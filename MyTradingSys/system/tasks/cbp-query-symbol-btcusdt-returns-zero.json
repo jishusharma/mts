@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T17:32:07Z",
   "commands": [],
   "context": {
     "calls_to_edit": 5,
@@ -22,6 +23,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "57f0ad0c6: cbp.query normalises symbol aliases (BTCUSDT, btc-perpetual -> BTC); 27 tests p",
+      "ref": "a0704527f",
+      "utc": "2026-10-28T17:32:07Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "cbp: audit integration, align default store_path fallback, mark cbp-ingestion for Cloud re",
@@ -38,7 +45,12 @@
   "refined_by": "",
   "refreshed": "2026-10-28T12:29:48Z",
   "refs": [],
-  "result": "",
+  "result": "57f0ad0c6: cbp.query normalises symbol aliases (BTCUSDT, btc-perpetual -> BTC); 27 tests pass, new test red before",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/cbp/__init__.py",
     "MyTradingSys/tests/test_cbp_query.py"
@@ -51,12 +63,13 @@
   "sources": [
     "MyTradingSys/cbp/__init__.py:106-124 (exact-match filter)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add _norm_symbol(s): upper, drop -/_/space, strip trailing PERPETUAL|PERP|USDT|USDC|USD",
     "Use it on both sides of the symbol filter in query()",
     "Add test_query_symbol_aliases with BTC, BTCUSDT, btc-perpetual, ETH negative"
   ],
+  "taken": "2026-10-28T17:32:07Z",
   "tests": "MyTradingSys/tests/test_cbp_query.py::test_query_symbol_aliases (fails on pre-change code: 0 rows for BTCUSDT)",
   "title": "cbp.query(symbol='BTCUSDT') returns 0 rows; store uses 'BTC' (6 rows). Normalise symbols in query + test",
   "weight": "IMPORTANT",
