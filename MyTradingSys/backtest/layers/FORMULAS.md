@@ -184,6 +184,13 @@ Canonical source: standard Sharpe ratio (reward per unit of volatility); the pop
 here follows Bailey/Lopez de Prado's PBO paper's own convention of dividing by the realized in-sample
 `N`, not `N-1`, when comparing strategy variants over a fixed block of returns.
 
+**Degenerate-input policy (DECISION OURS, 2026-10-28):** `pbo_cscv` / `ref_pbo_cscv` raise `ValueError` for
+T < S, S < 2 or odd S, ragged rows, an empty or single-row matrix, or zero columns (no partition is
+silently truncated to zero rows; nondivisible T keeps the first (T//S)*S rows). `bt_stats.sharpe`
+returns NaN for zero variance or a single observation, and `psr` / `dsr` propagate NaN; inside CSCV a
+constant variant ranks as Sharpe 0 so valid-input PBO arithmetic is unchanged (section 10 oracle, 1e-12).
+`ref_pbo.sharpe` keeps its own 0.0 convention for constant series (internal to the reference CSCV).
+
 **PSR / DSR (`bt/bt_stats.py:psr,dsr,expected_max_sr`):** Probabilistic Sharpe Ratio / Deflated Sharpe
 Ratio per Bailey & Lopez de Prado, "The Sharpe Ratio Efficient Frontier" (2012) and the DSR literature —
 `psr = Phi((SR - SR*) * sqrt(T-1) / sqrt(1 - skew*SR + (kurtosis-1)/4 * SR^2))`; `dsr` substitutes

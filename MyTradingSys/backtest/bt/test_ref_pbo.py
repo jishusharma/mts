@@ -72,5 +72,35 @@ class TestRefPBO(unittest.TestCase):
             self.assertGreaterEqual(pbo, 0.0)
             self.assertLessEqual(pbo, 1.0)
 
+class TestRefPBOBoundary(unittest.TestCase):
+    """Degenerate-input contract (FORMULAS.md section 10, DECISION OURS)."""
+
+    def _ok(self, T=8, N=2):
+        return [[float(t + n * (t % 3)) for n in range(N)] for t in range(T)]
+
+    def test_ref_pbo_rejects_T_less_than_S(self):
+        with self.assertRaises(ValueError):
+            ref_pbo_cscv(self._ok(T=4), S=8)
+
+    def test_rejects_S_below_2_and_odd(self):
+        for S in (0, 1, 3, -2):
+            with self.assertRaises(ValueError):
+                ref_pbo_cscv(self._ok(), S=S)
+
+    def test_rejects_ragged_matrix(self):
+        M = self._ok()
+        M[3] = M[3][:1]
+        with self.assertRaises(ValueError):
+            ref_pbo_cscv(M, S=2)
+
+    def test_rejects_empty_and_singleton(self):
+        with self.assertRaises(ValueError):
+            ref_pbo_cscv([], S=2)
+        with self.assertRaises(ValueError):
+            ref_pbo_cscv([[1.0, 2.0]], S=2)
+        with self.assertRaises(ValueError):
+            ref_pbo_cscv([[], []], S=2)
+
+
 if __name__ == '__main__':
     unittest.main()
