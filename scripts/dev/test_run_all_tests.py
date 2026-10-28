@@ -656,6 +656,40 @@ class TestPassRecord(unittest.TestCase):
         results = rat.run_plan(plan, 2, out=io.StringIO(), reused={"3a": "reused: passed"})
         self.assertEqual((results, ran), ({"3a": True}, []))
 
+    def commit(self, name, text, msg):
+        (self.d / name).parent.mkdir(parents=True, exist_ok=True)
+        (self.d / name).write_text(text, encoding="utf-8")
+        subprocess.run(["git", "-C", str(self.d), "add", name], check=True, capture_output=True)
+        subprocess.run(["git", "-C", str(self.d), "commit", "-q", "-m", msg], check=True, capture_output=True)
+
+    def test_input_record_skips_slow_steps_when_only_notes_and_cards_changed(self):
+        plan = [rat.Step("5b", "layers", "l", cmd_text="python -m unittest x"), rat.Step("3la", "lint", "l", cmd_text="python lint.py"),
+                rat.Step("4d", "doc tests", "l", cmd_text="python docs.py"), rat.Step("3xt", "extra", "l", cmd_text="python extra.py")]
+        ok = {s.num: True for s in plan}
+        self.assertTrue(rat.save_input_record(plan, ok, root=self.d))
+        self.assertEqual(set(rat.load_input_reused(plan, root=self.d)), {"5b", "3xt"})      # 3la and 4d are never skipped
+        self.commit("MyTradingSys/research/note.md", "n\n", "note")
+        self.commit("MyTradingSys/system/tasks/c.json", "{}\n", "card")
+        self.assertEqual(set(rat.load_input_reused(plan, root=self.d)), {"5b", "3xt"})      # notes and cards are not inputs
+        self.commit("MyTradingSys/backtest/layers/FORMULAS.md", "f\n", "formulas")          # a note a layer test may read
+        self.assertEqual(rat.load_input_reused(plan, root=self.d), {})
+        self.assertTrue(rat.save_input_record(plan, ok, root=self.d))
+        self.commit("a.py", "changed\n", "code")                                            # real code change
+        self.assertEqual(rat.load_input_reused(plan, root=self.d), {})
+
+    def test_input_record_ignores_failed_reused_dirty_and_other_signature_steps(self):
+        plan = [rat.Step("5b", "layers", "l", cmd_text="python -m unittest x")]
+        rat.save_input_record(plan, {"5b": True}, root=self.d)
+        rat.save_input_record(plan, {"5b": False}, root=self.d)                              # a fail drops the entry
+        self.assertEqual(rat.load_input_reused(plan, root=self.d), {})
+        rat.save_input_record(plan, {"5b": True}, root=self.d)
+        self.assertEqual(set(rat.load_input_reused(plan, root=self.d)), {"5b"})
+        self.assertEqual(rat.load_input_reused([rat.Step("5b", "layers", "l", cmd_text="python -m unittest y")], root=self.d), {})
+        self.assertEqual(rat.load_input_reused(plan, root=self.d, now=time.time() + rat.RECORD_MAX_AGE_S + 1), {})
+        (self.d / "dirty.py").write_text("x\n", encoding="utf-8")
+        self.assertEqual(rat.load_input_reused(plan, root=self.d), {})                       # untracked file = dirty tree
+        self.assertFalse(rat.save_input_record(plan, {"5b": True}, root=self.d))
+
     def test_ci_never_uses_the_record(self):
         with mock.patch.dict(os.environ, {"CI": "true"}), mock.patch.object(rat, "build_plan", return_value=[]), \
                 mock.patch.object(rat, "load_reused") as load, mock.patch.object(rat, "save_record") as save, \

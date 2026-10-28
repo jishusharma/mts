@@ -1113,6 +1113,79 @@ def load_reused(plan, root=REPO, now=None):
         return {}
 
 
+# Input-scoped pass record (ship-speed audit 2026-10-28, register B8/B-gate): the tree record above misses after every trunk merge, because
+# a merge changes the tree even when only cards and notes came in. For the two slowest full-gate steps (3xt extra tests 175 s, 5b layer
+# tests 159 s on JIS-NUC) a second record keys the pass on the hash of their INPUTS: every tracked file except notes and task cards.
+# A step is skipped only when this exact step (same signature) passed on a clean tree with the same inputs, in the same python, within a day.
+# Step 3la (look-ahead lint) and 4d (doc tests) are never in INPUT_SKIP_STEPS: they read the notes this hash leaves out.
+INPUT_RECORD_NAME = "mts_gate_inputs.json"
+INPUT_SKIP_STEPS = ("3xt", "5b")
+INPUT_KEEP_NOTES = ("MyTradingSys/backtest/", "MyTradingSys/tests/", "scripts/")   # a .md/.txt here can be test input (FORMULAS.md): it counts
+
+
+def is_gate_input(path):
+    p = path.replace(chr(92), "/")
+    if p.startswith("MyTradingSys/system/tasks/") and p.endswith(".json"):
+        return False
+    if p.endswith((".md", ".txt")) and not p.startswith(INPUT_KEEP_NOTES):
+        return False
+    return True
+
+
+def inputs_hash(root=REPO):
+    import hashlib
+    rows = [r.split(None, 3) for r in _git_out(root, "ls-files", "-s").splitlines()]
+    keep = sorted(f"{r[1]} {r[3]}" for r in rows if len(r) == 4 and is_gate_input(r[3]))
+    return hashlib.sha1(chr(10).join(keep).encode("utf-8")).hexdigest()
+
+
+def load_input_reused(plan, root=REPO, now=None):
+    """{num: note} of INPUT_SKIP_STEPS steps whose input record matches (clean tree, same inputs hash, signature, python, age). Else {}."""
+    try:
+        tree, clean = tree_state(root)
+        if not clean:
+            return {}
+        rec = json.loads((Path(_git_out(root, "rev-parse", "--absolute-git-dir").strip()) / INPUT_RECORD_NAME).read_text(encoding="utf-8"))
+        h = inputs_hash(root)
+        out = {}
+        for s in plan:
+            r = rec.get("steps", {}).get(s.num)
+            if s.num in INPUT_SKIP_STEPS and not s.skip and r and r.get("sig") == s.sig() and r.get("inputs") == h                     and r.get("python") == sys.version and (now or time.time()) - float(r.get("epoch", 0)) <= RECORD_MAX_AGE_S:
+                out[s.num] = f"reused: inputs unchanged since the pass of {r.get('utc', '?')}"
+        return out
+    except Exception:
+        return {}
+
+
+def save_input_record(plan, results, reused=None, root=REPO, start_tree=None):
+    """Record INPUT_SKIP_STEPS steps that really ran and PASSED in this gate (never a reused one); a FAIL drops the entry. Never raises."""
+    try:
+        tree, clean = tree_state(root)
+        if not clean or (start_tree and tree != start_tree):
+            return False
+        path = Path(_git_out(root, "rev-parse", "--absolute-git-dir").strip()) / INPUT_RECORD_NAME
+        try:
+            steps = dict(json.loads(path.read_text(encoding="utf-8")).get("steps", {}))
+        except Exception:
+            steps = {}
+        h = inputs_hash(root)
+        for s in plan:
+            if s.num not in INPUT_SKIP_STEPS or s.skip or s.num in (reused or {}):
+                continue
+            if results.get(s.num) is True:
+                steps[s.num] = {"sig": s.sig(), "inputs": h, "python": sys.version, "epoch": time.time(),
+                                "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
+            elif results.get(s.num) is False:
+                steps.pop(s.num, None)
+        tmp = path.with_name(f"{INPUT_RECORD_NAME}.{os.getpid()}.tmp")
+        with open(tmp, "w", encoding="utf-8", newline=chr(10)) as fh:
+            json.dump({"steps": steps}, fh)
+        os.replace(tmp, path)
+        return True
+    except Exception:
+        return False
+
+
 def save_record(plan, results, root=REPO, start_tree=None, deferred=None):
     """Write the passing steps of this run (and the still-valid passes of the same tree) to the record. Skipped when the tree is dirty or
     HEAD moved while the gate ran (a session edited or committed mid-gate). Atomic (temp + os.replace, 3 tries on a Windows lock); never
@@ -1249,6 +1322,8 @@ def main(argv=None):
         except Exception:
             use_record = False
         reused = load_reused(plan) if use_record else {}
+        if use_record:
+            reused = {**load_input_reused(plan), **reused}
     slot = None
     precheck_slot = None
     if "--slot" in args and mode not in ("docs", "none"):
@@ -1262,6 +1337,7 @@ def main(argv=None):
                        precheck="--precheck" in args and not fast_applied, slot=slot, reused=reused, precheck_slot=precheck_slot)
     if use_record:
         save_record(plan, results, start_tree=start_tree, deferred=fast_info.get("deferred") if fast_applied else None)
+        save_input_record(plan, results, reused=reused, start_tree=start_tree)
 
     # Summary
     print("\n" + "=" * 70)
