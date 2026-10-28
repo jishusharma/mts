@@ -1,0 +1,69 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-28T08:13:45Z",
+  "depends_on": [],
+  "done_when": "A recorded run where the Codex lane works until its limit, usage figure recorded, and the dispatch order that keeps it fed is written in EXHAUST_PHASE.md or CODEX_START.md.",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Make the Codex (GPT) lane work until its session limit, same as the Claude logins, and write down the dispatch order that keeps it fed.",
+  "id": "codex-gpt-exhaust-full",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "docs: name successor_wake + exhaust radar commands in SUPER_SESSION/EXHAUST_PHASE",
+      "ref": "e27d96497d00",
+      "utc": "2026-10-27T23:09:19Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "e27d96497d00 docs: name successor_wake + exhaust radar commands in SUPER_SESSION/EXHAUST_P",
+      "ref": "MyTradingSys/system/EXHAUST_PHASE.md",
+      "utc": "2026-10-27T23:09:19Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "scripts/dev/test_codex_run.py::test_build_template_leaves_the_gate_to_the_runner",
+  "not_twin_of": [
+    "codex-spend-guard-151-vs-65"
+  ],
+  "note": "Role Builder. Operator D3 2026-10-28 (d-gpt-exhaust-full).",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T08:14:53Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/exhaust.py",
+    "scripts/dev/codex_run.py",
+    "MyTradingSys/system/EXHAUST_PHASE.md",
+    "MyTradingSys/system/CODEX_START.md"
+  ],
+  "scope_out": [
+    "live tree, deploys"
+  ],
+  "scope_sha": "e27d96497d00",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/system/EXHAUST_PHASE.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read EXHAUST_PHASE.md, exhaust.py, codex_run.py, CODEX_START.md",
+    "Find why the lane stops short of the limit; fix with a test that fails on old code",
+    "Run the lane to its limit, record usage; write the dispatch order"
+  ],
+  "tests": "new test fails on pre-change code",
+  "title": "Codex lane: exhaust GPT to 100% of its session limit, record the run and the dispatch order",
+  "weight": "ROUTINE",
+  "worker": "session"
+}
