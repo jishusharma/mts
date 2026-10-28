@@ -5,8 +5,8 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-28T15:06:05Z",
-    "misses": 32,
+    "folded": "2026-10-28T15:11:21Z",
+    "misses": 37,
     "reads": [
       "scripts/dev/test_sync.py",
       "MyTradingSys/system/GATE_SPEED.md"
