@@ -19,6 +19,32 @@ class GateScratch(unittest.TestCase):
         r._drop_scratch()
         self.assertFalse(os.path.exists(d))
 
+    def test_children_get_a_run_scoped_temp_root_removed_at_exit(self):
+        """2026-10-28: tests' own tempfile.mkdtemp leftovers refilled %TEMP% (~190 dirs / 10 min). A child that makes a temp dir must
+        land under the run root, and removing the gate temp dirs must take it with it."""
+        import subprocess, tempfile
+        keys = ("TEMP", "TMP", "TMPDIR", "MTS_RUN_TEMP", "MTS_NO_RUN_TEMP")
+        saved = {k: os.environ.get(k) for k in keys}
+        real = tempfile.gettempdir()
+        saved_td = tempfile.tempdir
+        os.environ.pop("MTS_RUN_TEMP", None); os.environ.pop("MTS_NO_RUN_TEMP", None)
+        try:
+            root = r.run_temp_root()
+            self.assertTrue(root and os.path.isdir(root))
+            self.assertEqual(tempfile.gettempdir(), real)   # this process keeps the shared temp dir (gate slots)
+            out = subprocess.run([sys.executable, "-c", "import tempfile;print(tempfile.mkdtemp(prefix='leak_'))"],
+                                 capture_output=True, text=True).stdout.strip()
+            self.assertTrue(os.path.isdir(out))
+            self.assertEqual(os.path.dirname(out), root)
+            r._remove_gate_tmp()
+            self.assertFalse(os.path.exists(out))
+            self.assertFalse(os.path.exists(root))
+        finally:
+            for k, v in saved.items():
+                if v is None: os.environ.pop(k, None)
+                else: os.environ[k] = v
+            tempfile.tempdir = saved_td
+
 
 if __name__ == "__main__":
     unittest.main()

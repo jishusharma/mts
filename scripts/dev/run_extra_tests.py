@@ -113,8 +113,10 @@ def main(argv=None):
         pass
     tests = pick(argv, all_tests())
     tmp = Path(tempfile.mkdtemp(prefix="mts_xt_"))
-    bad = run_files(tests, jobs(), tmp=tmp)
-    shutil.rmtree(tmp, ignore_errors=True)
+    try:
+        bad = run_files(tests, jobs(), tmp=tmp)
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
     print(f"extra tests ({len(tests)} files): " + ("FAIL " + ", ".join(bad) if bad else "PASS"))
     return 1 if bad else 0
 

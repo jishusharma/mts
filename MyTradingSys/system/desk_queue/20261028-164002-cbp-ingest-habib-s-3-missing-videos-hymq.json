@@ -1,0 +1,11 @@
+{
+  "card": "cbp-ingest-habib-s-3-missing-videos-hymq",
+  "done_when": "The CBP store has exactly 3 rows for analyst habib: hymqmEfCGrw, R15Ao0XUoV8, c9qf7QJroAE, each quote_verified true; the row-count command above prints 3.",
+  "from": "JIS-NUC",
+  "id": "20261028-164002-cbp-ingest-habib-s-3-missing-videos-hymq",
+  "need": "python scripts/dev/fetch_captions_timed.py --analyst habib --canonical-out <CBP_HOME>/raw_transcripts_canonical hymqmEfCGrw R15Ao0XUoV8 c9qf7QJroAE; python -c \"import sys;sys.path.insert(0,'MyTradingSys');import cbp;d=cbp.load();print(len([r for r in d['rows'] if r['analyst']=='habib']),'habib rows')\" (full brief: python scripts/dev/tasks.py brief cbp-ingest-habib-s-3-missing-videos-hymq)",
+  "posted": "2026-10-28T16:40:02Z",
+  "status": "pending",
+  "target": "DSA",
+  "title": "CBP: ingest Habib's 3 missing videos (hymqmEfCGrw, R15Ao0XUoV8, c9qf7QJroAE)"
+}

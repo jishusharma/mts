@@ -5,7 +5,7 @@
 ## HOW TO PATCH (rules)
 
 ### Read before write
-1. Backup to backup_YYYYMMDD_HHMMSS/ first.
+1. Backup to backup_session\ first (USER.md). Never a backup beside the live file (B186).
 2. Select-String -Context N the target region.
 3. Anchor = literal string from that output.
 4. Abort if match count != 1.

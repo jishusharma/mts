@@ -34,6 +34,9 @@ import hosts  # noqa: E402
 REPO = Path(__file__).resolve().parents[2]
 from cicd_run import SUPERVISOR_LOG_REL  # noqa: E402  (one owner of the path)
 RECENT_MIN = 30
+GATEWAY_IDLE_HOURS = 12    # DECISION (OURS): a .gateway_owner tree is the gateway session's own only while it is in use; with the machine flag
+                           # ~/.claude/mts_gateway_on every tree gets the marker (66 trees, ~4 GB, kept C: at 6 GB free 2026-10-28). Idle this long
+                           # it is an ordinary finished tree: the clean / merged / no-unshipped-commits checks below still decide.
 IDLE_HOURS = sync.TIDY_IDLE_HOURS
 DIRTY_IDLE_HOURS = 24      # DECISION (OURS, operator 2026-10-26 "same mechanism on all devices, periodically"): a tree whose branch is fully on trunk
                            # but holds uncommitted files is patch-saved and removed only after this many idle hours; unshipped commits never
@@ -69,7 +72,9 @@ def protected_reason(p, branch, primary_tree, here, now, mtime_of=None):
     if (p / sync.LIVE_MARKER).exists():
         return "live tree"
     if (p / sync.GATEWAY_MARKER).exists():
-        return "gateway tree"   # GATEWAY_NUC.md rule 7
+        g_idle = sync.idle_hours(p, branch, now) if mtime_of is None else mtime_of(p)
+        if g_idle < GATEWAY_IDLE_HOURS:
+            return "gateway tree"   # GATEWAY_NUC.md rule 7, while in use
     if p.name in sync.LANE_WORKTREES or low.startswith(("mts-relay", "mts-push", "mts-refiner", "mts-control-room")):
         return "lane tree"
     if "codex" in low or "codex" in branch.lower():

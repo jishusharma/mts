@@ -492,6 +492,14 @@ def test_plan_lines_only_the_owner_runs_shared_lanes():
     assert "SPAWN 1: s1" not in red and "CI RED" in red
 
 
+def test_plan_spawn_line_names_agents_not_sessions():
+    p = S.pace_plan(T0, _rd(10, 20), 95)
+    live = {"A": {"host": "JIS-NUC", "mode": "NORMAL", "run": 0, "free": 2, "at": "x", "dsa": "up"}}
+    ctx = {"picks": [{"id": "s1", "role": "Builder", "worker": "session"}], "ci": {"red": False}}
+    spawn = [l for l in S.plan_lines("A", "JIS-NUC", p, live, ctx, gate_key=False) if l.startswith("SPAWN")][0]
+    assert "agent" in spawn and "session" not in spawn and "sessions, 2 chained" not in spawn
+
+
 def test_plan_lines_run_session_planner_when_raw_cards_are_old():
     p = S.pace_plan(T0, _rd(10, 20), 95)
     live = {"A": {"host": "JIS-NUC", "mode": "NORMAL", "run": 0, "free": 3, "at": "x", "dsa": "up"}}

@@ -38,3 +38,6 @@ D:\tools originals remain as fallback (start-trading-day.ps1:42-46). Nothing wen
 `scripts\dev\c_drive_care.ps1` (report by default, `-Apply` safe deletes) and `scripts\sched\register_c_drive_care.ps1`
 (task MTS-CDriveCare, Sundays 04:00). Log: %LOCALAPPDATA%\MTS-DiskCare\c_drive_latest.md; WARN line under 15 GB free.
 Both run under Windows PowerShell 5.1 (tested): no 7+ only calls.
+
+## Gateway marker does not pin finished trees (2026-10-28)
+With the machine flag `~/.claude/mts_gateway_on`, `sync.py start` marks every tree `.gateway_owner`; that pinned 66 trees (~4 GB) and the guard freed 0.66 GB. `wt_maint.py` now honours the marker only while the tree was active in the last `GATEWAY_IDLE_HOURS` (12 h); idle past that it is judged like any tree (clean, branch on trunk, no unshipped commits).
