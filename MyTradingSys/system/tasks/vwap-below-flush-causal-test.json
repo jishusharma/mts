@@ -2,6 +2,22 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T09:37:58Z",
+    "misses": 26,
+    "reads": [
+      "scripts/dev/tasks.py",
+      "MyTradingSys/research/sim_desk/export_results.py",
+      "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T09_live_parity.md",
+      "MyTradingSys/research/pipeliner/station_watcher_monitor.py",
+      "MyTradingSys/system/SUPER_SESSION.md",
+      "MyTradingSys/system/ROUTING.md",
+      "MyTradingSys/research/layer_lab/reports/2026-10-28_gpt-t09-table-recount.md",
+      "MyTradingSys/research/sim_desk/results/t09_live_parity.json"
+    ],
+    "session": "agent-aad5d23099c2d11d7"
+  },
   "created": "2026-10-25T19:28:39Z",
   "depends_on": [
     "vwap-as-a-level-research-tom-fabio-analysts-web",
