@@ -164,6 +164,12 @@ class RealRepoReaders(unittest.TestCase):
         self.assertNotIn('api_batch.py', unread)
         self.assertNotIn('operator_material_index.py', unread)
 
+    def test_gateway_run_and_refresh_main_checkout_have_a_reader(self):
+        built = ws.build(ws.ROOT)
+        unread = [os.path.basename(p) for p in ws.dev_no_reader(ws.ROOT, built[0], built[1])]
+        self.assertNotIn('gateway_run.py', unread)
+        self.assertNotIn('refresh_main_checkout.py', unread)
+
 
 class ScanSpeed(unittest.TestCase):
     """GATE_SPEED.md X4: the content-hash facts cache must never change what the scan finds."""

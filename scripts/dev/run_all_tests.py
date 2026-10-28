@@ -304,16 +304,6 @@ def format_step(num, description, cmd_text, ok, output, elapsed, progress="", ta
     return lines
 
 
-def run_step(step_num, description, cmd, cwd=None):
-    """Run one step now and print its block. Return (True|False|None, output); None means skipped."""
-    t0 = time.monotonic()
-    ok, output = exec_step(cmd, cwd)
-    block = format_step(step_num, description, " ".join(cmd) if isinstance(cmd, list) else cmd, ok, output, time.monotonic() - t0)
-    with _LOCK:
-        print("\n".join(block), flush=True)
-    return ok, output
-
-
 def find_backtest_modules():
     """Find all test_*.py modules (including .new) in MyTradingSys/backtest/bt."""
     bt_dir = REPO / "MyTradingSys" / "backtest" / "bt"

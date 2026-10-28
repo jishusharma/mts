@@ -1,6 +1,6 @@
 {
   "approved_by": "",
-  "asks": "Lab_Guy: stamp REVIEWED for rolling-chain-background-wait-design-rev (planner cannot stamp)",
+  "asks": "",
   "commands": [],
   "created": "2026-10-27T20:33:04Z",
   "depends_on": [],
@@ -12,13 +12,15 @@
   "goal": "Operator asked why rolling-chain background agents (Agent-tool dispatches) sit 15-25 min each and wants that consolidated into one design before any fix is coded. Each link currently: reads full card brief, edits files, runs the smoke/full gate (run_all_tests.py), re-verifies pinned regression numbers, commits, sync.py ship (CI gate). That cycle is the real cost, not idle wait.",
   "id": "rolling-chain-background-wait-design-rev",
   "lane": "SONNET",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator rule for this whole line of work: consolidate idea -> refine this task -> design review passes (with tests where applicable) -> only then implement -> implementation tested with proof attached. Do not skip straight to a code change. Session_Planner 2026-10-28: content complete, passes the T0 gate; needs an IMPORTANT review stamp before promotion, which this pinned session cannot spawn (role: spawns nothing) -- recommend coordinator-run batched Sonnet reviewer Agent. No stamp fabricated.",
+  "note": "Operator rule for this whole line of work: consolidate idea -> refine this task -> design review passes (with tests where applicable) -> only then implement -> implementation tested with proof attached. Do not skip straight to a code change. Session_Planner 2026-10-28: content complete, passes the T0 gate; needs an IMPORTANT review stamp before promotion, which this pinned session cannot spawn (role: spawns nothing) -- recommend coordinator-run batched Sonnet reviewer Agent. No stamp fabricated.\nWAITING 2026-10-28 (planner-raw-refine): fields complete; needs a real Lab_Guy stamp (planner cannot stamp).\nREVIEWED:2026-10-28 ACCEPT Lab_Guy (Sonnet, C0 design-only, no live path). Checked: usage_reminder.py MAX_RUNNING=2 (line 22, OURS) exists; gate-timing evidence source exists (runtime_data/gate_timing.jsonl via sync.record_ship_timing / run_all_tests.record_timing, mts_doctor.py:250); no code change in scope; done_when lists levers + default. Note for builder: cite gate_timing.jsonl rows as the baseline, label the picked default OURS.",
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "",
+  "refreshed": "2026-10-28T12:01:22Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -27,9 +29,10 @@
   "scope_out": [
     "scripts/dev/usage_reminder.py, scripts/dev/sync.py, scripts/dev/tasks.py, any sim_desk code — no implementation in this card"
   ],
+  "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Pull timing evidence: grep recent sync.py ship / gate run durations from the last 6 rolling-chain links for a real baseline, not a guess.",
     "List levers with tradeoffs (card size, MAX_RUNNING, gate scope, batching) and pick one default; write the note.",
