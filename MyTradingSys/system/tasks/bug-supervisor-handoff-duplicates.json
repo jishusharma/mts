@@ -4,7 +4,7 @@
   "commands": [],
   "context": {
     "calls_to_edit": 25,
-    "folded": "2026-10-28T13:48:38Z",
+    "folded": "2026-10-28T13:49:04Z",
     "misses": 16,
     "reads": [
       "scripts/dev/logon_wake.py",
