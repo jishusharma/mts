@@ -6,7 +6,7 @@
   ],
   "context": {
     "calls_to_edit": 21,
-    "folded": "2026-10-28T07:00:59Z",
+    "folded": "2026-10-28T07:08:54Z",
     "misses": 6,
     "reads": [
       "MyTradingSys/research/live_reads/2026-10-26_cross_market_tools/watch_rows.csv",
