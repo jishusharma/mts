@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "2026-10-28T15:12:29Z",
+  "closed": "2026-10-28T14:56:01Z",
   "commands": [
     "python MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T05/t05_lc1.py"
   ],
@@ -18,9 +18,9 @@
   "latest": [
     {
       "kind": "ship",
-      "line": "levels_hold.md T05-F5 section: fair touched-only control KEEP 0 of 12 (published 8) on DEV",
-      "ref": "21f0c6dfe",
-      "utc": "2026-10-28T15:12:29Z"
+      "line": "LC1 fair control ported; DEV 2022-04-01..2024-06-30: 0 of 12 KEEP (published 8), matches T",
+      "ref": "2add4f3cd",
+      "utc": "2026-10-28T14:56:01Z"
     },
     {
       "auto": true,
@@ -46,7 +46,7 @@
     "MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.py",
     "MyTradingSys/research/worktree_disposition_20261026/REPORT.md"
   ],
-  "result": "levels_hold.md T05-F5 section: fair touched-only control KEEP 0 of 12 (published 8) on DEV 2022-04-01..2024-06-30; exclude_real=False reproduces T05 lc1_fair.csv 12x12 fields 0 mismatches; test_levels_hold_fair.py red->green; 7 consumers listed, no cards filed",
+  "result": "LC1 fair control ported; DEV 2022-04-01..2024-06-30: 0 of 12 KEEP (published 8), matches T05 lc1_fair.csv; MyTradingSys/research/levels_confluence_2026-10-14/lc1_fair_dev.csv; 6 consumer cards filed",
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"
@@ -71,7 +71,7 @@
     "Write the test first (red on the old control), then rerun the 12 families and re-state the KEEP list in levels_hold.md.",
     "List every layer or doc that consumed the 8 KEEP families as priors and file one card per consumer with tasks.py new (no edits to layer code or docs here)."
   ],
-  "taken": "2026-10-28T15:12:29Z",
+  "taken": "2026-10-28T14:56:01Z",
   "tests": "MyTradingSys/research/levels_confluence_2026-10-14/test_levels_hold_fair.py::test_fair_control_excludes_real_level: draws never equal the real level and untouched lines leave the denominator; red on the old control, green on the fair one.",
   "title": "Re-state LC1 KEEP list on the touched-only fair control (T05-F5)",
   "weight": "CRUCIAL",

@@ -34,6 +34,12 @@ DEC0 = int(dt.datetime(2022, 4, 1, tzinfo=dt.timezone.utc).timestamp() * 1000)
 END = int(dt.datetime(2024, 7, 1, tzinfo=dt.timezone.utc).timestamp() * 1000)
 
 
+def pub_col(row, key):
+    """Published (legacy) control column: levels_hold.analyze moved it to legacy_* when the fair control became the verdict
+    (T05-F5, 2026-10-28); older analyze rows carry it under the plain key."""
+    return row.get("legacy_" + key, row[key])
+
+
 def month_of(day):
     d = dt.date(1970, 1, 1) + dt.timedelta(days=int(day))
     return d.year * 12 + d.month
@@ -83,9 +89,9 @@ def main():
         w = csv.writer(fh)
         w.writerow(["family", "n", "hold", "random_hold", "diff", "ci_lo", "ci_hi", "verdict"])
         for f, r in sorted(fams.items()):
-            w.writerow([f, r["n"], f"{r['hold_rate']:.4f}", f"{r['random_hold_rate']:.4f}", f"{r['difference']:.4f}",
-                        f"{r['ci95'][0]:.4f}", f"{r['ci95'][1]:.4f}", r.get("legacy_verdict", r["verdict"])])
-    print("published run reproduced:", {f: (r["n"], round(r["hold_rate"], 3), round(r["random_hold_rate"], 3), r.get("legacy_verdict", r["verdict"]))
+            w.writerow([f, r["n"], f"{r['hold_rate']:.4f}", f"{pub_col(r, 'random_hold_rate'):.4f}", f"{pub_col(r, 'difference'):.4f}",
+                        f"{pub_col(r, 'ci95')[0]:.4f}", f"{pub_col(r, 'ci95')[1]:.4f}", pub_col(r, "verdict")])
+    print("published run reproduced:", {f: (r["n"], round(r["hold_rate"], 3), round(pub_col(r, "random_hold_rate"), 3), pub_col(r, "verdict"))
                                          for f, r in fams.items()}, flush=True)
 
     # ---- fair null
@@ -150,8 +156,8 @@ def main():
         pub = fams.get(fam)
         out.append(dict(family=fam, n_touch=rn, hold=rh / rn, fair_ctl_touches=cn, fair_ctl_hold=ch / cn, diff=rh / rn - ch / cn,
                         ci_lo=lo_, ci_hi=hi_, verdict="KEEP" if lo_ > 0 else "DROP",
-                        pub_hold=pub["hold_rate"] if pub else float("nan"), pub_random=pub["random_hold_rate"] if pub else float("nan"),
-                        pub_diff=pub["difference"] if pub else float("nan"), pub_verdict=pub.get("legacy_verdict", pub["verdict"]) if pub else "",
+                        pub_hold=pub["hold_rate"] if pub else float("nan"), pub_random=pub_col(pub, "random_hold_rate") if pub else float("nan"),
+                        pub_diff=pub_col(pub, "difference") if pub else float("nan"), pub_verdict=pub_col(pub, "verdict") if pub else "",
                         orig_ctl_equal_real_share=o[2] / (5 * o[0]), orig_ctl_untouched_share=o[1] / (5 * o[0])))
     with open(HERE / "out" / "lc1_fair.csv", "w", newline="\n", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=list(out[0]))

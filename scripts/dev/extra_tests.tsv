@@ -138,3 +138,4 @@ scripts/dev/test_dedupe_dead_code.py
 scripts/dev/test_gateway_run.py
 scripts/dev/test_logon_wake.py
 scripts/dev/test_refresh_main_checkout.py
+scripts/dev/test_sync_push_race.py

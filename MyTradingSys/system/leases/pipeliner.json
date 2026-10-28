@@ -1,17 +1,17 @@
 {
- "acquired": 1793040245,
- "expires": 1793055082,
+ "acquired": 1793200417,
+ "expires": 1793203117,
  "holder": {
   "account": "?",
   "host": "DESKTOP-F7IU69N",
-  "key": "DESKTOP-F7IU69N/a38d02c7f4c8",
-  "session": "a38d02c7f4c8"
+  "key": "DESKTOP-F7IU69N/d706ba2280d0",
+  "session": "d706ba2280d0"
  },
- "nonce": "366d4ee758aba78a",
- "renewed": 1793052382,
+ "nonce": "0cd1e7ff651e1dfd",
+ "renewed": 1793200417,
  "role": "Pipeliner",
  "state": "held",
  "took_over_from": null,
  "ttl": 2700,
- "write_id": "e47a237feb2d"
+ "write_id": "dbcdbb18d541"
 }

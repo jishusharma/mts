@@ -14,7 +14,7 @@
   "goal": "Fix the review BLOCK of 2026-10-19 on the vendor-gate tests in test_lab_flow.py: make the tamper test fail on the old gate, make the V5 mutant tests exercise launch/gate not unchanged helpers, add the stage-3 same-vendor-as-producer case and an empty-vendor receipt test.",
   "id": "lab-flow-vendor-gate-tests-tamper-test-p",
   "kind": "build",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
@@ -46,6 +46,12 @@
   "refined_by": "Session_Planner",
   "refreshed": "2026-10-28T14:03:56Z",
   "refs": [],
+  "reroute": {
+    "at": "2026-10-28T14:43:36Z",
+    "from": "CODEX",
+    "to": "SONNET",
+    "why": "credits"
+  },
   "result": "",
   "scope_in": [
     "scripts/dev/test_lab_flow.py",
