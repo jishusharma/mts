@@ -2,6 +2,8 @@
 
 Unused quota is lost money. Rule, in force until the operator says otherwise: **from 2 hours before a login's weekly reset, that login plans to use up every model's remaining quota, and in the last hour it does.** Idling, "stopping for the reset" and handing over because the quota is nearly full are not allowed in this window.
 
+Numbers and the other budget rules: SUPER_SESSION.md "Budget policy". In this window the 5 h stop is 95 (`exhaust.py plan` prints `five_stop`), not 100.
+
 ## Who acts (no collisions)
 - Only a **top-level session** acts. Subagents, Agent-tool children and workers a Supervisor started ignore the broadcast; the parent decides whether to pass work to them.
 - **One actor per login.** The first top-level session on a login that reads the broadcast runs `python scripts/dev/sync.py claim "exhaust-<login>"` (login = A, B or C, CLOUD_ACCOUNTS.md). Claim held by another session: do not act; `mts_signal.py ack <id> told --note "login <X> held"` and carry on. The claim holder acks `done` when the window ends.

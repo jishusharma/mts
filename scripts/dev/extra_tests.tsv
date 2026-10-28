@@ -130,3 +130,4 @@ scripts/dev/test_api_batch.py
 scripts/dev/test_bg_watch.py
 MyTradingSys/research/extraction_ledger_2026-10/test_cross_method_qa.py
 scripts/dev/test_device_tasks.py
+scripts/dev/test_budget_policy.py
