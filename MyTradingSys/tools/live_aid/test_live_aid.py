@@ -1,7 +1,7 @@
 """Tests for live_aid_indicators.js: independent Python maths vs the JS (run through node).
 
 Data: 300 Binance fapi BTCUSDT 1m klines (live, 20 s timeout) or the committed public fixture.
-Set LIVE_AID_BREAK=<rsi|rsiSma|bb|atr|vwap|days|pnl> to run the JS with that function deliberately
+Set LIVE_AID_BREAK=<rsi|rsiSma|bb|atr|vwap|days|wt|pnl> to run the JS with that function deliberately
 broken (fail-first demo): the matching test must then fail.
 """
 import json
@@ -135,6 +135,7 @@ let atr = A.atr(d.h, d.l, d.c, 14);
 let vwap = A.dayVwap(d.t, d.h, d.l, d.c, d.v);
 let pnl = A.closedPnlBtc('short', 81414.42, [{size:3240,price:81127},{size:4140,price:81024},{size:900,price:80947.5}]);
 let days = A.utcDays(d.t.map((t, i) => [t - 3 * 3600000, 0, d.h[i], d.l[i], d.c[i], d.v[i]]));
+let wt = A.wavetrend(d.t, d.h, d.l, d.c, 60000, 200);
 let open = A.inversePnlBtc('short', 8280, 81414.42, 81000);
 if (brk === 'rsi') rsi = bump(rsi);
 if (brk === 'rsiSma') rsiSma = bump(rsiSma);
@@ -142,9 +143,10 @@ if (brk === 'bb') bb.pctB = bump(bb.pctB);
 if (brk === 'atr') atr = bump(atr);
 if (brk === 'vwap') vwap = bump(vwap);
 if (brk === 'days') days = days.map(r => [r[0], r[1], r[2], r[3] * 1.001, r[4], r[5]]);
+if (brk === 'wt') wt.wt1 = bump(wt.wt1);
 if (brk === 'pnl') { pnl = -pnl; open = -open; }
 const n = a => a.map(v => Number.isFinite(v) ? v : null);
-process.stdout.write(JSON.stringify({rsi:n(rsi), rsiSma:n(rsiSma), pctB:n(bb.pctB), width:n(bb.width), atr:n(atr), vwap:n(vwap), days, pnl, open}));
+process.stdout.write(JSON.stringify({rsi:n(rsi), rsiSma:n(rsiSma), pctB:n(bb.pctB), width:n(bb.width), atr:n(atr), vwap:n(vwap), days, wt1:n(wt.wt1), wt2:n(wt.wt2), wtEv:wt.event, pnl, open}));
 """
 
 
@@ -204,6 +206,19 @@ def test_utc_days(js):
     for row in js["days"]:
         hi, lo = days[row[0]]
         assert abs(row[2] - hi) <= TOL and abs(row[3] - lo) <= TOL, (row, hi, lo)
+
+
+def test_wavetrend_matches_layer_module(js):
+    # the repo's WaveTrend layer (FORMULAS.md s20, checked there against its own golden series) is the reference
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("wavetrend", HERE.parents[1] / "backtest/layers/wavetrend/wavetrend.py")
+    wtm = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(wtm)
+    rows = wtm.compute([(t, h, l, c) for t, h, l, c in zip(T, H, L, C)], 60_000)
+    nan = lambda v: None if math.isnan(v) else v
+    same(js["wt1"], [nan(r.wt1) for r in rows], "wt1")
+    same(js["wt2"], [nan(r.wt2) for r in rows], "wt2")
+    assert js["wtEv"] == [r.event for r in rows]
 
 
 FILLS = [(3240, 81127.0), (4140, 81024.0), (900, 80947.5)]

@@ -89,7 +89,9 @@ button:hover { background: #2e3946; }
   <section id="p-strip">
     <div class="hd"><h2>Strip</h2><span class="v" id="strip-venue"></span><span class="age" id="age-strip">--</span></div>
     <div class="scroll"><table><thead><tr><th>TF</th><th>RSI</th><th>SMA</th><th>%B</th><th>BBw%</th><th>ATR</th><th>vs VWAP</th></tr></thead><tbody id="strip"></tbody></table></div>
-    <span class="tag">RSI14 Wilder, SMA14 of RSI, BB(20,2) population, ATR14 Wilder, day VWAP hlc3 from 00:00Z: SOURCED (your chart setup). Flag lines 30/70: OURS. Last row value is the forming bar.</span>
+    <div class="hd"><h2>WaveTrend</h2><span class="tag">wt1 / wt2, lines &plusmn;53 &plusmn;60</span></div>
+    <div class="scroll"><table><thead><tr><th>TF</th><th>wt1</th><th>wt2</th><th>Zone</th><th>Last cross</th></tr></thead><tbody id="wt"></tbody></table></div>
+    <span class="tag">RSI14 Wilder, SMA14 of RSI, BB(20,2) population, ATR14 Wilder, day VWAP hlc3 from 00:00Z: SOURCED (your chart setup). WaveTrend 10/21/4, 0.015, lines 53/60: SOURCED (LazyBear, as on your chart); 200-bar warm-up: OURS. Flag lines 30/70: OURS. Values include the forming bar.</span>
   </section>
 
   <!-- 4. LEVELS -->
@@ -352,6 +354,18 @@ button:hover { background: #2e3946; }
       var band = k.pctB > 1 ? '<span class="chip">above band</span>' : k.pctB < 0 ? '<span class="chip">below band</span>' : '';
       return '<tr><td>' + tf.k + '</td><td>' + fmt(k.rsi, 1) + flags + '</td><td>' + fmt(k.rsiSma, 1) + '</td><td>' + fmt(k.pctB * 100, 0) + band +
         '</td><td>' + fmt(k.width * 100, 2) + '</td><td>' + fmt(k.atr, 1) + '</td><td class="' + cls(k.close - vw) + '">' + (isFinite(vw) ? sgn(k.close - vw, 1) : 'NOT_IN_DATA') + '</td></tr>';
+    }).join('');
+    $('wt').innerHTML = TFS.map(function (tf) {
+      var rows = S.tf[tf.k];
+      if (!rows || rows.length < 40) return '<tr><td>' + tf.k + '</td><td colspan="4">' + NID + '</td></tr>';
+      var c = A.columns(rows), w = A.wavetrend(c.t, c.h, c.l, c.c, tf.ms, 200), n = c.c.length - 1, a = w.wt1[n], b = w.wt2[n];
+      if (!isFinite(a)) return '<tr><td>' + tf.k + '</td><td colspan="4">' + NID + ' <span class="err">' + (n + 1) + ' bars, needs 200 + warm-up</span></td></tr>';
+      var zone = a >= 60 ? 'above 60' : a >= 53 ? '53 to 60' : a <= -60 ? 'below -60' : a <= -53 ? '-60 to -53' : a >= 0 ? '0 to 53' : '-53 to 0';
+      var zc = a >= 53 ? 'down' : a <= -53 ? 'up' : '';
+      var k = n; while (k >= 0 && !w.event[k]) k--;
+      var cross = k < 0 ? '--' : (w.event[k] > 0 ? 'up ' : 'down ') + (k === n ? 'now' : (n - k) + ' bars ago') + ' @ ' + fmt(w.wt1[k], 0) + (k === n ? ', forming bar' : '');
+      return '<tr><td>' + tf.k + '</td><td class="' + (a > b ? 'up' : a < b ? 'down' : '') + '">' + fmt(a, 1) + '</td><td>' + fmt(b, 1) +
+        '</td><td class="' + zc + '">' + zone + '</td><td>' + cross + '</td></tr>';
     }).join('');
     age('age-strip', S.klT);
 

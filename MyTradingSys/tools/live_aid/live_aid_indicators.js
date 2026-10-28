@@ -104,6 +104,38 @@
     return c;
   }
 
+  // WaveTrend (LazyBear), FORMULAS.md s20, same conventions as backtest/layers/wavetrend/wavetrend.py:
+  // ap=hlc3; esa=EMA(ap,10); d=EMA(|ap-esa|,10); ci=(ap-esa)/(0.015*d); wt1=EMA(ci,21); wt2=SMA(wt1,4). EMAs seed on the
+  // first valid value; a time gap, a NaN bar or a flat window (d <= 1e-9*|ap|) drops the state; values shown only after
+  // `warmup` valid bars (200, OURS). Cross: first bar strictly on the other side of the last strict side of wt1-wt2.
+  function wavetrend(times, highs, lows, closes, tfMs, warmup) {
+    warmup = warmup || 200;
+    var n = closes.length, a1 = 2 / 11, a2 = 2 / 22, esa = null, dev = null, tci = null, since = 0, prevT = null;
+    var raw = new Array(n).fill(NaN), keep = new Array(n).fill(false);
+    for (var i = 0; i < n; i++) {
+      if (prevT !== null && times[i] - prevT !== tfMs) { esa = dev = tci = null; since = 0; }
+      prevT = times[i];
+      if (!isFinite(highs[i]) || !isFinite(lows[i]) || !isFinite(closes[i])) { esa = dev = tci = null; since = 0; continue; }
+      var ap = (highs[i] + lows[i] + closes[i]) / 3;
+      esa = esa === null ? ap : a1 * ap + (1 - a1) * esa;
+      var x = Math.abs(ap - esa);
+      dev = dev === null ? x : a1 * x + (1 - a1) * dev;
+      if (dev <= 1e-9 * Math.abs(ap)) { tci = null; since = 0; continue; }
+      var ci = (ap - esa) / (0.015 * dev);
+      tci = tci === null ? ci : a2 * ci + (1 - a2) * tci;
+      since++; raw[i] = tci; keep[i] = since >= warmup;
+    }
+    var w2 = sma(raw, 4), wt1 = [], wt2 = [], ev = [], last = 0;
+    for (i = 0; i < n; i++) {
+      wt1.push(keep[i] ? raw[i] : NaN); wt2.push(keep[i] ? w2[i] : NaN);
+      if (!isFinite(wt1[i]) || !isFinite(wt2[i])) { ev.push(0); last = 0; continue; }
+      var side = (wt1[i] > wt2[i]) - (wt1[i] < wt2[i]);
+      ev.push(side !== 0 && last !== 0 && side !== last ? side : 0);
+      if (side !== 0) last = side;
+    }
+    return { wt1: wt1, wt2: wt2, event: ev };
+  }
+
   // Fold intraday rows [t, o, h, l, c, v] into UTC-day rows with the same layout (t = 00:00Z of the day).
   function utcDays(rows) {
     var out = [], cur = null;
@@ -117,7 +149,7 @@
     return out;
   }
 
-  var api = { rma: rma, sma: sma, rsi: rsi, bollinger: bollinger, atr: atr, dayVwap: dayVwap, utcDays: utcDays,
+  var api = { rma: rma, sma: sma, rsi: rsi, bollinger: bollinger, atr: atr, dayVwap: dayVwap, utcDays: utcDays, wavetrend: wavetrend,
     inversePnlBtc: inversePnlBtc, closedPnlBtc: closedPnlBtc, columns: columns };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.LiveAid = api;
