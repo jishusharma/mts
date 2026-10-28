@@ -1,11 +1,16 @@
 """mts_doctor.py - the MTS doctor: one repeatable, read-only health check (MyTradingSys/system/MTS_DOCTOR.md).
 
   python scripts/dev/mts_doctor.py [--hours 72] [--memory DIR] [--out DIR] [--no-process]
+  python scripts/dev/mts_doctor.py --heal [--apply]   # run the safe HEAL rows only (HEAL_MAP.md); default is a dry run, --apply makes it real
 
 Part 1 (AI health): dead references, duplicated guidance, memory index drift, task-card lint warnings, twin cards, bad skills, boot cost.
 Part 2 (process health): health_audit.py (commit mix, gate bookkeeping, B4 adoption, red CI, stale claims).
 Writes ONE file, <out>/REPORT_<utc date>.md (default MyTradingSys/research/mts_doctor/). Reports only: it never edits rules,
 memory, cards or the live tree. Part 1 is deterministic for a given repo state; Part 2 reads trunk and CI at run time.
+`--heal` is the one exception to "reports only": it runs the HEAL class of doctor finding (HEAL_MAP.md) - idempotent, reversible,
+and touching no git history, live tree, runtime data or others' uncommitted files - and logs every action to <out>/heal_log.jsonl.
+The main-checkout heal only prints one recovery command (the main checkout is shared session state); releases and broadcast
+parks are dry-run by default and apply with `--apply`.
 """
 import argparse
 import json
@@ -28,6 +33,206 @@ HOOK_FILES = (".claude/settings.json",)
 def tracked(repo):
     out = subprocess.run(["git", "-C", str(repo), "ls-files"], capture_output=True, text=True).stdout.splitlines()
     return [p for p in out if p]
+
+
+def _git(repo, *args):
+    """One git call, as a result object (callers read .stdout / .returncode). Injected heals read through this so they stay
+    testable: `git_fn` can be swapped, and it needs no network."""
+    return subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True)
+
+
+# ---- self-heal (O1 2026-10-28, HEAL_MAP.md): the safe class of doctor finding that fixes itself instead of piling up as
+# WARN lines. A HEAL row is idempotent, reversible, and touches no git history, live tree, runtime data or others' uncommitted
+# files (it appends bookkeeping commits the way sync.py already does). Bigger fixes (auto-revert of a red commit, deciding a
+# waiting question) are CARD rows, not heals. No timer: heals are only invoked by a doctor run (`mts_doctor.py --heal`) or
+# `sync.py`, never scheduled (SCHEDULING_POLICY.md).
+CARD_SHIPPED = ("done", "shipped", "released")   # wait_after's shipped states: the task's work cannot come back
+HEAL_STALE_CLAIM_H = None    # resolved from sync.STALE_HOURS at call time (one source, test_mts_doctor dedupe rule)
+HEAL_BROADCAST_H = 48        # OURS: a HIGH broadcast pending this long on a host with no session is parked (expired), not just WARNed
+
+
+def _card_state(slug, git_fn, ref="origin/fast-track"):
+    """The task card's state on trunk (git show, so no local state), or '' when there is no card (a free-form task claim)."""
+    r = git_fn("show", f"{ref}:MyTradingSys/system/tasks/{slug}.json")
+    if r.returncode != 0:
+        return ""
+    try:
+        c = json.loads(r.stdout)
+    except (ValueError, json.JSONDecodeError):
+        return ""
+    return str(c.get("status") or c.get("state") or "")
+
+
+def _now_utc(now):
+    return (now or datetime.now(timezone.utc)).strftime("%Y%m%dT%H%M%SZ")
+
+
+def _shipped_reason(repo, slug, kv, git_fn, ref="origin/fast-track"):
+    """Why a stale claim is safe to release: its card is in a shipped state, or the claim host's branch shows 0 commits ahead
+    of trunk (git cherry). None when the work is not shipped - the claim stays with its owner."""
+    st = _card_state(slug, git_fn, ref=ref)
+    if st in CARD_SHIPPED:
+        return f"card {slug} is {st} (shipped)"
+    host = str(kv.get("host", "")).strip()
+    if host:
+        r = git_fn("rev-list", "--count", f"{ref}..origin/{host}/{slug}")
+        if r.returncode == 0 and r.stdout.strip() == "0":
+            return f"branch {host}/{slug} is fully on {ref} (git cherry: shipped)"
+    return None
+
+
+def heal_release_shipped_claims(repo, now=None, claims=None, release_fn=None, git_fn=None):
+    """Release a stale claim only when its work is already shipped (card in CARD_SHIPPED, or the claim host's branch shows 0
+    commits ahead of trunk). Returns [(slug, reason)]; calls release_fn(slug) for each when given. A fresh claim or an
+    unshipped one stays with its owner (conservative default)."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import sync as Y
+    git_fn = git_fn or (lambda *a: _git(repo, *a))
+    now = now or datetime.now(timezone.utc)
+    stale_h = HEAL_STALE_CLAIM_H if HEAL_STALE_CLAIM_H is not None else Y.STALE_HOURS
+    if claims is None:
+        claims = Y.open_claims(Path(repo))
+    out = []
+    for slug, kv in claims:
+        epoch = kv.get("epoch")
+        if not epoch or (now.timestamp() - int(epoch)) / 3600 <= stale_h:
+            continue                       # fresh: still being worked, not stale
+        reason = _shipped_reason(repo, slug, kv, git_fn, ref=f"origin/{Y.TRUNK}")
+        if reason:
+            out.append((slug, reason))
+            if release_fn:
+                release_fn(slug)
+    return out
+
+
+def heal_expire_unackable_broadcasts(repo, rows=None, now=None, send_fn=None):
+    """Park (`expired`) a HIGH broadcast that a host with no session has sat on past HEAL_BROADCAST_H - so mts_signal.pending
+    stops listing it and the BROADCAST check drops to OK - with the reason in the ack note. Active or fresh hosts are left
+    alone (a session may still ack). Returns [(host, id)] of the broadcasts parked."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import mts_signal as S
+    now = now or datetime.now(timezone.utc)
+    if rows is None:
+        h = S.ensure(repo)
+        rows = S.load(h) if h else []
+    active = S.hosts_active(rows, BROADCAST_SEEN_H, now)
+    rows_f = [r for r in rows if r.get("aud") != "top"]
+    b_by_id = {b["id"]: b for b in S.high_open(rows_f)}
+    out = []
+    for host in sorted(S.hosts_seen(rows_f)):
+        if host in active:
+            continue                       # a session ran there recently: it can still ack
+        for p in S.pending(rows_f, host, now):
+            if p["hours"] <= HEAL_BROADCAST_H:
+                continue
+            b = b_by_id.get(p["id"])
+            if b and S.hosts.key(str(b.get("from", "")).split("/")[0]) == host:
+                continue                 # the host that issued the HIGH broadcast does not owe it its own ack
+            note = f"doctor heal: no session on {host}, HIGH pending {p['hours']:.0f} h (>{HEAL_BROADCAST_H} h)"
+            extra = {"id": p["id"], "state": "expired", "host": host, "note": note}
+            if send_fn:
+                send_fn(note, extra)
+            out.append((host, p["id"]))
+    return out
+
+
+def heal_main_checkout(main, git_fn=None, ref="origin/fast-track"):
+    """The main checkout (where every session loads hooks from) may be behind or diverged from trunk. A heal never moves it -
+    it is shared session state and may hold others' uncommitted work (O1: 'touches no ... others' uncommitted files') - so it
+    prints ONE exact recovery command and names which hook copy is in use. Clean-behind gets the fast-forward command;
+    diverged gets the merge command; a live tree or an in-sync checkout gets a skip / OK line. Returns the lines to report."""
+    main = Path(main)
+    git_fn = git_fn or (lambda *a: _git(main, *a))
+    hook_copy = main / ".claude" / "settings.json"
+    if (main / ".mts_live").exists():
+        return [f"live tree {main}: main-checkout heal skipped (the live tree changes only by deploy)"]
+    head = git_fn("rev-parse", "HEAD")
+    if head.returncode != 0:
+        return [f"no HEAD at {main}; nothing to heal"]
+    ahead = git_fn("rev-list", "--count", f"{ref}..HEAD").stdout.strip()
+    behind = git_fn("rev-list", "--count", f"HEAD..{ref}").stdout.strip()
+    if ahead.isdigit() and int(ahead) > 0:
+        return [f"{main} is {ahead} ahead, {behind} behind {ref} (diverged): run by hand  git -C {main} merge {ref}  "
+                f"(hooks currently load from {hook_copy})"]
+    if behind.isdigit() and int(behind) > 0:
+        return [f"{main} is {behind} behind {ref}: run  git -C {main} merge --ff-only {ref}  "
+                f"(hooks load from {hook_copy})"]
+    return [f"{main} is in sync with {ref} (hooks load from {hook_copy})"]
+
+
+def heal(repo, out_dir=None, now=None, dry_run=True, claims=None, rows=None, main_checkout=None, git_fn=None):
+    """Run the HEAL rows only (HEAL_MAP.md) and log each action to <out_dir>/heal_log.jsonl (the audit trail is written even
+    in a dry run). dry_run names the actions without executing the release or send. Returns the report lines. In apply mode
+    every action is fail-soft: a lost push race (the claims branch is hot, other workers release concurrently) defers that
+    one item - logged and retried next run, idempotent - rather than taking the whole heal down. A self-heal that dies on
+    transient contention is not safe-by-construction."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import sync as Y
+    out_dir = out_dir or Path(REPO / OUT_REL)
+    now = now or datetime.now(timezone.utc)
+    if claims is None:
+        claims = Y.open_claims(Path(repo))
+    lines, log = [], []
+
+    release_errs = {}
+    def _apply_release(s):
+        try:
+            Y.release(repo, s)
+        except Exception as e:            # lost race / transient: defer, don't crash the heal
+            release_errs[s] = f"{type(e).__name__}: {str(e)[:100]}"
+    released = heal_release_shipped_claims(repo, now=now, claims=claims,
+                                           release_fn=None if dry_run else _apply_release, git_fn=git_fn)
+    for slug, reason in released:
+        err = None if dry_run else release_errs.get(slug)
+        if dry_run:
+            lines.append(f"would release stale claim {slug}: {reason}")
+        elif err:
+            lines.append(f"release of stale claim {slug} deferred ({err}); idempotent, retried next run")
+        else:
+            lines.append(f"released stale claim {slug}: {reason}")
+        log.append({"heal": "release-shipped", "slug": slug, "reason": reason, "dry_run": dry_run,
+                    "ok": (err is None) if not dry_run else None, "utc": _now_utc(now)})
+
+    send_errs = {}
+    def _apply_send(text, extra):
+        try:
+            _send_expired(extra, repo)
+        except Exception as e:
+            send_errs[extra.get("id")] = f"{type(e).__name__}: {str(e)[:100]}"
+    expired = heal_expire_unackable_broadcasts(repo, rows=rows, now=now,
+                                               send_fn=None if dry_run else _apply_send)
+    for host, bid in expired:
+        err = None if dry_run else send_errs.get(bid)
+        if dry_run:
+            lines.append(f"would expire HIGH {bid} on {host} as expired (no session, pending >{HEAL_BROADCAST_H} h)")
+        elif err:
+            lines.append(f"parking of HIGH {bid} on {host} deferred ({err}); idempotent, retried next run")
+        else:
+            lines.append(f"expire HIGH {bid} on {host} as expired (no session, pending >{HEAL_BROADCAST_H} h)")
+        log.append({"heal": "expire-broadcast", "id": bid, "host": host, "dry_run": dry_run,
+                    "ok": (err is None) if not dry_run else None, "utc": _now_utc(now)})
+
+    if main_checkout is not None:
+        for l in heal_main_checkout(main_checkout, git_fn=git_fn):
+            lines.append(l)
+            log.append({"heal": "main-checkout", "line": l, "dry_run": dry_run, "utc": _now_utc(now)})
+
+    p = Path(out_dir)
+    p.mkdir(parents=True, exist_ok=True)
+    with open(p / "heal_log.jsonl", "a", encoding="utf-8", newline="\n") as fh:
+        for row in log:
+            fh.write(json.dumps(row) + "\n")
+    if not lines:
+        lines.append("no HEAL row fired: all clear")
+    return lines
+
+
+def _send_expired(extra, repo):
+    """The real (non-dry) sender for a parked broadcast: an `expired` ack record, so mts_signal.pending stops listing the host."""
+    import mts_signal as S
+    note = extra.get("note", "")
+    return S.send(f"ack {extra.get('id')} expired {note}", kind="ack",
+                  extra={"id": extra.get("id"), "state": "expired", "host": extra.get("host"), "note": note})
 
 
 def ai_files(repo, files):
@@ -529,8 +734,18 @@ if __name__ == "__main__":
     ap.add_argument("--memory")
     ap.add_argument("--out")
     ap.add_argument("--no-process", action="store_true")
+    ap.add_argument("--heal", action="store_true", help="run the safe HEAL rows only (HEAL_MAP.md); default is a dry run, --apply makes it real")
+    ap.add_argument("--apply", action="store_true", help="with --heal: actually release the claims and park the broadcasts (main checkout stays print-only)")
     a = ap.parse_args()
     sys.stdout.reconfigure(errors="replace")
-    p, f = run(REPO, a.out, a.memory or default_memory(), not a.no_process, a.hours)
-    print(p.read_text(encoding="utf-8").splitlines()[0])
-    print(f"{p}: {len(f)} findings")
+    if a.heal:
+        main_checkout = None
+        common = _git(REPO, "rev-parse", "--git-common-dir").stdout.strip()
+        if common:
+            main_checkout = (Path(REPO) / common).resolve().parent      # the checkout every session loads hooks from
+        for l in heal(REPO, out_dir=a.out, dry_run=not a.apply, main_checkout=main_checkout):
+            print(l)
+    else:
+        p, f = run(REPO, a.out, a.memory or default_memory(), not a.no_process, a.hours)
+        print(p.read_text(encoding="utf-8").splitlines()[0])
+        print(f"{p}: {len(f)} findings")

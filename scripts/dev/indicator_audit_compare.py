@@ -40,13 +40,6 @@ def engine_values(indicator, closes):
     return out
 
 
-def engine_bb_live(closes):
-    """Second engine route for Bollinger: the live alert layer's own copy (upper, lower)."""
-    from MyTradingSys.backtest.layers.alerts.live_bb_top_reversal import bollinger
-    up, lo = bollinger(closes)
-    return {"BB_up": up[-1], "BB_low": lo[-1]}
-
-
 def _num(x):
     return isinstance(x, (int, float)) and not isinstance(x, bool) and math.isfinite(x)
 
