@@ -6,13 +6,19 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-28T09:34:18Z",
-    "misses": 26,
+    "folded": "2026-10-28T12:30:02Z",
+    "misses": 49,
     "reads": [
-      "scripts/dev/test_device_tasks.py",
-      "scripts/dev/test_supervisor.py"
+      "scripts/dev/live_mirror.py",
+      "MyTradingSys/cbp/__init__.py",
+      "scripts/dev/prereg_gate.py",
+      "scripts/dev/verdicts.py",
+      "MyTradingSys/system/GATEWAY_NUC.md",
+      "MyTradingSys/tests/test_cbp_query.py",
+      "scripts/dev/cbp_run.py",
+      "MyTradingSys/research/gross_effect_screen_2026-10-15/PRE_REG.md"
     ],
-    "session": "agent-a7ffd59b066976566"
+    "session": "agent-aedb53e46b554e0d5"
   },
   "created": "2026-10-28T08:18:16Z",
   "depends_on": [
