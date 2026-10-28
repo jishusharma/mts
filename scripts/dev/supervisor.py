@@ -725,9 +725,10 @@ def brief(card_id: str, role: str | None = None, repo: Path = REPO, card: dict |
 
 
 # ---------- the five-hour loop (MyTradingSys/system/SUPER_LOOP.md): one `plan` call per wake, heartbeat, lanes, hand-over ----------
+import traffic  # noqa: E402  (the one budget-policy constants: SPAWN_CEIL, LAST_DAY_*, five_ceiling)
 LOOP_DIR = "mts-superloop"      # under ~/.claude: this login's get_usage readings (local, never in git)
 HEARTBEAT_MIN = 75              # a supervisor's heartbeat older than this = it is gone (watcher <= 50 min + slack; OURS)
-SPAWN_CEIL = 80                 # 5 h % at which no Claude worker starts (SUPERVISOR.md pacing)
+SPAWN_CEIL = traffic.SPAWN_CEIL   # 5 h % at which no Claude worker starts; five_ceiling() lifts it to 95 in the exhaust window
 K_DEFAULT = 0.12                # weekly points per 5 h point until two readings in one window measure it (GUESS)
 TRANSIT_MIN = 20                # write the hand-over this many minutes before the 5 h window resets (OURS)
 DSA_DOWN_H = 24                 # a DSA target whose oldest pending row is older than this has no working bridge (OURS)
@@ -767,18 +768,21 @@ def _utc(s):
     return d if d.tzinfo else d.replace(tzinfo=timezone.utc)
 
 
-LAST_DAY_H = 24      # weekly room left this close to the reset is lost if unused (OURS)
-LAST_DAY_CAP = 99    # operator 2026-10-22, login A at 97% with 15 h to reset: "do not exhaust it completely, but still use it ... slowly"
+LAST_DAY_H = traffic.LAST_DAY_H      # weekly room left this close to the reset is lost if unused (OURS)
+LAST_DAY_CAP = traffic.LAST_DAY_CAP  # operator 2026-10-22, login A at 97% with 15 h to reset: "do not exhaust it completely, but still use it ... slowly"
 
 
 def weekly_cap(login: str, host: str, h_to_reset: float | None = None) -> int:
-    """SUPER_SESSION.md rule 12: logins B and C stop at 75% of the week when they run on JIS-NB (operator choice); else 95%, raised to
-    LAST_DAY_CAP in the last LAST_DAY_H before the weekly reset, so the last points are spent slowly instead of lost (pace_plan spreads them)."""
+    """SUPER_SESSION.md "Budget policy": B and C on JIS-NB stop at 75% / 85% of the week (operator choice), else 95%; in the last
+    LAST_DAY_H before the weekly reset every login's cap is LAST_DAY_CAP, so the last points are spent slowly instead of lost
+    (pace_plan spreads them). The desktop caps do not outlive the week they protect (operator 2026-10-28, weekly-reset-radar)."""
+    if h_to_reset is not None and 0 < h_to_reset <= LAST_DAY_H:
+        return LAST_DAY_CAP
     if CN(host) == NB and login == "C":
         return 85    # operator 2026-10-26: raised from 75
     if CN(host) == NB and login == "B":
         return 75
-    return LAST_DAY_CAP if h_to_reset is not None and 0 < h_to_reset <= LAST_DAY_H else 95
+    return 95
 
 
 def loop_home(home=None) -> Path:
@@ -840,7 +844,8 @@ def pace_plan(now: datetime, rd: dict, cap: float, hist=(), running: int = 0) ->
     share = max(0.0, cap - week) / windows
     k_meas = estimate_k(list(hist))
     k = k_meas or K_DEFAULT
-    room = max(0.0, min(share / k, SPAWN_CEIL - five))
+    ceil = traffic.five_ceiling(wk_h)
+    room = max(0.0, min(share / k, ceil - five))
     target = five + room
     first = next((h for h in hist if _same_window(h, rd)), None)
     burn = projected = None
@@ -862,11 +867,11 @@ def pace_plan(now: datetime, rd: dict, cap: float, hist=(), running: int = 0) ->
         elif projected < target - 10 and running < 4:
             slots = max(slots, min(4, running + 1))
             why.append(f"burn {burn:.1f}/h projects {projected:.0f}% < target {target:.0f}%: grow")
-    if five >= SPAWN_CEIL or room < 2:
+    if five >= ceil or room < 2:
         mode, slots = "STOP", 0
-    elif five >= 70:
+    elif five >= 70 and ceil == SPAWN_CEIL:      # the exhaust window has one stop, no tapering bands
         mode, slots = "SUPERVISOR-ONLY", 0
-    elif five >= 60:
+    elif five >= 60 and ceil == SPAWN_CEIL:
         mode, slots = "CRUCIAL-ONLY", min(slots, 1)
     else:
         mode = "SPEND" if room >= 30 else "NORMAL"

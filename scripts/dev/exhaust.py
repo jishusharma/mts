@@ -230,7 +230,9 @@ def plan(login: str, week: float, five: float, reset: datetime, models: dict, no
     else:
         phase = "none"
     order = sorted((m for m, used in models.items() if used < 100), key=lambda m: models[m])
+    import traffic     # the one 5 h stop (SUPER_SESSION.md "Budget policy"): 95 inside the exhaust window, else 80
     return {"login": login, "phase": phase, "minutes_to_reset": minutes, "week": week, "five": five, "models": order,
+            "five_stop": traffic.five_ceiling(minutes / 60),
             "read_utc": read_utc, "source": source}
 
 

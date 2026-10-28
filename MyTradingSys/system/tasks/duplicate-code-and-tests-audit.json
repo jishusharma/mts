@@ -4,6 +4,22 @@
   "commands": [
     "python scripts/dev/run_all_tests.py --quick"
   ],
+  "context": {
+    "calls_to_edit": 28,
+    "folded": "2026-10-28T08:44:50Z",
+    "misses": 122,
+    "reads": [
+      "scripts/dev/test_verdicts.py",
+      "MyTradingSys/tests/test_verdicts.py",
+      "scripts/dev/run_extra_tests.py",
+      "scripts/dev/desk.py",
+      "scripts/dev/lane_health.py",
+      ".claude",
+      ".claude/settings.json",
+      "MyTradingSys/system/UNATTENDED_PERMISSIONS.md"
+    ],
+    "session": "agent-a141e44c7437a1f07"
+  },
   "created": "2026-10-28T08:18:15Z",
   "depends_on": [],
   "done_when": "research/dedupe_audit_2026-10/CODE.md exists: ranked table, each row with the grep command and its result as evidence; nothing deleted.",
