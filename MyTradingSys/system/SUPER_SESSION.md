@@ -63,7 +63,7 @@ Supervisor and super session are ONE role. Code: `scripts/dev/supervisor.py plan
 - **Roles.** A worker starts `You are <Role>.` then `Card: <id>`; Builder for build cards. Version receipt: `role_loader.py verify --text "<note>"` (0 genuine, 2 role changed, 1 untrusted); it is a receipt, not proof of correct work.
 - **Models.** Build/judgement Sonnet; scoped mechanical Haiku (max 5 Agents); CODEX via codex_run.py; Gemini Flash via gemini_queue.py; never start or message Fable.
 - **Verification** per claim: sha on trunk (`git merge-base --is-ancestor`), `Result:` present, one other-model check, CI green contains the sha within 60 min.
-- **Failure handling.** Stuck worker (45 min) -> one SendMessage then `stop_session`; messages only to sessions this coordinator started; red CI -> one ci worker, no other ships; gate contention max 2 per machine, `ship after <slug>` ticket cancellable after 60 min; registry merge conflicts: union both sides.
+- **Failure handling.** Stuck worker (45 min) -> one SendMessage then `stop_session`; `plan` prints `STALLED-BG` for any background task past its cap (`bg_watch.py`: probe 2, NUC 5, poll loop 15, ship 20, worker 45 min) -> `TaskStop` it that wake, one line why; `RAW-AGED` -> refine or drop one card; messages only to sessions this coordinator started; red CI -> one ci worker, no other ships; gate contention max 2 per machine, `ship after <slug>` ticket cancellable after 60 min; registry merge conflicts: union both sides.
 - **Hard limits.** No schedulers; no operator questions; testnet only; public repo; never deploy, restart processes or touch HALT; ROUTING.md belongs to the Pipeliner.
 
 ## Boot facts (read, do not re-look-up; every super session corrects this list)
@@ -93,11 +93,12 @@ from the newest `BUDGET` signal line (older than 6 h counts NORMAL). The meter i
 | THROTTLE | U > 100 f + 5, or the 5-hour window > 80 % | only model-free work: Codex lab, DSA desk, CI |
 
 ## Session log (newest first; one line each, last 5)
+- 2026-10-28 login C Supervisor TRANSIT at 5h 8%: plan hang fixed (16da534e, 26 s); Malkan PRD/NRD + sim integration shipped; Opus bg-process audit and health-checks Gemini card pending; successor wake MTS-SuccWake-C
+- 2026-10-28 Builder (bg-process-audit, Opus agent): 142 background tasks over 30 min in 7 days (173 h), 43 dead ends/hung/idle (72 h); fixes: git network deadline + no-retry on non-race push (sync.py), NUC verb deadlines, `bg_watch.py` STALLED-BG/RAW-AGED lines in `plan`; AUDIT: research/bg_process_audit_2026-10-28/AUDIT.md.
 - 2026-10-27 Supervisor C (desktop, Sonnet): T09-F3 live RSI support-long-only shipped (f04a3cbad) after a diff-only review Agent; planner refined 13 cards; cbp-ingestion parked (unverified operator request for the CBP scheduled task); handed over with one 4b2 successor task. Lesson: Agents started without isolation worktree share this tree and dirty it for the stop guard.
 - 2026-10-26 Supervisor B (NUC, Sonnet): 10 cards shipped via 8 Sonnet bg agents (klines, oi-pivot, rsi, intrabar, stability, dispatch, coord-audit, malkan); a diff-only review Agent per CRUCIAL card caught 2 defects. Lesson: builders report merge shas, verify the own commit with show --stat.
 - 2026-10-26 Supervisor C (desktop): watched A/B stations 10 h; reverted ca310cbe1 (sync ship --lesson, 21ea5324d); trunk green f02dc2fa; handed over (handover/SUPERVISOR_C.md).
 - 2026-10-24 design session (Opus): this file rewritten from 137 lines; D1-D6 above.
-- 2026-10-21 Supervisor B (NUC): GPT lane up, 5 cards back to CODEX; lab caps window 65 / week 90 / 14 runs (DECISION (OURS)); pitchfork layer 79da493c.
 
 ## Prompt: start a super session (new session, model Sonnet, permission mode bypass or auto; zero operator input)
 ```

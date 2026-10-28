@@ -49,6 +49,15 @@ class ClaimRetryTest(unittest.TestCase):
         self.assertEqual(sh.call_count, 1)
 
 
+    def test_non_race_push_failure_fails_at_once(self):
+        # bg-process-audit 2026-10-28: an auth/network push failure retried 6 x 3 pushes; sync.py now says "not a race"
+        err = "sync: claim push FAILED (not a race, no retry): fatal: Authentication failed"
+        with mock.patch.object(gq, "sh", return_value=cp(1, err)) as sh:
+            st, why = gq.claim_with_retry("wt", "c1", sleep=lambda s: None)
+        self.assertEqual((st, sh.call_count), ("fail", 1))
+        self.assertIn("Authentication failed", why)
+
+
 class RunJobTest(unittest.TestCase):
     def _run(self, claim_result):
         calls = []

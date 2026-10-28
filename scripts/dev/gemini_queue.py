@@ -67,7 +67,8 @@ def claim_holder(card: str, claims) -> str:
 def claim_with_retry(wt, card: str, tries: int = 6, sleep=time.sleep):
     """Claim `card` from worktree `wt`; returns (status, reason), status in ok|skip|fail.
     A busy trunk rejects the claim push: re-run (sync.py re-fetches) up to `tries` times with 2-10 s jittered backoff (OURS).
-    Our own host already holding it = ok; another holder = skip at once; a timeout (rc 124) fails at once, never 6 hangs."""
+    Our own host already holding it = ok; another holder = skip at once; a timeout (rc 124) or a push that failed for a
+    non-race reason (sync.py PushFailed) fails at once, never 6 hangs."""
     reason = ''
     for n in range(1, tries + 1):
         c = sh([PY, 'scripts/dev/sync.py', 'claim', card], cwd=wt)
@@ -77,8 +78,10 @@ def claim_with_retry(wt, card: str, tries: int = 6, sleep=time.sleep):
         m = re.search(r'already claimed by (\S+)', reason)
         if m:
             return ('ok', '') if m.group(1).lower() == socket.gethostname().lower() else ('skip', reason)
-        if c.returncode == 124:
+        if c.returncode == 124 or 'TIMEOUT' in reason:
             return 'fail', f'timeout: {reason}'
+        if 'not a race' in reason:      # sync.py PushFailed: auth/network/hook; a retry fails the same way (bg-process-audit)
+            return 'fail', f'push failed, not a race: {reason}'
         if n < tries:
             sleep(random.uniform(2, 10))
     return 'fail', f'after {tries} tries: {reason}'

@@ -1,0 +1,69 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "context": {
+    "calls_to_edit": 43,
+    "folded": "2026-10-27T23:57:00Z",
+    "misses": 32,
+    "reads": [
+      "scripts/dev/test_sync.py",
+      "scripts/dev/nuc_lab.py",
+      "scripts/dev/gemini_queue.py",
+      "scripts/dev/successor_wake.py",
+      "scripts/dev/test_gemini_queue.py",
+      "MyTradingSys/system/roles/builder.md",
+      "scripts/dev/nuc_wake.py",
+      "scripts/dev/test_nuc_lab.py"
+    ],
+    "session": "agent-ac11f7eb0a30ecbd7"
+  },
+  "created": "2026-10-27T23:49:16Z",
+  "depends_on": [],
+  "done_when": "AUDIT.md in MyTradingSys/research/bg_process_audit_2026-10-28/ lists every background task over 30 min (7 days) with outcome; python -m pytest scripts/dev/test_bg_watch.py scripts/dev/test_nuc_lab.py scripts/dev/test_gemini_queue.py -q passes and test_sync.py -k 'auth_failure or lost_race_message or GitNetTimeout' passes",
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "No background task in an MTS session runs silently past its cap: NUC verbs and network git have deadlines, a non-race push fails once with its reason, and plan/wait report any task past its cap (STALLED-BG) and aged raw IMPORTANT cards (RAW-AGED)",
+  "id": "bug-long-background-processes-dead-ends",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Built and shipped by the audit owner in one pass (operator HIGH priority, zero-input). DECISION (OURS): state left raw for a reviewer stamp (tasks.py done refuses an unreviewed card); a reviewer checks the diff and marks it done.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/bg_process_audit_2026-10-28/AUDIT.md",
+    "MyTradingSys/research/lead/2026-10-28_coordinator-idle-during-background-wait.md"
+  ],
+  "result": "AUDIT.md: 142 background tasks over 30 min in 7 days (173 h), 43 dead/hung/idle (72 h); shipped: git net deadline 180 s, non-race push fails once with reason, NUC verb deadlines, bg_watch STALLED-BG/RAW-AGED in plan + watcher wake; 14 new tests fail on old code",
+  "scope_in": [
+    "scripts/dev/bg_watch.py",
+    "scripts/dev/sync.py",
+    "scripts/dev/nuc_lab.py",
+    "scripts/dev/nuc_wake.py",
+    "scripts/dev/gemini_queue.py",
+    "scripts/dev/supervisor.py",
+    "MyTradingSys/research/bg_process_audit_2026-10-28/"
+  ],
+  "scope_out": [
+    "sim_desk, divergence PRD/NRD, live tree, ship re-gate design"
+  ],
+  "size": "M",
+  "sources": [
+    "operator 2026-10-28: background processes run 1h39m+ and most are dead ends"
+  ],
+  "state": "raw",
+  "steps": [
+    "Mine transcripts for background tasks over 30 min; classify outcome",
+    "Cite gaps file:line",
+    "Add deadlines, fail-fast push, bg_watch report and watcher wake; tests fail first"
+  ],
+  "tests": "test_bg_watch.py (7), test_nuc_lab.py NucLabTimeoutTest (2), test_gemini_queue.py non-race (1), test_sync.py auth/race/timeout (4); all fail on the pre-change code",
+  "title": "Background processes run 1h39m+ as dead ends (ssh probes, claim retries, ship waits, watchers, Agents): audit and close",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

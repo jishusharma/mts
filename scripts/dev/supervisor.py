@@ -449,7 +449,13 @@ def _probe_wait_state(repo: Path, shas: list[str]) -> dict:
     gs_info = read_gate_slots(repo)
     busy_slots = int(gs_info["busy"]) if isinstance(gs_info, dict) and "busy" in gs_info else None
     total_slots = int(gs_info["total"]) if isinstance(gs_info, dict) and "total" in gs_info else None
-    return {"shas": sha_on_trunk, "shas_green": sha_on_green, "ci_red": ci_red, "busy_slots": busy_slots, "total_slots": total_slots}
+    try:    # bg-process-audit 2026-10-28: a hung background task never ends, so it never woke the coordinator; its cap does
+        import bg_watch
+        stalled = [f"{r['kind']} {r['id']} {r['age']:.0f}m > cap {r['cap']}m" for r in bg_watch.stalled()]
+    except Exception:
+        stalled = None
+    return {"shas": sha_on_trunk, "shas_green": sha_on_green, "ci_red": ci_red, "busy_slots": busy_slots, "total_slots": total_slots,
+            "stalled": stalled}
 
 
 STUCK_MAX = 2   # plans in a row with a free worker slot and no new worker: stop the actionable wake (no 5 min wake loop; OURS)
@@ -532,6 +538,11 @@ def _detect_transition(baseline: dict, current: dict) -> str | None:
     cur_busy = current.get("busy_slots")
     if base_busy is not None and cur_busy is not None and base_busy > 0 and cur_busy < base_busy:
         return f"TRANSITION gate slot freed ({base_busy} -> {cur_busy} busy)"
+
+    seen = {x.split()[1] for x in (baseline.get("stalled") or []) if len(x.split()) > 1}
+    for x in current.get("stalled") or []:
+        if len(x.split()) > 1 and x.split()[1] not in seen:
+            return f"TRANSITION STALLED-BG {x}: run plan, TaskStop it if it is yours"
 
     return None
 
@@ -1276,6 +1287,11 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
     if shas:
         ctx["shas_arg"] = " --shas " + ",".join(shas)
     live[login]["free"] = free
+    try:    # bg-process-audit 2026-10-28: background tasks over their wall-time cap, and IMPORTANT cards left raw, every wake
+        import bg_watch
+        notes += bg_watch.report_lines(repo, root=(Path(home) / "projects") if home else None, now=now.timestamp())
+    except Exception as e:
+        notes.append(f"NOTE bg_watch failed ({type(e).__name__}: {str(e)[:80]}): run `python scripts/dev/bg_watch.py report` by hand")
     lines = plan_lines(login, host, pl, live, ctx, (Path.home() / ".ssh" / "nuc_gate").exists()) + notes + who_block(_who_rows() if who_rows is None else who_rows)
     loop_home(home).mkdir(parents=True, exist_ok=True)
     for ih, _lg, _n in (ctx.get("idle_hosts", []) if send else []):     # a dry run never silences the line

@@ -59,12 +59,23 @@ def build_script(verb, specs=None):
     return f"{LAB_CD}; {cmd}\n"
 
 
-def run(verb, specs=None, runner=subprocess.run):
+# Max wall time per verb (bg-process-audit 2026-10-28, OURS): a NUC verb with no deadline sat silent for 1h39m+.
+# status is a NUC verb (5 min). tick and gemini run a whole Codex/Gemini job inside the ssh session (the 2-hour silent
+# probe of 2026-10-27 was `codex_run.py tick` piped over ssh), so they get the worker cap: 45 min.
+VERB_TIMEOUT_S = {"status": 300, "tick": 2700, "gemini": 2700}
+
+
+def run(verb, specs=None, runner=subprocess.run, timeout=None):
     if not have_gate_key():
         print("no gate key")
         return 0
     script = build_script(verb, specs)
-    r = runner(gate_cmd() + ["ps"], input=script, text=True, capture_output=True)
+    limit = timeout or VERB_TIMEOUT_S.get(verb, 300)
+    try:
+        r = runner(gate_cmd() + ["ps"], input=script, text=True, capture_output=True, timeout=limit)
+    except subprocess.TimeoutExpired:
+        print(f"TIMEOUT nuc_lab {verb} after {limit}s: no reply from the NUC gate; not retried (check `nuc_wake.py` / NUC power)")
+        return 124
     out = "\n".join(l for l in (r.stdout + r.stderr).splitlines() if "quantum" not in l and "upgraded" not in l)
     print(out.strip() or f"exit {r.returncode}")
     return r.returncode
