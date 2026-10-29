@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-29T21:59:14Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -23,6 +24,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "check_sourced_params.py: 58 params checked, 0 allowlisted, exit 0 on trunk; 9 tests pass; ",
+      "ref": "f33839501",
+      "utc": "2026-10-29T21:59:14Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Merge origin/fast-track (wiring_registry: keep trunk, reapply div_flags_chart why)",
@@ -42,7 +49,12 @@
   "refined_by": "",
   "refreshed": "2026-10-28T08:23:51Z",
   "refs": [],
-  "result": "",
+  "result": "check_sourced_params.py: 58 params checked, 0 allowlisted, exit 0 on trunk; 9 tests pass; gate step 3sg in --quick (commit c8919c4c9)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tests/test_sourced_rule_guard.py",
     "scripts/dev/check_sourced_params.py",
@@ -62,12 +74,13 @@
     "operator 2026-10-28 priority: stop MTS drifting; account for everything extracted; make it findable",
     "CLAUDE.md Numbers rule 2026-10-13"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write check_sourced_params.py: load every params JSON (shapes seen: krown {value,label,source}; rsi flat with *_quote keys); report missing label, SOURCED without quote, source not in EXTRACTION_LEDGER.csv.",
     "Test fixtures: good, no label, SOURCED without quote, unknown source; plus a real-tree run against the allowlist of known gaps (count asserted).",
     "Wire into the --quick gate list in run_all_tests.py; commit with Result: <N params checked, M allowlisted>."
   ],
+  "taken": "2026-10-29T21:59:14Z",
   "tests": "MyTradingSys/tests/test_sourced_rule_guard.py: fails on the pre-change tree (script missing) and on the SOURCED-without-quote fixture.",
   "title": "Guard: no layer param or rule ships without a SOURCED quote+file:line or an OURS label (CI test)",
   "weight": "IMPORTANT",
