@@ -1,0 +1,1 @@
+{"t": "20261029T234035Z", "from": "jis-nb/C", "to": "all", "kind": "done", "text": "ship status-stale-root-cause Result: status now prints GPT \"EXHAUSTED until 2026-10-30T02:29Z\" for the spent lane instead of \"36%\"; 7 new tests fail on the old code, 128 pass.", "login": "C", "sid": "106850006d"}
