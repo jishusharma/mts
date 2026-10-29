@@ -15,3 +15,31 @@ Read this file at every Eagle_Eyes load (BOOT step 0 in `roles/eagle_eyes.md`). 
 | 2 | Show what alerts the system fires now and what testnet trades it fires | alerts and trades on the live host are NOT_IN_DATA from this host; mirror copy is #508 of 2026-10-20 |
 | 3 | Redesign the alerts: elegant, no drag/close problems, no windows piling up; study how modern alerts are designed | filed as a card |
 | 4 | Eagle_Eyes thinks: what MTS lacks that blocks completion, an edge, and a first mainnet trade (final goal; even the simplest edge) | answer in the report, kept up to date in `research/live_reads` |
+
+## Live-session teachings, 2026-10-28/29 (verbatim excerpts, operator voice)
+
+Why this section exists: the 10-28 session was compacted 6 times; each summary kept tasks and dropped these teachings, so Eagle_Eyes read values shot by shot and the operator had to name every pattern himself. Read these at every load and after every compaction.
+
+- Timeframes (11:17Z): "how the time frames are changing is one of the keys that we have to understand. So how to connect the dots?"
+- Flips (11:22Z): "identify the slip as early as possible and anticipate the slip ... get into the trade with this anticipation and build on that anticipation and confirm to it. Keeping in mind the fluctuations and the volatility ATR".
+- His setup (12:21Z): "Whenever there is a break above the last high, and whenever the momentum starts to shift just before the US session, I am anticipating it and getting into the trade."
+- Top traders (15:02Z): "perhaps the edge is by finding the confluence and not by a clear winner of some sort."
+- Research (17:06Z): "We need to understand how to use things ... take those ideas and apply them and just see what works."
+- CVD bursts (18:21Z): "CVD is not rising as the prices coming down ... it comes in bursts ... it is not sure that it will be more than the previous highs in the CVD. Thereby creating divergence also possible. So prepare for all these views".
+- Divergence and BB (22:20Z): "all these buys with divergence - BB dance price b/w upper and middle + slippage".
+- Flow states (22:24Z): first line "open [interest] going up, CVD and delta coming down with negative value. Second one, all positive ... understand what it means in the past".
+- Triggers (23:02Z): "eveywhere when u see price movements - watch indicator behavior - observer anything u would like to backtest".
+- In trade (10-29 01:50Z): "I need to know when to get out, when to stay in the trade. How much to get out maybe ... every spike up, a lot of open interest was coming down ... where the supports are, what the DOM is layer is saying, test to the VWAP ... Divergences, confidence level to stay in the trade ... pointers, but you have been writing essays instead of bullet points."
+- Role (01:53Z): "You are not a forecast teller ... You are not supposed to take readings carefully. That must be done by something else. You are a thinker, right?"
+- All layers (01:56Z): "Think from every layer's point of view ... CVD and OI and the delta ... RSI ... wave[trend] ... Fabio ... Malkan ... Tom ... [Krown] ... Jason and his brother Michael ... Habib ... Why I cannot see it symbolically? Like, okay, something green, something red".
+
+## Per-shot frame (OURS, from the teachings above)
+
+1. Colour grid first: layer rows (price/BB, OI vs price, CVD, net delta, RSI, WT, StochRSI, volume, heatmap/DOM, VWAP) x timeframe columns (1m 5m 15m 1h 4h); green/red/white; white = no shot, never "neutral".
+2. Agreement count: "N of M layers say down".
+3. The odd one: which layers disagree, and who is trapped or covering (OI vs price 4-way).
+4. Timeframe flip: which column changed colour since the last shot.
+5. Analyst lens: one line each, Tom, Fabio, Malkan, Krown, Habib, the two brothers (latest CBP/Discord row with date; NOT_IN_DATA if none).
+6. In a trade: supports, VWAP distance, divergence flags, confidence count. Never an exit or size call.
+7. Backtest log: anything that repeats goes to `research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md`.
+Bullets only, max about 8 lines plus the grid.
