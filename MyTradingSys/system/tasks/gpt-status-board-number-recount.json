@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-29T20:43:46Z",
   "commands": [],
   "created": "2026-10-28T17:55:18Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "FIX-FIRST; audit report MyTradingSys/research/layer_lab/reports/2026-10-28_gpt-status-boar",
+      "ref": "94c57a668",
+      "utc": "2026-10-29T20:43:46Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -31,7 +38,12 @@
   "refined_by": "",
   "refreshed": "2026-10-28T17:55:20Z",
   "refs": [],
-  "result": "",
+  "result": "FIX-FIRST; audit report MyTradingSys/research/layer_lab/reports/2026-10-28_gpt-status-board-number-recount.md; UTC commit buckets off; SONNET follow-up use-utc-day-boundaries-in-status-board-c filed RAW pending Lab_Guy review",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/status_board.py",
     "scripts/dev/test_status_board.py",
@@ -47,13 +59,14 @@
   "sources": [
     "scripts/dev/status_board.py docstring lines 1-5 (operator 2026-10-28 d-status-is-inline-dashboard: numbers come from commands run now)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Run python scripts/dev/status_board.py once from a scratch worktree and save the output in the report.",
     "For each number in the output write the independent command you used and the value it gave; flag any mismatch beyond the rounding the script states.",
     "List every section and say whether a failure prints NOT_IN_DATA (read the try/except blocks, file:line), then report findings as a table: severity, file:line, evidence, proposed fix. Change no code.",
     "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
   ],
+  "taken": "2026-10-29T20:43:46Z",
   "tests": "",
   "title": "GPT recounts every number status_board.py prints from git and task cards (never invent numbers)",
   "weight": "ROUTINE",
