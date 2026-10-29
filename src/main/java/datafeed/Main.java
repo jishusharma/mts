@@ -1,6 +1,8 @@
 package datafeed;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * Entry point for BinanceDataFeed.
@@ -12,6 +14,43 @@ import java.util.List;
  * Default (no args): single snapshot for BTCUSDT only.
  */
 public class Main {
+    static final List<String> LIQ_LOG_SYMBOLS = List.of("BTCUSDT", "ETHUSDT");
+
+    static final Function<String, BinanceLiquidationAccumulator> DEFAULT_LIQ_FACTORY = sym -> {
+        try {
+            return new BinanceLiquidationAccumulator(sym);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    };
+
+    /** Builds and connects one accumulator per symbol; a failing symbol logs one line and is skipped. */
+    static List<BinanceLiquidationAccumulator> startLiquidationLogs(
+            List<String> syms, Function<String, BinanceLiquidationAccumulator> factory) {
+        List<BinanceLiquidationAccumulator> started = new ArrayList<>();
+        for (String sym : syms) {
+            try {
+                BinanceLiquidationAccumulator acc = factory.apply(sym);
+                acc.connect();
+                started.add(acc);
+            } catch (Throwable t) {
+                System.err.println("[Main] Liquidation log not started for " + sym + ": " + t);
+            }
+        }
+        return started;
+    }
+
+    /** Shuts down every accumulator; one failure never skips the rest. */
+    static void closeAll(List<BinanceLiquidationAccumulator> accs) {
+        for (BinanceLiquidationAccumulator acc : accs) {
+            try {
+                acc.shutdown();
+            } catch (Throwable t) {
+                System.err.println("[Main] Liquidation log shutdown failed: " + t);
+            }
+        }
+    }
+
     public static void main(String[] args) throws Exception {
         String mode = "snapshot";
         List<String> symbols = List.of("BTCUSDT");
@@ -32,9 +71,12 @@ public class Main {
             }
             String symbol = symbols.get(0);
             StateCodeEmitter emitter = new StateCodeEmitter(symbol);
+            // Liquidation event log (runtime_data/liq_events); connect() is async, failures never stop the emitter.
+            final List<BinanceLiquidationAccumulator> liqLogs = startLiquidationLogs(LIQ_LOG_SYMBOLS, DEFAULT_LIQ_FACTORY);
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 System.out.println("[Main] Shutdown signal received.");
                 emitter.shutdown();
+                closeAll(liqLogs);
             }));
             emitter.connectBlocking();
             Thread.sleep(Long.MAX_VALUE);
