@@ -41,7 +41,8 @@ None of (a)-(d) was checked before 2026-10-11 for any trader-derived layer.
 | C6 | Exit model | Fixed bracket, 8-bar timeout (unsourced), one trade at a time; the trader's management (re-entry, partials, trailing) is not modelled. 28 % of stopped trades had been +1 R first | tom_bt.py:11-19; DIAG_BTC; ROADMAP F7/F8 |
 | C7 | Statistics / protocol | Tom BTC holdout read twice (burned); best-of-18 anchor cell; aggregate verdicts with no regime/session split; HTF cells with n 5-17 reported as "no edge" | B147; t090 RESULT; B154; MARKET_GUIDE row rsi malkan |
 | C8 | Market / timeframe transfer | DAX-sized stops on BTC; Fabio NQ order flow on BTC; Malkan's daily/weekly/monthly equity swing method run on BTC 1m-1h with a 10-bar horizon; CryptoCred's daily/weekly swing method run as 15m 1 %/2 %/8-bar brackets | DIAG_BTC; FABIO ledger; rsi_divergence_mtf REPORT; EXIT_POLICIES_REPORT |
-C1, C2 and C8 decide whether a test measures the trader at all. C3-C7 decide whether its number can be trusted.
+| C9 (added 2026-10-30, Eagle_Eyes review) | Operator-intent fidelity | The encoding of the operator's own idea does not match what he means: T087 tested "first touch" as one 1m touch, he means approach classes on several closes; coded KR-L10 (fractal pivots, 1 % tolerance) shows "range" on 10-29 and cannot see his daily last lower high (82,035) | T087 RESULT.md; TEST_LEDGER.md 2026-10-30 rows; PRE_REG_TEMPLATE gate 0g |
+C1, C2, C8 and C9 decide whether a test measures the trader at all. C3-C7 decide whether its number can be trusted.
 We fixed many C3-C5 items one by one. C1/C2/C8 were never checked before a run until 2026-10-11.
 
 ## 3. What outside research says, mapped to our classes

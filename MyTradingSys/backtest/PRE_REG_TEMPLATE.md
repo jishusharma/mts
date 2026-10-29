@@ -4,9 +4,9 @@ Source: research/tom_transfer_2026-10-11/BACKTEST_FAILURES_RESEARCH.md section 6
 Copy this file next to a layer's pre-registration (or HOME_FIT_AUDIT_<layer>.md) and fill every slot BEFORE any backtest run.
 An item with no answer or no evidence line is `NOT_ANSWERED`; the run does not start. Missing data is `NOT_IN_DATA`, never 0.
 
-## 0. Pre-build gate (items 0a-0f; decision q13, 2026-10-14: adopted, "be flexible")
+## 0. Pre-build gate (items 0a-0g; decision q13, 2026-10-14: adopted, "be flexible"; 0g added 2026-10-30)
 
-Answer all six in writing before anything is built. A "no" stops the build unless the pre-registration states why it is waived.
+Answer all seven in writing before anything is built. A "no" stops the build unless the pre-registration states why it is waived.
 Source: research/mts_flow_audit_2026-10-13/REPORT.md section 3.
 
 - 0a Cost: smallest stop or target this idea uses? On BTC fees stay under 0.25 R only with a stop of at least 0.40 % (taker legs) or 0.20 % (maker entry).
@@ -15,6 +15,7 @@ Source: research/mts_flow_audit_2026-10-13/REPORT.md section 3.
 - 0d Data: does BTC history hold every input the source reads? A missing input is NOT_IN_DATA; nothing is built on it.
 - 0e Power: trades in the dev window and the detectable edge; if larger than the claimed edge, write INCONCLUSIVE in advance or do not run (backtest/power_mde.py).
 - 0f Kill: which result ends this source for good, and how many redesigns are allowed before it?
+- 0g Operator intent (class C9, 2026-10-30): when the idea comes from the operator's own trading (his levels, his "first touch", his lower highs), does the encoding fire where HE would mark it? Check it on at least 3 of his dated chart notes or screenshots before any run; a definition he has not confirmed is labelled OURS and the result says so. Examples of misses: T087 "first touch" was one 1m touch, he means approach classes (near miss, wick through, close through then fail, accepted); coded KR-L10 cannot see his daily last lower high.
 
 ## 1. Source home: market, timeframe, session, holding period (with quote + file:line).
 
