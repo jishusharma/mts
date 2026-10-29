@@ -1,0 +1,1 @@
+{"t": "20261029T162914Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "ship cbp-query-symbol-btcusdt-2 Result: design note picks source + threshold per signal (CI lag 20 min OURS, gate slot 20 min OURS, STALE 24 h SOURCED, lane idle 2 polls OURS), format reuses traffic.p", "login": "B", "sid": "1400b02eb2"}
