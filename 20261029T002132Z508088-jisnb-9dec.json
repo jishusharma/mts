@@ -1,0 +1,1 @@
+{"t": "20261029T002132Z", "from": "jis-nb/C", "to": "all", "kind": "ack", "text": "ack b-4c2dfe told live tree has wip commit + HALT/AUTO_PAUSE; refresh waits for operator go at a pause", "login": "C", "id": "b-4c2dfe", "state": "told", "host": "jis-nb", "note": "live tree has wip commit + HALT/AUTO_PAUSE; refresh waits for operator go at a pause"}
