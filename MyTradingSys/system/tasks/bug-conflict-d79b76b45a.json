@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-29T22:21:00Z",
   "commands": [],
   "created": "2026-10-27T20:45:35Z",
   "depends_on": [],
@@ -16,6 +17,12 @@
   "last_seen": "2026-10-27T20:45:35Z",
   "last_session": "be43c83b-b392-49d3-a368-1330028fe5f6",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Verified Admin_Guy alias to Lead and fallback vs ROLE NOT LOADED boundary; 77 tests passed",
+      "ref": "7d09362f5",
+      "utc": "2026-10-29T22:21:00Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,7 +47,12 @@
   "refined_by": "",
   "refreshed": "2026-10-27T21:31:45Z",
   "refs": [],
-  "result": "",
+  "result": "Verified role_loader.py ALIASES maps Admin_Guy -> Lead and injects lead.md; verified ROLES.md line 5 states boundary: no role line = fallback pick, named role text not injected = ROLE NOT LOADED and stop. Tests passed: 77 passed (test_role_loader + test_integrity), role_loader.py check ok.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/ROLES.md",
     "scripts/dev/role_loader.py"
@@ -53,12 +65,13 @@
   "seen": 1,
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Run role_loader.py pick --text 'You are Admin_Guy.' and 'operator task R1' and record both outputs",
     "If both behave per the decision, add the one-line boundary to ROLES.md; if Admin_Guy gives no file, fix the alias, not the rule",
     "Run test_role_loader and test_integrity"
   ],
+  "taken": "2026-10-29T22:21:00Z",
   "tests": "python -m pytest scripts/dev -k role_loader -q and MyTradingSys/tests/docs/test_integrity.py; fail-first only if the alias fix is needed",
   "title": "Instruction conflict: hook says ROLE NOT LOADED stop (Admin_Guy no file) vs operator task R1 with no role line = Builder fallb",
   "weight": "ROUTINE",
