@@ -31,6 +31,7 @@ WaveTrend 10/21/4, 0.015, lines 53/60 = OURS (LazyBear defaults; his chart setti
 
 | Step | His words / source | Reading (OURS) |
 |---|---|---|
+| In-trade panel (card live-aid-in-trade-panel) | 10-29 via Eagle_Eyes: he left a trade early, "no in-trade inputs" | bullets: supports, DOM read, VWAP distance/test, divergences (RSI/CVD/delta/OI), squeeze read, CVD vs delta, stay confidence, stay-vs-reduce as OURS rules fixed before data |
 | Liquidation tape, OI and flow | brief from Eagle_Eyes | live liquidation prints, open interest and taker flow beside price |
 | Liquidation layer context (R08) | "now we have to find out how much of this is actually useful - worth trusting - so we need a constant context building for this liquidation layer" | show each typed heatmap band's track record from `research/liquidation_layer_2026-10-28/BANDS_LEDGER.csv` |
 | Heatmap vs what played out, by timeframe (R09) | "we can also see it's diff timeframes to compare what platyed out at lower time frames since last weeks" | per band: touched / swept / rejected on 1m-15m since last week |
