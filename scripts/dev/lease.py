@@ -162,6 +162,9 @@ def current_role(env=None):
     if sid:
         try:
             import role_loader
+            explicit = [role_name(r) for r in role_loader.explicit_injected(sid)]
+            if explicit:
+                return explicit[-1]   # the role the operator most recently named wins over an older singleton
             roles = [role_name(r) for r in role_loader.injected(sid)]
             single = [r for r in roles if r in SINGLETONS]
             if single or roles:
