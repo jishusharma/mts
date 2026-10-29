@@ -527,6 +527,17 @@ def other_session_tree(repo, slug):
     return branch
 
 
+def agent_sandbox_tree(repo):
+    """A clean `.claude/worktrees/agent-*` checkout on its own branch: the tree the Agent tool made for an isolated worker.
+    The worker already sits in a private tree, so `start --worker` works there instead of adding a second one."""
+    p = Path(repo).resolve()
+    if not p.name.startswith("agent-") or p.parent.name != "worktrees" or p.parent.parent.name != ".claude":
+        return False
+    if not git(repo, "branch", "--show-current", check=False).stdout.strip():
+        return False
+    return shared_tree_reason(repo) is None
+
+
 def start(repo, slug=None, here=False, quiet=False, worker=False):
     """Bring a tree up to date. Returns the tree the session must work in: `repo` when it is clean, else a
     fresh worktree off origin/fast-track (printed as `WORKTREE: <path>`); never touches the other files.
@@ -534,6 +545,9 @@ def start(repo, slug=None, here=False, quiet=False, worker=False):
     workers never switch a lane tree or commit in their Supervisor's tree."""
     refuse_live(repo)
     other = None if (here or not slug) else ("--worker" if worker else other_session_tree(repo, slug))
+    if other and worker and agent_sandbox_tree(repo):
+        print(f"agent isolation tree {Path(repo).name}: already your own; no second worktree. Work here.")
+        other = None
     if other:
         path = new_worktree(repo, slug)
         print(f"this tree is not yours ({'worker start' if worker else 'made for ' + other}); not working here.")
