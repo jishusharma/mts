@@ -44,6 +44,20 @@ def task_xml(python, script, home):
             escape(str(ROOT)) + '</WorkingDirectory></Exec></Actions></Task>')
 
 
+def validate_task_xml(xml):
+    """Fail closed unless the generated task is a twice-daily CBP-only retrying task."""
+    required = ("<StartBoundary>2026-10-26T09:00:00Z</StartBoundary>",
+                "<StartBoundary>2026-10-26T13:00:00Z</StartBoundary>",
+                "<MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>",
+                "<Interval>PT15M</Interval><Count>3</Count>", "cbp_schedule.py", "run", "--home")
+    missing = [part for part in required if part not in xml]
+    if missing:
+        raise ValueError("invalid CBP task XML; missing " + ", ".join(missing))
+    if "claude_run" in xml or "trading" in xml.lower():
+        raise ValueError("task XML must remain CBP-only")
+    return True
+
+
 def preflight(home):
     config = home / "cbp_v2" / "analysts.json"
     if not config.is_file():
@@ -58,10 +72,15 @@ def preflight(home):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("command", choices=("install", "run", "status", "remove", "check"))
+    ap.add_argument("command", choices=("install", "run", "status", "remove", "check", "dry-run"))
     ap.add_argument("--home", type=Path, default=None)
     a = ap.parse_args(argv)
     home = (a.home or cbp.default_cbp_home()).resolve()
+    if a.command == "dry-run":
+        xml = task_xml(sys.executable, Path(__file__).resolve(), home)
+        validate_task_xml(xml)
+        print("CBP task valid (09:00, 13:00 UTC; 3 retries/15m; no registration): " + str(home))
+        return 0
     if a.command in ("status", "remove"):
         cmd = ["schtasks", "/Query", "/TN", TASK, "/V", "/FO", "LIST"] if a.command == "status" else [
             "schtasks", "/Delete", "/TN", TASK, "/F"]

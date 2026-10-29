@@ -2,6 +2,7 @@
 import subprocess
 import sys
 import unittest
+from statistics import NormalDist
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -11,6 +12,19 @@ GATE = HERE / "prereg_gate.py"
 def run(*a):
     p = subprocess.run([sys.executable, str(GATE), *a], capture_output=True, text=True, encoding="utf-8")
     return p.returncode, p.stdout
+
+
+def independent_z(m):
+    """Spec-derived two-sided Holm critical z, independent of prereg_gate.py."""
+    return NormalDist().inv_cdf(1 - 0.05 / (2 * m))
+
+
+def independent_mde(n, sd, m):
+    return (independent_z(m) + 0.84) * sd / n**0.5
+
+
+def independent_need_n(sd, m, cost, max_gross=0.30):
+    return ((independent_z(m) + 0.84) * sd / (max_gross - cost)) ** 2
 
 
 class PreRegGate(unittest.TestCase):
@@ -58,6 +72,78 @@ class PreRegGate(unittest.TestCase):
             code, out = run("--n", "678", "--sd", "1.4", "--cost", "0.1", "--m", "auto", "--verdicts-csv", str(fx))
             self.assertIn("m 3 ", out)
             self.assertEqual(run("--n", "678", "--sd", "1.4", "--cost", "0.1", "--m", "7")[0], 0)
+
+    def test_z_holm_m1_matches_independent_quantile(self):
+        expected = independent_z(1)
+        code, out = run("--n", "100000", "--sd", "1.5", "--cost", "0", "--m", "1")
+        self.assertEqual(code, 0, out)
+        self.assertIn(f"z_holm {expected:.3f}", out)
+
+    def test_z_holm_m5_matches_independent_quantile(self):
+        expected = independent_z(5)
+        code, out = run("--n", "100000", "--sd", "1.5", "--cost", "0", "--m", "5")
+        self.assertEqual(code, 0, out)
+        self.assertIn(f"z_holm {expected:.3f}", out)
+
+    def test_z_holm_m9_matches_independent_quantile(self):
+        expected = independent_z(9)
+        code, out = run("--n", "100000", "--sd", "1.5", "--cost", "0", "--m", "9")
+        self.assertEqual(code, 0, out)
+        self.assertIn(f"z_holm {expected:.3f}", out)
+
+    def test_mde_independent_point_small_n(self):
+        expected = independent_mde(100, 1.2, 1)
+        code, out = run("--n", "100", "--sd", "1.2", "--cost", "0", "--m", "1")
+        self.assertEqual(code, 1, out)
+        self.assertIn(f"MDE {expected:.3f} R", out)
+
+    def test_mde_independent_point_mid_n(self):
+        expected = independent_mde(1000, 2, 5)
+        code, out = run("--n", "1000", "--sd", "2", "--cost", "0", "--m", "5")
+        self.assertEqual(code, 0, out)
+        self.assertIn(f"MDE {expected:.3f} R", out)
+
+    def test_mde_independent_point_large_n(self):
+        expected = independent_mde(5000, 3, 9)
+        code, out = run("--n", "5000", "--sd", "3", "--cost", "0", "--m", "9")
+        self.assertEqual(code, 0, out)
+        self.assertIn(f"MDE {expected:.3f} R", out)
+
+    def test_exact_gross_limit_passes(self):
+        n, sd, m = 100, 1.05, 1
+        expected = independent_mde(n, sd, m)
+        cost = 0.30 - expected
+        code, out = run("--n", str(n), "--sd", str(sd), "--cost", format(cost, ".17g"), "--m", str(m))
+        self.assertEqual(code, 0, out)
+        self.assertIn("PASS", out)
+        self.assertIn("= 0.300 vs max plausible gross 0.3", out)
+
+    def test_just_above_gross_limit_blocks(self):
+        n, sd, m = 100, 1.05, 1
+        cost = 0.30 - independent_mde(n, sd, m) + 1e-6
+        code, out = run("--n", str(n), "--sd", str(sd), "--cost", format(cost, ".17g"), "--m", str(m))
+        self.assertEqual(code, 1, out)
+        self.assertIn("BLOCK", out)
+
+    def test_sd_one_requires_source_but_just_above_one_is_valid(self):
+        code, out = run("--n", "10000", "--sd", "1", "--cost", "0", "--m", "1")
+        self.assertEqual(code, 2, out)
+        code, out = run("--n", "10000", "--sd", "1.0001", "--cost", "0", "--m", "1")
+        self.assertEqual(code, 0, out)
+        self.assertIn("MDE", out)
+
+    def test_cost_at_or_above_limit_has_infinite_n_needed(self):
+        for cost in ("0.30", "0.31"):
+            with self.subTest(cost=cost):
+                code, out = run("--n", "100", "--sd", "2", "--cost", cost, "--m", "1")
+                self.assertEqual(code, 1, out)
+                self.assertIn("n needed inf", out)
+
+    def test_finite_n_needed_matches_independent_formula(self):
+        expected = independent_need_n(sd=1.2, m=5, cost=0.05)
+        code, out = run("--n", "200", "--sd", "1.2", "--cost", "0.05", "--m", "5")
+        self.assertEqual(code, 1, out)
+        self.assertIn(f"n needed {expected:.0f}", out)
 
 
 if __name__ == "__main__":
