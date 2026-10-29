@@ -12,4 +12,8 @@ Author: Eagle_Eyes (observer). Operator rule (10-28 about 22:40Z): at every pric
 | C6 | Price spikes through a drawn heatmap cluster, then is rejected | Heatmap band, OI on the spike bar | Move after the touch; whether OI fell | 81,45x to 81,51x band, 20:00Z spike to 81,759 | Heatmap history: not stored (NOT_IN_DATA) | needs a recorder or saved shots |
 | C7 | Top-trader ratio steps | Accounts and positions ratio, price, OI | Lead and lag at 15m to 2h | accounts 2.093 (15:01Z) to 2.017 (22:36Z) | Ratio history: Binance keeps 30 days only | concept only |
 
+| C8 | Two highs at about the same price on 15m | WT and RSI at each high (WT about +54 then about +48, RSI about 80 then about 72; pixel reads on the 2-day zoom, the 8-day view misread WT as +60 / +40) | Forward move after the second, weaker high | 08:30Z and 20:00Z (Bitstamp 15m, shot c117c0bd9772 and its 2-day zoom) | 15m klines, 8+ days | idea |
+| C10 | Double low on 15m: price lower low, WT equal low, RSI higher low | WT about -45 then about -44; RSI about 28 then about 31 | Move after the second low | 15:00Z and 16:45Z 10-28 (price 80,3xx; then about +1,400 to the 20:00Z high on Bitstamp) | 15m klines | idea; one instance |
+| C9 | 15m WT at or under about -60 | WT15, price low, RSI | Distance from the WT low to the price low and the move after; 10-28 14:00Z reached only about -45 and still bounced | -70 to -72 near the 10-22, 10-24 and 10-26 lows (pixel reads, OURS) | 15m klines, as many days as the archive holds | idea |
+
 Open gaps behind every row: CVD, net delta and net longs/shorts anchors and units (NOT_IN_DATA); 15m footprint delta mismatch (card `legend-footprint-bar-delta-differs-betwe`). One session, one day: none of this is evidence.
