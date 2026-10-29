@@ -1,0 +1,10 @@
+{
+  "done_when": "gate_flake_repro.txt exists and its full text (every traceback) is pasted into the desk result; state how many of the 4 ship processes held vs queued for a gate slot at that moment.",
+  "from": "DESKTOP-F7IU69N",
+  "id": "20261029-170405-gate-flakes-under-load-reproduce-4-concu",
+  "need": "On JIS-NB, in 4 separate worktrees (sync.py start), start 4 'python scripts/dev/sync.py ship --dry' (or if --dry is not supported, 4 'python scripts/dev/run_all_tests.py --quick') at the same time; while they run, in a 5th shell run: python -m pytest MyTradingSys/tests/test_lease.py scripts/dev/test_trunk_lag.py scripts/dev/test_soak_six_slots.py scripts/dev/test_mts_signal.py scripts/dev/test_gate_impact.py -q 2>&1 | tee gate_flake_repro.txt; paste the full tee output (every FAIL traceback, not just the summary line) plus how many of the 4 ships were still queued for a gate slot (sync.py where) when the pytest run started.",
+  "posted": "2026-10-29T17:04:05Z",
+  "status": "pending",
+  "target": "DSA-NB",
+  "title": "Gate flakes under load: reproduce 4+ concurrent sync.py ship on JIS-NB, capture tracebacks for 5 tests"
+}
