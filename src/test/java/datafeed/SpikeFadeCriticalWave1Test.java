@@ -177,6 +177,9 @@ public class SpikeFadeCriticalWave1Test {
         ObjectNode up = detect(todayShort(prior(900.0, legs(4.5, 4.5)), 1005.5, 904.5, 904.6));
         assertNotNull(up, "close 904.6 > 904.5");
         assertTrue(up.get("c2_above_prior_day").asBoolean());
+        boolean hasC2 = false;
+        for (JsonNode cd : up.get("conditions")) if ("A-C2".equals(cd.asText())) hasC2 = true;
+        assertTrue(hasC2, "A-C2 listed when c2 true");
     }
 
 
