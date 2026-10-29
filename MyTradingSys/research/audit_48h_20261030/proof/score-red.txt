@@ -1,0 +1,24 @@
+.F                                                                     [100%]
+================================== FAILURES ===================================
+_ TestCbpStoreRecount.test_dummy_whitespace_and_dash_levels_are_not_tradable (blank='   ') _
+MyTradingSys\research\analysts\test_analysts_ingestion_and_scorecard.py:347: in test_dummy_whitespace_and_dash_levels_are_not_tradable
+    self.assertEqual(R.recount_cbp_store(data)["Fixture"]["tradable_rows"], 0)
+E   AssertionError: 1 != 0
+_ TestCbpStoreRecount.test_dummy_whitespace_and_dash_levels_are_not_tradable (blank='�') _
+MyTradingSys\research\analysts\test_analysts_ingestion_and_scorecard.py:347: in test_dummy_whitespace_and_dash_levels_are_not_tradable
+    self.assertEqual(R.recount_cbp_store(data)["Fixture"]["tradable_rows"], 0)
+E   AssertionError: 1 != 0
+_ TestCbpStoreRecount.test_mixed_complete_and_incomplete_calls_counts_one_tradable_row _
+MyTradingSys\research\analysts\test_analysts_ingestion_and_scorecard.py:338: in test_mixed_complete_and_incomplete_calls_counts_one_tradable_row
+    self.assertEqual(R.recount_cbp_store(data)["Fixture"], {"rows": 1, "trades": 2, "tradable_rows": 1})
+E   AssertionError: {'rows': 1, 'trades': 2, 'tradable_rows': 0} != {'rows': 1, 'trades': 2, 'tradable_rows': 1}
+E   - {'rows': 1, 'tradable_rows': 0, 'trades': 2}
+E   ?                              ^
+E   
+E   + {'rows': 1, 'tradable_rows': 1, 'trades': 2}
+E   ?                              ^
+=========================== short test summary info ===========================
+SUBFAILED(blank='   ') MyTradingSys/research/analysts/test_analysts_ingestion_and_scorecard.py::TestCbpStoreRecount::test_dummy_whitespace_and_dash_levels_are_not_tradable
+SUBFAILED(blank='�') MyTradingSys/research/analysts/test_analysts_ingestion_and_scorecard.py::TestCbpStoreRecount::test_dummy_whitespace_and_dash_levels_are_not_tradable
+FAILED MyTradingSys/research/analysts/test_analysts_ingestion_and_scorecard.py::TestCbpStoreRecount::test_mixed_complete_and_incomplete_calls_counts_one_tradable_row
+3 failed, 1 passed, 13 deselected in 0.36s

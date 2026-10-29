@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-29T22:52:53Z",
+  "depends_on": [],
+  "done_when": "Counts agree with hand-set fixtures; independent Cloud verification accepts before trunk merge.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Make analyst scorecard tradable-row counts agree with the CBP read contract.",
+  "id": "audit48-cbp-scorecard-parity",
+  "kind": "build",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "MyTradingSys/research/analysts/test_analysts_ingestion_and_scorecard.py::test_dummy_whitespace_and_dash_levels_are_not_tradable",
+  "note": "IMPLEMENTED, AWAITING CLOUD REVIEW.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/analysts/run_scorecard.py",
+    "MyTradingSys/research/analysts/test_analysts_ingestion_and_scorecard.py"
+  ],
+  "scope_out": [
+    "runtime data",
+    "live tree"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "active",
+  "steps": [
+    "Reject dummy whitespace/dash levels and count any complete trade in a mixed row.",
+    "Run independent expected-count fixtures and CBP suites; Cloud reviews before merge."
+  ],
+  "tests": "Mixed-row and placeholder regressions fail before fix; 63 tests and 2 subtests pass.",
+  "title": "48h audit: analyst scorecard disagrees with canonical CBP tradability",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

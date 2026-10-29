@@ -19,6 +19,9 @@ HERE = Path(__file__).resolve().parent
 if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
 
+sys.path.insert(0, str(HERE.parents[2] / "MyTradingSys"))
+import cbp
+
 from schema import AnalystSignal, SignalDirection, ImbalanceConstruct, SignalStatus
 from score_analysts import (
     score_signal_against_klines,
@@ -59,17 +62,14 @@ def load_calls_from_csv(csv_path: Path):
 
 
 def recount_cbp_store(data: dict) -> dict:
-    """Independent per-analyst recount of the CBP store (names kept as stored: Michael and Michaal are two analysts)."""
+    """Per-analyst recount using the canonical CBP tradability contract (names kept as stored: Michael and Michaal are two analysts)."""
     out = {}
     for r in data.get("rows", []):
         c = out.setdefault(r.get("analyst", "UNKNOWN"), {"rows": 0, "trades": 0, "tradable_rows": 0})
         c["rows"] += 1
         trades = r.get("trades") or []
         c["trades"] += len(trades)
-        if trades and all(
-            t.get("direction") in ("LONG", "SHORT") and t.get("entry") and t.get("target") and t.get("invalidation")
-            for t in trades
-        ):
+        if cbp.is_tradable(r):
             c["tradable_rows"] += 1
     return out
 

@@ -331,6 +331,21 @@ class TestCbpStoreRecount(unittest.TestCase):
         self.assertIn("| Michaal | 1 | 0 | 0 |", md)
         self.assertIn("| Qriptal | 1 | 2 | 1 |", md)
 
+    def test_mixed_complete_and_incomplete_calls_counts_one_tradable_row(self):
+        import run_scorecard as R
+        trade = {"direction": "LONG", "entry": "80K", "target": "87K", "invalidation": "79K"}
+        data = {"rows": [{"analyst": "Fixture", "trades": [trade, dict(trade, target="")]}]}
+        self.assertEqual(R.recount_cbp_store(data)["Fixture"], {"rows": 1, "trades": 2, "tradable_rows": 1})
+
+    def test_dummy_whitespace_and_dash_levels_are_not_tradable(self):
+        import run_scorecard as R
+        # Dummy values must fail closed rather than inflate the public scorecard.
+        trade = {"direction": "LONG", "entry": "80K", "target": "87K", "invalidation": "79K"}
+        for blank in ("   ", chr(0x2014)):
+            data = {"rows": [{"analyst": "Fixture", "trades": [dict(trade, target=blank)]}]}
+            with self.subTest(blank=blank):
+                self.assertEqual(R.recount_cbp_store(data)["Fixture"]["tradable_rows"], 0)
+
 
 if __name__ == "__main__":
     unittest.main()
