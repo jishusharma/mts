@@ -1,0 +1,59 @@
+{
+ "id": "tom-corr-divergence-backtest",
+ "kind": "backtest",
+ "family": "Tom: correlation divergence (TOM-CTX-DIV)",
+ "title": "Tom correlation-divergence filter: H1 DAX vs ES/Nikkei/BTC, H2 BTC vs ES/DXY (daily as-of, fee-net)",
+ "provenance": "run",
+ "date": "2026-10-29",
+ "what": [],
+ "how": "run_div.py, frozen by PRE_REG.md before any outcome; DEV 70%, VALIDATION once, HOLDOUT not read.",
+ "window": "2017-07-14 to 2026-10-29",
+ "verdict": {
+  "label": "NOT-ADD TOM-CTX-DIV: primary variants have negative fee-net expectancy on DEV and VALIDATION; holdout not read.",
+  "tone": "bad"
+ },
+ "why": [
+  "All parameters OURS (Tom states none).",
+  "VALIDATION n is 8 (H1) and 16 (H2), below 30: inconclusive on its own; DEV fails first."
+ ],
+ "kpis": [
+  {
+   "label": "H1 DAX primary DEV fee-net mean (n 35)",
+   "value": "-110 bps"
+  },
+  {
+   "label": "H1 VALIDATION (n 8)",
+   "value": "-93 bps"
+  },
+  {
+   "label": "H2 BTC primary DEV (n 52)",
+   "value": "-72 bps"
+  },
+  {
+   "label": "H2 VALIDATION (n 16)",
+   "value": "-19 bps"
+  },
+  {
+   "label": "Holdout",
+   "value": "not read"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: daily event study, see RESULT.md and dev.json"
+  }
+ ],
+ "evidence": [
+  "MyTradingSys/research/tom_correlation_trick_2026-10-26/RESULT.md"
+ ],
+ "missing": [
+  "holdout not read (VALIDATION failed)"
+ ],
+ "source_files": [
+  "MyTradingSys/research/tom_correlation_trick_2026-10-26/run_div.py",
+  "MyTradingSys/research/tom_correlation_trick_2026-10-26/PRE_REG.md"
+ ],
+ "commit": "see git log"
+}
