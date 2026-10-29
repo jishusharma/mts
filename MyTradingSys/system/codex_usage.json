@@ -4,9 +4,9 @@
   "week_resets": 1793780113,
   "week_used": 28.0,
   "window_resets": 1793309280,
-  "window_used": 34.0
+  "window_used": 35.0
  },
- "at": "2026-10-29T21:02:50Z",
+ "at": "2026-10-29T21:10:36Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -19,18 +19,33 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 0.0,
-  "window_pts": 1.0,
-  "window_runs": 2
+  "window_pts": 2.0,
+  "window_runs": 3
  },
  "runs": [
+  {
+   "at": "2026-10-29T21:09:08Z",
+   "card": "lab-flow-vendor-gate-tests-tamper-test-p",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 81,
+   "tokens_out": 4953,
+   "tokens_total": 611613,
+   "tokens_uncached": 42180,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
   {
    "at": "2026-10-29T21:01:02Z",
    "card": "cbp-ingestion",
    "effort": "medium",
    "kind": "build",
    "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
+   "note": " 5b: Layer tests: NOT RUN (precheck failed: step 3g)\nStep 5c: Options tests: PASS\nStep 6: Backtest tests: SKIP\n=================================================",
+   "outcome": "SHIP_FAILED",
    "seconds": 101,
    "tokens_out": 6543,
    "tokens_total": 757687,
@@ -155,21 +170,6 @@
    "tokens_out": 4059,
    "tokens_total": 510640,
    "tokens_uncached": 50517,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-27T18:52:19Z",
-   "card": "gpt-slippage-arith",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 36,
-   "tokens_out": 2643,
-   "tokens_total": 171987,
-   "tokens_uncached": 21120,
    "week_pts": 0.0,
    "window_pts": 0.0
   }

@@ -1,0 +1,4 @@
+path	functions	note
+MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py	cluster_mean_se,diff_cluster	existing offender, pre-lint
+MyTradingSys/research/published_strats_2026-10-13/run_pub.py	holm	existing offender, pre-lint
+MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/study.py	cluster_se	existing offender, pre-lint
