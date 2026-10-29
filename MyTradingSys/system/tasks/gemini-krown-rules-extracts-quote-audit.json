@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-29T18:42:53Z",
   "commands": [
     "python scripts/dev/fetch_captions_timed.py --analyst Krown https://www.youtube.com/watch?v=UHY740h3e-Y https://www.youtube.com/watch?v=SOaAP9vBgM4 https://www.youtube.com/watch?v=-9rAJNUpMsk https://www.youtube.com/watch?v=EQy4HouRMMk",
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/krown_audit_2026-10-22/GEMINI_RULES_QUOTE_AUDIT.md"
@@ -17,6 +19,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "GEMINI_RULES_QUOTE_AUDIT.md: 13/13 SOURCED quotes MATCH (0 altered, 0 not-in-captions); ve",
+      "ref": "435070574",
+      "utc": "2026-10-29T18:42:53Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -47,7 +55,12 @@
     "to": "DSA",
     "why": "credits"
   },
-  "result": "",
+  "result": "GEMINI_RULES_QUOTE_AUDIT.md: 13/13 SOURCED quotes MATCH (0 altered, 0 not-in-captions); verify_extract_quotes.py PASS",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "extracts/gemini_out/krown/UHY740h3e-Y_rules.md",
     "extracts/gemini_out/krown/SOaAP9vBgM4_rules.md",
@@ -68,13 +81,14 @@
     "MyTradingSys/options/research/KROWN_FREE_VS_PAID.md:151 (the 4 ids are the transcript-queue priority list)",
     "MyTradingSys/research/GROUND_LEVEL_YOUTUBE_EXTRACTIONS_STRATEGY_2026-10-18.md s6.1.2 (the other 4 Krown ids LB3DRYxnA0A _JoJbu_Ug-A fMRvOt26xcA hNfjyrJEytI are halted: not in this card)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Run the fetch command once (full URLs because -9rAJNUpMsk starts with a dash). One try per video, no loop: on the first HTTP 429 write the exact error for that video and every unfetched one into the audit file, mark them NOT CHECKED, stop fetching.",
     "For each fetched video list every SOURCED: \"...\" quote in extracts/gemini_out/krown/<id>_rules.md and search it in raw_transcripts_canonical/<id>_raw.txt (case/punctuation normalised). Class: MATCH, ALTERED (list differing words) or NOT-IN-CAPTIONS.",
     "Write GEMINI_RULES_QUOTE_AUDIT.md: table id | quote # | class | caption line; re-emit each MATCH as > \"<verbatim caption text>\" then **Source GPS: <id> | BEGIN|MIDDLE|END**. Never summarise from watching the video. Do not edit the extracts.",
     "Run python scripts/dev/verify_extract_quotes.py on the audit file until exit 0; commit the audit only (transcripts are git-ignored) with a Result: line giving matches / altered / not-in-captions counts."
   ],
+  "taken": "2026-10-29T18:38:07Z",
   "tests": "verify_extract_quotes.py exit 0 on MyTradingSys/research/krown_audit_2026-10-22/GEMINI_RULES_QUOTE_AUDIT.md (command exits non-zero before the run: file absent)",
   "title": "[GEMINI] Krown 4 yt-burn rule extracts (UHY740h3e-Y SOaAP9vBgM4 -9rAJNUpMsk EQy4HouRMMk): fetch captions, check every SOURCED quote",
   "weight": "ROUTINE",
