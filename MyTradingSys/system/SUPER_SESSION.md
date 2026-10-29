@@ -102,11 +102,11 @@ from the newest `BUDGET` signal line (older than 6 h counts NORMAL). The meter i
 | THROTTLE | U > 100 f + 5 (not in the last 24 h), U >= 99, or the 5-hour window above its stop (80 %, 95 % in the last 2 h) | only model-free work: Codex lab, DSA desk, CI |
 
 ## Session log (newest first; one line each, last 5)
+- B 2026-10-30 20:00-21:42Z: names rule Desktop/Lenovo/NUC + B22/B23 filed, CI red reverted (ca25ae86f), GPT lane brought up (lane_state c9cf84d4a) and 2 GPT runs shipped (811f9870), liquidation deploy sent to the Lenovo (b-d564be, unacked); roman ingest parked.
 - A 2026-10-29 16:58-17:30Z: operator-directed drain before weekly reset; wiring audit shipped+Haiku-verified, gemini race test was a no-op (already shipped), pitchfork arm-check (verdict NO, deduped against another session's shipped doc), CI RED (TOM-CTX-DIV) saw B's revert in flight and stood down rather than duplicate, 9 raw Noticed cards filed; handed over at TRANSIT (context 255K).
 - B 2026-10-28 13:00-18:15Z: restart chain proven once (logon wake), 6 Opus fixes verified, ship wait removed, 3 CI REDs reverted, 11 cards shipped; successor registered fire-now
 - B 2026-10-28 12:00-13:05Z: logon_wake 4d (MTSLogonWake + launch_app) shipped; wiring audit Tom/Fabio/Habib bcfd46cfc 446 rows verified; planner refined 5 cards; CI red 4d cleared; builder cbp-query-symbol in flight at transit
 - 2026-10-28 Builder (bg-process-audit, Opus agent): 142 background tasks over 30 min in 7 days (173 h), 43 dead ends/hung/idle (72 h); fixes: git network deadline + no-retry on non-race push (sync.py), NUC verb deadlines, `bg_watch.py` STALLED-BG/RAW-AGED lines in `plan`; AUDIT: research/bg_process_audit_2026-10-28/AUDIT.md.
-- 2026-10-27 Supervisor C (desktop, Sonnet): T09-F3 live RSI support-long-only shipped (f04a3cbad) after a diff-only review Agent; planner refined 13 cards; cbp-ingestion parked (unverified operator request for the CBP scheduled task); handed over with one 4b2 successor task. Lesson: Agents started without isolation worktree share this tree and dirty it for the stop guard.
 
 ## Prompt: start a super session (new session, model Sonnet, permission mode bypass or auto; zero operator input)
 ```
