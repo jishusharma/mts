@@ -7,12 +7,14 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-29T23:21:32Z",
-    "misses": 24,
+    "folded": "2026-10-29T23:21:50Z",
+    "misses": 26,
     "reads": [
+      "scripts/dev/test_refresh_main_checkout.py",
       "src/test/java/datafeed/LiquidationEventLogTest.java",
       "scripts/dev/run_all_tests.py",
-      "scripts/dev/run_extra_tests.py"
+      "scripts/dev/run_extra_tests.py",
+      "scripts/dev/refresh_main_checkout.py"
     ],
     "session": "agent-a1446fdde65729ea6"
   },
