@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-29T22:51:45Z",
+  "depends_on": [],
+  "done_when": "scripts/dev/test_operator_questions.py has >=8 passing tests, 3/3 scratch mutations fail them, operator_questions.py unchanged.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "operator_questions.py has no test. Read its docstring, derive expected outputs by hand for 6 boundary cases (at limit, one below, one above, empty input, malformed input, error path), write scripts/dev/test_operator_questions.py using temp dirs only, then 3 scratch mutations must each fail a test.",
+  "id": "gpt-spec-tests-operator-questions",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "note": "Producer GPT; reviewer Claude or Gemini. Expected values independent of the code; tests touch temp dirs only, never runtime data. ROUTINE, no live path.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-29T22:51:47Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/test_operator_questions.py",
+    "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-spec-tests-operator-questions.md"
+  ],
+  "scope_out": [
+    "any live path",
+    "editing the audited source files"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "scripts/dev/operator_questions.py"
+  ],
+  "state": "ready",
+  "steps": [
+    "read operator_questions.py and list every branch",
+    "compute expected values by hand",
+    "write tests, run 3 mutations, write report"
+  ],
+  "tests": "python -m pytest scripts/dev/test_operator_questions.py -q",
+  "title": "Spec-derived tests for scripts/dev/operator_questions.py (no test file today)",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

@@ -1,0 +1,51 @@
+{
+ "approved_by": "",
+ "asks": "",
+ "commands": [
+  "C:/Users/E-ngineers/.gemini/bin/agy.exe --print \"Follow the steps of card gemini-param-labels-wlow_bounce (python scripts/dev/tasks.py brief gemini-param-labels-wlow_bounce). Write only MyTradingSys/research/gemini_audits_2026-10-30/wlow_bounce_param_labels.md. Facts with file:line or NOT_IN_DATA; no verdicts.\" --model gemini-4-argon-medium"
+ ],
+ "created": "2026-10-29T22:52:39Z",
+ "depends_on": [],
+ "done_when": "MyTradingSys/research/gemini_audits_2026-10-30/wlow_bounce_param_labels.md exists: one row per parameter with file:line, label, and source quote or NOT_IN_DATA",
+ "est_turns": 12,
+ "formula_id": "",
+ "formula_ids": [],
+ "from_inbox": "",
+ "goal": "List each numeric parameter default in layers/wlow_bounce code, find its source (analyst extract, FORMULAS.md, or none) and label SOURCED (quote + path) or OURS. Report only; no verdicts.",
+ "id": "gemini-param-labels-wlow_bounce",
+ "kind": "run",
+ "lane": "CODEX",
+ "latest": [],
+ "layers": [],
+ "live_path": false,
+ "note": "Producer vendor per title; reviewer is a different vendor. Facts with file:line or NOT_IN_DATA; no verdicts. ROUTINE, no live path.",
+ "prio": 3,
+ "refine_tries": 0,
+ "refined_by": "",
+ "refreshed": "2026-10-29T22:52:40Z",
+ "refs": [],
+ "result": "",
+ "scope_in": [
+  "MyTradingSys/research/gemini_audits_2026-10-30/wlow_bounce_param_labels.md (new file only)"
+ ],
+ "scope_out": [
+  "any live path",
+  "editing the audited source files"
+ ],
+ "scope_sha": "",
+ "size": "S",
+ "sources": [
+  "MyTradingSys/backtest/layers/wlow_bounce",
+  "MyTradingSys/backtest/layers/MOVED_RULES.md"
+ ],
+ "state": "ready",
+ "steps": [
+  "list parameters",
+  "search extracts for each",
+  "write table"
+ ],
+ "tests": "none (run card); proof = every row has file:line",
+ "title": "[GEMINI] Argon-medium: every parameter in layers/wlow_bounce labelled SOURCED or OURS (file:line)",
+ "weight": "ROUTINE",
+ "worker": "agent"
+}

@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-29T22:51:39Z",
+  "depends_on": [],
+  "done_when": "scripts/dev/test_coord_overhead.py has >=8 passing tests, 3/3 scratch mutations fail them, coord_overhead.py unchanged.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "coord_overhead.py has no test. Read its docstring, derive expected outputs by hand for 6 boundary cases (at limit, one below, one above, empty input, malformed input, error path), write scripts/dev/test_coord_overhead.py using temp dirs only, then 3 scratch mutations must each fail a test.",
+  "id": "gpt-spec-tests-coord-overhead",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "note": "Producer GPT; reviewer Claude or Gemini. Expected values independent of the code; tests touch temp dirs only, never runtime data. ROUTINE, no live path.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-29T22:51:40Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/test_coord_overhead.py",
+    "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-spec-tests-coord-overhead.md"
+  ],
+  "scope_out": [
+    "any live path",
+    "editing the audited source files"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "scripts/dev/coord_overhead.py"
+  ],
+  "state": "ready",
+  "steps": [
+    "read coord_overhead.py and list every branch",
+    "compute expected values by hand",
+    "write tests, run 3 mutations, write report"
+  ],
+  "tests": "python -m pytest scripts/dev/test_coord_overhead.py -q",
+  "title": "Spec-derived tests for scripts/dev/coord_overhead.py (no test file today)",
+  "weight": "ROUTINE",
+  "worker": "session"
+}
