@@ -12,7 +12,7 @@
   "goal": "aibridge_health.py has no test. Read its docstring, derive expected outputs by hand for 6 boundary cases (at limit, one below, one above, empty input, malformed input, error path), write scripts/dev/test_aibridge_health.py using temp dirs only, then 3 scratch mutations must each fail a test.",
   "id": "gpt-spec-tests-aibridge-health",
   "kind": "build",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [],
   "layers": [],
   "live_path": false,
@@ -22,6 +22,12 @@
   "refined_by": "",
   "refreshed": "2026-10-29T22:51:59Z",
   "refs": [],
+  "reroute": {
+    "at": "2026-10-29T23:26:05Z",
+    "from": "CODEX",
+    "to": "SONNET",
+    "why": "window"
+  },
   "result": "",
   "scope_in": [
     "scripts/dev/test_aibridge_health.py",
