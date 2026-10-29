@@ -2,6 +2,18 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 7,
+    "folded": "2026-10-29T17:59:26Z",
+    "misses": 15,
+    "reads": [
+      "scripts/core/show-alert.ps1",
+      "scripts/core/start-trading-day.ps1",
+      "scripts/live/tape-watch.ps1",
+      "scripts/sched/check_live_health.py"
+    ],
+    "session": "agent-ad64f427d3885b501"
+  },
   "created": "2026-10-28T17:44:00Z",
   "depends_on": [],
   "done_when": "A Pester-free python test over the extracted title regex shows one popup max per producer; fails on the old 'MTS #' pattern; shipped, cherry empty",
