@@ -1,0 +1,47 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-29T18:42:40Z",
+  "depends_on": [],
+  "done_when": "grep for JIS-NB and DESKTOP-F7IU69N in MyTradingSys/system/*.md and CLAUDE.md finds only DEVICES.md section 0, MACHINE_RENAME.md and archive files; script help and reply text say Desktop, Lenovo, NUC; docs integrity test passes and a new test fails on the old text",
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Operator 2026-10-30: only the names Desktop, Lenovo and NUC are used. 458 lines in 127 docs still say JIS-NB or DESKTOP-F7IU69N. Replace them in prose, keeping hostnames only in DEVICES.md section 0 and hosts.py (and code that must match a real hostname through hosts.canonical).",
+  "id": "rename-devices-desktop-lenovo-nuc",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-29T18:42:40Z",
+  "refs": [
+    "MyTradingSys/system/DEVICES.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/*.md; CLAUDE.md (size cap 7168 B, do not grow); scripts/dev user-facing strings"
+  ],
+  "scope_out": [
+    "hostname comparisons in code; archive folders; live tree"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "List every hit by file",
+    "Replace prose by file group, run the docs tests after each group",
+    "Add the test"
+  ],
+  "tests": "docs integrity test: retired hostnames only in the allowed files",
+  "title": "Rename devices to Desktop, Lenovo, NUC across docs, cards and script output",
+  "weight": "",
+  "worker": "session"
+}
