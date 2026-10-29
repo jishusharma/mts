@@ -33,6 +33,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `tom-btc-dev-backtest` blocked p2 CODEX: Tom on BTC T6: DEV backtest + adjustments (both fills, maker vs taker entry, management arms) - every variant 
   - `tom-btc-encode` blocked p2 CODEX: Tom on BTC T5: encode the concepts that separated into a flag-gated BTC detector (entry paths A1-A3, stop at t
   - `tom-btc-validation` blocked p2 DSA-NUC: Tom on BTC T7: VALIDATION read once (2025-04..2025-06) of the frozen DEV config
+  - `tom-corr-divergence-backtest` ready p2 DSA: Pre-registered backtest of Tom correlation-divergence filter (H1 DAX vs ES/Nikkei/BTC, H2 BTC vs ES/NQ/DXY), s
   - `tom-probe-prereg` blocked p2 SONNET: Pre-register the surviving S/Q/M/F arms and write their runner card
   - `tom-probe-runner` blocked p2 SONNET: Run pre-registered Tom management arms on DAX and BTC
   - `lab-verify-trend-healthy-in-balance` refined p3 SONNET: LAB-VERIFY 10-18: how often trend_healthy is set inside a multi-day balance (DEV)
@@ -93,6 +94,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/rsi_divergence_mtf_2026-10-09`
 - Codex lab reports (newest 3 of 3): `MyTradingSys/research/layer_lab/reports/2026-10-28_malkan-hindi-reread-garble-check.md`; `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-rsi-gpt-rederive.md`; `MyTradingSys/research/layer_lab/reports/2026-10-26_lf-rsi-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
+  - `extracted-rules-wiring-audit` ready p1 SONNET: Wiring audit (Malkan, Krown): every SOURCED rule in the setup catalogs/glossaries vs layer code, params and te
   - `malkan-rsi-divergence-chart-flags-1d-1w` ready p1 SONNET: Malkan RSI regular + hidden divergence detector with chart-drawn flags on 1d and 1w (operator confirms/correct
   - `sourced-rule-guard` ready p1 SONNET: Guard: no layer param or rule ships without a SOURCED quote+file:line or an OURS label (CI test)
   - `krown-hidden-divergence-confluence-feed` ready p2 SONNET: Krown hidden divergence as a shared confluence feed any layer (RSI 40-60 included) can consume; Malkan layer s
@@ -228,6 +230,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Roadmap: `MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md`
 - Codex lab reports (newest 4 of 5): `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-krown-gpt-rederive.md`; `MyTradingSys/research/layer_lab/reports/2026-10-28_astra-low-levels-fee-drag-recompute.md`; `MyTradingSys/research/layer_lab/reports/2026-10-26_astra-low-levels-fee-drag-recompute.md`; `MyTradingSys/research/layer_lab/reports/2026-10-26_astra-low-confluence-prereg-leak-hunt.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
+  - `extracted-rules-wiring-audit` ready p1 SONNET: Wiring audit (Malkan, Krown): every SOURCED rule in the setup catalogs/glossaries vs layer code, params and te
   - `sourced-rule-guard` ready p1 SONNET: Guard: no layer param or rule ships without a SOURCED quote+file:line or an OURS label (CI test)
   - `confluence-s4-dev-trials` ready p2 SONNET: Confluence S4: DEV and DEV_EXT trial runs (T2, sizing arm, pooled read, T4) per PRE_REG_CONFLUENCE
   - `confluence-s5-fable-verdict` refined p2 SONNET: Confluence S5: Fable verdict on DEV results, what goes to the one VALIDATION read (then ship, S6)
@@ -266,9 +269,9 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-pitchfork-gpt-rederive.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `pitchfork-engine-implement-hagopian-fail` refined p2 OPUS: Pitchfork engine: implement Hagopian failure breakout candidates (PF-HAG-L / PF-HAG-S) in Java
-  - `pitchfork-fixes-desk-python` ready p2 SONNET: Pitchfork desk/Python review fixes: F1 target reading, F4 profile parity, F5 lookahead + VA leak test, F6 pyth
+  - `pitchfork-fixes-desk-python` raw p2 SONNET: Pitchfork desk/Python review fixes: F1 target reading, F4 profile parity, F5 lookahead + VA leak test, F6 pyth
   - `pitchfork-fixes-live-java` raw p2 SONNET: Pitchfork live Java review fixes: F3 stale-bounce gate parity, F6 inverted-fork tine, F7/F9 labels
-  - `pitchfork-pf-can-arm-order-check` ready p2 SONNET: Pitchfork step 0: can a PF-* candidate arm an order in the live state machine? (read-only code trace, no edit)
+  - `pitchfork-pf-can-arm-order-check` raw p2 SONNET: Pitchfork step 0: can a PF-* candidate arm an order in the live state machine? (read-only code trace, no edit)
   - `sim-desk-plug-in-pitchfork-4h-tine-bounc` refined p2 OPUS: Sim desk: plug in Pitchfork 4H tine-bounce study adapter (Modified Schiff + Volume Profile)
   - `layer-review-rsi-cc-pitchfork-engine` ready p3 SONNET: Layer review sheet: RSI, CryptoCred, pitchfork, live engine (idea, source, backtests, bugs, confluence)
 
