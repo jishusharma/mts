@@ -1,34 +1,67 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/successor_wake.py register --login A --at <UTC+3min> --prompt-file <noop-prompt.txt>  (NUC or NB host, one proof fire only)",
+    "schtasks /query /tn MTS-SuccWake-A /v"
+  ],
   "created": "2026-10-29T18:20:26Z",
   "depends_on": [],
-  "done_when": "A real test (or logged repro) shows where the headless chain actually drops: either the conhost/claude -p process never starts, starts and crashes before any tool call, or starts but its SessionStart/signal hooks never fire; fix lands for whichever stage fails, verified by a second real fire-and-check.",
-  "est_turns": null,
+  "done_when": "per-fire log shows all stages for one real fire and the task is gone afterwards; test_successor_wake.py exits 0; cause named in wake_proof file; shipped, cherry empty",
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Supervisor A handed over at TRANSIT (415eb1b36), which registered MTS-SuccWake-A per SCHEDULING_POLICY 4b3. `schtasks /query /tn MTS-SuccWake-A /v` showed Last Run Time matching the fireAt, Last Result 0 (success), but ~50 min later: no new login-A heartbeat in mts_signal who, no new commit touching MyTradingSys/system/handover/SUPERVISOR_A.md past 415eb1b36/3cba6f9ee on origin/fast-track, and no conhost/claude process with a start time near the fire time. The one-shot task itself also did not self-unregister (still present, Status Ready) though 4b2/4b3 require it to.",
+  "goal": "MTS-SuccWake-A fired (Last Result 0) on 2026-10-29 but no successor work landed and the task did not self-unregister. Find the stage that drops: conhost start, claude -p start, or hooks.",
   "id": "4b3-one-shot-successor-wake-task-fired-s",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "successor_wake: chain survives link 1 (B14)",
+      "ref": "12d90245bd5a",
+      "utc": "2026-10-28T14:56:20Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "c8dcca8eda10 successor_wake usage handoff: woken session is handed its own pacer reading v",
+      "ref": "MyTradingSys/research/lead/wake_proof_2026-10-28T06-25Z.md",
+      "utc": "2026-10-28T06:37:47Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Raw, filed by Supervisor A from its own observation (not a worker's Noticed: line), not yet refined. Repro data: schtasks output and git/signal state captured in this session's transcript around 2026-10-29T18:10-18:20Z; not re-attached here since it is log output, not a file in the repo.",
+  "note": "REVIEWED:2026-10-30 ACCEPT (planner-refine-0930 reviewer agent a240c7e8). Raw data (schtasks output 2026-10-29T18:10-18:20Z) lives only in the filing session transcript; the stage log replaces it. Real fire only on JIS-NUC or JIS-NB (host lane; coordinator places the session). First FIX applied 2026-10-30.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-29T21:15:00Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/successor_wake.py",
+    "scripts/dev/test_successor_wake.py",
+    "MyTradingSys/research/lead/wake_proof_2026-10-28T06-25Z.md"
+  ],
+  "scope_out": [
+    "SCHEDULING_POLICY exceptions beyond 4b3; other logins; deploy; any unattended registration other than the one proof fire"
+  ],
+  "scope_sha": "12d90245bd5a",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read build_script run.ps1 (successor_wake.py:163-210) and wake_proof_2026-10-28; list what run.ps1 logs per stage",
+    "Make run.ps1 append stage lines (started, claude found, claude exit code, unregister result) to runtime_data/succwake_<login>.log",
+    "Add test: build_script output has the stage log and unregisters in finally (fails on old script)",
+    "On the NUC or NB host run the proof fire (commands), read the log, fix the failing stage",
+    "Write the named cause into MyTradingSys/research/lead/wake_proof_2026-10-28T06-25Z.md"
+  ],
+  "tests": "scripts/dev/test_successor_wake.py::test_run_ps1_logs_stages_and_unregisters_in_finally fails on the old script, passes after",
   "title": "4b3 one-shot successor-wake task fired (schtasks Last Result 0) but no successor Supervisor A work landed on trunk ~50 min later",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

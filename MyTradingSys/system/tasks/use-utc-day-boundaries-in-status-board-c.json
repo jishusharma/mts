@@ -13,13 +13,30 @@
   "id": "use-utc-day-boundaries-in-status-board-c",
   "kind": "audit",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "85ed6317fed9 ship: 3 file(s)",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-10-28_gpt-status-board-number-recount.md",
+      "utc": "2026-10-29T20:43:59Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "status board: GPT and Gemini section, newest-by-time BUDGET, widened cleanup grep, 45 line",
+      "ref": "344f483c4fbe",
+      "utc": "2026-10-28T17:32:53Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-30 ACCEPT (planner-refine-0930 reviewer agent af84b184/a9b47887; weight kept) OURS: UTC for UTC-labelled counts.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-29T21:14:13Z",
   "refs": [
     "gpt-status-board-number-recount"
   ],
@@ -31,12 +48,13 @@
   "scope_out": [
     "other dashboard sections, live trading, deployments, secrets"
   ],
+  "scope_sha": "344f483c4fbe",
   "size": "S",
   "sources": [
     "gpt-status-board-number-recount report: MyTradingSys/research/layer_lab/reports/2026-10-28_gpt-status-board-number-recount.md",
     "scripts/dev/status_board.py:261-273,300-307"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Add failing tests using offset-bearing commit timestamps around UTC midnight and local midnight.",
     "Change git queries/counting to explicit UTC boundaries for today, yesterday, rolling daily output, and cleanup commits.",

@@ -4,31 +4,51 @@
   "commands": [],
   "created": "2026-10-29T17:10:55Z",
   "depends_on": [],
-  "done_when": "A card with a non-empty `asks` field is excluded from cmd_check's auto-promotion-to-ready path (not silently cleared); a new test covers this.",
-  "est_turns": null,
+  "done_when": "python scripts/dev/test_tasks.py exits 0 including the new test; tasks.py check on a card with asks prints NOT READY (open asks); shipped, cherry empty",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Noticed by Session_Planner (2026-10-29): tasks.py check's promotion path ignores an open `asks` field, promoting to ready and clearing it even when the card is waiting on external data.",
+  "goal": "tasks.py check promotes a raw/refined card to ready and clears `asks` even when asks holds an open operator question; a card parked on a question must stay refined.",
   "id": "tasks-py-check-promotion-ignores-an-open",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 7 file(s)",
+      "ref": "8eea41a39ac4",
+      "utc": "2026-10-29T17:15:52Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Raw, filed by Supervisor A from a worker's Noticed: line, not yet refined.",
+  "note": "REVIEWED:2026-10-30 T0-ONLY (planner-refine-0930; OURS ROUTINE: dev tool).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-29T21:12:24Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/tasks.py",
+    "scripts/dev/test_tasks.py"
+  ],
+  "scope_out": [
+    "how asks gets set (tried --asks) and answered (apply-op retry); the Control Room page"
+  ],
+  "scope_sha": "8eea41a39ac4",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "In tasks.py promotion_problems (line ~1122) add a problem \"open asks: <text>\" when card.asks is non-empty",
+    "Make apply-op retry (the only clearer) keep working: it clears asks before check",
+    "Add a test to test_tasks.py: card passing every other gate with asks set stays refined after cmd_check"
+  ],
+  "tests": "scripts/dev/test_tasks.py::test_check_does_not_promote_card_with_open_asks fails on old code (card becomes ready), passes after",
   "title": "tasks.py check promotion ignores an open asks field (clears asks, promotes to ready while waiting on external data)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

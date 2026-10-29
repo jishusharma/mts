@@ -4,33 +4,53 @@
   "commands": [],
   "created": "2026-10-29T17:29:15Z",
   "depends_on": [],
-  "done_when": "A new regression test asserts tom_signal/parse_tom_alert rejects every PF-* setup string by family (not just today's PF-REV-L/S, PF-HAG-L/S spellings), fails on the pre-change code, passes after.",
-  "est_turns": null,
+  "done_when": "test_auto_trader.py has test_pf_setups_never_arm covering 5 spellings and python -m pytest -q MyTradingSys/execution/test_auto_trader.py is green; shipped, cherry empty",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Noticed by a Builder (2026-10-29) while tracing pitchfork-pf-can-arm-order-check: PF-* candidates currently fail to arm only by naming accident (auto_trader.py:182 parses side from a _long/_short suffix; PF's -L/-S suffix fails that parse). A future PF rename could silently open PF-* to auto-trade.",
+  "goal": "Pin with a test that parse_tom_alert / the arm path never yields a tradable side for any PF-* setup string, so a future PF rename cannot open PF-* to auto-trade by accident.",
   "id": "pin-a-regression-test-tom-signal-parse-t",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "T09-F3: live RSI trades only support@40 long; cross, failure, rejection are alert-only",
+      "ref": "f04a3cbad6ee",
+      "utc": "2026-10-26T20:59:34Z"
+    }
+  ],
   "layers": [
     "pitchfork"
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "Raw, filed by Supervisor A from a worker's Noticed: line, not yet refined.",
+  "note": "REVIEWED:2026-10-30 T0-ONLY (planner-refine-0930; OURS ROUTINE: test only, guard added only if a spelling arms). Safety direction: reject, fail closed.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-29T21:12:25Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/execution/test_auto_trader.py",
+    "MyTradingSys/execution/auto_trader.py"
+  ],
+  "scope_out": [
+    "changing auto_trader behaviour for non-PF setups; deploy; live tree (builders never deploy)"
+  ],
+  "scope_sha": "f04a3cbad6ee",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read auto_trader.py:170-185 (side comes from a _long/_short suffix) and PF_ARM_TRACE.md",
+    "Add a parametrised test: setups PF-REV-L, PF-REV-S, PF-H-L, pf_rev_long, PF-REV_long must give no armed order (side None or rejected before arming)",
+    "If any spelling arms, make auto_trader reject setups starting with PF- explicitly, labelled OURS"
+  ],
+  "tests": "test_auto_trader.py::test_pf_setups_never_arm fails on old code for the PF-REV_long spelling (or documents it passes), passes after",
   "title": "Pin a regression test: tom_signal/parse_tom_alert must reject any PF-* setup string, not just today's exact spellings",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

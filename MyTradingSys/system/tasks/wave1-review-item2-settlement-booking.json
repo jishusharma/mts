@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-29T21:21:09Z",
   "commands": [
     "python -c \"import json;d=json.load(open('MyTradingSys/research/loose_code/txlog_capture_2026-10-10_jishu_11.json'));print(d['account_summary']);[print(e) for e in d['entries']]\""
   ],
@@ -14,32 +16,55 @@
   "goal": "Independent reader checks the daily P/L formula against Deribit's own field definitions and the recorded testnet log",
   "id": "wave1-review-item2-settlement-booking",
   "lane": "DSA-NUC",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "REVIEW_ITEM2_GEMINI.md: hand calculation matches daily_pnl_btc exactly (-7.70e-06 BTC, gap",
+      "ref": "926980721",
+      "utc": "2026-10-29T21:21:09Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "research/ top level: 189 -> 14 files; 176 dated loose files into _archive/loose_2026-10 an",
+      "ref": "f8d0799de2bc",
+      "utc": "2026-10-25T23:02:12Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Gemini lane: gemini_queue.py run wave1-review-item2-settlement-booking:low (NUC).",
+  "note": "REVIEWED:2026-10-30 ACCEPT (planner-refine-0930 reviewer agent af84b184/a9b47887; weight kept)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-29T21:14:14Z",
   "refs": [],
-  "result": "",
+  "result": "REVIEW_ITEM2_GEMINI.md: hand calculation matches daily_pnl_btc exactly (-7.70e-06 BTC, gap 0.0); Deribit settlement and profit_as_cashflow verified",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/execution/mainnet_pnl.py, daily_loss_monitor.py compute_total_pnl_usd"
   ],
   "scope_out": [
     "no secrets, no live tree, do not read wave-1 notes"
   ],
+  "scope_sha": "f8d0799de2bc",
   "size": "S",
   "sources": [
     "https://docs.deribit.com/ (private/get_transaction_log fields change, cashflow, profit_as_cashflow; private/get_account_summary session_rpl, session_upl, equity, balance)",
     "MyTradingSys/research/loose_code/txlog_capture_2026-10-10_jishu_11.json (recorded testnet)"
   ],
-  "state": "raw",
+  "state": "done",
   "steps": [
     "Read the Deribit field definitions (public docs)",
     "Hand-compute P/L since the 10-10 08:00 settlement from the recorded entries + account_summary",
     "Run daily_pnl_btc on the same window; record both numbers and explain any gap"
   ],
+  "taken": "2026-10-29T21:20:31Z",
   "tests": "",
   "title": "Second-model review (Gemini): Deribit settlement/funding booking in daily P/L",
   "weight": "CRITICAL",
