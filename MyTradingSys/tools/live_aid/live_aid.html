@@ -116,6 +116,11 @@ button:hover { background: #2e3946; }
     </div>
     <span class="tag">Distance = level - price on the candle venue. ATR15 = ATR14 of 15m bars.</span>
   </section>
+  <section id="p-coil">
+    <div class="hd"><h2>Coil and pierce (15m)</h2><span class="v" id="coil-venue"></span><span class="age" id="age-coil">--</span></div>
+    <ul id="coil" class="it"></ul>
+    <span class="tag">Odds = MEASURED base rates, Binance 2022-01..2026-09, no fees, pierces within 2 h of the US open (research/pre_us_squeeze_2026-10-29, research/bb_pierce_force_2026-10-29). Thresholds OURS. Descriptive, not an edge, never an entry call.</span>
+  </section>
 </main>
 
 <script src="live_aid_indicators.js"></script>
@@ -212,7 +217,7 @@ button:hover { background: #2e3946; }
     return fetch(url, { signal: ctl.signal }).then(function (r) { clearTimeout(to); if (!r.ok) throw new Error('HTTP ' + r.status + ' ' + url); return r.json(); });
   }
 
-  var TFS = [{ k: '1m', ms: 60000, n: 1500, dr: '1' }, { k: '5m', ms: 300000, n: 300, dr: '5' }, { k: '15m', ms: 900000, n: 300, dr: '15' }];
+  var TFS = [{ k: '1m', ms: 60000, n: 1500, dr: '1' }, { k: '5m', ms: 300000, n: 300, dr: '5' }, { k: '15m', ms: 900000, n: 1500, dr: '15' }];
 
   // Binance fapi first; if blocked, Deribit BTC-PERPETUAL candles (venue tag changes to DERIBIT).
   function fetchBars(tf, n, ms, dr) {
@@ -361,10 +366,44 @@ button:hover { background: #2e3946; }
     $('uncovered').textContent = have ? 'uncovered ' + fmt(size - covered, 0) + ' USD of ' + fmt(size, 0) : '';
   }
 
+
+  function prevDayHL(now) {
+    var pdh = NaN, pdl = NaN;
+    if (S.daily) { var dsy = dayStart(now) - 86400000; S.daily.rows.forEach(function (r) { if (+r[0] === dsy) { pdh = +r[2]; pdl = +r[3]; } }); }
+    return { h: pdh, l: pdl };
+  }
+  function renderCoil(now) {
+    var rows = S.tf['15m'], el = $('coil');
+    $('coil-venue').textContent = S.venue ? S.venue + ' perp' : '';
+    if (!rows || !rows.length) { el.innerHTML = '<li>' + NID + '</li>'; return; }
+    var pd = prevDayHL(now), r = A.coilPierce(rows, 900000, now, pd.h, pd.l);
+    if (!r) { el.innerHTML = '<li>not enough 15m bars yet</li>'; return; }
+    var us = sessionInfo(now - 7200000).us, inWin = us - now <= 7200000;
+    var x = r.ctx, L = [];
+    L.push('<li><b>' + (r.coil ? 'COIL' : 'no coil') + '</b>: band width ' + fmt(100 * r.width, 2) + '% is at the ' + fmt(100 * r.bwPct, 0) +
+      'th percentile of the last ' + fmt(r.histBars / 96, 1) + ' days (coil = lowest 20%). Before the US open this means: US range ' + x.expand +
+      'x the 8 h box; close up ' + x.up + '% / down ' + x.down + '% / inside ' + x.side + '%; both sides broken ' + x.both + '% (n=' + x.n + ').</li>');
+    var p = r.pierce;
+    if (!p) L.push('<li>No 15m close outside the band in the last 2 h. Band ' + fmt(r.lower, 1) + ' / ' + fmt(r.mid, 1) + ' / ' + fmt(r.upper, 1) + '.</li>');
+    else {
+      L.push('<li><b class="' + (p.side === 'up' ? 'up' : 'down') + '">PIERCE ' + p.side.toUpperCase() + '</b> at ' + hhmm(p.t) + ' (' + p.ageBars + ' bars ago), close ' + fmt(p.close, 1) +
+        (p.coilBefore ? ' <span class="tag">out of a coil</span>' : '') + (p.midBack ? ' <span class="tag">already back across the mid</span>' : '') + '</li>');
+      L.push('<li>Force: volume ' + fmt(p.volRatio, 2) + 'x the 20-bar mean, taker delta ' + (isFinite(p.deltaShare) ? sgn(p.deltaShare, 2) : NID) +
+        ' in its direction: <b>' + p.force + '</b>. Reach / fail by force: ' + p.byForce.reach + '% / ' + p.byForce.fail + '% (n=' + p.byForce.n + ').</li>');
+      if (p.byDist) L.push('<li>Target ' + (p.side === 'up' ? 'prev day high ' : 'prev day low ') + fmt(p.level, 1) + ', ' + fmt(100 * p.dist, 2) +
+        '% away: reached before a close back across the mid <b>' + p.byDist.reach + '%</b>, mid first ' + p.byDist.fail + '% (n=' + p.byDist.n + '). Distance decides most of it.</li>');
+      else L.push('<li>Prev-day level already behind price or not loaded: no distance odds.</li>');
+    }
+    L.push('<li class="dim">' + (inWin ? 'Inside' : 'OUTSIDE') + ' the measured window (US open ± 2 h, next US open ' + hhmm(sessionInfo(now).us) + ').' + (inWin ? '' : ' Odds measured near the US open only.') + '</li>');
+    el.innerHTML = L.join('');
+    $('age-coil').textContent = S.klT ? Math.round((now - S.klT) / 1000) + 's' : '--';
+  }
+
   function render() {
     var now = Date.now();
     S.a15 = atr15();
     renderTop();
+    renderCoil(now);
     var a15 = S.a15;
 
     // 3. strip
