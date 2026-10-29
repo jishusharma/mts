@@ -1,56 +1,56 @@
-# Cross-Review Report: bg_watch.py
+# Gemini `bg_watch.py` cross-review
 
-- **Reviewer:** Gemini (Antigravity session, JIS-NUC)
-- **Target:** `scripts/dev/bg_watch.py` (Claude-built)
-- **Reference card:** `gemini-bg-watch-crossreview`
-- **Date:** 2026-10-30
+**Verdict: SOUND.** The cap mapping, completion handling, TaskStop recognition, and bounded `until` command matched the card’s expected behavior in independent synthetic checks. No code or spec changes were made.
 
-## 1. Per-Kind Caps & Notice-Matching Rules
+## Cap table
 
-### Cap Table (`scripts/dev/bg_watch.py:29`)
-```python
-CAPS = {"probe": 2, "nuc": 5, "poll-loop": 10, "tests": 20, "ship": 20, "gemini": 45, "worker": 45, "command": 10}
-```
-All targets stated in docstring lines 15-16 (`probe 2`, `NUC verb 5`, `worker 45`, `ship 20`, `tests 20`, `poll-loop 10`) match exactly.
-Watchers dynamically compute `supervisor.py wait --timeout S` + 5 min (`scripts/dev/bg_watch.py:46-52`).
+The source documents operator targets and defines local caps at `scripts/dev/bg_watch.py:16-29`; `kind_of()` maps commands at lines 41-75. Direct calls to `kind_of()` produced:
 
-### Notice-Matching Rules (`scripts/dev/bg_watch.py:85-98`)
-- Completion notice parsed via `_notified(d)`:
-  - User message: `d.get("message").get("content")` containing `<task-notification>` and `<task-id>([a-z0-9]+)</task-id>`.
-  - Queued command attachment: `d.get("attachment").get("prompt")` containing `<task-notification>` and `<task-id>([a-z0-9]+)</task-id>`.
-  - Tool results (e.g. `grep` output quoting a notice) are explicitly ignored as they arrive as `tool_result` without root `<task-notification>`.
-- Explicit stop via `TaskStop` tool use (`scripts/dev/bg_watch.py:118-119`):
-  - Adds `inp.get("task_id")` or `inp.get("shell_id")` to `done`.
+| Kind | Expected cap | Observed | Result |
+|---|---:|---:|---|
+| probe | 2 min | 2 min | Match |
+| NUC / SSH | 5 min | 5 min | Match |
+| worker (Agent/Task) | 45 min | 45 min | Match |
+| ship | 20 min | 20 min | Match |
+| poll-loop | 10 min | 10 min | Match |
+| tests | 20 min | 20 min | Match |
+| Gemini queue | 45 min | 45 min | Match |
+| generic command | 10 min | 10 min | Match |
+| watcher `supervisor.py wait --timeout 3000` | timeout + 5 = 3005 min | 3005 min | Match |
+| watcher without explicit timeout | 3000 s default + 5 min = 55 min | 55 min | Match |
 
-## 2. Synthetic Transcript Fixtures (6 Cases)
+## Synthetic `report_lines()` fixtures
 
-Tested using synthetic transcript `.jsonl` files in isolated scratch directories with `bg_watch.report_lines`:
+Created six isolated JSONL transcripts in a temporary directory. Each background Bash call used a synthetic ID and a start timestamp; the `report_lines()` call used a fixed clock. Only the transcript file’s mtime was refreshed so it passed the active-session filter. The temporary directory was removed automatically after the run.
 
-| Fixture # | Scenario | Age / Cap | Expected Classification | Actual Classification | Result |
-|---|---|---|---|---|---|
-| 1 | Running task over cap | 60m / 45m (worker) | STALLED | STALLED (`STALLED-BG worker agt0001 60m > cap 45m`) | PASS |
-| 2 | Finished by user message notice | 80m (finished 60m ago) | NOT STALLED | NOT STALLED (no stalled lines) | PASS |
-| 3 | Finished by queued_command attachment | 90m (finished 30m ago) | NOT STALLED | NOT STALLED (no stalled lines) | PASS |
-| 4 | Stopped via `TaskStop` tool use | 70m (stopped 10m ago) | NOT STALLED | NOT STALLED (no stalled lines) | PASS |
-| 5 | Young running task | 5m / 20m (tests) | NOT STALLED | NOT STALLED (no stalled lines) | PASS |
-| 6 | Notice quoted inside tool result (grep) | 40m / 10m (poll-loop) | STALLED | STALLED (`STALLED-BG poll-loop bpoll006 40m > cap 10m`) | PASS |
-
-All 6 fixtures matched expected behavior.
-
-## 3. Exit Code Verification (`bg_watch.py until`)
-
-Verified via subprocess invocation:
-- **Matching pattern:** `python scripts/dev/bg_watch.py until --file <tempfile> --pattern MATCHING_PATTERN --timeout 3`
-  - Exit code: `0`
-- **Non-matching pattern (timeout):** `python scripts/dev/bg_watch.py until --file <tempfile> --pattern NON_EXISTENT_PATTERN --timeout 3 --interval 1`
-  - Exit code: `124` (matches POSIX standard timeout exit code convention)
-
-## 4. Findings Table
-
-| Severity | File:Line | Evidence | Proposed Fix |
+| Case | Expected | Actual | Result |
 |---|---|---|---|
-| None | `scripts/dev/bg_watch.py` | Implementation strictly complies with specifications and docstring contracts. | No code changes required. |
+| Running command, 20 min old | Report stalled; command cap is 10 min | `STALLED-BG command bgabc123 20m > cap 10m ...` | Match |
+| Completion notice in user message | No report | No report lines | Match |
+| Completion notice in `queued_command` attachment | No report | No report lines | Match |
+| `TaskStop` for the background ID | No report | No report lines | Match |
+| Running command, 5 min old | No report; below 10 min cap | No report lines | Match |
+| Completion notice quoted inside a tool result | Still report; quoted result is not a completion signal | `STALLED-BG command bgabc123 20m > cap 10m ...` | Match |
 
-## 5. Verdict
+The matching rule is explicit in `_notified()` and `open_tasks()` (`bg_watch.py:85-141`): notices are read from a user message or queued-command attachment, while tool-result content is excluded; a `TaskStop` tool call records the task ID as done.
 
-**SOUND**
+## `until` CLI
+
+Ran the actual CLI in subprocesses against temporary files, with `--timeout 3 --interval 1`:
+
+| File condition | Expected exit | Actual exit | Result |
+|---|---:|---:|---|
+| Pattern already present | 0 | 0 | Match |
+| Existing file without the pattern | 124 after deadline | 124 after 3 seconds | Match |
+
+`wait_until()` implements this deadline behavior at `bg_watch.py:198-210`; CLI parsing and exit propagation are at lines 227-239.
+
+## Findings
+
+| Severity | File:line | Evidence | Proposed fix |
+|---|---|---|---|
+| None | — | All cap mappings, six fixture outcomes, and both CLI exit codes matched their documented expectations. | None |
+
+## Verification limits
+
+This was a read-only behavior audit using synthetic transcript files and existing code. No live Claude transcript, background task, or running process was inspected or changed. No product tests were run; the card’s specified synthetic checks were run directly.

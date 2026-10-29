@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-29T20:32:06Z",
   "commands": [],
   "created": "2026-10-25T19:25:11Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Saved z values reproduced; directional one-sided Holm has 0/9 passes; W05/W06 wrong-direct",
+      "ref": "7877fdccb",
+      "utc": "2026-10-29T20:32:06Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,13 +45,12 @@
   "refined_by": "codex_run.py ask",
   "refreshed": "2026-10-25T19:27:06Z",
   "refs": [],
-  "reroute": {
-    "at": "2026-10-28T09:48:08Z",
-    "desk": "20261028-094808-gpt-wavetrend-atlas-holm",
-    "to": "DSA",
-    "why": "credits"
+  "result": "Saved z values reproduced; directional one-sided Holm has 0/9 passes; W05/W06 wrong-direction; report carries forward invalid C1/low-power limits.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
   },
-  "result": "",
   "scope_in": [
     "MyTradingSys/research/sim_desk/results/wavetrend_atlas.json",
     "MyTradingSys/research/wavetrend_2026-10-17/ATLAS_STUDY_SPEC.md",
@@ -58,7 +64,7 @@
   "scope_sha": "bd11ebf782e0",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
     "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
@@ -66,6 +72,7 @@
     "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
     "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
   ],
+  "taken": "2026-10-29T20:32:06Z",
   "tests": "",
   "title": "GPT recomputes the WaveTrend atlas z-scores and Holm over 9 cells",
   "weight": "ROUTINE",

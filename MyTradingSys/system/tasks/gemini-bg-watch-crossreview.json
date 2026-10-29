@@ -1,8 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "claim": "",
-  "closed": "2026-10-29T20:57:25Z",
+  "closed": "2026-10-29T20:47:02Z",
   "commands": [],
   "created": "2026-10-28T17:55:23Z",
   "depends_on": [],
@@ -18,9 +17,9 @@
   "latest": [
     {
       "kind": "ship",
-      "line": "Report 2026-10-28_gem-bg-watch-crossreview.md written: 6/6 fixtures match, until exits 0/1",
-      "ref": "a59edd79f",
-      "utc": "2026-10-29T20:57:25Z"
+      "line": "SOUND; six synthetic transcript cases matched; cap mapping matched; until exit codes 0 and",
+      "ref": "85ed6317f",
+      "utc": "2026-10-29T20:47:02Z"
     },
     {
       "auto": true,
@@ -39,13 +38,7 @@
   "refined_by": "",
   "refreshed": "2026-10-28T17:55:25Z",
   "refs": [],
-  "reroute": {
-    "at": "2026-10-28T18:14:50Z",
-    "desk": "20261028-181450-gemini-bg-watch-crossreview",
-    "to": "DSA",
-    "why": "credits"
-  },
-  "result": "Report 2026-10-28_gem-bg-watch-crossreview.md written: 6/6 fixtures match, until exits 0/124, verdict SOUND",
+  "result": "SOUND; six synthetic transcript cases matched; cap mapping matched; until exit codes 0 and 124; report MyTradingSys/research/layer_lab/reports/2026-10-28_gem-bg-watch-crossreview.md",
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"
@@ -73,7 +66,7 @@
     "Run `bg_watch.py until --file F --pattern RE --timeout 3` for a matching and a non-matching file and record the exit codes.",
     "Report findings as a table: severity, file:line, evidence, proposed fix. Change no code. For each HIGH finding capture: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
   ],
-  "taken": "2026-10-29T20:55:42Z",
+  "taken": "2026-10-29T20:47:02Z",
   "tests": "",
   "title": "[GEMINI] Cross-review bg_watch.py: caps, 124 timeout exit and false stall reports",
   "weight": "ROUTINE",

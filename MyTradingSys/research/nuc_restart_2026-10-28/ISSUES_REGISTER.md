@@ -76,7 +76,3 @@ Severity: H = stops unattended work or duplicates it; M = wastes turns or hides 
 - Shipped by the ship-speed session: `f6c7c446b` (ship returns when origin has the commit, B8), `223bb7c01` (`ship --result`, `bg_watch.py until`, poll cap 600 s). Open: skip unchanged gate steps (`gate_select.py`, blocked by JIS-NB's stale claim `ship-gate-let-a-new-look-ahead-fail-reac`, 97 h).
 - LC1 re-state `10dca8a07`: 0 of 12 families KEEP on the fair control (published 8).
 - Wiring audit `bcfd46cfc`: 446 rows. PRE_REG `04112bfe2`: pre-US failed-break freeze (gate inputs n=300, sd=60 bps are estimates).
-
-## Added 2026-10-30 (operator complaint)
-
-- B22 (H, VERIFIED): Supervisor B answered the operator's liquidation-log question from DEPLOY_RUNBOOK.md (JIS-NB, cutover "staged") and said the feed host was out of reach, when the Java feeds run on the Lenovo (they ran on the Desktop before). Docs disagree on which host is live and use three naming schemes (JIS-NB, DESKTOP-F7IU69N, Desktop/Lenovo/NUC). The Supervisor also stopped at the first blocked step instead of routing the deploy to the Lenovo. Cards: `bug-supervisor-stale-setup-one-step`, `rename-devices-desktop-lenovo-nuc`. Interim fix: names rule at DEVICES.md section 0 and the DEPLOY_RUNBOOK.md banner.

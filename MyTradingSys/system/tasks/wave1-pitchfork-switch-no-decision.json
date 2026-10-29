@@ -1,0 +1,45 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "grep -n mts.pitchfork scripts/core/start-trading-day.ps1"
+  ],
+  "created": "2026-10-29T19:48:07Z",
+  "depends_on": [],
+  "done_when": "OPERATOR_DECISIONS.md has a pitchfork-live entry, or the ps1 lines are removed on trunk; and a gate flags ps1 -Dmts.* edits from cards with live_path false",
+  "est_turns": 3,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Live switch mts.pitchfork=true (start-trading-day.ps1:113,445,475, commit 60cda535e by gemini-queue, card live_path false, no approved_by, no OPERATOR_DECISIONS entry): get the decision recorded or the switch reverted by the coordinator's deploy",
+  "id": "wave1-pitchfork-switch-no-decision",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Wave 1 item 3 switch census; money MED (PF cannot order only through a suffix-parsing accident, PF_ARM_TRACE.md), process HIGH",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/core/start-trading-day.ps1, MyTradingSys/system/OPERATOR_DECISIONS.md"
+  ],
+  "scope_out": [],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md"
+  ],
+  "state": "raw",
+  "steps": [
+    "Route to the coordinator: live-tree change reaches the operator"
+  ],
+  "tests": "none (decision)",
+  "title": "FINDING: mts.pitchfork=true live since 2026-10-28 with no operator decision",
+  "weight": "CRITICAL",
+  "worker": "agent",
+  "notes": [
+    "Wave1 item 4 (2026-10-30): the switch is also inert: PitchforkSignalLayer.java:353 needs >=15 4h bars, MarketDataSnapshot.java:489,1338 fetch 3; replay of 10-29 gave 0 pitchfork candidates. Decide: remove the switch, or fix the bar count and then record the decision."
+  ]
+}

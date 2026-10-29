@@ -12,7 +12,7 @@
   "goal": "prereg_gate.py decides whether a PRE_REG may freeze, yet test_prereg_gate.py has 5 tests. Add boundary tests from the docstring formulas, expected numbers computed independently (not by calling prereg_gate.mde): z_holm for m=1,5,9, MDE at 3 (n,sd,m) points, PASS exactly at limit, BLOCK just above, sd=1 refused without --sd-source, sd=1.0001 accepted, cost>=max-gross prints n needed inf.",
   "id": "gpt-prereg-gate-boundary-tests",
   "kind": "build",
-  "lane": "SONNET",
+  "lane": "CODEX",
   "latest": [
     {
       "auto": true,
@@ -30,12 +30,6 @@
   "refined_by": "",
   "refreshed": "2026-10-28T17:57:42Z",
   "refs": [],
-  "reroute": {
-    "at": "2026-10-28T18:14:50Z",
-    "from": "CODEX",
-    "to": "SONNET",
-    "why": "credits"
-  },
   "result": "",
   "scope_in": [
     "scripts/dev/test_prereg_gate.py",

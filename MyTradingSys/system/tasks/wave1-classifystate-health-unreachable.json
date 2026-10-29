@@ -1,0 +1,44 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "mvn -q -Dtest=SetupCandidatesCriticalWave1Test,SpikeFadeCriticalWave1Test test"
+  ],
+  "created": "2026-10-29T19:48:05Z",
+  "depends_on": [],
+  "done_when": "classifyState can return trend_unhealthy on a real snapshot shape; health rule cites Tom quote file:line; test fails on old code",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Make the trend health state follow Tom's definition: snapshot cvd_slope is only rising/falling/flat so trend_unhealthy never fires; outside today's developing VA = healthy is not Tom's rule; below_val long-only open since 2026-10-17",
+  "id": "wave1-classifystate-health-unreachable",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Wave 1 item 3; single-model, Gemini review pending (wave1-review-item3-engine)",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "src/main/java/datafeed/SetupCandidatesBuilder.java:290-316, MarketDataSnapshot.java:714-773"
+  ],
+  "scope_out": [],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md",
+    "MyTradingSys/research/tom_direction_health_audit_2026-10-17/AUDIT.md"
+  ],
+  "state": "raw",
+  "steps": [
+    "Read the finding in MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md",
+    "Fix per the trader source; new test fails first"
+  ],
+  "tests": "a JUnit test that fails on the current code",
+  "title": "FINDING HIGH: classifyState health is just 'outside today's VA'; trend_unhealthy unreachable",
+  "weight": "CRITICAL",
+  "worker": "agent"
+}

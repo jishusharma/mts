@@ -12,8 +12,6 @@ The 2026-10-06 device plan's proposals, the Ollama/Qwen worker notes, the router
 
 ## 0. Which machine am I on? (every session checks this first)
 
-**Three names, in every doc, reply and card (operator 2026-10-30): Desktop, Lenovo, NUC.** Desktop = the tower (hostname JIS-NB, new JIS-DESKTOP). Lenovo = the Lenovo laptop (DESKTOP-F7IU69N, new JIS-LAPTOP). NUC = JIS-NUC. Hostnames appear only in this table and in `scripts/dev/hosts.py`. **The live testnet system and the Java feeds run on the Lenovo (live tree `C:\MTS\mts-live`); they used to run on the Desktop, which is now cold standby.** Older lines in other files that say JIS-NB mean the Desktop; DESKTOP-F7IU69N or "the laptop" mean the Lenovo. Every machine has to be able to read and write what the others need (repo through `sync.py ship`, signals through `mts_signal.py`); a block between machines is a bug card, not a workaround.
-
 Check the HOSTNAME, never the username: the desktop and the laptop both run as `e-ngineers`, and the Claude app runs under three logins across them (CLOUD_ACCOUNTS.md).
 
 | Hostname | Machine | PowerShell | Python |

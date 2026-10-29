@@ -1,0 +1,44 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "mvn -q -Dtest=SetupCandidatesCriticalWave1Test,SpikeFadeCriticalWave1Test test"
+  ],
+  "created": "2026-10-29T19:48:06Z",
+  "depends_on": [],
+  "done_when": "each gate cites spec line + quote; T3/T5/T6 path reachable in a test that fails on old code",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Align SpikeFadeDetector gates with TOM_LAYER_V2_SPEC rule paths (A-C2 not in T3/T5/T6; 'above previous day' is a risk caveat per k0zm5NYn0IQ); plus MED: A-C3 volume missing on price arm, fixed 20-pt stop on BTC, prior-day-high proxy with no distance cap, re-entry cap state not persisted",
+  "id": "wave1-spikefade-ac1-ac2-mandatory",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Wave 1 item 3; spikeFade is OFF in live, so no live money impact today",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "src/main/java/datafeed/SpikeFadeDetector.java, SpikeFadeSessionState.java"
+  ],
+  "scope_out": [],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md",
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md"
+  ],
+  "state": "raw",
+  "steps": [
+    "Read the finding in MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md",
+    "Fix per the trader source; new test fails first"
+  ],
+  "tests": "a JUnit test that fails on the current code",
+  "title": "FINDING HIGH: SpikeFade requires A-C1+A-C2 on every path, so T3/T5/T6 fades can never fire",
+  "weight": "CRITICAL",
+  "worker": "agent"
+}

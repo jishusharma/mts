@@ -1,0 +1,44 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "mvn -q -DskipTests compile"
+  ],
+  "created": "2026-10-29T20:18:41Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/critical_test_wave1_2026-10-30/REVIEW_ITEM4_GEMINI.md lists bars where fadeA1 fires (perp) and the A-C2 margin per bar",
+  "est_turns": 4,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent rerun on the published perp daily zip: which candidates fire per bar 15:00-16:30Z with live switches and with -Dmts.spikeFade=true",
+  "id": "wave1-review-item4-replay",
+  "lane": "DSA-NUC",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini lane: gemini_queue.py run wave1-review-item4-replay:low (NUC)",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/critical_test_wave1_2026-10-30/ItemFourReplay.java, src/main/java/datafeed/SpikeFadeDetector.java"
+  ],
+  "scope_out": [
+    "do not read ITEM4_REPLAY_2026-10-29.md before writing your answer"
+  ],
+  "size": "S",
+  "sources": [
+    "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-29.zip"
+  ],
+  "state": "raw",
+  "steps": [
+    "Download the perp zip; run the harness both ways; tabulate"
+  ],
+  "tests": "none (run)",
+  "title": "Second-model review (Gemini): rerun 2026-10-29 replay on perp data, spikeFade on/off",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

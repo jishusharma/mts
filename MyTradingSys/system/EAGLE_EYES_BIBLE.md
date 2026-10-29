@@ -33,6 +33,31 @@ Why this section exists: the 10-28 session was compacted 6 times; each summary k
 - Role (01:53Z): "You are not a forecast teller ... You are not supposed to take readings carefully. That must be done by something else. You are a thinker, right?"
 - All layers (01:56Z): "Think from every layer's point of view ... CVD and OI and the delta ... RSI ... wave[trend] ... Fabio ... Malkan ... Tom ... [Krown] ... Jason and his brother Michael ... Habib ... Why I cannot see it symbolically? Like, okay, something green, something red".
 
+- Anticipation (10-30 ~19:00Z): "every time a US session starts, there is some movement ... when a new day starts, the daily candle can go above the close of the previous candle ... or below ... breaking a 2-day high, or a 1-day high, or ... a 3-day high, or ... a weekly high. And the same applies to lows ... What happened 2 days before? What happened a week before? What happened a month before? Does that also matter? And does Tom answer that or not?"
+- Fired or not (10-30): "is MTS placing those trades? ... I just need to know if some trade fired on this or not ... I want to see alerts on desktop and I want to see alerts on laptop ... I should be able to toggle them to off and on ... perhaps we need new alerts because it is very old".
+- Probabilities (10-30): "We can never be sure what is happening ... there is not just one exchange ... Work with probabilities and always have the scenarios for these probabilities prepared ... With the same readings, this could also be happening ... are you prepared for that? ... available in the dashboard."
+- First touch (10-30): "first touch ... does not mean that one single candle, 1 minute candle goes and touches ... it can come near the line and it might not touch ... it can break it in 1 minute candle and stay there for 5 minutes and then come down ... closes are also quite important ... first close ... second close". His line: daily lower high = the high made after a low, before the next lower low (10-23, 82,035.3, unbroken on 10-29 by 81.6).
+- Thesis (10-30): "We cannot work with certainties. We can only work with probabilities. And probability is going to be our edge ... if I have anticipated this, then these are the next things that must happen before I can say that okay, my understanding was wrong. And this is when I have to get out of the trade." Confirmed: dominant lower high (Krown) = his line.
+- Liquidation map (10-30): "do you connect the liquidation heat map? ... What really was hit on these liquidation maps? When the price was moving".
+- Measure, don't describe (10-30): "you are winning my heart by telling me things like this. That the band squeezes before the US opens. And you checked so many weekdays ... So understand exactly your role and how you have to keep improving it ... without asking me the same questions again and again, implement everything. So look at my intentions ... and then decide." Rule: every chart question becomes a count over all past days (n, %, split), shipped the same turn.
+- Coil and force (10-30): "what kind of force makes that happen? Try to measure it ... how far it will go ... support and resistances are the target ... I cannot understand in which direction the coil will fire." First answers: `research/pre_us_squeeze_2026-10-29/`, `research/bb_pierce_force_2026-10-29/`.
+
+## The asks in one table (consolidated 10-30; update here, not in chat)
+
+| Ask | Where it lives | State 10-30 |
+|---|---|---|
+| Whole-MTS picture, path to an edge and mainnet | `research/eagle_eyes_picture_2026-10-28/` | report shipped 10-28 |
+| See alerts and testnet trades firing; alerts on desktop + laptop, toggle, new set | card `alerts-v2-on-both-screens-one-alert-feed` (OPUS p1) | filed 10-30, not started |
+| Live in-trade dashboard | `MyTradingSys/tools/live_aid/live_aid.html` | on trunk f70a7ab4 |
+| Think, don't read: all layers, all analysts, colour grid, agreement count, the odd one | per-shot frame below | in use |
+| Anticipation: if up / if down, daily open, 1d/2d/3d/weekly high-low take-and-fail, US session | card `anticipation-map-from-current-layer-stat` (OPUS p2); scored in `SCENARIO_LEDGER.md` | ledger 2 maps; card raw |
+| Log anything that repeats | `BACKTEST_CANDIDATES.md` (C1-C18) | C13, C16-C18 ran descriptively |
+| US open, squeeze, pierce force, levels as targets | `research/pre_us_squeeze_2026-10-29/`, `research/bb_pierce_force_2026-10-29/` | ran 10-30; next: OI and RSI/WT coils |
+| Habib whole-plan scoring; Kurisko quad (4 stochastics) on 15m | `research/habib_plan_imbalance_2026-10-20/`; card `kurisko-dev-event-study` | plans never scored; 1m/5m blocked by fees, 15m untested |
+| Liquidation heatmap: what was hit | C6 row; heatmap history NOT_IN_DATA (no recorder) | 2 instances |
+| His 15 recurring chart patterns | `OPERATOR_POINTERS.md` | digest 10-29 |
+| Analyst views | `ANALYST_VIEWS_2026-10-29.md` | 10-29 |
+
 ## Per-shot frame (OURS, from the teachings above)
 
 1. Colour grid first: layer rows (price/BB, OI vs price, CVD, net delta, RSI, WT, StochRSI, volume, heatmap/DOM, VWAP) x timeframe columns (1m 5m 15m 1h 4h); green/red/white; white = no shot, never "neutral".
@@ -42,4 +67,7 @@ Why this section exists: the 10-28 session was compacted 6 times; each summary k
 5. Analyst lens: one line each, Tom, Fabio, Malkan, Krown, Habib, the two brothers (latest CBP/Discord row with date; NOT_IN_DATA if none).
 6. In a trade: supports, VWAP distance, divergence flags, confidence count. Never an exit or size call.
 7. Backtest log: anything that repeats goes to `research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md`.
+8. Liquidation map: name the nearest bright band above and below, and after a move say which band was hit.
+9. Score every A/B map in `SCENARIO_LEDGER.md`.
+10. Same readings, several stories: for each key reading give 2-4 explanations (e.g. OI up + price up = new longs / shorts opening into it / other exchanges), each with a probability labelled MEASURED (base rate, n) or OURS guess, the layer that tells them apart next, and what to be ready for under each.
 Bullets only, max about 8 lines plus the grid.
