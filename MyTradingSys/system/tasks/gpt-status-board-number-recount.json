@@ -31,12 +31,6 @@
   "refined_by": "",
   "refreshed": "2026-10-28T17:55:20Z",
   "refs": [],
-  "reroute": {
-    "at": "2026-10-28T18:14:50Z",
-    "desk": "20261028-181450-gpt-status-board-number-recount",
-    "to": "DSA",
-    "why": "credits"
-  },
   "result": "",
   "scope_in": [
     "scripts/dev/status_board.py",

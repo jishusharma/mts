@@ -1,0 +1,47 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -c \"import json;d=json.load(open('MyTradingSys/research/loose_code/txlog_capture_2026-10-10_jishu_11.json'));print(d['account_summary']);[print(e) for e in d['entries']]\""
+  ],
+  "created": "2026-10-29T19:38:08Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/critical_test_wave1_2026-10-30/REVIEW_ITEM2_GEMINI.md gives the P/L since 2026-10-10 08:00Z computed by hand from the recorded file and Deribit docs, and the value MyTradingSys/execution/mainnet_pnl.daily_pnl_btc returns, with the difference",
+  "est_turns": 4,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent reader checks the daily P/L formula against Deribit's own field definitions and the recorded testnet log",
+  "id": "wave1-review-item2-settlement-booking",
+  "lane": "DSA-NUC",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini lane: gemini_queue.py run wave1-review-item2-settlement-booking:low (NUC).",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/execution/mainnet_pnl.py, daily_loss_monitor.py compute_total_pnl_usd"
+  ],
+  "scope_out": [
+    "no secrets, no live tree, do not read wave-1 notes"
+  ],
+  "size": "S",
+  "sources": [
+    "https://docs.deribit.com/ (private/get_transaction_log fields change, cashflow, profit_as_cashflow; private/get_account_summary session_rpl, session_upl, equity, balance)",
+    "MyTradingSys/research/loose_code/txlog_capture_2026-10-10_jishu_11.json (recorded testnet)"
+  ],
+  "state": "raw",
+  "steps": [
+    "Read the Deribit field definitions (public docs)",
+    "Hand-compute P/L since the 10-10 08:00 settlement from the recorded entries + account_summary",
+    "Run daily_pnl_btc on the same window; record both numbers and explain any gap"
+  ],
+  "tests": "",
+  "title": "Second-model review (Gemini): Deribit settlement/funding booking in daily P/L",
+  "weight": "CRITICAL",
+  "worker": "agent"
+}
