@@ -30,6 +30,8 @@ Recorded testnet responses in git: only `research/loose_code/txlog_capture_2026-
   - The log holds no settlement entry for 2026-10-10 08:00 although a position was open 07:15-09:15 (the B149 reasoning used the 10-09 settlement only).
   - Assumption (labelled OURS): session_rpl and session_upl were 0 right after the 10-10 08:00 settlement. One capture cannot prove it; a second capture with equity at both ends can.
   - Result: FINDING, MED (the daily-loss guard reads this number; here the error is on the safe side, a larger loss, but the formula is not shown right). Card `wave1-settlement-pnl-identity-gap`.
+  - Pinned offline: `test_mainnet_pnl.py::RecordedSettlementTests::test_recorded_settlement_identity` (expectedFailure, expected from the identity).
+  - Formula fix waits on settlement-capture-testnet-second-log.
 
 ## Item 5 (T5 + T6): live-vs-archive parity, one alert per candidate
 

@@ -114,5 +114,25 @@ class DailyTests(unittest.TestCase):
             mp.daily_pnl_btc([tr(-1e-05)], {})
 
 
+class RecordedSettlementTests(unittest.TestCase):
+    # Expected value from Deribit's equity identity (equity = balance + session_rpl + session_upl), not from repo code.
+    # By hand on the recorded 2026-10-10 log: sum(change) of the 3 trades after 08:00Z + session_rpl + session_upl = -6.30e-07 BTC.
+    # OURS assumption: session_rpl/upl were 0 right after the 10-10 08:00 settlement.
+    @unittest.expectedFailure  # OURS assumption: session_rpl/upl were 0 after the 10-10 08:00 settlement; see settlement-capture-testnet-second-log
+    def test_recorded_settlement_identity(self):
+        import json
+        import os
+        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "research", "loose_code",
+                            "txlog_capture_2026-10-10_jishu_11.json")
+        with open(path, encoding="utf-8") as f:
+            cap = json.load(f)
+        s = cap["account_summary"]
+        win = [e for e in cap["entries"] if e["ts_utc"] >= "2026-10-10T08:00:00Z"]
+        self.assertEqual(len(win), 3)
+        expected = sum(e["change"] for e in win) + s["session_rpl"] + s["session_upl"]
+        self.assertAlmostEqual(expected, -6.30e-07, delta=5e-9)
+        self.assertAlmostEqual(mp.daily_pnl_btc(win, s), expected, delta=1e-9)
+
+
 if __name__ == "__main__":
     unittest.main()
