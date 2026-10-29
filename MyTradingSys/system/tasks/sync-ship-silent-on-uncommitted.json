@@ -4,8 +4,8 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-29T17:07:37Z",
-    "misses": 11,
+    "folded": "2026-10-29T17:09:18Z",
+    "misses": 12,
     "reads": [
       "scripts/dev/tasks.py",
       "MyTradingSys/system/LAYERS.md",
@@ -13,7 +13,8 @@
       "MyTradingSys/research/eagle_eyes_picture_2026-10-28/ANALYST_VIEWS_2026-10-29.md",
       "MyTradingSys/tests/test_lease.py",
       "scripts/dev/test_trunk_lag.py",
-      "scripts/dev/run_all_tests.py"
+      "scripts/dev/run_all_tests.py",
+      "scripts/dev/mts_signal.py"
     ],
     "session": "agent-a472ce37345f714ae"
   },
@@ -28,13 +29,23 @@
   "id": "sync-ship-silent-on-uncommitted",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sync.start --worker: work in an Agent-tool isolation tree, no second worktree",
+      "ref": "0bc90e4cf333",
+      "utc": "2026-10-29T16:58:54Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DRAFT 2026-10-29 Session_Planner (OURS): sync.py is the ship path so IMPORTANT: needs a real REVIEWED stamp before ready. No twin: B6 only filters CRLF noise, ship --result commits files on request. | REVIEWED:2026-10-29 ACCEPT (reviewer-raw-cards-b) Verified sync.py ship() not-files branch and tree_state exist as cited; no twin.",
+  "note": "REVIEWED:2026-10-29 ACCEPT (reviewer-raw-cards-b; verified ship() not-files branch and tree_state exist) | DRAFT 2026-10-29 Session_Planner (OURS): sync.py is the ship path so IMPORTANT: needs a real REVIEWED stamp before ready. No twin: B6 only filters CRLF noise, ship --result commits files on request.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-29T17:08:13Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -43,9 +54,10 @@
   "scope_out": [
     "gate logic; live tree; ship --result commit path; push-race code"
   ],
+  "scope_sha": "0bc90e4cf333",
   "size": "S",
   "sources": [],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Read sync.py ship() lines 1139-1149 (the 'not files' branch) and tree_state/work at 1249-1290 (B6: CRLF-only is noise)",
     "Write the failing test in test_sync.py: throwaway repo, one untracked real file, no commit -> ship must return/exit with NOT SHIPPED and nonzero",
