@@ -39,6 +39,8 @@ Why this section exists: the 10-28 session was compacted 6 times; each summary k
 - First touch (10-30): "first touch ... does not mean that one single candle, 1 minute candle goes and touches ... it can come near the line and it might not touch ... it can break it in 1 minute candle and stay there for 5 minutes and then come down ... closes are also quite important ... first close ... second close". His line: daily lower high = the high made after a low, before the next lower low (10-23, 82,035.3, unbroken on 10-29 by 81.6).
 - Thesis (10-30): "We cannot work with certainties. We can only work with probabilities. And probability is going to be our edge ... if I have anticipated this, then these are the next things that must happen before I can say that okay, my understanding was wrong. And this is when I have to get out of the trade." Confirmed: dominant lower high (Krown) = his line.
 - Liquidation map (10-30): "do you connect the liquidation heat map? ... What really was hit on these liquidation maps? When the price was moving".
+- Measure, don't describe (10-30): "you are winning my heart by telling me things like this. That the band squeezes before the US opens. And you checked so many weekdays ... So understand exactly your role and how you have to keep improving it ... without asking me the same questions again and again, implement everything. So look at my intentions ... and then decide." Rule: every chart question becomes a count over all past days (n, %, split), shipped the same turn.
+- Coil and force (10-30): "what kind of force makes that happen? Try to measure it ... how far it will go ... support and resistances are the target ... I cannot understand in which direction the coil will fire." First answers: `research/pre_us_squeeze_2026-10-29/`, `research/bb_pierce_force_2026-10-29/`.
 
 ## The asks in one table (consolidated 10-30; update here, not in chat)
 
@@ -49,7 +51,9 @@ Why this section exists: the 10-28 session was compacted 6 times; each summary k
 | Live in-trade dashboard | `MyTradingSys/tools/live_aid/live_aid.html` | on trunk f70a7ab4 |
 | Think, don't read: all layers, all analysts, colour grid, agreement count, the odd one | per-shot frame below | in use |
 | Anticipation: if up / if down, daily open, 1d/2d/3d/weekly high-low take-and-fail, US session | card `anticipation-map-from-current-layer-stat` (OPUS p2); scored in `SCENARIO_LEDGER.md` | ledger 2 maps; card raw |
-| Log anything that repeats | `BACKTEST_CANDIDATES.md` (C1-C14) | idea rows only |
+| Log anything that repeats | `BACKTEST_CANDIDATES.md` (C1-C18) | C13, C16-C18 ran descriptively |
+| US open, squeeze, pierce force, levels as targets | `research/pre_us_squeeze_2026-10-29/`, `research/bb_pierce_force_2026-10-29/` | ran 10-30; next: OI and RSI/WT coils |
+| Habib whole-plan scoring; Kurisko quad (4 stochastics) on 15m | `research/habib_plan_imbalance_2026-10-20/`; card `kurisko-dev-event-study` | plans never scored; 1m/5m blocked by fees, 15m untested |
 | Liquidation heatmap: what was hit | C6 row; heatmap history NOT_IN_DATA (no recorder) | 2 instances |
 | His 15 recurring chart patterns | `OPERATOR_POINTERS.md` | digest 10-29 |
 | Analyst views | `ANALYST_VIEWS_2026-10-29.md` | 10-29 |
