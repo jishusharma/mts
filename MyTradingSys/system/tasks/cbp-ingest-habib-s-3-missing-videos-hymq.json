@@ -5,6 +5,18 @@
     "python scripts/dev/fetch_captions_timed.py --analyst habib --canonical-out <CBP_HOME>/raw_transcripts_canonical hymqmEfCGrw R15Ao0XUoV8 c9qf7QJroAE",
     "python -c \"import sys;sys.path.insert(0,'MyTradingSys');import cbp;d=cbp.load();print(len([r for r in d['rows'] if r['analyst']=='habib']),'habib rows')\""
   ],
+  "context": {
+    "calls_to_edit": 10,
+    "folded": "2026-10-29T17:11:42Z",
+    "misses": 11,
+    "reads": [
+      "scripts/dev/cbp_run.py",
+      "scripts/dev/verdicts.py",
+      "MyTradingSys/research/tom_correlation_trick_2026-10-26/EXTRACT.md",
+      "scripts/dev/prereg_gate.py"
+    ],
+    "session": "agent-a50e301054c310c4c"
+  },
   "created": "2026-10-28T12:29:38Z",
   "depends_on": [],
   "done_when": "The CBP store has exactly 3 rows for analyst habib: hymqmEfCGrw, R15Ao0XUoV8, c9qf7QJroAE, each quote_verified true; the row-count command above prints 3.",
