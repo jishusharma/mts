@@ -1,14 +1,14 @@
 {
-  "detail": "ERROR: You\u2019ve hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/settings/usage to purchase more credits or try again at 7:15 AM.",
-  "fails": 0,
+  "detail": "operator 2026-10-30: give work to GPT; Codex allowance 8% window / 24% week, the 10-27 credits error cleared",
+  "fails": 1,
   "heartbeat": "2026-10-22T15:08:46Z",
   "last_error": "2026-10-27T21:29:43Z",
-  "last_ok": "2026-10-27T21:07:23Z",
+  "last_ok": "2026-10-29T20:13:13Z",
   "last_probe": "2026-10-26T17:04:19Z",
-  "override": "",
-  "reason": "credits",
-  "resumed": "2026-10-27T08:36:27Z",
-  "since": "2026-10-27T21:29:43Z",
-  "status": "down",
+  "override": "2026-10-29T23:13:13Z",
+  "reason": "",
+  "resumed": "2026-10-29T20:13:13Z",
+  "since": "",
+  "status": "up",
   "until": ""
 }

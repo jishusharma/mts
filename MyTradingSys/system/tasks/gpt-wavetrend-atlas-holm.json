@@ -38,12 +38,6 @@
   "refined_by": "codex_run.py ask",
   "refreshed": "2026-10-25T19:27:06Z",
   "refs": [],
-  "reroute": {
-    "at": "2026-10-28T09:48:08Z",
-    "desk": "20261028-094808-gpt-wavetrend-atlas-holm",
-    "to": "DSA",
-    "why": "credits"
-  },
   "result": "",
   "scope_in": [
     "MyTradingSys/research/sim_desk/results/wavetrend_atlas.json",

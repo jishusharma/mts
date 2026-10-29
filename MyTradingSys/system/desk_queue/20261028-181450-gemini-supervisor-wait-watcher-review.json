@@ -1,12 +1,15 @@
 {
   "card": "gemini-supervisor-wait-watcher-review",
   "done_when": "Report MyTradingSys/research/layer_lab/reports/2026-10-28_gem-supervisor-wait-watcher-review.md has the behavior-to-test table (count of rows and of NO TEST rows stated), the three watchcheck exit codes and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "finished": "2026-10-29T20:13:13Z",
   "from": "lane_health",
+  "host": "lane_health",
   "id": "20261028-181450-gemini-supervisor-wait-watcher-review",
   "need": "Rerouted from the GPT lane (credits/limit/outage) to DSA. Card gemini-supervisor-wait-watcher-review: [GEMINI] Cross-review the supervisor.py wait watcher: fail-closed wake source and test gaps\nWorktree: mts-dsa (python scripts/dev/sync.py start first). Data on F:\\MTS\\data is read-only.\nFull brief: python scripts/dev/tasks.py brief gemini-supervisor-wait-watcher-review\nGoal: In supervisor.py (lines 443-600: _probe_wait_state, PLAN_MAX_MIN, one actionable wake per plan, watchcheck) list every behavior stated in comments or docstrings and map each to a test in test_su\nRead: scripts/dev/supervisor.py; scripts/dev/test_supervisor.py; MyTradingSys/research/layer_lab/reports/2026-10-28_gem-supervisor-wait-watcher-review.md\nStep 1: Read supervisor.py lines 443-600 and extract each stated behavior as one row: behavior | file:line.\nStep 2: For each row grep test_supervisor.py for a test that would fail if the behavior broke; write test name:line or NO TEST.\nStep 3: Run watchcheck from a scratch HOME with no marker, an expired marker and a dead pid marker; record the three exit codes (expect 4 each).\nStep 4: Report: gap table (NO TEST rows with severity), the three exit codes, one verdict line. Change no code. For each HIGH gap capture: python scripts/dev/tasks.py new \"<title>\" --lane SONNET.\nWrite the report to MyTradingSys/research/layer_lab/reports/2026-10-28_gemini-supervisor-wait-watcher-review.md: findings or numbers, each with file:line or the command you ran.\nNumbers come only from output you printed in the chat. Change no code or spec. Never read a holdout.\nIf a command fails twice, close the desk row with --failed and the error text.\nClose: python scripts/dev/desk.py done <row id> --result \"<verdict or number + MyTradingSys/research/layer_lab/reports/2026-10-28_gemini-supervisor-wait-watcher-review.md>\".",
   "posted": "2026-10-28T18:14:50Z",
   "rerouted_from": "CODEX",
-  "status": "pending",
+  "result": "cancelled: GPT lane is back, card returned to CODEX",
+  "status": "failed",
   "target": "DSA",
   "title": "[GEMINI] Cross-review the supervisor.py wait watcher: fail-closed wake source and test gaps"
 }
