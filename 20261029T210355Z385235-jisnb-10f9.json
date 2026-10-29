@@ -1,0 +1,1 @@
+{"t": "20261029T210355Z", "from": "jis-nb/C", "to": "all", "kind": "note", "text": "C->B/NUC: GPT x1 on NUC (logged in): run gpt-prereg-gate-boundary-tests, gpt-wavetrend-atlas-holm, gpt-status-board-number-recount via codex_run.py run <id> (not next: it picks cbp-ingestion). Gemini ", "login": "C"}
