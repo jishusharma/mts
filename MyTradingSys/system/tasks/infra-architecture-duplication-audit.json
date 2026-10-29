@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-29T21:44:21Z",
   "commands": [
     "python scripts/dev/run_all_tests.py --quick"
   ],
@@ -14,7 +16,14 @@
   "goal": "Find overlapping hooks, scheduled/startup mechanisms, stale device-task lists and duplicate published artifact pages. Winner by the default rule in OPERATOR_DECISIONS.md d-dedupe-lean-no-contradiction; never ask the operator.",
   "id": "infra-architecture-duplication-audit",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "research/dedupe_audit_2026-10/INFRA.md: 24 ranked infra/architecture overlaps tabulated wi",
+      "ref": "6a12947c6",
+      "utc": "2026-10-29T21:44:21Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -30,7 +39,12 @@
   "refs": [
     "MyTradingSys/system/OPERATOR_DECISIONS.md"
   ],
-  "result": "",
+  "result": "research/dedupe_audit_2026-10/INFRA.md: 24 ranked infra/architecture overlaps tabulated with evidence, default-rule decisions, and batches 1-5 progress",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     ".claude/settings*.json hooks",
     "SCHEDULING_POLICY.md and startup mechanisms",
@@ -44,12 +58,13 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Inventory hooks, startup/scheduled mechanisms, the device-task registry and older lists, published pages",
     "Mark overlaps and contradictions with evidence, winner by the default rule",
     "Write INFRA.md ranked"
   ],
+  "taken": "2026-10-29T21:44:03Z",
   "tests": "Check: each row cites a path or command output reproducible on trunk.",
   "title": "Infra and architecture duplication audit: hooks, startup mechanisms, device-task registry, pages",
   "weight": "ROUTINE",

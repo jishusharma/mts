@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-29T21:39:35Z",
   "commands": [
     "python scripts/dev/codex_run.py next"
   ],
@@ -20,6 +22,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "PARITY_AUDIT.md and PARITY_UNSOURCED.csv created; 9 layer folders audited; 10 unsourced/en",
+      "ref": "ccf9707bc",
+      "utc": "2026-10-29T21:39:35Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Merge remote-tracking branch 'origin/fast-track' into jis/repoint-lc1",
@@ -36,7 +44,12 @@
   "refined_by": "",
   "refreshed": "2026-10-29T21:09:42Z",
   "refs": [],
-  "result": "",
+  "result": "PARITY_AUDIT.md and PARITY_UNSOURCED.csv created; 9 layer folders audited; 10 unsourced/engineering refs verified with line checks",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/wiring_audit_2026-10/PARITY_AUDIT.md",
     "MyTradingSys/research/wiring_audit_2026-10/PARITY_UNSOURCED.csv",
@@ -62,12 +75,13 @@
     "operator 2026-10-28 priority: stop MTS drifting; account for everything extracted; make it findable",
     "operator 2026-10-28: Malkan layer uses only Malkan PRD/NRD"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read WIRING_MALKAN_KROWN.csv and WIRING_TOM_FABIO_HABIB.csv for the sourced side.",
     "For each layer file and params JSON list enforced rules and parameters; match to a wiring row; a miss is UNSOURCED, or a label gap (param without SOURCED/OURS).",
     "Write PARITY_AUDIT.md (per layer: matched, unsourced, mislabelled) and PARITY_UNSOURCED.csv with a recommendation each."
   ],
+  "taken": "2026-10-29T21:37:14Z",
   "tests": "Every PARITY_UNSOURCED.csv row has a code file:line that exists (small script check printed in the report); layers with no trader rules are listed NOT COVERED with a reason.",
   "title": "Per layer: what the trader said (sourced quotes) vs what the code does; flag any layer built on a rule he never said",
   "weight": "IMPORTANT",

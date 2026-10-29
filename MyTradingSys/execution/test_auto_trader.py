@@ -34,6 +34,18 @@ def tom_alert(no=44, verdict="SETUP_FORMING", setup="ct_short", entry=83537.3, s
 
 
 class TomSignalTest(unittest.TestCase):
+    def test_pf_setups_never_arm(self):
+        # Parametrised regression test: PF-* setup variants must never arm (side is None and tom_signal rejects)
+        spellings = ["PF-REV-L", "PF-REV-S", "PF-H-L", "pf_rev_long", "PF-REV_long"]
+        for setup_spelling in spellings:
+            alert = tom_alert(setup=setup_spelling)
+            parsed = at.parse_tom_alert(alert)
+            self.assertIsNone(parsed.get("side"), f"parse_tom_alert must not assign side to {setup_spelling}")
+            st = {"tom_last_alert_no": 43}
+            sig = at.tom_signal(alert, st, cfg(), NOW)
+            self.assertIn("reject", sig, f"tom_signal must carry reject for {setup_spelling}")
+            self.assertIsNone(sig.get("side"))
+            self.assertNotIn("plan_args", sig)
     def test_actionable_short_builds_limit_plan(self):
         st = {"tom_last_alert_no": 43}
         s = at.tom_signal(tom_alert(), st, cfg(), NOW)

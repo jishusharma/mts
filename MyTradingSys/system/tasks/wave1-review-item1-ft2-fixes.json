@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-29T21:19:41Z",
   "commands": [
     "python -m pytest -q MyTradingSys/execution/testnet/offline/test_fix3_offline.py MyTradingSys/execution/test_premainnet1_offline.py"
   ],
@@ -15,6 +17,12 @@
   "id": "wave1-review-item1-ft2-fixes",
   "lane": "DSA-NUC",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "REVIEW_ITEM1_GEMINI.md: C1/C2/C3/B1 all FIXED; offline tests: 55 passed, 2 skipped",
+      "ref": "504a24dba",
+      "utc": "2026-10-29T21:19:41Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +40,12 @@
   "refined_by": "",
   "refreshed": "2026-10-29T21:14:59Z",
   "refs": [],
-  "result": "",
+  "result": "REVIEW_ITEM1_GEMINI.md: C1/C2/C3/B1 all FIXED; offline tests: 55 passed, 2 skipped",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/execution/deribit_orders.py",
     "MyTradingSys/execution/executor.py",
@@ -49,13 +62,14 @@
     "MyTradingSys/research/fast_track_2026-09-27/review/ADVERSARIAL_REVIEW_FT2.md (C1-C3)",
     "MyTradingSys/research/fast_track_2026-09-27/review/OPUS_PREMAINNET_AUDIT.md row 1 (kill-switch BLOCKER = B1)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Queue: python scripts/dev/gemini_queue.py run wave1-review-item1-ft2-fixes:low (NUC)",
     "Read C1-C3 in ADVERSARIAL_REVIEW_FT2.md and kill-switch row 1 of OPUS_PREMAINNET_AUDIT.md",
     "Write REVIEW_ITEM1_GEMINI.md: one line per finding C1, C2, C3, B1 = FIXED/NOT FIXED/PARTIAL with file:line and covering test",
     "Run the offline tests and quote the summary line"
   ],
+  "taken": "2026-10-29T21:18:24Z",
   "tests": "",
   "title": "Second-model review (Gemini): are FT2 C1-C3 + kill-switch B1 fixed on trunk",
   "weight": "CRITICAL",

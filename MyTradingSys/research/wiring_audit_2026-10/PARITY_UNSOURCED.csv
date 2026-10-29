@@ -1,0 +1,11 @@
+layer,code_file_line,rule_description,status,recommendation
+rsi,MyTradingSys/backtest/layers/rsi/krown_hidden_divergence.py:11,"Generic hidden RSI divergence (no trend condition) implemented under rsi layer",UNSOURCED_IN_MALKAN,MOVE_TO_KROWN_OR_CONFLUENCE
+kurisko,MyTradingSys/backtest/layers/kurisko/quad_rotation.py:5,"Short mirror setup: all four lines > 80 and fast turns down",UNSOURCED,LABEL_OURS
+kurisko,MyTradingSys/backtest/layers/kurisko/quad_rotation.py:4,"4-RSI bands option on lookbacks (9,14,40,60)",OPERATOR_HYPOTHESIS,LABEL_OPERATOR_HYPOTHESIS
+wavetrend,MyTradingSys/backtest/layers/wavetrend/wavetrend.py:19,"WARMUP=200 bars and D_TOL=1e-9 flat window tolerance",INTERNAL_CHOICE,LABEL_OURS
+pizzino,MyTradingSys/backtest/layers/pizzino/pizzino_indicators.py:10,"Fractal rule, state formula, W, L, N, tol, R, RRmin and 2R fallback",UNSOURCED,LABEL_OURS
+pitchfork,MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py:10,"Andrews/Schiff geometric pitchfork channels and Hagopian rules",EXTERNAL_PUBLIC,LABEL_EXTERNAL_PUBLIC
+trendlines,MyTradingSys/backtest/layers/trendlines/trendline_core.py:23,"k=3, spacing 10..200, age cap 500, tolerances 0.10/0.25/1.0 x ATR_b",UNSOURCED,LABEL_OURS
+alerts,MyTradingSys/backtest/layers/alerts/alert_emitter.py:2,"Alert formatting and JSONL sink infrastructure",NOT_COVERED,INFRA_ONLY
+krown,MyTradingSys/backtest/layers/krown/krown_core.py:20,"Zone lookback 250 bars and swing tolerance 0.01",UNSOURCED,LABEL_OURS
+fabio,MyTradingSys/backtest/layers/fabio/v3/day_gates.py:50,"Fallback session timing and execution gates lacking direct Fabio quotes",UNSOURCED,LABEL_OURS
