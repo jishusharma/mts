@@ -1,15 +1,18 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-29T16:59:39Z",
   "commands": [],
   "context": {
-    "calls_to_edit": null,
-    "folded": "2026-10-29T16:57:41Z",
-    "misses": 3,
+    "calls_to_edit": 36,
+    "folded": "2026-10-29T16:59:44Z",
+    "misses": 5,
     "reads": [
+      "scripts/dev/tasks.py",
       "MyTradingSys/system/ANNOUNCEMENTS.md",
       "MyTradingSys/research/wiring_audit_2026-10/WIRING_MALKAN_KROWN.md",
-      "MyTradingSys/research/wiring_audit_2026-10/test_wiring_malkan_krown.py"
+      "MyTradingSys/research/wiring_audit_2026-10/test_wiring_malkan_krown.py",
+      "scripts/dev/task_state.py"
     ],
     "session": "agent-af635ce5110930dec"
   },
@@ -26,6 +29,12 @@
   "id": "extracted-rules-wiring-audit",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "WIRING_MALKAN_KROWN.csv 167 rows (36 Malkan, 131 Krown; deliverable pre-existed on this br",
+      "ref": "5cce7d735",
+      "utc": "2026-10-29T16:59:39Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -47,13 +56,18 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-28 ACCEPT LAB:none CLASS:C1 REVIEWER:sonnet-agent WEIGHT:IMPORTANT. Sonnet medium.",
+  "note": "REVIEWED:2026-10-28 ACCEPT LAB:none CLASS:C1 REVIEWER:sonnet-agent WEIGHT:IMPORTANT. Sonnet medium. DECISION (OURS): deliverable already present on this branch (commit ef9d10095, ancestor of this worktree's HEAD; a sibling 'release extracted-rules-wiring-audit' commit exists only on an unmerged JIS-NUC side branch, so this card's state/result never caught up) -- WIRING_MALKAN_KROWN.csv/.md, QUOTES_USED_MALKAN_KROWN.md and the parser script all exist and match done_when (167 rows: 36 Malkan, 131 Krown; footer ROWS: 167 = CSV rows). Re-verified rather than rebuilt: verify_extract_quotes.py exits 0 and test_wiring_malkan_krown.py (4 tests) passes. SETUP_CATALOG.md contributes 0 rows -- confirmed by grep (no Malkan/Krown/divergence rule ids there); it is 100% Tom/Fabio chart setups, which scope_out reserves for the sibling card. No layer code, params or SETUP_CATALOG.md/MALKAN/KROWN docs were touched.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-10-28T08:23:49Z",
   "refs": [],
-  "result": "",
+  "result": "WIRING_MALKAN_KROWN.csv 167 rows (36 Malkan, 131 Krown; deliverable pre-existed on this branch at ef9d10095, re-verified not rebuilt). verify_extract_quotes.py QUOTES_USED_MALKAN_KROWN.md: PASS: 0 problem(s) (exit 0). pytest test_wiring_malkan_krown.py: 4 passed in 1.01s (footer ROWS:167 == csv rows, every Krown ledger rule present, verdicts/locations valid, quotes verify). SETUP_CATALOG.md: 0 rows (Tom/Fabio only, out of scope per sibling card).",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/wiring_audit_2026-10/WIRING_MALKAN_KROWN.csv",
     "MyTradingSys/research/wiring_audit_2026-10/WIRING_MALKAN_KROWN.md",
@@ -74,12 +88,13 @@
     "operator 2026-10-28 priority: stop MTS drifting; account for everything extracted; make it findable",
     "MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Parse the three catalogs into rule rows (script kept in the folder for rerun).",
     "Per rule: grep params/*.json, layer .py and test_*.py for the rule id or its number; check the quote with verify_extract_quotes.py against the ledger extract.",
     "Write CSV + MD (counts by verdict, top 10 unwired-worth-wiring by how strongly the trader stresses it); rules with no quote go to a NO_QUOTE section."
   ],
+  "taken": "2026-10-29T16:59:39Z",
   "tests": "verify_extract_quotes.py exit 0 on every quote used; MD footer row count equals CSV rows.",
   "title": "Wiring audit (Malkan, Krown): every SOURCED rule in the setup catalogs/glossaries vs layer code, params and tests: wired / unwired-worth-wiring / not-worth-wiring, with quote and file:line",
   "weight": "IMPORTANT",
