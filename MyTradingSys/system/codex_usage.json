@@ -1,12 +1,12 @@
 {
  "allowance": {
   "plan": null,
-  "week_resets": 1793909838,
+  "week_resets": 1793909886,
   "week_used": 0,
-  "window_resets": 1793323038,
+  "window_resets": 1793323086,
   "window_used": 0
  },
- "at": "2026-10-29T20:17:18Z",
+ "at": "2026-10-29T20:18:06Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -18,11 +18,26 @@
  "host": "JIS-NB",
  "lab": {
   "astra_runs": 0,
-  "week_pts": 9.2,
-  "window_pts": 6.0,
-  "window_runs": 1
+  "week_pts": 10.2,
+  "window_pts": 12.0,
+  "window_runs": 2
  },
  "runs": [
+  {
+   "at": "2026-10-29T20:17:40Z",
+   "card": "gpt-status-board-number-recount",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "INCOMPLETE",
+   "seconds": 17,
+   "tokens_out": null,
+   "tokens_total": null,
+   "tokens_uncached": null,
+   "week_pts": null,
+   "window_pts": null
+  },
   {
    "at": "2026-10-29T20:16:50Z",
    "card": "gpt-wavetrend-atlas-holm",
