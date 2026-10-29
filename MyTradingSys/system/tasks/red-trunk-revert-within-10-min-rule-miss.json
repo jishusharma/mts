@@ -2,6 +2,20 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-29T21:18:44Z",
+    "misses": 15,
+    "reads": [
+      "AGENTS.md",
+      "MyTradingSys/system/GEMINI_START.md",
+      "MyTradingSys/system/CODEX_START.md",
+      "MyTradingSys/tests/docs/test_integrity.py",
+      "scripts/dev/mts_doctor.py",
+      "MyTradingSys/system/SUPER_SESSION.md"
+    ],
+    "session": "agent-a52f5c86799d6af26"
+  },
   "created": "2026-10-24T15:09:37Z",
   "depends_on": [
     "doctor-dedupe-codex-gemini-start"
