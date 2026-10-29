@@ -1128,6 +1128,8 @@ LAYERS_REL = "MyTradingSys/system/LAYERS.md"
 
 def stage_layers(repo):
     """tasks.py regenerates LAYERS.md on every card command; commit it when it differs so it is not left modified. True if committed."""
+    if git(repo, "rev-parse", "--git-dir", check=False).returncode != 0:
+        return False
     git(repo, "update-index", "-q", "--refresh", check=False)   # stat-only dirt (line endings, touched mtime) is not a difference
     if git(repo, "diff", "--quiet", "HEAD", "--", LAYERS_REL, check=False).returncode == 0 and not git(
             repo, "ls-files", "--others", "--exclude-standard", "--", LAYERS_REL, check=False).stdout.strip():
