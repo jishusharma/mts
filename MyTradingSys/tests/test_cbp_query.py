@@ -324,3 +324,19 @@ def test_same_name_analysts_split_by_channel(tmp_path):
     cbp.save({"rows": [row1, row2, old_row]}, st)
     assert len(cbp.query(store=st, now=NOW)) == 3
     assert len(cbp.query(channel="@MichaelPizzino", store=st, now=NOW)) == 1
+
+@pytest.mark.parametrize('field,bad', [('trades', 7), ('trades', True), ('analyst', 7), ('channel', 7), ('published', 7), ('published', 'not-a-date'), ('symbols', [7]), ('quotes', [None]), ('pointers', [{}]), ('quote_verified', 'true')])
+def test_query_malformed_row_does_not_hide_valid_rows(tmp_path, field, bad):
+    good = row('a' * 11, '2026-10-23')
+    broken = dict(good, **{field: bad})
+    st = tmp_path / 'malformed.json'
+    cbp.save({'rows': [broken, good]}, st)
+    assert cbp.validate_row(broken)
+    assert cbp.query(analyst='Krown', channel='@krown', store=st, now=NOW) == []
+    assert cbp.query(analyst='Krown', store=st, now=NOW) == [good]
+
+@pytest.mark.parametrize('payload', [[], None, 7, 'bad', {'rows': None}, {'rows': 7}])
+def test_query_invalid_store_envelope_is_empty(tmp_path, payload):
+    st = tmp_path / 'bad-envelope.json'
+    st.write_text(json.dumps(payload), encoding='utf-8')
+    assert cbp.query(store=st, now=NOW) == []

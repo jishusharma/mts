@@ -1,0 +1,144 @@
+FFFFFFFFFFFFFFFF                                                         [100%]
+================================== FAILURES ===================================
+_________ test_query_malformed_row_does_not_hide_valid_rows[trades-7] _________
+MyTradingSys\tests\test_cbp_query.py:334: in test_query_malformed_row_does_not_hide_valid_rows
+    assert cbp.validate_row(broken)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+MyTradingSys\cbp\__init__.py:78: in validate_row
+    for t in r.get("trades") or []:
+             ^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: 'int' object is not iterable
+_______ test_query_malformed_row_does_not_hide_valid_rows[trades-True] ________
+MyTradingSys\tests\test_cbp_query.py:334: in test_query_malformed_row_does_not_hide_valid_rows
+    assert cbp.validate_row(broken)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+MyTradingSys\cbp\__init__.py:78: in validate_row
+    for t in r.get("trades") or []:
+             ^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: 'bool' object is not iterable
+________ test_query_malformed_row_does_not_hide_valid_rows[analyst-7] _________
+MyTradingSys\tests\test_cbp_query.py:334: in test_query_malformed_row_does_not_hide_valid_rows
+    assert cbp.validate_row(broken)
+E   AssertionError: assert []
+E    +  where [] = <function validate_row at 0x00000267413422A0>({'analyst': 7, 'video_id': 'aaaaaaaaaaa', 'published': '2026-10-23', 'bias': 'BULLISH', ...})
+E    +    where <function validate_row at 0x00000267413422A0> = cbp.validate_row
+________ test_query_malformed_row_does_not_hide_valid_rows[channel-7] _________
+MyTradingSys\tests\test_cbp_query.py:334: in test_query_malformed_row_does_not_hide_valid_rows
+    assert cbp.validate_row(broken)
+E   AssertionError: assert []
+E    +  where [] = <function validate_row at 0x00000267413422A0>({'analyst': 'Krown', 'video_id': 'aaaaaaaaaaa', 'published': '2026-10-23', 'bias': 'BULLISH', ...})
+E    +    where <function validate_row at 0x00000267413422A0> = cbp.validate_row
+_______ test_query_malformed_row_does_not_hide_valid_rows[published-7] ________
+MyTradingSys\tests\test_cbp_query.py:334: in test_query_malformed_row_does_not_hide_valid_rows
+    assert cbp.validate_row(broken)
+E   AssertionError: assert []
+E    +  where [] = <function validate_row at 0x00000267413422A0>({'analyst': 'Krown', 'video_id': 'aaaaaaaaaaa', 'published': 7, 'bias': 'BULLISH', ...})
+E    +    where <function validate_row at 0x00000267413422A0> = cbp.validate_row
+___ test_query_malformed_row_does_not_hide_valid_rows[published-not-a-date] ___
+MyTradingSys\tests\test_cbp_query.py:334: in test_query_malformed_row_does_not_hide_valid_rows
+    assert cbp.validate_row(broken)
+E   AssertionError: assert []
+E    +  where [] = <function validate_row at 0x00000267413422A0>({'analyst': 'Krown', 'video_id': 'aaaaaaaaaaa', 'published': 'not-a-date', 'bias': 'BULLISH', ...})
+E    +    where <function validate_row at 0x00000267413422A0> = cbp.validate_row
+_______ test_query_malformed_row_does_not_hide_valid_rows[symbols-bad6] _______
+MyTradingSys\tests\test_cbp_query.py:334: in test_query_malformed_row_does_not_hide_valid_rows
+    assert cbp.validate_row(broken)
+E   AssertionError: assert []
+E    +  where [] = <function validate_row at 0x00000267413422A0>({'analyst': 'Krown', 'video_id': 'aaaaaaaaaaa', 'published': '2026-10-23', 'bias': 'BULLISH', ...})
+E    +    where <function validate_row at 0x00000267413422A0> = cbp.validate_row
+_______ test_query_malformed_row_does_not_hide_valid_rows[quotes-bad7] ________
+MyTradingSys\tests\test_cbp_query.py:334: in test_query_malformed_row_does_not_hide_valid_rows
+    assert cbp.validate_row(broken)
+E   AssertionError: assert []
+E    +  where [] = <function validate_row at 0x00000267413422A0>({'analyst': 'Krown', 'video_id': 'aaaaaaaaaaa', 'published': '2026-10-23', 'bias': 'BULLISH', ...})
+E    +    where <function validate_row at 0x00000267413422A0> = cbp.validate_row
+______ test_query_malformed_row_does_not_hide_valid_rows[pointers-bad8] _______
+MyTradingSys\tests\test_cbp_query.py:334: in test_query_malformed_row_does_not_hide_valid_rows
+    assert cbp.validate_row(broken)
+E   AssertionError: assert []
+E    +  where [] = <function validate_row at 0x00000267413422A0>({'analyst': 'Krown', 'video_id': 'aaaaaaaaaaa', 'published': '2026-10-23', 'bias': 'BULLISH', ...})
+E    +    where <function validate_row at 0x00000267413422A0> = cbp.validate_row
+___ test_query_malformed_row_does_not_hide_valid_rows[quote_verified-true] ____
+MyTradingSys\tests\test_cbp_query.py:334: in test_query_malformed_row_does_not_hide_valid_rows
+    assert cbp.validate_row(broken)
+E   AssertionError: assert []
+E    +  where [] = <function validate_row at 0x00000267413422A0>({'analyst': 'Krown', 'video_id': 'aaaaaaaaaaa', 'published': '2026-10-23', 'bias': 'BULLISH', ...})
+E    +    where <function validate_row at 0x00000267413422A0> = cbp.validate_row
+____________ test_query_invalid_store_envelope_is_empty[payload0] _____________
+MyTradingSys\tests\test_cbp_query.py:342: in test_query_invalid_store_envelope_is_empty
+    assert cbp.query(store=st, now=NOW) == []
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+MyTradingSys\cbp\__init__.py:130: in query
+    for r in load(store)["rows"]:
+             ^^^^^^^^^^^
+MyTradingSys\cbp\__init__.py:57: in load
+    return {"schema": 1, "rows": d.get("rows", []), "rejected": d.get("rejected", [])}
+                                 ^^^^^
+E   AttributeError: 'list' object has no attribute 'get'
+______________ test_query_invalid_store_envelope_is_empty[None] _______________
+MyTradingSys\tests\test_cbp_query.py:342: in test_query_invalid_store_envelope_is_empty
+    assert cbp.query(store=st, now=NOW) == []
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+MyTradingSys\cbp\__init__.py:130: in query
+    for r in load(store)["rows"]:
+             ^^^^^^^^^^^
+MyTradingSys\cbp\__init__.py:57: in load
+    return {"schema": 1, "rows": d.get("rows", []), "rejected": d.get("rejected", [])}
+                                 ^^^^^
+E   AttributeError: 'NoneType' object has no attribute 'get'
+________________ test_query_invalid_store_envelope_is_empty[7] ________________
+MyTradingSys\tests\test_cbp_query.py:342: in test_query_invalid_store_envelope_is_empty
+    assert cbp.query(store=st, now=NOW) == []
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+MyTradingSys\cbp\__init__.py:130: in query
+    for r in load(store)["rows"]:
+             ^^^^^^^^^^^
+MyTradingSys\cbp\__init__.py:57: in load
+    return {"schema": 1, "rows": d.get("rows", []), "rejected": d.get("rejected", [])}
+                                 ^^^^^
+E   AttributeError: 'int' object has no attribute 'get'
+_______________ test_query_invalid_store_envelope_is_empty[bad] _______________
+MyTradingSys\tests\test_cbp_query.py:342: in test_query_invalid_store_envelope_is_empty
+    assert cbp.query(store=st, now=NOW) == []
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+MyTradingSys\cbp\__init__.py:130: in query
+    for r in load(store)["rows"]:
+             ^^^^^^^^^^^
+MyTradingSys\cbp\__init__.py:57: in load
+    return {"schema": 1, "rows": d.get("rows", []), "rejected": d.get("rejected", [])}
+                                 ^^^^^
+E   AttributeError: 'str' object has no attribute 'get'
+____________ test_query_invalid_store_envelope_is_empty[payload4] _____________
+MyTradingSys\tests\test_cbp_query.py:342: in test_query_invalid_store_envelope_is_empty
+    assert cbp.query(store=st, now=NOW) == []
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+MyTradingSys\cbp\__init__.py:130: in query
+    for r in load(store)["rows"]:
+             ^^^^^^^^^^^^^^^^^^^
+E   TypeError: 'NoneType' object is not iterable
+____________ test_query_invalid_store_envelope_is_empty[payload5] _____________
+MyTradingSys\tests\test_cbp_query.py:342: in test_query_invalid_store_envelope_is_empty
+    assert cbp.query(store=st, now=NOW) == []
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+MyTradingSys\cbp\__init__.py:130: in query
+    for r in load(store)["rows"]:
+             ^^^^^^^^^^^^^^^^^^^
+E   TypeError: 'int' object is not iterable
+=========================== short test summary info ===========================
+FAILED MyTradingSys/tests/test_cbp_query.py::test_query_malformed_row_does_not_hide_valid_rows[trades-7]
+FAILED MyTradingSys/tests/test_cbp_query.py::test_query_malformed_row_does_not_hide_valid_rows[trades-True]
+FAILED MyTradingSys/tests/test_cbp_query.py::test_query_malformed_row_does_not_hide_valid_rows[analyst-7]
+FAILED MyTradingSys/tests/test_cbp_query.py::test_query_malformed_row_does_not_hide_valid_rows[channel-7]
+FAILED MyTradingSys/tests/test_cbp_query.py::test_query_malformed_row_does_not_hide_valid_rows[published-7]
+FAILED MyTradingSys/tests/test_cbp_query.py::test_query_malformed_row_does_not_hide_valid_rows[published-not-a-date]
+FAILED MyTradingSys/tests/test_cbp_query.py::test_query_malformed_row_does_not_hide_valid_rows[symbols-bad6]
+FAILED MyTradingSys/tests/test_cbp_query.py::test_query_malformed_row_does_not_hide_valid_rows[quotes-bad7]
+FAILED MyTradingSys/tests/test_cbp_query.py::test_query_malformed_row_does_not_hide_valid_rows[pointers-bad8]
+FAILED MyTradingSys/tests/test_cbp_query.py::test_query_malformed_row_does_not_hide_valid_rows[quote_verified-true]
+FAILED MyTradingSys/tests/test_cbp_query.py::test_query_invalid_store_envelope_is_empty[payload0]
+FAILED MyTradingSys/tests/test_cbp_query.py::test_query_invalid_store_envelope_is_empty[None]
+FAILED MyTradingSys/tests/test_cbp_query.py::test_query_invalid_store_envelope_is_empty[7]
+FAILED MyTradingSys/tests/test_cbp_query.py::test_query_invalid_store_envelope_is_empty[bad]
+FAILED MyTradingSys/tests/test_cbp_query.py::test_query_invalid_store_envelope_is_empty[payload4]
+FAILED MyTradingSys/tests/test_cbp_query.py::test_query_invalid_store_envelope_is_empty[payload5]
+16 failed, 30 deselected in 0.39s

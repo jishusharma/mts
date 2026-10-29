@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-29T22:44:10Z",
+  "depends_on": [],
+  "done_when": "Focused suites pass; Cloud independently verifies before merge.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Reject structurally invalid CBP rows without crashing queries or hiding valid peers.",
+  "id": "audit48-cbp-invalid-rows",
+  "kind": "build",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "FIX IMPLEMENTED, AWAITING CLOUD REVIEW. Regression evidence in research/audit_48h_20261030. Do not auto-close or merge.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/cbp/__init__.py",
+    "MyTradingSys/tests/test_cbp_query.py"
+  ],
+  "scope_out": [
+    "activation",
+    "live tree"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "active",
+  "steps": [
+    "Reproduce invalid envelope and row types; validate schema types before iteration and filtering.",
+    "Run focused suites; hold branch for Cloud review before trunk merge."
+  ],
+  "tests": "16 parameterized regressions fail before fix; 51 CBP tests pass after fix.",
+  "title": "48h audit: CBP malformed rows crash fail-closed read path",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

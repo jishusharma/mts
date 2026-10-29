@@ -54,7 +54,10 @@ def load(path=None):
         d = json.loads(p.read_text(encoding="utf-8"))
     except (OSError, ValueError):
         d = {}
-    return {"schema": 1, "rows": d.get("rows", []), "rejected": d.get("rejected", [])}
+    if not isinstance(d, dict):
+        d = {}
+    return {"schema": 1, **{k: d[k] if isinstance(d.get(k), list) else []
+                            for k in ("rows", "rejected")}}
 
 
 def save(data, path=None):
@@ -75,9 +78,26 @@ def validate_row(r):
     for k in ("quotes", "trades", "pointers", "symbols"):
         if k in r and not isinstance(r[k], list):
             errs.append(k + " must be a list")
-    for t in r.get("trades") or []:
+    for k in ("analyst", "video_id", "published", "channel"):
+        if k in r and not isinstance(r[k], str):
+            errs.append(k + " must be a string")
+    published = r.get("published")
+    try:
+        if not isinstance(published, str) or datetime.strptime(published, "%Y-%m-%d").strftime("%Y-%m-%d") != published:
+            raise ValueError("invalid date")
+    except ValueError:
+        errs.append("published must be YYYY-MM-DD")
+    if "quote_verified" in r and type(r["quote_verified"]) is not bool:
+        errs.append("quote_verified must be a boolean")
+    for k in ("quotes", "pointers", "symbols"):
+        if isinstance(r.get(k), list) and any(not isinstance(v, str) for v in r[k]):
+            errs.append(k + " items must be strings")
+    trades = r.get("trades")
+    for t in trades if isinstance(trades, list) else []:
         if not isinstance(t, dict) or any(k not in t for k in TRADE_FIELDS):
             errs.append("trade needs %s" % (TRADE_FIELDS,))
+        elif any(not isinstance(t[k], str) for k in TRADE_FIELDS):
+            errs.append("trade fields must be strings")
         elif t["direction"] not in DIRECTIONS:
             errs.append("trade direction must be one of %s" % (DIRECTIONS,))
     if "expires_at" in r and parse_expiry(r["expires_at"]) is None:
@@ -99,7 +119,7 @@ def is_tradable(r):
     """A trade with entry, target, invalidation and valid direction all stated (the analyst's words, nothing filled in)."""
     return any(
         t.get("direction") in DIRECTIONS and
-        all(str(t.get(k) or "").strip() not in ("", "—") for k in ("entry", "target", "invalidation"))
+        all(str(t.get(k) or "").strip() not in ("", "вЂ”") for k in ("entry", "target", "invalidation"))
         for t in r.get("trades") or []
     )
 
