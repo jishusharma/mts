@@ -42,6 +42,10 @@ button:hover { background: #2e3946; }
 .form-rung { display: grid; grid-template-columns: 1fr 1fr auto; gap: 6px; }
 .tag { font: 10px var(--sans); color: var(--dim); }
 .scroll { overflow-x: auto; }
+.it { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.it li { display: grid; gap: 1px; border-top: 1px solid var(--line); padding-top: 4px; font: 12px var(--mono); }
+.it li:first-child { border-top: 0; padding-top: 0; }
+.it .v { font-size: 10px; }
 </style>
 
 <main>
@@ -85,6 +89,13 @@ button:hover { background: #2e3946; }
     <span class="tag">Inverse contract: P&amp;L BTC = size x (1/entry - 1/mark), negated for a short. Saved in this browser only.</span>
   </section>
 
+  <!-- 2b. IN-TRADE -->
+  <section id="p-intrade">
+    <div class="hd"><h2>In-trade readings</h2><span class="age" id="age-it">--</span></div>
+    <ul id="it" class="it"></ul>
+    <span class="tag">Descriptive readouts, no advice. Rules and thresholds = OURS, fixed in STEPS.md before data was looked at. Data: Deribit mainnet public trades, book and open interest (you trade testnet, prints differ); candles from the strip venue. Rule R = 3 or more of the available flags against the side you typed; it names no size.</span>
+  </section>
+
   <!-- 3. STRIP -->
   <section id="p-strip">
     <div class="hd"><h2>Strip</h2><span class="v" id="strip-venue"></span><span class="age" id="age-strip">--</span></div>
@@ -116,7 +127,8 @@ button:hover { background: #2e3946; }
   var NID = '<span class="nid">NOT_IN_DATA</span>';
   var STALE_MS = 15000;
   var S = { dbt: null, dbtMark: null, dbtT: 0, dbtErr: '', bin: null, binT: 0, binErr: '',
-            a15: NaN, tf: {}, venue: null, klErr: '', klT: 0, daily: null };
+            a15: NaN, tf: {}, venue: null, klErr: '', klT: 0, daily: null,
+            trades: [], trT: 0, book: null, bookT: 0, oi: null, oiT: 0, oiHist: [], flowErr: '' };
 
   function fmt(x, d) { return isFinite(x) ? x.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }) : '--'; }
   function sgn(x, d) { return isFinite(x) ? (x > 0 ? '+' : '') + fmt(x, d) : '--'; }
@@ -148,21 +160,38 @@ button:hover { background: #2e3946; }
     try { ws = new WebSocket('wss://www.deribit.com/ws/api/v2'); } catch (e) { S.dbtErr = String(e); return setTimeout(deribitWs, 5000); }
     ws.onopen = function () {
       dws = ws; var w = waiters; waiters = []; w.forEach(function (f) { f(); });
-      ws.send(JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'public/subscribe', params: { channels: ['ticker.BTC-PERPETUAL.100ms'] } }));
+      ws.send(JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'public/subscribe', params: { channels: ['ticker.BTC-PERPETUAL.100ms', 'trades.BTC-PERPETUAL.100ms', 'book.BTC-PERPETUAL.none.20.100ms'] } }));
       ws.send(JSON.stringify({ jsonrpc: '2.0', id: 2, method: 'public/set_heartbeat', params: { interval: 30 } }));
     };
     ws.onmessage = function (m) {
       var d = JSON.parse(m.data);
       if (d.id && pend[d.id]) { var f = pend[d.id]; delete pend[d.id]; f(d); return; }
       if (d.method === 'heartbeat' && d.params && d.params.type === 'test_request') { ws.send(JSON.stringify({ jsonrpc: '2.0', id: 3, method: 'public/test', params: {} })); return; }
+      if (d.method === 'subscription' && d.params && d.params.channel && d.params.channel.indexOf('trades.') === 0) {
+        var now0 = Date.now();
+        (d.params.data || []).forEach(function (x) { S.trades.push({ t: now0, usd: +x.amount, buy: x.direction === 'buy' }); });
+        S.trT = now0; S.flowErr = '';
+        var cut = now0 - 900000; while (S.trades.length && S.trades[0].t < cut) S.trades.shift();
+        return;
+      }
+      if (d.method === 'subscription' && d.params && d.params.channel && d.params.channel.indexOf('book.') === 0) {
+        var bk = d.params.data || {}, pr = function (a) { return (a || []).map(function (x) { return [+x[x.length - 2], +x[x.length - 1]]; }); };
+        S.book = { bids: pr(bk.bids), asks: pr(bk.asks) }; S.bookT = Date.now();
+        return;
+      }
       if (d.method === 'subscription' && d.params && d.params.data) {
-        var t = d.params.data; S.dbt = t.last_price; S.dbtMark = t.mark_price; S.dbtT = Date.now(); S.dbtErr = '';
+        var t = d.params.data;
+        if (isFinite(+t.open_interest)) {
+          S.oi = +t.open_interest; S.oiT = Date.now();
+          var lastH = S.oiHist[S.oiHist.length - 1];
+          if (!lastH || S.oiT - lastH.t >= 10000) { S.oiHist.push({ t: S.oiT, oi: S.oi, px: t.last_price }); var c5 = S.oiT - 600000; while (S.oiHist.length && S.oiHist[0].t < c5) S.oiHist.shift(); }
+        } S.dbt = t.last_price; S.dbtMark = t.mark_price; S.dbtT = Date.now(); S.dbtErr = '';
         if (S.venue === 'DERIBIT') patchForming(t.last_price);
         tick();
       }
       if (d.error) S.dbtErr = 'Deribit error ' + JSON.stringify(d.error);
     };
-    ws.onerror = function () { S.dbtErr = 'websocket error (www.deribit.com unreachable or blocked)'; };
+    ws.onerror = function () { S.dbtErr = 'websocket error (www.deribit.com unreachable or blocked)'; S.flowErr = S.dbtErr; };
     ws.onclose = function (e) { S.dbtErr = S.dbtErr || ('websocket closed code ' + e.code); setTimeout(deribitWs, 3000); };
   }
 
@@ -396,6 +425,64 @@ button:hover { background: #2e3946; }
     if (!isFinite(px)) html += '<tr><td colspan="5" class="err">' + (S.venue ? S.venue : 'candle venue') + ' live price NOT_IN_DATA: distances blank</td></tr>';
     $('levels').innerHTML = html;
     age('age-lvl', S.klT);
+    renderInTrade(now, L, px, a15, m1);
+  }
+
+  // ---------- in-trade bullets (maths in live_aid_indicators.js) ----------
+  var FEED_MAX = 30000;
+  function fresh(t) { return t && Date.now() - t <= FEED_MAX; }
+  function bullet(label, tag, html) { return '<li><span class="v">' + label + ' <span class="tag">' + tag + '</span></span><span>' + html + '</span></li>'; }
+  function nid(why) { return NID + ' <span class="err">' + esc(why) + '</span>'; }
+  function renderInTrade(now, L, px, a15, m1) {
+    var sd = store.side === 'long' ? 1 : store.side === 'short' ? -1 : 0, out = [], flags = [];
+    var why = S.flowErr || S.dbtErr || 'feed not connected';
+    if (!sd) { $('it').innerHTML = bullet('Side', 'typed by you', nid('type side in the position block')); age('age-it', S.trT); return; }
+    var mark = S.dbtMark, cx = mark > 0 ? mark : (px > 0 ? px : NaN);
+    // 1 supports
+    var sup = A.supports(L, cx, sd);
+    out.push(bullet(sd > 0 ? 'Supports below' : 'Resistance above', 'levels from the Levels block, OURS pick: 2 nearest',
+      !sup ? nid('no price') : sup.length ? sup.map(function (x) { return esc(x.n) + ' ' + fmt(x.p, 1) + ' (' + sgn(x.p - cx, 1) + ')'; }).join('; ') : 'none on that side'));
+    // 2 DOM
+    var dm = fresh(S.bookT) ? A.dom(S.book.bids, S.book.asks, cx) : null;
+    flags.push(A.flagDom(dm, sd));
+    out.push(bullet('DOM +/-0.25% (top 20 levels)', 'Deribit book, OURS band', !dm ? nid(fresh(S.bookT) ? 'empty book' : 'book feed ' + why) :
+      'bids ' + fmt(dm.bid, 0) + ' / asks ' + fmt(dm.ask, 0) + ' USD, imbalance ' + sgn(dm.imb, 2) + (dm.wall ? '; biggest ' + dm.wall.side + ' ' + fmt(dm.wall.price, 1) + ' (' + fmt(dm.wall.size, 0) + ')' : '')));
+    // 3 VWAP test
+    var vt = null;
+    if (m1 && m1.length >= 5) { var c1 = A.columns(m1), vs = A.dayVwap(c1.t, c1.h, c1.l, c1.c, c1.v); if (dayStart(c1.t[0]) < dayStart(now)) vt = A.vwapTest(c1.h, c1.l, c1.c, vs, sd); }
+    flags.push(A.flagVwap(vt));
+    out.push(bullet('Day VWAP (last 5 x 1m bars)', 'SOURCED VWAP, OURS test', !vt ? nid('1m candles ' + (S.klErr || 'not covering 00:00Z')) :
+      sgn(vt.dist, 1) + ' pts from VWAP; ' + vt.result + (vt.result === 'no test' ? ' (no bar touched it)' : ' (close ' + (vt.dist >= 0 ? 'above' : 'below') + ')')));
+    // 4 divergences
+    var dtxt = [], dflags = [];
+    TFS.forEach(function (tf) {
+      var rows = S.tf[tf.k]; if (!rows || rows.length < 60) { dtxt.push(tf.k + ': NOT_IN_DATA'); return; }
+      var c = A.columns(rows), r = A.rsi(c.c, 14), w = A.wavetrend(c.t, c.h, c.l, c.c, tf.ms, 200);
+      var res = [['RSI', A.divergence(c.c, r)], ['WT', A.divergence(c.c, w.wt1)]];
+      var cell = res.map(function (x) { return x[1] === null ? x[0] + ' NOT_IN_DATA' : x[0] + ' ' + (x[1] > 0 ? 'bullish' : x[1] < 0 ? 'bearish' : 'none'); }).join(', ');
+      dtxt.push(tf.k + ': ' + cell);
+      if (tf.k === '1m') dflags.push(A.flagDiv(res[0][1], sd));
+    });
+    flags.push(dflags.length ? dflags[0] : null);
+    out.push(bullet('Divergence, price vs RSI14 / WaveTrend wt1', 'OURS: last 15 bars vs the 15 before; the 1m RSI one feeds the flags', dtxt.map(esc).join('<br>')));
+    // 5 squeeze: price vs OI over the last 10 min of Deribit samples
+    var h = S.oiHist, sq = null, dp = NaN, doi = NaN;
+    if (fresh(S.oiT) && h.length > 1 && h[h.length - 1].t - h[0].t >= 120000) { dp = h[h.length - 1].px / h[0].px - 1; doi = h[h.length - 1].oi / h[0].oi - 1; sq = A.squeeze(dp, doi); }
+    flags.push(A.flagSqueeze(dp, doi, sd));
+    out.push(bullet('Squeeze read: price vs open interest', 'Deribit OI, OURS window up to 10 min, eps 0.05%', sq === null ? nid(fresh(S.oiT) ? 'needs 2 min of OI samples' : 'OI feed ' + why) :
+      'price ' + sgn(dp * 100, 2) + '%, OI ' + sgn(doi * 100, 2) + '% over ' + Math.round((h[h.length - 1].t - h[0].t) / 60000) + ' min: ' + sq));
+    // 6 CVD vs delta
+    var fl = fresh(S.trT) ? A.flow(S.trades, now) : null;
+    flags.push(A.flagFlow(fl, sd));
+    out.push(bullet('CVD vs delta (taker flow)', 'Deribit trades, OURS windows 15 min / 60 s', !fl ? nid('trades feed ' + why) :
+      'CVD ' + sgn(fl.cvd, 0) + ' USD over ' + Math.round(fl.spanMs / 60000) + ' min, delta ' + sgn(fl.delta, 0) + ' USD last 60 s: ' + (Math.sign(fl.cvd) === Math.sign(fl.delta) ? 'agree' : 'disagree') +
+      ' (counted since this page connected)'));
+    // 7 stay confidence, 8 rule R
+    var cf = A.confidence(flags);
+    out.push(bullet('Stay confidence (' + store.side + ')', 'OURS: flags for / available among DOM, VWAP, 1m divergence, squeeze, flow', cf.avail ? cf.for + ' of ' + cf.avail + ' flags for, ' + cf.against + ' against (' + (cf.total - cf.avail) + ' NOT_IN_DATA)' : nid('no flag available')));
+    out.push(bullet('Rule R (reduce rule)', 'OURS, fixed in STEPS.md; no size shown', cf.avail ? (cf.reduceRule ? 'MET: ' + cf.against + ' of ' + cf.avail + ' flags against' : 'not met: ' + cf.against + ' of ' + cf.avail + ' against, needs 3') : nid('no flag available')));
+    $('it').innerHTML = out.join('');
+    age('age-it', Math.max(S.trT, S.bookT, S.oiT));
   }
 
   // ---------- inputs ----------

@@ -235,3 +235,93 @@ def test_pnl_js(js):
     assert abs(js["pnl"] - 0.0004498) < 5e-8
     assert abs(js["open"] - (-(8280 * (1 / 81414.42 - 1 / 81000)))) <= TOL
     assert js["open"] > 0  # short gains when mark is below entry
+
+
+# ---------- in-trade panel (card live-aid-in-trade-panel): fixed OURS rules, hand-computed expectations ----------
+# Extra LIVE_AID_BREAK modes: itdiv itflow itsqueeze itdom itsupport itvwap itconf (each must fail one test below).
+IT_RUNNER = r"""
+const A = require(process.argv[process.argv.length - 1]);
+const brk = process.env.LIVE_AID_BREAK || '';
+const w = 15;
+const lowP = [], lowI = [], hiP = [], hiI = [];
+for (let i = 0; i < 30; i++) {            // h1 = bars 0-14, h2 = bars 15-29
+  const h2 = i >= 15;
+  lowP.push(h2 ? 98 + (i % 3) : 100 + (i % 3));  lowI.push(h2 ? 35 + (i % 3) : 30 + (i % 3));   // price lower low, ind higher low
+  hiP.push(h2 ? 112 - (i % 3) : 110 - (i % 3));  hiI.push(h2 ? 60 - (i % 3) : 65 - (i % 3));    // price higher high, ind lower high
+}
+const flatP = Array(30).fill(100), flatI = Array(30).fill(50);
+let dv = [A.divergence(lowP, lowI, w), A.divergence(hiP, hiI, w), A.divergence(flatP, flatI, w), A.divergence(lowP.slice(0, 20), lowI.slice(0, 20), w)];
+if (brk === 'itdiv') dv[0] = -dv[0];
+const now = 1000000;
+let fl = A.flow([{t: now - 300000, usd: 200, buy: false}, {t: now - 30000, usd: 50, buy: false}, {t: now - 10000, usd: 100, buy: true}], now);
+if (brk === 'itflow') fl.cvd = -fl.cvd;
+let sq = [A.squeeze(0.001, 0.002), A.squeeze(0.001, -0.002), A.squeeze(-0.001, 0.002), A.squeeze(-0.001, -0.002), A.squeeze(0.0001, 0.01), A.squeeze(0.001, 0.0001)];
+if (brk === 'itsqueeze') sq[1] = sq[0];
+let dm = A.dom([[99900, 5], [99800, 9], [90000, 100]], [[100100, 2], [100300, 3], [110000, 50]], 100000);
+if (brk === 'itdom') dm.imb = -dm.imb;
+const lv = [{n: 'a', p: 99}, {n: 'b', p: 95}, {n: 'c', p: 101}, {n: 'd', p: 98}, {n: 'nan', p: NaN}];
+let sup = [A.supports(lv, 100, 1).map(x => x.n), A.supports(lv, 100, -1).map(x => x.n)];
+if (brk === 'itsupport') sup = [sup[1], sup[0]];
+const mk = (hh, ll, cc) => ({h: Array(5).fill(hh), l: Array(5).fill(ll), c: Array(5).fill(cc), v: Array(5).fill(100)});
+const vt = (b, sd) => A.vwapTest(b.h, b.l, b.c, b.v, sd);
+let vw = [vt(mk(102, 98, 101), 1).result, vt(mk(102, 98, 99), 1).result, vt(mk(102, 98, 99), -1).result, vt(mk(110, 105, 107), 1).result, vt(mk(102, 98, 101), 1).dist];
+if (brk === 'itvwap') vw[1] = 'held';
+let fg = [A.flagDiv(1, 1), A.flagDiv(1, -1), A.flagDiv(0, 1), A.flagDiv(null, 1),
+          A.flagSqueeze(0.001, 0.002, 1), A.flagSqueeze(0.001, -0.002, 1), A.flagSqueeze(-0.001, 0.002, 1), A.flagSqueeze(-0.001, 0.002, -1),
+          A.flagFlow({cvd: 5, delta: 1}, 1), A.flagFlow({cvd: -5, delta: -1}, 1), A.flagFlow({cvd: 5, delta: -1}, 1), A.flagFlow({cvd: -5, delta: -1}, -1),
+          A.flagDom({imb: 0.5}, 1), A.flagDom({imb: 0.5}, -1), A.flagDom({imb: 0.1}, 1), A.flagVwap({result: 'held'}), A.flagVwap({result: 'lost'}), A.flagVwap({result: 'no test'}), A.flagVwap(null)];
+let cf = [A.confidence([1, -1, -1, -1, null, 0]), A.confidence([1, -1, -1, 0, null, 0]), A.confidence([null, null])];
+if (brk === 'itconf') cf[1].reduceRule = true;
+process.stdout.write(JSON.stringify({dv, fl, sq, dm, sup, vw, fg, cf}));
+"""
+
+
+@pytest.fixture(scope="module")
+def it():
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("node not installed")
+    out = subprocess.run([node, "-e", IT_RUNNER, str(JS)], capture_output=True, text=True, timeout=60, env=os.environ.copy())
+    assert out.returncode == 0, out.stderr
+    return json.loads(out.stdout)
+
+
+def test_it_divergence(it):
+    assert it["dv"] == [1, -1, 0, None]  # bullish, bearish, none, too few bars -> NOT_IN_DATA
+
+
+def test_it_flow_cvd_vs_delta(it):
+    # 15 min cvd = -200 -50 +100 = -150; 60 s window holds the 30 s sell 50 and the 10 s buy 100: delta = +50
+    assert it["fl"] == {"delta": 50, "cvd": -150, "spanMs": 300000}
+
+
+def test_it_squeeze_oi(it):
+    assert it["sq"] == ["up, OI up: new longs", "up, OI down: short covering (squeeze)", "down, OI up: new shorts",
+                        "down, OI down: long unwind", "flat", "up, OI flat"]
+
+
+def test_it_dom(it):
+    d = it["dm"]  # band +/-0.25% of 100000 = 99750..100250: bids 5+9, asks 2 (100300 is outside)
+    assert (d["bid"], d["ask"]) == (14, 2)
+    assert abs(d["imb"] - 0.75) < 1e-12
+    assert d["wall"] == {"side": "bid", "price": 99800, "size": 9}
+
+
+def test_it_supports(it):
+    assert it["sup"] == [["a", "d"], ["c"]]  # long: nearest below 100; short: above
+
+
+def test_it_vwap_test(it):
+    # vwap level 100 on all 5 bars; bars (high 102, low 98) touch it, (110, 105) do not
+    assert it["vw"] == ["held", "lost", "held", "no test", 1]  # close 101 long; close 99 long; close 99 short; no touch; dist
+
+
+def test_it_flags(it):
+    assert it["fg"] == [1, -1, 0, None, 1, 0, -1, 1, 1, -1, 0, 1, 1, -1, 0, 1, -1, 0, None]
+
+
+def test_it_confidence_and_reduce_rule(it):
+    a, b, c = it["cf"]
+    assert (a["avail"], a["for"], a["against"], a["reduceRule"]) == (5, 1, 3, True)
+    assert (b["avail"], b["for"], b["against"], b["reduceRule"]) == (5, 1, 2, False)
+    assert c["avail"] == 0 and c["reduceRule"] is False

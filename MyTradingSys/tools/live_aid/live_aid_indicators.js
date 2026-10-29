@@ -149,7 +149,91 @@
     return out;
   }
 
-  var api = { rma: rma, sma: sma, rsi: rsi, bollinger: bollinger, atr: atr, dayVwap: dayVwap, utcDays: utcDays, wavetrend: wavetrend,
+  // ---------- in-trade readings (card live-aid-in-trade-panel). Every threshold below = OURS, fixed in STEPS.md before any data
+  // was looked at. sd = +1 long, -1 short. Descriptive only: no entry, exit or size wording. ----------
+  var IT = { divWin: 15, flowShortMs: 60000, flowLongMs: 900000, squeezeEps: 0.0005, domPct: 0.0025, domImb: 0.2,
+             vwapBars: 5, supportN: 2, reduceAt: 3 };
+
+  function finiteArr(a) { return a.every(isFinite); }
+  // Divergence: last 2w values split in halves h1,h2. bullish (+1): price lower low in h2 but indicator higher low; bearish (-1): mirror on highs.
+  function divergence(price, ind, w) {
+    w = w || IT.divWin;
+    var n = price.length;
+    if (n < 2 * w || ind.length !== n) return null;
+    var p1 = price.slice(n - 2 * w, n - w), p2 = price.slice(n - w), i1 = ind.slice(n - 2 * w, n - w), i2 = ind.slice(n - w);
+    if (!finiteArr(p1) || !finiteArr(p2) || !finiteArr(i1) || !finiteArr(i2)) return null;
+    var mx = function (a) { return Math.max.apply(null, a); }, mn = function (a) { return Math.min.apply(null, a); };
+    if (mn(p2) < mn(p1) && mn(i2) > mn(i1)) return 1;
+    if (mx(p2) > mx(p1) && mx(i2) < mx(i1)) return -1;
+    return 0;
+  }
+  // Taker flow from trades [{t, usd, buy}]: delta = net buy-sell USD over the last 60 s, cvd = net over the last 15 min (or since the first trade).
+  function flow(trades, now) {
+    if (!trades || !trades.length) return null;
+    var d = 0, c = 0;
+    trades.forEach(function (x) {
+      var s = x.buy ? x.usd : -x.usd;
+      if (now - x.t <= IT.flowLongMs) c += s;
+      if (now - x.t <= IT.flowShortMs) d += s;
+    });
+    return { delta: d, cvd: c, spanMs: Math.min(IT.flowLongMs, now - trades[0].t) };
+  }
+  // Price vs open interest over a window: dp, doi are fractional changes. eps = 0.05%.
+  function squeeze(dp, doi) {
+    if (!isFinite(dp) || !isFinite(doi)) return null;
+    var e = IT.squeezeEps;
+    if (Math.abs(dp) < e) return 'flat';
+    if (Math.abs(doi) < e) return dp > 0 ? 'up, OI flat' : 'down, OI flat';
+    if (dp > 0) return doi > 0 ? 'up, OI up: new longs' : 'up, OI down: short covering (squeeze)';
+    return doi > 0 ? 'down, OI up: new shorts' : 'down, OI down: long unwind';
+  }
+  // Order book within +/- domPct of px. bids/asks [[price, size]]. imb = (bid-ask)/(bid+ask); wall = biggest level in that band.
+  function dom(bids, asks, px) {
+    if (!bids || !asks || !bids.length || !asks.length || !isFinite(px)) return null;
+    var lo = px * (1 - IT.domPct), hi = px * (1 + IT.domPct), b = 0, a = 0, wall = null;
+    bids.forEach(function (x) { if (x[0] >= lo) { b += x[1]; if (!wall || x[1] > wall.size) wall = { side: 'bid', price: x[0], size: x[1] }; } });
+    asks.forEach(function (x) { if (x[0] <= hi) { a += x[1]; if (!wall || x[1] > wall.size) wall = { side: 'ask', price: x[0], size: x[1] }; } });
+    if (b + a === 0) return null;
+    return { bid: b, ask: a, imb: (b - a) / (b + a), wall: wall };
+  }
+  // Nearest supports for the trade: long = levels below px, short = levels above px. levels [{n, p}].
+  function supports(levels, px, sd) {
+    if (!isFinite(px)) return null;
+    var f = levels.filter(function (l) { return isFinite(l.p) && (sd > 0 ? l.p < px : l.p > px); });
+    f.sort(function (x, y) { return Math.abs(x.p - px) - Math.abs(y.p - px); });
+    return f.slice(0, IT.supportN);
+  }
+  // VWAP test over the last k 1m bars (v = per-bar VWAP series): touch = bar range contains vwap. held = last close on the trade side, lost = other side.
+  function vwapTest(h, l, c, v, sd) {
+    var n = c.length, k = IT.vwapBars;
+    if (n < k || v.length !== n || !isFinite(v[n - 1])) return null;
+    var touched = false;
+    for (var i = n - k; i < n; i++) if (isFinite(v[i]) && l[i] <= v[i] && v[i] <= h[i]) touched = true;
+    var side = (c[n - 1] - v[n - 1]) * sd;
+    return { dist: c[n - 1] - v[n - 1], touched: touched, result: !touched ? 'no test' : side >= 0 ? 'held' : 'lost' };
+  }
+  // Flags: +1 for the trade, -1 against, 0 neutral, null NOT_IN_DATA. Stay confidence = for / available; reduce-rule R = against >= 3.
+  function flagDiv(d, sd) { return d === null ? null : d === 0 ? 0 : (d === sd ? 1 : -1); }
+  function flagSqueeze(dp, doi, sd) {
+    if (!isFinite(dp) || !isFinite(doi)) return null;
+    if (Math.abs(dp) < IT.squeezeEps) return 0;
+    if (dp * sd < 0) return -1;
+    return doi > IT.squeezeEps ? 1 : 0;
+  }
+  function flagFlow(f, sd) {
+    if (!f) return null;
+    var a = Math.sign(f.cvd) * sd, b = Math.sign(f.delta) * sd;
+    return a > 0 && b > 0 ? 1 : a < 0 && b < 0 ? -1 : 0;
+  }
+  function flagDom(d, sd) { return !d ? null : d.imb * sd > IT.domImb ? 1 : d.imb * sd < -IT.domImb ? -1 : 0; }
+  function flagVwap(t) { return !t ? null : t.result === 'held' ? 1 : t.result === 'lost' ? -1 : 0; }
+  function confidence(flags) {
+    var av = flags.filter(function (x) { return x !== null; }), f = av.filter(function (x) { return x > 0; }).length, a = av.filter(function (x) { return x < 0; }).length;
+    return { avail: av.length, total: flags.length, for: f, against: a, reduceRule: av.length > 0 && a >= IT.reduceAt };
+  }
+
+  var api = { IT: IT, divergence: divergence, flow: flow, squeeze: squeeze, dom: dom, supports: supports, vwapTest: vwapTest,
+    flagDiv: flagDiv, flagSqueeze: flagSqueeze, flagFlow: flagFlow, flagDom: flagDom, flagVwap: flagVwap, confidence: confidence, rma: rma, sma: sma, rsi: rsi, bollinger: bollinger, atr: atr, dayVwap: dayVwap, utcDays: utcDays, wavetrend: wavetrend,
     inversePnlBtc: inversePnlBtc, closedPnlBtc: closedPnlBtc, columns: columns };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.LiveAid = api;
