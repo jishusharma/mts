@@ -1,0 +1,47 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest -q MyTradingSys/execution/testnet/offline/test_fix3_offline.py MyTradingSys/execution/test_premainnet1_offline.py"
+  ],
+  "created": "2026-10-29T19:38:06Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/critical_test_wave1_2026-10-30/REVIEW_ITEM1_GEMINI.md has one verdict line per finding (C1, C2, C3, B1): FIXED / NOT FIXED / PARTIAL with file:line",
+  "est_turns": 3,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent reader (not Claude) judges from code + source whether each finding is fixed on trunk",
+  "id": "wave1-review-item1-ft2-fixes",
+  "lane": "DSA-NUC",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini lane: gemini_queue.py run wave1-review-item1-ft2-fixes:low (NUC). Reviewer gets code + source, never our conclusion.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/execution/deribit_orders.py, executor.py, position_manager.py, kill_switch.py and their offline tests"
+  ],
+  "scope_out": [
+    "no network, no secrets, no live tree; do not read the wave-1 ledger or other conclusions"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/fast_track_2026-09-27/review/ADVERSARIAL_REVIEW_FT2.md (C1-C3 sections)",
+    "MyTradingSys/research/fast_track_2026-09-27/review/OPUS_PREMAINNET_AUDIT.md row 1"
+  ],
+  "state": "raw",
+  "steps": [
+    "Read each finding's description",
+    "Read the current trunk code and tests; for each finding say FIXED/NOT FIXED/PARTIAL with file:line and whether a test covers it",
+    "Run python -m pytest -q MyTradingSys/execution/testnet/offline/test_fix3_offline.py MyTradingSys/execution/test_premainnet1_offline.py and quote the summary line"
+  ],
+  "tests": "",
+  "title": "Second-model review (Gemini): are FT2 C1-C3 + kill-switch B1 fixed on trunk",
+  "weight": "CRITICAL",
+  "worker": "agent"
+}
