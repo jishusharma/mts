@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-29T22:45:26Z",
+  "depends_on": [],
+  "done_when": "Independent Cloud review and verification accept the fix and evidence before merge.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Reject nonfinite signals; fail closed on malformed hook state and failed durable send receipts.",
+  "id": "audit48-live-validation-state",
+  "kind": "build",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "IMPLEMENTED; AWAITING CLOUD REVIEW, do not auto-merge.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/backtest/layers/alerts/live_validation.py",
+    "MyTradingSys/tests/validation/test_live_validation_store.py"
+  ],
+  "scope_out": [
+    "live tree",
+    "deployment",
+    "trading activation"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "active",
+  "steps": [
+    "Run fail-first regressions and focused related suites.",
+    "Cloud independently reviews and verifies branch before trunk merge."
+  ],
+  "tests": "3 new tests fail before fix (18 failure reports including subtests); 14 tests and 15 subtests pass.",
+  "title": "48h audit: live validation accepts infinite inputs and malformed state",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

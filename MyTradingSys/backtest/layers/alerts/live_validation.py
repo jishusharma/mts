@@ -9,6 +9,7 @@ No order path, no balance, no network: sending and charting are injected callabl
 corrupt store file, a chart or send error all end as DOUBT / PENDING, never as a verdict.
 """
 import json
+import math
 import os
 
 # code -> (type, side). PRD/NRD = price HL + RSI LL (hidden bull) / price LH + RSI HH (hidden bear); K-* = generic hidden.
@@ -25,8 +26,8 @@ class StoreError(Exception):
 
 def _num(x):
     v = float(x)
-    if v != v:
-        raise ValueError("nan")
+    if not math.isfinite(v):
+        raise ValueError("nonfinite number")
     return v
 
 
@@ -101,7 +102,12 @@ class Store:
         return _read(self.p_doubts, {"doubts": []})["doubts"]
 
     def state(self):
-        return _read(self.p_state, {"pending": {}, "sent": []})
+        st = _read(self.p_state, {"pending": {}, "sent": []})
+        if (not isinstance(st, dict) or not isinstance(st.get("pending"), dict)
+                or not isinstance(st.get("sent"), list)
+                or any(not isinstance(sid, str) for sid in st["sent"])):
+            raise StoreError("invalid hook state")
+        return st
 
     # ---- writes
     def add_case(self, sig, verdict, verbatim, date, chart_path, source):
@@ -179,7 +185,11 @@ def process_signal(store, sig, render_chart, send):
         return "PENDING"
     st["pending"].pop(sid, None)
     st["sent"].append(sid)
-    _write(store.p_state, st)
+    try:
+        _write(store.p_state, st)
+    except OSError:
+        # Delivery succeeded but its receipt is not durable. Do not report SENT.
+        return "PENDING"
     return "SENT"
 
 

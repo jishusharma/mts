@@ -1,0 +1,169 @@
+FFF                                                       [100%]
+================================== FAILURES ===================================
+_______________ T.test_failed_state_write_after_send_is_pending _______________
+MyTradingSys\tests\validation\test_live_validation_store.py:137: in test_failed_state_write_after_send_is_pending
+    self.assertEqual(lv.process_signal(self.s, SIG, self.chart, self.send), "PENDING")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+MyTradingSys\backtest\layers\alerts\live_validation.py:182: in process_signal
+    _write(store.p_state, st)
+C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\Lib\unittest\mock.py:1176: in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\Lib\unittest\mock.py:1180: in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\Lib\unittest\mock.py:1247: in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+MyTradingSys\tests\validation\test_live_validation_store.py:134: in fail_state
+    raise OSError("disk unavailable")
+E   OSError: disk unavailable
+_ T.test_nonfinite_signal_is_rejected_before_chart_or_send (field='price_A', value=inf) _
+MyTradingSys\tests\validation\test_live_validation_store.py:119: in test_nonfinite_signal_is_rejected_before_chart_or_send
+    self.assertEqual(lv.process_signal(self.s, sig(**{field: value}), self.chart, self.send), "REJECTED")
+E   AssertionError: 'SENT' != 'REJECTED'
+E   - SENT
+E   + REJECTED
+_ T.test_nonfinite_signal_is_rejected_before_chart_or_send (field='price_A', value=-inf) _
+MyTradingSys\tests\validation\test_live_validation_store.py:119: in test_nonfinite_signal_is_rejected_before_chart_or_send
+    self.assertEqual(lv.process_signal(self.s, sig(**{field: value}), self.chart, self.send), "REJECTED")
+E   AssertionError: 'DUPLICATE' != 'REJECTED'
+E   - DUPLICATE
+E   + REJECTED
+_ T.test_nonfinite_signal_is_rejected_before_chart_or_send (field='price_B', value=inf) _
+MyTradingSys\tests\validation\test_live_validation_store.py:119: in test_nonfinite_signal_is_rejected_before_chart_or_send
+    self.assertEqual(lv.process_signal(self.s, sig(**{field: value}), self.chart, self.send), "REJECTED")
+E   AssertionError: 'DUPLICATE' != 'REJECTED'
+E   - DUPLICATE
+E   + REJECTED
+_ T.test_nonfinite_signal_is_rejected_before_chart_or_send (field='price_B', value=-inf) _
+MyTradingSys\tests\validation\test_live_validation_store.py:119: in test_nonfinite_signal_is_rejected_before_chart_or_send
+    self.assertEqual(lv.process_signal(self.s, sig(**{field: value}), self.chart, self.send), "REJECTED")
+E   AssertionError: 'DUPLICATE' != 'REJECTED'
+E   - DUPLICATE
+E   + REJECTED
+_ T.test_nonfinite_signal_is_rejected_before_chart_or_send (field='rsi_A', value=inf) _
+MyTradingSys\tests\validation\test_live_validation_store.py:119: in test_nonfinite_signal_is_rejected_before_chart_or_send
+    self.assertEqual(lv.process_signal(self.s, sig(**{field: value}), self.chart, self.send), "REJECTED")
+E   AssertionError: 'DUPLICATE' != 'REJECTED'
+E   - DUPLICATE
+E   + REJECTED
+_ T.test_nonfinite_signal_is_rejected_before_chart_or_send (field='rsi_A', value=-inf) _
+MyTradingSys\tests\validation\test_live_validation_store.py:119: in test_nonfinite_signal_is_rejected_before_chart_or_send
+    self.assertEqual(lv.process_signal(self.s, sig(**{field: value}), self.chart, self.send), "REJECTED")
+E   AssertionError: 'DUPLICATE' != 'REJECTED'
+E   - DUPLICATE
+E   + REJECTED
+_ T.test_nonfinite_signal_is_rejected_before_chart_or_send (field='rsi_B', value=inf) _
+MyTradingSys\tests\validation\test_live_validation_store.py:119: in test_nonfinite_signal_is_rejected_before_chart_or_send
+    self.assertEqual(lv.process_signal(self.s, sig(**{field: value}), self.chart, self.send), "REJECTED")
+E   AssertionError: 'DUPLICATE' != 'REJECTED'
+E   - DUPLICATE
+E   + REJECTED
+_ T.test_nonfinite_signal_is_rejected_before_chart_or_send (field='rsi_B', value=-inf) _
+MyTradingSys\tests\validation\test_live_validation_store.py:119: in test_nonfinite_signal_is_rejected_before_chart_or_send
+    self.assertEqual(lv.process_signal(self.s, sig(**{field: value}), self.chart, self.send), "REJECTED")
+E   AssertionError: 'DUPLICATE' != 'REJECTED'
+E   - DUPLICATE
+E   + REJECTED
+_ T.test_nonfinite_signal_is_rejected_before_chart_or_send (field='bars_A_to_B', value=inf) _
+MyTradingSys\tests\validation\test_live_validation_store.py:119: in test_nonfinite_signal_is_rejected_before_chart_or_send
+    self.assertEqual(lv.process_signal(self.s, sig(**{field: value}), self.chart, self.send), "REJECTED")
+E   AssertionError: 'DUPLICATE' != 'REJECTED'
+E   - DUPLICATE
+E   + REJECTED
+_ T.test_nonfinite_signal_is_rejected_before_chart_or_send (field='bars_A_to_B', value=-inf) _
+MyTradingSys\tests\validation\test_live_validation_store.py:119: in test_nonfinite_signal_is_rejected_before_chart_or_send
+    self.assertEqual(lv.process_signal(self.s, sig(**{field: value}), self.chart, self.send), "REJECTED")
+E   AssertionError: 'DUPLICATE' != 'REJECTED'
+E   - DUPLICATE
+E   + REJECTED
+__________ T.test_nonfinite_signal_is_rejected_before_chart_or_send ___________
+MyTradingSys\tests\validation\test_live_validation_store.py:120: in test_nonfinite_signal_is_rejected_before_chart_or_send
+    self.assertEqual(self.sent, [])
+E   AssertionError: Lists differ: [('BTCUSDT 1d K-HBEAR 2026-01-23..2026-01-[79 chars]ng')] != []
+E   
+E   First list contains 1 additional elements.
+E   First extra element 0:
+E   ('BTCUSDT 1d K-HBEAR 2026-01-23..2026-01-28: DOUBT -- confirm or correct once for category BTCUSDT|1d|hidden|bear', 'c.png')
+E   
+E   + []
+E   - [('BTCUSDT 1d K-HBEAR 2026-01-23..2026-01-28: DOUBT -- confirm or correct once '
+E   -   'for category BTCUSDT|1d|hidden|bear',
+E   -   'c.png')]
+---------------------------- Captured stdout call -----------------------------
+uuuuuuuuuu
+___ T.test_structurally_corrupt_state_is_pending_without_sending (state=[]) ___
+MyTradingSys\tests\validation\test_live_validation_store.py:126: in test_structurally_corrupt_state_is_pending_without_sending
+    self.assertEqual(lv.process_signal(self.s, SIG, self.chart, self.send), "PENDING")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+MyTradingSys\backtest\layers\alerts\live_validation.py:163: in process_signal
+    if sid in st["sent"]:
+              ^^^^^^^^^^
+E   TypeError: list indices must be integers or slices, not str
+__ T.test_structurally_corrupt_state_is_pending_without_sending (state=None) __
+MyTradingSys\tests\validation\test_live_validation_store.py:126: in test_structurally_corrupt_state_is_pending_without_sending
+    self.assertEqual(lv.process_signal(self.s, SIG, self.chart, self.send), "PENDING")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+MyTradingSys\backtest\layers\alerts\live_validation.py:163: in process_signal
+    if sid in st["sent"]:
+              ^^^^^^^^^^
+E   TypeError: 'NoneType' object is not subscriptable
+___ T.test_structurally_corrupt_state_is_pending_without_sending (state={}) ___
+MyTradingSys\tests\validation\test_live_validation_store.py:126: in test_structurally_corrupt_state_is_pending_without_sending
+    self.assertEqual(lv.process_signal(self.s, SIG, self.chart, self.send), "PENDING")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+MyTradingSys\backtest\layers\alerts\live_validation.py:163: in process_signal
+    if sid in st["sent"]:
+              ^^^^^^^^^^
+E   KeyError: 'sent'
+_ T.test_structurally_corrupt_state_is_pending_without_sending (state={'sent': None, 'pending': {}}) _
+MyTradingSys\tests\validation\test_live_validation_store.py:126: in test_structurally_corrupt_state_is_pending_without_sending
+    self.assertEqual(lv.process_signal(self.s, SIG, self.chart, self.send), "PENDING")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+MyTradingSys\backtest\layers\alerts\live_validation.py:163: in process_signal
+    if sid in st["sent"]:
+       ^^^^^^^^^^^^^^^^^
+E   TypeError: argument of type 'NoneType' is not a container or iterable
+_ T.test_structurally_corrupt_state_is_pending_without_sending (state={'sent': [], 'pending': []}) _
+MyTradingSys\tests\validation\test_live_validation_store.py:126: in test_structurally_corrupt_state_is_pending_without_sending
+    self.assertEqual(lv.process_signal(self.s, SIG, self.chart, self.send), "PENDING")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+MyTradingSys\backtest\layers\alerts\live_validation.py:180: in process_signal
+    st["pending"].pop(sid, None)
+E   TypeError: pop expected at most 1 argument, got 2
+________ T.test_structurally_corrupt_state_is_pending_without_sending _________
+MyTradingSys\tests\validation\test_live_validation_store.py:127: in test_structurally_corrupt_state_is_pending_without_sending
+    self.assertEqual(self.sent, [])
+E   AssertionError: Lists differ: [('BTCUSDT 1d K-HBEAR 2026-01-23..2026-01-[79 chars]ng')] != []
+E   
+E   First list contains 1 additional elements.
+E   First extra element 0:
+E   ('BTCUSDT 1d K-HBEAR 2026-01-23..2026-01-28: DOUBT -- confirm or correct once for category BTCUSDT|1d|hidden|bear', 'c.png')
+E   
+E   + []
+E   - [('BTCUSDT 1d K-HBEAR 2026-01-23..2026-01-28: DOUBT -- confirm or correct once '
+E   -   'for category BTCUSDT|1d|hidden|bear',
+E   -   'c.png')]
+---------------------------- Captured stdout call -----------------------------
+uuuuu
+=========================== short test summary info ===========================
+FAILED MyTradingSys/tests/validation/test_live_validation_store.py::T::test_failed_state_write_after_send_is_pending
+SUBFAILED(field='price_A', value=inf) MyTradingSys/tests/validation/test_live_validation_store.py::T::test_nonfinite_signal_is_rejected_before_chart_or_send
+SUBFAILED(field='price_A', value=-inf) MyTradingSys/tests/validation/test_live_validation_store.py::T::test_nonfinite_signal_is_rejected_before_chart_or_send
+SUBFAILED(field='price_B', value=inf) MyTradingSys/tests/validation/test_live_validation_store.py::T::test_nonfinite_signal_is_rejected_before_chart_or_send
+SUBFAILED(field='price_B', value=-inf) MyTradingSys/tests/validation/test_live_validation_store.py::T::test_nonfinite_signal_is_rejected_before_chart_or_send
+SUBFAILED(field='rsi_A', value=inf) MyTradingSys/tests/validation/test_live_validation_store.py::T::test_nonfinite_signal_is_rejected_before_chart_or_send
+SUBFAILED(field='rsi_A', value=-inf) MyTradingSys/tests/validation/test_live_validation_store.py::T::test_nonfinite_signal_is_rejected_before_chart_or_send
+SUBFAILED(field='rsi_B', value=inf) MyTradingSys/tests/validation/test_live_validation_store.py::T::test_nonfinite_signal_is_rejected_before_chart_or_send
+SUBFAILED(field='rsi_B', value=-inf) MyTradingSys/tests/validation/test_live_validation_store.py::T::test_nonfinite_signal_is_rejected_before_chart_or_send
+SUBFAILED(field='bars_A_to_B', value=inf) MyTradingSys/tests/validation/test_live_validation_store.py::T::test_nonfinite_signal_is_rejected_before_chart_or_send
+SUBFAILED(field='bars_A_to_B', value=-inf) MyTradingSys/tests/validation/test_live_validation_store.py::T::test_nonfinite_signal_is_rejected_before_chart_or_send
+FAILED MyTradingSys/tests/validation/test_live_validation_store.py::T::test_nonfinite_signal_is_rejected_before_chart_or_send
+SUBFAILED(state=[]) MyTradingSys/tests/validation/test_live_validation_store.py::T::test_structurally_corrupt_state_is_pending_without_sending
+SUBFAILED(state=None) MyTradingSys/tests/validation/test_live_validation_store.py::T::test_structurally_corrupt_state_is_pending_without_sending
+SUBFAILED(state={}) MyTradingSys/tests/validation/test_live_validation_store.py::T::test_structurally_corrupt_state_is_pending_without_sending
+SUBFAILED(state={'sent': None, 'pending': {}}) MyTradingSys/tests/validation/test_live_validation_store.py::T::test_structurally_corrupt_state_is_pending_without_sending
+SUBFAILED(state={'sent': [], 'pending': []}) MyTradingSys/tests/validation/test_live_validation_store.py::T::test_structurally_corrupt_state_is_pending_without_sending
+FAILED MyTradingSys/tests/validation/test_live_validation_store.py::T::test_structurally_corrupt_state_is_pending_without_sending
+18 failed, 11 deselected in 0.51s

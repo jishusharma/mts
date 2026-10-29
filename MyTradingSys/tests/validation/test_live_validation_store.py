@@ -112,5 +112,31 @@ class T(unittest.TestCase):
         self.assertEqual(lv.seed_from_history(self.s, csvp, "x", "d"), [])   # idempotent
 
 
+    def test_nonfinite_signal_is_rejected_before_chart_or_send(self):
+        for field in ("price_A", "price_B", "rsi_A", "rsi_B", "bars_A_to_B"):
+            for value in (float("inf"), float("-inf")):
+                with self.subTest(field=field, value=value):
+                    self.assertEqual(lv.process_signal(self.s, sig(**{field: value}), self.chart, self.send), "REJECTED")
+        self.assertEqual(self.sent, [])
+
+    def test_structurally_corrupt_state_is_pending_without_sending(self):
+        for state in ([], None, {}, {"sent": None, "pending": {}}, {"sent": [], "pending": []}):
+            with self.subTest(state=state):
+                Path(self.s.p_state).write_text(json.dumps(state), encoding="utf-8")
+                self.assertEqual(lv.process_signal(self.s, SIG, self.chart, self.send), "PENDING")
+        self.assertEqual(self.sent, [])
+
+    def test_failed_state_write_after_send_is_pending(self):
+        from unittest.mock import patch
+        original = lv._write
+        def fail_state(path, obj):
+            if path == self.s.p_state:
+                raise OSError("disk unavailable")
+            return original(path, obj)
+        with patch.object(lv, "_write", side_effect=fail_state):
+            self.assertEqual(lv.process_signal(self.s, SIG, self.chart, self.send), "PENDING")
+        self.assertEqual(len(self.sent), 1)
+
+
 if __name__ == "__main__":
     unittest.main()
