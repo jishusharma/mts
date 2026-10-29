@@ -38,3 +38,12 @@ The inventory (`research/audit_inventory/AUDIT_INVENTORY.md`, about 55 audits) s
 | 5 | T5 + T6 | Live feeds (aggTrades, OI, liquidations) live-vs-archive parity for one day; every candidate and order produces exactly one visible alert | no audit since 2026-09-15 |
 
 Reviewer per item: the author model plus one other family (Gemini on NUC for code reads, DSA for runs); reviewers get the code and the source, not our conclusion.
+
+## Wave 2 (queued 2026-10-30, from `reports/BTC backtesting failure causes.md`, login A)
+
+| # | Area | Item | Done when |
+|---|---|---|---|
+| 6 | T5 | Venue mismatch: signals and backtests use Binance BTCUSDT perp, orders go to Deribit BTC-PERPETUAL. Measure 1m close, wick extremes and funding differences on one month; re-run one existing layer backtest on Deribit candles (or Deribit mark price) with a one-bar fill delay | gap table per field; the layer's result on both venues side by side |
+| 7 | T4 | Funding coverage: list every backtest script that holds a perp position across a funding time; mark which charge the venue's historical funding series (4 scripts reference funding today) | census table; missing ones get a card or a written "fee-only lower bound" label |
+| 8 | T4 | Trial budget: for each layer verdict on record, the trial count vs Minimum Backtest Length for its dev window (about 2.25 y: about 7 independent configs before Sharpe 1 is noise, Bailey et al. 2014); any "pass" must show a deflated Sharpe >= 0.95 | per-layer row: n trials, dev years, MinBTL budget, DSR if it passed |
+
