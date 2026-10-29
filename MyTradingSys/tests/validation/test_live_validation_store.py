@@ -138,5 +138,16 @@ class T(unittest.TestCase):
         self.assertEqual(len(self.sent), 1)
 
 
+
+    def test_latest_correction_overrides_previous_valid_case(self):
+        self.s.correct(SIG, "VALID", "ok", "d")
+        self.s.correct(SIG, "WRONG", "not a divergence", "d")
+        result = lv.match(self.s, SIG)
+        self.assertEqual(result, "matches reviewed case #2: WRONG")
+        self.assertNotIn("validated", result)
+        self.assertEqual(lv.process_signal(self.s, SIG, self.chart, self.send), "SENT")
+        self.assertIn("WRONG", self.sent[0][0])
+
+
 if __name__ == "__main__":
     unittest.main()

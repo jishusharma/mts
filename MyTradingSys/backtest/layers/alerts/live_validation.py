@@ -145,9 +145,12 @@ def match(store, sig):
     """-> 'matches validated case #n' or 'DOUBT' (doubt appended). Never an auto-verdict; fails closed."""
     try:
         key, geo = category_key(sig), geometry(sig)
-        for c in store.cases():
+        # A later operator correction supersedes an older case with the same geometry.
+        for c in reversed(store.cases()):
             if c["category"] == key and c["verdict"] is not None and c["geometry"] == geo and geo["in_window"]:
-                return "matches validated case #%d" % c["case"]
+                if c["verdict"] == "VALID":
+                    return "matches validated case #%d" % c["case"]
+                return "matches reviewed case #%d: %s" % (c["case"], c["verdict"])
         store.add_doubt(sig, "no validated look-alike in %s" % key)
     except (ValueError, KeyError, TypeError, StoreError):
         return "DOUBT"

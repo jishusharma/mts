@@ -1,0 +1,11 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+___________ T.test_latest_correction_overrides_previous_valid_case ____________
+MyTradingSys\tests\validation\test_live_validation_store.py:146: in test_latest_correction_overrides_previous_valid_case
+    self.assertEqual(result, "matches reviewed case #2: WRONG")
+E   AssertionError: 'matches validated case #1' != 'matches reviewed case #2: WRONG'
+E   - matches validated case #1
+E   + matches reviewed case #2: WRONG
+=========================== short test summary info ===========================
+FAILED MyTradingSys/tests/validation/test_live_validation_store.py::T::test_latest_correction_overrides_previous_valid_case
+1 failed, 14 deselected in 0.28s

@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-29T22:47:43Z",
+  "depends_on": [],
+  "done_when": "Cloud verifies the diff and tests; full gate passes before trunk merge.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Use the latest operator correction and show rejected verdicts explicitly instead of calling them validated.",
+  "id": "audit48-validation-verdict-precedence",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "IMPLEMENTED; AWAITING CLOUD REVIEW. No deploy or process restart.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/backtest/layers/alerts/live_validation.py",
+    "MyTradingSys/tests/validation/test_live_validation_store.py"
+  ],
+  "scope_out": [
+    "live tree",
+    "deployment",
+    "process restart"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "active",
+  "steps": [
+    "Run fail-first regression and related tests.",
+    "Cloud independently reviews and verifies before trunk merge."
+  ],
+  "tests": "Latest-correction test fails before repair; 15 tests and 15 subtests pass after.",
+  "title": "48h audit: latest rejected validation case still reported as validated match",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}
