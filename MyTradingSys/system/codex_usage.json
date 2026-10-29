@@ -1,12 +1,12 @@
 {
  "allowance": {
   "plan": "plus",
-  "week_resets": 1793614696,
-  "week_used": 29.0,
-  "window_resets": 1793151916,
-  "window_used": 68.0
+  "week_resets": 1793780113,
+  "week_used": 24.0,
+  "window_resets": 1793309280,
+  "window_used": 10.0
  },
- "at": "2026-10-27T21:29:47Z",
+ "at": "2026-10-29T20:14:46Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -18,18 +18,33 @@
  "host": "JIS-NUC",
  "lab": {
   "astra_runs": 0,
-  "week_pts": 11.5,
-  "window_pts": 9.0,
-  "window_runs": 2
+  "week_pts": 0.0,
+  "window_pts": 1.0,
+  "window_runs": 1
  },
  "runs": [
+  {
+   "at": "2026-10-29T20:13:51Z",
+   "card": "cbp-ingestion",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 48,
+   "tokens_out": 3017,
+   "tokens_total": 365948,
+   "tokens_uncached": 47667,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
   {
    "at": "2026-10-27T21:29:43Z",
    "card": "lf-volume_candles_ma-gpt-rederive",
    "effort": "medium",
    "kind": "audit",
    "model": "gpt-6-luna",
-   "note": "Codex credits ran out; the card stays ready, is not charged a try, and the GPT lane is marked down",
+   "note": "Codex credits ran out; the card stays ready, is not charged a try, and the GPT lane is marked down | release failed: sync: no claim lf-volume-candles-ma-gpt-red",
    "outcome": "LIMIT",
    "seconds": 3,
    "tokens_out": null,
@@ -157,21 +172,6 @@
    "tokens_uncached": 99664,
    "week_pts": 1.0,
    "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-27T11:50:08Z",
-   "card": "lf-session_timing-gpt-rederive",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": " | release failed: sync: no claim lf-session-timing-gpt-rederive on origin/claims",
-   "outcome": "BLOCKED",
-   "seconds": 65,
-   "tokens_out": 3622,
-   "tokens_total": 459214,
-   "tokens_uncached": 50984,
-   "week_pts": 0.0,
-   "window_pts": 0.0
   }
  ]
 }

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-29T20:14:41Z",
   "commands": [
     "python -m pytest MyTradingSys/tests/test_cbp_query.py --basetemp=<scratch dir> -q"
   ],
@@ -29,6 +30,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "27 focused tests passed; task XML dry-run valid; activation off (data host missing); repor",
+      "ref": "7fa356aff",
+      "utc": "2026-10-29T20:14:41Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "cbp: audit integration, align default store_path fallback, mark cbp-ingestion for Cloud re",
@@ -54,7 +61,12 @@
     "to": "SONNET",
     "why": "credits"
   },
-  "result": "29 focused CBP + schedule tests pass (fixed store_path fallback alignment in cbp/__init__.py & cbp_schedule.py and F:-drive test assertion in test_cbp_query.py); audit recorded in CBP_AUDIT_2026-10-28.md. Activation off on NUC (data host missing / origin/cloud/work not checked out at F:/CryptoScrapper). Ready for Cloud (Claude) review.",
+  "result": "27 focused tests passed; task XML dry-run valid; activation off (data host missing); report MyTradingSys/research/layer_lab/reports/2026-10-29_cbp-ingestion.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/cbp/__init__.py",
     "scripts/dev/cbp_run.py",
@@ -69,13 +81,14 @@
   "scope_sha": "fcd3c0449a71",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Re-run the focused suites: python -m pytest MyTradingSys/tests/test_cbp_query.py --basetemp=<scratch dir> -q (the 9 errors seen on 2026-10-27 were PermissionError on the default pytest temp dir C:/Users/E-ngineers/AppData/Local/Temp/pytest-of-E-ngineers, an environment issue, not a code fault); expect 29 passed with CBP audit tests.",
     "Confirm regressions are red on the pre-fix code: store_path default agreement across cbp/__init__.py, cbp_run.py, cbp_schedule.py when F:/CryptoScrapper is absent; the F: drive assertion in test_cbp_query.py.",
     "Confirm the CBP-only twice-daily task in cbp_schedule.py validates (dry run, nothing registered); activation stays off: record 'data host missing' in the report.",
     "Ship; DECISION (OURS) default: activation off until a data host exists."
   ],
+  "taken": "2026-10-29T20:14:41Z",
   "tests": "pytest focused CBP suites, regression tests red before repair",
   "title": "CBP twice-daily ingestion: schedule, canonical paths, retry and health",
   "weight": "IMPORTANT",
