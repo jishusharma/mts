@@ -225,7 +225,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Ledger: `MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv`; `MyTradingSys/research/krown_ta101_2026-10-13/KROWN_CONSOLIDATED.md`; `MyTradingSys/research/krown_ta101_2026-10-13/MANIFEST.csv`
 - Other results: `MyTradingSys/research/krown_ta101_2026-10-13/reflexivity_log.md`; `MyTradingSys/research/layer_lab/candle_close_2026-10-14/REPORT.md`; `MyTradingSys/options/research/KROWN_FREE_VS_PAID.md`
 - Roadmap: `MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md`
-- Codex lab reports (newest 4 of 5): `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-krown-gpt-rederive.md`; `MyTradingSys/research/layer_lab/reports/2026-10-28_astra-low-levels-fee-drag-recompute.md`; `MyTradingSys/research/layer_lab/reports/2026-10-26_astra-low-levels-fee-drag-recompute.md`; `MyTradingSys/research/layer_lab/reports/2026-10-26_astra-low-confluence-prereg-leak-hunt.md`
+- Codex lab reports (newest 4 of 6): `MyTradingSys/research/layer_lab/reports/2026-10-30_krown-other-sources-event-study-videos.md`; `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-krown-gpt-rederive.md`; `MyTradingSys/research/layer_lab/reports/2026-10-28_astra-low-levels-fee-drag-recompute.md`; `MyTradingSys/research/layer_lab/reports/2026-10-26_astra-low-levels-fee-drag-recompute.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `sourced-rule-guard` ready p1 SONNET: Guard: no layer param or rule ships without a SOURCED quote+file:line or an OURS label (CI test)
   - `confluence-s4-dev-trials` ready p2 SONNET: Confluence S4: DEV and DEV_EXT trial runs (T2, sizing arm, pooled read, T4) per PRE_REG_CONFLUENCE
@@ -236,7 +236,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `krown-dev-event-study-levels` refined p2 SONNET: Krown DEV event study 2/3: level and moving-average hypotheses H-M1, H-M3, H-Z1 (H-M2 not run); DONE when: DEV
   - `krown-hidden-divergence-confluence-feed` ready p2 SONNET: Krown hidden divergence as a shared confluence feed any layer (RSI 40-60 included) can consume; Malkan layer s
   - `krown-views-via-gemini-what-krown-says-a` raw p2 DSA-NUC: Krown views via Gemini: what Krown says about highs, higher highs, lower highs, 'tick below', daily close abov
-  - `krown-other-sources-event-study-videos` ready p3 CODEX: Krown other sources: extract his daily BTC event-study videos and the CBP krown item with the V2 method (trigg
   - `layer-review-krown-wavetrend` ready p3 SONNET: Layer review sheet: Krown and WaveTrend (idea, source, backtests, bugs, confluence)
   - `trendline-ledger-registry-hygiene` ready p3 SONNET: Trend-line daily ledger schema v2 enforcement + register the module in layer_index and wiring_registry (audit 
 
