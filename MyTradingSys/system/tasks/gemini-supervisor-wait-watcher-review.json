@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-29T20:50:31Z",
   "commands": [],
   "created": "2026-10-28T17:55:26Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "FIX-FIRST; 12 behaviors mapped, 3 MED NO TEST gaps; watchcheck failed states exit 4/4/4 an",
+      "ref": "d202cbdb4",
+      "utc": "2026-10-29T20:50:31Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -31,7 +38,12 @@
   "refined_by": "",
   "refreshed": "2026-10-28T17:55:27Z",
   "refs": [],
-  "result": "",
+  "result": "FIX-FIRST; 12 behaviors mapped, 3 MED NO TEST gaps; watchcheck failed states exit 4/4/4 and live marker exit 0; report MyTradingSys/research/layer_lab/reports/2026-10-28_gem-supervisor-wait-watcher-review.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/supervisor.py",
     "scripts/dev/test_supervisor.py",
@@ -47,13 +59,14 @@
   "sources": [
     "scripts/dev/supervisor.py:443-600 (wait watcher; docstrings are the spec)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read supervisor.py lines 443-600 and extract each stated behavior as one row: behavior | file:line.",
     "For each row grep test_supervisor.py for a test that would fail if the behavior broke; write test name:line or NO TEST.",
     "Run watchcheck from a scratch HOME with no marker, an expired marker and a dead pid marker; record the three exit codes (expect 4 each).",
     "Report: gap table (NO TEST rows with severity), the three exit codes, one verdict line. Change no code. For each HIGH gap capture: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
   ],
+  "taken": "2026-10-29T20:50:31Z",
   "tests": "",
   "title": "[GEMINI] Cross-review the supervisor.py wait watcher: fail-closed wake source and test gaps",
   "weight": "ROUTINE",
