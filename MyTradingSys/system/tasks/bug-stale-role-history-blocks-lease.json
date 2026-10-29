@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-29T22:25:00Z",
   "commands": [],
   "context": {
     "calls_to_edit": 12,
@@ -25,6 +26,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "Commit 41e7e6d15149: latest explicit role wins over older singleton in lease.py; 33 tests passed in test_lease.py",
+      "ref": "a9dd9013d",
+      "utc": "2026-10-29T22:25:00Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "dedupe batch 4: remove dead run_step, explicit_role, clean_prompt, sync_script; pilot-3 no",
@@ -41,7 +48,12 @@
   "refined_by": "",
   "refreshed": "2026-10-29T16:46:10Z",
   "refs": [],
-  "result": "",
+  "result": "Commit 41e7e6d15149 resolved bug-stale-role-history-blocks-lease by using role_loader.explicit_injected(sid)[-1] in lease.py:current_role; 33 unit tests in test_lease.py pass.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/lease.py",
     "MyTradingSys/tests/test_lease.py",
@@ -56,12 +68,13 @@
     "scripts/dev/lease.py:157-175",
     "scripts/dev/role_loader.py:332-337"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Reproduce in test_lease.py: role_loader state roles=[Pipeliner, Session_Planner] (Session_Planner latest) -> current_role() today returns Pipeliner",
     "In lease.current_role use the most recent EXPLICIT role line (role_loader.explicit_injected(sid)[-1]) instead of any singleton in history; MTS_ROLE env still wins; fail closed (None) on read error as today",
     "Keep the case: Pipeliner loaded then a mere mention of another role stays Pipeliner (existing test)"
   ],
+  "taken": "2026-10-29T22:25:00Z",
   "tests": "MyTradingSys/tests/test_lease.py::test_latest_explicit_role_beats_older_singleton fails on old code; the existing later-mention-never-hides-a-singleton test stays green",
   "title": "BUG: session with a prior role in history gets mis-resolved as that old role by lease.py/role_loader, blocking claim/ship for the new role until MTS_ROLE is set explicitly",
   "weight": "IMPORTANT",
