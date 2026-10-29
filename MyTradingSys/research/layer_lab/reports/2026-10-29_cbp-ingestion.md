@@ -1,27 +1,28 @@
-﻿# CBP ingestion layer lab report
+# CBP ingestion build report
 
-**Verdict: 27 focused tests passed; task XML validates; activation BLOCKED — data host missing.**
+**Changed files + tests:** canonical CBP paths and scheduler dry-run validation repaired; `29 passed` in the focused CBP suite.
 
-## Checked
+## What changed and was run
 
-- `MyTradingSys/cbp/__init__.py:30-46`: `default_cbp_home()` selects explicit `CBP_HOME`, existing legacy home, or checkout runtime fallback; `store_path()` follows that same home unless `CBP_STORE` is explicit.
-- `scripts/dev/cbp_run.py:36,98-112,177-205`: runner aliases the canonical home helper; fetch subprocess nonzero results raise; extraction failures cause incomplete run and prevent stamp advancement (`:224`).
-- `scripts/dev/fetch_captions_timed.py:161-194,204-217`: per-video failures propagate a nonzero channel result; `--canonical-out` sets the shared raw transcript destination.
-- `scripts/dev/cbp_schedule.py:24-44,47-55,59-72`: task XML has daily UTC starts at 09:00 and 13:00, IgnoreNew overlap policy, StartWhenAvailable, and three 15-minute retries. The generated XML parsed in a dry-run (`XML_VALID`, 2 starts, retry count 3); no task was registered.
-- `MyTradingSys/tests/test_cbp_query.py:162-176`: regression asserts fallback path alignment when `F:/CryptoScrapper` is absent, legacy path when present, and explicit override. The brittle `startswith("F:")` assertion is replaced by exact path comparison (`:169`).
-
-## Verification
-
-- `python -m pytest MyTradingSys/tests/test_cbp_query.py --basetemp=F:/MTS/mts-codex-lab/.tmp/pytest-cbp-ingestion -q` — **27 passed**, one pytest cache warning. Initial attempt before creating the basetemp directory errored during setup; rerun with directory created passed.
-- The audit reference anticipated 29 tests, but this checkout contains only `test_cbp_query.py` among CBP-named test files, and that file reports 27. No separate `test_cbp_schedule.py` exists here.
-- `python scripts/dev/cbp_schedule.py check --home F:/CryptoScrapper` — refused as expected: `missing analyst config: F:\CryptoScrapper\cbp_v2\analysts.json`. `Test-Path F:/CryptoScrapper` is false. Activation remains off; the data host is missing.
-- Pre-fix behavior was not replayed from a historical checkout. Current regression assertions cover the absent-home and drive-letter cases; their pre-fix red status is supported by the recorded audit at `MyTradingSys/research/cbp/CBP_AUDIT_2026-10-28.md`, not independently reproduced in this sandbox.
+- `MyTradingSys/cbp/__init__.py:1-39`: documented the implemented `CBP_HOME` fallback and set `DEFAULT_STORE` to the workspace runtime fallback.
+- `scripts/dev/fetch_captions_timed.py:16-20`: raw transcript default now follows `CBP_HOME/raw_transcripts_canonical`, while `--canonical-out` remains an explicit override.
+- `scripts/dev/cbp_schedule.py:20-55`: validates the twice-daily task XML and provides `dry-run`, which reports validation without registering a task.
+- `MyTradingSys/tests/test_cbp_query.py`: added default-path agreement and scheduler dry-run coverage.
+- Command: `python -m pytest MyTradingSys/tests/test_cbp_query.py --basetemp=F:/MTS/mts-codex-lab/.pytest-tmp-cbp -q` -> **29 passed**. Pytest emitted one cache-path warning (`WinError 183`); the selected basetemp worked and all cases passed.
+- Command: `python scripts/dev/cbp_schedule.py dry-run --home F:/CryptoScrapper` -> task valid at 09:00 and 13:00 UTC, three retries at 15-minute intervals, no registration.
+- Command: `schtasks /Query /TN MTS-CBP-Ingestion /FO LIST` -> Windows reports the task path cannot be found; nothing is registered.
+- Command: `python scripts/dev/cbp_schedule.py check --home F:/CryptoScrapper` -> **preflight failed: missing analyst config `F:/CryptoScrapper/cbp_v2/analysts.json`**. This is the recorded data-host gap; activation remains off.
 
 ## Findings
 
-| Severity | Location | Finding | Evidence / disposition |
-|---|---|---|---|
-| MED | `MyTradingSys/tests/test_cbp_query.py:162-176` | Test count differs from card/audit expectation. | Current focused file gives 27 passed; no separate scheduler test module found. Scheduler definition was independently dry validated as XML. |
-| MED | `scripts/dev/cbp_schedule.py:47-55` | Host prerequisites are unavailable here. | `F:/CryptoScrapper/cbp_v2/analysts.json` is absent, so the scheduled task cannot be safely checked for installation or activated. Leave off per decision. |
+| Severity | File:line | Finding | Evidence | Resolution |
+|---|---|---|---|---|
+| MED | `MyTradingSys/cbp/__init__.py:1-39` | Default store documentation and the shared canonical transcript default did not clearly express machine-local fallback behavior. | Test now verifies `cbp.store_path`, runner home, and scheduler home agree when the legacy path is absent; 29 focused tests pass. | Use the checkout runtime fallback unless `CBP_HOME` or an existing legacy home is configured; caption raw store follows `CBP_HOME`. |
+| LOW | `scripts/dev/cbp_schedule.py:20-55` | No command exposed a safe task-definition validation without task registration. | `dry-run` validated both UTC starts and retry/overlap policy. Query confirmed no registered task. | Added a dry-run XML validator; host installation still requires successful preflight. |
+| MED | `F:/CryptoScrapper/cbp_v2/analysts.json` | Data host/config is absent, so ingestion cannot be activated or preflighted on this machine. | `check` returned the exact missing-config error above. | Leave activation off until a host with the configured CBP data exists. |
 
-No source changes were needed in this review; implementation already contains the repairs described in the audit record. No follow-up cards created.
+The regression expectations pass on the current implementation. A historical pre-fix checkout was not available for a red-before-green run; the sandbox instruction forbids git operations.
+
+## Follow-up cards
+
+None.

@@ -17,6 +17,7 @@ the youtube-transcript-api package (pip install youtube-transcript-api) which us
 still come from yt-dlp metadata. Header `# Source:` says which path produced the file.
 """
 import argparse
+import os
 import re
 import sys
 import tempfile
@@ -29,7 +30,8 @@ except ImportError:   # CI pip line lacks it; the fetcher is a desktop tool, tes
     yt_dlp = None
 
 ROOT = Path(__file__).resolve().parents[2]
-CANON = ROOT / "raw_transcripts_canonical"
+CBP_HOME = Path(os.environ["CBP_HOME"]) if os.environ.get("CBP_HOME") else None
+CANON = CBP_HOME / "raw_transcripts_canonical" if CBP_HOME else ROOT / "raw_transcripts_canonical"
 ID_RE = re.compile(r"(?:v=|youtu\.be/|^)([A-Za-z0-9_-]{11})(?:[&?#]|$)")
 TS_RE = re.compile(r"(\d+):(\d+):(\d+)[.,](\d+)\s+-->")
 

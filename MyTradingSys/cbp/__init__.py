@@ -5,7 +5,8 @@
 
 One JSON file (schema.json is owned by MTS, rows carry the fields listed in ROW_FIELDS), no queue, no acks.
 Written only by scripts/dev/cbp_run.py. Data lives outside the public repo (CBP_STORE, default
-F:/CryptoScrapper/cbp_store/rows.json); transcripts and runtime data never enter this repo.
+CBP_HOME/cbp_store/rows.json; CBP_HOME falls back to this checkout's runtime_data/cbp when the legacy
+F:/CryptoScrapper directory is absent); transcripts and runtime data never enter this repo.
 Rows are analyst claims, not signals: anything that trades still passes the backtest gate (B139).
 """
 import json
@@ -18,7 +19,7 @@ sys.dont_write_bytecode = True
 
 ROOT = Path(__file__).resolve().parents[2]
 LEGACY_HOME = Path("F:/CryptoScrapper")
-DEFAULT_STORE = LEGACY_HOME / "cbp_store" / "rows.json"
+DEFAULT_STORE = ROOT / "runtime_data" / "cbp" / "cbp_store" / "rows.json"
 WINDOW_DAYS = 5
 ROW_FIELDS = ("analyst", "video_id", "published", "bias", "quotes", "trades", "pointers",
               "symbols", "quote_verified", "expires_at")
