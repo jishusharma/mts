@@ -1,34 +1,57 @@
 {
   "approved_by": "operator 2026-10-30 via Eagle_Eyes (d-eagle-eyes-missed-boxes-defaults)",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/gemini_queue.py run krown-views-via-gemini-what-krown-says-a:low",
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/krown_capture_2026-10-16/KROWN_VIEWS_HIGHS.md"
+  ],
   "created": "2026-10-29T19:21:21Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "KROWN_VIEWS_HIGHS.md covers the 6 topics (or says NOT SAID per topic) and verify_extract_quotes.py exits 0 on it; commit on gemini-q branch reviewed and shipped by a Claude session",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Gemini extracts what Krown says about highs, higher highs, lower highs, tick below, daily close above/below a level and broken vs unbroken highs, each with a verbatim quote and video id.",
   "id": "krown-views-via-gemini-what-krown-says-a",
   "lane": "DSA-NUC",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "krown capture: channel inventory (3,841 videos classified), 6-video pilot RULES_DRAFT, 4 b",
+      "ref": "f94f2279f891",
+      "utc": "2026-10-16T17:30:59Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-30 T0-ONLY (planner-refine-0930; OURS ROUTINE: extraction with machine quote check, no verdict). Operator 10-30 ask, approved_by set.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-29T21:13:12Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/krown_capture_2026-10-16/transcripts",
+    "MyTradingSys/research/krown_capture_2026-10-16/KROWN_VIEWS_HIGHS.md"
+  ],
+  "scope_out": [
+    "turning any view into a rule or layer parameter; trade results; the live tree"
+  ],
+  "scope_sha": "f94f2279f891",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
+  "state": "ready",
+  "steps": [
+    "Queue: python scripts/dev/gemini_queue.py run krown-views-via-gemini-what-krown-says-a:low (NUC)",
+    "Output KROWN_VIEWS_HIGHS.md: per topic, `> \"<verbatim quote>\"` then `**Source GPS: <VIDEO_ID> | <BEGIN|MIDDLE|END>**`",
+    "Verify: python scripts/dev/verify_extract_quotes.py MyTradingSys/research/krown_capture_2026-10-16/KROWN_VIEWS_HIGHS.md"
+  ],
   "tests": "",
   "title": "Krown views via Gemini: what Krown says about highs, higher highs, lower highs, 'tick below', daily close above/below a level, what a broken vs unbroken high means; quotes verified with verify_extract_quotes (operator 10-30)",
-  "weight": "",
+  "weight": "ROUTINE",
   "worker": ""
 }
