@@ -2,6 +2,17 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-29T16:57:41Z",
+    "misses": 3,
+    "reads": [
+      "MyTradingSys/system/ANNOUNCEMENTS.md",
+      "MyTradingSys/research/wiring_audit_2026-10/WIRING_MALKAN_KROWN.md",
+      "MyTradingSys/research/wiring_audit_2026-10/test_wiring_malkan_krown.py"
+    ],
+    "session": "agent-af635ce5110930dec"
+  },
   "created": "2026-10-27T20:38:49Z",
   "depends_on": [
     "extraction-ledger-all-sources"
