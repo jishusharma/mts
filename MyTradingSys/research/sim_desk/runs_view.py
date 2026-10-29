@@ -1,6 +1,7 @@
 """Read-only view of saved desk runs (results/desk-*.json): a table row per run and one full run for side-by-side.
 Only reads files the desk already wrote; fetches nothing. Foreign or broken files are skipped."""
 import json
+from datetime import date
 import re
 from pathlib import Path
 
@@ -22,7 +23,13 @@ def _nums(text):
 
 def _in_dev(doc):
     ds = DATE_RE.findall(str(doc.get('window', '')))
-    return len(ds) >= 2 and all(DEV_FIRST <= d <= DEV_LAST for d in ds[:2])   # no window stated = not shown (fail closed)
+    if len(ds) < 2:
+        return False
+    try:
+        start, end = (date.fromisoformat(d) for d in ds[:2])
+    except ValueError:
+        return False
+    return DEV_FIRST <= start.isoformat() <= end.isoformat() <= DEV_LAST
 
 
 def _row(doc):
@@ -72,7 +79,10 @@ def list_tests(results_dir):
         doc = json.loads((Path(results_dir) / '_catalogue.json').read_text(encoding='utf-8'))
     except (OSError, ValueError):
         return []
-    rows = [r for r in doc.get('rows', []) if isinstance(r, dict) and r.get('id')]
+    if not isinstance(doc, dict) or not isinstance(doc.get('rows'), list):
+        return []
+    rows = [r for r in doc['rows'] if isinstance(r, dict) and isinstance(r.get('id'), str)
+            and TEST_ID_RE.fullmatch(r['id'])]
     rows.sort(key=lambda r: (str(r.get('date') or ''), str(r.get('title') or '')), reverse=True)
     return rows
 
@@ -87,4 +97,7 @@ def get_test(results_dir, tid):
         doc = json.loads((Path(results_dir) / f'{tid}.json').read_text(encoding='utf-8'))
     except (OSError, ValueError):
         return None
-    return doc if isinstance(doc, dict) else None
+    if not isinstance(doc, dict) or doc.get('id') != tid:
+        return None
+    # The all-tests endpoint must preserve the same DEV boundary as /api/runs.
+    return doc if not ID_RE.fullmatch(tid) or _in_dev(doc) else None

@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-29T22:46:12Z",
+  "depends_on": [],
+  "done_when": "Independent Cloud review and verification accept the fix and evidence before merge.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Preserve the DEV boundary on desk result cards and tolerate corrupt catalogues.",
+  "id": "audit48-simdesk-card-boundary",
+  "kind": "build",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "IMPLEMENTED; AWAITING CLOUD REVIEW, do not auto-merge.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/runs_view.py",
+    "MyTradingSys/research/sim_desk/test_backfill.py"
+  ],
+  "scope_out": [
+    "live tree",
+    "deployment",
+    "trading activation"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "active",
+  "steps": [
+    "Run fail-first regressions and focused related suites.",
+    "Cloud independently reviews and verifies branch before trunk merge."
+  ],
+  "tests": "8 failing subcases before fix; 40 tests and 8 subtests pass; 2 existing data-dependent skips.",
+  "title": "48h audit: simulator test-card endpoint bypasses desk DEV window",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

@@ -1,0 +1,60 @@
+..                                                               [100%]
+================================== FAILURES ===================================
+____________ ReadBoundary.test_corrupt_catalogue_is_empty (doc=[]) ____________
+MyTradingSys\research\sim_desk\test_backfill.py:115: in test_corrupt_catalogue_is_empty
+    self.assertEqual(runs_view.list_tests(root), [])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+MyTradingSys\research\sim_desk\runs_view.py:75: in list_tests
+    rows = [r for r in doc.get('rows', []) if isinstance(r, dict) and r.get('id')]
+                       ^^^^^^^
+E   AttributeError: 'list' object has no attribute 'get'
+___________ ReadBoundary.test_corrupt_catalogue_is_empty (doc=None) ___________
+MyTradingSys\research\sim_desk\test_backfill.py:115: in test_corrupt_catalogue_is_empty
+    self.assertEqual(runs_view.list_tests(root), [])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+MyTradingSys\research\sim_desk\runs_view.py:75: in list_tests
+    rows = [r for r in doc.get('rows', []) if isinstance(r, dict) and r.get('id')]
+                       ^^^^^^^
+E   AttributeError: 'NoneType' object has no attribute 'get'
+______ ReadBoundary.test_corrupt_catalogue_is_empty (doc={'rows': None}) ______
+MyTradingSys\research\sim_desk\test_backfill.py:115: in test_corrupt_catalogue_is_empty
+    self.assertEqual(runs_view.list_tests(root), [])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+MyTradingSys\research\sim_desk\runs_view.py:75: in list_tests
+    rows = [r for r in doc.get('rows', []) if isinstance(r, dict) and r.get('id')]
+                       ^^^^^^^^^^^^^^^^^^^
+E   TypeError: 'NoneType' object is not iterable
+_______ ReadBoundary.test_corrupt_catalogue_is_empty (doc={'rows': 7}) ________
+MyTradingSys\research\sim_desk\test_backfill.py:115: in test_corrupt_catalogue_is_empty
+    self.assertEqual(runs_view.list_tests(root), [])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+MyTradingSys\research\sim_desk\runs_view.py:75: in list_tests
+    rows = [r for r in doc.get('rows', []) if isinstance(r, dict) and r.get('id')]
+                       ^^^^^^^^^^^^^^^^^^^
+E   TypeError: 'int' object is not iterable
+_ ReadBoundary.test_desk_test_card_obeys_same_dev_boundary_as_saved_runs (window='2025-01-01 to 2025-02-01') _
+MyTradingSys\research\sim_desk\test_backfill.py:103: in test_desk_test_card_obeys_same_dev_boundary_as_saved_runs
+    self.assertIsNone(runs_view.get_test(root, rid))
+E   AssertionError: {'id': 'desk-rsi-1234abcd', 'window': '2025-01-01 to 2025-02-01'} is not None
+_ ReadBoundary.test_desk_test_card_obeys_same_dev_boundary_as_saved_runs (window='not stated') _
+MyTradingSys\research\sim_desk\test_backfill.py:103: in test_desk_test_card_obeys_same_dev_boundary_as_saved_runs
+    self.assertIsNone(runs_view.get_test(root, rid))
+E   AssertionError: {'id': 'desk-rsi-1234abcd', 'window': 'not stated'} is not None
+_ ReadBoundary.test_desk_test_card_obeys_same_dev_boundary_as_saved_runs (window='2023-12-01 to 2023-01-01') _
+MyTradingSys\research\sim_desk\test_backfill.py:103: in test_desk_test_card_obeys_same_dev_boundary_as_saved_runs
+    self.assertIsNone(runs_view.get_test(root, rid))
+E   AssertionError: {'id': 'desk-rsi-1234abcd', 'window': '2023-12-01 to 2023-01-01'} is not None
+_ ReadBoundary.test_desk_test_card_obeys_same_dev_boundary_as_saved_runs (window='2023-02-30 to 2023-03-01') _
+MyTradingSys\research\sim_desk\test_backfill.py:103: in test_desk_test_card_obeys_same_dev_boundary_as_saved_runs
+    self.assertIsNone(runs_view.get_test(root, rid))
+E   AssertionError: {'id': 'desk-rsi-1234abcd', 'window': '2023-02-30 to 2023-03-01'} is not None
+=========================== short test summary info ===========================
+SUBFAILED(doc=[]) MyTradingSys/research/sim_desk/test_backfill.py::ReadBoundary::test_corrupt_catalogue_is_empty
+SUBFAILED(doc=None) MyTradingSys/research/sim_desk/test_backfill.py::ReadBoundary::test_corrupt_catalogue_is_empty
+SUBFAILED(doc={'rows': None}) MyTradingSys/research/sim_desk/test_backfill.py::ReadBoundary::test_corrupt_catalogue_is_empty
+SUBFAILED(doc={'rows': 7}) MyTradingSys/research/sim_desk/test_backfill.py::ReadBoundary::test_corrupt_catalogue_is_empty
+SUBFAILED(window='2025-01-01 to 2025-02-01') MyTradingSys/research/sim_desk/test_backfill.py::ReadBoundary::test_desk_test_card_obeys_same_dev_boundary_as_saved_runs
+SUBFAILED(window='not stated') MyTradingSys/research/sim_desk/test_backfill.py::ReadBoundary::test_desk_test_card_obeys_same_dev_boundary_as_saved_runs
+SUBFAILED(window='2023-12-01 to 2023-01-01') MyTradingSys/research/sim_desk/test_backfill.py::ReadBoundary::test_desk_test_card_obeys_same_dev_boundary_as_saved_runs
+SUBFAILED(window='2023-02-30 to 2023-03-01') MyTradingSys/research/sim_desk/test_backfill.py::ReadBoundary::test_desk_test_card_obeys_same_dev_boundary_as_saved_runs
+8 failed, 2 passed, 7 deselected in 0.36s

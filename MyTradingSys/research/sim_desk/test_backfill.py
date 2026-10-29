@@ -88,3 +88,28 @@ class NothingInvented(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ReadBoundary(unittest.TestCase):
+    def test_desk_test_card_obeys_same_dev_boundary_as_saved_runs(self):
+        import tempfile
+        from pathlib import Path
+        rid = "desk-rsi-1234abcd"
+        with tempfile.TemporaryDirectory() as root:
+            path = Path(root) / (rid + ".json")
+            for window in ("2025-01-01 to 2025-02-01", "not stated", "2023-12-01 to 2023-01-01", "2023-02-30 to 2023-03-01"):
+                path.write_text(json.dumps({"id": rid, "window": window}), encoding="utf-8")
+                with self.subTest(window=window):
+                    self.assertIsNone(runs_view.get_test(root, rid))
+                    self.assertIsNone(runs_view.get_run(root, rid))
+            path.write_text(json.dumps({"id": rid, "window": "DEV only 2023-01-01 to 2023-02-01"}), encoding="utf-8")
+            self.assertEqual(runs_view.get_test(root, rid)["id"], rid)
+
+    def test_corrupt_catalogue_is_empty(self):
+        import tempfile
+        from pathlib import Path
+        with tempfile.TemporaryDirectory() as root:
+            for doc in ([], None, {"rows": None}, {"rows": 7}):
+                (Path(root) / "_catalogue.json").write_text(json.dumps(doc), encoding="utf-8")
+                with self.subTest(doc=doc):
+                    self.assertEqual(runs_view.list_tests(root), [])
