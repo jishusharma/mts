@@ -5,7 +5,7 @@
   "commands": [],
   "context": {
     "calls_to_edit": 25,
-    "folded": "2026-10-29T22:09:10Z",
+    "folded": "2026-10-29T22:13:01Z",
     "misses": 24,
     "reads": [
       "MyTradingSys/backtest/fetch_binance_archive.py",
