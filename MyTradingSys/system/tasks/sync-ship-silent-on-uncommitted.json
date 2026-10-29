@@ -13,13 +13,23 @@
   "id": "sync-ship-silent-on-uncommitted",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sync.ahead_commits: compare with the merge-base, not the trunk tip (B17)",
+      "ref": "d5946cee2d90",
+      "utc": "2026-10-28T15:50:09Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DRAFT 2026-10-29 Session_Planner (OURS): sync.py is the ship path so IMPORTANT: needs a real REVIEWED stamp before ready. No twin: B6 only filters CRLF noise, ship --result commits files on request. | REVIEWED:2026-10-29 ACCEPT (reviewer-raw-cards-b) Verified sync.py ship() not-files branch and tree_state exist as cited; no twin.",
+  "note": "DRAFT 2026-10-29 Session_Planner (OURS): sync.py is the ship path so IMPORTANT: needs a real REVIEWED stamp before ready. No twin: B6 only filters CRLF noise, ship --result commits files on request.\nREVIEWED:2026-10-29 ACCEPT (reviewer-raw-cards-b) Verified sync.py ship() not-files branch and tree_state exist as cited; no twin.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-29T16:55:38Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -28,9 +38,10 @@
   "scope_out": [
     "gate logic; live tree; ship --result commit path; push-race code"
   ],
+  "scope_sha": "d5946cee2d90",
   "size": "S",
   "sources": [],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Read sync.py ship() lines 1139-1149 (the 'not files' branch) and tree_state/work at 1249-1290 (B6: CRLF-only is noise)",
     "Write the failing test in test_sync.py: throwaway repo, one untracked real file, no commit -> ship must return/exit with NOT SHIPPED and nonzero",
