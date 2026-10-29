@@ -1415,3 +1415,8 @@ REMOVED 2026-10-24 (43d3bfc8f): offer_guard.py is gone; the rule now lives in CL
 ```json
 {"id": "d-eagle-eyes-missed-boxes-defaults", "order": 66, "date": "2026-10-30", "status": "DECIDED", "question": "Decision boxes the operator could not click (they vanished when he pasted new shots): which way?", "answer": "OPERATOR (2026-10-30): \"I was not able to click on so many decision boxes ... I hope that you have the answers for everything and you don't have to wait\". DECISION (OURS, safe defaults): YES to alerts-v2, anticipation/probability panel, level-approach study, Krown views, critical-test wave 2, Kurisko quad on 15m/1h, Habib whole-plan scoring on the holdout (one shot); next Eagle_Eyes counts = OI and RSI/WT coils around the US open. Not defaulted: mts.pitchfork=true live without a decision (live-tree change, operator only). Eagle_Eyes stops ending replies on click-boxes; defaults are taken and listed.", "done": "approved_by set on 7 cards"}
 ```
+
+## d-live-aid-full-width | decided 2026-10-30 | live-aid builder
+```json
+{"id": "d-live-aid-full-width", "order": 67, "date": "2026-10-30", "status": "DECIDED", "question": "Live aid layout: narrow column (R05) or full screen?", "answer": "OPERATOR (2026-10-30): \"make it like fill the screen horizontally as well, and improve the look and feel ... the text is so small and it looks like a lot of clutter ... I need only the most important things, but I do not know how to decide it right now.\" Default picked by the builder (OURS): full width, bigger text, a glance row (price, VWAP distance, nearest level each side, stay confidence + rule R, session); extra columns behind a More detail switch; source notes folded.", "done": "live_aid.html R11 layout"}
+```
