@@ -5,6 +5,19 @@
     "mvn -q test -Dtest=LiquidationLogWiringTest+LiquidationEventLogTest",
     "python scripts/dev/sync.py ship --result \"liq accumulator wired into statemachine JVM\" -m \"wire BinanceLiquidationAccumulator into Main statemachine\""
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-29T23:21:50Z",
+    "misses": 26,
+    "reads": [
+      "scripts/dev/test_refresh_main_checkout.py",
+      "src/test/java/datafeed/LiquidationEventLogTest.java",
+      "scripts/dev/run_all_tests.py",
+      "scripts/dev/run_extra_tests.py",
+      "scripts/dev/refresh_main_checkout.py"
+    ],
+    "session": "agent-a1446fdde65729ea6"
+  },
   "created": "2026-10-29T21:54:23Z",
   "depends_on": [],
   "done_when": "After a JVM restart, runtime_data/liq_events/BTCUSDT.jsonl exists and grows (checked within 30 min by a coordinator); LiquidationLogWiringTest passes (fails on pre-change Main); mvn -q test green; LIQ_DEPLOY.md steps 4-5 name the statemachine JVM. Verify: git cherry origin/fast-track <sha> empty and ls-tree shows the 3 files.",
