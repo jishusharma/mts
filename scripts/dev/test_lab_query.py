@@ -15,6 +15,20 @@ REPO = HERE.parents[1]
 TOOL = HERE / "lab_query.py"
 
 
+SHALLOW_REASON = "shallow clone: git log history unavailable (depth-limited CI checkout)"
+
+
+def _is_shallow(repo):
+    p = subprocess.run(["git", "-C", str(repo), "rev-parse", "--is-shallow-repository"],
+                       capture_output=True, text=True, encoding="utf-8")
+    return p.stdout.strip() == "true"
+
+
+def history_skip_reason(probe=_is_shallow):
+    """'' when git history is complete; else SHALLOW_REASON so history-dependent tests skip instead of failing."""
+    return SHALLOW_REASON if probe(REPO) else ""
+
+
 def run(root, *args):
     p = subprocess.run([sys.executable, str(TOOL), "--root", str(root), *args],
                        capture_output=True, text=True, encoding="utf-8")
@@ -181,11 +195,18 @@ class LabQueryRealRepo(unittest.TestCase):
         rc, out, _ = run(REPO, "layers", "--format", "json")
         self.assertEqual({l["id"] for l in json.loads(out)["layers"]}, {l["id"] for l in m["layers"]})
 
+    @unittest.skipIf(history_skip_reason() != "", history_skip_reason())
     def test_tom_spec_latest_commit_matches_git(self):
         rel = "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md"
         want = git(REPO, "log", "-1", "--format=%h", "--", rel)
         rc, out, _ = run(REPO, "changes", "tom", "--n", "500", "--format", "json")
         self.assertIn(want, [c["sha"][:len(want)] for c in json.loads(out)["commits"]])
+
+
+class ShallowSkipTests(unittest.TestCase):
+    def test_history_skip_reason_follows_shallow_probe(self):
+        self.assertEqual(history_skip_reason(probe=lambda r: True), SHALLOW_REASON)
+        self.assertEqual(history_skip_reason(probe=lambda r: False), "")
 
 
 if __name__ == "__main__":

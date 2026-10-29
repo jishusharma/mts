@@ -472,10 +472,10 @@ button:hover { background: #2e3946; }
     out.push(bullet('Squeeze read: price vs open interest', 'Deribit OI, OURS window up to 10 min, eps 0.05%', sq === null ? nid(fresh(S.oiT) ? 'needs 2 min of OI samples' : 'OI feed ' + why) :
       'price ' + sgn(dp * 100, 2) + '%, OI ' + sgn(doi * 100, 2) + '% over ' + Math.round((h[h.length - 1].t - h[0].t) / 60000) + ' min: ' + sq));
     // 6 CVD vs delta
-    var fl = fresh(S.trT) ? A.flow(S.trades, now) : null;
+    var fl = A.flowLive(S.trT, S.dbtT, now) ? A.flow(S.trades, now) : null;
     flags.push(A.flagFlow(fl, sd));
-    out.push(bullet('CVD vs delta (taker flow)', 'Deribit trades, OURS windows 15 min / 60 s', !fl ? nid('trades feed ' + why) :
-      'CVD ' + sgn(fl.cvd, 0) + ' USD over ' + Math.round(fl.spanMs / 60000) + ' min, delta ' + sgn(fl.delta, 0) + ' USD last 60 s: ' + (Math.sign(fl.cvd) === Math.sign(fl.delta) ? 'agree' : 'disagree') +
+    out.push(bullet('CVD vs delta (taker flow)', 'Deribit trades, OURS windows 15 min / 60 s', !fl ? nid(S.trT ? 'trades feed ' + why : S.dbtT ? 'no trade printed since this page connected' : 'trades feed ' + why) :
+      'CVD ' + sgn(fl.cvd, 0) + ' USD over ' + Math.round(fl.spanMs / 60000) + ' min, delta ' + sgn(fl.delta, 0) + ' USD last 60 s: ' + (fl.delta === 0 || fl.cvd === 0 ? 'quiet tape' : Math.sign(fl.cvd) === Math.sign(fl.delta) ? 'agree' : 'disagree') +
       ' (counted since this page connected)'));
     // 7 stay confidence, 8 rule R
     var cf = A.confidence(flags);

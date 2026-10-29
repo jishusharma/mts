@@ -834,7 +834,7 @@ print("logged")
             if (-not $NoBeep) {
                 # kill prior popup before spawning new - never more than 1 on screen
         Get-Process powershell,pwsh -ErrorAction SilentlyContinue | ForEach-Object {
-            if ($_.Id -ne $PID -and $_.MainWindowTitle -match "MTS #") {
+            if ($_.Id -ne $PID -and $_.MainWindowTitle -match "^MTS (ALERT )?#\d+") {
                 Stop-Process -Id $_.Id -Force -ErrorAction SilentlyContinue
             }
         }
