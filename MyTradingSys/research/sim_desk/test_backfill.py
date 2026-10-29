@@ -86,8 +86,6 @@ class NothingInvented(unittest.TestCase):
                     self.assertIn(w["label"], ("SOURCED", "OURS"))
 
 
-if __name__ == "__main__":
-    unittest.main()
 
 
 class ReadBoundary(unittest.TestCase):
@@ -109,7 +107,12 @@ class ReadBoundary(unittest.TestCase):
         import tempfile
         from pathlib import Path
         with tempfile.TemporaryDirectory() as root:
-            for doc in ([], None, {"rows": None}, {"rows": 7}):
+            # Dummy outputs must fail closed instead of becoming catalogue rows.
+            for doc in ("dummy", [], None, {"rows": None}, {"rows": 7}):
                 (Path(root) / "_catalogue.json").write_text(json.dumps(doc), encoding="utf-8")
                 with self.subTest(doc=doc):
                     self.assertEqual(runs_view.list_tests(root), [])
+
+
+if __name__ == "__main__":
+    unittest.main()

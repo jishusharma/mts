@@ -335,7 +335,7 @@ def test_query_malformed_row_does_not_hide_valid_rows(tmp_path, field, bad):
     assert cbp.query(analyst='Krown', channel='@krown', store=st, now=NOW) == []
     assert cbp.query(analyst='Krown', store=st, now=NOW) == [good]
 
-@pytest.mark.parametrize('payload', [[], None, 7, 'bad', {'rows': None}, {'rows': 7}])
+@pytest.mark.parametrize('payload', [[], None, 7, 'dummy', {'rows': None}, {'rows': 7}])
 def test_query_invalid_store_envelope_is_empty(tmp_path, payload):
     st = tmp_path / 'bad-envelope.json'
     st.write_text(json.dumps(payload), encoding='utf-8')

@@ -15,7 +15,7 @@
   "lane": "CODEX",
   "layers": [],
   "live_path": false,
-  "mutation_check": "",
+  "mutation_check": "MyTradingSys/research/sim_desk/test_backfill.py::test_corrupt_catalogue_is_empty",
   "note": "IMPLEMENTED; AWAITING CLOUD REVIEW, do not auto-merge.",
   "prio": 1,
   "refine_tries": 0,

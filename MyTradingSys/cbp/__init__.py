@@ -119,7 +119,7 @@ def is_tradable(r):
     """A trade with entry, target, invalidation and valid direction all stated (the analyst's words, nothing filled in)."""
     return any(
         t.get("direction") in DIRECTIONS and
-        all(str(t.get(k) or "").strip() not in ("", "вЂ”") for k in ("entry", "target", "invalidation"))
+        all(str(t.get(k) or "").strip() not in ("", chr(0x2014)) for k in ("entry", "target", "invalidation"))
         for t in r.get("trades") or []
     )
 

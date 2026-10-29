@@ -89,7 +89,7 @@ class T(unittest.TestCase):
         self.assertEqual(self.s.cases(), [])
 
     def test_non_signal_events_rejected(self):
-        for ev in ({"type": "deposit", "amount": 5}, {"code": "K-HBEAR", "tf": "1d"}, None,
+        for ev in ({"dummy": True}, {"type": "deposit", "amount": 5}, {"code": "K-HBEAR", "tf": "1d"}, None,
                    sig(rsi_A=float("nan"))):
             self.assertEqual(lv.process_signal(self.s, ev, self.chart, self.send), "REJECTED")
         self.assertEqual(self.sent, [])
@@ -147,6 +147,16 @@ class T(unittest.TestCase):
         self.assertNotIn("validated", result)
         self.assertEqual(lv.process_signal(self.s, SIG, self.chart, self.send), "SENT")
         self.assertIn("WRONG", self.sent[0][0])
+
+
+
+    def test_doubt_store_write_error_does_not_escape_or_claim_validation(self):
+        from unittest.mock import patch
+        with patch.object(lv, "_write", side_effect=OSError("disk unavailable")):
+            self.assertEqual(lv.match(self.s, SIG), "DOUBT")
+            self.assertEqual(lv.process_signal(self.s, SIG, self.chart, self.send), "PENDING")
+        self.assertEqual(len(self.sent), 1)
+        self.assertIn("DOUBT", self.sent[0][0])
 
 
 if __name__ == "__main__":

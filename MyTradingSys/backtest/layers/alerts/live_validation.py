@@ -152,7 +152,7 @@ def match(store, sig):
                     return "matches validated case #%d" % c["case"]
                 return "matches reviewed case #%d: %s" % (c["case"], c["verdict"])
         store.add_doubt(sig, "no validated look-alike in %s" % key)
-    except (ValueError, KeyError, TypeError, StoreError):
+    except (ValueError, KeyError, TypeError, StoreError, OSError):
         return "DOUBT"
     return "DOUBT"
 

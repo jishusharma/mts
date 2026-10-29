@@ -15,7 +15,7 @@
   "lane": "CODEX",
   "layers": [],
   "live_path": false,
-  "mutation_check": "",
+  "mutation_check": "MyTradingSys/tests/validation/test_live_validation_store.py::test_non_signal_events_rejected",
   "note": "IMPLEMENTED; AWAITING CLOUD REVIEW, do not auto-merge.",
   "prio": 1,
   "refine_tries": 0,

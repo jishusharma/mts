@@ -1,0 +1,22 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_____ T.test_doubt_store_write_error_does_not_escape_or_claim_validation ______
+MyTradingSys\tests\validation\test_live_validation_store.py:156: in test_doubt_store_write_error_does_not_escape_or_claim_validation
+    self.assertEqual(lv.match(self.s, SIG), "DOUBT")
+                     ^^^^^^^^^^^^^^^^^^^^^
+MyTradingSys\backtest\layers\alerts\live_validation.py:154: in match
+    store.add_doubt(sig, "no validated look-alike in %s" % key)
+MyTradingSys\backtest\layers\alerts\live_validation.py:129: in add_doubt
+    _write(self.p_doubts, {"doubts": d})
+C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\Lib\unittest\mock.py:1176: in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\Lib\unittest\mock.py:1180: in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\Lib\unittest\mock.py:1241: in _execute_mock_call
+    raise effect
+E   OSError: disk unavailable
+=========================== short test summary info ===========================
+FAILED MyTradingSys/tests/validation/test_live_validation_store.py::T::test_doubt_store_write_error_does_not_escape_or_claim_validation
+1 failed, 15 deselected in 0.46s
