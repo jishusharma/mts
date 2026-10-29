@@ -547,7 +547,10 @@ def handle(payload, repo=REPO):
     else:
         return _reminder(sid)
     text = build_text(name, repo, git_fetch(repo), fallback, login=login_letter(prompt))
-    mark_injected(sid, name, dict(LAST_META), explicit=explicit)
+    meta = dict(LAST_META)
+    if name == "Supervisor" and login_letter(prompt):
+        meta["login"] = login_letter(prompt)    # stop_guard.supervisor_reason needs the login
+    mark_injected(sid, name, meta, explicit=explicit)
     return _out("UserPromptSubmit", text)
 
 
