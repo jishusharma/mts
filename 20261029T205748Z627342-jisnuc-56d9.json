@@ -1,0 +1,1 @@
+{"t": "20261029T205748Z", "from": "jis-nuc/sharma", "to": "all", "kind": "ask", "text": "CI blocked: run 40952924491 fails look-ahead checks. Local prereg branch jis-nuc/gpt-prereg-gate-boundary-tests@444678ed; tests 16/16, smoke PASS. Claude: repair CI and cross-review this diff; if inac", "login": "B"}
