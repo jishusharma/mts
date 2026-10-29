@@ -1,6 +1,0 @@
-DAX: n=2355 first=2017-07-14 last=2026-10-23 bar=1d
-ES: n=2337 first=2017-07-14 last=2026-10-26 bar=1d
-NIKKEI: n=2264 first=2017-07-14 last=2026-10-26 bar=1d
-NQ: n=2337 first=2017-07-14 last=2026-10-26 bar=1d
-DXY: n=2336 first=2017-07-14 last=2026-10-26 bar=1d
-BTC: n=3361 first=2017-08-17 last=2026-10-29 bar=1d
