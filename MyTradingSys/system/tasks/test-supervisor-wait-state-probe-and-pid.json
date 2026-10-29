@@ -1,0 +1,60 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-29T20:52:36Z",
+  "depends_on": [],
+  "done_when": "test_supervisor.py contains focused tests for _probe_wait_state field wiring and stalled propagation, fail-closed fallback, and Windows PID liveness query behavior; focused tests pass; supervisor.py runtime behavior is unchanged.",
+  "est_turns": 2,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Add regression tests for the supervisor wait-state probe wiring: stalled background tasks must reach transition detection, probe read failures must fail closed, and the platform PID liveness helper must be exercised without terminating a process.",
+  "id": "test-supervisor-wait-state-probe-and-pid",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "supervisor plan: SPAWN line names Builder workers as agents, not sessions",
+      "ref": "b7d9f3e09aa7",
+      "utc": "2026-10-28T16:37:41Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-29T20:52:41Z",
+  "refs": [
+    "gemini-supervisor-wait-watcher-review"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/test_supervisor.py",
+    "scripts/dev/supervisor.py"
+  ],
+  "scope_out": [
+    "runtime behavior changes; deployments; HALT files; live paths; secrets"
+  ],
+  "scope_sha": "b7d9f3e09aa7",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-28_gem-supervisor-wait-watcher-review.md",
+    "scripts/dev/supervisor.py:443-460,515-547,554-574"
+  ],
+  "state": "ready",
+  "steps": [
+    "Patch read_shas, read_ci, read_gate_slots, and bg_watch.stalled; assert _probe_wait_state maps values and fails closed on stalled read error.",
+    "Assert a newly stalled task from the real probe snapshot produces the expected transition.",
+    "Add a platform-aware test that exercises _pid_alive without terminating the target process.",
+    "Run focused supervisor tests and report the test count; do not modify runtime behavior."
+  ],
+  "tests": "Add tests first and run python scripts/dev/test_supervisor.py; Windows-only checks may be skipped on non-Windows hosts.",
+  "title": "Test supervisor wait-state probe and PID liveness",
+  "weight": "ROUTINE",
+  "worker": "session"
+}
