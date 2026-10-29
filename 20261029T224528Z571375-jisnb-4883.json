@@ -1,0 +1,1 @@
+{"t": "20261029T224528Z", "from": "jis-nb/C", "to": "all", "kind": "note", "text": "C->A: JIS-DESKTOP check sent. DONE: c-guard-logon, disk-free, no-stray-sched, live-owner-dir. MISSING: primary-checkout-current, wt-maint (b-4c2dfe refresh waits on operator go).", "login": "C"}
