@@ -17,6 +17,17 @@ def cp(rc, err=""):
     return subprocess.CompletedProcess([], rc, "", err)
 
 
+class RootConfigTest(unittest.TestCase):
+    def test_root_from_env(self):
+        with tempfile.TemporaryDirectory() as t, mock.patch.dict("os.environ", {"MTS_GQ_ROOT": t}):
+            self.assertEqual(gq.root(), Path(t))
+
+    def test_root_default_when_env_unset(self):
+        env = {k: v for k, v in __import__("os").environ.items() if k != "MTS_GQ_ROOT"}
+        with mock.patch.dict("os.environ", env, clear=True):
+            self.assertEqual(gq.root(), gq.ROOT)
+
+
 class ClaimRetryTest(unittest.TestCase):
     def test_reject_3_times_then_accept(self):
         seq = [cp(1, REJ), cp(1, REJ), cp(1, REJ), cp(0)]
