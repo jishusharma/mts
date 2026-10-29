@@ -1,9 +1,22 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-29T23:28:30Z",
   "commands": [
     "python -m pytest MyTradingSys/execution/test_mainnet_pnl.py -q"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-29T23:28:29Z",
+    "misses": 19,
+    "reads": [
+      "MyTradingSys/execution/test_mainnet_pnl.py",
+      "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEMS_1_2_5.md",
+      "MyTradingSys/research/critical_test_wave1_2026-10-30/item2_settlement_identity.py",
+      "MyTradingSys/research/loose_code/txlog_capture_2026-10-10_jishu_11.json"
+    ],
+    "session": "agent-ab0f4aaa4350dd087"
+  },
   "created": "2026-10-29T19:38:26Z",
   "depends_on": [],
   "done_when": "test_recorded_settlement_identity exists in test_mainnet_pnl.py (expectedFailure, expected from the identity not code), pytest on the file passes; mainnet_pnl.py unchanged (git diff empty); shipped, cherry empty",
@@ -15,6 +28,12 @@
   "id": "wave1-settlement-pnl-identity-gap",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "test_mainnet_pnl.py::test_recorded_settlement_identity xfail, gap -4.82e-06 BTC",
+      "ref": "98e0e960b",
+      "utc": "2026-10-29T23:28:30Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -42,7 +61,12 @@
   "refined_by": "",
   "refreshed": "2026-10-29T22:04:06Z",
   "refs": [],
-  "result": "",
+  "result": "test_mainnet_pnl.py::test_recorded_settlement_identity xfail, gap -4.82e-06 BTC",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/execution/test_mainnet_pnl.py",
     "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEMS_1_2_5.md"
@@ -59,13 +83,14 @@
     "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEMS_1_2_5.md:27-32",
     "MyTradingSys/research/critical_test_wave1_2026-10-30/item2_settlement_identity.py:11-22"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "In test_mainnet_pnl.py add test_recorded_settlement_identity: load research/loose_code/txlog_capture_2026-10-10_jishu_11.json, window = entries with ts_utc >= 2026-10-10T08:00:00Z (3 trades), expected = sum(change) + account_summary.session_rpl + session_upl (hand-worked -6.30e-07), assert daily_pnl_btc(window, summary) == approx(expected).",
     "Decorate it @unittest.expectedFailure with the reason 'OURS assumption: session_rpl/upl were 0 after the 10-10 08:00 settlement; see settlement-capture-testnet-second-log'; run it once without the decorator to confirm it fails today (gap -4.82e-06).",
     "Do not edit mainnet_pnl.py. Append two lines to ITEMS_1_2_5.md Item 2: the test name and 'formula fix waits on settlement-capture-testnet-second-log'.",
     "python -m pytest MyTradingSys/execution/test_mainnet_pnl.py -q passes (xfail counted)."
   ],
+  "taken": "2026-10-29T23:28:30Z",
   "tests": "test_mainnet_pnl.py::test_recorded_settlement_identity: identity-based expected value, fails without the expectedFailure decorator (daily_pnl_btc returns -5.45e-06 vs -6.30e-07)",
   "title": "Settlement P/L identity gap, offline part: pin the recorded 10-10 log against the equity identity (no formula change)",
   "weight": "CRITICAL",

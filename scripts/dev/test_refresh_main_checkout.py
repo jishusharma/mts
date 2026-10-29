@@ -176,6 +176,19 @@ class T(unittest.TestCase):
         for p in ("scripts/dev/x.py", "MyTradingSys/execution/live_runner.py"):
             self.assertFalse(R.is_protected(p), p)
 
+    def test_apply_with_gitignored_protected_dir(self):
+        (self.clone / ".gitignore").write_text(".mts_live" + chr(10))
+        g(self.clone, "add", ".gitignore")
+        g(self.clone, "commit", "-q", "-m", "ignore")
+        g(self.clone, "branch", "wip")
+        (self.clone / ".mts_live").mkdir()
+        (self.clone / ".mts_live" / "x").write_text("live")
+        (self.clone / "dirty.txt").write_text("x")
+        ok, _ = self.run_r(apply=True, merge_if_diverged=True, wip_branch="wip")
+        self.assertTrue(ok, self.text())
+        self.assertEqual((self.clone / ".mts_live" / "x").read_text(), "live")
+        self.assertEqual((self.clone / "dirty.txt").read_text(), "x")
+
     def test_cli_default_is_dry(self):
         self.assertEqual(R.main(["--repo", str(self.clone)]), 0)
         self.assertNotEqual(g(self.clone, "rev-parse", "HEAD"), g(self.up, "rev-parse", "HEAD"))

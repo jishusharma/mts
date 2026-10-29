@@ -1,38 +1,50 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "mvn -q -Dtest=SpikeFade* test"
+  ],
   "created": "2026-10-29T22:01:21Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "SpikeFadeSessionState re-entry cap survives a fresh JVM (default state file under the configured runtime dir, not in repo; fails closed to no re-entry when unreadable); test for restart, reset and unreadable-file fails on the old code; mvn -q -Dtest=SpikeFade* test is green.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
   "goal": "MED finding in MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md: SpikeFadeSessionState re-entry cap resets on JVM restart (live path restart rule). Persist it and test restart/reset state. Split from wave1-spikefade-ac1-ac2-mandatory.",
   "id": "spikefade-reentry-cap-not-persisted",
-  "lane": "SONNET",
+  "lane": "JIS-NB",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "PLANNER 2026-10-30: filled and T0-checked; awaits Lab_Guy/reviewer stamp before ready (CRUCIAL+ needs independent review)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [
-    ""
+    "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "src/main/java/datafeed/SpikeFadeSessionState.java",
+    "src/main/java/datafeed/SpikeFadePaths.java",
+    "src/test/java/datafeed/SpikeFadePathsTest.java"
+  ],
+  "scope_out": [
+    "deploy or enabling mts.spikeFade"
+  ],
+  "size": "S",
   "sources": [
     "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md"
   ],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Read ITEM3 row A10 and SpikeFadeSessionState:36-68",
+    "Persist the cap by default (no runtime data committed)",
+    "Restart/reset/error tests, then mvn -q -Dtest=SpikeFade* test"
+  ],
+  "tests": "SpikeFadeSessionStateTest: record entry, new instance reads it back, corrupt file blocks re-entry, session roll resets; fails on current in-memory static",
   "title": "SpikeFade re-entry cap state (SpikeFadeSessionState) is not persisted across JVM restart",
-  "weight": "",
-  "worker": ""
+  "weight": "CRITICAL",
+  "worker": "agent"
 }
