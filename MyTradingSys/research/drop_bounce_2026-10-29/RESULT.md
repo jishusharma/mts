@@ -46,3 +46,23 @@ Close-up of the bounce (spot, live 10-29):
 - **Direction:** after this shape, history is close to a coin flip. A break of the low within 4 hours is about as likely as a hold.
 - **Bounce quality:** whether the bounce had more taker buying did not change the odds. Only a very thin bounce, with volume under half the drop's, raised the break rate a little.
 - **The BB question:** about 95% of the next hour's 1m closes stayed inside the bands, split about evenly between the lower half and the upper half.
+
+## Follow-up: the bounce failed and came back near the low (`followup.py`, shot 85ba89446b0d)
+
+Situation, 10-29 21:47Z:
+- The bounce peaked at 79,811, about 60% of the drop retraced.
+- Price then faded back to 78,986, within 1% of the low, with about -157 BTC of net spot selling since 21:30Z.
+
+Past cases where the bounce reached at least 55% retrace and then came back within 1% of the low (n=116):
+
+| Group | Low broken within 1h | within 4h | Close higher 4h later |
+|---|---|---|---|
+| All (n=116) | 16% | 43% | 59% |
+| Fade with net selling, delta share <= -0.10 (n=47) | 9% | 38% | 57% |
+| Fade without net selling (n=69) | 22% | 46% | 59% |
+
+Reading:
+- **Selling into the fade did not raise the break rate.** It was lower: 38% vs 46% within 4h.
+- **This fits Fabio's absorption (F-CVD3):** sell effort near the low without a result.
+- **Not settled:** n=47 is small, the gap is within noise, and this is fee-free and descriptive.
+- **A quick break is unlikely:** a break of the low within the next hour was uncommon (16%).

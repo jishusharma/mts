@@ -39,6 +39,30 @@ Fabio mostly trades NQ (Nasdaq futures). Only FawPrRUGNpk shows a BTC-style pric
 - **Setup:** a bid/ask footprint, CVD and a volume profile, on 5m and 1m charts.
 - **His signal**, SOURCED: "you have a negative delta with a positive price action. That's a very clear divergence in market pressure." [9IliXww64uM] He entered on the 5-minute close that confirmed it.
 
+## 3b. Channel shorts (captions fetched 10-30, 5 of 13)
+
+| # | Concept | SOURCED |
+|---|---|---|
+| F-CVD13 | **His tool ranking.** Bollinger Bands F tier, RSI D, MACD F; deep trades, volume profile, VWAP and the liquidity heat map S tier; footprint A | "Bollinger bands. >> F tier. It's a proxy for volatility." [3JZH06L28us]; "Deep trades. S tier. It's the proxy of the aggression and interaction between orders in the market." [3JZH06L28us] |
+| F-CVD14 | **Take-profit ladder:** daily high/low, then value area high/low, then liquidity (heat map) | "Third place, daily high and lows." [5H1MCBG87YI]; "Second place, value area highs and lows." [5H1MCBG87YI] |
+| F-CVD15 | **Liquidity reload means a reversal**; a ladder of small walls gets pierced | "If as soon as the level is taken, they reload more liquidity, it's likely that we will reverse." [5H1MCBG87YI] |
+| F-CVD16 | **Aggressive vs passive mechanics.** Market orders eat passive levels; price steps up only when the passive side runs out | "So, the aggressive liquidity is matched with the passive liquidity, and this is how the market moves." [_xEhztnK2g0] |
+
+OURS: F-CVD13 matters for us. Fabio rates the Bollinger Band F tier, yet our coil and pierce panel is built on the BB. Our own counts agree that the BB gives size, not direction (C17: 29/29/43). His direction tools are delta, big trades and liquidity.
+
+## 3c. Guest and partner videos not yet read (ROI order, for the Gemini card)
+
+| Order | Id | Channel | Length | Why |
+|---|---|---|---|---|
+| 1 | agjftXPkLUE | Andrea Cimi + Fabervaale | 25 min | Cimi trades CVD divergence (section 3) |
+| 2 | cLgdXZnLL_0 | Andrea Cimi + Fabervaale | 34 min | same series |
+| 3 | feV6CATGUqo | HijoTrades | 3 h | full strategy explained |
+| 4 | pZai3k1e-Jg | HijoTrades | 1.9 h | strategy breakdown with examples |
+| 5 | HUYBdYnXUNc | IQCapital | 33 min | "new strategy, live on chart" |
+| later | tvERE-Beu2U, TvoQr6ObjnU, xArUSiXyUzI, DD73wDVvObI | live sessions | 1.6-5.7 h | low ROI per hour; may repeat sessions already read |
+
+Not worth fetching: the remaining 8 shorts (motivational or promo titles).
+
 ## 4. How this maps to our BTC data (OURS)
 
 - **What we have:**
