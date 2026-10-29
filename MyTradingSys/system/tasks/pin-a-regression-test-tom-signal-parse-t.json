@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-29T21:47:48Z",
   "commands": [],
   "created": "2026-10-29T17:29:15Z",
   "depends_on": [],
@@ -13,6 +15,12 @@
   "id": "pin-a-regression-test-tom-signal-parse-t",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "auto_trader.py rejects PF-/pf_ setups (OURS); test_pf_setups_never_arm added with 5 spelli",
+      "ref": "6eda3dc2e",
+      "utc": "2026-10-29T21:47:48Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +40,12 @@
   "refined_by": "",
   "refreshed": "2026-10-29T21:12:25Z",
   "refs": [],
-  "result": "",
+  "result": "auto_trader.py rejects PF-/pf_ setups (OURS); test_pf_setups_never_arm added with 5 spellings, 111 tests passing",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/execution/test_auto_trader.py",
     "MyTradingSys/execution/auto_trader.py"
@@ -43,12 +56,13 @@
   "scope_sha": "f04a3cbad6ee",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read auto_trader.py:170-185 (side comes from a _long/_short suffix) and PF_ARM_TRACE.md",
     "Add a parametrised test: setups PF-REV-L, PF-REV-S, PF-H-L, pf_rev_long, PF-REV_long must give no armed order (side None or rejected before arming)",
     "If any spelling arms, make auto_trader reject setups starting with PF- explicitly, labelled OURS"
   ],
+  "taken": "2026-10-29T21:45:44Z",
   "tests": "test_auto_trader.py::test_pf_setups_never_arm fails on old code for the PF-REV_long spelling (or documents it passes), passes after",
   "title": "Pin a regression test: tom_signal/parse_tom_alert must reject any PF-* setup string, not just today's exact spellings",
   "weight": "ROUTINE",

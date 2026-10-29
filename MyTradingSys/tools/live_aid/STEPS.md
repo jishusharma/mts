@@ -1,6 +1,6 @@
 # Live aid: steps
 
-Narrow BTC trading aid that sits beside the operator's charts. Requirements: `REQUIREMENTS.md` (dash-reqs session records them; each new row becomes one small shipped step here). Observation only: no order buttons, no entry/exit or sizing wording.
+BTC trading aid (full width since R11; was a narrow column) that sits beside the operator's charts. Requirements: `REQUIREMENTS.md` (dash-reqs session records them; each new row becomes one small shipped step here). Observation only: no order buttons, no entry/exit or sizing wording.
 
 ## Open it
 
@@ -25,6 +25,7 @@ Deribit 1D candles open at 08:00Z, so prev-day high/low and weekly open come fro
 | v1 | 4 blocks: price+clock, position (inverse P&L, ATR15 multiples, rung ladder, uncovered size), 1m/5m/15m strip, levels (VWAP, day H/L with time, prev day H/L, weekly open, typed levels). Stale badge amber past 15 s; failed feed = NOT_IN_DATA + error | BUILT 2026-10-28 |
 | R10 | WaveTrend table under the strip: wt1, wt2 (colour = wt1 above/below wt2), zone vs the 53/60 lines, last wt1/wt2 cross with bars ago and level, on 1m/5m/15m. Same maths as `backtest/layers/wavetrend/wavetrend.py` (test compares them) | BUILT 2026-10-28 |
 | In-trade | In-trade block (needs side typed): supports/resistance, DOM, VWAP test, divergences, squeeze read, CVD vs delta, stay confidence, rule R. Maths in `live_aid_indicators.js`, tests `test_live_aid.py` (`LIVE_AID_BREAK=itdiv|itflow|itsqueeze|itdom|itsupport|itvwap|itconf|itlive`) | BUILT 2026-10-29 |
+| R11 | Full-width layout: position bar, glance tiles (price, VWAP distance + test, nearest level above/below incl. typed, stay confidence + rule R, session), then in-trade / momentum (strip + WaveTrend in one table) / levels columns; SMA, BB width, ATR, VWAP, wt1/wt2, ATR15 under "More detail"; source notes folded; SOURCED/OURS chips with the full note on hover | BUILT 2026-10-30 |
 
 WaveTrend 10/21/4, 0.015, lines 53/60 = OURS (LazyBear defaults; his chart settings unknown). Parameters: RSI14 Wilder, SMA14 of RSI, BB(20,2) population, ATR14 Wilder, day VWAP hlc3 from 00:00Z = SOURCED (his chart setup). RSI 30/70 flag lines, session names = OURS.
 
