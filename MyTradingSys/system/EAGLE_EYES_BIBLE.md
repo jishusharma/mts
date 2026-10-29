@@ -33,6 +33,24 @@ Why this section exists: the 10-28 session was compacted 6 times; each summary k
 - Role (01:53Z): "You are not a forecast teller ... You are not supposed to take readings carefully. That must be done by something else. You are a thinker, right?"
 - All layers (01:56Z): "Think from every layer's point of view ... CVD and OI and the delta ... RSI ... wave[trend] ... Fabio ... Malkan ... Tom ... [Krown] ... Jason and his brother Michael ... Habib ... Why I cannot see it symbolically? Like, okay, something green, something red".
 
+- Anticipation (10-30 ~19:00Z): "every time a US session starts, there is some movement ... when a new day starts, the daily candle can go above the close of the previous candle ... or below ... breaking a 2-day high, or a 1-day high, or ... a 3-day high, or ... a weekly high. And the same applies to lows ... What happened 2 days before? What happened a week before? What happened a month before? Does that also matter? And does Tom answer that or not?"
+- Fired or not (10-30): "is MTS placing those trades? ... I just need to know if some trade fired on this or not ... I want to see alerts on desktop and I want to see alerts on laptop ... I should be able to toggle them to off and on ... perhaps we need new alerts because it is very old".
+- Liquidation map (10-30): "do you connect the liquidation heat map? ... What really was hit on these liquidation maps? When the price was moving".
+
+## The asks in one table (consolidated 10-30; update here, not in chat)
+
+| Ask | Where it lives | State 10-30 |
+|---|---|---|
+| Whole-MTS picture, path to an edge and mainnet | `research/eagle_eyes_picture_2026-10-28/` | report shipped 10-28 |
+| See alerts and testnet trades firing; alerts on desktop + laptop, toggle, new set | card `alerts-v2-on-both-screens-one-alert-feed` (OPUS p1) | filed 10-30, not started |
+| Live in-trade dashboard | `MyTradingSys/tools/live_aid/live_aid.html` | on trunk f70a7ab4 |
+| Think, don't read: all layers, all analysts, colour grid, agreement count, the odd one | per-shot frame below | in use |
+| Anticipation: if up / if down, daily open, 1d/2d/3d/weekly high-low take-and-fail, US session | card `anticipation-map-from-current-layer-stat` (OPUS p2); scored in `SCENARIO_LEDGER.md` | ledger 2 maps; card raw |
+| Log anything that repeats | `BACKTEST_CANDIDATES.md` (C1-C14) | idea rows only |
+| Liquidation heatmap: what was hit | C6 row; heatmap history NOT_IN_DATA (no recorder) | 2 instances |
+| His 15 recurring chart patterns | `OPERATOR_POINTERS.md` | digest 10-29 |
+| Analyst views | `ANALYST_VIEWS_2026-10-29.md` | 10-29 |
+
 ## Per-shot frame (OURS, from the teachings above)
 
 1. Colour grid first: layer rows (price/BB, OI vs price, CVD, net delta, RSI, WT, StochRSI, volume, heatmap/DOM, VWAP) x timeframe columns (1m 5m 15m 1h 4h); green/red/white; white = no shot, never "neutral".
@@ -42,4 +60,6 @@ Why this section exists: the 10-28 session was compacted 6 times; each summary k
 5. Analyst lens: one line each, Tom, Fabio, Malkan, Krown, Habib, the two brothers (latest CBP/Discord row with date; NOT_IN_DATA if none).
 6. In a trade: supports, VWAP distance, divergence flags, confidence count. Never an exit or size call.
 7. Backtest log: anything that repeats goes to `research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md`.
+8. Liquidation map: name the nearest bright band above and below, and after a move say which band was hit.
+9. Score every A/B map in `SCENARIO_LEDGER.md`.
 Bullets only, max about 8 lines plus the grid.
