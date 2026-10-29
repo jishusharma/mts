@@ -1,0 +1,38 @@
+events 35963
+
+A. OI x price over the last 30 min
+               n   up60  up240  up_first  down_first
+oi   price                                          
+down down   6296  0.535  0.534     0.433       0.467
+     flat   5038  0.497  0.510     0.375       0.413
+     up     5428  0.489  0.490     0.459       0.433
+up   down   4985  0.527  0.528     0.435       0.488
+     flat   8023  0.513  0.510     0.419       0.393
+     up     6193  0.485  0.494     0.479       0.436
+
+B. OI up, price flat: by taker delta in the window
+            n   up60  up240  up_first  down_first
+delta                                            
+buyers   2035  0.494  0.501     0.409       0.361
+mixed    3765  0.516  0.508     0.445       0.412
+sellers  2223  0.526  0.523     0.383       0.390
+
+C. OI up, price flat: by top-trader long/short ratio change
+                    n   up60  up240  up_first  down_first
+top                                                      
+top flat         7511  0.512  0.508     0.417       0.392
+top longs grew    133  0.541  0.541     0.414       0.421
+top shorts grew   379  0.522  0.551     0.456       0.412
+
+D. OI up, price flat: delta x top-trader
+                            n   up60  up240  up_first  down_first
+delta   top                                                      
+buyers  top flat         1907  0.490  0.497     0.408       0.360
+        top longs grew     41  0.585  0.537     0.439       0.415
+        top shorts grew    87  0.552  0.586     0.414       0.356
+mixed   top flat         3545  0.516  0.509     0.443       0.410
+        top longs grew     53  0.377  0.453     0.396       0.528
+        top shorts grew   167  0.545  0.503     0.497       0.419
+sellers top flat         2059  0.526  0.516     0.380       0.389
+        top longs grew     39  0.718  0.667     0.410       0.282
+        top shorts grew   125  0.472  0.592     0.432       0.440
