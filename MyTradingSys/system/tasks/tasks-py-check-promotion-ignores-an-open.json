@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-29T22:55:49Z",
   "commands": [],
   "created": "2026-10-29T17:10:55Z",
   "depends_on": [],
@@ -13,6 +15,12 @@
   "id": "tasks-py-check-promotion-ignores-an-open",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Added open asks check to promotion_problems in scripts/dev/tasks.py; added test_check_does",
+      "ref": "f73ff791c",
+      "utc": "2026-10-29T22:55:49Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -30,7 +38,12 @@
   "refined_by": "",
   "refreshed": "2026-10-29T21:12:24Z",
   "refs": [],
-  "result": "",
+  "result": "Added open asks check to promotion_problems in scripts/dev/tasks.py; added test_check_does_not_promote_card_with_open_asks to scripts/dev/test_tasks.py; 116 tests pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/tasks.py",
     "scripts/dev/test_tasks.py"
@@ -41,12 +54,13 @@
   "scope_sha": "8eea41a39ac4",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "In tasks.py promotion_problems (line ~1122) add a problem \"open asks: <text>\" when card.asks is non-empty",
     "Make apply-op retry (the only clearer) keep working: it clears asks before check",
     "Add a test to test_tasks.py: card passing every other gate with asks set stays refined after cmd_check"
   ],
+  "taken": "2026-10-29T22:52:43Z",
   "tests": "scripts/dev/test_tasks.py::test_check_does_not_promote_card_with_open_asks fails on old code (card becomes ready), passes after",
   "title": "tasks.py check promotion ignores an open asks field (clears asks, promotes to ready while waiting on external data)",
   "weight": "ROUTINE",

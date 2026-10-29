@@ -211,6 +211,15 @@ class QueueTest(unittest.TestCase):
         self.run_cli("check", "B1")
         self.assertEqual(T.get(self.repo, "B1")["state"], "ready")
 
+    def test_check_does_not_promote_card_with_open_asks(self):
+        c = good("B1", state="refined", goal="valid goal", asks="need operator confirmation on threshold")
+        T.save(self.repo, c)
+        rc, out = self.run_cli("check", "B1")
+        self.assertIn("NOT READY", out)
+        self.assertIn("open asks", out)
+        self.assertEqual(T.get(self.repo, "B1")["state"], "refined")
+        self.assertEqual(T.get(self.repo, "B1")["asks"], "need operator confirmation on threshold")
+
     def test_ready_card_closes_without_take_when_every_gate_passes(self):
         T.save(self.repo, good("B1"))
         rc, out = self.run_cli("done", "B1", "--result", "28 rows")

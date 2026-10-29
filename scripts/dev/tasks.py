@@ -1120,8 +1120,10 @@ def needs_review(card):
 
 
 def promotion_problems(card, holds=None, repo=None):
-    """Why `check` must not promote a raw/refined card to ready: an active hold, or no real review for important/crucial/critical or C1+."""
+    """Why `check` must not promote a raw/refined card to ready: an active hold, open asks, or no real review for important/crucial/critical or C1+."""
     p = hold_problems(card, holds)
+    if card.get("asks") and str(card["asks"]).strip():
+        p.append(f"open asks: {str(card['asks']).strip()}")
     if needs_review(card) and stamp_kind(card, repo=repo) != "real":
         p.append("needs a real review stamp (ACCEPT or 'REVIEWED: <reviewer> <date>'), not " + ("T0-ONLY" if stamp_kind(card, repo=repo) == "t0" else "none") + ": Lab_Guy pass (roles/lab_guy.md)")
     return p
