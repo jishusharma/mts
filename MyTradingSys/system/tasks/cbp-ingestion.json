@@ -26,7 +26,7 @@
   "goal": "Repair canonical ingestion, propagate transient errors and supply an explicit twice-daily CBP-only Windows task.",
   "id": "cbp-ingestion",
   "kind": "build",
-  "lane": "SONNET",
+  "lane": "CODEX",
   "latest": [
     {
       "auto": true,
@@ -48,12 +48,6 @@
     "MyTradingSys/research/cbp/CBP_AUDIT_2026-10-28.md",
     "MyTradingSys/research/cbp/INGESTION_WIRING_2026-10-27.md"
   ],
-  "reroute": {
-    "at": "2026-10-28T09:59:29Z",
-    "from": "CODEX",
-    "to": "SONNET",
-    "why": "credits"
-  },
   "result": "29 focused CBP + schedule tests pass (fixed store_path fallback alignment in cbp/__init__.py & cbp_schedule.py and F:-drive test assertion in test_cbp_query.py); audit recorded in CBP_AUDIT_2026-10-28.md. Activation off on NUC (data host missing / origin/cloud/work not checked out at F:/CryptoScrapper). Ready for Cloud (Claude) review.",
   "scope_in": [
     "MyTradingSys/cbp/__init__.py",

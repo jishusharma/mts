@@ -1,12 +1,15 @@
 {
   "card": "gemini-bg-watch-crossreview",
   "done_when": "Report MyTradingSys/research/layer_lab/reports/2026-10-28_gem-bg-watch-crossreview.md has the 6-fixture table (expected vs actual), the two exit codes, a findings table (or 'no findings') and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "finished": "2026-10-29T20:13:13Z",
   "from": "lane_health",
+  "host": "lane_health",
   "id": "20261028-181450-gemini-bg-watch-crossreview",
   "need": "Rerouted from the GPT lane (credits/limit/outage) to DSA. Card gemini-bg-watch-crossreview: [GEMINI] Cross-review bg_watch.py: caps, 124 timeout exit and false stall reports\nWorktree: mts-dsa (python scripts/dev/sync.py start first). Data on F:\\MTS\\data is read-only.\nFull brief: python scripts/dev/tasks.py brief gemini-bg-watch-crossreview\nGoal: Check bg_watch.py (Claude-built) against its own docstring: per-kind caps match the stated targets (probe 2, NUC verb 5, worker 45, ship 20 minutes), `until` exits 0 on match and 124 on timeout,\nRead: scripts/dev/bg_watch.py; scripts/dev/test_bg_watch.py; MyTradingSys/research/layer_lab/reports/2026-10-28_gem-bg-watch-crossreview.md\nStep 1: Read bg_watch.py and list its cap table and its notice-matching rules (file:line).\nStep 2: Write 6 synthetic transcript .jsonl fixtures in a scratch dir (running, finished by message, finished by queued_command, stopped, young, notice quoted inside a tool result) and run bg_watch.re\nStep 3: Run `bg_watch.py until --file F --pattern RE --timeout 3` for a matching and a non-matching file and record the exit codes.\nStep 4: Report findings as a table: severity, file:line, evidence, proposed fix. Change no code. For each HIGH finding capture: python scripts/dev/tasks.py new \"<title>\" --lane SONNET.\nWrite the report to MyTradingSys/research/layer_lab/reports/2026-10-28_gemini-bg-watch-crossreview.md: findings or numbers, each with file:line or the command you ran.\nNumbers come only from output you printed in the chat. Change no code or spec. Never read a holdout.\nIf a command fails twice, close the desk row with --failed and the error text.\nClose: python scripts/dev/desk.py done <row id> --result \"<verdict or number + MyTradingSys/research/layer_lab/reports/2026-10-28_gemini-bg-watch-crossreview.md>\".",
   "posted": "2026-10-28T18:14:50Z",
   "rerouted_from": "CODEX",
-  "status": "pending",
+  "result": "cancelled: GPT lane is back, card returned to CODEX",
+  "status": "failed",
   "target": "DSA",
   "title": "[GEMINI] Cross-review bg_watch.py: caps, 124 timeout exit and false stall reports"
 }
