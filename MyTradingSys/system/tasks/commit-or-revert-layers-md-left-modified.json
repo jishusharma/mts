@@ -1,7 +1,20 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-29T17:15:46Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-29T17:11:39Z",
+    "misses": 10,
+    "reads": [
+      "scripts/dev/test_tasks.py",
+      "scripts/dev/test_sync.py",
+      "scripts/dev/make_layers_md.py",
+      "MyTradingSys/system/LAYERS.md"
+    ],
+    "session": "agent-a133ecc603af89036"
+  },
   "created": "2026-10-29T17:02:11Z",
   "depends_on": [],
   "done_when": "New tests in test_tasks.py (announce line) and test_sync.py (ship stages a differing LAYERS.md) fail before and pass after; both files green; shipped with a Result: line, cherry against origin/fast-track empty",
@@ -13,6 +26,12 @@
   "id": "commit-or-revert-layers-md-left-modified",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "tasks.py announces regenerated LAYERS.md; sync ship commits it; 2 new tests",
+      "ref": "75b4aec6f",
+      "utc": "2026-10-29T17:15:46Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -30,7 +49,12 @@
   "refined_by": "",
   "refreshed": "2026-10-29T17:08:54Z",
   "refs": [],
-  "result": "",
+  "result": "tasks.py announces regenerated LAYERS.md; sync ship commits it; 2 new tests",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/sync.py",
     "scripts/dev/test_sync.py"
@@ -41,12 +65,13 @@
   "scope_sha": "0bc90e4cf333",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Cause is tasks.py regen (~line 243): every card command rewrites LAYERS.md in the working tree; a worker that does not stage it leaves it modified. Confirm in a throwaway clone with a card command then status",
     "Fix: make the regen print one line 'LAYERS.md regenerated: ship it' and have sync.py ship stage it when it differs (smallest change; no content edit)",
     "Write the fail-first test in test_tasks.py: a card change in a throwaway repo must announce the regenerated LAYERS.md"
   ],
+  "taken": "2026-10-29T17:15:46Z",
   "tests": "scripts/dev/test_tasks.py new test fails on current silent regen, passes after",
   "title": "Commit or revert LAYERS.md left modified by an unrelated background regen process (also touched two pitchfork card states)",
   "weight": "IMPORTANT",

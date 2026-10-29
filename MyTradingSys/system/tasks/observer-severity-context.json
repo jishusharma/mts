@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-29T17:15:47Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -27,7 +28,14 @@
   "id": "observer-severity-context",
   "kind": "build",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "DESIGN.md with sections i-iv, quotes verified",
+      "ref": "75b4aec6f",
+      "utc": "2026-10-29T17:15:47Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -37,7 +45,12 @@
   "refined_by": "",
   "refreshed": "2026-10-29T17:09:02Z",
   "refs": [],
-  "result": "",
+  "result": "DESIGN.md with sections i-iv, quotes verified",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/observer_severity_context/"
   ],
@@ -55,7 +68,7 @@
     "MyTradingSys/tools/live_aid/STEPS.md",
     "MyTradingSys/research/TOM_VERBATIM_INDEX.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "(i) Severity scale per signal: large-trade size vs recent distribution, CVD/net-delta divergence at a level, volume vs same-time-of-day median; each parameter SOURCED (Tom quote + file:line, TOM_VERBATIM_INDEX.md) or OURS; cut-offs on DEV, VALIDATION once, holdout once.",
     "(i-b) Session timing (operator addendum 2026-10-29, see OPERATOR_DECISIONS d-observer-severity-context): rate large trades by session (Asia 00:00-08:00 UTC, London from 08:00, NY from 13:30, DST-aware) and minutes after open. Reuse CONTEXT_FACTORS_SPEC.md line 186 (reconcile NY 13:30) and items/T054_us_session_news_correlation.md.",
@@ -63,6 +76,7 @@
     "(ii) Standing context card loaded at observer start: cycle position (60k to 87k, bull-trap worry, 4-year cycle incomplete), CBP bottom view, key levels; data source and refresh time per field.",
     "(iii) Plug severity into live_aid.html in-trade panel (8 bullets: support/resistance, DOM, VWAP, divergences, squeeze, CVD vs delta, stay confidence, rule R); worked example: 10-28 ~81,800 top sell from data alone."
   ],
+  "taken": "2026-10-29T17:15:47Z",
   "tests": "Docs-only: verify_extract_quotes.py exit 0 on any Tom quotes; grep shows each parameter row carries SOURCED or OURS.",
   "title": "Observer severity ratings, session timing and standing context card (design note, no code)",
   "weight": "IMPORTANT",

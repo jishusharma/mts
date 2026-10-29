@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-29T17:11:38Z",
   "commands": [
     "python scripts/dev/verdicts.py check 'tom correlation divergence'",
     "python -m pytest -q MyTradingSys/research/tom_correlation_trick_2026-10-26/test_run_div.py",
@@ -16,7 +17,14 @@
   "goal": "Run the frozen EXTRACT.md section 4 test: H1 DAX vs ES/Nikkei/BTC and H2 BTC vs ES/NQ/DXY convergence-start filter vs no-filter control and shuffled-basket placebo, fee-net, DEV 70% then VALIDATION once, holdout once only if VALIDATION passes; verdict add or not-add TOM-CTX-DIV.",
   "id": "tom-corr-divergence-backtest",
   "lane": "DSA",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "NOT-ADD: H1/H2 primary fee-net DEV -110/-72 bps, VALIDATION -93/-19 bps, holdout not read",
+      "ref": "ac1b16ec4",
+      "utc": "2026-10-29T17:11:38Z"
+    }
+  ],
   "layers": [
     "tom"
   ],
@@ -28,7 +36,12 @@
   "refined_by": "",
   "refreshed": "2026-10-26T17:26:23Z",
   "refs": [],
-  "result": "",
+  "result": "NOT-ADD: H1/H2 primary fee-net DEV -110/-72 bps, VALIDATION -93/-19 bps, holdout not read",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/tom_correlation_trick_2026-10-26/PRE_REG.md",
     "MyTradingSys/research/tom_correlation_trick_2026-10-26/run_div.py",
@@ -47,13 +60,14 @@
     "MyTradingSys/research/tom_correlation_trick_2026-10-26/EXTRACT.md section 4 (frozen test, OURS)",
     "MyTradingSys/backtest/layers/FORMULAS.md (formulas)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Data audit first: list per instrument the first/last date and bar size from Yahoo chart API, data-api.binance.vision, dax_raw/nq_raw; freeze the grid (daily as-of, see note), the splits (DEV older 70%) and fee+slippage for FDAX/FDXM (OURS) in PRE_REG.md before any outcome",
     "Paste verdicts.py check 'tom correlation divergence' and prereg_gate.py output (n = expected events, --m auto --new-cells <variants>) into PRE_REG.md; state holdout n<30 = INCONCLUSIVE; list all variants (lookback 1/2/3/5 d, basket sets, quintile cut) as trial-ledger rows",
     "Write test_run_div.py first (hand-built 12-day fixture: expected trigger days, as-of alignment, no bar after the traded close) and see it fail; then run_div.py with non-overlapping events and cluster-robust SE, bootstrap 95% lower bound",
     "Run DEV, then VALIDATION once, then holdout once only on pass; append rows to layer_lab/TRIALS.md; write RESULT.md with the verdict and export sim_desk/results/tom-corr-divergence-backtest.json"
   ],
+  "taken": "2026-10-29T17:11:38Z",
   "tests": "MyTradingSys/research/tom_correlation_trick_2026-10-26/test_run_div.py: hand-built 12-day fixture with trigger days and as-of alignment derived by hand from EXTRACT.md section 4; written first and fails before run_div.py exists",
   "title": "Pre-registered backtest of Tom correlation-divergence filter (H1 DAX vs ES/Nikkei/BTC, H2 BTC vs ES/NQ/DXY), spec in MyTradingSys/research/tom_correlation_trick_2026-10-26/EXTRACT.md s4. DONE when: fee-net DEV, VALIDATION once, holdout once, filter vs no-filter control, all variants in the trial ledger, verdict add/not-add TOM-CTX-DIV",
   "weight": "CRUCIAL",

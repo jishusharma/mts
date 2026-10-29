@@ -243,9 +243,13 @@ def refresh_layers(repo=REPO):
     """Regenerate LAYERS.md after a card change, so its open-card lists never go stale. Never fails the card command."""
     if not (Path(repo) / LAYER_INDEX).is_file():
         return
+    f = Path(repo) / "MyTradingSys" / "system" / "LAYERS.md"
     try:
+        before = f.read_bytes() if f.is_file() else None
         import make_layers_md
         make_layers_md.write(repo)
+        if f.is_file() and f.read_bytes() != before:
+            print("LAYERS.md regenerated: ship it")   # sync.py ship stages it; a worker that skips ship leaves it modified
     except Exception as e:   # the card change already landed; say so, do not hide it
         print(f"tasks: LAYERS.md not regenerated: {e}")
 
