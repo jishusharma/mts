@@ -9,6 +9,7 @@ Definitions fixed before the first run (all OURS; descriptive, no fees; DEV 2022
 - OI up: dOI >= +0.25%; OI down: dOI <= -0.25%; price flat: |dP| <= 0.15%, up / down beyond that.
 - Outcomes from the window end: close 60 min and 4 h later up or down; which comes first within 4 h, +0.5% or -0.5%.
 - Events do not overlap (after one, skip 6 bars).
+- Cycle splits (operator 10-30, 'every time frame is different as there are cycles'): calendar year; price above or below its 20-day mean.
 """
 import glob, sys
 import numpy as np, pandas as pd
@@ -31,6 +32,8 @@ def load():
 
 def run():
     d = load(); g = d.g.to_numpy(); c, h, l, oi, v, tb, tt = (d[x].to_numpy(float) for x in ['c', 'h', 'l', 'oi', 'v', 'tb', 'tt'])
+    ma = pd.Series(c).rolling(288 * 20).mean().to_numpy()  # 20-day mean: the cycle (OURS)
+    yr = pd.to_datetime(g * 300, unit='s').year.to_numpy()
     rows = []; i = 6; N = len(c)
     while i < N - 49:
         if g[i + 48] - g[i - 6] != 54:
@@ -47,7 +50,7 @@ def run():
             if hu and hd: first = 'both'; break
             if hu: first = 'up'; break
             if hd: first = 'down'; break
-        rows.append(dict(oi=oic, price=pc, ds=ds, tt=tt[i] / tt[i - 6] - 1,
+        rows.append(dict(year=yr[i], cycle='n/a' if np.isnan(ma[i]) else ('above 20d mean' if c[i] > ma[i] else 'below 20d mean'), oi=oic, price=pc, ds=ds, tt=tt[i] / tt[i - 6] - 1,
                          up60=c[i + 12] > c[i], up240=c[i + 48] > c[i], first=first))
         i += 6
     R = pd.DataFrame(rows)
@@ -59,6 +62,9 @@ def run():
         return t.round(3).to_string()
     print('events', len(R))
     print('\nA. OI x price over the last 30 min'); print(tab(['oi', 'price']))
+    for G in ('year', 'cycle'):
+        t = R.groupby([G, 'oi', 'price']).up60.agg(['mean', 'size']).unstack(G)
+        print(f'\nA-{G}. up 60 min later, by {G}'); print(t.round(3).to_string())
     F = R[(R.oi == 'up') & (R.price == 'flat')]
     R = F
     print('\nB. OI up, price flat: by taker delta in the window'); print(tab(['delta']))

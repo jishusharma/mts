@@ -50,5 +50,8 @@
   "tests": "test_live_aid.py: hand-built absorption case (delta +0.5, no extension) sets the flag; fails on current JS",
   "title": "level-approach prep: pre-level checklist, absorption signature, who-absorbed (OI), confirm-entry rule, flag-count strength in live_aid + alerts (spec CARD_SPECS.md#level-approach-prep)",
   "weight": "",
-  "worker": "session"
+  "worker": "session",
+  "notes": [
+    "2026-10-30 Eagle_Eyes: U1 is measurable now: F:/MTS/data/orderflow_1m (1m b99 large buy/sell + footprint, 2024-12..2026-09). Context-free 5m absorption counts in research/large_trade_absorption_2026-10-30/RESULT.md (absorbed sells went down first 55%, n=95; textbook reversal not seen without level context). Next: level x absorption."
+  ]
 }

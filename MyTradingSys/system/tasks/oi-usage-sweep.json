@@ -1,0 +1,58 @@
+{
+  "approved_by": "operator 2026-10-30 Eagle_Eyes chat (\"they must say all cool stuff abt OI and how to use it\")",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/gemini_queue.py run oi-usage-sweep:low"
+  ],
+  "created": "2026-10-29T23:42:10Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/oi_side_2026-10-30/OI_CONCEPTS.md: OI-1+ concept rows (SOURCED quote [id], plain meaning OURS, how to measure on Binance metrics); 6-10 videos read, chosen by ROI and listed with id/title/channel; captions in raw_transcripts_canonical/<id>_raw.txt; verify_extract_quotes.py exits 0.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Operator 10-30 asked what Fabio and team say about open interest: the Fabio channel has none (NQ trader), and Krown ep7 (P3rDSh187TE) is our only OI source. Find BTC open-interest teaching (OI + price + delta + funding, liquidation maps) on crypto order-flow channels, as concept rows with verified quotes.",
+  "id": "oi-usage-sweep",
+  "lane": "DSA-NUC",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "research: OI side by cycle (year, 20-day mean) per operator \"cycles\" point",
+      "ref": "1eb5a0f1e5bf",
+      "utc": "2026-10-29T23:41:58Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-29T23:42:23Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/oi_side_2026-10-30/",
+    "raw_transcripts_canonical/"
+  ],
+  "scope_out": [],
+  "scope_sha": "1eb5a0f1e5bf",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/oi_side_2026-10-30/RESULT.md",
+    "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_CONSOLIDATED.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Start from Krown P3rDSh187TE (KR-LQC01-04) and the Fabio guest list in CVD_CONCEPTS.md 3c (HijoTrades, Cimi, IQCapital) for OI passages",
+    "YouTube search: BTC open interest + funding + CVD order-flow teaching; rank by ROI, fetch captions",
+    "Write OI_CONCEPTS.md rows; map each to a measurement on F:/MTS/data/binance_metrics",
+    "verify_extract_quotes.py OI_CONCEPTS.md until exit 0"
+  ],
+  "tests": "n/a (extraction lane: verify_extract_quotes.py exit 0)",
+  "title": "OI usage sweep: every passage on how to read open interest for BTC (Krown ep7 done; Fabio channel has none): crypto order-flow channels via Gemini, verified quotes",
+  "weight": "",
+  "worker": "session"
+}

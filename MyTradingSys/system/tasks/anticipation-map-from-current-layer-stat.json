@@ -16,16 +16,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "live_aid: coil and pierce (15m) panel with measured base rates",
-      "ref": "8054adb53184",
-      "utc": "2026-10-29T20:33:52Z"
+      "line": "scenario ledger: 10-29 21:47 base-rate read scored (low broke 23:45Z)",
+      "ref": "3dc87fa0af93",
+      "utc": "2026-10-29T23:56:21Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "08fcf6b068cf eagle_eyes: C16 US-window rally fade base rate + 10-29 20:05Z scenario map",
+      "line": "3dc87fa0af93 scenario ledger: 10-29 21:47 base-rate read scored (low broke 23:45Z)",
       "ref": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/SCENARIO_LEDGER.md",
-      "utc": "2026-10-29T20:08:06Z"
+      "utc": "2026-10-29T23:56:21Z"
     }
   ],
   "layers": [],
@@ -35,7 +35,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-29T21:19:06Z",
+  "refreshed": "2026-10-29T23:56:30Z",
   "refs": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/SCENARIO_LEDGER.md",
     "MyTradingSys/tools/live_aid/live_aid.html",
@@ -48,7 +48,7 @@
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/SCENARIO_LEDGER.md"
   ],
   "scope_out": [],
-  "scope_sha": "8054adb53184",
+  "scope_sha": "3dc87fa0af93",
   "size": "M",
   "sources": [],
   "state": "ready",

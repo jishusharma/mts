@@ -170,11 +170,18 @@ public class SpikeFadeCriticalWave1Test {
 
     /** Case C (A-C2 is strict): last close equal to the prior day's high (904.5) -> none; 904.6 -> fires. */
     @Test
-    void caseC_close_must_be_above_prior_day_high() {
-        assertNull(detect(todayShort(prior(900.0, legs(4.5, 4.5)), 1005.5, 904.5, 904.5)),
-                "close 904.5 == prior day high 904.5");
-        assertNotNull(detect(todayShort(prior(900.0, legs(4.5, 4.5)), 1005.5, 904.5, 904.6)), "close 904.6 > 904.5");
+    void caseC_c2_above_prior_day_is_recorded_not_gated() {
+        ObjectNode eq = detect(todayShort(prior(900.0, legs(4.5, 4.5)), 1005.5, 904.5, 904.5));
+        assertNotNull(eq, "close 904.5 == prior day high 904.5 still fires (A-C2 is a caveat)");
+        assertFalse(eq.get("c2_above_prior_day").asBoolean());
+        ObjectNode up = detect(todayShort(prior(900.0, legs(4.5, 4.5)), 1005.5, 904.5, 904.6));
+        assertNotNull(up, "close 904.6 > 904.5");
+        assertTrue(up.get("c2_above_prior_day").asBoolean());
+        boolean hasC2 = false;
+        for (JsonNode cd : up.get("conditions")) if ("A-C2".equals(cd.asText())) hasC2 = true;
+        assertTrue(hasC2, "A-C2 listed when c2 true");
     }
+
 
     /**
      * Case D (A-S1): one prior session (index 5) has leg 70 -> high 1070, above today's 1040. It is the only prior high
