@@ -1,5 +1,5 @@
 {
-  "approved_by": "",
+  "approved_by": "operator 2026-10-30 via Eagle_Eyes (d-eagle-eyes-missed-boxes-defaults)",
   "asks": "",
   "closed": "2026-10-27T20:51:37Z",
   "commands": [],
@@ -38,7 +38,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "10-30: approved by default to score the 9 priced plans once on the holdout, as whole plans (level + scenario), execution excluded; operator asked why Habib calls so much right.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -59,7 +59,7 @@
   "scope_sha": "e65a368db143",
   "size": "S",
   "sources": [],
-  "state": "done",
+  "state": "raw",
   "steps": [
     "Read README.md, plan_score.py, PLAN_LEDGER.csv",
     "Write DRAFT pre-reg; label params SOURCED/OURS"
