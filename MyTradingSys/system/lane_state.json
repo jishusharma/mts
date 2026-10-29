@@ -1,14 +1,14 @@
 {
-  "detail": "Codex run finished",
+  "detail": "Codex 5-hour window 100% used, resets 2026-10-30 02:29Z",
   "fails": 0,
   "heartbeat": "2026-10-22T15:08:46Z",
-  "last_error": "2026-10-27T21:29:43Z",
+  "last_error": "2026-10-29T23:26:05Z",
   "last_ok": "2026-10-29T21:13:27Z",
   "last_probe": "2026-10-26T17:04:19Z",
-  "override": "2026-10-29T23:13:13Z",
-  "reason": "",
+  "override": "",
+  "reason": "window",
   "resumed": "2026-10-29T20:13:13Z",
-  "since": "",
-  "status": "up",
-  "until": ""
+  "since": "2026-10-29T23:26:05Z",
+  "status": "down",
+  "until": "2026-10-30T02:29:05Z"
 }
