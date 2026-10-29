@@ -472,6 +472,18 @@ class SyncTest(unittest.TestCase):
         self.assertEqual(self.branch_of(lane), f"{sync.socket.gethostname()}/old-task")
         self.assertTrue(self.branch_of(Path(path)).endswith("/cbp-query"))
 
+    def test_start_worker_inside_agent_isolation_worktree_makes_no_second_tree(self):
+        """An Agent-tool isolation tree (.claude/worktrees/agent-*) is already private: --worker works there, no new worktree."""
+        tree = self.make_tree(self.tmp.resolve() / ".claude" / "worktrees" / "agent-x1", "worktree-agent-x1")
+        before = subprocess.run(["git", "-C", str(self.a), "worktree", "list"], capture_output=True, text=True).stdout
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            path = sync.start(tree, slug="cbp-query", worker=True)
+        after = subprocess.run(["git", "-C", str(self.a), "worktree", "list"], capture_output=True, text=True).stdout
+        self.assertEqual(Path(path).resolve(), tree.resolve())
+        self.assertNotIn("WORKTREE:", buf.getvalue())
+        self.assertEqual(before, after)
+
     def test_start_other_slug_in_another_sessions_tree_makes_a_worktree(self):
         """B3: `start <slug>` from a session tree made for another slug (the Supervisor's) never works in that tree."""
         host = sync.socket.gethostname()
