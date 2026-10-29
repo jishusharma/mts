@@ -1,0 +1,1 @@
+{"t": "20261029T170511Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "SUP-B (JIS-NUC) rolling 12h window from 17:10Z, 5h=4% wk=49%. Proposal: B takes board picks via tasks.py dispatch (1 builder/wake, planner refines raw cards, codex tick). A (SPEND, wk 80%, resets 10-3", "login": "B"}
