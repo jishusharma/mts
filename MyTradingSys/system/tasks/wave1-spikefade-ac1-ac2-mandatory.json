@@ -4,6 +4,17 @@
   "commands": [
     "mvn -q test -Dtest=SpikeFadeCriticalWave1Test+SpikeFadeTest+SpikeFadeProfileTest+SpikeFadePathsTest+SpikeFadeFlagOffGoldenTest"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-29T23:40:57Z",
+    "misses": 19,
+    "reads": [
+      "src/test/java/datafeed/SpikeFadeTest.java",
+      "src/test/java/datafeed/SpikeFadeCriticalWave1Test.java",
+      "src/main/java/datafeed/SpikeFadeDetector.java"
+    ],
+    "session": "agent-a2bca261696017eee"
+  },
   "created": "2026-10-29T19:48:06Z",
   "depends_on": [],
   "done_when": "SpikeFadeCriticalWave1Test caseC asserts a candidate with c2_above_prior_day=false at close==prior high and passes; SpikeFadeFlagOffGoldenTest unchanged and green; shipped, cherry empty",
