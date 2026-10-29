@@ -1,0 +1,54 @@
+{
+  "approved_by": "operator 2026-10-30 via Eagle_Eyes (d-map-before-backtest, d-setup-review-before-backtest, d-storybook-v2)",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-29T22:28:48Z",
+  "depends_on": [],
+  "done_when": "RESULT.md with U7 table (CVD sign x break side, n) and U8 table (divergence vs distance-matched control, reversal rate 4h, n); both rows in CVD_CONCEPTS.md section 4 updated from UNMEASURED; holdout untouched.",
+  "est_turns": 18,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Measure two Fabio CVD claims on BTC 1m taker delta: U7 does the CVD slope inside a pre-US coil (C17 events) predict the break side; U8 does a CVD lower low with price within 0.1% of the prior low (F-CVD3 absorption) predict a reversal vs matched lows. Descriptive, DEV only. Map: MyTradingSys/research/eagle_eyes_picture_2026-10-28/SESSION_MAP_2026-10-30.md",
+  "id": "cvd-coil-and-absorption-u7-u8",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Eagle_Eyes: failed-bounce follow-up (n=116) + Fabervaale shorts F-CVD13..16, guest-video R",
+      "ref": "54734e7d4ec7",
+      "utc": "2026-10-29T21:56:53Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-29T22:30:16Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/fabio_cvd_2026-10-30/",
+    "MyTradingSys/research/pre_us_squeeze_2026-10-29/"
+  ],
+  "scope_out": [],
+  "scope_sha": "54734e7d4ec7",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/fabio_cvd_2026-10-30/CVD_CONCEPTS.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "U7: reuse pre_us_squeeze events; CVD = cumulative taker delta over the box; split by sign",
+    "U8: 15m swing lows on 1m archive; divergence vs distance-matched control; forward 4h",
+    "Update CVD_CONCEPTS.md section 4"
+  ],
+  "tests": "test_cvd_u7_u8.py: hand-built bars with a CVD lower low at a flat low flag as divergence; fails before the detector exists",
+  "title": "CVD studies U7 and U8: does CVD slope in a coil predict the break side; does a CVD lower low at a flat price low predict a reversal",
+  "weight": "",
+  "worker": "session"
+}

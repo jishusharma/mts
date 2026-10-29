@@ -1,0 +1,49 @@
+{
+  "approved_by": "operator 2026-10-30 via Eagle_Eyes (d-map-before-backtest, d-setup-review-before-backtest, d-storybook-v2)",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-29T22:28:47Z",
+  "depends_on": [
+    "bb-state-regime-tf-map",
+    "setup-review-with-operator"
+  ],
+  "done_when": "PRE_REG.md frozen (TF from his pick, clearance from a measured distribution, fixed vs trailing stop as two configs counted in the MinBTL budget); fee-net (12 bp) DEV result with n, win, mean R; holdout untouched; verdict row in VERDICTS.csv.",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Test the operator rule as he walked it (shot 8faf2cac14be): setup = green candle reaching the BB mid after closing outside the lower band; next candle trades below its close -> short; stop = previous candle high; take profit with clearance before the lower band. Only after the map and his setup pick. Map: MyTradingSys/research/eagle_eyes_picture_2026-10-28/SESSION_MAP_2026-10-30.md",
+  "id": "bb-mid-reject-candle-rule-test",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/prev_close_break_2026-10-29/",
+    "MyTradingSys/research/TRIAL_LEDGER.csv"
+  ],
+  "scope_out": [],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/prev_close_break_2026-10-29/RESULT.md"
+  ],
+  "state": "raw",
+  "steps": [
+    "Wait for bb-state-regime-tf-map and setup-review-with-operator",
+    "Pre-reg with his TF, clearance from the map distribution, 2 stop configs",
+    "Fee-net DEV run, trial ledger row, RESULT.md"
+  ],
+  "tests": "test_bb_mid_reject.py: the 10-29 21:35-22:05 bars give one short at 79,553 with stop 79,688; fails before the rule exists",
+  "title": "Operator BB-mid rejection candle rule (shot 8faf2cac14be): pre-reg and fee-net DEV test after the map and his setup pick",
+  "weight": "",
+  "worker": "session",
+  "not_twin_of": [
+    "backtest-pre-us-failed-break-dev-run"
+  ]
+}
