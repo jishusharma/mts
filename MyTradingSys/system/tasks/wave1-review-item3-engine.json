@@ -1,0 +1,44 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "grep -n classifyState src/main/java/datafeed/SetupCandidatesBuilder.java"
+  ],
+  "created": "2026-10-29T19:48:09Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/critical_test_wave1_2026-10-30/REVIEW_ITEM3_GEMINI.md: one row per gate (A-C1, A-C2, A-C3, A-S1, A-S2, A-T1) and per classifyState branch: MATCH / MISMATCH with quote file:line and code file:line",
+  "est_turns": 4,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent reader compares the code with Tom's own words, not our spec's verdicts",
+  "id": "wave1-review-item3-engine",
+  "lane": "DSA-NUC",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini lane: gemini_queue.py run wave1-review-item3-engine:low (NUC)",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "src/main/java/datafeed/SpikeFadeDetector.java, SetupCandidatesBuilder.java classifyState/determineDirections, MarketDataSnapshot.java slope fields"
+  ],
+  "scope_out": [
+    "do not read ITEM3_SPIKEFADE_CLASSIFYSTATE.md or the ledger"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md and the quote files it cites"
+  ],
+  "state": "raw",
+  "steps": [
+    "Read quotes, then code; fill the table"
+  ],
+  "tests": "none (review)",
+  "title": "Second-model review (Gemini): SpikeFadeDetector + classifyState vs Tom sources",
+  "weight": "CRITICAL",
+  "worker": "agent"
+}
