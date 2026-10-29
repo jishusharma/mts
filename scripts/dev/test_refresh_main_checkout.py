@@ -32,6 +32,11 @@ class T(unittest.TestCase):
         g(self.origin, "symbolic-ref", "HEAD", "refs/heads/fast-track")  # git < 2.28 has no init -b
         g(base, "clone", "-q", str(self.origin), str(self.clone))
         g(self.clone, "checkout", "-q", "-B", "fast-track")
+        # the script under test runs bare `git merge`/`git stash` (no -c identity): give the clone its own
+        # identity so the test does not depend on a global user.name/email (absent on some hosts).
+        g(self.clone, "config", "user.name", "t")
+        g(self.clone, "config", "user.email", "t@t")
+        g(self.clone, "config", "commit.gpgsign", "false")
         commit(self.clone, "a.txt")
         g(self.clone, "push", "-q", "origin", "fast-track")
         g(base, "clone", "-q", str(self.origin), str(self.up))
