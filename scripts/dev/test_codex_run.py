@@ -464,6 +464,30 @@ class UsageDocTest(unittest.TestCase):
         json.dumps(doc)
 
 
+class ExhaustedUsageTest(unittest.TestCase):
+    # 2026-10-30: the hold path marked the lane down but never rewrote codex_usage.json, so status kept printing the last run's 36%.
+    RL = {"primary": {"used_percent": 100.0, "resets_at": 1793323745}, "secondary": {"used_percent": 30.0, "resets_at": 1793780113}, "plan_type": "plus"}
+
+    def test_record_exhausted_writes_flag_reading_and_reset(self):
+        with tempfile.TemporaryDirectory() as d:
+            R.record_exhausted(d, Path(d) / "home", self.RL, "Codex 5-hour window 100% used", 1793323745, 1793316000)
+            doc = json.loads((Path(d) / R.USAGE).read_text(encoding="utf-8"))
+        self.assertTrue(doc["exhausted"]["flag"])
+        self.assertEqual(doc["exhausted"]["until"], "2026-10-30T01:29:05Z")
+        self.assertEqual(doc["allowance"]["window_used"], 100.0)
+        self.assertEqual(doc["at"], "2026-10-29T23:20:00Z")
+
+    def test_write_usage_flags_a_spent_reading_by_itself(self):
+        with tempfile.TemporaryDirectory() as d:
+            R.write_usage(d, [], self.RL, 1793316000)
+            spent = json.loads((Path(d) / R.USAGE).read_text(encoding="utf-8"))["exhausted"]
+            R.write_usage(d, [], {**self.RL, "primary": {"used_percent": 36.0, "resets_at": 1793323745}}, 1793316000)
+            ok = json.loads((Path(d) / R.USAGE).read_text(encoding="utf-8"))["exhausted"]
+        self.assertTrue(spent["flag"])
+        self.assertTrue(spent["until"])
+        self.assertEqual(ok, {"flag": False})
+
+
 class IndexTest(unittest.TestCase):
     def test_delivered_newest_first_with_report_link_then_queue(self):
         done1 = card("lab-old", state="done", closed="2026-10-11T08:00:00Z", result="SOUND")

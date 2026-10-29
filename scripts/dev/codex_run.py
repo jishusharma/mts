@@ -236,6 +236,18 @@ def hold_until(rl, now):
     return max([e for e in ends if e > now] or [0])
 
 
+def exhausted_doc(why, until_epoch, now):
+    """The `exhausted` block of codex_usage.json: status_board prints "EXHAUSTED until <reset>" from it instead of a stale %."""
+    return {"flag": True, "why": why[:200], "at": datetime.fromtimestamp(now, timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "until": datetime.fromtimestamp(until_epoch, timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ") if until_epoch else ""}
+
+
+def record_exhausted(wt, home, rl, why, until_epoch, now):
+    """The hold found the allowance spent: rewrite codex_usage.json with this reading and the flag (the lane sweep ships it with
+    lane_state.json). Before 2026-10-30 only a finished run wrote the file, so status kept printing the last run's 36%."""
+    write_usage(wt, run_rows(home), rl, now, exhausted_doc(why, until_epoch, now))
+
+
 def mark_window_down(why, until_epoch, now_dt):
     """The allowance is spent: mark the GPT lane down until the reset so lane_health reroutes the ready CODEX cards (no card waits on GPT)."""
     lane = lane_health.load(REPO)
@@ -431,7 +443,7 @@ def rollout_usage(home, session):
     return out
 
 
-def usage_doc(rows, rl, now, host):
+def usage_doc(rows, rl, now, host, exhausted=None):
     """The compact view the Control Room embeds (relay_board.board -> gpt_usage): allowance, the lab's spend and caps, latest runs."""
     used_w, w_start, w_end, used_k, k_start, k_end = windows(rl, now)
     sw, sk = lab_spend(rows, w_start), lab_spend(rows, k_start)
@@ -449,13 +461,16 @@ def usage_doc(rows, rl, now, host):
             "lab": {"window_pts": round(sw["window_pts"], 1), "window_runs": sw["runs"], "astra_runs": sw["astra_runs"], "week_pts": round(sk["week_pts"], 1)},
             "caps": {"window_pts": LAB_WINDOW_PTS, "week_pts": LAB_WEEK_PTS, "runs_per_window": LAB_RUNS_PER_WINDOW, "astra_runs_per_window": ASTRA_RUNS_PER_WINDOW,
                      "min_gap_min": MIN_GAP_S // 60, "window_reserve": WINDOW_RESERVE},
-            "runs": runs}
+            "runs": runs, "exhausted": exhausted or {"flag": False}}
 
 
-def write_usage(wt, rows, rl, now):
+def write_usage(wt, rows, rl, now, exhausted=None):
+    if exhausted is None:   # a reading at or over the stop line is a spent allowance even when no hold path ran
+        why = hold(rl, now)
+        exhausted = exhausted_doc(why, hold_until(rl, now), now) if why else None
     p = Path(wt) / USAGE
     p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(usage_doc(rows, rl, now, socket.gethostname()), indent=1, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
+    p.write_text(json.dumps(usage_doc(rows, rl, now, socket.gethostname(), exhausted), indent=1, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
 
 
 def salvage(wt, home, cid, when, files=None):
@@ -753,7 +768,10 @@ def run_card(card, dry=False, env=os.environ, probing=False):
                     "model_used": hdr.get("model"), "effort_used": hdr.get("effort"), "session": hdr.get("session"),
                     "exit": code, "seconds": secs, "tokens": int(m.group(1).replace(",", "")) if m else None, **use, "outcome": outcome,
                     "report": reports[-1] if reports else "", "note": note, "log": str(log)}
-        write_usage(wt, run_rows(home) + [make_row()], budget(home), time.time())
+        rl_now = budget(home)
+        spent = exhausted_doc(f"Codex {err or 'limit'} error: " + (lane_health.error_line(logtext) or note), hold_until(rl_now, time.time()), time.time()) \
+            if outcome == "LIMIT" or err else None   # 401 / limit / credits: no fresh % in the log, the flag tells status it is spent
+        write_usage(wt, run_rows(home) + [make_row()], rl_now, time.time(), spent)
         lane = lane_health.record_run({**lane_health.load(wt), "last_probe": lane_health.iso(when)} if probing else lane_health.load(wt), outcome, err, when,
                                       lane_health.error_line(logtext) if err else "")
         lane_health.save(wt, lane)   # DONE/BLOCKED: rides in the commit below; otherwise shipped on its own
@@ -816,6 +834,7 @@ def cmd_next(a):
     why = "" if skip else hold(rl, time.time())
     if why:
         end = hold_until(rl, time.time())
+        record_exhausted(REPO, home, rl, why, end, time.time())
         if end:
             mark_window_down(why, end, utc())
         print(f"IDLE {why}; lane marked down until the reset, cards move to DSA/Claude at the next sweep ({card['id']})")

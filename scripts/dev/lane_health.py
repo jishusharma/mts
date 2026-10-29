@@ -44,10 +44,13 @@ CREDITS = re.compile(r"out of (?:credits?|tokens)|insufficient[_ ](?:credits?|qu
                      r"credits? (?:have been |are |is |were )?(?:exhausted|depleted|used up|run out)|run out of credits?|"
                      r"credit balance|(?:add|purchase|buy|top up)(?: more)? credits?|exceeded your (?:current )?quota|billing", re.I)
 LIMIT = re.compile(r"usage limit|rate[ _]limit(?: reached| exceeded)?|too many requests|limit reached", re.I)
+AUTH = re.compile(r"\b401\b[^\n]{0,40}unauthori[sz]ed|unauthori[sz]ed[^\n]{0,40}\b401\b|status(?: code)?:? 401\b|invalid[_ ]api[_ ]key|"
+                  r"not logged in|please (?:log|sign) ?in|refresh token (?:has )?expired", re.I)   # 2026-10-30: a 401 run left GPT "36%"
+USAGE = "MyTradingSys/system/codex_usage.json"   # codex_run writes it next to STATE when the allowance is spent
 SAFE_FALLBACK = "SONNET"        # lane for rerouted build cards and for cards that need to SEE images (DSA is text only)
 VISION = re.compile(r"\b(frames?|images?|png|jpe?g|screenshots?)\b", re.I)
 REPORT_TEST = "Report file exists with the findings table or numbers and the verdict line; no code or spec changed"
-HOLD_REASONS = ("credits", "limit", "failing")
+HOLD_REASONS = ("credits", "limit", "auth", "failing")   # auth (401): probed like credits, an operator re-login brings it back
 
 
 def utc():
@@ -66,16 +69,18 @@ def epoch(s):
 
 
 def classify(text):
-    """'credits' | 'limit' | '' from the END of a Codex run log (the head holds the echoed prompt and repo text)."""
+    """'credits' | 'limit' | 'auth' | '' from the END of a Codex run log (the head holds the echoed prompt and repo text)."""
     tail = (text or "")[-TAIL:]
     if CREDITS.search(tail):
         return "credits"
-    return "limit" if LIMIT.search(tail) else ""
+    if LIMIT.search(tail):
+        return "limit"
+    return "auth" if AUTH.search(tail) else ""
 
 
 def error_line(text):
     """The ERROR line a person should see on the Control Room (reset time included), cut to 200 characters."""
-    hits = [ln.strip() for ln in (text or "")[-TAIL:].splitlines() if ln.strip().upper().startswith("ERROR") and (CREDITS.search(ln) or LIMIT.search(ln))]
+    hits = [ln.strip() for ln in (text or "")[-TAIL:].splitlines() if ln.strip().upper().startswith("ERROR") and (CREDITS.search(ln) or LIMIT.search(ln) or AUTH.search(ln))]
     return hits[-1][:200] if hits else ""
 
 
@@ -421,6 +426,8 @@ def sweep(repo=REPO, now=None, do_apply=False, do_ship=False, beating=False):
         changed.append(str(save(repo, st).relative_to(repo)))
     elif git(repo, "status", "--porcelain", "--", STATE, check=False).stdout.strip():
         changed.append(STATE)   # state written by codex_run (window spent): ship it too, a dirty tree would stop the next tick
+    if git(repo, "status", "--porcelain", "--", USAGE, check=False).stdout.strip():
+        changed.append(USAGE)   # the spent-allowance reading (codex_run.record_exhausted): without it status showed a 2 h old "36%"
     shipped = ""
     if do_ship and changed:
         ok = commit_ship(repo, sorted(set(changed)), f"lane health: GPT {st['status']}" + (f" ({st['reason']})" if st["reason"] else "")
