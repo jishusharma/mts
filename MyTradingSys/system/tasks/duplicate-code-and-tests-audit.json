@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-29T21:58:24Z",
   "commands": [
     "python scripts/dev/run_all_tests.py --quick"
   ],
@@ -32,11 +33,17 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "research/dedupe_audit_2026-10/CODE.md: 24 ranked code/test duplicate items with grep evide",
+      "ref": "dd3259bc9",
+      "utc": "2026-10-29T21:58:24Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nb/two-cards-voice-procs",
-      "ref": "1536591a46bb",
-      "utc": "2026-10-28T06:43:07Z"
+      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nuc/gpt-prereg-gate-boundary-tes",
+      "ref": "25da7f4a638a",
+      "utc": "2026-10-29T21:32:01Z"
     }
   ],
   "layers": [],
@@ -50,11 +57,16 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-28T08:18:34Z",
+  "refreshed": "2026-10-29T21:54:21Z",
   "refs": [
     "MyTradingSys/system/OPERATOR_DECISIONS.md"
   ],
-  "result": "",
+  "result": "research/dedupe_audit_2026-10/CODE.md: 24 ranked code/test duplicate items with grep evidence and consolidation recommendations",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev",
     "MyTradingSys/tests",
@@ -63,15 +75,16 @@
   "scope_out": [
     "Audit never deletes or edits code"
   ],
-  "scope_sha": "1536591a46bb",
+  "scope_sha": "25da7f4a638a",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Find duplicated helper functions and near-identical scripts",
     "Find scripts nothing imports, calls or greps (dead), and tests that assert the same thing",
     "Write CODE.md with grep evidence per row, ranked"
   ],
+  "taken": "2026-10-29T21:58:24Z",
   "tests": "Check: re-run three random rows' grep commands and get the same result.",
   "title": "Duplicate code and tests audit: scripts/dev and tests",
   "weight": "ROUTINE",
