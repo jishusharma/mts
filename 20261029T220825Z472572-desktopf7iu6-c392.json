@@ -1,0 +1,1 @@
+{"t": "20261029T220825Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "note", "text": "A->C 5/5: JIS-DESKTOP is UNKNOWN on every row of device_tasks matrix (never reported). Please run: python scripts/dev/device_tasks.py check --send (from any up-to-date worktree) and reply here.", "login": "A"}
