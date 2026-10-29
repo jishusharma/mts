@@ -1,0 +1,22 @@
+pierces 1349 coil 415
+ALL with level beyond                    n=1009 REACHED  30% FAILED  52% | level dist med 1.60% | run med 0.59%
+up                                       n= 469 REACHED  29% FAILED  54% | level dist med 1.56% | run med 0.59%
+down                                     n= 540 REACHED  30% FAILED  51% | level dist med 1.65% | run med 0.59%
+coil=True                                n= 330 REACHED  29% FAILED  56% | level dist med 1.53% | run med 0.51%
+coil=False                               n= 679 REACHED  30% FAILED  50% | level dist med 1.62% | run med 0.63%
+force: vol ratio terciles cut at 1.96x / 3.56x; median vol ratio 2.64x, median delta share +0.13
+vol ratio low tercile                    n= 351 REACHED  26% FAILED  58% | level dist med 1.71% | run med 0.53%
+vol ratio mid tercile                    n= 356 REACHED  28% FAILED  53% | level dist med 1.57% | run med 0.57%
+vol ratio top tercile                    n= 302 REACHED  36% FAILED  45% | level dist med 1.52% | run med 0.67%
+delta with pierce (>+0.10)               n= 623 REACHED  33% FAILED  50% | level dist med 1.51% | run med 0.58%
+delta weak/against (<=+0.10)             n= 386 REACHED  25% FAILED  56% | level dist med 1.81% | run med 0.59%
+top vol + delta with                     n= 197 REACHED  39% FAILED  42% | level dist med 1.43% | run med 0.63%
+level within 0.5%                        n= 156 REACHED  74% FAILED  25% | level dist med 0.27% | run med 0.36%
+level 0.5-1.5%                           n= 313 REACHED  36% FAILED  54% | level dist med 0.93% | run med 0.63%
+level > 1.5%                             n= 540 REACHED  13% FAILED  59% | level dist med 2.81% | run med 0.71%
+coil + top vol + delta with              n=  64 REACHED  41% FAILED  44% | level dist med 1.47% | run med 0.68%
+-- distance-matched (level 0.5-1.5%)
+  top vol + delta with                   n=  58 REACHED  40% FAILED  52% | level dist med 0.87% | run med 0.64%
+  everything else                        n= 255 REACHED  35% FAILED  54% | level dist med 0.96% | run med 0.63%
+  coil                                   n= 108 REACHED  35% FAILED  56% | level dist med 0.92% | run med 0.61%
+  no coil                                n= 205 REACHED  37% FAILED  52% | level dist med 0.95% | run med 0.63%
