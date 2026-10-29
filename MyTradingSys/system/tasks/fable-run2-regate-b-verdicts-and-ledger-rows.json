@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-29T22:16:37Z",
   "commands": [
     "python -m pytest scripts/dev/test_verdicts.py -q",
     "python scripts/dev/verdicts.py count --split DEV",
@@ -30,6 +31,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "Commit 07695eb16511 applied REGATE fixes 3-7: count --split DEV 56, 62 count-only rows add",
+      "ref": "248874ff3",
+      "utc": "2026-10-29T22:16:37Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Session flow states x context: PRE_REG, 604 DEV rows, event table, verdict INCONCLUSIVE",
@@ -55,7 +62,12 @@
   "refs": [
     "MyTradingSys/research/fable_audit_2026-10-18/REGATE_AUDIT.md"
   ],
-  "result": "",
+  "result": "Commit 07695eb16511 applied REGATE fixes 3-7: count --split DEV 56, 62 count-only rows added, test_verdicts passes",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/VERDICTS.csv",
     "MyTradingSys/research/VERDICTS_OVERRIDES.csv",
@@ -85,7 +97,7 @@
   "sources": [
     "MyTradingSys/research/fable_audit_2026-10-18/REGATE_AUDIT.md:60-84 (Q6 table and fix list)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read REGATE_AUDIT.md fix items 3-7 and the Q6 table (lines 60-84); run verdicts.py count --split DEV (57) and --ledger (76) for the start numbers.",
     "Write the live-file case in test_verdicts.py; run it and see it fail.",
@@ -95,6 +107,7 @@
     "Append 62 count-only rows to TRIAL_LEDGER.csv (existing columns): bb_top 12 (bb_top PRE_REG.md:9), eur_low 3 (followups trials.csv), context_factors 16 distinct (factor, side) of its trials.csv, pit trials.csv 8, pit V3 14 (PRE_REG_V3.md:16 and :52-55), cryptocred 9 (count_power.json rows). Recount each; record any difference in the commit.",
     "pytest test_verdicts.py; run count --split DEV and --ledger; sync.py ship."
   ],
+  "taken": "2026-10-29T22:16:37Z",
   "tests": "scripts/dev/test_verdicts.py new live-file case: count_variants(DEV) == 56; no study_dir 'filter'; kurisko split DEV; bb_top and pit_levels rows BLOCKED; no context_factors row kill_scope has 'session-extreme fade'. Fails now (57, UNPARSED, present).",
   "title": "Fable run 2 REGATE fixes 3-7: VERDICTS BLOCKED backfill, kill scopes, duplicate rows, count-only TRIAL_LEDGER rows",
   "weight": "CRUCIAL",

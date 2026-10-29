@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-29T22:20:00Z",
   "commands": [],
   "created": "2026-10-27T06:52:34Z",
   "depends_on": [],
@@ -16,6 +17,12 @@
   "last_seen": "2026-10-27T06:52:34Z",
   "last_session": "b3c88f60-c6a6-456b-a09a-5d5d5f50a9aa",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "ANNOUNCEMENTS A-20261026-1:21 clarifies unrestricted gateway lifts weekly cap only; scheduled tasks stay OFF per GATEWAY_NUC.md:31; test_integrity passes",
+      "ref": "89619dbe5f66",
+      "utc": "2026-10-29T22:20:00Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,7 +47,12 @@
   "refined_by": "",
   "refreshed": "2026-10-27T21:31:44Z",
   "refs": [],
-  "result": "",
+  "result": "ANNOUNCEMENTS.md A-20261026-1 line 21 already specifies: Not a scheduling exception: unrestricted (GATEWAY_NUC.md:26-31) lifts only the usage/weekly-cap gate and the 2-worker pacing, not the no scheduled tasks anywhere hard rule (GATEWAY_NUC.md:31 keeps it in force on the gateway too); the one standing exception is MTS-CBP-Ingestion (SCHEDULING_POLICY.md CBP-only exception), unrelated to this gateway profile. test_integrity passes (15 passed).",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/ANNOUNCEMENTS.md",
     "MyTradingSys/system/GATEWAY_NUC.md"
@@ -54,12 +66,13 @@
   "seen": 1,
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "grep 'scheduled' in ANNOUNCEMENTS.md, GATEWAY_NUC.md, SCHEDULING_POLICY.md and list every sentence that reads as permitting scheduled jobs",
     "Add one line to the active gateway announcement: gateway lifts the weekly cap only; scheduled tasks stay OFF except the CBP-only exception",
     "Run test_integrity"
   ],
+  "taken": "2026-10-29T22:20:00Z",
   "tests": "python -m pytest MyTradingSys/tests/docs/test_integrity.py -q (must pass; fail-first: a grep test is not needed for a doc line)",
   "title": "Instruction conflict: Hard rule: no scheduled tasks anywhere vs operator: unrestricted gateway incl. scheduled job",
   "weight": "ROUTINE",

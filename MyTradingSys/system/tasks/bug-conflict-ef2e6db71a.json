@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-29T22:22:00Z",
   "commands": [],
   "context": {
     "calls_to_edit": 12,
@@ -28,6 +29,12 @@
   "last_session": "e75d3eec-88e2-4dca-af71-396651e5d8c1",
   "latest": [
     {
+      "kind": "ship",
+      "line": "Verified DEPLOY_RUNBOOK.md line 13 bans reset/rebase on live or main checkout; test_integrity passes (15 passed)",
+      "ref": "cf86833da",
+      "utc": "2026-10-29T22:22:00Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "deploy-runbook-manual-world: make manual deploy the standard operational procedure",
@@ -51,7 +58,12 @@
   "refined_by": "",
   "refreshed": "2026-10-27T21:31:46Z",
   "refs": [],
-  "result": "",
+  "result": "Verified DEPLOY_RUNBOOK.md line 13 already states: Never reset or rebase. History-rewriting (git reset, git rebase) on the live tree or the main checkout is never a Builder or Lead order... allowed repair is git -C <tree> pull --ff-only (PARALLEL.md) or the manual deploy steps below. test_integrity passes (15 passed).",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/DEPLOY_RUNBOOK.md",
     "MyTradingSys/system/LEAD.md"
@@ -64,12 +76,13 @@
   "seen": 1,
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "grep 'reset' in system/*.md and roles/lead*.md for any text that tells Lead to reset the main checkout",
     "Replace or annotate the loser text with the pull --ff-only path",
     "Run test_integrity"
   ],
+  "taken": "2026-10-29T22:22:00Z",
   "tests": "python -m pytest MyTradingSys/tests/docs/test_integrity.py -q",
   "title": "Instruction conflict: Hard rule: never rebase/reset; live tree via desk/ vs Lead order: git reset --soft on main checkout (liv",
   "weight": "ROUTINE",

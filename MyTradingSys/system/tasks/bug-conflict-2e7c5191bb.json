@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-29T22:17:45Z",
   "commands": [],
   "created": "2026-10-28T14:39:01Z",
   "depends_on": [],
@@ -15,6 +16,12 @@
   "last_seen": "2026-10-28T14:39:01Z",
   "last_session": "8f188868-1ade-4f03-aa7e-b786f4253d0f",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Commit b7d9f3e09aa7: plan SPAWN line names Builder workers as agents, test_plan_spawn_line",
+      "ref": "5c413a1d7",
+      "utc": "2026-10-29T22:17:45Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,12 @@
   "refined_by": "",
   "refreshed": "2026-10-28T16:06:08Z",
   "refs": [],
-  "result": "",
+  "result": "Commit b7d9f3e09aa7: plan SPAWN line names Builder workers as agents, test_plan_spawn_line_names_agents_not_sessions passes",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/supervisor.py",
     "scripts/dev/test_supervisor.py"
@@ -47,11 +59,12 @@
     "MyTradingSys/system/roles/supervisor.md:35",
     "MyTradingSys/system/WORKERS.md:18-21"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "In supervisor.py plan_lines (SPAWN line ~1017) print worker kind 'agent' for every Claude Builder card, drop the '[operator turn: sessions, 2 chained cards each ...]' clause; keep interactive roles as session",
     "Add a fail-first test in test_supervisor.py: a pick with worker=session in the plan prints no 'session' and no 'sessions, 2 chained'"
   ],
+  "taken": "2026-10-29T22:17:45Z",
   "tests": "test_supervisor.py::test_plan_spawn_line_names_agents_not_sessions fails on old code, passes after",
   "title": "Instruction conflict: role file hard rule: worker roles (Builder etc.) a vs supervisor.py plan SPAWN 1 tagged cryptocred-stop-",
   "weight": "ROUTINE",

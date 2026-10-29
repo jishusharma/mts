@@ -1,0 +1,70 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/execution/capture_txlog_settlement.py --hours 36 --out MyTradingSys/research/txlog_capture_2026-10-31_before.json",
+    "python MyTradingSys/execution/capture_txlog_settlement.py --hours 36 --out MyTradingSys/research/txlog_capture_2026-10-31_after.json",
+    "python MyTradingSys/research/critical_test_wave1_2026-10-30/item2_settlement_identity.py"
+  ],
+  "created": "2026-10-29T22:00:42Z",
+  "depends_on": [],
+  "done_when": "Both capture files (settlement entry, or a documented absence) are committed; ITEMS_1_2_5.md Item 2 states which formula matches with expected, code and diff numbers; unblocks the formula card; shipped, cherry empty",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Run capture_txlog_settlement.py on the host with testnet secrets after a day where a testnet position was open across 08:00Z (daily_loss_monitor logs show it) and record equity at both ends, to decide which P/L formula matches Deribit.",
+  "id": "settlement-capture-testnet-second-log",
+  "lane": "DSA-NUC",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "critical test wave 1: items 1, 2, 5 (FT2/kill-switch fixes PASS, settlement P/L finding, p",
+      "ref": "c511a40dc1d7",
+      "utc": "2026-10-29T19:39:55Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "c511a40dc1d7 critical test wave 1: items 1, 2, 5 (FT2/kill-switch fixes PASS, settlement P",
+      "ref": "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEMS_1_2_5.md",
+      "utc": "2026-10-29T19:39:55Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "wave1-settlement-pnl-identity-gap"
+  ],
+  "note": "REVIEWED:2026-10-30 ACCEPT (reviewer Agent, FIX lines applied) ",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-29T22:04:09Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/txlog_capture_2026-10-31_before.json",
+    "MyTradingSys/research/txlog_capture_2026-10-31_after.json",
+    "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEMS_1_2_5.md",
+    "MyTradingSys/research/critical_test_wave1_2026-10-30/item2_settlement_identity.py"
+  ],
+  "scope_out": [
+    "any order or position (existing testnet activity only), mainnet, .secrets contents, mainnet_pnl.py edits"
+  ],
+  "scope_sha": "c511a40dc1d7",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Check the daily_loss_monitor log for a testnet position spanning an 08:00Z settlement within 36 h; none: note it and re-run next day (do not open a trade).",
+    "Run the capture twice, once shortly before 08:00Z (_before.json) and once after the settlement (_after.json): the account summary is taken at capture time, so equity at both ends needs two files.",
+    "Edit item2_settlement_identity.py: point it at the _after file and change its hard-coded window 'ts_utc >= 2026-10-10T08:00:00Z' to the new date; run it and paste expected/code/diff into ITEMS_1_2_5.md Item 2."
+  ],
+  "tests": "none (run lane): item2_settlement_identity.py prints the identity numbers on the new capture",
+  "title": "Capture a second Deribit testnet transaction log spanning one 08:00Z settlement with equity at both ends (feeds wave1-settlement-pnl-identity-gap)",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

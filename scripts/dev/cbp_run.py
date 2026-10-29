@@ -48,28 +48,11 @@ PROMPT = """You extract what ONE crypto analyst says in ONE video. Output ONLY a
 Rules: only what the analyst says, no inference, no filling gaps. A trade needs entry, target and invalidation in
 their words (use "" for any not stated). Every quote and trade.quote must be copied verbatim from the transcript
 (auto-captions: copy the caption words as they are). bias is the analyst's own stance on BTC.
-Transcript of %(analyst)s, %(published)s, "%(title)s":
 """
 
 
 def stamp_path():
-    return Path(os.environ.get("CBP_STAMP") or CBP_HOME / "cbp_store" / "stamp.json")
-
-
-def open_window(now):
-    """Name of the UTC window that is open at `now`, else None."""
-    t = now.astimezone(timezone.utc).time()
-    for name, a, b in WINDOWS:
-        if a <= t and (b is None or t < b):
-            return name
-    return None
-
-
-def is_due(now, stamp):
-    """Window name when one is open and the stamp has no run in it today, else None."""
-    w = open_window(now)
-    day = now.astimezone(timezone.utc).date().isoformat()
-    return w if w and day + ":" + w not in stamp.get("done", []) else None
+    return Path(os.environ.get("CBP_STAMP", str(cbp.default_cbp_home() / "cbp_store" / "stamp.json")))
 
 
 def read_stamp():
@@ -77,6 +60,28 @@ def read_stamp():
         return json.loads(stamp_path().read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return {}
+
+
+def open_window(now):
+    """The WINDOWS entry containing `now` (UTC time), or None."""
+    t = now.astimezone(timezone.utc).time()
+    for name, start, end in WINDOWS:
+        if end is None:
+            if t >= start:
+                return name
+        elif start <= t < end:
+            return name
+    return None
+
+
+def is_due(now, stamp):
+    """Window name if a window is open AND not yet recorded in stamp for today; None otherwise."""
+    w = open_window(now)
+    if not w:
+        return None
+    day = now.astimezone(timezone.utc).date().isoformat()
+    entry = day + ":" + w
+    return None if entry in stamp.get("done", []) else w
 
 
 def write_stamp(now, window):
@@ -125,7 +130,7 @@ def parse_transcript(path):
 
 
 def local_videos(cutoff):
-    """[(video_id, analyst, published, title, path)] of transcripts on disk published on/after cutoff."""
+    """[(video_id, analyst, published, title, path, channel)] of transcripts on disk published on/after cutoff."""
     out = []
     seen = set()
     for p in sorted(TRANSCRIPTS.glob("*_timed.txt")) + sorted(TRANSCRIPTS.glob("*_raw.txt")):
@@ -133,14 +138,15 @@ def local_videos(cutoff):
         if meta.get("video id") in seen:
             continue
         if meta.get("published", "") >= cutoff and meta.get("analyst") and meta.get("video id"):
-            out.append((meta["video id"], meta["analyst"], meta["published"], meta.get("title", ""), p))
+            channel = meta.get("channel")
+            out.append((meta["video id"], meta["analyst"], meta["published"], meta.get("title", ""), p, channel))
             seen.add(meta["video id"])
     return out
 
 
 def llm_extract(video, body, run=subprocess.run):
     """One `claude -p` pass per video; returns the parsed JSON object or raises ValueError."""
-    vid, analyst, published, title, _ = video
+    vid, analyst, published, title, _ = video[:5]
     prompt = PROMPT % {"analyst": analyst, "published": published, "title": title.replace('"', "'")}
     r = run(["claude", "-p", "--model", MODEL, "--tools", "", "--no-session-persistence"],
             input=prompt + body, capture_output=True, text=True, encoding="utf-8", timeout=600)
@@ -154,7 +160,8 @@ def llm_extract(video, body, run=subprocess.run):
 def build_row(video, got, body):
     """Row from the extractor's object, or (None, reason). Every quote must occur in the transcript, checked with
     verify_extract_quotes (the one checker); one fabricated quote rejects the whole row."""
-    vid, analyst, published, _, _ = video
+    vid, analyst, published = video[0], video[1], video[2]
+    channel = video[5] if len(video) > 5 else None
     norm_body = vq.norm(vq.TIMESTAMP.sub(" ", body))
     quotes = [q for q in got.get("quotes") or [] if isinstance(q, str) and q.strip()]
     trades = [t for t in got.get("trades") or [] if isinstance(t, dict)]
@@ -163,6 +170,7 @@ def build_row(video, got, body):
         if bad is not None:
             return None, "quote not in transcript: " + bad.strip()[:60]
     row = {"analyst": analyst, "video_id": vid, "published": published,
+           **({"channel": channel} if channel else {}),
            "bias": got.get("bias") if got.get("bias") in cbp.BIASES else "NO_VIEW",
            "symbols": [str(s).upper() for s in got.get("symbols") or []],
            "quotes": quotes,
