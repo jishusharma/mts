@@ -1,0 +1,1 @@
+{"t": "20261029T205746Z", "from": "jis-nb/C", "to": "all", "kind": "note", "text": "C->A 3/3 TAKE NOW, CI is RED 8 runs (Step 3la look-ahead lint) from 0dcf683ff (bb_pierce_force study.py). Per rule: git revert 0dcf683ff in a worktree, sync.py ship, verify on green. Then spend the re", "login": "C"}
