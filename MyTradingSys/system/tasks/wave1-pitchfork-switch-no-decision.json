@@ -25,7 +25,7 @@
   "refine_tries": 1,
   "refined_by": "",
   "refs": [],
-  "result": "",
+  "result": "Resolved by d-pitchfork-keep-and-prepare (operator 10-30): keep the switch (inert, 3 vs 15 4h bars), build out via pitchfork-live-4h-bars-too-few and pitchfork-operator-charts-prep.",
   "scope_in": [
     "scripts/core/start-trading-day.ps1, MyTradingSys/system/OPERATOR_DECISIONS.md"
   ],
@@ -34,7 +34,7 @@
   "sources": [
     "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md"
   ],
-  "state": "raw",
+  "state": "done",
   "steps": [
     "Route to the coordinator: live-tree change reaches the operator"
   ],

@@ -71,3 +71,7 @@ Why this section exists: the 10-28 session was compacted 6 times; each summary k
 9. Score every A/B map in `SCENARIO_LEDGER.md`.
 10. Same readings, several stories: for each key reading give 2-4 explanations (e.g. OI up + price up = new longs / shorts opening into it / other exchanges), each with a probability labelled MEASURED (base rate, n) or OURS guess, the layer that tells them apart next, and what to be ready for under each.
 Bullets only, max about 8 lines plus the grid.
+
+### Level prep and Pitchfork (10-30)
+- Prepare at a level before price arrives: checklist, absorption (effort without result), who absorbed (OI up = shorts opening, flat/down = passive sellers or profit-taking), confirm on a 5m close back through the stuck swing, strength = flag count. All UNTESTED; open unknowns U1-U6 with how to measure: `research/eagle_eyes_picture_2026-10-28/CARD_SPECS.md`.
+- Pitchfork live switch is on but inert (3 vs 15 four-hour bars) and cannot arm orders; the in-sample sim result (n=77, PF 1.24) is not evidence. Operator method = copy-paste forks (same slope and width, new anchor): measure vs random parallels before trusting it.
