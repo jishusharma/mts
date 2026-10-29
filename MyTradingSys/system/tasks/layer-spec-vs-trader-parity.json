@@ -18,6 +18,15 @@
   "id": "layer-spec-vs-trader-parity",
   "kind": "audit",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into jis/repoint-lc1",
+      "ref": "ded13479a522",
+      "utc": "2026-10-28T19:37:09Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -25,6 +34,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-29T21:09:42Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -46,12 +56,13 @@
     "new backtests",
     "deciding what trades (fee-net OOS decides)"
   ],
+  "scope_sha": "ded13479a522",
   "size": "M",
   "sources": [
     "operator 2026-10-28 priority: stop MTS drifting; account for everything extracted; make it findable",
     "operator 2026-10-28: Malkan layer uses only Malkan PRD/NRD"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Read WIRING_MALKAN_KROWN.csv and WIRING_TOM_FABIO_HABIB.csv for the sourced side.",
     "For each layer file and params JSON list enforced rules and parameters; match to a wiring row; a miss is UNSOURCED, or a label gap (param without SOURCED/OURS).",

@@ -4,34 +4,53 @@
   "commands": [],
   "created": "2026-10-29T17:10:54Z",
   "depends_on": [],
-  "done_when": "`tasks.py lint` prints 0 STALE rows after a refresh pass over the currently-STALE ready cards (scope changed since their last refresh).",
-  "est_turns": null,
+  "done_when": "tasks.py stale lists 0 cards and tasks.py lint exits 0; shipped, cherry empty",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Noticed by Session_Planner (2026-10-29): tasks.py lint reports ~70 pre-existing ready cards STALE repo-wide, unrelated to this session's own cards.",
+  "goal": "Clear the STALE tags tasks.py lint reports on ready cards: for each listed card re-read the scope change, then refresh or park it.",
   "id": "tasks-py-lint-refresh-the-70-pre-existin",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "feat(krown): extract 4 event-study videos and build CALL_LEDGER.csv",
+      "ref": "19036dfc33d3",
+      "utc": "2026-10-29T21:07:22Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Raw, filed by Supervisor A from a worker's Noticed: line, not yet refined.",
   "not_twin_of": [
     "tasks-py-brief-refuses-ready-cards-and-h"
   ],
+  "note": "REVIEWED:2026-10-30 T0-ONLY (planner-refine-0930; OURS ROUTINE: card hygiene).",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-29T21:12:26Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/system/tasks"
+  ],
+  "scope_out": [
+    "card content rewrites beyond the refresh; product code; non-stale cards"
+  ],
+  "scope_sha": "19036dfc33d3",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "python scripts/dev/tasks.py stale > list; for each id read git log over its scope_in since refreshed",
+    "Unchanged meaning: python scripts/dev/tasks.py tag <id> --refresh; changed meaning: tasks.py tried <id>",
+    "Run tasks.py lint until it exits 0"
+  ],
+  "tests": "python scripts/dev/tasks.py lint prints no STALE line and exits 0 (before: exits 1 with STALE list)",
   "title": "tasks.py lint: refresh the ~70 pre-existing ready cards it reports STALE",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
