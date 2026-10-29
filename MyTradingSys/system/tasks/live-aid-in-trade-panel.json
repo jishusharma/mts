@@ -2,6 +2,15 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 7,
+    "folded": "2026-10-29T01:59:44Z",
+    "misses": 26,
+    "reads": [
+      "MyTradingSys/tools/live_aid/STEPS.md"
+    ],
+    "session": "agent-a4487ccf3f8f364ec"
+  },
   "created": "2026-10-29T01:51:47Z",
   "depends_on": [],
   "done_when": "8 bullets render on the live page with labels; tests pass and each break mode fails one; Artifact republished",
