@@ -1,7 +1,22 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-29T21:18:52Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-29T21:18:44Z",
+    "misses": 15,
+    "reads": [
+      "AGENTS.md",
+      "MyTradingSys/system/GEMINI_START.md",
+      "MyTradingSys/system/CODEX_START.md",
+      "MyTradingSys/tests/docs/test_integrity.py",
+      "scripts/dev/mts_doctor.py",
+      "MyTradingSys/system/SUPER_SESSION.md"
+    ],
+    "session": "agent-a52f5c86799d6af26"
+  },
   "created": "2026-10-24T15:09:37Z",
   "depends_on": [
     "doctor-dedupe-codex-gemini-start"
@@ -15,6 +30,12 @@
   "id": "red-trunk-revert-within-10-min-rule-miss",
   "lane": "HAIKU",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "revert line added to AGENTS.md, CODEX_START.md, GEMINI_START.md",
+      "ref": "d940633be",
+      "utc": "2026-10-29T21:18:52Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +60,12 @@
   "refined_by": "Session_Planner",
   "refreshed": "2026-10-27T22:51:51Z",
   "refs": [],
-  "result": "",
+  "result": "revert line added to AGENTS.md, CODEX_START.md, GEMINI_START.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "AGENTS.md",
     "MyTradingSys/system/CODEX_START.md",
@@ -55,12 +81,13 @@
   "sources": [
     "MyTradingSys/system/SUPER_SESSION.md D3"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Check each file for an existing revert rule (grep -n revert).",
     "Add the line where Hard rules / gates are listed; do not copy the whole D3 text.",
     "Run test_integrity."
   ],
+  "taken": "2026-10-29T21:18:52Z",
   "tests": "python -m pytest MyTradingSys/tests/docs/test_integrity.py -q passes; grep -c 'SUPER_SESSION.md D3' on the three files is 1 each.",
   "title": "red-trunk revert-within-10-min rule missing from AGENTS.md, CODEX_START.md and GEMINI_START.md",
   "weight": "ROUTINE",
