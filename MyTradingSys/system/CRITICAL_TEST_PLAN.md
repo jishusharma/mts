@@ -25,12 +25,16 @@ Scope is narrow on purpose: only places where a wrong rule costs money (orders, 
 | T6 | Alerts reach the screen | A firing nobody sees is a silent failure | alert path, popups, dashboard | Every candidate and order produces exactly one visible alert on desktop and laptop |
 | T7 | New probability panel | Numbers the operator will trade on | anticipation card | Base rates recomputed by a second model from raw data before display |
 
-## First wave (narrow, about 5 items)
+## First wave (trimmed by the past-audit inventory, 2026-10-30)
 
-1. T2: flag census. List every on/off switch the live launcher sets, against the decision that set it (spikeFade OFF, pitchfork ON found 10-30).
-2. T1: fail-closed census. For each guard in T1, one test each for an API error, a restart and a stale file. Reuse the existing tests, add only the missing ones.
-3. T4: net R:R hand cases, Java vs Python parity.
-4. T3: KR-L10 vs the operator's lower-high definition and Krown's own words (card `krown-views-via-gemini-what-krown-says-a`).
-5. T2: replay of 10-29 through the engine (offline): what would have fired, with all switches as in live and with spikeFade on.
+The inventory (`research/audit_inventory/AUDIT_INVENTORY.md`, about 55 audits) shows backtest method and rule-vs-quote wiring are already the most checked areas, so they are not in this wave. The wave goes where nothing was checked:
 
-The wave is filled in after the past-audit inventory, so items already covered are dropped, not redone.
+| # | Area | Item | Why it is not a duplicate |
+|---|---|---|---|
+| 1 | T1 | Confirm the 3 CRITICAL findings of `ADVERSARIAL_REVIEW_FT2.md` and the kill-switch BLOCKER of `OPUS_PREMAINNET_AUDIT.md` are fixed on trunk, each with a test that fails on the old code | inventory found no later audit confirming the fixes |
+| 2 | T1 | Restart/reset replay across executor + position_manager + reconciler with recorded Deribit testnet responses (not fake clients); funding and settlement booking (non-trade balance moves) | every past execution audit used fake clients |
+| 3 | T2 | Audit `SpikeFadeDetector`, scoring/confidence and `classifyState` in `SetupCandidatesBuilder.java` (U + I), plus the launcher switch census (spikeFade OFF, pitchfork ON) against the decisions that set them | no audit of their own; the 2026-09-17 classifyState tracker was never closed |
+| 4 | T2 | Offline replay of 10-29 through the engine: what would have fired with live switches, and with spikeFade on | new question |
+| 5 | T5 + T6 | Live feeds (aggTrades, OI, liquidations) live-vs-archive parity for one day; every candidate and order produces exactly one visible alert | no audit since 2026-09-15 |
+
+Reviewer per item: the author model plus one other family (Gemini on NUC for code reads, DSA for runs); reviewers get the code and the source, not our conclusion.
