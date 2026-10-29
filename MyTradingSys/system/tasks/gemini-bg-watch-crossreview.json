@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-29T20:47:02Z",
   "commands": [],
   "created": "2026-10-28T17:55:23Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "SOUND; six synthetic transcript cases matched; cap mapping matched; until exit codes 0 and",
+      "ref": "85ed6317f",
+      "utc": "2026-10-29T20:47:02Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -31,7 +38,12 @@
   "refined_by": "",
   "refreshed": "2026-10-28T17:55:25Z",
   "refs": [],
-  "result": "",
+  "result": "SOUND; six synthetic transcript cases matched; cap mapping matched; until exit codes 0 and 124; report MyTradingSys/research/layer_lab/reports/2026-10-28_gem-bg-watch-crossreview.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/bg_watch.py",
     "scripts/dev/test_bg_watch.py",
@@ -47,13 +59,14 @@
   "sources": [
     "scripts/dev/bg_watch.py docstring lines 1-20 (bg-process-audit 2026-10-28; caps are OURS, operator 2026-10-28 targets)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read bg_watch.py and list its cap table and its notice-matching rules (file:line).",
     "Write 6 synthetic transcript .jsonl fixtures in a scratch dir (running, finished by message, finished by queued_command, stopped, young, notice quoted inside a tool result) and run bg_watch.report on each; record expected vs actual.",
     "Run `bg_watch.py until --file F --pattern RE --timeout 3` for a matching and a non-matching file and record the exit codes.",
     "Report findings as a table: severity, file:line, evidence, proposed fix. Change no code. For each HIGH finding capture: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
   ],
+  "taken": "2026-10-29T20:47:02Z",
   "tests": "",
   "title": "[GEMINI] Cross-review bg_watch.py: caps, 124 timeout exit and false stall reports",
   "weight": "ROUTINE",
