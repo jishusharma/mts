@@ -1836,6 +1836,22 @@ class ShipResultFlagTest(unittest.TestCase):
             with self.assertRaises(sync.SyncError):
                 sync.commit_pending(td, "  ")
 
+    def test_stage_layers_commits_a_modified_layers_md_only(self):
+        with tempfile.TemporaryDirectory() as td:
+            g = self.make_repo(td)
+            f = Path(td) / sync.LAYERS_REL
+            f.parent.mkdir(parents=True)
+            f.write_text("a", encoding="utf-8")
+            g("add", "-A")
+            g("commit", "-q", "-m", "layers")
+            self.assertFalse(sync.stage_layers(td))      # unchanged: nothing
+            f.write_text("b", encoding="utf-8")
+            (Path(td) / "other.txt").write_text("x", encoding="utf-8")
+            self.assertTrue(sync.stage_layers(td))
+            self.assertIn("Result:", g("log", "-1", "--format=%B"))
+            self.assertEqual(g("status", "--short", "--", sync.LAYERS_REL).strip(), "")
+            self.assertIn("other.txt", g("status", "--short"))   # unrelated file untouched
+
     def test_cli_result_commits_before_ship_and_m_without_result_is_refused(self):
         with mock.patch.object(sync, "toplevel", return_value=Path(".")), mock.patch.object(sync, "run_host_health"),                 mock.patch.object(sync, "ship", return_value=None) as mock_ship,                 mock.patch.object(sync, "commit_pending", return_value=1) as mock_commit:
             self.assertEqual(sync.main(["ship", "--result", "it works", "-m", "subj"]), 0)

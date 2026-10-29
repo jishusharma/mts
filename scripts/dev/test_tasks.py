@@ -642,6 +642,27 @@ class RepoDataTest(unittest.TestCase):
 
 
 
+class RefreshLayersAnnounceTest(unittest.TestCase):
+    def test_regen_that_changes_layers_md_announces_it(self):
+        with tempfile.TemporaryDirectory() as d:
+            repo = Path(d)
+            (repo / T.LAYER_INDEX).parent.mkdir(parents=True)
+            (repo / T.LAYER_INDEX).write_text("{}", encoding="utf-8")
+            out_file = repo / "MyTradingSys" / "system" / "LAYERS.md"
+            out_file.write_text("old", encoding="utf-8")
+            fake = mock.Mock()
+            fake.write = lambda r: out_file.write_text("new", encoding="utf-8")
+            buf = io.StringIO()
+            with mock.patch.dict(sys.modules, {"make_layers_md": fake}), contextlib.redirect_stdout(buf):
+                T.refresh_layers(repo)
+                self.assertIn("LAYERS.md regenerated: ship it", buf.getvalue())
+                buf2 = io.StringIO()
+                with contextlib.redirect_stdout(buf2):
+                    fake.write = lambda r: None      # unchanged content: silent
+                    T.refresh_layers(repo)
+                self.assertNotIn("regenerated", buf2.getvalue())
+
+
 class LabMachineChecksTest(unittest.TestCase):
     def setUp(self):
         self.d = tempfile.TemporaryDirectory()
