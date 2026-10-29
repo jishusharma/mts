@@ -2,45 +2,72 @@
   "approved_by": "",
   "asks": "",
   "commands": [
-    "python MyTradingSys/research/critical_test_wave1_2026-10-30/item2_settlement_identity.py"
+    "python -m pytest MyTradingSys/execution/test_mainnet_pnl.py -q"
   ],
   "created": "2026-10-29T19:38:26Z",
   "depends_on": [],
-  "done_when": "a second recorded testnet capture spanning one 08:00 settlement with known start/end equity shows which formula matches; the code is fixed with a test that fails on the old formula, or the identity assumption is shown wrong with numbers",
-  "est_turns": 6,
+  "done_when": "test_recorded_settlement_identity exists in test_mainnet_pnl.py (expectedFailure, expected from the identity not code), pytest on the file passes; mainnet_pnl.py unchanged (git diff empty); shipped, cherry empty",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Resolve whether mainnet_pnl.realized_btc (change + cashflow for profit_as_cashflow trades) double counts: on the recorded 10-10 log it gives -5.45e-06 BTC since 08:00Z vs -6.30e-07 from equity = balance + session_rpl + session_upl; also the 10-10 08:00 settlement entry is missing although a position was held 07:15-09:15",
+  "goal": "Part (a) only. Add a test that computes the expected P/L on the recorded 2026-10-10 log from the equity identity (sum change + session_rpl + session_upl = -6.30e-07 BTC), not from code, against daily_pnl_btc (-5.45e-06). Marked expectedFailure until part (b) decides which formula is right.",
   "id": "wave1-settlement-pnl-identity-gap",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "critical test wave 1: items 1, 2, 5 (FT2/kill-switch fixes PASS, settlement P/L finding, p",
+      "ref": "c511a40dc1d7",
+      "utc": "2026-10-29T19:39:55Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "c511a40dc1d7 critical test wave 1: items 1, 2, 5 (FT2/kill-switch fixes PASS, settlement P",
+      "ref": "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEMS_1_2_5.md",
+      "utc": "2026-10-29T19:39:55Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS) 2026-10-30: parked; split before dispatch: (a) offline recount on the recorded 10-10 log with a fail-first test, (b) DSA-NUC testnet capture across an 08:00Z settlement.",
+  "not_twin_of": [
+    "settlement-capture-testnet-second-log"
+  ],
+  "note": "REVIEWED:2026-10-30 ACCEPT (reviewer Agent, FIX lines applied) Refined 2026-10-30 per the parked split: (a) is this card, (b) is raw card settlement-capture-testnet-second-log (DSA-NUC). Formula change is a later card after (b); the daily-loss guard reads this number, so no edit on one capture.",
   "prio": 2,
   "refine_tries": 1,
   "refined_by": "",
+  "refreshed": "2026-10-29T22:04:06Z",
   "refs": [],
   "result": "",
   "scope_in": [
-    "MyTradingSys/execution/mainnet_pnl.py, capture_txlog_settlement.py"
+    "MyTradingSys/execution/test_mainnet_pnl.py",
+    "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEMS_1_2_5.md"
   ],
   "scope_out": [
-    "no orders; testnet read-only capture on the host holding testnet secrets (operator or DSA run)"
+    "MyTradingSys/execution/mainnet_pnl.py formula (no change before the second capture)",
+    "capture_txlog_settlement.py",
+    "daily_loss_monitor, kill_switch, position_manager, auto_trader, HALT files",
+    "live tree"
   ],
+  "scope_sha": "c511a40dc1d7",
   "size": "S",
   "sources": [
-    "MyTradingSys/research/critical_test_wave1_2026-10-30/item2_settlement_identity.py",
-    "MyTradingSys/research/loose_code/txlog_capture_2026-10-10_jishu_11.json"
+    "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEMS_1_2_5.md:27-32",
+    "MyTradingSys/research/critical_test_wave1_2026-10-30/item2_settlement_identity.py:11-22"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
-    "Run capture_txlog_settlement.py before and after an 08:00 UTC settlement with an open testnet position, saving equity at both ends",
-    "Compare equity delta with daily_pnl_btc on the same window"
+    "In test_mainnet_pnl.py add test_recorded_settlement_identity: load research/loose_code/txlog_capture_2026-10-10_jishu_11.json, window = entries with ts_utc >= 2026-10-10T08:00:00Z (3 trades), expected = sum(change) + account_summary.session_rpl + session_upl (hand-worked -6.30e-07), assert daily_pnl_btc(window, summary) == approx(expected).",
+    "Decorate it @unittest.expectedFailure with the reason 'OURS assumption: session_rpl/upl were 0 after the 10-10 08:00 settlement; see settlement-capture-testnet-second-log'; run it once without the decorator to confirm it fails today (gap -4.82e-06).",
+    "Do not edit mainnet_pnl.py. Append two lines to ITEMS_1_2_5.md Item 2: the test name and 'formula fix waits on settlement-capture-testnet-second-log'.",
+    "python -m pytest MyTradingSys/execution/test_mainnet_pnl.py -q passes (xfail counted)."
   ],
-  "tests": "MyTradingSys/execution/test_mainnet_pnl.py::test_recorded_settlement_identity (new; must fail on the current formula if the gap is real)",
-  "title": "FINDING: daily P/L formula disagrees with Deribit equity identity on recorded testnet log",
+  "tests": "test_mainnet_pnl.py::test_recorded_settlement_identity: identity-based expected value, fails without the expectedFailure decorator (daily_pnl_btc returns -5.45e-06 vs -6.30e-07)",
+  "title": "Settlement P/L identity gap, offline part: pin the recorded 10-10 log against the equity identity (no formula change)",
   "weight": "CRITICAL",
-  "worker": "agent"
+  "worker": "session"
 }

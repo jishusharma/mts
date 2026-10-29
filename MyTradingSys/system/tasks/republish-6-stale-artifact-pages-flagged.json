@@ -15,10 +15,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Raw, filed by Supervisor A from a worker's Noticed: line, not yet refined.",
   "not_twin_of": [
     "q17-p5-three-pages"
   ],
+  "note": "Raw, filed by Supervisor A from a worker's Noticed: line, not yet refined. | PLANNER 2026-10-30 SKIPPED: 3 of the 6 pages are single copies on login jishusharma1985 (artifacts.py plan: NO COPY) and q17-p5-three-pages (blocked) may retire the rest; needs a per-login Artifact publish, not a repo change.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",

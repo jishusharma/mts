@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-29T22:03:02Z",
   "commands": [],
   "created": "2026-10-27T20:03:16Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "1d (23 events) and 1w (4 events) charts and tables generated in research/malkan_rsi_2026-0",
+      "ref": "893252ce8",
+      "utc": "2026-10-29T22:03:02Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -31,7 +38,12 @@
   "refined_by": "",
   "refreshed": "2026-10-27T21:31:47Z",
   "refs": [],
-  "result": "",
+  "result": "1d (23 events) and 1w (4 events) charts and tables generated in research/malkan_rsi_2026-09-28/flags/; 16 pytest tests pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/rsi/div_flags_chart.py",
     "MyTradingSys/research/malkan_rsi_2026-09-28/"
@@ -44,12 +56,13 @@
   "scope_sha": "b39401fcadce",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "git ls-tree origin/fast-track to confirm the module and test exist",
     "Run: python -m MyTradingSys.backtest.layers.rsi.div_flags_chart --symbol BTCUSDT --tfs 1d,1w --bars 250 into MyTradingSys/research/malkan_rsi_2026-09-28/flags/",
     "Run test_div_flags_chart.py; ship PNGs, table and one readme line listing flag ids for the operator to confirm"
   ],
+  "taken": "2026-10-29T22:03:02Z",
   "tests": "python -m pytest MyTradingSys/backtest/layers/rsi/test_div_flags_chart.py -q (already exists; shipped commit shows it fail-first)",
   "title": "Malkan RSI regular + hidden divergence detector with chart-drawn flags on 1d and 1w (operator confirms/corrects readings)",
   "weight": "ROUTINE",

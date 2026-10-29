@@ -1,0 +1,38 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-29T22:01:19Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "MED finding in MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md: A-S2 fixed 20-point stop (DAX, k0zm5NYn0IQ:24-26) is applied to BTC prices. Decide a scaling (label OURS) and test it. Split from wave1-spikefade-ac1-ac2-mandatory.",
+  "id": "spikefade-stop-fixed-20pt-btc",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    ""
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [
+    "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md"
+  ],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "SpikeFade A-S2 fixed 20-point stop is a DAX number applied to BTC",
+  "weight": "",
+  "worker": ""
+}

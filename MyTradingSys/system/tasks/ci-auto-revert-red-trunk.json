@@ -1,7 +1,10 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest scripts/dev/test_ci_revert.py -q",
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
   "created": "2026-10-28T14:44:57Z",
   "depends_on": [],
   "done_when": "python scripts/dev/ci_revert.py prints the revert plan for a red fixture and refuses a merge commit; --apply creates one revert commit and no force; tests fail first and pass; CI-REVERT doctor line points at the tool; shipped, cherry empty",
@@ -12,39 +15,60 @@
   "goal": "New scripts/dev/ci_revert.py: when the CI-REVERT check shows fast-track red, find the first red run's commit, and (with --apply) make a git revert of it in the caller's own worktree and ship it via sync.py ship; dry run by default. Never force, rebase or reset.",
   "id": "ci-auto-revert-red-trunk",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into claude/live-aid-design-c4174e",
+      "ref": "ff671c93b9fe",
+      "utc": "2026-10-28T19:46:54Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "022aae9066b9 Reapply \"dedupe batch 1: workers=Agents, model_guard refs, heartbeat, sched e",
+      "ref": "MyTradingSys/system/MTS_DOCTOR.md",
+      "utc": "2026-10-28T09:34:11Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
   "not_twin_of": [
     "red-trunk-revert-within-10-min-rule-miss"
   ],
-  "note": "DECISION (OURS) 2026-10-30: CRITICAL, writes trunk history; parked until a plan-review session exists; steps must add the mts_doctor CI-REVERT line, MTS_DOCTOR.md and a later-commits-touch-same-files test.",
+  "note": "REVIEWED:2026-10-30 ACCEPT (reviewer Agent, FIX lines applied) Refined 2026-10-30 from the parked DECISION (OURS): CRITICAL because it writes trunk history; plan-review (REVIEW <id> PLAN) before code, diff-review before ship. Dry run is the default; the tool never runs unattended.",
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "",
+  "refreshed": "2026-10-29T22:04:05Z",
   "refs": [],
   "result": "",
   "scope_in": [
     "scripts/dev/ci_revert.py",
     "scripts/dev/test_ci_revert.py",
     "scripts/dev/mts_doctor.py",
-    "MyTradingSys/system/MTS_DOCTOR.md"
+    "MyTradingSys/system/MTS_DOCTOR.md",
+    "scripts/dev/extra_tests.tsv"
   ],
   "scope_out": [
     "scheduling or hooks that run it unattended (SCHEDULING_POLICY.md); the doc-wording card red-trunk-revert-within-10-min-rule-miss; CI workflow; live tree"
   ],
+  "scope_sha": "ff671c93b9fe",
   "size": "M",
   "sources": [
     "scripts/dev/mts_doctor.py:409-434",
     "CLAUDE.md Boot 2 (revert within 10 min)"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
-    "Reuse mts_doctor.ci_fetch/ci_revert to name the first red head_sha with no green after it",
-    "Refuse (print manual git revert steps) when the breaking commit is a merge, is not on origin/fast-track, or later commits touch the same files",
-    "--apply: git revert --no-edit in own worktree, Result: line in the body, sync.py ship; doctor CI-REVERT detail names the command to run"
+    "Add a helper in mts_doctor.py returning the full first-red head_sha (ci_revert at :409 returns only a status string with the sha cut to 8); ci_revert.py uses it via ci_fetch (:437). Dry run prints the plan by default.",
+    "Refuse (print the manual git revert steps) when the breaking commit is a merge, is not on origin/fast-track, or when later commits touch the same files (git diff --name-only vs the later range).",
+    "--apply: in the caller's own worktree run git revert --no-edit <sha>, body line 'Result: reverts <sha> (CI red)', then sync.py ship. Never force, rebase or reset; never schedule or hook it (SCHEDULING_POLICY.md). On any revert conflict run git revert --abort and leave the worktree clean.",
+    "mts_doctor.py: the CI-REVERT WARN detail ends with 'run: python scripts/dev/ci_revert.py'; add that command to the CI-REVERT row in MyTradingSys/system/MTS_DOCTOR.md (keep SIZE_CAPS in test_integrity.py within headroom).",
+    "scripts/dev/test_ci_revert.py (fake runs, no network): cases per tests field; list test_ci_revert.py in scripts/dev/extra_tests.tsv (the EXTRA source); confirm each fails on the pre-change code (module absent), run python scripts/dev/run_all_tests.py --quick."
   ],
-  "tests": "test_ci_revert.py: fake runs [green,red@A,red@B] -> plan names A; merge commit refused; dry run makes no commit; each fails on the pre-change code (module absent)",
+  "tests": "test_ci_revert.py: fake runs [green,red@A,red@B] -> plan names A; merge commit refused; later-commit-touches-same-files refused; dry run makes no commit; doctor detail names the command; each fails pre-change (module absent)",
   "title": "CI auto-revert: when CI-REVERT warns (red fast-track), a session or hook reverts the breaking commit within the 10-min window instead of the WARN recurring; touches git history so it is a card, not a heal (HEAL_MAP.md CI-REVERT row)",
   "weight": "CRITICAL",
   "worker": "session"

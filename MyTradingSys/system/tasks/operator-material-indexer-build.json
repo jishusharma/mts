@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-29T22:00:29Z",
   "commands": [],
   "context": {
     "calls_to_edit": 3,
@@ -23,6 +24,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "scripts/dev/operator_material_index.py shipped (commit a64342bec); test registered in extr",
+      "ref": "be419a639",
+      "utc": "2026-10-29T22:00:29Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "wavetrend c1-v2: versioned C1 detector pairing confirmed price+WT pivots (count-only, DEV)",
@@ -39,7 +46,12 @@
   "refined_by": "",
   "refreshed": "2026-10-27T20:52:05Z",
   "refs": [],
-  "result": "",
+  "result": "scripts/dev/operator_material_index.py shipped (commit a64342bec); test registered in extra_tests.tsv; tmp-tree test passes",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/operator_material_index.py",
     "scripts/dev/test_operator_material_index.py",
@@ -56,12 +68,13 @@
     "operator 2026-10-28 priority: stop MTS drifting; account for everything extracted; make it findable",
     "CLAUDE.md: repo is PUBLIC"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write the script: --roots, --host, --out; skip system and .git dirs; docx text via zipfile xml; stdout prints counts only.",
     "Test on a tmp tree: 2 png, 1 docx, 1 txt with keyword; index has 4 rows, stdout has no file names, nothing written outside --out.",
     "Register the test in extra_tests.tsv."
   ],
+  "taken": "2026-10-29T22:00:29Z",
   "tests": "scripts/dev/test_operator_material_index.py: tmp-tree fixture, 4 rows, topic tag set, no file outside --out; fails before the script exists.",
   "title": "Build operator_material_index.py: scan chosen folders for the operator screenshots and notes on one machine, write a local-only index",
   "weight": "ROUTINE",
