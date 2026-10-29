@@ -2,6 +2,21 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-29T17:07:37Z",
+    "misses": 11,
+    "reads": [
+      "scripts/dev/tasks.py",
+      "MyTradingSys/system/LAYERS.md",
+      "MyTradingSys/system/desk_queue/20261029-170046-cbp-pull-habib-hymqmefcgrw-rejected-quot.json",
+      "MyTradingSys/research/eagle_eyes_picture_2026-10-28/ANALYST_VIEWS_2026-10-29.md",
+      "MyTradingSys/tests/test_lease.py",
+      "scripts/dev/test_trunk_lag.py",
+      "scripts/dev/run_all_tests.py"
+    ],
+    "session": "agent-a472ce37345f714ae"
+  },
   "created": "2026-10-28T18:17:43Z",
   "depends_on": [],
   "done_when": "New test in scripts/dev/test_sync.py fails on the old code (ship returns silently / prints only 'nothing to ship') and passes now; the clean-tree case still prints 'nothing to ship' and exits 0; shipped, git cherry origin/fast-track <sha> empty",
