@@ -4,7 +4,7 @@
   "commands": [],
   "created": "2026-10-29T19:21:20Z",
   "depends_on": [],
-  "done_when": "Table per approach class (near-miss, wick-through, close-through-then-fail 1st/2nd close, accepted) x TF with n, forward move, and the confirm sequence + invalidation sequence that best separated outcomes, as measured base rates (descriptive, fee-free, labelled); dev/holdout split before any rule is proposed; result feeds the live_aid probability panel.",
+  "done_when": "Table per approach class (near-miss, wick-through, close-through-then-fail 1st/2nd close, accepted) x TF with n, forward move, and the confirm sequence + invalidation sequence that best separated outcomes, as measured base rates (descriptive, fee-free, labelled); dev/holdout split before any rule is proposed; result feeds the live_aid probability panel. Before the run: PRE_REG_TEMPLATE gate 0g answered (the line and approach classes checked against at least 3 of the operator's dated shots, e.g. 1bb324a9ad96, 19991af5d4a3, a83eefa84968).",
   "est_turns": null,
   "formula_id": "",
   "formula_ids": [],
