@@ -76,3 +76,4 @@ Severity: H = stops unattended work or duplicates it; M = wastes turns or hides 
 - Shipped by the ship-speed session: `f6c7c446b` (ship returns when origin has the commit, B8), `223bb7c01` (`ship --result`, `bg_watch.py until`, poll cap 600 s). Open: skip unchanged gate steps (`gate_select.py`, blocked by JIS-NB's stale claim `ship-gate-let-a-new-look-ahead-fail-reac`, 97 h).
 - LC1 re-state `10dca8a07`: 0 of 12 families KEEP on the fair control (published 8).
 - Wiring audit `bcfd46cfc`: 446 rows. PRE_REG `04112bfe2`: pre-US failed-break freeze (gate inputs n=300, sd=60 bps are estimates).
+- B23 (H, VERIFIED 2026-10-30): Supervisor B ended several turns with no `plan`, watcher or worker running (after the operator's questions); the operator had to ask why it was inactive. Nothing makes a Supervisor turn end without a live watcher. Card `bug-supervisor-idles-no-watcher` (prio 1, SONNET): stop hook refuses to end a Supervisor turn without a watcher or a fresh plan.
