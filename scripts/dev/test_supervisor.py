@@ -1152,3 +1152,61 @@ def test_successor_wave_starts_at_its_own_first_reading():
             {"at": "2026-10-19T11:30:00Z", "sid": "new"}, {"at": "2026-10-19T12:00:00Z", "sid": "new"}]
     assert S.wave_start_from(hist, T0) == datetime(2026, 10, 19, 8, 30, tzinfo=timezone.utc)
     assert S.wave_start_from(hist, T0, sid="new") == datetime(2026, 10, 19, 11, 30, tzinfo=timezone.utc)
+
+
+def test_probe_wait_state_wiring_and_fail_closed(monkeypatch, tmp_path):
+    monkeypatch.setattr(S, "read_shas", lambda repo, shas: {"abc": {"on_trunk": True}, "def": {"on_green": True}})
+    monkeypatch.setattr(S, "read_ci", lambda use_cache=False: {"red": True})
+    monkeypatch.setattr(S, "read_gate_slots", lambda repo: {"busy": 2, "total": 5})
+
+    import sys
+    import types
+    fake_bg = types.ModuleType("bg_watch")
+    fake_bg.stalled = lambda: [{"kind": "task", "id": "t1", "age": 75.2, "cap": 60}]
+    monkeypatch.setitem(sys.modules, "bg_watch", fake_bg)
+
+    res = S._probe_wait_state(tmp_path, ["abc", "def"])
+    assert res["shas"] == {"abc": True, "def": False}
+    assert res["shas_green"] == {"abc": False, "def": True}
+    assert res["ci_red"] is True
+    assert res["busy_slots"] == 2
+    assert res["total_slots"] == 5
+    assert res["stalled"] == ["task t1 75m > cap 60m"]
+
+    # Fails closed on bg_watch error
+    fake_bg_broken = types.ModuleType("bg_watch")
+    def _err(): raise RuntimeError("stalled query boom")
+    fake_bg_broken.stalled = _err
+    monkeypatch.setitem(sys.modules, "bg_watch", fake_bg_broken)
+
+    res_err = S._probe_wait_state(tmp_path, ["abc"])
+    assert res_err["stalled"] is None
+
+
+def test_probe_stalled_task_transition(monkeypatch, tmp_path):
+    baseline = {"shas": {}, "shas_green": {}, "ci_red": False, "busy_slots": 0, "total_slots": 5, "stalled": []}
+
+    import sys, types
+    fake_bg = types.ModuleType("bg_watch")
+    fake_bg.stalled = lambda: [{"kind": "job", "id": "job-42", "age": 90.0, "cap": 45}]
+    monkeypatch.setitem(sys.modules, "bg_watch", fake_bg)
+    monkeypatch.setattr(S, "read_shas", lambda r, s: {})
+    monkeypatch.setattr(S, "read_ci", lambda use_cache=False: {"red": False})
+    monkeypatch.setattr(S, "read_gate_slots", lambda r: {"busy": 0, "total": 5})
+
+    current = S._probe_wait_state(tmp_path, [])
+    tr = S._detect_transition(baseline, current)
+    assert tr is not None
+    assert "TRANSITION STALLED-BG job job-42 90m > cap 45m" in tr
+
+
+def test_pid_alive_platform_helper():
+    import os
+    # Live process: current python process is alive
+    cur_pid = os.getpid()
+    assert S._pid_alive(cur_pid) is True
+
+    # Dead/nonexistent process: huge non-existent PID
+    assert S._pid_alive(2147483647) is False
+    assert S._pid_alive(0) is False
+    assert S._pid_alive(-1) is False

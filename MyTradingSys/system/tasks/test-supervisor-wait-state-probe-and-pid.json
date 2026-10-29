@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-29T23:07:34Z",
   "commands": [],
   "created": "2026-10-29T20:52:36Z",
   "depends_on": [],
@@ -13,6 +15,12 @@
   "id": "test-supervisor-wait-state-probe-and-pid",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Added regression tests to scripts/dev/test_supervisor.py for _probe_wait_state wiring, sta",
+      "ref": "0d8db70d9",
+      "utc": "2026-10-29T23:07:34Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +40,12 @@
   "refs": [
     "gemini-supervisor-wait-watcher-review"
   ],
-  "result": "",
+  "result": "Added regression tests to scripts/dev/test_supervisor.py for _probe_wait_state wiring, stalled bg_watch propagation, fail-closed fallback, and _pid_alive helper; all 89 tests pass with zero supervisor.py runtime changes.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/test_supervisor.py",
     "scripts/dev/supervisor.py"
@@ -46,13 +59,14 @@
     "MyTradingSys/research/layer_lab/reports/2026-10-28_gem-supervisor-wait-watcher-review.md",
     "scripts/dev/supervisor.py:443-460,515-547,554-574"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Patch read_shas, read_ci, read_gate_slots, and bg_watch.stalled; assert _probe_wait_state maps values and fails closed on stalled read error.",
     "Assert a newly stalled task from the real probe snapshot produces the expected transition.",
     "Add a platform-aware test that exercises _pid_alive without terminating the target process.",
     "Run focused supervisor tests and report the test count; do not modify runtime behavior."
   ],
+  "taken": "2026-10-29T23:05:07Z",
   "tests": "Add tests first and run python scripts/dev/test_supervisor.py; Windows-only checks may be skipped on non-Windows hosts.",
   "title": "Test supervisor wait-state probe and PID liveness",
   "weight": "ROUTINE",
