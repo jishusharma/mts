@@ -72,7 +72,44 @@ def reason(path):
     return sync.unshipped_reason(t)
 
 
+SUP_PLAN_MAX_MIN = 10   # a Supervisor turn may end only if a `plan` ran this recently (OURS)
+
+
+def supervisor_reason(sid):
+    """Why a Supervisor-role session may not end its turn idle, or None. Blocks while `supervisor.py watchcheck` is non-zero (no live
+    watcher) or no `plan` ran in the last SUP_PLAN_MAX_MIN minutes (bug-supervisor-idles-no-watcher, 2026-10-30). Not a Supervisor,
+    login unknown or any error: None (fails open)."""
+    try:
+        if not sid:
+            return None
+        import role_loader
+        if "Supervisor" not in role_loader.explicit_injected(sid):
+            return None
+        login = str((role_loader.role_meta(sid, "Supervisor") or {}).get("login") or "").strip().upper()[:1]
+        if login not in ("A", "B", "C", "D"):
+            return None
+        import supervisor
+        from datetime import datetime, timezone
+        parts = []
+        rc, msg = supervisor.watchcheck(login)
+        if rc != 0:
+            parts.append(msg)
+        at = supervisor._utc(supervisor._last_plan(login).get("at"))
+        age = (datetime.now(timezone.utc) - at).total_seconds() / 60 if at else None
+        if age is None or age > SUP_PLAN_MAX_MIN:
+            parts.append(f"no `supervisor.py plan --login {login}` in the last {SUP_PLAN_MAX_MIN} min")
+        if not parts:
+            return None
+        return ("Supervisor " + login + " would end the turn idle: " + "; ".join(parts) +
+                ". Answer the operator, then run `plan`, act on its lines, start the watcher in the background and end only when "
+                f"`supervisor.py watchcheck --login {login}` exits 0.")
+    except Exception:
+        return None
+
+
 def message(why):
+    if why.startswith("Supervisor "):
+        return "STOP GUARD: " + why
     return (f"STOP GUARD: this worktree still holds work ({why}). Commit it (body ends `Result: ...`) and run "
             f"`python scripts/dev/sync.py ship`; if the files are scratch, delete them or add them to .gitignore. "
             f"Then end the session.")
@@ -115,7 +152,7 @@ def hook(stdin_text):
         ws = data.get("workspacePaths") or []
         cwd = data.get("cwd") or (ws[0] if ws else None) or os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
         sid = data.get("session_id") or data.get("conversationId")
-        why = reason(cwd)
+        why = reason(cwd) or supervisor_reason(sid)
         if not why or seen_before(sid, why):
             return ""
         decision = "continue" if is_agy else "block"
