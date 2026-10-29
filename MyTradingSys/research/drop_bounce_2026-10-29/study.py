@@ -29,7 +29,7 @@ ev = []; last = -10**9
 for i in range(260, n - 241):
     if i - last < 240: continue
     if not (abs(c[i] - mid[i]) <= 0.0015 * mid[i]): continue
-    if t[i] - t[i - 240] != 240 * 60 or t[i + 240] - t[i] != 240 * 60: continue  # gap check on both windows
+    if t[i] - t[i - 240] != 240 * 60 or t[i + 240] - t[i] != 240 * 60: continue
     seg = l[i - 60:i - 19]; j = i - 60 + int(np.argmin(seg)); L = l[j]
     if l[j + 1:i + 1].min() < L: continue
     hseg = h[i - 240:j];
