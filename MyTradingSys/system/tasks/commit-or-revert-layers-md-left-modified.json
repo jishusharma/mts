@@ -4,31 +4,51 @@
   "commands": [],
   "created": "2026-10-29T17:02:11Z",
   "depends_on": [],
-  "done_when": "MyTradingSys/system/LAYERS.md and the two pitchfork cards it touched are either committed by their owning process with a Result: line in the commit body, or reverted to the pre-regen state; `git status` shows them clean on the owning checkout.",
-  "est_turns": null,
+  "done_when": "New tests in test_tasks.py (announce line) and test_sync.py (ship stages a differing LAYERS.md) fail before and pass after; both files green; shipped with a Result: line, cherry against origin/fast-track empty",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
   "goal": "Noticed by extracted-rules-wiring-audit's build Agent (2026-10-29): LAYERS.md was left modified/uncommitted in its worktree by an unrelated background regen process, which also touched two pitchfork card states.",
   "id": "commit-or-revert-layers-md-left-modified",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sync.start --worker: work in an Agent-tool isolation tree, no second worktree",
+      "ref": "0bc90e4cf333",
+      "utc": "2026-10-29T16:58:54Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Raw, filed by Supervisor A from a worker's Noticed: line, not yet refined.",
+  "note": "REVIEWED:2026-10-29 ACCEPT (reviewer FIX applied: sync.py scope + staging test added) | DECISION (OURS): root cause is the by-design regen in tasks.py, not a rogue process. Smallest fix = announce + stage. Card title is historical: fix, not a manual commit/revert.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-29T17:08:54Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/sync.py",
+    "scripts/dev/test_sync.py"
+  ],
+  "scope_out": [
+    "LAYERS.md content; pitchfork card content; live tree"
+  ],
+  "scope_sha": "0bc90e4cf333",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Cause is tasks.py regen (~line 243): every card command rewrites LAYERS.md in the working tree; a worker that does not stage it leaves it modified. Confirm in a throwaway clone with a card command then status",
+    "Fix: make the regen print one line 'LAYERS.md regenerated: ship it' and have sync.py ship stage it when it differs (smallest change; no content edit)",
+    "Write the fail-first test in test_tasks.py: a card change in a throwaway repo must announce the regenerated LAYERS.md"
+  ],
+  "tests": "scripts/dev/test_tasks.py new test fails on current silent regen, passes after",
   "title": "Commit or revert LAYERS.md left modified by an unrelated background regen process (also touched two pitchfork card states)",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "agent"
 }
