@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-29T22:23:00Z",
   "commands": [],
   "created": "2026-10-28T15:55:44Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "bug-supervisor-role-missing-watchcheck-call",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Verified roles/supervisor.md step 3 wires watchcheck call; test_role_budget.py and test_supervisor.py pass",
+      "ref": "61bc6005e",
+      "utc": "2026-10-29T22:23:00Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -37,7 +44,12 @@
   "refined_by": "",
   "refreshed": "2026-10-28T15:57:21Z",
   "refs": [],
-  "result": "",
+  "result": "Commit 942762397b5a wired watchcheck into supervisor.md step 3 as the last call; test_role_budget.py (5 passed) and test_supervisor.py -k watchcheck (4 passed) pass.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/roles/supervisor.md"
   ],
@@ -45,10 +57,11 @@
   "scope_sha": "af2d5b82bdea",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add the watchcheck call + restart-on-exit-4 rule to supervisor.md step 3; retoken; fit byte budget"
   ],
+  "taken": "2026-10-29T22:23:00Z",
   "tests": "MyTradingSys/tests/test_role_budget.py; scripts/dev/test_supervisor.py -k watchcheck",
   "title": "BUG: roles/supervisor.md 'Every wake' step never calls supervisor.py watchcheck (SUPER_SESSION.md step 5's own fail-closed last-call rule), so a watcher that exits immediately or never starts goes undetected -- caused a 70min-stalled Opus Agent worker to go unreported tonight",
   "weight": "",
