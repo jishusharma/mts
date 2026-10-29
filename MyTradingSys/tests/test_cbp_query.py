@@ -298,3 +298,29 @@ def test_trade_missing_direction_is_not_tradable():
     assert cbp.is_tradable({"trades": [dict(trade, direction="LONG")]})
     assert cbp.is_tradable({"trades": [dict(trade, direction="SHORT")]})
 
+
+
+def test_same_name_analysts_split_by_channel(tmp_path):
+    st = tmp_path / "split_channel.json"
+    row1 = row("1" * 11, "2026-10-23", analyst="Michael")
+    row1["channel"] = "@MichaelPizzino"
+    row2 = row("2" * 11, "2026-10-23", analyst="Michael")
+    row2["channel"] = "@michaelvdpoppe"
+    cbp.save({"rows": [row1, row2]}, st)
+
+    # Both load cleanly
+    all_rows = cbp.query(store=st, now=NOW)
+    assert len(all_rows) == 2
+
+    # Query with channel filter (case-insensitive)
+    pizzino = cbp.query(channel="@michaelpizzino", store=st, now=NOW)
+    assert len(pizzino) == 1 and pizzino[0]["video_id"] == "1" * 11
+
+    poppe = cbp.query(channel="@MICHAELVDPOPPE", store=st, now=NOW)
+    assert len(poppe) == 1 and poppe[0]["video_id"] == "2" * 11
+
+    # Old rows without channel still load and match when channel is not filtered
+    old_row = row("3" * 11, "2026-10-23", analyst="Legacy")
+    cbp.save({"rows": [row1, row2, old_row]}, st)
+    assert len(cbp.query(store=st, now=NOW)) == 3
+    assert len(cbp.query(channel="@MichaelPizzino", store=st, now=NOW)) == 1

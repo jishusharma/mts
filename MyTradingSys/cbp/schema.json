@@ -5,6 +5,7 @@
   "required": ["analyst", "video_id", "published", "bias", "quotes", "trades", "pointers", "symbols", "quote_verified", "expires_at"],
   "properties": {
     "analyst": {"type": "string"},
+    "channel": {"type": "string"},
     "video_id": {"type": "string", "minLength": 11, "maxLength": 11},
     "published": {"type": "string", "description": "YYYY-MM-DD"},
     "bias": {"enum": ["BULLISH", "BEARISH", "NEUTRAL", "NO_VIEW"]},

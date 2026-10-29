@@ -121,8 +121,8 @@ def _norm_symbol(s):
     return s
 
 
-def query(analyst=None, symbol=None, since_days=WINDOW_DAYS, now=None, store=None):
-    """Rows published within the last since_days, newest first; optional analyst / symbol filter."""
+def query(analyst=None, symbol=None, channel=None, since_days=WINDOW_DAYS, now=None, store=None):
+    """Rows published within the last since_days, newest first; optional analyst / channel / symbol filter."""
     now = now or datetime.now(timezone.utc)
     cutoff = (now - timedelta(days=since_days)).date().isoformat()
     sym = _norm_symbol(symbol) if symbol else None
@@ -135,6 +135,8 @@ def query(analyst=None, symbol=None, since_days=WINDOW_DAYS, now=None, store=Non
         if (r.get("published") or "") < cutoff:
             continue
         if analyst and r.get("analyst", "").lower() != analyst.lower():
+            continue
+        if channel and (r.get("channel") or "").lower() != channel.lower():
             continue
         if sym and sym not in [_norm_symbol(s) for s in r.get("symbols") or []]:
             continue

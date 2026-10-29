@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-29T22:10:00Z",
   "commands": [],
   "created": "2026-10-28T11:19:08Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "schema.json adds channel; cbp.query supports case-insensitive channel= filter; cbp_run.py ",
+      "ref": "58cd95456",
+      "utc": "2026-10-29T22:10:00Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -31,7 +38,12 @@
   "refined_by": "",
   "refreshed": "2026-10-28T12:29:49Z",
   "refs": [],
-  "result": "",
+  "result": "schema.json adds channel; cbp.query supports case-insensitive channel= filter; cbp_run.py carries channel; test_same_name_analysts_split_by_channel passes (30 tests pass)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/cbp/__init__.py",
     "MyTradingSys/cbp/schema.json",
@@ -46,13 +58,14 @@
   "sources": [
     "scripts/dev/cbp_run.py:105,167 (channel known at fetch, dropped in row)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read cbp_run.py: build_row (about line 154) gets only (vid, analyst, published, title, path); carry channel via local_videos / fetch_new tuple (an['channel'], line 105), never a lookup by short name (ambiguous for two Michaels)",
     "Add channel to the row dict (about line 167); update callers and tests of the changed signature",
     "schema.json: optional string channel (not in required); cbp.query channel= filter, case-insensitive",
     "Add the test; run test_cbp_query.py and test_cbp_scorecard.py"
   ],
+  "taken": "2026-10-29T22:10:00Z",
   "tests": "MyTradingSys/tests/test_cbp_query.py::test_same_name_analysts_split_by_channel (fails before: row has no channel key)",
   "title": "CBP rows carry no channel/handle: two analysts both labelled Michael (@MichaelPizzino, @michaelvdpoppe) and Michaal/Qriptal(Habib) cannot be told apart; add channel to row + schema",
   "weight": "IMPORTANT",
