@@ -238,7 +238,7 @@ def test_pnl_js(js):
 
 
 # ---------- in-trade panel (card live-aid-in-trade-panel): fixed OURS rules, hand-computed expectations ----------
-# Extra LIVE_AID_BREAK modes: itdiv itflow itsqueeze itdom itsupport itvwap itconf (each must fail one test below).
+# Extra LIVE_AID_BREAK modes: itdiv itflow itsqueeze itdom itsupport itvwap itconf itlive (each must fail one test below).
 IT_RUNNER = r"""
 const A = require(process.argv[process.argv.length - 1]);
 const brk = process.env.LIVE_AID_BREAK || '';
@@ -272,7 +272,9 @@ let fg = [A.flagDiv(1, 1), A.flagDiv(1, -1), A.flagDiv(0, 1), A.flagDiv(null, 1)
           A.flagDom({imb: 0.5}, 1), A.flagDom({imb: 0.5}, -1), A.flagDom({imb: 0.1}, 1), A.flagVwap({result: 'held'}), A.flagVwap({result: 'lost'}), A.flagVwap({result: 'no test'}), A.flagVwap(null)];
 let cf = [A.confidence([1, -1, -1, -1, null, 0]), A.confidence([1, -1, -1, 0, null, 0]), A.confidence([null, null])];
 if (brk === 'itconf') cf[1].reduceRule = true;
-process.stdout.write(JSON.stringify({dv, fl, sq, dm, sup, vw, fg, cf}));
+let lv2 = [A.flowLive(now - 60000, now - 1000, now), A.flowLive(now - 60000, now - 60000, now), A.flowLive(0, now, now), A.flowLive(now - 1000, 0, now)];
+if (brk === 'itlive') lv2[0] = false;
+process.stdout.write(JSON.stringify({dv, fl, sq, dm, sup, vw, fg, cf, lv2}));
 """
 
 
@@ -325,3 +327,9 @@ def test_it_confidence_and_reduce_rule(it):
     assert (a["avail"], a["for"], a["against"], a["reduceRule"]) == (5, 1, 3, True)
     assert (b["avail"], b["for"], b["against"], b["reduceRule"]) == (5, 1, 2, False)
     assert c["avail"] == 0 and c["reduceRule"] is False
+
+
+def test_it_flow_live_on_quiet_tape(it):
+    # Deribit trades.100ms is sparse (9 messages in 20 s on 2026-10-29): no trade for 60 s while the same socket's
+    # ticker is fresh = quiet tape (live); both silent = dead; no trade since connect = not live
+    assert it["lv2"] == [True, False, False, True]

@@ -152,7 +152,7 @@
   // ---------- in-trade readings (card live-aid-in-trade-panel). Every threshold below = OURS, fixed in STEPS.md before any data
   // was looked at. sd = +1 long, -1 short. Descriptive only: no entry, exit or size wording. ----------
   var IT = { divWin: 15, flowShortMs: 60000, flowLongMs: 900000, squeezeEps: 0.0005, domPct: 0.0025, domImb: 0.2,
-             vwapBars: 5, supportN: 2, reduceAt: 3 };
+             vwapBars: 5, supportN: 2, reduceAt: 3, feedMs: 30000 };
 
   function finiteArr(a) { return a.every(isFinite); }
   // Divergence: last 2w values split in halves h1,h2. bullish (+1): price lower low in h2 but indicator higher low; bearish (-1): mirror on highs.
@@ -177,6 +177,12 @@
       if (now - x.t <= IT.flowShortMs) d += s;
     });
     return { delta: d, cvd: c, spanMs: Math.min(IT.flowLongMs, now - trades[0].t) };
+  }
+  // Trades channel is sparse: a quiet tape is data (delta 0), not a dead feed. Live = a trade within feedMs, or at least one
+  // trade since connect and the same socket's ticker within feedMs. trT / linkT = last trade / last ticker time (0 = never).
+  function flowLive(trT, linkT, now) {
+    if (!trT) return false;
+    return now - trT <= IT.feedMs || (linkT > 0 && now - linkT <= IT.feedMs);
   }
   // Price vs open interest over a window: dp, doi are fractional changes. eps = 0.05%.
   function squeeze(dp, doi) {
@@ -232,7 +238,7 @@
     return { avail: av.length, total: flags.length, for: f, against: a, reduceRule: av.length > 0 && a >= IT.reduceAt };
   }
 
-  var api = { IT: IT, divergence: divergence, flow: flow, squeeze: squeeze, dom: dom, supports: supports, vwapTest: vwapTest,
+  var api = { IT: IT, divergence: divergence, flow: flow, flowLive: flowLive, squeeze: squeeze, dom: dom, supports: supports, vwapTest: vwapTest,
     flagDiv: flagDiv, flagSqueeze: flagSqueeze, flagFlow: flagFlow, flagDom: flagDom, flagVwap: flagVwap, confidence: confidence, rma: rma, sma: sma, rsi: rsi, bollinger: bollinger, atr: atr, dayVwap: dayVwap, utcDays: utcDays, wavetrend: wavetrend,
     inversePnlBtc: inversePnlBtc, closedPnlBtc: closedPnlBtc, columns: columns };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

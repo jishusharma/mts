@@ -199,7 +199,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Codex lab reports (newest 2 of 2): `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-live_engine-gpt-rederive.md`; `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-live_engine-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `live-mirror-follow-live-host-move` ready p1 DSA: live_mirror.py hard-codes JIS-NB (LIVE_HOST, share \JIS-NB\MTS-Mirror); live loop is on desktop-f7iu69n (Lenov
-  - `live-aid-in-trade-panel` ready p2 SONNET: live aid: in-trade panel (supports, DOM, VWAP test, divergences, squeeze, CVD vs delta, stay confidence)
   - `state-code-accumulator-backfill` refined p2 JIS-NB: StateCodeEmitter: backfill session CVD/cum_pv/cum_vol after restart and WS reconnect, fail closed on backfill 
   - `statecode-backfill-race-coverage` ready p2 JIS-NB: StateCodeEmitter: cover in-flight rollover reconnect and retry scheduling
   - `layer-review-rsi-cc-pitchfork-engine` ready p3 SONNET: Layer review sheet: RSI, CryptoCred, pitchfork, live engine (idea, source, backtests, bugs, confluence)
@@ -269,9 +268,9 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-pitchfork-gpt-rederive.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `pitchfork-engine-implement-hagopian-fail` refined p2 OPUS: Pitchfork engine: implement Hagopian failure breakout candidates (PF-HAG-L / PF-HAG-S) in Java
-  - `pitchfork-fixes-desk-python` raw p2 SONNET: Pitchfork desk/Python review fixes: F1 target reading, F4 profile parity, F5 lookahead + VA leak test, F6 pyth
+  - `pitchfork-fixes-desk-python` ready p2 SONNET: Pitchfork desk/Python review fixes: F1 target reading, F4 profile parity, F5 lookahead + VA leak test, F6 pyth
   - `pitchfork-fixes-live-java` raw p2 SONNET: Pitchfork live Java review fixes: F3 stale-bounce gate parity, F6 inverted-fork tine, F7/F9 labels
-  - `pitchfork-pf-can-arm-order-check` raw p2 SONNET: Pitchfork step 0: can a PF-* candidate arm an order in the live state machine? (read-only code trace, no edit)
+  - `pitchfork-pf-can-arm-order-check` ready p2 SONNET: Pitchfork step 0: can a PF-* candidate arm an order in the live state machine? (read-only code trace, no edit)
   - `sim-desk-plug-in-pitchfork-4h-tine-bounc` refined p2 OPUS: Sim desk: plug in Pitchfork 4H tine-bounce study adapter (Modified Schiff + Volume Profile)
   - `layer-review-rsi-cc-pitchfork-engine` ready p3 SONNET: Layer review sheet: RSI, CryptoCred, pitchfork, live engine (idea, source, backtests, bugs, confluence)
 

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-29T17:03:57Z",
   "commands": [],
   "context": {
     "calls_to_edit": 7,
@@ -23,6 +24,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "8 in-trade bullets live on live_aid.html (39e7418ca); quiet-tape fix: CVD/delta no longer ",
+      "ref": "202240874",
+      "utc": "2026-10-29T17:03:57Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "live aid: WaveTrend parameters labelled OURS (his chart settings unknown)",
@@ -39,7 +46,12 @@
   "refined_by": "",
   "refreshed": "2026-10-29T01:52:33Z",
   "refs": [],
-  "result": "",
+  "result": "8 in-trade bullets live on live_aid.html (39e7418ca); quiet-tape fix: CVD/delta no longer NOT_IN_DATA when no trade for 30 s; 18 tests pass, each it* break mode fails one",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tools/live_aid/"
   ],
@@ -51,12 +63,13 @@
   "sources": [
     "Eagle_Eyes relay 2026-10-29 (local_6cd8cb7e)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Feeds: Deribit public trades (CVD, net delta), OI from ticker open_interest, book.BTC-PERPETUAL for DOM; each failure = NOT_IN_DATA + error",
     "Fixed OURS rules for divergence, squeeze and confidence written in STEPS.md before any data is looked at",
     "Tests fail first per item (test_live_aid.py LIVE_AID_BREAK modes)"
   ],
+  "taken": "2026-10-29T17:03:57Z",
   "tests": "python -m pytest MyTradingSys/tools/live_aid/test_live_aid.py -q",
   "title": "live aid: in-trade panel (supports, DOM, VWAP test, divergences, squeeze, CVD vs delta, stay confidence)",
   "weight": "",
