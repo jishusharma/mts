@@ -1,7 +1,20 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-29T21:09:30Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-29T21:09:29Z",
+    "misses": 5,
+    "reads": [
+      "scripts/dev/wiring_scan.py",
+      "scripts/dev/test_wiring_scan.py",
+      "CLAUDE.md",
+      "MyTradingSys/system/QUICK_ANSWERS.md"
+    ],
+    "session": "agent-abad23187313940ad"
+  },
   "created": "2026-10-28T06:27:18Z",
   "depends_on": [],
   "done_when": "python scripts/dev/wiring_scan.py --check prints no WARN NO-READER line naming api_batch.py or operator_material_index.py; new test fails on pre-change code.",
@@ -13,6 +26,12 @@
   "id": "fix-wiring-no-reader-api-batch-omi",
   "lane": "HAIKU",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Already fixed by ae025c07a (QUICK_ANSWERS names both readers + test); wiring_scan --check ",
+      "ref": "b8548229a",
+      "utc": "2026-10-29T21:09:30Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +51,12 @@
   "refs": [
     "MyTradingSys/research/fix_verification_2026-10-28/REPORT.md"
   ],
-  "result": "",
+  "result": "Already fixed by ae025c07a (QUICK_ANSWERS names both readers + test); wiring_scan --check prints 0 NO-READER, 5 reader tests pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/wiring_scan.py",
     "scripts/dev/api_batch.py",
@@ -42,12 +66,13 @@
   "scope_sha": "64b0df558d83",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Confirm whether api_batch.py and operator_material_index.py are genuinely reader-less CLI entry points or are missing a real caller",
     "Add a reader (import/call) where one is missing, else add a small documented allowlist in wiring_scan.py for CLI entry points and list these two",
     "Re-run wiring_scan.py --check and confirm both WARN lines are gone"
   ],
+  "taken": "2026-10-29T21:09:30Z",
   "tests": "scripts/dev/test_wiring_scan.py::test_cli_entrypoint_allowlist_suppresses_no_reader (new, must fail on pre-change code)",
   "title": "wiring_scan.py --check WARN NO-READER for api_batch.py and operator_material_index.py: add the reader or allowlist (fix report FAIL a)",
   "weight": "ROUTINE",
