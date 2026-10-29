@@ -2,44 +2,73 @@
   "approved_by": "",
   "asks": "",
   "commands": [
-    "grep -n mts.pitchfork scripts/core/start-trading-day.ps1"
+    "python -m pytest MyTradingSys/tests/test_no_undecided_mts_flags_in_ps1.py -q",
+    "python scripts/dev/run_all_tests.py --quick"
   ],
   "created": "2026-10-29T19:48:07Z",
   "depends_on": [],
-  "done_when": "OPERATOR_DECISIONS.md has a pitchfork-live entry, or the ps1 lines are removed on trunk; and a gate flags ps1 -Dmts.* edits from cards with live_path false",
-  "est_turns": 3,
+  "done_when": "grep -c 'mts.pitchfork' scripts/core/start-trading-day.ps1 prints 0 on trunk; test_no_undecided_mts_flags_in_ps1.py passes and fails on the old ps1; OPERATOR_DECISIONS.md has the pitchfork-live entry; shipped, cherry empty",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Live switch mts.pitchfork=true (start-trading-day.ps1:113,445,475, commit 60cda535e by gemini-queue, card live_path false, no approved_by, no OPERATOR_DECISIONS entry): get the decision recorded or the switch reverted by the coordinator's deploy",
+  "goal": "Default (OURS, 2026-10-30 decision): revert the undecided live switch. Remove -Dmts.pitchfork=true from scripts/core/start-trading-day.ps1 lines 113, 445, 475 (commit 60cda535e, no approved_by, no OPERATOR_DECISIONS entry); keep the Java flag default false.",
   "id": "wave1-pitchfork-switch-no-decision",
-  "lane": "SONNET",
+  "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into claude/live-aid-design-c4174e",
+      "ref": "8fbd3f8970c0",
+      "utc": "2026-10-29T21:18:48Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "8fbd3f8970c0 Merge remote-tracking branch 'origin/fast-track' into claude/live-aid-design-",
+      "ref": "MyTradingSys/system/OPERATOR_DECISIONS.md",
+      "utc": "2026-10-29T21:18:48Z"
+    }
+  ],
   "layers": [],
-  "live_path": false,
+  "live_path": true,
   "mutation_check": "",
-  "note": "DECISION (OURS) 2026-10-30: parked; switch is inert (3 of 15 4h bars) so default is coordinator removes the ps1 lines at next deploy; card needs steps for that plus a gate test for ps1 -Dmts.* edits.",
+  "note": "REVIEWED:2026-10-30 ACCEPT (reviewer Agent, FIX lines applied) Refined 2026-10-30. Only the 'ps1 -Dmts.* edits from live_path false cards' gate part is covered by the allowlist test (no card-metadata check). Deploy by coordinator only.",
   "notes": [
     "Wave1 item 4 (2026-10-30): the switch is also inert: PitchforkSignalLayer.java:353 needs >=15 4h bars, MarketDataSnapshot.java:489,1338 fetch 3; replay of 10-29 gave 0 pitchfork candidates. Decide: remove the switch, or fix the bar count and then record the decision."
   ],
   "prio": 1,
   "refine_tries": 1,
   "refined_by": "",
+  "refreshed": "2026-10-29T22:04:03Z",
   "refs": [],
   "result": "",
   "scope_in": [
-    "scripts/core/start-trading-day.ps1, MyTradingSys/system/OPERATOR_DECISIONS.md"
+    "scripts/core/start-trading-day.ps1",
+    "MyTradingSys/system/OPERATOR_DECISIONS.md",
+    "MyTradingSys/tests/test_no_undecided_mts_flags_in_ps1.py"
   ],
-  "scope_out": [],
+  "scope_out": [
+    "PitchforkSignalLayer.java (card pitchfork-fixes-live-java)",
+    "position_manager, auto_trader, HALT files",
+    "restarting any process",
+    "the live tree"
+  ],
+  "scope_sha": "8fbd3f8970c0",
   "size": "S",
   "sources": [
     "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
-    "Route to the coordinator: live-tree change reaches the operator"
+    "Edit start-trading-day.ps1: delete the -Dmts.pitchfork=true token at lines 113, 445, 475 only (keep every other argument unchanged).",
+    "Add MyTradingSys/tests/test_no_undecided_mts_flags_in_ps1.py: parse start-trading-day.ps1 for -Dmts.<name>= tokens and assert each is listed in an allowlist in the test; allowlist starts empty (pitchfork absent). Fails on pre-change ps1.",
+    "Append a pitchfork-live entry to OPERATOR_DECISIONS.md: DECISION (OURS) 2026-10-30 switch removed, re-enable needs an operator entry plus pitchfork-fixes-live-java shipped.",
+    "Run python scripts/dev/run_all_tests.py --quick; ship. A coordinator applies it to the live tree and restarts the JVM per DEPLOY_RUNBOOK.md s2 (no open trades window)."
   ],
-  "tests": "none (decision)",
+  "tests": "MyTradingSys/tests/test_no_undecided_mts_flags_in_ps1.py: asserts no non-allowlisted -Dmts.* token in start-trading-day.ps1; fails on the current ps1 (3 hits)",
   "title": "FINDING: mts.pitchfork=true live since 2026-10-28 with no operator decision",
   "weight": "CRITICAL",
-  "worker": "agent"
+  "worker": "session"
 }

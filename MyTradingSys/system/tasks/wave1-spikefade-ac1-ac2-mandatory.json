@@ -2,43 +2,64 @@
   "approved_by": "",
   "asks": "",
   "commands": [
-    "mvn -q -Dtest=SetupCandidatesCriticalWave1Test,SpikeFadeCriticalWave1Test test"
+    "mvn -q test -Dtest=SpikeFadeCriticalWave1Test+SpikeFadeTest+SpikeFadeProfileTest+SpikeFadePathsTest+SpikeFadeFlagOffGoldenTest"
   ],
   "created": "2026-10-29T19:48:06Z",
   "depends_on": [],
-  "done_when": "each gate cites spec line + quote; T3/T5/T6 path reachable in a test that fails on old code",
-  "est_turns": 6,
+  "done_when": "SpikeFadeCriticalWave1Test caseC asserts a candidate with c2_above_prior_day=false at close==prior high and passes; SpikeFadeFlagOffGoldenTest unchanged and green; shipped, cherry empty",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Align SpikeFadeDetector gates with TOM_LAYER_V2_SPEC rule paths (A-C2 not in T3/T5/T6; 'above previous day' is a risk caveat per k0zm5NYn0IQ); plus MED: A-C3 volume missing on price arm, fixed 20-pt stop on BTC, prior-day-high proxy with no distance cap, re-entry cap state not persisted",
+  "goal": "Part 1 of 5. Remove the A-C2 hard gate in SpikeFadeDetector.java:181-183 (TLV2:165-168: T3/T5/T6 have no C2; k0zm5NYn0IQ:51-56 says 'above previous day' is a risk caveat). Keep A-C1 (median rank) as is; emit c2_above_prior_day=true|false on the candidate. Flag mts.spikeFade stays off.",
   "id": "wave1-spikefade-ac1-ac2-mandatory",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "critical test wave 1 item 3: SpikeFade + classifyState audit, switch census, 11 hand-compu",
+      "ref": "ebc7a556bb55",
+      "utc": "2026-10-29T19:48:38Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS) 2026-10-30: parked; split into 5 cards (A-C2 gates first, then A-C3 volume, stop, prior-day cap, re-entry persistence), each naming its SpikeFadeCriticalWave1Test case.",
+  "note": "REVIEWED:2026-10-30 ACCEPT (reviewer Agent, FIX lines applied) Refined 2026-10-30: split into 5 cards (4 new raw ones listed in scope_out). Behaviour change is dark while mts.spikeFade is false; OURS. Needs the CRITICAL review before ship (changes which fades the engine could emit).",
   "prio": 2,
   "refine_tries": 1,
   "refined_by": "",
+  "refreshed": "2026-10-29T22:04:20Z",
   "refs": [],
   "result": "",
   "scope_in": [
-    "src/main/java/datafeed/SpikeFadeDetector.java, SpikeFadeSessionState.java"
+    "src/main/java/datafeed/SpikeFadeDetector.java",
+    "src/test/java/datafeed/SpikeFadeCriticalWave1Test.java",
+    "src/test/java/datafeed/SpikeFadeTest.java"
   ],
-  "scope_out": [],
+  "scope_out": [
+    "A-C3 volume, stop, prior-day cap, re-entry persistence (cards spikefade-ac3-volume-gate, spikefade-stop-fixed-20pt-btc, spikefade-prior-day-high-proxy-cap, spikefade-reentry-cap-not-persisted)",
+    "SpikeFadeSessionState.java",
+    "flipping -Dmts.spikeFade",
+    "position_manager, auto_trader, HALT files, live tree"
+  ],
+  "scope_sha": "ebc7a556bb55",
   "size": "S",
   "sources": [
-    "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md",
-    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md"
+    "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md:14,94",
+    "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md:165-168"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
-    "Read the finding in MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md",
-    "Fix per the trader source; new test fails first"
+    "SpikeFadeDetector.java:181-183: replace 'if (!(lastClose > priorHigh)) return null;' with a boolean c2 = lastClose > priorHigh (strict >, as caseC); no early return.",
+    "Add c.put(\"c2_above_prior_day\", c2) next to c.put(\"entry_path\",\"A1\") (~line 232) and a comment with the quote k0zm5NYn0IQ:51-56 and 'OURS: gate dropped, fire rate unmeasured'. Add \"A-C2\" to the conditions array (SpikeFadeDetector.java:233-235) only when c2 is true (OURS); SpikeFadeProfileTest:193 expects [A-C1,A-C2,A-C3] on an above-prior-day fixture and must stay green.",
+    "SpikeFadeCriticalWave1Test: change caseC to expect a candidate at close 904.5 with c2_above_prior_day=false and at 904.6 with true (old expectation assertNull at 904.5 fails on the new code and the new one fails on old code); leave cases A, B, D, E untouched and passing.",
+    "Flip SpikeFadeTest.notAbovePriorDayRangeFiresNothing (:177-183) to expect a candidate with c2_above_prior_day=false and A-C2 absent from conditions.",
+    "Run the command above; flag-off golden output must be unchanged."
   ],
-  "tests": "a JUnit test that fails on the current code",
-  "title": "FINDING HIGH: SpikeFade requires A-C1+A-C2 on every path, so T3/T5/T6 fades can never fire",
+  "tests": "SpikeFadeCriticalWave1Test caseC rewritten: close == prior high now yields a candidate with c2_above_prior_day=false (fails on old code: returns null); flag-off golden test unchanged",
+  "title": "SpikeFade: A-C2 (above previous day) becomes a recorded caveat, not a mandatory gate (T3/T5/T6 paths reachable)",
   "weight": "CRITICAL",
-  "worker": "agent"
+  "worker": "session"
 }
