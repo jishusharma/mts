@@ -25,6 +25,16 @@ PROTECTED_PREFIXES = ("MyTradingSys/execution/HALT", "MyTradingSys/execution/AUT
 STASH_EXCLUDES = [f":(exclude){p}" for p in PROTECTED_PREFIXES]
 
 
+def stash_excludes(repo):
+    """Exclude pathspecs, minus gitignored prefixes (git add/stash refuses an ignored path in a pathspec)."""
+    out = []
+    for p in PROTECTED_PREFIXES:
+        if git(repo, "check-ignore", "-q", p).returncode == 0:
+            continue
+        out.append(f":(exclude){p}")
+    return out
+
+
 def is_protected(path):
     p = path.strip('"').replace("\\", "/")
     return any(p == q or p.startswith(q) for q in PROTECTED_PREFIXES)
@@ -125,7 +135,7 @@ def refresh(repo, branch="fast-track", wip_branch=None, apply=False, merge_if_di
         return True, stash
 
     if dirty:
-        s = git(repo, "stash", "push", "-u", "-m", stash, "--", ".", *STASH_EXCLUDES)
+        s = git(repo, "stash", "push", "-u", "-m", stash, "--", ".", *stash_excludes(repo))
         if s.returncode or "No local changes" in s.stdout:
             say(f"STOP: stash failed: {(s.stderr or s.stdout).strip()}")
             return False, None

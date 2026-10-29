@@ -5,34 +5,62 @@
   "created": "2026-10-29T22:05:40Z",
   "depends_on": [],
   "done_when": "DEVICES.md s1/s3, LIVE_HOST_MOVE.md header and STATION_CLEANUP.md s1 state the cutover with its date (from git log / SUPERVISOR_LOG, NOT CAPTURED if unknown) and JIS-NB's current role; STATION_CLEANUP s1 rows filled from the 2026-10-30 STATION answers of A, B, C; no other content change.",
-  "est_turns": null,
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
   "goal": "The live loop runs on the Lenovo (C:\\MTS\\mts-live: java statemachine, auto_trader, position_manager, orderflow_live, loop-supervisor seen 2026-10-29 22:50Z) but DEVICES.md s1/s3/s8, LIVE_HOST_MOVE.md header and STATION_CLEANUP.md s1 still say NOT CUT OVER / loop on JIS-NB. Stale docs mislead every cleanup and access decision.",
   "id": "station-cleanup-table-stale-after-cutover",
   "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Revert 830da2640 (device rename docs + 2 cards): CI RED at Step 4d, test_7b: card rename-d",
+      "ref": "1ce1b3f5ffbb",
+      "utc": "2026-10-29T18:49:41Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "1ce1b3f5ffbb Revert 830da2640 (device rename docs + 2 cards): CI RED at Step 4d, test_7b: ",
+      "ref": "MyTradingSys/system/DEVICES.md",
+      "utc": "2026-10-29T18:49:41Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Lenovo/A answer 2026-10-29 22:50Z: C free 379 GB; MTSTempGuard logon run installed today (was missing); daily hook ran 22:17Z freed 1.9 GB, retired 15 worktrees; main checkout blocked from pulling by others' dirty files.",
+  "note": "REVIEWED:2026-10-30 T0-ONLY",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-29T23:29:22Z",
   "refs": [
     "MyTradingSys/system/STATION_CLEANUP.md",
     "MyTradingSys/system/DEVICES.md",
     "MyTradingSys/system/LIVE_HOST_MOVE.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/system/DEVICES.md",
+    "MyTradingSys/system/LIVE_HOST_MOVE.md",
+    "MyTradingSys/system/STATION_CLEANUP.md"
+  ],
+  "scope_out": [
+    "any code"
+  ],
+  "scope_sha": "1ce1b3f5ffbb",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Date the cutover from git log or SUPERVISOR_LOG (NOT CAPTURED if unknown)",
+    "Edit the three docs and fill STATION_CLEANUP s1 from the A, B, C answers",
+    "Check size caps"
+  ],
+  "tests": "docs only: python scripts/dev/run_all_tests.py --quick stays green (test_integrity size caps)",
   "title": "DEVICES/LIVE_HOST_MOVE/STATION_CLEANUP still say live loop on JIS-NB, NOT cut over; it runs on the Lenovo. Refresh tables from roll-call answers",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

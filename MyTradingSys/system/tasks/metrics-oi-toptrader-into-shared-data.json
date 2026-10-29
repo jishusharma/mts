@@ -5,7 +5,7 @@
   "created": "2026-10-29T22:15:31Z",
   "depends_on": [],
   "done_when": "One fetch script writes BTCUSDT (and ETHUSDT) 5m metrics 2022-01..latest to the canonical data root (NUC F:/MTS/data/metrics, path from env/config, never hard-coded); gaps listed per month; a re-run is idempotent; oi_delta_event_table REPORT.md corrected; DATA index/doc names the path; test covers gap listing and idempotence.",
-  "est_turns": null,
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Filed by Supervisor A from Builder Noticed 2. Public market data only (pre-approved). Known blanks: top-trader ratios 2022-01..2022-12 partly empty (study doc line 28).",
+  "note": "PLANNER 2026-10-30: filled and T0-checked; awaits Lab_Guy review stamp (T0-ONLY refused at IMPORTANT)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -24,14 +24,22 @@
     "MyTradingSys/research/layer_lab/oi_delta_event_table/REPORT.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/backtest/fetch_futures_metrics.py"
+  ],
+  "scope_out": [
+    "any mainnet or account call (public archive only)"
+  ],
+  "size": "M",
   "sources": [],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Write the fetch script (data root from env/config)",
+    "Run BTCUSDT and ETHUSDT 2022-01..latest, list gaps",
+    "Fail-first test, correct REPORT.md NOT_IN_DATA, name the path in the data doc"
+  ],
+  "tests": "test_fetch_futures_metrics.py: gap listing per month and idempotent re-run on a fake archive; fails before the script exists",
   "title": "Fetch data.binance.vision futures metrics (OI, top-trader and global L/S ratios, 2022-01..now) into the canonical NUC data store so every station and backtest reads one copy; correct NOT_IN_DATA in oi_delta_event_table",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
