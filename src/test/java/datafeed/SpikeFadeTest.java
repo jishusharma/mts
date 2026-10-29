@@ -174,13 +174,16 @@ public class SpikeFadeTest {
     }
 
     @Test
-    void notAbovePriorDayRangeFiresNothing() {
+    void notAbovePriorDayRangeStillFiresWithC2False() {
         double[] l = legs();
         l[19] = 400.0;   // prior day high 24300: price 24106 is inside the prior range, A-C2 fails
         ArrayNode k = priorSessions(l);
         today(k);
         ArrayNode out = SetupCandidatesBuilder.build(M, root("GER40", 24106.0), new HashMap<>(), k);
-        assertNull(fade(out), "A-C2 fails when price is inside the prior day range: " + out);
+        JsonNode f = fade(out);
+        assertNotNull(f, "A-C2 is a caveat, not a gate: " + out);
+        assertFalse(f.get("c2_above_prior_day").asBoolean());
+        for (JsonNode cd : f.get("conditions")) assertNotEquals("A-C2", cd.asText());
     }
 
     @Test

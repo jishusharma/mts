@@ -178,9 +178,10 @@ final class SpikeFadeDetector {
         for (double v : legs) if (v < legPct) below++;
         double impulseRank = below / (double) LOOKBACK;
 
-        // A-C2 (range form): price above the prior day's range
+        // A-C2 (range form) is a recorded caveat, not a gate. Source k0zm5NYn0IQ:51-56: 'above previous day' is a risk
+        // caveat; TLV2:165-168: T3/T5/T6 have no C2. OURS: gate dropped, fire rate unmeasured.
         double priorHigh = dayHigh[LOOKBACK - 1];
-        if (!(lastClose > priorHigh)) return null;
+        boolean c2 = lastClose > priorHigh;
 
         // stop: A-S1 nearest prior-session high above the zone, else A-S2 fixed 20 points
         double above = Double.POSITIVE_INFINITY, maxPrior = Double.NEGATIVE_INFINITY;
@@ -230,9 +231,10 @@ final class SpikeFadeDetector {
         math.put("net_rr_sanity", netRR >= floor);
         c.put("stop_rule", s1 ? "A-S1" : "A-S2");
         c.put("entry_path", "A1");
+        c.put("c2_above_prior_day", c2);
         var cond = c.putArray("conditions");
         cond.add("A-C1");
-        cond.add("A-C2");
+        if (c2) cond.add("A-C2");
         var pr = c.putArray("proofs");
         proofs.forEach(pr::add);
         var nid = c.putArray("not_in_data");
