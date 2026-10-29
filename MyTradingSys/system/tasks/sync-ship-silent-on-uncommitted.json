@@ -4,7 +4,7 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-29T17:09:18Z",
+    "folded": "2026-10-29T17:10:02Z",
     "misses": 12,
     "reads": [
       "scripts/dev/tasks.py",
@@ -33,19 +33,19 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "sync.start --worker: work in an Agent-tool isolation tree, no second worktree",
-      "ref": "0bc90e4cf333",
-      "utc": "2026-10-29T16:58:54Z"
+      "line": "sync.ahead_commits: compare with the merge-base, not the trunk tip (B17)",
+      "ref": "d5946cee2d90",
+      "utc": "2026-10-28T15:50:09Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-29 ACCEPT (reviewer-raw-cards-b; verified ship() not-files branch and tree_state exist) | DRAFT 2026-10-29 Session_Planner (OURS): sync.py is the ship path so IMPORTANT: needs a real REVIEWED stamp before ready. No twin: B6 only filters CRLF noise, ship --result commits files on request.",
+  "note": "DRAFT 2026-10-29 Session_Planner (OURS): sync.py is the ship path so IMPORTANT: needs a real REVIEWED stamp before ready. No twin: B6 only filters CRLF noise, ship --result commits files on request.\nREVIEWED:2026-10-29 ACCEPT (reviewer-raw-cards-b) Verified sync.py ship() not-files branch and tree_state exist as cited; no twin.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-29T17:08:13Z",
+  "refreshed": "2026-10-29T16:55:38Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -54,7 +54,7 @@
   "scope_out": [
     "gate logic; live tree; ship --result commit path; push-race code"
   ],
-  "scope_sha": "0bc90e4cf333",
+  "scope_sha": "d5946cee2d90",
   "size": "S",
   "sources": [],
   "state": "ready",
