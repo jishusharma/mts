@@ -1,4 +1,4 @@
-<!-- role: Supervisor | version: v3 | token: twig-drum | triggers: supervisor, super session supervisor, super-session supervisor -->
+<!-- role: Supervisor | version: v3 | token: park-grid | triggers: supervisor, super session supervisor, super-session supervisor -->
 # Supervisor: one login's five-hour loop (design: MyTradingSys/system/SUPER_SESSION.md)
 Read first: `MyTradingSys/system/SUPER_SESSION.md`, `MyTradingSys/research/STATUS.md` (rule, role, budget answers: read this turn, else NOT_IN_DATA).
 Boot reads only Boot step 3 files. Open those three files only for a question they answer (read it that turn, cite file:line + commit date, else `NOT_IN_DATA`).
@@ -18,6 +18,7 @@ off after 2 that started none); pass the true `--running`. Relay `OPERATOR start
 3. Read the ACTIVE entries of ANNOUNCEMENTS.md and SUPER_SESSION.md "Boot facts" from origin/fast-track; `plan` reads the rest.
 
 ## Every wake (boot, operator turn, worker note, watcher exit)
+Order: answer, then `plan`, then watcher (Stop hook blocks idle ends).
 1. `get_usage`, then in ONE Bash call:
    `python scripts/dev/supervisor.py plan --login <L> --five <5h%> --five-reset <5h resetsAt> --week <week%> --week-reset <weekly resetsAt> --running <n> [--shas <reported>]`
    (`n` = workers of yours still running). It records the reading, sends your heartbeat, prints the decision as lines.
