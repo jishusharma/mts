@@ -179,7 +179,11 @@ def parse_tom_alert(alert: dict) -> dict:
     except (KeyError, ValueError):
         return {}
     setup = fields.get("SETUP", "")
-    side = "long" if setup.endswith("_long") else "short" if setup.endswith("_short") else None
+    # Explicit rejection of Pitchfork setups (OURS: safeguard against renamed PF-* setups ending in _long/_short)
+    if setup.upper().startswith("PF-") or setup.lower().startswith("pf_"):
+        side = None
+    else:
+        side = "long" if setup.endswith("_long") else "short" if setup.endswith("_short") else None
     rr = re.search(r"net\s+([0-9.]+)", fields.get("R:R", ""))
     return {"alert_no": int(m.group(1)) if m else None, "verdict": fields.get("VERDICT", ""),
             "time": fields.get("TIME", ""), "price": _positive_float(fields.get("PRICE")),
