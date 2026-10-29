@@ -1,7 +1,9 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
   "class": "C1",
+  "closed": "2026-10-29T21:07:11Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_<videoid>.md  # <videoid> from KROWN_FREE_VS_PAID.md s1b"
   ],
@@ -15,6 +17,12 @@
   "kind": "build",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "4 V2 extracts PASS verify_extract_quotes.py (10/10 quotes); CALL_LEDGER.csv built with 7 c",
+      "ref": "69d004242",
+      "utc": "2026-10-29T21:07:11Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +47,12 @@
     "MyTradingSys/research/krown_ta101_2026-10-13/PRE_REG_KROWN.md",
     "MyTradingSys/options/research/KROWN_FREE_VS_PAID.md"
   ],
-  "result": "",
+  "result": "4 V2 extracts PASS verify_extract_quotes.py (10/10 quotes); CALL_LEDGER.csv built with 7 calls split design/check; report 2026-10-30_krown-other-sources-event-study-videos.md written",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/krown_ta101_2026-10-13/",
     "raw_transcripts_canonical/"
@@ -55,12 +68,13 @@
     "MyTradingSys/research/fast_track_2026-09-27/EXTRACTION_METHOD_V2.md",
     "MyTradingSys/research/krown_ta101_2026-10-13/PRE_REG_KROWN.md item 2"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "YouTube rules as the TA 101 card: on any HTTP 429 STOP the yt-dlp path at once; DECISION (OURS) default: take the transcript through Gemini search grounding (gemini_queue.py), and if that fails park the video id in the report and go on with the next, never wait for pasted transcripts.",
     "Extract with research/fast_track_2026-09-27/EXTRACTION_METHOD_V2.md, one video per fresh worker, into krown_ta101_2026-10-13/extracts/.",
     "Run verify_extract_quotes.py on each extract; build CALL_LEDGER.csv; verify each call date against klines before it is used as ground truth; split design/check by date."
   ],
+  "taken": "2026-10-29T21:02:46Z",
   "tests": "docs lane: verify_extract_quotes.py is the gate",
   "title": "Krown other sources: extract his daily BTC event-study videos and the CBP krown item with the V2 method (trigger, target, hit rate as he states them); DONE when: a V2 extract per video passes the quote gate and a call ledger exists",
   "updated": "2026-10-18T10:00:00Z",

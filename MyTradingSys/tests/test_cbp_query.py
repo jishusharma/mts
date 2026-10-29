@@ -14,6 +14,7 @@ sys.path.insert(0, str(ROOT / "scripts" / "dev"))
 
 import cbp  # noqa: E402
 import cbp_run  # noqa: E402
+import cbp_schedule  # noqa: E402
 
 NOW = datetime(2026, 10, 24, 10, 0, tzinfo=timezone.utc)
 BODY = "[00:00:01] so bitcoin needs to hold 80K\n[00:00:09] and then we target 87K with stop under 79K\n"
@@ -188,6 +189,30 @@ def test_cbp_run_works_without_fixed_machine_paths(tmp_path, monkeypatch):
     st = tmp_path / "s2.json"
     ext = lambda v, b: GOOD  # noqa: E731
     assert cbp_run.run_once(NOW, fetch=lambda *a: None, extract=ext, store=st) == (1, 1, 0)
+
+
+def test_store_default_agrees_across_cbp_components(tmp_path, monkeypatch):
+    monkeypatch.delenv("CBP_HOME", raising=False)
+    monkeypatch.delenv("CBP_STORE", raising=False)
+    monkeypatch.setattr(cbp, "LEGACY_HOME", tmp_path / "missing-legacy")
+    expected_home = cbp.ROOT / "runtime_data" / "cbp"
+    monkeypatch.setattr(cbp_run, "CBP_HOME", expected_home)
+    expected = expected_home / "cbp_store" / "rows.json"
+    assert cbp.store_path() == expected
+    assert cbp_run.CBP_HOME / "cbp_store" / "rows.json" == expected
+    assert cbp_schedule.cbp.default_cbp_home(exists=lambda p: False) / "cbp_store" / "rows.json" == expected
+
+
+def test_cbp_schedule_dry_run_validates_without_registration(tmp_path, capsys):
+    xml = cbp_schedule.task_xml(sys.executable, cbp_schedule.Path(cbp_schedule.__file__), tmp_path)
+    assert cbp_schedule.validate_task_xml(xml)
+    assert "<StartBoundary>2026-10-26T09:00:00Z</StartBoundary>" in xml
+    assert "<StartBoundary>2026-10-26T13:00:00Z</StartBoundary>" in xml
+    assert "<RestartOnFailure>" in xml and "<Count>3</Count>" in xml
+    assert "<MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>" in xml
+    assert "trading" not in xml.lower()
+    assert cbp_schedule.main(["dry-run", "--home", str(tmp_path)]) == 0
+    assert "no registration" in capsys.readouterr().out
 
 
 def test_extractor_nonzero_json_is_failure():

@@ -20,9 +20,9 @@
   "not_twin_of": [
     "pitchfork-review-fixes-2026-10-28"
   ],
-  "note": "DRAFT 2026-10-28 Session_Planner (OURS): live_path card split from pitchfork-review-fixes-2026-10-28. HOLD for dispatch: CRITICAL protocol (review SESSION mid and pre-ship), and DoR 4 wants live_path cards in lane JIS-NB: coordinator decides lane before dispatch. Runs after pitchfork-pf-can-arm-order-check tells urgency. Not dispatchable until REVIEWED stamp. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files. | T0 2026-10-28 planner-refine-A: scope_in paths all tracked, no open claim on them, content complete; only gap = Lab_Guy REVIEWED stamp (IMPORTANT+).",
+  "note": "DECISION (OURS) 2026-10-30: parked; add the F3 step, name the new Java test class and move lane to JIS-NB (live_path) before dispatch.",
   "prio": 2,
-  "refine_tries": 1,
+  "refine_tries": 2,
   "refined_by": "",
   "refs": [
     "MyTradingSys/research/pitchfork_2026-10-19/OPUS_E2E_REVIEW_2026-10-28.md"
