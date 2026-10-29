@@ -4,14 +4,30 @@
   "commands": [],
   "created": "2026-10-29T18:52:39Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Each engine candidate and testnet order gives exactly one visible alert on JIS-NB and DESKTOP-F7IU69N (T6 row in TEST_LEDGER.md); toggles persist; old popup path removed.",
+  "est_turns": 30,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "One alert feed shown on desktop and laptop with per-type toggles, old popups retired, alert set = what the engine fires plus live_aid coil/pierce and level-approach flags. Full text: MyTradingSys/research/eagle_eyes_picture_2026-10-28/CARD_SPECS.md",
   "id": "alerts-v2-on-both-screens-one-alert-feed",
-  "lane": "OPUS",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into claude/practical-bose-f4a558",
+      "ref": "a74747ae2136",
+      "utc": "2026-10-29T20:33:56Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "a97b86446b78 critical test wave 1 item 4: offline replay of 2026-10-29 through the engine,",
+      "ref": "MyTradingSys/system/TEST_LEDGER.md",
+      "utc": "2026-10-29T20:18:57Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,16 +35,26 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-29T21:19:08Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/",
+    "MyTradingSys/system/TEST_LEDGER.md"
+  ],
   "scope_out": [],
-  "size": "",
+  "scope_sha": "a74747ae2136",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Census current alert sources and popups",
+    "One feed file + reader on both screens",
+    "Per-type toggles",
+    "T6 check: one alert per candidate/order"
+  ],
+  "tests": "test_alert_feed.py: 3 candidates + 1 order in, exactly 4 alerts out, none duplicated; fails before the feed exists",
   "title": "alerts v2 on both screens: one alert feed shown on JIS-NB (desktop) and DESKTOP-F7IU69N (laptop), per-alert-type on/off toggle, retire the old MTS ALERT popups, new alert set = what the engine actually fires (signals, testnet orders, Tom/layer setups incl. prior-day/multi-day high-low take-and-fail), elegant non-piling UI (operator 10-28 Bible ask 3 + 10-30)",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }

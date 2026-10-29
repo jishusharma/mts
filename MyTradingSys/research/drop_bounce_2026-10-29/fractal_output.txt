@@ -1,0 +1,12 @@
+matches n=511 (corr>=0.85; median corr 0.91)
+ALL: n=511 | BREAK 48% RETEST 12% HOLD 40% | up after 60m 53%, after 4h 55% | median max up +0.88%, max down -0.81% | next 60m closes: below lower 6%, lower-mid 43%, above mid 51%
+corr>=0.90: n=314 | BREAK 47% RETEST 12% HOLD 40% | up after 60m 50%, after 4h 52% | median max up +0.79%, max down -0.81% | next 60m closes: below lower 5%, lower-mid 44%, above mid 51%
+                  t  corr   rng   brk   ret  up60  up240  mxup   mxdn  below  lowmid  above
+2024-06-24 08:45:00 0.971 0.039 False False False   True 0.006 -0.008  0.050   0.783  0.167
+2022-11-14 19:06:00 0.967 0.027 False False  True   True 0.028 -0.004  0.050   0.250  0.700
+2023-09-08 09:17:00 0.966 0.021 False False False   True 0.004 -0.002  0.033   0.500  0.467
+2024-04-05 04:32:00 0.965 0.021 False  True  True  False 0.012 -0.007  0.017   0.300  0.683
+2022-08-09 23:52:00 0.965 0.024 False False False  False 0.003 -0.008  0.067   0.600  0.333
+2023-04-03 00:56:00 0.963 0.021 False  True False  False 0.002 -0.006  0.100   0.483  0.417
+2022-03-15 06:24:00 0.963 0.021 False False False   True 0.009 -0.005  0.067   0.483  0.450
+2022-10-13 09:43:00 0.963 0.024  True False  True   True 0.017 -0.042  0.050   0.433  0.517

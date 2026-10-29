@@ -1,0 +1,54 @@
+{
+  "approved_by": "operator 2026-10-30 via Eagle_Eyes (d-eagle-eyes-missed-boxes-defaults)",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-29T21:18:22Z",
+  "depends_on": [],
+  "done_when": "live_aid shows per marked level within 0.5%: checklist, absorption flag, OI tell, flag count, each with n or UNMEASURED; one alert per level approach; unknowns U1-U4 measured or left as open ledger rows.",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Engine prepared at a level before price arrives: pre-level checklist, absorption signature, who-absorbed via OI, confirm-entry rule (descriptive), strength by flag count, shown in live_aid and alerts. Spec: MyTradingSys/research/eagle_eyes_picture_2026-10-28/CARD_SPECS.md#level-approach-prep",
+  "id": "level-approach-prep",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "live_aid: coil and pierce (15m) panel with measured base rates",
+      "ref": "8054adb53184",
+      "utc": "2026-10-29T20:33:52Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-29T21:19:11Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/live_aid.html",
+    "MyTradingSys/tools/live_aid/live_aid_indicators.js",
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/CARD_SPECS.md"
+  ],
+  "scope_out": [],
+  "scope_sha": "8054adb53184",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Measure U1 absorption and U3 wicks on 1m archive (U2 needs OI history)",
+    "Add panel rows + flag count",
+    "Wire one alert per approach (with alerts-v2)",
+    "Bible teaching + ledger rows"
+  ],
+  "tests": "test_live_aid.py: hand-built absorption case (delta +0.5, no extension) sets the flag; fails on current JS",
+  "title": "level-approach prep: pre-level checklist, absorption signature, who-absorbed (OI), confirm-entry rule, flag-count strength in live_aid + alerts (spec CARD_SPECS.md#level-approach-prep)",
+  "weight": "",
+  "worker": "session"
+}

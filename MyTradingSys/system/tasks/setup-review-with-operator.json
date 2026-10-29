@@ -1,0 +1,65 @@
+{
+  "approved_by": "operator 2026-10-30 via Eagle_Eyes (d-map-before-backtest, d-setup-review-before-backtest, d-storybook-v2)",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-29T22:28:45Z",
+  "depends_on": [],
+  "done_when": "SETUP_REVIEW.md: per setup a plain rule (SOURCED vs OURS), one BTC example shot, our measured counts if any, open gaps from EXTRACTION_CRITICAL_GAPS; operator verdict column filled from his chat replies; his 2-3 picks recorded in OPERATOR_DECISIONS.md.",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Close the gap the operator named on 10-30 (\"setups were never extracted properly from Tom and never reviewed\"): the catalog exists (16 Tom, 7 Fabio setups, SETUP_CATALOG.md) but he never reviewed it. One page per setup with a recent BTC chart example; he keeps, rewrites or rejects each and picks 2-3 to test first. Map: MyTradingSys/research/eagle_eyes_picture_2026-10-28/SESSION_MAP_2026-10-30.md",
+  "id": "setup-review-with-operator",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into claude/practical-bose-f4a558",
+      "ref": "89018b18d404",
+      "utc": "2026-10-29T22:04:26Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "89018b18d404 Merge remote-tracking branch 'origin/fast-track' into claude/practical-bose-f",
+      "ref": "MyTradingSys/system/OPERATOR_DECISIONS.md",
+      "utc": "2026-10-29T22:04:26Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-29T22:30:12Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md",
+    "MyTradingSys/research/setup_catalog_2026-10-15/EXTRACTION_CRITICAL_GAPS_2026-10-18.md",
+    "MyTradingSys/research/setup_review_2026-10/",
+    "MyTradingSys/system/OPERATOR_DECISIONS.md"
+  ],
+  "scope_out": [],
+  "scope_sha": "89018b18d404",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md",
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/SESSION_MAP_2026-10-30.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Check SETUP_CATALOG gaps G-TOM-1 / G-FAB-1/2 are merged (sections 4.2, 6.4); list what is still open",
+    "One page per setup: plain rule, SOURCED/OURS, BTC example chart from the 1m archive, measured counts",
+    "Walk the operator through it in Eagle_Eyes chat, 3-4 setups per sitting; record each verdict",
+    "Record his picks as a decision; those picks feed bb-state-regime-tf-map and the pre-regs"
+  ],
+  "tests": "n/a (review task; output is the sheet and his verdicts)",
+  "title": "Setup review with the operator: one page per catalogued Tom/Fabio setup with a BTC example, he picks 2-3 to test",
+  "weight": "",
+  "worker": "session"
+}

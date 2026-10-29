@@ -1,0 +1,55 @@
+{
+  "approved_by": "operator 2026-10-30 via Eagle_Eyes (d-eagle-eyes-missed-boxes-defaults)",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-29T21:18:24Z",
+  "depends_on": [],
+  "done_when": "His shots classified with pivots, TF and scale; pre-reg shipped; dev count of reactions at copied-fork lines vs random-parallel control with n; holdout untouched.",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Prepare the Pitchfork layer for the operator's method: classify his pitchfork charts, then measure whether copied (pasted, same slope and width) forks attract price more than random parallels. Spec: MyTradingSys/research/eagle_eyes_picture_2026-10-28/CARD_SPECS.md#pitchfork-operator-charts-prep",
+  "id": "pitchfork-operator-charts-prep",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "pitchfork: PF_ARM_TRACE verdict NO, PF-* cannot send an order (auto_trader side parse)",
+      "ref": "ddb4689382c3",
+      "utc": "2026-10-29T17:19:46Z"
+    }
+  ],
+  "layers": [
+    "pitchfork"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-29T21:19:13Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/pitchfork/",
+    "MyTradingSys/research/pitchfork_2026-10-19/",
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/CARD_SPECS.md"
+  ],
+  "scope_out": [],
+  "scope_sha": "ddb4689382c3",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Wait for operator pitchfork shots; classify with shot.py",
+    "Add copy-fork (parallel offset) to pitchfork_detector.py",
+    "Pre-reg, dev count vs control"
+  ],
+  "tests": "test_pitchfork_detector.py: copied fork keeps slope and width at a new anchor; fails before the copy function exists",
+  "title": "pitchfork: classify operator's pitchfork charts, measure copy-paste (parallel) forks vs random parallels (spec CARD_SPECS.md#pitchfork-operator-charts-prep)",
+  "weight": "",
+  "worker": "session"
+}

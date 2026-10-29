@@ -1,0 +1,3 @@
+bounce >=55% then back within 1% of low: n=116 | low broken within 1h 16%, within 4h 43% | close up after 4h 59% | median max up +1.01%
+fade with net selling (delta share <= -0.10): n=47 | low broken within 1h 9%, within 4h 38% | close up after 4h 57% | median max up +0.97%
+fade without net selling: n=69 | low broken within 1h 22%, within 4h 46% | close up after 4h 59% | median max up +1.11%

@@ -43,7 +43,7 @@
   "refined_by": "",
   "refreshed": "2026-10-29T22:04:03Z",
   "refs": [],
-  "result": "",
+  "result": "Resolved by d-pitchfork-keep-and-prepare (operator 10-30): keep the switch (inert, 3 vs 15 4h bars), build out via pitchfork-live-4h-bars-too-few and pitchfork-operator-charts-prep.",
   "scope_in": [
     "scripts/core/start-trading-day.ps1",
     "MyTradingSys/system/OPERATOR_DECISIONS.md",
@@ -60,7 +60,7 @@
   "sources": [
     "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Edit start-trading-day.ps1: delete the -Dmts.pitchfork=true token at lines 113, 445, 475 only (keep every other argument unchanged).",
     "Add MyTradingSys/tests/test_no_undecided_mts_flags_in_ps1.py: parse start-trading-day.ps1 for -Dmts.<name>= tokens and assert each is listed in an allowlist in the test; allowlist starts empty (pitchfork absent). Fails on pre-change ps1.",

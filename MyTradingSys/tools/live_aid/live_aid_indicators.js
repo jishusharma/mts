@@ -238,7 +238,40 @@
     return { avail: av.length, total: flags.length, for: f, against: a, reduceRule: av.length > 0 && a >= IT.reduceAt };
   }
 
-  var api = { IT: IT, divergence: divergence, flow: flow, flowLive: flowLive, squeeze: squeeze, dom: dom, supports: supports, vwapTest: vwapTest,
+  // Coil and pierce (15m), operator ask 2026-10-30. Probabilities are the MEASURED descriptive base rates of
+  // research/pre_us_squeeze_2026-10-29 and research/bb_pierce_force_2026-10-29 (Binance 1m 2022-01..2026-09, no fees,
+  // within 2 h of the US open). Thresholds are OURS, copied from those studies. rows: [t,o,h,l,c,v,..,takerBuy@9].
+  var CP = { coilPct: 0.20, lookback: 2880, pierceAgeMax: 8, volStrong: 3.56, volWeak: 1.96, deltaWith: 0.10,
+    dist: [{ max: 0.005, reach: 74, fail: 25, n: 156 }, { max: 0.015, reach: 36, fail: 54, n: 313 }, { max: Infinity, reach: 13, fail: 59, n: 540 }],
+    force: { strong: { reach: 39, fail: 42, n: 197 }, weak: { reach: 26, fail: 58, n: 351 }, mid: { reach: 30, fail: 52, n: 1009 } },
+    coil: { expand: 1.54, up: 29, down: 29, side: 43, both: 23, n: 192 }, noCoil: { expand: 1.26, up: 25, down: 29, side: 47, both: 16, n: 800 } };
+  function coilPierce(rows, tfMs, now, pdh, pdl) {
+    var closed = rows.filter(function (r) { return +r[0] + tfMs <= now; });
+    var c = closed.map(function (r) { return +r[4]; }), bb = bollinger(c, 20, 2), i = c.length - 1;
+    if (i < 41 || !isFinite(bb.width[i])) return null;
+    function pctAt(j) { var h = bb.width.slice(Math.max(0, j - CP.lookback), j).filter(isFinite); return { p: h.filter(function (x) { return x < bb.width[j]; }).length / h.length, n: h.length }; }
+    var pa = pctAt(i), pct = pa.p, hist = { length: pa.n };
+    var out = { bwPct: pct, histBars: hist.length, coil: pct <= CP.coilPct, width: bb.width[i], upper: bb.upper[i], lower: bb.lower[i], mid: bb.basis[i],
+      pierce: null, ctx: pct <= CP.coilPct ? CP.coil : CP.noCoil };
+    for (var k = i; k > i - CP.pierceAgeMax && k > 20; k--) {
+      var side = c[k] > bb.upper[k] && c[k - 1] <= bb.upper[k - 1] ? 'up' : c[k] < bb.lower[k] && c[k - 1] >= bb.lower[k - 1] ? 'down' : null;
+      if (!side) continue;
+      var v = +closed[k][5], vs = 0; for (var j = k - 20; j < k; j++) vs += +closed[j][5];
+      var vr = v / (vs / 20), tb = closed[k].length > 9 ? +closed[k][9] : NaN;
+      var ds = isFinite(tb) && v > 0 ? (2 * tb - v) / v * (side === 'up' ? 1 : -1) : NaN;
+      var lvl = side === 'up' ? pdh : pdl;
+      if (!isFinite(lvl) || (side === 'up' ? lvl <= c[k] : lvl >= c[k])) lvl = NaN;
+      var dist = isFinite(lvl) ? Math.abs(lvl / c[k] - 1) : NaN, db = null;
+      for (var q = 0; q < CP.dist.length && isFinite(dist); q++) if (dist <= CP.dist[q].max) { db = CP.dist[q]; break; }
+      var fb = vr >= CP.volStrong && ds > CP.deltaWith ? 'strong' : vr < CP.volWeak ? 'weak' : 'mid';
+      out.pierce = { side: side, t: +closed[k][0], ageBars: i - k, close: c[k], volRatio: vr, deltaShare: ds, level: lvl, dist: dist,
+        byDist: db, coilBefore: pctAt(k - 1).p <= CP.coilPct, force: fb, byForce: CP.force[fb], midBack: side === 'up' ? c[i] < bb.basis[i] : c[i] > bb.basis[i] };
+      break;
+    }
+    return out;
+  }
+
+  var api = { CP: CP, coilPierce: coilPierce, IT: IT, divergence: divergence, flow: flow, flowLive: flowLive, squeeze: squeeze, dom: dom, supports: supports, vwapTest: vwapTest,
     flagDiv: flagDiv, flagSqueeze: flagSqueeze, flagFlow: flagFlow, flagDom: flagDom, flagVwap: flagVwap, confidence: confidence, rma: rma, sma: sma, rsi: rsi, bollinger: bollinger, atr: atr, dayVwap: dayVwap, utcDays: utcDays, wavetrend: wavetrend,
     inversePnlBtc: inversePnlBtc, closedPnlBtc: closedPnlBtc, columns: columns };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

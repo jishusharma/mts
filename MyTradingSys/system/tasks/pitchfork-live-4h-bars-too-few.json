@@ -1,0 +1,46 @@
+{
+  "approved_by": "operator 2026-10-30 via Eagle_Eyes (d-eagle-eyes-missed-boxes-defaults)",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/sync.py start pitchfork-live-4h-bars-too-few",
+    "mvn -q test -Dtest=MarketDataSnapshot*",
+    "python scripts/dev/sync.py ship --release pitchfork-live-4h-bars-too-few"
+  ],
+  "created": "2026-10-29T21:18:25Z",
+  "depends_on": [],
+  "done_when": "Snapshot supplies >= 15 closed 4h bars live and as-of; replay of 10-29 shows PF evaluated; PF candidates still cannot arm an order (side=None) unless a separate decision says so.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Make the live Pitchfork layer able to fire: the snapshot asks for 3 four-hour bars (MarketDataSnapshot lines 489, 1338) but PitchforkSignalLayer.detect needs 15, so mts.pitchfork=true is inert.",
+  "id": "pitchfork-live-4h-bars-too-few",
+  "lane": "JIS-NB",
+  "layers": [
+    "pitchfork"
+  ],
+  "live_path": true,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "src/main/java/datafeed/MarketDataSnapshot.java"
+  ],
+  "scope_out": [],
+  "size": "S",
+  "sources": [],
+  "state": "raw",
+  "steps": [
+    "Raise 4h limit to 20 in both maps",
+    "Test restart/as-of path and API error (fails closed)",
+    "Replay 10-29 to confirm PF evaluated"
+  ],
+  "tests": "MarketDataSnapshot test: as-of snapshot returns >= 15 4h bars; fails on limit 3",
+  "title": "pitchfork live: snapshot fetches 3 x 4h bars, PitchforkSignalLayer needs 15, so mts.pitchfork=true never fires (ITEM4_REPLAY_2026-10-29.md)",
+  "weight": "",
+  "worker": "agent"
+}

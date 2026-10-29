@@ -1,0 +1,49 @@
+{
+ "approved_by": "",
+ "asks": "",
+ "commands": [],
+ "created": "2026-10-29T22:52:10Z",
+ "depends_on": [],
+ "done_when": "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-audit-formulas-vs-rsi-layer.md lists each formula, FORMULAS.md line, code file:line, toy numbers by hand vs code, SAME/DIFFERENT/NOT_IN_DATA.",
+ "est_turns": 12,
+ "formula_id": "",
+ "formula_ids": [],
+ "from_inbox": "",
+ "goal": "For layers/rsi, find each formula in FORMULAS.md it uses, re-derive 3 outputs by hand on a 10-bar toy series, run the layer code on the same series and report SAME or DIFFERENT with file:line. Report only; do not edit code.",
+ "id": "gpt-audit-formulas-vs-rsi-layer",
+ "kind": "audit",
+ "lane": "CODEX",
+ "latest": [],
+ "layers": [],
+ "live_path": false,
+ "note": "Producer vendor per title; reviewer is a different vendor. Facts with file:line or NOT_IN_DATA; no verdicts. ROUTINE, no live path.",
+ "prio": 3,
+ "refine_tries": 0,
+ "refined_by": "",
+ "refreshed": "2026-10-29T22:52:11Z",
+ "refs": [],
+ "result": "",
+ "scope_in": [
+  "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-audit-formulas-vs-rsi-layer.md"
+ ],
+ "scope_out": [
+  "any live path",
+  "editing the audited source files"
+ ],
+ "scope_sha": "",
+ "size": "S",
+ "sources": [
+  "MyTradingSys/backtest/layers/FORMULAS.md",
+  "MyTradingSys/backtest/layers/rsi"
+ ],
+ "state": "ready",
+ "steps": [
+  "list formulas the layer uses",
+  "hand-compute 3 values on a toy series",
+  "run layer code and compare"
+ ],
+ "tests": "none (audit card); proof = every row has file:line quotes",
+ "title": "GPT audit: FORMULAS.md definitions vs layers/rsi code (re-derive 3 numbers)",
+ "weight": "ROUTINE",
+ "worker": "session"
+}

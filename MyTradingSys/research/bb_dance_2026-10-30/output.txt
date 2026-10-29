@@ -1,0 +1,17 @@
+shorts with a lower-band touch: 11051
+
+P(new low before a close above the mid), by bars since the last touch (k) and %b of that close
+   mean_far  mean_near  size_far  size_near
+k                                          
+1     0.319      0.594      3353       6360
+2     0.307      0.587      3934       4528
+3     0.290      0.604      3982       3302
+4     0.285      0.598      3721       2490
+5     0.267      0.628      3315       1929
+6     0.263      0.641      2874       1474
+
+Gross % per short (no fees), mean / median / share > 0:
+X0_first_close_inside      n=11051 mean=0.178 med=0.094 win=0.755
+Xk3_three_bars_no_touch    n=11051 mean=0.178 med=0.067 win=0.636
+Xfar_close_pb_ge_025       n=11051 mean=0.172 med=0.062 win=0.687
+Xmid_close_above_mid       n=11051 mean=0.168 med=0.005 win=0.512

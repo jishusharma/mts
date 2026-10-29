@@ -1424,3 +1424,28 @@ REMOVED 2026-10-24 (43d3bfc8f): offer_guard.py is gone; the rule now lives in CL
 ```json
 {"id": "d-live-aid-full-width", "order": 68, "date": "2026-10-30", "status": "DECIDED", "question": "Live aid layout: narrow column (R05) or full screen?", "answer": "OPERATOR (2026-10-30): \"make it like fill the screen horizontally as well, and improve the look and feel ... the text is so small and it looks like a lot of clutter ... I need only the most important things, but I do not know how to decide it right now.\" Default picked by the builder (OURS): full width, bigger text, a glance row (price, VWAP distance, nearest level each side, stay confidence + rule R, session); extra columns behind a More detail switch; source notes folded.", "done": "live_aid.html R11 layout"}
 ```
+
+## d-coil-pierce-panel | decided 2026-10-30 | Eagle_Eyes
+```json
+{"id": "d-coil-pierce-panel", "order": 69, "date": "2026-10-30", "status": "DECIDED", "question": "What should the live dashboard show about coils and band pierces?", "answer": "OPERATOR (2026-10-30): \"these are the informations that I required in my dashboard. This is the coil that is forming, and this is the piercing that has started, and in this direction, and these are the probabilities\" then \"is this the right question?\" DECISION (OURS): mostly right; the data says direction is a coin flip, so the panel shows coil (size of the coming move), pierce side and force, and the odds of reaching the prior-day level vs failing back to the mid, by distance and force (MEASURED, n shown), plus whether now is inside the measured US-open window.", "done": "live_aid.html 'Coil and pierce (15m)' panel + LiveAid.coilPierce + hand-case test"}
+```
+
+## d-pitchfork-keep-and-prepare | decided 2026-10-30 | Eagle_Eyes
+```json
+{"id": "d-pitchfork-keep-and-prepare", "order": 70, "date": "2026-10-30", "status": "DECIDED", "question": "mts.pitchfork=true is on in live without a decision (wave1 finding): keep, switch off, or build out?", "answer": "OPERATOR (2026-10-30): \"Pitchfork is a new layer that I wanted to add ... I can just copy a pitchfork and just paste it ... so prepare this layer well, and going forward we will also see my charts that has the pitchfork\". DECISION: keep the switch as is (it is inert: live fetches 3 four-hour bars, the layer needs 15; PF candidates cannot arm an order). Build out: pitchfork-live-4h-bars-too-few (JIS-NB, Lab_Guy review first), pitchfork-operator-charts-prep (copy-paste parallel forks vs random parallels, after his shots). PF arming orders stays off until a fee-net OOS pass and a separate decision.", "done": "cards pitchfork-live-4h-bars-too-few, pitchfork-operator-charts-prep; wave1-pitchfork-switch-no-decision closed"}
+```
+
+## d-map-before-backtest | decided 2026-10-30 | Eagle_Eyes
+```json
+{"id": "d-map-before-backtest", "order": 71, "date": "2026-10-30", "status": "DECIDED", "question": "Before backtesting a candle or BB idea, what must be decided?", "answer": "OPERATOR (2026-10-30): \"First, we need to understand what we should backtest ... phase is very important ... how we decide are we going to wait for the 4-hour close or the 12-hour close, or the 1-hour close ... Do you agree with me?\" and on the prev-close idea: \"you do not have to backtest anything right now. Just be with me for this screenshot.\" DECISION (OURS, agreed): no new backtest of a candle/BB rule until a descriptive map exists: BB state x prior candle x regime (moving / not moving) x timeframe close; the operator's walked rule (green candle at the BB mid after closing outside, short on a cross of its close, stop = prior high, TP with clearance before the band) is tested only after the map and his setup pick. The prev-close study (every candle, all losing fee-net) stays as a negative baseline.", "done": "cards bb-state-regime-tf-map, bb-mid-reject-candle-rule-test (depends on map + review)"}
+```
+
+## d-setup-review-before-backtest | decided 2026-10-30 | Eagle_Eyes
+```json
+{"id": "d-setup-review-before-backtest", "order": 72, "date": "2026-10-30", "status": "DECIDED", "question": "Why have backtests not found anything, and what comes first?", "answer": "OPERATOR (2026-10-30): \"we have not ordered any backtesting. We have not decided any setups. Our setups were never extracted properly from Tom and they were never reviewed. So how backtesting can fetch anything.\" DECISION (OURS): partly right. SETUP_CATALOG.md (10-15, 16 Tom + 7 Fabio setups, gaps merged 10-18) is the extraction, but the operator never reviewed it and the blind eye read (tom-btc-eye-read) never ran. Next: a setup-by-setup review with him (one BTC example per setup), he picks 2-3; only those get pre-registered and tested.", "done": "card setup-review-with-operator"}
+```
+
+## d-storybook-v2 | decided 2026-10-30 | Eagle_Eyes
+```json
+{"id": "d-storybook-v2", "order": 73, "date": "2026-10-30", "status": "DECIDED", "question": "Is the Tom/Fabio storybook the book the operator should learn from?", "answer": "OPERATOR (2026-10-30): \"I hope that the terms storybook is actually with all these contexts ... can you see this book that was written for me? For my understanding ... I will also learn it.\" DECISION (OURS, default taken): the 10-05 story carries the core (bazaar, balance vs trend, Idea+Proof+Math, playbook by mood, Fabio CVD, gaps M1-M9) but is archived and misses live regime definitions, the timeframe ladder, proof thresholds, a BB chapter and our measured counts. Build a living v2 in research/storybook/ and refresh the deck; setups for testing come out of the book.", "done": "card storybook-v2-living-book"}
+```

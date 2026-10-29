@@ -333,3 +333,41 @@ def test_it_flow_live_on_quiet_tape(it):
     # Deribit trades.100ms is sparse (9 messages in 20 s on 2026-10-29): no trade for 60 s while the same socket's
     # ticker is fresh = quiet tape (live); both silent = dead; no trade since connect = not live
     assert it["lv2"] == [True, False, False, True]
+
+
+def _coil_rows():
+    # 60 closed 15m bars alternating 100/101 (constant band width), then a close at 105 with 4x volume and
+    # taker buy 300 of 400 (delta share +0.5), then one still-forming bar that must be ignored.
+    rows, t0 = [], 1_700_000_000_000
+    for i in range(60):
+        c = 100.0 if i % 2 == 0 else 101.0
+        rows.append([t0 + i * 900_000, c, c + 0.2, c - 0.2, c, 100.0, 0, 0, 0, 50.0])
+    rows.append([t0 + 60 * 900_000, 101.0, 105.1, 100.9, 105.0, 400.0, 0, 0, 0, 300.0])
+    rows.append([t0 + 61 * 900_000, 105.0, 120.0, 104.0, 119.0, 5.0, 0, 0, 0, 5.0])
+    now = t0 + 61 * 900_000 + 60_000
+    return rows, now
+
+
+def test_coil_pierce_hand_case():
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("node not installed")
+    rows, now = _coil_rows()
+    runner = ("const A=require(process.argv[1]);let d='';process.stdin.on('data',x=>d+=x).on('end',()=>{const j=JSON.parse(d);"
+              "console.log(JSON.stringify(A.coilPierce(j.rows,900000,j.now,105.3,90)))})")
+    out = subprocess.run([node, "-e", runner, str(JS)], input=json.dumps({"rows": rows, "now": now}),
+                         capture_output=True, text=True, timeout=60)
+    assert out.returncode == 0, out.stderr
+    r = json.loads(out.stdout)
+    closes = [x[4] for x in rows[:61]]
+    w = closes[-20:]
+    m = sum(w) / 20
+    sd = (sum((x - m) ** 2 for x in w) / 20) ** 0.5
+    assert closes[-1] > m + 2 * sd  # hand check: the 105 close is outside the upper band
+    assert r["coil"] is False and r["bwPct"] == 1  # the pierce bar itself widens the band above every earlier width
+    p = r["pierce"]
+    assert p["coilBefore"] is True  # bar before the pierce: flat 100/101 width, none of the earlier widths is smaller
+    assert p["side"] == "up" and p["ageBars"] == 0 and p["close"] == 105.0
+    assert abs(p["volRatio"] - 4.0) < 1e-12 and abs(p["deltaShare"] - 0.5) < 1e-12
+    assert p["force"] == "strong" and p["byForce"]["reach"] == 39
+    assert abs(p["dist"] - 0.3 / 105) < 1e-12 and p["byDist"]["reach"] == 74

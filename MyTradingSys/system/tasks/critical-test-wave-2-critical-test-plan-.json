@@ -4,14 +4,30 @@
   "commands": [],
   "created": "2026-10-29T19:55:24Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Three rows in TEST_LEDGER.md (PASS / FINDING / UNTESTABLE) with the gap table, funding census table and per-layer MinBTL table; FINDINGs filed as cards.",
+  "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Run CRITICAL_TEST_PLAN.md wave 2 items 6-8 (venue gap Binance vs Deribit, funding census, trial count vs MinBTL) with a second-model review. Full text: MyTradingSys/research/eagle_eyes_picture_2026-10-28/CARD_SPECS.md",
   "id": "critical-test-wave-2-critical-test-plan-",
-  "lane": "OPUS",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "critical test wave 1 item 4: offline replay of 2026-10-29 through the engine, spikeFade of",
+      "ref": "a97b86446b78",
+      "utc": "2026-10-29T20:18:57Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "a97b86446b78 critical test wave 1 item 4: offline replay of 2026-10-29 through the engine,",
+      "ref": "MyTradingSys/system/TEST_LEDGER.md",
+      "utc": "2026-10-29T20:18:57Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,16 +35,27 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-29T21:19:25Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
+  "scope_in": [
+    "MyTradingSys/system/CRITICAL_TEST_PLAN.md",
+    "MyTradingSys/system/TEST_LEDGER.md",
+    "MyTradingSys/research/critical_test_wave2_2026-10-30/"
+  ],
   "scope_out": [],
-  "size": "",
+  "scope_sha": "a97b86446b78",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Item 6 venue gap on one month",
+    "Item 7 funding census of perp backtests",
+    "Item 8 trials vs MinBTL per verdict",
+    "Second-model review, ledger rows"
+  ],
+  "tests": "n/a (audit lane: results are ledger rows)",
   "title": "critical test wave 2 (CRITICAL_TEST_PLAN.md items 6-8): Binance-vs-Deribit venue gap, funding coverage census of perp backtests, trial count vs Minimum Backtest Length per layer verdict; rows in TEST_LEDGER.md, second-model review",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }

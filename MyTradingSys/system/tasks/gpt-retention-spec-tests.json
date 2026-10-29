@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-29T22:50:57Z",
+  "depends_on": [],
+  "done_when": "scripts/dev/test_retention.py has >=8 passing tests, 3/3 scratch mutations of retention.py fail them, retention.py unchanged.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "retention.py has no test. Read its docstring/spec, derive expected keep/delete decisions by hand for 6 boundary cases (exactly at limit, one below, one above, empty dir, protected path, dry-run), write scripts/dev/test_retention.py, then 3 scratch mutations must each fail a test.",
+  "id": "gpt-retention-spec-tests",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "note": "Producer GPT; reviewer is Claude or Gemini. Expected values independent of the code. ROUTINE, no live path.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-29T22:51:10Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/test_retention.py",
+    "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-retention-spec-tests.md"
+  ],
+  "scope_out": [
+    "scripts/dev/retention.py",
+    "any live path"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "scripts/dev/retention.py"
+  ],
+  "state": "ready",
+  "steps": [
+    "read retention.py docstring and note every threshold",
+    "compute expected outcomes by hand",
+    "write tests and mutation report"
+  ],
+  "tests": "python -m pytest scripts/dev/test_retention.py -q",
+  "title": "Spec-derived tests for scripts/dev/retention.py (no test file today)",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

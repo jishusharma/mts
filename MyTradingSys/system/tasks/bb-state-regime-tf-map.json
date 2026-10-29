@@ -1,0 +1,58 @@
+{
+  "approved_by": "operator 2026-10-30 via Eagle_Eyes (d-map-before-backtest, d-setup-review-before-backtest, d-storybook-v2)",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-29T22:28:46Z",
+  "depends_on": [],
+  "done_when": "MAP.md + map.csv: per cell n, next-bar direction, reach of lower band / mid / upper band before the other, median max adverse and favourable; cells with n<30 greyed; regime definition written before the first count; holdout untouched; 3 operator shots (8faf2cac14be, f2fb8d432eb7, 85ba89446b0d) located in their cells.",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Before any backtest (operator 10-30), map what happens next per context: BB state x prior candle x regime (moving / not moving, OURS, fixed first) x timeframe close (15m, 1h, 4h, 12h). Descriptive, fee-free, DEV 2022-2025 only. Map: MyTradingSys/research/eagle_eyes_picture_2026-10-28/SESSION_MAP_2026-10-30.md",
+  "id": "bb-state-regime-tf-map",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "prev-close break: operator's rule as walked (BB-mid setup, band take-profit), spec for nex",
+      "ref": "6eecd0e89249",
+      "utc": "2026-10-29T22:16:30Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-29T22:30:27Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/bb_state_map_2026-10/",
+    "MyTradingSys/research/prev_close_break_2026-10-29/",
+    "MyTradingSys/research/bb_pierce_force_2026-10-29/",
+    "MyTradingSys/research/drop_bounce_2026-10-29/"
+  ],
+  "scope_out": [],
+  "scope_sha": "6eecd0e89249",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/prev_close_break_2026-10-29/RESULT.md",
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/SESSION_MAP_2026-10-30.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Write the state, candle and regime definitions (OURS) in MAP.md before counting",
+    "Build TF bars from F:/MTS/data/tom_raw 1m, DEV only; count every cell",
+    "Locate the 3 operator shots in their cells; flag cells the operator trades",
+    "Hand the table to setup-review-with-operator for his pick"
+  ],
+  "tests": "test_bb_state_map.py: hand-built 20-bar series lands in the expected state and regime; fails before the classifier exists",
+  "title": "Descriptive map before any backtest: BB state x prior candle x regime (moving / not moving) x timeframe close -> next-move distribution",
+  "weight": "",
+  "worker": "session"
+}

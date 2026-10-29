@@ -1,0 +1,49 @@
+{
+  "approved_by": "operator 2026-10-30 via Eagle_Eyes (\"find out everything fabio and his channel mates tell abt using CVD ... use Gemini\")",
+  "asks": "",
+  "commands": [
+    "git -C <repo> pull --ff-only origin fast-track",
+    "python scripts/dev/gemini_queue.py run fabervaale-cvd-sweep:low"
+  ],
+  "created": "2026-10-29T21:48:27Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/fabio_cvd_2026-10-30/CHANNEL_SWEEP.md lists all uploads (id, title, date, read y/n) and new concept rows F-CVD13+ in the CVD_CONCEPTS.md table format; verify_extract_quotes.py exits 0; captions saved to raw_transcripts_canonical/<id>_raw.txt.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "List every Fabervaale ENG upload (and guest videos with Fabio/Cimi), fetch captions for ones not in raw_transcripts_canonical, and extract every CVD, delta, absorption and exhaustion passage verbatim with video id + timestamp; flag BTC/crypto mentions.",
+  "id": "fabervaale-cvd-sweep",
+  "lane": "DSA-NUC",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Already read by Claude (do not redo): 0jM5Y31YJak o-w5Gxss6T0 Pz8f0wWW12M Is1HvdfQm5c 06R-ebyOhDI DyS79Eb92Ug FawPrRUGNpk 9IliXww64uM. Gemini low effort; quotes from captions only (gemini-youtube-quotes-need-captions). Main channel (13 videos) all in store; 5 shorts fetched 10-30. Read in ROI order: agjftXPkLUE, cLgdXZnLL_0, feV6CATGUqo, pZai3k1e-Jg, HUYBdYnXUNc (CVD_CONCEPTS.md section 3c); long live sessions last.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-29T21:48:38Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/fabio_cvd_2026-10-30/",
+    "raw_transcripts_canonical/"
+  ],
+  "scope_out": [],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Queue: python scripts/dev/gemini_queue.py run fabervaale-cvd-sweep:low (NUC)",
+    "yt-dlp --flat-playlist https://www.youtube.com/@FabervaaleENG/videos for the list",
+    "captions only (no video watch), skip ids already in raw_transcripts_canonical",
+    "extract passages, verify_extract_quotes until exit 0",
+    "Claude reviews branch gemini-q/fabervaale-cvd-sweep and ships"
+  ],
+  "tests": "n/a (extraction lane: verify_extract_quotes.py exit 0)",
+  "title": "Fabervaale ENG channel sweep: every CVD/delta/absorption passage from Fabio and guests (Cimi etc.), verbatim, BTC mentions flagged; extends fabio_cvd_2026-10-30/CVD_CONCEPTS.md",
+  "weight": "",
+  "worker": "session"
+}

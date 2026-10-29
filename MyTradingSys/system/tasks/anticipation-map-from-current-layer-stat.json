@@ -5,13 +5,29 @@
   "created": "2026-10-29T18:45:42Z",
   "depends_on": [],
   "done_when": "live_aid panel shows 2-4 readings with probability + source label, the deciding layer, and prepared confirm/kill per reading; each map is scored in SCENARIO_LEDGER.md; base rates come from a backtest on Binance 1m/5m history (OI, taker delta) with fee-free descriptive stats labelled as such.",
-  "est_turns": null,
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Prepare the operator for a live trade: for the current layer state, show every plausible reading of the same data (e.g. price up + OI up = new aggressive longs OR shorts opening into the rally OR other exchanges doing something Binance is not), the probability of each (measured base rate where we have history, else labelled OURS guess), what tells them apart next (the deciding layer), and what to expect and prepare for under each. Shown as a dashboard panel (live_aid.html) and popped as an alert when the leading reading flips.",
+  "goal": "For the current layer state show every plausible reading of the same data (who is buying, who is trapped, other venues), each with a measured base rate or UNMEASURED, the deciding layer, and a prepared confirm/kill. Full text: MyTradingSys/research/eagle_eyes_picture_2026-10-28/CARD_SPECS.md",
   "id": "anticipation-map-from-current-layer-stat",
-  "lane": "OPUS",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "live_aid: coil and pierce (15m) panel with measured base rates",
+      "ref": "8054adb53184",
+      "utc": "2026-10-29T20:33:52Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "08fcf6b068cf eagle_eyes: C16 US-window rally fade base rate + 10-29 20:05Z scenario map",
+      "ref": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/SCENARIO_LEDGER.md",
+      "utc": "2026-10-29T20:08:06Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,20 +35,30 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-29T21:19:06Z",
   "refs": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/SCENARIO_LEDGER.md",
     "MyTradingSys/tools/live_aid/live_aid.html",
     "MyTradingSys/system/EAGLE_EYES_BIBLE.md"
   ],
   "result": "",
-  "scope_in": [],
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/live_aid.html",
+    "MyTradingSys/tools/live_aid/live_aid_indicators.js",
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/SCENARIO_LEDGER.md"
+  ],
   "scope_out": [],
-  "size": "",
+  "scope_sha": "8054adb53184",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "List reading pairs (price x OI x delta) and their base rates from 1m/5m history",
+    "Add live_aid panel rows with n and source tag",
+    "Score each map in SCENARIO_LEDGER"
+  ],
+  "tests": "test_live_aid.py: hand case where price up + OI up yields 2+ readings with the stored rates; fails on current JS",
   "title": "anticipation map: from current layer state, list if-price-up and if-price-down branches with the historical layer readings that followed each, scored in SCENARIO_LEDGER.md (Eagle_Eyes 10-30 operator ask)",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }

@@ -1,0 +1,13 @@
+ALL: n=813 | BREAK 44% RETEST 10% HOLD 45% | first: low-retest 48% 61.8% 37% neither 15% | next 60m closes: below lower 5%, lower-mid 43%, above mid 52% | close up after 60m 54%
+bounce delta share median +0.049; bounce/drop volume-per-bar median 1.11
+bounce delta share >= median (more taker buying): n=407 | BREAK 43% RETEST 12% HOLD 45% | first: low-retest 49% 61.8% 34% neither 17% | next 60m closes: below lower 5%, lower-mid 43%, above mid 52% | close up after 60m 55%
+bounce delta share <  median: n=406 | BREAK 46% RETEST 9% HOLD 45% | first: low-retest 47% 61.8% 40% neither 14% | next 60m closes: below lower 6%, lower-mid 43%, above mid 51% | close up after 60m 54%
+bounce delta share > 0 (net taker buying): n=651 | BREAK 44% RETEST 10% HOLD 46% | first: low-retest 47% 61.8% 37% neither 16% | next 60m closes: below lower 5%, lower-mid 43%, above mid 52% | close up after 60m 55%
+bounce vol/bar >= drop vol/bar x0.5: n=738 | BREAK 44% RETEST 11% HOLD 46% | first: low-retest 47% 61.8% 37% neither 15% | next 60m closes: below lower 5%, lower-mid 43%, above mid 52% | close up after 60m 55%
+bounce vol/bar <  drop vol/bar x0.5: n=75 | BREAK 52% RETEST 7% HOLD 41% | first: low-retest 51% 61.8% 31% neither 19% | next 60m closes: below lower 6%, lower-mid 42%, above mid 52% | close up after 60m 49%
+drop 2.5-3.5%: n=550 | BREAK 46% RETEST 12% HOLD 42% | first: low-retest 50% 61.8% 38% neither 12% | next 60m closes: below lower 5%, lower-mid 42%, above mid 52% | close up after 60m 55%
+year 2022: n=292 | BREAK 50% RETEST 10% HOLD 40% | first: low-retest 51% 61.8% 37% neither 12% | next 60m closes: below lower 6%, lower-mid 44%, above mid 51% | close up after 60m 56%
+year 2023: n=125 | BREAK 34% RETEST 7% HOLD 59% | first: low-retest 38% 61.8% 40% neither 22% | next 60m closes: below lower 5%, lower-mid 42%, above mid 53% | close up after 60m 55%
+year 2024: n=198 | BREAK 40% RETEST 10% HOLD 49% | first: low-retest 45% 61.8% 38% neither 16% | next 60m closes: below lower 5%, lower-mid 40%, above mid 54% | close up after 60m 59%
+year 2025: n=115 | BREAK 50% RETEST 9% HOLD 41% | first: low-retest 50% 61.8% 34% neither 16% | next 60m closes: below lower 5%, lower-mid 45%, above mid 50% | close up after 60m 46%
+year 2026: n=83 | BREAK 42% RETEST 19% HOLD 39% | first: low-retest 52% 61.8% 31% neither 17% | next 60m closes: below lower 5%, lower-mid 46%, above mid 49% | close up after 60m 51%
