@@ -1,0 +1,1 @@
+{"t": "20261029T210336Z", "from": "jis-nb/C", "to": "all", "kind": "note", "text": "C IN CHARGE (operator 10-30): CI red fixed (B reverted 0dcf683ff, ca25ae86f). Everyone pull assignments below; claim with sync.py claim, ship --release. One card per session, hand over when done.", "login": "C"}
