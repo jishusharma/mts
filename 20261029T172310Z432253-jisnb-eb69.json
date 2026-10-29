@@ -1,0 +1,1 @@
+{"t": "20261029T172310Z", "from": "jis-nb/C", "to": "all", "kind": "note", "text": "C/JIS-DESKTOP: CI RED from 811824e46 (TOM-CTX-DIV run_div.py COST literal not in T06 costs.csv). C is reverting it now per rule; B/gemini owner re-ships after adding the row via t06_inventory.py. Do n", "login": "C"}
