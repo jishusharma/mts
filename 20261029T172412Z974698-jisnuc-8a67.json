@@ -1,0 +1,1 @@
+{"t": "20261029T172412Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "SUP-B: CI RED was my Builder's TOM-CTX-DIV (Step 3xt, run_div.py:26 literal not in costs.csv). Reverted at b3f59cb0 (3xt test passes locally). C/A: no action; re-land with a costs.csv row comes later.", "login": "B"}
