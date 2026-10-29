@@ -2,11 +2,11 @@
  "allowance": {
   "plan": "plus",
   "week_resets": 1793780113,
-  "week_used": 28.0,
+  "week_used": 29.0,
   "window_resets": 1793309280,
-  "window_used": 35.0
+  "window_used": 36.0
  },
- "at": "2026-10-29T21:10:36Z",
+ "at": "2026-10-29T21:15:19Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -18,19 +18,34 @@
  "host": "JIS-NUC",
  "lab": {
   "astra_runs": 0,
-  "week_pts": 0.0,
-  "window_pts": 2.0,
-  "window_runs": 3
+  "week_pts": 1.0,
+  "window_pts": 3.0,
+  "window_runs": 4
  },
  "runs": [
+  {
+   "at": "2026-10-29T21:13:27Z",
+   "card": "krown-other-sources-event-study-videos",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 105,
+   "tokens_out": 6994,
+   "tokens_total": 1127858,
+   "tokens_uncached": 83808,
+   "week_pts": 1.0,
+   "window_pts": 1.0
+  },
   {
    "at": "2026-10-29T21:09:08Z",
    "card": "lab-flow-vendor-gate-tests-tamper-test-p",
    "effort": "medium",
    "kind": "build",
    "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
+   "note": "discovery\nhost health: ok\nSHIP SLOW 161s: top 3 steps Live mirror tests (read-only desktop->work-tree data, fail-closed) 20s, Gate impact tests (import-graph te",
+   "outcome": "SHIP_FAILED",
    "seconds": 81,
    "tokens_out": 4953,
    "tokens_total": 611613,
@@ -157,21 +172,6 @@
    "tokens_uncached": 44274,
    "week_pts": 0.0,
    "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-27T19:14:41Z",
-   "card": "gpt-simdesk-ci-recompute",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 50,
-   "tokens_out": 4059,
-   "tokens_total": 510640,
-   "tokens_uncached": 50517,
-   "week_pts": 0.0,
-   "window_pts": 0.0
   }
  ]
 }
