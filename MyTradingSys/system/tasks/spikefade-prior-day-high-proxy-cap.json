@@ -1,11 +1,13 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "mvn -q -Dtest=SpikeFade* test"
+  ],
   "created": "2026-10-29T22:01:20Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Prior-day-high proxy in SpikeFadeDetector is ignored when farther than a named cap (constant labelled OURS with its value in the commit body); SpikeFadeCriticalWave1Test gains a case that fails on the old code; mvn -q -Dtest=SpikeFade* test is green.",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
@@ -15,24 +17,33 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "PLANNER 2026-10-30: filled and T0-checked; awaits Lab_Guy/reviewer stamp before ready (CRUCIAL+ needs independent review)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [
-    ""
+    "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "src/main/java/datafeed/SpikeFadeDetector.java",
+    "src/test/java/datafeed/SpikeFadeCriticalWave1Test.java"
+  ],
+  "scope_out": [
+    "SpikeFadeProfile.java"
+  ],
+  "size": "S",
   "sources": [
     "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md"
   ],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Read ITEM3 findings for the prior-day-high proxy (case C)",
+    "Add a distance cap constant labelled OURS",
+    "Fail-first test, run mvn -q -Dtest=SpikeFade* test"
+  ],
+  "tests": "SpikeFadeCriticalWave1Test: proxy day-high beyond the cap returns null, within cap fires; fails on current code",
   "title": "SpikeFade prior-day-high proxy has no distance cap",
-  "weight": "",
-  "worker": ""
+  "weight": "CRUCIAL",
+  "worker": "agent"
 }

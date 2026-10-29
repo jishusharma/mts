@@ -5,7 +5,7 @@
   "created": "2026-10-29T22:05:39Z",
   "depends_on": [],
   "done_when": "mts_signal.py budget appends disk=C<free>[,F<free>] (GB, one decimal) to the BUDGET line; who shows it per host; supervisor.py plan prints one DISK LOW line naming host and drive when any host's last line shows < 15 GB (MTS_C_MIN_FREE_GB); tests fail on the old code; STATION_CLEANUP.md section 2 lists the mechanism.",
-  "est_turns": null,
+  "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Filed by Supervisor A from the operator's disk-cleanup ask. Each Supervisor already posts BUDGET at least once per cycle, so this gives several readings a day per host without a scheduler.",
+  "note": "PLANNER 2026-10-30: filled and T0-checked; awaits Lab_Guy review stamp (T0-ONLY refused at IMPORTANT)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -25,14 +25,26 @@
     "MyTradingSys/system/STATION_CLEANUP.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/mts_signal.py",
+    "scripts/dev/host_health.py",
+    "scripts/dev/supervisor.py",
+    "MyTradingSys/system/STATION_CLEANUP.md",
+    "scripts/dev/run_extra_tests.py"
+  ],
+  "scope_out": [
+    "any scheduler or live-tree change"
+  ],
+  "size": "M",
   "sources": [],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Add disk=C<free>[,F<free>] to the BUDGET line via host_health",
+    "Show it in who and add DISK LOW in supervisor plan",
+    "Fail-first tests, register in run_extra_tests.py, update STATION_CLEANUP s2"
+  ],
+  "tests": "test_mts_signal_budget_disk.py: budget line carries disk=C<free>; supervisor plan prints DISK LOW at < 15 GB; fails on current code",
   "title": "Fleet disk watch: every BUDGET line carries C: (and F:) free GB; who shows it; supervisor plan warns any host under 15 GB",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
