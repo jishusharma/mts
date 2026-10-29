@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-29T21:01:48Z",
   "commands": [
     "python -m pytest scripts/dev/test_lab_flow.py -q"
   ],
@@ -26,6 +28,12 @@
   "kind": "build",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "REVIEWED: gemini-3.8-flash 2026-10-30 ACCEPT; independent review of COD/Claude build ac212",
+      "ref": "6592138a0",
+      "utc": "2026-10-29T21:01:48Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -56,7 +64,12 @@
   "refined_by": "Session_Planner",
   "refreshed": "2026-10-28T14:03:56Z",
   "refs": [],
-  "result": "",
+  "result": "REVIEWED: gemini-3.8-flash 2026-10-30 ACCEPT; independent review of COD/Claude build ac21243ad; verified 52/52 tests pass, 7/7 mutants killed, report 2026-10-28_lab-flow-vendor-gate-tests-tamper-test-p.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/test_lab_flow.py",
     "scripts/dev/lab_flow.py (read; edit only to fix a gate bug a new test exposes)",
@@ -73,12 +86,13 @@
     "scripts/dev/lab_flow.py:158,211-217",
     "commit ea73852f4 (card filed from review BLOCK)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Tamper test (test_lab_flow.py:198): revert the vendor check in scratch copy of lab_flow.py:211-212 and show the test turns red; today it also accepts the 'drifted' message so it passes on old code: assert the exact vendor-normalized message only.",
     "V5 mutant tests (:171-196) call normalize_vendor/validate_hardened_recipe directly: rewrite each to go through F.launch or F.gate so a weakened gate (not just a helper) is caught; record which mutant each test kills.",
     "Add: stage-3 vendor equal to stage-1 producer vendor is refused (lab_flow.py:215); accepted() with a receipt whose vendor is empty returns False (lab_flow.py:158)."
   ],
+  "taken": "2026-10-29T21:01:14Z",
   "tests": "scripts/dev/test_lab_flow.py new tests run against the pre-change lab_flow.py with the vendor checks mutated in scratch: at least the tamper and the empty-receipt test fail there.",
   "title": "lab_flow vendor gate tests: tamper test passes on old code; V5 mutant tests call unchanged functions; add stage-3 same-vendor case and empty-vendor receipt test (review BLOCK 2026-10-19)",
   "weight": "IMPORTANT",

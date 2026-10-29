@@ -230,3 +230,5 @@ MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/.gapfreq_cache/
 
 # liquidation forceOrder event ledger (runtime data, repo is public)
 runtime_data/liq_events/
+
+runtime_data/

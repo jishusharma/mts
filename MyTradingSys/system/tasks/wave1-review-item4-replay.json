@@ -2,25 +2,36 @@
   "approved_by": "",
   "asks": "",
   "commands": [
-    "mvn -q -DskipTests compile"
+    "curl -L -o %TEMP%/BTCUSDT-1m-2026-10-29.zip https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-29.zip",
+    "python scripts/dev/gemini_queue.py run wave1-review-item4-replay:low"
   ],
   "created": "2026-10-29T20:18:41Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/critical_test_wave1_2026-10-30/REVIEW_ITEM4_GEMINI.md lists bars where fadeA1 fires (perp) and the A-C2 margin per bar",
-  "est_turns": 4,
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
   "goal": "Independent rerun on the published perp daily zip: which candidates fire per bar 15:00-16:30Z with live switches and with -Dmts.spikeFade=true",
   "id": "wave1-review-item4-replay",
   "lane": "DSA-NUC",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "critical test wave 1 item 4: offline replay of 2026-10-29 through the engine, spikeFade of",
+      "ref": "a97b86446b78",
+      "utc": "2026-10-29T20:18:57Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Gemini lane: gemini_queue.py run wave1-review-item4-replay:low (NUC)",
+  "note": "REVIEWED:2026-10-30 ACCEPT (planner-refine-0930 reviewer agent a240c7e8). Gemini lane: gemini_queue.py run wave1-review-item4-replay:low (NUC)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-29T21:15:00Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -29,13 +40,16 @@
   "scope_out": [
     "do not read ITEM4_REPLAY_2026-10-29.md before writing your answer"
   ],
+  "scope_sha": "a97b86446b78",
   "size": "S",
   "sources": [
     "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-29.zip"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
-    "Download the perp zip; run the harness both ways; tabulate"
+    "Download the published perp 1m zip (public data, command above)",
+    "Rerun the 15:00-16:30Z replay twice: live switches, and with -Dmts.spikeFade=true (harness ItemFourReplay.java and item4_summarise.py in the wave1 folder)",
+    "Write REVIEW_ITEM4_GEMINI.md: candidates firing per bar for both runs and the diff vs ITEM4_REPLAY_2026-10-29.md"
   ],
   "tests": "none (run)",
   "title": "Second-model review (Gemini): rerun 2026-10-29 replay on perp data, spikeFade on/off",
