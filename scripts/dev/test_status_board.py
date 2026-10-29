@@ -91,6 +91,31 @@ class T(unittest.TestCase):
         self.assertIn("NOT_IN_DATA (no Gemini usage file", txt)
         self.assertNotIn("@", txt)
 
+    def test_parse_commit_utc_day_handles_offsets_around_midnight(self):
+        # 04:30 in +05:30 is 23:00 on previous day in UTC
+        ts_local_morning = "2026-10-30T04:30:00+05:30"
+        self.assertEqual(sb.parse_commit_utc_day(ts_local_morning), "2026-10-29")
+
+        # 06:00 in +05:30 is 00:30 on same day in UTC
+        ts_local_after_utc_midnight = "2026-10-30T06:00:00+05:30"
+        self.assertEqual(sb.parse_commit_utc_day(ts_local_after_utc_midnight), "2026-10-30")
+
+        # Negative offset: 21:00 on 2026-10-29 in -04:00 is 01:00 on 2026-10-30 in UTC
+        ts_west = "2026-10-29T21:00:00-04:00"
+        self.assertEqual(sb.parse_commit_utc_day(ts_west), "2026-10-30")
+
+    def test_git_days_uses_explicit_utc(self):
+        fake_log = "2026-10-30T04:30:00+05:30\n2026-10-30T06:00:00+05:30\n2026-10-29T20:00:00Z"
+        original_run = sb.run
+        try:
+            sb.run = lambda cmd, timeout=20: fake_log
+            sb.git_days.cache_clear()
+            days = sb.git_days()
+            self.assertEqual(days, ["2026-10-29", "2026-10-30", "2026-10-29"])
+        finally:
+            sb.run = original_run
+            sb.git_days.cache_clear()
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-29T23:11:19Z",
   "commands": [],
   "created": "2026-10-29T20:43:00Z",
   "depends_on": [],
@@ -14,6 +16,12 @@
   "kind": "audit",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "status_board.py now uses explicit ISO UTC timestamp parsing (parse_commit_utc_day) for git",
+      "ref": "5e593a7fd",
+      "utc": "2026-10-29T23:11:19Z"
+    },
     {
       "auto": true,
       "kind": "report",
@@ -40,7 +48,12 @@
   "refs": [
     "gpt-status-board-number-recount"
   ],
-  "result": "",
+  "result": "status_board.py now uses explicit ISO UTC timestamp parsing (parse_commit_utc_day) for git_days and sec_value; commits around midnight correctly attributed to UTC days; unit tests pass; verified by live run output",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/status_board.py",
     "scripts/dev/test_status_board.py"
@@ -54,12 +67,13 @@
     "gpt-status-board-number-recount report: MyTradingSys/research/layer_lab/reports/2026-10-28_gpt-status-board-number-recount.md",
     "scripts/dev/status_board.py:261-273,300-307"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add failing tests using offset-bearing commit timestamps around UTC midnight and local midnight.",
     "Change git queries/counting to explicit UTC boundaries for today, yesterday, rolling daily output, and cleanup commits.",
     "Run focused status-board tests and independently compare the rendered counts against UTC-parsed commit timestamps."
   ],
+  "taken": "2026-10-29T23:08:36Z",
   "tests": "Add tests first for commits on either side of UTC midnight and local midnight; demonstrate current failure before implementation, then pass after fix.",
   "title": "Use UTC day boundaries in status board commit counts",
   "weight": "IMPORTANT",

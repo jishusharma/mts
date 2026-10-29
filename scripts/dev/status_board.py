@@ -257,9 +257,24 @@ def utc_day(offset=0):
     return (datetime.now(timezone.utc) + timedelta(days=offset)).strftime("%Y-%m-%d")
 
 
+def parse_commit_utc_day(iso_ts: str) -> str:
+    """Parse an offset-bearing git ISO timestamp (%cI) and return YYYY-MM-DD in UTC."""
+    try:
+        dt = datetime.fromisoformat(iso_ts.strip())
+        return dt.astimezone(timezone.utc).strftime("%Y-%m-%d")
+    except Exception:
+        return ""
+
+
 @functools.lru_cache(maxsize=None)
 def git_days():
-    return run(["git", "log", "origin/fast-track", "--no-merges", "--since=8.days", "--format=%cd", "--date=format-local:%Y-%m-%d"], 20).split()
+    lines = run(["git", "log", "origin/fast-track", "--no-merges", "--since=9.days", "--format=%cI"], 30).splitlines()
+    days = []
+    for ln in lines:
+        d = parse_commit_utc_day(ln)
+        if d:
+            days.append(d)
+    return days
 
 
 def common_dir():
@@ -299,8 +314,16 @@ def sec_speed():
 
 def sec_value():
     now = datetime.now(timezone.utc)
-    done = sorted((c for c in cards() if c.get("state") == "done" and str(c.get("closed", ""))[:10] == utc_day()), key=lambda c: c.get("closed", ""), reverse=True)
-    subj = run(["git", "log", "origin/fast-track", "--no-merges", "--since=midnight", "--format=%s"], 20).splitlines()
+    t_utc = utc_day()
+    done = sorted((c for c in cards() if c.get("state") == "done" and str(c.get("closed", ""))[:10] == t_utc), key=lambda c: c.get("closed", ""), reverse=True)
+    raw_log = run(["git", "log", "origin/fast-track", "--no-merges", "--since=2.days", "--format=%cI %s"], 30).splitlines()
+    subj = []
+    for ln in raw_log:
+        if not ln.strip():
+            continue
+        parts = ln.strip().split(" ", 1)
+        if parse_commit_utc_day(parts[0]) == t_utc:
+            subj.append(parts[1] if len(parts) > 1 else "")
     clean = cleanup_commits(subj)
     stuck = [c["id"] for c in cards() if c.get("state") == "active" and old_hours(c.get("taken", ""), now) > STUCK_H]
     stale = stale_claims(run([sys.executable, str(HERE / "sync.py"), "claims"], 30))
