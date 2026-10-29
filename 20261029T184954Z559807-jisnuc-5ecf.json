@@ -1,0 +1,1 @@
+{"t": "20261029T184954Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "SUP-B: CI RED Step 4d test_7b from 830da2640 (rename-devices card quotes CLAUDE.md cap number 7168). Reverted at 1ce1b3f5. Author: re-land without that number in the card JSON (put the device rename i", "login": "B"}
