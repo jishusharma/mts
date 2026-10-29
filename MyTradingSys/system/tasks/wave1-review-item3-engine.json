@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-29T21:23:26Z",
   "commands": [
     "grep -n classifyState src/main/java/datafeed/SetupCandidatesBuilder.java"
   ],
@@ -15,6 +17,12 @@
   "id": "wave1-review-item3-engine",
   "lane": "DSA-NUC",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "REVIEW_ITEM3_GEMINI.md: 6 SpikeFade gates MATCH; classifyState branches verified; verdict ",
+      "ref": "e56fbdbbb",
+      "utc": "2026-10-29T21:23:26Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +40,12 @@
   "refined_by": "",
   "refreshed": "2026-10-29T21:14:15Z",
   "refs": [],
-  "result": "",
+  "result": "REVIEW_ITEM3_GEMINI.md: 6 SpikeFade gates MATCH; classifyState branches verified; verdict SOUND",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "src/main/java/datafeed/SpikeFadeDetector.java, SetupCandidatesBuilder.java classifyState/determineDirections, MarketDataSnapshot.java slope fields"
   ],
@@ -44,10 +57,11 @@
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md and the quote files it cites"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read quotes, then code; fill the table"
   ],
+  "taken": "2026-10-29T21:21:59Z",
   "tests": "none (review)",
   "title": "Second-model review (Gemini): SpikeFadeDetector + classifyState vs Tom sources",
   "weight": "CRITICAL",

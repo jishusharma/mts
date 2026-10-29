@@ -1,6 +1,8 @@
 {
   "approved_by": "operator 2026-10-30 via Eagle_Eyes (d-eagle-eyes-missed-boxes-defaults)",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-29T21:35:17Z",
   "commands": [
     "python scripts/dev/gemini_queue.py run krown-views-via-gemini-what-krown-says-a:low",
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/krown_capture_2026-10-16/KROWN_VIEWS_HIGHS.md"
@@ -16,6 +18,12 @@
   "id": "krown-views-via-gemini-what-krown-says-a",
   "lane": "DSA-NUC",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "KROWN_VIEWS_HIGHS.md: 6 topics covered with 9 verbatim quotes, 0 problems via verify_extra",
+      "ref": "df179f893",
+      "utc": "2026-10-29T21:35:17Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,7 +41,12 @@
   "refined_by": "",
   "refreshed": "2026-10-29T21:13:12Z",
   "refs": [],
-  "result": "",
+  "result": "KROWN_VIEWS_HIGHS.md: 6 topics covered with 9 verbatim quotes, 0 problems via verify_extract_quotes.py",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/krown_capture_2026-10-16/transcripts",
     "MyTradingSys/research/krown_capture_2026-10-16/KROWN_VIEWS_HIGHS.md"
@@ -44,12 +57,13 @@
   "scope_sha": "f94f2279f891",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Queue: python scripts/dev/gemini_queue.py run krown-views-via-gemini-what-krown-says-a:low (NUC)",
     "Output KROWN_VIEWS_HIGHS.md: per topic, `> \"<verbatim quote>\"` then `**Source GPS: <VIDEO_ID> | <BEGIN|MIDDLE|END>**`",
     "Verify: python scripts/dev/verify_extract_quotes.py MyTradingSys/research/krown_capture_2026-10-16/KROWN_VIEWS_HIGHS.md"
   ],
+  "taken": "2026-10-29T21:31:31Z",
   "tests": "",
   "title": "Krown views via Gemini: what Krown says about highs, higher highs, lower highs, 'tick below', daily close above/below a level, what a broken vs unbroken high means; quotes verified with verify_extract_quotes (operator 10-30)",
   "weight": "ROUTINE",
