@@ -1419,4 +1419,8 @@ REMOVED 2026-10-24 (43d3bfc8f): offer_guard.py is gone; the rule now lives in CL
 ## d-supervisor-c-distributes-work-all-logins | decided 2026-10-30 | Builder (operator-decision-distribution)
 ```json
 {"id": "d-supervisor-c-distributes-work-all-logins", "order": 67, "date": "2026-10-30", "status": "DECIDED", "question": "Who distributes work across logins, and which login takes what?", "answer": "OPERATOR (2026-10-30): \"Supervisor C is in charge of distributing work across all logins: login D (idle, weekly resets Sunday) takes SONNET/JIS-NB cards; login A uses the 100 USD cloud credits (expire 2026-11-05) and its last ~12% weekly; NUC runs GPT x1 and Gemini x2 (one card per account); desktop GPT blocked until Codex login; use all budgets efficiently, C coordinates only, C weekly 24% so no C builders beyond one.\" DECISION (OURS): none added; recorded as given.", "done": "entry recorded; Supervisor C routes cards per this split."}
+
+## d-live-aid-full-width | decided 2026-10-30 | live-aid builder
+```json
+{"id": "d-live-aid-full-width", "order": 68, "date": "2026-10-30", "status": "DECIDED", "question": "Live aid layout: narrow column (R05) or full screen?", "answer": "OPERATOR (2026-10-30): \"make it like fill the screen horizontally as well, and improve the look and feel ... the text is so small and it looks like a lot of clutter ... I need only the most important things, but I do not know how to decide it right now.\" Default picked by the builder (OURS): full width, bigger text, a glance row (price, VWAP distance, nearest level each side, stay confidence + rule R, session); extra columns behind a More detail switch; source notes folded.", "done": "live_aid.html R11 layout"}
 ```
