@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-29T22:09:11Z",
   "commands": [],
   "context": {
     "calls_to_edit": 25,
@@ -23,7 +24,14 @@
   "goal": "Descriptive study only: how CVD, net delta, open interest, net longs/shorts (CoinGlass/Binance) and top-trader long/short ratios relate to each other across market phases, especially the US Open. Output a table of observed co-movements, divergences and lead-lag per phase, plus candidate one-sentence concepts. No edge hunting, no trade advice.",
   "id": "layer-relations-concepts-us-open",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "DEV 2022-01..2024-06 BTCUSDT-perp 5m: net delta vs price rho +0.78 (n=650 US Open windows)",
+      "ref": "cacd9a221",
+      "utc": "2026-10-29T22:09:11Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -33,7 +41,12 @@
   "refined_by": "",
   "refreshed": "2026-10-28T13:55:54Z",
   "refs": [],
-  "result": "",
+  "result": "DEV 2022-01..2024-06 BTCUSDT-perp 5m: net delta vs price rho +0.78 (n=650 US Open windows); OI vs price +0.11; top-trader accounts L/S vs price -0.74 (n=422); price->top-acct lead k=+2 (-0.22); CoinGlass CVD/net longs-shorts NOT_IN_DATA; top-trader ratios blank most of 2022. LAYER_RELATIONS_US_OPEN.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "DEV-available CoinGlass and Binance data; operator screenshots from the shot store (Eagle_Eyes first read)"
   ],
@@ -43,10 +56,11 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "1. Pull the operator screenshots from the shot store and the CoinGlass/Binance series available in DEV. 2. Tabulate per phase (incl. US Open): co-movements, divergences, lead-lag between CVD, net delta, OI, net longs/shorts, top-trader L/S. 3. Write candidate one-sentence concepts. 4. Label every number SOURCED (file:line) or OURS."
   ],
+  "taken": "2026-10-29T22:09:11Z",
   "tests": "none: descriptive study, no code; output checked by reading the table against the cited data files",
   "title": "layer-relations-concepts-us-open",
   "weight": "",
