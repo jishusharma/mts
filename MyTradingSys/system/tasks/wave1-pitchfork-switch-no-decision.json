@@ -2,7 +2,7 @@
   "approved_by": "",
   "asks": "",
   "commands": [
-    "git log -S'mts.pitchfork' --oneline -- scripts/core/start-trading-day.ps1"
+    "grep -n mts.pitchfork scripts/core/start-trading-day.ps1"
   ],
   "created": "2026-10-29T19:48:07Z",
   "depends_on": [],
@@ -38,5 +38,8 @@
   "tests": "none (decision)",
   "title": "FINDING: mts.pitchfork=true live since 2026-10-28 with no operator decision",
   "weight": "CRITICAL",
-  "worker": "agent"
+  "worker": "agent",
+  "notes": [
+    "Wave1 item 4 (2026-10-30): the switch is also inert: PitchforkSignalLayer.java:353 needs >=15 4h bars, MarketDataSnapshot.java:489,1338 fetch 3; replay of 10-29 gave 0 pitchfork candidates. Decide: remove the switch, or fix the bar count and then record the decision."
+  ]
 }
