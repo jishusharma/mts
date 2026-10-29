@@ -1,11 +1,13 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "mvn -q -Dtest=SpikeFade* test"
+  ],
   "created": "2026-10-29T22:01:19Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "A_S2_POINTS (DAX 20 points, SpikeFadeDetector.java:40,192) is scaled per symbol (BTC as percent of price, rule labelled OURS, TLV2:323 min width 0.40 pct as the reference); SpikeFadeCriticalWave1Test case for a BTC price fails on the old code; mvn -q -Dtest=SpikeFade* test is green.",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
@@ -15,24 +17,33 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "PLANNER 2026-10-30: filled and T0-checked; awaits Lab_Guy/reviewer stamp before ready (CRUCIAL+ needs independent review)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [
-    ""
+    "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "src/main/java/datafeed/SpikeFadeDetector.java",
+    "src/test/java/datafeed/SpikeFadeCriticalWave1Test.java"
+  ],
+  "scope_out": [
+    "DAX behaviour unchanged (20 points stays for DAX)"
+  ],
+  "size": "S",
   "sources": [
     "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md"
   ],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Read ITEM3 row A5 and TLV2:94,265,323",
+    "Scale the stop per symbol, label OURS",
+    "Fail-first test, run mvn -q -Dtest=SpikeFade* test"
+  ],
+  "tests": "SpikeFadeCriticalWave1Test: BTC A-S2 stop distance is >= the scaled width, not 20 dollars; fails on current code",
   "title": "SpikeFade A-S2 fixed 20-point stop is a DAX number applied to BTC",
-  "weight": "",
-  "worker": ""
+  "weight": "CRUCIAL",
+  "worker": "agent"
 }
