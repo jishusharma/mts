@@ -13,13 +13,23 @@
   "id": "popup-kill-loop-regex-mts-misses-mts-ale",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "pitchfork: integrate sim_desk plugin, Java Hagopian + B070 netRR + 1m proof, live wiring, ",
+      "ref": "60cda535ecec",
+      "utc": "2026-10-28T10:11:22Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DRAFT 2026-10-28 Session_Planner (OURS): edits are in repo only, deploy by coordinator (DEPLOY_RUNBOOK). Needs REVIEWED stamp (IMPORTANT). | REVIEWED:2026-10-29 ACCEPT (reviewer-raw-cards-b) Verified start-trading-day.ps1:837 matches only \"MTS #\"; producers TAPE # (tape-watch.ps1:87) and \"MTS live health RED\" (check_live_health.py:100) confirmed. Source: start-trading-day.ps1:835-840.",
+  "note": "DRAFT 2026-10-28 Session_Planner (OURS): edits are in repo only, deploy by coordinator (DEPLOY_RUNBOOK). Needs REVIEWED stamp (IMPORTANT).\nREVIEWED:2026-10-29 ACCEPT (reviewer-raw-cards-b) Verified start-trading-day.ps1:837 matches only \"MTS #\"; producers TAPE # (tape-watch.ps1:87) and \"MTS live health RED\" (check_live_health.py:100) confirmed. Source: start-trading-day.ps1:835-840.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-29T16:46:26Z",
   "refs": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/PICTURE_AND_PLAN.md"
   ],
@@ -33,13 +43,14 @@
   "scope_out": [
     "deploy, restart, live tree; alert verdict logic; TopMost/taskbar change (separate card)"
   ],
+  "scope_sha": "60cda535ecec",
   "size": "S",
   "sources": [
     "scripts/core/start-trading-day.ps1:835-840",
     "scripts/live/tape-watch.ps1:87",
     "scripts/sched/check_live_health.py:100"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Read PICTURE_AND_PLAN.md s3.2 and the kill step before Start-Process wscript.exe in start-trading-day.ps1",
     "Write the failing-first test with the 4 title forms",

@@ -38,7 +38,7 @@
   "refs": [
     "MyTradingSys/research/nuc_restart_2026-10-28/ISSUES_REGISTER.md"
   ],
-  "result": "",
+  "result": "Already fixed, nothing to build: B1,B2,B3,B5,B6,B10 shipped as 637422a47 (hand-over guard, one TRANSIT rule; test_supervisor.py, test_successor_wake.py), 2c5731b8a (B3 worker worktree), fc12c222f (B6 CRLF noise; test_stop_guard.py), B5 _no_real_log in test_logon_wake.py; all ancestors of origin/fast-track (ISSUES_REGISTER.md:66). Dropped by Session_Planner 2026-10-29. Open follow-ups B14,B15,B16 have their own cards.",
   "scope_in": [
     "scripts/dev/supervisor.py; scripts/dev/successor_wake.py; scripts/dev/sync.py; scripts/dev/stop_guard.py; scripts/dev/logon_wake.py; scripts/dev/test_logon_wake.py; scripts/dev/test_supervisor.py; .gitattributes; MyTradingSys/system/roles/supervisor.md; MyTradingSys/system/SUPER_SESSION.md"
   ],
@@ -49,7 +49,7 @@
   "sources": [
     "operator 2026-10-28"
   ],
-  "state": "raw",
+  "state": "dropped",
   "steps": [
     "Read ISSUES_REGISTER.md B1-B3, B5, B6, B10; reproduce each from the cited output",
     "Write failing tests first, then fix B5 (smallest), B6, B1, B2, B3 in that order",

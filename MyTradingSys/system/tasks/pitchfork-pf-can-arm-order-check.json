@@ -12,6 +12,7 @@
   "goal": "Trace SetupCandidatesBuilder.java:271 (PF-* candidates, -Dmts.pitchfork=true from start-trading-day.ps1:113,445,475) into the state machine and say yes/no per path whether a PF-* candidate can arm or send an order on testnet.",
   "id": "pitchfork-pf-can-arm-order-check",
   "lane": "SONNET",
+  "latest": [],
   "layers": [
     "pitchfork"
   ],
@@ -20,10 +21,11 @@
   "not_twin_of": [
     "pitchfork-review-fixes-2026-10-28"
   ],
-  "note": "DRAFT 2026-10-28 Session_Planner (OURS): split from pitchfork-review-fixes-2026-10-28 (step 0 there). Read-only so live_path false. IMPORTANT: verdict decides whether the live Java card is urgent; needs real stamp. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files. | T0 2026-10-28 planner-refine-A: scope_in paths all tracked, no open claim on them, content complete; only gap = Lab_Guy REVIEWED stamp (IMPORTANT+). | REVIEWED:2026-10-29 ACCEPT (reviewer-raw-cards-b) Verified SetupCandidatesBuilder.java:271 and -Dmts.pitchfork at start-trading-day.ps1:113,445,475.",
+  "note": "DRAFT 2026-10-28 Session_Planner (OURS): split from pitchfork-review-fixes-2026-10-28 (step 0 there). Read-only so live_path false. IMPORTANT: verdict decides whether the live Java card is urgent; needs real stamp. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files. | T0 2026-10-28 planner-refine-A: scope_in paths all tracked, no open claim on them, content complete; only gap = Lab_Guy REVIEWED stamp (IMPORTANT+).\nREVIEWED:2026-10-29 ACCEPT (reviewer-raw-cards-b) Verified SetupCandidatesBuilder.java:271 and -Dmts.pitchfork at start-trading-day.ps1:113,445,475.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-29T16:46:24Z",
   "refs": [
     "MyTradingSys/research/pitchfork_2026-10-19/OPUS_E2E_REVIEW_2026-10-28.md"
   ],
@@ -34,11 +36,12 @@
   "scope_out": [
     "any code change; flipping the flag; live tree; restart"
   ],
+  "scope_sha": "",
   "size": "S",
   "sources": [
     "MyTradingSys/research/pitchfork_2026-10-19/OPUS_E2E_REVIEW_2026-10-28.md"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "grep PF- and mts.pitchfork across src/main/java and scripts/core; list each consumer of the candidate list",
     "Write PF_ARM_TRACE.md: per consumer file:line, can arm (yes/no/conditional) and why; one-line verdict"

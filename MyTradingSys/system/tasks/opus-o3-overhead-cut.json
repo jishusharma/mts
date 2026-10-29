@@ -27,6 +27,15 @@
   "goal": "Operator runs Opus on system/handover/OPUS_RUNS.md O3 after O1 ships: count 7 days of trunk commits by kind with a script, rank stop-doing cuts by commits/day saved, apply the 3 cheapest; no safety gate or live-path check removed.",
   "id": "opus-o3-overhead-cut",
   "lane": "OPUS",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "observer-severity-context: decision record + design card (docs only)",
+      "ref": "abb02c8e9228",
+      "utc": "2026-10-29T02:31:28Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -34,6 +43,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-29T16:43:56Z",
   "refs": [
     "MyTradingSys/system/handover/OPUS_RUNS.md"
   ],
@@ -46,11 +56,12 @@
   "scope_out": [
     "live tree, deploy, mainnet, .secrets, .env, outcome columns and bars >= 2024-07-01"
   ],
+  "scope_sha": "abb02c8e9228",
   "size": "M",
   "sources": [
     "MyTradingSys/research/opus_run_design_2026-10-28/DESIGN.md"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Script counts 7 days of trunk commits by kind",
     "CUTS.md ranked by commits/day saved",

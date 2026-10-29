@@ -13,13 +13,30 @@
   "id": "pre-pipeline-sources-review-by-2026-10-2",
   "kind": "audit",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "observer-severity-context: decision record + design card (docs only)",
+      "ref": "abb02c8e9228",
+      "utc": "2026-10-29T02:31:28Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "abb02c8e9228 observer-severity-context: decision record + design card (docs only)",
+      "ref": "MyTradingSys/system/OPERATOR_DECISIONS.md",
+      "utc": "2026-10-29T02:31:28Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DRAFT 2026-10-28 Session_Planner (OURS): enforcement stays a test, not runtime rejection (rejecting would stop testnet trades; operator decides that). | REVIEWED:2026-10-29 ACCEPT (reviewer-raw-cards-b) Verified 27 entries, all review_by 2026-10-23, only format-validated (registry.py:59-76), never enforced at runtime, so re-dating changes no trading behaviour. Test file path to be chosen under MyTradingSys/execution/ (added to scope_in as test_pre_pipeline_review_by.py).",
+  "note": "DRAFT 2026-10-28 Session_Planner (OURS): enforcement stays a test, not runtime rejection (rejecting would stop testnet trades; operator decides that).\nREVIEWED:2026-10-29 ACCEPT (reviewer-raw-cards-b) Verified 27 entries, all review_by 2026-10-23, only format-validated (registry.py:59-76), never enforced at runtime, so re-dating changes no trading behaviour. Test file path to be chosen under MyTradingSys/execution/ (added to scope_in as test_pre_pipeline_review_by.py).",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-29T16:46:27Z",
   "refs": [
     "MyTradingSys/execution/auto_trader_config.json"
   ],
@@ -32,9 +49,10 @@
   "scope_out": [
     "auto_trader.py logic; promoted_setups.json; live tree deploy; mainnet"
   ],
+  "scope_sha": "abb02c8e9228",
   "size": "S",
   "sources": [],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Write the failing test reading the config",
     "Set review_by to 2026-11-25 on all entries, reason text names the default and this card",
