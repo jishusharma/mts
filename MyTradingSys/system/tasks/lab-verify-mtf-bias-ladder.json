@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-29T21:40:56Z",
   "commands": [
     "python scripts/dev/shot.py status"
   ],
@@ -23,7 +25,14 @@
   "goal": "Test the operator's grandfather-father-son bias idea: when the higher timeframes (weekly, 5d, 3d, 2d, 1d, 12h) are mostly one colour and the lower timeframes turn the other way, does the higher bias win after the lower move fades; and does it add to the Malkan 40-60 RSI zone state. Observation only: does the ladder beat the unconditional forward return after fees.",
   "id": "lab-verify-mtf-bias-ladder",
   "lane": "DSA-NUC",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "REPORT.md in 2026-10-28_lab_verify_mtf_bias_ladder: 36 VALIDATION cells evaluated, 0 clear",
+      "ref": "a7ae3403a",
+      "utc": "2026-10-29T21:40:56Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -36,7 +45,12 @@
     "MyTradingSys/research/live_reads/2026-10-26_cross_market_tools/mtf_bias.py",
     "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/READ.md"
   ],
-  "result": "",
+  "result": "REPORT.md in 2026-10-28_lab_verify_mtf_bias_ladder: 36 VALIDATION cells evaluated, 0 clear fee-net-positive with |t|>=1.96; verdict NOT WORTH A LAYER",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "read-only: Binance spot BTCUSDT klines 15m, 1h, 12h, 1d, 3d, 1w from data-api.binance.vision"
   ],
@@ -47,13 +61,14 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "pull the klines for as many years as the API gives; build 2d/4d/5d from 1d",
     "compute the ladder state and the Malkan RSI zone per bar with no look-ahead (closed candles only)",
     "event counts first, then forward returns 4/8/16 bars, baseline, fee-net, t-stat; DEV then VALIDATION once, variants in the trial ledger",
     "write REPORT.md in a new research folder; verdict worth a layer card or closed"
   ],
+  "taken": "2026-10-29T21:40:30Z",
   "tests": "",
   "title": "LAB-VERIFY: multi-timeframe bias ladder (grandfather/father/son) plus Malkan RSI 40-60 state on BTC, fee-net",
   "weight": "",
