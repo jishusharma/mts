@@ -2,6 +2,22 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 61,
+    "folded": "2026-10-29T17:23:03Z",
+    "misses": 12,
+    "reads": [
+      "MyTradingSys/execution/auto_trader.py",
+      "MyTradingSys/backtest/layers/alerts/live_layers.py",
+      "src/main/java/datafeed/PitchforkSignalLayer.java",
+      "src/main/java/datafeed/MarketDataSnapshot.java",
+      "MyTradingSys/execution/executor.py",
+      "MyTradingSys/research/pitchfork_2026-10-19/OPUS_E2E_REVIEW_2026-10-28.md",
+      "src/main/java/datafeed/StateCodeEmitter.java",
+      "MyTradingSys/market_data/dsa_task_012_setup_candidates.md"
+    ],
+    "session": "agent-ad721921e1397a3e6"
+  },
   "created": "2026-10-28T16:07:40Z",
   "depends_on": [],
   "done_when": "PF_ARM_TRACE.md exists with a one-line YES/NO verdict and file:line per consumer; shipped, cherry empty",
@@ -21,7 +37,7 @@
   "not_twin_of": [
     "pitchfork-review-fixes-2026-10-28"
   ],
-  "note": "DRAFT 2026-10-28 Session_Planner (OURS): split from pitchfork-review-fixes-2026-10-28 (step 0 there). Read-only so live_path false. IMPORTANT: verdict decides whether the live Java card is urgent; needs real stamp. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files. | T0 2026-10-28 planner-refine-A: scope_in paths all tracked, no open claim on them, content complete; only gap = Lab_Guy REVIEWED stamp (IMPORTANT+).\nREVIEWED:2026-10-29 ACCEPT (reviewer-raw-cards-b) Verified SetupCandidatesBuilder.java:271 and -Dmts.pitchfork at start-trading-day.ps1:113,445,475.",
+  "note": "DRAFT 2026-10-28 Session_Planner (OURS): split from pitchfork-review-fixes-2026-10-28 (step 0 there). Read-only so live_path false. IMPORTANT: verdict decides whether the live Java card is urgent; needs real stamp. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files. | T0 2026-10-28 planner-refine-A: scope_in paths all tracked, no open claim on them, content complete; only gap = Lab_Guy REVIEWED stamp (IMPORTANT+).\nREVIEWED:2026-10-29 ACCEPT (reviewer-raw-cards-b) Verified SetupCandidatesBuilder.java:271 and -Dmts.pitchfork at start-trading-day.ps1:113,445,475.\nDECISION (OURS) 2026-10-29 Builder: verdict is NO - PF-* candidates land only in the snapshot setup_candidates array, read by display scripts (scripts/live/*.ps1) only. auto_trader.py (the only module that automatically calls executor.py --go) reads two unrelated signal sources (runtime_data/last_alert.json + MyTradingSys/runtime/alerts/*.jsonl via live_runner_cli.py/live_layers.py, neither of which wires pitchfork); promoted_setups.json has zero entries as a second gate. start-trading-day.ps1:445 passes the flag into the statemachine process (StateCodeEmitter.java) which never reads it - dead wiring, noted in the doc. Conservative default taken per CLAUDE.md (never ask operator): this read-only trace does not promote or touch the related live Java card; that decision is left to whoever reviews this verdict, per the card's own note. Full trace + every file:line re-verified by grep in MyTradingSys/research/pitchfork_2026-10-19/PF_ARM_TRACE.md.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -29,7 +45,7 @@
   "refs": [
     "MyTradingSys/research/pitchfork_2026-10-19/OPUS_E2E_REVIEW_2026-10-28.md"
   ],
-  "result": "",
+  "result": "Verdict NO: PF-* candidates reach only the snapshot setup_candidates array (display scripts); auto_trader.py's two signal sources (runtime_data/last_alert.json, MyTradingSys/runtime/alerts/*.jsonl) never carry pitchfork, and promoted_setups.json has zero entries as a second gate. Doc: MyTradingSys/research/pitchfork_2026-10-19/PF_ARM_TRACE.md. pytest MyTradingSys/tests/docs/test_integrity.py -v: 15 passed in 3.71s (2026-10-29).",
   "scope_in": [
     "MyTradingSys/research/pitchfork_2026-10-19/PF_ARM_TRACE.md"
   ],
