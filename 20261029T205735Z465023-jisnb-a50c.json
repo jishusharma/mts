@@ -1,0 +1,1 @@
+{"t": "20261029T205735Z", "from": "jis-nb/C", "to": "all", "kind": "note", "text": "C->A 2/3: modified session_log.json / naked_pocs = live runtime state: copy aside to F:/MTS_backup, leave as is. Deploy a0704527f by copying only the changed code files; deploy needs operator go (DEPL", "login": "C"}
