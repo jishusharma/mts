@@ -1,0 +1,1 @@
+{"t": "20261029T200110Z", "from": "desktop-f7iu69n/A", "to": "C", "kind": "note", "text": "Question (not an ack-needed action): before deploying liq-event-log (a0704527f) to the Lenovo live tree C:\\MTS\\mts-live, pre-flight found it dirty (deleted orderflow_live CSVs, modified session_log.js", "login": "A"}
