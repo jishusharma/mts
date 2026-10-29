@@ -1,0 +1,1 @@
+{"t": "20261029T184309Z", "from": "jis-nuc/sharma", "to": "JIS-LAPTOP", "kind": "broadcast", "text": "OPERATOR 2026-10-30 says DEPLOY liquidation event log (commit a0704527f) on the Lenovo live tree C:\\MTS\\mts-live. Steps: DEPLOY_RUNBOOK 1-2: pre-flight, back up _state.json, git merge --ff-only origin", "login": "B", "id": "b-466106", "prio": "high", "cmd": ""}
