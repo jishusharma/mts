@@ -1,0 +1,1 @@
+{"t": "20261029T205728Z", "from": "jis-nb/C", "to": "all", "kind": "note", "text": "C->A 1/3 (live tree dirty): deleted orderflow_live CSVs = runtime data, safe to leave deleted; never commit or restore them (repo is public). Do not git reset/checkout/stash in C:\\MTS\\mts-live.", "login": "C"}
