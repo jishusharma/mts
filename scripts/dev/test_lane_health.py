@@ -35,6 +35,9 @@ class Detect(unittest.TestCase):
     def test_credits_and_limit_text(self):
         self.assertEqual(L.classify(CREDITS_LOG), "credits")
         self.assertEqual(L.classify(LIMIT_LOG), "limit")
+        self.assertEqual(L.classify("x" * 5000 + "\nERROR: unexpected status 401 Unauthorized: token expired\n"), "auth")
+        self.assertIn("401", L.error_line("x" * 5000 + "\nERROR: unexpected status 401 Unauthorized\n"))
+        self.assertEqual(L.classify("x" * 5000 + "\nread 401 lines\n"), "")
         for t in ("insufficient_quota", "You have exceeded your current quota", "Your credit balance is too low", "credits exhausted"):
             self.assertEqual(L.classify("a" * 5000 + t), "credits", t)
 
