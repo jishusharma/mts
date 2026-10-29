@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-29T18:10:13Z",
   "commands": [],
   "created": "2026-10-22T22:41:51Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "cloud-ship-unshallow-the-clone-once-befo",
   "lane": "HAIKU",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "scripts/dev/test_lab_query.py: history test skips with reason when repo is shallow (histor",
+      "ref": "7fa356aff",
+      "utc": "2026-10-29T18:10:13Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -30,7 +37,12 @@
   "refined_by": "Session_Planner",
   "refreshed": "2026-10-25T22:17:29Z",
   "refs": [],
-  "result": "",
+  "result": "scripts/dev/test_lab_query.py: history test skips with reason when repo is shallow (history_skip_reason); new fail-first test",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/test_lab_query.py"
   ],
@@ -45,12 +57,13 @@
     "scripts/dev/task_state.py:115",
     "scripts/dev/test_lab_query.py:186"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read test_lab_query.py:180-195 and task_state.is_shallow.",
     "Add a module-level skipif on the shallow check (stubbed in one test).",
     "Run the file."
   ],
+  "taken": "2026-10-29T18:10:13Z",
   "tests": "scripts/dev/test_lab_query.py new test: with is_shallow stubbed True the history test is skipped with reason 'shallow clone'; with False it runs; fails now (no skip).",
   "title": "Cloud ship: unshallow the clone once before extra tests (test_lab_query needs history)",
   "weight": "ROUTINE",
