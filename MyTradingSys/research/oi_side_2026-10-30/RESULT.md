@@ -29,6 +29,26 @@ Reading:
 - **Direction:** every row sits between 48% and 54%. OI, with or without price, did not tell the next direction.
 - **A small lean against the push:** after OI and price rose together, the next hour was up 48.5%; after OI rose and price fell, 52.7%. That is a gap of about 4 points (about 6 standard errors), below fee level as a trade.
 
+## A2. By cycle (operator: "every time frame is different as there are cycles")
+
+Share of windows where the close was up 60 minutes later. n per cell is 842-2,817, so one standard error is about 1.0-1.7 points.
+
+| OI | Price | Story (OURS) | 2022 | 2023 | 2024 | 2025 |
+|---|---|---|---|---|---|---|
+| down | up | short covering | 44% | 48% | 52% | 55% |
+| down | down | long liquidation | 54% | 58% | 53% | 48% |
+| up | down | shorts pressing | 52% | 55% | 53% | 50% |
+| up | flat | build-up | 52% | 52% | 50% | 52% |
+| up | up | longs pressing | 49% | 47% | 49% | 50% |
+
+Reading:
+- **The operator is right for the OI-down cells.** Their meaning flips with the cycle:
+  - Short-covering rallies faded in the 2022 bear market (44% up) but kept going in 2024-25 (52-55%), an 11-point swing of about 5 standard errors.
+  - Long liquidations bounced in 2023 (58%) but not in 2025 (48%).
+- **OI-up cells barely change across years.** Build-ups stay about 50/50 in every cycle.
+- **A shorter cycle definition (price above or below its 20-day mean) changed little:** at most 3.6 points between the two halves. The year, standing in for the macro bull/bear phase, separates more.
+- **Consequence:** an OI read needs the cycle as context. It goes into `bb-state-regime-tf-map` as a regime column.
+
 ## B. The operator's case: OI up, price flat, split by the aggressor
 
 | Taker delta in the window | n | Up 60 min | +0.5% first | -0.5% first |
