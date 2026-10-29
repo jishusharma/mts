@@ -42,52 +42,7 @@ Vendor pages are marketing; treat their claims as unverified (the search tool sa
 
 Not found by search (NOT_IN_DATA): independent usability studies of any backtest tool; vectorbt `Portfolio.stats` layout. Command that would find the second: read `vectorbt` docs page `Portfolio.stats`.
 
-## 2. What we need
-
-**Light.** One HTML file, inline CSS and JS, no libraries, SVG charts written by hand. Mockup is 27 KB with 255 trades embedded (10 KB of that); budget 150 KB per page, 40 KB per result file. Percent distances and R only, no price files (repo is public). Leave out: candlestick libraries, 600 stats, logins, saved presets, live data, multi-asset, a chart library, any server call.
-
-**Powerful: five views, in this order.**
-1. **Tests** (catalogue as cards): name, one-line plain description, status chip (FAILED / NOT ENOUGH DATA / PASSED-DEV-ONLY / NO RESULT), net R, trades, dollars. Top: honest scoreboard (passed / failed / not enough / none yet).
-2. **Result**: verdict banner first, then ROI hero, 8 KPIs, equity curve with play and scrub.
-3. **Replay**: one trade at a time (date, side, level family, R, money after) plus last-40 bar strip. Local desk adds the real candle SVG for the same trade; the public page cannot.
-4. **Quiz** ("would you take this?"): ten real trades, take or skip, reveal, scored against take-all.
-5. **Compare**: two results side by side from the same schema (all ideas vs filled; test A vs B; later live vs backtest), before/after fees bar, precomputed-variant slider (stop type K1..K5), level family table with n.
-Verdict and why: one sentence the operator can act on ("even +0.10 R is ruled out"), never "power 31%" (REVIEW_FABLE.md section A).
-
-**Fun, kept honest** (rules, not decoration):
-- Replay and curve animate; the curve turns red below the start line and the banner is sticky. Animation never smooths or skips losses.
-- Quiz scores your picks against "take all ten" on the same trades; end screen states the rule's true average. Streak = rounds played, never wins.
-- Badges count tests *closed honestly* (FAILED counts the same as PASSED). The scoreboard shows 0 passed as plain fact.
-- Rings/progress only for "validation runs spent" (1 per idea), never for P&L.
-- Anything that favours the user (best trade, best family) always sits beside n and the all-trades number.
-
-**ROI shown plainly.** First number on the Result tab: "1,000 USD -> X on DEV after fees". Sizing is OURS: 1% of current money at risk per trade (1R = 1%), compounding. Levels ladder: 1,000 -> **715** (-28.5%), worst drop in money -35%, 255 trades, -0.119 R net per trade, 41% wins, worst losing streak 15 (filled-only, computed this session). Fees shown as their own line (0.111 R). Per-trade money is path-dependent; state the sizing under the number.
-
-**Look and feel.** One design system = v1's tokens (already live): `--bg --card --ink --mute --line --good --bad --acc --warn`, system font, 14 px body, 12 px caps labels, 14 px radius cards, 8/12/16 spacing, dark and light via `:root` variables with `prefers-color-scheme` plus a manual toggle. Phone: single column, bottom tab bar, 16 px gutters, KPI strip 2x4. Desktop: max 980 px, cards in 2 columns. Reference apps to imitate:
-- **QuantConnect results banner**: stats strip on top of one equity curve.
-- **Apple Fitness / Activity**: one big number, rings, calm colours, one thing per card.
-- **Robinhood-style portfolio card**: big money number, one line chart you can scrub, red/green by sign (we keep the colour, drop the confetti).
-
-## 3. Proposed result schema (`results/<id>.json`, sim-v2 adopts or replies)
-`{id, title, plain, status: FAILED|NOT_ENOUGH_DATA|PASSED_DEV|NO_RESULT, why, try_no, window:[from,to], fees:{gross_r,fee_r}, n_ideas, n_filled, mean_net_r, ci:[lo,hi], win_rate, max_dd_r, worst_streak, trades:[[date,side,family,r],...], variants:[{label,mean_net_r,n}], families:[{name,n,mean_r}]}`. Dollars are computed in the page from `trades` with the shown sizing rule. The catalogue is `results/index.json` (id, title, status, mean_net_r, n_filled). Counting rule: `n_filled` is the headline trade count; ideas that never filled go in `n_ideas` only.
-
-## 4. Ranked build list (understanding per hour, rough hours for a Sonnet builder)
-| # | Item | Hours | Why this rank |
-|---|---|---|---|
-| 1 | Result tab: banner + dollars hero + KPI strip + equity with scrub/play | 4 | Does the one job: judge a test without text. Prototype done |
-| 2 | Standard result JSON + catalogue cards (Tests tab), backfill past tests | 5 | Makes it the home of every test; unlocks all other tabs |
-| 3 | Compare tab (two results, fee bars, family table, variant slider) | 4 | Shows why a test failed (fees, no-fills, one bad family) |
-| 4 | Replay tab with trade strip; local-only candle SVG per trade (v1 charts.py) | 4 | "See an example"; public page shows R strip only |
-| 5 | Quiz | 3 | Fun and teaches that gut picks lose; low risk because scored vs take-all |
-| 6 | Dark/light polish, phone pass, scoreboard badges | 2 | Cheap, high feel |
-| 7 | Live vs backtest compare (needs live mirror export) | 5 | Valuable later; depends on a data feed that does not exist |
-Total 1-6: about 22 h. Do 1 and 2 first; they are the product.
-
-## 5. What NOT to build
-Candle chart library; order entry or paper trading; parameter sliders that *run* anything in the page (only precomputed variants); P&L leaderboards; win-streak badges; confetti or sound; rolling Sharpe, Monte Carlo, 600 stats; accounts; a server for the public page; raw price files in the repo; "best family" or "best variant" highlights without n.
-
-## DECISION (OURS) defaults taken
-1% risk sizing for dollars; filled trades are the headline count; PASSED only after the one validation run; mockup uses ROADMAP counts for the RSI cards (no decimals invented) and marks WaveTrend "no result yet".
+## 2-5. Superseded by the OPERATOR OVERRIDE block at the top of this file (2026-10-25): the five-tab plan (Tests/Result/Replay/Quiz/Compare), the proposed result schema, the ranked build list, the cut list and the OURS defaults they rested on are history; what ships is accuracy, selectable params per layer plus conditions, performance, visualization and user friendly, in that order, on the local desk (`desk.py` + `page.html`).
 
 ## 6. Operator inputs, one line each (Doctor list 2026-10-25)
 | # | Input | Where covered |

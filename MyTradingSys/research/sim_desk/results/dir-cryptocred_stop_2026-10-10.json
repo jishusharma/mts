@@ -1,0 +1,38 @@
+{
+ "id": "dir-cryptocred_stop_2026-10-10",
+ "kind": "backtest",
+ "family": "Cryptocred Stop",
+ "title": "CryptoCred stop placement - source hunt (D20/B143)",
+ "provenance": "source-extracted",
+ "date": "2026-10-10",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Date: 2026-10-10 UTC. Session: MTS-2026-10-10-1405Z-DSA-COO.",
+  "tone": "info"
+ },
+ "why": [
+  "Conclusion: every stop rule is net-negative on all three setups. Stop placement",
+  "alone does not make a CryptoCred entry profitable. The widest ATR stop is least bad"
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/cryptocred_stop_2026-10-10/STOP_SOURCES.md"
+ ],
+ "commit": "f29af65d8"
+}

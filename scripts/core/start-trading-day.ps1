@@ -110,7 +110,7 @@ function Get-DirectSnapshotCmd {
         }
         $cp = (Get-Content -LiteralPath $cpFile -Raw).Trim()
         if (-not $cp) { return $null }
-        return ('java -cp "target\classes;' + $cp + '" datafeed.Main snapshot ' + $Symbol + ' > NUL 2>&1')
+        return ('java -Dmts.pitchfork=true -cp "target\classes;' + $cp + '" datafeed.Main snapshot ' + $Symbol + ' > NUL 2>&1')
     } catch { return $null }
 }
 
@@ -442,7 +442,7 @@ if ($stale) {
 $smArgs = @(
     "-NoProfile","-ExecutionPolicy","Bypass",
     "-Command",
-    "cd '$R'; mvn -q exec:java '-Dexec.mainClass=datafeed.Main' '-Dexec.args=statemachine $Symbol'"
+    "cd '$R'; mvn -q exec:java '-Dmts.pitchfork=true' '-Dexec.mainClass=datafeed.Main' '-Dexec.args=statemachine $Symbol'"
 )
 $sm = Start-Process pwsh.exe -ArgumentList $smArgs -PassThru -WindowStyle Hidden
 Log-Line "state_machine PID=$($sm.Id)"
@@ -472,7 +472,7 @@ try {
         Log-Line "--- cycle $cycle ---"
     
         Write-Host "[apparatus] fetching snapshot..."
-        $mvnCmd = 'mvn -q exec:java "-Dexec.mainClass=datafeed.Main" "-Dexec.args=snapshot ' + $Symbol + '" > NUL 2>&1'
+        $mvnCmd = 'mvn -q exec:java "-Dmts.pitchfork=true" "-Dexec.mainClass=datafeed.Main" "-Dexec.args=snapshot ' + $Symbol + '" > NUL 2>&1'
         # B191: direct java on the cached runtime classpath (no cmd+Maven+plugin JVM start every cycle: that cold start is what
         # starved under host load). Any miss falls back to the Maven command above, so behaviour never gets worse.
         $rc = $null
@@ -834,7 +834,7 @@ print("logged")
             if (-not $NoBeep) {
                 # kill prior popup before spawning new - never more than 1 on screen
         Get-Process powershell,pwsh -ErrorAction SilentlyContinue | ForEach-Object {
-            if ($_.Id -ne $PID -and $_.MainWindowTitle -match "MTS #") {
+            if ($_.Id -ne $PID -and $_.MainWindowTitle -match "^MTS (ALERT )?#\d+") {
                 Stop-Process -Id $_.Id -Force -ErrorAction SilentlyContinue
             }
         }

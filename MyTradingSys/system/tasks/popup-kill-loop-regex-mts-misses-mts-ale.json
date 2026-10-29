@@ -1,0 +1,75 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "context": {
+    "calls_to_edit": 7,
+    "folded": "2026-10-29T17:59:26Z",
+    "misses": 15,
+    "reads": [
+      "scripts/core/show-alert.ps1",
+      "scripts/core/start-trading-day.ps1",
+      "scripts/live/tape-watch.ps1",
+      "scripts/sched/check_live_health.py"
+    ],
+    "session": "agent-ad64f427d3885b501"
+  },
+  "created": "2026-10-28T17:44:00Z",
+  "depends_on": [],
+  "done_when": "A Pester-free python test over the extracted title regex shows one popup max per producer; fails on the old 'MTS #' pattern; shipped, cherry empty",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Make the popup cleanup in start-trading-day.ps1 match every producer title (MTS ALERT #n, MTS #n, TAPE #n, MTS live health RED) so at most one window per producer stays open.",
+  "id": "popup-kill-loop-regex-mts-misses-mts-ale",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "pitchfork: integrate sim_desk plugin, Java Hagopian + B070 netRR + 1m proof, live wiring, ",
+      "ref": "60cda535ecec",
+      "utc": "2026-10-28T10:11:22Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "DRAFT 2026-10-28 Session_Planner (OURS): edits are in repo only, deploy by coordinator (DEPLOY_RUNBOOK). Needs REVIEWED stamp (IMPORTANT).\nREVIEWED:2026-10-29 ACCEPT (reviewer-raw-cards-b) Verified start-trading-day.ps1:837 matches only \"MTS #\"; producers TAPE # (tape-watch.ps1:87) and \"MTS live health RED\" (check_live_health.py:100) confirmed. Source: start-trading-day.ps1:835-840.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-29T16:46:26Z",
+  "refs": [
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/PICTURE_AND_PLAN.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/core/start-trading-day.ps1",
+    "scripts/core/show-alert.ps1",
+    "scripts/live/tape-watch.ps1",
+    "scripts/sched/check_live_health.py"
+  ],
+  "scope_out": [
+    "deploy, restart, live tree; alert verdict logic; TopMost/taskbar change (separate card)"
+  ],
+  "scope_sha": "60cda535ecec",
+  "size": "S",
+  "sources": [
+    "scripts/core/start-trading-day.ps1:835-840",
+    "scripts/live/tape-watch.ps1:87",
+    "scripts/sched/check_live_health.py:100"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read PICTURE_AND_PLAN.md s3.2 and the kill step before Start-Process wscript.exe in start-trading-day.ps1",
+    "Write the failing-first test with the 4 title forms",
+    "Widen the match (per-producer prefix, kill previous of same producer only) and keep failing closed on an unreadable window list"
+  ],
+  "tests": "New test in MyTradingSys/tests feeds the 4 title forms to the cleanup pattern; fails on old pattern (matches only 'MTS #')",
+  "title": "popup kill loop regex 'MTS #' misses 'MTS ALERT #n', TAPE and health titles: windows pile up; done when a failing-first test shows one popup max per producer",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

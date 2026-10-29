@@ -1,0 +1,50 @@
+{
+ "id": "dir-overnight_2026-10-16",
+ "kind": "backtest",
+ "family": "Overnight",
+ "title": "Morning report - overnight 2026-10-15 evening IST -> 2026-10-16 (super-2, JIS-NB)",
+ "provenance": "source-extracted",
+ "date": "2026-10-16",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "s",
+  "tone": "info"
+ },
+ "why": [
+  "Bottom line: no edge yet, pipeline ready. Two screens ran and both are INCONCLUSIVE. Nothing is promoted (the registry is",
+  "rsi:cross maps only (40, down) and (60, up); other levels are rejected fail-closed (104 rejects since 10-07).",
+  "W11 exec-halt-entry-10031: root cause unprovable; 10031 keeps halting, fail-closed.",
+  "10031 and unknown Deribit codes keep halting (fail closed)."
+ ],
+ "kpis": [
+  {
+   "label": "trades (first count in the source)",
+   "value": "78"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 78,
+   "quote": "- 24 h: 78 trades, net -29.20 USD, PF 0.10, 86 % time exits."
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/overnight_2026-10-16/MORNING_REPORT.md"
+ ],
+ "commit": "c47149a47"
+}

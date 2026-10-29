@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "B175: task cards for NB, laptop and shipping; cpu_cleanup -Audit needs no elevation",
-      "ref": "7257400c85f5",
-      "utc": "2026-10-21T01:00:55Z"
+      "line": "defender exclusions: add agy.exe and cloudcode_cli.exe processes and the cloud-code folder",
+      "ref": "2fc96444b9b9",
+      "utc": "2026-10-24T12:35:45Z"
     }
   ],
   "layers": [],
@@ -27,7 +27,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-21T01:01:55Z",
+  "refreshed": "2026-10-27T19:29:48Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -39,7 +39,7 @@
     "any change to the live tree, live loop, HALT files or open trades",
     "disabling services or tasks (that needs the operator in an admin shell)"
   ],
-  "scope_sha": "7257400c85f5",
+  "scope_sha": "2fc96444b9b9",
   "size": "S",
   "sources": [
     "MyTradingSys/items/B175_defender_msmpeng_cpu.md (2026-10-21 update)",

@@ -1,0 +1,79 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-27T23:38:49Z",
+  "commands": [],
+  "created": "2026-10-25T19:25:25Z",
+  "depends_on": [],
+  "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Count REVIEW-SPEC stamps in the spec's 31 lines (line 7 needs one; GPT: 0). Line 23 says overshoot is tick-bounded; GPT: 49,999.90 then 50,005.00 at 50,000 = $5 = 50 ticks = 1 bp = 0.025 R at a 0.40% stop. Producer: GPT gpt-6-luna. Do NOT read: helper tests, evidence.json. Report: MyTradingSys/research/layer_lab/reports/2026-10-26_gem-g7-tick-gap-check.md",
+  "id": "gem-g7-tick-gap-check",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "SOUND; report 2026-10-26_gem-g7-tick-gap-check.md written",
+      "ref": "2775a8b23",
+      "utc": "2026-10-27T23:38:49Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "yt-burn batch 6: GPT wave-3 reports for gap-g7-stop-slippage and rv05-h2 (both BLOCKED; ca",
+      "ref": "5623ccdfec54",
+      "utc": "2026-10-24T15:53:58Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "5623ccdfec54 yt-burn batch 6: GPT wave-3 reports for gap-g7-stop-slippage and rv05-h2 (bot",
+      "ref": "MyTradingSys/research/gpt_burn_2026-10-24/gx3-gap-g7-slippage/report.md",
+      "utc": "2026-10-24T15:53:58Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 T0-ONLY (planner, machine checks only). Producer vendor: GPT gpt-6-luna. Reviewer vendor: Gemini Flash (agy via gemini_queue.py); producer != reviewer. Reviewer must NOT read: the report's helper tests and evidence.json. Read-only audit: no product code, no live path, DEV data only (bars before 2024-07-01), no VALIDATION or HOLDOUT. DECISION (OURS) 2026-10-26: weight ROUTINE so the card is READY now; the planner may raise it (formula or verdict checks = CRUCIAL, needs a review stamp). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refreshed": "2026-10-25T19:28:26Z",
+  "refs": [],
+  "result": "SOUND; report 2026-10-26_gem-g7-tick-gap-check.md written",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/lab_guy/specs/gap-g7-stop-slippage.md",
+    "MyTradingSys/research/gpt_burn_2026-10-24/gx3-gap-g7-slippage/report.md"
+  ],
+  "scope_out": [
+    "code or spec changes",
+    "holdout reads",
+    "BTC runs of the current encoding (ROADMAP section 2)"
+  ],
+  "scope_sha": "5623ccdfec54",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
+    "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
+    "Report findings as a table: severity HIGH/MED/LOW, file:line, what is wrong, evidence, proposed fix. Change no code and no spec.",
+    "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
+    "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "taken": "2026-10-27T23:38:49Z",
+  "tests": "",
+  "title": "[GEMINI] Check GPT's G7 audit: missing review stamp and tick-skip overshoot arithmetic",
+  "weight": "ROUTINE",
+  "worker": ""
+}

@@ -94,7 +94,11 @@ def main() -> int:
     if a.dry:
         print(script)
         return 0
-    r = subprocess.run(GATE + ["ps"], input=script, text=True, capture_output=True)
+    try:    # it only registers a detached scheduled task: seconds. 300 s (OURS) = the NUC verb cap (bg-process-audit 2026-10-28)
+        r = subprocess.run(GATE + ["ps"], input=script, text=True, capture_output=True, timeout=300)
+    except subprocess.TimeoutExpired:
+        print("TIMEOUT nuc_wake after 300s: no reply from the NUC gate; not retried")
+        return 124
     out = "\n".join(l for l in (r.stdout + r.stderr).splitlines() if "quantum" not in l and "upgraded" not in l)
     print(out.strip() or f"exit {r.returncode}")
     return r.returncode

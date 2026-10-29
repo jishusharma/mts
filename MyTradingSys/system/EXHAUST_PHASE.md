@@ -2,6 +2,8 @@
 
 Unused quota is lost money. Rule, in force until the operator says otherwise: **from 2 hours before a login's weekly reset, that login plans to use up every model's remaining quota, and in the last hour it does.** Idling, "stopping for the reset" and handing over because the quota is nearly full are not allowed in this window.
 
+Numbers and the other budget rules: SUPER_SESSION.md "Budget policy". In this window the 5 h stop is 95 (`exhaust.py plan` prints `five_stop`), not 100.
+
 ## Who acts (no collisions)
 - Only a **top-level session** acts. Subagents, Agent-tool children and workers a Supervisor started ignore the broadcast; the parent decides whether to pass work to them.
 - **One actor per login.** The first top-level session on a login that reads the broadcast runs `python scripts/dev/sync.py claim "exhaust-<login>"` (login = A, B or C, CLOUD_ACCOUNTS.md). Claim held by another session: do not act; `mts_signal.py ack <id> told --note "login <X> held"` and carry on. The claim holder acks `done` when the window ends.
@@ -43,3 +45,4 @@ Trade, deploy, restart, touch HALT files, read `.secrets/`, add a scheduler (SCH
 
 ## Commands (moved from CLAUDE.md step 5b)
 After `get_usage`, once: `python scripts/dev/mts_signal.py budget --login <A|B|C> --five <%> --week <%> --reset <UTC>` (jishusharma1985=C), then `python scripts/dev/exhaust.py plan --login <X> --week <%> --five <%> --reset <UTC>`.
+Radar (operator d-weekly-reset-radar, card `weekly-reset-radar-48h-exhaust`): `python scripts/dev/exhaust.py radar [--json]` reads the newest BUDGET line per login, rolls a stale weekly reset forward by 7-day steps (stale > 6 h), and prints hours-to-reset + week% left, with a one-shot RESET T-48/T-24/T-2 banner per threshold (deduped like EXHAUST_PHASE s4). Successor-wake fireAt is budget-aware the same way (SCHEDULING_POLICY 4b2; `scripts/dev/successor_wake.py`).

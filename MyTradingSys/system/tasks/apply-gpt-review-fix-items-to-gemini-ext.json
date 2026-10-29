@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-27T23:14:31Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py extracts/gemini_out/gWjHq5UMisY_gemini.md"
   ],
@@ -16,18 +17,24 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "F1-F6 applied and verified across all 7 Tom extracts; FIXES_APPLIED_tom.md updated; verify",
+      "ref": "072d3e3d3",
+      "utc": "2026-10-27T23:14:31Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "yt-burn: Gemini Tom extracts (9), audit -dMWA_bbm3o, Fabio notes (9) - quote-verified, 5 c",
-      "ref": "152df77163d3",
-      "utc": "2026-10-24T15:07:14Z"
+      "line": "gemini_out: apply GPT review fixes F1-F5 to Tom extracts; F6 deferred",
+      "ref": "38dfe0116d23",
+      "utc": "2026-10-25T05:52:43Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "152df77163d3 yt-burn: Gemini Tom extracts (9), audit -dMWA_bbm3o, Fabio notes (9) - quote-",
-      "ref": "extracts/gemini_out/7BQPMJ39WpI_gemini.md",
-      "utc": "2026-10-24T15:07:14Z"
+      "line": "38dfe0116d23 gemini_out: apply GPT review fixes F1-F5 to Tom extracts; F6 deferred",
+      "ref": "extracts/gemini_out/96iPFDpXEcU_gemini.md",
+      "utc": "2026-10-25T05:52:43Z"
     }
   ],
   "layers": [],
@@ -37,11 +44,16 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-24T22:51:22Z",
+  "refreshed": "2026-10-27T19:29:44Z",
   "refs": [
     "MyTradingSys/research/worktree_disposition_20261026/REPORT.md"
   ],
-  "result": "",
+  "result": "F1-F6 applied and verified across all 7 Tom extracts; FIXES_APPLIED_tom.md updated; verify_extract_quotes exits 0",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "extracts/gemini_out/7BQPMJ39WpI_gemini.md",
     "extracts/gemini_out/96iPFDpXEcU_gemini.md",
@@ -58,17 +70,18 @@
     "verify_extract_quotes.py (separate card)",
     "any new claim not in the transcript"
   ],
-  "scope_sha": "152df77163d3",
+  "scope_sha": "38dfe0116d23",
   "size": "M",
   "sources": [
     "MyTradingSys/research/gpt_burn_2026-10-24/gx2-review-tom-extracts/report.md:21-118"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/gpt_burn_2026-10-24/gx2-review-tom-extracts/report.md sections Findings F1-F6 and the per-file table (lines 21-118); open the cited transcript lines in raw_transcripts_canonical/<id>_raw.txt.",
     "Per finding, edit the extract: F1/F3 restore the omitted condition in the key finding and summary; F2 say 32% is slightly profitable, not break-even; F4 mark the mirrored long-stop rule as inferred, not sourced; F5 replace gWjHq5UMisY lines 70 and 75 with real caption-body quotes or label them description metadata with no spoken GPS; F6 fix the 9 drifted Source GPS tags against the caption body.",
     "Write FIXES_APPLIED_tom.md: one line per finding (file:line, before, after). Run python scripts/dev/verify_extract_quotes.py on each edited file until exit 0, then the report's audit command (Reproduce, F5) for the caption-body match."
   ],
+  "taken": "2026-10-27T23:14:31Z",
   "tests": "Verifier exit 0 on all 7 edited files; the report's caption-body audit shows 107/107 matches (was 105/107); no new quote text outside the transcript.",
   "title": "Apply GPT review FIX items F1-F6 to the 7 FIX Gemini Tom extracts (J1-J9 minus 2 APPROVE)",
   "weight": "IMPORTANT",

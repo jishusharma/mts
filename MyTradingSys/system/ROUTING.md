@@ -5,6 +5,30 @@ procedures (how to post a desk row, how the lab runs a card). Changes come from 
 (ROLES.md row Pipeliner); a change that alters how sessions behave also gets an ANNOUNCEMENTS.md entry and one signal line.
 
 ## Changes (newest first)
+- 2026-10-28 Pipeliner re-sweep (lead-pipeline-2026-10-28, third opening today): 15 -> 15 pending, no closes. Standing operator
+  hold confirmed in force: the DeepSeek bridges (DSA/DSA-NB/DSA-NUC) stay closed, so all 5 DSA-target rows (gemini-krown-
+  rules-extracts-quote-audit, gpt-wavetrend-atlas-holm, trust-recheck-q76-dev-ext-power-check, run-all-tests-full-worker-
+  run, live-mirror-follow-live-host-move) were skipped entirely this pass, left queued, not routed or touched, matching
+  the existing "do not post new rows there" line above. The other 10 pending rows (JIS-NB 2, JIS-NUC 5, CLAUDE 1, OPERATOR
+  2) were re-checked against trunk and against this morning's two earlier drains and found unchanged: every decision in
+  `research/pipeliner/DRAIN_2026-10-28.md` still holds. One sweep false positive re-verified and rejected: LIKELY DONE flag
+  on `20261023-062833-apply-laptop-cpu-cleanup-on-desktop-f7iu` cites commit e8271b763, which is the LOGIN-naming change in
+  `mts_signal.py`, unrelated to the CPU-cleanup row; left pending (OPERATOR, audit-only report exists, apply step not run).
+- 2026-10-28 Pipeliner drain (pipeliner-2026-10-28): 20 -> 15 pending. Closed done: republish-3-stale-pages (evidence: commit
+  30f1f7fc4, current ship shows no stale-page warning), aibridge-v0.7.1-install-on-JIS-NUC (evidence: aibridge_verify PASS
+  28/28 JIS-NUC, commit 4271cb142 brought NB/NUC to B196). DECISION (OURS): declined approve-scheduling-policy-4a at the
+  conservative default (CLAUDE.md hard rule "no scheduled tasks anywhere" outranks it; SCHEDULING_POLICY.md never adopted
+  4a). Converted dsa-session-prompt-four-bridge-rules desk row to card `dsa-session-prompt-four-bridge-rules-cri` (lane
+  SONNET): DSA_SESSION_PROMPT.md is a critical file needing operator sign-off, not a desk run-and-report row. Fixed one
+  true wrong target (JIS-LAPTOP is not in desk.py's target enum; reposted as 20261028-065330-operator-material-search-on-
+  desktop-f7iu --target CLAUDE). Left the OPERATOR-targeted "chrome-load-reload-the-aibridge-extensio" row as-is: it is
+  correctly targeted per the 2026-10-23 entry below (desk.py's sweep validator list is stale, not the row); evidence shows
+  NB/NUC extensions load clean but the laptop's does not yet, so the row still has real work. DSA / DSA-NUC rows (4 LAB-
+  VERIFY/probe/ideas rows, ~34-56 h) left untouched per the super-session coordinator: both bridges are backed up unopened,
+  operator said hold, do not post new rows there. 2 BLOCKED-DATA rows (T02/T03, JIS-NB) and the already-correctly-routed
+  context-composite-v2-dev-read (JIS-NUC) left pending: blocked on data/machine, not abandoned. 3 older STALE rows (send-
+  jishu-sharma-pages, stop-the-nuc-inbox-poller, apply-laptop-cpu-cleanup) checked against trunk/claude.ai evidence and
+  found still genuinely open (partial progress only); left pending, no fabricated closes.
 - 2026-10-27 bug-youtube-gemini-only-rule-is-a-preference: split the YouTube row. "Gemini on the NUC" was written
   as the only path for CBP's analyst caption fetch; it was a preference (CBP used yt-dlp directly before Gemini
   existed). CBP's own fetch (`cbp_run.py`, known channels) now runs on any Claude machine; Gemini/`gemini_queue.py`
@@ -65,7 +89,7 @@ build or code work is a card, never a desk row; a desk row needs exact commands 
 - C1 Where DeepSeek run-and-report goes: DSA_DELEGATION.md (10-09) routes by data location (1m klines only on JIS-NB -> DSA-NB; 1h/1d, transcripts -> DSA-NUC). A-20261018-4 (10-18) says run-and-report for the lab goes to the NUC by `--target DSA`, but `DSA` is taken by whichever bridge boots first, NB or NUC. Applied: data location decides (DSA-NB / DSA-NUC); `--target DSA` only when either machine can run it.
 - C2 GPT lab host: HOW_MTS_RUNS.md and A-20261018-4 put Codex/GPT on JIS-NUC (`F:/MTS/mts-codex-lab`); the NUC signal of 2026-10-18 15:48Z calls the stalled lab "NB host". `codex_run.py status` reports STALLED (16 ready, nothing ran for 17 h). Applied: NUC. Needs one answer: which machine runs `codex_run.py tick` today.
 - C3 Daily desk assigner: DSA_DELEGATION.md says `desk.py assign` runs daily via MTS-DailyHygiene; SCHEDULING_POLICY.md (10-17) retired that task. Applied: the super-session coordinator runs `desk.py assign` by hand on wake.
-- C4 LAB-VERIFY routing: ROLES.md Eagle_Eyes row says `desk.py post --target DSA`; but `DSA` means the DeepSeek bridges, and the item needs a DEV-data study with judgment (lab, Lab_Guy class). Applied: it becomes a lab card on the NUC; Eagle_Eyes may still post the desk row, Pipeliner converts it.
+- C4 LAB-VERIFY routing: `roles/eagle_eyes.md:60` says `desk.py post --target DSA`; but `DSA` means the DeepSeek bridges, and the item needs a DEV-data study with judgment (lab, Lab_Guy class). Applied: it becomes a lab card on the NUC; Eagle_Eyes may still post the desk row, Pipeliner converts it.
 - C5 Gemini model names: LAB_RECIPES.md (10-16) names "Gemini 2.5 Pro" for build-review; GEMINI_START.md (10-17/18) says the AI Pro login has only Antigravity models (Gemini 3.8 Flash, Gemini 4 Argon) and `gemini_queue.py` is Flash only. Applied: Flash, Argon for C2/C3.
 - C6 HOW_MTS_RUNS.md (10-15) still says the live tree changes only through MTS-AutoDeploy and lists dispatchers as running (marked RETIRED in place); SCHEDULING_POLICY.md and CLAUDE.md (manual or coordinator deploy) win.
 - C7 DeepSeek bridges: 11 DSA-NB rows (the DSA audit T01-T10 batch, posted 10-16) and older DSA rows have not been taken for 2+ days; no file says whether the bridges are still run daily (decision D12 "once a day"). Applied: rows stay on DSA lanes; the operator starts a DSA session when wanted.

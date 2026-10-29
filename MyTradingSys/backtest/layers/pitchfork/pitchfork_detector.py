@@ -17,6 +17,8 @@ from enum import Enum
 import math
 from typing import List, Optional, Tuple, Dict, Any
 
+from MyTradingSys.backtest.vp_pivot_probe import build_profile
+
 
 class PitchforkVariant(Enum):
     STANDARD = "standard"
@@ -123,7 +125,6 @@ class PitchforkChannel:
 
         # State tracking
         self.has_reached_ml = False
-        self.has_stalled_before_ml = False
         self.hagopian_triggered = False
         self.max_ml_approach_ratio = 0.0  # 0.0 = at tine, 1.0 = reached ML
 
@@ -338,7 +339,7 @@ def find_pivots_zigzag(
 ) -> List[PitchforkPivot]:
     """Non-repainting pivot finder using local extrema with volatility/change gating.
 
-    A pivot at index i is confirmed at index i + lookback.
+    A pivot at index i is confirmed at index c_idx = i + lookback.
     Accurately tracks extending legs by updating peaks/troughs until reversal gating triggers.
     """
     n = len(highs)
@@ -348,9 +349,10 @@ def find_pivots_zigzag(
     pivots: List[PitchforkPivot] = []
     last_type: Optional[bool] = None  # True for high, False for low
 
-    for i in range(lookback, n - lookback):
-        is_local_high = all(highs[i] >= highs[j] for j in range(i - lookback, i + lookback + 1) if j != i)
-        is_local_low = all(lows[i] <= lows[j] for j in range(i - lookback, i + lookback + 1) if j != i)
+    for c_idx in range(lookback * 2, n):
+        i = c_idx - lookback
+        is_local_high = all(highs[i] >= highs[j] for j in range(i - lookback, c_idx + 1) if j != i)
+        is_local_low = all(lows[i] <= lows[j] for j in range(i - lookback, c_idx + 1) if j != i)
 
         if last_type is None:
             if is_local_high:
@@ -379,3 +381,159 @@ def find_pivots_zigzag(
                 last_type = True
 
     return pivots
+
+
+def scan_pitchfork_signals(
+    highs: List[float],
+    lows: List[float],
+    closes: List[float],
+    volumes: Optional[List[float]] = None,
+    variant: PitchforkVariant = PitchforkVariant.MODIFIED_SCHIFF,
+    setup_mode: str = "BOUNCE",
+    vp_filter: str = "VA",
+    lookback: int = 4,
+    min_change_pct: float = 0.03,
+    stop_offset_pct: float = 0.015,
+    max_eval_bars: int = 60,
+    bin_width: float = 10.0,
+) -> List[Dict[str, Any]]:
+    """Causal, bar-by-bar scanner for Pitchfork Tine Bounce and Hagopian Failure signals.
+
+    Steps through bar index `bar_i` from `lookback * 2` to `len(closes) - 1`, using ONLY
+    bars `0 .. bar_i` to confirm ZigZag pivots, construct the latest 3-pivot Pitchfork,
+    check anchored profile confluence over `P0..P2`, and emit signals at `bar_i`.
+    """
+    n = len(closes)
+    if n < lookback * 2 + 3:
+        return []
+    vols = volumes if volumes is not None else [1.0] * n
+    events: List[Dict[str, Any]] = []
+
+    # Incremental causal ZigZag state
+    pivots: List[PitchforkPivot] = []
+    last_type: Optional[bool] = None
+    active_triplet_key: Optional[Tuple[int, int, int]] = None
+    active_pf: Optional[PitchforkChannel] = None
+    active_vp_ok: bool = False
+    bounce_emitted: bool = False
+    hagopian_emitted: bool = False
+    p2_confirm_bar: int = -1
+
+    for bar_i in range(lookback * 2, n):
+        # 1. Check if bar (bar_i - lookback) is a newly confirmed local extremum using bars <= bar_i
+        cand_idx = bar_i - lookback
+        win_start = cand_idx - lookback
+        is_local_high = all(highs[cand_idx] >= highs[j] for j in range(win_start, bar_i + 1) if j != cand_idx)
+        is_local_low = all(lows[cand_idx] <= lows[j] for j in range(win_start, bar_i + 1) if j != cand_idx)
+
+        if last_type is None:
+            if is_local_high:
+                pivots.append(PitchforkPivot(index=cand_idx, price=highs[cand_idx], is_high=True))
+                last_type = True
+            elif is_local_low:
+                pivots.append(PitchforkPivot(index=cand_idx, price=lows[cand_idx], is_high=False))
+                last_type = False
+        elif last_type is True:
+            if is_local_high and highs[cand_idx] > pivots[-1].price:
+                pivots[-1] = PitchforkPivot(index=cand_idx, price=highs[cand_idx], is_high=True)
+            elif is_local_low and (pivots[-1].price - lows[cand_idx]) / max(1e-9, pivots[-1].price) >= min_change_pct:
+                pivots.append(PitchforkPivot(index=cand_idx, price=lows[cand_idx], is_high=False))
+                last_type = False
+        elif last_type is False:
+            if is_local_low and lows[cand_idx] < pivots[-1].price:
+                pivots[-1] = PitchforkPivot(index=cand_idx, price=lows[cand_idx], is_high=False)
+            elif is_local_high and (highs[cand_idx] - pivots[-1].price) / max(1e-9, pivots[-1].price) >= min_change_pct:
+                pivots.append(PitchforkPivot(index=cand_idx, price=highs[cand_idx], is_high=True))
+                last_type = True
+
+        if len(pivots) < 3:
+            continue
+
+        p0, p1, p2 = pivots[-3], pivots[-2], pivots[-1]
+        if p0.is_high == p1.is_high or p1.is_high == p2.is_high:
+            continue
+
+        t_key = (p0.index, p1.index, p2.index)
+        if t_key != active_triplet_key:
+            active_triplet_key = t_key
+            p2_confirm_bar = bar_i
+            bounce_emitted = False
+            hagopian_emitted = False
+            try:
+                active_pf = PitchforkChannel(p0, p1, p2, variant=variant)
+            except ValueError:
+                active_pf = None
+                continue
+
+            # Evaluate anchored profile over P0..P2 (all indices <= cand_idx < bar_i)
+            s_idx = min(p0.index, p2.index)
+            e_idx = max(p0.index, p2.index)
+            if vp_filter == "ALL":
+                active_vp_ok = True
+            else:
+                vp = build_profile(lows[s_idx : e_idx + 1], highs[s_idx : e_idx + 1], vols[s_idx : e_idx + 1], w=bin_width)
+                if not vp:
+                    active_vp_ok = False
+                elif vp_filter == "VA":
+                    active_vp_ok = bool(vp["val"] <= p2.price <= vp["vah"])
+                elif vp_filter == "POC":
+                    active_vp_ok = bool(abs(p2.price - vp["poc_price"]) / max(1e-9, vp["poc_price"]) <= 0.015)
+                else:
+                    active_vp_ok = True
+
+        if active_pf is None or not active_vp_ok:
+            continue
+        if bar_i - p2_confirm_bar > max_eval_bars:
+            continue
+
+        # 2. Evaluate current bar_i on active_pf
+        t_val = float(bar_i)
+        ml_now = active_pf.get_ml(t_val)
+        uml_now = active_pf.get_uml(t_val)
+        lml_now = active_pf.get_lml(t_val)
+        is_long_bounce = not p2.is_high
+
+        # Check Tine Bounce setup before updating ML reach
+        if setup_mode in ("BOUNCE", "BOTH") and not bounce_emitted and not active_pf.has_reached_ml and not active_pf.hagopian_triggered:
+            tine_now = lml_now if is_long_bounce else uml_now
+            # Emit bounce signal on P2 confirmation bar OR when bar touches/retests the active tine and closes inside channel
+            touched_tine = (lows[bar_i] <= tine_now <= highs[bar_i]) or (bar_i == p2_confirm_bar)
+            closed_inside = (closes[bar_i] >= lml_now) if is_long_bounce else (closes[bar_i] <= uml_now)
+            if touched_tine and closed_inside:
+                entry_ref = closes[bar_i]
+                stop_px = min(lows[bar_i], tine_now) * (1.0 - stop_offset_pct) if is_long_bounce else max(highs[bar_i], tine_now) * (1.0 + stop_offset_pct)
+                risk = abs(entry_ref - stop_px)
+                reward = (ml_now - entry_ref) if is_long_bounce else (entry_ref - ml_now)
+                if risk > 0 and reward > 0:
+                    bounce_emitted = True
+                    events.append({
+                        "bar_index": bar_i,
+                        "side": 1 if is_long_bounce else -1,
+                        "kind": "BOUNCE",
+                        "stop": stop_px,
+                        "ml_target": ml_now,
+                        "tine_level": tine_now,
+                        "channel_width": active_pf.channel_width,
+                    })
+
+        # Step bar state for ML reach & Hagopian failure
+        res = active_pf.eval_bar(bar_i, high=highs[bar_i], low=lows[bar_i], close=closes[bar_i])
+        if setup_mode in ("HAGOPIAN", "BOTH") and res.hagopian_triggered and not hagopian_emitted:
+            hagopian_emitted = True
+            # Hagopian breakout is in the opposite direction of the failed P2 bounce
+            hag_side = -1 if active_pf.p2_is_lower else 1
+            entry_ref = closes[bar_i]
+            tine_now = lml_now if active_pf.p2_is_lower else uml_now
+            stop_px = max(highs[bar_i], tine_now) * (1.0 + stop_offset_pct) if hag_side < 0 else min(lows[bar_i], tine_now) * (1.0 - stop_offset_pct)
+            hag_target = entry_ref + hag_side * active_pf.channel_width
+            events.append({
+                "bar_index": bar_i,
+                "side": hag_side,
+                "kind": "HAGOPIAN",
+                "stop": stop_px,
+                "ml_target": hag_target,
+                "tine_level": tine_now,
+                "channel_width": active_pf.channel_width,
+            })
+
+    return events

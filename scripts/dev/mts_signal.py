@@ -74,7 +74,8 @@ CMD_MAX = 300           # the operator command of a HIGH broadcast
 FUTURE_MIN = 10        # a record stamped later than now + this is a wrong clock: ignored
 DOT = chr(183)
 TOLD_TTL_H = 2          # OURS: a HIGH broadcast acked `told` goes loud again after this many hours (operator 2026-10-25: b-10b3d8 sat `told` ~25 h)
-RANK = {"none": 0, "told": 1, "done": 2}
+RANK = {"none": 0, "told": 1, "expired": 2, "done": 3}
+TERMINAL = ("done", "expired")   # a host that closed a broadcast this way owes no further action; a later real `done` still outranks `expired`
 
 
 def home():
@@ -251,13 +252,16 @@ def prune(h):
 REPEAT_SEC = 300   # OURS: an identical note from the same sender inside 5 minutes adds nothing (traffic.py: 87 repeated lines in 72 h)
 
 
+REPEAT_KINDS = ("note", "done")     # a ship signal re-fired with the same Result (3 times after a fast-track merge, 2026-10-28) adds nothing either
+
+
 def is_repeat(rows, rec):
     """True when `rec` is a note that a row from the same sender already says, within REPEAT_SEC. Broadcasts and acks never repeat-drop."""
-    if rec.get("kind") != "note":
+    if rec.get("kind") not in REPEAT_KINDS:
         return False
     t = datetime.strptime(rec["t"], "%Y%m%dT%H%M%SZ")
     for r in rows:
-        if r.get("kind") == "note" and r.get("from") == rec.get("from") and r.get("text") == rec.get("text"):
+        if r.get("kind") == rec.get("kind") and r.get("from") == rec.get("from") and r.get("text") == rec.get("text"):
             try:
                 if 0 <= (t - datetime.strptime(r["t"], "%Y%m%dT%H%M%SZ")).total_seconds() <= REPEAT_SEC:
                     return True
@@ -375,9 +379,10 @@ def ship_dir(cmd, cwd):
 def last_result(cwd):
     """The `Result:` line of the newest work commit in cwd (what a ship delivered), else ''. Claim, release and merge commits
     are skipped: a ship that ends on its claim commit sent the claim's "works on: <old task>" text as its Result (2026-10-23,
-    DESKTOP-F7IU69N, 9 ships in a row)."""
+    DESKTOP-F7IU69N, 9 ships in a row). First-parent only: the commits this branch made and shipped, not the trunk commits a
+    merged-in fast-track brings (a context-fold commit from trunk's Result was signalled as the ship's, 3 times, 2026-10-28)."""
     try:
-        r = git(cwd, "log", "-10", "--format=%x1e%B", check=False, timeout=5)
+        r = git(cwd, "log", "--first-parent", "-10", "--format=%x1e%B", check=False, timeout=5)
     except (OSError, subprocess.SubprocessError, RuntimeError):
         return ""
     for body in r.stdout.split(chr(0x1e))[1:]:
@@ -408,6 +413,11 @@ def auto_send_text(payload):
     if ev == "SessionStart" and payload.get("source") in (None, "startup"):
         return "session started in %s%s" % (Path(cwd).name or "?", " login=" + login() if login() else ""), "note"
     if ev == "PostToolUse" and payload.get("tool_name") == "Bash":
+        resp = payload.get("tool_response")
+        if isinstance(resp, dict):
+            rc = resp.get("exit_code") if "exit_code" in resp else resp.get("returncode")
+            if (rc is not None and rc != 0) or resp.get("is_error") is True:
+                return None
         cmd = str((payload.get("tool_input") or {}).get("command") or "")
         m = CMD.search(cmd)
         if m:
@@ -471,7 +481,7 @@ def high_open(rows):
 
 
 def ack_state(rows, bid, hostname):
-    """Best state this host reached for broadcast bid: none < told < done."""
+    """Best state this host reached for broadcast bid: none < told < expired (a by-hand/done-after-close still wins: done > expired)."""
     best = "none"
     for r in rows:
         if r.get("kind") == "ack" and r.get("id") == bid and hosts.same_host(r.get("host", ""), hostname) \
@@ -588,7 +598,7 @@ def action_block(rows, ev):
             continue
         st = own_state(rows, b)
         old = told_expired(rows, b) if st == "told" else None
-        if st == "done" or (st == "told" and ev != "SessionStart" and not old):
+        if st in TERMINAL or (st == "told" and ev != "SessionStart" and not old):
             continue
         if st == "told" and not old:
             out.append("[MTS reminder %s HIGH %s] this machine was told, not yet confirmed done: %s (when it ran: python scripts/dev/mts_signal.py ack %s done)"
@@ -614,7 +624,7 @@ def sender_status(rows):
         if not hosts.same_host(str(b.get("from", "")).split("/")[0], host()):
             continue
         hs = sorted(targets(rows, b))
-        open_ = ["%s=%s" % (h, ack_state(rows, b["id"], h)) for h in hs if ack_state(rows, b["id"], h) != "done"]
+        open_ = ["%s=%s" % (h, ack_state(rows, b["id"], h)) for h in hs if ack_state(rows, b["id"], h) not in TERMINAL]
         if open_:
             out.append("[MTS BROADCAST %s status] %d/%d hosts done; open: %s (python scripts/dev/mts_signal.py acks %s)"
                        % (b["id"], len(hs) - len(open_), len(hs), ", ".join(open_), b["id"]))
@@ -656,6 +666,13 @@ def _handle_rows(payload, sid, ev, auto):
         out.append(action_block(rows, ev))
     if ev == "SessionStart":
         out.append("\n".join(roll_lines(rows)[:4]))
+        try:
+            import exhaust
+            rb = exhaust.radar_banner(rows, now=now(), state_dir=sd / "radar")
+            if rb:
+                out.append(rb)
+        except Exception:
+            pass
     if ev == "UserPromptSubmit":
         out.append(sender_status(rows))
     if ev != "SessionStart":
@@ -1017,7 +1034,7 @@ def main(argv):
         rows = load(h)
         want = argv[1] if len(argv) > 1 else ""
         bs = [b for b in high_open(rows) if b["id"] == want] if want else \
-            [b for b in high_open(rows) if any(ack_state(rows, b["id"], t) != "done" for t in targets(rows, b))]
+            [b for b in high_open(rows) if any(ack_state(rows, b["id"], t) not in TERMINAL for t in targets(rows, b))]
         for b in bs:
             print("%s HIGH from %s at %s: %s" % (b["id"], b.get("from", "?"), b["t"], b.get("text", "")))
             for t in sorted(targets(rows, b)):

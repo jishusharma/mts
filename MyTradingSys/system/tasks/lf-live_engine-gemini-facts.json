@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T03:24:11Z",
   "commands": [
     "python scripts/dev/lab_query.py layers",
     "python scripts/dev/lab_query.py rulings live_engine"
@@ -16,7 +17,14 @@
   "id": "lf-live_engine-gemini-facts",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "1 infrastructure component covered; 45 facts cited with file:line; live_engine.md written",
+      "ref": "b7ad6ad1c",
+      "utc": "2026-10-28T03:24:11Z"
+    }
+  ],
   "layers": [
     "live_engine"
   ],
@@ -30,7 +38,12 @@
   "refs": [
     "MyTradingSys/system/ANTIGRAVITY_LAPTOP.md item C"
   ],
-  "result": "",
+  "result": "1 infrastructure component covered; 45 facts cited with file:line; live_engine.md written",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/live_engine.md (new file only)"
   ],
@@ -46,7 +59,7 @@
     "MyTradingSys/methodology/screenshot_intake.md",
     "MyTradingSys/system/DEPLOY_RUNBOOK.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "python scripts/dev/lab_query.py layers (rows with family live_engine); read the live_engine section of MyTradingSys/system/LAYERS.md and its spec/results files in layer_index.json",
     "python scripts/dev/lab_query.py rulings live_engine",
@@ -54,6 +67,7 @@
     "Write NOT_IN_DATA where the repo has no answer; never fill from memory; give no verdict",
     "Commit with a Result: line (layers covered, facts counted)"
   ],
+  "taken": "2026-10-28T03:24:11Z",
   "tests": "none (run card); proof = file exists and every fact line carries file:line or NOT_IN_DATA",
   "title": "[GEMINI] Layer fact sheet: live_engine (file:line facts only, no verdict)",
   "weight": "ROUTINE",

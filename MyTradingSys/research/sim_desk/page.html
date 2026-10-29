@@ -42,16 +42,6 @@
   #bd td:first-child, #bd th:first-child { text-align:left; }
   #bd .few { color:var(--wait); }
   footer { color:var(--mute); font-size:12px; margin-top:10px; }
-  #qs { margin-top:14px; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:8px 12px; }
-  #qs h2 { font-size:14px; margin:0 0 4px; }
-  .q { border-top:1px solid var(--line); padding:8px 0; }
-  .q:first-of-type { border-top:0; }
-  .q p { margin:2px 0; font-size:13px; }
-  .q .mute { color:var(--mute); font-size:12px; }
-  .q .opts { display:flex; gap:6px; flex-wrap:wrap; margin:6px 0 4px; }
-  .q .opts button { background:var(--bg); color:var(--ink); border:1px solid var(--line); padding:4px 10px; font-weight:500; }
-  .q .opts button.on { background:#2563eb; color:#fff; border-color:#2563eb; }
-  .q textarea { width:100%; font:inherit; color:var(--ink); background:var(--bg); border:1px solid var(--line); border-radius:5px; padding:4px 6px; min-height:34px; }
   .err { color:var(--fail); }
   #equity { display:none; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:8px 12px; margin:10px 0; }
   #equity svg { width:100%; height:180px; display:block; }
@@ -95,9 +85,13 @@
   <section id="bd"></section>
   <details id="chartbox" class="fold"><summary>Example trade charts</summary><div class="charts" id="charts"></div></details>
   <details id="ledgerbox" class="fold"><summary>Trial ledger and run details</summary><footer id="foot"></footer></details>
+  <section id="alltests"><h2>All tests <span id="atn"></span></h2><div class="say">Every test we ever wrote down, newest first. Click one to read its result card. Read-only: nothing is re-run.</div>
+    <div class="row"><select id="atk" aria-label="Kind"><option value="">All kinds</option><option value="backtest">Backtests</option><option value="audit">Audits</option><option value="thought_experiment">Thought experiments</option></select>
+    <select id="atv" aria-label="Verdict"><option value="">Any verdict</option><option value="failed">Failed</option><option value="unclear">Unclear</option><option value="passed">Passed</option><option value="other">Other</option></select>
+    <select id="atf" aria-label="Family"><option value="">All families</option></select></div>
+    <div class="scroll"><table id="attab"></table></div><div id="atcard"></div></section>
   <section id="runs"><h2>Saved runs</h2><div class="say">Every run you do is saved here. Tick two to see them side by side. Read-only: nothing is fetched or re-run.</div>
     <table id="runtab"></table><div id="sbs"></div></section>
-  <section id="qs"><h2>Questions for you</h2><div id="qlist"></div></section>
 </main>
 <script>
 const $ = id => document.getElementById(id);
@@ -132,7 +126,6 @@ async function init() {
   pickStudy(studies[0].id);
   loadRuns();
   buildConditions();
-  loadQuestions();
 }
 
 function pickStudy(id) {
@@ -180,35 +173,6 @@ function condValues() {
   const c = {};
   for (const el of $('condfields').querySelectorAll('select, input')) if (el.value !== '') c[el.name] = el.type === 'number' ? Number(el.value) : el.value;
   return c;
-}
-
-async function loadQuestions() {
-  const qs = await (await fetch('/api/questions')).json();
-  const list = $('qlist'); list.innerHTML = '';
-  for (const q of qs) {
-    const d = document.createElement('div'); d.className = 'q';
-    const t = document.createElement('p'); t.innerHTML = '<b></b>'; t.firstChild.textContent = q.question;
-    const c = document.createElement('p'); c.textContent = q.context;
-    const df = document.createElement('p'); df.className = 'mute'; df.textContent = 'If you say nothing: ' + q.default;
-    const opts = document.createElement('div'); opts.className = 'opts';
-    const box = document.createElement('textarea'); box.placeholder = 'Anything to add (optional)';
-    const st = document.createElement('p'); st.className = 'mute';
-    if (q.answer) { box.value = q.answer.text || ''; st.textContent = `Your answer (${q.answer.at}): ${q.answer.choice}`; }
-    for (const o of q.options) {
-      const b = document.createElement('button'); b.textContent = o;
-      if (q.answer && q.answer.choice === o) b.className = 'on';
-      b.onclick = async () => {
-        const r = await fetch('/api/answer', { method:'POST', headers:{'Content-Type':'application/json'},
-                                               body: JSON.stringify({ id: q.id, choice: o, text: box.value }) });
-        const a = await r.json();
-        if (!r.ok) { st.textContent = a.error; return; }
-        for (const x of opts.children) x.className = x === b ? 'on' : '';
-        st.textContent = `Saved (${a.at}): ${a.choice}. The next session reads this.`;
-      };
-      opts.appendChild(b);
-    }
-    d.append(t, c, df, opts, box, st); list.appendChild(d);
-  }
 }
 
 function values() {
@@ -343,13 +307,16 @@ function show(o) {
     (o.already_tried ? 'Same settings as an earlier try: not logged again. ' : `Trial #${o.try_no} logged. `) +
     `Setups tried on this data so far: ${o.try_no} here + ${o.prior_tries} by the original study.`;
 }
+const BD_TITLES = { year: 'Year', side: 'Side', hour: 'Hour of day', exit: 'Exit' };   // known group keys; an unknown key falls back to its own name
 function breakdown(B) {
   const box = $('bd'); box.innerHTML = '';
-  if (!B || !['year', 'side', 'hour'].some(g => (B[g] || []).length)) { box.style.display = 'none'; return; }
+  const keys = B ? Object.keys(B).filter(g => (B[g] || []).length) : [];
+  if (!keys.length) { box.style.display = 'none'; return; }
   box.style.display = 'block';
   const h = document.createElement('h2'); h.textContent = 'Where the trades came from (filled trades, average net R)'; box.appendChild(h);
   const grp = document.createElement('div'); grp.className = 'grp'; box.appendChild(grp);
-  for (const [g, name] of [['year', 'Year'], ['side', 'Side'], ['hour', 'Hour of day']]) {
+  for (const g of keys) {
+    const name = BD_TITLES[g] || g;
     const t = document.createElement('table'), hr = t.insertRow();
     for (const x of [name, 'trades', 'avg net R', '']) { const c = document.createElement('th'); c.textContent = x; hr.appendChild(c); }
     for (const r of B[g] || []) {
@@ -399,7 +366,45 @@ async function sideBySide() {
   }
   if (seq === sbsSeq) box.replaceChildren(...cards);
 }
+let allTests = [];
+async function loadAllTests() {
+  try { allTests = await (await fetch('/api/tests')).json(); } catch (e) { allTests = []; }
+  const fams = [...new Set(allTests.map(r => r.family))].sort();
+  const sel = $('atf'); for (const f of fams) { const o = document.createElement('option'); o.value = f; o.textContent = f; sel.appendChild(o); }
+  for (const id of ['atk', 'atv', 'atf']) $(id).onchange = showTests;
+  showTests();
+}
+function showTests() {
+  const k = $('atk').value, v = $('atv').value, f = $('atf').value, t = $('attab'); t.innerHTML = '';
+  const rows = allTests.filter(r => (!k || r.kind === k) && (!v || (r.verdict_class || 'other') === v) && (!f || r.family === f));
+  $('atn').textContent = '(' + rows.length + ' of ' + allTests.length + ')';
+  if (!rows.length) { t.innerHTML = '<tr><td>No test matches.</td></tr>'; return; }
+  const h = t.insertRow();
+  for (const x of ['Date', 'Test', 'Kind', 'Family', 'Verdict as written']) { const c = document.createElement('th'); c.textContent = x; h.appendChild(c); }
+  for (const r of rows) {
+    const tr = t.insertRow(); tr.style.cursor = 'pointer';
+    for (const x of [r.date || '-', r.title, (r.kind || '').replace('_', ' '), r.family, r.verdict]) { const c = tr.insertCell(); c.textContent = x; c.style.textAlign = 'left'; }
+    tr.onclick = () => openTest(r.id);
+  }
+}
+async function openTest(id) {
+  const box = $('atcard'); box.textContent = 'Loading...';
+  let d = null;
+  try { d = await (await fetch('/api/tests/' + encodeURIComponent(id))).json(); } catch (e) {}
+  if (!d || d.error) { box.textContent = 'No result card for ' + id + ' (listed only).'; return; }
+  const cards = [], add = (tag, txt, st) => { const e = document.createElement(tag); e.textContent = txt; if (st) e.style.cssText = st; cards.push(e); };
+  add('h3', d.title); add('div', 'Verdict: ' + ((d.verdict || {}).label || '-'), 'font-weight:600');
+  add('div', 'Kind: ' + (d.kind || '-') + ' | Window: ' + (d.window || 'not stated in the source') + ' | ' + (d.provenance === 'source-extracted' ? 'copied from the written note, not re-run' : 'desk or hand-made export'), 'color:var(--mute)');
+  for (const k of (d.kpis || [])) add('div', k.label + ': ' + k.value);
+  for (const w of (d.why || [])) add('div', '- ' + w);
+  for (const w of (d.what || [])) add('div', w.name + ': ' + w.value_plain, 'color:var(--mute)');
+  for (const e of (d.evidence || [])) add('div', 'from the source - ' + e.field + ' ' + e.value + ': "' + e.quote + '"', 'color:var(--mute);font-size:12px');
+  for (const [m, why] of Object.entries(d.missing || {})) add('div', 'Not in the source: ' + m + ' (' + why + ')', 'color:var(--mute);font-size:12px');
+  add('div', 'Source: ' + (d.source_files || []).join(', '), 'color:var(--mute);font-size:12px');
+  box.replaceChildren(...cards);
+}
 init();
+loadAllTests();
 </script>
 </body>
 </html>

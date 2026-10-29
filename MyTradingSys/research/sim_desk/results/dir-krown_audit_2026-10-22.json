@@ -1,0 +1,51 @@
+{
+ "id": "dir-krown_audit_2026-10-22",
+ "kind": "audit",
+ "family": "Krown Audit",
+ "title": "Krown layer audit: where it stands, what it adds, how it feeds the other layers (2026-10-22)",
+ "provenance": "source-extracted",
+ "date": "2026-10-22",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "pipeline, PROJECT_VISION item 5) yes: one dated call per day with target, window, invalidation YOUTUBE_SAMPLE.md ledger accrues slowly; never compare inside sealed windows",
+  "tone": "info"
+ },
+ "why": [
+  "> Reviewed by an independent Opus pass: REVIEW_OPUS.md (SOUND WITH FIXES). Corrections F11, F14, F18 applied in place. The wiring ideas in s5 are superseded where they conflict with LAYER_CONFLUENCE_DESIGN.md s9 (v2) and the governance rule PROJECT_VISION.md:…",
+  "daily/weekly data with checksums, fire counts, a recall check (FAIL: only 3 of 12 of his examples verify on klines; 0 strict hits),",
+  "What MTS does NOT need from Krown: more intraday entry setups, his candle-pattern rules alone (repo evidence: no edge), RSI divergence",
+  "alone (no edge on any TF in our tests), his stated hit rates (claims, H-ids only)."
+ ],
+ "kpis": [
+  {
+   "label": "net R after fees (first value in the source)",
+   "value": "-0.137",
+   "tone": "bad"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "net_r",
+   "value": -0.137,
+   "quote": "> Reviewed by an independent Opus pass: REVIEW_OPUS.md (SOUND WITH FIXES). Corrections F11, F14, F18 applied in place. The wiring ideas in s5 are superseded where they conflict with LAYER_CONFLUENCE_…"
+  }
+ ],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/krown_audit_2026-10-22/REPORT.md"
+ ],
+ "commit": "460c15e0b"
+}

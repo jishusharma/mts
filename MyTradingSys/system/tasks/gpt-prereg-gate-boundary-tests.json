@@ -1,0 +1,59 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-28T17:57:00Z",
+  "depends_on": [],
+  "done_when": "test_prereg_gate.py has at least 13 passing tests (5 old + 8 new), the report shows 3 of 3 flipped-script runs failing, and prereg_gate.py is unchanged.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "prereg_gate.py decides whether a PRE_REG may freeze, yet test_prereg_gate.py has 5 tests. Add boundary tests from the docstring formulas, expected numbers computed independently (not by calling prereg_gate.mde): z_holm for m=1,5,9, MDE at 3 (n,sd,m) points, PASS exactly at limit, BLOCK just above, sd=1 refused without --sd-source, sd=1.0001 accepted, cost>=max-gross prints n needed inf.",
+  "id": "gpt-prereg-gate-boundary-tests",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "gate-fix-1..5: prereg_gate sd/m, mean cost, BLOCKED verdict, count-only ledger rows",
+      "ref": "8f988e38fe10",
+      "utc": "2026-10-18T15:59:53Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "Producer vendor: GPT (codex_run.py build); the reviewer is a Claude or Gemini session, not GPT. Spec-derived: expected values come from the docstring formula computed independently, never from running the script. Routine code, no live path. DECISION (OURS) 2026-10-28: weight ROUTINE. Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T17:57:42Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/test_prereg_gate.py",
+    "MyTradingSys/research/layer_lab/reports/2026-10-28_gpt-prereg-gate-boundary-tests.md"
+  ],
+  "scope_out": [
+    "editing scripts/dev/prereg_gate.py",
+    "research/VERDICTS.csv",
+    "any live path"
+  ],
+  "scope_sha": "8f988e38fe10",
+  "size": "S",
+  "sources": [
+    "scripts/dev/prereg_gate.py docstring lines 1-11 (0.30 R and 0.84 are OURS labels; Phi^-1 formula stated there)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only the docstring and CLI options of prereg_gate.py; compute the expected z_holm, MDE and need values by hand or with statistics.NormalDist in the test, never by importing prereg_gate functions.",
+    "Add at least 8 new test methods covering the cases in the goal, including the exact-limit PASS and the just-above BLOCK (exit codes 0 and 1) and the exit-2 input errors.",
+    "Fail-first proof: in a scratch copy of prereg_gate.py flip 3 things (POWER_Z 0.84 to 0.80, `<=` to `<` in ok, `sd <= 1` to `sd < 1`); each flip must fail at least one new test. Record the three runs in the report.",
+    "Run python scripts/dev/test_prereg_gate.py on the real script; all pass. Write the report with the expected-value table and the three flipped runs."
+  ],
+  "tests": "scripts/dev/test_prereg_gate.py: 8 new boundary methods with independently computed expectations; each of the 3 flips (POWER_Z, <= vs <, sd <= 1) must fail one of them in a scratch copy.",
+  "title": "GPT adds spec-derived boundary tests to test_prereg_gate.py (MDE formula, 0.30 R limit, sd<=1 rule)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

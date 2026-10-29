@@ -23,6 +23,7 @@ The operator is not a developer: do these, do not ask, do not re-investigate. Ha
 ## Layers
 - Layers (Tom, Fabio, RSI, CryptoCred, positioning, session, ...): ONE index per layer with spec, code, ledger, latest results, roadmap and open cards, for Claude and Codex sessions: `MyTradingSys/system/LAYERS.md` (pointers in `system/layer_index.json`; regenerate `python scripts/dev/make_layers_md.py`). Same commit: a new backtest is a row in `system/layer_map.json`, a new layer joins a family in `layer_index.json`, a layer card gets `tasks.py new ... --layer <family>` (gate step 3ly fails on a dead pointer or an unowned layer).
 - Live state off the desktop (NUC, laptop): `sync.py start` pulls the read-only mirror; `python scripts/dev/live_mirror.py brief` before any live read; say `mirror@<utc>` when you quote it (LIVE_MIRROR.md).
+- The 12 steps a layer passes on its way to live (G0-G5, labels, pre-reg, record, validation, live parity, promotion, confluence), each with a file:line pointer: `MyTradingSys/system/LAYER_INTEGRATION.md`.
 
 ## Push, CI/CD, deploy, machines
 - Push: never from the live tree (the folder holding `.mts_live`). `sync.py ship` is the way. Cloud containers (claude.ai/code, harness branch `claude/...`): start from origin/fast-track, push the harness branch, open a PR into fast-track; CI auto-merges it when green (PARALLEL.md). `python scripts/dev/cloud_setup.py` installs the gate deps and prints the state. If sync.py itself is broken, the manual recipe is PARALLEL.md "Fallback if sync.py is broken".
@@ -53,6 +54,10 @@ The operator is not a developer: do these, do not ask, do not re-investigate. Ha
 
 ## Ask Gemini or GPT directly (no desk row)
 `python scripts/dev/ask_model.py gemini|gpt "<prompt>" [--model flash|argon|sonnet|opus] [--effort low|medium|high] [--file PATH ...]` sends the prompt to the model and prints the answer (read-only, runs in a scratch folder under F:/MTS/ask, never a work tree). Gemini = Antigravity `agy` on the Google Pro login; GPT = Codex CLI on the lab login. Use it for questions, second opinions, frame reads. Work that must change the repo stays on cards (`gemini_queue.py`, `codex_run.py`). Quota error (429) means wait for the reset it prints; do not fall back to a desk row for a question.
+
+## Commands the operator must run (no copy-paste)
+Any command the operator has to run, in admin or normal PowerShell or any shell: open it with the terminal tool (`mcp__terminal__run_in_terminal`) with the command already typed, so the operator only presses Enter or UAC Yes. For admin: `Start-Process pwsh -Verb RunAs -ArgumentList '-NoExit','-Command','<cmd>'`. Never paste the command in chat as the only delivery. Standing rule, repeated by the operator.
+
 - HIGH broadcast stuck (operator 2026-10-25: b-10b3d8 sat `told` ~25 h): `told` expires after 2 h (`TOLD_TTL_H` in mts_signal.py): loud again on every prompt, Stop blocks it; a broadcast with `--cmd` takes `ack <id> told --note "<blocker>"` only. Hosts without a session (live Lenovo): `python scripts/dev/mts_signal.py pending --host <h> --json`; mts_doctor BROADCAST warns after 6 h naming host and id; run the cmd there by hand, then `ack <id> done`.
 
 ## Archive, then delete
@@ -60,3 +65,11 @@ Research or runtime data goes to F:/MTS_backup first (local backup repo only), n
 
 ## Never scan a whole drive
 No bare `find /`, `find C:\`, `grep -r /`, `ls -R /` or `du /` in any shell: name a folder (`git ls-files`, `find MyTradingSys -name ...`). A timed-out shell call leaves the find.exe running (JIS-NUC 2026-10-26: 9 h, 10.9M handles, 0 MB free). Check: `powershell -File scripts/operator/runaway_check.ps1`; see RUNAWAY_GUARD.md.
+
+## Hand-run dev tools (named readers, so the wiring scan's NO-READER warning stays quiet)
+- `scripts/dev/api_batch.py`: bulk non-urgent LLM jobs (extractions, quote checks, classification) on the Claude API credit at the half-price Batches rate. Run by hand: `submit jobs.jsonl --max-usd 2`, `status <id>`, `fetch <id>`. Key from env `ANTHROPIC_API_KEY` only. Reader: an operator or Builder session that has a batch of >20 non-urgent prompts.
+- `scripts/dev/operator_material_index.py`: local-only index of operator screenshots and notes on one machine (JSONL outside the repo, counts only on stdout). Run by hand per machine: `python scripts/dev/operator_material_index.py --roots <dir>`. Reader: the Eagle_Eyes screenshot intake.
+- `scripts/dev/cbp_scorecard.py`: per-analyst row/trade/tradable recount of the CBP store (read-only, counts only). Run by hand on the host that holds the store (JIS-NB): `python scripts/dev/cbp_scorecard.py [--store snap.json]`. Michael (@MichaelPizzino) and Michaal (@michaelvdpoppe) are different analysts. Reader: the CBP scorecard (research/cbp/SCORECARD_GPT.md).
+- `scripts/dev/gateway_run.py`: runs one headless Opus card on the API gateway in the background on the station that holds the key (GATEWAY_NUC.md). Run by hand: `probe`, `start --card <id> --run <O1|O2|O3>`, `status`; `tick` reports and relaunches dead or hung runs (compact, then resume). Watching is a Haiku job: `handover/GATEWAY_HAIKU.md`. Reader: the operator or coordinator that sends a card to the gateway.
+- `scripts/dev/refresh_main_checkout.py`: brings a stale primary checkout up to origin/fast-track without losing work (named stash, ff-only merge, pop). Dry run by default, `--apply` to act. Reader: the operator or Doctor on an `[MTS ACTION REQUIRED]` refresh notice (ack line printed at the end).
+- Status/dashboard: say "status" and run `python scripts/dev/status_board.py`, paste its output inline in the chat (no links); `scripts/dev/status_board.py` prints budget, speed, value, missing work and hygiene tables in about 12 s.

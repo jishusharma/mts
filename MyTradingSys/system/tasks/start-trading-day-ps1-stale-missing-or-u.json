@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest -q MyTradingSys/tests/test_state_code_read.py"
+  ],
+  "created": "2026-10-25T19:27:06Z",
+  "depends_on": [],
+  "done_when": "scripts/live/state_code_read.py (read_state_code -> OK <letter>, STALE, MISSING, UNREADABLE or INVALID) and state_code_read.ps1 exist; start-trading-day.ps1 raises ADVERSE FLOW only on an exact 'OK <letter>' from the helper; 9 tests in test_state_code_read.py pass and each fails before the helper exists.",
+  "est_turns": 26,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "The live loop's ADVERSE FLOW exit alert (start-trading-day.ps1:660-668) reads state_code.json without an age check, and the STALE check (:640-653) and both try/catch blocks swallow errors silently. A stale, missing, unreadable or INVALID reading must give one STATE_CODE UNAVAILABLE line and never an ADVERSE FLOW alert from old data.",
+  "id": "start-trading-day-ps1-stale-missing-or-u",
+  "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Launch scripts derive the tree root from their own location, not the dev checkout path",
+      "ref": "10d793945d6b",
+      "utc": "2026-10-22T05:41:17Z"
+    }
+  ],
+  "layers": [],
+  "live_path": true,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-26 ACCEPT (Sonnet reviewer Agent aadbae80 verified, planner DECISION OURS). Found 2026-10-26 by Session_Planner drafter D: no card or test covers the reader side of state_code.json (emitter side has 30+ StateCodeEmitterTest cases). A dead emitter leaves the last valid file, so ADVERSE FLOW fires on old data. live_path set true (it edits the live loop script). Fails closed on any helper failure; builder never deploys. Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-25T19:47:12Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/core/start-trading-day.ps1",
+    "scripts/live/state_code_read.py",
+    "scripts/live/state_code_read.ps1",
+    "MyTradingSys/tests/test_state_code_read.py"
+  ],
+  "scope_out": [
+    "src/main/java/datafeed/StateCodeEmitter.java",
+    "orders, accounts, HALT files",
+    "deploy or restart of any process"
+  ],
+  "scope_sha": "10d793945d6b",
+  "size": "M",
+  "sources": [
+    "scripts/core/start-trading-day.ps1:640-668 (existing 90 s threshold, kept, OURS)",
+    "src/main/java/datafeed/StateCodeEmitter.java:659-660 comment: INVALID matches neither ^S nor ^L (SOURCED)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read start-trading-day.ps1 l.636-672 and StateCodeEmitter.java l.655-662 (timestamp_utc, state INVALID, readers match ^S and ^L)",
+    "Write the tests first (red), then state_code_read.py: age from timestamp_utc against now; age below -2 s (future stamp, clock skew; OURS) is INVALID; STALE above 90 s; MISSING; UNREADABLE (bad json, no timestamp); INVALID state; else prints 'OK <first letter>'; exit 0 only for OK",
+    "Add state_code_read.ps1 (dot-sourced): Get-StateCodeReading runs the helper with a 10 s timeout (OURS) and returns its text only when the exit code is 0 and the output matches exactly ^OK [A-Z]$; nonzero exit, empty output, python not on PATH, timeout or any exception returns 'UNAVAILABLE helper'",
+    "Wire start-trading-day.ps1: one call replaces both blocks (l.640-668); ADVERSE FLOW only on an exact 'OK S' or 'OK L' that opposes the position side; any other result adds 'STATE_CODE UNAVAILABLE (<status>)' once per change; no empty catch; direction and stop logic unchanged",
+    "Restart case: a file left by an earlier run (age 1 day, state S..) reads STALE; the helper reads files only, so a non-trade balance move cannot change its result (say so in the commit body); builder never deploys or restarts"
+  ],
+  "tests": "test_state_code_read.py: stale file with S/L state is STALE; missing; corrupt json or no timestamp; INVALID state; future timestamp_utc is INVALID; fresh OK <letter>; ps1 wrapper under powershell.exe with a stub python (nonzero exit, empty output, not on PATH, timeout) is never ADVERSE; no empty catch",
+  "title": "start-trading-day.ps1: stale, missing or unreadable state_code.json must not feed ADVERSE FLOW and must alert (fail closed)",
+  "weight": "CRITICAL",
+  "worker": "session"
+}

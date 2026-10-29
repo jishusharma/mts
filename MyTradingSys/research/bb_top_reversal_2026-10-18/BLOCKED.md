@@ -7,3 +7,6 @@ Arithmetic (prereg_gate.py): n 759 days, sd 1.5 R, m 58 -> z_holm 3.332, MDE (3.
 What would unblock: (a) maker/limit entry and exit modelling with a written fee decision (operator), (b) a wider-stop variant (stop >= ~0.5% so cost <= 0.2 R) as a new pre-reg, (c) an operator overrule of the 0.30 R plausible-gross cap. No parameter search may rescue the gate.
 
 DECISION (OURS, conservative default): BLOCKED, no run. sd = 1.5 is the worst-case bound rather than a scored proxy, to avoid reading outcomes; with sd 1.0 the cost term still blocks.
+
+## Kill scope (REGATE_AUDIT.md fix 4; OURS wording from the audit Q5 text)
+FAIL/INCONCLUSIVE: stop; this BLOCK (count-only, no outcome read) covers only the 12 registered 15m BB(20,2) top-reversal short variants (E1-E3 x S1-S2 x two exits) on BTCUSDT at the median stop 0.286 %; it blocks on cost alone (0.349 R > 0.30 R), so the family is not killed: a wider stop, a maker entry or another timeframe is a new PRE_REG with new TRIAL_LEDGER rows.

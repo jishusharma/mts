@@ -72,14 +72,30 @@ def created_epoch(card):
 
 def claims(repo, now):
     rows = []
+    seen = set()
     for p in sorted((Path(repo) / SYS / "claims").glob("*.md")):
         kv = dict(re.findall(r"^(\w+):\s*(.*)$", p.read_text(encoding="utf-8"), re.M))
         try:
             age_h = (now - int(kv.get("epoch", ""))) / 3600.0
         except ValueError:
             age_h = None
+        seen.add(p.stem)
         rows.append({"task": kv.get("task", p.stem), "host": kv.get("host", "?"), "account": kv.get("account", "?"),
                      "age_h": None if age_h is None else round(age_h, 1)})
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import sync
+        for slug, kv in sync.open_claims(Path(repo), fetch=False):
+            if slug in seen:
+                continue
+            try:
+                age_h = (now - int(kv.get("epoch", ""))) / 3600.0
+            except ValueError:
+                age_h = None
+            rows.append({"task": kv.get("task", slug), "host": kv.get("host", "?"), "account": kv.get("account", "?"),
+                         "age_h": None if age_h is None else round(age_h, 1)})
+    except Exception:
+        pass
     return rows
 
 

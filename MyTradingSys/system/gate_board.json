@@ -7,7 +7,7 @@
    "proof": [
     "MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md"
    ],
-   "next": "G3 blind marks (READER_PROTOCOL.md + g3_marks_2026-10-16)"
+   "next": "Live validation with drawn chart flags (d-live-validation; G3 blind marks dropped)"
   },
   {
    "layer": "fabio",
@@ -15,7 +15,7 @@
    "proof": [
     "MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md"
    ],
-   "next": "G1 coverage check, then G3"
+   "next": "G1 coverage check, then live validation (d-live-validation)"
   },
   {
    "layer": "malkan",
@@ -23,7 +23,7 @@
    "proof": [
     "MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md"
    ],
-   "next": "G3 blind marks MAL-2/5, MAL-16/17 (g3_marks_2026-10-16)"
+   "next": "Live validation + 1d/1w RSI divergence flags (d-live-validation; G3 blind marks dropped)"
   },
   {
    "layer": "krown",
@@ -31,7 +31,7 @@
    "proof": [
     "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_SETUP_CATALOG.md (commit f4a5182a)"
    ],
-   "next": "G3 blind marks (not started)"
+   "next": "Live validation with drawn chart flags (d-live-validation; G3 blind marks dropped)"
   }
  ]
 }

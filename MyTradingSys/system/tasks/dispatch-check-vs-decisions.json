@@ -1,0 +1,75 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "context": {
+    "calls_to_edit": 13,
+    "folded": "2026-10-28T08:22:52Z",
+    "misses": 0,
+    "reads": [],
+    "session": "agent-a92794d20661b76fe"
+  },
+  "created": "2026-10-28T06:23:18Z",
+  "depends_on": [],
+  "done_when": "tasks.py dispatch and the planner exclude any open card whose title or scope matches a decision marked as a no-go in OPERATOR_DECISIONS.md, showing why-excluded; a one-step verb drops a card by decision id; tests fail on the pre-change code.",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "A card that contradicts a recorded operator decision must never be dispatched. Docker card docker-vs-windows-test-speed ran on 2026-10-27 after the operator had decided against Docker (chat only, never recorded).",
+  "id": "dispatch-check-vs-decisions",
+  "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "plan hang: read claims once per run, not per card",
+      "ref": "33ddfe6bb991",
+      "utc": "2026-10-27T23:53:54Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "eb305a9f043c Result: 5-day wiring audit & fixes (4b2 successor_wake, 48h exhaust radar, 6 ",
+      "ref": "MyTradingSys/system/OPERATOR_DECISIONS.md",
+      "utc": "2026-10-27T22:21:22Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T06:23:34Z",
+  "refs": [
+    "MyTradingSys/system/OPERATOR_DECISIONS.md",
+    "MyTradingSys/system/tasks/docker-vs-windows-test-speed.json"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/tasks.py",
+    "scripts/dev/test_tasks.py",
+    "MyTradingSys/system/OPERATOR_DECISIONS.md"
+  ],
+  "scope_out": [
+    "No live tree, no deploy, no change to existing card states beyond the drop verb"
+  ],
+  "scope_sha": "33ddfe6bb991",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read cmd_dispatch in tasks.py and the existing apply-op drop; decide a machine-readable no-go marker in decision JSON (DECISION OURS, conservative: keyword list field)",
+    "Add the check to dispatch ranking: card text vs no-go keywords, excluded with why",
+    "Add a one-step verb: tasks.py drop-by-decision <card> <decision-id> that drops and records the id",
+    "Write tests that fail before the change; run run_all_tests.py --quick"
+  ],
+  "tests": "New tests in scripts/dev/test_tasks.py: a card matching a no-go decision is excluded with a reason; the drop verb sets state dropped with the decision id in the note; a card with no match is unchanged. Each fails on the pre-change code.",
+  "title": "Dispatch check: compare card to OPERATOR_DECISIONS.md before dispatch; one-step card drop",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

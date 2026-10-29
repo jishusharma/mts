@@ -1,0 +1,76 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/fetch_captions_timed.py --analyst habib --canonical-out <CBP_HOME>/raw_transcripts_canonical hymqmEfCGrw R15Ao0XUoV8 c9qf7QJroAE",
+    "python -c \"import sys;sys.path.insert(0,'MyTradingSys');import cbp;d=cbp.load();print(len([r for r in d['rows'] if r['analyst']=='habib']),'habib rows')\""
+  ],
+  "context": {
+    "calls_to_edit": 10,
+    "folded": "2026-10-29T17:11:42Z",
+    "misses": 11,
+    "reads": [
+      "scripts/dev/cbp_run.py",
+      "scripts/dev/verdicts.py",
+      "MyTradingSys/research/tom_correlation_trick_2026-10-26/EXTRACT.md",
+      "scripts/dev/prereg_gate.py"
+    ],
+    "session": "agent-a50e301054c310c4c"
+  },
+  "created": "2026-10-28T12:29:38Z",
+  "depends_on": [],
+  "done_when": "The CBP store has exactly 3 rows for analyst habib: hymqmEfCGrw, R15Ao0XUoV8, c9qf7QJroAE, each quote_verified true; the row-count command above prints 3.",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Habib has 0 rows in the CBP store (10-27 CBP_STATUS noted a 429); add verified rows for hymqmEfCGrw (2026-10-27), R15Ao0XUoV8 (2026-10-25/26), c9qf7QJroAE (2026-10-22). c9qf7QJroAE is 6 days old: cbp_run.py's normal --force path filters to the last 5 days at both fetch and extract time, so it needs the direct-id fetch + a widened local_videos cutoff, not a plain --force run.",
+  "id": "cbp-ingest-habib-s-3-missing-videos-hymq",
+  "lane": "DSA",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "cbp.query: normalise symbol aliases (BTCUSDT, btc-perpetual -> BTC)",
+      "ref": "57f0ad0c6e68",
+      "utc": "2026-10-28T13:25:52Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "EVIDENCE 2026-10-28 (Discord #trading-updates, IST): Habib posted 10/22 c9qf7QJroAE, 10/25-26 live R15Ao0XUoV8, 10/27 hymqmEfCGrw 'Bitcoin: ONE last retest before the dump?!'; CBP store rows.json has none of them (Habib = 0 rows; 10-27 CBP_STATUS noted a 429). Operator wants every analyst, every transcript. Run cbp_run for these ids with captions, then verify_extract_quotes.py to exit 0.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T15:01:13Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/fetch_captions_timed.py",
+    "scripts/dev/cbp_run.py",
+    "MyTradingSys/cbp/__init__.py"
+  ],
+  "scope_out": [
+    "the twice-daily scheduler / canonical-path repair (cbp-ingestion card owns that)",
+    "other analysts' backfill; live tree; analysts.json schedule changes"
+  ],
+  "scope_sha": "57f0ad0c6e68",
+  "size": "S",
+  "sources": [
+    "note: Discord #trading-updates evidence 2026-10-28 (Habib's 3 posts, CBP store had 0 rows)",
+    "scripts/dev/cbp_run.py (WINDOW_DAYS/local_videos cutoff; fetch_captions_timed.py videos positional arg)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Fetch the 3 raw transcripts directly: python scripts/dev/fetch_captions_timed.py --analyst habib --canonical-out <CBP_HOME>/raw_transcripts_canonical hymqmEfCGrw R15Ao0XUoV8 c9qf7QJroAE (positional video ids skip the --channel/--since filtering; add --cookies <CBP_HOME>/cookies_utube_1.txt if present). CBP_HOME = env CBP_HOME, else F:/CryptoScrapper, else cbp.default_cbp_home().",
+    "cbp_run.py's local_videos(cutoff) also drops anything published before now-5d, so a plain --force run still skips c9qf7QJroAE (6 days old).",
+    "Reuse cbp_run.py's own parse_transcript/llm_extract/build_row/cbp.save for just these 3 ids with a widened cutoff, e.g. local_videos('2000-01-01'); same verbatim-quote check (build_row/vq.first_missing) still runs. Do not change cbp_run.py for this card.",
+    "Verify with the row-count command below that habib has exactly 3 new rows, each quote_verified true.",
+    "tasks.py done cbp-ingest-habib-s-3-missing-videos-hymq --result '<n> rows added'; ship."
+  ],
+  "tests": "",
+  "title": "CBP: ingest Habib's 3 missing videos (hymqmEfCGrw, R15Ao0XUoV8, c9qf7QJroAE)",
+  "weight": "ROUTINE",
+  "worker": ""
+}

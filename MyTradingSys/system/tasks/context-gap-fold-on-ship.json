@@ -30,9 +30,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "tasks.py stop_tag: a never-refreshed card is not stale work",
-      "ref": "9135c745c08b",
-      "utc": "2026-10-25T12:02:20Z"
+      "line": "tasks.py: list and dispatch now show a card's SHIPPED/STALE trunk tag",
+      "ref": "d2e575feb51c",
+      "utc": "2026-10-27T09:55:35Z"
     }
   ],
   "layers": [],
@@ -42,7 +42,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-25T12:09:14Z",
+  "refreshed": "2026-10-27T19:29:48Z",
   "refs": [
     "MyTradingSys/research/mts_doctor/CONTEXT_FILES_DESIGN.md"
   ],
@@ -55,7 +55,7 @@
   "scope_out": [
     "sync.py, gate_select.py, run_all_tests.py, supervisor.py, roles, CLAUDE.md"
   ],
-  "scope_sha": "9135c745c08b",
+  "scope_sha": "d2e575feb51c",
   "size": "M",
   "sources": [],
   "state": "ready",

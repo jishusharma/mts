@@ -10,10 +10,11 @@ import java.util.*;
 /**
  * Pitchfork Signal Layer (MTS Layer Family 'pitchfork').
  * Implements Modified Schiff Pitchfork geometry, anchored volume profile confluence (FORMULAS 18.1),
- * and resting limit tine-touch execution.
+ * resting limit tine-touch execution, and Hagopian momentum failure breakouts.
  *
  * <p>Reference Specifications:
- * - RESEARCH_PITCHFORK_LAYER.md: Rules P-01 (Pivots), P-02 (Schiff angle normalization), P-03 (80% ML rule).
+ * - RESEARCH_PITCHFORK_LAYER.md: Rules P-01 (Pivots), P-02 (Schiff angle normalization), P-03 (80% ML rule),
+ *   and P-04 (Hagopian failure breakout rule).
  * - PHASE2_4H_POC_STUDY.md: 4H timeframe validation (1,273 setups, 2020-2026), proving that resting
  *   limit orders on tine retests eliminate fee drag (+0.05% to +0.88% net) and Value Area confluence
  *   boosts net return to +0.61% with a 1.63 Profit Factor.
@@ -35,6 +36,7 @@ public final class PitchforkSignalLayer {
     public static final double STOP_OFFSET_PCT = 0.015; // 1.5% structural stop beyond tine
     public static final double POC_TOLERANCE_PCT = 0.015; // 1.5% POC confluence band
     public static final double TIGHT_POC_TOLERANCE_PCT = 0.0075; // 0.75% high conviction POC band
+    public static final double HAGOPIAN_MIN_APPROACH_RATIO = 0.15; // Rule P-04: >= 15% approach toward ML before failure
 
     public static class Pivot {
         public final int index;
@@ -76,6 +78,7 @@ public final class PitchforkSignalLayer {
         public final double offsetUml;
         public final double offsetLml;
         public final double channelWidth;
+        public final double halfWidth;
         public final boolean isAscending;
         public final boolean p2IsLower;
 
@@ -116,6 +119,7 @@ public final class PitchforkSignalLayer {
 
             this.p2IsLower = (offsetP2 <= 0.0);
             this.channelWidth = Math.abs(this.offsetUml - this.offsetLml);
+            this.halfWidth = this.channelWidth / 2.0;
         }
 
         public double getMl(double t) {
@@ -291,7 +295,7 @@ public final class PitchforkSignalLayer {
      */
     public static List<ObjectNode> detect(ObjectMapper mapper, ObjectNode root, JsonNode klines4h, JsonNode klines1m, String symbol) {
         try {
-            return detectUnsafe(mapper, root, klines4h);
+            return detectUnsafe(mapper, root, klines4h, klines1m, symbol);
         } catch (RuntimeException | OutOfMemoryError | StackOverflowError e) {
             return new ArrayList<>(); // fail closed: malformed input never throws into the live candidate builder
         }
@@ -304,7 +308,37 @@ public final class PitchforkSignalLayer {
         return !Double.isNaN(x) && !Double.isInfinite(x) && x > 0;
     }
 
-    private static List<ObjectNode> detectUnsafe(ObjectMapper mapper, ObjectNode root, JsonNode klines4h) {
+    /**
+     * Checks 1m bars for a microstructural rejection wick at the active tine level (for bounce setups)
+     * or momentum continuation (for Hagopian breakouts) within the last 20 1m bars.
+     */
+    private static boolean hasMicroRejectionAtZone(JsonNode klines1m, double zonePrice, boolean isLong) {
+        if (klines1m == null || !klines1m.isArray() || klines1m.size() == 0 || !finitePositive(zonePrice)) {
+            return false;
+        }
+        int n = klines1m.size();
+        int start = Math.max(0, n - 20);
+        for (int i = start; i < n; i++) {
+            JsonNode bar = klines1m.get(i);
+            if (bar == null || !bar.isArray() || bar.size() < 5) continue;
+            double o = bar.get(1).asDouble();
+            double h = bar.get(2).asDouble();
+            double l = bar.get(3).asDouble();
+            double c = bar.get(4).asDouble();
+            if (!finitePositive(h) || !finitePositive(l) || h <= l) continue;
+            double range = h - l;
+            double body = Math.abs(c - o);
+            double wickRatio = 1.0 - (body / range);
+            if (isLong) {
+                if (l <= zonePrice && c > zonePrice && wickRatio >= 0.5) return true;
+            } else {
+                if (h >= zonePrice && c < zonePrice && wickRatio >= 0.5) return true;
+            }
+        }
+        return false;
+    }
+
+    private static List<ObjectNode> detectUnsafe(ObjectMapper mapper, ObjectNode root, JsonNode klines4h, JsonNode klines1m, String symbol) {
         List<ObjectNode> candidates = new ArrayList<>();
         if (root == null || mapper == null) {
             return candidates;
@@ -348,7 +382,7 @@ public final class PitchforkSignalLayer {
             if (timestamps[i] < 0 || (i > 0 && timestamps[i] <= timestamps[i - 1])) {
                 return candidates; // bars must be strictly ascending in time
             }
-            if (!finitePositive(highs[i]) || !finitePositive(lows[i]) || highs[i] < lows[i]
+            if (!finitePositive(highs[i]) || !finitePositive(lows[i]) || !finitePositive(closes[i]) || highs[i] < lows[i]
                     || Double.isNaN(volumes[i]) || Double.isInfinite(volumes[i]) || volumes[i] < 0) {
                 return candidates; // one bad bar poisons the series
             }
@@ -404,18 +438,77 @@ public final class PitchforkSignalLayer {
             return candidates;
         }
 
+        // Track post-P2 path from p2.index + 1 through n4h - 1 for ML reach and Rule P-04 Hagopian Failure
+        boolean hasReachedMl = false;
+        double maxApproachRatio = 0.0;
+        for (int idx = p2.index + 1; idx < n4h; idx++) {
+            double t = (double) idx;
+            double mlAt = pf.getMl(t);
+            double umlAt = pf.getUml(t);
+            double lmlAt = pf.getLml(t);
+
+            if (!hasReachedMl) {
+                if (lows[idx] <= mlAt && mlAt <= highs[idx]) {
+                    hasReachedMl = true;
+                } else if (pf.p2IsLower && (closes[idx] >= mlAt || highs[idx] >= mlAt)) {
+                    hasReachedMl = true;
+                } else if (!pf.p2IsLower && (closes[idx] <= mlAt || lows[idx] <= mlAt)) {
+                    hasReachedMl = true;
+                }
+            }
+            if (!hasReachedMl && pf.halfWidth > 0) {
+                double distTraveled = pf.p2IsLower ? (closes[idx] - lmlAt) : (umlAt - closes[idx]);
+                double ratio = Math.max(0.0, Math.min(1.0, distTraveled / pf.halfWidth));
+                if (ratio > maxApproachRatio) {
+                    maxApproachRatio = ratio;
+                }
+            }
+        }
+
         double currentBarT = (double) (n4h - 1);
         double mlNow = pf.getMl(currentBarT);
         double umlNow = pf.getUml(currentBarT);
         double lmlNow = pf.getLml(currentBarT);
+        double lastClose = closes[n4h - 1];
 
-        boolean isLong = !p2.isHigh; // Swing low -> bounce long towards ML
-        String setupType = isLong ? "PF-REV-L" : "PF-REV-S";
-        String direction = isLong ? "long" : "short";
+        // Rule P-04: Hagopian Failure Breakout check on the latest closed 4H bar
+        boolean hagopianTriggered = !hasReachedMl
+                && maxApproachRatio >= HAGOPIAN_MIN_APPROACH_RATIO
+                && (pf.p2IsLower ? (lastClose < lmlNow) : (lastClose > umlNow));
 
-        double entryPrice = isLong ? lmlNow : umlNow;
-        double stopPrice = isLong ? entryPrice * (1.0 - STOP_OFFSET_PCT) : entryPrice * (1.0 + STOP_OFFSET_PCT);
-        double targetPrice = mlNow;
+        boolean isLong;
+        String setupType;
+        String direction;
+        String zoneName;
+        String zoneType;
+        double entryPrice;
+        double stopPrice;
+        double targetPrice;
+
+        if (hagopianTriggered) {
+            // Hagopian failure reverses the failed P2 bounce: lower-tine breakdown -> short; upper-tine breakout -> long
+            isLong = !pf.p2IsLower;
+            setupType = isLong ? "PF-HAG-L" : "PF-HAG-S";
+            direction = isLong ? "long" : "short";
+            zoneName = isLong ? "pitchfork_hagopian_uml" : "pitchfork_hagopian_lml";
+            zoneType = "pitchfork_hagopian";
+            entryPrice = lastClose;
+            double originTine = pf.p2IsLower ? lmlNow : umlNow;
+            stopPrice = isLong
+                    ? Math.min(entryPrice, originTine) * (1.0 - STOP_OFFSET_PCT)
+                    : Math.max(entryPrice, originTine) * (1.0 + STOP_OFFSET_PCT);
+            targetPrice = isLong ? (entryPrice + pf.channelWidth) : (entryPrice - pf.channelWidth);
+        } else {
+            // Standard Rule P-03 Tine Bounce towards Median Line
+            isLong = !p2.isHigh; // Swing low -> bounce long towards ML
+            setupType = isLong ? "PF-REV-L" : "PF-REV-S";
+            direction = isLong ? "long" : "short";
+            zoneName = isLong ? "pitchfork_lml" : "pitchfork_uml";
+            zoneType = "pitchfork_tine";
+            entryPrice = isLong ? lmlNow : umlNow;
+            stopPrice = isLong ? entryPrice * (1.0 - STOP_OFFSET_PCT) : entryPrice * (1.0 + STOP_OFFSET_PCT);
+            targetPrice = mlNow;
+        }
 
         if (!finitePositive(entryPrice) || !finitePositive(targetPrice) || !finitePositive(stopPrice)) {
             return candidates;
@@ -424,7 +517,7 @@ public final class PitchforkSignalLayer {
             return candidates; // price already through the stop: stale setup
         }
         if (isLong ? targetPrice <= entryPrice : targetPrice >= entryPrice) {
-            return candidates; // target must lie on the profit side of the tine
+            return candidates; // target must lie on the profit side of the entry
         }
         double risk = Math.abs(entryPrice - stopPrice);
         double reward = Math.abs(targetPrice - entryPrice);
@@ -433,18 +526,21 @@ public final class PitchforkSignalLayer {
         }
 
         double grossRR = reward / risk;
-        double netRR = (reward - entryPrice * 0.0012) / (risk + entryPrice * 0.0012);
+        // B070 parity: use single shared fee model in ExecutionMathConstants instead of hardcoded fee literals
+        double netRR = ExecutionMathConstants.netRR(symbol, entryPrice, targetPrice, stopPrice);
         double distPct = Math.abs(currentPrice - entryPrice) / currentPrice * 100.0;
         String tier = (distPct <= 0.1) ? "trigger_ready" : (distPct <= 0.5) ? "conditional" : "ignore";
+
+        boolean microRejection = hasMicroRejectionAtZone(klines1m, entryPrice, isLong);
 
         ObjectNode cand = mapper.createObjectNode();
         cand.put("setup_type", setupType);
         cand.put("direction", direction);
 
         ObjectNode zone = cand.putObject("zone");
-        zone.put("name", isLong ? "pitchfork_lml" : "pitchfork_uml");
+        zone.put("name", zoneName);
         zone.put("price", Math.round(entryPrice * 100.0) / 100.0);
-        zone.put("type", "pitchfork_tine");
+        zone.put("type", zoneType);
 
         ObjectNode math = cand.putObject("math");
         math.put("entry", Math.round(entryPrice * 100.0) / 100.0);
@@ -473,20 +569,28 @@ public final class PitchforkSignalLayer {
         pfNode.put("va_confluent", inValueArea);
         pfNode.put("poc_confluent", nearPoc);
         pfNode.put("tight_poc_confluent", tightPoc);
+        pfNode.put("hagopian_triggered", hagopianTriggered);
+        pfNode.put("max_ml_approach_ratio", Math.round(maxApproachRatio * 1000.0) / 1000.0);
 
         ObjectNode proof = cand.putObject("proof");
         int proofCount = 0;
         if (inValueArea) proofCount++;
         if (nearPoc) proofCount++;
         if (grossRR >= 2.0) proofCount++;
+        if (microRejection) proofCount++;
+        if (hagopianTriggered) proofCount++;
         proof.put("proof_count", proofCount);
         proof.put("proof_va_confluent", inValueArea);
         proof.put("proof_poc_confluent", nearPoc);
         proof.put("proof_rr_favorable", grossRR >= 2.0);
+        proof.put("proof_1m_wick_rejection", microRejection);
+        proof.put("proof_hagopian_breakout", hagopianTriggered);
 
         ObjectNode score = cand.putObject("score");
-        score.put("raw", inValueArea ? (tightPoc ? 95 : 85) : 75);
-        score.put("confidence", tightPoc ? "HIGH" : "MEDIUM");
+        int baseRaw = inValueArea ? (tightPoc ? 95 : 85) : 75;
+        if (microRejection) baseRaw = Math.min(98, baseRaw + 5);
+        score.put("raw", baseRaw);
+        score.put("confidence", (tightPoc || (inValueArea && microRejection)) ? "HIGH" : "MEDIUM");
         score.put("proof_count", proofCount);
         score.put("confluence_bonus", inValueArea ? 20 : 10);
 
@@ -494,4 +598,3 @@ public final class PitchforkSignalLayer {
         return candidates;
     }
 }
-

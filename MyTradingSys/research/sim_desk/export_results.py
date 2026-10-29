@@ -166,7 +166,7 @@ def t09_result():
             "volume_fvg trades the opposite side of the backtested reading: 0 of 24 matched signals have the same side (%d side differences in the table)." % side_sum,
             "The RSI layer trades events (cross, failure, rejection@40) that no backtest covered: 5m 384 of 461 signals, 15m 126 of 147, 1h 25 of 28.",
             "Every layer exits by one fixed 1 % / 2 % / 8-bar bracket that no backtest used. About 94 % time exits follow from that bracket alone (5m), not from bad luck.",
-            "Good news: turn_of_candle, session_momentum, cvd_absorption, sr_flip and failed_msb match bit for bit (0 differences in 3,200+ signals).",
+            "Good news: turn_of_candle, session_momentum, cvd_absorption, sr_flip and failed_msb match bit for bit (0 differences in 3,156 signals).",
         ],
         "kpis": [
             {"label": "days replayed", "value": str(len(par["days"]))},

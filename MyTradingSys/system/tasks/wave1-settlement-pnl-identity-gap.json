@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/research/critical_test_wave1_2026-10-30/item2_settlement_identity.py"
+  ],
+  "created": "2026-10-29T19:38:26Z",
+  "depends_on": [],
+  "done_when": "a second recorded testnet capture spanning one 08:00 settlement with known start/end equity shows which formula matches; the code is fixed with a test that fails on the old formula, or the identity assumption is shown wrong with numbers",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Resolve whether mainnet_pnl.realized_btc (change + cashflow for profit_as_cashflow trades) double counts: on the recorded 10-10 log it gives -5.45e-06 BTC since 08:00Z vs -6.30e-07 from equity = balance + session_rpl + session_upl; also the 10-10 08:00 settlement entry is missing although a position was held 07:15-09:15",
+  "id": "wave1-settlement-pnl-identity-gap",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Wave 1 item 2, severity MED (the daily-loss guard reads this number); single-model, review card wave1-review-item2-settlement-booking",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/execution/mainnet_pnl.py, capture_txlog_settlement.py"
+  ],
+  "scope_out": [
+    "no orders; testnet read-only capture on the host holding testnet secrets (operator or DSA run)"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/critical_test_wave1_2026-10-30/item2_settlement_identity.py",
+    "MyTradingSys/research/loose_code/txlog_capture_2026-10-10_jishu_11.json"
+  ],
+  "state": "raw",
+  "steps": [
+    "Run capture_txlog_settlement.py before and after an 08:00 UTC settlement with an open testnet position, saving equity at both ends",
+    "Compare equity delta with daily_pnl_btc on the same window"
+  ],
+  "tests": "MyTradingSys/execution/test_mainnet_pnl.py::test_recorded_settlement_identity (new; must fail on the current formula if the gap is real)",
+  "title": "FINDING: daily P/L formula disagrees with Deribit equity identity on recorded testnet log",
+  "weight": "CRITICAL",
+  "worker": "agent"
+}

@@ -4,6 +4,15 @@
   "commands": [
     "python scripts/dev/shot.py status"
   ],
+  "context": {
+    "calls_to_edit": 8,
+    "folded": "2026-10-28T08:36:30Z",
+    "misses": 1,
+    "reads": [
+      "MyTradingSys/research/live_reads/2026-10-26_cross_market_tools/mtf_bias.py"
+    ],
+    "session": "agent-a30c58e3e785d0c20"
+  },
   "created": "2026-10-26T20:05:00Z",
   "depends_on": [],
   "done_when": "table: for each ladder state (count of higher timeframes red/green, RSI 40-60 zone per timeframe) the BTCUSDT forward 4/8/16-bar return on 1h and 15m, gross and after 0.2% round-trip fee, against the unconditional baseline with t-stat; DEV/VALIDATION split stated; trial count logged; verdict worth-a-layer or not",

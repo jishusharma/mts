@@ -1,0 +1,56 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-25T19:46:03Z",
+  "depends_on": [
+    "rsi-deep-engine",
+    "rsi-deep-engine-ladders",
+    "rsi-deep-engine-exits"
+  ],
+  "done_when": "CROSSVENDOR_REVIEW.md in rsi_deep_buy_2026-10-19/ with one table row per test file (hand number re-derived: match or mismatch; shuffled/dummy output rejected: yes/no; bar at or after 2024-07-01 read: no), one row for the episode_sim.py look-ahead and ladder-bookkeeping read (SPEC s6.5), and a verdict line SOUND / FIX-FIRST / BLOCKED",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Read-only audit by Gemini (producer != reviewer, SPEC s6.5): re-derive by hand the numbers in test_episode_sim.py, test_episode_ladders.py and test_episode_exits.py (fee +0.90 %, average cost 99.0 and 98.5714, the RSI-path exit bars, the planted K1/K2/K4/K8 T/F), check each test fails on a shuffled or dummy output and reads no bar at or after 2024-07-01; report ACCEPT or FIX per test file.",
+  "id": "rsi-deep-crossvendor-review",
+  "kind": "audit",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "rsi-deep-engine",
+    "rsi-deep-engine-ladders",
+    "rsi-deep-engine-exits",
+    "rsi-deep-run-dev"
+  ],
+  "note": "REVIEWED:2026-10-26 ACCEPT (Sonnet reviewer Agent reviewers, after 2nd FIX applied once, not re-read, planner DECISION OURS). Created 2026-10-26 (SPEC s6.5 card that did not exist). Producer GPT, reviewer Gemini via gemini_queue.py; run-dev waits on this card. FIX r2 2026-10-26: weight CRUCIAL (it gates the run-dev verdict numbers), est_turns 12, mutations run only in the throwaway gemini_queue worktree and are never committed, look-ahead and ladder-bookkeeping row added (SPEC s6.5). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/CROSSVENDOR_REVIEW.md"
+  ],
+  "scope_out": [
+    "Read-only audit: change no committed code, test or spec; mutations run only in the throwaway gemini_queue worktree and are never committed; the engine cards are the producers, Gemini is the reviewer"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "refined",
+  "steps": [
+    "Wait until the three engine cards are done; read their test files, episode_sim.py and PRE_REG.md",
+    "Re-derive each hand number independently: fee +0.90 %, -10.10 % open mark, average cost 99.0 and 690/7 = 98.5714, X1/X2/X3 exit bars, X4 break at bar 8 on the planted path, planted K1/K2/K4/K8 T/F and firing numbers #1 and #5",
+    "Mutate each test input (shuffled closes, constant dummy output) only in the throwaway gemini_queue worktree; the mutations are never committed; record whether the test fails",
+    "Read episode_sim.py for look-ahead (a future bar changing an earlier episode) and ladder bookkeeping (units, average cost, cap B) per SPEC s6.5 and add one findings row for it",
+    "Write CROSSVENDOR_REVIEW.md as a findings table (HIGH/MED/LOW, file:line, evidence, fix) and one verdict line; a HIGH finding becomes a card via tasks.py new"
+  ],
+  "tests": "",
+  "title": "[GEMINI] RSI deep-buy: cross-vendor audit of the three GPT-built engine cards (tests and hand numbers)",
+  "weight": "CRUCIAL",
+  "worker": ""
+}

@@ -1,0 +1,37 @@
+{
+ "id": "dir-fable_setups_2026-10-19",
+ "kind": "backtest",
+ "family": "Fable Setups",
+ "title": "Fable run 4 pack: BTCUSDT LOOK window",
+ "provenance": "source-extracted",
+ "date": "2026-10-19",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Window: 2022-01-01 00:00 UTC to 2023-06-30 23:59 UTC. Nothing after 2023-06-30 is in this pack (every bar opens",
+  "tone": "info"
+ },
+ "why": [
+  "on or before 2023-06-30; build/leak_check.py checks every file, build/test_pack.py proves it fails on a planted row)."
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/fable_setups_2026-10-19/pack/README.md"
+ ],
+ "commit": "370070104"
+}

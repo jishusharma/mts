@@ -2,6 +2,13 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-27T18:46:31Z",
+    "misses": 13,
+    "reads": [],
+    "session": "agent-aaed78713b823a912"
+  },
   "created": "2026-10-25T08:00:36Z",
   "depends_on": [],
   "done_when": "test_supervisor.py: handover writes the 7 sections from a fixture plan, refuses a 61-line file and a '## Update' file; --verify marks an unreachable sha STALE; plan prints TRANSIT at 150K/3 h; context_files/EXAMPLE_SUPERVISOR_C.md passes the shape check.",
@@ -16,9 +23,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Machine rename: repo works under old and new host names (hosts.py)",
-      "ref": "fc950331b605",
-      "utc": "2026-10-25T15:36:18Z"
+      "line": "supervisor: fixed-form coordinator handover (port of JIS-NB/handover-form-2 onto current t",
+      "ref": "94d3fe8836c4",
+      "utc": "2026-10-27T18:46:33Z"
     },
     {
       "auto": true,
@@ -35,7 +42,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-10-25T22:30:07Z",
+  "refreshed": "2026-10-27T19:30:19Z",
   "refs": [
     "MyTradingSys/research/mts_doctor/CONTEXT_FILES_DESIGN.md"
   ],
@@ -50,7 +57,7 @@
     "live path, orders, deploy, restarts",
     "new hooks, gate steps or rules beyond the card"
   ],
-  "scope_sha": "fc950331b605",
+  "scope_sha": "94d3fe8836c4",
   "size": "M",
   "sources": [
     "MyTradingSys/research/mts_doctor/CONTEXT_FILES_DESIGN.md:118 and section 3"

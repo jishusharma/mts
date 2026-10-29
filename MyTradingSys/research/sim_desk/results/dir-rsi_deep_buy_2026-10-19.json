@@ -1,0 +1,46 @@
+{
+ "id": "dir-rsi_deep_buy_2026-10-19",
+ "kind": "backtest",
+ "family": "Rsi Deep Buy",
+ "title": "RSI deep-buy probability tables (card rsi-deep-prob-tables, SPEC s2 Steps D-E, OPUS_FRAMING s4)",
+ "provenance": "source-extracted",
+ "date": "2026-10-19",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Data: BTCUSDT 1m. DEV = open < 2024-07-01 (prob_tables_dev.csv, written and frozen first, sha256 974916957094da63). VALIDATION = windows starting 2024-07-01..2025-06-30, read once (prob_tables_val.csv). HOLDOUT (2025-07…",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "How to read a cell: event = RSI closes at or below level L (after being 3+ above, once per window per visit); fill = next bar open. p_deeper dK = RSI closes <= L-K later in the same window. p_rsi_bounce bB = RSI rises B…",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2024-07-01 to 2025-06-30 (as written in the source)",
+ "verdict": {
+  "label": ". Hourly RSI timeframes have few events.",
+  "tone": "info"
+ },
+ "why": [
+  "70 of 1217 compared price-bounce cells; first 10 by DEV p:"
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)"
+ },
+ "source_files": [
+  "MyTradingSys/research/rsi_deep_buy_2026-10-19/PROB_REPORT.md"
+ ],
+ "commit": "9d61cb293"
+}

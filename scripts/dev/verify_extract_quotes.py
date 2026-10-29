@@ -16,9 +16,9 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-QUOTE = re.compile(r'^>\s*"(.+)"\s*$')
+QUOTE = re.compile(r'^>\s*"(.*)"\s*$')
 TIMESTAMP = re.compile(r"\[\d+:\d{2}(?::\d{2})?\]")
-CBP_EVIDENCE = re.compile(r'^(?:-\s*)?evidence:\s*"(.+)"\s*$')
+CBP_EVIDENCE = re.compile(r'^(?:-\s*)?evidence:\s*"(.*)"\s*$')
 CBP_HEAD = re.compile(r"^###\s*[^|]*\|[^|]*\|\s*([A-Za-z0-9_-]{11})\s*\|")
 GPS = re.compile(r"Source GPS:\s*([A-Za-z0-9_-]{11})\s*\|\s*(BEGIN|MIDDLE|END)")
 
@@ -67,15 +67,19 @@ def first_missing(quote: str, body_norm: str):
     """None when `quote` occurs in the normalised transcript `body_norm`, else the first fragment that does not.
     "..." / ellipsis joins fragments that must each occur, in order. The one matcher (CBP run, extract files)."""
     at = 0
+    seen_any = False
     for frag in re.split(r"\.{3}|…", quote):
         q = norm(frag)
         if not q:
             continue
-        at = body_norm.find(q, at)
-        if at < 0:
+        seen_any = True
+        p = re.compile(rf"(?:^|\s){re.escape(q)}(?:\s|$)")
+        m = p.search(body_norm, at)
+        if not m:
             return frag
-        at += len(q)
-    return None
+        start = m.start() + (1 if body_norm[m.start()] == " " else 0)
+        at = start + len(q)
+    return None if seen_any else quote
 
 
 def check_cbp_evidence(path: Path, lines, i, m, cache) -> int:
@@ -136,11 +140,17 @@ def check(path: Path) -> int:
             bad += 1
             continue
         q = norm(m.group(1))
-        at = body.find(q)
-        if not q or at < 0:
+        if not q:
             print(f"MISSING  {path.name}:{i + 1} {m.group(1)[:60]!r}")
             bad += 1
             continue
+        p = re.compile(rf"(?:^|\s){re.escape(q)}(?:\s|$)")
+        m_word = p.search(body)
+        if not m_word:
+            print(f"MISSING  {path.name}:{i + 1} {m.group(1)[:60]!r}")
+            bad += 1
+            continue
+        at = m_word.start() + (1 if body[m_word.start()] == " " else 0)
         third = ("BEGIN", "MIDDLE", "END")[min(2, 3 * at // max(1, len(body)))]
         if third != pos:
             print(f"POSITION {path.name}:{i + 1} tagged {pos}, found {third}")

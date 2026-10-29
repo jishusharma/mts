@@ -781,7 +781,7 @@
       "id": "pitchfork",
       "name": "Pitchfork (Andrews / Schiff / Morge median line)",
       "tracks": "Gemini (study/detector), Claude",
-      "status": "Foundational study papers delivered (papers/01, 02, 03); detector, tests, and YouTube BTC evaluation benchmark built.",
+      "status": "Detector, simulator desk plugin (studies/pitchfork.py), and live Java engine (PitchforkSignalLayer.java with Tine Bounce + Hagopian Failure + Volume Profile confluence) built, wired, and verified on DEV.",
       "spec": [
         "papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md",
         "papers/02_PITCHFORK_APPLICATION_ON_BTC.md",
@@ -789,10 +789,18 @@
         "papers/03_YOUTUBE_PITCHFORK_MASTERS_BTC_STUDY.md"
       ],
       "code": [
-        "MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py"
+        "MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py",
+        "MyTradingSys/research/sim_desk/studies/pitchfork.py",
+        "src/main/java/datafeed/PitchforkSignalLayer.java"
       ],
-      "ledger": [],
-      "results": [],
+      "ledger": [
+        "MyTradingSys/research/pitchfork_2026-10-19/TRIALS_PITCHFORK.csv",
+        "MyTradingSys/research/pitchfork_2026-10-19/TRIALS_PITCHFORK_4H.csv"
+      ],
+      "results": [
+        "MyTradingSys/research/pitchfork_2026-10-19/PHASE1_EVENT_STUDY.md",
+        "MyTradingSys/research/pitchfork_2026-10-19/PHASE2_4H_POC_STUDY.md"
+      ],
       "roadmap": [],
       "cards": [
         "pitchfork-*"
@@ -800,7 +808,7 @@
       "layers": [
         "pitchfork_swing"
       ],
-      "plain": "Dynamic equilibrium channels from 3 swing pivots with median line reach (80% rule) and Hagopian failure breakout on BTC.",
+      "plain": "Dynamic equilibrium channels from 3 swing pivots with median line reach (80% rule), anchored Volume Profile confluence, and Hagopian failure breakout on BTC.",
       "path": {
         "idea": {
           "s": "done",
@@ -812,26 +820,27 @@
         },
         "fees": {
           "s": "done",
-          "note": "4H/1D stops 1.2-2.0%, targets 3.5-8.0%: fee drag < 5% of gross edge"
+          "note": "4H/1D stops 1.5-2.0%, targets 3.5-8.0%: fee drag < 5% of gross edge; B070 ExecutionMathConstants.netRR wired"
         },
         "charts": {
-          "s": "planned",
-          "note": "visual chart inspection on BTC swing structures"
+          "s": "done",
+          "note": "sim_desk SVG trade charts (chart_trade) + visual BTC swing benchmark"
         },
         "built": {
           "s": "done",
-          "note": "pitchfork_detector.py + test_pitchfork_detector.py"
+          "note": "pitchfork_detector.py + sim_desk/studies/pitchfork.py + PitchforkSignalLayer.java (PF-REV-L/S, PF-HAG-L/S)"
         },
         "dev": {
-          "s": "planned",
-          "note": "event study on BTC 4H/1D"
+          "s": "done",
+          "note": "Phase 1 1D (226 forks, 72.1% ML reach, +1.50% net/trade) + Phase 2 4H VP confluence (734 VA forks, 64.9% WR, +0.61% net, PF 1.63) + sim_desk DEV plugin"
         },
         "oos": {
           "s": "planned",
           "note": "validation on holdout period"
         },
         "testnet": {
-          "s": "later"
+          "s": "now",
+          "note": "wired via -Dmts.pitchfork=true in start-trading-day.ps1 and SetupCandidatesBuilder.java"
         }
       }
     },

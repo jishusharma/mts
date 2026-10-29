@@ -1,6 +1,6 @@
 # Tom's "correlation trick": extract, gap check, test plan (2026-10-26)
 
-Status: the live stream "LIVE TRADING: DAX Short Using My Correlation Trick!" is NOT yet read (live streams have no captions until they end; card `tom-corr-live-captions`). Everything below is from two older Tom videos already on disk that describe the same idea. SOURCED = Tom's words; OURS = our reading.
+Status: the live stream "LIVE TRADING: DAX Short Using My Correlation Trick!" (English video `e83njGZFrPw`, German `liEJMfE_PXg`) captions fetched and analyzed (card `tom-corr-live-captions`). Quotes from that live stream are compiled in Section 1b. SOURCED = Tom's words; OURS = our reading.
 
 ## 1. What the trick is (SOURCED)
 
@@ -47,12 +47,67 @@ The correlation is only the idea; entry needs proof and a setup:
 > "I used correlations for myself in a way that they are logical and also work. And that's exactly a point that many people get wrong again and again and enter such trades far too early"
 **Source GPS: zQTbdEweG3c | BEGIN**
 
+## 1b. Live stream quotes (e83njGZFrPw)
+
+Video title: *LIVE TRADING: DAX Short Using My Correlation Trick!* (ID: `e83njGZFrPw`).
+
+### SOURCED quotes with timestamps
+
+Cross-market imbalance (DAX marching upward while S&P sideways):
+
+> "you can see it perfectly here that the S&P future moved sideways during the same period where the DAX was already marching upwards"
+**Source GPS: e83njGZFrPw | BEGIN**
+*[00:01:14]*
+
+Divergence percentage expansion and basket investigation:
+
+> "also in terms of the percentage expansion, what we had in the corresponding DAX index was significantly more compared to the wonderful S&P future. So, what do I do then? Then I start investigating which stocks are in the DAX and are currently driving this outperformance"
+**Source GPS: e83njGZFrPw | BEGIN**
+*[00:01:25]*
+
+DAX heavyweights hitting barriers (Siemens, SAP, Allianz, Airbus, Deutsche Telekom):
+
+> "The first thing that was very important to me was that the stocks that caused the market to be significantly stronger than other index futures hit a barrier."
+**Source GPS: e83njGZFrPw | MIDDLE**
+*[00:07:05]*
+
+Never short the top on divergence alone; wait for confirmed selling:
+
+> "Secondly, the technical side showed me that there is actual selling happening. Before that, you shouldn't just look for a short somewhere at the top."
+**Source GPS: e83njGZFrPw | END**
+*[00:07:15]*
+
+Stop-loss logical point of reference (structural, above second accepted balance):
+
+> "why is the risk located up here? And I always say, a stop-loss needs a logical point of reference. And for me that logical reference point was simply the second move where the market accepted lower prices."
+**Source GPS: e83njGZFrPw | MIDDLE**
+*[00:04:43]*
+
+Take profit strategy (test lower boundary of sideways phase):
+
+> "Regarding the take profit strategy, I have logically thought about it this way. I assume that we will first test the lower boundary of this current sideways phase."
+**Source GPS: e83njGZFrPw | MIDDLE**
+*[00:05:01]*
+
+### Comparison of Tom's stated thresholds vs OURS pre-registered values (Section 4)
+
+no thresholds stated: across the entire live stream e83njGZFrPw, Tom provides zero numeric thresholds (no numeric lookback days, no percentage cutoff, no point/tick stop or target). All entry, stop, and target rules remain purely structural.
+
+| Parameter | Tom's stated threshold (`e83njGZFrPw`) | OURS pre-registered value (Section 4) | Match / Gap |
+|---|---|---|---|
+| Divergence lookback | no thresholds stated (visual intraday / multi-session comparison) | 2 days (primary; variants 1, 3, 5 d) | Parameter is entirely OURS |
+| Divergence magnitude | no thresholds stated ("significantly more compared to the wonderful S&P future") | Top quintile (top 20% vs trailing 250 d) | Cutoff is entirely OURS |
+| Basket definition | S&P future (ES) + DAX heavyweights (Siemens, SAP, Allianz, Airbus, Telekom) | Primary: median sign of ES, Nikkei, BTC; H2: ES, NQ, DXY | Basket membership differs; Tom uses ES + individual heavyweights |
+| Entry trigger | no thresholds stated (structural: 2nd lower balance accepted + VPOC shift down + profile low rejection) | Convergence start: basket turns towards DAX direction and DAX fails to make new extreme | Both require confirmation; Tom uses profile/balance acceptance, OURS uses convergence turn |
+| Stop loss | no thresholds stated (structural: above 2nd move where market accepted lower prices) | Trailing / structural | Consistent philosophy (structural reference), zero numeric points |
+| Take profit | no thresholds stated (structural: test lower boundary of sideways phase / range traversal) | Full range / fee-net expectancy > 0 | Both target opposite boundary of range/balance |
+
 ## 2. OURS interpretation (not Tom's numbers)
 
 - Tom gives NO threshold: no lookback, no divergence size, no correlation figure. Everything numeric is OURS and pre-registered below.
-- Timing matters more than the divergence: in zQTbdEweG3c he entered when the divergence began to RESOLVE (S&P and BTC recovering, DAX "stopped rising"), and names entering on the divergence itself as the common error ("far too early").
+- Timing matters more than the divergence: in zQTbdEweG3c he entered when the divergence began to RESOLVE (S&P and BTC recovering, DAX "stopped rising"), and names entering on the divergence itself as the common error ("far too early"). In e83njGZFrPw he confirms: "Before that, you shouldn't just look for a short somewhere at the top."
 - It is an idea source ("strategy when things go differently") feeding the TOM-1 counter-trade chain, not a gate and not a stand-alone entry; most TOM-1 ledger trades cite no divergence.
-- Third source on disk: ledger row T11 = liEJMfE_PXg "DAX Future Short with Correlation Trick" (frames only, `TOM_TRADE_LEDGER.csv:32`); the live stream is a fourth.
+- Third source on disk: ledger row T11 = liEJMfE_PXg "DAX Future Short with Correlation Trick" (frames only, `TOM_TRADE_LEDGER.csv:32`); the live stream is a fourth (e83njGZFrPw, fetched in `tom-corr-live-captions`).
 
 ## 3. Gap check vs the Tom catalogue
 

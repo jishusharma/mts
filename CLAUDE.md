@@ -1,10 +1,10 @@
 # MTS - Claude Code sessions
 
-CLAUDE.md is already in context; do not cat or Read it. Code mode only (DSA chat: `DSA_SESSION_PROMPT.md`; Codex: `AGENTS.md`).
+CLAUDE.md is in context; never Read it. Code mode only (DSA chat: `DSA_SESSION_PROMPT.md`; Codex: `AGENTS.md`).
 
-## Boot (every turn re-reads the context)
-1. `python scripts/dev/sync.py start <slug>`: in a lane tree (mts-app/relay/dsa) it switches to branch <host>/<slug>; elsewhere it prints `WORKTREE: <path>` (work only there, never the live tree).
-2. Read `MyTradingSys/research/STATUS.md`, not what it summarises; `LESSONS_DIGEST.md` only for live-path or backtest work. RED `CI green:` / `CI RED`: first to see it (the author above all) `git revert`s the breaking commit, ships in 10 min; putting the failing file back to its last-green bytes is a revert, a new line is a forward-fix (never forward-fix trunk). A hand-over (NEXT_SESSION.md) is history: current state comes from disk or git this turn. Read the ACTIVE entries of `MyTradingSys/system/ANNOUNCEMENTS.md` (STOP/HOLD there outranks the queue). `[MTS ACTION REQUIRED]` outranks the current task: do it first. Where a kind of work goes (machine, channel, model, checker): `MyTradingSys/system/ROUTING.md`.
+## Boot 
+1. `python scripts/dev/sync.py start <slug>`: in a lane tree (mts-app/relay/dsa) it switches to branch <host>/<slug>; elsewhere it prints `WORKTREE: <path>` (work only there).
+2. Read `MyTradingSys/research/STATUS.md`, not what it summarises; `LESSONS_DIGEST.md` only for live-path or backtest work. RED `CI green:` / `CI RED`: first to see it (the author above all) `git revert`s the breaking commit, ships in 10 min; last-green bytes = revert, a new line = forward-fix (never forward-fix trunk). A hand-over (NEXT_SESSION.md) is history: current state comes from disk or git this turn. Read the ACTIVE entries of `MyTradingSys/system/ANNOUNCEMENTS.md` (STOP/HOLD there outranks the queue). `[MTS ACTION REQUIRED]` outranks the current task: do it first. Where a kind of work goes (machine, channel, model, checker): `MyTradingSys/system/ROUTING.md`.
 3. Task from NEXT_SESSION.md or `tasks.py next`; `sync.py claim "<task>"`, work, `sync.py ship --release <slug>`, `sync.py where` (own tree clean). Station (no role line = Builder): fetch, read queue + login plan, loop (WORKERS.md rule 10).
 4. Hand-over: no schedulers or routines anywhere (SCHEDULING_POLICY.md). Overwrite NEXT_SESSION.md, `sync.py ship`; the coordinator (SUPER_SESSION.md) starts the next. Zero operator input: defaults for open questions. His "keep working" outranks hand-over.
 5a. Role sessions ("You are Eagle_Eyes"): the `role_loader.py` hook injects `roles/<role>.md`; the first reply is its `ROLE LOADED: ...` banner (none: Builder fallback).
@@ -14,12 +14,12 @@ CLAUDE.md is already in context; do not cat or Read it. Code mode only (DSA chat
 
 ## Cost and routing
 - Interactive sessions and subagents: Sonnet, Opus only when the operator names it; Haiku for mechanical work; worker type + model: WORKERS.md. Wait on a queue with one background shell; spot-check a worker claim.
-- No "want me to?" offers for implied work: do it now, full depth. Free public market data, YouTube: pre-approved.
+- No "want me to?" offers for implied work: do it now, full depth. Public market data, YouTube: pre-approved.
 - T0 script first, then by card lane (HOW_MTS_RUNS.md): run-and-report goes to DSA (`desk.py post ... --target DSA`; low on budget: post the rest to DSA, then hand over).
 - The operator dictates by voice: expect misheard words; take the reading that fits the project.
 - Never wait on a question. Ask who started you: an Agent ends its report with the question and its default; a session uses SendMessage. Only money, mainnet, going private, deleting data or a live-tree change reach the operator; work goes on at the safe default. Stuck on another machine's state: `mts_signal.py who`, then broadcast.
 - Fleet-wide by default: put what one machine needs in the repo; a per-machine step goes out as `mts_signal.py broadcast --cmd ...`, never via the operator.
-- Operator replies: result line, What|Status|Proof, "Waiting for you", Who|Doing|Done when; plain words (OPERATOR_REPLY_FORMAT.md).
+- Reply shape (operator): bold result line first; a table when the content is discrete rows, else bullets; a "YOU DO" next-step list (max ~3) only when he must act; strip hedging/background; under ~8 lines unless he asked for depth. Plain words (OPERATOR_REPLY_FORMAT.md; health pulse + discard test: OPERATOR_PREFS.md).
 - Surface: Win App only; never say "use the CLI". Permission block: try the allowed equivalent.
 
 ## Gates (before any commit touching the area)
@@ -37,6 +37,7 @@ CLAUDE.md is already in context; do not cat or Read it. Code mode only (DSA chat
 - Live-path changes need a test for restart/reset state, non-trade balance moves and API errors; safety checks fail closed (more: MOVED_RULES.md).
 - Layers and numbers: no fixed core, fee-net out-of-sample results decide what trades; label each parameter SOURCED or OURS, never call OURS the trader's (MOVED_RULES.md).
 - Anything off: report -> independent audit -> fix. Never conclude from truncated output; parse, then count.
+- Noticed gaps: non-Agent sessions file a raw card the same turn; Agents end with `Noticed:`; chat decisions go to OPERATOR_DECISIONS.md (WORKERS.md rule 11).
 - Windows: files with `newline='\n'`; long patches in a .py script; the Bash tool strips backslashes, use Write/Edit; Write decodes backslash-u: use `chr()`.
 - Never use `.git/info/exclude`: ignores go in `.gitignore`.
 

@@ -1,5 +1,7 @@
 # RUN_MODEL: talk in the app, work in the CLI (operator 2026-10-22, design v1)
 
+Superseded by SUPER_SESSION.md and ROLES.md (2026-10-24): the role count lives in ROLES.md, the one coordinator is the app super session.
+
 Operator ask (2026-10-22): "use the UI ... to discuss something with the admin guy, the artifact guy, the thinker ... if some task comes out of
 it, it will be sent to the CLI directly ... that need not be interrupted ... right models and the right compactions at the right time ...
 optimally using all our data plans ... reduce [script time] by half." Status: DESIGN. Phases below say what is built.
@@ -14,7 +16,7 @@ optimally using all our data plans ... reduce [script time] by half." Status: DE
   click, no child session. `mts_run.py` picks it up on any device whose login has budget.
 - The supervisor is the script, not an LLM session: picking, claiming, launching, timing out, logging and pacing are code. An LLM is called only
   for judgement (refine a raw card, review a diff), and then as one short CLI run.
-- Roles to remember: three (the conversation roles above). Builder, Pipeliner, Lab_Guy, MTS_Doctor, Eagle_Eyes and Session_Planner become worker
+- Roles to remember: the conversation roles above (count: ROLES.md). Builder, Pipeliner, Lab_Guy, MTS_Doctor, Eagle_Eyes and Session_Planner become worker
   kinds that `mts_run.py` sets from the card's `worker` field; their role files stay as the worker's brief.
 
 ## 2. A worker run
@@ -22,7 +24,7 @@ optimally using all our data plans ... reduce [script time] by half." Status: DE
 claude -p "<card brief>" --model <haiku|sonnet|opus> --permission-mode auto --permission-prompts none
        --tools Bash,Read,Edit,Write,Grep,Glob --strict-mcp-config --max-turns <est_turns x 1.5> --output-format json
 ```
-- Runs in its own worktree (`sync.py start`), with the project hooks (safety_guard, model_guard, turn_meter). Never `--bare` (it skips hooks).
+- Runs in its own worktree (`sync.py start`), with the project hooks (safety_guard). Never `--bare` (it skips hooks).
 - `--tools` and `--strict-mcp-config` drop the app's connector and browser tools: the fixed cost per step falls from about 75k tokens to the
   core tools only (to be measured in phase 1).
 - No compaction for workers: a card is sized to fit (est_turns); a run that hits `--max-turns` writes its hand-over to the card and is requeued
@@ -70,4 +72,4 @@ operator asks a "teach me" question in any MTS session, the answer is also saved
 1. Hook speed to budget, away-flag fix, hook_bench, interview feed, this design. (branch hook-speed)
 2. `mts_run.py`: once, loop --hours N, ledger, calibrate, pace; one worker at a time; measured fixed cost per step with `--tools`.
 3. Parallel workers per device, cross-device usage on the signal branch, checker runs, use-it-or-lose-it upgrade.
-4. Retire the app super session and child-session workers; ROLES.md lists the three conversation roles and the worker kinds.
+4. Retire the app super session and child-session workers; ROLES.md lists the conversation roles and the worker kinds.

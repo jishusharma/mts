@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T01:40:19Z",
   "commands": [],
   "created": "2026-10-25T20:05:36Z",
   "depends_on": [],
@@ -13,7 +14,14 @@
   "id": "lf-rsi-gpt-rederive",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "SOUND; 19 matches, 1 minor rounding discrepancy noted; rsi.md written",
+      "ref": "03bfb07c7",
+      "utc": "2026-10-28T01:40:19Z"
+    }
+  ],
   "layers": [
     "rsi"
   ],
@@ -25,7 +33,12 @@
   "refined_by": "",
   "refreshed": "2026-10-25T20:07:04Z",
   "refs": [],
-  "result": "",
+  "result": "SOUND; 19 matches, 1 minor rounding discrepancy noted; rsi.md written",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/rsi.md (new file only)"
   ],
@@ -39,13 +52,14 @@
     "MyTradingSys/backtest/layers/FORMULAS.md",
     "MyTradingSys/research/rsi_divergence_mtf_2026-10-09"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "List the result files for rsi in layer_index.json (results, ledger) and pick the headline numbers each states",
     "Recompute each from the ledger or raw data with an independent script (formulas from MyTradingSys/backtest/layers/FORMULAS.md, not from the code under check)",
     "Write MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/rsi.md: quoted number, recomputed number, MATCH/MISMATCH, file:line, script path",
     "Commit with a Result: line (n checked, n mismatches)"
   ],
+  "taken": "2026-10-28T01:40:19Z",
   "tests": "none (audit card); proof = the recompute script runs and the table is filled",
   "title": "Layer re-derive: rsi (independent recount of the headline numbers behind the fact sheet)",
   "weight": "ROUTINE",

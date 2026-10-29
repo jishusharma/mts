@@ -1,0 +1,10 @@
+{
+  "done_when": "NUC_COUNTS.md shipped on origin/fast-track and a local JIS-NUC.jsonl exists",
+  "from": "JIS-NB",
+  "id": "20261027-205356-operator-material-search-on-jis-nuc-scre",
+  "need": "After scripts/dev/operator_material_index.py is on origin/fast-track (card operator-material-indexer-build): run it on the NUC over Desktop, Documents, Pictures, Downloads, OneDrive and every other data drive, --host JIS-NUC --out F:/MTS/data/operator_material_index. Index stays local; commit only MyTradingSys/research/operator_material_2026-10/NUC_COUNTS.md (counts by topic and root, no file names). Copy nothing private.",
+  "posted": "2026-10-27T20:53:56Z",
+  "status": "pending",
+  "target": "JIS-NUC",
+  "title": "Operator material search on JIS-NUC: screenshots and notes on RSI reverse divergence and trader videos"
+}

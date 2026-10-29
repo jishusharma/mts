@@ -40,13 +40,6 @@ def engine_values(indicator, closes):
     return out
 
 
-def engine_bb_live(closes):
-    """Second engine route for Bollinger: the live alert layer's own copy (upper, lower)."""
-    from MyTradingSys.backtest.layers.alerts.live_bb_top_reversal import bollinger
-    up, lo = bollinger(closes)
-    return {"BB_up": up[-1], "BB_low": lo[-1]}
-
-
 def _num(x):
     return isinstance(x, (int, float)) and not isinstance(x, bool) and math.isfinite(x)
 
@@ -79,19 +72,6 @@ def run(packets, replies):
             if not r["ok"]:
                 bad.append(r)
     return {"n_values": len(rows), "n_mismatch": len(bad), "rows": rows, "mismatches": bad}
-
-
-def live_route_check(packets):
-    """Engine self-consistency: the live alert layer's Bollinger must equal chart_verify's. -> list of disagreements."""
-    out = []
-    for p in packets:
-        if p["indicator"] != "BB":
-            continue
-        a, b = engine_values("BB", p["closes"]), engine_bb_live(p["closes"])
-        for key in ("BB_up", "BB_low"):
-            if abs(a[key] - b[key]) > 1e-9 * abs(a[key]):
-                out.append({"packet": p["id"], "key": key, "chart_verify": a[key], "live_bb": b[key]})
-    return out
 
 
 def other_routes(packets):

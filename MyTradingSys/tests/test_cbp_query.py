@@ -45,6 +45,17 @@ def test_query_five_day_filter_and_filters(tmp_path):
     assert len(cbp.query(since_days=2, store=st, now=NOW)) == 2
 
 
+def test_query_symbol_aliases(tmp_path):
+    st = tmp_path / "s.json"
+    cbp.save({"rows": [row("a" * 11, "2026-10-23"), row("d" * 11, "2026-10-22", analyst="Rekt", sym="ETH")]}, st)
+    base = [r["video_id"] for r in cbp.query(symbol="BTC", store=st, now=NOW)]
+    assert len(base) == 1
+    for alias in ("BTCUSDT", "btc", "btc-perpetual", "BTC_USD", "BTCPERP"):
+        assert [r["video_id"] for r in cbp.query(symbol=alias, store=st, now=NOW)] == base, alias
+    assert [r["video_id"][0] for r in cbp.query(symbol="ETHUSDT", store=st, now=NOW)] == ["d"]
+    assert cbp.query(symbol="SOLUSDT", store=st, now=NOW) == []
+
+
 def test_window_logic_injected_clock():
     assert cbp_run.open_window(at(9)) == "EU" and cbp_run.open_window(at(10, 59)) == "EU"
     assert cbp_run.open_window(at(11)) == "EU" and cbp_run.open_window(at(8, 59)) is None
@@ -152,13 +163,17 @@ def test_cbp_run_works_without_fixed_machine_paths(tmp_path, monkeypatch):
     """bug-youtube-gemini-only-rule-is-a-preference: CBP must not assume one machine. With CBP_HOME unset
     and no legacy F:/CryptoScrapper, the default falls back under this checkout, never a dead drive path."""
     monkeypatch.delenv("CBP_HOME", raising=False)
+    monkeypatch.delenv("CBP_STORE", raising=False)
     home = cbp_run.default_cbp_home(exists=lambda p: False)
     assert home == cbp_run.ROOT / "runtime_data" / "cbp"
-    assert not str(home).startswith("F:")
+    assert home != Path("F:/CryptoScrapper")
+    assert cbp.store_path(exists=lambda p: False) == home / "cbp_store" / "rows.json"
     legacy_present = cbp_run.default_cbp_home(exists=lambda p: True)
     assert legacy_present == Path("F:/CryptoScrapper")  # still honored when actually present
+    assert cbp.store_path(exists=lambda p: True) == Path("F:/CryptoScrapper/cbp_store/rows.json")
     monkeypatch.setenv("CBP_HOME", str(tmp_path / "other_machine_home"))
     assert cbp_run.default_cbp_home() == tmp_path / "other_machine_home"  # explicit override always wins
+    assert cbp.store_path() == tmp_path / "other_machine_home" / "cbp_store" / "rows.json"
 
     # End-to-end on a per-machine CBP_HOME (no F:/CryptoScrapper read anywhere): fetch, extract, store.
     home2 = tmp_path / "cbp_home"
@@ -248,3 +263,13 @@ def test_expiry_boundary_is_expired(tmp_path):
 @pytest.mark.parametrize("bad", ["tomorrow", "", None, 5, "2026-10-28", "2026-10-28T00:00:00+00:00"])
 def test_malformed_expiry_is_not_returned(tmp_path, bad):
     assert cbp.query(store=_stored(tmp_path, bad), now=NOW) == []
+
+
+def test_trade_missing_direction_is_not_tradable():
+    trade = {"asset": "BTC", "entry": "80K", "target": "87K", "invalidation": "79K", "quote": "q"}
+    assert not cbp.is_tradable({"trades": [trade]})
+    assert not cbp.is_tradable({"trades": [dict(trade, direction="")]})
+    assert not cbp.is_tradable({"trades": [dict(trade, direction="SIDEWAYS")]})
+    assert cbp.is_tradable({"trades": [dict(trade, direction="LONG")]})
+    assert cbp.is_tradable({"trades": [dict(trade, direction="SHORT")]})
+

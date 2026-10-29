@@ -1,10 +1,13 @@
 {
   "done_when": "operator ran the stop command or allow-listed the pattern in MyTradingSys/system/STRAY_REAP_POLICY.md",
+  "finished": "2026-10-28T00:04:59Z",
   "from": "JIS-NUC",
+  "host": "DESKTOP-F7IU69N",
   "id": "20261026-005556-stray-cpu-hog-on-jis-nuc",
   "need": "STRAY PID 16516 find.exe cpu=7278s age=2.0h chain: (parent gone)\n    cmd: \"C:\\Users\\E-ngineers\\Git\\usr\\bin\\find.exe\"\n    stop: taskkill /PID 16516 /T /F",
   "posted": "2026-10-26T00:55:56Z",
-  "status": "pending",
+  "result": "moot: one-time PID snapshot, process certainly gone by now; no further action",
+  "status": "failed",
   "target": "JIS-NB",
   "title": "Stray CPU hog on JIS-NUC"
 }

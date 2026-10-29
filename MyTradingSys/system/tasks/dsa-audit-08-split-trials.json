@@ -30,7 +30,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "BLOCKED remaining audit: original runtime input manifests, per-study wrapped-loader windows, cross-format seal projection and full PRE_REG/parameter history remain required. Partial report shipped; not a completed audit. Follow-up t08-original-input-window-provenance.",
+  "note": "DUPLICATE/SUPERSEDED planner 2026-10-28 (OURS): partial T08_split_trials.md shipped; remaining work is carried by t08-original-input-window-provenance (blocked), t08-ledger-lowercase-trial-coverage and t08-orderflow-default-dev-guard (done). Re-running the whole audit would duplicate them.",
   "pinned": false,
   "prio": 1,
   "refine_tries": 0,
@@ -56,7 +56,7 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "refined",
+  "state": "dropped",
   "steps": [
     "Read MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md sections 1-7, then section 8 'T08' (full method).",
     "Static split map: every date filter and split constant under backtest/ and research/ with file:line.",

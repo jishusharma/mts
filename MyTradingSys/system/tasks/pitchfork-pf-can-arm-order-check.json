@@ -1,0 +1,69 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "context": {
+    "calls_to_edit": 61,
+    "folded": "2026-10-29T17:28:10Z",
+    "misses": 12,
+    "reads": [
+      "MyTradingSys/execution/auto_trader.py",
+      "MyTradingSys/backtest/layers/alerts/live_layers.py",
+      "src/main/java/datafeed/PitchforkSignalLayer.java",
+      "src/main/java/datafeed/MarketDataSnapshot.java",
+      "MyTradingSys/execution/executor.py",
+      "MyTradingSys/research/pitchfork_2026-10-19/OPUS_E2E_REVIEW_2026-10-28.md",
+      "src/main/java/datafeed/StateCodeEmitter.java",
+      "MyTradingSys/market_data/dsa_task_012_setup_candidates.md"
+    ],
+    "session": "agent-ad721921e1397a3e6"
+  },
+  "created": "2026-10-28T16:07:40Z",
+  "depends_on": [],
+  "done_when": "PF_ARM_TRACE.md exists with a one-line YES/NO verdict and file:line per consumer; shipped, cherry empty",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Trace SetupCandidatesBuilder.java:271 (PF-* candidates, -Dmts.pitchfork=true from start-trading-day.ps1:113,445,475) into the state machine and say yes/no per path whether a PF-* candidate can arm or send an order on testnet.",
+  "id": "pitchfork-pf-can-arm-order-check",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [
+    "pitchfork"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "pitchfork-review-fixes-2026-10-28"
+  ],
+  "note": "DRAFT 2026-10-28 Session_Planner (OURS): split from pitchfork-review-fixes-2026-10-28 (step 0 there). Read-only so live_path false. IMPORTANT: verdict decides whether the live Java card is urgent; needs real stamp. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files. | T0 2026-10-28 planner-refine-A: scope_in paths all tracked, no open claim on them, content complete; only gap = Lab_Guy REVIEWED stamp (IMPORTANT+).\nREVIEWED:2026-10-29 ACCEPT (reviewer-raw-cards-b) Verified SetupCandidatesBuilder.java:271 and -Dmts.pitchfork at start-trading-day.ps1:113,445,475.\nDECISION (OURS) 2026-10-29 Builder (agent-ad721921e1397a3e6): hit a ship-time merge conflict - jishusharma had already shipped MyTradingSys/research/pitchfork_2026-10-19/PF_ARM_TRACE.md to fast-track at ddb468938 (\"PF_ARM_TRACE verdict NO, PF-* cannot send an order (auto_trader side parse)\") while I was independently tracing the same card. My own first-pass trace was WRONG on the mechanism: I had claimed auto_trader.py's Tom signal source (runtime_data/last_alert.json) is unrelated to setup_candidates; it is not - start-trading-day.ps1 Build-Card (:318-353) writes SETUP/ENTRY/STOP/TARGET from $snap.setup_candidates[0] straight into that file, so a PF-* candidate CAN reach it when PF is the top (only) candidate (Compute-Verdict :202-219). The real, decisive gate is auto_trader.py:182 (`side = \"long\" if setup.endswith(\"_long\") else \"short\" if setup.endswith(\"_short\") else None`) + :279-280 (`unknown setup side` reject): PF-REV-L/PF-REV-S/PF-HAG-L/PF-HAG-S end in -L/-S, not _long/_short, so side parses to None and tom_signal rejects every PF-* alert before place() - an accident of naming, not a designed block. I re-verified every file:line in ddb468938's doc by grep myself (all matched) before accepting it; it is materially more accurate than my draft was. Discarded my own draft, rebased onto origin/fast-track (git pull --rebase, clean) so the existing doc stands unchanged, and am shipping only this card's bookkeeping (note/result/state) - no competing content file. Conservative default per CLAUDE.md (never ask operator): did not touch or promote the related live Java card; that call is left to whoever reviews this verdict. Noticed for file: the naming-accident gate (PF-REV-L vs _long/_short) is fragile - a rename of PF setup types would silently open the gate; worth a pinned regression test per the shipped doc's own \"Caveats\" section.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-29T16:46:24Z",
+  "refs": [
+    "MyTradingSys/research/pitchfork_2026-10-19/OPUS_E2E_REVIEW_2026-10-28.md"
+  ],
+  "result": "Verdict NO (doc already shipped by jishusharma at ddb468938, verified accurate by independent grep of every file:line in it): PF-REV-L/S and PF-HAG-L/S parse to side=None in auto_trader.py:182 and are rejected at :279-280 ('unknown setup side') before any order call, even though they can reach runtime_data/last_alert.json as the Tom card when PF is the sole top candidate. Doc: MyTradingSys/research/pitchfork_2026-10-19/PF_ARM_TRACE.md (unchanged, upstream content). Rebased cleanly onto origin/fast-track; no competing file shipped. pytest MyTradingSys/tests/docs/test_integrity.py -v: 15 passed in 4.95s (2026-10-29).",
+  "scope_in": [
+    "MyTradingSys/research/pitchfork_2026-10-19/PF_ARM_TRACE.md"
+  ],
+  "scope_out": [
+    "any code change; flipping the flag; live tree; restart"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/pitchfork_2026-10-19/OPUS_E2E_REVIEW_2026-10-28.md"
+  ],
+  "state": "done",
+  "steps": [
+    "grep PF- and mts.pitchfork across src/main/java and scripts/core; list each consumer of the candidate list",
+    "Write PF_ARM_TRACE.md: per consumer file:line, can arm (yes/no/conditional) and why; one-line verdict"
+  ],
+  "tests": "doc-only: MyTradingSys/tests/docs/test_integrity.py green; every claim cites file:line (verify by grep)",
+  "title": "Pitchfork step 0: can a PF-* candidate arm an order in the live state machine? (read-only code trace, no edit)",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

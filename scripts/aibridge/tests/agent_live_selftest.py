@@ -14,6 +14,7 @@ import urllib.request
 import winreg
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+BRIDGE_VERSION = json.load(open(os.path.join(HERE, '..', 'RELEASES.json'), encoding='utf-8'))['current']
 args = sys.argv[1:]
 
 
@@ -114,7 +115,7 @@ try:
     if not up:
         raise SystemExit(1)
     st, p = http('GET', '/ping')
-    check('ping reports version host shell', p.get('agent') == '0.7.1' and p.get('host') and p.get('shell_version', '').startswith('5.'), p)
+    check('ping reports version host shell', p.get('agent') == BRIDGE_VERSION and p.get('host') and p.get('shell_version', '').startswith('5.'), p)
 
     st, r = run("Write-Output 'one'\nWrite-Output 'two'\nWrite-Output 'three'", rid='r1')
     check('multi-line block: every line runs', st == 200 and r['out'].split() == ['one', 'two', 'three'], r)

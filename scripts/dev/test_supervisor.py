@@ -341,9 +341,9 @@ def test_pace_over_weekly_cap_is_stop():
 
 def test_last_day_before_the_weekly_reset_spends_the_last_points_slowly():
     """Operator 2026-10-22: A at 97% with 15 h to its reset. Cap 95 -> STOP (points lost); last-day cap 99 over 3 windows ->
-    2/3 wk pt here / 0.12 = 5.6 pts of 5 h -> 1 Claude worker, NORMAL. NB B/C keep their 75."""
+    2/3 wk pt here / 0.12 = 5.6 pts of 5 h -> 1 Claude worker, NORMAL. NB B/C lift to 99 too (2026-10-28)."""
     assert S.weekly_cap("A", "DESKTOP-F7IU69N", 15) == 99 and S.weekly_cap("A", "DESKTOP-F7IU69N", 30) == 95
-    assert S.weekly_cap("A", "DESKTOP-F7IU69N") == 95 and S.weekly_cap("C", "JIS-NB", 15) == 85
+    assert S.weekly_cap("A", "DESKTOP-F7IU69N") == 95 and S.weekly_cap("C", "JIS-NB", 15) == 99   # 10-28: desktop caps lift in the last day too
     assert S.pace_plan(T0, _rd(2, 97, week_reset="2026-10-20T03:00Z"), 95)["mode"] == "STOP"
     p = S.pace_plan(T0, _rd(2, 97, week_reset="2026-10-20T03:00Z"), S.weekly_cap("A", "DESKTOP-F7IU69N", 15))
     assert p["room"] == 5.6 and p["slots"] == 1 and p["mode"] == "NORMAL"
@@ -462,9 +462,9 @@ def test_pick_cards_jis_nb_lane_follows_the_live_host_file(monkeypatch, tmp_path
     f = tmp_path / "live_host.txt"
     monkeypatch.setattr(S, "LIVE_HOST_FILE", f)
     ids = lambda h: [r["id"] for r in S.pick_cards(rows, h, 9)]
-    assert S.live_host() == "JIS-NB" and ids("JIS-NB") == ["n1", "s1"]
+    assert S.live_host() == S.CN("JIS-NB") and ids("JIS-NB") == ["n1", "s1"]
     f.write_text("desktop-f7iu69n", encoding="utf-8")
-    assert S.live_host() == "DESKTOP-F7IU69N"
+    assert S.live_host() == S.CN("DESKTOP-F7IU69N")
     assert ids("DESKTOP-F7IU69N") == ["n1", "s1"] and ids("JIS-NB") == ["s1"] and ids("JIS-NUC") == ["s1"]
 
 
@@ -490,6 +490,14 @@ def test_plan_lines_only_the_owner_runs_shared_lanes():
     assert "OPERATOR DeepSeek DSA-NB" in b and "nuc_wake" not in b                      # NUC has a supervisor: no headless wake
     red = "\n".join(S.plan_lines("A", "JIS-NUC", p, live, dict(ctx, ci={"red": True, "message": "2 failed"}), gate_key=False))
     assert "SPAWN 1: s1" not in red and "CI RED" in red
+
+
+def test_plan_spawn_line_names_agents_not_sessions():
+    p = S.pace_plan(T0, _rd(10, 20), 95)
+    live = {"A": {"host": "JIS-NUC", "mode": "NORMAL", "run": 0, "free": 2, "at": "x", "dsa": "up"}}
+    ctx = {"picks": [{"id": "s1", "role": "Builder", "worker": "session"}], "ci": {"red": False}}
+    spawn = [l for l in S.plan_lines("A", "JIS-NUC", p, live, ctx, gate_key=False) if l.startswith("SPAWN")][0]
+    assert "agent" in spawn and "session" not in spawn and "sessions, 2 chained" not in spawn
 
 
 def test_plan_lines_run_session_planner_when_raw_cards_are_old():
@@ -532,8 +540,9 @@ def test_handover_round_trip(tmp_path, monkeypatch):
                                                         "picks": ["s1"]}), encoding="utf-8")
     p = S.handover(tmp_path, "c", note="ship s1 then take s2", host="JIS-NB", home=home, now=T0)
     t = p.read_text(encoding="utf-8")
-    assert p.name == "SUPERVISOR_C.md" and "- Next: ship s1 then take s2" in t and "card-a" in t and "card-b" not in t
-    assert "A@JIS-NUC" in t and "You are Supervisor. Login C." in t and "\r" not in t
+    assert p.name == "SUPERVISOR_C.md" and "2. ship s1 then take s2" in t and "card-a" in t and "card-b" not in t
+    assert "A@JIS-NUC" in t and "\r" not in t and S.validate_form(t) == []
+    assert S.next_line(t).startswith("1. `python scripts/dev/sync.py start")
 
 
 # ---------- review fixes (Sonnet + Haiku review 2026-10-19) ----------
@@ -872,3 +881,274 @@ def test_wait_records_marker_and_removes_it_after(tmp_path):
     assert rc == 3 and seen and all(seen)
     assert not (tmp_path / "C-watcher.json").exists()
     assert S.watchcheck("C", home=tmp_path)[0] == 4
+
+
+# ---------- C4 supervisor-handover-fixed-form ----------
+import subprocess as _sp
+EXDIR = Path(__file__).resolve().parents[2] / "MyTradingSys" / "research" / "mts_doctor" / "context_files"
+SEVEN = ["Goal", "Truth", "Ruled out", "Next 3 steps", "Traps", "Open", "Missed last time"]
+
+
+def _form(**over):
+    body = {"Goal": ["run, window, stops"], "Truth": ["- claim | `git rev-parse HEAD` | ok"], "Ruled out": ["- x"],
+            "Next 3 steps": ["1. `python scripts/dev/sync.py start s`"], "Traps": ["- t"], "Open": ["- o"], "Missed last time": ["(none)"]}
+    body.update(over)
+    out = ["# Supervisor C handover | written x | verify: y   (STALE 0 at last boot)", ""]
+    for h in SEVEN:
+        out += [f"## {h}", *body[h], ""]
+    return "\n".join(out)
+
+
+def test_handover_writes_seven_fixed_sections(tmp_path, monkeypatch):
+    import sync
+    monkeypatch.setattr(sync, "read_claims", lambda repo, ref: [])
+    home = tmp_path / "h"
+    home.mkdir()
+    p = S.handover(tmp_path, "c", note="n", host="JIS-NB", home=home, now=T0)
+    t = p.read_text(encoding="utf-8")
+    assert [h for h, _ in S.split_sections(t)[1]] == SEVEN and S.validate_form(t) == []
+    assert len(t.splitlines()) <= 60 and len(t.encode()) <= 6144
+
+
+def test_handover_refuses_update_extra_heading_and_caps(tmp_path):
+    assert S.validate_form(_form()) == []
+    upd = _form() + "\n## Update 2026-10-25\n- more\n"
+    assert any("Update" in x for x in S.validate_form(upd))
+    with pytest.raises(ValueError):
+        S.handover(tmp_path, "c", text=upd, now=T0)
+    assert not (tmp_path / "MyTradingSys").exists()                       # refused: nothing written
+    assert any("cap" in x for x in S.validate_form(_form(Traps=["- t"] * 7)))
+    long = _form(Goal=["g"] * 2, Truth=["- c%d | `git rev-parse HEAD` | ok" % i for i in range(15)], Traps=["- t"] * 6, Open=["- o"] * 5,
+                 **{"Ruled out": ["- r"] * 6, "Next 3 steps": ["1. a", "2. b", "3. c"], "Missed last time": ["m"] * 6})
+    assert S.validate_form(long) == []                                    # every section at its cap = 58 lines: fits
+    long = long.replace("\n\n## Goal", "\nnote one\nnote two\n\n\n## Goal", 1)
+    assert any("lines > cap 60" in x for x in S.validate_form(long))      # 61 lines overall
+    assert any("missing heading" in x for x in S.validate_form(_form().replace("## Traps", "## Misc")))
+    assert any("Truth line" in x for x in S.validate_form(_form(Truth=["- claim without a check"])))
+
+
+def test_examples_pass_shape_check():
+    assert S.validate_form((EXDIR / "EXAMPLE_SUPERVISOR_C.md").read_text(encoding="utf-8"), "supervisor") == []
+    assert S.validate_form((EXDIR / "EXAMPLE_LEAD.md").read_text(encoding="utf-8"), "lead") == []
+
+
+def _git_repo(tmp_path):
+    r = tmp_path / "r"
+    r.mkdir()
+    g = lambda *a: _sp.run(["git", "-C", str(r), *a], capture_output=True, text=True, check=True).stdout.strip()
+    g("init", "-q")
+    g("-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "--allow-empty", "-m", "a")
+    on = g("rev-parse", "HEAD")
+    g("update-ref", "refs/remotes/origin/fast-track", on)
+    g("-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "--allow-empty", "-m", "b")
+    return r, on, g("rev-parse", "HEAD")
+
+
+def test_verify_marks_sha_not_on_trunk_stale(tmp_path):
+    r, on, off = _git_repo(tmp_path)
+    chk = "`git merge-base --is-ancestor <sha> origin/fast-track`"
+    t = _form(Truth=[f"- shipped {on[:9]} | {chk} | exit 0", f"- unshipped {off[:9]} | {chk} | exit 0", "- cannot run | `get_usage` | x"])
+    new, res = S.verify_text(t, r)
+    assert (res["ok"], res["stale"], res["unchecked"]) == (1, 1, 1)
+    assert f"- STALE: unshipped {off[:9]}" in new and f"- shipped {on[:9]}" in new and "(STALE 1 at last boot)" in new
+    again, res2 = S.verify_text(new, r)       # a line that still fails keeps its mark, once
+    assert again.count("STALE: ") == 1 and res2["stale"] == 1
+    cnt = S.verify_text(_form(Truth=["- ready | `git rev-list --count HEAD` | 2", "- wrong | `git rev-list --count HEAD` | 5"]), r)[1]
+    assert (cnt["ok"], cnt["stale"]) == (1, 1)
+
+
+def test_verify_cli_writes_stale(tmp_path, capsys, monkeypatch):
+    r, on, off = _git_repo(tmp_path)
+    f = r / "h.md"
+    f.write_text(_form(Truth=[f"- gone {off[:9]} | `git merge-base --is-ancestor <sha> origin/fast-track` | exit 0"]), encoding="utf-8", newline="\n")
+    monkeypatch.chdir(r)
+    (r / "MyTradingSys").mkdir()
+    assert S.main(["handover", "--verify", "--file", str(f), "--login", "C"]) == 0
+    out = capsys.readouterr().out
+    assert "STALE 1" in out and "STALE: gone" in f.read_text(encoding="utf-8")
+
+
+def test_transit_at_150k_context_or_3h():
+    start = T0 - timedelta(hours=3, minutes=1)
+    pl = S.pace_plan(T0, _rd(10, 20), 95)
+    assert S.transit_reason(pl, T0, 150_000).startswith("context 150K") and S.transit_reason(pl, T0, 149_999) == ""
+    assert "3.0 h" in S.transit_reason(pl, T0, None, start) and S.transit_reason(pl, T0, 10, T0 - timedelta(hours=2)) == ""
+    hot = "\n".join(S.plan_lines("C", "JIS-NB", pl, {}, {"ci": {}, "picks": [], "transit_now": "context 160K >= 150K"}, False))
+    cold = "\n".join(S.plan_lines("C", "JIS-NB", pl, {}, {"ci": {}, "picks": []}, False))
+    assert "TRANSIT NOW (context 160K" in hot and "TRANSIT NOW" not in cold
+    hist = [{"at": "2026-10-19T05:00:00Z"}, {"at": "2026-10-19T09:00:00Z"}, {"at": "2026-10-19T10:30:00Z"}, {"at": "2026-10-19T12:00:00Z"}]
+    assert S.wave_start_from(hist, T0) == datetime(2026, 10, 19, 9, 0, tzinfo=timezone.utc)   # 05:00 is a gap > 90 min earlier
+
+
+def test_lead_role_same_form_other_file(tmp_path):
+    p = S.handover(tmp_path, "", role="lead", host="JIS-NB", now=T0)
+    t = p.read_text(encoding="utf-8")
+    assert p.name == "LEAD_RESUME_2026-10-19.md" and S.validate_form(t, "lead") == []
+    assert len(S.split_sections(t)[1]) == 8
+    with pytest.raises(ValueError):
+        S.handover(tmp_path, "", role="lead", now=T0, text=t + "\n## Ninth\n- x\n")
+    assert S.verify_text(t, tmp_path, "lead")[1]["problems"] == []
+
+
+# ---------- SUPER_SESSION.md Session log cap (handover log overflow broke test_session_log_keeps_last_five 2026-10-28) ----------
+def _session_doc(entries):
+    body = "\n".join(f"- {i}" for i in entries)
+    return f"# Super session\n\n## Pacing\nstate row\n\n## Session log (newest first; one line each, last 5)\n{body}\n\n## Prompt: start a super session\n```\nYou are Supervisor.\n```\n"
+
+
+def test_append_session_line_prepends_newest_first_and_keeps_cap():
+    """5 entries already: the new line goes to the top and the oldest (last) entry is dropped, so the section still holds 5."""
+    doc = _session_doc(["1", "2", "3", "4", "5"])
+    out = S.append_session_line(doc, "- NEW")
+    log = [l for l in out.splitlines() if l.startswith("- ")]
+    assert log == ["- NEW", "- 1", "- 2", "- 3", "- 4"]
+    assert "- 5" not in out                      # oldest dropped
+
+
+def test_append_session_line_under_cap_does_not_drop():
+    """Fewer than 5 entries: the new line is prepended, nothing dropped, total grows by one."""
+    out = S.append_session_line(_session_doc(["1", "2"]), "- NEW")
+    log = [l for l in out.splitlines() if l.startswith("- ")]
+    assert log == ["- NEW", "- 1", "- 2"]
+
+
+def test_append_session_line_leaves_other_sections_untouched():
+    """Only the entry block under '## Session log' changes; the Pacing/Prompt sections and their '- ' lines elsewhere are intact."""
+    doc = _session_doc(["1", "2", "3", "4", "5"])
+    out = S.append_session_line(doc, "- NEW")
+    assert "## Pacing" in out and "state row" in out and "You are Supervisor." in out
+    assert "## Prompt: start a super session" in out
+
+
+def test_append_session_line_missing_section_is_noop():
+    """A file without the Session log section is returned unchanged (fail closed: no new section invented)."""
+    doc = "# Super session\n\n## Pacing\nstate row\n"
+    assert S.append_session_line(doc, "- NEW") == doc
+
+
+def test_append_session_line_blank_input_is_noop():
+    assert S.append_session_line(_session_doc(["1"]), "") == _session_doc(["1"])
+    assert S.append_session_line(_session_doc(["1"]), "   ") == _session_doc(["1"])
+
+
+def test_append_session_line_respects_custom_keep():
+    out = S.append_session_line(_session_doc(["1", "2", "3"]), "- NEW", keep=2)
+    assert [l for l in out.splitlines() if l.startswith("- ")] == ["- NEW", "- 1"]
+
+
+def test_record_session_line_writes_capped_file(tmp_path, monkeypatch):
+    """End-to-end: 5 entries on disk + a new line -> 5 kept, oldest gone; returns the new count."""
+    import sync
+    monkeypatch.setattr(sync, "read_claims", lambda repo, ref: [])
+    p = tmp_path / "MyTradingSys" / "system"
+    p.mkdir(parents=True)
+    doc_path = p / "SUPER_SESSION.md"
+    doc_path.write_text(_session_doc(["1", "2", "3", "4", "5"]), encoding="utf-8")
+    assert S.record_session_line(tmp_path, "- NEW") == 5
+    on_disk = [l for l in doc_path.read_text(encoding="utf-8").splitlines() if l.startswith("- ")]
+    assert on_disk == ["- NEW", "- 1", "- 2", "- 3", "- 4"]
+
+
+def test_record_session_line_autobulleted_text_stays_well_formed(tmp_path):
+    """A raw line without '- ' gets one prepended; the next capped call still slices the block correctly (no stray entry)."""
+    p = tmp_path / "MyTradingSys" / "system"
+    p.mkdir(parents=True)
+    doc_path = p / "SUPER_SESSION.md"
+    doc_path.write_text(_session_doc(["1", "2", "3", "4", "5"]), encoding="utf-8")
+    assert S.record_session_line(tmp_path, "NEW") == 5            # raw text, no bullet
+    assert S.record_session_line(tmp_path, "SECOND") == 5          # still 5: block re-sliced, oldest dropped again
+    on_disk = [l for l in doc_path.read_text(encoding="utf-8").splitlines() if l.startswith("- ")]
+    assert on_disk == ["- SECOND", "- NEW", "- 1", "- 2", "- 3"]
+
+
+def test_record_session_line_missing_file_is_noop(tmp_path):
+    assert S.record_session_line(tmp_path, "- NEW") == -1      # SUPER_SESSION.md absent: nothing written
+
+
+def test_fold_target_card_else_handover(tmp_path):
+    cards = tmp_path / "MyTradingSys" / "system" / "tasks"
+    cards.mkdir(parents=True)
+    (cards / "abc.json").write_text("{}", encoding="utf-8")
+    assert S.fold_target(tmp_path, "abc", "c") == cards / "abc.json"
+    assert S.fold_target(tmp_path, None, "c").name == "SUPERVISOR_C.md" and S.fold_target(tmp_path, "nope", "c").name == "SUPERVISOR_C.md"
+    assert S.fold_target(tmp_path, None, None, "lead", T0).name == "LEAD_RESUME_2026-10-19.md"
+    t = S.set_missed(_form(), ["a.md", "b.md"])
+    assert "a.md" in t and "(none)" not in t and S.validate_form(t) == []
+
+
+def test_peer_none_live_line_names_the_heartbeat_constant():
+    p = S.pace_plan(T0, _rd(10, 20), 95)
+    live = {"B": {"host": "JIS-NB", "mode": "NORMAL", "run": 0, "free": 3, "at": "x", "dsa": None}}
+    ctx = {"codex_ready": 3, "spare": "card-x", "ci": {}, "picks": []}
+    out = chr(10).join(S.plan_lines("B", "JIS-NB", p, live, dict(ctx, nuc_ok=False), gate_key=False))
+    assert f"no heartbeat < {S.HEARTBEAT_MIN} min" in out
+
+
+# ---------- bug-supervisor-handoff-duplicates (ISSUES_REGISTER 2026-10-28 B1, B2) ----------
+def _readings(home, login, rows):
+    home.mkdir(parents=True, exist_ok=True)
+    (home / f"{login}.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")
+
+
+def test_handover_guard_refuses_while_another_supervisor_of_the_login_planned(tmp_path, monkeypatch):
+    """B1: two Supervisor B sessions each wrote the hand-over and woke a successor. A second live planner of the same login
+    within HANDOVER_GUARD_MIN refuses the hand-over and names it; --force (force=True) overrides; own or old readings do not block."""
+    import sync
+    monkeypatch.setattr(sync, "read_claims", lambda repo, ref: [])
+    home = tmp_path / "home"
+    other = dict(_rd(40, 20, at="2026-10-19T11:55:00Z"), sid="sess-other-1234", tree="C:/x/mts-supervisor-b", host="JIS-NUC")
+    _readings(home, "B", [other])
+    with pytest.raises(ValueError) as e:
+        S.handover(tmp_path, "b", host="JIS-NUC", home=home, now=T0, sid="sess-me")
+    assert "sess-oth" in str(e.value) and "mts-supervisor-b" in str(e.value) and "--force" in str(e.value)
+    assert not S.handover_path(tmp_path, "B").exists()                                     # nothing written
+    assert S.handover(tmp_path, "b", host="JIS-NUC", home=home, now=T0, sid="sess-me", force=True).is_file()
+    _readings(home, "B", [dict(other, sid="sess-me")])                                    # my own reading
+    assert S.handover(tmp_path, "b", host="JIS-NUC", home=home, now=T0, sid="sess-me").is_file()
+    _readings(home, "B", [dict(other, at="2026-10-19T11:45:00Z")])                        # 15 min ago: gone
+    assert S.handover(tmp_path, "b", host="JIS-NUC", home=home, now=T0, sid="sess-me").is_file()
+
+
+def test_handover_cli_refuses_and_force_overrides(tmp_path, monkeypatch, capsys):
+    import sync
+    import mts_signal
+    monkeypatch.setattr(sync, "read_claims", lambda repo, ref: [])
+    monkeypatch.setattr(mts_signal, "resolve_login", lambda x: ("B", ""))
+    monkeypatch.setenv("MTS_RELAY_HOME", str(tmp_path / "relay"))
+    monkeypatch.setenv("CLAUDE_CODE_SESSION_ID", "sess-me")
+    now = S._now_utc() - timedelta(minutes=2)
+    _readings(S.loop_home(), "B", [{"at": now.strftime("%Y-%m-%dT%H:%M:%SZ"), "sid": "sess-other", "tree": "t2"}])
+    (tmp_path / "MyTradingSys").mkdir()
+    monkeypatch.chdir(tmp_path)
+    assert S.main(["handover", "--login", "B", "--no-send", "--no-wake"]) == 2
+    assert "REFUSED" in capsys.readouterr().out
+    assert S.main(["handover", "--login", "B", "--no-send", "--no-wake", "--force"]) == 0
+
+
+def test_plan_records_its_session_in_the_reading(tmp_path, monkeypatch):
+    monkeypatch.setenv("CLAUDE_CODE_SESSION_ID", "sess-plan-42")
+    _plan_run(tmp_path, 0, 0, send=False)
+    rows = [json.loads(x) for x in (tmp_path / "C.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]
+    assert rows[-1]["sid"] == "sess-plan-42"
+
+
+def test_one_transit_rule_code_and_docs_agree():
+    """B2: plan printed TRANSIT NOW on a 3 h wave while the role file said `TRANSIT at` or 5 h >= 80%. One rule: TRANSIT_RULE,
+    quoted verbatim in roles/supervisor.md and SUPER_SESSION.md, and transit_reason fires on each of its triggers."""
+    repo = Path(__file__).resolve().parents[2]
+    for rel in ("MyTradingSys/system/roles/supervisor.md", "MyTradingSys/system/SUPER_SESSION.md"):
+        assert S.TRANSIT_RULE in (repo / rel).read_text(encoding="utf-8"), rel
+    pl = S.pace_plan(T0, _rd(10, 20), 95)                                                  # reset 14:00Z -> TRANSIT at 13:40Z
+    assert S.transit_reason(pl, T0) == ""
+    assert "TRANSIT at" in S.transit_reason(pl, datetime(2026, 10, 19, 13, 41, tzinfo=timezone.utc))
+    assert "5 h 80%" in S.transit_reason(S.pace_plan(T0, _rd(80, 20), 95), T0)
+    assert "wave 3.0 h" in S.transit_reason(pl, T0, wave_start=T0 - timedelta(hours=3, minutes=1))
+    assert S.transit_reason(pl, T0, context_tokens=150_000).startswith("context 150K")
+
+
+def test_successor_wave_starts_at_its_own_first_reading():
+    """B2: readings are shared per login; the successor's wave must not inherit its predecessor's start (instant TRANSIT NOW)."""
+    hist = [{"at": "2026-10-19T08:30:00Z", "sid": "old"}, {"at": "2026-10-19T10:00:00Z", "sid": "old"},
+            {"at": "2026-10-19T11:30:00Z", "sid": "new"}, {"at": "2026-10-19T12:00:00Z", "sid": "new"}]
+    assert S.wave_start_from(hist, T0) == datetime(2026, 10, 19, 8, 30, tzinfo=timezone.utc)
+    assert S.wave_start_from(hist, T0, sid="new") == datetime(2026, 10, 19, 11, 30, tzinfo=timezone.utc)

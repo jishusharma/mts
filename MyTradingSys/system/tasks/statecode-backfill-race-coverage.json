@@ -16,6 +16,15 @@
   "goal": "Prove in-flight fetch rejection and automatic retry scheduling with deterministic tests.",
   "id": "statecode-backfill-race-coverage",
   "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "StateCodeEmitter: ignore live ticks older than the accepted backfill seam",
+      "ref": "b795342b00eb",
+      "utc": "2026-10-25T15:45:50Z"
+    }
+  ],
   "layers": [
     "live_engine"
   ],
@@ -25,6 +34,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-27T22:51:55Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -35,11 +45,12 @@
     "deploys, process restarts, HALT files, live tree",
     "unrelated strategy logic"
   ],
+  "scope_sha": "b795342b00eb",
   "size": "M",
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-20_review-statecode-backfill-gpt.md"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Read the GPT review report and reproduce the cited scenario.",
     "Change clock across UTC midnight during fetch; reconnect during fetch; fail a scheduled attempt then recover; close/reopen without intermediate emit and assert cvd ring restarts.",

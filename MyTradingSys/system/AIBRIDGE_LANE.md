@@ -22,6 +22,7 @@ Config, policy, audit: same folder.
 Extension:       F:\AIBridge\extension, Chrome MV3, loaded unpacked.
 
 State 2026-10-19: extension/agent 0.7.1 installed on JIS-NB (aibridge_install.py; reload extension + F5 chat pending), NUC install pending; task fit table and evidence: SUPER_LOOP.md.
+State 2026-10-28: bridge 0.7.2 = B196 + version guard (scripts/aibridge/RELEASES.json; a bridge file change without a bump fails tests/test_aibridge_version_bump.py). Desktop F:\AIBridge still 0.7.1 until card aibridge-072-desktop-install runs (install, Chrome Reload, F5). Every bridge fix bumps the version (d-dsa-bridge-version-bump-always).
 State 2026-10-01: P1, P2, P3a, P3b part 1 done. P3b part 2 blocked on the Chrome extension ID.
 Bridge hard rules (its own project): loopback only, denials always win, audit every request,
 no BOM, LF only, no emoji, read before write. A bridge-development session does not write into

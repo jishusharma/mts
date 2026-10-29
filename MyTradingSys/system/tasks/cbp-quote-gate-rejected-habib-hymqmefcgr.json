@@ -1,0 +1,61 @@
+{
+  "approved_by": "",
+  "asks": "Owner/data prerequisite: waiting on DSA desk 20261029-170046-cbp-pull-habib-hymqmefcgrw-rejected-quot for the exact rejected[] triple and raw transcript text; no operator decision needed, just data not reachable from this worktree (no CBP_HOME/F: access).",
+  "commands": [],
+  "created": "2026-10-29T02:01:25Z",
+  "depends_on": [],
+  "done_when": "If the fragment IS verbatim in the transcript after vq.norm: a fail-first regression lands in test_cbp_query.py and vq.first_missing/norm is fixed, shipped. If NOT present: tasks.py done --result quotes the fragment and the transcript text that disproves it; no code change.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Decide whether CBP's quote gate (cbp_run.py build_row -> vq.first_missing) wrongly rejected analyst Habib's hymqmEfCGrw row, or correctly rejected an LLM-fabricated quote, and fix the gate only if the rejected fragment is a genuine verbatim excerpt of the transcript.",
+  "id": "cbp-quote-gate-rejected-habib-hymqmefcgr",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "CBP: reject empty quoted evidence",
+      "ref": "0c1ea48f1d99",
+      "utc": "2026-10-28T14:35:43Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "DECISION (OURS) Session_Planner 2026-10-29: cbp_run.py:154-174 shows the stored rejected[] reason is only the FIRST UNMATCHED FRAGMENT of the LLM's own quote, truncated to 60 chars (cbp_run.py:164) -- it is not transcript context, and the original full LLM quote is never persisted once rejected (build_row returns (None, reason) and nothing else is saved). The only in-repo evidence (MyTradingSys/research/eagle_eyes_picture_2026-10-28/ANALYST_VIEWS_2026-10-29.md:8-14) shows the real transcript sentence ends '...targeting again the quarterly pivot at $ 78,000.' with the NEXT bullet switching topic to '$73,000' -- no sign of the rejected fragment's tail 'which for me is the first ta[sk...]' nearby, but that doc is a curated 4-bullet selection (not the full transcript), so this is not conclusive either way. This repo/worktree has no F:/CryptoScrapper (CBP_HOME) access to check directly. Posted DSA desk task 20261029-170046-cbp-pull-habib-hymqmefcgrw-rejected-quot (python one-liners: print the exact rejected[] triple for hymqmEfCGrw from cbp_store/rows.json, and 500 chars of the raw transcript around 'quarterly pivot') to get the real numbers before anyone judges this a gate bug. Parked with tasks.py tried --asks; do not promote until the desk result lands.",
+  "prio": 2,
+  "refine_tries": 1,
+  "refined_by": "",
+  "refreshed": "2026-10-29T17:06:04Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/cbp_run.py",
+    "scripts/dev/verify_extract_quotes.py",
+    "MyTradingSys/cbp/__init__.py",
+    "scripts/dev/test_cbp_query.py"
+  ],
+  "scope_out": [
+    "the LLM extraction prompt/model choice; re-running cbp_run.py for new videos (separate card cbp-ingest-habib-s-3-missing-videos-hymq); live tree"
+  ],
+  "scope_sha": "0c1ea48f1d99",
+  "size": "S",
+  "sources": [
+    "scripts/dev/cbp_run.py:154-174 (build_row: vq.first_missing per quote, rejection reason = bad.strip()[:60])",
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/ANALYST_VIEWS_2026-10-29.md:8-14 (sourced hymqmEfCGrw transcript excerpt, Caveat 1 names the exact rejected reason string)",
+    "MyTradingSys/tests/test_cbp_query.py:117 (existing rejected[] shape assertion)"
+  ],
+  "state": "blocked",
+  "steps": [
+    "Read the DSA desk result for 20261029-170046-cbp-pull-habib-hymqmefcgrw-rejected-quot: the exact rejected[] triple for hymqmEfCGrw and 500 chars of raw transcript around 'quarterly pivot'",
+    "Run vq.norm + vq.first_missing on the rejected fragment against that transcript text yourself to confirm match/no-match (do not trust the desk report's own verdict, only its printed text)",
+    "No match (fragment genuinely absent): tasks.py done --result quoting both strings; no code change -- the gate is working as intended",
+    "Match found (gate bug, e.g. a normalisation edge case): write the fail-first regression in test_cbp_query.py from the real fixture, fix vq.first_missing/norm, ship"
+  ],
+  "tests": "scripts/dev/test_cbp_query.py: new regression built from the real (fragment, transcript) pair from the desk result; fails on old code only if a genuine matcher bug is confirmed",
+  "title": "CBP quote gate rejected Habib hymqmEfCGrw row that the transcript supports",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

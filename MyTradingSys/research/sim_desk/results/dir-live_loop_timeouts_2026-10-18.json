@@ -1,0 +1,67 @@
+{
+ "id": "dir-live_loop_timeouts_2026-10-18",
+ "kind": "thought_experiment",
+ "family": "Live Loop Timeouts",
+ "title": "Live-Loop Timeouts Post-B191 Audit Report",
+ "provenance": "source-extracted",
+ "date": "2026-10-18",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "The mirrored log runtime_data/_mirror/runtime_data/live_runner.log contains OURS: 3000 lines (mirrored via tail 3000 rule from scripts/dev/live_mirror.py:54).",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "Log time window:",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "First poll entry: 2026-10-16T05:58:15Z",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "Last poll entry: 2026-10-18T10:05:28Z",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 5 from the source",
+   "value_plain": "B191 commit timestamp: 2026-10-16T15:36:57Z",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 6 from the source",
+   "value_plain": "In MyTradingSys/backtest/layers/alerts/live_runner_cli.py, any network/fetch timeout emits:",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2026-10-16 to 2026-10-18 (as written in the source)",
+ "verdict": {
+  "label": "Date: 2026-10-18",
+  "tone": "info"
+ },
+ "why": [
+  "Failed classpath generation is throttled with a backoff of SOURCED: 30 min ($script:CpRetryAfter = (Get-Date).AddMinutes(30), [scripts/core/start-trading-day.ps1:105](file:///F:/MTS/gq/live-loop-timeouts-b191/scripts/core/start-trading-day.ps1L105)).",
+  "If direct execution fails or returns non-zero, falls back to mvn_snapshot with timeout SOURCED: 180 s ([scripts/core/start-trading-day.ps1:485](file:///F:/MTS/gq/live-loop-timeouts-b191/scripts/core/start-trading-day.ps1L485))."
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)"
+ },
+ "source_files": [
+  "MyTradingSys/research/live_loop_timeouts_2026-10-18/REPORT.md"
+ ],
+ "commit": "966d2607d"
+}

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T04:16:41Z",
   "commands": [
     "python scripts/dev/gemini_queue.py run tom-corr-live-captions:medium",
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/tom_correlation_trick_2026-10-26/EXTRACT.md"
@@ -17,6 +18,12 @@
   "kind": "run",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "e83njGZFrPw captions fetched (1802 words); EXTRACT.md section 1b added; verify_extract_quo",
+      "ref": "6721e3d15",
+      "utc": "2026-10-28T04:16:41Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -43,7 +50,12 @@
   "refined_by": "",
   "refreshed": "2026-10-26T17:25:06Z",
   "refs": [],
-  "result": "",
+  "result": "e83njGZFrPw captions fetched (1802 words); EXTRACT.md section 1b added; verify_extract_quotes exits 0; no thresholds stated",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/tom_correlation_trick_2026-10-26/EXTRACT.md",
     "raw_transcripts_canonical"
@@ -59,13 +71,14 @@
     "MyTradingSys/research/tom_correlation_trick_2026-10-26/EXTRACT.md:3 (stream not yet read)",
     "MyTradingSys/system/ROUTING.md:44 (YouTube work on Gemini)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Find the video id of the stream (Gemini search grounding via the queue; EXTRACT.md:3 has the title); confirm it has ended",
     "Fetch captions: python scripts/dev/fetch_captions.py --analyst Tom <id> (manual track first); a NOCAPS result parks the card",
     "Add EXTRACT.md section 1b (SOURCED quotes with timestamps), then a table of every threshold Tom states vs our OURS value in section 4",
     "Run verify_extract_quotes.py on EXTRACT.md until exit 0; commit with a Result: line"
   ],
+  "taken": "2026-10-28T04:16:41Z",
   "tests": "",
   "title": "Fetch captions of Tom live 'DAX Short Using My Correlation Trick' via gemini_queue on JIS-NUC once the stream ends. DONE when: raw_transcripts_canonical/<id>_raw.txt exists, EXTRACT.md in MyTradingSys/research/tom_correlation_trick_2026-10-26/ gets a section 1b with new quotes and verify_extract_quotes.py exits 0, and any numeric threshold Tom states is listed vs our OURS values",
   "weight": "ROUTINE",

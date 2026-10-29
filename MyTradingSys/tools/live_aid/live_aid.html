@@ -1,0 +1,517 @@
+<title>BTC Live Aid</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+Condensed:wght@400;600&display=swap">
+<style>
+/* Layout: one narrow column (~420px) that sits beside the charts; four stacked panels, numbers first. Single dark look by choice. */
+:root {
+  --bg: #0d1013; --panel: #141920; --line: #232b35; --fg: #e3e8ee; --dim: #8592a1;
+  --up: #3fbf8a; --down: #e2665c; --amber: #e0a43a; --accent: #6ea8d9;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  --sans: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+  color-scheme: dark;
+}
+body { background: var(--bg); color: var(--fg); font: 13px/1.35 var(--sans); }
+main { max-width: 420px; margin: 0 auto; display: grid; gap: 8px;
+  padding-block: 8px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+section { background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 8px 10px; display: grid; gap: 6px; min-width: 0; }
+.hd { display: flex; align-items: center; gap: 8px; }
+.hd h2 { margin: 0; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); flex: 1; }
+.age { font: 11px var(--mono); padding: 1px 6px; border-radius: 3px; background: var(--line); color: var(--dim); }
+.age.stale { background: var(--amber); color: var(--bg); }
+.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.big { font: 600 26px/1.1 var(--mono); font-variant-numeric: tabular-nums; }
+.mid { font: 600 17px/1.2 var(--mono); font-variant-numeric: tabular-nums; }
+.v { font: 10px var(--sans); letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+.dim { color: var(--dim); }
+.up { color: var(--up); } .down { color: var(--down); }
+.nid { color: var(--amber); font: 600 12px var(--mono); }
+.err { color: var(--dim); font: 11px var(--mono); word-break: break-word; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.cell { display: grid; gap: 1px; min-width: 0; }
+table { width: 100%; border-collapse: collapse; font: 12px var(--mono); font-variant-numeric: tabular-nums; }
+th { font: 600 10px var(--sans); letter-spacing: .06em; text-transform: uppercase; color: var(--dim); text-align: right; padding: 2px 3px; }
+td { text-align: right; padding: 3px 3px; border-top: 1px solid var(--line); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+.chip { font: 600 10px var(--sans); padding: 0 4px; border-radius: 3px; border: 1px solid var(--amber); color: var(--amber); margin-left: 3px; }
+input, select { background: var(--bg); color: var(--fg); border: 1px solid var(--line); border-radius: 3px; font: 12px var(--mono); padding: 3px 5px; width: 100%; min-width: 0; box-sizing: border-box; }
+input:focus-visible, select:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+button { background: var(--line); color: var(--fg); border: 0; border-radius: 3px; font: 600 11px var(--sans); padding: 3px 8px; cursor: pointer; }
+button:hover { background: #2e3946; }
+.form3 { display: grid; grid-template-columns: 80px 1fr 1fr; gap: 6px; }
+.form-rung { display: grid; grid-template-columns: 1fr 1fr auto; gap: 6px; }
+.tag { font: 10px var(--sans); color: var(--dim); }
+.scroll { overflow-x: auto; }
+.it { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.it li { display: grid; gap: 1px; border-top: 1px solid var(--line); padding-top: 4px; font: 12px var(--mono); }
+.it li:first-child { border-top: 0; padding-top: 0; }
+.it .v { font-size: 10px; }
+</style>
+
+<main>
+  <!-- 1. PRICE + CLOCK -->
+  <section id="p-price">
+    <div class="hd"><h2>Price and clock</h2><span class="age" id="age-price">--</span></div>
+    <div class="row2">
+      <div class="cell"><span class="v">Deribit BTC-PERPETUAL last (mainnet)</span><span class="big" id="dbt-last">--</span><span class="err" id="dbt-sub"></span></div>
+      <div class="cell"><span class="v">Binance BTCUSDT perp last</span><span class="big" id="bin-last">--</span><span class="err" id="bin-sub"></span></div>
+    </div>
+    <div class="row2">
+      <div class="cell"><span class="v">Basis Deribit - Binance</span><span class="mid" id="basis">--</span></div>
+      <div class="cell"><span class="v">UTC</span><span class="mid" id="utc">--</span></div>
+    </div>
+    <div class="row2">
+      <div class="cell"><span class="v">Session (OURS)</span><span class="mid" id="session">--</span></div>
+      <div class="cell"><span class="v">Next US open / EU open</span><span class="num" id="cd-us">--</span><span class="num" id="cd-eu">--</span></div>
+    </div>
+    <span class="tag">You trade Deribit TESTNET; these are MAINNET public prices, testnet prints differ.</span>
+  </section>
+
+  <!-- 2. POSITION -->
+  <section id="p-pos">
+    <div class="hd"><h2>Position (typed by you)</h2><span class="age" id="age-pos">--</span></div>
+    <div class="form3">
+      <select id="pos-side" aria-label="Side"><option value="">side</option><option value="short">short</option><option value="long">long</option></select>
+      <input id="pos-size" type="number" inputmode="decimal" placeholder="size USD" aria-label="Size USD">
+      <input id="pos-entry" type="number" inputmode="decimal" placeholder="avg entry" aria-label="Average entry">
+    </div>
+    <div class="row2">
+      <div class="cell"><span class="v">Unrealised P&amp;L BTC / USD (Deribit mark)</span><span class="big" id="pnl-btc">--</span><span class="num" id="pnl-usd">--</span></div>
+      <div class="cell"><span class="v">Average - mark</span><span class="mid" id="pos-dist">--</span><span class="num dim" id="pos-atr">--</span></div>
+    </div>
+    <div class="hd"><h2>Ladder of resting limits</h2><span class="tag" id="uncovered"></span></div>
+    <div class="scroll"><table><thead><tr><th>Price</th><th>Size USD</th><th>Pts</th><th>ATR15</th><th></th></tr></thead><tbody id="rungs"></tbody></table></div>
+    <div class="form-rung">
+      <input id="rung-price" type="number" inputmode="decimal" placeholder="rung price" aria-label="Rung price">
+      <input id="rung-size" type="number" inputmode="decimal" placeholder="rung size USD" aria-label="Rung size USD">
+      <button id="rung-add" type="button">Add rung</button>
+    </div>
+    <span class="tag">Inverse contract: P&amp;L BTC = size x (1/entry - 1/mark), negated for a short. Saved in this browser only.</span>
+  </section>
+
+  <!-- 2b. IN-TRADE -->
+  <section id="p-intrade">
+    <div class="hd"><h2>In-trade readings</h2><span class="age" id="age-it">--</span></div>
+    <ul id="it" class="it"></ul>
+    <span class="tag">Descriptive readouts, no advice. Rules and thresholds = OURS, fixed in STEPS.md before data was looked at. Data: Deribit mainnet public trades, book and open interest (you trade testnet, prints differ); candles from the strip venue. Rule R = 3 or more of the available flags against the side you typed; it names no size.</span>
+  </section>
+
+  <!-- 3. STRIP -->
+  <section id="p-strip">
+    <div class="hd"><h2>Strip</h2><span class="v" id="strip-venue"></span><span class="age" id="age-strip">--</span></div>
+    <div class="scroll"><table><thead><tr><th>TF</th><th>RSI</th><th>SMA</th><th>%B</th><th>BBw%</th><th>ATR</th><th>vs VWAP</th></tr></thead><tbody id="strip"></tbody></table></div>
+    <div class="hd"><h2>WaveTrend</h2><span class="tag">wt1 / wt2, lines &plusmn;53 &plusmn;60</span></div>
+    <div class="scroll"><table><thead><tr><th>TF</th><th>wt1</th><th>wt2</th><th>Zone</th><th>Last cross</th></tr></thead><tbody id="wt"></tbody></table></div>
+    <span class="tag">RSI14 Wilder, SMA14 of RSI, BB(20,2) population, ATR14 Wilder, day VWAP hlc3 from 00:00Z: SOURCED (your chart setup). WaveTrend 10/21/4, 0.015, lines 53/60, 200-bar warm-up: OURS (LazyBear defaults; your chart settings not yet known). Flag lines 30/70: OURS. Values include the forming bar.</span>
+  </section>
+
+  <!-- 4. LEVELS -->
+  <section id="p-levels">
+    <div class="hd"><h2>Levels</h2><span class="v" id="lvl-venue"></span><span class="age" id="age-lvl">--</span></div>
+    <div class="scroll"><table><thead><tr><th>Level</th><th>Price</th><th>Pts</th><th>ATR15</th><th></th></tr></thead><tbody id="levels"></tbody></table></div>
+    <div class="form-rung">
+      <input id="lvl-name" type="text" placeholder="label" aria-label="Level label">
+      <input id="lvl-price" type="number" inputmode="decimal" placeholder="price" aria-label="Level price">
+      <button id="lvl-add" type="button">Add level</button>
+    </div>
+    <span class="tag">Distance = level - price on the candle venue. ATR15 = ATR14 of 15m bars.</span>
+  </section>
+</main>
+
+<script src="live_aid_indicators.js"></script>
+<script>
+(function () {
+  'use strict';
+  var A = window.LiveAid;
+  var $ = function (id) { return document.getElementById(id); };
+  var NID = '<span class="nid">NOT_IN_DATA</span>';
+  var STALE_MS = 15000;
+  var S = { dbt: null, dbtMark: null, dbtT: 0, dbtErr: '', bin: null, binT: 0, binErr: '',
+            a15: NaN, tf: {}, venue: null, klErr: '', klT: 0, daily: null,
+            trades: [], trT: 0, book: null, bookT: 0, oi: null, oiT: 0, oiHist: [], flowErr: '' };
+
+  function fmt(x, d) { return isFinite(x) ? x.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }) : '--'; }
+  function sgn(x, d) { return isFinite(x) ? (x > 0 ? '+' : '') + fmt(x, d) : '--'; }
+  function cls(x) { return x > 0 ? 'up' : x < 0 ? 'down' : ''; }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function hhmm(t) { return new Date(t).toISOString().slice(11, 16) + 'Z'; }
+
+  // ---------- storage (this browser only) ----------
+  var KEY = 'liveaid.v1';
+  var store = { side: '', size: '', entry: '', rungs: [], levels: [] };
+  try { var raw = localStorage.getItem(KEY); if (raw) store = Object.assign(store, JSON.parse(raw)); } catch (e) {}
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {} }
+
+  // ---------- feeds ----------
+  // JSON-RPC over the Deribit websocket (its REST API refuses a page opened from disk: no CORS).
+  var dws = null, rpcId = 10, pend = {}, waiters = [];
+  function dRpc(method, params) {
+    return new Promise(function (ok, no) {
+      function go() {
+        var i = ++rpcId, to = setTimeout(function () { delete pend[i]; no(new Error('Deribit ' + method + ' timeout')); }, 8000);
+        pend[i] = function (j) { clearTimeout(to); j.error ? no(new Error('Deribit ' + JSON.stringify(j.error))) : ok(j); };
+        dws.send(JSON.stringify({ jsonrpc: '2.0', id: i, method: method, params: params }));
+      }
+      if (dws && dws.readyState === 1) go(); else waiters.push(go);
+    });
+  }
+  function deribitWs() {
+    var ws;
+    try { ws = new WebSocket('wss://www.deribit.com/ws/api/v2'); } catch (e) { S.dbtErr = String(e); return setTimeout(deribitWs, 5000); }
+    ws.onopen = function () {
+      dws = ws; var w = waiters; waiters = []; w.forEach(function (f) { f(); });
+      ws.send(JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'public/subscribe', params: { channels: ['ticker.BTC-PERPETUAL.100ms', 'trades.BTC-PERPETUAL.100ms', 'book.BTC-PERPETUAL.none.20.100ms'] } }));
+      ws.send(JSON.stringify({ jsonrpc: '2.0', id: 2, method: 'public/set_heartbeat', params: { interval: 30 } }));
+    };
+    ws.onmessage = function (m) {
+      var d = JSON.parse(m.data);
+      if (d.id && pend[d.id]) { var f = pend[d.id]; delete pend[d.id]; f(d); return; }
+      if (d.method === 'heartbeat' && d.params && d.params.type === 'test_request') { ws.send(JSON.stringify({ jsonrpc: '2.0', id: 3, method: 'public/test', params: {} })); return; }
+      if (d.method === 'subscription' && d.params && d.params.channel && d.params.channel.indexOf('trades.') === 0) {
+        var now0 = Date.now();
+        (d.params.data || []).forEach(function (x) { S.trades.push({ t: now0, usd: +x.amount, buy: x.direction === 'buy' }); });
+        S.trT = now0; S.flowErr = '';
+        var cut = now0 - 900000; while (S.trades.length && S.trades[0].t < cut) S.trades.shift();
+        return;
+      }
+      if (d.method === 'subscription' && d.params && d.params.channel && d.params.channel.indexOf('book.') === 0) {
+        var bk = d.params.data || {}, pr = function (a) { return (a || []).map(function (x) { return [+x[x.length - 2], +x[x.length - 1]]; }); };
+        S.book = { bids: pr(bk.bids), asks: pr(bk.asks) }; S.bookT = Date.now();
+        return;
+      }
+      if (d.method === 'subscription' && d.params && d.params.data) {
+        var t = d.params.data;
+        if (isFinite(+t.open_interest)) {
+          S.oi = +t.open_interest; S.oiT = Date.now();
+          var lastH = S.oiHist[S.oiHist.length - 1];
+          if (!lastH || S.oiT - lastH.t >= 10000) { S.oiHist.push({ t: S.oiT, oi: S.oi, px: t.last_price }); var c5 = S.oiT - 600000; while (S.oiHist.length && S.oiHist[0].t < c5) S.oiHist.shift(); }
+        } S.dbt = t.last_price; S.dbtMark = t.mark_price; S.dbtT = Date.now(); S.dbtErr = '';
+        if (S.venue === 'DERIBIT') patchForming(t.last_price);
+        tick();
+      }
+      if (d.error) S.dbtErr = 'Deribit error ' + JSON.stringify(d.error);
+    };
+    ws.onerror = function () { S.dbtErr = 'websocket error (www.deribit.com unreachable or blocked)'; S.flowErr = S.dbtErr; };
+    ws.onclose = function (e) { S.dbtErr = S.dbtErr || ('websocket closed code ' + e.code); setTimeout(deribitWs, 3000); };
+  }
+
+  function binanceWs() {
+    var ws;
+    try { ws = new WebSocket('wss://fstream.binance.com/ws/btcusdt@aggTrade'); } catch (e) { S.binErr = String(e); return setTimeout(binanceWs, 10000); }
+    ws.onmessage = function (m) {
+      var d = JSON.parse(m.data); S.bin = +d.p; S.binT = Date.now(); S.binErr = '';
+      if (S.venue === 'BINANCE') patchForming(+d.p);
+      tick();
+    };
+    ws.onerror = function () { S.binErr = 'websocket error (fstream.binance.com unreachable or blocked)'; };
+    ws.onclose = function (e) { S.binErr = S.binErr || ('websocket closed code ' + e.code); setTimeout(binanceWs, 10000); };
+  }
+
+  function getJson(url) {
+    var ctl = new AbortController(); var to = setTimeout(function () { ctl.abort(); }, 8000);
+    return fetch(url, { signal: ctl.signal }).then(function (r) { clearTimeout(to); if (!r.ok) throw new Error('HTTP ' + r.status + ' ' + url); return r.json(); });
+  }
+
+  var TFS = [{ k: '1m', ms: 60000, n: 1500, dr: '1' }, { k: '5m', ms: 300000, n: 300, dr: '5' }, { k: '15m', ms: 900000, n: 300, dr: '15' }];
+
+  // Binance fapi first; if blocked, Deribit BTC-PERPETUAL candles (venue tag changes to DERIBIT).
+  function fetchBars(tf, n, ms, dr) {
+    var bin = 'https://fapi.binance.com/fapi/v1/klines?symbol=BTCUSDT&interval=' + tf + '&limit=' + n;
+    function viaDeribit(why) {
+      var end = Date.now(), start = end - n * ms;
+      return dRpc('public/get_tradingview_chart_data', { instrument_name: 'BTC-PERPETUAL', resolution: dr, start_timestamp: start, end_timestamp: end }).then(function (j) {
+        var r = j.result; if (!r || r.status !== 'ok') throw new Error('Deribit candles: ' + JSON.stringify(j.error || r.status));
+        var rows = r.ticks.map(function (t, i) { return [t, r.open[i], r.high[i], r.low[i], r.close[i], r.volume[i]]; });
+        return { venue: 'DERIBIT', rows: rows, note: why };
+      });
+    }
+    if (S.venue === 'DERIBIT') return viaDeribit(S.klErr);
+    return getJson(bin).then(function (rows) { return { venue: 'BINANCE', rows: rows }; },
+      function (e) { return viaDeribit('Binance fapi failed: ' + (e.name === 'AbortError' ? 'timeout' : e.message)); });
+  }
+
+  function mergeRows(old, rows) {
+    if (!old) return rows.slice();
+    var byT = {}; old.forEach(function (r, i) { byT[+r[0]] = i; });
+    rows.forEach(function (r) { var i = byT[+r[0]]; if (i === undefined) old.push(r); else old[i] = r; });
+    return old.slice(-1500);
+  }
+
+  function loadAll(full) {
+    return Promise.all(TFS.map(function (tf) {
+      return fetchBars(tf.k, full ? tf.n : 3, tf.ms, tf.dr).then(function (res) {
+        if (S.venue && S.venue !== res.venue) S.tf = {};
+        S.venue = res.venue; if (res.note) S.klErr = res.note;
+        S.tf[tf.k] = mergeRows(full || !S.tf[tf.k] ? null : S.tf[tf.k], res.rows);
+        if (!full && S.tf[tf.k].length < 50) return loadAll(true);
+      });
+    })).then(function () { S.klT = Date.now(); if (S.venue === 'BINANCE') S.klErr = ''; },
+      function (e) { S.klErr = 'candles failed on both venues: ' + e.message; });
+  }
+
+  function loadDaily() {
+    // 1h bars folded into UTC days: Deribit's own 1D candles open at 08:00Z, not 00:00Z.
+    var bin = 'https://fapi.binance.com/fapi/v1/klines?symbol=BTCUSDT&interval=1h&limit=240';
+    var p = S.venue === 'BINANCE' ? getJson(bin) : (function () {
+      var end = Date.now(), start = end - 10 * 86400000;
+      return dRpc('public/get_tradingview_chart_data', { instrument_name: 'BTC-PERPETUAL', resolution: '60', start_timestamp: start, end_timestamp: end })
+        .then(function (j) { var r = j.result; return r.ticks.map(function (t, i) { return [t, r.open[i], r.high[i], r.low[i], r.close[i], r.volume[i]]; }); });
+    })();
+    return p.then(function (rows) { S.daily = { venue: S.venue, rows: A.utcDays(rows) }; S.dailyErr = ''; }, function (e) { S.dailyErr = 'daily levels: ' + e.message; });
+  }
+
+  function patchForming(px) {
+    TFS.forEach(function (tf) {
+      var rows = S.tf[tf.k]; if (!rows || !rows.length) return;
+      var last = rows[rows.length - 1];
+      if (Date.now() >= +last[0] + tf.ms) return; // bar closed; the next poll appends the new one
+      last[4] = px; if (px > +last[2]) last[2] = px; if (px < +last[3]) last[3] = px;
+    });
+  }
+
+  // ---------- derived ----------
+  function calc(rows) {
+    var c = A.columns(rows), n = c.c.length - 1;
+    var r = A.rsi(c.c, 14), rs = A.sma(r, 14), bb = A.bollinger(c.c, 20, 2), at = A.atr(c.h, c.l, c.c, 14);
+    return { close: c.c[n], rsi: r[n], rsiSma: rs[n], pctB: bb.pctB[n], width: bb.width[n], atr: at[n], cols: c };
+  }
+
+  function venuePrice() { return S.venue === 'BINANCE' ? (isFinite(S.bin) ? S.bin : null) : (isFinite(S.dbt) ? S.dbt : null); }
+  function dayStart(t) { return Math.floor(t / 86400000) * 86400000; }
+
+  function sessionInfo(now) {
+    function zoned(y, m, d, hh, mm, tz) { // UTC ms of local wall time in tz
+      var guess = Date.UTC(y, m, d, hh, mm);
+      function off(t) {
+        var p = {}; new Intl.DateTimeFormat('en-US', { timeZone: tz, hourCycle: 'h23', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })
+          .formatToParts(new Date(t)).forEach(function (x) { p[x.type] = +x.value; });
+        return Date.UTC(p.year, p.month - 1, p.day, p.hour, p.minute) - t;
+      }
+      var t = guess - off(guess); return guess - off(t);
+    }
+    function next(hh, mm, tz) {
+      for (var k = -1; k < 9; k++) {
+        var d = new Date(dayStart(now) + k * 86400000), wd = d.getUTCDay();
+        if (wd === 0 || wd === 6) continue;
+        var t = zoned(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), hh, mm, tz);
+        if (t > now) return t;
+      }
+    }
+    var y = new Date(now), Y = y.getUTCFullYear(), M = y.getUTCMonth(), D = y.getUTCDate(), wd = y.getUTCDay();
+    var lon = zoned(Y, M, D, 8, 0, 'Europe/London'), nyO = zoned(Y, M, D, 9, 30, 'America/New_York'), nyC = zoned(Y, M, D, 16, 0, 'America/New_York');
+    var name = wd === 0 || wd === 6 ? 'Weekend' : now < lon ? 'Asia' : now < nyO ? 'EU' : now < nyC ? 'US' : 'Post-US';
+    return { name: name, us: next(9, 30, 'America/New_York'), eu: next(8, 0, 'Europe/London') };
+  }
+  function cd(ms) { var s = Math.max(0, Math.floor(ms / 1000)); var h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60); return h + ':' + String(m).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }
+
+  function age(id, t) {
+    var el = $(id); if (!t) { el.textContent = 'no data'; el.className = 'age stale'; return; }
+    var a = Date.now() - t; el.textContent = (a / 1000).toFixed(0) + 's'; el.className = 'age' + (a > STALE_MS ? ' stale' : '');
+  }
+
+  function atr15() { var r = S.tf['15m']; return r && r.length > 20 ? calc(r).atr : NaN; }
+  function distCells(level, px, a15) {
+    if (!isFinite(px) || !isFinite(level)) return '<td>' + NID + '</td><td></td>';
+    var d = level - px;
+    return '<td class="' + cls(d) + '">' + sgn(d, 1) + '</td><td>' + (isFinite(a15) ? sgn(d / a15, 2) : '--') + '</td>';
+  }
+
+  // ---------- render ----------
+  // Fast path (every websocket tick, at most once per frame): price, clock, position.
+  // Slow path (once a second): candle strip, levels, ATR15 cache.
+  var queued = false;
+  function tick() { if (!queued) { queued = true; requestAnimationFrame(function () { queued = false; renderTop(); }); } }
+  function feedDown(t, err) { return !t || (err && Date.now() - t > STALE_MS); }
+  function renderTop() {
+    var now = Date.now();
+    // 1. price + clock
+    $('dbt-last').innerHTML = S.dbt != null && !feedDown(S.dbtT, S.dbtErr) ? fmt(S.dbt, 1) : NID;
+    $('dbt-sub').textContent = S.dbtErr ? S.dbtErr : (S.dbtMark ? 'mark ' + fmt(S.dbtMark, 1) : '');
+    $('bin-last').innerHTML = S.bin != null && !feedDown(S.binT, S.binErr) ? fmt(S.bin, 1) : NID;
+    $('bin-sub').textContent = S.binErr;
+    $('basis').innerHTML = !feedDown(S.dbtT, S.dbtErr) && !feedDown(S.binT, S.binErr) ? '<span class="' + cls(S.dbt - S.bin) + '">' + sgn(S.dbt - S.bin, 1) + '</span>' : NID;
+    $('utc').textContent = new Date(now).toISOString().slice(11, 19);
+    var si = sessionInfo(now);
+    $('session').textContent = si.name;
+    $('cd-us').textContent = 'US ' + hhmm(si.us) + ' in ' + cd(si.us - now);
+    $('cd-eu').textContent = 'EU ' + hhmm(si.eu) + ' in ' + cd(si.eu - now);
+    age('age-price', S.dbtT);
+    if (feedDown(S.binT, S.binErr) && S.dbtT) { $('age-price').textContent += ' / Binance down'; $('age-price').className = 'age stale'; }
+
+    // 2. position
+    var a15 = S.a15, mark = S.dbtMark, size = +store.size, entry = +store.entry;
+    var have = (store.side === 'short' || store.side === 'long') && size > 0 && entry > 0;
+    if (!have) { $('pnl-btc').textContent = '--'; $('pnl-usd').textContent = 'type side, size and average'; $('pos-dist').textContent = '--'; $('pos-atr').textContent = ''; }
+    else if (!isFinite(mark) || feedDown(S.dbtT, S.dbtErr)) { $('pnl-btc').innerHTML = NID; $('pnl-usd').textContent = S.dbtErr || 'no Deribit mark yet'; $('pos-dist').innerHTML = NID; $('pos-atr').textContent = ''; }
+    else {
+      var p = A.inversePnlBtc(store.side, size, entry, mark);
+      $('pnl-btc').innerHTML = '<span class="' + cls(p) + '">' + sgn(p, 6) + '</span>';
+      $('pnl-usd').innerHTML = '<span class="' + cls(p) + '">' + sgn(p * mark, 2) + ' USD</span>';
+      var d = entry - mark;
+      $('pos-dist').textContent = sgn(d, 1) + ' pts';
+      $('pos-atr').textContent = isFinite(a15) ? sgn(d / a15, 2) + ' x ATR15' : 'ATR15 NOT_IN_DATA';
+    }
+    age('age-pos', S.dbtT);
+    var covered = 0;
+    $('rungs').innerHTML = store.rungs.map(function (r, i) {
+      covered += +r.size || 0;
+      return '<tr><td>' + fmt(+r.price, 1) + '</td><td>' + fmt(+r.size, 0) + '</td>' + distCells(+r.price, mark, a15) +
+        '<td><button type="button" data-rung="' + i + '">x</button></td></tr>';
+    }).join('') || '<tr><td colspan="5" class="dim">no rungs typed</td></tr>';
+    $('uncovered').textContent = have ? 'uncovered ' + fmt(size - covered, 0) + ' USD of ' + fmt(size, 0) : '';
+  }
+
+  function render() {
+    var now = Date.now();
+    S.a15 = atr15();
+    renderTop();
+    var a15 = S.a15;
+
+    // 3. strip
+    var px = venuePrice();
+    $('strip-venue').textContent = S.venue ? S.venue + ' perp' : '';
+    var vw = NaN, m1 = S.tf['1m'];
+    if (m1 && m1.length) {
+      var c1 = A.columns(m1), v = A.dayVwap(c1.t, c1.h, c1.l, c1.c, c1.v);
+      if (dayStart(c1.t[0]) < dayStart(now)) vw = v[v.length - 1]; // only if the window covers 00:00Z
+    }
+    $('strip').innerHTML = TFS.map(function (tf) {
+      var rows = S.tf[tf.k];
+      if (!rows || rows.length < 40) return '<tr><td>' + tf.k + '</td><td colspan="6">' + NID + ' <span class="err">' + esc(S.klErr) + '</span></td></tr>';
+      var k = calc(rows), flags = '';
+      if (k.rsi < 30) flags += '<span class="chip">RSI&lt;30</span>'; if (k.rsi > 70) flags += '<span class="chip">RSI&gt;70</span>';
+      var band = k.pctB > 1 ? '<span class="chip">above band</span>' : k.pctB < 0 ? '<span class="chip">below band</span>' : '';
+      return '<tr><td>' + tf.k + '</td><td>' + fmt(k.rsi, 1) + flags + '</td><td>' + fmt(k.rsiSma, 1) + '</td><td>' + fmt(k.pctB * 100, 0) + band +
+        '</td><td>' + fmt(k.width * 100, 2) + '</td><td>' + fmt(k.atr, 1) + '</td><td class="' + cls(k.close - vw) + '">' + (isFinite(vw) ? sgn(k.close - vw, 1) : 'NOT_IN_DATA') + '</td></tr>';
+    }).join('');
+    $('wt').innerHTML = TFS.map(function (tf) {
+      var rows = S.tf[tf.k];
+      if (!rows || rows.length < 40) return '<tr><td>' + tf.k + '</td><td colspan="4">' + NID + '</td></tr>';
+      var c = A.columns(rows), w = A.wavetrend(c.t, c.h, c.l, c.c, tf.ms, 200), n = c.c.length - 1, a = w.wt1[n], b = w.wt2[n];
+      if (!isFinite(a)) return '<tr><td>' + tf.k + '</td><td colspan="4">' + NID + ' <span class="err">' + (n + 1) + ' bars, needs 200 + warm-up</span></td></tr>';
+      var zone = a >= 60 ? 'above 60' : a >= 53 ? '53 to 60' : a <= -60 ? 'below -60' : a <= -53 ? '-60 to -53' : a >= 0 ? '0 to 53' : '-53 to 0';
+      var zc = a >= 53 ? 'down' : a <= -53 ? 'up' : '';
+      var k = n; while (k >= 0 && !w.event[k]) k--;
+      var cross = k < 0 ? '--' : (w.event[k] > 0 ? 'up ' : 'down ') + (k === n ? 'now' : (n - k) + ' bars ago') + ' @ ' + fmt(w.wt1[k], 0) + (k === n ? ', forming bar' : '');
+      return '<tr><td>' + tf.k + '</td><td class="' + (a > b ? 'up' : a < b ? 'down' : '') + '">' + fmt(a, 1) + '</td><td>' + fmt(b, 1) +
+        '</td><td class="' + zc + '">' + zone + '</td><td>' + cross + '</td></tr>';
+    }).join('');
+    age('age-strip', S.klT);
+
+    // 4. levels
+    $('lvl-venue').textContent = S.venue ? S.venue + ' perp' : '';
+    var L = [];
+    L.push({ n: 'Day VWAP', p: vw });
+    if (m1 && m1.length) {
+      var hi = -Infinity, lo = Infinity, ht = 0, lt = 0, ds = dayStart(now);
+      m1.forEach(function (r) { if (+r[0] < ds) return; if (+r[2] > hi) { hi = +r[2]; ht = +r[0]; } if (+r[3] < lo) { lo = +r[3]; lt = +r[0]; } });
+      L.push({ n: 'Day high ' + (ht ? hhmm(ht) : ''), p: isFinite(hi) ? hi : NaN });
+      L.push({ n: 'Day low ' + (lt ? hhmm(lt) : ''), p: isFinite(lo) ? lo : NaN });
+    } else { L.push({ n: 'Day high', p: NaN }); L.push({ n: 'Day low', p: NaN }); }
+    var pdh = NaN, pdl = NaN, wo = NaN;
+    if (S.daily) {
+      var dsy = dayStart(now) - 86400000, mon = dayStart(now) - ((new Date(now).getUTCDay() + 6) % 7) * 86400000;
+      S.daily.rows.forEach(function (r) { if (+r[0] === dsy) { pdh = +r[2]; pdl = +r[3]; } if (+r[0] === mon) wo = +r[1]; });
+    }
+    L.push({ n: 'Prev day high', p: pdh }); L.push({ n: 'Prev day low', p: pdl }); L.push({ n: 'Weekly open (Mon 00:00Z)', p: wo });
+    var html = L.map(function (l) {
+      return '<tr><td>' + esc(l.n) + '</td><td>' + (isFinite(l.p) ? fmt(l.p, 1) : NID) + '</td>' + (isFinite(l.p) ? distCells(l.p, px, a15) : '<td></td><td></td>') + '<td></td></tr>';
+    }).join('');
+    html += store.levels.map(function (l, i) {
+      return '<tr><td>' + esc(l.name || 'custom') + ' <span class="tag">typed</span></td><td>' + fmt(+l.price, 1) + '</td>' + distCells(+l.price, px, a15) +
+        '<td><button type="button" data-lvl="' + i + '">x</button></td></tr>';
+    }).join('');
+    if (S.dailyErr) html += '<tr><td colspan="5" class="err">' + esc(S.dailyErr) + '</td></tr>';
+    if (!isFinite(px)) html += '<tr><td colspan="5" class="err">' + (S.venue ? S.venue : 'candle venue') + ' live price NOT_IN_DATA: distances blank</td></tr>';
+    $('levels').innerHTML = html;
+    age('age-lvl', S.klT);
+    renderInTrade(now, L, px, a15, m1);
+  }
+
+  // ---------- in-trade bullets (maths in live_aid_indicators.js) ----------
+  var FEED_MAX = 30000;
+  function fresh(t) { return t && Date.now() - t <= FEED_MAX; }
+  function bullet(label, tag, html) { return '<li><span class="v">' + label + ' <span class="tag">' + tag + '</span></span><span>' + html + '</span></li>'; }
+  function nid(why) { return NID + ' <span class="err">' + esc(why) + '</span>'; }
+  function renderInTrade(now, L, px, a15, m1) {
+    var sd = store.side === 'long' ? 1 : store.side === 'short' ? -1 : 0, out = [], flags = [];
+    var why = S.flowErr || S.dbtErr || 'feed not connected';
+    if (!sd) { $('it').innerHTML = bullet('Side', 'typed by you', nid('type side in the position block')); age('age-it', S.trT); return; }
+    var mark = S.dbtMark, cx = mark > 0 ? mark : (px > 0 ? px : NaN);
+    // 1 supports
+    var sup = A.supports(L, cx, sd);
+    out.push(bullet(sd > 0 ? 'Supports below' : 'Resistance above', 'levels from the Levels block, OURS pick: 2 nearest',
+      !sup ? nid('no price') : sup.length ? sup.map(function (x) { return esc(x.n) + ' ' + fmt(x.p, 1) + ' (' + sgn(x.p - cx, 1) + ')'; }).join('; ') : 'none on that side'));
+    // 2 DOM
+    var dm = fresh(S.bookT) ? A.dom(S.book.bids, S.book.asks, cx) : null;
+    flags.push(A.flagDom(dm, sd));
+    out.push(bullet('DOM +/-0.25% (top 20 levels)', 'Deribit book, OURS band', !dm ? nid(fresh(S.bookT) ? 'empty book' : 'book feed ' + why) :
+      'bids ' + fmt(dm.bid, 0) + ' / asks ' + fmt(dm.ask, 0) + ' USD, imbalance ' + sgn(dm.imb, 2) + (dm.wall ? '; biggest ' + dm.wall.side + ' ' + fmt(dm.wall.price, 1) + ' (' + fmt(dm.wall.size, 0) + ')' : '')));
+    // 3 VWAP test
+    var vt = null;
+    if (m1 && m1.length >= 5) { var c1 = A.columns(m1), vs = A.dayVwap(c1.t, c1.h, c1.l, c1.c, c1.v); if (dayStart(c1.t[0]) < dayStart(now)) vt = A.vwapTest(c1.h, c1.l, c1.c, vs, sd); }
+    flags.push(A.flagVwap(vt));
+    out.push(bullet('Day VWAP (last 5 x 1m bars)', 'SOURCED VWAP, OURS test', !vt ? nid('1m candles ' + (S.klErr || 'not covering 00:00Z')) :
+      sgn(vt.dist, 1) + ' pts from VWAP; ' + vt.result + (vt.result === 'no test' ? ' (no bar touched it)' : ' (close ' + (vt.dist >= 0 ? 'above' : 'below') + ')')));
+    // 4 divergences
+    var dtxt = [], dflags = [];
+    TFS.forEach(function (tf) {
+      var rows = S.tf[tf.k]; if (!rows || rows.length < 60) { dtxt.push(tf.k + ': NOT_IN_DATA'); return; }
+      var c = A.columns(rows), r = A.rsi(c.c, 14), w = A.wavetrend(c.t, c.h, c.l, c.c, tf.ms, 200);
+      var res = [['RSI', A.divergence(c.c, r)], ['WT', A.divergence(c.c, w.wt1)]];
+      var cell = res.map(function (x) { return x[1] === null ? x[0] + ' NOT_IN_DATA' : x[0] + ' ' + (x[1] > 0 ? 'bullish' : x[1] < 0 ? 'bearish' : 'none'); }).join(', ');
+      dtxt.push(tf.k + ': ' + cell);
+      if (tf.k === '1m') dflags.push(A.flagDiv(res[0][1], sd));
+    });
+    flags.push(dflags.length ? dflags[0] : null);
+    out.push(bullet('Divergence, price vs RSI14 / WaveTrend wt1', 'OURS: last 15 bars vs the 15 before; the 1m RSI one feeds the flags', dtxt.map(esc).join('<br>')));
+    // 5 squeeze: price vs OI over the last 10 min of Deribit samples
+    var h = S.oiHist, sq = null, dp = NaN, doi = NaN;
+    if (fresh(S.oiT) && h.length > 1 && h[h.length - 1].t - h[0].t >= 120000) { dp = h[h.length - 1].px / h[0].px - 1; doi = h[h.length - 1].oi / h[0].oi - 1; sq = A.squeeze(dp, doi); }
+    flags.push(A.flagSqueeze(dp, doi, sd));
+    out.push(bullet('Squeeze read: price vs open interest', 'Deribit OI, OURS window up to 10 min, eps 0.05%', sq === null ? nid(fresh(S.oiT) ? 'needs 2 min of OI samples' : 'OI feed ' + why) :
+      'price ' + sgn(dp * 100, 2) + '%, OI ' + sgn(doi * 100, 2) + '% over ' + Math.round((h[h.length - 1].t - h[0].t) / 60000) + ' min: ' + sq));
+    // 6 CVD vs delta
+    var fl = A.flowLive(S.trT, S.dbtT, now) ? A.flow(S.trades, now) : null;
+    flags.push(A.flagFlow(fl, sd));
+    out.push(bullet('CVD vs delta (taker flow)', 'Deribit trades, OURS windows 15 min / 60 s', !fl ? nid(S.trT ? 'trades feed ' + why : S.dbtT ? 'no trade printed since this page connected' : 'trades feed ' + why) :
+      'CVD ' + sgn(fl.cvd, 0) + ' USD over ' + Math.round(fl.spanMs / 60000) + ' min, delta ' + sgn(fl.delta, 0) + ' USD last 60 s: ' + (fl.delta === 0 || fl.cvd === 0 ? 'quiet tape' : Math.sign(fl.cvd) === Math.sign(fl.delta) ? 'agree' : 'disagree') +
+      ' (counted since this page connected)'));
+    // 7 stay confidence, 8 rule R
+    var cf = A.confidence(flags);
+    out.push(bullet('Stay confidence (' + store.side + ')', 'OURS: flags for / available among DOM, VWAP, 1m divergence, squeeze, flow', cf.avail ? cf.for + ' of ' + cf.avail + ' flags for, ' + cf.against + ' against (' + (cf.total - cf.avail) + ' NOT_IN_DATA)' : nid('no flag available')));
+    out.push(bullet('Rule R (reduce rule)', 'OURS, fixed in STEPS.md; no size shown', cf.avail ? (cf.reduceRule ? 'MET: ' + cf.against + ' of ' + cf.avail + ' flags against' : 'not met: ' + cf.against + ' of ' + cf.avail + ' against, needs 3') : nid('no flag available')));
+    $('it').innerHTML = out.join('');
+    age('age-it', Math.max(S.trT, S.bookT, S.oiT));
+  }
+
+  // ---------- inputs ----------
+  $('pos-side').value = store.side; $('pos-size').value = store.size; $('pos-entry').value = store.entry;
+  ['pos-side', 'pos-size', 'pos-entry'].forEach(function (id) {
+    $(id).addEventListener('input', function () { store.side = $('pos-side').value; store.size = $('pos-size').value; store.entry = $('pos-entry').value; save(); render(); });
+  });
+  $('rung-add').addEventListener('click', function () {
+    var p = +$('rung-price').value, s = +$('rung-size').value; if (!(p > 0) || !(s > 0)) return;
+    store.rungs.push({ price: p, size: s }); store.rungs.sort(function (a, b) { return b.price - a.price; });
+    $('rung-price').value = ''; $('rung-size').value = ''; save(); render();
+  });
+  $('lvl-add').addEventListener('click', function () {
+    var p = +$('lvl-price').value; if (!(p > 0)) return;
+    store.levels.push({ name: $('lvl-name').value.trim(), price: p });
+    $('lvl-name').value = ''; $('lvl-price').value = ''; save(); render();
+  });
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.rung) { store.rungs.splice(+b.dataset.rung, 1); save(); render(); }
+    if (b.dataset.lvl) { store.levels.splice(+b.dataset.lvl, 1); save(); render(); }
+  });
+
+  // ---------- start ----------
+  deribitWs(); binanceWs();
+  loadAll(true).then(loadDaily);
+  setInterval(function () { loadAll(false); }, 5000);
+  setInterval(loadDaily, 300000);
+  setInterval(render, 1000);
+  render();
+})();
+</script>

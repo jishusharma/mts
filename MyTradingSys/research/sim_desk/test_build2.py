@@ -40,6 +40,14 @@ def test_breakdown_empty_run():
     assert desk.breakdown({'net': [], 'touch_t': [], 'filled': [], 'side': []}) == {'year': [], 'side': [], 'hour': []}
 
 
+def test_breakdown_with_filled_trades_but_no_exit_key_still_three_groups():
+    """Extends the empty-run case above: a result with real filled trades but no 'exit' array (an older cache, or
+    a study that predates the reason columns) gets exactly the three original groups, no exit group added."""
+    res = {'net': [1.0, -1.0, 0.5, -0.5], 'filled': [True, True, True, True], 'side': [1, -1, 1, 1],
+           'touch_t': [ms(2022, 5, 1, 3), ms(2022, 6, 1, 5), ms(2023, 1, 1, 3), ms(2023, 2, 1, 23)]}
+    assert set(desk.breakdown(res)) == {'year', 'side', 'hour'}
+
+
 def test_page_collapses_charts_and_ledger_and_shows_breakdown():
     h = (HERE / 'page.html').read_text(encoding='utf-8')
     assert 'id="bd"' in h and 'too few trades' in h

@@ -1,0 +1,61 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-28T14:23:46Z",
+  "commands": [],
+  "created": "2026-10-28T06:27:22Z",
+  "depends_on": [],
+  "done_when": "This card's result lists, per commit, the new test name and whether it failed on the parent commit (expected: yes); any test that did NOT fail pre-change is filed as a BUGS.md gate-violation row, never silently accepted.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "fail-first check owed from fix_verification_2026-10-28: confirm the new tests added by commits 37742aa6e (is_tradable direction), 02b9db8db (run_all_tests step 3g) and c50c6191d (super session log cap) each failed on the pre-change code, per CLAUDE.md 'new tests must fail on the pre-change code at least once.'",
+  "id": "failfirst-check-37742aa6e-02b9db8db-c50c6191d",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "all 3 failed on parent: 37742aa6e test_cbp_query::test_trade_missing_direction_is_not_trad",
+      "ref": "4be68ddca",
+      "utc": "2026-10-28T14:23:46Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T07:11:59Z",
+  "refs": [
+    "MyTradingSys/research/fix_verification_2026-10-28/REPORT.md"
+  ],
+  "result": "all 3 failed on parent: 37742aa6e test_cbp_query::test_trade_missing_direction_is_not_tradable FAIL pre; 02b9db8db adds no test, existing test_run_all_tests.py TestPassRecord 3 tests FAIL on parent, 58 OK after; c50c6191d adds no test, existing test_super_session_doc::test_session_log_keeps_last_five FAIL on parent. No gate violation.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "commit 37742aa6e",
+    "commit 02b9db8db",
+    "commit c50c6191d"
+  ],
+  "scope_out": [],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "For each commit, identify the new test(s) it adds (git show --stat / diff on the test file)",
+    "Check out each commit's parent (git show <commit>^:<path> or a scratch worktree) and run just that new test",
+    "Record PASS/FAIL for each; CLAUDE.md requires FAIL on pre-change code at least once"
+  ],
+  "taken": "2026-10-28T14:23:46Z",
+  "tests": "the new tests introduced by 37742aa6e, 02b9db8db and c50c6191d (this card verifies them; it adds no new test of its own)",
+  "title": "Fail-first check: new tests of commits 37742aa6e, 02b9db8db, c50c6191d must fail on the pre-change code; record result (fix report)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

@@ -8,6 +8,7 @@ import tempfile
 import time
 import unittest
 from pathlib import Path
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import c_drive_guard as g
@@ -41,12 +42,15 @@ class GuardTest(unittest.TestCase):
         g.LOCK = Path(self.logdir.name) / "c_drive_guard.lock"
         g.STAMP.write_text("x", encoding="utf-8")      # daily run not due unless a test ages this
         self.real_tidy = g.run_tidy
+        self.real_check = g.start_check_detached
+        g.start_check_detached = lambda: None          # never post a real device-tasks report from a test
         g.run_tidy = lambda apply: []                  # never run the real worktree job against this checkout from a test
 
     def tearDown(self):
         g.TEMP, g.LOG, g.STAMP = self.old_temp, self.old_log, self.old_stamp
         g.LOCK = self.old_lock
         g.run_tidy = self.real_tidy
+        g.start_check_detached = self.real_check
         self.d.cleanup()
         self.logdir.cleanup()
 
@@ -377,6 +381,139 @@ class RunKeyTest(unittest.TestCase):
             self.assertIn(str(Path(self.co.name, "scripts", "dev", "c_drive_guard.py")), cmd)
             self.assertEqual(g.uninstall(key=TEST_KEY, name=TEST_NAME), 0)
         self.assertIsNone(g.installed_command(TEST_KEY, TEST_NAME))
+
+
+NOW = 1_800_000_000.0     # fixed clock for the process tests (epoch seconds)
+
+
+def proc(pid, ppid, name, cmd, age_h, now=NOW):
+    return {"pid": pid, "ppid": ppid, "name": name, "cmd": cmd, "created": now - age_h * 3600, "cpu": 0.0}
+
+
+def leftovers_jis_nb(now=NOW):
+    """The JIS-NB leftovers of 2026-10-28 (parents already gone), a live claude.exe tree with us in it, and a young sim desk run."""
+    return [
+        proc(100, 1, "explorer.exe", "C:\\Windows\\explorer.exe", 300, now),
+        proc(200, 100, "claude.exe", "claude.exe --session x", 50, now),
+        proc(201, 200, "python.exe", "python.exe scripts/dev/c_drive_guard.py", 0.1, now),
+        proc(300, 1, "pythonw.exe", "pythonw.exe -m MyTradingSys.backtest.layers.fabio.htf_context_live --loop", 146, now),
+        proc(301, 1, "pythonw.exe", "pythonw.exe -m MyTradingSys.backtest.layers.fabio.htf_context_live --loop", 146, now),
+        proc(400, 8460, "python.exe", "python.exe desk.py --no-browser --port 8790", 48, now),
+        proc(401, 400, "python.exe", "python.exe desk.py --no-browser --port 8790", 48, now),
+        proc(500, 16256, "cmd.exe", "cmd /d /s /c chrome-native-host.exe chrome-extension://x", 72, now),
+        proc(600, 1, "python.exe", "python.exe MyTradingSys/research/sim_desk/desk.py", 5, now),
+    ]
+
+
+class ProcsTest(unittest.TestCase):
+    def verdicts(self, rows):
+        return {r["pid"]: r["verdict"] for r in rows}
+
+    def test_jis_nb_leftovers_are_listed_with_their_verdicts(self):
+        v = self.verdicts(g.proc_rows(leftovers_jis_nb(), NOW))
+        self.assertEqual(v, {300: "PROTECTED", 301: "PROTECTED", 400: "KILL", 401: "KILL", 500: "UNMATCHED"})
+
+    def test_young_and_own_processes_are_no_candidates(self):
+        v = self.verdicts(g.proc_rows(leftovers_jis_nb(), NOW))
+        self.assertNotIn(600, v)
+        self.assertNotIn(201, v)
+
+    def test_safe_old_desk_py_is_kill(self):
+        self.assertEqual(g.proc_verdict(proc(9, 1, "python.exe", "python desk.py --port 8790", 30), {}, NOW)[0], "KILL")
+
+    def test_young_process_is_no_candidate(self):
+        self.assertIsNone(g.proc_verdict(proc(9, 1, "python.exe", "python desk.py", 23.9), {}, NOW))
+
+    def test_unknown_start_time_is_no_candidate(self):
+        p = proc(9, 1, "python.exe", "python desk.py", 30)
+        p["created"] = 0
+        self.assertIsNone(g.proc_verdict(p, {}, NOW))
+
+    def test_claude_ancestor_protects_a_safe_pattern(self):
+        rows = [proc(10, 1, "claude.exe", "claude.exe", 100), proc(11, 10, "python.exe", "python desk.py", 30)]
+        by = {p["pid"]: p for p in rows}
+        self.assertEqual(g.proc_verdict(rows[1], by, NOW)[0], "PROTECTED")
+
+    def test_never_kill_text_protects_even_with_a_safe_pattern(self):
+        for text in (".mts_live", "live_runner_cli", "loop-supervisor", "start-trading-day", "oi_recorder", "orderflow_live",
+                     "htf_context_live", "deploy", "wait_then_ship"):
+            cmd = "python desk.py --tag " + text
+            self.assertEqual(g.proc_verdict(proc(9, 1, "python.exe", cmd, 30), {}, NOW)[0], "PROTECTED", text)
+
+    def test_never_kill_text_in_an_ancestor_protects_the_child(self):
+        rows = [proc(10, 1, "pythonw.exe", "pythonw -m MyTradingSys.live_runner_cli", 80), proc(11, 10, "python.exe", "python desk.py", 30)]
+        by = {p["pid"]: p for p in rows}
+        self.assertEqual(g.proc_verdict(rows[1], by, NOW)[0], "PROTECTED")
+
+    def test_sync_py_ship_is_protected(self):
+        self.assertEqual(g.proc_verdict(proc(9, 1, "python.exe", "python scripts/dev/sync.py ship --release x", 30), {}, NOW)[0], "PROTECTED")
+
+    def test_java_is_never_killed(self):
+        for name in ("java.exe", "javaw.exe"):
+            v = g.proc_verdict(proc(9, 1, name, "java desk.py", 300), {}, NOW)
+            self.assertNotEqual(v and v[0], "KILL", name)
+
+    def test_unmatched_shell_is_reported_and_never_killed(self):
+        self.assertEqual(g.proc_verdict(proc(9, 1, "cmd.exe", "cmd /c something unknown", 72), {}, NOW)[0], "UNMATCHED")
+
+    def test_other_image_names_are_no_candidates(self):
+        self.assertIsNone(g.proc_verdict(proc(9, 1, "notepad.exe", "notepad desk.py", 300), {}, NOW))
+
+    def test_apply_kills_only_kill_rows_by_pid(self):
+        killed_pids = []
+        snap = leftovers_jis_nb()
+        k, s = g.procs_apply(snapshot=lambda: snap, now=NOW, kill=lambda pid: killed_pids.append(pid) or True)
+        self.assertEqual(sorted(killed_pids), [400, 401])
+        self.assertEqual(sorted(k), [400, 401])
+        self.assertEqual(s, [])
+
+    def test_pid_reused_between_report_and_kill_is_not_killed(self):
+        first = leftovers_jis_nb()
+        second = [dict(p) for p in first]
+        for p in second:
+            if p["pid"] == 400:
+                p["created"] = NOW - 1 * 3600          # PID 400 was reused by a young process
+        calls = iter([first, second])
+        killed_pids = []
+        k, s = g.procs_apply(snapshot=lambda: next(calls), now=NOW, kill=lambda pid: killed_pids.append(pid) or True)
+        self.assertEqual(killed_pids, [401])
+        self.assertTrue(any("PID 400" in line for line in s))
+
+    def test_report_run_kills_nothing(self):
+        def boom(*a, **k):
+            raise AssertionError("the report must never kill")
+        with mock.patch.object(g, "kill_pid", boom), mock.patch.object(g, "procs_apply", boom):
+            line = g.procs_summary(procs=leftovers_jis_nb(), now=NOW)
+        self.assertIn("2 KILL candidate(s)", line)
+        self.assertIn("2 PROTECTED", line)
+        self.assertIn("1 UNMATCHED", line)
+
+    def test_summary_never_raises(self):
+        self.assertTrue(g.procs_summary(procs=[{"bad": 1}], now=NOW).startswith("unavailable"))
+
+    def test_kill_is_by_pid_never_by_image_name(self):
+        seen = []
+        with mock.patch.object(g.subprocess, "run", lambda args, **kw: seen.append(args) or subprocess.CompletedProcess(args, 0)):
+            self.assertTrue(g.kill_pid(4242))
+        self.assertEqual(seen, [["taskkill", "/PID", "4242", "/F"]])
+        src = Path(g.__file__).read_text(encoding="utf-8")
+        self.assertNotIn('"/IM"', src)
+        self.assertNotIn('"/T"', src[src.index("def kill_pid"):src.index("def procs_apply")])
+
+    def test_daily_run_logs_the_procs_count_and_never_kills(self):
+        with mock.patch.object(g, "procs_summary", lambda *a, **k: "0 KILL candidate(s) []"), \
+                mock.patch.object(g, "procs_apply", side_effect=AssertionError("no kill in the daily run")), \
+                mock.patch.object(g, "prune", lambda apply: (0, 0)), mock.patch.object(g, "run_tidy", lambda apply, repos=(): []), \
+                mock.patch.object(g, "main_checkout_note", lambda: "main checkout 0 behind"):
+            with tempfile.TemporaryDirectory() as d:
+                old_log = g.LOG
+                g.LOG = Path(d) / "c_drive_guard.log"
+                try:
+                    g.apply_all("apply")
+                    text = g.LOG.read_text(encoding="utf-8")
+                finally:
+                    g.LOG = old_log
+        self.assertIn("procs (report only): 0 KILL candidate(s)", text)
 
 
 if __name__ == "__main__":

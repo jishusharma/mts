@@ -243,9 +243,13 @@ def refresh_layers(repo=REPO):
     """Regenerate LAYERS.md after a card change, so its open-card lists never go stale. Never fails the card command."""
     if not (Path(repo) / LAYER_INDEX).is_file():
         return
+    f = Path(repo) / "MyTradingSys" / "system" / "LAYERS.md"
     try:
+        before = f.read_bytes() if f.is_file() else None
         import make_layers_md
         make_layers_md.write(repo)
+        if f.is_file() and f.read_bytes() != before:
+            print("LAYERS.md regenerated: ship it")   # sync.py ship stages it; a worker that skips ship leaves it modified
     except Exception as e:   # the card change already landed; say so, do not hide it
         print(f"tasks: LAYERS.md not regenerated: {e}")
 
@@ -482,6 +486,8 @@ def brief(card):
         L.append(f"Flow {f['id']} stage {f['stage']} ({f['recipe']}): {f['lens']}")
         L += [f"C{i + 1}: {criterion}" for i, criterion in enumerate(f["criteria"])]
         L.append("Predecessor receipt/report: " + ", ".join(card.get("depends_on", [])) + "; read its card JSON for the report path.")
+    elif card.get("depends_on"):
+        L.append("Depends on: " + ", ".join(card["depends_on"]))
     if card.get("lane") == "CODEX":
         L.append(f"Report: {LAB_REPORTS}/<UTC date>_{card['id']}.md (findings or numbers, each with file:line or command)")
     if card.get("flow"):
@@ -520,11 +526,13 @@ def ready_cards(repo=REPO, lane=None):
 
 
 def open_claims(repo):
-    """{claim slug: claim fields} of the claim files on origin/fast-track, read with sync.py's own reader (as of the last fetch).
+    """{claim slug: claim fields} of the open claims, read with sync.open_claims (origin/claims side branch plus legacy trunk
+    files, as of the last fetch). Coordination audit 2026-10-26 finding 2A: this read only origin/fast-track after claims moved
+    to the side branch, so next/dispatch/brief offered cards other sessions held.
     {} when git or the ref is unavailable (a test repo, a fresh clone): the claim itself stays the lock, `sync.py claim` refuses."""
     import sync   # scripts/dev is on sys.path wherever tasks.py runs or is imported by name
     try:
-        return dict(sync.read_claims(repo, f"origin/{sync.TRUNK}"))
+        return dict(sync.open_claims(repo, fetch=False))
     except (OSError, sync.SyncError):
         return {}
 
@@ -700,6 +708,41 @@ def cmd_fill(a):
     return cmd_check(argparse.Namespace(id=c["id"], demote=False))
 
 
+_LIKELY_FN_RE = re.compile(r"\b(test_[A-Za-z0-9_]+|cmd_[A-Za-z0-9_]+)\b")
+
+
+def likely_done_reason(card: dict, repo: Path = REPO) -> str:
+    """Detector (dispatch-ranking-shows-already-shipped-c): returns a warning reason when a ready/raw card's own
+    tests/done_when symbols are already present inside its scope_in files on disk, else ''."""
+    if card.get("state") not in ("raw", "refined", "ready", "active"):
+        return ""
+    blob = f"{card.get('tests', '')}\n{card.get('done_when', '')}"
+    symbols = sorted(set(_LIKELY_FN_RE.findall(blob)))
+    if not symbols:
+        return ""
+    scope_files: list[Path] = []
+    for s in card.get("scope_in", []):
+        tok = str(s).split()[0].rstrip(",;") if str(s).strip() else ""
+        tok = re.sub(r":\d[\d,\-]*$", "", tok).rstrip("/")
+        if not tok:
+            continue
+        p = (Path(repo) / tok) if not Path(tok).is_absolute() else Path(tok)
+        if p.is_file() and p.suffix == ".py":
+            scope_files.append(p)
+    if not scope_files:
+        return ""
+    texts = {}
+    for p in scope_files:
+        try:
+            texts[p] = p.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            pass
+    matched = [sym for sym in symbols if any(f"def {sym}" in txt for txt in texts.values())]
+    if matched and len(matched) == len(symbols):
+        return f"likely already in tree ({', '.join(matched)} defined in scope_in)"
+    return ""
+
+
 def cmd_check(a):
     cards = load_all(REPO)
     reg = registry(REPO)
@@ -712,18 +755,19 @@ def cmd_check(a):
             miss = promotion_problems(c, repo=REPO)
         elif not miss and c["state"] in LIVE and needs_review(c) and stamp_kind(c, repo=REPO) != "real":
             miss = ["review stamp voided or missing: scope or card changed after review"]
+        likely = likely_done_reason(c, REPO)
         if not miss:
             if c["state"] in ("raw", "refined"):
                 c.update(state="ready", asks="")
                 TS.refresh(c, REPO, now())
                 save(REPO, c)
-                print(f"{c['id']}: READY (promoted)")
+                print(f"{c['id']}: READY (promoted)" + (f" [WARN {likely}]" if likely else ""))
             else:
                 late = TS.overdue(c, REPO)
                 if late and not a.id:
                     bad += 1
-                if late or a.id:
-                    print(f"{c['id']}: {c['state']} and passes" + (f" but STALE: {late}" if late else ""))
+                if late or a.id or likely:
+                    print(f"{c['id']}: {c['state']} and passes" + (f" but STALE: {late}" if late else "") + (f" [WARN {likely}]" if likely else ""))
         elif a.id or c["state"] in LIVE:
             bad += 1 if a.id else (c["state"] in LIVE)
             if c["state"] in LIVE and a.demote:
@@ -773,10 +817,10 @@ def cmd_status(a):
     print(status_line(cards))
 
 
-def stop_tag(c, repo=None):
+def stop_tag(c, repo=None, claims=None):
     """The STATE tag when the card's work is already on trunk (SHIPPED) or its scope moved on (STALE), else ''."""
     repo = repo or REPO
-    tag = TS.state_tag(c, repo, claim_of(c, open_claims(repo)), registry(repo))
+    tag = TS.state_tag(c, repo, claim_of(c, open_claims(repo) if claims is None else claims), registry(repo))
     # DECISION (OURS): "latest never refreshed" is a fresh card without pointers, not stale work: it stays dispatchable
     return tag if tag.startswith(("SHIPPED", "STALE")) and "never refreshed" not in tag else ""
 
@@ -1427,7 +1471,7 @@ def exclusion(card, cards, reg, holds, claims, lane_st, as_of, host=None, repo=R
     import lane_health
     if card["state"] != "ready":
         return ("state", f"not ready: state is {card['state']}")
-    tag = stop_tag(card, repo)   # C3: the Lead pick path never dispatches a card whose work is already on trunk or scope is stale
+    tag = stop_tag(card, repo, claims)   # C3: the Lead pick path never dispatches a card whose work is already on trunk or scope is stale
     if tag:
         return ("shipped" if tag.startswith("SHIPPED") else "stale", tag)
     held = hold_problems(card, holds)
@@ -1487,6 +1531,34 @@ def shard_of(card_id, logins):
     return ls[zlib.crc32(card_id.encode("utf-8")) % len(ls)] if ls else ""
 
 
+BATCH_MAX = 3   # OURS: judgement, not tuned (rolling-chain-link-latency-levers.md Default); re-check once 30 batched links exist
+
+
+def _scope_overlap(xs, ys):
+    xs, ys = [x.rstrip("/") for x in xs], [y.rstrip("/") for y in ys]
+    return any(x == y or x.startswith(y + "/") or y.startswith(x + "/") for x in xs for y in ys)
+
+
+def batch_cards(rows, max_n=BATCH_MAX):
+    """Pure. Greedy first-fit in rank order: batches of 2..max_n card ids with pairwise-disjoint scope_in, to share one gate and
+    one ship. Never batched: live_path cards, cards with no scope_in (unknown), any path on the live path (gate_select.FULL_RE)
+    or the gate's own machinery; those ship alone and appear in no batch. A lone safe card is not a batch."""
+    import gate_select
+    groups = []
+    for r in rows:
+        scope = [x.replace("\\", "/") for x in r.get("scope_in") or []]
+        if r.get("live_path") or not scope or any(gate_select.FULL_RE.match(x) or gate_select.is_gate_file(x) for x in scope):
+            continue
+        for g in groups:
+            if len(g[0]) < max_n and not any(_scope_overlap(scope, s) for s in g[1]):
+                g[0].append(r["id"])
+                g[1].append(scope)
+                break
+        else:
+            groups.append(([r["id"]], [scope]))
+    return [g[0] for g in groups if len(g[0]) >= 2]
+
+
 def dispatch(cards, reg, holds, claims, lane_st, as_of, host=None, repo=REPO, login=None, logins=None):
     """Pure ranked snapshot: {as_of, host, dispatch: [...], excluded: [...]}. Same inputs -> same dict (as_of is an input).
     With `login` and at least two `logins` (the supervisors alive), each row gets `shard` and `own`; after pinned (CI) cards the
@@ -1507,7 +1579,7 @@ def dispatch(cards, reg, holds, claims, lane_st, as_of, host=None, repo=REPO, lo
         inc.append({"id": c["id"], "title": c["title"], "lane": c["lane"], "role": role, "weight": w, "prio": c.get("prio", 3),
                     "pinned": bool(c.get("pinned")), "est_turns": c.get("est_turns"), "worker": c.get("worker") or "",
                     "reviewer": REVIEWER_SLOT[w], "scope_in": list(c.get("scope_in", [])), "depends_on": list(c.get("depends_on", [])),
-                    "created": c.get("created", "")})
+                    "live_path": bool(c.get("live_path")), "created": c.get("created", "")})
         if sharded:
             inc[-1]["shard"] = shard_of(c["id"], logins)
             inc[-1]["own"] = inc[-1]["shard"] == login
@@ -1520,18 +1592,22 @@ def dispatch(cards, reg, holds, claims, lane_st, as_of, host=None, repo=REPO, lo
         r["rank"] = n
         del r["created"], r["blocker"]
     exc.sort(key=lambda r: (r["reason_code"], r["id"]))
-    return {"as_of": as_of.strftime("%Y-%m-%dT%H:%M:%SZ"), "host": host or "", "dispatch": inc, "excluded": exc}
+    return {"as_of": as_of.strftime("%Y-%m-%dT%H:%M:%SZ"), "host": host or "", "dispatch": inc, "excluded": exc,
+            "batches": batch_cards(inc)}
 
 
 def dispatch_table(snap):
     """The <=15-line table session_planner.md Duty 2 asks for, plus one summary line of exclusions."""
     lines = [f"DISPATCH as_of {snap['as_of']}: {len(snap['dispatch'])} card(s), {len(snap['excluded'])} excluded"]
-    for r in snap["dispatch"][:DISPATCH_TABLE_MAX - 3]:
+    batches = snap.get("batches") or []
+    room = DISPATCH_TABLE_MAX - 3 - len(batches)
+    for r in snap["dispatch"][:max(room, 0)]:
         est = f"{r['est_turns']}t" if r["est_turns"] else "-"
         lines.append(f"{r['rank']}. {r['id']} [{r['lane']}] {r['weight']} p{r['prio']} {r['worker'] or '-'} {est} review={r['reviewer']}")
-    left = len(snap["dispatch"]) - (DISPATCH_TABLE_MAX - 3)
+    left = len(snap["dispatch"]) - max(room, 0)
     if left > 0:
         lines.append(f"... +{left} more (--json)")
+    lines += [f"BATCH {n}: {' + '.join(b)} (one gate, one ship)" for n, b in enumerate(batches, 1)]
     by = {}
     for e in snap["excluded"]:
         by[e["reason_code"]] = by.get(e["reason_code"], 0) + 1

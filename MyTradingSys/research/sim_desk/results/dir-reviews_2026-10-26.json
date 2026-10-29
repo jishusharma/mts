@@ -1,0 +1,54 @@
+{
+ "id": "dir-reviews_2026-10-26",
+ "kind": "audit",
+ "family": "Reviews",
+ "title": "Mechanical verification of sim_standing_2026-10-26.md (bfe807df8)",
+ "provenance": "source-extracted",
+ "date": "2026-10-26",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2022-04-01 to 2024-06-30 (as written in the source)",
+ "verdict": {
+  "label": ", 6 example charts) MATCH",
+  "tone": "info"
+ },
+ "why": [],
+ "kpis": [
+  {
+   "label": "trades (first count in the source)",
+   "value": "772"
+  },
+  {
+   "label": "net R after fees (first value in the source)",
+   "value": "0.039"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 772,
+   "quote": "B2 46c596a40 → 3c262f8b3 \"Levels review fixes … Fable found 517 of 772 never actually filled; now counts filled only (255)\" sim-desk: independent Fable review of the desk and the levels study → sim-d…"
+  },
+  {
+   "field": "net_r",
+   "value": 0.039,
+   "quote": "B6 0fc67ac06 \"frozen rule E1 S2 K5 X0_2R reproduces this exact result (INPUTS.md §3, verified by test_reference.py)\" sim-v2 (a): reference tests per desk study, filled trades only, fee-net (2026-10-2…"
+  }
+ ],
+ "missing": {
+  "parameters": "no rule or parameter section found in the source",
+  "why": "no sentence in the source states why it passed or failed",
+  "n_trades": "not a trade test (audit)"
+ },
+ "source_files": [
+  "MyTradingSys/research/reviews_2026-10-26/brief_verification.md"
+ ],
+ "commit": "dbf40dd7d"
+}

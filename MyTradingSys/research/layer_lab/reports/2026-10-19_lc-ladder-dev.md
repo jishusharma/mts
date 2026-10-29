@@ -1,6 +1,6 @@
 # lc-ladder-dev report - 2026-10-19
 
-**BLOCKED - preregistered LC3 DEV window is outside the permitted data range.**
+**BLOCKED - preregistered LC3 DEV window is outside the permitted data range.** [SUPERSEDED 2026-10-28: fair control gives KEEP none, levels_hold.md]
 
 ## What was checked
 

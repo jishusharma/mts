@@ -1,0 +1,38 @@
+{
+ "id": "st-fast_track_2026-09-27-pbo_019_result",
+ "kind": "backtest",
+ "family": "Fast Track",
+ "title": "Task 019 (ref-pbo) verify result + PBO band cross-check",
+ "provenance": "source-extracted",
+ "date": "2026-09-27",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "REVIEW,",
+  "tone": "info"
+ },
+ "why": [
+  "Reported failing tests: test_ref_pbo_cscv_normal_case, test_sharpe. Both are bugs in the",
+  "test_pbo_cscv, seed=12345) has an empirical ~36% chance of failing correct code just from"
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/fast_track_2026-09-27/PBO_019_RESULT.md"
+ ],
+ "commit": "03bd84035"
+}

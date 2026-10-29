@@ -1,0 +1,35 @@
+{
+ "id": "lm-oi-delta",
+ "kind": "backtest",
+ "family": "Oi Delta",
+ "title": "OI delta 4-state classifier backtest",
+ "provenance": "source-extracted",
+ "date": "2026-09-21",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2026-09-13 to 2026-09-22 (as written in the source)",
+ "verdict": {
+  "label": "descriptive; no verdict line in the head of the file",
+  "tone": "info"
+ },
+ "why": [],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "parameters": "no rule or parameter section found in the source",
+  "why": "no sentence in the source states why it passed or failed"
+ },
+ "source_files": [
+  "MyTradingSys/research/_archive/loose_2026-10/OI_DELTA_4STATE_BACKTEST_2026-09-21.md"
+ ],
+ "commit": "f8d0799de"
+}

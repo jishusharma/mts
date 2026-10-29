@@ -160,7 +160,7 @@ public class PitchforkSignalLayerTest {
     }
 
     @Test
-    public void testDetectExactNumbers() {
+    public void testDetectExactNumbersAndExecutionMathParity() {
         List<ObjectNode> d = PitchforkSignalLayer.detect(mapper, rootNode(2000.0), fixture4h(), null, "BTCUSDT");
         assertEquals(1, d.size());
         ObjectNode c = d.get(0);
@@ -171,6 +171,15 @@ public class PitchforkSignalLayerTest {
         assertEquals(108.02, m.get("stop").asDouble(), 1e-9);
         assertEquals(133.33, m.get("target").asDouble(), 1e-9);
         assertEquals(14.39, m.get("gross_rr").asDouble(), 0.011);
+
+        // Verify exact B070 ExecutionMathConstants.netRR parity (13.43 vs old hardcoded 0.0012 value of 13.22)
+        double exactEntry = 125.0 + (5.0 / 15.0) * 25.0 - 23.666666666666668;
+        double exactStop = exactEntry * 0.985;
+        double exactTarget = 125.0 + (5.0 / 15.0) * 25.0;
+        double expectedNetRR = Math.round(ExecutionMathConstants.netRR("BTCUSDT", exactEntry, exactTarget, exactStop) * 100.0) / 100.0;
+        assertEquals(13.43, expectedNetRR, 1e-9);
+        assertEquals(expectedNetRR, m.get("net_rr").asDouble(), 1e-9);
+
         assertEquals("ignore", m.get("tier").asText());
         ObjectNode pf = (ObjectNode) c.get("pitchfork");
         assertEquals(115.0, pf.get("vp_poc").asDouble(), 1e-9);
@@ -178,8 +187,100 @@ public class PitchforkSignalLayerTest {
         assertEquals(120.0, pf.get("vp_vah").asDouble(), 1e-9);
         assertTrue(pf.get("va_confluent").asBoolean());
         assertFalse(pf.get("poc_confluent").asBoolean());
+        assertFalse(pf.get("hagopian_triggered").asBoolean());
         assertEquals(2, c.get("proof").get("proof_count").asInt()); // VA + RR>=2
         assertEquals(85, c.get("score").get("raw").asInt());
+    }
+
+    @Test
+    public void testHagopianFailureShortAndLongDetection() {
+        // 1. Ascending pitchfork (10x fixture: P2 at index 25 is a swing low at 1080, LML(30) = 1096.67, ML(30) = 1333.33):
+        // Bars 26..29 rally to ~1140 (approach ratio ~20% >= 15%, never reaching ML ~1333),
+        // then Bar 30 slices and closes below LML(30) = 1096.67 at 1040.0 -> emits PF-HAG-S!
+        ArrayNode kShort = mapper.createArrayNode();
+        for (int i = 0; i < 31; i++) {
+            ArrayNode b = kShort.addArray();
+            double m = base(i) * 10.0;
+            b.add(i * 14400000L);
+            b.add(m);
+            b.add(m + 20.0);
+            b.add(m - 20.0);
+            b.add(m);
+            b.add(i == 25 ? 10000.0 : 100.0);
+        }
+        ArrayNode bar30 = (ArrayNode) kShort.get(30);
+        bar30.set(1, mapper.getNodeFactory().numberNode(1100.0));
+        bar30.set(2, mapper.getNodeFactory().numberNode(1110.0));
+        bar30.set(3, mapper.getNodeFactory().numberNode(1030.0));
+        bar30.set(4, mapper.getNodeFactory().numberNode(1040.0));
+
+        List<ObjectNode> dShort = PitchforkSignalLayer.detect(mapper, rootNode(1040.0), kShort, null, "BTCUSDT");
+        assertEquals(1, dShort.size());
+        ObjectNode hagS = dShort.get(0);
+        assertEquals("PF-HAG-S", hagS.get("setup_type").asText());
+        assertEquals("short", hagS.get("direction").asText());
+        assertEquals("pitchfork_hagopian", hagS.get("zone").get("type").asText());
+        assertTrue(hagS.get("pitchfork").get("hagopian_triggered").asBoolean());
+        assertTrue(hagS.get("proof").get("proof_hagopian_breakout").asBoolean());
+        ObjectNode mathS = (ObjectNode) hagS.get("math");
+        assertEquals(1040.0, mathS.get("entry").asDouble(), 1e-9);
+        assertTrue(mathS.get("target").asDouble() < mathS.get("entry").asDouble());
+        assertTrue(mathS.get("stop").asDouble() > mathS.get("entry").asDouble());
+
+        // 2. Descending pitchfork (inverted 10x fixture: P2 at index 25 is a swing high):
+        // Price approaches ML downwards on bars 26..29, then Bar 30 closes above UML -> emits PF-HAG-L!
+        ArrayNode kLong = mapper.createArrayNode();
+        for (int i = 0; i < 31; i++) {
+            ArrayNode b = kLong.addArray();
+            double m = 6000.0 - 10.0 * base(i);
+            b.add(i * 14400000L);
+            b.add(m);
+            b.add(m + 20.0);
+            b.add(m - 20.0);
+            b.add(m);
+            b.add(i == 25 ? 10000.0 : 100.0);
+        }
+        // At i=25, m=4900, high=4920. Bars 26..29 drop to 4890..4860 (approaching ML ~4666.7).
+        // On Bar 30, UML(30) = 4903.33; set low=4890 (> bar 25 low 4880), high=4915 (< bar 25 high 4920), close=4912 (> UML 4903.33)!
+        ArrayNode b30L = (ArrayNode) kLong.get(30);
+        b30L.set(1, mapper.getNodeFactory().numberNode(4895.0));
+        b30L.set(2, mapper.getNodeFactory().numberNode(4915.0));
+        b30L.set(3, mapper.getNodeFactory().numberNode(4890.0));
+        b30L.set(4, mapper.getNodeFactory().numberNode(4912.0));
+
+        List<ObjectNode> dLong = PitchforkSignalLayer.detect(mapper, rootNode(4912.0), kLong, null, "BTCUSDT");
+        assertEquals(1, dLong.size());
+        ObjectNode hagL = dLong.get(0);
+        assertEquals("PF-HAG-L", hagL.get("setup_type").asText());
+        assertEquals("long", hagL.get("direction").asText());
+        assertTrue(hagL.get("pitchfork").get("hagopian_triggered").asBoolean());
+        ObjectNode mathL = (ObjectNode) hagL.get("math");
+        assertEquals(4912.0, mathL.get("entry").asDouble(), 1e-9);
+        assertTrue(mathL.get("target").asDouble() > mathL.get("entry").asDouble());
+        assertTrue(mathL.get("stop").asDouble() < mathL.get("entry").asDouble());
+    }
+
+    @Test
+    public void testMicrostructural1mWickRejectionProof() {
+        // Build 1m bars with a clear long rejection wick across LML(30) = 109.67:
+        // low=108.5 (<= 109.67), close=110.2 (> 109.67), open=110.0, high=110.5 -> range=2.0, body=0.2, wickRatio=0.9 >= 0.5
+        ArrayNode k1m = mapper.createArrayNode();
+        for (int i = 0; i < 20; i++) {
+            ArrayNode b = k1m.addArray();
+            b.add(i * 60000L);
+            b.add(110.0);
+            b.add(110.5);
+            b.add(i == 19 ? 108.5 : 109.8);
+            b.add(110.2);
+            b.add(100.0);
+        }
+        List<ObjectNode> d = PitchforkSignalLayer.detect(mapper, rootNode(2000.0), fixture4h(), k1m, "BTCUSDT");
+        assertEquals(1, d.size());
+        ObjectNode c = d.get(0);
+        assertTrue(c.get("proof").get("proof_1m_wick_rejection").asBoolean());
+        assertEquals(3, c.get("proof").get("proof_count").asInt()); // VA + RR>=2 + 1m wick rejection
+        assertEquals(90, c.get("score").get("raw").asInt()); // 85 + 5
+        assertEquals("HIGH", c.get("score").get("confidence").asText());
     }
 
     @Test

@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-27T20:45:35Z",
+  "depends_on": [],
+  "done_when": "Both inputs verified by command output pasted in the commit body; boundary stated once in ROLES.md. Verify: content commit sha, git cherry origin/fast-track <sha> empty AND git ls-tree -r origin/fast-track --name-only shows the files.",
+  "est_turns": 5,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Make the boundary explicit: 'named role, text not injected = ROLE NOT LOADED and stop; no role line = Builder fallback'. Check role_loader.py ALIASES covers Admin_Guy and add one line to ROLES.md if the boundary is not stated in one place.",
+  "id": "bug-conflict-d79b76b45a",
+  "kind": "build",
+  "lane": "SONNET",
+  "last_seen": "2026-10-27T20:45:35Z",
+  "last_session": "be43c83b-b392-49d3-a368-1330028fe5f6",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Builder: fold the operator reply-shape rule into shared guidance + det-only guardrail",
+      "ref": "e4e998f18c03",
+      "utc": "2026-10-27T15:31:51Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "e4e998f18c03 Builder: fold the operator reply-shape rule into shared guidance + det-only g",
+      "ref": "MyTradingSys/system/ROLES.md",
+      "utc": "2026-10-27T15:31:51Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Planner 2026-10-28 DECISION (OURS): no real conflict. ROLES.md:21 maps Admin_Guy to Lead (alias, roles/lead.md exists, so no 'no file'); ROLES.md:5 and WORKERS.md rule 10: no role line = Builder fallback and keep working. CLAUDE.md step 5a (ROLE NOT LOADED + stop) applies only to a named role whose text was not injected. Default: both hold, different inputs. | REVIEWED:2026-10-28 T0-ONLY",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-27T21:31:45Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/ROLES.md",
+    "scripts/dev/role_loader.py"
+  ],
+  "scope_out": [
+    "CLAUDE.md",
+    "hook behaviour changes"
+  ],
+  "scope_sha": "e4e998f18c03",
+  "seen": 1,
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Run role_loader.py pick --text 'You are Admin_Guy.' and 'operator task R1' and record both outputs",
+    "If both behave per the decision, add the one-line boundary to ROLES.md; if Admin_Guy gives no file, fix the alias, not the rule",
+    "Run test_role_loader and test_integrity"
+  ],
+  "tests": "python -m pytest scripts/dev -k role_loader -q and MyTradingSys/tests/docs/test_integrity.py; fail-first only if the alias fix is needed",
+  "title": "Instruction conflict: hook says ROLE NOT LOADED stop (Admin_Guy no file) vs operator task R1 with no role line = Builder fallb",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

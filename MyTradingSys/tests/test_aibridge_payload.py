@@ -5,6 +5,7 @@ Expected behaviour comes from the DSA coordinator field reports of 2026-10-12 an
 auto-run, no cached result, PS 5.1 stated, fresh environment, parallel chats), not from the code under test.
 The live agent test starts a scratch agent on a free local port (Windows only) and drives it over HTTP; the node test covers the extension helpers.
 """
+import json
 import os
 import re
 import shutil
@@ -22,9 +23,10 @@ def test_payload_files_exist_and_versions_agree():
     for rel in ("src/agent.ps1", "src/checks.ps1", "extension/content.js", "extension/loop.js", "extension/background.js",
                 "extension/manifest.json", "scripts/run-task.ps1", "scripts/start-agent.ps1", "policy_patch.json"):
         assert (PAYLOAD / rel).is_file(), rel
-    assert '"version": "0.7.1"' in (PAYLOAD / "extension/manifest.json").read_text(encoding="utf-8")
-    assert "$AgentVersion = '0.7.1'" in (PAYLOAD / "src/agent.ps1").read_text(encoding="utf-8")
-    assert "L.VERSION = '0.7.1'" in (PAYLOAD / "extension/loop.js").read_text(encoding="utf-8")
+    cur = json.loads((PAYLOAD / "RELEASES.json").read_text(encoding="utf-8"))["current"]
+    assert f'"version": "{cur}"' in (PAYLOAD / "extension/manifest.json").read_text(encoding="utf-8")
+    assert f"$AgentVersion = '{cur}'" in (PAYLOAD / "src/agent.ps1").read_text(encoding="utf-8")
+    assert f"L.VERSION = '{cur}'" in (PAYLOAD / "extension/loop.js").read_text(encoding="utf-8")
 
 
 def _blob_eol(p):

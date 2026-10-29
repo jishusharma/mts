@@ -4,6 +4,22 @@ The Control Room db holds the live copy (collection `decisions`, one doc per que
 a session that adds a question appends it here; the pickup that applies an answer writes the answer and the note here,
 word for word (CONTROL_ROOM.md step 4). Seed a wiped or second db from the JSON blocks below.
 
+## d-restart-c-a-supervisors | decided 2026-10-27 | Lead (admin, JIS-NUC login B)
+```json
+{"id": "d-restart-c-a-supervisors", "order": 46, "date": "2026-10-27", "status": "DECIDED",
+ "question": "Both supervisor loops are mode=ENDED (C on JIS-NB, A on the laptop), 117 ready cards queued, C's 5h/weekly reset at 2026-10-27T20:00Z and A's at 22:30Z. Restart the loops to drain the ready cards into the reset windows?",
+ "answer": "OPERATOR VERBATIM: 'Start a fresh Supervisor on JIS-NB (login C) and DESKTOP-F7IU69N (login A) so the ENDED loops resume and ready cards drain into the 19:59Z reset window.' (2026-10-27, JIS-NUC, login B seat)",
+ "done": "pending: card one-shot-successor-wake-task-4b2-no-human - successor_wake.py (4b2 one-time task, zero-operator-click restart). Design at research/lead/2026-10-27_successor-wake-design.md; chain-vs-manual open question resolved by d-47-successor-wake-chained (chained default, budget-aware fireAt). Interim: a live session on A (desktop-f7iu69n) can take a restart signal; C (JIS-NB) has no live session - parked until the card ships, or the operator starts the successor line by hand once."}
+```
+
+## d-47-successor-wake-chained | decided 2026-10-27 | Lead (admin, JIS-NUC login B)
+```json
+{"id": "d-47-successor-wake-chained", "order": 47, "date": "2026-10-27", "status": "DECIDED",
+ "question": "The successor-wake design (research/lead/2026-10-27_successor-wake-design.md) leaves one open call: default every ENDED supervisor to auto-register its successor task (chain), or keep the one-liner manual?",
+ "answer": "OPERATOR VERBATIM: 'runs must be chained - nothing manual but manual interventions possible/compatible -> makes sense? So depending of the session usage limits runs has to continue. keep distributing load. Something exists on this but perhaps is not woired and connetted.' (2026-10-27, JIS-NUC, login B seat)",
+ "done": "design doc updated (chained default + budget-aware fireAt + the 3 existing-but-unwired pieces); card one-shot-successor-wake-task-4b2-no-human READY with the chained done-when; not yet dispatched."}
+```
+
 ## q1-one-control-room | asked 2026-10-13 | Process
 
 Which Control Room page holds your questions and Inbox?
@@ -1187,6 +1203,7 @@ Recommended: A Stop hook blocks replies that end by asking the operator's leave 
 Answer: A Stop hook blocks replies that end by asking the operator's leave for work; sessions do the work, the operator stops them if wrong
 Operator note (verbatim): "There must be a hook which says that never ask such a question as if you say go and you know, you should just go and do it and if I see that you are doing something which you should not, then I will stop you. At least the work will not be lost."
 Applied: 2026-10-22: scripts/dev/offer_guard.py (Stop hook, .claude/settings.json) with scripts/dev/test_offer_guard.py; OPERATOR-ONLY: lines stay allowed for real operator decisions.
+REMOVED 2026-10-24 (43d3bfc8f): offer_guard.py is gone; the rule now lives in CLAUDE.md and memory only, no hook enforces it (dedupe INFRA 9, DECISION OURS, 2026-10-28).
 
 ```json
 {
@@ -1277,4 +1294,119 @@ Applied: 2026-10-22: scripts/dev/offer_guard.py (Stop hook, .claude/settings.jso
 ## d-jisnb-no-sched-tasks | decided 2026-10-23 | Thinker
 ```json
 {"id": "d-jisnb-no-sched-tasks", "date": "2026-10-23", "status": "DECIDED", "question": "Are MTS scheduled tasks still enabled on JIS-NB (failure review row 7)?", "options": {"A": "no: operator removed them all; correct SCHEDULING_POLICY.md and withdraw row 7"}, "recommended": "A", "answer": "Actually, there are no 15 empty scheduled tasks, and I have gone and looked into the schedule settings, and I had actually already removed everything. I don't know what everyone is talking about. I tried to tell the same thing in the other chats which I'm telling you.", "done": "SCHEDULING_POLICY.md JIS-NB row = none; failure review row 7 withdrawn; claims about tasks need a same-turn schtasks paste"}
+```
+
+## d-nuc-hw-verdict | decided 2026-10-27 | Lead (admin, JIS-NUC login B)
+```json
+{"id": "d-nuc-hw-verdict", "order": 45, "date": "2026-10-27", "status": "DECIDED", "question": "JIS-NUC (Intel NUC10 i7FNH) watchdog-resets ~2x/day (14 in 4 days, worsening; idle AND load, cool, clean logs 14 min before). Nothing software-side worked. What is wrong, should the operator sell it, and is it safe to route heavy multi-thread work to it?", "options": {"A": "order the 19V 120W 5.5x2.5 adapter now as the single-variable test; 48 h verdict, escalate to BIOS 0067 + CR2032 + BIOS settings in one attended window, then SSD firmware; sell only if board DC-DC/VRM is confirmed dead. Pause heavy routing to the NUC until the adapter test passes.", "B": "sell the NUC now as a broken 24/7 box (defective => low price), replace with a fresh box.", "C": "keep running heavy threads and hope the socket fix holds (it did not: rate 4/43h -> 3/28h, then 3 more in the 48h test)."}, "recommended": "A", "answer": "OPERATOR: 'what is wrong with this device... do I just sell it, or if defective I won't get a good price, I'm stuck' (2026-10-27) - so default A with the sell-floor as the fallback if the hardware tests fail. DECISION (OURS) safe default, operator overrides.", "done": "handover NUC_SHUTDOWN_HANDOVER.md update 2026-10-27 18:20; coordination signal to the desktop chain (login A/C) to pause heavy NUC routing until the adapter verdict; logger restarted 18:22. A-20261026-1 heavy-load-to-NUC is overridden-by-fact while resets continue."}
+```
+
+## d-weekly-reset-radar | decided 2026-10-28 | Lead (thinker, login C)
+```json
+{"question":"A weekly quota reset passed unnoticed and ~20% was lost. What should MTS do?","decision":"Track every login's reset, flag it 48 h ahead (T-48/T-24/T-2), and keep the successor chain running to exhaust the week before reset. Card weekly-reset-radar-48h-exhaust. DECISION (OURS): flag stages 48/24/2 h; roll a stale reset forward by 7 days; extends EXHAUST_PHASE.md (2 h window) and the successor-wake design.","date":"2026-10-28","status":"DECIDED","operator_quote":"We just lost around 20 % weekly max plan data - it just resetted without we noticing - it is a miss - mts must track and flat 48 hours in advance and exhaust weekly.","id":"d-weekly-reset-radar"}
+```
+
+## d-live-validation | decided 2026-10-28 | Lead (thinker, login C), relayed from the Malkan RSI session
+```json
+{"status":"DECIDED","operator_quote":"Relayed 2026-10-28 by the Malkan RSI session; verbatim operator words not in the relay (NOT_IN_DATA).","decision":"Live validation: a live signal is sent with a chart of drawn flags; operator confirms or corrects once per unique category; look-alikes inherit (matches validated case #n); differing or corrected goes to a DOUBTS list, never an auto-verdict. Seed categories from history (OURS). Card live-validation-store-signal-chart-hook.","question":"How are layers validated now that G3 blind marking is dropped?","id":"d-live-validation","date":"2026-10-28"}
+```
+
+## d-no-docker-wsl-for-mts | decided 2026-10-28 | Builder (docker-card-drop)
+```json
+{"id": "d-no-docker-wsl-for-mts", "order": 48, "date": "2026-10-28", "status": "DECIDED", "question": "Use Docker or WSL for MTS gates or test speed-ups?", "answer": "No. Operator decided in chat (never recorded) not to use Docker/WSL for MTS and uninstalled it from the Lenovo. Verbatim words not in the record (NOT_IN_DATA). DEVICES.md:83 (Docker Desktop and WSL kept) stays about the operator's own projects only, not MTS. Amended 2026-10-28 (operator chat): Docker may remain installed on the desktop (JIS-NB) for the operator's personal project (Heal Grid interview). MTS never depends on Docker, never starts it, never uninstalls it.", "done": "card docker-vs-windows-test-speed dropped (it had been dispatched 2026-10-27 and started Docker Desktop on JIS-NB; operator stopped it 2026-10-28; result file never written). Follow-up card dispatch-check-vs-decisions."}
+```
+
+## d-rolling-sessions | decided 2026-10-28 | Builder (rolling-sessions-decisions)
+```json
+{"id": "d-rolling-sessions", "order": 49, "date": "2026-10-28", "status": "DECIDED", "question": "Do rolling Supervisor sessions continue on every login, and how do we survive login C going down?", "answer": "OPERATOR (chat 2026-10-28, D1+D2): rolling sessions continue on every login; login A (Supervisor, ~15% context) keeps running as is, do not restart it. Login C goes down every now and then (known issue), so every Supervisor keeps a current hand-over file so a fresh session takes over with one spoken word. Logins A and C stay active continuously; work proceeds on all logins without gaps. Verbatim words not in the record (NOT_IN_DATA). DECISION (OURS): successor line is the short form 'Supervisor <L>' (role_loader.py BARE_LOGIN loads handover/SUPERVISOR_<L>.md).", "done": "handover/SUPERVISOR_C.md rewritten 2026-10-28 (goals, short successor line); SUPERVISOR_A.md untouched; cards rolling-session-cost-comparison, context-loading-wiring-report"}
+```
+
+## d-gpt-exhaust-full | decided 2026-10-28 | Builder (rolling-sessions-decisions)
+```json
+{"id": "d-gpt-exhaust-full", "order": 50, "date": "2026-10-28", "status": "DECIDED", "question": "Codex (GPT) lane is back in full use: how hard to run it?", "answer": "OPERATOR (chat 2026-10-28, D3): GPT (Codex lane) is back in full use; exhaust it to 100% of its session limit, same as the Claude logins. Verbatim words not in the record (NOT_IN_DATA).", "done": "card codex-gpt-exhaust-full (Builder): recorded run to the limit, usage figure, written dispatch order; Supervisors keep the Codex lane fed"}
+```
+
+## d-measure-rolling-cost | decided 2026-10-28 | Builder (rolling-sessions-decisions)
+```json
+{"id": "d-measure-rolling-cost", "order": 51, "date": "2026-10-28", "status": "DECIDED", "question": "How long do rolling sessions run before data consumption becomes a problem, and what did past issues look like; and how is context loading wired?", "answer": "OPERATOR (chat 2026-10-28, D4+D5): wants a measured comparison of how long rolling sessions run before data consumption becomes a problem and what past issues look like; and a plain explanation of how context loading is wired today (boot load, hooks, role files, memory, compaction), as the first discussion of the next Supervisor session. Verbatim words not in the record (NOT_IN_DATA).", "done": "cards rolling-session-cost-comparison (research/rolling_session_cost_2026-10/REPORT.md) and context-loading-wiring-report (research/context_loading_wiring_2026-10/REPORT.md); next Supervisor opens with the second"}
+```
+
+## d-budget-policy-one-rule | decided 2026-10-28 | Lead (budget-rules-tester)
+```json
+{"id": "d-budget-policy-one-rule", "order": 53, "date": "2026-10-28", "status": "DECIDED", "question": "Session-limit and weekly-limit rules contradicted each other (desktop caps 75/85 held to the reset, 5 h stop 80 inside the exhaust window, THROTTLE pace line in the last day, D6 text vs Pacing text). Which wins?", "answer": "OPERATOR (2026-10-28 via the starting session): resolve by default, never ask: newer decision wins, code beats doc, later doc wins. DECISION (OURS): one 'Budget policy' block in SUPER_SESSION.md; last 24 h every weekly cap is 99 and the pace throttle is off; last 2 h the 5 h stop is 95 with no tapering bands; else 5 h stop 80. Constants live in traffic.py. Codex 85 stop left to card codex-gpt-exhaust-full.", "done": "scripts/dev/test_budget_policy.py (9 tests, 5 fail on the old code)"}
+```
+
+## d-dedupe-lean-no-contradiction | decided 2026-10-28 | Builder (dedupe-lean-rule)
+```json
+{"id": "d-dedupe-lean-no-contradiction", "order": 52, "date": "2026-10-28", "status": "DECIDED", "question": "How clean must files, prompts, roles, code, tests, infrastructure, architecture, docs and cards stay, and who resolves contradictions?", "answer": "OPERATOR (chat 2026-10-28): 'Everything stays deduped, lean, non-contradictory and clean: files, prompts, roles, code, tests, infrastructure, architecture, docs, cards. Remove contradictions; never come back to the operator with a question about a contradiction.' DEFAULT RULE (OURS) so nobody asks: (1) two recorded operator decisions conflict: the newer dated one wins; (2) doc vs code: the code/trunk behaviour wins and the doc is fixed; (3) two docs conflict: the one with the later commit date wins and the other is edited to point at it; (4) the loser is fixed or deleted in the same change, DECISION (OURS) logged in the commit body, no question to the operator. Deleting needs: nothing else greps the name (grep first) and the tests still pass (failing-first or a passing run).", "done": "cards contradiction-audit-docs-prompts-roles, duplicate-code-and-tests-audit, infra-architecture-duplication-audit (Researcher audits to research/dedupe_audit_2026-10/DOCS.md, CODE.md, INFRA.md), then apply-dedupe-audit-findings (Builder, batches of 10). CLAUDE.md not edited (byte cap). Related, not twins: dispatch-check-vs-decisions, planner-conflicting-cards-vs-decisions."}
+
+## d-pre-us-failed-break-short-backtest | decided 2026-10-28 | Eagle_Eyes
+```json
+{"id": "d-pre-us-failed-break-short-backtest", "order": 54, "date": "2026-10-28", "status": "DECIDED", "question": "Should the operator's pre-US failed-break short build be backtested, and how?", "answer": "OPERATOR (voice, 2026-10-28): wants his repeating setup (break above last high, momentum shift before the US session, anticipate and enter) built into a backtest, no stop-loss in the rule (fixed capital), with S/R, timeframes and sessions; Eagle_Eyes must consolidate his words and charts into the requirement. Quote in card backtest-the-operator-s-pre-us-failed-br. Also: a Haiku click-answer session for open questions (card operator-question-list-click-answer-sess); NUC allow-once prompt difference (card nuc-app-auto-clicks-allow-once-prompts-o).", "done": "3 raw cards filed"}
+## d-gateway-background-opus | decided 2026-10-28 | Lead (opus-gateway-prompts)
+```json
+{"id": "d-gateway-background-opus", "order": 53, "date": "2026-10-28", "status": "DECIDED", "question": "How do gateway (API key) runs work while the app runs a subscription login, without new app instances?", "answer": "OPERATOR (chat 2026-10-28): 'use the gateway logins from the background so we do not create new instances'; 'do not ask me to do anything, just get it done in a safe way'; gave the working key in chat (the .reg key is invalid). DONE: key saved on JIS-NUC at ~/.mts_gateway/key (user-only ACL, outside the repo, never in a prompt/arg/log); scripts/dev/gateway_run.py probe/start/status runs headless Opus cards as claude -p children billed to the gateway (subscription OAuth vars dropped, outputs redacted, own gw-<card> worktree, one self-deleting one-shot task per run). Probe 2026-10-28 returned OK from claude-opus-5-5. O1 and O2 started on it the same day.", "done": "system/handover/OPUS_RUNS.md section Gateway; GATEWAY_NUC.md Open points."}
+```
+
+## d-krown-s8-validation-read-go | decided 2026-10-28 | Fable R6 (fable-run6-powered-prereg)
+```json
+{"id": "d-krown-s8-validation-read-go", "order": 54, "date": "2026-10-28", "status": "DECIDED", "question": "Krown S8 4h (the only powered family, R6 counts: 539 UTC days vs 439 needed) may spend the one VALIDATION read (2024-07-01..2025-06-30) after its DEV run passes?", "answer": "OPERATOR (chat 2026-10-28, reply to the R6 wrap-up ask): 'Yes, go'. VALIDATION read of Krown S8 4h: go. Conditions unchanged: only after krown-s8-4h-e2-dev-run ships PASS_DEV on the frozen PRE_REG.md (research/fable_run6_powered_prereg); one read, cells frozen, HOLDOUT stays sealed.", "done": "card krown-s8-4h-validation-read: operator-go precondition met (note updated); still waits on dep krown-s8-4h-e2-dev-run."}
+```
+
+## d-live-trading-dashboard-built-live | decided 2026-10-28 | Eagle_Eyes
+```json
+{"id": "d-live-trading-dashboard-built-live", "order": 55, "date": "2026-10-28", "status": "DECIDED", "question": "What dashboard does the operator want while trading?", "answer": "OPERATOR (voice, 2026-10-28): 'i need trading dashboard - a cool one! highly performance oriented - and it will be build live with my reqs and current live usage'; earlier: 'use opus - strict narrow dashboard that suits my style - we will add functions step by step'; and 'we can also see its diff timeframes to compare what played out at lower time frames since last weeks' (heatmap across timeframes). DECISION (OURS): Opus Builder builds a narrow v1 (price+clock, manual position and ladder, 1m/5m/15m RSI-BB-ATR strip, levels), every later requirement becomes a step in MyTradingSys/tools/live_aid/STEPS.md with his words verbatim. Observation only, no signals.", "done": "Opus Builder running; liquidation trust ledger in research/liquidation_layer_2026-10-28/"}
+```
+
+## d-krown-s8-e2-desk-crosscheck-go | decided 2026-10-28 | Fable R6 (fable-run6-powered-prereg)
+```json
+{"id": "d-krown-s8-e2-desk-crosscheck-go", "order": 56, "date": "2026-10-28", "status": "DECIDED", "question": "Run a simulator-desk cross-check of the E2 Krown S8 4h trade list (BTCUSDT 2022-04-01..2024-06-30) to prove the trade mechanics agree between e2_run.py and the desk Krown study?", "answer": "OPERATOR (chat 2026-10-28, after asking whether the simulator can prove what E2 tested): 'Yes, run it'. Sonnet card krown-s8-e2-desk-crosscheck, session started the same turn. Mechanics proof only; the E2 verdict (INCONCLUSIVE) is untouched.", "done": "card krown-s8-e2-desk-crosscheck filed and started."}
+```
+
+## d-dsa-bridge-version-bump-always | decided 2026-10-28 | Builder (dsa-bridge-version-miss)
+```json
+{"id": "d-dsa-bridge-version-bump-always", "order": 57, "date": "2026-10-28", "status": "DECIDED", "question": "Why do DSA bridge fixes not reach the desktop, and how is the bridge version miss stopped?", "answer": "OPERATOR (2026-10-28): 'Find why the DSA bridge fixes are not working on the desktop. The DSA bridge version has not changed, so every time there is a fix the version is not updated. This is not the first time. Fix this miss ALWAYS. Make sure all DSA fixes are tested and ready on the desktop. Running DSA on the NUC is pointless because it restarts on the Lenovo; think about it later.' DECISION: every DSA bridge fix bumps the bridge version (guard: scripts/dev/aibridge_version.py + MyTradingSys/tests/test_aibridge_version_bump.py); DSA is not run on the NUC (revisit later).", "done": "bridge 0.7.2 with the version guard; card aibridge-072-desktop-install for the desktop install and Chrome reload."}
+## d-layer-relations-concepts-first | decided 2026-10-28 | Builder (operator-decision-layer-concepts)
+```json
+{"id": "d-layer-relations-concepts-first", "order": 57, "date": "2026-10-28", "status": "DECIDED", "question": "How do the layers we have used (CVD, net delta, OI, net longs/shorts, top-trader long/short ratios) combine and react to each other through a Bitcoin phase, especially around the US Open? What do we study first?", "answer": "OPERATOR (voice, 2026-10-28): \"how these layers that we have been using before combine with the net shorts in account and the top traders and all those things ... how they behave how they react to each other during a phase of a Bitcoin is what we need to understand. And especially around the US Open ... we have to first identify only the simple facts and the simple things that really work, without even trying to understand where is the edge and where it is not. Whatever correlations we see, whatever deviations we see, so first try to understand them as concepts and then we will understand how to apply them.\" Meaning: describe how these measures relate across phases (esp. US Open) as plain observed facts and concepts first; no edge hunting, no trade advice yet. DECISION (OURS): descriptive study only, DEV data only, no VALIDATION or HOLDOUT read.", "done": "card layer-relations-concepts-us-open (raw -> ready, Sonnet agent, size S): per-phase table of co-movements, divergences and lead-lag plus candidate one-sentence concepts. Eagle_Eyes first read from the shot store feeds it."}
+```
+
+## d-all-stations-roll-exhaust-a | decided 2026-10-28 | Lead (opus-gateway-prompts)
+```json
+{"id": "d-all-stations-roll-exhaust-a", "order": 58, "date": "2026-10-28", "status": "DECIDED", "question": "How hard do the three stations run now?", "answer": "OPERATOR (voice, 2026-10-28): 'Login is now active. On the Lenovo laptop, I need it to be engaged. Let it exhaust all the session limit that remains ... and then it will continue normally in the next session. So I need work to be rolling everywhere ... continue in parallel from 3 machines must happen right now.' DECISION (OURS): login A (laptop) runs Supervisor A in exhaust mode for the current 5 h window (EXHAUST_PHASE.md five_stop 95), weekly cap still applies; B (NUC) and C (desktop) keep NORMAL supervisors dispatching; gateway runs O1-O3 continue.", "done": "HIGH broadcast to jis-laptop; NORMAL broadcast to all supervisors."}
+```
+
+## d-eagle-eyes-bible-alerts-mainnet | decided 2026-10-28 | Eagle_Eyes
+```json
+{"id": "d-eagle-eyes-bible-alerts-mainnet", "order": 60, "date": "2026-10-28", "status": "DECIDED", "question": "What does the operator want from Eagle_Eyes beyond live reads?", "answer": "OPERATOR (voice, 2026-10-28): a compact report of the whole MTS picture; to SEE alerts firing and the testnet trades fired; a redesigned, elegant alert UI with no drag/close problems and no windows piling up (study how modern alerts are designed); Eagle_Eyes to find what MTS lacks to reach completion, an edge and a first mainnet trade (the goal, even on the simplest edge). Verbatim brief saved as MyTradingSys/system/EAGLE_EYES_BIBLE.md, read at every Eagle_Eyes load. Then: spawn an Opus session to review the report and plan, apply the corrections, and give the operator a prompt for a stable-model run. DECISION (OURS): report and plan in research/eagle_eyes_picture_2026-10-28, Opus review session, stable-run prompt as a saved file with a one-line start.", "done": "bible, picture and plan shipped; Opus reviewer started the same turn."}
+```
+
+## d-status-is-inline-dashboard | decided 2026-10-28 | Builder (status-board-c)
+```json
+{"id": "d-status-is-inline-dashboard", "order": 59, "date": "2026-10-28", "status": "DECIDED", "question": "What does 'status' mean?", "answer": "OPERATOR (2026-10-28): \"whenever I say status, I should be presented a dashboard right at my chat screen... readable, actionable ... it must change with context, whatever I'm asking. So every output has to be in that format\" DECISION (OURS): 'status' runs scripts/dev/status_board.py and pastes the tables inline, no links.", "done": "scripts/dev/status_board.py + test_status_board.py shipped; QUICK_ANSWERS.md line added."}
+```
+
+## d-observer-severity-context | decided 2026-10-29 | Builder (observer-severity-context)
+```json
+{"id": "d-observer-severity-context", "order": 61, "date": "2026-10-29", "status": "DECIDED", "question": "What must the live observer (Eagle_Eyes) carry and rate while assisting a live trade?", "answer": "OPERATOR (2026-10-29): (a) the observer must carry market context during a live trade: where BTC came from (60k to 87k), the bull-trap worry, bear market then, the 4-year cycle not complete, and the CBP project's bottom-finding context. (b) Every signal gets a severity/strength rating from volume, CVD, net delta and large-trade size at the level, per Tom's method; the rating scale is decided by evidence. (c) Example: on a CoinGlass Binance BTCUSDT perp 15m chart the big sell at the top (large red bubbles ~81,800 on 10-28 14:00) should have been identifiable without looking at the chart. (d) VM images stay on F:, never D: (D is slow); he does not want to run commands himself. Coordinator addendum same day: large trades also rated by session (Asia 00:00-08:00 UTC, London from 08:00, NY from 13:30, today's DST) and minutes after a session open; chart readings are hypotheses. DECISION (OURS): design-only card first, no code.", "done": "card observer-severity-context filed (Sonnet, design note); VM images policy: F: only."}
+```
+
+## d-alerts-v2-both-screens-anticipation | decided 2026-10-30 | Eagle_Eyes
+```json
+{"id": "d-alerts-v2-both-screens-anticipation", "order": 62, "date": "2026-10-30", "status": "DECIDED", "question": "What alerts and anticipation does the operator want from MTS?", "answer": "OPERATOR (voice, 2026-10-30): anticipation = know in advance what happens if price goes up or down, e.g. the new UTC daily candle (about 05:30 IST) opening and taking the prior 1-day, 2-day, 3-day or weekly high/low, then failing (10-29: two green dailies off the lower BB, 10-29 candle went above the 10-28 high, then a short). Asks whether Tom answers how older context (2 days, a week, a month) matters, whether MTS fired a trade on that, and says he cannot see what fires. Wants alerts on the desktop and the laptop, toggle on/off, new meaningful alerts because the old ones are too old; dashboard for live trading, alerts to see what fires. DECISION (OURS): cards alerts-v2-on-both-screens-one-alert-feed (OPUS prio 1) and anticipation-map-from-current-layer-stat (OPUS prio 2); live-host fire check asked by signal to desktop-f7iu69n; SCENARIO_LEDGER.md scores every A/B map.", "done": "cards filed, signal sent; no build started."}
+```
+
+## d-probability-scenarios-live-panel | decided 2026-10-30 | Eagle_Eyes
+```json
+{"id": "d-probability-scenarios-live-panel", "order": 63, "date": "2026-10-30", "status": "DECIDED", "question": "How should the observer handle readings that can mean more than one thing?", "answer": "OPERATOR (voice, 2026-10-30): reading flow is guesswork (many exchanges, Binance only one); work with probabilities; for the same readings list each thing that could be happening, what to expect and be prepared for under each; have it answered in session and available in the dashboard, popping out what is happening, the possibilities with probabilities and what to do in each. DECISION (OURS): card anticipation-map-from-current-layer-stat raised to prio 1 with this goal; Eagle_Eyes per-shot frame gains step 10 (every reading gets 2-4 explanations with probability label and the deciding layer).", "done": "card updated; Bible step 10 added."}
+```
+
+## d-level-approach-first-touch | decided 2026-10-30 | Eagle_Eyes
+```json
+{"id": "d-level-approach-first-touch", "order": 64, "date": "2026-10-30", "status": "DECIDED", "question": "What is a 'first touch' of a high and which highs matter?", "answer": "OPERATOR (voice, 2026-10-30): first touch is not one 1m candle touching a line; price can come near and not touch (10-29 high 81,953.7 vs the 10-23 line 82,035.3), break on 1m, stay 5 minutes and come down; closes matter (first close, second close; 15m view). Reference line = daily 'lower high': after a low, the high made before the next lower low (10-23 high, not broken since). Krown talks about highs, lower highs, tick below, day close: get his views. Use layers to judge whether to short at those highs; gather the data. DECISION (OURS): cards level-approach-study-daily-last-lower-hi (OPUS p1) and krown-views-via-gemini-what-krown-says-a (DSA-NUC p2); note: our coded Krown KR-L10 (fractal swings, 1% tol) shows 'range' on 10-29 and does not see the operator's line.", "done": "cards filed; Bible teaching added."}
+```
+
+## d-critical-test-plan-and-ledger | decided 2026-10-30 | Eagle_Eyes
+```json
+{"id": "d-critical-test-plan-and-ledger", "order": 65, "date": "2026-10-30", "status": "DECIDED", "question": "Should MTS start formal testing for critical business-rule bugs?", "answer": "OPERATOR (voice, 2026-10-30): methods, formulas and designs (e.g. the probabilities) are critical and must be reviewed by different models; design a specific, narrow test plan for critical gaps where business rules live (Java engine and elsewhere); a bug is either a rule not understood or a rule implemented wrong; do not duplicate past checks; record test plans and how much was tested from now on. DECISION (OURS): MyTradingSys/system/CRITICAL_TEST_PLAN.md + TEST_LEDGER.md; past audits indexed in research/audit_inventory/AUDIT_INVENTORY.md; wave 1 card (OPUS p1).", "done": "plan, ledger, inventory, wave-1 card shipped."}
 ```

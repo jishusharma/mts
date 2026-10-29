@@ -1,4 +1,4 @@
-# Install / update AIBridge to the payload in scripts/aibridge (v0.7.1: fluent auto-run, parallel chats, receipts).
+# Install / update AIBridge to the payload in scripts/aibridge (version: scripts/aibridge/RELEASES.json "current").
 # Usage: python scripts/dev/aibridge_install.py [F:/AIBridge] [--dry] [--restart-agent] [--fresh [--origin=chrome-extension://<id>]]
 # --fresh: the machine has no AIBridge yet; creates src/config.json (own token), src/policy.json and the folders, then installs.
 # Run on each host that has an AIBridge (JIS-NB, JIS-NUC). Token-free: the machine's own TOKEN, AGENT_CWD and
@@ -14,7 +14,7 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PAYLOAD = os.path.normpath(os.path.join(HERE, '..', 'aibridge'))
-VERSION = '0.7.1'
+VERSION = json.load(open(os.path.join(PAYLOAD, 'RELEASES.json'), encoding='utf-8'))['current']  # one source: the release record
 
 args = [a for a in sys.argv[1:] if not a.startswith('--')]
 dry = '--dry' in sys.argv
@@ -102,6 +102,7 @@ files = [
     ('scripts/run-task.ps1', None),
     ('docs/V07_CONTRACT.md', None),
     ('policy_patch.json', None),
+    ('RELEASES.json', None),
     ('tests/loop.test.js', None),
     ('tests/handsfree.test.js', None),
     ('tests/agent_live_selftest.py', None),

@@ -201,13 +201,18 @@ def _role_line():
     return role_line
 
 
-def clean_prompt(prompt):
-    """The prompt without the app's wrappers (reminder blocks, paste tags, start_session "Background ... Task:"): role_line.py."""
-    rl = _role_line()
-    return rl.clean(prompt) if rl else str(prompt or "")
+BARE_LOGIN = re.compile(r"(?i)^\s*(?:supervisor\s*(?:login\s*)?|login\s+)([abc])\s*[.!]?\s*$")  # Supervisor A | supervisor login a | login a
+LOGIN_IN_TEXT = re.compile(r"(?i)\blogin\s+([abc])\b")
+HANDOVER_REL = "MyTradingSys/system/handover/SUPERVISOR_{}.md"
 
 
-BARE_LOGIN = re.compile(r"(?i)^\s*login\s+[abc]\s*[.!]?\s*$")
+def login_letter(prompt):
+    """The login letter (A|B|C) a Supervisor start names, or None: the bare start (BARE_LOGIN) or `Login <L>.` in the first 300 chars."""
+    m = BARE_LOGIN.match(str(rl_first_line(prompt)))
+    if m:
+        return m.group(1).upper()
+    m = LOGIN_IN_TEXT.search(str(prompt or "")[:300])
+    return m.group(1).upper() if m else None
 
 
 def rl_first_line(prompt):
@@ -297,24 +302,6 @@ def pick_role(text, repo=REPO):
 
 
 ROLE_LINE = re.compile(r"(?im)^\s*You are ([\w&]+)")
-
-
-def explicit_role(prompt, roles=None):
-    """THE definition of a role session (role_loader and model_guard.role_session both call this): the first prompt names the
-    role on its own line (`You are X.` in the first 3000 chars, or a trigger phrase such as `I need a pipeliner` starting a line
-    in the first 300). A role the fallback picks from task words is only a soft hint and is not a role session."""
-    prompt = prompt or ""
-    names = {n.lower(): n for n in KNOWN_ROLES}
-    names.update({a: n for n, al in ALIASES.items() for a in al})
-    for m in ROLE_LINE.finditer(prompt[:3000]):
-        if m.group(1).lower() in names:
-            return names[m.group(1).lower()]
-    head = prompt[:300].lower()
-    for name, trigs in (roles if roles is not None else local_roles()).items():
-        for t in trigs:
-            if re.search(r"^[ \t]*" + PREFIX + r"\s+" + _phrase(t) + r"(?![a-z0-9_])", head, re.M):
-                return name
-    return None
 
 
 def from_session(prompt):
@@ -436,12 +423,24 @@ RULES_ANSWER = ("RULES ANSWERS (bug-haiku-stale-rule-answers): before any answer
 CONFLICT_HINT = (chr(10) + "Conflict with an instruction you hold? Follow precedence (CLAUDE.md), run `tasks.py conflict 'A | B'`, keep working." + chr(10))
 
 
-def build_text(name, repo, fetched_ok, fallback=None):
+def build_text(name, repo, fetched_ok, fallback=None, login=None):
     LAST_META.clear()
     pre = (f"ROLE LOADER (hook): the prompt has no role line; the best fit from the task text is {name} ({fallback}). "
            f"After the banner, one line: if the operator meant another role, `You are <Role>.` switches "
            f"(`python scripts/dev/role_loader.py list` shows all).\n") if fallback else ""
-    return pre + _build_text(name, repo, fetched_ok, fallback) + CONFLICT_HINT
+    return pre + _build_text(name, repo, fetched_ok, fallback) + handover_text(name, repo, login) + CONFLICT_HINT
+
+
+def handover_text(name, repo, login):
+    """Supervisor with a login letter: the hand-over file for that login from origin/fast-track (its goals start the session). '' otherwise."""
+    if name != "Supervisor" or not login:
+        return ""
+    rel = HANDOVER_REL.format(login)
+    text = git_show(repo, rel)
+    if text is None:
+        return ""
+    return (f"\n----- HAND-OVER {rel} on {TRUNK} (history: current state comes from git and disk this turn; "
+            f"its goals are the start) -----\n" + text.replace("\r\n", "\n"))
 
 
 def _build_text(name, repo, fetched_ok, fallback=None):
@@ -547,7 +546,7 @@ def handle(payload, repo=REPO):
         explicit = False
     else:
         return _reminder(sid)
-    text = build_text(name, repo, git_fetch(repo), fallback)
+    text = build_text(name, repo, git_fetch(repo), fallback, login=login_letter(prompt))
     mark_injected(sid, name, dict(LAST_META), explicit=explicit)
     return _out("UserPromptSubmit", text)
 

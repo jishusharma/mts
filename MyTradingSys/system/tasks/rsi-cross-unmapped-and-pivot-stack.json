@@ -2,6 +2,15 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 9,
+    "folded": "2026-10-28T16:06:18Z",
+    "misses": 7,
+    "reads": [
+      "MyTradingSys/research/v1_plan_2026-10-20/D4_LAYER_DECISION.md"
+    ],
+    "session": "agent-ac39b0de985cdb7e9"
+  },
   "created": "2026-10-19T04:22:37Z",
   "depends_on": [],
   "done_when": "research/live_reads/2026-10-17_live_market_1017/RSI_CROSS_UNMAPPED.md has the counts table (TF x week), a one-paragraph map/leave decision with the DEV number and SOURCED/OURS labels, the Part B note linking SHOT_4ae992130268.md; a CRITICAL JIS-NB follow-up card is filed only if the decision is map.",
@@ -16,9 +25,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "T09-F2: label paths relative, cc label split so wiring_scan sees no runtime reference",
-      "ref": "bf1f9c6ed64b",
-      "utc": "2026-10-24T23:37:16Z"
+      "line": "T09-F3: live RSI trades only support@40 long; cross, failure, rejection are alert-only",
+      "ref": "f04a3cbad6ee",
+      "utc": "2026-10-26T20:59:34Z"
     }
   ],
   "layers": [
@@ -30,7 +39,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-10-25T22:30:27Z",
+  "refreshed": "2026-10-27T19:30:17Z",
   "refs": [
     "MyTradingSys/execution/auto_trader.py:416"
   ],
@@ -43,7 +52,7 @@
     "any new layer or detector code",
     "live tree .mts_live, deploys, HALT files"
   ],
-  "scope_sha": "bf1f9c6ed64b",
+  "scope_sha": "f04a3cbad6ee",
   "size": "S",
   "sources": [
     "MyTradingSys/execution/auto_trader.py:77,413,416",

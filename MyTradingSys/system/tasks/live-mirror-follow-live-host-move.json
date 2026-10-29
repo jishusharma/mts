@@ -1,0 +1,61 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/live_owner.py check",
+    "python scripts/dev/live_mirror.py publish",
+    "python scripts/dev/live_mirror.py brief"
+  ],
+  "created": "2026-10-28T11:32:31Z",
+  "crucial": true,
+  "depends_on": [],
+  "done_when": "on the Lenovo 'live_mirror.py publish' exits 0 with MTS_LIVE_OWNER_DIR set; from the NUC 'live_mirror.py brief' first line is 'LIVE OWNER: DESKTOP-F7IU69N (heartbeat Ns ago)' with live numbers; both outputs quoted in the desk reply; a manual publish is the only copy until the supervisor deploy (LIVE_MIRROR.md:69-74), say so in the reply",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Code already follows the owner marker (b565b0a1d, LIVE_MIRROR.md:69-74); close the gap that no copy exists: publish once from the Lenovo (desktop-f7iu69n) and read it from another host",
+  "id": "live-mirror-follow-live-host-move",
+  "kind": "run",
+  "lane": "DSA",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "live_mirror: on-demand ensure; brief republishes in the live tree when the copy is older t",
+      "ref": "6b61514f7174",
+      "utc": "2026-10-26T17:27:16Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-28 ACCEPT (FIX applied once) DECISION (OURS): original build ask is done in code; only the run-and-report remains, so DSA desk task (desk.py post --target DSA), not a builder. Ends: desk reply quotes both outputs",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T12:29:49Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/live_mirror.py"
+  ],
+  "scope_out": [
+    "read-only here: no edit of live_mirror.py or LIVE_MIRROR.md; no live tree, HALT or trades"
+  ],
+  "scope_sha": "6b61514f7174",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/system/LIVE_MIRROR.md:69-72; scripts/dev/sync.py start output 'LIVE OWNER: UNCONFIRMED (no owner marker)' on JIS-NUC 2026-10-28"
+  ],
+  "state": "ready",
+  "steps": [
+    "On the Lenovo check MTS_LIVE_OWNER_DIR is set and live_owner.py check shows a fresh heartbeat (publish exits 2 otherwise)",
+    "On the Lenovo run live_owner.py check then publish; report both lines",
+    "On the NUC run brief; if MTS_LIVE_OWNER_DIR is unset there, report that (broadcast the per-machine env step, never leave it to the operator)"
+  ],
+  "tests": "python scripts/dev/test_live_mirror.py passes unchanged (owner tests already cover the logic)",
+  "title": "live_mirror.py hard-codes JIS-NB (LIVE_HOST, share \\JIS-NB\\MTS-Mirror); live loop is on desktop-f7iu69n (Lenovo, heartbeat live), so no session off the Lenovo can read live state. Make mirror root/owner follow the live-owner heartbeat; publish from Lenovo; test",
+  "weight": "IMPORTANT",
+  "worker": ""
+}

@@ -102,12 +102,25 @@ def layers_mentions(root, study, ids):
 def open_claims(root, study, card_ids):
     d = root / "MyTradingSys/system/claims"
     out = []
+    seen_slugs = set()
     for p in sorted(d.glob("*.md")) if d.is_dir() else []:
         body = p.read_text(encoding="utf-8")
         if (study and study in body) or any(i and (i in p.stem or i in body) for i in card_ids):
             kv = dict(l.split(": ", 1) for l in body.splitlines() if ": " in l)
+            seen_slugs.add(p.stem)
             out.append("  %s: %s / %s - %s [area: %s]" % (p.stem, kv.get("host", "?"), kv.get("account", "?"),
                                                            kv.get("task", "?"), kv.get("area", "-")))
+    try:
+        import sync
+        for slug, kv in sync.open_claims(root, fetch=False):
+            if slug in seen_slugs:
+                continue
+            blob = " ".join(f"{k}: {v}" for k, v in kv.items())
+            if (study and study in blob) or any(i and (i in slug or i in blob) for i in card_ids):
+                out.append("  %s: %s / %s - %s [area: %s]" % (slug, kv.get("host", "?"), kv.get("account", "?"),
+                                                               kv.get("task", "?"), kv.get("area", "-")))
+    except Exception:
+        pass
     return out
 
 

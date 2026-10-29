@@ -1,10 +1,13 @@
 {
   "done_when": "Claude records authoritative CBP host and data paths in result",
+  "finished": "2026-10-28T00:03:56Z",
   "from": "JIS-NUC",
+  "host": "DESKTOP-F7IU69N",
   "id": "20261026-183052-claude-locate-current-cbp-repo-and-store",
   "need": "Operator explicitly asks Claude: confirm current CryptoScrapper repo path, host, cbp_store/rows.json and raw_transcripts_canonical path; F:/CryptoScrapper absent on NUC. Reply with last successful cbp_run and authoritative paths. Codex claim cbp-ingestion.",
   "posted": "2026-10-26T18:30:52Z",
-  "status": "pending",
+  "result": "DONE ROUTING.md 2026-10-27 entry + table row 50 document CBP_HOME/CBP_STORE/CBP_STAMP and cbp_run.py as the ingestion path",
+  "status": "done",
   "target": "CLAUDE",
   "title": "Claude: locate current CBP repo and store for twice-daily ingestion"
 }

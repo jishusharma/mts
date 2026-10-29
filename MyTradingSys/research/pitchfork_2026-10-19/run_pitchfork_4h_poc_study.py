@@ -32,6 +32,7 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
+from MyTradingSys.backtest.fees import BINANCE_MAKER, BINANCE_TAKER
 from MyTradingSys.backtest.layers.pitchfork.pitchfork_detector import (
     PitchforkVariant,
     PitchforkPivot,
@@ -162,8 +163,8 @@ def simulate_4h_pitchfork_study():
     ]
 
     exec_modes = [
-        ("TINE_LIMIT_RETEST", 0.0009),   # 0.02% maker entry + 0.05% taker exit + 0.02% slippage = 0.09%
-        ("CONFIRM_CLOSE_MKT", 0.0012),   # 0.05% taker entry + 0.05% taker exit + 0.02% slippage = 0.12%
+        ("TINE_LIMIT_RETEST", BINANCE_MAKER + BINANCE_TAKER + BINANCE_MAKER),   # maker entry + taker exit + 2bp slip = 0.09%
+        ("CONFIRM_CLOSE_MKT", 2.0 * BINANCE_TAKER + BINANCE_MAKER),             # taker entry + taker exit + 2bp slip = 0.12%
     ]
 
     results_table = []

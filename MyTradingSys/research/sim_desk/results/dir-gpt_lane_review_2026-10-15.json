@@ -1,0 +1,70 @@
+{
+ "id": "dir-gpt_lane_review_2026-10-15",
+ "kind": "audit",
+ "family": "Gpt Lane Review",
+ "title": "NUC GPT plan, 2026-10-15 (operator: Astra light only, only the most valuable tasks)",
+ "provenance": "source-extracted",
+ "date": "2026-10-15",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Read-only, via the nuc_gate. The gate's command set is now bare (status, models, ps ...): the memory line \"v3 status\" is stale, v3 is refused (\"not whitelisted\"). models lists Ollama models only and printed nothing (no…",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "Host JIS-NUC, up 2 days, 17.5 of 31.8 GB RAM free, no Ollama model loaded, no worker process",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "Codex processes 2 codex + 1 codex-computer-use-swift, started 2026-10-15 17:44 local: the operator's Codex app is open",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "CODEX_HOME F:\\codex_home",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 5 from the source",
+   "value_plain": "Default model (app sessions) F:\\codex_home\\config.toml: model = \"gpt-6.1-sol\", model_reasoning_effort = \"medium\". This is NOT Astra. Every hand-started app session uses it",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 6 from the source",
+   "value_plain": "Allowed efforts in the app [desktop] enabled-reasoning-efforts = [\"low\",\"medium\",\"high\",\"xhigh\",\"persistent\",\"ultra\",\"max\"]",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "(confirmed / false NOT STATED with file:line quote / quote does not support / mis-assigned trade). Changes nothing in the catalogue.",
+  "tone": "good"
+ },
+ "why": [
+  "Nothing here has been launched. The operator approves first. Sibling note: TRACK_RECORD.md (past GPT successes and failures) in this folder.",
+  "enabled-reasoning-efforts = [\"low\"] hides medium/high in the app picker (UNVERIFIED that the app honours the list as a hard block; if not, the config default still starts every session on low). The edit is a settings change on the NUC, so the operator (or a g…",
+  "To stop the cheap automatic runs the operator does not want: python scripts/dev/codex_run.py stop \"operator 2026-10-15: GPT only for valuable tasks\", then resume after the 3 cards below are queued (the three ready non-crucial cards run on luna, not astra, so…",
+  "Output: MyTradingSys/research/gpt_lane_review_2026-10-15/CATALOG_AUDIT.md: table of setup x cell x verdict (confirmed / false NOT STATED with file:line quote / quote does not support / mis-assigned trade). Changes nothing in the catalogue."
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window"
+ },
+ "source_files": [
+  "MyTradingSys/research/gpt_lane_review_2026-10-15/NUC_GPT_PLAN.md"
+ ],
+ "commit": "1c61408cc"
+}

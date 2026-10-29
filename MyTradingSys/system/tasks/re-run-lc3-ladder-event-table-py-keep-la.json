@@ -1,0 +1,80 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-28T15:56:36Z",
+  "commands": [],
+  "created": "2026-10-28T14:46:57Z",
+  "depends_on": [],
+  "done_when": "ladder_dev.md has the SUPERSEDED-PREMISE line, the two code comments relabelled, test_ladder.py and test_event_table.py green, frozen_rule.json and all CSVs byte-identical (diff stat lists 3 files).",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "LC3 ladder and event table build ideas and targets from the 8 old KEEP families (void). Annotate the premise; the frozen rule and the INCONCLUSIVE/FAIL verdict stay; no rerun.",
+  "id": "re-run-lc3-ladder-event-table-py-keep-la",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "annotate only: SUPERSEDED-PREMISE in ladder_dev.md, LEGACY comments in event_table.py/ladd",
+      "ref": "11e7bc39c",
+      "utc": "2026-10-28T15:56:36Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "lc-ladder-dev: NEXT_SESSION title first, CSV written with LF",
+      "ref": "4843f9284577",
+      "utc": "2026-10-20T20:36:48Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "da096725e880 lc-ladder-dev: LC3 ladder simulator, DEV run of all 240 pre-registered arms p",
+      "ref": "MyTradingSys/research/levels_confluence_2026-10-14/ladder_dev.md",
+      "utc": "2026-10-20T20:36:32Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-28 ACCEPT | DECISION (OURS): no rerun, annotate only. Overlap: layer_lab report copies are card lc1-empty-keep-layer-lab-index-reports.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T15:52:44Z",
+  "refs": [
+    "re-state-lc1-keep-list-on-the-touched-on"
+  ],
+  "result": "annotate only: SUPERSEDED-PREMISE in ladder_dev.md, LEGACY comments in event_table.py/ladder_run.py; no rerun",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/levels_confluence_2026-10-14/ladder_dev.md",
+    "MyTradingSys/research/levels_confluence_2026-10-14/event_table.py",
+    "MyTradingSys/research/levels_confluence_2026-10-14/ladder_run.py"
+  ],
+  "scope_out": [
+    "frozen_rule.json (frozen); ladder_ideas_dev.csv; event_table.csv; any VALIDATION or HOLDOUT read; levels_hold.py"
+  ],
+  "scope_sha": "4843f9284577",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.md (fair-control section: KEEP list none, 0 of 12, DEV 2022-04-01..2024-06-30)",
+    "MyTradingSys/research/levels_confluence_2026-10-14/ladder_dev.md:7 (frozen rule E1 S2 K5 X0_2R, n 772, mean net R -0.039)"
+  ],
+  "state": "done",
+  "steps": [
+    "Put a SUPERSEDED-PREMISE line under the Verdict heading of ladder_dev.md: 8 KEEP families void on the fair control (levels_hold.md), verdict unchanged, no rerun (DECISION OURS: the ladder needs KEEP levels; none exist).",
+    "Add a '# LEGACY 8-family set, void since T05-F5' comment line above the KEEP assignment at event_table.py:16, and the same words to the ladder_run.py:1 docstring.",
+    "Run test_event_table.py and test_ladder.py; ship."
+  ],
+  "taken": "2026-10-28T15:56:36Z",
+  "tests": "MyTradingSys/research/levels_confluence_2026-10-14/test_ladder.py and test_event_table.py stay green (comment-only); grep -c SUPERSEDED ladder_dev.md is 0 before, >= 1 after.",
+  "title": "Re-run LC3 ladder (event_table.py KEEP, ladder_run.py, frozen_rule.json) on the fair-control LC1 list",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

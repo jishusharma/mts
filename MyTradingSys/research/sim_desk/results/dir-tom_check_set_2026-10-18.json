@@ -1,0 +1,77 @@
+{
+ "id": "dir-tom_check_set_2026-10-18",
+ "kind": "audit",
+ "family": "Tom Check Set",
+ "title": "TOM CHECK SET - FRAMES-ONLY TRADE RECAPS (2026-10-18)",
+ "provenance": "source-extracted",
+ "date": "2026-10-18",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Session Video ID Trade ID Market Side Qty Entry Stop Target Frame Path Frame Time / Taskbar Status",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "S7 liEJMfE_PXg T11 FDAX short 2 26444 26490 (46pt, panel 46T) 26286 (158pt) F:/MTS/data/tom_videos/frames/liEJMfE_PXg_0270.jpg t=270 (taskbar 10:05) CHECK (frames only, no caption read)",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "S7 liEJMfE_PXg T11-x FDAX exit 2 26444 26490 26286 F:/MTS/data/tom_videos/frames/liEJMfE_PXg_0630.jpg t=600-630 (taskbar 10:10-10:12) CHECK (\"Ziel erreicht\" annotation; fill unobserved)",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "S8 ZZeET7ng1nk T12 FDAX short 1 25116 25139 (23pt, panel -23T) 24974 (142pt, panel 142T) F:/MTS/data/tom_videos/frames/ZZeET7ng1nk_0330.jpg before t=120 (taskbar 08:08-08:10 CEST) CHECK (frames only, no caption read)",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 5 from the source",
+   "value_plain": "S8 ZZeET7ng1nk T12-m1 FDAX stop_tighten -1 25116 25038 (moved from 25139) 24974 F:/MTS/data/tom_videos/frames/ZZeET7ng1nk_0990.jpg t=900 (SL 25097) to t=990 (SL 25038, taskbar 08:54 CEST) CHECK (stop to profit locked 78…",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 6 from the source",
+   "value_plain": "Unreadable/unverified fields per A-20261018-7:",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Protocol: TOM_LAYER_V2_SPEC.md section 7.",
+  "tone": "info"
+ },
+ "why": [],
+ "kpis": [
+  {
+   "label": "trades (first count in the source)",
+   "value": "2"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 2,
+   "quote": "The Tom CHECK set remains frozen at 2 trades (S7 / T11 and S8 / T12), exactly as specified in TOM_LAYER_V2_SPEC.md section 7."
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "why": "no sentence in the source states why it passed or failed",
+  "n_trades": "not a trade test (audit)"
+ },
+ "source_files": [
+  "MyTradingSys/research/tom_check_set_2026-10-18/CHECK_SET.md"
+ ],
+ "commit": "3585430cb"
+}

@@ -1,11 +1,14 @@
 {
   "card": "lab-verify-mtf-bias-ladder",
   "done_when": "table: for each ladder state (count of higher timeframes red/green, RSI 40-60 zone per timeframe) the BTCUSDT forward 4/8/16-bar return on 1h and 15m, gross and after 0.2% round-trip fee, against the unconditional baseline with t-stat; DEV/VALIDATION split stated; trial count logged; verdict worth-a-layer or not",
+  "finished": "2026-10-28T09:00:53Z",
   "from": "JIS-NB",
+  "host": "DESKTOP-F7IU69N",
   "id": "20261026-204750-lab-verify-mtf-bias-ladder",
   "need": "python scripts/dev/shot.py status (full brief: python scripts/dev/tasks.py brief lab-verify-mtf-bias-ladder)",
   "posted": "2026-10-26T20:47:50Z",
-  "status": "pending",
+  "result": "MyTradingSys/research/live_reads/2026-10-28_lab_verify_mtf_bias_ladder/REPORT.md -- NOT worth a layer: 0/36 VALIDATION cells (1h/15m x 6 ladder states x 4/8/16-bar) clear fee-net-positive at |t|>=1.96 vs unconditional baseline",
+  "status": "done",
   "target": "DSA-NUC",
   "title": "LAB-VERIFY: multi-timeframe bias ladder (grandfather/father/son) plus Malkan RSI 40-60 state on BTC, fee-net"
 }

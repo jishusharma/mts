@@ -1,0 +1,61 @@
+{
+  "approved_by": "",
+  "asks": "Waiting on DSA-NB desk 20261029-170405-gate-flakes-under-load-reproduce-4-concu for real tracebacks + gate-slot queue state under 4+ concurrent ships before diagnosing; no operator decision needed, just data from JIS-NB.",
+  "commands": [],
+  "created": "2026-10-28T19:45:05Z",
+  "depends_on": [],
+  "done_when": "Evidence named per failing test (real traceback + file:line, from the desk reproduction, not the symptom summary in this title); either one shared fix keeps all 5 tests green under 4+ concurrent sync.py ship on JIS-NB while standalone stays green, or (if causes differ) a BUGS.md row plus S/M cards split per distinct cause, this umbrella card then closed with a note; shipped, cherry empty.",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "test_lease.py, test_trunk_lag.py, test_soak_six_slots.py, test_mts_signal.py, test_gate_impact.py each pass standalone but failed 2026-10-28 when 4+ sync.py ship gates ran at once on JIS-NB (3 live-aid-design ships hit it). Find a shared root cause (slot contention, fetch/lock race, or a tight timeout) and fix it, or split per-test if causes differ.",
+  "id": "gate-flakes-under-load-test-lease-py-tes",
+  "kind": "build",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "trunk-lag-test-fails-under-full-load"
+  ],
+  "note": "DECISION (OURS) Session_Planner 2026-10-29: no exact traceback for any of the 5 tests exists in this repo yet (only the symptom line in this card's own title); this worktree is on DESKTOP-F7IU69N, not JIS-NB, so the 4+-concurrent-ship contention cannot be reproduced here. Candidate mechanisms found by reading the code, none confirmed: sync.py:230 GATE_SLOTS=2 (machine-wide concurrent-gate cap -- with 4+ ships, 2 queue for a slot while 2 run, so a queued ship's own subprocess timeouts keep ticking while it waits); sync.py:76 GIT_NET_TIMEOUT_S=180 (git fetch/push); sync.py:155-167 fetch_trunk FETCH_TRIES=3 with jitter (shared refs/remotes/origin/fast-track across worktrees: 'cannot lock ref' under concurrent fetch, GATE_SPEED.md D4); run_all_tests.py:113 GATE_HARD_STEP_S=60; GATE_SPEED.md:55 per-step timeout 240s. The exact '45 s' in the title matches no constant found (sync.py:662 pull_mirror's 45s timeout is unrelated: it already fails soft and is not one of the 5 named tests). Posted DSA-NB desk task 20261029-170405-gate-flakes-under-load-reproduce-4-concu (reproduce 4 concurrent sync.py ship on JIS-NB, run the 5 tests mid-load, paste every traceback + gate-slot queue state) to get real evidence before guessing a fix. Parked with tasks.py tried --asks; do not promote until the desk result lands.",
+  "prio": 2,
+  "refine_tries": 1,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tests/test_lease.py",
+    "scripts/dev/test_trunk_lag.py",
+    "scripts/dev/test_soak_six_slots.py",
+    "scripts/dev/test_mts_signal.py",
+    "scripts/dev/test_gate_impact.py",
+    "scripts/dev/sync.py (GateSlot/GATE_SLOTS, fetch_trunk/GIT_NET_TIMEOUT_S)",
+    "scripts/dev/run_all_tests.py (GATE_HARD_STEP_S)"
+  ],
+  "scope_out": [
+    "live tree",
+    "trunk-lag-test-fails-under-full-load (not_twin_of: that card covers test_trunk_lag.py failing inside one sequential run_all_tests run, not this concurrent-ships-on-one-host case)",
+    "redesigning the step-timeout budget beyond this bug",
+    "hosts other than JIS-NB unless the desk result shows they reproduce it too"
+  ],
+  "size": "M",
+  "sources": [
+    "scripts/dev/sync.py:76 (GIT_NET_TIMEOUT_S=180), :230 (GATE_SLOTS=2), :155-167 (fetch_trunk retry/jitter)",
+    "scripts/dev/run_all_tests.py:113 (GATE_HARD_STEP_S=60)",
+    "MyTradingSys/system/GATE_SPEED.md:55 (per-step timeout 240 s), :11 (push-race evidence), D4 (fetch retried 3x with jitter)",
+    "card title (first-hand evidence: 3 live-aid-design ships failed this way 2026-10-28; all 5 tests pass alone)"
+  ],
+  "state": "blocked",
+  "steps": [
+    "Read the DSA-NB desk result for 20261029-170405-gate-flakes-under-load-reproduce-4-concu: the real traceback per test and the gate-slot queue state (how many of the 4 ships held vs queued)",
+    "Group the 5 failures by mechanism: slot-queue wait eating a fixed timeout vs git fetch/lock contention (fetch_trunk 'cannot lock ref') vs something else; a test failing only while QUEUED (not running) points at GATE_SLOTS, not the test's own code",
+    "If one shared cause: write a fail-first regression that simulates the contention (e.g. hold a gate slot or a git lock in a background thread, assert the real test still passes within its timeout), fix, rerun all 5 standalone and under simulated load",
+    "If causes differ per test: file the BUGS.md row, split into per-test S cards (tasks.py new), drop this umbrella card with a note pointing at the new ids"
+  ],
+  "tests": "Per the fix path chosen in steps: a fail-first regression simulating the actual contention mechanism found in the desk evidence (slot wait or fetch-lock race), run against each of the 5 named test files; must fail on current code and pass after the fix.",
+  "title": "gate flakes under load: test_lease.py, test_trunk_lag.py, test_soak_six_slots.py, test_mts_signal.py, test_gate_impact.py fail on 45 s git fetch / step timeouts when 4+ ships share JIS-NB (all pass alone); 3 ships of live-aid-design failed this way 2026-10-28",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

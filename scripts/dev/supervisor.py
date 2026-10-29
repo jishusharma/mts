@@ -94,11 +94,63 @@ def read_shas(repo: Path, shas: list[str]) -> dict:
     return out
 
 
+def _load_cards_fetched(repo: Path) -> list[dict]:
+    """Load task cards from origin/fast-track when present, overlaid on working tree cards so fetch refreshes dispatch."""
+    import tasks
+    local_cards = {c["id"]: c for c in tasks.load_all(repo) if isinstance(c, dict) and "id" in c}
+    try:
+        ls = subprocess.run(
+            ["git", "-C", str(repo), "ls-tree", f"{TRUNK_REF}:MyTradingSys/system/tasks"],
+            capture_output=True,
+            text=True,
+            timeout=5,
+            check=False,
+        )
+        if ls.returncode != 0 or not ls.stdout.strip():
+            return sorted(local_cards.values(), key=lambda c: c["id"])
+        blobs: list[str] = []
+        for ln in ls.stdout.splitlines():
+            parts = ln.split()
+            if len(parts) >= 4 and parts[3].endswith(".json") and not parts[3].startswith("_"):
+                blobs.append(parts[2])
+        if not blobs:
+            return sorted(local_cards.values(), key=lambda c: c["id"])
+        cat = subprocess.run(
+            ["git", "-C", str(repo), "cat-file", "--batch"],
+            input=("\n".join(blobs) + "\n").encode("utf-8"),
+            capture_output=True,
+            timeout=10,
+            check=False,
+        )
+        if cat.returncode == 0 and cat.stdout:
+            buf = cat.stdout
+            pos = 0
+            while pos < len(buf):
+                nl = buf.find(b"\n", pos)
+                if nl < 0:
+                    break
+                hdr = buf[pos:nl].decode("utf-8", "replace").split()
+                pos = nl + 1
+                if len(hdr) >= 3 and hdr[1] == "blob":
+                    sz = int(hdr[2])
+                    raw = buf[pos : pos + sz].decode("utf-8", "replace")
+                    pos += sz + 1
+                    try:
+                        c = json.loads(raw)
+                        if isinstance(c, dict) and "id" in c:
+                            local_cards[c["id"]] = c
+                    except ValueError:
+                        pass
+    except (OSError, subprocess.SubprocessError, ValueError):
+        pass
+    return sorted(local_cards.values(), key=lambda c: c["id"])
+
+
 def _dispatch_raw(repo: Path, as_of: datetime, host: str | None = None, login: str | None = None,
                   logins: list | None = None) -> dict:
     import tasks
     import lane_health
-    cards = tasks.load_all(repo)
+    cards = _load_cards_fetched(repo)
     reg = tasks.registry(repo)
     holds = tasks.active_holds(repo)
     claims = tasks.open_claims(repo)
@@ -198,20 +250,25 @@ def _gate_slots_raw(repo: Path = REPO) -> dict:
     total = sync.GATE_SLOTS
     busy = 0
     pids = []
-    for i in range(total):
-        p = d / f"slot-{i}"
-        if not p.exists():
-            continue
-        try:
-            raw = p.read_text(encoding="utf-8").strip()
-            owner = int(raw) if raw else (0 if time.time() - p.stat().st_mtime > 10 else None)
-        except (OSError, ValueError):
-            owner = None
-        if owner is None:
-            busy += 1
-        elif owner > 0 and pid_alive(owner):
-            busy += 1
-            pids.append(owner)
+    dirs = [d]
+    fast_d = d.parent / "gate-slots-fast"
+    if fast_d != d and fast_d.is_dir():
+        dirs.append(fast_d)
+    for cur_d in dirs:
+        for i in range(max(total, getattr(sync, "FAST_GATE_SLOTS", 1))):
+            p = cur_d / f"slot-{i}"
+            if not p.exists():
+                continue
+            try:
+                raw = p.read_text(encoding="utf-8").strip()
+                owner = int(raw) if raw else (0 if time.time() - p.stat().st_mtime > 10 else None)
+            except (OSError, ValueError):
+                owner = None
+            if owner is None:
+                busy += 1
+            elif owner > 0 and pid_alive(owner):
+                busy += 1
+                pids.append(owner)
     return {"busy": busy, "total": total, "free": max(0, total - busy), "pids": pids}
 
 
@@ -294,7 +351,7 @@ def read_budget(as_of: datetime | None = None, home: Path | None = None) -> dict
 
 def read_peers(login: str | None, as_of: datetime, do_fetch: bool = True) -> dict:
     """The other logins' supervisors, seen only through their BUDGET signal lines (the app cannot message across logins).
-    `active` = logins whose supervisor heartbeat (BUDGET line with sup=, < 75 min) has free slots, plus this one: the list dispatch shards over.
+    `active` = logins whose supervisor heartbeat (BUDGET line with sup=, newer than HEARTBEAT_MIN) has free slots, plus this one: the list dispatch shards over.
     Fails soft: {"error": ...} and dispatch then runs unsharded."""
     try:
         import traffic
@@ -386,12 +443,19 @@ def parse_duration(val: str | int | float) -> int:
 def _probe_wait_state(repo: Path, shas: list[str]) -> dict:
     shas_map = read_shas(repo, shas)
     sha_on_trunk = {s: bool(info.get("on_trunk")) if isinstance(info, dict) and "error" not in info else False for s, info in shas_map.items()}
+    sha_on_green = {s: bool(info.get("on_green")) if isinstance(info, dict) and "error" not in info else False for s, info in shas_map.items()}
     ci_info = read_ci(use_cache=False)
     ci_red = bool(ci_info["red"]) if isinstance(ci_info, dict) and "red" in ci_info else None
     gs_info = read_gate_slots(repo)
     busy_slots = int(gs_info["busy"]) if isinstance(gs_info, dict) and "busy" in gs_info else None
     total_slots = int(gs_info["total"]) if isinstance(gs_info, dict) and "total" in gs_info else None
-    return {"shas": sha_on_trunk, "ci_red": ci_red, "busy_slots": busy_slots, "total_slots": total_slots}
+    try:    # bg-process-audit 2026-10-28: a hung background task never ends, so it never woke the coordinator; its cap does
+        import bg_watch
+        stalled = [f"{r['kind']} {r['id']} {r['age']:.0f}m > cap {r['cap']}m" for r in bg_watch.stalled()]
+    except Exception:
+        stalled = None
+    return {"shas": sha_on_trunk, "shas_green": sha_on_green, "ci_red": ci_red, "busy_slots": busy_slots, "total_slots": total_slots,
+            "stalled": stalled}
 
 
 STUCK_MAX = 2   # plans in a row with a free worker slot and no new worker: stop the actionable wake (no 5 min wake loop; OURS)
@@ -456,6 +520,13 @@ def _detect_transition(baseline: dict, current: dict) -> str | None:
         if not was_on and now_on:
             return f"TRANSITION sha {sha} landed on {TRUNK_REF}"
 
+    base_green = baseline.get("shas_green", {})
+    cur_green = current.get("shas_green", {})
+    for sha, now_green in cur_green.items():
+        was_green = bool(base_green.get(sha, False))
+        if not was_green and now_green:
+            return f"TRANSITION sha {sha} landed on {GREEN_REF}"
+
     base_ci = baseline.get("ci_red")
     cur_ci = current.get("ci_red")
     if base_ci is not None and cur_ci is not None and base_ci != cur_ci:
@@ -467,6 +538,11 @@ def _detect_transition(baseline: dict, current: dict) -> str | None:
     cur_busy = current.get("busy_slots")
     if base_busy is not None and cur_busy is not None and base_busy > 0 and cur_busy < base_busy:
         return f"TRANSITION gate slot freed ({base_busy} -> {cur_busy} busy)"
+
+    seen = {x.split()[1] for x in (baseline.get("stalled") or []) if len(x.split()) > 1}
+    for x in current.get("stalled") or []:
+        if len(x.split()) > 1 and x.split()[1] not in seen:
+            return f"TRANSITION STALLED-BG {x}: run plan, TaskStop it if it is yours"
 
     return None
 
@@ -600,10 +676,11 @@ def brief(card_id: str, role: str | None = None, repo: Path = REPO, card: dict |
     # Line 1: You are <Role>.
     line1 = f"You are {worker_role}."
 
-    # Line 2: Card: <card_id>[, <chained_ids>...]. Boot: python <main_checkout>/scripts/dev/sync.py start <slug>; work only in the printed WORKTREE.
+    # Line 2: Card: <card_id>[, <chained_ids>...]. Boot: python <main_checkout>/scripts/dev/sync.py start <slug> --worker; work only in the
+    # printed WORKTREE. --worker (B3): a worker Agent always gets its own tree, never the Supervisor's tree or lane.
     # Note: <main_checkout> is the path to repo
     slug = card_id.lower()
-    line2 = f"Card: {card_id}. Boot: python {repo}/scripts/dev/sync.py start {slug}; work only in the printed WORKTREE."
+    line2 = f"Card: {card_id}. Boot: python {repo}/scripts/dev/sync.py start {slug} --worker; work only in the printed WORKTREE."
 
     lines = [line1, line2]
 
@@ -619,6 +696,25 @@ def brief(card_id: str, role: str | None = None, repo: Path = REPO, card: dict |
         if clean_scope:
             lines.append(f"Scope in: {'; '.join(clean_scope)}")
 
+    deps = card.get("depends_on") or []
+    if deps:
+        lines.append(f"Depends on: {', '.join(str(d) for d in deps)}")
+
+    ctx = card.get("context") or {}
+    reads = ctx.get("reads") if isinstance(ctx, dict) else None
+    if reads:
+        clean_reads = [str(r) for r in reads if not any(x in str(r) for x in (".secrets", ".env", "keys"))]
+        if clean_reads:
+            lines.append(f"Read first: {'; '.join(clean_reads)}")
+
+    tests_spec = card.get("tests") or ""
+    if tests_spec:
+        lines.append(f"Tests: {tests_spec}")
+
+    done_when = card.get("done_when") or ""
+    if done_when:
+        lines.append(f"Done when: {done_when}")
+
     # Defaults for open questions
     lines.append("Defaults for open questions: on any ambiguity take the most conservative default, never ask the operator.")
 
@@ -630,9 +726,10 @@ def brief(card_id: str, role: str | None = None, repo: Path = REPO, card: dict |
 
 
 # ---------- the five-hour loop (MyTradingSys/system/SUPER_LOOP.md): one `plan` call per wake, heartbeat, lanes, hand-over ----------
+import traffic  # noqa: E402  (the one budget-policy constants: SPAWN_CEIL, LAST_DAY_*, five_ceiling)
 LOOP_DIR = "mts-superloop"      # under ~/.claude: this login's get_usage readings (local, never in git)
-HEARTBEAT_MIN = 75              # a supervisor's heartbeat older than this = it is gone (watcher <= 50 min + slack; OURS)
-SPAWN_CEIL = 80                 # 5 h % at which no Claude worker starts (SUPERVISOR.md pacing)
+HEARTBEAT_MIN = 100             # a supervisor's heartbeat older than this = it is gone (watcher <= 50 min + a long turn; login A beats every 60-90 min, 75 asked for a second Supervisor; OURS 2026-10-28)
+SPAWN_CEIL = traffic.SPAWN_CEIL   # 5 h % at which no Claude worker starts; five_ceiling() lifts it to 95 in the exhaust window
 K_DEFAULT = 0.12                # weekly points per 5 h point until two readings in one window measure it (GUESS)
 TRANSIT_MIN = 20                # write the hand-over this many minutes before the 5 h window resets (OURS)
 DSA_DOWN_H = 24                 # a DSA target whose oldest pending row is older than this has no working bridge (OURS)
@@ -672,18 +769,21 @@ def _utc(s):
     return d if d.tzinfo else d.replace(tzinfo=timezone.utc)
 
 
-LAST_DAY_H = 24      # weekly room left this close to the reset is lost if unused (OURS)
-LAST_DAY_CAP = 99    # operator 2026-10-22, login A at 97% with 15 h to reset: "do not exhaust it completely, but still use it ... slowly"
+LAST_DAY_H = traffic.LAST_DAY_H      # weekly room left this close to the reset is lost if unused (OURS)
+LAST_DAY_CAP = traffic.LAST_DAY_CAP  # operator 2026-10-22, login A at 97% with 15 h to reset: "do not exhaust it completely, but still use it ... slowly"
 
 
 def weekly_cap(login: str, host: str, h_to_reset: float | None = None) -> int:
-    """SUPER_SESSION.md rule 12: logins B and C stop at 75% of the week when they run on JIS-NB (operator choice); else 95%, raised to
-    LAST_DAY_CAP in the last LAST_DAY_H before the weekly reset, so the last points are spent slowly instead of lost (pace_plan spreads them)."""
+    """SUPER_SESSION.md "Budget policy": B and C on JIS-NB stop at 75% / 85% of the week (operator choice), else 95%; in the last
+    LAST_DAY_H before the weekly reset every login's cap is LAST_DAY_CAP, so the last points are spent slowly instead of lost
+    (pace_plan spreads them). The desktop caps do not outlive the week they protect (operator 2026-10-28, weekly-reset-radar)."""
+    if h_to_reset is not None and 0 < h_to_reset <= LAST_DAY_H:
+        return LAST_DAY_CAP
     if CN(host) == NB and login == "C":
         return 85    # operator 2026-10-26: raised from 75
     if CN(host) == NB and login == "B":
         return 75
-    return LAST_DAY_CAP if h_to_reset is not None and 0 < h_to_reset <= LAST_DAY_H else 95
+    return 95
 
 
 def loop_home(home=None) -> Path:
@@ -745,7 +845,8 @@ def pace_plan(now: datetime, rd: dict, cap: float, hist=(), running: int = 0) ->
     share = max(0.0, cap - week) / windows
     k_meas = estimate_k(list(hist))
     k = k_meas or K_DEFAULT
-    room = max(0.0, min(share / k, SPAWN_CEIL - five))
+    ceil = traffic.five_ceiling(wk_h)
+    room = max(0.0, min(share / k, ceil - five))
     target = five + room
     first = next((h for h in hist if _same_window(h, rd)), None)
     burn = projected = None
@@ -767,11 +868,11 @@ def pace_plan(now: datetime, rd: dict, cap: float, hist=(), running: int = 0) ->
         elif projected < target - 10 and running < 4:
             slots = max(slots, min(4, running + 1))
             why.append(f"burn {burn:.1f}/h projects {projected:.0f}% < target {target:.0f}%: grow")
-    if five >= SPAWN_CEIL or room < 2:
+    if five >= ceil or room < 2:
         mode, slots = "STOP", 0
-    elif five >= 70:
+    elif five >= 70 and ceil == SPAWN_CEIL:      # the exhaust window has one stop, no tapering bands
         mode, slots = "SUPERVISOR-ONLY", 0
-    elif five >= 60:
+    elif five >= 60 and ceil == SPAWN_CEIL:
         mode, slots = "CRUCIAL-ONLY", min(slots, 1)
     else:
         mode = "SPEND" if room >= 30 else "NORMAL"
@@ -779,7 +880,7 @@ def pace_plan(now: datetime, rd: dict, cap: float, hist=(), running: int = 0) ->
             "cap": cap, "k": k, "k_measured": bool(k_meas), "room": round(room, 1), "target": round(target), "h_left": round(h_left, 2),
             "burn": None if burn is None else round(burn, 2), "projected": None if projected is None else round(projected),
             "five_reset": r5.strftime("%Y-%m-%dT%H:%MZ"), "week_reset": (rw or now + timedelta(days=7)).strftime("%Y-%m-%dT%H:%MZ"),
-            "transit": (r5 - timedelta(minutes=TRANSIT_MIN)).strftime("%Y-%m-%dT%H:%MZ"), "why": "; ".join(why)}
+            "transit": (r5 - timedelta(minutes=TRANSIT_MIN)).strftime("%Y-%m-%dT%H:%MZ"), "ceil": ceil, "why": "; ".join(why)}
 
 
 def heartbeat_text(login: str, host: str, plan: dict, dsa: str | None = None, free: int | None = None, mode: str | None = None,
@@ -901,7 +1002,7 @@ def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_ke
     if unknown:
         L.append("PEERS UNKNOWN (signals not read): shared-lane actions below are NOTE only this wake; do not touch NEXT_SESSION.md")
     elif len(live) <= 1:
-        L.append("PEER none live (no heartbeat < 75 min): you are alone; NEXT_SESSION.md is yours to update at transit")
+        L.append(f"PEER none live (no heartbeat < {HEARTBEAT_MIN} min): you are alone; NEXT_SESSION.md is yours to update at transit")
     for hid, kind, title in ctx.get("holds", []):
         L.append(f"BOARD {kind} {hid}: {title} (no card of that kind)")
     if ctx.get("handover"):
@@ -913,9 +1014,10 @@ def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_ke
         L.append(f"SPAWN CI RED: one worker on the pinned ci-* card only; nothing else ships ({ci.get('message', '')[:80]})")
     picks = ctx.get("picks", [])
     if plan["new"] and picks and not ci.get("red"):
-        L.append(f"SPAWN {len(picks)}: " + ", ".join(f"{p['id']} ({p.get('role') or 'Builder'}, {p.get('worker') or '?'}, "
-                                                  f"{'own' if p.get('own', True) else 'peer'})" for p in picks)
-                 + "  [operator turn: sessions, 2 chained cards each; event turn: size-S Agents only]")
+        # WORKERS.md rule 2 / roles/supervisor.md:35: Claude Builder cards run as background Agents; only interactive roles are sessions
+        kind = lambda p: "agent" if (p.get("role") or "Builder") == "Builder" else (p.get("worker") or "?")
+        L.append(f"SPAWN {len(picks)}: " + ", ".join(f"{p['id']} ({p.get('role') or 'Builder'}, {kind(p)}, "
+                                                  f"{'own' if p.get('own', True) else 'peer'})" for p in picks))
     elif plan["new"] and not picks:
         L.append("NOTE no Claude card fits this host: Session_Planner (foreground Agent) refines raw cards, or idle")
     # shared lanes: exactly one live supervisor (lane_owner) acts on each
@@ -950,7 +1052,7 @@ def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_ke
         if s.get("dsa") == "down":
             L.append(f"OPERATOR AIBridge agent down on {s['host']} (heartbeat of {lg}): run scripts/dev/aibridge_health.py there")
     if me_any and claude_ok and ctx.get("pipeliner_free") and ctx.get("desk_pending"):
-        L.append(f"SPAWN Pipeliner on the next operator turn (`You are Pipeliner.`, lease free, {ctx['desk_pending']} desk rows pending)")
+        L.append(f"SPAWN Lead in pipeline mode on the next operator turn (`You are Lead.`, then `role_loader.py mode pipeline`, lease free, {ctx['desk_pending']} desk rows pending)")
     if me_any and gate_key and ctx.get("nuc_ok") and not any(s["host"] == NUC for s in live.values()) and ctx.get("spare"):
         L.append(f"RUN python scripts/dev/nuc_wake.py --card {ctx['spare']} --name {ctx['spare'][:20]}   (NUC has no supervisor: one headless "
                  f"worker there, the NUC login's budget)")
@@ -958,6 +1060,9 @@ def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_ke
         for ih, logins, n in ctx.get("idle_hosts", []):
             L.append(f"OPERATOR start a Supervisor on {ih}: no heartbeat < {HEARTBEAT_MIN} min, {n} card(s) ready for it, budget on "
                      f"login {'/'.join(logins)}: `You are Supervisor. Login {logins[0]}.`")
+    if ctx.get("transit_now"):
+        L.append(f"TRANSIT NOW ({ctx['transit_now']}): write the hand-over (7 fixed sections), ship it, reply with the successor line, "
+                 f"mark yourself completed: python scripts/dev/supervisor.py handover --login {login} [--from <file>]")
     L.append(f"RUN (background) python scripts/dev/supervisor.py wait --timeout 50m --login {login}{ctx.get('shas_arg', '')}   then end the turn")
     L.append(f"TRANSIT at {plan['transit']}: python scripts/dev/supervisor.py handover --login {login} --note \"<one line>\"; ship it; "
              f"successor line: You are Supervisor. Login {login}. Continue from {HANDOVER_REL.format(login)}")
@@ -1078,7 +1183,8 @@ def _who_rows() -> list:
 
 
 def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, no_fetch: bool = False, host: str | None = None,
-         home=None, now: datetime | None = None, shas: list | None = None, who_rows=None) -> tuple[list, dict]:
+         home=None, now: datetime | None = None, shas: list | None = None, who_rows=None,
+         context_tokens: int | None = None, wave_start: datetime | None = None) -> tuple[list, dict]:
     """One call per wake (boot included): records the reading, sends the heartbeat, reads peers, board, hand-over, CI, dispatch,
     lanes and desk from trunk, and returns (lines, data). Every sub-read fails soft into a NOTE line, never into a success value."""
     import tasks
@@ -1086,13 +1192,14 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
     now = now or _now_utc()
     host = CN(host or socket.gethostname())
     login = login.strip().upper()[:1]
-    rd = {**rd, "at": now.strftime("%Y-%m-%dT%H:%M:%SZ")}
+    rd = {**rd, "at": now.strftime("%Y-%m-%dT%H:%M:%SZ"), "sid": session_ident(), "tree": str(Path(repo).resolve()), "host": host}
     hist = record_reading(login, rd, home)
     rw = _utc(rd.get("week_reset"))
     gs = read_gate_slots(repo)
     pl = pace_plan(now, rd, weekly_cap(login, host, (rw - now).total_seconds() / 3600 if rw else None), hist[:-1], running)
     prev = _last_plan(login, home)
     notes, ctx = [], {}
+    ctx["transit_now"] = transit_reason(pl, now, context_tokens, wave_start or wave_start_from(hist, now, rd["sid"]))
     if not no_fetch:
         try:
             fetch_origin(repo)
@@ -1125,7 +1232,7 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
         notes.append(f"NOTE board unreadable ({type(e).__name__}): read ANNOUNCEMENTS.md ACTIVE by hand")
     ho = _git_show(repo, HANDOVER_REL.format(login))
     if ho:
-        nxt = [x.strip() for x in ho.splitlines() if x.strip().startswith(("- Next", "Next", "- next"))][:1]
+        nxt = [next_line(ho)] if next_line(ho) else [x.strip() for x in ho.splitlines() if x.strip().startswith(("- Next", "Next", "- next"))][:1]
         ctx["handover"] = HANDOVER_REL.format(login) + " on trunk" + (": " + nxt[0][:160] if nxt else "")
     ctx["ci"] = read_ci(now=now)
     try:
@@ -1187,6 +1294,11 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
     if shas:
         ctx["shas_arg"] = " --shas " + ",".join(shas)
     live[login]["free"] = free
+    try:    # bg-process-audit 2026-10-28: background tasks over their wall-time cap, and IMPORTANT cards left raw, every wake
+        import bg_watch
+        notes += bg_watch.report_lines(repo, root=(Path(home) / "projects") if home else None, now=now.timestamp())
+    except Exception as e:
+        notes.append(f"NOTE bg_watch failed ({type(e).__name__}: {str(e)[:80]}): run `python scripts/dev/bg_watch.py report` by hand")
     lines = plan_lines(login, host, pl, live, ctx, (Path.home() / ".ssh" / "nuc_gate").exists()) + notes + who_block(_who_rows() if who_rows is None else who_rows)
     loop_home(home).mkdir(parents=True, exist_ok=True)
     for ih, _lg, _n in (ctx.get("idle_hosts", []) if send else []):     # a dry run never silences the line
@@ -1218,45 +1330,443 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
     return lines, data
 
 
-def render_handover(login: str, host: str, now: datetime, last: dict, claims: list, note: str = "") -> str:
-    """Pure: the per-login hand-over file the next `You are Supervisor.` boot reads (plan prints its Next line)."""
+LEAD_HANDOVER_REL = "MyTradingSys/system/handover/LEAD_RESUME_{}.md"
+TRANSIT_CONTEXT = 150_000       # context tokens at which a coordinator writes its hand-over (CONTEXT_FILES_DESIGN 3b; OURS)
+TRANSIT_HOURS = 3.0             # wave length at which it does, whichever first (OURS)
+WAVE_GAP_MIN = 90               # readings further apart than this start a new wave when the wave start is not given (OURS)
+VERIFY_TIMEOUT = 30
+# The fixed forms (CONTEXT_FILES_DESIGN 3b and 10a): heading, max non-blank lines. `truth` = the section whose lines carry `claim | check | result`.
+FORMS = {
+    "supervisor": {"title": "# Supervisor", "max_lines": 60, "max_bytes": 6144, "truth": "Truth", "preamble": 2,
+                   "sections": [("Goal", 2), ("Truth", 15), ("Ruled out", 6), ("Next 3 steps", 3), ("Traps", 6), ("Open", 5),
+                                ("Missed last time", 6)]},
+    "lead": {"title": "# Lead", "max_lines": 80, "max_bytes": 8192, "truth": "Board", "preamble": 2,
+             "sections": [("Vision", 4), ("Priorities now", 5), ("Decisions", 10), ("Open questions", 6), ("Board", 6),
+                          ("Ruled out", 8), ("Discussions", 10), ("Missed last time", 6)]},
+}
+MISSED_DEFAULT = "(machine-written by `context_gap.py fold` at the next ship)"
+_HEAD_RE = re.compile(r"^#{2,}\s+(.*?)(?:\s*\(.*\))?\s*$")     # "## Truth (claim | check | result)" is the heading Truth
+_SHA_RE = re.compile(r"\b(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,40}\b")
+_CHECK_OK = re.compile(r"^(git|python scripts/dev/)\S*")
+_CHECK_BAD = re.compile(r"[;`$<>]|&&|\|\|")
+
+
+# B2 (2026-10-28): the one transit rule. roles/supervisor.md and SUPER_SESSION.md quote it verbatim (test_one_transit_rule_code_and_docs_agree).
+TRANSIT_RULE = ("TRANSIT = the first of: 5 h at the stop (80%, 95% in the last 2 h before the weekly reset), the `TRANSIT at` time "
+                "(20 min before the 5 h reset), this session's own wave >= 3 h, or --context-tokens >= 150000")
+
+
+def transit_reason(pl: dict, now: datetime, context_tokens: int | None = None, wave_start: datetime | None = None) -> str:
+    """Pure: '' while the wave may go on, else why the coordinator writes its hand-over now (TRANSIT_RULE, whichever first).
+    `pl` = pace_plan's dict (five, ceil, transit); wave_start = this session's first reading (wave_start_from with its sid)."""
+    why = []
+    try:
+        if float(pl.get("five", 0)) >= float(pl.get("ceil") or SPAWN_CEIL):
+            why.append(f"5 h {float(pl['five']):g}% >= stop {float(pl.get('ceil') or SPAWN_CEIL):g}%")
+    except (TypeError, ValueError):
+        pass
+    t = _utc(pl.get("transit"))
+    if t is not None and now >= t:
+        why.append(f"TRANSIT at {pl['transit']} passed")
+    if context_tokens is not None and context_tokens >= TRANSIT_CONTEXT:
+        why.append(f"context {context_tokens / 1000:.0f}K >= {TRANSIT_CONTEXT // 1000}K")
+    if wave_start is not None and (now - wave_start).total_seconds() >= TRANSIT_HOURS * 3600:
+        why.append(f"wave {(now - wave_start).total_seconds() / 3600:.1f} h >= {TRANSIT_HOURS:g} h")
+    return "; ".join(why)
+
+
+def wave_start_from(hist, now: datetime, sid: str | None = None) -> datetime | None:
+    """Pure: start of the contiguous run of readings (gap <= WAVE_GAP_MIN) that ends at the newest one; None without timestamps.
+    sid: only that session's readings (B2: the per-login file is shared, a successor must not inherit its predecessor's wave)."""
+    ts = sorted(t for t in (_utc(r.get("at")) for r in hist if isinstance(r, dict) and (sid is None or r.get("sid") == sid)) if t)
+    if not ts:
+        return None
+    start = ts[-1]
+    for t in reversed(ts[:-1]):
+        if (start - t).total_seconds() > WAVE_GAP_MIN * 60:
+            break
+        start = t
+    return start
+
+
+def split_sections(text: str) -> tuple[list, list]:
+    """Pure: (preamble lines incl. the title, [(heading, [lines])]) split at every heading of level >= 2."""
+    pre, secs = [], []
+    for ln in text.splitlines():
+        m = _HEAD_RE.match(ln)
+        if m:
+            secs.append((m.group(1), []))
+        elif secs:
+            secs[-1][1].append(ln)
+        else:
+            pre.append(ln)
+    return pre, secs
+
+
+def split_fields(line: str) -> list:
+    """Pure: 'claim | check | result' split on pipes that are outside backticks."""
+    out, cur, tick = [], [], False
+    for ch in line:
+        if ch == "`":
+            tick = not tick
+        if ch == "|" and not tick:
+            out.append("".join(cur).strip())
+            cur = []
+        else:
+            cur.append(ch)
+    out.append("".join(cur).strip())
+    return out
+
+
+def validate_form(text: str, kind: str = "supervisor") -> list:
+    """Pure: the problems that make `handover` refuse a file (empty list = valid). Fixed headings in order, line caps per section,
+    60 lines / 6 KB overall, no `## Update` (a hand-over is rewritten whole, never appended to), Truth lines are `claim | check | result`."""
+    f = FORMS[kind]
+    probs = []
+    pre, secs = split_sections(text)
+    if not (pre and pre[0].startswith(f["title"])):
+        probs.append(f"first line must start with '{f['title']}'")
+    if len([x for x in pre[1:] if x.strip()]) > f["preamble"]:
+        probs.append(f"more than {f['preamble']} lines between the title and the first heading")
+    for h, _ in secs:
+        if h.lower().startswith("update"):
+            probs.append(f"'## {h}' refused: rewrite the whole file, never append an update")
+    want = [h for h, _ in f["sections"]]
+    got = [h for h, _ in secs]
+    for h in got:
+        if h not in want and not h.lower().startswith("update"):
+            probs.append(f"unknown heading '## {h}' (the form has: {', '.join(want)})")
+    for h in want:
+        if h not in got:
+            probs.append(f"missing heading '## {h}'")
+    kept = [h for h in got if h in want]
+    if kept != [h for h in want if h in kept]:
+        probs.append("headings out of order")
+    n_lines = len(text.rstrip("\n").splitlines())
+    if n_lines > f["max_lines"]:
+        probs.append(f"{n_lines} lines > cap {f['max_lines']}")
+    n_bytes = len(text.encode("utf-8"))
+    if n_bytes > f["max_bytes"]:
+        probs.append(f"{n_bytes} bytes > cap {f['max_bytes']}")
+    caps = dict(f["sections"])
+    for h, body in secs:
+        body = [x for x in body if x.strip()]
+        if h in caps and len(body) > caps[h]:
+            probs.append(f"'## {h}' has {len(body)} lines > cap {caps[h]}")
+        if kind == "supervisor" and h == "Next 3 steps" and body and not body[0].lstrip().startswith("1."):
+            probs.append("'## Next 3 steps' must start with '1.' (step 1 runs on a cold start)")
+        if kind == "supervisor" and h == f["truth"]:
+            for x in body:
+                core = x.lstrip()
+                core = core[len("- STALE: "):] if core.startswith("- STALE: ") else core[2:] if core.startswith("- ") else ""
+                if not core or len(split_fields(core)) < 3:
+                    probs.append(f"Truth line needs '- claim | check | result': {x.strip()[:60]}")
+    return probs
+
+
+def _check_command(field: str) -> str:
+    m = re.search(r"`([^`]+)`", field)
+    return (m.group(1) if m else field).strip()
+
+
+def run_check(repo: Path, claim: str, check_field: str, result: str) -> tuple[str, str]:
+    """Run one Truth check. -> ('ok'|'stale'|'unchecked', detail). Only `git ...` and `python scripts/dev/...` commands run (no ; & ` $ >);
+    `<sha>` is replaced by each sha named in the claim. Fails on a non-zero exit; a numeric result@write must match the last output line."""
+    cmd = _check_command(check_field)
+    if not _CHECK_OK.match(cmd):
+        return "unchecked", "not a runnable git/python check"
+    cmds = [cmd]
+    if "<sha>" in cmd:
+        shas = _SHA_RE.findall(claim)
+        if not shas:
+            return "unchecked", "<sha> but no sha in the claim"
+        cmds = [cmd.replace("<sha>", s) for s in shas]
+    if re.search(r"<[^<>]*>", " ".join(cmds)):
+        return "unchecked", "placeholder in the command"
+    if any(_CHECK_BAD.search(c) for c in cmds):
+        return "unchecked", "not a runnable git/python check"
+    import shlex
+    for c in cmds:
+        head, *tail = [x.strip() for x in c.split("|")]
+        try:
+            r = subprocess.run(shlex.split(head), cwd=str(repo), capture_output=True, text=True, timeout=VERIFY_TIMEOUT)
+            out_text, rc = r.stdout, r.returncode
+            for t in tail:      # the only pipe stages we emulate (no shell, no bash needed): wc -l and grep -c <word>
+                ln = out_text.splitlines()
+                if t == "wc -l":
+                    out_text, rc = f"{len(ln)}\n", 0
+                elif t.startswith("grep -c "):
+                    out_text, rc = f"{sum(1 for x in ln if shlex.split(t)[2] in x)}\n", 0
+                else:
+                    return "unchecked", f"pipe stage not emulated: {t[:30]}"
+        except (OSError, ValueError, subprocess.TimeoutExpired) as e:
+            return "stale", f"{type(e).__name__}: {c[:60]}"
+        last = (out_text.strip().splitlines() or [""])[-1].strip()
+        m = re.match(r"(\d+)\b", result.strip())
+        if len(cmds) == 1 and m and re.fullmatch(r"\d+", last):
+            if last != m.group(1):
+                return "stale", f"{c[:60]} printed {last}, written {m.group(1)}"
+        elif rc != 0:
+            return "stale", f"exit {rc}: {c[:60]}"
+    return "ok", ""
+
+
+def verify_text(text: str, repo: Path, kind: str = "supervisor") -> tuple[str, dict]:
+    """Re-run each Truth check; prefix failures with 'STALE: ', drop the prefix from lines that pass again, refresh the header count.
+    -> (new text, {'problems': [...], 'ok': n, 'stale': n, 'unchecked': n, 'lines': [(status, line, detail)]})"""
+    f = FORMS[kind]
+    out = {"problems": validate_form(text, kind), "ok": 0, "stale": 0, "unchecked": 0, "lines": []}
+    in_truth = False
+    new = []
+    for ln in text.splitlines():
+        m = _HEAD_RE.match(ln)
+        if m:
+            in_truth = m.group(1) == f["truth"]
+            new.append(ln)
+            continue
+        body = ln.lstrip()
+        was = body.startswith("- STALE: ")
+        core = body[len("- STALE: "):] if was else body[2:] if body.startswith("- ") else ""
+        fields = split_fields(core) if (in_truth and core) else []
+        if len(fields) >= 3:
+            st, det = run_check(repo, fields[0], fields[1], fields[2])
+            out[st] += 1
+            out["lines"].append((st, core[:80], det))
+            if st == "stale":
+                ln = "- STALE: " + core
+            elif was:
+                ln = "- " + core
+        elif in_truth and core:
+            out["unchecked"] += 1
+        new.append(ln)
+    head = new[0] if new else ""
+    fresh = re.sub(r"\(STALE \d+[^)]*\)", f"(STALE {out['stale']} at last boot)", head)
+    if fresh == head and "(STALE" not in head:
+        fresh = head + f"   (STALE {out['stale']} at last boot)"
+    new[0:1] = [fresh]
+    return "\n".join(new) + "\n", out
+
+
+def set_missed(text: str, lines: list) -> str:
+    """Pure: replace the body of '## Missed last time' (the machine-written fold section); other sections untouched."""
+    out, skipping = [], False
+    for ln in text.splitlines():
+        m = _HEAD_RE.match(ln)
+        if m:
+            skipping = m.group(1) == "Missed last time"
+            out.append(ln)
+            if skipping:
+                out.extend(lines)
+            continue
+        if not skipping:
+            out.append(ln)
+    return "\n".join(out) + "\n"
+
+
+SUPER_SESSION_REL = "MyTradingSys/system/SUPER_SESSION.md"
+SESSION_LOG_SECTION = "Session log"
+SESSION_LOG_MAX = 5
+
+
+def append_session_line(text: str, line: str, keep: int = SESSION_LOG_MAX) -> str:
+    """Pure: add one line to SUPER_SESSION.md's `## Session log` section (newest first), dropping the oldest entry so the section
+    never holds more than `keep` (the doc test test_session_log_keeps_last_five caps it at 5). The handover's one-line-per-run
+    update used to be typed by hand and has overflowed that cap twice (2026-10-25, 2026-10-28); this is the capped writer. Only
+    the contiguous `- ` entry block at the top of the section is replaced; every other line and section is untouched. An empty
+    line or a file without the section is returned as-is (fail closed: no new section, no empty entry)."""
+    if not line.strip() or not text.strip():
+        return text
+    lines = text.splitlines()
+    start = None
+    for i, ln in enumerate(lines):
+        m = _HEAD_RE.match(ln)
+        if m and m.group(1) == SESSION_LOG_SECTION:
+            start = i
+            break
+    if start is None:
+        return text
+    i = start + 1
+    while i < len(lines) and not lines[i].strip():
+        i += 1                                   # past any blank lines under the heading
+    block_start = i
+    while i < len(lines) and lines[i].lstrip().startswith("- "):
+        i += 1                                   # the contiguous entry block, newest first
+    out = lines[:start + 1] + [line] + lines[block_start:i][:(keep - 1)] + lines[i:]
+    body = "\n".join(out)
+    return body if body.endswith("\n") else body + "\n"
+
+
+def record_session_line(repo: Path, line: str) -> int:
+    """Add one Session log line to SUPER_SESSION.md on trunk, dropping the oldest entry to keep the last 5. Returns the new entry
+    count. A missing file or section is a no-op returning -1 (fail closed: nothing written, nothing invented). A line missing its
+    leading '- ' is given one, so a raw-text call still yields a well-formed entry the next call can re-slice."""
+    p = Path(repo) / SUPER_SESSION_REL
+    try:
+        text = p.read_text(encoding="utf-8")
+    except OSError:
+        return -1
+    line = line.strip()
+    if not line.startswith("- "):
+        line = "- " + line
+    new = append_session_line(text, line)
+    if new == text:
+        return -1
+    p.write_text(new, encoding="utf-8", newline="\n")
+    log, counting = [], False
+    for ln in new.splitlines():
+        m = _HEAD_RE.match(ln)
+        if m:
+            counting = m.group(1) == SESSION_LOG_SECTION
+        elif counting and ln.lstrip().startswith("- "):
+            log.append(ln)
+    return len(log)
+
+
+def handover_path(repo: Path, login: str | None = None, role: str = "supervisor", now: datetime | None = None) -> Path:
+    if role == "lead":
+        return Path(repo) / LEAD_HANDOVER_REL.format((now or _now_utc()).strftime("%Y-%m-%d"))
+    return Path(repo) / HANDOVER_REL.format((login or "").strip().upper()[:1])
+
+
+def fold_target(repo: Path, card_id: str | None = None, login: str | None = None, role: str = "supervisor",
+                now: datetime | None = None) -> Path:
+    """Where the ship-time fold (context_gap.py) writes: the claimed card's json, and with no card the coordinator's handover file."""
+    if card_id:
+        p = Path(repo) / "MyTradingSys" / "system" / "tasks" / f"{card_id}.json"
+        if p.is_file():
+            return p
+    return handover_path(repo, login, role, now)
+
+
+def next_line(text: str) -> str:
+    """The first line under '## Next 3 steps' (plan prints it at boot); '' if none."""
+    _pre, secs = split_sections(text)
+    for h, body in secs:
+        if h == "Next 3 steps":
+            return next((x.strip() for x in body if x.strip()), "")
+    return ""
+
+
+def render_handover(login: str, host: str, now: datetime, last: dict, claims: list, note: str = "", role: str = "supervisor",
+                    missed: list | None = None) -> str:
+    """Pure: the fixed-form file written from the last plan (supervisor) or a valid skeleton (lead).
+    The agent edits it or passes its own file with --from; either way validate_form decides."""
+    u = now.strftime("%Y-%m-%dT%H:%MZ")
+    missed = missed or [MISSED_DEFAULT]
+    if role == "lead":
+        L = [f"# Lead handover | written {u} by {host} | discussions since last rotation: 0 | verify: python scripts/dev/supervisor.py handover --verify --role lead", "",
+             "## Vision", "See MyTradingSys/PROJECT_VISION.md: fee-net out-of-sample results decide what trades; no mainnet, no schedulers.", "",
+             "## Priorities now", "1. (fill: ranked, each with the number it moves and its card)", "",
+             "## Decisions", "- (fill: d-<slug> | date | one line)", "",
+             "## Open questions", "- (fill: question; default; who answers)", "",
+             "## Board", f"- written {u}; read the live board with `python scripts/dev/tasks.py list`", "",
+             "## Ruled out", "- (fill: option closed, and why)", "",
+             "## Discussions", "- (fill: title -> card ids -> refine status)", "",
+             "## Missed last time", *missed, ""]
+        return "\n".join(L)
     pl = last.get("plan", {})
     peers = ", ".join(f"{lg}@{s.get('host', '?')}" for lg, s in sorted(last.get("live", {}).items()) if lg != login)
-    L = [f"# Supervisor hand-over, login {login} ({host}, {now.strftime('%Y-%m-%dT%H:%MZ')})", "",
-         f"- Next: {note or 'continue the dispatch order; nothing pending from this run'}",
-         f"- Budget at hand-over: 5h {pl.get('five', '?')}% (reset {pl.get('five_reset', '?')}), week {pl.get('week', '?')}% of cap "
-         f"{pl.get('cap', '?')} (reset {pl.get('week_reset', '?')}), mode {pl.get('mode', '?')}, k {pl.get('k', '?')}"
-         f"{'' if pl.get('k_measured') else ' (GUESS)'}",
-         f"- Peers live at hand-over: {peers or 'none'}",
-         f"- Last picks: {', '.join(last.get('picks', [])) or 'none'}",
-         f"- Open claims from {host}: {', '.join(claims) or 'none'} (finish, hand over in the card, or release by the claim rules)",
-         "", f"Successor: `You are Supervisor. Login {login}. Continue from {HANDOVER_REL.format(login)}`", ""]
+    picks = ", ".join(last.get("picks", [])) or "none"
+    L = [f"# Supervisor {login} handover | written {u} by {host} | verify: python scripts/dev/supervisor.py handover --verify   (STALE 0 at last boot)", "",
+         "## Goal",
+         f"Login {login} on {host}: mode {pl.get('mode', '?')}, 5 h {pl.get('five', '?')}% (reset {pl.get('five_reset', '?')}), week {pl.get('week', '?')}% of cap {pl.get('cap', '?')}.",
+         f"Stop at 5 h >= {SPAWN_CEIL}%, week >= cap, CI red, no ready cards, the TRANSIT at time, or a {TRANSIT_HOURS:g} h wave.", "",
+         "## Truth",
+         f"- Peers live at write: {peers or 'none'} | `python scripts/dev/sync.py where --all` | read at {u}",
+         f"- Last picks: {picks} | `python scripts/dev/tasks.py dispatch` | read at {u}",
+         f"- Open claims from {host}: {', '.join(claims) or 'none'} | `python scripts/dev/sync.py where --all` | read at {u}", "",
+         "## Ruled out", "- none recorded by the tool; add what was tried and closed (`handover --from <file>`).", "",
+         "## Next 3 steps",
+         f"1. `python scripts/dev/sync.py start supervisor-{login}-<utc date>`; `get_usage`; `python scripts/dev/supervisor.py plan --login {login} --five <%> --five-reset <utc> --week <%> --week-reset <utc> --running 0`.",
+         f"2. {note or 'Continue the dispatch order; nothing pending from this run.'}",
+         "3. `python scripts/dev/tasks.py dispatch`; start the next picks.", "",
+         "## Traps", "- One ship at a time; EXTRA registration forces the ~20 min gate.", "",
+         "## Open", "- Claims above: finish, hand over in the card, or release.", "",
+         "## Missed last time", *missed, ""]
     return "\n".join(L)
 
 
+HANDOVER_GUARD_MIN = 10        # another planner of the login this recent = it is alive: no second hand-over writer (B1, OURS)
+
+
+def session_ident() -> str:
+    """Who is planning: the Claude Code session id, else the Claude pid, else this process's folder (OURS)."""
+    return os.environ.get("CLAUDE_CODE_SESSION_ID") or os.environ.get("CLAUDE_PID") or str(Path.cwd().resolve())
+
+
+def other_planner(login: str, now: datetime, sid: str, home=None, minutes: int = HANDOVER_GUARD_MIN) -> dict | None:
+    """The newest reading of `login` from another session within `minutes`, else None. Readings without a sid (written before
+    2026-10-28) never block: their origin is unknown (OURS)."""
+    try:
+        rows = [json.loads(x) for x in (loop_home(home) / f"{login}.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]
+    except (OSError, ValueError):
+        return None
+    for r in reversed(rows):
+        t = _utc(r.get("at")) if isinstance(r, dict) else None
+        if t and r.get("sid") and r["sid"] != sid and -60 <= (now - t).total_seconds() <= minutes * 60:
+            return r
+    return None
+
+
+def _old_missed(p: Path) -> list | None:
+    try:
+        for h, body in split_sections(p.read_text(encoding="utf-8"))[1]:
+            if h == "Missed last time":
+                return [x for x in body if x.strip()] or None
+    except OSError:
+        pass
+    return None
+
+
 def handover(repo: Path, login: str, note: str = "", host: str | None = None, home=None, now: datetime | None = None,
-             send: bool = False) -> Path:
+             send: bool = False, role: str = "supervisor", text: str | None = None, wake: bool = False, force: bool = False,
+             sid: str | None = None) -> Path:
+    """Write the fixed-form hand-over (7 sections, or the Lead's 8) and return its path. `text` = a file the agent wrote; without it the
+    form is rendered from the last plan. A form that breaks the caps or carries `## Update` raises ValueError and writes nothing.
+    B1: one hand-over writer per login: another Supervisor of the login that planned in the last HANDOVER_GUARD_MIN minutes
+    raises ValueError naming it (it is alive and owns the login), unless force."""
     import sync
     now = now or _now_utc()
     host = CN(host or socket.gethostname())
-    login = login.strip().upper()[:1]
-    try:
-        last = json.loads((loop_home(home) / f"{login}-last-plan.json").read_text(encoding="utf-8"))
-    except (OSError, ValueError):
-        last = {}
-    try:
-        claims = [s for s, kv in sync.read_claims(repo, TRUNK_REF) if CN(kv.get("host") or "") == host]
-    except Exception:
-        claims = ["(claims unreadable)"]
-    p = Path(repo) / HANDOVER_REL.format(login)
-    p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(render_handover(login, host, now, last, claims, note), encoding="utf-8", newline="\n")
-    if send and last.get("plan"):
+    login = (login or "").strip().upper()[:1]
+    p = handover_path(repo, login, role, now)
+    if role != "lead" and not force:
+        o = other_planner(login, now, sid or session_ident(), home)
+        if o:
+            age = (now - _utc(o["at"])).total_seconds() / 60
+            raise ValueError(f"another Supervisor {login} is live: session {str(o['sid'])[:8]} in {o.get('tree', '?')} on "
+                             f"{o.get('host', '?')} planned {age:.0f} min ago (< {HANDOVER_GUARD_MIN}). One hand-over writer per login: "
+                             f"leave it to that session and end without a hand-over, or rerun with --force if it is gone")
+    if text is None:
         try:
-            import mts_signal
-            mts_signal.send(heartbeat_text(login, host, {**last["plan"], "running": 0}, free=0, mode="ENDED"), to="all", kind="note")
+            last = json.loads((loop_home(home) / f"{login}-last-plan.json").read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            last = {}
+        try:
+            claims = [s for s, kv in sync.read_claims(repo, TRUNK_REF) if CN(kv.get("host") or "") == host]
         except Exception:
-            pass   # the 75 min heartbeat age still removes this supervisor
+            claims = ["(claims unreadable)"]
+        text = render_handover(login, host, now, last, claims, note, role, _old_missed(p))
+    probs = validate_form(text, role)
+    if probs:
+        raise ValueError("; ".join(probs))
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(text if text.endswith("\n") else text + "\n", encoding="utf-8", newline="\n")
+    if send and role != "lead":
+        try:
+            lp = json.loads((loop_home(home) / f"{login}-last-plan.json").read_text(encoding="utf-8"))
+            if lp.get("plan"):
+                import mts_signal
+                mts_signal.send(heartbeat_text(login, host, {**lp["plan"], "running": 0}, free=0, mode="ENDED"), to="all", kind="note")
+        except Exception:
+            pass   # the HEARTBEAT_MIN heartbeat age still removes this supervisor
+    if wake and role != "lead":
+        try:
+            import successor_wake
+            r = successor_wake.register(login, cwd=repo, home=home)
+            print(f"{r['line']} [{r['why']}]")
+        except Exception as e:   # fail closed = no task, never a broken hand-over; the line tells the operator the manual command
+            print(f"successor wake NOT registered ({e}); manual: python scripts/dev/successor_wake.py --login {login}")
     return p
 
 
@@ -1294,11 +1804,27 @@ def main(argv: list[str] | None = None) -> int:
     p_plan.add_argument("--no-send", action="store_true", help="do not send the heartbeat (tests, dry runs)")
     p_plan.add_argument("--no-fetch", action="store_true")
     p_plan.add_argument("--json", action="store_true")
+    p_plan.add_argument("--context-tokens", type=int, default=None, help="this session's context size in tokens: TRANSIT NOW at >= 150000")
+    p_plan.add_argument("--wave-start", default=None, help="UTC start of this wave (default: from the readings); TRANSIT NOW after 3 h")
 
     p_ho = sub.add_parser("handover", help="write handover/SUPERVISOR_<login>.md from the last plan (ship it once)")
     p_ho.add_argument("--login", default=None, help="optional: detected from the app account")
     p_ho.add_argument("--note", default="", help="one line: what the successor does first")
     p_ho.add_argument("--no-send", action="store_true", help="do not send the ENDED heartbeat")
+    p_ho.add_argument("--force", action="store_true", help="write although another Supervisor of the login planned < 10 min ago (B1)")
+    p_ho.add_argument("--no-wake", action="store_true", help="do not register the one-time successor task (SCHEDULING_POLICY 4b2; default: register)")
+    p_ho.add_argument("--role", "--kind", dest="role", choices=("supervisor", "lead"), default="supervisor",
+                      help="lead: the Lead's 8-section resume file handover/LEAD_RESUME_<date>.md")
+    p_ho.add_argument("--from", dest="src", default=None, help="a form file you wrote: validated (caps, no '## Update'), then written to the target")
+    p_ho.add_argument("--verify", action="store_true", help="re-run every Truth check of the target (or --file) and mark failures STALE")
+    p_ho.add_argument("--file", default=None, help="with --verify: the file to check (default: the target of --login/--role)")
+    p_ho.add_argument("--no-write", action="store_true", help="with --verify: report only, leave the file as it is")
+    p_ho.add_argument("--fold-target", action="store_true", help="print the file the ship-time fold writes (the card, else the hand-over)")
+    p_ho.add_argument("--card", default=None, help="with --fold-target: the claimed card id")
+
+    p_sl = sub.add_parser("session-log", help="add one line to SUPER_SESSION.md's Session log (last 5 kept), dropping the oldest entry")
+    p_sl.add_argument("line", help="the one-line session record")
+    p_sl.add_argument("--repo", default=None, help="repo root (default: the checkout this script is in)")
 
     args = ap.parse_args(argv)
     if args.cmd in ("plan", "handover", "wait", "tick", "watchcheck"):
@@ -1310,7 +1836,8 @@ def main(argv: list[str] | None = None) -> int:
         if mism:
             print(mism, file=sys.stderr if getattr(args, "json", False) else sys.stdout)
         args.login = det or args.login
-    if args.cmd in ("plan", "handover") and (not args.login or args.login.strip().upper()[:1] not in ("A", "B", "C")):
+    lead_ho = args.cmd == "handover" and args.role == "lead"
+    if args.cmd in ("plan", "handover") and not lead_ho and (not args.login or args.login.strip().upper()[:1] not in ("A", "B", "C")):
         print("login unknown: the app account is not in CLOUD_ACCOUNTS.md LOGINS; pass --login A|B|C or set env MTS_LOGIN")
         return 2
     if args.cmd == "plan":
@@ -1322,12 +1849,57 @@ def main(argv: list[str] | None = None) -> int:
             print("--five and --week are percentages 0-100 (get_usage percentUsed); --running >= 0")
             return 2
         rd = {"five": args.five, "five_reset": args.five_reset, "week": args.week, "week_reset": args.week_reset}
+        ws = _utc(args.wave_start) if args.wave_start else None
+        if args.wave_start and ws is None:
+            print("--wave-start: UTC time like 2026-10-19T14:00Z")
+            return 2
         lines, data = plan(REPO, args.login, rd, running=args.running, send=not args.no_send, no_fetch=args.no_fetch,
-                           shas=parse_shas_arg(args.shas))
+                           shas=parse_shas_arg(args.shas), context_tokens=args.context_tokens, wave_start=ws)
         print(json.dumps(data, indent=1, sort_keys=True, default=str) if args.json else chr(10).join(lines))
         return 0
+    if args.cmd == "session-log":
+        repo = Path(args.repo) if args.repo else (Path.cwd() if (Path.cwd() / "MyTradingSys").is_dir() else REPO)
+        n = record_session_line(repo, args.line)
+        if n < 0:
+            print("no-op: no '## Session log' section (or file missing) in SUPER_SESSION.md; nothing written")
+            return 2
+        print(f"wrote {SUPER_SESSION_REL}: {n} Session log entr{'y' if n == 1 else 'ies'} (last {SESSION_LOG_MAX} kept); ship it once")
+        return 0
     if args.cmd == "handover":
-        p = handover(Path.cwd() if (Path.cwd() / "MyTradingSys").is_dir() else REPO, args.login, note=args.note, send=not args.no_send)
+        repo = Path.cwd() if (Path.cwd() / "MyTradingSys").is_dir() else REPO
+        if args.fold_target:
+            print(fold_target(repo, args.card, args.login, args.role))
+            return 0
+        if args.verify:
+            p = Path(args.file) if args.file else handover_path(repo, args.login, args.role)
+            try:
+                text = p.read_text(encoding="utf-8")
+            except OSError as e:
+                print(f"cannot read {p}: {e}")
+                return 2
+            new, res = verify_text(text, repo, args.role)
+            for st, ln, det in res["lines"]:
+                if st != "ok":
+                    print(f"{st.upper()}: {ln}" + (f"  [{det}]" if det else ""))
+            for pr in res["problems"]:
+                print(f"SHAPE: {pr}")
+            if res["stale"] and not args.no_write:
+                p.write_text(new, encoding="utf-8", newline="\n")
+            print(f"verify {p.name}: ok {res['ok']} STALE {res['stale']} unchecked {res['unchecked']} shape problems {len(res['problems'])}")
+            return 1 if res["problems"] else 0
+        text = None
+        if args.src:
+            try:
+                text = Path(args.src).read_text(encoding="utf-8")
+            except OSError as e:
+                print(f"cannot read {args.src}: {e}")
+                return 2
+        try:
+            p = handover(repo, args.login or "", note=args.note, send=not args.no_send, role=args.role, text=text,
+                         wake=not args.no_wake, force=args.force)
+        except ValueError as e:
+            print(f"REFUSED, nothing written: {e}")
+            return 2
         print(f"wrote {p}; ship it once (sync.py ship, docs only)")
         return 0
     if args.cmd == "tick":

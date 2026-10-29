@@ -1,0 +1,40 @@
+{
+ "id": "dir-screenshot_context_2026-10-10",
+ "kind": "thought_experiment",
+ "family": "Screenshot Context",
+ "title": "T092 REPORT - what context does a single screenshot read get? (2026-10-10, Opus, JIS-NUC)",
+ "provenance": "source-extracted",
+ "date": "2026-10-10",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "are never one record: shot.py stores only claim counts, not the claims.",
+  "tone": "info"
+ },
+ "why": [
+  "Each screenshot read starts cold. The extract template has no slot for prior context, and the next read does not",
+  "At 20:13Z the 78f967b4e253 header shows C [price omitted] (..._78f967b4e253.md:14): below both levels. The extract does not",
+  "Invalidation/Falsify are returned for the reader. Run them: they must fail on today's shot.py.",
+  "status_line counts are unchanged; a malformed row is refused with its line number. Must fail on today's code."
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/screenshot_context_2026-10-10/REPORT.md"
+ ],
+ "commit": "4a21f269c"
+}

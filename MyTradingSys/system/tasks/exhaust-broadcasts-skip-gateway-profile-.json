@@ -1,0 +1,63 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/tasks.py brief exhaust-broadcasts-skip-gateway-profile-",
+    "grep -n \"pending\\|Stop\\|TOLD_TTL\" scripts/dev/mts_signal.py",
+    "grep -rn \"mts_gateway_on\\|MTS_GATEWAY\" scripts/dev/ | head -20",
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "created": "2026-10-27T18:28:00Z",
+  "depends_on": [],
+  "done_when": "Gateway-hosted sessions (~/.claude/mts_gateway_on or MTS_GATEWAY=1) are not in the unacked-HIGH pending/stop set for exhaust-kind broadcasts: no block, no ack needed there. Test fails on current code first, passes after. One line added to GATEWAY_NUC.md Rules. Duplicate empty card exhaust-skip-gateway-profile-hosts deleted.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "peer local_0a9a8c44 (Dictation session) + Lead/nec-hw-diagnosis 2026-10-27",
+  "goal": "Stop the b-2a5b44 re-fire loop: gateway-profile hosts have no tracked weekly cap, so no session there can ever satisfy an exhaust broadcast, but the per-host stop copy stays pending and re-blocks the stop hook; observed 5 redundant acks across 3 machines in one evening.",
+  "id": "exhaust-broadcasts-skip-gateway-profile-",
+  "kind": "build",
+  "lane": "JIS-NB",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "OPERATOR QUOTE: 'simplification style that is deductive and lean... keeps discarding what is not needed' (2026-10-27)",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-27T18:22:46Z",
+  "refs": [
+    "MyTradingSys/system/GATEWAY_NUC.md",
+    "scripts/dev/mts_signal.py (Stop hook, pending, TOLD_TTL_H)",
+    "signal b-2a5b44 read trail (5 acks, 3 hosts, 2026-10-27)"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/mts_signal.py: gateway-host detection in the pending/Stop set for exhaust-kind broadcasts",
+    "MyTradingSys/system/GATEWAY_NUC.md: one rule line",
+    "one new test under MyTradingSys/tests/"
+  ],
+  "scope_out": [
+    "changing ack states or TTL semantics for non-gateway hosts",
+    "deleting existing signal files",
+    "the exhaust.py claim flow on real-cap hosts"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "peer message local_0a9a8c44: 'drop gateway-profile hosts from exhaust broadcasts (their login has no tracked cap, so a gateway host can never satisfy the claim), otherwise these hosts re-arm on every re-fire'"
+  ],
+  "state": "ready",
+  "steps": [
+    "Write the failing test first: gateway marker + unacked exhaust HIGH broadcast -> host not in the pending/blocked set; same case without the marker -> still blocks. Run on current code: must fail.",
+    "In mts_signal.py, add a gateway-host check (reuse the ~/.claude/mts_gateway_on / MTS_GATEWAY=1 detection that sync.py/usage_reminder.py already use) and exclude those hosts for exhaust-kind broadcasts only.",
+    "Add one line to GATEWAY_NUC.md Rules: exhaust broadcasts do not apply on gateway hosts; do not ack them.",
+    "Delete the empty duplicate card exhaust-skip-gateway-profile-hosts (tasks.py delete if present, else remove the JSON and registry row).",
+    "Run the quick gate; ship."
+  ],
+  "tests": "new test: gateway host excluded from pending HIGH set for exhaust broadcasts; non-gateway host still blocked (regression)",
+  "title": "exhaust-broadcasts: skip gateway-profile hosts",
+  "weight": "",
+  "worker": ""
+}

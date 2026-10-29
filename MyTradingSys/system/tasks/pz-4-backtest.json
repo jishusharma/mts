@@ -59,7 +59,7 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "refined",
   "steps": [
     "Freeze PRE_REG.md first: verdicts.py check, prereg_gate.py exit 0, SPEC.md defaults + listed OURS variants",
     "Follow LAYER_LAB.md for the harness; run DEV only, one TRIALS.md row per run",

@@ -378,6 +378,39 @@ class Wiring(Base):
         self.assertEqual(role_loader.lease_suffix("Eagle_Eyes", self.b), "")
 
 
+class CurrentRoleHistoryTest(unittest.TestCase):
+    """A session that played Pipeliner and was later given another role resolves to the later one."""
+
+    def setUp(self):
+        import role_loader
+        self.rl = role_loader
+        self.tmp = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.tmp, True)
+        self.env = {"CLAUDE_CODE_SESSION_ID": "hist1"}
+        p = mock.patch.dict(os.environ, {"MTS_ROLES_HOME": self.tmp})
+        p.start()
+        self.addCleanup(p.stop)
+
+    def test_latest_explicit_role_beats_older_singleton(self):
+        self.rl.mark_injected("hist1", "Pipeliner", explicit=True)
+        self.rl.mark_injected("hist1", "Session_Planner", explicit=True)
+        self.assertEqual(lease.current_role(self.env), "Session_Planner")
+
+    def test_later_mention_never_hides_a_singleton(self):
+        self.rl.mark_injected("hist1", "Pipeliner", explicit=True)
+        self.rl.mark_injected("hist1", "Eagle_Eyes", explicit=False)
+        self.assertEqual(lease.current_role(self.env), "Pipeliner")
+
+    def test_legacy_state_without_flags_keeps_singleton_rule(self):
+        self.rl.mark_injected("hist1", "Pipeliner")
+        self.rl.mark_injected("hist1", "Eagle_Eyes")
+        self.assertEqual(lease.current_role(self.env), "Eagle_Eyes")   # legacy state counts as explicit: last wins
+
+    def test_env_role_still_wins(self):
+        self.rl.mark_injected("hist1", "Pipeliner", explicit=True)
+        self.assertEqual(lease.current_role({**self.env, "MTS_ROLE": "Lead"}), "Lead")
+
+
 class RoleNameNoRoleTest(unittest.TestCase):
     """A roleless session (no MTS_ROLE, no injected role) made current_role() None; role_name(None) raised AttributeError
     and crashed every `sync.py ship` (found 2026-10-19 on the Lenovo)."""

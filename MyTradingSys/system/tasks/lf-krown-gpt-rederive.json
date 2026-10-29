@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T02:38:22Z",
   "commands": [],
   "created": "2026-10-25T20:05:47Z",
   "depends_on": [],
@@ -13,7 +14,14 @@
   "id": "lf-krown-gpt-rederive",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "SOUND; 20 claims checked, 0 mismatches; krown.md written",
+      "ref": "513891add",
+      "utc": "2026-10-28T02:38:22Z"
+    }
+  ],
   "layers": [
     "krown"
   ],
@@ -25,7 +33,12 @@
   "refined_by": "",
   "refreshed": "2026-10-25T20:06:49Z",
   "refs": [],
-  "result": "",
+  "result": "SOUND; 20 claims checked, 0 mismatches; krown.md written",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/krown.md (new file only)"
   ],
@@ -42,13 +55,14 @@
     "MyTradingSys/research/krown_ta101_2026-10-13/reflexivity_log.md",
     "MyTradingSys/research/layer_lab/candle_close_2026-10-14/REPORT.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "List the result files for krown in layer_index.json (results, ledger) and pick the headline numbers each states",
     "Recompute each from the ledger or raw data with an independent script (formulas from MyTradingSys/backtest/layers/FORMULAS.md, not from the code under check)",
     "Write MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/krown.md: quoted number, recomputed number, MATCH/MISMATCH, file:line, script path",
     "Commit with a Result: line (n checked, n mismatches)"
   ],
+  "taken": "2026-10-28T02:38:22Z",
   "tests": "none (audit card); proof = the recompute script runs and the table is filled",
   "title": "Layer re-derive: krown (independent recount of the headline numbers behind the fact sheet)",
   "weight": "ROUTINE",

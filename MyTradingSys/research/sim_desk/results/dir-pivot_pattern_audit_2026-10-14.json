@@ -1,0 +1,65 @@
+{
+ "id": "dir-pivot_pattern_audit_2026-10-14",
+ "kind": "audit",
+ "family": "Pivot Pattern Audit",
+ "title": "Pivot-pattern scope audit — 2026-10-14",
+ "provenance": "source-extracted",
+ "date": "2026-10-14",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Original 2026-10-14 METHOD/report, raw-event checks and INDEPENDENT_AUDIT document the 126-cell diagnostic and sampling/test-import weaknesses.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "Corrected PRE_REG, engine/rules, funding coverage, encounter ledger and amendments address comparable encounters, structural phase hypotheses, chronology, costs, placebo stability, orientation and bootstrap normalizatio…",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "CYCLE_DESIGN.md already defines delayed five-bar pivots, reclaim → higher low → structure confirmation, local/swing/persistence labels, missed alerts, confirmation delay and episode-based evaluation. It is a design, not…",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "The 2026-10-04 candle pilot already tested classical shapes on 1h/1d data. Repeating a broad hammer/engulfing scan would duplicate it; that scan does not settle pivot-conditioned sequences.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 5 from the source",
+   "value_plain": "BACKTEST_FAILURES_RESEARCH.md and the non-core layer audit document prior scope, source, timeframe, management and holdout mistakes. Existing candle-close-cycle-labels and lc-levels-hold cards cover related follow-ups;…",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "The requested question is how candles develop around local, swing and macro tops/bottoms, conditional on the strength and origin of levels and the market phase. The delivered experiments answer narrower questions about close signatures at…",
+  "tone": "info"
+ },
+ "why": [
+  "The 2026-10-04 candle pilot already tested classical shapes on 1h/1d data. Repeating a broad hammer/engulfing scan would duplicate it; that scan does not settle pivot-conditioned sequences.",
+  "Completed parent highs/lows are causal candidate levels: engine.py aggregates completed 4h/day/week periods and aligns them to trigger open timestamps. Each encountered value is frozen. That establishes availability, not predictive strength. A previous low ma…",
+  "Reuse existing level implementations after parity checks. Maintain a level ledger containing origin, source timeframe, price/zone, formed_at, available_at, as-of touch history, age, role, invalidation and algorithm/source version. Overlapping levels should re…",
+  "Owning rerun session finishes revised independent checks, resolves/logs the midnight discrepancy, freezes an output receipt and delivers it. Keep prior failed analyses. Do not launch another same-scope run in parallel."
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window"
+ },
+ "source_files": [
+  "MyTradingSys/research/pivot_pattern_audit_2026-10-14/REPORT.md"
+ ],
+ "commit": "7563aa220"
+}

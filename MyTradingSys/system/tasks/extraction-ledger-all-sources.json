@@ -1,0 +1,96 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-28T04:48:35Z",
+  "commands": [],
+  "context": {
+    "calls_to_edit": 9,
+    "folded": "2026-10-27T21:32:30Z",
+    "misses": 4,
+    "reads": [
+      "MyTradingSys/research/malkan_extract_2026-10-15/tools/check_hindi.py",
+      "scripts/dev/verify_extract_quotes.py",
+      "scripts/dev/extra_tests.tsv",
+      "MyTradingSys/research/video_priority_2026-10-15/RANKED_KROWN.csv"
+    ],
+    "session": "agent-a621b94450aa14c71"
+  },
+  "created": "2026-10-27T20:38:47Z",
+  "depends_on": [],
+  "done_when": "EXTRACTION_LEDGER.csv has one row per video id in raw_transcripts_canonical (148 files on 2026-10-28) plus every extract file; GAPS.md lists all misses with counts; test passes; run_extra_tests green; git cherry origin/fast-track empty.",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "One ledger row per video/source extracted so far (id, channel, language, method captions|hindi_asr|whisper|gemini, transcript file, extract file, quotes verified, layer/param that uses it); unreferenced or unverified rows listed as gaps. Foundation for the wiring audit, parity audit and WHERE_IS.",
+  "id": "extraction-ledger-all-sources",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "303 rows, 71 no-extract, 32 bad-quotes, 92 unused; test passes; extra_tests.tsv:127",
+      "ref": "0eb5a8fac",
+      "utc": "2026-10-28T04:48:35Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "bg-process-audit: deadlines on NUC/git network calls, no retry on non-race push, STALLED-B",
+      "ref": "e1ac77891613",
+      "utc": "2026-10-27T23:56:54Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "a47fce415cb9 extraction ledger: one row per transcript/extract (302 rows, 230 ids), GAPS.m",
+      "ref": "MyTradingSys/research/extraction_ledger_2026-10/GAPS.md",
+      "utc": "2026-10-27T21:01:57Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-28 T0-ONLY LAB:none CLASS:C0 REVIEWER:none WEIGHT:ROUTINE. Sonnet medium. Link earlier inventories, do not overwrite.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T04:47:41Z",
+  "refs": [],
+  "result": "303 rows, 71 no-extract, 32 bad-quotes, 92 unused; test passes; extra_tests.tsv:127",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/extraction_ledger_2026-10/build_ledger.py",
+    "MyTradingSys/research/extraction_ledger_2026-10/test_build_ledger.py",
+    "MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv",
+    "MyTradingSys/research/extraction_ledger_2026-10/GAPS.md",
+    "scripts/dev/extra_tests.tsv"
+  ],
+  "scope_out": [
+    "layer code",
+    "any re-extraction (that is extraction-method-coverage-audit)",
+    "raw_transcripts_canonical content"
+  ],
+  "scope_sha": "e1ac77891613",
+  "size": "M",
+  "sources": [
+    "operator 2026-10-28 priority: stop MTS drifting; account for everything extracted; make it findable",
+    "scripts/dev/verify_extract_quotes.py",
+    "MyTradingSys/research/transcript_inventory_2026-10-09/RESULT.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Write build_ledger.py (stdlib): enumerate raw_transcripts_canonical/*_raw.txt (suffix gives method: _asr_raw = whisper, _hi_raw = hindi_asr, else captions), every research/**/extract*.md, research/cbp, gemini_burn and tom_*/fabio_* extract folders, and the ids in research/video_priority_2026-10-15.",
+    "Per row: run scripts/dev/verify_extract_quotes.py on the extract (PASS/FAIL/NA; Hindi via malkan_extract_2026-10-15/tools/check_hindi.py); used_by = grep of the video id in backtest/layers/*/params/*.json and layer SPEC/catalog files (layer:param or none).",
+    "Write EXTRACTION_LEDGER.csv sorted by video_id and GAPS.md: transcript but no extract, extract with FAIL/NA quotes, extract used by no layer, id seen in only one place.",
+    "Register test_build_ledger.py in scripts/dev/extra_tests.tsv; commit with Result: <rows, gaps counts>."
+  ],
+  "taken": "2026-10-28T04:48:35Z",
+  "tests": "test_build_ledger.py: fixture tree with 1 captions id, 1 hindi id, 1 orphan transcript; asserts 3 rows, orphan in GAPS, bad quote gives FAIL. Fails on the pre-change tree (no script).",
+  "title": "Extraction ledger: one table of EVERY extraction (video id, channel, language, method: captions/Hindi ASR/Whisper/Gemini, extract file, quotes verified, which layer/param uses it); gaps listed",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

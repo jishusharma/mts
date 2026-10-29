@@ -26,21 +26,17 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Ledger: `MyTradingSys/research/tom_transfer_2026-10-11/TOM_TRADE_LEDGER.csv`; `MyTradingSys/research/tom_transfer_2026-10-11/TOM_LEDGER_CANONICAL_GROUPS.csv`
 - Other results: `MyTradingSys/research/tom_transfer_2026-10-11/RECALL_DAX.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-tom-ledger-frames.md`
 - Roadmap: `MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md`; `MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_DAX.md`
-- Codex lab reports (newest 2 of 2): `MyTradingSys/research/layer_lab/reports/2026-10-25_lf-tom-gemini-facts.md`; `MyTradingSys/research/layer_lab/reports/2026-10-22_tom-btc-other-setups.md`
+- Codex lab reports (newest 4 of 4): `MyTradingSys/research/layer_lab/reports/2026-10-28_tom-corr-live-captions.md`; `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-tom-gpt-rederive.md`; `MyTradingSys/research/layer_lab/reports/2026-10-25_lf-tom-gemini-facts.md`; `MyTradingSys/research/layer_lab/reports/2026-10-22_tom-btc-other-setups.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `tom-btc-eye-read` blocked p1 SONNET: Tom on BTC T3: eye read of the 80 lab charts by two readers (Claude + Jis), blind; agreement per Tom concept
-  - `lf-tom-gpt-rederive` ready p2 CODEX: Layer re-derive: tom (independent recount of the headline numbers behind the fact sheet)
   - `live-divergence-event-log` ready p2 DSA: Live divergence event log: record each BTC vs ES/NQ divergence read with outcomes at +30/60/120 min (forward e
   - `tom-btc-dev-backtest` blocked p2 CODEX: Tom on BTC T6: DEV backtest + adjustments (both fills, maker vs taker entry, management arms) - every variant 
   - `tom-btc-encode` blocked p2 CODEX: Tom on BTC T5: encode the concepts that separated into a flag-gated BTC detector (entry paths A1-A3, stop at t
-  - `tom-btc-validation` refined p2 DSA-NUC: Tom on BTC T7: VALIDATION read once (2025-04..2025-06) of the frozen DEV config
-  - `tom-corr-divergence-backtest` ready p2 DSA: Pre-registered backtest of Tom correlation-divergence filter (H1 DAX vs ES/Nikkei/BTC, H2 BTC vs ES/NQ/DXY), s
-  - `tom-corr-live-captions` ready p2 CODEX: Fetch captions of Tom live 'DAX Short Using My Correlation Trick' via gemini_queue on JIS-NUC once the stream 
-  - `tom-probe-prereg` refined p2 SONNET: Pre-register the surviving S/Q/M/F arms and write their runner card
-  - `tom-probe-runner` refined p2 SONNET: Run pre-registered Tom management arms on DAX and BTC
-  - `tom-short-coverage-above-vah` refined p2 SONNET: Tom short coverage on trend-down days: no candidate above VAH, ct_short at VAH killed by POC-only target (2026
+  - `tom-btc-validation` blocked p2 DSA-NUC: Tom on BTC T7: VALIDATION read once (2025-04..2025-06) of the frozen DEV config
+  - `tom-probe-prereg` blocked p2 SONNET: Pre-register the surviving S/Q/M/F arms and write their runner card
+  - `tom-probe-runner` blocked p2 SONNET: Run pre-registered Tom management arms on DAX and BTC
   - `lab-verify-trend-healthy-in-balance` refined p3 SONNET: LAB-VERIFY 10-18: how often trend_healthy is set inside a multi-day balance (DEV)
-  - `multi-tf-bias-stack-one-written-rule-tha` refined p3 SONNET: Multi-TF bias stack: one written rule that forms bias from HTF location + LTF flow, tested on DEV (operator 10
+  - `layer-review-tom-guidance` ready p3 SONNET: Layer review sheet: Tom and cross-guidance (idea, source, backtests, bugs, confluence)
   - `tom-btc-other-setups` blocked p3 CODEX: Tom on BTC T8: chart lab + event study for his other trade types (trend continuation pullback to value/VWAP, b
 
 ## Fabio (order-flow layer) (`fabio`)
@@ -62,13 +58,12 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Ledger: `MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.csv`; `MyTradingSys/research/fabio_transfer/FABIO_TRADE_LEDGER.md`
 - Other results: `MyTradingSys/research/_archive/loose_2026-10/P2_FABIO_V3_HOLDOUT_STATUS.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-fabio-ledger-frames.md`; `MyTradingSys/research/orderflow_views_2026-10-14`
 - Roadmap: `MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md`
-- Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-25_lf-fabio-gemini-facts.md`
+- Codex lab reports (newest 2 of 2): `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-fabio-gpt-rederive.md`; `MyTradingSys/research/layer_lab/reports/2026-10-25_lf-fabio-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `lf-fabio-gpt-rederive` ready p2 CODEX: Layer re-derive: fabio (independent recount of the headline numbers behind the fact sheet)
-  - `t09-f4-live-window-99-bars-swing-layers` refined p2 JIS-NB: T09-F4 S2: 99-bar live window misses 68 of 96 escalation signals; fetch more bars for swing layers
+  - `t09-f4-live-window-99-bars-swing-layers` ready p2 JIS-NB: T09-F4 S2: 99-bar live window misses 68 of 96 escalation signals; fetch more bars for swing layers
+  - `layer-review-fabio-session` ready p3 SONNET: Layer review sheet: Fabio and session timing (idea, source, backtests, bugs, confluence)
   - `oi-pivot-1h-4h-long-oi-followup` ready p3 SONNET: OI pivot candidates at 1h/4h: aggregate the 5m metrics archive 2022-01..2024-06 (DEV), same candidates/outcome
-  - `rv05-h3-outcome-evidence` refined p3 SONNET: RV05 H3: incorporate partial stop coverage evidence into existing F13 outcome repair
-  - `fabio-layer-v2-markets` refined p5 OPUS: Fabio layer v2 spec, part B: data plan per market, cost, stop width, build + recall cards (Opus research)
+  - `fabio-layer-v2-markets` blocked p5 OPUS: Fabio layer v2 spec, part B: data plan per market, cost, stop width, build + recall cards (Opus research)
   - `fabio-layer-v2-spec` blocked p5 OPUS: Fabio layer v2 spec, part A: setup families + sourced rules from his ledger (Opus research)
 
 ## Tom/Fabio cross-guidance (BB, LVN, regime filters) (`guidance`)
@@ -80,7 +75,8 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Spec / sources: `MyTradingSys/research/tom_fabio_guidance_2026-10-12/GUIDANCE_AUDIT.md`; `MyTradingSys/research/tom_fabio_guidance_2026-10-12/PRE_REG_Q33.md`
 - Code: `MyTradingSys/research/tom_fabio_guidance_2026-10-12/matrix_q33.py`; `MyTradingSys/backtest/layers/test_layer_boundaries.py`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `lf-guidance-gpt-rederive` ready p2 CODEX: Layer re-derive: guidance (independent recount of the headline numbers behind the fact sheet)
+  - `lf-guidance-gpt-rederive` blocked p2 CODEX: Layer re-derive: guidance (independent recount of the headline numbers behind the fact sheet)
+  - `layer-review-tom-guidance` ready p3 SONNET: Layer review sheet: Tom and cross-guidance (idea, source, backtests, bugs, confluence)
 
 ## RSI / Malkan / Kurisko (`rsi`)
 - Status: 40/60 levels: tolerance study done; divergence: no edge on any TF.
@@ -95,10 +91,13 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Spec / sources: `MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md`; `MyTradingSys/backtest/layers/FORMULAS.md`
 - Code: `MyTradingSys/backtest/layers/rsi/malkan_40_60.py`; `MyTradingSys/backtest/layers/rsi/malkan_mtf.py`; `MyTradingSys/backtest/layers/kurisko/quad_rotation.py`; `MyTradingSys/backtest/layers/kurisko/stoch_core.py`
 - Other results: `MyTradingSys/research/rsi_divergence_mtf_2026-10-09`
-- Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-26_lf-rsi-gemini-facts.md`
+- Codex lab reports (newest 3 of 3): `MyTradingSys/research/layer_lab/reports/2026-10-28_malkan-hindi-reread-garble-check.md`; `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-rsi-gpt-rederive.md`; `MyTradingSys/research/layer_lab/reports/2026-10-26_lf-rsi-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `kurisko-dev-event-study` refined p2 SONNET: Kurisko Quad Rotation: DEV event study, fee-net, same-window placebo
-  - `lf-rsi-gpt-rederive` ready p2 CODEX: Layer re-derive: rsi (independent recount of the headline numbers behind the fact sheet)
+  - `malkan-rsi-divergence-chart-flags-1d-1w` ready p1 SONNET: Malkan RSI regular + hidden divergence detector with chart-drawn flags on 1d and 1w (operator confirms/correct
+  - `sourced-rule-guard` ready p1 SONNET: Guard: no layer param or rule ships without a SOURCED quote+file:line or an OURS label (CI test)
+  - `krown-hidden-divergence-confluence-feed` ready p2 SONNET: Krown hidden divergence as a shared confluence feed any layer (RSI 40-60 included) can consume; Malkan layer s
+  - `kurisko-dev-event-study` ready p2 SONNET: Kurisko Quad Rotation: DEV event study, fee-net, same-window placebo
+  - `layer-review-rsi-cc-pitchfork-engine` ready p3 SONNET: Layer review sheet: RSI, CryptoCred, pitchfork, live engine (idea, source, backtests, bugs, confluence)
   - `rsi-cross-unmapped-and-pivot-stack` ready p3 SONNET: RSI cross events are rejected as unmapped in the auto-trader (no layer_rules entry); and no layer stacks level
   - `malkan-prereg-dwm-equities` refined p4 SONNET: Malkan: pre-registration for the D/W/M equity home test (items 6/7/8/9/11/12, gates 0a/0f)
 
@@ -115,7 +114,8 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/cryptocred_stop_2026-10-10`
 - Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-25_lf-cryptocred-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `lf-cryptocred-gpt-rederive` ready p2 CODEX: Layer re-derive: cryptocred (independent recount of the headline numbers behind the fact sheet)
+  - `lf-cryptocred-gpt-rederive` blocked p2 CODEX: Layer re-derive: cryptocred (independent recount of the headline numbers behind the fact sheet)
+  - `layer-review-rsi-cc-pitchfork-engine` ready p3 SONNET: Layer review sheet: RSI, CryptoCred, pitchfork, live engine (idea, source, backtests, bugs, confluence)
 
 ## Positioning (funding, OI, whale / FlowHorse) (`positioning`)
 - Status: T055 C1 FAIL; OI/long-short unused as filters.
@@ -129,8 +129,9 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Spec / sources: `MyTradingSys/research/_archive/loose_2026-10/whale_positioning_evidence_2026-09-12.md`; `MyTradingSys/backtest/layers/FORMULAS.md`
 - Code: `MyTradingSys/backtest/layers/positioning`
 - Other results: `MyTradingSys/research/_archive/loose_2026-10/OI_DIVERGENCE_V2_2026-10-10.md`; `MyTradingSys/research/_archive/loose_2026-10/OI_EVENT_STUDY_2026-10-10.md`
+- Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-positioning-gpt-rederive.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `lf-positioning-gpt-rederive` ready p2 CODEX: Layer re-derive: positioning (independent recount of the headline numbers behind the fact sheet)
+  - `layer-review-positioning-volume-callers` ready p3 SONNET: Layer review sheet: positioning, volume and candles, callers (idea, source, backtests, bugs, confluence)
   - `positioning-c1-prereg-no-source` ready p4 SONNET: Positioning C1: pre-registration labelled NO-SOURCE (items 1/6/8/9/11/12, gates 0a/0f)
 
 ## Session / timing (session levels, turn of candle, session momentum) (`session_timing`)
@@ -150,9 +151,9 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Spec / sources: `MyTradingSys/research/_archive/loose_2026-10/TURN_OF_CANDLE_ORIGIN_2026-10-09.md`
 - Code: `MyTradingSys/backtest/layers/session`; `MyTradingSys/backtest/layers/session_levels`; `MyTradingSys/backtest/layers/turn_of_candle`
 - Other results: `MyTradingSys/research/t087_session_levels_2026-10-09`; `MyTradingSys/research/eur_low_us_sweep_2026-10-14`
+- Codex lab reports (newest 3 of 3): `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-session_timing-gpt-rederive.md`; `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-session_timing-gemini-facts.md`; `MyTradingSys/research/layer_lab/reports/2026-10-27_lf-session_timing-gpt-rederive.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `lf-session_timing-gemini-facts` ready p2 CODEX: [GEMINI] Layer fact sheet: session_timing (file:line facts only, no verdict)
-  - `lf-session_timing-gpt-rederive` ready p2 CODEX: Layer re-derive: session_timing (independent recount of the headline numbers behind the fact sheet)
+  - `layer-review-fabio-session` ready p3 SONNET: Layer review sheet: Fabio and session timing (idea, source, backtests, bugs, confluence)
 
 ## Volume, candle patterns, daily MA setups, bigtrade (`volume_candles_ma`)
 - Status: No validated edge; volume HOLDOUT sealed; MA numbers NO-SOURCE.
@@ -180,9 +181,9 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Spec / sources: `MyTradingSys/backtest/layers/FORMULAS.md`
 - Code: `MyTradingSys/backtest/bigtrade`
 - Other results: `MyTradingSys/research/volume_2026-10-09`; `MyTradingSys/research/candle_patterns_2026-10-04`; `MyTradingSys/research/setup_alpha_beta_2026-10-10`; `MyTradingSys/research/bigtrade_2026-10-09`; `MyTradingSys/research/layer_lab/candle_close_2026-10-14`
+- Codex lab reports (newest 2 of 2): `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-volume_candles_ma-gpt-rederive.md`; `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-volume_candles_ma-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `lf-volume_candles_ma-gemini-facts` ready p2 CODEX: [GEMINI] Layer fact sheet: volume_candles_ma (file:line facts only, no verdict)
-  - `lf-volume_candles_ma-gpt-rederive` ready p2 CODEX: Layer re-derive: volume_candles_ma (independent recount of the headline numbers behind the fact sheet)
+  - `layer-review-positioning-volume-callers` ready p3 SONNET: Layer review sheet: positioning, volume and candles, callers (idea, source, backtests, bugs, confluence)
   - `pooled-short-lookback-trend-tsmom-30d-sm` blocked p3 DSA: Pooled short-lookback trend (TSMOM 30d, SMA50/100, 4h Donchian 20/10) on sealed 2025-07..2026-09 BTC holdout: 
   - `time-adjusted-volume-context-line-for-th` refined p3 SONNET: Time-adjusted volume context line for the live read (same-slot baseline, effort vs result, OI scope) as read-o
 
@@ -193,11 +194,12 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Code: `MyTradingSys/execution`
 - Other results: `MyTradingSys/research/screenshots`
 - Roadmap: `MyTradingSys/system/NEXT_SESSION.md`
+- Codex lab reports (newest 2 of 2): `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-live_engine-gpt-rederive.md`; `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-live_engine-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `lf-live_engine-gemini-facts` ready p2 CODEX: [GEMINI] Layer fact sheet: live_engine (file:line facts only, no verdict)
-  - `lf-live_engine-gpt-rederive` ready p2 CODEX: Layer re-derive: live_engine (independent recount of the headline numbers behind the fact sheet)
-  - `state-code-accumulator-backfill` ready p2 JIS-NB: StateCodeEmitter: backfill session CVD/cum_pv/cum_vol after restart and WS reconnect, fail closed on backfill 
-  - `statecode-backfill-race-coverage` refined p2 JIS-NB: StateCodeEmitter: cover in-flight rollover reconnect and retry scheduling
+  - `live-mirror-follow-live-host-move` ready p1 DSA: live_mirror.py hard-codes JIS-NB (LIVE_HOST, share \JIS-NB\MTS-Mirror); live loop is on desktop-f7iu69n (Lenov
+  - `state-code-accumulator-backfill` refined p2 JIS-NB: StateCodeEmitter: backfill session CVD/cum_pv/cum_vol after restart and WS reconnect, fail closed on backfill 
+  - `statecode-backfill-race-coverage` ready p2 JIS-NB: StateCodeEmitter: cover in-flight rollover reconnect and retry scheduling
+  - `layer-review-rsi-cc-pitchfork-engine` ready p3 SONNET: Layer review sheet: RSI, CryptoCred, pitchfork, live engine (idea, source, backtests, bugs, confluence)
   - `live-loop-timeouts-b191` refined p3 SONNET: Network: re-check live-loop timeouts after B191 plus wrapper priority and snapshot.cp (read-only report first)
   - `live-orderflow-state-line-1m-5m-15m-pric` refined p3 SONNET: Live read: one order-flow state line per TF (1m/5m/15m price swing vs Binance CVD swing vs OI change), descrip
   - `score-context-reads-automatically-carrie` refined p3 SONNET: Score context reads automatically: carried falsifier lines (HELD/BROKEN/UNTESTED) computed from klines at the 
@@ -210,9 +212,10 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Ledger: `MyTradingSys/research/analysts/SAMPLE_CALL_LEDGER.csv`
 - Other results: `MyTradingSys/research/analysts/SCORECARD.md`
 - Roadmap: `MyTradingSys/research/analysts/ROADMAP.md`
+- Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-callers-gpt-rederive.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `lf-callers-gpt-rederive` ready p2 CODEX: Layer re-derive: callers (independent recount of the headline numbers behind the fact sheet)
   - `analyst-ingest-roman-x` ready p3 SONNET: Implement Roman Trading volume-absorption social call listener
+  - `layer-review-positioning-volume-callers` ready p3 SONNET: Layer review sheet: positioning, volume and candles, callers (idea, source, backtests, bugs, confluence)
 
 ## Krown (TA 101: zones, volume, candles, averages, ranges) (`krown`)
 - Status: Spec v0.2 + 120-rule ledger from 15 of 19 reachable TA 101 videos (14 TA + 1 fees). The 4 missing transcripts are on disk since 2026-10-16 (krown_capture_2026-10-16/transcripts/ta101_missing4). Gate G2 reached: KROWN_SETUP_CATALOG.md (commit f4a5182a). One structural stop (compression breakout), no stop distance or size rule: the rest is OURS. Detectors not built, not backtested.
@@ -222,16 +225,19 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Ledger: `MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv`; `MyTradingSys/research/krown_ta101_2026-10-13/KROWN_CONSOLIDATED.md`; `MyTradingSys/research/krown_ta101_2026-10-13/MANIFEST.csv`
 - Other results: `MyTradingSys/research/krown_ta101_2026-10-13/reflexivity_log.md`; `MyTradingSys/research/layer_lab/candle_close_2026-10-14/REPORT.md`; `MyTradingSys/options/research/KROWN_FREE_VS_PAID.md`
 - Roadmap: `MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LAYER_SPEC.md`
-- Codex lab reports (newest 3 of 3): `MyTradingSys/research/layer_lab/reports/2026-10-26_astra-low-levels-fee-drag-recompute.md`; `MyTradingSys/research/layer_lab/reports/2026-10-26_astra-low-confluence-prereg-leak-hunt.md`; `MyTradingSys/research/layer_lab/reports/2026-10-25_lf-krown-gemini-facts.md`
+- Codex lab reports (newest 4 of 5): `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-krown-gpt-rederive.md`; `MyTradingSys/research/layer_lab/reports/2026-10-28_astra-low-levels-fee-drag-recompute.md`; `MyTradingSys/research/layer_lab/reports/2026-10-26_astra-low-levels-fee-drag-recompute.md`; `MyTradingSys/research/layer_lab/reports/2026-10-26_astra-low-confluence-prereg-leak-hunt.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `astra-low-levels-fee-drag-recompute` blocked p1 CODEX: Astra-low: independently recompute the levels study fee drag (+0.22 R gross, -0.12 R net, 255 fills)
-  - `confluence-s4-dev-trials` refined p2 SONNET: Confluence S4: DEV and DEV_EXT trial runs (T2, sizing arm, pooled read, T4) per PRE_REG_CONFLUENCE
+  - `sourced-rule-guard` ready p1 SONNET: Guard: no layer param or rule ships without a SOURCED quote+file:line or an OURS label (CI test)
+  - `confluence-s4-dev-trials` ready p2 SONNET: Confluence S4: DEV and DEV_EXT trial runs (T2, sizing arm, pooled read, T4) per PRE_REG_CONFLUENCE
   - `confluence-s5-fable-verdict` refined p2 SONNET: Confluence S5: Fable verdict on DEV results, what goes to the one VALIDATION read (then ship, S6)
   - `krown-data-cme-btc-volume` refined p2 SONNET: Krown CME BTC futures daily volume (public data only) as third volume arm
   - `krown-dev-event-study` refined p2 SONNET: Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: 
-  - `lf-krown-gpt-rederive` ready p2 CODEX: Layer re-derive: krown (independent recount of the headline numbers behind the fact sheet)
-  - `trendline-count-only-v2` refined p2 SONNET: Trend-line count-only v2 and PRE_REG v2: first_touch vs all_touches, retest/reclaim counts, causal terciles, k
-  - `krown-other-sources-event-study-videos` refined p3 CODEX: Krown other sources: extract his daily BTC event-study videos and the CBP krown item with the V2 method (trigg
+  - `krown-dev-event-study-candles` refined p2 SONNET: Krown DEV event study 3/3: candle hypotheses H-C1, H-C2 (H-T1 not run); DONE when: DEV_RESULTS.md has N, power
+  - `krown-dev-event-study-levels` refined p2 SONNET: Krown DEV event study 2/3: level and moving-average hypotheses H-M1, H-M3, H-Z1 (H-M2 not run); DONE when: DEV
+  - `krown-hidden-divergence-confluence-feed` ready p2 SONNET: Krown hidden divergence as a shared confluence feed any layer (RSI 40-60 included) can consume; Malkan layer s
+  - `krown-views-via-gemini-what-krown-says-a` raw p2 DSA-NUC: Krown views via Gemini: what Krown says about highs, higher highs, lower highs, 'tick below', daily close abov
+  - `krown-other-sources-event-study-videos` ready p3 SONNET: Krown other sources: extract his daily BTC event-study videos and the CBP krown item with the V2 method (trigg
+  - `layer-review-krown-wavetrend` ready p3 SONNET: Layer review sheet: Krown and WaveTrend (idea, source, backtests, bugs, confluence)
   - `trendline-ledger-registry-hygiene` ready p3 SONNET: Trend-line daily ledger schema v2 enforcement + register the module in layer_index and wiring_registry (audit 
 
 ## WaveTrend (LazyBear oscillator) (`wavetrend`)
@@ -242,18 +248,29 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Ledger: `MyTradingSys/research/gross_effect_screen_2026-10-15/EXPOSURE_LEDGER.csv`
 - Other results: `MyTradingSys/research/wavetrend_2026-10-17/RESULT.md`; `MyTradingSys/research/wavetrend_2026-10-17/AUDIT_2026-10-18.md`; `MyTradingSys/research/wavetrend_2026-10-17/DISPOSITION_2026-10-19.md`; `MyTradingSys/research/wavetrend_2026-10-17/STATUS_2026-10-19.md`
 - Roadmap: `MyTradingSys/research/wavetrend_2026-10-17/STATUS_2026-10-19.md`
+- Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-27_lf-wavetrend-gpt-rederive.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `wavetrend-c1-v2` refined p1 SONNET: WaveTrend C1 detector correction and new count-only prereg
-  - `lf-wavetrend-gpt-rederive` ready p2 CODEX: Layer re-derive: wavetrend (independent recount of the headline numbers behind the fact sheet)
+  - `layer-review-krown-wavetrend` ready p3 SONNET: Layer review sheet: Krown and WaveTrend (idea, source, backtests, bugs, confluence)
 
 ## Pitchfork (Andrews / Schiff / Morge median line) (`pitchfork`)
-- Status: Foundational study papers delivered (papers/01, 02, 03); detector, tests, and YouTube BTC evaluation benchmark built.
+- Status: Detector, simulator desk plugin (studies/pitchfork.py), and live Java engine (PitchforkSignalLayer.java with Tine Bounce + Hagopian Failure + Volume Profile confluence) built, wired, and verified on DEV.
 - Tracks: Gemini (study/detector), Claude
-- Layer `pitchfork_swing`: Foundational papers delivered; detector built with unit tests (100% pass) | module MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py
+- Layer `pitchfork_swing`: Detector, sim_desk plugin (studies/pitchfork.py), and live Java engine (PitchforkSignalLayer.java) built and verified (100% pass) | module MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py
+- Backtests (layer_map.json, newest first):
+  - 2026-10-28 `PITCHFORK-4H-VP-20261028`: PASS (VA confluence PF 1.63, +0.61% net/trade; sim_desk plugin verified) | `MyTradingSys/research/pitchfork_2026-10-19/PHASE2_4H_POC_STUDY.md`
+  - 2026-10-19 `PITCHFORK-1D-20261019`: PASS (Modified Schiff +1.50% mean net/trade, 72.12% ML reach) | `MyTradingSys/research/pitchfork_2026-10-19/PHASE1_EVENT_STUDY.md`
 - Spec / sources: `papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md`; `papers/02_PITCHFORK_APPLICATION_ON_BTC.md`; `MyTradingSys/research/pitchfork_2026-10-19/RESEARCH_PITCHFORK_LAYER.md`; `papers/03_YOUTUBE_PITCHFORK_MASTERS_BTC_STUDY.md`
-- Code: `MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py`
+- Code: `MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py`; `MyTradingSys/research/sim_desk/studies/pitchfork.py`; `src/main/java/datafeed/PitchforkSignalLayer.java`
+- Ledger: `MyTradingSys/research/pitchfork_2026-10-19/TRIALS_PITCHFORK.csv`; `MyTradingSys/research/pitchfork_2026-10-19/TRIALS_PITCHFORK_4H.csv`
+- Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-pitchfork-gpt-rederive.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `lf-pitchfork-gpt-rederive` ready p2 CODEX: Layer re-derive: pitchfork (independent recount of the headline numbers behind the fact sheet)
+  - `pin-a-regression-test-tom-signal-parse-t` raw p2 SONNET: Pin a regression test: tom_signal/parse_tom_alert must reject any PF-* setup string, not just today's exact sp
+  - `pitchfork-engine-implement-hagopian-fail` refined p2 OPUS: Pitchfork engine: implement Hagopian failure breakout candidates (PF-HAG-L / PF-HAG-S) in Java
+  - `pitchfork-fixes-desk-python` ready p2 SONNET: Pitchfork desk/Python review fixes: F1 target reading, F4 profile parity, F5 lookahead + VA leak test, F6 pyth
+  - `pitchfork-fixes-live-java` raw p2 SONNET: Pitchfork live Java review fixes: F3 stale-bounce gate parity, F6 inverted-fork tine, F7/F9 labels
+  - `sim-desk-plug-in-pitchfork-4h-tine-bounc` refined p2 OPUS: Sim desk: plug in Pitchfork 4H tine-bounce study adapter (Modified Schiff + Volume Profile)
+  - `layer-review-rsi-cc-pitchfork-engine` ready p3 SONNET: Layer review sheet: RSI, CryptoCred, pitchfork, live engine (idea, source, backtests, bugs, confluence)
 
 ## Pizzino (Jason bar count + Michael nested swing states) (`pizzino`)
 - Status: Indicator module built with fail-first tests from SPEC worked examples. No backtest, no live wiring (pz-4 next).
@@ -262,8 +279,8 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Spec / sources: `MyTradingSys/research/pizzino_layer_2026-10-27/SPEC.md`; `MyTradingSys/research/pizzino_layer_2026-10-27/PLAN.md`
 - Code: `MyTradingSys/backtest/layers/pizzino/pizzino_indicators.py`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `pz-4-backtest` ready p1 SONNET: Pizzino layer: BTC backtest DEV/VALIDATION/holdout, fee-net, trial ledger
-  - `pz-5-confluence-and-live` raw p2 SONNET: Pizzino layer: confluence table with other layers; cbp.query bias and levels as live input
+  - `pz-4-backtest` refined p1 SONNET: Pizzino layer: BTC backtest DEV/VALIDATION/holdout, fee-net, trial ledger
+  - `pz-5-confluence-and-live` refined p2 SONNET: Pizzino layer: confluence table with other layers; cbp.query bias and levels as live input
 
 ## Cross-cutting
 

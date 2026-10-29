@@ -77,6 +77,14 @@ class VerifyQuotesTest(unittest.TestCase):
         self.assertEqual(bad, 1)
         self.assertIn("POSITION", out)
 
+    def test_empty_gps_quote_fails(self):
+        """Reject an empty GPS quote instead of treating it as a valid dummy quote."""
+        self._transcript("[0:00] alpha beta gamma\n")
+        bad, out = self._check("", "BEGIN")
+        self.assertNotEqual(bad, 0, out)
+        self.assertEqual(bad, 1, out)
+        self.assertIn("MISSING", out)
+
     def _cbp(self, evidence, cues=("[0:00] alpha beta gamma", "[0:02] delta epsilon zeta")):
         (self.root / "inbox").mkdir(exist_ok=True)
         (self.root / "inbox" / f"Jala_{VID}.txt").write_text(chr(10).join([*cues, ""]), encoding="utf-8")
@@ -109,6 +117,34 @@ class VerifyQuotesTest(unittest.TestCase):
         cues = ("[0:00] it s gonna it s going to be going up",)
         bad, out = self._cbp("it's gonna be going up", cues)
         self.assertEqual(bad, 1)
+        self.assertIn("MISSING", out)
+
+    def test_cbp_empty_ellipsis_fails(self):
+        # quote normalizes to no spoken words: must fail
+        cues = ("[0:00] alpha beta gamma",)
+        bad, out = self._cbp("...", cues)
+        self.assertEqual(bad, 1, out)
+        self.assertIn("MISSING", out)
+
+    def test_cbp_punctuation_only_fails(self):
+        # punctuation only normalizes to empty: must fail
+        cues = ("[0:00] alpha beta gamma",)
+        bad, out = self._cbp("!?!", cues)
+        self.assertEqual(bad, 1, out)
+        self.assertIn("MISSING", out)
+
+    def test_cbp_empty_quoted_evidence_fails(self):
+        """Reject explicit empty CBP evidence instead of treating it as valid dummy evidence."""
+        bad, out = self._cbp("")
+        self.assertNotEqual(bad, 0, out)
+        self.assertEqual(bad, 1, out)
+        self.assertIn("MISSING", out)
+
+    def test_cbp_partial_word_fails(self):
+        # transcript has 'belong', evidence 'long' must not match partial word
+        cues = ("[0:00] these assets belong together",)
+        bad, out = self._cbp("long", cues)
+        self.assertEqual(bad, 1, out)
         self.assertIn("MISSING", out)
 
 

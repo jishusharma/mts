@@ -1,0 +1,39 @@
+{
+ "id": "audit-t08_split_trials",
+ "kind": "audit",
+ "family": "Audit: DSA backtest audit",
+ "title": "T08: split integrity and trial inventory",
+ "provenance": "source-extracted",
+ "date": "2026-10-16",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2022-01-17 to 2024-06-30 (as written in the source)",
+ "verdict": {
+  "label": "BLOCKED for full historical coverage; FIX-FIRST for the confirmed default-run risk. UNCHECKED C2 result pending cross-vendor review.",
+  "tone": "good"
+ },
+ "why": [
+  "F1 adds a remaining unsafe default, rather than repeating the already-known historical orderflow exposure. F2 does not claim the old eight-row central ledger remains current: it now has 29 rows; the built ledger has 1,279 rows from nine registries.",
+  "On this timestamp set, OOS starts in main VALIDATION and extends into HOLDOUT. This does not prove any historical result used these exact inputs.",
+  "Default roots Dumps/backtest/raw_1m_2022/klines and Dumps/backtest/raw/klines are absent. Today's default-loader endpoint: BLOCKED for all four runners. Historical endpoint at publication: BLOCKED for all four. This probe preserves the actual split function,…",
+  "out/contamination_calendar.csv expands observed event min/max bounds by month and phase. It explicitly marks bounds-only months; it does not claim every intervening month had a trade. Publication dates are excluded."
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T08_split_trials.md"
+ ],
+ "commit": "e96f3dbd2"
+}

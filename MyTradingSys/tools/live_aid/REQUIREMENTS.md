@@ -1,0 +1,23 @@
+# Live trading dashboard: requirements
+
+Recorded by the Haiku requirements session (dash-reqs). Opus designer builds from this table. Newer requirement wins; older one is marked CONFLICT. Operator words are kept verbatim; the reading is ours.
+
+No positions, prices held, balances or order ids are recorded here.
+
+| ID | Date (UTC) | Block | Verbatim quote | Reading | Status | Conflicts with |
+|---|---|---|---|---|---|---|
+| R01 | 2026-10-28 | Other | "i need like a trading aid now when i am into positions" | Needs a trading aid that is on screen while he holds a position. | BUILT v1 | - |
+| R02 | 2026-10-28 | Setup checklist | "so now when us opens we can look into getting into positions based on each layer" | At US open, show per-layer entry looks so he can judge getting into a position on each layer. | DESIGNED (STEPS.md backlog) | - |
+| R03 | 2026-10-28 | Other | "all latest inputs" | Show the latest inputs (all layers) on the page, kept current. | DESIGNED (STEPS.md backlog) | - |
+| R04 | 2026-10-28 | Other | "i need a live dashboad to trade based on what u knw my trades" | Live dashboard to trade from, built around his own trade history and habits. | BUILT v1 | - |
+| R05 | 2026-10-28 | Look and feel | "use opus - strict narror dashboad that usits my style - we will add functions step by step" | Strict, narrow dashboard that fits his style; functions added one step at a time. Designer = Opus. | BUILT v1 | - |
+| R06 | 2026-10-28 | Look and feel | "i need trading dashboard - a cool one! highly performance orinted - and it will be build live with my reqs and current live usage" | Cool-looking, performance-oriented trading dashboard, built live from his requirements and current use. | BUILT v1 | - |
+| R07 | 2026-10-28 | Other | "hiaku would ecord reqs and opus will desin" | Process: Haiku records requirements, Opus designs. | DONE (process) | - |
+| R08 | 2026-10-28 | Flow/Liquidations | "now we have to find out how much of this is actually useful - worth trusting - so we need a constant context building for this liquidation layer" | Liquidation layer: keep building context continuously to find out how useful and trustworthy it is. Reference: MyTradingSys/research/liquidation_layer_2026-10-28/README.md. | DESIGNED (STEPS.md backlog) | - |
+| R09 | 2026-10-28 | Timeframe strip | "we can also see it's diff timeframes to compare what platyed out at lower time frames since last weeks" | Heatmap across timeframes, comparing what played out at lower timeframes since last week. | DESIGNED (STEPS.md backlog) | - |
+| R10 | 2026-10-28 ~13:58 | Timeframe strip | "This is the third pair of the screenshot. So look at this. It has the same RSI, but it has also wavefront. It has price. This chart is very clear. So this is for the wavefront module. And see how the wavefront on the very left just climbs from there and keeps top. Yeah, it is above the red line, and when it comes down at green, it is a buy there. Yeah, and then it is above 50, and then it is, and finally when it comes starts to come down, so there is a way in which it comes down, right? All these coiling that is happening below the green lines on the far right side, and then the bigger coil that we see right now forming. So there is something about this that wavefront already signals. So if you have read wavefront, if you understand how it works on different time frames, so the concept is the change, same I mean. And to apply it on 1 minute is good for live trading dashboard with wavefront concepts, support, conference setups, whatever it requires." | Add a WaveTrend panel to the 1m strip next to RSI, same concept he reads on other timeframes (line cross from below the green zone, above/below 50 and zero, turning down, coiling near the lines). Descriptive only, no buy/sell call. "Wavefront" read as WaveTrend (indicator WT_CROSS_LB on his TradingView chart; layer MyTradingSys/backtest/layers/wavetrend/wavetrend.py, card T061). Relayed by Eagle_Eyes from his live message. | BUILT (step R10) | - |
+
+## Open questions for the operator
+
+1. Which WaveTrend settings does his chart use (channel length and average length)? Pick one or type them.
+2. Does "coiling" mean the two lines hug each other near the green or zero line? Yes / no.

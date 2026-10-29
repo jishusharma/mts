@@ -77,25 +77,43 @@ def gross_rows(arm="T", path=None):
     return rows
 
 
-def lc1_rows():
-    """levels_hold on standard DEV: per touch of a KEEP family, net = HOLD(1/0) minus the family's pooled
-    random-line hold rate, in pp, so the mean equals the study 'difference'. Side = level above/below midnight."""
+LC1_LEGACY_KEEP = ("prior_day_high", "prior_day_low", "prior_day_poc", "naked_poc", "4h_fractal_low",
+                   "4h_fractal_high", "round_1000", "prior_week_high")   # LEGACY, void since T05-F5
+
+
+def _lc1_bars(bars=None):
+    """Loader seam: tests pass `bars`; default reads the DEV klines. DEV only: asserted below DEV_END_MS."""
+    if bars is None:
+        from MyTradingSys.backtest.bt.bt_data import load_klines
+        s = int(dt.datetime(2022, 3, 21, tzinfo=dt.timezone.utc).timestamp() * 1000)
+        bars = load_klines("F:/MTS/data/tom_raw", start_ms=s, end_ms=DEV_END_MS)
+    assert bars and max(b["t"] for b in bars) < DEV_END_MS
+    return bars
+
+
+def lc1_family_rows(bars=None):
+    """levels_hold fair control (KEEP none, 0 of 12) on standard DEV, ALL families: one row per touch,
+    (family, day_ms, side, net) with net = HOLD(1/0) minus the family's fair-control random_hold_rate, in pp."""
     sys.path.insert(0, str(REPO))
     sys.path.insert(0, str(REPO / "MyTradingSys/research/levels_confluence_2026-10-14"))
     from levels import levels_by_day
     from levels_hold import analyze
-    from MyTradingSys.backtest.bt.bt_data import load_klines
-    s = int(dt.datetime(2022, 3, 21, tzinfo=dt.timezone.utc).timestamp() * 1000)
+    bars = _lc1_bars(bars)
     d0 = int(dt.datetime(2022, 4, 1, tzinfo=dt.timezone.utc).timestamp() * 1000)
-    bars = load_klines("F:/MTS/data/tom_raw", start_ms=s, end_ms=DEV_END_MS)
-    assert bars and max(b["t"] for b in bars) < DEV_END_MS
-    dev = [b for b in bars if b["t"] >= d0]
-    res = analyze(dev, levels_by_day(bars))
-    keep = {"prior_day_high", "prior_day_low", "prior_day_poc", "naked_poc", "4h_fractal_low",
-            "4h_fractal_high", "round_1000", "prior_week_high"}
+    res = analyze([b for b in bars if b["t"] >= d0], levels_by_day(bars))
     rate = {k: v["random_hold_rate"] for k, v in res["families"].items()}
-    return [(e["day"] * DAY_MS, e["side"], 100.0 * ((e["outcome"] == "HOLD") - rate[e["family"]]))
-            for e in res["touches"] if e["family"] in keep]
+    return [(e["family"], e["day"] * DAY_MS, e["side"], 100.0 * ((e["outcome"] == "HOLD") - rate[e["family"]]))
+            for e in res["touches"]]
+
+
+def lc1_rows(bars=None):
+    """Fair-control LC1 rows for all 12 families (hold minus fair control per touch, pp). Side = level above/below midnight."""
+    return [r[1:] for r in lc1_family_rows(bars)]
+
+
+def lc1_legacy_rows(bars=None):
+    """LEGACY 8-family set, void since T05-F5 (fair control has KEEP none). Same rows, filtered to the old KEEP set."""
+    return [r[1:] for r in lc1_family_rows(bars) if r[0] in LC1_LEGACY_KEEP]
 
 
 RSI_ROWS = [  # chosen params, RERUN_FUNDING.md (SOURCED); funding off (raw_fund absent here, effect <= 0.015 pp)
@@ -146,7 +164,8 @@ def table(name, unit, rows):
 def main():
     studies = [("gross_effect_screen arm T", "% net of 0.14 cost+funding", gross_rows("T")),
                ("gross_effect_screen arm C", "% net of 0.14 cost+funding", gross_rows("C")),
-               ("levels_hold LC1 KEEP", "pp hold minus random", lc1_rows())]
+               ("levels_hold LC1 fair control (KEEP none)", "pp hold minus fair control", lc1_rows()),
+               ("levels_hold LC1 KEEP (LEGACY 8-family set, void since T05-F5; fair control KEEP none)", "pp hold minus random", lc1_legacy_rows())]
     studies += [("rsi " + k, "% net (fees)", v) for k, v in rsi_rows().items()]
     lines = ["| study | year | cut | n | mean |", "|---|---|---|---|---|"]
     flips = []

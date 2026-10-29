@@ -107,5 +107,33 @@ class NucLabTest(unittest.TestCase):
         self.assertNotIn("while", s.lower())
 
 
+class NucLabTimeoutTest(unittest.TestCase):
+    """bg-process-audit 2026-10-28: a NUC verb with no deadline sat silent for 2 h. Every verb now has one."""
+
+    def test_status_has_a_5_minute_deadline_and_prints_timeout(self):
+        seen = {}
+
+        def hang(cmd, **kw):
+            seen.update(kw)
+            raise nuc_lab.subprocess.TimeoutExpired(cmd, kw.get("timeout"))
+        buf = io.StringIO()
+        with tempfile.TemporaryDirectory() as t:
+            key = Path(t) / "k"
+            key.write_text("k", encoding="utf-8")
+            os.environ["MTS_NUC_GATE_KEY"] = str(key)
+            try:
+                with contextlib.redirect_stdout(buf):
+                    rc = nuc_lab.run("status", runner=hang)
+            finally:
+                os.environ.pop("MTS_NUC_GATE_KEY", None)
+        self.assertEqual(seen.get("timeout"), 300)
+        self.assertEqual(rc, 124)
+        self.assertIn("TIMEOUT nuc_lab status after 300s", buf.getvalue())
+
+    def test_job_verbs_get_the_worker_cap(self):
+        self.assertEqual(nuc_lab.VERB_TIMEOUT_S["tick"], 2700)
+        self.assertEqual(nuc_lab.VERB_TIMEOUT_S["gemini"], 2700)
+
+
 if __name__ == "__main__":
     unittest.main()

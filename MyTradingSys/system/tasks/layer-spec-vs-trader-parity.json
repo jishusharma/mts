@@ -1,0 +1,64 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/codex_run.py next"
+  ],
+  "created": "2026-10-27T20:38:50Z",
+  "depends_on": [
+    "extracted-rules-wiring-audit",
+    "extracted-rules-wiring-audit-tom-fabio-habib"
+  ],
+  "done_when": "PARITY_AUDIT.md covers every layer folder under backtest/layers that enforces trader rules; PARITY_UNSOURCED.csv lists each unsourced rule with file:line and recommendation; shipped; cherry empty.",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Inverse of the wiring audit: start from layer code and params, trace each enforced rule back to a quote; flag code rules with no quote (example: generic hidden divergence in the Malkan layer, 2026-10-28) as UNSOURCED with a recommendation: label OURS, move to the right layer, or remove.",
+  "id": "layer-spec-vs-trader-parity",
+  "kind": "audit",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-28 ACCEPT LAB:none CLASS:C1 REVIEWER:sonnet-agent WEIGHT:IMPORTANT. GPT luna medium; producer != reviewer of the Claude-built wiring audit (ROUTING.md row 46).",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/wiring_audit_2026-10/PARITY_AUDIT.md",
+    "MyTradingSys/research/wiring_audit_2026-10/PARITY_UNSOURCED.csv",
+    "MyTradingSys/backtest/layers/rsi",
+    "MyTradingSys/backtest/layers/krown",
+    "MyTradingSys/backtest/layers/fabio",
+    "MyTradingSys/backtest/layers/kurisko",
+    "MyTradingSys/backtest/layers/pizzino",
+    "MyTradingSys/backtest/layers/wavetrend",
+    "MyTradingSys/backtest/layers/pitchfork",
+    "MyTradingSys/backtest/layers/trendlines",
+    "MyTradingSys/backtest/layers/alerts",
+    "MyTradingSys/backtest/dax_engine.py"
+  ],
+  "scope_out": [
+    "changing layer code",
+    "new backtests",
+    "deciding what trades (fee-net OOS decides)"
+  ],
+  "size": "M",
+  "sources": [
+    "operator 2026-10-28 priority: stop MTS drifting; account for everything extracted; make it findable",
+    "operator 2026-10-28: Malkan layer uses only Malkan PRD/NRD"
+  ],
+  "state": "refined",
+  "steps": [
+    "Read WIRING_MALKAN_KROWN.csv and WIRING_TOM_FABIO_HABIB.csv for the sourced side.",
+    "For each layer file and params JSON list enforced rules and parameters; match to a wiring row; a miss is UNSOURCED, or a label gap (param without SOURCED/OURS).",
+    "Write PARITY_AUDIT.md (per layer: matched, unsourced, mislabelled) and PARITY_UNSOURCED.csv with a recommendation each."
+  ],
+  "tests": "Every PARITY_UNSOURCED.csv row has a code file:line that exists (small script check printed in the report); layers with no trader rules are listed NOT COVERED with a reason.",
+  "title": "Per layer: what the trader said (sourced quotes) vs what the code does; flag any layer built on a rule he never said",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

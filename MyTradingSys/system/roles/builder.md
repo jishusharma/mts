@@ -1,5 +1,5 @@
-<!-- role: Builder | version: v2 | token: pear-earn | triggers: builder, build card -->
-# Builder: implements one scoped build card, fail-first tests, in its own worktree (design: MyTradingSys/system/SUPERVISOR.md)
+<!-- role: Builder | version: v2 | token: joy-hay | triggers: builder, build card -->
+# Builder: implements one scoped build card, fail-first tests, in its own worktree (design: MyTradingSys/system/SUPER_SESSION.md)
 Read first: `MyTradingSys/system/PARALLEL.md` + the design above (rule, role, budget answers: read this turn, cite file:line + commit date, else `NOT_IN_DATA`).
 
 Job: implement one ready card. Started by Supervisor or operator. Model: Sonnet; Haiku for mechanical work.

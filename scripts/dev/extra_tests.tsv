@@ -13,6 +13,7 @@ MyTradingSys/research/wavetrend_2026-10-17/test_wt_parity_ref.py
 MyTradingSys/research/wavetrend_2026-10-17/test_count_events.py
 MyTradingSys/research/wavetrend_2026-10-17/test_input_manifest.py
 MyTradingSys/research/wavetrend_2026-10-17/test_paired_inference.py
+MyTradingSys/research/wavetrend_2026-10-17/test_c1_v2.py
 MyTradingSys/research/rsi_deep_buy_2026-10-19/test_econ_floor.py
 MyTradingSys/research/rsi_deep_buy_2026-10-19/test_depth_map.py
 scripts/dev/test_trial_ledger.py
@@ -23,6 +24,7 @@ scripts/dev/test_trace.py
 scripts/dev/test_lab_query.py
 scripts/dev/test_health_audit.py
 scripts/dev/test_mts_doctor.py
+scripts/dev/test_mts_doctor_heal.py
 scripts/dev/test_prereg_gate.py
 scripts/dev/test_eagle_gaps.py
 scripts/dev/test_research_kit_lint.py
@@ -92,6 +94,7 @@ MyTradingSys/research/volume_2026-10-09/test_volume.py
 MyTradingSys/research/tom_btc_2026-10-13/test_chart_lab.py
 MyTradingSys/research/levels_confluence_2026-10-14/test_levels.py
 MyTradingSys/research/levels_confluence_2026-10-14/test_event_table.py
+MyTradingSys/research/levels_confluence_2026-10-14/test_levels_hold_fair.py
 MyTradingSys/research/sim_desk/artifact/test_artifact.py
 MyTradingSys/runtime/test_update_market_state.py
 scripts/dev/test_testnet_canary.py
@@ -112,6 +115,7 @@ scripts/dev/test_c_drive_guard.py
 scripts/dev/test_host_health.py
 scripts/dev/test_context_gap.py
 scripts/dev/test_behavior_eval.py
+scripts/dev/test_reply_shape_check.py
 scripts/dev/test_ship_time_guard.py
 scripts/dev/test_usage_reminder.py
 scripts/dev/test_perm_audit.py
@@ -120,3 +124,22 @@ scripts/dev/test_cbp_schedule.py
 scripts/dev/test_runaway_check.py
 scripts/dev/test_tasks_conflict.py
 scripts/dev/test_live_cross_read.py
+scripts/dev/test_operator_material_index.py
+scripts/dev/test_gemini_queue.py
+MyTradingSys/research/extraction_ledger_2026-10/test_build_ledger.py
+scripts/dev/test_successor_wake.py
+scripts/dev/test_api_batch.py
+scripts/dev/test_bg_watch.py
+MyTradingSys/research/extraction_ledger_2026-10/test_cross_method_qa.py
+scripts/dev/test_device_tasks.py
+scripts/dev/test_budget_policy.py
+MyTradingSys/research/fable_run6_powered_prereg/test_e2_run.py
+MyTradingSys/research/fable_run6_powered_prereg/test_crosscheck_desk.py
+scripts/dev/test_dedupe_dead_code.py
+scripts/dev/test_gateway_run.py
+scripts/dev/test_logon_wake.py
+scripts/dev/test_refresh_main_checkout.py
+MyTradingSys/tools/live_aid/test_live_aid.py
+scripts/dev/test_sync_push_race.py
+scripts/dev/test_announcements_ids.py
+scripts/dev/test_status_board.py

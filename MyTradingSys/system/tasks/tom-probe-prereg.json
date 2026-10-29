@@ -35,7 +35,7 @@
     "tom"
   ],
   "live_path": false,
-  "note": "CHECKED 2026-10-18: waits only on tom-dax-backtest (ready, not done); then needs the real Lab_Guy stamp (CRUCIAL/C2). Order is by depends_on. | UNBLOCKED 2026-10-18: operator lifted the holds in chat (DAX chain q11 hold, A-20261018-5); no-FDAX-data-purchase rule stays. Results built on lab bases stay labelled UNCHECKED. [PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C2 reviewer=GPT/Argon high + Haiku re-derive + 2nd vendor on first use] HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release. | opus 2026-10-11: DIAG_BTC says S SKIP, Q SKIP (thin), M GO. Scope reduced to the M arms (partials, trail, re-entry, no timeout) with stops wide enough to clear BTC noise+fees per TOM_LAYER_V2_SPEC; S/Q arms parked until the v2 encoding exists.\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C1 weight=IMPORTANT); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.",
+  "note": "BLOCKED 2026-10-28 Session_Planner(c-1028): depends_on tom-dax-backtest is dropped and the DAX chain is parked (no FDAX data, q11); re-scope to BTC arms (M GO) after the tom-btc chain; Lab_Guy stamp needed (C2) | CHECKED 2026-10-18: waits only on tom-dax-backtest (ready, not done); then needs the real Lab_Guy stamp (CRUCIAL/C2). Order is by depends_on. | UNBLOCKED 2026-10-18: operator lifted the holds in chat (DAX chain q11 hold, A-20261018-5); no-FDAX-data-purchase rule stays. Results built on lab bases stay labelled UNCHECKED. [PLAN 2026-10-18 weight=CRUCIAL lab-touch=yes class=C2 reviewer=GPT/Argon high + Haiku re-derive + 2nd vendor on first use] HELD 2026-10-13 (operator chat, q11): DAX chain parked, no FDAX data; Tom moves to BTC (research/tom_btc_2026-10-13/TOM_ON_BTC.md). Release with tasks.py apply-op <id> release. | opus 2026-10-11: DIAG_BTC says S SKIP, Q SKIP (thin), M GO. Scope reduced to the M arms (partials, trail, re-entry, no timeout) with stops wide enough to clear BTC noise+fees per TOM_LAYER_V2_SPEC; S/Q arms parked until the v2 encoding exists.\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C1 weight=IMPORTANT); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
@@ -59,7 +59,7 @@
     "operator chat 2026-10-11: queue DAX recall, gap rules, DAX backtest in that order; probe selection/management/session with options flagged up front",
     "MyTradingSys/research/tom_transfer_2026-10-11/PROBE_PLAN.md"
   ],
-  "state": "refined",
+  "state": "blocked",
   "steps": [
     "List each arm with source status (Tom quote + file:line, or NO-SOURCE needing an operator decision).",
     "Fix market order per the branch in PROBE_PLAN section 4, holdouts (BTC forward data from 2026-09-27; DAX last 6 months), trial count, DSR/PBO.",
@@ -68,7 +68,7 @@
   ],
   "tests": "python scripts/dev/tasks.py lint stays green with the new runner card (fails if the card misses tests/done_when).",
   "title": "Pre-register the surviving S/Q/M/F arms and write their runner card",
+  "updated": "2026-10-18T10:00:00Z",
   "weight": "IMPORTANT",
-  "worker": "agent",
-  "updated": "2026-10-18T10:00:00Z"
+  "worker": "agent"
 }

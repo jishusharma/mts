@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-25T19:32:20Z",
+  "depends_on": [
+    "rsi-deep-engine"
+  ],
+  "done_when": "S1-S3, the cap arm and ruin_test() pass test_episode_ladders.py on synthetic paths; episode_sim.py --ruin dev --out <csv> exists and refuses any bar at or after 2024-07-01; the DEV klines run (2022-05, 2022-06, 2022-11; 2020-03 NOT_IN_DATA; 2024-08-05 is VALIDATION) belongs to rsi-deep-run-dev; average cost equals the hand value",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Add scale-in ladders to episode_sim.py: S1 adds 1 unit per further a % fall (a in 0.5/1/2 %, scaled by the TF median bar range; both OURS), S2 doubling adds, S3 adds at each new RSI low, max adds M in 2/4/6 (OURS); bankroll cap arm B=20u plus a no-cap line; ruin_test() and CLI --ruin dev, unit-tested on synthetic crashes only (the DEV klines run is a run-dev step).",
+  "id": "rsi-deep-engine-ladders",
+  "kind": "build",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "MyTradingSys/research/layer_lab/formula_spec_text/test_formula_spec.py::test_shuffled_rsi_closes_are_rejected",
+  "not_twin_of": [
+    "rsi-deep-run-dev",
+    "rsi-deep-engine"
+  ],
+  "note": "REVIEWED:2026-10-26 ACCEPT (Sonnet reviewer Agent a8e64e6d verified, planner DECISION OURS). Drafted 2026-10-26 (split of the old engine M card). DECISION (OURS) 2026-10-26: the SPEC s4 ruin replays 2020-03 (before the data start 2022-01, NOT_IN_DATA) and 2024-08-05 (VALIDATION) are not run here; the DEV crashes 2022-05, 2022-06, 2022-11 stand in, 2024-08-05 joins the VALIDATION-once step. Edits episode_sim.py, so it runs after engine 1 (dependency). Chain wired 2026-10-26: prereg -> engine -> ladders -> exits -> run-dev; prereg -> prob-tables -> context/confirmations/confluence/divergence. Tables read no grid output, so they wait on prereg, not on run-dev. OPUS_FRAMING.md wins over SPEC.md. FIX 2026-10-26: ruin_dev.csv run moved to rsi-deep-run-dev (F:/MTS/data/tom_raw/klines is confirmed only on JIS-NB, this card is CODEX on the NUC); the a % scaling by TF median bar range is OURS; est_turns 14. Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files. PLANNER 2026-10-28 DECISION (OURS): lane CODEX -> SONNET, worker session: the parent rsi-deep-engine was re-laned to SONNET (CODEX lab STALLED, ROUTING C2) and all three cards edit the same episode_sim.py as one chain, so one writer lane avoids a cross-lane merge. Stays raw until rsi-deep-engine is done (chain engine -> ladders -> exits).\nWAITING 2026-10-28 (planner-raw-refine): fields and REVIEWED stamp complete; gate miss is depends_on rsi-deep-engine (refined).",
+  "prio": 2,
+  "refine_tries": 1,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/episode_sim.py",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/test_episode_ladders.py",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/OPUS_FRAMING.md"
+  ],
+  "scope_out": [
+    "No X4/X5 exits (engine 3), no VALIDATION or HOLDOUT bar (2024-08-05 flush and 2020-03 are not DEV), no live path, do not edit econ_floor.py"
+  ],
+  "size": "S",
+  "sources": [
+    "fee 0.10 % round trip SOURCED: MyTradingSys/backtest/fees.py (OPUS_FRAMING.md section 7)",
+    "DEV 2022-01-01..2024-06-30, HOLDOUT read once SOURCED: MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md section 5",
+    "MyTradingSys/research/rsi_deep_buy_2026-10-19/OPUS_FRAMING.md section 2.4 (ruin arithmetic, bankroll cap B=20u default in section 6 item 2)"
+  ],
+  "state": "refined",
+  "steps": [
+    "Read SPEC s3-s4 (ladders, ruin test), OPUS_FRAMING s2.4 worked ruin example, and the finished episode_sim.py core",
+    "Write test_episode_ladders.py first (hand values in tests); see it fail",
+    "Add S1-S3 with M, the cap arm B=20u plus the no-cap line, capital-needed metrics",
+    "Add ruin_test(path, ladder, M, B) returning capital needed and RUIN/OK, and the CLI flag --ruin dev --out <csv>; read no market data here, tests use synthetic crashes",
+    "Run the tests and lookahead_lint.py; GPT lab ships through its branch flow"
+  ],
+  "tests": "Fail-first on planted paths: average_cost of fills 100, 99, 98 with units 1, 1, 1 = 99.0; units 1, 2, 4 = 690/7 = 98.5714; cap B=20u blocks the add that would exceed it; a ladder needing more than B is flagged RUIN; a never-recovering series stays open at the last price; shuffled closes change the ruin table.",
+  "title": "RSI deep-buy engine 2 of 3: scale-in ladders S1-S3, bankroll cap B=20u and ruin_test() (the DEV ruin run is in rsi-deep-run-dev)",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

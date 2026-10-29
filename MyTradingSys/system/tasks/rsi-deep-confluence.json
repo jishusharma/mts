@@ -14,6 +14,22 @@
   "goal": "SPEC s2 Step H: pre-register one causal vote per usable layer (same TF and two TFs up, last completed bar), build confluence scores (max 8 voters, 3 TFs), report the change in Step G race probabilities and fee-net EV vs RSI-level-only. Layers without causal history are NOT_IN_DATA. SHOT_REVIEW C5 adds the HTF opposite-divergence voter (window 20 bars) and the oscillator count.",
   "id": "rsi-deep-confluence",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "RSI deep-buy Phase 1D-E: depth/bounce probability tables, DEV then VALIDATION",
+      "ref": "28565f801b92",
+      "utc": "2026-10-26T01:31:25Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "28565f801b92 RSI deep-buy Phase 1D-E: depth/bounce probability tables, DEV then VALIDATION",
+      "ref": "MyTradingSys/research/layer_lab/TRIALS.md",
+      "utc": "2026-10-26T01:31:25Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -21,6 +37,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
+  "refreshed": "2026-10-27T22:51:53Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -36,6 +53,7 @@
     "any HOLDOUT bar (2025-07 onward)",
     "live path, orders, VALIDATION-tuned parameters"
   ],
+  "scope_sha": "28565f801b92",
   "size": "S",
   "sources": [
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md",
@@ -43,7 +61,7 @@
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/APPLIED.md",
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/SHOT_REVIEW.md"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Read SPEC s2 Step H and SHOT_REVIEW C5; list candidate voters and check each for bar-by-bar history in MyTradingSys/backtest/layers (LAYERS.md).",
     "Commit the vote table (layer, TF, rule, +1/-1 condition) to CONFLUENCE.md before running anything; no tuning on outcomes.",

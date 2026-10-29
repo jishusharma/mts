@@ -1,0 +1,92 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-28T15:21:08Z",
+  "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-28T15:20:46Z",
+    "misses": 29,
+    "reads": [
+      "MyTradingSys/research/analysts/run_scorecard.py",
+      "MyTradingSys/research/analysts/test_analysts_ingestion_and_scorecard.py",
+      "MyTradingSys/research/analysts/SCORECARD.md",
+      "scripts/dev/cbp_scorecard.py",
+      "MyTradingSys/research/analysts/SAMPLE_CALL_LEDGER.csv",
+      "MyTradingSys/research/fix_verification_2026-10-28/REPORT.md",
+      "MyTradingSys/research/layer_lab/reports/2026-10-28_cbp-scorecard-recount.md",
+      "MyTradingSys/research/cbp/SCORECARD_GPT.md"
+    ],
+    "session": "agent-a197c33f86b800fb4"
+  },
+  "created": "2026-10-28T06:27:19Z",
+  "depends_on": [],
+  "done_when": "An independent recount script's counts are recorded in this card's result and compared against the JIS-NB store; Michael vs Michaal is resolved as one analyst (typo) or two; SCORECARD.md is regenerated with non-zero rows or the blocker is documented.",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Analyst SCORECARD.md Summary table has no data rows (reads as 0 for every analyst), but the JIS-NB store has real counts (Michael 5, Jason 2, Krown 4, Qriptal 1, Michaal 1, tradable 1 = Qriptal; fix_verification_2026-10-28 FAIL b, commit 37742aa6e). Recount independently and resolve Michael vs Michaal.",
+  "id": "scorecard-recount-jis-nb-store",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "SCORECARD.md sec 5 now lists CBP store rows (now: Krown 3, Michael 2, Jason 1, Michaal 1; ",
+      "ref": "feb777fba",
+      "utc": "2026-10-28T15:21:08Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "analysts: ship execution ROADMAP.md, wire callers family, add Roman card, clean SCORECARD.",
+      "ref": "90aaafd30a29",
+      "utc": "2026-10-18T16:31:40Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "90aaafd30a29 analysts: ship execution ROADMAP.md, wire callers family, add Roman card, cle",
+      "ref": "MyTradingSys/research/analysts/SCORECARD.md",
+      "utc": "2026-10-18T16:31:40Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T07:11:13Z",
+  "refs": [
+    "MyTradingSys/research/fix_verification_2026-10-28/REPORT.md"
+  ],
+  "result": "SCORECARD.md sec 5 now lists CBP store rows (now: Krown 3, Michael 2, Jason 1, Michaal 1; snapshot 13 rows Michael 5 Jason 2 Krown 4 Qriptal 1 Michaal 1, tradable Qriptal); Michael/Michaal = two analysts; run_scorecard reads sample ledger (empty) not CBP store",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/analysts/run_scorecard.py",
+    "MyTradingSys/research/analysts/score_analysts.py",
+    "MyTradingSys/research/analysts/SCORECARD.md"
+  ],
+  "scope_out": [],
+  "scope_sha": "90aaafd30a29",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Read the JIS-NB analyst-call store directly (not through run_scorecard.py) and count rows per analyst name",
+    "Resolve Michael vs Michaal: check source ledgers/usernames for a typo vs. two distinct analysts",
+    "Write/run an independent recount script and compare its counts to SCORECARD.md's current (empty) output",
+    "If run_scorecard.py is the bug, fix it to read the real store and regenerate SCORECARD.md"
+  ],
+  "taken": "2026-10-28T15:21:08Z",
+  "tests": "MyTradingSys/research/analysts/test_analysts_ingestion_and_scorecard.py::test_recount_matches_store_counts (new, must fail on pre-change code showing an empty table)",
+  "title": "Analyst scorecard recount from the JIS-NB store with an independent script; SCORECARD shows 0 but store has Michael 5, Jason 2, Krown 4, Qriptal 1, Michaal 1; resolve Michael vs Michaal (fix report FAIL b)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

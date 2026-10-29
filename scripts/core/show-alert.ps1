@@ -24,6 +24,24 @@ try {
 
 $alert = Get-Content $AlertFile -Raw -Encoding UTF8 | ConvertFrom-Json
 
+# One popup max per producer: close earlier windows of the same producer only.
+# POPUP_PRODUCER_RX (the test extracts these lines; keep one regex per line)
+# POPUP_PRODUCER_RX: ^MTS (ALERT )?#\d+
+# POPUP_PRODUCER_RX: ^TAPE #\d+
+# POPUP_PRODUCER_RX: ^MTS live health
+$popupRx = @(Select-String -LiteralPath $PSCommandPath -Pattern '^# POPUP_PRODUCER_RX: (.+)$' |
+    ForEach-Object { $_.Matches[0].Groups[1].Value })
+$myRx = $popupRx | Where-Object { "$($alert.title)" -match $_ } | Select-Object -First 1
+if ($myRx) {
+    try {
+        Get-Process powershell,pwsh -ErrorAction Stop | ForEach-Object {
+            if ($_.Id -ne $PID -and $_.MainWindowTitle -match $myRx) {
+                Stop-Process -Id $_.Id -Force -ErrorAction SilentlyContinue
+            }
+        }
+    } catch {}
+}
+
 $form = New-Object AlertForm
 $form.Text = $alert.title
 $form.Width = 600

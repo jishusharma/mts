@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T03:48:02Z",
   "commands": [],
   "created": "2026-10-26T18:35:28Z",
   "depends_on": [],
@@ -15,11 +16,17 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "test_trade_missing_direction_is_not_tradable fail-first + fixed; SCORECARD_GPT.md delivere",
+      "ref": "6cdb5d72d",
+      "utc": "2026-10-28T03:48:02Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "research/ top level: 189 -> 14 files; 176 dated loose files into _archive/loose_2026-10 an",
-      "ref": "f8d0799de2bc",
-      "utc": "2026-10-25T23:02:12Z"
+      "line": "Fix: YouTube-only-via-Gemini-on-NUC was a preference, not a limit",
+      "ref": "d456f001b687",
+      "utc": "2026-10-27T11:04:42Z"
     }
   ],
   "layers": [],
@@ -29,24 +36,30 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-26T18:35:28Z",
+  "refreshed": "2026-10-27T19:29:47Z",
   "refs": [
     "MyTradingSys/research/cbp/GPT_CBP_GUIDE.md"
   ],
-  "result": "",
+  "result": "test_trade_missing_direction_is_not_tradable fail-first + fixed; SCORECARD_GPT.md delivered",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/cbp/; MyTradingSys/cbp/__init__.py; scripts/dev/cbp_run.py"
   ],
   "scope_out": [
     "F:/CryptoScrapper, any row or transcript text in the repo, order paths"
   ],
-  "scope_sha": "f8d0799de2bc",
+  "scope_sha": "d456f001b687",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "write a failing test that fails on a row with missing direction, count rows with python over rows.json, join to daily closes, score at expiry"
   ],
+  "taken": "2026-10-28T03:48:02Z",
   "tests": "python -m pytest MyTradingSys/tests/test_cbp_query.py (fail-first)",
   "title": "CBP analyst scorecard: independent recount of scored calls (D5 gate 4)",
   "weight": "",

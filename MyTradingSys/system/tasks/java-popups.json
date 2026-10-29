@@ -48,7 +48,7 @@
   "scope_sha": "c93b7ac29728",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "refined",
   "steps": [
     "Read card_specs/java-popups.md first. Desk check (read-only, needs a visible popup on NB): the git grep and the Get-CimInstance command; no popup visible = outcome B.",
     "Write test_start_trading_day_hidden.py with find_visible_launches(); test it on synthetic bad and good snippets, then on the real files.",

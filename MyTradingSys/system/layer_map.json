@@ -678,7 +678,7 @@
    "family": "pitchfork",
    "name": "Pitchfork swing dynamics (Andrews / Schiff / Modified Schiff ML & Hagopian failure)",
    "module": "MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py",
-   "status": "Foundational papers delivered; detector built with unit tests (100% pass)",
+   "status": "Detector, sim_desk plugin (studies/pitchfork.py), and live Java engine (PitchforkSignalLayer.java) built and verified (100% pass)",
    "params": [
     {
      "k": "variant",
@@ -1449,6 +1449,42 @@
    "n": "S1 4933 long / 5434 short DIV events; S5 1411 / 1858",
    "verdict": "NEGATIVE: CVD divergence adds nothing over price alone on 1m/5m",
    "report": "MyTradingSys/research/orderflow_views_2026-10-14/RESULT.md",
+   "read": "summary"
+  },
+  {
+   "id": "PITCHFORK-1D-20261019",
+   "title": "Phase 1 Daily Pitchfork Event Study (Standard, Schiff, Modified Schiff, Log Modified Schiff)",
+   "date": "2026-10-19",
+   "market": "Binance BTCUSDT 1D (aggregated from 1m klines)",
+   "layers": [
+    "pitchfork_swing"
+   ],
+   "params": "ZigZag lookback=3, min_change=4.0%, stop=1.5%, target=Median Line (80% rule) or 1x channel width (Hagopian)",
+   "split": "DEV + historical 2020-2026",
+   "fees": "2 * BINANCE_TAKER (0.10% round-trip)",
+   "interaction": "4 geometric variants evaluated across 226 confirmed 3-pivot swings",
+   "effects": "Modified Schiff 72.12% ML reach, 65.49% net WR, +1.50% mean net return/trade; Hagopian 59.57% target hit rate",
+   "n": "226 confirmed forks per variant",
+   "verdict": "PASS (Modified Schiff +1.50% mean net/trade, 72.12% ML reach)",
+   "report": "MyTradingSys/research/pitchfork_2026-10-19/PHASE1_EVENT_STUDY.md",
+   "read": "summary"
+  },
+  {
+   "id": "PITCHFORK-4H-VP-20261028",
+   "title": "Phase 2 4-Hour Pitchfork & Anchored Volume Profile Confluence Study + Sim Desk Plugin",
+   "date": "2026-10-28",
+   "market": "Binance BTCUSDT 4H & 1m klines",
+   "layers": [
+    "pitchfork_swing"
+   ],
+   "params": "ZigZag lookback=4, min_change=3.0%, stop=1.5%, anchored VP (w=10 USD, 70% VA, 1.5% POC) over P0-P2 swing",
+   "split": "DEV 2022-04-01..2024-06-30 (sim_desk) + 2020-2026 4H study",
+   "fees": "maker 0.02% / taker 0.05% + 0.02% slippage",
+   "interaction": "Pitchfork tine retest x Anchored Volume Profile (UNFILTERED, VA_CONFLUENT, POC_1.5PCT, POC_0.75PCT)",
+   "effects": "Tine limit retest + VA confluence: n=734 filled, 64.85% WR, +0.61% mean net return, PF 1.63; tight POC 0.75%: n=148, 70.95% WR, +0.88% net, PF 1.98",
+   "n": "1273 unfiltered setups, 734 VA-confluent, 148 tight-POC",
+   "verdict": "PASS (VA confluence PF 1.63, +0.61% net/trade; sim_desk plugin verified)",
+   "report": "MyTradingSys/research/pitchfork_2026-10-19/PHASE2_4H_POC_STUDY.md",
    "read": "summary"
   }
  ]

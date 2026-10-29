@@ -1,0 +1,48 @@
+{
+ "id": "dir-gap_g3_shadow_fills_2026-10-18",
+ "kind": "backtest",
+ "family": "Gap G3 Shadow Fills",
+ "title": "G3 GO_LIVE_BAR on Shadow Fills from the Real Tape (2026-10-18)",
+ "provenance": "source-extracted",
+ "date": "2026-10-18",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "- Background (G3 Gap):",
+  "tone": "info"
+ },
+ "why": [
+  "> Evidence: GO_LIVE_BAR.md:6 'measured on testnet'; :10 'using the exchange's real fills and fees'. EXEC_PROVENANCE_AUDIT.md:92: testnet order book not replayed, testnet liquidity untested. Deribit says testnet does not mirror live liquidity [search].",
+  "Discrepancy: $slip\\_bp_{\\text{testnet}} - slip\\_bp_{\\text{shadow}}$ (negative indicates testnet was optimistic)."
+ ],
+ "kpis": [
+  {
+   "label": "trades (first count in the source)",
+   "value": "0"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 0,
+   "quote": "1. ord_1: BUY limit at 80,000.0 (touches bar 0, trades through bar 1). Filled on both."
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/gap_g3_shadow_fills_2026-10-18/SHADOW_FILLS.md"
+ ],
+ "commit": "460d34063"
+}

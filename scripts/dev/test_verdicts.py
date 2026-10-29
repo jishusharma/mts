@@ -190,6 +190,36 @@ class RealRegistry(unittest.TestCase):
             self.assertTrue(o["source"].strip(), o)
         self.assertTrue(names)
 
+    def test_regate_fixes_3_to_7_live_files(self):
+        # REGATE_AUDIT.md fix items 3-7: DEV count 57 -> 56, no phantom 'filter' study, BLOCKED backfill, kill scopes, ledger rows
+        # Count-agnostic: the invariant is the regate floor (56 DEV variants), not an exact total that every new DEV study moves.
+        # The count must also equal an independent csv read of VERDICTS.csv, so a silent drop in the helper is caught.
+        seen, _ = V.count_variants(V.CSV_PATH, "DEV")
+        self.assertGreaterEqual(len(seen), 56, "regate fix 3: DEV variants fell below the 56 floor")
+        with open(V.CSV_PATH, newline="", encoding="utf-8") as f:
+            raw = {(r["study_dir"], r["arm"]) for r in csv.DictReader(f)
+                   if r["split_read"] != V.UNP and "DEV" in r["split_read"].upper().split("+")}
+        self.assertEqual(seen, raw)
+        self.assertFalse(self.row("filter"))
+        k = self.row("kurisko_2026-10-18")
+        self.assertTrue(k and all(r["split_read"] == "DEV" for r in k))
+        for name in ("bb_top_reversal_2026-10-18", "pit_levels_2026-10-16"):
+            rs = self.row(name)
+            self.assertTrue(rs, name)
+            self.assertTrue(all(r["verdict"] == "BLOCKED" for r in rs), name)
+            parsed = V.parse_study(V.RESEARCH / name)
+            self.assertTrue(parsed[0]["kill_scope"].startswith("FAIL/INCONCLUSIVE: stop"), parsed[0]["kill_scope"])
+        for r in self.rows:
+            if r["study_dir"].startswith("context_factors"):
+                self.assertNotIn("session-extreme fade", r["kill_scope"], r["study_dir"])
+        eur = [r for r in self.row("eur_low_us_sweep_followups_2026-10-18")]
+        self.assertTrue(all("BLOCKED legs are not killed" in r["kill_scope"] for r in eur) and eur)
+        per = V.ledger_per_study(RESEARCH_LEDGER, "DEV")
+        for st, n in (("bb_top_reversal_2026-10-18", 12), ("eur_low_us_sweep_followups_2026-10-18", 3),
+                      ("context_factors_2026-10-16", 16), ("context_factors_pit_2026-10-16", 8 + 14),
+                      ("cryptocred_htf_2026-10", 9)):
+            self.assertEqual(len(per.get(st, ())), n, st)
+
 
 class PowerLine(unittest.TestCase):
     def test_power_line_g1_low_power(self):

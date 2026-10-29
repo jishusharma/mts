@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-28T02:30:38Z",
   "commands": [],
   "created": "2026-10-25T20:05:45Z",
   "depends_on": [],
@@ -13,7 +14,14 @@
   "id": "lf-callers-gpt-rederive",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "SOUND; 20 claims checked, 0 mismatches; callers.md written",
+      "ref": "02a5098d5",
+      "utc": "2026-10-28T02:30:38Z"
+    }
+  ],
   "layers": [
     "callers"
   ],
@@ -25,7 +33,12 @@
   "refined_by": "",
   "refreshed": "2026-10-25T20:06:38Z",
   "refs": [],
-  "result": "",
+  "result": "SOUND; 20 claims checked, 0 mismatches; callers.md written",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/callers.md (new file only)"
   ],
@@ -40,13 +53,14 @@
     "MyTradingSys/research/analysts/REVIEW_AND_INGESTION_EVALUATION_2026-10-18.md",
     "MyTradingSys/research/analysts/SCORECARD.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "List the result files for callers in layer_index.json (results, ledger) and pick the headline numbers each states",
     "Recompute each from the ledger or raw data with an independent script (formulas from MyTradingSys/backtest/layers/FORMULAS.md, not from the code under check)",
     "Write MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/callers.md: quoted number, recomputed number, MATCH/MISMATCH, file:line, script path",
     "Commit with a Result: line (n checked, n mismatches)"
   ],
+  "taken": "2026-10-28T02:30:38Z",
   "tests": "none (audit card); proof = the recompute script runs and the table is filled",
   "title": "Layer re-derive: callers (independent recount of the headline numbers behind the fact sheet)",
   "weight": "ROUTINE",

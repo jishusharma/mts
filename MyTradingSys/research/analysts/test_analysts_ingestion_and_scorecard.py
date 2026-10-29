@@ -315,5 +315,22 @@ class TestCryptoChaseSocialScraper(unittest.TestCase):
             self.assertEqual(rows[0].targets_str, "68000.0")
 
 
+class TestCbpStoreRecount(unittest.TestCase):
+    def test_recount_matches_store_counts(self):
+        import run_scorecard as R
+        trade = {"direction": "LONG", "entry": "80K", "target": "87K", "invalidation": "79K"}
+        data = {"rows": [{"analyst": "Michael"}] * 5 + [{"analyst": "Jason"}] * 2 + [{"analyst": "Krown"}] * 4
+                + [{"analyst": "Qriptal", "trades": [trade, trade]}, {"analyst": "Michaal"}]}
+        counts = R.recount_cbp_store(data)
+        self.assertEqual({k: v["rows"] for k, v in counts.items()},
+                         {"Michael": 5, "Jason": 2, "Krown": 4, "Qriptal": 1, "Michaal": 1})
+        self.assertEqual(counts["Qriptal"]["tradable_rows"], 1)
+        self.assertEqual(sum(v["tradable_rows"] for v in counts.values()), 1)
+        md = R.generate_scorecard_markdown({}, counts)
+        self.assertIn("| Michael | 5 | 0 | 0 |", md)
+        self.assertIn("| Michaal | 1 | 0 | 0 |", md)
+        self.assertIn("| Qriptal | 1 | 2 | 1 |", md)
+
+
 if __name__ == "__main__":
     unittest.main()

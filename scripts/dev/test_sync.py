@@ -226,6 +226,48 @@ class SyncTest(unittest.TestCase):
         sh(self.a, "fetch", "-q", "origin")
         self.assertEqual(sync.open_claims(self.a), [])
 
+    def race_claim(self, task_b, area_a="-", area_b="-"):
+        """coordination audit 2026-10-26 finding 1: clone b's claim lands between a's open-claims check and a's push. Returns
+        (a's SyncError text or None, number of 'claimed' lines printed, final open claims {slug: account})."""
+        real = sync.git
+        fired = []
+
+        def racing(repo, *args, **kw):
+            if Path(repo) == self.a and args[:1] == ("push",) and args[-1].endswith(":refs/heads/claims") and not fired:
+                fired.append(1)
+                with mock.patch.dict(os.environ, {"MTS_ACCOUNT": "worker-b"}):
+                    sync.claim(self.b, task_b, area=area_b, gate=self.gate, force=True)
+            return real(repo, *args, **kw)
+        out, err = io.StringIO(), None
+        with contextlib.redirect_stdout(out), mock.patch.object(sync, "git", racing), \
+                mock.patch.dict(os.environ, {"MTS_ACCOUNT": "worker-a"}):
+            try:
+                sync.claim(self.a, "Same task", area=area_a, gate=self.gate, force=True)
+            except sync.SyncError as e:
+                err = str(e)
+        self.assertEqual(fired, [1])
+        rows = {s: kv.get("account") for s, kv in sync.open_claims(self.a)}
+        return err, out.getvalue().count("claimed "), rows
+
+    def test_racing_claim_on_the_same_task_does_not_overwrite_the_winner(self):
+        err, claimed, rows = self.race_claim("Same task")
+        self.assertIsNotNone(err, "the loser must be refused, not told 'claimed'")
+        self.assertIn("already claimed", err)
+        self.assertEqual(claimed, 1)                       # only b's success line
+        self.assertEqual(rows, {"same-task": "worker-b"})  # b keeps the lock it was told it holds
+
+    def test_racing_claim_with_an_overlapping_area_is_refused(self):
+        err, claimed, rows = self.race_claim("Other task", area_a="scripts/dev/x.py", area_b="scripts/dev")
+        self.assertIsNotNone(err)
+        self.assertIn("already claimed", err)
+        self.assertEqual(rows, {"other-task": "worker-b"})
+
+    def test_racing_claim_with_disjoint_areas_both_land(self):
+        err, claimed, rows = self.race_claim("Same task", area_a="docs/a.md", area_b="scripts/dev")
+        self.assertIsNone(err)
+        self.assertEqual(claimed, 2)
+        self.assertEqual(sorted(rows.values()), ["worker-a", "worker-b"])   # same name, disjoint areas: suffixed slug, no overwrite
+
     def claim_files_on(self, ref):
         sh(self.a, "fetch", "-q", "origin")
         return [s for s, _ in sync.read_claims(self.a, ref)]
@@ -417,6 +459,50 @@ class SyncTest(unittest.TestCase):
         (lane / sync.LIVE_MARKER).write_text("", newline="\n")
         with self.assertRaises(sync.SyncError):
             sync.start(lane, slug="next")
+        self.assertEqual(self.branch_of(lane), f"{sync.socket.gethostname()}/old-task")
+
+    def test_start_worker_in_a_lane_tree_makes_a_worktree_and_leaves_the_lane(self):
+        """B3: a worker Agent booted in the Supervisor's lane tree switched it and committed there. --worker always gets its own tree."""
+        lane = self.make_lane()
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            path = sync.start(lane, slug="cbp-query", worker=True)
+        self.assertNotEqual(Path(path).resolve(), lane.resolve())
+        self.assertIn("WORKTREE:", buf.getvalue())
+        self.assertEqual(self.branch_of(lane), f"{sync.socket.gethostname()}/old-task")
+        self.assertTrue(self.branch_of(Path(path)).endswith("/cbp-query"))
+
+    def test_start_worker_inside_agent_isolation_worktree_makes_no_second_tree(self):
+        """An Agent-tool isolation tree (.claude/worktrees/agent-*) is already private: --worker works there, no new worktree."""
+        tree = self.make_tree(self.tmp.resolve() / ".claude" / "worktrees" / "agent-x1", "worktree-agent-x1")
+        before = subprocess.run(["git", "-C", str(self.a), "worktree", "list"], capture_output=True, text=True).stdout
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            path = sync.start(tree, slug="cbp-query", worker=True)
+        after = subprocess.run(["git", "-C", str(self.a), "worktree", "list"], capture_output=True, text=True).stdout
+        self.assertEqual(Path(path).resolve(), tree.resolve())
+        self.assertNotIn("WORKTREE:", buf.getvalue())
+        self.assertEqual(before, after)
+
+    def test_start_other_slug_in_another_sessions_tree_makes_a_worktree(self):
+        """B3: `start <slug>` from a session tree made for another slug (the Supervisor's) never works in that tree."""
+        host = sync.socket.gethostname()
+        sup = self.make_tree(self.tmp.resolve() / f"mts-{host.lower()}-supervisor-b", f"{host}/supervisor-b")
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            path = sync.start(sup, slug="cbp-query")
+        self.assertNotEqual(Path(path).resolve(), sup.resolve())
+        self.assertIn("WORKTREE:", buf.getvalue())
+        self.assertEqual(self.branch_of(sup), f"{host}/supervisor-b")
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(Path(sync.start(sup, slug="supervisor-b")).resolve(), sup.resolve())   # its own slug: stays
+
+    def test_start_worker_flag_on_the_cli(self):
+        lane = self.make_lane()
+        buf = io.StringIO()
+        with mock.patch.object(sync, "toplevel", lambda p: lane), contextlib.redirect_stdout(buf):
+            self.assertEqual(sync.main(["start", "w2", "--worker", "-q"]), 0)
+        self.assertIn("WORKTREE:", buf.getvalue())
         self.assertEqual(self.branch_of(lane), f"{sync.socket.gethostname()}/old-task")
 
     def test_start_slug_in_a_non_lane_clean_tree_still_stays_put(self):
@@ -1186,6 +1272,82 @@ class SyncTest(unittest.TestCase):
 
 
 
+    # bg-process-audit 2026-10-28: network git calls have a deadline, and a push that failed for a non-race reason is not
+    # retried (5 Gemini claims on 2026-10-28 retried 18 pushes each, all printed as 'someone shipped first').
+    AUDIT_AUTH = "remote: Invalid username or token." + chr(10) + "fatal: Authentication failed for 'https://github.com/x/y.git/'"
+
+    def failing_push(self, target):
+        real = sync.git
+        pushes = []
+
+        def spy(repo, *args, **kw):
+            if args[:1] == ("push",) and args[-1].endswith(target):
+                pushes.append(args)
+                return subprocess.CompletedProcess(args, 128, "", self.AUDIT_AUTH)
+            return real(repo, *args, **kw)
+        return spy, pushes
+
+    def test_claim_push_auth_failure_fails_once_with_the_reason(self):
+        spy, pushes = self.failing_push(":refs/heads/claims")
+        with mock.patch.object(sync, "git", spy), contextlib.redirect_stdout(io.StringIO()):
+            with self.assertRaises(sync.PushFailed) as e:
+                sync.claim(self.a, "Task auth", gate=self.gate, force=True)
+        self.assertEqual(len(pushes), 1)
+        self.assertIn("Authentication failed", str(e.exception))
+        self.assertIn("not a race", str(e.exception))
+
+    def test_ship_push_auth_failure_is_not_regated(self):
+        commit(self.a, "auth.py", "x" + chr(10))
+        spy, pushes = self.failing_push("HEAD:refs/heads/fast-track")
+        with mock.patch.object(sync, "git", spy), contextlib.redirect_stdout(io.StringIO()):
+            with self.assertRaises(sync.PushFailed):
+                sync.ship(self.a, gate=self.gate, sleep=lambda s: None)
+        self.assertEqual(len(pushes), 1)
+        self.assertEqual(len(self.gated), 1)
+
+    def test_lost_race_message_still_retries(self):
+        r = subprocess.CompletedProcess([], 1, "", " ! [rejected]        HEAD -> fast-track (fetch first)" + chr(10) + "error: failed to push some refs")
+        self.assertTrue(sync.push_race_lost(r))
+        self.assertFalse(sync.push_race_lost(subprocess.CompletedProcess([], 128, "", self.AUDIT_AUTH)))
+        self.assertFalse(sync.push_race_lost(subprocess.CompletedProcess([], 124, "", "TIMEOUT git push after 180s")))
+
+    def test_lost_claim_race_retries_after_a_jitter_not_in_lockstep(self):
+        # 2026-10-28 NUC (gemini-lane-fix): two gemini claimers each lost 3 claim pushes back to back with ~0 s
+        # between attempts (no backoff in the claims loop), so the second claimer re-fetched exactly when the
+        # other's push landed: 6 'push rejected' lines, both claims 'still rejected after 3 tries'. The ship loop
+        # already jitters 1-5 s between lost-race retries (GATE_SPEED D4); the claims loop now jitters 0.5-4 s too.
+        rel = "MyTradingSys/system/claims/jitter.md"
+        sync.push_claim_commit(self.a, rel, "host: a\n", "claim jitter")   # create origin/claims
+        real = sync.git
+        fired = []
+
+        def spy(repo, *args, **kw):
+            r = real(repo, *args, **kw)
+            if r.returncode == 0 and args[:1] == ("push",) and args[-1].endswith(":refs/heads/claims") and not fired:
+                fired.append(1)
+                r.returncode, r.stderr = 1, " ! [rejected]  " + rel + " -> claims (fetch first)" + chr(10) + "error: failed to push some refs"
+            return r
+        sleeps = []
+        with mock.patch.object(sync, "git", spy), contextlib.redirect_stdout(io.StringIO()):
+            sync.push_claim_commit(self.a, rel, "host: a\n", "claim jitter", sleep=sleeps.append)
+        self.assertEqual(fired, [1])        # first push lost the race; the jittered retry landed
+        self.assertEqual(len(sleeps), 1)
+        self.assertTrue(0.5 <= sleeps[0] <= 4.0, sleeps)
+
+    def test_claim_and_release_take_a_sleep_arg(self):
+        # the CLI claim/release paths thread the sleeper through, so a lost race there is jittered too
+        sleeps = []
+        spy = mock.Mock(wraps=sync.push_claim_commit)
+        with mock.patch.object(sync, "push_claim_commit", spy):
+            sync.claim(self.a, "Jitter claim", gate=self.gate, force=True, sleep=sleeps.append)
+        self.assertTrue(any("sleep" in c.kwargs for c in spy.call_args_list), spy.call_args_list)
+        spy.reset_mock()
+        rel_slug = "jitter-claim"
+        with mock.patch.object(sync, "push_claim_commit", spy):
+            sync.release(self.a, rel_slug, sleep=sleeps.append)
+        self.assertTrue(any("sleep" in c.kwargs for c in spy.call_args_list), spy.call_args_list)
+
+
 class GateSlotTest(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp())
@@ -1593,11 +1755,35 @@ class OwnCiWaitTest(unittest.TestCase):
                     mock.patch.object(sync, "ship", return_value=self.pushed) as mock_ship, \
                     mock.patch.object(sync, "ci_path_filter", return_value=["scripts/**"]), \
                     mock.patch.object(sync, "wait_own_ci", return_value=state) as mock_wait:
-                self.assertEqual(sync.main(["ship", "--release", "my-slug"]), rc, state)
+                self.assertEqual(sync.main(["ship", "--wait-ci", "--release", "my-slug"]), rc, state)
                 mock_ship.assert_called_once_with(Path("."), release_slug="my-slug", after_slug=None)
                 self.assertEqual(mock_wait.call_args[0][0], self.pushed)
                 self.assertEqual(mock_wait.call_args[1]["globs"], ["scripts/**"])
         self.assertEqual(sync.CI_RED_EXIT, 3)
+
+    def test_ship_returns_without_the_ci_wait_by_default_and_ci_verb_waits_later(self):
+        """B8 (2026-10-28): the 10-minute CI poll is opt-in on ship; `sync.py ci` does it for the last pushed sha."""
+        with tempfile.TemporaryDirectory() as td, mock.patch.object(sync, "toplevel", return_value=Path(td)),                 mock.patch.object(sync, "run_host_health"), mock.patch.object(sync, "ship", return_value=self.pushed),                 mock.patch.object(sync, "write_last_pushed") as mock_save,                 mock.patch.object(sync, "ci_path_filter", return_value=None),                 mock.patch.object(sync, "wait_own_ci", return_value="red") as mock_wait:
+            self.assertEqual(sync.main(["ship"]), 0)
+            mock_wait.assert_not_called()
+            mock_save.assert_called_once()
+            with mock.patch.dict(os.environ, {"SYNC_WAIT_CI": "1"}):
+                self.assertEqual(sync.main(["ship"]), sync.CI_RED_EXIT)
+            self.assertEqual(mock_wait.call_count, 1)
+            with mock.patch.object(sync, "read_last_pushed", return_value=self.pushed):
+                self.assertEqual(sync.main(["ci"]), sync.CI_RED_EXIT)
+            self.assertEqual(mock_wait.call_args[0][0], self.pushed)
+            self.assertEqual(sync.main(["ci", "abcdef12"]), sync.CI_RED_EXIT)
+            self.assertEqual(mock_wait.call_args[0][0].sha, "abcdef12")
+            with mock.patch.object(sync, "read_last_pushed", return_value=None):
+                self.assertEqual(sync.main(["ci"]), 1)    # nothing pushed from this tree and no sha given
+
+    def test_last_pushed_sha_round_trips_through_the_git_dir(self):
+        with tempfile.TemporaryDirectory() as td:
+            subprocess.run(["git", "init", "-q", td], check=True)
+            self.assertIsNone(sync.read_last_pushed(td))
+            sync.write_last_pushed(td, self.pushed)
+            self.assertEqual(sync.read_last_pushed(td), self.pushed)
 
     def test_no_ci_wait_flag_env_and_a_ship_that_pushed_nothing_skip_the_wait(self):
         with mock.patch.object(sync, "toplevel", return_value=Path(".")), mock.patch.object(sync, "run_host_health"), \
@@ -1622,12 +1808,84 @@ class OwnCiWaitTest(unittest.TestCase):
         self.assertIn("--no-ci-wait", codex_run.SHIP_ARGS)
 
 
+class ShipResultFlagTest(unittest.TestCase):
+    """`ship --result` commits the tree's uncommitted files with a Result: body line (planner finding, 2026-10-28)."""
+
+    def make_repo(self, td):
+        g = lambda *a: subprocess.run(["git", "-C", td, *a], check=True, capture_output=True, text=True).stdout
+        g("init", "-q")
+        g("config", "user.email", "t@t")
+        g("config", "user.name", "t")
+        (Path(td) / "a.txt").write_text("one", encoding="utf-8")
+        g("add", "-A")
+        g("commit", "-q", "-m", "base")
+        g("update-ref", f"refs/remotes/origin/{sync.TRUNK}", "HEAD")
+        return g
+
+    def test_commit_pending_writes_the_result_line_and_takes_new_and_changed_files(self):
+        with tempfile.TemporaryDirectory() as td:
+            g = self.make_repo(td)
+            (Path(td) / "a.txt").write_text("two", encoding="utf-8")
+            (Path(td) / "b.txt").write_text("new", encoding="utf-8")
+            self.assertEqual(sync.commit_pending(td, "ships in 40 s", "planner: card edits"), 2)
+            msg = g("log", "-1", "--format=%B")
+            self.assertTrue(msg.startswith("planner: card edits"))
+            self.assertIn("Result: ships in 40 s", msg)
+            self.assertEqual(g("status", "--short").strip(), "")
+            self.assertEqual(sync.commit_pending(td, "x"), 0)       # clean tree: nothing to commit
+            with self.assertRaises(sync.SyncError):
+                sync.commit_pending(td, "  ")
+
+    def test_stage_layers_commits_a_modified_layers_md_only(self):
+        with tempfile.TemporaryDirectory() as td:
+            g = self.make_repo(td)
+            f = Path(td) / sync.LAYERS_REL
+            f.parent.mkdir(parents=True)
+            f.write_text("a", encoding="utf-8")
+            g("add", "-A")
+            g("commit", "-q", "-m", "layers")
+            self.assertFalse(sync.stage_layers(td))      # unchanged: nothing
+            f.write_text("b", encoding="utf-8")
+            (Path(td) / "other.txt").write_text("x", encoding="utf-8")
+            self.assertTrue(sync.stage_layers(td))
+            self.assertIn("Result:", g("log", "-1", "--format=%B"))
+            self.assertEqual(g("status", "--short", "--", sync.LAYERS_REL).strip(), "")
+            self.assertIn("other.txt", g("status", "--short"))   # unrelated file untouched
+
+    def test_cli_result_commits_before_ship_and_m_without_result_is_refused(self):
+        with mock.patch.object(sync, "toplevel", return_value=Path(".")), mock.patch.object(sync, "run_host_health"),                 mock.patch.object(sync, "ship", return_value=None) as mock_ship,                 mock.patch.object(sync, "commit_pending", return_value=1) as mock_commit:
+            self.assertEqual(sync.main(["ship", "--result", "it works", "-m", "subj"]), 0)
+            mock_commit.assert_called_once_with(Path("."), "it works", "subj")
+            mock_ship.assert_called_once_with(Path("."), release_slug=None, after_slug=None)
+            with contextlib.redirect_stderr(io.StringIO()):
+                self.assertEqual(sync.main(["ship", "-m", "subj"]), 1)
+
+
 class PARALLEL_MainCheckoutRuleTest(unittest.TestCase):
     def test_rule_present(self):
         doc = Path(__file__).resolve().parents[2] / "MyTradingSys" / "system" / "PARALLEL.md"
         text = doc.read_text(encoding="utf-8")
         for needle in ("Main checkout rule", "never edit", "merge --ff-only origin/fast-track"):
             self.assertIn(needle, text)
+
+
+class GitNetTimeoutTest(unittest.TestCase):
+    def test_network_verb_gets_a_deadline_and_a_timeout_line(self):
+        seen = {}
+
+        def hang(cmd, **kw):
+            seen.update(kw)
+            raise subprocess.TimeoutExpired(cmd, kw.get("timeout"))
+        with mock.patch.object(sync.subprocess, "run", hang), contextlib.redirect_stderr(io.StringIO()) as err:
+            r = sync.git(".", "fetch", "--quiet", "origin", "fast-track", check=False)
+        self.assertEqual(r.returncode, 124)
+        self.assertEqual(seen.get("timeout"), sync.GIT_NET_TIMEOUT_S)
+        self.assertEqual(seen["env"].get("GIT_TERMINAL_PROMPT"), "0")
+        self.assertIn("TIMEOUT git fetch", err.getvalue())
+        with mock.patch.object(sync.subprocess, "run", hang), contextlib.redirect_stderr(io.StringIO()):
+            with self.assertRaises(sync.SyncError) as e:
+                sync.git(".", "push", "origin", "x")
+        self.assertIn("TIMEOUT git push", str(e.exception))
 
 
 if __name__ == "__main__":

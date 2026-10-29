@@ -1,0 +1,84 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-28T15:50:24Z",
+  "commands": [],
+  "context": {
+    "calls_to_edit": 10,
+    "folded": "2026-10-28T15:50:27Z",
+    "misses": 11,
+    "reads": [
+      "scripts/dev/prereg_gate.py",
+      "MyTradingSys/research/gross_effect_screen_2026-10-15/PRE_REG.md",
+      "scripts/dev/verdicts.py",
+      "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/READ.md"
+    ],
+    "session": "agent-aca8fd589189c042a"
+  },
+  "created": "2026-10-28T12:22:09Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/pre_us_failed_break_2026-10/PRE_REG.md committed alone before any run: concrete level rules, verdicts.py check output pasted, prereg_gate.py --m auto exit 0 (exit 1 = card parked with the output in note)",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Write and freeze PRE_REG.md for the pre-US failed-break short build (levels from S/R + session + ATR, fixed capital scale-in, no stop, S/R limit exits) before any run",
+  "id": "backtest-the-operator-s-pre-us-failed-br",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/pre_us_failed_break_2026-10/PRE_REG.md frozen; verdicts.py check exi",
+      "ref": "e051c4d26",
+      "utc": "2026-10-28T15:50:24Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "gate-fix-1..5: prereg_gate sd/m, mean cost, BLOCKED verdict, count-only ledger rows",
+      "ref": "8f988e38fe10",
+      "utc": "2026-10-18T15:59:53Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-28 ACCEPT (FIX applied once) Link mtf-timeframe-lead-lag-research. Ends: content sha; git cherry origin/fast-track <sha> empty AND git ls-tree shows PRE_REG and the results json SPLIT 2026-10-28: run half is card backtest-pre-us-failed-break-dev-run.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-28T12:29:50Z",
+  "refs": [],
+  "result": "MyTradingSys/research/pre_us_failed_break_2026-10/PRE_REG.md frozen; verdicts.py check exit 0, prereg_gate --m auto exit 0 (m 68, n needed 250)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/pre_us_failed_break_2026-10/PRE_REG.md",
+    "scripts/dev/prereg_gate.py",
+    "scripts/dev/verdicts.py"
+  ],
+  "scope_out": [
+    "no VALIDATION or HOLDOUT read; no live or testnet orders; the 10-28 day stays an anecdote, not a test row"
+  ],
+  "scope_sha": "8f988e38fe10",
+  "size": "M",
+  "sources": [
+    "card note: shots bf4be625432d 3ca8df9aca33 + Deribit testnet tx log (10-28 08:46-12:14 UTC, 17 sells, net ~+0.00041 BTC, OURS)"
+  ],
+  "state": "done",
+  "steps": [
+    "Copy the template research/gross_effect_screen_2026-10-15/PRE_REG.md (read-only) into the new study folder",
+    "Define each level concretely (S/R source, session window, ATR multiple), label each SOURCED or OURS; operator shots are the only source",
+    "Run verdicts.py check and prereg_gate.py --m auto, paste both outputs",
+    "Commit PRE_REG.md alone (the freeze)"
+  ],
+  "taken": "2026-10-28T15:50:24Z",
+  "tests": "docs/gate only: prereg_gate.py exit code recorded in PRE_REG.md; no code, so no fail-first test",
+  "title": "Pre-register the operator's pre-US failed-break short build (rule, levels, PRE_REG frozen)",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}
