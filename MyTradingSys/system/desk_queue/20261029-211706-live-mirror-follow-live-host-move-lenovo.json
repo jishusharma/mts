@@ -1,0 +1,10 @@
+{
+  "done_when": "Lenovo live_mirror.py publish exits 0 and mirror is readable from NUC",
+  "from": "JIS-NUC",
+  "id": "20261029-211706-live-mirror-follow-live-host-move-lenovo",
+  "need": "On DESKTOP-F7IU69N (Lenovo, running the live loop): verify MTS_LIVE_OWNER_DIR is set, run 'python scripts/dev/live_owner.py check', then run 'python scripts/dev/live_mirror.py publish'. Report the command outputs so JIS-NUC can confirm 'live_mirror.py brief' shows LIVE OWNER: DESKTOP-F7IU69N.",
+  "posted": "2026-10-29T21:17:06Z",
+  "status": "pending",
+  "target": "DESKTOP-F7IU69N",
+  "title": "live-mirror-follow-live-host-move-lenovo-publish"
+}
