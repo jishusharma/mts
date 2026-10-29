@@ -14,13 +14,23 @@
   "goal": "Independent reader compares the code with Tom's own words, not our spec's verdicts",
   "id": "wave1-review-item3-engine",
   "lane": "DSA-NUC",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tom-encode-fade-profile-proofs: PROFILE arm of the fade (A-C3 thin top, A-P3 failed P brea",
+      "ref": "d5ac4ffa6f66",
+      "utc": "2026-10-18T12:27:49Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Gemini lane: gemini_queue.py run wave1-review-item3-engine:low (NUC)",
+  "note": "REVIEWED:2026-10-30 ACCEPT (planner-refine-0930 reviewer agent af84b184/a9b47887; weight kept)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-29T21:14:15Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -29,11 +39,12 @@
   "scope_out": [
     "do not read ITEM3_SPIKEFADE_CLASSIFYSTATE.md or the ledger"
   ],
+  "scope_sha": "d5ac4ffa6f66",
   "size": "S",
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md and the quote files it cites"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Read quotes, then code; fill the table"
   ],

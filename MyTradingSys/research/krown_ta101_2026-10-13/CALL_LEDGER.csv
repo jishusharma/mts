@@ -1,0 +1,8 @@
+call_id,date_utc,video_id,instrument,side,trigger,target,hit_rate_stated,split,outcome_stated
+KRN-CALL-001,2026-09-25,OggsnATGbOg,BTC,short,"4h 5/21 EMA death cross",55 EMA (~82650),87% in <=1d; 94% in <=4d,design,hit target within 4d
+KRN-CALL-002,2026-09-25,OggsnATGbOg,BTC,long,"May swing high / 55 EMA retest (~82600-82650)",100000+,66.7% green 3w; 100% green 9w,design,held and bounced
+KRN-CALL-003,2026-10-06,V0gjxlaW2Qk,BTC,long,"Weekly stochastic overbought at 80k-81k",100000+ (+26% median),12 of 13 times (92.3%),design,ongoing expansion
+KRN-CALL-004,2026-10-06,V0gjxlaW2Qk,BTC,long,"Weekly stochastic modern filter (post-2018)",94500-95000 (+17.7% median),100% positive 1m post-2018,design,target reached
+KRN-CALL-005,2026-10-06,V0gjxlaW2Qk,BTC,short,"Daily close below ribbon mid band ($85000)",83000-84000 pullback bounce,conditional on breakdown,check,held above 85k
+KRN-CALL-006,2026-10-07,sCLLZKY_r8g,BTC,long,"Weekly overbought signal triggered 2w prior (~80k-81k)",100000+ (+26% median),12 of 13 times (92.3%),check,expansion towards 100k
+KRN-CALL-007,2026-10-08,ZNvLh3JyOco,BTC,long,"Post-2018 modern weekly overbought filter",94500-95000 (+17.7% median),high median dispersion,check,projected target

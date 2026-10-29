@@ -190,3 +190,55 @@ class StopGuardTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class SupervisorWatcherTest(StopGuardTest):
+    """test_stop_guard_supervisor_watcher: a Supervisor turn may not end with no live watcher or no fresh plan."""
+
+    def setUp(self):
+        super().setUp()
+        import role_loader
+        import supervisor
+        self.rl, self.sup = role_loader, supervisor
+        for k in ("MTS_ROLES_HOME", "MTS_RELAY_HOME", "MTS_STOP_GUARD_HOME"):
+            os.environ[k] = str(self.tmp / k)
+            self.addCleanup(os.environ.pop, k, None)
+        self.rl.mark_injected("sup1", "Supervisor", {"login": "B"}, explicit=True)
+        self.home = self.sup.loop_home()
+        self.home.mkdir(parents=True, exist_ok=True)
+
+    def _plan(self, minutes_ago):
+        from datetime import datetime, timedelta, timezone
+        at = (datetime.now(timezone.utc) - timedelta(minutes=minutes_ago)).strftime("%Y-%m-%dT%H:%MZ")
+        (self.home / "B-last-plan.json").write_text(json.dumps({"at": at}), newline="\n")
+
+    def _watcher(self):
+        from datetime import datetime, timedelta, timezone
+        exp = (datetime.now(timezone.utc) + timedelta(minutes=30)).strftime("%Y-%m-%dT%H:%MZ")
+        (self.home / "B-watcher.json").write_text(json.dumps({"pid": os.getpid(), "expires": exp}), newline="\n")
+
+    def test_blocks_without_watcher_or_plan(self):
+        out = json.loads(self.run_hook(session_id="sup1"))
+        self.assertEqual(out["decision"], "block")
+        self.assertIn("NO WAKE SOURCE", out["reason"])
+        self.assertIn("plan", out["reason"])
+
+    def test_blocks_with_stale_plan_even_when_watcher_lives(self):
+        self._watcher()
+        self._plan(30)
+        self.assertIn("no `supervisor.py plan", self.run_hook(session_id="sup1"))
+
+    def test_allows_with_watcher_and_fresh_plan(self):
+        self._watcher()
+        self._plan(2)
+        self.assertEqual(self.run_hook(session_id="sup1"), "")
+
+    def test_blocks_once_per_state(self):
+        self.assertIn("block", self.run_hook(session_id="sup1"))
+        self.assertEqual(self.run_hook(session_id="sup1"), "")
+
+    def test_other_roles_and_errors_fail_open(self):
+        self.assertEqual(self.run_hook(session_id="not-a-supervisor"), "")
+        self.rl.mark_injected("sup2", "Supervisor", {}, explicit=True)    # login unknown
+        self.assertEqual(self.run_hook(session_id="sup2"), "")
+        self.assertEqual(self.run_hook(session_id="sup1", stop_hook_active=True), "")

@@ -4,31 +4,52 @@
   "commands": [],
   "created": "2026-10-29T17:10:55Z",
   "depends_on": [],
-  "done_when": "A rejected CBP row persists its full extracted quote (or a content hash of it) alongside the truncated reason string, so rejection evidence can be re-examined later.",
-  "est_turns": null,
+  "done_when": "run_once appends a rejected row whose reason holds the full (<=400 char) bad quote; test_cbp_build_row.py exits 0 and is listed in run_extra_tests.py; shipped, cherry empty",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Noticed by Session_Planner (2026-10-29), while refining cbp-quote-gate-rejected-habib-hymqmefcgr: CBP's build_row discards the LLM's full extracted quote on rejection, keeping only a 60-char truncated fragment.",
+  "goal": "On a quote-gate rejection cbp_run.build_row returns only a 60-char fragment of the bad quote; keep the full extracted quote (capped 400 chars) in the rejected row so a reviewer can judge it.",
   "id": "cbp-build-row-discards-the-full-extracte",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "gate: run-scoped temp root so test scratch dirs no longer pile up in %TEMP%",
+      "ref": "5200e38f8c41",
+      "utc": "2026-10-28T16:27:36Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Raw, filed by Supervisor A from a worker's Noticed: line, not yet refined.",
+  "note": "REVIEWED:2026-10-30 T0-ONLY (planner-refine-0930; OURS ROUTINE: CBP bookkeeping text, no verdict). Twin check: cbp-quote-gate-rejected-habib-hymqmefcgr is a data row, not this code.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-29T21:12:23Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/cbp_run.py",
+    "scripts/dev/test_cbp_build_row.py",
+    "scripts/dev/run_extra_tests.py"
+  ],
+  "scope_out": [
+    "quote gate rules in verify_extract_quotes; the stored row schema of accepted rows; re-running past rejections"
+  ],
+  "scope_sha": "5200e38f8c41",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "In cbp_run.build_row (line 154) put the full bad quote (strip, first 400 chars) in the reason: \"quote not in transcript: <full>\"",
+    "Add scripts/dev/test_cbp_build_row.py: a 150-char fabricated quote is rejected and the reason contains all 150 chars; list it in run_extra_tests.py",
+    "python scripts/dev/test_cbp_build_row.py and the cbp tests"
+  ],
+  "tests": "scripts/dev/test_cbp_build_row.py::test_rejected_reason_keeps_full_quote fails on the old [:60] code, passes after",
   "title": "CBP build_row discards the full extracted quote on rejection, keeping only a 60-char fragment",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

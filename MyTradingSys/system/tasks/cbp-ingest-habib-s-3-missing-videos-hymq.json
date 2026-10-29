@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-29T21:14:26Z",
   "commands": [
     "python scripts/dev/fetch_captions_timed.py --analyst habib --canonical-out <CBP_HOME>/raw_transcripts_canonical hymqmEfCGrw R15Ao0XUoV8 c9qf7QJroAE",
     "python -c \"import sys;sys.path.insert(0,'MyTradingSys');import cbp;d=cbp.load();print(len([r for r in d['rows'] if r['analyst']=='habib']),'habib rows')\""
@@ -29,6 +31,12 @@
   "lane": "DSA",
   "latest": [
     {
+      "kind": "ship",
+      "line": "3 rows added to CBP store (c9qf7QJroAE, hymqmEfCGrw, R15Ao0XUoV8), all quote_verified True",
+      "ref": "29450d1ef",
+      "utc": "2026-10-29T21:14:26Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "cbp.query: normalise symbol aliases (BTCUSDT, btc-perpetual -> BTC)",
@@ -45,7 +53,12 @@
   "refined_by": "",
   "refreshed": "2026-10-28T15:01:13Z",
   "refs": [],
-  "result": "",
+  "result": "3 rows added to CBP store (c9qf7QJroAE, hymqmEfCGrw, R15Ao0XUoV8), all quote_verified True",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/fetch_captions_timed.py",
     "scripts/dev/cbp_run.py",
@@ -61,7 +74,7 @@
     "note: Discord #trading-updates evidence 2026-10-28 (Habib's 3 posts, CBP store had 0 rows)",
     "scripts/dev/cbp_run.py (WINDOW_DAYS/local_videos cutoff; fetch_captions_timed.py videos positional arg)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Fetch the 3 raw transcripts directly: python scripts/dev/fetch_captions_timed.py --analyst habib --canonical-out <CBP_HOME>/raw_transcripts_canonical hymqmEfCGrw R15Ao0XUoV8 c9qf7QJroAE (positional video ids skip the --channel/--since filtering; add --cookies <CBP_HOME>/cookies_utube_1.txt if present). CBP_HOME = env CBP_HOME, else F:/CryptoScrapper, else cbp.default_cbp_home().",
     "cbp_run.py's local_videos(cutoff) also drops anything published before now-5d, so a plain --force run still skips c9qf7QJroAE (6 days old).",
@@ -69,6 +82,7 @@
     "Verify with the row-count command below that habib has exactly 3 new rows, each quote_verified true.",
     "tasks.py done cbp-ingest-habib-s-3-missing-videos-hymq --result '<n> rows added'; ship."
   ],
+  "taken": "2026-10-29T21:08:57Z",
   "tests": "",
   "title": "CBP: ingest Habib's 3 missing videos (hymqmEfCGrw, R15Ao0XUoV8, c9qf7QJroAE)",
   "weight": "ROUTINE",
