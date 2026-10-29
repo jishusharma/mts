@@ -216,6 +216,11 @@ class TestComputeStoch(unittest.TestCase):
             self.assertTrue(v.get("source"), k)
         self.assertIs(p["enabled"]["value"], False)
         self.assertEqual(p["bands"]["value"], [[9, 3], [14, 3], [40, 4], [60, 10]])
+        self.assertEqual(p["bands"]["label"], "OURS")
+        self.assertTrue("bands_labels" in p["bands"])
+        labels = [item["label"] for item in p["bands"]["bands_labels"]]
+        self.assertEqual(labels, ["SOURCED", "SOURCED", "OURS", "SOURCED"])
+        self.assertIn("(44,4)", p["bands"]["source"])
         self.assertEqual((p["level_lo"]["value"], p["level_hi"]["value"]), (20, 80))
         self.assertEqual(p["rsi_bands"]["label"], "OPERATOR-HYPOTHESIS")
 

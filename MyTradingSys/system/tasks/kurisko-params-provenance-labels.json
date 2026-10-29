@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-29T22:58:09Z",
   "commands": [],
   "created": "2026-10-19T04:55:23Z",
   "depends_on": [],
@@ -13,6 +15,12 @@
   "id": "kurisko-params-provenance-labels",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Separate sourced lookbacks from adopted smoothing/role defaults in kurisko_default.json; r",
+      "ref": "54a14e351",
+      "utc": "2026-10-29T22:58:09Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +47,12 @@
   "refs": [
     "MyTradingSys/research/layer_lab/reports/2026-10-19_kurisko-module-crossvendor-review.md"
   ],
-  "result": "",
+  "result": "Separate sourced lookbacks from adopted smoothing/role defaults in kurisko_default.json; reconcile sensitivity tuple to (44,4); all numeric default values unchanged; test_quad_rotation passes; review mismatch rows answered.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/kurisko/params/kurisko_default.json",
     "MyTradingSys/backtest/layers/kurisko/test_quad_rotation.py",
@@ -55,12 +68,13 @@
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-19_kurisko-module-crossvendor-review.md:18-19,53"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read review rows 18-19 and KURISKO_SPEC section 5 row 1; grep every reader of params['bands'] and its 'label' (quad_rotation.py, tests).",
     "Edit label/source text only: if nothing reads 'label' as an enum use a label string naming both; else add a sibling key bands_labels and leave 'bands' untouched. Pick the (44,x) tuple the spec documents and say so in the source text.",
     "Add the test: loading the params returns bands == [[9,3],[14,3],[40,4],[60,10]] and the label text names both SOURCED and OURS."
   ],
+  "taken": "2026-10-29T22:56:51Z",
   "tests": "scripts: MyTradingSys/backtest/layers/kurisko/test_quad_rotation.py new test: params bands values equal [[9,3],[14,3],[40,4],[60,10]] and labels split; fails before the label split.",
   "title": "Kurisko: separate sourced periods from OURS smoothing defaults and reconcile sensitivity tuple",
   "weight": "IMPORTANT",

@@ -53,3 +53,8 @@ Existing suite: **28 passed in 0.07s**. The fixture's first raw value is 200/3 a
 `kurisko-params-provenance-labels`: correct combined SOURCED attribution and reconcile (44,3)/(44,4) documentation while preserving all deployed/default numerical values. No implementation rewrite, additional trial or strategy validation is implied.
 
 This review covers the requested code, params, FORMULAS section 24, source spec, quote-gated extract, prior review, golden generator/CSV, and tests. It does not verify profitability, source-video pixels, actual trading fills or newly inferred parameters. No source edits were made, and no accepted trust tag or live promotion was issued. The executor supplies a separate upstream delivery receipt.
+
+
+### Resolution (2026-10-30, card kurisko-params-provenance-labels)
+- **SOURCED vs OURS band defaults (MISMATCH row 18):** RESOLVED. `params/kurisko_default.json` bands tuple marked `OURS` overall with explicit per-band provenance breakdown via `bands_labels`: bands [9,3], [14,3], and [60,10] are `SOURCED`; band [40,4] has lookback 40 `SOURCED` and smoothing `d=4` labelled `OURS` (adopted default from slide S4). All numeric values preserved unchanged.
+- **Sensitivity tuple (MISMATCH row 19):** RESOLVED. Source text in `kurisko_default.json` reconciled to `(44,4)` matching KURISKO_SPEC section 5 row 1 as a sensitivity run in the ledger.
