@@ -1,0 +1,55 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-29T01:51:47Z",
+  "depends_on": [],
+  "done_when": "8 bullets render on the live page with labels; tests pass and each break mode fails one; Artifact republished",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "In-trade block on live_aid.html, short bullets labelled SOURCED/OURS/NOT_IN_DATA: supports/DOM, VWAP distance+test, divergences (RSI/CVD/delta/OI), squeeze read (price vs OI), CVD vs delta, stay confidence, stay-vs-reduce as OURS rules fixed before data. Full list: tools/live_aid/STEPS.md backlog row.",
+  "id": "live-aid-in-trade-panel",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "live aid: WaveTrend parameters labelled OURS (his chart settings unknown)",
+      "ref": "c8a99ae201ab",
+      "utc": "2026-10-28T20:19:47Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "CONFLICT to settle before item 8: the live-aid brief forbids sizing advice; 'how much to reduce' must stay a descriptive OURS rule readout (e.g. 'rule R: 2 of 3 flags against = reduce-rule met'), never a size number, unless the operator overrides the constraint.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-29T01:52:33Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/"
+  ],
+  "scope_out": [
+    "orders, order buttons, live tree, account data in the repo"
+  ],
+  "scope_sha": "c8a99ae201ab",
+  "size": "M",
+  "sources": [
+    "Eagle_Eyes relay 2026-10-29 (local_6cd8cb7e)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Feeds: Deribit public trades (CVD, net delta), OI from ticker open_interest, book.BTC-PERPETUAL for DOM; each failure = NOT_IN_DATA + error",
+    "Fixed OURS rules for divergence, squeeze and confidence written in STEPS.md before any data is looked at",
+    "Tests fail first per item (test_live_aid.py LIVE_AID_BREAK modes)"
+  ],
+  "tests": "python -m pytest MyTradingSys/tools/live_aid/test_live_aid.py -q",
+  "title": "live aid: in-trade panel (supports, DOM, VWAP test, divergences, squeeze, CVD vs delta, stay confidence)",
+  "weight": "",
+  "worker": "session"
+}
