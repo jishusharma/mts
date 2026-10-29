@@ -13,34 +13,53 @@
   "created": "2026-10-28T13:52:21Z",
   "depends_on": [],
   "done_when": "aibridge_health.py prints installed 0.7.2 = running agent 0.7.2 = trunk 0.7.2 with no WARN line, and the Chrome panel shows 0.7.2 after the reload",
-  "est_turns": null,
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "id": "aibridge-072-desktop-install",
   "goal": "Put bridge 0.7.2 (B196 post-gate draft keep, hands-free fix, version guard) on the desktop F:/AIBridge and into the running Chrome extension. The desktop copy is still 0.7.1 and Chrome still runs the pre-B196 extension until the reload.",
+  "id": "aibridge-072-desktop-install",
   "kind": "run",
   "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "AIBridge 0.7.2: version guard, desktop version check (B196 shipped unbumped)",
+      "ref": "5bb07ccc6df5",
+      "utc": "2026-10-28T13:57:15Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Supersedes desk row 20261026-200004 (chrome reload, target OPERATOR). DSA round trip (desk.py post --target DSA) is still NOT_CHECKED: needs a live DeepSeek chat. Do not run DSA on the NUC; it restarts on the Lenovo.",
+  "note": "DECISION (OURS) 2026-10-29: run-and-report on JIS-NB via desk task (desk.py post --target DSA-NB), not a builder; Chrome reload is the only operator step, listed OPERATOR-ONLY, card does not wait on it. Supersedes desk row 20261026-200004.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-29T17:07:43Z",
   "refs": [
     "MyTradingSys/system/tasks/aibridge-version-not-bumped.json",
     "MyTradingSys/system/OPERATOR_DECISIONS.md#d-dsa-bridge-version-bump-always"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/aibridge_install.py"
+  ],
+  "scope_out": [
+    "product code; DSA round trip on the NUC; live tree"
+  ],
+  "scope_sha": "5bb07ccc6df5",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
+  "state": "ready",
+  "steps": [
+    "On JIS-NB (desk task, not a builder): merge origin/fast-track in the bridge worktree, run aibridge_install.py F:/AIBridge --restart-agent, then aibridge_health.py",
+    "Operator-by-hand only: chrome://extensions AIBridge Reload per profile, F5 the DSA chat tab (agents cannot click Chrome); queue as one OPERATOR-ONLY line, do not wait",
+    "Run aibridge_verify.py F:/AIBridge and paste its output in the desk result"
+  ],
   "tests": "python -m pytest MyTradingSys/tests/test_aibridge_version_bump.py MyTradingSys/tests/test_aibridge_install_fresh.py MyTradingSys/tests/test_aibridge_payload.py",
   "title": "AIBridge 0.7.2 on the desktop: install, reload Chrome, verify",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

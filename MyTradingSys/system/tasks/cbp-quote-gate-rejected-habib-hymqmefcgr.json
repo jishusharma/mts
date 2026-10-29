@@ -4,31 +4,40 @@
   "commands": [],
   "created": "2026-10-29T02:01:25Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "test_verify_extract_quotes.py new case fails before, passes after; or card dropped with the mismatch evidence in note",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Find why verify_extract_quotes rejected a Habib hymqmEfCGrw row that the transcript supports (quarterly pivot 78k) and fix the gate or the row.",
   "id": "cbp-quote-gate-rejected-habib-hymqmefcgr",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "HOLD-UNTIL desk 20261029-170046 (target DSA) result is pasted here; stamp then (reviewer ACCEPT 2026-10-29). If no result by 2026-10-31 drop the card. DECISION (OURS).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/verify_extract_quotes.py",
+    "scripts/dev/test_verify_extract_quotes.py"
+  ],
+  "scope_out": [
+    "CBP store contents; rows.json edits"
+  ],
+  "size": "S",
   "sources": [],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Read desk result 20261029-170046 (rejected triple + 500 chars of transcript around quarterly pivot)",
+    "Compare the rejected quote to the transcript text: normalisation gap (punctuation, case, whitespace) vs a real mismatch",
+    "If gap: fix the normaliser and add the fail-first case from the pasted pair; if real mismatch: no code, drop card with the reason"
+  ],
+  "tests": "scripts/dev/test_verify_extract_quotes.py new case with the desk-pasted pair fails on current code",
   "title": "CBP quote gate rejected Habib hymqmEfCGrw row that the transcript supports",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "agent"
 }

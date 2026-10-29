@@ -4,35 +4,47 @@
   "commands": [],
   "created": "2026-10-28T19:45:05Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "4 concurrent runs of the 5 tests pass 3 times in a row; python scripts/dev/run_all_tests.py --quick green; shipped, cherry empty",
+  "est_turns": 30,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "The 5 listed tests pass when 4+ ships share JIS-NB (45 s fetch/step timeouts), not only alone.",
   "id": "gate-flakes-under-load-test-lease-py-tes",
   "kind": "build",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "not_twin_of": [
+    "trunk-lag-test-fails-under-full-load"
+  ],
+  "note": "HOLD-UNTIL desk 20261029-170405 result is pasted here (no stamp until then, so not dispatchable). Fallback if no repro by 2026-10-31: scale the 45 s timeouts by env var in the 5 tests and verify with 4 parallel runs. DECISION (OURS) 2026-10-29. Reviewer: scope/est fine.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/test_trunk_lag.py",
+    "scripts/dev/test_soak_six_slots.py",
+    "scripts/dev/test_mts_signal.py",
+    "scripts/dev/test_gate_impact.py",
+    "MyTradingSys/tests/test_lease.py"
+  ],
+  "scope_out": [
+    "gate logic in run_all_tests.py; live tree; lowering test coverage"
+  ],
+  "size": "M",
   "sources": [],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Wait for desk 20261029-170405 (DSA repro of 4+ concurrent ships with tracebacks); read its result in the card note, do not rerun it",
+    "Per test, make git fetch/step timeouts injectable or env-scaled (like T.git_timeout in test_trunk_lag.py) and use --no-fetch where the test is not about fetch",
+    "Re-run the 5 tests under 4 parallel runs; all green 3 times"
+  ],
+  "tests": "Under 4 parallel runs the 5 tests fail on current code (repro by desk) and pass after the change",
   "title": "gate flakes under load: test_lease.py, test_trunk_lag.py, test_soak_six_slots.py, test_mts_signal.py, test_gate_impact.py fail on 45 s git fetch / step timeouts when 4+ ships share JIS-NB (all pass alone); 3 ships of live-aid-design failed this way 2026-10-28",
-  "weight": "",
-  "worker": "",
-  "not_twin_of": [
-    "trunk-lag-test-fails-under-full-load"
-  ]
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
