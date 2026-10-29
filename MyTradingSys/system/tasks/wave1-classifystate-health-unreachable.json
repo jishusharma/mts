@@ -17,7 +17,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS) 2026-10-30: parked; split into (a) health rule vs Tom quote and (b) below_val long-only; scope_in must add SetupCandidatesCriticalWave1Test, SpikeFadeCriticalWave1Test and the AUDIT.md quote file.",
+  "note": "DECISION (OURS) 2026-10-30: parked; split into (a) health rule vs Tom quote and (b) below_val long-only; scope_in must add SetupCandidatesCriticalWave1Test, SpikeFadeCriticalWave1Test and the AUDIT.md quote file. | PLANNER 2026-10-30 SKIPPED: needs a chosen volume/liquidity field from the snapshot as the health test (OURS rule, TOM_LAYER_V2_SPEC s6 CHANGE row) and live SetupCandidatesBuilder; overlaps the Tom layer v2 build, so decide there first.",
   "prio": 2,
   "refine_tries": 1,
   "refined_by": "",

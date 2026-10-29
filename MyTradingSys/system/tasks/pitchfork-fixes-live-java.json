@@ -1,50 +1,68 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "mvn -q test -Dtest=PitchforkSignalLayerTest",
+    "python scripts/dev/sync.py ship --result \"pitchfork F3/F6/F7/F9 java parity\" -m \"PitchforkSignalLayer review fixes\""
+  ],
   "created": "2026-10-28T16:07:50Z",
   "depends_on": [],
-  "done_when": "PF-REV emits no bounce when ML was reached after P2 or triplet older than 60 bars; inverted-fork picks the correct tine; F7/F9 labels asserted; mvn test green; CRITICAL review session approves plan and diff; shipped, cherry empty",
+  "done_when": "PF-REV emits no bounce when ML reached after P2 or triplet older than 60 bars; inverted fork picks the P2 tine; F7/F9 labels asserted; mvn test PitchforkSignalLayerTest green and new cases fail on old code; CRITICAL review approves; shipped, cherry empty",
   "est_turns": 30,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
   "goal": "Port Python parity into PitchforkSignalLayer.java: F3 PF-REV bounce needs not hasReachedMl and triplet age <= 60 bars, F6 tine by p2_is_lower, F7/F9 OURS labels. Built in a worktree; never deployed by the builder.",
   "id": "pitchfork-fixes-live-java",
-  "lane": "SONNET",
+  "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "pitchfork: integrate sim_desk plugin, Java Hagopian + B070 netRR + 1m proof, live wiring, ",
+      "ref": "60cda535ecec",
+      "utc": "2026-10-28T10:11:22Z"
+    }
+  ],
   "layers": [
     "pitchfork"
   ],
-  "live_path": false,
+  "live_path": true,
   "mutation_check": "",
   "not_twin_of": [
-    "pitchfork-review-fixes-2026-10-28"
+    "pitchfork-review-fixes-2026-10-28",
+    "pitchfork-engine-implement-hagopian-fail"
   ],
-  "note": "DECISION (OURS) 2026-10-30: parked; add the F3 step, name the new Java test class and move lane to JIS-NB (live_path) before dispatch.",
+  "note": "REVIEWED:2026-10-30 ACCEPT (reviewer Agent, FIX lines applied) Filled 2026-10-30 by planner: live_path true (review L41: PF-* reaches live candidate list via -Dmts.pitchfork=true), lane JIS-NB. Deploy/JVM restart by coordinator only (DEPLOY_RUNBOOK s2).",
   "prio": 2,
   "refine_tries": 2,
   "refined_by": "",
+  "refreshed": "2026-10-29T22:04:02Z",
   "refs": [
     "MyTradingSys/research/pitchfork_2026-10-19/OPUS_E2E_REVIEW_2026-10-28.md"
   ],
   "result": "",
   "scope_in": [
     "src/main/java/datafeed/PitchforkSignalLayer.java",
-    "src/test/java"
+    "src/test/java/datafeed/PitchforkSignalLayerTest.java"
   ],
   "scope_out": [
     "deploy; restart; the live tree; HALT files; changing the -Dmts.pitchfork flag"
   ],
+  "scope_sha": "60cda535ecec",
   "size": "M",
   "sources": [
-    "MyTradingSys/research/pitchfork_2026-10-19/OPUS_E2E_REVIEW_2026-10-28.md"
+    "MyTradingSys/research/pitchfork_2026-10-19/OPUS_E2E_REVIEW_2026-10-28.md:23-29,41"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
-    "F6: in PitchforkSignalLayer.java pick the tine by p2_is_lower as the Python desk scanner does; add the inverted-fork test",
-    "F7/F9: apply the OURS labels from OPUS_E2E_REVIEW_2026-10-28.md in the layer's reason strings; test asserts the labels"
+    "F3 in PitchforkSignalLayer.java (~L442-511): PF-REV bounce branch returns no candidate when hasReachedMl is true or (n4h-1 - p2.index) > 60 bars (OURS: p2.index stands in for Python's p2_confirm_bar; label it OURS).",
+    "F6: PF-REV tine/entry chosen by pf.p2IsLower (UML vs LML through P2), not by name; keep isLong = !p2.isHigh; match Python desk scanner :494,498.",
+    "F7/F9: add OURS labels (stop = close not bar extreme; TIGHT_POC 0.75%, wick 0.5, 20-bar window, RR 1.5, net 1.4, score 95/85/75, PF-REV stop 1.5%) in reason strings/comments; note P-02 not implemented.",
+    "New tests in PitchforkSignalLayerTest.java: stale-triplet and reached-ML cases emit no PF-REV (must fail on old code); inverted-fork tine; flag-off unchanged; null/short kline input fails closed (empty list).",
+    "mvn -q test -Dtest=PitchforkSignalLayerTest, then request CRITICAL REVIEW (plan, diff) per session_planner_details.md; builder never deploys or touches -Dmts.pitchfork."
   ],
-  "tests": "Java test: stale triplet and reached-ML bounce emit no candidate (fails on old code); inverted-fork tine test; restart/API-error tests",
+  "tests": "PitchforkSignalLayerTest: stale triplet and reached-ML bounce emit no candidate (fails on old code); inverted-fork tine; restart/short-input/API-error cases fail closed",
   "title": "Pitchfork live Java review fixes: F3 stale-bounce gate parity, F6 inverted-fork tine, F7/F9 labels",
   "weight": "CRITICAL",
   "worker": "session"

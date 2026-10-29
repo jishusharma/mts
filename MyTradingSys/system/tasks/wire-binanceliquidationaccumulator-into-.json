@@ -1,34 +1,77 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "mvn -q test -Dtest=LiquidationLogWiringTest+LiquidationEventLogTest",
+    "python scripts/dev/sync.py ship --result \"liq accumulator wired into statemachine JVM\" -m \"wire BinanceLiquidationAccumulator into Main statemachine\""
+  ],
   "created": "2026-10-29T21:54:23Z",
   "depends_on": [],
-  "done_when": "The process the Lenovo live loop actually runs (start-trading-day.ps1 launches `datafeed.Main statemachine BTCUSDT`, supervised by loop-supervisor.ps1) constructs and connects a BinanceLiquidationAccumulator for BTCUSDT (and ETHUSDT if chosen), so runtime_data/liq_events/BTCUSDT.jsonl is created and grows after a JVM restart; a test fails on the pre-change code (statemachine path has no accumulator) and passes after; the feed never blocks on the log; LIQ_DEPLOY.md steps 4-5 are corrected to match.",
-  "est_turns": null,
+  "done_when": "After a JVM restart, runtime_data/liq_events/BTCUSDT.jsonl exists and grows (checked within 30 min by a coordinator); LiquidationLogWiringTest passes (fails on pre-change Main); mvn -q test green; LIQ_DEPLOY.md steps 4-5 name the statemachine JVM. Verify: git cherry origin/fast-track <sha> empty and ls-tree shows the 3 files.",
+  "est_turns": 14,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Supervisor A ran the operator-approved liq-event-log deploy (a0704527f, LIQ_DEPLOY.md) on C:\\MTS\\mts-live as a selective checkout (3 files, _state.json backed up to runtime_data/deploy_backup/20261029T201716Z, mvn compile ok, LiquidationEventLogTest 5/5). Before the JVM restart step it found that restarting cannot produce liq_events: on both the live tree and origin/green/fast-track, `new BinanceLiquidationAccumulator` appears only in Scheduler.java (scheduler mode). The live loop runs statemachine mode (Main.java -> StateCodeEmitter, no accumulator) plus one-shot snapshot calls; nothing runs scheduler mode. Every day without wiring is unrecorded forceOrder data (H3 has no REST backfill).",
+  "goal": "Option (a): Main's statemachine branch constructs+connects a BinanceLiquidationAccumulator (BTCUSDT, ETHUSDT) next to StateCodeEmitter. Why not (b): start-trading-day.ps1:434 kills ALL java.exe each loop restart and loop-supervisor.ps1:149 tracks only 'statemachine'.",
   "id": "wire-binanceliquidationaccumulator-into-",
-  "lane": "",
+  "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Add Lenovo deploy steps for the liquidation event log",
+      "ref": "8b81377d7aaa",
+      "utc": "2026-10-29T18:43:33Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "8b81377d7aaa Add Lenovo deploy steps for the liquidation event log",
+      "ref": "MyTradingSys/research/nuc_restart_2026-10-28/LIQ_DEPLOY.md",
+      "utc": "2026-10-29T18:43:33Z"
+    }
+  ],
   "layers": [],
   "live_path": true,
   "mutation_check": "",
-  "note": "Raw, filed by Supervisor A. Options for the refiner: (a) construct+connect the accumulator inside the statemachine branch of Main.java alongside StateCodeEmitter; (b) a separate light `liqlog` mode JVM launched by start-trading-day.ps1 and watched by loop-supervisor.ps1. (a) changes the one JVM the live loop already supervises; (b) adds a process. JVM restart then needs a window with no open position_manager trades. Live tree currently has the 3 a0704527f files staged (inert: nothing constructs the class). Broadcasts b-466106/b-d564be acked told with this blocker.",
+  "note": "REVIEWED:2026-10-30 ACCEPT (reviewer Agent, FIX lines applied) Deploy is NOT part of this card: JVM restart only in a window with no open position_manager trades, done by a coordinator per DEPLOY_RUNBOOK.md section 2 (src/main/java row). Cwd for relative runtime_data/liq_events is repo root (start-trading-day.ps1:445 cd $R). Builder never restarts. CRITICAL weight: needs REVIEW session protocol (plan+diff) before ship.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refs": ["MyTradingSys/research/nuc_restart_2026-10-28/LIQ_DEPLOY.md", "src/main/java/datafeed/Main.java", "src/main/java/datafeed/Scheduler.java", "scripts/core/start-trading-day.ps1"],
+  "refreshed": "2026-10-29T22:04:17Z",
+  "refs": [
+    "MyTradingSys/research/nuc_restart_2026-10-28/LIQ_DEPLOY.md",
+    "src/main/java/datafeed/Main.java",
+    "src/main/java/datafeed/Scheduler.java",
+    "scripts/core/start-trading-day.ps1"
+  ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "src/main/java/datafeed/Main.java",
+    "src/test/java/datafeed/LiquidationLogWiringTest.java",
+    "MyTradingSys/research/nuc_restart_2026-10-28/LIQ_DEPLOY.md"
+  ],
+  "scope_out": [
+    "position_manager, auto_trader, HALT files, StateCodeEmitter.java logic, Scheduler.java, BinanceLiquidationAccumulator.java, scripts/core/*.ps1, the live tree and any JVM restart (coordinator only)"
+  ],
+  "scope_sha": "8b81377d7aaa",
+  "size": "S",
+  "sources": [
+    "src/main/java/datafeed/Scheduler.java:27-28 (only construction site)",
+    "scripts/core/start-trading-day.ps1:434,445",
+    "scripts/core/loop-supervisor.ps1:149"
+  ],
+  "state": "ready",
+  "steps": [
+    "Main.java: add package-private static startLiquidationLogs(List<String> syms, Function<String,BinanceLiquidationAccumulator> factory) returning the connected list; each symbol in try/catch(Throwable) so a failure logs one line and never stops the emitter; default call uses syms BTCUSDT,ETHUSDT and new BinanceLiquidationAccumulator(sym).",
+    "Also package-private closeAll(List<BinanceLiquidationAccumulator>) in Main (each shutdown in try/catch).",
+    "Main statemachine branch: call it BEFORE emitter.connectBlocking() (connect() is async, never blocks); keep the list; the existing shutdown hook also calls shutdown() on every accumulator after emitter.shutdown(), each in its own try/catch.",
+    "Test LiquidationLogWiringTest (JUnit like LiquidationEventLogTest): stub factory returns an accumulator subclass overriding connect() and shutdown() (no network) and records constructed symbols -> BTCUSDT and ETHUSDT built; factory throwing for ETHUSDT still returns BTCUSDT and does not throw (feed never blocked); a returned list is shut down by the helper closeAll().",
+    "Run mvn -q test -Dtest=LiquidationLogWiringTest+LiquidationEventLogTest; git stash Main.java change and confirm the new test fails to compile/fails (fail-first), restore.",
+    "Edit LIQ_DEPLOY.md steps 4-5: restart the statemachine JVM via the loop (JVM-restart window with NO open position_manager trades, coordinator-run per DEPLOY_RUNBOOK.md section 2); check BTCUSDT.jsonl and ETHUSDT.jsonl. Note that scheduler mode (Scheduler.java) also writes the same files and must not run alongside."
+  ],
+  "tests": "src/test/java/datafeed/LiquidationLogWiringTest.java: (1) statemachine helper constructs accumulators for BTCUSDT+ETHUSDT (fails pre-change: no helper in Main); (2) a throwing factory never propagates (feed never blocks); (3) closeAll shuts all down. Restart/API-error rule: websocket failure is async in onError/onClose.",
   "title": "Wire BinanceLiquidationAccumulator into the live JVM path: statemachine mode never constructs it, so liq_events never records",
-  "weight": "",
-  "worker": ""
+  "weight": "CRITICAL",
+  "worker": "session"
 }
