@@ -92,4 +92,26 @@ public class LiquidationEventLogTest {
         assertEquals(8, acc.getLogDroppedCount());
         acc.shutdown();
     }
+    @Test
+    void shutdownDrainsAcceptedEventsBeforeReturning(@TempDir Path dir) throws Exception {
+        BinanceLiquidationAccumulator acc = new BinanceLiquidationAccumulator("BTCUSDT", dir);
+        for (int i = 0; i < 200; i++)
+            acc.onMessage(force("BTCUSDT", "SELL", "100", "1", i, i));
+        acc.shutdown();
+        assertEquals(200, lines(dir, "BTCUSDT").size());
+        assertEquals(0, acc.getLogDroppedCount());
+        assertEquals(0, acc.getLogErrorCount());
+    }
+
+    @Test
+    void shutdownCountsAbandonedQueueWhenNoWriterExists(@TempDir Path dir) throws Exception {
+        BinanceLiquidationAccumulator acc = new BinanceLiquidationAccumulator("BTCUSDT", dir, 2, false);
+        acc.onMessage(force("BTCUSDT", "SELL", "100", "1", 1, 1));
+        acc.onMessage(force("BTCUSDT", "SELL", "100", "1", 2, 2));
+        acc.shutdown();
+        assertEquals(2, acc.getLogDroppedCount());
+        acc.shutdown();
+        assertEquals(2, acc.getLogDroppedCount());
+    }
+
 }

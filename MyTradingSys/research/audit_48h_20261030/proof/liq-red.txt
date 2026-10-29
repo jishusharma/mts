@@ -1,0 +1,55 @@
+[Liquidation WS] Raw event (BTCUSDT): {"e":"forceOrder","E":1,"o":{"s":"BTCUSDT","S":"SELL","o":"LIMIT","q":"0.014","p":"9910","ap":"100","X":"FILLED","l":"0.014","z":"1","T":1}}
+[Liquidation WS] Raw event (BTCUSDT): {"result":null,"id":1}
+[Liquidation WS] Parse error (BTCUSDT): Cannot invoke "com.fasterxml.jackson.databind.JsonNode.asText()" because the return value of "com.fasterxml.jackson.databind.JsonNode.get(String)" is null
+[Liquidation WS] Parse error (BTCUSDT): Unrecognized token 'not': was expecting (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
+ at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 1, column: 4]
+[Liquidation WS] Raw event (ETHUSDT): {"e":"forceOrder","E":1,"o":{"s":"ETHUSDT","S":"BUY","o":"LIMIT","q":"0.014","p":"9910","ap":"2500","X":"FILLED","l":"0.014","z":"1","T":1}}
+[Liquidation WS] Raw event (ETHUSDT): {"e":"forceOrder","E":2,"o":{"s":"ETHUSDT","S":"BUY","o":"LIMIT","q":"0.014","p":"9910","ap":"2501","X":"FILLED","l":"0.014","z":"2","T":2}}
+[Liquidation WS] Raw event (BTCUSDT): {"e":"forceOrder","E":1568014460893,"o":{"s":"BTCUSDT","S":"SELL","o":"LIMIT","q":"0.014","p":"9910","ap":"9910.5","X":"FILLED","l":"0.014","z":"0.014","T":1568014460891}}
+[Liquidation WS] Raw event (BTCUSDT): {"e":"forceOrder","E":0,"o":{"s":"BTCUSDT","S":"SELL","o":"LIMIT","q":"0.014","p":"9910","ap":"100","X":"FILLED","l":"0.014","z":"1","T":0}}
+[Liquidation WS] event log (BTCUSDT): log queue full, event dropped
+[Liquidation WS] Raw event (BTCUSDT): {"e":"forceOrder","E":1,"o":{"s":"BTCUSDT","S":"SELL","o":"LIMIT","q":"0.014","p":"9910","ap":"100","X":"FILLED","l":"0.014","z":"1","T":1}}
+[Liquidation WS] event log (BTCUSDT): write failed: java.nio.file.FileAlreadyExistsException: C:\Users\E-NGIN~1\AppData\Local\Temp\junit12920437608993585212\file-not-dir
+[Liquidation WS] Raw event (BTCUSDT): {"e":"forceOrder","E":0,"o":{"s":"BTCUSDT","S":"SELL","o":"LIMIT","q":"0.014","p":"9910","ap":"100","X":"FILLED","l":"0.014","z":"1","T":0}}
+[ERROR] Tests run: 7, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.675 s <<< FAILURE! -- in datafeed.LiquidationEventLogTest
+[ERROR] datafeed.LiquidationEventLogTest.shutdownCountsAbandonedQueueWhenNoWriterExists(Path) -- Time elapsed: 0.272 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <2> but was: <0>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:166)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:161)
+	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:632)
+	at datafeed.LiquidationEventLogTest.shutdownCountsAbandonedQueueWhenNoWriterExists(LiquidationEventLogTest.java:112)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+
+[ERROR] datafeed.LiquidationEventLogTest.shutdownDrainsAcceptedEventsBeforeReturning(Path) -- Time elapsed: 0.054 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <200> but was: <61>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145)
+	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:531)
+	at datafeed.LiquidationEventLogTest.shutdownDrainsAcceptedEventsBeforeReturning(LiquidationEventLogTest.java:101)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+
+[ERROR] Failures: 
+[ERROR]   LiquidationEventLogTest.shutdownCountsAbandonedQueueWhenNoWriterExists:112 expected: <2> but was: <0>
+[ERROR]   LiquidationEventLogTest.shutdownDrainsAcceptedEventsBeforeReturning:101 expected: <200> but was: <61>
+[ERROR] Tests run: 7, Failures: 2, Errors: 0, Skipped: 0
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.2.5:test (default-test) on project BinanceDataFeed: There are test failures.
+[ERROR] 
+[ERROR] Please refer to F:\MTS\mts-jis-nuc-codex-48h-value-audit\target\surefire-reports for the individual test results.
+[ERROR] Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

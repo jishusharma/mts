@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-29T22:47:42Z",
+  "depends_on": [],
+  "done_when": "Cloud verifies the diff and tests; full gate passes before trunk merge.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Drain accepted liquidation log events on shutdown; count abandoned queue entries.",
+  "id": "audit48-liquidation-shutdown-drain",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "IMPLEMENTED; AWAITING CLOUD REVIEW. No deploy or process restart.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "src/main/java/datafeed/BinanceLiquidationAccumulator.java",
+    "src/test/java/datafeed/LiquidationEventLogTest.java"
+  ],
+  "scope_out": [
+    "live tree",
+    "deployment",
+    "process restart"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "active",
+  "steps": [
+    "Run fail-first regression and related tests.",
+    "Cloud independently reviews and verifies before trunk merge."
+  ],
+  "tests": "Maven 7 tests: two regressions fail before repair (61/200 recorded, 0/2 abandoned counted); all seven pass after.",
+  "title": "48h audit: liquidation shutdown interrupts writer before queued events drain",
+  "weight": "CRITICAL",
+  "worker": "session"
+}

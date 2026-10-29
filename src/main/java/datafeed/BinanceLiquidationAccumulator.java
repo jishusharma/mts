@@ -73,7 +73,11 @@ public class BinanceLiquidationAccumulator extends WebSocketClient {
     }
 
     /** Never blocks and never throws: a full queue drops the line and counts it (fail open for the feed). */
-    private void enqueueLog(String line) {
+    private synchronized void enqueueLog(String line) {
+        if (shuttingDown) {
+            logDropped.incrementAndGet();
+            return;
+        }
         if (logQueue.offer(line)) logEnqueued.incrementAndGet();
         else {
             logDropped.incrementAndGet();
@@ -217,10 +221,28 @@ public class BinanceLiquidationAccumulator extends WebSocketClient {
     }
 
     public void shutdown() {
-        shuttingDown = true;
+        synchronized (this) {
+            if (shuttingDown) return;
+            shuttingDown = true; // no new log accepts after this point
+        }
         reconnectExecutor.shutdownNow();
-        if (logWriter != null) logWriter.interrupt();
         close();
+        if (logWriter != null) {
+            try {
+                // Drain accepted events before interrupting the writer. Bounded so a failed disk cannot hang shutdown.
+                if (!awaitLogIdle(5000)) logErr("shutdown drain timed out");
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            } finally {
+                logWriter.interrupt();
+            }
+        }
+        // A disabled/stalled writer must not silently lose the remaining accepted events.
+        int abandoned = 0;
+        while (logQueue.poll() != null) abandoned++;
+        logDropped.addAndGet(abandoned);
+        logDone.addAndGet(abandoned);
+        if (abandoned > 0) logErr("shutdown dropped " + abandoned + " queued events");
     }
 
     public String getSymbol() {
