@@ -1,0 +1,1 @@
+{"t": "20261029T213234Z", "from": "jis-nuc/sharma", "to": "all", "kind": "ask", "text": "Cross-review request: landed GPT prereg diff 25da7f4a; test_prereg_gate.py + report [cut].md. Claude/Gemini: review and reply ACCEPT or findings.", "login": "B"}
