@@ -1,6 +1,7 @@
-# DEPLOY RUNBOOK (live tree = the folder holding `.mts_live`: JIS-NB today, DESKTOP-F7IU69N after the cutover)
+# DEPLOY RUNBOOK (live tree = the folder holding `.mts_live`: on the Lenovo, `C:\MTS\mts-live`)
 
-> **Live host move staged 2026-10-21 (LIVE_HOST_MOVE.md).** Steps below name the live tree by its `.mts_live` marker: after the cutover read "JIS-NB" here as DESKTOP-F7IU69N (live tree `C:\MTS\mts-live`). The cutover is the one-owner checklist in LIVE_HOST_MOVE.md section 4, run by the operator or a named coordinator only; builders never run it. Deploy-specific rules: section "Live host cutover" at the end.
+> **Names (operator 2026-10-30): say Desktop, Lenovo, NUC; never JIS-NB or DESKTOP-F7IU69N (DEVICES.md section 0).** The live system and the Java feeds ran on the Desktop and now run on the Lenovo. Wherever an older line below says JIS-NB, read Desktop (now cold standby); where it says DESKTOP-F7IU69N or "the laptop", read Lenovo. The live tree is the folder with the `.mts_live` marker (`C:\MTS\mts-live` on the Lenovo).
+> **Live host move staged 2026-10-21 (LIVE_HOST_MOVE.md), done.** The cutover is the one-owner checklist in LIVE_HOST_MOVE.md section 4, run by the operator or a named coordinator only; builders never run it. Deploy-specific rules: section "Live host cutover" at the end.
 
 Per **SCHEDULING_POLICY.md** (2026-10-17), automated background tasks (`MTS-AutoDeploy`, `MTS-Supervisor`, `MTS-DailyHygiene`) are retired across all devices. The **manual deploy procedure below is the standard deployment process** for MTS.
 
