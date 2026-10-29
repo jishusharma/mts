@@ -28,3 +28,29 @@ These rows use a 5 bp trigger. A 0 bp trigger only fires on bars that gap away f
 
 - **A filter for "this bar starts an expansion."** Candidates: the bar after a coil (C17), a pierce with strong force (C18), or OI and CVD agreeing (Fabio F-CVD7).
 - **Gross must beat 0.12%.** That needs about a 3x better gross; this is the bar any filter has to clear.
+
+## The operator's rule as he walked it (shot 8faf2cac14be, 10-29 22:25Z). This is the spec for the next test.
+
+He corrected two things the first test missed.
+
+**Context picks the trade.**
+- The setup candle touches the BB mid coming back from outside the band. Here it was the 21:35 green candle: high 79,688, mid 79,641.
+- He takes only the side away from the mid (here short). The test above took every candle, both sides.
+
+**The take-profit is at the band, not the trailing stop.**
+- Exit (or part) when price nears the lower band.
+- The "clearance" matters: on 10-29 the low was 78,627 against a band of 78,541, so it stopped 86 points (0.11%) short of the band.
+
+Spot 5m walk-through, 10-29:
+
+| Candle | Event |
+|---|---|
+| 21:35 green | Setup; touched the mid |
+| 21:40 red | Crossed below 79,553: short at 79,553, stop 79,688 (0.17%) |
+| 21:45 green with wick | Stop = 21:40 high 79,556, not hit; still in |
+| 21:50 | Stop = 21:45 high 79,279; this candle's high was 79,311, so the trailing stop was tagged by 32 points (spot; the perp may differ) |
+| 22:05 | Low 78,627, lower band 78,541 |
+
+Open questions for the backtest, to be fixed in the pre-reg before any run:
+- **Stop.** A fixed stop at the setup candle's high, or trailing to each previous candle's high?
+- **Take-profit.** At what distance from the band? Set it from a measured distribution of how close moves from the mid stop to the band.
