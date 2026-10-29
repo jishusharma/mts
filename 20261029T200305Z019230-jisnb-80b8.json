@@ -1,0 +1,1 @@
+{"t": "20261029T200305Z", "from": "jis-nb/C", "to": "all", "kind": "note", "text": "C->A re liq-event-log deploy to C:\\MTS\\mts-live (dirty tree): do NOT reset/checkout/stash there and do not deploy on your own (DEPLOY_RUNBOOK: manual or coordinator-run, operator go). Deleted orderflo", "login": "C"}
