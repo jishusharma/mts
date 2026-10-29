@@ -82,9 +82,44 @@ class T(unittest.TestCase):
     def test_gpt_row_stale_and_fresh(self):
         d = {"allowance": {"plan": "plus", "window_used": 68.0, "week_used": 29.0}, "at": "2026-10-27T21:29:47Z"}
         r = sb.gpt_row(d, datetime(2026, 10, 28, 12, 0, tzinfo=timezone.utc), "src")
-        self.assertEqual(r[:4], ["GPT (Codex)", "plus", "68%", "29%"])
+        self.assertEqual(r[:2], ["GPT (Codex)", "plus"])
+        self.assertTrue(r[2].startswith("STALE 68% (14.5 h old)"), r[2])
+        self.assertTrue(r[3].startswith("STALE 29%"), r[3])
         self.assertIn("STALE", r[4])
-        self.assertNotIn("STALE", sb.gpt_row(d, datetime(2026, 10, 28, 0, 0, tzinfo=timezone.utc), "src")[4])
+        fresh = sb.gpt_row(d, datetime(2026, 10, 27, 21, 40, tzinfo=timezone.utc), "src")
+        self.assertEqual(fresh[2:4], ["68% (10 min old)", "29% (10 min old)"])
+        self.assertNotIn("STALE", fresh[4])
+
+    def test_gpt_reading_2h_old_is_never_a_plain_percent(self):
+        # 2026-10-30: status printed GPT "36%" from a 2.3 h old codex_usage.json while the allowance was spent
+        d = {"allowance": {"plan": "plus", "window_used": 36.0, "week_used": 29.0}, "at": "2026-10-29T21:15:19Z"}
+        r = sb.gpt_row(d, datetime(2026, 10, 29, 23, 33, tzinfo=timezone.utc), "src")
+        self.assertNotIn(r[2], ("36%", "36.0%"))
+        self.assertIn("STALE", r[2])
+        self.assertIn("STALE", r[3])
+
+    def test_gpt_exhausted_from_usage_flag_and_from_lane_state(self):
+        now = datetime(2026, 10, 29, 23, 33, tzinfo=timezone.utc)
+        d = {"allowance": {"plan": "plus", "window_used": 36.0, "week_used": 29.0}, "at": "2026-10-29T23:30:00Z",
+             "exhausted": {"flag": True, "until": "2026-10-30T02:29:05Z", "why": "x"}}
+        self.assertEqual(sb.gpt_row(d, now, "s")[2:4], ["EXHAUSTED until 2026-10-30T02:29Z"] * 2)
+        lane = {"status": "down", "reason": "window", "until": "2026-10-30T02:29:05Z"}
+        d2 = {"allowance": {"plan": "plus", "window_used": 36.0, "week_used": 29.0}, "at": "2026-10-29T21:15:19Z"}
+        r = sb.gpt_row(d2, now, "s", lane)
+        self.assertEqual(r[2], "EXHAUSTED until 2026-10-30T02:29Z")
+        self.assertIn("lane_state.json", r[5])
+        auth = sb.gpt_row(d2, now, "s", {"status": "down", "reason": "auth", "until": ""})
+        self.assertEqual(auth[2], "EXHAUSTED, reset unknown")
+        after = sb.gpt_row(d2, datetime(2026, 10, 30, 3, 0, tzinfo=timezone.utc), "s", lane)   # reset passed: back to aged numbers
+        self.assertNotIn("EXHAUSTED", after[2])
+        self.assertIn("STALE", after[2])
+
+    def test_budget_rows_carry_age_and_stale(self):
+        b = {"A": ("2110", 26, 91, "2026-11-01T17:00Z"), "B": ("2325", 50, 57, "?")}
+        txt = chr(10).join(sb.fmt_budget(b, 0, 0, 0, 0, datetime(2026, 10, 29, 23, 35, tzinfo=timezone.utc)))
+        self.assertIn("STALE 26% (2.4 h old)", txt)
+        self.assertIn("| B | 50% (10 min old) | 57% (10 min old) | 23:25 (10 min ago)", txt)
+        self.assertEqual(round(sb.hhmm_age_h("2350", datetime(2026, 10, 30, 0, 10, tzinfo=timezone.utc)), 2), 0.33)   # crosses midnight
 
     def test_gemini_not_in_data_and_no_email(self):
         txt = chr(10).join(sb.fmt_gpt_gemini(sb.gpt_row({}, datetime.now(timezone.utc), "s")))

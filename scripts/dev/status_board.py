@@ -21,6 +21,18 @@ REPO = HERE.parent.parent
 sys.path.insert(0, str(HERE))
 ND = "NOT_IN_DATA"
 STUCK_H = 24
+STALE_MIN = 30   # a reading older than this prints as STALE, never as a plain % (operator 2026-10-30: GPT "36%" was 2.3 h old and spent)
+
+
+def age_text(hours):
+    return f"{hours * 60:.0f} min" if hours < 1 else f"{hours:.1f} h"
+
+
+def aged(value, hours):
+    """A number with its age; over STALE_MIN it reads 'STALE <value> (<age> old)'."""
+    if hours is None:
+        return f"{value} (age {ND})"
+    return ("STALE " if hours * 60 > STALE_MIN else "") + f"{value} ({age_text(hours)} old)"
 
 
 def table(headers, rows):
@@ -61,11 +73,26 @@ def parse_budget(text):
     return out
 
 
-def fmt_budget(budget, closed_today, closed_yday, commits_today, commits_yday):
+def hhmm_age_h(hhmm, now):
+    """Hours since a signal line's HHMM (UTC): today's time, or yesterday's when that would be in the future."""
+    try:
+        t = now.replace(hour=int(hhmm[:2]), minute=int(hhmm[2:4]), second=0, microsecond=0)
+    except (ValueError, TypeError):
+        return None
+    if t > now + timedelta(minutes=1):
+        t -= timedelta(days=1)
+    return (now - t).total_seconds() / 3600
+
+
+def fmt_budget(budget, closed_today, closed_yday, commits_today, commits_yday, now=None):
+    now = now or datetime.now(timezone.utc)
     lines = []
     if budget:
-        lines += table(["Login", "5h used", "Week used", "Seen (UTC)", "Week resets"],
-                       [[k, f"{v[1]}%", f"{v[2]}%", v[0][:2] + ":" + v[0][2:], v[3]] for k, v in sorted(budget.items())])
+        rows = []
+        for k, v in sorted(budget.items()):
+            h = hhmm_age_h(v[0], now)
+            rows.append([k, aged(f"{v[1]}%", h), aged(f"{v[2]}%", h), v[0][:2] + ":" + v[0][2:] + (f" ({age_text(h)} ago)" if h is not None else ""), v[3]])
+        lines += table(["Login", "5h used", "Week used", "Seen (UTC)", "Week resets"], rows)
     else:
         lines.append(nd("no BUDGET lines in the signal read"))
     lines += table(["What it bought", "Today", "Yesterday"], [["Cards closed", closed_today, closed_yday], ["Commits on trunk", commits_today, commits_yday]])
@@ -144,45 +171,88 @@ def cleanup_commits(subjects):
 
 
 GPT_JSON = "MyTradingSys/system/codex_usage.json"
-STALE_H = 6
+LANE_JSON = "MyTradingSys/system/lane_state.json"   # lane_health: GPT down for window/limit/credits/auth = spent, whatever the % says
+SPENT_REASONS = ("window", "limit", "credits", "auth")
 GEM_FACTS = ("Gemini facts on trunk: plan Google AI Pro (MyTradingSys/system/GEMINI_START.md:1); lane CODEX cards only (GEMINI_START.md:5); "
              "Flash models via agy queue (scripts/dev/gemini_queue.py:10); queue logs F:/MTS/gq/*.log live on the NUC, not on trunk (gemini_queue.py:20).")
+
+
+def _epoch(s):
+    try:
+        return datetime.fromisoformat(str(s).replace("Z", "+00:00")).timestamp()
+    except ValueError:
+        return 0.0
+
+
+def spent_until(d, lane, now):
+    """'EXHAUSTED until <reset>' (or 'EXHAUSTED, reset unknown') when codex_usage.json's flag or lane_state.json says GPT is spent, else ''."""
+    ts = now.timestamp()
+    hits = []
+    ex = (d or {}).get("exhausted") or {}
+    if ex.get("flag") and (not ex.get("until") or _epoch(ex["until"]) > ts):
+        hits.append(ex.get("until") or "")
+    ln = lane or {}
+    if ln.get("status") == "down" and ln.get("reason") in SPENT_REASONS and (not ln.get("until") or _epoch(ln["until"]) > ts):
+        hits.append(ln.get("until") or "")
+    if not hits:
+        return ""
+    known = sorted(h for h in hits if h)
+    return f"EXHAUSTED until {known[-1][:16]}Z" if known else "EXHAUSTED, reset unknown"
 
 
 def _pct(v):
     return f"{v:g}%" if isinstance(v, (int, float)) else ND
 
 
-def gpt_row(d, now, src):
-    """Table row for the GPT/Codex account from codex_usage.json content."""
+def gpt_row(d, now, src, lane=None):
+    """Table row for the GPT/Codex account from codex_usage.json content (+ lane_state.json): every % carries its age, a spent lane
+    prints EXHAUSTED until <reset>, a 5-hour window whose reset passed since the reading says so instead of the old %."""
     al = d.get("allowance") or {}
     at = d.get("at", "")
     age = old_hours(at, now) if at else None
-    when = f"{at[:16]}Z, {age:.1f} h old" + (" STALE" if age > STALE_H else "") if at else ND
-    return ["GPT (Codex)", al.get("plan") or ND, _pct(al.get("window_used")), _pct(al.get("week_used")), when, src]
+    when = f"{at[:16]}Z, {age_text(age)} old" + (" STALE" if age * 60 > STALE_MIN else "") if at else ND
+    spent = spent_until(d, lane, now)
+    if spent:
+        return ["GPT (Codex)", al.get("plan") or ND, spent, spent, when, src + (" + " + LANE_JSON if lane and lane.get("status") == "down" else "")]
+    five = aged(_pct(al.get("window_used")), age) if at else ND
+    if at and 0 < (al.get("window_resets") or 0) <= now.timestamp():
+        five = f"window reset since the reading (was {_pct(al.get('window_used'))}, {age_text(age)} old)"
+    week = aged(_pct(al.get("week_used")), age) if at else ND
+    return ["GPT (Codex)", al.get("plan") or ND, five, week, when, src]
 
 
 def fmt_gpt_gemini(gpt):
     gem = ["Gemini (Antigravity)", "Google AI Pro", ND, ND, ND, "GEMINI_START.md:1"]
     return table(["Provider", "Account/plan", "5h used", "Week used", "Reading (UTC), age", "Source"], [gpt, gem]) + [
-        "Gemini usage: NOT_IN_DATA (no Gemini usage file; would measure: gemini_queue run counts per day from its done log)", GEM_FACTS]
+        "Gemini usage: NOT_IN_DATA (no Gemini usage file on trunk: `gemini_queue.py run` writes one <card>.log per job under F:/MTS/gq on the "
+        "NUC (gemini_queue.py:20, :99) and nothing reaches trunk, so runs/day cannot be counted here)", GEM_FACTS]
 
 
-def newest_gpt(now):
-    """codex_usage.json from the tree or origin/fast-track, whichever has the newer `at`."""
+def _tree_and_trunk(rel):
     cands = []
     try:
-        cands.append((json.loads((REPO / GPT_JSON).read_text(encoding="utf-8")), GPT_JSON + " (tree)"))
+        cands.append((json.loads((REPO / rel).read_text(encoding="utf-8")), rel + " (tree)"))
     except (OSError, ValueError):
         pass
     try:
-        cands.append((json.loads(run(["git", "show", "origin/fast-track:" + GPT_JSON])), GPT_JSON + " (origin/fast-track)"))
+        cands.append((json.loads(run(["git", "show", "origin/fast-track:" + rel])), rel + " (origin/fast-track)"))
     except ValueError:
         pass
+    return cands
+
+
+LANE_STAMPS = ("since", "last_error", "last_ok", "resumed", "last_probe")
+
+
+def newest_gpt(now):
+    """codex_usage.json from the tree or origin/fast-track, whichever has the newer `at`; lane_state.json likewise (newest stamp)."""
+    cands = _tree_and_trunk(GPT_JSON)
     if not cands:
         raise FileNotFoundError(GPT_JSON)
     d, src = max(cands, key=lambda c: c[0].get("at", ""))
-    return gpt_row(d, now, src)
+    lanes = _tree_and_trunk(LANE_JSON)
+    lane = max(lanes, key=lambda c: max(str(c[0].get(k) or "") for k in LANE_STAMPS))[0] if lanes else None
+    return gpt_row(d, now, src, lane)
 
 
 def sec_gpt_gemini():
