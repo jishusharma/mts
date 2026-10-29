@@ -8,6 +8,8 @@ import org.junit.jupiter.api.io.TempDir;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -110,8 +112,75 @@ public class LiquidationEventLogTest {
         acc.onMessage(force("BTCUSDT", "SELL", "100", "1", 2, 2));
         acc.shutdown();
         assertEquals(2, acc.getLogDroppedCount());
+        assertTrue(acc.awaitLogIdle(100));
         acc.shutdown();
         assertEquals(2, acc.getLogDroppedCount());
+    }
+
+    @Test
+    void shutdownWaitsForAnAcceptedBlockedWrite(@TempDir Path dir) throws Exception {
+        CountDownLatch entered = new CountDownLatch(1), release = new CountDownLatch(1);
+        Runnable gate = () -> {
+            entered.countDown();
+            try { release.await(); }
+            catch (InterruptedException e) { Thread.currentThread().interrupt(); throw new IllegalStateException(e); }
+        };
+        BinanceLiquidationAccumulator acc = new BinanceLiquidationAccumulator("BTCUSDT", dir, 10, true, gate);
+        acc.onMessage(force("BTCUSDT", "SELL", "100", "1", 1, 1));
+        assertTrue(entered.await(2, TimeUnit.SECONDS));
+        acc.onMessage(force("BTCUSDT", "SELL", "100", "1", 2, 2));
+        CountDownLatch started = new CountDownLatch(1), finished = new CountDownLatch(1);
+        Thread shutdown = new Thread(() -> { started.countDown(); acc.shutdown(); finished.countDown(); });
+        shutdown.start();
+        try {
+            assertTrue(started.await(1, TimeUnit.SECONDS));
+            assertFalse(finished.await(100, TimeUnit.MILLISECONDS), "shutdown must wait for the blocked write");
+        } finally {
+            release.countDown();
+            shutdown.join(7000);
+        }
+        assertFalse(shutdown.isAlive(), "shutdown must be bounded");
+        assertEquals(2, lines(dir, "BTCUSDT").size());
+        assertTrue(acc.awaitLogIdle(100));
+    }
+
+    @Test
+    void timedOutDrainCountsLossAndPrintsEvenWhenRateLimited(@TempDir Path dir) throws Exception {
+        CountDownLatch entered = new CountDownLatch(1), release = new CountDownLatch(1);
+        Runnable gate = () -> {
+            entered.countDown();
+            try { release.await(); }
+            catch (InterruptedException e) { Thread.currentThread().interrupt(); throw new IllegalStateException(e); }
+        };
+        BinanceLiquidationAccumulator acc = new BinanceLiquidationAccumulator("BTCUSDT", dir, 10, true, gate);
+        acc.onMessage(force("BTCUSDT", "SELL", "100", "1", 1, 1));
+        assertTrue(entered.await(2, TimeUnit.SECONDS));
+        acc.onMessage(force("BTCUSDT", "SELL", "100", "1", 2, 2));
+        java.io.ByteArrayOutputStream captured = new java.io.ByteArrayOutputStream();
+        java.io.PrintStream previous = System.err;
+        long start = System.nanoTime();
+        try {
+            System.setErr(new java.io.PrintStream(captured));
+            acc.shutdown();
+            assertTrue(acc.awaitLogIdle(2000));
+        } finally {
+            System.setErr(previous);
+            release.countDown();
+        }
+        assertTrue(System.nanoTime() - start < 8_000_000_000L, "stalled writer cannot hang shutdown");
+        assertEquals(1, acc.getLogDroppedCount());
+        assertEquals(1, acc.getLogErrorCount());
+        assertTrue(captured.toString().contains("shutdown dropped 1 queued events"));
+    }
+
+    @Test
+    void postShutdownEventIsCountedAsDropped(@TempDir Path dir) throws Exception {
+        BinanceLiquidationAccumulator acc = new BinanceLiquidationAccumulator("BTCUSDT", dir);
+        acc.shutdown();
+        acc.onMessage(force("BTCUSDT", "SELL", "100", "1", 1, 1));
+        assertEquals(1, acc.getLogDroppedCount());
+        assertEquals(0, lines(dir, "BTCUSDT").size());
+        assertTrue(acc.awaitLogIdle(100));
     }
 
 }

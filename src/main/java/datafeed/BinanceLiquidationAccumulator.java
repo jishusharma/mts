@@ -45,6 +45,8 @@ public class BinanceLiquidationAccumulator extends WebSocketClient {
     private final AtomicLong logErrors = new AtomicLong();
     private volatile long lastLogErrPrint = 0;
     private Thread logWriter;
+    private final Object logAcceptLock = new Object();
+    private final Runnable beforeLogWrite; // package-private constructor seam for deterministic offline tests
 
     public BinanceLiquidationAccumulator(String symbol) throws Exception {
         this(symbol, DEFAULT_LOG_DIR);
@@ -55,7 +57,13 @@ public class BinanceLiquidationAccumulator extends WebSocketClient {
     }
 
     BinanceLiquidationAccumulator(String symbol, Path logDir, int queueCap, boolean startWriter) throws Exception {
+        this(symbol, logDir, queueCap, startWriter, null);
+    }
+
+    BinanceLiquidationAccumulator(String symbol, Path logDir, int queueCap, boolean startWriter,
+                                  Runnable beforeLogWrite) throws Exception {
         super(new URI("wss://fstream.binance.com/market/ws/" + symbol.toLowerCase() + "@forceOrder"));
+        this.beforeLogWrite = beforeLogWrite;
         this.symbol = symbol;
         this.reconnectExecutor = Executors.newSingleThreadScheduledExecutor(r -> {
             Thread t = new Thread(r, "liq-reconnect-" + symbol);
@@ -73,16 +81,20 @@ public class BinanceLiquidationAccumulator extends WebSocketClient {
     }
 
     /** Never blocks and never throws: a full queue drops the line and counts it (fail open for the feed). */
-    private synchronized void enqueueLog(String line) {
-        if (shuttingDown) {
-            logDropped.incrementAndGet();
-            return;
+    private void enqueueLog(String line) {
+        boolean full = false;
+        synchronized (logAcceptLock) {
+            if (shuttingDown) {
+                logDropped.incrementAndGet();
+                return;
+            }
+            if (logQueue.offer(line)) logEnqueued.incrementAndGet();
+            else {
+                logDropped.incrementAndGet();
+                full = true;
+            }
         }
-        if (logQueue.offer(line)) logEnqueued.incrementAndGet();
-        else {
-            logDropped.incrementAndGet();
-            logErr("log queue full, event dropped");
-        }
+        if (full) logErr("log queue full, event dropped");
     }
 
     private void logLoop() {
@@ -94,6 +106,7 @@ public class BinanceLiquidationAccumulator extends WebSocketClient {
                 return;
             }
             try {
+                if (beforeLogWrite != null) beforeLogWrite.run();
                 Files.createDirectories(logDir);
                 Files.write(logDir.resolve(symbol + ".jsonl"), (line + '\n').getBytes(StandardCharsets.UTF_8),
                         StandardOpenOption.CREATE, StandardOpenOption.APPEND);
@@ -220,8 +233,10 @@ public class BinanceLiquidationAccumulator extends WebSocketClient {
         lastEventTime = 0;
     }
 
+    /** Drain accepted logs for up to 5 seconds. Concurrent repeat calls are idempotent and may return before the first drain.
+     * A timed-out in-flight write counts as a log error; abandoned queued lines count as dropped. */
     public void shutdown() {
-        synchronized (this) {
+        synchronized (logAcceptLock) {
             if (shuttingDown) return;
             shuttingDown = true; // no new log accepts after this point
         }
@@ -242,7 +257,8 @@ public class BinanceLiquidationAccumulator extends WebSocketClient {
         while (logQueue.poll() != null) abandoned++;
         logDropped.addAndGet(abandoned);
         logDone.addAndGet(abandoned);
-        if (abandoned > 0) logErr("shutdown dropped " + abandoned + " queued events");
+        if (abandoned > 0) System.err.println("[Liquidation WS] event log (" + symbol
+                + "): shutdown dropped " + abandoned + " queued events");
     }
 
     public String getSymbol() {

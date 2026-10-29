@@ -1,0 +1,18 @@
+[Liquidation WS] Raw event (BTCUSDT): {"e":"forceOrder","E":1,"o":{"s":"BTCUSDT","S":"SELL","o":"LIMIT","q":"0.014","p":"9910","ap":"100","X":"FILLED","l":"0.014","z":"1","T":1}}
+[Liquidation WS] Raw event (BTCUSDT): {"e":"forceOrder","E":1,"o":{"s":"BTCUSDT","S":"SELL","o":"LIMIT","q":"0.014","p":"9910","ap":"100","X":"FILLED","l":"0.014","z":"1","T":1}}
+[Liquidation WS] event log (BTCUSDT): shutdown dropped 2 queued events
+[Liquidation WS] Raw event (BTCUSDT): {"result":null,"id":1}
+[Liquidation WS] Parse error (BTCUSDT): Cannot invoke "com.fasterxml.jackson.databind.JsonNode.asText()" because the return value of "com.fasterxml.jackson.databind.JsonNode.get(String)" is null
+[Liquidation WS] Parse error (BTCUSDT): Unrecognized token 'not': was expecting (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
+ at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 1, column: 4]
+[Liquidation WS] Raw event (ETHUSDT): {"e":"forceOrder","E":1,"o":{"s":"ETHUSDT","S":"BUY","o":"LIMIT","q":"0.014","p":"9910","ap":"2500","X":"FILLED","l":"0.014","z":"1","T":1}}
+[Liquidation WS] Raw event (ETHUSDT): {"e":"forceOrder","E":2,"o":{"s":"ETHUSDT","S":"BUY","o":"LIMIT","q":"0.014","p":"9910","ap":"2501","X":"FILLED","l":"0.014","z":"2","T":2}}
+[Liquidation WS] Raw event (BTCUSDT): {"e":"forceOrder","E":1568014460893,"o":{"s":"BTCUSDT","S":"SELL","o":"LIMIT","q":"0.014","p":"9910","ap":"9910.5","X":"FILLED","l":"0.014","z":"0.014","T":1568014460891}}
+[Liquidation WS] Raw event (BTCUSDT): {"e":"forceOrder","E":1,"o":{"s":"BTCUSDT","S":"SELL","o":"LIMIT","q":"0.014","p":"9910","ap":"100","X":"FILLED","l":"0.014","z":"1","T":1}}
+[Liquidation WS] Raw event (BTCUSDT): {"e":"forceOrder","E":1,"o":{"s":"BTCUSDT","S":"SELL","o":"LIMIT","q":"0.014","p":"9910","ap":"100","X":"FILLED","l":"0.014","z":"1","T":1}}
+[Liquidation WS] Raw event (BTCUSDT): {"e":"forceOrder","E":0,"o":{"s":"BTCUSDT","S":"SELL","o":"LIMIT","q":"0.014","p":"9910","ap":"100","X":"FILLED","l":"0.014","z":"1","T":0}}
+[Liquidation WS] event log (BTCUSDT): log queue full, event dropped
+[Liquidation WS] event log (BTCUSDT): shutdown dropped 2 queued events
+[Liquidation WS] Raw event (BTCUSDT): {"e":"forceOrder","E":1,"o":{"s":"BTCUSDT","S":"SELL","o":"LIMIT","q":"0.014","p":"9910","ap":"100","X":"FILLED","l":"0.014","z":"1","T":1}}
+[Liquidation WS] event log (BTCUSDT): write failed: java.nio.file.FileAlreadyExistsException: C:\Users\E-NGIN~1\AppData\Local\Temp\junit13718901311223525654\file-not-dir
+[Liquidation WS] Raw event (BTCUSDT): {"e":"forceOrder","E":0,"o":{"s":"BTCUSDT","S":"SELL","o":"LIMIT","q":"0.014","p":"9910","ap":"100","X":"FILLED","l":"0.014","z":"1","T":0}}
