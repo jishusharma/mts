@@ -20,6 +20,12 @@ AGY = Path.home() / '.gemini' / 'bin' / 'agy.exe'
 ROOT = Path(os.environ.get('MTS_GQ_ROOT') or ('F:/MTS/gq' if Path('F:/').exists() else Path.home() / '.gemini' / 'mts-gq'))
 PY = sys.executable
 
+
+def root() -> Path:
+    """Queue root, read at call time: MTS_GQ_ROOT if set, else the module default ROOT."""
+    env = os.environ.get('MTS_GQ_ROOT')
+    return Path(env) if env else ROOT
+
 RULES = """You are a Gemini Flash worker in the MTS repo. Work ONLY in this directory (a throwaway git worktree).
 Read CLAUDE.md first (it applies to you). Do the card below end to end.
 Hard rules: do NOT run sync.py ship, do NOT push, do NOT stamp REVIEWED, do NOT touch the live tree, HALT files,
@@ -89,9 +95,9 @@ def claim_with_retry(wt, card: str, tries: int = 6, sleep=time.sleep):
 
 
 def run_job(card: str, effort: str, model: str = 'flash') -> None:
-    wt = ROOT / card
-    log = ROOT / f'{card}.log'
-    ROOT.mkdir(parents=True, exist_ok=True)
+    wt = root() / card
+    log = root() / f'{card}.log'
+    root().mkdir(parents=True, exist_ok=True)
     git('fetch', '-q', 'origin', timeout=60)
     import sync
     held = claim_holder(card, sync.open_claims(REPO))
@@ -134,7 +140,7 @@ def main(argv: list[str]) -> int:
         print(__doc__)
         return 2
     if argv[0] == 'status':
-        for lg in sorted(ROOT.glob('*.log')):
+        for lg in sorted(root().glob('*.log')):
             lines = lg.read_text(encoding='utf-8', errors='replace').strip().splitlines()
             print(lg.stem, '|', lines[-1][:120] if lines else '')
         return 0

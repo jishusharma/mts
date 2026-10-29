@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-29T22:50:21Z",
   "commands": [],
   "created": "2026-10-25T20:53:36Z",
   "depends_on": [
@@ -16,18 +17,24 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "gemini_queue.root() reads MTS_GQ_ROOT at call time; scripts/dev/test_gemini_queue.py 12 pa",
+      "ref": "48e51ff6e",
+      "utc": "2026-10-29T22:50:21Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "GEMINI_START: laptop agy CLI installed, gemini_queue F: gap, account naming, approval re-c",
-      "ref": "c5639ca90c70",
-      "utc": "2026-10-25T20:50:19Z"
+      "line": "ship: 6 file(s)",
+      "ref": "9166234009f2",
+      "utc": "2026-10-29T21:18:55Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "c5639ca90c70 GEMINI_START: laptop agy CLI installed, gemini_queue F: gap, account naming, ",
+      "line": "9166234009f2 ship: 6 file(s)",
       "ref": "MyTradingSys/system/GEMINI_START.md",
-      "utc": "2026-10-25T20:50:19Z"
+      "utc": "2026-10-29T21:18:55Z"
     }
   ],
   "layers": [],
@@ -37,9 +44,14 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-10-25T22:18:55Z",
+  "refreshed": "2026-10-29T22:48:32Z",
   "refs": [],
-  "result": "",
+  "result": "gemini_queue.root() reads MTS_GQ_ROOT at call time; scripts/dev/test_gemini_queue.py 12 passed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/gemini_queue.py",
     "scripts/dev/test_gemini_queue.py",
@@ -51,18 +63,19 @@
     "live path, orders, deploy, restarts",
     "new hooks, gate steps or rules beyond the card"
   ],
-  "scope_sha": "c5639ca90c70",
+  "scope_sha": "9166234009f2",
   "size": "S",
   "sources": [
     "scripts/dev/gemini_queue.py:19",
     "MyTradingSys/system/GEMINI_START.md:51"
   ],
-  "state": "refined",
+  "state": "done",
   "steps": [
     "Read gemini_queue.py lines 19, 60-110 (ROOT uses).",
     "Write test_gemini_queue.py that sets MTS_GQ_ROOT to tmp_path and checks the log and worktree paths (fails now: constant).",
     "Replace the constant by a function root(); register the test in run_extra_tests.py (B150 discovery)."
   ],
+  "taken": "2026-10-29T22:50:21Z",
   "tests": "scripts/dev/test_gemini_queue.py::test_root_from_env fails on the hard-coded Path('F:/MTS/gq') and passes after.",
   "title": "gemini_queue.py: make ROOT configurable for the laptop (other Gemini laptop questions are host/operator items)",
   "weight": "ROUTINE",
