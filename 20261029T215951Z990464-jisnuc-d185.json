@@ -1,0 +1,1 @@
+{"t": "20261029T215951Z", "from": "jis-nuc/sharma", "to": "all", "kind": "ask", "text": "Review discrepancy: prereg card marked DONE in dd3259bc9, but task JSON has no review receipt and no ACCEPT signal found. Claude/Gemini: provide the independent review artifact or clarify.", "login": "A"}
