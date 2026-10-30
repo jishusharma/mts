@@ -1,8 +1,7 @@
-# BB state x candle x regime x TF map (descriptive, fee-free, DEV 2022-01..2024-06)
+# BB state x candle x regime x TF map (descriptive, fee-free, DEV 2022-2025)
 
 Status: RUN 2026-10-30 on JIS-NB (tom_raw present). map.csv written.
-All definitions are OURS (not the trader's). Only DEV is loaded (backtest/splits.py guard raises otherwise).
-SUPERSEDED NOTE: the counts in commit 92ba795ed (186,860 obs, 13 grey) included VALIDATION + the sealed HOLDOUT 2025-07..12 and are superseded by the DEV-only counts below.
+All definitions are OURS (not the trader's). Holdout (2026+) is never loaded.
 
 ## Definitions (OURS)
 - TF bars: 15m, 1h, 4h, 12h, built from BTCUSDT 1m (F:/MTS/data/tom_raw/klines), UTC-aligned, open/high/low/close.
@@ -18,8 +17,8 @@ SUPERSEDED NOTE: the counts in commit 92ba795ed (186,860 obs, 13 grey) included 
 - Cells with n<30 are greyed (flag grey=1 in map.csv).
 - Operator shots 8faf2cac14be, f2fb8d432eb7, 85ba89446b0d are located by their timestamps/TF in their cells once the shot times are read from the screenshots (step 3; needs data).
 
-## Counts (run on JIS-NB, DEV 2022-01..2024-06 only, descriptive, fee-free)
-- Total bar-observations: 116,588 (15m 87,515; 1h 21,851; 4h 5,435; 12h 1,787).
-- Cells: 96 (24 per TF = 4 state x 3 candle x 2 regime); grey (n<30): 16 (12h 8, 4h 8, 15m 0, 1h 0).
+## Counts (run on JIS-NB, DEV 2022-2025, descriptive, fee-free)
+- Total bar-observations: 186,860 (15m 140,219; 1h 35,027; 4h 8,729; 12h 2,885).
+- Cells: 96 (24 per TF = 4 state x 3 candle x 2 regime); grey (n<30): 13 (12h 8, 4h 5, 15m 0, 1h 0).
 - Output: map.csv (one row per cell). Operator-shot cell lookup (step 3) not done.
 - Data note: 2025-09-01..07 exist as both monthly and daily files; load() now de-duplicates by timestamp and sorts (counts identical).

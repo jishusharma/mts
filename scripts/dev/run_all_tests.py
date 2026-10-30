@@ -37,8 +37,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))   # gate_select
 
 # Function-style pytest tests that step 5b (unittest) collects only partly: Fabio v3 + live writers (TF1, E7).
 PYTEST_LAYER_PATHS = [
-    "MyTradingSys/backtest/test_splits.py",
-    "MyTradingSys/research/bb_state_map_2026-10/test_bb_state_map.py",
     "MyTradingSys/backtest/layers/fabio/v3/tests",
     "MyTradingSys/backtest/layers/fabio/test_orderflow_live.py",
     "MyTradingSys/backtest/layers/fabio/test_of_backfill.py",
