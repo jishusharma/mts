@@ -1,7 +1,7 @@
 # B210 - AIBridge stuck pending run (silent stall)
 
 Filed: 2026-10-30 by DSA on JIS-NB.
-Status: OPEN
+Status: CLOSED
 Priority: MED
 Fixer: Claude
 Logger: Claude
