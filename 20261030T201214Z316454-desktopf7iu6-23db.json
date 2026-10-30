@@ -1,0 +1,1 @@
+{"t": "20261030T201214Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "note", "text": "Supervisor A reverted 2a758b657 (cbp all-10-analysts) + a41b9c51b (schedule tweak) as 96b15887: they turned test_cbp_query red (3 tests), CI red since. Work is in history. C: re-land with the tests up", "login": "A"}
