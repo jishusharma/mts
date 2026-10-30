@@ -29,12 +29,12 @@
       "last_published": {
         "jishu.sharma": "2026-10-17",
         "jishu.awgp": "moved 2026-10-17",
-        "jishusharma1985": "2026-10-25"
+        "jishusharma1985": "2026-10-31"
       },
       "note": "One Inbox: the jishu.sharma page (q21; db seeded from OPERATOR_DECISIONS.md and OPERATOR_INBOX.md 2026-10-15, existing answers kept). Publish the other copies without writing to their db. Carries the Claude-GPT cycle section (system/RELAY_NOTES.md). Republished by the NUC pickup, built with the trade ledger. The jishusharma1985 copy is published WITHOUT capabilities (2026-10-14): the page's own code shows 'Read-only view', so that login has no second Inbox nobody picks up. Republish it without passing capabilities.",
       "purpose": "Decisions waiting on you (Inbox), testnet health, road to profitability.",
       "notes_go_to": "Inbox answers save to this page's decisions list. One Inbox only (q21).",
-      "published_sha": "9fb2247c2021e4a365ed42533e805ae84357db67899ccf5ca484d73bba77f9f0"
+      "published_sha": "2796d8cf8a710d9affe275a9089cc2c731fdcd8f6a9d0dfce090b1de31a731de"
     },
     {
       "slug": "mts_layer_map",
@@ -56,12 +56,12 @@
       "last_published": {
         "jishu.sharma": "2026-10-13",
         "jishu.awgp": "2026-10-14",
-        "jishusharma1985": "2026-10-25"
+        "jishusharma1985": "2026-10-31"
       },
       "note": "2026-10-13: the old Layer Map (backtest matrix + configurator, make_layer_map.py) was replaced at the SAME url by MTS Layers (per-layer road, stuck days, missing steps, decisions waiting on Jis, How MTS runs). make_layer_map.py still builds the old page if wanted. Published on all three logins.",
       "purpose": "Every trading layer's road and where it is stuck.",
       "notes_go_to": "Read only. Put notes on the Research Map.",
-      "published_sha": "6be0bf2c38d8219c345fc67c404b45f986ffd303cdf45ded6bcd762bb91dce8f"
+      "published_sha": "5b1c87d976013bd2e6e6d77c4c060ffe8c1652efb880ef58e48fb2793318caeb"
     },
     {
       "slug": "tom_fabio_deck",
@@ -83,12 +83,12 @@
       "last_published": {
         "jishu.sharma": "2026-10-12",
         "jishu.awgp": "never",
-        "jishusharma1985": "2026-10-17"
+        "jishusharma1985": "2026-10-31"
       },
       "note": "Rebuilt from TOM_FABIO_STORY_2026-10-05.md and tom_fabio_guidance_2026-10-12/. Old jishu.sharma url 2DXWot is an old copy and not found.",
       "purpose": "Slides: what Tom and Fabio taught.",
       "notes_go_to": "Read only.",
-      "published_sha": "38e8be024fae008374bd3498f270bdb15fa7ddce1e0338a0a98c594306b0fd1e"
+      "published_sha": "8253a2a48068db94c423c21384ed548b8cb24abe205e229336070a4aeecf3b25"
     },
     {
       "slug": "cbp_monday_desk",
@@ -230,7 +230,7 @@
       "last_published": {
         "jishu.sharma": "never",
         "jishu.awgp": "never",
-        "jishusharma1985": "2026-10-25"
+        "jishusharma1985": "2026-10-31"
       },
       "title": "MTS Home",
       "html": "MyTradingSys/system/artifacts/mts_home.html",
@@ -240,7 +240,7 @@
       "purpose": "This list: every MTS page, its owner login, where your notes go, and how to open it from any login.",
       "notes_go_to": "Nothing to write here.",
       "note": "The hub (operator 2026-10-16: 'all my artifacts available from one place'). Generated from registry.json; pinned on the home login.",
-      "published_sha": "ec17952dd0f2a7f3a677d57e01fc390837d2daedbc23a0f7b213ac5abaca5c87"
+      "published_sha": "87851d48281d696de2df94125b277d4565c4caa375e3ca297e39256f4d4f63ac"
     },
     {
       "slug": "research_map",
@@ -254,7 +254,7 @@
         "jishu.awgp": ""
       },
       "last_published": {
-        "jishusharma1985": "2026-10-16",
+        "jishusharma1985": "2026-10-31",
         "jishu.sharma": "never",
         "jishu.awgp": "never"
       },
@@ -269,7 +269,7 @@
       "purpose": "Where the research stands: what was tested, each trader's gate, what you can change.",
       "notes_go_to": "the Note / ask button. It saves to this page's own list (db \"requests\"); the next super session answers there.",
       "note": "Capabilities db + user (keep them: republish without passing capabilities). Other sessions edit DATA: read the live version first, never an old saved copy.",
-      "published_sha": "138acff3b24c2d99c1a993ebc2794e7d393e8ccb38bdacd046b8d8e5d17ab3b5"
+      "published_sha": "52b500b479fdca0c50cf9a92fb5f36350928b5862f707eb21bef3dd5bd70321d"
     },
     {
       "slug": "session_planner",
@@ -283,7 +283,7 @@
         "jishu.awgp": ""
       },
       "last_published": {
-        "jishusharma1985": "2026-10-16",
+        "jishusharma1985": "2026-10-31",
         "jishu.sharma": "never",
         "jishu.awgp": "never"
       },
@@ -298,7 +298,7 @@
       "purpose": "Builds the prompt for the next super session: pick a goal and hours, copy, paste into a new session.",
       "notes_go_to": "nothing to send. Copy the prompt; your ticks and goal stay saved on this page.",
       "note": "Capability db (keep it: republish without passing capabilities).",
-      "published_sha": "635e4923d97a45482ecda91b99f96f802d32988b4bc9c41e546e23a64af79f77"
+      "published_sha": "c89b122558ca5da4bb144c30d0efbff1893de7285486c2066018fa864330fbc7"
     }
   ],
   "unpinned_old": {
