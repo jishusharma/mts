@@ -1,58 +1,39 @@
-# Vacuous-test audit: last 30 test-adding commits (2026-10-31)
+# Vacuous-test audit (card sonnet-new-tests-must-fail-on-old-code-audit)
 
-Method: for each commit, a detached throwaway worktree at the parent; the commit's version of each touched test file is copied in and only the newly added test functions are run (`pytest -k`, MTS_REPO_ROOT = that worktree). `fails-on-old` Y = fails or errors on the parent code (including ImportError/collect error because the code under test did not exist yet: a weaker Y, marked `Y*`); N = passes on old code = vacuous for this gate; skip = skipped (Chromium/fixture absent), unproven. Reverts/reapplies excluded. Script: audit run from the session scratchpad; commits are the 30 newest non-revert commits adding `def test_` to a test file.
+Method: newest 30 non-merge, non-revert commits (base 239f17a1f) that ADD a `*test_*.py` file. For each: detached worktree at the commit, every non-test file the commit touched restored to its parent state (added non-test files deleted), then only the new test file run (`pytest <file> -q -x`). Fails/errors = Y (test guards the change). Passes = N (vacuous on old code).
+Repro: any row, e.g. `git worktree add --detach W <sha>; git -C W checkout <sha>^ -- <non-test files>; pytest W/<test>`.
 
-| sha | commit | new tests | fails-on-old Y (strict / import-error*) | N | skip |
-|---|---|---|---|---|---|
-| 12b43fe17 | AIBridge 0.7.3: run-lock expiry (B210), task gate FAILED=FAIL, kind fr | 6 | 5 / 0 | 1 | 0 |
-| 908cbb858 | gemini_queue: serialise git worktree setup with lock + retry; GOLAS-B  | 5 | 5 / 0 | 0 | 0 |
-| 2a758b657 | cbp: all 10 analysts, bottom-call + alt verdicts per video, dashboard  | 1 | 1 / 0 | 0 | 0 |
-| bb7731974 | ship: 7 file(s) | 5 | 1 / 4 | 0 | 0 |
-| e31013dfb | T058 per-TF break event study re-land (ledger P0-45): W/1D/4h/1h/15m,  | 4 | 0 / 4 | 0 | 0 |
-| f17fb6f75 | Main checkout fast-forwards past local edits trunk does not touch | 1 | 1 / 0 | 0 | 0 |
-| 92aa0ab3d | ship: 6 file(s) | 5 | 0 / 0 | 1 | 4 |
-| 2037b9246 | Supervisor never idle with ready work: role rule, re-arm after compact | 4 | 4 / 0 | 0 | 0 |
-| 2877e1fed | G7: BTCUSDT stop-slippage proxy from public aggTrades by volatility te | 10 | 0 / 10 | 0 | 0 |
-| a43b9fbff | B163 v2: run Alpha vs buy-and-hold and Beta per-sweep on DEV/VAL; RESU | 4 | 0 / 4 | 0 | 0 |
-| b3442d6ca | super sessions: D11 work programme (streams, order, failure modes, tes | 1 | 1 / 0 | 0 | 0 |
-| 46cb4255e | splits module + holdout guard; BB state map re-run DEV-only | 6 | 0 / 6 | 0 | 0 |
-| 8582e5678 | Supervisors keep going for the work period; stop guard finds role-less | 5 | 5 / 0 | 0 | 0 |
-| 36f311c44 | artifact testing: four-layer design (ARTIFACT_TESTING.md) + layer 3 ga | 3 | 0 / 0 | 0 | 3 |
-| 589685fbb | analyst levels: no hit before the video could exist; cbp_run prompt ca | 4 | 3 / 0 | 1 | 0 |
-| 135c8a848 | token_audit: per-session load_tokens and thinking_chars columns (A3-20 | 1 | 1 / 0 | 0 | 0 |
-| 122323253 | live_aid: US open ladder (if up / if down) with measured reach and hol | 1 | 1 / 0 | 0 | 0 |
-| 876dcb791 | shot.py: worktree hook runs use the shared screenshot store even when  | 1 | 1 / 0 | 0 | 0 |
-| 966f15bbc | Chart paste rebuilds live_aid analyst_data.js | 1 | 1 / 0 | 0 | 0 |
-| c409e3f6b | WHERE_IS: re-apply topic index and where_is.py without role-file lines | 2 | 2 / 0 | 0 | 0 |
-| 1448911c7 | live_aid: verdict board + analysts panel (every roster analyst, levels | 7 | 6 / 1 | 0 | 0 |
-| f8c5e4895 | live_aid: news headline panel, pulse tile, word tags (Tree News REST) | 2 | 2 / 0 | 0 | 0 |
-| 14f601e2c | Wire CBP analyst levels into every chart read (analyst_levels.py) | 5 | 0 / 5 | 0 | 0 |
-| 2d7d4d49c | fix-single-cost-module: test_no_own_costs + frozen cost allowlist, fee | 6 | 6 / 0 | 0 | 0 |
-| 2210e9d77 | Land phone-chat uploads from the parent folder in any MTS session | 2 | 1 / 0 | 1 | 0 |
-| 792ae66b6 | Add on-demand fix_verifier.py (ledger A4-18) | 5 | 0 / 5 | 0 | 0 |
-| d3570f13b | Retire headless successor wake as handover default; claude -p ok prefl | 8 | 8 / 0 | 0 | 0 |
-| f20eeed04 | US open countdown line: pure DST-aware function + tests (T054 step 5) | 8 | 0 / 8 | 0 | 0 |
-| 50b9036ff | lab gpt-spec-tests-check-sourced-params: DONE (build) | 9 | 5 / 0 | 4 | 0 |
-| 99ff967f2 | asks audit: LEDGER (319 distinct asks), 20 cards for OPEN+relevant, ga | 1 | 1 / 0 | 0 | 0 |
+| # | sha | test | fails on old? | note |
+|---|---|---|---|---|
+| 1 | 908cbb858 | MyTradingSys/tests/test_gemini_queue_lock.py | Y | 1 failed |
+| 2 | e31013dfb | research/tf_break_event_study_2026-10-30/test_study.py | Y | import error (module absent) |
+| 3 | 92aa0ab3d | tools/live_aid/test_live_aid_replay.py | **N** | 1 passed, 4 skipped on old live_aid.html; the one passing test does not exercise the change; 4 skipped (needs deps) |
+| 4 | 2877e1fed | research/gap_g7_stop_slippage_2026-10-18/test_slippage.py | Y | slippage.py absent |
+| 5 | a43b9fbff | research/setup_alpha_beta_v2_2026-10/test_beta_events.py | Y | error |
+| 6 | 46cb4255e | backtest/test_splits.py | Y | error |
+| 7 | 36f311c44 | scripts/dev/test_artifact_pages.py | **N** | 12 skipped (no headless Chromium here): cannot fail; unverifiable on this machine |
+| 8 | 589685fbb | scripts/dev/test_cbp_run.py | Y | 1 failed |
+| 9 | c409e3f6b | scripts/dev/test_where_is.py | Y | 1 failed |
+| 10 | 1448911c7 | tools/live_aid/test_build_analyst_data.py | Y | error |
+| 11 | 14f601e2c | scripts/dev/test_analyst_levels.py | Y | error |
+| 12 | 2d7d4d49c | backtest/test_no_own_costs.py | Y | 1 failed |
+| 13 | 792ae66b6 | scripts/dev/test_fix_verifier.py | Y | error |
+| 14 | d3570f13b | tests/docs/test_operator_decisions_parse.py | Y | 1 failed |
+| 15 | f20eeed04 | tools/test_us_open_alert.py | Y | error |
+| 16 | 50b9036ff | scripts/dev/test_check_sourced_params.py | **N** | 9 passed; commit touches no code (retro spec test of existing check) |
+| 17 | 5e37f0323 | scripts/dev/test_where_is.py | Y | 1 failed |
+| 18 | 451545147 | tests/test_operator_questions_gaps.py | Y | 1 failed |
+| 19 | 5e52c5540 | scripts/dev/test_deploy_untrack_backup.py | **N** | 15 passed; retro spec test, no code change |
+| 20 | 108c58d8a | research/bb_state_map_2026-10/test_bb_state_map.py | Y | error |
+| 21 | d585606e2 | scripts/dev/test_check_set_frames.py | **N** | 13 passed; retro spec test, no code change |
+| 22 | 222976f9d | scripts/dev/test_coord_overhead.py | **N** | 9 passed; retro spec test, no code change |
+| 23 | 1deae1acd | scripts/dev/test_tom_noise_units.py | **N** | 12 passed; retro spec test, no code change |
+| 24 | 414a5e7d3 | scripts/dev/test_retention.py | **N** | 10 passed; retro spec test, no code change |
+| 25 | 499d6fda4 | scripts/dev/test_station_disk_report.py | Y | error |
+| 26 | 4209a07ba | research/sim_desk/test_page_top.py | Y | 1 failed |
+| 27 | 771d07995 | scripts/dev/test_aibridge_version.py | **N** | 13 passed; retro spec test (its message claims 3/3 mutations caught, so not empty) |
+| 28 | c6355a908 | scripts/dev/test_station_disk_report.py | Y | error |
+| 29 | a97b86446 | item4_summarise.py, replay_prep_spot_days.py (research/critical_test_wave_1) | n/a | scripts matched by path, not tests (error: no module) |
+| 30 | c511a40dc | item1_prefix_check.py, item2_settlement_identity.py | n/a | not pytest tests ("no tests ran"); matched by path only |
 
-## Vacuous (pass on old code) and unproven tests
-
-| sha | test | fails-on-old |
-|---|---|---|
-| 12b43fe17 | MyTradingSys/tests/test_aibridge_cmd_kind.py::test_real_writes_still_write | N |
-| 92aa0ab3d | MyTradingSys/tools/live_aid/test_live_aid_replay.py::test_fixture_is_the_expected_window | N |
-| 92aa0ab3d | MyTradingSys/tools/live_aid/test_live_aid_replay.py::test_missing_fixture_reads_not_in_data | skip (unproven) |
-| 92aa0ab3d | MyTradingSys/tools/live_aid/test_live_aid_replay.py::test_rendered_strip_matches_python_maths | skip (unproven) |
-| 92aa0ab3d | MyTradingSys/tools/live_aid/test_live_aid_replay.py::test_short_windows_read_not_in_data | skip (unproven) |
-| 92aa0ab3d | MyTradingSys/tools/live_aid/test_live_aid_replay.py::test_wrapped_rsi_is_caught | skip (unproven) |
-| 36f311c44 | scripts/dev/test_artifact_pages.py::test_live_aid_fails_closed_without_feeds | skip (unproven) |
-| 36f311c44 | scripts/dev/test_artifact_pages.py::test_page_opens_clean_offline | skip (unproven) |
-| 36f311c44 | scripts/dev/test_artifact_pages.py::test_planted_defects_are_caught | skip (unproven) |
-| 589685fbb | scripts/dev/test_analyst_levels.py::test_k_on_both_bounds | N |
-| 2210e9d77 | scripts/dev/test_shot.py::test_hook_skips_old_parent_uploads | N |
-| 50b9036ff | scripts/dev/test_check_sourced_params.py::test_allowlist_expiry_at_limit_is_still_allowed | N |
-| 50b9036ff | scripts/dev/test_check_sourced_params.py::test_allowlist_one_day_above_expiry_fails | N |
-| 50b9036ff | scripts/dev/test_check_sourced_params.py::test_allowlist_one_day_below_expiry_is_allowed | N |
-| 50b9036ff | scripts/dev/test_check_sourced_params.py::test_missing_root_value_is_reported_as_cli_argument_error | N |
-
-7 tests pass on old code (N): `test_real_writes_still_write` is a guard pinning unchanged behaviour (legit); the sourced-params expiry-boundary tests and `test_k_on_both_bounds`, `test_hook_skips_old_parent_uploads`, `test_fixture_is_the_expected_window` assert behaviour that already held (pure characterisation, not a regression for the change). No raw cards filed (run instruction: do not file cards); each N above is a candidate card.
+Summary: 30 commits, 19 Y, 9 N (7 retro spec tests of unchanged code, 1 fully skipped, 1 pass/skip on live_aid replay), 2 not tests. Retro spec tests cannot fail on "old code" by construction; for them the gate needs a mutation check instead (as 771d07995 did). Rows 3 and 7 are the real vacuity risks. Findings are listed here only; no cards filed (operator instruction).
