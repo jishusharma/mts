@@ -76,3 +76,18 @@ Prior: MyTradingSys/research/wt30_sequence_2026-10-30/RESULT.md
 | c4 | MATCH | 10-30 low near 76.5k around 02:00Z | Binance spot low 76,500.11 in the 02:00Z bar |
 | c5 | MATCH | bounce high about 78.6-78.8k mid-morning | 78,804.01 in the 06:30Z bar |
 | c6 | NOT_IN_DATA | Bitstamp last 77,149 at 13:12Z | Binance spot 77,321 at 13:16Z; no same-minute Bitstamp data, gap not measured |
+
+## Shot c2fdb0b39295: CoinGlass Legend, Binance perp 30m, liquidation heatmap + large trades (13:22Z)
+
+Prior: MyTradingSys/research/eagle_eyes_picture_2026-10-28/US_SESSION_PLAN_2026-10-30.md
+
+Heatmap bands are pixel reads (scale 7.92 USD/px from the 77,600 and 76,800 gridlines); MTS has no heatmap recorder, so this shot is the only record.
+
+| id | MATCH or MISMATCH or NOT_IN_DATA | chart claim | data check |
+|---|---|---|---|
+| h1 | MATCH | 10-29 perp high 81,953.7 | lh_break_2026-10-30 / SCENARIO_LEDGER 10-29 row: 81,953.7 |
+| h2 | MATCH | 10-30 perp low 76,444.0 | lh_break_2026-10-30/RESULT.md: perp low 76,444 |
+| h3 | NOT_IN_DATA | brightest band 79.0-79.4k ends where the 10-29 23:30Z-10-30 00:00Z drop crossed it (band hit) | no heatmap history in MTS; spot 30m bars 23:30Z 78,880-77,910, 00:00Z 78,274-76,856 crossed it |
+| h4 | NOT_IN_DATA | bands left now: below about 77,210 (dim), 77,040 (brighter), 76,510, 76,080; above about 78,700-78,880 (dim), 82,100-82,300 (bright) | pixel read only |
+| h5 | NOT_IN_DATA | big green large-trade bubbles at the 81.9k top (10-29 ~19:00Z) and at about 77.7k in the 10-30 ~04:30Z drop; price went lower after both | large_trade_absorption_2026-10-30: buy-aggression n=1,155 up 60 min 47.4%; buy-absorbed (red bar) n=99 50.5% |
+| h6 | NOT_IN_DATA | last bar O 77,435.0 C 77,384.7 at 13:22Z | fapi.binance.com times out from JIS-NB; spot 77,321 at 13:16Z |
