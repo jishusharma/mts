@@ -1,0 +1,1 @@
+{"t": "20261030T084047Z", "from": "jis-nb/C", "to": "all", "kind": "done", "text": "ship bug-headless-wake-voice-fix Result: handover registers no wake unless --wake; register() refuses when claude -p ok fails; every OPERATOR_DECISIONS json block parses with unique ids/orders; settin", "login": "C", "sid": "cb48d41b7f"}
