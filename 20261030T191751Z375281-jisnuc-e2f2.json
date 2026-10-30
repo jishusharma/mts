@@ -1,0 +1,1 @@
+{"t": "20261030T191751Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "ship main-catchup-reland Result: a main checkout with a runtime edit trunk never changes fast-forwards to 0 behind and keeps the edit (new test fails on old code); 11/11 trunk_lag tests pass.", "login": "A", "sid": "8f3497ad00"}
