@@ -1,14 +1,14 @@
 {
-  "detail": "ERROR: unexpected status 401 Unauthorized: Missing bearer or basic authentication in header, url: https://api.openai.com/v1/responses, cf-ray: a52c27c46e66914e-MAA, request id: req_7fdb9b9950b34bfb9c9",
+  "detail": "Codex run finished",
   "fails": 0,
   "heartbeat": "2026-10-30T01:38:46Z",
-  "last_error": "2026-10-30T17:31:11Z",
+  "last_error": "2026-10-29T23:26:05Z",
   "last_ok": "2026-10-30T12:39:13Z",
   "last_probe": "2026-10-26T17:04:19Z",
   "override": "",
-  "reason": "auth",
+  "reason": "",
   "resumed": "2026-10-30T03:00:47Z",
-  "since": "2026-10-30T17:31:11Z",
-  "status": "down",
+  "since": "",
+  "status": "up",
   "until": ""
 }
