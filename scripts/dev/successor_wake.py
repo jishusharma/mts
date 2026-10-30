@@ -175,16 +175,26 @@ def build_script(login: str, model: str, prompt: str, cwd: Path, fire_at: dateti
     d = f"{base or os.environ.get('MTS_SUCC_WAKE_DIR') or BASE_DIR}/{login}"
     cwd_s = str(cwd).replace("\\", "/")
     usage_json = json.dumps(usage or {}, ensure_ascii=True, sort_keys=True, separators=(",", ":"))
+    log = f"{d}/succwake_{login}.log"    # outside the repo (public): per-stage trail of one fire
     run = "\n".join([
-        '$env:Path += ";C:/Users/E-ngineers/.local/bin"',
-        f"Set-Location '{cwd_s}'",
-        f"$env:MTS_SUCC_WAKE_TASK = '{name}'",
-        "$c = (Get-Command claude.exe).Source",
-        "try {",
+        f"function Stage($m) {{ try {{ Add-Content -Path '{log}' -Value ((Get-Date).ToUniversalTime().ToString('o') + ' ' + $m) }} catch {{}} }}",
+        "Stage 'started'",
+        "$code = -1",
+        "try {",     # everything inside: a failed Set-Location / Get-Command must still reach the unregister
+        '  $env:Path += ";C:/Users/E-ngineers/.local/bin"',
+        f"  Set-Location '{cwd_s}'",
+        f"  $env:MTS_SUCC_WAKE_TASK = '{name}'",
+        "  $c = (Get-Command claude.exe).Source",
+        "  Stage ('claude found ' + $c)",
         f"  Get-Content -Raw '{d}/prompt.txt' | & $c -p --model {model} --permission-mode bypassPermissions > '{d}/out.log' 2> '{d}/err.log'",
+        "  $code = $LASTEXITCODE",
+        "} catch {",
+        "  Stage ('error ' + $_.Exception.Message)",
         "} finally {",
+        "  Stage ('claude exit ' + $code)",
         f"  $t = Get-ScheduledTask -TaskName '{name}' -ErrorAction SilentlyContinue",
-        f"  if ($t -and $t.Description -eq '{token}') {{ Unregister-ScheduledTask -TaskName '{name}' -Confirm:$false -ErrorAction SilentlyContinue }}",
+        f"  if ($t -and $t.Description -eq '{token}') {{ Unregister-ScheduledTask -TaskName '{name}' -Confirm:$false -ErrorAction SilentlyContinue; Stage 'unregistered' }}",
+        "  else { Stage 'unregister skipped (task absent or description mismatch)' }",
         "}",
     ])
     L = [
