@@ -283,6 +283,104 @@ def cmd_pending(args):
         print(f"{n}. [{r.get('weight', 'ROUTINE')}]{qid} {r.get('utc', '')} tags={tags}")
         print(f"   {r.get('prompt', '')}")
 
+# ---- gaps: asks and open items nobody holds (operator 2026-10-30: T054 news step sat unbuilt 33 days) ----
+ASK_RE = re.compile(r"\b(build|add|fix|make|create|implement|research|investigate|wire|need|want|should|please|change|remove|"
+                    r"design|show|put|test|ensure|update|move|record|stop|start)\b", re.I)
+GAP_STOP = {"about", "there", "their", "would", "could", "should", "which", "these", "those", "where", "while", "being", "think",
+            "thing", "things", "really", "please", "again", "right", "first", "other", "after", "before", "still", "going"}
+LIVE_ITEM_STATES = ("OPEN", "PARTIAL", "QUEUED")
+CARD_DEAD = ("done", "dropped")
+
+
+def _tokens(text):
+    return {w for w in re.findall(r"[a-z0-9]{5,}", text.lower()) if w not in GAP_STOP}
+
+
+def _utc(t):
+    from datetime import datetime, timezone
+    try:
+        d = datetime.fromisoformat(str(t).replace("Z", "+00:00"))
+        return d if d.tzinfo else d.replace(tzinfo=timezone.utc)
+    except ValueError:
+        return None
+
+
+def asks_gaps(repo=None, now=None, hours=24, days=14, rows=None, cards=None, commits=None, ledger_text=None, index_text=None):
+    """Asks with no card, no commit and no non-OPEN ledger row after `hours`, plus OPEN/PARTIAL/QUEUED items with no live card.
+    Link = a card created after the ask or a commit subject after it sharing 3+ words, or a card/ledger row carrying the ask's
+    'MM-DD HH:MM' stamp. Returns {"asks": [{utc, prompt}], "items": [{id, state, line}]}. Heuristic by design: lean, no paperwork."""
+    import subprocess
+    from datetime import datetime, timezone, timedelta
+    repo = Path(repo) if repo else Path(__file__).resolve().parents[2]
+    now = now or datetime.now(timezone.utc)
+    if cards is None:
+        cards = []
+        for f in sorted((repo / "MyTradingSys" / "system" / "tasks").glob("*.json")):
+            try:
+                cards.append(json.loads(f.read_text(encoding="utf-8")))
+            except (OSError, ValueError):
+                pass
+    if rows is None:
+        rows = read_rows(log_path())
+    if ledger_text is None:
+        lf = repo / "MyTradingSys" / "research" / "asks_audit_2026-10-30" / "LEDGER.md"
+        ledger_text = lf.read_text(encoding="utf-8") if lf.is_file() else ""
+    if index_text is None:
+        xf = repo / "MyTradingSys" / "items" / "INDEX.md"
+        index_text = xf.read_text(encoding="utf-8") if xf.is_file() else ""
+    lo, hi = now - timedelta(days=days), now - timedelta(hours=hours)
+    cand = []
+    for r in rows:
+        t, text = _utc(r.get("utc")), (r.get("prompt") or "").strip()
+        if t and lo <= t <= hi and len(text) >= 25 and not is_automated(text) and ASK_RE.search(text):
+            cand.append((t, text))
+    if commits is None:
+        commits = []
+        if cand:
+            try:
+                out = subprocess.run(["git", "-C", str(repo), "log", "origin/fast-track", f"--since={min(c[0] for c in cand).isoformat()}",
+                                      "--format=%aI\t%s"], capture_output=True, text=True, timeout=60).stdout
+                for ln in out.splitlines():
+                    a, _, b = ln.partition("\t")
+                    if _utc(a):
+                        commits.append((_utc(a), b))
+            except (OSError, subprocess.SubprocessError):
+                pass
+    card_info = [(_utc(c.get("created")), _tokens(" ".join(str(c.get(k, "")) for k in ("title", "goal", "note", "refs"))),
+                  json.dumps(c)) for c in cards]
+    com_info = [(t, _tokens(s)) for t, s in commits]
+    ledger_rows = [ln for ln in ledger_text.splitlines() if ln.startswith("|") and "| OPEN |" not in ln]
+    gaps = []
+    for t, text in cand:
+        stamp, tk = f"{t:%m-%d %H:%M}", _tokens(text)
+        if any(stamp in ln for ln in ledger_rows) or any(stamp in raw for _, _, raw in card_info):
+            continue
+        if any(ct and ct >= t and len(tk & ctk) >= 3 for ct, ctk, _ in card_info) or any(ct >= t and len(tk & ctk) >= 3 for ct, ctk in com_info):
+            continue
+        gaps.append({"utc": t.strftime("%Y-%m-%dT%H:%MZ"), "prompt": text[:110].replace("\n", " ")})
+    live = [raw for (_, _, raw), c in zip(card_info, cards) if c.get("state") not in CARD_DEAD]
+    items = []
+    for ln in index_text.splitlines():
+        cols = [x.strip() for x in ln.split("|")]
+        if len(cols) >= 4 and cols[1] in LIVE_ITEM_STATES and re.fullmatch(r"[A-Z]\d{3}", cols[0]):
+            if not any(re.search(rf"\b{cols[0]}\b", raw) for raw in live):
+                items.append({"id": cols[0], "state": cols[1], "line": cols[3][:90]})
+    return {"asks": gaps, "items": items}
+
+
+def cmd_gaps(args):
+    g = asks_gaps(hours=args.hours, days=args.days)
+    if args.json:
+        print(json.dumps(g, indent=2, ensure_ascii=False))
+        return
+    print(f"ASK-GAPS: {len(g['asks'])} ask(s) older than {args.hours} h with no card/commit/ledger row; "
+          f"{len(g['items'])} open item(s) with no live card")
+    for a in g["asks"][:8]:
+        print(f"  ask {a['utc']} {a['prompt']}")
+    for i in g["items"][:8]:
+        print(f"  item {i['id']} {i['state']} {i['line']}")
+    print("fix: tasks.py new ... --ref <item id or ask stamp 'MM-DD HH:MM'>, or add a ledger row; then rerun")
+
 
 def main(argv=None):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")  # Windows consoles default to cp1251/cp1252
@@ -306,6 +404,11 @@ def main(argv=None):
     pend = sub.add_parser("pending", help="typed operator questions with no recorded decision, ranked")
     pend.add_argument("--json", action="store_true", help="print JSON array")
     pend.set_defaults(fn=cmd_pending)
+    gp = sub.add_parser("gaps", help="asks with no card/commit after N hours; open items with no live card")
+    gp.add_argument("--hours", type=int, default=24)
+    gp.add_argument("--days", type=int, default=14, help="look back this far")
+    gp.add_argument("--json", action="store_true")
+    gp.set_defaults(fn=cmd_gaps)
     args = p.parse_args(argv)
     args.fn(args)
     return 0
