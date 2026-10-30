@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-30T20:21:41Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/test_hunt_2026-10-31/auto_trader_failclosed_matrix.md exists with one row per branch (file:line, fails closed Y/N, test file or NONE) and a proposed-test list",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Table of every branch in execution/auto_trader.py that handles API errors, restart/reset state or non-trade balance moves: does it fail closed, is it tested, with file:line. Name each untested branch and a test input.",
+  "id": "gpt-bug-hunt-auto-trader-fail-closed",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Live-path area: report only, no code edit. GPT lab: luna medium. Focus: catch bugs early (operator 2026-10-31). Final report ends with a Noticed: line.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T20:21:43Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/test_hunt_2026-10-31/ (new files only)"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code edits; any backtest verdict; .secrets and .env"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "read MyTradingSys/execution/auto_trader.py and its tests",
+    "enumerate error/restart/balance branches",
+    "mark tested or NONE by grepping the tests"
+  ],
+  "tests": "report only; every finding cites file:line and a reproducing input",
+  "title": "GPT: auto_trader.py fail-closed audit: every error path (API error, restart, non-trade balance move, stale state) and whether a test covers it",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

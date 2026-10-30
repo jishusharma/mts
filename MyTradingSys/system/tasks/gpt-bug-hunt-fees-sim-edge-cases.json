@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-30T20:21:37Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/test_hunt_2026-10-31/fees_sim_bug_hunt.md exists; each finding has a reproducing snippet, expected vs actual; proposed pytest cases that fail on current code are in MyTradingSys/research/layer_lab/test_hunt_2026-10-31/proposed_test_fees_sim.py",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "List every input class where fees.py or sim.py gives a wrong or silent result (zero size, funding sign, regime boundaries, NaN prices), each with a reproducing call and the expected number computed independently from FORMULAS.md.",
+  "id": "gpt-bug-hunt-fees-sim-edge-cases",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "GPT lab: luna medium. Focus: catch bugs early (operator 2026-10-31). Final report ends with a Noticed: line.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T20:21:39Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/test_hunt_2026-10-31/ (new files only)"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code edits; any backtest verdict; .secrets and .env"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "read MyTradingSys/backtest/fees.py, sim.py, test_no_own_costs.py, test_sim_planted_edge.py",
+    "derive expected values by hand from FORMULAS.md",
+    "run the reproducing calls read-only and record actual output"
+  ],
+  "tests": "report only; every finding cites file:line and a reproducing input",
+  "title": "GPT: bug hunt in backtest/fees.py and sim.py: fee-regime edges, zero/negative size, funding sign, rounding; write failing-input list and proposed tests",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
