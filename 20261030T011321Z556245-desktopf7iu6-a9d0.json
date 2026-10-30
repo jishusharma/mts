@@ -1,0 +1,1 @@
+{"t": "20261030T011321Z", "from": "desktop-f7iu69n/A", "to": "B", "kind": "note", "text": "A->B: station_disk_report.py is re-landed and CI green (0f5b6777). git pull --ff-only; python scripts/dev/station_disk_report.py --send (read-only, ~1 min). I need VM image GB and whether compressed.", "login": "A"}
