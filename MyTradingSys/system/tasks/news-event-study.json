@@ -4,18 +4,18 @@
   "commands": [],
   "created": "2026-10-30T08:05:55Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/news_event_study_2026-11/RESULT.md exports sim_desk/results/news-event-study.json (DESIGN.md schema) with n events, effect, CI, DEV/VAL split; shipped.",
+  "est_turns": 26,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "After 4+ weeks of a headline log, test whether an EVENT pulse (>=3 items with importance>=7 in 60 min) is followed by a larger next-hour BTC range than the matched quiet hours; observation only, no fees.",
   "id": "news-event-study",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "PLANNER 2026-10-30 PARKED: reviewer FIX, no headline logger exists (REPORT N5 wants a log outside the repo) and none of the news cards writes one. Needs a logger card first, then 28 days of log; refine again then.",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
@@ -23,14 +23,26 @@
     "MyTradingSys/research/news_feeds_2026-10-30/REPORT.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
+  "scope_in": [
+    "MyTradingSys/research/news_feeds_2026-10-30/REPORT.md",
+    "scripts/dev/prereg_gate.py"
+  ],
+  "scope_out": [
+    "trade rules",
+    "holdout data"
+  ],
+  "size": "M",
+  "sources": [
+    "REPORT.md N5 (4+ weeks, OOS split)"
+  ],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "refuse to run unless the log spans >= 28 days (print the day count and stop); pre-register window, threshold and the split in PRE_REG.md before the run",
+    "write study.py + test, run on DEV then VAL once; label thresholds OURS",
+    "write RESULT.md and the json; ship. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
+  ],
+  "tests": "MyTradingSys/research/news_event_study_2026-11/test_study.py: synthetic log with a planted +50% range after EVENT is detected; null log is not (fails before study.py exists).",
   "title": "News log + event study: news pulse vs next-hour BTC range, after 4 weeks of log (N5)",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

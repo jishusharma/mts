@@ -4,33 +4,66 @@
   "commands": [],
   "created": "2026-10-30T08:24:23Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "usOpenCountdown(now) in live_aid_indicators.js returns minutes to next NYSE open on 6 fixture instants incl. DST edge and weekend; line renders; test_live_aid.py green; shipped.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "live_aid.html: context-only line 'US open in N min' (NYSE open 13:30 UTC summer / 14:30 winter, DST-aware) that never gates Tom or any alert.",
   "id": "ask-p0-37-us-open-alert-line",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "research: news feeds for MTS (Binance hack timeline, free feeds tested, wiring plan) + 4 c",
+      "ref": "12a473da6c81",
+      "utc": "2026-10-30T08:06:10Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "12a473da6c81 research: news feeds for MTS (Binance hack timeline, free feeds tested, wirin",
+      "ref": "MyTradingSys/items/T054_us_session_news_correlation.md",
+      "utc": "2026-10-30T08:06:10Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-30 T0-ONLY | Same file set as the other live-aid cards: one writer at a time.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-30T09:58:05Z",
   "refs": [
     "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/live_aid.html",
+    "MyTradingSys/tools/live_aid/live_aid_indicators.js",
+    "MyTradingSys/tools/live_aid/test_live_aid.py",
+    "MyTradingSys/research/live_reads/2026-10-26_cross_market_tools/us_open.py",
+    "MyTradingSys/items/T054_us_session_news_correlation.md"
+  ],
+  "scope_out": [
+    "alert gating",
+    "US holidays beyond weekends (label: holidays not handled, OURS)"
+  ],
+  "scope_sha": "12a473da6c81",
+  "size": "S",
+  "sources": [
+    "us_open.py (open time), T054 N3 'US open in N min' line, ledger P0-37"
+  ],
+  "state": "ready",
+  "steps": [
+    "port the open-time logic from us_open.py to JS; test first",
+    "show the line 60 min before open, grey otherwise; text says context only",
+    "run test_live_aid.py; ship. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
+  ],
+  "tests": "MyTradingSys/tools/live_aid/test_live_aid.py: test_us_open_countdown (summer, winter, Saturday, 13:29, 13:31); red before the function exists.",
   "title": "T054 step 5: context-only 'US open in N min' alert line, never gates Tom (ledger P0-37)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
