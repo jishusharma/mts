@@ -1,0 +1,10 @@
+{
+  "done_when": "Report exists with reviewer model, MATCH or MISMATCH per number with file:line, the mutation result and a tag proposal",
+  "from": "JIS-NB",
+  "id": "20261030-163023-trust-re-check-q76-dev-ext-power-check-o",
+  "need": "JIS-NB lacks F:/MTS/data/dev_ext_2019_2021 (checked 2026-10-30 16:28Z). The q76 card says run on JIS-NUC. Same brief: re-derive 545 DEV_EXT feasible days and 1,207 total from 1m CSVs with the written rule in PRE_REG_V2.md:17-31 and :44, confirm no bar at or after 2022-01-01 was read, mutate one day-count line in a scratch copy, write the report to MyTradingSys/research/layer_lab/reports/2026-10-30_trust-recheck-q76-dev-ext-power-check.md",
+  "posted": "2026-10-30T16:30:23Z",
+  "status": "pending",
+  "target": "DSA-NUC",
+  "title": "Trust re-check q76 dev-ext power check on the NUC"
+}
