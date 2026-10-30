@@ -4,17 +4,12 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-30T23:19:47Z",
-    "misses": 6,
+    "folded": "2026-10-30T23:23:19Z",
+    "misses": 51,
     "reads": [
-      "scripts/dev/cbp_run.py",
-      "scripts/dev/artifacts.py",
-      "scripts/dev/test_cbp_run.py",
-      "MyTradingSys/research/news_feeds_2026-10-30/REPORT.md",
-      "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md",
-      "scripts/dev/test_artifacts.py"
+      "MyTradingSys/research/news_feeds_2026-10-30/REPORT.md"
     ],
-    "session": "agent-a2535cc6bf2029c26"
+    "session": "agent-a34d7e0a38e9de721"
   },
   "created": "2026-10-30T14:56:42Z",
   "depends_on": [],
