@@ -31,5 +31,10 @@ No DSA-NUC cards exist on trunk. tasks.py next --lane DSA-NUC and --lane DSA bot
 Session ID: MTS-2026-10-30-HHMMZ-DSA-JIS-NUC
 Role: BUILDER. Worktree first: git worktree add ../mts-dsa-jis-nuc-<MMdd-HHmm> -b dsa/jis-nuc-<MMdd-HHmm> origin/fast-track
 Then: # AIRUN task=mts-boot repo=<worktree> hours=1 timeout=900, then python scripts/dev/dsa.py boot.
-Task: take desk row 20261023-115742-run-card-context-composite-v2-dev-read or 20261026-154448-redo-fable-sim, whichever desk.py next --host JIS-NUC returns first.
+
+   Q1. host=JIS-NUC Take the first JIS-NUC desk row desk.py next --host JIS-NUC returns and finish it end to end.
+     Close it with desk.py done --result on a shipped sha.
+     DONE when: desk.py list shows that row done and the sha has an empty git cherry origin/fast-track.
+   Q2. host=JIS-NUC Land desk 20261030-125045 only if a Claude session is doing it; DSA must not write under scripts/aibridge/.
+     DONE when: content.js:11 reads aibridge_cap: 200 in both copies and the extension is reloaded.
 ```
