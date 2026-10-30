@@ -151,3 +151,4 @@ scripts/dev/test_tom_noise_units.py
 scripts/dev/test_coord_overhead.py
 scripts/dev/test_check_sourced_params.py
 MyTradingSys/tools/test_us_open_alert.py
+scripts/dev/test_fix_verifier.py
