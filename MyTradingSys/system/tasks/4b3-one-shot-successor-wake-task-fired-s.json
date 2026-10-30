@@ -5,6 +5,16 @@
     "python scripts/dev/successor_wake.py register --login A --at <UTC+3min> --prompt-file <noop-prompt.txt>  (NUC or NB host, one proof fire only)",
     "schtasks /query /tn MTS-SuccWake-A /v"
   ],
+  "context": {
+    "calls_to_edit": 7,
+    "folded": "2026-10-30T00:23:04Z",
+    "misses": 15,
+    "reads": [
+      "scripts/dev/test_successor_wake.py",
+      "scripts/dev/successor_wake.py"
+    ],
+    "session": "agent-a22178d4dd5aa5a46"
+  },
   "created": "2026-10-29T18:20:26Z",
   "depends_on": [],
   "done_when": "per-fire log shows all stages for one real fire and the task is gone afterwards; test_successor_wake.py exits 0; cause named in wake_proof file; shipped, cherry empty",
