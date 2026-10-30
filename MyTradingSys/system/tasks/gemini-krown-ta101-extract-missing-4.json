@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-30T19:37:28Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_hNfjyrJEytI.md"
   ],
@@ -15,7 +17,14 @@
   "id": "gemini-krown-ta101-extract-missing-4",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "4 extracts, quotes PASS 0 problems, check_numbers 0 not found, MANIFEST.csv shows 19 of 19",
+      "ref": "702040ee1",
+      "utc": "2026-10-30T19:37:28Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -27,7 +36,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "4 extracts, quotes PASS 0 problems, check_numbers 0 not found, MANIFEST.csv shows 19 of 19 reachable EXTRACTED_TA",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_<id>.md (4 new), MANIFEST.csv (4 rows); read: EXTRACT_TEMPLATE.md, PROTOCOL.md s3, krown_capture_2026-10-16/transcripts/ta101_missing4/*_timed.txt"
   ],
@@ -37,13 +51,14 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "copy each ta101_missing4/<id>_timed.txt into raw_transcripts_canonical/<id>_raw.txt if the verifier needs it there (read verify_extract_quotes.py header)",
     "write extract_<id>.md per EXTRACT_TEMPLATE.md: zones, volume, candles, averages, ranges rules with timed quotes and the Source GPS line",
     "run verify_extract_quotes.py on each until exit 0; run tools/check_numbers.py if it accepts a single extract",
     "update MANIFEST.csv status, extract path, quote_gate for the 4 ids; commit on the branch with a Result: line (4 extracts, quotes, problems 0)"
   ],
+  "taken": "2026-10-30T19:30:36Z",
   "tests": "verify_extract_quotes.py exit 0 is the gate; docs only",
   "title": "[GEMINI] Krown TA 101: extract the 4 missing videos from the timed transcripts already on disk (hNfjyrJEytI fMRvOt26xcA LB3DRYxnA0A _JoJbu_Ug-A)",
   "weight": "ROUTINE",
