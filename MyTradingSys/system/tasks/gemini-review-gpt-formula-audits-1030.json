@@ -2,6 +2,17 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-30T17:34:31Z",
+    "misses": 8,
+    "reads": [
+      "MyTradingSys/system/codex_usage.json",
+      "MyTradingSys/system/lane_state.json",
+      "scripts/dev/lane_health.py"
+    ],
+    "session": "agent-a05c2c75207b3a902"
+  },
   "created": "2026-10-30T17:14:59Z",
   "depends_on": [],
   "done_when": "one file research/gemini_audits_2026-10-30/review_gpt_formula_audits.md with a row per number (4 reports), each SAME or DIFF with the delta and file:line; producer GPT, reviewer Gemini.",
