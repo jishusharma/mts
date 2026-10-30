@@ -1,20 +1,26 @@
 # SUPERVISOR C notes (super-session-1, Agent sonnet, login C, JIS-DESKTOP) - rewritten each wake
 
-Started 2026-10-30T17:20Z. Work until 2026-10-31T05:06Z (plan). Wake 1 at 18:10Z. 5h window reset 17:50Z (now 5 pct, next reset 22:50Z), week 40 pct (cap 85).
+Started 2026-10-30T17:20Z. Work until 2026-10-31T05:06Z. Wake 3 at 18:40Z. Usage: parent reading 17:20Z (5h 43, week 39); since then ESTIMATES only (Agents cannot get_usage): 5h ~25, week ~42; 5h reset 22:50Z; plan slots=1 (burn shrink). DECISION (OURS): spawn at most 1 new Sonnet worker per wake until a real reading arrives.
 
-## Running / waiting
-- Haiku a4a6d3d01555c8ff0 haiku-refresh-stale-ready-cards: STALE 24 -> 5 (5 held: look delivered), local sha b328ea3f1 in worktree agent-a4a6d3d01555c8ff0, NOT pushed (its offline gate failed on role_budget/token/successor_wake in its tree; trunk supervisor.md is 7413 B so recheck). Re-ship after CI green via SendMessage to it; verify git cherry + one recount.
-- Opus a62eb6666d8cbc5a0 (stream F, bug-supervisor-idles-after-wake-retired, approval d-supervisor-idle-bug): 6/6 built, local commits 2037b9246 9b0542273 7b66a91a7 in worktree agent-a62eb6666d8cbc5a0, NOT shipped (CI red). Re-ship when CI green.
-- Haiku a1b340f351ac8ff74 (read-only idle-bug done_when check): finished.
+## Shipped and verified (git cherry empty, Result: in body, CI green after)
+- eba62ccc2 (on trunk 98d5ed195): GPT lane state restored after false auth-down from running codex_run.py on this desktop.
+- 3e32873fd -> c9986aad2: 19 ready cards un-STALEd (24 -> 5; 5 held as delivered). Flags re-fire on any scope-file touch (treadmill): workers run `tasks.py tag --refresh <id>` themselves.
+- Opus F bug-supervisor-idles-after-wake-retired: 2037b9246 + 9b0542273 + 7b66a91a7 in bc20940de; 141 tests pass; card done on trunk.
+- Stream A layer-review-tom-guidance: 843ee79fd (4 sections, verify_extract_quotes exit 0).
+- Planner: 15f050461 (4 cards refined: live-aid-replay, gemini_queue guard, C20 reland, sim-desk-click-test; mirror-share-denied-jisnb parked).
+- Haiku recount 18:50Z (a937a63512ee45648): tom sheet 4 sections x5 headings, no verdict wording; 141 tests pass (supervisor 94, status_board 21, doctor 21, role_budget 5); supervisor.md 7432 B < 7500. All PASS.
 
-## Done this wake
-- Revert of false "GPT down (auth)" lane state: eba62ccc2 -> trunk 98d5ed195 (cherry empty). Cause: codex CLI on this desktop has no OpenAI login (401); `codex_run.py tick` here also overwrote lane_state/codex_usage. DO NOT run codex_run.py on this desktop.
-- NUC ssh gate tick: lab tree salvaged 64 files, but claim push fails (no git login in the ssh session). So GPT audits go via desk row to an interactive NUC session: 20261030-174331 (6 audits). Gemini desk row 20261030-173120 (4 cards, :low).
-- Signal q-f7aac9 to desktop-f7iu69n: run testnet-trade-readout-daily (stream C). b-230ce8 ack NOT sent (no run landed).
-- DECISION (OURS): no manual claim before the codex tick (the runner claims itself and skips claimed cards). DECISION (OURS): started F Opus worker the same wake as Haiku (parent order beats RAMP new=1).
+## Running
+- Sonnet a27bd342cf0969230: live-aid-replay-mode-fixture-feeds (stream D), waiting on its ship; collision risk with Lenovo claim pizzino-layer-dashboard on live_aid.html.
+- Haiku a1381e3e0a2a0bc81: haiku-register-orphan-tests, waiting on its ship.
 
-## Blocked / next
-- CI RED: 5 fails; 067b81238 (splits revert), afc08114b (B163 revert) landed by others; run 41103757447 queued. Start no shipping work until green.
-- Then: Haiku haiku-register-orphan-tests; stream A layer-review-tom-guidance (STALE until the Haiku refresh ships); stream D live-aid-replay-mode-fixture-feeds is RAW -> Session_Planner first; re-ship Opus F work.
-- Feeder: file check cards in another lane per ship (none yet: only revert/desk rows).
-- Noticed: handover() lacked a work-period check (fixed in the Opus F build); test_successor_wake read the real loop folder (fixed 7b66a91a7).
+## Open asks
+- desk 20261030-174331 (JIS-NUC): run the 6 GPT audits (desktop codex has NO login; never run codex_run.py here). b-230ce8 ack pending until a run lands.
+- desk 20261030-173120 (JIS-NUC): 4 Gemini cards at :low.
+- signal q-f7aac9 -> desktop-f7iu69n: run testnet-trade-readout-daily (ack due 18:40Z, answer by 21:40Z). live-not-fired-audit-1029 also needs the Lenovo (live files).
+
+## Next
+- Verify D and orphan-test ships; Haiku recount of the 5 shipped claims.
+- Feeder: file Gemini blind-read / GPT re-derive check cards for ships with numbers (tom sheet, replay test) if LANE LOW; none printed so far.
+- Stream C follow-up when the Lenovo acks; stream B/E on picks.
+- Noticed: task STALE flag treadmill; test_verify_cli_writes_stale flaky; Tom sheet notes SetupCandidatesBuilder max 5 flags vs TOM_CORE_BT.md:14 ceiling 6.
