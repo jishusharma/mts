@@ -30,6 +30,13 @@ class Parse(unittest.TestCase):
         self.assertEqual(al.parse_levels("a decline to 78 thousand"), [78000])
         self.assertEqual(al.parse_levels("pullback between 77.5k and 78.5k"), [77500, 78500])
 
+    def test_k_on_both_bounds(self):
+        self.assertEqual(al.parse_levels("expects a wick into 76k-77k"), [76000, 77000])
+
+    def test_counts_are_not_prices(self):
+        self.assertEqual(al.parse_levels("100k liquidations today, then 75k is the level"), [75000])
+        self.assertEqual(al.parse_levels("over 120k contracts liquidated near 80k"), [80000])
+
     def test_noise_dropped(self):
         self.assertEqual(al.parse_levels("13 EMA crossing 34 EMA on the 2-day, September 15th"), [])
         self.assertEqual(al.parse_levels("ETH range 2K to 4.5K"), [])
@@ -40,6 +47,18 @@ class Parse(unittest.TestCase):
         lv = al.ladder(rows)
         self.assertEqual([x["level"] for x in lv], [81000, 75000])
         self.assertEqual({x["analyst"] for x in lv}, {"Michael"})
+
+
+class Hit(unittest.TestCase):
+    def test_publish_day_bars_never_count(self):
+        """Only the date is stored: a touch on the publish day may predate the video, so hit starts the next UTC day."""
+        day = int(datetime(2026, 10, 29, tzinfo=timezone.utc).timestamp())
+        bars = [(day + 3600 * k, 80_500.0, 79_500.0, 80_000.0) for k in range(24)]  # 10-29 only: 79.5k..80.5k
+        bars += [(day + 86_400 + 3600 * k, 82_000.0, 81_000.0, 81_500.0) for k in range(24)]  # 10-30: 81k..82k
+        lv = [dict(level=80_000.0, published="2026-10-29", expires_at=""), dict(level=81_500.0, published="2026-10-29", expires_at="")]
+        al.mark(lv, bars, datetime(2026, 10, 31, tzinfo=timezone.utc))
+        self.assertEqual([x["hit"] for x in lv], [False, True])
+        self.assertEqual(al.hit_from("2026-10-29"), datetime(2026, 10, 30, tzinfo=timezone.utc))
 
 
 class Notice(unittest.TestCase):

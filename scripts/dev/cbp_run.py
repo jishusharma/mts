@@ -40,7 +40,9 @@ CBP_HOME = default_cbp_home()
 TRANSCRIPTS = Path(os.environ.get("CBP_TRANSCRIPTS", str(CBP_HOME / "raw_transcripts_canonical")))
 WINDOWS = (("EU", time(9, 0), time(13, 0)), ("PRE_US", time(13, 0), None))
 MODEL = os.environ.get("CBP_MODEL", "claude-sonnet-5-5")
-PROMPT = """You extract what ONE crypto analyst says in ONE video. Output ONLY a JSON object, nothing else:
+PROMPT = """You extract what ONE crypto analyst says in ONE video.
+Analyst: %(analyst)s. Published: %(published)s. Title: "%(title)s".
+Output ONLY a JSON object, nothing else:
 {"bias": "BULLISH|BEARISH|NEUTRAL|NO_VIEW", "symbols": ["BTC",...],
  "quotes": ["<=25 words, verbatim from the transcript"],
  "trades": [{"asset":"BTC","direction":"LONG|SHORT","entry":"...","target":"...","invalidation":"...","quote":"verbatim"}],
