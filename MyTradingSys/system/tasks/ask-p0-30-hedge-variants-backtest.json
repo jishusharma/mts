@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T11:43:06Z",
   "commands": [],
   "created": "2026-10-30T08:24:21Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "ask-p0-30-hedge-variants-backtest",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "no hedge variant fee-net positive 2022-01..2025-08; best -16.0 bps vs unhedged -7.6; resea",
+      "ref": "afd551435",
+      "utc": "2026-10-30T11:43:06Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +46,12 @@
   "refs": [
     "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md"
   ],
-  "result": "",
+  "result": "no hedge variant fee-net positive 2022-01..2025-08; best -16.0 bps vs unhedged -7.6; research/t053_hedge_variants_2026-10-30",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/items/T053_two_account_hedge_scalping.md",
     "MyTradingSys/research/_archive/loose_2026-10/T053_TWO_ACCOUNT_HEDGE_RESEARCH.md",
@@ -60,12 +72,13 @@
   "sources": [
     "T053 item steps (2026-09-28); ledger P0-30"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read the T053 research doc open questions; DECISION (OURS) defaults: equal-size hedge, unhedge at entry price, fee 10 bps, funding series per items/B103_funding_coverage.md (state the file used in PRE_REG; fail closed where missing)",
     "verdicts.py check 'hedge'; prereg_gate.py --m auto; freeze PRE_REG.md",
     "write hedge.py on bt_engine (fail closed on missing funding) + test first; run once on DEV; RESULT.md + json; verdicts.py backfill; ship. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
   ],
+  "taken": "2026-10-30T11:43:06Z",
   "tests": "research/hedge_variants_2026-10/test_hedge.py: hand-computed 3-trade case with fee and funding (numbers from FORMULAS.md, computed by hand) matches; fails before hedge.py exists.",
   "title": "T053 step 3: backtest hedge variants on 1m with fees and funding (ledger P0-30); step 4 testnet run waits on it (P0-31)",
   "weight": "CRUCIAL",
