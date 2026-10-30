@@ -5,6 +5,20 @@
     "git branch -r | grep gemini-q/",
     "python scripts/dev/verify_extract_quotes.py <file>"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-30T21:19:47Z",
+    "misses": 23,
+    "reads": [
+      "MyTradingSys/system/WORKERS.md",
+      "MyTradingSys/research/v1_plan_2026-10-20/D7_ROADMAP.md",
+      "MyTradingSys/system/layer_index.json",
+      "MyTradingSys/tools/live_aid/live_aid_indicators.js",
+      "MyTradingSys/research/sim_desk/PLUGIN.md",
+      "MyTradingSys/research/mts_doctor/MAINNET_PATH_2026-10-25.md"
+    ],
+    "session": "agent-a94c8ad8f55ad1e50"
+  },
   "created": "2026-10-30T18:56:22Z",
   "depends_on": [],
   "done_when": "every gemini-q branch that exists is merged or tried-with-reason; verify_extract_quotes.py exits 0 on each merged extract; the card states carry the numbers; one ship, git cherry empty",
