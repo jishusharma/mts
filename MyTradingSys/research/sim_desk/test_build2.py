@@ -72,3 +72,21 @@ def test_saved_run_is_in_the_catalogue(tmp_path):
     assert len({r['id'] for r in cat['rows']}) == len(cat['rows'])
     row = next(r for r in cat['rows'] if r['id'] == rid)
     assert row['kind'] == 'backtest' and row['exported'] is True and row['verdict'] == out['verdict']
+
+
+def test_rebuild_flags_result_whose_id_differs_from_the_row_that_claimed_its_source(tmp_path):
+    """Two result files in a temp folder, nothing in EXPORTED_BY_SOURCE. 'zz-a' lists a source (the pitchfork phase-2 note)
+    that the layer_map row lm-pitchfork-4h-vp-20261028 claims first under another id; 'zz-b' lists a source no row has.
+    By hand: both must come out exported (2 of 2), zz-a on the existing row, zz-b on a new row, row ids unique."""
+    import build_catalogue as bc
+    res = tmp_path / 'res'
+    res.mkdir()
+    for rid, src in (('zz-a', 'MyTradingSys/research/pitchfork_2026-10-19/PHASE2_4H_POC_STUDY.md'),
+                     ('zz-b', 'MyTradingSys/research/zz_nonexistent/NOTE.md')):
+        (res / (rid + '.json')).write_text(json.dumps({'id': rid, 'family': 'F', 'title': rid, 'kind': 'backtest',
+                                                      'verdict': {'label': 'v'}, 'source_files': [src]}), encoding='utf-8')
+    _, doc = bc.main(['--results', str(res), '--out', str(tmp_path / 'cat.json')])
+    assert {r['result_id'] for r in doc['rows'] if r['exported']} == {'zz-a', 'zz-b'}
+    assert doc['exported'] == 2
+    assert next(r for r in doc['rows'] if r['result_id'] == 'zz-a')['id'] == 'lm-pitchfork-4h-vp-20261028'
+    assert len({r['id'] for r in doc['rows']}) == len(doc['rows'])
