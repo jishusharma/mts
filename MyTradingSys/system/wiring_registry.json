@@ -914,6 +914,10 @@
       "disp": "TOOL",
       "why": "Geometric Pitchfork channel and median line detection engine for Andrews, Schiff, and Modified Schiff variants; covered by test_pitchfork_detector.py; registered in layer_index.json and layer_map.json."
     },
+    "MyTradingSys/backtest/layers/pizzino/pizzino_levels.py": {
+      "disp": "TOOL",
+      "why": "Pizzino level export CLI (python pizzino_levels.py --fetch or --klines): JSON levels per frame 1d..1m, run by hand; the live aid page computes the same in JS (A.pizzino in tools/live_aid/live_aid_indicators.js, parity test test_live_aid.py). Covered by test_pizzino_levels.py; no live import."
+    },
     "MyTradingSys/backtest/layers/pizzino/pizzino_indicators.py": {
       "disp": "TOOL",
       "why": "Pizzino pure-function indicators (fractal pivots, nested swing states, bar count, 50% line, break and retest, trade plan); covered by test_pizzino_indicators.py; registered in layer_index.json and layer_map.json; no live wiring."
