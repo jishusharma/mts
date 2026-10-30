@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-30T17:15:13Z",
+  "depends_on": [],
+  "done_when": "one line per source SAME/DIFF appended to the day file; DIFF filed as a finding.",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "After testnet-trade-readout-daily ships a day file, recount the per-source rows from its own table and from funnel_report.py --day on the same inputs if reachable; SAME or DIFF with the numbers.",
+  "id": "haiku-recount-testnet-readout",
+  "lane": "HAIKU",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Final report ends with a Noticed: line. Blocked? List 2-3 non-destructive fixes, try the safest, verify, then report.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T17:16:12Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "the newest research/testnet_status/TESTNET_STATUS_<date>.md (read, then one appended line per source)"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change to any file outside the named ones"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "read the day file table",
+    "recount rows per source from the file's own rows",
+    "append SAME/DIFF lines",
+    "report"
+  ],
+  "tests": "see done_when",
+  "title": "Haiku: recount one day of the testnet readout (rows per source, calibration vs promoted) from the published research/testnet_status file; report SAME/DIFF",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

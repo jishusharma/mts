@@ -279,17 +279,32 @@ def read_gate_slots(repo: Path = REPO) -> dict:
         return {"error": f"{type(e).__name__}: {e}"}
 
 
+GEMINI_TAG = "[GEMINI]"          # ROUTING.md "Gemini-designated card": a CODEX-lane card whose title starts with this tag
+LANE_FLOORS = {"SONNET": 6, "HAIKU": 3, "GEMINI": 4}   # OURS (D11_PROGRAMME.md): under the floor the Planner feeds the lane; CODEX keeps 8
+
+
+def is_gemini_card(c: dict) -> bool:
+    return str(c.get("title", "")).lstrip().upper().startswith(GEMINI_TAG) or str(c.get("vendor", "")).lower() == "gemini"
+
+
+def lane_counts(ready: list) -> dict:
+    """Ready cards per model lane: codex = CODEX minus the [GEMINI]-tagged ones (codex_run.py skips those), gemini = the tagged
+    ones (no card carries a vendor field, 2026-10-30: the old vendor-only count was always 0, so no Gemini worker ever spawned)."""
+    lane = lambda c: str(c.get("lane", "")).upper()
+    return {"codex": sum(1 for c in ready if lane(c) == "CODEX" and not is_gemini_card(c)),
+            "gemini": sum(1 for c in ready if is_gemini_card(c)),
+            "sonnet": sum(1 for c in ready if lane(c) == "SONNET"),
+            "haiku": sum(1 for c in ready if lane(c) == "HAIKU")}
+
+
 def _ready_for_lane(repo: Path, lane: str) -> list:
     import tasks
-    if lane == "GEMINI":
+    if lane in ("GEMINI", "CODEX"):
         cards = tasks.load_all(repo)
         reg = tasks.registry(repo)
-        return [
-            c for c in cards
-            if c.get("state") == "ready"
-            and (str(c.get("lane", "")).upper() == "GEMINI" or str(c.get("vendor", "")).lower() == "gemini")
-            and not tasks.problems(c, cards, reg, repo)
-        ]
+        ready = [c for c in cards if c.get("state") == "ready" and not tasks.problems(c, cards, reg, repo)]
+        want = lane == "GEMINI"
+        return [c for c in ready if str(c.get("lane", "")).upper() in ("CODEX", "GEMINI") and is_gemini_card(c) == want]
     ready, _ = tasks.ready_cards(repo, lane=lane)
     return ready
 
@@ -1041,6 +1056,10 @@ def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_ke
         L.append(f"SPAWN Lab_Guy for {ctx['gemini_ready']} Gemini card(s) (gemini_queue.py run <card>:medium, reviews the branch)")
     if me_codex and 0 <= cx < 8:
         L.append(f"NOTE CODEX lane {cx} ready (< 8): Session_Planner refines CODEX cards this wake")
+    for ln, floor in LANE_FLOORS.items():          # every lane has a floor (D11_PROGRAMME.md "never short of work")
+        n = ctx.get(ln.lower() + "_ready")
+        if n is not None and n < floor:
+            L.append(f"LANE LOW {ln} {n} (< {floor}): Session_Planner feeds it from the D11_PROGRAMME.md backlog this wake")
     if me_any and ctx.get("dsa_unposted"):
         L.append(f"RUN python -u scripts/dev/desk.py assign > ~/.claude/{LOOP_DIR}/assign.log 2>&1 &   "
                  f"({ctx['dsa_unposted']} ready DSA-lane card(s) without a desk row)")
@@ -1262,9 +1281,10 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
     try:
         cards, reg = tasks.load_all(repo), tasks.registry(repo)
         ready = [c for c in cards if c.get("state") == "ready" and not tasks.problems(c, cards, reg, repo)]
-        ctx["codex_ready"] = sum(1 for c in ready if str(c.get("lane", "")).upper() == "CODEX")
+        lc = lane_counts(ready)
+        ctx["codex_ready"], ctx["gemini_ready"] = lc["codex"], lc["gemini"]
+        ctx["sonnet_ready"], ctx["haiku_ready"] = lc["sonnet"], lc["haiku"]
         ctx["refine_raw"] = len(tasks.refine_due(cards))
-        ctx["gemini_ready"] = sum(1 for c in ready if str(c.get("vendor", "")).lower() == "gemini")
         import desk
         rows = desk.trunk_rows(repo, TRUNK_REF)
         have = {r.get("card") for r in rows}

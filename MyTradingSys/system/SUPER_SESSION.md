@@ -17,7 +17,7 @@ SUPERVISOR.md and SUPER_LOOP.md are pointers to this file (merged 2026-10-26); `
 ## Every wake
 1. `get_usage`, `supervisor.py plan ...` (roles/supervisor.md), read the notes file. Stop conditions (D6) first.
 2. Verify notes from workers: `git cherry origin/fast-track <sha>` empty, commit body has `Result:`, CI moved `origin/green/fast-track` past it; one other-model spot check (a Haiku Agent re-runs the named test or count). Then `mark_completed` + `archive_session`.
-3. Doctor due (D2)? Ready cards < 6 (D4)? Run those Agents.
+3. Doctor due (D2)? Ready cards < 6 (D4)? `LANE LOW` lines from `plan` (SONNET 6, HAIKU 3, GEMINI 4, CODEX 8)? Run those Agents; the Planner feeds a low lane from `research/v1_plan_2026-10-20/D11_PROGRAMME.md` section 6 first (feeder rule, section 3: every ship files its check in another vendor's lane the same wake).
 4. Start workers for free slots (D3): as background Agents (`run_in_background: true`), never `start_session` (roles/supervisor.md:35, rule 9 below). Interactive roles (Eagle_Eyes) are sessions.
 5. Rewrite the notes file, start the watcher (`supervisor.py wait`, background), then run `supervisor.py watchcheck` as the LAST call of the turn: exit 4 / `NO WAKE SOURCE` = start the watcher again; a turn that ends without exit 0 is a defect to report.
 
