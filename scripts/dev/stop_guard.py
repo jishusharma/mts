@@ -75,6 +75,28 @@ def reason(path):
 SUP_PLAN_MAX_MIN = 10   # a Supervisor turn may end only if a `plan` ran this recently (OURS)
 
 
+def planner_login(sid, home=None):
+    """The login whose newest `supervisor.py plan` reading came from this session inside the last day, else '' (2026-10-30: a
+    Supervisor started without a role line was never guarded and sat idle 16 h)."""
+    try:
+        import json
+        import supervisor
+        from datetime import datetime, timezone, timedelta
+        best = ("", None)
+        for lg in ("A", "B", "C", "D"):
+            p = supervisor.loop_home(home) / f"{lg}.jsonl"
+            if not p.exists():
+                continue
+            rows = [json.loads(x) for x in p.read_text(encoding="utf-8").splitlines() if x.strip()]
+            if rows and rows[-1].get("sid") == sid:
+                at = supervisor._utc(rows[-1].get("at"))
+                if at and datetime.now(timezone.utc) - at < timedelta(days=1) and (best[1] is None or at > best[1]):
+                    best = (lg, at)
+        return best[0]
+    except Exception:
+        return ""
+
+
 def supervisor_reason(sid):
     """Why a Supervisor-role session may not end its turn idle, or None. Blocks while `supervisor.py watchcheck` is non-zero (no live
     watcher) or no `plan` ran in the last SUP_PLAN_MAX_MIN minutes (bug-supervisor-idles-no-watcher, 2026-10-30). Not a Supervisor,
@@ -83,13 +105,19 @@ def supervisor_reason(sid):
         if not sid:
             return None
         import role_loader
-        if "Supervisor" not in role_loader.explicit_injected(sid):
-            return None
-        login = str((role_loader.role_meta(sid, "Supervisor") or {}).get("login") or "").strip().upper()[:1]
-        if login not in ("A", "B", "C", "D"):
-            return None
         import supervisor
         from datetime import datetime, timezone
+        login = ""
+        if "Supervisor" in role_loader.explicit_injected(sid):
+            login = str((role_loader.role_meta(sid, "Supervisor") or {}).get("login") or "").strip().upper()[:1]
+        if login not in ("A", "B", "C", "D"):
+            login = planner_login(sid)     # no role line (a start line without it, or a compacted session): its own `plan` readings say it
+        if login not in ("A", "B", "C", "D"):
+            return None
+        wk = supervisor.read_work(login)
+        end = supervisor._utc(wk.get("until"))
+        if wk and (end is None or end <= datetime.now(timezone.utc)):
+            return None     # the work period is over: the hand-over ends the session
         parts = []
         rc, msg = supervisor.watchcheck(login)
         if rc != 0:
@@ -152,8 +180,11 @@ def hook(stdin_text):
         ws = data.get("workspacePaths") or []
         cwd = data.get("cwd") or (ws[0] if ws else None) or os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
         sid = data.get("session_id") or data.get("conversationId")
-        why = reason(cwd) or supervisor_reason(sid)
-        if not why or seen_before(sid, why):
+        sup = supervisor_reason(sid)
+        why = sup or reason(cwd)
+        # a Supervisor inside its work period is blocked on every idle turn end, not once per state (2026-10-30: blocked once, then
+        # idle 16 h); stop_hook_active above still lets the blocked turn's own retry end, so it never loops
+        if not why or (not sup and seen_before(sid, why)):
             return ""
         decision = "continue" if is_agy else "block"
         return json.dumps({"decision": decision, "reason": message(why)})
