@@ -143,6 +143,7 @@ scripts/dev/test_logon_wake.py
 scripts/dev/test_refresh_main_checkout.py
 MyTradingSys/tools/live_aid/test_live_aid.py
 MyTradingSys/tools/live_aid/test_build_analyst_data.py
+MyTradingSys/tools/live_aid/test_oi_money.py
 MyTradingSys/tools/live_aid/test_live_aid_replay.py
 scripts/dev/test_sync_push_race.py
 scripts/dev/test_announcements_ids.py
