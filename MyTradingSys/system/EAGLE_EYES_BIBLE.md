@@ -40,6 +40,14 @@ Why this section exists: the 10-28 session was compacted 6 times; each summary k
 - Thesis (10-30): "We cannot work with certainties. We can only work with probabilities. And probability is going to be our edge ... if I have anticipated this, then these are the next things that must happen before I can say that okay, my understanding was wrong. And this is when I have to get out of the trade." Confirmed: dominant lower high (Krown) = his line.
 - Liquidation map (10-30): "do you connect the liquidation heat map? ... What really was hit on these liquidation maps? When the price was moving".
 - Measure, don't describe (10-30): "you are winning my heart by telling me things like this. That the band squeezes before the US opens. And you checked so many weekdays ... So understand exactly your role and how you have to keep improving it ... without asking me the same questions again and again, implement everything. So look at my intentions ... and then decide." Rule: every chart question becomes a count over all past days (n, %, split), shipped the same turn.
+- Live tracking (10-30 ~17:00Z): "track the charts live ... bubbles ... footprints ... liquidation levels ... 15 minute or 30 minute ... heat maps". State 10-31: Eagle_Eyes can open his CoinGlass Legend tab, switch timeframes and read bubbles + footprint; the Liquidation Heatmap layer does not load in the Claude Chrome tab (his tab shows it), so heatmap bands come from his shots. Reads happen on each wake (watcher event or message), not continuously.
+- Band walk and switch (10-30): "Bollinger Band traits are so good ... RSI is making such a beautiful divergence ... rejected by these red line ... 60 line ... when to get out from the short trade and when to get in a long trade". Measured C20.
+- Malkan (10-30): "What about the Malkan 40/60 layer? ... 5-star, 7-star? ... backtesting has to be really conducted very sincerely, keeping in mind what failures mean". Answer: 5-star only approximated (malkan_mtf, look-ahead bug), 7-star never tested; BTC gives too few events for power, the fair test is an Indian-equity basket, pre-registered.
+- Edge search (10-30): "which factors ... parameters ... confluence ... separate the Bitcoin phases".
+- Pierce in a breakdown (10-30): "classic pierce through the Bollinger Band in a downtrend ... where you will encash it? ... how 15 minutes, 30 minutes, 4 hours behave during macro level breakdowns". Measured C21.
+- Volume and RSI 40 (10-30): "RSI coming out of the red line ... left the line ... Volume is also increasing as the price comes down ... apply each idea of volume and see what works". Logged C22.
+- Heatmap live (10-30): "the cluster was forming below the line ... are you reading these when we go to the live mode ... if you are not, then you tell me".
+- Daily lower RSI highs (10-31): "RSI has been making lower lows since the first push ... deflected from the 60 line ... fake out from the center line of the Bollinger ... all these things are quite tradable, you just have to find proper ways". Measured C23.
 - Coil and force (10-30): "what kind of force makes that happen? Try to measure it ... how far it will go ... support and resistances are the target ... I cannot understand in which direction the coil will fire." First answers: `research/pre_us_squeeze_2026-10-29/`, `research/bb_pierce_force_2026-10-29/`.
 
 ## The asks in one table (consolidated 10-30; update here, not in chat)
@@ -51,7 +59,9 @@ Why this section exists: the 10-28 session was compacted 6 times; each summary k
 | Live in-trade dashboard | `MyTradingSys/tools/live_aid/live_aid.html` | on trunk f70a7ab4 |
 | Think, don't read: all layers, all analysts, colour grid, agreement count, the odd one | per-shot frame below | in use |
 | Anticipation: if up / if down, daily open, 1d/2d/3d/weekly high-low take-and-fail, US session | card `anticipation-map-from-current-layer-stat` (OPUS p2); scored in `SCENARIO_LEDGER.md` | ledger 2 maps; card raw |
-| Log anything that repeats | `BACKTEST_CANDIDATES.md` (C1-C18) | C13, C16-C18 ran descriptively |
+| Log anything that repeats | `BACKTEST_CANDIDATES.md` (C1-C23) | C13, C16-C18 descriptive; C20 (15m div + BB switch) 0/36 OOS positive; C21 30m breakdown pierce only cell positive in both periods (n=38/35, needs pre-reg); C23 daily shorts none beat the always-short base; C22 idea |
+| Malkan 5-star / 7-star fair test | Indian-equity basket, pre-registered (PRE_REG_TEMPLATE) | not started; BTC n too small |
+| Heatmap in Eagle_Eyes' own browser tab | Legend tab: layer missing | his shots until the layer loads there |
 | US open, squeeze, pierce force, levels as targets | `research/pre_us_squeeze_2026-10-29/`, `research/bb_pierce_force_2026-10-29/` | ran 10-30; next: OI and RSI/WT coils |
 | Habib whole-plan scoring; Kurisko quad (4 stochastics) on 15m | `research/habib_plan_imbalance_2026-10-20/`; card `kurisko-dev-event-study` | plans never scored; 1m/5m blocked by fees, 15m untested |
 | Liquidation heatmap: what was hit | C6 row; heatmap history NOT_IN_DATA (no recorder) | 2 instances |
