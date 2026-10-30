@@ -262,5 +262,62 @@ def test_no_calendar_on_429_then_numbers_on_200(browser):
             ctx.close()
 
 
+# ---------- "What the money is doing" (OI_COMMENTARY_SPEC.md): the 10-30 18:50Z flush replayed through the rendered tile ----------
+# window.LIVEAID_OI = the committed Bybit 5m fixture (klines + OI snapshots); the page keeps only rows stamped <= now, as the
+# live REST call would return them. Clock 19:10:30Z: the 18:50 and 19:00 flush bars are closed, the 19:10 bar is forming.
+OIFX = json.loads((HERE / "fixture_bybit_flush_1030.json").read_text(encoding="utf-8"))
+OI_NOW = datetime.datetime(2026, 10, 30, 19, 10, 30, tzinfo=datetime.timezone.utc)
+
+
+def _money(browser, inject=True):
+    ctx = browser.new_context(offline=True, viewport={"width": 1400, "height": 900})
+    page = ctx.new_page()
+    errs = []
+    page.on("pageerror", lambda e: errs.append(str(e).splitlines()[0][:200]))
+    try:
+        if inject:
+            page.add_init_script("window.LIVEAID_OI = " + json.dumps({"klines": OIFX["klines"], "oi": OIFX["oi"]}) + ";")
+        page.clock.set_fixed_time(OI_NOW)
+        page.goto(PAGE.resolve().as_uri() + "?replay=fixture", wait_until="load", timeout=30000)
+        page.wait_for_timeout(1300)
+        rows = page.eval_on_selector_all("#m-rows tr", "rs => rs.map(r => Array.from(r.children).map(c => c.innerText))")
+        return rows, page.inner_text("#m-lines"), page.inner_text("#m-call"), errs
+    finally:
+        ctx.close()
+
+
+def _bybit_window(mins):
+    """Independent: Bybit samples = (kline open time, open price, OI snapshot at that time), newest at or before now; base =
+    newest sample at least `mins` old. Returns (price change %, OI change %) as the page prints them (2 dp, signed)."""
+    now = int(OI_NOW.timestamp() * 1000)
+    oi = {int(t): v for t, v in OIFX["oi"].items()}
+    pts = [(k[0], k[1], oi[k[0]]) for k in OIFX["klines"] if k[0] <= now and oi.get(k[0], 0) > 0]
+    last = pts[-1]
+    base = [p for p in pts if p[0] <= now - mins * 60000][-1]
+    f = lambda x: ("+" if x > 0 else "") + f"{x:,.2f}"
+    return f((last[1] / base[1] - 1) * 100) + "%", f((last[2] / base[2] - 1) * 100) + "%"
+
+
+def test_money_tile_replays_the_1850_flush(browser):
+    rows, lines, call, errs = _money(browser)
+    assert not errs, errs
+    assert "FLUSH 18:50Z, low 76232, price -0.55 %, OI -0.37 % (-256 BTC), longs liquidated" in lines, lines
+    assert "2 bars hit within 60 min, the last 19:00Z" in lines, lines
+    by = {r[0]: r for r in rows}
+    assert list(by) == ["5 min", "15 min", "60 min"], rows
+    for w, mins in (("5 min", 5), ("15 min", 15), ("60 min", 60)):
+        px, doi = _bybit_window(mins)
+        r = by[w]
+        assert r[2] == "NOT_IN_DATA" and r[4] == "NOT_IN_DATA", r   # Deribit and Binance: no samples in replay
+        assert r[3] == doi and r[5] == doi and r[1] == px, (w, r, px, doi)   # one venue: all-venues net = Bybit
+    assert call != "NOT_IN_DATA" and call != "--", call
+
+
+def test_money_tile_without_oi_reads_not_in_data(browser):
+    rows, lines, call, errs = _money(browser, inject=False)
+    assert not errs, errs
+    assert call == "NOT_IN_DATA" and "FLUSH" not in lines and "NOT_IN_DATA" in lines, (call, lines)
+
+
 if __name__ == "__main__":
     sys.exit(pytest.main([__file__, "-q", *sys.argv[1:]]))
