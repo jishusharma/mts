@@ -4,7 +4,7 @@
   "commands": [],
   "context": {
     "calls_to_edit": 14,
-    "folded": "2026-10-30T08:35:51Z",
+    "folded": "2026-10-30T08:38:27Z",
     "misses": 15,
     "reads": [
       "MyTradingSys/research/fast_track_2026-09-27/BTC_SESSION_SWEEPS_2026-10-04.md",
@@ -14,7 +14,7 @@
       "MyTradingSys/research/session_sweeps/session_open_study.py",
       "MyTradingSys/backtest/fetch_binance_archive.py",
       "MyTradingSys/backtest/layers/fabio/v3/day_gates.py",
-      "MyTradingSys/backtest/fees.py"
+      "MyTradingSys/research/h3_ny_open_low_prereg/PRE_REG.md"
     ],
     "session": "agent-a7d0a6bf9e7aaa479"
   },
