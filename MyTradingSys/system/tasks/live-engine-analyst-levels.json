@@ -1,34 +1,65 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest MyTradingSys/tests/test_t037_update_market_state.py -q",
+    "python scripts/dev/analyst_levels.py --json"
+  ],
   "created": "2026-10-30T09:56:21Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "pytest MyTradingSys/tests/test_t037_update_market_state.py passes with new tests: ladder section written from a stub analyst_levels JSON; empty, error and timeout give 'no levels' and the state file is still written.",
+  "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Carry the CBP analyst-level ladder (nearest level above/below price, analyst, hit/open) into current_market_state as an ANALYST_LEVELS note section so live mode shows it. Display only, never a trade input; error or stale data gives 'no levels'.",
   "id": "live-engine-analyst-levels",
-  "lane": "SONNET",
+  "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "analyst levels: no hit before the video could exist; cbp_run prompt carries metadata (Argo",
+      "ref": "589685fbb501",
+      "utc": "2026-10-30T14:30:46Z"
+    }
+  ],
   "layers": [],
-  "live_path": false,
+  "live_path": true,
   "mutation_check": "",
-  "note": "OPERATOR QUOTE (10-30): \"Dashboard should be firing all these things, every layer, every important news, and you first of all you have to look into everything that is not fired when you are in live mode.\" Display/context only, never a trade input until a fee-net OOS test says so.",
+  "note": "REVIEWED:2026-10-30 ACCEPT PLANNER 2026-10-30: DECISION (OURS): in-process import, no new service. Labelled analyst call / not backtested. cbp HIT fix already shipped (589685fbb). Live path: CRITICAL review SESSION. Operator quote: Dashboard should be firing every layer, every important news, look into everything not fired in live mode.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-30T17:15:18Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/runtime/update_market_state.py",
+    "MyTradingSys/tests/test_t037_update_market_state.py",
+    "scripts/dev/analyst_levels.py",
+    "MyTradingSys/runtime/mts_math.py"
+  ],
+  "scope_out": [
+    "order or trade code",
+    "deploy or restart",
+    "any trade input from levels"
+  ],
+  "scope_sha": "589685fbb501",
+  "size": "M",
+  "sources": [
+    "operator 2026-10-30 quote in card note history",
+    "analyst_levels.py --json"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read analyst_levels.py main (--json), main() in update_market_state.py and update_state/format_state in mts_math.py (imported there)",
+    "Call analyst_levels in-process with a short timeout; add ANALYST_LEVELS section (nearest above, nearest below, analyst, published, state hit/open)",
+    "Tests: atomic write kept, subprocess/API error and stale data give 'no levels', non-trade path only",
+    "Worktree only; deploy manual. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
+  ],
+  "tests": "MyTradingSys/tests/test_t037_update_market_state.py: stub levels JSON gives nearest above/below in the state file; analyst_levels failure gives 'no levels'; fails before the section exists.",
   "title": "Live engine context: carry the CBP analyst-level ladder (analyst_levels.py --json) into current_market_state as a NOTE layer (nearest level above/below, analyst, hit/open); live-path: restart/reset + API-error tests, fails closed to 'no levels'",
-  "weight": "",
-  "worker": ""
+  "weight": "CRITICAL",
+  "worker": "session"
 }
