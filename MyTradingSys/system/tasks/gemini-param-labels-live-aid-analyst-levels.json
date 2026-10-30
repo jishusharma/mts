@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T21:19:38Z",
   "commands": [],
   "created": "2026-10-30T17:15:02Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "64 params: 24 SOURCED, 40 OURS; 3 cites spot-checked",
+      "ref": "35872ab10",
+      "utc": "2026-10-30T21:19:38Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,7 +40,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "64 params: 24 SOURCED, 40 OURS; 3 cites spot-checked",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tools/live_aid/live_aid_indicators.js, us_open_rates.js, scripts/dev/analyst_levels.py (read); one output file"
   ],
@@ -43,12 +55,13 @@
   "scope_sha": "122323253c92",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "list every numeric constant and parameter with file:line",
     "find the SOURCED quote or mark OURS",
     "write the table and the counts line"
   ],
+  "taken": "2026-10-30T21:19:38Z",
   "tests": "see done_when",
   "title": "[GEMINI] every parameter in tools/live_aid/live_aid_indicators.js, us_open_rates.js and scripts/dev/analyst_levels.py labelled SOURCED or OURS (file:line)",
   "weight": "ROUTINE",

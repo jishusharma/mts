@@ -211,7 +211,7 @@ public class SpikeFadeCriticalWave1Test {
      * A prior high at 1070 (2.88 %) stays within the cap (case D).
      */
     @Test
-    void caseF_far_prior_high_beyond_cap_falls_back_to_a_s2() {
+    void caseF_far_non_proxy_prior_high_beyond_cap_is_ignored() {
         double[] l = legs(5.0, 20.0);
         l[5] = 100.0;
         ArrayNode k = prior(1000.0, l);
@@ -221,6 +221,19 @@ public class SpikeFadeCriticalWave1Test {
         assertEquals("A-S2", c.get("stop_rule").asText());
         assertEquals(1060.0, c.get("math").get("stop").asDouble(), 0.0);
         assertEquals(1.5, c.get("math").get("gross_rr").asDouble(), 0.0);
+    }
+
+    /**
+     * Case G (proxy cap, audit CRITICAL_24H Finding 2): the prior-day high proxy itself (session index 19) is 1100, 5.77 %
+     * above the 1040 zone, beyond the OURS 3 % cap. The proxy is untrustworthy, so no candidate (null), never the
+     * unscaled high + 20 A-S2 stop. A far high on any other prior day stays ignored (case F).
+     */
+    @Test
+    void caseG_prior_day_high_proxy_beyond_cap_returns_null() {
+        double[] l = legs(5.0, 100.0);
+        ArrayNode k = prior(1000.0, l);
+        today(k, 1010.0, up30DownTo(1010.0, 1040.0, 1030.0, 10));
+        assertNull(detect(k), "proxy 1100 is 5.77 % above the zone: fail closed, no high+20 stop");
     }
 
     /** Case E (fail closed): fewer than 20 prior sessions -> no candidate even when the idea is plain. */
