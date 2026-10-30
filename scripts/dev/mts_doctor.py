@@ -367,7 +367,7 @@ SHIP_MAX_S = 120            # OURS: the operator's 2-minute ship; WARN when the 
 HOOKS_BEHIND_MAX = 50       # OURS
 DISK_MIN_GB = 15            # OURS
 HOOK_NAMES = ("role_loader", "ci_watch")
-CHECK_NAMES = ("SIZE-HEADROOM", "CI-REVERT", "SHIP-TIME", "HOOK-REG", "DISK", "CONTEXT-GAP", "WAITING-ON-OPERATOR", "BROADCAST", "STALE-CLAIMS", "SCRATCH-TRACKED", "CONFLICT-OPEN")
+CHECK_NAMES = ("SIZE-HEADROOM", "CI-REVERT", "SHIP-TIME", "HOOK-REG", "DISK", "CONTEXT-GAP", "WAITING-ON-OPERATOR", "BROADCAST", "STALE-CLAIMS", "SCRATCH-TRACKED", "CONFLICT-OPEN", "ASK-GAPS")
 
 
 def _load(path, name):
@@ -578,6 +578,17 @@ def waiting_on_operator(repo, now=None, questions=None):
     return "WARN", "; ".join(parts) + f" | fix: {WAIT_FIX}"
 
 
+def ask_gaps(repo):
+    """WARN when operator asks older than 24 h have no card, commit or ledger row, or an OPEN item has no live card (T054 news step sat 33 days)."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import operator_questions
+    g = operator_questions.asks_gaps(repo)
+    if not g["asks"] and not g["items"]:
+        return "OK", "every ask older than 24 h has a card, commit or ledger row; every OPEN item has a live card"
+    return "WARN", (f"{len(g['asks'])} ask(s) without card/commit, {len(g['items'])} open item(s) without a live card: "
+                    f"{', '.join(i['id'] for i in g['items'][:8])} | fix: python scripts/dev/operator_questions.py gaps")
+
+
 CONFLICT_WARN = 3   # OURS: more open bug-conflict cards than this = WARN
 
 
@@ -663,7 +674,8 @@ def checklist(repo, process=True, now=None):
            ("WAITING-ON-OPERATOR", lambda: waiting_on_operator(repo, now)),
            ("BROADCAST", lambda: broadcast_check(repo, now=now) if process else ("unavailable", "skipped (--no-process, no network)")),
            ("STALE-CLAIMS", lambda: stale_claims(repo, now=now) if process else ("unavailable", "skipped (--no-process, no network)")),
-           ("SCRATCH-TRACKED", lambda: scratch_tracked(repo)), ("CONFLICT-OPEN", lambda: conflict_open(repo)))
+           ("SCRATCH-TRACKED", lambda: scratch_tracked(repo)), ("CONFLICT-OPEN", lambda: conflict_open(repo)),
+           ("ASK-GAPS", lambda: ask_gaps(repo)))
     out = []
     for name, fn in fns:
         try:
