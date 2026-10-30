@@ -5,7 +5,9 @@
   "id": "20261028-110227-run-all-tests-full-worker-run",
   "need": "python scripts/dev/run_all_tests.py > run_all_tests_full_2026-10-28.txt 2>&1; echo EXIT_CODE=$? (full brief: python scripts/dev/tasks.py brief run-all-tests-full-worker-run)",
   "posted": "2026-10-28T11:02:27Z",
-  "status": "pending",
+  "status": "taken",
+  "taken": "2026-10-30T16:31:23Z",
+  "taken_by": "JIS-NB",
   "target": "DSA",
   "title": "Full run_all_tests.py worker run on trunk, record the exit code and failures (fix report CT-3)"
 }
