@@ -1449,3 +1449,8 @@ REMOVED 2026-10-24 (43d3bfc8f): offer_guard.py is gone; the rule now lives in CL
 ```json
 {"id": "d-storybook-v2", "order": 73, "date": "2026-10-30", "status": "DECIDED", "question": "Is the Tom/Fabio storybook the book the operator should learn from?", "answer": "OPERATOR (2026-10-30): \"I hope that the terms storybook is actually with all these contexts ... can you see this book that was written for me? For my understanding ... I will also learn it.\" DECISION (OURS, default taken): the 10-05 story carries the core (bazaar, balance vs trend, Idea+Proof+Math, playbook by mood, Fabio CVD, gaps M1-M9) but is archived and misses live regime definitions, the timeframe ladder, proof thresholds, a BB chapter and our measured counts. Build a living v2 in research/storybook/ and refresh the deck; setups for testing come out of the book.", "done": "card storybook-v2-living-book"}
 ```
+
+## d-fable-r5-r7-run | decided 2026-10-30 | Supervisor_C
+```json
+{"id": "d-fable-r5-r7-run", "order": 74, "date": "2026-10-30", "status": "DECIDED", "question": "Run the planned Fable sessions R5 and R7 now?", "answer": "OPERATOR (2026-10-30): \"archive and clean up - run AI health checkups. Test more. Run the planned 1 or 2 planned fable session on my authority!\" DECISION (on operator authority): run Fable 5.1 sessions R5 (card fable-run5-grandfather-decision, brief fable_run_5_brief.md) and R7 (card fable-run7-forward-test, FABLE_RUN_R7.md) now; started by Supervisor C; also archive/clean up and run the mts_doctor health check (REPORT_2026-10-30.md). The approved_by of those two cards is satisfied by this entry.", "done": "cards fable-run5-grandfather-decision, fable-run7-forward-test"}
+```
