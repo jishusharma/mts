@@ -1,6 +1,7 @@
 {
   "approved_by": "",
-  "asks": "captions not on host: verify_extract_quotes.py NO-TRANSCRIPT (raw_transcripts_canonical lacks ids); branch kept on origin/gemini-q",
+  "asks": "",
+  "closed": "2026-10-30T21:25:32Z",
   "commands": [
     "python scripts/dev/fetch_captions_timed.py --analyst Malkan --channel @malkansview --latest 12 --out MyTradingSys/research/malkan_rsi_2026-10-31/transcripts",
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/malkan_rsi_2026-10-31/MALKAN_RULES_2026-10-31.md"
@@ -16,7 +17,14 @@
   "id": "gemini-malkan-top12-rsi-rules-extract",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "21 quotes verified exit 0; caveat Hindi-English auto-captions garbled (about=above, for te",
+      "ref": "2175f9c9f",
+      "utc": "2026-10-30T21:25:32Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -28,7 +36,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "21 quotes verified exit 0; caveat Hindi-English auto-captions garbled (about=above, for tea=40, sorting=shorting)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/malkan_rsi_2026-10-31/MALKAN_RULES_2026-10-31.md (new), transcripts under research/malkan_rsi_2026-10-31/transcripts/; read: the existing Malkan folders under MyTradingSys/research (ls | grep -i malkan) for the video priority list"
   ],
@@ -38,13 +51,14 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "find the ranked video list in the Malkan research folders (grep -ril priority); else take the latest 12",
     "fetch captions (one try per video; 429 -> UNVERIFIED)",
     "keyword scan: RSI, 40, 60, momentum, bullish, bearish, control, invalidation, timeframe; read the surrounding lines",
     "write MALKAN_RULES_2026-10-31.md: table rule | timeframe | entry | invalidation | video id | timestamp | quote; run verify_extract_quotes.py until exit 0; commit with a Result: line"
   ],
+  "taken": "2026-10-30T21:25:32Z",
   "tests": "verify_extract_quotes.py exit 0 is the gate; docs only",
   "title": "[GEMINI] Malkan RSI 40-60: fetch captions of the 12 ranked-top videos (video_priority list) and extract the 40/60 rules, momentum reads and invalidations with timed quotes",
   "weight": "ROUTINE",
