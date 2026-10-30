@@ -32,3 +32,13 @@ Per arm and side, per period (2022-01..2024-06, 2024-07..2026-10-31, forward): n
 1. Seen-period check: mean net > 0 in BOTH periods, n >= 100 each, highs and lows pooled.
 2. Forward: mean net > 0 with n >= 30 before any live use; one look at n = 30, no peeking rule changes.
 3. A pass is still research: no order, no size, no live path without the operator and the normal gates.
+
+## Result (run once, 2026-10-31, `c26_arms.py`, after this file was committed as 21fbba6b)
+| Arm | 2022-01..2024-06 pooled | 2024-07..10-31 pooled | Verdict |
+|---|---|---|---|
+| A ride to the level | n=1504, win 55%, net -0.100%, t -5.2 | n=1362, win 55%, net -0.112%, t -5.6 | NO (pass rule 1 fails) |
+| B fade the swept take-out | n=898, win 37%, net -0.078%, t -2.9 | n=802, win 28%, net -0.117%, t -4.9 | NO (pass rule 1 fails) |
+
+Gross is about zero in both arms (net is about minus the 0.10% fee): the magnet is real (C26 base rates) but the distance to the
+level is too short and the stop too near to pay taker fees. Forward test not started: an arm that fails rule 1 is closed.
+Any variant (maker fills, wider target, 30m) is a new id, not a re-run of this one.
