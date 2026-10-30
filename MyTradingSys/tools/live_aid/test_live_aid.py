@@ -238,7 +238,7 @@ def test_pnl_js(js):
 
 
 # ---------- in-trade panel (card live-aid-in-trade-panel): fixed OURS rules, hand-computed expectations ----------
-# Extra LIVE_AID_BREAK modes: itdiv itflow itsqueeze itdom itsupport itvwap itconf itlive itliqside itliqdb itliqsum (each must fail one test below).
+# Extra LIVE_AID_BREAK modes: itdiv itflow itsqueeze itdom itsupport itvwap itconf itlive itliqside itliqdb itliqsum itfund itbybit itfold (each must fail one test below).
 IT_RUNNER = r"""
 const A = require(process.argv[process.argv.length - 1]);
 const brk = process.env.LIVE_AID_BREAK || '';
@@ -285,7 +285,16 @@ const ev = [{t: now - 30000, side: 'long', usd: 150000}, {t: now - 120000, side:
 let lqs = [A.liqSum(ev, now, 60000), A.liqSum(ev, now, 300000), A.liqSum(ev, now, 900000),
            A.liqSum([{t: now, side: 'long', usd: 100}, {t: now, side: 'short', usd: 60}], now, 60000).dom, A.liqSum([], now, 60000).dom];
 if (brk === 'itliqsum') lqs[1].dom = 'mixed';
-process.stdout.write(JSON.stringify({dv, fl, sq, dm, sup, vw, fg, cf, lv2, lqv, lqs}));
+let fd = [A.fundRead(0.00005311), A.fundRead(-0.0004), A.fundRead(0.000005), A.fundRead(NaN), A.premium(76859.45, 76840.34), A.premium(NaN, 1)];
+if (brk === 'itfund') fd[1].side = 'longs';
+let bt = A.bybitTick(null, {type: 'snapshot', data: {a: '1', b: '2'}});
+bt = A.bybitTick(bt, {type: 'delta', data: {b: '3'}});
+let bt2 = A.bybitTick(bt, {type: 'snapshot', data: {c: '1'}});
+if (brk === 'itbybit') bt = {b: '3'};
+const H = 3600000, b0 = 4 * H * 100;
+let fo = A.foldBars([[b0 - H, '9', '9', '9', '9', '1'], [b0, '10', '12', '9', '11', '2'], [b0 + H, '11', '15', '10', '14', '3'], [b0 + 3 * H, '14', '14', '8', '13', '4'], [b0 + 4 * H, '13', '13', '12', '12.5', '5']], 4 * H);
+if (brk === 'itfold') fo[1][3] = 9;
+process.stdout.write(JSON.stringify({dv, fl, sq, dm, sup, vw, fg, cf, lv2, lqv, lqs, fd, bt: [bt, bt2], fo}));
 """
 
 
@@ -398,3 +407,31 @@ def test_liq_windows_dominance_big(it):
     assert it["lqs"][1] == {"long": 150000, "short": 20000, "n": 2, "big": 1, "dom": "longs"}
     assert it["lqs"][2] == {"long": 160000, "short": 20000, "n": 3, "big": 1, "dom": "longs"}
     assert it["lqs"][3:] == ["mixed", "none"]  # 100 vs 60 is under 2x; nothing = none
+
+
+# ---------- funding and premium (STEPS.md "Funding rules"): hand-computed ----------
+def test_funding_read(it):
+    # 0.00005311 per 8h = 0.005311 %; x 3 x 365 = 5.8155 % a year; positive = longs pay; under 0.03 % per 8h = not high
+    a, b, c, d = it["fd"][:4]
+    assert a["side"] == "longs" and a["high"] is False
+    assert a["pct8h"] == pytest.approx(0.005311) and a["annual"] == pytest.approx(5.815545)
+    # -0.0004 = -0.04 % per 8h: shorts pay, high (|r| >= 0.0003); -43.8 % a year
+    assert b["side"] == "shorts" and b["high"] is True and b["annual"] == pytest.approx(-43.8)
+    assert c["side"] == "zero" and d is None  # |r| < 0.00001 = about zero; no number = no read
+
+
+def test_premium_and_bybit_merge(it):
+    # mark 76859.45 - index 76840.34 = 19.11 pts = 19.11 / 76840.34 x 10000 = 2.487 bps
+    p = it["fd"][4]
+    assert p["pts"] == pytest.approx(19.11) and p["bps"] == pytest.approx(2.48698, abs=1e-4)
+    assert it["fd"][5] is None
+    # Bybit tickers: a delta carries only changed fields and merges; a snapshot replaces
+    assert it["bt"] == [{"a": "1", "b": "3"}, {"c": "1"}]
+
+
+def test_fold_1h_into_4h(it):
+    # 4h buckets open at multiples of 4h from 1970-01-01 00:00Z (= 00/04/08/12/16/20Z). b0 - 1h belongs to the bucket before;
+    # b0..b0+3h: open 10 (first), high 15, low 8, close 13 (last), volume 2+3+4 = 9 (b0+2h missing is fine); b0+4h starts a new bucket
+    H = 3600000
+    b0 = 4 * H * 100
+    assert it["fo"] == [[b0 - 4 * H, 9, 9, 9, 9, 1], [b0, 10, 15, 8, 13, 9], [b0 + 4 * H, 13, 13, 12, 12.5, 5]]

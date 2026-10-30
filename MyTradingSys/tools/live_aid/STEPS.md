@@ -27,6 +27,8 @@ Deribit 1D candles open at 08:00Z, so prev-day high/low and weekly open come fro
 | In-trade | In-trade block (needs side typed): supports/resistance, DOM, VWAP test, divergences, squeeze read, CVD vs delta, stay confidence, rule R. Maths in `live_aid_indicators.js`, tests `test_live_aid.py` (`LIVE_AID_BREAK=itdiv|itflow|itsqueeze|itdom|itsupport|itvwap|itconf|itlive`) | BUILT 2026-10-29 |
 | R11 | Full-width layout: position bar, glance tiles (price, VWAP distance + test, nearest level above/below incl. typed, stay confidence + rule R, session), then in-trade / momentum (strip + WaveTrend in one table) / levels columns; SMA, BB width, ATR, VWAP, wt1/wt2, ATR15 under "More detail"; source notes folded; SOURCED/OURS chips with the full note on hover | BUILT 2026-10-30 |
 | Liquidations | Glance tile (5 min: longs flushed / shorts flushed / both sides / none) and a panel: 1/5/15 min USD liquidated per side, last 8 prints. Bybit live from JIS-NB; Binance forceOrder wired but blocked there (NOT_IN_DATA); Deribit via the liquidation flag on trades. Maths `liqDeribit/liqBybit/liqBinance/liqSum`, tests `test_liq_*` (`LIVE_AID_BREAK=itliqside|itliqdb|itliqsum`) | BUILT 2026-10-30 |
+| Funding and premium | Glance tile (Deribit funding per 8h + read; Bybit rate and next funding time) and a panel: per venue last, mark - index (pts, bp), funding 8h, a year, read, open interest, next funding; Bybit - Deribit last. Deribit from the ticker already subscribed, Bybit `tickers.BTCUSDT` on the liquidation socket, Binance NOT_IN_DATA (blocked). Maths `fundRead/premium/bybitTick`, tests `test_funding_read`, `test_premium_and_bybit_merge` (`LIVE_AID_BREAK=itfund|itbybit`). Also: coil lines no longer split per word; 8 glance tiles fit one row | BUILT 2026-10-30 |
+| More timeframes | Momentum strip gains 1h (Binance 1h or Deribit resolution 60) and 4h rows. 4h is folded from 1h on UTC 00/04/08/12/16/20Z boundaries because Deribit has no 4h candles; divergence list includes 1h. Maths `foldBars`, test `test_fold_1h_into_4h` (`LIVE_AID_BREAK=itfold`) | BUILT 2026-10-30 |
 
 WaveTrend 10/21/4, 0.015, lines 53/60 = OURS (LazyBear defaults; his chart settings unknown). Parameters: RSI14 Wilder, SMA14 of RSI, BB(20,2) population, ATR14 Wilder, day VWAP hlc3 from 00:00Z = SOURCED (his chart setup). RSI 30/70 flag lines, session names = OURS.
 
@@ -57,6 +59,17 @@ WaveTrend 10/21/4, 0.015, lines 53/60 = OURS (LazyBear defaults; his chart setti
 | Tape | last 8 events, newest first |
 | Feed state | liquidations are sparse: a venue counts as live while its socket is open and answered a ping in the last 60 s; else NOT_IN_DATA + error |
 
+## Funding rules (OURS unless marked, written before the panel was built; operator "see what else is worth wiring" 2026-10-30)
+
+| Rule | Value |
+|---|---|
+| Rates | Deribit ticker `funding_8h`; Bybit `fundingRate` (BTCUSDT interval 8h): SOURCED (venue APIs). Positive = longs pay shorts (SOURCED) |
+| Read | under 0.001 % per 8h = about zero; else longs pay / shorts pay; 0.03 % or more = high (3x the 0.01 % interest baseline) |
+| A year | rate x 3 x 365 (no compounding) |
+| Premium | mark - index on each venue, in points and bp of index (SOURCED fields) |
+| Cross-venue | Bybit last - Deribit last; Bybit is USDT, Deribit USD, so it includes the USDT/USD rate: shown, never read |
+| Feed state | Deribit as the price feed; Bybit live while a ticker message arrived in the last 15 s |
+
 ## Backlog (his words first)
 
 | Step | His words / source | Reading (OURS) |
@@ -67,5 +80,4 @@ WaveTrend 10/21/4, 0.015, lines 53/60 = OURS (LazyBear defaults; his chart setti
 | Per-layer looks at US open (R02) | "so now when us opens we can look into getting into positions based on each layer" | at 13:30Z show each layer's current reading, descriptive only |
 | Setup checklist: pre-US failed break | brief from Eagle_Eyes; his Deribit log | failed break above last high + momentum shift before US open; OURS definition, not validated |
 | Analyst strip from CBP | brief from Eagle_Eyes | latest Habib / analyst levels from CBP, labelled by venue |
-| More timeframes | brief from Eagle_Eyes | 1h / 4h rows in the strip |
 | All latest inputs (R03) | "all latest inputs" | every layer's latest input on the page, kept current |

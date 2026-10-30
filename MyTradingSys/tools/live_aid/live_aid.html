@@ -36,7 +36,7 @@ section, .tile { background: var(--panel); border: 1px solid var(--line); border
 .bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; }
 .bar .inputs { display: grid; grid-template-columns: 96px 130px 130px; gap: 8px; }
 .bar .grow { flex: 1; }
-.glance { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(190px, 100%), 1fr)); }
+.glance { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(170px, 100%), 1fr)); }
 .cols { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(460px, 100%), 1fr)); align-items: start; }
 table { width: 100%; border-collapse: collapse; font: 15px var(--mono); font-variant-numeric: tabular-nums; }
 th { font: 600 11px var(--sans); letter-spacing: .06em; text-transform: uppercase; color: var(--dim); text-align: right; padding: 3px 6px; }
@@ -55,6 +55,7 @@ button:hover { background: #2e3946; }
 body:not(.more) .x { display: none; }
 .it { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 .it li { display: grid; gap: 2px; border-top: 1px solid var(--line); padding-top: 8px; font: 15px var(--mono); }
+#coil li { display: block; }
 .it li:first-child { border-top: 0; padding-top: 0; }
 details summary { cursor: pointer; color: var(--dim); font: 600 13px var(--sans); }
 details[open] summary { margin-bottom: 8px; }
@@ -108,6 +109,8 @@ details[open] summary { margin-bottom: 8px; }
       <span class="big" id="g-stay">--</span><span class="sub" id="g-rule"></span></div>
     <div class="tile"><span class="lab">Liquidations, last 5 min<span class="src" title="Bybit and Binance liquidation streams plus Deribit trades flagged as liquidations. Side codes SOURCED (venue docs); windows, the 2x dominance rule and the 100k big-print line are OURS (STEPS.md).">MIXED</span></span>
       <span class="big" id="g-liq">--</span><span class="sub" id="g-liq-sub"></span></div>
+    <div class="tile"><span class="lab">Funding, per 8h<span class="src" title="Deribit funding_8h and Bybit fundingRate (8h interval): SOURCED (venue APIs). Positive = longs pay shorts. About-zero under 0.001 %, high at 0.03 % or more: OURS (STEPS.md).">MIXED</span></span>
+      <span class="big" id="g-fund">--</span><span class="sub" id="g-fund-sub"></span></div>
     <div class="tile"><span class="lab">Session<span class="src" title="Session names: OURS. Opens: London 08:00, New York 09:30 local.">OURS</span></span>
       <span class="big" id="session">--</span><span class="sub" id="cd-us"></span><span class="sub" id="cd-eu"></span></div>
   </div>
@@ -142,6 +145,12 @@ details[open] summary { margin-bottom: 8px; }
       </details>
     </section>
 
+    <section id="p-fund">
+      <div class="hd"><h2>Funding and premium</h2><span class="tag" id="fund-feeds"></span></div>
+      <div class="scroll"><table><thead><tr><th>Venue</th><th>Last</th><th>Mark - index</th><th>Funding 8h</th><th class="x">A year</th><th>Reads</th><th class="x">Open int. USD</th><th class="x">Next funding</th></tr></thead><tbody id="fund"></tbody></table></div>
+      <span class="sub" id="fund-basis"></span>
+    </section>
+
     <section id="p-coil">
       <div class="hd"><h2>Coil and pierce (15m)</h2><span class="tag" id="coil-venue"></span><span class="age" id="age-coil">--</span></div>
       <ul id="coil" class="it"></ul>
@@ -153,7 +162,8 @@ details[open] summary { margin-bottom: 8px; }
   <details class="notes"><summary>Sources and rules</summary>
     <p>You trade Deribit TESTNET; these are MAINNET public prices, testnet prints differ. Position, rungs and levels are saved in this browser only.</p>
     <p>Inverse contract: P&amp;L BTC = size x (1/average - 1/mark), negated for a short. Distances = level - price on the candle venue; ATR15 = ATR14 of 15m bars.</p>
-    <p>RSI14 Wilder, SMA14 of RSI, BB(20,2) population, ATR14 Wilder, day VWAP hlc3 from 00:00Z: SOURCED (your chart setup). WaveTrend 10/21/4, 0.015, lines 53/60, 200-bar warm-up: OURS (LazyBear defaults; your chart settings not yet known). Flag lines 30/70: OURS. Values include the forming bar.</p>
+    <p>RSI14 Wilder, SMA14 of RSI, BB(20,2) population, ATR14 Wilder, day VWAP hlc3 from 00:00Z: SOURCED (your chart setup). WaveTrend 10/21/4, 0.015, lines 53/60, 200-bar warm-up: OURS (LazyBear defaults; your chart settings not yet known). Flag lines 30/70: OURS. Values include the forming bar. 4h = 1h bars folded on UTC 00/04/08/12/16/20Z (Deribit has no 4h candles).</p>
+    <p>Funding: Deribit ticker funding_8h (accrues continuously), Bybit tickers.BTCUSDT fundingRate (paid every 8h at nextFundingTime). Positive = longs pay shorts. Mark - index = each venue's own premium. A year = rate x 3 x 365. All SOURCED (venue APIs); "about zero" under 0.001 % per 8h and "high" at 0.03 % or more (3x the 0.01 % interest baseline): OURS (STEPS.md). Bybit - Deribit last mixes USDT and USD, so it includes the USDT/USD rate.</p>
     <p>Liquidations: Bybit allLiquidation.BTCUSDT (price = bankruptcy price), Binance btcusdt@forceOrder (one print per second at most), Deribit trades carrying the liquidation flag. Side = the position that was liquidated (SOURCED, venue docs). 1/5/15 min sums since this page connected, "longs" or "shorts" when one side is at least 2x the other, big print = 100,000 USD or more: OURS (STEPS.md).</p>
     <p>In-trade readings are descriptive, no advice. Rules and thresholds = OURS, fixed in STEPS.md before data was looked at. Data: Deribit mainnet public trades, book and open interest; candles from the strip venue. Rule R = 3 or more of the available flags against the side you typed; it names no size.</p>
   </details>
@@ -170,7 +180,7 @@ details[open] summary { margin-bottom: 8px; }
   var S = { dbt: null, dbtMark: null, dbtT: 0, dbtErr: '', bin: null, binT: 0, binErr: '',
             a15: NaN, tf: {}, venue: null, klErr: '', klT: 0, daily: null,
             trades: [], trT: 0, book: null, bookT: 0, oi: null, oiT: 0, oiHist: [], flowErr: '',
-            liq: [], lq: { BYBIT: { t: 0, err: '' }, BINANCE: { t: 0, err: '' } } };
+            liq: [], lq: { BYBIT: { t: 0, err: '' }, BINANCE: { t: 0, err: '' } }, byt: { d: null, t: 0 } };
 
   function fmt(x, d) { return isFinite(x) ? x.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }) : '--'; }
   function sgn(x, d) { return isFinite(x) ? (x > 0 ? '+' : '') + fmt(x, d) : '--'; }
@@ -227,7 +237,7 @@ details[open] summary { margin-bottom: 8px; }
           S.oi = +t.open_interest; S.oiT = Date.now();
           var lastH = S.oiHist[S.oiHist.length - 1];
           if (!lastH || S.oiT - lastH.t >= 10000) { S.oiHist.push({ t: S.oiT, oi: S.oi, px: t.last_price }); var c5 = S.oiT - 600000; while (S.oiHist.length && S.oiHist[0].t < c5) S.oiHist.shift(); }
-        } S.dbt = t.last_price; S.dbtMark = t.mark_price; S.dbtT = Date.now(); S.dbtErr = '';
+        } S.dbt = t.last_price; S.dbtMark = t.mark_price; S.dbtIdx = t.index_price; S.dbtF8 = t.funding_8h; S.dbtT = Date.now(); S.dbtErr = '';
         if (S.venue === 'DERIBIT') patchForming(t.last_price);
         tick();
       }
@@ -246,16 +256,17 @@ details[open] summary { margin-bottom: 8px; }
     var ws, ping, st = S.lq.BYBIT;
     try { ws = new WebSocket('wss://stream.bybit.com/v5/public/linear'); } catch (e) { st.err = String(e); return setTimeout(bybitLiqWs, 10000); }
     ws.onopen = function () {
-      ws.send(JSON.stringify({ op: 'subscribe', args: ['allLiquidation.BTCUSDT'] }));
+      ws.send(JSON.stringify({ op: 'subscribe', args: ['allLiquidation.BTCUSDT', 'tickers.BTCUSDT'] }));
       ping = setInterval(function () { ws.send(JSON.stringify({ op: 'ping' })); }, 20000);
     };
     ws.onmessage = function (m) {
       var d = JSON.parse(m.data); st.t = Date.now(); st.err = '';
-      if (d.topic && d.data) addLiq(d.data.map(A.liqBybit));
+      if (d.topic === 'tickers.BTCUSDT') { S.byt.d = A.bybitTick(S.byt.d, d); S.byt.t = st.t; }
+      else if (d.topic && d.data) addLiq(d.data.map(A.liqBybit));
       else if (d.success === false) st.err = 'Bybit ' + (d.ret_msg || 'subscribe refused');
     };
     ws.onerror = function () { st.err = 'websocket error (stream.bybit.com unreachable or blocked)'; };
-    ws.onclose = function (e) { clearInterval(ping); st.t = 0; st.err = st.err || ('websocket closed code ' + e.code); setTimeout(bybitLiqWs, 10000); };
+    ws.onclose = function (e) { clearInterval(ping); st.t = 0; S.byt.t = 0; st.err = st.err || ('websocket closed code ' + e.code); setTimeout(bybitLiqWs, 10000); };
   }
   var binLiqSock = null;
   function binanceLiqWs() {
@@ -287,7 +298,9 @@ details[open] summary { margin-bottom: 8px; }
     return fetch(url, { signal: ctl.signal }).then(function (r) { clearTimeout(to); if (!r.ok) throw new Error('HTTP ' + r.status + ' ' + url); return r.json(); });
   }
 
-  var TFS = [{ k: '1m', ms: 60000, n: 1500, dr: '1' }, { k: '5m', ms: 300000, n: 300, dr: '5' }, { k: '15m', ms: 900000, n: 1500, dr: '15' }];
+  var TFS = [{ k: '1m', ms: 60000, n: 1500, dr: '1' }, { k: '5m', ms: 300000, n: 300, dr: '5' }, { k: '15m', ms: 900000, n: 1500, dr: '15' }, { k: '1h', ms: 3600000, n: 1500, dr: '60' }];
+  // 4h rows are folded from 1h on UTC boundaries (Deribit has no 4h candles); shown in the momentum strip only.
+  var STRIP = TFS.concat([{ k: '4h', ms: 14400000 }]);
 
   // Binance fapi first; if blocked, Deribit BTC-PERPETUAL candles (venue tag changes to DERIBIT).
   function fetchBars(tf, n, ms, dr) {
@@ -320,7 +333,7 @@ details[open] summary { margin-bottom: 8px; }
         S.tf[tf.k] = mergeRows(full || !S.tf[tf.k] ? null : S.tf[tf.k], res.rows);
         if (!full && S.tf[tf.k].length < 50) return loadAll(true);
       });
-    })).then(function () { S.klT = Date.now(); if (S.venue === 'BINANCE') S.klErr = ''; },
+    })).then(function () { if (S.tf['1h']) S.tf['4h'] = A.foldBars(S.tf['1h'], 14400000); S.klT = Date.now(); if (S.venue === 'BINANCE') S.klErr = ''; },
       function (e) { S.klErr = 'candles failed on both venues: ' + e.message; });
   }
 
@@ -475,6 +488,7 @@ details[open] summary { margin-bottom: 8px; }
     renderTop();
     renderCoil(now);
     renderLiq(now);
+    renderFund(now);
     var a15 = S.a15;
 
     // 3. strip
@@ -486,7 +500,7 @@ details[open] summary { margin-bottom: 8px; }
       if (dayStart(c1.t[0]) < dayStart(now)) vw = v[v.length - 1]; // only if the window covers 00:00Z
     }
     // One momentum table: RSI, %B and WaveTrend zone/cross always; SMA, BB width, ATR, VWAP and wt1/wt2 under "More detail".
-    $('strip').innerHTML = TFS.map(function (tf) {
+    $('strip').innerHTML = STRIP.map(function (tf) {
       var rows = S.tf[tf.k];
       if (!rows || rows.length < 40) return '<tr><td>' + tf.k + '</td><td colspan="10">' + NID + ' <span class="err">' + esc(S.klErr) + '</span></td></tr>';
       var k = calc(rows), flags = '';
@@ -565,6 +579,30 @@ details[open] summary { margin-bottom: 8px; }
       return '<tr><td>' + new Date(e.t).toISOString().slice(11, 19) + '</td><td>' + venueName(e.venue) + '</td><td class="' + (e.side === 'long' ? 'down' : 'up') + '">' + e.side +
         '</td><td>' + usdK(e.usd) + (e.usd >= A.LQ.bigUsd ? '<span class="chip">big</span>' : '') + '</td><td>' + fmt(e.px, 1) + '</td></tr>';
     }).join('') || '<tr><td colspan="5" class="dim">no liquidation since this page connected</td></tr>';
+  }
+
+  // ---------- funding and premium ----------
+  function pct(x, d) { return (x > 0 ? '+' : '') + fmt(x, d) + '%'; }
+  function renderFund(now) {
+    var dLive = !feedDown(S.dbtT, S.dbtErr), b = S.byt.d, bLive = !!(b && S.byt.t && now - S.byt.t <= STALE_MS);
+    var word = { longs: 'longs pay', shorts: 'shorts pay', zero: 'about zero' };
+    function read(f) { return f ? word[f.side] + (f.high ? '<span class="chip">high</span>' : '') : NID; }
+    function row(name, live, err, last, pm, f, oi, next) {
+      if (!live) return '<tr><td>' + name + '</td><td colspan="7"><span title="' + esc(err || 'not connected yet') + '">' + NID + '</span></td></tr>';
+      return '<tr><td>' + name + '</td><td>' + fmt(last, 1) + '</td><td>' + (pm ? fmt(pm.pts, 1) + ' <span class="dim">' + fmt(pm.bps, 1) + 'bp</span>' : NID) +
+        '</td><td>' + (f ? pct(f.pct8h, 4) : NID) + '</td><td class="x">' + (f ? pct(f.annual, 1) : '--') + '</td><td>' + read(f) +
+        '</td><td class="x">' + (isFinite(oi) ? usdK(oi) : '--') + '</td><td class="x">' + next + '</td></tr>';
+    }
+    var fD = dLive ? A.fundRead(S.dbtF8) : null, fB = bLive ? A.fundRead(b.fundingRate) : null, nextB = '--';
+    if (bLive && isFinite(+b.nextFundingTime)) { var nt = +b.nextFundingTime; nextB = new Date(nt).toISOString().slice(11, 16) + 'Z, in ' + cd(nt - now); }
+    $('fund').innerHTML = row('Deribit', dLive, S.dbtErr, S.dbt, A.premium(S.dbtMark, S.dbtIdx), fD, S.oi, 'continuous') +
+      row('Bybit', bLive, S.lq.BYBIT.err, bLive ? +b.lastPrice : NaN, bLive ? A.premium(+b.markPrice, +b.indexPrice) : null, fB, bLive ? +b.openInterestValue : NaN, nextB) +
+      row('Binance', false, S.binErr || 'funding not wired: fapi.binance.com blocked from this network', NaN, null, null, NaN, '--');
+    $('fund-feeds').textContent = 'Deribit ' + (dLive ? 'live' : 'down') + ', Bybit ' + (bLive ? 'live' : 'down');
+    $('fund-basis').innerHTML = dLive && bLive ? 'Bybit - Deribit last: ' + fmt(+b.lastPrice - S.dbt, 1) + ' pts (USDT vs USD, includes the USDT/USD rate)' : '';
+    var lead = fD || fB;
+    $('g-fund').innerHTML = lead ? pct(lead.pct8h, 4) + ' <span class="tag" style="font-size:16px">' + read(lead) + '</span>' : NID;
+    $('g-fund-sub').innerHTML = (fD ? 'Deribit' : fB ? 'Bybit' : 'no funding feed reachable') + (fD && fB ? '; Bybit ' + pct(fB.pct8h, 4) + ', next ' + nextB : '');
   }
 
   // ---------- glance tiles: VWAP distance, nearest level each side (built-in + typed) ----------

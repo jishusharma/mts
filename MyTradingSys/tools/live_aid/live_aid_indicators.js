@@ -289,7 +289,38 @@
     return r;
   }
 
-  var api = { LQ: LQ, liqDeribit: liqDeribit, liqBybit: liqBybit, liqBinance: liqBinance, liqSum: liqSum, CP: CP, coilPierce: coilPierce, IT: IT, divergence: divergence, flow: flow, flowLive: flowLive, squeeze: squeeze, dom: dom, supports: supports, vwapTest: vwapTest,
+  // Funding and premium (STEPS.md "Funding rules"). Rates are per 8h (Deribit funding_8h; Bybit fundingRate, interval 8h): SOURCED.
+  // Thresholds OURS: under 0.001 % per 8h = about zero; 0.03 % or more (3x the 0.01 % interest baseline) = high.
+  var FD = { zero: 0.00001, high: 0.0003, perYear: 1095 };
+  function fundRead(r) {
+    if (r === null || r === undefined || r === '' || !isFinite(+r)) return null;
+    r = +r;
+    return { pct8h: r * 100, annual: r * FD.perYear * 100, side: Math.abs(r) < FD.zero ? 'zero' : r > 0 ? 'longs' : 'shorts', high: Math.abs(r) >= FD.high };
+  }
+  function premium(mark, idx) {
+    if (!isFinite(+mark) || !isFinite(+idx) || !+idx) return null;
+    var pts = mark - idx; return { pts: pts, bps: pts / idx * 1e4 };
+  }
+  // Bybit tickers: a snapshot replaces, a delta carries only the fields that changed.
+  function bybitTick(prev, msg) {
+    var o = {}, k, d = msg.data || {};
+    if (msg.type !== 'snapshot' && prev) for (k in prev) o[k] = prev[k];
+    for (k in d) o[k] = d[k];
+    return o;
+  }
+
+  // Fold bars into a longer timeframe on UTC boundaries (4h from 1h: Deribit has no 4h resolution). Rows [t, o, h, l, c, v].
+  function foldBars(rows, ms) {
+    var out = [], cur = null;
+    rows.forEach(function (r) {
+      var b = Math.floor(+r[0] / ms) * ms;
+      if (!cur || cur[0] !== b) { cur = [b, +r[1], +r[2], +r[3], +r[4], +r[5]]; out.push(cur); }
+      else { cur[2] = Math.max(cur[2], +r[2]); cur[3] = Math.min(cur[3], +r[3]); cur[4] = +r[4]; cur[5] += +r[5]; }
+    });
+    return out;
+  }
+
+  var api = { foldBars: foldBars, FD: FD, fundRead: fundRead, premium: premium, bybitTick: bybitTick, LQ: LQ, liqDeribit: liqDeribit, liqBybit: liqBybit, liqBinance: liqBinance, liqSum: liqSum, CP: CP, coilPierce: coilPierce, IT: IT, divergence: divergence, flow: flow, flowLive: flowLive, squeeze: squeeze, dom: dom, supports: supports, vwapTest: vwapTest,
     flagDiv: flagDiv, flagSqueeze: flagSqueeze, flagFlow: flagFlow, flagDom: flagDom, flagVwap: flagVwap, confidence: confidence, rma: rma, sma: sma, rsi: rsi, bollinger: bollinger, atr: atr, dayVwap: dayVwap, utcDays: utcDays, wavetrend: wavetrend,
     inversePnlBtc: inversePnlBtc, closedPnlBtc: closedPnlBtc, columns: columns };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
