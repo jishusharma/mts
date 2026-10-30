@@ -367,7 +367,7 @@ SHIP_MAX_S = 120            # OURS: the operator's 2-minute ship; WARN when the 
 HOOKS_BEHIND_MAX = 50       # OURS
 DISK_MIN_GB = 15            # OURS
 HOOK_NAMES = ("role_loader", "ci_watch")
-CHECK_NAMES = ("SIZE-HEADROOM", "CI-REVERT", "SHIP-TIME", "HOOK-REG", "DISK", "CONTEXT-GAP", "WAITING-ON-OPERATOR", "BROADCAST", "STALE-CLAIMS", "SCRATCH-TRACKED", "CONFLICT-OPEN", "ASK-GAPS")
+CHECK_NAMES = ("SIZE-HEADROOM", "CI-REVERT", "SHIP-TIME", "HOOK-REG", "DISK", "CONTEXT-GAP", "WAITING-ON-OPERATOR", "BROADCAST", "STALE-CLAIMS", "SCRATCH-TRACKED", "CONFLICT-OPEN", "ASK-GAPS", "SUPERVISOR-IDLE")
 
 
 def _load(path, name):
@@ -658,6 +658,36 @@ def scratch_tracked(repo, files=None):
     return "OK", "no tracked scratch or ship-log files"
 
 
+def supervisor_idle(repo, beats=None, ready_n=None, now=None):
+    """WARN when a login has READY Claude cards and no dispatch or worker activity for SUP_IDLE_MIN (60) min outside a budget stop
+    (bug-supervisor-idles-after-wake-retired: ~8 h with READY cards and nothing running, 2026-10-30). Same rule as the status
+    board's RED line (status_board.supervisor_rows). beats = [(utc, text)] (default: signals branch); ready_n default: repo cards."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import status_board as SB
+    at = now or datetime.now(timezone.utc)
+    if beats is None:
+        import mts_signal as S
+        h = S.ensure(repo)
+        if h is None:
+            return "unavailable", "no origin for the signals branch"
+        beats = SB.beats_from_rows(S.load(h), at)
+    if ready_n is None:
+        cs = []
+        for p in (Path(repo) / "MyTradingSys" / "system" / "tasks").glob("*.json"):
+            try:
+                cs.append(json.loads(p.read_text(encoding="utf-8")))
+            except (OSError, ValueError):
+                pass
+        ready_n = SB.claude_ready(cs)
+    rows = SB.supervisor_rows(beats, ready_n, at)
+    red = [r for r in rows if r["red"]]
+    if red:
+        return "WARN", ("; ".join(f"{r['login']} idle {r['idle_min']} min (mode {r['mode']})" for r in red)
+                        + f" with {ready_n} READY Claude card(s) | fix: that login's Supervisor dispatches or arms supervisor.py wait;"
+                        " none alive: start one (roles/supervisor.md start line)")
+    return "OK", f"{len(rows)} login(s) with Supervisor heartbeats, none idle {SB.SUP_IDLE_MIN} min with {ready_n} READY Claude card(s)"
+
+
 def checklist(repo, process=True, now=None):
     """[(name, status, detail)] for CHECK_NAMES. A check that raises is reported unavailable, never fatal."""
     repo = Path(repo)
@@ -675,7 +705,8 @@ def checklist(repo, process=True, now=None):
            ("BROADCAST", lambda: broadcast_check(repo, now=now) if process else ("unavailable", "skipped (--no-process, no network)")),
            ("STALE-CLAIMS", lambda: stale_claims(repo, now=now) if process else ("unavailable", "skipped (--no-process, no network)")),
            ("SCRATCH-TRACKED", lambda: scratch_tracked(repo)), ("CONFLICT-OPEN", lambda: conflict_open(repo)),
-           ("ASK-GAPS", lambda: ask_gaps(repo)))
+           ("ASK-GAPS", lambda: ask_gaps(repo)),
+           ("SUPERVISOR-IDLE", lambda: supervisor_idle(repo, now=now) if process else ("unavailable", "skipped (--no-process, no network)")))
     out = []
     for name, fn in fns:
         try:

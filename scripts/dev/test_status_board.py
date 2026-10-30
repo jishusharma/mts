@@ -9,6 +9,38 @@ import status_board as sb  # noqa: E402
 
 
 class T(unittest.TestCase):
+    def test_supervisors_red_idle_with_ready_work(self):
+        """bug-supervisor-idles-after-wake-retired (3): per-login mode, last dispatch, RED for a login with READY cards and no
+        dispatch/worker activity for 60 min; a login seen under 60 min, a busy one, a budget STOP and no READY work are not RED."""
+        from datetime import timedelta
+        now = datetime(2026, 10, 30, 18, 0, tzinfo=timezone.utc)
+        t = lambda m: now - timedelta(minutes=m)
+        hb = lambda lg, mode, run: (f"BUDGET login={lg} 5h=40% week=40% reset=2026-11-03T20:00Z sup=JIS-NB mode={mode} "
+                                    f"run={run} free=1 end=19:00Z")
+        beats = [(t(200), hb("C", "NORMAL", 0)), (t(180), hb("C", "NORMAL", 1)), (t(90), hb("C", "NORMAL", 0)),
+                 (t(10), hb("C", "ENDED", 0)), (t(70), hb("A", "NORMAL", 0)), (t(65), hb("A", "NORMAL", 1)),
+                 (t(5), hb("A", "NORMAL", 1)), (t(30), hb("B", "NORMAL", 0)),
+                 (t(3), "BUDGET login=B 5h=1% week=1% reset=2026-11-03T20:00Z")]
+        rows = {r["login"]: r for r in sb.supervisor_rows(beats, 5, now)}
+        self.assertEqual(sorted(rows), ["A", "B", "C"])
+        self.assertEqual((rows["C"]["mode"], rows["C"]["idle_min"], rows["C"]["red"]), ("ENDED", 180, True))
+        self.assertEqual(rows["C"]["last_dispatch"], t(180))
+        self.assertEqual((rows["A"]["mode"], rows["A"]["red"], rows["A"]["last_dispatch"]), ("NORMAL", False, t(65)))
+        self.assertFalse(rows["B"]["red"])                       # first seen 30 min ago
+        self.assertIsNone(rows["B"]["last_dispatch"])
+        out = "\n".join(sb.fmt_supervisors(list(rows.values()), 5, now))
+        self.assertIn("RED idle with ready work: login C", out)
+        self.assertIn("| C | ENDED (10 min old) | 3.0 h ago |", out)
+        self.assertNotIn("login A", out)
+        self.assertFalse(any(r["red"] for r in sb.supervisor_rows(beats, 0, now)))           # no READY work
+        stop = beats + [(t(1), hb("C", "STOP", 0))]
+        self.assertFalse({r["login"]: r for r in sb.supervisor_rows(stop, 5, now)}["C"]["red"])   # budget STOP is not idle
+        late = beats + [(t(2), hb("C", "NORMAL", 0))]                                         # a later beat replaces ENDED
+        self.assertEqual({r["login"]: r for r in sb.supervisor_rows(late, 5, now)}["C"]["mode"], "NORMAL")
+        self.assertEqual(sb.claude_ready([{"state": "ready", "lane": "SONNET"}, {"state": "ready", "lane": "CODEX"},
+                                          {"state": "ready", "lane": "OPUS"}, {"state": "ready", "lane": "DSA-NUC"},
+                                          {"state": "raw", "lane": "SONNET"}, {"state": "ready", "lane": "JIS-NB"}]), 2)
+
     def test_asks_overdue_first_with_age(self):
         asks = [{"id": "q-1", "from": "jis-nb/C", "to": "A", "state": "none", "age_min": 20, "due_min": 60, "overdue": False, "esc": "", "text": "x"},
                 {"id": "q-2", "from": "jis-nuc/A", "to": "C", "state": "told", "age_min": 90, "due_min": 60, "overdue": True, "esc": "jis-nb", "text": "y"}]

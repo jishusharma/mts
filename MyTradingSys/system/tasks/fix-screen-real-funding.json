@@ -2,6 +2,22 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 10,
+    "folded": "2026-10-30T17:42:26Z",
+    "misses": 37,
+    "reads": [
+      "MyTradingSys/backtest/bt/bt_data.py",
+      "MyTradingSys/research/gross_effect_screen_2026-10-15/test_screen.py",
+      "MyTradingSys/backtest/bt/test_bt_data.py",
+      "MyTradingSys/research/chart_read_g5_2026-10-16/test_common.py",
+      "MyTradingSys/research/lab_guy/specs/gap-g7-stop-slippage.md",
+      "MyTradingSys/research/gross_effect_screen_2026-10-15/FUNDING_RERUN.md",
+      "scripts/dev/tasks.py",
+      "MyTradingSys/backtest/fetch_binance_archive.py"
+    ],
+    "session": "agent-a6a8e9dfaaa231792"
+  },
   "created": "2026-10-25T19:25:12Z",
   "depends_on": [],
   "done_when": "A funding_rerun table (old flat-1bp vs real) is written next to the screens; test_screen.py and chart_read_g5 test_common.py pass; no published verdict, ledger row or pre-registered bar is edited; the loader raises when both folders are missing; numbers match scripts/T06/out/funding_rerun.json.",
@@ -20,9 +36,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "bt_data.load_klines: convert microsecond stamps, raise on conflicting duplicates, report d",
-      "ref": "8f8a52814868",
-      "utc": "2026-10-26T00:53:00Z"
+      "line": "Revert \"Revert real-funding screens: CI red (T06 costs.csv pins screen.py line numbers)\"",
+      "ref": "8cae5e9e285e",
+      "utc": "2026-10-27T22:20:16Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "8cae5e9e285e Revert \"Revert real-funding screens: CI red (T06 costs.csv pins screen.py lin",
+      "ref": "MyTradingSys/research/gross_effect_screen_2026-10-15/FUNDING_RERUN.md",
+      "utc": "2026-10-27T22:20:16Z"
     }
   ],
   "layers": [],
@@ -32,7 +55,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-10-27T19:29:51Z",
+  "refreshed": "2026-10-30T17:40:01Z",
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T06_cost_fill_realism.md"
   ],
@@ -52,7 +75,7 @@
     "restating any published verdict, ledger row or pre-registered bar",
     "live path"
   ],
-  "scope_sha": "8f8a52814868",
+  "scope_sha": "8cae5e9e285e",
   "size": "M",
   "sources": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T06_cost_fill_realism.md (T06-F1)",
