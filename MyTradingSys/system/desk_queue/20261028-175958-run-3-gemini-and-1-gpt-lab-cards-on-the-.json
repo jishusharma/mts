@@ -4,7 +4,9 @@
   "id": "20261028-175958-run-3-gemini-and-1-gpt-lab-cards-on-the-",
   "need": "git pull origin fast-track in a work tree (cards are on trunk, bcfe5c6b0). Then: python scripts/dev/gemini_queue.py run gemini-bg-watch-crossreview:low gemini-api-batch-crossreview:low gemini-supervisor-wait-watcher-review:low (one at a time, low effort); then python scripts/dev/codex_run.py next (picks gpt-refresh-main-checkout-review; spend guard 10 runs per 5h). Never touch the live tree or HALT files.",
   "posted": "2026-10-28T17:59:58Z",
-  "status": "pending",
+  "status": "taken",
+  "taken": "2026-10-30T12:34:06Z",
+  "taken_by": "JIS-NUC",
   "target": "JIS-NUC",
   "title": "Run 3 Gemini and 1 GPT lab cards on the NUC"
 }
