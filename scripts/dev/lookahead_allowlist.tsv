@@ -297,6 +297,3 @@ MyTradingSys/research/oi_side_2026-10-30/study.py	pivot-right-neighbour	if g[i +
 MyTradingSys/research/oi_side_2026-10-30/study.py	fwd-index	up60=c[i + 12] > c[i], up240=c[i + 48] > c[i], first=first))	SAFE: outcome-window read (bars after the event) used only to score the event, never to select it; reviewed 2026-10-30
 MyTradingSys/research/large_trade_absorption_2026-10-30/study.py	fwd-index	if not (net[i] >= hi or net[i] <= lo) or g[i + 48] - g[i] != 48:	SAFE: outcome-window read (bars after the event) used only to score the event, never to select it; reviewed 2026-10-30
 MyTradingSys/research/large_trade_absorption_2026-10-30/study.py	fwd-index	rows.append(dict(cls=cls, up60=c[i + 12] > c[i], up240=c[i + 48] > c[i], first=first))	SAFE: outcome-window read (bars after the event) used only to score the event, never to select it; reviewed 2026-10-30
-MyTradingSys/research/bounce_shift_2026-10-30/study.py	pivot-right-neighbour	63	SAFE: g[i+72] only checks the 6 h data window is gap-free for outcomes, not an entry input
-MyTradingSys/research/bounce_shift_2026-10-30/study.py	fwd-index	70	SAFE: outcome measurement after the signal bar
-MyTradingSys/research/bounce_shift_2026-10-30/study.py	fwd-index	71	SAFE: outcome measurement after the signal bar
