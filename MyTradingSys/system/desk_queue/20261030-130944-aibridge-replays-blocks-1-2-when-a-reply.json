@@ -1,0 +1,10 @@
+{
+  "done_when": "A 6-block reply on any host runs each block exactly once; the batch receipt reports blocks_seen=6 and no repeated command; a test fixture with 6 blocks asserts each runs once.",
+  "from": "JIS-NUC",
+  "id": "20261030-130944-aibridge-replays-blocks-1-2-when-a-reply",
+  "need": "MTS-2026-10-30-1228Z on JIS-NUC sent 6 AIRUN blocks. The batch returned blocks_seen=5, blocks_run=5, and blocks 1-2 ran twice: worktree creation and the NUC NEXT_SESSION grep both appear as results #1/#3 and #2/#4 with identical sha. Distinct from B184 (miscount of blocks_seen/blocks_run): here the same block executes twice. Reads are harmless under replay; a claim or a ship is not. Repro: any reply with 6 blocks. Check content.js runBatch ranKeys marking at content.js:447-449 against the batch counter at content.js:451.",
+  "posted": "2026-10-30T13:09:44Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "AIBridge replays blocks 1-2 when a reply carries 6 blocks (duplicate execution)"
+}
