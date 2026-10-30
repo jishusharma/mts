@@ -35,7 +35,8 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "Drafted by analysts-roadmap following survey recommendation (Construct 1 Volume Absorption peer to Habib). REVIEWED:2026-10-18 T0-ONLY",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "gemini-4-argon",
@@ -62,7 +63,7 @@
   "sources": [
     "MyTradingSys/research/_archive/loose_2026-10/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md:116-135"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Implement ingest adapter reading Roman Trading public calls (or operator inbox pastes) with verbatim source_url and published_utc.",
     "Extract entry, stop loss (below volume-anomaly wick), and targets using parse_social_call with ImbalanceConstruct.VOLUME_ABSORPTION.",

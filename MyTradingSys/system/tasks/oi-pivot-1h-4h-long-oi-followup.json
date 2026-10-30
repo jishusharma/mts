@@ -22,7 +22,8 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-26 ACCEPT (Sonnet reviewer a9113afd018ea56c9, after FIX applied)",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -51,7 +52,7 @@
     "layer_lab/LAB_BLOCKED_2026-10-17.md:17 (DEV cut 2024-07-01, SOURCED)",
     "MyTradingSys/backtest/layers/FORMULAS.md (delta, ATR)"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Write PRE_REG_1H4H.md BEFORE any outcome: reuse PRE_REG.md D1-D3 and candidates unchanged; 1h/4h bars from 1m klines F:/MTS/data/tom_raw/klines; OI at TF close with the D2 5m lag; 4h-context lookback 4 bars (OURS); 2 TF x 4 x 2 x 2 = 16 cells; label each parameter SOURCED or OURS",
     "Paste verdicts.py check 'oi pivot reversal' and prereg_gate.py --n <day clusters> --sd 1.4 --sd-source scripts/dev/prereg_gate.py:7 --cost 0.0 --m auto --new-cells 16 into the PRE_REG; on BLOCK freeze as DESCRIPTIVE in advance, as PRE_REG.md does",

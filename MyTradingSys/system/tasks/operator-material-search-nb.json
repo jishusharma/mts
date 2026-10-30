@@ -20,7 +20,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-28 T0-ONLY LAB:none CLASS:C0 REVIEWER:none WEIGHT:ROUTINE. Lane JIS-NB (reads the desktop disk). Sibling desk rows cover JIS-NUC and JIS-LAPTOP.",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
@@ -40,7 +41,7 @@
   "sources": [
     "operator 2026-10-28 priority: stop MTS drifting; account for everything extracted; make it findable"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Run the command below.",
     "Write NB_COUNTS.md: counts by topic and root, newest mtime, local index path; no file names.",

@@ -32,7 +32,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DRAFT 2026-10-28 Session_Planner (OURS): enforcement stays a test, not runtime rejection (rejecting would stop testnet trades; operator decides that).\nREVIEWED:2026-10-29 ACCEPT (reviewer-raw-cards-b) Verified 27 entries, all review_by 2026-10-23, only format-validated (registry.py:59-76), never enforced at runtime, so re-dating changes no trading behaviour. Test file path to be chosen under MyTradingSys/execution/ (added to scope_in as test_pre_pipeline_review_by.py).",
+  "note": "S0 drop 2026-10-30 (D7 roadmap, operator: keep only what is useful): new machinery or superseded; revive by a new card if needed",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -52,7 +53,7 @@
   "scope_sha": "abb02c8e9228",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "Write the failing test reading the config",
     "Set review_by to 2026-11-25 on all entries, reason text names the default and this card",

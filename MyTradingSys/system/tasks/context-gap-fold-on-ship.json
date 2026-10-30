@@ -38,7 +38,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "S0 drop 2026-10-30 (D7 roadmap, operator: keep only what is useful): new machinery or superseded; revive by a new card if needed",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -58,7 +59,7 @@
   "scope_sha": "d2e575feb51c",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "context_gap.py fold: parse transcript, paths only, cap 8, trunk paths, write card.context, commit",
     "preship.py: on sync.py ship call fold; failure never blocks",

@@ -33,7 +33,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "OPERATOR-RUN part: pasting prompts into AWS console; public data only, no spend, no keys",
+  "note": "S0 drop 2026-10-30 (D7 roadmap, operator: keep only what is useful): new machinery or superseded; revive by a new card if needed",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -53,7 +54,7 @@
   "sources": [
     "MyTradingSys/system/AWS_BEDROCK_PILOT.md"
   ],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "Operator runs jobs J1-J9, A1-A2 from AWS_BEDROCK_PILOT.md via the Haiku helper",
     "Stage raw_transcripts_canonical/gWjHq5UMisY_raw.txt from pending_raw",

@@ -24,7 +24,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "PLANNER refine-raw-cards 2026-10-30: filled from gemini_queue.py read",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -41,7 +42,7 @@
   "scope_sha": "71f3e7aeb2f8",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Read gemini_queue.py lines 64-115 and test_gemini_queue.py",
     "Write the fail-first test for own-host claim in run_job",

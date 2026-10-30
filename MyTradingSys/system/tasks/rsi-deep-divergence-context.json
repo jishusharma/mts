@@ -33,7 +33,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): scoped from SPEC/OPUS_FRAMING/SHOT_REVIEW; needs the batched review stamp, then tasks.py check. Waits on rsi-deep-prob-tables. The 10 fixture windows are HOLDOUT: detector output only. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
@@ -61,7 +62,7 @@
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/APPLIED.md",
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/SHOT_REVIEW.md"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Read SPEC Steps I-J and SHOT_REVIEW (c)/(d); check rsi_divergence.py stamp is not earlier than the confirming bar (OPUS_FRAMING s2.2 item 5) before reuse.",
     "Implement the detector (pairing rules, close vs wick, eps, min RSI diff, FAILURE_SWING, firing numbers) and pass K1-K10 first.",

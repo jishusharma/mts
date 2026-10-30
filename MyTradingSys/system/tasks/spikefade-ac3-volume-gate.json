@@ -26,7 +26,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-30 ACCEPT planner T0 + scope paths verified",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -48,7 +49,7 @@
   "sources": [
     "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Read ITEM3 row A4 and TLV2:61 / k0zm5NYn0IQ:357-360",
     "Add the volume-above-VPOC gate to the price arm; label thresholds SOURCED or OURS",

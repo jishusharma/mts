@@ -36,7 +36,8 @@
     "dispatch-check-vs-decisions",
     "planner-conflicting-cards-vs-decisions"
   ],
-  "note": "WAITING 2026-10-28 (planner-2026-10-28-c2): waits on depends_on cards contradiction-audit-docs-prompts-roles, duplicate-code-and-tests-audit, infra-architecture-duplication-audit (all still ready, not done). Scope after they ship: batches of 10 per d-dedupe-lean-no-contradiction; no operator question.",
+  "note": "S0 drop 2026-10-30 (D7 roadmap, operator: keep only what is useful): new machinery or superseded; revive by a new card if needed",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -56,7 +57,7 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "Take the top rows in batches of at most 10",
     "Apply per the default rule; run python scripts/dev/run_all_tests.py --quick green",

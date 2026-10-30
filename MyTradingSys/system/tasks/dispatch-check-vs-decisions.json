@@ -40,7 +40,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "S0 drop 2026-10-30 (D7 roadmap, operator: keep only what is useful): new machinery or superseded; revive by a new card if needed",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -61,7 +62,7 @@
   "scope_sha": "33ddfe6bb991",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "Read cmd_dispatch in tasks.py and the existing apply-op drop; decide a machine-readable no-go marker in decision JSON (DECISION OURS, conservative: keyword list field)",
     "Add the check to dispatch ranking: card text vs no-go keywords, excluded with why",

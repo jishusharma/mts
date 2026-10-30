@@ -13,6 +13,12 @@ Entry format: `### A-<yyyymmdd>-<n> <kind> <title>` with kind one of INFO, DO-NO
 
 ## ACTIVE
 
+### A-20261030-1 INFO S0 Freeze and clean is in force (operator 2026-10-30, d-simplify-align-s0)
+- Applies to: every session, planner and supervisor.
+- Until: S0 exits are met (D7_ROADMAP.md: ready cards <= 15, claims <= 4 and 0 stale, worktrees <= 8, bookkeeping share < 30 %), then S1.
+- What: machinery stays as built (3 stations, super sessions, lanes) but does not grow: no new roles, pages, rule documents, vendors, lanes or dashboards (D7 freeze list). Research breadth is not cut (discovery phase). New cards that add machinery go raw and stay parked unless they fix a collision, a wrong ship or a stale claim. Ready cards are the 28 kept on 2026-10-30; parked cards carry note 'S0 park', unpark only at S3 first pass or on the operator's word. Direction: setup-review-with-operator and storybook-v2-living-book first (S1), then the S3 two-layer funnel.
+- Why: trunk measured 0 promoted setups against 250 system docs, 250 dev scripts, 251 open cards and ~90 % of 30-day edits in process files; the operator chose to keep only what is useful and align to the roadmap.
+
 ### A-20261026-1 DO-NOW NUC runs on a Gateway profile: login B is off there, send the heavy load to the NUC (operator 2026-10-26)
 - Applies to: every session; coordinators route work, NUC sessions work the queue.
 - Until: the operator posts the end of it.

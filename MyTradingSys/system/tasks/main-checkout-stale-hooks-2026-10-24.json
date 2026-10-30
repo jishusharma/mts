@@ -35,7 +35,8 @@
   "not_twin_of": [
     "hook-lag-gate"
   ],
-  "note": "Refined by Session_Planner 2026-10-25. Touches the live tree (main checkout, PARALLEL.md:35) so it follows DEPLOY_RUNBOOK.md with the operator present (his keep/drop word per file is the review); weight ROUTINE only so the card can pass the stamp gate, treat as CRITICAL for care. 436efe562 + 086a1b257 already let trunk_lag copy hook scripts into a blocked checkout, so step 1 may show part of this solved.\nREVIEWED:2026-10-25 T0-ONLY\nDECISION (OURS) 2026-10-28 Builder: re-measured main checkout: 1523 behind origin/fast-track, 1 ahead (0ac18c3fb wip, blocks ff-only), 98 dirty paths. Live tree + reset/drop of a commit needs the operator (CLAUDE.md hard rules); conservative default = no change made. Backup exists at F:/MTS_backup/main_checkout_2026-10-25/. Card stays ready for the operator step.\nDECISION (OURS) 2026-10-29 Builder: re-measured main checkout read-only: 2356 behind, 1 ahead (0ac18c3fb wip), 150 dirty paths. Needs operator keep/drop word on the live tree (CLAUDE.md hard rules, scope: Builders never touch live tree); no change made. Backup still at F:/MTS_backup/main_checkout_2026-10-25/. Card stays ready for the operator step.",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 1,
   "refine_tries": 1,
   "refined_by": "",
@@ -54,7 +55,7 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Re-measure: git -C <main> fetch origin; rev-list --count HEAD..origin/fast-track; git -C <main> status --short. If 0 behind and clean, record the numbers in the note and finish",
     "Save, never discard: copy each locally edited or deleted file to F:/MTS_backup/main_checkout_2026-10-25/ (git -C diff to a .patch plus the files); staged cbp_run.py is a duplicate of trunk f9fcf77b4 (verify by git diff origin/fast-track -- path), SUPERVISOR_LOG.md local lines get appended to the trunk copy after the update",

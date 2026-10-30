@@ -40,7 +40,8 @@
   "not_twin_of": [
     "bug-conflict-d79b76b45a"
   ],
-  "note": "",
+  "note": "S0 drop 2026-10-30 (D7 roadmap, operator: keep only what is useful): new machinery or superseded; revive by a new card if needed",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -60,7 +61,7 @@
   "sources": [
     "operator ask 2026-10-28 gap 4"
   ],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "Read the gap text and linked files",
     "Implement the smallest change",

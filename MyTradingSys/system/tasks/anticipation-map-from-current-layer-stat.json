@@ -31,7 +31,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 10-30: 'We can never be sure what is happening ... there is not just one exchange ... Work with probabilities and always have the scenarios ... With the same readings, this could also be happening ... are you prepared for that? ... available in the dashboard.' Decision d-probability-scenarios-live-panel.",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
@@ -51,7 +52,7 @@
   "scope_sha": "3dc87fa0af93",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "List reading pairs (price x OI x delta) and their base rates from 1m/5m history",
     "Add live_aid panel rows with n and source tag",

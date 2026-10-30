@@ -25,7 +25,8 @@
   "live_path": false,
   "mutation_check": "",
   "not_twin_of": [],
-  "note": "Goal: one spoken phrase starts the Supervisor with its hand-over goals. scripts/dev/role_loader.py: widen BARE_LOGIN (line ~210) so 'Supervisor A', 'supervisor login a' and 'login a' all resolve to Supervisor; build_text (line ~447) appends MyTradingSys/system/handover/SUPERVISOR_<L>.md from origin/fast-track when it exists. Update roles/ROSTER.json start_line, run role_loader.py render. Tests in MyTradingSys/tests/test_role_loader.py (fail on old code first). Done when: the three phrases each print the ROLE LOADED banner plus the hand-over goals in a recorded run.",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -41,7 +42,7 @@
   "scope_sha": "4545f7733b55",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Widen BARE_LOGIN in role_loader.py (~line 210) so the 3 phrases resolve to Supervisor",
     "In build_text (~line 447), append MyTradingSys/system/handover/SUPERVISOR_<L>.md from origin/fast-track when it exists",

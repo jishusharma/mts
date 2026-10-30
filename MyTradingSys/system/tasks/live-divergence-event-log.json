@@ -34,7 +34,8 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "OPERATOR QUOTE (2026-10-26): \"whatever tricks that we are recording today, whatever we are observing, that is why I call you Eagle Eyes, because you have to find a way for doing the right comparisons and making the right observations ... and how it will be utilized later on to put the things into right perspective, move the things through the right pipeline and queues.\"",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -53,7 +54,7 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Create research/live_reads/divergence_events.csv with columns utc,btc_since_open,es_since_open,nq_since_open,vix,r5m_1h_es,r5m_1h_nq,footprint_delta_note,out_30m,out_60m,out_120m",
     "Add event 1 (2026-10-26 14:36Z) and fill outcomes from Binance spot and Yahoo 5m once 120 min have passed",

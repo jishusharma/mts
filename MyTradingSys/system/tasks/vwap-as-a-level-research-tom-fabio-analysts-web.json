@@ -24,7 +24,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): DECISION (OURS): Part A only (what the sources say). The causal BTC test (P(touch/rejection), forward return after a flush >100 pts under the day VWAP) is a follow-up card filed at the end, because it must use the VWAP definition of card formulas-md-definitions (snapshot VWAP) and needs a PRE_REG. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
@@ -47,7 +48,7 @@
     "card title (shots 2026-10-19 14:16, price 135 under VWAP 82,402)",
     "src/main/java/datafeed/MarketDataSnapshot.java:688-726"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "grep -ril vwap extracts/processed MyTradingSys/research to list candidate sources; keep only those with a trader's words.",
     "Per source copy the verbatim quote and file:line; mark NOT STATED where the trader is silent on anchor, bands or retest rule.",

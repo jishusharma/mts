@@ -29,7 +29,8 @@
   "not_twin_of": [
     "context-gap-fold-on-ship"
   ],
-  "note": "Related, not a twin: context-gap-fold-on-ship builds the fold; this card stops the fold polluting ships.",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -48,7 +49,7 @@
   "sources": [
     "operator ask 2026-10-28 gap 3"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Read the gap text and linked files",
     "Implement the smallest change",

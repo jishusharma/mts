@@ -24,7 +24,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-26 T0-ONLY | DRAFT 2026-10-26 Session_Planner (OURS): absorbs the shipped t02-f3 pair (dropped). tasks.py stale lists 35 ready cards on 2026-10-26. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "note": "S0 drop 2026-10-30 (D7 roadmap, operator: keep only what is useful): new machinery or superseded; revive by a new card if needed",
+  "pinned": false,
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
@@ -44,7 +45,7 @@
   "sources": [
     "python scripts/dev/tasks.py stale"
   ],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "Run tasks.py stale and group cards by the commit that moved their scope (many share one commit, e.g. a702fafd, 494b4ad0).",
     "Per group read the commit's diff on the scope paths; if the card goal still stands run tasks.py tag <id> --refresh.",

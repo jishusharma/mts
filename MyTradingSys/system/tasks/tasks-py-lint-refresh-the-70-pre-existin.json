@@ -27,7 +27,8 @@
   "not_twin_of": [
     "tasks-py-brief-refuses-ready-cards-and-h"
   ],
-  "note": "REVIEWED:2026-10-30 T0-ONLY (planner-refine-0930; OURS ROUTINE: card hygiene).",
+  "note": "S0 drop 2026-10-30 (D7 roadmap, operator: keep only what is useful): new machinery or superseded; revive by a new card if needed",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -43,7 +44,7 @@
   "scope_sha": "19036dfc33d3",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "python scripts/dev/tasks.py stale > list; for each id read git log over its scope_in since refreshed",
     "Unchanged meaning: python scripts/dev/tasks.py tag <id> --refresh; changed meaning: tasks.py tried <id>",

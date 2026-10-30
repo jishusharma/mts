@@ -24,7 +24,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-30 T0-ONLY (planner-refine-0930; OURS ROUTINE: CBP bookkeeping text, no verdict). Twin check: cbp-quote-gate-rejected-habib-hymqmefcgr is a data row, not this code.",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -42,7 +43,7 @@
   "scope_sha": "5200e38f8c41",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "In cbp_run.build_row (line 154) put the full bad quote (strip, first 400 chars) in the reason: \"quote not in transcript: <full>\"",
     "Add scripts/dev/test_cbp_build_row.py: a 150-char fabricated quote is rejected and the reason contains all 150 chars; list it in run_extra_tests.py",

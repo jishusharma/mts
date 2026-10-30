@@ -31,7 +31,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-26 T0-ONLY | DRAFT 2026-10-26 Session_Planner (OURS): the doctor 2026-10-25 lists 13 DEAD-REF lines (not the 11 of the title). Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
@@ -54,7 +55,7 @@
   "sources": [
     "scripts/dev/mts_doctor.py DEAD-REF check"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Run mts_doctor.py --no-process; list the DEAD-REF lines per file (then git checkout the report).",
     "For each, git log --all --diff-filter=D to find where the file went; replace with the new tracked path or delete the line.",

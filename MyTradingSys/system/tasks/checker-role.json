@@ -33,7 +33,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): C7 of CONTEXT_FILES_DESIGN (operator-approved 2026-10-25). Roster has 7 roles after the Lead merge; Checker is embedded (never picked by the fallback). Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files. | CLUSTER: same file set as context-cost-rules (one e",
+  "note": "S0 drop 2026-10-30 (D7 roadmap, operator: keep only what is useful): new machinery or superseded; revive by a new card if needed",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
@@ -60,7 +61,7 @@
     "MyTradingSys/research/mts_doctor/CONTEXT_FILES_DESIGN.md:156",
     "MyTradingSys/system/roles/lab_guy.md"
   ],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "Read CONTEXT_FILES_DESIGN.md line 156 and lab_guy.md stamp duties and the review Agent brief in SUPER_SESSION rule 3 / session_planner_details.md.",
     "Write checker.md (header, ROLE LOADED banner via role_loader render); add the ROSTER.json row; run role_loader.py render and check.",
