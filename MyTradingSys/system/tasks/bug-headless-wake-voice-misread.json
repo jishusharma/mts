@@ -1,6 +1,7 @@
 {
   "approved_by": "operator order 2026-10-30 (voice), decision d-headless-wake-bug in OPERATOR_DECISIONS.md; Opus named",
   "asks": "",
+  "closed": "2026-10-30T08:31:47Z",
   "commands": [],
   "created": "2026-10-30T08:05:12Z",
   "crucial": true,
@@ -13,7 +14,14 @@
   "goal": "Retire the rolling-supervisor headless successor wake (default), add the voice rule 'dictated cloud = Claude in this project', propose the settings.json Write->Edit diff, and repair OPERATOR_DECISIONS.md so every JSON block parses with no duplicate order.",
   "id": "bug-headless-wake-voice-misread",
   "lane": "OPUS",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "successor wake retired as handover default (--wake opt-in, claude -p ok preflight); voice ",
+      "ref": "21e6bef42",
+      "utc": "2026-10-30T08:31:47Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -26,7 +34,12 @@
     "MyTradingSys/system/OPERATOR_DECISIONS.md",
     "MyTradingSys/system/SCHEDULING_POLICY.md"
   ],
-  "result": "",
+  "result": "successor wake retired as handover default (--wake opt-in, claude -p ok preflight); voice rule in 3 docs; OPERATOR_DECISIONS parses (3 fences, dup entry, 4 order dups); settings proposal in research/lead",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "Decision on MyTradingSys/system/successor_wake.py and SCHEDULING_POLICY 4b2 / supervisor role doc (default retire from rolling-supervisor; keep only app-closed-overnight path guarded by pre-flight claude -p ok that refuses to register on failure)",
     "Add rule 'dictated cloud = Claude in this project; answer the question asked' to role docs / reply rules",
@@ -42,7 +55,7 @@
   "sources": [
     "MyTradingSys/research/lead/bug_headless_wake_voice_2026-10-30.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the transcript MyTradingSys/research/lead/bug_headless_wake_voice_2026-10-30.md section 'What needs to be done'",
     "Write a failing parse test for OPERATOR_DECISIONS.md JSON blocks, then fix orders 52, 57, 67 and the duplicate order",
@@ -51,6 +64,7 @@
     "Write the proposed settings.json Write->Edit diff to a proposal file; do not apply",
     "Run tasks.py check, run_all_tests --quick, sync.py ship"
   ],
+  "taken": "2026-10-30T08:31:47Z",
   "tests": "Fail-first: a parse test over OPERATOR_DECISIONS.md JSON blocks that fails on current trunk (orders 52, 57, 67 unparseable, duplicate order) and passes after repair; if a wake path is kept, a test that registration is refused when the claude -p ok pre-flight fails.",
   "title": "BUG (operator, verbatim in ref): supervisor misread dictated 'cloud' as cloud not Claude; headless successor wake is wrong design and failed on expired OAuth; fix both + repair OPERATOR_DECISIONS.md conflict markers",
   "weight": "",

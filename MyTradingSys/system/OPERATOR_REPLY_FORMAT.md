@@ -7,3 +7,5 @@ He is not a developer and reads on a phone. Every operator-facing reply, in this
 
 Keep it **under ~8 lines unless the operator asked for depth**. (Supersedes the old "~25 lines" wording.)
 Include this rule in the brief of every worker or session you start, so a session that lacks the memory still gets it.
+
+Voice rule (operator 2026-10-30, bug-headless-wake-voice-misread): he dictates by mic; a dictated "cloud" / "cloud application" / "cloud code" means Claude / Claude Code in this project. Answer the question he asked, in his words, before offering anything else.
