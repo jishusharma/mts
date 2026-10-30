@@ -1,0 +1,245 @@
+{
+ "id": "ask-p0-45-tf-break-event-study",
+ "kind": "backtest",
+ "parity": null,
+ "family": "Break event study by timeframe",
+ "title": "Close-break, reclaim and wick sweep of a swing level on W, 1D, 4h, 1h and 15m: fee-net follow / fade trade, DEV and VALIDATION",
+ "provenance": "run",
+ "date": "2026-10-30",
+ "what": [
+  {
+   "name": "Source",
+   "value_plain": "operator ask T058 (broken lows and highs by timeframe), no trader transcript (NO-SOURCE)",
+   "label": "OURS"
+  },
+  {
+   "name": "Swing and break",
+   "value_plain": "fractal swing (W2, 1D3, 4h3, 1h5, 15m5 bars each side), first pierce consumes the level; close beyond by 0.1 ATR = break, else W1 wick sweep; R if a close is back inside within N bars (W2, 1D3, 4h6, 1h6, 15m8), else H",
+   "label": "OURS"
+  },
+  {
+   "name": "Trade",
+   "value_plain": "H: follow the break; R: fade it; W1: fade the pierce; entry at the open after the class is known, exit after 4 bars",
+   "label": "OURS"
+  },
+  {
+   "name": "Costs",
+   "value_plain": "Binance taker 0.05% per side on both legs (backtest/fees.py regime A, 0.10% round trip), no slippage",
+   "label": "SOURCED"
+  }
+ ],
+ "how": "Event study on BTCUSDT 1m bars aggregated to each timeframe; events counted per pierce of a live swing level, not per bar. Week-block bootstrap 95% CI. Pseudo-level control and indicator state before, at and after are in output.md.",
+ "window": "DEV 2022-01-01 to 2024-06-30 and VALIDATION 2024-07-01 to 2025-06-30; HOLDOUT never loaded",
+ "verdict": {
+  "label": "No fee-net edge at any timeframe (15m FAIL, 1h and 4h INCONCLUSIVE, W and 1D too few events)",
+  "tone": "bad"
+ },
+ "why": [
+  "At 15m, following a held break, fading a reclaimed break and fading a wick sweep are each negative after fees in DEV and VALIDATION with a CI that excludes zero (e.g. wick sweep DEV -0.122%, VAL -0.103%).",
+  "At 1h and 4h the fee-net means sit around zero and every CI spans zero, so no claim either way; W (17 events) and 1D (122 events) are too few.",
+  "Most pierces are wick sweeps (55-60% of events at 4h, 1h and 15m); hold share among close-breaks falls with shorter timeframe (4h 50/44%, 1h 46/43%, 15m 36/35% DEV/VAL) and is close to a random-level control."
+ ],
+ "kpis": [
+  {
+   "label": "15m events (H / R / W1), DEV",
+   "value": "790 / 1393 / 3055"
+  },
+  {
+   "label": "15m follow H fee-net DEV / VAL",
+   "value": "-0.097% / -0.124%",
+   "tone": "bad"
+  },
+  {
+   "label": "15m fade W1 fee-net DEV / VAL",
+   "value": "-0.122% / -0.103%",
+   "tone": "bad"
+  },
+  {
+   "label": "1h follow H fee-net DEV / VAL",
+   "value": "0.003% / -0.002%"
+  },
+  {
+   "label": "4h follow H fee-net DEV / VAL",
+   "value": "-0.033% / 0.414%"
+  },
+  {
+   "label": "Hold share 15m DEV / VAL",
+   "value": "36% / 35%"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "table",
+   "title": "Events and fee-net mean per trade at h4, regime A",
+   "caption": "percent only; CI = week-block bootstrap 95%, shown when n >= 10",
+   "cols": [
+    "TF",
+    "class",
+    "n DEV",
+    "n VAL",
+    "DEV mean %",
+    "DEV CI",
+    "VAL mean %",
+    "VAL CI"
+   ],
+   "rows": [
+    [
+     "W",
+     "H",
+     "6",
+     "0",
+     "3.265",
+     "na",
+     "-",
+     "na"
+    ],
+    [
+     "W",
+     "R",
+     "1",
+     "0",
+     "-5.903",
+     "na",
+     "-",
+     "na"
+    ],
+    [
+     "W",
+     "W1",
+     "7",
+     "3",
+     "6.828",
+     "na",
+     "-6.333",
+     "na"
+    ],
+    [
+     "1D",
+     "H",
+     "22",
+     "9",
+     "0.104",
+     "[-2.39, 2.85]",
+     "1.769",
+     "na"
+    ],
+    [
+     "1D",
+     "R",
+     "13",
+     "7",
+     "-1.066",
+     "[-3.43, 1.72]",
+     "-3.596",
+     "na"
+    ],
+    [
+     "1D",
+     "W1",
+     "51",
+     "20",
+     "0.597",
+     "[-0.58, 1.85]",
+     "0.346",
+     "[-2.81, 3.02]"
+    ],
+    [
+     "4h",
+     "H",
+     "110",
+     "38",
+     "-0.033",
+     "[-0.55, 0.42]",
+     "0.414",
+     "[-0.35, 1.16]"
+    ],
+    [
+     "4h",
+     "R",
+     "111",
+     "48",
+     "-0.417",
+     "[-0.85, 0.06]",
+     "-0.634",
+     "[-1.48, 0.10]"
+    ],
+    [
+     "4h",
+     "W1",
+     "304",
+     "126",
+     "-0.105",
+     "[-0.33, 0.12]",
+     "-0.151",
+     "[-0.49, 0.18]"
+    ],
+    [
+     "1h",
+     "H",
+     "266",
+     "98",
+     "0.003",
+     "[-0.16, 0.16]",
+     "-0.002",
+     "[-0.27, 0.28]"
+    ],
+    [
+     "1h",
+     "R",
+     "308",
+     "131",
+     "-0.076",
+     "[-0.24, 0.08]",
+     "-0.172",
+     "[-0.38, 0.03]"
+    ],
+    [
+     "1h",
+     "W1",
+     "804",
+     "283",
+     "-0.064",
+     "[-0.14, 0.02]",
+     "-0.053",
+     "[-0.22, 0.11]"
+    ],
+    [
+     "15m",
+     "H",
+     "790",
+     "323",
+     "-0.097",
+     "[-0.14, -0.06]",
+     "-0.124",
+     "[-0.18, -0.07]"
+    ],
+    [
+     "15m",
+     "R",
+     "1393",
+     "594",
+     "-0.069",
+     "[-0.10, -0.03]",
+     "-0.095",
+     "[-0.14, -0.06]"
+    ],
+    [
+     "15m",
+     "W1",
+     "3055",
+     "1146",
+     "-0.122",
+     "[-0.14, -0.10]",
+     "-0.103",
+     "[-0.14, -0.07]"
+    ]
+   ]
+  }
+ ],
+ "source_files": [
+  "MyTradingSys/research/tf_break_event_study_2026-10-30/RESULT.md",
+  "MyTradingSys/research/tf_break_event_study_2026-10-30/PRE_REG.md",
+  "MyTradingSys/research/tf_break_event_study_2026-10-30/study.py"
+ ],
+ "commit": "this card"
+}

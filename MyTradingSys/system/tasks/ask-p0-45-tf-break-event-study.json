@@ -2,6 +2,17 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 14,
+    "folded": "2026-10-30T19:30:35Z",
+    "misses": 21,
+    "reads": [
+      "scripts/dev/verdicts.py",
+      "MyTradingSys/research/sim_desk/build_catalogue.py",
+      "MyTradingSys/research/sim_desk/artifact/index.html"
+    ],
+    "session": "agent-ad8d395b329477c07"
+  },
   "created": "2026-10-30T08:24:24Z",
   "depends_on": [],
   "done_when": "RESULT.md + output.md in MyTradingSys/research/tf_break_event_study_2026-10-30/ with n per TF x class (H/R/W1) and DEV and VAL fee-net mean % with CI; events.csv not in the repo; exports sim_desk/results/ask-p0-45-tf-break-event-study.json; lookahead_lint --new and test_no_own_costs pass.",
