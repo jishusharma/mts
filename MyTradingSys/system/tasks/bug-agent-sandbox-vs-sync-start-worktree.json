@@ -24,7 +24,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DRAFT 2026-10-28 Session_Planner (OURS): follow-up to B3 (shipped 2c5731b8a), different case: the Agent tool made the tree. sync.py is a ship-path file so weight IMPORTANT: needs a real REVIEWED stamp (Lab_Guy) before ready. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.\nREVIEWED:2026-10-29 ACCEPT (reviewer-raw-cards-b) Verified sync.start --worker forces new_worktree (B3) and the named existing test exists.",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -44,7 +45,7 @@
     "MyTradingSys/research/nuc_restart_2026-10-28/ISSUES_REGISTER.md:12",
     "scripts/dev/sync.py:529-548"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Reproduce: in a tmp repo, run start <slug> --worker with cwd = <repo>/.claude/worktrees/agent-x; confirm a second WORKTREE: line is made",
     "In start(): when --worker and the tree is a clean .claude/worktrees/agent-* checkout (own branch, not the Supervisor tree), skip new_worktree and work there",

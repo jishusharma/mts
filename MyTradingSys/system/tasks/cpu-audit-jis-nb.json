@@ -23,7 +23,8 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "JIS-NB is the live host (HALT flags raised 2026-10-19): read-only audit only; the operator applies, in a quiet window, never restarting or stopping live processes. If scripts/operator/cpu_cleanup.ps1 is missing after sync.py start, take card ship-cpu-cleanup-scripts first.",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -46,7 +47,7 @@
     "scripts/operator/cpu_cleanup.ps1 header",
     "NUC result: MsMpEng 0.45 -> 0-0.12 core under stress, 57 items disabled"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "git pull via sync.py start; confirm scripts/operator/cpu_cleanup.ps1 and defender_exclusions.ps1 exist",
     "Run the read-only audit (no admin needed) and keep the log",

@@ -18,7 +18,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "SOURCED (operator, live chat 2026-10-26 ~20:00Z, shot 13c9d9d2cd6e): \"I just want to make sure that we also cover 5 day and 3 day and through the 2 day and 1 day ... weekly we definitely cover. Monthly we have not included so far, but we will come to that later ... 4 day I am not sure. Maybe it is good to have. Maybe it is something like a dark horse\". OURS: Binance spot has 1d, 3d, 1w, 1M only, so 2d/4d/5d are built from 1d candles; the anchor (bars end on today, the forming bar holds today) is a judgement and must be stated in the map; a prototype is in MyTradingSys/research/live_reads/2026-10-26_cross_market_tools/mtf_bias.py. CLAUDE.md rule: new timeframe means grep every TF/family map (candidates: scripts/dev/shot.py, market_guide.py, chart_verify.py, alert_rate_check.py, backtest/layers/alerts/live_runner_cli.py, backtest/bigtrade/*.py, scripts/dev/test_tf_map.py). Not live path unless a map is read by the live runner: if it is, the live-path test rules apply (restart state, API errors, fail closed).",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -38,7 +39,7 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "grep every TF/family map and list them in the card result",
     "add 2d, 3d, 4d, 5d with the stated anchor rule; 3d is the exchange candle",
