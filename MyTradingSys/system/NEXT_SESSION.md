@@ -27,9 +27,9 @@ No DSA-NUC cards exist on trunk. tasks.py next --lane DSA-NUC and --lane DSA bot
  3. Next DSA-NUC chat: take 20261023-115742 or 20261026-154448 from the desk list above.
 
 ## Next session launch prompt
-`	ext
+```text
 Session ID: MTS-2026-10-30-HHMMZ-DSA-JIS-NUC
-Role: BUILDER. Worktree first: git worktree add ..\\mts-dsa-jis-nuc-<MMdd-HHmm> -b dsa/jis-nuc-<MMdd-HHmm> origin/fast-track
+Role: BUILDER. Worktree first: git worktree add ../mts-dsa-jis-nuc-<MMdd-HHmm> -b dsa/jis-nuc-<MMdd-HHmm> origin/fast-track
 Then: # AIRUN task=mts-boot repo=<worktree> hours=1 timeout=900, then python scripts/dev/dsa.py boot.
 Task: take desk row 20261023-115742-run-card-context-composite-v2-dev-read or 20261026-154448-redo-fable-sim, whichever desk.py next --host JIS-NUC returns first.
-`
+```
