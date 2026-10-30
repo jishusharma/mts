@@ -52,6 +52,7 @@
   "weight": "",
   "worker": "session",
   "notes": [
-    "2026-10-30 Eagle_Eyes: U1 is measurable now: F:/MTS/data/orderflow_1m (1m b99 large buy/sell + footprint, 2024-12..2026-09). Context-free 5m absorption counts in research/large_trade_absorption_2026-10-30/RESULT.md (absorbed sells went down first 55%, n=95; textbook reversal not seen without level context). Next: level x absorption."
+    "2026-10-30 Eagle_Eyes: U1 is measurable now: F:/MTS/data/orderflow_1m (1m b99 large buy/sell + footprint, 2024-12..2026-09). Context-free 5m absorption counts in research/large_trade_absorption_2026-10-30/RESULT.md (absorbed sells went down first 55%, n=95; textbook reversal not seen without level context). Next: level x absorption.",
+    "2026-10-30 Eagle_Eyes: oversold-cascade bounce signals tested in research/bounce_shift_2026-10-30/RESULT.md (n=755, DEV 2022-25): only S5 (close above the low bar's high) tilts, 48.8/45.4 vs 44.9/49.4 random; back-inside-band and RSI divergence mark the first pause, not the turn. Next: S5 x level context, then a 2026 confirmation run."
   ]
 }
