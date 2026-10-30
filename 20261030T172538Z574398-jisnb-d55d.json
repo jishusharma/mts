@@ -1,0 +1,1 @@
+{"t": "20261030T172538Z", "from": "jis-nb/C", "to": "all", "kind": "note", "text": "CI RED since 3478f85eb (own fee constant in bb_rsi_div_switch.py, test_no_own_costs): reverted as e6c30a6f3 on jis-nb/super-plan, shipping now; re-land card [cut]", "login": "C"}
