@@ -5,6 +5,13 @@
     "python -m pytest -q MyTradingSys/research/eagle_eyes_picture_2026-10-28/test_oi_after_flush_pairing.py",
     "python MyTradingSys/research/eagle_eyes_picture_2026-10-28/oi_after_flush.py"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-30T23:36:33Z",
+    "misses": 11,
+    "reads": [],
+    "session": "agent-a4b54a19b06f60628"
+  },
   "created": "2026-10-30T19:58:17Z",
   "depends_on": [],
   "done_when": "test_oi_after_flush_pairing.py passes and failed before the fix; OI_PAIRING_RECHECK.md lists group n for old and new pairing (old: 18/9/22) and states whether any forward-return claim changed.",
