@@ -2,6 +2,7 @@
   "approved_by": "",
   "asks": "",
   "claim": "",
+  "closed": "2026-10-30T20:11:21Z",
   "commands": [],
   "created": "2026-10-30T17:15:06Z",
   "depends_on": [],
@@ -14,7 +15,14 @@
   "id": "gemini-blind-read-layer-review-sheets",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "research/gemini_audits_2026-10-30/layer_sheets_blind_read.md",
+      "ref": "ebc9b92ed",
+      "utc": "2026-10-30T20:11:21Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -26,7 +34,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "research/gemini_audits_2026-10-30/layer_sheets_blind_read.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "the shipped layer review sheets (files named in cards layer-review-*), their cited files (read); one output file"
   ],
@@ -36,7 +49,7 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "active",
+  "state": "done",
   "steps": [
     "git ls-tree origin/fast-track for each sheet; skip missing ones and say so",
     "open every cited file:line and check the number",
