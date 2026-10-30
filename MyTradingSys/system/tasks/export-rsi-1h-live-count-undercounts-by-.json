@@ -24,7 +24,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS): weight ROUTINE (export-arithmetic fix against a sourced audit recount, no trading-decision parameter) -> T0-ONLY, no reviewer stamp needed. Captured from gpt-t09-table-recount's MED finding, which had no follow-up card yet.",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -45,7 +46,7 @@
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-28_gpt-t09-table-recount.md (MED finding)"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Add a fail-first test asserting the exported RSI 1h row's Live value equals parity_result.json's live_tradable_side (28), not same+live_only (27); see it fail.",
     "Fix export_results.py:123-124 to use the source's tradable/accepted count for Live while keeping the category totals (same/side_diff/off_by_one/live_only) separate.",

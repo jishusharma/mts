@@ -49,7 +49,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "OPERATOR QUOTE: 'whatever we have established as working good in the last pilot to run, those functionalities must not break ... tests so shipping time and test running time do not bloat'. Spec research/mts_doctor/LEAD_ROLE_SOLUTION.md s2/s3; (Sonnet Agent reviewed vs solution.)\nREVIEWED:2026-10-25 ACCEPT\n Runs after depends_on, never parallel with role_loader.py cards.",
+  "note": "S0 drop 2026-10-30 (D7 roadmap, operator: keep only what is useful): new machinery or superseded; revive by a new card if needed",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -74,7 +75,7 @@
     "research/mts_doctor/LEAD_ROLE_SOLUTION.md s2-s4 (section 4 card table)",
     "research/mts_doctor/LEAD_ROLE_IMPACT_MAP.md"
   ],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "Write the tests first, see them fail; add lead.md core + 4 mode files (bodies moved; Pin/THINKER BLOCK/OPEN-note lines dropped; doctor rule reworded per solution s1); role_loader.py retoken lead.md; delete the 4 old files.",
     "ROSTER.json: one Lead entry (start operator, 'You are Lead.', model 'Sonnet (Opus when named)', lane SONNET, limit 'one at a time; a second reads LEAD.md'); aliases = full list in LEAD_ROLE_SOLUTION s2 (thinker ... doctor); keywords = union of the 4 old.",

@@ -37,7 +37,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-30 ACCEPT (reviewer Agent, FIX lines applied) Refined 2026-10-30: split into 5 cards (4 new raw ones listed in scope_out). Behaviour change is dark while mts.spikeFade is false; OURS. Needs the CRITICAL review before ship (changes which fades the engine could emit).",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 1,
   "refined_by": "",
@@ -61,7 +62,7 @@
     "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md:14,94",
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md:165-168"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "SpikeFadeDetector.java:181-183: replace 'if (!(lastClose > priorHigh)) return null;' with a boolean c2 = lastClose > priorHigh (strict >, as caseC); no early return.",
     "Add c.put(\"c2_above_prior_day\", c2) next to c.put(\"entry_path\",\"A1\") (~line 232) and a comment with the quote k0zm5NYn0IQ:51-56 and 'OURS: gate dropped, fire rate unmeasured'. Add \"A-C2\" to the conditions array (SpikeFadeDetector.java:233-235) only when c2 is true (OURS); SpikeFadeProfileTest:193 expects [A-C1,A-C2,A-C3] on an above-prior-day fixture and must stay green.",

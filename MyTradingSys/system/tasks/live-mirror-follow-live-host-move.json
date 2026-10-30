@@ -30,7 +30,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-28 ACCEPT (FIX applied once) DECISION (OURS): original build ask is done in code; only the run-and-report remains, so DSA desk task (desk.py post --target DSA), not a builder. Ends: desk reply quotes both outputs",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
@@ -48,7 +49,7 @@
   "sources": [
     "MyTradingSys/system/LIVE_MIRROR.md:69-72; scripts/dev/sync.py start output 'LIVE OWNER: UNCONFIRMED (no owner marker)' on JIS-NUC 2026-10-28"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "On the Lenovo check MTS_LIVE_OWNER_DIR is set and live_owner.py check shows a fresh heartbeat (publish exits 2 otherwise)",
     "On the Lenovo run live_owner.py check then publish; report both lines",

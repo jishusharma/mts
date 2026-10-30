@@ -22,7 +22,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "OPERATOR QUOTE: 'simplification style that is deductive and lean... keeps discarding what is not needed' (2026-10-27)",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -48,7 +49,7 @@
   "sources": [
     "peer message local_0a9a8c44: 'drop gateway-profile hosts from exhaust broadcasts (their login has no tracked cap, so a gateway host can never satisfy the claim), otherwise these hosts re-arm on every re-fire'"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Write the failing test first: gateway marker + unacked exhaust HIGH broadcast -> host not in the pending/blocked set; same case without the marker -> still blocks. Run on current code: must fail.",
     "In mts_signal.py, add a gateway-host check (reuse the ~/.claude/mts_gateway_on / MTS_GATEWAY=1 detection that sync.py/usage_reminder.py already use) and exclude those hosts for exhaust-kind broadcasts only.",

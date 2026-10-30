@@ -16,7 +16,8 @@
   "latest": [],
   "layers": [],
   "live_path": false,
-  "note": "Producer GPT; reviewer Claude or Gemini. Expected values independent of the code; tests touch temp dirs only, never runtime data. ROUTINE, no live path.",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -37,7 +38,7 @@
   "sources": [
     "scripts/dev/role_hook_launcher.py"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "read role_hook_launcher.py and list every branch",
     "compute expected values by hand",

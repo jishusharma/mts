@@ -31,7 +31,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-30 ACCEPT planner T0 + scope paths verified",
+  "note": "S0 drop 2026-10-30 (D7 roadmap, operator: keep only what is useful): new machinery or superseded; revive by a new card if needed",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -55,7 +56,7 @@
   "scope_sha": "0bf8b9261c25",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "Add disk=C<free>[,F<free>] to the BUDGET line via host_health",
     "Show it in who and add DISK LOW in supervisor plan",

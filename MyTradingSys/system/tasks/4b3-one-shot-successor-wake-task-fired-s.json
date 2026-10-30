@@ -44,7 +44,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-30 ACCEPT (planner-refine-0930 reviewer agent a240c7e8). Raw data (schtasks output 2026-10-29T18:10-18:20Z) lives only in the filing session transcript; the stage log replaces it. Real fire only on JIS-NUC or JIS-NB (host lane; coordinator places the session). First FIX applied 2026-10-30.",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
@@ -62,7 +63,7 @@
   "scope_sha": "12d90245bd5a",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Read build_script run.ps1 (successor_wake.py:163-210) and wake_proof_2026-10-28; list what run.ps1 logs per stage",
     "Make run.ps1 append stage lines (started, claude found, claude exit code, unregister result) to runtime_data/succwake_<login>.log",

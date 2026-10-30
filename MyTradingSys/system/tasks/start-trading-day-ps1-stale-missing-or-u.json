@@ -26,7 +26,8 @@
   "layers": [],
   "live_path": true,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-26 ACCEPT (Sonnet reviewer Agent aadbae80 verified, planner DECISION OURS). Found 2026-10-26 by Session_Planner drafter D: no card or test covers the reader side of state_code.json (emitter side has 30+ StateCodeEmitterTest cases). A dead emitter leaves the last valid file, so ADVERSE FLOW fires on old data. live_path set true (it edits the live loop script). Fails closed on any helper failure; builder never deploys. Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -50,7 +51,7 @@
     "scripts/core/start-trading-day.ps1:640-668 (existing 90 s threshold, kept, OURS)",
     "src/main/java/datafeed/StateCodeEmitter.java:659-660 comment: INVALID matches neither ^S nor ^L (SOURCED)"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Read start-trading-day.ps1 l.636-672 and StateCodeEmitter.java l.655-662 (timestamp_utc, state INVALID, readers match ^S and ^L)",
     "Write the tests first (red), then state_code_read.py: age from timestamp_utc against now; age below -2 s (future stamp, clock skew; OURS) is INVALID; STALE above 90 s; MISSING; UNREADABLE (bad json, no timestamp); INVALID state; else prints 'OK <first letter>'; exit 0 only for OK",
