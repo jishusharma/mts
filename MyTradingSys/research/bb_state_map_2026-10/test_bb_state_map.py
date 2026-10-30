@@ -1,5 +1,5 @@
 import numpy as np
-from study import classify
+from bb_state_study import classify
 
 
 def test_hand_built_series():

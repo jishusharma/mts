@@ -18,4 +18,4 @@ All definitions are OURS (not the trader's). Holdout (2026+) is never loaded.
 - Operator shots 8faf2cac14be, f2fb8d432eb7, 85ba89446b0d are located by their timestamps/TF in their cells once the shot times are read from the screenshots (step 3; needs data).
 
 ## Blocked
-F:/MTS/data/tom_raw is not present on DESKTOP-F7IU69N. Run `python study.py` on the machine holding it; writes map.csv. Counts not made, none invented.
+F:/MTS/data/tom_raw is not present on DESKTOP-F7IU69N. Run `python bb_state_study.py` on the machine holding it; writes map.csv. Counts not made, none invented.
