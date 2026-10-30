@@ -6,7 +6,7 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-30T20:36:07Z",
+    "folded": "2026-10-30T20:35:30Z",
     "misses": 65,
     "reads": [
       "scripts/aibridge/src/agent.ps1",
