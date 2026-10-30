@@ -2,6 +2,16 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-30T20:41:15Z",
+    "misses": 4,
+    "reads": [
+      "src/main/java/datafeed/StateCodeEmitter.java",
+      "src/test/java/datafeed/StateCodeEmitterTest.java"
+    ],
+    "session": "agent-a89c1365ba6060227"
+  },
   "created": "2026-10-30T20:22:14Z",
   "depends_on": [],
   "done_when": "new tests pass on current code and fail on the mutated copy (recorded in the commit body); CI green after ship",
