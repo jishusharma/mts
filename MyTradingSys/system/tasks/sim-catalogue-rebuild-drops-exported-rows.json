@@ -4,6 +4,15 @@
   "commands": [
     "python MyTradingSys/research/sim_desk/build_catalogue.py --out %TEMP%/cat.json"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-30T23:04:17Z",
+    "misses": 13,
+    "reads": [
+      "MyTradingSys/research/pitchfork_2026-10-19/PHASE2_4H_POC_STUDY.md"
+    ],
+    "session": "agent-a433573f37dc35924"
+  },
   "created": "2026-10-30T22:40:26Z",
   "depends_on": [],
   "done_when": "Rebuild to a temp --out flags all results/*.json exported (count == files), and sim_desk/artifact/test_artifact.py passes after refresh_catalogue().",
