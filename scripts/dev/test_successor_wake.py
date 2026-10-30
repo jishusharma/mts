@@ -315,3 +315,13 @@ def test_real_schtasks_path_registers_expected_task_via_fake(tmp_path, monkeypat
     assert "--model claude-sonnet-5-5" in run_ps and "Unregister-ScheduledTask -TaskName 'MTS-SuccWake-C'" in run_ps
     assert "You are Supervisor. Login C." in (tmp_path / "wake" / "C" / "prompt.txt").read_text(encoding="utf-8")
     assert not Path(str(out) + ".started").exists()                           # future fireAt: no immediate start
+
+
+def test_run_ps1_logs_stages_and_unregisters_in_finally(tmp_path):
+    s = _dry(tmp_path, at="2026-10-27T20:05Z")["script"]
+    run = s.split("$r = @'\n", 1)[1].split("\n'@", 1)[0]
+    for stage in ("Stage 'started'", "claude found", "claude exit", "'unregistered'", "succwake_C.log"):
+        assert stage in run, stage
+    head, fin = run.split("} finally {", 1)
+    assert "Get-Command claude.exe" in head.split("try {", 1)[1]  # a failed lookup must still reach finally
+    assert "Unregister-ScheduledTask" in fin

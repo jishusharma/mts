@@ -2,6 +2,17 @@
   "approved_by": "operator 2026-10-30 via Eagle_Eyes (d-eagle-eyes-missed-boxes-defaults)",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-30T00:15:34Z",
+    "misses": 3,
+    "reads": [
+      "scripts/dev/gemini_queue.py",
+      "scripts/dev/test_gemini_queue.py",
+      "scripts/dev/run_extra_tests.py"
+    ],
+    "session": "agent-af25c4893d3aed4a3"
+  },
   "created": "2026-10-29T19:21:20Z",
   "depends_on": [],
   "done_when": "Table per approach class x TF with n, forward move, best confirm and invalidation sequences; dev/holdout split; PRE_REG gate 0g checked on 3 operator shots; result feeds live_aid. Full text: MyTradingSys/research/eagle_eyes_picture_2026-10-28/CARD_SPECS.md",

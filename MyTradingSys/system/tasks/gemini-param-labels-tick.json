@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-30T00:18:30Z",
   "commands": [
     "C:/Users/E-ngineers/.gemini/bin/agy.exe --print \"Follow the steps of card gemini-param-labels-tick (python scripts/dev/tasks.py brief gemini-param-labels-tick). Write only MyTradingSys/research/gemini_audits_2026-10-30/tick_param_labels.md. Facts with file:line or NOT_IN_DATA; no verdicts.\" --model gemini-4-argon-medium"
   ],
@@ -15,7 +17,14 @@
   "id": "gemini-param-labels-tick",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Created MyTradingSys/research/gemini_audits_2026-10-30/tick_param_labels.md auditing 16 nu",
+      "ref": "878350462",
+      "utc": "2026-10-30T00:18:30Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "note": "Producer vendor per title; reviewer is a different vendor. Facts with file:line or NOT_IN_DATA; no verdicts. ROUTINE, no live path.",
@@ -30,7 +39,12 @@
     "to": "DSA",
     "why": "window"
   },
-  "result": "",
+  "result": "Created MyTradingSys/research/gemini_audits_2026-10-30/tick_param_labels.md auditing 16 numeric parameters (2 SOURCED, 14 OURS).",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-10-30/tick_param_labels.md (new file only)"
   ],
@@ -44,12 +58,13 @@
     "MyTradingSys/backtest/layers/tick",
     "MyTradingSys/backtest/layers/MOVED_RULES.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "list parameters",
     "search extracts for each",
     "write table"
   ],
+  "taken": "2026-10-30T00:17:33Z",
   "tests": "none (run card); proof = every row has file:line",
   "title": "[GEMINI] Argon-medium: every parameter in layers/tick labelled SOURCED or OURS (file:line)",
   "weight": "ROUTINE",
