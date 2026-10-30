@@ -30,6 +30,16 @@ HIGH broadcasts (operator 2026-10-22: a "every machine needs X" broadcast was sh
       broadcasts. The sending machine's sessions also get a one-line ack status on their prompts while any host is not done.
 A record stamped more than 10 minutes in the future (wrong clock) is ignored for display and for the seen marker.
 
+ASKS: every ask gets an ack and an answer (operator 2026-10-30: asks sat unanswered, A re-asked C twice and idled):
+  python scripts/dev/mts_signal.py ask "<text>" --to <host|A|B|C|all> [--type ask|resend|task] [--wait M] [--due M]
+      (`send --kind ask` takes the same path) gets an id (q-xxxxxx), a minimum wait and a deadline (ASK_TYPES, minutes). The
+      target's next prompt/SessionStart shows "[MTS ASK ...]" and its Stop is blocked once until the reply carries the id; it
+      runs `ack <q-id> told` (seen) and `ack <q-id> done --note "<answer>"` (one answer from any target closes it; the asker's
+      sessions then see the answer). The same text from the same host to the same target inside the wait is refused (no re-ask).
+      Past the deadline unanswered: the first hook or `asks` run that sees it escalates ONCE (kind esc) to the supervisor host of
+      the target's login (BUDGET sup=), which then shows it too; `asks [--json]` and status_board.py list it as OVERDUE with age.
+      No scheduler: delivery rides only on prompts, session start and Stop.
+
   python scripts/dev/mts_signal.py send "<text>" [--to host|all] [--kind note|claim|done|ask|broadcast]
   python scripts/dev/mts_signal.py broadcast "<message>"   a signal every other session shows on its NEXT turn (nothing
                                                          wakes an idle session or flashes; the sender wakes them)
@@ -319,8 +329,10 @@ def unseen_for(rows, since, sid=""):
     broadcast from any session but this one (all sessions on one machine share one sender id). Acks and HIGH broadcasts are
     not news (the action block handles them); a record stamped in the future is ignored."""
     me, tag, lim = who(), sid_tag(sid), future_limit()
-    return [r for r in rows if since < r.get("t", "") <= lim and to_me(r.get("to"))
-            and r.get("kind") != "ack" and r.get("prio") != "high"
+    mine = {a["id"] for a in asks_from_me(rows)}
+    answers = [r for r in rows if since < r.get("t", "") <= lim and r.get("kind") == "ack" and r.get("state") == "done" and r.get("id") in mine]
+    return answers + [r for r in rows if since < r.get("t", "") <= lim and to_me(r.get("to"))
+            and r.get("kind") not in ("ack", "ask", "esc") and r.get("prio") != "high"
             and (r.get("from") != me or (r.get("kind") == "broadcast" and r.get("sid", "") != tag))]
 
 
@@ -631,6 +643,160 @@ def sender_status(rows):
     return "\n".join(out)
 
 
+# ---- asks: mandatory ack + answer, minimum wait before a re-ask, one escalation past the deadline ----------------------
+
+ASK_TYPES = {"ask": (15, 60), "resend": (15, 30), "task": (30, 240)}   # OURS (operator 2026-10-30): (minimum wait, deadline) in minutes
+
+
+def _norm(text):
+    return re.sub(r"\s+", " ", str(text or "")).strip().lower()
+
+
+def ask_state(rows, qid):
+    """none < told (seen) < done (answered); one answer from any host closes the ask."""
+    best = "none"
+    for r in rows:
+        if r.get("kind") == "ack" and r.get("id") == qid and RANK.get(r.get("state"), 0) > RANK[best]:
+            best = r["state"]
+    return best
+
+
+def asks_open(rows):
+    """Asks of the last KEEP_DAYS not yet answered, oldest first."""
+    cutoff, lim = stamp(now() - timedelta(days=KEEP_DAYS)), future_limit()
+    return [r for r in rows if r.get("kind") == "ask" and r.get("id") and cutoff <= r.get("t", "") <= lim
+            and ask_state(rows, r["id"]) not in TERMINAL]
+
+
+def asks_from_me(rows):
+    return [r for r in rows if r.get("kind") == "ask" and r.get("id") and hosts.same_host(str(r.get("from", "")).split("/")[0], host())]
+
+
+def ask_due(a):
+    return _t(a) + timedelta(minutes=int(a.get("due", ASK_TYPES["ask"][1])))
+
+
+def ask_wait_end(a):
+    return _t(a) + timedelta(minutes=int(a.get("wait", ASK_TYPES["ask"][0])))
+
+
+def escalated_to(rows, qid):
+    return [r.get("to") for r in rows if r.get("kind") == "esc" and r.get("id") == qid]
+
+
+def ask_for_me(rows, a, hostname=None):
+    """Addressed to this host (any of its names), to its login letter, to all, or escalated here; never the asker's own host."""
+    hostname = hostname or host()
+    if hosts.same_host(str(a.get("from", "")).split("/")[0], hostname):
+        return False
+    to = str(a.get("to", ""))
+    mine = (login() == to.upper() and hosts.same_host(hostname, host())) if to.upper() in LOGIN_LETTERS else to_me(to, hostname)
+    return mine or any(to_me(t, hostname) for t in escalated_to(rows, a["id"]) if t != "all")
+
+
+def sup_host(rows, letter):
+    """The supervisor host of a login: sup= of its newest BUDGET line, else ''."""
+    for r in reversed(rows):
+        m = re.match(r"BUDGET login=%s\b.*?\bsup=(\S+)" % re.escape(letter), str(r.get("text", "")))
+        if m:
+            return m.group(1).lower()
+    return ""
+
+
+def target_login(rows, a):
+    to = str(a.get("to", ""))
+    if to.upper() in LOGIN_LETTERS:
+        return to.upper()
+    for r in reversed(rows):
+        if r.get("login") and hosts.same_host(str(r.get("from", "")).split("/")[0], to):
+            return str(r["login"]).upper()
+    return str(a.get("login", "")).upper()       # to=all: the asker's own login supervisor routes it
+
+
+def escalate(rows, at=None, send_fn=None):
+    """Past the deadline and unanswered, with no esc record yet: one esc record to the target login's supervisor host
+    (else all). Returns [(qid, to)]. Called from every prompt hook and `asks`, so no scheduler is needed."""
+    at = at or now()
+    out = []
+    for a in asks_open(rows):
+        if at <= ask_due(a) or escalated_to(rows, a["id"]):
+            continue
+        to = sup_host(rows, target_login(rows, a)) or "all"
+        mins = int((at - _t(a)).total_seconds() // 60)
+        text = "ESCALATED %s: %s asked %s %d min ago, no answer (deadline %s min): %s" % (a["id"], a.get("from", "?"), a.get("to"), mins, a.get("due"), a.get("text", ""))
+        (send_fn or (lambda t, x: send(t, to=x["to"], kind="esc", extra=x)))(text, {"id": a["id"], "to": to})
+        out.append((a["id"], to))
+    return out
+
+
+def ask_rows(rows, at=None):
+    """[{id, from, to, type, state, age_min, due_min, overdue, esc}] for open asks, oldest first (asks --json, status_board)."""
+    at = at or now()
+    return [{"id": a["id"], "from": a.get("from", "?"), "to": a.get("to"), "type": a.get("type", "ask"), "state": ask_state(rows, a["id"]),
+             "age_min": int((at - _t(a)).total_seconds() // 60), "due_min": int(a.get("due", 0)), "overdue": at > ask_due(a),
+             "esc": ",".join(escalated_to(rows, a["id"])), "text": a.get("text", "")} for a in asks_open(rows)]
+
+
+def ask_block(rows, ev, at=None):
+    """For the target: an unseen ask is loud on every prompt; a told one only at SessionStart or once overdue."""
+    at = at or now()
+    if is_worker_env():
+        return ""
+    out = []
+    for a in asks_open(rows):
+        if not ask_for_me(rows, a):
+            continue
+        st, late = ask_state(rows, a["id"]), at > ask_due(a)
+        if st == "told" and not late and ev != "SessionStart":
+            continue
+        tag = "OVERDUE %d min" % ((at - ask_due(a)).total_seconds() // 60) if late else "answer by %s" % ask_due(a).strftime("%H%MZ")
+        out.append("[MTS ASK %s %s from %s at %s %s %s %s] %s" % (DOT, a["id"], a.get("from", "?"), a["t"][9:13] + "Z", DOT, st, tag, a.get("text", "")))
+        if st == "none":
+            out.append("Reply required, before the current task: python scripts/dev/mts_signal.py ack %s told; when answered: "
+                       'ack %s done --note "<answer>". Name %s in your reply.' % (a["id"], a["id"], a["id"]))
+    return "\n".join(out)
+
+
+def asker_status(rows, at=None):
+    """For the asker's host: each open ask with its state, and the time before which a re-ask is refused."""
+    at = at or now()
+    out = []
+    for a in asks_from_me(rows):
+        st = ask_state(rows, a["id"])
+        if st in TERMINAL or _t(a) < at - timedelta(days=1):
+            continue
+        if at < ask_wait_end(a):
+            hint = "min-wait: no re-ask before %s" % ask_wait_end(a).strftime("%H%MZ")
+        elif at > ask_due(a):
+            hint = "OVERDUE, escalated to %s" % (",".join(escalated_to(rows, a["id"])) or "(next hook)")
+        else:
+            hint = "answer due %s" % ask_due(a).strftime("%H%MZ")
+        out.append("[MTS ASK %s to %s] %s, %d min old; %s" % (a["id"], a.get("to"), st, (at - _t(a)).total_seconds() // 60, hint))
+    return "\n".join(out)
+
+
+def new_ask(text, to="all", typ="ask", wait=None, due=None, at=None):
+    """Sends an ask; returns (id, message). A same-text ask from this host to the same target still inside its minimum wait is
+    collapsed into the open one (nothing sent)."""
+    h = ensure()
+    if h is None:
+        return "", "no origin"
+    rows, at = load(h), at or now()
+    w, d = ASK_TYPES.get(typ, ASK_TYPES["ask"])
+    w, d = int(wait if wait is not None else w), int(due if due is not None else d)
+    for a in asks_from_me(rows):
+        if hosts.key(str(a.get("to"))) == hosts.key(to) and _norm(a.get("text")) == _norm(clean(text)) \
+                and ask_state(rows, a["id"]) not in TERMINAL and at < ask_wait_end(a):
+            return a["id"], ("NOT sent: same ask %s went to %s %d min ago; minimum wait %s min, re-ask not before %s"
+                             % (a["id"], to, (at - _t(a)).total_seconds() // 60, a.get("wait"), ask_wait_end(a).strftime("%H:%MZ")))
+    qid = "q-" + hashlib.sha1(("%s%s%s" % (time.time(), who(), text)).encode("utf-8")).hexdigest()[:6]
+    ok = send(text, to=to, kind="ask", extra={"id": qid, "type": typ, "wait": max(1, w), "due": max(w, d)})
+    if not ok:
+        return "", "ask NOT sent (push failed)"
+    return qid, ("ask %s sent to %s: ack expected within %d min, answer by %d min; do not re-ask before then (python scripts/dev/mts_signal.py asks)"
+                 % (qid, to, w, max(w, d)))
+
+
 def _handle(payload, sid, ev, auto):
     head = login_line() if ev == "SessionStart" else ""
     got = _handle_rows(payload, sid, ev, auto)
@@ -664,6 +830,11 @@ def _handle_rows(payload, sid, ev, auto):
     out = []
     if ev in ("UserPromptSubmit", "SessionStart"):
         out.append(action_block(rows, ev))
+        out.append(ask_block(rows, ev))
+        try:
+            escalate(rows)
+        except Exception:
+            pass
     if ev == "SessionStart":
         out.append("\n".join(roll_lines(rows)[:4]))
         try:
@@ -675,6 +846,7 @@ def _handle_rows(payload, sid, ev, auto):
             pass
     if ev == "UserPromptSubmit":
         out.append(sender_status(rows))
+        out.append(asker_status(rows))
     if ev != "SessionStart":
         out.append(news(rows, sid, seen_f, sd, fetch))
     return "\n".join(t for t in out if t)
@@ -755,9 +927,17 @@ def stop_check(payload):
         return ""
     rows = load(h)
     pending = [b for b in high_open(rows) if to_me(b.get("to")) and not (b.get("aud") == "top" and is_worker_env()) and needs_action(rows, b)]
-    if not pending:
+    asks = [] if is_worker_env() else [a for a in asks_open(rows) if ask_for_me(rows, a) and ask_state(rows, a["id"]) == "none"]
+    if not pending and not asks:
         return ""
     reply = reply_text(payload)
+    if not pending:
+        if any(a["id"] in reply for a in asks):
+            return ""
+        return json.dumps({"decision": "block", "reason": "[MTS ASK] unanswered ask(s) for this machine: "
+                           + " ; ".join("%s from %s: %s" % (a["id"], a.get("from", "?"), a.get("text", "")[:80]) for a in asks)
+                           + ". Run: " + " ; ".join("python scripts/dev/mts_signal.py ack %s told" % a["id"] for a in asks)
+                           + ', answer with ack <id> done --note "<answer>", and name the id in your reply.'}, ensure_ascii=False)
     if "ACTION FOR THIS MACHINE" in reply or any(b["id"] in reply for b in pending):
         return ""
     reason = ("[MTS ACTION REQUIRED] unacked HIGH broadcast for this machine and your reply does not tell the operator. Reply again with "
@@ -958,9 +1138,41 @@ def main(argv):
         ap.add_argument("--kind", default="note", choices=["note", "claim", "done", "ask", "broadcast"])
         ap.add_argument("--sid", default="", help=argparse.SUPPRESS)
         a = ap.parse_args(argv[1:])
+        if a.kind == "ask":
+            return main(["ask", a.text, "--to", a.to])
         ok = send(a.text, to=a.to, kind=a.kind, sid=a.sid)
         print("sent" if ok else "NOT sent (no origin or push failed)")
         return 0 if ok else 1
+    if cmd == "ask":
+        import argparse
+        ap = argparse.ArgumentParser(prog="mts_signal.py ask")
+        ap.add_argument("text")
+        ap.add_argument("--to", default="all", help="host, login letter A/B/C, or all")
+        ap.add_argument("--type", default="ask", choices=sorted(ASK_TYPES))
+        ap.add_argument("--wait", type=int, default=None, help="minimum wait in minutes before a re-ask")
+        ap.add_argument("--due", type=int, default=None, help="deadline in minutes; unanswered past it escalates once")
+        a = ap.parse_args(argv[1:])
+        qid, msg = new_ask(a.text, to=a.to, typ=a.type, wait=a.wait, due=a.due)
+        print(msg)
+        return 0 if qid and not msg.startswith("NOT") else (3 if qid else 1)
+    if cmd == "asks":
+        h = ensure()
+        if h is None:
+            print("no origin")
+            return 1
+        rows = load(h)
+        for qid, to in escalate(rows):
+            print("escalated %s to %s" % (qid, to))
+        res = ask_rows(load(h))
+        if "--json" in argv:
+            print(json.dumps(res))
+            return 0
+        for r in res:
+            print("%s %s->%s %-5s %s %d min (deadline %d)%s  %s" % (r["id"], r["from"], r["to"], r["state"], "OVERDUE" if r["overdue"] else "open",
+                                                                r["age_min"], r["due_min"], " esc " + r["esc"] if r["esc"] else "", r["text"][:80]))
+        if not res:
+            print("no open asks")
+        return 0
     if cmd == "broadcast":
         import argparse
         ap = argparse.ArgumentParser(prog="mts_signal.py broadcast")
@@ -1015,7 +1227,18 @@ def main(argv):
         if h is None:
             print("no origin")
             return 1
-        known = {b["id"]: b for b in high_open(load(h))}
+        rows = load(h)
+        if a.id.startswith("q-"):
+            if a.id not in {q["id"] for q in asks_open(rows)}:
+                print("unknown or already answered ask %s (python scripts/dev/mts_signal.py asks)" % a.id)
+                return 2
+            if a.state == "done" and not clean(a.note).strip():
+                print("ack %s done needs --note with the answer (it goes back to the asker)" % a.id)
+                return 2
+            ok = send("ack %s %s %s" % (a.id, a.state, a.note), kind="ack", extra={"id": a.id, "state": a.state, "host": host(), "login": login(), "note": clean(a.note, 160)})
+            print("ack %s %s (%s)" % (a.id, a.state, host()) if ok else "ack NOT sent (push failed)")
+            return 0 if ok else 1
+        known = {b["id"]: b for b in high_open(rows)}
         if a.id not in known:
             print("unknown or expired broadcast id %s (python scripts/dev/mts_signal.py acks)" % a.id)
             return 2

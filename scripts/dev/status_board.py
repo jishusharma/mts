@@ -290,6 +290,20 @@ def fmt_sessions():
             "Sonnet vs Opus value: NOT_IN_DATA (would measure: cards closed per login 5h-% by model)"]
 
 
+def fmt_asks(asks, high):
+    """Asks and HIGH broadcasts still owed a reply (operator 2026-10-30: mandatory reply). asks = `mts_signal.py asks --json`,
+    high = `mts_signal.py pending --json`. OVERDUE rows first, each with its age."""
+    rows = [("OVERDUE" if a["overdue"] else "open", a["id"], f"{a['from']} -> {a['to']}", a["state"], age_text(a["age_min"] / 60),
+             a.get("esc") or "-", a["text"][:60]) for a in asks]
+    rows += [("OVERDUE" if h["hours"] * 60 > 120 else "open", h["id"], f"HIGH -> {h['host']}", h["state"], age_text(h["hours"]), "-",
+              (h.get("note") or "")[:60]) for h in high]
+    if not rows:
+        return ["No ask or HIGH broadcast waits for a reply."]
+    rows.sort(key=lambda r: r[0] != "OVERDUE")
+    n = sum(1 for r in rows if r[0] == "OVERDUE")
+    return [f"{n} OVERDUE of {len(rows)} waiting"] + table(["", "id", "who", "state", "age", "escalated to", "text"], rows)
+
+
 def result_line(budget, red_min, open_w, failures):
     wk = max((v[2] for v in budget.values()), default=None)
     bits = [f"week budget up to {wk}%" if wk is not None else "budget " + ND, f"CI red {red_min} min" if red_min else "CI green",
@@ -407,6 +421,11 @@ def sec_missing():
                        sum(1 for c in cs if c.get("state") == "raw"), sum(1 for c in cs if c.get("state") == "blocked"))
 
 
+def sec_asks():
+    load = lambda *a: json.loads(run([sys.executable, str(HERE / "mts_signal.py"), *a, "--json"], 30) or "[]")
+    return fmt_asks(load("asks"), load("pending"))
+
+
 def sec_hygiene():
     disks = []
     for d in ("C:\\", "D:\\", "F:\\"):
@@ -439,7 +458,7 @@ def sec_hygiene():
 
 
 SECTIONS = [("Resources: budget and what it bought", sec_budget), ("Speed and health", sec_speed), ("Value added", sec_value),
-            ("GPT and Gemini", sec_gpt_gemini), ("Still missing", sec_missing), ("Hygiene", sec_hygiene)]
+            ("GPT and Gemini", sec_gpt_gemini), ("Still missing", sec_missing), ("Asks waiting for a reply", sec_asks), ("Hygiene", sec_hygiene)]
 
 
 def build(sections=None):
