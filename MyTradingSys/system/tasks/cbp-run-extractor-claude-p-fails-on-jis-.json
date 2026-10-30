@@ -2,6 +2,20 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-30T23:19:47Z",
+    "misses": 6,
+    "reads": [
+      "scripts/dev/cbp_run.py",
+      "scripts/dev/artifacts.py",
+      "scripts/dev/test_cbp_run.py",
+      "MyTradingSys/research/news_feeds_2026-10-30/REPORT.md",
+      "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md",
+      "scripts/dev/test_artifacts.py"
+    ],
+    "session": "agent-a2535cc6bf2029c26"
+  },
   "created": "2026-10-30T14:56:42Z",
   "depends_on": [],
   "done_when": "test_cbp_run.py: with an extractor that fails for 1 of 2 videos with stderr 'OAuth token expired', the good video is saved to store and verdicts.json and the RuntimeError text contains the stderr cause.",
