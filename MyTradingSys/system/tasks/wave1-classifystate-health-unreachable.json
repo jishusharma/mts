@@ -14,25 +14,36 @@
   "goal": "Make the trend health state follow Tom's definition: snapshot cvd_slope is only rising/falling/flat so trend_unhealthy never fires; outside today's developing VA = healthy is not Tom's rule; below_val long-only open since 2026-10-17",
   "id": "wave1-classifystate-health-unreachable",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Pitchfork Layer: Wire Modified Schiff tine bounce and Volume Profile confluence into Setup",
+      "ref": "91d2e43c3133",
+      "utc": "2026-10-21T01:04:20Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS) 2026-10-30: parked; split into (a) health rule vs Tom quote and (b) below_val long-only; scope_in must add SetupCandidatesCriticalWave1Test, SpikeFadeCriticalWave1Test and the AUDIT.md quote file. | PLANNER 2026-10-30 SKIPPED: needs a chosen volume/liquidity field from the snapshot as the health test (OURS rule, TOM_LAYER_V2_SPEC s6 CHANGE row) and live SetupCandidatesBuilder; overlaps the Tom layer v2 build, so decide there first.",
+  "note": "REVIEWED:2026-10-30 ACCEPT planner T0 + scope paths verified",
   "prio": 2,
   "refine_tries": 1,
   "refined_by": "",
+  "refreshed": "2026-10-30T01:04:44Z",
   "refs": [],
   "result": "",
   "scope_in": [
     "src/main/java/datafeed/SetupCandidatesBuilder.java:290-316, MarketDataSnapshot.java:714-773"
   ],
   "scope_out": [],
+  "scope_sha": "91d2e43c3133",
   "size": "S",
   "sources": [
     "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md",
     "MyTradingSys/research/tom_direction_health_audit_2026-10-17/AUDIT.md"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Read the finding in MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md",
     "Fix per the trader source; new test fails first"

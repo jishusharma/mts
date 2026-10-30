@@ -14,13 +14,23 @@
   "goal": "MED finding in MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md: prior-day-high proxy (dayHigh of latest prior session with a window bar) has no distance cap. Add a capped, OURS-labelled rule with a test. Split from wave1-spikefade-ac1-ac2-mandatory.",
   "id": "spikefade-prior-day-high-proxy-cap",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "SpikeFade test: assert A-C2 listed when c2 true",
+      "ref": "1dce15d9ee93",
+      "utc": "2026-10-29T23:41:06Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "PLANNER 2026-10-30: filled and T0-checked; awaits Lab_Guy/reviewer stamp before ready (CRUCIAL+ needs independent review)",
+  "note": "REVIEWED:2026-10-30 ACCEPT planner T0 + scope paths verified",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-30T01:04:42Z",
   "refs": [
     "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md"
   ],
@@ -32,11 +42,12 @@
   "scope_out": [
     "SpikeFadeProfile.java"
   ],
+  "scope_sha": "1dce15d9ee93",
   "size": "S",
   "sources": [
     "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Read ITEM3 findings for the prior-day-high proxy (case C)",
     "Add a distance cap constant labelled OURS",

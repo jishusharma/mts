@@ -12,13 +12,30 @@
   "goal": "Operator 2026-10-30: the JIS-NB C: drive fills often (121 GB disk; 7.6 GB free on 10-10, 12.8 GB on 10-24) and nobody sees it until it is red. host_health.check_disk knows local free GB but no other machine sees it. No schedulers allowed, so the watch must ride on lines Supervisors already send every cycle.",
   "id": "fleet-disk-free-in-budget-line",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "reply-protocol: mandatory ack + answer for every ask, minimum wait, one escalation",
+      "ref": "0bf8b9261c25",
+      "utc": "2026-10-30T00:20:58Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "18723585d95f cleanup: logon run can cover a second clone (--repo) so JIS-NB's Run checkout",
+      "ref": "MyTradingSys/system/STATION_CLEANUP.md",
+      "utc": "2026-10-26T12:20:35Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "PLANNER 2026-10-30: filled and T0-checked; awaits Lab_Guy review stamp (T0-ONLY refused at IMPORTANT)",
+  "note": "REVIEWED:2026-10-30 ACCEPT planner T0 + scope paths verified",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-30T01:04:44Z",
   "refs": [
     "scripts/dev/mts_signal.py",
     "scripts/dev/host_health.py",
@@ -35,9 +52,10 @@
   "scope_out": [
     "any scheduler or live-tree change"
   ],
+  "scope_sha": "0bf8b9261c25",
   "size": "M",
   "sources": [],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Add disk=C<free>[,F<free>] to the BUDGET line via host_health",
     "Show it in who and add DISK LOW in supervisor plan",

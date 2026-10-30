@@ -16,24 +16,35 @@
   "goal": "Make the live Pitchfork layer able to fire: the snapshot asks for 3 four-hour bars (MarketDataSnapshot lines 489, 1338) but PitchforkSignalLayer.detect needs 15, so mts.pitchfork=true is inert.",
   "id": "pitchfork-live-4h-bars-too-few",
   "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "StateCodeEmitter: kline backfill of session CVD/VWAP sums, fail closed; vwap_anchor_utc = ",
+      "ref": "e4bcc09fd3a3",
+      "utc": "2026-10-19T20:48:44Z"
+    }
+  ],
   "layers": [
     "pitchfork"
   ],
   "live_path": true,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-30 ACCEPT planner T0 + scope paths verified",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-30T01:04:46Z",
   "refs": [],
   "result": "",
   "scope_in": [
     "src/main/java/datafeed/MarketDataSnapshot.java"
   ],
   "scope_out": [],
+  "scope_sha": "e4bcc09fd3a3",
   "size": "S",
   "sources": [],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Raise 4h limit to 20 in both maps",
     "Test restart/as-of path and API error (fails closed)",
@@ -41,6 +52,6 @@
   ],
   "tests": "MarketDataSnapshot test: as-of snapshot returns >= 15 4h bars; fails on limit 3",
   "title": "pitchfork live: snapshot fetches 3 x 4h bars, PitchforkSignalLayer needs 15, so mts.pitchfork=true never fires (ITEM4_REPLAY_2026-10-29.md)",
-  "weight": "",
+  "weight": "CRITICAL",
   "worker": "agent"
 }
