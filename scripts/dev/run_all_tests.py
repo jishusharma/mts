@@ -68,6 +68,7 @@ BACKTEST_PYTEST_PATHS = [
     "MyTradingSys/backtest/test_tom_dax_recall.py",
     "MyTradingSys/backtest/test_tom_v2_recall.py",
     "MyTradingSys/backtest/test_tom_dax_bt.py",
+    "MyTradingSys/backtest/test_no_own_costs.py",
 ]
 
 # These steps scan or write checkout state (layer index, artifact registry, wiring --check, STATUS generator, group map), and
