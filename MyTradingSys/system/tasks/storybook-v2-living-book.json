@@ -1,6 +1,7 @@
 {
   "approved_by": "operator 2026-10-30 via Eagle_Eyes (d-map-before-backtest, d-setup-review-before-backtest, d-storybook-v2)",
   "asks": "",
+  "closed": "2026-10-30T10:44:58Z",
   "commands": [],
   "created": "2026-10-29T22:28:43Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "storybook-v2-living-book",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/storybook/STORYBOOK.md v2: chapters 8b-14, 14 history boxes, M1-M9 1",
+      "ref": "c409e3f6b",
+      "utc": "2026-10-30T10:44:58Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -37,7 +44,12 @@
   "refined_by": "",
   "refreshed": "2026-10-29T22:30:09Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/storybook/STORYBOOK.md v2: chapters 8b-14, 14 history boxes, M1-M9 1 fixed 8 open; verify_extract_quotes PASS; deck republished (v8, +6 slides)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/_archive/loose_2026-10/TOM_FABIO_STORY_2026-10-05.md",
     "MyTradingSys/research/storybook/",
@@ -53,13 +65,14 @@
     "MyTradingSys/research/_archive/loose_2026-10/TOM_FABIO_STORY_2026-10-05.md",
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/SESSION_MAP_2026-10-30.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Copy the story to research/storybook/STORYBOOK.md (old file stays as history)",
     "Add regime, timeframe-ladder, proof-checklist and BB chapters; plain words, one term per page",
     "Add a what-history-says box per idea from RESULT.md files (n, file:line, never recomputed); mark M1-M9 fixed or open",
     "verify_extract_quotes, then republish the deck from the new file"
   ],
+  "taken": "2026-10-30T10:44:58Z",
   "tests": "verify_extract_quotes.py STORYBOOK.md exits 0 (fails while any quote is unverified)",
   "title": "Storybook v2: refresh the Tom/Fabio bazaar story into a living book with regime, timeframe ladder, proof checklist, BB chapter and measured boxes",
   "weight": "",
