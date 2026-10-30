@@ -2,6 +2,20 @@
   "approved_by": "operator 2026-10-30: 'log a bug, high priority, fix so you do not sleep again'",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-30T08:19:04Z",
+    "misses": 7,
+    "reads": [
+      "scripts/dev/stop_guard.py",
+      "scripts/dev/test_stop_guard.py",
+      "scripts/dev/tasks.py",
+      "scripts/dev/supervisor.py",
+      "MyTradingSys/system/roles/supervisor.md",
+      "scripts/dev/run_all_tests.py"
+    ],
+    "session": "agent-a0857b771b978db50"
+  },
   "created": "2026-10-29T21:00:32Z",
   "depends_on": [],
   "done_when": "Stop hook blocks the end of a Supervisor-role turn while `supervisor.py watchcheck --login <L>` exits non-zero (no live watcher) or no plan ran in the last 10 min; a test fails on the old stop_guard and passes now; the role file's every-wake step says answer, then plan, then watcher",
