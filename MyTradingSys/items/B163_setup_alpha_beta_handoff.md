@@ -48,7 +48,3 @@ part (e.g. Fabio's sweep/CVD rules, research/fast_track_2026-09-27/FABIO_RULEBOO
 Operator: "Run both as research tests" (note: "just for you - fresh eyes - see if there is something new in all this").
 Applied: DSA desk tasks 20261009-231504 (Alpha) and 20261009-231505 (Beta), both labelled NO-SOURCE.
 Fresh-eyes read: the one idea not already tested here is Beta's with/without-CVD comparison (does absorption add anything over a plain sweep reclaim); Alpha mostly repeats the 2026-10-03 MA research, so its likely value is drawdown cut, not return. Beta's task reports both rows.
-
-## 2026-10-30 v2 re-run (card ask-p0-65-setup-alpha-beta-backtest)
-v1 void: no DEV/VAL split, Beta n 708,240 was per bar, beta_sweep.py swing code read the next bar. v2 pre-registered (research/setup_alpha_beta_v2_2026-10/PRE_REG.md), run once, HOLDOUT sealed.
-Result: Alpha FAIL (Sharpe and drawdown better than buy-and-hold in DEV, worse in VALIDATION; 4 and 11 entries). Beta S1 INCONCLUSIVE by the n floors (DEV n 50 mean -0.58 R, VAL n 23 mean -0.70 R fee-net), all 8 cells negative; kline-CVD absorption adds nothing over a plain sweep. See RESULT.md there.
