@@ -2,11 +2,11 @@
  "allowance": {
   "plan": "plus",
   "week_resets": 1793780113,
-  "week_used": 52.0,
+  "week_used": 53.0,
   "window_resets": 1793365056,
-  "window_used": 22.0
+  "window_used": 23.0
  },
- "at": "2026-10-30T10:35:45Z",
+ "at": "2026-10-30T12:40:18Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -21,11 +21,26 @@
  "host": "JIS-NUC",
  "lab": {
   "astra_runs": 0,
-  "week_pts": 2.0,
-  "window_pts": 2.0,
-  "window_runs": 5
+  "week_pts": 3.0,
+  "window_pts": 3.0,
+  "window_runs": 6
  },
  "runs": [
+  {
+   "at": "2026-10-30T12:39:13Z",
+   "card": "gpt-audit-formulas-vs-pizzino-layer",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 58,
+   "tokens_out": 3242,
+   "tokens_total": 357937,
+   "tokens_uncached": 46983,
+   "week_pts": 1.0,
+   "window_pts": 1.0
+  },
   {
    "at": "2026-10-30T10:34:38Z",
    "card": "gpt-audit-formulas-vs-pitchfork-layer",
@@ -159,21 +174,6 @@
    "tokens_total": 530695,
    "tokens_uncached": 33954,
    "week_pts": 0.0,
-   "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-29T21:13:27Z",
-   "card": "krown-other-sources-event-study-videos",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "discovery\nhost health: ok\nSHIP SLOW 181s: top 3 steps Live mirror tests (read-only desktop->work-tree data, fail-closed) 15s, Gate impact tests (import-graph te",
-   "outcome": "SHIP_FAILED",
-   "seconds": 105,
-   "tokens_out": 6994,
-   "tokens_total": 1127858,
-   "tokens_uncached": 83808,
-   "week_pts": 1.0,
    "window_pts": 1.0
   }
  ]
