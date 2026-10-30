@@ -1390,9 +1390,8 @@ TRANSIT_RULE = ("TRANSIT = the first of: 5 h at the stop (80%, 95% in the last 2
 
 # bug-supervisor-idles-after-wake-retired (2026-10-30): roles/supervisor.md and SUPER_SESSION.md quote these verbatim
 # (test_idle_rules_code_and_docs_agree).
-IDLE_RULE = "Never end a turn idle while READY cards or unread signals await the lane: dispatch a worker or arm `supervisor.py wait`"
-REARM_RULE = ("Post-compaction first act: re-arm the watcher (`supervisor.py wait`, then `watchcheck`) and re-read signals "
-              "(`mts_signal.py read`), then rebuild from `plan`")
+IDLE_RULE = "Never end a turn idle while READY cards or unread signals wait: dispatch a worker or arm `supervisor.py wait`"
+REARM_RULE = "Post-compaction first act: re-arm the watcher and re-read signals (`mts_signal.py read`), then rebuild from `plan`"
 WORK_DEFAULT_H = 8.0            # work period a Supervisor keeps going for when the operator named none (operator 2026-10-30: "8 to 12 hours"; OURS)
 WORK_RULE = ("WORK PERIOD: inside it the Supervisor never hands over; the 5 h stop is a pause (watcher stays armed, plan again after "
              "the reset), compaction carries the context; the hand-over comes only when the work period ends or the week cap is reached")
