@@ -4,6 +4,18 @@
   "commands": [
     "python scripts/dev/run_all_tests.py --quick"
   ],
+  "context": {
+    "calls_to_edit": 25,
+    "folded": "2026-10-30T20:11:19Z",
+    "misses": 55,
+    "reads": [
+      "scripts/aibridge/src/checks.ps1",
+      "scripts/aibridge/scripts/run-task.ps1",
+      "DSA_SESSION_PROMPT.md",
+      "MyTradingSys/research/BUGS.md"
+    ],
+    "session": "agent-a69f6c7bf7c4faac1"
+  },
   "created": "2026-10-30T19:59:57Z",
   "depends_on": [],
   "done_when": "new tests fail on the old code and pass now; BUGS.md B210 and B209 rows marked fixed with the commit; desk row 20261030-163838 marked done",
