@@ -1,11 +1,9 @@
 {
-  "id": "cbp-run-prompt-metadata-and-analyst-levels-hit-bug",
-  "title": "CBP & Analyst Levels: fix cbp_run.py PROMPT % dict dropping metadata and analyst_levels.py pre-publish HIT look-ahead",
-  "state": "raw",
-  "priority": "IMPORTANT",
-  "lane": "JIS-NB",
+  "Verify": "pytest -q MyTradingSys/cbp/test_cbp.py",
+  "asks": "",
   "created": "2026-10-30",
-  "goal": "Fix three defects in the CBP / Analyst Levels pipeline found in CRITICAL_24H_AUDIT_2026-10-30.md Finding 3: (1) scripts/dev/cbp_run.py:43-51,150 computes PROMPT % {'analyst': ..., 'published': ..., 'title': ...} on a PROMPT string with zero % placeholders, silently dropping analyst, published date, and video title from every LLM extraction call. (2) scripts/dev/analyst_levels.py:84 computes t0 from date-only published ('YYYY-MM-DD' -> 00:00:00 UTC), so mark() checks 1h bars starting at 00:00 UTC of the publish day (hours before the video was published), falsely marking levels as HIT. (3) analyst_levels.py:25-50 parses non-price k-numbers in 40k..200k (e.g. '100k liquidations' -> 100000.0) and misses '76k-77k' in _RANGE_K.",
+  "done_when": "pytest -q scripts/dev/test_cbp_run.py scripts/dev/test_analyst_levels.py passes with new tests for PROMPT metadata, '76k-77k' parsing, non-price k nouns and pre-publish bar exclusion in mark().",
+  "est_turns": 18,
   "files_to_read": [
     "MyTradingSys/research/gemini_audits_2026-10-30/CRITICAL_24H_AUDIT_2026-10-30.md",
     "scripts/dev/cbp_run.py",
@@ -17,15 +15,40 @@
     "scripts/dev/analyst_levels.py",
     "MyTradingSys/cbp/test_cbp.py"
   ],
-  "steps": [
-    "In scripts/dev/cbp_run.py:43-51, include %(analyst)s, %(published)s, and %(title)s in PROMPT (and escape any literal % as %%) so llm_extract() passes the metadata to the extractor.",
-    "In scripts/dev/analyst_levels.py:84, avoid marking levels as HIT on 1h bars from before the video could have been published (use video publish timestamp when available or start from the end of the publish UTC date / next day 00:00 UTC when only date YYYY-MM-DD is stored).",
-    "In scripts/dev/analyst_levels.py:25-50, support optional k on the first bound in _RANGE_K (e.g. '76k-77k') and exclude obvious non-price nouns following k-numbers (e.g. 'liquidations', 'contracts', 'subscribers').",
-    "Add unit tests in MyTradingSys/cbp/test_cbp.py covering PROMPT formatting, _RANGE_K '76k-77k', and mark() look-ahead prevention."
-  ],
-  "done_when": "pytest MyTradingSys/cbp/test_cbp.py passes with tests covering PROMPT metadata interpolation, '76k-77k' range parsing, and mark() pre-publish bar exclusion.",
-  "Verify": "pytest -q MyTradingSys/cbp/test_cbp.py",
+  "goal": "Fix CBP defects (CRITICAL_24H_AUDIT Finding 3): cbp_run.py PROMPT % dict drops analyst/published/title; analyst_levels.py marks levels HIT on bars before the video was published (date-only t0); k-number parsing takes non-price nouns and misses '76k-77k'.",
+  "id": "cbp-run-prompt-metadata-and-analyst-levels-hit-bug",
+  "lane": "SONNET",
+  "live_path": false,
+  "note": "PLANNER 2026-10-30: already shipped in 589685fbb (all 3 audit-finding-3 defects, 10 tests); reviewer confirmed. Dropped as duplicate of shipped work.",
   "notes": [
     "Filed by Gemini 4 Argon (Low) 24h critical audit (MTS-20261030-GEM-AUD-gemini-24h-critical-audit)."
-  ]
+  ],
+  "pinned": false,
+  "prio": 2,
+  "priority": "IMPORTANT",
+  "scope_in": [
+    "scripts/dev/cbp_run.py",
+    "scripts/dev/analyst_levels.py",
+    "scripts/dev/test_cbp_run.py",
+    "scripts/dev/test_analyst_levels.py"
+  ],
+  "scope_out": [
+    "live engine wiring",
+    "run_all_tests.py edits"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/gemini_audits_2026-10-30/CRITICAL_24H_AUDIT_2026-10-30.md Finding 3"
+  ],
+  "state": "dropped",
+  "steps": [
+    "cbp_run.py:43-51: add %(analyst)s %(published)s %(title)s to PROMPT, escape literal % as %%",
+    "analyst_levels.py:84-90: for date-only published start the HIT scan at the next UTC midnight (conservative, OURS), or at the timestamp when stored",
+    "analyst_levels.py:25-50: allow optional k on the first bound; reject k-numbers followed by liquidations|contracts|subscribers",
+    "Add tests to the two existing test files. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
+  ],
+  "tests": "scripts/dev/test_analyst_levels.py: mark() ignores 1h bars before the publish date end and parse_levels('76k-77k') yields both bounds; fails on current analyst_levels.py.",
+  "title": "CBP & Analyst Levels: fix cbp_run.py PROMPT % dict dropping metadata and analyst_levels.py pre-publish HIT look-ahead",
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

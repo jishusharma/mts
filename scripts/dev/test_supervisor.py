@@ -1226,3 +1226,31 @@ def test_plan_lines_lane_floors_every_lane_not_only_codex():
     cards = [{"state": "ready", "lane": "CODEX", "title": "[GEMINI] label x"}, {"state": "ready", "lane": "CODEX", "title": "GPT audit y"},
              {"state": "ready", "lane": "SONNET", "title": "s"}, {"state": "ready", "lane": "HAIKU", "title": "h"}]
     assert S.lane_counts(cards) == {"codex": 1, "gemini": 1, "sonnet": 1, "haiku": 1}
+
+
+def test_work_period_keeps_the_supervisor_going(tmp_path):
+    """bug-supervisor-idles-after-wake-retired (2026-10-30): every Supervisor handed over within 3 h and nothing started the next.
+    Inside the work period only the week cap ends it; a successor inherits an active period; the 5 h stop is a PAUSE line."""
+    now = datetime(2026, 10, 30, 18, 0, tzinfo=timezone.utc)
+    pl = {"five": 85, "ceil": 80, "transit": "2026-10-30T17:00Z", "week": 40, "cap": 85}
+    end = now + timedelta(hours=2)
+    assert S.transit_reason(pl, now, 200_000, now - timedelta(hours=5), end) == ""
+    assert "week 90% >= cap 85%" in S.transit_reason({**pl, "week": 90}, now, work_end=end)
+    assert "work period ended" in S.transit_reason(pl, end, work_end=end)
+    wp = S.work_period("C", now, "s1", home=tmp_path)
+    assert wp["source"] == "default" and S._utc(wp["until"]) == now + timedelta(hours=S.WORK_DEFAULT_H)
+    assert S.work_period("C", now + timedelta(hours=1), "s2", home=tmp_path)["sid"] == "s1"          # successor inherits
+    assert S.work_period("C", now, "s1", hours=12, home=tmp_path)["source"] == "operator"
+    late = now + timedelta(hours=13)
+    assert S.work_period("C", late, "s1", home=tmp_path)["sid"] == "s1"                                # own ended period stays ended
+    assert S.work_period("C", late, "s3", home=tmp_path)["sid"] == "s3"                                # a new session gets a new one
+    full = {**S.pace_plan(now, _rd(85, 40), 85), "five": 85, "ceil": 80}
+    L = S.plan_lines("C", "JIS-DESKTOP", full, {}, {"work": wp}, False)
+    assert any(x.startswith("WORK until") for x in L) and any(x.startswith("PAUSE 5 h") for x in L)
+    assert not any(x.startswith("TRANSIT at") for x in L)
+
+
+def test_work_rule_code_and_docs_agree():
+    repo = Path(S.__file__).resolve().parents[2]
+    assert S.WORK_RULE in (repo / "MyTradingSys/system/SUPER_SESSION.md").read_text(encoding="utf-8")
+    assert "SUPER_SESSION.md WORK PERIOD" in (repo / "MyTradingSys/system/roles/supervisor.md").read_text(encoding="utf-8")

@@ -1079,12 +1079,21 @@ def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_ke
         for ih, logins, n in ctx.get("idle_hosts", []):
             L.append(f"OPERATOR start a Supervisor on {ih}: no heartbeat < {HEARTBEAT_MIN} min, {n} card(s) ready for it, budget on "
                      f"login {'/'.join(logins)}: `You are Supervisor. Login {logins[0]}.`")
+    wk = ctx.get("work") or {}
     if ctx.get("transit_now"):
         L.append(f"TRANSIT NOW ({ctx['transit_now']}): write the hand-over (7 fixed sections), ship it, reply with the successor line, "
                  f"mark yourself completed: python scripts/dev/supervisor.py handover --login {login} [--from <file>]")
+    elif wk.get("until"):
+        L.append(f"WORK until {wk['until']} ({wk.get('source', 'default')}; change: plan ... --hours N): keep going, never hand over before it")
+        try:
+            if float(plan.get("five", 0)) >= float(plan.get("ceil") or SPAWN_CEIL):
+                L.append(f"PAUSE 5 h at the stop: start no worker; keep the watcher armed; plan again after the 5 h reset {plan.get('five_reset', '')}")
+        except (TypeError, ValueError):
+            pass
     L.append(f"RUN (background) python scripts/dev/supervisor.py wait --timeout 50m --login {login}{ctx.get('shas_arg', '')}   then end the turn")
-    L.append(f"TRANSIT at {plan['transit']}: python scripts/dev/supervisor.py handover --login {login} --note \"<one line>\"; ship it; "
-             f"successor line: You are Supervisor. Login {login}. Continue from {HANDOVER_REL.format(login)}")
+    if not wk.get("until"):
+        L.append(f"TRANSIT at {plan['transit']}: python scripts/dev/supervisor.py handover --login {login} --note \"<one line>\"; ship it; "
+                 f"successor line: You are Supervisor. Login {login}. Continue from {HANDOVER_REL.format(login)}")
     return L
 
 
@@ -1203,7 +1212,8 @@ def _who_rows() -> list:
 
 def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, no_fetch: bool = False, host: str | None = None,
          home=None, now: datetime | None = None, shas: list | None = None, who_rows=None,
-         context_tokens: int | None = None, wave_start: datetime | None = None) -> tuple[list, dict]:
+         context_tokens: int | None = None, wave_start: datetime | None = None, work_hours: float | None = None,
+         work_until: datetime | None = None) -> tuple[list, dict]:
     """One call per wake (boot included): records the reading, sends the heartbeat, reads peers, board, hand-over, CI, dispatch,
     lanes and desk from trunk, and returns (lines, data). Every sub-read fails soft into a NOTE line, never into a success value."""
     import tasks
@@ -1218,7 +1228,9 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
     pl = pace_plan(now, rd, weekly_cap(login, host, (rw - now).total_seconds() / 3600 if rw else None), hist[:-1], running)
     prev = _last_plan(login, home)
     notes, ctx = [], {}
-    ctx["transit_now"] = transit_reason(pl, now, context_tokens, wave_start or wave_start_from(hist, now, rd["sid"]))
+    wp = work_period(login, now, rd["sid"], work_hours, work_until, home, write=send)
+    ctx["work"] = wp
+    ctx["transit_now"] = transit_reason(pl, now, context_tokens, wave_start or wave_start_from(hist, now, rd["sid"]), _utc(wp.get("until")))
     if not no_fetch:
         try:
             fetch_origin(repo)
@@ -1376,9 +1388,60 @@ TRANSIT_RULE = ("TRANSIT = the first of: 5 h at the stop (80%, 95% in the last 2
                 "(20 min before the 5 h reset), this session's own wave >= 3 h, or --context-tokens >= 150000")
 
 
-def transit_reason(pl: dict, now: datetime, context_tokens: int | None = None, wave_start: datetime | None = None) -> str:
+WORK_DEFAULT_H = 8.0            # work period a Supervisor keeps going for when the operator named none (operator 2026-10-30: "8 to 12 hours"; OURS)
+WORK_RULE = ("WORK PERIOD: inside it the Supervisor never hands over; the 5 h stop is a pause (watcher stays armed, plan again after "
+             "the reset), compaction carries the context; the hand-over comes only when the work period ends or the week cap is reached")
+
+
+def _work_file(login: str, home=None) -> Path:
+    return loop_home(home) / f"{login}-work.json"
+
+
+def read_work(login: str, home=None) -> dict:
+    try:
+        d = json.loads(_work_file(login, home).read_text(encoding="utf-8"))
+        return d if isinstance(d, dict) and _utc(d.get("until")) else {}
+    except (OSError, ValueError):
+        return {}
+
+
+def work_period(login: str, now: datetime, sid: str, hours: float | None = None, until: datetime | None = None, home=None,
+                write: bool = True) -> dict:
+    """The login's work period (bug-supervisor-idles-after-wake-retired, operator 2026-10-30). `--hours`/`--until` set it (source
+    operator). Else an active period is kept, whoever started it (a successor inherits it). Else this session's own ended period
+    stays ended (the hand-over is due). Else a new WORK_DEFAULT_H period starts for this session. Returns {until, sid, source, start}."""
+    cur = read_work(login, home)
+    if hours is not None or until is not None:
+        end = until or (now + timedelta(hours=float(hours)))
+        cur = {"until": end.strftime("%Y-%m-%dT%H:%MZ"), "sid": sid, "source": "operator", "start": now.strftime("%Y-%m-%dT%H:%MZ")}
+    elif cur and (_utc(cur["until"]) > now or cur.get("sid") == sid):
+        return cur
+    else:
+        cur = {"until": (now + timedelta(hours=WORK_DEFAULT_H)).strftime("%Y-%m-%dT%H:%MZ"), "sid": sid, "source": "default",
+               "start": now.strftime("%Y-%m-%dT%H:%MZ")}
+    if write:
+        try:
+            _work_file(login, home).parent.mkdir(parents=True, exist_ok=True)
+            _work_file(login, home).write_text(json.dumps(cur), encoding="utf-8", newline="\n")
+        except OSError:
+            pass
+    return cur
+
+
+def transit_reason(pl: dict, now: datetime, context_tokens: int | None = None, wave_start: datetime | None = None,
+                   work_end: datetime | None = None) -> str:
     """Pure: '' while the wave may go on, else why the coordinator writes its hand-over now (TRANSIT_RULE, whichever first).
-    `pl` = pace_plan's dict (five, ceil, transit); wave_start = this session's first reading (wave_start_from with its sid)."""
+    `pl` = pace_plan's dict (five, ceil, transit); wave_start = this session's first reading (wave_start_from with its sid).
+    work_end (WORK_RULE): inside the work period only the week cap ends the session; after it, the period's end does."""
+    if work_end is not None:
+        if now >= work_end:
+            return f"work period ended at {work_end.strftime('%Y-%m-%dT%H:%MZ')}"
+        try:
+            if float(pl.get("week", 0)) >= float(pl.get("cap") or 100):
+                return f"week {float(pl['week']):g}% >= cap {float(pl['cap']):g}%"
+        except (TypeError, ValueError):
+            pass
+        return ""
     why = []
     try:
         if float(pl.get("five", 0)) >= float(pl.get("ceil") or SPAWN_CEIL):
@@ -1826,6 +1889,8 @@ def main(argv: list[str] | None = None) -> int:
     p_plan.add_argument("--json", action="store_true")
     p_plan.add_argument("--context-tokens", type=int, default=None, help="this session's context size in tokens: TRANSIT NOW at >= 150000")
     p_plan.add_argument("--wave-start", default=None, help="UTC start of this wave (default: from the readings); TRANSIT NOW after 3 h")
+    p_plan.add_argument("--hours", type=float, default=None, help="work period from now (operator's 'work for N hours'); default 8 h (WORK_RULE)")
+    p_plan.add_argument("--until", default=None, help="work period end, UTC like 2026-10-31T06:00Z (instead of --hours)")
 
     p_ho = sub.add_parser("handover", help="write handover/SUPERVISOR_<login>.md from the last plan (ship it once)")
     p_ho.add_argument("--login", default=None, help="optional: detected from the app account")
@@ -1874,8 +1939,13 @@ def main(argv: list[str] | None = None) -> int:
         if args.wave_start and ws is None:
             print("--wave-start: UTC time like 2026-10-19T14:00Z")
             return 2
+        wu = _utc(args.until) if args.until else None
+        if args.until and wu is None or args.hours is not None and not 0 < args.hours <= 48:
+            print("--until: UTC time like 2026-10-31T06:00Z; --hours: 0-48")
+            return 2
         lines, data = plan(REPO, args.login, rd, running=args.running, send=not args.no_send, no_fetch=args.no_fetch,
-                           shas=parse_shas_arg(args.shas), context_tokens=args.context_tokens, wave_start=ws)
+                           shas=parse_shas_arg(args.shas), context_tokens=args.context_tokens, wave_start=ws,
+                           work_hours=args.hours, work_until=wu)
         print(json.dumps(data, indent=1, sort_keys=True, default=str) if args.json else chr(10).join(lines))
         return 0
     if args.cmd == "session-log":
