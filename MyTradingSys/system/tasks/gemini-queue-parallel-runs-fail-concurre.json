@@ -20,9 +20,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Merge origin/fast-track for 5-day wiring audit & fixes",
-      "ref": "a37caf64ec00",
-      "utc": "2026-10-27T22:22:56Z"
+      "line": "gemini_queue: root() reads MTS_GQ_ROOT at call time (laptop)",
+      "ref": "71f3e7aeb2f8",
+      "utc": "2026-10-29T22:50:21Z"
     }
   ],
   "layers": [],
@@ -32,7 +32,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-27T22:51:43Z",
+  "refreshed": "2026-10-30T17:40:10Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -44,7 +44,7 @@
     "gemini-queue-claim-release-push-hangs-fo (separate card, same file: take after it)",
     "any process start or restart on the NUC"
   ],
-  "scope_sha": "a37caf64ec00",
+  "scope_sha": "71f3e7aeb2f8",
   "size": "S",
   "sources": [
     "scripts/dev/gemini_queue.py:55-82",

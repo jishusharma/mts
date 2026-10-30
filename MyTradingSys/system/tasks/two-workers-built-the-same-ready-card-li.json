@@ -4,34 +4,58 @@
   "commands": [],
   "created": "2026-10-30T11:46:41Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "FINDING.md names the cause with shas; python -m pytest scripts/dev/test_gemini_queue.py passes with the 3 new skip tests failing on the old code; the old run_job on a done card is shown to start a job (pasted); shipped, git cherry origin/fast-track <sha> empty.",
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Find why gemini_queue.run_job started live-aid-news-panel (gemini-queue commit f8c5e4895, 15:43 IST) about 1h50 after a session built it (e74038d3d, 13:51) and 70 min after the card was closed (2db125d50, 14:31); then close the gap: run_job refuses a card that is not state ready on origin/fast-track or whose state tag is SHIPPED/STALE.",
   "id": "two-workers-built-the-same-ready-card-li",
   "kind": "audit",
-  "lane": "",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "gemini_queue: root() reads MTS_GQ_ROOT at call time (laptop)",
+      "ref": "71f3e7aeb2f8",
+      "utc": "2026-10-29T22:50:21Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-30 ACCEPT | DECISION (OURS): scope limited to the gemini_queue guard (existing runner, no new machinery under the S0 freeze); the session-side unclaimed build is reported in FINDING.md, not fixed here. The raw title says '20 min earlier'; git dates above are the truth.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-30T18:24:10Z",
   "refs": [
     "f8c5e4895"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "scripts/dev/gemini_queue.py",
+    "scripts/dev/test_gemini_queue.py",
+    "MyTradingSys/research/two_workers_collision_2026-10-30/FINDING.md"
+  ],
+  "scope_out": [
+    "tasks.py promotion rules, sync.py claim logic, the planner, any other lane runner, product code"
+  ],
+  "scope_sha": "71f3e7aeb2f8",
+  "size": "M",
+  "sources": [
+    "git: f8c5e4895, e74038d3d, 2db125d50"
+  ],
+  "state": "ready",
+  "steps": [
+    "Timeline from git: git log --format='%h %an %ad' on MyTradingSys/system/tasks/live-aid-news-panel.json and on live_aid.html; the card state when gemini-queue claimed (read its log or the claims branch); note whether the session ever filed a claim.",
+    "Read gemini_queue.run_job (lines 97-135) and tasks.stop_tag/exclusion (tasks.py ~820, ~1470): run_job checks open claims only, never the card state or tag. Write FINDING.md: cause, 6 lines max, with sha for each fact.",
+    "Fix in gemini_queue.run_job only: after the fetch, read the card from origin/fast-track; skip with a log line 'SKIP <card>: state <x>/<tag>' unless state is ready and the tag is READY. Keep the existing claim skip.",
+    "Tests in test_gemini_queue.py: a done card, a SHIPPED-tag card and an unreadable card each skip (no worktree add, no agy call); a ready card still runs. Fail-first on the pre-change run_job."
+  ],
+  "tests": "scripts/dev/test_gemini_queue.py: test_done_card_skipped, test_shipped_tag_skipped, test_unreadable_card_fails_closed (each fails on current run_job: it calls worktree add), test_ready_card_runs",
   "title": "Two workers built the same READY card: live-aid-news-panel was built in a session worktree and again by gemini-queue (f8c5e4895, 20 min earlier); the planner promoted the raw card to ready while the session held it unclaimed. Find why claim/ready did not block the second pickup",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
