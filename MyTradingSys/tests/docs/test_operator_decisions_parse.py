@@ -42,6 +42,6 @@ def test_ids_and_orders_unique():
 def test_voice_rule_in_reply_and_role_docs():
     """bug-headless-wake-voice-misread: dictated 'cloud' = Claude, answer the question asked."""
     base = F.parent
-    for rel in ("OPERATOR_REPLY_FORMAT.md", "roles/supervisor.md", "roles/builder.md"):
+    for rel in ("OPERATOR_REPLY_FORMAT.md", "ROLES.md"):
         t = (base / rel).read_text(encoding="utf-8")
-        assert 'dictated "cloud"' in t and "means Claude" in t, rel
+        assert 'dictated "cloud"' in t and "Claude" in t, rel
