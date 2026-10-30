@@ -114,6 +114,56 @@ def card_gate(card: str) -> tuple[bool, str]:
     return True, ''
 
 
+class setup_lock:
+    """Exclusive lock file (O_CREAT|O_EXCL poll) so parallel jobs never run git setup at once (NUC 2026-10-24: 2 of 7 jobs
+    died on the .git/config lock). Waits up to `timeout` s (OURS 60); a lock older than `stale` s (OURS 120) is broken.
+    Released on exit, also on an exception."""
+    def __init__(self, timeout: float = 60, stale: float = 120, sleep=time.sleep):
+        self.timeout, self.stale, self.sleep = timeout, stale, sleep
+
+    def __enter__(self):
+        path, t0 = root() / '.git-setup.lock', time.time()
+        path.parent.mkdir(parents=True, exist_ok=True)
+        self.path = path
+        while True:
+            try:
+                os.close(os.open(str(path), os.O_CREAT | os.O_EXCL | os.O_WRONLY))
+                return self
+            except FileExistsError:
+                try:
+                    if time.time() - path.stat().st_mtime > self.stale:
+                        path.unlink()
+                        continue
+                except OSError:
+                    continue
+                if time.time() - t0 > self.timeout:
+                    raise TimeoutError(f'git setup lock {path} busy for {self.timeout}s')
+                self.sleep(0.2)
+
+    def __exit__(self, *exc):
+        try:
+            self.path.unlink()
+        except OSError:
+            pass
+        return False
+
+
+def add_worktree(card: str, wt: Path, tries: int = 3, sleep=time.sleep):
+    """fetch + `git worktree add` for `card` under the setup lock; up to `tries` retries (2 s) on a git lock error.
+    Returns the last CompletedProcess of worktree add (rc 0 = ok); a busy setup lock comes back as rc 124."""
+    try:
+        with setup_lock(sleep=sleep):
+            git('fetch', '-q', 'origin', timeout=60)
+            for n in range(tries + 1):
+                r = git('worktree', 'add', '-b', f'gemini-q/{card}', str(wt), 'origin/fast-track')
+                err = (r.stderr or '').lower()
+                if r.returncode == 0 or not ('could not lock' in err or 'unable to lock' in err) or n == tries:
+                    return r
+                sleep(2)
+    except TimeoutError as e:
+        return subprocess.CompletedProcess([], 124, '', str(e))
+
+
 def run_job(card: str, effort: str, model: str = 'flash') -> None:
     wt = root() / card
     log = root() / f'{card}.log'
@@ -129,7 +179,7 @@ def run_job(card: str, effort: str, model: str = 'flash') -> None:
         log.write_text(f'SKIP {card}: already claimed by {held}\n', encoding='utf-8', newline='\n')
         return
     if not wt.exists():
-        r = git('worktree', 'add', '-b', f'gemini-q/{card}', str(wt), 'origin/fast-track')
+        r = add_worktree(card, wt)
         if r.returncode:
             log.write_text('worktree failed: ' + r.stderr, encoding='utf-8', newline='\n')
             return

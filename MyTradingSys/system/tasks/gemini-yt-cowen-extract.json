@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/fetch_captions_timed.py --analyst Cowen --channel @benjaminjcowen --latest 8 --out MyTradingSys/research/yt_feed_2026-10-31/transcripts_cowen",
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/yt_feed_2026-10-31/COWEN_LEVELS_2026-10-31.md"
+  ],
+  "created": "2026-10-30T20:06:59Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/yt_feed_2026-10-31/COWEN_LEVELS_2026-10-31.md exists; every item has video id, timestamp and a verbatim quote, or NOT_IN_DATA; verify_extract_quotes.py exits 0",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Write MyTradingSys/research/yt_feed_2026-10-31/COWEN_LEVELS_2026-10-31.md: first line counts videos read, captioned and UNVERIFIED; a table of items, then per-video sections with the full quotes.",
+  "id": "gemini-yt-cowen-extract",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini rules: captions first (fetch_captions_timed.py), quote only from the caption file, one fetch try per video, no retry loop, 429 -> mark the video UNVERIFIED with no quotes; run verify_extract_quotes.py until exit 0; facts and quotes only, no trading verdict, no code change. Final report ends with a Noticed: line.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T20:07:01Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/yt_feed_2026-10-31/ (new files only)"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code; any backtest; any trading verdict; .secrets and .env"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "python scripts/dev/fetch_captions_timed.py --analyst Cowen --channel @benjaminjcowen --latest 8 --out MyTradingSys/research/yt_feed_2026-10-31/transcripts_cowen (one try per video; 429 -> UNVERIFIED, no retry loop)",
+    "keyword scan each transcript for the topic terms, read the surrounding lines before quoting",
+    "write MyTradingSys/research/yt_feed_2026-10-31/COWEN_LEVELS_2026-10-31.md per the goal; run verify_extract_quotes.py until exit 0; commit on the branch with a Result: line (videos read, items found, NOT_IN_DATA count)"
+  ],
+  "tests": "verify_extract_quotes.py exit 0; no code change",
+  "title": "[GEMINI] Cowen (@benjaminjcowen): latest 8 videos, extract his risk metric levels, cycle position calls and stated BTC price leve with timed quotes",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
