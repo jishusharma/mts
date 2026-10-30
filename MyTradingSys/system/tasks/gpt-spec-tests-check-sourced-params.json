@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T08:30:01Z",
   "commands": [],
   "created": "2026-10-29T22:51:43Z",
   "depends_on": [],
@@ -13,17 +14,28 @@
   "id": "gpt-spec-tests-check-sourced-params",
   "kind": "build",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "9 tests; 3/3 mutations killed; report MyTradingSys/research/layer_lab/reports/2026-10-30_g",
+      "ref": "fcd831a52",
+      "utc": "2026-10-30T08:30:01Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
-  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
-  "pinned": false,
+  "note": "Producer GPT; reviewer Claude or Gemini. Expected values independent of the code; tests touch temp dirs only, never runtime data. ROUTINE, no live path.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-10-29T22:51:44Z",
   "refs": [],
-  "result": "",
+  "result": "9 tests; 3/3 mutations killed; report MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-spec-tests-check-sourced-params.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/test_check_sourced_params.py",
     "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-spec-tests-check-sourced-params.md",
@@ -38,12 +50,13 @@
   "sources": [
     "scripts/dev/check_sourced_params.py"
   ],
-  "state": "blocked",
+  "state": "done",
   "steps": [
     "read check_sourced_params.py and list every branch",
     "compute expected values by hand",
     "write tests, run 3 mutations, write report"
   ],
+  "taken": "2026-10-30T08:30:01Z",
   "tests": "python -m pytest scripts/dev/test_check_sourced_params.py -q",
   "title": "Spec-derived tests for scripts/dev/check_sourced_params.py (no test file today)",
   "weight": "ROUTINE",
