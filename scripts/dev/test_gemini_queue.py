@@ -70,7 +70,7 @@ class ClaimRetryTest(unittest.TestCase):
 
 
 class RunJobTest(unittest.TestCase):
-    def _run(self, claim_result):
+    def _run(self, claim_result, gate=(True, "")):
         calls = []
         with tempfile.TemporaryDirectory() as t:
             (Path(t) / "c1").mkdir()
@@ -80,6 +80,7 @@ class RunJobTest(unittest.TestCase):
                 return cp(0)
             with mock.patch.object(gq, "ROOT", Path(t)), mock.patch.object(gq, "git", side_effect=fake_git), \
                     mock.patch("sync.open_claims", return_value=[]), \
+                    mock.patch.object(gq, "card_gate", return_value=gate), \
                     mock.patch.object(gq, "claim_with_retry", return_value=claim_result), \
                     mock.patch.object(gq.subprocess, "run") as run:
                 gq.run_job("c1", "low")
@@ -97,6 +98,38 @@ class RunJobTest(unittest.TestCase):
         _, log, run = self._run(("skip", "already claimed by X"))
         self.assertTrue(log.startswith("SKIP c1"), log)
         run.assert_not_called()
+
+
+    def test_done_card_skipped(self):
+        calls, log, run = self._run(("ok", ""), gate=(False, "state done/READY"))
+        self.assertTrue(log.startswith("SKIP c1: state done"), log)
+        self.assertFalse([c for c in calls if c[:1] == ("worktree",)])
+        run.assert_not_called()
+
+    def test_shipped_tag_skipped(self):
+        calls, log, run = self._run(("ok", ""), gate=(False, "state ready/SHIPPED"))
+        self.assertIn("SHIPPED", log)
+        self.assertFalse([c for c in calls if c[:1] == ("worktree",)])
+        run.assert_not_called()
+
+    def test_ready_card_runs(self):
+        calls, log, run = self._run(("fail", "x"))   # gate passed: it reached the claim step
+        self.assertTrue(log.startswith("CLAIM FAILED"), log)
+
+
+class CardGateTest(unittest.TestCase):
+    def _gate(self, out, rc=0, tag=""):
+        with mock.patch.object(gq, "git", return_value=subprocess.CompletedProcess([], rc, out, "boom")),                 mock.patch("tasks.stop_tag", return_value=tag):
+            return gq.card_gate("c1")
+
+    def test_unreadable_card_fails_closed(self):
+        self.assertFalse(self._gate("", rc=128)[0])
+        self.assertFalse(self._gate("not json")[0])
+
+    def test_done_and_tagged_refused_ready_ok(self):
+        self.assertEqual(self._gate('{"state": "done"}')[0], False)
+        self.assertEqual(self._gate('{"state": "ready"}', tag="SHIPPED abc")[0], False)
+        self.assertEqual(self._gate('{"state": "ready"}'), (True, ""))
 
 
 NL = chr(10)
