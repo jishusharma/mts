@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T21:22:46Z",
   "commands": [
     "python scripts/dev/fetch_captions_timed.py --analyst Rekt --channel @RektCapital --latest 8 --out MyTradingSys/research/yt_feed_2026-10-31/transcripts_rekt-capital",
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/yt_feed_2026-10-31/REKT_LEVELS_2026-10-31.md"
@@ -16,7 +17,14 @@
   "id": "gemini-yt-rekt-capital-extract",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "videos read 8, items found 16, NOT_IN_DATA count 0; verify_extract_quotes.py exit 0",
+      "ref": "5e1b7528d",
+      "utc": "2026-10-30T21:22:46Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -28,7 +36,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "videos read 8, items found 16, NOT_IN_DATA count 0; verify_extract_quotes.py exit 0",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/yt_feed_2026-10-31/ (new files only)"
   ],
@@ -38,12 +51,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "python scripts/dev/fetch_captions_timed.py --analyst Rekt --channel @RektCapital --latest 8 --out MyTradingSys/research/yt_feed_2026-10-31/transcripts_rekt-capital (one try per video; 429 -> UNVERIFIED, no retry loop)",
     "keyword scan each transcript for the topic terms, read the surrounding lines before quoting",
     "write MyTradingSys/research/yt_feed_2026-10-31/REKT_LEVELS_2026-10-31.md per the goal; run verify_extract_quotes.py until exit 0; commit on the branch with a Result: line (videos read, items found, NOT_IN_DATA count)"
   ],
+  "taken": "2026-10-30T21:22:46Z",
   "tests": "verify_extract_quotes.py exit 0; no code change",
   "title": "[GEMINI] Rekt (@RektCapital): latest 8 videos, extract his cycle and range levels: re-accumulation ranges, support and resist with timed quotes",
   "weight": "ROUTINE",
