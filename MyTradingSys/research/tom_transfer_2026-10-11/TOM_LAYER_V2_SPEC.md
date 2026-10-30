@@ -496,3 +496,4 @@ Beginner-level video; it adds no new entry trigger, stop or target. What it does
 | 5 | Open gap need not close if the new equilibrium moved [TOM-285, TOM-286] | SOURCED | Narrows family C (section 4): gap-close long applies only when the prior-day equilibrium was not shifted by the gap day. Still parked (one trade) |
 | 6 | Test of value area high: rejection first, then acceptance of higher prices [TOM-287, TOM-288] | SOURCED | Same shape as TOM-011 failed-break; no new rule |
 Open test (OURS, not run): his 70/30 claim on BTC. Count days where price leaves the prior-day value area and returns to it the same day vs not, over all history, with a placebo of random day offsets (PRE-REG first, FORMULAS.md section 18 profile definition). No result is claimed here.
+Concept-by-concept check against trunk (known? tested? how to apply): `VP_VIDEO_CONCEPT_CHECK_2026-10-31.md`; card `tom-vp-return-to-value-count` (awaits Lab_Guy review stamp).
