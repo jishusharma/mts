@@ -1,7 +1,7 @@
 {
  "_doc": "Catalogue of known tests on trunk. kind is inferred (kind_source). Built by sim_desk/build_catalogue.py.",
- "count": 190,
- "exported": 190,
+ "count": 191,
+ "exported": 191,
  "rows": [
   {
    "id": "st-_archive-loose_2026-10-cbp_profile6_result",
@@ -2788,6 +2788,20 @@
    "source": "MyTradingSys/research/setup_alpha_beta_v2_2026-10/RESULT.md",
    "exported": true,
    "result_id": "ask-p0-65-setup-alpha-beta-backtest",
+   "date": "2026-10-30",
+   "status": "FAILED",
+   "verdict_class": "failed"
+  },
+  {
+   "id": "ask-p0-45-tf-break-event-study",
+   "family": "Break event study by timeframe",
+   "title": "Close-break, reclaim and wick sweep of a swing level on W, 1D, 4h, 1h and 15m: fee-net follow / fade trade, DEV and VALIDATION",
+   "kind": "backtest",
+   "kind_source": "result file",
+   "verdict": "No fee-net edge at any timeframe (15m FAIL, 1h and 4h INCONCLUSIVE, W and 1D too few events)",
+   "source": "MyTradingSys/research/tf_break_event_study_2026-10-30/RESULT.md",
+   "exported": true,
+   "result_id": "ask-p0-45-tf-break-event-study",
    "date": "2026-10-30",
    "status": "FAILED",
    "verdict_class": "failed"
