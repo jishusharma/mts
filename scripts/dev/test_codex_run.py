@@ -764,5 +764,27 @@ class AskMutationFlagTest(unittest.TestCase):
             self.assertIn("wrote", out.getvalue())
 
 
+class HostAuthTest(unittest.TestCase):
+    """A 401 means this host has no Codex login: it must not write lane_state/codex_usage or ship (2026-10-30 JIS-DESKTOP, eba62ccc2)."""
+    def test_401_log_is_idle_and_touches_no_shared_state(self):
+        c = card("lab-401", kind="audit")
+        with tempfile.TemporaryDirectory() as d:
+            d = Path(d)
+            (d / T.DIR).mkdir(parents=True)
+            (d / T.DIR / "lab-401.json").write_text(json.dumps(c), encoding="utf-8")
+
+            def fake_execute(cmd, text, log, timeout_s, env):
+                Path(log).write_text("ERROR: unexpected status 401 Unauthorized: Missing bearer"+chr(10), encoding="utf-8")
+                return 1, 1
+            ok = unittest.mock.Mock(returncode=0, stdout="", stderr="")
+            with unittest.mock.patch.object(R, "codex_home", return_value=d), unittest.mock.patch.object(R, "lab_wt", return_value=d),                  unittest.mock.patch.object(R, "find_exe", return_value="codex"), unittest.mock.patch.object(R.codex_pack, "build", return_value="p"),                  unittest.mock.patch.object(R, "sh", return_value=ok), unittest.mock.patch.object(R, "execute", side_effect=fake_execute),                  unittest.mock.patch.object(R, "changed_files", return_value=[]), unittest.mock.patch.object(R, "write_usage") as wu,                  unittest.mock.patch.object(R.lane_health, "save") as ls, unittest.mock.patch.object(R.lane_health, "commit_ship") as cs,                  contextlib.redirect_stdout(io.StringIO()) as out:
+                rc = R.run_card(c)
+            self.assertEqual(rc, 0)
+            self.assertIn("IDLE host-auth", out.getvalue())
+            wu.assert_not_called()
+            ls.assert_not_called()
+            cs.assert_not_called()
+
+
 if __name__ == "__main__":
     unittest.main()
