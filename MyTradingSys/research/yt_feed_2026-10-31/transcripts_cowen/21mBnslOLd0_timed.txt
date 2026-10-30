@@ -1,0 +1,545 @@
+# Video ID: 21mBnslOLd0
+# Title: Bitcoin: Post-FOMC
+# Published: 2026-10-29
+# Source: youtube_transcript_api (auto); uploader: Benjamin Cowen
+# Analyst: Cowen
+# Channel: @benjaminjcowen
+# Duration_s:1236
+# Word count: 3632
+# ---
+[00:00:00] Hey everyone, and thanks for dropping
+[00:00:02] back into the cryptoverse.
+[00:00:04] Today, we're going to talk about Bitcoin
+[00:00:07] post FOMC. If you guys like the content,
+[00:00:11] make sure you subscribe to the channel,
+[00:00:12] give the video a thumbs up, and also
+[00:00:15] check out the sale on ITC premium at
+[00:00:18] intothecryptoverse.com.
+[00:00:21] We also do have the upcoming ITC
+[00:00:24] conference, the inaugural ITC
+[00:00:27] conference. So, if you want to be there
+[00:00:29] uh and listen to discussions, make sure
+[00:00:31] you go ahead and get your ticket. Prices
+[00:00:32] will be going up on November 1st. That's
+[00:00:35] just a few days from now. So, if you are
+[00:00:36] going to go, if you already know you're
+[00:00:38] going to go, make sure you go ahead and
+[00:00:39] get your ticket. That way it makes uh it
+[00:00:41] makes it a little bit easier for us to
+[00:00:43] plan on on how many people are going to
+[00:00:44] be there, you know, how much food to
+[00:00:46] order, all that sort of stuff. So, I
+[00:00:47] think it's going to be a great
+[00:00:48] conference. We got a lot of people
+[00:00:49] coming, and hopefully hopefully everyone
+[00:00:51] enjoys it. Um with that said, I I do
+[00:00:54] want to talk a little bit now about
+[00:00:55] Bitcoin and uh FOMC.
+[00:00:59] So, the Fed today did not raise rates,
+[00:01:02] and so that was sort of the base case by
+[00:01:05] the markets going into FOMC. There was
+[00:01:07] like a 90% chance that the Fed would
+[00:01:10] hold rates steady, and in fact, they
+[00:01:12] did.
+[00:01:13] And
+[00:01:14] what's interesting though is
+[00:01:18] if you just looked at like the inflation
+[00:01:20] data,
+[00:01:21] it is somewhat hard to justify like not
+[00:01:25] raising rates
+[00:01:27] because the labor market has been
+[00:01:30] relatively fine, right? And and and
+[00:01:32] these are like the Fed's own words,
+[00:01:33] right? They talk about how robust the
+[00:01:35] labor market has been.
+[00:01:37] But,
+[00:01:38] we just had the producer price index PPI
+[00:01:42] come in well above expectations, right?
+[00:01:45] I mean, way above
+[00:01:48] where you know, where the market was
+[00:01:50] expecting.
+[00:01:52] So, if we go take a look at that, um the
+[00:01:55] producer price index PPI, you look at
+[00:01:58] the year-over-year change. I mean, look
+[00:02:00] at this thing.
+[00:02:01] Right? I mean, this is you can look at a
+[00:02:03] percentage, right? 6.35%. I mean, this
+[00:02:06] thing has been moving up.
+[00:02:10] And so,
+[00:02:11] I I think one of the
+[00:02:13] somewhat puzzling things, but not
+[00:02:15] really, if we're being honest, one of
+[00:02:17] the puzzling things is
+[00:02:18] if you see inflation kind of like
+[00:02:21] running out of control again,
+[00:02:24] and and it looks like, according to, you
+[00:02:26] know, the SEP from last time and what
+[00:02:29] Fed officials have said, they're
+[00:02:30] expecting another rate hike. Like, why
+[00:02:32] not go ahead and do it
+[00:02:34] in October? Why wait until December when
+[00:02:38] who knows where inflation might be at
+[00:02:40] that point? Now,
+[00:02:43] obviously, the the the most likely
+[00:02:46] answer,
+[00:02:47] that they would, of course, never say,
+[00:02:49] is because the midterms.
+[00:02:52] And actually, the same thing happened in
+[00:02:53] 2018. You know, I mean, I I I know some
+[00:02:57] people think we don't live in a
+[00:02:58] simulation, but in 2018, we had a rate
+[00:03:01] hike in September,
+[00:03:02] a pause at the next meeting around the
+[00:03:04] midterms, and then another rate hike in
+[00:03:07] December. And it it seems like that's
+[00:03:10] what we're going to get this time, too.
+[00:03:12] So,
+[00:03:13] you know, it's hard it it's hard to
+[00:03:15] imagine like what is the justification
+[00:03:17] really for not raising rates when you
+[00:03:20] can see that inflation is starting to
+[00:03:22] pick back up. Um and I I think that we
+[00:03:26] have I believe we have PCE tomorrow.
+[00:03:30] So, if we go over to the calendar and
+[00:03:32] look at what's sort of up tomorrow, you
+[00:03:34] can see we've got core PCE coming in and
+[00:03:37] headline PCE. Now,
+[00:03:40] the headline expectation
+[00:03:43] is 3.6.
+[00:03:45] Last month, it was 3.4. So, if we click
+[00:03:49] on it and just take a look at it, you
+[00:03:51] can see that PCE
+[00:03:53] had gone up into May and then it came
+[00:03:56] back down, but I'm of the opinion that
+[00:03:59] this stuff is going to start moving back
+[00:04:01] up again.
+[00:04:02] The rise in oil prices has significantly
+[00:04:05] contributed to rising inflation in a lot
+[00:04:08] of different areas, right? It it it it
+[00:04:10] not it doesn't just affect um you know,
+[00:04:13] energy markets, it affects many many
+[00:04:15] things.
+[00:04:16] And if you look at say WTI,
+[00:04:20] you can see that it sort of found a high
+[00:04:25] this final high was in the month of May
+[00:04:28] and then it went down into July.
+[00:04:31] So, if you go back to PCE, you can see
+[00:04:34] that this the high was in May and then
+[00:04:37] it went down into July. And now it's
+[00:04:42] starting to go back up. There's a lag,
+[00:04:44] right? I mean, there's a lag on this
+[00:04:45] thing and I think there's a good chance
+[00:04:47] that PCE
+[00:04:49] could come in somewhat hot just like PPI
+[00:04:53] did. Just like the producer price index
+[00:04:55] came in hot, I think there's a good
+[00:04:57] chance that PCE
+[00:04:59] could also come in hot. At least
+[00:05:00] probably at 3.6%. I mean, I could be
+[00:05:02] wrong about that. It's not like I have
+[00:05:04] any you know,
+[00:05:06] inside into it other than just, you
+[00:05:08] know, what what would seemingly make
+[00:05:10] sense and that would be to see a hot
+[00:05:11] print. But, it kind of all falls in line
+[00:05:14] with what we've been talking about,
+[00:05:15] right? Cuz we've kind of laid out the
+[00:05:17] framework for how this goes and the
+[00:05:20] first one was you get your second weekly
+[00:05:22] close by Bitcoin
+[00:05:26] below
+[00:05:28] 83K,
+[00:05:29] which happened. So, therefore, fake out
+[00:05:33] confirmed.
+[00:05:34] Arguably
+[00:05:36] happened. The next thing is the Fed
+[00:05:39] holds rates, which happened today. The
+[00:05:41] next thing is PCE comes in hot.
+[00:05:45] If it does, the long end likely spikes.
+[00:05:48] Long end spikes. And one of the reasons
+[00:05:50] why I think the long end will spike is
+[00:05:53] because we are around the time where it
+[00:05:57] should start going up if it's going to
+[00:05:59] repeat like what it did in the last two
+[00:06:02] midterm years. So, if you look at the
+[00:06:05] year-to-date ROI of something like the
+[00:06:09] 10-year yield, for instance, right? Just
+[00:06:11] look at the 10-year yield. Uh and if you
+[00:06:15] look at it in 2026 and compare it to say
+[00:06:18] 2018, you can see how the 10-year yield
+[00:06:20] find it found a top in October. And then
+[00:06:22] it fell, it even bounced around the same
+[00:06:25] time, and then it fell. And And back
+[00:06:27] then, you can see that it bottomed, it
+[00:06:30] found a low around October 26th to the
+[00:06:32] 28th, and then it rallied back up sort
+[00:06:35] of into the midterms.
+[00:06:38] And maybe even a little after the
+[00:06:39] midterms. And then it fell.
+[00:06:42] And then if you look at 2022,
+[00:06:45] you can see the same thing happened,
+[00:06:46] right? It topped in October, a little
+[00:06:49] later in October, it dropped, found a
+[00:06:51] low around October 27th, which is
+[00:06:54] basically right around where we were
+[00:06:55] where we are now, and then it had one
+[00:06:57] final rally into
+[00:07:00] about November 7th before then dropping
+[00:07:03] into the end of the year. Now, we know
+[00:07:05] the long end back then still went up in
+[00:07:07] 2023 somewhat, not a lot. And by the end
+[00:07:10] of the year, I guess it was mostly flat.
+[00:07:12] And then of course it continued to go up
+[00:07:14] in 2024 and and and
+[00:07:16] um if you look at like 2025, I guess it
+[00:07:19] dropped in 2025. But we know the long
+[00:07:22] end's, you know, much higher now than it
+[00:07:23] was back in 2022.
+[00:07:25] And so, or at least for a lot of it.
+[00:07:28] So, when you look at it like this, I I I
+[00:07:30] think there's a good chance the long end
+[00:07:32] will rally. So, then I have to ask
+[00:07:34] myself, well, what is the catalyst if
+[00:07:37] you need one? What is the catalyst for a
+[00:07:40] potential rally? The catalyst is
+[00:07:42] basically, you know,
+[00:07:44] what war said today
+[00:07:47] and that is him kind of bragging about
+[00:07:49] how the long end has come down recently.
+[00:07:52] Would that not be the perfect time for
+[00:07:53] the long end to go back up? Right? Like
+[00:07:55] right after the Fed official is bragging
+[00:07:57] about it coming back down. And what's
+[00:07:59] remarkable to me is kind of like the
+[00:08:02] audacity to even say that it's coming
+[00:08:05] back down when
+[00:08:08] it it's still higher than where it was
+[00:08:10] at the September meeting. Like if you
+[00:08:12] look at the 10-year yield, the September
+[00:08:14] meeting, the 10-year yield was at
+[00:08:17] um you know, right around where it is
+[00:08:19] now. Maybe a little bit lower than where
+[00:08:21] it is now. So, it it's kind of
+[00:08:24] or maybe right around the same cuz it it
+[00:08:26] dropped today right after Fed meeting.
+[00:08:28] But it's basically the same level. So,
+[00:08:30] to to say that it's come down is
+[00:08:32] basically just getting lost in this
+[00:08:35] right here. But then zooming out, it
+[00:08:38] just seems a little silly to be bragging
+[00:08:41] about the 10-year coming down. And with
+[00:08:44] oil prices rising, like what if What if
+[00:08:47] the reason
+[00:08:48] the long end rallies back up to 5-3 is
+[00:08:52] because the Fed is unwilling to raise
+[00:08:54] rates when they should?
+[00:08:57] Right? That doesn't mean the long end
+[00:08:59] has to go up for the rest of the year.
+[00:09:01] What I've said, the most likely outcome
+[00:09:05] if we continue along this idea, is that
+[00:09:07] the long end spikes and then after the
+[00:09:09] midterms, then So, but before before the
+[00:09:13] we we should also see oil spike
+[00:09:16] to 120
+[00:09:18] due to the Iran war.
+[00:09:20] And then after that
+[00:09:23] stocks finally drop.
+[00:09:25] And then after that, or probably before
+[00:09:27] that, Bitcoin drops in Q4.
+[00:09:32] I mean, I'm just thinking like what is
+[00:09:34] what is the catalyst if you need one to
+[00:09:36] get the long end back up. It's probably
+[00:09:38] great to see it go right back up after
+[00:09:40] the Fed chair brags about it coming back
+[00:09:43] down. And also potentially they raise
+[00:09:45] they they they don't raise rates today,
+[00:09:48] they didn't. What if you get a hot
+[00:09:50] inflation report tomorrow and then
+[00:09:52] everyone's left wondering why didn't
+[00:09:54] they raise rates, right? I mean, why
+[00:09:56] not? Is it just because of the midterms?
+[00:09:59] Because if everyone's already penciling
+[00:10:00] in a rate hike and inflation's picking
+[00:10:03] back up, do you not run the risk of
+[00:10:06] falling behind? Now, what I think's
+[00:10:08] going to happen is I think the long end
+[00:10:10] rallies and then comes back down before
+[00:10:11] the next FOMC, they raise rates, and
+[00:10:14] then and then and it probably continues
+[00:10:15] to come down after that. That's what I
+[00:10:17] think's going to happen. But
+[00:10:19] we'll we'll see. So, what about Bitcoin?
+[00:10:22] Well, Bitcoin, you know, had an initial
+[00:10:25] rally, but you can see that it's running
+[00:10:27] up against this 50-day moving average.
+[00:10:29] And this is a this is an area that's run
+[00:10:30] up to a lot after breaking down below
+[00:10:33] it. And and so, I think this is going to
+[00:10:35] be kind of a critical level here for for
+[00:10:38] Bitcoin. And I know there's a lot of,
+[00:10:40] you know, I see the comments, right? I
+[00:10:42] mean, I obviously I've I've sort of
+[00:10:44] tilted with a bearish bias
+[00:10:48] uh throughout all of 2026, you know, and
+[00:10:50] and for the most part that bearish that
+[00:10:52] that bearish bias was correct. Obviously
+[00:10:56] with this move back up to 87k, you could
+[00:10:58] argue perhaps it wasn't. Um but at the
+[00:11:02] same time, you know, the longer we just
+[00:11:04] continue to spend below the May high, it
+[00:11:07] just seems like it's more accepting of
+[00:11:09] being back below it. Now, I know
+[00:11:10] everyone's kind of just waiting for the
+[00:11:12] the day we wake up and Bitcoin goes up
+[00:11:14] to 90k or something. And I'm not going
+[00:11:17] to say that it can't happen.
+[00:11:19] Um you know, I I wasn't expecting the
+[00:11:21] move to 87k.
+[00:11:23] But what I am saying is that
+[00:11:26] there is just simply the the risk that
+[00:11:28] that Bitcoin fades back down. And and
+[00:11:31] there's a lot of markets that are
+[00:11:33] already doing that. And I think that's
+[00:11:35] what really like gets me to not like
+[00:11:39] completely throw in the towel on the Q4
+[00:11:41] drop idea, is if you go through a lot of
+[00:11:43] the markets, they tend to have three
+[00:11:46] separate lows in 2026. If you look at
+[00:11:48] gold, you have your Q1 low,
+[00:11:51] your summer low, and now it's trying to
+[00:11:54] form the Q4 low. So, there you have
+[00:11:56] gold. Now, look at South Korea.
+[00:12:00] This index,
+[00:12:01] you have your Q1 low, you had a massive
+[00:12:04] rally, you still had your summer low,
+[00:12:07] and now it's trying to form the Q4 low.
+[00:12:10] Right?
+[00:12:11] Three separate lows.
+[00:12:14] Completely different index, but you see
+[00:12:15] it in gold, you see it in South Korea.
+[00:12:18] Now, go look at the HSI, go look at at
+[00:12:20] China. It's it's like the same thing,
+[00:12:22] right? You have your Q1 low, you have
+[00:12:25] your summer low, and now it's trying to
+[00:12:27] form the Q4 low. So, I just I see this
+[00:12:30] pattern across so many different
+[00:12:32] markets, and I struggle to to sort of
+[00:12:35] say that oh, no, it won't happen with
+[00:12:37] Bitcoin, right? Because Bitcoin has done
+[00:12:39] the same thing. The Q1 low, the summer
+[00:12:42] low,
+[00:12:43] we just need the Q4 low, right? And and
+[00:12:46] and then it all matches everything else
+[00:12:48] that we just looked at. So,
+[00:12:51] I'm not saying that view has to pan out,
+[00:12:53] but like it it's not like it's
+[00:12:55] completely out of the question. Um
+[00:12:59] And one of the things that I I've sort
+[00:13:01] of noted a couple of times is how back
+[00:13:05] in May, Bitcoin sold off, started
+[00:13:09] selling off about a month before the
+[00:13:12] SpaceX IPO, right? In fact, we just
+[00:13:16] added the chart, I believe, uh to show
+[00:13:20] that. Let's see if I can Yeah, so if you
+[00:13:22] look at at Bitcoin,
+[00:13:25] the blue line, so the dash line is when
+[00:13:27] the SpaceX IPO was, and this just shows
+[00:13:31] you 30 days before the IPO and 30 days
+[00:13:33] after. This is Bitcoin sort of
+[00:13:35] normalized from 30 days before to 30
+[00:13:36] days after, and you can see that
+[00:13:38] Bitcoin's actually following what it did
+[00:13:41] prior to the SpaceX IPO. I mean, the
+[00:13:44] argument is that what if people just
+[00:13:46] simply pull money out of the crypto
+[00:13:47] markets to save up to go put it in in
+[00:13:50] one of these IPOs. Now, that might not
+[00:13:51] make sense to you, but there are a lot
+[00:13:53] of people that do that type of stuff,
+[00:13:55] right? There's a lot of people that will
+[00:13:56] do that, especially if they bought
+[00:13:58] Bitcoin in the summer and they're up 30%
+[00:14:00] or something, 40%, and if they want to
+[00:14:02] go get the Anthropic IPO, that's the
+[00:14:05] reason, right? And then it just kind of
+[00:14:07] fades back down and, you know, bottoms
+[00:14:10] sometime around the IPO and then
+[00:14:12] probably goes back up after that. Right?
+[00:14:14] So, this is just, you know, it's playing
+[00:14:17] out so far, and if it continues to play
+[00:14:19] out, you know, you'll you'll see it
+[00:14:20] drop, maybe bounce one more time, and
+[00:14:23] then drop into, you know, into the Q4
+[00:14:27] low, and then you have basically the the
+[00:14:29] midterm year has played out, would have
+[00:14:32] played out like it always does, right?
+[00:14:35] So,
+[00:14:36] um
+[00:14:37] we'll [snorts] see what happens, right?
+[00:14:39] But I mean, you know, it it it almost be
+[00:14:41] like if it if it
+[00:14:43] mimic that, where it, you know, you
+[00:14:45] drop, you rally, you drop again, maybe a
+[00:14:47] rally one more time, and then you get a
+[00:14:48] larger drop.
+[00:14:51] I know it's a lot, you know, to take in,
+[00:14:53] but
+[00:14:54] if you look at the Fed and what they
+[00:14:57] what they said, I mean, again, they just
+[00:14:58] kept rates constant,
+[00:15:01] and
+[00:15:03] you know, I mean, if you look at if you
+[00:15:05] look at expectations,
+[00:15:07] let me reload this cuz I do believe it
+[00:15:09] is it's been updated. I don't think
+[00:15:10] there's as high of a probability. Yeah,
+[00:15:12] I mean, you have like an 80% nearly an
+[00:15:13] 80% chance that the Fed raises rates in
+[00:15:16] December,
+[00:15:17] right? And if you look at it aggregated
+[00:15:20] over the next several months, you can
+[00:15:21] see the market is pricing in two rate
+[00:15:24] hikes in 2027. I don't even know if
+[00:15:26] you're going to have those rate hikes in
+[00:15:27] 2027. You might not need them.
+[00:15:29] You know, if the stock market were to
+[00:15:31] get a correction at the end of the year
+[00:15:33] before the end of the year, perhaps
+[00:15:34] those rate hikes get priced out. At the
+[00:15:36] end of 2018, we had the the SEP that was
+[00:15:40] released in December 2018, the summary
+[00:15:42] of the economic projections,
+[00:15:44] thought we they they it said that we
+[00:15:46] likely would have two rate hikes in
+[00:15:47] 2019. And then we got zero rate hikes
+[00:15:50] in 2019.
+[00:15:52] So,
+[00:15:53] we ended up getting three rate cuts. So,
+[00:15:55] I I think this is important to, you
+[00:15:58] know, to sort of
+[00:15:59] to understand, but also be like, look,
+[00:16:01] these things don't always have to play
+[00:16:03] out like the market thinks, right? So,
+[00:16:07] it's a complicated market, for sure.
+[00:16:09] There's a lot of moving parts. The next
+[00:16:11] thing to watch is where does PCE come in
+[00:16:14] tomorrow?
+[00:16:15] And
+[00:16:16] I could be wrong. Like, maybe it comes
+[00:16:18] in cold, right? There's a chance of
+[00:16:20] that. I'd say there's probably at least
+[00:16:21] a 30-40% chance that it comes in softer
+[00:16:25] than expectations. But, if it comes in
+[00:16:27] hot,
+[00:16:29] then the most likely outcome would be
+[00:16:31] that crypto
+[00:16:33] would probably sell off.
+[00:16:36] The long end would start to rally,
+[00:16:38] right? Crypto might then bounce one more
+[00:16:41] time into the midterms, and then drop
+[00:16:44] after midterms. You know, all of
+[00:16:45] Bitcoin's prior major drops that marked
+[00:16:48] market cycle bottoms have always
+[00:16:50] occurred
+[00:16:51] after the midterms. Every single one of
+[00:16:53] them.
+[00:16:55] You look at
+[00:16:56] 2022, right? The last drop was after the
+[00:16:58] midterms. Same thing was true in 2018,
+[00:17:02] the final drop was after the midterms.
+[00:17:04] And then even in 2014,
+[00:17:06] uh you rallied right after the midterms,
+[00:17:09] but we ended up dropping after the
+[00:17:11] midterms, as well. So, it kind of all
+[00:17:14] just lines up. Uh and I think it's
+[00:17:18] important for people to realize that
+[00:17:20] yeah, this has been a great rally up to
+[00:17:22] 87k and you know, maybe maybe the bulls
+[00:17:25] are right and we don't go and go back
+[00:17:27] down, but we're seeing a lot of other
+[00:17:29] markets put in the Q1 low, the summer
+[00:17:31] low, and the Q4 low. And I I just think
+[00:17:34] that if if PCE comes in hot, the long
+[00:17:37] end rallies,
+[00:17:38] we get the uncertainty of the midterms
+[00:17:40] and what that could bring, you could
+[00:17:42] easily see that Q4 low. And I mean, look
+[00:17:44] at what happened with Brazil
+[00:17:46] after their midterms. You had a very
+[00:17:48] unexpected result, and then Brazil like
+[00:17:51] dropped 20% overnight. Like the index,
+[00:17:53] which seems a bit of an extreme
+[00:17:55] overreaction. Um
+[00:17:58] I I don't I you know, I don't fully
+[00:18:00] I it's not like I'm that in tune as
+[00:18:02] what's going on over there, but it it
+[00:18:04] seems like an overreaction.
+[00:18:06] And then today,
+[00:18:08] uh you had we're not going to get into
+[00:18:11] all of it, but you had other elections,
+[00:18:12] right? And when you have elections where
+[00:18:14] there's a lot of uncertainty, it often
+[00:18:16] it often leads to markets dropping. And
+[00:18:19] with the launch of the SpaceX IPO
+[00:18:23] preceding the SpaceX IPO, the stock
+[00:18:26] market dropped. The S&P dropped about
+[00:18:28] 5%. And that was that was like the week
+[00:18:32] or two leading into the SpaceX IPO. The
+[00:18:35] Anthropic IPO is going to probably be
+[00:18:37] like the week of November 16th to the
+[00:18:39] 20th. So, we could start to see a drop
+[00:18:42] in the stock market shortly after the
+[00:18:45] midterms. It could continue drop. It's
+[00:18:46] already been dropping, but a continued
+[00:18:48] drop after the midterms that then takes
+[00:18:51] Bitcoin down into the Q4 low. I know
+[00:18:54] it's not a popular view at this point,
+[00:18:55] right? I get that, but it is still a
+[00:18:59] complete and total possibility that
+[00:19:02] isn't just backed up by you know, a a
+[00:19:07] sort of this bearish bias, but I mean, I
+[00:19:09] feel like it is somewhat backed up by
+[00:19:12] some of the data, right? Not all of the
+[00:19:14] data. You can go find some data that
+[00:19:16] looks pretty bullish if you want to go
+[00:19:18] look at like TA and the RSI and the MACD
+[00:19:21] and that sort of stuff.
+[00:19:22] That all looks bullish. But, if you want
+[00:19:24] to look at like what Bitcoin normally
+[00:19:26] does after a rate hike in September of a
+[00:19:28] midterm year, on average, it doesn't do
+[00:19:30] anything. And then about
+[00:19:33] 50 days after the rate hike, Bit-
+[00:19:35] Bitcoin then starts to drop. And we're
+[00:19:37] currently on day 43.
+[00:19:38] And you can see we had two midterm years
+[00:19:41] previously where we had a rate hike,
+[00:19:42] Bitcoin just kind of popped up for a
+[00:19:44] little bit, didn't do anything, and then
+[00:19:46] we got the final drop
+[00:19:48] uh right after, you know, somewhere
+[00:19:50] somewhere around the midterms, right?
+[00:19:53] So,
+[00:19:55] those
+[00:19:57] That's my view. And um
+[00:20:00] we'll see where it We'll see where PCE
+[00:20:01] comes in tomorrow. And if it comes in
+[00:20:03] hot, look for the long into rally. Look
+[00:20:05] for Bitcoin to drop. Then probably one
+[00:20:07] more bounce by Bitcoin,
+[00:20:09] uh you know, at some point before the
+[00:20:10] midterms. And then
+[00:20:13] at that point, if if it goes down to the
+[00:20:15] Q4 low, then it would be just doing what
+[00:20:17] would have been the base case all along.
+[00:20:19] If you guys like the content, make sure
+[00:20:21] you subscribe to the channel, give the
+[00:20:22] video a thumbs up, and also make sure
+[00:20:24] you check out the upcoming Investing
+[00:20:26] Through the Cycles Conference. Ticket
+[00:20:27] prices are going up in just about 3 or 4
+[00:20:29] days from now. So, make sure you go
+[00:20:31] ahead and get your ticket before the
+[00:20:32] prices increase. Thank you guys for
+[00:20:33] being here, and I'll see you next time.
+[00:20:35] Bye.
