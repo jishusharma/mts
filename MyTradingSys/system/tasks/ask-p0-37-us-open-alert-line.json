@@ -2,6 +2,22 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-30T09:33:52Z",
+    "misses": 25,
+    "reads": [
+      "scripts/dev/extra_tests.tsv",
+      "scripts/dev/sync.py",
+      "MyTradingSys/system/wiring_registry.json",
+      "MyTradingSys/items/T054_us_session_news_correlation.md",
+      "scripts/dev/tasks.py",
+      "scripts/dev/wiring_scan.py",
+      "MyTradingSys/system/OPERATOR_DECISIONS.md",
+      "MyTradingSys/research/malkan_extract_2026-10-15/tools/test_check_numbers.py"
+    ],
+    "session": "agent-aabe8f2378523e244"
+  },
   "created": "2026-10-30T08:24:23Z",
   "depends_on": [],
   "done_when": "usOpenCountdown(now) in live_aid_indicators.js returns minutes to next NYSE open on 6 fixture instants incl. DST edge and weekend; line renders; test_live_aid.py green; shipped.",

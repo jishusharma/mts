@@ -977,6 +977,11 @@
     "MyTradingSys/research/layer_lab/fabio_escalation_event_table/event_table.py": {
       "disp": "TOOL",
       "why": "DEV-only 1h Fabio escalation/absorption (FAB-002/003) event table with 24-bar forward MFE/MAE in ATR14 R; covered by test_event_table.py; reads only DEV timestamps from the local perp NPZ; read-only imports of the fabio layer; no live imports."
+    },
+    "MyTradingSys/tools/us_open_alert.py": {
+      "disp": "WIRE",
+      "ref": "ask-p0-37-us-open-alert-line",
+      "why": "Pure US-open countdown line (T054 step 5, context only); a later live_aid card imports us_open_line. Not wired here because another session owns live_aid."
     }
   }
 }
