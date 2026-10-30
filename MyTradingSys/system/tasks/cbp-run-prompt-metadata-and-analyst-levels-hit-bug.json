@@ -1,0 +1,31 @@
+{
+  "id": "cbp-run-prompt-metadata-and-analyst-levels-hit-bug",
+  "title": "CBP & Analyst Levels: fix cbp_run.py PROMPT % dict dropping metadata and analyst_levels.py pre-publish HIT look-ahead",
+  "state": "raw",
+  "priority": "IMPORTANT",
+  "lane": "JIS-NB",
+  "created": "2026-10-30",
+  "goal": "Fix three defects in the CBP / Analyst Levels pipeline found in CRITICAL_24H_AUDIT_2026-10-30.md Finding 3: (1) scripts/dev/cbp_run.py:43-51,150 computes PROMPT % {'analyst': ..., 'published': ..., 'title': ...} on a PROMPT string with zero % placeholders, silently dropping analyst, published date, and video title from every LLM extraction call. (2) scripts/dev/analyst_levels.py:84 computes t0 from date-only published ('YYYY-MM-DD' -> 00:00:00 UTC), so mark() checks 1h bars starting at 00:00 UTC of the publish day (hours before the video was published), falsely marking levels as HIT. (3) analyst_levels.py:25-50 parses non-price k-numbers in 40k..200k (e.g. '100k liquidations' -> 100000.0) and misses '76k-77k' in _RANGE_K.",
+  "files_to_read": [
+    "MyTradingSys/research/gemini_audits_2026-10-30/CRITICAL_24H_AUDIT_2026-10-30.md",
+    "scripts/dev/cbp_run.py",
+    "scripts/dev/analyst_levels.py",
+    "MyTradingSys/cbp/test_cbp.py"
+  ],
+  "files_to_touch": [
+    "scripts/dev/cbp_run.py",
+    "scripts/dev/analyst_levels.py",
+    "MyTradingSys/cbp/test_cbp.py"
+  ],
+  "steps": [
+    "In scripts/dev/cbp_run.py:43-51, include %(analyst)s, %(published)s, and %(title)s in PROMPT (and escape any literal % as %%) so llm_extract() passes the metadata to the extractor.",
+    "In scripts/dev/analyst_levels.py:84, avoid marking levels as HIT on 1h bars from before the video could have been published (use video publish timestamp when available or start from the end of the publish UTC date / next day 00:00 UTC when only date YYYY-MM-DD is stored).",
+    "In scripts/dev/analyst_levels.py:25-50, support optional k on the first bound in _RANGE_K (e.g. '76k-77k') and exclude obvious non-price nouns following k-numbers (e.g. 'liquidations', 'contracts', 'subscribers').",
+    "Add unit tests in MyTradingSys/cbp/test_cbp.py covering PROMPT formatting, _RANGE_K '76k-77k', and mark() look-ahead prevention."
+  ],
+  "done_when": "pytest MyTradingSys/cbp/test_cbp.py passes with tests covering PROMPT metadata interpolation, '76k-77k' range parsing, and mark() pre-publish bar exclusion.",
+  "Verify": "pytest -q MyTradingSys/cbp/test_cbp.py",
+  "notes": [
+    "Filed by Gemini 4 Argon (Low) 24h critical audit (MTS-20261030-GEM-AUD-gemini-24h-critical-audit)."
+  ]
+}

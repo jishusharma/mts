@@ -1,0 +1,33 @@
+{
+  "id": "wave1-item2-settlement-window-and-double-count",
+  "title": "Wave-1 Item 2: fix 36h session_rpl window mismatch in test_recorded_settlement_identity and pre-08:00 UTC settlement double-count in mainnet_pnl.py",
+  "state": "raw",
+  "priority": "IMPORTANT",
+  "lane": "SONNET",
+  "created": "2026-10-30",
+  "goal": "Fix two defects uncovered by the 24h critical audit (MyTradingSys/research/gemini_audits_2026-10-30/CRITICAL_24H_AUDIT_2026-10-30.md Finding 1): (1) In txlog_capture_2026-10-10_jishu_11.json and _13.json, no 08:00:00Z settlement entry fired on 2026-10-10, so account_summary.session_rpl (+1.17e-06 in _11.json, +2.56e-06 in _13.json) is the 36-hour cumulative cashflow since the 2026-10-09T08:00:00Z settlement (sum(cashflow)=+1.18e-06 / +2.58e-06), whereas test_recorded_settlement_identity in MyTradingSys/execution/test_mainnet_pnl.py:130-154 summed only the 4h post-2026-10-10T08:00:00Z entries (-3.65e-06 cashflow), producing the exact -4.82e-06 BTC gap. (2) In MyTradingSys/execution/mainnet_pnl.py:42-61 and daily_loss_monitor.py:349-353, querying get_transaction_log from 00:00 UTC on a day that contains an 08:00 UTC settlement entry double-counts trades closed in [00:00, 08:00) UTC (counted once via trade.cashflow with profit_as_cashflow=True and again inside settlement.change, which also sweeps prior-day [08:00, 24:00) UTC PnL into the current UTC day).",
+  "files_to_read": [
+    "MyTradingSys/research/gemini_audits_2026-10-30/CRITICAL_24H_AUDIT_2026-10-30.md",
+    "MyTradingSys/execution/mainnet_pnl.py",
+    "MyTradingSys/execution/test_mainnet_pnl.py",
+    "MyTradingSys/execution/daily_loss_monitor.py",
+    "MyTradingSys/research/loose_code/txlog_capture_2026-10-10_jishu_11.json",
+    "MyTradingSys/research/loose_code/txlog_capture_2026-10-10_jishu_13.json"
+  ],
+  "files_to_touch": [
+    "MyTradingSys/execution/mainnet_pnl.py",
+    "MyTradingSys/execution/test_mainnet_pnl.py",
+    "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEMS_1_2_5.md"
+  ],
+  "steps": [
+    "Read CRITICAL_24H_AUDIT_2026-10-30.md Finding 1 and verify the 36h post-2026-10-09T08:00:00Z cashflow sum on _11.json (+1.18e-06 vs session_rpl +1.17e-06) and _13.json (+2.58e-06 vs session_rpl +2.56e-06).",
+    "Update mainnet_pnl.py so UTC-day PnL does not double-count [00:00, 08:00) UTC profit_as_cashflow=True trades or sweep prior-day [08:00, 24:00) trade PnL when an 08:00 UTC settlement entry is present in the log slice (extract only funding/interest from settlement or exclude trade-rpl sweep when profit_as_cashflow trades are already summed).",
+    "Update test_recorded_settlement_identity in test_mainnet_pnl.py to slice from the actual last settlement timestamp in the log (2026-10-09T08:00:00Z) when comparing against account_summary.session_rpl, remove @unittest.expectedFailure, and add a unit test covering a UTC day with both a 07:30Z trade and an 08:00Z settlement.",
+    "Update ITEMS_1_2_5.md Item 2 section with the resolved identity proof."
+  ],
+  "done_when": "pytest MyTradingSys/execution/test_mainnet_pnl.py passes with 0 expectedFailures and includes a regression test for same-UTC-day pre-08:00 trade + 08:00 settlement.",
+  "Verify": "pytest -q MyTradingSys/execution/test_mainnet_pnl.py",
+  "notes": [
+    "Filed by Gemini 4 Argon (Low) 24h critical audit (MTS-20261030-GEM-AUD-gemini-24h-critical-audit). Also supersedes the mystery aspect of settlement-capture-testnet-second-log."
+  ]
+}
