@@ -1,0 +1,222 @@
+[
+ {
+  "id": "TOM-1a",
+  "name": "imbalance fade",
+  "date_utc": "2026-09-21",
+  "window": "2026-09-20 00:00Z to 2026-09-22 00:00Z, 5-minute candles",
+  "selection_rule": "a push of >=1.5% within 2h that ends >=0.5% above the prior-day value-area high, then gives back >=50% of the push within 4h",
+  "note": "Price pushed up 1.9% in 1h50m to 87,385, 7.8% above the prior-day value-area high (81,080), then gave back 68% of the push within 2h20m.",
+  "status": "match",
+  "png": "examples/TOM-1a.png"
+ },
+ {
+  "id": "TOM-1b",
+  "name": "swing top",
+  "date_utc": "2026-09-19",
+  "window": "2026-08-12 00:00Z to 2026-09-26 00:00Z, daily candles",
+  "selection_rule": "daily: >=3 consecutive up days, then a day closing in its lower third with the high above the prior 10 days; relaxed by 25% once",
+  "note": "RELAXED threshold (-/+25%): 2+ up days in a row, then 19 Sep: new 10-day high (81,934) but the day closed at 81,226, in the lower 37% of its range (weak close after a run-up).",
+  "status": "relaxed",
+  "png": "examples/TOM-1b.png"
+ },
+ {
+  "id": "TOM-2",
+  "name": "counter trade in balance",
+  "date_utc": "2026-09-26",
+  "window": "2026-09-25 00:00Z to 2026-09-27 00:00Z, 5-minute candles",
+  "selection_rule": "UTC day with range <60% of the median range of the prior 20 days, high and low both inside the prior-day value area",
+  "note": "26 Sep range was 709 USD = 36% of the 20-day median range (1,954); high and low both stayed inside the prior-day value area (83,500-84,490): a quiet, balanced day.",
+  "status": "match",
+  "png": "examples/TOM-2.png"
+ },
+ {
+  "id": "TOM-3",
+  "name": "limit sell below the last volume step",
+  "date_utc": "2026-09-22",
+  "window": "2026-08-13 00:00Z to 2026-09-27 00:00Z, daily candles",
+  "selection_rule": "daily: inside day right under a 20-day high after >=5 up days of the last 10",
+  "note": "22 Sep is an inside day (range 85,080-86,700 sits inside 21 Sep) right under the 20-day high (87,385), after 7 up days out of the last 10.",
+  "status": "match",
+  "png": "examples/TOM-3.png"
+ },
+ {
+  "id": "TOM-4",
+  "name": "trend continuation pullback",
+  "date_utc": "2026-09-21",
+  "window": "2026-09-20 00:00Z to 2026-09-22 00:00Z, 5-minute candles",
+  "selection_rule": "day with close-open >=+1.5%; after 06:00 UTC price touched the UTC-day VWAP, stayed within 0.2% for >=3 5m bars, then made a new day high",
+  "note": "Day closed +6.7% (open to close). After 06:00 UTC price touched the UTC-day VWAP (81,475) at 07:10, stayed within 0.20% of it for 3+ bars, then made a new day high (82,222) at 08:20.",
+  "status": "match",
+  "png": "examples/TOM-4.png"
+ },
+ {
+  "id": "TOM-6",
+  "name": "breakout",
+  "date_utc": "2026-09-26",
+  "window": "2026-09-25 00:00Z to 2026-09-27 00:00Z, 5-minute candles",
+  "selection_rule": ">=6h with 5m range <0.8%, then a 5m close above the range high with 5m volume >=2x the balance median",
+  "note": "24.0 h+ (look-back capped at 24 h) of balance (5m range 83,750-84,297, 0.65%), then a 5m close at 84,309 above the range with volume 10.0x the balance median.",
+  "status": "match",
+  "png": "examples/TOM-6.png"
+ },
+ {
+  "id": "TOM-7",
+  "name": "VWAP scalp",
+  "date_utc": "2026-09-26",
+  "window": "2026-09-25 00:00Z to 2026-09-27 00:00Z, 5-minute candles",
+  "selection_rule": "day with range <1.2% where the 5m close crosses the UTC-day VWAP >=8 times",
+  "note": "Day range only 0.85%; the 5m close crossed the UTC-day VWAP 33 times (pink dots).",
+  "status": "match",
+  "png": "examples/TOM-7.png"
+ },
+ {
+  "id": "TOM-8",
+  "name": "gap close (CME-gap proxy)",
+  "date_utc": "2026-09-07",
+  "window": "2026-09-04 20:00Z to 2026-09-08 00:00Z, 15-minute candles",
+  "selection_rule": "Monday 00:00 UTC open vs Friday 21:00 UTC close differ by >=0.8% and the gap is closed within the Monday",
+  "note": "Friday 21:00 UTC close 79,656 vs Monday 00:00 UTC open 80,301: weekend gap +0.81% (CME-gap proxy, OURS). Price came back to the Friday level at Mon 03:37 UTC on Monday: gap closed.",
+  "status": "match",
+  "png": "examples/TOM-8.png"
+ },
+ {
+  "id": "TOM-9",
+  "name": "gap holds (CME-gap proxy)",
+  "date_utc": "2026-06-15",
+  "window": "2026-06-12 20:00Z to 2026-06-16 00:00Z, 15-minute candles",
+  "selection_rule": "same gap proxy, NOT closed within Monday and Monday closes further in the gap direction",
+  "note": "Friday 21:00 UTC close 63,418 vs Monday 00:00 UTC open 65,702: weekend gap +3.60% (CME-gap proxy, OURS). Price never returned to the Friday level on Monday and Monday closed at 66,286, further in the gap direction.",
+  "status": "match",
+  "png": "examples/TOM-9.png"
+ },
+ {
+  "id": "TOM-10",
+  "name": "closing-auction reversal",
+  "date_utc": null,
+  "window": null,
+  "selection_rule": "NO BTC equivalent (24/7 market, no closing auction)",
+  "note": "no BTC equivalent",
+  "status": "none",
+  "png": null
+ },
+ {
+  "id": "TOM-11",
+  "name": "cross-market lead (crude oil vs index)",
+  "date_utc": null,
+  "window": null,
+  "selection_rule": "NO data on disk for crude oil / index",
+  "note": "no BTC equivalent: no crude-oil or index data on disk",
+  "status": "none",
+  "png": null
+ },
+ {
+  "id": "TOM-12",
+  "name": "break-in",
+  "date_utc": "2026-09-25",
+  "window": "2026-09-24 00:00Z to 2026-09-26 00:00Z, 5-minute candles",
+  "selection_rule": "5m close >=0.3% above the prior-day VAH, within 2h a 5m close back below VAH, then price reaches the prior-day POC within 4h",
+  "note": "5m close 84,613 was 0.35% above the prior-day value-area high (84,320); within 15 min a 5m close came back below it, and price then reached the prior-day POC (83,315) 105 min later.",
+  "status": "match",
+  "png": "examples/TOM-12.png"
+ },
+ {
+  "id": "TOM-14",
+  "name": "news shock V reversal",
+  "date_utc": "2026-09-15",
+  "window": "2026-09-14 00:00Z to 2026-09-16 00:00Z, 5-minute candles",
+  "selection_rule": "day's largest 15-minute move >=2%, then >=60% retraced within 6h",
+  "note": "Largest 15-minute move of 15 Sep: -2.27% (76,756 to 75,011, ending 18:49 UTC); 72% of it was retraced within 0.5 h (to 76,276).",
+  "status": "match",
+  "png": "examples/TOM-14.png"
+ },
+ {
+  "id": "TOM-15",
+  "name": "candle formations at a range edge",
+  "date_utc": "2026-09-21",
+  "window": "2026-09-18 08:00Z to 2026-09-23 08:00Z, 1-hour candles",
+  "selection_rule": "three same-colour 1h candles ending at a 20-day high or low",
+  "note": "3 green 1h candles in a row ending at a new 20-day high (87,385; previous 20-day high 86,874), 21 Sep 20:00 UTC.",
+  "status": "match",
+  "png": "examples/TOM-15.png"
+ },
+ {
+  "id": "TOM-16",
+  "name": "top after forced buying",
+  "date_utc": "2026-09-21",
+  "window": "2026-09-20 00:00Z to 2026-09-22 00:00Z, 5-minute candles",
+  "selection_rule": "hour with volume >=4x the 30-day hourly median at a 30-day high, then a 5m close below that hour low within 6h",
+  "note": "The 15:00 UTC hour on 21 Sep printed a 30-day high (86,340) with volume 4.2x the 30-day hourly median; in the first 5m bar after that hour ended a 5m close (85,722) fell below the hour's low (85,750).",
+  "status": "match",
+  "png": "examples/TOM-16.png"
+ },
+ {
+  "id": "TOM-17",
+  "name": "low-volume-node scalp",
+  "date_utc": "2026-09-25",
+  "window": "2026-09-25 16:28Z to 2026-09-25 19:28Z, 1-minute candles",
+  "selection_rule": "price enters the prior-day profile's lowest-volume 50-USD band inside the value area and the next 15 min travel >=0.3%",
+  "note": "Prior-day profile's thinnest 50-USD band inside its value area is 83,700-83,750. Price entered it at 17:58 UTC and travelled 0.33% up in the next 15 minutes (thin zone = little trading there before).",
+  "status": "match",
+  "png": "examples/TOM-17.png"
+ },
+ {
+  "id": "FAB-1",
+  "name": "balance with CVD pressure, break on volume",
+  "date_utc": "2026-09-05",
+  "window": "2026-09-04 00:00Z to 2026-09-06 00:00Z, 5-minute candles",
+  "selection_rule": ">=6h with 5m range <1% while the CVD proxy moves (near-)monotonically >=1.5x its 30-day 6h median move, then first 5m close outside in the CVD direction with volume >=2x balance median",
+  "note": "24.0 h+ (look-back capped at 24 h) balance (5m range 79,348-79,966, 0.78%) while the CVD proxy climbed steadily (83% of half-hour steps in one direction, net +1,583 BTC = 1.6x the 30-day 6h median), then the first 5m close above the balance at 80,065 with volume 6.5x the balance median.",
+  "status": "match",
+  "png": "examples/FAB-1.png"
+ },
+ {
+  "id": "FAB-2",
+  "name": "absorbed push",
+  "date_utc": "2026-08-20",
+  "window": "2026-08-19 00:00Z to 2026-08-21 00:00Z, 5-minute candles",
+  "selection_rule": "15-min window with |delta proxy| in the top 2% but price change in the bottom 30%, then >=0.5% move against the delta sign within 2h; relaxed by 25% once",
+  "note": "RELAXED threshold (-/+25%): 15-min window 02:45 UTC: aggressive buying (delta proxy +1,277 BTC, top 2.5% of the last 120 days) but price moved only 0.02% (bottom 38%). Within 2h price then moved 0.58% the other way.",
+  "status": "relaxed",
+  "png": "examples/FAB-2.png"
+ },
+ {
+  "id": "FAB-4",
+  "name": "failed breakout back into balance",
+  "date_utc": "2026-09-20",
+  "window": "2026-09-19 00:00Z to 2026-09-21 03:00Z, 5-minute candles",
+  "selection_rule": "5m close >=0.2% outside the prior-day value area, back inside within 30 min, then reaches the opposite edge within 6h",
+  "note": "5m close 80,758 was 0.2%+ below the prior-day value-area low (80,960); 25 min later it was back inside, and 2h00m after that price reached the opposite edge (81,480).",
+  "status": "match",
+  "png": "examples/FAB-4.png"
+ },
+ {
+  "id": "FAB-5",
+  "name": "buyers protect a level",
+  "date_utc": "2026-09-24",
+  "window": "2026-09-23 00:00Z to 2026-09-25 02:00Z, 5-minute candles",
+  "selection_rule": "touch of prior-day VAL within 0.1% with negative 15-min delta proxy, low holds, then +0.7% within 2h",
+  "note": "15-min bar 22:30 UTC touched the prior-day value-area low (84,070, low 84,025) with a negative delta proxy (-125 BTC: sellers aggressive) yet the low held, and price rose 0.70% within 2 h.",
+  "status": "match",
+  "png": "examples/FAB-5.png"
+ },
+ {
+  "id": "FAB-6",
+  "name": "IVB first 30 minutes of the US open",
+  "date_utc": "2026-09-25",
+  "window": "2026-09-25 12:00Z to 2026-09-25 21:00Z, 5-minute candles",
+  "selection_rule": "weekday 13:30-14:00 UTC range, then a 5m close outside it",
+  "note": "First 30 minutes of the US open (13:30-14:00 UTC) ranged 83,434-84,306 (1.05%). The first 5m close outside it was 14:00 UTC at 83,210 (below).",
+  "status": "match",
+  "png": "examples/FAB-6.png"
+ },
+ {
+  "id": "FAB-8",
+  "name": "volume-defined fair value gap",
+  "date_utc": "2026-09-25",
+  "window": "2026-09-24 00:00Z to 2026-09-25 15:17Z, 5-minute candles",
+  "selection_rule": "last swing A->B >=2% within 3 days, fixed-range 1m profile A->B, lowest-volume 50-USD band inside its value area, price returns to it",
+  "note": "Swing up 82,832 -> 85,224 (2.9% in 26h, A 24 Sep 09:00, B 25 Sep 11:00). Fixed-range 1m profile A->B: 70% value area 83,790-84,840, thinnest 50-USD band inside it 83,850-83,900. Price returned to that band at 25 Sep 12:17 UTC (next 2 h shown).",
+  "status": "match",
+  "png": "examples/FAB-8.png"
+ }
+]
