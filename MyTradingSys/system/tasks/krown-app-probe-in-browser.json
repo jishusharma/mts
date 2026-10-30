@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T21:45:57Z",
   "commands": [
     "python scripts/dev/sync.py start krown-app-probe"
   ],
@@ -15,7 +16,14 @@
   "id": "krown-app-probe-in-browser",
   "kind": "run",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "APP BLOCKED (443 unreachable); 0 free signals",
+      "ref": "c18a00dfb",
+      "utc": "2026-10-30T21:45:57Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -27,7 +35,12 @@
   "refs": [
     "MyTradingSys/options/research/KROWN_FREE_VS_PAID.md"
   ],
-  "result": "",
+  "result": "APP BLOCKED (443 unreachable); 0 free signals",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/krown_free_2026-10-31/ (new files only)"
   ],
@@ -37,12 +50,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "ToolSearch select the claude-in-chrome tools; open a new tab on the app URL",
     "read the page text and visible panels; note any login wall",
     "write KROWN_APP_PROBE.md and ship"
   ],
+  "taken": "2026-10-30T21:45:57Z",
   "tests": "report only",
   "title": "Probe app.krowntrading.net (Krown Trading App, Free Market Dynamics) in a real browser: what is public, what needs a login, what the free dashboard shows",
   "weight": "ROUTINE",
