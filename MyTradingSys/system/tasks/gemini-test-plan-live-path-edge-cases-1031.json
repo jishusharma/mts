@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T22:29:35Z",
   "commands": [],
   "created": "2026-10-30T20:21:57Z",
   "depends_on": [],
@@ -13,7 +14,14 @@
   "id": "gemini-test-plan-live-path-edge-cases-1031",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_burn_2026-10-31/LIVE_PATH_TEST_PLAN.md",
+      "ref": "d51018142",
+      "utc": "2026-10-30T22:29:35Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -25,7 +33,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/gemini_burn_2026-10-31/LIVE_PATH_TEST_PLAN.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_burn_2026-10-31/ (new files only)"
   ],
@@ -35,12 +48,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read the modules and their tests",
     "grep tests for each case",
     "write the table"
   ],
+  "taken": "2026-10-30T22:29:35Z",
   "tests": "report only; every finding cites file:line and a reproducing input",
   "title": "[GEMINI] test plan for the live path: restart/reset state, non-trade balance moves, API errors, one case list per module, with file:line",
   "weight": "ROUTINE",
