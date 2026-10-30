@@ -4,33 +4,63 @@
   "commands": [],
   "created": "2026-10-30T08:24:32Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "token_audit.py --days 7 --out writes a per-session table with columns load_tokens and thinking_chars; test_token_audit.py has a case for both; shipped; cherry empty.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Extend token_audit.py so each transcript row also reports first-turn loaded tokens and thinking-block size, so the operator sees per-session loading and thinking over time.",
   "id": "ask-a3-20-session-thinking-tracking",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "registry: carry live-tree-only edits (INDEX, BUGS, apparatus_fixes) onto fast-track; close",
+      "ref": "cddac74169f2",
+      "utc": "2026-10-14T12:32:30Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "cddac74169f2 registry: carry live-tree-only edits (INDEX, BUGS, apparatus_fixes) onto fast",
+      "ref": "MyTradingSys/items/B172_sonnet_ritual_token_use.md",
+      "utc": "2026-10-14T12:32:30Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-30 T0-ONLY | DECISION (OURS): by hand per run, no recurring job (SCHEDULING_POLICY); ledger A3-20 stays OPEN until the operator accepts this reading.",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-30T10:01:01Z",
   "refs": [
     "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "scripts/dev/token_audit.py",
+    "scripts/dev/test_token_audit.py",
+    "MyTradingSys/items/B172_sonnet_ritual_token_use.md"
+  ],
+  "scope_out": [
+    "Claude transcripts content (read only, nothing copied into the repo)",
+    "scheduling any recurring run"
+  ],
+  "scope_sha": "cddac74169f2",
+  "size": "S",
+  "sources": [
+    "ledger A3-20 (P0511); B172 token audit"
+  ],
+  "state": "ready",
+  "steps": [
+    "read token_audit.py _text/first-turn logic; add thinking_chars summing blocks of type thinking",
+    "add the two columns to the md table; test first, then code; ship. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
+  ],
+  "tests": "scripts/dev/test_token_audit.py: fixture transcript with one thinking block of 40 chars and a first-turn usage reports thinking_chars=40 and the right load_tokens; red before the change.",
   "title": "Continuous-improvement tracking of each session's loading and thinking (ledger A3-20)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

@@ -4,33 +4,70 @@
   "commands": [],
   "created": "2026-10-30T08:24:21Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "research/hedge_variants_2026-10/PRE_REG.md frozen first; RESULT.md with n, net R per variant and CI; exports sim_desk/results/hedge-variants.json; shipped.",
+  "est_turns": 38,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "T053 step 3: backtest hedge variants a (hedge after a fee-covering move) and b1 (hedge after a BB-outside or divergence trigger) on BTCUSDT 1m with fees and funding, DEV only, pre-registered; testnet step P0-31 stays out.",
   "id": "ask-p0-30-hedge-variants-backtest",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "stats: CSCV degenerate-input contract (raise on invalid partitions, NaN Sharpe on zero var",
+      "ref": "732f411af1b1",
+      "utc": "2026-10-28T14:55:01Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "732f411af1b1 stats: CSCV degenerate-input contract (raise on invalid partitions, NaN Sharp",
+      "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
+      "utc": "2026-10-28T14:55:01Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-30 ACCEPT | CRUCIAL: review Agent on the diff before ship. Equal-size hedge is delta-neutral, so expectancy comes from the trigger rule only (T053 2026-10-04 note).",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-30T10:00:17Z",
   "refs": [
     "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/items/T053_two_account_hedge_scalping.md",
+    "MyTradingSys/research/_archive/loose_2026-10/T053_TWO_ACCOUNT_HEDGE_RESEARCH.md",
+    "MyTradingSys/backtest/bt/bt_engine.py",
+    "MyTradingSys/backtest/fees.py",
+    "scripts/dev/prereg_gate.py",
+    "scripts/dev/verdicts.py",
+    "MyTradingSys/backtest/layers/FORMULAS.md",
+    "MyTradingSys/items/B103_funding_coverage.md"
+  ],
+  "scope_out": [
+    "variant b2",
+    "testnet or any order",
+    "VALIDATION/HOLDOUT reads"
+  ],
+  "scope_sha": "732f411af1b1",
+  "size": "M",
+  "sources": [
+    "T053 item steps (2026-09-28); ledger P0-30"
+  ],
+  "state": "ready",
+  "steps": [
+    "read the T053 research doc open questions; DECISION (OURS) defaults: equal-size hedge, unhedge at entry price, fee 10 bps, funding series per items/B103_funding_coverage.md (state the file used in PRE_REG; fail closed where missing)",
+    "verdicts.py check 'hedge'; prereg_gate.py --m auto; freeze PRE_REG.md",
+    "write hedge.py on bt_engine (fail closed on missing funding) + test first; run once on DEV; RESULT.md + json; verdicts.py backfill; ship. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
+  ],
+  "tests": "research/hedge_variants_2026-10/test_hedge.py: hand-computed 3-trade case with fee and funding (numbers from FORMULAS.md, computed by hand) matches; fails before hedge.py exists.",
   "title": "T053 step 3: backtest hedge variants on 1m with fees and funding (ledger P0-30); step 4 testnet run waits on it (P0-31)",
-  "weight": "",
-  "worker": ""
+  "weight": "CRUCIAL",
+  "worker": "session"
 }

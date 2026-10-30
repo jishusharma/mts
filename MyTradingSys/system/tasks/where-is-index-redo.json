@@ -4,33 +4,65 @@
   "commands": [],
   "created": "2026-10-30T08:30:57Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "scripts/dev/where_is.py, MyTradingSys/system/WHERE_IS.md, scripts/dev/test_where_is.py exist on fast-track; test_where_is, test_role_budget, tests/docs/test_integrity.py green; sync.py start prints one pointer line.",
+  "est_turns": 24,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Re-apply (new files where_is.py, test_where_is.py, WHERE_IS.md) commit 5e37f0323 (WHERE_IS topic index + where_is.py query) which fcd831a52 reverted because roles/lead.md and roles/supervisor.md went over the byte budget; this time touch no role file.",
   "id": "where-is-index-redo",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Add on-demand fix_verifier.py (ledger A4-18)",
+      "ref": "792ae66b67d6",
+      "utc": "2026-10-30T08:54:14Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "fcd831a5278f revert WHERE_IS 5e37f0323: role files over byte budget (CI red)",
+      "ref": "MyTradingSys/system/QUICK_ANSWERS.md",
+      "utc": "2026-10-30T08:25:45Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-30 ACCEPT | sync.py change is the single start-pointer line only; if the diff touches the gate section raise to CRITICAL.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-30T10:00:30Z",
   "refs": [
     "MyTradingSys/system/tasks/where-things-are-index.json"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "scripts/dev/sync.py",
+    "scripts/dev/extra_tests.tsv",
+    "MyTradingSys/system/QUICK_ANSWERS.md"
+  ],
+  "scope_out": [
+    "MyTradingSys/system/roles/lead.md",
+    "MyTradingSys/system/roles/supervisor.md",
+    "CLAUDE.md"
+  ],
+  "scope_sha": "792ae66b67d6",
+  "size": "M",
+  "sources": [
+    "fcd831a52 (revert reason: role files over byte budget)"
+  ],
+  "state": "ready",
+  "steps": [
+    "git show 5e37f0323 per file; restore where_is.py, WHERE_IS.md, test_where_is.py, the extra_tests.tsv row, the sync.py start pointer line, the QUICK_ANSWERS row",
+    "skip the lead.md and supervisor.md lines; run test_role_budget and tests/docs/test_integrity.py; run test_where_is",
+    "regenerate WHERE_IS.md once, ship. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
+  ],
+  "tests": "scripts/dev/test_where_is.py (restored from 5e37f0323, new file): asserts the query for a ledger video id returns its file path AND ledger row text; red while where_is.py is absent.",
   "title": "Redo WHERE_IS index: re-apply 5e37f0323 (where_is.py, WHERE_IS.md, tests, sync.py start pointer, QUICK_ANSWERS row) but do NOT add lines to roles/supervisor.md or lead.md (test_role_budget 7500 B cap); revert 'fcd831a5' removed it",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

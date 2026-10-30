@@ -1,6 +1,6 @@
 {
   "approved_by": "",
-  "asks": "",
+  "asks": "B163 waits on Control Room decision D22 (Setup Alpha/Beta handoff): answered? Default: not answered, keep parked",
   "commands": [],
   "created": "2026-10-30T08:24:29Z",
   "depends_on": [],
@@ -17,7 +17,7 @@
   "mutation_check": "",
   "note": "",
   "prio": 3,
-  "refine_tries": 0,
+  "refine_tries": 1,
   "refined_by": "",
   "refs": [
     "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md"

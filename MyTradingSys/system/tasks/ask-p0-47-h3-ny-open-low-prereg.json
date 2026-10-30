@@ -20,33 +20,68 @@
   },
   "created": "2026-10-30T08:24:25Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "research/h3_ny_open_low_2026-10/PRE_REG.md frozen before the run, RESULT.md with n, mean R net of fees and CI, exports sim_desk/results/h3-ny-open-low.json; verdicts.py backfill row added; shipped.",
+  "est_turns": 34,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Pre-register then test candidate H3 (a new day low at NY open +180 min that holds) on DEV 2020-01..2021-12 only (perp 1m klines before 2020 do not exist), fee-net, one run; verdict recorded in VERDICTS.csv.",
   "id": "ask-p0-47-h3-ny-open-low-prereg",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "research: US-open OOS replication on 2020-21 (P0-34)",
+      "ref": "fd087f1cea6a",
+      "utc": "2026-10-30T08:37:01Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "69348c6c07c4 Gross-effect screen pre-registration + card gross-effect-screen-dev (Fable 5.",
+      "ref": "MyTradingSys/research/gross_effect_screen_2026-10-15/PRE_REG.md",
+      "utc": "2026-10-15T17:49:54Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-30 ACCEPT | CRUCIAL: needs the review Agent on the diff before ship (decision numbers, pre-reg). Window is 2020-01..2021-12 (us_open_oos REPORT limit 1).",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-30T10:00:15Z",
   "refs": [
     "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/items/T058_broken_extremes_sweep_vs_continuation.md",
+    "MyTradingSys/research/session_sweeps/session_open_study.py",
+    "MyTradingSys/research/us_open_oos_2026-10-30/run_oos.py",
+    "scripts/dev/prereg_gate.py",
+    "scripts/dev/verdicts.py",
+    "MyTradingSys/backtest/fees.py",
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/PRE_REG.md"
+  ],
+  "scope_out": [
+    "VALIDATION/HOLDOUT reads",
+    "live code"
+  ],
+  "scope_sha": "fd087f1cea6a",
+  "size": "M",
+  "sources": [
+    "T058 item H3 (2026-10-04), ledger P0-47"
+  ],
+  "state": "ready",
+  "steps": [
+    "verdicts.py check 'ny open low hold' and paste the output; prereg_gate.py --m auto for the MDE; stop if exit 1",
+    "freeze PRE_REG.md (definition of NY open, holds = no lower low in 60 min, stop/target OURS), commit it",
+    "write h3.py + test first, run once on DEV, write RESULT.md and json, verdicts.py backfill; ship. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
+  ],
+  "tests": "research/h3_ny_open_low_2026-10/test_h3.py: planted day-low-that-holds series is flagged, a made-up low that breaks is not; fails before h3.py exists.",
   "title": "H3 NY-open+180 new day low that holds: pre-register, test 2019-09..2021-12 (ledger P0-47)",
-  "weight": "",
-  "worker": ""
+  "weight": "CRUCIAL",
+  "worker": "session"
 }
