@@ -59,11 +59,10 @@ def procs():
 
 def report():
     parts = []
-    drives = ("C:\\", "F:\\") if os.name == "nt" else ("/",)
-    for d in drives:
+    for d in ("C:\\", "F:\\"):
         g = free_gb(d)
         if g is not None:
-            parts.append("%sfree=%.0fG" % (d[0] if os.name == "nt" else "root", g))
+            parts.append("%sfree=%.0fG" % (d[0], g))
     for label, paths in CANDIDATES.items():
         tot = 0.0
         cut = False
