@@ -26,6 +26,7 @@ Order: answer, then `plan`, then watcher (Stop hook blocks idle ends).
    2 chained cards each; never start_session: the app asks the operator to approve each one), verify notes (below), mark_completed/archive.
    `PLAN mode=STOP|SUPERVISOR-ONLY`: no Claude worker; RUN lines still run. Copy `OPERATOR` lines into your one-line reply.
 3. Start the watcher, then `supervisor.py watchcheck --login <L>` as the LAST call (SUPER_SESSION.md step 5): exit 4 -> restart the watcher, recheck; end only on exit 0. No sleep loops, second watcher or schedulers.
+   Never end a turn idle while READY cards or unread signals await the lane: dispatch a worker or arm `supervisor.py wait` (status RED after 60 min).
 SUPER_SESSION.md rules 11-14 apply (review Agent before a live-path/gate ship; spend inside the weekly cap; a defect blocks only its readers;
 never dispatch raw/refined cards). Board STOP/HOLD and CI RED outrank everything (`BOARD` / `SPAWN CI RED`). `tasks.py check <id>` + `sync.py claim` decide a card.
 
@@ -57,7 +58,7 @@ Stop spawning, drain, `get_usage` + `plan` again, then `python scripts/dev/super
 Alone (`PEER none live`): also overwrite NEXT_SESSION.md; successor line in your reply; mark your workers completed; one line to the operator.
 
 ## Long runs and compaction
-Compaction carries the work period; after it, rebuild from `plan`, never memory (SUPER_SESSION.md D5).
+Compaction carries the work period. Post-compaction first act: re-arm the watcher (`supervisor.py wait`, then `watchcheck`) and re-read signals (`mts_signal.py read`), then rebuild from `plan`, never memory (SUPER_SESSION.md D5).
 
 ## When stuck
 Stuck on a fact you lack: never ask the operator. `mts_signal.py who`; else a HIGH broadcast (`mts_signal.py broadcast ... --prio high --cmd ...`) and continue on the conservative default; a recurring gap becomes a card + Builder.
