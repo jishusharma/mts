@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T23:04:18Z",
   "commands": [
     "python MyTradingSys/research/sim_desk/build_catalogue.py --out %TEMP%/cat.json"
   ],
@@ -25,6 +26,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "exported 200->203 of 203; test_build2+test_artifact 15 passed",
+      "ref": "fb51913c4",
+      "utc": "2026-10-30T23:04:18Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "T058 per-TF break event study re-land (ledger P0-45): W/1D/4h/1h/15m, DEV/VAL, fee-net fro",
@@ -43,7 +50,12 @@
   "refined_by": "",
   "refreshed": "2026-10-30T22:59:55Z",
   "refs": [],
-  "result": "",
+  "result": "exported 200->203 of 203; test_build2+test_artifact 15 passed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/sim_desk/build_catalogue.py",
     "MyTradingSys/research/sim_desk/test_build2.py"
@@ -54,13 +66,14 @@
   "scope_sha": "e31013dfb104",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Reproduce: python build_catalogue.py --out <tmp>; diff result ids vs rows with exported true",
     "Find which earlier row claims each source first (seen set in add()) so id_ in have never matches; read rows for the 3 sources",
     "Fix: add the 3 sources to EXPORTED_BY_SOURCE or, better, let add() match exported by result file source/id even when another row claimed the source",
     "Rebuild, check the count, run test_artifact.py and test_build2.py"
   ],
+  "taken": "2026-10-30T23:04:18Z",
   "tests": "New test in test_build2.py: temp results dir with a result file whose id differs from the row id claimed first; rebuild must flag it exported. Fails on current code (3 of 203 unflagged).",
   "title": "sim_desk build_catalogue.py: a full rebuild on trunk 2026-10-31 un-flags 3 exported results (tom-corr-divergence-backtest, dir-tom_correlation_trick_2026-10-26, dir-pitchfork_2026-10-19) so test_artifact catalogue test goes red; the desk refresh_catalogue() calls that rebuild after every saved run",
   "weight": "ROUTINE",
