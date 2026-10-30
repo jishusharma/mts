@@ -49,16 +49,12 @@ def free_gb(drive):
 
 
 def procs():
-    cmd = ["tasklist", "/fo", "csv", "/nh"] if os.name == "nt" else ["ps", "-A", "-o", "comm="]
     try:
-        out = subprocess.run(cmd, capture_output=True, text=True, timeout=30).stdout
+        out = subprocess.run(["tasklist", "/fo", "csv", "/nh"], capture_output=True, text=True, timeout=30).stdout
     except (OSError, subprocess.SubprocessError):
-        return "procs=n/a"
+        return "n/a"
     names = [line.split('","')[0].strip('"').lower() for line in out.splitlines() if line]
-    names = [n.rsplit("/", 1)[-1] for n in names]
-    java = sum(x in ("java", "java.exe") for x in names)
-    python = sum(x.startswith("python") for x in names)
-    return "java=%d python=%d" % (java, python)
+    return "java=%d python=%d" % (sum(x == "java.exe" for x in names), sum(x.startswith("python") for x in names))
 
 
 def report():

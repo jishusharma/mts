@@ -19,7 +19,7 @@ class T(unittest.TestCase):
         line = s.report()
         self.assertNotIn("\n", line)
         self.assertIn("free=", line)
-        self.assertTrue("java=" in line or "procs=n/a" in line)
+        self.assertIn("java=", line)
 
 
 if __name__ == "__main__":
