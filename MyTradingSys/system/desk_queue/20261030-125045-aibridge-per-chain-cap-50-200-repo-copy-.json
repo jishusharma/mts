@@ -1,0 +1,10 @@
+{
+  "done_when": "content.js:11 reads 'aibridge_cap: 200,' in scripts/aibridge/extension/ and in F:\\AIBridge\\extension\\; the extension is reloaded on chrome://extensions and the chat pressed F5; the status counter reads runs/200; no other constant changed; the backup F:\\AIBridge\\extension\\content.js.pre_cap200 exists.",
+  "from": "JIS-NUC",
+  "id": "20261030-125045-aibridge-per-chain-cap-50-200-repo-copy-",
+  "need": "scripts/aibridge/extension/content.js:11 is 'aibridge_cap: 50,   // blocks run in one chain before auto turns itself off'. It is the per-chain cap: content.js:405 renders the counter 'runs/<cap>', content.js:446 calls stopAuto at runs >= cap. The installed copy F:\\AIBridge\\extension\\content.js:11 carries the same 50. Change both to 200. Back up the installed file first as F:\\AIBridge\\extension\\content.js.pre_cap200 (the folder already keeps content.js.pre_cap50 etc.). Leave aibridge_max_blocks: 6 (content.js:13) and every other tunable alone. Alternative with no file edit: chrome.storage.local.set({aibridge_cap: 200}) in the extension context; content.js:589-590 reads that key at load and the value is per page.",
+  "posted": "2026-10-30T12:50:45Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "AIBridge per-chain cap 50 -> 200 (repo copy + installed extension)"
+}
