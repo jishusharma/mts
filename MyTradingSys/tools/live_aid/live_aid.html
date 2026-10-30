@@ -113,6 +113,8 @@ details[open] summary { margin-bottom: 8px; }
       <span class="big" id="g-fund">--</span><span class="sub" id="g-fund-sub"></span></div>
     <div class="tile"><span class="lab">Session<span class="src" title="Session names: OURS. Opens: London 08:00, New York 09:30 local.">OURS</span></span>
       <span class="big" id="session">--</span><span class="sub" id="cd-us"></span><span class="sub" id="cd-eu"></span></div>
+    <div class="tile"><span class="lab">News pulse, 60 min<span class="src" title="Tree News REST (news.treeofalpha.com/api/news), importance 0-10 SOURCED. Mark at 7 or more, 60 min window, EVENT at 3 or more such items, 15 s poll: OURS (research/news_feeds_2026-10-30/REPORT.md N1/N2). Context only, gates nothing.">MIXED</span></span>
+      <span class="big" id="g-news">--</span><span class="sub" id="g-news-sub"></span></div>
   </div>
 
   <!-- 3. COLUMNS -->
@@ -156,6 +158,11 @@ details[open] summary { margin-bottom: 8px; }
       <ul id="coil" class="it"></ul>
       <span class="tag">Odds = MEASURED base rates, Binance 2022-01..2026-09, no fees, pierces within 2 h of the US open (research/pre_us_squeeze_2026-10-29, research/bb_pierce_force_2026-10-29). Thresholds OURS. Descriptive, not an edge, never an entry call.</span>
     </section>
+    <section id="p-news">
+      <div class="hd"><h2>News headlines</h2><span class="tag" id="news-feed"></span><span class="age" id="age-news">--</span></div>
+      <ul id="news" class="it"></ul>
+      <span class="tag">Tree News, last 12. Score = importance 0-10 (SOURCED). Marked at 7 or more, class tags (hack, halt, ETF, Fed/CPI, war, delist) and the QUIET/BUSY/EVENT tile: OURS. Context only, never an entry or exit call.</span>
+    </section>
   </div>
 
   <!-- 4. NOTES -->
@@ -180,7 +187,7 @@ details[open] summary { margin-bottom: 8px; }
   var S = { dbt: null, dbtMark: null, dbtT: 0, dbtErr: '', bin: null, binT: 0, binErr: '',
             a15: NaN, tf: {}, venue: null, klErr: '', klT: 0, daily: null,
             trades: [], trT: 0, book: null, bookT: 0, oi: null, oiT: 0, oiHist: [], flowErr: '',
-            liq: [], lq: { BYBIT: { t: 0, err: '' }, BINANCE: { t: 0, err: '' } }, byt: { d: null, t: 0 } };
+            news: null, newsT: 0, newsErr: '', liq: [], lq: { BYBIT: { t: 0, err: '' }, BINANCE: { t: 0, err: '' } }, byt: { d: null, t: 0 } };
 
   function fmt(x, d) { return isFinite(x) ? x.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }) : '--'; }
   function sgn(x, d) { return isFinite(x) ? (x > 0 ? '+' : '') + fmt(x, d) : '--'; }
@@ -483,6 +490,7 @@ details[open] summary { margin-bottom: 8px; }
   }
 
   function render() {
+    renderNews(Date.now());
     var now = Date.now();
     S.a15 = atr15();
     renderTop();
@@ -685,6 +693,35 @@ details[open] summary { margin-bottom: 8px; }
     age('age-it', Math.max(S.trT, S.bookT, S.oiT));
   }
 
+  // ---------- news (Tree News REST, CORS *; context only) ----------
+  var NEWS_POLL = 15000, NEWS_URL = 'https://news.treeofalpha.com/api/news?limit=50';
+  var TAGNAME = { hack: 'hack', halt: 'halt', etf: 'ETF', fed: 'Fed/CPI', war: 'war', delist: 'delist' };
+  function loadNews() {
+    getJson(NEWS_URL).then(function (j) {
+      if (!Array.isArray(j)) throw new Error('unexpected reply');
+      S.news = j.map(function (x) { return { time: +x.time, importance: typeof x.importance === 'number' ? x.importance : parseFloat(x.importance), title: x.title || x.en || '', source: x.source || x.sourceName || '' }; })
+        .filter(function (x) { return isFinite(x.time); }).sort(function (a, b) { return b.time - a.time; });
+      S.newsT = Date.now(); S.newsErr = '';
+    }, function (e) { S.newsErr = e.name === 'AbortError' ? 'timeout' : e.message; });
+  }
+  function renderNews(now) {
+    var live = S.news && S.newsT && now - S.newsT <= 3 * NEWS_POLL;
+    if (!live) { // fail closed: grey NO FEED, no stale headlines
+      $('g-news').innerHTML = '<span class="dim">NO FEED</span>'; $('g-news-sub').textContent = S.newsErr || 'not connected yet';
+      $('news').innerHTML = '<li>' + NID + ' <span class="err">' + esc(S.newsErr || 'not connected yet') + '</span></li>'; $('news-feed').textContent = 'down'; $('age-news').textContent = '--'; return;
+    }
+    var p = A.pulse(S.news, now);
+    $('g-news').innerHTML = '<span class="' + (p.level === 'EVENT' ? 'down' : p.level === 'BUSY' ? '' : 'dim') + '">' + p.level + '</span>';
+    $('g-news-sub').textContent = p.n + ' item' + (p.n === 1 ? '' : 's') + ' scored ' + A.NW.hi + ' or more in 60 min';
+    $('news-feed').textContent = 'Tree News live';
+    $('news').innerHTML = S.news.slice(0, 12).map(function (x) {
+      var hi = isFinite(x.importance) && x.importance >= A.NW.hi;
+      var tg = A.wordTags(x.title).map(function (k) { return '<span class="chip">' + TAGNAME[k] + '</span>'; }).join('');
+      return '<li><span class="lab">' + hhmm(x.time) + ' ' + esc(x.source) + '<span class="src" title="importance, SOURCED (Tree News)">' + (isFinite(x.importance) ? fmt(x.importance, 1) : '--') + '</span></span><span' + (hi ? ' class="down"' : '') + '>' + (hi ? '&#9650; ' : '') + esc(x.title) + tg + '</span></li>';
+    }).join('') || '<li>no headlines</li>';
+    age('age-news', S.newsT);
+  }
+
   // ---------- inputs ----------
   var UIKEY = 'liveaid.ui.more';
   try { $('more-tog').checked = localStorage.getItem(UIKEY) === '1'; } catch (e) {}
@@ -716,6 +753,7 @@ details[open] summary { margin-bottom: 8px; }
   // ---------- start ----------
   deribitWs(); binanceWs(); bybitLiqWs(); binanceLiqWs();
   loadAll(true).then(loadDaily);
+  loadNews(); setInterval(loadNews, NEWS_POLL);
   setInterval(function () { loadAll(false); }, 5000);
   setInterval(loadDaily, 300000);
   setInterval(render, 1000);
