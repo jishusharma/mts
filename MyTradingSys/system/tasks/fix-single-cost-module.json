@@ -2,6 +2,22 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-30T09:55:08Z",
+    "misses": 41,
+    "reads": [
+      "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/costs.csv",
+      "MyTradingSys/backtest/fees.py",
+      "scripts/dev/run_extra_tests.py",
+      "scripts/dev/run_all_tests.py",
+      "MyTradingSys/backtest/bigtrade/capture.py",
+      "MyTradingSys/backtest/layers/fabio/run_backtest.py",
+      "MyTradingSys/backtest/tom_stop_width.py",
+      "MyTradingSys/research/rsi_deep_buy_2026-10-19/econ_floor.py"
+    ],
+    "session": "agent-a34e394e80499659d"
+  },
   "created": "2026-10-25T19:25:14Z",
   "depends_on": [
     "gemini-laptop-open-questions"
