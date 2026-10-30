@@ -3,14 +3,13 @@
   "asks": "",
   "commands": [],
   "context": {
-    "calls_to_edit": 20,
-    "folded": "2026-10-30T08:16:55Z",
-    "misses": 33,
+    "calls_to_edit": null,
+    "folded": "2026-10-30T10:22:59Z",
+    "misses": 50,
     "reads": [
-      "scripts/dev/mts_doctor.py",
-      "MyTradingSys/tests/test_operator_questions_pending.py"
+      "MyTradingSys/tests/test_role_roster.py"
     ],
-    "session": "5fdeeddb-5a32-4b7b-af79-35c62cbfa6e5"
+    "session": "agent-ae74a25c7b6cdedbb"
   },
   "created": "2026-10-30T08:05:53Z",
   "depends_on": [],
