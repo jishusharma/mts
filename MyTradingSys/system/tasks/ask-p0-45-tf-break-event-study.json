@@ -1,28 +1,17 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "2026-10-30T08:37:54Z",
-  "commands": [
-    "python study.py events.csv"
-  ],
+  "commands": [],
   "created": "2026-10-30T08:24:24Z",
   "depends_on": [],
-  "done_when": "RESULT.md with code-computed tables exists",
-  "est_turns": 20,
+  "done_when": "",
+  "est_turns": null,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Per-TF event study of indicator state before/at/after a swing break",
+  "goal": "",
   "id": "ask-p0-45-tf-break-event-study",
   "lane": "SONNET",
-  "latest": [
-    {
-      "kind": "ship",
-      "line": "Reduced per-TF event study done, see research/tf_break_event_study_2026-10-30/RESULT.md",
-      "ref": "6e68eed8f",
-      "utc": "2026-10-30T08:37:54Z"
-    }
-  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -30,34 +19,18 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T08:37:52Z",
   "refs": [
     "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md"
   ],
-  "result": "Reduced per-TF event study done, see research/tf_break_event_study_2026-10-30/RESULT.md",
-  "result_receipt": {
-    "trust": {
-      "tag": "UNCHECKED"
-    }
-  },
-  "scope_in": [
-    "MyTradingSys/research/tf_break_event_study_2026-10-30"
-  ],
-  "scope_out": [
-    "live-tree"
-  ],
-  "scope_sha": "",
-  "size": "M",
-  "sources": [
-    "MyTradingSys/research/fast_track_2026-09-27/T058_BROKEN_EXTREMES.md"
-  ],
-  "state": "done",
-  "steps": [
-    "run study.py and analyze.py"
-  ],
-  "taken": "2026-10-30T08:37:54Z",
-  "tests": "none-research-only",
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
   "title": "T058: per-timeframe (W/D/4h/1h/15m) event study of indicator state before/at/after the break (ledger P0-45)",
-  "weight": "ROUTINE",
-  "worker": "session"
+  "weight": "",
+  "worker": ""
 }

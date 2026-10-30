@@ -150,3 +150,4 @@ scripts/dev/test_retention.py
 scripts/dev/test_tom_noise_units.py
 scripts/dev/test_coord_overhead.py
 scripts/dev/test_check_sourced_params.py
+scripts/dev/test_fix_verifier.py
