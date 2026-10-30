@@ -329,6 +329,9 @@ def asks_gaps(repo=None, now=None, hours=24, days=14, rows=None, cards=None, com
         xf = repo / "MyTradingSys" / "items" / "INDEX.md"
         index_text = xf.read_text(encoding="utf-8") if xf.is_file() else ""
     lo, hi = now - timedelta(days=days), now - timedelta(hours=hours)
+    m = re.search(r"Audited through:\s*(\S+)", ledger_text)   # the ledger covers every ask up to this UTC
+    if m and _utc(m.group(1)):
+        lo = max(lo, _utc(m.group(1)))
     cand = []
     for r in rows:
         t, text = _utc(r.get("utc")), (r.get("prompt") or "").strip()
