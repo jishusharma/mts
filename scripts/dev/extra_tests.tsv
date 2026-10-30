@@ -143,4 +143,3 @@ MyTradingSys/tools/live_aid/test_live_aid.py
 scripts/dev/test_sync_push_race.py
 scripts/dev/test_announcements_ids.py
 scripts/dev/test_status_board.py
-scripts/dev/test_station_disk_report.py
