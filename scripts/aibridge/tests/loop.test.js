@@ -71,4 +71,33 @@ t('linkLabel: visible status text names state, tab hidden, ages', () => {
   const l = L.linkLabel(L.linkState(10000, { port: 1000, worker: 9900 }), true);
   assert.ok(l.includes('degraded') && l.includes('tab hidden') && l.includes('worker 0.1s'));
 });
-console.log(n + ' passed');
+
+// B210: a lost completion frame must not hold the run lock forever. guardCall expires it and resyncs with the agent.
+const pending = [];
+function a(name, fn) { pending.push(fn().then(() => { n++; console.log('PASS ' + name); })); }
+a('guardCall: lost completion frame -> lock released with a visible reason and the agent queue', async () => {
+  const never = () => new Promise(() => {});
+  const r = await L.guardCall(never, 30, async () => ({ ok: true, status: 200, body: { running: 0 } }));
+  assert.strictEqual(r.ok, false); assert.strictEqual(r.cls, 'lock_expired');
+  assert.ok(/lock released after/.test(r.error) && /agent reports running 0/.test(r.error) && /nothing was running/.test(r.error), r.error);
+});
+a('guardCall: agent still running at expiry is said, not hidden', async () => {
+  const r = await L.guardCall(() => new Promise(() => {}), 30, async () => ({ ok: true, status: 200, body: { running: 2 } }));
+  assert.ok(/agent reports running 2/.test(r.error) && !/nothing was running/.test(r.error), r.error);
+});
+a('guardCall: resync itself dead still releases the lock', async () => {
+  const r = await L.guardCall(() => new Promise(() => {}), 30, async () => null);
+  assert.strictEqual(r.cls, 'lock_expired'); assert.ok(/agent did not answer/.test(r.error), r.error);
+});
+a('guardCall: a normal answer passes through untouched', async () => {
+  const resp = { ok: true, status: 200, body: { exit: 0 } };
+  assert.strictEqual(await L.guardCall(async () => resp, 1000, async () => null), resp);
+});
+a('lockMs: twice the block timeout, default for a block without one', async () => {
+  assert.strictEqual(L.lockMs(120), 240000); assert.strictEqual(L.lockMs(undefined), 1200000);
+});
+a('formatResult: lock_expired prints an ERROR line the prompt can name', async () => {
+  const s = L.formatResult(5, 'x', { ok: false, cls: 'lock_expired', error: 'lock released after 3 s' });
+  assert.ok(s.includes('ERROR lock_expired: lock released after 3 s'));
+});
+Promise.all(pending).then(() => console.log(n + ' passed'), (e) => { console.error('FAIL', e); process.exit(1); });

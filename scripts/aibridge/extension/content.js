@@ -253,7 +253,7 @@
     panel.style.display = 'block'; panel.textContent = 'running...';
     var myToken = token;
     var rid = newRid();
-    callWithRetry(cmd, opts, false, rid).then(async function (resp0) {
+    L.guardCall(function () { return callWithRetry(cmd, opts, false, rid); }, L.lockMs(opts.timeout_s), function () { return ping(opts.host); }).then(async function (resp0) {
       var resp = vet(rid, cmd, resp0, !!opts.task);
       btn.disabled = false;
       panel.textContent = panelText(resp);
@@ -457,7 +457,7 @@
       if (!it.cmd && !it.opts.task) { it.resp = { ok: false, cls: 'NOT_RUN', error: 'NOT RUN: the block has no command after the # AIRUN line.' }; continue; }
       runs++; refreshUi();
       setStatus('running #' + it.n + (seenN > 1 ? ' (block ' + (i + 1) + '/' + seenN + ')' : '') + ': ' + it.cmd.split('\n')[0].slice(0, 60));
-      var resp = vet(it.rid, it.cmd, await callWithRetry(it.cmd, it.opts, true, it.rid), !!it.opts.task);
+      var resp = vet(it.rid, it.cmd, await L.guardCall(function () { return callWithRetry(it.cmd, it.opts, true, it.rid); }, L.lockMs(it.opts.timeout_s), function () { return ping(it.opts.host); }), !!it.opts.task);
       it.resp = resp; ran++;
       if (it.block.__aibPanel) { it.block.__aibPanel.style.display = 'block'; it.block.__aibPanel.textContent = '[auto #' + it.n + ']\n' + panelText(resp); }
       if (myToken !== token) return;

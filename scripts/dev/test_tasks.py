@@ -616,6 +616,17 @@ class StateTagTest(NextSkipsClaimedTest):
         self.assertIn("ready", line)
         self.assertIn("STALE:scope changed", line)
 
+    def test_list_hides_closed_cards_unless_all(self):
+        """B209 item 2: `list` put ~700 closed rows into a boot output. Default = open cards only; --all opts in."""
+        self.commit("src/a.py", "x=1" + NL)
+        self.card()
+        T.save(self.repo, good("TS2", state="done", scope_in=["src/a.py (the module)"], refs=["B900"]))
+        out = self.run_cli("list")[1]
+        self.assertIn("TS1", out)
+        self.assertNotIn("TS2", out)
+        self.assertIn("TS2", self.run_cli("list", "--all")[1])
+        self.assertIn("TS2", self.run_cli("list", "--state", "done")[1])
+
     def test_dispatch_excludes_a_ready_card_whose_scope_already_shipped_on_trunk(self):
         """The Lead pick path (tasks.py dispatch, session_planner.md Duty 2) must not hand out the same stale-but-ready
         card that next/take/brief already refuse -- exclusion() read only card['state'] and missed it."""

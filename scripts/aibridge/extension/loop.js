@@ -1,7 +1,7 @@
 // loop.js - pure helpers for the auto-loop. No DOM, no chrome.* so node can test them.
 (function (root) {
   var L = {};
-  L.VERSION = '0.7.2';
+  L.VERSION = '0.7.3';
 
   L.fnv = function (s) {
     var h = 2166136261;
@@ -57,6 +57,32 @@
     }
     lines.push('[END AIRUN RESULT #' + n + ']');
     return lines.join('\n');
+  };
+
+  // B210: the run lock. A pending run expires at twice its block timeout (default block timeout 600 s), so a lost
+  // completion frame cannot hold the panel on "running #N" for ever.
+  L.lockMs = function (timeoutS) { return 2 * 1000 * (timeoutS && timeoutS > 0 ? timeoutS : 600); };
+  // callFn() -> Promise of the agent answer. If it has not settled after ms, ask the agent for its queue (resyncFn() ->
+  // Promise of a ping answer or null) and resolve with a visible lock_expired result instead. A late answer is dropped.
+  L.guardCall = function (callFn, ms, resyncFn) {
+    return new Promise(function (resolve) {
+      var done = false;
+      var timer = setTimeout(function () {
+        if (done) return;
+        done = true;
+        var secs = Math.round(ms / 1000);
+        var head = 'lock released after ' + secs + ' s: no completion frame arrived from the agent';
+        Promise.resolve().then(function () { return resyncFn(); }).then(function (r) {
+          var b = r && r.ok && r.body ? r.body : null;
+          if (!b) return head + '; the agent did not answer the queue check. Re-send the block; if it repeats, reload the extension and press F5.';
+          return head + '; agent reports running ' + b.running + (Number(b.running) === 0 ? ', nothing was running' : ', it may still be working on the earlier block') + '. The block may or may not have run: check before re-sending.';
+        }, function () { return head + '; the queue check failed.'; }).then(function (msg) {
+          resolve({ ok: false, cls: 'lock_expired', error: msg });
+        });
+      }, ms);
+      Promise.resolve().then(callFn).then(function (r) { if (done) return; done = true; clearTimeout(timer); resolve(r); },
+        function (e) { if (done) return; done = true; clearTimeout(timer); resolve({ ok: false, cls: 'extension_link', error: String(e) }); });
+    });
   };
 
   // Does the reply the agent saw match the block we sent? (rid echoed, same line count). null = fine, else a problem text.
