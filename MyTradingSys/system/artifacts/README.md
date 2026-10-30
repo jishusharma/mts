@@ -54,3 +54,6 @@ python scripts/dev/artifacts.py plan --account <jishu.awgp|jishu.sharma>
 Do each REPUBLISH / PUBLISH NEW / RECORD URL line (read the Artifacts list for a missing url), update registry.json
 (urls, last_published), `artifacts.py check`, ship via sync.py. Leave the OPERATOR lines to Jis.
 ```
+
+## 2026-10-31 declutter (operator)
+Live set: MTS Home (hub), Research Map, Session Planner, MTS Layers, Sim Desk, CBP Analyst Desk (the one CBP page, rebuilt every CBP run), Tom and Fabio deck + Setup Review, BTC Live Aid. Retired (registry `retire`, operator deletes in the app): MTS Control Room, CBP Monday Desk, CBP Consensus Desk, CBP Desk. Retired pages are skipped by `build`, listed on Home under old copies to delete.
