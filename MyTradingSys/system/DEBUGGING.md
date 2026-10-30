@@ -30,14 +30,6 @@ the others fail silently, so run it by hand to see the error: `echo {} | python 
 | stop refused | `scripts/dev/stop_guard.py` | `~/.claude/mts-stop-guard.json` |
 | Agent/Task/Workflow spawn refused (`USAGE GATE:`) or no USAGE: reminder | `scripts/dev/usage_reminder.py` (gate: stale get_usage, 2 agents running, 5 h > elapsed% + 10; after get_usage run `usage_reminder.py record --five P --elapsed E`) | `$MTS_USAGE_STATE` or `~/.claude/mts_usage_gate.json` |
 | prompt notice "TRUNK LAG": tree behind origin/fast-track | `scripts/dev/trunk_lag.py` (`MTS_TRUNK_LAG=off`) | `<git dir>/mts_trunk_fetch` |
-| main checkout (where hooks run) far behind: hook fixes never run there | catch-up below | the main checkout | any session on that machine |
-
-Main checkout catch-up (JIS-NUC 2026-10-30: 1891 behind, 105 dirty files, 103 of them stale trunk copies from a half-done refresh):
-1. `git -C <main> fetch origin`; `git -C <main> rev-list --count HEAD..origin/fast-track`. 0: done.
-2. Back up first: `git diff --cached --binary` and `git diff --binary` into `../_main_backup_<date>/`, untracked files copied there; the index as a local branch (`git write-tree`, `git commit-tree <tree> -p HEAD`, `git branch <host>/main-index-backup-<date> <commit>`).
-3. Per dirty, staged or untracked file: content equal to some version in `git log origin/fast-track -- <file>` = stale copy, restore it (`git restore --staged .`, `git restore -- <files>`, remove stale untracked). A file with a unique edit stays as it is.
-4. `git -C <main> merge --ff-only origin/fast-track`; it refuses if a kept edit touches a file trunk changed: back that file up, restore, retry.
-Never stash, reset or rebase. Do not run `refresh_main_checkout.py --apply` on such a tree: its `stash pop` puts the stale copies back on top of the new trunk.
 | commit denied / edit note `PRESHIP` | `python scripts/dev/preship.py check` (rules: its RULES table) | `~/.claude/mts-preship-*.json` |
 | broadcast nobody reacted to | `python scripts/dev/mts_signal.py acks [<id>]` (hosts vs none/told/done); resend with `broadcast "<text>" --prio high --cmd "<command>"` | branch `mts-signals` | the sending session |
 | signal / git windows flash | `scripts/dev/mts_signal.py` | `~/.claude/mts-signals`, branch `mts-signals` |
