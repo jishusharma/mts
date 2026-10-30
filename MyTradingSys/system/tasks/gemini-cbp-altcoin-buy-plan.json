@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T19:29:33Z",
   "commands": [
     "python scripts/dev/fetch_captions_timed.py --analyst Rekt --channel @RektCapital --latest 5 --out MyTradingSys/research/cbp/transcripts_2026-10-31",
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/cbp/ALT_BUY_PLAN_2026-10-31.md"
@@ -16,7 +17,14 @@
   "id": "gemini-cbp-altcoin-buy-plan",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/cbp/ALT_BUY_PLAN_2026-10-31.md",
+      "ref": "7e1fbe671",
+      "utc": "2026-10-30T19:29:33Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -28,7 +36,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/cbp/ALT_BUY_PLAN_2026-10-31.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/cbp/ALT_BUY_PLAN_2026-10-31.md (new), transcripts under research/cbp/transcripts_2026-10-31/"
   ],
@@ -38,13 +51,14 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "fetch captions: 6 channels x latest 5 with fetch_captions_timed.py (one try per video; 429 -> UNVERIFIED)",
     "keyword scan per transcript: altcoin, alts, dominance, rotation, buy, accumulate, DCA, cycle, bottom, top; read the surrounding lines",
     "write ALT_BUY_PLAN_2026-10-31.md: table analyst | rule (when) | which alts | level or date | video id | timestamp | quote; then a per-analyst section with the full quotes",
     "run verify_extract_quotes.py until exit 0; commit on the branch with a Result: line (videos read, rules found, analysts with NOT_IN_DATA)"
   ],
+  "taken": "2026-10-30T19:29:33Z",
   "tests": "verify_extract_quotes.py exit 0 is the gate; docs only",
   "title": "[GEMINI] CBP altcoin buy plan: what the T1 CBP analysts say about WHEN to buy alts and WHICH (Rekt, Cowen, Bob Loukas, Jala, vdPoppe, CCU), latest 5 videos each",
   "weight": "ROUTINE",
