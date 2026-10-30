@@ -38,3 +38,12 @@ Is it true that when BTC makes a move in opposite direction before breaking out 
  peak in summer = macro-release hint for step 4 (news), untested. Cloud AI: not needed now; if used, CLD per SURFACE_POLICY s1,
  APP recommended (s1b). Next: N1 OOS replication on 2019-09..2021-12; N3 context-only "US open in N min" alert line.
  Defect filed: B102 (fixed-UTC session anchors in offline models).
+
+## VERBATIM ASK (operator, 2026-10-30, news module)
+I think what is missing from the dashboard is also news. ... yesterday we saw the market sell-off, and there was some Binance hack of $6 billion. So we never could catch it, not early, not late. ... do a proper research on this, especially for Bitcoin. ... What are the things that we can scan every day? Keep scanning, keep polling ... What are the feeds for this? What are the plugins for this ... how MTS can also be prepared for that.
+
+## STATE (cont.)
+2026-10-30 step 4 (news) RESEARCH DONE: research/news_feeds_2026-10-30/REPORT.md. Tree News REST (free, CORS *,
+timestamped, importance score) had the hack at 20:39:00 UTC, 15 min after the 20:24 on-chain drain and before the
+20:40-20:45 main leg (Deribit 5m); CoinDesk RSS 21:12 = after the low. Normal day 5-9 items at importance >= 7, hack day 42.
+Cards: live-aid-news-panel (N1/N2/N6), live-aid-macro-calendar (N3), news-hot-wallet-watch (N4), news-event-study (N5).
