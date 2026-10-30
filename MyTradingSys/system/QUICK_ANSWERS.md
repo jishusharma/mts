@@ -58,6 +58,7 @@ The operator is not a developer: do these, do not ask, do not re-investigate. Ha
 ## Commands the operator must run (no copy-paste)
 Any command the operator has to run, in admin or normal PowerShell or any shell: open it with the terminal tool (`mcp__terminal__run_in_terminal`) with the command already typed, so the operator only presses Enter or UAC Yes. For admin: `Start-Process pwsh -Verb RunAs -ArgumentList '-NoExit','-Command','<cmd>'`. Never paste the command in chat as the only delivery. Standing rule, repeated by the operator.
 
+- Ask unanswered / who owes a reply: `python scripts/dev/mts_signal.py asks` (OVERDUE with age, escalation host); rules in ROUTING.md Signal row. GPT/Gemini lanes have no hooks: the host's Claude session (supervisor) acks and answers or routes for them.
 - HIGH broadcast stuck (operator 2026-10-25: b-10b3d8 sat `told` ~25 h): `told` expires after 2 h (`TOLD_TTL_H` in mts_signal.py): loud again on every prompt, Stop blocks it; a broadcast with `--cmd` takes `ack <id> told --note "<blocker>"` only. Hosts without a session (live Lenovo): `python scripts/dev/mts_signal.py pending --host <h> --json`; mts_doctor BROADCAST warns after 6 h naming host and id; run the cmd there by hand, then `ack <id> done`.
 
 ## Archive, then delete

@@ -627,6 +627,109 @@ class SignalTest(unittest.TestCase):
         self.assertEqual(S.clean("mail alice.fake@example.test now"), "mail [cut] now")
 
 
+class AskTest(unittest.TestCase):
+    """Mandatory reply (operator 2026-10-30): an ask has an id, a minimum wait and a deadline; the target must ack and answer;
+    a same-text re-ask inside the wait is refused; past the deadline it escalates once to the target login's supervisor host."""
+    setUp, tearDown, machine, payload = SignalTest.setUp, SignalTest.tearDown, SignalTest.machine, SignalTest.payload
+
+    def ask(self, text="resend the budget file", to="jis-nb", *extra):
+        self.machine("jis-nuc", "sharma")
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = S.main(["ask", text, "--to", to, *extra])
+        self.assertEqual(rc, 0, buf.getvalue())
+        return [r for r in S.load(S.ensure()) if r.get("kind") == "ask"][-1]
+
+    def test_ask_record_carries_id_wait_deadline(self):
+        a = self.ask()
+        self.assertTrue(a["id"].startswith("q-"))
+        self.assertEqual((a["to"], a["wait"], a["due"], a["type"]), ("jis-nb", 15, 60, "ask"))
+        self.assertLessEqual(len(a["text"]), 250)
+
+    def test_send_kind_ask_takes_the_ask_path(self):
+        self.machine("jis-nuc", "sharma")
+        with contextlib.redirect_stdout(io.StringIO()):
+            S.main(["send", "THINK c1: route", "--to", "all", "--kind", "ask"])
+        a = [r for r in S.load(S.ensure()) if r.get("kind") == "ask"]
+        self.assertEqual(len(a), 1)
+        self.assertTrue(a[0].get("id", "").startswith("q-"))
+
+    def test_target_sees_ask_every_prompt_until_told_and_stop_blocks_once(self):
+        qid = self.ask()["id"]
+        self.machine("jis-nb", "pro")
+        out = S.handle(self.payload("UserPromptSubmit"))
+        self.assertIn("[MTS ASK", out)
+        self.assertIn(qid, out)
+        stop = lambda **kw: S.handle(self.payload("Stop", **kw))
+        self.assertEqual(json.loads(stop(last_assistant_message="all done"))["decision"], "block")
+        self.assertEqual(stop(last_assistant_message="all done", stop_hook_active=True), "")
+        self.assertEqual(stop(last_assistant_message="acked %s" % qid), "")
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(S.main(["ack", qid, "told"]), 0)
+        self.assertEqual(stop(last_assistant_message="all done"), "")
+        (S.state_dir() / "last_fetch").unlink()
+        self.assertNotIn(qid, S.handle(self.payload("UserPromptSubmit")))       # told and not overdue: quiet
+        self.machine("other", "x")
+        self.assertEqual(S.ask_block(S.load(S.ensure()), "UserPromptSubmit"), "")   # not addressed to this host
+
+    def test_reask_inside_min_wait_refused_after_it_allowed(self):
+        a = self.ask()
+        self.assertEqual(S.new_ask("Resend  the budget file", to="jis-nb")[0], a["id"])     # same text, collapsed
+        rows = S.load(S.ensure())
+        self.assertEqual(len([r for r in rows if r.get("kind") == "ask"]), 1)
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(S.main(["ask", "resend the budget file", "--to", "jis-nb"]), 3)
+        later = S._t(a) + timedelta(minutes=16)
+        qid2, msg = S.new_ask("resend the budget file", to="jis-nb", at=later)
+        self.assertNotEqual(qid2, a["id"], msg)
+
+    def test_answer_closes_ask_and_reaches_asker(self):
+        qid = self.ask()["id"]
+        self.machine("jis-nb", "pro")
+        S.ensure()
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(S.main(["ack", qid, "done"]), 2)                    # an answer needs --note
+            self.assertEqual(S.main(["ack", qid, "done", "--note", "resent as budget_v2"]), 0)
+        self.machine("jis-nuc", "sharma")
+        rows = S.load(S.ensure())
+        self.assertEqual(S.asks_open(rows), [])
+        self.assertIn("resent as budget_v2", " ".join(r.get("text", "") for r in S.unseen_for(rows, "0")))
+
+    def test_overdue_escalates_once_to_target_login_supervisor_and_lists_overdue(self):
+        self.machine("jis-nuc", "sharma")
+        S.send("BUDGET login=C 5h=10% week=50% reset=x sup=JIS-LAPTOP mode=NORMAL", kind="note")
+        a = self.ask("which reset is right", "C")
+        rows = S.load(S.ensure())
+        at = S._t(a) + timedelta(minutes=61)
+        self.assertEqual(S.escalate(rows, at=S._t(a) + timedelta(minutes=59), send_fn=lambda t, x: None), [])
+        sent = []
+        self.assertEqual(S.escalate(rows, at=at, send_fn=lambda t, x: sent.append((t, x))), [(a["id"], "jis-laptop")])
+        self.assertLessEqual(len(sent[0][0]), 250)
+        S.escalate(rows, at=at)                                                   # real send
+        rows = S.load(S.ensure())
+        self.assertEqual(S.escalate(rows, at=at, send_fn=lambda t, x: sent.append(x)), [])      # once only
+        r = S.ask_rows(rows, at=at)[0]
+        self.assertTrue(r["overdue"])
+        self.assertEqual((r["age_min"], r["esc"]), (61, "jis-laptop"))
+        self.machine("jis-laptop", "lenovo")                                     # the supervisor host now sees it
+        self.assertIn("OVERDUE", S.ask_block(S.load(S.ensure()), "UserPromptSubmit", at=at))
+
+    def test_login_letter_target_and_worker_env_skip(self):
+        qid = self.ask("x", "C")["id"]
+        self.machine("jis-nb", "pro")
+        os.environ["MTS_LOGIN"] = "C"
+        rows = S.load(S.ensure())
+        self.assertIn(qid, S.ask_block(rows, "UserPromptSubmit"))
+        os.environ["MTS_LOGIN"] = "A"
+        self.assertEqual(S.ask_block(rows, "UserPromptSubmit"), "")
+        os.environ["MTS_LOGIN"] = "C"
+        os.environ["MTS_ROLE"] = "Builder"
+        try:
+            self.assertEqual(S.ask_block(rows, "UserPromptSubmit"), "")
+        finally:
+            os.environ.pop("MTS_ROLE", None)
+
+
 class ExhaustReadTest(unittest.TestCase):
     """B199 (BUGS.md): a quota number names its source and read time; exhaust.py plan --read <UTC of the get_usage call>
     refuses a reading older than 10 min. Expected values are hand-counted minutes on a fixed clock, not read from exhaust.py."""

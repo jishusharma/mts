@@ -9,6 +9,18 @@ import status_board as sb  # noqa: E402
 
 
 class T(unittest.TestCase):
+    def test_asks_overdue_first_with_age(self):
+        asks = [{"id": "q-1", "from": "jis-nb/C", "to": "A", "state": "none", "age_min": 20, "due_min": 60, "overdue": False, "esc": "", "text": "x"},
+                {"id": "q-2", "from": "jis-nuc/A", "to": "C", "state": "told", "age_min": 90, "due_min": 60, "overdue": True, "esc": "jis-nb", "text": "y"}]
+        high = [{"id": "b-1", "host": "vm", "state": "none", "hours": 3.0, "note": ""}]
+        out = sb.fmt_asks(asks, high)
+        self.assertEqual(out[0], "2 OVERDUE of 3 waiting")
+        self.assertIn("| OVERDUE | q-2 |", out[3])
+        self.assertIn("1.5 h", out[3])
+        self.assertIn("| OVERDUE | b-1 |", out[4])
+        self.assertIn("| open | q-1 |", out[5])
+        self.assertEqual(sb.fmt_asks([], []), ["No ask or HIGH broadcast waits for a reply."])
+
     def test_budget_newest_per_login(self):
         txt = ("1700Z h/C [note] BUDGET login=C 5h=10% week=80% reset=2026-10-27T20:00Z sup=X\n"
                "1750Z h/C [note] BUDGET login=C 5h=12% week=81% reset=2026-10-27T20:00Z sup=X\n"
