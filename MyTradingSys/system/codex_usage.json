@@ -3,10 +3,10 @@
   "plan": "plus",
   "week_resets": 1793780113,
   "week_used": 53.0,
-  "window_resets": 1793365056,
-  "window_used": 23.0
+  "window_resets": 1793408675,
+  "window_used": 1.0
  },
- "at": "2026-10-30T12:40:18Z",
+ "at": "2026-10-30T20:30:16Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -22,10 +22,40 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 3.0,
-  "window_pts": 3.0,
-  "window_runs": 6
+  "window_pts": 1.0,
+  "window_runs": 1
  },
  "runs": [
+  {
+   "at": "2026-10-30T20:28:34Z",
+   "card": "gpt-bug-hunt-auto-trader-fail-closed",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 101,
+   "tokens_out": 6911,
+   "tokens_total": 751508,
+   "tokens_uncached": 72085,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
+  {
+   "at": "2026-10-30T20:04:24Z",
+   "card": "gpt-audit-formulas-vs-rsi-layer",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 50,
+   "tokens_out": 3520,
+   "tokens_total": 320340,
+   "tokens_uncached": 38676,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-30T12:39:13Z",
    "card": "gpt-audit-formulas-vs-pizzino-layer",
@@ -143,36 +173,6 @@
    "tokens_out": 4101,
    "tokens_total": 454322,
    "tokens_uncached": 31533,
-   "week_pts": 0.0,
-   "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-30T03:27:54Z",
-   "card": "gpt-spec-tests-tom-noise-units",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "KIP\nStep 5: Maven tests: SKIP\nStep 5b: Layer tests: SKIP\nStep 5c: Options tests: SKIP\nStep 6: Backtest tests: SKIP\n=============================================",
-   "outcome": "SHIP_FAILED",
-   "seconds": 134,
-   "tokens_out": 9145,
-   "tokens_total": 709305,
-   "tokens_uncached": 48000,
-   "week_pts": 1.0,
-   "window_pts": 2.0
-  },
-  {
-   "at": "2026-10-30T03:01:29Z",
-   "card": "gpt-retention-spec-tests",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 98,
-   "tokens_out": 6373,
-   "tokens_total": 530695,
-   "tokens_uncached": 33954,
    "week_pts": 0.0,
    "window_pts": 1.0
   }

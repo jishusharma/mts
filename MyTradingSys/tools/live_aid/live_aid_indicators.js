@@ -555,8 +555,8 @@
   var C24 = { study: 'C24, Bybit 5m 07-02..10-30', baseUp: 52, baseDrop: 6,
               rebuilding: { n: 18, up: 53 }, flat: { n: 9, up: 56 }, falling: { n: 22, up: 55, drop: 14 } };
   function oiExpect(e, path) {
-    if (!e) return { measured: false, text: 'No flush or squeeze in the last 60 min. What follows a six-state read is not measured yet (C25, BACKTEST_CANDIDATES.md).' };
-    if (e.kind === 'SQUEEZE') return { measured: false, text: 'What follows a squeeze is not measured yet (C26, BACKTEST_CANDIDATES.md).' };
+    if (!e) return { measured: false, text: 'No flush or squeeze in the last 60 min. What follows a six-state read is not measured yet (C26, BACKTEST_CANDIDATES.md).' };
+    if (e.kind === 'SQUEEZE') return { measured: false, text: 'What follows a squeeze is not measured yet (C27, BACKTEST_CANDIDATES.md).' };
     if (!path.done) return { measured: false, text: 'C24 reads the OI path 40 min after the flush, in ' + path.minsLeft + ' min; so far OI ' + (path.group || 'not in data') + '.' };
     if (!path.chop) return { measured: false, text: 'Price moved more than 0.8 % in the 40 min after the flush: outside the C24 sample, not measured.' };
     var g = C24[path.group], loose = e.close > -OM.flushPx ? ' C24 counted bars that closed -0.25 % or lower; this one closed ' + (e.close * 100).toFixed(2) + ' %, a loose match.' : '';
@@ -565,10 +565,31 @@
     return { measured: true, n: g.n, study: C24.study, text: t + loose };
   }
 
+  // ---------- macro calendar (card live-aid-macro-calendar). events = ForexFactory ff_calendar_thisweek.json rows
+  // {title, country, date (ISO with offset), impact, forecast, previous[, actual]}; impact is SOURCED (ForexFactory), only USD + High count.
+  // next = earliest such event with time > now (countdown >= 1 ms, never negative); last = up to 3 with time <= now, newest first
+  // (equal times keep feed order). A result is never listed before its time. actual is null when the feed carries none (it does not today).
+  function nextHighEvent(events, now) {
+    var hi = [];
+    (Array.isArray(events) ? events : []).forEach(function (e, i) {
+      if (!e || e.country !== 'USD' || e.impact !== 'High') return;
+      var t = Date.parse(e.date);
+      if (!isFinite(t)) return;
+      var a = e.actual === undefined || e.actual === null || String(e.actual).trim() === '' ? null : String(e.actual);
+      hi.push({ title: String(e.title || ''), t: t, i: i, forecast: e.forecast == null ? '' : String(e.forecast), previous: e.previous == null ? '' : String(e.previous), actual: a });
+    });
+    hi.sort(function (x, y) { return x.t - y.t || x.i - y.i; });
+    var past = hi.filter(function (x) { return x.t <= now; }), fut = hi.filter(function (x) { return x.t > now; });
+    function strip(x) { return { title: x.title, t: x.t, forecast: x.forecast, previous: x.previous, actual: x.actual }; }
+    var last = past.slice(-3).reverse().map(strip), nx = fut.length ? strip(fut[0]) : null;
+    if (nx) nx.countdownMs = fut[0].t - now;
+    return { next: nx, last: last };
+  }
+
   var api = { OM: OM, oiState: oiState, oiWindow: oiWindow, oiNet: oiNet, oiDisagree: oiDisagree, oiBars: oiBars, oiEvents: oiEvents, oiLastEvent: oiLastEvent, oiPath: oiPath, oiTrap: oiTrap, oiEventText: oiEventText, C24: C24, oiExpect: oiExpect,
     AV: AV, rosterRead: rosterRead, analystVote: analystVote, levelWatch: levelWatch, zones: zones, lean: lean, actions: actions, NW: NW, newsTags: newsTags, newsMerge: newsMerge, newsPulse: newsPulse, foldBars: foldBars, FD: FD, fundRead: fundRead, premium: premium, bybitTick: bybitTick, LQ: LQ, liqDeribit: liqDeribit, liqBybit: liqBybit, liqBinance: liqBinance, liqSum: liqSum, CP: CP, coilPierce: coilPierce, IT: IT, divergence: divergence, flow: flow, flowLive: flowLive, squeeze: squeeze, dom: dom, supports: supports, vwapTest: vwapTest,
     flagDiv: flagDiv, flagSqueeze: flagSqueeze, flagFlow: flagFlow, flagDom: flagDom, flagVwap: flagVwap, confidence: confidence, rma: rma, sma: sma, rsi: rsi, bollinger: bollinger, atr: atr, dayVwap: dayVwap, utcDays: utcDays, wavetrend: wavetrend,
-    inversePnlBtc: inversePnlBtc, closedPnlBtc: closedPnlBtc, columns: columns, UO: UO, usOpen: usOpen };
+    inversePnlBtc: inversePnlBtc, closedPnlBtc: closedPnlBtc, columns: columns, UO: UO, usOpen: usOpen, nextHighEvent: nextHighEvent };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.LiveAid = api;
 })(typeof self !== 'undefined' ? self : this);

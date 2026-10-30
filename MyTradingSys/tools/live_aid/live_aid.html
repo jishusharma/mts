@@ -157,6 +157,14 @@ details[open] summary { margin-bottom: 8px; }
     <span class="tag">Says where positions are going, not where price goes next. Only lines marked MEASURED carry a base rate; no size, no orders.</span>
   </section>
 
+  <!-- 2d. MACRO CALENDAR (card live-aid-macro-calendar; ForexFactory JSON, impact SOURCED) -->
+  <section id="p-macro">
+    <div class="hd"><h2>Macro calendar</h2><span class="src" title="Next High-impact USD event and the last 3 High-impact USD results, from the ForexFactory weekly JSON (nfs.faireconomy.media). Impact rating SOURCED (ForexFactory). Fetched once on load, then once a day; on any error, a 429 or an old copy the strip reads NO CALENDAR, never stale numbers. A result is shown only once its time has passed. The feed has no actual column today, so Actual reads not in feed.">SOURCED</span><span class="age" id="age-mc">--</span></div>
+    <div class="vrow"><span class="huge" id="mc-next">--</span><span class="sub" id="mc-sub"></span></div>
+    <div class="scroll"><table><thead><tr><th>Time</th><th>Last results</th><th>Actual</th><th>Forecast</th><th>Previous</th></tr></thead><tbody id="mc-rows"></tbody></table></div>
+    <span class="tag">Context only: a scheduled-event clock. It gates nothing; no size, no orders.</span>
+  </section>
+
   <!-- 3. COLUMNS -->
   <div class="cols">
     <section id="p-intrade">
@@ -613,6 +621,7 @@ details[open] summary { margin-bottom: 8px; }
     renderFund(now);
     renderNews(now);
     renderMoney(now);
+    renderCal(now);
     var a15 = S.a15;
 
     // 3. strip
@@ -774,6 +783,35 @@ details[open] summary { margin-bottom: 8px; }
     var lead = fD || fB;
     $('g-fund').innerHTML = lead ? pct(lead.pct8h, 4) + ' <span class="tag" style="font-size:16px">' + read(lead) + '</span>' : NID;
     $('g-fund-sub').innerHTML = (fD ? 'Deribit' : fB ? 'Bybit' : 'no funding feed reachable') + (fD && fB ? '; Bybit ' + pct(fB.pct8h, 4) + ', next ' + nextB : '');
+  }
+
+  // ---------- macro calendar (ForexFactory weekly JSON; it sends no CORS header today, so a browser block reads NO CALENDAR too) ----------
+  var CAL_URL = 'https://nfs.faireconomy.media/ff_calendar_thisweek.json', CAL_DAY = 86400000, CAL_RETRY = 1800000, CAL_MAX_AGE = 26 * 3600000;
+  S.cal = { events: null, t: 0, err: 'connecting' };
+  function loadCal() {
+    var ctl = new AbortController(), to = setTimeout(function () { ctl.abort(); }, 8000), next = CAL_RETRY;
+    return fetch(CAL_URL, { signal: ctl.signal }).then(function (r) { clearTimeout(to); if (!r.ok) throw new Error(r.status === 429 ? 'HTTP 429 (rate limited)' : 'HTTP ' + r.status); return r.json(); })
+      .then(function (a) { if (!Array.isArray(a)) throw new Error('not a list'); S.cal.events = a; S.cal.t = Date.now(); S.cal.err = ''; next = CAL_DAY; })
+      .catch(function (e) { clearTimeout(to); S.cal.events = null; S.cal.err = 'ForexFactory feed: ' + (e && e.message ? e.message : 'unreachable'); })
+      .then(function () { setTimeout(loadCal, next); });
+  }
+  function cdText(ms) {
+    var m = Math.floor(Math.max(0, ms) / 60000), d = Math.floor(m / 1440), h = Math.floor(m % 1440 / 60);
+    return d ? d + 'd ' + String(h).padStart(2, '0') + 'h' : h ? h + 'h ' + String(m % 60).padStart(2, '0') + 'm' : m < 1 ? '<1 min' : m + ' min';
+  }
+  function renderCal(now) {
+    var ok = S.cal.events && S.cal.t && now - S.cal.t <= CAL_MAX_AGE, tb = $('mc-rows');
+    $('age-mc').textContent = S.cal.t ? Math.round((now - S.cal.t) / 60000) + 'm' : '--';
+    if (!ok) {
+      $('mc-next').innerHTML = '<span class="nid">NO CALENDAR</span>'; $('mc-sub').textContent = S.cal.events ? 'calendar copy older than 26 h' : S.cal.err; tb.innerHTML = ''; return;
+    }
+    var r = A.nextHighEvent(S.cal.events, now), nx = r.next;
+    $('mc-next').textContent = nx ? 'in ' + cdText(nx.countdownMs) : 'none left';
+    $('mc-sub').textContent = nx ? nx.title + ' at ' + hhmm(nx.t) + ' (forecast ' + (nx.forecast || '--') + ', previous ' + (nx.previous || '--') + ')' : "no further High-impact USD event in this week's file";
+    tb.innerHTML = r.last.map(function (x) {
+      return '<tr><td>' + new Date(x.t).toISOString().slice(5, 16).replace('T', ' ') + 'Z</td><td>' + esc(x.title) + '</td><td>' + (x.actual === null ? '<span class="dim">not in feed</span>' : esc(x.actual)) +
+        '</td><td>' + esc(x.forecast || '--') + '</td><td>' + esc(x.previous || '--') + '</td></tr>';
+    }).join('') || '<tr><td colspan="5" class="dim">no High-impact USD result yet in this week\'s file</td></tr>';
   }
 
   // ---------- news ----------
@@ -989,6 +1027,8 @@ details[open] summary { margin-bottom: 8px; }
       S.tf['5m'] = A.foldBars(m1r, 300000); S.tf['15m'] = A.foldBars(m1r, 900000); S.tf['1h'] = A.foldBars(m1r, 3600000); S.tf['4h'] = A.foldBars(m1r, 14400000);
       S.klT = Date.now();
     } else S.klErr = 'replay fixture not loaded';
+    // Calendar in replay: the test injects window.LIVEAID_CAL (ForexFactory rows); without it the strip reads NO CALENDAR. No fetch.
+    if (Array.isArray(window.LIVEAID_CAL)) { S.cal.events = window.LIVEAID_CAL; S.cal.t = Date.now(); S.cal.err = ''; } else S.cal.err = 'replay: no calendar injected';
     setInterval(render, 1000);
     render();
     return;
@@ -1001,6 +1041,7 @@ details[open] summary { margin-bottom: 8px; }
   loadNews(); setInterval(loadNews, 15000);
   setInterval(omSample, 10000); loadBybitOi(); setInterval(loadBybitOi, 60000);
   loadBinanceOi(true); setInterval(function () { loadBinanceOi(false); }, 30000); setInterval(function () { loadBinanceOi(true); }, 300000);
+  loadCal();
   render();
 })();
 </script>
