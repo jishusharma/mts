@@ -5,13 +5,22 @@
   "created": "2026-10-30T20:31:49Z",
   "depends_on": [],
   "done_when": "Opening live_aid.html over file:// or the local server on the desktop shows the next High USD event from a snapshot file written by the script (rendered number checked, ARTIFACT_TESTING layer 3), test green, shipped, git cherry empty",
-  "est_turns": null,
+  "est_turns": 14,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
   "goal": "The macro strip shipped in bb7731974 fetches nfs.faireconomy.media directly; the feed has no CORS header so the real page shows NO CALENDAR. Add a small script that saves the weekly JSON to a local file the page reads (same-origin), keep NO CALENDAR on error.",
   "id": "live-aid-macro-calendar-cors-snapshot",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 7 file(s)",
+      "ref": "bb7731974f57",
+      "utc": "2026-10-30T19:52:44Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,6 +28,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-30T20:38:54Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -26,12 +36,17 @@
     "MyTradingSys/tools/live_aid/test_live_aid.py"
   ],
   "scope_out": [],
+  "scope_sha": "bb7731974f57",
   "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
+  "state": "ready",
+  "steps": [
+    "write scripts/dev/ff_calendar_snapshot.py (or reuse an existing snapshot writer) saving the weekly ForexFactory JSON next to live_aid.html",
+    "live_aid.html reads the same-origin snapshot first, direct fetch only as fallback, NO CALENDAR on error or copy older than 26 h",
+    "browser test: strip shows the snapshot's next High USD event; red on trunk, green after; ship"
+  ],
   "tests": "test_live_aid_replay-style browser test: strip shows the snapshot's next High event; fails on current trunk (reads NO CALENDAR)",
   "title": "live_aid macro strip reads NO CALENDAR in a real browser: faireconomy feed sends no CORS header, add a local snapshot script/file the page reads",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }
