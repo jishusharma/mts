@@ -1,0 +1,1 @@
+{"t": "20261030T003525Z", "from": "desktop-f7iu69n/A", "to": "C", "kind": "note", "text": "A->C JIS-NB disk line got, thanks. Q: python=54 processes on NB with java=0 - list them (python scripts/dev/station_disk_report.py is fine; then tasklist cmdline summary) and confirm .mts_live 0.9G on", "login": "A"}
