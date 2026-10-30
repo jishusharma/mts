@@ -13,7 +13,10 @@ def test_schedule_contract():
     root = ET.fromstring(xml)
     ns = {"t": "http://schemas.microsoft.com/windows/2004/02/mit/task"}
     assert [n.text for n in root.findall('.//t:StartBoundary', ns)] == [
-        '2026-10-26T09:00:00Z', '2026-10-26T13:00:00Z']
+        '2026-11-02T05:00:00Z', '2026-11-02T20:00:00Z', '2026-11-02T05:30:00Z', '2026-11-02T16:30:00Z']
+    weeks = [[d.tag.split('}')[1] for d in n] for n in root.findall('.//t:DaysOfWeek', ns)]
+    assert weeks == [['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']] * 2 + [['Saturday'], ['Sunday']]
+    schedule.validate_task_xml(xml)
     assert root.find('.//t:MultipleInstancesPolicy', ns).text == 'IgnoreNew'
     assert root.find('.//t:StartWhenAvailable', ns).text == 'true'
     assert root.find('.//t:RestartOnFailure/t:Count', ns).text == '3'
@@ -31,7 +34,7 @@ def test_scheduled_run_uses_same_store_and_propagates_error(tmp_path):
         run.return_value.returncode = 1
         assert schedule.main(['run', '--home', str(tmp_path)]) == 1
         args, kwargs = run.call_args
-        assert args[0][-1] == '--due'
+        assert args[0][-1] == '--force'  # idempotent: known videos are skipped, so any start time is safe
         assert kwargs['env']['CBP_STORE'] == str(tmp_path / 'cbp_store' / 'rows.json')
         assert kwargs['env']['CBP_TRANSCRIPTS'] == str(tmp_path / 'raw_transcripts_canonical')
         assert kwargs['env']['CBP_STAMP'] == str(tmp_path / 'cbp_store' / 'stamp.json')
