@@ -160,3 +160,4 @@ scripts/dev/test_where_is.py
 scripts/dev/test_artifact_pages.py
 MyTradingSys/research/sim_desk/test_page_click.py
 MyTradingSys/research/sim_desk/test_tom_vp.py
+MyTradingSys/backtest/test_vp_return_to_value.py
