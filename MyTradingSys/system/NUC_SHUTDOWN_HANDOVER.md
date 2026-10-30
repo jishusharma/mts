@@ -113,6 +113,13 @@ User stories that actually fixed a NUC10-class box ("What users did" section + I
 - Verdict: the 48 h clean test FAILED. The runaway find did not cause the resets; hardware path (adapter swap, BIOS, RAM test) stays open. DECISION (OURS): count the clean window from the last reset, 10-27 00:49.
 
 
-## Update 2026-10-27 - adapter ordered (operator, Amazon.in)
+## Update 2026-10-27 - adapter listing checked, NOT ordered (operator, Amazon.in; corrected 2026-10-30)
 - SellZone 120 W, 19 V 6.32 A, 5.5 x 2.5 mm, centre + ("with Centre Pin", listing "for Toshiiba L500D"), sold by Online SBS, Amazon delivered, expected 04 Nov. All four NUC10-spec items confirmed on the listing page (operator pasted it 2026-10-27). The NUC10 power-sensing circuit caps the CPU at 120 W - a 120 W rail is the design value, no under-power.
 - Keep the old adapter for the swap-back. Verdict 48 h after plugging in: nuc_health.ps1 -Days 2, 0 event-142 resets = fixed; resets continue = escalate to the UPS + BIOS 0067 + CR2032 window (d-nuc-hw-verdict step 3).
+
+## Update 2026-10-30 - BIOS idle C-state change (JIS-NUC, login A)
+- Correction: the adapter above was never ordered (operator 2026-10-30: only the delivery date was viewed). Order it only if resets continue after this BIOS test.
+- Before the change: watchdog reset 10-30, last logger row 06:46:54 (CPU 4 %, 51 C, 16 GB free, disk idle), event 142 + HAL 13 at 06:52. Fourth logged freeze at idle and cool; heavy load at 100 C on 10-30 gave none.
+- Changed (operator, Visual BIOS 0059): Dynamic Power Technology = Custom, OSACPI C2 Report = Disabled. One variable only. Clean user restarts 14:13 and 14:18 (event 1074, no 41/142), Windows back 14:51 local. Not readable from Windows; per operator.
+- Verdict 2026-11-01 ~14:51: nuc_health.ps1 -Days 2. 0 event-142 = idle C-state was the cause. Any reset = set Dynamic Power back, then adapter swap (order then), then BIOS 0067 + CR2032, mdsched, SSD firmware.
+- Side effect seen: Windows Night light greyed out, its CloudStore keys missing (driver and HDMI monitor OK; still grey after sign-out). Likely lost in a hard reset (OURS, unproven). Operator uses the monitor's own warm mode.
