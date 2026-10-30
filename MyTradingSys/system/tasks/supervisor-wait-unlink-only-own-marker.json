@@ -2,6 +2,19 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-30T23:01:13Z",
+    "misses": 39,
+    "reads": [
+      "scripts/dev/artifacts.py",
+      "MyTradingSys/research/sim_desk/build_catalogue.py",
+      "scripts/dev/cbp_run.py",
+      "scripts/dev/test_artifact_pages.py",
+      "MyTradingSys/research/sim_desk/artifact/test_artifact.py"
+    ],
+    "session": "agent-ad1adba0f00f4dd9c"
+  },
   "created": "2026-10-30T19:28:11Z",
   "depends_on": [],
   "done_when": "",
