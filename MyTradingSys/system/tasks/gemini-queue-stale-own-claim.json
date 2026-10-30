@@ -4,31 +4,51 @@
   "commands": [],
   "created": "2026-10-29T23:47:55Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "run_job proceeds (no SKIP log) when claim_holder returns this machine's hostname and still skips for another host; test_gemini_queue.py has the new case and passes; run_extra_tests green.",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "run_job (gemini_queue.py line 103-106) skips a card whose open claim is held by this same host, so a crash between claim and release strands it forever; claim_with_retry already treats own host as ok.",
   "id": "gemini-queue-stale-own-claim",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "gemini_queue: root() reads MTS_GQ_ROOT at call time (laptop)",
+      "ref": "71f3e7aeb2f8",
+      "utc": "2026-10-29T22:50:21Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "PLANNER refine-raw-cards 2026-10-30: filled from gemini_queue.py read",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-30T00:14:45Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/gemini_queue.py",
+    "scripts/dev/test_gemini_queue.py"
+  ],
+  "scope_out": [
+    "sync.py claim semantics; any scheduler"
+  ],
+  "scope_sha": "71f3e7aeb2f8",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read gemini_queue.py lines 64-115 and test_gemini_queue.py",
+    "Write the fail-first test for own-host claim in run_job",
+    "In run_job treat held equal to socket.gethostname() (case-insensitive) as not held, then run python scripts/dev/test_gemini_queue.py"
+  ],
+  "tests": "test_gemini_queue.py: run_job with an open claim whose host is socket.gethostname() does not write SKIP; another host still does; fails on current code",
   "title": "gemini_queue: a crash between claim and release leaves the card claimed; run_job then skips its own host's claim forever (line 104 checks before claim_with_retry, which treats own host as ok)",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }
