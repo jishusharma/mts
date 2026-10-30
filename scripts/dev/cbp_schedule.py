@@ -2,7 +2,7 @@
 
 Install from a durable MTS checkout on the host holding CBP data:
     python scripts/dev/cbp_schedule.py install --home F:/CryptoScrapper
-Task times (OURS): Mon-Fri 05:00 and 20:00 UTC, Saturday 05:30 UTC (11:00 IST), Sunday 16:30 UTC (22:00 IST).
+Task times (OURS): 09:00 UTC (Europe underway), 13:00 UTC (before US cash open).
 No trading process is started. The signed-in user's existing Claude login is used.
 """
 import argparse
@@ -21,20 +21,12 @@ sys.path.insert(0, str(ROOT / "MyTradingSys"))
 import cbp  # noqa: E402
 
 
-# Start times (UTC, OURS; operator 2026-10-31): Mon-Fri twice, Saturday once 11:00 IST, Sunday once 22:00 IST.
-WEEKDAY_TIMES = ("05:00", "20:00")
-WEEKEND_TIMES = (("Saturday", "05:30"), ("Sunday", "16:30"))
-
-
 def task_xml(python, script, home):
     args = subprocess.list2cmdline([str(script), "run", "--home", str(home)])
-
-    def trigger(day_names, hhmm):
-        return ('<CalendarTrigger><StartBoundary>2026-11-02T%s:00Z</StartBoundary><Enabled>true</Enabled>'
-                '<ScheduleByWeek><DaysOfWeek>%s</DaysOfWeek><WeeksInterval>1</WeeksInterval></ScheduleByWeek>'
-                '</CalendarTrigger>' % (hhmm, "".join("<%s/>" % d for d in day_names)))
-    triggers = "".join(trigger(("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"), t) for t in WEEKDAY_TIMES)
-    triggers += "".join(trigger((day,), t) for day, t in WEEKEND_TIMES)
+    triggers = "".join(
+        '<CalendarTrigger><StartBoundary>2026-10-26T%s:00:00Z</StartBoundary>'
+        '<Enabled>true</Enabled><ScheduleByDay><DaysInterval>1</DaysInterval>'
+        '</ScheduleByDay></CalendarTrigger>' % hour for hour in ("09", "13"))
     return ('<?xml version="1.0" encoding="UTF-16"?>'
             '<Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">'
             '<RegistrationInfo><Description>CBP fetch, extract, verify, store twice daily</Description></RegistrationInfo>'
@@ -53,9 +45,9 @@ def task_xml(python, script, home):
 
 
 def validate_task_xml(xml):
-    """Fail closed unless the generated task is the CBP-only retrying weekday-twice, Saturday-once, Sunday-once task."""
-    required = tuple("<StartBoundary>2026-11-02T%s:00Z</StartBoundary>" % t for t in WEEKDAY_TIMES + tuple(t for _, t in WEEKEND_TIMES)) + (
-                "<Saturday/>", "<Sunday/>", "<Friday/>",
+    """Fail closed unless the generated task is a twice-daily CBP-only retrying task."""
+    required = ("<StartBoundary>2026-10-26T09:00:00Z</StartBoundary>",
+                "<StartBoundary>2026-10-26T13:00:00Z</StartBoundary>",
                 "<MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>",
                 "<Interval>PT15M</Interval><Count>3</Count>", "cbp_schedule.py", "run", "--home")
     missing = [part for part in required if part not in xml]
@@ -71,8 +63,8 @@ def preflight(home):
     if not config.is_file():
         raise ValueError("missing analyst config: " + str(config))
     data = json.loads(config.read_text(encoding="utf-8"))
-    if not any(a.get("enabled") for a in data["analysts"]):
-        raise ValueError("no enabled analysts")
+    if not any(a.get("enabled") and a.get("profile") == "actionable" for a in data["analysts"]):
+        raise ValueError("no enabled actionable analysts")
     if not shutil.which("claude"):
         raise ValueError("claude executable unavailable to this user")
     subprocess.run([sys.executable, "-c", "import yt_dlp"], check=True, capture_output=True)
@@ -87,7 +79,7 @@ def main(argv=None):
     if a.command == "dry-run":
         xml = task_xml(sys.executable, Path(__file__).resolve(), home)
         validate_task_xml(xml)
-        print("CBP task valid (Mon-Fri %s UTC, Sat/Sun once; 3 retries/15m; no registration): %s" % (" ".join(WEEKDAY_TIMES), home))
+        print("CBP task valid (09:00, 13:00 UTC; 3 retries/15m; no registration): " + str(home))
         return 0
     if a.command in ("status", "remove"):
         cmd = ["schtasks", "/Query", "/TN", TASK, "/V", "/FO", "LIST"] if a.command == "status" else [
@@ -111,7 +103,7 @@ def main(argv=None):
                CBP_STAMP=str(state / "stamp.json"), CBP_TRANSCRIPTS=str(home / "raw_transcripts_canonical"))
     # Append stderr as well as stdout; the task's LastTaskResult retains the failure code.
     with (state / "ingestion.log").open("a", encoding="utf-8") as log:
-        return subprocess.run([sys.executable, str(ROOT / "scripts/dev/cbp_run.py"), "--force"],
+        return subprocess.run([sys.executable, str(ROOT / "scripts/dev/cbp_run.py"), "--due"],
                               env=env, stdout=log, stderr=subprocess.STDOUT, cwd=ROOT).returncode
 
 

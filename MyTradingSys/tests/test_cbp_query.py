@@ -124,7 +124,13 @@ def test_old_videos_never_extracted(tmp_path, monkeypatch):
     st = _setup(tmp_path, monkeypatch, pub="2026-10-18")
     called = []
     out = cbp_run.run_once(NOW, fetch=lambda *a: None, extract=lambda v, b: called.append(1) or GOOD, store=st)
-    assert out == (0, 0, 0) and called == []
+    # 2a758b657: videos inside the 21-day verdict window are extracted for the dashboard verdict, but a video older
+    # than the 5-day row window must never become a query row.
+    assert out == (0, 0, 0) and called == [1]
+    assert cbp.load(st)["rows"] == [] and cbp.query(store=st, now=NOW) == []
+    assert "V" * 11 in json.loads(cbp_run.verdicts_path(st).read_text(encoding="utf-8"))
+    cbp_run.run_once(NOW, fetch=lambda *a: None, extract=lambda v, b: called.append(2) or GOOD, store=st)
+    assert called == [1]  # verdict stored: no second pass
 
 
 def test_fetch_failure_propagates(monkeypatch):
@@ -206,8 +212,12 @@ def test_store_default_agrees_across_cbp_components(tmp_path, monkeypatch):
 def test_cbp_schedule_dry_run_validates_without_registration(tmp_path, capsys):
     xml = cbp_schedule.task_xml(sys.executable, cbp_schedule.Path(cbp_schedule.__file__), tmp_path)
     assert cbp_schedule.validate_task_xml(xml)
-    assert "<StartBoundary>2026-10-26T09:00:00Z</StartBoundary>" in xml
-    assert "<StartBoundary>2026-10-26T13:00:00Z</StartBoundary>" in xml
+    # Sat 11:00 IST = 05:30Z, Sun 22:00 IST = 16:30Z (IST = UTC+5:30); weekdays twice (05:00Z, 20:00Z)
+    for hhmm in ("05:00", "20:00", "05:30", "16:30"):
+        assert "<StartBoundary>2026-11-02T%s:00Z</StartBoundary>" % hhmm in xml
+    assert xml.count("<CalendarTrigger>") == 4
+    assert "<Saturday/>" in xml and "<Sunday/>" in xml
+    assert "<StartBoundary>2026-10-26T09:00:00Z</StartBoundary>" not in xml
     assert "<RestartOnFailure>" in xml and "<Count>3</Count>" in xml
     assert "<MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>" in xml
     assert "trading" not in xml.lower()
@@ -250,6 +260,9 @@ def test_planted_duplicate_video_id_is_not_extracted_again(tmp_path, monkeypatch
     st = _setup(tmp_path, monkeypatch, vid="P" * 11)
     built, _ = cbp_run.build_row(("P" * 11, "Krown", "2026-10-23", "fixture", None), GOOD, BODY)
     cbp.save({"rows": [built]}, st)
+    vp = cbp_run.verdicts_path(st)  # verdict already stored too (2a758b657: a missing verdict triggers extraction)
+    vp.write_text(json.dumps({"P" * 11: cbp_run.build_verdict(("P" * 11, "Krown", "2026-10-23", "fixture", None), GOOD, BODY)}),
+                  encoding="utf-8", newline="\n")
 
     def must_not_extract(*args):
         pytest.fail("duplicate video must be stopped before extraction")
