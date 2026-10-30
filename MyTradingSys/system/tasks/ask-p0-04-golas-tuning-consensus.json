@@ -4,33 +4,62 @@
   "commands": [],
   "created": "2026-10-30T08:24:17Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/golas_2026-10/C_TUNING_CONSENSUS.md exists, one row per indicator and timeframe with value, n_sources, URLs, tier; shipped.",
+  "est_turns": 24,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "GOLAS-C: internet consensus on indicator tuning for BTC (RSI length, BB 20/2, VWAP anchors): which values practitioners use per timeframe, with count of independent sources and URL+quote; mark OURS vs SOURCED.",
   "id": "ask-p0-04-golas-tuning-consensus",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "research/ top level: 189 -> 14 files; 176 dated loose files into _archive/loose_2026-10 an",
+      "ref": "f8d0799de2bc",
+      "utc": "2026-10-25T23:02:12Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "f8d0799de2bc research/ top level: 189 -> 14 files; 176 dated loose files into _archive/loo",
+      "ref": "MyTradingSys/research/_archive/loose_2026-10/GOLAS_CD_WEB_2026-09-21.md",
+      "utc": "2026-10-25T23:02:12Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-30 ACCEPT | Cluster with ask-p0-02 and ask-p0-03.",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-30T10:00:08Z",
   "refs": [
     "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/_archive/loose_2026-10/GOLAS_CD_WEB_2026-09-21.md",
+    "MyTradingSys/research/MTS_DICTIONARY.md"
+  ],
+  "scope_out": [
+    "code",
+    "changing any live parameter"
+  ],
+  "scope_sha": "f8d0799de2bc",
+  "size": "M",
+  "sources": [
+    "ledger P0-04"
+  ],
+  "state": "ready",
+  "steps": [
+    "start from the archived GOLAS C web note (2026-09-21, unverified web); re-verify each value at its URL",
+    "add timeframes it missed; write C_TUNING_CONSENSUS.md, ship. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
+  ],
+  "tests": "Doc card: tests/docs/test_integrity.py green; each row cites at least one URL (count in commit body).",
   "title": "GOLAS-C: internet consensus on tuning indicators for BTC (ledger P0-04)",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

@@ -1051,6 +1051,14 @@ def notice(new, backlog):
         lines.append("Before you answer from them: python scripts/dev/shot.py classify <id> --kind chart|positions|app|other|noise --why \"<what it is, what the operator meant>\""
                      " (chart also needs --symbol --tf --at [--tz] --source). Reading, claim classes and outcomes: MyTradingSys/methodology/screenshot_intake.md."
                      " No shot may stay 'new' at session end.")
+        try:  # operator 10-30: analyst levels in CBP were never shown next to a chart read
+            sys.path.insert(0, str(Path(__file__).resolve().parent))
+            from analyst_levels import hook_block
+            block = hook_block()
+            if block:
+                lines.append(block)
+        except Exception:
+            pass
     elif backlog:
         lines.append(f"[SCREENSHOT INTAKE] {len(backlog)} saved screenshot(s) are not closed yet (oldest {max(age_hours(s.get('ts_seen') or s.get('ts_landed')) for s in backlog) / 24:.1f} d):"
                      f" {', '.join(s['id'][:8] for s in backlog[:6])}. `python scripts/dev/shot.py list --status pending`")
