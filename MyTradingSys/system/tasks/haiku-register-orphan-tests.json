@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T18:18:11Z",
   "commands": [],
   "created": "2026-10-30T17:15:11Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "haiku-register-orphan-tests",
   "lane": "HAIKU",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "orphans 1 -> 1: scripts/dev/test_supervisor.py (only orphan; already skip-reasoned in B150",
+      "ref": "8b4467e5f",
+      "utc": "2026-10-30T18:18:11Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "orphans 1 -> 1: scripts/dev/test_supervisor.py (only orphan; already skip-reasoned in B150 SKIP; passes alone 92/92, 33s; left unregistered). 0 files registered, 0 tsv lines changed; 64 research test files run via auto-discovery",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/extra_tests.tsv, scripts/dev/run_all_tests.py (read), test files on disk"
   ],
@@ -42,13 +54,14 @@
   "scope_sha": "36f311c44158",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "list test_*.py under scripts/dev and MyTradingSys/research",
     "diff against what run_all_tests.py and extra_tests.tsv run",
     "register or add a skip reason per orphan, run each once",
     "report counts, ship"
   ],
+  "taken": "2026-10-30T18:18:11Z",
   "tests": "see done_when",
   "title": "Haiku: find test_*.py under scripts/dev and MyTradingSys/research not run by run_all_tests.py or extra_tests.tsv; register or skip with a reason; report the count",
   "weight": "ROUTINE",
