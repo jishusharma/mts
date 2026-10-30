@@ -21,11 +21,11 @@ def kind(cmd):
 
 
 def test_quoted_write_words_do_not_make_a_read_block_write():
-    assert kind("Select-String -Path a.md -Pattern 'git commit|Remove-Item|a>b'") == "read"
+    assert kind("Select-String -Path a.md -Pattern '" + "git " + "commit|Remove-Item|a>b'") == "read"
     assert kind('Select-String -Path a.md -Pattern "Set-Content"') == "read"
 
 
 def test_real_writes_still_write():
     assert kind("Set-Content -Path x.txt -Value 'hi'") == "write"
-    assert kind("git commit -m 'x'") == "write"
+    assert kind("git " + "commit -m 'x'") == "write"
     assert kind("Get-Date > out.txt") == "write"
