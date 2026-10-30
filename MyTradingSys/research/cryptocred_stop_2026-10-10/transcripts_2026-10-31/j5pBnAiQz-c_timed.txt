@@ -1,0 +1,1186 @@
+# Video ID: j5pBnAiQz-c
+# Title: Technical Analysis Series - Horizontal Support/Resistance (UPDATED)
+# Published: 2022-11-13
+# Source: yt_dlp captions (auto); uploader: CryptoCred
+# Analyst: CryptoCred
+# Channel: @CryptoCred
+# Duration_s:2232
+# Word count: 8139
+# ---
+[00:00:00] hello and welcome to another video as
+[00:00:02] part of the technical analysis series
+[00:00:04] it's yet another update to one of The
+[00:00:06] Originals today we're discussing
+[00:00:08] horizontal support and resistance
+[00:00:11] so here's the outline for this video
+[00:00:13] disclaimer first then we'll cover the
+[00:00:15] broader question of does technical
+[00:00:17] analysis work and what that term entails
+[00:00:19] we'll then go over the important point
+[00:00:21] the charting is not trading and kind of
+[00:00:23] the limited scope of the material we're
+[00:00:25] going to cover will Define the term
+[00:00:27] levels and go through some of these
+[00:00:28] price action variants of it we'll talk
+[00:00:32] about how to identify levels some
+[00:00:33] nuances that I've picked up over time
+[00:00:35] quickly gloss over the types of setups
+[00:00:38] that you may get at levels and then
+[00:00:39] we'll conclude
+[00:00:41] first things first usual disclaimer
+[00:00:43] pulls the video familiarize yourself all
+[00:00:45] of that I am an idiot I'm not a
+[00:00:46] financial advisor not an investment
+[00:00:48] advisor not a lawyer nobody you should
+[00:00:50] listen to frankly trading sucks you'll
+[00:00:51] lose all your money I'm a clown
+[00:00:53] clueless this venting purposes only uh
+[00:00:56] get some help and so on and so forth but
+[00:00:58] if you do stick around make sure to like
+[00:01:00] the video and subscribe to the channel
+[00:01:01] and do all the stuff that has supported
+[00:01:03] me so much over the last five years
+[00:01:05] thank you for sticking around with the
+[00:01:07] technical analysis series always a work
+[00:01:08] in progress so let's get straight into
+[00:01:10] it
+[00:01:12] now the broader question of does
+[00:01:13] technical analysis work it's quite
+[00:01:15] interesting to be addressing that
+[00:01:16] premise maybe five years after the
+[00:01:18] series came out but I do have some
+[00:01:20] thoughts on this broadly speaking it's a
+[00:01:23] popular question but it's terribly
+[00:01:24] phrased I feel like I'm at Jordan
+[00:01:26] Peterson meme where it's like what do
+[00:01:27] you mean by does what do you mean by
+[00:01:29] technical what do you mean by analysis
+[00:01:31] what do you mean by work but like as
+[00:01:33] Mimi as that is that is a fairly decent
+[00:01:35] framework to engage the question uh if
+[00:01:37] you do answer yes uh which I do because
+[00:01:40] sort of how I trade obviously I think
+[00:01:42] even the answer yes exists on a spectrum
+[00:01:44] so you have like on the extremely strong
+[00:01:46] side of yes you'll have the premise that
+[00:01:48] price charts contain all necessary
+[00:01:50] information public and private to make
+[00:01:53] accurate predictions about future prices
+[00:01:54] or sometimes even stronger forms of kind
+[00:01:56] of determinism so for example for these
+[00:01:58] Advocates everything you might ever need
+[00:02:00] to know is in the price whatever news
+[00:02:02] release is coming up is priced in even
+[00:02:05] sort of unexpected events and things
+[00:02:07] that weren't public information and sort
+[00:02:09] of shocks when it comes to news
+[00:02:11] catalysts those are priced in by the
+[00:02:13] chart as well that's a very strong form
+[00:02:15] of technical analysis adherence and on
+[00:02:18] the other side of the spectrum the
+[00:02:19] extremely weak version is something
+[00:02:21] along the lines of the market isn't
+[00:02:23] completely random and some prices appear
+[00:02:25] to be stickier and more important than
+[00:02:27] other prices in a way that can be
+[00:02:29] predictive I'm much closer to the
+[00:02:31] somewhere between close to the extremely
+[00:02:33] weak part for sure
+[00:02:36] um and I think for ta to be valuable the
+[00:02:39] claim doesn't need to be particularly
+[00:02:40] great in terms of it'll tell you what
+[00:02:42] the Market's going to do or claims about
+[00:02:44] its strike rate and everything else I
+[00:02:46] think the basic observation that the
+[00:02:47] market isn't completely random and that
+[00:02:49] some prices appear to matter more than
+[00:02:51] others in some sort of replicable way
+[00:02:54] that you can model that's sort of enough
+[00:02:55] to have a baseline
+[00:02:57] um to work on something in my opinion
+[00:02:59] I said why my technical analysis be
+[00:03:01] useful uh there are a few reasons uh the
+[00:03:03] first I'm sure you've heard this
+[00:03:04] argument before the essentially the
+[00:03:06] self-fulfilling prophecy argument that
+[00:03:08] look in a retail-oriented market we're
+[00:03:10] all kind of looking at the same stuff
+[00:03:11] the same levels using the same tools and
+[00:03:14] therefore there will be much overlap
+[00:03:15] when it comes to flows and positioning
+[00:03:17] and how the market participants react to
+[00:03:20] certain shifts in price some other
+[00:03:22] explanations that you can find in
+[00:03:24] financial literature stuff like order
+[00:03:25] herding and herding just like you would
+[00:03:28] sheep so kind of very similar mechanism
+[00:03:30] of participants clustering around the
+[00:03:33] same price points there's also order
+[00:03:35] splitting which is to say that a lot of
+[00:03:37] time when you get big moves there are
+[00:03:39] outstanding orders that remain unfilled
+[00:03:41] at those levels so when the market comes
+[00:03:43] back to those levels you get some sort
+[00:03:45] of reaction as the remainder of those
+[00:03:46] orders are filled or if those underwater
+[00:03:48] positions choose to cut their exposure
+[00:03:50] at the place where they got them or vice
+[00:03:52] versa that phenomenon is also decently
+[00:03:54] well recorded we also have stock market
+[00:03:56] order clustering so we'll talk a lot
+[00:03:58] about spiky SFP failed breakout type of
+[00:04:01] setups and again this is something
+[00:04:03] that's been written about a lot and
+[00:04:05] there's fairly well established in
+[00:04:06] literature that stop orders tend to herd
+[00:04:10] and cluster around specific prices and
+[00:04:12] the one-sided demand for liquidity that
+[00:04:14] they create is is quite replicable and
+[00:04:16] predictable
+[00:04:17] um at least to some extent enough to be
+[00:04:19] useful at the very least again a lot of
+[00:04:21] these Concepts were covered in the
+[00:04:23] market microstructure video which you've
+[00:04:25] hopefully watched if you haven't go back
+[00:04:27] and do that this will all make a lot
+[00:04:28] more sense and before and you know the
+[00:04:30] last point which is somewhat more crypto
+[00:04:31] specific is that crypto fundamentals are
+[00:04:33] largely or a lot of the time depending
+[00:04:35] on the project or protocol whatever else
+[00:04:37] in one form or another info you know um
+[00:04:40] what am I going to say informed by Price
+[00:04:42] there we go so analyzing price makes
+[00:04:44] sense you know fundamentals equals price
+[00:04:46] price equals fundamentals you get this
+[00:04:48] reflexive flywheel type effect when
+[00:04:50] number go up fundamental metrics better
+[00:04:52] that's bullish number go up fundamental
+[00:04:54] metrics Better Price bullish so on and
+[00:04:56] so forth so it makes sense to have price
+[00:04:58] as one of the things you look at and
+[00:05:00] that's in essence what technical
+[00:05:01] analysis is now if you want to be really
+[00:05:03] cynical at that point you could make the
+[00:05:04] argument that there are no fundamentals
+[00:05:06] and the market is just perception and
+[00:05:08] liquidity and momentum but even if
+[00:05:10] that's true looking at prices still
+[00:05:12] seems like a worthwhile Endeavor so why
+[00:05:15] not do it or at least have a baseline
+[00:05:16] understanding I think that's another
+[00:05:18] broader point I didn't really include
+[00:05:19] here but when you consider sort of
+[00:05:22] technical trading it's not that you
+[00:05:23] either have to trade entirely based on
+[00:05:25] TA or you have to think it's complete
+[00:05:27] nonsense right you can have a weighted
+[00:05:29] approach in your trading system of how
+[00:05:31] much you how much importance you ascribe
+[00:05:34] to technical levels and that percentage
+[00:05:35] doesn't need to be terribly high but I
+[00:05:37] think some portion of it is not a
+[00:05:40] complete waste of time how's that for an
+[00:05:41] endorsement
+[00:05:43] now this is an important point and it's
+[00:05:44] something I wish I had learned earlier I
+[00:05:47] went back when I was trying to paper
+[00:05:48] trade and spent all day drawing levels
+[00:05:50] instead of actually trading the market
+[00:05:51] and that's kind of the central point
+[00:05:53] there right mapping a market is not the
+[00:05:55] same as trading it so identifying levels
+[00:05:58] at most gives you a broad understanding
+[00:06:00] of where you might look to do business
+[00:06:01] so that's kind of one facet of trade
+[00:06:03] identification but that's all uh you
+[00:06:06] know just being able to draw on a chart
+[00:06:07] and even if the market does something
+[00:06:08] quote unquote at the levels that you've
+[00:06:10] drawn that doesn't inherently or far
+[00:06:12] from it build the foundations of a
+[00:06:14] trading system you know it doesn't
+[00:06:15] inherently tell you anything about risk
+[00:06:17] management sizing entry triggers exit
+[00:06:19] triggers trade management what assets
+[00:06:21] you choose and all the sort of nuts and
+[00:06:24] bolts that make up a real trading system
+[00:06:26] it's just one small part of it which is
+[00:06:28] kind of trade identification or broadly
+[00:06:30] points you towards where you might want
+[00:06:32] to do business and then the rest is for
+[00:06:33] you to figure out just drawing on a
+[00:06:35] chart does not do that for you live
+[00:06:37] trading back testing ideally live
+[00:06:39] testing journaling refining setups those
+[00:06:42] are kind of your tools when it comes to
+[00:06:44] translating the line on your trading
+[00:06:45] view into something actionable
+[00:06:46] replicable and something that eventually
+[00:06:48] morphs into a system so don't fall into
+[00:06:51] this complacency trap where you're
+[00:06:53] correctly quote unquote identifying the
+[00:06:54] pivots but if you don't have a way of
+[00:06:56] approaching the market and actually
+[00:06:57] putting that or translating those views
+[00:07:00] into trade ideas then it's a very
+[00:07:01] limited use to us right
+[00:07:03] and that's why the bullet point there
+[00:07:05] says spend more time thinking about the
+[00:07:07] boring stuff in order to succeed and
+[00:07:09] also just I guess there's a basic
+[00:07:10] intellectual exercise here that it's no
+[00:07:12] surprise you can go on Twitter and just
+[00:07:14] get levels of really good Traders or
+[00:07:17] people have been doing this for a while
+[00:07:18] but that doesn't guarantee profitability
+[00:07:19] and there's a reason for that right or
+[00:07:21] even you could have Traders at the same
+[00:07:23] levels but we'll approach the market
+[00:07:24] completely differently and even have
+[00:07:25] diverging views at times that's where
+[00:07:28] the edge is not just in the mapping of
+[00:07:30] the market
+[00:07:32] so let's get into some definitions
+[00:07:34] so when it comes to defining levels the
+[00:07:36] definition presented here is a level is
+[00:07:38] a price or cluster of prices that has
+[00:07:40] either acted as a flow and or ceiling in
+[00:07:43] the past or preceded a large move now
+[00:07:46] this is a very broad sort of
+[00:07:47] all-encompassing price action definition
+[00:07:50] for the stuff that we draw on our charts
+[00:07:52] that we hope has some sort of
+[00:07:54] significance uh colloquially speaking
+[00:07:56] it's basically the premise that price
+[00:07:58] action in this area doesn't immediately
+[00:08:00] appear to be random and or the market
+[00:08:02] really seems to give a about what
+[00:08:04] happens here you know there's like a
+[00:08:05] basic eye test that you can apply to the
+[00:08:07] Chart a lot of the time and kind of see
+[00:08:09] the areas that seem to matter more than
+[00:08:10] others now the issue is a lot of
+[00:08:12] technical analysis gurus have taken the
+[00:08:14] simple premise and repackaged it in a
+[00:08:16] hundred different ways so you'll see
+[00:08:17] people trade levels ranges clusters
+[00:08:19] Supply demand blocks pivots this that
+[00:08:21] and the other and you might think oh my
+[00:08:22] God there's so many you know price
+[00:08:24] action Concepts I need to learn to be
+[00:08:26] well equipped with uh you know naked
+[00:08:28] trading as the term is known oddly
+[00:08:30] enough but that's not true for the most
+[00:08:33] part all of these end up converging in
+[00:08:36] the same place they're all very similar
+[00:08:38] and you know we're all looking at the
+[00:08:39] same charts and the areas you'll get
+[00:08:41] from and even the exact levels you'll
+[00:08:43] get from all of these trading systems
+[00:08:44] were you know the overlap there is
+[00:08:46] enormous you can put a range Trader a
+[00:08:48] supply demand Trader and all the block
+[00:08:50] Trader whatever in you know at the same
+[00:08:52] chart and there's a decently high
+[00:08:54] probability that you'll get more or less
+[00:08:56] the same levels at the very least you'll
+[00:08:58] be in the same neighborhood if not
+[00:08:59] exactly the same prices uh there's no
+[00:09:01] massive gap between these things we're
+[00:09:04] all looking at the same thing here's the
+[00:09:05] Candlestick chart what levels seem to
+[00:09:07] matter more than most and how do we
+[00:09:08] delineate them so you know if you're
+[00:09:10] sort of intimidated by you know the
+[00:09:12] amount of sort of vocabulary that
+[00:09:14] concerns this part of trading don't be
+[00:09:17] because it all roads lead to Rome as the
+[00:09:19] saying goes
+[00:09:20] now what are some basic identifiers when
+[00:09:23] it comes to defining levels we'll go
+[00:09:24] over this in more detail but there are
+[00:09:26] five that immediately come to mind and
+[00:09:27] again they're not mutually exclusive
+[00:09:29] there's overlap there and I'm sure I
+[00:09:30] missed the couple but these These are
+[00:09:32] sort of the building blocks so the first
+[00:09:33] one is the peak of a rally so you have a
+[00:09:35] move up where did that Peak take place
+[00:09:37] you delineate that either just with a
+[00:09:39] line with a wick candle body the candle
+[00:09:41] itself whatever and that gives you some
+[00:09:43] idea of resistance right the bottom of a
+[00:09:45] dump uh same there yeah I've also
+[00:09:47] recurring you know areas of recurring
+[00:09:49] tests and bounces again I test kind of
+[00:09:52] stuff the prices that the market seems
+[00:09:54] to care about and be attracted to and
+[00:09:56] responding well to and then you also
+[00:09:58] have uh consolidations that can be
+[00:10:00] contextually quite important so what's
+[00:10:02] the consolidation formed between large
+[00:10:04] impulsive moves those area can be
+[00:10:06] pivotal and the consolidations preceding
+[00:10:09] impulsive moves you kind of see a big
+[00:10:10] move in the market and you track it back
+[00:10:12] and think where did that come from and
+[00:10:14] that's sort of where a lot of Supply
+[00:10:14] demand logic comes from right
+[00:10:19] and so before we jump into some diagrams
+[00:10:21] so actually let's do that first right so
+[00:10:23] we had four or five categories here pic
+[00:10:24] of a rally bottom of a dump area of
+[00:10:26] recurring tests and bounces
+[00:10:27] consolidations formed between impulsive
+[00:10:29] moves and consolidations preceding
+[00:10:31] impulsive moves uh this is I mean this
+[00:10:33] is four of them but the consolidations
+[00:10:34] thing does need to be split into two
+[00:10:36] um sort of simplest explanation is the
+[00:10:39] following you know top left is your
+[00:10:41] classic you have a rally peak of a rally
+[00:10:43] Market went down you mark out where that
+[00:10:45] Peak took place and we'll talk about
+[00:10:46] Wicks versus bodies and all that stuff
+[00:10:48] but it doesn't matter if you're unsure
+[00:10:49] just box out the whole candle and you'll
+[00:10:51] have an idea but that's kind of your
+[00:10:52] basic area of resistance you know that's
+[00:10:54] where the ceiling was for price at that
+[00:10:57] moment in time and we flip that on its
+[00:10:59] head that's where we get our
+[00:11:00] understanding of support it's where the
+[00:11:02] market was dumping and then it stopped
+[00:11:04] dumping and something happened at that
+[00:11:06] point for the reversal to take place and
+[00:11:08] that made that point may be interesting
+[00:11:10] in the future and so we've sort of drawn
+[00:11:11] the floor for present purposes
+[00:11:14] um this is in the bottom left corner
+[00:11:16] that's this sort of consolidation
+[00:11:17] structure we have an impulsive move then
+[00:11:19] price goes sideways another impulsive
+[00:11:21] move that little consolidation post
+[00:11:24] impulse tends to be quite pivotal or at
+[00:11:26] least important from a structural point
+[00:11:28] of view so we're interested in the type
+[00:11:30] of participation that went on there
+[00:11:32] and also doesn't have to be between
+[00:11:33] impulsive moves if you have like a range
+[00:11:35] and then the market just breaks out from
+[00:11:36] it as I said you kind of Trace back and
+[00:11:38] think wow this was a big move that made
+[00:11:39] a higher high shifted Market structure
+[00:11:41] something went on there to push price
+[00:11:43] Beyond its uh usual range uh where did
+[00:11:46] that originate and you kind of Trace
+[00:11:47] back and you find the supply down the
+[00:11:49] demand Zone level whatever it may be
+[00:11:52] right and then the last box is your
+[00:11:55] classic kind of price sensitive support
+[00:11:57] resistance level uh kind of very
+[00:11:59] self-evident inflection points in the
+[00:12:02] market
+[00:12:03] um where support tends to resistance
+[00:12:05] resistance to support or it sort of
+[00:12:07] pivots one way or another depending on
+[00:12:08] where the market is above it or below it
+[00:12:10] okay
+[00:12:12] um those are kind of our basic
+[00:12:13] structures and you should be rather
+[00:12:16] familiar with them at this point now
+[00:12:18] when it comes to identifying levels you
+[00:12:20] have no idea what you're doing there is
+[00:12:21] a kind of basic heuristic technique you
+[00:12:23] can employ to at least land you in the
+[00:12:25] right areas
+[00:12:26] um and you can do some of these you can
+[00:12:27] do all of them whatever helps so you can
+[00:12:30] say where did a big move start so you're
+[00:12:32] kind of looking at the big outsized move
+[00:12:33] the big candles and then you trace them
+[00:12:35] back and then you mark wherever the
+[00:12:37] origin of that big move is
+[00:12:39] then you can say where did a big move
+[00:12:41] pause before continuing right so you
+[00:12:43] have an impulsive move a period of
+[00:12:44] consolidation and another impulsive move
+[00:12:46] it's that middle of the sandwich that
+[00:12:48] period of consolidation that may be
+[00:12:49] interesting to us from a level's point
+[00:12:51] of view so you want to mark that where
+[00:12:53] did a big move stop and reverse so
+[00:12:55] that's the classic sort of either range
+[00:12:56] high range low support resistance
+[00:12:58] example we want to be aware of the where
+[00:13:00] the big inflection points in the market
+[00:13:01] have been so that we can follow them in
+[00:13:03] the future and then in terms of
+[00:13:05] approaching this you could simply start
+[00:13:06] from very obvious higher time frames
+[00:13:08] like the monthly and weekly and if you
+[00:13:09] want to work your way down to lower time
+[00:13:11] frames like your daily and intraday and
+[00:13:13] naturally the areas where you'll have
+[00:13:14] Confluence so you know you've got a
+[00:13:16] monthly level there weekly level there
+[00:13:17] and sort of there's just a lot of
+[00:13:18] overlap from a top-down point of view
+[00:13:21] when it comes to time frames you know
+[00:13:22] that you're dealing with a higher
+[00:13:23] probability area that's probably worth
+[00:13:25] doing business so sort of a multi-time
+[00:13:27] frame level
+[00:13:29] now sometimes a market will only have a
+[00:13:31] few clear structures and that's
+[00:13:32] completely fine so you'll see a lot of
+[00:13:34] the time with beginners when they'll
+[00:13:35] show you what their charts look like
+[00:13:36] they've got a level every ten dollars
+[00:13:37] now that's not very practical like if
+[00:13:39] even if you had to trade that and you
+[00:13:41] took a basic levels level approach it'd
+[00:13:42] be practically impossible it also
+[00:13:44] assumes that all of those prices are
+[00:13:46] meaningful enough or significant enough
+[00:13:48] to risk your Capital uh which just on
+[00:13:50] its face is very unlikely especially if
+[00:13:51] your chart is completely covered and has
+[00:13:53] no empty space so if you have fewer
+[00:13:55] levels that's fine that means the trades
+[00:13:57] will be more obvious and in general when
+[00:13:59] it comes to outcomes more visibility and
+[00:14:02] more higher time frame Confluence
+[00:14:04] generally lead to a higher probability
+[00:14:06] that the area is good so don't be
+[00:14:08] dismayed if you start marking up a chart
+[00:14:09] and you think hey you know I've done my
+[00:14:11] homework from the monthly to the Daily
+[00:14:12] to the intraday and you know there are a
+[00:14:14] few intraday levels here or there but
+[00:14:15] they're really sort of three to four big
+[00:14:17] zones that I think overlap and look good
+[00:14:19] that's completely fine completely normal
+[00:14:21] and if anything it takes away a lot of
+[00:14:22] the decision fatigue when it comes to
+[00:14:24] trading in the market because you know
+[00:14:25] exactly where to do business and you're
+[00:14:27] not caught flat-footed when you get
+[00:14:29] because you know it it's obvious and
+[00:14:31] you've been waiting for it and sort of
+[00:14:32] By definition most of the time the
+[00:14:34] market is not in an area worth trading
+[00:14:36] especially when it comes to kind of
+[00:14:37] higher time frame swing trading setups
+[00:14:40] and the last Point here is still
+[00:14:42] something I try to
+[00:14:43] um stick to to this day is that
+[00:14:45] especially after a bit of practice most
+[00:14:47] levels should just jump out at you if
+[00:14:50] you're there trying to get really
+[00:14:51] Surgical and thinking oh is this area
+[00:14:52] good or not and it's not entirely clear
+[00:14:55] to you and you're like drilling down and
+[00:14:56] turning your monitor around trying to
+[00:14:58] figure out if it's a if it's an area
+[00:14:59] worth paying attention to it probably
+[00:15:01] isn't the best you know that there's a
+[00:15:03] positive correlation between the
+[00:15:05] visibility of the level and the
+[00:15:07] likelihood that it's important then does
+[00:15:08] well so if you're there forcing the
+[00:15:10] issue then it's probably not as
+[00:15:12] important as you think
+[00:15:15] and so again these were sort of our
+[00:15:17] Baseline diagrams and we can go over
+[00:15:19] what some of these look like so this is
+[00:15:21] Bitcoin dollar at 19k this is your
+[00:15:24] straightforward uh support structure as
+[00:15:27] you'll recall it's you know the bottom
+[00:15:29] of a dump bullet point number two from
+[00:15:31] the basic identifiers uh you had a very
+[00:15:33] sharp move down from 30 to 20. that was
+[00:15:36] the bottom of the dump but before the
+[00:15:37] first meaningful bounce and that was our
+[00:15:39] range low for quite some time until
+[00:15:41] recently as you can tell
+[00:15:44] a similar point on this chain link
+[00:15:45] dollar chart in terms of Range High or
+[00:15:48] just resistance or the peak of a rally
+[00:15:50] where you have like a very significant
+[00:15:51] rally it peaked here and there was
+[00:15:53] resistance again and was resistance once
+[00:15:55] again so again look look how outstanding
+[00:15:58] sort of standoutish these levels are
+[00:16:01] compared to everything else it's it sort
+[00:16:03] of should jump out at you with even
+[00:16:04] without the demarcation on the screen
+[00:16:05] when it comes to those consolidations
+[00:16:07] that form between impulsive moves this
+[00:16:09] is one on polygon you see like a huge
+[00:16:12] rally and big break in Market structure
+[00:16:14] here and the first time the market
+[00:16:15] actually slowed down for a couple weeks
+[00:16:16] or for a month in this case was this
+[00:16:18] consolidation before shooting off to
+[00:16:21] make new highs and that's like a very
+[00:16:22] very big move that's a log chart I think
+[00:16:24] and so when the market pulled back it
+[00:16:26] was this pre-breakout consolidation that
+[00:16:28] ended up acting as Support also
+[00:16:32] and then an example of the flip support
+[00:16:34] resistance pivot type of thing this is
+[00:16:36] the 1200 level on eth was previously the
+[00:16:39] Range High ton of support a ton of
+[00:16:41] resistance here broke out went up a lot
+[00:16:43] came down that's where it found support
+[00:16:45] broke up again and that's sort of where
+[00:16:47] the market is churning and chopping uh
+[00:16:49] at the moment
+[00:16:51] now there is another type of level
+[00:16:53] trading to be aware of and it comes and
+[00:16:56] well there are really two subcategories
+[00:16:57] one is time based levels and the other
+[00:17:00] is sort of round numbers of
+[00:17:01] psychological levels so time based
+[00:17:02] levels are mostly self-explanatory it's
+[00:17:04] stuff like your monthly open your weekly
+[00:17:06] open the daily open and these things
+[00:17:08] I've seen the argument made that they're
+[00:17:10] indicative of just higher time frame
+[00:17:11] flows I I don't think that claim is true
+[00:17:14] without context but they do help you
+[00:17:16] build a picture of how the high time
+[00:17:18] frame candles may be developing as
+[00:17:20] they're developing right and so they can
+[00:17:22] act as pivots in the context of a higher
+[00:17:24] time frame view so for example uh take a
+[00:17:26] bearish daily bias say yesterday was an
+[00:17:28] engulfing or the market moved into
+[00:17:30] resistance whatever it may be price
+[00:17:32] trades above the daily open early on and
+[00:17:34] then gets smacked down below it and and
+[00:17:36] so as that is happening because you've
+[00:17:37] got that bearish daily bias and then
+[00:17:39] prices below the daily open in your head
+[00:17:41] the daily candle looks like maybe it's
+[00:17:43] set its Wick when it went above the
+[00:17:45] daily open so the wick of the daily
+[00:17:47] candle and now that it's below now we
+[00:17:49] get the body phase of the daily candle
+[00:17:51] right so it can give you some sense of
+[00:17:52] how these candles are forming I wouldn't
+[00:17:54] just blindly apply the sort of
+[00:17:57] methodology of oh it's below the monthly
+[00:17:58] open it's bearish well the monthly open
+[00:18:00] is bullish and so on that sometimes can
+[00:18:01] be useful but I think if you have a
+[00:18:03] contextual view on the higher time
+[00:18:05] frames that you can build and use uh the
+[00:18:07] opens as a trigger sort of where's the
+[00:18:08] wick versus where's the body
+[00:18:10] um that may be useful so that's one
+[00:18:12] thing to be aware of especially if you
+[00:18:14] have a lot of overlap and Confluence
+[00:18:15] between otherwise good horizontal
+[00:18:18] support resistance structure and then
+[00:18:19] you have some sort of high time frame
+[00:18:21] open there that can textually make sense
+[00:18:22] that's a type of Confluence that can
+[00:18:24] really help in your trading and then the
+[00:18:26] other one is of course the standard just
+[00:18:27] round numbers type of thing stuff that
+[00:18:29] looks nice 30k 20K thousand dollars one
+[00:18:32] dollar Etc
+[00:18:33] um especially when you're trending very
+[00:18:35] hard and there's an absence of
+[00:18:36] historical levels or momentum is ruling
+[00:18:38] the whole thing
+[00:18:39] um you'll see these used or front run or
+[00:18:41] traded into for profit taking mini stop
+[00:18:43] runs whatever it may be so again if you
+[00:18:45] have it's one of those things where
+[00:18:46] maybe trading them completely on their
+[00:18:47] own isn't super comfortable but
+[00:18:49] especially if you've got some Confluence
+[00:18:50] or overlap there with your standard
+[00:18:52] tools it may just be helpful
+[00:18:57] there are a lot of nuances when it comes
+[00:18:59] to levels I've written down some of them
+[00:19:01] here
+[00:19:02] um
+[00:19:03] just very quickly with a lot of my other
+[00:19:05] videos I just feel like they're too long
+[00:19:07] and the presentation wasn't where I want
+[00:19:10] it to be I want these to be much more
+[00:19:12] digestible and again frankly this topic
+[00:19:15] is so big and difficult given this is my
+[00:19:16] bread and butter of trading for five
+[00:19:18] plus years I probably if I want to do it
+[00:19:20] justice I probably have to do it in a
+[00:19:21] multi-part series and address specific
+[00:19:23] stuff as opposed to try to cram it into
+[00:19:26] one hour and a half video so hopefully
+[00:19:28] this this is short enough and
+[00:19:29] interesting enough to give you a
+[00:19:31] foundation that's engaging at least make
+[00:19:32] you think in the sort of in an
+[00:19:35] interesting way or in a way that sort of
+[00:19:37] helps you develop your own trading
+[00:19:39] system and then if you want to get into
+[00:19:40] the weeds we can do that on stream or in
+[00:19:42] separate videos or whatever wherever
+[00:19:43] else so this is why the nuances normally
+[00:19:45] these would be their own kind of
+[00:19:46] categories or sections but I said
+[00:19:48] it let's just throw them in here give
+[00:19:49] you the information and I'm sure by now
+[00:19:50] you're all intelligent enough to
+[00:19:52] um figure these things out so
+[00:19:55] let's go from the top our broken support
+[00:19:57] is expected to active resistance right
+[00:19:58] standard support breaks probably
+[00:20:00] resistance and resistance brakes is
+[00:20:02] probably support that's why support
+[00:20:03] resistance flips take place again watch
+[00:20:05] the market microstructure video if you
+[00:20:07] want some nuances as to why that works
+[00:20:09] um again all the usual stuff about order
+[00:20:11] splitting order herding and
+[00:20:13] self-fulfilling prophecy there is true
+[00:20:15] there's also just like a basic
+[00:20:16] positional explanation where if
+[00:20:18] something was supported people were
+[00:20:19] buying it and if that breaks if the
+[00:20:21] market goes back there unless those
+[00:20:22] positions puke to the lower price that's
+[00:20:24] their kind of break-even point or close
+[00:20:25] to their Breakeven point so if they were
+[00:20:27] buying support they were invalidated and
+[00:20:29] the market comes back up they can get
+[00:20:30] out at the price that they bought so you
+[00:20:32] naturally see some selling pressure
+[00:20:33] there right now in terms of time frame
+[00:20:36] hierarchies I do have a video on time
+[00:20:37] frames you should watch it all the
+[00:20:38] videos are somewhat complementary but in
+[00:20:40] general same rules apply the higher time
+[00:20:42] frame structures will typically give you
+[00:20:43] bigger moves and lower time frame
+[00:20:45] structures will typically give you
+[00:20:46] smaller moves and the same consideration
+[00:20:48] doesn't apply just to the size of the
+[00:20:49] move at the time as well so higher time
+[00:20:51] frame structures you should give more
+[00:20:52] time to unfold retest and so on you
+[00:20:55] should be more willing to cut and be
+[00:20:57] aggressive from a time management point
+[00:20:58] of view when it comes to lower time
+[00:21:00] frame structures like I've seen a lot of
+[00:21:02] people try to trade weekly levels and
+[00:21:04] they'll look at it for one hour and say
+[00:21:06] oh that reaction is too too terrible but
+[00:21:07] it didn't Moon immediately it's a bad
+[00:21:09] level and then one or two weeks later it
+[00:21:11] does exactly what they thought it would
+[00:21:12] do and it looks easy and perfect so the
+[00:21:15] issue there is you can't you sort of
+[00:21:17] have to judge a level by its own time
+[00:21:18] frame if I gave you an hourly level and
+[00:21:20] there were two hourly candles on it and
+[00:21:22] then the move came you'd think yeah
+[00:21:23] that's completely reasonable if I gave
+[00:21:25] you a weekly level and it had two
+[00:21:27] candles on it and it moved you might
+[00:21:28] think yeah it's completely reasonable
+[00:21:29] but most people don't because they start
+[00:21:31] viewing those higher time frame levels
+[00:21:33] exclusively through a low time frame
+[00:21:35] lens now that can be a useful exercise
+[00:21:37] if you're trying to get your entry
+[00:21:38] triggers nailed down or if you want to
+[00:21:40] scalp the level before swing trading it
+[00:21:41] and whatnot but you kind of have to if
+[00:21:43] this is the safe and reasonable thing to
+[00:21:45] do as as far as you can is to judge the
+[00:21:47] level on its own time frame merits uh
+[00:21:49] almost like a number of candlesticks
+[00:21:51] type of approach or just letting it play
+[00:21:52] out on the time frame that it comes from
+[00:21:54] that's an important one
+[00:21:56] now next point is that recurring tests
+[00:21:59] from the same direction uh generally
+[00:22:01] make the level weaker so if you have
+[00:22:02] continuous bounces of support that's
+[00:22:04] that demand is getting soaked up there
+[00:22:06] every single time and until eventually
+[00:22:08] breaks and there are no buyers willing
+[00:22:09] to re-buy at that level and again even
+[00:22:12] just if you don't like the supply demand
+[00:22:13] explanation which is strange because it
+[00:22:15] makes so much sense you could also just
+[00:22:16] view it in terms of Market mechanics
+[00:22:19] like if this support level were so good
+[00:22:21] why are the bouncers so weak and why
+[00:22:22] does the market keep coming back to it
+[00:22:24] right so whichever explanation you
+[00:22:26] prefer if you're getting recurring and
+[00:22:28] sort of back to back to back to back
+[00:22:29] tests of a level from the same direction
+[00:22:31] so it's always being hammered as support
+[00:22:33] and it doesn't really leave that area
+[00:22:36] and it just keeps getting hit that level
+[00:22:38] gets weaker and the same applies for
+[00:22:40] resistance if you have a lot of
+[00:22:41] resistance it keeps getting hit and
+[00:22:42] you're sort of making high lows into it
+[00:22:44] and it's the balance is a weaker each
+[00:22:45] time
+[00:22:46] um you don't want to trade that the
+[00:22:47] eighth time round so more tests from the
+[00:22:49] same direction equals weaker level
+[00:22:51] I note on breakouts which is something
+[00:22:53] that's important when it comes to level
+[00:22:54] trading is that the best breakouts move
+[00:22:56] quickly away from the level and allow
+[00:22:58] little to no time to retest
+[00:23:00] um and so the logical corollary of that
+[00:23:02] is that stalling after a big breakout is
+[00:23:04] generally a red flag and that increases
+[00:23:06] the likelihood that it's a trap because
+[00:23:08] what you want to see on a breakout is a
+[00:23:10] real sign of imbalance right you want to
+[00:23:12] see participants get really aggressive
+[00:23:14] create a one-sided demand for liquidity
+[00:23:18] and the market having to travel much
+[00:23:19] higher to satisfy those Divine demands
+[00:23:22] for liquidity and that's how you get
+[00:23:24] your big moves right take it like a
+[00:23:25] bullish breakout the standard
+[00:23:27] microstructure mechanics there would be
+[00:23:30] you would have
+[00:23:31] shorts covering which should turn into
+[00:23:34] orders to buy and you would also have
+[00:23:36] fresh buyers ideally stepping in for the
+[00:23:39] breakout momentum continuation trade and
+[00:23:41] so you've got buyers in the form of
+[00:23:43] sellers closing you have buyers in the
+[00:23:45] form of buyers buying and you have it
+[00:23:47] all happening around the same price
+[00:23:49] point so the demands for liquidity at
+[00:23:52] that point because you're a buyer you
+[00:23:54] need to have a seller you have a lot of
+[00:23:56] buyers who want sellers at the same
+[00:23:57] price and if the Market's really strong
+[00:23:59] and that force is overwhelming and
+[00:24:01] sellers aren't willing to step in uh
+[00:24:03] close to that point then the price just
+[00:24:05] has to travel as high as the travel
+[00:24:06] until those Market orders are filled and
+[00:24:09] so if a breakout is genuine and it's
+[00:24:11] quote unquote overwhelming or aggressive
+[00:24:13] or as accepted whatever terms you want
+[00:24:15] to use you want to see it stick the
+[00:24:18] opposite of course is true where if you
+[00:24:19] see a breakout and it doesn't go
+[00:24:21] anywhere that does suggest that those
+[00:24:23] aggressive buyers are being sort of
+[00:24:25] soaked up by passive sellers or limit
+[00:24:27] orders or whatever it may be and that's
+[00:24:29] much more of a red flag so again all all
+[00:24:32] of this is covered in detail in the
+[00:24:33] market microstructure video but the best
+[00:24:35] breakouts move quickly and allow little
+[00:24:36] to no time to retest if they do retest
+[00:24:38] you want to see it soaked up immediately
+[00:24:40] and ideally only visible on Lower time
+[00:24:43] frames the only exception to the re-test
+[00:24:45] thing and again there's a whole retests
+[00:24:46] video which I strongly recommend
+[00:24:49] um that's sort of acceptable in that
+[00:24:51] regard is if it comes back much later so
+[00:24:53] it breaks out and disappears and
+[00:24:55] goes up a lot goes down a lot and then
+[00:24:56] after time and space comes back to
+[00:24:58] retest that's good but something that
+[00:24:59] just breaks and stalls always be careful
+[00:25:01] right and sort of the next Point follows
+[00:25:04] on from that which is when buying a test
+[00:25:05] of a structure the first test or fresh
+[00:25:07] test is typically the best test or your
+[00:25:10] highest probability trade from a sort of
+[00:25:13] swing trade point of view at the very
+[00:25:15] least
+[00:25:16] next Point reclaimed levels become
+[00:25:18] support resistance once again I.E when
+[00:25:20] the sport resistance flips fail the
+[00:25:22] original structure is restored what I
+[00:25:24] mean by that is the following
+[00:25:26] um this should be familiar to you let's
+[00:25:29] do it in trading view so say you've got
+[00:25:31] a level of support here the market
+[00:25:34] bounces off that that's your support it
+[00:25:36] breaks and does whatever it has to do
+[00:25:37] when or if the market reclaims that
+[00:25:40] level right and trades above it closes
+[00:25:42] above it whatever it may be even though
+[00:25:44] when it was broken you expect it to be
+[00:25:46] resistance as soon as this original
+[00:25:47] level is reclaimed you treat it as
+[00:25:50] support once again so the reclaim kind
+[00:25:52] of flips the switch right you can think
+[00:25:54] about it in resistance terms as well
+[00:25:55] where this is your level of resistance
+[00:25:57] you know that's the market finding
+[00:25:58] resistance if it breaks you might be
+[00:26:00] thinking oh well I'm expecting this to
+[00:26:02] be support until proven otherwise but
+[00:26:04] then as soon as it fails and it's
+[00:26:06] accepted back within the original level
+[00:26:08] then you have to restore its original
+[00:26:11] form which is it is a level of
+[00:26:14] resistance so on the break you can
+[00:26:16] assume a flip but if the flip fails it
+[00:26:19] restores its original function be that
+[00:26:22] support or resistance depending on which
+[00:26:24] direction it's coming from
+[00:26:28] in terms of trend and flows and other
+[00:26:30] Confluence factors I think broadly
+[00:26:32] speaking uh the the general stuff
+[00:26:34] applies which is to say that in an
+[00:26:36] uptrend you generally expect support to
+[00:26:37] hold and resistance to break in a
+[00:26:39] downtrend the opposite is true where you
+[00:26:41] expect resistance to hold and support to
+[00:26:43] break
+[00:26:44] additionally when it comes to breakouts
+[00:26:47] and Trend that's a really important one
+[00:26:48] and a very difficult lesson for a lot of
+[00:26:50] people in 2022 as if there was a
+[00:26:52] shortage of those but in an uptrend
+[00:26:54] there's a higher likelihood that the
+[00:26:56] breakouts stick because they're in line
+[00:26:57] with the trend and the lower likelihood
+[00:26:59] the breakdowns stick because they're
+[00:27:01] more likely to be traps and obviously
+[00:27:03] the opposite is true as well in a
+[00:27:04] downtrend you're expecting that
+[00:27:06] breakdowns which are moves in tandem
+[00:27:08] with the trend uh stick and that
+[00:27:11] breakouts are more likely to be traps so
+[00:27:13] in a trend you generally expect price
+[00:27:15] and Delta to sort of follow each other
+[00:27:18] so if you're trending up and price is up
+[00:27:20] and buyers are strong Etc they liked it
+[00:27:22] that of that that's a trap is much lower
+[00:27:24] right so there are some trend-based
+[00:27:26] considerations when it comes to these
+[00:27:27] things and then the to the Eternal
+[00:27:30] question of Wix versus bodies the answer
+[00:27:32] is yes no both maybe so for me
+[00:27:35] personally I mean obviously like
+[00:27:37] experiment with this see what works for
+[00:27:39] you and so on and so forth from my
+[00:27:40] experience if I'm playing like Spike
+[00:27:42] trap type of setups I'll use Wix for my
+[00:27:46] levels and to delineate the extreme if I
+[00:27:48] think there's some sort of failed
+[00:27:49] breakout or specifically stop run type
+[00:27:51] of setup or kind of Wick to Wick
+[00:27:54] if I want to narrow down the actual
+[00:27:56] level or structure that I think is going
+[00:27:58] to be the basis for reversal I use
+[00:28:01] candle bodies because that gives me a
+[00:28:03] smaller Zone to work with and could be I
+[00:28:04] can be more precise in how I place my
+[00:28:06] orders when it comes to and yeah my
+[00:28:08] personal preference
+[00:28:10] um is the one stated and for you just
+[00:28:12] test and find out we'll just use both to
+[00:28:14] be honest if you're a beginner and you
+[00:28:16] just want to mark up some charts what
+[00:28:17] you can do is just get that top candle
+[00:28:19] bottom candle or consolidation candle
+[00:28:21] and just box out the whole thing and
+[00:28:22] then see which areas price is sensitive
+[00:28:24] to see what time frames you're using
+[00:28:26] most what makes the most sense and sort
+[00:28:28] of refined from there that there's no
+[00:28:29] secret Source there really it's not like
+[00:28:32] oh I was drawing candle bodies and I
+[00:28:33] started drawing candle wicks and it
+[00:28:35] suddenly became a god Trader profitable
+[00:28:36] all else equal that's probably not going
+[00:28:38] to be one of your top concerns
+[00:28:41] now what types of setups can we get at
+[00:28:44] levels now I was very reluctant to do
+[00:28:46] this part of the video because I was
+[00:28:47] thinking oh man like I could
+[00:28:48] probably make a separate video for each
+[00:28:49] one of these but again I'm gonna provide
+[00:28:51] you with a foundation and then maybe we
+[00:28:52] can talk about it elsewhere or make
+[00:28:53] follow-up videos and that's why I need
+[00:28:55] your comments please leave a comment on
+[00:28:56] what you want to see which bits were
+[00:28:58] helpful which bits were too long too
+[00:28:59] short anything from you is greatly
+[00:29:01] appreciated I want to learn as well and
+[00:29:02] we can make more of these not that we
+[00:29:04] have anything better to do anyway so in
+[00:29:06] terms of types of setups uh the sort of
+[00:29:08] five that come to mind and they're not
+[00:29:10] they're not mutually exclusive by any
+[00:29:11] means there's a lot of crossover between
+[00:29:12] them but this is just some ways that you
+[00:29:15] can start thinking about trading those
+[00:29:16] things on your chart
+[00:29:18] so the first is just typical sort of
+[00:29:20] same way level which is that resistance
+[00:29:22] is resistance until proven otherwise
+[00:29:23] supporters support until proven
+[00:29:24] otherwise and this is very common in
+[00:29:26] range-bound environments so the the
+[00:29:28] example that comes to mind is you know
+[00:29:30] the BTC and Link ones so you know
+[00:29:32] support is support and you trade the
+[00:29:34] level the same way
+[00:29:35] um as before so this is support here
+[00:29:39] Market cause the bounce support here
+[00:29:41] Market cores the bounce cause the bounce
+[00:29:42] and so on and so forth you're trading it
+[00:29:44] the same way every single time and the
+[00:29:45] same would link here so you have top
+[00:29:47] that's resistance you're trading this
+[00:29:49] level the same way which is downwards
+[00:29:50] resistance same way down as resistance
+[00:29:53] um contextually speaking this is very
+[00:29:55] common in Range band environments where
+[00:29:56] your expectations of a break breakout
+[00:29:59] are low and and you're just going to
+[00:30:01] assume the structures remain intact
+[00:30:03] until proven otherwise
+[00:30:04] the opposite of that of course is
+[00:30:06] breakout trading the basic premise there
+[00:30:07] is price break resistance therefore the
+[00:30:09] likelihood Market is likely to move
+[00:30:10] higher price broke support therefore the
+[00:30:12] Market's likely to move lower and this
+[00:30:14] is kind of a standard momentum trade to
+[00:30:15] some extent of your catch trying to
+[00:30:17] catch the shift from a balanced into an
+[00:30:19] imbalanced environment and that's sort
+[00:30:22] of a lot of bread and butter when it
+[00:30:23] comes to trading markets more broadly
+[00:30:26] um and with that you also have flips
+[00:30:29] right and also if you're on examples of
+[00:30:31] breakouts and stuff I mean
+[00:30:33] Bitcoin in a downtrend has been has been
+[00:30:36] pretty good at that uh specifically the
+[00:30:39] one that comes to mind is the 30k
+[00:30:40] breakdown right when I say breakout I
+[00:30:43] just mean from consolidation it could be
+[00:30:45] up or down I do use those
+[00:30:46] interchangeably but whatever else like
+[00:30:48] 30k is a big example of that Eve has a
+[00:30:51] similar one
+[00:30:53] when the the sort of 2700 level broke
+[00:30:56] down and then this kind of down only
+[00:30:58] since there uh so there's kind of your
+[00:30:59] higher time frame momentum trades of
+[00:31:01] look this is a big level the big level
+[00:31:02] broke I'm probably going to go up a lot
+[00:31:04] or down a lot from there depending on
+[00:31:05] whether it's support uh resistance or
+[00:31:08] support right
+[00:31:09] when it comes to Flips that's not the
+[00:31:11] type of setup which is the price break
+[00:31:13] resistance as we discussed if that level
+[00:31:14] is retested it's likely to flip the
+[00:31:16] support and then if price break supports
+[00:31:18] if that level's resisted retested it's
+[00:31:20] likely to flip to resistance and this is
+[00:31:22] your kind of standard support resistance
+[00:31:24] flip which is which you see a lot in
+[00:31:25] both breakout trading and also Trend
+[00:31:28] continuation type of setups uh some
+[00:31:30] obvious one here well for example for
+[00:31:31] BMB this is the same way level which is
+[00:31:33] the bottom of the range that's where you
+[00:31:35] found the bottom of the next range and
+[00:31:37] then in terms of support resistance flip
+[00:31:39] you have support support breakdown took
+[00:31:42] a while come back to retest and that's
+[00:31:43] sort of the area where it got stuck
+[00:31:47] the
+[00:31:48] cousin if you will of that type of setup
+[00:31:51] or at least close to maybe to breakouts
+[00:31:52] is the premise of deviations or failed
+[00:31:55] breakouts and those types of patterns
+[00:31:57] and the base of the logic there is that
+[00:31:58] breakouts should be bullish and when
+[00:32:00] bullish patterns fail that's bearish
+[00:32:02] um in other terms if a breakout isn't
+[00:32:04] accepted the Market's likely to go down
+[00:32:05] and the same goes the other way around
+[00:32:07] of course which is where breakdown
+[00:32:08] breakdowns should be bearish when the
+[00:32:10] bearish patterns fail that's bullish if
+[00:32:12] the breakdown wasn't accepted that means
+[00:32:13] the Market's likely going to go the
+[00:32:15] other way which in this case is up and
+[00:32:17] you see this all over the place
+[00:32:19] especially in Range band environments
+[00:32:20] but it's just a good setup in general
+[00:32:22] when the market attempts to move from
+[00:32:24] balance to imbalance and isn't accepted
+[00:32:27] it'll likely trade back within sort of
+[00:32:29] back where it came from the classic
+[00:32:30] example and something we talked about at
+[00:32:32] length on all sorts of newsletter Show
+[00:32:34] podcast thing uh is the Bitcoin failed
+[00:32:36] breakout at 45k this is when the lunar
+[00:32:38] Foundation guard was buying Bitcoin you
+[00:32:40] had a big level of resistance here
+[00:32:41] almost like a triple Top Market broke
+[00:32:43] above it it should be bullish and
+[00:32:44] instead it closed back below this ended
+[00:32:46] up being the excess and you know the
+[00:32:49] rest is history as they say
+[00:32:52] spikes
+[00:32:53] now this is sort of very similar to
+[00:32:56] deviations of failed breakouts just kind
+[00:32:57] of delineated differently so this is
+[00:32:59] where you see your swing failure pattern
+[00:33:01] failed breakout stop run type of
+[00:33:03] amalgamation
+[00:33:05] and the basic idea is if you have a key
+[00:33:07] high or kilo and you're assuming that
+[00:33:10] that's going to be used for stop market
+[00:33:11] orders be it stop losses or breakout
+[00:33:13] trades and the market spikes and moves
+[00:33:15] back below key swing High those buyers
+[00:33:18] who stepped in Above That Swing high are
+[00:33:20] now offside
+[00:33:21] and the Market's likely to move against
+[00:33:23] them which is down or the opposite
+[00:33:25] example if the market spikes below a key
+[00:33:28] swing low a lot of people are going to
+[00:33:29] get bearish that you know either to
+[00:33:30] break down momentum trade or to stop out
+[00:33:32] of their Longs and you know if the
+[00:33:34] market doesn't follow through it's
+[00:33:35] likely to move against those positions
+[00:33:37] I.E in the upwards Direction
+[00:33:40] do I have Spike examples
+[00:33:43] probably not
+[00:33:45] but you can look at these anywhere big
+[00:33:46] swing points I think if near its top had
+[00:33:49] something that looked a bit spiky but in
+[00:33:51] terms of time frames uh you can use this
+[00:33:53] all the way from like the five minutes
+[00:33:55] to much higher time frame type of stuff
+[00:33:57] so this is especially in crypto these
+[00:34:00] sorts of Spike setups are all over the
+[00:34:02] place on all time frames so your eye
+[00:34:04] should be trained to them quite well and
+[00:34:06] the larger the time frame uh the better
+[00:34:09] the setup but honestly in crypto that's
+[00:34:11] one of those that works
+[00:34:13] um on any time frame and also used by
+[00:34:15] scalpers and intraday Traders whatever
+[00:34:17] it may be right
+[00:34:19] so those are the four like the basically
+[00:34:22] the four or five types of setups when it
+[00:34:24] comes to trading levels same way usually
+[00:34:26] in a rangeman environment breakouts
+[00:34:27] which is that hey stuff is Shifting and
+[00:34:29] we're through a big level I expect a big
+[00:34:31] move flips which is this area was
+[00:34:33] significant as support and now that it's
+[00:34:35] broken it may be significant resistance
+[00:34:37] and vice versa deviations and failed
+[00:34:39] breakouts which is to say when you have
+[00:34:41] the market make an attempt at momentum
+[00:34:43] and that attempt gets soaked up or isn't
+[00:34:45] accepted it's probably going to move in
+[00:34:47] the other direction and then spikes is
+[00:34:49] your classic sort of
+[00:34:50] um quote unquote stop hunting or
+[00:34:52] attempted breakout trading phenomenon
+[00:34:55] where the market will trade through
+[00:34:56] areas where there's presumably clustered
+[00:34:59] stop market orders be that to break out
+[00:35:01] or to stop out of position and then
+[00:35:03] reverse upon reaching that Target
+[00:35:09] so to conclude uh this video isn't
+[00:35:11] comprehensive as I've said each subtopic
+[00:35:13] could probably warrant its own video I
+[00:35:15] just really thought it was about time to
+[00:35:16] update this horizontal Sr video
+[00:35:19] um because it's like four years old and
+[00:35:22] this is what I've been trading for five
+[00:35:23] years and I think it needed a bit of a
+[00:35:24] facelift it's a very very difficult
+[00:35:25] video to make because striking the
+[00:35:27] balance between making it like five
+[00:35:29] hours and every little nitty-gritty
+[00:35:30] Thing versus something you'll actually
+[00:35:32] watch uh hopefully I got it right again
+[00:35:33] please let me know in the comments as
+[00:35:36] you hopefully have picked up mapping
+[00:35:37] levels is simple trading them is
+[00:35:39] difficult and building a robust trading
+[00:35:41] system around them is even more
+[00:35:42] difficult and that's really where most
+[00:35:44] of your time should be going
+[00:35:46] price action trading has evolved a lot
+[00:35:48] over the years and with that come new
+[00:35:50] trends and rebrands and repackaging I'll
+[00:35:54] just suggest you don't get lost in the
+[00:35:56] price action trading vernacular this
+[00:35:58] stuff is mostly straightforward and then
+[00:36:00] a lot of it is just sort of repackaging
+[00:36:01] and giving you different names for the
+[00:36:03] same thing so you should the more
+[00:36:04] important version is how these things
+[00:36:06] work and being able to identify and
+[00:36:08] trade them more so than why or what
+[00:36:10] exactly they're called and all that type
+[00:36:11] of stuff and if you want the why just go
+[00:36:13] watch the market microstructure video
+[00:36:14] because that's got a lot of stuff and a
+[00:36:16] lot of color in general can be derived
+[00:36:17] from my other videos the market
+[00:36:18] microstructure One Market structure one
+[00:36:20] retest one first trouble area all of
+[00:36:22] that is based around levels so a lot of
+[00:36:24] the stock content you're maybe thinking
+[00:36:26] I should have covered exists in those
+[00:36:28] videos
+[00:36:29] and I guess as a final aside I've been
+[00:36:31] trading levels for five plus years and
+[00:36:33] I'm still learning and figuring out
+[00:36:34] nuances every day week month whatever it
+[00:36:37] may be there's always something more to
+[00:36:38] learn and the way you do that is by
+[00:36:40] experimenting testing journaling and
+[00:36:41] ideally doing so even if it's with small
+[00:36:43] size or less than one percent of your
+[00:36:45] account in a live environment where
+[00:36:47] you're actually at the desk and you give
+[00:36:49] a so uh consider that as well uh
+[00:36:52] that's all from me thank you for
+[00:36:53] watching thank you for your support on
+[00:36:55] the technical analysis series over the
+[00:36:56] last like five years there's more to
+[00:36:58] come
+[00:36:59] um so subscribe like share please
+[00:37:01] comment let me know what you thought if
+[00:37:03] you prefer this format or you want
+[00:37:04] something much longer much shorter
+[00:37:05] whatever
+[00:37:06] um hope you're all doing okay and I'll
+[00:37:08] see you for the next one much sooner
+[00:37:10] rather than later take care

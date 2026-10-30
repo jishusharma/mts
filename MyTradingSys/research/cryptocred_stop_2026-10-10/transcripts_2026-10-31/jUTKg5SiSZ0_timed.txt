@@ -1,0 +1,1469 @@
+# Video ID: jUTKg5SiSZ0
+# Title: Technical Analysis Series - Daily Open Trade Strategy
+# Published: 2023-05-28
+# Source: yt_dlp captions (auto); uploader: CryptoCred
+# Analyst: CryptoCred
+# Channel: @CryptoCred
+# Duration_s:2944
+# Word count: 9969
+# ---
+[00:00:00] hello and welcome to another video as
+[00:00:02] part of the technical analysis Series
+[00:00:04] today we're talking about the daily open
+[00:00:06] trade strategy
+[00:00:07] here's the outline for the video we'll
+[00:00:09] start with a Candlestick refresher we'll
+[00:00:11] cover some cool mechanics we'll talk
+[00:00:12] about using the daily open for
+[00:00:14] continuation setups I.E when you have an
+[00:00:16] expectation for Trend day trend days or
+[00:00:19] expansion more generally we'll talk
+[00:00:20] about candle open drives some nuances
+[00:00:22] and then conclude
+[00:00:24] usual disclaimer this is not Financial
+[00:00:26] investment legal advice or advice of any
+[00:00:28] sort it's just a YouTube video
+[00:00:29] entertainment purposes only and you know
+[00:00:32] talk to a lawyer or something
+[00:00:35] so refresher on candlesticks if this is
+[00:00:38] new to you then I recommend you go back
+[00:00:39] earlier in the playlist which one of the
+[00:00:41] First videos has the title of
+[00:00:43] introduction to candlesticks or
+[00:00:45] something of that nature watch that and
+[00:00:47] work your way down here this video will
+[00:00:48] assume some prior knowledge but it's all
+[00:00:50] prior knowledge you can get from the
+[00:00:51] playlist itself so see you back here
+[00:00:54] later if that applies to you if it
+[00:00:55] doesn't let's continue the first useful
+[00:00:58] observation we'll make is that most
+[00:01:00] markets tend to trade either or
+[00:01:01] particularly both sides of the open on
+[00:01:04] any given day and that's simply to say
+[00:01:06] that most daily candles have a wick it's
+[00:01:08] a bit of a sort of banal observation but
+[00:01:09] an important one you know if you go to
+[00:01:11] if USD on The Daily most candles with
+[00:01:14] some recent exceptions have a wick on
+[00:01:16] both sides regardless of whether they're
+[00:01:18] green or red it doesn't matter if the
+[00:01:21] market is moving sideways trending up
+[00:01:22] trending down whatever that observation
+[00:01:24] on average tends to hold true same for
+[00:01:26] BTC same fraults and so on and so forth
+[00:01:29] there why that is useful will become
+[00:01:30] obvious sooner rather than later
+[00:01:33] final bit of housekeeping is that the
+[00:01:35] daily open is at midnight UTC most of
+[00:01:37] your charting software should be able to
+[00:01:39] tell you when the daily open is you can
+[00:01:40] get indicators on trading view you can
+[00:01:42] simply change your time zone to UTC and
+[00:01:44] know when that is but nothing too
+[00:01:46] complicated there and the acronyms we'll
+[00:01:48] be using for this video are the
+[00:01:49] following Dio is daily open hod high of
+[00:01:51] day LOD low of day fade just means
+[00:01:54] stepping in front of a big move so
+[00:01:55] selling a move up or buying a move down
+[00:01:58] HTF has high time frame and ltf is low
+[00:02:01] time frame
+[00:02:03] here's our diagram courtesy of ig.com
+[00:02:06] when you have a green candle regardless
+[00:02:08] of what time frame it represents
+[00:02:11] um the closing price is higher than the
+[00:02:13] opening price and the tails are the
+[00:02:15] highest and lowest prices traded within
+[00:02:18] whatever session it's representing but
+[00:02:20] the core part is a higher closing price
+[00:02:22] than the opening price and the same for
+[00:02:25] the red candles uh just in Reverse
+[00:02:27] essentially where it's red because the
+[00:02:28] closing price was below the opening
+[00:02:31] price okay
+[00:02:33] now when we talk about daily open setups
+[00:02:35] for continuation there's an important
+[00:02:37] requirement that I think helps and it's
+[00:02:40] to have a high time frame directional
+[00:02:41] bias I will even put this in Brackets
+[00:02:44] because having a high time frame
+[00:02:46] directional bias is not a prerequisite
+[00:02:48] it certainly helps but having some sense
+[00:02:49] of a directional bias is important and
+[00:02:52] they'll become obvious why momentarily
+[00:02:53] now the Assumption when you have a
+[00:02:55] directional bias or what it means to
+[00:02:56] have a directional bias is the following
+[00:02:58] you're essentially saying if we take the
+[00:03:00] daily example that today if you have a
+[00:03:02] bullish sort of bearish bullish or
+[00:03:04] bearish daily directional bias you're
+[00:03:06] saying today is likely to be a trend day
+[00:03:08] and or today and the subsequent days are
+[00:03:11] likely to Trend and the inference there
+[00:03:13] is that the trend portion of the day
+[00:03:14] will occur above or below the daily open
+[00:03:16] in the direction of the bias so quite
+[00:03:18] simply if you think for whatever reason
+[00:03:20] that today's daily candle is going to
+[00:03:22] look like this at some point the market
+[00:03:24] has to trade significantly above the
+[00:03:26] opening price and close higher for the
+[00:03:28] candle to be green and for you to be
+[00:03:29] correct and of course the opposite for
+[00:03:31] if you have a bearish directional bias
+[00:03:33] if you are correct at some point the
+[00:03:34] Market's gonna have to move lower from
+[00:03:36] the opening price and close at a lower
+[00:03:38] closing price in order for your view to
+[00:03:41] be validated now
+[00:03:43] the setup uh all these new you know
+[00:03:45] we'll cover a bunch of nuances in a
+[00:03:46] moment but the setup mechanically
+[00:03:48] speaking is rather simple where
+[00:03:49] essentially you're looking to buy a
+[00:03:51] reclaim of the daily open on a bullish
+[00:03:52] Trend day or sell a move back below the
+[00:03:54] daily open on a bearish trend day and
+[00:03:57] another benefit of this is you get
+[00:03:58] built-in invalidations with these things
+[00:04:00] where if you have a bullish directional
+[00:04:02] bias uh your low of day is the stop for
+[00:04:05] a bullish trendy idea and if you have a
+[00:04:07] bearish directional buyers the high of
+[00:04:08] day is your stop on a bearish trend Day
+[00:04:10] idea now going back to something I said
+[00:04:12] earlier why is having a high time frame
+[00:04:14] directional bias an important sort of
+[00:04:16] Criterion to satisfy and it's because if
+[00:04:19] you take this setup sort of mechanically
+[00:04:20] at face value you end up with quite
+[00:04:22] absurd conclusions so consider the
+[00:04:24] following if we took this in the most
+[00:04:26] literal sense let's see if we can bring
+[00:04:29] this up
+[00:04:31] oops
+[00:04:32] okay doesn't matter let's say
+[00:04:36] you have this you're taking this
+[00:04:38] literally and it's quite nice we have it
+[00:04:39] on this page anyway so
+[00:04:41] this is your daily open
+[00:04:43] okay
+[00:04:44] and let's say you don't have a
+[00:04:45] directional bias and you're only
+[00:04:47] following the setup portion of buyer
+[00:04:49] reclaim of the daily open or seller move
+[00:04:51] back below the daily open what that
+[00:04:53] wouldn't mean necessarily is that as
+[00:04:54] soon as you see this a little move back
+[00:04:56] below and a move back above you would
+[00:04:58] think okay well that that's the setup
+[00:04:59] okay so I'm gonna long this I'm gonna
+[00:05:03] put a stop at the low and Target higher
+[00:05:05] and it would mean the opposite is true
+[00:05:06] for the bearish setup where if it goes
+[00:05:08] higher initially and then is back below
+[00:05:10] you would short it below the daily open
+[00:05:13] you'd put a stop above and Target lower
+[00:05:15] and hopefully you can already tell the
+[00:05:17] absurdity of this exercise because if we
+[00:05:19] were to look at the daily open on say
+[00:05:22] BTC USD
+[00:05:25] uh that setup wouldn't be particularly
+[00:05:27] great in most cases I mean certainly
+[00:05:30] here it would have worked right if you
+[00:05:32] for example to drive lower as soon as
+[00:05:33] above the daily open your buyer with a
+[00:05:35] stop at the low sure that works but then
+[00:05:37] if you take a larger sample size and see
+[00:05:39] how messy and choppy the market tends to
+[00:05:41] be around the daily open you'll see that
+[00:05:45] applying the strategy mechanically turns
+[00:05:47] into a bit of a nightmare
+[00:05:50] um yeah it's just without context and
+[00:05:53] without the requisite filters applying
+[00:05:55] this type of setup uh just blindly
+[00:05:57] doesn't tend to work particularly well
+[00:05:59] and there are a lot of charts on social
+[00:06:01] media which simply have the daily open
+[00:06:03] as a level without any context and just
+[00:06:05] use it as support resistance and I think
+[00:06:07] put charitably that is uh misled so you
+[00:06:10] can hopefully see where if you just kind
+[00:06:11] of Chase the first tiny move off of the
+[00:06:13] daily open or the first reclaim and just
+[00:06:15] smack a stop uh you know one two five
+[00:06:18] ten ticks higher or lower on average
+[00:06:20] that will be a losing strategy okay and
+[00:06:22] you can say the same for eth
+[00:06:24] um
+[00:06:25] did you know the market tends to be very
+[00:06:26] choppy and sort of push above push below
+[00:06:28] and it's not always as simple as well
+[00:06:30] this is the daily open use it as a
+[00:06:32] support resistance pivot thanks for
+[00:06:33] watching like And subscribe uh the
+[00:06:35] evidence doesn't support that so how can
+[00:06:37] we keep the useful idea of having the
+[00:06:39] daily open as a pivot but apply the the
+[00:06:41] sort of appropriate context to it to
+[00:06:44] make it tradable and worth our time
+[00:06:48] now before we get into a bunch of
+[00:06:49] context and we also have a ton of chart
+[00:06:51] examples to go through as well I want to
+[00:06:53] give you the paint version of what I'm
+[00:06:57] talking about
+[00:06:58] here we go now essentially what we're
+[00:07:01] saying is the following
+[00:07:04] let's say our directional bias is
+[00:07:06] bearish
+[00:07:09] bear okay so what we expect and just to
+[00:07:12] keep things simple we're going to take
+[00:07:13] the daily example what we expect the
+[00:07:15] daily candle to look like is the
+[00:07:17] following right so we have a bearish
+[00:07:19] directional bias we think the day is
+[00:07:20] going to close lower and maybe the
+[00:07:21] subsequent day is going to close lower
+[00:07:22] but this is our expectation of what the
+[00:07:25] daily candle is going to look like right
+[00:07:28] now with that in mind if we take the
+[00:07:30] daily open something interesting happens
+[00:07:33] so
+[00:07:35] we have the daily open here
+[00:07:37] okay what we're essentially trying to do
+[00:07:39] is capture the body portion of the
+[00:07:43] candle as it's forming in real time so
+[00:07:45] again bear in mind it's a red candle so
+[00:07:47] this is the opening price and this is
+[00:07:49] the closing price here and this is the
+[00:07:52] high and the low so
+[00:07:53] if this is our daily open we have a
+[00:07:55] bearish directional bias and we're
+[00:07:56] trying to take this setup
+[00:07:58] um we're tracking the high time frame
+[00:08:01] candle in real time so if we are correct
+[00:08:04] let's say the market fulfills the first
+[00:08:07] Criterion and drives higher from the
+[00:08:08] daily open what we're expecting this
+[00:08:11] move to be is the wick portion of that
+[00:08:14] daily candle okay as the market loses
+[00:08:17] the daily open and we'll talk about time
+[00:08:20] frames all the other details in a moment
+[00:08:22] as the market loses the daily open we
+[00:08:24] expect to be here somewhere right so
+[00:08:27] we've formed the high of the day
+[00:08:28] this is the daily open and we're now
+[00:08:31] below it
+[00:08:32] and when we're entering a trade
+[00:08:34] somewhere below the daily open or where
+[00:08:37] it's acting as resistance what we're
+[00:08:38] trying to do is capture the candle body
+[00:08:42] portion of the setup before it unfolds
+[00:08:46] so ideally if this is our expectation
+[00:08:49] for you know this is our directional
+[00:08:51] bias that the candle is going to look
+[00:08:52] like this what we're really doing is
+[00:08:55] trying to enter somewhere around here
+[00:08:58] close to the Daily open and we're trying
+[00:09:00] to capture as much of this candle body
+[00:09:02] as possible
+[00:09:04] so hopefully that makes sense
+[00:09:06] um
+[00:09:07] let's get into the nitty-gritty
+[00:09:10] and again tons of chart examples coming
+[00:09:12] your way uh first a bit more Theory bear
+[00:09:14] with me
+[00:09:15] um what does it mean to have a high time
+[00:09:16] frame directional bias again I don't
+[00:09:18] mind if you just remove the high time
+[00:09:19] frame part and talk about directional
+[00:09:21] bias in general I will say read with the
+[00:09:23] article on medium about directional bias
+[00:09:25] it'll be in the description but in
+[00:09:26] general the basic definition is a strong
+[00:09:28] brackets High time frame signal that the
+[00:09:31] next days weeks or if you're using it on
+[00:09:33] a lower time frame basis sessions will
+[00:09:35] move higher or lower
+[00:09:39] higher
+[00:09:40] or lower right
+[00:09:43] I.E higher than usual conviction in
+[00:09:48] Direction and what are some examples of
+[00:09:50] that and it's hopefully things that
+[00:09:52] already exist in your trading system so
+[00:09:54] breaks of key levels failed breaks of
+[00:09:56] key levels reclaims or losses of key
+[00:09:58] levels candle closes or evidence of
+[00:10:00] absorption at important contextual areas
+[00:10:03] breakouts and re-tests of high time
+[00:10:05] frame Market structure levels I.E areas
+[00:10:07] where you could reasonably expect the
+[00:10:08] higher low or lower high deform gain or
+[00:10:11] loss of ma based Trend momentum
+[00:10:13] Divergence all the usual trading stuff
+[00:10:15] that we use to generate signals all of
+[00:10:16] that applies here we're just trying to
+[00:10:18] add a filter to the price action instead
+[00:10:20] of using that daily open tail chasing
+[00:10:22] absurd example we talked about earlier
+[00:10:24] now
+[00:10:25] when it comes to the reclaim of the
+[00:10:27] daily open because again all I'm doing
+[00:10:28] is kind of just breaking down these
+[00:10:30] steps because this is really the only
+[00:10:31] slide you need but as we've seen if you
+[00:10:32] apply it in a vacuum you end up with
+[00:10:35] quite unfavorable results so we've
+[00:10:36] hopefully covered what the high time
+[00:10:38] frame directional bias means and again
+[00:10:39] the article does some heavy lifting
+[00:10:40] there
+[00:10:41] um now as far as the following reclaim
+[00:10:43] of the O we know that if we're bullish
+[00:10:45] we're buying the you know move lower and
+[00:10:47] we're above the daily open we're buyers
+[00:10:48] and if we're bearish move higher and
+[00:10:50] move back below the daily open uh we are
+[00:10:52] sellers what what does what does that
+[00:10:54] really mean and it means the following
+[00:10:56] when I say reclaim of the level
+[00:10:58] so again what what reclaim essentially
+[00:11:00] means is uh if we're bearish by reclaim
+[00:11:03] we mean it's above and now it's back
+[00:11:05] below and we make that actually visible
+[00:11:07] I'm sure that would be helpful
+[00:11:10] so if we're bearish all that means is we
+[00:11:12] were above and now we're back below or
+[00:11:14] if we're bullish that means we were
+[00:11:16] below and we were below and now we're
+[00:11:19] back above okay that's all that means
+[00:11:22] now
+[00:11:23] in the past examples and we'll talk
+[00:11:25] about charts in a moment I just simply
+[00:11:26] kind of circled this area as being where
+[00:11:28] you'd enter but of course we need more
+[00:11:30] detail than that specifically I will say
+[00:11:32] that your entry usually is usually on
+[00:11:34] your standard intraday setup time frames
+[00:11:36] a lot of Traders will have like
+[00:11:37] execution time frames or time frames on
+[00:11:39] which they execute their shorter time
+[00:11:40] frame strategies or even sort of look
+[00:11:42] for setups for their higher time frame
+[00:11:44] swings and that's that in our for our
+[00:11:46] purposes there has to be a lower time
+[00:11:47] frame strategy uh specifically time
+[00:11:49] frame wise so that can be the five
+[00:11:51] minute the 15 minute the hourly uh these
+[00:11:52] are the three I use the most and mostly
+[00:11:54] for daily open entry trigger stuff it'll
+[00:11:56] be either five minute or hourly oddly
+[00:11:59] enough but something lower time frame
+[00:12:00] that you can actually track monitor I
+[00:12:02] think is helpful
+[00:12:03] the second point I'll make is it's worth
+[00:12:06] treating the daily open in those cases
+[00:12:07] as an Sr level and you want to apply the
+[00:12:09] usual entry trigger techniques in the
+[00:12:12] video so sometimes you know just chasing
+[00:12:14] the breakdown or the breakout is
+[00:12:15] appropriate sometimes a retest is
+[00:12:17] appropriate looking at lower time frame
+[00:12:18] patterns above the daily open if you're
+[00:12:20] bullish or below if you're bearish kind
+[00:12:22] of fractal type price action is also
+[00:12:23] appropriate there are full videos on
+[00:12:25] this stuff uh one important Nuance that
+[00:12:28] applies specifically to the strategy is
+[00:12:30] point number three that you should be
+[00:12:32] prepared to trade around that level more
+[00:12:34] than once if necessary because sometimes
+[00:12:36] it can get choppy we are dealing with
+[00:12:38] usually sort of higher time frame levels
+[00:12:40] and areas where the market can take a
+[00:12:42] while and so it's not the end of the
+[00:12:44] world if the market kind of chops before
+[00:12:45] giving uh the move that you're looking
+[00:12:47] for
+[00:12:48] now as far as invalidation goes
+[00:12:50] um as we mentioned earlier it's
+[00:12:52] essentially built in which is helpful so
+[00:12:54] it's the high of day if you're a seller
+[00:12:55] and the low of day if you're a buyer
+[00:12:58] um sometimes the market will give you a
+[00:12:59] better or clearer invalidation which
+[00:13:01] we'll talk about in some trial examples
+[00:13:02] and it's also not uncommon to get a
+[00:13:04] spike so again setup wise and sort of
+[00:13:07] from a risk management point of view you
+[00:13:08] want to be sure that you're in a spot
+[00:13:09] where you can take a couple of stabs at
+[00:13:11] this thing without getting stopped out
+[00:13:13] right so you don't want to risk five
+[00:13:15] percent or something on just a single
+[00:13:17] daily open strategy Get Wicked out and
+[00:13:19] then it plays out again but you don't
+[00:13:20] want to risk 10 on the same trade so
+[00:13:22] give yourself some leeway there
+[00:13:25] um
+[00:13:26] so
+[00:13:28] yeah let's talk let's talk some chart
+[00:13:30] examples and talk through it so the
+[00:13:33] slide I want to have here will probably
+[00:13:35] be this one okay so we can sort of we
+[00:13:37] have the setup and validation and we
+[00:13:38] will go through charts and see how it
+[00:13:40] applies so here's BTC USD on The Daily
+[00:13:43] um
+[00:13:43] Market is at a resistance level at the
+[00:13:47] time 28 700 and we're back below and
+[00:13:51] retesting that level so directional bias
+[00:13:52] in this case will be bearish because the
+[00:13:54] market is at resistance sometimes it's
+[00:13:55] that simple now if we have our daily
+[00:13:58] open marked we can see the following
+[00:14:01] so this is our daily open the market
+[00:14:04] drives lower initially fine sells off
+[00:14:06] from the open maybe you feel bad for
+[00:14:08] fomo like not chasing this and thinking
+[00:14:10] oh well the big move is done now and
+[00:14:11] we're just moving lower however look
+[00:14:13] what happens so the market then drives
+[00:14:15] in it drives and at this portion of
+[00:14:17] price action it does two things that are
+[00:14:19] important for our purposes and it
+[00:14:20] happens on both occasions actually
+[00:14:22] um
+[00:14:23] the first thing it does is it trades
+[00:14:26] above the daily open so the purple line
+[00:14:27] is daily open so all of this price
+[00:14:29] action here is above it so per our
+[00:14:32] diagram of being bearish this we expect
+[00:14:34] to be the wick of that high time frame
+[00:14:36] candle then when it breaks down which
+[00:14:38] happens here on this occasion it gives
+[00:14:39] you a nice retest of the daily opens
+[00:14:41] your entry trigger in that case you'd be
+[00:14:43] rewarded for if you didn't chase this
+[00:14:44] and had a limit order that's fine so
+[00:14:46] that satisfies the
+[00:14:49] Criterion of moving back below it and
+[00:14:52] then your invalidation automatically and
+[00:14:54] mechanically becomes the highest high
+[00:14:57] made with a Target being whatever your
+[00:15:00] your broader directional bias is
+[00:15:02] suggesting so as I said from support to
+[00:15:03] resistance from ma band to ma band
+[00:15:05] overbought to oversold what have you one
+[00:15:07] side of the range to the other all of it
+[00:15:09] being the same thing and you actually
+[00:15:11] had a similar setup play out twice at
+[00:15:13] that level
+[00:15:14] which isn't unexpected if you're dealing
+[00:15:16] with daily levels where the market can
+[00:15:18] spend some time there before actually
+[00:15:19] giving you the big move but same thing
+[00:15:21] here
+[00:15:22] um and this is actually on the same day
+[00:15:23] as well which is interesting
+[00:15:26] you have the daily open market moves
+[00:15:28] above it once again here but notice it's
+[00:15:30] not just moving above the daily open
+[00:15:32] we're not doing that thing where we just
+[00:15:33] draw the level and if it's you know if
+[00:15:34] it breaks down we sell it and if it
+[00:15:35] breaks up we're buying we have the
+[00:15:37] context that the big blue level is a
+[00:15:39] daily level of resistance okay and
+[00:15:41] notice how the market isn't just trading
+[00:15:43] above the daily open but it's getting
+[00:15:44] stuffed at that daily level of
+[00:15:46] resistance but mechanically very much a
+[00:15:48] similar thing going on there where it
+[00:15:50] hits the daily level then loses the
+[00:15:53] daily open and the reason I included
+[00:15:55] this example here is because this is one
+[00:15:56] of those where you would initially at
+[00:15:58] least likely get spiked because if you
+[00:16:01] followed let's say this breakdown candle
+[00:16:03] as an entry trigger your invalidation
+[00:16:06] mechanically would go at the high and
+[00:16:09] two candles later you get stopped out by
+[00:16:12] this Wick which is why the point about
+[00:16:13] being flexible and being able to take
+[00:16:15] the setup more than once is important
+[00:16:16] because after that Spike you can see the
+[00:16:19] market comes in and tests the daily open
+[00:16:20] again on this occasion before giving you
+[00:16:23] the move that was uh favorable
+[00:16:25] um so yeah that's that's one example of
+[00:16:29] it now you can see how we sort of built
+[00:16:30] up the idea right sort of using all the
+[00:16:32] principles that we discussed uh we have
+[00:16:34] the high time frame directional bias
+[00:16:35] because we know it's a daily resistance
+[00:16:37] we had the move above the daily open
+[00:16:39] which we expect to be the wick we have
+[00:16:41] the loss of the daily open with
+[00:16:42] invalidation Baha'i and then you get a
+[00:16:44] nice move in your favor uh here this
+[00:16:46] showcases uh the same principles except
+[00:16:48] with the spike you also get the later
+[00:16:51] get a re-entry opportunity before the
+[00:16:53] market trades lower okay but it goes
+[00:16:55] back to that same diagram we talked
+[00:16:56] about of you know if our expectation is
+[00:16:59] that the daily candle is at some point
+[00:17:01] or more likely than not going to look
+[00:17:03] like this
+[00:17:05] when the market is doing this you are
+[00:17:08] here when the market is doing the well
+[00:17:11] this portion right losing the daily open
+[00:17:14] you are here-ish and the move that
+[00:17:17] you're trying to capture
+[00:17:20] is the follow through having uh flipped
+[00:17:23] the daily open
+[00:17:25] and I'll keep doing this to sort of
+[00:17:26] reiterate the point but hopefully that's
+[00:17:28] one good example and there are more
+[00:17:31] because I know you like examples I do
+[00:17:32] listen to your feedback uh here's
+[00:17:34] cardano uh an example of a different
+[00:17:36] directional bias which is a sort of
+[00:17:38] failed breakout and retest where you had
+[00:17:40] a level of resistance Market comes in
+[00:17:42] tries to break out not accepted and um
+[00:17:45] back below it right sort of breaks down
+[00:17:46] below here you get a retest on this
+[00:17:48] occasion retest on this occasion so
+[00:17:50] if you look at that on the hourly time
+[00:17:52] frame again directional bias we'll have
+[00:17:55] our mental note of what we expect the
+[00:17:58] candle to look like here
+[00:18:00] okay red
+[00:18:02] would this being the opening price and
+[00:18:05] this being the closing price
+[00:18:07] what we have
+[00:18:09] um
+[00:18:09] marking out this daily open
+[00:18:12] doesn't meet our criteria initially you
+[00:18:14] get a drive above the daily open
+[00:18:16] crucially where is that drive taking
+[00:18:18] place is it in the middle of nowhere no
+[00:18:20] that drive above the daily open is into
+[00:18:22] daily resistance so as you're getting
+[00:18:25] this portion of the move you're thinking
+[00:18:29] there's a chance that we're here
+[00:18:31] okay then the market gives you an hourly
+[00:18:36] signal and it closes initially below the
+[00:18:40] daily open on the hourly time frame and
+[00:18:43] then comes back and notice it keeps
+[00:18:44] getting stuffed at Daily resistance so
+[00:18:46] already in terms of Entry triggers as
+[00:18:49] per the video you could do something as
+[00:18:51] simple as
+[00:18:53] hourly closed below as an entry trigger
+[00:18:55] because it hit daily resistance and
+[00:18:56] closed Below on the hourly so that could
+[00:18:58] be sufficient and we know that the
+[00:18:59] invalidation on that occasion is a
+[00:19:02] mechanical stop to start with at the
+[00:19:04] height of the day okay
+[00:19:06] um Market comes in keeps re-testing the
+[00:19:09] level so another option could simply be
+[00:19:11] on this second breakdown uh you're a
+[00:19:14] limit seller either of the level or of
+[00:19:16] the daily open because we know this is
+[00:19:17] the breakdown signal so we're allowed to
+[00:19:19] be sellers it's just a question of how
+[00:19:20] do we sell is it hourly close below
+[00:19:22] appropriate uh limit order the daily
+[00:19:24] limit order at the daily open
+[00:19:26] appropriate limit order at the
+[00:19:27] resistance all appropriate right this is
+[00:19:29] stuff for you to figure out and there
+[00:19:31] are options there are videos on this as
+[00:19:32] well
+[00:19:33] um it depends is always the best answer
+[00:19:35] when it comes to entry triggers and also
+[00:19:37] to be completely candid
+[00:19:39] um it may seem like a big deal but
+[00:19:41] whether you open enter at the daily open
+[00:19:43] or even slightly below or at the level
+[00:19:45] this isn't going to make a ton of
+[00:19:46] difference ultimately for the purposes
+[00:19:49] of our trade idea okay
+[00:19:51] um
+[00:19:52] so if we're talking about this bit of
+[00:19:54] price action
+[00:19:56] as the market has broken down below the
+[00:19:58] daily open and is re-testing it you're
+[00:20:00] hoping if you're correct that you're
+[00:20:01] somewhere here and then as the market
+[00:20:04] expands lower your expectation is to
+[00:20:07] catch this portion of the move so again
+[00:20:10] very straightforward we built the idea
+[00:20:13] off of the we have we have a high time
+[00:20:15] frame bearish directional bias in the
+[00:20:16] fact that the markets failed to break
+[00:20:17] out and it's sort of retesting
+[00:20:19] resistance
+[00:20:20] um our lower time frames satisfy the
+[00:20:23] requirements for the setup because we
+[00:20:25] have a
+[00:20:27] move back below the daily open on a
+[00:20:29] bearish trend day we have a move back
+[00:20:31] below the daily Upon A various Trend
+[00:20:33] there you have two occasions technically
+[00:20:34] you have this hourly close below and
+[00:20:37] then you have this hourly close below as
+[00:20:39] well all while again contextually
+[00:20:41] respecting the daily level of resistance
+[00:20:45] uh your invalidation is the high of the
+[00:20:48] day which is here on this occasion
+[00:20:50] didn't give you any trouble and Target
+[00:20:52] is whatever move you're looking for
+[00:20:55] sometimes it will just be as simple as
+[00:20:57] if you have a high time frame
+[00:20:58] directional bias you have a high time
+[00:20:59] frame Target that's what makes the setup
+[00:21:01] quite attractive you essentially Get Low
+[00:21:03] time frame style defining risk with a
+[00:21:06] high time frame Target and that's how
+[00:21:07] you get very high risk to reward setups
+[00:21:09] or you're simply almost ignoring the
+[00:21:11] higher time frames as far as targets go
+[00:21:13] and say I think this is a really good
+[00:21:14] setup but I'm not sure if this is going
+[00:21:15] to be the big daily move so you know I'm
+[00:21:18] going to Target uh you know hourly four
+[00:21:20] hour 12 hour support instead of daily
+[00:21:24] weekly whatever support okay so
+[00:21:25] basically looking using this strategy
+[00:21:27] for smaller moves instead of full swing
+[00:21:29] entries
+[00:21:31] here's another example on BNB a similar
+[00:21:34] type of setup where you have a level of
+[00:21:37] resistance or a Range High initially
+[00:21:39] Market tries to break above it and
+[00:21:41] ultimately fails and this turns back to
+[00:21:43] resistance again so what can we do we
+[00:21:46] can map out a couple of daily opens
+[00:21:48] given we've spent some time at this
+[00:21:50] level
+[00:21:51] uh the first one is here and this kind
+[00:21:54] of shows some of the squeeze examples
+[00:21:55] that we've discussed so consider the
+[00:21:57] following
+[00:21:58] uh you have daily open and it's just
+[00:22:00] complete chop
+[00:22:02] right complete chop initially and then
+[00:22:04] if you
+[00:22:05] sold this breakdown and you kind of
+[00:22:08] apply the strategy mechanically chop
+[00:22:09] chop chop breakdown you put a stop at
+[00:22:12] the high of the day which would be you
+[00:22:15] know somewhere around these highs let's
+[00:22:16] say and then your entry was below the
+[00:22:18] daily open that's your stop and you're
+[00:22:20] targeting lower this takes you out you
+[00:22:22] get completely squeezed so again if
+[00:22:23] you're using those really aggressive
+[00:22:24] high-risk models you don't want to do
+[00:22:26] that because what happens after is the
+[00:22:28] market just completely collapses as a
+[00:22:30] result and again this is on 15 minute to
+[00:22:32] give a different example it completely
+[00:22:33] collapses back below it and sort of
+[00:22:35] breaks support in doing so
+[00:22:38] uh and then you get a significantly move
+[00:22:40] lower a significant move lower rather
+[00:22:42] this I think encapsulates a couple of
+[00:22:45] the concepts we talked about first is
+[00:22:46] that again don't want to over risk on
+[00:22:48] these setups because it can get choppy
+[00:22:49] uh and the second point that it makes
+[00:22:52] with regards to the strategy
+[00:22:53] specifically is that a lot of the time
+[00:22:57] the mechanical stop uh won't the market
+[00:23:00] can at times get offer you better
+[00:23:01] options so let's say the market sort of
+[00:23:04] broke down you you want to take a chunk
+[00:23:05] here on this break of support after the
+[00:23:07] squeeze and so you look at the slides
+[00:23:09] and mechanically they say your stop goes
+[00:23:11] at the high of the day however at that
+[00:23:13] point the high of the day is literally
+[00:23:14] up here and that would really start to
+[00:23:16] compromise the risk to reward Ratio or
+[00:23:20] the payoff of the trade that's available
+[00:23:21] to you so that's an instance where you
+[00:23:23] can exercise exercise some discretion
+[00:23:25] and say well look in this context we
+[00:23:27] have a big breakdown off candle
+[00:23:29] here that ended up breaking this level
+[00:23:31] of support so instead of using the
+[00:23:33] mechanical stop at the high of the day
+[00:23:35] I'm gonna move it down somewhat and use
+[00:23:37] it at the high of the thrust candle that
+[00:23:40] broke the level instead on the five
+[00:23:41] minute 15 minute whatever it may be and
+[00:23:43] that can sort of tighten up the risk
+[00:23:44] reward ratio and make the setups more
+[00:23:46] palatable okay
+[00:23:48] and then the market came in and retested
+[00:23:50] that level again a slightly more
+[00:23:51] straightforward example where you have
+[00:23:53] your daily open it immediately drives
+[00:23:56] higher into resistance and then breaks
+[00:23:59] down on the 15 minute here this one is a
+[00:24:02] bit trickier because if you were waiting
+[00:24:04] with limit orders at the daily open it
+[00:24:06] goes unfilled and you might have felt
+[00:24:07] uncomfortable chasing this but that's
+[00:24:09] just a lot of trading you never know
+[00:24:11] what the perfect entry trigger for your
+[00:24:13] setup was going to be
+[00:24:14] um sometimes your limit orders will get
+[00:24:15] run over sometimes you're waiting for
+[00:24:17] Price action to show you whether it's
+[00:24:19] bullish or bearish and instead it just
+[00:24:20] via reverses and leaves you in the dust
+[00:24:21] I think you should have a range of
+[00:24:23] options and all those options are
+[00:24:25] covered in the entry triggers video and
+[00:24:26] it's also sometimes worth asking if it
+[00:24:28] makes a difference right so as we
+[00:24:30] covered in the other cardano example
+[00:24:32] sometimes the difference between leaving
+[00:24:34] a limit order at the level and taking a
+[00:24:36] market order slightly below it is
+[00:24:38] basically immaterial and if you think
+[00:24:39] the setup is good then it's kind of
+[00:24:40] worth crossing the spread to make sure
+[00:24:42] you can put the trade on instead of the
+[00:24:44] market just kind of going without you if
+[00:24:45] the difference itself between those two
+[00:24:47] orders and both kind of price and cost
+[00:24:49] isn't going to be too great
+[00:24:52] on this occasion again
+[00:24:54] um if we're using the 15 minute close
+[00:24:56] below is what technically makes it valid
+[00:24:58] uh invalidation again one of those where
+[00:25:00] the high of day is your mechanical one
+[00:25:02] but you'd be forgiven for using
+[00:25:03] something closer to the Daily open
+[00:25:05] itself and then the market basically
+[00:25:07] moves sideways for a bit and then trade
+[00:25:08] slower okay
+[00:25:12] um let me see before I cover these
+[00:25:14] examples whether there are others let's
+[00:25:15] progress the slides a little bit
+[00:25:17] hopefully you have a sense for this
+[00:25:18] thing now
+[00:25:22] when we're talking about the daily open
+[00:25:23] 4 continuation
+[00:25:25] I think this technique has two
+[00:25:27] subcategories
+[00:25:30] in particular you're either catching the
+[00:25:33] impulse at structure I.E the market is
+[00:25:36] at a key contextual level but hasn't
+[00:25:37] reacted or moved yet or you're catching
+[00:25:39] the impulse away from structure so
+[00:25:42] colloquially without even reading the
+[00:25:44] rest of the slides
+[00:25:45] or at least the first half for type 1
+[00:25:47] you're saying the market is at a key
+[00:25:49] level and I'm going to use the daily
+[00:25:50] open as an entry trigger for type 2
+[00:25:52] you're saying we just broke support I
+[00:25:54] think we're really in the next
+[00:25:55] few days are going to go lower or we
+[00:25:57] just broke resistance I think the market
+[00:25:58] is really strong and the next few days
+[00:26:00] are going to move higher so one of those
+[00:26:02] you're using it at structure the other
+[00:26:04] one is away from structure okay so if we
+[00:26:07] add some examples of that uh it's
+[00:26:09] basically all we're left with so
+[00:26:11] let's take a few of these uh with Pepe
+[00:26:14] which is a trending meme coin around the
+[00:26:16] time I started making the slides for
+[00:26:17] this
+[00:26:18] um
+[00:26:19] you had a big Breakout
+[00:26:22] on this candle here right so whatever
+[00:26:25] chart structure there is I mean even
+[00:26:27] just to kind of take all-time high type
+[00:26:28] of stuff uh you had a big breakout on
+[00:26:30] this candle so you're thinking okay well
+[00:26:32] this is the daily close I really think
+[00:26:33] the next few days unless I'm wrong and
+[00:26:35] the market deviates and goes to zero I
+[00:26:37] think they're going to be updates how
+[00:26:38] can I take a piece of that so
+[00:26:40] usual stuff you map out the daily open
+[00:26:43] and again this is some of the some of
+[00:26:46] these are clearer than others but on the
+[00:26:47] five minute here which is what you have
+[00:26:49] to do with particularly trending markets
+[00:26:52] uh this example is probably way too sort
+[00:26:55] of hindsight fitted the other daily open
+[00:26:57] and moves lower reclaims And Trades
+[00:26:58] higher I mean this would be like a 10
+[00:27:00] trillion R trade so I'm slightly less
+[00:27:02] sure about this it's probably if you
+[00:27:04] were sitting at your desk at the time
+[00:27:05] you probably would have thought it was
+[00:27:06] noise something that's a bit better is
+[00:27:08] this one here
+[00:27:09] so again same thing directional bias is
+[00:27:12] bullish and so our expectation for what
+[00:27:15] the daily candle is going to look like
+[00:27:16] is the following right our classic good
+[00:27:19] old green boy here so this is this is
+[00:27:22] our directional bias
+[00:27:24] okay
+[00:27:25] so what are we left with
+[00:27:29] Market opens initially moves higher
+[00:27:31] actually so you might be thinking a bit
+[00:27:33] sick to your stomach thinking oh I knew
+[00:27:35] Pepe was going to go higher uh but I was
+[00:27:38] waiting because I watched cred's
+[00:27:39] terrible video and now I'm sidelined
+[00:27:41] however
+[00:27:42] um then the market comes in and trades
+[00:27:44] below the daily open
+[00:27:46] so if your directional bias is correct
+[00:27:48] at this point when we're here
+[00:27:51] your expectation is that you are here
+[00:27:54] and then when the market reclaims the
+[00:27:57] daily open just sort of starts trading
+[00:27:59] above it your expectation is that you're
+[00:28:01] somewhere here that the low of the day
+[00:28:03] has been made and you're in the early
+[00:28:04] portions of the candle body on this
+[00:28:08] occasion actually comes in and retests
+[00:28:10] it however regardless of what entry
+[00:28:12] trigger you used whether it's uh we're
+[00:28:14] back above the daily open now I'm going
+[00:28:15] to use a market order or whether you
+[00:28:17] were a limit buyer at the daily open
+[00:28:19] itself as we know the mechanical stop
+[00:28:21] goes at the low of day which is here and
+[00:28:24] regardless of your entry trigger in or
+[00:28:26] around the daily open that remained
+[00:28:28] untagged and then the rest of the
+[00:28:30] trending move is what we're targeting
+[00:28:32] using this strategy okay
+[00:28:35] um
+[00:28:37] the opposite example of that actually I
+[00:28:39] think this is like one of the one of the
+[00:28:41] slightly clearer ones this is similar to
+[00:28:42] cardano and BMB you have this level on
+[00:28:45] near on the daily chart
+[00:28:48] um the directional bias that's present
+[00:28:49] is that the market has formed a really
+[00:28:52] bearish daily close uh through a key
+[00:28:54] level so you basically had support
+[00:28:57] resistance looks like a breakout but hey
+[00:29:00] ho
+[00:29:01] um you have a daily close back below it
+[00:29:03] and it's not just the daily close back
+[00:29:04] below it it's a bearish engulfing that
+[00:29:06] also sort of spiked previous days high
+[00:29:09] and then closed below the level as bad
+[00:29:11] as it gets right so you're looking at
+[00:29:13] this daily candle here after it's closed
+[00:29:15] and are thinking I think this thing is
+[00:29:16] going to move lower how do I catch a
+[00:29:18] piece of that well you do it hopefully
+[00:29:19] using the daily open strategy and again
+[00:29:22] very similar stuff as per our setup
+[00:29:25] slides right cell move back below daily
+[00:29:28] open invalidation low of day sorry high
+[00:29:31] of day on bearish Trend day so
+[00:29:34] how does that manifest on this occasion
+[00:29:37] uh this is the hourly time frame here so
+[00:29:39] you can see we have examples of the five
+[00:29:41] minute the 15 minute the hourly really
+[00:29:42] varies uh sometimes I'll prefer to use
+[00:29:44] the hourly if I can but a lot of the
+[00:29:46] time it's 15 minute as well but it's all
+[00:29:48] three really hourly if I you know I'm
+[00:29:50] getting old so hourly time frame if the
+[00:29:52] market lets me get away with it but on
+[00:29:54] this occasion uh you have the daily open
+[00:29:56] and I've just used the hourly here
+[00:29:57] there's a bit of a wick that makes
+[00:29:59] things a bit unpalatable but bigger
+[00:30:01] picture right given we don't really mind
+[00:30:03] this because we're looking to sell moves
+[00:30:06] back below the daily open so if it just
+[00:30:08] wants to dump off the daily open or do
+[00:30:09] whatever that's fine let's look at it
+[00:30:11] for our purposes
+[00:30:13] so again I'm going to do The Annoying
+[00:30:15] Thing of having the directional bias
+[00:30:18] candle visible on the screen this is
+[00:30:20] what we're looking for right this is
+[00:30:21] what the daily chart is suggesting that
+[00:30:24] this price action is going to look like
+[00:30:27] daily open market immediately rallies
+[00:30:30] into resistance right this is our daily
+[00:30:33] level that we talked about Market
+[00:30:35] rallies into resistance
+[00:30:37] here
+[00:30:39] okay and then crucially where does it
+[00:30:42] lose the daily open so technically you
+[00:30:46] could argue that this is enough and your
+[00:30:49] entry trigger is at the high of the day
+[00:30:52] which at that point is like here
+[00:30:54] somewhere I will add the provisor
+[00:30:56] however that well
+[00:30:58] purely technically that's valid you've
+[00:31:01] seen in the other examples that if
+[00:31:02] you're taking this at a level the market
+[00:31:05] really likes to come and test those
+[00:31:07] levels and the reason for those of you
+[00:31:09] who've watched my videos for a while
+[00:31:10] that stop idea should hopefully offend
+[00:31:12] you is because you're putting a stop at
+[00:31:14] resistance so you're putting a stop for
+[00:31:16] a short at resistance so if the if there
+[00:31:19] you know if the market goes there and
+[00:31:20] turns around you'd feel really stupid
+[00:31:21] because if you're short and you have a
+[00:31:23] stop that's an order to buy
+[00:31:25] if you have a stop in this occasion for
+[00:31:27] a short at resistance you're putting in
+[00:31:28] an order to buy at resistance and that's
+[00:31:30] a bad idea so
+[00:31:32] you wouldn't do that hopefully and if if
+[00:31:35] you were patient with it the market
+[00:31:36] actually just pushes into the level oops
+[00:31:38] that's a big Arrow the market pushes
+[00:31:40] into the level
+[00:31:41] you get some crazy Wicks and price
+[00:31:43] action that's showing no evidence of
+[00:31:45] acceptance acceptance rather it's just
+[00:31:47] all hourly closes below and then I think
+[00:31:49] the the more visible
+[00:31:51] part of the strategy is here you get the
+[00:31:53] hourly close below the
+[00:31:56] daily open mechanically your
+[00:31:59] invalidation would be the high of the
+[00:32:02] day which is here
+[00:32:04] on this week although I think you'd be
+[00:32:06] forgiven for using this pre-breakdown
+[00:32:08] candle as well
+[00:32:10] and then you'll Target and again there's
+[00:32:12] a video on the channel on FTA first
+[00:32:13] trouble area which is all about profit
+[00:32:14] taking and that's why I might feel like
+[00:32:16] I'm skipping past a lot of Concepts like
+[00:32:18] specific specific entry triggers uh
+[00:32:20] retests first trouble areas but there
+[00:32:22] are videos on the channel for all of it
+[00:32:24] so you can just piece it together that's
+[00:32:26] kind of the point of having a course in
+[00:32:28] any case uh once you get a close back
+[00:32:29] below notice that the next candle
+[00:32:31] squeezes you right it's nice and green
+[00:32:33] but ultimately it doesn't matter it
+[00:32:34] doesn't even reach resistance certainly
+[00:32:36] doesn't take out any mechanical stops
+[00:32:38] and the market just proceeds to move
+[00:32:40] lower Okay so
+[00:32:43] when
+[00:32:44] this portion is happening and the daily
+[00:32:47] resistance is being tested your idea is
+[00:32:49] that we're here when you get a close
+[00:32:51] below the daily open your idea is
+[00:32:54] somewhere that we're in the early
+[00:32:55] portions of this and then the trade idea
+[00:32:58] is that if you're if you're correct
+[00:32:59] about this candle this is your stop
+[00:33:02] this is your entry
+[00:33:04] this is your profit
+[00:33:07] okay
+[00:33:10] um
+[00:33:12] let me see if I want to
+[00:33:15] yeah so more examples
+[00:33:17] Pepe we're done near we're done a couple
+[00:33:20] more so another one another example of
+[00:33:23] the type 2
+[00:33:24] set up where we're trading away from
+[00:33:26] structure is if
+[00:33:28] big level at 1700 and you see this daily
+[00:33:31] close here right think about it from
+[00:33:35] this point of view we have support
+[00:33:37] support support
+[00:33:38] breakdown first daily close below this
+[00:33:40] level in a while and you're staring at
+[00:33:42] it thinking well you know basically you
+[00:33:44] are here and you're thinking this
+[00:33:46] doesn't look good and I think there's a
+[00:33:47] chance that the next day or days are
+[00:33:49] going to move lower so the directional
+[00:33:52] bias Criterion is Satisfied by the fact
+[00:33:54] that you've got a daily breakdown as
+[00:33:55] your basis for that okay now
+[00:33:59] with the daily open in mind how did that
+[00:34:01] unfold it tended to be fairly charitable
+[00:34:05] actually on this occasion this is using
+[00:34:06] the daily open indicator on trading View
+[00:34:10] and this is that 1700 level uh I think
+[00:34:14] this is a bit generous as far as uh
+[00:34:17] catching it we have initial drive off
+[00:34:19] the open and then loses it immediately
+[00:34:21] so purely mechanically speaking uh you
+[00:34:24] would be on the 30 minute time frame a
+[00:34:27] seller of this breakdown within
+[00:34:29] validation at the high and just
+[00:34:31] targeting a lower day of trading there
+[00:34:34] wasn't a ton of profit from this kind of
+[00:34:36] just went sideways
+[00:34:37] um
+[00:34:38] and again if you look at the next day
+[00:34:40] similar type of thing slightly choppy on
+[00:34:43] this occasion where you have the daily
+[00:34:44] open and instead of driving higher and
+[00:34:46] the market moving below it you just kept
+[00:34:48] finding resistance at the daily open
+[00:34:50] initially sort of drives off and then
+[00:34:53] comes into the level and then uh dumps
+[00:34:55] right so sometimes I think that the
+[00:34:58] point of including this is that the
+[00:35:01] reason you have to take small risks
+[00:35:03] unless you have very clear sort of
+[00:35:05] invalidation for these things is that
+[00:35:07] sometimes the moves will just be so
+[00:35:09] small and this kind of the initial drive
+[00:35:11] before the loss of the level is so minor
+[00:35:14] that you simply can't risk large amounts
+[00:35:17] with like a 510 tick stop it doesn't
+[00:35:20] doesn't make a ton of sense and other
+[00:35:21] times it just gets a bit choppy and hard
+[00:35:23] to hard to follow through
+[00:35:25] um but as long as the core idea is there
+[00:35:27] it's a better than usual way to act on
+[00:35:32] that bias because look at look if you
+[00:35:33] saw this breakdown and your idea was I'm
+[00:35:35] gonna sell a retest uh you sort of
+[00:35:37] missed out on the biggest down days
+[00:35:39] before the market went sideways and
+[00:35:41] reversed so you sort of give yourself a
+[00:35:43] chance to catch trending moves even as a
+[00:35:46] levels trade admittedly this example
+[00:35:47] being a bit rough one that I think is
+[00:35:49] better
+[00:35:50] is this if USD one where you had a the
+[00:35:54] directional bias on this case is bullish
+[00:35:55] because there is a reclaim of a key
+[00:35:57] level uh those of you who watch the
+[00:35:59] streams uh sort of know this setup very
+[00:36:01] well you have support support uh
+[00:36:03] breakdown attempt and then the next day
+[00:36:05] just super engulfs the whole thing and
+[00:36:07] so again the idea is you're looking at
+[00:36:09] this candle thinking wow this should
+[00:36:10] have really dumped this is a really big
+[00:36:12] engulfing I think it's going to follow
+[00:36:13] through and a bunch of people are
+[00:36:14] trapped at the lows so how do I catch a
+[00:36:16] piece of this you map out your daily
+[00:36:17] open
+[00:36:18] I'm looking at the price action again
+[00:36:20] applying the same good old model
+[00:36:22] of our directional bias is such that we
+[00:36:25] expect the candle to look like this
+[00:36:28] okay here's our green boy
+[00:36:31] with this being the open and this being
+[00:36:34] the close
+[00:36:36] so how did it unfold
+[00:36:40] we have our daily open
+[00:36:43] okay on this move initially moves lower
+[00:36:47] and then higher
+[00:36:50] so if you were to apply that right off
+[00:36:52] the open which I don't like doing in
+[00:36:54] general but very mechanically you'd be
+[00:36:57] in this type of trade within validation
+[00:37:00] and entry trigger somewhere here
+[00:37:02] congratulations you bought the top rough
+[00:37:04] okay however
+[00:37:06] how did it unfold after that and this is
+[00:37:08] why I don't like trading the daily open
+[00:37:10] immediately after the open itself and
+[00:37:12] this is something we'll come on to in
+[00:37:13] the videos uh you can see the market
+[00:37:15] comes back and does trade that level and
+[00:37:18] presents you with much clearer price
+[00:37:19] action where it tries to break the daily
+[00:37:21] open moves back below it
+[00:37:24] reclaims it and this is on the 15 minute
+[00:37:26] uh with this breakout move here your
+[00:37:29] mechanical invalidation would be at the
+[00:37:32] low of the day
+[00:37:34] um which is this move here and then
+[00:37:36] Target basically a trend day right or
+[00:37:39] just to put on a position or whatever it
+[00:37:41] may be whatever your high time frame
+[00:37:42] directional bias is suggesting the
+[00:37:44] direction of the market is going to be
+[00:37:46] and again even if you want to get more
+[00:37:48] nuanced about entry triggers if you took
+[00:37:50] a market order on a breakout above that
+[00:37:53] was fine and on this occasion if you
+[00:37:55] limit bid the daily open that was fine
+[00:37:58] as well
+[00:38:01] uh is that all I wanted to say yes yes
+[00:38:05] it was
+[00:38:06] um so yeah ton of examples but just to
+[00:38:08] reiterate the two different types with
+[00:38:10] the BNB cardano near examples you're
+[00:38:13] using the daily open as an entry trigger
+[00:38:14] to do business at structure the hey I've
+[00:38:17] got a bias that this thing is going to
+[00:38:18] reverse but it hasn't reversed yet and I
+[00:38:20] want to pump a position have it be risk
+[00:38:22] defined and a nice and with an
+[00:38:24] invalidation built into it with the
+[00:38:25] second type it's hey we just broke I
+[00:38:28] think the Market's going to Trend
+[00:38:29] because we've broken down from or broken
+[00:38:31] up from a key level uh I don't think I'm
+[00:38:33] going to get a retest but I want a piece
+[00:38:35] of it in case it doesn't pull back and
+[00:38:37] most often seen at large after large or
+[00:38:39] failed breakouts and with the first one
+[00:38:41] is mostly seen as in our examples at
+[00:38:44] high time frame levels where sort of the
+[00:38:46] market is more likely to spend more time
+[00:38:48] at the level before giving you a
+[00:38:49] reversal
+[00:38:52] one other type of mean reversion that is
+[00:38:56] also tradable but I've dedicated less
+[00:38:58] attention to which I'll talk about is
+[00:39:00] candle open drives so meter version
+[00:39:03] setups may become available where the
+[00:39:05] market offers a fast one-sided move away
+[00:39:06] from its opening price you see this on
+[00:39:08] the hourly daily weekly very much
+[00:39:10] similar time frames uh generally
+[00:39:12] speaking I found myself trading these
+[00:39:13] less frequently and with less success
+[00:39:15] over time uh used to be
+[00:39:18] almost free money sort of there was
+[00:39:20] always a daily open drive and it was
+[00:39:21] fadable and especially on the four hour
+[00:39:23] you used to have a lot of brainless
+[00:39:24] four-hour candle drives with Algos
+[00:39:27] chasing it and those were fadable back
+[00:39:28] to the open but over time I think that's
+[00:39:30] deteriorated it may come back which is
+[00:39:32] why I sort of included this and there
+[00:39:33] are still some very spicy daily open
+[00:39:35] drives that are worth trading uh but I
+[00:39:37] think it's a much smaller part of my
+[00:39:39] system than the other stuff so I've
+[00:39:40] spent less time here so essentially the
+[00:39:42] setup or the application is the
+[00:39:44] following
+[00:39:45] if you go back to our original
+[00:39:47] observation that the market is likely to
+[00:39:49] trade uh both sides of a given candle
+[00:39:52] open especially if you're talking about
+[00:39:53] the daily time frame so this is the open
+[00:39:54] what I'm essentially talking about is
+[00:39:56] the market just immediately off the open
+[00:39:58] driving up one side having spent no time
+[00:40:00] below and if you have a model of a
+[00:40:02] candle that just has a wick on either
+[00:40:04] side you're saying hey the candle
+[00:40:06] doesn't look like this like most candles
+[00:40:08] should it actually just looks like this
+[00:40:10] and there's nothing here
+[00:40:12] and so the trade idea in general is to
+[00:40:15] sell that down into the daily open such
+[00:40:17] that you have a wick on the candle okay
+[00:40:21] and it works in the other direction as
+[00:40:22] well let's say you have an open
+[00:40:24] and the market just drives lower
+[00:40:26] immediately and you are here at the time
+[00:40:29] the candle looks like
+[00:40:32] this hold on my brain has just
+[00:40:35] completely here we go uh the candle
+[00:40:37] looks like this okay it has an open it
+[00:40:40] dumped immediately off the open uh
+[00:40:42] presumably it has a low uh but it's only
+[00:40:43] got a wick on one side so your idea is
+[00:40:46] to fade or mean revert it if you will
+[00:40:49] higher in order to trade both sides of
+[00:40:53] the daily open that that's really all it
+[00:40:55] comes down to you have this on the four
+[00:40:57] hour the hour hourly the daily what have
+[00:40:59] you and the basic premise is that most
+[00:41:01] candles on most time frames have work on
+[00:41:03] Wicks on either side uh this candle just
+[00:41:05] drove off the open and it's likely uh to
+[00:41:07] come back to it and sort of fill that in
+[00:41:09] and mean revert towards that area
+[00:41:11] um
+[00:41:12] and yes as I say here the mechanical
+[00:41:14] sets up is to fade any drives targeting
+[00:41:16] the candle open on the other side so if
+[00:41:18] you have a daily open drive down uh you
+[00:41:20] buy that targeting the daily open higher
+[00:41:22] right as as in the former the latter
+[00:41:24] example and the other way around if you
+[00:41:26] have a daily open drive up uh you sell
+[00:41:28] it down targeting the daily open now
+[00:41:31] there are some obviously obvious
+[00:41:32] difficulties with this and they are they
+[00:41:33] are as follows and this this list isn't
+[00:41:35] exhaustive by any means now it's not
+[00:41:38] unusual for Trend forming moves to start
+[00:41:40] with the drive
+[00:41:42] so while it's often than usually the
+[00:41:45] case that especially on the kind of
+[00:41:46] higher time frames and certainly the
+[00:41:48] daily time frame most candles will trade
+[00:41:50] both sides of the daily open sometimes
+[00:41:51] you just have someone completely just a
+[00:41:53] pin at a certain time and the market
+[00:41:55] impact is such that it just sort of gaps
+[00:41:58] up and doesn't have a wick and the price
+[00:41:59] action isn't very efficient and it's a
+[00:42:01] bit of a thin move but because it's such
+[00:42:03] a large order and the momentum that it
+[00:42:04] instigates as a result uh the market
+[00:42:06] just doesn't revert and it's actually
+[00:42:07] the opposite it's a transforming move
+[00:42:09] rather than a mean reverting type of
+[00:42:10] thing so that's an important
+[00:42:12] consideration
+[00:42:13] the other difficulty is that unlike the
+[00:42:16] other strategy it's much harder to find
+[00:42:18] a clear invalidation for this thing so
+[00:42:21] if we take our example of sort of the
+[00:42:23] daily open drive lower you know this is
+[00:42:26] our daily open and the market just
+[00:42:27] drives lower and you're somewhere here
+[00:42:30] how do you know if you're going to
+[00:42:31] Target the other side of the daily open
+[00:42:33] uh so that the market has a wick on both
+[00:42:35] sides if you will where's your
+[00:42:37] invalidation to this
+[00:42:39] um there's not unlike the first one
+[00:42:40] there's no sort of mechanically clear
+[00:42:42] area where you can put that now of
+[00:42:44] course if you're looking at this on
+[00:42:45] Lower time frames and then it breaks
+[00:42:47] down and there's a reclaim maybe it
+[00:42:48] gives you that or maybe you've got like
+[00:42:50] a high time or a sort of lower time
+[00:42:52] frame on this occasion uh level of
+[00:42:54] support that you're willing to trade
+[00:42:56] back towards the daily open and that
+[00:42:58] gives you an invalidation all of those
+[00:43:00] are viable but it tends to be a bit
+[00:43:01] Messier and far less clear than the
+[00:43:03] first setup presented
+[00:43:05] um
+[00:43:06] the final point I'll make is that the
+[00:43:09] difficulty with candle open drives
+[00:43:10] specifically around the daily open as
+[00:43:11] we've discussed is usually the moves are
+[00:43:13] much smaller and noisier especially if
+[00:43:15] you try to trade this sort of every day
+[00:43:16] as a mechanical strategy
+[00:43:19] um there's a there's just a lot of chop
+[00:43:20] and churn around the daily open uh so
+[00:43:24] it's it's not I think at face value uh
+[00:43:27] the best idea it's one of those things
+[00:43:28] where you'll I'd be able to quite easily
+[00:43:31] identify a good daily open drive if you
+[00:43:33] see one but a lot of the time the market
+[00:43:35] just opens and doesn't move enough uh to
+[00:43:38] make the mean reversion likely or it
+[00:43:39] opens and it just immediately chops both
+[00:43:41] sides of the daily open and the idea
+[00:43:43] doesn't really go anywhere I mean
+[00:43:45] there's there are a lot of messy
+[00:43:46] examples here so that's something to
+[00:43:48] bear in mind however that doesn't mean
+[00:43:49] that candle open drives are completely
+[00:43:51] useless I think there are some useful
+[00:43:52] applications for them I've got three
+[00:43:54] that I'd like to mention here the first
+[00:43:56] is just keeping in the back of your mind
+[00:43:58] that if a candle is wickless there's a
+[00:44:00] higher likelihood of the market trading
+[00:44:02] there and also just a bad idea for stop
+[00:44:03] placement so for example
+[00:44:06] if you have a bullish directional bias
+[00:44:08] and there's a daily Drive higher and you
+[00:44:10] just mark it by that thing and you put
+[00:44:11] your stop at the daily open maybe that's
+[00:44:13] not such a great idea because as we've
+[00:44:15] seen in countless prior examples even if
+[00:44:18] you're a directional bias is correct
+[00:44:19] there's a good chance the Market's going
+[00:44:20] to trade both sides of the daily open so
+[00:44:23] it's nice little sort of potential
+[00:44:24] meaner version uh thing to keep in your
+[00:44:27] back pocket or to have some
+[00:44:28] understanding of where that is and that
+[00:44:30] it could come down and get backfilled
+[00:44:32] that's why I'm not a huge fan
+[00:44:34] in most cases of chasing the market in
+[00:44:37] the direction that it's wickless so if
+[00:44:39] there's a drive in One Direction
+[00:44:41] um even if I'm not going to step in
+[00:44:42] against it I generally don't like
+[00:44:44] chasing it
+[00:44:45] um I think another application of candle
+[00:44:47] open drives is that can give you
+[00:44:48] Confluence for other ideas so for
+[00:44:51] example you have a daily open drive into
+[00:44:53] daily resistance with a bearish
+[00:44:54] directional bias all the stuff lining up
+[00:44:56] if you're trading it for a low time
+[00:44:58] frame punt instead of the high time
+[00:45:00] frame basis for it you could just Target
+[00:45:02] the daily open for a little mechanical
+[00:45:04] trade strategy I've done that from time
+[00:45:05] to time it's quite cathartic and another
+[00:45:09] example of Confluence is the market
+[00:45:10] breaking down just at the daily open
+[00:45:12] like midnight UTC which is generally a
+[00:45:14] less liquid session and you probably
+[00:45:16] don't want to chase that with a tight
+[00:45:17] stop as we discussed because we know
+[00:45:18] that there's a good chance the market
+[00:45:20] will come back and at least tag the
+[00:45:22] daily open even if you're correct and
+[00:45:24] just in general especially if the candle
+[00:45:26] open meta comes back with these wickless
+[00:45:29] hourlies four hours that come coming in
+[00:45:31] backfill with great consistency they
+[00:45:33] make for you know these kind of open
+[00:45:34] drives make for good mechanical Targets
+[00:45:36] in mean reverting markets generally
+[00:45:38] especially if you're low time frame
+[00:45:39] trading and you're failing a move
+[00:45:41] sometimes just seeing where the higher
+[00:45:42] time frame candle opens are can give you
+[00:45:44] a high probability or at least a very
+[00:45:46] straightforward Target
+[00:45:49] so here are some nuances I think the
+[00:45:51] first one is the daily open Move needs
+[00:45:54] to be a visible drive or at least a loss
+[00:45:56] or a reclaim or whatever the context
+[00:45:58] mandates and not some tiny low time
+[00:46:00] frame Wick through so even when we were
+[00:46:02] engaging the examples on the five minute
+[00:46:03] 15 minute hourly it wasn't just kind of
+[00:46:06] chop and churn a noise or one minute
+[00:46:07] closes below you want to see good enough
+[00:46:09] evidence of a loss of that level if
+[00:46:12] you're bearish or a gain of that level
+[00:46:13] if you're bullish like you would with
+[00:46:14] any other support resistance type of
+[00:46:16] thing
+[00:46:16] um
+[00:46:17] Point number two is do not assume that
+[00:46:19] every new day will have an actionable
+[00:46:20] daily open setup as we said the pretty
+[00:46:23] much the most important part of at least
+[00:46:25] the first setup is having some sort of
+[00:46:27] Direction bias or some sort of
+[00:46:29] indication of where the Market's going
+[00:46:31] to go because otherwise you just start
+[00:46:32] chasing every move above the daily open
+[00:46:34] your buyer every move below the daily
+[00:46:35] open you're a seller and then if it you
+[00:46:37] know just flip flop flip flop and it
+[00:46:39] ends pretty disastrously so I know it's
+[00:46:41] tempting after learning something new to
+[00:46:43] go look for a million examples across
+[00:46:45] every single trading pair to trade it
+[00:46:47] but often not the case the context needs
+[00:46:49] to be there first and then then this
+[00:46:51] becomes a much more useful tool I will
+[00:46:54] say that you can apply this candle open
+[00:46:55] logic to other time frames
+[00:46:57] so the hourly the four hour for intraday
+[00:46:59] uh weekly and monthly opens as well uh
+[00:47:01] sort of Worlds your oyster for that type
+[00:47:03] of stuff I just find that if I have a
+[00:47:05] high time frame directional bias I
+[00:47:06] generally prefer for that to come from
+[00:47:08] the daily or the weekly sometimes it's
+[00:47:11] monthly but monthly levels are just a
+[00:47:12] bit more rare but if it's there I'll
+[00:47:14] take it daily tends to be the most
+[00:47:16] common one
+[00:47:17] so
+[00:47:18] what point was I making there good Lord
+[00:47:22] um yes it can apply to other time frames
+[00:47:25] my preferred time frames are
+[00:47:26] specifically daily open for directional
+[00:47:28] bias and then hourly and five minute are
+[00:47:31] my preferred execution time frames but
+[00:47:33] it can you can sort of expand to other
+[00:47:36] time frames also
+[00:47:38] um all aforementioned Confluence factors
+[00:47:40] help and the core of the setup sort of
+[00:47:42] relies on Confluence factors so support
+[00:47:45] resistance previous days week so
+[00:47:47] previous day or week high and low all of
+[00:47:49] the sort of price action stuff that
+[00:47:50] we've covered in the channel covered in
+[00:47:52] the top down analysis video covered in
+[00:47:53] the entry triggers video covered in the
+[00:47:55] directional bias article Link in the
+[00:47:56] description all of that is I think a
+[00:47:58] prerequisite to make sense of this uh
+[00:48:00] and you can see I'm really passionate
+[00:48:02] about this point because again even the
+[00:48:03] last bullet point uh is about the same
+[00:48:05] thing of don't be a drone drawing the
+[00:48:07] daily open the void of any context and
+[00:48:09] using it as support resistance not the
+[00:48:10] point
+[00:48:12] conclusion uh how are we still doing
+[00:48:14] this five years later although I think
+[00:48:15] it's actually six years 2017 December
+[00:48:18] was the first video
+[00:48:20] um so yeah five six years later we're
+[00:48:22] still here I do appreciate the small
+[00:48:24] gesture of liking the video subscribing
+[00:48:25] to the channel even if you're just
+[00:48:27] watching after all this time I'm
+[00:48:28] grateful uh that you think this is
+[00:48:29] important enough hopefully it hasn't
+[00:48:30] been a waste of your time uh
+[00:48:32] unfortunately or fortunately for some of
+[00:48:34] you depending on what you thought of
+[00:48:35] this video there are plenty more updates
+[00:48:36] planned even though it may not seem
+[00:48:38] credible given every five six months
+[00:48:40] seems to be the going rate for a video
+[00:48:41] but if you leave me a comment as to
+[00:48:44] whether you want to see more I will make
+[00:48:45] more so make your voice heard if you
+[00:48:47] want more regular content like Market
+[00:48:49] commentary stuff check out technical
+[00:48:50] Roundup uh second YouTube channel
+[00:48:52] hopefully it still exists if you're
+[00:48:53] watching this back in time or in the
+[00:48:55] future I should say but that is all from
+[00:48:57] me thank you for the continued support
+[00:48:58] throughout the years like subscribe
+[00:48:59] comment call me an idiot or don't be
+[00:49:01] nice for a change and that's all from me
+[00:49:03] see you for the next one

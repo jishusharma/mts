@@ -1,0 +1,3132 @@
+# Video ID: BHwoN7VPrBE
+# Title: Technical Analysis Series - Market Structure
+# Published: 2020-12-18
+# Source: youtube_transcript_api (auto); uploader: CryptoCred
+# Analyst: CryptoCred
+# Channel: @CryptoCred
+# Duration_s:5753
+# Word count: 18016
+# ---
+[00:00:01] hello and welcome to the video
+[00:00:04] we've got another addition to the
+[00:00:05] technical analysis series
+[00:00:07] this video is on market structure
+[00:00:11] apologies for the delay between videos
+[00:00:13] i'm grateful for your patience and
+[00:00:14] sticking around for this channel
+[00:00:18] we deal more with quality and not
+[00:00:19] quantity but certainly the quantity side
+[00:00:21] of things has been lacking so i hope
+[00:00:23] this more than
+[00:00:23] makes up for it
+[00:00:27] here's the outline for today we've got a
+[00:00:28] disclaimer some general remarks
+[00:00:31] and defining market structure
+[00:00:33] identifying breaks in market structure
+[00:00:35] trading breaks in market structure and
+[00:00:37] then we'll finish off with some new
+[00:00:38] answers
+[00:00:40] usual disclaimer i'm nobody i know
+[00:00:42] nothing this is for fun
+[00:00:47] i'll try to keep this reasonably brief i
+[00:00:49] may or may not have recorded this video
+[00:00:50] without recording it
+[00:00:52] having spoken to myself for an hour 40
+[00:00:54] minutes
+[00:00:55] so here we are nonetheless first things
+[00:00:58] first
+[00:00:58] i'm just presenting my understanding of
+[00:01:00] market structure that i found personally
+[00:01:02] useful
+[00:01:02] i don't think there's an objective or
+[00:01:04] correct form and people feel
+[00:01:06] will and feel free to disagree with the
+[00:01:09] terms i use and how i use them but
+[00:01:10] that's fine
+[00:01:11] i'm just doing my best with what makes
+[00:01:12] sense to me it's a topic with a lot of
+[00:01:14] gray areas
+[00:01:16] market structure generally i think is a
+[00:01:17] tool to provide context more so than
+[00:01:19] just a
+[00:01:20] mechanical trading system
+[00:01:23] and it tends to follow the general
+[00:01:24] principle of the clearer and the more
+[00:01:26] straightforward and unambiguous
+[00:01:27] something is
+[00:01:28] the better it will work i think a lot of
+[00:01:30] technical trading is like that
+[00:01:31] with levels and all sorts of things
+[00:01:34] deriving their significance
+[00:01:36] from their clarity if you will or how
+[00:01:39] obvious they are
+[00:01:40] to the largest number of participants
+[00:01:43] generally these videos i like to just
+[00:01:46] sign post
+[00:01:47] versus just tell you stuff to absorb and
+[00:01:50] apply
+[00:01:50] sharing ideas and if you find some of it
+[00:01:52] useful great you don't need to believe
+[00:01:54] or subscribe to all of it by any means
+[00:01:57] oddly enough i have to clarify this but
+[00:01:59] examples are deliberately cherry-picked
+[00:02:00] to present the concepts as clearly as
+[00:02:02] possible
+[00:02:03] this isn't the trading highlight reel i
+[00:02:06] just picked the stuff which i think
+[00:02:07] looks clearest to convey a certain point
+[00:02:10] finally i'm very grateful to everybody
+[00:02:11] who reaches out and asks where to go or
+[00:02:13] what to do once they've finished
+[00:02:15] consuming
+[00:02:16] this content as well as the articles my
+[00:02:18] answer is practice practice practice
+[00:02:20] specifically actually trading and
+[00:02:23] posting up charts and acting on ideas
+[00:02:25] and making notes
+[00:02:26] unfortunately or perhaps fortunately
+[00:02:28] there's no replacement
+[00:02:30] for screen time so at the end of the day
+[00:02:32] you have to put the hours in
+[00:02:33] and there's only so much reading you can
+[00:02:35] do until you start going around in
+[00:02:37] circles
+[00:02:38] and wasting time if you appreciate the
+[00:02:40] technical analysis series if you've ever
+[00:02:42] learned anything from any of these
+[00:02:43] videos
+[00:02:44] make sure to like this video and
+[00:02:46] subscribe to the channel if you haven't
+[00:02:47] already
+[00:02:48] thank you very much let's get straight
+[00:02:50] into it again
+[00:02:53] sometimes we'll be using the acronyms of
+[00:02:55] fairly self-explanatory
+[00:02:57] market structure high low higher high
+[00:02:59] etc etc
+[00:03:01] you may want to just screenshot or keep
+[00:03:03] these in mind but shouldn't be too hard
+[00:03:05] to remember
+[00:03:09] so section one is defining market
+[00:03:10] structure my definition is a sequence of
+[00:03:12] proximate highs and lows in a given
+[00:03:14] instrument
+[00:03:15] and that sequence varies depending on
+[00:03:18] whether the market is bullish or bearish
+[00:03:20] for bullish market structure we
+[00:03:22] generally expect to see higher highs and
+[00:03:23] higher lows
+[00:03:24] for bearish market structure we
+[00:03:26] generally expect to see lower highs
+[00:03:28] and lower lows this begs the question
+[00:03:31] which highs and lows as there are many
+[00:03:33] are suitable anchors
+[00:03:35] for ascertaining market structure
+[00:03:37] generally and as you may remember from
+[00:03:39] the fit video
+[00:03:40] we give significance to swing highs
+[00:03:43] and swing lows for market structure
+[00:03:45] anchors
+[00:03:47] they can be defined in the following
+[00:03:48] manner a swing low is a low with a
+[00:03:50] higher low on both sides
+[00:03:52] and a swing high is a high with a lower
+[00:03:55] high on both sides
+[00:03:56] so a low sandwiched by higher lows and a
+[00:03:59] high sandwiched by lower highs
+[00:04:01] if you will there's no single formula in
+[00:04:04] my opinion for choosing which highs and
+[00:04:06] lows are valid for market structure
+[00:04:08] there are a number of factors to
+[00:04:10] consider when it comes to arriving to
+[00:04:12] the decision
+[00:04:12] of what's a valid swing high or low to
+[00:04:15] choose
+[00:04:17] here are some you might want to consider
+[00:04:19] recency is important
+[00:04:21] significance and size of the move
+[00:04:23] following that high or low
+[00:04:24] is important again revisiting the
+[00:04:26] concept
+[00:04:28] or the principle of greater clarity
+[00:04:30] leading to
+[00:04:31] better outcomes if you have a bigger
+[00:04:34] more significant swing
+[00:04:35] away from the level it's probably going
+[00:04:37] to be better and more significant and
+[00:04:38] meaningful generally
+[00:04:40] for your trading as well the basic smell
+[00:04:43] test of course is what's the most
+[00:04:44] obvious or
+[00:04:45] outstanding high or low you probably
+[00:04:48] can't go wrong
+[00:04:49] with that and if it doesn't look like a
+[00:04:51] clear swing point from first glance
+[00:04:53] it likely won't be the best structure
+[00:04:56] so again going for the so-called
+[00:04:58] low-hanging fruit is actually pretty
+[00:05:00] wise
+[00:05:00] when it comes to this type of technical
+[00:05:02] trading
+[00:05:04] as to the question where the market
+[00:05:05] structure and trend are the same
+[00:05:07] i would say they're not they're somewhat
+[00:05:09] complementary and can be used in a
+[00:05:10] similar fashion
+[00:05:12] i don't think you need to pick between
+[00:05:13] one or the other and i don't even think
+[00:05:14] they conflict a lot of the time
+[00:05:16] so for example you may have a high time
+[00:05:18] frame bull trend
+[00:05:19] which sees a low time frame market
+[00:05:21] structure break
+[00:05:22] and it's not like you have to pick which
+[00:05:24] one is correct they
+[00:05:26] both provide different types of contexts
+[00:05:28] and in that case
+[00:05:29] with the low time frame breakdown in a
+[00:05:31] high time frame uptrend
+[00:05:32] that could just lead you to the
+[00:05:34] conclusion of a potential opportunity to
+[00:05:36] buy a dip
+[00:05:39] here's the diagram version of the swing
+[00:05:41] high and swing low
+[00:05:42] as you'll recall swing high lower high
+[00:05:45] on both sides
+[00:05:46] swing low higher low on both sides this
+[00:05:49] should say higher low not a high low
+[00:05:51] but it's been one of those days
+[00:05:55] we talked a lot about filtering swing
+[00:05:57] highs and swing lows
+[00:06:00] even if we just take the basic
+[00:06:02] definition of
+[00:06:03] low with a high low on either side high
+[00:06:05] with a lower high on either side
+[00:06:07] with the daily time frame chart which is
+[00:06:09] supposed to be the cleaner slower moving
+[00:06:10] one this is
+[00:06:11] my quick markup of the swing highs and
+[00:06:15] lows
+[00:06:16] using that definition there's a lot
+[00:06:18] going on if you were to draw levels on
+[00:06:19] every single one of these highs and lows
+[00:06:21] it wouldn't be the most useful and
+[00:06:22] actionable chart in the world even
+[00:06:24] though it is
+[00:06:25] pretty high time frame you can only
+[00:06:26] imagine what an intraday chart
+[00:06:28] would look like which is why in my
+[00:06:30] opinion it's important to continue
+[00:06:32] paying attention
+[00:06:33] to these considerations for choosing
+[00:06:37] highs and lows as opposed to just
+[00:06:39] blanketly selecting all of them
+[00:06:40] i think some selectivity and some sort
+[00:06:43] of quality filter
+[00:06:44] is definitely helpful and will make
+[00:06:46] things more actionable
+[00:06:49] so some further things to consider is
+[00:06:51] the swing high or low you're assessing
+[00:06:52] confluent with another key level
+[00:06:54] is there more going on at that level
+[00:06:56] that will attack attract
+[00:06:58] the attention of further participants is
+[00:07:01] it a nice support resistance level with
+[00:07:03] multiple touches
+[00:07:04] is there a candle open there like the
+[00:07:06] monthly open weekly open daily open etc
+[00:07:08] is there just a good reason to have eyes
+[00:07:10] there
+[00:07:12] as was betrayed by the previous chart
+[00:07:14] with all those nice arrows
+[00:07:16] in any given market on any given time
+[00:07:18] frame you can almost certainly find
+[00:07:19] structure that qualifies as
+[00:07:20] an msb latin itself does not make it
+[00:07:23] worth trading
+[00:07:25] and that is the reason why we have those
+[00:07:26] quality filters so that
+[00:07:28] when we have higher highs and higher
+[00:07:30] lows or just
+[00:07:31] market structure levels more generally
+[00:07:33] that they actually mean something as
+[00:07:34] opposed to having a ton of overlapping
+[00:07:36] levels
+[00:07:37] generating a lot of noise and very few
+[00:07:39] signals
+[00:07:42] as for further quality filters if in
+[00:07:44] doubt sr it out
+[00:07:45] works quite well so by definition
+[00:07:47] horizontal support resistance is derived
+[00:07:49] from old highs and lows
+[00:07:51] if you can identify at least decent
+[00:07:52] levels so you've got some
+[00:07:54] prowess in support resistance
+[00:07:56] identification you can automatically
+[00:07:58] identify meaningful market structure
+[00:07:59] levels or at least your job is easier
+[00:08:02] it also works for trend lines given the
+[00:08:04] sequence of higher lows
+[00:08:05] and lower highs those make up your
+[00:08:08] uptrend and downtrend
+[00:08:09] line levels as well so if you've got a
+[00:08:11] nice trend line and it's broken
+[00:08:12] good chance you've got a market
+[00:08:15] structure break on your hands
+[00:08:16] as well the more eyes the better
+[00:08:20] a quick note on candle bodies for market
+[00:08:21] structure a bit weird but something i
+[00:08:23] use so i get questions about
+[00:08:24] and people generally love the topics of
+[00:08:26] wicks and bodies so
+[00:08:28] it's unconventional but i personally use
+[00:08:30] them i find they work better on high
+[00:08:31] time frames
+[00:08:32] and or at swing points where the wick
+[00:08:35] may make things a bit difficult or some
+[00:08:38] sort of outlier
+[00:08:39] i just say test yourself and be
+[00:08:41] consistent there's no right or wrong way
+[00:08:43] in my opinion as long as you're not
+[00:08:45] forcing narratives on the chart and
+[00:08:47] being selective based on other biases
+[00:08:52] so we had this chart earlier with every
+[00:08:53] single swing high and low and then this
+[00:08:55] version
+[00:08:56] is maybe the higher quality or filtered
+[00:08:58] one where
+[00:08:59] i've opted to choose the swing highs and
+[00:09:00] lows that i think are really
+[00:09:02] outstanding and significant on the daily
+[00:09:05] time frame
+[00:09:06] and as you can tell there's just more
+[00:09:09] room between levels
+[00:09:10] easier to read and that tends to
+[00:09:12] translate into
+[00:09:14] more actionable ideas and signals
+[00:09:18] also you can do this exercise yourself
+[00:09:20] pick a
+[00:09:21] pick any market any time frame maybe
+[00:09:23] something you've never looked at where
+[00:09:24] you don't trade
+[00:09:25] and just delineate using again the basic
+[00:09:28] definition
+[00:09:28] of swing high and swing low what you
+[00:09:30] think are the clearest or most
+[00:09:32] outstanding levels that are available
+[00:09:36] unlike most things i found that the less
+[00:09:38] you think about this
+[00:09:39] the better the results and of course
+[00:09:41] with time and practice it'll become
+[00:09:43] second nature
+[00:09:46] still on defining market structure
+[00:09:49] difficult question
+[00:09:50] is there a single unified market
+[00:09:52] structure per time frame
+[00:09:54] we can compare this to trend let's say
+[00:09:56] the 200 daily moving average
+[00:09:58] is your key for directional bias in most
+[00:10:01] cases
+[00:10:02] unless the market's just chopping up the
+[00:10:04] level or it's really close whatever
+[00:10:05] but in most cases you'll be able to look
+[00:10:07] at where price is
+[00:10:08] relative to that 200 daily moving
+[00:10:10] average and it will give you a pretty
+[00:10:12] unambiguous answer as to whether
+[00:10:14] the market's bullish or bearish if it's
+[00:10:15] above it it's bullish if it's below it
+[00:10:17] it's bearish right
+[00:10:18] i think market structure doesn't lend
+[00:10:20] itself well to that type of uniformity
+[00:10:21] which
+[00:10:22] which isn't a bad thing i think the
+[00:10:24] assessment or your assessment of market
+[00:10:26] structure will depend on how strictly
+[00:10:27] you define your criteria
+[00:10:29] for valid swing points and that will of
+[00:10:32] course affect the types of trades you
+[00:10:33] want to take
+[00:10:35] so let's say you're on the looser side
+[00:10:37] of the spectrum and you just map every
+[00:10:39] single swing high and swing low as
+[00:10:40] in this example chart then you will have
+[00:10:43] many types
+[00:10:44] many market structures going on at the
+[00:10:47] same time
+[00:10:48] uh depending on which swings you're
+[00:10:50] paying attention to and then you'll have
+[00:10:52] short term breakdowns but
+[00:10:55] longer term higher lows etc etc
+[00:10:58] whereas if you're more on this side of
+[00:10:59] the spectrum where you're conservative
+[00:11:01] and far more selective
+[00:11:02] about the swing highs and lows that you
+[00:11:04] choose you may get
+[00:11:06] fewer market structure signals going on
+[00:11:09] at any one time but even if you have the
+[00:11:11] cleaner daily view
+[00:11:13] you could have shorter time frame daily
+[00:11:14] market structure breaks
+[00:11:16] even if your daily market structure
+[00:11:18] levels are
+[00:11:19] intact so again it's a bit of a
+[00:11:22] mixed pot and i think it really depends
+[00:11:24] i don't think there's one market
+[00:11:25] structure it just depends
+[00:11:27] on how strict you are with your
+[00:11:29] guidelines
+[00:11:30] the stricter you are the less
+[00:11:34] noise you will have so maybe less going
+[00:11:36] on at the same time but if you're very
+[00:11:38] strict with this is my market structure
+[00:11:40] level and everything else is noise
+[00:11:41] then maybe at times you will have a
+[00:11:44] clear read as to this is the market
+[00:11:46] structure
+[00:11:47] on a given time frame i just don't think
+[00:11:48] it's a totally
+[00:11:50] useful way of thinking about things so
+[00:11:52] for example it's totally fine to say
+[00:11:54] that high time frame market structure is
+[00:11:55] bullish but the low time frame market
+[00:11:56] structure has been broken
+[00:11:58] even on the same time frame so if you
+[00:12:01] look at a chart and you think well yeah
+[00:12:02] you've got a higher low here but this is
+[00:12:04] a lower low and oh my god do i have to
+[00:12:05] pick and choose
+[00:12:06] the answer is not really
+[00:12:09] the third point is pretty important
+[00:12:11] it'll become apparent as we continue
+[00:12:13] more in discussing setups identifying
+[00:12:15] market structure breaks
+[00:12:16] but do not chase every market structure
+[00:12:18] break this is something to have in the
+[00:12:20] back of your mind
+[00:12:21] as we go further into the content
+[00:12:25] if you end up ascribing significance to
+[00:12:28] every single shift in market structure
+[00:12:30] you are turning yourself into nothing
+[00:12:32] more than a
+[00:12:33] breakout and breakdown chaser if that's
+[00:12:36] your strategy
+[00:12:37] fine but it's got very little to do with
+[00:12:39] how
+[00:12:40] we want to use market structure as a
+[00:12:42] tool to provide context
+[00:12:44] and maybe derive some setups as well
+[00:12:48] i mean by definition even if you have
+[00:12:50] like a bullish dip for a high low
+[00:12:52] that implies that market structure was
+[00:12:54] broken on some time frame to
+[00:12:56] make price go lower uh and vice versa so
+[00:12:58] if you're always like a
+[00:13:00] cat chasing a dog chasing its own tail
+[00:13:02] type of thing
+[00:13:03] and pretending you're doing so under the
+[00:13:05] guise of market structure it's generally
+[00:13:07] not going to lead to the most
+[00:13:09] amazing outcomes
+[00:13:14] so identifying breaks in market
+[00:13:15] structure now that we've identified what
+[00:13:16] market structure is
+[00:13:19] my definition is a shift in the sequence
+[00:13:21] of highs and lows
+[00:13:22] in the opposite direction so for a
+[00:13:24] bullish
+[00:13:25] market structure break it is when a
+[00:13:28] sequence of lower highs
+[00:13:30] is violated by a higher high and of
+[00:13:32] course for bearish market structure
+[00:13:34] break is when a sequence of higher lows
+[00:13:36] is violated by a lower low
+[00:13:40] just very quickly i know i said that i
+[00:13:43] wouldn't be
+[00:13:44] wouldn't profess to teaching some sort
+[00:13:46] of orthodoxy or this is how market
+[00:13:47] structure is
+[00:13:48] but even with my pretty straightforward
+[00:13:50] and simple
+[00:13:51] definitions there are some criticisms
+[00:13:53] and alternative views to be aware of
+[00:13:55] so for example you can see that for my
+[00:13:57] bullish market structure break
+[00:13:58] definition
+[00:13:59] you just need a higher high right lower
+[00:14:01] high higher high and that event in
+[00:14:03] itself
+[00:14:03] is valid for breaking market structure
+[00:14:05] there are some schools of thought
+[00:14:08] which argue that the higher high in
+[00:14:09] itself isn't enough and you need a
+[00:14:11] higher low before the higher high
+[00:14:13] for that to be a valid break in market
+[00:14:14] structure so slightly more stringent
+[00:14:16] requirements
+[00:14:17] again it's not the case of this person's
+[00:14:18] right this person's wrong and this is
+[00:14:20] how i do think
+[00:14:20] my things my weight or the highway uh as
+[00:14:23] with anything it's just personal
+[00:14:24] preference trade-offs and what works for
+[00:14:26] you
+[00:14:26] my personal view is the requirement of a
+[00:14:28] higher low before a higher high is just
+[00:14:29] pretty conservative
+[00:14:31] and also just more burdensome the second
+[00:14:34] kind of criticism to be aware of
+[00:14:36] um with regard to my definition of
+[00:14:39] market structure offered
+[00:14:41] in the first bullet point is that
+[00:14:43] there's an alternative view that the
+[00:14:44] lower high
+[00:14:45] that's broken must have preceded a lower
+[00:14:47] low to be valid or the higher low that
+[00:14:49] is broken
+[00:14:49] must have preceded a higher high to be
+[00:14:52] valid
+[00:14:53] so you can see in my definition i don't
+[00:14:55] ascribe any special functions
+[00:14:56] to the higher low to the lower high or
+[00:15:00] the higher load that get violated
+[00:15:01] but some schools of thought or
+[00:15:04] practitioners of market structure
+[00:15:05] will have to will ascribe certain
+[00:15:07] features to these highs and lows
+[00:15:09] in order for their break to be valid
+[00:15:13] again i think it's just needlessly
+[00:15:14] complex you can just see how simple my
+[00:15:16] definition is compared to all the other
+[00:15:18] caveats simple isn't always better but
+[00:15:20] in this instance
+[00:15:21] i feel like it's beneficial um and i
+[00:15:24] still integrate similar logic for setups
+[00:15:25] in terms of how significant is this high
+[00:15:27] or low
+[00:15:28] but i think it's unduly restrictive and
+[00:15:30] some obvious market structure anchors
+[00:15:32] just don't mismeet
+[00:15:33] this strict test ethereum bitcoin on the
+[00:15:36] weekly time frame comes to mind
+[00:15:39] so this is it right and donald and i in
+[00:15:42] technical roundup wrote about
+[00:15:44] the break in weekly market structure
+[00:15:47] when we had this higher high on the
+[00:15:50] weekly time frame so we had this swing
+[00:15:51] point
+[00:15:52] okay uh and then close above it you can
+[00:15:55] see
+[00:15:56] high lower high and then higher high
+[00:15:59] relative to the last one
+[00:16:00] here so this for us was a break in
+[00:16:02] market structure right this bit of price
+[00:16:03] action closing above the level
+[00:16:04] uh and we managed to catch or be
+[00:16:07] prepared for
+[00:16:08] the move that was to follow if we were
+[00:16:10] to take an overly strict definition
+[00:16:12] that the broken high
+[00:16:16] must have led to a lower low
+[00:16:19] then if we just look at where this leg
+[00:16:20] down went it technically made a higher
+[00:16:22] low to the preceding one
+[00:16:24] so not much good there and even if we
+[00:16:26] take the
+[00:16:27] probably one of the best and most
+[00:16:28] outstanding swing points on the chart
+[00:16:30] all the way up here and assess whether
+[00:16:33] it's valid
+[00:16:34] for a market structure anchor if we look
+[00:16:36] at the leg down
+[00:16:37] that came as a result of that swing
+[00:16:39] technically it didn't make a lower low
+[00:16:41] either so that would mean that this
+[00:16:44] under some interpretations wouldn't be a
+[00:16:46] valid market structure level because it
+[00:16:49] didn't lead
+[00:16:50] to a lower low again not saying one is
+[00:16:52] right one is wrong i just think it's
+[00:16:54] unduly stringent
+[00:16:55] and i think i'll just have an easier
+[00:16:57] time making this video both with
+[00:16:58] stuff that actually trade how i view
+[00:17:00] things myself but also building upon
+[00:17:02] this as a foundation i think we'll have
+[00:17:03] an easier time
+[00:17:04] i just wanted to bring in some
+[00:17:05] alternative perspectives um
+[00:17:07] make you aware that if people disagree
+[00:17:09] with you on the internet it won't be the
+[00:17:10] end of the world there are different
+[00:17:11] ways of doing things
+[00:17:13] i'm just giving you what works for me
+[00:17:16] and as it says in the final point study
+[00:17:17] your own trades see what works for you
+[00:17:19] maybe integrate mine maybe integrate
+[00:17:21] another version
+[00:17:21] both uh this is you know your toolbox
+[00:17:25] customize it as you wish
+[00:17:28] some basic home cook diagrams for breaks
+[00:17:30] in market structure again relying on the
+[00:17:32] basic
+[00:17:33] um definitions put forth in the previous
+[00:17:36] slide
+[00:17:37] we've got a high low or high and in the
+[00:17:40] market structure break event
+[00:17:41] is when we have a shift from the
+[00:17:43] sequence of lower highs to a higher high
+[00:17:46] right so the higher high event for me is
+[00:17:49] the break
+[00:17:50] in market structure specifically the
+[00:17:52] close above
+[00:17:53] a lower high some points
+[00:17:56] as sort of touched on earlier what's
+[00:17:58] happening at the lowes is
+[00:18:00] less relevant for me when it comes to
+[00:18:01] bullish market structure
+[00:18:03] i want to see evidence of what's going
+[00:18:04] on at resistance and higher prices to be
+[00:18:06] focused on the bullish side so
+[00:18:09] that's just my view and the same for the
+[00:18:11] bearish side or
+[00:18:12] similar logic you've got low high low
+[00:18:14] and again the sequence
+[00:18:16] of the shift bearish bearish shift in
+[00:18:19] market structure
+[00:18:20] is when you move from higher lows and
+[00:18:22] that's broken by a lower low
+[00:18:24] that shift from higher lows to lower low
+[00:18:26] is the break in
+[00:18:27] market structure or the market structure
+[00:18:29] break so again high low
+[00:18:30] lower low that shift is our msb
+[00:18:34] same thing for me personally what's
+[00:18:35] happening at the highs is less relevant
+[00:18:37] if i'm focusing on the bearish side
+[00:18:39] my focus will be on lower prices and on
+[00:18:42] price behavior around support for the
+[00:18:44] most part and
+[00:18:45] hence why less interested up here eyes
+[00:18:49] down here
+[00:18:52] some more details and identifying breaks
+[00:18:54] in market structure we have to deal with
+[00:18:55] the nitty gritty wicks or bodies
+[00:18:57] people seem fascinated with this topic
+[00:18:59] it's not too relevant but
+[00:19:00] i'll happily entertain it in most cases
+[00:19:03] just as a general heuristic
+[00:19:05] if you must ask yourself where the
+[00:19:06] market structure break has formed
+[00:19:08] uh it probably hasn't or at least a very
+[00:19:10] clear one hasn't
+[00:19:12] as for wicks or bodies there's no right
+[00:19:15] answer in my opinion as long as your
+[00:19:16] framework
+[00:19:17] for ascertaining them uh is consistent
+[00:19:20] that is to say ascertaining breaks in
+[00:19:22] market structure so some common variants
+[00:19:24] of kind of wicks or bodies and candle
+[00:19:26] closes all that type of stuff
+[00:19:28] is using wicks to delineate market
+[00:19:30] structure and
+[00:19:31] a wick above or below constitutes a
+[00:19:34] break
+[00:19:35] so no requirement for close just wicks
+[00:19:37] through swing highs
+[00:19:38] wakes through swing lows with constitute
+[00:19:40] a market structure break
+[00:19:42] i've seen that the second one i think
+[00:19:44] this is the probably the most popular
+[00:19:45] one
+[00:19:47] using wicks for market structure so
+[00:19:48] swing highs and swing lows
+[00:19:50] the actual wicks and the candlesticks
+[00:19:51] and then closes above
+[00:19:54] the highs or below the lows for market
+[00:19:55] structure breaks this is the more
+[00:19:57] conservative one where you're using the
+[00:19:58] extreme
+[00:19:59] for the high and low and then you want a
+[00:20:00] full close through to
+[00:20:02] uh get some sort of confirmation so
+[00:20:04] that's that's pretty popular
+[00:20:06] and then my preferred variant is using
+[00:20:08] candle bodies for market structure
+[00:20:10] and then closes so again bodies above or
+[00:20:13] below
+[00:20:13] for market structure break no magical
+[00:20:16] reason not saying this is the real way
+[00:20:17] to do it
+[00:20:18] secret voodoo whatever just something
+[00:20:20] i've done and what works for me i was
+[00:20:22] using
+[00:20:22] candle closes for levels and just
+[00:20:24] basically transplanted it to market
+[00:20:26] structure
+[00:20:26] and i didn't i didn't feel hurt by the
+[00:20:29] decision but again
+[00:20:30] look for yourself maybe your market's
+[00:20:32] different
+[00:20:34] if in doubt context will often dictate
+[00:20:36] what's reasonable in exceptional
+[00:20:37] circumstances
+[00:20:39] um i've got the example of bitcoin
+[00:20:42] having this 14k
+[00:20:44] wick and well was market structure
+[00:20:46] broken on the 12k break or on the 14k
+[00:20:48] break like if you if you have those
+[00:20:50] anomalous wicks which are clearly far
+[00:20:52] away from where most
+[00:20:53] trading was done and the candle bodies
+[00:20:55] just have the nicer levels and
+[00:20:56] like a lot of the time will be pretty
+[00:20:58] obvious so by all means be consistent
+[00:21:00] but
+[00:21:01] no need to be a zealot with these things
+[00:21:03] you'll know a breakout
+[00:21:04] and a breakdown when you see one and if
+[00:21:07] you're having to split hairs by looking
+[00:21:09] at wicks versus bodies then maybe it's
+[00:21:10] not as clear-cut
+[00:21:12] as you've thought as for
+[00:21:15] candle closes as we discussed the common
+[00:21:17] variants as you know wix above or closes
+[00:21:19] above below etc
+[00:21:20] i'd say watch the time frames video
+[00:21:22] generally it's helpful for this video as
+[00:21:23] well
+[00:21:24] but as a safe rule to roll with
+[00:21:27] i at least like to see a close above or
+[00:21:30] below on the same time frame as the
+[00:21:32] market structure anchor
+[00:21:33] so if i'm looking at daily market
+[00:21:34] structure and i've got my
+[00:21:37] swing high or swing low set out i want
+[00:21:39] to see a daily close
+[00:21:41] through that high or low to constitute a
+[00:21:44] market structure break
+[00:21:45] type of event otherwise it's just kind
+[00:21:47] of a re-test of support resistance or
+[00:21:49] some other weird stuff
+[00:21:50] and it also just makes things very easy
+[00:21:53] to interpret uh consistently and you're
+[00:21:56] not having to look at random time frames
+[00:21:58] and weird price action
+[00:22:00] you have the market structure level from
+[00:22:01] a certain time frame and it's broken
+[00:22:03] when that same time frame closes through
+[00:22:04] it
+[00:22:04] pretty straightforward and the market at
+[00:22:06] least crypto markets seem generally
+[00:22:08] comfortable
+[00:22:09] with this implied consensus around
+[00:22:11] candle closes so until that changes
+[00:22:13] uh i'm totally fine with it
+[00:22:17] so identifying breaks in market
+[00:22:19] structure again this is this isn't
+[00:22:21] focused on trading
+[00:22:22] market structure breaks which is the
+[00:22:24] third section this is more once you've
+[00:22:26] identified it what can you do with that
+[00:22:27] information or perhaps what you
+[00:22:28] shouldn't do with that information
+[00:22:30] so directional bias is a big one i
+[00:22:32] strongly recommend watching the video
+[00:22:33] on not the video this kind of is the
+[00:22:35] video but the reading the medium article
+[00:22:38] on directional bias i'll try to link
+[00:22:40] that in the description if not just
+[00:22:42] search crypto credit directional bias
+[00:22:44] uh it's it's a medium article but the
+[00:22:47] basic outline is as follows
+[00:22:48] it may seem uh fairly self-explanatory
+[00:22:51] but of course
+[00:22:52] next the upcoming slides will build on
+[00:22:55] the content
+[00:22:56] um in the slides that come before it so
+[00:22:58] bear with me
+[00:22:59] and it's also good for beginners so for
+[00:23:01] a bullish market structure break
+[00:23:04] we're essentially anticipating a higher
+[00:23:06] high with or without a higher low
+[00:23:08] right so you've got the bullish market
+[00:23:09] structure break the higher highest
+[00:23:10] formed we're anticipating higher prices
+[00:23:12] usually in the form of another higher
+[00:23:13] high and whether it pulls back or not
+[00:23:15] hence the with or without a higher low
+[00:23:17] we don't know
+[00:23:18] but generally that's a bullish outlook
+[00:23:19] buyers are in control resistance is
+[00:23:21] broken however you want to slice it
+[00:23:23] and we're favoring long side trades and
+[00:23:25] that also
+[00:23:26] means that short side trades are counter
+[00:23:29] trend
+[00:23:30] right bearish margin stretch to break as
+[00:23:32] you can imagine the opposite
+[00:23:34] um you have a bearish market structure
+[00:23:37] break that's a lower low
+[00:23:38] support is broken and we're anticipating
+[00:23:40] lower prices
+[00:23:41] with or without another lower high again
+[00:23:43] we don't know how or if the market's
+[00:23:45] going to pull back
+[00:23:46] in those cases and that's a bearish
+[00:23:48] outlook
+[00:23:50] generally once you have that bearish
+[00:23:51] breaking market structure assuming lower
+[00:23:53] highs and lower lows and favoring short
+[00:23:55] side trades
+[00:23:56] or if you're long only or in other
+[00:23:58] circumstances you could stay out
+[00:24:00] take profit hedge or do whatever it is
+[00:24:01] you do to
+[00:24:03] mitigate exposure in those cases and as
+[00:24:05] per the last point
+[00:24:06] jumping a little bit market structure
+[00:24:08] brakes don't always have to
+[00:24:10] translate into a trade it can be used or
+[00:24:12] they can be used as
+[00:24:14] signals in their own right so maybe i'm
+[00:24:16] going to stop longing i'm going to move
+[00:24:17] my stops i'm going to take some profit
+[00:24:19] i'm going to hedge et cetera it doesn't
+[00:24:20] always have to be
+[00:24:21] long this short this right
+[00:24:25] practical considerations for trading in
+[00:24:27] msb
+[00:24:28] and this is just some quick pointers
+[00:24:30] maybe a summary version of the article
+[00:24:31] but you should still read it
+[00:24:32] on trading against a market structure
+[00:24:36] break so again
+[00:24:37] bullish break bullish outlook but what
+[00:24:39] if you want to take bearish trades right
+[00:24:41] or bearish trade bearish outlook but
+[00:24:42] what if you do want to get long
+[00:24:43] there are some things to be aware of if
+[00:24:45] and when you find yourself
+[00:24:47] in those calendar trend scenarios and
+[00:24:48] again all my personal views opinions and
+[00:24:50] so on
+[00:24:51] the first of all the basic overarching
+[00:24:54] ideas if you're trading counter trend
+[00:24:55] you're trading against the current so to
+[00:24:58] speak
+[00:24:58] and therefore you have to be more
+[00:25:00] defensive and less
+[00:25:02] liberal with those positions because
+[00:25:05] the odds so to speak to use that term
+[00:25:07] very loosely are against you
+[00:25:09] what are some of those considerations or
+[00:25:11] what might those considerations
+[00:25:12] translate into during a trade well
+[00:25:15] shorter holding periods
+[00:25:16] for one more conservative targets you
+[00:25:18] know trade
+[00:25:20] closing trades at fta first trouble area
+[00:25:23] greater minimum risk raw requirements
+[00:25:25] usually with closer invalidation
+[00:25:27] not wider targets so let's say typically
+[00:25:30] for
+[00:25:30] a trade you will have a requirement to
+[00:25:33] offer for it to offer at least the 1.5
+[00:25:36] reward for every unit of risk
+[00:25:39] and then for a counter trend trade
+[00:25:40] because
+[00:25:43] the current so to speak is against you
+[00:25:45] or the probability
+[00:25:46] of that side of the market being correct
+[00:25:49] or rewarding you
+[00:25:50] is lower you kind of build that in to
+[00:25:54] your trade parameters and require let's
+[00:25:56] say two reward
+[00:25:57] for one risk instead of 1.5 so the
+[00:25:59] payoff has to be worth it or there has
+[00:26:01] to be a higher chance of a
+[00:26:02] greater payout than usual in order to
+[00:26:04] justify trading counter trend and again
+[00:26:07] small nuance point it usually comes in
+[00:26:09] the form of close end validation
+[00:26:11] which is much more reasonable and
+[00:26:13] playing much more defensively as opposed
+[00:26:14] to picking wider targets
+[00:26:16] uh you don't want to artificially
+[00:26:19] inflate your risk reward by going for
+[00:26:22] wider targets
+[00:26:23] instead of looking for opportunities
+[00:26:25] closer than validation which kind of
+[00:26:26] goes hand in hand with shorter holding
+[00:26:28] periods anyway
+[00:26:30] further more active trade management the
+[00:26:32] whole idea of letting winners run
+[00:26:34] is a more trend following and in
+[00:26:38] trading in tandem with the trend that
+[00:26:40] you don't over manage positions that are
+[00:26:41] just going up
+[00:26:42] generally if you're long etc etc whereas
+[00:26:44] if you're a counter trend you need to be
+[00:26:45] a bit more dynamic
+[00:26:46] and not allow your evolving r
+[00:26:50] so to speak to tier 8
+[00:26:53] so you know these trades because they
+[00:26:55] count the trend and lower probability by
+[00:26:56] definition sort of require more
+[00:26:58] babysitting
+[00:26:59] uh different sizing is also another
+[00:27:00] consideration
+[00:27:02] we like to bet bigger when we're on the
+[00:27:05] right side or on the easier side of the
+[00:27:06] market
+[00:27:07] and if we're making our job
+[00:27:08] unintentionally difficult by going
+[00:27:10] counter trend
+[00:27:10] that typically warrants some sort of
+[00:27:12] sizing adjustment
+[00:27:14] in many cases so obviously smaller or
+[00:27:16] more conservative
+[00:27:18] just some very quick points there you
+[00:27:20] can always flip those around when
+[00:27:21] trading in the direction of the market
+[00:27:23] structure break right so trading with
+[00:27:25] the trends so to speak
+[00:27:26] uh those would be longer holding periods
+[00:27:28] more liberal targets
+[00:27:29] maybe lower risk world requirements less
+[00:27:31] trade management more hands off and
+[00:27:34] larger sizing all else considered just
+[00:27:37] some points to consider
+[00:27:43] still focusing on the benefits we can
+[00:27:44] derive from identifying breaks in market
+[00:27:46] structure outside of trading the actual
+[00:27:48] breaks in market structure
+[00:27:50] this is a very useful one because i know
+[00:27:51] a lot of the audience will be levels
+[00:27:53] traders or paying attention to levels in
+[00:27:55] one way or another
+[00:27:56] market structure can be used to filter
+[00:27:58] good support resistance levels and
+[00:28:00] structures from
+[00:28:01] less good ones so it's a great use case
+[00:28:04] for those struggling with level
+[00:28:05] selection be it
+[00:28:07] your levels just getting chopped and not
+[00:28:09] being price sensitive at all and not
+[00:28:10] being respected by the market
+[00:28:12] or if you just have too many and you
+[00:28:14] need and
+[00:28:15] trading level level becomes impossible
+[00:28:17] simply because you've got a level every
+[00:28:18] one percent right
+[00:28:20] so what's the basic premise how does
+[00:28:21] market structure help us find better
+[00:28:23] levels
+[00:28:24] and this comes down to what can we
+[00:28:25] expect from good resistance and good
+[00:28:27] support or what are some of the
+[00:28:29] behaviors and types of market structure
+[00:28:32] development that we can use to find
+[00:28:35] good levels and we're essentially
+[00:28:36] working backwards right so
+[00:28:39] we look for the break and market
+[00:28:40] structure and then we're jumping and
+[00:28:42] thinking where did that come from and
+[00:28:44] the origin
+[00:28:45] of those market structure shifts is
+[00:28:46] where we'll find our good levels
+[00:28:49] so the basic outline is as follows
+[00:28:52] resistance or a high that preceded
+[00:28:54] a bearish market structure break which
+[00:28:56] is a lower low
+[00:28:58] is strong resistance and support so a
+[00:29:00] low
+[00:29:01] that preceded a bullish market structure
+[00:29:03] break
+[00:29:04] a higher high is strong support
+[00:29:08] to use more colloquial terms we're
+[00:29:10] essentially asking the level
+[00:29:12] itself for its cv a kind of list of
+[00:29:15] achievements
+[00:29:16] like what okay so you've got this high
+[00:29:18] what did it actually do why is it
+[00:29:19] significant why is it better than any
+[00:29:20] other high
+[00:29:21] well this high preceded a break in
+[00:29:23] market structure
+[00:29:25] so the market reached this price level
+[00:29:26] and then made a lower low
+[00:29:28] okay well that's a bit more significant
+[00:29:29] than the market just reaching that
+[00:29:30] highway
+[00:29:31] and then doing nothing and the same for
+[00:29:32] support why this slow why this support
+[00:29:34] well the bounce that followed made a
+[00:29:36] higher high and shifted market structure
+[00:29:38] okay well that's a bit more significant
+[00:29:39] than other levels perhaps
+[00:29:42] and this type of logic is applicable to
+[00:29:44] all support resistance structures
+[00:29:46] and similar stuff generally you'll see
+[00:29:48] it applied to supply demand zones like
+[00:29:50] this is the supply zone
+[00:29:52] and the move away from it broke demand
+[00:29:53] so it's significant or this is demand
+[00:29:55] zone
+[00:29:56] move away from it broke that's this
+[00:29:58] supplies is significant
+[00:29:59] uh kind of second order thinking makes
+[00:30:02] sense
+[00:30:02] right i'd say it's particularly
+[00:30:05] applicable for range trading
+[00:30:06] where re-tests are deeper and or higher
+[00:30:08] lows and lower highs
+[00:30:10] are less pronounced when you really need
+[00:30:11] to zero in on like a range layer or a
+[00:30:13] level
+[00:30:14] this type of stuff can help here's the
+[00:30:16] tldr
+[00:30:17] and memorizing this is going to be
+[00:30:19] important for our reversal setup but a
+[00:30:22] high that forced the lower low
+[00:30:24] forced preceded doesn't really matter
+[00:30:25] whether you believe in the causation
+[00:30:27] side of things
+[00:30:28] it's really irrelevant it's just
+[00:30:29] structure we're interested in but a high
+[00:30:30] that forced the lower low is significant
+[00:30:32] and the low that forced the higher high
+[00:30:34] is significant again we see the shift in
+[00:30:36] market structure that's significant and
+[00:30:38] we work backwards to find the level
+[00:30:39] so to speak here's the home cooked
+[00:30:43] diagram version
+[00:30:44] right uh strong support we're almost
+[00:30:47] working backwards
+[00:30:48] so you've got the high the lower high
+[00:30:49] higher high okay we know that's
+[00:30:51] important because the higher high is the
+[00:30:52] breaking market structure
+[00:30:53] that's some serious stuff where did it
+[00:30:55] come from so to speak we're tracking it
+[00:30:57] on ancestry or whatever
+[00:30:59] data mining website you use and we work
+[00:31:01] backwards and see this was the
+[00:31:03] swing low that broke market struck to
+[00:31:06] the upside
+[00:31:07] right or the market structure shifting
+[00:31:09] move originated from here
+[00:31:10] even if we compare it to its neighbor
+[00:31:12] let's say this swing low okay well
+[00:31:13] that's potentially good support i mean i
+[00:31:14] know in this case the levels are lined
+[00:31:16] up so it's not terribly compelling but
+[00:31:17] just for the sake of argument
+[00:31:18] this swing low you've got to bounce but
+[00:31:20] that bounce resulted in the lower high
+[00:31:22] not as impressive whereas
+[00:31:24] the move from this low result in the
+[00:31:25] higher high okay now we're in business
+[00:31:28] i think the same logic can be applied uh
+[00:31:30] to resistance of course
+[00:31:32] whereby we're working backwards we see
+[00:31:34] this shift in market structure low
+[00:31:35] high low low or low okay something
+[00:31:37] clearly happened here this is
+[00:31:39] significant the shift in behavior
+[00:31:40] and let's work backwards where did this
+[00:31:43] lower low and market structure shift
+[00:31:44] come from and this is the high that
+[00:31:46] preceded the market structure break
+[00:31:49] or again to use that type of language
+[00:31:50] the market structure shifting move
+[00:31:52] originated from here so but what this
+[00:31:54] high do yeah it led to a selloff but it
+[00:31:56] was a higher low this is the one which
+[00:31:57] shifted market structure
+[00:31:59] so the level kind of derives additional
+[00:32:01] significance from the fact that it moved
+[00:32:03] things around a lot
+[00:32:09] this is an important bit identifying
+[00:32:10] breaks in market structure with regard
+[00:32:12] to entry triggers
+[00:32:13] and market structure breaks can be used
+[00:32:15] as an entry trigger where msb can be
+[00:32:17] used as an entry trigger when trading
+[00:32:19] at and in brackets high time frame
+[00:32:20] structure it doesn't have to be high
+[00:32:21] time frame structure that's the most
+[00:32:23] common use case
+[00:32:24] what's the basic premise well this seeks
+[00:32:27] to address
+[00:32:28] the common question of well how do you
+[00:32:31] know this support is going to hold or
+[00:32:32] how do you know this resistance is going
+[00:32:33] to hold
+[00:32:34] which i think is generally impossible to
+[00:32:35] answer and the answer itself is actually
+[00:32:37] quite boring as well you don't so you
+[00:32:39] you know you either take a guess or you
+[00:32:41] develop a case based on
+[00:32:43] evidence in price action as it develops
+[00:32:46] right or you just go in with no
+[00:32:48] knowledge and the
+[00:32:50] the risk reward and the payout and the
+[00:32:51] probability etc um
+[00:32:53] justify a blind entry but for our
+[00:32:55] purposes
+[00:32:58] if we simplify things a bit how do you
+[00:32:59] know this support's going to hold well
+[00:33:00] what would be good evidence of support
+[00:33:02] holding
+[00:33:02] well a bullish break in market structure
+[00:33:05] would mean that buying is going on at
+[00:33:06] the level
+[00:33:07] so you know that's pretty good
+[00:33:09] confirmation as far as those things go
+[00:33:11] uh same for the bearish side how do you
+[00:33:12] know this resistance is going to hold
+[00:33:13] well if markets
+[00:33:14] i don't know if it's going to hold but
+[00:33:16] if market structure starts to break down
+[00:33:17] then there's a good
+[00:33:18] that's good reason to believe that
+[00:33:20] sellers are selling the level so it's
+[00:33:22] doing something so i don't know for
+[00:33:23] certain but at least it shifts the odd
+[00:33:25] odds in that direction and in my favor
+[00:33:28] so the basic premise
+[00:33:29] bearish microstructure break out
+[00:33:31] resistance for cell setups we want to
+[00:33:32] see selling at resistance
+[00:33:34] bullish market structure break at
+[00:33:35] support for buy setups we want to see
+[00:33:38] buying at support it's most commonly
+[00:33:41] used in multi-time frame trading systems
+[00:33:43] so this is your kind of top-down stuff
+[00:33:44] that you'll see pretty frequently
+[00:33:46] whereby you'll start with the high time
+[00:33:48] frames like weekly daily structure as an
+[00:33:49] area to do business like this is the
+[00:33:51] support i want to buy resistance
+[00:33:52] resistance i want to sell
+[00:33:54] um usually based on again high time
+[00:33:56] frame levels structures what have you
+[00:33:58] and then there's a low time frame market
+[00:34:00] structure break as the trigger for the
+[00:34:02] trade
+[00:34:03] so this is the daily level and i'll get
+[00:34:05] the hourly
+[00:34:06] lower highs and lower lows that'll be my
+[00:34:08] entry to short or this is you know
+[00:34:10] daily support i'll wait for four hour
+[00:34:13] lower highs sorry four hour higher highs
+[00:34:16] and higher lows and i'll
+[00:34:17] that'll be my trigger to buy it's
+[00:34:19] important to note that this time frame
+[00:34:20] logic is often scaled down
+[00:34:22] so you'll see five minute 15 minute
+[00:34:24] entries
+[00:34:25] at even intraday levels and it's more
+[00:34:28] the
+[00:34:28] hierarchy of time frames it's relevant
+[00:34:30] that you derive clues about higher time
+[00:34:32] frame structure from the price action
+[00:34:34] specifically
+[00:34:35] um market structure on lower time frames
+[00:34:39] some important notes and this is
+[00:34:40] something i've been thinking about a lot
+[00:34:41] uh both just
+[00:34:42] throughout my career and also the people
+[00:34:44] that i've learned to trade from etc etc
+[00:34:46] and i think it's relevant for developing
+[00:34:47] traders
+[00:34:48] uh the idea of confirmation is it tends
+[00:34:50] to be a golden goose for most people and
+[00:34:52] it's much easier said than done
+[00:34:53] i've seen a very small handful of people
+[00:34:55] actually integrate it into their system
+[00:34:57] trader as z being one of them go watch
+[00:34:58] his live streams and learn from him
+[00:35:00] but he's been doing it for you know at
+[00:35:03] least
+[00:35:04] two or three times as long as i've just
+[00:35:06] traded my first market
+[00:35:07] so there's a lot of experience that goes
+[00:35:09] into that and he's also incredibly
+[00:35:10] systematic
+[00:35:12] um and he knows what in advance
+[00:35:15] in very clear unambiguous terms what
+[00:35:17] confirmation means
+[00:35:18] how to use it when to use it and the
+[00:35:20] implications it has for his trading
+[00:35:21] system
+[00:35:23] how it affects his entries etc etc so
+[00:35:25] it's no joke it's no easy map
+[00:35:26] no kind of laughing matter right and of
+[00:35:28] course it stands to
+[00:35:30] logic that if confirmation and trading
+[00:35:31] were easy uh or accessible losing a
+[00:35:33] trade would be very difficult
+[00:35:35] because you'd have a level and if it
+[00:35:36] confirms great you get on board you get
+[00:35:38] the trade and if it doesn't confirm
+[00:35:39] well thank god because you missed out uh
+[00:35:42] you know you dodged a bullet
+[00:35:44] on the losing trade of course in reality
+[00:35:45] it doesn't work that way
+[00:35:47] my observation certainly with beginners
+[00:35:48] traders uh is that most participants end
+[00:35:51] up being their own greatest enemies in
+[00:35:52] trying to develop a confirmation-based
+[00:35:53] system it's just
+[00:35:55] searching for certainty uh in a in a
+[00:35:58] business
+[00:35:58] where the certainty comes either at a
+[00:36:00] premium or just
+[00:36:01] doesn't exist and how many times does
+[00:36:04] this happen to you where you've planned
+[00:36:05] the trade like this is the level i'm
+[00:36:06] gonna buy it
+[00:36:07] the market comes into the level you try
+[00:36:09] you get a bit scared or angsty you
+[00:36:12] try to outsmart yourself you start
+[00:36:13] looking at other time frames other
+[00:36:14] indicators etc
+[00:36:15] by the end of it you've opened the
+[00:36:17] closing trade 20 times and the result of
+[00:36:18] course is your original plan plays out
+[00:36:20] perfectly just bounces and you would
+[00:36:22] have had an easy time just either
+[00:36:24] leaving a limit order
+[00:36:25] or hitting a market order as soon as it
+[00:36:27] hit the level
+[00:36:28] um so there is that risk
+[00:36:31] that trying to outsmart the market in
+[00:36:33] that way
+[00:36:34] um certainly using a lot a lot of
+[00:36:36] discretion like that
+[00:36:37] in execution as a beginner trader comes
+[00:36:39] with its own risk comes with its own
+[00:36:41] risks
+[00:36:41] and there's often just an implicit
+[00:36:43] trade-off with the whole idea of
+[00:36:45] confirmation
+[00:36:46] if you even entertain it which is that
+[00:36:48] you'll get good confirmation and a
+[00:36:49] entry versus
+[00:36:50] little to no confirmation and a great
+[00:36:53] entry
+[00:36:55] not to mention that if you have to wait
+[00:36:56] for confirmation for a lot of trade
+[00:36:58] setups
+[00:36:58] it will lock you out of some of the best
+[00:37:01] entries and
+[00:37:02] trade types uh especially on lower time
+[00:37:04] frames so that's
+[00:37:06] something else to be aware of you kind
+[00:37:07] of cut off the
+[00:37:10] potential scope of opportunities if you
+[00:37:12] always have to wait for xyz
+[00:37:14] to develop not to mention that if you
+[00:37:16] really get into granular intraday
+[00:37:17] trading
+[00:37:17] a lot of the time what you think is
+[00:37:20] market structure developing etc
+[00:37:22] if you get really granular is well more
+[00:37:24] likely than not just be noise
+[00:37:26] and you know just a couple of big market
+[00:37:27] orders being able to push around your
+[00:37:29] entry trigger system probably isn't the
+[00:37:31] best thing in the world
+[00:37:32] perhaps most importantly there's a risk
+[00:37:35] of creating a poor
+[00:37:36] habit of what's essentially only
+[00:37:37] entering a market once it moves
+[00:37:38] significantly in your favor
+[00:37:40] and i've someone who's i've tried this
+[00:37:43] i've tried to develop systems which give
+[00:37:45] me you know certainty even at the
+[00:37:47] expense of entry and
+[00:37:48] those haven't corresponded with great
+[00:37:50] parts and great periods in my
+[00:37:52] trading career so just some some nuances
+[00:37:55] to be aware of
+[00:37:57] that said it's not like it's a useless
+[00:37:59] tool and there's a reason i've included
+[00:38:01] it
+[00:38:01] uh into the presentation my preferred
+[00:38:04] approach with regard to using market
+[00:38:05] structure
+[00:38:06] is to essentially preview high time
+[00:38:08] frame price action
+[00:38:09] so i'll use daily market structure
+[00:38:11] weekly levels for example
+[00:38:13] instead of having to wait a whole week
+[00:38:16] for a candle to close that structure
+[00:38:18] before getting
+[00:38:18] any sort of information as to whether
+[00:38:20] support resistance is going to do its
+[00:38:21] job
+[00:38:22] using daily market structure at these
+[00:38:24] higher time frame levels is a pretty
+[00:38:26] good
+[00:38:27] middle ground compromise to get
+[00:38:28] something faster moving instead of
+[00:38:30] waiting
+[00:38:30] you know 14 to 21 days to enter a
+[00:38:34] position
+[00:38:35] and also just generally and this is
+[00:38:36] especially relevant with bitcoin at
+[00:38:39] you know above 20 000 with no real
+[00:38:41] levels left
+[00:38:42] um using daily market structure on its
+[00:38:44] own when the market is between levels
+[00:38:45] is helpful and generally just for low
+[00:38:47] time frame trading to provide context uh
+[00:38:50] very useful tools but i certainly wanted
+[00:38:52] to touch on that note
+[00:38:54] of confirmation and maybe point out some
+[00:38:56] potential
+[00:38:57] difficulties to be aware of
+[00:39:00] so we're onto trading breaks in market
+[00:39:02] structure we've learned
+[00:39:04] what it is how to identify it and also
+[00:39:06] identifying as mentioned
+[00:39:08] breaks in market structure and the type
+[00:39:10] of information that can be derived from
+[00:39:11] those breaks
+[00:39:12] so now we're going to focus on three
+[00:39:13] setups once market structure break
+[00:39:15] uh has been identified two are based on
+[00:39:18] continuation
+[00:39:19] and one is based on reversal
+[00:39:22] all three are contingent on an msb
+[00:39:24] forming so they occur
+[00:39:25] after a higher high bullish breaking
+[00:39:27] market structure or after a lower low
+[00:39:29] bearish break in market structure these
+[00:39:31] aren't the type of setups that can
+[00:39:34] that you take in anticipation of market
+[00:39:36] structure breaking these are very
+[00:39:37] much reacting after the fact and what
+[00:39:40] happens next and where
+[00:39:41] okay for beginners just to reiterate the
+[00:39:44] terms
+[00:39:45] continuation means the trade setup is in
+[00:39:47] the same direction
+[00:39:48] as the market structure break so bullish
+[00:39:50] break
+[00:39:51] we're looking for continuation trades
+[00:39:53] which means long trades or bullish
+[00:39:54] trades
+[00:39:55] and then vice versa uh reversal is for
+[00:39:58] trading the other side of an msb so
+[00:40:01] quite literally the opposite if
+[00:40:02] continuation of bullish
+[00:40:05] msb is a long trade then reversal
+[00:40:08] of bullish msb is a short trade once
+[00:40:10] certain conditions are met
+[00:40:13] before we dive into the setup some doses
+[00:40:15] of realism that i think a lot of trading
+[00:40:17] education skips out on
+[00:40:18] i try not to do that but i could have
+[00:40:20] done a much better job in previous
+[00:40:21] videos
+[00:40:22] so here we are this applies generally as
+[00:40:24] well as for i think any type of trading
+[00:40:26] really
+[00:40:27] firstly these aren't fully fleshed out
+[00:40:30] trade setups per se
+[00:40:31] i'm a discretionary trader so i'd never
+[00:40:33] kind of force a mechanical strategy down
+[00:40:35] your throat either way
+[00:40:36] uh just not how i roll and we're more
+[00:40:38] focused on set up logic here which you
+[00:40:39] can then manipulate replicate adjust to
+[00:40:41] your own needs which i think is more
+[00:40:43] helpful but
+[00:40:44] uh worth reiterating for some people
+[00:40:46] secondly
+[00:40:47] if you go out actively looking for
+[00:40:48] trades or forcing something on the
+[00:40:50] market you'll probably lose your shirt
+[00:40:51] there's especially a kind of
+[00:40:53] excitement based on novelty and i've
+[00:40:55] been there when you kind of learn
+[00:40:56] something new with regard to technical
+[00:40:58] trading and you really want to get out
+[00:40:59] there and
+[00:41:01] trade it and find opportunities i think
+[00:41:03] it's good to experiment and
+[00:41:05] participate in the market and learn via
+[00:41:07] doing for the most part provided you
+[00:41:08] know some basic risk management
+[00:41:10] but at least be reasonable with
+[00:41:13] waiting for opportunities versus forcing
+[00:41:15] them because you want to try something
+[00:41:17] out
+[00:41:17] quote unquote the third point this
+[00:41:19] applies to setups generally just always
+[00:41:20] look for probability enhancers
+[00:41:22] uh if the market's kind enough to be in
+[00:41:24] a place where you have some sort of
+[00:41:25] confluence
+[00:41:26] be it the underlying trend high time
+[00:41:28] frames technical confluence
+[00:41:29] funding oi whatever it is you use or
+[00:41:32] proven it's worth make sure to use it
+[00:41:34] a lot of the time when traders learn
+[00:41:35] something new they'll just strip it of
+[00:41:37] all context and just go out and try it
+[00:41:39] and if it doesn't work they ditch it
+[00:41:42] ta is you know not exactly a science
+[00:41:46] especially this type of discretionary
+[00:41:47] technical trading
+[00:41:48] if we were dealing with certainties then
+[00:41:49] we wouldn't be risking like one to five
+[00:41:51] percent of our account per trade
+[00:41:53] that in itself is in the dimension of
+[00:41:54] the uncertainties that we navigate so
+[00:41:56] why make things harder than they need to
+[00:41:58] be if stuff works for you have these
+[00:42:00] probability enhancers
+[00:42:01] use them don't think that everything
+[00:42:02] goes out the window just just because
+[00:42:04] you learnt some highs and lows
+[00:42:06] on that topic a lot of the time
+[00:42:08] just doesn't work it's just how trading
+[00:42:09] works
+[00:42:10] uh certainly this how technical trading
+[00:42:12] and any type of trading works
+[00:42:13] generally just sometimes no it's no good
+[00:42:17] uh you can even do everything correctly
+[00:42:18] and still lose money which may seem
+[00:42:20] absurd in
+[00:42:21] almost any other line of work uh it
+[00:42:23] would be but
+[00:42:25] this is this is what we deal with so
+[00:42:27] it's important to kind of have a
+[00:42:29] procedural mind as well as a results
+[00:42:31] based mind towards these things
+[00:42:34] we're talking about setups that follow
+[00:42:37] market structure breaks
+[00:42:38] of course there's no guarantee that
+[00:42:39] you'll get a set up after a market
+[00:42:40] structure break
+[00:42:41] as you may have seen with bitcoin and
+[00:42:43] just any stuff generally once you get
+[00:42:45] that higher high or lower low
+[00:42:46] the market could just full send or full
+[00:42:48] reverse without you um
+[00:42:50] the first setup of the pullback to the
+[00:42:52] market structure level is aggressive
+[00:42:53] it's basically a re-test of the
+[00:42:54] breakdown
+[00:42:55] or a re-test of the breakout but a lot
+[00:42:57] of the time even that doesn't happen
+[00:42:58] so that's just something to be aware of
+[00:43:00] there's no guarantee and there's no
+[00:43:02] system which will
+[00:43:03] allow you to catch every single move in
+[00:43:05] a satisfactory fashion
+[00:43:08] the next point is there's this idea of
+[00:43:09] cut and reverse in technical trading
+[00:43:11] which a lot of people
+[00:43:12] take as a given and the basic idea that
+[00:43:14] is that let's say
+[00:43:15] for example you've got support and you
+[00:43:17] buy that level of support
+[00:43:18] and then if it fails then the idea is
+[00:43:21] that you sell that level of support as
+[00:43:22] resistance and you kind of
+[00:43:23] still make money right so you take the
+[00:43:26] trade in
+[00:43:26] the direction that's presented and if it
+[00:43:28] fails you take the other side and that's
+[00:43:29] supposed to kind of mitigate
+[00:43:31] or allow you to claw back some of that
+[00:43:34] profit
+[00:43:34] uh what i've seen a lot in developing
+[00:43:36] traders um is and i still
+[00:43:38] put myself in that category to a large
+[00:43:39] extent probably until the day i stopped
+[00:43:41] trading
+[00:43:41] but nonetheless in much greener traders
+[00:43:43] they'll take cut and reverse as a given
+[00:43:45] that if they're long failed that means
+[00:43:47] they're short at that level must work
+[00:43:49] and if they're short failed that means
+[00:43:50] it's a very good long
+[00:43:51] a lot of the time that set up that logic
+[00:43:53] is sound the good bearish setups that
+[00:43:55] fail
+[00:43:56] are bullish and good bullish setups that
+[00:43:58] fail a bearish etc but don't take the
+[00:43:59] cut and reverse for granted
+[00:44:01] sometimes you just end up in a shitty
+[00:44:02] position the market just doesn't want to
+[00:44:04] mesh with you
+[00:44:05] or there's something else going on so
+[00:44:07] don't assume that you've always
+[00:44:08] identified absolute turning points
+[00:44:10] and that the market's going to be kind
+[00:44:11] enough to let you get in on the other
+[00:44:12] side
+[00:44:13] in any meaningful capacity if your first
+[00:44:16] uh trade was wrong
+[00:44:17] okay it's fine to be aware of
+[00:44:19] opportunities
+[00:44:20] upon invalidation and we'll visit some
+[00:44:22] of those but again don't take it for
+[00:44:23] granted
+[00:44:25] final kind of boring cred point is the
+[00:44:27] harder parts
+[00:44:28] of setups generally is everything except
+[00:44:32] the trade identification so sizing
+[00:44:34] execution
+[00:44:35] management choosing targets and
+[00:44:37] emotional stuff whatever
+[00:44:39] um that's the actual hard part now there
+[00:44:41] are separate videos and articles on
+[00:44:43] those like the fta videos really good
+[00:44:45] trade management video there's
+[00:44:46] articles on trading psychology and
+[00:44:48] things to do after losing trade etc but
+[00:44:50] they're not covered in this
+[00:44:52] and so don't assume just because you've
+[00:44:53] understood the basic uh
+[00:44:55] trade identification parameters of a of
+[00:44:58] the setups that we're going to cover
+[00:44:59] that somehow that just means you get to
+[00:45:01] trade profitably forever it's a small
+[00:45:03] part important part but small part
+[00:45:04] nonetheless and the other stuff in that
+[00:45:06] list is definitely uh
+[00:45:08] necessary and complementary
+[00:45:12] with that said let's talk about trading
+[00:45:13] breaks in market structure setup number
+[00:45:15] one is continuation
+[00:45:17] from market structure level so the basic
+[00:45:19] premise is as follows
+[00:45:20] and this is your bread and butter
+[00:45:21] support resistance and
+[00:45:24] which i'm sure many of you are familiar
+[00:45:25] with but if not here we go anyway
+[00:45:27] as you'll recall the setups discussed
+[00:45:29] here are contingent on the market
+[00:45:31] structure breaking forming so we're
+[00:45:33] acting after the higher high after the
+[00:45:34] lower low so in the bullish case
+[00:45:37] as a reminder bullish market structure
+[00:45:39] break requires a higher high and the
+[00:45:41] long trade because again continuation
+[00:45:42] bullish break we want to get long
+[00:45:44] the long trade is taken on a pullback to
+[00:45:46] the broken high
+[00:45:47] and of course the opposite is true for
+[00:45:48] the bearish side bearish market
+[00:45:50] structure break requires lower low once
+[00:45:51] we've had the lower low
+[00:45:53] we're looking for continuation so that's
+[00:45:54] the bearish side because of the bearish
+[00:45:56] breaking market structure
+[00:45:57] and the short trade is taken on a
+[00:45:59] pullback to the broken low so
+[00:46:00] as i said textbook kind of bread and
+[00:46:02] butter support resistance
+[00:46:04] broken support turning to resistance on
+[00:46:06] re-test broken resistance turning to
+[00:46:08] support on a re-test
+[00:46:10] of course the usual support resistance
+[00:46:11] considerations apply as well
+[00:46:14] there isn't necessarily a correct high
+[00:46:17] or low to use
+[00:46:18] at any one time especially if you've got
+[00:46:20] a level which you which lines up
+[00:46:22] uh pretty close to other highs and swing
+[00:46:24] points etcetera you kind of have to
+[00:46:26] make a judgment call and the same
+[00:46:28] discussion applies with regard to wicks
+[00:46:30] and bodies
+[00:46:30] but there is a general balancing
+[00:46:32] consideration if there is a bit of space
+[00:46:34] between wicks and bodies that if you're
+[00:46:36] using wicks or just anchors that are
+[00:46:37] closer to markets or closer to
+[00:46:39] the price as it is right now or closer
+[00:46:41] to the breakout whatever
+[00:46:42] uh you're more likely to get a fill but
+[00:46:44] the entry may be worse right
+[00:46:47] at the same time using bodies and
+[00:46:49] anchors further from the market
+[00:46:50] you're less likely to get a fill but
+[00:46:52] your entry may be better and
+[00:46:53] as discussed of course there are other
+[00:46:55] variants that you get fully filled you
+[00:46:57] get stopped out or you don't get a fill
+[00:46:58] at all because the market just moves
+[00:47:00] um but just some balancing to have in
+[00:47:02] the back of your mind
+[00:47:03] there's no signs to it in my opinion and
+[00:47:06] i'm not an expert on scaling orders so
+[00:47:08] i'm not going to profess to talk about
+[00:47:09] that matter
+[00:47:11] but the basic idea is as follows again
+[00:47:13] this is the easiest setup of them all
+[00:47:15] you identify the breaking market
+[00:47:16] structure you identify the breaking
+[00:47:18] market structure and then you
+[00:47:19] take the trade on where market structure
+[00:47:21] was broken
+[00:47:22] right uh invalidation always important
+[00:47:24] and
+[00:47:25] in this case the setup at its core is a
+[00:47:28] support resistance flip
+[00:47:29] right broken support flipping to
+[00:47:31] resistance broken resistance flipping to
+[00:47:32] support
+[00:47:33] so necessarily invalidation will be
+[00:47:35] based on that logic
+[00:47:36] and the setup's failed if the flip fails
+[00:47:39] so if the broken support
+[00:47:41] fails to act as resistance and the
+[00:47:43] broken resistance fails to act as
+[00:47:45] support
+[00:47:46] we've got our homemade home-cooked
+[00:47:48] diagram here
+[00:47:50] again nothing terribly complex i'm sure
+[00:47:52] let's say assuming preceding lower highs
+[00:47:54] here
+[00:47:54] this is a high you've got the break of
+[00:47:57] market structure when the higher high is
+[00:47:58] made
+[00:47:59] so this is on the close of this move
+[00:48:01] through the high
+[00:48:02] is when the market's technically bullish
+[00:48:04] that's on breaking market structure
+[00:48:05] we've identified it
+[00:48:06] identified it then on the trading side
+[00:48:08] of things we know that our first
+[00:48:10] option for continuation is trading where
+[00:48:13] market structure was broken where was it
+[00:48:15] broken
+[00:48:16] it was this high so it's the re-test of
+[00:48:17] that high where the long is taken
+[00:48:19] just like it says long trade taken back
+[00:48:22] at the high
+[00:48:22] who's break shifted the market structure
+[00:48:25] so when you're up here
+[00:48:26] i'll ask you so what's going on you say
+[00:48:28] market structure's broken
+[00:48:29] why well it broke we made a higher you
+[00:48:32] know it broke a high made a higher high
+[00:48:33] which high
+[00:48:34] this one well that's it that's the level
+[00:48:36] for the trade fairly straightforward
+[00:48:37] fairly self-explanatory again pretty
+[00:48:40] fast moving
+[00:48:41] um pretty aggressive considered in most
+[00:48:43] cases
+[00:48:44] again no guarantee could just pentamoon
+[00:48:46] but in terms of nearest pullback levels
+[00:48:48] this is what we're dealing with
+[00:48:49] the point of market structure break
+[00:48:53] uh same for the bearish side right
+[00:48:54] assuming preceding high lows et cetera
+[00:48:56] we've got the low
+[00:48:57] the lower low right and this is where we
+[00:49:00] this is identifying the market structure
+[00:49:01] level
+[00:49:02] the low the lower low identifying the
+[00:49:04] market structure break
+[00:49:05] okay phase three how do we trade this
+[00:49:07] continuation okay we're looking to get
+[00:49:08] short
+[00:49:09] where do we get short well where was
+[00:49:10] market structure was broken well it was
+[00:49:12] broken when this low was broken so
+[00:49:13] that's our level
+[00:49:14] short trade taken back at the low who's
+[00:49:17] break shifted market structure
+[00:49:19] identify ms this is our low
+[00:49:22] identify market structure break here the
+[00:49:24] close below the low
+[00:49:25] trade taken on the retest of step one
+[00:49:27] what's step one where we identified ms
+[00:49:29] in the first place so the high
+[00:49:31] who's break cemented the market
+[00:49:33] structure break the low who's break
+[00:49:35] cemented market structure break that is
+[00:49:37] that same
+[00:49:38] level where we look to do business on
+[00:49:40] the nearest continuation trade
+[00:49:42] i'm not going to pepper you with chart
+[00:49:44] examples there are
+[00:49:45] that be insulting your intelligence
+[00:49:46] there are so many of these highs turning
+[00:49:48] to lows and lows turning to highs
+[00:49:51] so be sure to go check those out see
+[00:49:53] what they look like
+[00:49:56] the second setup also continuation um
+[00:49:58] this is a slightly more complicated but
+[00:50:00] this is continuation from pullback level
+[00:50:02] okay uh the basic premise is as follows
+[00:50:04] with a reminder that bullish market
+[00:50:06] structure is predicated on higher highs
+[00:50:07] and higher lows
+[00:50:08] and bearish market structures predicated
+[00:50:10] on lower highs
+[00:50:12] and lower lows so as before bullish
+[00:50:14] market structure break requires a higher
+[00:50:16] high
+[00:50:18] but now the continuation trade is taken
+[00:50:20] below the breakout point
+[00:50:22] but above the most recent low okay when
+[00:50:24] we get to the diagrams trust me this
+[00:50:25] will make a lot more sense bear with me
+[00:50:26] with the text for now
+[00:50:27] for the bearish market structure break
+[00:50:29] um it requires a lower low
+[00:50:31] sure then continuation trade is taken
+[00:50:33] above the breakdown point
+[00:50:34] but below the most recent high it's a
+[00:50:36] bit less straightforward but the basic
+[00:50:38] logic is as follows
+[00:50:39] and this is the bullish example the kind
+[00:50:40] of conversation you have in your head
+[00:50:43] using the same steps right mapping
+[00:50:45] market structure identifying the break
+[00:50:47] then trading it so step one i've
+[00:50:50] identified a bullish market structure
+[00:50:51] break that's bullish
+[00:50:53] sure second bullish market structure
+[00:50:55] break is predicated
+[00:50:56] on higher highs and higher lows
+[00:50:58] fantastic
+[00:50:59] third point the higher high portion is
+[00:51:01] complete by definition because we've had
+[00:51:03] the market structure break
+[00:51:04] meaning that if the market is indeed
+[00:51:05] bullish the next dip will form
+[00:51:08] and or must form a high low
+[00:51:11] now the final question this is what this
+[00:51:13] setup seeks to answer which area
+[00:51:15] structure which isn't the breakout level
+[00:51:18] right reminder that the breakout level
+[00:51:19] in this case is again
+[00:51:20] where market structure was broken where
+[00:51:22] market structure was broken so which
+[00:51:23] area structure which isn't the breakout
+[00:51:25] level
+[00:51:25] is a reasonable candidate for this
+[00:51:27] higher low or lower high in the bearish
+[00:51:30] case
+[00:51:32] now immediately what you know the
+[00:51:34] question that you might have
+[00:51:35] is well in this case we've got the
+[00:51:37] breaking market structure and
+[00:51:38] that point where market structure is
+[00:51:40] broken flips
+[00:51:42] it acts as support that's bullish and
+[00:51:44] then it acts as resistance that's
+[00:51:45] bearish so everything's aligned
+[00:51:46] if it goes below that when it should be
+[00:51:49] bullish
+[00:51:50] or above that it should be bearish
+[00:51:52] doesn't that just
+[00:51:53] nullify the bullishness of the higher
+[00:51:56] high or the bearishness of the lower low
+[00:51:58] and the answer is no
+[00:51:59] right and again let's take the bullish
+[00:52:00] example price making a high high and not
+[00:52:02] flying straight away
+[00:52:03] isn't bearish per se a pullback is still
+[00:52:06] bullish
+[00:52:07] so long as it forms a higher low again
+[00:52:09] the requirement for bullish market
+[00:52:10] structure
+[00:52:11] is higher highs and higher lows nowhere
+[00:52:14] does it say that it's higher highs and a
+[00:52:15] higher low
+[00:52:16] only as long as the higher low forms at
+[00:52:18] the breakout point right that's just
+[00:52:19] one option as long as whatever dip
+[00:52:22] follows doesn't make a lower low
+[00:52:24] uh it's still technically bullish and
+[00:52:25] meets our criteria and again we can come
+[00:52:27] up with a bit of a spectrum of scale
+[00:52:29] here
+[00:52:30] where the very bullish variant is a
+[00:52:33] higher high into a moonshot
+[00:52:34] okay just you get a breakout and it just
+[00:52:36] full sends bitcoin style
+[00:52:38] then you have still a bullish option uh
+[00:52:40] which is set up number one where you get
+[00:52:42] the higher high
+[00:52:43] re-test the breakout and then moon
+[00:52:45] that's bullish
+[00:52:46] still bullish but deeper pullback option
+[00:52:49] is higher high
+[00:52:50] dip below the breakout but form a high
+[00:52:52] low and then moon which is the setup
+[00:52:54] that we're talking about here
+[00:52:55] and then the shite option the one which
+[00:52:56] invalidates this is a higher high
+[00:52:58] dip below the breakout and then a lower
+[00:53:00] low and again for bullishness we need
+[00:53:02] higher highs and higher lows
+[00:53:03] so this is not allowed because it breaks
+[00:53:06] the pattern and is no longer
+[00:53:08] bullish so here's the diagram version of
+[00:53:10] that
+[00:53:13] again might need a tiny bit more thought
+[00:53:14] uh than the basic support resistance
+[00:53:16] flip
+[00:53:17] um we have the high same old break in
+[00:53:19] market structure higher high
+[00:53:21] pulls back to the breakout level which
+[00:53:22] can be very close to price like let's
+[00:53:24] say the close was like one or two
+[00:53:25] percent
+[00:53:27] through the high or maybe a bit more but
+[00:53:30] either way the re-test level ends up
+[00:53:31] being quite close
+[00:53:33] and then the market falls below the
+[00:53:35] breakout level
+[00:53:36] is that a reason to think that the
+[00:53:39] market is bearish or that this higher
+[00:53:41] high in the breaking market structure
+[00:53:42] has been some
+[00:53:42] has been neutralized i mean the answer
+[00:53:44] is no it's still bullish as long as a
+[00:53:46] higher low
+[00:53:47] forms and the valid area
+[00:53:50] for that higher low deform is anywhere
+[00:53:53] as long as it doesn't make a lower low
+[00:53:55] so we're left with
+[00:53:56] a lot of space so yes the most the best
+[00:53:59] aggressive
+[00:53:59] continuation neatest easiest support
+[00:54:02] resistance flip is obviously
+[00:54:04] at the point where market structure
+[00:54:05] broke is broken but with the realities
+[00:54:07] of how these things move a lot of the
+[00:54:09] time you have to go lower to go higher
+[00:54:10] and the dips won't always be this
+[00:54:12] shallow
+[00:54:12] and the point is a deeper dip is fine
+[00:54:14] and still bullish
+[00:54:15] as long as it doesn't make a lower low
+[00:54:17] thus keeping the higher high high low
+[00:54:19] structure
+[00:54:20] intact now on a very nuanced point there
+[00:54:23] is
+[00:54:24] a space for short-term bearishness uh
+[00:54:26] when you get this higher high breakout
+[00:54:28] and then a dip
+[00:54:29] back below the breakup point because at
+[00:54:31] that point any new buyers on this
+[00:54:33] breakout above the high
+[00:54:35] so when that higher high is made so
+[00:54:36] anyone catching this
+[00:54:38] breakout they're going to be underwater
+[00:54:40] when this breakout point fails right so
+[00:54:42] if your entry
+[00:54:43] was buying the breakout here and then
+[00:54:45] the market starts falling below
+[00:54:46] the breakout point yes there is room for
+[00:54:49] short-term bearishness as
+[00:54:52] the breakout buyers have to unwind but
+[00:54:54] that doesn't shift
+[00:54:55] market structure as long as the low is
+[00:54:58] intact
+[00:54:59] and some sort of higher low forms on
+[00:55:01] that dip that's that's important
+[00:55:03] to understand
+[00:55:11] just some more detail on that and we
+[00:55:13] will cover of course what i mean by high
+[00:55:15] low area
+[00:55:16] or lower high area it's deliberately
+[00:55:19] and as mentioned in the diagram idea
+[00:55:21] valid as long as previous low isn't
+[00:55:23] violated
+[00:55:24] if it's broken then the higher low
+[00:55:26] higher high higher high higher low
+[00:55:28] structure has failed and that's
+[00:55:29] invalidated but look
+[00:55:30] if you have a higher high as long as it
+[00:55:31] doesn't break the odd low then
+[00:55:33] everything is kind of fair game
+[00:55:34] for a higher low just because it didn't
+[00:55:37] happen at the support resistance slip
+[00:55:38] doesn't mean it can't happen elsewhere
+[00:55:40] while still keeping the integrity of
+[00:55:41] that structure intact that's important
+[00:55:43] to understand
+[00:55:44] and the reason i'm harping on about it
+[00:55:45] so much is because i
+[00:55:47] didn't have a fun time trading these
+[00:55:49] types of market structure breaks for the
+[00:55:50] longest time
+[00:55:51] uh because what would happen to me was
+[00:55:53] the following let me get rid of this
+[00:55:55] very quickly to get some diagram space
+[00:55:57] so what happened to me is essentially
+[00:56:00] i'd get trapped
+[00:56:01] by that move which ended up being a
+[00:56:03] higher low and i'd get bearish so i'd
+[00:56:04] have a level
+[00:56:05] right let's make this slightly clearer
+[00:56:07] i'll be very brief here
+[00:56:10] i have a level that's a high it breaks
+[00:56:12] makes a higher high
+[00:56:13] and i'm expecting again i was purely
+[00:56:15] levels traded not trading market
+[00:56:16] structure that if the market's bullish
+[00:56:18] it does something like this right the
+[00:56:20] high broken resistance
+[00:56:22] boom support number go up okay what
+[00:56:25] would often happen
+[00:56:26] will happen enough for me to look into
+[00:56:28] it and remember that something just
+[00:56:29] wasn't correct
+[00:56:30] is the market would pull back the level
+[00:56:32] but it would initially close
+[00:56:33] below it okay so it would fail to flip
+[00:56:36] at that early most aggressive level
+[00:56:37] in my mind that was bearish like really
+[00:56:40] bearish so i'm like oh my god look this
+[00:56:41] is the trap support resistance flip
+[00:56:43] failed everyone's trapped above this
+[00:56:44] high i'm gonna sell it all the way down
+[00:56:46] to you know
+[00:56:47] zero obviously being hyperbolic but the
+[00:56:50] idea was
+[00:56:50] that the most important thing going on
+[00:56:52] in the chart was
+[00:56:54] the failure to flip this level to
+[00:56:55] support and so i'd get short on a
+[00:56:56] re-test or short on the close
+[00:56:58] and the market would drift and then it
+[00:57:00] would get stuck
+[00:57:01] somewhere you know around here and then
+[00:57:03] eventually either stop me out on the
+[00:57:04] trail stop or just reverse completely
+[00:57:06] and i'd be wrong and that would always
+[00:57:08] dumbfound me because my idea was look
+[00:57:10] the support resistance flip has failed
+[00:57:11] why on earth is the market bullish
+[00:57:13] like this is the most significant event
+[00:57:14] going on whereas with the benefit of
+[00:57:16] hindsight now understanding market
+[00:57:17] structure
+[00:57:18] of course what happened was the market
+[00:57:20] was made high
+[00:57:21] low high or high and while this was very
+[00:57:24] bad
+[00:57:24] well this was in in the very short term
+[00:57:26] bearish that that failed that there was
+[00:57:28] a fail to break out above that high
+[00:57:30] all it led to was a slightly deeper
+[00:57:32] pullback into a higher low
+[00:57:34] so basically the higher low was formed
+[00:57:35] here instead of being formed here
+[00:57:37] is that that much more bearish i mean
+[00:57:39] not really it's just kind of bullish
+[00:57:41] with a deeper pullback as opposed to a
+[00:57:42] shallower pullback
+[00:57:43] so that's the the reason i'm giving this
+[00:57:45] so much attention is because i used to
+[00:57:46] think that
+[00:57:47] price not flipping that level was the
+[00:57:50] be-all and end-all whereas the be-all
+[00:57:51] and end-all is actually
+[00:57:52] the lower low and this space in between
+[00:57:55] is fair game where a higher low could
+[00:57:57] reasonably formed and this
+[00:57:58] me a lot so trying to avoid
+[00:58:00] people making the same mistake
+[00:58:02] i think the distinction is made most
+[00:58:04] clear on this slide here
+[00:58:06] the key event is the market structure
+[00:58:08] break okay that that's the overarching
+[00:58:10] overriding narrative
+[00:58:12] once that takes place you simply don't
+[00:58:13] know if the market will pull back and if
+[00:58:15] so the extent
+[00:58:18] to use different terms the market
+[00:58:19] structure break is an impulsive move
+[00:58:21] and then the market may continue the
+[00:58:22] impulse set up number one
+[00:58:24] right so basically nothing impulse and
+[00:58:26] then minimal pullback
+[00:58:28] and then goes higher right or it may
+[00:58:31] retrace the impulse before continuing
+[00:58:33] but in both cases as we covered earlier
+[00:58:37] the idea is either continuing the
+[00:58:38] impulse or continuing
+[00:58:40] after retracing the impulse but in both
+[00:58:41] case these cases these are continuation
+[00:58:43] setups right
+[00:58:45] so now with that kind of diagram
+[00:58:47] knowledge and defining things more
+[00:58:48] clearly
+[00:58:49] setup number one is minimal pullback the
+[00:58:52] idea is the market will use the breakout
+[00:58:54] or breakdown
+[00:58:55] level for continuation and this setup is
+[00:58:57] focused trading
+[00:58:58] at the market structure break right
+[00:59:00] whereas market structure broken
+[00:59:02] it was at this high and that's where we
+[00:59:03] trade that's set up number one
+[00:59:06] set up number two meaningful pullback
+[00:59:08] the idea is the market
+[00:59:09] may need to retrace following an msb
+[00:59:12] so this setup is focused on trading the
+[00:59:14] move following the market structure
+[00:59:16] break
+[00:59:17] not at the market structure break but
+[00:59:18] following the market structure break i.e
+[00:59:20] the higher low or the lower high maybe
+[00:59:23] the most simple way of expressing it
+[00:59:25] i mean yes the focus is on different
+[00:59:26] legs impulse versus retracement
+[00:59:28] but if we just take bullish market
+[00:59:30] structure which is higher highs
+[00:59:32] and higher lows okay both being
+[00:59:35] uh prerequisites setup number one deals
+[00:59:38] with the higher high sort of thing
+[00:59:40] and then setup number two deals with the
+[00:59:43] high low part of it setup number one
+[00:59:46] high or high we want to get on board
+[00:59:47] that breakout and catch the rest of it
+[00:59:49] set up number two the higher highest
+[00:59:50] formed we're now fishing for the high
+[00:59:53] low
+[00:59:53] shallower retrace deeper retrace both
+[00:59:55] still bullish
+[00:59:57] as long as no that sequence of higher
+[01:00:00] lows isn't violated so no lower lows
+[01:00:02] okay it's just differently bullish
+[01:00:04] that's the point
+[01:00:05] for me if this failed there was no this
+[01:00:08] and that's why i lost a lot of support
+[01:00:09] resistance
+[01:00:10] trades and made a lot of stupid
+[01:00:12] decisions
+[01:00:14] this should make things very clear maybe
+[01:00:16] re-read it pause the video but
+[01:00:18] i think it gets the point across
+[01:00:19] reasonably well
+[01:00:22] uh these are just the same diagrams
+[01:00:25] set up number one market structure
+[01:00:27] broken here we take the trade here
+[01:00:29] market structure broken here we take the
+[01:00:31] trade here right the the break
+[01:00:33] and the trade are one and the same in
+[01:00:35] essence
+[01:00:36] set up number two the break sets the
+[01:00:38] bias but then we go fishing for the
+[01:00:40] other half in this case we go fishing
+[01:00:42] for the higher low
+[01:00:42] in this case the break sets the bias we
+[01:00:44] go fishing for the other half which is
+[01:00:46] the lower high
+[01:00:48] bullish break if it's bullish we need a
+[01:00:50] higher low
+[01:00:51] it's going to go deeper that's where we
+[01:00:52] look for it bearish break
+[01:00:55] lower low not enough to retest the level
+[01:00:59] it's going to go deeper we look for the
+[01:01:00] lower high
+[01:01:02] and again in validation just as a
+[01:01:03] reminder
+[01:01:06] for the bullish case it's higher highs
+[01:01:07] and higher lows if it fails to make a
+[01:01:09] higher low
+[01:01:10] invalidation for the bearish case low or
+[01:01:12] high
+[01:01:13] and lower low if on this bounce it fails
+[01:01:16] to make a lower high
+[01:01:17] then the structure's broken and that's
+[01:01:19] no longer valid
+[01:01:22] now for the slightly more interesting
+[01:01:23] bit with regard to defining the pullback
+[01:01:26] area again we've taken a lot of
+[01:01:27] liberties and defining it as the higher
+[01:01:28] low
+[01:01:29] area or the lower high area what does
+[01:01:31] that actually mean
+[01:01:32] where do we find this and a lot of the
+[01:01:34] time there can be a lot of space
+[01:01:35] between where the low formed and the
+[01:01:38] breakout level so how do we
+[01:01:39] find structure within what could
+[01:01:42] potentially be
+[01:01:43] a big high time frame gap so defining
+[01:01:45] the pullback area yes
+[01:01:46] purely technically for the bullish case
+[01:01:48] anything that is below the breakout
+[01:01:50] level
+[01:01:50] but above the last low is valid and in
+[01:01:53] the bearish case anything that is above
+[01:01:54] the breakdown level
+[01:01:56] but below the last high is valid okay
+[01:01:59] so i mean you've seen me explain this in
+[01:02:01] other videos when you have the break in
+[01:02:02] market structure
+[01:02:04] right i suppose the decision tree
+[01:02:07] you have
+[01:02:10] market structure break and then you've
+[01:02:12] got two options
+[01:02:13] one is the support resistance flip and
+[01:02:16] one is going to be the
+[01:02:18] retrace for the trade
+[01:02:22] okay that that's what set up number one
+[01:02:23] and seven number two is market structure
+[01:02:25] break okay what do we do do we have the
+[01:02:26] support resistance flip
+[01:02:27] if not this is always closer to market
+[01:02:29] right if no support resistance flip we
+[01:02:31] go for the deeper retrace that's the
+[01:02:33] most basic decision tree form
+[01:02:35] of that that i think is available uh and
+[01:02:37] that's what i'm getting at here so if
+[01:02:39] it's bullish
+[01:02:40] and we're talking about the pullback
+[01:02:41] level then by definition the breakout
+[01:02:43] level wasn't enough
+[01:02:45] so anything that is below that but above
+[01:02:47] the last low is valid
+[01:02:48] for a higher low candidate and in the
+[01:02:49] bearish case again the support
+[01:02:51] resistance slip didn't work so we have
+[01:02:52] to go deeper so anything that's above
+[01:02:54] the breakdown level but as long as it
+[01:02:55] doesn't make a higher high
+[01:02:57] is valid problem that's a lot of space
+[01:02:59] especially if using high time free
+[01:03:00] market structure so we're looking for
+[01:03:02] high low lower high candidates in those
+[01:03:03] areas so it's a bit of a free-fall
+[01:03:05] really
+[01:03:05] in terms of price action tools support
+[01:03:08] resistance structures high time frame
+[01:03:10] candle opens moving averages moving
+[01:03:12] average clusters
+[01:03:13] i think retracement and fib kind of
+[01:03:15] stuff is really good for this
+[01:03:17] like golden pocket 618 etc for those
+[01:03:20] interested in my personal approach and
+[01:03:21] again in the study guide there's a whole
+[01:03:23] chapter on fibonacci levels
+[01:03:25] which just talks about market structure
+[01:03:27] breaks and this exact topic on deeper
+[01:03:29] retraces
+[01:03:31] personally i look for support resistance
+[01:03:33] structures anywhere between the 618
+[01:03:35] and 786 retracement some will know that
+[01:03:38] as the price action
+[01:03:41] ote type of thing but just kind of
+[01:03:43] between
+[01:03:44] the deeper fib levels and there's no
+[01:03:46] fixed answer
+[01:03:47] really so for me i'll map out
+[01:03:50] the low and then the higher high and
+[01:03:52] then as the market starts pulling back
+[01:03:54] it's between these
+[01:03:55] levels that i'll look for structure or
+[01:03:57] just a retracement sometimes even if
+[01:03:59] there is no structure but ideally
+[01:04:01] there'll be technical structure there
+[01:04:02] like some sort of range a level
+[01:04:04] support resistance etc as well as with
+[01:04:07] being within the bounds
+[01:04:08] of that retracement and again we'll look
+[01:04:11] at some examples in a moment but also
+[01:04:12] the study guide chapter on that
+[01:04:14] has plenty also an important an
+[01:04:17] important point must be made about risk
+[01:04:19] reward
+[01:04:19] considerations when it comes to this um
+[01:04:23] so the deeper price reaches into the
+[01:04:24] pullback area the superior the risk
+[01:04:26] reward
+[01:04:27] purely technically right so this is
+[01:04:28] because a deeper pullback by definition
+[01:04:30] is closer to invalidation
+[01:04:31] if we're saying for example in the
+[01:04:33] bullish case that x marks the spot that
+[01:04:35] we're low
+[01:04:36] that we're wrong uh below x then purely
+[01:04:39] on risk reward terms the closer you get
+[01:04:41] to invalidation the greater the risk
+[01:04:42] reward
+[01:04:43] so the idea would be that this here
+[01:04:46] so close to the low is quote unquote the
+[01:04:48] best entry in terms of risk rewards
+[01:04:49] because it's so close than validation
+[01:04:51] right in a similar vein here we're
+[01:04:53] invalidated if price makes a higher
+[01:04:54] hikes again bearishness needs lower
+[01:04:56] highs and lower lows
+[01:04:57] so higher high just isn't acceptable if
+[01:04:59] the market's bearish
+[01:05:00] as a result we're invalidated here then
+[01:05:02] surely this is the best entry available
+[01:05:04] on the chart and i should just wait for
+[01:05:05] the market to reach these extremities to
+[01:05:07] get positioned
+[01:05:08] now while the logic is uh commendable
+[01:05:12] it doesn't always stand to reason and it
+[01:05:14] really depends what the chart looks like
+[01:05:15] you'll have to exercise your discretion
+[01:05:16] so
+[01:05:16] say for example this red rectangle that
+[01:05:19] i've drawn
+[01:05:20] is a great support resistance structure
+[01:05:22] some sort of confluent
+[01:05:24] retracement level and there's a demand
+[01:05:26] zone there which
+[01:05:28] looks great and it fills in inefficiency
+[01:05:30] all that type of stuff
+[01:05:31] um let's say the market comes into it
+[01:05:33] and then actually closes
+[01:05:34] below the level here now in purely risk
+[01:05:37] reward terms i'm now closer to my
+[01:05:39] invalidation so the entry is
+[01:05:41] quote unquote a better one purely from a
+[01:05:43] risk broad point of view but in terms of
+[01:05:45] probability
+[01:05:46] uh the likelihood of the trade working
+[01:05:48] out in my favor has
+[01:05:49] shifted not in the favorable direction
+[01:05:52] or unfavorably
+[01:05:53] because my best candidate for a bounce
+[01:05:55] has now failed given we closed
+[01:05:57] below the level so the point is you need
+[01:05:59] to always consider the context and what
+[01:06:01] do you actually have
+[01:06:02] as a balanced candidate blindly trying
+[01:06:04] to get long as close as possible to
+[01:06:06] invalidation
+[01:06:07] if it means ignoring price action
+[01:06:10] developments
+[01:06:11] like support being broken or resistance
+[01:06:13] being broken etc
+[01:06:14] uh just isn't the best decision in my
+[01:06:17] view like as discretionary traders the
+[01:06:18] whole point is to take in
+[01:06:20] uh that type of context so well it's
+[01:06:22] important to consider
+[01:06:23] risk reward as you get deeper pullbacks
+[01:06:25] after higher highs or after lower lows
+[01:06:27] it also just needs to make sense to
+[01:06:29] enter as opposed to well we're about to
+[01:06:31] get stopped out anyway so i might as
+[01:06:32] well punt
+[01:06:33] right invalidation as as discussed
+[01:06:36] earlier
+[01:06:37] uh for the bullish cases a lower low
+[01:06:38] because we need higher highs and higher
+[01:06:39] lows for bullish market structure a
+[01:06:41] lower low is unacceptable for those
+[01:06:42] purposes
+[01:06:43] and for the bearish case we need
+[01:06:47] lower highs and lower lows so if price
+[01:06:49] makes a higher high that pattern is
+[01:06:51] broken and it's not acceptable
+[01:06:53] uh some very quick examples they're not
+[01:06:55] great and again
+[01:06:57] cherry picked etc doing your own
+[01:06:58] research and finding these in your own
+[01:07:00] on your own will always be much more
+[01:07:01] valuable
+[01:07:01] but there's some some retracement
+[01:07:03] examples here uh based on
+[01:07:05] daily market structure so
+[01:07:09] support swing glow whatever you want to
+[01:07:11] call it i always use candle closes so
+[01:07:13] that's me
+[01:07:14] you have the break identifying market
+[01:07:15] structure step one
+[01:07:17] breaking market structure here step two
+[01:07:20] and then we have to trade market
+[01:07:22] structure so you've had the
+[01:07:24] break in market structure and we come up
+[01:07:26] with our two options one is the support
+[01:07:28] resistance flip which is close to market
+[01:07:29] and the other one
+[01:07:30] is a deeper retrace where's the support
+[01:07:32] resistance flip
+[01:07:33] here absolutely nothing market blasts
+[01:07:35] through it and then
+[01:07:37] finds resistance in that pocket
+[01:07:40] between the 618 and 786
+[01:07:43] retracement again just as an example
+[01:07:46] uh similar type of uh pattern here again
+[01:07:49] i appreciate this will
+[01:07:50] look somewhat uh grainy potentially turn
+[01:07:53] up that 1440p
+[01:07:55] um but similar level of support i've got
+[01:07:58] here
+[01:08:00] for market structure so that's step
+[01:08:01] number one identify the level
+[01:08:04] here close below it so one identify
+[01:08:07] market structure two is the breaking
+[01:08:08] market structure
+[01:08:09] uh that takes us to three now the market
+[01:08:12] structure's broken we've got two choices
+[01:08:14] is it gonna
+[01:08:14] turn at the support resistance flip or
+[01:08:16] is it gonna push us for a lower high
+[01:08:18] it doesn't do at the support
+[01:08:19] resistance flip so we know this isn't
+[01:08:21] good and it's gonna push us for the
+[01:08:22] lower high and again in a similar vein
+[01:08:25] found resistance at those retracement
+[01:08:26] levels and in this instance
+[01:08:28] some extra confluence in the form of a
+[01:08:30] supply zone
+[01:08:31] uh at 10.3 10.4 k
+[01:08:36] which was tested here okay i think i've
+[01:08:38] got some other examples i'm not gonna
+[01:08:40] narrate through all of them because
+[01:08:41] again finding your own is
+[01:08:42] is much more valuable um similar type of
+[01:08:46] stuff going on in a couple of instances
+[01:08:47] here
+[01:08:48] um you've got the high you've got the
+[01:08:50] low
+[01:08:51] you've got the higher high so again
+[01:08:54] market structure level
+[01:08:56] goes here breaking market structure here
+[01:08:59] creates our decision tree do we have the
+[01:09:01] sr flip or do we have the deeper retrace
+[01:09:04] well we go back to where our sr flip
+[01:09:06] would have been no good
+[01:09:07] the market on this in this on this
+[01:09:09] occasion closes right through that level
+[01:09:11] uh but bounces off of the deeper
+[01:09:14] retracement
+[01:09:15] and then trades higher on in the same
+[01:09:17] chart in a very similar vein
+[01:09:19] with some deeper swings and again look
+[01:09:21] we're picking the really obvious ones
+[01:09:22] right
+[01:09:22] there is stuff we could find in the
+[01:09:23] middle but the really obvious ones again
+[01:09:25] will serve as well
+[01:09:27] we've got the low we've got this leg up
+[01:09:30] the high high
+[01:09:34] higher high breaking market structure
+[01:09:38] okay so this is step number one
+[01:09:40] identifying our market structure point
+[01:09:42] step number two identifying our break in
+[01:09:44] market structure
+[01:09:46] once we have that we've got our decision
+[01:09:47] tree as before do we have the support
+[01:09:49] resistance flip
+[01:09:51] or do we have the uh retracement or
+[01:09:54] squeeze
+[01:09:55] whatever it may be on this occasion if
+[01:09:58] we delineate where the support
+[01:09:59] resistance place
+[01:10:00] flip would be expected to take place
+[01:10:02] here you can see that it's no good
+[01:10:04] actually acts as resistance and travels
+[01:10:07] all the way back
+[01:10:08] retraces to at this point the fib uh 618
+[01:10:11] level
+[01:10:12] before ultimately trading higher
+[01:10:14] hopefully
+[01:10:15] starting to make a little bit more sense
+[01:10:16] than before if not maybe leave a comment
+[01:10:18] i'll try to do my best
+[01:10:19] to explain i think this is uh the
+[01:10:21] penultimate example
+[01:10:23] big swing high here right the top of
+[01:10:25] this aggressive leg
+[01:10:27] so again step one we've identified the
+[01:10:29] market structure
+[01:10:31] here makes a higher high step two is the
+[01:10:32] market structure break
+[01:10:34] we have do we go for support resistance
+[01:10:35] again then there are examples of this
+[01:10:37] because
+[01:10:37] at least in this presentation because
+[01:10:38] they're literally all over the place any
+[01:10:40] sr flip uh qualifies so no point doing
+[01:10:43] that the retracement one is slightly
+[01:10:45] more
+[01:10:45] uh less intuitive so again sr well let's
+[01:10:48] look at it we've drawn out the level
+[01:10:50] yeah no good you have the overshoot and
+[01:10:52] then the pullback so that's not good to
+[01:10:53] go
+[01:10:54] we have to focus on retracement in a
+[01:10:55] similar vein pulls back
+[01:10:57] to this window which also in this case
+[01:10:59] happens to be confluence
+[01:11:00] with this little supply zone here and
+[01:11:03] this range etc so we have the
+[01:11:04] retracement window and also some
+[01:11:05] technical factors to consider
+[01:11:07] uh market bounces number go up again
+[01:11:10] cherry pick not amazing examples plenty
+[01:11:12] of faults i'm sure um
+[01:11:14] but that's what we're dealing with
+[01:11:16] hopefully that's clear again feel free
+[01:11:18] to revisit this
+[01:11:19] that's set up number two where the break
+[01:11:21] in market structure
+[01:11:22] is still the most important thing and
+[01:11:23] it's a question of where do we fish
+[01:11:25] for those higher lows in the bullish
+[01:11:27] case or those lower highs in the bearish
+[01:11:29] case
+[01:11:29] if the support resistance flip trade
+[01:11:33] isn't on the table
+[01:11:37] so let's talk about the third set up in
+[01:11:39] trading breaks and market structure the
+[01:11:40] first two were continuation
+[01:11:42] this one is reversal so
+[01:11:46] setup number one as we discussed focus
+[01:11:48] on dealing with the impulse at the
+[01:11:49] market structure break level
+[01:11:50] setup number two the one we just talked
+[01:11:52] about focuses on dealing with the
+[01:11:54] retracement away from the market
+[01:11:55] structure break level
+[01:11:56] um the reversal setup of course in
+[01:11:58] contrast of these focuses on trading in
+[01:12:00] the opposite direction of a market
+[01:12:01] structure break so a bit of a mindset
+[01:12:03] shift here
+[01:12:03] normally bullish break we looked along
+[01:12:06] bearish break we'll look the short
+[01:12:08] in this case once certain conditions are
+[01:12:09] met um we're actually looking to get
+[01:12:12] short on the bullish break and to get
+[01:12:15] long
+[01:12:16] following the bearish break okay
+[01:12:20] and the specific factors which must
+[01:12:22] happen for that to be reasonable and not
+[01:12:24] count the trend
+[01:12:25] is getting longer market when a lower
+[01:12:26] high fails to form
+[01:12:28] following a lower low and getting
+[01:12:29] shorter market
+[01:12:31] when a higher low fails to form
+[01:12:34] following a
+[01:12:35] higher high again if we take our basics
+[01:12:38] with what's bullish we've got higher
+[01:12:40] highs
+[01:12:41] and higher lows once
+[01:12:44] we get our break in market structure
+[01:12:46] what's in validation for our
+[01:12:48] continuation setups well if higher low
+[01:12:50] fails
+[01:12:50] then it's no longer bullish so of course
+[01:12:52] the reversal setup is the higher low
+[01:12:54] failing
+[01:12:54] after a higher high which suggests
+[01:12:57] reversal
+[01:12:58] bulls bullishness getting invalidated is
+[01:13:01] bearish
+[01:13:02] bearishness getting invalidated is
+[01:13:04] bullish it's kind of the
+[01:13:06] core logic there so if the market's
+[01:13:08] bullish after a higher high it should be
+[01:13:10] forming a lower low if it doesn't
+[01:13:12] not a good sign and that's what the
+[01:13:14] setup seems the capital
+[01:13:15] seeks to capitalize on something
+[01:13:17] important is the good setups that fail
+[01:13:19] uh often great setups in the opposite
+[01:13:21] direction not always again the cut and
+[01:13:22] reverse thing is a good example of
+[01:13:25] that just potentially costing you more
+[01:13:26] money in fees but when really clear
+[01:13:29] setups are offered to one side of the
+[01:13:30] market and they scuffle it
+[01:13:33] um i don't play sports but guess that's
+[01:13:36] some sort of interception
+[01:13:37] or something for my american audience
+[01:13:39] and so there's an advantage in
+[01:13:42] when the other you know in instances
+[01:13:44] where the other side loses something
+[01:13:45] advantageous or gives up
+[01:13:47] an advantage so setup logic in
+[01:13:50] colloquial form uh this helped me
+[01:13:52] write this so hopefully it helps you as
+[01:13:53] well so red is for the cell setup
+[01:13:56] higher high is bullish straightforward
+[01:13:58] invalidation
+[01:13:59] for bullishness is a lower low because
+[01:14:03] we should be seeing higher highs and
+[01:14:04] higher lows if we see a lower low no
+[01:14:06] good
+[01:14:06] not bullish so if we get a higher high
+[01:14:09] bullish
+[01:14:10] into a lower low invalidated then you
+[01:14:12] have balls offside
+[01:14:14] bulls offside is or makes for a good
+[01:14:17] cell setup we always seek to exert
+[01:14:20] pressure
+[01:14:21] on those who are weakest in the market
+[01:14:22] or in the most disadvantageous position
+[01:14:25] and when you're getting squeezed and
+[01:14:26] validated stopped out etc
+[01:14:28] that's when you are most prone to those
+[01:14:31] types of instances
+[01:14:32] or circumstances what's the bullish case
+[01:14:35] again the inverse lower low is bearish
+[01:14:38] invalidation is a higher high because if
+[01:14:40] it's bearish it should be making lower
+[01:14:42] lows
+[01:14:42] and lower highs so if we have a lower
+[01:14:45] low bearish
+[01:14:46] into a higher high that's bears
+[01:14:48] invalidated
+[01:14:49] bears invalidated or offside makes for
+[01:14:52] an easy time
+[01:14:53] or an easier time for bulls again we're
+[01:14:56] preying on those
+[01:14:58] under pressure or trapped on the wrong
+[01:15:00] side of the market
+[01:15:02] the diagrams will make this clear again
+[01:15:05] but
+[01:15:06] bear with me bear with me with the text
+[01:15:08] so bullish setup requires price to break
+[01:15:10] above a high that preceded a lower low
+[01:15:14] so the sequence would be high forms a
+[01:15:17] lower low
+[01:15:18] and then price makes a higher high above
+[01:15:21] the first high
+[01:15:23] bearish setup of course is the opposite
+[01:15:25] you've got
+[01:15:27] it it requires price to break below a
+[01:15:29] low that preceded a higher high so
+[01:15:31] you've got a low
+[01:15:32] okay a low which forms a higher high
+[01:15:34] okay that's bullish right it goes back
+[01:15:36] to that strong support thing
+[01:15:37] this low broke market structure that's
+[01:15:40] sick it should be strong
+[01:15:41] but then you get a lower low below the
+[01:15:42] first low never mind strong support
+[01:15:44] has failed or bullish market structure
+[01:15:48] has been invalidated and i kind of front
+[01:15:51] round myself with that third point
+[01:15:53] if it helps this can be articulated in
+[01:15:54] support resistance terms as discussed
+[01:15:56] previously
+[01:15:57] so resistance that force the lower low
+[01:15:59] is strong resistance right going back to
+[01:16:01] that discussion why this high
+[01:16:02] well it forced the lower low okay well
+[01:16:04] that's strong right and price closing
+[01:16:06] above it means that strong resistance
+[01:16:08] has failed
+[01:16:09] and strong resistance failing is bullish
+[01:16:11] right
+[01:16:13] bearish of course the opposite support
+[01:16:14] that forced a higher high is strong
+[01:16:16] support
+[01:16:17] why this low well it forced a higher
+[01:16:19] high not just any kind of bounce okay
+[01:16:21] that's significant
+[01:16:22] and so if price then closes below it
+[01:16:24] that means strong support
+[01:16:25] has failed strong support failing is
+[01:16:28] bearish think bitcoin that's 6k for
+[01:16:31] example or whatever
+[01:16:33] the underlying logic whether you want to
+[01:16:35] use market structure terms or sport
+[01:16:36] resistance terms doesn't really matter
+[01:16:37] we're going to focus on
+[01:16:38] basically the same stuff but the in
+[01:16:40] market structure terms is that the
+[01:16:42] market structure break
+[01:16:43] failed to offer continuation failed
+[01:16:46] continuation is suggestive of reversal
+[01:16:48] i mean yeah or just chop set up etc
+[01:16:50] but for our purposes failed continuation
+[01:16:52] is suggestive of reversal
+[01:16:53] if we take that to our decision tree
+[01:16:55] just very briefly
+[01:16:57] let's say we've got the bullish case
+[01:16:58] positive you've got the break in market
+[01:17:01] structure
+[01:17:02] right and then you've got one it's going
+[01:17:05] to make
+[01:17:05] a higher low off of the sr flip or it's
+[01:17:08] going to make a higher low
+[01:17:10] of a retrace this setup says it fails
+[01:17:13] here but it also fails here because it
+[01:17:14] doesn't make a higher low
+[01:17:16] it makes a lower low and so suddenly
+[01:17:18] bulls
+[01:17:20] are on the wrong side of the market and
+[01:17:21] that's where we want to
+[01:17:23] take the other end okay so the
+[01:17:25] underlying logic as the market structure
+[01:17:26] break failed to offer continuation
+[01:17:27] did it continue off the sr flip nope
+[01:17:30] okay did it make a higher low and
+[01:17:32] find some you know find support on a dip
+[01:17:33] no it actually made a lower low oh well
+[01:17:35] well it's no longer bullish then
+[01:17:36] okay that's why it's bearish
+[01:17:40] because it failed as a bullish setup to
+[01:17:42] offer continuation
+[01:17:44] and those participants taking these
+[01:17:46] setups or even taking the breakout
+[01:17:48] are trapped on the wrong side of the
+[01:17:56] market
+[01:17:58] so here's what that looks like as
+[01:18:00] foreshadowed in
+[01:18:01] the last point of this slide this ends
+[01:18:02] up looking identical to set up one
+[01:18:04] which is the bread and butter support
+[01:18:05] resistance clip just with an msb
+[01:18:07] in the other direction uh as part of the
+[01:18:10] preceding
+[01:18:11] context so again
+[01:18:14] setup number one is just this
+[01:18:19] you know breakout retest up breakdown
+[01:18:22] re-test
+[01:18:23] down but the reason this is reversal is
+[01:18:26] because of the preceding context
+[01:18:27] in the form of a market structure break
+[01:18:30] in the other direction
+[01:18:32] right so this is a bullish breakout but
+[01:18:34] it's happening after
+[01:18:36] a bearish breakdown so you've got really
+[01:18:40] positive price action
+[01:18:41] after a bear trap so more squeeze
+[01:18:44] potential
+[01:18:46] to use some very loose terms okay so if
+[01:18:48] we follow this
+[01:18:49] kind of in order
+[01:18:55] we've got the high so we've got a low
+[01:18:58] formed okay this market
+[01:18:59] forms a low this is relevant to ground
+[01:19:01] us in terms of market structure
+[01:19:03] then you get this high which precedes a
+[01:19:05] market structure break
+[01:19:06] because after this high you've got a leg
+[01:19:08] down which makes a lower low
+[01:19:10] so again this level's extra significant
+[01:19:12] extra strong whatever
+[01:19:13] not only is it a high that led to a
+[01:19:15] sell-off but that sell-off broke market
+[01:19:17] structure
+[01:19:18] so once this happens once you get that
+[01:19:19] market structure break from low to lower
+[01:19:21] low
+[01:19:22] that flow chart comes up of step one or
+[01:19:25] step two
+[01:19:26] right
+[01:19:30] okay you've got the market structure
+[01:19:31] break it's bearish the bearish market
+[01:19:33] structure break so you either sell the
+[01:19:34] support resistance flip for option one
+[01:19:36] right or for option two you sell the
+[01:19:38] retracement or the squeeze
+[01:19:40] so market comes into this level option
+[01:19:43] one fails as the market starts to trade
+[01:19:45] higher
+[01:19:45] okay so those sellers and sellers below
+[01:19:47] the low are
+[01:19:48] underwater are feeling heat and then the
+[01:19:51] final stand
+[01:19:52] and the final bastion of bearishness is
+[01:19:55] some sort of
+[01:19:56] lower high structure and then
+[01:19:59] when the market breaks above that and
+[01:20:01] makes a higher high in either of these
+[01:20:03] cases
+[01:20:04] being in setup number one or setup
+[01:20:05] number two or any cells taken in between
+[01:20:08] either at the lowest low or just
+[01:20:10] somewhere on the way up
+[01:20:11] where is invalidation where are their
+[01:20:13] stops going to be
+[01:20:15] and remember shorts closing
+[01:20:18] or being forced to close at market turn
+[01:20:22] into market orders to buy so additional
+[01:20:25] fuel
+[01:20:25] well typically if bears were betting on
+[01:20:28] continuation they want
+[01:20:30] lower highs and lower lows if price
+[01:20:33] fails
+[01:20:34] and makes a higher high they are
+[01:20:37] invalidated and closing
+[01:20:38] those shorts which become longs at
+[01:20:42] market so this high which was amazing
+[01:20:44] resistance because it broke market
+[01:20:45] structure once it gets flipped
+[01:20:47] with the added bonus of all this
+[01:20:49] additional fuel
+[01:20:50] at the lows and on the way up turns into
+[01:20:54] support and facilitates an almighty
+[01:20:57] squeeze
+[01:20:58] in the other direction so that's the
+[01:21:00] difference set up number one is just the
+[01:21:01] kind of bread and butter
+[01:21:03] support resistance uh resistance support
+[01:21:05] support resistance flip
+[01:21:06] right there's no other there's no other
+[01:21:08] real impetus
+[01:21:10] for participants to be really trapped on
+[01:21:11] the wrong side
+[01:21:13] of this flip in this case there is a ton
+[01:21:16] of impetus for participants to be
+[01:21:17] trapped on the wrong side of this flip
+[01:21:19] because there was a break in market
+[01:21:20] structure which induced
+[01:21:23] to use certain language uh those sellers
+[01:21:25] into the market or made that seem like
+[01:21:27] an attractive option
+[01:21:28] so more people offside bigger potential
+[01:21:31] for
+[01:21:31] a squeeze i i don't do the same thing
+[01:21:35] here
+[01:21:35] it's kind of the same thing right this
+[01:21:37] is the low which broke market structure
+[01:21:39] that's significant then when it fails
+[01:21:44] that strong support has failed and all
+[01:21:46] those breakout buyers
+[01:21:48] are in trouble both on the flip
+[01:21:51] no dice and on the higher low no dice
+[01:21:54] either anything in between
+[01:21:57] um
+[01:22:00] not good to go right and so when the
+[01:22:03] market
+[01:22:03] breaks through that level makes a lower
+[01:22:05] low and invalidates balls completely
+[01:22:07] any bounce is seen as a good
+[01:22:11] exit but generally those positions that
+[01:22:14] are offside
+[01:22:15] and again the opposite applies
+[01:22:20] longs closing at
+[01:22:23] market or being forced to close
+[01:22:26] turn into cell orders which simply
+[01:22:29] exacerbates or fuels further
+[01:22:30] the move in the opposite direction so at
+[01:22:33] its core is this like a basic
+[01:22:34] support resistance flip yes why is it
+[01:22:36] different or significant
+[01:22:38] because you have a count yeah you have a
+[01:22:39] market structure break a fake out
+[01:22:41] in the opposite direction which leaves
+[01:22:43] more people offside
+[01:22:45] kind of extra good not just an sr flip
+[01:22:47] srip with a whole lot of people eating
+[01:22:49] a big plate of not good stuff
+[01:22:52] on the wrong side of it some quick chart
+[01:22:55] examples again
+[01:22:56] doing your own kind of homework here is
+[01:22:58] really good we have a really clean
+[01:22:59] sequence of
+[01:23:00] lower highs on ethersd
+[01:23:04] on the four hour chart here then
+[01:23:05] specifically this swing here is nice
+[01:23:07] i i know i say the high but really if
+[01:23:09] you just want to box out the candle or
+[01:23:10] just box out the whole leg
+[01:23:12] um jump into one of the live streams and
+[01:23:15] see how we do it there it's it's pretty
+[01:23:16] reasonable
+[01:23:18] we have this swing up
+[01:23:21] which leads to a lower low right
+[01:23:25] so more sellers in the market
+[01:23:28] as a result market structure looking
+[01:23:30] bearish so you have continuation sellers
+[01:23:32] and lower high sellers as well
+[01:23:34] instead and they're invalidated if price
+[01:23:36] makes a higher high because again
+[01:23:37] they're bearish they want lower highs
+[01:23:39] and lower lows but the market makes a
+[01:23:40] higher high
+[01:23:41] and breaks that level that's it all
+[01:23:43] those positions
+[01:23:45] underwater feeding the heat shorts
+[01:23:48] puking their positions become
+[01:23:51] orders for the most part to buy at
+[01:23:54] market
+[01:23:55] you get the flip should have been really
+[01:23:57] you know nuked down from here broke my
+[01:23:59] construction man this should have been
+[01:24:00] really good resistance oh god it failed
+[01:24:02] um all these guys are wrong it's strong
+[01:24:04] support number go up
+[01:24:08] again whether you want to articulate it
+[01:24:09] in market structure terms or support
+[01:24:10] resistance terms doesn't make any
+[01:24:11] difference
+[01:24:12] it's the price structure that we really
+[01:24:15] care about
+[01:24:16] if usd daily
+[01:24:20] uh this is the low to high example
+[01:24:25] let me just box out this consolidation
+[01:24:30] this is the low which led to the high
+[01:24:33] which broke market structure
+[01:24:34] should have been amazing penta giga
+[01:24:37] support right breaking market structure
+[01:24:39] do you get a support resistance flip
+[01:24:40] option one sr is here no dice
+[01:24:44] okay option two some sort of high low
+[01:24:46] structure right right
+[01:24:49] on the retrace no dice either
+[01:24:52] and when that level fails all the buyers
+[01:24:55] of the break and market structure and of
+[01:24:57] dips that
+[01:24:58] followed are offside and re-tests are
+[01:25:02] our opportunity to mitigate that loss
+[01:25:05] and generally just puking positions
+[01:25:08] with smarter traders taking the other
+[01:25:09] side as well conscious of that fact
+[01:25:14] uh there are a couple of others on here
+[01:25:15] but i know this video is going on for
+[01:25:16] very long so i'll try to cut it short
+[01:25:18] snx this is one we discussed on
+[01:25:21] stream as well so you have your market
+[01:25:24] structure
+[01:25:26] type of anchor here you can you can have
+[01:25:28] the close and the wick whatever you've
+[01:25:30] got like high time frame support
+[01:25:32] um through these lows it gets broken
+[01:25:36] on this leg so we kind of work backwards
+[01:25:39] and say okay you've had a market
+[01:25:40] structure break where did it come from
+[01:25:42] right and you look for the upswing
+[01:25:45] if you will or the high which led to
+[01:25:49] or preceded it doesn't really matter the
+[01:25:52] lower low and
+[01:25:52] in these cases i just like to get the
+[01:25:54] whole consolidation candle whatever
+[01:25:56] okay so wow working backwards big market
+[01:25:59] structure break where did it come from
+[01:26:00] came from blue box it should be strong
+[01:26:02] resistance
+[01:26:03] as soon as that's broken through
+[01:26:07] screwed screwed etc right you just
+[01:26:10] complete flip full on that's what's
+[01:26:12] bloody called a reversal
+[01:26:13] right and the same area acts as support
+[01:26:17] and this ends up being the capitulation
+[01:26:20] bottom
+[01:26:22] i'm sure you understand by now the the
+[01:26:24] logic of
+[01:26:26] the setup
+[01:26:29] yeah so is it a basic support resistance
+[01:26:32] flip
+[01:26:32] yes why is it important because you have
+[01:26:35] a market structure
+[01:26:36] break acting as a trap period
+[01:26:40] some nuances and make sure to like the
+[01:26:42] video if you've made it this far and
+[01:26:43] i've read every single comment as well
+[01:26:45] if you have any feedback
+[01:26:46] if this helped that this confused you
+[01:26:48] anything like that i would genuinely
+[01:26:49] love to hear from you
+[01:26:50] but just some new answers to finish up
+[01:26:52] the first about time frames and
+[01:26:53] reasonable expectations
+[01:26:55] watch the time frames video in the
+[01:26:56] technical analysis series if you haven't
+[01:26:58] already
+[01:26:58] but as a general guideline you should
+[01:27:00] kind of expect the time frame of the
+[01:27:02] market structure break to have a
+[01:27:03] significant
+[01:27:04] bearing on the size of the move that
+[01:27:05] follows you should manage your
+[01:27:06] expectation
+[01:27:07] in line with that type of relationship
+[01:27:11] again to use exaggerated terms don't
+[01:27:14] expect the world to end
+[01:27:15] over an intraday market structure break
+[01:27:17] but at the same time don't expect a
+[01:27:19] weekly market structure break to fizzle
+[01:27:21] out after a couple days
+[01:27:22] so expect big things you know bigger and
+[01:27:25] longer moves from larger brakes
+[01:27:27] smaller and shorter moves from smaller
+[01:27:28] brakes probably the simplest way i can
+[01:27:30] put it but
+[01:27:30] you'd be surprised how many people under
+[01:27:33] play
+[01:27:35] underestimate the significance of big
+[01:27:36] market structure shifts in high time
+[01:27:38] frames and then overstay
+[01:27:39] the smallest lower low or higher high
+[01:27:42] on low time frames it's just people have
+[01:27:44] that thing all messed up all the time so
+[01:27:46] time frame kind of
+[01:27:48] precedence is important and being aware
+[01:27:51] of the type of move you can reasonably
+[01:27:52] expect is also
+[01:27:54] helpful and will prevent you from
+[01:27:56] turning into one of those market
+[01:27:57] structure break chases the possible
+[01:28:00] exception yeah the low time frame market
+[01:28:02] structure break a high timeframe
+[01:28:03] structure
+[01:28:03] but even that is just a way of taking a
+[01:28:05] high time frame trade so
+[01:28:06] the rule still applies and of course
+[01:28:09] related to that is that the low time
+[01:28:10] frame market structure break does not
+[01:28:12] cancel a high timeframe dominant trend
+[01:28:14] so selling every single you know 15
+[01:28:17] minute red candle in a strong high time
+[01:28:18] frame up trend
+[01:28:19] it's just just rough i mean the market
+[01:28:21] by definition has to break market
+[01:28:22] structure
+[01:28:23] to make a higher low so you don't want
+[01:28:25] to be like old cred constantly selling
+[01:28:27] the high low because of
+[01:28:28] because of a level basically um stepping
+[01:28:31] in front of a moving train with a
+[01:28:32] plastic straw type of deal
+[01:28:34] and always consider the context right
+[01:28:36] the way you event you avoid becoming a
+[01:28:38] kind of market structure breakout
+[01:28:40] chaser and just generally not using this
+[01:28:42] tool very well
+[01:28:44] is by stripping it of its context but if
+[01:28:46] you use market structure as a tool to
+[01:28:48] provide you with clues evidence context
+[01:28:50] then you can navigate the charts with
+[01:28:52] more reasonable expectations
+[01:28:54] based on time frames especially so low
+[01:28:56] time frame market structure break and
+[01:28:57] high timeframe bull trend
+[01:28:58] you'll be like okay yes i can expect
+[01:29:00] short term price action
+[01:29:01] to be bearish but i know that in the
+[01:29:03] whatever medium term that's actually a
+[01:29:04] dip that i want to buy
+[01:29:05] so i'm not going to hold it into new
+[01:29:07] lows and i'll scale out when it
+[01:29:09] comes into a higher low area and
+[01:29:10] actually look to build along et cetera
+[01:29:12] et cetera
+[01:29:12] right you actually have to you know use
+[01:29:14] your discretion um
+[01:29:16] in those cases but it really helps makes
+[01:29:18] a huge difference
+[01:29:20] the second nuance market structure in
+[01:29:22] range so
+[01:29:24] it's one of those things where it can be
+[01:29:25] a good tool but when used for the wrong
+[01:29:27] job surprise surprise doesn't feel too
+[01:29:30] great
+[01:29:30] and it's again going back to the theme
+[01:29:33] of stripping tools
+[01:29:34] of context just leads to shitty outcomes
+[01:29:37] so with regard to rangers in less
+[01:29:38] volatile conditions
+[01:29:41] market structure breaks which are just
+[01:29:44] less obvious or shorter term
+[01:29:46] uh or you know away from the range
+[01:29:48] boundaries where most of the
+[01:29:50] quality so to speak trading is done can
+[01:29:52] just be pure noise
+[01:29:53] even if it wouldn't be say in like other
+[01:29:55] conditions or outside of the range or in
+[01:29:56] trending conditions etc
+[01:29:58] so sometimes choppers chop right and
+[01:30:00] that's all it is for most participants
+[01:30:02] so if you have these higher highs lower
+[01:30:03] lows kind of happening in the middle of
+[01:30:04] nowhere
+[01:30:05] um especially outside of the range
+[01:30:07] boundaries or extremities
+[01:30:09] uh it'll probably mean low quality
+[01:30:10] opportunities and the market could just
+[01:30:11] keep floating around
+[01:30:13] and could have continued to avoid being
+[01:30:15] impulsive until
+[01:30:16] one of those boundaries is reached so i
+[01:30:18] wouldn't put too much stock
+[01:30:20] into those market structure breaks in a
+[01:30:23] range
+[01:30:23] outside of parts of the range that you'd
+[01:30:26] actually trade
+[01:30:27] typically being the top and bottom of
+[01:30:28] the range slightly above slightly below
+[01:30:30] and maybe the range midpoint if
+[01:30:33] if it's appropriate as implied by the
+[01:30:36] well as stated by the third point i
+[01:30:38] think best practice is to focus on
+[01:30:39] market structure breaks at the
+[01:30:40] extremities
+[01:30:41] rather than chasing every higher high
+[01:30:43] high low sorry higher high low low so
+[01:30:45] market structure break at the range
+[01:30:46] midpoint it's just
+[01:30:48] i've done it it's not fun i thought i
+[01:30:50] was clever kind of trading the range in
+[01:30:52] quarters
+[01:30:53] seeing traders do it i think
+[01:30:56] not easy and where does that end up
+[01:30:58] means mark bearish market structure
+[01:31:00] breaks at the top of the range right the
+[01:31:02] idea of
+[01:31:02] bearish price action the resistance
+[01:31:04] bullish msb at the bottom of the range
+[01:31:06] bullish price action at support and then
+[01:31:09] you'll do yourself a favor by not losing
+[01:31:10] your shirt trying to force your view
+[01:31:12] at mid-range or just well away from
+[01:31:14] those boundaries
+[01:31:18] third nuance a bit thin on this one but
+[01:31:20] just something worth grazing over
+[01:31:22] uh failure to continue versus just
+[01:31:24] market structure shift so again a
+[01:31:26] benefit of
+[01:31:27] market structure versus just levels uh
+[01:31:29] is that it gives
+[01:31:30] a lot of weight to recency not that
+[01:31:31] levels don't but really how price action
+[01:31:34] is developing there and then
+[01:31:35] i think market structure is uh despite
+[01:31:38] its overlap with sr i mean it's the same
+[01:31:40] thing in a lot of cases
+[01:31:41] but whatever it's a good tool for how
+[01:31:43] the market is like
+[01:31:44] right now right now and this can provide
+[01:31:46] early hints of trend reversal or a
+[01:31:47] slowdown
+[01:31:48] more generally even if market structure
+[01:31:50] isn't broken so specifically
+[01:31:51] um there are little shifts in behavior
+[01:31:54] that you can spot which act
+[01:31:56] not as signs of reversal or something to
+[01:31:57] act upon or a setup
+[01:31:59] but as little you know
+[01:32:03] gaps in the armor or um red flags
+[01:32:07] when you've got a dominant trend or
+[01:32:08] market structure so a bullish example is
+[01:32:10] when
+[01:32:11] or signs of a sign of bullishness slowly
+[01:32:14] emerging
+[01:32:14] is when you've got clear lower highs and
+[01:32:16] lower lows right except those lower lows
+[01:32:18] then start to form
+[01:32:19] equal or higher lows so again
+[01:32:22] bullish market structure needs a higher
+[01:32:24] high but if it starts
+[01:32:27] moving from lower low to equal or higher
+[01:32:29] low
+[01:32:30] it's not bullish per se but it's less
+[01:32:31] bearish right and that information
+[01:32:33] itself you know the twisting of the dial
+[01:32:36] more gradually is still useful and of
+[01:32:38] course the bearish example is the
+[01:32:39] opposite you've got a really strong
+[01:32:40] trend the market structure whatever
+[01:32:42] clear higher highs and higher lows um
+[01:32:46] and then the highs start to form equal
+[01:32:48] or
+[01:32:49] lower highs again it's only bearish if
+[01:32:52] at least in this version or how i view
+[01:32:55] things if you get a lower low
+[01:32:56] but the fact that you've moved from
+[01:32:58] higher highs to
+[01:32:59] equal lower highs is a sign of a
+[01:33:02] slowdown
+[01:33:03] in the bullish momentum again not fatal
+[01:33:05] by any means it could just be literally
+[01:33:07] consolidation before another leg higher
+[01:33:08] or lower
+[01:33:09] but a lot of the time waiting for
+[01:33:13] a clear market structure shift before
+[01:33:15] shifting buyers is just too late and you
+[01:33:16] get like blow out candles and you get
+[01:33:18] carried out
+[01:33:19] it's just not fun so having some sort of
+[01:33:23] early warning system is the term used
+[01:33:26] here
+[01:33:26] which i think is applicable some sort of
+[01:33:28] you know early red flag caution
+[01:33:30] hey mate take a look at this for
+[01:33:34] changes in market structure before
+[01:33:36] market structure breaks i think is
+[01:33:38] useful
+[01:33:39] and so for me monitoring
+[01:33:42] those highs and lows slowly kind of
+[01:33:45] becoming less impulsive is just the
+[01:33:47] useful way of
+[01:33:49] having a pulse on that again it's more
+[01:33:51] trend slow down rather than reversal but
+[01:33:53] a lot of the time
+[01:33:54] uh it's much better to you know it'll
+[01:33:56] stop you from getting oversized at the
+[01:33:58] end of the trend or
+[01:33:59] at least put reversal on the radar
+[01:34:00] something to be aware of
+[01:34:04] and this just helps i think with a lot
+[01:34:05] of conjecture you see on twitter when
+[01:34:08] you say something people argue that
+[01:34:09] something's bottoming out or topping out
+[01:34:11] um a lot of the time they have good
+[01:34:13] reasons sometimes they don't
+[01:34:14] and if there's any indication that a
+[01:34:18] dominant trend is at least slowing down
+[01:34:20] you should be able to see these changes
+[01:34:24] subtle differences in market structure
+[01:34:26] um if those views are correct so again
+[01:34:28] it's failure to continue
+[01:34:29] by that i mean failure failure to
+[01:34:30] continue making lower lows
+[01:34:33] if the market is really bearish and
+[01:34:35] failure to continue making higher highs
+[01:34:37] if the market is really
+[01:34:38] bullish so subtle subtle shifts
+[01:34:42] thank you for watching i'm glad you've
+[01:34:44] made it this far if you have i
+[01:34:46] appreciate your patience both in
+[01:34:47] watching this video but also in sticking
+[01:34:50] around
+[01:34:52] for my content on youtube twitter
+[01:34:55] whatever it may be i'm i'm very grateful
+[01:34:57] for your audience
+[01:34:59] be sure to like the video and subscribe
+[01:35:01] to the channel if you haven't already
+[01:35:03] again leave a comment even if it's sure
+[01:35:05] any insights feedback
+[01:35:07] i'm exceptionally grateful for and i'd
+[01:35:09] love to hear from you
+[01:35:10] although i may be inactive on the
+[01:35:13] cryptocrad youtube channel i think it's
+[01:35:14] just because the bar is set so high with
+[01:35:16] the technical analysis series
+[01:35:18] i do upload weekly on technical roundup
+[01:35:21] uh including live streaming every monday
+[01:35:24] and on most fridays
+[01:35:25] as well as a free newsletter so there is
+[01:35:27] a lot of content and if you want to ever
+[01:35:29] discuss
+[01:35:31] these videos or get an up-to-date live
+[01:35:33] view of the concepts we discuss
+[01:35:35] i'd love to have you visit one of the
+[01:35:37] live streams to come and chat
+[01:35:39] so all the links to the slides to the
+[01:35:41] other videos articles technical roundup
+[01:35:42] will be in the description
+[01:35:44] thank you again so much for watching uh
+[01:35:46] hope to hear from
+[01:35:47] some feedback from you if not thanks
+[01:35:49] anyway take care trade safe
+[01:35:51] and i will see you for the next one

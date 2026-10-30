@@ -1,0 +1,1364 @@
+# Video ID: r9c9pw6M_ww
+# Title: Technical Analysis Series - Top Down Approach to Trading
+# Published: 2022-11-20
+# Source: youtube_transcript_api (auto); uploader: CryptoCred
+# Analyst: CryptoCred
+# Channel: @CryptoCred
+# Duration_s:2596
+# Word count: 9660
+# ---
+[00:00:00] hello and welcome to another video as
+[00:00:02] part of the technical analysis Series
+[00:00:03] today we are discussing a top-down
+[00:00:05] approach to trading here's the outline
+[00:00:07] for today's video disclaimer first then
+[00:00:09] we'll discuss what is a top-down
+[00:00:11] approach we'll discuss whether you need
+[00:00:13] a top-down approach some commentary on
+[00:00:15] time frames and as a reminder there is a
+[00:00:17] separate video on the channel
+[00:00:18] specifically on this topic which I
+[00:00:19] expect you to have watched if you're
+[00:00:21] sitting here we'll then go over a lot of
+[00:00:23] practical examples of using a top-down
+[00:00:25] approach for trading regardless of
+[00:00:26] whether you primarily operate on low
+[00:00:28] time frames or high time frames we'll
+[00:00:29] cover some nuances and then we'll
+[00:00:31] conclude
+[00:00:32] usual disclaimer I'm not an investment
+[00:00:34] advisor not a legal advisor not a
+[00:00:35] financial advisor not a health advisor
+[00:00:37] not an advisor of any sort you'd be an
+[00:00:39] idiot to listen to me this is
+[00:00:40] performance art
+[00:00:41] so if you're still here let's go over
+[00:00:42] some definitions what is a top-down
+[00:00:44] approach for me it's using a synthesis
+[00:00:46] of high time frames and low time frames
+[00:00:48] to analyze and trade the market again
+[00:00:50] quite broad but as we'll see there are
+[00:00:52] specific reasons for that so the goal in
+[00:00:55] doing so is to create a multi-time frame
+[00:00:57] map of the market wherein its moves can
+[00:00:59] be interpreted in the appropriate
+[00:01:00] context so let's do some doodling one
+[00:01:03] example might be as follows
+[00:01:06] say you have this level here in the
+[00:01:08] market and it's a weekly level of
+[00:01:11] support and you're looking at that level
+[00:01:13] of support on The Daily time frame and
+[00:01:15] the market comes in bounces you know
+[00:01:18] then breaks Market structure so all very
+[00:01:20] good it's what you want to see support
+[00:01:21] supporting and you have bullish Market
+[00:01:23] structure at a weekly level of support
+[00:01:26] now let's say you have this break-in
+[00:01:28] Market structure and then the market
+[00:01:29] starts to pull back which is completely
+[00:01:31] reasonable right now if you're looking
+[00:01:33] at that pullback on its own terms just
+[00:01:36] this leg you might think it's bearish
+[00:01:37] because the Market's moving lower if
+[00:01:39] you're looking at on the five minute 50
+[00:01:41] minute hourly it's breaking support red
+[00:01:43] candles it looks bad however in the
+[00:01:45] context of what's going on that the
+[00:01:47] market is bouncing off weekly support
+[00:01:49] and that daily Market structure is
+[00:01:51] bullish when you apply that context to
+[00:01:54] this leg down in price action it might
+[00:01:56] actually quite reasonably make you
+[00:01:57] bullish because that price breaking
+[00:01:59] lower that lower time frame bearish
+[00:02:01] Market structure is actually an
+[00:02:02] opportunity to establish an entry for a
+[00:02:04] long trade within the context of the
+[00:02:06] higher time frames being stacked in your
+[00:02:08] favor so that's kind of to a larger
+[00:02:10] extent what we're trying to do here is
+[00:02:11] by giving you a multi-time frame sort of
+[00:02:14] an analytical approach to the market you
+[00:02:16] can better contextualize moves
+[00:02:18] especially on Lower time frames so you
+[00:02:20] might ordinarily just be chasing right
+[00:02:22] is this a dip worth buying is this a
+[00:02:24] rally worth selling should I trust this
+[00:02:26] breakout should I trust this breakdown
+[00:02:28] all those questions for the most part
+[00:02:30] are answered by establishing a
+[00:02:31] directional bias and as I said a
+[00:02:33] multi-time frame framework for the
+[00:02:36] market and that's sort of the premise of
+[00:02:37] today's video hopefully that quick
+[00:02:39] example gets you thinking in the right
+[00:02:41] way and it makes sense what we're trying
+[00:02:42] to achieve here
+[00:02:45] now do you need a top-down approach
+[00:02:47] being completely honest the answer is
+[00:02:49] not necessarily consider the following
+[00:02:51] if you're trading on low time frames and
+[00:02:53] I will get this toolbar out of your face
+[00:02:56] if you're trading on low time frames by
+[00:02:58] definition you're aiming for smaller
+[00:02:59] rotations right so the market can be
+[00:03:01] contextualized primarily by your trading
+[00:03:03] time frames so if you're trading you
+[00:03:05] know buying five minutes support and
+[00:03:06] selling five minute resistance and
+[00:03:08] trying to catch you know less than one
+[00:03:09] percent as a move does it really matter
+[00:03:11] what the market is doing on the monthly
+[00:03:13] weekly daily level as we'll discuss it
+[00:03:15] might help to know that but it's not a
+[00:03:17] prerequisite for trading those low time
+[00:03:19] frame setups like they can work in
+[00:03:21] isolation so to speak
+[00:03:23] however and again this is sort of why
+[00:03:25] I'm making this video using a top-down
+[00:03:27] approach even in that low time frame
+[00:03:29] context the the upside is that it can
+[00:03:31] provide a lot of Confluence and boost
+[00:03:33] your low time frame setups and we'll go
+[00:03:35] over some very practical examples of
+[00:03:36] what that might look like and the same
+[00:03:38] answer goes of course for the high time
+[00:03:39] frame Traders by definition you don't
+[00:03:41] need a top-down approach or a multi-time
+[00:03:44] frame analytical framework you're aiming
+[00:03:46] for bigger rotations and so low time
+[00:03:48] frame movements are generally less
+[00:03:49] important if you're buying daily support
+[00:03:51] to sell daily resistance or weekly to
+[00:03:53] weekly does it really matter what the
+[00:03:55] market is doing on the five minute or 15
+[00:03:56] minute not necessarily you could
+[00:03:58] probably get through just fine by using
+[00:04:00] the time frame of the structure that
+[00:04:02] you're trading but as it says here you
+[00:04:04] can still benefit from a multi-time
+[00:04:06] frame approach specifically when you're
+[00:04:08] a high time frame Trader the low time
+[00:04:09] frame Traders can provide you with
+[00:04:11] tighter trade execution parameters and
+[00:04:14] really give you more timely entries when
+[00:04:16] executing on these large ideas so in
+[00:04:19] summary the answer is no you don't need
+[00:04:21] a top-down approach but at the same time
+[00:04:22] there are no real downsides to using a
+[00:04:24] top-down approach and as we'll discuss
+[00:04:26] and look at some practical examples it
+[00:04:28] can improve your execution and your
+[00:04:30] trading regardless of which high time
+[00:04:32] frame to low time frame end of the
+[00:04:33] spectrum you happen to fall on
+[00:04:36] again pause the video If you haven't
+[00:04:38] looked at or watched the low uh the time
+[00:04:41] frames video on the channel it's still
+[00:04:43] relatively up to date and has all this
+[00:04:45] good stuff so this is more of a recap
+[00:04:46] and a summary of the differences between
+[00:04:48] High time frames and low time frames and
+[00:04:50] some brief definitions High time frames
+[00:04:52] will generally give you slower signals
+[00:04:53] because the candlesticks and time
+[00:04:55] periods take longer time take a longer
+[00:04:56] time to form obviously generally
+[00:04:58] speaking there's less ambiguity simply
+[00:05:00] because there's less data and less
+[00:05:01] likely to be noisy and stuff just tends
+[00:05:04] to be clearer it's very hard to mess up
+[00:05:06] where the big monthly weekly daily
+[00:05:08] levels are it's much easier to get
+[00:05:09] caught up in noise if you're looking at
+[00:05:11] hourly 15 minute five minute levels
+[00:05:13] right
+[00:05:14] also generally speaking the high time
+[00:05:16] frames will give you bigger moves than
+[00:05:18] low time frames but the cost of those
+[00:05:21] bigger moves is a lower frequency of
+[00:05:23] setups again because they take longer to
+[00:05:25] unfold and that's also the next Point
+[00:05:26] High time frames have a longer
+[00:05:29] resolution time so if you're trading a
+[00:05:31] daily level you know buying daily
+[00:05:33] support to sell daily resistance it
+[00:05:34] could be quite reasonably two three four
+[00:05:36] days before you actually get a move and
+[00:05:39] the trade resolves whereas of course on
+[00:05:41] Lower time frames you don't have that
+[00:05:42] issue and examples of what I mean by
+[00:05:44] high time frame when I refer to them in
+[00:05:45] this video monthly weekly and daily time
+[00:05:47] frames and you're looking at charts and
+[00:05:49] those are typically used to kind of set
+[00:05:50] your bias and give you an idea of where
+[00:05:52] the market is bigger picture and low
+[00:05:54] time frame is basically the opposite of
+[00:05:56] everything we've discussed you get
+[00:05:57] faster signals because time passes more
+[00:05:59] quickly and it takes less time to for
+[00:06:01] candle structure to form there's more
+[00:06:03] ambiguity I know this point is arguable
+[00:06:05] but you just have a lot more
+[00:06:07] candlesticks a lot more levels and it's
+[00:06:09] easier to get lost simply because of the
+[00:06:11] amount of charts stuff you have to work
+[00:06:13] with and also have smaller moves because
+[00:06:15] you know they're originating from lower
+[00:06:17] time frame structures the upside to that
+[00:06:19] of course is a higher frequency of
+[00:06:20] setups that's why generally speaking for
+[00:06:22] people who are trying to get as much
+[00:06:23] learning experience under their belt as
+[00:06:25] possible some form of low time frame
+[00:06:27] trading is recommended because the
+[00:06:29] market will just simply give you
+[00:06:30] feedback quicker you know if you're like
+[00:06:32] weekly swing trading to learn how to
+[00:06:34] trade you know it's going to take you
+[00:06:35] maybe a year before you have a decent
+[00:06:37] trading journal if that you know even
+[00:06:38] maybe even that's being a bit aggressive
+[00:06:41] but it's going to take you a very long
+[00:06:42] time to build up a meaningful trading
+[00:06:44] journal to learn from and the feedback
+[00:06:45] from the market is just less frequent a
+[00:06:47] lot slower whereas if you're on low time
+[00:06:48] frames that's a lot of feedback and data
+[00:06:50] you're getting in a higher trade
+[00:06:52] frequency as a result
+[00:06:54] of course it takes shorter and a shorter
+[00:06:56] period of time to resolve low time frame
+[00:06:57] trades things just move quicker and the
+[00:06:59] examples of what I mean by low time
+[00:07:01] frame is mostly your intraday time
+[00:07:02] frames your four hour hourly 15 minute
+[00:07:04] five minute tick chart whatever just you
+[00:07:06] know the low time frame source and
+[00:07:08] typically the low time frames are used
+[00:07:09] to execute trades so whether that's sort
+[00:07:13] of within the higher time frame context
+[00:07:14] you've got a daily level and your
+[00:07:16] execution time frame is on a lower time
+[00:07:18] frame or you're just trading the lower
+[00:07:19] time frames per se this is typically
+[00:07:21] your execution time frame one way or
+[00:07:24] another
+[00:07:25] we're about to jump into some charts
+[00:07:27] momentarily but let's do the sort of
+[00:07:29] logic of what we're trying to look at
+[00:07:30] first and there are kind of two
+[00:07:32] approaches when it comes to multi-time
+[00:07:35] frame analysis and there's a lot of
+[00:07:37] overlap here but I do think there is a
+[00:07:38] meaningful difference the first is
+[00:07:40] executing low time frame setups
+[00:07:42] exclusively in high time frame areas so
+[00:07:44] this is when you have a low time frame
+[00:07:45] setup but you only trade it if it's
+[00:07:47] happening within a high time frame
+[00:07:49] context that aligns with your idea and
+[00:07:51] the second is executing High time frame
+[00:07:53] setups using low time frames so again in
+[00:07:55] this case it's flipped where the core
+[00:07:57] setup is a higher time frame setup and
+[00:07:59] you're using lower time frames to kind
+[00:08:01] of zero in on where you want to do
+[00:08:02] business and execute on those ideas
+[00:08:06] so the first approach in more detail as
+[00:08:08] I said you're essentially using higher
+[00:08:10] time frames as a filter for lower time
+[00:08:12] frame setups and some examples of what I
+[00:08:14] mean by lower time frame setups and
+[00:08:15] again there are videos on these and I
+[00:08:17] can do more to leave me a comment on
+[00:08:18] whatever you want to see your Monday
+[00:08:20] range type of stuff your daily open
+[00:08:22] pivot stuff even your standard price
+[00:08:24] action things on low time frames and the
+[00:08:26] only filter you apply to them is you
+[00:08:28] trade them as you ordinarily would
+[00:08:29] except the setup only becomes actionable
+[00:08:32] if it occurs in an area of high time
+[00:08:34] frame structure so again we're getting
+[00:08:36] back to the idea of trying to stack the
+[00:08:37] deck and stack the odds in your favor so
+[00:08:39] in this case the most basic example
+[00:08:41] would be bullish low time frame setups
+[00:08:43] at high time frame support and bearish
+[00:08:45] low time frame setups at high time frame
+[00:08:47] resistance you're trying to get sort of
+[00:08:49] like a like someone's spine you know
+[00:08:51] alignment between the time frames all
+[00:08:52] pointing in the same direction to try to
+[00:08:54] stack it in your favor as much as
+[00:08:55] possible and the second approach is is
+[00:08:58] sort of corollary to that where you're
+[00:08:59] using low time frames to execute on high
+[00:09:01] time frame ideas in that case you kind
+[00:09:03] of discard the lower time frame setups
+[00:09:05] per se and you use you're looking at
+[00:09:07] your monthly weekly daily levels and
+[00:09:09] setups and then the question becomes
+[00:09:11] well I've got a rough idea that this I
+[00:09:12] mean I'm going to sell this daily
+[00:09:14] resistance or buy this weekly support
+[00:09:16] but how do I kind of narrow down and
+[00:09:18] execute on that idea or kind of tighten
+[00:09:20] up the parameters of the trade so my
+[00:09:22] risk to reward is better and therefore I
+[00:09:23] can put more size on it and you know
+[00:09:25] there are a couple of ways of doing this
+[00:09:26] as we'll see in a moment there's the low
+[00:09:28] time frame fractal logic from the entry
+[00:09:30] triggers video where you have set up
+[00:09:31] certain setups and in general sort of
+[00:09:33] the high time frame offers bias and
+[00:09:35] structure and the low time frame is
+[00:09:37] where you execute on the bias and
+[00:09:39] structure offered by the higher time
+[00:09:41] frames let's look at a bunch of chart
+[00:09:42] examples to really drive this home and
+[00:09:44] thank you for your feedback on the last
+[00:09:45] video that you want more chart examples
+[00:09:48] so here we are
+[00:09:50] here's a really good example of
+[00:09:52] sort of stacking time frames in order to
+[00:09:55] give your low time frame setups more
+[00:09:57] Edge so let's take a basic setup here
+[00:09:59] and again there's no there's you know
+[00:10:01] there are no Mysteries here the basic
+[00:10:03] setup I'm referring to here is when you
+[00:10:04] have a level of support right and the
+[00:10:06] market comes in and breaks that level of
+[00:10:08] support you might be looking to short
+[00:10:10] that in order to send it lower so it's
+[00:10:13] your classic support break equals number
+[00:10:15] go down if you want to see that as a
+[00:10:17] retest trade and momentum trade it
+[00:10:18] doesn't matter the idea is the Market's
+[00:10:20] lost the floor and it's going to trade
+[00:10:21] lower so let's see how that fared on
+[00:10:24] this s p four hour chart you add a range
+[00:10:27] level here you know clear support and if
+[00:10:29] you tried to kind of poke below or short
+[00:10:31] any of this you had a really rough time
+[00:10:33] and the Market's still there stepping up
+[00:10:34] right you have another shelf formed here
+[00:10:36] if you tried to sell this structure even
+[00:10:38] if it closed below that ended up being a
+[00:10:39] trap ended up pushing higher same thing
+[00:10:41] here you've got a shelf and some you
+[00:10:44] know four hour closes and even hourly
+[00:10:45] closes I'm sure if you were to look on a
+[00:10:47] lower time frame taking place below that
+[00:10:49] shelf but again you got trapped and the
+[00:10:51] market moves higher the question about
+[00:10:52] comes when did that flow when did those
+[00:10:54] flows change when did that low time
+[00:10:56] frame set up the very basic one of just
+[00:10:58] selling a breakdown of support when did
+[00:11:00] it start working well if you look over
+[00:11:01] here at this 4310 handle that's a
+[00:11:05] monthly level of resistance and notice
+[00:11:07] what happened as soon as the market hit
+[00:11:09] that level or reached that high time
+[00:11:11] frame resistance again this is our
+[00:11:12] intraday time frame on the four hour and
+[00:11:14] those brick selling breakdowns of
+[00:11:16] support setups have been getting
+[00:11:17] completely cooked and then the market
+[00:11:18] reaches High time frame resistance and
+[00:11:21] then you have you know this shelf breaks
+[00:11:23] down Market disappears even if you want
+[00:11:24] to use this shelf breaks down Market
+[00:11:26] disappears even comes back and re-tests
+[00:11:28] it this shelf breaks down Market
+[00:11:30] disappears comes down and retested so
+[00:11:32] suddenly on this end of the spectrum
+[00:11:34] although that same setup is getting
+[00:11:36] completely cooked on this side this
+[00:11:38] setup is completely printing money what
+[00:11:40] changed between the left hand side and
+[00:11:42] the right hand side well the answer is
+[00:11:43] the market actually reached a high time
+[00:11:45] frame level of resistance and that
+[00:11:47] completely turned around the flows so
+[00:11:49] that's kind of the most visible example
+[00:11:50] that I can remember and think of when it
+[00:11:52] comes to to using High time frames to
+[00:11:54] boost your low time frame setups there's
+[00:11:56] no real difference between what we're
+[00:11:58] trying to do you have a shelf and you're
+[00:12:00] trying to sell below it on a breakdown
+[00:12:01] to send the market lower and the only
+[00:12:03] difference in this case wasn't in the
+[00:12:05] setup but it was in the context and the
+[00:12:07] context shifted around here because the
+[00:12:09] market reached High time frame
+[00:12:11] resistance right
+[00:12:13] I'm sure we can look at another example
+[00:12:16] this is one on BTC USD this is the 25k
+[00:12:21] sort of Wick area high you know sort of
+[00:12:23] daily level resistance or daily swing
+[00:12:25] failure point if you take the same setup
+[00:12:27] of trying to short breakdowns you know
+[00:12:29] if you try to do so anywhere in this
+[00:12:30] consolidation you got cooked if you
+[00:12:32] tried to sell this level on several
+[00:12:35] occasions it simply didn't work you also
+[00:12:37] had an overthrow type of setup where you
+[00:12:40] have a bunch of highs and then the
+[00:12:42] market came above them and back below
+[00:12:43] maybe that's a deviation but if you sold
+[00:12:45] that you got cooked so again the market
+[00:12:47] just not working in your favor and then
+[00:12:48] it reaches this daily swing Point uh in
+[00:12:51] this juncture and also swing fails on
+[00:12:53] The Daily time frame which means the
+[00:12:54] daily spiked above it and closed below
+[00:12:56] and also at that point although this
+[00:12:58] isn't like exactly a perfect one you
+[00:13:00] have some momentum Divergence happening
+[00:13:02] across the highs building up and it only
+[00:13:04] starts to really shift after the market
+[00:13:07] trades at the high time frame level and
+[00:13:09] then suddenly as soon as you get that
+[00:13:11] high time frame price action and you're
+[00:13:13] not just doing business in the middle of
+[00:13:14] nowhere but you're taking the same trade
+[00:13:16] setup with the high time frame context
+[00:13:18] on your side same setup you've got
+[00:13:20] support support breakdown except this
+[00:13:22] time you know once it goes and it gives
+[00:13:24] you a slight re-test that's when the
+[00:13:25] market decided to roll over so again
+[00:13:27] what's the difference between selling
+[00:13:29] you know trying to sell this breakdown
+[00:13:31] and trying to sell this breakdown it's
+[00:13:33] technically speaking the same setup but
+[00:13:35] you boosted the odds and you know
+[00:13:37] stacked the deck in your favor because
+[00:13:39] you're not just doing that in a vacuum
+[00:13:40] or in isolation this time the context is
+[00:13:43] that the market hit a daily level of
+[00:13:45] resistance and then that boosts the
+[00:13:47] probability of your bearish setup
+[00:13:49] working okay hopefully that is that
+[00:13:52] logic is starting to become
+[00:13:53] understandable generally speaking with
+[00:13:55] my educational videos I don't want to
+[00:13:56] spam you with examples because I found
+[00:13:58] when I was learning it gives a false
+[00:14:00] sense of security that these setups
+[00:14:01] always happen they're always super clean
+[00:14:02] and they work and also I think at least
+[00:14:05] to me it encouraged me to be lazy
+[00:14:06] instead of going out and finding those
+[00:14:08] setups on my own so let me know if I've
+[00:14:10] got the balance right in the comments
+[00:14:11] but that's sort of why I don't give you
+[00:14:12] 50 examples I think it gives you the
+[00:14:14] wrong idea of how these sorts of things
+[00:14:16] work so there's just a couple examples
+[00:14:19] of doing business executing low time
+[00:14:21] frame setups at high time frame areas
+[00:14:23] and how much that can change the success
+[00:14:25] rate and the win rate of those types of
+[00:14:27] Trades
+[00:14:30] um I'm sure I've got more examples this
+[00:14:34] is a decent one as well but it's more on
+[00:14:37] the second approach of using low time
+[00:14:39] frames to execute on high time frame
+[00:14:41] ideas and again there's a lot of overlap
+[00:14:42] here so if we take the first one before
+[00:14:45] that and using High time frame areas as
+[00:14:47] a filter specifically this daily open
+[00:14:49] pivot idea so what I mean by daily open
+[00:14:52] pivot is the following
+[00:14:54] so if you go on trading View and look at
+[00:14:57] any chart that you trade you can map out
+[00:14:59] where the open for the day was I think
+[00:15:02] XO is a custom indicator which does it
+[00:15:04] for you but you would simply go to
+[00:15:06] whatever instrument you're using you'd
+[00:15:09] go on The Daily time frame maybe a chart
+[00:15:11] would help
+[00:15:12] and the daily open is simply where the
+[00:15:15] day that you're trading opened so we
+[00:15:17] know that this is a red candle the open
+[00:15:19] is and you can also just hover over it
+[00:15:21] and trading view in the top left will
+[00:15:22] tell you the Open high low and close
+[00:15:25] sorry over here open high low close in
+[00:15:28] this case the daily open comes in at
+[00:15:32] 24.50 right and and that's all I mean So
+[00:15:35] structurally speaking what do I mean by
+[00:15:36] daily open pivot sometimes what the
+[00:15:39] market will do is use the daily open as
+[00:15:42] a kind of support resistance structure
+[00:15:43] or an inflection point and so what it
+[00:15:46] might look like is the following
+[00:15:48] let's take a bear case right so number
+[00:15:51] going down you might have this line is
+[00:15:55] your daily open
+[00:15:57] don't know why my voice cracked there
+[00:15:58] we're not going to talk about it so this
+[00:16:00] is the daily open and what you might see
+[00:16:02] is that on the open that the market
+[00:16:04] rallies and does something maybe ideally
+[00:16:06] even hits a level of higher time frame
+[00:16:08] resistance and then when it goes below
+[00:16:10] the daily open
+[00:16:12] what you need to think of is what's the
+[00:16:14] daily candle looking like at this
+[00:16:16] juncture so if this was our open all of
+[00:16:19] this price action here is the wick of
+[00:16:21] the daily candle and then especially if
+[00:16:23] you hit resistance and starts to find
+[00:16:25] resistance at the daily open and moves
+[00:16:27] lower that a lot of the time can be the
+[00:16:29] expansion of the daily candle so it's
+[00:16:32] kind of like watching the high time
+[00:16:33] frame candle form in real time so you've
+[00:16:35] got the open this is the wick it's below
+[00:16:38] the wick and below if you open at that
+[00:16:40] point and then you might get the actual
+[00:16:41] body to the downside now and the same
+[00:16:44] works for bullish scenarios of course
+[00:16:45] where if you've got a bullish daily bias
+[00:16:47] you might have a level here that's the
+[00:16:49] daily open and for whatever reason
+[00:16:51] you're expecting a move higher in the
+[00:16:53] market on that day and we'll discuss
+[00:16:55] some examples of what that might look
+[00:16:56] like the Market opens and then trades
+[00:16:59] lower maybe you hit some level of high
+[00:17:01] time frame support here
+[00:17:03] that that you're expecting that to be
+[00:17:05] the wick but what's your evidence your
+[00:17:06] evidence would be if the market then
+[00:17:07] reclaims and finds support above the
+[00:17:09] daily open and then again you can start
+[00:17:11] to craft a picture that I'm expecting a
+[00:17:13] green candle the move below the daily
+[00:17:15] open is the wick of that green candle
+[00:17:17] and then when we're above the daily open
+[00:17:18] maybe that's when I get my candle body
+[00:17:20] right that's sort of the basic premise
+[00:17:22] of the daily open pivot type of strategy
+[00:17:25] is that you simply Mark out the daily
+[00:17:27] open of whatever candle you're trading
+[00:17:29] it also works for weeklies monthlies or
+[00:17:31] whatever else and then depending on the
+[00:17:33] context you start to build a picture of
+[00:17:34] what that high time frame candle might
+[00:17:36] look like if you have a directional bias
+[00:17:38] at play if the markets are support
+[00:17:39] resistance or whatever else right so
+[00:17:41] let's look at some examples of that
+[00:17:44] so this is one on here we go this is on
+[00:17:48] if USD on the hourly time frame and this
+[00:17:51] is our the kind of the second test I
+[00:17:54] think of this 1200 level which is just
+[00:17:56] as a reminder of where this High time
+[00:17:57] frame context comes from when I say the
+[00:17:59] 1200 level I mean this one very clear uh
+[00:18:04] Range High Resistance turn to support I
+[00:18:06] think we're looking at this point of
+[00:18:07] price action here
+[00:18:09] let's go back
+[00:18:12] um so here's our daily open uh sort of
+[00:18:15] midnight Mark the open of the candle and
+[00:18:17] we know that in the you know within this
+[00:18:19] blue line we're in an area of support so
+[00:18:21] again the high time frame context is
+[00:18:23] that we're expecting a bounce from this
+[00:18:25] area so what does price action do
+[00:18:27] you have your daily open it pushes below
+[00:18:30] the level but we're still again the
+[00:18:32] overall context is this this doesn't
+[00:18:34] need to be tick perfect we're in an area
+[00:18:35] of daily support so our directional bias
+[00:18:38] is bullish right so what does the market
+[00:18:40] do it pushes lower on The Daily open and
+[00:18:42] then as soon as that's reclaimed this
+[00:18:45] ends up being the wick of the daily
+[00:18:47] candle and then you get your expansion
+[00:18:49] higher and then the market just their
+[00:18:51] steps higher I might have misidentified
+[00:18:53] this now that I'm thinking about it
+[00:18:54] there's a decent chance that I'm talking
+[00:18:55] about the actual breakout day uh on the
+[00:18:59] sort of 15th 16th or whatever that seems
+[00:19:02] to be more correct yeah we are talking
+[00:19:04] about bad apologies I'm referring to the
+[00:19:06] expansion here right
+[00:19:08] um
+[00:19:09] let me let me just jump back so this is
+[00:19:12] like a classic setup
+[00:19:15] it's just been this so this is a classic
+[00:19:17] setup so the context is that the market
+[00:19:19] looks strong and it's on the cusp of a
+[00:19:20] breakout we have a directional bias to
+[00:19:22] suggest expansion and resistance looks
+[00:19:24] weak what's the trigger there or how do
+[00:19:26] you use low time frames in this High
+[00:19:27] time frame context classic daily open
+[00:19:29] strategy so that daily open dips below
+[00:19:32] gets above the level and even if you
+[00:19:34] chase this breakout you know you didn't
+[00:19:36] really eat that much of a drawdown
+[00:19:37] before the market continued to a
+[00:19:39] trending day now you might be thinking
+[00:19:40] well this is obvious however every
+[00:19:42] single day has a daily open so every
+[00:19:45] single day you could arguably be using
+[00:19:46] the strategy if it's above the daily
+[00:19:47] open and goes below you might want to
+[00:19:49] sell and if it's you know below the
+[00:19:51] daily open it goes above you might want
+[00:19:52] to buy but if you just try to do that
+[00:19:54] sort of blindly or without context the
+[00:19:56] win rate of those setups will be kind of
+[00:19:57] crappy right again we're using multiple
+[00:20:00] time frames to try to stack the deck in
+[00:20:02] our favor as much as possible we're not
+[00:20:04] blindly buying above the daily open once
+[00:20:06] it's a pivot or selling below the daily
+[00:20:08] open once it's a pivot or whatever else
+[00:20:09] we know in this case that there's a high
+[00:20:11] likelihood of expansion given this
+[00:20:13] resistance looks cooked and therefore
+[00:20:14] that gives us a bias and an expectation
+[00:20:17] for which way the daily open is going to
+[00:20:19] act and gives us an overall view as to
+[00:20:21] which direction we want to trade again
+[00:20:24] the benefit of the higher time frame
+[00:20:26] stuff is that it sort of takes out a lot
+[00:20:28] of the guesswork or at least improves
+[00:20:30] your probability and gives you some
+[00:20:31] guidance as the direction as to how am I
+[00:20:33] going to trade my low time frame
+[00:20:35] strategy if you blindly just try to
+[00:20:36] trade every daily open pivot you would
+[00:20:39] have a rough time so what we're looking
+[00:20:40] for is Confluence and that Confluence or
+[00:20:42] the source of that Confluence is the
+[00:20:45] higher time frame context
+[00:20:47] let's look at another example this is
+[00:20:49] the soul level at 15 and again all these
+[00:20:52] levels I'm just purely Cherry Picked for
+[00:20:54] the example of this stream uh it's stuff
+[00:20:56] we've talked about on uh technical
+[00:20:57] Roundup and other stuff and levels I've
+[00:21:00] tweeted or whatever else so here's that
+[00:21:02] 15 level on Solana which is currently
+[00:21:04] acting as resistance that's sort of the
+[00:21:06] context you know where the chart's
+[00:21:07] coming from I'm sure we can close a
+[00:21:09] couple of these no one will be too
+[00:21:11] offended
+[00:21:12] so here's another example again what's
+[00:21:14] the context the context is on the higher
+[00:21:16] time frame that we have had a weekly
+[00:21:18] close below the structure and we're now
+[00:21:20] getting an Underside retest so the
+[00:21:22] higher time frame context of what the
+[00:21:23] bigger picture is telling us is that
+[00:21:25] this is resistance and the same on The
+[00:21:26] Daily time frame uh close below retest
+[00:21:29] and sort of this is the point of price
+[00:21:30] action we're looking at we're not
+[00:21:32] blindly saying they below daily open
+[00:21:34] bearish we're saying the market's at
+[00:21:35] resistance and therefore the daily open
+[00:21:37] pivot has a on which is a low time frame
+[00:21:39] setup has a higher probability of
+[00:21:41] working because of the higher time frame
+[00:21:42] context and what does that look like you
+[00:21:44] can see Market not being accepted above
+[00:21:46] that level at all and this is kind of on
+[00:21:47] the hourly looking at this weekly level
+[00:21:49] of resistance we've mapped out the daily
+[00:21:51] open here
+[00:21:52] what does the market do pushes above
+[00:21:54] resistance first back below and then
+[00:21:56] comes back to give a nice kiss to the
+[00:22:00] same Underside level of resistance
+[00:22:01] before eventually trading lower so again
+[00:22:05] in terms of what that daily candle might
+[00:22:06] look like you have the first push
+[00:22:09] a second push later in the day to retest
+[00:22:11] structure and then you get the impulsive
+[00:22:13] move and look a lot of the time this
+[00:22:15] gets choppy and messy but even if you
+[00:22:17] traded the first kind of pivot of the
+[00:22:19] daily open sort of this pushing the
+[00:22:21] resistance back below even if you sold
+[00:22:23] somewhere there your invalidation would
+[00:22:25] still be at the high right so if the
+[00:22:26] Market's pushing up into resistance I
+[00:22:28] mean if anything that's an opportunity
+[00:22:29] to add compound or at the very least sit
+[00:22:31] in your hands and you didn't get
+[00:22:33] validated in the market ended up moving
+[00:22:34] lower so again nothing stopping you from
+[00:22:36] just smacking this on the daily time
+[00:22:38] frame or on the even on the weekly time
+[00:22:40] frame whatever else but you know it
+[00:22:42] spent a lot of time at this level before
+[00:22:44] it actually gave you an Impulse lower
+[00:22:46] and adding some low time frame color to
+[00:22:48] this High time frame setups or you can
+[00:22:50] view it the other way again of executing
+[00:22:52] the daily open pivot within this High
+[00:22:54] time frame context you're using the time
+[00:22:55] frames to stack the odds in your favor
+[00:23:00] here's another example and there's a lot
+[00:23:02] going on here this is Bitcoin I think
+[00:23:04] it's the first time uh that 19k was
+[00:23:06] tested as a fresh level of support and
+[00:23:09] there's a lot going on here in terms of
+[00:23:10] lower time frame setups taking place
+[00:23:12] within a higher time frame context the
+[00:23:15] first is
+[00:23:16] that again we're in an area of weekly
+[00:23:18] support so all of this is kind of
+[00:23:20] reasonable area for a wick it doesn't
+[00:23:22] need to be perfectly on the level as we
+[00:23:23] discussed in the entry triggers video
+[00:23:25] especially with weekly time frames you
+[00:23:27] need to give this some space to Wick and
+[00:23:30] sort of deviate especially on Lower time
+[00:23:32] frames so again here you have double
+[00:23:34] bottom or you know equal lows Market
+[00:23:36] pokes below no acceptance and that in
+[00:23:38] itself is a low time frame setup and
+[00:23:40] again I'm sure there were a lot of those
+[00:23:41] taking place on the way down but because
+[00:23:43] the market hadn't yet arrived at this
+[00:23:45] High time frame context the probability
+[00:23:47] of those long setups working out was
+[00:23:49] lower now that we're within the bullish
+[00:23:51] High time frame context the probability
+[00:23:52] of those low time frame low time frame
+[00:23:54] bullish setups working out is actually
+[00:23:56] higher so you've got a few things going
+[00:23:57] on here you know if you trade this the
+[00:23:59] classic sort of Swing failure pattern go
+[00:24:01] look at Trader Dante stuff but the basic
+[00:24:04] premises when you have an outstanding or
+[00:24:06] an obvious looking deep swing low and
+[00:24:09] the market I'm sure he would hate this
+[00:24:10] example but whatever I'm sorry Tom you
+[00:24:13] have an outstanding or a deep swing low
+[00:24:14] the market comes in and pokes it but
+[00:24:17] ends up closing above it so spokes below
+[00:24:19] the low but closes above it and it's the
+[00:24:21] close above that suggests that sellers
+[00:24:23] below this low are trapped and the
+[00:24:26] Market's likely going to revert higher
+[00:24:28] even if it's not like a good SFP example
+[00:24:30] it's still your standard kind of double
+[00:24:31] bottom poke reversal or kind of double
+[00:24:33] top poke reversal and as soon as that
+[00:24:36] happens you can see the market starts to
+[00:24:37] move up and responds positively to that
+[00:24:39] if you trade low time frame basic
+[00:24:42] support resistance slips you have
+[00:24:43] resistance resistance and in this case
+[00:24:45] the market actually turned and used that
+[00:24:46] as support and again this if you were to
+[00:24:49] try to trade this breakout here sort of
+[00:24:51] anywhere or in the middle of nowhere
+[00:24:53] maybe it's up to a coin toss if it's
+[00:24:55] happening within the context of Pi time
+[00:24:57] frame support our goal is to make it
+[00:24:59] better than coin toss and try to improve
+[00:25:01] the likelihood of that you know the
+[00:25:04] trade working out and improve our odds
+[00:25:05] basically
+[00:25:07] um you know even if you then waited if
+[00:25:09] you sort of take a bigger picture view
+[00:25:10] that this is the high time frame level
+[00:25:12] anything below it is a deviation I'm
+[00:25:14] going to get back gets back above that's
+[00:25:16] going to be the high a time frame Wick
+[00:25:17] you know if you traded anywhere within
+[00:25:19] this consolidation or even if you break
+[00:25:21] out bought the break the break from the
+[00:25:23] range initially all of that ended up
+[00:25:25] working out uh because you know the high
+[00:25:27] time frame move was in your favor so
+[00:25:29] you've got a sort of dual benefit there
+[00:25:31] that not only does the high time frame
+[00:25:33] improve the odds of your actual low time
+[00:25:36] frame trade working because you're
+[00:25:37] stacking time frames but also if it does
+[00:25:39] work you end up getting a bigger move
+[00:25:41] because as we discussed higher time
+[00:25:42] frame equals bigger moves so you can see
+[00:25:44] there's a lot there are a lot of
+[00:25:45] benefits to using High time frame
+[00:25:47] analysis even in your low time frame
+[00:25:49] trading setups it matters less what the
+[00:25:52] exact setup is but the context of where
+[00:25:55] it's taking place holds a lot of weight
+[00:25:57] in my sort of observation at the very
+[00:25:58] least
+[00:26:00] let's look at another example if USD on
+[00:26:03] the four hour here this is when the
+[00:26:04] market rallied into weekly structure at
+[00:26:07] sort of 1900 all thereabouts that was
+[00:26:10] the top of the merge rally again a level
+[00:26:12] we'd been looking at for quite a while
+[00:26:15] and this is more on you know out of
+[00:26:16] these two examples this is very much
+[00:26:17] more on the using low time frame to
+[00:26:19] execute on high time frame ideas and
+[00:26:21] what you have here
+[00:26:23] um I also just included this as an
+[00:26:25] example you know if you were trying to
+[00:26:26] sell this thing before it got to the
+[00:26:28] high time frame level you had some
+[00:26:30] pretty decent intraday setups forming
+[00:26:32] right so look at this level I've drawn
+[00:26:33] here which has a lot of Confluence at
+[00:26:35] the highs so you've got a big shelf the
+[00:26:37] market pushes above it and then falls
+[00:26:39] back below that should be a deviation
+[00:26:41] right that should be bearish instead
+[00:26:43] what does the market do just completely
+[00:26:44] blast through it and you're not having a
+[00:26:46] very good time there right at the same
+[00:26:47] point you know if you try to sell any of
+[00:26:49] these breakdowns you're just just not
+[00:26:51] having a very good time when did the
+[00:26:53] flows shift the flows shifted when the
+[00:26:56] market reached High time frame
+[00:26:57] resistance and at that point the low
+[00:26:59] time frame bearish setup started
+[00:27:01] printing so while the market was in the
+[00:27:03] middle of nowhere the low time frame set
+[00:27:04] up so a bit of a coin toss will neither
+[00:27:06] here nor there whereas when the flow's
+[00:27:08] shifted and they're more likely to shift
+[00:27:09] at high time frame areas where the
+[00:27:11] participation is going to shift then if
+[00:27:13] you stack those two things together and
+[00:27:15] use your lower time frame setups that
+[00:27:17] complement the higher time frame bias
+[00:27:19] that's when you really sort of Stack the
+[00:27:21] deck right and what we have here this is
+[00:27:23] something I've seen Trader main do I've
+[00:27:25] looked at the market in similar terms
+[00:27:27] before but when you have a sort of
+[00:27:29] deviation of a big level or a push
+[00:27:31] through it on Lower time frames that
+[00:27:32] ends up getting back below you can
+[00:27:34] simply sort of backtrack and say what
+[00:27:35] was the last bit of structure before
+[00:27:37] that push in this case we have a nice
+[00:27:39] little shelf cluster consolidation range
+[00:27:42] before the push and then it gets back
+[00:27:44] below and you can see a lot of support
+[00:27:45] going on there but again we're not
+[00:27:47] looking why wouldn't we buy this for
+[00:27:49] example right maybe you could for a
+[00:27:50] scalp right by the bottom of the range
+[00:27:51] so the top of the range but we know that
+[00:27:53] the high time frame context at the
+[00:27:54] Market's just rallied into resistance so
+[00:27:56] already that also has the benefit of
+[00:27:58] keeping us out of bad trades on Lower
+[00:28:00] time frames and giving us at least a
+[00:28:02] gentle nudge as to which part of the
+[00:28:03] market or which side of the market we
+[00:28:05] should be looking at so a lot of the
+[00:28:06] time when you get these pushes through
+[00:28:08] these high time frame levels and these
+[00:28:09] deviation type of setups you can simply
+[00:28:11] look where did the push originate from
+[00:28:12] and use that as your low time frame
+[00:28:14] pivot in this case as with any kind of
+[00:28:17] deviation set up it's either the
+[00:28:18] engulfing candle that's going to be in
+[00:28:20] validation or the high of the move
+[00:28:23] um and then in terms of getting on board
+[00:28:25] this weekly idea because again this is
+[00:28:26] like a weekly chart we're dealing with
+[00:28:28] right like how do you actually trade
+[00:28:29] this type of structure well we're taking
+[00:28:31] a four hour view of this weekly level
+[00:28:33] and that gives us very clear and
+[00:28:35] actionable setups in this case we have a
+[00:28:37] cluster access support it even gives you
+[00:28:40] a bounce into the level so if you want
+[00:28:41] to trade the level itself that's fine
+[00:28:43] but if you want to kind of get more
+[00:28:44] quote-unquote confirmation or trade the
+[00:28:46] back side of it on this occasion it gave
+[00:28:48] you a very clean breakdown and re-test
+[00:28:50] of that structure before expanding to
+[00:28:52] the downside so even though you're not
+[00:28:54] like timing the top and even if you
+[00:28:57] don't choose the trade at the level
+[00:28:58] itself because the high time frame is on
+[00:29:00] your side and that generally implies a
+[00:29:02] bigger move you can afford to trade
+[00:29:04] later or on the back side because it
+[00:29:06] means the higher time frame will give
+[00:29:07] the low time frame setup a bit of a
+[00:29:09] boost in terms of Direction and the size
+[00:29:11] of the move right so you're doing
+[00:29:12] business here when the top ended up
+[00:29:14] being here but the gap between the two
+[00:29:16] doesn't make any difference because you
+[00:29:18] still get to execute you still get on
+[00:29:20] board and the move that follows you know
+[00:29:21] from even from a kind of a sort of
+[00:29:24] ordinary risk to reward point of view
+[00:29:25] still makes the trade more than worth it
+[00:29:30] so you can start to see there are a few
+[00:29:31] different benefits start to creep in in
+[00:29:33] terms of multi-time frame analysis in
+[00:29:35] terms of directional bias in terms of
+[00:29:37] giving you a sense of how big the move
+[00:29:39] is going to be and sort of boosting uh
+[00:29:42] potential risk to reward or you know how
+[00:29:44] much you can squeeze out from what looks
+[00:29:46] like a low time frame setup if it has a
+[00:29:48] high time frame context it's going to
+[00:29:49] move more it also gives you a sense of
+[00:29:51] timing when you're executing High time
+[00:29:53] frame setups you know the market can
+[00:29:54] spend quite a lot of time at these high
+[00:29:56] time frame levels but it's when the low
+[00:29:57] time frame trigger kicks in that you can
+[00:29:59] be more sure or at least have higher
+[00:30:02] confidence to you know step on the gas
+[00:30:04] so to speak and that now the move is
+[00:30:06] going to come so the sort of very cool
+[00:30:08] they very much complement each other and
+[00:30:10] that's why I think it's worth
+[00:30:11] integrating both and again that's why
+[00:30:12] sort of we're discussing this topic at
+[00:30:15] hand
+[00:30:16] here's another example uh the E 1400
+[00:30:18] level uh prior cycle High I think this
+[00:30:20] might be what I was referring to the
+[00:30:21] second bounce uh but in any case let me
+[00:30:23] just quickly check
+[00:30:26] uh yeah this is the prior cycle High one
+[00:30:28] of the early bouncers yeah 1440. uh that
+[00:30:31] that's what we're talking about I'm
+[00:30:32] pretty sure it's this point on the 28th
+[00:30:35] of August let's see if I'm making things
+[00:30:36] up no exactly that's sort of where we're
+[00:30:38] looking at so again higher time frame
+[00:30:39] context previous cycle High uh current
+[00:30:41] range low as the market right you know
+[00:30:43] sort of fell back into it very
+[00:30:44] aggressively understandably you know
+[00:30:46] that the market is in an area of high
+[00:30:47] time frame support and you've actually
+[00:30:49] got a lot going on here so again similar
+[00:30:50] to the Bitcoin example you know that you
+[00:30:52] at the very least shouldn't be looking
+[00:30:53] to be a seller here and not immediately
+[00:30:54] because it is high time frame support so
+[00:30:56] your directional bias is inclined
+[00:30:59] towards uh the bullish side and what do
+[00:31:01] we have here we have a daily open setup
+[00:31:03] as well as that happens to form and this
+[00:31:06] is a nice bit of Confluence at an area
+[00:31:08] of lower time frame support resistance
+[00:31:10] so you have daily open plus hourly level
+[00:31:13] and what do we see we see the market is
+[00:31:15] sold off very aggressively uh on the
+[00:31:17] open into again it's not just selling
+[00:31:19] off anywhere it's not just any type of
+[00:31:21] breakdown if you didn't have the higher
+[00:31:22] time frame context if you didn't have
+[00:31:24] this level and you're just looking at
+[00:31:25] this bit of price action it looks
+[00:31:27] bearish right you have the market
+[00:31:29] support support breakdown without the
+[00:31:33] higher time frame context quite
+[00:31:35] understandably you could just be bearish
+[00:31:36] this market and looks like a breakdown
+[00:31:37] but because we know the higher time
+[00:31:39] frame context what we're actually
+[00:31:40] looking for buys or at the very least
+[00:31:41] skeptical of this move lower and how
+[00:31:44] does it unfold
+[00:31:45] market closes below tries to re-test
+[00:31:48] doesn't move anywhere immediately closes
+[00:31:50] back above actually gives you a re-test
+[00:31:52] on the level so this in itself could be
+[00:31:54] a setup where you're a buyer of the
+[00:31:56] level within validation at the low of
+[00:31:57] the day uh and then if you wanted more
+[00:31:59] Confluence right or wanted to take this
+[00:32:01] further you've then had a strong move
+[00:32:04] through the daily open and through this
+[00:32:06] resistance and to have a support
+[00:32:08] resistance flip on top of that so this
+[00:32:10] is what I mean by stacking the odds
+[00:32:11] right you've got
+[00:32:12] weekly daily whatever higher time frame
+[00:32:14] support you have a support resistance
+[00:32:16] flip at that level and then you have a
+[00:32:19] complementary lower time frame support
+[00:32:20] resistance flip which also takes the
+[00:32:22] market above the daily open that's a lot
+[00:32:24] of stuff working out in your favor right
+[00:32:26] and again you don't have to be too
+[00:32:28] concerned with the idea well you know if
+[00:32:30] I'm entering here and my first trouble
+[00:32:32] area is you know at the range high is
+[00:32:34] that trade even worth it well if you
+[00:32:36] purely assess it on low time frame terms
+[00:32:38] it could be a bit precarious but because
+[00:32:39] we know this is a daily level we know
+[00:32:41] that the jump it's going to get if we
+[00:32:43] are right is also bigger so we can
+[00:32:45] afford higher targets and that's sort of
+[00:32:47] why the market ended up pushing more and
+[00:32:49] I think it after this it also kind of
+[00:32:50] Consolidated if not went higher so
+[00:32:52] basically that's sort of the one again
+[00:32:54] one of the benefits is that if you're
+[00:32:56] trading low time frame setups
+[00:32:58] in high time frame areas they can get
+[00:33:00] you you can sort of take later entries
+[00:33:02] because the risk to reward isn't as
+[00:33:04] compromised because the move is likely
+[00:33:06] to be bigger because it's coming from
+[00:33:08] higher time frames hopefully that makes
+[00:33:09] sense but this is an example of like a
+[00:33:11] lot going on and all of it acting in the
+[00:33:13] same direction
+[00:33:16] uh here's an example of chain link this
+[00:33:17] is the daily Range High just over nine
+[00:33:19] dollars I believe I am referring to this
+[00:33:23] structure here
+[00:33:25] let's see my memory yep so this is the
+[00:33:27] daily level and we're looking at this
+[00:33:29] point in price action I believe
+[00:33:31] so we have a daily open example here
+[00:33:33] again and let's look at what the market
+[00:33:34] did and we know it's an area of
+[00:33:36] resistance so you have the daily open
+[00:33:38] Market dips a little bit and then pushes
+[00:33:40] up and below so that in itself is
+[00:33:42] arguably scalpable on those time frames
+[00:33:44] you know kind of made it to the bottom
+[00:33:45] of the range here uh but we know that
+[00:33:48] the pivot is likely going to come from
+[00:33:49] the higher time frame level so what does
+[00:33:51] the market do and this is all taking
+[00:33:52] place on the same day as you can see on
+[00:33:54] the eighth
+[00:33:56] you get a short-term seller from the
+[00:33:58] daily open and then as the market starts
+[00:33:59] to Rally it goes above the daily open
+[00:34:02] again so in your mind you're like okay
+[00:34:03] it's at resistance and it's above the
+[00:34:06] daily open this could be the wick
+[00:34:07] portion of the market and then it just
+[00:34:10] completely folds so regardless of and I
+[00:34:12] think there's like an hourly SFP there
+[00:34:14] as well if I'm not mistaken
+[00:34:15] um we can actually fact check that
+[00:34:19] do I even hold on
+[00:34:21] yeah and you also have like an hourly
+[00:34:23] swing failure pattern where you have a
+[00:34:25] clear swing High the market comes
+[00:34:27] through it and then closes below it so
+[00:34:29] even on the hourly you're getting entry
+[00:34:30] triggers and then if we look on the 15
+[00:34:32] minute you know if you trade the SFP
+[00:34:34] you're in around here uh if you're
+[00:34:36] trading the close above close Below on
+[00:34:39] the 15 minute you're also in if you're
+[00:34:41] trading the deviation and move below the
+[00:34:43] daily open any of this you're in also so
+[00:34:46] you just have like a wealth of options
+[00:34:48] to choose from because you have the
+[00:34:50] luxury of the higher time frame context
+[00:34:51] being on your side and in all those
+[00:34:53] cases you could also get happen to get a
+[00:34:54] very clear invalidation in the form of
+[00:34:56] the higher highest high-made because
+[00:34:58] it's one of those SFP fet you know
+[00:35:00] failed breakout type of setups usually
+[00:35:02] your invalidation is the highest I made
+[00:35:03] or the lowest slow made if it's the
+[00:35:05] bullish example right so again another
+[00:35:07] example of the market rallying into a
+[00:35:09] daily level but you're getting lower
+[00:35:11] time frame signals that give you really
+[00:35:13] tight invalidation and or really timely
+[00:35:15] and precise entries that then allow you
+[00:35:17] to capture the meat of the daily time
+[00:35:20] frame move with decision of a lower time
+[00:35:22] frame entry but that's really the sort
+[00:35:24] of I guess
+[00:35:26] the Golden Goose of all this is that
+[00:35:28] you're trying to catch the large moves
+[00:35:31] that happen on higher time frames within
+[00:35:33] the context and with the Precision of
+[00:35:35] lower time frame risk parameters and
+[00:35:37] that that's really when uh you you get
+[00:35:39] to milk the market
+[00:35:42] uh here's another example uh Chili's
+[00:35:44] this is I think a daily or weekly Range
+[00:35:48] High and I included this example because
+[00:35:49] it's like a little bit messy and that's
+[00:35:51] completely normal
+[00:35:52] I think this is also kind of a Wiki type
+[00:35:54] of thing so you've got a I think a daily
+[00:35:56] or weekly level at 28 cents and just
+[00:35:58] like we discussed I mapped up the
+[00:36:00] consolidation that ended up pushing the
+[00:36:02] market through the level before trading
+[00:36:03] lower and you can let's see what the
+[00:36:05] price action did right it actually
+[00:36:06] behaved very well initially you know it
+[00:36:09] this ended up being the deviation in the
+[00:36:10] short term came below Underside retest
+[00:36:12] and traded lower like even if you're
+[00:36:14] just scalping that then there might be
+[00:36:15] something there like you know this is an
+[00:36:17] hourly chart and that's a fairly sizable
+[00:36:18] move so even if you don't want to swing
+[00:36:21] trade
+[00:36:22] two daily weekly higher time frame
+[00:36:24] targets and you you're purely a low time
+[00:36:26] frame guy that leg alone could be enough
+[00:36:28] and that's what I mean even if you're
+[00:36:30] applying this multi-time Frame approach
+[00:36:31] but you're like a low time frame
+[00:36:33] maximalist nothing is forcing you to
+[00:36:35] actually hold it to the higher time
+[00:36:37] frame targets like the higher time
+[00:36:39] frames are still going to give you a
+[00:36:40] reaction of some sort and if you're very
+[00:36:42] low time frame oriented that reaction
+[00:36:43] could itself be enough we're just trying
+[00:36:45] to go the extra mile and catch the high
+[00:36:48] time frame move using low time frame
+[00:36:50] parameters because that completely you
+[00:36:52] know roofs the risk reward of the setups
+[00:36:54] we're talking about but in this case
+[00:36:56] the market that actually rallied again
+[00:36:58] and not only did it rally again but it
+[00:37:00] took out uh what would be your original
+[00:37:02] stop at the swing higher what should
+[00:37:04] have been the deviation right but then
+[00:37:06] look at look at what we do right we
+[00:37:07] simply apply the same logic of if this
+[00:37:09] is still going to be high time frame
+[00:37:10] resistance we can simply box out the
+[00:37:12] consolidation that pushed the market
+[00:37:14] through the level and see if that's
+[00:37:15] going to active resistance and then lo
+[00:37:17] and behold this ends up being a spike
+[00:37:19] and this is on the hourly so you know on
+[00:37:20] The Daily it just looks like Wick City
+[00:37:22] at this point
+[00:37:23] um but eventually you see the same
+[00:37:25] pattern play out where you have a Spiker
+[00:37:27] behind so some extra Confluence a loss
+[00:37:29] of support sort of a breakdown a re-test
+[00:37:32] of the origin of the spike I'm sure
+[00:37:34] Trader Maine would call this a breaker
+[00:37:35] or something like that and then that
+[00:37:37] retest you know sends the market lower
+[00:37:39] very impulsive leg that breaks Market
+[00:37:41] structure and then you know very cheeky
+[00:37:43] here also just gives you a re-test of
+[00:37:45] that same structure before moving lower
+[00:37:46] and so this is completely normal
+[00:37:48] sometimes the market will be messy and
+[00:37:50] that's just the cost of paying for
+[00:37:52] trying to optimize your risk reward on
+[00:37:54] low time frames when dealing with high
+[00:37:55] time frame structures we know High time
+[00:37:57] frame structures take generally longer
+[00:37:58] to resolve so it's completely reasonable
+[00:38:00] that the market might chop churn and
+[00:38:02] kind of Spike around a bit more when
+[00:38:04] viewed through a lower time frame lens
+[00:38:06] as long as you can take a scratch and
+[00:38:07] you can execute and sort of keep a cool
+[00:38:09] head and be patient for the high time
+[00:38:12] frame expansion there's nothing wrong
+[00:38:13] with more than one entry or a similar
+[00:38:16] trade idea around the same level of
+[00:38:18] resistance
+[00:38:24] let's go back
+[00:38:27] don't need you
+[00:38:29] slideshow
+[00:38:33] so what are some nuances and hopefully
+[00:38:35] those examples were helpful and there's
+[00:38:37] a lot to look at there the first thing
+[00:38:39] is it doesn't always it doesn't hurt to
+[00:38:41] always have an understanding of where
+[00:38:42] the market is on high time frames I'm
+[00:38:44] probably going to repeat myself for the
+[00:38:46] eighth time if I go over all the
+[00:38:47] benefits but from those examples it
+[00:38:49] should be clear that even if you're a
+[00:38:50] low time frame maximalist it doesn't
+[00:38:52] hurt to have an idea of where you're
+[00:38:54] doing business and where you're doing
+[00:38:55] business can radically change the
+[00:38:57] outcome of the same setup as we saw in
+[00:38:59] the s p examples if you were trying to
+[00:39:01] sell any of those breakdowns or take
+[00:39:03] those breakdown setups before the market
+[00:39:04] hit resistance you were getting carried
+[00:39:07] out if you started taking those setups
+[00:39:09] after the market here High time frame
+[00:39:10] resistance you are printing money and
+[00:39:11] the difference again isn't in the setup
+[00:39:13] it's just the flows changed and the
+[00:39:14] context change and the higher time
+[00:39:16] frames are the best tool to give you
+[00:39:18] that context
+[00:39:20] the second and also obviously it works
+[00:39:22] the other way around where if you're
+[00:39:23] trading on higher time frames you never
+[00:39:24] really know where the move is going to
+[00:39:25] come and you also want to optimize your
+[00:39:27] risk around on Lower time frames or at
+[00:39:29] least get a tighter in validation
+[00:39:30] because that means you can size the
+[00:39:31] trade a lot more and the way you do that
+[00:39:33] and kind of catch the impulse or tighten
+[00:39:36] up your parameters is by introducing low
+[00:39:38] time frame execution into your higher
+[00:39:39] time frame idea so they are super Yin
+[00:39:42] yangy very complementary right and
+[00:39:44] that's something worth bearing in mind
+[00:39:45] uh the second bullet point is something
+[00:39:47] I've sort of covered just before that
+[00:39:49] when you're trading around High time
+[00:39:51] frame areas using kind of multi-time
+[00:39:53] frame analysis
+[00:39:54] um it sort of unlocks High time frame
+[00:39:57] swing trade ideas right so you sort of
+[00:39:59] know when to act on them and it also
+[00:40:01] improves the probability of low time
+[00:40:03] frame trades working that's kind of why
+[00:40:05] you should always have some sort of
+[00:40:07] understanding of where the higher time
+[00:40:08] frames are because maybe you can just
+[00:40:10] outright swing trade them and those are
+[00:40:12] big moves that are worth catching but
+[00:40:14] even if you don't want to do that and
+[00:40:15] you're just a low time frame guy
+[00:40:16] stacking those odds in your favor as
+[00:40:19] we've seen can be very favorable and we
+[00:40:21] again front run this discussion this
+[00:40:24] discussion a little bit when it comes to
+[00:40:25] what is the Golden Goose well the Golden
+[00:40:27] Goose is using low time frames to
+[00:40:29] execute High time frame ideas and in
+[00:40:31] doing so supercharge your risk reward
+[00:40:33] and therefore your sizing right
+[00:40:35] um the third bullet point we sort of
+[00:40:36] looked at in the Chili's example
+[00:40:38] by definition introducing low time
+[00:40:40] frames also introduces more noise so you
+[00:40:42] have to be open-minded about letting the
+[00:40:44] market Wicks and taking a few scratches
+[00:40:46] and sort of working around an area and
+[00:40:49] that you know not necessarily the first
+[00:40:51] impulse is going to be the one that
+[00:40:52] rolls the market over
+[00:40:53] um as we know these high time frames can
+[00:40:55] take longer to resolve and so that just
+[00:40:57] means more patience on the lower time
+[00:40:59] frame front and be willing to take more
+[00:41:01] than one entry trigger and that's
+[00:41:02] important
+[00:41:04] the last point is with regards to
+[00:41:06] trading review just study your trading
+[00:41:08] journal it's worth asking whether a
+[00:41:11] multi-time frame approach actually
+[00:41:13] improves your trading outcomes because
+[00:41:15] it might not so for example if you're
+[00:41:16] purely a low time frame guy maybe
+[00:41:18] looking at higher time frames makes you
+[00:41:21] hold trades for too long because you're
+[00:41:22] trying to turn everything into a swing
+[00:41:23] whereas if you just traded your load
+[00:41:25] time frame strategy normally it would be
+[00:41:27] completely fine or the same goes maybe
+[00:41:28] your load time frame strategy is so good
+[00:41:30] that it works very well outside of high
+[00:41:32] time frame context you should just trade
+[00:41:34] the damn thing and forget the high time
+[00:41:35] from context that's completely
+[00:41:37] reasonable and the same obviously goes
+[00:41:38] for the high time frame Traders maybe
+[00:41:39] they just work better in isolation
+[00:41:41] you've got daily support you buy it on
+[00:41:42] the daily you settle daily resistance
+[00:41:44] all on the daily time frame and you
+[00:41:45] don't get involved in the noise same
+[00:41:46] with weekly monthly whatever else maybe
+[00:41:48] that just works better and you don't
+[00:41:50] need the added low time frame parameters
+[00:41:52] or even worse they end up confusing you
+[00:41:54] chopping you up whereas if you just
+[00:41:55] stuck the higher time frames you'd be
+[00:41:56] fine these are very serious questions
+[00:41:58] and then they're worth asking so don't
+[00:42:00] and this is like a like a fundamentally
+[00:42:02] very difficult thing to do of mixing and
+[00:42:04] matching time for frames to get the both
+[00:42:05] out of most so you know if you're going
+[00:42:07] to go down that route make sure that it
+[00:42:09] actually improves your expectancy as a
+[00:42:11] Trader and doesn't make it worse
+[00:42:13] that's all from me before you go do
+[00:42:16] YouTube stuff like subscribe leave me a
+[00:42:18] comment um you can see that the
+[00:42:20] frequency is really revving up on the
+[00:42:22] technical Roundup series or technical
+[00:42:23] analysis series oops Freudian slip so
+[00:42:25] I'd love to hear from you positive
+[00:42:27] negative constructive hopefully not
+[00:42:29] destructive but let me know whether this
+[00:42:30] was helpful and whether you want to see
+[00:42:32] more there's lots more content on the
+[00:42:33] way I think I've got like 13 videos or
+[00:42:35] something silly like that the number
+[00:42:37] isn't final but you know there's a lot
+[00:42:38] more cooking what do you want to see do
+[00:42:40] you like the shorter videos I'm not even
+[00:42:42] sure if this is a shorter video but some
+[00:42:43] of them will be shorter anyway I want to
+[00:42:45] hear from you guys so please let me know
+[00:42:47] and also if you want kind of market
+[00:42:48] analysis content go to technical Roundup
+[00:42:51] we do all sorts of you know I usually
+[00:42:53] upload one or two videos a week on their
+[00:42:55] market analysis and then a more kind of
+[00:42:57] chill podcast the commentary type of
+[00:42:58] thing and if you just want levels and
+[00:43:00] trade ideas go to trletter.com it's our
+[00:43:03] free Weekly Newsletter um and we've kind
+[00:43:05] of kind of send that out every Tuesday
+[00:43:06] that's all from me thank you for your
+[00:43:08] time attention support throughout the
+[00:43:11] years I hope this is helpful I'd love to
+[00:43:12] hear from you again how happy trading
+[00:43:14] take care and I'll see you for the next
+[00:43:16] one

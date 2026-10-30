@@ -1,0 +1,1353 @@
+# Video ID: H5IkSUZvYn0
+# Title: Technical Analysis Series - Market Microstructure (UPDATED)
+# Published: 2022-02-03
+# Source: yt_dlp captions (auto); uploader: CryptoCred
+# Analyst: CryptoCred
+# Channel: @CryptoCred
+# Duration_s:2673
+# Word count: 8895
+# ---
+[00:00:00] hello and welcome to another video as
+[00:00:02] part of the technical analysis series
+[00:00:05] this one is on market microstructure and
+[00:00:07] it's a follow-up to the order flow video
+[00:00:10] here's the outline for today's
+[00:00:12] lecture
+[00:00:14] lecture is a bit self-indulgent but
+[00:00:16] there we go
+[00:00:18] first of all disclaimer i know nothing i
+[00:00:20] am nobody this is entertainment finance
+[00:00:22] is bad and evil just like capitalism so
+[00:00:24] don't don't do it
+[00:00:28] no general remarks we'll get straight
+[00:00:29] into it limit order versus market order
+[00:00:31] the two main order types and most of the
+[00:00:34] order types you see on whatever platform
+[00:00:36] you trade are slight modifications or
+[00:00:38] derivatives of these two orders
+[00:00:41] so let's get into it the definition of a
+[00:00:43] limit order it's an instruction to buy
+[00:00:45] or sell an instrument at a specific
+[00:00:46] price or better and your better part
+[00:00:49] means using a limit order guarantees
+[00:00:51] that your fill price will not be worse
+[00:00:53] than your limit price but it can be
+[00:00:55] better so take a practical example
+[00:00:57] market a is trading at 10 that's its
+[00:00:59] price i set a limit order to buy at
+[00:01:01] eight and if market a begins to decline
+[00:01:04] my limit buy will only be filled at
+[00:01:06] eight or better and the all better means
+[00:01:09] less than eight so 7.95 7.9 whatever it
+[00:01:12] may be
+[00:01:13] now i may get filled below eight because
+[00:01:15] it's better and the reason for that is
+[00:01:17] as logic would suggest if i'm happy
+[00:01:18] buying eight then the inference is that
+[00:01:21] if i'm happy to buy below eight as well
+[00:01:24] because it's a cheaper price now you can
+[00:01:26] set exceptions to that where if you
+[00:01:28] would you want to buy only at eight and
+[00:01:30] not even below if it's a better price
+[00:01:32] like a post only limit order but in any
+[00:01:35] case you will not be filled above eight
+[00:01:37] because it's a worse price so you kind
+[00:01:39] of start to see that a limit order the
+[00:01:40] main benefit you're afforded is being
+[00:01:42] able to tightly control the prices at
+[00:01:45] which you are willing to trade and do
+[00:01:47] business and the drawback or the cost of
+[00:01:49] that is that the limit orders do not
+[00:01:51] guarantee execution so for example if
+[00:01:53] price trades to 8.1 and reverses whereas
+[00:01:55] my limit buyer was at eight i'm not
+[00:01:57] getting filled on that trade in the same
+[00:01:59] vein if my limit buys at eight and price
+[00:02:01] trades very little at eight before
+[00:02:03] reversing i may get what's called a
+[00:02:05] partial fill which means only a fraction
+[00:02:07] of my full buy order is filled on that
+[00:02:09] move
+[00:02:10] now a market order the definition is an
+[00:02:12] instruction to buy or sell an instrument
+[00:02:14] immediately at the best price currently
+[00:02:16] available as we'll discuss it's that
+[00:02:18] best price currently available part that
+[00:02:20] really varies and affects trade
+[00:02:22] execution however a market order
+[00:02:24] guarantees execution as to you get your
+[00:02:26] position and the full size you want
+[00:02:28] basically immediately but it does not
+[00:02:30] guarantee execution price because you
+[00:02:32] get the best price that's currently
+[00:02:34] available and there are a lot of factors
+[00:02:35] that affect that as we will discuss
+[00:02:40] now a few distinctions between limit
+[00:02:42] orders and market orders you'll often
+[00:02:44] hear limit orders referred to as or
+[00:02:46] people posting limit orders but referred
+[00:02:47] to as makers or maker orders and that's
+[00:02:50] because they are adding liquidity to the
+[00:02:52] order book and when market orders then
+[00:02:54] come in they trade against resting limit
+[00:02:57] orders
+[00:02:58] in the book
+[00:02:59] right so limit orders provide add
+[00:03:01] liquidity by allowing market orders to
+[00:03:04] take that liquidity when they execute
+[00:03:06] against them and that's where the whole
+[00:03:07] maker taker type of things come from
+[00:03:09] limit orders
+[00:03:10] improve liquidity conditions and
+[00:03:13] market orders reduce liquidity
+[00:03:16] conditions by literally taking liquidity
+[00:03:18] right and this is often reflected in
+[00:03:20] different fee structures you may get a
+[00:03:22] rebate or typically a lower fee for a
+[00:03:24] limit order or by being a maker and
+[00:03:26] you'll pay a higher fee by being a taker
+[00:03:29] and that's just to
+[00:03:31] you know that displays the impact you're
+[00:03:33] having on overall liquidity conditions
+[00:03:36] the basic trade-off between the orders
+[00:03:37] themselves is as we've discussed
+[00:03:39] the the cost for being able to choose
+[00:03:41] the price you trade so that's with a
+[00:03:43] limit order you have tight control over
+[00:03:44] the actual prices where you execute is
+[00:03:47] that execution itself is not guaranteed
+[00:03:49] so your limit order may go unfilled you
+[00:03:51] may get a partial fill whatever it may
+[00:03:53] be right and in the same vein the cost
+[00:03:55] for immediate execution when you're
+[00:03:57] using a market order is that the
+[00:03:58] execution price is not guaranteed so if
+[00:04:01] your market order is large or the market
+[00:04:03] you're trading is less liquid spreads
+[00:04:05] are wider you know market makers are
+[00:04:06] quoting wide whatever it may be your
+[00:04:08] fill price may be quite different from
+[00:04:09] the price you see on the
+[00:04:12] screen so with that in mind we can start
+[00:04:15] to answer a rather fundamental question
+[00:04:16] which is why does price move and the
+[00:04:18] basic answer is that market orders move
+[00:04:21] price so as a reminder market orders
+[00:04:23] demand immediate execution and reduce
+[00:04:26] liquidity in doing so so in essence when
+[00:04:29] market the number of market orders is
+[00:04:31] greater than the number of limit orders
+[00:04:33] at a level market must move up or down
+[00:04:36] to satisfy the liquidity demands of
+[00:04:38] those market orders because again they
+[00:04:40] can't wait they're happy to pay up
+[00:04:42] you know they're happy to get a worse
+[00:04:44] price
+[00:04:45] to guarantee that immediate execution
+[00:04:47] that's why they're using a market order
+[00:04:48] so take the practical example below
+[00:04:50] market a is trading at 10 that's kind of
+[00:04:52] its price and there are 50 000 in limit
+[00:04:55] orders at limit sell orders specifically
+[00:04:57] at ten and i want to buy seventy five
+[00:04:59] thousand dollars of market a urgently
+[00:05:02] now two things should kind of jump out
+[00:05:04] the first is the term urgently you know
+[00:05:05] i'll be using a market order the second
+[00:05:07] is that there is an imbalance between
+[00:05:09] the amount that i want to buy which is
+[00:05:10] 75 000 and the amount of liquidity or
+[00:05:13] limit sell orders available at that
+[00:05:15] price for me to be matched with right
+[00:05:18] so you can immediately see there's that
+[00:05:20] imbalance created to the tune of 25
+[00:05:23] dollars for example so what would happen
+[00:05:25] i get filled for fifty thousand dollars
+[00:05:27] at the price of ten but twenty five
+[00:05:29] thousand dollars of my order remains
+[00:05:30] unfilled because again i wanted seventy
+[00:05:32] five thousand now that the key point
+[00:05:34] about a market order it's an urgent
+[00:05:35] demand for liquidity even if i get
+[00:05:38] filled to 50 000 at 10 i can't just wait
+[00:05:40] and sit around for the other 25 000. the
+[00:05:42] market
+[00:05:43] will look for
+[00:05:44] the other 25 000 immediately even if
+[00:05:46] it's at a worse price which in this case
+[00:05:48] means a higher price so price moves
+[00:05:50] higher to fill the rest of my demands
+[00:05:53] for liquidity for example 25 000 across
+[00:05:55] 10.2 and 10.8 whatever it may be so as
+[00:05:58] per our definitions of a market order my
+[00:06:00] execution was guaranteed but my fill
+[00:06:02] price was not as the market had to match
+[00:06:05] or pair my liquidity demands
+[00:06:07] urgently and those orders were only
+[00:06:08] available at a worse or a higher price
+[00:06:10] it's the basic premise that if i want to
+[00:06:12] buy a lot at a given price and there are
+[00:06:16] only there are fewer sellers than what i
+[00:06:18] demand at that price then i need to find
+[00:06:20] more sellers and where am i going to
+[00:06:22] find more sellers at a less attractive
+[00:06:24] price for me and a more attractive price
+[00:06:26] for them which is higher so i'm paying
+[00:06:29] extra
+[00:06:30] you know i'm paying a premium to get
+[00:06:32] that urgent liquidity and that premium
+[00:06:34] comes in the form of a worse
+[00:06:37] price and it's a higher price if you're
+[00:06:39] trying to market buy and it's a lower
+[00:06:41] price if you're trying to market sell
+[00:06:44] take another example a guy at the bazaar
+[00:06:46] is selling five bananas for 30 cents
+[00:06:48] another five bananas at 35 cents
+[00:06:50] starving i urgently need to buy 10
+[00:06:52] bananas so i buy five at 30 cents but
+[00:06:54] again my order is for 10 bananas i can't
+[00:06:57] just buy five and then i'm using a
+[00:06:58] market order it kind of just sits around
+[00:07:00] and waits i'm happy to pay a worse price
+[00:07:03] to get that immediate execution it's the
+[00:07:04] whole point of a market order right so i
+[00:07:06] still need five more bananas immediately
+[00:07:08] so i buy the other five at 35 cents and
+[00:07:10] the price of bananas increases as a
+[00:07:12] result so once again it comes down to an
+[00:07:14] imbalance between my urgent need for 10
+[00:07:17] bananas and the amount available at the
+[00:07:18] starting price of 30 cents so if i
+[00:07:20] wanted to get the other five i had to
+[00:07:21] pay up for them and settle for a worse
+[00:07:24] price so circling back to why price
+[00:07:26] moves it's when the urgent demands for
+[00:07:28] liquidity cannot be fully met at a given
+[00:07:31] price price must move higher or lower to
+[00:07:34] meet those demands
+[00:07:38] bid ask spread so the bid is the price
+[00:07:41] at which a buyer is willing to buy and
+[00:07:42] the ask or the offered sometimes called
+[00:07:44] is the price at which a seller is
+[00:07:45] willing to sell and the best bid is the
+[00:07:47] highest bid at the market which just
+[00:07:49] means near current price and not just in
+[00:07:50] the order book or anywhere in the book
+[00:07:52] and the best ask is the lowest asking
+[00:07:54] price at the market again near current
+[00:07:57] price uh in terms of where market makers
+[00:07:59] are quoting currently so the bid asks
+[00:08:00] spread is the difference between the
+[00:08:03] best bid and the best ask so a narrow
+[00:08:05] spread you'll hear this term used this
+[00:08:06] is when the ask is close to the bid
+[00:08:08] usually indicates a liquid market with
+[00:08:10] some exceptions and a wide spread is
+[00:08:12] when the ask is distant from the bid is
+[00:08:14] a less liquid market and you'll hear the
+[00:08:16] term capturing the spread usually in
+[00:08:18] reference to dealers market makers
+[00:08:19] liquidity providers people posting limit
+[00:08:21] orders whatever it may be and
+[00:08:22] essentially the dealer will get filled
+[00:08:23] at the bid and close that position at
+[00:08:25] the offer and that spread that
+[00:08:27] difference is their profit on that trade
+[00:08:30] and we'll talk about that in detail in
+[00:08:31] the liquidity and market making sections
+[00:08:36] okay so liquidity
+[00:08:39] it's often used as an umbrella term i
+[00:08:40] mean just to first set the scene if you
+[00:08:42] will there's a big difference between
+[00:08:43] how liquidity and different types of
+[00:08:45] liquidity is used in the in the
+[00:08:47] literature if you will and how it's used
+[00:08:49] on crypto twitter they're not completely
+[00:08:50] different but just to give you the
+[00:08:52] um canonical definitions first
+[00:08:56] and then we'll go into why we use it how
+[00:08:58] we use it in our niche internet circle
+[00:09:01] so liquidity is often used as an
+[00:09:03] umbrella term to denote some version of
+[00:09:05] and again it's like a mixture it's not
+[00:09:06] one of these things it doesn't have to
+[00:09:08] be all of these things but it's the
+[00:09:10] following if i want to trade this thing
+[00:09:12] with a bunch of size how much price
+[00:09:14] impact am i going to have
+[00:09:16] or how much will it cost or how quickly
+[00:09:19] can i do it and i guess and or applies
+[00:09:21] for all of those so just to further
+[00:09:23] define some terms market impact the
+[00:09:25] average response of prices to trades so
+[00:09:27] if the average response surprises trades
+[00:09:29] is large
+[00:09:30] say that's large market impact if it's
+[00:09:31] not it's smaller liquidity
+[00:09:34] specific sub definition is the size of
+[00:09:36] the price response to a trade of a fixed
+[00:09:38] size and that kind of sets up this
+[00:09:40] relationship as per the final bullet
+[00:09:41] point where if if you know if there's
+[00:09:44] low market impact you would say that's a
+[00:09:46] liquid market and if there's large
+[00:09:47] market impact you would generally say
+[00:09:49] that's an illiquid or a less liquid
+[00:09:51] market
+[00:09:53] so some definitions that also play into
+[00:09:55] you know conversations about liquidity
+[00:09:57] spreads being the first one as as per
+[00:09:59] the previous slides wide spreads
+[00:10:01] generally suggest conditions of reduced
+[00:10:03] liquidity market makers quoting wider
+[00:10:05] and in those circumstances by definition
+[00:10:07] crossing the spread or executing a
+[00:10:09] market order becomes more expensive
+[00:10:11] right
+[00:10:12] you also hear the term depth used which
+[00:10:14] is the market's ability to absorb large
+[00:10:16] market orders without a significant
+[00:10:18] price impact so you can see it's
+[00:10:20] important to make the distinction
+[00:10:21] between spreads and depth because you
+[00:10:23] can have a market where the spreads are
+[00:10:24] tight you know the best bid and the best
+[00:10:25] offer are quite close to each other but
+[00:10:27] if those quotes are for relatively small
+[00:10:29] sizes you could say that the market is
+[00:10:31] still less liquid because they would get
+[00:10:33] crushed by a large market order and that
+[00:10:36] would have a large price impact so just
+[00:10:38] seeing how tight the spread is without
+[00:10:40] looking at the size that's being quoted
+[00:10:42] for that spread you know it only gives
+[00:10:44] you half half the half the picture
+[00:10:47] trading consideration is that liquidity
+[00:10:50] in general is relative to an extent so a
+[00:10:52] trader with a four five figure position
+[00:10:54] size or portfolio will not face the same
+[00:10:56] constraints as
+[00:10:59] a trader with a much larger book or
+[00:11:01] position size so there's a case to be
+[00:11:02] made for smaller traders to kind of
+[00:11:05] dabble more with whether they're on
+[00:11:07] equal footing which would be the lower
+[00:11:09] in the mid caps
+[00:11:10] but in any case the tldr version is that
+[00:11:13] liquidity
+[00:11:14] is some combination of speed and
+[00:11:16] immediacy right how quickly can i get
+[00:11:18] this order filled the cost of trading
+[00:11:20] which plays into
+[00:11:22] at least uh the kind of spreads that are
+[00:11:24] being quoted and also the market's
+[00:11:26] ability to absorb large market orders
+[00:11:28] which is the depth of a specific
+[00:11:30] instrument
+[00:11:31] of a specific instrument now as per that
+[00:11:34] sub point encrypted twitter palance
+[00:11:36] liquidity also refers to resting orders
+[00:11:38] above or below key swing points like the
+[00:11:40] whole sfp type of discussion and we will
+[00:11:42] talk about that but just wanted to get
+[00:11:44] the
+[00:11:45] normal definition of liquidity out of
+[00:11:46] the way first now one crucial
+[00:11:48] consideration uh this sounds
+[00:11:50] self-evident but it can be confusing is
+[00:11:51] that liquidity conditions can and often
+[00:11:53] do change and there are tons of factors
+[00:11:55] that can impact or influence liquidity
+[00:11:57] conditions volatility news events
+[00:12:00] session times liquidation cascades and
+[00:12:02] all sorts of other things
+[00:12:04] can change how liquid a market is at a
+[00:12:07] given time so it's important to have
+[00:12:09] some understanding of those metrics we
+[00:12:10] talked about spreads depth etc to know
+[00:12:13] what type of market impact you may or
+[00:12:15] may not have
+[00:12:18] so let's talk about order clustering and
+[00:12:20] stop loss hunting and failed breakouts
+[00:12:22] and breakdowns and any essentially any
+[00:12:24] version of the kind of reversal pattern
+[00:12:25] you see i'm not even going to show you
+[00:12:27] charts because there are 10 zillion of
+[00:12:28] them you've seen before on this channel
+[00:12:30] on the internet whatever but it's
+[00:12:32] essentially this phenomenon where the
+[00:12:34] market makes a high
+[00:12:36] and then at some point trades through it
+[00:12:39] before
+[00:12:40] reversing and moving lower or in the
+[00:12:42] same vein if you're dealing with a you
+[00:12:44] know level of support
+[00:12:47] you've got that as your bounce point you
+[00:12:49] can delineate the low
+[00:12:51] and then the market
+[00:12:52] comes trades through it before reversing
+[00:12:55] so the question we're essentially
+[00:12:56] answering is what happens kind of here
+[00:13:00] right um from a market microstructure
+[00:13:03] perspective is it
+[00:13:04] some bloke called the market maker who
+[00:13:06] buys up a ton and then sells it down or
+[00:13:08] you know sells down a town then buys it
+[00:13:10] up or is there something a bit more
+[00:13:11] nuanced going on my submission is
+[00:13:12] obviously the second right so we're
+[00:13:14] essentially answering what happens here
+[00:13:16] right what happens here
+[00:13:21] now
+[00:13:22] let's let's define some terms first and
+[00:13:24] foremost
+[00:13:25] order clustering is simply a large
+[00:13:26] number of orders resting at the same
+[00:13:28] price and so there's a cluster you know
+[00:13:30] collection of orders
+[00:13:32] now more specific order types a stop
+[00:13:35] market order is a market order that is
+[00:13:37] executed only when price reaches
+[00:13:39] whatever trigger price is set for it and
+[00:13:41] so if you think about the buy and sell
+[00:13:43] side a buy stop market order is a market
+[00:13:46] order to buy when price reaches the
+[00:13:48] trigger price and a sell stop market
+[00:13:51] order is a market order to sell when
+[00:13:53] price reaches the trigger price
+[00:13:55] and typically these order types are used
+[00:13:58] for stop losses and also by breakout
+[00:14:00] traders one final bit to remind yourself
+[00:14:03] of is that long's closing must become
+[00:14:06] orders to sell right so if you're plus
+[00:14:08] one and you want to go to zero you have
+[00:14:09] to sell to to get there and then in the
+[00:14:11] same vein shorts closing become orders
+[00:14:13] to buy so if you're at -1 you need to
+[00:14:16] buy to get to zero
+[00:14:18] now what's the mark market market micro
+[00:14:20] structure explanation of some of the
+[00:14:22] stuff that goes on at these junctures
+[00:14:23] that we've pointed out a few things are
+[00:14:25] happening
+[00:14:26] the first is that stock market orders
+[00:14:28] cluster at a particular price that's
+[00:14:31] above a swing high below a swing low
+[00:14:33] round numbers all the stuff that would
+[00:14:35] generally attract orders or used as a
+[00:14:37] reference point by a large number of
+[00:14:38] traders so let's say this
+[00:14:40] is some you know round number swing high
+[00:14:43] wick or breakout level that's important
+[00:14:45] and that's why orders may cluster above
+[00:14:47] it for example right
+[00:14:51] now
+[00:14:52] let's say price actually trades through
+[00:14:54] that key point and it triggers a wave of
+[00:14:57] market orders at once and all those
+[00:15:00] market orders or yeah i mean those
+[00:15:02] market orders are primarily in the same
+[00:15:04] direction
+[00:15:05] what we know from our market order
+[00:15:06] section is that creates an immediate
+[00:15:09] one-sided demand for liquidity so let's
+[00:15:11] take this kind of i guess
+[00:15:13] bullish like breakout attempt example if
+[00:15:15] this is a key
+[00:15:17] you know level in the market and the
+[00:15:19] market trades above it we can then look
+[00:15:21] back at our two groups
+[00:15:23] what kind of market orders are hitting
+[00:15:26] as price trades through this high well
+[00:15:28] we know that a buy stock market is a
+[00:15:29] market order to buy when price reaches
+[00:15:31] the trigger price and it's used for stop
+[00:15:33] losses and by breakout traders so as the
+[00:15:35] market is doing this existing short
+[00:15:37] positions that sold at some point here
+[00:15:40] whose invalidation is predicated on this
+[00:15:42] high being the high or remaining intact
+[00:15:45] as they sell their positions and get
+[00:15:47] stopped out those shorts closing become
+[00:15:50] market orders to buy right that's group
+[00:15:52] number one and then you also have
+[00:15:54] breakout traders for whom trading above
+[00:15:56] this is going to be technically
+[00:15:57] significant and they're expecting a move
+[00:15:59] like that trading through this high
+[00:16:01] becomes a market order to buy trying to
+[00:16:03] catch or force momentum and those are
+[00:16:05] our two groups as described here
+[00:16:09] so what happens
+[00:16:10] price trades through the price
+[00:16:12] triggering a wave of market orders at
+[00:16:14] once we just described the types of
+[00:16:16] groups in this example participating and
+[00:16:18] that creates an immediate one-sided
+[00:16:20] demand for liquidity now as we know from
+[00:16:22] our market order section price moves
+[00:16:24] until the liquidity demands of those
+[00:16:26] market orders are satisfied and those
+[00:16:28] market orders are being executed against
+[00:16:31] limit orders so what has taken place if
+[00:16:34] you get that flood of market orders and
+[00:16:36] then price starts to creep back down
+[00:16:38] below the breakout point well there are
+[00:16:40] a few things going on and this list
+[00:16:41] isn't exhausted by any means but i think
+[00:16:43] it's the most important stuff
+[00:16:45] the first in general is that liquidity
+[00:16:47] conditions improve and return to normal
+[00:16:49] given those demands have been met right
+[00:16:50] so there's a bit of inbuilt or built-in
+[00:16:52] reversion when that is the case
+[00:16:54] the second is that large limit orders
+[00:16:56] have been filled as we know the only way
+[00:16:58] those market orders stop impacting price
+[00:17:01] is when they have been sufficiently
+[00:17:03] paired with
+[00:17:04] limit orders and so when you get that
+[00:17:07] type of
+[00:17:08] slowdown it's essentially those large
+[00:17:10] market orders being soaked up and
+[00:17:11] hitting a wall of passive buyers or
+[00:17:13] passive sellers or just limit orders
+[00:17:15] right because as we know from our
+[00:17:16] understanding of market orders if there
+[00:17:18] weren't the limit orders willing to
+[00:17:21] soak up those market orders it would
+[00:17:23] just keep going until there have been
+[00:17:25] sufficient limit orders to meet the
+[00:17:26] liquidity demands of those market orders
+[00:17:28] right so the fact that price essentially
+[00:17:30] hits a wall or stops essentially means
+[00:17:32] that that liquidity demand created by
+[00:17:34] the flood of market orders has has been
+[00:17:36] met by limit orders
+[00:17:39] now the last two bits are very important
+[00:17:41] is that momentum chases and breakout
+[00:17:42] traders are offside and they're forced
+[00:17:44] to close so in this example let's say
+[00:17:46] you bought this breakout and then price
+[00:17:48] starts trading below the breakout point
+[00:17:50] right you're very likely considering
+[00:17:51] that you're wrong on the idea because it
+[00:17:53] was supposed to look like this and it
+[00:17:54] doesn't as we know long's closing create
+[00:17:58] selling pressure right long's closed
+[00:18:00] become orders to sell and those orders
+[00:18:02] to sell push price down a bit further
+[00:18:04] and then you have savvy traders who kind
+[00:18:06] of waited to see the the trap take place
+[00:18:09] they will also sell to exert further
+[00:18:12] pressure on those trap traders and force
+[00:18:14] them to close uh much more urgently so
+[00:18:17] in some effect you have the opposite
+[00:18:19] taking place but in essence it's it's a
+[00:18:22] mixture of these conditions uh i spoke
+[00:18:24] to adam from trading riot
+[00:18:27] he believes that it's much more to do
+[00:18:28] with momentum chasers versus traders
+[00:18:30] being stopped out i don't see why that
+[00:18:31] wouldn't be the case but in any case
+[00:18:34] it still adheres to the basic principles
+[00:18:37] of market microstructure that we talked
+[00:18:39] about you have one-sided demand for
+[00:18:42] liquidity created by market orders
+[00:18:44] hitting the market those have to be
+[00:18:46] absorbed otherwise price will keep
+[00:18:48] traveling or moving until they are if it
+[00:18:52] if price stops that means they most
+[00:18:53] likely hit a wall of sell orders someone
+[00:18:56] willing to soak up all those market
+[00:18:58] orders from the other direction and then
+[00:19:00] as
+[00:19:01] price moves down or moves you know
+[00:19:04] back below the breakout point or back
+[00:19:06] above the breakdown point
+[00:19:09] these traders with market orders trying
+[00:19:11] to force momentum and force a breakout
+[00:19:13] they realize they're wrong they start
+[00:19:15] puking their pukes turn into orders to
+[00:19:17] sell and then the smart guys who are
+[00:19:19] watching them puke will also sell to
+[00:19:21] force them to close more urgently that's
+[00:19:24] really it
+[00:19:27] the tldr version i suppose is
+[00:19:31] market orders flood
+[00:19:34] limit orders
+[00:19:35] soak
+[00:19:36] break out
+[00:19:38] traders
+[00:19:39] close
+[00:19:41] smart traders
+[00:19:43] step on their necks that's really it
+[00:19:46] that's that's really it
+[00:19:48] okay
+[00:19:52] now
+[00:19:54] going back full circle to the i guess
+[00:19:56] the crypto twitter version why do
+[00:19:58] traders use the term liquidity when
+[00:19:59] highlighting key swing points round
+[00:20:01] numbers whatever it may be
+[00:20:03] now the answer is they're assuming that
+[00:20:04] if the market trades through those
+[00:20:06] prices or those key swing points
+[00:20:07] whatever it may be a flood of market
+[00:20:09] orders will be triggered which creates a
+[00:20:12] one-sided demand for liquidity so as a
+[00:20:14] result it's kind of a bit of a misnomer
+[00:20:16] because as we know as price trades
+[00:20:18] through those key swing points the flood
+[00:20:20] of a one of those market orders creating
+[00:20:22] a one-sided demand for liquidity it
+[00:20:24] actually reduces liquidity because we
+[00:20:26] know that market orders reduce liquidity
+[00:20:28] they're takers right they take liquidity
+[00:20:30] so if you have a ton of market orders
+[00:20:31] sliding in at once you'd actually expect
+[00:20:34] in the short term at least liquidity
+[00:20:35] conditions not to improve but to
+[00:20:37] deteriorate which makes sense so when it
+[00:20:39] comes to traders using the term
+[00:20:40] liquidity to denote those key swing
+[00:20:42] points the actual assumption at work is
+[00:20:44] that there will be a larger
+[00:20:46] limit order entity willing to absorb all
+[00:20:49] of those market orders before leading to
+[00:20:52] some sort of reversal i just thought
+[00:20:53] it's you know might be helpful to go
+[00:20:55] into the
+[00:20:56] terminology or the history to some
+[00:20:57] extent so to generalize this activity
+[00:20:59] traders use the term buy stops or sell
+[00:21:01] stops
+[00:21:02] or just stops in general to refer to
+[00:21:04] this type of phenomenon so for example
+[00:21:06] if we go through another bullish one
+[00:21:08] where price is trading through a
+[00:21:09] breakout point uh and the claim will be
+[00:21:12] that there are buy stops above x
+[00:21:15] so above that swing point what does that
+[00:21:17] actually mean as we discussed it comes
+[00:21:18] from two groups one is existing short
+[00:21:20] positions closing
+[00:21:23] the second is
+[00:21:25] breakout traders trying to buy
+[00:21:27] and both those groups want liquidity in
+[00:21:29] the same area and the market moves to
+[00:21:31] find limit orders to satisfy those
+[00:21:33] demands sometimes those demands will be
+[00:21:35] satisfied quite close to the breakout
+[00:21:36] point so limit orders are willing to
+[00:21:39] soak up that liquidity and drive price
+[00:21:41] in the other direction and then the
+[00:21:43] momentum traders and the savior traders
+[00:21:45] kind of exacerbate the move other times
+[00:21:47] you get a real breakout as we'll discuss
+[00:21:51] so this is the important point right
+[00:21:54] not everything is a stop hunt or a trap
+[00:21:56] otherwise markets would never trend it
+[00:21:57] would look a lot of these charts would
+[00:21:58] look really rather absurd if you could
+[00:22:00] always just kind of draw a wick and the
+[00:22:02] market trades through it and then it
+[00:22:04] goes down immediately and then trades
+[00:22:05] through a low and goes up you basically
+[00:22:07] have these weird range bound market ad
+[00:22:08] infinitum that just doesn't make any
+[00:22:10] sense it's clear to us as observers that
+[00:22:12] markets do trend so how does that work
+[00:22:15] well the first thing to note is when it
+[00:22:17] comes to choosing levels uh to identify
+[00:22:20] order clustering the higher time frame
+[00:22:22] or in general more outstanding levels
+[00:22:24] they're the ones to go to and the logic
+[00:22:26] is rather basic is that because they are
+[00:22:28] big levels they have more eyes on them
+[00:22:30] those eyes attract more orders and more
+[00:22:32] people are using to are willing to use
+[00:22:34] those levels as a reference point for
+[00:22:36] their trades and that leads to a larger
+[00:22:38] order clustering effect which would mean
+[00:22:39] that once that type of pattern happens
+[00:22:41] you get a more significant break or
+[00:22:43] reversal simply because there are more
+[00:22:45] orders and or more participants trading
+[00:22:47] it right so don't be that person on the
+[00:22:49] one minute chart saying everything is an
+[00:22:50] sfp this is a stop hunt market maker
+[00:22:52] took the stops yada yada is probably not
+[00:22:54] helpful and not accurate right
+[00:22:56] now when it comes to breaks and
+[00:22:57] reversals now understanding what we know
+[00:22:59] about order clustering and market orders
+[00:23:01] and liquidity should be rather easy to
+[00:23:03] articulate which is the following are
+[00:23:05] there sufficient limit orders near price
+[00:23:08] to meet the immediate liquidity demands
+[00:23:11] of all the market orders
+[00:23:13] right so even if we take our simple
+[00:23:15] diagram version of the following
+[00:23:18] you know
+[00:23:19] this being the high
+[00:23:21] and then the market starts to trade
+[00:23:23] through it and as we know a bunch of
+[00:23:25] market
+[00:23:26] a bunch of buy stops are being hit
+[00:23:28] market orders to buy are hitting the
+[00:23:30] market as
+[00:23:31] price trades through this high both
+[00:23:33] shorts being stopped out and momentum
+[00:23:34] traders trying to force the issue basic
+[00:23:36] premise are there sufficient limit
+[00:23:38] orders near price to meet the immediate
+[00:23:40] liquidity demands of all those market
+[00:23:42] orders so these are all market orders to
+[00:23:44] buy the question is is there a market
+[00:23:46] seller
+[00:23:48] sorry a limit seller near the price
+[00:23:50] willing to soak up all those urgent
+[00:23:52] market orders if the answer is yes then
+[00:23:55] you get what often is referred to a kind
+[00:23:57] of stop hunt type of setup and the
+[00:23:59] market reverses for the reasons that we
+[00:24:00] mentioned right the limit cell the
+[00:24:02] bigger limit sales have been filled and
+[00:24:03] the breakout traders need to close and
+[00:24:05] the smarter traders step on the breakout
+[00:24:07] traders next and sell down forcing their
+[00:24:09] positions more underwater and for those
+[00:24:11] longs to really be at pressure to close
+[00:24:13] out right if the answer is no that there
+[00:24:15] aren't sufficient limit orders near
+[00:24:17] price to meet the liquidity demands
+[00:24:19] created by all the market orders market
+[00:24:22] buy orders in this case flooding in here
+[00:24:23] well then simply the market as we know
+[00:24:24] for our from our understanding will
+[00:24:26] continue to move higher until those
+[00:24:28] liquidity demands are satisfied by limit
+[00:24:31] sell orders passive sellers whatever you
+[00:24:33] want to call them so it all comes back
+[00:24:34] to liquid liquidity demands right
+[00:24:37] that's that's really the first principle
+[00:24:38] which is ubiquitous throughout this
+[00:24:40] market microstructure section
+[00:24:44] so it's like what's the difference
+[00:24:45] between how do i know or like what's the
+[00:24:47] difference between a stop hunt and a
+[00:24:49] real breakout was like i mean you could
+[00:24:51] look at some stuff as we'll discuss but
+[00:24:52] essentially it comes down to is someone
+[00:24:54] willing to soak up all those market
+[00:24:56] orders close to where they flood in if
+[00:24:58] the answer is yes there is someone
+[00:25:00] willing to soak well then you probably
+[00:25:01] get some sort of reversal and the
+[00:25:02] breakout traders eat if the answer
+[00:25:05] is no no one's willing to soak will in
+[00:25:06] the breakout traders make money
+[00:25:09] final note more of a kind of trading
+[00:25:11] housekeeping thing is no one has it out
+[00:25:13] for you or your positions uh it's very
+[00:25:15] rare unless you're some large percentage
+[00:25:17] of the open interest in a specific
+[00:25:18] contract and you're being clumsy with it
+[00:25:20] you know there are there are edge cases
+[00:25:22] but honestly
+[00:25:24] for most listeners if your stock
+[00:25:25] placement is likely to be at a cluster
+[00:25:27] of orders it may be worth either
+[00:25:29] reconsidering it or developing
+[00:25:30] strategies based on those order clusters
+[00:25:33] this will this will really come from
+[00:25:34] your trading journal and looking at what
+[00:25:36] happens after i get stopped out and is
+[00:25:38] there a way i can either avoid that or
+[00:25:40] actually create a setup from where i'd
+[00:25:42] ordinarily where i would ordinarily get
+[00:25:44] stopped out so that's some independent
+[00:25:45] study impetus if anything
+[00:25:48] independent study impetus nice okay
+[00:25:50] liquidation cascades we all love crypto
+[00:25:52] futures and stuff so liquidation
+[00:25:54] cascades
+[00:25:55] bread and butter right
+[00:25:57] the basic premise of liquidation
+[00:25:58] cascades is that liquidations beget more
+[00:26:01] liquidations now what does the term
+[00:26:02] liquidation actually mean as per the
+[00:26:04] risk management video which you've
+[00:26:05] hopefully watched it's your position
+[00:26:07] being forcibly closed by the exchange
+[00:26:08] when you run out of maintenance margin
+[00:26:10] or collateral essentially required to
+[00:26:12] maintain the position uh just like
+[00:26:14] shorts closing become orders to buy and
+[00:26:16] long's closing become orders to sell
+[00:26:18] long liquidations become urgent orders
+[00:26:20] to sell because those are long's closing
+[00:26:22] and short liquidations become urgent
+[00:26:24] orders to buy because those are
+[00:26:27] shorts closing right so
+[00:26:29] the very simple kind of loop that is
+[00:26:31] created in a cascading liquidation
+[00:26:33] environment is the following long
+[00:26:34] position a is open price moves down and
+[00:26:37] long position a reaches its liquidation
+[00:26:40] price
+[00:26:41] as a result long position a is forcibly
+[00:26:43] closed and that as we know long's
+[00:26:45] closing means sell orders hitting the
+[00:26:46] market and settle is hitting the market
+[00:26:48] moves price down as a result long
+[00:26:50] position b reaches liquidation price and
+[00:26:51] long position b is forcibly closed that
+[00:26:53] means more sell orders hitting the
+[00:26:54] market price moves down lower and then
+[00:26:56] long position c reaches liquidation
+[00:26:58] price you kind of
+[00:26:59] hopefully you see the pattern there
+[00:27:00] right
+[00:27:02] now again nothing too different in terms
+[00:27:04] of market microstructure it's still an
+[00:27:06] imbalance created by the urgent demands
+[00:27:08] for liquidity by those positions closing
+[00:27:10] at market and an insufficient number of
+[00:27:12] limit orders willing to meet those
+[00:27:14] demands at that price so a lot of guys
+[00:27:17] selling it once brings in more sellers
+[00:27:20] in a loop when it comes to the
+[00:27:21] liquidation cascade a lot of
+[00:27:22] participants buying at once also brings
+[00:27:24] in more buyers in a loop
+[00:27:28] so liquidation cascades are also
+[00:27:29] exacerbated so made greater or furthered
+[00:27:32] by two things the first is that group of
+[00:27:34] savvy traders adding further pressure
+[00:27:36] via market orders sometimes you can just
+[00:27:37] smell a liquidation cascade you know a
+[00:27:39] large chunk of open interest is trapped
+[00:27:41] maybe there's a technical setup to go
+[00:27:43] with it and you can basically exert
+[00:27:45] pressure on those positions and hope to
+[00:27:47] catch the market at a at a discount uh
+[00:27:49] or at a higher or lower price depending
+[00:27:51] on which side is getting liquidated and
+[00:27:52] also liquidity providers and market
+[00:27:54] makers who are very cognizant of open
+[00:27:56] interest and the proximity of the market
+[00:27:58] to a cascading effect will also quote
+[00:28:01] wider and provide less liquidity because
+[00:28:03] no one wants to get trapped um you know
+[00:28:06] with a bunch of inventory in the middle
+[00:28:08] of a liquidation cascade that's going to
+[00:28:09] be hard to get rid of and we will talk
+[00:28:11] about what all of that means but that's
+[00:28:12] essentially liquidation cascades in a
+[00:28:14] nutshell it's the same thing you know
+[00:28:17] the pressure of a bunch of market orders
+[00:28:19] flooding in at once um just on crack or
+[00:28:22] on steroids i don't know which one is
+[00:28:23] more acceptable this isn't monetized
+[00:28:25] anyway
+[00:28:27] okay so market makers a group
+[00:28:29] or you know an entity which we alluded
+[00:28:30] to a type of participant earlier
+[00:28:32] obviously it's the entity to which you
+[00:28:34] attribute every bad trade or move that
+[00:28:36] caught you offside i mean that's
+[00:28:37] obviously a joke we'd be surprised how
+[00:28:39] common this is both on trading youtube
+[00:28:41] and crypto twitter to some extent where
+[00:28:44] you see these big wicks or outlier moves
+[00:28:46] which are very easily explained with
+[00:28:48] market microstructure basics but the
+[00:28:50] go-to understanding is that there's some
+[00:28:51] i don't know some bloke in chicago at
+[00:28:53] the cme just has this big red button on
+[00:28:56] his keyboard saying run the stops and
+[00:28:57] then price wicks out takes you out for
+[00:28:59] your net worth of 0.004 btc and then
+[00:29:02] price reverses right that's not really
+[00:29:04] the case so let's start from first
+[00:29:05] principles market makers are liquidity
+[00:29:07] providers and that term should become
+[00:29:09] familiar because we talked about how
+[00:29:10] limit orders add liquidity to the order
+[00:29:13] book and they are makers and they
+[00:29:14] improve liquidity conditions whatever so
+[00:29:16] market makers do performing essentially
+[00:29:19] the same function they provide liquidity
+[00:29:21] by posting limit orders which allow
+[00:29:23] traders using market orders or those who
+[00:29:25] require immediacy to take that liquidity
+[00:29:30] now the prices at which the market maker
+[00:29:31] is willing to offer liquidity is
+[00:29:33] essentially the bid ask spread you know
+[00:29:34] the bid are spread and that's their
+[00:29:35] quote right that's their quote you hear
+[00:29:37] that so you often hear like they're
+[00:29:39] quoting wide quoting an arrow whatever
+[00:29:40] it may be or asking a market maker for a
+[00:29:43] quote when you want to trade a specific
+[00:29:44] instrument that's what that refers to
+[00:29:46] now as a quick reminder i mean i talked
+[00:29:48] about that limit orders add liquidity by
+[00:29:50] allowing market orders which take
+[00:29:51] liquidity to execute against them so how
+[00:29:54] do they make money well essentially
+[00:29:55] market makers sell immediacy right
+[00:29:58] traders fill market makers bids when
+[00:30:00] they sell using a market order and they
+[00:30:02] fill the market makers asks when they
+[00:30:04] use when they buy using a market order
+[00:30:07] and so the market maker will typically
+[00:30:08] make money by capturing the spread i.e
+[00:30:11] buying at their bid and selling at their
+[00:30:13] ask and that spread is not just the bid
+[00:30:16] our spread but also the kind of profit
+[00:30:17] on their trade a lot of the time the
+[00:30:19] realized spread what they actually make
+[00:30:20] from that transaction is a bit less than
+[00:30:22] the outright spread doesn't really
+[00:30:23] matter all too much and obviously it's
+[00:30:26] not as easy as it sounds given you know
+[00:30:29] the frequency with which
+[00:30:31] market makers have to price and reprice
+[00:30:33] their quotes especially to compete on
+[00:30:35] larger exchanges and during volatility
+[00:30:36] and a bunch of other factors it's not
+[00:30:38] super straightforward and there's a
+[00:30:40] reason all the high frequency trading
+[00:30:41] firms and quants have huge brains so
+[00:30:44] going back to spreads in the context of
+[00:30:46] market making you'll hear the term
+[00:30:48] narrow and wide spreads as we defined
+[00:30:50] spread is the difference between the bid
+[00:30:51] and the ask you know the buy price and
+[00:30:53] the sale price also the bid offer
+[00:30:54] whatever you want to call it so when you
+[00:30:56] have a wide spread you have a large
+[00:30:57] difference between the bid and the ask
+[00:30:59] and the narrow spread you have a small
+[00:31:00] difference between the bid and the ask
+[00:31:02] and you can just kind of go and look at
+[00:31:04] your favorite perp
+[00:31:06] and kind of just study how prices are
+[00:31:09] being quoted what's top of the book
+[00:31:11] further away and all of that type of
+[00:31:13] stuff just paying attention to the tape
+[00:31:15] can be very helpful in that regard you
+[00:31:16] can even go to a kind of aggregator of
+[00:31:19] order books like okotoki and kind of
+[00:31:21] check out what they're doing again not
+[00:31:24] affiliated or anything like that just
+[00:31:25] some
+[00:31:26] venues to observe the types of stuff we
+[00:31:29] are talking about
+[00:31:31] now when it comes to market making
+[00:31:32] probably the most misunderstood thing
+[00:31:34] but also the most important thing is
+[00:31:35] inventory risk right so just to define
+[00:31:38] some terms inventories the market makers
+[00:31:40] exposure to an asset and in general and
+[00:31:42] there are crypto exceptions to this
+[00:31:43] which we'll talk about in general market
+[00:31:45] makers prefer to be delta neutral as far
+[00:31:47] as possible and which essentially means
+[00:31:50] if delta is directional exposure
+[00:31:52] simplest definition
+[00:31:53] having no or limited exposure to
+[00:31:55] directional risk because holding
+[00:31:56] inventory typically means you're holding
+[00:31:58] delta so let's say i'm a market maker
+[00:31:59] i'm not i'm too stupid too bad at maths
+[00:32:01] uh so if my bid gets hit and i'm long 10
+[00:32:04] bitcoin so someone executed
+[00:32:06] a market order filled my bid and i'm
+[00:32:08] long 10 btc in the period my ask isn't
+[00:32:12] hit or my offer isn't hit i'm holding 10
+[00:32:14] bitcoins worth of directional exposure
+[00:32:16] and all the associated financing costs
+[00:32:18] with that position whatever that may be
+[00:32:19] then consider if the price of bitcoin
+[00:32:21] falls i must quote lower asking prices
+[00:32:25] to get rid of the inventory or to become
+[00:32:27] delta neutral or go back to zero or
+[00:32:29] offset that position right and that
+[00:32:31] essentially turns into a form of buying
+[00:32:33] high selling low or you know whatever
+[00:32:37] with that in mind we can then articulate
+[00:32:38] what inventory risk actually is which is
+[00:32:41] holding exposure to an asset that you
+[00:32:43] may not be able to get rid of in a
+[00:32:45] timely manner as its value fluctuates
+[00:32:47] and usually in the form of uh moving
+[00:32:49] against you right so that's why the
+[00:32:51] ideal environment for market makers is a
+[00:32:54] high volume trendless tight
+[00:32:56] consolidation which would mean there's
+[00:32:57] lots of trading going on so quotes being
+[00:32:59] filled on both sides and reduced
+[00:33:01] inventory risk because the price of the
+[00:33:03] underlying asset stays fixed so you can
+[00:33:05] see just with from first principles this
+[00:33:07] flies to some extent in the idea that
+[00:33:09] market makers love this like crazy
+[00:33:11] whipsaw price action you know up 10
+[00:33:14] spikes the high down 20
+[00:33:15] that doesn't really stand up to scrutiny
+[00:33:17] although there are some exceptions which
+[00:33:18] we'll discuss
+[00:33:20] now obviously market makers have to
+[00:33:23] mitigate their inventory risk and there
+[00:33:24] are a few ways of doing that they can
+[00:33:25] adjust their quotes so if they have too
+[00:33:27] much inventory they can lower they need
+[00:33:29] they need to attract buyers to get rid
+[00:33:31] of it right so you need to lower their
+[00:33:32] asks to move them close to price more
+[00:33:34] likely to get hit lower their bids make
+[00:33:36] them less attractive less likely to get
+[00:33:37] hit the opposite is true of course if
+[00:33:39] they have too little inventory and they
+[00:33:40] want more of it and they need to attract
+[00:33:42] sellers how do you do that you raise
+[00:33:43] your asking price to get it further away
+[00:33:45] from the price less likely to get hit or
+[00:33:47] you raise your bids to increase the
+[00:33:48] likelihood that they get filled there
+[00:33:49] are other stuff other things they can do
+[00:33:51] you can change the sizes you're quoting
+[00:33:52] depending on which side you want to get
+[00:33:54] filled you can actually become a taker
+[00:33:56] if there's some urgency in evening out
+[00:33:58] and you can use other instruments etc
+[00:34:00] etc are not super relevant but just to
+[00:34:02] add some context now toxic flow and
+[00:34:04] dealing with informed traders is
+[00:34:05] important so as we've established lots
+[00:34:07] of inventory and big vol isn't typically
+[00:34:09] desirable for market makers and i will
+[00:34:11] talk about some exceptions when it comes
+[00:34:13] to the crypto caveats but that's a very
+[00:34:14] safe baseline assumptions a baseline
+[00:34:16] assumption so toxic flow is those two
+[00:34:18] things essentially put together we have
+[00:34:20] informed traders so smart money with big
+[00:34:23] size trading with large market orders
+[00:34:25] into market makers because again the
+[00:34:28] smart money in that case or the informed
+[00:34:29] traders will be taking with large size
+[00:34:32] and the market you know reducing
+[00:34:34] liquidity and the market makers will be
+[00:34:35] the one providing it now
+[00:34:38] what happens in that case is that market
+[00:34:39] makers end up acquiring a bunch of
+[00:34:41] inventory which is the product of
+[00:34:42] one-sided order flow they're getting
+[00:34:43] pounded with these large market orders
+[00:34:45] and it's all very one-sided and that
+[00:34:47] inventory becomes very hard to offset
+[00:34:49] given the likely price impact of those
+[00:34:52] large market orders that's actually the
+[00:34:54] the dynamic that's um that exists with
+[00:34:57] toxic flow and you know the mental
+[00:34:59] calculation is that's being made by um
+[00:35:02] the informed trader is that
+[00:35:05] they're happy
+[00:35:06] to
+[00:35:07] trade into the market maker and suffer
+[00:35:10] worse execution or wider quotes whatever
+[00:35:12] because whatever information they have
+[00:35:14] that they're trading on pays for the
+[00:35:16] edge you would normally give to the
+[00:35:19] market maker right especially if it's a
+[00:35:21] time sensitive edge
+[00:35:22] be it speed or information or whatever
+[00:35:25] it may be in that regard you kind of
+[00:35:27] have to use a market order um because
+[00:35:31] with every second of time that passes
+[00:35:33] presumably that edge deteriorates so
+[00:35:35] you're happy to pay for that urgency to
+[00:35:37] take advantage of the edge and that's
+[00:35:39] kind of the first caveat in principle
+[00:35:41] informed flow will still use market
+[00:35:43] orders especially when their edge is
+[00:35:44] time sensitive that's information
+[00:35:46] latency and so on in practice what
+[00:35:48] you'll see if you look at derivatives
+[00:35:49] order flow uh market orders and
+[00:35:51] derivatives getting absorbed by a large
+[00:35:53] passive buyer or seller is usually the
+[00:35:54] catalyst for reversal that see may seem
+[00:35:56] somewhat contradictory but it does make
+[00:35:59] sense
+[00:36:00] now the final thing i'll note about
+[00:36:02] market makers and being delta neutral
+[00:36:03] etc um crypto is a bit of a weird one
+[00:36:06] because a lot of crypto shops which do
+[00:36:07] hft work and have market making
+[00:36:09] operations they're not purely they're
+[00:36:12] not pure market making firms right
+[00:36:14] they'll also take other trades and
+[00:36:15] discretionary positions and put on
+[00:36:17] deltas and so on so you know i listen to
+[00:36:19] qcp capital make some presentations and
+[00:36:21] i've talked to some other guys
+[00:36:23] if they think
+[00:36:24] that
+[00:36:26] the position they're being hit with is
+[00:36:29] plus cv or just like a good one in
+[00:36:31] general as part of either another
+[00:36:33] trading system or just that someone's
+[00:36:34] really urgently selling into them like
+[00:36:36] near a bottom or buying from them near
+[00:36:37] the top
+[00:36:38] they'll keep parts of that position on
+[00:36:41] their book and not you not look to
+[00:36:42] offset it immediately so they'll take
+[00:36:45] basically the tldr is they'll be happy
+[00:36:46] to actually take on and keep inventory
+[00:36:49] if they think it's an at an advantageous
+[00:36:51] price um so in this example as i said
+[00:36:53] they'll often keep the delta if they
+[00:36:54] think it's advantageous or not rush to
+[00:36:57] be delta neutral in all scenarios but
+[00:36:59] that's still you know quite a far cry
+[00:37:01] from some bloke sitting there saying
+[00:37:02] let's run the upside let's run the
+[00:37:04] downsides that type of stuff
+[00:37:07] order flow passive and active so there
+[00:37:10] are lots of tools that visualize order
+[00:37:11] flow ideas the most common forms are the
+[00:37:13] following you get some sort of order
+[00:37:14] book analysis we looked at okotoki
+[00:37:16] you've got trading light etc you look at
+[00:37:18] your heat maps and seeing where those
+[00:37:20] passive orders are resting and how
+[00:37:22] they're being moved and then you've got
+[00:37:23] tools displaying volume per price and
+[00:37:25] that's your sierra chart extra charts
+[00:37:27] agar or any kind of cvd types of
+[00:37:31] information
+[00:37:33] those are showing um that's active order
+[00:37:35] flow now what's the difference so order
+[00:37:37] book analysis and all of its derivatives
+[00:37:38] is essentially passive order flow that
+[00:37:40] is to say the main thing to focus on it
+[00:37:42] doesn't cost anything to show those big
+[00:37:45] bids and offers as those limit orders
+[00:37:47] can be canceled for free right
+[00:37:49] and crucially those bids and asks
+[00:37:50] especially larger orders away from the
+[00:37:53] inside spread they will shift as the
+[00:37:54] market shifts right it's not a static
+[00:37:56] thing so sometimes you'll see people
+[00:37:57] post up a picture of an older book and
+[00:37:59] say oh well there's only you know 50 btc
+[00:38:01] and asks until we go to x price but if
+[00:38:03] price were actually to start moving
+[00:38:05] towards x price the order book and the
+[00:38:07] off bids and offers being shown would
+[00:38:09] also move as the price moves that's
+[00:38:11] that's what it you know it's kind of
+[00:38:12] stale order flow if you will gives you a
+[00:38:14] snapshot or preview of the market at a
+[00:38:17] certain point but you cannot expect that
+[00:38:19] to remain the case as price actually
+[00:38:21] moves that's very important um
+[00:38:23] on the topic of large bids and large
+[00:38:26] offers they're not automatically bullish
+[00:38:27] or bearish for example they could be
+[00:38:29] there in the large bids example to fill
+[00:38:31] smaller orders or to even push price
+[00:38:33] into actually filling asks elsewhere or
+[00:38:35] hidden orders elsewhere on another
+[00:38:37] exchange um
+[00:38:38] it's not always you know thinking about
+[00:38:40] it critically it's not always
+[00:38:41] economically efficient
+[00:38:43] to advertise the full size you want to
+[00:38:45] trade and the price you want to trade
+[00:38:46] and so on uh because of the risk of
+[00:38:48] front running which is participants
+[00:38:50] pushing price away from your limit
+[00:38:51] orders and uh trading ahead like trading
+[00:38:54] your intention ahead of where you want
+[00:38:55] to trade it and also in crypto
+[00:38:57] especially it's fairly easy to mitigate
+[00:39:00] that kind of parasitic trading you can
+[00:39:02] use hidden orders there's otc trades
+[00:39:04] block trades and so on so showing large
+[00:39:06] orders can be used can be as some sort
+[00:39:09] of psyops right
+[00:39:11] other times it's actually very obvious
+[00:39:13] what's going on like there's just like a
+[00:39:14] big limit chase going on uh like we had
+[00:39:16] in the 2020 2021 coinbase uh us
+[00:39:20] bidder but my view is the following
+[00:39:22] right in essence
+[00:39:23] given all the
+[00:39:25] drawbacks and caveats that come with
+[00:39:28] passive order flow i think order book
+[00:39:30] essentially all the book alpha and
+[00:39:32] strategies do exist but they'll most
+[00:39:34] likely come from specific idiosyncrasies
+[00:39:36] or like a particular behavior in a given
+[00:39:38] asset class or even a specific exchange
+[00:39:40] so in my view you need to be really
+[00:39:42] granular with what you're looking for
+[00:39:44] and not just saying well big bid equals
+[00:39:46] bounce forever big ask equals doom it's
+[00:39:49] usually not that simple and requires a
+[00:39:51] bit more study and it can be definitely
+[00:39:53] used as like a confluence tool like even
+[00:39:56] off off the cuff um bitfinex showing
+[00:39:59] large
+[00:40:00] bid walls at market inflection points
+[00:40:04] tends to be a catalyst for you know more
+[00:40:06] often than not is some sort of big
+[00:40:07] catalyst for reversal however ftx doing
+[00:40:10] the same thing throwing up large bywalls
+[00:40:13] is you know offers a much lower strike
+[00:40:15] rate in that regard so you'd think it's
+[00:40:17] the same thing you know price at a key
+[00:40:19] inflection point large bids come up
+[00:40:20] maybe you know equals bullish well it
+[00:40:22] depends on which venue those bids are
+[00:40:25] being shown right so you can see that it
+[00:40:27] really comes down to the nuances and i'm
+[00:40:29] not comfortable making a video where i
+[00:40:30] kind of extrapolate from first
+[00:40:32] principles big bid wall equals buy
+[00:40:35] because bullish big cell will equal sell
+[00:40:37] because bearish i mean it makes for a
+[00:40:38] shorter and easier video but i just
+[00:40:40] don't think it's true
+[00:40:43] order flow uh the active side it's tools
+[00:40:45] like footprint displaying active order
+[00:40:47] flow so this is in contrast with
+[00:40:50] passive order flow this is buying and
+[00:40:51] selling that has already taken place
+[00:40:53] it's not kind of resting orders or the
+[00:40:55] intention trade or whatever these are
+[00:40:57] kind of economic transactions that have
+[00:40:58] already taken place and these different
+[00:41:00] charts and tools in varying forms
+[00:41:02] display the amount of volume traded at a
+[00:41:05] given price level
+[00:41:07] now again doing some sort of full order
+[00:41:09] flow trading video strategy thing is
+[00:41:12] beyond the scope of this video and
+[00:41:13] probably beyond my ability but in
+[00:41:15] essence
+[00:41:17] using active order flow can be used to
+[00:41:18] infer strength or weakness in a market
+[00:41:20] by gauging the impact or lack thereof
+[00:41:23] that market orders are having on price
+[00:41:24] so you can see it all comes back to
+[00:41:26] market orders to a large extent it's
+[00:41:28] very useful thing to look at and the
+[00:41:29] order and the impact they're having on a
+[00:41:32] market so most
+[00:41:34] active order flow strategies to some
+[00:41:36] extent are focused on patterns of
+[00:41:38] absorption um or lack thereof so
+[00:41:40] essentially by absorption i mean a large
+[00:41:42] effort from market orders to move price
+[00:41:44] with relatively little impact which as
+[00:41:46] per examples would suggest that larger
+[00:41:49] limit orders are being filled and are
+[00:41:50] willing to soak up all that one-sided
+[00:41:54] flow i will say that you know as final
+[00:41:56] note lots of guru wizardry when it comes
+[00:41:58] to i mean order flow in general
+[00:41:59] microstructure in general but order flow
+[00:42:00] like active order flow specifically
+[00:42:02] there's a lot of like oh just get by
+[00:42:04] this dom for 10 depth of market for 10
+[00:42:06] 000 and
+[00:42:08] you know you can see inside the
+[00:42:09] candlesticks with this footprint and
+[00:42:11] others kind of stuff um i spoke to i had
+[00:42:13] the privilege of speaking to adam from
+[00:42:14] trading riot on this topic
+[00:42:16] and you know that's a good blog go read
+[00:42:18] it it's got great intro and advanced
+[00:42:20] stuff and other materials on there i
+[00:42:22] wholeheartedly recommend it but even he
+[00:42:24] warned me when he was proofreading for
+[00:42:25] me this order flow section that you'll
+[00:42:27] probably get wrecked trying to day trade
+[00:42:29] order flow anyway it's not like okay i
+[00:42:31] understand the microstructure because i
+[00:42:32] won't watch the cred video now i can
+[00:42:34] open up a footprint to see market buying
+[00:42:36] and selling and therefore i'm going to
+[00:42:37] be this day trading genius very unlikely
+[00:42:39] but in any case
+[00:42:40] you can start to see how understanding
+[00:42:43] market microstructure specifically what
+[00:42:45] market orders are the type of impact
+[00:42:47] they have it kind of opens the doors
+[00:42:48] towards a more general understanding of
+[00:42:50] trading strategies and price action
+[00:42:52] strategies order flow strategies
+[00:42:54] whatever it may be right it's just it's
+[00:42:55] a good bedrock of knowledge to have
+[00:42:58] i mean that's it really that's the
+[00:42:59] conclusion is that this topic is
+[00:43:00] complicated and i i still feel like i
+[00:43:02] barely scratched the surface i tried to
+[00:43:04] almost avoid remaking this video because
+[00:43:06] i knew how you know how many topics i'd
+[00:43:08] have to
+[00:43:09] either skip completely or cover very
+[00:43:11] briefly hopefully it's a decent kind of
+[00:43:13] introductory base
+[00:43:15] to encourage further learning education
+[00:43:18] whatever
+[00:43:19] per the second point making directional
+[00:43:21] bets is cool but it doesn't hurt to know
+[00:43:22] what you're trading right it'd be that
+[00:43:24] the contract specifications or like
+[00:43:27] how the market actually works which is
+[00:43:29] what we've tried to cover to some extent
+[00:43:30] with market market microstructure uh
+[00:43:33] final bits from me i've got nothing to
+[00:43:34] sell right i haven't got any
+[00:43:36] paid whatever type of thing that's how
+[00:43:38] you'll know i'm wrecked you can go back
+[00:43:39] to this video if there's ever a crypto
+[00:43:41] cred exclusive masterclass trading
+[00:43:43] course super secret yada yada come back
+[00:43:46] to this video and say craig you told me
+[00:43:47] to come here and tell you you're broke
+[00:43:48] now that you've got this thing going on
+[00:43:50] that would probably be the case um
+[00:43:53] i mean yeah so nothing to sell just
+[00:43:54] seeking dopamine and if you'd like to do
+[00:43:56] me a favor given this is all free um
+[00:43:58] like the video that helps subscribe to
+[00:44:00] the channel
+[00:44:01] because vanity metrics and also leave a
+[00:44:03] comment you know if did you learn
+[00:44:04] anything new do you disagree do you
+[00:44:06] agree um i always read all the comments
+[00:44:09] and i'm grateful for your support and
+[00:44:10] feedback over the years final point
+[00:44:12] follow me on twitter as well because why
+[00:44:13] not and that's all from me
+[00:44:16] in terms of stuff in the future i think
+[00:44:18] there are two more videos i want to make
+[00:44:20] as part of the upgraded updated
+[00:44:22] technical analysis series and then we'll
+[00:44:24] kind of see where we go from there
+[00:44:25] that's all from me managed to keep this
+[00:44:26] under an hour which is shocking but i
+[00:44:28] hope you have an awesome year and yeah
+[00:44:30] i'd love to hear from you thanks for
+[00:44:32] watching bye

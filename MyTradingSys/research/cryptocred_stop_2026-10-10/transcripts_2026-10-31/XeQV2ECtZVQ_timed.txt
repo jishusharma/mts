@@ -1,0 +1,2036 @@
+# Video ID: XeQV2ECtZVQ
+# Title: Technical Analysis Series - Risk Management (UPDATED)
+# Published: 2021-12-13
+# Source: youtube_transcript_api (auto); uploader: CryptoCred
+# Analyst: CryptoCred
+# Channel: @CryptoCred
+# Duration_s:4163
+# Word count: 13216
+# ---
+[00:00:00] hello and welcome to another video as
+[00:00:02] part of the technical analysis series
+[00:00:05] this is the first update to the series
+[00:00:08] and we'll be talking about risk
+[00:00:09] management the video first came out
+[00:00:11] three and a half years ago so i thought
+[00:00:12] it's time to give it a bit of a facelift
+[00:00:14] and a new pair of tits still as
+[00:00:16] important as ever but obviously my views
+[00:00:18] have evolved and developed etc since
+[00:00:20] then so let's get straight into it
+[00:00:24] here's the outline for today's lecture
+[00:00:26] talk monologue lesson general remarks
+[00:00:29] first invalidation to follow once you've
+[00:00:32] got those two you can put together a
+[00:00:34] basic conceptualization of stop losses
+[00:00:37] having done so position sizing and risk
+[00:00:39] per trade is next including the basic
+[00:00:41] calculation and how to vary position
+[00:00:43] size and when to do so etc
+[00:00:45] we'll talk about some trade management
+[00:00:48] tools specifically in the form of
+[00:00:50] dynamic risk to reward and tom's
+[00:00:51] evolving r um as well as break even
+[00:00:54] stops and partial profits with some
+[00:00:56] mention of winning streaks and losing
+[00:00:58] streaks in between and then a couple of
+[00:01:01] um quick sections they do need their own
+[00:01:03] videos to some extent but just to give
+[00:01:04] them pay homage as part of a broader
+[00:01:07] risk management guide we'll gloss over
+[00:01:09] leverage trading and cover some crypto
+[00:01:12] specific considerations before
+[00:01:14] concluding
+[00:01:17] disclaimer pause it read it make sure
+[00:01:18] you're familiar i am an idiot this is a
+[00:01:21] joke it's for entertainment purposes
+[00:01:22] only i'm not a financial advisor not
+[00:01:25] telling you to buy sell or
+[00:01:27] do whatever with any of your money or
+[00:01:29] your mom's credit card
+[00:01:31] that's it
+[00:01:34] so some general remarks if you've made
+[00:01:36] it this far
+[00:01:37] first of all survival is the priority if
+[00:01:40] you survive
+[00:01:41] your mistakes that gives you a chance to
+[00:01:44] actually look for alpha look for an edge
+[00:01:46] or just become a better trader
+[00:01:49] especially in crypto it seems like the
+[00:01:51] asset class disproportionately in a good
+[00:01:53] way in this context rewards people who
+[00:01:56] just simply stick around even if they
+[00:01:57] aren't the best traders or investors so
+[00:02:00] you need to stop hemorrhaging money
+[00:02:02] first
+[00:02:03] and avoid getting blown up by your
+[00:02:05] experiments in the market so that you
+[00:02:08] can eventually become profitable so
+[00:02:10] survival always in first place
+[00:02:13] even as you get more developed and
+[00:02:14] advanced right
+[00:02:16] second point as always the video this
+[00:02:18] video will offer a basic framework and
+[00:02:20] the rest is on you i'm not trying to
+[00:02:21] give you some sort of copy paste
+[00:02:23] template to use forever i'm trying to
+[00:02:25] teach you or at least guide your
+[00:02:26] thinking and reasoning so you can arrive
+[00:02:29] at independent
+[00:02:30] conclusions
+[00:02:32] thoughts about the market frameworks etc
+[00:02:34] on your own without me so i think that's
+[00:02:36] just more valuable in the medium to long
+[00:02:38] term if you disagree there are a lot of
+[00:02:39] videos that cater towards uh you this
+[00:02:42] isn't one of them
+[00:02:44] a lot of the quant guys were upset that
+[00:02:45] my first risk management video wasn't
+[00:02:47] particularly quantitative totally fair
+[00:02:49] critique but i just think that's not
+[00:02:51] terribly appealing or attractive to the
+[00:02:53] average person so if you want the quant
+[00:02:55] side of things you're probably gonna
+[00:02:56] have to look elsewhere mine is
+[00:02:59] you know the premise of this video is to
+[00:03:00] be accessible to the largest number of
+[00:03:01] people including those without a quant
+[00:03:03] or maths background
+[00:03:06] so just just putting that out there
+[00:03:08] now colloquially going back to survival
+[00:03:11] as long as you don't blow up you have
+[00:03:12] time to do two important things right
+[00:03:14] first of all figure out cool [ __ ] that
+[00:03:16] has an edge the way you do that is via
+[00:03:19] experimentation and of course if you
+[00:03:20] don't have any risk management then
+[00:03:22] those experiments simply cost your
+[00:03:24] account and that's the end of your
+[00:03:25] trading journey um not very nice right
+[00:03:28] and the second thing of course is by
+[00:03:30] virtue of managing your bankroll uh it
+[00:03:32] allows you to swing for the fences on
+[00:03:34] really asymmetric setups so very often
+[00:03:36] you'll find in crypto it's you know a
+[00:03:38] handful of trades that make up a very
+[00:03:41] large part of your total p l and if your
+[00:03:44] bankroll management sucks and you know
+[00:03:45] you're constantly getting liquidated or
+[00:03:47] managing terrible positions etc that
+[00:03:50] really kind of ties your hands when it
+[00:03:52] comes time to act
+[00:03:53] in the most important parts in the
+[00:03:55] market now those two things together
+[00:03:57] very important figure out [ __ ] that has
+[00:03:58] an edge and then really pedal to the
+[00:04:00] metal where appropriate so that's
+[00:04:03] those are the products of not blowing up
+[00:04:06] your account and having some sense of
+[00:04:07] longevity to your trading career
+[00:04:10] final point on that never risk your
+[00:04:12] ability to take risk because at that
+[00:04:14] point the game is over so don't never
+[00:04:15] put yourself in that position
+[00:04:18] as for the last bullet point it's just a
+[00:04:20] bit of housekeeping
+[00:04:21] although a lot has changed in the last
+[00:04:23] three and a half years my production
+[00:04:25] quality and output hasn't so we still
+[00:04:28] have the good old format of
+[00:04:31] google slides and me talking over them
+[00:04:34] now it's very easy to make like a 10-15
+[00:04:36] minute click-baity version of this video
+[00:04:39] where i say three risk management tricks
+[00:04:41] banks don't want you to know right and
+[00:04:43] then be like number one always make sure
+[00:04:45] to use a stop number two always make
+[00:04:48] sure you've got two reward for one risk
+[00:04:50] number three
+[00:04:52] always risk one to two percent per trade
+[00:04:54] and that's amazing you feel like you've
+[00:04:55] learned something but the information is
+[00:04:57] actually just surface level asinine dog
+[00:05:00] [ __ ] right and so
+[00:05:03] that's not what i'm doing here the point
+[00:05:04] of this video is it's going to be longer
+[00:05:06] but we're going to get down to the very
+[00:05:08] nitty gritty of it the the gray areas
+[00:05:10] the detail uh so you actually can come
+[00:05:12] away with something useful anything
+[00:05:14] worth doing is worth doing properly and
+[00:05:15] that's kind of the premise of this video
+[00:05:17] if that's not appropriate for you or you
+[00:05:19] you know you're not geared to learn in
+[00:05:22] this type of manner uh then i totally
+[00:05:24] get it but unfortunately this is all
+[00:05:25] i've got to offer or fortunately we'll
+[00:05:28] see i guess
+[00:05:29] right if you're still here i guess
+[00:05:31] thanks and let's get straight into it so
+[00:05:33] we'll talk about invalidation first
+[00:05:35] right very important before you even
+[00:05:37] mention stop losses
+[00:05:39] so the basic premise is that you risk
+[00:05:41] money in the market or you take a risk
+[00:05:43] or you take a trade because you have
+[00:05:44] some sort of idea now like all ideas
+[00:05:47] even non-trading ones
+[00:05:49] there needs to be it needs to be
+[00:05:50] falsifiable right there needs to be some
+[00:05:52] sense of invalidation for when that idea
+[00:05:55] is most likely if not outrightly
+[00:05:58] no longer correct
+[00:06:00] so
+[00:06:02] very simply invalidation is when your
+[00:06:05] idea is almost certainly in brackets
+[00:06:09] wrong it's just where you're wrong
+[00:06:12] let's take a step back if your idea
+[00:06:14] itself doesn't have an invalidation it's
+[00:06:16] probably worth reconsidering it it's
+[00:06:18] like holding any other views right like
+[00:06:20] i hold political view or like you know i
+[00:06:22] hold view a on this public policy issue
+[00:06:25] it's like okay well what type of
+[00:06:26] evidence would make you reconsider that
+[00:06:28] idea or say it's wrong
+[00:06:30] if you can't articulate the conditions
+[00:06:32] under which your belief is wrong then
+[00:06:33] it's not a very rigorous belief in that
+[00:06:36] regard or at the very least it's not
+[00:06:37] reasonable and it's very much the same
+[00:06:39] in trading if you have an idea but the
+[00:06:41] idea doesn't have invalidation that's
+[00:06:42] already a bit of a red flag or immediate
+[00:06:45] sign that maybe you should spend a bit
+[00:06:46] more time thinking about it right
+[00:06:49] now if we take a step back even further
+[00:06:51] if your idea doesn't have a basis in the
+[00:06:53] first place and you're just like yeah
+[00:06:54] well i'm long because the green button
+[00:06:56] is uh
+[00:06:57] brighter than the red one then we have
+[00:07:00] bigger issues and it's all the way back
+[00:07:01] to the drawing board
+[00:07:02] so the important parts obviously being
+[00:07:04] having an idea and then deriving an
+[00:07:06] invalidation from that idea and that
+[00:07:09] last bit is important and that's the
+[00:07:10] whole premise of the third bullet point
+[00:07:12] is invalidation is usually a product of
+[00:07:15] the idea itself
+[00:07:17] it's sort of built in to the trade idea
+[00:07:22] what you don't want to do as a beginner
+[00:07:23] is to take a trade for reason a and then
+[00:07:26] close it for reasons completely
+[00:07:28] unrelated to reason a
+[00:07:30] so for example let's say you're playing
+[00:07:32] some sort of i don't know oscillator low
+[00:07:34] time frame oversold bounce
+[00:07:37] and then you close the trade and your
+[00:07:38] friend comes to you and says
+[00:07:40] hey steve why'd you close the trade and
+[00:07:42] then you say well because i saw this dog
+[00:07:44] take a [ __ ] on my front lawn so i closed
+[00:07:46] the trade well hold on you took the
+[00:07:48] trade because of an oscillator oversold
+[00:07:52] signal
+[00:07:52] what on earth does a dog taking a [ __ ]
+[00:07:55] have to do with that and the answer is
+[00:07:57] nothing and that's how you know you're
+[00:07:58] in the wrong neighborhood right in
+[00:08:00] general and there are exceptions to this
+[00:08:02] but in general especially as a beginner
+[00:08:04] there should be a very clear link
+[00:08:06] between the trade idea itself and the
+[00:08:08] invalidation of that idea if those two
+[00:08:11] things are completely disparate then you
+[00:08:12] know something is likely wrong
+[00:08:15] and worth reconsidering
+[00:08:17] so some examples for invalidation what
+[00:08:19] that may look like you can have
+[00:08:20] price-based invalidation so the idea is
+[00:08:23] that x level is support and invalidation
+[00:08:26] would be x failing to act as support you
+[00:08:28] can see on both sides of that equation
+[00:08:30] you have x either acting or not acting
+[00:08:32] as support that's a shared theme and the
+[00:08:34] invalidation is very closely linked to
+[00:08:36] the idea itself
+[00:08:38] i've also put in just a few time-based
+[00:08:40] examples so for example the idea is that
+[00:08:42] price should consecutively close above x
+[00:08:45] to suggest a breakout and then
+[00:08:47] validation would be price closing below
+[00:08:49] x and that's your typical kind of candle
+[00:08:51] close invalidation logic again the
+[00:08:54] relationship is very clear candle close
+[00:08:56] above is the idea invalidation is candle
+[00:08:58] closed below very closely linked
+[00:09:01] another time-based one the idea is that
+[00:09:03] price usually moves x percent within y
+[00:09:05] hours after zed takes place those
+[00:09:07] letters they're just placeholders so you
+[00:09:09] can put whatever you want there
+[00:09:10] invalidation would be price not moving x
+[00:09:12] percent within y time frame following z
+[00:09:16] again x y z on one side x y z on the
+[00:09:19] other side not x y z on one side and
+[00:09:20] sort of abc on the other side again very
+[00:09:23] clear link between the idea and the
+[00:09:25] invalidation
+[00:09:27] and and typically with that type of
+[00:09:28] logic by the way as it says there
+[00:09:30] it's one of those this [ __ ] isn't moving
+[00:09:32] quickly enough for the type of setup it
+[00:09:34] is in validation and also crypto given
+[00:09:36] all sorts of correlations with legacy
+[00:09:38] markets recently etc you can get
+[00:09:40] time-based
+[00:09:41] setups and invalidations so the idea
+[00:09:44] that the market usually does x within y
+[00:09:45] where y is some sort of time period or
+[00:09:47] training session your invalidation is
+[00:09:50] priced not doing x within y time period
+[00:09:53] or trading session so for example let's
+[00:09:54] say you think the market is going to go
+[00:09:56] up between
+[00:09:58] whatever new york open and new york
+[00:10:00] close that's your idea invalidation
+[00:10:02] would be the market not going up between
+[00:10:04] new york open and new york closed you
+[00:10:05] don't just hold that position into the
+[00:10:08] tokyo open just to see what happens for
+[00:10:10] the sake of it invalidation always
+[00:10:12] closely tied to the idea itself if
+[00:10:14] you're gonna take anything away from
+[00:10:16] this set of slides or i guess this
+[00:10:17] lecture as a whole it would be that
+[00:10:20] final example just a kind of volatility
+[00:10:22] based one you know the idea is that
+[00:10:24] price usually moves x percent within y
+[00:10:26] hours after z takes place and validation
+[00:10:28] again price moving less than x percent
+[00:10:31] within y time frame following zed
+[00:10:33] both sides of the equation are kind of
+[00:10:35] closely linked and that's your typical i
+[00:10:38] was expecting dildos but i'm getting
+[00:10:39] [ __ ] all in validation all the opposite
+[00:10:41] of that where i was expecting tiny
+[00:10:42] candles but all the candles are really
+[00:10:44] big
+[00:10:45] um hopefully this section is clear if
+[00:10:47] you need to re-listen to it do because
+[00:10:48] it sets the foundation but the basic
+[00:10:50] idea is if you have an idea
+[00:10:53] for a trade the invalidation for that
+[00:10:55] idea should bear at least some
+[00:10:57] resemblance to the reason so the reason
+[00:11:00] you're wrong is very closely tied to the
+[00:11:02] reason for taking the trade in the first
+[00:11:03] place you don't want to take two
+[00:11:04] completely different things and say i'm
+[00:11:06] buying because a but i'll close it
+[00:11:08] because e or z on the other side of the
+[00:11:10] alphabet right there needs to be some
+[00:11:12] sort of proximity between those two
+[00:11:13] concepts the idea and the invalidation
+[00:11:18] now that we have a working framework for
+[00:11:20] invalidation we can talk about stop
+[00:11:22] losses
+[00:11:23] as as it will be as it will become
+[00:11:25] obvious
+[00:11:26] not all trades have an obvious or
+[00:11:28] outright stop-loss
+[00:11:30] and it's sometimes less clear
+[00:11:31] specifically with the time-based or
+[00:11:32] volatility-based examples but of course
+[00:11:34] the opposite side of that is some
+[00:11:36] price-based or ta-based examples will
+[00:11:38] sometimes give you very very clear
+[00:11:40] invalidation where no thinking is
+[00:11:41] required so if that makes no sense there
+[00:11:44] is a video on the channel i think it's
+[00:11:46] titled something like overthrow for stop
+[00:11:48] loss placement and that entire
+[00:11:51] video
+[00:11:52] is about the type of setups where you
+[00:11:54] don't need to think about your stock
+[00:11:55] placement and the market sort of does it
+[00:11:57] for you in those setups it's not always
+[00:11:59] the case but it does happen from time to
+[00:12:01] time
+[00:12:02] so what is a stop loss right so the
+[00:12:04] basic premise is that the a stop loss is
+[00:12:06] an order often but not always a market
+[00:12:09] order to fully close a position at a
+[00:12:12] certain price or at a certain loss
+[00:12:15] threshold
+[00:12:16] so two types of market the two most
+[00:12:18] common types of market orders four stops
+[00:12:21] you either have a market order which
+[00:12:22] guarantees execution often at the price
+[00:12:26] of
+[00:12:26] a less favorable fuel price or at the
+[00:12:28] cost of a less favorable fill price
+[00:12:30] you're paying for the immediacy of
+[00:12:33] execution
+[00:12:34] um with
+[00:12:36] inferior prices most of the time again
+[00:12:39] especially if you're executing large
+[00:12:40] orders into empty order books or
+[00:12:43] whatever you know things can get quite
+[00:12:44] ugly that's the basic premise for the
+[00:12:46] market order guaranteed execution but
+[00:12:47] the price you get may suck
+[00:12:50] whereas with limit orders or limit
+[00:12:52] stop orders you know if it skips your
+[00:12:55] price and the market teleports quite
+[00:12:56] simply you're [ __ ] because you're not
+[00:12:57] guaranteeing that execution um at your
+[00:13:01] price or as close as possible to your
+[00:13:03] price
+[00:13:04] so the sort of tldr version
+[00:13:06] ends up being that stop placement should
+[00:13:08] be where
+[00:13:09] a either the setup obviously calls for
+[00:13:12] it so like in those ta examples where
+[00:13:14] you have clear invalidation in line with
+[00:13:16] the trade idea or b
+[00:13:18] where the idea is obviously wrong if
+[00:13:20] price trades to the stop order and we
+[00:13:22] will add some detail to that uh shortly
+[00:13:24] but those are the two kind of tldr
+[00:13:26] scenarios and you can see that if you
+[00:13:28] don't have
+[00:13:29] any sense of invalidation for your trade
+[00:13:32] idea it becomes very difficult to find
+[00:13:36] an appropriate stop for that same idea
+[00:13:39] and just to kind of go off on a very
+[00:13:40] quick tangent there's nothing wrong with
+[00:13:43] saying for example that i have a decent
+[00:13:45] idea
+[00:13:46] if you're making say a directional bet
+[00:13:48] of where the market's going to go but i
+[00:13:50] don't have a particularly clear way of
+[00:13:52] defining my invalidation for the trade
+[00:13:55] and therefore i will wait until such a
+[00:13:57] time that i do that is completely fine
+[00:13:59] right because again those two things are
+[00:14:01] very closely linked together the idea
+[00:14:02] itself and the invalidation of that idea
+[00:14:05] i mean target is like a separate topic
+[00:14:07] and slightly less important i think idea
+[00:14:09] and invalidation
+[00:14:11] take precedence in that regard so if one
+[00:14:13] of those elements is missing such as you
+[00:14:16] know i think i know where the market's
+[00:14:17] going to go but i don't have a clear way
+[00:14:19] of setting up those trade parameters
+[00:14:21] because i don't know where i'm wrong or
+[00:14:22] invalidation isn't clear to me it's
+[00:14:24] completely fine to gloss over that trade
+[00:14:27] for that reason sometimes the market
+[00:14:29] just doesn't give you what we like to
+[00:14:30] call risk-defined setups and skipping
+[00:14:33] those is
+[00:14:34] fine totally appropriate right
+[00:14:37] now a quick point about stops the final
+[00:14:39] bullet point
+[00:14:40] most of the complaints i know i used 99
+[00:14:42] there it's obviously a bit hyperbolic
+[00:14:44] but the overwhelming majority of
+[00:14:46] complaints about stop hunting or the
+[00:14:48] good old price wicked and reversed on me
+[00:14:50] while it may seem sort of like
+[00:14:51] intentional or engineered behavior on
+[00:14:53] behalf of the market on average it's
+[00:14:55] just not true and
+[00:14:57] more often or better explained by simply
+[00:15:00] having [ __ ] stop placement not
+[00:15:02] deliberate hunting and we will talk
+[00:15:04] about some remedies for that but just
+[00:15:05] maybe get that thought out of your head
+[00:15:07] that someone's got it out for you um
+[00:15:09] most of the time it's just your stop
+[00:15:10] placement as [ __ ]
+[00:15:11] and in areas where you should be looking
+[00:15:13] to execute a trade instead of getting
+[00:15:15] out of one in the first place
+[00:15:18] okay
+[00:15:19] more on stops
+[00:15:21] so as before stop placement is
+[00:15:23] inextricably linked with the trade idea
+[00:15:25] itself your stop reflects your
+[00:15:27] invalidation and we know that your
+[00:15:28] invalidation is derived from the trade
+[00:15:31] idea
+[00:15:32] if you have a [ __ ] idea that typically
+[00:15:34] translates to [ __ ] stop placement most
+[00:15:37] likely or as we mentioned sometimes you
+[00:15:39] have a clear-ish idea but because you
+[00:15:42] can't define the risk on the setup
+[00:15:44] properly you may wish to uh skip over
+[00:15:46] the setup which is completely fine right
+[00:15:49] now if you don't know where to put a
+[00:15:51] stop that often means the idea itself
+[00:15:52] was not defined very clearly all the
+[00:15:54] setup isn't particularly good as we
+[00:15:55] mentioned right that's appropriate now a
+[00:15:57] simple eye test you can apply to your
+[00:15:59] stop placement is to just add the level
+[00:16:02] on a chart somewhere so maybe even a
+[00:16:03] blank chart like a separate line and ask
+[00:16:06] yourself would i want to buy where my
+[00:16:08] long gets stopped out
+[00:16:11] and or would i want to sell where my
+[00:16:14] short gets stopped out
+[00:16:16] if the answer is yes then there's a good
+[00:16:18] chance that the trade sucks especially
+[00:16:20] if you trade technicals and maybe you
+[00:16:21] should be looking to trade at your stop
+[00:16:24] rather than exiting the trade at your
+[00:16:26] stop there's just like a simple eye test
+[00:16:27] you can apply to give you some idea of
+[00:16:30] whether your
+[00:16:31] stop placement is favorable and you know
+[00:16:33] if it's completely wack then maybe the
+[00:16:35] trade idea itself sucks as well
+[00:16:39] now
+[00:16:40] the first top take of the video
+[00:16:42] in my view and again there are a million
+[00:16:44] different ways to trade so i'm trying to
+[00:16:46] be you know capture a lot of those
+[00:16:48] methods in this video so here's my view
+[00:16:52] strictness with stop usage and placement
+[00:16:55] is inversely correlated with the size of
+[00:16:58] the move you're trying to trade
+[00:17:00] now what does that mean
+[00:17:02] let's use some examples if you're
+[00:17:04] punting these low time frame tight
+[00:17:06] rotations with nearby invalidation which
+[00:17:08] typically also means a lot of size your
+[00:17:10] stop placement needs to be strict
+[00:17:12] because the idea must be precise to be
+[00:17:14] correct and then obviously the opposite
+[00:17:16] is true if you're saying like no i think
+[00:17:18] the market's going to bounce between 38k
+[00:17:21] and 42k or whatever uh especially if
+[00:17:24] there are kind of liquidations or like a
+[00:17:26] big move coming into the level
+[00:17:28] because you are your trade idea must be
+[00:17:32] less precise
+[00:17:33] while it's still being able to be
+[00:17:35] correct your stop placement in turn can
+[00:17:37] also be less precise or surgical or less
+[00:17:41] tight in those circumstances
+[00:17:43] so the summary version
+[00:17:45] if you're being precise with the trade
+[00:17:47] your stop placement should also be
+[00:17:49] precise
+[00:17:50] if you're being less precise with the
+[00:17:51] trade or dealing with a wider area or a
+[00:17:53] higher time frame idea
+[00:17:55] your stop placement can also be less
+[00:17:57] precise or wider
+[00:17:59] make sure to not mix the two because
+[00:18:01] that's when you get really shitty trades
+[00:18:02] i.e
+[00:18:03] low time frame trades with a lot of size
+[00:18:05] and really sloppy stop placement which
+[00:18:07] exacerbates losses or high time frame
+[00:18:10] kind of swing ideas where you should be
+[00:18:12] giving the market kind of a chance to
+[00:18:13] breathe and develop structure but
+[00:18:15] instead you're on the one minute chart
+[00:18:16] trying to put a
+[00:18:17] stop order under the first swing low or
+[00:18:20] swing high that you see
+[00:18:21] as long as you avoid those extremes
+[00:18:23] you're fine but just have this kind of
+[00:18:24] framework in your mind that your stop
+[00:18:26] placement should to some extent reflect
+[00:18:28] the type of trade you're taking
+[00:18:31] more precision with the trade equals
+[00:18:34] more precision with the stop and then
+[00:18:36] sort of less precision with the trade
+[00:18:37] generally less precision with the stop
+[00:18:39] because you have either a narrower
+[00:18:40] invalidation if you're doing the low
+[00:18:42] time frame higher size stuff or you have
+[00:18:45] a
+[00:18:47] wider invalidation if you're doing the
+[00:18:49] swing trading type of model and that
+[00:18:51] reflects in your stop placement i hope
+[00:18:52] that makes sense
+[00:18:53] now in terms of types of stops hard stop
+[00:18:55] and soft stop
+[00:18:57] what is a hard stop well in essence it's
+[00:19:00] a market order to close the full
+[00:19:02] position at a certain price or loss
+[00:19:04] threshold right um
+[00:19:06] when is it appropriate in my opinion
+[00:19:08] it's best used for clearly defined
+[00:19:10] setups and or setups where entry is
+[00:19:12] close to invalidation which usually
+[00:19:15] means more size as we'll discuss as well
+[00:19:17] so the hard stop is essentially your
+[00:19:18] eject button from the market now soft
+[00:19:21] stop
+[00:19:22] it's a kind of mental stop to start
+[00:19:24] closing out the position um typically
+[00:19:27] using a mix of limit and market orders
+[00:19:29] if in if and when invalidation criteria
+[00:19:31] begin to be satisfied and again this is
+[00:19:33] more suitable for your kind of swing
+[00:19:35] tradie and ideas that are less reliant
+[00:19:37] on precision
+[00:19:39] so for example let's say your basic
+[00:19:41] premise was at the market with you know
+[00:19:42] say btc bounces between 38 and 42k just
+[00:19:46] pulling numbers out my butt here and the
+[00:19:48] market pokes above 42 and then closes
+[00:19:50] back below it and it kind of looks like
+[00:19:51] resistance
+[00:19:53] then maybe you start exiting that trade
+[00:19:54] or scaling it down as the probability of
+[00:19:57] a bounce from that area um starts to
+[00:20:00] lower as it acts as resistance as a very
+[00:20:02] basic example
+[00:20:04] now as a beginner this is where some
+[00:20:06] different practical recommendations come
+[00:20:08] into place in my view you should just
+[00:20:10] use hard stops if you're a beginner
+[00:20:12] because i mean the likelihood that you
+[00:20:13] mess up your order placement and using
+[00:20:16] the ui ux whatever of the exchange
+[00:20:19] that's probably going to happen to you
+[00:20:21] which is fine it's part of learning and
+[00:20:23] also because your ideas probably suck
+[00:20:24] that's not necessarily a bad thing
+[00:20:26] because having those sucky ideas and
+[00:20:29] getting stopped out and then watching
+[00:20:30] the market like mega reverse without you
+[00:20:32] or whatever scenario you may come across
+[00:20:35] that in itself will teach you
+[00:20:37] more about stop placement
+[00:20:39] than anything else just by studying what
+[00:20:41] the market does if anything after taking
+[00:20:43] you out and it's very often with
+[00:20:45] beginners where their stock placement is
+[00:20:47] pretty horrendous they keep getting
+[00:20:48] stopped out at the bottom before i move
+[00:20:50] up or the top before i move down and and
+[00:20:52] by virtue of kind of studying their
+[00:20:54] stops that leads them to identify better
+[00:20:57] trades by trading at where they thought
+[00:20:59] they should be getting stopped out
+[00:21:00] instead of exiting the trade at that
+[00:21:02] point right so there there's definitely
+[00:21:04] valuable information and
+[00:21:06] valuable lessons
+[00:21:07] to be learned from getting stopped out
+[00:21:11] and it can actually lead to some pretty
+[00:21:12] good trade
+[00:21:14] ideas as well but in general because of
+[00:21:16] the likelihood of error when interacting
+[00:21:18] with the exchange and just in general
+[00:21:20] because your ideas probably aren't that
+[00:21:21] great um soft stops just require more
+[00:21:25] experience and
+[00:21:26] knowing the type of setups you're
+[00:21:28] trading etc as a beginner i think hard
+[00:21:30] stops are your friend and you can
+[00:21:32] branch out if if appropriate do read
+[00:21:34] adam's blog in its entirety but also
+[00:21:36] over at trading riot the risk management
+[00:21:38] blog um
+[00:21:40] it's a comprehensive guide and
+[00:21:41] specifically it's got a very cool
+[00:21:42] section on using soft and hard stops and
+[00:21:45] for
+[00:21:46] a variety of setups pretty creative
+[00:21:48] stuff there go go check it out
+[00:21:52] okay
+[00:21:53] so now that we know invalidation and we
+[00:21:54] know what
+[00:21:55] what a stop order is we can talk about
+[00:21:58] position sizing and risk per trade
+[00:22:01] so definitions first
+[00:22:03] position size and risk per trade are two
+[00:22:05] different things people get this
+[00:22:06] confused all the time they'll see like
+[00:22:08] oh you know someone tweets like a one
+[00:22:10] million contract position size and
+[00:22:12] they'll think oh my god you know if he's
+[00:22:14] wrong he'll lose a million dollars how
+[00:22:16] rich is this guy uh that's not the case
+[00:22:18] right we're dealing with two really
+[00:22:19] quite different concepts so what is
+[00:22:21] position size it's the number of units
+[00:22:23] of an instrument bought or sold right
+[00:22:26] just the number of contracts for a
+[00:22:27] position or whatever it is that you're
+[00:22:29] trading
+[00:22:30] the risk per trade is the percentage of
+[00:22:33] your portfolio or just whatever the
+[00:22:35] notional amount that a trader stands to
+[00:22:37] lose upon invalidation slash if their
+[00:22:39] stop gets hit now obviously that number
+[00:22:41] isn't going to be perfect because they
+[00:22:43] might manage the trade or the actual
+[00:22:45] execution of their stop order might suck
+[00:22:47] and they'll lose more if they get a bad
+[00:22:48] feel etc but fundamentally when it comes
+[00:22:51] to basic definitions position size
+[00:22:53] number of the
+[00:22:55] number of units of an instrument bought
+[00:22:57] or sold risk per trade is if i get
+[00:22:59] stopped out if my idea is wrong how much
+[00:23:01] do i stand to lose not accounting for
+[00:23:03] execution and other stuff now
+[00:23:06] as you can derive or infer at this point
+[00:23:08] if you have an invalidation point
+[00:23:10] calculating your position size becomes
+[00:23:12] rather straightforward maths right
+[00:23:15] so here's the kind of basic formula i
+[00:23:17] suppose your position size is calculated
+[00:23:20] by multiplying your portfolio by your
+[00:23:22] risk percentage and then dividing that
+[00:23:24] by the distance to your invalidation
+[00:23:27] from your entry
+[00:23:29] right
+[00:23:30] so just to define those terms your
+[00:23:32] position size again is the number of
+[00:23:34] contracts if you're using like perpetual
+[00:23:36] swaps for example or whatever else your
+[00:23:38] portfolio is your total trading capital
+[00:23:40] or equity right how much is in your
+[00:23:42] trading account or whatever sub account
+[00:23:44] you're using your risk percentage is the
+[00:23:47] percentage of your portfolio at risk
+[00:23:50] expressed as a decimal again how much
+[00:23:52] you will lose if you get stopped out not
+[00:23:54] accounting for whatever additional
+[00:23:56] execution costs and then the distance to
+[00:23:58] invalidation is the again rather simply
+[00:24:01] the distance between entry and
+[00:24:03] invalidation expressed as a decimal so
+[00:24:06] let's take a very simple example
+[00:24:09] you've got 100k equity
+[00:24:11] risking two percent on a setup so two
+[00:24:14] percent of the hundred thousand and your
+[00:24:15] invalidation or your stop is five
+[00:24:17] percent away um the math is pretty
+[00:24:19] straightforward again position size
+[00:24:20] equals portfolio times risk percentage
+[00:24:22] divided by distance and validation we
+[00:24:24] plug in the numbers 100k is the
+[00:24:26] portfolio
+[00:24:27] 0.02 is 2 in decimal form and we divide
+[00:24:31] that by
+[00:24:32] five percent in decimal form which is
+[00:24:34] our invalidation and that gives us a
+[00:24:37] 40 000 usd position size and you can
+[00:24:40] always check the maths if we take that
+[00:24:42] 40 000 usd position size and it moves
+[00:24:45] five percent and hits the stop loss you
+[00:24:47] get forty thousand so five percent of
+[00:24:49] forty thousand is two thousand which
+[00:24:51] appropriately is two percent of one
+[00:24:54] hundred thousand so all in order as per
+[00:24:56] the criteria and again just to reiterate
+[00:24:58] this doesn't account for slippage fees
+[00:25:00] etc i'm mostly assuming you're
+[00:25:02] trading liquid markets and liquid
+[00:25:05] sessions
+[00:25:06] sufficient order book depth and all that
+[00:25:07] other good stuff okay that's kind of the
+[00:25:09] basic maths there
+[00:25:13] here's the spicy part now most risk
+[00:25:15] management guides are understandably
+[00:25:17] just casually very conservative and will
+[00:25:18] tell you to risk anywhere from 0.5 to
+[00:25:21] whatever three percent
+[00:25:23] uh of your account per trade and the
+[00:25:26] reason they do that again is completely
+[00:25:28] understandable because your risk of ruin
+[00:25:30] or the chances of blowing up your
+[00:25:31] account on the consecutive losing streak
+[00:25:33] at those conservative positions uh or
+[00:25:35] percentages rather is quite low so if i
+[00:25:38] had to follow that framework and say
+[00:25:40] kind of a gun to my head one to three
+[00:25:42] percent uh of your account per trade is
+[00:25:44] safe but just to be very clear that
+[00:25:46] range is useless without context and in
+[00:25:49] general fixed risk per trade is mostly
+[00:25:52] [ __ ]
+[00:25:53] and that should be kind of immediately
+[00:25:54] of evident by the fact that it assumes
+[00:25:57] that all the setups carry the same
+[00:25:58] expected value so all yours all the
+[00:26:01] trades that you take all your setups are
+[00:26:03] somehow equal and therefore they should
+[00:26:05] be treated with the um same sizing or
+[00:26:08] same risk and that just doesn't sound
+[00:26:10] compelling right i'm sure even you can
+[00:26:13] imagine some things
+[00:26:14] some setups that you have or trades you
+[00:26:16] like to take work really well and offer
+[00:26:19] you really handsome win rates and high
+[00:26:21] risk reward etc etc while others are
+[00:26:24] kind of awash so it kind of fails the
+[00:26:27] basic eye test to risk the same on
+[00:26:29] setups that you know have an edge and
+[00:26:31] work really well
+[00:26:32] and setups that kind of suck and are a
+[00:26:35] bit of a coin toss at best right it just
+[00:26:37] doesn't really make much sense so two
+[00:26:39] things to consider so how much do i risk
+[00:26:41] per trade um
+[00:26:43] given that i think there are two factors
+[00:26:44] that that should inform that decision
+[00:26:46] the first is what is the expected value
+[00:26:49] the ev if you will
+[00:26:50] which is simply just means average
+[00:26:52] outcome of this specific setup right and
+[00:26:56] then the second point to consider what
+[00:26:57] are the chances of ruin as in blowing up
+[00:26:59] your account if you eat [ __ ] on this
+[00:27:00] setup repeatedly so that there's like a
+[00:27:02] very again discretionary type of
+[00:27:04] framework to this which i think is
+[00:27:06] better than giving you arbitrary
+[00:27:08] percentages and this is how i think
+[00:27:09] through it
+[00:27:10] so if you're dealing with frequent
+[00:27:12] setups with marginal odds
+[00:27:14] that warrants marginal bets what's that
+[00:27:17] in colloquial terms it just means risk
+[00:27:19] less on [ __ ] that happens a lot and has
+[00:27:21] a marginal edge advantage in the market
+[00:27:24] right
+[00:27:25] and obviously we're dealing with a bit
+[00:27:27] of a scale here then if you have
+[00:27:28] frequent setups with good odds that
+[00:27:31] typically warrants bigger bets and the
+[00:27:33] colloquial version risk more on [ __ ]
+[00:27:35] that happens a lot and has a clear edge
+[00:27:38] this should start to become quite
+[00:27:39] intuitive as i go through it right now
+[00:27:41] obviously the less less frequent setups
+[00:27:44] with great odds generally weren't the
+[00:27:46] biggest bets and it's sort of the risk
+[00:27:48] most on [ __ ] which rarely happens but
+[00:27:50] offers a massive edge and a
+[00:27:53] no-brainer type of scenario now it's
+[00:27:56] very likely that you have different
+[00:27:58] setups in your trading arsenal uh
+[00:28:01] appropriate for different market regimes
+[00:28:03] and whatever so it just simply doesn't
+[00:28:05] make any sense to you know if you're
+[00:28:07] betting one percent on your once every
+[00:28:09] three months best performing setup but
+[00:28:11] then also betting one percent on the day
+[00:28:14] trading setup that comes out two three
+[00:28:16] four times a day it just doesn't stand
+[00:28:18] to reason right
+[00:28:19] i mean even if you consider different
+[00:28:21] types of trades
+[00:28:22] if you're day trading like i don't know
+[00:28:24] five ten fifteen trades a day depending
+[00:28:26] on how many rotations you're getting and
+[00:28:27] the size of those rotations risking you
+[00:28:30] know a fraction of a percentage on those
+[00:28:32] setups
+[00:28:33] could be reasonable and lands you at a
+[00:28:36] decent daily risk limit right depending
+[00:28:38] on your win rate and other things
+[00:28:39] however let's say you've got like one
+[00:28:41] complete banger setup
+[00:28:43] which
+[00:28:44] comes around in the market once every
+[00:28:46] two three months
+[00:28:48] and then you risk one percent on that
+[00:28:49] setup that just doesn't make any sense
+[00:28:51] it doesn't stand to reason right so
+[00:28:53] again i sort of semi-apologize for not
+[00:28:55] giving a lazy percentage answer but this
+[00:28:57] is the reality of discretionary trading
+[00:28:59] right you consider the individual
+[00:29:01] expected value or odds of specific
+[00:29:03] setups you consider the frequency
+[00:29:05] with which that setup occurs and then
+[00:29:07] that gives you a sort of spectrum right
+[00:29:10] so on the left-hand side in terms of
+[00:29:12] risking less you have
+[00:29:14] high frequency low ev
+[00:29:17] [ __ ]
+[00:29:18] so those are setups which are meh
+[00:29:20] and therefore warrant
+[00:29:23] you know reduced risk if if any risk at
+[00:29:25] all they happen all the time the edge is
+[00:29:27] kind of questionable or marginal there's
+[00:29:29] nothing special about them and on the
+[00:29:31] other side of the spectrum you have
+[00:29:32] setups that are far less frequent but
+[00:29:35] with like a really big win rate or
+[00:29:36] positive expectancy or just high ev kind
+[00:29:38] of an umbrella term for all those things
+[00:29:40] and in that case and that's the other
+[00:29:41] end of the spectrum which is really good
+[00:29:43] setups and warrant more risk right just
+[00:29:46] a very quick note for the obvious
+[00:29:47] outlier if you have high frequency if
+[00:29:51] you find like a high frequency high ev
+[00:29:53] edge that's kind of the golden goose of
+[00:29:55] trading and it's very likely that it's
+[00:29:56] some low time frame short-term
+[00:29:58] idiosyncrasy that's probably not going
+[00:30:00] to be in the market for very long if you
+[00:30:02] see that absolutely [ __ ] smash it and
+[00:30:04] then bin it as soon as it stops working
+[00:30:06] and that's sort of where this last point
+[00:30:08] comes from um the best edges don't last
+[00:30:10] long enough to be back tested thoroughly
+[00:30:12] so if you think you've stumbled upon a
+[00:30:14] high frequency
+[00:30:15] high ev setup just milk it while it's
+[00:30:17] there just be very um
+[00:30:22] aware that as soon as that stops working
+[00:30:25] it's likely going to
+[00:30:26] not be an edge at all you kind of milk
+[00:30:28] it and then as soon as it breaks you
+[00:30:29] don't try to force the issue um
+[00:30:32] so that's really it when it comes to
+[00:30:34] position sizing and risk per trade right
+[00:30:36] it's a spectrum on the
+[00:30:39] don't risk much if anything end of the
+[00:30:40] spectrum you have stuff that happens a
+[00:30:42] lot and stuff that has marginal odds or
+[00:30:46] ev not very attractive on the other side
+[00:30:48] of the spectrum which warrants more risk
+[00:30:51] is the lower frequency setup but you
+[00:30:52] know you're in for a treat and those
+[00:30:54] setups weren't more risk if you stumble
+[00:30:57] on the golden goose high frequency high
+[00:30:58] ev slam it and then it's on you to pass
+[00:31:02] your trading figure out the types of
+[00:31:04] setups you trade how frequently they
+[00:31:06] happen
+[00:31:07] what's their expectancy or expected
+[00:31:09] value and then decide your risk
+[00:31:11] parameters from that point there's no
+[00:31:13] right or wrong answer it just needs to
+[00:31:14] be a considered
+[00:31:16] decision based on those factors the
+[00:31:19] frequency of the setup
+[00:31:20] the
+[00:31:21] its expected value or average outcome
+[00:31:24] and then the risk of ruin if you trade
+[00:31:26] it at a certain size
+[00:31:29] the brain dead summary version is bet
+[00:31:32] less if anything on meh odds and bet
+[00:31:36] more with higher conviction on lower
+[00:31:38] frequency good odds that's what it comes
+[00:31:40] down to because the alternative of
+[00:31:42] course doesn't make any [ __ ] sense to
+[00:31:43] be clear right if you get fantastic
+[00:31:46] setups that come up only once every one
+[00:31:48] two three months just like a complete
+[00:31:49] brain dead one and you risk one percent
+[00:31:52] you're not really optimizing your
+[00:31:54] training and in the same vein if you get
+[00:31:57] this day trading setup that comes up 10
+[00:31:59] times a day
+[00:32:00] and you just pick one of those 10 times
+[00:32:02] and risk 10 that doesn't make any
+[00:32:04] [ __ ] sense either so that's why i'm
+[00:32:06] building you this kind of spectrum to
+[00:32:07] consider where your setup exists on that
+[00:32:09] spectrum and to risk um
+[00:32:12] in a more tailored way to better reflect
+[00:32:15] the circumstances
+[00:32:17] okay
+[00:32:20] so let's dip into trade management very
+[00:32:22] quickly as a facet of risk management
+[00:32:24] we're gonna talk about dynamic risk to
+[00:32:26] reward or tom dante's evolving r as i'm
+[00:32:27] sure you remember from the first video
+[00:32:29] uh so the basic premise of evolving r is
+[00:32:31] that the risk to reward ratio of a trade
+[00:32:33] evolves as price moves away from from
+[00:32:36] your entry point either to your target
+[00:32:39] or even to your stop and the basic idea
+[00:32:41] is to make sure you're not being
+[00:32:42] complacent in trade management so we'll
+[00:32:45] have a chart example here in a second
+[00:32:48] let's say you buy it 50
+[00:32:49] target 100 and stop at 25. so you're
+[00:32:52] risking 25 25 for a gain of 50 that's 2r
+[00:32:55] okay
+[00:32:56] so the scenario we're about to cover is
+[00:32:58] that fourth sub bullet point is that
+[00:33:01] suppose the market pushes from 50 to 85
+[00:33:04] and starts to struggle right let's let's
+[00:33:07] display that
+[00:33:10] so again
+[00:33:11] trading view standards the middle bit
+[00:33:14] the middle line is your entry this is
+[00:33:16] your take profit and this is your stop
+[00:33:19] right
+[00:33:21] so let's posit that you have um
+[00:33:26] at the po at the point in which you open
+[00:33:27] the trade which is here right
+[00:33:30] this is your entry
+[00:33:32] this your stop
+[00:33:33] this your target right
+[00:33:36] that's a two hour trade now let's say
+[00:33:39] the trade has evolved markets moved
+[00:33:41] around and it moves it's moved up to
+[00:33:43] this 85 handle and then starts to
+[00:33:45] struggle around it maybe should puts in
+[00:33:48] a bearish divergence some broken market
+[00:33:50] structure on low time frames whatever
+[00:33:53] if you haven't moved your original stop
+[00:33:55] it's still at 25 as it was in the
+[00:33:58] original setup but now the market's
+[00:34:00] moved all the way to 85 considering your
+[00:34:02] target was 100 you can see that the risk
+[00:34:04] reward of the trade shifts
+[00:34:06] because now despite your original entry
+[00:34:10] being at 50 the market's now at 85. this
+[00:34:13] difference between 50 and 85 it's still
+[00:34:16] unrealized p l it doesn't mean [ __ ]
+[00:34:18] right you haven't made any money on the
+[00:34:20] trade so now as the market starts to
+[00:34:22] struggle with this let's say it's a
+[00:34:23] resistance or some sort of like other
+[00:34:24] contextual level you need to reassess
+[00:34:27] what type of trade am i in now that it's
+[00:34:29] moved in this context at 85 you are
+[00:34:33] risking
+[00:34:34] all the way back to your stop
+[00:34:37] in order to capture these extra 15
+[00:34:41] points and that gives you at the time of
+[00:34:43] reassessing the trade 0.25 are
+[00:34:47] so
+[00:34:48] at the inception of the trade you have
+[00:34:50] 2r right
+[00:34:52] gain 2 units of reward per unit of risk
+[00:34:56] then as the market comes into this level
+[00:34:58] and starts to struggle provided you do
+[00:35:00] no trade management and you just sit
+[00:35:02] there the adjusted risk to reward of the
+[00:35:04] trade at the time that it's actually
+[00:35:06] moved
+[00:35:07] drops drastically to 0.25 r
+[00:35:11] okay
+[00:35:13] now there is some nuance here
+[00:35:14] unsurprisingly so evolving r posits that
+[00:35:17] where appropriate you should reassess
+[00:35:19] the risk to reward calculation um to you
+[00:35:23] know to figure out if staying in the
+[00:35:24] position is justified in the absence of
+[00:35:26] any management in the example as we
+[00:35:28] mentioned
+[00:35:29] if you do nothing that trade has become
+[00:35:32] an evolved 0.25 r you're risking 60
+[00:35:35] points
+[00:35:37] to gain another 15 at an area where the
+[00:35:39] market appears to be shifting now look i
+[00:35:41] know that 0.25 is a lot worse than 2 but
+[00:35:44] the point of evolving r isn't to ensure
+[00:35:46] that your trade always satisfies some
+[00:35:48] arbitrary ratio like okay the trade was
+[00:35:50] 2r now it's 0.25 you know 0.25 isn't 2
+[00:35:53] so i should close the trade immediately
+[00:35:55] that's not the point right
+[00:35:57] it's there to serve as a kind of wake-up
+[00:35:59] call um or trade management signal once
+[00:36:02] the market approaches your take profit
+[00:36:03] it's just to keep you sharp and to
+[00:36:05] reconsider the context as the market
+[00:36:07] starts to approach your pre-existing
+[00:36:10] trade parameters be it your take profit
+[00:36:12] or your stop
+[00:36:14] of course what's implicit in this idea
+[00:36:16] is that there's nothing particularly
+[00:36:18] special as we'll come on to about your
+[00:36:21] take profit or your stop level or
+[00:36:23] whatever it is that you're using to
+[00:36:24] anchor the trade nothing
+[00:36:26] you know
+[00:36:26] implicitly um important about those
+[00:36:30] factors so what evolving r does is just
+[00:36:32] to make sure that you kind of stay sharp
+[00:36:34] and manage trades and pay attention to
+[00:36:36] the adjusted risk to reward
+[00:36:39] in areas where it makes sense to do so
+[00:36:41] or as the market starts to turn before
+[00:36:43] your target or before your stop
+[00:36:47] two final points on this which are
+[00:36:48] important first is the best guide here
+[00:36:50] will be your trade journal
+[00:36:53] and that's looking at whether on average
+[00:36:54] or trade management decisions improve
+[00:36:56] your results or if you're better relying
+[00:36:58] better off relying on set and forget
+[00:37:00] right now with evolving r
+[00:37:03] people who take this concept on board
+[00:37:05] take you usually kind of veer to one
+[00:37:07] extreme whereby they will never hold a
+[00:37:09] trade to target and they will never be
+[00:37:11] fully stopped out and they're always
+[00:37:13] looking for management signals to kind
+[00:37:15] of
+[00:37:16] do something with the trade before it
+[00:37:17] reaches their parameters that's not the
+[00:37:19] point here right as per the last point
+[00:37:21] the emphasis should be on making sure
+[00:37:23] trades that are near completion don't
+[00:37:25] round trip and come back to stop you out
+[00:37:27] so let's say you buy 50 with a target at
+[00:37:30] 100 the market gets to 95 and then you
+[00:37:32] let it come all the way back to stop you
+[00:37:35] out it's that type of [ __ ] that's
+[00:37:36] unacceptable and is the premise of
+[00:37:39] evolving r to make sure you don't give
+[00:37:41] back extremely unreasonable uh setups
+[00:37:46] to the market right or forego a
+[00:37:49] disproportionate
+[00:37:50] amount of profit for just an extra tiny
+[00:37:53] bit of a reward
+[00:37:54] now just some notes on how trade
+[00:37:56] management usually works in
+[00:37:58] early stage trading i think two points
+[00:38:00] that i make there are
+[00:38:02] correct in my experience so beginners
+[00:38:04] are usually better served learning via
+[00:38:06] conservative targets and set and forget
+[00:38:08] so conservative targets just mean like
+[00:38:09] fta or the first trouble area as per the
+[00:38:11] other technical analysis series and by
+[00:38:14] set and forget i simply mean having a
+[00:38:16] pre-existing entry target stop and not
+[00:38:18] really doing much in between unless
+[00:38:20] there's an overridingly compelling
+[00:38:22] reason to intervene and as a beginner
+[00:38:24] your instincts for when to intervene are
+[00:38:26] probably going to suck
+[00:38:27] and at least with set and forget you'll
+[00:38:29] have some good data as to whether the
+[00:38:30] market reaches your target are you being
+[00:38:32] too ambitious are you being too
+[00:38:33] conservative i'd much rather have that
+[00:38:35] consistency than uh non-kind of
+[00:38:38] evidence-based interventions in the
+[00:38:39] market based on your emotions right
+[00:38:42] and that's where the second point comes
+[00:38:43] from the early on in your trading career
+[00:38:46] purely probabilistically you're far more
+[00:38:48] likely to over manage a trade uh than
+[00:38:51] under manage it so that's some quick
+[00:38:54] stuff on evolving r i know i covered it
+[00:38:55] in the first risk management video to
+[00:38:57] some depth but people mistook that to
+[00:39:00] say that you should always do something
+[00:39:02] ahead of your take profit or before you
+[00:39:04] get stopped out that's not the case i
+[00:39:06] think the primary emphasis should be on
+[00:39:07] not giving back massive gains when the
+[00:39:10] reward left is tiny and and vice versa
+[00:39:14] it's just a bit of prudent active
+[00:39:16] non-lazy trade management
+[00:39:18] is the
+[00:39:20] core premise
+[00:39:23] now let's talk about winning streaks and
+[00:39:24] losing streaks
+[00:39:26] so by definition a streak as the name
+[00:39:28] suggests is consecutive wins or losses
+[00:39:31] in the market now streaks can offer
+[00:39:34] information about changes in the market
+[00:39:35] regime and or the expected value of a
+[00:39:38] specific setup again expect value
+[00:39:40] average outcome whatever
+[00:39:42] i've broken this down into two uh rather
+[00:39:44] straightforward sections dumb [ __ ] to
+[00:39:46] avoid and smart [ __ ] to consider so on
+[00:39:48] the dumb [ __ ] to avoid side of things
+[00:39:50] here are some really common mistakes and
+[00:39:52] things you shouldn't do
+[00:39:54] in my opinion first of all risking more
+[00:39:57] when losing to make it all back
+[00:39:59] that should be intuitive but
+[00:40:01] that's how you dig a hole that's hard to
+[00:40:03] come back from
+[00:40:04] um especially if the specific setup is
+[00:40:07] losing more often than not that can be
+[00:40:08] some sort of sign in the market that
+[00:40:11] conditions are shifted or the edge is
+[00:40:12] over or what be it so if your setup is
+[00:40:16] not working
+[00:40:17] risking more
+[00:40:19] to make it all back if anything the
+[00:40:21] probability is that you dig yourself an
+[00:40:22] even deeper hole not worth it
+[00:40:25] another bad idea is risking more on
+[00:40:27] losing setups while other setups are
+[00:40:29] doing well this is specifically
+[00:40:31] especially the case if you have setups
+[00:40:33] which are contingent or reliant on
+[00:40:35] different market regimes so if your
+[00:40:37] trending setups are printing
+[00:40:40] but your ranging setups are losing
+[00:40:44] and you start betting more on the
+[00:40:46] ranging setups kind of because they are
+[00:40:48] losing or you think there should be some
+[00:40:49] sort of parity between setups or
+[00:40:51] whatever that's a bad idea don't do it
+[00:40:54] another one risking less
+[00:40:56] when winning to accumulate karma points
+[00:40:59] from the market for not being greedy
+[00:41:01] this one is really stupid right and it's
+[00:41:03] really presumptuous because if the
+[00:41:05] market's rewarding your style of trading
+[00:41:07] that's probably almost certainly not
+[00:41:09] going to stick around forever so if
+[00:41:11] anything the most you can do to maximize
+[00:41:13] your expected value or your expectancy
+[00:41:15] as a trader at that time is to milk the
+[00:41:18] edge while it exists so
+[00:41:21] you often see people look i'm gonna win
+[00:41:22] streak i'm gonna back away and kind of
+[00:41:24] chill out i think that's wrong because
+[00:41:26] you never know when
+[00:41:28] when the next time will be that those
+[00:41:29] conditions become favorable towards your
+[00:41:30] trading system you're almost duty-bound
+[00:41:33] to make the most of those conditions and
+[00:41:36] trade them while they're there
+[00:41:38] there are no bonus points for being like
+[00:41:39] you know i've done really well time to
+[00:41:40] take a step back etc if anything you
+[00:41:42] don't know if or when the next time
+[00:41:45] you're going to be able to trade well
+[00:41:46] will come about in the market so make
+[00:41:48] the most of it while it's available your
+[00:41:49] fake humility will not be rewarded by
+[00:41:51] the market right
+[00:41:54] bad idea risking less on winning setups
+[00:41:56] following a losing streak on a different
+[00:41:59] setup now this is why having clearly
+[00:42:01] defined or at least somewhat defined
+[00:42:03] setups is important because again they
+[00:42:05] will often rely on different market
+[00:42:07] conditions regimes etc
+[00:42:10] now what you see when people hit a
+[00:42:11] losing streak with a certain setup is
+[00:42:13] they feel the need to kind of reduce
+[00:42:15] their risk management
+[00:42:17] sorry increase their sorry reduce their
+[00:42:19] risk per trade in general and say yeah
+[00:42:21] i've lost three trades in a row i'm just
+[00:42:23] gonna back away a little bit it's like
+[00:42:24] but mate your ranging setups are eating
+[00:42:26] [ __ ] sure but your trending setups are
+[00:42:28] completely printing why would you back
+[00:42:30] off the stuff that's working just
+[00:42:32] because some other stuff isn't working
+[00:42:34] as well
+[00:42:36] so that that's why having setups is so
+[00:42:37] helpful because you can you don't need
+[00:42:39] to completely back away from the market
+[00:42:41] in a losing streak maybe just one side
+[00:42:43] of your trading isn't working and it's
+[00:42:44] time for the other to shine but just
+[00:42:46] because you take a beating in one style
+[00:42:48] of trading doesn't mean you have to bin
+[00:42:50] everything and kind of take some time
+[00:42:51] off or do whatever assuming you're still
+[00:42:53] following your rules i mean obviously if
+[00:42:54] you're tilted and doing dumb [ __ ] then
+[00:42:56] maybe you should take some time off um
+[00:42:59] this last one happens a lot ditching a
+[00:43:01] profitable setup after a small string of
+[00:43:03] losses just don't do it it's probably a
+[00:43:05] setup in your system because it's done
+[00:43:06] well over a large period of time there
+[00:43:08] are lots of reasons for why setups don't
+[00:43:10] work which we'll talk about in a moment
+[00:43:12] and ditching a profitable setup after a
+[00:43:13] small string of losses is just a bad
+[00:43:16] idea um you're making quite big
+[00:43:18] decisions based on short-term or
+[00:43:20] incomplete data and that generally
+[00:43:21] doesn't yield the best outcomes
+[00:43:24] now what are some smart things to
+[00:43:25] consider so here are a few
+[00:43:28] by virtue of having your setups defined
+[00:43:31] quite clearly for different market
+[00:43:32] regimes or instruments or time frames or
+[00:43:34] however you want to split them up you
+[00:43:36] can simply make the assessment which
+[00:43:37] setups are working well and which ones
+[00:43:39] are no longer working
+[00:43:40] and from there
+[00:43:42] provided you have enough data you can
+[00:43:44] start to make some inferences about
+[00:43:45] subtle shifts in market structure or
+[00:43:47] conditions the type of regime we're in
+[00:43:49] so for example
+[00:43:50] if trending setups start losing and
+[00:43:52] ranging setups start printing then that
+[00:43:54] could give you a hint that the market is
+[00:43:56] changing from a trending regime to a
+[00:43:58] ranging one right and then that in turn
+[00:44:00] informs you about which setups to add
+[00:44:02] more risk to or trade more frequently
+[00:44:04] versus which setups to maybe back away
+[00:44:06] from right
+[00:44:08] now again
+[00:44:09] if something is working well
+[00:44:11] you don't know how long that's going to
+[00:44:12] last for but you should take advantage
+[00:44:14] of it while it's there and that usually
+[00:44:15] means you either trade it more
+[00:44:17] frequently and or with bigger size i
+[00:44:19] generally like to just trade it more
+[00:44:20] frequently the whole bigger size
+[00:44:22] argument can get a bit tilting if you
+[00:44:24] think an edge just started working well
+[00:44:26] you you win one or two trades and you
+[00:44:27] add size and that trade is a loser it
+[00:44:30] tends to be a bit funky so i think if a
+[00:44:31] setup is working well i think both of
+[00:44:33] those are fine but in general trading at
+[00:44:34] least start by trading it more
+[00:44:36] frequently before considering uh size
+[00:44:39] adjustments
+[00:44:40] now if something is not working well
+[00:44:43] obviously you know the opposite applies
+[00:44:44] trade it less and or with smaller size
+[00:44:47] and or be more selective with it that
+[00:44:48] last one is really important
+[00:44:50] um
+[00:44:51] if a setup you feel like a setup is
+[00:44:53] losing edge or hasn't been as clear
+[00:44:55] recently as it has been in the past one
+[00:44:57] things you can do is one of the things
+[00:44:59] you can do is to essentially apply a
+[00:45:00] quality filter to it to say that this is
+[00:45:02] what the setup looks like in its a plus
+[00:45:05] ideal form it's kind of not been so
+[00:45:07] great recently i'm only going to trade
+[00:45:08] the really clear outright examples of it
+[00:45:11] and not the marginal cases that's just
+[00:45:14] one one way to to filter out
+[00:45:17] or to filter four higher quality trades
+[00:45:20] we touched on this earlier with
+[00:45:22] short-term edges but if you have a novel
+[00:45:24] short-term edge that stops printing
+[00:45:27] you should probably bin it because those
+[00:45:29] sorts of short-term idiosyncrasies don't
+[00:45:31] don't usually come back
+[00:45:33] and it's more more or less
+[00:45:35] like an on and off switch so for example
+[00:45:37] if there's like heavy selling
+[00:45:39] at a in a certain exchange at the start
+[00:45:41] of the asian session over the period of
+[00:45:42] like a week and then suddenly the flows
+[00:45:44] flip and that session starts buying
+[00:45:46] don't try to keep cramming that edge
+[00:45:48] once the behavior is quite clearly
+[00:45:49] shifted especially for this low time
+[00:45:51] frame stuff it could be as um
+[00:45:54] you know as nuanced as following a
+[00:45:56] specific algo or a specific whale or
+[00:45:58] participant whatever as soon as that
+[00:45:59] stops working that those aren't the
+[00:46:01] types of edges that you should uh force
+[00:46:03] past their expiry date so just something
+[00:46:05] to bear in mind there if you find
+[00:46:07] something milk it as soon as it stops
+[00:46:08] working bin it um those short term edges
+[00:46:10] sometimes are the best sources of profit
+[00:46:12] but also need
+[00:46:13] the most discipline in execution
+[00:46:16] this last one is really important uh
+[00:46:18] short term streaks don't necessarily
+[00:46:20] mean a setup is trash or fantastic
+[00:46:22] there are a bunch of reasons i mean the
+[00:46:24] whole point of trading is that you can
+[00:46:26] do the quote unquote right thing the
+[00:46:28] plus ev thing and still lose money right
+[00:46:31] in the same vein you can do the wrong
+[00:46:32] thing and trade like a dumb ass and
+[00:46:34] still make money so if your brain isn't
+[00:46:37] process oriented and thinking about sort
+[00:46:39] of large numbers and the next kind of
+[00:46:41] fifty hundred hundred fifty thousand
+[00:46:44] trades whatever um maybe try to
+[00:46:46] recalibrate in that direction
+[00:46:48] and just quick very quickly some of the
+[00:46:50] reasons why setups
+[00:46:52] fail or succeed and that might not be
+[00:46:54] most indicative as to their long-term
+[00:46:56] expected value you sometimes just get
+[00:46:58] variance that's part of the deal you
+[00:47:00] might be incorrectly identifying setups
+[00:47:03] which leads to better or sometimes
+[00:47:05] sorry worse or sometimes even better
+[00:47:07] outcomes
+[00:47:08] shifts in conditions again that awkward
+[00:47:10] phase where you're in a you've been in a
+[00:47:12] range your ranging setups have been
+[00:47:14] printing then suddenly they stopped
+[00:47:15] working and your trending setups are
+[00:47:18] making money but you're not trading and
+[00:47:19] trading them yet because you think the
+[00:47:20] market's in a range so those that sort
+[00:47:22] of awkward lull where you're identifying
+[00:47:25] the shift in conditions but your actual
+[00:47:26] trading hasn't caught up yet uh that can
+[00:47:28] be a reason for setups working well or
+[00:47:30] poorly and then the last one which is a
+[00:47:32] sort of very apt summary of all those
+[00:47:34] conditions [ __ ] happens [ __ ] happens so
+[00:47:37] don't read too much into it think about
+[00:47:38] the next 10 20 50 100 trades etc
+[00:47:41] depending on your trading style but [ __ ]
+[00:47:43] happens is definitely an important one
+[00:47:46] last point on streaks is just to be
+[00:47:48] nimble some variance is expected but if
+[00:47:50] you're gonna gain anything from those
+[00:47:52] streaks i mean first of all don't tilt
+[00:47:53] and blow up and just assume i should
+[00:47:55] stop trading and any of that type of
+[00:47:56] stuff uh be analytical about it but in
+[00:47:59] general um you should really strongly
+[00:48:01] consider whether the streak be it a
+[00:48:03] winning or a losing one is telling you
+[00:48:05] anything about market conditions so if
+[00:48:07] you have staple setups that print money
+[00:48:09] like if we're in the range this setup
+[00:48:10] always does well or if we're in a trend
+[00:48:13] this setup always does well and suddenly
+[00:48:14] they stop
+[00:48:15] doing so well or underperform or
+[00:48:18] whatever
+[00:48:19] you know incur a losing streak
+[00:48:22] sometimes that will be very useful and
+[00:48:24] actionable market information and all of
+[00:48:26] this is impossible to do without a
+[00:48:29] trading journal i don't mean anything
+[00:48:30] sophisticated even just a discord just
+[00:48:33] with you which has a few of the setups
+[00:48:35] you trade and then you track your trades
+[00:48:36] that will be sufficient for these
+[00:48:38] purposes
+[00:48:40] so tldr there's dumb [ __ ] to avoid when
+[00:48:42] on a streak there's smart [ __ ] to do
+[00:48:45] in the aforementioned list the thing to
+[00:48:47] look out for is
+[00:48:50] it's very unlikely that everything you
+[00:48:51] do stops working see where the odds have
+[00:48:54] shifted and what clues that gives you as
+[00:48:56] to the larger market conditions be
+[00:48:59] prepared for
+[00:49:01] stuff to suck from time to time and
+[00:49:03] writing it off to variants
+[00:49:06] and if you are fortunate enough to be in
+[00:49:09] a condition or to be in market
+[00:49:11] conditions where your setups are doing
+[00:49:12] really well make the most of it there's
+[00:49:14] no there are no points for this fake
+[00:49:16] humility right
+[00:49:17] now
+[00:49:18] back to trade management very quickly on
+[00:49:21] break-even stops and partial profits
+[00:49:23] i'm sure you've heard these gems
+[00:49:25] so-called gems of trading wisdom before
+[00:49:27] that stopped to break even you know i've
+[00:49:28] got a free trade now it's [ __ ] it's
+[00:49:30] not true as we'll discuss and the cousin
+[00:49:33] of that trading idiom uh which is took
+[00:49:35] some off here can never go broke taking
+[00:49:37] profit also not true not compelling for
+[00:49:40] reasons we are going to discuss now okay
+[00:49:43] so here we go just being very real with
+[00:49:45] you here
+[00:49:46] and i think you know this deep down if
+[00:49:47] you search your soul
+[00:49:49] most break even stop and partial profit
+[00:49:52] decisions are made to achieve
+[00:49:53] psychological comfort not because those
+[00:49:56] decisions improve trade outcomes in the
+[00:49:57] long run right so just like we said
+[00:49:59] really early on in the beginning of the
+[00:50:01] video
+[00:50:02] there should always be a clear link
+[00:50:04] between your trade idea and your
+[00:50:07] invalidation
+[00:50:08] right so it's kind of thesis
+[00:50:10] driven when you move you'll stop to
+[00:50:14] break even
+[00:50:15] most cases that's not thesis driven and
+[00:50:17] it has actually no bearing on the reason
+[00:50:19] you took the trade in the first place
+[00:50:21] actually it's just an arbitrary way to
+[00:50:25] avoid dealing with the inherent
+[00:50:27] uncertainty and chaos that comes with
+[00:50:28] markets
+[00:50:29] right so
+[00:50:31] there's nothing special as we alluded to
+[00:50:33] earlier about your specific entry target
+[00:50:36] stop loss you know your p l the price at
+[00:50:38] which you can afford that new watch or
+[00:50:40] do whatever else the market doesn't care
+[00:50:41] about any of that right so making
+[00:50:43] decisions to preserve the sanctity of
+[00:50:46] those arbitrary figures is a futile
+[00:50:47] attempt to impose your will on the
+[00:50:49] market that's just all it is
+[00:50:51] right and it's kind of a disrespect to
+[00:50:52] yourself to some extent saying that well
+[00:50:54] i'm taking a trade because reason a and
+[00:50:56] you know i've it's back tested and i've
+[00:50:58] got a thesis and it makes sense and then
+[00:51:00] you make an important trade management
+[00:51:02] decision like moving your stop simply
+[00:51:04] because you like the amount of green p l
+[00:51:06] you see or you're scared to go under
+[00:51:08] water again
+[00:51:10] it's pure psychological cope as opposed
+[00:51:12] to
+[00:51:13] process driven decision making
+[00:51:16] and that's kind of the the whole point
+[00:51:18] of the first bullet point with breakeven
+[00:51:19] stops is that trade management decisions
+[00:51:21] should never be arbitrary and should
+[00:51:23] almost always be derived from the trade
+[00:51:25] idea itself uh putting a stop at
+[00:51:27] breakeven because you quote unquote
+[00:51:30] won't lose any money is the definition
+[00:51:32] of arbitrarily
+[00:51:34] tampering with a live trade
+[00:51:37] now the argument most advocates fall
+[00:51:40] back on is that you take the risk out of
+[00:51:42] the market and it's a free trade
+[00:51:45] if we think about that critically we
+[00:51:46] know that that's not true right because
+[00:51:48] the cost of moving your stop to break
+[00:51:51] even is sacrificing the potential gain
+[00:51:54] you could have had from your trade idea
+[00:51:56] but is that is no longer accessible to
+[00:51:58] you because you're not letting it play
+[00:51:59] out properly
+[00:52:00] right so think about it even in purely
+[00:52:03] ta terms
+[00:52:05] your break even stop on a long
+[00:52:07] is essentially saying i am bearish in
+[00:52:10] the same place that i bought previously
+[00:52:12] and we could even do like a ghetto
+[00:52:13] diagram of what that looks like
+[00:52:17] let's say this is level of support right
+[00:52:20] market comes in you buy it it bounces
+[00:52:23] and so you decide to put a stop
+[00:52:25] at your entry
+[00:52:27] right or at around your entry so you put
+[00:52:29] a stop here
+[00:52:32] now as the market comes back you know
+[00:52:34] normally you get a bit of a kind of
+[00:52:35] mechanical bounce first time around
+[00:52:37] before the market sort of revisits as
+[00:52:38] the market's coming back into this level
+[00:52:42] this is still support
+[00:52:44] and you were happy buying it
+[00:52:46] moments ago
+[00:52:47] on the on the premise that this is an
+[00:52:49] area where the market might reverse now
+[00:52:51] bear in mind if you're long your stop
+[00:52:54] loss is going to be in order to sell
+[00:52:56] right so if the market pushes back into
+[00:52:59] support what you're doing by definition
+[00:53:02] is selling where you bought previously
+[00:53:05] does that make any sense i mean in some
+[00:53:06] cases maybe but that's the exception to
+[00:53:08] the rule what you're really doing is
+[00:53:10] saying i don't have conviction in this
+[00:53:12] trade or
+[00:53:13] i don't have the balls to deal with
+[00:53:15] markets so i just want the market to go
+[00:53:17] up in a straight line and make me happy
+[00:53:18] immediately uh if it doesn't somehow the
+[00:53:21] thesis is incorrect but but we all know
+[00:53:22] that's [ __ ] so what is it once you
+[00:53:24] you know the emperor is naked type of
+[00:53:26] thing it's clearly just a coping
+[00:53:28] mechanism
+[00:53:29] there's no good most of the time there's
+[00:53:30] no good compelling reason to want to
+[00:53:33] sell where you bought moments ago
+[00:53:34] nothing's really changed by this retest
+[00:53:37] right except
+[00:53:39] you have this magic unrealized p l shiny
+[00:53:41] numbers and
+[00:53:43] green stuff and you don't want to be
+[00:53:44] underwater because you have ptsd from
+[00:53:46] other trades and a bunch of other
+[00:53:47] non-compelling explanations for that
+[00:53:49] type of behavior it most of the time
+[00:53:51] it's [ __ ] and you know it right
+[00:53:54] so break even stopping along as we
+[00:53:56] discussed i'm bearish in the place that
+[00:53:58] i bought previously most of the time
+[00:53:59] that's not a plus cv decision
+[00:54:02] and the same works for shorting you know
+[00:54:04] i'm if you put a break even stop on a
+[00:54:06] short i'm bullish in the same place that
+[00:54:08] i sold previously
+[00:54:11] so to preserve quote-unquote preserve
+[00:54:13] your p l you are happy to
+[00:54:16] sell support and buy resistance so that
+[00:54:20] you don't have to sit on the water for a
+[00:54:21] bit maybe does that sound like good
+[00:54:23] long-term trading habits
+[00:54:25] i don't think so right my view is that
+[00:54:28] no is the answer
+[00:54:30] now look i'm not a complete
+[00:54:32] extremist with these things sometimes it
+[00:54:34] will be true and reasonable but if the
+[00:54:36] market
+[00:54:37] you know especially if you get like very
+[00:54:39] dislocated entries or crazy wicks or in
+[00:54:41] certain contexts it is very much the
+[00:54:43] case that if the market retests your
+[00:54:46] entry the idea or the probability of
+[00:54:48] your idea being correct falls
+[00:54:49] drastically
+[00:54:51] so that's per the bottom bullet point it
+[00:54:53] can be justifiable where revisiting the
+[00:54:55] entry invalidates the idea or makes the
+[00:54:57] setup very likely to fail but i'd be
+[00:54:59] willing to bet nine times out of ten
+[00:55:02] when people put a break even stop on a
+[00:55:05] trade it's not a considered opinion
+[00:55:07] based on the new price action evidence
+[00:55:09] or whatever metrics they track rather
+[00:55:11] it's just a coping mechanism for well at
+[00:55:13] least i won't lose money well you know
+[00:55:15] what you won't make any either in the
+[00:55:16] long run by not letting your ideas play
+[00:55:18] out have some balls trade the set up and
+[00:55:22] not the p l
+[00:55:26] that logic is unsurprisingly applicable
+[00:55:28] to partial profits as well it can be
+[00:55:30] justified in search certain situations
+[00:55:32] like the evolving our examples but
+[00:55:34] arbitrarily closing trades based on
+[00:55:36] non-market factors like p l loan will
+[00:55:39] likely harm you in the long run okay and
+[00:55:42] as mentioned trading is process oriented
+[00:55:44] so let's consider um
+[00:55:46] the cost to this type of arbitrary
+[00:55:49] management so my view as per the middle
+[00:55:51] bullet points is that there is always
+[00:55:52] there's no such thing as a free lunch or
+[00:55:54] a free trade or any of this type of
+[00:55:55] stuff
+[00:55:56] if you cut your trades early at break
+[00:55:58] even in the long run you probably
+[00:56:00] perform better by letting your setup
+[00:56:02] logic play out and the same for taking
+[00:56:04] profit early in the long run assuming
+[00:56:06] it's arbitrary of course not like an
+[00:56:08] evolving r example but in the long run
+[00:56:10] you probably perform better by letting
+[00:56:11] your setup logic play out as well now
+[00:56:13] look
+[00:56:14] let's play sort of devil's advocate here
+[00:56:16] and steel man the other side of the
+[00:56:18] argument even if it's not true that in
+[00:56:20] the long run you you perform better by
+[00:56:22] letting your setups play out
+[00:56:25] if you manage your trades according to a
+[00:56:28] system or somewhat objective criteria
+[00:56:30] you at least have data you have evidence
+[00:56:32] that you can review and optimize your
+[00:56:34] trade management
+[00:56:36] however if you're just randomly closing
+[00:56:38] trades so putting your stop a break even
+[00:56:40] because you don't like being underwater
+[00:56:41] or immediately taking profit when you
+[00:56:43] see some sort of p l that's like a month
+[00:56:45] of rent or your favorite meal deal from
+[00:56:48] boots tesco whatever
+[00:56:51] those decisions don't give you any
+[00:56:53] useful or actionable information so even
+[00:56:56] in the best case if closing these trades
+[00:56:59] early isn't harming you in the long run
+[00:57:01] you still can't do anything with that
+[00:57:03] you can't optimize it because the
+[00:57:04] decision process itself is arbitrary in
+[00:57:08] most cases
+[00:57:09] there's [ __ ] all you can do to to make
+[00:57:10] your trading better from these arbitrary
+[00:57:13] on and off switch flicks
+[00:57:15] right
+[00:57:16] so even in the best case if it's not
+[00:57:18] harming you in the long run you can't do
+[00:57:21] that type of decision making doesn't
+[00:57:23] lend itself well to being optimized
+[00:57:25] studied streamlined whatever
+[00:57:28] but
+[00:57:29] in in fact the worst or base case for
+[00:57:32] this is that closing early is harming
+[00:57:34] you in the long run and the
+[00:57:35] decision-making process is too arbitrary
+[00:57:37] and opaque to be helpful okay there's
+[00:57:39] just some
+[00:57:41] my views on that matter
+[00:57:43] i suppose the colloquial or slightly
+[00:57:44] rude version of that is it's unlikely
+[00:57:46] that i close winning trades when i feel
+[00:57:48] my dick tingle is an edge very unlikely
+[00:57:51] right
+[00:57:52] so if you're going to commit to trading
+[00:57:54] you have to commit to being process
+[00:57:56] oriented
+[00:57:58] and that process should be open to
+[00:58:00] scrutiny and based on certain principles
+[00:58:03] that you can kind of tweak revisit
+[00:58:06] readjust whatever
+[00:58:08] if those principles are i put a stop at
+[00:58:10] break even because i'm scared of being
+[00:58:12] underwater and i close my trades early
+[00:58:15] because i like the green p l
+[00:58:18] what what the [ __ ] are you supposed to
+[00:58:19] do with that
+[00:58:21] it's arbitrary it doesn't let your own
+[00:58:23] conviction and trade ideas play out and
+[00:58:25] it's very hard to do anything with in
+[00:58:27] terms of optimization down the line
+[00:58:34] okay
+[00:58:36] leverage trading
+[00:58:38] as i mentioned this probably needs its
+[00:58:40] own video and i'll try to make that
+[00:58:42] happen at some point maybe but just from
+[00:58:44] a basic risk management overview here's
+[00:58:47] here's the
+[00:58:48] summary version
+[00:58:50] now leverage trading as i mentioned in
+[00:58:52] the first point it's not evil but it's
+[00:58:54] not a shortcut either it's just like a
+[00:58:55] tool
+[00:58:56] like any other if you misuse it you get
+[00:58:57] hurt some people do very well with it i
+[00:58:59] will say that most for every kind of
+[00:59:01] leverage success story you see on
+[00:59:03] twitter or social media elsewhere there
+[00:59:05] are thousands tens of thousands hundreds
+[00:59:06] of thousands who just lose all their
+[00:59:08] money leverage trading so be aware of
+[00:59:10] the social media highlight reel that is
+[00:59:12] being presented to you now what is the
+[00:59:14] basic premise of leveraged trading well
+[00:59:16] you can put on positions with a fraction
+[00:59:18] of the notional amount of the position
+[00:59:20] you want to trade as collateral so let's
+[00:59:22] say you have spot markets
+[00:59:24] right i want to buy 10 000 usd of coin a
+[00:59:27] i need 10 000 usd because otherwise i
+[00:59:29] can't buy
+[00:59:31] 10 000 usd of coin a right now if you're
+[00:59:33] trading leveraged products
+[00:59:35] uh and you're trying to put on the same
+[00:59:36] position you can offer a fraction of the
+[00:59:40] position you want to establish
+[00:59:42] as collateral and then you borrow the
+[00:59:44] remainder quote unquote from the
+[00:59:45] exchange
+[00:59:46] so i can have a fraction of ten thousand
+[00:59:48] usd in the same example um and with 5000
+[00:59:52] usd in my account i can put on that 10
+[00:59:55] 000 usd position by levering my 5000 usd
+[00:59:59] two times
+[01:00:00] okay
+[01:00:02] so it's essentially a form of a loan or
+[01:00:04] borrowing money
+[01:00:07] now obviously one of the primary risks
+[01:00:09] kind of like with any other loan uh of
+[01:00:11] leverage trading is getting liquidated
+[01:00:13] and liquidation is when your position is
+[01:00:15] forcibly closed by the exchange when you
+[01:00:17] run out of maintenance margin so you
+[01:00:19] don't have enough collateral to keep the
+[01:00:20] position open right in effect
+[01:00:23] there are two types of liquidation it's
+[01:00:25] either your position gets closed that's
+[01:00:26] isolated margin your collateral is kind
+[01:00:28] of it's the collateral isolated to that
+[01:00:30] specific position or in the worst case
+[01:00:32] scenario and unfortunately in many cases
+[01:00:35] the default setting uh for
+[01:00:38] trading futures or trading with leverage
+[01:00:40] whatever
+[01:00:41] is cross or portfolio margin where your
+[01:00:43] entire trading account becomes
+[01:00:44] collateral for the position so if the
+[01:00:47] position is forcibly closed uh
+[01:00:50] you lose all the money in your account
+[01:00:52] because that was the collateral base
+[01:00:54] okay
+[01:00:56] a gross over simplification there but
+[01:00:58] that's what you get in there we've
+[01:00:59] already been going on for an hour so
+[01:01:01] we'll have to deal with it now if
+[01:01:03] there's one thing you learn from this
+[01:01:04] whole leverage thing
+[01:01:06] is it's the following
+[01:01:07] cranking up the leverage slider does not
+[01:01:10] increase or decrease your p l your p l
+[01:01:13] is dictated by your position size this
+[01:01:15] is really important so someone will say
+[01:01:17] oh should i use 5x or 20x well
+[01:01:21] it's a nonsensical question because your
+[01:01:23] p l is going to be dictated by your
+[01:01:25] position size leverage merely affects
+[01:01:27] how collateralized you are for that
+[01:01:29] position size
+[01:01:30] right so let's take a very basic example
+[01:01:33] buying 10 000 contracts of a linear
+[01:01:35] altcoin usd future at two times leverage
+[01:01:38] the market gains five percent that's a
+[01:01:40] five percent gain
+[01:01:41] and then if i long ten thousand of
+[01:01:43] everything the same at ten times
+[01:01:45] leverage
+[01:01:46] right it's still a five percent gain
+[01:01:49] because in both cases i'm gaining five
+[01:01:51] percent on 10 000 contracts this bit of
+[01:01:54] the equation merely informs me how much
+[01:01:57] collateral have i put up to have a 10
+[01:01:59] 000 position the p l is dictated by how
+[01:02:02] much your position size moves the
+[01:02:05] leverage simply says how much collateral
+[01:02:07] you offered to get those contracts in
+[01:02:09] the first place leverage equals
+[01:02:10] collateralization
+[01:02:12] okay
+[01:02:13] now obviously there's a bit of nuance
+[01:02:15] there it's like well leverage per
+[01:02:16] position or like how leverage is your
+[01:02:18] account forget that for now we'll deal
+[01:02:19] with it in the video the basic framework
+[01:02:21] that you need to understand is low
+[01:02:23] leverage typically means you've offered
+[01:02:24] more margin or collateral for that
+[01:02:26] position and your liquidation is further
+[01:02:28] away from price and of course the
+[01:02:29] opposite is true whereby high leverage
+[01:02:31] typically means you've offered less
+[01:02:32] margin or collateral for that position
+[01:02:34] which means your liquidation is closer
+[01:02:36] to price but your main risk management
+[01:02:38] tools will be your position size and
+[01:02:42] leverage will just be the proximity to
+[01:02:44] liquidation based on how much collateral
+[01:02:45] you've offered for that quote unquote
+[01:02:47] loan okay
+[01:02:49] so in theory and we know this isn't
+[01:02:51] really true in practice leverage is cool
+[01:02:53] for pair trades so trick you know
+[01:02:55] trading um
+[01:02:57] pairs you don't own so for example if i
+[01:02:59] think eth is going to outperform uh
+[01:03:02] another layer one
+[01:03:04] i will buy x amount of beef and sell an
+[01:03:07] equivalent amount of uh that layer one
+[01:03:10] and i've put on a pair trade so i'm not
+[01:03:12] exposed to the downside or upside moves
+[01:03:15] in those specific pairs it's how they
+[01:03:16] perform relative to each other that
+[01:03:19] informs my p l so you can set up cool
+[01:03:20] trades like that um leverage also lets
+[01:03:23] you keep less money on exchange so you
+[01:03:25] know if i if i normally trade with
+[01:03:28] whatever average ten thousand dollar
+[01:03:30] position sizes uh i can keep let's say
+[01:03:33] five thousand or seven thousand on the
+[01:03:35] account uh and that still allows me to
+[01:03:37] trade by normal position size by using
+[01:03:39] leverage so i don't need to keep the
+[01:03:41] full amount i normally trade with an
+[01:03:43] exchange and also as mentioned kind of
+[01:03:45] in the first point with pair trades
+[01:03:46] trading coins that you don't own in
+[01:03:48] spots so sort of just expressing
+[01:03:50] directional views or whatever pair
+[01:03:52] trades with coins in which i don't hold
+[01:03:55] collateral right
+[01:03:56] just by trading the futures contract
+[01:03:58] itself as opposed to owning spot
+[01:04:00] outrightly
+[01:04:02] what i will say is this topic needs its
+[01:04:04] own video unless you know exactly what
+[01:04:07] you're doing with leverage trading and
+[01:04:09] that takes a while to understand don't a
+[01:04:11] pin if you want somewhere to start i do
+[01:04:13] have like a comprehensive um
+[01:04:16] position size for leveraged trading type
+[01:04:18] of new medium article somewhere probably
+[01:04:20] needs an update but i will also just say
+[01:04:22] go read the contract specifications on
+[01:04:24] the exchanges where you want to trade
+[01:04:26] and those will have a lot of information
+[01:04:27] about the products and
+[01:04:29] all the things you need to know to
+[01:04:31] not get destroyed on your first trade
+[01:04:35] so some crypto specific considerations
+[01:04:37] this again could be its own video it
+[01:04:38] could make it a very long list etc but
+[01:04:40] let's go over just three very basic ones
+[01:04:42] okay
+[01:04:44] the first is correlations
+[01:04:47] when bitcoin and ethereum nuke the rest
+[01:04:49] of the market tends to nuke with them
+[01:04:50] right so that's generally referred to as
+[01:04:52] a strong positive correlation to the
+[01:04:54] downside
+[01:04:56] so diversification in crypto is still
+[01:04:58] very tricky when it comes to the
+[01:04:59] downside you know when the big boys nuke
+[01:05:01] all the [ __ ] coins tend to go with them
+[01:05:03] so you often find newer participants or
+[01:05:05] maybe use the equities or whatever else
+[01:05:07] saying yeah well i'm holding some d5 and
+[01:05:08] holding some exchange coins and holding
+[01:05:10] some layer ones etc and that gives them
+[01:05:12] a sense that they're diversified or you
+[01:05:15] know their risk is spread out and you
+[01:05:16] know if one sector falls maybe another
+[01:05:18] sector will do better etc but generally
+[01:05:20] in crypto at the moment at the time of
+[01:05:22] recording this video if your big picture
+[01:05:24] read is wrong especially to the downside
+[01:05:26] when it comes to the majors you'll
+[01:05:28] likely eat [ __ ] on all those positions
+[01:05:30] so while you may think you're
+[01:05:32] diversified by holding you know
+[01:05:33] different
+[01:05:34] sectors of alt coins for example you're
+[01:05:37] essentially stacking your risk because
+[01:05:39] if you're wrong they'll all move down in
+[01:05:40] the same direction right specifically
+[01:05:42] the downside um positive correlations
+[01:05:44] are strong
+[01:05:45] so personally i tend to prefer fewer
+[01:05:48] high conviction trades just one and two
+[01:05:49] rather than trying to bet on direction
+[01:05:51] with like a basket of coins that will on
+[01:05:53] average behave quite similarly anyway
+[01:05:55] especially to the downside so so bear
+[01:05:58] that in mind and be aware that uh a lot
+[01:06:01] of the time your risk stacks when it
+[01:06:03] comes to altcoins given how those
+[01:06:05] correlations play out uh the second one
+[01:06:07] counterparty risk and exchange downtime
+[01:06:09] um exchanges tend to break during
+[01:06:11] volatility still the case derivatives
+[01:06:13] spot all of it quite often goes to [ __ ]
+[01:06:15] um
+[01:06:16] so keeping coins on several different
+[01:06:19] exchanges
+[01:06:20] is probably not the worst idea in the
+[01:06:22] world both to reduce like a rug pull um
+[01:06:25] from that specific venue but also to
+[01:06:26] make sure that if you have to trade and
+[01:06:28] the one of the exchanges or one of the
+[01:06:30] exchanges we have money is down you can
+[01:06:32] actually just hedge or do whatever you
+[01:06:34] have to do on another venue without
+[01:06:36] getting completely obliterated um
+[01:06:39] so that's another thing to bear in mind
+[01:06:41] and the final one is security this is
+[01:06:43] probably the most crypto specific one
+[01:06:46] so many people you know spend years in
+[01:06:47] crypto and then type in their meta mask
+[01:06:50] seed phrase or share their price share
+[01:06:53] their seed phrase for their wallet or
+[01:06:54] whatever and lose it all
+[01:06:56] you know years worth of
+[01:06:58] progress and trading just by some stupid
+[01:07:00] mistake so security is really important
+[01:07:02] i've just added some basics here this is
+[01:07:04] an offset guide but probably better than
+[01:07:06] nothing unique emails and non-sms
+[01:07:08] two-factor authentication for all
+[01:07:10] sign-ups uh do not reuse passwords keep
+[01:07:13] coins on well-secured credible
+[01:07:14] centralized exchanges i know it's a bit
+[01:07:16] of a hot take and people say not your
+[01:07:17] keys not your coins uh but on average i
+[01:07:19] think it's easier to secure a
+[01:07:23] credible centralized exchange account
+[01:07:25] than it is for most people to secure
+[01:07:27] like a either a paper wallet or a hard
+[01:07:28] wallet so that's just my hardware wallet
+[01:07:30] that's my personal view um or again as
+[01:07:33] mentioned or in a hardware wallet
+[01:07:34] without the backup being somewhere
+[01:07:36] easily accessible uh don't click on
+[01:07:38] random links there's a lot of phishing
+[01:07:39] going on so you know bookmark all the
+[01:07:41] main websites you use especially
+[01:07:43] exchanges to avoid fishing even if you
+[01:07:46] own a board ape don't share your seed
+[01:07:48] phrase with anyone that asks contrary to
+[01:07:50] popular belief that's just like not a
+[01:07:52] very helpful um thing to do maybe
+[01:07:55] helpful for the hacker but if you want
+[01:07:56] to keep your property uh that's just one
+[01:07:58] of the things you don't pass around at
+[01:08:00] every convention you go to or in
+[01:08:01] response to every dm you receive and
+[01:08:04] i'm sure you've seen this on twitter and
+[01:08:06] everywhere else specifically discord and
+[01:08:08] mods and groups all this [ __ ]
+[01:08:10] impersonators are everywhere in crypto
+[01:08:12] so make sure you're talking to whoever
+[01:08:14] you think you're talking to and if they
+[01:08:16] ask you for money or sorts of personal
+[01:08:18] information
+[01:08:19] it's probably a scam
+[01:08:21] that's it conclusion i'm done um no
+[01:08:24] referral links courses ads upsells none
+[01:08:26] of that [ __ ] just me with a
+[01:08:28] increasingly raspy and broken voice uh
+[01:08:30] rambling into my microphone in my mom's
+[01:08:32] basement about risk management so that's
+[01:08:34] that's cool
+[01:08:36] if you enjoyed this if you think it's
+[01:08:37] helpful if you've been a fan of the
+[01:08:38] technical analysis series and want to
+[01:08:40] see more of the videos get a facelift
+[01:08:43] make sure to like this video and
+[01:08:45] subscribe both of those are free and if
+[01:08:47] you want to be really nice leave a
+[01:08:48] comment on this video below maybe type
+[01:08:51] it as i'm speaking right now just
+[01:08:53] waiting for you
+[01:08:54] or just tweet at me at crypto cred to
+[01:08:56] tell me how much has changed your life
+[01:08:58] don't actually do that as in don't tell
+[01:09:00] me it changed your life it's just a bit
+[01:09:01] of a weird thing to tell a stranger but
+[01:09:02] if you found it helpful or have any
+[01:09:04] questions i'd love to hear from you
+[01:09:05] that's all i've got uh hopefully
+[01:09:07] this wasn't the worst thing you've
+[01:09:09] seen all day or week or whatever
+[01:09:12] managed to clock it in an hour 10
+[01:09:14] minutes that's all from me have a
+[01:09:16] wonderful whatever and i'll see you for
+[01:09:18] the next video merry christmas as well
+[01:09:20] or something bye

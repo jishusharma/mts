@@ -1,0 +1,2468 @@
+# Video ID: inqHN8q57X4
+# Title: Technical Analysis Series - Retests
+# Published: 2021-03-14
+# Source: youtube_transcript_api (auto); uploader: CryptoCred
+# Analyst: CryptoCred
+# Channel: @CryptoCred
+# Duration_s:4861
+# Word count: 14029
+# ---
+[00:00:01] hello and welcome to the video
+[00:00:03] this is another addition to the
+[00:00:04] technical analysis series
+[00:00:06] it's also the fourth year i think of the
+[00:00:08] ta series
+[00:00:09] so if you've hung around you're still
+[00:00:10] watching still following my work thank
+[00:00:13] you very much
+[00:00:13] i hope some of it has proved valuable if
+[00:00:16] it hasn't maybe this is the redemption
+[00:00:17] video
+[00:00:18] we've all been waiting for go ahead and
+[00:00:20] like it subscribe do all that fun stuff
+[00:00:22] but let's talk about the topic at hand
+[00:00:24] today which is
+[00:00:26] retests and more than just three tests
+[00:00:27] we're gonna discuss breakouts
+[00:00:29] rounded re-tests whether to even trade
+[00:00:31] re-tests all that
+[00:00:33] breakout-related stuff as we'll see
+[00:00:36] shortly so here's the outline nothing
+[00:00:39] new
+[00:00:40] here we'll start with a disclaimer some
+[00:00:42] general remarks to set the scene
+[00:00:44] we'll then define the basic premise of
+[00:00:46] this video which is breakdowns and
+[00:00:47] re-tests
+[00:00:48] including defining those terms we'll
+[00:00:51] then outline the dilemma that's usually
+[00:00:52] presented
+[00:00:53] when it comes to trading retests versus
+[00:00:56] breakouts
+[00:00:56] so it's the idea of a trade guarantee
+[00:00:58] versus or alongside
+[00:01:00] risk reward then we'll talk about what a
+[00:01:02] breakout actually is and some common
+[00:01:04] traps and
+[00:01:05] things that will make your trading more
+[00:01:06] difficult so that we can avoid those
+[00:01:09] things
+[00:01:10] we'll get into some detail about the
+[00:01:12] types of retests in this case
+[00:01:13] the two main categories which is
+[00:01:15] immediate versus rounded
+[00:01:17] and then some some of the actual useful
+[00:01:19] stuff uh that the extra considerations
+[00:01:22] that should play into your
+[00:01:23] decision-making process when trying to
+[00:01:25] assess whether to trade the breakout the
+[00:01:27] retest both
+[00:01:28] neither whatever right and those
+[00:01:30] considerations are
+[00:01:31] potentially a false dilemma um the
+[00:01:34] existing trend or precedent that's being
+[00:01:36] set by the market
+[00:01:37] risk ward considerations hidden retests
+[00:01:40] which aren't as fancy as they sound
+[00:01:42] and then some notes on context which are
+[00:01:44] always important
+[00:01:48] disclaimer make sure to pause the video
+[00:01:50] and familiarize yourself i mean we've
+[00:01:51] been here for four years i'm sure we
+[00:01:52] know a thing or two not a professional
+[00:01:54] not a financial advisor
+[00:01:56] not a lawyer nobody really maybe you
+[00:01:57] shouldn't watch this video at all
+[00:01:59] but um you know trading's risky i'm not
+[00:02:02] a financial advisor i'm just an idiot a
+[00:02:04] clown a jester here for entertainment
+[00:02:06] purposes only
+[00:02:08] so with that said some general remarks
+[00:02:10] what i hate about a lot of ta videos
+[00:02:12] i know talk about starting on a positive
+[00:02:14] note is that they essentially prescribe
+[00:02:17] a way of trading without knowing the
+[00:02:19] person's system the markets they trade
+[00:02:21] their style anything like that right so
+[00:02:23] we've avoided that
+[00:02:24] or at least i've done my best to avoid
+[00:02:26] that in this
+[00:02:28] video series so it should come as no
+[00:02:30] surprise that no one size fits all
+[00:02:33] is the first comment with regards to
+[00:02:35] general remarks right the best results
+[00:02:37] will come from
+[00:02:37] testing contextual decisions adapting
+[00:02:40] these broad frameworks for your
+[00:02:42] specific markets etc etc so whenever you
+[00:02:45] come across this type of trading
+[00:02:46] education
+[00:02:47] and they say you should always do this
+[00:02:48] and never do that
+[00:02:50] very rarely is it some well-reasoned or
+[00:02:54] comprehensive type of framework so
+[00:02:57] always be a bit
+[00:02:58] cautious of that accordingly the
+[00:03:01] framework that we're discussing is
+[00:03:02] applicable to a wide range of systems
+[00:03:04] so that's price action you know
+[00:03:06] horizontals market structure
+[00:03:07] ichimoku cloud moving averages trend
+[00:03:09] lines whatever
+[00:03:10] anything under the sun more or less
+[00:03:12] qualifies for this as long as you've got
+[00:03:14] some sort of system
+[00:03:15] which can identify breaks of structure
+[00:03:17] or even more simply
+[00:03:18] identify support resistance it's really
+[00:03:20] straightforward not even just support
+[00:03:22] resistance just any turning points in
+[00:03:24] the market
+[00:03:25] or a system which can identify bits
+[00:03:28] of price which are important or you're
+[00:03:30] expecting a reaction from
+[00:03:32] that's enough right so low bar um
+[00:03:34] something you can i'm sure
+[00:03:35] apply to some extent to whatever it is
+[00:03:37] you trade
+[00:03:38] another general remark missed trades are
+[00:03:40] normal okay so breakouts vary retest
+[00:03:43] very
+[00:03:44] the market varies it just really depends
+[00:03:47] right
+[00:03:48] so trying to catch everything
+[00:03:51] is is unnecessary
+[00:03:54] this fourth point as well a lot of
+[00:03:56] trading education tries to
+[00:03:58] almost remove all the uncertainty from
+[00:04:00] trading and just say
+[00:04:01] you know x always happens always do x
+[00:04:03] never do y et cetera
+[00:04:05] as discretionary traders that's just not
+[00:04:07] how the markets work that's not what
+[00:04:09] we're dealing with that's not what we're
+[00:04:11] forced to confront on a day-to-day basis
+[00:04:13] and as i say here somewhat
+[00:04:15] tongue-in-cheek confirmation
+[00:04:17] quickly becomes cope formation right it
+[00:04:19] even fails the basic
+[00:04:21] uh logical test that if the market was
+[00:04:24] so nice as to offer confirmation at
+[00:04:26] every turn
+[00:04:26] then losing trades would be virtually
+[00:04:28] impossible right because you either got
+[00:04:29] confirmation
+[00:04:30] great you make money or you didn't get
+[00:04:32] confirmation great you didn't take a
+[00:04:34] trade that
+[00:04:34] was bad and we know that the market
+[00:04:37] doesn't operate to those degrees
+[00:04:39] of certainty so be wary
+[00:04:42] of systems which promote it again there
+[00:04:45] is a
+[00:04:45] very small handful of traders whom i
+[00:04:47] know personally like trader as zed
+[00:04:50] and a few of my colleagues who actually
+[00:04:51] have a well-defined rigorous system
+[00:04:54] which tells them what confirmation is
+[00:04:56] but even in those cases you're not
+[00:04:58] avoiding
+[00:04:58] the uncertainty of markets you're just
+[00:05:00] defining it slightly differently
+[00:05:02] or planning for it right
+[00:05:06] as a result the framework we're working
+[00:05:08] on is just trying to make higher
+[00:05:09] probability
+[00:05:10] bets and arm you with more information
+[00:05:12] to make your decisions
+[00:05:13] as opposed to a basic checklist always
+[00:05:15] trade the re-test when x never trade the
+[00:05:16] re-test and why
+[00:05:17] we're not dealing with that crap right
+[00:05:20] now a very quick one to get off the bat
+[00:05:21] so i don't need to confront it later in
+[00:05:22] the lecture what you'll often see
+[00:05:25] is this blanket statement that the
+[00:05:27] market needs to retest
+[00:05:28] x to confirm it as support resistance
+[00:05:31] just forget it right
+[00:05:32] i don't know i can't call this anything
+[00:05:34] other than the notion because it's
+[00:05:35] complete fiction
+[00:05:36] it'll put you in some absolutely
+[00:05:38] terrible trades the market doesn't have
+[00:05:40] to do anything
+[00:05:42] as we'll discover but i don't know where
+[00:05:43] this idea came from it's really harmful
+[00:05:46] i've legit had dms you know at the time
+[00:05:48] of recording bitcoins like under 60k
+[00:05:50] or something and i've had dms of people
+[00:05:53] telling me that they shorted
+[00:05:55] the 20k breakouts the previous all-time
+[00:05:57] high breakouts in bitcoin
+[00:05:59] because having broken it price didn't
+[00:06:02] come back to re-test it
+[00:06:03] as a result the market hadn't confirmed
+[00:06:06] the 20k
+[00:06:07] breakout as genuine so they decided to
+[00:06:08] sell i mean it's just nonsense it
+[00:06:10] doesn't stand up to any serious scrutiny
+[00:06:13] so don't do it as i say in the second
+[00:06:16] bullet point the significant event tends
+[00:06:18] to be the break of structure itself
+[00:06:20] it doesn't suddenly become magically
+[00:06:22] valid if price decides to come back to
+[00:06:24] it
+[00:06:24] right so so the level break or the
+[00:06:27] structure break is what's important
+[00:06:28] the retest isn't what gives it
+[00:06:32] significance so to speak
+[00:06:34] so this would normally be a slide of its
+[00:06:35] own but let's just get this out the way
+[00:06:36] and not give it any more time that it
+[00:06:37] needs
+[00:06:38] forget the notion that a retest always
+[00:06:40] needs to happen
+[00:06:41] to confirm one thing or another it's
+[00:06:43] just not true
+[00:06:45] i've already mentioned the last point
+[00:06:46] i'll make you know two more quick points
+[00:06:48] you don't have to trade every single
+[00:06:50] breakout or breakdown in fact later on
+[00:06:51] them and discuss when discussing context
+[00:06:53] we'll discuss the circumstances where
+[00:06:56] not trading a breakout or breakdown
+[00:06:58] is actually advisable so keep an open
+[00:07:00] mind towards that
+[00:07:01] and the final point is i've got some
+[00:07:03] examples for these concepts
+[00:07:04] but given they're so broadly applicable
+[00:07:06] to a whole range of systems i'm
+[00:07:08] generally not a huge fan
+[00:07:09] of just spamming examples which make the
+[00:07:11] markets look very neat
+[00:07:12] you know some setups will fail some
+[00:07:14] examples
+[00:07:16] don't work i've obviously cherry-picked
+[00:07:18] to communicate concepts as clearly as i
+[00:07:19] can
+[00:07:20] don't expect the market to operate like
+[00:07:22] clockwork in that regard
+[00:07:23] and the best and most meaningful study
+[00:07:26] you can do is
+[00:07:27] through your own time your own trades
+[00:07:28] your own examples so relying on them
+[00:07:30] when trying to learn ta
+[00:07:33] can hamper your progress
+[00:07:37] so what's the basic premise breakdowns
+[00:07:39] and re-tests hopefully you've watched
+[00:07:41] some of the other videos during the
+[00:07:43] course of the ta series god knows where
+[00:07:44] i'll put this in the playlist
+[00:07:46] but you should know what a horizontal
+[00:07:47] level is and you shouldn't know what
+[00:07:48] market structure is
+[00:07:49] so it should come as no surprise that
+[00:07:51] losing support is typically bearish
+[00:07:53] right and the breakdown and or retest of
+[00:07:55] the broken support may be a chance to
+[00:07:57] sell conversely
+[00:07:59] or inversely i suppose breaking
+[00:08:01] resistance is typically bullish
+[00:08:02] and the logical corollary of that is
+[00:08:04] that the breakout and or re-test of the
+[00:08:06] broken resistance
+[00:08:07] may be a chance to buy right and
+[00:08:10] this video largely addresses how when
+[00:08:12] and whether to trade such occurrences
+[00:08:14] so i suppose at its most basic
+[00:08:18] you know if we have a level of support
+[00:08:22] or a support structure in this case it
+[00:08:24] happens to be a horizontal level
+[00:08:26] right where previous bounce occurred for
+[00:08:28] example if
+[00:08:29] that structure is broken right on let's
+[00:08:32] say a move here
+[00:08:33] then either the breakout event itself
+[00:08:36] right
+[00:08:37] or the retest of that previous support
+[00:08:40] so again the breakdown itself
+[00:08:42] or the retest may provide an opportunity
+[00:08:45] to sell
+[00:08:45] that's kind of its simplest articulation
+[00:08:48] and then the same of course is true
+[00:08:49] for resistance you have a level of
+[00:08:52] resistance
+[00:08:55] when or if it is broken the break
+[00:08:58] of the structure itself or the
+[00:09:00] subsequent retest
+[00:09:01] of the structure may provide
+[00:09:03] opportunities to buy it
+[00:09:06] just to kind of restate what we're
+[00:09:08] working with on a very basic level
+[00:09:12] so you saw in the previous slide there
+[00:09:14] were two structures or potential trade
+[00:09:16] ideas
+[00:09:17] that are generated by a breaker
+[00:09:19] resistance or by a loss of support
+[00:09:21] one of them relied on trading the actual
+[00:09:25] break of the structure and the other
+[00:09:27] relied on trading the retest
+[00:09:29] of the structure so the motivation for
+[00:09:31] this entire video was someone asking
+[00:09:32] well
+[00:09:33] do i wait for confirmation or wait for a
+[00:09:35] retest or is trading the break enough
+[00:09:37] and i should go for that
+[00:09:39] and there is just like with many things
+[00:09:41] in trading there's always some sort of
+[00:09:42] built-in
+[00:09:43] trade-off or balancing act that has to
+[00:09:44] be performed in this case
+[00:09:46] two things are being balanced risk
+[00:09:48] reward
+[00:09:50] and certainty so
+[00:09:53] less certainty often offers superior
+[00:09:56] risk reward this applies to markets
+[00:09:57] generally forgetting just the ta side of
+[00:09:59] things
+[00:10:00] and then more certainty often offers
+[00:10:02] inferior risk raw i mean you can even
+[00:10:04] arguably apply this to investing some
+[00:10:06] extent but certainly when it comes to
+[00:10:07] trading
+[00:10:07] this technical side of things um this is
+[00:10:10] applicable
+[00:10:11] so the basic example of course that
+[00:10:12] comes to mind is trading at a level
+[00:10:15] versus trading away from a level now
+[00:10:16] again a very basic visual
+[00:10:19] let's take buying a retest of broken
+[00:10:22] resistance
+[00:10:23] so we'll start and make our structure
+[00:10:25] nice and
+[00:10:27] thick there we go
+[00:10:32] then we'll have our price line in
+[00:10:34] actually make it black as well
+[00:10:37] and this is kind of the path for price
+[00:10:38] for example right you get resistance
+[00:10:40] and then you get a break of resistance
+[00:10:44] occurring here now the expectation
+[00:10:46] either way the trade is that you're
+[00:10:48] expecting
+[00:10:49] the market to trade higher right the
+[00:10:51] break of resistance is your bullish
+[00:10:52] signal and you want the trade
+[00:10:54] on the bullish side so there's the
+[00:10:55] question of are you trading the retest
+[00:10:56] or are you trading the break
+[00:10:58] itself and so this is where the
+[00:11:00] trade-off unsurprisingly comes in
+[00:11:02] from a risk road point of view at the
+[00:11:04] very least let's take some very basic
+[00:11:05] invalidation
+[00:11:06] type of ideas if you're trading
+[00:11:10] the break then let's say your entry is
+[00:11:13] on the candle close
+[00:11:14] or structure close here right let's
+[00:11:18] assume we have a common objective
+[00:11:19] in the form of the some sort of level of
+[00:11:22] resistance
+[00:11:23] above market here and then we also have
+[00:11:25] the same stop loss again taking a very
+[00:11:27] crude example
+[00:11:29] a market structure based stop loss at
+[00:11:31] the low
+[00:11:32] okay just to bring the models in mind
+[00:11:36] so from a breakout point of view the
+[00:11:38] entry
+[00:11:39] is generally triggered once you get an
+[00:11:41] appropriate candle close something we'll
+[00:11:43] discuss later
+[00:11:44] through the structure that you had as
+[00:11:45] resistance so in this case
+[00:11:47] it would be where the blue line is
+[00:11:49] that's the breakout entry
+[00:11:51] now the retest entry
+[00:11:54] would of course be at or near the level
+[00:11:57] that was broken in the first place which
+[00:11:59] triggered
+[00:11:59] the bullish idea so we can overlay that
+[00:12:02] on top
+[00:12:03] of the level from which the trade idea
+[00:12:05] is derived
+[00:12:10] so more or less here and you can see
+[00:12:12] this gap that's created
+[00:12:14] as a result is the kind of risk to
+[00:12:17] reward or extra
+[00:12:18] r that you sacrifice as a result for
+[00:12:21] going
+[00:12:22] or electing one choice over another and
+[00:12:25] that's
+[00:12:26] kind of the simplest way of showing you
+[00:12:28] that trade-off so even if you you know
+[00:12:29] this is your entry
+[00:12:31] this is your stop-loss and this is your
+[00:12:33] target and then this is a potential
+[00:12:35] entry
+[00:12:36] as well it becomes quite clear at least
+[00:12:38] it should unless i've done an absolutely
+[00:12:39] terrible job
+[00:12:40] that the retest entry offers superior
+[00:12:44] risk to reward because you're closer to
+[00:12:46] your stop loss
+[00:12:47] with the same target okay whereas the
+[00:12:50] breakout
+[00:12:51] entry offers an inferior risk to reward
+[00:12:54] because again the stop is the same the
+[00:12:57] target is also the same but you're
+[00:12:59] further away from the stop or perhaps
+[00:13:01] close to target
+[00:13:02] however you want to articulate it so
+[00:13:05] that's kind of the trade-off
+[00:13:06] at its core the bullish idea is
+[00:13:08] generated by the breakout event
+[00:13:10] and then it's a question of where do i
+[00:13:12] get involved if you get involved back at
+[00:13:14] the structure
+[00:13:14] you get better risk reward but no
+[00:13:16] guarantee that you get filled at all
+[00:13:18] right maybe the trade won't trigger
+[00:13:19] whereas if you're trading the breakout
+[00:13:21] event itself
+[00:13:22] you are guaranteed a trade right because
+[00:13:24] you're entering on the break
+[00:13:26] but you may sacrifice
+[00:13:29] your risk reward on that trade as the
+[00:13:31] cost
+[00:13:32] of doing business or guaranteeing
+[00:13:34] business one way or another and one
+[00:13:36] thing we'll discuss is that sometimes
+[00:13:38] this first option of trading the
+[00:13:39] breakouts it's so far
+[00:13:41] from the level which generated the idea
+[00:13:44] in the first place
+[00:13:45] that the risk reward has become so bad
+[00:13:48] that the idea is inactionable
+[00:13:50] in itself right i mean we'll revisit
+[00:13:52] that concept
+[00:13:53] but just to be clear i wanted to do a
+[00:13:55] very basic
+[00:13:56] version of outlining what the dilemma
+[00:13:59] looks like so hopefully that's clear the
+[00:14:00] text is much clearer now
+[00:14:02] now that we've got a couple of chart
+[00:14:04] examples and that's kind of where the
+[00:14:06] dilemma comes in
+[00:14:07] if you wait for a re-test you get
+[00:14:09] superior risk reward but no trade
+[00:14:11] guarantee
+[00:14:12] just like in our diagram right if you
+[00:14:14] trade the breakout you get a guaranteed
+[00:14:16] trade in most cases
+[00:14:18] but at the cost of an inferior risk to
+[00:14:20] reward
+[00:14:21] so there are trade-offs and this video
+[00:14:22] kind of seeks to address the question of
+[00:14:25] when do i do one over the other if
+[00:14:28] at all okay and again same thing here
+[00:14:31] less certainty often offers superior
+[00:14:33] risk reward
+[00:14:34] so if you're buying the retest of the
+[00:14:36] level
+[00:14:39] it's not clear whether the breakout's
+[00:14:40] going to hold or whether the market's
+[00:14:42] going to bounce from that level etc but
+[00:14:43] you get the premium if you will
+[00:14:45] or the benefit of superior risk reward
+[00:14:47] whereas if you're waiting for all the
+[00:14:48] bullishness to kick in all the candles
+[00:14:50] which look great etc
+[00:14:52] the market will necessarily be further
+[00:14:54] away from
+[00:14:55] the breakout level because you're
+[00:14:56] waiting for that evidence of bullishness
+[00:14:58] to emerge so that's good probability is
+[00:15:00] on your side
+[00:15:01] and you'll guarantee a trade but the
+[00:15:04] cost of doing that or waiting for that
+[00:15:05] evidence to emerge
+[00:15:07] is inferior risk to reward i hope i've
+[00:15:09] made that
+[00:15:10] somewhat clear if i haven't
+[00:15:13] rewatch it and i hope i have so gauging
+[00:15:16] a breakout this is really important and
+[00:15:18] it's kind of taking a step back but a
+[00:15:19] very important step back
+[00:15:21] that should be quite obvious by now the
+[00:15:24] video relies on the idea that the
+[00:15:25] breakout or breakdown
+[00:15:26] has taken place right there has been a
+[00:15:29] significant shift in structure or level
+[00:15:31] rolling over
+[00:15:32] whatever and then as mentioned earlier
+[00:15:34] we're trying to answer how when whether
+[00:15:36] to trade it
+[00:15:36] re-test breakout whatever now the whole
+[00:15:39] video goes out the window
+[00:15:41] if there is no real quote-unquote
+[00:15:43] breakout or real quote-unquote
+[00:15:46] breakdown so these principles become
+[00:15:48] inapplicable if you're buying a failed
+[00:15:50] breakout or selling
+[00:15:51] a failed breakdown so in effect you end
+[00:15:55] up buying
+[00:15:55] resistance or selling supports which are
+[00:15:58] things we don't want to do
+[00:15:59] if you've misidentified a
+[00:16:02] breakout or a breakdown i suppose the
+[00:16:05] final way i could
+[00:16:06] rephrase to articulate this again
+[00:16:10] is that we said that the break of
+[00:16:11] resistance is a bullish setup
+[00:16:14] so if you misread that breakout you're
+[00:16:16] essentially getting bull trapped
+[00:16:18] right or we said that a break of support
+[00:16:21] is typically a bearish setup
+[00:16:23] if you misread that you're getting bear
+[00:16:25] trapped and all of those things are
+[00:16:26] things we don't want
+[00:16:27] okay so obviously we need to come up
+[00:16:29] with some sort of heuristic
+[00:16:31] to make sure that a valid or real or
+[00:16:34] high probability break of structures
+[00:16:36] taken place
+[00:16:37] before implementing the framework we've
+[00:16:39] learned so far and are going to
+[00:16:41] add weight to later in the video
+[00:16:44] so one quick way of doing that and again
+[00:16:46] it's quick but imperfect
+[00:16:48] is by aligning time frames right so if
+[00:16:50] you've got a daily level of
+[00:16:52] whatever moving average support
+[00:16:53] resistance market structure
+[00:16:55] use whatever you use in order to filter
+[00:16:59] a lot of the noise you can simply opt
+[00:17:02] for time frame alignment
+[00:17:04] that is to say if you've got a daily
+[00:17:05] structure it's only broken if you get a
+[00:17:08] daily candle close through it
+[00:17:10] and if you've got a four hour structure
+[00:17:11] it's only valid if you get a four hour
+[00:17:13] close through it
+[00:17:13] etc etc so basically scale or align
+[00:17:17] the structure with the break
+[00:17:20] time frames and again i've got a whole
+[00:17:21] video on time frames which you've
+[00:17:23] hopefully watched as well if not maybe
+[00:17:24] this will
+[00:17:25] be clearer with that in mind
+[00:17:29] or maybe even going a step backwards why
+[00:17:31] why is that important
+[00:17:32] right and it's important because you can
+[00:17:35] get time for what i call time frame
+[00:17:36] traps
+[00:17:37] you all know i hate making up language
+[00:17:39] so i'm sure it's called a million other
+[00:17:41] things
+[00:17:41] it doesn't really matter but it's the
+[00:17:43] idea that a low time frame quote-unquote
+[00:17:46] breakout at high time frame resistance
+[00:17:47] can just be a wick
+[00:17:49] and the low time frame breakdown a high
+[00:17:51] time frame support can
+[00:17:52] just be a wick as well so let me bring
+[00:17:55] some chart examples to make that
+[00:17:56] uh clear so let's jump out of this for a
+[00:18:00] second
+[00:18:00] and let's go to the bitcoin daily chart
+[00:18:04] bitcoin daily chart i've used the replay
+[00:18:05] mode and just to take us back a little
+[00:18:07] bit
+[00:18:08] and we had a daily level of resistance
+[00:18:12] in the form of this cluster at around
+[00:18:13] 52k and then you can see
+[00:18:15] a pretty straightforward retest of
+[00:18:18] resistance
+[00:18:19] uh on the underside of this level here
+[00:18:22] right so on the daily timeframe this
+[00:18:24] looks pretty unambiguous right it wicked
+[00:18:26] the level and closed below it there's
+[00:18:27] nothing kind of bullish
+[00:18:29] in terms of breaking this level or no
+[00:18:31] good evidence that the level has failed
+[00:18:33] to act as resistance when we're looking
+[00:18:35] at a
+[00:18:36] daily level on the daily time frame
+[00:18:39] right so both with time frame alignment
+[00:18:41] intact everything
+[00:18:42] looks in order now let me bring your
+[00:18:44] attention to an intraday time frame
+[00:18:46] where we actually have that same level
+[00:18:48] but viewed on the hourly
+[00:18:49] right now look
+[00:18:52] at what you get this is the hourly time
+[00:18:55] frame looking at a daily level
+[00:18:56] and you get a really bullish looking
+[00:18:58] close through it right
+[00:19:00] looks like looks like a breakout except
+[00:19:02] as you can see
+[00:19:03] what followed was an engulfing candle
+[00:19:05] and then the market trading away
+[00:19:07] significantly from the level so this
+[00:19:12] bit of price action here which looks
+[00:19:14] like
+[00:19:15] a low time frame breakout actually ended
+[00:19:17] up being the high time frame wick
+[00:19:19] so what you see in the box here is
+[00:19:21] literally
+[00:19:22] this wick being formed which taking us
+[00:19:25] back to the slides
+[00:19:26] a low time frame breakout at high time
+[00:19:29] frame resistance
+[00:19:30] can be just a wick which is what
+[00:19:33] happened here
+[00:19:33] high time frame resistance low time
+[00:19:36] frame breakout
+[00:19:37] ended up being a wick which is why
+[00:19:39] having
+[00:19:40] either rules around time frames or rules
+[00:19:42] around breakouts and breakdowns
+[00:19:44] generally
+[00:19:44] that's why that is so important and
+[00:19:46] obviously the same applies for support
+[00:19:48] i think i've got an example as well let
+[00:19:50] me bring that up in just
+[00:19:52] one second yes i do talk about
+[00:19:55] preparation
+[00:19:56] here we are same um instrument right
+[00:19:59] bitcoin
+[00:20:00] dollar daily chart we've got support the
+[00:20:02] bottom of the range at 44k
+[00:20:04] and again on the daily time frame this
+[00:20:06] looks pretty innocent or unambiguous
+[00:20:08] right
+[00:20:08] from your basic ta analysis
+[00:20:12] price is closing above the level of
+[00:20:14] support respecting it nothing
+[00:20:16] too scary looking right at least there's
+[00:20:18] no real
+[00:20:19] ambiguity on the daily time frame
+[00:20:22] however if we then look at that same
+[00:20:23] level
+[00:20:24] 44 850s on the intraday time frame
+[00:20:28] you can actually see price trading below
+[00:20:29] the level or quote unquote
+[00:20:31] breaking down before ultimately sending
+[00:20:34] much higher
+[00:20:35] so this portion of again
+[00:20:39] low time frame price action at a high
+[00:20:42] time frame level
+[00:20:44] all of this ended up being the wick
+[00:20:48] so it's that same trap we talked about
+[00:20:49] just on the other side a low time frame
+[00:20:51] breakdown it's in quotations for a
+[00:20:53] reason at high time frame support
+[00:20:55] can just be a wick and that's exactly
+[00:20:57] what we've got here
+[00:20:58] the market's at daily support at 44 850
+[00:21:01] there's a breakdown below 44 850 but
+[00:21:04] because you're kind of jumping the gun
+[00:21:05] looking at lower time frames when
+[00:21:08] assessing high time frame structure
+[00:21:10] you essentially end up being the wick or
+[00:21:13] getting bearish in the wick portion of
+[00:21:15] the candle
+[00:21:16] before the high time frame does its job
+[00:21:18] again it's that distinction where the
+[00:21:19] daily time frame shows no ambiguity
+[00:21:21] but if you're zoomed in watching these
+[00:21:24] high time frame levels
+[00:21:25] through low time frame lenses that's how
+[00:21:27] you get trapped okay or certainly one of
+[00:21:29] the ways
+[00:21:30] in which you get trapped which is
+[00:21:31] essentially what i'm cautioning against
+[00:21:33] uh in this section you kind of need to
+[00:21:34] be fair when assessing breakouts or
+[00:21:37] breakdowns
+[00:21:38] certainly when dealing with high
+[00:21:39] timeframe levels just ask yourself have
+[00:21:41] i given this level enough time
+[00:21:43] to prove whether it's been broken or not
+[00:21:46] or am i at risk of being
+[00:21:48] the wick again this is something i cover
+[00:21:49] in the time frames video so make sure to
+[00:21:51] check that out
+[00:21:51] but these kind of time frame traps are
+[00:21:53] important and in my opinion they most
+[00:21:55] frequently occur
+[00:21:56] when you're just hyper zoomed in on low
+[00:21:58] time frame price action
+[00:21:59] at high time frame levels okay
+[00:22:02] again a topic perhaps for another video
+[00:22:04] and certainly in the time frames video
+[00:22:05] but try to be as certain as practically
+[00:22:07] possible
+[00:22:08] that a break in structure has actually
+[00:22:10] taken place before using these
+[00:22:11] principles you don't want to just be
+[00:22:12] chasing price around
+[00:22:14] and end up getting bearish at the lower
+[00:22:16] wick and bullish at the upper wick
+[00:22:19] in practice
+[00:22:25] now again we're working a bit with
+[00:22:26] definitions but not all retests are made
+[00:22:29] equal
+[00:22:29] right so just some definitions i think
+[00:22:32] the two
+[00:22:33] categories which are useful for us to
+[00:22:34] understand are immediate retests and
+[00:22:37] rounded retests now
+[00:22:40] as the name suggests the immediate
+[00:22:42] retest is when you trade at
+[00:22:43] or near structure when it breaks right
+[00:22:46] so at the time of the breakout or the
+[00:22:47] breakdown
+[00:22:48] so as the bullet point says you're
+[00:22:49] trading the break itself if you're
+[00:22:51] having that kind of conversation in your
+[00:22:52] head
+[00:22:53] it's x whatever it is moving average
+[00:22:55] level market structure
+[00:22:56] just broke what's my action here right
+[00:22:59] so you're kind of following
+[00:23:00] up or acting on the
+[00:23:03] break out or breakdown event itself
+[00:23:05] you're very close to that
+[00:23:08] occurrence whereas on the rounded retest
+[00:23:10] you're trading at or near structure
+[00:23:12] after the breakout has played out so it
+[00:23:14] doesn't matter
+[00:23:15] the breakout event itself you're trading
+[00:23:18] once the move is played out and the
+[00:23:19] markets
+[00:23:20] has returned to that same area where
+[00:23:22] something significant
+[00:23:23] has taken place right again the internal
+[00:23:26] um
+[00:23:26] dialogue if you will or monologue i
+[00:23:28] guess this was a big area that the
+[00:23:30] market moved away from what's my action
+[00:23:31] now that we've returned to it
+[00:23:33] okay and some chart examples of course
+[00:23:36] will be useful
+[00:23:37] so let me bring those up
+[00:23:41] okay here's here's actually quite a good
+[00:23:43] example
+[00:23:45] let's look at if usd
+[00:23:48] uh on the weekly time frame right so
+[00:23:50] we've got the 2017 high
+[00:23:52] at around 1420 and this is one of those
+[00:23:55] charts which kind of has
+[00:23:57] evidence of both so this is a prior
+[00:23:59] all-time high so
+[00:24:01] important level and then you have the
+[00:24:03] weekly close
+[00:24:04] above it here right so that candle close
+[00:24:08] would be trading or taking decisions
+[00:24:10] following that candle close would be
+[00:24:12] trading the breakout
+[00:24:14] whereas the subsequent pullback to the
+[00:24:17] level
+[00:24:17] a couple of weeks ago that would be the
+[00:24:21] kind of rounded retest variant now
+[00:24:24] immediately this really isn't the best
+[00:24:26] example in the world
+[00:24:27] and the reason i say that is you
+[00:24:28] normally want more time and space
+[00:24:30] between a break of the level
+[00:24:32] and then the rounded retest right this
+[00:24:34] portion tends to be significant so not
+[00:24:36] an a plus
+[00:24:36] example but generally speaking the more
+[00:24:38] time and space
+[00:24:40] that takes place between a break and a
+[00:24:42] return to the level
+[00:24:43] the better it qualifies as a rounded
+[00:24:46] retest
+[00:24:46] or perhaps if you kind of have to ask
+[00:24:48] yourself is this a rounded re-test it
+[00:24:50] probably isn't right um i think i've got
+[00:24:53] a better example
+[00:24:55] somewhere yeah of course i do if daily
+[00:24:58] chart
+[00:24:59] uh shows this quite well and again you
+[00:25:01] can see the same two principles
+[00:25:03] at play the breakout candle
+[00:25:07] or the kind of the the breakout retest
+[00:25:10] if you will or trade
+[00:25:11] is a close through the same old 2017
+[00:25:14] level
+[00:25:15] whereas the rounded so kind of this your
+[00:25:16] decision making process
+[00:25:19] will be here the the immediate breakout
+[00:25:21] decision process will be within
+[00:25:23] or following this candle whereas the
+[00:25:25] rounded re-test
+[00:25:26] again it's taking place or based on the
+[00:25:28] same level right the same old 2017 high
+[00:25:31] whereas here you are
+[00:25:34] taking action immediately whereas in
+[00:25:36] this instance
+[00:25:37] price has rounded out since breaking
+[00:25:40] time and space has passed between the
+[00:25:42] break and the re-test
+[00:25:44] and that's kind of the distinction
+[00:25:45] between those two types
+[00:25:47] of structures so again the main
+[00:25:50] distinguishing factor is time and
+[00:25:53] space if you're trading here there's
+[00:25:56] very little time and space
+[00:25:58] betw um between the break of the level
+[00:26:00] and where the market is now right you're
+[00:26:02] trading the breakout itself whereas here
+[00:26:04] more time has passed a lot has happened
+[00:26:06] and you're trading a return to the
+[00:26:08] breakup point
+[00:26:09] doesn't it may seem like a trivial
+[00:26:10] distinction but it is quite important as
+[00:26:12] i'm sure we'll
+[00:26:13] discuss shortly so again immediate
+[00:26:16] re-test at on the structure like those
+[00:26:18] first cases
+[00:26:19] and rounded re-test is when a lot has
+[00:26:22] happened since the break and then the
+[00:26:23] market's come back
+[00:26:24] to that level itself right so what are
+[00:26:27] the considerations is there one you
+[00:26:28] should trade
+[00:26:29] over another how are they different a
+[00:26:31] few points
+[00:26:32] the first is that rounded re-tests offer
+[00:26:33] an easier decision-making process
+[00:26:35] given your trade no you're not trading
+[00:26:36] the brake itself right
+[00:26:38] you've got more time to plan maybe more
+[00:26:40] structures formed
+[00:26:41] between the brake and the re-test for
+[00:26:43] you to target as a take profit or put a
+[00:26:45] stop
+[00:26:46] you know use for a stop-loss whatever it
+[00:26:47] may be um there's less of a rush as i
+[00:26:50] mentioned the third point right there's
+[00:26:51] more time to think plan
+[00:26:52] act etc rounded re-tests tend to be
+[00:26:55] clearer setups
+[00:26:56] so the fact that the re-test is rounded
+[00:26:58] implies that a meaningful break took
+[00:26:59] place
+[00:27:00] so you essentially eradicate the risk of
+[00:27:02] falling for
+[00:27:04] well you reduce the risk of falling for
+[00:27:05] a failed breakout or a failed breakdown
+[00:27:07] type of setup
+[00:27:08] because the fact that the market broke
+[00:27:10] that structure moved away from it and
+[00:27:12] has now come back
+[00:27:13] you're not going to get trapped uh as
+[00:27:15] easily as you would trying to catch the
+[00:27:17] breakout
+[00:27:18] itself it should come as no surprise
+[00:27:21] that there's a similar balancing act
+[00:27:23] when it comes to immediate
+[00:27:24] versus rounded re-test and it's not the
+[00:27:26] case that one is
+[00:27:27] always better than the other it's the
+[00:27:29] same old trade-offs no pun intended
+[00:27:32] so if you're trading the break you're
+[00:27:34] more likely to guarantee a trade
+[00:27:36] but a higher chance of getting trapped
+[00:27:39] with the added detriment of inferior
+[00:27:43] risk to reward right so if we go back
+[00:27:46] for example
+[00:27:47] to our daily ethereum example
+[00:27:50] here one second let me oops
+[00:27:55] here we are if i just bring back
+[00:27:59] so again using our immediate versus
+[00:28:02] rounded
+[00:28:03] uh framework where do those two trades
+[00:28:05] take place the immediate trade
+[00:28:07] is within this bit of price action and
+[00:28:09] the
+[00:28:10] rounded trade is within this type of
+[00:28:12] price action
+[00:28:13] notice it's the same level it's just
+[00:28:15] when are you trading it are you trading
+[00:28:16] at the break or on the retest
+[00:28:18] and now we can assess the
+[00:28:21] framework that we discussed in the
+[00:28:23] previous slide so if you're trying to do
+[00:28:24] business
+[00:28:25] on this side of the market the good news
+[00:28:28] is you're almost certainly guaranteed
+[00:28:30] to trade because you just enter a market
+[00:28:32] right the market doesn't need to pull
+[00:28:33] back or do
+[00:28:34] anything really specific in order for
+[00:28:36] you to generate
+[00:28:38] an idea or execute an idea more
+[00:28:41] importantly
+[00:28:41] so that's cool um the cost
+[00:28:44] for that is again inferior risk reward
+[00:28:47] let's say you're wrong below this low or
+[00:28:49] below here is when you really start the
+[00:28:50] question whether your idea is correct
+[00:28:52] just from a simple eye test there's less
+[00:28:54] distance
+[00:28:55] from the level to where you're wrong
+[00:28:57] then from the breakout
+[00:28:58] to where you're wrong and that
+[00:29:00] difference is crops up in your risk
+[00:29:02] reward trading at structure almost
+[00:29:04] always get a
+[00:29:05] gives you better risk reward than
+[00:29:06] trading away from structure
+[00:29:09] okay so that's that's the first and kind
+[00:29:12] of
+[00:29:12] foremost consideration and if we go back
+[00:29:16] you can see that a higher chance of
+[00:29:18] getting trapped
+[00:29:19] is also something that's worth bearing
+[00:29:21] in mind in this case
+[00:29:23] you're we're working with the daily time
+[00:29:24] frame so the daily close itself
+[00:29:27] can be a pretty good signal but if
+[00:29:28] you're actually trying to trade within
+[00:29:30] this candle itself
+[00:29:31] right before the daily close or as the
+[00:29:33] market's pushing above the level
+[00:29:34] you end up potentially falling into that
+[00:29:37] same time frame trap
+[00:29:38] that we discussed earlier there's
+[00:29:40] nothing there's no worse feeling than
+[00:29:42] being trapped on the wrong side of a
+[00:29:43] breakout trade
+[00:29:44] if you're trading rounded retests you
+[00:29:46] can you can still get trapped if the
+[00:29:47] level fails
+[00:29:48] but it won't be as harsh a lot of the
+[00:29:50] time or you have more time to move
+[00:29:52] around it than if you end up being the
+[00:29:53] wick
+[00:29:54] on an on an attempted breakout
+[00:29:57] okay now of course on the other side of
+[00:29:59] things if you trade the retest you're
+[00:30:01] less likely to guarantee a trade right
+[00:30:03] bitcoin dollar
+[00:30:04] on the daily time frame probably being
+[00:30:06] the all-time
+[00:30:08] example of that i'm going to bring that
+[00:30:10] up right now actually
+[00:30:11] because it's quite useful
+[00:30:15] to have so let's say your idea was to
+[00:30:18] trade
+[00:30:18] the 20k uh bitcoin breakouts
+[00:30:22] let's quickly add that to no that's not
+[00:30:25] it
+[00:30:25] let's take the coinbase chart bitcoin
+[00:30:28] coinbase there we are
+[00:30:30] so 20k breakout level
+[00:30:35] you get a daily or even weekly close
+[00:30:37] above and your idea is well look i don't
+[00:30:39] want to sacrifice risk rewards so i'll
+[00:30:40] wait for a pullback
+[00:30:41] then i'll get long into whatever and as
+[00:30:44] you can see the market just just didn't
+[00:30:45] pull back to that
+[00:30:47] so trading the retest is less likely to
+[00:30:49] guarantee a trade
+[00:30:50] obviously if the market doesn't pull
+[00:30:52] back but lowers the chances
+[00:30:54] of you getting trapped right you can
+[00:30:57] still get trapped on rounded re-tests
+[00:30:59] it's just it takes longer and it
+[00:31:01] generally is a bit more obvious and
+[00:31:02] gives you more time to act
+[00:31:04] rather than trading the break event
+[00:31:06] itself and of course the extra
+[00:31:08] downside is that same thing we discussed
+[00:31:10] the chance of no fill
+[00:31:11] right the fact that you may leave an
+[00:31:13] order but the market doesn't come back
+[00:31:14] to it
+[00:31:16] so we we've discussed some of the pros
+[00:31:17] and cons where does that leave us
+[00:31:19] well the first thing to say is it's not
+[00:31:20] a binary choice right sometimes the
+[00:31:22] break is very clear but the retest
+[00:31:24] doesn't happen or it's very unattractive
+[00:31:25] uh sometimes the breakout is messy but
+[00:31:28] when the market comes back to the level
+[00:31:29] it looks really good
+[00:31:31] again i'm not going to be formulaic here
+[00:31:32] because i don't believe those formulas
+[00:31:33] exist
+[00:31:34] there are pros and cons it really
+[00:31:36] depends on the context all the you know
+[00:31:38] no two breakouts are the same the chart
+[00:31:39] may look different
+[00:31:40] um it's one of those decisions you'll
+[00:31:43] have to make based on what's clear to
+[00:31:45] you okay
+[00:31:46] more so or additionally some of the
+[00:31:49] contextual considerations that we'll
+[00:31:50] cover
+[00:31:51] in a moment will make this decision
+[00:31:53] easier but there's no or there are no
+[00:31:55] rules against trading
+[00:31:56] both sides or even no sides
+[00:32:00] so it's not that one is better than the
+[00:32:01] other you should always do one and not
+[00:32:03] the other
+[00:32:03] it's just they're different and be aware
+[00:32:05] of the trade-offs when
+[00:32:06] you're choosing whether to trade a
+[00:32:12] retest
+[00:32:16] so the first consideration when it comes
+[00:32:19] to
+[00:32:19] retests generally is that maybe we're
+[00:32:22] dealing with a false dilemma here
+[00:32:26] a lot of what i've tried to answer is
+[00:32:27] should you trade the break or the retest
+[00:32:29] if you're trading the retest what type
+[00:32:31] etc etc what if it doesn't matter
+[00:32:33] right so the basic premise of the false
+[00:32:35] dilemma is you would split your position
+[00:32:37] equally between the break and the
+[00:32:38] re-test
+[00:32:39] and as a result you don't have to choose
+[00:32:41] one over the other so for example the
+[00:32:43] market closes above resistance you
+[00:32:44] establish 50
+[00:32:45] of your position on the close and the
+[00:32:47] other half in the form of a limit order
+[00:32:50] at the level so
+[00:32:53] whatever example you want to use from
+[00:32:55] our previous
+[00:32:57] charts i can bring up um
+[00:33:00] the i mean eth in this case also makes
+[00:33:03] sense let me bring that up in a moment
+[00:33:06] yeah here we go right one sec
+[00:33:10] nope
+[00:33:13] right same old eath chart so let's say
+[00:33:16] you want to trade
+[00:33:17] through this all-time high breakout and
+[00:33:20] if this false dilemma consideration is
+[00:33:22] correct then you essentially put half on
+[00:33:24] on the camera close above like
+[00:33:26] forgetting this side of the chart the
+[00:33:27] re-test etcetera right let's just let's
+[00:33:28] just take the all-time high trade
+[00:33:30] uh that was available so you would take
+[00:33:32] half on the breakouts
+[00:33:34] itself and then you'd leave half if the
+[00:33:36] market generally
+[00:33:38] you know if the market were to pull back
+[00:33:40] to the level um and that's it right so
+[00:33:42] you've guaranteed a position by trading
+[00:33:44] the breakout and then you could also
+[00:33:45] trade the retest or get the rest of your
+[00:33:47] size on on the retest if the market
+[00:33:49] pulls back
+[00:33:49] now this may seem like a middle ground
+[00:33:52] which
+[00:33:53] fixes this dilemma or gets rid of it
+[00:33:55] completely but there are some
+[00:33:57] hidden concerns or concerns which may
+[00:33:58] not be immediately obvious
+[00:34:00] so the obvious benefit is you get a
+[00:34:02] guaranteed trade even without a pullback
+[00:34:04] and you also get full sizing if the
+[00:34:06] market offers one that seems great right
+[00:34:08] you get the trade on and if it does pull
+[00:34:10] back well great you have your full
+[00:34:12] exposure that you wanted to in that
+[00:34:13] position however there is a significant
+[00:34:15] downside
+[00:34:16] and it's that the trade is guaranteed to
+[00:34:18] be sub-optimal
+[00:34:19] one way or another like something is
+[00:34:21] always going to suck about it
+[00:34:22] no matter whether the market pulls back
+[00:34:24] or keeps going
+[00:34:26] and it should be fairly straightforward
+[00:34:28] what those
+[00:34:29] downsides are if the market does pull
+[00:34:31] back then your average entry is worse
+[00:34:34] than if you just waited for a retest
+[00:34:36] and generally speaking a worse average
+[00:34:39] entry becomes less
+[00:34:41] comfortable to manage and more
+[00:34:44] liable to be over traded puked early et
+[00:34:47] cetera et cetera
+[00:34:49] at the same time if the market doesn't
+[00:34:50] pull back then you've only got half size
+[00:34:53] on the trade as opposed to the full
+[00:34:54] exposure that you wanted
+[00:34:56] and and there's no way around this right
+[00:34:58] so it either pulls back you get full
+[00:35:00] size at a shittier average or it doesn't
+[00:35:03] pull back you've only got half size
+[00:35:04] you can't go anywhere if you
+[00:35:07] implement the system you you'll have to
+[00:35:09] suffer the con
+[00:35:10] you know the consequences of one or the
+[00:35:12] other now for me personally i don't
+[00:35:14] trade like this
+[00:35:15] i just don't i i like to establish
+[00:35:17] positions
+[00:35:18] when i say with conviction and for me
+[00:35:21] the way my brain works is either the
+[00:35:22] break is so significant that i want
+[00:35:24] exposure as soon as possible i want my
+[00:35:25] full size
+[00:35:26] and the inferior risk reward is
+[00:35:29] completely justified
+[00:35:31] or i don't mind missing the move and
+[00:35:33] it's only attractive back at structure
+[00:35:35] and with that boost of having superior
+[00:35:38] risk reward
+[00:35:40] i personally don't like this neither
+[00:35:41] here nor their approach
+[00:35:43] but if you're someone who struggles with
+[00:35:46] trade execution
+[00:35:47] and you know if it makes sense for you
+[00:35:51] due to whatever factors you could
+[00:35:52] consider it uh but for me personally
+[00:35:55] i don't like the ambiguity and i don't
+[00:35:57] like that there's a downside
+[00:35:59] built into the trade itself but it's
+[00:36:01] certainly one thing to consider
+[00:36:04] now the second thing to consider when it
+[00:36:06] comes to do i trade the break or the
+[00:36:08] retest
+[00:36:08] is the idea of precedent right and the
+[00:36:10] basic premise is
+[00:36:11] does the instrument that you're trading
+[00:36:13] especially in its current trend or with
+[00:36:15] recent price action
+[00:36:16] offer regular retests and this is kind
+[00:36:18] of as simple as it sounds
+[00:36:20] right if it does offer regular retests
+[00:36:21] well then great wait for one
+[00:36:23] and if it doesn't offer a regular retest
+[00:36:25] then it would be unreasonable for you to
+[00:36:27] expect it
+[00:36:30] as mentioned it's mostly as
+[00:36:31] straightforward as it seems but there
+[00:36:32] are some
+[00:36:33] arguably uncomfortable exceptions or
+[00:36:35] deviations from this rule
+[00:36:37] so as the trend itself shifts and either
+[00:36:40] becomes more aggressive or slows down
+[00:36:43] your expectations of a re-test should
+[00:36:45] also scale with that
+[00:36:47] so in a very fast moving trend or market
+[00:36:50] re-tests will have not happened at all
+[00:36:52] or they'll happen very very quickly
+[00:36:53] which is something we'll discuss as well
+[00:36:55] in the hidden retest section at the same
+[00:36:57] time if the trend slows down and the
+[00:36:58] market starts to consolidate more and
+[00:37:00] it's not as parabolic or aggressive as
+[00:37:01] before
+[00:37:02] then retests are more common as the
+[00:37:05] market spends more time ranging
+[00:37:06] right and that's what i've got in the
+[00:37:08] exception examples
+[00:37:10] there and my suggestion would just be to
+[00:37:12] look at more recent
+[00:37:14] price action for context and how quickly
+[00:37:17] things are developing or not
+[00:37:21] developing so i've got a chart example
+[00:37:22] here
+[00:37:24] let me jump out uh it's a uni
+[00:37:29] uni usd on the daily time frame
+[00:37:32] right you can see as
+[00:37:36] things if we just take the breakout
+[00:37:38] levels
+[00:37:39] so you come here essentially no re-tests
+[00:37:43] no re-test no re-test
+[00:37:47] no re-test no retest
+[00:37:51] and then we take the most recent
+[00:37:52] breakout
+[00:37:54] you get your retests right but
+[00:37:56] especially when price
+[00:37:57] moved from the sideways environment and
+[00:38:00] shifted here to start moving
+[00:38:01] parabolically
+[00:38:02] you can see that none of these bases
+[00:38:04] were kind enough to offer you a re-test
+[00:38:06] so if you were constantly sat
+[00:38:09] with limit bids you probably weren't
+[00:38:11] feeling too great about it and just as a
+[00:38:13] kind of general tip
+[00:38:14] it's always when this first shift occurs
+[00:38:16] from a large range
+[00:38:18] into the trend forming expansion right
+[00:38:20] when it just starts to break out
+[00:38:22] after moving sideways for a long period
+[00:38:23] of time um
+[00:38:25] retests just tend to be far less
+[00:38:27] pronounced uh if
+[00:38:29] at all existent and that's really that
+[00:38:30] kind of first
+[00:38:32] trend forming leg um that portion of the
+[00:38:35] market tends to move really really
+[00:38:36] quickly
+[00:38:36] and not let you in certainly not on
+[00:38:38] obvious daily timeframe pullbacks
+[00:38:42] another example of a on the daily time
+[00:38:44] frame um
+[00:38:46] kind of similar logic here
+[00:38:50] you have your long-standing
+[00:38:52] consolidation
+[00:38:54] um whether this re-tests or not it kind
+[00:38:55] of depends how you draw your levels
+[00:38:57] i know for me that most likely would
+[00:38:58] have missed or been like a very partial
+[00:39:00] fill
+[00:39:01] so maybe not really here next breakout
+[00:39:04] no retest no retest
+[00:39:08] meh slash not really right unless you're
+[00:39:11] taking the immediate trade which is
+[00:39:12] something we'll talk about
+[00:39:13] and then finally once you get your d5
+[00:39:16] and market wide
+[00:39:17] pullback you get some semblance of a
+[00:39:20] pullback and even then
+[00:39:21] i'm not necessarily the most generous
+[00:39:23] thing in the world and again it's that
+[00:39:24] same pattern that we just discussed
+[00:39:26] when you have a long period of sideways
+[00:39:28] and then you get the trend
+[00:39:29] forming bullish leg this kind of impulse
+[00:39:32] that follows tends to be the least
+[00:39:34] forgiving
+[00:39:34] in terms of allowing you to get on board
+[00:39:36] on easy pullbacks
+[00:39:38] so again by no means the most perfect
+[00:39:40] examples in the world and
+[00:39:42] i'm sure there are better ones on
+[00:39:43] different time frames etc but just to
+[00:39:45] get the basic idea in your mind
+[00:39:46] of does it make sense
+[00:39:50] both in terms of context but also just
+[00:39:52] price history to wait for a re-test if
+[00:39:54] it does then don't get greedy if the
+[00:39:56] market always or generally tends to pull
+[00:39:57] back then it makes
+[00:39:58] sense to wait for one and if it doesn't
+[00:40:00] well then maybe you'll have to pay up
+[00:40:02] and swallow the shittier
+[00:40:05] risk to reward um with the expected
+[00:40:08] benefit of
+[00:40:09] strong moving price action in your favor
+[00:40:10] so this again sounds very
+[00:40:12] straightforward
+[00:40:13] it is but a lot of people ignore it do i
+[00:40:15] wait for a re-test well mate just look
+[00:40:16] at the chart and see if it makes sense
+[00:40:18] to wait for a retest
+[00:40:19] that's probably as anecdotal or
+[00:40:21] colloquial as i can make it
+[00:40:23] this is a big one right probably the
+[00:40:25] most important one so
+[00:40:26] worth paying attention if you haven't
+[00:40:28] been already also if you've learned
+[00:40:29] anything so far just go ahead like the
+[00:40:31] video
+[00:40:31] uh that would be awesome feedback for me
+[00:40:33] and always read all the comments and i'm
+[00:40:34] grateful for those of you
+[00:40:35] who engage anyway back to the topic at
+[00:40:38] hand
+[00:40:39] a few basic premises here the first
+[00:40:43] is that waiting for a retest or a
+[00:40:44] pullback may be necessary
+[00:40:46] where entering on the break presents
+[00:40:49] inactionable
+[00:40:50] risk to reward okay so just as a
+[00:40:52] reminder
+[00:40:53] the closer we trade the structure that
+[00:40:56] tends to bring
+[00:40:57] better risk reward and then the further
+[00:40:59] we trade from structure
+[00:41:01] that usually offers inferior risk to
+[00:41:03] reward it's that same old trade-off
+[00:41:05] now as a result as we mentioned earlier
+[00:41:07] in the lecture sometimes that risk that
+[00:41:09] that
+[00:41:09] negative risk to reward or the negative
+[00:41:12] impact on the risk reward simply from
+[00:41:13] the size of the breakdown
+[00:41:15] or break out or the size of the break
+[00:41:17] can be so big that a follow-up entry
+[00:41:20] doesn't make sense right i mean just
+[00:41:22] purely anecdotally
+[00:41:24] how many times have you seen for example
+[00:41:26] you've got a level here
+[00:41:28] right this is your support resistance
+[00:41:30] structure
+[00:41:32] your target is let's say
+[00:41:35] this take profit level at
+[00:41:39] whatever structure that is and then the
+[00:41:40] market looks like this
+[00:41:42] market oops let me just align colors
+[00:41:45] that's your level
+[00:41:46] and then the market will be in blue
+[00:41:48] market comes in
+[00:41:50] bounces comes in offers a weak bounce
+[00:41:53] and maybe at this point you're thinking
+[00:41:54] okay well my trade idea
+[00:41:56] or my plan is that if the market breaks
+[00:41:58] down from this level
+[00:42:00] and then either comes back to retest it
+[00:42:02] or just
+[00:42:03] breaks down from this support generally
+[00:42:05] i'm gonna look to sell
+[00:42:06] this area and target uh the green level
+[00:42:10] right amazing trading plan you're
+[00:42:11] essentially selling the loss of support
+[00:42:13] and targeting the next support now
+[00:42:15] instead i'm sure we've all been there
+[00:42:17] what the market does is something like
+[00:42:19] this
+[00:42:20] the next candle just completely rips the
+[00:42:22] market in half
+[00:42:23] this level gets absolutely hosed and the
+[00:42:26] close
+[00:42:27] looks something like this right this is
+[00:42:30] imagine this is a red candle here i'll
+[00:42:33] make it easier for you to visualize
+[00:42:37] there we go now
+[00:42:40] in these types of scenarios we were
+[00:42:42] always aware that trading the breakdown
+[00:42:46] incurs a cost or premium in terms of the
+[00:42:49] risk reward
+[00:42:50] but let's say you want to follow up and
+[00:42:52] trade the breakout
+[00:42:53] in this case what would the risk to
+[00:42:55] reward profile be right i mean let's
+[00:42:57] look at it
+[00:42:58] your invalidation would say be here
+[00:43:02] this line because you don't want price
+[00:43:04] to reclaim
+[00:43:05] the breakdown point your entry best case
+[00:43:08] right and this isn't accounting for
+[00:43:09] slippage or anything like that
+[00:43:11] would be on the candle close so
+[00:43:14] here and then your target is still
+[00:43:18] that same old daily support now
+[00:43:22] as a result the anatomy of that trade
+[00:43:25] is this is your risk and
+[00:43:29] this is your reward
+[00:43:32] so you can see that that's not like
+[00:43:33] that's not a good trade right that's not
+[00:43:35] really an actionable
+[00:43:36] risk to reward most of the traders
+[00:43:38] already played out
+[00:43:40] without you getting on board and that's
+[00:43:42] absolutely fine
+[00:43:43] more importantly is the point that's
+[00:43:45] made within
+[00:43:47] that previous slide that sometimes the
+[00:43:49] break is so big that a follow-up entry
+[00:43:51] doesn't make sense
+[00:43:53] it's already reached the target or it's
+[00:43:55] so close to the target that something
+[00:43:57] simply doesn't make sense
+[00:43:58] to trade towards it unless that area
+[00:44:00] breaks and then there's another trade
+[00:44:03] entirely right maybe to reframe that if
+[00:44:06] it wasn't clear i think it was though it
+[00:44:08] tends to be pretty
+[00:44:08] visually obvious you can kind of talk to
+[00:44:11] yourself and ask
+[00:44:12] what move am i trying to capture it's
+[00:44:14] kind of a two-fold question
+[00:44:16] part one what move am i trying to
+[00:44:18] capture and move two
+[00:44:19] or question two how much of that space
+[00:44:21] has already played out
+[00:44:22] as a result of that break if the break
+[00:44:26] has already taken your idea
+[00:44:27] mostly to target the risk reward to
+[00:44:30] chase it
+[00:44:31] without a re-test often isn't there
+[00:44:35] so in this cases the market makes it
+[00:44:37] really clear whether you wait for a
+[00:44:38] break or the re-test you obviously have
+[00:44:39] to wait for the re-test
+[00:44:40] because the break trade simply isn't
+[00:44:43] available
+[00:44:44] right so if we kind of redraw that same
+[00:44:46] example whereby this is the level
+[00:44:50] this is our take profit and then
+[00:44:53] we'll have our market in blue
+[00:44:57] again support comes in weak bounce and
+[00:45:01] your plan is to sell
+[00:45:02] this level into the green level if you
+[00:45:05] end up getting a close
+[00:45:06] like here right at that point the
+[00:45:09] breakout trade that we discussed
+[00:45:11] isn't reasonable or available as a
+[00:45:14] in terms of risk reward it's just too
+[00:45:16] ugly so you're kind of
+[00:45:18] forced to wait for a re-test
+[00:45:21] again just to make it very explicit this
+[00:45:24] is the candle closed here
+[00:45:25] what's our risk reward if we're trying
+[00:45:27] to trade the
+[00:45:28] breakdown well this would be our entry
+[00:45:36] more or less this would be our
+[00:45:38] invalidation
+[00:45:40] and green is our target so our risk
+[00:45:44] would be this and our reward would be
+[00:45:47] this that's not very good right whereas
+[00:45:50] if we taking the same chart
+[00:45:52] apply the idea of selling a retest
+[00:45:55] well in that case invalidation would be
+[00:45:58] unchanged right let's say it's
+[00:46:00] more or less above this high however
+[00:46:03] most crucially
+[00:46:04] the entry would be at or near the
+[00:46:06] structure
+[00:46:07] that's being retested here and then
+[00:46:09] you've got the same
+[00:46:11] take profit as before right so if we
+[00:46:13] were to recalculate
+[00:46:15] the risk reward on the retest trade
+[00:46:17] you've got your risk
+[00:46:19] here and your reward here a vastly
+[00:46:23] different trade
+[00:46:25] so what i'm saying is sometimes the
+[00:46:26] breakout or breakdown
+[00:46:28] can decide for you if it goes too far
+[00:46:31] the brake trade
+[00:46:32] or the immediate trade may not be
+[00:46:34] available and you're
+[00:46:35] forced to trade the re-test if you want
+[00:46:37] to trade the idea
+[00:46:39] simply because of the impact that the
+[00:46:40] break has had on the risk to
+[00:46:42] reward okay
+[00:46:46] so that's kind of what i'm getting at
+[00:46:48] with premise one now premise two which
+[00:46:50] kind of leans on that is that the
+[00:46:51] precision of your entry
+[00:46:53] is inversely correlated with the size of
+[00:46:55] the move
+[00:46:56] you're trying to capture
+[00:46:59] so if you're trading an intraday range
+[00:47:01] there's generally less to capture
+[00:47:03] so your entry must be more precise and
+[00:47:05] it kind of makes sense right you get a
+[00:47:06] lot of intraday ranges setups or
+[00:47:09] especially if you're trading much lower
+[00:47:10] time frames
+[00:47:12] price moves sideways a lot so it makes
+[00:47:15] sense for you to be picky or selective
+[00:47:17] with your entry like you don't have a
+[00:47:18] lot of room to work with so
+[00:47:21] positioning becomes more important at
+[00:47:23] the same time if you're trading a high
+[00:47:25] time frame swing
+[00:47:26] there's more to capture so your entry
+[00:47:28] can be less precise
+[00:47:30] right so the assumption there is
+[00:47:32] obviously the previous example flipped
+[00:47:33] on its head
+[00:47:34] whereby you get fewer swing trade setups
+[00:47:36] they occur less frequently
+[00:47:38] and as a result you can be or you can
+[00:47:40] afford to be less selective with your
+[00:47:41] entry
+[00:47:43] but you don't have to you don't have to
+[00:47:46] that's very important
+[00:47:47] i noticed that a lot of people take this
+[00:47:48] to the extreme and swing traders become
+[00:47:50] really sloppy with their entry you don't
+[00:47:52] have to be
+[00:47:53] it's just about getting the balancing
+[00:47:54] act in the in the right direction
+[00:47:58] okay and now basic premise 2.1 which is
+[00:48:01] kind of a re-articulation of the
+[00:48:03] previous one
+[00:48:04] but this really changed my trading so i
+[00:48:06] kind of want to emphasize it
+[00:48:09] the precision of your entry is inversely
+[00:48:11] correlated with the significance
+[00:48:13] of the idea level or structure that
+[00:48:15] you're trading
+[00:48:16] and this relies on the premise that not
+[00:48:18] all setups are made equal
+[00:48:20] and i'm sure we've all been there in
+[00:48:21] cases where you know if x
+[00:48:23] breaks the entire market is going to
+[00:48:25] 20 percent or the opposite of that
+[00:48:27] if y breaks the market the market is
+[00:48:30] just going to mega moon there's no
+[00:48:31] no resistance in sight in those cases
+[00:48:34] does it really matter
+[00:48:36] whether your entry is one percent or
+[00:48:37] three percent away from x
+[00:48:39] so a good example is the bitcoin
+[00:48:41] all-time high right the 20k
+[00:48:42] breakout the 2017 one if your idea is
+[00:48:46] that the bitcoin all-time high breakout
+[00:48:48] is just gonna absolutely send this
+[00:48:50] market
+[00:48:50] with no resistance in sight does it
+[00:48:52] ultimately matter
+[00:48:54] whether your entry is at twenty thousand
+[00:48:56] eight hundred
+[00:48:57] twenty thousand two hundred twenty one
+[00:48:59] thousand one hundred
+[00:49:00] i mean ultimately it doesn't right those
+[00:49:02] those deviations or
+[00:49:04] marginal differences are just that
+[00:49:06] marginal differences
+[00:49:07] if you're swinging for 30 40k it doesn't
+[00:49:10] really matter whether your entry is 20.1
+[00:49:12] or 20.2
+[00:49:13] right but of course if you're trading a
+[00:49:16] tight intraday range where the rotations
+[00:49:19] are two three percent you do have to be
+[00:49:22] more
+[00:49:22] more precise with your entry and those
+[00:49:25] few percentage points start to matter
+[00:49:27] right so it's to do with context and
+[00:49:29] that should be pretty pretty
+[00:49:30] self-explanatory
+[00:49:32] so for example if you're trading
+[00:49:35] within here right this is your range
+[00:49:42] then you need to be a bit more selective
+[00:49:43] in terms of where you enter right if
+[00:49:45] you're trying to buy
+[00:49:46] you're looking to do business at support
+[00:49:49] and you're looking to sell at resistance
+[00:49:52] it doesn't really make sense for you to
+[00:49:53] chase a breakdown or break out up here
+[00:49:55] simply because of the proximity of
+[00:49:57] resistance you've got less to work with
+[00:49:59] so you need more precision
+[00:50:00] at the same time if your you know your
+[00:50:04] resistance is up here and your support
+[00:50:07] is down here
+[00:50:08] does it really matter whether you enter
+[00:50:09] kind of here here
+[00:50:11] maybe even up to here etc if you've got
+[00:50:13] all the space available
+[00:50:14] now yes it still matters right if we
+[00:50:16] still want to optimize our trades but it
+[00:50:18] matters far
+[00:50:19] less where you've got boundaries
+[00:50:22] with space between them like this is a
+[00:50:24] very obvious example right
+[00:50:26] if you're targeting 10 percent like if
+[00:50:28] you're targeting 20 30 50 percent
+[00:50:31] one two percent doesn't matter if you're
+[00:50:32] targeting a
+[00:50:34] three to five percent move suddenly one
+[00:50:36] percent matters a lot
+[00:50:37] i don't want to sit on this point for
+[00:50:39] too long because it's fairly
+[00:50:39] self-explanatory but it's something that
+[00:50:41] people including myself get wrong a lot
+[00:50:43] and this is where the last point comes
+[00:50:44] in where opportunity costs from missing
+[00:50:46] a rare setup
+[00:50:48] just because the entry wasn't perfect
+[00:50:50] can suck
+[00:50:52] and the big bitcoin inflection points
+[00:50:54] come to mind right the reclaim of 6k
+[00:50:56] after the bear market breakdown the 20k
+[00:50:59] breakout towards all-time high
+[00:51:01] if you got the balance of those
+[00:51:04] situations wrong
+[00:51:05] and you were kind of too precise trying
+[00:51:07] to catch the perfect wick instead of
+[00:51:09] just trading the idea
+[00:51:10] you probably missed out on some of the
+[00:51:11] easier moves available in the market
+[00:51:14] right so your precision
+[00:51:19] is inversely correlated with the size of
+[00:51:21] the move you're trying to capture
+[00:51:22] if you're scalping or kind of day
+[00:51:25] trading you're going for less
+[00:51:26] so you should demand more from your
+[00:51:28] entry if you're going for big big plays
+[00:51:30] at key turning points
+[00:51:32] you're targeting more so your entry is
+[00:51:34] slightly
+[00:51:36] less significant okay you've got room to
+[00:51:38] work with
+[00:51:39] at the very least that should make sense
+[00:51:40] if it doesn't please let me know in the
+[00:51:42] comments i'll try to
+[00:51:43] try to clarify
+[00:51:46] now an extra consideration when it comes
+[00:51:48] to trading re-tests or breakouts
+[00:51:50] is the idea of hidden re-tests
+[00:51:54] so the basic premise here is that in
+[00:51:56] fast moving
+[00:51:57] well in fast-moving markets the high
+[00:51:59] time frame breaks that occur
+[00:52:01] sometimes do offer re-tests but they
+[00:52:03] occur on lower time frames
+[00:52:06] as a result those lower time frame
+[00:52:08] retests aren't always visible
+[00:52:10] on higher time frames so the example
+[00:52:13] which comes to mind and i'll bring up a
+[00:52:14] chart
+[00:52:15] momentarily to reflect this is that you
+[00:52:18] can have a market
+[00:52:19] this is a very good example yeah you can
+[00:52:21] have a market um
+[00:52:22] where the daily time frame or weekly
+[00:52:24] time frame just looks like it's gone up
+[00:52:25] forever
+[00:52:26] and offered no pullbacks at all but if
+[00:52:28] you look on a slightly lower time frame
+[00:52:29] you do get a pullback it's just very
+[00:52:31] short-lived
+[00:52:32] and the reason i call it hidden retests
+[00:52:33] is because that low time frame
+[00:52:35] re-test isn't always visible on the high
+[00:52:37] time frame chart from which the idea is
+[00:52:39] derived
+[00:52:39] so let's bring an example with bmb
+[00:52:41] actually
+[00:52:45] so we've got the bnb weekly chart here
+[00:52:51] you've got a big floor on the weekly
+[00:52:53] right and it looks like just looking at
+[00:52:55] the weekly candle closes
+[00:52:56] the market closed above and just mega
+[00:52:58] mooned right
+[00:53:00] if you look a bit more carefully you can
+[00:53:01] actually see that you did have a wick
+[00:53:03] back into this level okay so some
+[00:53:06] evidence that maybe there was some sort
+[00:53:08] of opportunity to get involved
+[00:53:10] just not on the weekly but instead on a
+[00:53:11] lower time frame and indeed
+[00:53:13] if we then look at that same level on
+[00:53:16] the
+[00:53:16] daily time frame it actually offered a
+[00:53:18] very orderly
+[00:53:19] and clear retest of that weekly
+[00:53:22] structure
+[00:53:22] before offering that seemingly parabolic
+[00:53:25] move
+[00:53:26] higher so this is kind of in a weird way
+[00:53:29] the opposite of the wick
+[00:53:30] trap type of setup we discussed at the
+[00:53:32] beginning of the video
+[00:53:33] where you end up buying high time frame
+[00:53:35] resistance and selling high time frame
+[00:53:37] uh support this is the positive version
+[00:53:40] of that
+[00:53:41] where instead of being the wick that
+[00:53:42] gets trapped you're the wick of the high
+[00:53:44] time frame candle
+[00:53:45] before it moves a lot in your favor okay
+[00:53:48] so it's kind of again the reason it's
+[00:53:50] quote-unquote hidden is because this
+[00:53:52] looks like a straight line up
+[00:53:53] but if you zoom in or move type you know
+[00:53:55] move down a couple time frames you can
+[00:53:57] see that the market did offer something
+[00:53:59] it just wasn't necessarily obvious or
+[00:54:01] easy
+[00:54:02] uh to get on board i think i've got
+[00:54:04] another example of this
+[00:54:06] if memory serves correctly
+[00:54:11] let me check if i don't find it
+[00:54:14] immediately i'll just
+[00:54:15] um
+[00:54:18] yeah actually this is a good example
+[00:54:20] here we go bitcoin weekly
+[00:54:22] off also offered a kind of hidden retest
+[00:54:25] and this is one we discussed on the
+[00:54:26] stream again this is example of
+[00:54:28] a weekly breakout which is actionable or
+[00:54:31] your entry was
+[00:54:32] possible on the daily timeframe and this
+[00:54:34] scales down right you could have a daily
+[00:54:36] setup which looks like it went straight
+[00:54:37] up with the quote-unquote hidden re-test
+[00:54:40] taking place on the four-hour it kind of
+[00:54:42] scales with
+[00:54:43] time frames so here another example
+[00:54:46] we had a weekly range highest close
+[00:54:48] range high
+[00:54:50] it looks like you get a close above and
+[00:54:52] then the market just moves
+[00:54:53] right and certainly there's no kind of
+[00:54:55] weekly red candle coming back to retest
+[00:54:57] this level
+[00:54:57] uh before moving higher you can see
+[00:54:59] there was a wick right and again this
+[00:55:01] wick formed after price closed above the
+[00:55:03] level
+[00:55:04] and then in the same vein we know
+[00:55:05] there's a weekly breakout and if we jump
+[00:55:07] down one time frame to the daily
+[00:55:09] similar to the bmb chart there was a
+[00:55:12] reasonably orderly break and retest on
+[00:55:15] the daily timeframe
+[00:55:16] before that big candle kicked in
+[00:55:19] as well right this bit of price action
+[00:55:22] here
+[00:55:23] hopefully those examples are helpful i'm
+[00:55:26] sure there are others
+[00:55:27] but just to revisit
+[00:55:31] so capitalizing on this should be
+[00:55:34] reasonably apparent
+[00:55:35] you can consider leaving limit orders at
+[00:55:37] the broken structure
+[00:55:39] and or monitoring it on lower time
+[00:55:41] frames so again you get a big weekly
+[00:55:43] break
+[00:55:43] you're thinking maybe there's a wick i
+[00:55:45] can catch in the next few days before
+[00:55:47] the next weekly leg
+[00:55:48] you get a big daily break you're
+[00:55:50] thinking maybe there's a
+[00:55:52] short term or very fast intraday wick i
+[00:55:54] can touch
+[00:55:55] i can catch before the daily leg kicks
+[00:55:57] in
+[00:55:59] the third point is very important kind
+[00:56:00] of the nature of these retests
+[00:56:02] is that they're often short-lived and
+[00:56:03] happen very quickly now that may seem
+[00:56:05] like a
+[00:56:06] negative point that you don't get a lot
+[00:56:08] of time to act but that's actually
+[00:56:09] exactly what you want to see
+[00:56:11] when there's real imbalance in the
+[00:56:12] market with one side rolling over
+[00:56:16] there is nothing worse than having a
+[00:56:18] high time frame level that you deem as
+[00:56:20] important
+[00:56:21] the market breaking it and then just
+[00:56:22] getting stuck right if anything that's a
+[00:56:24] bad sign
+[00:56:26] generally speaking the more time the
+[00:56:28] price spends
+[00:56:29] stuck or just consolidating at or near
+[00:56:32] an important level after breaking it
+[00:56:33] the more likely the break is to fail if
+[00:56:36] we if we kind of think
+[00:56:37] the first principles what kind of what
+[00:56:39] kind of behavior do we expect from
+[00:56:41] market participants
+[00:56:42] at those levels is that you have a big
+[00:56:44] area where a lot of people are looking
+[00:56:45] to trade
+[00:56:46] you have big participation and then one
+[00:56:49] side gets rinsed right we want to see
+[00:56:50] evidence of imbalance
+[00:56:52] impulsiveness whatever and when one side
+[00:56:55] gets rinsed the market should generally
+[00:56:57] move quickly
+[00:56:58] right like if buyers end up coming out
+[00:57:01] on the right side
+[00:57:02] and the level breaks right resistance
+[00:57:04] breaks then
+[00:57:05] sellers are even either getting
+[00:57:06] liquidated they're forcibly closing
+[00:57:09] puking their positions whatever and the
+[00:57:11] imbalance
+[00:57:12] just becomes very skewed let's take the
+[00:57:14] bitcoin uh
+[00:57:15] example just to kind of uh talk
+[00:57:18] through it very briefly
+[00:57:22] where are you
+[00:57:28] yeah you know what
+[00:57:32] nope so the basic idea here i'm not
+[00:57:35] going to spend too long on it
+[00:57:36] but you have resistance when resistance
+[00:57:40] is broken
+[00:57:40] you want the market to move higher why
+[00:57:43] because sellers at the level
+[00:57:44] are either liquidated or they are
+[00:57:47] closing their positions
+[00:57:49] cells closing at market become orders to
+[00:57:52] buy
+[00:57:52] and that just fuels the upside right as
+[00:57:55] well as
+[00:57:55] liquidations having a similar effect as
+[00:57:58] well as smarter participants
+[00:58:00] who then follow up on the breakout and
+[00:58:02] exert pressure
+[00:58:03] on those sellers looking to close and
+[00:58:05] the same works in the opposite direction
+[00:58:07] right you've got let's say
+[00:58:08] a big level of support
+[00:58:11] the market breaks it and you generally
+[00:58:14] expect
+[00:58:15] a move lower why well
+[00:58:18] buyers at that level are wrong and as
+[00:58:21] they close
+[00:58:22] out and or get liquidated those
+[00:58:25] orders those buy orders which close
+[00:58:29] become orders to sell which just fuels
+[00:58:31] on the way down
+[00:58:32] you get more participation selling the
+[00:58:33] breakdown liquidations etc etc
+[00:58:36] this is something we cover in the order
+[00:58:37] flow video the market micro structure
+[00:58:39] points themselves aren't like super
+[00:58:40] important
+[00:58:41] um but the basic idea is you want big
+[00:58:43] level big participation and then one
+[00:58:45] side gets rinsed
+[00:58:46] when one side get rinsed that's where
+[00:58:48] you get your big moves
+[00:58:49] big imbalance and the less time that
+[00:58:51] those who are wrong
+[00:58:52] get to close the more likely you've got
+[00:58:54] a big
+[00:58:55] expansion on your hands
+[00:58:59] now the fifth consideration context
+[00:59:03] probably the most valuable or i've
+[00:59:04] already said that about one of the other
+[00:59:05] sections
+[00:59:06] but this is important right now some
+[00:59:09] points to
+[00:59:09] revisit so the basic framework we
+[00:59:12] followed thus far
+[00:59:13] losing support is bearish the breakdown
+[00:59:15] and or re-test
+[00:59:16] may be a chance to sell breaking
+[00:59:18] resistance is typically bullish
+[00:59:20] the breakout or the re-test may be a
+[00:59:22] chance to buy okay
+[00:59:23] that's sort of the model we've been
+[00:59:24] working with now it's important to note
+[00:59:26] as discretionary traders that this isn't
+[00:59:28] always applicable
+[00:59:29] in fact there are times at which we want
+[00:59:31] to ignore this or even do the opposite
+[00:59:32] and these are just a few of them the
+[00:59:35] first
+[00:59:36] is that in a range-bound environment
+[00:59:40] chasing the breakdown or chasing the
+[00:59:42] breakout
+[00:59:44] could be quite ugly or end unfavorably
+[00:59:48] so in a range resistance is for selling
+[00:59:50] and support is for buying that much is
+[00:59:51] straightforward
+[00:59:52] however price will often poke at or
+[00:59:55] through the extremes
+[00:59:56] so through resistance or below support
+[01:00:00] before reverting to the mean so
+[01:00:03] in a range-bound environment the
+[01:00:05] probability
+[01:00:06] of a failed breakdown at support or a
+[01:00:09] failed breakout at resistance
+[01:00:11] is much higher so let's say you have a
+[01:00:15] range it's your support
+[01:00:18] this is your resistance your general
+[01:00:20] approach if you've correctly identified
+[01:00:22] the market when it's consolidating
+[01:00:24] is that you're looking to be a seller at
+[01:00:28] or around the upper boundary that
+[01:00:30] extreme and you're looking to be a buyer
+[01:00:32] at or around the lower boundary
+[01:00:36] and the other extreme as a result
+[01:00:41] one way to get trapped is to constantly
+[01:00:43] chase any price action
+[01:00:45] that occurs through those boundaries but
+[01:00:47] in the opposite direction right so if
+[01:00:48] you're always trying to buy
+[01:00:51] the range high in one form or another
+[01:00:53] there's a good chance that you end up
+[01:00:55] being the wick before the market
+[01:00:56] mean reverts right and again these
+[01:00:58] levels aren't always perfect you will
+[01:01:00] often get
+[01:01:00] the market attempt to break out and then
+[01:01:03] not find acceptance and ultimately get
+[01:01:05] pushed down right and this ends up being
+[01:01:06] your wick
+[01:01:07] deviation whatever it may be and this is
+[01:01:09] the person you don't want to be
+[01:01:11] right and the same happens on the
+[01:01:14] support side of things at the range low
+[01:01:17] you will often get attempts not just
+[01:01:19] perfectly bouncing from the level right
+[01:01:20] markets are messy
+[01:01:21] you will get attempts to drive price
+[01:01:23] lower and actually break from balance
+[01:01:26] and break from the range but instead
+[01:01:27] they fail the market doesn't find
+[01:01:29] acceptance below the range low
+[01:01:30] and it actually gets bought up and then
+[01:01:32] those guys are trapped
+[01:01:34] right so in a in a real or
+[01:01:38] compelling i suppose range bound
+[01:01:40] environment it's very risky
+[01:01:42] to be a seller on any move below or a
+[01:01:45] buyer
+[01:01:45] on any move above this can get real
+[01:01:48] trappy
+[01:01:49] very quickly and especially if the
+[01:01:50] market doesn't offer acceptance and a
+[01:01:52] break from balance
+[01:01:53] in a very significant manner that's how
+[01:01:55] you get trapped
+[01:01:57] okay so the one sentence summary of that
+[01:02:00] is don't
+[01:02:01] break out or break down chase in a range
+[01:02:04] um it's it's not a good way to trade
+[01:02:09] a similar rule applies to when you're
+[01:02:12] trading either in a strong underlying
+[01:02:13] trend or
+[01:02:14] at high time frame structure so in a
+[01:02:16] bull trend or at support
+[01:02:18] failed breakdown setups are likely and
+[01:02:21] in a bear trend rat resistance failed
+[01:02:23] break out setups are likely and we do
+[01:02:25] have some charts for that
+[01:02:27] let me bring them up i really need an
+[01:02:30] assistant or something to
+[01:02:32] you know do all this do all this magic
+[01:02:34] i'm clearly not
+[01:02:35] hugely competent here we go are they
+[01:02:39] so you'll recall the strong underlying
+[01:02:42] trend
+[01:02:42] in a bull trend failed breakdown setups
+[01:02:45] are
+[01:02:46] likely so let's take ave as an example
+[01:02:48] uh number go up this is
+[01:02:49] against bitcoin very strong trend right
+[01:02:52] number increasing very good and we have
+[01:02:56] this
+[01:02:56] range low here at 26's right this pre
+[01:03:00] lowest close before this move up uh and
+[01:03:03] this is a really good example
+[01:03:04] of what i was talking about let me make
+[01:03:06] the line slightly less
+[01:03:07] thick so we can actually see some of the
+[01:03:09] price action here's our range low
+[01:03:12] and again we know the trend is up and in
+[01:03:15] those cases we generally
+[01:03:17] expect support to hold so in this case
+[01:03:20] you get a close below the level and so
+[01:03:22] you may be thinking immediately if
+[01:03:24] you're just blanket
+[01:03:25] applying the framework that okay well
+[01:03:27] breaks of support
+[01:03:28] are bearish we look to sell rallies or
+[01:03:30] use that as an opportunity to
+[01:03:32] get a short position in order to
+[01:03:35] whatever maybe buy back lower or just to
+[01:03:36] get short the market
+[01:03:38] you can see in this case ended up being
+[01:03:39] a trap and the market actually sprung
+[01:03:41] use that level and then went higher
+[01:03:42] okay now again context is what's
+[01:03:44] important you know that the underlying
+[01:03:46] trend is strong
+[01:03:47] and you know that you've got a partial
+[01:03:48] close below the level
+[01:03:50] and then again without the benefit of
+[01:03:53] hindsight does it even make sense
+[01:03:55] to look for shorts in this type of
+[01:03:57] environment
+[01:03:58] maybe not right because when the market
+[01:04:00] breaks from this level
+[01:04:03] given the preceding trend and given it's
+[01:04:05] an area of support
+[01:04:07] generally speaking on the balance of
+[01:04:08] probabilities who's more likely to get
+[01:04:10] trapped at support
+[01:04:12] in a strong trend and my contention is
+[01:04:15] that
+[01:04:16] at support in a strong trend bears are
+[01:04:19] more likely to get trapped
+[01:04:20] than bulls right or sellers are more
+[01:04:22] likely to put their foot wrong
+[01:04:24] at support um than buyers obviously
+[01:04:28] so it's a basic case of kind of not
+[01:04:30] always trusting stuff like this
+[01:04:31] or at the very least not chasing it
+[01:04:34] without having good reason
+[01:04:35] to do so okay so this is just one
+[01:04:37] example of
+[01:04:38] a strong trend price that support a
+[01:04:41] breakdown set up
+[01:04:42] which fails and then you can see the
+[01:04:44] same level as used before the leg up so
+[01:04:46] it's kind of worth being cautious
+[01:04:47] of those breakdowns and kind of you
+[01:04:50] generally not worth chasing them
+[01:04:51] if you have higher time frame reasons to
+[01:04:54] believe that the trend is up
+[01:04:55] and the same kind of applies to litecoin
+[01:04:57] just in the inverse right like litecoin
+[01:04:59] against bitcoin
+[01:05:00] this is a multi-year kind of downtrend
+[01:05:04] okay and then you have this previous
+[01:05:07] support 10 resistance type thing
+[01:05:09] you can see that the market actually
+[01:05:11] broke above the level
+[01:05:12] on this occasion which sort of looks
+[01:05:14] like a
+[01:05:15] breakout now again the same rules apply
+[01:05:17] you know you've got a multi-year
+[01:05:19] downtrend here and you get your first
+[01:05:21] break above resistance
+[01:05:23] so again on the balance of probabilities
+[01:05:25] is this likely to be the market
+[01:05:27] structure reversal which sends it to the
+[01:05:29] moon
+[01:05:29] or is it likely to be some sort of
+[01:05:32] trappy setup which doesn't amount to
+[01:05:34] much
+[01:05:34] again there's no perfect heuristic or
+[01:05:36] framework for this but at the very least
+[01:05:37] knowing the context again with the whole
+[01:05:39] point of this slide is the context
+[01:05:41] the whole context is this has been going
+[01:05:42] down for years so should you have a lot
+[01:05:44] of faith
+[01:05:45] in the breakout probably not slash worth
+[01:05:48] being conservative
+[01:05:49] in the same vein here this has been
+[01:05:50] going up for months should you have a
+[01:05:52] lot of faith
+[01:05:53] in the breakdown probably not or worth
+[01:05:55] being conservative
+[01:05:57] as well i think the last point makes
+[01:05:58] this point
+[01:06:00] the last bullet point conveys this
+[01:06:02] message quite well
+[01:06:03] even if there's follow through
+[01:06:06] the better setup is still hunting a buy
+[01:06:09] at reclaimed support
+[01:06:12] or kind of selling back below resistance
+[01:06:15] so those options are much more
+[01:06:17] attractive than chasing
+[01:06:18] the counter trend move right so in the
+[01:06:21] other example
+[01:06:22] like even if it is a you know even if
+[01:06:25] the market does break support there
+[01:06:27] because the high time frame context is
+[01:06:28] bullish
+[01:06:30] you shouldn't look to chase the bearish
+[01:06:32] trade and say okay well this
+[01:06:33] may be bearish in that case i'll either
+[01:06:35] buy the reclaim or buy lower
+[01:06:37] right or with the litecoin example
+[01:06:41] this may be bullish but i'll either sell
+[01:06:48] i'll sell the attempted i'll sell back
+[01:06:50] below the the breakout level
+[01:06:52] right or i'll buy higher
+[01:06:55] in a strong market there's no need to
+[01:06:57] chase the first leg that's that's the
+[01:06:59] basic point we're trying to get across
+[01:07:01] um in that example i haven't made it
+[01:07:03] terribly clear but just be aware
+[01:07:05] of which side is likely getting trapped
+[01:07:07] here
+[01:07:08] and even if the breakout or breakdown is
+[01:07:11] genuine
+[01:07:11] does it make sense to chase it and a lot
+[01:07:13] of the times a lot of the time the
+[01:07:15] answer is
+[01:07:16] is kind of simply no right i'm going to
+[01:07:19] bring up the ave example just one more
+[01:07:20] time to try to make that
+[01:07:22] super clear let me click it
+[01:07:29] here we are
+[01:07:35] right so this is this is the level that
+[01:07:38] we were dealing with
+[01:07:40] here
+[01:07:43] so let's say you get this candle closed
+[01:07:47] and what i'm trying to encourage you or
+[01:07:49] to think of
+[01:07:50] in terms of your framework is in the
+[01:07:52] short term right without the benefits of
+[01:07:53] hindsight let's even remove that
+[01:07:56] here
+[01:08:01] does this candle close
+[01:08:05] look bearish yes
+[01:08:08] does that mean that you have to chase it
+[01:08:11] or
+[01:08:11] sell it at all no why
+[01:08:15] because the preceding trend and the
+[01:08:17] market context
+[01:08:18] is bullish so what do i do instead you
+[01:08:21] either
+[01:08:22] buy back at support lower or you buy
+[01:08:25] back
+[01:08:26] the reclaim higher but the bearish trade
+[01:08:29] isn't something you have to execute
+[01:08:33] if the high time frame context is
+[01:08:36] bullish
+[01:08:37] that should make sense i think i made
+[01:08:38] that way more clear in there
+[01:08:40] so if high time frame context bull
+[01:08:46] no rush or need
+[01:08:50] to execute bear trades
+[01:08:54] can wait for bull trades
+[01:08:58] higher or lower
+[01:09:02] right if the high time frame context is
+[01:09:05] bullish like we have here
+[01:09:06] there's no rush will need to execute the
+[01:09:08] bearish trades even if they happen
+[01:09:10] because the higher probability trades
+[01:09:11] generally are still on the bullish side
+[01:09:13] and they will occur either lower at
+[01:09:15] support or higher
+[01:09:16] if the breakdown gets reclaimed in
+[01:09:20] the same vein if
+[01:09:24] high time frame context bear there's no
+[01:09:27] rush or even need to execute
+[01:09:32] bull trades you can
+[01:09:35] wait for bear
+[01:09:38] trades lower
+[01:09:42] or higher
+[01:09:47] right i think that's way clearer than in
+[01:09:49] the slides
+[01:09:50] and hopefully this example um has made
+[01:09:53] that point
+[01:09:53] reasonably obvious but what you see like
+[01:09:56] a very common mistake
+[01:09:57] that i've observed is that the market
+[01:09:58] looks really really strong
+[01:10:00] and then on the first break of any
+[01:10:02] support any pullback any red candles
+[01:10:04] uh it's all you know jump ship and
+[01:10:07] abandon ship whatever that doesn't
+[01:10:08] necessarily make sense
+[01:10:10] because nothing has changed in the high
+[01:10:12] time frame und
+[01:10:13] you know overarching context until
+[01:10:15] proven otherwise
+[01:10:17] so here maybe this is one that's worth
+[01:10:21] screenshotting and what i'm getting at
+[01:10:23] generally
+[01:10:27] nice rescue um
+[01:10:29] [Music]
+[01:10:31] yeah that that's that and then the final
+[01:10:33] bit rounded re-test context
+[01:10:34] is that a lot can happen between a break
+[01:10:36] and the subsequent retest of the level
+[01:10:38] right
+[01:10:38] price action moves the market moves news
+[01:10:40] moves etc
+[01:10:42] so and that applies in terms of time and
+[01:10:44] structure
+[01:10:45] so a classic example is a break of
+[01:10:47] hourly support which reaches daily
+[01:10:49] support and then comes back to the
+[01:10:50] hourly
+[01:10:51] support turn resistance like do you want
+[01:10:53] to sell that and a lot of the time the
+[01:10:54] answer is no
+[01:10:56] why because the breakout target was
+[01:10:57] reached and you're essentially fading
+[01:10:59] a daily bounce with a lower time frame
+[01:11:02] structure so the probability of the
+[01:11:04] trade is lower altogether
+[01:11:06] don't worry i know there's a lot of
+[01:11:07] talking that there is a chart example
+[01:11:09] uh coming up to that effect
+[01:11:13] and it's actually bitcoin uh that same
+[01:11:15] 44 850 level
+[01:11:17] so let's go here
+[01:11:21] there we are and it's this same daily
+[01:11:24] range low here right 44 850
+[01:11:28] and then we look at it through our low
+[01:11:30] time frame lens another
+[01:11:31] it's kind of going back to the candle
+[01:11:33] trap whatever example
+[01:11:35] um but this also makes sense here
+[01:11:39] so you have an area of
+[01:11:43] lower time frame support resistance
+[01:11:47] in the form of this black level okay
+[01:11:51] the market it looks like a bearish
+[01:11:54] retest right the market breaks down
+[01:11:56] retests it trades lower
+[01:11:57] and then comes back for a rounded retest
+[01:12:01] of that area now at this point you know
+[01:12:04] that you're in an area of daily support
+[01:12:07] and the market's kind of springing back
+[01:12:10] from a potential wick area straight into
+[01:12:12] that level
+[01:12:13] does it make sense to sell the rounded
+[01:12:15] retest
+[01:12:16] of this structure it's far less
+[01:12:19] attractive
+[01:12:19] right on the brake it kind of makes
+[01:12:23] sense because you could potentially be
+[01:12:24] seeing a flip
+[01:12:25] of that daily level into resistance just
+[01:12:27] on lower time frames
+[01:12:28] but when it comes back the context is
+[01:12:30] just at least for me
+[01:12:32] significantly less attractive than it
+[01:12:35] was
+[01:12:36] uh previously right
+[01:12:39] there's a similar example with eth
+[01:12:42] actually
+[01:12:42] if we use its all-time high level i'm
+[01:12:44] gonna bring that up
+[01:12:46] here so if we use that prior 2017 high
+[01:12:50] at whatever 1400
+[01:12:53] and look at it from an hourly lens this
+[01:12:56] actually this example is actually way
+[01:12:57] better
+[01:12:58] than the bitcoin one so again we know
+[01:13:00] that 13 like 1400
+[01:13:01] is daily support and let's look at the
+[01:13:05] grounded retest context here
+[01:13:08] so there's an intraday level a massive
+[01:13:11] area here right the the 14
+[01:13:15] 20s or thereabouts
+[01:13:18] you have support support support support
+[01:13:22] breakdown and then at this point when it
+[01:13:24] comes back that's the rounded retest
+[01:13:26] of that same area right so purely on an
+[01:13:29] intraday basis
+[01:13:30] this looks like an amazing cell here
+[01:13:33] when it comes back to sort of rounded
+[01:13:36] retester level
+[01:13:37] after the break but again the context
+[01:13:40] what happened
+[01:13:41] between the break and the rounded
+[01:13:44] re-test well what happened was price
+[01:13:46] reached a
+[01:13:47] weekly and daily level right
+[01:13:51] so suddenly the trade isn't the same
+[01:13:53] it's not just the fact that you've got
+[01:13:54] prior lows and you're selling it into
+[01:13:56] prior highs
+[01:13:56] you're essentially selling the bounce
+[01:13:59] coming from
+[01:14:00] a high time frame level into a
+[01:14:03] low time frame level do you see that
+[01:14:04] contextual shift suddenly
+[01:14:07] this black box isn't a level in the
+[01:14:09] middle of nowhere
+[01:14:10] instead you're fading a an hourly
+[01:14:15] using an hourly resistance you're fading
+[01:14:17] a daily or weekly bounce from the best
+[01:14:19] level available
+[01:14:20] on the chart so the trade the breakdown
+[01:14:24] trade here
+[01:14:25] is not the same as the rounded retest
+[01:14:28] trade here
+[01:14:29] because and the main difference was the
+[01:14:31] retest
+[01:14:32] of a high time frame support structure
+[01:14:34] in the interim
+[01:14:40] right
+[01:14:44] so again not all levels are equal and
+[01:14:47] contacts vary as well
+[01:14:48] where is price coming from do i want to
+[01:14:50] stand in front of it
+[01:14:52] having that picture in your mind of what
+[01:14:54] has happened between the break
+[01:14:56] and the re-test can be really important
+[01:14:59] even from just a diagram point of view
+[01:15:01] i can come up with the following let's
+[01:15:04] say you have got
+[01:15:07] resistance here
+[01:15:10] from the hourly time frame
+[01:15:14] you've got a much i'll even make it kind
+[01:15:15] of scarier
+[01:15:18] you've got resistance here
+[01:15:22] oops from the daily time frame
+[01:15:27] and then we'll plot the market in blue
+[01:15:31] to kind of get this context point home
+[01:15:35] so you've got hourly resistance
+[01:15:40] resistance the market breaks you know
+[01:15:44] starts moving you get your typical
+[01:15:45] rounded retest type of stuff going on
+[01:15:47] right the market moves
+[01:15:48] it then hits this daily level of
+[01:15:51] resistance
+[01:15:52] and then starts moving back
+[01:15:56] towards our hourly level
+[01:15:59] and assume there's some you know the
+[01:16:01] distance between these two isn't that
+[01:16:02] great
+[01:16:03] now again this is context is really
+[01:16:04] important here if this daily level
+[01:16:06] didn't exist
+[01:16:08] then the rounded retest trade of
+[01:16:10] resistance resistance boom comes back to
+[01:16:12] support
+[01:16:13] this looks good right it looks very
+[01:16:14] textbook very straightforward
+[01:16:16] but the context suddenly makes this a
+[01:16:18] much riskier trade
+[01:16:20] because at that point you're not just
+[01:16:21] buying a retest of an hourly level
+[01:16:24] you're standing in front of a daily move
+[01:16:26] with
+[01:16:27] an hourly level and what you see a lot
+[01:16:29] in swing trading
+[01:16:30] is the following setup so you've got
+[01:16:32] like a daily level here an
+[01:16:34] intermediate to lower time frame
+[01:16:36] intraday level here
+[01:16:37] and then another daily level
+[01:16:43] as support so the actual high time frame
+[01:16:46] move
+[01:16:47] happens from a to b the big daily level
+[01:16:51] does its job and price
+[01:16:52] generally moves towards the other daily
+[01:16:55] level
+[01:16:56] as support what you don't want to do is
+[01:16:59] ignore this larger high time frame
+[01:17:01] context which is going to move the
+[01:17:02] market more
+[01:17:03] and end up being the knife catcher
+[01:17:05] between these two
+[01:17:07] uh powerful forces if you will i don't
+[01:17:10] expect this to be immediately clear
+[01:17:11] but it's just at least in the back of
+[01:17:13] your mind worth
+[01:17:15] keeping some sort of understanding or
+[01:17:17] awareness of what's the larger context
+[01:17:20] in the market if you just tunnel vision
+[01:17:22] on this and see it as an hourly
+[01:17:24] retest of previous resistance turn
+[01:17:27] support
+[01:17:28] that can work but you'll sometimes just
+[01:17:30] get steamrolled and
+[01:17:31] only later realize that there's some
+[01:17:32] higher time frame stuff
+[01:17:34] in play so that's really what i mean by
+[01:17:36] context what happened between the break
+[01:17:38] and the retest and if what happened is
+[01:17:40] price reached a really strong level of
+[01:17:42] resistance and is now moving down
+[01:17:45] that affects the probability of the of
+[01:17:47] the lower time frame trade
+[01:17:48] you want to trade especially if you're
+[01:17:50] punting against higher time frame forces
+[01:17:53] okay so that's what i mean by context
+[01:17:57] that's sort of what i've got there's no
+[01:17:59] single answer or formula breakouts very
+[01:18:01] retest very
+[01:18:02] as we've seen context vary which i
+[01:18:04] haven't explained amazingly well but
+[01:18:05] hopefully clearly enough
+[01:18:06] as with all my content you know my goal
+[01:18:08] is to arm you with tools to make
+[01:18:09] well-reasoned decisions
+[01:18:11] within a replica intelligent framework
+[01:18:12] etc etc kind of think for yourself
+[01:18:15] poke around concepts ideas which make
+[01:18:17] sense to me and find your own edge
+[01:18:20] with regard to the trade entry precision
+[01:18:23] i'll restate the following is that don't
+[01:18:25] be complacent where a good entry matters
+[01:18:28] but don't be greedy where pristine entry
+[01:18:30] isn't
+[01:18:31] required i definitely could have used
+[01:18:33] that lesson
+[01:18:34] a couple of years ago i know the bit
+[01:18:37] about context towards the end got a bit
+[01:18:39] grindy and maybe it wasn't entirely
+[01:18:40] clear
+[01:18:41] but as a discretionary trader context is
+[01:18:43] not only your friend it's likely your
+[01:18:44] edge
+[01:18:46] you know we should always look to build
+[01:18:48] an understanding of
+[01:18:49] all the moving parts or more moving
+[01:18:51] parts of the market
+[01:18:52] and not just look at levels and complete
+[01:18:54] isolation that break out
+[01:18:56] buy you know break down sell that you
+[01:18:58] know
+[01:18:59] if that's how you trade you could just
+[01:19:00] automate your own strategy back test it
+[01:19:02] and not have anything to do with it
+[01:19:03] it's very likely that you can forge some
+[01:19:06] sort of edge
+[01:19:07] if you make those contextual assessments
+[01:19:09] as to whether you want to trade the
+[01:19:10] breakout
+[01:19:11] whether you want to trade the breakdown
+[01:19:12] you know what happened between the break
+[01:19:14] and the retest all those things all
+[01:19:15] those
+[01:19:16] balancing acts and contexts that we
+[01:19:18] discussed throughout this presentation
+[01:19:20] at least for me that's where i got my
+[01:19:21] edge and
+[01:19:23] i'm sure that's a good source for yours
+[01:19:25] as well if you trade anything
+[01:19:27] like i do the last point is somewhat
+[01:19:30] cynical generic wisdom about no
+[01:19:31] replacement for screen time during
+[01:19:33] research etc but it is serious
+[01:19:35] you know the whole 15 minutes a day 4x
+[01:19:37] on the beach leave a couple of limit
+[01:19:38] orders go chill type of
+[01:19:40] uh it's it's not how you learn to trade
+[01:19:43] there's no
+[01:19:43] better teacher than screen time and for
+[01:19:45] all of you who kindly reach out over dms
+[01:19:47] and ask
+[01:19:48] you know i've watched all your videos
+[01:19:49] i've read all your articles where do i
+[01:19:51] go next
+[01:19:52] my answer is the market you go to the
+[01:19:54] market
+[01:19:55] it's the best teacher finally quick
+[01:19:58] plugs
+[01:19:58] please like the video if you haven't
+[01:20:00] already and leave a comment i will read
+[01:20:02] every single comment as i always do and
+[01:20:04] the likes are great feedback for me
+[01:20:06] to let me know whether i should keep
+[01:20:07] this technical analysis series going
+[01:20:09] uh for those of you who want more
+[01:20:10] content i stream every single week
+[01:20:13] on the technical roundup youtube channel
+[01:20:15] link available in the description below
+[01:20:16] if you want to go ask questions
+[01:20:18] and hang out generally we tend to have a
+[01:20:20] pretty um
+[01:20:21] nice atmosphere and you know it's fun so
+[01:20:24] come watch me live if that's your cup of
+[01:20:26] tea
+[01:20:26] and that's for the podcast under the
+[01:20:27] same name technical roundup we talk to
+[01:20:29] pretty interesting people
+[01:20:30] and try to pry alpha from them
+[01:20:34] there's also a newsletter for those who
+[01:20:35] just want the analysis and the levels
+[01:20:37] and don't really care about learning
+[01:20:38] trletta.com is the link to that we send
+[01:20:41] one email a week there's no upselling
+[01:20:43] it's free
+[01:20:44] just scroll click look at the charts
+[01:20:46] read our analysis
+[01:20:47] and yeah that's all i've got thank you
+[01:20:49] for watching and bearing with me for
+[01:20:50] three four years how long it's been
+[01:20:52] i hope this was helpful if it was let me
+[01:20:54] know if it wasn't let me know i'll try
+[01:20:55] to answer your question and make it
+[01:20:56] helpful
+[01:20:57] that's all i've got for now take care
+[01:20:59] and i'll see you next time

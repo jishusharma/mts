@@ -1,0 +1,2407 @@
+# Video ID: 7mnz-JxhHnk
+# Title: Technical Analysis Series - Entry Triggers (UPDATED)
+# Published: 2022-11-16
+# Source: youtube_transcript_api (auto); uploader: CryptoCred
+# Analyst: CryptoCred
+# Channel: @CryptoCred
+# Duration_s:4383
+# Word count: 16344
+# ---
+[00:00:00] Hello and welcome to another video as
+[00:00:02] part of the technical analysis series.
+[00:00:04] Today we're talking about entry
+[00:00:05] triggers.
+[00:00:07] Here's the outline for today's video.
+[00:00:09] First and foremost, thank you for your
+[00:00:10] support on the horizontal support
+[00:00:12] resistance video that came out a couple
+[00:00:13] days ago. If you enjoy this series,
+[00:00:16] please leave a like, subscribe, comment,
+[00:00:18] do all that stuff. Let's get back into
+[00:00:20] the algo and get back to work in these
+[00:00:22] treacherous market conditions. Now, to
+[00:00:25] business.
+[00:00:26] We're going to start with a disclaimer
+[00:00:27] where I where I basically tell you that
+[00:00:29] I'm an idiot and you shouldn't watch the
+[00:00:30] rest of the video. Then we'll get into
+[00:00:32] the main portion. We'll start with some
+[00:00:33] basics. We'll discuss what is a trading
+[00:00:36] plan and what is an entry trigger. We'll
+[00:00:38] cover six types of entry triggers. We'll
+[00:00:40] go over some nuances and then we'll
+[00:00:41] conclude.
+[00:00:43] Here's the disclaimer. Pause if you need
+[00:00:45] to. I'm an idiot. This is for
+[00:00:46] entertainment purposes only. Not
+[00:00:48] investment advice, not legal advice, not
+[00:00:50] financial advice, not life advice, not
+[00:00:51] health advice. This is a nothingburger.
+[00:00:54] Just just, you know, I'm completely
+[00:00:56] incompetent. Watch this for fun.
+[00:00:59] Now, what is a trading plan? I'll leave
+[00:01:01] a medium article I wrote a few years ago
+[00:01:02] in the description if you want to follow
+[00:01:04] up. The basic premise is as follows. A
+[00:01:06] trading plan basically dictates the
+[00:01:08] rules under which you engage with the
+[00:01:10] market. So, the first, what do I want to
+[00:01:12] see that would confirm an edge or form a
+[00:01:14] setup? Your kind of expectation. Then
+[00:01:16] with that comes certain parameters.
+[00:01:18] The first is where do I want to get in?
+[00:01:20] Sort of the price at which you establish
+[00:01:22] the trade. And more importantly, an
+[00:01:24] entry trigger is kind of answers this
+[00:01:25] question. How do I want to get in should
+[00:01:27] the market start to form a setup that
+[00:01:29] you recognize or that you think confirms
+[00:01:31] an edge?
+[00:01:32] And then it's where am I wrong? Which is
+[00:01:34] your invalidation or typically your stop
+[00:01:35] placement. Where do I want to get out?
+[00:01:37] Which is typically your take profit. And
+[00:01:39] then how much am I going to bet? Which
+[00:01:41] is your position sizing and other risk
+[00:01:42] management related factors.
+[00:01:44] Now, generally speaking, trading should
+[00:01:45] be treated as a job and taken seriously.
+[00:01:48] That's kind of why having a trading plan
+[00:01:49] is important. You're not just kind of
+[00:01:51] stumbling out of bed, opening your
+[00:01:52] mobile app, and seeing the first thing
+[00:01:54] that's gone up and buying that,
+[00:01:55] hopefully. Uh but you're sort of setting
+[00:01:57] the terms under which you do business.
+[00:01:59] And also, I've noticed over the years
+[00:02:01] that having a trading plan can address a
+[00:02:02] lot of issues that are perceived to be
+[00:02:04] psychological. So, you have people
+[00:02:05] pulling their orders at the last minute
+[00:02:07] or chasing in the middle of nowhere or
+[00:02:08] just basically acting at random, and
+[00:02:11] they think that it's because their
+[00:02:11] trading psychology is terrible, and they
+[00:02:13] read all these trading psychology books
+[00:02:15] hoping that they'll help. And some of
+[00:02:16] these books are decent, but I've just
+[00:02:18] learned that through discipline and
+[00:02:20] having a clear rule set for the market,
+[00:02:22] a lot of the issues that are perceived
+[00:02:23] to be psychological aren't psychological
+[00:02:25] at all, and they actually stem from
+[00:02:26] disorganization. And once you introduce
+[00:02:28] some organization, uh those things get
+[00:02:31] better. So, if that sounds like you,
+[00:02:32] consider kind of nailing down a bit more
+[00:02:35] on the disciplinary side and having
+[00:02:37] clearer rules for how and when to trade.
+[00:02:41] Now, what is an entry trigger? The
+[00:02:43] definition I've employed here is an
+[00:02:44] entry trigger is a specific set of
+[00:02:46] conditions under which a trade idea
+[00:02:48] materializes into a position. Or more
+[00:02:51] colloquially, it's when you put on risk
+[00:02:53] and change from being an observer of the
+[00:02:55] market to a participant in the market.
+[00:02:57] So, the question we're essentially
+[00:02:58] trying to answer, you know, if you're on
+[00:03:00] Crypto Twitter or trading-related social
+[00:03:02] media, you'll see a lot of arrows and
+[00:03:04] squiggly lines, and basically, someone,
+[00:03:05] for example, will have an a box,
+[00:03:08] you know, that could be their support,
+[00:03:09] resistance, whatever that may be. That's
+[00:03:11] sort of the premise for that trade, and
+[00:03:13] they'll draw something like this that
+[00:03:14] the market is going to come into there,
+[00:03:15] do something like this, and then go up.
+[00:03:17] And what we're trying to establish is
+[00:03:18] what on earth goes on here.
+[00:03:21] Even if your analysis is correct or the
+[00:03:22] market is respecting the lines you've
+[00:03:24] drawn on your chart, how do you turn
+[00:03:26] that into a position? Uh social media
+[00:03:28] doesn't do a great great job of this cuz
+[00:03:29] the squiggly lines and the arrows, etc.,
+[00:03:31] give the illusion that there's a clear
+[00:03:33] trading plan there, but it's not as
+[00:03:35] clear on how do you actually put on the
+[00:03:36] position. What kind of orders do you
+[00:03:37] use? What prices do you trade at? Do you
+[00:03:39] ladder in or what do you do? Uh and it's
+[00:03:41] very important cuz at the end of the
+[00:03:42] day, your execution is your P&L, right?
+[00:03:44] You need to actually put the trade on to
+[00:03:45] make some money. And and so, that's kind
+[00:03:47] of the premise behind this video.
+[00:03:50] There are some criteria for what make
+[00:03:52] good for make for a good entry trigger
+[00:03:55] and they are as follows. Uh clearly
+[00:03:56] identifiable so that you can actually
+[00:03:58] identify them when they're happening in
+[00:03:59] real time and trade them, consistent and
+[00:04:01] replicable, you know, they happen
+[00:04:03] frequently enough to allow you to
+[00:04:04] actually to trade and put on those
+[00:04:06] positions, easy to track and journal. As
+[00:04:09] we've discussed, a large part of this
+[00:04:10] comes to organization and that includes
+[00:04:11] trade review. So, if your entry trigger
+[00:04:13] is a completely arbitrary or
+[00:04:15] non-systematic or random, it becomes
+[00:04:16] very hard to track your trades and try
+[00:04:18] to improve your process.
+[00:04:20] They should be closely related to your
+[00:04:22] trade idea and where you want to do
+[00:04:23] business. You know, it's one thing to
+[00:04:25] say I think I want to take a long trade
+[00:04:27] at 20K and then the market's at 23K and
+[00:04:29] then you start trading there. So, what
+[00:04:31] your entry trigger should have a
+[00:04:32] decently close relation to where you
+[00:04:34] think uh you know, is a good area to do
+[00:04:36] business. So, those two things uh should
+[00:04:39] be
+[00:04:40] relatively proximate to one another. And
+[00:04:42] lastly, not emotionally driven. There
+[00:04:44] should be a system and a process there.
+[00:04:45] If you're just chasing the market or
+[00:04:47] acting on emotion or canceling and
+[00:04:48] pulling orders based on how you feel at
+[00:04:50] any one time, it becomes very difficult
+[00:04:52] to quantify any of these things or
+[00:04:54] establish a process which you can then
+[00:04:55] refine to get better. So, some some
+[00:04:58] things to look out for there and
+[00:04:59] hopefully the examples we cover uh cater
+[00:05:01] to those.
+[00:05:02] Needless to say, given this is part of
+[00:05:04] the technical analysis series, the entry
+[00:05:05] triggers presented here are broadly
+[00:05:07] based on technical setups although the
+[00:05:08] logic can be transplanted to other forms
+[00:05:11] of trading.
+[00:05:13] So, entry trigger one is outright price
+[00:05:16] and the definition here is rather
+[00:05:17] straightforward. It's buying or selling
+[00:05:19] using limit orders at a predetermined
+[00:05:21] price or area. So, essentially, upon
+[00:05:23] determining the price at which your
+[00:05:24] setup is triggered, you leave orders in
+[00:05:26] the market to trade at that price. It's
+[00:05:28] just your standard kind of limit order,
+[00:05:30] you know, limit buy at a price we think
+[00:05:32] the market's going to bounce, limit sell
+[00:05:34] at a price we think the market's going
+[00:05:35] to bounce and the way you get into the
+[00:05:37] market is that if the market trades
+[00:05:39] these prices, your limit limit orders
+[00:05:40] get filled and voila, you have a
+[00:05:42] position. Uh before we cover some pros
+[00:05:44] and cons,
+[00:05:45] we'll just quickly go over what that
+[00:05:46] looks like. Again, first the TradingView
+[00:05:48] example, then we'll look at some charts.
+[00:05:50] Let's say once again, our kind of social
+[00:05:51] media example, this is your area of
+[00:05:53] support or even, you know, maybe a more
+[00:05:55] explicit version is you have a level
+[00:05:57] here where you think the market's going
+[00:05:59] to bounce.
+[00:06:00] And you know, the market's somewhere up
+[00:06:02] here. You live at leave a limit order to
+[00:06:04] buy at that price. And if the market
+[00:06:07] comes in and trades there, as this is
+[00:06:09] happening, your limit order is getting
+[00:06:10] filled. And then, you know, if the
+[00:06:12] market bounces, good for you. If it
+[00:06:13] doesn't, maybe you get stopped out,
+[00:06:15] whatever. But the way you transition
+[00:06:17] from observer to participant is that by
+[00:06:20] leaving limit orders at a certain level,
+[00:06:23] when price trades those levels, that you
+[00:06:26] know, the rest is done for you. Your
+[00:06:27] limit order gets filled and voila, you
+[00:06:29] have a position. So, that's sort of at
+[00:06:30] its core, the most basic mechanism at
+[00:06:32] play there. Uh some chart examples of
+[00:06:34] that.
+[00:06:35] We had the Solana bearish breakdown and
+[00:06:37] retest at 135s, 136s. We wrote about
+[00:06:40] this in Technical Roundup,
+[00:06:42] tiacletter.com, free newsletter, yada
+[00:06:43] yada. But the basic premise was, you
+[00:06:45] know, if the market's somewhere here and
+[00:06:47] it's rallying and you're thinking, well,
+[00:06:48] this is support turned to resistance. I
+[00:06:50] think there might be a trade there. Your
+[00:06:51] entry trigger for trading this support
+[00:06:54] to resistance flip, which is the setup,
+[00:06:56] your entry trigger for that setup would
+[00:06:58] be quite simply leaving a limit order to
+[00:07:00] sell at 135.64 in this example. And
+[00:07:04] should the market trade to 135.64 as it
+[00:07:06] did, you get filled on your sell order
+[00:07:09] and that's your position established
+[00:07:11] right there and then. Uh similar example
+[00:07:13] for this 4740 key's handle, uh move back
+[00:07:16] within the range high here. That's
+[00:07:17] resistance once again. As the market is
+[00:07:19] creeping back up, you might think, well,
+[00:07:21] I have a setup which is this range high
+[00:07:24] reclaim or move back within the range
+[00:07:26] turned from support to resistance. And
+[00:07:28] your entry trigger for that setup is to
+[00:07:30] simply trade the level. And the way you
+[00:07:32] do that is you leave a limit order in
+[00:07:33] the market, in this case to sell. And if
+[00:07:36] the market, as it did, trade to that
+[00:07:37] level, you get filled on your limit
+[00:07:38] order and that's how you go from setup
+[00:07:41] to actually having a position. Rather
+[00:07:43] straightforward. I think there might be
+[00:07:45] one more example.
+[00:07:46] Here's the S&P 500 monthly cluster.
+[00:07:48] Again, something wrote about in
+[00:07:49] technical roundup. Um, I should probably
+[00:07:52] stop saying that. It's probably
+[00:07:52] annoying. Anyway,
+[00:07:54] uh, untested breakout cluster here on
+[00:07:56] the monthly as the market's floating
+[00:07:58] back. You're thinking there's probably a
+[00:07:59] setup here to play this from support to
+[00:08:00] resistance or whatever else. And the way
+[00:08:02] you engage with the market again is
+[00:08:03] simply by leaving a limit order to buy
+[00:08:05] at that price handle. It gets filled and
+[00:08:08] that's that's your position. And the
+[00:08:10] other examples are for other things. So,
+[00:08:15] obviously there are pros and cons to
+[00:08:17] certain strategies and ways of engaging
+[00:08:19] the market. Uh, the pros to limit orders
+[00:08:21] are as follows or this kind of outright
+[00:08:23] price entry trigger. Limit orders allow
+[00:08:25] you to control your fill prices, which
+[00:08:26] is nice. As we know from our market
+[00:08:28] microstructure video, which hopefully
+[00:08:29] you've watched, if you're using a market
+[00:08:31] order, the only thing you guarantee is
+[00:08:32] that your full position size gets filled
+[00:08:34] at the best possible price at that time,
+[00:08:36] but you don't get to decide the specific
+[00:08:38] price at which you get filled cuz you're
+[00:08:39] taking liquidity from the order book,
+[00:08:41] right? Whereas with limit orders, cuz
+[00:08:43] you're a maker, not a taker, you kind of
+[00:08:45] get a larger degree of control over what
+[00:08:48] prices you get to trade, which is nice.
+[00:08:50] Uh, another added benefit of that is
+[00:08:52] that limit orders are much cheaper or
+[00:08:53] typically
+[00:08:54] significantly cheaper, especially over
+[00:08:56] time, than market orders cuz limit
+[00:08:59] orders add liquidity to the order book,
+[00:09:01] whereas market orders take them away.
+[00:09:03] And that's usually reflected in the fee
+[00:09:04] structure. And if you run a big
+[00:09:06] simulation of many, many, many trades,
+[00:09:08] you'll see that over time being a maker
+[00:09:09] versus taker can quite drastically
+[00:09:11] affect your P&L curve and your cost of
+[00:09:13] trading more generally. So, that's
+[00:09:14] another benefit. Another benefit is that
+[00:09:17] trading with limit orders just enforces
+[00:09:18] discipline. You know, you have an idea,
+[00:09:20] you have a setup, and you know where
+[00:09:22] it's triggered. If you don't get that
+[00:09:24] price, you don't get a trade. Simple as
+[00:09:25] that. So, it stops you from trading
+[00:09:27] ahead of levels that you know are good.
+[00:09:29] It stops you from FOMOing in and chasing
+[00:09:31] the market. You have a plan. If it
+[00:09:32] fills, great. If it doesn't, no trade
+[00:09:34] for you. And then there's no sort of
+[00:09:35] ambiguity there.
+[00:09:37] Another benefit also to follow on from
+[00:09:39] that is that it removes the last second
+[00:09:41] emotional discretion where you might
+[00:09:43] start to interfere with your plan purely
+[00:09:46] based on how emotional or scared you're
+[00:09:48] feeling as the market's moving. And this
+[00:09:50] is a very common phenomenon, something I
+[00:09:52] used to struggle with a fair bit as well
+[00:09:54] where, you know, if we take our example
+[00:09:56] here, we've got a level at 1400 or 1390s
+[00:09:59] or whatever and the market's floating
+[00:10:01] down and up here you think, "Oh, this is
+[00:10:02] a really good level to buy. I wish I can
+[00:10:04] get a fill there." Well, but instead as
+[00:10:05] the market starts to come into it and it
+[00:10:07] looks really scary and aggressive, you
+[00:10:09] think, "Oh, no, never mind. This looks
+[00:10:10] so bad. Maybe it'll go even lower. Never
+[00:10:12] mind. Cancel order. Cancel order." And
+[00:10:13] what will often happen, what happens a
+[00:10:15] lot of the time, is that the market
+[00:10:16] might poke a little bit below your limit
+[00:10:17] order once you've canceled it and you
+[00:10:19] think, "Oh, thank god I didn't get
+[00:10:20] filled on that cuz I would have been
+[00:10:21] under water now." And then it does
+[00:10:22] exactly what you thought it might and
+[00:10:24] just cuz it looked scary, you canceled
+[00:10:26] your plan and didn't make any money.
+[00:10:27] Whereas if you just keep your limit
+[00:10:29] order there, it removes that last second
+[00:10:31] emotional discretion or at least makes
+[00:10:32] it easier to sit on your hands. You just
+[00:10:34] leave your order there and then you
+[00:10:36] manage the trade once you get filled
+[00:10:37] instead of just using this final leg of
+[00:10:40] scary price action to completely bail on
+[00:10:42] a plan on a purely or primarily on an
+[00:10:44] emotional basis. So, that's good. Uh the
+[00:10:46] kind of discipline that's built into
+[00:10:48] those types of orders.
+[00:10:50] As I said, the last kind of pro here is
+[00:10:52] it's a very straightforward
+[00:10:54] uh way of engaging the market. You're
+[00:10:56] simply doing business at your levels.
+[00:10:57] Doesn't take a bunch of thinking. Most
+[00:10:59] of the thinking comes to identifying the
+[00:11:01] areas where you want to do business and
+[00:11:03] certainly there are other considerations
+[00:11:04] as far as sizing and trade management
+[00:11:06] and profit taking and so on, but purely
+[00:11:08] when it comes to entry triggers, which
+[00:11:09] is the point of the video, uh it's about
+[00:11:11] as simple as it gets. This is the level
+[00:11:12] I want to do business at that level.
+[00:11:14] Limit order in. Full stop. Now,
+[00:11:16] obviously there are downsides to this
+[00:11:17] approach. The first is partial fills or
+[00:11:19] no fills even if the idea is broadly
+[00:11:22] correct. So, you know, limit orders
+[00:11:24] while they do do let you dictate the
+[00:11:26] prices at which you trade, there's no
+[00:11:27] guarantee that you'll get filled for the
+[00:11:29] full quantity of your order especially
+[00:11:31] if price kind of just wicks there or
+[00:11:32] fills some of your ladder or spends very
+[00:11:34] little time there, you might only get a
+[00:11:37] partial fill of your fully desired
+[00:11:39] position size.
+[00:11:41] Limit orders also to some extent remove
+[00:11:43] the option to get an even better price
+[00:11:45] if the market pushes deeper into
+[00:11:46] structure, uh which is something we'll
+[00:11:47] discuss. So, for the most part,
+[00:11:49] especially if you get those big scary
+[00:11:50] moves into your limit orders and ones
+[00:11:53] that actually extend past your limit
+[00:11:55] orders, uh you know, if your limit
+[00:11:57] orders are are sort of outrightly at the
+[00:11:59] level itself and the market sort of
+[00:12:01] wicks quite a bit below, most of your
+[00:12:03] fill is still going to be, in most
+[00:12:05] cases, uh where your limit order was.
+[00:12:08] And that sort of leaves all of this, all
+[00:12:10] the area, the sort of excess or the push
+[00:12:12] that happened below the level your
+[00:12:13] level, uh which is technically a better
+[00:12:15] entry, uh but it's not available to you.
+[00:12:17] For the most part, your baseline
+[00:12:18] assumption with limit orders will be, if
+[00:12:20] you get filled, most of it will be at
+[00:12:22] the price where your limit order is. Uh
+[00:12:23] and even if you do get the chance for a
+[00:12:25] discount or a better price, a lot of the
+[00:12:28] time the majority of your fill will come
+[00:12:30] from my your original order, and you'll
+[00:12:31] miss out on all this extra discount and
+[00:12:34] goodness, you know, if you're just
+[00:12:35] trading outrightly at the level itself.
+[00:12:37] And that's sort of the second setup
+[00:12:38] which which we'll discuss in time, uh
+[00:12:40] but that's certainly one thing to
+[00:12:41] consider for outright price.
+[00:12:44] And the sort of logical corollary of
+[00:12:45] that is that it doesn't immediately
+[00:12:47] cater well for deviation setups or
+[00:12:49] failed break type of setups and other
+[00:12:51] types of market phenomena which extend
+[00:12:54] past levels
+[00:12:55] that are support or resistance. Um so,
+[00:12:58] limit orders is the basic assumption
+[00:13:00] there is this is the level in some form
+[00:13:02] or another this level is going to hold.
+[00:13:03] And if you get sort of more messy price
+[00:13:05] action or failed breaks or deviations
+[00:13:07] and all this other stuff, uh basically
+[00:13:09] the market pushing the boundaries of
+[00:13:11] your structures and of your levels, uh
+[00:13:12] simply trading the price outrightly
+[00:13:15] makes it a bit more difficult to
+[00:13:17] navigate around that.
+[00:13:19] Uh another downside is that the
+[00:13:20] invalidation isn't always clear when
+[00:13:22] you're trading with limit orders. Uh the
+[00:13:23] level might be good, but how you kind of
+[00:13:26] define your risk around it might not be
+[00:13:28] as good. So, as we'll discuss, I'm kind
+[00:13:30] of jumping ahead a little bit here. When
+[00:13:32] you get type of when you get your type
+[00:13:33] of deviation setups right, let's say
+[00:13:35] this is your support, the market comes
+[00:13:36] in, and then it looks like it's going to
+[00:13:38] break down, but it eventually reclaims.
+[00:13:40] Uh the good thing about those types of
+[00:13:41] setups is that your risk is immediately
+[00:13:43] clear for the most part or very often on
+[00:13:45] those setups cuz you know you're wrong
+[00:13:47] if the deviation um gets violated once
+[00:13:50] again, right? The assumption being this
+[00:13:51] is support, this was the excess, and
+[00:13:53] then this level is support once again.
+[00:13:56] If you're just outrightly trading the
+[00:13:58] limit order and buying the level itself,
+[00:14:00] then maybe something you can look to to
+[00:14:01] the left to say, you know, this market
+[00:14:02] structure level is going to be my
+[00:14:03] invalidation, or maybe there's some
+[00:14:05] thrust candle there, and you can use the
+[00:14:07] thrust candle low as your stop or
+[00:14:09] something like that, but it it's not
+[00:14:11] guaranteed. A lot of the time while the
+[00:14:12] level itself might be good, the risk
+[00:14:14] management or the specific invalidation
+[00:14:16] around that level may be less clear.
+[00:14:18] The last con I can think of, which is
+[00:14:20] kind of 50/50 cuz it can be a pro,
+[00:14:22] especially if you're a beginner, uh if
+[00:14:23] you're just leaving limit orders in the
+[00:14:25] market to trade, that removes your
+[00:14:27] discretion in assessing how the market's
+[00:14:29] going to react to your level cuz you
+[00:14:30] simply don't know. You're putting an
+[00:14:31] order in to buy, putting an order in to
+[00:14:33] sell, and by the time the market starts
+[00:14:35] to react to your level, your order's
+[00:14:36] already been filled, right? So, you
+[00:14:38] don't get the chance to make the
+[00:14:39] discretionary determination as there is
+[00:14:41] support supporting, is resistance
+[00:14:43] resisting, what's the price action like,
+[00:14:44] is it is there absorption, whatever
+[00:14:46] else, because by the time it you know,
+[00:14:48] you you get a chance to observe those
+[00:14:49] things, you're already in the market.
+[00:14:51] So, that's kind of a a potential con,
+[00:14:53] but again, it can be a pro uh cuz
+[00:14:55] there's a lot of evidence to suggest
+[00:14:57] that traders uh sort of read into these
+[00:15:00] things too much and micro-analyze time
+[00:15:02] frames which have they have no
+[00:15:03] experience micro-analyzing and end up
+[00:15:05] fighting themselves out of perfectly
+[00:15:06] good positions. Like, come on,
+[00:15:08] colloquially, how many times have we
+[00:15:09] been here where we say this is a good
+[00:15:11] level, the market comes into it, and
+[00:15:13] then we'll jump down from like the
+[00:15:14] hourly to the 5-minute, and look at all
+[00:15:16] this kind of erratic 5-minute stuff, and
+[00:15:18] open and close 10 positions, and end up
+[00:15:20] flat, and then by the time and then this
+[00:15:22] happens. And so, this is what it looks
+[00:15:24] like on the 5-minute where you've been
+[00:15:26] fudding yourself out, but on the hourly
+[00:15:27] it just kind of on your original
+[00:15:28] timeframe it kind of just looks like
+[00:15:30] that. And this sort of little chop
+[00:15:32] consolidation excess is where you manage
+[00:15:34] to puke your position like a fool. We've
+[00:15:36] all been there. I still do it to this
+[00:15:37] day. It's very, very common. So, that
+[00:15:39] that's why it's sort of a 50/50 pro and
+[00:15:41] con cuz yes, you do surrender the right
+[00:15:43] to some extent to assess the price
+[00:15:44] action or at least you're filled by the
+[00:15:47] time you get a chance to look at the
+[00:15:48] price action, but sometimes that can be
+[00:15:50] quite good because
+[00:15:52] the you know, your perception of the
+[00:15:54] market on those lower timeframes that
+[00:15:56] that chance to discretionary assess
+[00:15:58] whether the market is doing what it
+[00:15:59] wants you what you want it to do can be
+[00:16:02] a downside if you don't know how to
+[00:16:03] manage your timeframes properly.
+[00:16:05] I guess the summary version of that is
+[00:16:06] it's not always a bad thing that you
+[00:16:08] don't get to look at the price action
+[00:16:09] because sometimes it's messy and it can
+[00:16:11] fud you out of an otherwise good
+[00:16:12] position.
+[00:16:14] Now, what's the recommended context for
+[00:16:16] this type of outright price trading or
+[00:16:18] just trading with limit orders, leaving
+[00:16:19] orders in the market?
+[00:16:20] Again, these aren't hard and fast rules,
+[00:16:22] but generally speaking, as we saw in our
+[00:16:24] examples, the first test best test at
+[00:16:26] really clear levels types of setups,
+[00:16:28] espe- especially if they're rounded
+[00:16:30] retest setups, leave lend themselves
+[00:16:32] very well to limit orders. Like look
+[00:16:34] here, there's a lot there there's months
+[00:16:35] here between the breakout and the
+[00:16:36] eventual retest and those limit orders
+[00:16:38] were
+[00:16:39] rewarded. And it's the same here with
+[00:16:40] this range high example, you know, it
+[00:16:42] broke back within the range here and you
+[00:16:44] had like a period of couple of months,
+[00:16:45] sort of two, three months before the
+[00:16:47] rounded retest came in. And sort of true
+[00:16:49] for the S&P as well. This is a really
+[00:16:51] long and rounded retest into this level
+[00:16:54] and I'm sure there are other setups
+[00:16:55] which we'll discuss or you can find
+[00:16:56] yourself. But in terms of recommended
+[00:16:58] context where you know, sort of when
+[00:16:59] should you feel confident enough to just
+[00:17:01] leave that order there,
+[00:17:03] in my observation it's those higher
+[00:17:05] timeframe fresh areas of support and
+[00:17:07] resistance with a lot of time and space
+[00:17:09] between the break and the retest.
+[00:17:13] The second entry trigger, entry trigger
+[00:17:14] two, is wick price. So, outright price
+[00:17:17] for the first one, wick price for the
+[00:17:18] second one. And the definition here is
+[00:17:20] buying or selling using limit and or
+[00:17:22] market orders below support or above
+[00:17:26] resistance. Now, this might sound weird,
+[00:17:28] but the examples we'll cover will
+[00:17:29] hopefully add some color. And the
+[00:17:31] premise here is that markets often wick
+[00:17:33] and rarely stick to technical structure
+[00:17:35] to the very tick, right? So, therefore,
+[00:17:38] selling at a relative premium or buying
+[00:17:41] at a relative discount can offer a
+[00:17:43] better entry price. Now, we'll go over
+[00:17:45] this one
+[00:17:46] at some examples before going into the
+[00:17:47] pros and cons, and it's as follows. If
+[00:17:49] you think the market will reverse and go
+[00:17:51] up from $1 and you have a chance to buy
+[00:17:53] it at 99 cents, why not buy there,
+[00:17:55] right? Uh and so, again, our TradingView
+[00:17:58] ghetto version of what that might look
+[00:17:59] like is instead of leaving a limit order
+[00:18:02] at the level itself, if you think this
+[00:18:03] 1395 handle is a good price and the
+[00:18:06] market's coming into it and it's
+[00:18:07] trading, let's say, here at 1380s, it's
+[00:18:10] very unlikely that the market the very
+[00:18:12] fact of the market trading at 1380s
+[00:18:14] invalidates your idea. And if you were
+[00:18:16] going to buy 1390s thinking it's for a
+[00:18:18] bounce, there's a decently high chance
+[00:18:21] that this 1380s, if your idea's correct,
+[00:18:23] is going to be the wick portion of that
+[00:18:26] candle that you hope or eventually takes
+[00:18:28] you higher. So, the idea here is, while
+[00:18:30] 1390s is the level you've identified
+[00:18:32] where you want to buy, you let the
+[00:18:34] market give you a discount relative to
+[00:18:36] that level. Whatever the difference is
+[00:18:38] between the level where you want to do
+[00:18:39] business and where you're speculating
+[00:18:41] that the wick might be, all of this
+[00:18:43] extra
+[00:18:45] sort of this gap here is a discount
+[00:18:47] relative to where you wanted to buy. And
+[00:18:48] so, the idea is A, you establish the
+[00:18:51] level that you think the market's going
+[00:18:52] to bounce from, and B, you actually let
+[00:18:53] the market poke below it, and anything
+[00:18:56] below it in your mind is, "If my idea's
+[00:18:59] correct, this is the wick and it's a
+[00:19:00] better entry, and therefore, I'm going
+[00:19:02] to look to buy there either with limit
+[00:19:04] orders or with market orders or whatever
+[00:19:06] else, right?" And the idea is, you know,
+[00:19:07] if if this type of thing happens, uh you
+[00:19:09] manage to catch that much more of the
+[00:19:11] move not by trading outrightly at the
+[00:19:12] level itself, but by getting more of the
+[00:19:14] wick portion of that candle. So, some
+[00:19:17] examples of that
+[00:19:18] are as follows. This is Bitcoin on its
+[00:19:21] first test of the sort of 19-20k
+[00:19:23] previous cycle's high. We can see that
+[00:19:25] even if you're looking at candle bodies,
+[00:19:27] and the wicks took it to a bit of an
+[00:19:28] extreme, although this does kind of
+[00:19:29] catch the average wick below. None of
+[00:19:32] these tests of 19-20k were perfect. You
+[00:19:34] can see even on the daily time frame
+[00:19:36] there were some excesses, and the market
+[00:19:38] didn't respect it to the tick. And if
+[00:19:39] you gave it some more space, let's say
+[00:19:41] on average of kind of 4% extra, you were
+[00:19:44] catching much, much better entries than
+[00:19:46] the participants who were outrightly
+[00:19:48] buying 19.8, 19.9k, or whatever. So,
+[00:19:51] that's just that's just one example.
+[00:19:53] Another one is I think I've got a BNB
+[00:19:55] chart, and this is the weekly range low
+[00:19:57] at the 210 handle. Again, especially you
+[00:19:59] can see on the first time that the when
+[00:20:01] the market really did its final
+[00:20:03] leg down before the 20k bounce, sort of
+[00:20:05] in the summer.
+[00:20:07] The discount relative to the level
+[00:20:09] itself ended up producing the bounce. I
+[00:20:10] mean, that's all well and good, but if
+[00:20:12] you were looking for those types of wick
+[00:20:14] entries, you got as much as a 12%
+[00:20:16] discount relative to the level itself
+[00:20:18] before you got the same move. Now,
+[00:20:20] again, the trade idea is the same, that
+[00:20:22] the market's going to bounce from 210,
+[00:20:23] and it's a question of entry trigger or
+[00:20:25] execution. Are you going to do level at
+[00:20:26] the 210 business Are you going to do
+[00:20:28] business at the 210 level outrightly
+[00:20:30] with those limit orders, or are you
+[00:20:32] going to go for those types of wick
+[00:20:33] entries by scooping it up below the
+[00:20:36] level in anticipation that A, your idea
+[00:20:39] is correct, the original premise that
+[00:20:41] 210 is going to bounce, but B, you're
+[00:20:42] getting a better entry in anticipation
+[00:20:45] that it's probably not going to bounce
+[00:20:46] exactly from 210. So, I'm just going to
+[00:20:48] going to give it a bit of room, and if I
+[00:20:49] get any discounts relative to that
+[00:20:51] level, that's just a better price and a
+[00:20:53] better deal, okay?
+[00:20:55] Um
+[00:20:55] Here's another example, this Matic
+[00:20:57] weekly cluster, similar type of summer
+[00:20:59] bottom type of thing.
+[00:21:01] Um
+[00:21:02] if you did level if you did business
+[00:21:04] outrightly at the kind of 34-38 cents
+[00:21:06] handle, still a great trade, and you
+[00:21:07] still caught the upside. But if you had
+[00:21:09] an open mind towards, you know, either
+[00:21:11] trading at the lower boundary or even
+[00:21:12] aiming for the wicks, that's an extra
+[00:21:14] 10, 15, maybe 20% which can make a huge
+[00:21:17] difference over time when it comes to
+[00:21:19] your lifetime P&L curve. So, again, the
+[00:21:22] basic idea stays the same that the
+[00:21:23] market's going to bounce between 34 and
+[00:21:24] 38. But if you believe that to be true,
+[00:21:27] then buying a bit below it at 33, 32,
+[00:21:30] whatever it may be, uh is just a better
+[00:21:33] version, a better entry, and like a
+[00:21:34] cheaper deal on the same trade idea.
+[00:21:37] Hopefully, that makes sense. And there
+[00:21:38] are some important nuances here. So,
+[00:21:40] let's get into the pros and cons.
+[00:21:42] Now, the pros are are mostly
+[00:21:43] self-explanatory. You get better entry
+[00:21:45] prices if you're right. Uh they can
+[00:21:47] offer clearer and tighter invalidation,
+[00:21:50] which typically means larger sizing as
+[00:21:51] well. Because by definition, if your
+[00:21:53] idea is correct and you got a wick price
+[00:21:55] entry trigger, you're doing business at
+[00:21:57] the wick. And therefore, you know, you
+[00:22:00] have a clearer invalidation. You don't
+[00:22:01] need to guess. You're either right or
+[00:22:02] the market is probably isn't going to
+[00:22:04] reverse at that type of structure. And
+[00:22:05] that just lets you tighten up your trade
+[00:22:06] parameters a lot. And then again, a sort
+[00:22:09] of upside corollary of that is that it's
+[00:22:11] less likely to squeeze your entry or
+[00:22:13] wick further if your trade idea is
+[00:22:15] correct. And it's really good if you can
+[00:22:16] get trade entries which don't kind of
+[00:22:18] sit on your entry and put you
+[00:22:20] underwater, above water, underwater,
+[00:22:21] above water. It's just psychologically
+[00:22:23] less draining and it's easier to manage
+[00:22:25] trades where you're you're kind of above
+[00:22:26] water the whole time. I've just found
+[00:22:28] it's easier to think about the market
+[00:22:30] objectively. Um another pro of this
+[00:22:32] approach is it reflects the fact that
+[00:22:34] markets aren't tick perfect and that
+[00:22:36] they wick. So, think about any, you
+[00:22:38] know, even in your past two, five, 10
+[00:22:40] trades, if you were buying a level of
+[00:22:42] support resistance, go go back at your
+[00:22:43] trading journal, look at those trades.
+[00:22:45] It's unlikely that your level was the
+[00:22:47] exact bottom wick, bottom tick of that
+[00:22:49] type of structure. Especially if you're
+[00:22:51] trading higher time frame stuff, like
+[00:22:52] dailies and weeklies, those wick
+[00:22:54] portions of your entries can be five,
+[00:22:56] 10, if not more percent that is, uh
+[00:22:59] compared to your original structure. So,
+[00:23:02] if your idea stays the same, but you can
+[00:23:03] get a
+[00:23:04] 1 to 10% just numbers, you know, back of
+[00:23:07] the napkin maths, better deal on your
+[00:23:09] entry, maybe that's worth looking out
+[00:23:11] for or at least being open towards
+[00:23:13] getting those types of entries, right?
+[00:23:16] Uh and another kind of upside that's a
+[00:23:17] bit more subtle is it may be easier to
+[00:23:19] get out if you're wrong. So, let's take
+[00:23:22] the Mask example, right?
+[00:23:24] Uh here.
+[00:23:26] So, let's say you end up buying closer
+[00:23:28] to the wick, and in this case the market
+[00:23:30] didn't go up, and let's say this is a
+[00:23:31] bearish retest. There's a decent chance
+[00:23:33] that if the market sort of, you know,
+[00:23:35] you get your entry closer to the candle
+[00:23:36] body or the wick, and then if the market
+[00:23:38] pushed up and started finding resistance
+[00:23:41] on the appropriate time frame where you
+[00:23:42] thought this would be support, that gap
+[00:23:45] uh is actually profit for you. So, it
+[00:23:47] puts you in a more manage- in a sort of
+[00:23:49] stronger position to manage the trade,
+[00:23:51] because even if you're wrong in buying
+[00:23:53] that support, because your entry was so
+[00:23:55] good, you have more bandwidth to manage
+[00:23:58] that trade and close it for a profit or
+[00:23:59] close it for break even or just not eat
+[00:24:01] the full size loss, uh because your
+[00:24:03] entry sort of accounts for that, right?
+[00:24:04] So, so it gives you trade management
+[00:24:06] benefits there as well, uh which are
+[00:24:07] important. Now, the cons are also very
+[00:24:09] important.
+[00:24:10] Now, first of all, the very fact of a
+[00:24:12] better price might mean that your
+[00:24:14] original idea is wrong. And especially
+[00:24:16] if you take this to an extreme, it can
+[00:24:18] create a trade idea completely different
+[00:24:20] to your original one. And it's a sort of
+[00:24:22] very basic thought experiment here. If
+[00:24:24] we take our level, and let's say in this
+[00:24:25] case this 1390s is resistance, and the
+[00:24:28] market, you know, starts to push, and as
+[00:24:30] it's here, you're thinking, "This is
+[00:24:31] just, you know, my my base case is that
+[00:24:33] this is resistance, the market's going
+[00:24:34] to go down." And the market's above it,
+[00:24:36] so this is technically a kind of wick
+[00:24:38] entry or potentially a premium. And then
+[00:24:40] the market keeps pushing, and you're
+[00:24:42] like, "Oh, this premium is amazing. Wow,
+[00:24:43] look at all these fills. I'm so lucky.
+[00:24:45] Wow, this is really good. I can't
+[00:24:46] believe I'm getting to catch this wick."
+[00:24:48] And then by the time you're fully
+[00:24:49] filled, you know, if you kind of zoom
+[00:24:50] out and take a fresh look at it, maybe
+[00:24:52] you're just completely wrong on the
+[00:24:53] trade, and this isn't going to be
+[00:24:54] resistance, and instead it's some sort
+[00:24:56] of reclaim that's going to shoot off or
+[00:24:57] some sort of, you know, consolidation
+[00:24:59] before a leg up, whatever it may be. So,
+[00:25:01] if you don't kind of scale your
+[00:25:03] expectations appropriately when it comes
+[00:25:04] to what is the reasonable bandwidth for
+[00:25:06] a wick, and you just keep kind of fading
+[00:25:09] the move and averaging in above the
+[00:25:11] level where you thought the market would
+[00:25:12] go down, you can end up in some gnarly
+[00:25:14] situations where you end up kind of
+[00:25:16] selling
+[00:25:17] a breakout
+[00:25:19] that invalidates your original premise.
+[00:25:20] That that's really clumsily put, but
+[00:25:22] basically when we're talking these wick
+[00:25:24] entries, they still need to be close
+[00:25:26] enough to the original structure to make
+[00:25:28] sense in line with your original trade
+[00:25:29] idea. If you really let the market get
+[00:25:31] away from you and take this kind of wick
+[00:25:34] idea or premium discount idea too far,
+[00:25:36] you basically end up doing business in
+[00:25:38] an area which has no relation to your
+[00:25:39] original trade idea. So, like if you
+[00:25:41] think 1390s is resistance, especially if
+[00:25:43] it's like a medium-time frame type of
+[00:25:45] entry, it should be resistance around
+[00:25:48] the 1390 area. You can't then start to
+[00:25:50] scale in at, you know, 1500 and say,
+[00:25:52] "Aha, I'm so clever. This is going to be
+[00:25:54] the 1390s wick." Cuz probably not. Uh
+[00:25:57] this is a question of margins. Are you
+[00:25:58] going to do business at the level
+[00:25:59] itself, or are you going to be cheeky
+[00:26:01] and try to catch a bit extra on the top?
+[00:26:03] It's not a matter of any move past this
+[00:26:05] level because the market's going to do
+[00:26:06] what I want it to do is a wick, even if
+[00:26:08] it's way, way displaced from the
+[00:26:09] original trade idea. So, basically all
+[00:26:11] of that rambling to say, don't get
+[00:26:13] carried away. This is an act of
+[00:26:15] refinement and not sort of trying to
+[00:26:17] transform the original trade idea into
+[00:26:18] something else.
+[00:26:20] And this sort of leads me to another con
+[00:26:22] is that if this is taken to an extreme
+[00:26:24] or you get basically too greedy with it,
+[00:26:26] you risk missing out on simple setups
+[00:26:28] completely by jostling for a marginally
+[00:26:30] better entry. Uh laddering can address
+[00:26:32] this somewhat, but you
+[00:26:34] at its core you need to assess whether
+[00:26:36] looking for a wick entry is worth it
+[00:26:39] compared to simply trading at the level.
+[00:26:41] So, for example, let's say your level
+[00:26:42] selection is indeed very accurate and or
+[00:26:44] your perception of where the wick might
+[00:26:46] reasonably form is inaccurate, you may
+[00:26:48] end up in a world where you the market's
+[00:26:50] is basically doing this, you know,
+[00:26:51] pushing into your levels, reversing,
+[00:26:53] pushing into your levels, reversing. And
+[00:26:55] it's more or less exactly where you
+[00:26:56] would have done business with a limit
+[00:26:58] order in the first place. But because
+[00:26:59] you're so obsessed with this wick idea
+[00:27:01] and you're taking it too far and not
+[00:27:02] scaling correctly, you tried to you
+[00:27:04] thought the wick would be up here and
+[00:27:05] you tried to sell that and instead got a
+[00:27:06] no fill. Or here, you thought the wick
+[00:27:08] would be here and instead got a no fill.
+[00:27:11] And because you're trying to catch an
+[00:27:12] extra 1 5% whatever it may be,
+[00:27:15] especially on lower time frames, you end
+[00:27:16] up missing out on the trade idea
+[00:27:17] completely, which doesn't make any sense
+[00:27:19] whatsoever. The final note I'll say on
+[00:27:21] this type of wick entries
+[00:27:23] wick entry technique is you need to
+[00:27:25] scale it appropriately to the time frame
+[00:27:27] you're dealing with. So, if you're
+[00:27:28] dealing with really fast outsized moves,
+[00:27:30] a higher time frame, liquidation driven,
+[00:27:32] you need to give it more breathing room.
+[00:27:34] You know, 5 10 even 15% on that type of
+[00:27:36] stuff relative to the structure isn't
+[00:27:38] unreasonable.
+[00:27:40] However, if you're dealing in a more
+[00:27:41] normal environment and smaller rotations
+[00:27:44] and lower time frames, you might just be
+[00:27:45] a question of sort of 0.5 to 2% if that
+[00:27:49] relative to the structure that you're
+[00:27:50] trading. So, you know, if you're like
+[00:27:51] trading the hourly chart, there's no
+[00:27:53] there's no point saying this is
+[00:27:54] resistance, right? Let's say this is
+[00:27:55] like an hourly chart and this is your
+[00:27:57] resistance, there's no point saying,
+[00:27:58] "Oh, I'm going to try to trade at 15%
+[00:28:00] higher than it is because for all
+[00:28:01] intents and purposes if it goes there,
+[00:28:03] then this probably wasn't resistance in
+[00:28:04] the first place, right?" So, your
+[00:28:06] expectation of where you might be
+[00:28:08] fishing for a wick should be somewhat in
+[00:28:10] line with the time frame you're trading.
+[00:28:12] Higher time frame, more space, lower
+[00:28:13] time frame, less space. Uh
+[00:28:15] the risk, the main con with this wick
+[00:28:18] price idea is simply taking it too far
+[00:28:20] and not being reasonable with it. And
+[00:28:22] that sort of leads me to the recommended
+[00:28:23] context is it
+[00:28:25] sort of this works best when it's dealt
+[00:28:27] with in first test best test setups at
+[00:28:30] really clear levels similar to the first
+[00:28:32] one, but especially if it's outsized
+[00:28:34] moves and liquidation driven kind of
+[00:28:36] momentum into do or die levels. So, it's
+[00:28:39] really at the extremes where it makes
+[00:28:41] sense to sort of be fishing for wicks,
+[00:28:43] especially really fast and scary moves
+[00:28:45] that are
+[00:28:45] um driven by those types of flows, as
+[00:28:47] opposed to on your kind of day-to-day
+[00:28:49] basis.
+[00:28:50] Hopefully, that makes sense.
+[00:28:54] Entry trigger three, deviation. Uh the
+[00:28:56] definition here is buying or selling
+[00:28:58] using limit orders and or market orders.
+[00:29:01] And then there are two parts to this.
+[00:29:02] Once price has moved past and then
+[00:29:05] fallen back within the boundaries of a
+[00:29:07] support/resistance structure. So, again,
+[00:29:10] this is similar to the wick price
+[00:29:11] entries and it sort of acknowledges that
+[00:29:14] price action can be messy. And this
+[00:29:16] particular type of messiness is such
+[00:29:18] that price often exceeds the boundaries
+[00:29:20] of the areas where we want to do
+[00:29:21] business. So, for example, if we go back
+[00:29:23] to our standard trading view type of
+[00:29:25] thing, if this is our resistance, an
+[00:29:26] example of of a deviation might be if
+[00:29:29] this is, you know, our level of
+[00:29:30] resistance, the market comes in and the
+[00:29:31] next time it actually pushes through the
+[00:29:33] level and then flatlines, consolidates,
+[00:29:36] and eventually falls back within the
+[00:29:38] structure. So, again, there are two
+[00:29:40] ingredients when it comes to a deviation
+[00:29:42] type entry trigger. One is excess or
+[00:29:45] shooting past the original structure,
+[00:29:47] which is this portion here. And the
+[00:29:50] second ingredient is then moving back
+[00:29:52] within or closing back within or being
+[00:29:54] accepted back within the original
+[00:29:56] structure, which is here. So, for
+[00:29:58] example, if you see a breakout,
+[00:30:01] you know, this is our level and you
+[00:30:02] know, again, resistance and then you see
+[00:30:03] a breakout and and you're asking someone
+[00:30:05] here, "Hey, is this a deviation or not?"
+[00:30:08] Uh the answer is you don't know until it
+[00:30:10] falls back within the structure.
+[00:30:12] The The act of failing to be accepted
+[00:30:15] back above it and or falling back within
+[00:30:17] it, that's what's quote unquote confirms
+[00:30:19] the deviation and then kind of triggers
+[00:30:22] this entry technique. You could
+[00:30:24] technically start to speculate whether
+[00:30:26] this is going to be a deviation by
+[00:30:28] looking at the higher time frame
+[00:30:29] context, maybe looking at a footprint
+[00:30:30] and seeing if there are signs of
+[00:30:31] absorption, but for our entry trigger
+[00:30:33] purposes, it's a two-part process. One
+[00:30:36] is the excess, but you only know it's
+[00:30:38] excess once it's moved back within the
+[00:30:40] original boundary.
+[00:30:42] Right?
+[00:30:43] So, some examples of that,
+[00:30:45] uh let me just close these for the time
+[00:30:47] being.
+[00:30:49] Here we go. Um the Bitcoin all-time high
+[00:30:52] breakout was a classic example of a
+[00:30:54] failed breakout, whether you want to use
+[00:30:55] the actual all-time high or this range
+[00:30:57] high structural level. The market
+[00:30:58] attempted to break out in its new
+[00:31:01] all-time high and then eventually fell
+[00:31:03] back within those parameters and a
+[00:31:04] weekly close back below it. You even got
+[00:31:06] a late kind of impulse here. I remember
+[00:31:07] this wiped out like all of the open
+[00:31:09] interest which is a crazy signal. Uh but
+[00:31:11] that's one example. So, this is your
+[00:31:12] boundary.
+[00:31:13] Portion one is the excess and portion
+[00:31:15] two is closing back below the
+[00:31:17] boundaries, right? Uh here's another
+[00:31:19] one. Uh the infamous Terra Luna buying
+[00:31:22] BTC breakout attempt. You've got this
+[00:31:23] triple top of resistance coming in. This
+[00:31:25] is the breakout. It's like, "How do you
+[00:31:27] know it's a deviation?" Well, you don't.
+[00:31:28] When do you know it's a deviation?
+[00:31:30] Purely technically speaking, on this
+[00:31:32] weekly candle here, at least on this
+[00:31:33] daily time frame candle here, uh when it
+[00:31:36] closes back within the range. Two-part
+[00:31:37] step. One, the break. Two, re-acceptance
+[00:31:41] back within the original parameters,
+[00:31:43] right?
+[00:31:44] Uh and I think these are
+[00:31:47] Let me see really quickly.
+[00:31:49] Yeah, uh more deviation type of setups
+[00:31:51] for ETH. Similar to its all-time high.
+[00:31:53] Range high, range high, looks like a
+[00:31:54] breakout, fizzles out, closes back
+[00:31:56] within the range, finds resistance
+[00:31:57] there, closes back below again.
+[00:32:00] Through the structure, back within the
+[00:32:01] structure. And same here on this
+[00:32:03] attempted breakout. You've got
+[00:32:04] resistance, resistance, support, kind of
+[00:32:06] a nice level at the 3,000s. You have a
+[00:32:08] breakout, excess through the structure,
+[00:32:10] and again closes back within the
+[00:32:12] structure. And this ends up being your
+[00:32:14] deviation when the market falls back
+[00:32:16] within its parameters, right?
+[00:32:18] Now,
+[00:32:19] the pros and cons here
+[00:32:21] are as follows.
+[00:32:23] Probably the best thing about this type
+[00:32:25] of setup and why I personally like it so
+[00:32:26] much is it presents a very, very clear
+[00:32:28] invalidation for any trade idea that you
+[00:32:30] have. As we discussed, the premise of
+[00:32:32] these deviations is that, you know, the
+[00:32:34] market typically typically double
+[00:32:36] doesn't double deviate, right? So, if we
+[00:32:38] take an example of this as support, you
+[00:32:40] have support here, and the market comes
+[00:32:42] back, excess, and then back within the
+[00:32:45] range, immediately, nine times out of
+[00:32:47] 10, your invalidation is the original
+[00:32:49] excess low made once the structure you
+[00:32:52] started with has been reclaimed, right?
+[00:32:54] This This is your go-to sort of built-in
+[00:32:57] invalidation, and there's a video on the
+[00:32:58] channel titled overthrow for stop loss
+[00:33:00] placement or something like that uh that
+[00:33:02] covers this in more detail. So, that
+[00:33:04] that's really good thing. And you know,
+[00:33:05] from an invalidation point of view, as
+[00:33:07] soon as the market starts breaking below
+[00:33:09] this level again, you could start to
+[00:33:10] exit, and certainly your hard stop at
+[00:33:12] the invalidation low, if it goes
+[00:33:13] anywhere near what should have been the
+[00:33:15] trap, then the idea is cooked, and
+[00:33:18] you're most most likely wrong. What's
+[00:33:20] far less common is, for example,
+[00:33:22] especially if you have like very clear
+[00:33:23] levels in higher time frame, and you're
+[00:33:25] dealing with clean structures, what you
+[00:33:27] don't see as much is
+[00:33:29] let's say you have resistance here,
+[00:33:31] uh ends up a break,
+[00:33:33] deviation,
+[00:33:34] and then it ends up coming back above
+[00:33:35] the level, and then deviating again.
+[00:33:38] Like, these types of double deviation
+[00:33:40] structures, they either happen on like
+[00:33:41] much lower time frames, or a lot of the
+[00:33:43] time it just means your structure sucks.
+[00:33:45] Um
+[00:33:47] at the very least, on the balance of
+[00:33:48] probabilities, these double deviations
+[00:33:50] are far less frequent than anything
+[00:33:52] else. And even if they do happen, your
+[00:33:54] risk is still primarily, at least your
+[00:33:56] starting stop loss is defined by the
+[00:33:58] highest high made on a failed breakout,
+[00:34:00] or the lowest low made on a failed
+[00:34:02] breakdown. So, even in the rare case
+[00:34:04] that you do get like extra squeeze, uh
+[00:34:06] it doesn't really change your
+[00:34:07] invalidation to start with cuz it
+[00:34:08] shouldn't violate the highest high made.
+[00:34:10] And then again, even if you you do get
+[00:34:11] this type of thing, you simply adjust
+[00:34:12] your stop to the most recent high, or to
+[00:34:14] the most recent low, right?
+[00:34:17] All of that to say,
+[00:34:18] that is one of the main benefits of
+[00:34:20] these types of setups, what makes them
+[00:34:21] really attractive, is that the
+[00:34:22] invalidation becomes very clear. And you
+[00:34:24] have an added bonus when it comes to the
+[00:34:25] pros for this type of category, is that
+[00:34:27] the generally speaking, higher prob-
+[00:34:29] there's a higher probability that these
+[00:34:31] sorts of deviation setups end up working
+[00:34:32] in your favor because the excess that is
+[00:34:34] created by the deviation um ends up
+[00:34:37] being
+[00:34:38] a sort of manifestation of trapped
+[00:34:40] participants, right? So, if if we just
+[00:34:41] sort of go back to markets
+[00:34:42] microstructure 101, uh if we have a
+[00:34:45] level here,
+[00:34:47] this is our resistance, this is the
+[00:34:49] breakout, and then the market trades
+[00:34:51] back below the level,
+[00:34:53] all the participants that were buying on
+[00:34:54] this leg up then out on the water,
+[00:34:57] right? They they bought this breakout,
+[00:34:59] they're now at the loss because the
+[00:35:00] market's here, whereas their average is
+[00:35:02] entry is here. And so, if it starts to
+[00:35:04] if the market starts to creep up, we can
+[00:35:06] expect them to sell their position or
+[00:35:07] puke them for break even. Or even if the
+[00:35:09] market doesn't creep up,
+[00:35:11] they they might be forced to forcibly
+[00:35:13] close their positions, especially as
+[00:35:15] more savvier traders start to sell that
+[00:35:17] down recognizing that they're trapped
+[00:35:19] and they'll have to do something. And
+[00:35:20] so, trapped longs closing turn to
+[00:35:24] shorts, and then you also have shorts
+[00:35:25] entering the market recognizing that
+[00:35:27] these guys are trapped, and that sort of
+[00:35:29] creates a lot of selling pressure. So,
+[00:35:30] the benefit of having types of deviation
+[00:35:32] types of entry triggers is they have
+[00:35:33] some extra technical conflict confluence
+[00:35:35] on your side that the setup's going to
+[00:35:37] work.
+[00:35:38] And also, quite logically, it's easier
+[00:35:40] to compound the position once the
+[00:35:41] deviation is set because you know
+[00:35:43] exactly where you're wrong, and that
+[00:35:44] makes it easier to sort of trade around
+[00:35:45] an area and adjust those parameters.
+[00:35:48] Now, there are some cons to this type of
+[00:35:49] setup. Uh the first is that sometimes
+[00:35:51] support just supports and resistance
+[00:35:53] resists, and there's no deviation, and
+[00:35:55] then you get no setup. So, again, the
+[00:35:56] core assumption of the this type of
+[00:35:58] deviation logic is that you will get
+[00:36:01] something like an excess, and then you
+[00:36:03] get to trade the backside of it in one
+[00:36:04] form or another. But, sometimes you'll
+[00:36:06] just have a level of resistance, and the
+[00:36:07] market will come into it and just
+[00:36:09] completely crap itself. And so, the
+[00:36:10] people who were trading the limit orders
+[00:36:11] at the level or whatever else, they're
+[00:36:13] they're eating well, right? Cuz they
+[00:36:14] just had a level, they sold the level,
+[00:36:16] and uh business as usual. And you know,
+[00:36:18] in some of the Solana examples and the
+[00:36:19] others we talked about, uh there was no
+[00:36:21] such deviation to speak of. It was a
+[00:36:22] straightforward, this is resistance, it
+[00:36:24] got there, it got smacked. This is
+[00:36:25] support, it got there and got smacked.
+[00:36:27] So, sometimes you don't have the luxury
+[00:36:29] of the market offering you this very
+[00:36:30] technically clean, identifiable failed
+[00:36:32] break or failed, you know, like excess.
+[00:36:35] You so- sometimes you just don't get
+[00:36:36] that. You get a very quick reaction at
+[00:36:37] the level, it does its job, does what it
+[00:36:39] says on the tin, and you know, good
+[00:36:40] night. So, you end up missing sometimes
+[00:36:44] on really clear and fast resolving
+[00:36:47] technical setups if you're always
+[00:36:49] waiting for a deviation. Like the market
+[00:36:50] doesn't have to do anything. Sometimes
+[00:36:52] it'll attempt to break and fail, then
+[00:36:53] you get a deviation setup. Sometimes it
+[00:36:55] won't and it'll just puke. And for you,
+[00:36:57] if you only have that as your entry
+[00:36:58] trigger, that could manifest in a missed
+[00:37:00] trade, right?
+[00:37:02] The other con is that when you're
+[00:37:03] dealing with these types of setups,
+[00:37:06] it requires more discretion regarding
+[00:37:08] your order types. So, once the deviation
+[00:37:09] is confirmed, like how do you actually
+[00:37:11] get on board? Do you market sell the
+[00:37:12] close
+[00:37:13] / the move back within the range? Do you
+[00:37:15] limit sell the deviated level? Do you do
+[00:37:17] both? It It can be quite tricky. So, you
+[00:37:19] know, in this example, if this is our
+[00:37:20] level of resistance once again,
+[00:37:23] market comes in, and the market closes
+[00:37:24] below, and this is our close. Like
+[00:37:26] technically, this confirms a deviation,
+[00:37:28] right? Cuz it's our two-part experiment.
+[00:37:30] Did it exceed the level? Yes. Did it
+[00:37:31] close back within the level? Yes. Aha,
+[00:37:33] deviation confirmed. But how do I get on
+[00:37:35] board? Do you leave a limit order at the
+[00:37:38] original level, so that when it retests,
+[00:37:40] you get a fill there? Do you just market
+[00:37:42] sell as soon as it closes as a
+[00:37:44] deviation, and then you have your risk
+[00:37:45] set hoping for continuation? Do you do
+[00:37:48] both, where you set some sort of market
+[00:37:50] sell position as a starter, and then you
+[00:37:52] add if it gets to the level for your
+[00:37:54] full position hoping then it rolls over?
+[00:37:56] Uh that's for you to figure out. For for
+[00:37:57] me personally, if I'm trading these
+[00:37:59] types of setups, for the most part, if
+[00:38:01] it's a very aggressive type of move
+[00:38:02] where it engulfs straight through the
+[00:38:04] structure, I'll typically market sell
+[00:38:06] that uh for my full position size, and
+[00:38:08] if it can wants to come back and retest,
+[00:38:09] that's fine. Uh if it's more of a
+[00:38:11] rounded type of deviation, like the
+[00:38:13] Solana one, where it's like deviated and
+[00:38:15] then it spends some time and then it
+[00:38:16] comes back into the level, I'll usually
+[00:38:18] let this leg go and then look to trade
+[00:38:21] the rounded retest uh with a limit order
+[00:38:23] at the level itself. Uh, but that's
+[00:38:25] definitely something you have to figure
+[00:38:26] out. How do you get on board? Um,
+[00:38:29] you don't have to pick one or the other,
+[00:38:30] but as soon as long as you have rules of
+[00:38:31] engagement for
+[00:38:33] trading these setups, uh, that's all it
+[00:38:35] takes. Um, and again, you are afforded a
+[00:38:38] bit of a break by the fact that your
+[00:38:39] invalidation is set by the highest high
+[00:38:41] made in the bearish scenario or the
+[00:38:44] lowest low made in the bullish scenario,
+[00:38:46] right? Sort of lowest low made the
+[00:38:48] bullish scenario. Your risk is here. So,
+[00:38:50] you certainly get some options uh, when
+[00:38:52] it comes to how you engage the market
+[00:38:54] for these types of setups. Now, some of
+[00:38:56] this will just be learning. Like for
+[00:38:57] example, you I've had before very clear
+[00:39:00] deviation type of setups. Like this is
+[00:39:01] support. It breaks down, no acceptance,
+[00:39:04] shoots back above and does this. And I'm
+[00:39:05] thinking, "Oh, great. This is a
+[00:39:07] deviation. Excess through the structure,
+[00:39:09] reclaim of the structure." That takes
+[00:39:11] both of our boxes. That's a deviation
+[00:39:13] setup. And then what I would do is I
+[00:39:15] would leave a limit order to buy the
+[00:39:17] original level of support, you know,
+[00:39:18] something like
+[00:39:20] this.
+[00:39:22] Uh, with a stop at the deviation low.
+[00:39:24] And instead, what the market would do is
+[00:39:26] just kind of consolidate, maybe come
+[00:39:27] down a little bit, and then shoot off.
+[00:39:29] So, my original setup was correct. My
+[00:39:31] idea was right. My expectation, all of
+[00:39:32] that was in line, but it just didn't
+[00:39:34] pull back far enough to the structure to
+[00:39:36] give me a fill. Uh, whereas obviously
+[00:39:37] I've had it before where I would just
+[00:39:39] market, but you know, I'd get a very
+[00:39:40] strong type of deviation signal. Uh,
+[00:39:42] where it'd come up and it would shoot up
+[00:39:44] completely. And I'm like, "Oh, hell
+[00:39:45] yeah. I'm going to market buy this
+[00:39:46] thing." And I end up entering on the
+[00:39:48] close back up of that type of structure
+[00:39:51] as long as the, you know, whatever. At
+[00:39:52] least it's let's say it's at least one
+[00:39:54] R. And then what would happen
+[00:39:56] is the market would then pull back to
+[00:39:58] where I'd normally leave a limit order
+[00:39:59] and then shoot off from there. Now,
+[00:40:01] that's not the worst thing in the world
+[00:40:02] because in most cases if your stop
+[00:40:03] placement is, uh, reasonable, uh, you
+[00:40:06] don't get end up getting taken out on
+[00:40:07] this. But this is all kind of this
+[00:40:09] difference between where my market entry
+[00:40:11] was and where my limit entry would be is
+[00:40:14] all money and, uh, expectancy you leave
+[00:40:16] on the table. So, it is tricky. Um, you
+[00:40:18] have you basically have to study your
+[00:40:20] setups and look at what would be the
+[00:40:21] fill rate if I left the limit order. Uh,
+[00:40:23] what about the market order? What's the
+[00:40:25] What's the impact on risk reward on my
+[00:40:26] setups of using market orders versus
+[00:40:28] limit orders? Uh, how how you know, how
+[00:40:30] displaced does price get from the
+[00:40:32] original level where I want to do
+[00:40:33] business? All these things are for your
+[00:40:34] trading journal, but that's just one of
+[00:40:36] the cons kind of worth considering is
+[00:40:38] that just cuz you identify deviation, it
+[00:40:40] it doesn't guarantee a way of trading
+[00:40:42] it, right? You still have to kind of get
+[00:40:44] in once the market's shown you that,
+[00:40:46] hey, support is still support or
+[00:40:47] resistance is still resistance. Uh, and
+[00:40:50] I I guess I covered the last con
+[00:40:51] somewhat implicitly
+[00:40:53] is it can greatly reduce the risk reward
+[00:40:55] or make the trade unavailable if the
+[00:40:56] market moves uh, too much from the
+[00:40:59] structure. So, that's one of the
+[00:41:00] inherent cons of not doing business at
+[00:41:02] the level itself is if you wait for the
+[00:41:04] market to move, by definition, you're
+[00:41:05] further away from the structure where
+[00:41:07] you're doing business. You're typically
+[00:41:08] further away from your invalidation, and
+[00:41:09] that can affect some of those uh,
+[00:41:11] built-in trade parameters that we talked
+[00:41:13] about. In terms of recommended contexts,
+[00:41:15] I think range-bound markets are really
+[00:41:16] good for deviation types of setups
+[00:41:18] because the core assumption of
+[00:41:19] range-bound markets is that support's
+[00:41:20] going to support, resistance's going to
+[00:41:22] resist, and any breaks through value
+[00:41:24] won't be accepted by the market. Um, so,
+[00:41:26] that's one thing, and also just levels
+[00:41:28] that have been traded before. So, less
+[00:41:30] so for first test, best test type of
+[00:41:31] stuff. I usually try to get in on the
+[00:41:33] first reaction of those, especially if
+[00:41:34] they're one of those long rounded
+[00:41:36] retests. But, if we're dealing with
+[00:41:37] levels that the market's been trading
+[00:41:39] before and we we where you've had
+[00:41:40] participation in the past, uh, having an
+[00:41:43] open mind, an open eye towards these
+[00:41:45] deviation setups are really good. Is
+[00:41:47] really good, rather.
+[00:41:49] Entry trigger four, uh, break in
+[00:41:51] structure. This is my least favorite and
+[00:41:52] one I used to trade sort of in 2019,
+[00:41:55] 2018, uh, but I sort of stepped away
+[00:41:56] from it. And there are people who are
+[00:41:57] much better than I am at doing this type
+[00:41:59] of stuff. You know, your Trader Mains,
+[00:42:01] your Trader SZs, and so on and so forth
+[00:42:03] do this much better than I do. Uh, well,
+[00:42:06] frankly, cuz I don't do it as well, but
+[00:42:07] you know, it certainly works for them.
+[00:42:09] And the definition here is buying or
+[00:42:11] selling using limit orders and or market
+[00:42:13] orders once price has shown sufficient
+[00:42:16] evidence of low time frame weakness at
+[00:42:18] resistance or low time frame strength at
+[00:42:21] support.
+[00:42:22] Now, essentially, this setup concedes
+[00:42:25] that the structure may not be attractive
+[00:42:26] enough to trade outrightly, so it's not
+[00:42:28] clear enough, not good enough,
+[00:42:30] contextually not attractive enough to
+[00:42:31] just leave a limit order there and get
+[00:42:33] filled no matter what, but that view can
+[00:42:35] be swayed with further evidence. And
+[00:42:37] that further evidence is typically price
+[00:42:38] action based, which means
+[00:42:41] I sort of on a core level, higher highs
+[00:42:42] and higher lows at support increase
+[00:42:44] likelihood that the setup is going to
+[00:42:45] work. Lower lows and lower highs at
+[00:42:47] resistance increase likelihood that the
+[00:42:48] setup is going to work. Um
+[00:42:51] So, typically, what you see with those
+[00:42:52] types of setups is someone will identify
+[00:42:55] a high time frame pivot. Let's say this
+[00:42:57] is your um initially your daily level of
+[00:43:00] resistance here at this 1460 handle. And
+[00:43:03] then what they'll do, as the market is
+[00:43:05] coming into this level and actually
+[00:43:07] starts pushing and trading it, they will
+[00:43:08] then jump down to time frame to their
+[00:43:11] execution time frame. Maybe it's the
+[00:43:13] hourly, right? This is painful. Maybe
+[00:43:15] it's the hourly, maybe it's the M15,
+[00:43:17] maybe it's the M5, maybe they just open
+[00:43:19] up a footprint, whatever it is, and then
+[00:43:21] they will assess
+[00:43:22] this price action as it's developing,
+[00:43:24] but not on the original time frame of
+[00:43:26] the level, but on a much lower time
+[00:43:27] frame so they get more candlesticks,
+[00:43:29] more data, and a more granular view of
+[00:43:31] what's going on. And then once they've
+[00:43:33] kind of zoomed in on the lower time
+[00:43:34] frames as to what's going on at this
+[00:43:36] higher time frame, they'll typically
+[00:43:38] look for signs of weakness, which at
+[00:43:40] that its most basic is bearish market
+[00:43:42] structure of lower highs and lower lows.
+[00:43:45] So, looking for some evidence of
+[00:43:46] absorption, weakness, whatever it may
+[00:43:48] be, in order to get on board there.
+[00:43:56] Now,
+[00:43:57] the pros and cons,
+[00:43:58] there is it's a bit of a mixed bag,
+[00:44:00] right? So, the pros of this is it
+[00:44:02] prevents you from taking trades where
+[00:44:03] the market just blitzes through the area
+[00:44:04] you were planning to trade, because by
+[00:44:06] definition, you're waiting for evidence
+[00:44:07] to see what happens. So for example,
+[00:44:09] we've all been there where we've wanted
+[00:44:10] to sell a level, right? Let's say we
+[00:44:11] want to sell this level here as the
+[00:44:13] market's coming into it, and then it,
+[00:44:15] you know, pushes, pushes, pushes, and
+[00:44:16] then the next candle looks like this.
+[00:44:18] And you think, "Ah, for sake."
+[00:44:19] And you know, if you had a limit order
+[00:44:20] there, uh you're not having a very good
+[00:44:22] time, even if you had like a wick type
+[00:44:24] of snipe you were looking for, you're
+[00:44:26] not having a very good time.
+[00:44:28] So this does happen in trading and it's
+[00:44:29] completely normal, you know, maybe it's
+[00:44:30] a news release or some some other
+[00:44:32] volatility catalyst, and your level just
+[00:44:34] gets completely blitzed. Uh that that's
+[00:44:36] kind of part of the game, and you know,
+[00:44:37] there are certain mitigation strategies,
+[00:44:39] but you will eat on those setups
+[00:44:41] from time to time. Whereas the pro of
+[00:44:43] just waiting for price action means it's
+[00:44:45] much less likely that that happens
+[00:44:46] because you're giving the market a
+[00:44:47] market a chance to prove to you uh what
+[00:44:49] the price action's going to do there. So
+[00:44:51] that that kind of delay in engaging the
+[00:44:53] level can prevent you from falling
+[00:44:55] victim to those types of uh wipeout
+[00:44:57] candles, which is which is definitely a
+[00:44:58] pro, right?
+[00:45:00] The other one I can think of is you
+[00:45:02] basically get increased confluence from
+[00:45:03] price action aligning with what you want
+[00:45:05] to see. And that that's sort of the
+[00:45:07] point made by the two bullet points
+[00:45:08] above, that, you know, if you're seeing
+[00:45:09] bullishness at what should be support,
+[00:45:11] that shifts the odds in your favor. If
+[00:45:13] you're seeing bearishness at what should
+[00:45:14] be resistance, that also shifts the odds
+[00:45:16] in your favor. Now there are also some
+[00:45:18] cons to consider, right?
+[00:45:20] The first, uh as I sort of alluded to
+[00:45:21] the fact that I don't
+[00:45:23] terribly you know, I don't use this a
+[00:45:24] lot myself. The most I'll do is maybe if
+[00:45:26] I've got like a
+[00:45:27] wishy-washy daily level, I might go down
+[00:45:30] to the hourly and look for a setup
+[00:45:31] there. That's something we'll discuss a
+[00:45:32] bit later. Um but this is still
+[00:45:34] difficult to do in practice. Uh
+[00:45:36] especially if you're trading really
+[00:45:37] higher time frame levels like the weekly
+[00:45:39] or the daily, maybe even the monthly, uh
+[00:45:41] you will get a an especially low signal
+[00:45:44] to noise ratio if you start staring at
+[00:45:47] every single low time frame candle at
+[00:45:48] high time frame structure. Like bear in
+[00:45:50] mind, sometimes when you're dealing with
+[00:45:51] weekly levels, they can take weeks to
+[00:45:53] resolve. Like if I have a weekly support
+[00:45:56] and the market prints two weekly candles
+[00:45:57] there more or less at the level, and
+[00:45:59] then reverses, that's completely normal.
+[00:46:01] But if you're looking at that level like
+[00:46:02] on the 1-minute or the 5-minute as soon
+[00:46:04] as it gets there, that that's a lot of
+[00:46:05] chop with with no ultimate resolutions.
+[00:46:08] There's a real risk there.
+[00:46:09] Another con is that it can turn into a
+[00:46:11] momentum chasing game, realistically,
+[00:46:14] which is basically like if you have a
+[00:46:15] level that you think that the market's
+[00:46:17] going to do something, like this
+[00:46:17] resistance, and then the market gets to
+[00:46:19] that level
+[00:46:20] and starts to break down, instead of
+[00:46:23] trading at or around the level itself,
+[00:46:25] you end up trading significantly sort of
+[00:46:27] displaced to the level after the
+[00:46:29] market's already moved. And so, in one
+[00:46:31] form or another, you do end up chasing
+[00:46:33] it. Now, that's completely fine as long
+[00:46:35] as you sort of know where you're wrong,
+[00:46:36] and as long as there's enough downside
+[00:46:38] or upside to capture to make the risk
+[00:46:39] reward worth it, but it does end up into
+[00:46:42] a bit of a chasing game where, you know,
+[00:46:43] you're waiting for red candles to sell
+[00:46:45] and looking for green candles to buy,
+[00:46:46] which like can be okay, um but if you're
+[00:46:49] if you're in an in an environment which
+[00:46:51] is less forgiving and the rotations are
+[00:46:53] smaller, like by the time you actually
+[00:46:55] get visible momentum or signs of
+[00:46:57] strength or signs of weakness, sometimes
+[00:46:59] either just the move is done or the risk
+[00:47:00] reward is too shitty to chase the market
+[00:47:02] at some point, and you know, most of the
+[00:47:04] leg has played out. So, that that's
+[00:47:05] something to bear in mind. Um
+[00:47:08] And that's sort of the the other con I
+[00:47:09] note there is that entry prices can
+[00:47:11] become quite detached from the original
+[00:47:12] idea. You know, if this is the level you
+[00:47:14] want to trade and you only get your real
+[00:47:16] momentum breakdown much lower,
+[00:47:19] let's say here somewhere, all of this
+[00:47:23] comes in the form of gains you've given
+[00:47:25] up by trading away from the level for
+[00:47:27] more confirmation as opposed to trading
+[00:47:28] at the level itself. So, there's
+[00:47:29] definitely like a delicate balancing act
+[00:47:31] there, and sometimes that's a very
+[00:47:32] tricky one um to get right, at least for
+[00:47:34] me, you know, purely honestly speaking.
+[00:47:38] Another thing I don't see people discuss
+[00:47:40] enough when it comes to these types of
+[00:47:41] uh break in structure trades is that it
+[00:47:44] precludes you from taking trades where
+[00:47:46] the reaction is swift and immediate. And
+[00:47:48] it comes to those types of setups we
+[00:47:49] discussed earlier where sometimes the
+[00:47:50] market will just fly into one of your
+[00:47:52] levels and then get completely smacked
+[00:47:53] and disappear. And there's there's room
+[00:47:55] for market structure to develop or
+[00:47:57] something like this or clear momentum to
+[00:47:58] come in. And you know, you're either
+[00:48:00] trading at the level itself or you're
+[00:48:02] not trading that level at all cuz it
+[00:48:03] basically solves itself or you know, the
+[00:48:05] trade resolves in one or two candles,
+[00:48:08] one or two time periods or in a very
+[00:48:09] short period of time. So, a lot of the
+[00:48:11] time basically waiting for shifts or
+[00:48:13] breaks in structure is a luxury
+[00:48:15] and a lot of the best trades in in my
+[00:48:18] experience, especially when it comes to
+[00:48:19] fading big moves, they simply don't give
+[00:48:21] you that luxury and they move way too
+[00:48:22] quickly and you're either on board and
+[00:48:24] you smacked it at the level or you
+[00:48:25] didn't. Uh so, you can miss out on some
+[00:48:27] absolute sitters, especially if we're
+[00:48:28] talking about those fresh rounded
+[00:48:29] levels, uh if you're not comfortable
+[00:48:31] trading the level itself and instead
+[00:48:32] waiting for confirmation or a break in
+[00:48:34] structure.
+[00:48:35] Um
+[00:48:36] And again, you can greatly reduce the
+[00:48:37] risk reward and make the trade
+[00:48:38] unavailable which is sort of the
+[00:48:39] implicit point there. Uh the recommended
+[00:48:41] contexts for these, I'd say if you're
+[00:48:43] like really experienced, uh that that's
+[00:48:45] probably the first one cuz most
+[00:48:47] beginners I think would be better off
+[00:48:48] just doing business at the level itself
+[00:48:49] rather than waiting for the market to
+[00:48:50] show them whether it's support or
+[00:48:52] resistance.
+[00:48:54] Um Broadly speaking, when you're unsure
+[00:48:55] about the quality of the structure, like
+[00:48:57] oh, this is like okay-ish support or
+[00:48:59] okay-ish resistance and also like in
+[00:49:01] tandem with not having a directional
+[00:49:02] bias, like let's say it's the range
+[00:49:03] midpoint and you're kind of like, ah,
+[00:49:06] like you know, it's 50/50, it's a
+[00:49:07] complete coin toss as to whether, you
+[00:49:09] know, my expectations for this market,
+[00:49:11] then you can say, okay, I'm going to
+[00:49:12] need more evidence to shift the scale on
+[00:49:14] this one and that evidence will be lower
+[00:49:16] time frame momentum when it gets to the
+[00:49:17] level. So, so I think it's reasonable in
+[00:49:19] those contexts, uh but for me
+[00:49:21] personally, uh my bias is always towards
+[00:49:24] trading as close as I can to the
+[00:49:26] structure itself. So, any types of entry
+[00:49:28] triggers that get me further away from
+[00:49:30] where I think I should be trading, I
+[00:49:32] generally treat with suspicion. It's a
+[00:49:33] completely fine strategy. Some people
+[00:49:35] pull it off really well and we'll cover
+[00:49:36] some examples uh a bit later where that
+[00:49:38] works, uh but just be aware of the
+[00:49:40] implicit trade-off there. And another
+[00:49:41] implicit trade-off that we'll cover, but
+[00:49:43] I think I should kind of
+[00:49:45] face it now
+[00:49:46] or sort of preface this point
+[00:49:48] is that there's a sliding scale to be be
+[00:49:50] of generally speaking that the more
+[00:49:52] confirmation you get or want, the worse
+[00:49:55] price you get for it. And the
+[00:49:57] less confirmation you have, the better
+[00:49:58] prices you get for that. So, if you're
+[00:50:00] if you're waiting for confirmation and
+[00:50:01] waiting for all the momentum in the
+[00:50:02] world to suggest that resistance is
+[00:50:04] going to resist, all the red candles,
+[00:50:06] all the oscillator signals, like by the
+[00:50:08] time that actually turns into a trade,
+[00:50:10] the meat of the move is likely at least
+[00:50:11] like a third down, halfway down, if not
+[00:50:13] entirely finished. Right? Like there's
+[00:50:15] no free lunch in markets. If you're
+[00:50:16] going to wait for resistance to resist,
+[00:50:18] or if you're going to wait for support
+[00:50:19] to support, a lot of the time you're
+[00:50:21] giving up better entries and better
+[00:50:23] prices. And again, that trade-off is
+[00:50:25] completely reasonable and can work,
+[00:50:26] especially if contextually there's like
+[00:50:28] a lot to capture.
+[00:50:30] And you know, there's plenty of the move
+[00:50:31] left. That's fine. But just be aware
+[00:50:33] that it's not some sort of hack or free
+[00:50:36] lunch where you can just wait for the
+[00:50:37] market to tell you if it's going to go
+[00:50:38] up and be able to buy it with no
+[00:50:40] repercussions, or wait for the market to
+[00:50:41] tell you it's going to go down and sell
+[00:50:42] it with no repercussions. There's always
+[00:50:43] a cost to these things. And in this
+[00:50:45] case, the cost for confirmation is
+[00:50:47] price.
+[00:50:50] Entry trigger five, candle close. Very
+[00:50:53] straightforward. The definition here is
+[00:50:54] buying or selling using market orders,
+[00:50:57] primarily, once price has closed in the
+[00:50:59] appropriate direction at a
+[00:51:01] support-resistance structure on a given
+[00:51:03] time frame. So, your kind of classic TA
+[00:51:05] 101, buying a close above resistance,
+[00:51:08] buying a close above support, selling a
+[00:51:10] close below resistance, selling a close
+[00:51:12] below support.
+[00:51:14] Now, the base case here is that when
+[00:51:16] you're engaging this type of framework,
+[00:51:18] the candle close that you're looking at
+[00:51:20] should take place on the same time frame
+[00:51:22] as the technical structure. So, if
+[00:51:23] you're looking at a daily chart and
+[00:51:25] daily levels, you should be looking at
+[00:51:27] daily closes to give you signal. And if
+[00:51:28] you're looking at a 4-hour chart, you
+[00:51:29] should be looking at 4-hour closes to
+[00:51:31] give you signal. Now, you can refine
+[00:51:32] that over time and sort of try to
+[00:51:34] anticipate how the higher time frames
+[00:51:36] are going to close by getting hints on
+[00:51:37] lower time frames. But sort of this
+[00:51:39] simple this system a lot of the time
+[00:51:41] works best at its simplest when you
+[00:51:43] don't really mix and match time frames
+[00:51:45] all too much, and you stick to the time
+[00:51:47] frame which the idea comes from. So,
+[00:51:49] some basic examples
+[00:51:51] and maybe we'll do the last bit first in
+[00:51:53] terms of recommended context so these
+[00:51:54] examples make sense. Uh it's really good
+[00:51:56] for reducing noise in a high time frame
+[00:51:58] swing trading. So, you know, cast your
+[00:52:00] mind back to the example I made earlier
+[00:52:01] where sometimes these daily and weekly
+[00:52:03] charts can take days and weeks to unfold
+[00:52:05] and if you're staring at them on the
+[00:52:06] 5-minute time frame, you're going to
+[00:52:07] take 50 trades with price not having
+[00:52:09] moved at all and by the time it actually
+[00:52:11] does, had you just waited for the high
+[00:52:12] time frame close, uh the signal uh would
+[00:52:15] be far less choppy and just, you know,
+[00:52:16] rather straightforward. And I think it's
+[00:52:18] also good for clear momentum plays when
+[00:52:20] it comes to big crypto breakouts or
+[00:52:22] breakdowns through key levels. A lot of
+[00:52:23] the time you're just kind of tagging on
+[00:52:24] to the candle close through that type of
+[00:52:26] structure uh makes a lot of sense. So,
+[00:52:27] let's look at some.
+[00:52:30] Nope.
+[00:52:31] Nope.
+[00:52:33] Talked about this.
+[00:52:35] Yes. Um
+[00:52:37] I think these were some of the
+[00:52:39] devi- well, this is one This is a
+[00:52:41] deviation and the candle close example.
+[00:52:43] So, we had this S&P 500 range low at
+[00:52:45] 36s, you know, 3680, 3630, thereabouts.
+[00:52:49] You had a close below that structure
+[00:52:50] which should have been a bearish retest,
+[00:52:52] etc. Market didn't follow through and
+[00:52:54] then closed above that level here. So,
+[00:52:56] purely on a candle close basis, this is
+[00:52:58] a reclaim and even if you bought the
+[00:53:00] close, you spent basically no time
+[00:53:01] underwater and caught this big impulse
+[00:53:03] here. Uh the reason I included this
+[00:53:05] example is not only for the candle close
+[00:53:07] type of setup, but this is also really
+[00:53:09] good example of the deviation ex- uh
+[00:53:10] thing we talked about earlier where
+[00:53:13] you have a level what's our two part
+[00:53:15] checklist for deviation? Excess through
+[00:53:16] the move? Yes. Close back within the
+[00:53:19] move or the original structure? Yes. But
+[00:53:21] then if you just left a limit order at
+[00:53:23] the original structure, you would have
+[00:53:24] gone unfilled. Whereas if you left a
+[00:53:25] market order, yes, your entry price
+[00:53:28] would have been worse, but at least
+[00:53:29] you'll have a position unlike not having
+[00:53:30] a position had you just went for the
+[00:53:32] limit order approach. So, that's kind of
+[00:53:34] a good practical example of that
+[00:53:35] trade-off in action. But yeah, as far as
+[00:53:37] uh candle close type of stuff goes, this
+[00:53:39] is a classic example. When it comes to
+[00:53:41] the stuff, again, when we wrote about I
+[00:53:44] probably shouldn't say that. Whatever,
+[00:53:45] it's a free newsletter, god dammit.
+[00:53:46] trletter.com, go read it if you want or
+[00:53:48] don't, it doesn't matter. It's just This
+[00:53:49] is how my brain works, it
+[00:53:50] compartmentalizes things. This is the
+[00:53:52] weekly ETH level at 1900s into the
+[00:53:55] merge.
+[00:53:56] Previous range high,
+[00:53:58] range low, breakdown retest, rounded
+[00:54:00] retest on a on a sort of weekly candle
+[00:54:02] close basis. You had a close below
+[00:54:05] resistance here. And even sort of if you
+[00:54:07] chased it next week, you know, your
+[00:54:08] entry wasn't amazing if you wait waited
+[00:54:10] for like the most obvious candle ever.
+[00:54:12] But given, you know, this big inflection
+[00:54:14] point, that wasn't the worst idea in the
+[00:54:16] world, right? I quite like when my
+[00:54:19] candle closes are actually relatively
+[00:54:21] close to the level itself as long as the
+[00:54:23] close is decisively clear. A lot of the
+[00:54:25] time, if you get a close that's just way
+[00:54:27] too far from the level, like if this
+[00:54:29] were just a wick and the candle closed,
+[00:54:31] the original one, let's say, closed like
+[00:54:32] here, a lot of the time what you'll see
+[00:54:34] in the coming periods, whether that's
+[00:54:36] hourly, daily, weekly, whatever, is the
+[00:54:38] the market will come in and fill a lot
+[00:54:40] of that wick closer to the original
+[00:54:42] level itself before moving lower. So, I
+[00:54:44] don't like if I'm going to trade candle
+[00:54:46] close swing trading signals, I generally
+[00:54:48] like them to be somewhat close to the
+[00:54:50] level itself cuz if it looks too wacky,
+[00:54:52] too crazy, a lot of the time that just
+[00:54:54] gets filled and I I can get a better
+[00:54:55] entry than chasing the close, especially
+[00:54:57] if we're dealing with like daily, weekly
+[00:54:59] stuff. So, that's a good example.
+[00:55:02] Another one is this ETH daily chart. You
+[00:55:05] know, you had a clear shelf of
+[00:55:06] resistance at this 1200s level. The
+[00:55:08] first daily close you got above. You
+[00:55:10] know, if you're leaving a limit order
+[00:55:10] there, no dice. But if you're using a
+[00:55:12] market order on the close, you have like
+[00:55:14] a tiny day of drawdown before catching
+[00:55:16] this entire impulse here. Another one,
+[00:55:19] again, I like my closes to be close to
+[00:55:21] the level itself. This is this 1400
+[00:55:23] prior cycle's high. Comes in, looks
+[00:55:25] really scary, but look all the closes
+[00:55:28] happen right at the level, which is
+[00:55:30] something I generally like. Or if all
+[00:55:31] these closes were happening, let's say,
+[00:55:33] up here, I'd be thinking, well, there's
+[00:55:35] a chance I might get my limit order
+[00:55:36] filled. So, you know, you have to make
+[00:55:38] that trade-off in your head. But if all
+[00:55:39] the closes are good, i.e. in the
+[00:55:41] direction that you want, and they're
+[00:55:43] happening pretty close to the level
+[00:55:44] you're looking at, that's generally a
+[00:55:46] pretty good sign, and you know, caught
+[00:55:47] that move there. And same when it came
+[00:55:49] back to give a rounded retest of this
+[00:55:51] structure, um it did give a pretty nice
+[00:55:54] wick retest later on before the impulse.
+[00:55:56] Uh but again, the close candle close
+[00:55:59] setup on the first test best test ended
+[00:56:01] up being quite useful and at least gave
+[00:56:02] you a move into the first trouble area.
+[00:56:04] Um and needless to say, a benefit of the
+[00:56:07] weekly close being rather close
+[00:56:10] to the structure is that it's much
+[00:56:11] easier to contextualize your risk reward
+[00:56:14] in that way, or at least you're you're
+[00:56:15] much likely to be closer to your
+[00:56:16] invalidation because you're trading
+[00:56:18] closer to the level itself. Uh so that's
+[00:56:20] something worth bearing in mind. Um
+[00:56:23] some more weekly time frame stuff, and I
+[00:56:24] think this one demonstrates the point uh
+[00:56:27] most pertinently about wanting those
+[00:56:29] closes to be close to the level. Sorry,
+[00:56:32] it's really annoying saying close and
+[00:56:34] close. Uh this is the BNB range low. Um
+[00:56:37] weekly close here, uh um
+[00:56:39] in the direction you want it, but not
+[00:56:40] like, you know, it's not closing up
+[00:56:41] here. It's still like contestable, but
+[00:56:44] significant enough to tell you that
+[00:56:45] support is supporting. You've got a
+[00:56:46] couple of tests later on the week, but
+[00:56:48] in any case, the entry is more or less
+[00:56:49] the same. Uh and then you've got your
+[00:56:51] nice move into resistance. And if you
+[00:56:52] look at the move into resistance, very
+[00:56:53] similar here. Um this is something we're
+[00:56:55] going to talk about, sort of previous
+[00:56:56] week's high and previous week's low, so
+[00:56:58] leave a like on the video if you want to
+[00:56:59] see that video quickly. But more or
+[00:57:01] less, basic premise here as well. Uh you
+[00:57:02] had a weekly close, you know, if you
+[00:57:04] used this as a hard stop, you definitely
+[00:57:05] got shafted on this move. Uh but purely
+[00:57:08] kind of candle structure speaking, uh
+[00:57:10] you're still getting no weekly closes
+[00:57:12] above resistance, so no reason to think
+[00:57:14] uh that the market was going to move
+[00:57:16] higher at that juncture.
+[00:57:18] Um
+[00:57:19] And a good one on Avax as well.
+[00:57:22] The kind of two levels come to mind. The
+[00:57:24] first is when this range high was
+[00:57:26] finally reclaimed. You know, if you
+[00:57:27] waited for the weekly close above that
+[00:57:29] type of structure, yes, it did come back
+[00:57:31] and retest the level a little bit, but
+[00:57:32] in any case, not not huge difference
+[00:57:34] between this weekly close entry and the
+[00:57:36] wick entry. Both ideas are more or less
+[00:57:38] the same and you got nice continuation
+[00:57:40] there.
+[00:57:41] And very similar to the downside,
+[00:57:42] actually, once the market closed below
+[00:57:45] this range low,
+[00:57:47] and you know, that point things were
+[00:57:48] looking pretty bad as well. Uh you got a
+[00:57:50] very straightforward continuation signal
+[00:57:53] um to the downside. So, purely on a
+[00:57:55] swing trading thing, if you're like,
+[00:57:56] this is a big level, close above it
+[00:57:57] long. This is a big level, close below
+[00:57:59] it short. Uh it may not feel comfortable
+[00:58:01] at the time cuz you're not like exactly
+[00:58:03] sniping the market or doing whatever
+[00:58:04] else, but for higher time frame uh swing
+[00:58:07] stuff, it certainly can be useful. I
+[00:58:09] don't know what this Ragnarok Ragnarok
+[00:58:11] playthrough is doing. Let's just close
+[00:58:12] it. Sorry about that. Uh so, let's look
+[00:58:15] at some pros and cons now.
+[00:58:17] So,
+[00:58:18] the first one should be self-evident is
+[00:58:20] that these things are generally easy to
+[00:58:21] identify. Um
+[00:58:22] not all the time and that's, you know,
+[00:58:24] it may seem somewhat contradictory, but
+[00:58:26] the good ones are generally easy to
+[00:58:27] identify. Although, sometimes the closes
+[00:58:29] can be ambiguous. If they are ambiguous,
+[00:58:31] just look at other entry triggers or
+[00:58:32] look at lower time frames or do
+[00:58:33] something else. Uh but the good ones are
+[00:58:35] generally easy to identify. Uh the
+[00:58:37] second pro is that they're they're easy
+[00:58:38] to backtest and even automate to some
+[00:58:41] extent. So, as far as getting data for
+[00:58:43] your trading journal across like all
+[00:58:45] time frames or testing strategies, uh
+[00:58:47] candle close stuff works pretty well and
+[00:58:49] is pretty easy to do in that regard. And
+[00:58:51] one of the main benefits that I
+[00:58:53] mentioned is that it avoids a lot of the
+[00:58:54] low time frame noise when high time
+[00:58:55] frame swing trading, which is really
+[00:58:57] important. Uh the cons are as follows.
+[00:58:59] The closes can sometimes be ambiguous.
+[00:59:01] So, you know, at that point you just
+[00:59:03] have to look at price action as I said
+[00:59:04] on other time frames or employ other
+[00:59:05] tools.
+[00:59:06] Um
+[00:59:07] on a sufficiently high time frame,
+[00:59:09] candle close signals can be very late or
+[00:59:11] trigger once the move is done. So,
+[00:59:13] sometimes, you know, if you're waiting
+[00:59:14] for a quote-unquote confirmation with
+[00:59:16] the candle close and by the time you get
+[00:59:17] the close, the market's up like 20, 30,
+[00:59:19] 50% or down as much, uh there really
+[00:59:21] isn't a lot left to capture. So,
+[00:59:23] contextually again, it's the same
+[00:59:25] trade-off, right? If you want more
+[00:59:26] confirmation, you get worse prices. And
+[00:59:28] sometimes those prices are so bad, or I
+[00:59:30] should say so displaced, that the
+[00:59:32] original trade idea is no longer tenable
+[00:59:34] or valid. That's always a tradeoff that
+[00:59:36] should be
+[00:59:37] on the forefront of your mind. What
+[00:59:39] price am I paying for this confirmation
+[00:59:41] if I'm waiting for confirmation?
+[00:59:43] Um
+[00:59:44] And the last one, of course, yeah, I
+[00:59:45] mean, that's sort of implied. By the
+[00:59:46] time the candle closes, the risk-reward
+[00:59:48] may be greatly reduced or the trade is
+[00:59:49] done or is somewhat unavailable. And
+[00:59:51] this issue crops up especially in like
+[00:59:53] high timeframe swing trading and
+[00:59:55] breakout trading. Or if you're going to
+[00:59:56] say, "I'm going to wait for the weekly
+[00:59:57] close." And the weekly close is up like
+[00:59:58] 50%. You know, that there still could be
+[01:00:00] something there, depending on the
+[01:00:01] context. But especially on those higher
+[01:00:04] timeframes, it's probably a good idea to
+[01:00:05] have faster moving signals as well
+[01:00:08] to to let you get on board even if the
+[01:00:11] close itself
+[01:00:12] makes it too late.
+[01:00:14] Recommended context, as we sort of
+[01:00:15] covered at the beginning, reducing noise
+[01:00:17] in high timeframe swing trading is like
+[01:00:18] 95% of it. And then clear momentum plays
+[01:00:21] as well, uh
+[01:00:23] not too dissimilar from the first point.
+[01:00:26] Entry trigger six, low timeframe
+[01:00:27] fractal. Uh shoutout to my friend Trader
+[01:00:30] Mayne, m a y n e. Go watch his
+[01:00:33] YouTube channel,
+[01:00:35] Twitch, TikTok, whatever stuff. This is
+[01:00:37] basically his entire trading system,
+[01:00:39] where he's got like actually the on the
+[01:00:41] Technical Roundup channel, I did an
+[01:00:42] interview with him where he explains his
+[01:00:44] entire trading system. And this is
+[01:00:46] basically what he does.
+[01:00:48] Um I used to trade in this fashion a bit
+[01:00:49] more again in 2018, 2019, less so now.
+[01:00:52] Uh but it is very popular and worth
+[01:00:53] being aware of how to use these things.
+[01:00:54] And I'll still kind of jump into the
+[01:00:56] weeds from time to time on lower
+[01:00:57] timeframes in a similar fashion.
+[01:00:59] But the definition here is buying or
+[01:01:01] selling using market and or limit orders
+[01:01:03] once price has formed a lower timeframe
+[01:01:06] buy or sell setup within a higher
+[01:01:08] timeframe area. So this is the classic
+[01:01:10] top-down approach and there's sort of a
+[01:01:12] small variation on the break in
+[01:01:13] structure entry trigger. Um and let's go
+[01:01:16] over the basic outline first. We'll kind
+[01:01:17] of do some doodles on TradingView and
+[01:01:19] then go over the pros and cons. So the
+[01:01:20] basic outline is as follows.
+[01:01:22] You identify a higher time frame area to
+[01:01:24] do business. This could just be a higher
+[01:01:25] time frame level or a lot of the time
+[01:01:27] this system is particularly useful is if
+[01:01:30] you're dealing with a broader higher
+[01:01:31] time frame zone. So, if you're dealing
+[01:01:33] with like a 5, 10, 15% price range on
+[01:01:36] like a much higher time frame like an
+[01:01:37] area to do business, this approach
+[01:01:39] really helps you refine and narrow that
+[01:01:41] down in order to make it more tradable
+[01:01:43] cuz no one no one wants to trade a 15%
+[01:01:45] range, right? That's a lot of drawdown
+[01:01:46] just from one side of the range to the
+[01:01:47] other. So, this is a way of kind of
+[01:01:49] being more precise with it and
+[01:01:52] making it more practical.
+[01:01:54] You wait for price to reach said area,
+[01:01:56] that high time frame zone. Then you go
+[01:01:58] down to a lower time frame or typically
+[01:02:00] again as stated of the execution time
+[01:02:01] frame which could be from the 5-minute
+[01:02:03] to the hourly or whatever else. And you
+[01:02:05] wait for a lower time frame setup to
+[01:02:07] form within the higher time frame
+[01:02:09] structure and then you execute. So,
+[01:02:11] let's go over an example.
+[01:02:13] Um
+[01:02:14] Let's say we have a weekly area.
+[01:02:16] Right?
+[01:02:17] Let's say we have a weekly zone here.
+[01:02:20] Uh and this is what it looks like on the
+[01:02:21] weekly time frame. Now, you might you
+[01:02:23] know, if you measure this out, this
+[01:02:25] might be like a I don't know, like a 5,
+[01:02:26] 10% range, whatever it may be. And you
+[01:02:28] want a bit more precision rather than
+[01:02:30] trading a 5, 10% range. Now, what you
+[01:02:32] typically do is if you then go down to
+[01:02:34] the 5-minute, what will normally happen
+[01:02:36] is that same weekly box actually looks
+[01:02:39] way bigger, right? Cuz you have the same
+[01:02:41] range on a smaller time frame, the
+[01:02:43] entire zone gets
+[01:02:45] larger. And then the question becomes,
+[01:02:46] well, I don't want to trade this whole
+[01:02:47] thing. How do I pick an entry? Which
+[01:02:49] part of this do I trade? Where do I get
+[01:02:52] an entry trigger? And and the answer is
+[01:02:53] you basically wait for low time frame
+[01:02:55] setups to form anywhere within the
+[01:02:58] higher time frame zone and you execute
+[01:03:00] on those lower time frames knowing that
+[01:03:02] you've got kind of high time frame
+[01:03:03] confluence because of where you're doing
+[01:03:05] business. So, for example,
+[01:03:07] let's say this is an area of resistance
+[01:03:09] and one of the patterns you trade is a
+[01:03:11] classic
+[01:03:13] overthrow or deviation or failed
+[01:03:15] breakout type of thing, right? Something
+[01:03:17] like this, where you're looking to sell
+[01:03:19] the right shoulder or, you know, the the
+[01:03:21] original the reclaim of resistance,
+[01:03:22] whatever it may be. So, now again to
+[01:03:24] recap what we've done, this is a weekly
+[01:03:26] level, right? This is like our weekly
+[01:03:27] box here.
+[01:03:29] We've gone down to a lower time frame,
+[01:03:31] which made the box bigger, and now we're
+[01:03:33] looking for lower time frame setups
+[01:03:35] within a higher time frame area. And
+[01:03:37] then as the market comes into it, you're
+[01:03:38] waiting, you're waiting, you know, it's
+[01:03:40] doing whatever, it's low time frame
+[01:03:41] price action in a high time frame area,
+[01:03:43] and then you see
+[01:03:45] something you see your setup. You see
+[01:03:47] this.
+[01:03:49] Right? You see this trigger. And you're
+[01:03:50] thinking, "Ah, Okay. Now that's my
+[01:03:53] entry trigger." Whereas before you were
+[01:03:54] like, "Where do I sell? Do I sell this?
+[01:03:56] Do I sell this? Do I sell this? Do I
+[01:03:59] scale in the whole thing and just leave
+[01:04:01] limit sell orders throughout the entire
+[01:04:02] structure?" The answer is no. The answer
+[01:04:04] is you wait for a setup that's formed
+[01:04:06] contextually, while yes on lower time
+[01:04:08] frames within a higher time frame zone,
+[01:04:10] and it's the setup it's the low time
+[01:04:12] frame setup that ends up being the
+[01:04:13] trigger for the larger idea. So, if this
+[01:04:15] is one of the setups that you trade, as
+[01:04:17] soon as you see that form again within
+[01:04:20] the boundaries of where you expect
+[01:04:22] resistance in one form or another, that
+[01:04:24] ends up being your entry trigger with
+[01:04:26] the built-in invalidation. And then in
+[01:04:29] doing so, you've managed to narrow down
+[01:04:31] this entire range into a specific entry,
+[01:04:34] a clear invalidation, and then you have
+[01:04:35] the benefit of swing trading to a larger
+[01:04:37] target cuz you're not just expecting an
+[01:04:39] intraday move from one side of the range
+[01:04:41] to the other or whatever else. Remember,
+[01:04:42] this is our weekly structure, so we're
+[01:04:44] expecting it to go down to some other
+[01:04:46] level of resistance, right?
+[01:04:49] Hopefully that makes sense.
+[01:04:50] Now,
+[01:04:52] what's the balancing act here? So, the
+[01:04:54] pros is that you get to balance if you
+[01:04:57] manage to balance low time frame entries
+[01:04:59] in higher time frame areas, they can
+[01:05:00] give you really tight invalidations. So,
+[01:05:03] instead of you know, if you've got like
+[01:05:03] a 10% weekly block range, whatever it
+[01:05:06] is, instead of going spray and pray on
+[01:05:08] the entire 10% and just laddering limit
+[01:05:10] orders or praying, you know, selling the
+[01:05:13] bottom of the range and you have to eat
+[01:05:14] a 10% drawdown because it goes to the
+[01:05:15] top of the range or whatever it is, you
+[01:05:17] give yourself a more precise entry and a
+[01:05:19] more precise invalidation. So, that's
+[01:05:20] always really good. And again, you you
+[01:05:22] have like you you have a low time frame
+[01:05:24] entry for a high time frame swing trade.
+[01:05:26] So, the risk reward for that stuff ends
+[01:05:28] up going up you know, ends up increasing
+[01:05:29] exponentially. And that's sort of the
+[01:05:31] second point, front running myself as
+[01:05:32] usual, it can increase the risk reward
+[01:05:35] and narrow down entries when dealing
+[01:05:37] with wider areas. Like you'll see a lot
+[01:05:39] of analysis on Twitter
+[01:05:40] which is completely reasonable. You
+[01:05:42] know, they'll they'll draw out like a
+[01:05:43] like a larger weekly area somewhere.
+[01:05:46] Um, you know, let's let's do some random
+[01:05:48] stuff.
+[01:05:50] Let's say let's say they've delineated
+[01:05:53] on the on the weekly time frame this
+[01:05:54] consolidation here, right? As some as
+[01:05:57] some mega meltdown support between 420
+[01:06:00] and you know, 470.
+[01:06:03] And the question becomes well, where
+[01:06:04] within this range do I buy? Or even if
+[01:06:05] we take this little cluster
+[01:06:07] consolidation here,
+[01:06:09] right? I think this is a good example
+[01:06:10] actually cuz this is one that I was
+[01:06:12] looking at at the time. This sort of 2
+[01:06:14] to 300s level, this entire pre-breakout
+[01:06:16] cluster. And then the question is, you
+[01:06:18] know, if you're going to treat this as
+[01:06:19] resistance as the market comes back into
+[01:06:20] it, where in that consolidation do you
+[01:06:23] do business? Cuz if we measure the size
+[01:06:25] of this consolidation
+[01:06:27] as the market's coming into it, you're
+[01:06:28] like, oh, this is resistance. Like which
+[01:06:30] part of it, bro? This is a 20% box,
+[01:06:33] right? It's a 20% box. How on earth am I
+[01:06:34] supposed to know where to sell it? The
+[01:06:36] answer becomes well, brother, you go
+[01:06:38] down on the lower time frames, like your
+[01:06:40] daily or even your 4-hour or whatever
+[01:06:42] else, and then you find setups on the
+[01:06:45] daily or the intraday within this area
+[01:06:47] that allow you to define your risk in a
+[01:06:49] more narrow way. So, you don't have to
+[01:06:51] figure out you don't have to sell the
+[01:06:52] whole box or treat the whole thing as
+[01:06:54] resistance, you simply wait until you
+[01:06:56] get a lower time frame setup, and then
+[01:06:57] the lower time frame setup dictates your
+[01:07:00] entry and your invalidation, and then
+[01:07:02] you still have the benefit of trading it
+[01:07:04] to higher time frame targets. Hopefully,
+[01:07:06] that makes sense.
+[01:07:10] Uh there are obviously cons to this. The
+[01:07:11] first is difficult to do in practice.
+[01:07:13] It's the same issue of having a large
+[01:07:15] signal, or sorry, in this case, a low
+[01:07:16] signal-to-noise ratio. If you're staring
+[01:07:19] at low time frames at high time frame
+[01:07:20] structures. Again, I've got a video
+[01:07:22] coming on top-down analysis so that you
+[01:07:24] get your time frames right. There is
+[01:07:26] also a time frames video on the channel,
+[01:07:27] so but leave a like if you want to see
+[01:07:29] the top-down analysis video come out
+[01:07:30] soon. The basic idea is if you're going
+[01:07:32] to mix and match time frames, you need
+[01:07:33] to be somewhat reasonable with it. So,
+[01:07:35] if you if you're trading monthly levels,
+[01:07:37] maybe just look at the weekly time frame
+[01:07:38] for your setups and not the 5-minute. If
+[01:07:40] you're trading weekly setups, maybe just
+[01:07:42] look at the daily or the 3-day time
+[01:07:44] frame or the 12-hour or whatever for
+[01:07:46] your setups instead of the 1-minute. If
+[01:07:48] you're trading the 4-hour chart, maybe
+[01:07:50] look at your 15-minute to 1-hour instead
+[01:07:52] of a tick chart and so on and so forth.
+[01:07:54] There needs to be some sense of
+[01:07:55] proportionality
+[01:07:57] uh between the time frame that you're
+[01:07:59] using to generate the trade idea and
+[01:08:02] then your execution time frame. If
+[01:08:03] they're if they're too disparate and too
+[01:08:05] wide apart, then you just end up getting
+[01:08:07] lost in the noise and that's not good
+[01:08:08] for anyone. Um
+[01:08:11] And yes, it also has the same issue as
+[01:08:13] some of the other techniques where some
+[01:08:14] you know, a lot a lot of the time good
+[01:08:15] setups will just play out way too
+[01:08:16] quickly. And if you're waiting for setup
+[01:08:18] to form and a bunch of price action to
+[01:08:20] unfold and so on and so forth, sometimes
+[01:08:22] the market will just smack the level and
+[01:08:23] reverse and you're none the wiser for
+[01:08:25] it. Uh recommended contacts, I said look
+[01:08:27] at Trade the Mains stuff, Trader AZ does
+[01:08:28] this well, Trader XO, all your normal
+[01:08:30] price action blokes uh
+[01:08:32] take this pretty seriously and have a
+[01:08:34] lot of content and resources around it,
+[01:08:35] so check it out. Uh but the yes, finding
+[01:08:38] more precise entries in a wide wider
+[01:08:39] high time frame area is the main benefit
+[01:08:41] of this type of entry trigger.
+[01:08:45] There are some nuances I want to cover.
+[01:08:48] The first is that these categories are
+[01:08:49] not mutually exclusive. So, for example,
+[01:08:51] you might have if we take the extremes,
+[01:08:54] let's say a deviation setup and a limit
+[01:08:55] order setup, right?
+[01:08:58] Let's quickly draw this out. They're not
+[01:09:01] mutually exclusive. So, you might, for
+[01:09:03] example,
+[01:09:05] as we discussed, get a deviation type of
+[01:09:08] setup where the market comes in and
+[01:09:09] reclaim support, and then you leave a
+[01:09:12] limit order at the then deviated level,
+[01:09:15] right? And the market comes in,
+[01:09:17] hopefully you get filled, the market
+[01:09:18] goes up. You can also mix and match.
+[01:09:19] Again, the example we use is where if
+[01:09:21] you get a deviation setup, you may wish
+[01:09:23] to open some of the position with a
+[01:09:24] market order as soon as the deviation is
+[01:09:26] confirmed, and then you leave a little
+[01:09:27] bit on the limit order side of it if the
+[01:09:30] market comes back to the original level,
+[01:09:31] and it gives you a better average price.
+[01:09:34] The invalidation is the same, and the
+[01:09:36] idea is the same, just with a higher
+[01:09:37] likelihood of getting some fills or
+[01:09:39] whatever else.
+[01:09:40] Um so, when it comes to these entry
+[01:09:43] triggers, it's not like you only have to
+[01:09:44] use one or it's one per setup or they're
+[01:09:46] somehow contradictory.
+[01:09:47] You can mix and match and use both, use
+[01:09:49] neither. You can jump from one to the
+[01:09:51] other, right? So, for example,
+[01:09:53] let's say you have a limit order idea,
+[01:09:55] and the market comes in and just
+[01:09:57] completely craps through your level, and
+[01:09:59] you get stopped out, but then eventually
+[01:10:01] it turns into a deviation, right? And
+[01:10:02] you maybe you can limit buy the same
+[01:10:04] level again, or maybe market order as
+[01:10:06] soon as it reclaims, and it goes up. So,
+[01:10:08] even though you went for a limit order
+[01:10:09] entry trigger here,
+[01:10:11] you end up going for a market entry
+[01:10:13] here, even though it's largely the same
+[01:10:15] trade idea. So, it's not like you you're
+[01:10:17] sort of bound to use one, or the fact
+[01:10:19] that one got stopped out means you can't
+[01:10:20] use another entry trigger. Different
+[01:10:22] conditions, contexts, and setups will
+[01:10:24] likely require slightly different entry
+[01:10:25] triggers. Not a one-size-fits-all, and
+[01:10:27] this is something again to
+[01:10:29] learn from your trading journal to some
+[01:10:30] extent, experience, observations, and so
+[01:10:32] forth. I will say on the experience
+[01:10:34] front, beginners should lean towards
+[01:10:35] simpler techniques first, cuz you don't
+[01:10:37] have the experience and the discretion
+[01:10:39] to do all this low time frame
+[01:10:42] stuff and the nuances involved there. I
+[01:10:44] would say start with the simple stuff,
+[01:10:45] like mostly just the limit order
+[01:10:47] strategies if anything, or the candle
+[01:10:48] close strategies, and then refine as
+[01:10:51] necessary from observation and study of
+[01:10:53] your trading journals and other tools to
+[01:10:54] reflect on what the what on earth you're
+[01:10:56] actually doing. I would say don't use
+[01:10:59] entry triggers as a precursor for
+[01:11:00] cowardice. I I just see this a lot
+[01:11:02] nowadays uh that people are trying to
+[01:11:04] avoid taking risks. Like, "Oh, if you
+[01:11:06] look at if it confirms, I'll do this. If
+[01:11:07] it confirms, I'll do that." It's like
+[01:11:09] there's no such thing as a free lunch,
+[01:11:10] you know? There's always a price to pay
+[01:11:11] for confirmation, and you end up kind of
+[01:11:13] narrowing the band of trades and the
+[01:11:15] parameters of those trades you can, you
+[01:11:17] know, that are available to you by by
+[01:11:18] quite a fair bit. Uh you know, the
+[01:11:20] market pays you to take risk. Uh the
+[01:11:22] uncertainty is the whole name of the
+[01:11:23] game, so be wary of anything that just
+[01:11:25] makes it sound like you can't lose. Uh
+[01:11:27] you know, if true confirmation existed
+[01:11:29] with no downsides, no one would ever
+[01:11:30] lose money, and people obviously do. So,
+[01:11:32] that that's something worth bearing in
+[01:11:34] mind as well. And it's again the same
+[01:11:35] sliding scale I alluded to earlier. Less
+[01:11:37] confirmation generally means a better
+[01:11:38] entry, more confirmation generally means
+[01:11:40] a worse entry, which is fine, but it's
+[01:11:42] just a calculation you have to be aware
+[01:11:44] of uh and make sense of uh depending on,
+[01:11:47] you know, the sides of the move, how
+[01:11:48] much is there left to catch, the
+[01:11:49] relative risk to reward, so on and so
+[01:11:51] forth.
+[01:11:52] Some trades will require you to mix and
+[01:11:54] match.
+[01:11:55] Again, we went over the example where
+[01:11:56] you have like a sell like gets
+[01:11:57] invalidated, and then it turns into a
+[01:11:59] deviation. And you you can take more
+[01:12:01] than one trade and more than one entry
+[01:12:02] trigger at the same structure, you know?
+[01:12:03] There are no rules against that that I'm
+[01:12:05] aware of. Uh and the last thing I'll say
+[01:12:06] on entry triggers is this is the very
+[01:12:08] core of trading. It's how you execute.
+[01:12:10] Like, this is very serious business. As
+[01:12:11] much as we love squiggling on charts and
+[01:12:13] entry techniques and looking smart, at
+[01:12:14] the end of the day you have to get in
+[01:12:15] and out of the market uh and bring your
+[01:12:17] plans and your squiggles into fruition.
+[01:12:20] And that's what entry triggers, you
+[01:12:22] know, that's what this entire topic is
+[01:12:23] about. Take it seriously. Study it, give
+[01:12:25] it time, experiment with it, uh and it's
+[01:12:28] much more likely to be the source of
+[01:12:29] edge than how you draw your lines or
+[01:12:31] where you draw your boxes.
+[01:12:33] That's it. Conclusion. Thanks for
+[01:12:35] watching. Uh if you're enjoying the
+[01:12:37] rapid onset of the technical analysis
+[01:12:39] series, let's get a bunch of likes on
+[01:12:40] this video, and then I'll gauge, you
+[01:12:42] know, going by the response, I'll see
+[01:12:44] how quickly I have to get these out. Um
+[01:12:46] hope you enjoyed them. Thank you for
+[01:12:47] sticking by the series for so long. Uh
+[01:12:49] leave any comments and questions, I'll
+[01:12:51] try to get back to you. And yeah, any
+[01:12:53] any feedback and sharing and all the
+[01:12:55] normal stuff is much appreciated. Hope
+[01:12:56] everyone's doing okay, and I'll see you
+[01:12:58] much sooner rather than later for some
+[01:13:00] more stuff. Take care. Thank you.
+[01:13:01] Bye-bye.

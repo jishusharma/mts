@@ -1,0 +1,695 @@
+# Video ID: f9mkEe-Y67A
+# Title: Technical Analysis Series - Pattern Failure
+# Published: 2022-08-13
+# Source: yt_dlp captions (auto); uploader: CryptoCred
+# Analyst: CryptoCred
+# Channel: @CryptoCred
+# Duration_s:1339
+# Word count: 4552
+# ---
+[00:00:01] hello and welcome to another video as
+[00:00:02] part of the technical analysis series
+[00:00:04] today we are discussing pattern failure
+[00:00:08] here's the outline for today's video
+[00:00:09] disclaimer first and foremost and then
+[00:00:11] quite simple table of contents we'll go
+[00:00:14] into pattern trading logic what it means
+[00:00:16] and what the central premise of pattern
+[00:00:18] trading is in general
+[00:00:19] we'll go over pattern failure logic
+[00:00:22] that is how to come up with good trade
+[00:00:24] ideas when pattern traders fail we'll
+[00:00:27] look at some examples of pattern failure
+[00:00:29] cover some nuances and then conclude
+[00:00:32] before we get going i just wanted to
+[00:00:33] express my thank you very quickly for
+[00:00:35] the literally years of support on this
+[00:00:37] series i think 2017 or 2018 was the
+[00:00:39] first video we've built out quite a
+[00:00:41] knowledge base and your support
+[00:00:43] throughout all these years despite a
+[00:00:44] lack of consistency is very much
+[00:00:46] appreciated i hope you're still finding
+[00:00:48] value in these videos the updates and i
+[00:00:50] appreciate all the likes subscriptions
+[00:00:52] comments feedback engagement and all of
+[00:00:54] that thank you and i hope this continues
+[00:00:55] to be a useful resource for you and
+[00:00:57] something to share with people who care
+[00:00:59] about trading
+[00:01:00] so disclaimer first and foremost again
+[00:01:02] pause the video if you must i'm an idiot
+[00:01:04] i don't know anything this is for fun
+[00:01:05] this is satire comedy entertainment
+[00:01:08] performance art at best i don't know
+[00:01:10] what i'm doing
+[00:01:13] so pattern trading logic
+[00:01:14] and i think this is gonna be one of the
+[00:01:15] more useful videos in general because
+[00:01:17] it's not
+[00:01:18] specifically tied to one particular part
+[00:01:20] of trading i think it's just a useful
+[00:01:22] way to think about the market in general
+[00:01:24] regardless of what system you use to
+[00:01:26] generate signals
+[00:01:27] so with pattern training logic if we
+[00:01:28] take a step back and think about trading
+[00:01:30] logic in general and sort of reverse
+[00:01:32] engineer how one might come up with
+[00:01:34] ideas we're left with three basic steps
+[00:01:36] and this might be even a useful
+[00:01:37] framework if you don't have a way of
+[00:01:38] thinking about how you approach the
+[00:01:40] market and those are the three these are
+[00:01:42] following three steps the first is
+[00:01:44] what's the thesis or idea sort of what
+[00:01:46] do i think the market is going to do
+[00:01:49] usually this is directional but not
+[00:01:50] necessarily the second one is once you
+[00:01:53] have an idea for the market or a thesis
+[00:01:55] uh what's the what are the entry
+[00:01:56] parameters for that thesis or the entry
+[00:01:58] trigger what is the
+[00:02:00] mechanism by which you actually take
+[00:02:02] that idea and put it into action and
+[00:02:04] decide to actually put some risk on the
+[00:02:05] trade and then the third one is
+[00:02:07] regarding invalidation stop loss risk
+[00:02:09] management whatever those are the exit
+[00:02:11] parameters for that trade or where is
+[00:02:13] this idea wrong
+[00:02:15] now in general when it comes to patent
+[00:02:17] trading logic the first and most basic
+[00:02:19] premise is that traders observe patterns
+[00:02:21] now as mentioned the term patterns is
+[00:02:23] used in a very very broad sense
+[00:02:25] now in general patterns can generate
+[00:02:27] trade signals so traders will spot these
+[00:02:30] patterns
+[00:02:31] which are some form of repeatable
+[00:02:33] replicable signals in the market they're
+[00:02:35] identifiable
+[00:02:37] and these patterns can generate signals
+[00:02:39] which is to say create positioning based
+[00:02:41] on those patterns could be longs could
+[00:02:43] be shorts could be a view on volatility
+[00:02:45] whatever it may be now as mentioned
+[00:02:47] pattern is broadly defined you have
+[00:02:49] chart patterns which is your usual ta
+[00:02:50] triangle wedges whatever else you have
+[00:02:53] price patterns your swing failure
+[00:02:55] patterns specific candlestick structures
+[00:02:57] whatever it may be you have structural
+[00:02:59] patterns again fairly ta-oriented to
+[00:03:01] nobody's surprise but these are sort of
+[00:03:03] horizontal breaks diagonal breaks and
+[00:03:05] shifts in structure
+[00:03:07] and then also you have indicator
+[00:03:08] generated signals uh your momentum
+[00:03:10] divergences your moving average
+[00:03:12] crossovers and whatever else you may use
+[00:03:14] even on chain stuff is valid here
+[00:03:16] now the core premise of pattern trading
+[00:03:17] i kind of touched on this earlier is
+[00:03:19] that similar patterns will resolve in a
+[00:03:21] similar fashion it's their repeatability
+[00:03:23] and replicability that makes them a
+[00:03:25] source for trade ideas when it comes to
+[00:03:28] speculation
+[00:03:29] and this and these properties that i
+[00:03:30] just described create a lot of
+[00:03:32] positioning based around patterns
+[00:03:34] because they are easy to identify and
+[00:03:36] they repeat themselves traders back test
+[00:03:38] them study them and as a result end up
+[00:03:40] acting on them and a lot of the time
+[00:03:42] depending on the pattern
+[00:03:43] these features create built-in
+[00:03:45] parameters for trading specific patterns
+[00:03:47] that is to say trading rules pertaining
+[00:03:49] to those specific patterns take a shot
+[00:03:52] every time i say pattern in this video
+[00:03:54] if you want to die of liver cirrhosis so
+[00:03:56] when it comes to examples here are some
+[00:03:57] basic ones i won't need to give you
+[00:03:59] chart examples at this point hopefully
+[00:04:01] but we will cover some later if you take
+[00:04:02] a standard head and shoulders top
+[00:04:04] pattern you'll know that the cell is
+[00:04:06] triggered on the breach of the right
+[00:04:07] shoulder and the target is derived from
+[00:04:09] the distance between the sort of head
+[00:04:12] and the neckline again somewhat
+[00:04:13] arbitrary but you know if we take our
+[00:04:15] standard sort of head and shoulders type
+[00:04:17] of construction right shoulder head sort
+[00:04:20] of left shoulder this ends up being your
+[00:04:22] neckline and when the neckline is
+[00:04:24] breached that generally and when it
+[00:04:26] comes to classical charting is your
+[00:04:28] signal to sell although i don't think
+[00:04:29] this is a particularly good setup on
+[00:04:31] average and then in terms of target um
+[00:04:34] classical chartists will measure from
+[00:04:36] the head to the neckline whatever
+[00:04:37] distance this is as their target and the
+[00:04:39] invalidation tends to be above the right
+[00:04:42] shoulder again not the best trade setup
+[00:04:44] in the world but as we'll discuss it
+[00:04:46] doesn't have to be the best trade setup
+[00:04:47] in order for it to generate good signals
+[00:04:50] now again more examples your classic
+[00:04:52] triangle type of structure as i'm sure
+[00:04:54] you've all seen before when the market
+[00:04:55] is in some form of consolidation and the
+[00:04:58] market breaks out of one of the
+[00:05:00] boundaries let's say it's the upper
+[00:05:02] boundary in this triangle's case the buy
+[00:05:04] in this case is triggered on the close
+[00:05:06] above the consolidation structure the
+[00:05:08] invalidation would be the a move back
+[00:05:10] within it and the target again is
+[00:05:12] usually kind of the widest part of the
+[00:05:14] pattern to give you some idea of where
+[00:05:16] the market might go now again this isn't
+[00:05:17] the best way to trade i don't think it's
+[00:05:19] even a particularly good way to trade
+[00:05:20] but it's important to understand the
+[00:05:22] types of structures in the market that
+[00:05:23] will get traders involved and it's those
+[00:05:26] traders involvement which is so
+[00:05:27] important for pattern failure now the
+[00:05:29] last two examples are very flexible and
+[00:05:31] very malleable your basic support
+[00:05:33] resistance type of stuff so a break of
+[00:05:35] support will usually generate bearish
+[00:05:37] signals that is to say you've got a
+[00:05:38] level of let's say horizontal support
+[00:05:39] here when that is broken uh market
+[00:05:42] participants will see that as a break of
+[00:05:43] support and that may generate a sell
+[00:05:45] signal and vice versa for resistance or
+[00:05:47] break above resistance may generate a
+[00:05:49] long signal again the cool thing to wrap
+[00:05:51] your mind around here is that markets
+[00:05:53] will do similar things traders will look
+[00:05:56] at and study those similar things and
+[00:05:59] act similarly around those patterns and
+[00:06:02] it's this repeated behavior specifically
+[00:06:04] when it fails that we want to zero in on
+[00:06:06] and take advantage of the herd to some
+[00:06:08] extent or at least mass positioning
+[00:06:10] based on the same pattern uh getting
+[00:06:12] invalidated because it is there in
+[00:06:14] validation that gives us good trades and
+[00:06:17] we're sort of getting into the next
+[00:06:18] slide here which is pattern failure
+[00:06:20] logic so the core premise of pattern
+[00:06:22] failure uh is twofold the first going
+[00:06:24] back to the previous slide is that
+[00:06:26] pattern formation and identification
+[00:06:28] creates positioning traders will see
+[00:06:30] some of the stuff we discussed and take
+[00:06:31] position
+[00:06:32] based on those features now crucially
+[00:06:36] positioning that is wrong or invalidated
+[00:06:38] will typically act as a fuel for
+[00:06:40] reversal so trader sees a pattern trader
+[00:06:43] acts on a pattern if that trader is
+[00:06:46] wrong they will be forced to close and
+[00:06:47] it's that shift in the market where
+[00:06:49] they've established a position they
+[00:06:51] realize they're wrong and they're forced
+[00:06:52] to close their trades that sort of
+[00:06:54] failure of the setup to materialize is
+[00:06:57] where pattern failure becomes so helpful
+[00:06:59] so let's take a basic example of
+[00:07:01] shorting a break of support
+[00:07:03] right classic let's say horizontal
+[00:07:05] structure and you have
+[00:07:07] support and that support is broken and
+[00:07:10] as we discussed the break of support in
+[00:07:11] itself under many systems will generate
+[00:07:13] a short signal let's look under the hood
+[00:07:16] and consider what might actually go on
+[00:07:17] so looking at these bullet points here
+[00:07:19] the support level breaks as indicated
+[00:07:21] here participants act on that signal and
+[00:07:24] short
+[00:07:24] and then let's say in this case because
+[00:07:26] we're talking about pattern failure the
+[00:07:28] expectation is a break of support is
+[00:07:30] bearish number go down so that failing
+[00:07:32] would be number not going down a number
+[00:07:34] going up instead right some sort of
+[00:07:36] failed breakdown reclaim deviation
+[00:07:38] whatever you want to call it right the
+[00:07:39] market does the pattern doesn't do what
+[00:07:42] it is quote unquote supposed to do right
+[00:07:45] as a result the breakdown doesn't follow
+[00:07:47] through and actually starts going up as
+[00:07:49] i mentioned reclaim failed break
+[00:07:50] whatever you want to call it and
+[00:07:51] crucially that act of the pattern
+[00:07:53] failing failing failing is what causes
+[00:07:57] those traders who shorted it in the
+[00:07:58] first place to make a decision and
+[00:07:59] usually that decision is to close the
+[00:08:02] trade so participants that acted on that
+[00:08:04] signal in this case the short are wrong
+[00:08:06] and are forced to close this is very
+[00:08:09] crucial what does it mean to force to
+[00:08:10] close a position in this context well if
+[00:08:13] we think about it from a market
+[00:08:14] microstructure point of view we know
+[00:08:16] that shorts closing especially if it's
+[00:08:18] done aggressively via market orders
+[00:08:20] become orders to buy so if your short
+[00:08:22] position is you go from zero to minus
+[00:08:24] one and you need to close ie go back to
+[00:08:26] zero you need to go from minus one to
+[00:08:29] zero right so you need to flatten out
+[00:08:30] and therefore buy back your short to go
+[00:08:33] from short to neutral and that act of
+[00:08:36] closing your short when you're wrong
+[00:08:38] becomes in an order to buy and it's
+[00:08:40] typically a market order to buy now we
+[00:08:43] can look even deeper as per this bullet
+[00:08:44] point a lot of the time the market
+[00:08:47] impact of those positions being
+[00:08:48] invalidated tends to be more significant
+[00:08:51] and that's because you have a lot of
+[00:08:52] orders hitting the order book around the
+[00:08:54] same price and in the same direction
+[00:08:56] again this should hearken back to the
+[00:08:58] market micro structure video but a good
+[00:09:00] way to think about it analogically is a
+[00:09:02] lot of people trying to exit through a
+[00:09:03] single narrow door to take rta example
+[00:09:06] you have breakdown sellers enter in more
+[00:09:09] or less the same region i.e on the
+[00:09:11] breakdown region and as the market
+[00:09:13] starts to climb up and invalidate them
+[00:09:15] you have all those same shorts closing
+[00:09:17] more or less around the same area i.e
+[00:09:19] the support level whose breakdown they
+[00:09:21] shorted in the first place so you have a
+[00:09:23] lot of selling interest as the market
+[00:09:24] breaks here and that selling interest
+[00:09:26] turns into buying interest as the idea
+[00:09:29] becomes wrong and crucially that buying
+[00:09:32] interest becomes concentrated more more
+[00:09:34] or less around the same area where the
+[00:09:36] sell signal was generated in the first
+[00:09:38] place so you've got a lot of one-sided
+[00:09:40] kind of demand for liquidity
+[00:09:43] to close those shorts around the same
+[00:09:44] area and as we know from our micro
+[00:09:46] microstructure video if there is a lot
+[00:09:48] of demand for liquidity in one pocket uh
+[00:09:51] that is where you get your aggressive
+[00:09:52] and fast moves a lot of the time right
+[00:09:55] hopefully that makes sense i think if
+[00:09:57] you've watched the market microstructure
+[00:09:58] video before this uh it should be very
+[00:10:00] familiar if not it's it's the basic idea
+[00:10:03] of the market moving when traders are
+[00:10:06] using market orders in the same
+[00:10:07] direction at the same price that's going
+[00:10:09] to have a much larger impact than
+[00:10:11] something a bit more spread out right
+[00:10:13] so taking that example and all the other
+[00:10:15] examples that we'll cover and those that
+[00:10:16] come to mind as per the penultimate
+[00:10:18] bullet point when patterns fail they can
+[00:10:20] generate a signal in the opposite
+[00:10:22] direction and this really speaks to the
+[00:10:24] core of at least my trading system which
+[00:10:26] is that bullish pattern failure is
+[00:10:28] bearish and bearish pattern failure is
+[00:10:31] bullish so you're essentially trading
+[00:10:33] the invalidation of participants to bet
+[00:10:35] on the pattern they got it wrong and
+[00:10:37] they're now forced to close their
+[00:10:39] position in general in trading you're
+[00:10:41] always going to have a good time trading
+[00:10:43] voluntarily where people are trading
+[00:10:45] involuntarily or necessarily because
+[00:10:47] they're being sloppy they're rushing
+[00:10:49] they're happy to pay a premium or a bad
+[00:10:51] price for liquidity and you have the
+[00:10:53] luxury of providing that for them if you
+[00:10:55] will at a much better price and under
+[00:10:58] your discretion
+[00:11:00] hopefully that makes sense
+[00:11:03] so some examples of pattern failure i
+[00:11:06] think for bitcoin dollar and again this
+[00:11:07] works for indicators and chart patterns
+[00:11:09] price patterns whatever else i'll use
+[00:11:12] the examples that i like trading uh
+[00:11:13] specifically failed breakouts and failed
+[00:11:15] breakdowns and there's really no better
+[00:11:17] example on higher time frames than
+[00:11:19] bitcoin's attempted all-time high range
+[00:11:21] high breakout in the 60 thousands right
+[00:11:24] so this is a very important structural
+[00:11:25] area it's the prior all-time high and
+[00:11:27] very clear horizontal range high and you
+[00:11:29] can just see a lot of price action there
+[00:11:30] uh the market broke above it right this
+[00:11:32] sort of sequence here now typically as
+[00:11:35] we know what's the pattern the pattern
+[00:11:37] is a breakout and the breakout is
+[00:11:38] bullish so you're going to have bullish
+[00:11:40] participation and positioning based on
+[00:11:43] the breakout of this horizontal level
+[00:11:44] and those positions are being
+[00:11:45] established here in now
+[00:11:47] pattern failure is when the market does
+[00:11:50] the opposite of what the pattern should
+[00:11:51] do what should a breakout do go up
+[00:11:54] pattern failure is the breakdown not
+[00:11:55] going up but instead failing to break
+[00:11:57] out and in this case the trigger being
+[00:11:59] the close back below the breakout level
+[00:12:02] uh and that's a case of what should have
+[00:12:04] been a bullish pattern the breakout
+[00:12:06] failing becomes a bearish pattern and
+[00:12:07] that was very much the start of the
+[00:12:10] downtrend right and this is just one
+[00:12:12] example of this pattern working
+[00:12:14] horizontally um we've got another
+[00:12:16] example uh the famous now famous or now
+[00:12:18] infamous i should say terra luna failed
+[00:12:20] breakout around the sort of 44 45k
+[00:12:23] handle you can see again a very clear
+[00:12:25] horizontal level of resistance very
+[00:12:26] clear range high the market breaks out
+[00:12:28] of it and it looks very impulsive and
+[00:12:30] again the pattern at its face value is a
+[00:12:32] bullish breakout at this instance
+[00:12:35] the bullish breakout has failed that's
+[00:12:37] bullish pattern failure that's bearish
+[00:12:39] and you can see that was the start of a
+[00:12:41] very strong and very one-sided downtrend
+[00:12:48] now there are some nuances when it comes
+[00:12:50] to pattern failure and again the point
+[00:12:51] of this video isn't the spoon feed you
+[00:12:53] set ups it's more to get you thinking
+[00:12:55] about setups in the market in general as
+[00:12:57] well as your own setups i'm sure you've
+[00:12:59] noticed in the past especially if you're
+[00:13:00] someone that uses a trading journal that
+[00:13:02] you may have invalidated you've been
+[00:13:04] invalidated on the long setup and then
+[00:13:06] you know the market takes you out and
+[00:13:07] then completely reverses in the other
+[00:13:09] direction or vice versa right so
+[00:13:11] as long as your signals and your setups
+[00:13:14] are good when they fail that's not
+[00:13:16] always just a write-off to variance or
+[00:13:17] too bad whatever it sucks a lot of the
+[00:13:19] time you can derive useful signal from
+[00:13:22] pattern failure or good setups failing
+[00:13:25] right now in general some nuances to
+[00:13:27] make this make more sense uh the
+[00:13:29] following so the first is that the
+[00:13:31] clearer the pattern the better the setup
+[00:13:32] because the idea is that you're going to
+[00:13:34] get a lot of participation and similar
+[00:13:37] participation around the same pattern so
+[00:13:39] if something's clearer and more easily
+[00:13:41] identifiable you're going to get more
+[00:13:43] participation around that level be it
+[00:13:45] from just the setup working on its own
+[00:13:47] or more helpfully for our
+[00:13:49] use case is that very clear setup
+[00:13:52] failing to play out like a lot of those
+[00:13:53] breakouts that we mentioned they just
+[00:13:55] looked really good and that's and
+[00:13:57] therefore if they start looking really
+[00:13:58] bad everyone that thought they looked
+[00:14:00] really good they're going to eat a lot
+[00:14:01] of and it's those patterned traders
+[00:14:03] eating that acts as the edge or the
+[00:14:06] source for pattern failure setups and
+[00:14:09] again the second point is some you know
+[00:14:11] re-articulation of the first that the
+[00:14:13] better the level the more reliable the
+[00:14:15] pattern and it comes down to the same
+[00:14:17] thing that very clear levels will get
+[00:14:19] more participation and it's when a lot
+[00:14:21] of participation is offside when pattern
+[00:14:23] failure setups work best
+[00:14:25] there are some trend considerations when
+[00:14:27] thinking about pattern failure one thing
+[00:14:29] i like to do is to look for pattern
+[00:14:30] failure that aligns at the trend you're
+[00:14:32] trading if there is one for confluence
+[00:14:34] so in an uptrend i want to see bearish
+[00:14:36] pattern failure for continuation in a
+[00:14:38] downtrend i want to see bullish pattern
+[00:14:40] failure for continuation right so in the
+[00:14:42] uptrend context i want to see sellers
+[00:14:43] really step in and get trapped and i
+[00:14:46] already have the trend on my side and
+[00:14:48] then i've got extra fuel of bears being
+[00:14:49] trapped and that's how you get your high
+[00:14:51] probability set up and it works the
+[00:14:52] other way around for downtrend as well
+[00:14:54] it kind of acts as an extra boost for a
+[00:14:56] trade you have trapped participants
+[00:14:58] boosting a trend that's already there
+[00:15:01] now you can also consider using other
+[00:15:03] tools to get a sense of the level of
+[00:15:04] participation at the pattern or at the
+[00:15:06] level or at the structure some that come
+[00:15:08] to mind and maybe separate videos on
+[00:15:09] these later is you can look at a
+[00:15:11] footprint to see that the market to see
+[00:15:12] the amount of market buying selling or
+[00:15:14] delta and its relative impact at those
+[00:15:16] breakdown or breakout points you can see
+[00:15:18] changes in open interest to see how much
+[00:15:20] fresh positioning has been generated by
+[00:15:22] that pattern and you can also just look
+[00:15:24] at volume uh for a bit of simple
+[00:15:26] analysis there but all of these things
+[00:15:28] are pointing to the same thing we want
+[00:15:29] to see a large amount of participation
+[00:15:31] at the pattern because all that large
+[00:15:33] participation is going to have to close
+[00:15:35] if they're wrong and that's when we want
+[00:15:37] to trade when people establish strong
+[00:15:39] views on the market those views are
+[00:15:41] wrong they are trapped they have to
+[00:15:43] close they are under pressure and it's
+[00:15:45] those opportunities where they're
+[00:15:46] rushing for liquidity where if you're on
+[00:15:48] the other side of that you're going to
+[00:15:49] have a much better time um
+[00:15:52] higher time frames
+[00:15:53] sort of time frame commentary in general
+[00:15:55] and this again speaks to the first two
+[00:15:56] points if anything is the higher time
+[00:15:58] frame also gives more visibility which
+[00:16:00] gives more participation and gives a
+[00:16:02] bigger reversal upon pattern failure so
+[00:16:04] kind of a five minute time frame failed
+[00:16:06] breakout may not give you a 10 20 move
+[00:16:09] or something massive but it will still
+[00:16:10] give you like a rotation relative to the
+[00:16:12] time frame itself but if you're gonna
+[00:16:13] get a very high time frame pattern
+[00:16:15] failure that's going to give you a
+[00:16:16] larger move right so again it kind of
+[00:16:18] goes back to the time frame video of
+[00:16:19] scaling your expectations of the
+[00:16:21] rotation with the time frame you're
+[00:16:23] dealing with and it's generally linear
+[00:16:25] so smaller time frame smaller trap
+[00:16:27] smaller move bigger time frame bigger
+[00:16:29] trap bigger move um the next point is
+[00:16:32] something don mentioned when reading
+[00:16:33] through these slides that chop is not
+[00:16:35] pattern failure again you'll notice a
+[00:16:37] theme throughout the nuances section
+[00:16:39] that a lack of ambiguity and clear
+[00:16:42] patterns
+[00:16:43] do best so when it comes to good good
+[00:16:45] pattern failure that you know those
+[00:16:47] setups are characterized by clear
+[00:16:49] unambiguous signals that generate
+[00:16:50] positioning if the market's just choppy
+[00:16:53] if it's not clear what's going on if
+[00:16:54] it's not the type of move that's going
+[00:16:56] to sort of generate fomo for lack of a
+[00:16:57] better term then maybe the market's just
+[00:16:59] choppy and it's not going to induce
+[00:17:01] market participants to express views
+[00:17:04] and i think just going back to first
+[00:17:06] principles really what this video comes
+[00:17:07] down to is that when the market really
+[00:17:09] tries to do something and it fails at
+[00:17:11] that thing it's likely going to do the
+[00:17:12] opposite thing so something that looks
+[00:17:14] very bearish if it doesn't follow
+[00:17:16] through that's probably bullish or
+[00:17:17] something that looks very bullish and it
+[00:17:19] just kind of gets stuck or doesn't
+[00:17:20] follow through um
+[00:17:22] that's very bearish right the best
+[00:17:24] bullish setups are failed bearish setups
+[00:17:26] the best bearish setups are failed
+[00:17:27] bullish setups and again as mentioned at
+[00:17:29] the very beginning there is a wide range
+[00:17:31] of possibilities under the umbrella term
+[00:17:33] pattern so get creative
+[00:17:36] the list is really endless i think
+[00:17:38] almost any trading system that looks at
+[00:17:40] some sort of replicable repeated
+[00:17:42] behavior or really anything if we even
+[00:17:44] take a broader term anything that
+[00:17:45] generates positioning
+[00:17:47] you can apply this pattern failure logic
+[00:17:50] to it so chart patterns price patterns
+[00:17:52] candlestick patterns indicators that
+[00:17:54] trigger signals you know your
+[00:17:55] divergences whatever else moving average
+[00:17:58] crossovers anything that gets
+[00:18:00] participants to bet is prone to pattern
+[00:18:03] failure and that's really the point of
+[00:18:04] this video it's to get you to think
+[00:18:06] about what happens when the market makes
+[00:18:08] people trade and those people trading
+[00:18:10] are wrong and those spots where
+[00:18:13] participants are wrong and recognize it
+[00:18:16] and are forced to close their positions
+[00:18:18] um
+[00:18:19] that's a great place to trade in general
+[00:18:21] and again just to go back to the
+[00:18:22] original slide
+[00:18:24] this comes down to the pattern failure
+[00:18:26] logic that when patents fail they
+[00:18:28] generate a signal in the opposite
+[00:18:31] direction and it's from a market
+[00:18:33] microstructure point of view it's
+[00:18:35] because pattern failure typically
+[00:18:37] creates a one-sided demand for liquidity
+[00:18:40] around the same price and we know that
+[00:18:42] that is a fuel for big market moves
+[00:18:46] people being urgently wrong and being
+[00:18:49] forced to close is a fantastic catalyst
+[00:18:51] for a reversal so whatever it is you
+[00:18:53] trade
+[00:18:54] if there is invalidation and you notice
+[00:18:57] that participants have acted on
+[00:18:58] something and they're wrong that's when
+[00:19:01] a pattern failure mindset uh may become
+[00:19:04] helpful
+[00:19:06] do i have anything else useful to say on
+[00:19:07] that i don't repeat myself too much
+[00:19:09] hopefully the kind of framework that i'm
+[00:19:11] trying to get across uh is clear at this
+[00:19:13] point and also just how broad this
+[00:19:15] section is should also come to mind
+[00:19:17] indicators price charts whatever uh even
+[00:19:20] if you and i think this is an important
+[00:19:21] point even if you don't trade the
+[00:19:23] patterns yourself pattern failure can be
+[00:19:25] useful so for example let's say you
+[00:19:27] think chart patterns are the dumbest
+[00:19:28] thing in the world and that's not an
+[00:19:30] unreasonable view and you see this head
+[00:19:31] and shoulders forming right
+[00:19:33] you see it forming and you see it kind
+[00:19:35] of break down you know neckline whatever
+[00:19:37] even if you're someone who doesn't
+[00:19:38] typically trade a head and shoulders if
+[00:19:40] the market starts to make it above the
+[00:19:42] neckline you can still infer that the
+[00:19:44] participants who do trade this chart
+[00:19:46] pattern or this setup of whom there are
+[00:19:48] many you know from a market
+[00:19:50] microstructure point of view they
+[00:19:51] essentially sold the bottom and as the
+[00:19:53] neckline gets reclaimed they're gonna
+[00:19:54] have to start market buying to
+[00:19:57] close their short positions so the good
+[00:19:59] thing about pattern failure is even if
+[00:20:01] you don't like or trade these setups
+[00:20:04] themselves you can take advantage of
+[00:20:05] people that do when they are wrong and
+[00:20:07] this really opens up
+[00:20:09] your kind of trading toolkit or
+[00:20:11] inventory for adding new setups where
+[00:20:13] even if you don't natively trade the
+[00:20:15] setups yourself you can still identify
+[00:20:17] when participants that do trade them are
+[00:20:19] wrong and step on their necks when they
+[00:20:21] are invalidated so that's a really
+[00:20:23] important point pattern failure doesn't
+[00:20:25] just apply to the setups you trade it's
+[00:20:27] really anything that the market trades
+[00:20:29] or the market recognizes that can be a
+[00:20:31] useful source for edge or setups
+[00:20:35] that's really it again much shorter
+[00:20:37] video than usual but i think it's more
+[00:20:40] the type of video this is one that gets
+[00:20:42] you thinking about what a pattern is and
+[00:20:45] what pattern failure is and deriving
+[00:20:47] signals from
+[00:20:48] obvious setups failing a lot of the time
+[00:20:51] i think when you're a beginner trader
+[00:20:53] it's a very binary way of thinking about
+[00:20:54] it where you have a setup and if the
+[00:20:56] setup fails that's it you're wrong you
+[00:20:57] take the loss and you move on but what
+[00:20:59] i've discovered over time and just what
+[00:21:01] i think is a generally useful way to
+[00:21:03] think about the market is that good
+[00:21:04] setups being invalidated can themselves
+[00:21:07] give rise to future setups and i think
+[00:21:09] that's something very much worth
+[00:21:10] investigating uh that's all i've got for
+[00:21:12] this video apologies as always for the
+[00:21:14] long delay between these videos it just
+[00:21:16] just takes a while to be honest but
+[00:21:17] we're still building the good old
+[00:21:18] technical roundup uh not even technical
+[00:21:20] roundup
+[00:21:21] the cred technical analysis series and
+[00:21:24] as i've said hopefully before i'm
+[00:21:26] grateful for your support over the years
+[00:21:27] and there is more coming i'm never
+[00:21:28] getting bored of this stuff and as i
+[00:21:30] grow and develop and become a better
+[00:21:32] trader i look forward to sharing all of
+[00:21:33] that stuff with you if you found this
+[00:21:35] helpful or if this channel has ever done
+[00:21:37] anything for you uh please like the
+[00:21:38] video and subscribe to the channel all
+[00:21:39] the normal youtube stuff is helpful
+[00:21:41] leave a comment to prove that you're not
+[00:21:42] a worthless tic talker and therefore
+[00:21:44] have the attention span to sit through
+[00:21:45] this maybe even leave a comment with
+[00:21:47] pattern failure setups that you enjoy uh
+[00:21:49] as always
+[00:21:50] you can find me twitter crypto cred lots
+[00:21:52] of posting some market commentary
+[00:21:54] if you want more market oriented stuff
+[00:21:57] i do a live stream usually a couple
+[00:21:59] every week on the technical roundup
+[00:22:00] youtube channel and there's a free
+[00:22:02] weekly newsletter that i write with
+[00:22:03] donald
+[00:22:04] which basically has market levels and
+[00:22:06] analysis that we look at every single
+[00:22:08] week all of that is free don't need your
+[00:22:10] money
+[00:22:11] but i do appreciate your attention and
+[00:22:12] for sticking with me throughout all
+[00:22:14] these years that's all take care happy
+[00:22:16] trading and i'll see you for the next
+[00:22:18] video goodbye

@@ -1,0 +1,1624 @@
+# Video ID: nPDk5qPbf08
+# Title: Technical Analysis Series - How To Use Candlestick Highs/Lows to Trade Reversals
+# Published: 2022-12-18
+# Source: yt_dlp captions (auto); uploader: CryptoCred
+# Analyst: CryptoCred
+# Channel: @CryptoCred
+# Duration_s:3150
+# Word count: 11268
+# ---
+[00:00:00] hello and welcome to another video as
+[00:00:02] part of the technical analysis Series
+[00:00:03] today we're discussing how to use
+[00:00:05] Candlestick highs and lows to trade
+[00:00:07] reversals here's the outline for the
+[00:00:09] video we'll start with the disclaimer
+[00:00:10] we'll Define our terms what are
+[00:00:12] Candlestick highs and lows we'll discuss
+[00:00:14] significant versus insignificant highs
+[00:00:16] and lows we'll go over a quick refresher
+[00:00:18] for market microstructure for the two
+[00:00:20] types of patterns we're going to talk
+[00:00:21] about swing failure patterns the SFP and
+[00:00:24] failed brakes we'll cover some nuances
+[00:00:26] and then hopefully conclude
+[00:00:29] usual disclaimer I am an idiot I don't
+[00:00:31] know anything this isn't legal advice
+[00:00:32] it's not Financial advice it's not
+[00:00:34] investment advice it's not Fitness
+[00:00:35] advice it's not lifestyle advice it's
+[00:00:38] certainly not dating advice I don't know
+[00:00:39] what this is but whatever it is it's for
+[00:00:41] entertainment purposes only so hopefully
+[00:00:42] you're fine with that
+[00:00:44] let's get into it so what are
+[00:00:46] Candlestick highs and lows
+[00:00:48] the most simple definition is the high
+[00:00:51] or low of a Candlestick on a given time
+[00:00:53] frame so if you're using Candlestick
+[00:00:54] chart these are going to be the Wicks
+[00:00:56] that you see perhaps a better definition
+[00:00:58] would be the extreme of a specific
+[00:01:00] rotation on a given time frame and with
+[00:01:03] that framework you can start to split
+[00:01:05] this definition into sessions days weeks
+[00:01:08] months and so on which is something that
+[00:01:10] will be helpful when we consider how to
+[00:01:11] arrive at some of these contextual
+[00:01:13] levels now again as a reminder we're
+[00:01:15] looking for extremes so the highest high
+[00:01:16] made lower slow made ideally at those
+[00:01:19] big obvious turning points now an
+[00:01:21] exercise you can do is to Simply open up
+[00:01:23] a chart and Mark out the significant or
+[00:01:25] standout ties in those again these would
+[00:01:27] be the Wicks if it's too noisy on
+[00:01:29] whatever time frame you've chosen then
+[00:01:30] simply go on the larger time frames just
+[00:01:32] the weekly and the daily and the
+[00:01:33] exercise should be easier now I'm aware
+[00:01:36] of some trading view indicators that do
+[00:01:37] this for you I'm sure they're fine I
+[00:01:39] don't use them myself and the exercise I
+[00:01:41] think is straightforward enough to be
+[00:01:42] able to use your discretion and again a
+[00:01:45] recurring theme throughout this whole
+[00:01:47] presentation will be don't over
+[00:01:49] complicate this a lot of what we're
+[00:01:51] going to be talking about is dependent
+[00:01:52] on other Market participants seeing
+[00:01:54] these highs and lows and trading around
+[00:01:56] them so if it doesn't stand out to you
+[00:01:58] it's probably not too significant so you
+[00:02:00] can either pause the video and do that
+[00:02:01] exercise I'm going to jump forward and
+[00:02:03] show you a quick example of what that
+[00:02:05] might look like
+[00:02:07] on the Bitcoin daily chart here we go
+[00:02:08] just marking out the swing highs and
+[00:02:10] swing lows again very obvious levels at
+[00:02:12] inflection points you know
+[00:02:14] I think the matter speaks for itself
+[00:02:17] very similar for if USD on The Daily
+[00:02:20] time frame just looking at the important
+[00:02:22] Wicks the ones that stand out and the
+[00:02:24] ones that are built at Key highs kilos
+[00:02:26] key turning points not in the middle of
+[00:02:28] nowhere I'm sure I've missed some I'm
+[00:02:29] sure I've added some that you wouldn't
+[00:02:31] have but the exercise as you can tell is
+[00:02:33] rather straightforward again this is the
+[00:02:35] eighth example I don't know if you want
+[00:02:36] to pause on it and this is the BTC
+[00:02:38] example
+[00:02:40] now on to the next slide I think we can
+[00:02:43] present a more robust definition of
+[00:02:47] significant highs and lows especially
+[00:02:48] given the amount of them that exist and
+[00:02:50] that's kind of the premise of the first
+[00:02:52] point that not all highs and lows are
+[00:02:54] worth paying attention to sort of by
+[00:02:55] definition every tiny rotation will set
+[00:02:57] a high or low uh and so if you were on
+[00:02:59] the five minute marking out every single
+[00:03:01] swing high or swing low that's that's
+[00:03:02] nightmare mode so we need some sort of
+[00:03:04] filter to allow us to determine what
+[00:03:05] what are the significant highs and lows
+[00:03:07] worth paying attention to and worth
+[00:03:08] trading around and so marking them all
+[00:03:11] is useful and if your chart looks like a
+[00:03:12] clutter mess that's as useful as marking
+[00:03:15] none of them so I think some discretion
+[00:03:17] is helpful here having some criteria for
+[00:03:20] um you know how useful they are and
+[00:03:21] we're going to go over some of them here
+[00:03:23] now again our overall aim is to find the
+[00:03:25] most significant ones and these are
+[00:03:27] anchors that future Traders and present
+[00:03:30] Traders will use for their trading and
+[00:03:32] this could be for breakout trading it
+[00:03:34] could be for stock market orders it
+[00:03:36] could be for profit taking but more
+[00:03:38] broadly we just want to see
+[00:03:39] participation at those highs and lows
+[00:03:42] and as far as examples go don't worry
+[00:03:43] about it as you can see here we've got
+[00:03:44] like 20 tabs so thank you for all your
+[00:03:46] feedback on that and in general thank
+[00:03:48] you for your support on the technical
+[00:03:49] analysis series if you want to see more
+[00:03:50] leave a comment leave a like all this
+[00:03:52] kind of YouTube nonsense does does
+[00:03:54] actually matter and I pay attention to
+[00:03:55] it so thank you for your support so
+[00:03:58] and this last section is actually very
+[00:03:59] densely packed and it's very important
+[00:04:01] and it seeks to answer the question how
+[00:04:03] do I know whether a high or low is
+[00:04:04] significant and here are some filters
+[00:04:06] you can use they're not mutually
+[00:04:07] exclusive nor is it a checklist so bear
+[00:04:10] in mind if some of these are present
+[00:04:12] that's fine if all of them are present
+[00:04:13] great if one of them is present it's
+[00:04:14] probably okay these are just some things
+[00:04:17] to look out for so the first will be
+[00:04:18] time frame so the larger the time frame
+[00:04:21] the fewer Wicks or swing points there
+[00:04:23] are by definition and that makes the
+[00:04:25] existing ones more significant uh the
+[00:04:28] second one is the eye test that the
+[00:04:30] clearer the swing the more participants
+[00:04:31] will likely use it and we see this
+[00:04:33] phenomenon in order herding and
+[00:04:35] clustering in financial markets uh more
+[00:04:37] generally I think time based markers can
+[00:04:40] be helpful so the high and low of a
+[00:04:42] session London New York Asia whatever it
+[00:04:44] may be the higher low of a day a week a
+[00:04:47] month and kind of using these large
+[00:04:49] candle reference points to map
+[00:04:52] significant highs and lows as kind of
+[00:04:55] objective anchors for the market you
+[00:04:57] know so if the market trades build low
+[00:04:58] previous days low you know some Market
+[00:05:00] participants might infer that the market
+[00:05:02] is weaker than yesterday above
+[00:05:03] yesterday's high that's a breakout you
+[00:05:05] know high of the week low of the week
+[00:05:06] these are all things that you even see
+[00:05:07] reported in financial media so when
+[00:05:10] participants look at asset prices they
+[00:05:12] like to have some sort of time anchor or
+[00:05:14] reference point for the price action
+[00:05:16] that they see and so using
+[00:05:18] um session day week month Etc to kind of
+[00:05:21] anchor those highs and lows is
+[00:05:22] definitely helpful and I'll be providing
+[00:05:23] signals to a large number and a broad
+[00:05:26] range of Market participants
+[00:05:28] the last point is that those highs and
+[00:05:30] lows formed around support resistance or
+[00:05:32] that end up forming support resistance
+[00:05:34] levels themselves and this is just
+[00:05:36] further contextual Confluence suggesting
+[00:05:38] that the specific price matters and so
+[00:05:40] you have kind of two forms of that as
+[00:05:42] repetition so a build up of what you'll
+[00:05:44] see referred to as equal highs or lows
+[00:05:46] and participants might infer that that's
+[00:05:49] kind of indicative of a strength of a
+[00:05:50] level and in general when you have an
+[00:05:52] inside day inside week inside month
+[00:05:54] um you might look to map the high and
+[00:05:56] low of that inside day week month and
+[00:05:58] then participants will bet on the
+[00:06:00] resolution of that depending on you know
+[00:06:02] when the market trades attempts to break
+[00:06:04] down or attempts to break out and again
+[00:06:06] the basic heuristic here before we jump
+[00:06:07] into the charts is if you really need to
+[00:06:10] look for it it being the swing I'll
+[00:06:12] swing low and debate whether it's
+[00:06:13] significant it probably isn't so this
+[00:06:15] should be a fairly intuitive and
+[00:06:16] straightforward exercise but before we
+[00:06:18] go into a market microstructure
+[00:06:20] refresher let's look at what some of
+[00:06:22] those might look like
+[00:06:23] we've covered the daily examples on BTC
+[00:06:26] and Eve as far as Bitcoin on the monthly
+[00:06:28] starting very easy this is the all-time
+[00:06:30] high swing high you can see you've got a
+[00:06:31] couple of spikes of that but no
+[00:06:33] acceptance above uh this is the 30k
+[00:06:35] range low uh ultimately bounced a bit
+[00:06:37] but didn't lead too much you could also
+[00:06:40] use this example of the summer lows
+[00:06:42] which I think I have another time frame
+[00:06:44] it's a similar kind of Spike before this
+[00:06:45] second high was made and then in the
+[00:06:47] context of the downtrend uh worth paying
+[00:06:49] attention to you have pre you have an
+[00:06:51] inside month here and all an inside
+[00:06:52] month means it's not being particularly
+[00:06:54] technical with the jargon is that a
+[00:06:56] candle whose price action is contained
+[00:06:58] who's high and low and all of you know
+[00:07:00] the entirety of which is contained
+[00:07:01] within the boundaries of the previous
+[00:07:03] month so in this case this is an obvious
+[00:07:04] one we had the new candle this entire
+[00:07:06] candle fits into the candle that
+[00:07:08] precedes it so this is a bit of a
+[00:07:10] volatility contraction in the range and
+[00:07:11] so here you had a move above previous
+[00:07:13] month's high before the market sold off
+[00:07:15] and another example here and inside
+[00:07:17] month and then uh the last month spiked
+[00:07:19] about previous months high and then
+[00:07:21] moved lower these are all behaviors will
+[00:07:23] discuss but simply in terms of mapping
+[00:07:25] the market with these significant highs
+[00:07:27] and lows this might be one way of doing
+[00:07:28] it also this low probably matters and I
+[00:07:30] have it on another time frame so fairly
+[00:07:32] self-evident and you start to really
+[00:07:34] build a feel for it if you're paying
+[00:07:36] attention and if you just stare at a
+[00:07:37] charts long enough
+[00:07:39] similar example here on the if monthly a
+[00:07:41] bit later kind of in the downtrend where
+[00:07:43] you have again another inside month big
+[00:07:45] Newt candle and then rally but the rally
+[00:07:48] is still an inside month contained
+[00:07:49] within previous month's price action you
+[00:07:51] can see Spike of our previous month's
+[00:07:52] high no acceptance traded lower even
+[00:07:55] gave you a bit of a cheeky retest on
+[00:07:58] this down month as far as this green
+[00:08:00] month that we had you can see that after
+[00:08:02] this down month it spiked previous month
+[00:08:04] slow and closed up and then most recent
+[00:08:06] month again spiked the previous month's
+[00:08:08] high and Spike previous months low while
+[00:08:11] closing on the down candle and then for
+[00:08:12] this month you might want to map out the
+[00:08:14] monthly High and the monthly low and see
+[00:08:16] how that resolves also being aware of
+[00:08:17] the summer low as well so some some
+[00:08:20] fairly straightforward examples there
+[00:08:22] uh lots more on the Bitcoin weekly chart
+[00:08:24] very similar levels you know at the
+[00:08:26] first
+[00:08:26] um all-time high top in the 60s you had
+[00:08:29] this swing High you know highest high
+[00:08:31] made Fairly self-evident again Market
+[00:08:33] spikes finds trouble uh on this occasion
+[00:08:36] you have the swing low Market just
+[00:08:37] breaks through it right so just an
+[00:08:38] example of how it's not always a perfect
+[00:08:40] system by any means if we take it to the
+[00:08:43] summer lows and this new candle you can
+[00:08:44] see that the market tried to break
+[00:08:46] through and make new lows and that's
+[00:08:47] where a lot of the soak came in before
+[00:08:49] the all-time high attempt similar type
+[00:08:51] of thing yeah this weekly swing high
+[00:08:53] before the final leg up ended up spiking
+[00:08:56] there unsurprisingly and that there is
+[00:08:58] some back fitting here but I'm just
+[00:08:59] trying to show you examples because
+[00:09:00] people ask them uh before the market
+[00:09:02] traded lower and even even within the
+[00:09:04] context of this downtrend again even if
+[00:09:06] you're not looking at oh this this would
+[00:09:08] have told you it's the top uh look at
+[00:09:10] where a lot of momentum came from that's
+[00:09:11] perhaps the more useful exercise uh you
+[00:09:13] know this weekly down candle first
+[00:09:15] spiked the high of the preceding week
+[00:09:17] and then you got the impulse lower same
+[00:09:19] here we have previous weeks High the
+[00:09:21] market spikes that top and then closes
+[00:09:23] lower
+[00:09:24] and then a kind of more generous version
+[00:09:26] of this High made here the market pushes
+[00:09:29] up and tries to I mean trading in a
+[00:09:31] level of resistance but again if we're
+[00:09:33] going to have a good week you'd expect
+[00:09:35] this candle to exceed the preceding one
+[00:09:37] it doesn't all it can do is Spike its
+[00:09:39] high and then move lower from the bounce
+[00:09:42] we've had we had the nuke candle low
+[00:09:44] Market Spike that moved up whether to
+[00:09:46] move up into the last summer low so
+[00:09:48] these levels are sensitive they matter
+[00:09:50] that's my point we're going to talk
+[00:09:51] about uh specific entry triggers and you
+[00:09:53] know engulfing candles and all that type
+[00:09:55] of stuff but this is just kind of more
+[00:09:57] to train your eye for looking for not
+[00:09:59] only swing Highs but also those
+[00:10:01] contextual levels like uh in this
+[00:10:03] example keeping in mind you know being
+[00:10:06] aware of previous week's High previous
+[00:10:07] week slow previous days high previous
+[00:10:09] days low and then you start to build a
+[00:10:11] picture of the market based on those
+[00:10:12] inflection points support resistance
+[00:10:14] Trend and you you sort of put it all
+[00:10:16] together as we will discuss of course uh
+[00:10:18] same for if
+[00:10:19] highest I made before the big drop you
+[00:10:22] can see the market on this occasion
+[00:10:23] wasn't obvious type of Spike scenario
+[00:10:25] but there was no acceptance above that
+[00:10:27] level you had a week to close above the
+[00:10:28] depth back below and then everything on
+[00:10:30] the back side was a bearish retest uh
+[00:10:32] speaking of that same summer rally you
+[00:10:33] had the low of the new candle Spike
+[00:10:35] spike you know Market participants
+[00:10:37] betting on new lows not being accepted
+[00:10:40] and then the market rallying and then
+[00:10:41] more recently again you had previous
+[00:10:43] weeks High
+[00:10:45] being sorry no acceptance of our
+[00:10:48] previous week's High here ended up
+[00:10:50] closing
+[00:10:51] um red in the context of a downtrend and
+[00:10:53] at resistance before moving lower and
+[00:10:55] same thing here where did this week's
+[00:10:57] rally take us you had a double top of
+[00:10:58] previous week's High and the high of the
+[00:11:00] week before that Spike and reverse so
+[00:11:03] this isn't as much kind of saying oh
+[00:11:04] look every single swing high is a wick
+[00:11:06] and therefore you could have said it's
+[00:11:07] the top that's not all I'm saying I'm
+[00:11:09] sort of trying to make the case for at
+[00:11:12] least being aware of where those
+[00:11:13] previous week stays sessions uh highs
+[00:11:16] and those are because a lot of momentum
+[00:11:18] shifts form around the breakout attempts
+[00:11:21] that occur at those levels so this is
+[00:11:24] more just so you have them on your radar
+[00:11:26] uh BNB again uh this kind of range low
+[00:11:29] final red candle before the all-time
+[00:11:31] high got spiked here before the rally
+[00:11:33] even smaller things here like a double
+[00:11:35] weekly bottom market and you have to
+[00:11:37] realize at some point this cat this red
+[00:11:38] candle was down here right where the
+[00:11:40] wick is so at that point Market
+[00:11:41] participants are betting on this level
+[00:11:43] of support or these lows breaking they
+[00:11:45] were wrong and you get a slight pop in
+[00:11:47] the market and then the more recent
+[00:11:48] price action you know uh all around the
+[00:11:50] FTX news I think this was you had this
+[00:11:52] swing High
+[00:11:54] Spike and then a spike of that candle
+[00:11:57] which ended up again the case for
+[00:11:59] previous week's high no acceptance above
+[00:12:01] that's where you've got your impulse and
+[00:12:02] even smaller bounces you can see are
+[00:12:04] contextually relevant
+[00:12:06] um using this type of lens we had like a
+[00:12:08] bunch of one two three kind of triple
+[00:12:10] quadruple bottom and then the market
+[00:12:12] tried to break it and you've got a
+[00:12:13] slight bounce as a result of those
+[00:12:15] participants being a bit too eager and
+[00:12:17] we will reuse some of these examples and
+[00:12:18] try to get as many as I can across uh
+[00:12:21] Litecoin and this starts to lean towards
+[00:12:23] some of the contextual topics we're
+[00:12:24] going to talk about you have a weekly
+[00:12:26] level of resistance here at 79.50 uh
+[00:12:29] Market comes in closes below it and so
+[00:12:31] this is the high of the candle which
+[00:12:33] found resistance at that level another
+[00:12:35] test of the level not much going on when
+[00:12:37] does the move finally happen well it was
+[00:12:39] after the initial High got spiked and
+[00:12:42] then a retest of the level gave you your
+[00:12:44] impulse so still very relevant another
+[00:12:46] contextual example on the S P 500 you
+[00:12:49] have daily resistance here
+[00:12:51] and a daily swing Point uh from this
+[00:12:54] high I think this is around fomc you
+[00:12:56] know markets trading here comes in
+[00:12:57] impulse where is the impulse well it
+[00:13:00] spikes that significant swing High into
+[00:13:03] a level resistance and that's when the
+[00:13:04] market finally moves lower same here
+[00:13:06] this is kind of the lower slow made
+[00:13:08] initially and as the Market's rallying
+[00:13:10] down and trading in this area sort of
+[00:13:12] where the wick is you have to realize
+[00:13:13] other Mark participants are betting that
+[00:13:15] this low isn't going to hold and the
+[00:13:16] Market's going to break down further
+[00:13:17] towards 34 33 whatever it may be and
+[00:13:20] instead you have a spike and that was
+[00:13:21] the precursor to a larger reversal
+[00:13:24] um you're probably getting bored of the
+[00:13:25] examples at this point but hey people
+[00:13:26] ask for them are happy to provide
+[00:13:28] has similar typologic here you know the
+[00:13:30] market is puking towards its prior low
+[00:13:32] and closes on a down day and actually
+[00:13:34] closes below
+[00:13:35] um the close of the last swing point and
+[00:13:38] where does the reversal happen this is a
+[00:13:40] case of previous days low where the
+[00:13:42] market pokes below previous days low
+[00:13:43] closes above so everyone who's sold that
+[00:13:45] breakdown is trapped and ended up moving
+[00:13:47] higher and you have similar price action
+[00:13:49] on the other end of it we have swing
+[00:13:50] High here and swing High here on the
+[00:13:52] fomc thing where does the market come to
+[00:13:54] clear out uh comes in through these
+[00:13:56] highs failed breakout Spike whatever you
+[00:13:58] want to call it before trading lower
+[00:14:02] uh some very quick altcoin examples
+[00:14:04] again swing high on dydx here and here
+[00:14:07] uh what what's kind of the impetus or
+[00:14:10] the Catalyst for the reversal where you
+[00:14:12] have a candle that comes in swipes
+[00:14:13] previous week's high and this swing
+[00:14:16] Point here before closing down and
+[00:14:18] moving lower and again if you're
+[00:14:19] observing this on the daily time frame
+[00:14:21] of an infinite time frames you can get a
+[00:14:22] sense that the market is not being
+[00:14:24] accepted above previous week's high and
+[00:14:26] that could be a trap type of setup more
+[00:14:29] recently on bitcoin a very kind of
+[00:14:31] textbook mirror range type of setup you
+[00:14:34] have the lowest low made on Newt candle
+[00:14:35] Market comes in and as it's trading here
+[00:14:38] a lot of participants are kind of
+[00:14:39] betting that this low isn't going to
+[00:14:41] hold and the Market's just going to keep
+[00:14:42] puking lower they get trapped you know
+[00:14:44] close above and so everyone who sold
+[00:14:46] here isn't having a very good time
+[00:14:47] Market pushes higher where does it push
+[00:14:49] into well you have the other side of the
+[00:14:50] range The Other Extreme uh again spikes
+[00:14:52] That Swing point and you get a rotation
+[00:14:55] lower
+[00:14:57] um I will reuse all these examples I
+[00:14:58] just really want to train your muscle
+[00:14:59] kind of memory for it and your eye test
+[00:15:02] uh teeth USD
+[00:15:04] on The Daily time frame this is a very
+[00:15:05] interesting one similar type of Wick to
+[00:15:06] bitcoin and yeah if you see like an area
+[00:15:08] of resistance to the left comes in uh
+[00:15:10] finds resistance there at first and then
+[00:15:12] if you're mapping that you have previous
+[00:15:14] days high here and this day comes in not
+[00:15:16] only does it Spike previous days high
+[00:15:17] but it's into that same range higher
+[00:15:19] resistance closes down and ends up
+[00:15:21] giving you the puke and it actually if
+[00:15:23] you look at this intermediate type of
+[00:15:24] 1300 level on the four hour you have
+[00:15:27] like a mini version of that where I said
+[00:15:29] remember in the slides the point about
+[00:15:31] repetition build up of equal highs or
+[00:15:33] lowers participants May infer strength
+[00:15:35] of a level and so we have a good example
+[00:15:37] of that on if on the four hour which is
+[00:15:40] that this cluster of highs here one two
+[00:15:42] three four Market comes in clears them
+[00:15:46] out into the higher time frame level and
+[00:15:47] then gives you a backside re-test of the
+[00:15:50] intraday level before moving lower and
+[00:15:52] even then you have this kind of Swing
+[00:15:53] Point here that preceded the rally
+[00:15:55] Market comes in pukes through it no
+[00:15:57] bearish retest isn't accepted below and
+[00:15:59] then on the reclaim close above retest
+[00:16:01] is uh what gave you the initial rally
+[00:16:03] the higher low before that type of
+[00:16:05] rotation final example on BNB
+[00:16:08] lots of technical structures here if we
+[00:16:10] go from most recent
+[00:16:13] and there's a lot of headlines swirling
+[00:16:14] around at the time regarding binance you
+[00:16:17] have a big bearish Newt candle here that
+[00:16:19] completely breaks support and clears out
+[00:16:20] the range so they see that you know
+[00:16:22] participants who are trading on that day
+[00:16:24] see that candle think oh this looks
+[00:16:26] pretty bearish if it makes a new low I'm
+[00:16:27] gonna break down sell it to sell it
+[00:16:29] lower what happens instead previous days
+[00:16:31] low you've got mapped out spikes below
+[00:16:33] that closes above or ideally during the
+[00:16:35] course of the day you can see absorption
+[00:16:36] on the Move below previous days low and
+[00:16:38] maybe even trade a daily open strategy
+[00:16:40] or any type of failed breakdown pattern
+[00:16:42] that we'll discuss and ultimately led to
+[00:16:44] the uh move up that we're seeing right
+[00:16:47] now and same here on the repetition
+[00:16:49] point you've got support support Market
+[00:16:51] comes in breaks down is it accepted
+[00:16:54] below no closes back above and that sort
+[00:16:56] of what led to your initial impulse so
+[00:16:58] again significant highs and lows you can
+[00:17:00] probably draw one based on this type of
+[00:17:01] price action but that was a news release
+[00:17:02] so I kind of left it and again we will
+[00:17:04] reuse all these examples but hopefully
+[00:17:06] for those of you who don't watch these
+[00:17:07] videos unless there's a million charts
+[00:17:08] in the first 10 minutes and I love you
+[00:17:10] too don't worry about it but hopefully
+[00:17:12] that was a decent kind of introduction
+[00:17:15] and we've covered all those points right
+[00:17:16] time frame large time frame uh existing
+[00:17:19] Wicks become more significant from some
+[00:17:20] of the monthly weekly examples I test
+[00:17:22] hopefully all those swing highs and some
+[00:17:24] of those were obvious time based you can
+[00:17:26] see how often a lot of these inflection
+[00:17:28] points ended up being previous week's
+[00:17:29] high low daily uh previous days high low
+[00:17:32] those are very important anchors
+[00:17:33] especially when they make contextual
+[00:17:35] sense formed around support resistance
+[00:17:38] as a Confluence Factor we've hopefully
+[00:17:40] seen the importance of that that it's
+[00:17:41] not viewing every single Wick in
+[00:17:43] isolation we pay more attention to them
+[00:17:44] where it makes contextual sense to make
+[00:17:46] pay more attention to them and within
+[00:17:48] that kind of a subcategory we had
+[00:17:50] repetition where you had obvious levels
+[00:17:52] resulting in those types of multi-wick
+[00:17:55] areas and then also the idea of inside
+[00:17:58] day inside week inside month on some of
+[00:18:00] those higher time frame reversals
+[00:18:01] because those inside candles kind of
+[00:18:03] present a logical range in and of
+[00:18:05] themselves
+[00:18:07] so a quick refresher on market
+[00:18:10] microstructure and this is one of the
+[00:18:11] more important videos on the channel if
+[00:18:13] you haven't watched it yet please do
+[00:18:14] it's absolutely instrumental but let's
+[00:18:16] talk about the anatomy of a spike and
+[00:18:18] reversal setup so on its face it's
+[00:18:21] rather straightforward and so the kind
+[00:18:23] of behavior that we see uh you know
+[00:18:25] Market spikes below a lower reverses
+[00:18:27] higher Market spikes above a higher
+[00:18:28] reverse is lower and again this has
+[00:18:30] covered to death in the market
+[00:18:31] microstructure video I know much more
+[00:18:33] details so I recommend you go watch that
+[00:18:35] but a classic example would be you know
+[00:18:37] this is our low
+[00:18:38] and kind of a swing point in the market
+[00:18:40] and we can even sort of map it out as
+[00:18:42] our swing low and then the market comes
+[00:18:44] in
+[00:18:45] it spikes that low so again the original
+[00:18:47] low made and then for some reason some
+[00:18:50] of the time uh it'll it'll shoot off and
+[00:18:52] move higher despite looking bearish and
+[00:18:55] looking like it might break down we see
+[00:18:56] this type of Spike Behavior at important
+[00:18:59] lows and the opposite as well of you
+[00:19:01] know Spike Behavior at important highs
+[00:19:04] uh happen rather frequently why is that
+[00:19:07] the case uh what is going on under the
+[00:19:08] hood it's one thing to talk about just
+[00:19:10] the price action that hey it poked this
+[00:19:12] and some some magic thing happen here
+[00:19:14] and then the market went up but what's
+[00:19:16] actually going on and microstructure
+[00:19:18] does give us a decent basis for
+[00:19:20] analyzing that type of behavior
+[00:19:22] and so what happens is the following uh
+[00:19:25] first the market spikes below we're
+[00:19:26] going to use the bullish example just
+[00:19:27] because it's easier uh first of all the
+[00:19:29] market spikes below a low right and two
+[00:19:32] things happen or I guess two forms are
+[00:19:34] the same thing is that a large amount of
+[00:19:36] sellers or specifically a large amount
+[00:19:38] of orders to sell begin to execute at a
+[00:19:40] similar price and at a similar time now
+[00:19:43] who might those sellers be uh I think
+[00:19:45] they're broadly belong in two categories
+[00:19:46] one is the fresh sellers looking for
+[00:19:48] momentum continuation and the second is
+[00:19:50] previous buyers closing their lungs so
+[00:19:52] if we apply that to our squiggly diagram
+[00:19:55] when the market looks like this
+[00:19:57] you have fresh sellers who again like in
+[00:19:59] some of those examples are arguing look
+[00:20:00] this low is broken support is broken so
+[00:20:02] I'm expecting this and so as the break
+[00:20:04] starts to come in uh you know anything
+[00:20:06] below that low uh they become sellers
+[00:20:10] and the same vein if you were long
+[00:20:11] anywhere in here and using the swing low
+[00:20:14] as your invalidation because maybe you
+[00:20:15] thought the market was going to make a
+[00:20:16] higher low maybe you just thought it was
+[00:20:17] going to be an uptrend but you use this
+[00:20:19] Market structure level uh for a stop
+[00:20:22] for your lungs if the market invalidates
+[00:20:25] you and you're long you have to
+[00:20:27] get rid of your lung how do you get rid
+[00:20:29] of your lung well you have to sell right
+[00:20:31] you bought contracts you have to sell
+[00:20:32] them in order to get out of that
+[00:20:34] position so suddenly as we're down here
+[00:20:36] trading through the slow you have
+[00:20:38] momentum continuation sellers who are
+[00:20:39] betting on this and you have existing
+[00:20:41] Longs who are just being invalidated uh
+[00:20:43] because they use that specific low as a
+[00:20:46] stop loss for their bullish idea and so
+[00:20:48] as a result you have a lot of sellers
+[00:20:50] come in at the same price at the same
+[00:20:52] time so if that creates a large demand
+[00:20:54] for liquidity that is to say for buyers
+[00:20:57] now
+[00:20:59] those sellers are providing liquidity or
+[00:21:02] trade with a larger buyer who's able and
+[00:21:04] willing to absorb the cell pressure
+[00:21:06] because by definition if a bunch of
+[00:21:08] orders are being executed below this low
+[00:21:10] right as the markets here and a bunch of
+[00:21:12] people start selling if no one's willing
+[00:21:13] to buy it then it's just going to keep
+[00:21:15] moving lower until it finds a level of
+[00:21:18] buyers to fill their Market orders
+[00:21:20] because again Market orders are
+[00:21:21] immediate demands for liquidity so the
+[00:21:23] market will move as far as it has to
+[00:21:24] before those orders start getting filled
+[00:21:27] even if it's kind of crazy displaced and
+[00:21:30] ends up being a large move so the fact
+[00:21:32] that it gets absorbed or stops or kind
+[00:21:34] of consolidates or pauses here means
+[00:21:36] that despite the large amount of sell
+[00:21:38] orders coming in from those momentum
+[00:21:40] Sellers from those invalidated Longs
+[00:21:42] whatever it may be someone or something
+[00:21:44] is soaking it up right and and that has
+[00:21:47] to be buying because every buyer needs a
+[00:21:49] seller every seller needs a buyer so if
+[00:21:51] there's a lot of selling in the same
+[00:21:52] area at the same time there has to be a
+[00:21:54] sort of large buyer to stop the price
+[00:21:56] from skipping that price and moving much
+[00:21:58] lower so someone's someone ones on the
+[00:21:59] other side of it by definition a buyer
+[00:22:02] who's able and willing to absorb the
+[00:22:03] cell pressure
+[00:22:04] now what happens next is by virtue of
+[00:22:07] that absorption the breakdown has failed
+[00:22:09] so the market doesn't follow through and
+[00:22:11] it starts to reverse as those larger buy
+[00:22:13] orders have been filled right
+[00:22:16] and the same participants we just
+[00:22:18] described earlier uh therefore they're
+[00:22:20] trapped and they're forced to act so the
+[00:22:22] momentum continuation sellers have to
+[00:22:24] close which means they're forced to buy
+[00:22:26] back the reversal Traders like you me
+[00:22:28] and other traders who pump these types
+[00:22:30] of setups they Pile in Long having seen
+[00:22:33] the failed breakdown and inferred that
+[00:22:35] there are trapped sellers below that low
+[00:22:37] some pre-breakdown buyers also
+[00:22:39] potentially buy back depositions
+[00:22:41] realizing it's a spike and they've just
+[00:22:43] had the short end of the stick there and
+[00:22:44] it's a combination of the above to
+[00:22:46] varying degrees so the simplest
+[00:22:49] explanation will be the participants
+[00:22:50] tried to force the market lower and
+[00:22:51] failed and trap Traders act as fuel for
+[00:22:54] reversals so hopefully that gives you
+[00:22:56] some sense of
+[00:22:57] um you know sometimes the market just
+[00:22:59] pukes there's just a lot of selling and
+[00:23:01] no one's willing to buy it and the
+[00:23:02] market will travel and until it finds
+[00:23:04] those buyers to fill the demand for
+[00:23:06] liquidity from the sellers other times
+[00:23:08] the buyers are more than happy to
+[00:23:09] provide it and in fact wait for those
+[00:23:11] types of opportunities uh before the
+[00:23:13] market reverses so yeah very active
+[00:23:15] sellers not getting their way being
+[00:23:17] soaked up by passive buyers and voila
+[00:23:19] Traders just make things worse by
+[00:23:23] buying that type of setup and so those
+[00:23:26] sellers are not in a good position and
+[00:23:28] uh shorts closing end up being Longs
+[00:23:30] especially if they're if it's in an
+[00:23:31] urgent State and they act as fuel
+[00:23:32] especially if liquidations get involved
+[00:23:34] you can kind of start to see where this
+[00:23:36] is going
+[00:23:37] now the swing failure pattern or as it's
+[00:23:40] known the SFP all over crypto Twitter
+[00:23:42] this is a specific price pattern
+[00:23:44] articulated by Tom Dante I'll just tell
+[00:23:47] you to go purchase this webinar in it
+[00:23:49] for the detailed reasoning I think he's
+[00:23:51] been trading the SFP longer than I've
+[00:23:52] been trading full stop as ubiquitous as
+[00:23:55] it is on crypto Twitter most people
+[00:23:57] misapply and mislabel it so if you want
+[00:23:59] to learn from the person who's coined it
+[00:24:01] and still trading it to this day I just
+[00:24:03] go find it look it up buy it but the
+[00:24:06] premise is the following
+[00:24:08] um essentially it's a spike and closed
+[00:24:10] below a key high or low on a given time
+[00:24:12] frame and that acts as evidence of a
+[00:24:15] reversal and it's using that exact same
+[00:24:17] logic we covered just two minutes ago
+[00:24:19] that in the bullish case the spike but
+[00:24:21] you'd expect to see a spike below a
+[00:24:23] swing low and close back above it as in
+[00:24:24] the example that's a failed breakdown so
+[00:24:27] the sellers are trapped and the Market's
+[00:24:28] going to move against them and the
+[00:24:30] bearish example a spike below a sorry
+[00:24:33] that should say a spike above apologies
+[00:24:36] Spike above a swing high and close back
+[00:24:39] below it which indicates a failed
+[00:24:41] breakdown and the invalidation for that
+[00:24:43] would be the top or bottom of the spike
+[00:24:45] obviously if you're bullish it's the
+[00:24:46] lowest low made and if it's a bearish
+[00:24:49] example it's the highest high mate so
+[00:24:52] ordinarily
+[00:24:53] I think we have some of the chart
+[00:24:56] examples here I mean this isn't the
+[00:24:58] worst example on The Daily time frame
+[00:25:00] you have I mean this is one as well
+[00:25:03] um this is sort of one uh this is one
+[00:25:06] but you can see the logic is is rather
+[00:25:09] straightforward you have a level Market
+[00:25:10] comes into it spikes above it closed
+[00:25:12] below and that's your swing failure
+[00:25:13] pattern even though it's probably not
+[00:25:14] the best example
+[00:25:16] um here another one you have the swing
+[00:25:18] Point Market comes in spikes above it
+[00:25:20] closed below best to swing failure
+[00:25:22] pattern and you're in validation would
+[00:25:24] be the highest I made
+[00:25:25] if it's the bearish example
+[00:25:27] or the lowest low made if it's a bullish
+[00:25:31] example I'm wondering if there are any
+[00:25:32] specific uh SFP ones that are slightly
+[00:25:35] better than this perhaps on some of the
+[00:25:37] lower time frame stuff
+[00:25:39] I mean I would say this is a good one as
+[00:25:41] well uh didn't kind of retest the level
+[00:25:43] very straightforward came into the level
+[00:25:44] Spike above closed below that's the
+[00:25:46] swing failure pattern uh you can see
+[00:25:48] it's not always super straightforward
+[00:25:49] the market can come back and retest that
+[00:25:51] level but those are kind of nuances uh
+[00:25:53] we'll account for at at other points
+[00:25:56] um this as well is technically valid you
+[00:25:58] have a deep swing Point even a double
+[00:25:59] bottom at this point Market comes in
+[00:26:00] spikes Below close above uh that's just
+[00:26:03] Wing failure pattern and again
+[00:26:04] invalidation always on the lowest low
+[00:26:05] made if you're bullish highest high made
+[00:26:07] if you are bearish
+[00:26:11] yeah this probably isn't the worst I
+[00:26:13] mean this is gonna be a tricky one
+[00:26:14] because it's around fomc this is
+[00:26:16] probably a better one you have a very
+[00:26:17] key low because this is the low of the
+[00:26:20] entire downtrend so a lot of Traders
+[00:26:21] going to be betting on Trend
+[00:26:22] continuation instead you have a move
+[00:26:24] Below close above
+[00:26:26] and you know larger move to follow I
+[00:26:29] think Tom actually liked the one on
+[00:26:31] bitcoin I hope I've got it this one here
+[00:26:33] this is probably the best one
+[00:26:35] again these setups are really good at
+[00:26:37] extremes and by definition the lowest
+[00:26:39] slow made so fine in a strong Trend
+[00:26:41] especially after after a big breakdown
+[00:26:43] is always going to be contextually
+[00:26:44] relevant so you have the low Market
+[00:26:46] comes in spikes below closed above
+[00:26:48] that's your swing failure pattern in
+[00:26:50] validation below entry can be on the
+[00:26:52] candle close we'll discuss entry
+[00:26:53] triggers in a bit but just for this
+[00:26:54] pattern it can be on the candle close
+[00:26:56] and sometimes on the retest of the level
+[00:26:57] but sort of the Orthodox version as far
+[00:26:59] as I'm aware is as soon as it spikes
+[00:27:01] Below close above on the time frame uh
+[00:27:04] of the Swing higher low that you're
+[00:27:05] trading that's a valid entry trigger and
+[00:27:07] the same for the swing High Here Again
+[00:27:08] Spike above close below that's on the
+[00:27:11] swing failure pattern becomes valid in
+[00:27:14] my understanding
+[00:27:16] and again the logic is the same it's
+[00:27:17] basically the micro Market
+[00:27:18] microstructure refresher do you have
+[00:27:20] um Traders trapped below the low Market
+[00:27:22] moves against them Traders trapped above
+[00:27:24] the high Market moves against them you
+[00:27:26] can articulate this in a million
+[00:27:27] different ways it's by side liquidity
+[00:27:28] it's outside liquidity it's stop hunting
+[00:27:31] it's spikes it's deviations but the
+[00:27:33] price behavior is what's important and
+[00:27:36] that logic stays the same throughout the
+[00:27:38] market tried to do something it failed
+[00:27:40] to doing that thing the people that
+[00:27:41] tried to do that thing are trapped and
+[00:27:42] the Market's going to move against them
+[00:27:43] whatever fancy terminology you want to
+[00:27:45] use is fine I I'm hoping to convey the
+[00:27:48] concepts so you can sort of think for
+[00:27:49] yourself on those terms now as far as
+[00:27:52] this type of pattern goes as I said
+[00:27:53] invalidation is quite clear it's the
+[00:27:55] extreme which is nice because it
+[00:27:56] generally gives you pretty good risk
+[00:27:57] rewards unless the wick is crazy I will
+[00:27:59] say on the target it depends as far as
+[00:28:01] I'm aware Tom uses ATR based targets and
+[00:28:03] some contextual stuff uh the reason I
+[00:28:05] say it depends is because you know I'm a
+[00:28:07] discretionary Trader I'll never have
+[00:28:08] like it's rare that I have a mechanical
+[00:28:10] Target
+[00:28:12] but here are some ways you can think
+[00:28:13] about it and play around with
+[00:28:14] conceptually so if you have a high time
+[00:28:16] frame bias and play which is to say
+[00:28:18] let's say you have an hourly SFP but you
+[00:28:20] have a daily or weekly bullish signal
+[00:28:22] then you'll generally Target a larger
+[00:28:24] move because it's not just the hourly
+[00:28:25] pattern that's playing out but it's the
+[00:28:26] hourly pattern in the context of a
+[00:28:28] larger dominant Trend right so if we
+[00:28:30] have if I have a daily bullish bias an
+[00:28:32] hourly bullish sap I won't be selling
+[00:28:34] that at hourly resistance I'll be
+[00:28:36] looking to sell that at Daily resistance
+[00:28:37] hopefully that makes sense
+[00:28:39] um generally speaking if you want like a
+[00:28:41] rule of thumb your target will be the
+[00:28:43] FTA the first trouble area which is the
+[00:28:45] nearest support resistance structure on
+[00:28:47] that time frame as long as the risk
+[00:28:48] reward makes sense and meets your trade
+[00:28:50] criteria I thankfully do have an FTA
+[00:28:53] video on the cryptocurred channel uh go
+[00:28:55] look it up I think it's literally called
+[00:28:56] FTA and covers this concept to death
+[00:28:59] um you can also pick your targets
+[00:29:00] somewhat contextually so in a Range it
+[00:29:02] can be the midpoint and the other side
+[00:29:04] of the range in a trend it can you can
+[00:29:06] Target Trend continuation so higher high
+[00:29:08] if it's bullish or lower low if it's
+[00:29:09] bearish and again as usual some
+[00:29:11] combination of the above to varying
+[00:29:13] degrees dictated by context
+[00:29:16] now a common critique of the Swing
+[00:29:18] failure pattern or SFP is that there is
+[00:29:21] an arbitrariness to using candlesticks
+[00:29:23] for the specific purpose of the SFP like
+[00:29:25] as you'll recall in a lot of these
+[00:29:26] examples
+[00:29:28] um the necessary condition for the
+[00:29:30] pattern is a spike below and a close
+[00:29:33] above but obviously if you change time
+[00:29:35] frames uh and the you know the time
+[00:29:36] periods change then perhaps on one time
+[00:29:39] frame it looks like a spike Below close
+[00:29:40] above but another time frame it looks
+[00:29:42] like a close below and close above so it
+[00:29:44] doesn't make the spike and close
+[00:29:45] requirement
+[00:29:46] um does that mean the SFP isn't valid
+[00:29:48] and it's a totally reasonable question
+[00:29:49] to ask my view is the following
+[00:29:53] it doesn't matter
+[00:29:55] the exact time frame and the exact
+[00:29:57] Candlestick Spike close whatever as long
+[00:29:59] as you're consistent in your application
+[00:30:01] such as the time frames that you trade
+[00:30:03] the setup on and also the price is
+[00:30:05] unfolding in accordance with the logic
+[00:30:07] of the setup like the setup works not
+[00:30:09] because of some candle wick clothes
+[00:30:11] whatever it works because Traders are
+[00:30:13] trapped below the low or trapped above
+[00:30:15] the high that that's the important
+[00:30:16] mechanism here and sometimes that will
+[00:30:18] be neatly and elegantly reflected in the
+[00:30:20] Candlestick and the time frame you're
+[00:30:21] using other times it won't so that's why
+[00:30:24] I'm kind of drilling down the first
+[00:30:25] principles here so even if it's not the
+[00:30:27] picture perfect SFP or failed break or
+[00:30:29] trap setup on the time frame that you
+[00:30:31] want if you understand the logic of
+[00:30:33] price you'll be able to trade the setup
+[00:30:36] I will say in defense of using a
+[00:30:38] specific Candlestick or time based stuff
+[00:30:41] is that it just makes trade
+[00:30:43] identification and execution easier to
+[00:30:45] systematize you know you know that you
+[00:30:47] have to see on the hourly a spike and
+[00:30:48] close and if you don't see that you
+[00:30:49] don't trade the setup now yes sometimes
+[00:30:51] that will leave out you know leave you
+[00:30:52] with missed trades where all the price
+[00:30:54] stuff unfolded and just because the
+[00:30:56] Candlestick didn't work and wasn't on on
+[00:30:58] one time frame and not the other uh you
+[00:30:59] miss out on the trade that's okay but
+[00:31:01] that it is still a benefit of being
+[00:31:03] stricter with it that it's systematized
+[00:31:05] and you sort of it's very clear whether
+[00:31:06] you take the trade or not I would say
+[00:31:08] also another benefit of being slightly
+[00:31:10] stricter with your time frames and sort
+[00:31:12] of conceding the arbitrariness is that
+[00:31:14] it helps to mute some of the time frame
+[00:31:16] noise that you see so for example a five
+[00:31:17] minute SFP of a daily low could just be
+[00:31:20] the early portion of a breakdown and
+[00:31:22] you're there staring in the face of a
+[00:31:23] newt candle and you're like ah but look
+[00:31:25] the five minute closed below and you
+[00:31:27] know spiked below and closed above and
+[00:31:28] if you really mismatch your time frames
+[00:31:30] you sort of arrive at very premature
+[00:31:33] conclusions much of the time so sort of
+[00:31:35] using a specific time frame for the
+[00:31:37] setup smoothens out a lot of those
+[00:31:39] idiosyncrasies idiosyncrasies rather
+[00:31:42] now at its core again it's the principle
+[00:31:44] that matters you're looking for a lack
+[00:31:46] of acceptance through a significant
+[00:31:48] height or a lack of acceptance for a
+[00:31:49] significant low and there is a kind of
+[00:31:51] clear case for
+[00:31:52] um not being too tied up in the specific
+[00:31:54] Candlestick mechanics because footprint
+[00:31:56] Traders pump very similar setups without
+[00:31:59] reference to specific candlesticks or
+[00:32:00] time frames they'll just look at the
+[00:32:02] delta look at the footprint you know
+[00:32:04] look for heavy-handedness that doesn't
+[00:32:05] go anywhere and the logic of the setup
+[00:32:07] is the exact same without having to
+[00:32:09] revert to or resort to candlesticks it's
+[00:32:12] just a question of what's Happening
+[00:32:13] above the high or below the low
+[00:32:17] we can even correct that slightly
+[00:32:21] below the low there we go
+[00:32:25] now uh failed breaks and we're kind of
+[00:32:27] zooming out a little bit
+[00:32:29] if we take sfps
+[00:32:31] generally they resolve quickly and it's
+[00:32:33] best to think of it as a sort of Hit and
+[00:32:34] Run spike in Reverse type of setup as we
+[00:32:37] saw in a lot of the examples if the sfb
+[00:32:39] is going to be correct it won't spend a
+[00:32:41] ton of time at the level itself I mean
+[00:32:43] this is potentially one on the E4 hour
+[00:32:45] you have a swing High Market comes in
+[00:32:47] spikes it closes below and then
+[00:32:49] teleports right
+[00:32:51] um similar example on BTC and hold on
+[00:32:55] where was that yeah simple example BTC
+[00:32:57] uh Spike Below close above doesn't waste
+[00:32:59] any time next day up next day up pull
+[00:33:01] back and then continuation right same
+[00:33:03] thing here spikes above close below next
+[00:33:06] day just just rugs so SFP setups at
+[00:33:09] their core and this is one of the
+[00:33:10] benefits of trading them is that they
+[00:33:12] generally resolve quickly and if your
+[00:33:15] SFP isn't moving quickly then it's
+[00:33:17] probably not going to be the best setup
+[00:33:19] in the world because by definition if
+[00:33:21] you've really got your hands on a
+[00:33:22] trapped Trader setups those trap Traders
+[00:33:25] are by definition forced to act and that
+[00:33:28] urgency is reflected very obviously in
+[00:33:31] the price chart by large moves and if
+[00:33:33] there is no urgency and there is no
+[00:33:34] large move then you know how trapped are
+[00:33:36] the Traders really if the market hangs
+[00:33:38] around their entry the whole day the the
+[00:33:40] entire logic is that they have to act
+[00:33:41] they're underwater they're going to
+[00:33:42] close their positions or you know rebuy
+[00:33:44] if they're on the other side whatever it
+[00:33:46] may be if the Market's just kind of
+[00:33:47] spikes and does all then there's no
+[00:33:49] urgency and there's no trapped component
+[00:33:50] and that reduces the probability or just
+[00:33:53] appeal of the setup more broadly
+[00:33:55] something worth bearing in mind
+[00:33:56] now while sfps are one type of failed
+[00:33:59] break not all failed breaks are sfps nor
+[00:34:02] do they resolve instantaneously and so
+[00:34:04] it helps to have like a zoomed out
+[00:34:07] perspective on what we're looking at
+[00:34:09] here of the market showing an
+[00:34:10] unwillingness to accept prices above a
+[00:34:12] key high or below a key low and
+[00:34:15] sometimes that can take time so in some
+[00:34:17] of the examples that we've covered
+[00:34:19] especially on the higher time frame
+[00:34:20] charts it was by no means an
+[00:34:22] instantaneous process
+[00:34:25] um I think in some of the earlier
+[00:34:26] examples specifically
+[00:34:29] let's look at this
+[00:34:32] I think I've got better ones hold on
+[00:34:36] yeah so this is a good example I mean
+[00:34:38] this if weekly range is a good example
+[00:34:40] if we look on the downside the market
+[00:34:42] came in Spike the slow closed above but
+[00:34:43] you know moved up but didn't do much and
+[00:34:45] then it came in again and spiked
+[00:34:47] previous week slow and re-tested that
+[00:34:49] same original SFP level before then
+[00:34:52] giving you the impulse so and that's
+[00:34:53] quite a you know that's a month of price
+[00:34:55] action there now while technically the
+[00:34:57] setup at its core is the same of
+[00:34:59] participants trying to sell through this
+[00:35:01] low but not having any luck uh you can
+[00:35:03] tell that based on this time frame in
+[00:35:04] this specific pattern it wasn't like an
+[00:35:06] SFP type of Hit and Run setup it took a
+[00:35:07] bit longer to resolve a nice little
+[00:35:09] previous week slow Confluence on this
+[00:35:11] one as well uh same for the top side uh
+[00:35:14] this wasn't the case of it you know
+[00:35:15] spikes above closed below and then you
+[00:35:18] sell it if you did that you know you
+[00:35:19] wouldn't be having a great time however
+[00:35:21] this trade logic or the setup logic
+[00:35:23] ended up being the same just resolved
+[00:35:25] more slowly because ultimately the
+[00:35:26] market never accepted above the swing
+[00:35:28] high as we discussed close above and
+[00:35:30] then you know close below two weeks
+[00:35:33] later and then that starts acting as
+[00:35:34] resistance before you got this kind of
+[00:35:36] cyclical turnaround now again the same
+[00:35:38] the logic of the setup is the exact same
+[00:35:39] you know buyers tried to buy through the
+[00:35:41] Range High and weren't successful
+[00:35:42] sellers tried itself through the range
+[00:35:43] load when successful but unlike the SFP
+[00:35:46] setup this is a broader conception of a
+[00:35:47] failed break because it didn't resolve
+[00:35:49] as quickly
+[00:35:52] um
+[00:35:52] I mean similar ish examples on this kind
+[00:35:55] of BTC range low here where you have the
+[00:35:58] nuke candle low Market comes in
+[00:36:00] close below Spike Below close above I
+[00:36:03] mean if you traded that then you sort of
+[00:36:04] immediately underwater but ultimately if
+[00:36:06] you take this consolidation as a whole
+[00:36:07] you have a kilo it just took longer to
+[00:36:09] resolve market tried selling through it
+[00:36:11] tried selling through again previous
+[00:36:12] week's low Confluence and then you get
+[00:36:14] your impulsive type of move so that's
+[00:36:17] something worth bearing in mind when
+[00:36:18] dealing with failed breaks more broadly
+[00:36:20] is that they don't have to resolve
+[00:36:21] instantly if they're not SFP type of
+[00:36:23] style it's fine for the market to
+[00:36:25] actually try to break the level spend a
+[00:36:26] bit of time above it and the more
+[00:36:28] important question is not is there a
+[00:36:30] wick or is there not a wick but is the
+[00:36:32] market able to accept above the Range
+[00:36:34] High or accept below the range low and
+[00:36:36] when that answer becomes no then any
+[00:36:38] type of failed break setup becomes
+[00:36:40] actionable even if it takes a bit longer
+[00:36:43] than we'd like and it doesn't have to be
+[00:36:45] an instant reversal to be a failed break
+[00:36:47] type of setup
+[00:36:49] and yeah as I said before the underlying
+[00:36:51] logic was the same buyers tried to force
+[00:36:53] the market higher at a key level once
+[00:36:55] successful or sellers tried to force the
+[00:36:57] market lower at a key level and weren't
+[00:36:58] successful and their aggression those
+[00:37:01] large Deltas Market orders uh provide
+[00:37:03] the fuel for reversal and you can still
+[00:37:05] kind of start to piece together a lot of
+[00:37:07] the price action Concepts you've seen
+[00:37:08] when it comes to reclaims or deviations
+[00:37:11] or over under setups
+[00:37:13] um it's the same thing it's just a
+[00:37:14] failed break and support resistance
+[00:37:16] terms it's back above support it's
+[00:37:17] support again backup layer resistance is
+[00:37:19] resistance again so for example when you
+[00:37:20] see your textbook type of
+[00:37:22] um
+[00:37:23] premise of a deviation uh you know let's
+[00:37:26] say this is your support and the market
+[00:37:27] does this and then you know breaks above
+[00:37:29] you'll have a lot of commentators saying
+[00:37:31] well this is a this is now you know this
+[00:37:32] portion was a deviation now the market
+[00:37:35] has reclaimed this level but what really
+[00:37:37] happened is the market tried to break
+[00:37:39] lower that portion
+[00:37:41] of price wasn't accepted and ended up in
+[00:37:43] a reclaim with those sellers trapped uh
+[00:37:47] sometimes it's instant if this is FP
+[00:37:48] sometimes it takes longer if it's a
+[00:37:50] deviation uh maybe it's a failed support
+[00:37:53] resistance flip if we really want to
+[00:37:54] make start making stuff up but at its
+[00:37:56] core it's the same thing uh break lower
+[00:37:58] Market not having it break higher Market
+[00:38:00] not having it and the how long that can
+[00:38:03] take can simply vary and it's okay that
+[00:38:06] variance is okay
+[00:38:10] fail breaks too
+[00:38:13] one of the main benefits of trading SFP
+[00:38:15] or failed brake setups as we've
+[00:38:17] discussed at length is the predefined
+[00:38:19] invalidation so usually you're in the
+[00:38:21] bullish scenario be the lower slow made
+[00:38:23] and in the bearish scenario it's the
+[00:38:25] highest high mate the the sort of excess
+[00:38:27] of the move
+[00:38:28] and so when you're considering whether
+[00:38:30] there's a failed break uh type of move
+[00:38:33] forming whether there's been a deviation
+[00:38:34] or what have you
+[00:38:36] um it's a two-parting two-part formula
+[00:38:38] part one is price making an effort to
+[00:38:41] break through the key level I.E trading
+[00:38:43] for it or spending time above it and
+[00:38:44] part two is price failing to continue
+[00:38:47] and therefore moving back within its
+[00:38:50] boundaries so again
+[00:38:52] if we have the if this is our level if
+[00:38:55] it's an SFP type of thing uh that entire
+[00:38:57] process is quick it tries nope not
+[00:38:59] having it and sort of that's where the
+[00:39:01] trade that's what the trade idea looks
+[00:39:03] like if it's just a failed break more
+[00:39:05] broadly it's okay for the market to take
+[00:39:07] longer and you have a fight between
+[00:39:09] buyers and sellers at the level and then
+[00:39:11] when it does that one side definitely
+[00:39:13] lost and it's the sellers and they still
+[00:39:15] end up acting as fuel even though the
+[00:39:16] setup took longer but the course the
+[00:39:18] logic ends up being the same part one an
+[00:39:21] attempt to break through the level part
+[00:39:23] two is no acceptance below that boundary
+[00:39:25] now whether that happens instantly what
+[00:39:27] happens later it doesn't matter the
+[00:39:29] trade logic and the the forces at play
+[00:39:31] are the same
+[00:39:33] as far as entry triggers go
+[00:39:36] um
+[00:39:37] thankfully now I can say watch the entry
+[00:39:39] triggers video because it's a good video
+[00:39:40] and a lot of the same principles are
+[00:39:42] applicable here uh generally speaking
+[00:39:44] for failed breaks and again this isn't
+[00:39:45] conclusive by any means I think the
+[00:39:46] entry triggers video covers more uh but
+[00:39:50] some to consider are the following you
+[00:39:52] can have a close below to close back
+[00:39:54] above
+[00:39:55] or close above to close back Below on
+[00:39:57] the relevant time frame so quite simply
+[00:39:59] in some of our examples here
+[00:40:02] if we take hold on
+[00:40:06] I want to get some of the better levels
+[00:40:08] on this one we had yeah I mean these one
+[00:40:10] is a really straightforward one you had
+[00:40:11] a close above
+[00:40:13] um the level here this next week was
+[00:40:15] whatever and then you had to close back
+[00:40:16] below so that's a classic example and
+[00:40:18] then your entry would be anywhere at the
+[00:40:19] level or even the market order in
+[00:40:21] validation behind and you know that
+[00:40:23] that's the idea uh in a nutshell
+[00:40:26] uh other examples in terms of levels I
+[00:40:29] want to see if we get any any really
+[00:40:31] clean ones
+[00:40:32] um
+[00:40:33] close above close back below
+[00:40:37] I mean I covered these on stream all the
+[00:40:39] time I think the E4 might be the only
+[00:40:41] one I've got available in this specific
+[00:40:43] catalog I mean this actually isn't bad
+[00:40:45] for Eve
+[00:40:46] um yeah that's I knew I had one more
+[00:40:48] example but this one underneath is good
+[00:40:50] but we had this quadruple top and also
+[00:40:52] some you know it's also a four hour and
+[00:40:54] daily important swing point and we know
+[00:40:56] there's a lot of stuff going on here but
+[00:40:58] just taking this lower level you had to
+[00:40:59] close above uh a sweep swipe Spike
+[00:41:03] whatever term you want to use all
+[00:41:04] defining you're describing the same
+[00:41:05] price action and then a close back below
+[00:41:08] that same that same level and I kind of
+[00:41:10] used it mapping the initial high or
+[00:41:12] mapped it using the initial high but you
+[00:41:13] can use any any of these similar
+[00:41:15] structures close above close back below
+[00:41:17] these guys are trapped and you know and
+[00:41:19] on the wrong side of the move and that
+[00:41:21] ends up being your impulse so that's
+[00:41:23] just one specific entry trigger the most
+[00:41:25] straightforward one and thankfully I've
+[00:41:26] just now remembered there is another
+[00:41:27] video on my channel which is horizontal
+[00:41:30] support resistance setup uh clean double
+[00:41:33] close or some some made up like
+[00:41:35] that but that that exact video is a bit
+[00:41:37] old but it covers this type of logic
+[00:41:38] where you have a clear level market
+[00:41:40] closes below it and then closes back
+[00:41:42] above it as a valid entry trigger here
+[00:41:45] we go oh God I just forgot what my
+[00:41:47] examples were this is a good one you
+[00:41:48] have this triple quadruple bottom BNB
+[00:41:51] closed below looks like a break close
+[00:41:53] above evidence that the market wasn't
+[00:41:55] accepting that break in validation at
+[00:41:56] the lower slow made and Target whatever
+[00:41:58] contextual level makes sense in this
+[00:42:00] case it rallied all the way to the Range
+[00:42:02] High despite it so again very
+[00:42:04] straightforward as far as entry triggers
+[00:42:06] go just candle closes on the relevant
+[00:42:07] time frame
+[00:42:08] um that's definitely worth investigating
+[00:42:10] another one which is again related to
+[00:42:14] um the first one but reclaimed level
+[00:42:15] back to acting as support after
+[00:42:17] breakdown attempt or resistance back to
+[00:42:20] back you know returns to acting as
+[00:42:21] resistance after the breakout attempt
+[00:42:24] um so basically the level restoring its
+[00:42:27] original purpose so just like in our
+[00:42:29] squiggly example here if this if this
+[00:42:31] was our support evidence of a failed
+[00:42:32] breakdown or an entry trigger the once
+[00:42:34] the market gets back above you find it
+[00:42:36] starts finding support at that same
+[00:42:38] original level
+[00:42:39] um where it formed the low initially so
+[00:42:41] that can be uh that can definitely be a
+[00:42:43] useful signal uh I'm I mean this is
+[00:42:46] probably the more straightforward one
+[00:42:48] that we have available this four hour
+[00:42:50] low on Eve break below Market doesn't go
+[00:42:53] anywhere right so that there's some sort
+[00:42:55] of soak absorption going on and then
+[00:42:56] ultimately closes back above Wicks back
+[00:42:58] to this level finds support there and
+[00:43:00] that level's been reclaimed now in
+[00:43:02] validation you know at the low if you
+[00:43:04] want to be safe or maybe even a Thrust
+[00:43:05] candle stop if you're cheeky and then
+[00:43:07] Target again uh very contextual
+[00:43:11] I'm wondering if there are others I mean
+[00:43:13] this is decent enough again it's based
+[00:43:15] on that if
+[00:43:16] uh for our structure but looking at it
+[00:43:19] on the daily in terms of this Range High
+[00:43:21] and the swing point in general
+[00:43:23] um you had to close above close back
+[00:43:25] below here after a spike and you can see
+[00:43:27] the market retested that level before
+[00:43:29] moving higher so it was resistance
+[00:43:30] that's the spike back to resistance and
+[00:43:33] and that's the important part of that I
+[00:43:36] think
+[00:43:37] um was there anything else structurally
+[00:43:39] that's
+[00:43:41] particularly helpful I don't think so
+[00:43:45] that that's probably the the core of it
+[00:43:47] as far as the entry trigger goes
+[00:43:49] um and in general even if you're not
+[00:43:50] using price based stuff you just want to
+[00:43:52] see a large amount of delta or
+[00:43:53] aggression through the high and low and
+[00:43:55] price trading above that cluster if
+[00:43:57] you're using the footprint right so I'm
+[00:44:00] sure go to Adam's videos and blog
+[00:44:03] trading Riot and he covers a ton on what
+[00:44:06] these kind of mouse trap and failed
+[00:44:08] brake setups look like from a footprint
+[00:44:10] point of view they're really good but
+[00:44:12] very much looking at the same thing of
+[00:44:14] you want to see a large amount of
+[00:44:16] participation that goes unrewarded and
+[00:44:18] as soon as the market starts trading
+[00:44:19] above where the sellers tried really
+[00:44:21] hard or below where the buyers tried
+[00:44:22] really hard any and any entry trigger at
+[00:44:25] that point is valid whether it's a
+[00:44:26] market entry or some sort of re-test
+[00:44:28] Entry or a momentum entry on a
+[00:44:29] consolidation with some sort of daily
+[00:44:31] open flip you you know candle close you
+[00:44:33] name it it's the kitchen sink at that
+[00:44:35] point
+[00:44:37] now there are some very important
+[00:44:38] nuances when considering these types of
+[00:44:40] Spike reversal setups what have you now
+[00:44:43] I call them trap setups as a catual term
+[00:44:45] and I would say that they are important
+[00:44:47] in the context of the dominant Trend so
+[00:44:50] in a downtrend when things are bearish
+[00:44:52] you would expect failed breakouts more
+[00:44:55] than failed breakdowns because in
+[00:44:56] downtrend it's less likely to be a
+[00:44:58] failed breakdown and be a real breakdown
+[00:45:00] because the trend is down and stuff is
+[00:45:01] moving down but when you see a breakout
+[00:45:03] and a downtrend you should raise your
+[00:45:05] eyebrow because that's a counter Trend
+[00:45:06] move and therefore in your mind at least
+[00:45:08] you should entertain with a higher
+[00:45:09] probability that the breakout is going
+[00:45:11] to fail and obviously the opposite works
+[00:45:13] for an uptrend which is bullish in
+[00:45:15] bullish conditions if you see a
+[00:45:16] breakdown you should treat that with
+[00:45:17] suspicion uh that perhaps that is a
+[00:45:19] catalyst for a continuation more so than
+[00:45:22] a real breakdown SO trading sort of you
+[00:45:24] know the old slogan in tandem with the
+[00:45:27] trend is is actually relevant when
+[00:45:28] considering uh trap type of setups
+[00:45:32] you definitely don't want to be the
+[00:45:33] counter Trend
+[00:45:34] um maximalist who in every uptrend Fades
+[00:45:37] every breakout when every downtrend
+[00:45:39] Fades every breakdown that's a very
+[00:45:42] easy way to not have a great time to put
+[00:45:45] it charitably now within a range
+[00:45:47] forgetting the context of a dominant
+[00:45:48] Trend within a range you want to look
+[00:45:50] for trap setups at the extremes or
+[00:45:52] boundaries of the range and the basic
+[00:45:54] logic applies of a failed breakdown at
+[00:45:56] the range low more likely to reach for
+[00:45:58] the Range High a failed breakdown of the
+[00:45:59] Range High more likely to reach for the
+[00:46:00] range low so one extreme uh to the other
+[00:46:03] essentially and that's as we indicated I
+[00:46:06] mean this BNB one is like a decent
+[00:46:07] example a failed breakdown at this range
+[00:46:10] low and led to your Range High and then
+[00:46:12] back down
+[00:46:13] um
+[00:46:14] on the Bitcoin front this was a good one
+[00:46:16] where you had a failed breakdown at the
+[00:46:18] range low ultimately took you to the
+[00:46:20] Range High and so when you're dealing in
+[00:46:22] range-bound conditions those in
+[00:46:25] generally speaking those should be your
+[00:46:26] targets from from one extreme to the
+[00:46:28] other uh regardless of the sort of time
+[00:46:30] frame you're engaging in uh same here
+[00:46:33] right you have a spike I mean this is
+[00:46:34] this is a really unfortunate example
+[00:46:36] given this candle would have probably
+[00:46:37] taken anyone out but if you were quick
+[00:46:39] enough to to catch the previous week's
+[00:46:41] high or whatever it may be you know
+[00:46:42] range high range low once the spike
+[00:46:44] comes in and fails ideally some sort of
+[00:46:46] you know visible on the lower time frame
+[00:46:48] where does It ultimately get to it gets
+[00:46:50] to the range low
+[00:46:52] um do I have other Range band examples
+[00:46:54] which aren't crazy crazy I don't think
+[00:46:57] so I don't want to go like
+[00:46:59] um you know I guess this is somewhat
+[00:47:01] valid I mean we're sort of talking about
+[00:47:02] it at the time here you had a Range High
+[00:47:04] Spike where's the range low well it's at
+[00:47:06] the very least here if not lower down uh
+[00:47:08] but I think the the
+[00:47:10] more important point is
+[00:47:12] to take away the fact that when we're
+[00:47:14] dealing with inside days weeks and
+[00:47:16] months that in itself is also a range so
+[00:47:19] for example if you have this as your
+[00:47:22] um inside month
+[00:47:23] no that's a bad example let me just do
+[00:47:25] this on the squiggly
+[00:47:27] do I have any examples yeah sorry this
+[00:47:29] is a good one
+[00:47:31] so if you're dealing with the inside
+[00:47:33] range as a month
+[00:47:35] um
+[00:47:36] let me try that again when you're
+[00:47:39] dealing with an inside candle its
+[00:47:40] boundaries become the range and so when
+[00:47:42] you have spikes of one side of the
+[00:47:44] candle that's the Range High or or the
+[00:47:46] range low right so on this occasion this
+[00:47:49] is the inside month the Range High got
+[00:47:50] Spike the natural Target is the other
+[00:47:52] side of the range which happens to be
+[00:47:54] the inside candle low so when you get
+[00:47:56] inside today's inside weeks inside
+[00:47:58] months and the market spikes one side of
+[00:48:01] that candle you naturally target the
+[00:48:03] other side of that candle I really
+[00:48:05] butchered that but I think we'll keep it
+[00:48:07] in whatever
+[00:48:08] raw and unedited but yes any type of
+[00:48:11] range whether it's your standard price
+[00:48:12] action one or a specific inside candle
+[00:48:14] type of range from one side to the other
+[00:48:16] uh once a failed break has taken place
+[00:48:19] is your Baseline expectation I would
+[00:48:21] also warn you in this because listen
+[00:48:23] whenever I this certainly was the case
+[00:48:25] for me whenever I learned a new tool I
+[00:48:27] just jumped into the first one minute
+[00:48:28] chart and tried to use it and find every
+[00:48:30] use case for it this is especially
+[00:48:31] important for trap setups is that not
+[00:48:33] everything is a trap setup uh sometimes
+[00:48:36] the market just breaks higher or breaks
+[00:48:38] lower and keeps going and that's normal
+[00:48:39] especially when there's a dominant Trend
+[00:48:41] in tax can you imagine if the market
+[00:48:43] just worked on these types of spikes and
+[00:48:44] failed brakes I mean the market would
+[00:48:46] literally never go anywhere right you
+[00:48:47] just have like the same range and it's
+[00:48:49] like oh Spike one side spikes the other
+[00:48:51] side spikes one side Spike the other
+[00:48:52] side the market will be garbage and as
+[00:48:54] we've observed the market does Trend and
+[00:48:56] have a directional bias from time to
+[00:48:59] time so it's not all traps it's not all
+[00:49:01] spikes uh contextually you could again
+[00:49:03] start to make really strong case for
+[00:49:05] where you might expect those to form
+[00:49:06] like you know in tandem with the trend
+[00:49:08] or specific range boundaries you can
+[00:49:10] sort of zero in to where you might
+[00:49:12] expect them but not every you know not
+[00:49:13] every time the market trades through a
+[00:49:15] wick is it the end of the world Mega
+[00:49:17] reversal incoming so I think you know
+[00:49:19] having a good filter and we discussed
+[00:49:21] some of those steps having good fields
+[00:49:22] from good context for where to find
+[00:49:24] significant versus insignificant spikes
+[00:49:26] is going to save you a lot of money
+[00:49:27] because otherwise you end up doing
+[00:49:29] business at every single week and it's
+[00:49:30] just not a good time
+[00:49:32] I will say also be proportional when
+[00:49:34] considering time frames now if you have
+[00:49:37] a daily failed setup or you know failed
+[00:49:40] breakdown of just some sort of daily
+[00:49:41] trap it's likely to lead to a big daily
+[00:49:43] move as we saw in the Bitcoin example if
+[00:49:45] you have a small 15-minute trap it'll
+[00:49:46] probably lead to a smaller 15
+[00:49:48] did I say 15 oh my God I'm talking about
+[00:49:51] my bank account here if you have a
+[00:49:52] smaller 15 minute trap it's more likely
+[00:49:55] to lead to a smaller 15 minute move and
+[00:49:57] if you have now what doesn't make sense
+[00:49:59] is having a you know a five minute Spike
+[00:50:01] for example and then expecting a weekly
+[00:50:03] reversal on the back of that so I think
+[00:50:04] again this speaks to the strength of the
+[00:50:06] sfb specifically it kind of keeps you
+[00:50:08] grounded in terms of time frames but
+[00:50:09] just be aware of the types of Spike or
+[00:50:12] trap or sfb setups you're dealing with
+[00:50:13] and make sure they're somewhat
+[00:50:15] proportional uh when it comes to the
+[00:50:16] type of move You're Expecting higher
+[00:50:18] time frame bigger move lower time frame
+[00:50:20] smaller move in general I would say for
+[00:50:23] this type of setup and just thinking
+[00:50:25] about the market in this way that
+[00:50:26] Confluence is very important so a random
+[00:50:29] high or low that barely stands out is
+[00:50:31] less likely to be compelling than a
+[00:50:32] clear High time frame high or low which
+[00:50:34] also aligns with an Sr level moving
+[00:50:36] average round number like you should be
+[00:50:38] able to build a story almost of of the
+[00:50:40] market or sort of make it compelling as
+[00:50:42] to why that inflection point is
+[00:50:44] significant out of the thousands of
+[00:50:46] highs and lows available when viewed
+[00:50:48] through the lens of a Candlestick chart
+[00:50:50] so factors of Confluence whether it's
+[00:50:52] support resistance or Candlestick opens
+[00:50:54] or you know daily weekly monthly highs
+[00:50:56] and lows moving averages round numbers
+[00:50:58] all that kind of stuff adds significance
+[00:51:00] uh and increases the probability of you
+[00:51:03] Landing somewhere important as opposed
+[00:51:05] in the middle of nowhere
+[00:51:06] and again the last Point very important
+[00:51:09] but also very simple pick better levels
+[00:51:12] to get better trades even if they don't
+[00:51:13] form as often as we covered at the very
+[00:51:16] outset of this video uh the logic of
+[00:51:19] these types of setups is based on active
+[00:51:21] participation in the same area if it
+[00:51:23] doesn't stand out to you if it's not
+[00:51:24] obvious and you know if the sort of
+[00:51:28] Swing point or key high and low you're
+[00:51:30] looking at you just kind of lose track
+[00:51:31] of it when you take your eyes away from
+[00:51:32] the chart it's probably not that
+[00:51:34] significant and if it doesn't stand out
+[00:51:35] to you it probably doesn't stand out to
+[00:51:37] the rest of the market and that's doing
+[00:51:38] you no favors in terms of doing business
+[00:51:40] at good levels
+[00:51:42] conclusion that's it we're done uh
+[00:51:44] before you go I would really appreciate
+[00:51:46] it if you do normal YouTube stuff just
+[00:51:48] while I'm rambling click a like on the
+[00:51:50] video subscribe to the channel if you
+[00:51:51] haven't already leave a comment uh about
+[00:51:53] something ideally relevant to the video
+[00:51:55] but personal insults are also acceptable
+[00:51:57] uh there's a lot more content on the way
+[00:51:58] I want to get this one out of the way
+[00:52:00] because it also also pertains to
+[00:52:02] um some of the videos that came before
+[00:52:04] it so it's a nice little topic to round
+[00:52:06] up on before we venture elsewhere I
+[00:52:08] would also ask you to check out
+[00:52:09] technical Roundup where I do live
+[00:52:11] streams and other stuff and the free
+[00:52:12] newsletter trlatter.com which comes out
+[00:52:15] every week where we Donald and I just
+[00:52:16] post levels and Analysis if you want
+[00:52:18] more up-to-date Market stuff that's
+[00:52:19] where you look that's all from me hope
+[00:52:21] you all have an excellent day week life
+[00:52:24] uh whatever the relevant time period is
+[00:52:26] for you thank you for your sport more
+[00:52:27] coming and that's all from me take care
+[00:52:29] bye
