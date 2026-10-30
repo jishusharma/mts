@@ -1,160 +1,35 @@
-# NEXT SESSION (2026-10-27, Fable 5.1 / fable-confluence-map)
+NEXT SESSION (2026-10-30, DSA JIS-NUC / MTS-2026-10-30-1228Z)
 
-Done: fable-confluence-integration-map. Wrote `MyTradingSys/research/design_cards_2026-10-26/FABLE_CONFLUENCE_MAP.md`: 13 families x (role, inputs, outputs, overlaps), every non-UNKNOWN cell sourced from layer_index.json, LAYERS.md or PRE_REG_CONFLUENCE.md (role words from its section 8). No verdicts, no discards, no live-tree or data touch. Card closed with tasks.py done --result. Next reviewer: start the confluence review from this map; pairs to deduplicate are listed at the bottom of it.
+Last DSA boot: 2026-10-30T12:29Z JIS-NUC, branch dsa/jis-nuc-1030-1229 at origin/fast-track 94d593881.
+Older hand-over sections moved to MyTradingSys/system/handoff_history/2026-10-30_next_session_trim.md.
 
-# NEXT SESSION (2026-10-23, Gemini Flash / yt-exhaust)
+## Queue answer
+No DSA-NUC cards exist on trunk. tasks.py next --lane DSA-NUC and --lane DSA both return NO_READY_CARD (31 ready, none DSA-laned). NUC work is desk rows.
 
-Done this exhaust session (JIS-NUC, jis-nuc/yt-exhaust, 2026-10-23/24):
-1. `lab-planted-error-trial`: implemented 8 shadows across 8 error classes for 6 clean cards per codex-unstick; written fail-first test; generated FLOW_PLANTED_2026-10-18.md catch table, manifest.json and shadow folders 01..08. Shipped to origin/fast-track (commit 23426b19).
-2. `t02-f3-fixtures-fabio-v3-grid`: hand-built 1m order-flow fixture with footprint, delta, and b99 volume forcing Model C breakout signal at NY cash open; verified assert_causal across cuts with 0 differences and planted peek detection; written report. Shipped to origin/fast-track (commit 33ad19a5).
-3. `t02-f3-fixtures-wlow-session-levels`: hand-built fixtures forcing wlow_bounce (ISO weekly low bounce on bar 175) and session_levels (prior-day high failed breakout on Day 1 min 101); verified assert_causal across cuts with 0 differences and planted peek detection; written report. Resolved CI red cause via unittest.skipUnless when NUC F: drive runs.jsonl is absent on Linux CI runner; full 65-step gate passed and shipped to origin/fast-track (commit 794e56d1). CI turned green.
-4. `lab-formula-spec-text`: added F01 synthetic twin with RSI 57.8313 (4800/83, hand arithmetic documented, replacing legacy 57.8125); F11.4-6 arithmetic confirmed/corrected; header updated to document tape vs synthetic examples accurately; test_formula_spec.py verified; written report. Shipped to origin/fast-track (commit f5bce62f).
-Queue status: tasks.py list --lane CODEX --state ready is 100% EXHAUSTED (0 ready cards remain). YouTube extraction cards check: 0 ready CODEX extraction cards exist (krown-other-sources-event-study-videos is refined C1 awaiting independent Claude/GPT review; Producer != Reviewer strictly followed).
-Next: Take pending Sonnet / HAIKU cards (dsa-audit-04..06, cbp-add-channel-latest-n, aws-bedrock-extraction-pilot) or review refined cards.
-Worktree state: clean, 0 unshipped commits, all claims released.
+## Shipped this chat
+- bb66230f, c9d30bc4: desk 20261028-094808 (krown quote audit) closed as a stale duplicate of card gemini-krown-rules-extracts-quote-audit, already shipped 2026-10-29 as 0d3dd3c26 (13/13 MATCH, 0 altered, 0 not-in-captions). Claim released.
+- 10295cabb: desk 20261028-175958. Three Gemini cards were already SHIPPED 2026-10-29 (d202cbdb4, 6592138a0, 13e33e26a), so they ran as no-ops (STOP: STATE SHIPPED, exit 0). The GPT card ran fresh: codex_run.py next -> gpt-audit-formulas-vs-pizzino-layer DONE -> b27a08517, verdict FIX-FIRST.
+- 0e638993b: desk 20261030-125045 PENDING -> CLAUDE. AIBridge aibridge_cap 50 -> 200 at scripts/aibridge/extension/content.js:11 and F:/AIBridge/extension/content.js:11, backup content.js.pre_cap200, extension reload. DSA may not write under scripts/aibridge/ or F:/AIBridge.
 
-# NEXT_SESSION
+## Findings
+- pizzino is FIX-FIRST: layers/pizzino has no entry in backtest/layers/FORMULAS.md (scope at :3-8 excludes it). Three sampled calculations match SPEC.md by hand, so this is a documentation gap, same shape as the pitchfork audit.
+- verify_extract_quotes.py on the Krown audit exits 1 with 18 NO-TRANSCRIPT lines on JIS-NUC. raw_transcripts_canonical/ is gitignored (.gitignore:210) and the four Krown caption files are not on this host. A quote audit needs the captions on the host that runs the gate.
+- agy at %USERPROFILE%/.gemini/bin/agy.exe and codex under %LOCALAPPDATA%/OpenAI/Codex/bin both work on JIS-NUC, but neither resolves on PATH, so a where probe reports a false missing.
+- Boot worktree add collides when two chats in the same minute reuse a branch name. Check git branch --list before the add.
+- A reply carrying 6 AIRUN blocks was replayed as 5 with blocks 1-2 duplicated. Reads and sync.py start are safe under replay; a claim or a ship is not.
 
-Older blocks (2026-10-18/19): `MyTradingSys/system/handoff_history/2026-10-21_next_session_trim.md`. A session reads only its own block.
+## Open on JIS-NUC (desk, pending, none claimed)
+20261017-105400 pages to the repo (12d) | 20261017-124448 stop the NUC inbox poller (12d) | 20261023-115742 run-card-context-composite-v2-dev-read (6d) | 20261026-154448 redo-fable-sim-page-contract (3d) | 20261027-205356 operator material search (2d).
 
-## Rolling super-session chain hand-over 2026-10-27 (DESKTOP-F7IU69N, local_37a9ec3e)
+## Next actions
+ 1. Claude: land desk 20261030-125045. aibridge_cap 50 -> 200 in both content.js copies, back up the installed one as content.js.pre_cap200, reload the extension, press F5.
+ 2. Claude: extend FORMULAS.md to the layer families the audits flag NOT_IN_DATA (pizzino, then pitchfork if its report agrees). Doc task, one hand-worked example each.
+ 3. Next DSA-NUC chat: take 20261023-115742 or 20261026-154448 from the desk list above.
 
-**Worktree cleanup from the 2026-10-26 Lenovo hand-over is DONE.** All 8 remaining UNSHIPPED branches (ci-1687ee8-2, context-diet, gemini-ship-boot-halve, hook-reminder-get-usage, usage-reminder-gate-3, ship-speed, ship-lesson-flag, model-rule-enforce) were independently re-evaluated by parallel workers, all recommended DROP (superseded/already-landed/stale), and deleted from origin with operator confirmation. That hand-over bucket is closed — do not re-open it.
-
-**Operator asked for a rolling super-session chain this session** (one coordinator link hands to the next live, via the Agent tool only — never `start_session` for worker dispatch, it pops an unwanted approval card even in bypass mode; see memory `feedback_prefer_agent_over_start_session`). Two p1 cards record this as a standing capability request + a behavior bug, both still `raw`, need refine+implement:
-- `coordinator-self-pacing-rolling-super-se` (d1b0b9753) — pacing checklist request for SUPER_SESSION.md.
-- `coordinator-retried-start-session-after-` (e72a67e4b) — behavior-rule request (don't retry start_session after known click-friction feedback) + an open platform question for whoever has Remote Control/push-layer visibility (does a backend-refused start_session still cost a click?).
-
-**Chain progress this session (4 links via Agent tool, 7 cards shipped, all verified `git cherry origin/fast-track <sha>` empty):**
-- Link 2 (Gate Board/backlog drain): shipped `bug-burn-cap-stops-all-work` (f00e9f212, burn-cap zero-spawn fix). No ready Gate Board card existed (tom/malkan/krown all waiting on a future triage pass). Filed `bug-context-gap-fold-repo-short-path` after hitting a blocker.
-- Link 3 (blocker fix + drain): shipped 4 fixes — `bug-context-gap-fold-repo-short-path` (f6186e465, real cause was missing git identity in `fold_repo()`'s sandbox repo, not the short-path alias the card named), `bug-ready-state-lags-shipped-card` (d2e575feb), `bug-nuc-signal-hub-not-a-git-repo` (3c3785563), `go-private-trigger-notify-operator-when-` (ffc522a39 + e81c0ca53). Also discovered its own fix now flags ~30 previously-"ready" cards as `STALE:scope changed` — re-check scope before dispatching any of them, they are not necessarily already shipped.
-- Link 4: shipped `bug-youtube-gemini-only-rule-is-a-preference` (d456f001b, 67f805ec8 — CBP caption fetch no longer requires Gemini/NUC, only open-ended video search does) and `live-cross-market-read-script` (a6a5d7a2b, bb9751a8f, 81435c019 — ported Eagle_Eyes' hand-run live-read script, fixed a since-open 5-minute bar-close bug). Flagged (false alarm, resolved): the shared main checkout was ~2500 commits stale/read-only — always `sync.py start` into a fresh worktree, don't trust "card not found" from the stale main tree.
-- Link 5 (last link this session, usage window was down to its final ~6%): shipped exactly one card, deliberately stopping after it per the tight budget — `tandem-nuc-lab-from-other-devices` (66990cb05, added `scripts/dev/nuc_lab.py` + 6 tests, gate step 3nl). Shipped with `--no-ci-wait` to fit the time budget. **CI for 66990cb05 was still `in_progress` (run 40496958685) when this session checked — confirm it went green.**
-
-**Open items for the next coordinator:**
-1. Confirm CI run 40496958685 (commit 66990cb05) finished green. If red, it's the first thing to fix.
-2. Not started, left ready for whoever has a fresh usage window: `fix-fill-rules-shared` (M, touches 5 backtest engines, needs real exploration time), `oi-pivot-1h-4h-long-oi-followup` (CRUCIAL weight, 16-cell prereg run — needs rule-11 review), `timeframes-add-2d-3d-4d-5d` (open-ended — scope says "every timeframe map found by grep," run that grep first before sizing it), `ops-change-checklist-ship-gate` (CRITICAL, needs rule-11 review), `re-state-lc1-keep-list-on-the-touched-on` (CRUCIAL, decision-numbers, needs rule-11 review).
-3. Refine (rule 14 triage) the two still-`raw` coordinator-chain cards above when there's a free SONNET slot — docs-only, no code.
-4. Re-scope-check the ~30 cards link 3 flagged STALE before dispatching any (`tasks.py check <id>`); most are likely just behind trunk, not already done.
-5. The main checkout (`BinanceDataFeed`) has pre-existing modified/untracked files left by earlier link work (not mine to touch per hard rules — don't stash/clean/revert).
-6. **Chain wound down here deliberately, not from idling or dying early:** by the end of link 5 the 5h usage window was at 94% with ~1h6m left (weekly 40%, context only ~12% — context was never the constraint, the 5h plan window was). Launching a 6th link into the last ~6% of budget risked leaving work half-shipped right as the window reset, so this coordinator stopped dispatching new links and finalized hand-over instead. Next coordinator: once the window resets, resume from item 2 above.
-
-### Continuation same chain, next coordinator window (DESKTOP-F7IU69N/JIS-LAPTOP login A, closed by operator 2026-10-27/28, stopped BEFORE the 5h window ran out this time)
-Links 6-9 dispatched via Agent tool, every shipped sha independently verified (`git fetch` + `git cherry origin/fast-track <sha>` empty + `git merge-base --is-ancestor`), not just trusted from the subagent's own report:
-- Link 6 `sim-desk-exit-reasons`: shipped `c054737d3` (added 'exit' reason column STOP/T1/SIGNAL/HOLD/NOFILL -> canonical set, RESULT_VERSION 3->4, pins 255/-0.119 unchanged). Verified.
-- Link 7 `kurisko-params-provenance-labels`: **NOT shipped — WIP only.** Worktree `mts-desktop-f7iu69n-kurisko-params-provenance-labels`, branch `DESKTOP-F7IU69N/kurisko-params-provenance-labels`, commit `923719398`. Module tests pass (29/29, new fail-first test confirmed), bands_labels sibling key added (SOURCED/OURS split), sensitivity tuple (44,4) picked per KURISKO_SPEC section 5 row 1, review MISMATCH rows 18-19 answered. Blocked on: the full gate (`run_all_tests.py --quick`) was still running when this session closed — **next session must re-run the full gate from scratch, confirm green, then `sync.py ship --release kurisko-params-provenance-labels` and empty-cherry-verify. Do not assume clean from module tests alone.**
-- Link 8 `context-cost-rules-compact-before-idle`: shipped `231545be3` (3 new rules: compact before idle in SUPER_SESSION.md D5, wide-reads-to-subagent in SUPER_SESSION.md Thinner coordinator #1, new-topic-fresh-session in roles/lead.md). Verified on trunk. Caught itself about to duplicate a CI-red revert another session (`9776afc82`+`e83ae01b1`) had already landed — aborted before pushing, no duplicate shipped (coordinator also independently caught and messaged it to stop, redundant safety).
-- Link 9 `layer-integration-guidelines-file`: shipped `5a700d9f5` (new `MyTradingSys/system/LAYER_INTEGRATION.md`, 17 lines, QUICK_ANSWERS.md pointer added). Step 3 (G3) correctly written per REQUIREMENTS.md R-03 (blind marking dropped), not the stale source text. Verified on trunk.
-- **Caught 5 stale "READY" cards that were already shipped** (tasks.py check/dispatch/stale do not detect this): `mfe-exit-dev-only-rerun-not-reproducible`, `fix-raw-1d-vs-1m-resample-mismatch-905-o`, `habib-holdout-prereg-draft`, `bug-nuc-signal-hub-not-a-git-repo`, `bug-context-gap-fold-repo-short-path`. Closed each with grep/test evidence in `tasks.py done --result`, no duplicate dispatch.
-- **Operator gated-process rule (2026-10-27, standing for this whole line of work):** any process/infra-improvement idea gets consolidated into a design-review card first (tests where applicable must pass) — only then an implementation card, which is markable done only once shipped with tests and proof attached. Filed 2 cards under this rule, both correctly still `raw` (tooling blocks them pending a Lab_Guy review stamp, confirming the gate is structurally enforced, not just documented):
-  - `rolling-chain-background-wait-design-rev` — why each link's own work-cycle (gate/verify/commit/ship) takes 15-25 min.
-  - `dispatch-ranking-shows-already-shipped-c` — the "READY cards already shipped" tooling gap (3 named instances) found this session.
-  - `coordinator-sits-idle-during-long-backgr` — **new this close-out** (operator: "you are sleeping while a process is running for 1 hour 15 minutes, this is a gap"): the coordinator itself has nothing useful to do and no escalation path while a single link runs long; names the kurisko link's placeholder-polling pattern (37 tool_uses, mostly self-polling) as concrete evidence.
-- Session closed by direct operator instruction ("close all the threads, archive this session, I will start a new one") with the usage window at ~68% of the 5h cap, ~1h left — not a crash, not idling out; Link 7 was the one thing mid-flight and is now a safe, committed WIP, not a dangling uncommitted edit.
-- **Also sitting unshipped, not touched by this session (leave alone per hard rules on others' uncommitted files):** worktree `mts-desktop-f7iu69n-operator-material-indexer-build` has an untracked file. Not mine; some other session's in-progress card.
-- Next coordinator: (1) finish/ship Link 7 per the blocker above; (2) once a Lab_Guy pass is available, review the 3 raw design cards above so their implementation follow-ups can open; (3) resume drawing from `tasks.py dispatch` as usual, keep independently verifying every ship and keep checking candidate cards' `done_when` against the tree before dispatching (per the 5 stale closes above).
-
-## Next card: nuc-unexpected-shutdown (hand-over, JIS-NUC session, 2026-10-23)
-Task: nuc-unexpected-shutdown (no card on disk yet; the brief is `MyTradingSys/system/NUC_SHUTDOWN_HANDOVER.md`). Run with zero operator input; defaults for open questions.
-Steps:
-1. `python scripts/dev/sync.py start nuc-unexpected-shutdown`, then `python scripts/dev/sync.py claim "nuc-unexpected-shutdown"`.
-2. Re-read the NUC's event log before any change, for the last 7 days: Kernel-Power 41, event 6008, 1074, 13, WHEA-Logger, 37, and 506/507. Record the counts in the commit body, not from memory.
-3. Research is done (brief, "What official support says" and "What users did", with sources). Follow its ranked plan; do not redo the searches.
-4. Build `scripts/operator/nuc_power_fix.ps1`, modelled on `scripts/operator/defender_exclusions.ps1`: `-Check` changes nothing; sets AC display-off to Never (`powercfg /change monitor-timeout-ac 0`) and Fast Startup off (`HiberbootEnabled = 0`, needs admin); prints what still needs the BIOS or hardware. Never reboots. Test: `-Check` leaves powercfg and registry state unchanged; the test must fail before the script exists.
-5. Never set `PlatformAoAcOverride` (Intel: switching the standby model needs an OS reinstall). Do not reboot the NUC, flash or change the BIOS, add a scheduled task (SCHEDULING_POLICY.md), or touch the live tree.
-6. Ship with `python scripts/dev/sync.py ship --release nuc-unexpected-shutdown`. The commit body carries the event counts and the `-Check` output.
-7. Defaults: BIOS flash: no, until a UPS is in place. Leave the operator steps (BIOS: After Power Failure = Power On, PCIe ASPM off; CR2032; UPS and adapter; KC600 firmware S4500109; Defender exclusions b-544817) in the brief and the recap.
-
-## Next card: tc4-desk-done-once (hand-over, super session DESKTOP-F7IU69N, 2026-10-23)
-Task: tc4-desk-done-once (`python scripts/dev/tasks.py brief tc4-desk-done-once`). Not started (turn cap hit, weekly quota 97%). Steps: `sync.py start tc4-desk-done-once`, claim; test first (two clones close one row, exactly one done commit lands; red on old desk.py); fix `finish`/`take` in scripts/dev/desk.py (lines 126-150) with a re-read inside the push retry, CAS pattern of lease._write; ship. Then tc3-budget-lines, tc5-lab-lane-dedupe. Data-blocked here: context-conditioned-session-flow-states, kurisko-prereg-fire-counts (need Dumps/metrics, F:/MTS klines).
-
-## Next card: mid-turn-image-intake-gap (hand-over, plain pilot session on JIS-NB, 2026-10-22)
-Task: mid-turn-image-intake-gap (card on disk: `python scripts/dev/tasks.py brief mid-turn-image-intake-gap`).
-Steps, no operator input needed:
-1. `python scripts/dev/sync.py start mid-turn-image-intake-gap`, then `sync.py claim "mid-turn-image-intake-gap"`.
-2. Find the 2026-10-18 ~14:57Z session transcript jsonl and check whether the 5 mid-turn images are in it (queued-command or attachment record) versus the user record `ingest_transcript` accepts (scripts/dev/shot.py ~246).
-3. Present: extend `ingest_transcript` plus a fixture test that fails on old code. Absent (DEFAULT, OURS): add a KNOWN LIMITS row to MyTradingSys/methodology/screenshot_intake.md (~line 85: mid-turn images never reach disk, re-paste as a new prompt) and the notice line, with a test that the notice text exists.
-4. `python scripts/dev/test_shot.py`, `tasks.py done mid-turn-image-intake-gap --result "..."`, `sync.py ship --release <slug>`.
-Done earlier this session (pilot C, 2026-10-22): shot-py-store-path-nuc (manifest 452->454 rows), gate-quarantine-expiry-cap (already in c8e5fe3fd, card closed).
-
-## Simulator desk R2: ETH 1m + symbol box (hand-over, Supervisor C, 2026-10-21)
-Run with zero operator input; defaults for open questions (park levels; keep RSI daily default; plug nothing new). Plan: `MyTradingSys/research/sim_desk/ROADMAP.md` (now on trunk).
-- Verified: desk tests 41 passed / 3 skipped on trunk code. Nothing built yet (supervisor read budget ran out right after the planner).
-- Step 1 (public data, Sonnet or Haiku): fetch ETHUSDT 1m 2022-01..2024-06 (30 files, warm-up included) into F:/MTS/data/tom_raw/klines; do not commit CSVs: `python -c "import sys; sys.argv=['f','--start','2022-01-01','--end','2024-06-30','--datasets','klines','--out','F:/MTS/data/tom_raw']; import MyTradingSys.backtest.fetch_binance_archive as f; f.SYM='ETHUSDT'; sys.exit(f.main())"`; expect `{'ok': 30}`.
-- Card B1 (Sonnet; owns `backtest/fetch_binance_archive.py` add `--symbol`, `studies/_bars.py`, `test_studies.py`): `load_1m(symbol='BTCUSDT')`, `data_ready(symbol)`, symbol-keyed `.npy` cache and `_ALL` (today keyed `'a'`: ETH would silently read BTC). Test: tmp BTC and ETH CSVs with different prices, `load_1m('ETHUSDT')` after BTC returns ETH; red on old code.
-- Card B2 (Sonnet, after B1; owns `desk.py`, `studies/rsi.py`, `page.html`, `test_desk.py`): `symbol` param (BTCUSDT, ETHUSDT) in rsi `params/normalize/label/run`; TRIALS row carries symbol for non-BTC, BTC label/row byte-identical; bump `RESULT_VERSION` to 3; levels refuses non-BTC; dropdown in page. Test: fake bars both symbols, ETH row has `ETHUSDT`, BTC run after ETH not served from ETH cache; frozen BTC levels row (n 772 / -0.039) unchanged.
-- DEV window only. Thinker session `sim-thinker` (local_05060ea8-b8b6-4e9d-8024-03062ef8c643) is on standby, model not yet set to Opus (set_session_model was blocked); stop it or set Opus then send it the roadmap-judging task.
-- Login B (NUC): GPT card re-derive 255 / -0.119 R; Gemini card cross-review of RSI spec. Not posted this session.
-
-## Live host move coordinator (laptop) 2026-10-22: engine RUNNING from C:\MTS\mts-live at f435453c, health OK, AUTO_PAUSE cleared (hand-over, Sonnet)
-- CORRECTION 2026-10-22 11:00: all devices were switched off overnight on purpose (operator); the engine stop at 03:03 IST and any red alert from it are that, not a fault.
-- FIXED 2026-10-22 (57b77eab, 57e4ebb7, f435453c): launch scripts derived the dev-checkout path (now from $PSScriptRoot / script location); runtime_data launchers called a per-host python path that exists only on JIS-NB (now `python` from PATH; stuck wscript hosts piled up ~160 until killed); oi_recorder (one-shot, run each supervisor cycle) and htf_context_live --loop had no launcher/supervisor entry (now in loop-supervisor Aux list). MTS-Wrapper and MTS-Supervisor tasks now point at C:\MTS\mts-live. Guard tests in scripts/dev/test_mts_launcher.py. After `mts stop` kill any old loop-supervisor pwsh before `mts start` (an old supervisor keeps the old Aux list).
-- Done: cards 1-3 shipped; probe PASS; NUC shares MTS-* made; cmdkey on laptop+NB; JIS-NB stopped, state copied via NUC MTS-Backup/nb_state (robocopy exit 3, sha256 NOT compared). Live tree C:\MTS\mts-live at 2ead8370 with .mts_live; `mts start` ran, owner marker = desktop-f7iu69n. DECISION (OURS): old testnet HALT/HALT_DAILY_LOSS moved to halt_history (_cleared20261022), operator-approved.
-- Open: AUTO_PAUSE cleared 2026-10-22 08:10Z (health OK, testnet; 1 h watch compressed on operator ASAP); still to do: publish mirror + live_mirror.py brief; rename NB .mts_live to .retired and run the hardcoded-path/python-path check on NB scripts; sha256 compare of copied state; DEVICES.md and SCHEDULING_POLICY s5 'cut over'; JIS-NB red alert cause unconfirmed (NB never answered; likely the same check_live_health RED while the engine was down). Remote access to NB/NUC (ssh key + Tailscale) in progress with the Haiku guide session; NUC key login still refused. Rollback in LIVE_HOST_MOVE s4.
-
-## Live host move JIS-NB -> DESKTOP-F7IU69N: STAGED 2026-10-21, cutover NOT run (hand-over, Opus, Lenovo)
-Run with zero operator input; defaults for open questions. Plan and checklists: `MyTradingSys/system/LIVE_HOST_MOVE.md`; DEVICES.md s1/3/6/7/8/9 and DEPLOY_RUNBOOK.md ("Live host cutover") point to it. Nothing was deployed, started, stopped or shared.
-- Result: laptop facts captured (2 batteries, Balanced plan, Wi-Fi only, Update active hours 22-16, IPv4 192.168.29.157 DHCP); laptop Wi-Fi baseline 2026-10-20 21:34Z median per new HTTPS call: Binance ~200 ms, Deribit testnet ~320 ms. JIS-NB numbers for the comparison NOT taken.
-- Next, builder session (Sonnet, any host, not the live tree), cards in this order, each with tests that fail on old code: (1) `live_mirror.py` root/publisher not tied to the JIS-NB hostname (env/config per host; LIVE_HOST_MOVE s6); (2) `mts.ps1:348` auto-trader Python path resolved like the other launch lines, fail closed if missing (live path: restart + error tests); (3) `supervisor.py` lane rules know the laptop as the live host. File them with `tasks.py` if they are not cards yet.
-- UPDATE 2026-10-21 (operator, in chat): ALL laptop settings, gh login, SIM internet and the NUC shares are DONE; no operator blocker is left. Remaining: the 3 builder cards below (filed raw: host-move-live-mirror-root, host-move-mts-ps1-python-path, host-move-supervisor-lane-laptop; the Session_Planner refines them), the same-15-minute latency probe, then the cutover run by the coordinator the operator names (login A). The line below is the OLD list, kept for history.
-- Old list, operator (10 min, laptop): LIVE_HOST_MOVE s3 items 1-6 (charge threshold 60-80 % both batteries, Energy saver off, sleep/hibernate on AC never, NIC power saving off, Update restart notify, data SIM in the laptop LTE modem (replaces Ethernet; probe must pass over the SIM)), install `gh` and log in; NUC: create shares MTS-Data (read-only), MTS-Live, MTS-Mirror, MTS-Backup (s5); UPS USB link; router + ONT mini-UPS (s7).
-- Next, a session on JIS-NB: run the s3 item 9 probe on JIS-NB and on the laptop in the same 15 min, record both in LIVE_HOST_MOVE s1, pass/fail per the OURS rule there.
-- Cutover (s4): only the operator or a coordinator the operator names, in a window the operator chooses; none set (default: no move until named). Builders never run it. Defaults: q-live-autostart NO (manual `mts start` after any reboot), alerts stay on the laptop and are read on JIS-NB via the mirror, trips cut back to JIS-NB first.
-- CI: STATUS showed `CI green:` RED (oldest ungreen 22.7 h) and `gh` is missing on the laptop, so CI was not checked here; a host with `gh` checks the pinned `ci-<sha>` card first.
-- Do not add gates, lints or rule docs for this.
-
-## Simulator desk: RSI and WaveTrend studies shipped 2026-10-21 (hand-over, Opus lead)
-Run with zero operator input; defaults for open questions. Start: `python MyTradingSys/research/sim_desk/desk.py`, http://127.0.0.1:8765, pick the study at the top.
-- `studies/rsi.py` (Malkan 40/60 via rsi_core + malkan_40_60) and `studies/wavetrend.py` (LazyBear cross via wavetrend.py) share `studies/_bars.py` (1m bars cached in cache/bars, resample, one trade on 1m bars). Every on-screen choice says (trader) or (ours); sources are in each file header.
-- On screen (DEV, fee-net, filled trades): RSI daily (trader default) 2 trades, -1.04 R, NOT ENOUGH DATA (under 30 trades); RSI 4h 20 trades / 1h 75 trades, about 0 R, NOT ENOUGH DATA. WaveTrend 1h default 369 trades, -0.158 R, range -0.288 to -0.023, FAILED.
-- Desk verdict now: under 30 filled trades = NOT ENOUGH DATA; whole range below zero = FAILED. New question `rsi-timeframe` on the page (default: keep daily).
-
-## Simulator desk: plug-in seam + Questions panel shipped 2026-10-21 (hand-over, Opus lead)
-Run with zero operator input; defaults for open questions.
-- A new layer is one file in `MyTradingSys/research/sim_desk/studies/` (levels moved to `studies/levels.py`); the desk finds it at start, no desk.py edit; a study picker appears once there are two. Contract and per-layer verdicts: `sim_desk/PLUGIN.md`. Nothing fits as-is today; Tom, CryptoCred and RSI need a small adapter; Fabio does not fit (order-flow bars start 2024-12-02, after the DEV window). No layer was ported.
-- Questions panel at the bottom of the desk page: questions live in `sim_desk/questions.json`, the operator's answers append to `sim_desk/cache/answers.jsonl` (local, gitignored). FIRST STEP of the next desk session: read that file (latest row per id wins). No answer = default: `first-layers` -> wait for Tom v2 rules, then wrap Tom first; `levels-park` -> parked.
-- Ask the operator new desk questions by adding them to questions.json, not in chat. 32 tests (6 new, red before).
-
-## Simulator desk fixes shipped 2026-10-21 (hand-over, Opus lead; Fable review C1-C3 + E)
-Run with zero operator input; defaults for open questions. Start: `python MyTradingSys/research/sim_desk/desk.py`, http://127.0.0.1:8765 (first Run builds a local cache once, ~77 s; then ~7 s per Run; needs the 1m bars at F:/MTS/data/tom_raw/klines).
-- Now: only filled trades count (screen shows "255 trades (517 ideas never filled)"); verdict from the spread of the real trades, the two-point power model is off the screen; every chart caption has date/time UTC, R, long/short and outcome, and the level the entry filled at is drawn; plain error messages; "already tried" is keyed on TRIALS.md rows, so another tree does not log the same setting twice; the target box greys out unless the exit is "chosen multiple"; labels "Which touches" / "How to enter". 26 tests (10 new, red before).
-- Frozen setup on screen: NOT ENOUGH DATA, 255 filled trades, -0.119 R per trade, 95 % range -0.369 to +0.148 R, worst losing streak 15. The review expected FAILED; on filled trades the spread is wide (sd 1.57 R, power for +0.10 R 17 %), so +0.10 R is not ruled out. FAILED in the review came from the 517 zero rows.
-- Levels strategy: PARKED (coordinator, operator pre-approved). No validation run; card lc-validation stays unrun. Reason: no positive fee-net edge on DEV in any of 240 variants, filled trades average -0.119 R.
-- Open from the review, only if the operator asks after using it: C4 (one no-fill and one day-end example when common), C5 (study 2 = Fabio, check its data first). The study's 240-variant ranking counted no-fills as 0 R trades; nobody should re-rank it (strategy parked).
-- Do not add gates or rule docs for this.
-
-## LC3 ladder simulator (lc-ladder-dev) shipped 2026-10-21 (hand-over, Fable; data run on JIS-NB)
-Run with zero operator input; defaults for open questions. Card lc-ladder-dev is done; report `research/levels_confluence_2026-10-14/ladder_dev.md`, rule `frozen_rule.json`, 243 rows in `layer_lab/TRIALS.md`, 9 tests in `test_ladder.py` (red before the code existed).
-- Result on standard DEV (5976 first touches of the 8 KEEP levels, 2022-04..2024-06, VALIDATION/HOLDOUT unread): no variant of the 240 (3 entry filters x 4 scale-ins x 5 stops x 4 exits) has a lower 95 % CI above zero. Frozen rule E1 S2 K5 X0_2R: mean net R -0.039 [-0.123, +0.048], n 772. Verdict: INCONCLUSIVE by the card rule (power_mde.py two-point power 31 % < 50 %), FAIL by sample-sd power (87 % for +0.10 R). Arm P (METHOD.md ladder sizing): -0.130 R, 0 liquidations, max leverage 1.4x; it beats a random-entry control by +0.115 R and the naive S0 K1 X1 by +0.333 R, so the level and the capped adds help, but not enough to pay fees (mean fee 0.11 R per idea; break-even needs gross +0.11 R, the rule makes +0.07 R).
-- Decision for the operator (default given): card `lc-validation` (LC4, refined, depends on lc-ladder-dev) reads VALIDATION once only on a DEV PASS. Default: do NOT run it; park LC4 and the levels-confluence layer (fee-net evidence says no edge at the first touch with these exits). If the operator wants one more DEV iteration, the cheapest unexplored direction is the K0 finding: winners travel 1.27 % against before T1 (90th pct) while the tested stops sit at 0.2-0.7 %, i.e. every stop arm cuts most winners; a wide-stop/small-size arm was not pre-registered and would be a new trial.
-- Known contamination: E1/E4 filters were chosen on the stale VALIDATION-window separation.md (kept as pre-registered); event_table.csv was not used.
-- Do not add gates or rule docs for this.
-
-
-## Gate tiers by path: shipped 2026-10-20 (hand-over, Sonnet)
-Run with zero operator input; defaults for open questions. gate-tiers-by-path is on trunk (ba46d25c7); measured on JIS-NB after it: non-live code ship (smoke gate, 11 steps) 71 s wall; docs-only ship (this hand-over) 11 s wall, no local step.
-- Claims now live on the side branch `claims`: `sync.py claim/release` add no trunk commits; `relay_board.py` reads it (b1bb04ff3).
-- Follow-up, one small card: `desk.py` (trunk_claims), `trace.py` (open_claims), `make_layers_board.py` and `scripts/sched/relay.py` (live path: needs the restart/error tests) still read claim files from the trunk folder; point them at `origin/claims`.
-- A duplicate copy of this task sits unshipped on branch claude/vigilant-chatelet-c1366c (mid-merge, 10 conflicts); leave it, the operator decides on deleting it.
-- Second ship from one tree within 10 min is refused; `--again` overrides (trunk implementation).
-- Do not add gates, lints or rule docs for this.
-
-## Thinker hand-over 2026-10-20 (v1 plan written; nothing else changed)
-Run with zero operator input; defaults for open questions. The v1 plan is in `MyTradingSys/research/v1_plan_2026-10-20/` (README.md indexes D1-D9 and DECISIONS_PROPOSED.md). Nothing in it changed code, cards, config or the live tree.
-- Pipeliner / coordinator: post the seven questions in `DECISIONS_PROPOSED.md` on the decision page (OPERATOR_DECISIONS.md format, defaults given). Until the operator answers, apply only the defaults that cost nothing: release the 3 stale claims, 35-41 h with no commit (D1 section 4), ship the unjam branch `claude/traffic-unjam-77aa8e` after a rule-11 review (2 commits not on trunk: 958c0d05, 8d3dc4d0), run `tasks-sweep-closed-cards`.
-- Operator (ten minutes): read `D2_V1_SPEC.md` then `D7_ROADMAP.md`; answer yes / no / change per question. q-v1-config-1023 is due before 2026-10-23 (27 grandfathered sources).
-- Do not start new layers, lanes, pages or rule docs: D7 freeze is proposed and the default is yes.
-- Operator note 2026-10-20 (minimum work, lean, no gates that do not belong): `D10_OPERATOR_STYLE_TUNING.md` adds q-v1-gate-tiers, q-v1-claims-off-git, q-v1-turn-caps (defaults yes). First S0 card after the answer: gate tiers in `gate_select` + `sync.py` with tests that fail on old code.
-
-## NB tandem coordinator 2026-10-18 hand-over (NB at 81% weekly on 2026-10-18 ~13:00 IST, 5-hour 33%; weekly cap 78% passed: NB does shipping only until the 2026-10-20 reset)
-Shipped to trunk (git cherry empty): outcome-labeler incremental fix + 9 tests (SLOW exit 3 is discarded by `start-trading-day.ps1:546`, log it there: follow-up), krown-recall-check, state-machine vwap/cvd audit, RV02 R1+R2 (REVIEWED stamps), Fabio date-match + Tom ctlong audit, planner batch 3.
-Not on NB: a Tom fade paths ship (`tom-encode-fade-entry-paths`, branch claude/eloquent-shannon-345adc, REVIEWED APPROVE; NUC claimed the same card at 0628Z: look in the trunk history first) and eu-low-sweep (branch claude/quirky-volhard-b457c7): both sessions were told to ship and stop.
-For the NUC / Gemini (Flash medium or high; `agy` cannot run from NB, it says sign in over the SSH gate): `tom-probe-prereg`, `rv05-h2-position-line-evidence`, `rv-dsa-ledger-mechanical`, planner raw cards. Stay Claude (CRUCIAL, diff-only review Agent first): RV02 R3 `rv02-fix-dax-full-dev-authorization`, R4 `rv02-fix-dax-producer-data-binding`, `tom-dax-backtest`. Hold `gap-g2-dax-ask-candles` (A-20261018-6) and new consumers of unchecked lab bases (A-20261018-5). Live tree not at trunk (blocked by a live BUGS.md edit); BUGS rows B190-B193, java-popups desk check and the JIS-NB fetch row for gap-g2 are still open.
-Ship tips: run ships detached (`nohup python -u sync.py ship > log 2>&1 &`), the 2 gate slots queue for hours when 6+ sessions ship; a red from `Java insufficient memory` is load, rerun once.
-
-
-## DOCTOR hand-over 2026-10-22
-Read MyTradingSys/system/CI_SPEED_DIAGNOSIS_2026-10-22.md (partial). Next: implement item 1 (per-SHA concurrency + mark-green ancestor guard, fail-first test), then sync.py stage timings and the hard-coded path sweep.
-
-## E2E run 2 (2026-10-22, Supervisor B)
-Both cards shipped via Agent Builders: ecd83de0 (e2e-launcher-test-escape), ab82fc75 (e2e-hook-bench-all-hooks). Rechecked: git cherry empty, 103 and 10 tests passed. Open: Builder 2 used ship --again to pass the 10-minute second-ship guard.
+## Next session launch prompt
+`	ext
+Session ID: MTS-2026-10-30-HHMMZ-DSA-JIS-NUC
+Role: BUILDER. Worktree first: git worktree add ..\\mts-dsa-jis-nuc-<MMdd-HHmm> -b dsa/jis-nuc-<MMdd-HHmm> origin/fast-track
+Then: # AIRUN task=mts-boot repo=<worktree> hours=1 timeout=900, then python scripts/dev/dsa.py boot.
+Task: take desk row 20261023-115742-run-card-context-composite-v2-dev-read or 20261026-154448-redo-fable-sim, whichever desk.py next --host JIS-NUC returns first.
+`
