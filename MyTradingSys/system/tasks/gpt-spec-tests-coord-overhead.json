@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T07:00:48Z",
   "commands": [],
   "created": "2026-10-29T22:51:39Z",
   "depends_on": [],
@@ -13,7 +14,14 @@
   "id": "gpt-spec-tests-coord-overhead",
   "kind": "build",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "9 tests; 3/3 scratch mutations detected; MyTradingSys/research/layer_lab/reports/2026-10-3",
+      "ref": "7cb7de94e",
+      "utc": "2026-10-30T07:00:48Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "note": "Producer GPT; reviewer Claude or Gemini. Expected values independent of the code; tests touch temp dirs only, never runtime data. ROUTINE, no live path.",
@@ -22,7 +30,12 @@
   "refined_by": "",
   "refreshed": "2026-10-29T22:51:40Z",
   "refs": [],
-  "result": "",
+  "result": "9 tests; 3/3 scratch mutations detected; MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-spec-tests-coord-overhead.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/test_coord_overhead.py",
     "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-spec-tests-coord-overhead.md",
@@ -37,12 +50,13 @@
   "sources": [
     "scripts/dev/coord_overhead.py"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read coord_overhead.py and list every branch",
     "compute expected values by hand",
     "write tests, run 3 mutations, write report"
   ],
+  "taken": "2026-10-30T07:00:48Z",
   "tests": "python -m pytest scripts/dev/test_coord_overhead.py -q",
   "title": "Spec-derived tests for scripts/dev/coord_overhead.py (no test file today)",
   "weight": "ROUTINE",

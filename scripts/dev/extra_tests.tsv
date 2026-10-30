@@ -146,3 +146,4 @@ scripts/dev/test_status_board.py
 scripts/dev/test_station_disk_report.py
 scripts/dev/test_retention.py
 scripts/dev/test_tom_noise_units.py
+scripts/dev/test_coord_overhead.py

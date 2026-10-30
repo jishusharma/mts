@@ -2,11 +2,11 @@
  "allowance": {
   "plan": "plus",
   "week_resets": 1793780113,
-  "week_used": 45.0,
+  "week_used": 48.0,
   "window_resets": 1793347054,
-  "window_used": 4.0
+  "window_used": 24.0
  },
- "at": "2026-10-30T03:03:14Z",
+ "at": "2026-10-30T07:00:58Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -21,11 +21,41 @@
  "host": "JIS-NUC",
  "lab": {
   "astra_runs": 0,
-  "week_pts": 1.0,
-  "window_pts": 1.0,
-  "window_runs": 1
+  "week_pts": 2.0,
+  "window_pts": 4.0,
+  "window_runs": 3
  },
  "runs": [
+  {
+   "at": "2026-10-30T06:59:41Z",
+   "card": "gpt-spec-tests-coord-overhead",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 70,
+   "tokens_out": 4101,
+   "tokens_total": 454322,
+   "tokens_uncached": 31533,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
+  {
+   "at": "2026-10-30T03:27:54Z",
+   "card": "gpt-spec-tests-tom-noise-units",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "KIP\nStep 5: Maven tests: SKIP\nStep 5b: Layer tests: SKIP\nStep 5c: Options tests: SKIP\nStep 6: Backtest tests: SKIP\n=============================================",
+   "outcome": "SHIP_FAILED",
+   "seconds": 134,
+   "tokens_out": 9145,
+   "tokens_total": 709305,
+   "tokens_uncached": 48000,
+   "week_pts": 1.0,
+   "window_pts": 2.0
+  },
   {
    "at": "2026-10-30T03:01:29Z",
    "card": "gpt-retention-spec-tests",
@@ -143,36 +173,6 @@
    "tokens_out": 2778,
    "tokens_total": 254122,
    "tokens_uncached": 31056,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-27T20:22:39Z",
-   "card": "gpt-t09-table-recount",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 56,
-   "tokens_out": 4893,
-   "tokens_total": 510725,
-   "tokens_uncached": 50664,
-   "week_pts": 0.0,
-   "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-27T20:00:10Z",
-   "card": "gpt-t07-rerun-recount",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 44,
-   "tokens_out": 4030,
-   "tokens_total": 264125,
-   "tokens_uncached": 36607,
    "week_pts": 0.0,
    "window_pts": 0.0
   }
