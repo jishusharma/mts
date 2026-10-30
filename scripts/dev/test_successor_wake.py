@@ -221,6 +221,7 @@ def _cli(monkeypatch, tmp_path, extra):
     import mts_signal
     monkeypatch.setattr(sync, "read_claims", lambda repo, ref: [])
     monkeypatch.setattr(mts_signal, "resolve_login", lambda x: ("C", ""))
+    monkeypatch.setenv("MTS_RELAY_HOME", str(tmp_path / "relay"))    # never this machine's loop files (its live work period refuses)
     calls = []
 
     def fake(login, **kw):
@@ -258,6 +259,7 @@ def test_handover_register_failure_does_not_break_handover(tmp_path, monkeypatch
     import mts_signal
     monkeypatch.setattr(sync, "read_claims", lambda repo, ref: [])
     monkeypatch.setattr(mts_signal, "resolve_login", lambda x: ("C", ""))
+    monkeypatch.setenv("MTS_RELAY_HOME", str(tmp_path / "relay"))    # never this machine's loop files (its live work period refuses)
 
     def boom(*a, **k):
         raise W.WakeError("no cli")
