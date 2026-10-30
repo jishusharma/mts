@@ -34,7 +34,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-30 T0-ONLY | Host with the CBP store and Michael's channel access; JIS-NB lane means a desk task there.",
+  "note": "dash-designer 10-30: only 1 of 10 enabled analysts fresh; Rekt + Qriptal no row in 5-day store; Benjamin, Bob, Jala, CCU never fetched (cbp_run.py ingests profile=='actionable' only); last ingestion 2026-10-28 10:53Z.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
