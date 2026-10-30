@@ -1,6 +1,7 @@
 {
   "Verify": "mvn -q -Dtest=SpikeFadeCriticalWave1Test test",
   "asks": "",
+  "closed": "2026-10-30T21:12:58Z",
   "commands": [
     "mvn -q -Dtest=SpikeFadeCriticalWave1Test,SpikeFadeTest,SpikeFadePathsTest,SpikeFadeProfileTest test"
   ],
@@ -28,6 +29,12 @@
   "lane": "JIS-NB",
   "latest": [
     {
+      "kind": "ship",
+      "line": "caseG: proxy >3% above zone returns null (failed pre-change); replay G4 aligned; SpikeFade",
+      "ref": "a07da3cb7",
+      "utc": "2026-10-30T21:12:58Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "SpikeFade: cap A-S1 prior-day-high proxy distance (OURS 3 %)",
@@ -43,6 +50,12 @@
   "prio": 2,
   "priority": "IMPORTANT",
   "refreshed": "2026-10-30T17:15:22Z",
+  "result": "caseG: proxy >3% above zone returns null (failed pre-change); replay G4 aligned; SpikeFade* mvn green",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "src/main/java/datafeed/SpikeFadeDetector.java",
     "src/main/java/datafeed/SpikeFadePaths.java",
@@ -60,13 +73,14 @@
   "sources": [
     "MyTradingSys/research/gemini_audits_2026-10-30/CRITICAL_24H_AUDIT_2026-10-30.md Finding 2"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/gemini_audits_2026-10-30/CRITICAL_24H_AUDIT_2026-10-30.md Finding 2 and spikefade-prior-day-high-proxy-cap.json done_when",
     "SpikeFadeDetector.java:189-197: cap the priorHigh proxy (dayHigh[LOOKBACK-1]) not the stop choice; out of cap gives null, never high+20.0",
     "SpikeFadePaths.java:13 and SpikeFadeProfile.java:13: decide C2 enforced vs annotation-only after c4ad479e0; fix comments/logic, log DECISION (OURS)",
     "ItemFourReplay.java:188 follows detect(); worktree only. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
   ],
+  "taken": "2026-10-30T21:12:58Z",
   "tests": "src/test/java/datafeed/SpikeFadeCriticalWave1Test.java: >3% prior-day high gives null stop (not high+20); fails on current SpikeFadeDetector.java:189-197.",
   "title": "SpikeFade: fix 80e6ff471 A-S1 cap falling back to $20 BTC A-S2 stop and reconcile c4ad479e0 A-C2 removal across ItemFourReplay and Paths/Profile",
   "weight": "CRITICAL",
