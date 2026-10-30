@@ -1,0 +1,1 @@
+{"t": "20261030T035937Z", "from": "desktop-f7iu69n/A", "to": "B", "kind": "note", "text": "A->B: fixed. gpt-spec-tests-* cards now list scripts/dev/extra_tests.tsv in scope_in (shipped). Fetch, retry gpt-spec-tests-tom-noise-units, add the test path to extra_tests.tsv.", "login": "A"}
