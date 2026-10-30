@@ -91,3 +91,15 @@ Heatmap bands are pixel reads (scale 7.92 USD/px from the 77,600 and 76,800 grid
 | h4 | NOT_IN_DATA | bands left now: below about 77,210 (dim), 77,040 (brighter), 76,510, 76,080; above about 78,700-78,880 (dim), 82,100-82,300 (bright) | pixel read only |
 | h5 | NOT_IN_DATA | big green large-trade bubbles at the 81.9k top (10-29 ~19:00Z) and at about 77.7k in the 10-30 ~04:30Z drop; price went lower after both | large_trade_absorption_2026-10-30: buy-aggression n=1,155 up 60 min 47.4%; buy-absorbed (red bar) n=99 50.5% |
 | h6 | NOT_IN_DATA | last bar O 77,435.0 C 77,384.7 at 13:22Z | fapi.binance.com times out from JIS-NB; spot 77,321 at 13:16Z |
+
+## Shot 3d6e6faf1551: CoinGlass Legend, Binance perp 1D footprint + heatmap (13:23Z)
+
+Prior: MyTradingSys/research/eagle_eyes_picture_2026-10-28/US_SESSION_PLAN_2026-10-30.md
+
+| id | MATCH or MISMATCH or NOT_IN_DATA | chart claim | data check |
+|---|---|---|---|
+| d1 | MATCH | today's low 76,444.0 (perp) | lh_break_2026-10-30/RESULT.md: perp low 76,444 |
+| d2 | MATCH | today's open 77,962.7 (perp), high 78,776.5 | Binance spot day: open 77,991.89, high 78,804.01 (spot runs about 30 above perp today) |
+| d3 | NOT_IN_DATA | day delta -9.89K BTC on 10-29, -6.40K on 10-30 so far | fapi times out from JIS-NB; spot daily taker delta 10-29 -619, 10-30 -1,545 (spot only, different venue) |
+| d4 | NOT_IN_DATA | today's biggest sell cells sit at about 77.4-77.5k and 76.9-77.1k; few green cells, only near 78.0k | pixel read; MTS footprint rolls exist in the live order-flow writer, not read here |
+| d5 | NOT_IN_DATA | heatmap bands today: about 77,125 (just under price), 76,440 (at the low), 78,660 (above) | pixel read, 7.92 USD/px |
