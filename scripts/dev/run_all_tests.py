@@ -518,6 +518,7 @@ def build_plan(quick):
     add("3e", "DSA browser worker + queue lane tests", [sys.executable, "scripts/worker/test_dsa_worker.py"], "Step 3e: DSA worker tests")
     add("3sh", "Screenshot intake tests (save, classify, read, close gates)", [sys.executable, "scripts/dev/test_shot.py"], "Step 3sh: Screenshot intake tests")
     add("3al", "Analyst levels ladder (CBP pointers next to chart reads)", [sys.executable, "scripts/dev/test_analyst_levels.py"], "Step 3al: Analyst levels tests")
+    add("3cr", "CBP runner prompt carries video metadata", [sys.executable, "scripts/dev/test_cbp_run.py"], "Step 3cr: CBP runner tests")
     add("3mg", "Project group map tests (every row and file has one group)", [sys.executable, "scripts/dev/test_make_groups.py"], "Step 3mg: Project group map tests")
     add("3xt", "Extra tests outside the collected dirs (B150 discovery)", [sys.executable, "scripts/dev/run_extra_tests.py"], "Step 3xt: Extra tests")
     add("3ad", "Scheduled auto-deploy tests (stops on red gate)", [sys.executable, "scripts/dev/test_auto_deploy.py"], "Step 3ad: Auto-deploy tests")
