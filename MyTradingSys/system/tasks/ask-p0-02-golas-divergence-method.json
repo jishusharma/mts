@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T10:51:27Z",
   "commands": [],
   "created": "2026-10-30T08:24:15Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "ask-p0-02-golas-divergence-method",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "A_DIVERGENCE_METHOD.md 6 rows, OI NOT_IN_DATA",
+      "ref": "8786d1a24",
+      "utc": "2026-10-30T10:51:27Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +46,12 @@
   "refs": [
     "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md"
   ],
-  "result": "",
+  "result": "A_DIVERGENCE_METHOD.md 6 rows, OI NOT_IN_DATA",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/items/B063_divergence.md",
     "MyTradingSys/research/_archive/loose_2026-10/GOLAS_CD_WEB_2026-09-21.md",
@@ -54,12 +66,13 @@
   "sources": [
     "ledger P0-02, T089 covers RSI only (1157dbe6)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read B063_divergence.md and the archived GOLAS C/D web note so nothing is redone",
     "web search per indicator; keep only exchange docs, TradingView docs, books, papers (T1/T2)",
     "write A_DIVERGENCE_METHOD.md, ship. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
   ],
+  "taken": "2026-10-30T10:51:27Z",
   "tests": "Doc card: tests/docs/test_integrity.py green; every table row has a URL and a quote (grep count in commit body).",
   "title": "GOLAS-A: how institutions compute divergence per indicator, T1/T2 sources with proof (ledger P0-02)",
   "weight": "IMPORTANT",
