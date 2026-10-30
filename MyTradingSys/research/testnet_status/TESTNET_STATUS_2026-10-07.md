@@ -48,3 +48,14 @@ Entered in auto_trades.jsonl with no later trade_closed (whole log). Not an exch
 ## OPERATOR_ALERTS.log
 
 - OPERATOR_ALERTS.log: not found
+
+## Recount (haiku-recount-testnet-readout)
+
+Method: day-file table re-summed from its own rows (Entered 6 = Closed 6, Wins 3, Net +0.0897, Halt 963 = skipped_halt 963, zero-trade flags match). Cross-check: `funnel_report.py --day` against the live-tree execution/ inputs (read-only). Keys differ: funnel is per layer:sub:tf and per UTC day, not per family x account and 24 h from 02:30Z; funnel has no account key; funnel alerts are runtime/alerts rows, day-file alerts are auto_trader decisions. The day file was generated at window end (02:30Z), so the later UTC-day funnel run can see rows it could not.
+- cryptocred / jishu_4: SAME. Day file alerts 6, entered 1, closed 1, wins 1, net +0.0006; funnel 2026-10-06 cryptocred (fib_pullback 2 + sr_flip 4 alerts; sr_flip 1 filled/1 closed/1 win/+0.0006).
+- fabio / jishu_3: SAME. Day file alerts 3, entered 1, closed 1, wins 0, net -0.0013; funnel 2026-10-06 fabio (cvd_absorption 2 + volume_fvg 1 alerts; 1/1/0/-0.0013).
+- rsi / jishu_2: DIFF. Day file alerts 4, entered 0 (zero-trade flag). Funnel has no account key; family-level rsi 2026-10-06 + 2026-10-07 shows entries, so the per-account count cannot be confirmed from the funnel.
+- rsi / jishu_3: DIFF. Day file alerts 30, entered 3, closed 3, wins 1, net +0.0886; funnel rsi 2026-10-06 entered 1, net -0.0158 (alerts 39 across rsi layers, no account key). Window and key mismatch, not reconciled.
+- tom / main: DIFF. Day file alerts 19, rejected 17, entered 1, net +0.0018; funnel tom 2026-10-06 rejected 12, entered 0; 2026-10-07 rejected 13, entered 1, net +0.0018. Rejected count is 17 in the day file vs 25 across the two UTC days; not reconciled.
+- turn_of_candle / jishu_1: DIFF. Day file alerts 934 (all skipped_halt), entered 0; funnel turn_of_candle alerts 99 (2026-10-06) + 93 (2026-10-07), 6 filled and net -0.0921 on 2026-10-07 (after the day file was generated). Halt-skip vs alert definition differs.
+Overall: DIFF. Table re-sum is internally consistent (SAME on the table itself); cross-source agreement holds only for cryptocred and fabio, the other four rows do not reconcile on the same window and key.
