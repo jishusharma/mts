@@ -1,0 +1,64 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-30T17:14:57Z",
+  "depends_on": [],
+  "done_when": "report with the field or rule that separates the two kinds of rows (or NOT_IN_DATA if none exists, which is a finding for card testnet-trade-readout-daily); no code change.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Read GO_LIVE_BAR.md line 1 (configs that passed walk-forward only), execution/auto_trader.py promotion gate, auto_trader_config.json pre_pipeline_sources and trade_ledger.py; state with file:line how a ledger row can be told apart as calibration or promoted, and whether any reader counts calibration rows; re-derive the count from test fixtures in test_auto_trader_promotion.py.",
+  "id": "gpt-audit-testnet-counting-rule-vs-bar",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Supervisor: D01-D07 applied, go-live bar, ToC origin memo, naked-POC backfill, screenshots",
+      "ref": "9d807ef18f29",
+      "utc": "2026-10-09T07:21:43Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "9d807ef18f29 Supervisor: D01-D07 applied, go-live bar, ToC origin memo, naked-POC backfill",
+      "ref": "MyTradingSys/system/GO_LIVE_BAR.md",
+      "utc": "2026-10-09T07:21:43Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Final report ends with a Noticed: line. Blocked? List 2-3 non-destructive fixes, try the safest, verify, then report.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T17:16:01Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/GO_LIVE_BAR.md, MyTradingSys/execution/auto_trader.py, auto_trader_config.json, trade_ledger.py, test_auto_trader_promotion.py (all read); report file only"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change to any file outside the named ones"
+  ],
+  "scope_sha": "9d807ef18f29",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "find how a ledger row records its source and whether promoted vs pre_pipeline is recoverable",
+    "find every reader of trade_ledger.jsonl and whether it filters calibration rows",
+    "re-derive one count from the promotion test fixtures",
+    "report the rule with file:line or NOT_IN_DATA"
+  ],
+  "tests": "see done_when",
+  "title": "GPT audit: which testnet rows may count toward GO_LIVE_BAR (promoted vs pre_pipeline calibration) in auto_trader + trade_ledger",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
