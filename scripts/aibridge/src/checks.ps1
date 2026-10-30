@@ -203,6 +203,8 @@ function Get-CmdKind {
     $r = [string]$pol.kind_program_regex
     if (-not $w) { $w = '(?i)(\b(Remove-Item|ri|rm|rmdir|del|erase|rd|Set-Content|sc|Add-Content|ac|Out-File|New-Item|ni|Move-Item|mv|mi|move|Copy-Item|cp|copy|cpi|Rename-Item|rni|ren|Clear-Content|Set-Item)\b|git\s+(add|commit|push|reset|checkout|clean|rm|mv|merge|rebase|stash|restore|apply|cherry-pick|revert|tag|branch)\b|\[IO\.File\]::(Write|Delete|Move|Copy|Append)|[^-]>{1,2}\s*(?!\$null\b)(?!nul\b)[^\s&])' }
     if (-not $r) { $r = '(?i)\b(python|py|node|npm|mvn|pip|pytest|java|powershell|pwsh|cmd|bash|Start-Process|saps|Invoke-Expression|iex)\b|\.(ps1|exe|bat|cmd|py)\b' }
+    # B209: words inside quoted text (Select-String -Pattern 'copy|git commit', 'a>b') are data, not commands: blank them first.
+    $Cmd = [regex]::Replace($Cmd, '\x27[^\x27\r\n]*\x27|\x22[^\x22\r\n]*\x22', '\x27\x27')
     if ($Cmd -match $w) { return 'write' }
     if ($Cmd -match $r) { return 'program' }
     return 'read'

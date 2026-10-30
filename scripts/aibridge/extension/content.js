@@ -457,7 +457,9 @@
       if (!it.cmd && !it.opts.task) { it.resp = { ok: false, cls: 'NOT_RUN', error: 'NOT RUN: the block has no command after the # AIRUN line.' }; continue; }
       runs++; refreshUi();
       setStatus('running #' + it.n + (seenN > 1 ? ' (block ' + (i + 1) + '/' + seenN + ')' : '') + ': ' + it.cmd.split('\n')[0].slice(0, 60));
-      var resp = vet(it.rid, it.cmd, await callWithRetry(it.cmd, it.opts, true, it.rid), !!it.opts.task);
+      var resp = vet(it.rid, it.cmd, await L.raceDeadline(callWithRetry(it.cmd, it.opts, true, it.rid), L.expireMs(it.opts.timeout_s), function () {
+        return ping(it.opts.host).then(function (r) { return (r && r.ok && r.body && r.body.running != null) ? r.body.running : null; });
+      }), !!it.opts.task);
       it.resp = resp; ran++;
       if (it.block.__aibPanel) { it.block.__aibPanel.style.display = 'block'; it.block.__aibPanel.textContent = '[auto #' + it.n + ']\n' + panelText(resp); }
       if (myToken !== token) return;

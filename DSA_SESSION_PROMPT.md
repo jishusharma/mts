@@ -87,6 +87,10 @@ backup_session\ may be written there. Commit body: `Result: <what works now / th
 0.7 Bridge down. "ERROR extension_link": the extension is off or was reloaded (the operator presses F5 on the chat).
 "ERROR agent_unreachable": the agent is down (the operator runs F:\AIBridge\scripts\start-agent.ps1 -Watch). Say which one
 in one line, then work in paste mode (WORKER, section 1) until a call succeeds.
+Silent stall: the panel sits on "running #N" and blocks return nothing, no ERROR line. Since 0.7.3 the lock expires at twice
+the block timeout and prints "ERROR LOCK_EXPIRED"; re-send once. Still nothing: ask the operator for (1) Hands-free off, on,
+(2) reload the extension at chrome://extensions, (3) F5 on the chat. Never retry blind.
+PowerShell -Filter takes wildcards only (no [7-9] classes): use -Filter 'B1*.md' or Where-Object Name -match.
 
 0.8 PROTECTED PROCESSES. These two feed every session. Never skip them, never hand-edit them, never break them.
 (a) Session paste. scripts\start-session.ps1 builds Dumps\SESSION_PASTE.txt from MyTradingSys\runtime\SESSION_MANIFEST.json
@@ -121,7 +125,7 @@ DeepSeek chat: serial, no subagents, no saved images.
 
 ## 3. BOOT PROCEDURE
 
-1. Make this chat's worktree (one block, cwd = the live tree):
+1. Make this chat's worktree (ONE block in the whole reply, cwd = the live tree; a second one dies on the existing branch):
    Set-Location 'C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed'
    $id = (hostname).ToLower() + '-' + (Get-Date).ToUniversalTime().ToString('MMdd-HHmm')
    git fetch origin

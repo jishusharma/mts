@@ -1,7 +1,7 @@
 // loop.js - pure helpers for the auto-loop. No DOM, no chrome.* so node can test them.
 (function (root) {
   var L = {};
-  L.VERSION = '0.7.2';
+  L.VERSION = '0.7.3';
 
   L.fnv = function (s) {
     var h = 2166136261;
@@ -172,6 +172,41 @@
   // visible banner text for every auto-off (shown in the page next to the chat, not sent as a message)
   L.stopNotice = function (why) {
     return 'AIBridge hands-free is OFF: ' + (why || 'stopped') + ' Tick the box to re-arm.';
+  };
+
+  // B210: a run whose completion frame is lost leaves the panel on "running #N" forever. The run lock expires at twice the
+  // block timeout (default timeout 120 s, floor 30 s); on expiry the lock is released with a visible reason and the next
+  // block gets a receipt. expireMs(timeout_s) -> ms. expireText(waitedMs, agentRunning) -> the visible reason.
+  L.expireMs = function (timeoutS) {
+    var t = (timeoutS && timeoutS > 0) ? timeoutS : 120;
+    return Math.max(30, t) * 2 * 1000;
+  };
+  L.expireText = function (waitedMs, agentRunning) {
+    var s = Math.round(waitedMs / 1000);
+    return 'run lock released after ' + s + ' s: no completion arrived' +
+      (agentRunning === 0 ? ' and the agent reports running 0, so nothing was running' :
+       (agentRunning == null ? ' and the agent queue could not be read' : ' and the agent still reports running ' + agentRunning + '; the command may still be executing')) +
+      '. Re-send the block; if blocks keep returning nothing: Hands-free off then on, reload the extension, F5.';
+  };
+  // Resolve with p's value, or with an explicit lock-expired response after ms. onExpire(waitedMs) may return a promise of
+  // the agent's running count (0 = idle, null = unknown); it never blocks the release for more than 5 s.
+  L.raceDeadline = function (p, ms, onExpire) {
+    return new Promise(function (resolve) {
+      var done = false, t0 = Date.now();
+      var timer = setTimeout(function () {
+        if (done) return; done = true;
+        var waited = Date.now() - t0, finish = function (running) {
+          resolve({ ok: false, cls: 'LOCK_EXPIRED', error: L.expireText(waited, running) });
+        };
+        var q; try { q = onExpire ? onExpire(waited) : null; } catch (e) { q = null; }
+        if (!q || !q.then) { finish(q == null ? null : q); return; }
+        var fin = false, g = function (v) { if (!fin) { fin = true; finish(v == null ? null : v); } };
+        setTimeout(function () { g(null); }, 5000);
+        q.then(g, function () { g(null); });
+      }, ms);
+      p.then(function (v) { if (!done) { done = true; clearTimeout(timer); resolve(v); } },
+             function (e) { if (!done) { done = true; clearTimeout(timer); resolve({ ok: false, cls: 'extension_link', error: String(e) }); } });
+    });
   };
 
   root.AIBridgeLoop = L;

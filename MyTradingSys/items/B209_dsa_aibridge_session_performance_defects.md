@@ -1,7 +1,7 @@
 # B209 - DSA and AIBridge performance defects seen in one working session
 
 Filed: 2026-10-30 by DSA on JIS-NB.
-Status: OPEN
+Status: CLOSED
 Priority: MED
 Fixer: Claude
 Logger: Claude

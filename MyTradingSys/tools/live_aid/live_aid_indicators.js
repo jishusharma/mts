@@ -445,9 +445,30 @@
              or: or.n >= 3 ? { h: or.h, l: or.l, bars: or.n } : null, up: merge(up), down: merge(down), priorDays: np };
   }
 
+  // ---------- macro calendar (card live-aid-macro-calendar). events = ForexFactory ff_calendar_thisweek.json rows
+  // {title, country, date (ISO with offset), impact, forecast, previous[, actual]}; impact is SOURCED (ForexFactory), only USD + High count.
+  // next = earliest such event with time > now (countdown >= 1 ms, never negative); last = up to 3 with time <= now, newest first
+  // (equal times keep feed order). A result is never listed before its time. actual is null when the feed carries none (it does not today).
+  function nextHighEvent(events, now) {
+    var hi = [];
+    (Array.isArray(events) ? events : []).forEach(function (e, i) {
+      if (!e || e.country !== 'USD' || e.impact !== 'High') return;
+      var t = Date.parse(e.date);
+      if (!isFinite(t)) return;
+      var a = e.actual === undefined || e.actual === null || String(e.actual).trim() === '' ? null : String(e.actual);
+      hi.push({ title: String(e.title || ''), t: t, i: i, forecast: e.forecast == null ? '' : String(e.forecast), previous: e.previous == null ? '' : String(e.previous), actual: a });
+    });
+    hi.sort(function (x, y) { return x.t - y.t || x.i - y.i; });
+    var past = hi.filter(function (x) { return x.t <= now; }), fut = hi.filter(function (x) { return x.t > now; });
+    function strip(x) { return { title: x.title, t: x.t, forecast: x.forecast, previous: x.previous, actual: x.actual }; }
+    var last = past.slice(-3).reverse().map(strip), nx = fut.length ? strip(fut[0]) : null;
+    if (nx) nx.countdownMs = fut[0].t - now;
+    return { next: nx, last: last };
+  }
+
   var api = { AV: AV, rosterRead: rosterRead, analystVote: analystVote, levelWatch: levelWatch, zones: zones, lean: lean, actions: actions, NW: NW, newsTags: newsTags, newsMerge: newsMerge, newsPulse: newsPulse, foldBars: foldBars, FD: FD, fundRead: fundRead, premium: premium, bybitTick: bybitTick, LQ: LQ, liqDeribit: liqDeribit, liqBybit: liqBybit, liqBinance: liqBinance, liqSum: liqSum, CP: CP, coilPierce: coilPierce, IT: IT, divergence: divergence, flow: flow, flowLive: flowLive, squeeze: squeeze, dom: dom, supports: supports, vwapTest: vwapTest,
     flagDiv: flagDiv, flagSqueeze: flagSqueeze, flagFlow: flagFlow, flagDom: flagDom, flagVwap: flagVwap, confidence: confidence, rma: rma, sma: sma, rsi: rsi, bollinger: bollinger, atr: atr, dayVwap: dayVwap, utcDays: utcDays, wavetrend: wavetrend,
-    inversePnlBtc: inversePnlBtc, closedPnlBtc: closedPnlBtc, columns: columns, UO: UO, usOpen: usOpen };
+    inversePnlBtc: inversePnlBtc, closedPnlBtc: closedPnlBtc, columns: columns, UO: UO, usOpen: usOpen, nextHighEvent: nextHighEvent };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.LiveAid = api;
 })(typeof self !== 'undefined' ? self : this);

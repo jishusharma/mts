@@ -7,6 +7,7 @@
 #          "steps": [ { "name": "gate", "cmd": "python scripts/dev/x.py {slug}", "cwd": "{repo}", "timeout_s": 300,
 #                       "on_fail": "stop" | "continue" | "retry:2",           # default stop
 #                       "expect": "regex that stdout must match",              # optional extra pass condition
+#                       "fail_on": "regex",                                   # optional; default: a line 'FAILED: N step(s)' fails the step even at exit 0
 #                       "capture": { "wt": "WORKTREE: (.+)" },                 # regex group 1 -> {wt} for later steps
 #                       "show": 3 } ] }                                        # tail lines shown on PASS (default 1)
 # {name} placeholders in cmd/cwd/expect are filled from params then captures. A failed step shows its last 25 lines.
@@ -83,6 +84,11 @@ foreach ($st in $steps) {
         if ($ok -and $st.expect) {
             $ex = Expand-Vars ([string]$st.expect)
             if ($out -notmatch $ex) { $ok = $false; $why = "output did not match expect /$ex/" }
+        }
+        # B209: a gate that prints "FAILED: N step(s)" but exits 0 is a FAIL, never PASS over FAILED. fail_on overrides the pattern.
+        if ($ok) {
+            $fo = if ($st.fail_on) { Expand-Vars ([string]$st.fail_on) } else { '(?m)^\s*FAILED:\s*[1-9]\d*\s+step' }
+            if ($out -match $fo) { $ok = $false; $why = "output matched fail pattern /$fo/ although exit was $code" }
         }
         if (-not $ok -and -not $why) { $why = "exit $code" }
     } while (-not $ok -and $attempt -le $retries)

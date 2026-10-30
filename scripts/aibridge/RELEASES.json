@@ -1,7 +1,8 @@
 {
-  "current": "0.7.2",
+  "current": "0.7.3",
   "releases": {
     "0.7.1": "1990b00820eabbcc6fbd03003bef89804ff5d2d78c33d5aeeab3feec912ebbc8",
-    "0.7.2": "855450675a1fd914444d38ff183a8568e97e970af617fc040c44074d076dbd57"
+    "0.7.2": "855450675a1fd914444d38ff183a8568e97e970af617fc040c44074d076dbd57",
+    "0.7.3": "898f59b0e1d271c3ee4fc12b26a3bc76da0f2d6352ddfb87042c4a702fde56d2"
   }
 }

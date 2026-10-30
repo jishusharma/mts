@@ -184,5 +184,83 @@ def test_fixture_is_the_expected_window():
     assert len(KLINES) == 300 and KLINES[0][0] % 86_400_000 == 0, "fixture no longer opens at 00:00Z: the vs-VWAP NOT_IN_DATA premise changed"
 
 
+# ---------- macro calendar strip (card live-aid-macro-calendar): rendered text vs hand-worked expectations ----------
+FF = json.loads((HERE / "fixture_ff_calendar.json").read_text(encoding="utf-8"))["events"]
+CAL_URL_GLOB = "**/ff_calendar_thisweek.json"
+
+
+def _cal_page(browser, iso_now, events=None, offline=True):
+    ctx = browser.new_context(offline=offline, viewport={"width": 1400, "height": 900})
+    page = ctx.new_page()
+    errs = []
+    page.on("pageerror", lambda e: errs.append(str(e).splitlines()[0][:200]))
+    return ctx, page, errs
+
+
+def _cal_text(browser, iso_now, events):
+    ctx, page, errs = _cal_page(browser, iso_now)
+    try:
+        page.add_init_script("window.LIVEAID_REPLAY = " + json.dumps(KLINES) + ";")
+        if events is not None:
+            page.add_init_script("window.LIVEAID_CAL = " + json.dumps(events) + ";")
+        page.clock.set_fixed_time(datetime.datetime.fromisoformat(iso_now.replace("Z", "+00:00")))
+        page.goto(PAGE.resolve().as_uri() + "?replay=fixture", wait_until="load", timeout=30000)
+        page.wait_for_timeout(1300)
+        assert not errs, errs
+        return (page.inner_text("#mc-next"), page.inner_text("#mc-sub"),
+                page.eval_on_selector_all("#mc-rows tr", "rs => rs.map(r => Array.from(r.children).map(c => c.innerText))"))
+    finally:
+        ctx.close()
+
+
+def test_calendar_strip_renders_next_and_last(browser):
+    """12:00Z 10-29: GDP 12:30Z is 30 min away (hand: 12:30 - 12:00); results newest first: FOMC Press Conference 10-28 18:30Z, Federal Funds Rate 18:00Z."""
+    nxt, sub, rows = _cal_text(browser, "2026-10-29T12:00:00Z", FF)
+    assert nxt == "in 30 min", nxt
+    assert "Advance GDP q/q at 12:30Z" in sub and "forecast 3.2%" in sub and "previous 1.5%" in sub, sub
+    assert [r[1] for r in rows] == ["FOMC Press Conference", "Federal Funds Rate"], rows
+    assert rows[0][0].strip() == "10-28 18:30Z" and rows[1][0].strip() == "10-28 18:00Z", rows
+    assert rows[1][2].strip() == "not in feed" and rows[1][3].strip() == "4.00%" and rows[1][4].strip() == "4.00%", rows
+
+
+def test_calendar_time_honesty_at_the_event_minute(browser):
+    """At exactly 12:30Z the GDP row is a result (time <= now), nothing is next, and the countdown is not negative."""
+    nxt, sub, rows = _cal_text(browser, "2026-10-29T12:30:00Z", FF)
+    assert nxt == "none left", nxt
+    assert [r[1] for r in rows][0] == "Advance GDP q/q" and len(rows) == 3, rows
+    assert "-" not in nxt
+    # a minute earlier the GDP row must not be listed as a result
+    _, _, rows2 = _cal_text(browser, "2026-10-29T12:29:00Z", FF)
+    assert "Advance GDP q/q" not in [r[1] for r in rows2], rows2
+
+
+def test_no_calendar_without_data(browser):
+    nxt, sub, rows = _cal_text(browser, "2026-10-29T12:00:00Z", None)
+    assert nxt == "NO CALENDAR" and rows == [], (nxt, rows)
+
+
+def test_no_calendar_on_429_then_numbers_on_200(browser):
+    """Normal mode (no replay): a 429 from the feed gives NO CALENDAR and no numbers; a 200 with the fixture gives the strip."""
+    for status, want_numbers in ((429, False), (200, True)):
+        ctx, page, errs = _cal_page(browser, "2026-10-29T12:00:00Z", offline=False)
+        try:
+            page.route("**/*", lambda r: r.continue_() if r.request.url.startswith("file:") else r.abort())      # local files load, every other feed is down
+            body = json.dumps(FF) if status == 200 else "slow down"
+
+            def answer(route, _request=None, st=status, b=body):
+                route.fulfill(status=st, body=b, content_type="application/json", headers={"Access-Control-Allow-Origin": "*"})
+            page.route(CAL_URL_GLOB, answer)
+            page.clock.set_fixed_time(datetime.datetime(2026, 10, 29, 12, 0, tzinfo=datetime.timezone.utc))
+            page.goto(PAGE.resolve().as_uri(), wait_until="load", timeout=30000)
+            page.wait_for_timeout(1500)
+            nxt = page.inner_text("#mc-next")
+            if want_numbers:
+                assert nxt == "in 30 min", nxt
+            else:
+                assert nxt == "NO CALENDAR" and "429" in page.inner_text("#mc-sub") and page.query_selector_all("#mc-rows tr") == [], (nxt, page.inner_text("#mc-sub"))
+        finally:
+            ctx.close()
+
+
 if __name__ == "__main__":
     sys.exit(pytest.main([__file__, "-q", *sys.argv[1:]]))

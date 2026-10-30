@@ -181,5 +181,5 @@ B208 | OPEN    | B208_eagle_eyes_does_not_get_smarter_with_u.md | Eagle_Eyes doe
 B187 | OPEN    | B187_pit_levels_power_gate_blocker.md | PIT price-level study blocked by power gate; use every usable data source, unblock only by written operator decision
 B199 | OPEN    | B199_quota_numbers_disagree_by_source_the_u.md | Quota numbers disagree by source: the usage panel showed weekly 99% ("Starts whe
 B200 | OPEN    | B200_start_session_initiation_user_asked_sh.md | start_session(initiation=user_asked) showed an 'Allow once' card in a Bypass-per
-B209 | OPEN    | B209_dsa_aibridge_session_performance_defects.md | DSA/AIBridge performance defects from one session: duplicate worktree, oversized boot lists, block mis-attribution, PASS over FAILED
-B210 | OPEN    | B210_aibridge_stuck_pending_run.md | AIBridge silent stall: panel stuck on a pending run, no error, no timeout, no resync
+B209 | CLOSED  | B209_dsa_aibridge_session_performance_defects.md | DSA/AIBridge performance defects from one session: duplicate worktree, oversized boot lists, block mis-attribution, PASS over FAILED
+B210 | CLOSED  | B210_aibridge_stuck_pending_run.md | AIBridge silent stall: panel stuck on a pending run, no error, no timeout, no resync

@@ -567,3 +567,59 @@ def test_us_open_ladder_hand_case():
     assert r["up"][1]["touch"] is None and r["up"][1]["n"] == 0            # orH has no rates row
     assert r["up"][2]["touch"] == 5 and r["up"][2]["held"] is None        # dayH 2+: nt=5 under 30 -> held hidden
     assert all(x["dist"] > 0 for x in r["up"]) and all(x["dist"] < 0 for x in r["down"])
+
+
+# ---------- macro calendar strip (card live-aid-macro-calendar): ForexFactory JSON, impact field SOURCED ----------
+FF_FIXTURE = HERE / "fixture_ff_calendar.json"
+
+
+def _next_high(events, now_ms):
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("node not installed")
+    runner = ("const A=require(process.argv[1]);let j='';process.stdin.on('data',d=>j+=d).on('end',()=>{j=JSON.parse(j);"
+              "console.log(JSON.stringify(A.nextHighEvent(j.events,j.now)))})")
+    out = subprocess.run([node, "-e", runner, str(JS)], input=json.dumps({"events": events, "now": now_ms}),
+                         capture_output=True, text=True, timeout=60, env=os.environ.copy())
+    assert out.returncode == 0, out.stderr
+    return json.loads(out.stdout)
+
+
+def _utc(s):
+    import datetime
+    return int(datetime.datetime.fromisoformat(s.replace("Z", "+00:00")).timestamp() * 1000)
+
+
+def test_next_high_event():
+    """nextHighEvent on the 6-event real fixture. Expected values worked by hand (feed times are EDT = UTC-4 on 10-28/29):
+    Annual Budget Release GBP High (decoy), Federal Funds Rate USD High 10-28 14:00 EDT = 18:00Z, FOMC Press Conference USD High 14:30 EDT = 18:30Z,
+    Advance GDP q/q USD High 10-29 08:30 EDT = 12:30Z, Advance GDP Price Index USD Medium (same minute, decoy), Main Refinancing Rate EUR High (decoy)."""
+    ev = json.loads(FF_FIXTURE.read_text(encoding="utf-8"))["events"]
+    assert len(ev) == 6
+    # A: 12:00Z on 10-29: GDP is 30 min away; the two earlier USD High events are results, newest first; GBP/EUR/Medium never count.
+    a = _next_high(ev, _utc("2026-10-29T12:00:00Z"))
+    assert a["next"]["title"] == "Advance GDP q/q" and a["next"]["t"] == _utc("2026-10-29T12:30:00Z")
+    assert a["next"]["countdownMs"] == 1_800_000 and a["next"]["forecast"] == "3.2%" and a["next"]["previous"] == "1.5%"
+    assert [r["title"] for r in a["last"]] == ["FOMC Press Conference", "Federal Funds Rate"]
+    assert a["last"][1]["forecast"] == "4.00%" and a["last"][1]["actual"] is None     # the feed has no actual field
+    # same answer when the feed order is reversed (no reliance on order)
+    assert _next_high(ev[::-1], _utc("2026-10-29T12:00:00Z")) == a
+    # B: exactly at the GDP minute: event time <= now so it is a result, nothing is next, countdown never negative.
+    b = _next_high(ev, _utc("2026-10-29T12:30:00Z"))
+    assert b["next"] is None
+    assert [r["title"] for r in b["last"]] == ["Advance GDP q/q", "FOMC Press Conference", "Federal Funds Rate"]
+    # C: 1 ms before the GDP minute: still next with 1 ms to go, and not yet shown as a result (time honesty).
+    c = _next_high(ev, _utc("2026-10-29T12:30:00Z") - 1)
+    assert c["next"]["title"] == "Advance GDP q/q" and c["next"]["countdownMs"] == 1
+    assert [r["title"] for r in c["last"]] == ["FOMC Press Conference", "Federal Funds Rate"]
+    # D: before everything on 10-28 12:00Z: Fed rate is 6 h away; no results yet.
+    d = _next_high(ev, _utc("2026-10-28T12:00:00Z"))
+    assert d["next"]["title"] == "Federal Funds Rate" and d["next"]["countdownMs"] == 21_600_000 and d["last"] == []
+    # E: an actual, when the feed carries one, is passed through (synthetic row); bad rows (no date, wrong impact) are skipped.
+    syn = [{"title": "CPI m/m", "country": "USD", "date": "2026-11-12T08:30:00-05:00", "impact": "High", "actual": "0.4%", "forecast": "0.3%", "previous": "0.2%"},
+           {"title": "bad", "country": "USD", "date": "not a date", "impact": "High", "forecast": "", "previous": ""},
+           {"title": "low", "country": "USD", "date": "2026-11-12T09:00:00-05:00", "impact": "Low", "forecast": "", "previous": ""}]
+    e = _next_high(syn, _utc("2026-11-12T14:00:00Z"))      # 08:30 EST = 13:30Z, so 30 min ago
+    assert e["next"] is None and len(e["last"]) == 1 and e["last"][0]["actual"] == "0.4%" and e["last"][0]["forecast"] == "0.3%"
+    # F: empty input -> no event, no results
+    assert _next_high([], 0) == {"next": None, "last": []}

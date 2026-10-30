@@ -72,3 +72,40 @@ t('linkLabel: visible status text names state, tab hidden, ages', () => {
   assert.ok(l.includes('degraded') && l.includes('tab hidden') && l.includes('worker 0.1s'));
 });
 console.log(n + ' passed');
+
+// B210: a lost completion frame must not hold the run lock forever
+t('expireMs: twice the block timeout, default 120 s, floor 30 s', () => {
+  assert.strictEqual(L.expireMs(300), 600000);
+  assert.strictEqual(L.expireMs(undefined), 240000);
+  assert.strictEqual(L.expireMs(5), 60000);
+});
+t('expireText: names the wait, the agent queue and the recovery', () => {
+  const idle = L.expireText(90000, 0), unk = L.expireText(90000, null), busy = L.expireText(90000, 2);
+  assert.ok(idle.includes('released after 90 s') && idle.includes('running 0, so nothing was running') && idle.includes('F5'));
+  assert.ok(unk.includes('could not be read') && busy.includes('still reports running 2'));
+});
+// B209 item 6: a 6-block batch keeps block-to-result identity (swapped replies are caught, not posted)
+t('batch of 6: each result carries its own cmd and a swapped reply is rejected', () => {
+  const blocks = [1, 2, 3, 4, 5, 6].map(i => ({ rid: 'r' + i, cmd: 'echo ' + i + '\n'.repeat(i - 1) + 'x' }));
+  const reply = b => ({ ok: true, status: 200, body: { exit: 0, ms: 1, out: 'o' + b.rid, rid: b.rid, cmd_lines: b.cmd.split('\n').length, host: 'H' } });
+  blocks.forEach((b, i) => {
+    assert.strictEqual(L.checkEcho(b.rid, b.cmd, reply(b)), null);
+    const s = L.formatResult(i + 1, b.cmd, reply(b), '', { blocks_seen: 6, blocks_run: 6, index: i + 1, rid: b.rid });
+    assert.ok(s.includes('rid=' + b.rid) && s.includes('o' + b.rid));
+  });
+  assert.ok(L.checkEcho('r2', blocks[1].cmd, reply(blocks[4])).startsWith('STALE_REPLY'));
+});
+(async () => {
+  const never = new Promise(() => {});
+  const r = await L.raceDeadline(never, 20, () => Promise.resolve(0));
+  assert.strictEqual(r.ok, false); assert.strictEqual(r.cls, 'LOCK_EXPIRED');
+  assert.ok(r.error.includes('running 0'));
+  const fmt = L.formatResult(5, 'cmd', r, '', { blocks_seen: 2, blocks_run: 1, index: 2, rid: 'x' });
+  assert.ok(fmt.includes('ERROR LOCK_EXPIRED') && fmt.includes('[END AIRUN RESULT #5]'));
+  const ok = await L.raceDeadline(Promise.resolve({ ok: true }), 20, () => 0);   // a normal completion is untouched
+  assert.deepStrictEqual(ok, { ok: true });
+  const r2 = await L.raceDeadline(never, 20, () => null);
+  assert.strictEqual(r2.cls, 'LOCK_EXPIRED');
+  console.log('PASS raceDeadline: lost completion frame releases the lock with a visible reason'); 
+  console.log((n + 1) + ' passed (incl. async)');
+})().catch(e => { console.error(e); process.exit(1); });
