@@ -232,8 +232,14 @@ def _cli(monkeypatch, tmp_path, extra):
     return rc, calls
 
 
-def test_handover_default_registers_successor(tmp_path, monkeypatch):
+def test_handover_default_registers_nothing(tmp_path, monkeypatch):
+    """Retired as the rolling-supervisor default (d-headless-wake-bug, 2026-10-30): compaction + hand-over continue the open session."""
     rc, calls = _cli(monkeypatch, tmp_path, [])
+    assert rc == 0 and calls == []
+
+
+def test_handover_wake_flag_registers_successor(tmp_path, monkeypatch):
+    rc, calls = _cli(monkeypatch, tmp_path, ["--wake"])
     assert rc == 0 and len(calls) == 1 and calls[0][0] == "C"
 
 
@@ -243,7 +249,7 @@ def test_handover_no_wake_registers_nothing(tmp_path, monkeypatch):
 
 
 def test_handover_lead_never_wakes(tmp_path, monkeypatch):
-    rc, calls = _cli(monkeypatch, tmp_path, ["--role", "lead"])
+    rc, calls = _cli(monkeypatch, tmp_path, ["--role", "lead", "--wake"])
     assert calls == []
 
 
@@ -257,9 +263,36 @@ def test_handover_register_failure_does_not_break_handover(tmp_path, monkeypatch
         raise W.WakeError("no cli")
     monkeypatch.setattr(W, "register", boom)
     monkeypatch.chdir(_repo(tmp_path))
-    assert S.main(["handover", "--login", "C", "--no-send"]) == 0
+    assert S.main(["handover", "--login", "C", "--no-send", "--wake"]) == 0
     assert "NOT registered" in capsys.readouterr().out
     assert (tmp_path / W.HANDOVER_REL.format("C")).is_file()
+
+
+class _R:
+    def __init__(self, rc, out=""):
+        self.returncode, self.stdout, self.stderr = rc, out, ""
+
+
+def test_preflight_failure_refuses_to_register(tmp_path):
+    """The 10-29/10-30 wakes fired into an expired OAuth login: no claude -p ok pass, no task."""
+    ran = []
+    with pytest.raises(W.WakeError, match="pre-flight failed"):
+        W.register("C", cwd=_repo(tmp_path), at="2026-10-27T20:05Z", now=NOW, runner=ran.append,
+                   preflight=lambda: _R(1, "Failed to authenticate: OAuth session expired"))
+    assert ran == []
+
+
+def test_preflight_cannot_run_refuses(tmp_path):
+    def boom():
+        raise FileNotFoundError("claude")
+    with pytest.raises(W.WakeError, match="could not run"):
+        W.register("C", cwd=_repo(tmp_path), at="2026-10-27T20:05Z", now=NOW, runner=lambda s: None, preflight=boom)
+
+
+def test_preflight_pass_registers(tmp_path):
+    ran = []
+    r = W.register("C", cwd=_repo(tmp_path), at="2026-10-27T20:05Z", now=NOW, runner=ran.append, preflight=lambda: _R(0, "ok"))
+    assert r["ran"] and len(ran) == 1
 
 
 def test_library_handover_default_does_not_wake(tmp_path, monkeypatch):

@@ -41,7 +41,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DRAFT 2026-10-28 Session_Planner (OURS): basis NN/g progressive disclosure, Hick's law; operator 10-28 'not readable'. Basis (full ask): one fixed row of layer chips (no reflow on click), drop repeated title, DEV banner to one line, fee/slippage/conditions behind Advanced, R = 'profit per unit risked'.",
+  "note": "S0 drop 2026-10-30 (D7 roadmap, operator: keep only what is useful): new machinery or superseded; revive by a new card if needed",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -58,7 +59,7 @@
   "scope_sha": "73ff49f7a1c5",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "Read page.html header, banner (line 71) and control layout",
     "Write failing page test, then restructure: chips fixed row, banner one line, verdict+3 numbers first",
