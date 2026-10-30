@@ -2,6 +2,22 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-30T20:40:34Z",
+    "misses": 59,
+    "reads": [
+      "MyTradingSys/research/gap_g7_stop_slippage_2026-10-18/SLIPPAGE.md",
+      "scripts/dev/test_where_is.py",
+      "scripts/dev/test_station_disk_report.py",
+      "MyTradingSys/research/gap_g7_stop_slippage_2026-10-18/test_slippage.py",
+      "MyTradingSys/research/gap_g7_stop_slippage_2026-10-18/days.csv",
+      "MyTradingSys/tests/test_gemini_queue_lock.py",
+      "scripts/dev/test_artifact_pages.py",
+      "scripts/dev/test_cbp_run.py"
+    ],
+    "session": "agent-a9e3e0cdcc0e7222e"
+  },
   "created": "2026-10-30T20:22:10Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/test_hunt_2026-10-31/VACUOUS_TESTS.md lists 30 rows (sha, test, fails-on-old Y/N); a raw card is filed per vacuous test",
