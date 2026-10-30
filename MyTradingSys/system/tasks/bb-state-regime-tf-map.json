@@ -24,7 +24,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "blocked-on-data: F:/MTS/data/tom_raw absent on DESKTOP-F7IU69N; run MyTradingSys/research/bb_state_map_2026-10/study.py on the machine holding it. Definitions + script + test shipped.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
@@ -44,7 +44,7 @@
     "MyTradingSys/research/prev_close_break_2026-10-29/RESULT.md",
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/SESSION_MAP_2026-10-30.md"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Write the state, candle and regime definitions (OURS) in MAP.md before counting",
     "Build TF bars from F:/MTS/data/tom_raw 1m, DEV only; count every cell",
