@@ -2,11 +2,11 @@
  "allowance": {
   "plan": "plus",
   "week_resets": 1793780113,
-  "week_used": 49.0,
+  "week_used": 50.0,
   "window_resets": 1793365056,
-  "window_used": 1.0
+  "window_used": 4.0
  },
- "at": "2026-10-30T07:59:41Z",
+ "at": "2026-10-30T08:30:07Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -22,10 +22,25 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 2.0,
-  "window_pts": 1.0,
-  "window_runs": 1
+  "window_pts": 2.0,
+  "window_runs": 2
  },
  "runs": [
+  {
+   "at": "2026-10-30T08:28:11Z",
+   "card": "gpt-spec-tests-check-sourced-params",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 109,
+   "tokens_out": 5492,
+   "tokens_total": 479521,
+   "tokens_uncached": 36013,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
   {
    "at": "2026-10-30T07:58:05Z",
    "card": "gpt-spec-tests-deploy-untrack-backup",
@@ -160,21 +175,6 @@
    "tokens_uncached": 47667,
    "week_pts": 0.0,
    "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-27T21:29:43Z",
-   "card": "lf-volume_candles_ma-gpt-rederive",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "Codex credits ran out; the card stays ready, is not charged a try, and the GPT lane is marked down | release failed: sync: no claim lf-volume-candles-ma-gpt-red",
-   "outcome": "LIMIT",
-   "seconds": 3,
-   "tokens_out": null,
-   "tokens_total": null,
-   "tokens_uncached": null,
-   "week_pts": null,
-   "window_pts": null
   }
  ]
 }
