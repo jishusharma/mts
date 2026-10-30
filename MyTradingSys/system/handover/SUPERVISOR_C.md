@@ -1,28 +1,20 @@
-# Supervisor C handover | written 2026-10-30T02:17Z by JIS-DESKTOP | verify: python scripts/dev/supervisor.py handover --verify   (STALE 0 at last boot)
-Successor task: MTS-SuccWake-C fireAt 2026-10-30T02:18Z (4b2)
+# SUPERVISOR C notes (super-session-1, Agent sonnet, login C, JIS-DESKTOP) - rewritten each wake
 
-## Goal
-Login C on JIS-DESKTOP: mode NORMAL, 5 h 22.0% (reset 2026-10-30T02:40Z), week 28.0% of cap 85.
-Stop at 5 h >= 80%, week >= cap, CI red, no ready cards, the TRANSIT at time, or a 3 h wave.
+Started 2026-10-30T17:20Z. Work until 2026-10-31T05:06Z (plan). Wake 1 at 18:10Z. 5h window reset 17:50Z (now 5 pct, next reset 22:50Z), week 40 pct (cap 85).
 
-## Truth
-- Peers live at write: A@JIS-NUC, B@JIS-NUC | `python scripts/dev/sync.py where --all` | read at 2026-10-30T02:17Z
-- Last picks: main-checkout-stale-hooks-2026-10-24 | `python scripts/dev/tasks.py dispatch` | read at 2026-10-30T02:17Z
-- Open claims from JIS-DESKTOP: ship-root-cause | `python scripts/dev/sync.py where --all` | read at 2026-10-30T02:17Z
+## Running / waiting
+- Haiku a4a6d3d01555c8ff0 haiku-refresh-stale-ready-cards: STALE 24 -> 5 (5 held: look delivered), local sha b328ea3f1 in worktree agent-a4a6d3d01555c8ff0, NOT pushed (its offline gate failed on role_budget/token/successor_wake in its tree; trunk supervisor.md is 7413 B so recheck). Re-ship after CI green via SendMessage to it; verify git cherry + one recount.
+- Opus a62eb6666d8cbc5a0 (stream F, bug-supervisor-idles-after-wake-retired, approval d-supervisor-idle-bug): 6/6 built, local commits 2037b9246 9b0542273 7b66a91a7 in worktree agent-a62eb6666d8cbc5a0, NOT shipped (CI red). Re-ship when CI green.
+- Haiku a1b340f351ac8ff74 (read-only idle-bug done_when check): finished.
 
-## Ruled out
-- none recorded by the tool; add what was tried and closed (`handover --from <file>`).
+## Done this wake
+- Revert of false "GPT down (auth)" lane state: eba62ccc2 -> trunk 98d5ed195 (cherry empty). Cause: codex CLI on this desktop has no OpenAI login (401); `codex_run.py tick` here also overwrote lane_state/codex_usage. DO NOT run codex_run.py on this desktop.
+- NUC ssh gate tick: lab tree salvaged 64 files, but claim push fails (no git login in the ssh session). So GPT audits go via desk row to an interactive NUC session: 20261030-174331 (6 audits). Gemini desk row 20261030-173120 (4 cards, :low).
+- Signal q-f7aac9 to desktop-f7iu69n: run testnet-trade-readout-daily (stream C). b-230ce8 ack NOT sent (no run landed).
+- DECISION (OURS): no manual claim before the codex tick (the runner claims itself and skips claimed cards). DECISION (OURS): started F Opus worker the same wake as Haiku (parent order beats RAMP new=1).
 
-## Next 3 steps
-1. `python scripts/dev/sync.py start supervisor-C-<utc date>`; `get_usage`; `python scripts/dev/supervisor.py plan --login C --five <%> --five-reset <utc> --week <%> --week-reset <utc> --running 0`.
-2. 02:20Z TRANSIT. Open: Fable R5 shipped (GRANDFATHER_DECISION 7f02769e; config edit is a CRITICAL card); R7 on O2 hold; reply protocol e8e7e8cd shipped; station_disk_report removed from trunk, needs Linux-safe re-land; successor wake fix e1e0dba8 unproven (proof fire card); b-230ce8 told (GPT/Gemini on NUC); DeepSeek DSA row 39h; A reset conflict.
-3. `python scripts/dev/tasks.py dispatch`; start the next picks.
-
-## Traps
-- One ship at a time; EXTRA registration forces the ~20 min gate.
-
-## Open
-- Claims above: finish, hand over in the card, or release.
-
-## Missed last time
-(machine-written by `context_gap.py fold` at the next ship)
+## Blocked / next
+- CI RED: 5 fails; 067b81238 (splits revert), afc08114b (B163 revert) landed by others; run 41103757447 queued. Start no shipping work until green.
+- Then: Haiku haiku-register-orphan-tests; stream A layer-review-tom-guidance (STALE until the Haiku refresh ships); stream D live-aid-replay-mode-fixture-feeds is RAW -> Session_Planner first; re-ship Opus F work.
+- Feeder: file check cards in another lane per ship (none yet: only revert/desk rows).
+- Noticed: handover() lacked a work-period check (fixed in the Opus F build); test_successor_wake read the real loop folder (fixed 7b66a91a7).
