@@ -4,33 +4,65 @@
   "commands": [],
   "created": "2026-10-30T08:05:54Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Pure function nextHighEvent(events, now) in live_aid_indicators.js returns the right event on a fixture; strip renders; test_live_aid.py green; shipped.",
+  "est_turns": 14,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "live_aid.html: macro strip showing the next High-impact USD event with countdown and the last 3 results (actual vs forecast), from the ForexFactory JSON.",
   "id": "live-aid-macro-calendar",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "research: news feeds for MTS (Binance hack timeline, free feeds tested, wiring plan) + 4 c",
+      "ref": "12a473da6c81",
+      "utc": "2026-10-30T08:06:10Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "12a473da6c81 research: news feeds for MTS (Binance hack timeline, free feeds tested, wirin",
+      "ref": "MyTradingSys/research/news_feeds_2026-10-30/REPORT.md",
+      "utc": "2026-10-30T08:06:10Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-30 T0-ONLY | CORS of the JSON is unchecked (REPORT N3): step 2 fetches via the page, if blocked use a local copy refreshed by hand and say so in the result. Same file set as live-aid-news-panel: run after it.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-30T09:58:04Z",
   "refs": [
     "MyTradingSys/research/news_feeds_2026-10-30/REPORT.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/live_aid.html",
+    "MyTradingSys/tools/live_aid/live_aid_indicators.js",
+    "MyTradingSys/tools/live_aid/test_live_aid.py",
+    "MyTradingSys/research/news_feeds_2026-10-30/REPORT.md"
+  ],
+  "scope_out": [
+    "news headline panel (live-aid-news-panel)",
+    "gating any trade"
+  ],
+  "scope_sha": "12a473da6c81",
+  "size": "S",
+  "sources": [
+    "REPORT.md section 4 and N3; impact field SOURCED (ForexFactory)"
+  ],
+  "state": "ready",
+  "steps": [
+    "write nextHighEvent() and the test first; fixture copied from one real fetch of nfs.faireconomy.media/ff_calendar_thisweek.json",
+    "fetch once on load and then once a day (429 if hit twice a minute, REPORT.md section 4); on error or 429 show NO CALENDAR, never stale numbers",
+    "render the strip; ship. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
+  ],
+  "tests": "MyTradingSys/tools/live_aid/test_live_aid.py: test_next_high_event with a fixture of 6 events; red before the function exists.",
   "title": "live_aid: macro calendar strip from ForexFactory JSON (N3)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

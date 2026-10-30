@@ -1,48 +1,71 @@
 {
-  "id": "jis-nb-cleanup-python-procs-checkout-mts-live",
-  "title": "JIS-NB cleanup: 54 stray python procs, stale primary checkout, old .mts_live (0.9 GB)",
-  "state": "raw",
-  "lane": "JIS-NB",
-  "prio": 3,
-  "weight": "LIGHT",
-  "worker": "session",
-  "live_path": false,
-  "goal": "JIS-NB (old live host) is not clean after the Java engine moved to the Lenovo: STATION_DISK_2026-10-30.md shows java=0 but python=54, C: 28 GB free, primary checkout 2467+ commits behind and dirty, old .mts_live 0.9 GB still there.",
-  "done_when": "On JIS-NB: python process list reviewed and stale ones stopped (list in the ship result); primary checkout refreshed per b-4c2dfe (wip branch keeps local commits); device_tasks.py check --send shows primary-checkout-current and wt-maint DONE; .mts_live deletion proposed to the operator with its size and a note that nothing in it is unique (no deletion without his yes).",
-  "steps": [
-    "python scripts/dev/station_disk_report.py; tasklist cmdline summary of the python processes; stop stale ones that are not the hook, watcher or the operator's tools",
-    "python scripts/dev/refresh_main_checkout.py (see b-4c2dfe) after confirming no unshipped work",
-    "python scripts/dev/device_tasks.py check --send",
-    "report .mts_live size + 'nothing unique' evidence to the operator"
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/station_disk_report.py",
+    "powershell -c \"Get-CimInstance Win32_Process -Filter \\\"Name like 'python%'\\\" | Select ProcessId,CreationDate,@{n='cmd';e={\\.CommandLine.Substring(0,[Math]::Min(120,\\.CommandLine.Length))}} | Format-Table -Auto\"",
+    "git -C C:/Users/E-ngineers/IdeaProjects/BinanceDataFeed status --short"
   ],
-  "note": "Filed by Supervisor A 2026-10-30 after C did not answer three signals in 5 h. Data deletion is the operator's call.",
+  "created": "2026-10-30T04:57:00Z",
+  "depends_on": [],
+  "done_when": "STATION_DISK_2026-10-30.md gains a table of python processes (pid, age, command head) and the primary checkout behind-count after ff-only; shipped.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "On JIS-NB list the 54 python processes with command line and age, bring the primary checkout current, and record both in STATION_DISK_2026-10-30.md; nothing is deleted (.mts_live deletion stays the operator's call).",
+  "id": "jis-nb-cleanup-python-procs-checkout-mts-live",
+  "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "STATION_DISK_2026-10-30: three-machine disk table and cleanup list",
+      "ref": "444bf099cf1d",
+      "utc": "2026-10-30T01:14:10Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "444bf099cf1d STATION_DISK_2026-10-30: three-machine disk table and cleanup list",
+      "ref": "MyTradingSys/system/STATION_DISK_2026-10-30.md",
+      "utc": "2026-10-30T01:14:10Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-30 T0-ONLY | Host JIS-NB only (lane JIS-NB). Weight LIGHT was invalid, set ROUTINE.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T10:01:03Z",
   "refs": [
     "MyTradingSys/system/STATION_DISK_2026-10-30.md",
     "MyTradingSys/system/STATION_CLEANUP.md",
     "MyTradingSys/system/DISK_CARE.md"
   ],
+  "result": "",
   "scope_in": [
-    "MyTradingSys/system/STATION_DISK_2026-10-30.md"
+    "MyTradingSys/system/STATION_DISK_2026-10-30.md",
+    "MyTradingSys/system/STATION_CLEANUP.md"
   ],
   "scope_out": [
-    "any deletion of data",
-    "live tree on the Lenovo"
+    ".mts_live and any data deletion",
+    "stopping python processes that are a live engine or an open Claude session"
   ],
-  "created": "2026-10-30T04:57:00Z",
-  "depends_on": [],
-  "layers": [],
-  "formula_ids": [],
-  "formula_id": "",
-  "commands": [],
-  "tests": "",
-  "sources": [],
-  "asks": "",
-  "approved_by": "",
-  "from_inbox": "",
-  "est_turns": 6,
+  "scope_sha": "444bf099cf1d",
   "size": "S",
-  "refine_tries": 0,
-  "refined_by": "",
-  "result": "",
-  "mutation_check": ""
+  "sources": [
+    "STATION_DISK_2026-10-30.md findings 4 and 5"
+  ],
+  "state": "ready",
+  "steps": [
+    "run the commands on JIS-NB; classify each process: Claude/hook, MTS tool, orphan",
+    "stop only orphans older than 24 h whose parent is gone; if the primary checkout is dirty, record the dirty file list and do not ff; ship"
+  ],
+  "tests": "",
+  "title": "JIS-NB cleanup: 54 stray python procs, stale primary checkout, old .mts_live (0.9 GB)",
+  "weight": "ROUTINE",
+  "worker": "session"
 }
