@@ -52,6 +52,22 @@ class TokenAuditTest(unittest.TestCase):
         ])
         self.assertEqual(ta.audit_file(p)["label"], "dispatcher-kick")
 
+    def test_thinking_chars_and_load_tokens(self):
+        u = {"input_tokens": 2, "cache_read_input_tokens": 10, "cache_creation_input_tokens": 30, "output_tokens": 4}
+        th = {"type": "thinking", "thinking": "x" * 40}
+        d, p = self._write([
+            _row("user", content="hello"),
+            _row("assistant", id="a", usage=u, content=[th]),
+            _row("assistant", id="a", usage=u, content=[th]),  # streaming repeat: not double counted
+            _row("assistant", id="b", usage=u, content=[]),
+        ])
+        r = ta.audit_file(p)
+        self.assertEqual(r["thinking_chars"], 40)
+        self.assertEqual(r["load_tokens"], 42)
+        out = ta.render(ta.audit_root(d, 7), 7)
+        self.assertIn("load_tokens", out)
+        self.assertIn("thinking_chars", out)
+
 
 if __name__ == "__main__":
     unittest.main()
