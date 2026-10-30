@@ -1210,3 +1210,19 @@ def test_pid_alive_platform_helper():
     assert S._pid_alive(2147483647) is False
     assert S._pid_alive(0) is False
     assert S._pid_alive(-1) is False
+
+
+def test_plan_lines_lane_floors_every_lane_not_only_codex():
+    """D11 programme (2026-10-30): a lane under its floor prints LANE LOW so the Planner feeds it; the Gemini count reads the
+    [GEMINI] title prefix (ROUTING.md row), since no card carries a vendor field."""
+    p = S.pace_plan(T0, _rd(10, 20), 95)
+    live = {"A": {"host": "JIS-NUC", "mode": "NORMAL", "run": 0, "free": 3, "at": "x", "dsa": "up"}}
+    ctx = {"ci": {"red": False}, "picks": [], "codex_ready": 9, "sonnet_ready": 2, "haiku_ready": 0, "gemini_ready": 1}
+    out = "\n".join(S.plan_lines("A", "JIS-NUC", p, live, ctx, gate_key=False))
+    assert "LANE LOW SONNET 2 (< 6)" in out and "LANE LOW HAIKU 0 (< 3)" in out and "LANE LOW GEMINI 1 (< 4)" in out
+    assert "LANE LOW CODEX" not in out
+    full = "\n".join(S.plan_lines("A", "JIS-NUC", p, live, dict(ctx, sonnet_ready=6, haiku_ready=3, gemini_ready=4), gate_key=False))
+    assert "LANE LOW" not in full
+    cards = [{"state": "ready", "lane": "CODEX", "title": "[GEMINI] label x"}, {"state": "ready", "lane": "CODEX", "title": "GPT audit y"},
+             {"state": "ready", "lane": "SONNET", "title": "s"}, {"state": "ready", "lane": "HAIKU", "title": "h"}]
+    assert S.lane_counts(cards) == {"codex": 1, "gemini": 1, "sonnet": 1, "haiku": 1}

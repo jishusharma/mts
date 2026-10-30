@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-30T17:14:51Z",
+  "depends_on": [],
+  "done_when": "report MyTradingSys/research/layer_lab/reports/<date>_gpt-audit-live-aid-indicators-vs-formulas.md with 3 re-derived numbers (SAME or DIFF with the delta), every DIFF filed as a finding; no code change.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent check of the live aid maths the operator reads in a live session: re-derive RSI(14), BB(20,2) and WaveTrend from MyTradingSys/tools/live_aid/fixture_klines.json by hand from FORMULAS.md, compare with the js outputs (node), list every parameter as SOURCED or OURS.",
+  "id": "gpt-audit-live-aid-indicators-vs-formulas",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "live_aid: US open ladder (if up / if down) with measured reach and hold odds",
+      "ref": "122323253c92",
+      "utc": "2026-10-30T13:26:57Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Final report ends with a Noticed: line. Blocked? List 2-3 non-destructive fixes, try the safest, verify, then report.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T17:15:56Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/live_aid_indicators.js, fixture_klines.json, MyTradingSys/backtest/layers/FORMULAS.md; report file only"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change to any file outside the named ones"
+  ],
+  "scope_sha": "122323253c92",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "read FORMULAS.md RSI, BB, ATR, VWAP, WaveTrend sections",
+    "compute RSI(14), BB(20,2), WaveTrend by hand on the last 60 bars of fixture_klines.json",
+    "run node on the js functions with the same bars",
+    "write SAME/DIFF per number and the SOURCED/OURS table"
+  ],
+  "tests": "see done_when",
+  "title": "GPT audit: live_aid_indicators.js (RSI, BB, ATR, VWAP, WaveTrend) vs FORMULAS.md, re-derive 3 numbers from fixture_klines.json",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
