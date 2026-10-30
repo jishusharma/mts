@@ -1,0 +1,52 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/fetch_captions_timed.py --analyst Malkan --channel @malkansview --latest 12 --out MyTradingSys/research/malkan_rsi_2026-10-31/transcripts",
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/malkan_rsi_2026-10-31/MALKAN_RULES_2026-10-31.md"
+  ],
+  "created": "2026-10-30T18:52:48Z",
+  "depends_on": [],
+  "done_when": "MALKAN_RULES_2026-10-31.md exists with one row per stated rule (timeframe, entry, invalidation, video id, timestamp, quote) or NOT_IN_DATA; first line counts videos read; verify_extract_quotes.py exits 0.",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "The RSI/Malkan layer is weak (divergence no edge; 40/60 only a tolerance study) and its caption card was dropped. From the 12 ranked-top @malkansview videos named in the Malkan research folder (video priority list; else latest 12): every RSI 40-60 rule, timeframe, momentum read, entry, invalidation, with timed verbatim quotes. No verdict.",
+  "id": "gemini-malkan-top12-rsi-rules-extract",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini rules: captions first (fetch_captions_timed.py), quote only from the caption file, one fetch try per video, no retry loop, 429 -> mark the video UNVERIFIED with no quotes; run verify_extract_quotes.py until exit 0; facts and quotes only, no trading verdict, no code change. Final report ends with a Noticed: line.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T18:52:49Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/malkan_rsi_2026-10-31/MALKAN_RULES_2026-10-31.md (new), transcripts under research/malkan_rsi_2026-10-31/transcripts/; read: the existing Malkan folders under MyTradingSys/research (ls | grep -i malkan) for the video priority list"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code; any backtest; any trading verdict; .secrets and .env"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "find the ranked video list in the Malkan research folders (grep -ril priority); else take the latest 12",
+    "fetch captions (one try per video; 429 -> UNVERIFIED)",
+    "keyword scan: RSI, 40, 60, momentum, bullish, bearish, control, invalidation, timeframe; read the surrounding lines",
+    "write MALKAN_RULES_2026-10-31.md: table rule | timeframe | entry | invalidation | video id | timestamp | quote; run verify_extract_quotes.py until exit 0; commit with a Result: line"
+  ],
+  "tests": "verify_extract_quotes.py exit 0 is the gate; docs only",
+  "title": "[GEMINI] Malkan RSI 40-60: fetch captions of the 12 ranked-top videos (video_priority list) and extract the 40/60 rules, momentum reads and invalidations with timed quotes",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

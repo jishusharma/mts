@@ -1,0 +1,52 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/fetch_captions_timed.py --analyst Rekt --channel @RektCapital --latest 5 --out MyTradingSys/research/cbp/transcripts_2026-10-31",
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/cbp/ALT_BUY_PLAN_2026-10-31.md"
+  ],
+  "created": "2026-10-30T18:52:40Z",
+  "depends_on": [],
+  "done_when": "ALT_BUY_PLAN_2026-10-31.md exists with one row per stated rule (analyst, when, which, video id, timestamp, quote) or NOT_IN_DATA per analyst; first line counts videos read and rules; verify_extract_quotes.py exits 0.",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "The operator wants a CBP-sourced altcoin buy plan. From the latest 5 videos of each of @RektCapital, @benjaminjcowen, @bobloukas3493, @jalacrypto, @michaelvdpoppe, @CryptoCrewUniversity: every stated rule on when to buy alts (BTC dominance level, cycle phase, BTC level, date window) and which alts, with timed verbatim quotes. One table, no consensus verdict, no invention.",
+  "id": "gemini-cbp-altcoin-buy-plan",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini rules: captions first (fetch_captions_timed.py), quote only from the caption file, one fetch try per video, no retry loop, 429 -> mark the video UNVERIFIED with no quotes; run verify_extract_quotes.py until exit 0; facts and quotes only, no trading verdict, no code change. Final report ends with a Noticed: line.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T18:52:42Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/cbp/ALT_BUY_PLAN_2026-10-31.md (new), transcripts under research/cbp/transcripts_2026-10-31/"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code; any backtest; any trading verdict; .secrets and .env"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "fetch captions: 6 channels x latest 5 with fetch_captions_timed.py (one try per video; 429 -> UNVERIFIED)",
+    "keyword scan per transcript: altcoin, alts, dominance, rotation, buy, accumulate, DCA, cycle, bottom, top; read the surrounding lines",
+    "write ALT_BUY_PLAN_2026-10-31.md: table analyst | rule (when) | which alts | level or date | video id | timestamp | quote; then a per-analyst section with the full quotes",
+    "run verify_extract_quotes.py until exit 0; commit on the branch with a Result: line (videos read, rules found, analysts with NOT_IN_DATA)"
+  ],
+  "tests": "verify_extract_quotes.py exit 0 is the gate; docs only",
+  "title": "[GEMINI] CBP altcoin buy plan: what the T1 CBP analysts say about WHEN to buy alts and WHICH (Rekt, Cowen, Bob Loukas, Jala, vdPoppe, CCU), latest 5 videos each",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

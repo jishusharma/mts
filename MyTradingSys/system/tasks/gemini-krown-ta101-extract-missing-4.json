@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_hNfjyrJEytI.md"
+  ],
+  "created": "2026-10-30T18:52:35Z",
+  "depends_on": [],
+  "done_when": "4 extract files exist, each passes verify_extract_quotes.py (0 problems); MANIFEST.csv shows 19 of 19 reachable EXTRACTED_TA; no ledger rebuild (reviewer runs build_ledger.py).",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Finish the Krown TA 101 ledger source: the 4 timed transcripts sit in research/krown_capture_2026-10-16/transcripts/ta101_missing4 (no fetch needed). Write one extract per video per EXTRACT_TEMPLATE.md into research/krown_ta101_2026-10-13/extracts/, timed verbatim quotes, every rule with the number he says; mark MANIFEST.csv rows EXTRACTED_TA. The ledger rebuild stays with the Claude reviewer.",
+  "id": "gemini-krown-ta101-extract-missing-4",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini rules: captions first (fetch_captions_timed.py), quote only from the caption file, one fetch try per video, no retry loop, 429 -> mark the video UNVERIFIED with no quotes; run verify_extract_quotes.py until exit 0; facts and quotes only, no trading verdict, no code change. Final report ends with a Noticed: line.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T18:52:37Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_<id>.md (4 new), MANIFEST.csv (4 rows); read: EXTRACT_TEMPLATE.md, PROTOCOL.md s3, krown_capture_2026-10-16/transcripts/ta101_missing4/*_timed.txt"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code; any backtest; any trading verdict; .secrets and .env"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "copy each ta101_missing4/<id>_timed.txt into raw_transcripts_canonical/<id>_raw.txt if the verifier needs it there (read verify_extract_quotes.py header)",
+    "write extract_<id>.md per EXTRACT_TEMPLATE.md: zones, volume, candles, averages, ranges rules with timed quotes and the Source GPS line",
+    "run verify_extract_quotes.py on each until exit 0; run tools/check_numbers.py if it accepts a single extract",
+    "update MANIFEST.csv status, extract path, quote_gate for the 4 ids; commit on the branch with a Result: line (4 extracts, quotes, problems 0)"
+  ],
+  "tests": "verify_extract_quotes.py exit 0 is the gate; docs only",
+  "title": "[GEMINI] Krown TA 101: extract the 4 missing videos from the timed transcripts already on disk (hNfjyrJEytI fMRvOt26xcA LB3DRYxnA0A _JoJbu_Ug-A)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
