@@ -2,7 +2,7 @@
 
 Install from a durable MTS checkout on the host holding CBP data:
     python scripts/dev/cbp_schedule.py install --home F:/CryptoScrapper
-Task times (OURS): Mon-Fri 05:00 and 20:00 UTC, Saturday 05:30 UTC (11:00 IST), Sunday 16:30 UTC (22:00 IST).
+Task times (OURS): Mon-Fri 05:00 and 14:00 UTC, Saturday 05:30 UTC (11:00 IST), Sunday 16:30 UTC (22:00 IST).
 No trading process is started. The signed-in user's existing Claude login is used.
 """
 import argparse
@@ -22,7 +22,7 @@ import cbp  # noqa: E402
 
 
 # Start times (UTC, OURS; operator 2026-10-31): Mon-Fri twice, Saturday once 11:00 IST, Sunday once 22:00 IST.
-WEEKDAY_TIMES = ("05:00", "20:00")
+WEEKDAY_TIMES = ("05:00", "14:00")
 WEEKEND_TIMES = (("Saturday", "05:30"), ("Sunday", "16:30"))
 
 

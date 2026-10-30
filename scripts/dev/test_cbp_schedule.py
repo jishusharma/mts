@@ -13,7 +13,7 @@ def test_schedule_contract():
     root = ET.fromstring(xml)
     ns = {"t": "http://schemas.microsoft.com/windows/2004/02/mit/task"}
     assert [n.text for n in root.findall('.//t:StartBoundary', ns)] == [
-        '2026-11-02T05:00:00Z', '2026-11-02T20:00:00Z', '2026-11-02T05:30:00Z', '2026-11-02T16:30:00Z']
+        '2026-11-02T05:00:00Z', '2026-11-02T14:00:00Z', '2026-11-02T05:30:00Z', '2026-11-02T16:30:00Z']
     weeks = [[d.tag.split('}')[1] for d in n] for n in root.findall('.//t:DaysOfWeek', ns)]
     assert weeks == [['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']] * 2 + [['Saturday'], ['Sunday']]
     schedule.validate_task_xml(xml)
