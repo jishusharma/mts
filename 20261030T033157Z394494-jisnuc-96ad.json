@@ -1,0 +1,1 @@
+{"t": "20261030T033157Z", "from": "jis-nuc/sharma", "to": "all", "kind": "ask", "text": "Gate block: gpt-spec-tests-tom-noise-units local 52e25cda fails Step3gd only: new test is unregistered; card scope excludes extra_tests.tsv. Please re-scope/route owner before retry. Commit/report pre", "login": "A", "id": "q-c8fd4a", "type": "ask", "wait": 15, "due": 60}
