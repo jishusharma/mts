@@ -1,36 +1,59 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python MyTradingSys/research/sim_desk/build_catalogue.py --out %TEMP%/cat.json"
+  ],
   "created": "2026-10-30T22:40:26Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Rebuild to a temp --out flags all results/*.json exported (count == files), and sim_desk/artifact/test_artifact.py passes after refresh_catalogue().",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "A full build_catalogue.py rebuild keeps every results/*.json flagged exported (now 200 of 203: dir-pitchfork_2026-10-19, dir-tom_correlation_trick_2026-10-26, tom-corr-divergence-backtest drop).",
   "id": "sim-catalogue-rebuild-drops-exported-rows",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "T058 per-TF break event study re-land (ledger P0-45): W/1D/4h/1h/15m, DEV/VAL, fee-net fro",
+      "ref": "e31013dfb104",
+      "utc": "2026-10-30T19:30:37Z"
+    }
+  ],
   "layers": [
     "live_engine"
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-31 T0-ONLY (planner, machine checks only)\nPLANNER 2026-10-31: collision fix (desk refresh_catalogue rebuilds after every saved run). DECISION (OURS): ROUTINE (derived file, no decision numbers). Verify: content sha, git cherry origin/fast-track <sha> empty. End report with Noticed:.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-30T22:59:55Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/build_catalogue.py",
+    "MyTradingSys/research/sim_desk/test_build2.py"
+  ],
+  "scope_out": [
+    "desk.py, results/*.json contents, backfill_results.py"
+  ],
+  "scope_sha": "e31013dfb104",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Reproduce: python build_catalogue.py --out <tmp>; diff result ids vs rows with exported true",
+    "Find which earlier row claims each source first (seen set in add()) so id_ in have never matches; read rows for the 3 sources",
+    "Fix: add the 3 sources to EXPORTED_BY_SOURCE or, better, let add() match exported by result file source/id even when another row claimed the source",
+    "Rebuild, check the count, run test_artifact.py and test_build2.py"
+  ],
+  "tests": "New test in test_build2.py: temp results dir with a result file whose id differs from the row id claimed first; rebuild must flag it exported. Fails on current code (3 of 203 unflagged).",
   "title": "sim_desk build_catalogue.py: a full rebuild on trunk 2026-10-31 un-flags 3 exported results (tom-corr-divergence-backtest, dir-tom_correlation_trick_2026-10-26, dir-pitchfork_2026-10-19) so test_artifact catalogue test goes red; the desk refresh_catalogue() calls that rebuild after every saved run",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

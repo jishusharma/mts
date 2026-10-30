@@ -35,7 +35,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `tom-btc-validation` blocked p2 DSA-NUC: Tom on BTC T7: VALIDATION read once (2025-04..2025-06) of the frozen DEV config
   - `tom-probe-prereg` blocked p2 SONNET: Pre-register the surviving S/Q/M/F arms and write their runner card
   - `tom-probe-runner` blocked p2 SONNET: Run pre-registered Tom management arms on DAX and BTC
-  - `tom-vp-return-to-value-count` raw p2 SONNET: Tom VP: count return-to-value after leaving prior-day value on BTC (his 70/30 claim) with placebo + accepted-a
+  - `tom-vp-return-to-value-count` ready p2 SONNET: Tom VP: count return-to-value after leaving prior-day value on BTC (his 70/30 claim) with placebo + accepted-a
   - `lab-verify-trend-healthy-in-balance` refined p3 SONNET: LAB-VERIFY 10-18: how often trend_healthy is set inside a multi-day balance (DEV)
   - `tom-btc-other-setups` blocked p3 CODEX: Tom on BTC T8: chart lab + event study for his other trade types (trend continuation pullback to value/VWAP, b
 
@@ -201,7 +201,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `live-loop-timeouts-b191` refined p3 SONNET: Network: re-check live-loop timeouts after B191 plus wrapper priority and snapshot.cp (read-only report first)
   - `live-orderflow-state-line-1m-5m-15m-pric` refined p3 SONNET: Live read: one order-flow state line per TF (1m/5m/15m price swing vs Binance CVD swing vs OI change), descrip
   - `score-context-reads-automatically-carrie` refined p3 SONNET: Score context reads automatically: carried falsifier lines (HELD/BROKEN/UNTESTED) computed from klines at the 
-  - `sim-catalogue-rebuild-drops-exported-rows` raw p3 SONNET: sim_desk build_catalogue.py: a full rebuild on trunk 2026-10-31 un-flags 3 exported results (tom-corr-divergen
+  - `sim-catalogue-rebuild-drops-exported-rows` ready p3 SONNET: sim_desk build_catalogue.py: a full rebuild on trunk 2026-10-31 un-flags 3 exported results (tom-corr-divergen
 
 ## Callers (posted trade calls: Qriptal, RLinda, Bennett, Crypto Chase, Roman) (`callers`)
 - Status: Score the posted calls on Binance klines before anything else (B162 + multi-analyst ingestion). Self-reported 67.1 % wins, avg win 3.99 %, avg loss 0.63 %: unverified. Multi-provider parser + kline scorecard built (2026-10-18); 4 ingestion cards ready.
