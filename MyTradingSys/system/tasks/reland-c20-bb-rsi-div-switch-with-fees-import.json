@@ -4,33 +4,62 @@
   "commands": [],
   "created": "2026-10-30T17:25:10Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "test_no_own_costs.py passes with the script present; abs(COST_RT - 0.0012) < 1e-12 (pasted check); the rerun prints 36 variants all fee-net negative with OOS between -0.18 and -0.08 percent per trade (or the differences are listed); shipped, git cherry origin/fast-track <sha> empty.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Re-land the C20 BB+RSI divergence switch study (git show 3478f85eb:.../bb_rsi_div_switch.py) so CI stays green: replace its own FEE = 0.0012 by an import of MyTradingSys/backtest/fees.py, same numbers, no allowlist edit.",
   "id": "reland-c20-bb-rsi-div-switch-with-fees-import",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Revert \"research: C20 BB + RSI divergence direction-switch study on 15m BTC\"",
+      "ref": "e6c30a6f3583",
+      "utc": "2026-10-30T17:23:54Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "e6c30a6f3583 Revert \"research: C20 BB + RSI divergence direction-switch study on 15m BTC\"",
+      "ref": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md",
+      "utc": "2026-10-30T17:23:54Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-30 ACCEPT | DECISION (OURS): slippage 2 bp stays a labelled OURS expression in the study, not a new fees.py constant (fees.py has none). If the rerun cannot reach Binance klines, ship the script with the import and report the rerun as NOT_IN_DATA.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-30T18:24:12Z",
   "refs": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/bb_rsi_div_switch.py",
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md"
+  ],
+  "scope_out": [
+    "cost_allowlist.txt (frozen), fees.py (add no constant), any change to the study rules or variants, the 36-variant list, other research folders"
+  ],
+  "scope_sha": "e6c30a6f3583",
+  "size": "S",
+  "sources": [
+    "git: 3478f85eb (study), e6c30a6f3 (revert, reason), MyTradingSys/backtest/fees.py:32 (DERIBIT_TAKER)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Restore the script: git show 3478f85eb:MyTradingSys/research/eagle_eyes_picture_2026-10-28/bb_rsi_div_switch.py > the same path; restore the C20 row in BACKTEST_CANDIDATES.md from the same commit.",
+    "Replace line 13 FEE = 0.0012 by: from MyTradingSys.backtest import fees; COST_RT = 2 * fees.DERIBIT_TAKER + 2 * 1e-4 (10 bp taker RT regime A + 2 bp slip, OURS, comment says so); use COST_RT where FEE was; no name containing fee/slip/taker/maker assigned a bare number.",
+    "Run python MyTradingSys/backtest/test_no_own_costs.py (must pass without allowlist change) and python -m pytest MyTradingSys/backtest -q; run the study once (needs Binance public klines) and compare headline lines with the Result of 3478f85eb: 36 variants, all fee-net negative, OOS -0.08 to -0.18 percent per trade."
+  ],
+  "tests": "MyTradingSys/backtest/test_no_own_costs.py: fails on the 3478f85eb version of the script (own FEE constant), passes on the re-landed one; plus a one-line check abs(COST_RT - 0.0012) < 1e-12 pasted in the Result",
   "title": "Re-land C20 BB+RSI divergence switch study (3478f85eb, reverted: own fee constant) importing MyTradingSys/backtest/fees.py",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "agent"
 }

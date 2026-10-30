@@ -1,6 +1,10 @@
 {
   "_doc": "Files the wiring scan finds unrun (TEST-ONLY/ORPHAN), each declared with a disposition and evidence. Checked by scripts/dev/wiring_scan.py --check in the gate. Dispositions: TOOL, REPRO, PARKED, WIRE. A file that becomes LIVE/DEV-TOOL or disappears must be removed from here.",
   "entries": {
+    "MyTradingSys/backtest/splits.py": {
+      "disp": "TOOL",
+      "why": "Backtest library: the one DEV/VALIDATION/HOLDOUT definition plus assert_dev_only guard and holdout_reads.csv logger; imported by research scripts (bb_state_study.py), tested by backtest/test_splits.py."
+    },
     "MyTradingSys/tools/live_aid/build_artifact.py": {
       "disp": "TOOL",
       "why": "Builds the one-file claude.ai Artifact preview of live_aid.html (indicators inlined); run by hand when the live aid page changes, named in tools/live_aid/STEPS.md."

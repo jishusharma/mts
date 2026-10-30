@@ -1254,3 +1254,42 @@ def test_work_rule_code_and_docs_agree():
     repo = Path(S.__file__).resolve().parents[2]
     assert S.WORK_RULE in (repo / "MyTradingSys/system/SUPER_SESSION.md").read_text(encoding="utf-8")
     assert "SUPER_SESSION.md WORK PERIOD" in (repo / "MyTradingSys/system/roles/supervisor.md").read_text(encoding="utf-8")
+
+
+def test_handover_refuses_inside_the_work_period_so_mode_never_reads_ended_while_alive(tmp_path, monkeypatch):
+    """bug-supervisor-idles-after-wake-retired (4): ENDED was written only by handover(), which checked only another planner, so a
+    Supervisor could call it mid-period and its heartbeat read mode=ENDED while the session was alive. Inside the work period it
+    refuses (even with --force, and nothing is sent) unless the period is over or the week cap is reached."""
+    import sync
+    import mts_signal
+    monkeypatch.setattr(sync, "read_claims", lambda repo, ref: [])
+    sent = []
+    monkeypatch.setattr(mts_signal, "send", lambda text, **kw: sent.append(text) or True)
+    home = tmp_path / "home"
+    home.mkdir()
+    now = datetime(2026, 10, 30, 20, 0, tzinfo=timezone.utc)
+    S.work_period("C", now - timedelta(hours=1), "s1", hours=12, home=home)
+    pl = S.pace_plan(now, _rd(30, 40, five_reset="2026-10-30T22:00Z", week_reset="2026-11-03T20:00Z"), 85)
+    (home / "C-last-plan.json").write_text(json.dumps({"plan": pl}), encoding="utf-8")
+    with pytest.raises(ValueError) as e:
+        S.handover(tmp_path, "c", host="JIS-NB", home=home, now=now, sid="s1", send=True, force=True)
+    assert "work period" in str(e.value) and "supervisor.py wait" in str(e.value)
+    assert not S.handover_path(tmp_path, "C").exists() and not any("mode=ENDED" in x for x in sent)
+    (home / "C-last-plan.json").write_text("{", encoding="utf-8")                      # cap unknown: fail closed
+    with pytest.raises(ValueError):
+        S.handover(tmp_path, "c", host="JIS-NB", home=home, now=now, sid="s1")
+    (home / "C-last-plan.json").write_text(json.dumps({"plan": {**pl, "week": 90}}), encoding="utf-8")
+    assert S.handover(tmp_path, "c", host="JIS-NB", home=home, now=now, sid="s1", send=True).is_file()   # week cap reached
+    assert any("mode=ENDED" in x for x in sent)
+    (home / "C-last-plan.json").write_text(json.dumps({"plan": pl}), encoding="utf-8")
+    assert S.handover(tmp_path, "c", host="JIS-NB", home=home, now=now + timedelta(hours=12), sid="s1").is_file()   # period over
+
+
+def test_idle_rules_code_and_docs_agree():
+    """bug-supervisor-idles-after-wake-retired (1, 2): the never-idle rule and the post-compaction re-arm are quoted verbatim."""
+    repo = Path(S.__file__).resolve().parents[2]
+    role = (repo / "MyTradingSys/system/roles/supervisor.md").read_text(encoding="utf-8")
+    ss = (repo / "MyTradingSys/system/SUPER_SESSION.md").read_text(encoding="utf-8")
+    assert S.IDLE_RULE in role and S.REARM_RULE in role
+    d5 = next(x for x in ss.splitlines() if x.startswith("| D5 |"))
+    assert S.REARM_RULE in d5 and S.IDLE_RULE in d5

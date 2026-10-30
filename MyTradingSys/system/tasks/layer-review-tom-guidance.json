@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T18:26:19Z",
   "commands": [
     "python scripts/dev/lab_query.py layers tom",
     "python -c \"import json;d=json.load(open('MyTradingSys/system/layer_index.json'));n=sum(len(f.get('layers') or [1]) for f in d['families'] if f['id'] in ('tom','guidance',));h=sum(x.startswith('## ') for x in open('MyTradingSys/research/layer_lab/reports/layer_review_tom_guidance.md',encoding='utf8'));assert h==n==4,(h,n);print('sections',n)\"",
@@ -18,11 +19,17 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/layer_review_tom_guidance.md: 4 sections (tom_core",
+      "ref": "8b4467e5f",
+      "utc": "2026-10-30T18:26:19Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "B163 v2: run Alpha vs buy-and-hold and Beta per-sweep on DEV/VAL; RESULT, export, verdict ",
-      "ref": "a43b9fbff2e4",
-      "utc": "2026-10-30T17:26:25Z"
+      "line": "Revert B163 v2 alpha/beta study (a43b9fbff, 14502d93b): CI red at Step 3xt (cost_inventory",
+      "ref": "afc08114bc44",
+      "utc": "2026-10-30T18:04:45Z"
     },
     {
       "auto": true,
@@ -45,11 +52,16 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T17:40:37Z",
+  "refreshed": "2026-10-30T18:16:09Z",
   "refs": [
     "MyTradingSys/research/mts_doctor/MAINNET_PATH_2026-10-25.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/layer_lab/reports/layer_review_tom_guidance.md: 4 sections (tom_core, tom_proofs, tom_vp_pivot, bb_lvn_triggers), 5 headings each, both check commands OK, verify_extract_quotes PASS",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/reports/layer_review_tom_guidance.md",
     "MyTradingSys/system/layer_index.json",
@@ -70,14 +82,14 @@
     "VALIDATION and HOLDOUT reads",
     "layer_map.json, layer_index.json or code edits"
   ],
-  "scope_sha": "a43b9fbff2e4",
+  "scope_sha": "afc08114bc44",
   "size": "M",
   "sources": [
     "MyTradingSys/system/ANTIGRAVITY_LAPTOP.md section C (fact-sheet format)",
     "MyTradingSys/research/mts_doctor/LAYER_REALITY_2026-10-25.md",
     "MyTradingSys/research/mts_doctor/MAINNET_PATH_2026-10-25.md:34 (operator NO 2026-10-25)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Run python scripts/dev/lab_query.py layers <family> and read layer_index.json for each of: tom guidance. If MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/<family>.md exists (Antigravity input) start from it and re-verify every file:line; else build from the scope_in files.",
     "Per layer write '## <layer id>' (the family id where a family lists no layers) with exactly five '### ' headings in this order: '### Idea and source' (verbatim quote + file:line), '### Parameters' (each SOURCED with quote, or OURS), '### Backtests' (report path, fee-net yes/no, in-sample or OOS, n trades; lab_query.py backtests <family>, TRIAL_LEDGER.csv).",
@@ -86,6 +98,7 @@
     "Add one plain line per layer (not a heading): wired in the simulator (MyTradingSys/research/sim_desk/PLUGIN.md) yes or no.",
     "Run the two python -c commands in `commands` (section count; headings and wording). Both must print their OK line; then sync.py ship."
   ],
+  "taken": "2026-10-30T18:26:19Z",
   "tests": "Fail-first: both python -c commands in `commands` (section count == 4; five headings each, no verdict phrase) fail while the sheet is absent and pass once it is complete.",
   "title": "Layer review sheet: Tom and cross-guidance (idea, source, backtests, bugs, confluence)",
   "weight": "IMPORTANT",
