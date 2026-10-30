@@ -31,5 +31,31 @@ class Prompt(unittest.TestCase):
         self.assertEqual(cmd[cmd.index("--setting-sources") + 1], "")  # no project hooks in a scheduled run
 
 
+class Verdicts(unittest.TestCase):
+    def test_old_thesis_video_gets_a_verdict_not_a_row_and_bad_quote_is_dropped(self):
+        import json
+        import tempfile
+        from datetime import datetime, timezone
+        with tempfile.TemporaryDirectory() as d:
+            d = Path(d)
+            (d / "v1_raw.txt").write_text(
+                chr(10).join(["# Video ID: v1", "# Title: Alts", "# Published: 2026-10-16", "# Analyst: Jala",
+                           "# Channel: @jalacrypto", "# ---", "we go to level 70 guys and aave looks fine", ""]), encoding="utf-8")
+            got = {"bias": "BEARISH", "symbols": ["BTC"], "quotes": [], "trades": [], "pointers": [],
+                   "bottom_call": "NOT_IN", "bottom_quote": "we go to level 70 guys",
+                   "alts": [{"coin": "AAVE", "stance": "WATCH", "note": "n", "quote": "aave looks fine"},
+                            {"coin": "SOL", "stance": "BUY", "note": "n", "quote": "never said this"}]}
+            old, cbp_run.TRANSCRIPTS = cbp_run.TRANSCRIPTS, d
+            try:
+                added, total, rej = cbp_run.run_once(datetime(2026, 10, 31, tzinfo=timezone.utc), fetch=lambda c, k: None,
+                                                     extract=lambda v, b: got, store=d / "rows.json")
+            finally:
+                cbp_run.TRANSCRIPTS = old
+            v = json.loads((d / "verdicts.json").read_text(encoding="utf-8"))["v1"]
+            self.assertEqual((added, total), (0, 0))
+            self.assertEqual(v["bottom_call"], "NOT_IN")
+            self.assertEqual([a["coin"] for a in v["alts"]], ["AAVE"])
+
+
 if __name__ == "__main__":
     unittest.main()
