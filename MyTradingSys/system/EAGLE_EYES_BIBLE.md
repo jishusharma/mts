@@ -51,6 +51,7 @@ Why this section exists: the 10-28 session was compacted 6 times; each summary k
 - Abide by the Bible (10-31 ~19:45Z): "you need to abide [by] the Bible, because we cannot miss updating it." Rule: every operator ask or teaching lands here (verbatim line + asks-table row) in the SAME turn it is answered; a turn that answers him without it is not done.
 - OI commentary (10-31): "this is the kind of commentary that I need on my dashboard. When OI is changing, then what is the actual scenario? Is the money entering or is the money leaving? What has just happened? What to expect?" Spec: `research/eagle_eyes_picture_2026-10-28/OI_COMMENTARY_SPEC.md`.
 - Stoch RSI (10-31): "do we know how to use Stoch RSI and does MTS need it?" Answer: coded and chart-checked (FORMULAS.md s23, `chart_verify.py`); measured C25: no edge as a trigger on 15m/1h/4h, same as plain RSI; keep it as a chart read only, one daily lead to pre-register.
+- Held high, then taken (10-31): "the market did not take out that high, so it was letting the shorts build and then you can see on the third circle it took out that high. So what we need to find that what are these situations when the high or the low is not taken out, initially and then in the next day or so it happens. So look at the duration of how separate they are ... especially for 15 minutes time frame." Measured C26: a held retest is taken within 24h 72% vs 59% control, both sides, both periods.
 - Coil and force (10-30): "what kind of force makes that happen? Try to measure it ... how far it will go ... support and resistances are the target ... I cannot understand in which direction the coil will fire." First answers: `research/pre_us_squeeze_2026-10-29/`, `research/bb_pierce_force_2026-10-29/`.
 
 ## The asks in one table (consolidated 10-30; update here, not in chat)
@@ -66,6 +67,7 @@ Why this section exists: the 10-28 session was compacted 6 times; each summary k
 | Malkan 5-star / 7-star fair test | Indian-equity basket, pre-registered (PRE_REG_TEMPLATE) | not started; BTC n too small |
 | Dashboard OI commentary: money in/out, what just happened, what to expect (measured) | `OI_COMMENTARY_SPEC.md` -> live_aid.html, built by dash-designer | spec 10-31; C24 is its first measured line |
 | Stoch RSI: do we know it, does MTS need it | `stochrsi_vs_rsi.py`, C25 | measured 10-31: no intraday edge; 1d trend-long lead n=16 OOS, needs pre-reg |
+| Held high/low retest, then taken out: how often, how far apart (15m) | `failed_retest_takeout.py`, C26 | measured 10-31: 72% taken in 24h vs 59% control; retest ~10h after pivot, take-out ~4-5h later; 70% sweep back; tradable form needs pre-reg |
 | Heatmap in Eagle_Eyes' own browser tab | Legend tab: layer missing | his shots until the layer loads there |
 | US open, squeeze, pierce force, levels as targets | `research/pre_us_squeeze_2026-10-29/`, `research/bb_pierce_force_2026-10-29/` | ran 10-30; next: OI and RSI/WT coils |
 | Habib whole-plan scoring; Kurisko quad (4 stochastics) on 15m | `research/habib_plan_imbalance_2026-10-20/`; card `kurisko-dev-event-study` | plans never scored; 1m/5m blocked by fees, 15m untested |
