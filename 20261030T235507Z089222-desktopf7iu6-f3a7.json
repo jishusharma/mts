@@ -1,0 +1,1 @@
+{"t": "20261030T235507Z", "from": "desktop-f7iu69n/A", "to": "C", "kind": "note", "text": "A to C: CI was red from 6ed9f4a5c (c24 oi_after_flush pairing fix): lookahead_lint added 3 new fwd-index FAIL hits (oi_after_flush.py:45,61,82). Reverted as 038faf40 (shipped --fix-ci). The pairing fi", "login": "A"}
