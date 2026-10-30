@@ -1,0 +1,60 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-30T09:47:27Z",
+  "depends_on": [],
+  "done_when": "Three consecutive full sync.py ship gate runs under load pass with the same shard count; a new isolation test fails before the fix and passes after; root cause named in the commit body.",
+  "est_turns": 36,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Find and remove the shared state (temp dir, port, cwd file, timeout under parallel shards) that makes sync.py ship gate fail a different step each run while every test passes alone (3cx soak, 3sig, 3cr, 5b wlow_bounce nan).",
+  "id": "ship-gate-flaky-under-load-3sig-3cr-5b",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Add on-demand fix_verifier.py (ledger A4-18)",
+      "ref": "792ae66b67d6",
+      "utc": "2026-10-30T08:54:14Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-30 ACCEPT | CRITICAL (gate code): needs the CRITICAL protocol in session_planner_details.md (review session on plan and diff); not for an Agent.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T10:00:32Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/sync.py",
+    "scripts/dev/run_all_tests.py",
+    "scripts/dev/test_run_all_tests.py",
+    "scripts/dev/run_extra_tests.py",
+    "scripts/dev/extra_tests.tsv"
+  ],
+  "scope_out": [
+    "live tree .mts_live",
+    "product code under src/ and backtest/layers"
+  ],
+  "scope_sha": "792ae66b67d6",
+  "size": "M",
+  "sources": [
+    "raw card 7e3286249"
+  ],
+  "state": "ready",
+  "steps": [
+    "run the gate 3 times in parallel with a CPU burner; log which step fails and its stderr (pizzino-layer-dashboard-2 on the Lenovo failed 4 tries)",
+    "diff shared state across the failing steps (tempfile names, fixed ports, files in cwd, timeouts); isolate per shard",
+    "add the fail-first test for that cause (look in the failing tests: 3cx soak, 3sig, 3cr, 5b wlow_bounce, and extra_tests.tsv), re-run 3x, ship. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
+  ],
+  "tests": "Written around the cause found in step 2 (not before): a test in test_run_all_tests.py that reproduces the shared-state collision and is red on pre-fix code.",
+  "title": "sync.py ship gate fails a different step each run (3cx soak, 3sig ....E, 3cr, 5b wlow_bounce nan) with every test passing alone; pizzino-layer-dashboard-2 stuck 4 tries on Lenovo; find the shared-state/timeout cause",
+  "weight": "CRITICAL",
+  "worker": "session"
+}

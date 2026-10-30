@@ -3,44 +3,77 @@
   "asks": "",
   "commands": [],
   "context": {
-    "calls_to_edit": 20,
-    "folded": "2026-10-30T08:16:55Z",
-    "misses": 33,
+    "calls_to_edit": null,
+    "folded": "2026-10-30T10:23:04Z",
+    "misses": 50,
     "reads": [
-      "scripts/dev/mts_doctor.py",
-      "MyTradingSys/tests/test_operator_questions_pending.py"
+      "MyTradingSys/tests/test_role_roster.py"
     ],
-    "session": "5fdeeddb-5a32-4b7b-af79-35c62cbfa6e5"
+    "session": "agent-ae74a25c7b6cdedbb"
   },
   "created": "2026-10-30T08:05:53Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "live_aid.html shows the panel and tile; pure JS functions for pulse and word tags are tested in test_live_aid.py with a fixture list; test_live_aid.py green; shipped.",
+  "est_turns": 28,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "live_aid.html: headline panel from Tree News REST (poll 15 s OURS, last 12 items, importance>=7 marked OURS), a QUIET/BUSY/EVENT pulse tile (EVENT at >=3 items >=7 in 60 min OURS), and class word tags (hack, halt, ETF, Fed/CPI, war, delist).",
   "id": "live-aid-news-panel",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "research: news feeds for MTS (Binance hack timeline, free feeds tested, wiring plan) + 4 c",
+      "ref": "12a473da6c81",
+      "utc": "2026-10-30T08:06:10Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "12a473da6c81 research: news feeds for MTS (Binance hack timeline, free feeds tested, wirin",
+      "ref": "MyTradingSys/research/news_feeds_2026-10-30/REPORT.md",
+      "utc": "2026-10-30T08:06:10Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-30 ACCEPT | Shares live_aid.html with pizzino-layer-dashboard (claimed, live_aid overlay) and live-aid-macro-calendar: one writer at a time, take after the claim is released.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-30T10:00:10Z",
   "refs": [
     "MyTradingSys/research/news_feeds_2026-10-30/REPORT.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/live_aid.html",
+    "MyTradingSys/tools/live_aid/live_aid_indicators.js",
+    "MyTradingSys/tools/live_aid/test_live_aid.py",
+    "MyTradingSys/tools/live_aid/REQUIREMENTS.md",
+    "MyTradingSys/research/news_feeds_2026-10-30/REPORT.md"
+  ],
+  "scope_out": [
+    "order placement",
+    "any alert that gates a trade (news is context only)",
+    "history file writing (card news-event-study)"
+  ],
+  "scope_sha": "12a473da6c81",
+  "size": "M",
+  "sources": [
+    "REPORT.md section 4 (feed, CORS) and section 6 N1/N2/N6; thresholds labelled OURS"
+  ],
+  "state": "ready",
+  "steps": [
+    "add pulse() and wordTags() to live_aid_indicators.js (pure, no DOM) with tests first",
+    "fetch https://news.treeofalpha.com/api/news?limit=50 (CORS *, REPORT.md section 4); fail closed to a grey NO FEED tile on error",
+    "render panel and tile in live_aid.html; run test_live_aid.py; ship. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
+  ],
+  "tests": "MyTradingSys/tools/live_aid/test_live_aid.py: new test_news_pulse and test_word_tags with a fixture list; red before the functions exist.",
   "title": "live_aid: news headline panel + news pulse tile + word tags (Tree News REST, N1/N2/N6)",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

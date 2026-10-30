@@ -320,7 +320,30 @@
     return out;
   }
 
-  var api = { foldBars: foldBars, FD: FD, fundRead: fundRead, premium: premium, bybitTick: bybitTick, LQ: LQ, liqDeribit: liqDeribit, liqBybit: liqBybit, liqBinance: liqBinance, liqSum: liqSum, CP: CP, coilPierce: coilPierce, IT: IT, divergence: divergence, flow: flow, flowLive: flowLive, squeeze: squeeze, dom: dom, supports: supports, vwapTest: vwapTest,
+  // News (card live-aid-news-panel; REPORT.md N1/N2/N6). Tree News `importance` 0-10 and `time` (ms) are SOURCED.
+  // Mark at importance >= 7, 60 min window, EVENT at >= 3 such items: OURS (a normal day has 5-9 items >= 7, the hack day 42). Context only, never gates a trade.
+  var NW = { hi: 7, windowMs: 3600000, event: 3 };
+  function pulse(items, now) {
+    if (!items || !isFinite(+now)) return null;
+    var n = 0;
+    items.forEach(function (x) {
+      var t = +x.time, imp = x.importance;
+      if (typeof imp === 'number' && imp >= NW.hi && isFinite(t) && t <= now && now - t < NW.windowMs) n++;
+    });
+    return { n: n, level: n >= NW.event ? 'EVENT' : n > 0 ? 'BUSY' : 'QUIET' };
+  }
+  // Word classes, OURS list, fixed order. Case-insensitive; returns the class names found in a headline.
+  var WORDS = [['hack', /\b(hack(ed|s|ing)?|exploit(ed|s)?|drain(ed|s|ing)?|stolen|breach)\b/i],
+    ['halt', /\b(halt(ed|s)?|suspend(s|ed)?|suspension|pauses? withdraw\w*|withdrawals? (paused|suspended))\b/i],
+    ['etf', /\b(etfs?|sec)\b/i], ['fed', /\b(fed|fomc|cpi|powell|rate (cut|hike))\b/i],
+    ['war', /\b(war|sanctions?|missile|invasion|strikes?)\b/i], ['delist', /\bdelist(s|ed|ing)?\b/i]];
+  function wordTags(title) {
+    if (title === null || title === undefined) return [];
+    var t = String(title);
+    return WORDS.filter(function (w) { return w[1].test(t); }).map(function (w) { return w[0]; });
+  }
+
+  var api = { pulse: pulse, wordTags: wordTags, NW: NW, foldBars: foldBars, FD: FD, fundRead: fundRead, premium: premium, bybitTick: bybitTick, LQ: LQ, liqDeribit: liqDeribit, liqBybit: liqBybit, liqBinance: liqBinance, liqSum: liqSum, CP: CP, coilPierce: coilPierce, IT: IT, divergence: divergence, flow: flow, flowLive: flowLive, squeeze: squeeze, dom: dom, supports: supports, vwapTest: vwapTest,
     flagDiv: flagDiv, flagSqueeze: flagSqueeze, flagFlow: flagFlow, flagDom: flagDom, flagVwap: flagVwap, confidence: confidence, rma: rma, sma: sma, rsi: rsi, bollinger: bollinger, atr: atr, dayVwap: dayVwap, utcDays: utcDays, wavetrend: wavetrend,
     inversePnlBtc: inversePnlBtc, closedPnlBtc: closedPnlBtc, columns: columns };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

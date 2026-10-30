@@ -435,3 +435,49 @@ def test_fold_1h_into_4h(it):
     H = 3600000
     b0 = 4 * H * 100
     assert it["fo"] == [[b0 - 4 * H, 9, 9, 9, 9, 1], [b0, 10, 15, 8, 13, 9], [b0 + 4 * H, 13, 13, 12, 12.5, 5]]
+
+
+# ---------- news pulse and word tags (card live-aid-news-panel): thresholds OURS, hand-computed expectations ----------
+# LIVE_AID_BREAK modes: newspulse newswords (each must fail one test below).
+NEWS_RUNNER = r"""
+const A = require(process.argv[process.argv.length - 1]);
+const brk = process.env.LIVE_AID_BREAK || '';
+const now = 10000000, M = 60000;
+const it = (ageMin, imp) => ({time: now - ageMin * M, importance: imp});
+const pulses = [
+  A.pulse([], now),                                                     // nothing: QUIET, 0
+  A.pulse([it(5, 6.9), it(10, 3), it(20, null)], now),                  // none >= 7: QUIET, 0
+  A.pulse([it(5, 7), it(59, 9.1), it(61, 9)], now),                     // 7 counts (>=), 61 min old does not: BUSY, 2
+  A.pulse([it(1, 7.4), it(30, 8), it(59.9, 7), it(70, 9)], now),        // 3 inside 60 min: EVENT, 3
+  A.pulse([{time: now + 5 * M, importance: 9}, it(2, 'x')], now),       // future / non-numeric ignored: QUIET, 0
+  A.pulse(null, now)                                                    // no list = no read
+];
+if (brk === 'newspulse') pulses[3].level = 'BUSY';
+const titles = ['POTENTIAL BINANCE HACK ONGOING - ONCHAIN', 'Exchange suspends withdrawals after exploit', 'SEC delays Bitcoin ETF decision',
+  'Fed holds rates; CPI due Friday', 'Sanctions widen as war escalates', 'Binance to delist 3 tokens', 'Nice weather today', 'Whale drained wallet', null];
+const tags = titles.map(t => A.wordTags(t));
+if (brk === 'newswords') tags[0] = [];
+process.stdout.write(JSON.stringify({pulses, tags}));
+"""
+
+
+@pytest.fixture(scope="module")
+def news():
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("node not installed")
+    out = subprocess.run([node, "-e", NEWS_RUNNER, str(JS)], capture_output=True, text=True, timeout=60, env=os.environ.copy())
+    assert out.returncode == 0, out.stderr
+    return json.loads(out.stdout)
+
+
+def test_news_pulse(news):
+    # window = 60 min back from now; importance >= 7 counts (OURS); EVENT at >= 3 such items, BUSY at 1-2, QUIET at 0 (OURS, REPORT.md N2)
+    p = news["pulses"]
+    assert [(x["n"], x["level"]) for x in p[:5]] == [(0, "QUIET"), (0, "QUIET"), (2, "BUSY"), (3, "EVENT"), (0, "QUIET")]
+    assert p[5] is None
+
+
+def test_word_tags(news):
+    # classes in fixed order: hack, halt, etf, fed, war, delist (word list OURS, REPORT.md N6)
+    assert news["tags"] == [["hack"], ["hack", "halt"], ["etf"], ["fed"], ["war"], ["delist"], [], ["hack"], []]

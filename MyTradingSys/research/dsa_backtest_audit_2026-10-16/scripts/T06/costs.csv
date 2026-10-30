@@ -9,10 +9,10 @@ MyTradingSys/backtest/bt/bt_engine.py,20,maker_fee,0.0,fraction,per_side,maker,f
 MyTradingSys/backtest/bt/bt_engine.py,47,funding_paid_pct,0.0,pct,per_8h,n/a,fund in bt,0,assign,funding_paid_pct = 0.0
 MyTradingSys/backtest/fees.py,10,(literal),0.0005,fraction,round_trip,taker,cost in fees.py,0,literal_in_text,taker 0.0005 (5 bps per side; 10 bps round trip).
 MyTradingSys/backtest/fees.py,13,(literal),0.0002,fraction,n/a,both,cost in fees.py,0,literal_in_text,default tier. maker 0.0002 (4 bps RT); taker 0.0005 (10 bps RT).
-MyTradingSys/backtest/fees.py,23,DERIBIT_TAKER,0.0005,fraction,per_side,taker,fee in fees.py,0,assign,DERIBIT_TAKER = 0.0005
-MyTradingSys/backtest/fees.py,24,DERIBIT_MAKER,0.0,fraction,per_side,maker,fee in fees.py,0,assign,DERIBIT_MAKER = 0.0
-MyTradingSys/backtest/fees.py,27,BINANCE_TAKER,0.0005,fraction,per_side,taker,fee in fees.py,0,assign,BINANCE_TAKER = 0.0005
-MyTradingSys/backtest/fees.py,28,BINANCE_MAKER,0.0002,fraction,per_side,maker,fee in fees.py,0,assign,BINANCE_MAKER = 0.0002
+MyTradingSys/backtest/fees.py,32,DERIBIT_TAKER,0.0005,fraction,per_side,taker,fee in fees.py,0,assign,DERIBIT_TAKER = 0.0005
+MyTradingSys/backtest/fees.py,33,DERIBIT_MAKER,0.0,fraction,per_side,maker,fee in fees.py,0,assign,DERIBIT_MAKER = 0.0
+MyTradingSys/backtest/fees.py,36,BINANCE_TAKER,0.0005,fraction,per_side,taker,fee in fees.py,0,assign,BINANCE_TAKER = 0.0005
+MyTradingSys/backtest/fees.py,37,BINANCE_MAKER,0.0002,fraction,per_side,maker,fee in fees.py,0,assign,BINANCE_MAKER = 0.0002
 MyTradingSys/backtest/layers/cryptocred/cc_bt_adapter.py,17,(literal),0.0005,fraction,n/a,both,cost in layers,0,literal_in_text,def signals_to_trades(signals: list; bars: list; mark_bars: list = None; funding: list = (); taker_fee: float = 0.0005; 
 MyTradingSys/backtest/layers/cryptocred/cc_htf_count.py,66,cost_r,2,other,n/a,taker,cost in layers,1,assign,cost_r = 2 * F.DERIBIT_TAKER / risk_pct          # all_taker; two legs; conservative
 MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py,135,funding_paid_pct,0.0,pct,per_8h,n/a,fund in layers,1,assign,"""funding_paid_pct"": 0.0}"

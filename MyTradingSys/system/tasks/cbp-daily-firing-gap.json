@@ -1,34 +1,69 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/cbp_schedule.py status",
+    "python scripts/dev/cbp_run.py --due"
+  ],
   "created": "2026-10-30T08:32:44Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "cbp_store/stamp.json shows the EU and the next window both stamped on one UTC date after the fix; result line names the caller; shipped if any repo file changed.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "CBP has not fired since 10-28 EU: find out whether MTS-CBP-Ingestion is installed on the CryptoScrapper host or coordinator --due is the caller, fix the caller, and prove two UTC windows run in one day.",
   "id": "cbp-daily-firing-gap",
   "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "feat(cbp): add channel to CBP row schema and query filter",
+      "ref": "358a0e50a07c",
+      "utc": "2026-10-29T22:10:27Z"
+    },
+    {
+      "auto": true,
+      "kind": "audit",
+      "line": "fcd3c0449a71 cbp: audit integration, align default store_path fallback, mark cbp-ingestion",
+      "ref": "MyTradingSys/research/cbp/CBP_AUDIT_2026-10-28.md",
+      "utc": "2026-10-28T08:45:07Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "dash-designer 10-30: only 1 of 10 enabled analysts fresh; Rekt + Qriptal no row in 5-day store; Benjamin, Bob, Jala, CCU never fetched (cbp_run.py ingests profile=='actionable' only); last ingestion 2026-10-28 10:53Z.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-30T10:01:04Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
+  "scope_in": [
+    "scripts/dev/cbp_schedule.py",
+    "scripts/dev/cbp_run.py",
+    "MyTradingSys/research/cbp/INGESTION_WIRING_2026-10-27.md",
+    "MyTradingSys/research/cbp/CBP_AUDIT_2026-10-28.md"
+  ],
+  "scope_out": [
+    "the CBP gates and quote rules",
+    "any order or account access"
+  ],
+  "scope_sha": "358a0e50a07c",
+  "size": "S",
+  "sources": [
+    "CBP_AUDIT_2026-10-28.md:18-23"
+  ],
+  "state": "ready",
+  "steps": [
+    "run cbp_schedule.py status on the host; read stamp.json and ingestion.log (CBP_HOME/cbp_store)",
+    "if the task is missing, install it (the one CBP-only exception, SCHEDULING_POLICY.md 40-51) or run cbp_run.py --due from the coordinator wake; record which",
+    "confirm both windows stamp; ship the wiring note"
+  ],
   "tests": "",
   "title": "CBP not firing since 10-28 EU (stamp.json): Michael's 75k breakdown target sat unread; install/verify MTS-CBP-Ingestion on the CryptoScrapper host or coordinator --due runs, prove 2 windows/day",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }
