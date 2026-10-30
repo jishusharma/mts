@@ -1,0 +1,53 @@
+{
+ "_source": "one real fetch of https://nfs.faireconomy.media/ff_calendar_thisweek.json on 2026-10-31 (HTTP 200, 98 events); 6 events kept verbatim, feed order. impact SOURCED (ForexFactory). The feed carries no 'actual' field.",
+ "events": [
+  {
+   "title": "Annual Budget Release",
+   "country": "GBP",
+   "date": "2026-10-28T08:30:00-04:00",
+   "impact": "High",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "title": "Federal Funds Rate",
+   "country": "USD",
+   "date": "2026-10-28T14:00:00-04:00",
+   "impact": "High",
+   "forecast": "4.00%",
+   "previous": "4.00%"
+  },
+  {
+   "title": "FOMC Press Conference",
+   "country": "USD",
+   "date": "2026-10-28T14:30:00-04:00",
+   "impact": "High",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "title": "Advance GDP q/q",
+   "country": "USD",
+   "date": "2026-10-29T08:30:00-04:00",
+   "impact": "High",
+   "forecast": "3.2%",
+   "previous": "1.5%"
+  },
+  {
+   "title": "Advance GDP Price Index q/q",
+   "country": "USD",
+   "date": "2026-10-29T08:30:00-04:00",
+   "impact": "Medium",
+   "forecast": "3.2%",
+   "previous": "6.2%"
+  },
+  {
+   "title": "Main Refinancing Rate",
+   "country": "EUR",
+   "date": "2026-10-29T09:15:00-04:00",
+   "impact": "High",
+   "forecast": "2.65%",
+   "previous": "2.65%"
+  }
+ ]
+}
