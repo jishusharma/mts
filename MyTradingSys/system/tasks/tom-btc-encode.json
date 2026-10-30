@@ -1,6 +1,6 @@
 {
  "approved_by": "",
- "asks": "Operator reader-1 marks (G3) for the BTC Tom concepts do not exist, so no concept has separated. Default (OURS): wait for G3 + G4 recall, then re-scope this card to the concepts that survive; do not encode unseparated concepts flag-off.",
+ "asks": "Waits on tom-btc-eye-read (machine readers, NO-HUMAN-READER); then re-scope to the concepts that separate (d-tom-btc-no-human-reader).",
  "commands": [],
  "created": "2026-10-13T17:31:44Z",
  "depends_on": [

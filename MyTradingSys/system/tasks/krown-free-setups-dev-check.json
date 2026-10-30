@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/sync.py start krown-free-dev-check"
+  ],
+  "created": "2026-10-30T21:43:04Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/krown_free_2026-10-31/DEV_CHECK.md has per-setup n, hit-rate, fee-net mean R vs the claim; PRE_REG frozen before the run; look-ahead shift check passes; shipped with a Result: line",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Take the testable shortlist from MyTradingSys/research/krown_free_2026-10-31/KROWN_FREE_SETUPS.md (and the app probe if it shows rules). Freeze a PRE_REG, run each on DEV 2022-04-01..2024-06-30 BTC 1m fee-net with fees.py, count hit-rate, mean R, n, and compare to his claimed hit-rate.",
+  "id": "krown-free-setups-dev-check",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Depends on gemini-krown-free-setups-alerts-app-search. VALIDATION and holdout stay untouched. Final report ends with a Noticed: line.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T21:43:10Z",
+  "refs": [
+    "MyTradingSys/options/research/KROWN_FREE_VS_PAID.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/krown_free_2026-10-31/ (new files only); MyTradingSys/research/ trial ledger rows via the existing tool"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code; creating accounts or paying; .secrets and .env; VALIDATION and holdout windows"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "wait until KROWN_FREE_SETUPS.md is on trunk",
+    "write and freeze PRE_REG; run on DEV; shift check",
+    "write DEV_CHECK.md and ship"
+  ],
+  "tests": "pre-reg frozen before first run; one-bar shift look-ahead check; trial ledger rows added",
+  "title": "Check Krown's free setups: pre-register and run each complete-rule setup from KROWN_FREE_SETUPS.md on DEV fee-net, compare with his claimed hit-rate",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

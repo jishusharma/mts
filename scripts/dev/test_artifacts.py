@@ -148,6 +148,7 @@ class Home(unittest.TestCase):
                 "## q-json | asked 2026-10-16 | Research\n\nOnly json?\n\n```json\n{\"answer\": \"No\"}\n```\n\n"
                 "## q-decided (2026-10-22, Admin_Guy)\n```json\n{\"id\": \"q-decided\", \"status\": \"DECIDED\"}\n```\n", encoding="utf-8")
             (root / mh.TASKS / "c1.json").write_text('{"id": "c1", "state": "raw", "asks": "Jis, may the monitor clear it?", "title": "Halt"}', encoding="utf-8")
+            (root / mh.TASKS / "c3.json").write_text('{"id": "c3", "state": "raw", "asks": "Waiting on DSA-NB desk for data from JIS-NB", "title": "m"}', encoding="utf-8")  # a machine wait, not his
             (root / mh.TASKS / "c2.json").write_text('{"id": "c2", "state": "done", "asks": "Old?", "title": "x"}', encoding="utf-8")
             d = mh.build(self.reg, repo=root)
         self.assertEqual([w["id"] for w in d["waiting"]], ["q-open", "c1"])
