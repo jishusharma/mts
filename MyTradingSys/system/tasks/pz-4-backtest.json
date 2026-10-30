@@ -7,19 +7,14 @@
     "python scripts/dev/tasks.py brief pz-4-backtest"
   ],
   "context": {
-    "calls_to_edit": null,
-    "folded": "2026-10-26T21:27:58Z",
-    "misses": 15,
+    "calls_to_edit": 19,
+    "folded": "2026-10-30T08:56:25Z",
+    "misses": 2,
     "reads": [
-      "MyTradingSys/system/LAYERS.md",
-      "scripts/dev/cbp_run.py",
-      "scripts/dev/cbp_schedule.py",
-      "MyTradingSys/tests/test_cbp_query.py",
-      "scripts/dev/test_sync.py",
-      "scripts/dev/test_run_all_tests.py",
-      "MyTradingSys/system/SCHEDULING_POLICY.md"
+      "MyTradingSys/tools/live_aid/test_live_aid.py",
+      "MyTradingSys/tools/live_aid/live_aid.html"
     ],
-    "session": "agent-a3373db6f65852a3d"
+    "session": "agent-a5f790f688b0f3284"
   },
   "created": "2026-10-26T19:08:24Z",
   "depends_on": [
