@@ -20,9 +20,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "bt_data.load_klines: convert microsecond stamps, raise on conflicting duplicates, report d",
-      "ref": "8f8a52814868",
-      "utc": "2026-10-26T00:53:00Z"
+      "line": "Revert \"Revert real-funding screens: CI red (T06 costs.csv pins screen.py line numbers)\"",
+      "ref": "8cae5e9e285e",
+      "utc": "2026-10-27T22:20:16Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "8cae5e9e285e Revert \"Revert real-funding screens: CI red (T06 costs.csv pins screen.py lin",
+      "ref": "MyTradingSys/research/gross_effect_screen_2026-10-15/FUNDING_RERUN.md",
+      "utc": "2026-10-27T22:20:16Z"
     }
   ],
   "layers": [],
@@ -32,7 +39,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-10-27T19:29:51Z",
+  "refreshed": "2026-10-30T17:40:01Z",
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T06_cost_fill_realism.md"
   ],
@@ -52,7 +59,7 @@
     "restating any published verdict, ledger row or pre-registered bar",
     "live path"
   ],
-  "scope_sha": "8f8a52814868",
+  "scope_sha": "8cae5e9e285e",
   "size": "M",
   "sources": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T06_cost_fill_realism.md (T06-F1)",

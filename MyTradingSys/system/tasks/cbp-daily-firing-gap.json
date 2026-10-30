@@ -19,9 +19,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "feat(cbp): add channel to CBP row schema and query filter",
-      "ref": "358a0e50a07c",
-      "utc": "2026-10-29T22:10:27Z"
+      "line": "analyst levels: no hit before the video could exist; cbp_run prompt carries metadata (Argo",
+      "ref": "589685fbb501",
+      "utc": "2026-10-30T14:30:46Z"
     },
     {
       "auto": true,
@@ -38,7 +38,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T10:01:04Z",
+  "refreshed": "2026-10-30T17:39:48Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -51,7 +51,7 @@
     "the CBP gates and quote rules",
     "any order or account access"
   ],
-  "scope_sha": "358a0e50a07c",
+  "scope_sha": "589685fbb501",
   "size": "S",
   "sources": [
     "CBP_AUDIT_2026-10-28.md:18-23"

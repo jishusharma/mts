@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "research: news feeds for MTS (Binance hack timeline, free feeds tested, wiring plan) + 4 c",
-      "ref": "12a473da6c81",
-      "utc": "2026-10-30T08:06:10Z"
+      "line": "live_aid: US open ladder (if up / if down) with measured reach and hold odds",
+      "ref": "122323253c92",
+      "utc": "2026-10-30T13:26:57Z"
     },
     {
       "auto": true,
@@ -35,7 +35,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T09:58:04Z",
+  "refreshed": "2026-10-30T17:40:43Z",
   "refs": [
     "MyTradingSys/research/news_feeds_2026-10-30/REPORT.md"
   ],
@@ -50,7 +50,7 @@
     "news headline panel (live-aid-news-panel)",
     "gating any trade"
   ],
-  "scope_sha": "12a473da6c81",
+  "scope_sha": "122323253c92",
   "size": "S",
   "sources": [
     "REPORT.md section 4 and N3; impact field SOURCED (ForexFactory)"

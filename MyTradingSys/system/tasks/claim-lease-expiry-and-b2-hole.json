@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "gemini_queue: root() reads MTS_GQ_ROOT at call time (laptop)",
-      "ref": "71f3e7aeb2f8",
-      "utc": "2026-10-29T22:50:21Z"
+      "line": "WHERE_IS: re-apply topic index and where_is.py without role-file lines",
+      "ref": "c409e3f6b3f6",
+      "utc": "2026-10-30T10:37:23Z"
     },
     {
       "auto": true,
@@ -38,7 +38,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-29T23:59:02Z",
+  "refreshed": "2026-10-30T17:39:53Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -48,7 +48,7 @@
     "MyTradingSys/system/PARALLEL.md"
   ],
   "scope_out": [],
-  "scope_sha": "71f3e7aeb2f8",
+  "scope_sha": "c409e3f6b3f6",
   "size": "M",
   "sources": [
     "scripts/dev/sync.py:1472-1611",

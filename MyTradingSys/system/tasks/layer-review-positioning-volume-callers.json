@@ -20,16 +20,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "div flags: T01-F2 label + wiring registry entry (CI fixes for re-landed feature)",
-      "ref": "b39401fcadce",
-      "utc": "2026-10-27T20:23:31Z"
+      "line": "B163 v2: run Alpha vs buy-and-hold and Beta per-sweep on DEV/VAL; RESULT, export, verdict ",
+      "ref": "a43b9fbff2e4",
+      "utc": "2026-10-30T17:26:25Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "6c967d47fc55 tasks: re-scope-check 54 cards flagged stale by fold-on-ship fix",
+      "line": "85cbb15e4d9c planner: refine 8 raw cards (T058 re-land, B163 v2, live-path OI/CVD + analys",
       "ref": "MyTradingSys/system/LAYERS.md",
-      "utc": "2026-10-27T19:31:40Z"
+      "utc": "2026-10-30T17:16:36Z"
     }
   ],
   "layers": [
@@ -46,7 +46,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-27T20:47:21Z",
+  "refreshed": "2026-10-30T17:40:25Z",
   "refs": [
     "MyTradingSys/research/mts_doctor/MAINNET_PATH_2026-10-25.md"
   ],
@@ -71,7 +71,7 @@
     "VALIDATION and HOLDOUT reads",
     "layer_map.json, layer_index.json or code edits"
   ],
-  "scope_sha": "b39401fcadce",
+  "scope_sha": "a43b9fbff2e4",
   "size": "M",
   "sources": [
     "MyTradingSys/system/ANTIGRAVITY_LAPTOP.md section C (fact-sheet format)",

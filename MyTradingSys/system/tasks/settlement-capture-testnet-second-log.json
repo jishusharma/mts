@@ -20,16 +20,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "critical test wave 1: items 1, 2, 5 (FT2/kill-switch fixes PASS, settlement P/L finding, p",
-      "ref": "c511a40dc1d7",
-      "utc": "2026-10-29T19:39:55Z"
+      "line": "test: pin recorded 10-10 settlement log against equity identity (expectedFailure)",
+      "ref": "5136984322fb",
+      "utc": "2026-10-29T23:29:23Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "c511a40dc1d7 critical test wave 1: items 1, 2, 5 (FT2/kill-switch fixes PASS, settlement P",
+      "line": "5136984322fb test: pin recorded 10-10 settlement log against equity identity (expectedFail",
       "ref": "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEMS_1_2_5.md",
-      "utc": "2026-10-29T19:39:55Z"
+      "utc": "2026-10-29T23:29:23Z"
     }
   ],
   "layers": [],
@@ -42,7 +42,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-29T22:04:09Z",
+  "refreshed": "2026-10-30T17:40:48Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -54,7 +54,7 @@
   "scope_out": [
     "any order or position (existing testnet activity only), mainnet, .secrets contents, mainnet_pnl.py edits"
   ],
-  "scope_sha": "c511a40dc1d7",
+  "scope_sha": "5136984322fb",
   "size": "S",
   "sources": [],
   "state": "ready",

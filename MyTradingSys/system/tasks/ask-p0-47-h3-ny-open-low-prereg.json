@@ -32,9 +32,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "research: US-open OOS replication on 2020-21 (P0-34)",
-      "ref": "fd087f1cea6a",
-      "utc": "2026-10-30T08:37:01Z"
+      "line": "fix-single-cost-module: test_no_own_costs + frozen cost allowlist, fee regimes A-D in fees",
+      "ref": "2d7d4d49cf4c",
+      "utc": "2026-10-30T09:55:18Z"
     },
     {
       "auto": true,
@@ -51,7 +51,7 @@
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T10:00:15Z",
+  "refreshed": "2026-10-30T17:39:44Z",
   "refs": [
     "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md"
   ],
@@ -69,7 +69,7 @@
     "VALIDATION/HOLDOUT reads",
     "live code"
   ],
-  "scope_sha": "fd087f1cea6a",
+  "scope_sha": "2d7d4d49cf4c",
   "size": "M",
   "sources": [
     "T058 item H3 (2026-10-04), ledger P0-47"
