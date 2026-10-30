@@ -1029,6 +1029,16 @@ details[open] summary { margin-bottom: 8px; }
     } else S.klErr = 'replay fixture not loaded';
     // Calendar in replay: the test injects window.LIVEAID_CAL (ForexFactory rows); without it the strip reads NO CALENDAR. No fetch.
     if (Array.isArray(window.LIVEAID_CAL)) { S.cal.events = window.LIVEAID_CAL; S.cal.t = Date.now(); S.cal.err = ''; } else S.cal.err = 'replay: no calendar injected';
+    // Open interest in replay: window.LIVEAID_OI = {klines: [[t,o,h,l,c]], oi: {t: value}} (Bybit 5m); rows after now are dropped,
+    // as the live REST call would not have them. Deribit and Binance get no samples, so they read NOT_IN_DATA.
+    var RO = window.LIVEAID_OI, t0 = Date.now();
+    if (RO && Array.isArray(RO.klines)) {
+      var kl = RO.klines.filter(function (k) { return +k[0] <= t0; }), ois = {};
+      Object.keys(RO.oi || {}).forEach(function (t) { if (+t <= t0) ois[+t] = +RO.oi[t]; });
+      S.om.bars = A.oiBars(kl, ois); S.om.barsT = t0; S.om.barsErr = '';
+      S.om.BYBIT.rest = kl.map(function (x) { return { t: +x[0], px: +x[1], oi: ois[+x[0]], btc: ois[+x[0]] }; })
+        .filter(function (x) { return x.oi > 0; }).sort(function (a, b) { return a.t - b.t; });
+    } else S.om.barsErr = 'replay: no open interest injected';
     setInterval(render, 1000);
     render();
     return;
