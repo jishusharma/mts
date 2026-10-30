@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-30T20:22:10Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/test_hunt_2026-10-31/VACUOUS_TESTS.md lists 30 rows (sha, test, fails-on-old Y/N); a raw card is filed per vacuous test",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "For the last 30 commits that add a test file or test function, check out the parent's code under a throwaway worktree, run only the new test, record fail/pass. Tests passing on old code are vacuous: list them.",
+  "id": "sonnet-new-tests-must-fail-on-old-code-audit",
+  "kind": "audit",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Focus: catch bugs early (operator 2026-10-31). Final report ends with a Noticed: line.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T20:22:11Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/test_hunt_2026-10-31/ (new files only); MyTradingSys/system/tasks/ via tasks.py"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code edits; any backtest verdict; .secrets and .env"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "git log --no-merges for commits adding tests",
+    "git worktree add --detach <parent>; run the test",
+    "write the table; tasks.py new raw cards for vacuous ones"
+  ],
+  "tests": "report only; every finding cites file:line and a reproducing input",
+  "title": "Audit the last 30 test-adding commits: does each new test fail on the pre-change code (CLAUDE.md gate)? list the ones that pass on old code",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
