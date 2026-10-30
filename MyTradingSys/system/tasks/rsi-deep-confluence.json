@@ -33,7 +33,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): scoped from SPEC/OPUS_FRAMING/SHOT_REVIEW; needs the batched review stamp, then tasks.py check. Waits on rsi-deep-prob-tables (race tables). Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
@@ -61,7 +62,7 @@
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/APPLIED.md",
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/SHOT_REVIEW.md"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Read SPEC s2 Step H and SHOT_REVIEW C5; list candidate voters and check each for bar-by-bar history in MyTradingSys/backtest/layers (LAYERS.md).",
     "Commit the vote table (layer, TF, rule, +1/-1 condition) to CONFLUENCE.md before running anything; no tuning on outcomes.",

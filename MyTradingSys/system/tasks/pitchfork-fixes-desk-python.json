@@ -29,7 +29,8 @@
   "not_twin_of": [
     "pitchfork-review-fixes-2026-10-28"
   ],
-  "note": "DRAFT 2026-10-28 Session_Planner (OURS): split of pitchfork-review-fixes-2026-10-28 (size L, mixed desk/live). CRUCIAL (target formula, decision numbers): review Agent + REVIEWED stamp before dispatch; formula expected value computed independently from RESEARCH_PITCHFORK_LAYER.md:42, not from code. depends on nothing. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files. | T0 2026-10-28 planner-refine-A: scope_in paths all tracked, no open claim on them, content complete; only gap = Lab_Guy REVIEWED stamp (IMPORTANT+).\nREVIEWED:2026-10-29 ACCEPT (reviewer-raw-cards-b) Verified detector:528 (hag_target uses channel_width), RESEARCH:42 vs :54-55, review F1/F4/F5/F6/F9/F10 refs. CRUCIAL: F1 reading is a OURS decision; Java keeps 2x until card pitchfork-fixes-live-java lands, so desk/live differ meanwhile - state that in the label.",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -51,7 +52,7 @@
   "sources": [
     "MyTradingSys/research/pitchfork_2026-10-19/OPUS_E2E_REVIEW_2026-10-28.md"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "F1: DECISION (OURS) take RESEARCH_PITCHFORK_LAYER.md:42 as written, target = entry +/- |UML-ML|; label 'OURS reading' and note the :54-55 alternative; fix detector :528 and the desk EXIT['ML'] label",
     "F5: bin width from data up to bar i only, add a planted-leak test with vp_filter set to VA and POC; F6: pick the tine from p2_is_lower; F10: one zigzag function, detector :334-383 and :412-447 call it",

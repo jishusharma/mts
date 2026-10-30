@@ -38,7 +38,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): C4 of CONTEXT_FILES_DESIGN (operator-approved 2026-10-25). One editor of supervisor.py at a time: idle-lane and handover-refuses cards queue behind it. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "note": "S0 drop 2026-10-30 (D7 roadmap, operator: keep only what is useful): new machinery or superseded; revive by a new card if needed",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
@@ -62,7 +63,7 @@
   "sources": [
     "MyTradingSys/research/mts_doctor/CONTEXT_FILES_DESIGN.md:118 and section 3"
   ],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "Read CONTEXT_FILES_DESIGN.md section 3 (form) and supervisor.py render_handover/handover (lines 1156-1190).",
     "Write the failing tests first (7 sections, 61-line refusal, ## Update refusal, STALE verify, TRANSIT line).",
