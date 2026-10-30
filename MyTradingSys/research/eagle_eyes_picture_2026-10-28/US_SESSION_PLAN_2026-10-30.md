@@ -103,3 +103,19 @@ Prior: MyTradingSys/research/eagle_eyes_picture_2026-10-28/US_SESSION_PLAN_2026-
 | d3 | NOT_IN_DATA | day delta -9.89K BTC on 10-29, -6.40K on 10-30 so far | fapi times out from JIS-NB; spot daily taker delta 10-29 -619, 10-30 -1,545 (spot only, different venue) |
 | d4 | NOT_IN_DATA | today's biggest sell cells sit at about 77.4-77.5k and 76.9-77.1k; few green cells, only near 78.0k | pixel read; MTS footprint rolls exist in the live order-flow writer, not read here |
 | d5 | NOT_IN_DATA | heatmap bands today: about 77,125 (just under price), 76,440 (at the low), 78,660 (above) | pixel read, 7.92 USD/px |
+
+## Shot a25c204526aa: CoinGlass Legend, Binance perp 3m heatmap + large trades (13:25Z, 5 min before the US open)
+
+Prior: MyTradingSys/research/eagle_eyes_picture_2026-10-28/US_SESSION_PLAN_2026-10-30.md
+
+Pixel scale 3.37 USD/px (78,900 and 78,600 gridlines). Axis labels are IST (19:00 = 13:30Z).
+
+| id | MATCH or MISMATCH or NOT_IN_DATA | chart claim | data check |
+|---|---|---|---|
+| m1 | MATCH | today's perp high 78,776.5 and low 76,444.0 | daily shot 3d6e6faf1551 and lh_break RESULT |
+| m2 | MATCH | lower highs since 05:30Z (78.78k, 78.6k, 77.87k, 77.55k) on a 77.24-77.25k shelf tested 3 times | Binance spot 30m: highs 78,804 / 77,866 / 77,608 / 77,528; lows 77,239 (11:30Z), 77,254 (13:00Z) |
+| m3 | NOT_IN_DATA | brightest bands: 76,570-76,640 below (built after the 76,444 low), 78,815-79,000 above | pixel read; no heatmap history in MTS |
+| m4 | NOT_IN_DATA | a band at 77,020-77,085 brightening toward 13:25Z; price sits in a band at 77,240-77,310 | pixel read |
+| m5 | NOT_IN_DATA | big buys at 78.5-78.6k (07:15-07:30Z) and big sells at the 78.7k top (05:45Z) and in the 77.5-77.6k lows; price fell after the big buys | large_trade_absorption_2026-10-30: buy-aggression n=1,155 up 60 min 47.4% |
+
+Reading (OURS): the pre-US box bottom (77,239), the 3-test shelf and the nearest long-liquidation bands line up on the down side (77.05k, then 76.6k); the short-liquidation band 78.8-79.0k sits just above the box top (78,804). Heatmap bands as magnets are not measured (BACKTEST_CANDIDATES C6, 2 instances).
