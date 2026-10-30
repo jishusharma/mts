@@ -7,7 +7,8 @@ Eagle_Eyes nor the dashboard showed them. This is the one place that turns CBP r
   python scripts/dev/analyst_levels.py --offline       # no network (hooks): levels only
   python scripts/dev/analyst_levels.py --json          # for the dashboard
 
-Levels are parsed from each row's `pointers` (prices 40k..200k); hit = traded through since the publish day (UTC).
+Levels are parsed from each row's `pointers` (prices 40k..200k); hit = traded through since 00:00 UTC of the day AFTER
+the publish date (only the date is stored, so publish-day bars could predate the video: audit 2026-10-30 finding 3).
 """
 import argparse
 import json
@@ -23,7 +24,9 @@ import cbp  # noqa: E402
 
 LO, HI = 40_000, 200_000
 _NUM = r"\$?(\d{1,3}(?:,\d{3})+|\d{2,3}(?:\.\d+)?\s*[kK]\b|\d{2,3}(?:\.\d+)?\s*thousand|\d{5,6})"
-_RANGE_K = re.compile(r"\b(\d{2,3}(?:\.\d+)?)\s*-\s*(\d{2,3}(?:\.\d+)?)\s*[kK]\b")
+_RANGE_K = re.compile(r"\b(\d{2,3}(?:\.\d+)?)\s*[kK]?\s*-\s*(\d{2,3}(?:\.\d+)?)\s*[kK]\b")
+_NOT_PRICE = re.compile(r"(?i)\b\d{2,3}(?:\.\d+)?\s*[kK]?\s*(?:in\s+)?(?:liquidations?|liquidated|contracts?|coins?|"
+                        r"subscribers?|followers?|views?|votes?|people|wallets?|addresses|transactions?|traders?|BTC|ETH)\b")
 
 
 def _val(tok):
@@ -38,6 +41,7 @@ def _val(tok):
 def parse_levels(text):
     """Prices named in one pointer, in order, de-duplicated. '90-92k' gives 90,000 and 92,000."""
     out = []
+    text = _NOT_PRICE.sub(" ", text)  # "100k liquidations" is a count, not a price
     for a, b in _RANGE_K.findall(text):
         out += [float(a) * 1000, float(b) * 1000]
     for tok in re.findall(_NUM, text):
@@ -78,10 +82,15 @@ def spot_1h(since, timeout=15):
         return [(k[0] // 1000, float(k[2]), float(k[3]), float(k[4])) for k in json.load(f)]
 
 
+def hit_from(published):
+    """First UTC instant a bar may count as a hit: 00:00 of the day after the (date-only) publish date."""
+    return datetime.fromisoformat(published[:10]).replace(tzinfo=timezone.utc) + timedelta(days=1)
+
+
 def mark(lv, bars, now):
     price = bars[-1][3]
     for x in lv:
-        t0 = datetime.fromisoformat(x["published"]).replace(tzinfo=timezone.utc).timestamp()
+        t0 = hit_from(x["published"]).timestamp()
         seg = [b for b in bars if b[0] >= t0]
         x["hit"] = bool(seg) and min(b[2] for b in seg) <= x["level"] <= max(b[1] for b in seg)
         x["dist_pct"] = round((x["level"] / price - 1) * 100, 2)
