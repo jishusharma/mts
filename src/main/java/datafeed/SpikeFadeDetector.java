@@ -38,6 +38,8 @@ final class SpikeFadeDetector {
     static final LocalTime WINDOW_END = LocalTime.of(17, 35);
     static final int LOOKBACK = 20;
     static final double A_S2_POINTS = 20.0;   // A-S2, k0zm5NYn0IQ:22-24
+    /** OURS (no source): an A-S1 prior-day-high proxy farther above the zone than this % of the zone high is ignored. */
+    static final double A_S1_MAX_DISTANCE_PCT = 3.0;
     private static final long FIVE_MIN_MS = 300_000L;
 
     static boolean enabled() {
@@ -183,10 +185,10 @@ final class SpikeFadeDetector {
         double priorHigh = dayHigh[LOOKBACK - 1];
         boolean c2 = lastClose > priorHigh;
 
-        // stop: A-S1 nearest prior-session high above the zone, else A-S2 fixed 20 points
+        // stop: A-S1 nearest prior-session high above the zone within A_S1_MAX_DISTANCE_PCT (OURS), else A-S2 fixed 20 points
         double above = Double.POSITIVE_INFINITY, maxPrior = Double.NEGATIVE_INFINITY;
         for (double d : dayHigh) {
-            if (d > high && d < above) above = d;
+            if (d > high && d < above && (d - high) / high * 100.0 <= A_S1_MAX_DISTANCE_PCT) above = d;
             if (d > maxPrior) maxPrior = d;
         }
         boolean s1 = above != Double.POSITIVE_INFINITY;

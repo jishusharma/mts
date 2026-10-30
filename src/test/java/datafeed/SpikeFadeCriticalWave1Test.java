@@ -205,6 +205,24 @@ public class SpikeFadeCriticalWave1Test {
         for (JsonNode p : c.get("proofs")) assertNotEquals("A-P5", p.asText());
     }
 
+    /**
+     * Case F (A-S1 proxy cap, OURS 3 %): the only prior high above the zone is 1100, 60 above the 1040 zone
+     * (5.77 %), beyond the cap, so it is ignored and A-S2 applies: stop 1060, risk 20, reward 30, gross 1.5.
+     * A prior high at 1070 (2.88 %) stays within the cap (case D).
+     */
+    @Test
+    void caseF_far_prior_high_beyond_cap_falls_back_to_a_s2() {
+        double[] l = legs(5.0, 20.0);
+        l[5] = 100.0;
+        ArrayNode k = prior(1000.0, l);
+        today(k, 1010.0, up30DownTo(1010.0, 1040.0, 1030.0, 10));
+        ObjectNode c = detect(k);
+        assertNotNull(c);
+        assertEquals("A-S2", c.get("stop_rule").asText());
+        assertEquals(1060.0, c.get("math").get("stop").asDouble(), 0.0);
+        assertEquals(1.5, c.get("math").get("gross_rr").asDouble(), 0.0);
+    }
+
     /** Case E (fail closed): fewer than 20 prior sessions -> no candidate even when the idea is plain. */
     @Test
     void caseE_short_history_fails_closed() {
