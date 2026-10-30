@@ -35,15 +35,14 @@ class Registry(unittest.TestCase):
 
     def test_plan_actions(self):
         text = "\n".join(af.plan(self.reg, "jishusharma1985"))
-        self.assertIn("REPUBLISH    MTS Control Room", text)
-        self.assertIn("RECORD URL   CBP Desk", "\n".join(af.plan(self.reg, "jishu.sharma")))
+        self.assertIn("OPERATOR UNPIN+DELETE  MTS Control Room", text)  # retired 2026-10-31
+        self.assertIn("OPERATOR UNPIN+DELETE  CBP Desk", "\n".join(af.plan(self.reg, "jishu.sharma")))
         # operator 2026-10-17: every page is published from the home login; the Inbox page moved there (MNuodX), Tom and Fabio has no repo html and stays on jishu.sharma
-        self.assertIn("MTS Control Room <- MyTradingSys/system/artifacts/mts_control_room.html  url=https://claude.ai/artifact/MNuodXmi5RiEihX7rFpqUp", text)
         self.assertIn("NO COPY      Tom and Fabio", "\n".join(af.plan(self.reg, "jishu.awgp")))
         self.assertNotIn("CBP Dashboard", text)
         r = copy.deepcopy(self.reg)
-        r["pages"][0]["status"] = "retire"
-        self.assertIn("OPERATOR UNPIN+DELETE  MTS Control Room", "\n".join(af.plan(r, "jishusharma1985")))
+        next(pg for pg in r["pages"] if pg["slug"] == "mts_layer_map")["status"] = "retire"
+        self.assertIn("OPERATOR UNPIN+DELETE  MTS Layers", "\n".join(af.plan(r, "jishusharma1985")))
         self.assertIn("REPUBLISH    MTS Layers", text)
         r = copy.deepcopy(self.reg)
         next(pg for pg in r["pages"] if pg["slug"] == "mts_layer_map")["urls"]["jishusharma1985"] = ""
@@ -70,11 +69,11 @@ class Registry(unittest.TestCase):
     def test_pages_index_one_link_per_page(self):
         import make_control_room as mc
         rows = mc.page_index()
-        self.assertEqual({r["title"] for r in rows}, {"MTS Control Room", "MTS Layers", "Tom and Fabio: what they taught", "CBP Monday Desk",
-                                                      "CBP Consensus Desk", "MTS Home", "MTS Research Map", "MTS Session Planner", "MTS Sim Desk",
-                                                   "CBP Analyst Desk"})
+        self.assertEqual({r["title"] for r in rows}, {"MTS Layers", "Tom and Fabio: what they taught", "MTS Home", "MTS Research Map",
+                                                      "MTS Session Planner", "MTS Sim Desk", "CBP Analyst Desk",
+                                                      "Tom and Fabio Setup Review", "BTC Live Aid"})  # 2026-10-31: Control Room + old CBP desks retired
         own = {r["title"]: r["owner"] for r in rows}
-        self.assertEqual(own["MTS Control Room"], "jishusharma1985")
+        self.assertEqual(own["BTC Live Aid"], "jishusharma1985")
         self.assertEqual(own["Tom and Fabio: what they taught"], "jishusharma1985")
         self.assertEqual(own["MTS Research Map"], "jishusharma1985")
         self.assertTrue(all("/artifact/" in r["url"] for r in rows))
@@ -124,10 +123,11 @@ class Home(unittest.TestCase):
         import make_home as mh
         d = mh.build(self.reg)
         titles = [p["title"] for p in d["pages"]]
-        self.assertEqual(titles[:3], ["MTS Research Map", "MTS Control Room", "MTS Session Planner"])  # where Jis writes, first
+        self.assertEqual(titles[:3], ["MTS Research Map", "MTS Session Planner", "MTS Layers"])  # where Jis writes, first
         self.assertNotIn("MTS Home", titles)
         urls = {r["url"] for r in d["retire"]}
-        self.assertIn("https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su", urls)  # 2026-10-17: the jishu.sharma Control Room is now an old copy
+        self.assertIn("https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su", urls)  # the jishu.sharma Control Room is an old copy
+        self.assertIn("https://claude.ai/artifact/MNuodXmi5RiEihX7rFpqUp", urls)  # 2026-10-31: the retired Control Room itself
         self.assertIn("https://claude.ai/artifact/QwsvsN3LaZKNPvD6zPTTAe", urls)  # jishu.sharma MTS Layers
         self.assertFalse(urls & {p["url"] for p in d["pages"]})
         html = mh.render(d)
@@ -147,13 +147,14 @@ class Home(unittest.TestCase):
                 "## q-done | asked 2026-10-13 | Process\n\nDone one?\n\nRecommended: Yes\nAnswer: Yes\n\n"
                 "## q-json | asked 2026-10-16 | Research\n\nOnly json?\n\n```json\n{\"answer\": \"No\"}\n```\n\n"
                 "## q-decided (2026-10-22, Admin_Guy)\n```json\n{\"id\": \"q-decided\", \"status\": \"DECIDED\"}\n```\n", encoding="utf-8")
-            (root / mh.TASKS / "c1.json").write_text('{"id": "c1", "state": "raw", "asks": "May the monitor clear it?", "title": "Halt"}', encoding="utf-8")
+            (root / mh.TASKS / "c1.json").write_text('{"id": "c1", "state": "raw", "asks": "Jis, may the monitor clear it?", "title": "Halt"}', encoding="utf-8")
+            (root / mh.TASKS / "c3.json").write_text('{"id": "c3", "state": "raw", "asks": "Waiting on DSA-NB desk for data from JIS-NB", "title": "m"}', encoding="utf-8")  # a machine wait, not his
             (root / mh.TASKS / "c2.json").write_text('{"id": "c2", "state": "done", "asks": "Old?", "title": "x"}', encoding="utf-8")
             d = mh.build(self.reg, repo=root)
         self.assertEqual([w["id"] for w in d["waiting"]], ["q-open", "c1"])
         self.assertEqual(d["waiting"][0]["title"], "Retire old tasks?")
         self.assertTrue(d["waiting"][0]["explicit"])
-        self.assertEqual(d["answerAt"]["owner"], "jishusharma1985")
+        self.assertIsNone(d["answerAt"])  # decisions are answered in chat (Control Room retired 2026-10-31)
         self.assertIn("waiting for you", mh.render(d))
 
     def test_every_page_opens_on_the_home_login(self):
@@ -200,7 +201,7 @@ class Home(unittest.TestCase):
         """Operator 2026-10-25: every new development/page must show on MTS Home. A page shows when it is in registry.json."""
         import make_home as mh
         titles = [p["title"] for p in mh.build(self.reg)["pages"]]
-        for t in ("MTS Sim Desk", "CBP Analyst Desk", "MTS Layers", "MTS Control Room"):
+        for t in ("MTS Sim Desk", "CBP Analyst Desk", "MTS Layers", "BTC Live Aid"):
             self.assertIn(t, titles)
         reg = copy.deepcopy(self.reg)
         extra = copy.deepcopy(next(p for p in reg["pages"] if p["slug"] == "sim_desk"))

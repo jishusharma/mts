@@ -38,7 +38,7 @@ final class SpikeFadeDetector {
     static final LocalTime WINDOW_END = LocalTime.of(17, 35);
     static final int LOOKBACK = 20;
     static final double A_S2_POINTS = 20.0;   // A-S2, k0zm5NYn0IQ:22-24
-    /** OURS (no source): an A-S1 prior-day-high proxy farther above the zone than this % of the zone high is ignored. */
+    /** OURS (no source): a prior-day-high proxy farther above the zone than this % of the zone high gives no candidate (null); other far prior highs are ignored for A-S1. */
     static final double A_S1_MAX_DISTANCE_PCT = 3.0;
     private static final long FIVE_MIN_MS = 300_000L;
 
@@ -184,6 +184,9 @@ final class SpikeFadeDetector {
         // caveat; TLV2:165-168: T3/T5/T6 have no C2. OURS: gate dropped, fire rate unmeasured.
         double priorHigh = dayHigh[LOOKBACK - 1];
         boolean c2 = lastClose > priorHigh;
+        // OURS cap on the proxy itself (audit CRITICAL_24H Finding 2): a prior-day high farther above the zone than
+        // A_S1_MAX_DISTANCE_PCT is not a usable proxy; fail closed rather than fall back to the unscaled high + 20 stop.
+        if (priorHigh > high && (priorHigh - high) / high * 100.0 > A_S1_MAX_DISTANCE_PCT) return null;
 
         // stop: A-S1 nearest prior-session high above the zone within A_S1_MAX_DISTANCE_PCT (OURS), else A-S2 fixed 20 points
         double above = Double.POSITIVE_INFINITY, maxPrior = Double.NEGATIVE_INFINITY;

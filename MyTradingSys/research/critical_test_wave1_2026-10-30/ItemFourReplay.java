@@ -185,7 +185,8 @@ public class ItemFourReplay {
         double med = (so[9] + so[10]) / 2.0;
         st[0] = leg; st[1] = med; st[2] = priorHigh;
         if (!(leg > med)) return "G3_A-C1_LEG_NOT_ABOVE_MEDIAN";
-        if (!(b.c[last] > priorHigh)) return "G4_A-C2_CLOSE_NOT_ABOVE_PRIOR_DAY_HIGH";
+        // c4ad479e0: A-C2 is a recorded caveat, not a gate; detect() only fails closed on a proxy beyond the 3 % cap.
+        if (priorHigh > high && (priorHigh - high) / high * 100.0 > 3.0) return "G4_PRIOR_DAY_HIGH_PROXY_BEYOND_CAP";
         return "G5_PASS(A1 fires if risk/reward>0)";
     }
 }

@@ -1,35 +1,70 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest -q scripts/dev/test_mts_doctor.py"
+  ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-30T21:36:27Z",
+    "misses": 12,
+    "reads": [
+      "scripts/dev/test_mts_doctor.py",
+      "scripts/dev/mts_doctor.py",
+      "MyTradingSys/system/artifacts/layers_board.html",
+      "scripts/dev/test_artifact_pages.py",
+      "scripts/dev/make_control_room.py"
+    ],
+    "session": "agent-a9d399a686ba5279e"
+  },
   "created": "2026-10-30T20:58:49Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "python -m pytest -q scripts/dev/test_mts_doctor.py exits 0 with the pinned test passing 20 times in a row (loop of 20 runs of that test, 0 failures).",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Make test_same_day_run_twice_gives_the_same_report deterministic: pin the free-disk reading so the report text cannot differ between the two runs (CI run 41126898994: 93 vs 94 GB).",
   "id": "flaky-scripts-dev-test-mts-doctor-py-tes",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Supervisor never idle with ready work: role rule, re-arm after compaction, status RED, doc",
+      "ref": "2037b9246c15",
+      "utc": "2026-10-30T17:58:26Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-31 T0-ONLY Final report ends with a Noticed: line. Blocked? List 2-3 non-destructive fixes, try the safest, verify, then report.",
   "prio": 3,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "planner-20261030-d",
+  "refreshed": "2026-10-30T21:14:20Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/test_mts_doctor.py",
+    "scripts/dev/mts_doctor.py"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no product-code edit; the doctor's real disk check stays as it is"
+  ],
+  "scope_sha": "2037b9246c15",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "in test_same_day_run_twice_gives_the_same_report monkeypatch shutil.disk_usage (or D.disk) to a fixed value",
+    "fail-first: add test_report_text_changes_with_disk_reading that patches disk_usage to 93 GB then 94 GB between two runs and asserts the two texts differ only on the DISK line; confirm the original unpatched test shape fails under that patch",
+    "run python -m pytest -q scripts/dev/test_mts_doctor.py until green"
+  ],
+  "tests": "scripts/dev/test_mts_doctor.py::test_report_text_changes_with_disk_reading fails on the pre-change test shape under a moving disk value; the pinned same-day test passes",
   "title": "flaky: scripts/dev/test_mts_doctor.py test_same_day_run_twice_gives_the_same_report fails on CI when free disk GB changes between the two reports (93 vs 94 GB, run 41126898994); pin disk in the test",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

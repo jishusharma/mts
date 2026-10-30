@@ -1,0 +1,59 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/artifacts.py check",
+    "python scripts/dev/artifacts.py audit-links"
+  ],
+  "created": "2026-10-30T21:13:07Z",
+  "depends_on": [],
+  "done_when": "report holds 'pages ok n of N' and 'links OK k, not OK j' parsed from the two commands' own output, each next to the 2026-10-31 reference; no repo file changed.",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Count what artifacts.py check and audit-links say about the registry today (the feeder-rule check after a page ship), so a drift shows as a number.",
+  "id": "haiku-artifact-registry-link-count-1031",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Republish the 6 stale claude.ai pages and record it",
+      "ref": "abe3d2c6868e",
+      "utc": "2026-10-30T21:07:37Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-31 T0-ONLY Final report ends with a Noticed: line. Blocked? List 2-3 non-destructive fixes, try the safest, verify, then report.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T21:14:18Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/artifacts/registry.json",
+    "scripts/dev/artifacts.py"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no product-code edit; no Artifact publish"
+  ],
+  "scope_sha": "abe3d2c6868e",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "run python scripts/dev/artifacts.py check and keep the final summary line (reference 2026-10-31: 'artifacts: 11 pages ok')",
+    "run python scripts/dev/artifacts.py audit-links and count rows whose status column is OK vs anything else (reference: 5 link rows, all OK)",
+    "report: <n> pages ok of <total>; <k> link rows OK, <j> not OK with each not-OK row quoted; a changed number is filed as a raw card via tasks.py new"
+  ],
+  "tests": "count-based: both numbers present; card not done on a command crash or an empty parse",
+  "title": "Haiku: count artifacts.py check pages and audit-links OK vs not-OK rows, report",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
