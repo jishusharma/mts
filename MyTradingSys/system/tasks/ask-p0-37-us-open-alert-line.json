@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T11:43:07Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -30,6 +31,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MyTradingSys/tools/us_open_alert.py us_open_line(), 8 tests, DST-aware, not wired",
+      "ref": "afd551435",
+      "utc": "2026-10-30T11:43:07Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "research: news feeds for MTS (Binance hack timeline, free feeds tested, wiring plan) + 4 c",
@@ -55,7 +62,12 @@
   "refs": [
     "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/tools/us_open_alert.py us_open_line(), 8 tests, DST-aware, not wired",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tools/live_aid/live_aid.html",
     "MyTradingSys/tools/live_aid/live_aid_indicators.js",
@@ -72,12 +84,13 @@
   "sources": [
     "us_open.py (open time), T054 N3 'US open in N min' line, ledger P0-37"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "port the open-time logic from us_open.py to JS; test first",
     "show the line 60 min before open, grey otherwise; text says context only",
     "run test_live_aid.py; ship. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
   ],
+  "taken": "2026-10-30T11:43:07Z",
   "tests": "MyTradingSys/tools/live_aid/test_live_aid.py: test_us_open_countdown (summer, winter, Saturday, 13:29, 13:31); red before the function exists.",
   "title": "T054 step 5: context-only 'US open in N min' alert line, never gates Tom (ledger P0-37)",
   "weight": "ROUTINE",

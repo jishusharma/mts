@@ -7,7 +7,7 @@
 B058 | CLOSED  | B058_floor_reaction_mode.md | floor-reaction mode; receipt in BUGS row
 B059 | CLOSED  | B059_rank1_zone_drift.md | pf_vp bin-edge drift; fix landed 2026-09-24, pinned by BuildVpFixedGridTest 2026-10-11
 B062 | CLOSED  | B062_alert_direction_position.md | position-aware alert gating; landed
-B063 | OPEN    | B063_divergence.md | decision: restore divergence in schema, or deprecate
+B063 | CLOSED  | B063_divergence.md | divergence deprecated in snapshot schema 2026-10-04 (docs/data only)
 B064 | CLOSED  | B064_supervisor_stop_flag.md | supervisor_stop.flag retired 2026-09-24, loop_stop.flag only
 B065 | CLOSED  | B065_stale_swing_consumer.md | stale-swing rejection in extractZones + stop selection; landed
 B066 | CLOSED  | B066_rank1_distance_gate.md | rank-1 shown at trigger_ready while 150 pts from price; split from B059

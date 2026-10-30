@@ -135,7 +135,7 @@
 |-------|------|-------------|---------|--------------------------|
 | value | float | Cumulative delta value | -2018.985 | YES — "takerBuyBaseAssetVolume" is not true delta |
 | slope | string enum | rising / falling | falling | YES — from approximated data |
-| divergence | boolean | Price and CVD moving opposite directions | false | YES — divergence detection is heuristic |
+| ~~divergence~~ | (deprecated 2026-10-04, B063) | Field removed from the snapshot schema. The emitter never wrote it; Tom gives no numeric definition. | n/a | n/a |
 | last_3_delta | array of strings | Direction of last 3 bars | ["negative", "positive", "negative"] | YES |
 | confidence | string enum | Data reliability | MEDIUM | — |
 | source | string | Computation method | "Binance kline takerBuyBaseAssetVolume" | — |
@@ -145,7 +145,7 @@
 - Tom: CVD alone = 50% random. Now requires CVD + structural level (state.md Decisions Log, 2026-08-04)
 
 **Gap:** Tom's CVD discussion is on the CVD Strategy video (y67l86cSqb8). The screener's CVD is computed from taker buy volume, not true tick-level delta. This is a significant approximation.
-**Gap:** Tom does not define "divergence" numerically. The boolean flag is a screener heuristic.
+**Gap:** Tom does not define "divergence" numerically. DEPRECATED 2026-10-04 (B063): the field is not part of the snapshot schema. Tom's only divergence words are a guard, not a detector: "don't trade the delta divergence alone always use confirmation" (extracts/fresh/extract_rFPCtOcfUMI_fresh.md:71).
 **Crypto adaptation:** CVD is used in crypto as a proxy for order flow delta. Tom uses true footprint delta on futures. The screener's CVD is a crypto hack.
 
 ---
@@ -427,7 +427,7 @@
 |------------|--------------------------------------|--------|
 | volume_profile | poc, vah, val, hvns, lvns, shape | "True VP requires tick-level L2 data. May deviate 0.2-0.5%" |
 | vwap | price, sigma, bands, slope, slope_pct | "Binance 1m OHLCV approximation" |
-| cvd | value, slope, divergence, last_3_delta | "takerBuyBaseAssetVolume" is not true delta |
+| cvd | value, slope, last_3_delta (divergence deprecated, B063) | "takerBuyBaseAssetVolume" is not true delta |
 | fvg | all fvg objects | Detection algorithm is screener-specific, not Tom-validated |
 | naked_poc | all naked_poc objects | Requires multi-day VP; screener may have incomplete history |
 | liquidation | all fields | "accumulator_not_connected" = no data |
@@ -449,7 +449,7 @@
 2. **Minimum volume threshold:** No quantified rule for "high volume" vs "low volume."
 3. **VWAP standard deviation bands:** Tom never mentions sigma bands.
 4. **VWAP slope quantification:** "Very steep" is not defined numerically.
-5. **CVD divergence threshold:** No numeric definition of divergence.
+5. **CVD divergence threshold:** No numeric definition of divergence. Field deprecated 2026-10-04 (B063); not restored.
 6. **FVG detection algorithm:** No rules for minimum gap size or lookback.
 7. **Naked POC formal rules:** Mentioned but not systematized.
 8. **Funding/OI/L/S ratio:** Tom never mentions these. All are crypto adaptations.

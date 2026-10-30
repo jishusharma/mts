@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T11:43:09Z",
   "commands": [],
   "created": "2026-10-30T08:24:55Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "ask-p0-06-deprecate-divergence-schema",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "divergence deprecated in 6 schema docs/data files, B063 closed, e807a5d2",
+      "ref": "afd551435",
+      "utc": "2026-10-30T11:43:09Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +46,12 @@
   "refs": [
     "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md"
   ],
-  "result": "",
+  "result": "divergence deprecated in 6 schema docs/data files, B063 closed, e807a5d2",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/market_data/data_schema_v1.2.0.md",
     "MyTradingSys/market_data/data_state_document.md",
@@ -58,11 +70,12 @@
   "sources": [
     "MyTradingSys/items/B063_divergence.md:54 (decision), extract_rFPCtOcfUMI_fresh.md:71"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "edit per items/B063_divergence.md:64-72: schema L138/L430/L452, state doc L20/L151, sample json L109, dictionary L200-213",
     "keep the sample json valid (python json.load); run tests/docs/test_integrity.py; ship. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
   ],
+  "taken": "2026-10-30T11:43:09Z",
   "tests": "Doc-only card: check is git grep -c divergence on the three market_data files before and after (counts recorded in the commit body).",
   "title": "Apply 2026-10-04 decision: DEPRECATE divergence in schema (6 doc/data files), close B063 (ledger P0-06)",
   "weight": "ROUTINE",
