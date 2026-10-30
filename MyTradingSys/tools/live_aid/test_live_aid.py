@@ -238,7 +238,7 @@ def test_pnl_js(js):
 
 
 # ---------- in-trade panel (card live-aid-in-trade-panel): fixed OURS rules, hand-computed expectations ----------
-# Extra LIVE_AID_BREAK modes: itdiv itflow itsqueeze itdom itsupport itvwap itconf itlive (each must fail one test below).
+# Extra LIVE_AID_BREAK modes: itdiv itflow itsqueeze itdom itsupport itvwap itconf itlive itliqside itliqdb itliqsum (each must fail one test below).
 IT_RUNNER = r"""
 const A = require(process.argv[process.argv.length - 1]);
 const brk = process.env.LIVE_AID_BREAK || '';
@@ -274,7 +274,18 @@ let cf = [A.confidence([1, -1, -1, -1, null, 0]), A.confidence([1, -1, -1, 0, nu
 if (brk === 'itconf') cf[1].reduceRule = true;
 let lv2 = [A.flowLive(now - 60000, now - 1000, now), A.flowLive(now - 60000, now - 60000, now), A.flowLive(0, now, now), A.flowLive(now - 1000, 0, now)];
 if (brk === 'itlive') lv2[0] = false;
-process.stdout.write(JSON.stringify({dv, fl, sq, dm, sup, vw, fg, cf, lv2}));
+const sides = a => a.map(e => e.side + ':' + e.usd);
+let lqv = [sides(A.liqDeribit({liquidation: 'T', direction: 'sell', amount: 1000, price: 100}, 7)), sides(A.liqDeribit({liquidation: 'M', direction: 'sell', amount: 1000, price: 100}, 7)),
+           sides(A.liqDeribit({liquidation: 'MT', direction: 'buy', amount: 500, price: 100}, 7)), sides(A.liqDeribit({direction: 'buy', amount: 500, price: 100}, 7)),
+           sides([A.liqBybit({T: 5, S: 'Buy', v: '0.5', p: '80000'}), A.liqBybit({T: 5, S: 'Sell', v: '0.25', p: '80000'})]),
+           sides([A.liqBinance({o: {S: 'SELL', q: '0.1', ap: '80000', T: 5}}), A.liqBinance({o: {S: 'BUY', q: '0.2', ap: '80000', T: 5}})])];
+if (brk === 'itliqside') lqv[4] = lqv[4].reverse();
+if (brk === 'itliqdb') lqv[1] = lqv[0];
+const ev = [{t: now - 30000, side: 'long', usd: 150000}, {t: now - 120000, side: 'short', usd: 20000}, {t: now - 400000, side: 'long', usd: 10000}, {t: now + 1, side: 'short', usd: 5000}];
+let lqs = [A.liqSum(ev, now, 60000), A.liqSum(ev, now, 300000), A.liqSum(ev, now, 900000),
+           A.liqSum([{t: now, side: 'long', usd: 100}, {t: now, side: 'short', usd: 60}], now, 60000).dom, A.liqSum([], now, 60000).dom];
+if (brk === 'itliqsum') lqs[1].dom = 'mixed';
+process.stdout.write(JSON.stringify({dv, fl, sq, dm, sup, vw, fg, cf, lv2, lqv, lqs}));
 """
 
 
@@ -371,3 +382,19 @@ def test_coil_pierce_hand_case():
     assert abs(p["volRatio"] - 4.0) < 1e-12 and abs(p["deltaShare"] - 0.5) < 1e-12
     assert p["force"] == "strong" and p["byForce"]["reach"] == 39
     assert abs(p["dist"] - 0.3 / 105) < 1e-12 and p["byDist"]["reach"] == 74
+
+
+# ---------- liquidations (STEPS.md "Liquidation rules"): hand-computed ----------
+def test_liq_side_per_venue(it):
+    # Deribit T + taker sell = long; M + taker sell = maker bought = short; MT + taker buy = short (taker) and long (maker); no field = none
+    # Bybit Buy = long 0.5 x 80000; Sell = short 0.25 x 80000. Binance SELL = long 0.1 x 80000; BUY = short 0.2 x 80000
+    assert it["lqv"] == [["long:1000"], ["short:1000"], ["short:500", "long:500"], [],
+                         ["long:40000", "short:20000"], ["long:8000", "short:16000"]]
+
+
+def test_liq_windows_dominance_big(it):
+    # 1 min: long 150000 only; 5 min: + short 20000 (2 min ago); 15 min: + long 10000 (6.7 min ago); the future event never counts
+    assert it["lqs"][0] == {"long": 150000, "short": 0, "n": 1, "big": 1, "dom": "longs"}
+    assert it["lqs"][1] == {"long": 150000, "short": 20000, "n": 2, "big": 1, "dom": "longs"}
+    assert it["lqs"][2] == {"long": 160000, "short": 20000, "n": 3, "big": 1, "dom": "longs"}
+    assert it["lqs"][3:] == ["mixed", "none"]  # 100 vs 60 is under 2x; nothing = none

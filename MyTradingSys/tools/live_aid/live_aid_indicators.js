@@ -271,7 +271,25 @@
     return out;
   }
 
-  var api = { CP: CP, coilPierce: coilPierce, IT: IT, divergence: divergence, flow: flow, flowLive: flowLive, squeeze: squeeze, dom: dom, supports: supports, vwapTest: vwapTest,
+  // ---------- liquidations (rules: STEPS.md "Liquidation rules"; venue side codes SOURCED from their API docs, the rest OURS) ----------
+  // Event = {t, venue, side: 'long' | 'short' (the position liquidated), usd, px}.
+  var LQ = { bigUsd: 100000, domRatio: 2, keepMs: 900000, tapeN: 8, liveMs: 60000 };
+  function liqDeribit(x, t) { // trade with liquidation T (taker), M (maker) or MT; amount is USD
+    var L = x.liquidation || '', takerLong = x.direction === 'sell', out = [];
+    if (L.indexOf('T') >= 0) out.push({ t: t, venue: 'DERIBIT', side: takerLong ? 'long' : 'short', usd: +x.amount, px: +x.price });
+    if (L.indexOf('M') >= 0) out.push({ t: t, venue: 'DERIBIT', side: takerLong ? 'short' : 'long', usd: +x.amount, px: +x.price });
+    return out;
+  }
+  function liqBybit(x) { return { t: +x.T, venue: 'BYBIT', side: x.S === 'Buy' ? 'long' : 'short', usd: (+x.v) * (+x.p), px: +x.p }; }
+  function liqBinance(m) { var o = m.o; return { t: +o.T, venue: 'BINANCE', side: o.S === 'SELL' ? 'long' : 'short', usd: (+o.q) * (+o.ap), px: +o.ap }; }
+  function liqSum(ev, now, ms) {
+    var r = { long: 0, short: 0, n: 0, big: 0 };
+    ev.forEach(function (e) { if (e.t <= now && now - e.t <= ms) { r[e.side] += e.usd; r.n++; if (e.usd >= LQ.bigUsd) r.big++; } });
+    r.dom = r.long + r.short === 0 ? 'none' : r.long >= LQ.domRatio * r.short ? 'longs' : r.short >= LQ.domRatio * r.long ? 'shorts' : 'mixed';
+    return r;
+  }
+
+  var api = { LQ: LQ, liqDeribit: liqDeribit, liqBybit: liqBybit, liqBinance: liqBinance, liqSum: liqSum, CP: CP, coilPierce: coilPierce, IT: IT, divergence: divergence, flow: flow, flowLive: flowLive, squeeze: squeeze, dom: dom, supports: supports, vwapTest: vwapTest,
     flagDiv: flagDiv, flagSqueeze: flagSqueeze, flagFlow: flagFlow, flagDom: flagDom, flagVwap: flagVwap, confidence: confidence, rma: rma, sma: sma, rsi: rsi, bollinger: bollinger, atr: atr, dayVwap: dayVwap, utcDays: utcDays, wavetrend: wavetrend,
     inversePnlBtc: inversePnlBtc, closedPnlBtc: closedPnlBtc, columns: columns };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

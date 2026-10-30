@@ -22,21 +22,22 @@ section, .tile { background: var(--panel); border: 1px solid var(--line); border
 .age { font: 12px var(--mono); padding: 1px 7px; border-radius: 3px; background: var(--line); color: var(--dim); }
 .age.stale { background: var(--amber); color: var(--bg); }
 .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
-.huge { font: 600 40px/1 var(--mono); font-variant-numeric: tabular-nums; }
+.huge { font: 600 36px/1 var(--mono); font-variant-numeric: tabular-nums; }
 .big { font: 600 28px/1.1 var(--mono); font-variant-numeric: tabular-nums; }
 .lab { font: 600 12px var(--sans); letter-spacing: .07em; text-transform: uppercase; color: var(--dim); }
 .sub { font: 14px var(--mono); color: var(--dim); overflow-wrap: anywhere; }
 .dim { color: var(--dim); }
 .up { color: var(--up); } .down { color: var(--down); }
 .nid { color: var(--amber); font-weight: 600; font-family: var(--mono); }
+.huge .nid, .big .nid { font-size: 20px; }
 .met { color: var(--amber); }
 .err { color: var(--dim); font: 12px var(--mono); word-break: break-word; }
 .src { font: 600 10px var(--sans); letter-spacing: .06em; padding: 0 4px; border-radius: 3px; border: 1px solid var(--line); color: var(--accent); cursor: help; margin-left: 4px; }
 .bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; }
 .bar .inputs { display: grid; grid-template-columns: 96px 130px 130px; gap: 8px; }
 .bar .grow { flex: 1; }
-.glance { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); }
-.cols { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr)); align-items: start; }
+.glance { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(190px, 100%), 1fr)); }
+.cols { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(460px, 100%), 1fr)); align-items: start; }
 table { width: 100%; border-collapse: collapse; font: 15px var(--mono); font-variant-numeric: tabular-nums; }
 th { font: 600 11px var(--sans); letter-spacing: .06em; text-transform: uppercase; color: var(--dim); text-align: right; padding: 3px 6px; }
 td { text-align: right; padding: 7px 6px; border-top: 1px solid var(--line); white-space: nowrap; }
@@ -105,6 +106,8 @@ details[open] summary { margin-bottom: 8px; }
     <div class="tile"><span class="lab">Nearest level below</span><span class="big" id="g-below">--</span><span class="sub" id="g-below-sub"></span></div>
     <div class="tile"><span class="lab"><span id="g-stay-lab">Stay confidence</span><span class="src" title="OURS: flags for / available among order book, VWAP, 1m divergence, squeeze, taker flow. Rule R = 3 or more flags against; it names no size. Fixed in STEPS.md before data was looked at.">OURS</span></span>
       <span class="big" id="g-stay">--</span><span class="sub" id="g-rule"></span></div>
+    <div class="tile"><span class="lab">Liquidations, last 5 min<span class="src" title="Bybit and Binance liquidation streams plus Deribit trades flagged as liquidations. Side codes SOURCED (venue docs); windows, the 2x dominance rule and the 100k big-print line are OURS (STEPS.md).">MIXED</span></span>
+      <span class="big" id="g-liq">--</span><span class="sub" id="g-liq-sub"></span></div>
     <div class="tile"><span class="lab">Session<span class="src" title="Session names: OURS. Opens: London 08:00, New York 09:30 local.">OURS</span></span>
       <span class="big" id="session">--</span><span class="sub" id="cd-us"></span><span class="sub" id="cd-eu"></span></div>
   </div>
@@ -116,10 +119,10 @@ details[open] summary { margin-bottom: 8px; }
       <ul id="it" class="it"></ul>
     </section>
 
-    <section id="p-coil">
-      <div class="hd"><h2>Coil and pierce (15m)</h2><span class="v" id="coil-venue"></span><span class="age" id="age-coil">--</span></div>
-      <ul id="coil" class="it"></ul>
-      <span class="tag">Odds = MEASURED base rates, Binance 2022-01..2026-09, no fees, pierces within 2 h of the US open (research/pre_us_squeeze_2026-10-29, research/bb_pierce_force_2026-10-29). Thresholds OURS. Descriptive, not an edge, never an entry call.</span>
+    <section id="p-liq">
+      <div class="hd"><h2>Liquidations</h2><span class="tag" id="liq-feeds"></span></div>
+      <div class="scroll"><table><thead><tr><th>Window</th><th>Longs liq.</th><th>Shorts liq.</th><th>Reads</th><th class="x">Count</th><th class="x">&ge;100k</th></tr></thead><tbody id="liq-sum"></tbody></table></div>
+      <div class="scroll"><table><thead><tr><th>Time</th><th>Venue</th><th>Liquidated</th><th>USD</th><th>Price</th></tr></thead><tbody id="liq-tape"></tbody></table></div>
     </section>
 
     <section id="p-strip">
@@ -138,6 +141,12 @@ details[open] summary { margin-bottom: 8px; }
         </div>
       </details>
     </section>
+
+    <section id="p-coil">
+      <div class="hd"><h2>Coil and pierce (15m)</h2><span class="tag" id="coil-venue"></span><span class="age" id="age-coil">--</span></div>
+      <ul id="coil" class="it"></ul>
+      <span class="tag">Odds = MEASURED base rates, Binance 2022-01..2026-09, no fees, pierces within 2 h of the US open (research/pre_us_squeeze_2026-10-29, research/bb_pierce_force_2026-10-29). Thresholds OURS. Descriptive, not an edge, never an entry call.</span>
+    </section>
   </div>
 
   <!-- 4. NOTES -->
@@ -145,6 +154,7 @@ details[open] summary { margin-bottom: 8px; }
     <p>You trade Deribit TESTNET; these are MAINNET public prices, testnet prints differ. Position, rungs and levels are saved in this browser only.</p>
     <p>Inverse contract: P&amp;L BTC = size x (1/average - 1/mark), negated for a short. Distances = level - price on the candle venue; ATR15 = ATR14 of 15m bars.</p>
     <p>RSI14 Wilder, SMA14 of RSI, BB(20,2) population, ATR14 Wilder, day VWAP hlc3 from 00:00Z: SOURCED (your chart setup). WaveTrend 10/21/4, 0.015, lines 53/60, 200-bar warm-up: OURS (LazyBear defaults; your chart settings not yet known). Flag lines 30/70: OURS. Values include the forming bar.</p>
+    <p>Liquidations: Bybit allLiquidation.BTCUSDT (price = bankruptcy price), Binance btcusdt@forceOrder (one print per second at most), Deribit trades carrying the liquidation flag. Side = the position that was liquidated (SOURCED, venue docs). 1/5/15 min sums since this page connected, "longs" or "shorts" when one side is at least 2x the other, big print = 100,000 USD or more: OURS (STEPS.md).</p>
     <p>In-trade readings are descriptive, no advice. Rules and thresholds = OURS, fixed in STEPS.md before data was looked at. Data: Deribit mainnet public trades, book and open interest; candles from the strip venue. Rule R = 3 or more of the available flags against the side you typed; it names no size.</p>
   </details>
 </main>
@@ -159,7 +169,8 @@ details[open] summary { margin-bottom: 8px; }
   var STALE_MS = 15000;
   var S = { dbt: null, dbtMark: null, dbtT: 0, dbtErr: '', bin: null, binT: 0, binErr: '',
             a15: NaN, tf: {}, venue: null, klErr: '', klT: 0, daily: null,
-            trades: [], trT: 0, book: null, bookT: 0, oi: null, oiT: 0, oiHist: [], flowErr: '' };
+            trades: [], trT: 0, book: null, bookT: 0, oi: null, oiT: 0, oiHist: [], flowErr: '',
+            liq: [], lq: { BYBIT: { t: 0, err: '' }, BINANCE: { t: 0, err: '' } } };
 
   function fmt(x, d) { return isFinite(x) ? x.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }) : '--'; }
   function sgn(x, d) { return isFinite(x) ? (x > 0 ? '+' : '') + fmt(x, d) : '--'; }
@@ -200,7 +211,7 @@ details[open] summary { margin-bottom: 8px; }
       if (d.method === 'heartbeat' && d.params && d.params.type === 'test_request') { ws.send(JSON.stringify({ jsonrpc: '2.0', id: 3, method: 'public/test', params: {} })); return; }
       if (d.method === 'subscription' && d.params && d.params.channel && d.params.channel.indexOf('trades.') === 0) {
         var now0 = Date.now();
-        (d.params.data || []).forEach(function (x) { S.trades.push({ t: now0, usd: +x.amount, buy: x.direction === 'buy' }); });
+        (d.params.data || []).forEach(function (x) { S.trades.push({ t: now0, usd: +x.amount, buy: x.direction === 'buy' }); if (x.liquidation) addLiq(A.liqDeribit(x, +x.timestamp || now0)); });
         S.trT = now0; S.flowErr = '';
         var cut = now0 - 900000; while (S.trades.length && S.trades[0].t < cut) S.trades.shift();
         return;
@@ -225,6 +236,39 @@ details[open] summary { margin-bottom: 8px; }
     ws.onerror = function () { S.dbtErr = 'websocket error (www.deribit.com unreachable or blocked)'; S.flowErr = S.dbtErr; };
     ws.onclose = function (e) { S.dbtErr = S.dbtErr || ('websocket closed code ' + e.code); setTimeout(deribitWs, 3000); };
   }
+
+  // Liquidation streams. Prints are sparse, so a venue counts as live while its socket answers pings (A.LQ.liveMs).
+  function addLiq(ev) {
+    S.liq = S.liq.concat(ev); var cut = Date.now() - A.LQ.keepMs;
+    while (S.liq.length && S.liq[0].t < cut) S.liq.shift();
+  }
+  function bybitLiqWs() {
+    var ws, ping, st = S.lq.BYBIT;
+    try { ws = new WebSocket('wss://stream.bybit.com/v5/public/linear'); } catch (e) { st.err = String(e); return setTimeout(bybitLiqWs, 10000); }
+    ws.onopen = function () {
+      ws.send(JSON.stringify({ op: 'subscribe', args: ['allLiquidation.BTCUSDT'] }));
+      ping = setInterval(function () { ws.send(JSON.stringify({ op: 'ping' })); }, 20000);
+    };
+    ws.onmessage = function (m) {
+      var d = JSON.parse(m.data); st.t = Date.now(); st.err = '';
+      if (d.topic && d.data) addLiq(d.data.map(A.liqBybit));
+      else if (d.success === false) st.err = 'Bybit ' + (d.ret_msg || 'subscribe refused');
+    };
+    ws.onerror = function () { st.err = 'websocket error (stream.bybit.com unreachable or blocked)'; };
+    ws.onclose = function (e) { clearInterval(ping); st.t = 0; st.err = st.err || ('websocket closed code ' + e.code); setTimeout(bybitLiqWs, 10000); };
+  }
+  var binLiqSock = null;
+  function binanceLiqWs() {
+    var ws, st = S.lq.BINANCE;
+    try { ws = new WebSocket('wss://fstream.binance.com/ws/btcusdt@forceOrder'); } catch (e) { st.err = String(e); return setTimeout(binanceLiqWs, 15000); }
+    binLiqSock = ws;
+    ws.onopen = function () { st.t = Date.now(); st.err = ''; };
+    ws.onmessage = function (m) { var d = JSON.parse(m.data); st.t = Date.now(); if (d.o) addLiq([A.liqBinance(d)]); };
+    ws.onerror = function () { st.err = 'websocket error (fstream.binance.com unreachable or blocked)'; };
+    ws.onclose = function (e) { st.t = 0; st.err = st.err || ('websocket closed code ' + e.code); setTimeout(binanceLiqWs, 15000); };
+  }
+  // Binance answers pings at the protocol level, invisible to the page: an open socket counts as live.
+  setInterval(function () { if (binLiqSock && binLiqSock.readyState === 1) S.lq.BINANCE.t = Date.now(); }, 10000);
 
   function binanceWs() {
     var ws;
@@ -416,7 +460,7 @@ details[open] summary { margin-bottom: 8px; }
         (p.coilBefore ? ' <span class="tag">out of a coil</span>' : '') + (p.midBack ? ' <span class="tag">already back across the mid</span>' : '') + '</li>');
       L.push('<li>Force: volume ' + fmt(p.volRatio, 2) + 'x the 20-bar mean, taker delta ' + (isFinite(p.deltaShare) ? sgn(p.deltaShare, 2) : NID) +
         ' in its direction: <b>' + p.force + '</b>. Reach / fail by force: ' + p.byForce.reach + '% / ' + p.byForce.fail + '% (n=' + p.byForce.n + ').</li>');
-      if (p.byDist) L.push('<li>Target ' + (p.side === 'up' ? 'prev day high ' : 'prev day low ') + fmt(p.level, 1) + ', ' + fmt(100 * p.dist, 2) +
+      if (p.byDist) L.push('<li>Reference level ' + (p.side === 'up' ? 'prev day high ' : 'prev day low ') + fmt(p.level, 1) + ', ' + fmt(100 * p.dist, 2) +
         '% away: reached before a close back across the mid <b>' + p.byDist.reach + '%</b>, mid first ' + p.byDist.fail + '% (n=' + p.byDist.n + '). Distance decides most of it.</li>');
       else L.push('<li>Prev-day level already behind price or not loaded: no distance odds.</li>');
     }
@@ -430,6 +474,7 @@ details[open] summary { margin-bottom: 8px; }
     S.a15 = atr15();
     renderTop();
     renderCoil(now);
+    renderLiq(now);
     var a15 = S.a15;
 
     // 3. strip
@@ -491,6 +536,35 @@ details[open] summary { margin-bottom: 8px; }
     age('age-lvl', S.klT);
     renderGlance(L, px, vw);
     renderInTrade(now, L, px, a15, m1);
+  }
+
+  // ---------- liquidations ----------
+  function usdK(x) { return x >= 1e6 ? fmt(x / 1e6, 2) + 'M' : x >= 1e3 ? fmt(x / 1e3, 1) + 'k' : fmt(x, 0); }
+  function venueName(v) { return v.charAt(0) + v.slice(1).toLowerCase(); }
+  function renderLiq(now) {
+    var live = function (v) { return S.lq[v].t && now - S.lq[v].t <= A.LQ.liveMs; };
+    var up = ['BYBIT', 'BINANCE'].filter(live), dbLive = !feedDown(S.dbtT, S.dbtErr);
+    $('liq-feeds').innerHTML = ['BYBIT', 'BINANCE'].map(function (v) {
+      return live(v) ? venueName(v) + ' live' : '<span title="' + esc(S.lq[v].err || 'not connected yet') + '">' + venueName(v) + ' ' + NID + '</span>';
+    }).join(', ') + ', Deribit ' + (dbLive ? 'live' : NID);
+    if (!up.length && !dbLive) {
+      $('g-liq').innerHTML = NID; $('g-liq-sub').textContent = 'no liquidation feed reachable';
+      $('liq-sum').innerHTML = '<tr><td colspan="6">' + NID + '</td></tr>'; $('liq-tape').innerHTML = ''; return;
+    }
+    var word = { longs: 'longs flushed', shorts: 'shorts flushed', mixed: 'both sides', none: 'none' };
+    var W = [['1 min', 60000], ['5 min', 300000], ['15 min', 900000]].map(function (w) { return [w[0], A.liqSum(S.liq, now, w[1])]; });
+    $('liq-sum').innerHTML = W.map(function (w) {
+      var r = w[1], c = r.dom === 'longs' ? 'down' : r.dom === 'shorts' ? 'up' : '';
+      return '<tr><td>' + w[0] + '</td><td>' + usdK(r.long) + '</td><td>' + usdK(r.short) + '</td><td class="' + c + '">' + word[r.dom] + '</td><td class="x">' + r.n + '</td><td class="x">' + r.big + '</td></tr>';
+    }).join('');
+    var f5 = W[1][1];
+    $('g-liq').innerHTML = '<span class="' + (f5.dom === 'longs' ? 'down' : f5.dom === 'shorts' ? 'up' : '') + '">' + word[f5.dom] + '</span>';
+    $('g-liq-sub').textContent = 'longs ' + usdK(f5.long) + ', shorts ' + usdK(f5.short) + ' USD' + (f5.big ? ', ' + f5.big + ' print(s) of 100k+' : '');
+    var tape = S.liq.slice(-A.LQ.tapeN).reverse();
+    $('liq-tape').innerHTML = tape.map(function (e) {
+      return '<tr><td>' + new Date(e.t).toISOString().slice(11, 19) + '</td><td>' + venueName(e.venue) + '</td><td class="' + (e.side === 'long' ? 'down' : 'up') + '">' + e.side +
+        '</td><td>' + usdK(e.usd) + (e.usd >= A.LQ.bigUsd ? '<span class="chip">big</span>' : '') + '</td><td>' + fmt(e.px, 1) + '</td></tr>';
+    }).join('') || '<tr><td colspan="5" class="dim">no liquidation since this page connected</td></tr>';
   }
 
   // ---------- glance tiles: VWAP distance, nearest level each side (built-in + typed) ----------
@@ -602,7 +676,7 @@ details[open] summary { margin-bottom: 8px; }
   });
 
   // ---------- start ----------
-  deribitWs(); binanceWs();
+  deribitWs(); binanceWs(); bybitLiqWs(); binanceLiqWs();
   loadAll(true).then(loadDaily);
   setInterval(function () { loadAll(false); }, 5000);
   setInterval(loadDaily, 300000);

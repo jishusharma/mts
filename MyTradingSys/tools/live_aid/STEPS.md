@@ -26,6 +26,7 @@ Deribit 1D candles open at 08:00Z, so prev-day high/low and weekly open come fro
 | R10 | WaveTrend table under the strip: wt1, wt2 (colour = wt1 above/below wt2), zone vs the 53/60 lines, last wt1/wt2 cross with bars ago and level, on 1m/5m/15m. Same maths as `backtest/layers/wavetrend/wavetrend.py` (test compares them) | BUILT 2026-10-28 |
 | In-trade | In-trade block (needs side typed): supports/resistance, DOM, VWAP test, divergences, squeeze read, CVD vs delta, stay confidence, rule R. Maths in `live_aid_indicators.js`, tests `test_live_aid.py` (`LIVE_AID_BREAK=itdiv|itflow|itsqueeze|itdom|itsupport|itvwap|itconf|itlive`) | BUILT 2026-10-29 |
 | R11 | Full-width layout: position bar, glance tiles (price, VWAP distance + test, nearest level above/below incl. typed, stay confidence + rule R, session), then in-trade / momentum (strip + WaveTrend in one table) / levels columns; SMA, BB width, ATR, VWAP, wt1/wt2, ATR15 under "More detail"; source notes folded; SOURCED/OURS chips with the full note on hover | BUILT 2026-10-30 |
+| Liquidations | Glance tile (5 min: longs flushed / shorts flushed / both sides / none) and a panel: 1/5/15 min USD liquidated per side, last 8 prints. Bybit live from JIS-NB; Binance forceOrder wired but blocked there (NOT_IN_DATA); Deribit via the liquidation flag on trades. Maths `liqDeribit/liqBybit/liqBinance/liqSum`, tests `test_liq_*` (`LIVE_AID_BREAK=itliqside|itliqdb|itliqsum`) | BUILT 2026-10-30 |
 
 WaveTrend 10/21/4, 0.015, lines 53/60 = OURS (LazyBear defaults; his chart settings unknown). Parameters: RSI14 Wilder, SMA14 of RSI, BB(20,2) population, ATR14 Wilder, day VWAP hlc3 from 00:00Z = SOURCED (his chart setup). RSI 30/70 flag lines, session names = OURS.
 
@@ -43,11 +44,23 @@ WaveTrend 10/21/4, 0.015, lines 53/60 = OURS (LazyBear defaults; his chart setti
 | Stay confidence | flags for / available among DOM, VWAP, 1m divergence, squeeze, flow (NOT_IN_DATA excluded) |
 | Rule R | met if 3 or more available flags are against. A readout only: no size, no entry/exit wording (card note: sizing stays forbidden) |
 
+## Liquidation rules (OURS unless marked, written before the panel was built; operator "Yes, wire liquidations" 2026-10-30)
+
+| Item | Rule |
+|---|---|
+| Venues | Bybit public ws `allLiquidation.BTCUSDT` (reachable from JIS-NB); Binance `btcusdt@forceOrder` (blocked from JIS-NB, NOT_IN_DATA there); Deribit: the `liquidation` field on the trades already subscribed. OKX blocked from JIS-NB: not wired |
+| Side (SOURCED, venue docs) | Bybit `S` = Buy: a long was liquidated; Sell: a short. Binance `o.S` = SELL: a long was liquidated (forced sell); BUY: a short. Deribit `liquidation` T = taker liquidated (taker sell = long), M = maker liquidated (maker is the other side: taker sell = short), MT = both, the amount counts on each side |
+| Size | USD: Bybit v x p (p = bankruptcy price), Binance q x ap, Deribit amount (already USD) |
+| Windows | 1, 5 and 15 min sums of USD liquidated per side; only events since the page connected |
+| Dominant side | longs if long USD >= 2 x short USD, shorts on the mirror, mixed otherwise, none if both 0 |
+| Big print | one event >= 100,000 USD |
+| Tape | last 8 events, newest first |
+| Feed state | liquidations are sparse: a venue counts as live while its socket is open and answered a ping in the last 60 s; else NOT_IN_DATA + error |
+
 ## Backlog (his words first)
 
 | Step | His words / source | Reading (OURS) |
 |---|---|---|
-| Liquidation tape, OI and flow | brief from Eagle_Eyes | live liquidation prints, open interest and taker flow beside price |
 | Liquidation layer context (R08) | "now we have to find out how much of this is actually useful - worth trusting - so we need a constant context building for this liquidation layer" | show each typed heatmap band's track record from `research/liquidation_layer_2026-10-28/BANDS_LEDGER.csv` |
 | Heatmap vs what played out, by timeframe (R09) | "we can also see it's diff timeframes to compare what platyed out at lower time frames since last weeks" | per band: touched / swept / rejected on 1m-15m since last week |
 | Multi-timeframe flip watch | brief from Eagle_Eyes | flag when RSI crosses its SMA or %B crosses 0/1 on 1m, 5m, 15m |
