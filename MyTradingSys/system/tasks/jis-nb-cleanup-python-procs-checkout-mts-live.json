@@ -1,0 +1,48 @@
+{
+  "id": "jis-nb-cleanup-python-procs-checkout-mts-live",
+  "title": "JIS-NB cleanup: 54 stray python procs, stale primary checkout, old .mts_live (0.9 GB)",
+  "state": "raw",
+  "lane": "JIS-NB",
+  "prio": 3,
+  "weight": "LIGHT",
+  "worker": "session",
+  "live_path": false,
+  "goal": "JIS-NB (old live host) is not clean after the Java engine moved to the Lenovo: STATION_DISK_2026-10-30.md shows java=0 but python=54, C: 28 GB free, primary checkout 2467+ commits behind and dirty, old .mts_live 0.9 GB still there.",
+  "done_when": "On JIS-NB: python process list reviewed and stale ones stopped (list in the ship result); primary checkout refreshed per b-4c2dfe (wip branch keeps local commits); device_tasks.py check --send shows primary-checkout-current and wt-maint DONE; .mts_live deletion proposed to the operator with its size and a note that nothing in it is unique (no deletion without his yes).",
+  "steps": [
+    "python scripts/dev/station_disk_report.py; tasklist cmdline summary of the python processes; stop stale ones that are not the hook, watcher or the operator's tools",
+    "python scripts/dev/refresh_main_checkout.py (see b-4c2dfe) after confirming no unshipped work",
+    "python scripts/dev/device_tasks.py check --send",
+    "report .mts_live size + 'nothing unique' evidence to the operator"
+  ],
+  "note": "Filed by Supervisor A 2026-10-30 after C did not answer three signals in 5 h. Data deletion is the operator's call.",
+  "refs": [
+    "MyTradingSys/system/STATION_DISK_2026-10-30.md",
+    "MyTradingSys/system/STATION_CLEANUP.md",
+    "MyTradingSys/system/DISK_CARE.md"
+  ],
+  "scope_in": [
+    "MyTradingSys/system/STATION_DISK_2026-10-30.md"
+  ],
+  "scope_out": [
+    "any deletion of data",
+    "live tree on the Lenovo"
+  ],
+  "created": "2026-10-30T04:57:00Z",
+  "depends_on": [],
+  "layers": [],
+  "formula_ids": [],
+  "formula_id": "",
+  "commands": [],
+  "tests": "",
+  "sources": [],
+  "asks": "",
+  "approved_by": "",
+  "from_inbox": "",
+  "est_turns": 6,
+  "size": "S",
+  "refine_tries": 0,
+  "refined_by": "",
+  "result": "",
+  "mutation_check": ""
+}

@@ -28,6 +28,7 @@
   "goal": "Apply the top rows of DOCS.md, CODE.md and INFRA.md so one winner remains for each conflict or duplicate. Winner by the default rule in OPERATOR_DECISIONS.md d-dedupe-lean-no-contradiction; never ask the operator.",
   "id": "apply-dedupe-audit-findings",
   "lane": "SONNET",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -39,6 +40,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-30T04:56:35Z",
   "refs": [
     "MyTradingSys/system/OPERATOR_DECISIONS.md"
   ],
@@ -51,9 +53,10 @@
     "No live tree, deploy or process stop",
     "Delete only after grep shows nothing references the name"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Take the top rows in batches of at most 10",
     "Apply per the default rule; run python scripts/dev/run_all_tests.py --quick green",

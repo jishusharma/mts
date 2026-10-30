@@ -17,6 +17,22 @@
   "goal": "scripts/dev/where_is.py <topic> prints files, machine, channel and ledger row for a topic (trader, video id, layer, rule id, screenshot topic) from generated MyTradingSys/system/WHERE_IS.md; sync.py start prints one pointer line; the rule goes in QUICK_ANSWERS.md and role files, NOT CLAUDE.md (no size headroom).",
   "id": "where-things-are-index",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 5 file(s)",
+      "ref": "1deae1acd0b4",
+      "utc": "2026-10-30T04:31:13Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "0bf8b9261c25 reply-protocol: mandatory ack + answer for every ask, minimum wait, one escal",
+      "ref": "MyTradingSys/system/QUICK_ANSWERS.md",
+      "utc": "2026-10-30T00:20:58Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -24,6 +40,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-30T04:56:49Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -41,11 +58,12 @@
     "committing operator file names",
     "live tree"
   ],
+  "scope_sha": "1deae1acd0b4",
   "size": "M",
   "sources": [
     "operator 2026-10-28 priority: stop MTS drifting; account for everything extracted; make it findable"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "where_is.py build: read EXTRACTION_LEDGER.csv, both WIRING_*.csv, NB/NUC/LAPTOP counts files and layer_index.json; emit WHERE_IS.md (topic, path, machine, channel) sorted, with a build-date footer.",
     "where_is.py <topic>: case-insensitive match over WHERE_IS.md plus the local operator_material_index jsonl on this host (file names shown only locally).",

@@ -18,16 +18,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "GEMINI_START: laptop agy CLI installed, gemini_queue F: gap, account naming, approval re-c",
-      "ref": "c5639ca90c70",
-      "utc": "2026-10-25T20:50:19Z"
+      "line": "gemini_queue: root() reads MTS_GQ_ROOT at call time (laptop)",
+      "ref": "71f3e7aeb2f8",
+      "utc": "2026-10-29T22:50:21Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "c5639ca90c70 GEMINI_START: laptop agy CLI installed, gemini_queue F: gap, account naming, ",
+      "line": "71f3e7aeb2f8 gemini_queue: root() reads MTS_GQ_ROOT at call time (laptop)",
       "ref": "MyTradingSys/system/GEMINI_START.md",
-      "utc": "2026-10-25T20:50:19Z"
+      "utc": "2026-10-29T22:50:21Z"
     }
   ],
   "layers": [],
@@ -37,7 +37,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-10-25T22:29:48Z",
+  "refreshed": "2026-10-30T04:56:36Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -51,7 +51,7 @@
     "live path, orders, deploy, restarts",
     "new hooks, gate steps or rules beyond the card"
   ],
-  "scope_sha": "c5639ca90c70",
+  "scope_sha": "71f3e7aeb2f8",
   "size": "M",
   "sources": [
     "this card's steps list the six audit points (SPEED, CONTEXT LOAD, BOOT DOC, PLATFORM, RECOVERY, IDENTITY)",
@@ -59,7 +59,7 @@
     "scripts/dev/role_loader.py",
     "AGENTS.md"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "SPEED: read ci.yml:19 (tasks/** runs CI on purpose, CI review 2026-10-25) and gh run list timings for 5a65fb31, d794c33c; state whether 3m20s was queue or run time.",
     "CONTEXT LOAD: check NEXT_SESSION.md date and owner header; grep role_loader.py and AGENTS.md for who reads it; propose owner+date header only if a loader reads it.",

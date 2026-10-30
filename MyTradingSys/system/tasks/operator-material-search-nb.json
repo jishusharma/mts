@@ -16,6 +16,7 @@
   "goal": "Run the indexer on JIS-NB over Desktop, Documents, Pictures, Downloads, OneDrive and D:/ and report counts by topic; the index file stays on the machine. Say which items are RSI reverse/hidden divergence material.",
   "id": "operator-material-search-nb",
   "lane": "JIS-NB",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -23,6 +24,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-30T04:56:43Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -33,11 +35,12 @@
     "copying files",
     "live tree"
   ],
+  "scope_sha": "",
   "size": "S",
   "sources": [
     "operator 2026-10-28 priority: stop MTS drifting; account for everything extracted; make it findable"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Run the command below.",
     "Write NB_COUNTS.md: counts by topic and root, newest mtime, local index path; no file names.",

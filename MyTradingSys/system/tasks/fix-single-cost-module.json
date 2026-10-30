@@ -18,9 +18,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Merge remote-tracking branch 'origin/fast-track' into JIS-NB/machine-rename",
-      "ref": "937af0c3d6fd",
-      "utc": "2026-10-25T17:17:17Z"
+      "line": "gate: register test_aibridge_version in run_all_tests",
+      "ref": "a38ef3c15584",
+      "utc": "2026-10-30T00:32:52Z"
     }
   ],
   "layers": [],
@@ -30,7 +30,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-10-25T22:29:28Z",
+  "refreshed": "2026-10-30T04:56:39Z",
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T06_cost_fill_realism.md"
   ],
@@ -48,13 +48,13 @@
     "restating any published verdict, ledger row or pre-registered bar",
     "live path"
   ],
-  "scope_sha": "937af0c3d6fd",
+  "scope_sha": "a38ef3c15584",
   "size": "M",
   "sources": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T06_cost_fill_realism.md (T06-F2)",
     "MyTradingSys/backtest/fees.py:3"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Read T06-F2 and scripts/T06/costs.csv; list the files that define their own constant (imports_fees = 0).",
     "Write cost_allowlist.txt with those paths; write the test: scan *.py under backtest/ and research/ for fee/slippage literal assignments, fail on any file outside the allowlist.",
