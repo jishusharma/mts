@@ -12,7 +12,7 @@
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Gemini commits on gemini-q/<id> branches only and never ships (gemini_queue.py). For each of the 11 cards run on JIS-NUC task gq15 (gemini-jala-method-extract, gemini-cbp-altcoin-buy-plan, gemini-krown-ta101-extract-missing-4, gemini-pizzino-spec-vs-method-blind-check, gemini-review-gpt-formula-audits-1030, gemini-param-labels-live-aid-analyst-levels, gemini-doc-contradiction-scan-v1-plan, gemini-blind-read-layer-review-sheets, gemini-malkan-top12-rsi-rules-extract, gemini-krown-setups-beyond-ta101, gemini-cryptocred-stop-buffer-source-hunt): fetch the branch, run the verifier, spot-check 3 quotes against the transcript, merge what passes, tasks.py done with the count, ship once. A failing branch gets tasks.py tried with the reason, never a hand edit of its quotes.",
+  "goal": "Gemini never ships: its output sits on gemini-q/<id> branches (gemini_queue.py). For the 11 [GEMINI] cards NUC task gq15 runs on 2026-10-31 (ids in the decision d-gemini-youtube-feed-weak-layers): fetch each branch, run the verifier, spot-check 3 quotes against the transcript, merge what passes, tasks.py done with the counts, ship once. A failing branch gets tasks.py tried with the reason; never hand-edit a quote.",
   "id": "review-ship-gemini-q-branches-1031",
   "kind": "run",
   "lane": "SONNET",
@@ -45,5 +45,5 @@
   "tests": "verify_extract_quotes.py exit 0 per merged file; no code change",
   "title": "Review and ship the gemini-q/<id> branches from NUC task gq15 (11 [GEMINI] cards, 2026-10-31): verifier exit 0, quotes spot-checked, tasks.py done, one ship",
   "weight": "ROUTINE",
-  "worker": "agent"
+  "worker": "session"
 }
