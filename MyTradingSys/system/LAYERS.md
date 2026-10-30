@@ -199,7 +199,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `statecode-backfill-race-coverage` ready p2 JIS-NB: StateCodeEmitter: cover in-flight rollover reconnect and retry scheduling
   - `layer-review-rsi-cc-pitchfork-engine` ready p3 SONNET: Layer review sheet: RSI, CryptoCred, pitchfork, live engine (idea, source, backtests, bugs, confluence)
   - `live-aid-macro-calendar` ready p3 SONNET: live_aid: macro calendar strip from ForexFactory JSON (N3)
-  - `live-aid-replay-mode-fixture-feeds` ready p3 SONNET: Live aid: replay mode (?replay=fixture) feeds the page fixture_klines.json instead of sockets; test reads the 
   - `live-loop-timeouts-b191` refined p3 SONNET: Network: re-check live-loop timeouts after B191 plus wrapper priority and snapshot.cp (read-only report first)
   - `live-orderflow-state-line-1m-5m-15m-pric` refined p3 SONNET: Live read: one order-flow state line per TF (1m/5m/15m price swing vs Binance CVD swing vs OI change), descrip
   - `score-context-reads-automatically-carrie` refined p3 SONNET: Score context reads automatically: carried falsifier lines (HELD/BROKEN/UNTESTED) computed from klines at the 

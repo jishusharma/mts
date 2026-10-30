@@ -24,7 +24,7 @@ ship (warning only), `publish-record` once republished.
 
 | Artifact | 1 Maths | 2 Build | 3 Open it | 4 Time | Gap, card |
 |---|---|---|---|---|---|
-| Live aid | `test_live_aid.py` (RSI, BB, ATR, VWAP, WaveTrend, in-trade, liquidations, funding, news, US open, analysts; `LIVE_AID_BREAK`) | `test_build_analyst_data.py` (roster complete, rejected shown, levels offline) | `test_artifact_pages.py`: opens offline, NOT_IN_DATA, no NaN | `test_analyst_levels.py::Hit` (publish-day bars never count) | Numbers on the rendered page are never checked (layer 3 only sees "no crash"): a replay mode that feeds the page `fixture_klines.json` instead of sockets, then a test reads the tiles and compares with the layer-1 maths. Card `live-aid-replay-mode-fixture-feeds` |
+| Live aid | `test_live_aid.py` (RSI, BB, ATR, VWAP, WaveTrend, in-trade, liquidations, funding, news, US open, analysts; `LIVE_AID_BREAK`) | `test_build_analyst_data.py` (roster complete, rejected shown, levels offline) | `test_artifact_pages.py`: opens offline, NOT_IN_DATA, no NaN; `test_live_aid_replay.py`: rendered momentum strip = Python maths (`?replay=fixture`, fail-first `LIVE_AID_REPLAY_BREAK=rsi`) | `test_analyst_levels.py::Hit` (publish-day bars never count) | Other tiles (levels, flow, liquidations, verdict) are still unread on the rendered page: layer 1 is their number check |
 | Sim desk (static page) | `test_reference.py`, `test_desk.py` verdicts | `artifact/test_artifact.py` (every result file becomes a test, DEV window, relative only, bad files fail) + `test_page_top.py` | `test_artifact_pages.py` | n/a (precomputed DEV results) | none open |
 | Sim desk (local app) | same | `test_integration_http.py` (endpoints, every study wired, date lock) | not opened in a browser: `page.html` is only syntax-checked in node (HANDOVER_SIMV2.md). Card `sim-desk-page-click-test` | n/a | one card |
 | CBP analyst desk / consensus desk | n/a (words, not maths) | F:/CryptoScrapper `tests/test_golden.py`, `test_emit_gates.py`, `tools/test_profile.py` (extraction semantics, gates, profile) | registry copies open (`test_artifact_pages.py`); the analyst desk has no repo copy, so it is never opened or staleness-checked | `cbp_run.py` prompt carries the publish date (`test_cbp_run.py`) | Card `cbp-analyst-desk-repo-copy-and-open-check` |
@@ -43,4 +43,4 @@ ship (warning only), `publish-record` once republished.
 
 - No screenshot goldens, no visual-diff service, no browser farm: one headless Chromium on the desktop is the whole layer 3.
 - No test of the claude.ai viewer itself (CSP, pins, sharing): `artifacts.py plan` lists what a login must do; the operator clicks.
-- Live aid numbers on the rendered page wait for the replay mode card; until then layer 1 is the number check.
+- Live aid momentum strip is checked on the rendered page (replay mode); its other tiles still rely on layer 1.
