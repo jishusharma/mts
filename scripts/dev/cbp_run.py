@@ -38,6 +38,7 @@ default_cbp_home = cbp.default_cbp_home
 
 CBP_HOME = default_cbp_home()
 TRANSCRIPTS = Path(os.environ.get("CBP_TRANSCRIPTS", str(CBP_HOME / "raw_transcripts_canonical")))
+VERDICT_DAYS = 21  # a thesis analyst who posts every 2 weeks (Jala, Bob) must still have a latest vote
 WINDOWS = (("EU", time(9, 0), time(13, 0)), ("PRE_US", time(13, 0), None))
 MODEL = os.environ.get("CBP_MODEL", "claude-sonnet-5-5")
 PROMPT = """You extract what ONE crypto analyst says in ONE video.
@@ -46,7 +47,14 @@ Output ONLY a JSON object, nothing else:
 {"bias": "BULLISH|BEARISH|NEUTRAL|NO_VIEW", "symbols": ["BTC",...],
  "quotes": ["<=25 words, verbatim from the transcript"],
  "trades": [{"asset":"BTC","direction":"LONG|SHORT","entry":"...","target":"...","invalidation":"...","quote":"verbatim"}],
- "pointers": ["a level or condition the analyst names, short"]}
+ "pointers": ["a level or condition the analyst names, short"],
+ "bottom_call": "IN|NOT_IN|UNDECIDED|NO_VIEW", "bottom_conf": "HIGH|MED|LOW",
+ "bottom_quote": "verbatim, <=30 words (\"\" if NO_VIEW)", "bottom_summary": "one sentence, your words",
+ "alts": [{"coin":"SOL","stance":"BUY|HOLD|SELL|AVOID|WATCH","note":"short, your words","quote":"verbatim <=25 words"}],
+ "alts_general": "one sentence on his view of altcoins as a group (\"\" if none)", "alts_general_quote": "verbatim or \"\""}
+bottom_call is about the BTC cycle low: IN = he says it is in or very likely in; NOT_IN = he expects lower lows;
+UNDECIDED = conditions either way, no commitment; NO_VIEW = not addressed. alts = every non-BTC coin he gives a view on
+(BUY only if he says he is buying or it is a buy here).
 Rules: only what the analyst says, no inference, no filling gaps. A trade needs entry, target and invalidation in
 their words (use "" for any not stated). Every quote and trade.quote must be copied verbatim from the transcript
 (auto-captions: copy the caption words as they are). bias is the analyst's own stance on BTC.
@@ -99,7 +107,7 @@ def write_stamp(now, window):
 
 def analysts():
     cfg = json.loads((CBP_HOME / "cbp_v2" / "analysts.json").read_text(encoding="utf-8"))
-    return cfg, [a for a in cfg["analysts"] if a.get("enabled") and a.get("profile") == "actionable"]
+    return cfg, [a for a in cfg["analysts"] if a.get("enabled")]  # 2026-10-31: all feeds (Bottom-is-In vote, alts)
 
 
 def fetch_new(cutoff, store, run=subprocess.run):
@@ -185,35 +193,77 @@ def build_row(video, got, body):
     return (None, "; ".join(errs)) if errs else (row, "")
 
 
+def verdicts_path(store=None):
+    return Path(store).with_name("verdicts.json") if store else cbp.default_cbp_home() / "cbp_store" / "verdicts.json"
+
+
+def build_verdict(video, got, body):
+    """Bottom call + alt views from the extractor object; each quote is checked, an unverified item is dropped."""
+    norm_body = vq.norm(vq.TIMESTAMP.sub(" ", body))
+    ok = lambda q: isinstance(q, str) and q.strip() != "" and vq.first_missing(q, norm_body) is None
+    s = lambda v: str(v or "")
+    alts = [{k: s(a.get(k)) for k in ("coin", "stance", "note", "quote")}
+            for a in got.get("alts") or [] if isinstance(a, dict) and ok(a.get("quote"))]
+    call = got.get("bottom_call") if got.get("bottom_call") in ("IN", "NOT_IN", "UNDECIDED", "NO_VIEW") else "NO_VIEW"
+    gq = s(got.get("alts_general_quote"))
+    return {"analyst": video[1], "published": video[2], "title": video[3],
+            "bias": got.get("bias") if got.get("bias") in cbp.BIASES else "NO_VIEW",
+            "bottom_call": call, "bottom_conf": s(got.get("bottom_conf")),
+            "bottom_quote": s(got.get("bottom_quote")) if ok(got.get("bottom_quote")) else "",
+            "bottom_summary": s(got.get("bottom_summary")), "alts": alts,
+            "alts_general": s(got.get("alts_general")), "alts_general_quote": gq if ok(gq) else ""}
+
+
 def run_once(now, fetch=fetch_new, extract=llm_extract, store=None):
-    """Fetch, extract new videos, write the store. Returns (added, total, rejected)."""
+    """Fetch, extract new videos, write the store and verdicts. Returns (added, total, rejected).
+    Rows (window 5 days) feed cbp.query; verdicts (bottom call + alt views, VERDICT_DAYS) feed the dashboard."""
     cutoff = (now - timedelta(days=cbp.WINDOW_DAYS)).date().isoformat()
+    vcut = (now - timedelta(days=VERDICT_DAYS)).date().isoformat()
     data = cbp.load(store)
+    vpath = verdicts_path(store)
+    try:
+        verdicts = json.loads(vpath.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        verdicts = {}
     known = {(r["video_id"], r["analyst"]) for r in data["rows"]} | {(x[0], x[1]) for x in data["rejected"]}
-    fetch(cutoff, known)
+    fetch(vcut, known)
     added = rejected = 0
     failures = []
-    for video in local_videos(cutoff):
-        if (video[0], video[1]) in known:
+    for video in local_videos(vcut):
+        need_row = video[2] >= cutoff and (video[0], video[1]) not in known
+        if not need_row and video[0] in verdicts:
             continue
         _, body = parse_transcript(video[4])
         try:
-            row, why = build_row(video, extract(video, body), body)
+            got = extract(video, body)
+            row, why = build_row(video, got, body) if need_row else (None, "")
+            verdict = build_verdict(video, got, body)
         except (ValueError, TypeError, AttributeError, OSError, subprocess.SubprocessError):
             failures.append(video[0])
             continue  # temporary errors must not become permanent rejections
+        verdicts[video[0]] = verdict
         if row:
             data["rows"].append(row)
             added += 1
-        else:
+        elif need_row:
             data["rejected"].append([video[0], video[1], why])
             rejected += 1
         known.add((video[0], video[1]))
     data["rows"] = [r for r in data["rows"] if r["published"] >= cutoff]  # nothing older than 5 days is kept
     cbp.save(data, store)
+    verdicts = {k: v for k, v in verdicts.items() if v["published"] >= vcut}
+    vpath.parent.mkdir(parents=True, exist_ok=True)
+    vpath.write_text(json.dumps(verdicts, indent=1, ensure_ascii=False), encoding="utf-8", newline=chr(10))
     if failures:
         raise RuntimeError("extraction incomplete for %d video(s); retry required" % len(failures))
     return added, len(data["rows"]), rejected
+
+
+def rebuild_dashboard(run=subprocess.run):
+    """Regenerate cbp_v2/cbp_dashboard.html in the CBP home; a failure here never fails the run."""
+    tool = CBP_HOME / "cbp_v2" / "tools" / "build_dashboard.py"
+    if tool.is_file():
+        run([sys.executable, str(tool)], check=False)
 
 
 def main(argv=None, now=None):
@@ -235,6 +285,7 @@ def main(argv=None, now=None):
         print("cbp: FAILED (%s); window not marked complete" % type(e).__name__, file=sys.stderr)
         return 1
     write_stamp(now, window or open_window(now))
+    rebuild_dashboard()
     end = now.astimezone(timezone.utc).date().isoformat()  # window = the 5 days up to today
     print("cbp: +%d rows, %d total, window end %s%s" % (added, total, end, ", %d rejected" % rejected if rejected else ""))
     return 0
