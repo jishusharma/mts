@@ -145,6 +145,7 @@ MyTradingSys/tools/live_aid/test_live_aid.py
 MyTradingSys/tools/live_aid/test_build_analyst_data.py
 MyTradingSys/tools/live_aid/test_oi_money.py
 MyTradingSys/tools/live_aid/test_live_aid_replay.py
+MyTradingSys/tools/live_aid/test_live_aid_layout.py
 scripts/dev/test_sync_push_race.py
 scripts/dev/test_announcements_ids.py
 scripts/dev/test_status_board.py

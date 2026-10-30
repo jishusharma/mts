@@ -344,6 +344,32 @@
     return { n: hi.length, level: hi.length >= NW.event ? 'EVENT' : hi.length ? 'BUSY' : 'QUIET', top: hi.sort(function (a, b) { return b.importance - a.importance; })[0] || null };
   }
 
+  // A labelled reading per headline for BTC: POSITIVE / NEGATIVE / NEUTRAL / UNKNOWN. Word rules OURS (first match wins),
+  // never a forecast. react = how such news usually moved BTC: SOURCED from research/news_feeds_2026-10-30/REPORT.md
+  // section 3 where a study exists, else 'not measured here'. No rule hit = UNKNOWN: the headline alone gives no basis.
+  var NR_HACK = 'Exchange hacks: BTC -1.4 to -1.5 % on attack days (Lee and Milunovich 2025, 2012-2021); a study of 44 breaches 2017-2025 found no significant effect (arXiv 2602.07046). Both agree volatility rises.';
+  var NR_MACRO = 'FOMC / CPI / jobs: a volatility spike for minutes to hours; the direction comes from the number vs the forecast, not from the headline (Arcane Research via FXStreet 2022).';
+  var NR = [
+    ['hack', /\b(hack|hacked|hacker|hackers|exploit|exploited|drain|drained|stolen|theft|heist|breach)\b/i, 'NEGATIVE', NR_HACK, 'SOURCED'],
+    ['halt', /\b(halts?|halted|suspends?|suspended|pauses?|paused)\b.*\b(withdrawals?|deposits?|trading)\b/i, 'NEGATIVE', 'not measured here', 'none'],
+    ['macro', /\b(fed|fomc|powell|cpi|pce|nfp|payrolls?|jobs report|rate (cut|hike)s?|inflation|gdp)\b/i, 'UNKNOWN', NR_MACRO, 'SOURCED'],
+    ['war', /\b(war|missiles?|sanctions?|tariffs?|invasion|airstrikes?)\b/i, 'NEGATIVE', 'not measured here', 'none'],
+    ['etf up', /\b(etfs?)\b.*\b(approves?|approved|approval|inflows?|launch(es|ed)?)\b|\b(approves?|approved|approval|inflows?|launch(es|ed)?)\b.*\b(etfs?)\b/i, 'POSITIVE', 'not measured here', 'none'],
+    ['etf down', /\b(etfs?)\b.*\b(rejects?|rejected|denies|denied|delays?|delayed|outflows?)\b|\b(rejects?|rejected|denies|denied|delays?|delayed|outflows?)\b.*\b(etfs?)\b/i, 'NEGATIVE', 'not measured here', 'none']];
+  var NR_UP = /\b(buys?|bought|adds?|purchases?|purchased|accumulat\w*|reserve|adopts?|adoption)\b/i;
+  var NR_DOWN = /\b(sells?|sold|selling|sell-off|selloff|dumps?|dumped|bans?|banned|bankrupt\w*|liquidat\w*|outflows?|sues|lawsuit|charged|crackdown)\b/i;
+  function newsCoins(x) {
+    return ((x && x.suggestions) || []).map(function (c) { return String(c && typeof c === 'object' ? c.coin : c || '').toUpperCase(); }).filter(Boolean);
+  }
+  function newsRead(x) {
+    var t = String((x && x.title) || '').split('\n')[0], coins = newsCoins(x), btc = /\b(bitcoin|btc)\b/i.test(t) || coins.indexOf('BTC') >= 0;
+    for (var i = 0; i < NR.length; i++) if (NR[i][1].test(t)) return { tag: NR[i][2], why: 'word rule: ' + NR[i][0], react: NR[i][3], src: NR[i][4] };
+    if (coins.length && !btc) return { tag: 'NEUTRAL', why: 'not about BTC', react: 'Not about BTC (Tree coin tags: ' + coins.slice(0, 4).join(', ') + ').', src: 'SOURCED' };
+    if (btc && NR_UP.test(t)) return { tag: 'POSITIVE', why: 'word rule: BTC buying', react: 'not measured here', src: 'none' };
+    if (btc && NR_DOWN.test(t)) return { tag: 'NEGATIVE', why: 'word rule: BTC selling or pressure', react: 'not measured here', src: 'none' };
+    return { tag: 'UNKNOWN', why: t ? 'no rule matched' : 'no title', react: 'No rule matched: no basis for a direction.', src: 'none' };
+  }
+
   // ---------- analysts and verdict board (STEPS.md "Verdict rules"; all thresholds OURS) ----------
   var AV = { freshDays: 3, band: 6, at: 0.3, near: 1.5, merge: 0.25 };
   var BIAS = { BULLISH: 1, BEARISH: -1, NEUTRAL: 0 };
@@ -587,7 +613,7 @@
   }
 
   var api = { OM: OM, oiState: oiState, oiWindow: oiWindow, oiNet: oiNet, oiDisagree: oiDisagree, oiBars: oiBars, oiEvents: oiEvents, oiLastEvent: oiLastEvent, oiPath: oiPath, oiTrap: oiTrap, oiEventText: oiEventText, C24: C24, oiExpect: oiExpect,
-    AV: AV, rosterRead: rosterRead, analystVote: analystVote, levelWatch: levelWatch, zones: zones, lean: lean, actions: actions, NW: NW, newsTags: newsTags, newsMerge: newsMerge, newsPulse: newsPulse, foldBars: foldBars, FD: FD, fundRead: fundRead, premium: premium, bybitTick: bybitTick, LQ: LQ, liqDeribit: liqDeribit, liqBybit: liqBybit, liqBinance: liqBinance, liqSum: liqSum, CP: CP, coilPierce: coilPierce, IT: IT, divergence: divergence, flow: flow, flowLive: flowLive, squeeze: squeeze, dom: dom, supports: supports, vwapTest: vwapTest,
+    AV: AV, rosterRead: rosterRead, analystVote: analystVote, levelWatch: levelWatch, zones: zones, lean: lean, actions: actions, NW: NW, newsTags: newsTags, newsRead: newsRead, newsMerge: newsMerge, newsPulse: newsPulse, foldBars: foldBars, FD: FD, fundRead: fundRead, premium: premium, bybitTick: bybitTick, LQ: LQ, liqDeribit: liqDeribit, liqBybit: liqBybit, liqBinance: liqBinance, liqSum: liqSum, CP: CP, coilPierce: coilPierce, IT: IT, divergence: divergence, flow: flow, flowLive: flowLive, squeeze: squeeze, dom: dom, supports: supports, vwapTest: vwapTest,
     flagDiv: flagDiv, flagSqueeze: flagSqueeze, flagFlow: flagFlow, flagDom: flagDom, flagVwap: flagVwap, confidence: confidence, rma: rma, sma: sma, rsi: rsi, bollinger: bollinger, atr: atr, dayVwap: dayVwap, utcDays: utcDays, wavetrend: wavetrend,
     inversePnlBtc: inversePnlBtc, closedPnlBtc: closedPnlBtc, columns: columns, UO: UO, usOpen: usOpen, nextHighEvent: nextHighEvent };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

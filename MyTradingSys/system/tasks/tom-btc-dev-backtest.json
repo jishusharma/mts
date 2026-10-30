@@ -1,6 +1,6 @@
 {
  "approved_by": "",
- "asks": "Depends on tom-btc-encode, which waits for the operator G3 marks. Default (OURS): wait; once T5 exists run as CODEX run with a PRE_REG first (verdicts.py check, prereg_gate.py).",
+ "asks": "Depends on tom-btc-encode. Default (OURS): once T5 exists run as CODEX run with a PRE_REG first (verdicts.py check, prereg_gate.py).",
  "commands": [],
  "created": "2026-10-13T17:31:44Z",
  "depends_on": [
