@@ -3,6 +3,7 @@
 scripts/dev/test_planted_error_trial.py
 scripts/dev/test_check_set_frames.py
 scripts/dev/test_trunk_lag.py
+scripts/dev/test_deploy_untrack_backup.py
 scripts/dev/test_ci_split.py
 scripts/dev/test_no_syntax_warnings.py
 scripts/dev/test_preship.py
