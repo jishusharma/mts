@@ -6,6 +6,7 @@ Task times (OURS): Mon-Fri 05:00 and 20:00 UTC, Saturday 05:30 UTC (11:00 IST), 
 No trading process is started. The signed-in user's existing Claude login is used.
 """
 import argparse
+from datetime import datetime
 import json
 import os
 from pathlib import Path
@@ -26,14 +27,24 @@ WEEKDAY_TIMES = ("05:00", "20:00")
 WEEKEND_TIMES = (("Saturday", "05:30"), ("Sunday", "16:30"))
 
 
-def task_xml(python, script, home):
-    args = subprocess.list2cmdline([str(script), "run", "--home", str(home)])
+DAYS = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
 
-    def trigger(day_names, hhmm):
+
+def task_xml(python, script, home, utcoffset=None):
+    """Windows evaluates DaysOfWeek in the host's local day, so a UTC time that crosses local midnight
+    (20:00 UTC = 01:30 IST next day) moves its days one forward; `utcoffset` (default: host) drives that."""
+    args = subprocess.list2cmdline([str(script), "run", "--home", str(home)])
+    if utcoffset is None:
+        utcoffset = datetime.now().astimezone().utcoffset()
+
+    def trigger(utc_days, hhmm):
+        hh, mm = map(int, hhmm.split(":"))
+        shift = (datetime(2026, 11, 2, hh, mm) + utcoffset).date() - datetime(2026, 11, 2).date()
+        names = [DAYS[(DAYS.index(d) + shift.days) % 7] for d in utc_days]
         return ('<CalendarTrigger><StartBoundary>2026-11-02T%s:00Z</StartBoundary><Enabled>true</Enabled>'
                 '<ScheduleByWeek><DaysOfWeek>%s</DaysOfWeek><WeeksInterval>1</WeeksInterval></ScheduleByWeek>'
-                '</CalendarTrigger>' % (hhmm, "".join("<%s/>" % d for d in day_names)))
-    triggers = "".join(trigger(("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"), t) for t in WEEKDAY_TIMES)
+                '</CalendarTrigger>' % (hhmm, "".join("<%s/>" % d for d in names)))
+    triggers = "".join(trigger(DAYS[:5], t) for t in WEEKDAY_TIMES)
     triggers += "".join(trigger((day,), t) for day, t in WEEKEND_TIMES)
     return ('<?xml version="1.0" encoding="UTF-16"?>'
             '<Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">'
