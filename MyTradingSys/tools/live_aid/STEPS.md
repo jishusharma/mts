@@ -31,6 +31,7 @@ Deribit 1D candles open at 08:00Z, so prev-day high/low and weekly open come fro
 | More timeframes | Momentum strip gains 1h (Binance 1h or Deribit resolution 60) and 4h rows. 4h is folded from 1h on UTC 00/04/08/12/16/20Z boundaries because Deribit has no 4h candles; divergence list includes 1h. Maths `foldBars`, test `test_fold_1h_into_4h` (`LIVE_AID_BREAK=itfold`) | BUILT 2026-10-30 |
 
 WaveTrend 10/21/4, 0.015, lines 53/60 = OURS (LazyBear defaults; his chart settings unknown). Parameters: RSI14 Wilder, SMA14 of RSI, BB(20,2) population, ATR14 Wilder, day VWAP hlc3 from 00:00Z = SOURCED (his chart setup). RSI 30/70 flag lines, session names = OURS.
+| News | Glance tile "News, last hour" (QUIET / BUSY / EVENT + count of headlines scoring 7+) and a News panel: last 12 headlines with time, age, score, source, link and word tags. Tree News public REST polled every 15 s while the page is open, no key. Maths `newsTags/newsMerge/newsPulse`, tests `test_news_word_tags`, `test_news_pulse_and_merge` (`LIVE_AID_BREAK=itnews|itpulse`). Research: research/news_feeds_2026-10-30/REPORT.md | BUILT 2026-10-30 |
 
 ## In-trade rules (OURS, written before any data was looked at; sd = +1 long, -1 short)
 
@@ -69,6 +70,17 @@ WaveTrend 10/21/4, 0.015, lines 53/60 = OURS (LazyBear defaults; his chart setti
 | Premium | mark - index on each venue, in points and bp of index (SOURCED fields) |
 | Cross-venue | Bybit last - Deribit last; Bybit is USDT, Deribit USD, so it includes the USDT/USD rate: shown, never read |
 | Feed state | Deribit as the price feed; Bybit live while a ticker message arrived in the last 15 s |
+
+## News rules (OURS unless marked, written before the panel was built; operator "what is missing from the dashboard is also news" 2026-10-30)
+
+| Rule | Value |
+|---|---|
+| Feed | Tree News `news.treeofalpha.com/api/news` (free, CORS open): `time`, `source`, `title`, `url`, `importance` 0-10 all SOURCED |
+| High | importance 7 or more (normal day 5-9 such items, hack day 2026-10-29 had 42; measured 10-26..10-30) |
+| Pulse | high items with time in the last 60 min: 0 QUIET, 1-2 BUSY, 3+ EVENT |
+| Word tags | hack, halt (withdrawals/deposits/trading), etf/SEC, fed/macro, war/sanctions/tariffs, delist; whole words |
+| Feed state | live while a fetch succeeded in the last 60 s; first load 300 items, then 40 every 15 s, keep 400 |
+| Use | context only: says what is happening, never what to do |
 
 ## Backlog (his words first)
 

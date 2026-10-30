@@ -320,7 +320,31 @@
     return out;
   }
 
-  var api = { foldBars: foldBars, FD: FD, fundRead: fundRead, premium: premium, bybitTick: bybitTick, LQ: LQ, liqDeribit: liqDeribit, liqBybit: liqBybit, liqBinance: liqBinance, liqSum: liqSum, CP: CP, coilPierce: coilPierce, IT: IT, divergence: divergence, flow: flow, flowLive: flowLive, squeeze: squeeze, dom: dom, supports: supports, vwapTest: vwapTest,
+  // News (research/news_feeds_2026-10-30). Tree News `importance` 0-10: SOURCED. Mark at 7, 60 min window, EVENT at 3+: OURS
+  // (normal day 5-9 items at 7 or more, hack day 2026-10-29 had 42; measured 10-26..10-30).
+  var NW = { mark: 7, winMs: 3600000, event: 3 };
+  var NT = [['hack', /\b(hack|hacked|hacker|hackers|exploit|exploited|drain|drained|stolen|theft|heist|breach)\b/i],
+    ['halt', /\b(halts?|halted|suspends?|suspended|pauses?|paused)\b.*\b(withdrawals?|deposits?|trading)\b/i],
+    ['etf', /\b(etfs?|sec)\b/i], ['fed', /\b(fed|fomc|powell|cpi|pce|nfp|payrolls?|rate (cut|hike)s?|inflation)\b/i],
+    ['war', /\b(war|missiles?|sanctions?|tariffs?|invasion)\b/i], ['delist', /\b(delist|delists|delisting|delisted)\b/i],
+    ['btc', /\b(bitcoin|btc)\b/i]];
+  function newsTags(title) {
+    var t = String(title || ''), out = [];
+    NT.forEach(function (c) { if (c[1].test(t)) out.push(c[0]); });
+    return out;
+  }
+  function newsMerge(list, incoming, max) {
+    var seen = {}, out = [];
+    (incoming || []).concat(list || []).forEach(function (x) { if (x && x._id && !seen[x._id]) { seen[x._id] = 1; out.push(x); } });
+    out.sort(function (a, b) { return b.time - a.time; });
+    return out.slice(0, max);
+  }
+  function newsPulse(items, now) {
+    var hi = (items || []).filter(function (x) { return +x.importance >= NW.mark && x.time <= now && x.time > now - NW.winMs; });
+    return { n: hi.length, level: hi.length >= NW.event ? 'EVENT' : hi.length ? 'BUSY' : 'QUIET', top: hi.sort(function (a, b) { return b.importance - a.importance; })[0] || null };
+  }
+
+  var api = { NW: NW, newsTags: newsTags, newsMerge: newsMerge, newsPulse: newsPulse, foldBars: foldBars, FD: FD, fundRead: fundRead, premium: premium, bybitTick: bybitTick, LQ: LQ, liqDeribit: liqDeribit, liqBybit: liqBybit, liqBinance: liqBinance, liqSum: liqSum, CP: CP, coilPierce: coilPierce, IT: IT, divergence: divergence, flow: flow, flowLive: flowLive, squeeze: squeeze, dom: dom, supports: supports, vwapTest: vwapTest,
     flagDiv: flagDiv, flagSqueeze: flagSqueeze, flagFlow: flagFlow, flagDom: flagDom, flagVwap: flagVwap, confidence: confidence, rma: rma, sma: sma, rsi: rsi, bollinger: bollinger, atr: atr, dayVwap: dayVwap, utcDays: utcDays, wavetrend: wavetrend,
     inversePnlBtc: inversePnlBtc, closedPnlBtc: closedPnlBtc, columns: columns };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

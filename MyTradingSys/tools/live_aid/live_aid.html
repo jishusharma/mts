@@ -36,12 +36,18 @@ section, .tile { background: var(--panel); border: 1px solid var(--line); border
 .bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; }
 .bar .inputs { display: grid; grid-template-columns: 96px 130px 130px; gap: 8px; }
 .bar .grow { flex: 1; }
-.glance { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(170px, 100%), 1fr)); }
+.glance { display: grid; gap: 12px; grid-template-columns: minmax(min(200px, 100%), 1.3fr) repeat(auto-fit, minmax(min(140px, 100%), 1fr)); }
 .cols { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(460px, 100%), 1fr)); align-items: start; }
 table { width: 100%; border-collapse: collapse; font: 15px var(--mono); font-variant-numeric: tabular-nums; }
 th { font: 600 11px var(--sans); letter-spacing: .06em; text-transform: uppercase; color: var(--dim); text-align: right; padding: 3px 6px; }
 td { text-align: right; padding: 7px 6px; border-top: 1px solid var(--line); white-space: nowrap; }
 th:first-child, td:first-child { text-align: left; padding-left: 0; }
+.nh { white-space: normal; text-align: left; min-width: 260px; }
+.nh a { color: inherit; text-decoration: none; }
+.nh a:hover { text-decoration: underline; }
+#p-news th:last-child { text-align: left; }
+@media (min-width: 1000px) { #p-news { grid-column: span 2; } }
+tr.hi td { font-weight: 600; }
 .chip { font: 600 11px var(--sans); padding: 0 4px; border-radius: 3px; border: 1px solid var(--amber); color: var(--amber); margin-left: 4px; }
 input, select { background: var(--bg); color: var(--fg); border: 1px solid var(--line); border-radius: 4px; font: 15px var(--mono); padding: 5px 7px; width: 100%; min-width: 0; box-sizing: border-box; }
 input:focus-visible, select:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
@@ -111,6 +117,8 @@ details[open] summary { margin-bottom: 8px; }
       <span class="big" id="g-liq">--</span><span class="sub" id="g-liq-sub"></span></div>
     <div class="tile"><span class="lab">Funding, per 8h<span class="src" title="Deribit funding_8h and Bybit fundingRate (8h interval): SOURCED (venue APIs). Positive = longs pay shorts. About-zero under 0.001 %, high at 0.03 % or more: OURS (STEPS.md).">MIXED</span></span>
       <span class="big" id="g-fund">--</span><span class="sub" id="g-fund-sub"></span></div>
+    <div class="tile"><span class="lab">News, last hour<span class="src" title="Tree News importance score 0-10: SOURCED. Count of items scoring 7 or more in the last 60 min; EVENT at 3 or more, BUSY at 1-2: OURS (STEPS.md News rules; normal day 5-9 such items a day, hack day 42).">MIXED</span></span>
+      <span class="big" id="g-news">--</span><span class="sub" id="g-news-sub"></span></div>
     <div class="tile"><span class="lab">Session<span class="src" title="Session names: OURS. Opens: London 08:00, New York 09:30 local.">OURS</span></span>
       <span class="big" id="session">--</span><span class="sub" id="cd-us"></span><span class="sub" id="cd-eu"></span></div>
   </div>
@@ -120,6 +128,11 @@ details[open] summary { margin-bottom: 8px; }
     <section id="p-intrade">
       <div class="hd"><h2>In-trade readings</h2><span class="age" id="age-it">--</span></div>
       <ul id="it" class="it"></ul>
+    </section>
+
+    <section id="p-news">
+      <div class="hd"><h2>News</h2><span class="tag" id="news-feed"></span><span class="age" id="age-news">--</span></div>
+      <div class="scroll"><table><thead><tr><th>Time</th><th>Score</th><th class="x">Source</th><th>Headline</th></tr></thead><tbody id="news"></tbody></table></div>
     </section>
 
     <section id="p-liq">
@@ -164,6 +177,7 @@ details[open] summary { margin-bottom: 8px; }
     <p>Inverse contract: P&amp;L BTC = size x (1/average - 1/mark), negated for a short. Distances = level - price on the candle venue; ATR15 = ATR14 of 15m bars.</p>
     <p>RSI14 Wilder, SMA14 of RSI, BB(20,2) population, ATR14 Wilder, day VWAP hlc3 from 00:00Z: SOURCED (your chart setup). WaveTrend 10/21/4, 0.015, lines 53/60, 200-bar warm-up: OURS (LazyBear defaults; your chart settings not yet known). Flag lines 30/70: OURS. Values include the forming bar. 4h = 1h bars folded on UTC 00/04/08/12/16/20Z (Deribit has no 4h candles).</p>
     <p>Funding: Deribit ticker funding_8h (accrues continuously), Bybit tickers.BTCUSDT fundingRate (paid every 8h at nextFundingTime). Positive = longs pay shorts. Mark - index = each venue's own premium. A year = rate x 3 x 365. All SOURCED (venue APIs); "about zero" under 0.001 % per 8h and "high" at 0.03 % or more (3x the 0.01 % interest baseline): OURS (STEPS.md). Bybit - Deribit last mixes USDT and USD, so it includes the USDT/USD rate.</p>
+    <p>News: Tree News public REST (news.treeofalpha.com/api/news), polled every 15 s while this page is open; each item carries its own time, source and importance score 0-10 (SOURCED). Score 7 or more is marked "high"; the glance counts high items in the last 60 min, EVENT at 3 or more (OURS, research/news_feeds_2026-10-30). Word tags hack / halt / etf / fed / war / delist / btc: OURS. On 2026-10-29 this feed had the Binance hack at 20:39:00 UTC, before the 20:40-20:45 fall. Context only.</p>
     <p>Liquidations: Bybit allLiquidation.BTCUSDT (price = bankruptcy price), Binance btcusdt@forceOrder (one print per second at most), Deribit trades carrying the liquidation flag. Side = the position that was liquidated (SOURCED, venue docs). 1/5/15 min sums since this page connected, "longs" or "shorts" when one side is at least 2x the other, big print = 100,000 USD or more: OURS (STEPS.md).</p>
     <p>In-trade readings are descriptive, no advice. Rules and thresholds = OURS, fixed in STEPS.md before data was looked at. Data: Deribit mainnet public trades, book and open interest; candles from the strip venue. Rule R = 3 or more of the available flags against the side you typed; it names no size.</p>
   </details>
@@ -180,7 +194,7 @@ details[open] summary { margin-bottom: 8px; }
   var S = { dbt: null, dbtMark: null, dbtT: 0, dbtErr: '', bin: null, binT: 0, binErr: '',
             a15: NaN, tf: {}, venue: null, klErr: '', klT: 0, daily: null,
             trades: [], trT: 0, book: null, bookT: 0, oi: null, oiT: 0, oiHist: [], flowErr: '',
-            liq: [], lq: { BYBIT: { t: 0, err: '' }, BINANCE: { t: 0, err: '' } }, byt: { d: null, t: 0 } };
+            liq: [], lq: { BYBIT: { t: 0, err: '' }, BINANCE: { t: 0, err: '' } }, byt: { d: null, t: 0 }, news: { items: [], t: 0, err: '' } };
 
   function fmt(x, d) { return isFinite(x) ? x.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }) : '--'; }
   function sgn(x, d) { return isFinite(x) ? (x > 0 ? '+' : '') + fmt(x, d) : '--'; }
@@ -489,6 +503,7 @@ details[open] summary { margin-bottom: 8px; }
     renderCoil(now);
     renderLiq(now);
     renderFund(now);
+    renderNews(now);
     var a15 = S.a15;
 
     // 3. strip
@@ -605,6 +620,34 @@ details[open] summary { margin-bottom: 8px; }
     $('g-fund-sub').innerHTML = (fD ? 'Deribit' : fB ? 'Bybit' : 'no funding feed reachable') + (fD && fB ? '; Bybit ' + pct(fB.pct8h, 4) + ', next ' + nextB : '');
   }
 
+  // ---------- news ----------
+  var NEWS_URL = 'https://news.treeofalpha.com/api/news?limit=';
+  function loadNews() {
+    return fetch(NEWS_URL + (S.news.t ? 40 : 300)).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function (a) { if (!Array.isArray(a)) throw new Error('not a list'); S.news.items = A.newsMerge(S.news.items, a, 400); S.news.t = Date.now(); S.news.err = ''; })
+      .catch(function (e) { S.news.err = 'Tree News: ' + e.message; });
+  }
+  function ago(ms) { var m = Math.floor(ms / 60000); return m < 1 ? 'now' : m < 60 ? m + 'm' : Math.floor(m / 60) + 'h' + String(m % 60).padStart(2, '0'); }
+  function headline(x) { return String(x.title || '').split('\n')[0].slice(0, 220); }
+  function renderNews(now) {
+    var live = !!S.news.t && now - S.news.t <= 60000;
+    $('age-news').textContent = S.news.t ? Math.round((now - S.news.t) / 1000) + 's' : '--';
+    $('news-feed').textContent = 'Tree News ' + (live ? 'live' : 'down');
+    if (!live) {
+      $('news').innerHTML = '<tr><td colspan="4"><span title="' + esc(S.news.err || 'not connected yet') + '">' + NID + '</span></td></tr>';
+      $('g-news').innerHTML = NID; $('g-news-sub').textContent = S.news.err || 'connecting'; return;
+    }
+    $('news').innerHTML = S.news.items.slice(0, 12).map(function (x) {
+      var hi = +x.importance >= A.NW.mark, t = esc(headline(x)), u = String(x.url || '');
+      var tags = A.newsTags(headline(x)).filter(function (g) { return g !== 'btc'; }).map(function (g) { return '<span class="chip">' + g + '</span>'; }).join('');
+      return '<tr' + (hi ? ' class="hi"' : '') + '><td>' + new Date(x.time).toISOString().slice(11, 19) + ' <span class="dim">' + ago(now - x.time) + '</span></td><td>' + (isFinite(+x.importance) ? fmt(+x.importance, 1) : '--') +
+        (hi ? '<span class="chip">high</span>' : '') + '</td><td class="x">' + esc(x.source || '') + '</td><td class="nh">' + (/^https:\/\//.test(u) ? '<a href="' + esc(u) + '" target="_blank" rel="noopener noreferrer">' + t + '</a>' : t) + tags + '</td></tr>';
+    }).join('');
+    var p = A.newsPulse(S.news.items, now);
+    $('g-news').innerHTML = p.level + ' <span class="tag" style="font-size:16px">' + p.n + ' high</span>';
+    $('g-news-sub').textContent = p.top ? fmt(+p.top.importance, 1) + ' ' + headline(p.top).slice(0, 90) : 'no headline scored 7+ in 60 min';
+  }
+
   // ---------- glance tiles: VWAP distance, nearest level each side (built-in + typed) ----------
   function renderGlance(L, px, vw) {
     if (isFinite(px) && isFinite(vw)) { var dv = px - vw; $('g-vwap').innerHTML = '<span class="' + cls(dv) + '">' + sgn(dv, 1) + '</span>'; $('g-vwap-sub').textContent = 'VWAP ' + fmt(vw, 1) + (vwTest ? ', ' + vwTest : ''); }
@@ -719,6 +762,7 @@ details[open] summary { margin-bottom: 8px; }
   setInterval(function () { loadAll(false); }, 5000);
   setInterval(loadDaily, 300000);
   setInterval(render, 1000);
+  loadNews(); setInterval(loadNews, 15000);
   render();
 })();
 </script>

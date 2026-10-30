@@ -238,7 +238,7 @@ def test_pnl_js(js):
 
 
 # ---------- in-trade panel (card live-aid-in-trade-panel): fixed OURS rules, hand-computed expectations ----------
-# Extra LIVE_AID_BREAK modes: itdiv itflow itsqueeze itdom itsupport itvwap itconf itlive itliqside itliqdb itliqsum itfund itbybit itfold (each must fail one test below).
+# Extra LIVE_AID_BREAK modes: itdiv itflow itsqueeze itdom itsupport itvwap itconf itlive itliqside itliqdb itliqsum itfund itbybit itfold itnews itpulse (each must fail one test below).
 IT_RUNNER = r"""
 const A = require(process.argv[process.argv.length - 1]);
 const brk = process.env.LIVE_AID_BREAK || '';
@@ -294,7 +294,15 @@ if (brk === 'itbybit') bt = {b: '3'};
 const H = 3600000, b0 = 4 * H * 100;
 let fo = A.foldBars([[b0 - H, '9', '9', '9', '9', '1'], [b0, '10', '12', '9', '11', '2'], [b0 + H, '11', '15', '10', '14', '3'], [b0 + 3 * H, '14', '14', '8', '13', '4'], [b0 + 4 * H, '13', '13', '12', '12.5', '5']], 4 * H);
 if (brk === 'itfold') fo[1][3] = 9;
-process.stdout.write(JSON.stringify({dv, fl, sq, dm, sup, vw, fg, cf, lv2, lqv, lqs, fd, bt: [bt, bt2], fo}));
+const M = 60000;
+let nt = ['Tree News: POTENTIAL BINANCE HACK ONGOING - ONCHAIN', 'Binance suspends all deposits and withdrawals', 'SEC approves spot ETF options', 'FOMC holds rates; Powell speaks at 18:30', 'Bitcoin tops $80,000', 'Moonbirds pairs are now live', 'Hackathon winners announced'].map(A.newsTags);
+if (brk === 'itnews') nt[0] = [];
+const nws = [{_id: 'a', time: now - 10 * M, importance: 7.4}, {_id: 'b', time: now - 20 * M, importance: 8}, {_id: 'c', time: now - 30 * M, importance: 7},
+             {_id: 'd', time: now - 120 * M, importance: 9}, {_id: 'e', time: now - 5000, importance: 6.9}, {_id: 'f', time: now + 1000, importance: 9}];
+let np = [A.newsPulse(nws, now), A.newsPulse(nws.filter(x => x._id !== 'c'), now), A.newsPulse([], now),
+          A.newsMerge([{_id: 'a', time: 1}, {_id: 'b', time: 3}], [{_id: 'b', time: 3}, {_id: 'c', time: 2}], 2).map(x => x._id)];
+if (brk === 'itpulse') np[0].level = 'BUSY';
+process.stdout.write(JSON.stringify({dv, fl, sq, dm, sup, vw, fg, cf, lv2, lqv, lqs, fd, bt: [bt, bt2], fo, nt, np}));
 """
 
 
@@ -435,3 +443,19 @@ def test_fold_1h_into_4h(it):
     H = 3600000
     b0 = 4 * H * 100
     assert it["fo"] == [[b0 - 4 * H, 9, 9, 9, 9, 1], [b0, 10, 15, 8, 13, 9], [b0 + 4 * H, 13, 13, 12, 12.5, 5]]
+
+
+def test_news_word_tags(it):
+    # Word classes (OURS, research/news_feeds_2026-10-30 N6), checked in order hack, halt, etf, fed, war, delist, btc; whole words only
+    assert it["nt"] == [["hack"], ["halt"], ["etf"], ["fed"], ["btc"], [], []]
+
+
+def test_news_pulse_and_merge(it):
+    # Pulse = Tree importance >= 7 (SOURCED score, OURS mark) with now - 60 min < time <= now: a 7.4, b 8, c 7.0 count; d is 2 h old,
+    # e scores 6.9, f is in the future. 3 or more = EVENT, 1-2 = BUSY, 0 = QUIET (OURS; normal day 5-9 a day measured 10-26..10-28)
+    p = it["np"]
+    assert p[0]["n"] == 3 and p[0]["level"] == "EVENT"
+    assert p[1]["n"] == 2 and p[1]["level"] == "BUSY"
+    assert p[2]["n"] == 0 and p[2]["level"] == "QUIET"
+    # merge keeps one copy per _id, newest first, capped
+    assert p[3] == ["b", "c"]
