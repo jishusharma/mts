@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T09:55:17Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -32,6 +33,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MyTradingSys/backtest/test_no_own_costs.py + cost_allowlist.txt (65 frozen offenders); fee",
+      "ref": "ea9b66dc8",
+      "utc": "2026-10-30T09:55:17Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "gate: register test_aibridge_version in run_all_tests",
@@ -50,7 +57,12 @@
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T06_cost_fill_realism.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/backtest/test_no_own_costs.py + cost_allowlist.txt (65 frozen offenders); fees.py regimes A-D",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/fees.py",
     "MyTradingSys/backtest/test_no_own_costs.py",
@@ -70,13 +82,14 @@
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T06_cost_fill_realism.md (T06-F2)",
     "MyTradingSys/backtest/fees.py:3"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read T06-F2 and scripts/T06/costs.csv; list the files that define their own constant (imports_fees = 0).",
     "Write cost_allowlist.txt with those paths; write the test: scan *.py under backtest/ and research/ for fee/slippage literal assignments, fail on any file outside the allowlist.",
     "Plant a temp file in a tmp dir variant of the scan to prove it fails; document regimes A-D in fees.py.",
     "Register the test in run_all_tests.py / run_extra_tests.py if the discovery test requires it."
   ],
+  "taken": "2026-10-30T09:55:17Z",
   "tests": "MyTradingSys/backtest/test_no_own_costs.py: planted file 'FEE_RT = 0.0012' outside the allowlist fails; the same line inside an allowlisted path passes; fails on pre-change code (file absent).",
   "title": "Fix T06-F2: 57 of 70 cost-setting files define their own fee/slip constant; one costs.py imported by every study plus a test that greps for literals",
   "weight": "IMPORTANT",
