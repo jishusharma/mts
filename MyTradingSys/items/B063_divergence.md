@@ -72,3 +72,7 @@ Files that would change on the RESTORE path (blocked: needs a sourced Tom defini
 - MarketDataSnapshot.java (cvd emitter), data_schema_v1.2.0.md, a conditions/*.md rule, math_object_builder.py,
   Compute-Verdict in start-trading-day.ps1 and backtest/verdict.py (critical files, four-step proof), plus tests.
 Next step if the operator agrees: one small doc-only task for the six DEPRECATE files above.
+
+### 2026-10-30 - builder, card ask-p0-06-deprecate-divergence-schema
+
+Applied the 2026-10-04 DEPRECATE decision to the six doc/data files (schema, data_state_document, sample_btc_snapshot.json, MTS_DICTIONARY, compiled_output_audit, BUGS row). No Java/Python code changed. B063 CLOSED.

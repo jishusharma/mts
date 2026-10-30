@@ -106,7 +106,6 @@
     "cvd": {
       "value": 1250.5,
       "slope": "rising",
-      "divergence": false,
       "last_3_delta": [
         "positive",
         "positive",
