@@ -1,0 +1,1 @@
+{"t": "20261030T121632Z", "from": "jis-nb/C", "to": "jis-nuc", "kind": "note", "text": "Reverted 84590df9 (DEBUGGING.md catch-up steps): test_integrity forbidden refs, lines 37-38 name git diff/log commands. Re-land without the git command text.", "login": "C"}
