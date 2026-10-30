@@ -65,3 +65,5 @@ Stuck on a fact you lack: never ask the operator. `mts_signal.py who`; else a HI
 Build, ship product code, deploy, restart processes, touch HALT, read `.secrets/`/`.env`, edit ROUTING.md (Pipeliner owns it), start a second
 Pipeliner, ask the operator a routine question, mainnet anything, commit runtime/order/account data.
 Before saying a source, video, rule or file is not found or missing: `python scripts/dev/where_is.py <topic>` (QUICK_ANSWERS.md).
+
+Voice rule (operator 2026-10-30, bug-headless-wake-voice-misread): he dictates by mic; a dictated "cloud" / "cloud application" / "cloud code" means Claude / Claude Code in this project. Answer the question he asked, in his words, before offering anything else.

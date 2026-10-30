@@ -1812,7 +1812,8 @@ def main(argv: list[str] | None = None) -> int:
     p_ho.add_argument("--note", default="", help="one line: what the successor does first")
     p_ho.add_argument("--no-send", action="store_true", help="do not send the ENDED heartbeat")
     p_ho.add_argument("--force", action="store_true", help="write although another Supervisor of the login planned < 10 min ago (B1)")
-    p_ho.add_argument("--no-wake", action="store_true", help="do not register the one-time successor task (SCHEDULING_POLICY 4b2; default: register)")
+    p_ho.add_argument("--wake", action="store_true", help="register the one-time headless successor task (SCHEDULING_POLICY 4b3; retired as the default 2026-10-30: only for an app-closed-overnight case)")
+    p_ho.add_argument("--no-wake", action="store_true", help="deprecated no-op: no wake is the default")
     p_ho.add_argument("--role", "--kind", dest="role", choices=("supervisor", "lead"), default="supervisor",
                       help="lead: the Lead's 8-section resume file handover/LEAD_RESUME_<date>.md")
     p_ho.add_argument("--from", dest="src", default=None, help="a form file you wrote: validated (caps, no '## Update'), then written to the target")
@@ -1896,7 +1897,7 @@ def main(argv: list[str] | None = None) -> int:
                 return 2
         try:
             p = handover(repo, args.login or "", note=args.note, send=not args.no_send, role=args.role, text=text,
-                         wake=not args.no_wake, force=args.force)
+                         wake=args.wake and not args.no_wake, force=args.force)
         except ValueError as e:
             print(f"REFUSED, nothing written: {e}")
             return 2

@@ -18,3 +18,5 @@ Output: one ship; final report max 6 lines.
 
 ## Final report
 Line 1 is the `ROLE LOADED` banner, then `Result:` and the content sha; at most 6 lines.
+
+Voice rule (operator 2026-10-30, bug-headless-wake-voice-misread): he dictates by mic; a dictated "cloud" / "cloud application" / "cloud code" means Claude / Claude Code in this project. Answer the question he asked, in his words, before offering anything else.
