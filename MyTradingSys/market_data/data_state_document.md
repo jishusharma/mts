@@ -17,7 +17,7 @@
 | **4H VP** | poc, vah, val, shape | Current only | MEDIUM (1m OHLCV approx) | YES |
 | **Post-Funding VP** | poc, vah, val, shape | Current only | MEDIUM (1m OHLCV approx) | YES |
 | **VWAP** | price, slope, slope_pct, bands (+1s/+2s/-1s/-2s) | Current only | MEDIUM (1m OHLCV approx) | YES |
-| **CVD** | value, slope, divergence, last_3_delta, cvd_recent (1h/4h) | Current + 1h/4h slopes | MEDIUM (takerBuy proxy) | YES |
+| **CVD** | value, slope, last_3_delta, cvd_recent (1h/4h) (divergence deprecated, B063) | Current + 1h/4h slopes | MEDIUM (takerBuy proxy) | YES |
 | **Trade Flow** | net_delta | Current only | HIGH (computed from delta) | NO |
 | **Structure** | swing_high, swing_low, stale (1h/15m/5m) | Current only | HIGH (computed from OHLC) | NO |
 | **FVG** | unfilled_count, nearest_unfilled (type/top/bottom) | Current only | LOW (screener heuristic) | YES |
@@ -148,7 +148,7 @@ Given current DSA gaps, the screenshot MUST provide:
 |------------|--------------------|----------------|
 | CT at daily zone | 15m (entry) + 1H (context) | Rejection wick at zone, absorption, delta flip |
 | CT at 4H zone | 5m (entry) + 15m (context) | Rejection wick at zone, CVD slope, delta direction |
-| TC pullback | 15m (entry) + 1H (context) | Pullback depth, CVD divergence, VWAP band test |
+| TC pullback | 15m (entry) + 1H (context) | Pullback depth, VWAP band test (CVD divergence deprecated, B063) |
 | BO | 5m (entry) + 15m (context) | Volume spike, acceptance beyond level, OI rise |
 | Scalp | 3m/5m (entry) + 15m (context) | Quick rejection, VWAP band, speed confirmation |
 
