@@ -151,3 +151,4 @@ scripts/dev/test_tom_noise_units.py
 scripts/dev/test_coord_overhead.py
 MyTradingSys/backtest/layers/pizzino/test_pizzino_levels.py
 scripts/dev/test_check_sourced_params.py
+scripts/dev/test_fix_verifier.py
