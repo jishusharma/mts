@@ -12,7 +12,7 @@ Method: take `mts_signal.py budget --login <A|B|C> --five <%> --week <%> --reset
 |---|---|---|---|
 | a | Remote Control default for new sessions (OFF since 2026-10-30 ~08:36Z) | `get_settings` / session list: count sessions with remote control on | Keep OFF; turn on per session only when needed |
 | b | prompt_suggestions setting (ON; each suggestion = one extra model request) | `get_settings`; count suggestion calls per session | Turn OFF unless the operator wants them |
-| c | Runaway background-task output files and loops (e.g. 745 MB `b4nh1sdle.output` in the opus-picture-review-5bd04c worktree temp tasks folder, from a `git log --grep` Bash loop) | List `*.output` under worktree temp task dirs by size; check for loops in session transcripts | Stop the loop; delete the output; cap output size |
+| c | Runaway background-task output files and loops (e.g. a ~745 MB background-task output file, from a repeated history-search Bash loop) | List `*.output` under worktree temp task dirs by size; check for loops in session transcripts | Stop the loop; delete the output; cap output size |
 | d | Idle sessions holding background work or large context | `list_sessions`; flag idle sessions with background shells or big context | Archive done sessions; stop idle background work |
 | e | Opus/Fable where Sonnet/Haiku would do | Count Opus/Fable sessions per week vs task type (WORKERS.md) | Move routine work to Sonnet or Haiku |
 | f | Agent fan-out token use per task | Count Agent calls per task card; tokens from `get_usage` before/after | Cap waves at 4; one Agent per real need |
