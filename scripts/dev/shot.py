@@ -74,8 +74,23 @@ def main_root():
         common = ""
         rel = git("rev-parse", "--git-common-dir").strip()
         common = str((REPO / rel).resolve()) if rel else ""
+    if not common:  # git failed (2026-10-30 hook run): a worktree's .git file still names the shared git dir
+        common = worktree_common_dir(REPO / ".git")
     p = Path(common) if common else REPO / ".git"
     return p.parent if p.name == ".git" else REPO
+
+
+def worktree_common_dir(dotgit):
+    """'gitdir: <main>/.git/worktrees/<name>' + its commondir file -> '<main>/.git'; '' when not a linked worktree."""
+    try:
+        line = Path(dotgit).read_text(encoding="utf-8").strip()
+        if not line.startswith("gitdir:"):
+            return ""
+        gd = Path(line[len("gitdir:"):].strip())
+        rel = (gd / "commondir").read_text(encoding="utf-8").strip()
+        return str((gd / rel).resolve())
+    except OSError:
+        return ""
 
 
 def store_dir():

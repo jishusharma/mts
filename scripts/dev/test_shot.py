@@ -555,6 +555,19 @@ class MainRootOldGit(unittest.TestCase):
         with mock.patch.object(shot, "git", fake):
             self.assertEqual(shot.main_root(), Path("C:/x/MTS"))
 
+    def test_worktree_store_is_the_main_one_when_git_fails(self):
+        """2026-10-30: a hook run in a worktree where git returned nothing landed shots in the worktree's own store
+        and re-announced classified shots as new; the .git file still names the shared git dir."""
+        with tempfile.TemporaryDirectory() as td:
+            main, wt = Path(td) / "MTS", Path(td) / "wt"
+            gd = main / ".git" / "worktrees" / "wt"
+            gd.mkdir(parents=True)
+            (gd / "commondir").write_text("../..\n", encoding="utf-8")
+            wt.mkdir()
+            (wt / ".git").write_text(f"gitdir: {gd.as_posix()}\n", encoding="utf-8")
+            with mock.patch.object(shot, "git", lambda *a, cwd=None: ""), mock.patch.object(shot, "REPO", wt):
+                self.assertEqual(shot.main_root().resolve(), main.resolve())
+
 
 class HookStartupTest(unittest.TestCase):
     def test_hook_path_does_not_import_heavy_modules(self):
