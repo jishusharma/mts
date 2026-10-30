@@ -10,7 +10,7 @@ never stamps REVIEWED, never touches the live tree. A Claude session reviews the
 Flash models only (operator 2026-10-18); the argon option was added by the operator via the gemini-lane-fix task.
 """
 from __future__ import annotations
-import os, random, re, socket, subprocess, sys, time
+import json, os, random, re, socket, subprocess, sys, time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -94,6 +94,26 @@ def claim_with_retry(wt, card: str, tries: int = 6, sleep=time.sleep):
     return 'fail', f'after {tries} tries: {reason}'
 
 
+def card_gate(card: str) -> tuple[bool, str]:
+    """(ok, why): run only a card that is state ready on origin/fast-track and not tagged SHIPPED/STALE. Unreadable = not ok (fails closed)."""
+    r = git('show', f'origin/fast-track:MyTradingSys/system/tasks/{card}.json', timeout=60)
+    try:
+        c = json.loads(r.stdout)
+        if r.returncode or not isinstance(c, dict):
+            raise ValueError(r.stderr.strip()[:120] or 'not a card')
+    except ValueError as e:
+        return False, f'card unreadable on origin/fast-track ({e})'
+    tag = ''
+    try:
+        import tasks
+        tag = tasks.stop_tag(c, REPO)
+    except BaseException as e:   # SystemExit included: a tag we cannot compute must not start a job
+        return False, f'tag unreadable ({type(e).__name__})'
+    if c.get('state') != 'ready' or tag:
+        return False, f'state {c.get("state")}/{tag or "READY"}'
+    return True, ''
+
+
 class setup_lock:
     """Exclusive lock file (O_CREAT|O_EXCL poll) so parallel jobs never run git setup at once (NUC 2026-10-24: 2 of 7 jobs
     died on the .git/config lock). Waits up to `timeout` s (OURS 60); a lock older than `stale` s (OURS 120) is broken.
@@ -150,6 +170,10 @@ def run_job(card: str, effort: str, model: str = 'flash') -> None:
     root().mkdir(parents=True, exist_ok=True)
     git('fetch', '-q', 'origin', timeout=60)
     import sync
+    ok, why = card_gate(card)
+    if not ok:
+        log.write_text(f'SKIP {card}: {why}'+chr(10), encoding='utf-8', newline=chr(10))
+        return
     held = claim_holder(card, sync.open_claims(REPO))
     if held:
         log.write_text(f'SKIP {card}: already claimed by {held}\n', encoding='utf-8', newline='\n')

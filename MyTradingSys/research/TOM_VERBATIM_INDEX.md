@@ -282,4 +282,23 @@
 | TOM-268 | ujedEcmvBMk | MIDDLE | "Whenever the last volumes before such a price range are not traded, caution is advised, which prompted me to first reduce my position and say, well, what you have, you have." | gap_rules.md |
 | TOM-269 | 3JqMyzE8jIQ | END | "There was never any trading here. So, is this price area interesting for us or is it just boring because there probably won't be any support there?" | gap_rules.md |
 | TOM-270 | 3JqMyzE8jIQ | END | "And now look over here and you'll see I'm talking exactly about this price area where in this picture the market during cash hours has no substantial support zone at all. It m..." | gap_rules.md |
+| TOM-271 | BB3c8visnkI | BEGIN | "Where a lot of liquidity was traded, supply and demand are usually in balance." | TOM_LAYER_V2_SPEC.md |
+| TOM-272 | BB3c8visnkI | BEGIN | "These price ranges are called low volume nodes." | TOM_LAYER_V2_SPEC.md |
+| TOM-273 | BB3c8visnkI | BEGIN | "this is often the dividing line between the top and the bottom." | TOM_LAYER_V2_SPEC.md |
+| TOM-274 | BB3c8visnkI | BEGIN | "This means that the market participants have found a new price range up here that they accept." | TOM_LAYER_V2_SPEC.md |
+| TOM-275 | BB3c8visnkI | MIDDLE | "the market always likes to return to high liquidity to see if it can find trading participants there again." | TOM_LAYER_V2_SPEC.md |
+| TOM-276 | BB3c8visnkI | MIDDLE | "what's much more crucial for us is how the market behaves in these price ranges where very little liquidity occurred" | TOM_LAYER_V2_SPEC.md |
+| TOM-277 | BB3c8visnkI | MIDDLE | "within this zone here the market has traded 70% of the total liquidity for this week." | TOM_LAYER_V2_SPEC.md |
+| TOM-278 | BB3c8visnkI | MIDDLE | "depending on the profile shape, but especially 60 to 70% of the time, we have so-called balance equilibrium profiles." | TOM_LAYER_V2_SPEC.md |
+| TOM-279 | BB3c8visnkI | MIDDLE | "where I can find a counter trade. at the top for example to get back into the area and at the bottom where I can find a long trade for example to get back into the area a..." | TOM_LAYER_V2_SPEC.md |
+| TOM-280 | BB3c8visnkI | MIDDLE | "But unfortunately that is only the case about 30% of the time and the other 70% he will try and strive to run back here." | TOM_LAYER_V2_SPEC.md |
+| TOM-281 | BB3c8visnkI | MIDDLE | "these profiles only show you the period where the so-called cash session is" | TOM_LAYER_V2_SPEC.md |
+| TOM-282 | BB3c8visnkI | END | "it often ends with an excessive downward movement." | TOM_LAYER_V2_SPEC.md |
+| TOM-283 | BB3c8visnkI | END | "Where is the new equilibrium now? And if you see for example, oh the equilibrium is up here." | TOM_LAYER_V2_SPEC.md |
+| TOM-284 | BB3c8visnkI | END | "A way to recognize that something has changed here." | TOM_LAYER_V2_SPEC.md |
+| TOM-285 | BB3c8visnkI | END | "Now, many people say yes, then the gap will be closed. No, that doesn't have to be the case at all." | TOM_LAYER_V2_SPEC.md |
+| TOM-286 | BB3c8visnkI | END | "gap trading with the assumption that this always works is just very very problematic." | TOM_LAYER_V2_SPEC.md |
+| TOM-287 | BB3c8visnkI | END | "the market tested exactly there and moved back up and found its equilibrium." | TOM_LAYER_V2_SPEC.md |
+| TOM-288 | BB3c8visnkI | END | "with the result of acceptance of higher prices after the test even though the close was down here" | TOM_LAYER_V2_SPEC.md |
+| TOM-289 | BB3c8visnkI | END | "the volume profile gives you the information where is equilibrium, where is disequilibrium." | TOM_LAYER_V2_SPEC.md |
 # END
