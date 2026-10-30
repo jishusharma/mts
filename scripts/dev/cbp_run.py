@@ -150,7 +150,8 @@ def llm_extract(video, body, run=subprocess.run):
     """One `claude -p` pass per video; returns the parsed JSON object or raises ValueError."""
     vid, analyst, published, title, _ = video[:5]
     prompt = PROMPT % {"analyst": analyst, "published": published, "title": title.replace('"', "'")}
-    r = run(["claude", "-p", "--model", MODEL, "--tools", "", "--no-session-persistence"],
+    # --setting-sources "": project hooks need a session's CLAUDE_PROJECT_DIR and block `claude -p` run from a task
+    r = run(["claude", "-p", "--model", MODEL, "--tools", "", "--no-session-persistence", "--setting-sources", ""],
             input=prompt + body, capture_output=True, text=True, encoding="utf-8", timeout=600)
     r.check_returncode()
     m = re.search(r"\{.*\}", r.stdout or "", re.S)

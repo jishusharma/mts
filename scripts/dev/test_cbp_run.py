@@ -14,6 +14,7 @@ class Prompt(unittest.TestCase):
 
         def fake_run(cmd, input, **kw):
             sent["prompt"] = input
+            sent["cmd"] = cmd
 
             class R:
                 stdout, stderr = '{"bias": "NEUTRAL", "symbols": ["BTC"], "quotes": [], "trades": [], "pointers": []}', ""
@@ -26,6 +27,8 @@ class Prompt(unittest.TestCase):
         self.assertEqual(got["bias"], "NEUTRAL")
         for s in ("Analyst: Michael.", "Published: 2026-10-29.", "Title: \"BTC 'break' ahead\".", "TRANSCRIPT"):
             self.assertIn(s, sent["prompt"])
+        cmd = sent["cmd"]
+        self.assertEqual(cmd[cmd.index("--setting-sources") + 1], "")  # no project hooks in a scheduled run
 
 
 if __name__ == "__main__":
