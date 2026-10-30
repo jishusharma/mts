@@ -134,8 +134,9 @@ details[open] summary { margin-bottom: 8px; }
     </section>
 
     <section id="p-levels">
-      <div class="hd"><h2>Levels</h2><span class="tag" id="lvl-venue"></span><span class="age" id="age-lvl">--</span></div>
+      <div class="hd"><h2>Levels</h2><span class="tag" id="lvl-venue"></span><label class="tog" title="Pizzino layer: 1d and 4h 50% line and degree-3 swing levels join this list; table below. Degrees 1/2/3, 50% = (top + bottom) / 2: SOURCED. Fractal n = d, W 50, N 2, tol 0.5%, R 20, lower-frame nesting: OURS."><input type="checkbox" id="pz-tog"> Pizzino</label><span class="age" id="age-lvl">--</span></div>
       <div class="scroll"><table><thead><tr><th>Level</th><th>Price</th><th>Pts</th><th class="x">ATR15</th><th></th></tr></thead><tbody id="levels"></tbody></table></div>
+      <div class="scroll" id="pz-box"><table><thead><tr><th>Pizzino</th><th title="Swing state per degree 1/2/3 (Gann Swing Pro stand-in, OURS)">1/2/3-bar</th><th>Sum</th><th>50% line</th><th>Half</th><th title="Jason: bars of HH+HL (LH+LL) since the last significant degree-3 turn">Count</th><th>50% break / retest</th><th title="OURS: 4h under 1d, 1h/15m/5m/1m under 4h">Under parent</th></tr></thead><tbody id="pz"></tbody></table><p class="tag" id="pz-note">1d from Binance 1d (00:00Z) or Deribit 1D (08:00Z); 4h folded from 1h; closed bars only. Same maths as backtest/layers/pizzino/pizzino_levels.py. 4h and lower = OURS (the traders use D, 3D, W). Observation only.</p></div>
       <details><summary>Add your own level</summary>
         <div class="form-rung">
           <input id="lvl-name" type="text" placeholder="label" aria-label="Level label">
@@ -348,6 +349,29 @@ details[open] summary { margin-bottom: 8px; }
     return p.then(function (rows) { S.daily = { venue: S.venue, rows: A.utcDays(rows) }; S.dailyErr = ''; }, function (e) { S.dailyErr = 'daily levels: ' + e.message; });
   }
 
+  // Pizzino daily bars: Binance 1d opens 00:00Z; Deribit 1D opens 08:00Z (named in the note).
+  function loadPzDaily() {
+    var bin = 'https://fapi.binance.com/fapi/v1/klines?symbol=BTCUSDT&interval=1d&limit=400';
+    var p = S.venue === 'BINANCE' ? getJson(bin) : (function () {
+      var end = Date.now(), start = end - 400 * 86400000;
+      return dRpc('public/get_tradingview_chart_data', { instrument_name: 'BTC-PERPETUAL', resolution: '1D', start_timestamp: start, end_timestamp: end })
+        .then(function (j) { var r = j.result; return r.ticks.map(function (t, i) { return [t, r.open[i], r.high[i], r.low[i], r.close[i], r.volume[i]]; }); });
+    })();
+    return p.then(function (rows) { S.pzDaily = { venue: S.venue, rows: rows }; S.pzErr = ''; }, function (e) { S.pzErr = 'Pizzino daily: ' + e.message; });
+  }
+
+  // Closed bars only (the forming bar would move pivots); returns Pizzino frames, parents first.
+  function pzFrames(now) {
+    var src = { '1d': S.pzDaily && S.pzDaily.rows, '4h': S.tf['4h'], '1h': S.tf['1h'], '15m': S.tf['15m'], '5m': S.tf['5m'], '1m': S.tf['1m'] };
+    var ms = { '1d': 86400000, '4h': 14400000, '1h': 3600000, '15m': 900000, '5m': 300000, '1m': 60000 }, done = {}, out = [];
+    ['1d', '4h', '1h', '15m', '5m', '1m'].forEach(function (k) {
+      var r = src[k]; if (!r || r.length < 10) return;
+      if (now < +r[r.length - 1][0] + ms[k]) r = r.slice(0, -1);
+      done[k] = A.pizzino(r, k, done[A.PZ.parents[k]] || null); out.push(done[k]);
+    });
+    return out;
+  }
+
   function patchForming(px) {
     TFS.forEach(function (tf) {
       var rows = S.tf[tf.k]; if (!rows || !rows.length) return;
@@ -537,6 +561,23 @@ details[open] summary { margin-bottom: 8px; }
       S.daily.rows.forEach(function (r) { if (+r[0] === dsy) { pdh = +r[2]; pdl = +r[3]; } if (+r[0] === mon) wo = +r[1]; });
     }
     L.push({ n: 'Prev day high', p: pdh }); L.push({ n: 'Prev day low', p: pdl }); L.push({ n: 'Weekly open (Mon 00:00Z)', p: wo });
+    var pzOn = $('pz-tog').checked, pzf = pzOn ? pzFrames(now) : [];
+    $('pz-box').style.display = pzOn ? '' : 'none';
+    pzf.forEach(function (f) {
+      if (f.tf !== '1d' && f.tf !== '4h') return;
+      f.levels.forEach(function (l) { if (l.kind === 'MID' || l.d === 3) L.push({ n: l.n, p: l.p }); });
+    });
+    if (pzOn) {
+      var st = function (v) { return v > 0 ? 'up' : v < 0 ? 'down' : 'flat'; };
+      $('pz').innerHTML = pzf.map(function (f) {
+        var c = f.count, rt = f.retest;
+        return '<tr><td>' + f.tf + '</td><td>' + f.degrees.map(function (d) { return st(d.state); }).join(' / ') + '</td><td class="' + cls(f.conf) + '">' + sgn(f.conf, 0) +
+          (Math.abs(f.conf) === 3 ? '<span class="chip">confluence</span>' : '') + '</td><td>' + (f.mid === null ? NID : fmt(f.mid, 1)) + '</td><td>' + (f.half || NID) + '</td><td>' +
+          (c ? sgn(c.count || 0, 0) + ' from ' + (c.from === 'L' ? 'low ' : 'high ') + fmt(c.price, 1) + (c.three_bar ? '<span class="chip">3-bar</span>' : '') : NID) + '</td><td>' +
+          (rt ? (rt.dir ? rt.dir + ', ' : '') + rt.status : NID) + '</td><td>' + (f.parent ? f.parent.tf + ' ' + f.parent.half + (f.aligned ? ', aligned' : ', not aligned') : '-') + '</td></tr>';
+      }).join('') + (S.pzErr ? '<tr><td colspan="8" class="err">' + esc(S.pzErr) + '</td></tr>' : '') +
+        (!S.pzDaily && !S.pzErr ? '<tr><td colspan="8">1d bars loading</td></tr>' : '');
+    }
     var html = L.map(function (l) {
       return '<tr><td>' + esc(l.n) + '</td><td>' + (isFinite(l.p) ? fmt(l.p, 1) : NID) + '</td>' + (isFinite(l.p) ? distCells(l.p, px, a15) : '<td></td><td class="x"></td>') + '<td></td></tr>';
     }).join('');
@@ -694,6 +735,12 @@ details[open] summary { margin-bottom: 8px; }
     try { localStorage.setItem(UIKEY, $('more-tog').checked ? '1' : '0'); } catch (e) {}
   });
   $('pos-side').value = store.side; $('pos-size').value = store.size; $('pos-entry').value = store.entry;
+  var PZKEY = 'liveaid.ui.pizzino';
+  try { $('pz-tog').checked = localStorage.getItem(PZKEY) !== '0'; } catch (e) { $('pz-tog').checked = true; }
+  $('pz-tog').addEventListener('change', function () {
+    try { localStorage.setItem(PZKEY, $('pz-tog').checked ? '1' : '0'); } catch (e) {}
+    render();
+  });
   ['pos-side', 'pos-size', 'pos-entry'].forEach(function (id) {
     $(id).addEventListener('input', function () { store.side = $('pos-side').value; store.size = $('pos-size').value; store.entry = $('pos-entry').value; save(); render(); });
   });
@@ -715,9 +762,10 @@ details[open] summary { margin-bottom: 8px; }
 
   // ---------- start ----------
   deribitWs(); binanceWs(); bybitLiqWs(); binanceLiqWs();
-  loadAll(true).then(loadDaily);
+  loadAll(true).then(loadDaily).then(loadPzDaily);
   setInterval(function () { loadAll(false); }, 5000);
   setInterval(loadDaily, 300000);
+  setInterval(loadPzDaily, 900000);
   setInterval(render, 1000);
   render();
 })();

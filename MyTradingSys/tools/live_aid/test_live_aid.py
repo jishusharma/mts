@@ -435,3 +435,70 @@ def test_fold_1h_into_4h(it):
     H = 3600000
     b0 = 4 * H * 100
     assert it["fo"] == [[b0 - 4 * H, 9, 9, 9, 9, 1], [b0, 10, 15, 8, 13, 9], [b0 + 4 * H, 13, 13, 12, 12.5, 5]]
+
+
+# ---------- Pizzino overlay (card pizzino-layer-dashboard): JS A.pizzino must equal backtest/layers/pizzino/pizzino_levels.py ----------
+# LIVE_AID_BREAK=itpz shifts the JS 50% line; itpzlev drops the JS PH3 level; both must fail the test below.
+PZ_RUNNER = r"""
+const A = require(process.argv[process.argv.length - 1]);
+const d = JSON.parse(require('fs').readFileSync(0, 'utf8'));
+const brk = process.env.LIVE_AID_BREAK || '';
+const out = {};
+const par = A.pizzino(A.foldBars(d.rows, 900000), '15m', null);
+out['15m'] = par;
+out['1m'] = A.pizzino(d.rows, '1m', par);
+out['5m'] = A.pizzino(A.foldBars(d.rows, 300000), '5m', par);
+if (brk === 'itpz' && out['1m'].mid !== null) out['1m'].mid *= 1.001;
+if (brk === 'itpzlev') out['1m'].levels = out['1m'].levels.filter(x => x.n.indexOf('PH3') < 0);
+process.stdout.write(JSON.stringify(out));
+"""
+
+
+def _close(a, b, path=""):
+    if isinstance(b, dict):
+        assert isinstance(a, dict) and set(a) == set(b), (path, a, b)
+        for k in b:
+            _close(a[k], b[k], path + "." + k)
+    elif isinstance(b, list):
+        assert isinstance(a, list) and len(a) == len(b), (path, a, b)
+        for i, (x, y) in enumerate(zip(a, b)):
+            _close(x, y, f"{path}[{i}]")
+    elif isinstance(b, float) and not isinstance(a, (str, bool)) and a is not None:
+        assert abs(a - b) <= 1e-6 * max(1.0, abs(b)), (path, a, b)
+    else:
+        assert a == b, (path, a, b)
+
+
+def test_pizzino_js_matches_python_levels():
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("node not installed")
+    import importlib.util
+    import sys
+    sys.path.insert(0, str(HERE.parents[1] / "backtest/layers/pizzino"))
+    spec = importlib.util.spec_from_file_location("pizzino_levels", HERE.parents[1] / "backtest/layers/pizzino/pizzino_levels.py")
+    pzl = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(pzl)
+    out = subprocess.run([node, "-e", PZ_RUNNER, str(JS)], input=json.dumps({"rows": ROWS}), capture_output=True, text=True,
+                         timeout=60, env=os.environ.copy())
+    assert out.returncode == 0, out.stderr
+    got = json.loads(out.stdout)
+    par = pzl.levels_for(pzl.fold(ROWS, 900000), "15m")
+    want = {"15m": par, "1m": pzl.levels_for(ROWS, "1m", parent=par), "5m": pzl.levels_for(pzl.fold(ROWS, 300000), "5m", parent=par)}
+    assert want["1m"]["mid"] is not None and len(want["1m"]["levels"]) >= 5, (SOURCE, want["1m"])  # the data exercises the 50% path
+    for tf in want:
+        _close(got[tf], json.loads(json.dumps(want[tf])), tf)
+
+def test_page_wires_pizzino_overlay():
+    # The Levels block carries a Pizzino toggle, the 1d/4h levels join the list, the table renders per frame, the script parses.
+    import re
+    page = (HERE / "live_aid.html").read_text(encoding="utf-8")
+    assert 'id="pz-tog"' in page and 'id="pz"' in page and 'id="pz-box"' in page
+    assert "A.pizzino(" in page and "A.PZ.parents" in page and "loadPzDaily" in page
+    assert "l.kind === 'MID' || l.d === 3" in page  # 50% line and degree-3 swings go into the Levels list
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("node not installed: script syntax not checked")
+    code = "\n".join(re.findall(r"<script>(.*?)</script>", page, re.S))
+    out = subprocess.run([node, "-e", "new Function(require('fs').readFileSync(0, 'utf8'))"], input=code, capture_output=True, text=True, timeout=60)
+    assert out.returncode == 0, out.stderr

@@ -320,7 +320,98 @@
     return out;
   }
 
-  var api = { foldBars: foldBars, FD: FD, fundRead: fundRead, premium: premium, bybitTick: bybitTick, LQ: LQ, liqDeribit: liqDeribit, liqBybit: liqBybit, liqBinance: liqBinance, liqSum: liqSum, CP: CP, coilPierce: coilPierce, IT: IT, divergence: divergence, flow: flow, flowLive: flowLive, squeeze: squeeze, dom: dom, supports: supports, vwapTest: vwapTest,
+  // Pizzino levels: port of backtest/layers/pizzino/pizzino_levels.py levels_for() (SPEC.md s1-5; test_live_aid.py
+  // checks both agree). Degrees 1/2/3 SOURCED; fractal n = d, W 50, 50% leg = degree 3, N 2, tol 0.5%, R 20 = OURS.
+  var PZ = { W: 50, midDeg: 3, countDeg: 3, countLen: 3, N: 2, tol: 0.005, R: 20,
+    parents: { '4h': '1d', '1h': '4h', '15m': '4h', '5m': '4h', '1m': '4h' } };
+  function pzPivots(h, l, n) {
+    var raw = [], out = [], i, j, isH, isL;
+    for (i = n; i < h.length - n; i++) {
+      isH = true; isL = true;
+      for (j = i - n; j <= i + n; j++) { if (j === i) continue; if (!(h[i] > h[j])) isH = false; if (!(l[i] < l[j])) isL = false; }
+      if (isH) raw.push({ index: i, price: h[i], conf: i + n, kind: 'H' });
+      if (isL) raw.push({ index: i, price: l[i], conf: i + n, kind: 'L' });
+    }
+    raw.forEach(function (p) {
+      var q = out[out.length - 1];
+      if (q && q.kind === p.kind) { if (p.kind === 'H' ? p.price > q.price : p.price < q.price) out[out.length - 1] = p; }
+      else out.push(p);
+    });
+    return out;
+  }
+  function pzState(ph, pl, c) {
+    if (ph.length < 2 || pl.length < 2) return [0, null];
+    var a = ph[ph.length - 1], b = ph[ph.length - 2], x = pl[pl.length - 1], y = pl[pl.length - 2];
+    if (a > b && x > y && c > x) return [1, x];
+    if (a < b && x < y && c < a) return [-1, a];
+    return [0, null];
+  }
+  function pzBreakRetest(level, c, h, l, N, tol, R, up) {
+    var res = { at: null, rt: null, outcome: null }, i, j, k, ok;
+    var beyond = function (v) { return up ? v > level : v < level; };
+    for (i = N; i < c.length; i++) {
+      ok = !beyond(c[i - N]); for (k = i - N + 1; k <= i && ok; k++) ok = beyond(c[k]);
+      if (ok) { res.at = i; break; }
+    }
+    if (res.at === null) return res;
+    for (j = res.at + 1; j < Math.min(c.length, res.at + R + 1); j++) {
+      if (up ? l[j] <= level * (1 + tol) : h[j] >= level * (1 - tol)) { res.rt = j; res.outcome = beyond(c[j]) ? 'hold' : 'fail'; break; }
+    }
+    return res;
+  }
+  function pizzino(rows, tf, parent) {
+    var col = columns(rows), h = col.h, l = col.l, c = col.c, t = col.t, last = c.length - 1, piv = {};
+    var o = { tf: tf, asof: last >= 0 ? t[last] : null, bars: c.length, close: last >= 0 ? c[last] : null, degrees: [], conf: 0, mid: null, half: null,
+      leg: null, count: null, retest: null, parent: null, aligned: null, levels: [] };
+    if (last < 0) return o;
+    [1, 2, 3].forEach(function (d) {
+      var p = pzPivots(h, l, d); piv[d] = p;
+      var ph = p.filter(function (x) { return x.kind === 'H'; }).map(function (x) { return x.price; });
+      var pl = p.filter(function (x) { return x.kind === 'L'; }).map(function (x) { return x.price; });
+      var st = pzState(ph, pl, c[last]);
+      o.degrees.push({ d: d, state: st[0], 'break': st[1], ph: ph.length ? ph[ph.length - 1] : null, pl: pl.length ? pl[pl.length - 1] : null });
+      o.conf += st[0];
+      if (ph.length) o.levels.push({ n: 'PZ ' + tf + ' PH' + d, p: ph[ph.length - 1], kind: 'PH', d: d });
+      if (pl.length) o.levels.push({ n: 'PZ ' + tf + ' PL' + d, p: pl[pl.length - 1], kind: 'PL', d: d });
+    });
+    var pm = piv[PZ.midDeg], hs = pm.filter(function (x) { return x.kind === 'H'; }), ls = pm.filter(function (x) { return x.kind === 'L'; });
+    if (hs.length && ls.length) {
+      var H = hs[hs.length - 1], L = ls[ls.length - 1], mid = (H.price + L.price) / 2, st0 = Math.max(H.conf, L.conf), prev = null, best = null;
+      for (var i = st0; i <= last; i++) prev = c[i] > mid ? 'strong' : c[i] < mid ? 'weak' : prev;
+      o.mid = mid; o.half = prev;
+      o.leg = { from: H.index < L.index ? 'H' : 'L', ph: H.price, pl: L.price, ph_t: t[H.index], pl_t: t[L.index] };
+      o.levels.push({ n: 'PZ ' + tf + ' 50%', p: mid, kind: 'MID', d: PZ.midDeg });
+      [true, false].forEach(function (up) {
+        var r = pzBreakRetest(mid, c.slice(st0), h.slice(st0), l.slice(st0), PZ.N, PZ.tol, PZ.R, up);
+        if (r.at === null) return;
+        var b = r.at + st0;
+        if (best && b <= best.break_at) return;
+        var rt = r.rt === null ? null : r.rt + st0;
+        best = { dir: up ? 'up' : 'down', break_at: b, retest_at: rt, status: rt !== null ? 'retest ' + r.outcome : last - b >= PZ.R ? 'no retest in R' : 'awaiting retest' };
+      });
+      o.retest = best || { dir: null, break_at: null, retest_at: null, status: 'no break' };
+    }
+    var p3 = piv[PZ.countDeg];
+    for (var q = p3.length - 1; q >= 0; q--) {
+      var p = p3[q], ser = p.kind === 'L' ? l : h, sig = true;
+      for (var w = Math.max(0, p.index - PZ.W); w < p.index; w++) if (p.kind === 'L' ? !(ser[p.index] <= ser[w]) : !(ser[p.index] >= ser[w])) sig = false;
+      if (!sig) continue;
+      var sg = p.kind === 'L' ? 1 : -1, run = 0;
+      for (var k = p.index + 1; k <= last; k++) {
+        var ext = sg === 1 ? h[k] > h[k - 1] && l[k] > l[k - 1] : h[k] < h[k - 1] && l[k] < l[k - 1];
+        if (!ext) break; run++;
+      }
+      o.count = { from: p.kind, t: t[p.index], price: p.price, count: sg * run, three_bar: run >= PZ.countLen };
+      break;
+    }
+    if (parent && parent.half) {
+      o.parent = { tf: parent.tf, half: parent.half, mid: parent.mid };
+      o.aligned = o.conf !== 0 && (o.conf > 0 ? 1 : -1) === (parent.half === 'strong' ? 1 : -1);
+    }
+    return o;
+  }
+
+  var api = { PZ: PZ, pizzino: pizzino, foldBars: foldBars,FD: FD, fundRead: fundRead, premium: premium, bybitTick: bybitTick, LQ: LQ, liqDeribit: liqDeribit, liqBybit: liqBybit, liqBinance: liqBinance, liqSum: liqSum, CP: CP, coilPierce: coilPierce, IT: IT, divergence: divergence, flow: flow, flowLive: flowLive, squeeze: squeeze, dom: dom, supports: supports, vwapTest: vwapTest,
     flagDiv: flagDiv, flagSqueeze: flagSqueeze, flagFlow: flagFlow, flagDom: flagDom, flagVwap: flagVwap, confidence: confidence, rma: rma, sma: sma, rsi: rsi, bollinger: bollinger, atr: atr, dayVwap: dayVwap, utcDays: utcDays, wavetrend: wavetrend,
     inversePnlBtc: inversePnlBtc, closedPnlBtc: closedPnlBtc, columns: columns };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
