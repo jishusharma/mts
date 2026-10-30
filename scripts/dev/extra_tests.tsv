@@ -1,6 +1,7 @@
 # One repo-relative test path per line (blank and # lines skipped): tracked tests outside the dirs the main gate collects.
 # Registering a test = add a line here (smoke gate); run_extra_tests.py loads it.
 scripts/dev/test_planted_error_trial.py
+scripts/dev/test_check_set_frames.py
 scripts/dev/test_trunk_lag.py
 scripts/dev/test_ci_split.py
 scripts/dev/test_no_syntax_warnings.py
