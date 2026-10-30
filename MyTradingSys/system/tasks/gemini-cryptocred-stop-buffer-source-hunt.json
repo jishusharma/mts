@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T21:01:49Z",
   "commands": [
     "python scripts/dev/fetch_captions_timed.py --analyst CryptoCred --channel @CryptoCred --latest 10 --out MyTradingSys/research/cryptocred_stop_2026-10-10/transcripts_2026-10-31",
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/cryptocred_stop_2026-10-10/STOP_SOURCE_HUNT_2026-10-31.md"
@@ -16,7 +17,14 @@
   "id": "gemini-cryptocred-stop-buffer-source-hunt",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/cryptocred_stop_2026-10-10/STOP_SOURCE_HUNT_2026-10-31.md",
+      "ref": "8e02e017a",
+      "utc": "2026-10-30T21:01:49Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -28,7 +36,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/cryptocred_stop_2026-10-10/STOP_SOURCE_HUNT_2026-10-31.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/cryptocred_stop_2026-10-10/STOP_SOURCE_HUNT_2026-10-31.md (new), transcripts under research/cryptocred_stop_2026-10-10/transcripts_2026-10-31/; read: the cryptocred_* folders under MyTradingSys/research"
   ],
@@ -38,13 +51,14 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "grep the transcripts on disk under research/cryptocred_* for stop, buffer, invalidation, wick; list hits with file:line",
     "fetch captions of the latest 10 @CryptoCred videos (one try each; 429 -> UNVERIFIED)",
     "write STOP_SOURCE_HUNT_2026-10-31.md: table setup | stop rule in his words | buffer number if any | video id | timestamp | quote, or NOT_IN_DATA per setup",
     "run verify_extract_quotes.py until exit 0; commit on the branch with a Result: line (quotes found per setup)"
   ],
+  "taken": "2026-10-30T21:01:49Z",
   "tests": "verify_extract_quotes.py exit 0 is the gate; docs only",
   "title": "[GEMINI] CryptoCred stop buffer (B143 unsourced): find the stop placement rule in his videos or transcripts on disk, quote with timestamp or NOT_IN_DATA",
   "weight": "ROUTINE",
