@@ -1,0 +1,56 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-30T17:15:02Z",
+  "depends_on": [],
+  "done_when": "research/gemini_audits_2026-10-30/live_aid_param_labels.md with one row per parameter; counts in the first line.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Same shape as the 16 gemini-param-labels-* cards: list every constant and parameter with file:line, SOURCED (quote + source file) or OURS; no verdicts, no code change.",
+  "id": "gemini-param-labels-live-aid-analyst-levels",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "live_aid: US open ladder (if up / if down) with measured reach and hold odds",
+      "ref": "122323253c92",
+      "utc": "2026-10-30T13:26:57Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Final report ends with a Noticed: line. Blocked? List 2-3 non-destructive fixes, try the safest, verify, then report.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T17:16:05Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/live_aid_indicators.js, us_open_rates.js, scripts/dev/analyst_levels.py (read); one output file"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change to any file outside the named ones"
+  ],
+  "scope_sha": "122323253c92",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "list every numeric constant and parameter with file:line",
+    "find the SOURCED quote or mark OURS",
+    "write the table and the counts line"
+  ],
+  "tests": "see done_when",
+  "title": "[GEMINI] every parameter in tools/live_aid/live_aid_indicators.js, us_open_rates.js and scripts/dev/analyst_levels.py labelled SOURCED or OURS (file:line)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
