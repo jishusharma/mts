@@ -1,0 +1,603 @@
+# Video ID: YAF6fCuVWaI
+# Title: The 3 Buttons That Decide What Every Trade Costs You (Order Types Explained)
+# Published: 2026-10-24
+# Source: yt_dlp captions (manual); uploader: Krown
+# Analyst: Krown
+# Channel: @ECKrown
+# Duration_s:1997
+# Word count: 7015
+# ---
+[00:00:00] always, always
+[00:00:00] the market order will always be the worst price
+[00:00:03] with the worst fees
+[00:00:04] every time, always
+[00:00:07] Every trade you'll ever place comes down to three different buttons.
+[00:00:09] You have a market, you have a limit, and you have a stop.
+[00:00:11] That is literally the whole menu.
+[00:00:12] And after last week, you probably know something that most traders never learn,
+[00:00:15] which is those three buttons do not cost the same.
+[00:00:18] One of them charges you significantly more in the form of fees.
+[00:00:21] And every time that you press it, you are just incurring more and more and more fees.
+[00:00:24] And it's one that, honestly, beginners press the most because, you know,
+[00:00:27] they're probably just ignorant to the facts or they just haven't seen a video like this,
+[00:00:31] which is all good.
+[00:00:31] We're going to remedy it right here.
+[00:00:33] Anyways, in today's video, we're going to go over exactly what each button does.
+[00:00:36] Inside the machine, deep inside the machine, I should say,
+[00:00:39] when each one is the right thing to do because they all have their time and place,
+[00:00:42] of course, and also place all three, all three different order types here,
+[00:00:48] like with real live money on Coinbase.
+[00:00:50] So let's get into it.
+[00:00:51] I'll bring you over here to my nice little overview of which, yes,
+[00:00:54] we have a market, we have a limit, and we have a stop limit.
+[00:00:57] Anyways, let's go into, of course, what this playlist even is
+[00:01:00] because this is a part of the TA Foundation.
+[00:01:02] So if you're randomly finding this as a part of a much, much greater playlist
+[00:01:05] in which we go over foundational concepts for trading and technical analysis,
+[00:01:08] this is actually episode number nine.
+[00:01:09] So if you're not familiar with all of the previous concepts,
+[00:01:12] then I would strongly suggest you pause this video
+[00:01:15] and view the previous videos.
+[00:01:16] And I'll just be waiting right here for whenever you're ready.
+[00:01:18] Anyways, if you're wondering who I am or, you know,
+[00:01:21] or where I come from, my name is Eric Krown.
+[00:01:23] I used to be a market maker authorized trader on the floor of the New York Stock Exchange ARCA
+[00:01:26] as an equity options market maker.
+[00:01:27] And I think I just repeated that twice, but whatever.
+[00:01:31] That's besides the point.
+[00:01:32] I've actually seen this from the other side in other words.
+[00:01:34] So I think I could provide some nuances
+[00:01:36] with understanding when and how to use these orders
+[00:01:39] because there are certain orders for certain times
+[00:01:42] that are certainly right.
+[00:01:44] And there are ones that are certainly wrong as well.
+[00:01:45] So that's what I really want to address in this video.
+[00:01:47] And look, do you need to be a former market maker
+[00:01:49] in order to understand, you know, different order types?
+[00:01:52] Obviously not, but we can definitely look at some of the nuances
+[00:01:55] in a video like this.
+[00:01:56] So let's go over to the next slide right here.
+[00:01:59] And I want to go over exactly what an order is.
+[00:02:03] It's effectively just an instruction.
+[00:02:05] And that instruction answers three questions.
+[00:02:07] It answers, one, what am I trading?
+[00:02:09] Just what asset are you looking at?
+[00:02:11] Two, how much?
+[00:02:13] And then three, of course, it will identify at what price
+[00:02:18] or under what conditions.
+[00:02:19] So if you're going to be using a market order,
+[00:02:23] then you are effectively going to,
+[00:02:26] you're going to enter your order in at whatever the best market price is
+[00:02:29] right here, right now.
+[00:02:30] So if the best offer for Bitcoin is $80,000,
+[00:02:33] that is, you know, the lowest seller,
+[00:02:37] then you will effectively lift their offer
+[00:02:40] for as much quantity as they have,
+[00:02:42] assuming that, you know, you are going to fill that full order.
+[00:02:45] Anyways, the limit order is actually my favorite order type,
+[00:02:50] is effectively it actually makes you a market maker in essence.
+[00:02:53] And you are saying, I want to get filled only at my specific price,
+[00:02:58] but the timing component of that is obviously going to be tied
+[00:03:02] to whenever the market comes to you.
+[00:03:04] So you actually have to wait for the market,
+[00:03:05] someone else to put in a market order to fill your order.
+[00:03:09] And a stop order says,
+[00:03:11] if only if the market goes to this number first,
+[00:03:15] then I will put in an order
+[00:03:17] and you can actually have a stop limit and a stop market order.
+[00:03:19] We'll go over the nuances with that as well.
+[00:03:21] It's the same book, same machine, same thing,
+[00:03:23] but three instructions and three completely different bills
+[00:03:25] in terms of fees.
+[00:03:27] So let's move on from there.
+[00:03:28] And go over, of course, the market orders,
+[00:03:31] and which is again, this is the most impatient.
+[00:03:33] And this is the one that I said, like, or like I said, I see most newer people abuse.
+[00:03:39] And again, the market order is I want to get filled at any cost.
+[00:03:43] Well, not any cost, but at the best market price right now, effectively, you press buy
+[00:03:48] and you get filled immediately.
+[00:03:50] The machine takes the lowest ask and you're done right there.
+[00:03:53] So from last week, you know exactly what that means.
+[00:03:55] You cross the spread, you are a market taker.
+[00:03:59] And let me be fair to this button.
+[00:04:00] It does have a real job because when you need out and out of the market, like right now and
+[00:04:05] the market's moving very, very fast, well, your best bet is a market order.
+[00:04:09] Now, that does, like I said, have a very specific scenario.
+[00:04:12] It means you like, I must get out now, right now, no matter what.
+[00:04:18] That is when it's, it's kind of like, I wouldn't say a panic order, but it is a, it is a like
+[00:04:22] fail safe order effectively.
+[00:04:24] That's how I look at it.
+[00:04:26] Overall, if things are going well, I am not using market orders.
+[00:04:29] They are in order of, of last resort in my opinion.
+[00:04:33] Now, again, you can use market orders if you really do want, but you're going to be paying
+[00:04:38] extra due to your lack of patience almost in every case, or I mean, you will always pay
+[00:04:42] more, but of course you will at least get filled anyways.
+[00:04:46] That's how I use market orders.
+[00:04:47] Just as, as basically like, you know, an emergency, I need to get the fuck out right
+[00:04:51] now.
+[00:04:52] Speed is the, you know, is the main allure to a market order.
+[00:04:56] The problem is never the button.
+[00:04:57] The problem is paying for speed when you don't actually need it.
+[00:05:01] So consider this, like if you're going to be long-term DCA and into Bitcoin, for example,
+[00:05:06] and and, you know, you do a weekly DCA, are you going to be better off literally buying,
+[00:05:11] you know, at your, at market price at the beginning of the week or whenever you're
+[00:05:14] doing your DCA, or if you, you know, just put it a little bit under, a little bit
+[00:05:19] under the current best market and, and perhaps wait a little bit of time and incur a smaller
+[00:05:24] fee.
+[00:05:25] And that gives you that if you're not in a rush, market order is not what you want.
+[00:05:30] Market order is for if you are in an emergency situation and you need to get out or get
+[00:05:34] in for that matter anyways, let's move into the next one.
+[00:05:39] And of course, like I said, the impatience tax.
+[00:05:42] So what does that, what does the market order actually cost?
+[00:05:46] So three line items here.
+[00:05:48] One is going to be the spread.
+[00:05:49] So you paid the ask instead of the bid.
+[00:05:51] So that gap went to whoever rested there, obviously.
+[00:05:55] That was, that was effectively my old paycheck, you know, as a market maker.
+[00:05:58] Now, number two, you're going to pay them the taker fee.
+[00:06:00] So you're consuming liquidity costs more than providing it.
+[00:06:03] You saw it in the receipts from last week's video.
+[00:06:05] Most, almost every crypto exchange will have significantly higher fees in
+[00:06:09] comparison to their limit order fees.
+[00:06:12] Sometimes it's by a degree of like 10 X sometimes it's by a degree of like
+[00:06:16] five X, but usually somewhere in that, in that vicinity is kind of what I see
+[00:06:20] for a lot of exchanges, now different changes, different rules, obviously.
+[00:06:22] And in traditional markets, it is slightly different.
+[00:06:25] I think just in general, in traditional markets, you get less fees on both sides,
+[00:06:28] to be fair.
+[00:06:29] So, you know, less of an issue if you're trading traditional, but in
+[00:06:32] crypto land, especially on Coinbase or any major crypto exchange.
+[00:06:35] Yeah, you're going to incur a lot more fees for, from consuming
+[00:06:39] that liquidity, you pay a tax on that.
+[00:06:40] Anyways, number three is the one that scales with you.
+[00:06:43] And that is going to be slippage.
+[00:06:44] And this is where things can get actually a lot worse for you.
+[00:06:46] So if your order, if the size of your order, I should say, is bigger
+[00:06:51] than what's resting at the best price, you're going to eat through
+[00:06:54] the order book while you watch.
+[00:06:55] We went over a few of a few examples of this in the previous video,
+[00:06:58] but basically
+[00:06:59] Again, an example right here would be, let's say you want to market by 10 Bitcoin, but
+[00:07:05] there's only one Bitcoin offered at a price of 80,000 bucks, which is the current best
+[00:07:09] offer.
+[00:07:10] Well, guess what?
+[00:07:11] You'll get filled on that one Bitcoin there, you'll still pay the bigger fee, and then
+[00:07:14] to get the rest nine Bitcoins, you have to continue to go up and up and up in terms
+[00:07:18] of price to find those fills, to find the liquidity for those fills.
+[00:07:22] So your real price, your real effective price is going to be much higher than 80,000 bucks
+[00:07:28] in that scenario.
+[00:07:29] So if your
+[00:07:29] order is bigger than what's resting at the best price, you're going to eat through the
+[00:07:32] order book, right?
+[00:07:33] Small orders are not going to really be an issue with this, but if you're doing
+[00:07:36] bigger orders, then yes, this can absolutely be an issue.
+[00:07:38] You will incur what's called slippage, and sometimes it can get really, really
+[00:07:41] bad, especially in thin markets.
+[00:07:42] If you're trading shitcoins that have a lack of liquidity, this can get very
+[00:07:47] nasty very fast.
+[00:07:48] It can compound, and ultimately the impatient tax is on autopay for a lot of
+[00:07:52] people, which is unfortunate.
+[00:07:54] Anyways, let's move from there and let's go over button number two, which is my
+[00:07:58] favorite one, the limit order.
+[00:08:00] And this is the one where you name your price and refuse to trade it any other.
+[00:08:03] Your order goes into the order book.
+[00:08:05] As we showed last week, you became one of the green rows or one of the red
+[00:08:08] rows if you're a seller and you're a maker now, you're a market maker,
+[00:08:11] basically the maker discount instead of a take or premium.
+[00:08:14] So you get a lot less fees there by like several degrees in most cases,
+[00:08:18] especially on Coinbase, I should add as well.
+[00:08:21] And you get to choose your price instead of having to chase.
+[00:08:24] You will only get filled at the price that you list for that limit order.
+[00:08:28] Now, two honest caveats here, both from 2018, both still true as well.
+[00:08:32] The queue.
+[00:08:33] So orders at your price fill first come first served and in hidden orders,
+[00:08:37] they will go last as well.
+[00:08:39] And the big one, there is no guaranteed fill on a limit order.
+[00:08:42] Obviously I could put a limit order at, you know, like I will buy when
+[00:08:46] Bitcoin reaches $1 and I'll buy thousands of Bitcoins there.
+[00:08:50] But obviously Bitcoin, we need to come down to $1 for me to get filled there.
+[00:08:53] So just because you put in a limit order does not guarantee you are going to get filled.
+[00:08:58] Of course, we can employ other techniques to find areas that are, you know,
+[00:09:02] likely to be tested by price action.
+[00:09:04] Thus you're likely to get filled.
+[00:09:05] But of course that is a topic for, you know, other videos in the series as
+[00:09:08] well as the TA 101 program, which is by the way, 100% free anyways.
+[00:09:12] Um, and also in the link description below as well.
+[00:09:15] You're not guaranteed to fill anyways, back in 2018, I joked.
+[00:09:18] You could bid $1 for Bitcoin and yeah, price just has to get there.
+[00:09:22] That's all.
+[00:09:23] So you can put in your limit order at any price you want.
+[00:09:26] Uh, just price has to get there for you to get filled.
+[00:09:29] And some look every once in a while, especially back in the day, like, you
+[00:09:32] know, about 10 years ago for Bitcoin, every once in a while you'd see these
+[00:09:36] like massive, massive, massive wicks, uh, usually to the downside for Bitcoin,
+[00:09:41] where there'd be like a cascade of orders and then someone would get
+[00:09:43] filled for like, you know, $100 of Bitcoin or sorry, Bitcoin at $100.
+[00:09:48] And then price action would go back to like 6,000 bucks immediately.
+[00:09:51] It was crazy times that doesn't really happen all that much anymore.
+[00:09:54] But Hey, if you do want to be, you know, sort of a, uh, a bottom Fisher,
+[00:09:57] some people do that again, you actually have to get filled for
+[00:10:00] those to really matter.
+[00:10:01] Anyways, a limit order effectively is a bet on your patience.
+[00:10:04] And sometimes that patience does miss the bus.
+[00:10:07] So that is a trade off here.
+[00:10:09] But again, you do incur significantly less fees.
+[00:10:12] So let's go into the last order type, which is a stop limit, or
+[00:10:15] you could also use a stop market as well.
+[00:10:17] But I'll address the stop limit because stop limit is a lot more nuanced.
+[00:10:20] than a stop market.
+[00:10:22] But anyways, button number three.
+[00:10:24] So this is the one that watches the market
+[00:10:26] so you don't have to.
+[00:10:27] It's effectively, I mean, it's effectively
+[00:10:30] a conditional order is what it is.
+[00:10:31] So a stop order will sleep.
+[00:10:33] In other words, it does nothing
+[00:10:34] until price touches a trigger that you choose,
+[00:10:38] which is effectively your stop price.
+[00:10:40] And then you will enter in a limit order
+[00:10:43] into the order books.
+[00:10:44] So you set both of those numbers.
+[00:10:47] You set both the stop price.
+[00:10:49] So that is the price that whatever apps you're looking at,
+[00:10:52] when it gets to that price,
+[00:10:54] then it triggers your limit order,
+[00:10:56] which again, you choose the price for that as well.
+[00:10:58] So you got two prices there.
+[00:11:00] The stop price is your tripwire, in other words,
+[00:11:03] and the limit price is exactly as we just went over
+[00:11:05] in the previous slide here.
+[00:11:07] It's effectively the worst bill you'll accept
+[00:11:09] once that order is awake.
+[00:11:11] So why two?
+[00:11:12] Well, you're effectively creating a gap right there.
+[00:11:14] And if the market is crashing through your trigger,
+[00:11:17] a bear like sell at any price for a market order
+[00:11:20] could fill you really horribly.
+[00:11:22] So I'm sure many people have seen instances
+[00:11:24] where whatever asset you're looking at
+[00:11:26] is absolutely fucking collapsing.
+[00:11:29] And if you were to do a market order during that collapse,
+[00:11:31] you are gonna incur unbelievable amounts of slippage.
+[00:11:34] Like you might get your fills five to 10% off a market,
+[00:11:36] especially with illiquid shit coins.
+[00:11:38] With Bitcoin, it might be like half percent
+[00:11:40] to a percent off the market,
+[00:11:41] which is, by the way, humongous.
+[00:11:43] That is big, that is not good.
+[00:11:44] We don't want that.
+[00:11:45] But if you do a limit order, again,
+[00:11:47] you will only get filled at your price,
+[00:11:50] not lower or not higher as well.
+[00:11:55] I mean, you'll literally only just get filled at that price.
+[00:11:58] Anyways, one honest caveat here as well.
+[00:12:00] If price goes through both numbers,
+[00:12:02] a stop limit can fail to fill
+[00:12:04] and you're still in the trade.
+[00:12:05] So if price is going so fucking fast
+[00:12:08] that your stop, like the stop order gets hit
+[00:12:12] and then you enter in the limit order,
+[00:12:13] price is already beyond that,
+[00:12:15] then price does need to come back and fill you
+[00:12:18] if it is gonna fill you at all.
+[00:12:19] So there is a little bit of risk there.
+[00:12:22] But again, the way that you should be placing these things
+[00:12:25] realistically, there shouldn't be that much.
+[00:12:27] Anyways, protection, this is basically a protective order
+[00:12:31] and it has fine print.
+[00:12:32] So let's go one by one
+[00:12:36] so you can see all of these things in action,
+[00:12:38] which is best with examples, of course.
+[00:12:40] Anyways, yes, stop price equals when to wake up,
+[00:12:42] limit price equals the worst fill that you'll accept.
+[00:12:44] That's effectively how you can look at it.
+[00:12:46] Anyways, moving on from there.
+[00:12:48] Okay, yes, my favorite part.
+[00:12:49] We'll go through some examples right here on Coinbase.
+[00:12:53] And again, we do have a link
+[00:12:54] to Coinbase in the description below.
+[00:12:55] It does get you even greater fee discounts, by the way.
+[00:12:57] It gets you 80% off of your spot trading fees
+[00:13:00] and 10% off of your derivative trading fees.
+[00:13:02] Anyways, right here,
+[00:13:03] we're gonna start off with a simple limit order.
+[00:13:05] I'm gonna be on the buy side on all these,
+[00:13:06] but look, it's the same thing for the sell side.
+[00:13:08] Just flip it to red.
+[00:13:10] So here, Bitcoin right now is trading at $80,633.
+[00:13:13] If I put in a limit order below the current best bid,
+[00:13:16] which is $86,633, and now it just changed a lot to $86,17.
+[00:13:22] Just following this one right here,
+[00:13:23] it's jumping around a lot.
+[00:13:24] But anyways, you get the idea.
+[00:13:26] I'm gonna put in a limit order at $80,000.
+[00:13:30] Let's do $80,590, just so I don't get hit immediately.
+[00:13:33] We're gonna buy $50 of the old corns there.
+[00:13:36] Whoops, not $500, but $50.
+[00:13:37] All right, there we go.
+[00:13:38] So as you can see,
+[00:13:40] once I hit the green button right there by Bitcoin,
+[00:13:43] it sets in an order down here.
+[00:13:45] And let me just remove my face so you can see.
+[00:13:47] Exactly what that looks like. There we go. There's my Bitcoin. I am of course a buyer here
+[00:13:52] This is a limit order type. My price is
+[00:13:55] 80,590 and my quantity is the equivalent of 100 USDC
+[00:14:00] So I have to wait for Bitcoin to get down to me right now
+[00:14:05] It's trading about 30 40 bucks above where my limit order is and if it does come down then I will get filled and someone
+[00:14:11] Has to fill me again with a market order
+[00:14:13] Anyways from there, obviously if you wanted to sell all you need to do is go to the to the top inside over here and click
+[00:14:19] The red button. Let me just bring it over. There we go
+[00:14:22] Nice and and once you once you do the red button, it's the same thing. Just flip it around if I wanted to sell Bitcoin
+[00:14:30] 80,000 let's say
+[00:14:31] 700 for example, and I wanted to say so like $50 worth of Bitcoin right there
+[00:14:36] I'll just do that and let's hit sell Bitcoin. I'm not gonna do that right now cuz I actually don't want to sell that
+[00:14:41] But also while we're here, it does show you your fee
+[00:14:44] So for this this potential trade, that would be a 60 cent fee more or less
+[00:14:49] Anyways, let's now go into a market order. So for market order again follow my curse right here next to limit order
+[00:14:55] Is it's it's almost always gonna be sometimes market orders first sometimes limit orders first
+[00:14:59] But in this case for coinbase limit first market second
+[00:15:02] Anyways for here again, I choose whether I want to be a buyer or seller in this case
+[00:15:07] I'm gonna be a buyer and then I just choose the amount notice that we do not choose of course a price to put that in
+[00:15:14] Why well, you already know why because we're not we don't choose our price
+[00:15:18] We are going to get filled out whatever the best offer is if we're a buyer right now that best offer is 80,000
+[00:15:24] Just moved a lot right there, but 80,000 612. Yep
+[00:15:28] So if I want to buy 50 bit $50 worth of Bitcoin again, that's gonna be my fee about 59 cents
+[00:15:34] And if I hit this right here, it's gonna fill me at whatever the best price is
+[00:15:38] So let's see I'm gonna do it right there. Boom and I'm already filled and there we go. So
+[00:15:44] So we got that one again if we want to be a sell side, it's the same thing. Just just with the red button
+[00:15:49] That's all we choose how much we actually want to sell and then we will get filled out
+[00:15:53] Whatever the best bid is assuming that the best bid has enough liquidity available there to fill us, you know fully
+[00:15:59] Anyways, now we get into the fun one. So this is the stop limit
+[00:16:03] And I will bring it up like this. All right
+[00:16:05] This is where things get a little bit more tricky
+[00:16:08] But I think with a few examples you are going to understand this very very quickly.
+[00:16:13] First, we choose our stop price
+[00:16:14] Remember that is the trigger which will then activate our actual limit price order
+[00:16:20] so if we want to be a buyer if we want to use this for example as
+[00:16:25] Or actually no, let's let's let's let's actually use the example of a sell because I think this might be more relevant to more people
+[00:16:31] So let me give you a hypothetical situation here
+[00:16:34] I am long Bitcoin and I'm long Bitcoin at eighty thousand dollars and I
+[00:16:40] Based off of my strategy once you have effectively a stop loss
+[00:16:45] I want to be out of the trade if Bitcoin goes below seventy nine thousand five hundred. Okay, we can do that
+[00:16:50] Clarify that example. So I want to if Bitcoin goes to seventy nine thousand five hundred that tells me I no longer
+[00:16:56] We want to be in that trade, but I don't want to sell exactly at
+[00:17:00] seventy nine five hundred. I want to sell at seventy nine six hundred. Well
+[00:17:04] We can do that in which case my stop price is gonna be 79 500 if price if Bitcoin gets to that price 79 500
+[00:17:13] Then my limit price will enter in a sell order at let's just say I don't know 80,000 bucks again
+[00:17:19] I'm not saying this is like the best setup right here
+[00:17:21] I'm just giving this as an example and then we choose the amount that we'd be offering at that price and in this case again
+[00:17:27] We are seller because we're using this as a protective stop-loss order effectively
+[00:17:31] So again stop price 79 500 that means Bitcoin must go down to 79 500 first once it does that
+[00:17:38] Then it sets in a limit sell order at $80,000 for the amount that I have put right there
+[00:17:45] And if I do that it'll show up in the order books as such right there
+[00:17:48] All right, nice and simple as well. And again, let's give an opposite example where you want a limit buy
+[00:17:53] so sometimes people will set in a
+[00:17:57] Stop limit buy orders for a breakout, you know to play a breakout
+[00:18:02] So let's say we were looking at charts right here and we said look if Bitcoin trades above the high from the 25th of August
+[00:18:10] I actually look at that as a breakout. I'm by the way, I'm not saying that this is a breakout
+[00:18:14] I'm just giving this as an example. So
+[00:18:17] Let's say that if Bitcoin goes above there
+[00:18:18] I consider that a breakout and I actually want to enter in a long order so that I can join on that upside move
+[00:18:26] Well, we can absolutely do that. So again stop limit right here
+[00:18:29] We are going to be a buyer in this case
+[00:18:30] Our stop limit price is going to be at the top of that candle, which was 81 to
+[00:18:36] 265 so let's type in that
+[00:18:38] 81 to 65 and then let's say I expect Bitcoin to pull back a little bit from that number first maybe down to like
+[00:18:45] I don't know 80,000 800 and that's where I want to actually buy Bitcoin and we'll do you know 50 there as well
+[00:18:51] So again, what is this gonna look like Bitcoin goes above 81 to 65?
+[00:18:56] That means there literally must be a trade above 81 to 65
+[00:19:00] Once that occurs, then I put then I will activate a limit order at 80,800
+[00:19:05] So price action then comes down to 80,800 then I would be filled once it actually gets there
+[00:19:11] So again, if I press a button right there, boom
+[00:19:13] It'll show up as you see right here
+[00:19:15] And by the way
+[00:19:15] You can you can also of course edit these orders once you actually put them in the order book just with the edit
+[00:19:20] Icon right there again
+[00:19:22] You know
+[00:19:23] You can play around with your numbers as you see fit or if you just want to cancel them hit the X and put in a new
+[00:19:28] Order as well. That also works too. Okay, great. Let me put back on my camera get the old rat face back out
+[00:19:33] And let's go back into our slideshow. All right, cool. So we've gone over all three order types
+[00:19:39] Now let's go over. Hold on next slide right here. Yes, where are the stops go?
+[00:19:44] So now the question that I think might be most relevant to a lot of people is
+[00:19:48] Effectively not how to place a stop but where to place a stop and you own every piece of this as well because episode number
+[00:19:54] Four you're invalidation is effectively where the zone fails
+[00:19:57] So that's not an arbitrary distance and in episode number eight
+[00:20:01] We went over where where you typically see everyone stops pile up. So
+[00:20:06] In and usually that's kind of like around like a round major number
+[00:20:10] Just under the eat or just under like an obvious low. So you watch those clusters
+[00:20:16] in previous videos and
+[00:20:18] Ultimately, it just comes down to these two sentences put your stop where the trade idea
+[00:20:23] Effectively tells you it is so unlikely to be a winner that you might as well take a loss right now
+[00:20:29] Because it's only gonna get worse
+[00:20:31] for you. In other words, you put your stop where you can effectively know that your trade
+[00:20:36] idea is not going to work out. It's going to be wrong.
+[00:20:40] So I'm going to use a super rudimentary way of kind of judging this. Let's say we go
+[00:20:44] over here and let's say we're looking at a daily timeframe. And where's our last major
+[00:20:49] higher low? Our last major higher low was the low of Saturday, August the 22nd, and that
+[00:20:54] was 75, 5, 5, 6. So if I was long in this area right here, I would want a stop loss or
+[00:21:02] if I was really long on any point at this point, I would want a stop loss below the
+[00:21:07] low of this higher low. Why? Because if Bitcoin comes back down below that higher
+[00:21:12] low, again, just this guy right here, what does that tell us? Well, if we have a
+[00:21:16] lower low, then perhaps the trend is shifting, in which case I no longer want
+[00:21:20] to be long. Because if I'm long while the trend is shifting and it's shifting to the
+[00:21:24] downside, well, unless we like losing money, that's probably not the best idea.
+[00:21:31] So in this instance, again, we'll mark this off. And what we could do here is we
+[00:21:34] could set up a stop, basically a stop loss order, in which case we would have the
+[00:21:42] stop price just below the low of this. So again, the low is 75, 5, 5, 6. We could
+[00:21:46] have 75, 5, 5, 0, for example, just anywhere below. And once that low gets
+[00:21:52] traded to, or once that stop price gets traded to, then we can set in a limit
+[00:21:57] order using the stop limit to sell our position, maybe a couple hundred
+[00:22:03] bucks higher. Why? Because typically, when you come back down to a major low, in
+[00:22:07] this case, you're almost always going to have a balance attempt from that. Now,
+[00:22:10] balance attempt, again, not the same thing as reversal, but balance attempt
+[00:22:14] might save you a couple hundred bucks for getting out of your trade. So again,
+[00:22:19] let's just show how we'd set this up. Again, the number is 75, 5, 5, 6. So we'd
+[00:22:22] want to effectively have our stop price. And we're going to be a sell order
+[00:22:26] right here because we are anticipating long. We're going to have our stock
+[00:22:30] price at 75, 5, 5, 0. So just about $6 below that low. And we will then
+[00:22:37] enter in a limit order, let's just say, at $76,000. Oops, let me actually
+[00:22:41] type that in properly. And again, we could use this as a stop loss. This
+[00:22:45] would be assuming that we're already long at some point, and we figured,
+[00:22:50] okay, well, if Bitcoin comes below that previous low, probably don't want
+[00:22:54] to be long, might be witnessing a reversal, in which case, I just want
+[00:22:57] to be out of my position. So I will use that to sell effectively. So do
+[00:23:02] something like that. Anyways, let me get rid of these orders right here.
+[00:23:05] Boom, and also, boom. All right. And we'll leave in the actual buy
+[00:23:10] order, the buy limit order.
+[00:23:11] Episode number
+[00:23:12] four gives you the spot. Episode eight gives you the pile. Below the
+[00:23:15] truth, not inside the crowd, is the idea here. We don't want to be
+[00:23:18] stuck in with all of the wicks of the previous people who were probably
+[00:23:22] stopped out in what ultimately was a hunt. Anyways, there are, by the
+[00:23:26] way, many better ways of choosing stop loss areas. That is for the
+[00:23:32] TA 101 program. And of course, we go in with significant examples, as
+[00:23:35] well as live examples in the Krown Trading Bible. But that's a paid
+[00:23:38] program after all, and it is a lot more advanced. I don't expect
+[00:23:41] everyone is going to be appropriate for that. But this program and TI
+[00:23:46] 101, all free, and that will get you pretty much everything. Anyways,
+[00:23:49] I'm on, uh, so here's the moment I want you to burn inside your brain.
+[00:23:53] Consider this same trader, same chart, same idea executed three different ways.
+[00:23:57] Trader one market buys the breakout.
+[00:23:59] The second it moves, you're going to pay the spread, the premium, you know, again,
+[00:24:03] cause you pay more for a market order and maybe some slippage.
+[00:24:06] If your order is so big that you don't have enough liquidity available to you
+[00:24:10] at the current best sell offer, um, you obviously are going to climb higher and
+[00:24:13] higher there.
+[00:24:13] So that's going to be the worst price of all three of these.
+[00:24:16] Always, always the market order will always be the worst price with the
+[00:24:20] worst fees every time, always.
+[00:24:22] Um, trade at number two rests a limit order at a retest, you know, after a
+[00:24:28] breakout, they're obviously going to collect the discount and you're going
+[00:24:31] to fill at only your number if the market comes back for you.
+[00:24:34] So again, your risk there is that the market just doesn't come
+[00:24:37] back down to your price.
+[00:24:39] If it doesn't come back to you, you do not get filled.
+[00:24:41] That is your risk there.
+[00:24:42] But of course you can put in whatever number that you want and you know,
+[00:24:45] probably should choose a number that is likely for price to come back to.
+[00:24:49] Uh, anyways, trade number three isn't even at the screen.
+[00:24:51] His stop limit entry did all the watching, of course.
+[00:24:54] So these are three more or less identical ideas, but you got three
+[00:24:59] totally different bills.
+[00:25:00] Nobody shows you like these typically side by side, at least from the
+[00:25:03] videos that I've seen, because the difference looks tiny in one trade.
+[00:25:06] Like most people don't even notice this, uh, but it is not tiny
+[00:25:09] across thousands of trades, especially the more you trade basically, the
+[00:25:13] more you will save by, you know, not using market orders all the damn time.
+[00:25:16] Like I said, there is a time and place for those.
+[00:25:18] Absolutely.
+[00:25:18] But, uh, but there are few and far between, especially if you're doing
+[00:25:21] things in the way that we're presenting in these series here, which
+[00:25:23] ultimately it's going to save you a lot of money in my experience.
+[00:25:26] Anyways, uh, just one line that I want to kind of leave you with the
+[00:25:30] make the market come to you patients does pay.
+[00:25:33] And honestly, that's what I really want to get across in this video.
+[00:25:37] And again, when you put in limit orders that aren't filled out market,
+[00:25:40] you are effectively a market maker.
+[00:25:42] Some exchanges even still pay you to, uh, to do that as well.
+[00:25:45] But they are, uh, like I said, few and far between at these days.
+[00:25:48] Usually you just get a very, very small fee at this point.
+[00:25:50] Anyways, the pro switches.
+[00:25:51] So two switches, beginners never touch.
+[00:25:53] One is of course, execution, allow taker flip it off and your limit
+[00:25:58] becomes post only.
+[00:25:59] So let me just show you a little quick trick over here for a limit order.
+[00:26:03] If you hit this button post only, if you, if you hit this button, post only
+[00:26:08] right here, that will ensure that you never get filled at market, meaning
+[00:26:13] that you will only ever be a pure, uh, you know, a pure market maker.
+[00:26:18] So it, so if I try to put in a limit price well above the current
+[00:26:22] best offer as a buyer.
+[00:26:23] So let's say it's $81,000 and Bitcoin trading more than $200 below that
+[00:26:27] number right now, and I want to buy a thousand, a thousand USDC, a Bitcoin.
+[00:26:31] And I post only ticked on guess what, guess what will happen?
+[00:26:34] Guess what will happen?
+[00:26:35] Oh, it won't even let me do it right here.
+[00:26:37] Oh, that's beautiful.
+[00:26:38] Okay.
+[00:26:39] Yeah, it won't even let me put in the order in the order book.
+[00:26:41] But typically, uh, in, in previous days, what would happen is if you post
+[00:26:45] tick only, and then you put in that order, it'll immediately just get canceled.
+[00:26:48] Nowadays, I guess they just went, you know, they just got rid of all of
+[00:26:51] that and, and, uh, and fast forwarded to the final result, which is you
+[00:26:55] can't put in that order, um, but this can be incredibly useful when the.
+[00:26:59] The market is moving fast and you're kind of putting in limit orders close to current
+[00:27:04] price action.
+[00:27:05] This can ensure that you don't, again, get filled at market and current market fees.
+[00:27:12] If you want to always ensure that you only, only, only, only ever get filled on pure
+[00:27:16] limit orders, post-only is your friend.
+[00:27:19] Post-only ensures you will only ever get filled on pure limit orders as a maker, not a taker,
+[00:27:26] only as a maker.
+[00:27:28] Anyways, that is almost always how to enter into orders because more often than not,
+[00:27:33] I just want to be filled as a mark, you know, as a limit order at, you know, as a maker.
+[00:27:38] And then number two, and then the other sort of order type that we need to be aware of
+[00:27:40] here is the time in force.
+[00:27:43] So that is just, that is just telling you, or that is you indicating on your order entry
+[00:27:49] how long you want this order to be alive.
+[00:27:52] So almost always default is going to be GTC, which stands for good till canceled.
+[00:27:58] So basically you put in the order and it will just rest in there unless if you cancel
+[00:28:03] it or it gets filled, it won't, it won't like immediate, you know, it won't go away in
+[00:28:07] any other, in any other example or scenario.
+[00:28:09] Now, if I click on this and you, and you select good till time, well, now you can
+[00:28:16] put a time component on that order, meaning that if you don't get filled in this case
+[00:28:20] for one minute, that order will immediately cancel itself.
+[00:28:24] Or you could choose one hour or one day, for example, again, same, same idea there.
+[00:28:27] If you choose one day, your order will be in the order book for one day, if it doesn't
+[00:28:30] get filled within that timeframe, then your order just gets automatically canceled.
+[00:28:34] The other order type is immediate or cancel or IOC, and it is exactly as it sounds.
+[00:28:41] You either get filled immediately or it cancels.
+[00:28:45] This does not really make sense to use in most cases, but if, you know, if the mark's
+[00:28:51] moving very, very quickly and you only want to get filled at a certain limit order price
+[00:28:56] and it's probably very close to the current market, but things are moving so rapidly
+[00:29:01] that you don't want to use a market order because you might get major slippage, well,
+[00:29:05] you could use something like this on an IOC order and you will only get filled at that
+[00:29:09] price and if you wait any amount of time, then that order gets canceled.
+[00:29:13] So basically, you'll take whatever liquidity is available there and cancel the rest effectively.
+[00:29:17] But for the most part, most people are going to be on GTC, good till canceled.
+[00:29:20] Again, just allows you to put in your order into the order book and if you want to cancel
+[00:29:24] it later on, that's fine, but you've got to do it yourself.
+[00:29:26] Other than that, it will stay in there until filled.
+[00:29:30] The right button every time.
+[00:29:32] So the whole episode as one card just kind of summarizes this up right now.
+[00:29:35] If you're patient, if or if you can have patience, limit order is always be the best,
+[00:29:40] is always be the best.
+[00:29:41] And then you get to choose your level and you get a fee discount.
+[00:29:46] And yeah, you have to wait, but again, you get your exact price only.
+[00:29:51] Of course, the next one is a market order. This is emergency order. In my opinion,
+[00:29:56] you're going to pay extra fees for the speed of getting filled. But sometimes you just need
+[00:30:04] to get out. So that is completely valid. But I would not use these orders to enter position.
+[00:30:11] Ultimately, market orders are there for when you need to get out and get out now.
+[00:30:15] That's how I look at them. Anyways, stop limit, of course. We can use it in a lot of different
+[00:30:21] ways. We can use it as a stop loss in a way. We can also use it as potentially a breakout
+[00:30:25] trade in the example that we showed earlier. But basically, you set something at entry,
+[00:30:31] at the invalidation, tripwire plus a net, and then it stays on. It's almost like a built-in
+[00:30:37] risk management for yourself or breakout trade as well if you want to use it in that fashion.
+[00:30:42] Although, I would caution a little bit more as using it as a breakout trade.
+[00:30:45] Let's actually move on from there. But yes, this would be a good time for me to request
+[00:30:50] that if you do find this content valuable or if you just want more content like it,
+[00:30:52] the best way to get more of that is to like and subscribe, of course.
+[00:30:55] Anyways, so let's lock all of it in. An order is like an instruction, and the three instructions
+[00:31:01] carry three different fees or bills if you want to call it that. Market order is, again,
+[00:31:05] now at any cost, spread plus premium plus slippage. We only really want to deal with
+[00:31:11] that potentially in emergencies. Limit order is going to be at your price or nothing at all,
+[00:31:16] and that is effectively going to get you a fee discount, but you do have to wait.
+[00:31:20] And then the stop limit order, of course, is going to set the tripwire effectively,
+[00:31:25] which then initiates your actual limit order, and that will, again, it will save you a few
+[00:31:30] bucks on your fees and can be incredibly useful for managing stop losses on trades and things like
+[00:31:37] this. Anyways, the other switch is, of course, you got post only, and then your different order
+[00:31:43] types for good till canceled or immediate or cancel, these sort of things. Usually,
+[00:31:47] most people are going to be on good till canceled and post only. Like I said, guarantees
+[00:31:51] you will always, always, always only ever be filled on a maker order. You will not be able
+[00:31:56] to get filled on a taker order, so can be useful, of course, as well. Anyways, one habit swap this
+[00:32:01] week. Let's go over your homework. Next time you're about to press the market button when
+[00:32:06] nothing is on fire, I would strongly just to restrain yourself and don't do that.
+[00:32:10] Place the limit instead at a level that you actually want to get filled out, perhaps a level
+[00:32:14] that you marked based off of previous technical analysis, maybe using the episode four way as
+[00:32:20] we went over there. And if you're holding any position without a stop behind it,
+[00:32:23] fix that fucking ASAP with what you learned today. You can use that stop limit order,
+[00:32:29] use that to protect yourself, especially when you're holding positions overnight that you can't
+[00:32:33] actually manage if something were to happen. Anyways, that's where we're going to end on
+[00:32:38] this particular video, and we shall go over risk in the next one, big one actually as well. In
+[00:32:44] fact, we'll extrapolate on the ideas from, well, realistically, a lot of the videos in this
+[00:32:49] TA Foundation series. But of course, this one, we're going to use the order type for
+[00:32:52] that stop limit in order to manage risk. Anyways, that's what we're ending for today.
+[00:32:56] As always, wish you the best, best, take care, much love, and see you hopefully next time.
