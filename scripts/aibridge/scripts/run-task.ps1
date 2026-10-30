@@ -50,7 +50,7 @@ $steps = @($spec.steps)
 $label = if ($spec.name) { [string]$spec.name } else { [string]$in.name }
 $report = New-Object System.Collections.Generic.List[string]
 $report.Add(("TASK {0} id={1} steps={2} host={3}" -f $label, $taskId, $steps.Count, $env:COMPUTERNAME))
-$failedAt = 0; $failedName = ''; $softFails = 0; $totalSw = [Diagnostics.Stopwatch]::StartNew()
+$failedAt = 0; $failedName = ''; $totalSw = [Diagnostics.Stopwatch]::StartNew()
 $i = 0
 foreach ($st in $steps) {
     $i++
@@ -66,7 +66,7 @@ foreach ($st in $steps) {
     do {
         $attempt++
         $ps1 = Join-Path $base ('run\' + [guid]::NewGuid().ToString('N') + '.ps1')
-        [IO.File]::WriteAllText($ps1, "`$ProgressPreference='SilentlyContinue'; [Console]::OutputEncoding=[Text.Encoding]::UTF8; " + $cmd + "`r`nif (`$null -ne `$LASTEXITCODE) { exit `$LASTEXITCODE }", [Text.UTF8Encoding]::new($true))
+        [IO.File]::WriteAllText($ps1, "`$ProgressPreference='SilentlyContinue'; [Console]::OutputEncoding=[Text.Encoding]::UTF8; " + $cmd, [Text.UTF8Encoding]::new($true))
         $so = $ps1 + '.out'; $se = $ps1 + '.err'
         $sw = [Diagnostics.Stopwatch]::StartNew()
         try {
@@ -100,13 +100,12 @@ foreach ($st in $steps) {
     } else {
         $report.Add(("{0,2} FAIL  {1}  {2}s  {3}{4}" -f $i, $sname, $secs, $why, $retryNote))
         foreach ($l in ($lines | Select-Object -Last 25)) { $report.Add('   | ' + $(if ($l.Length -gt 240) { $l.Substring(0, 240) + '...' } else { $l })) }
-        if ($onFail -ne 'continue') { $failedAt = $i; $failedName = $sname } else { $softFails++ }
+        if ($onFail -ne 'continue') { $failedAt = $i; $failedName = $sname }
     }
 }
 $totalSw.Stop()
 $secsAll = [math]::Round($totalSw.Elapsed.TotalSeconds, 1)
 if ($failedAt) { $report.Add(("TASK RESULT: FAIL at step {0} ({1}) after {2}s; full log: {3}" -f $failedAt, $failedName, $secsAll, $logFile)) }
-elseif ($softFails) { $report.Add(("TASK RESULT: FAIL {0} step(s) failed (on_fail=continue) of {1} in {2}s; full log: {3}" -f $softFails, $steps.Count, $secsAll, $logFile)) }
 else { $report.Add(("TASK RESULT: PASS {0} steps in {1}s; full log: {2}" -f $steps.Count, $secsAll, $logFile)) }
 $report | ForEach-Object { Write-Output $_ }
-if ($failedAt -or $softFails) { exit 1 } else { exit 0 }
+if ($failedAt) { exit 1 } else { exit 0 }

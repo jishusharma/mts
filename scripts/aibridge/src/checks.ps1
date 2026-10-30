@@ -196,19 +196,6 @@ function Test-Allowed {
 }
 
 
-function Hide-StringsForKind {
-    param([string]$Cmd)
-    $tokens = $null; $errors = $null
-    try { [void][System.Management.Automation.Language.Parser]::ParseInput($Cmd, [ref]$tokens, [ref]$errors) } catch { return $Cmd }
-    $chars = $Cmd.ToCharArray()
-    foreach ($t in $tokens) {
-        if ([string]$t.Kind -in 'StringLiteral', 'StringExpandable', 'HereStringLiteral', 'HereStringExpandable', 'Comment') {
-            for ($i = $t.Extent.StartOffset; $i -lt $t.Extent.EndOffset -and $i -lt $chars.Length; $i++) { if ($chars[$i] -ne "`n") { $chars[$i] = 'x' } }
-        }
-    }
-    return (-join $chars)
-}
-
 function Get-CmdKind {
     # information only (never decides): read | write | program. Lets a refusal and a receipt say WHICH kind it was.
     param([string]$Cmd, $pol)
@@ -216,8 +203,6 @@ function Get-CmdKind {
     $r = [string]$pol.kind_program_regex
     if (-not $w) { $w = '(?i)(\b(Remove-Item|ri|rm|rmdir|del|erase|rd|Set-Content|sc|Add-Content|ac|Out-File|New-Item|ni|Move-Item|mv|mi|move|Copy-Item|cp|copy|cpi|Rename-Item|rni|ren|Clear-Content|Set-Item)\b|git\s+(add|commit|push|reset|checkout|clean|rm|mv|merge|rebase|stash|restore|apply|cherry-pick|revert|tag|branch)\b|\[IO\.File\]::(Write|Delete|Move|Copy|Append)|[^-]>{1,2}\s*(?!\$null\b)(?!nul\b)[^\s&])' }
     if (-not $r) { $r = '(?i)\b(python|py|node|npm|mvn|pip|pytest|java|powershell|pwsh|cmd|bash|Start-Process|saps|Invoke-Expression|iex)\b|\.(ps1|exe|bat|cmd|py)\b' }
-    # B209: classify the code, not the text inside quotes or comments (a read-only Select-String for 'git push|rm' is read)
-    $Cmd = Hide-StringsForKind $Cmd
     if ($Cmd -match $w) { return 'write' }
     if ($Cmd -match $r) { return 'program' }
     return 'read'
