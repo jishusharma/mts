@@ -102,7 +102,6 @@ from the newest `BUDGET` signal line (older than 6 h counts NORMAL). The meter i
 | THROTTLE | U > 100 f + 5 (not in the last 24 h), U >= 99, or the 5-hour window above its stop (80 %, 95 % in the last 2 h) | only model-free work: Codex lab, DSA desk, CI |
 
 ## Session log (newest first; one line each, last 5)
-- B 2026-10-29 21:59-01:07Z (NUC, no get_usage, hand-recorded budget): planner refined 9 cards (3da2c45a3), simdesk-declutter-top shipped (b39ea8c1), disk roll-call answered; usage gate blocked spawns 3 h until elapsed was recorded from the window start
 - B 2026-10-30 20:00-21:42Z: names rule Desktop/Lenovo/NUC + B22/B23 filed, CI red reverted (ca25ae86f), GPT lane brought up (lane_state c9cf84d4a) and 2 GPT runs shipped (811f9870), liquidation deploy sent to the Lenovo (b-d564be, unacked); roman ingest parked.
 - A 2026-10-29 16:58-17:30Z: operator-directed drain before weekly reset; wiring audit shipped+Haiku-verified, gemini race test was a no-op (already shipped), pitchfork arm-check (verdict NO, deduped against another session's shipped doc), CI RED (TOM-CTX-DIV) saw B's revert in flight and stood down rather than duplicate, 9 raw Noticed cards filed; handed over at TRANSIT (context 255K).
 - B 2026-10-28 13:00-18:15Z: restart chain proven once (logon wake), 6 Opus fixes verified, ship wait removed, 3 CI REDs reverted, 11 cards shipped; successor registered fire-now
