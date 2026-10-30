@@ -1388,6 +1388,10 @@ TRANSIT_RULE = ("TRANSIT = the first of: 5 h at the stop (80%, 95% in the last 2
                 "(20 min before the 5 h reset), this session's own wave >= 3 h, or --context-tokens >= 150000")
 
 
+# bug-supervisor-idles-after-wake-retired (2026-10-30): roles/supervisor.md and SUPER_SESSION.md quote these verbatim
+# (test_idle_rules_code_and_docs_agree).
+IDLE_RULE = "Never end a turn idle while READY cards or unread signals wait: dispatch a worker or arm `supervisor.py wait`"
+REARM_RULE = "Post-compaction first act: re-arm the watcher and re-read signals (`mts_signal.py read`), then rebuild from `plan`"
 WORK_DEFAULT_H = 8.0            # work period a Supervisor keeps going for when the operator named none (operator 2026-10-30: "8 to 12 hours"; OURS)
 WORK_RULE = ("WORK PERIOD: inside it the Supervisor never hands over; the 5 h stop is a pause (watcher stays armed, plan again after "
              "the reset), compaction carries the context; the hand-over comes only when the work period ends or the week cap is reached")
@@ -1791,6 +1795,27 @@ def other_planner(login: str, now: datetime, sid: str, home=None, minutes: int =
     return None
 
 
+def work_period_holds(login: str, now: datetime, home=None) -> str:
+    """'' when a Supervisor of `login` may hand over now, else why not (bug-supervisor-idles-after-wake-retired, WORK_RULE): inside the
+    login's work period (start <= now < until) only the week cap ends the session, so a direct `handover` call can no longer write
+    mode=ENDED while the session is alive mid-period. The week cap comes from the last plan; no readable plan = the cap is unknown =
+    refuse (fail closed). --force does not lift it (it is for a gone peer, B1); ending a period early is `plan --until <now>`
+    (operator's call). No period file = the pre-work-period behaviour (allowed). OURS."""
+    wp = read_work(login, home)
+    end, start = _utc(wp.get("until")), _utc(wp.get("start"))
+    if not end or now >= end or (start and now < start):
+        return ""
+    try:
+        pl = json.loads((loop_home(home) / f"{login}-last-plan.json").read_text(encoding="utf-8")).get("plan") or {}
+    except (OSError, ValueError, AttributeError):
+        pl = {}
+    if pl.get("week") is not None and transit_reason(pl, now, work_end=end):
+        return ""
+    return (f"inside the work period until {wp['until']} (week {pl.get('week', '?')}% < cap {pl.get('cap', '?')}%): no hand-over "
+            f"and no mode=ENDED while this Supervisor is alive. {IDLE_RULE}. Ending the period early is the operator's call: "
+            f"plan --until <now UTC>")
+
+
 def _old_missed(p: Path) -> list | None:
     try:
         for h, body in split_sections(p.read_text(encoding="utf-8"))[1]:
@@ -1813,6 +1838,10 @@ def handover(repo: Path, login: str, note: str = "", host: str | None = None, ho
     host = CN(host or socket.gethostname())
     login = (login or "").strip().upper()[:1]
     p = handover_path(repo, login, role, now)
+    if role != "lead":
+        why = work_period_holds(login, now, home)
+        if why:
+            raise ValueError(why)
     if role != "lead" and not force:
         o = other_planner(login, now, sid or session_ident(), home)
         if o:
