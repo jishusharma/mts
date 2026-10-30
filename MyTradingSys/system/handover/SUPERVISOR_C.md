@@ -10,6 +10,12 @@ Started 2026-10-30T17:20Z. Work until 2026-10-31T05:06Z. Wake 3 at 18:40Z. Usage
 - Planner: 15f050461 (4 cards refined: live-aid-replay, gemini_queue guard, C20 reland, sim-desk-click-test; mirror-share-denied-jisnb parked).
 - Haiku recount 18:50Z (a937a63512ee45648): tom sheet 4 sections x5 headings, no verdict wording; 141 tests pass (supervisor 94, status_board 21, doctor 21, role_budget 5); supervisor.md 7432 B < 7500. All PASS.
 
+- 19:11Z CI RED at Step 4 test_lookahead_lint (3d777c49d C21/C22 research by another session, no revert in 10 min): I reverted it, 740540935 -> f4b49bf01, CI green 19:15Z. Note the author may re-land with fixes.
+- haiku-register-orphan-tests closed 61c26852d: 1 orphan (test_supervisor.py, already skip-reasoned), 0 files registered (Haiku report; card result on trunk).
+- haiku-refresh-stale-ready-cards closed by me (tasks.py done) in the next ship.
+- d-drain-opus-supervisor-c: an Opus Supervisor C was drained on operator order; this session is the one C supervisor.
+- plan RUN line suggests `codex_run.py tick` over the NUC ssh gate: it cannot push (no git login in ssh), skip; GPT goes through desk row 20261030-174331.
+
 ## Running
 - Sonnet a27bd342cf0969230: live-aid-replay-mode-fixture-feeds (stream D), waiting on its ship; collision risk with Lenovo claim pizzino-layer-dashboard on live_aid.html.
 - Haiku a1381e3e0a2a0bc81: haiku-register-orphan-tests, waiting on its ship.
