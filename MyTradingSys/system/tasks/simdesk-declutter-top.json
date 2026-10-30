@@ -2,6 +2,15 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 9,
+    "folded": "2026-10-30T01:05:05Z",
+    "misses": 19,
+    "reads": [
+      "MyTradingSys/research/sim_desk/page.html"
+    ],
+    "session": "agent-a9ff05d7d2c878a10"
+  },
   "created": "2026-10-28T17:37:26Z",
   "depends_on": [],
   "done_when": "page.html shows the verdict and 3 numbers above the fold, Advanced toggle collapsed by default, chip row does not reflow on click; screenshot saved; test passes; shipped, cherry empty",

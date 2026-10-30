@@ -12,13 +12,15 @@
   "goal": "Builder 1441256e (layer relations US-open study) fetched data.binance.vision futures metrics for all of DEV ad hoc (OI, top-trader accounts/positions ratios, global ratio); oi_delta_event_table REPORT.md still says OI NOT_IN_DATA and backtest_gap_review G5 flagged the same. The data lives only in one worker's scratch, so other stations and studies re-fetch or skip it.",
   "id": "metrics-oi-toptrader-into-shared-data",
   "lane": "SONNET",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "PLANNER 2026-10-30: filled and T0-checked; awaits Lab_Guy review stamp (T0-ONLY refused at IMPORTANT)",
+  "note": "REVIEWED:2026-10-30 ACCEPT planner T0 + scope paths verified",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-30T01:04:45Z",
   "refs": [
     "MyTradingSys/research/layer_relations_2026-10/LAYER_RELATIONS_US_OPEN.md",
     "MyTradingSys/research/layer_lab/oi_delta_event_table/REPORT.md"
@@ -30,9 +32,10 @@
   "scope_out": [
     "any mainnet or account call (public archive only)"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Write the fetch script (data root from env/config)",
     "Run BTCUSDT and ETHUSDT 2022-01..latest, list gaps",

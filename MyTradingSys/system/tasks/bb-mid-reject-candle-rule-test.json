@@ -18,9 +18,12 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "not_twin_of": [
+    "backtest-pre-us-failed-break-dev-run"
+  ],
   "note": "",
   "prio": 3,
-  "refine_tries": 0,
+  "refine_tries": 1,
   "refined_by": "",
   "refs": [],
   "result": "",
@@ -42,8 +45,5 @@
   "tests": "test_bb_mid_reject.py: the 10-29 21:35-22:05 bars give one short at 79,553 with stop 79,688; fails before the rule exists",
   "title": "Operator BB-mid rejection candle rule (shot 8faf2cac14be): pre-reg and fee-net DEV test after the map and his setup pick",
   "weight": "",
-  "worker": "session",
-  "not_twin_of": [
-    "backtest-pre-us-failed-break-dev-run"
-  ]
+  "worker": "session"
 }

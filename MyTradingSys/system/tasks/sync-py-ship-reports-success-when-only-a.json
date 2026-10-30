@@ -1,37 +1,59 @@
 {
- "approved_by": "",
- "asks": "",
- "commands": [],
- "created": "2026-10-30T00:28:04Z",
- "depends_on": [],
- "done_when": "",
- "est_turns": null,
- "formula_id": "",
- "formula_ids": [],
- "from_inbox": "",
- "goal": "",
- "id": "sync-py-ship-reports-success-when-only-a",
- "lane": "",
- "layers": [],
- "live_path": false,
- "mutation_check": "",
- "note": "",
- "prio": 3,
- "refine_tries": 0,
- "refined_by": "",
- "refs": [],
- "result": "",
- "scope_in": [],
- "scope_out": [],
- "size": "",
- "sources": [],
- "state": "raw",
- "steps": [],
- "tests": "",
- "title": "sync.py ship reports success when only a merge commit shipped and tracked edits stayed uncommitted; warn on dirty tracked files",
- "weight": "",
- "worker": "",
- "not_twin_of": [
-  "sync-ship-silent-on-uncommitted"
- ]
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m unittest scripts/dev/test_sync.py"
+  ],
+  "created": "2026-10-30T00:28:04Z",
+  "depends_on": [],
+  "done_when": "sync.py ship prints a WARN line naming each uncommitted tracked file after a merge-only ship; new test_sync.py case fails on old code; python scripts/dev/test_sync.py green",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "sync.py ship prints success when only a merge commit shipped while tracked edits stayed uncommitted; ship must warn (not block) naming the dirty tracked files so the author notices unshipped work.",
+  "id": "sync-py-ship-reports-success-when-only-a",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 1 file(s)",
+      "ref": "d6fcdc3b279e",
+      "utc": "2026-10-29T17:26:13Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "sync-ship-silent-on-uncommitted"
+  ],
+  "note": "REVIEWED:2026-10-30 ACCEPT planner T0; CRITICAL (sync.py gate file): review SESSION pre-ship",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T01:05:09Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/sync.py",
+    "scripts/dev/test_sync.py"
+  ],
+  "scope_out": [
+    "gate logic, push/race logic, untracked or noise files (is_noise)"
+  ],
+  "scope_sha": "d6fcdc3b279e",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read ship() near sync.py:1144 and the dirty check at sync.py:384; find where the shipped summary prints",
+    "After a successful push, list tracked-modified files via git status --short (skip is_noise rows) and print one WARN line: N tracked file(s) NOT shipped: names",
+    "Fail-first test in test_sync.py: ship a merge-only change with a dirty tracked file, assert WARN line; clean tree prints none"
+  ],
+  "tests": "test_sync.py: dirty tracked file after merge-only ship prints WARN naming it; fails on current code; clean tree no WARN",
+  "title": "sync.py ship reports success when only a merge commit shipped and tracked edits stayed uncommitted; warn on dirty tracked files",
+  "weight": "CRITICAL",
+  "worker": "agent"
 }

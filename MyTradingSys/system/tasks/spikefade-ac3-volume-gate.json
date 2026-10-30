@@ -14,13 +14,23 @@
   "goal": "MED finding in MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md: A-C3 (no volume above the session VPOC) is not checked on the price-arm; split from wave1-spikefade-ac1-ac2-mandatory. Needs: Tom quote (TOM_LAYER_V2_SPEC.md:61) and a SpikeFadeCriticalWave1Test case.",
   "id": "spikefade-ac3-volume-gate",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "SpikeFade test: assert A-C2 listed when c2 true",
+      "ref": "1dce15d9ee93",
+      "utc": "2026-10-29T23:41:06Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "PLANNER 2026-10-30: filled and T0-checked; awaits Lab_Guy/reviewer stamp before ready (CRUCIAL+ needs independent review)",
+  "note": "REVIEWED:2026-10-30 ACCEPT planner T0 + scope paths verified",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-30T01:04:41Z",
   "refs": [
     "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md"
   ],
@@ -33,11 +43,12 @@
     "SpikeFadeProfile.java (profile arm)",
     "flag mts.spikeFade default (stays off)"
   ],
+  "scope_sha": "1dce15d9ee93",
   "size": "S",
   "sources": [
     "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Read ITEM3 row A4 and TLV2:61 / k0zm5NYn0IQ:357-360",
     "Add the volume-above-VPOC gate to the price arm; label thresholds SOURCED or OURS",
