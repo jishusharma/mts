@@ -1,0 +1,52 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/fetch_captions_timed.py --analyst Krown --channel @ECKrown --latest 14 --out MyTradingSys/research/krown_ta101_2026-10-13/transcripts_live_2026-10-31",
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LIVE_SETUPS_2026-10-31.md"
+  ],
+  "created": "2026-10-30T18:52:45Z",
+  "depends_on": [],
+  "done_when": "KROWN_LIVE_SETUPS_2026-10-31.md exists with one row per named setup (trigger, invalidation, timeframe, video id, timestamp, quote); first line counts videos read and setups; verify_extract_quotes.py exits 0.",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Krown TA beyond the TA 101 playlist: from the latest 10 @ECKrown videos not in krown_ta101 MANIFEST.csv or CALL_LEDGER.csv, every setup he names (EMA cross, squeeze break, range, zone), its trigger, invalidation and timeframe, with timed verbatim quotes and video id. Feeds the S8 study. No verdict, no code change.",
+  "id": "gemini-krown-setups-beyond-ta101",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini rules: captions first (fetch_captions_timed.py), quote only from the caption file, one fetch try per video, no retry loop, 429 -> mark the video UNVERIFIED with no quotes; run verify_extract_quotes.py until exit 0; facts and quotes only, no trading verdict, no code change. Final report ends with a Noticed: line.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T18:53:24Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LIVE_SETUPS_2026-10-31.md (new), transcripts under research/krown_ta101_2026-10-13/transcripts_live_2026-10-31/; read: MANIFEST.csv, CALL_LEDGER.csv"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code; any backtest; any trading verdict; .secrets and .env"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "list the ids already covered (MANIFEST.csv, CALL_LEDGER.csv); fetch captions of the latest 10 others (one try each; 429 -> UNVERIFIED)",
+    "keyword scan: EMA, squeeze, range, zone, breakout, retest, invalidation, stop, target; read the surrounding lines",
+    "write KROWN_LIVE_SETUPS_2026-10-31.md: table setup | trigger | invalidation | timeframe | video id | timestamp | quote",
+    "run verify_extract_quotes.py until exit 0; commit on the branch with a Result: line (videos read, setups found)"
+  ],
+  "tests": "verify_extract_quotes.py exit 0 is the gate; docs only",
+  "title": "[GEMINI] Krown beyond TA 101: from his latest 10 non-TA101 videos, the EMA-based BTC setups he names (structure, trigger, invalidation) with timed quotes, for the S8 study",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

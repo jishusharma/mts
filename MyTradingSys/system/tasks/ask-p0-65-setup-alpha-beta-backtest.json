@@ -2,6 +2,22 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 13,
+    "folded": "2026-10-30T18:32:25Z",
+    "misses": 35,
+    "reads": [
+      "scripts/dev/verdicts.py",
+      "MyTradingSys/research/sim_desk/results/audit-t03_planted_edges.json",
+      "scripts/dev/lookahead_lint.py",
+      "MyTradingSys/backtest/maker_model.py",
+      "MyTradingSys/backtest/bigtrade/bigmoves.py",
+      "MyTradingSys/backtest/PRE_REG_TEMPLATE.md",
+      "MyTradingSys/research/VERDICTS.csv",
+      "MyTradingSys/research/sim_desk/results/desk-levels-2b122b99.json"
+    ],
+    "session": "agent-a5226c0e3cbb410c5"
+  },
   "created": "2026-10-30T08:24:29Z",
   "depends_on": [],
   "done_when": "PRE_REG.md frozen before the run, then RESULT.md in MyTradingSys/research/setup_alpha_beta_v2_2026-10/ with n, win, mean R fee-net (funding incl.) on DEV and VAL for Alpha (vs buy-and-hold) and Beta (one entry per sweep); lookahead_lint --new 0 FAIL; exports sim_desk/results/ask-p0-65-setup-alpha-beta-backtest.json; verdict rows added.",
