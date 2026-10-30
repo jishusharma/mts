@@ -2,11 +2,11 @@
  "allowance": {
   "plan": "plus",
   "week_resets": 1793780113,
-  "week_used": 50.0,
+  "week_used": 51.0,
   "window_resets": 1793365056,
-  "window_used": 7.0
+  "window_used": 11.0
  },
- "at": "2026-10-30T09:28:41Z",
+ "at": "2026-10-30T09:53:01Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -23,9 +23,24 @@
   "astra_runs": 0,
   "week_pts": 2.0,
   "window_pts": 2.0,
-  "window_runs": 3
+  "window_runs": 4
  },
  "runs": [
+  {
+   "at": "2026-10-30T09:51:39Z",
+   "card": "gpt-audit-formulas-vs-kurisko-layer",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 75,
+   "tokens_out": 3587,
+   "tokens_total": 457447,
+   "tokens_uncached": 53220,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-30T09:27:43Z",
    "card": "gpt-audit-formulas-vs-krown-layer",
@@ -160,21 +175,6 @@
    "tokens_uncached": 42180,
    "week_pts": 0.0,
    "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-29T21:01:02Z",
-   "card": "cbp-ingestion",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": " 5b: Layer tests: NOT RUN (precheck failed: step 3g)\nStep 5c: Options tests: PASS\nStep 6: Backtest tests: SKIP\n=================================================",
-   "outcome": "SHIP_FAILED",
-   "seconds": 101,
-   "tokens_out": 6543,
-   "tokens_total": 757687,
-   "tokens_uncached": 49960,
-   "week_pts": 0.0,
-   "window_pts": 0.0
   }
  ]
 }
