@@ -4,9 +4,9 @@
   "week_resets": 1793780113,
   "week_used": 50.0,
   "window_resets": 1793365056,
-  "window_used": 4.0
+  "window_used": 7.0
  },
- "at": "2026-10-30T08:30:07Z",
+ "at": "2026-10-30T09:28:41Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -23,9 +23,24 @@
   "astra_runs": 0,
   "week_pts": 2.0,
   "window_pts": 2.0,
-  "window_runs": 2
+  "window_runs": 3
  },
  "runs": [
+  {
+   "at": "2026-10-30T09:27:43Z",
+   "card": "gpt-audit-formulas-vs-krown-layer",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 51,
+   "tokens_out": 3295,
+   "tokens_total": 330477,
+   "tokens_uncached": 46350,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-30T08:28:11Z",
    "card": "gpt-spec-tests-check-sourced-params",
@@ -160,21 +175,6 @@
    "tokens_uncached": 49960,
    "week_pts": 0.0,
    "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-29T20:13:51Z",
-   "card": "cbp-ingestion",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "ent): Merge conflict in MyTradingSys/system/tasks/cbp-ingestion.json\nAuto-merging MyTradingSys/system/lane_state.json\nCONFLICT (content): Merge conflict in MyTr",
-   "outcome": "SHIP_FAILED",
-   "seconds": 48,
-   "tokens_out": 3017,
-   "tokens_total": 365948,
-   "tokens_uncached": 47667,
-   "week_pts": 0.0,
-   "window_pts": 1.0
   }
  ]
 }
