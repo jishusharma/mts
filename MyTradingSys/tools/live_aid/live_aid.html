@@ -148,6 +148,15 @@ details[open] summary { margin-bottom: 8px; }
     <span class="tag">Reach odds fall with distance; a touch holding is a coin flip at every distance. Context for what to expect, never a signal; no size, no orders.</span>
   </section>
 
+  <!-- 2d. WHAT THE MONEY IS DOING (research/eagle_eyes_picture_2026-10-28/OI_COMMENTARY_SPEC.md; descriptive) -->
+  <section id="p-money">
+    <div class="hd"><h2>What the money is doing</h2><span class="src" title="Price vs open interest per venue over 5 / 15 / 60 min. Six-state sentences, flat under 0.1 %, venues disagree at 0.2 % up vs 0.2 % down, FLUSH / SQUEEZE = a Bybit 5m bar with its wick 0.25 % past the previous close while OI falls 0.2 %, trapped line at OI +0.2 % since the event: OURS (spec fixed before use). Lines marked MEASURED come from C24 (Bybit 5m 07-02..10-30, oi_after_flush.py). Feeds SOURCED: Deribit ticker, Bybit tickers + REST open-interest, Binance fapi openInterest.">OURS + MEASURED</span><span class="tag" id="m-feeds"></span></div>
+    <div class="vrow"><span class="huge" id="m-call">--</span><span class="sub" id="m-sub"></span></div>
+    <div class="scroll"><table><thead><tr><th>Window</th><th>Price</th><th>Deribit OI</th><th>Bybit OI</th><th>Binance OI</th><th>All venues OI</th><th>What it means</th></tr></thead><tbody id="m-rows"></tbody></table></div>
+    <ul id="m-lines" class="it"></ul>
+    <span class="tag">Says where positions are going, not where price goes next. Only lines marked MEASURED carry a base rate; no size, no orders.</span>
+  </section>
+
   <!-- 3. COLUMNS -->
   <div class="cols">
     <section id="p-intrade">
@@ -211,6 +220,7 @@ details[open] summary { margin-bottom: 8px; }
     <p>Analysts: CBP rows (analyst, publish day, bias, pointers) and the roster in CBP analysts.json, built into analyst_data.js by build_analyst_data.py (any session reading the chart reruns it; by hand: python MyTradingSys/tools/live_aid/build_analyst_data.py). Words and biases SOURCED (the analysts' videos); levels parsed by scripts/dev/analyst_levels.py; FRESH = newest row 3 days old or less, the 6 % band, AT 0.3 % and NEAR 1.5 %: OURS. NOT_FETCHED = an enabled analyst that ingestion skips (it fetches the "actionable" profile only). The store keeps 5 days of rows, so an older row reads NO ROW.</p>
     <p>News: Tree News public REST (news.treeofalpha.com/api/news), polled every 15 s while this page is open; each item carries its own time, source and importance score 0-10 (SOURCED). Score 7 or more is marked "high"; the glance counts high items in the last 60 min, EVENT at 3 or more (OURS, research/news_feeds_2026-10-30). Word tags hack / halt / etf / fed / war / delist / btc: OURS. On 2026-10-29 this feed had the Binance hack at 20:39:00 UTC, before the 20:40-20:45 fall. Context only.</p>
     <p>Liquidations: Bybit allLiquidation.BTCUSDT (price = bankruptcy price), Binance btcusdt@forceOrder (one print per second at most), Deribit trades carrying the liquidation flag. Side = the position that was liquidated (SOURCED, venue docs). 1/5/15 min sums since this page connected, "longs" or "shorts" when one side is at least 2x the other, big print = 100,000 USD or more: OURS (STEPS.md).</p>
+    <p>What the money is doing: price vs open interest per venue (Deribit ticker open_interest in USD contracts, Bybit tickers openInterest and REST open-interest 5min in BTC, Binance fapi openInterest and openInterestHist in BTC: SOURCED). Each venue's change is in its own unit; "All venues" weights each venue's change by its open interest in BTC so a price move is not counted as new positions. Six sentences from the spec, flat under 0.1 %, venues disagree at +0.2 % vs -0.2 %, FLUSH = a 5m bar with its low 0.25 % or more under the previous close while Bybit OI falls 0.2 % or more (SQUEEZE mirrored), bars under 12 apart are one event, trapped line at OI +0.2 % since the event: OURS (research/eagle_eyes_picture_2026-10-28/OI_COMMENTARY_SPEC.md). MEASURED lines: C24 in BACKTEST_CANDIDATES.md. A feed older than 90 s reads NOT_IN_DATA.</p>
     <p>In-trade readings are descriptive, no advice. Rules and thresholds = OURS, fixed in STEPS.md before data was looked at. Data: Deribit mainnet public trades, book and open interest; candles from the strip venue. Rule R = 3 or more of the available flags against the side you typed; it names no size.</p>
   </details>
 </main>
@@ -228,7 +238,8 @@ details[open] summary { margin-bottom: 8px; }
   var S = { dbt: null, dbtMark: null, dbtT: 0, dbtErr: '', bin: null, binT: 0, binErr: '',
             a15: NaN, tf: {}, venue: null, klErr: '', klT: 0, daily: null,
             trades: [], trT: 0, book: null, bookT: 0, oi: null, oiT: 0, oiHist: [], flowErr: '',
-            liq: [], lq: { BYBIT: { t: 0, err: '' }, BINANCE: { t: 0, err: '' } }, byt: { d: null, t: 0 }, news: { items: [], t: 0, err: '' } };
+            liq: [], lq: { BYBIT: { t: 0, err: '' }, BINANCE: { t: 0, err: '' } }, byt: { d: null, t: 0 }, news: { items: [], t: 0, err: '' },
+            om: { DERIBIT: { live: [], rest: [], err: '' }, BYBIT: { live: [], rest: [], err: '' }, BINANCE: { live: [], rest: [], err: '' }, bars: [], barsT: 0, barsErr: '' } };
 
   function fmt(x, d) { return isFinite(x) ? x.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }) : '--'; }
   function sgn(x, d) { return isFinite(x) ? (x > 0 ? '+' : '') + fmt(x, d) : '--'; }
@@ -344,6 +355,49 @@ details[open] summary { margin-bottom: 8px; }
   function getJson(url) {
     var ctl = new AbortController(); var to = setTimeout(function () { ctl.abort(); }, 8000);
     return fetch(url, { signal: ctl.signal }).then(function (r) { clearTimeout(to); if (!r.ok) throw new Error('HTTP ' + r.status + ' ' + url); return r.json(); });
+  }
+
+  // ---------- open interest for "What the money is doing" ----------
+  // Live samples every 10 s per venue (Deribit and Bybit from their open sockets, Binance by REST every 30 s); the last 2 h of
+  // 5m history from Bybit (and Binance when reachable) fill the 15 / 60 min windows before the page has been open that long.
+  function omPush(v, px, oi, btc) {
+    var L = S.om[v].live, t = Date.now();
+    if (!(px > 0) || !isFinite(oi)) return;
+    L.push({ t: t, px: px, oi: oi, btc: btc }); while (L.length && L[0].t < t - A.OM.keepMs) L.shift();
+  }
+  function omSample() {
+    var now = Date.now(), b = S.byt.d;
+    if (S.oiT && now - S.oiT < STALE_MS && S.dbt > 0) omPush('DERIBIT', S.dbt, S.oi, S.oi / S.dbt);
+    if (b && S.byt.t && now - S.byt.t < STALE_MS) omPush('BYBIT', +b.lastPrice, +b.openInterest, +b.openInterest);
+  }
+  function omHist(v) {
+    var o = S.om[v], t0 = o.live.length ? o.live[0].t : Infinity;
+    return o.rest.filter(function (x) { return x.t < t0; }).concat(o.live);
+  }
+  function loadBybitOi() {
+    var k = 'https://api.bybit.com/v5/market/kline?category=linear&symbol=BTCUSDT&interval=5&limit=25';
+    var o = 'https://api.bybit.com/v5/market/open-interest?category=linear&symbol=BTCUSDT&intervalTime=5min&limit=26';
+    Promise.all([getJson(k), getJson(o)]).then(function (r) {
+      var kl = r[0].result.list, ois = {};
+      r[1].result.list.forEach(function (x) { ois[+x.timestamp] = +x.openInterest; });
+      S.om.bars = A.oiBars(kl, ois); S.om.barsT = Date.now(); S.om.barsErr = '';
+      S.om.BYBIT.rest = kl.map(function (x) { return { t: +x[0], px: +x[1], oi: ois[+x[0]], btc: ois[+x[0]] }; })
+        .filter(function (x) { return x.oi > 0; }).sort(function (a, b) { return a.t - b.t; });
+    }, function (e) { S.om.barsErr = 'Bybit open-interest REST failed: ' + (e.name === 'AbortError' ? 'timeout' : e.message); });
+  }
+  function loadBinanceOi(hist) {
+    var st = S.om.BINANCE;
+    getJson('https://fapi.binance.com/fapi/v1/openInterest?symbol=BTCUSDT').then(function (j) {
+      st.err = ''; if (S.binT && Date.now() - S.binT < STALE_MS) omPush('BINANCE', S.bin, +j.openInterest, +j.openInterest);
+      else st.err = 'Binance price feed down';
+    }, function (e) { st.err = 'fapi.binance.com openInterest failed (blocked on some networks): ' + (e.name === 'AbortError' ? 'timeout' : e.message); });
+    if (!hist) return;
+    Promise.all([getJson('https://fapi.binance.com/futures/data/openInterestHist?symbol=BTCUSDT&period=5m&limit=25'),
+                 getJson('https://fapi.binance.com/fapi/v1/klines?symbol=BTCUSDT&interval=5m&limit=25')]).then(function (r) {
+      var px = {}; r[1].forEach(function (k) { px[+k[0]] = +k[1]; });
+      st.rest = r[0].map(function (x) { return { t: +x.timestamp, px: px[+x.timestamp], oi: +x.sumOpenInterest, btc: +x.sumOpenInterest }; })
+        .filter(function (x) { return x.px > 0 && x.oi > 0; }).sort(function (a, b) { return a.t - b.t; });
+    }, function () {});
   }
 
   var TFS = [{ k: '1m', ms: 60000, n: 1500, dr: '1' }, { k: '5m', ms: 300000, n: 300, dr: '5' }, { k: '15m', ms: 900000, n: 1500, dr: '15' }, { k: '1h', ms: 3600000, n: 1500, dr: '60' }];
@@ -558,6 +612,7 @@ details[open] summary { margin-bottom: 8px; }
     renderLiq(now);
     renderFund(now);
     renderNews(now);
+    renderMoney(now);
     var a15 = S.a15;
 
     // 3. strip
@@ -620,6 +675,52 @@ details[open] summary { margin-bottom: 8px; }
     renderGlance(L, px, vw);
     renderInTrade(now, L, px, a15, m1);
     renderVerdict(now, px, vw);
+  }
+
+  // ---------- what the money is doing (maths in live_aid_indicators.js, spec OI_COMMENTARY_SPEC.md) ----------
+  var OMV = [['DERIBIT', 'Deribit'], ['BYBIT', 'Bybit'], ['BINANCE', 'Binance']];
+  function omCell(w) { return w.err ? '<td title="' + esc(w.err) + '">' + NID + '</td>' : '<td class="' + cls(w.doi) + '">' + sgn(w.doi * 100, 2) + '%</td>'; }
+  function renderMoney(now) {
+    var H = {}; OMV.forEach(function (v) { H[v[0]] = omHist(v[0]); });
+    var rows = A.OM.wins.map(function (wn) {
+      var vs = OMV.map(function (v) { var h = H[v[0]]; return { name: v[1], w: A.oiWindow(h, now, wn[1]), btc: h.length ? h[h.length - 1].btc : NaN }; });
+      var net = A.oiNet(vs); return { label: wn[0], vs: vs, net: net, dis: net ? A.oiDisagree(vs, net.doi) : null };
+    });
+    var head = rows[1].net ? rows[1] : rows[0].net ? rows[0] : null;
+    if (head) {
+      var m = head.net.state.money;
+      $('m-call').innerHTML = '<span class="' + (m === 'in' ? 'up' : m === 'out' ? 'down' : '') + '">' + esc(head.net.state.text) + '</span>';
+      $('m-sub').textContent = head.label + ', ' + head.net.n + ' of ' + head.net.of + ' venues: price ' + sgn(head.net.dp * 100, 2) + ' %, open interest ' + sgn(head.net.doi * 100, 2) + ' %';
+    } else { $('m-call').innerHTML = NID; $('m-sub').textContent = 'no venue has open-interest samples yet'; }
+    $('m-rows').innerHTML = rows.map(function (r) {
+      var px = r.vs.filter(function (v) { return !v.w.err; })[0];
+      return '<tr><td>' + r.label + '</td><td class="' + (px ? cls(px.w.dp) : '') + '">' + (r.net ? sgn(r.net.dp * 100, 2) + '%' : '--') + '</td>' + r.vs.map(function (v) { return omCell(v.w); }).join('') +
+        (r.net ? '<td class="' + cls(r.net.doi) + '">' + sgn(r.net.doi * 100, 2) + '%</td><td class="nh">' + esc(r.net.state.text) + '</td>' : '<td>' + NID + '</td><td></td>') + '</tr>';
+    }).join('');
+    var L = [], bars = S.om.bars, bh = H.BYBIT, bl = bh[bh.length - 1];
+    var dis = rows.filter(function (r) { return r.dis; })[0];
+    if (dis) L.push(bullet('Venues disagree (' + dis.label + ')', 'OURS: one venue +0.2 %, another -0.2 %', esc(dis.dis)));
+    var lq = A.liqSum(S.liq, now, 900000), fl = A.flow(S.trades, now), f = A.fundRead(S.dbtF8), dp15 = rows[1].net ? rows[1].net.dp : NaN, who = [];
+    who.push(lq.dom === 'none' ? 'no liquidations seen in 15 min' : lq.dom === 'mixed' ? 'liquidations mixed (longs ' + fmt(lq.long / 1e6, 1) + 'M, shorts ' + fmt(lq.short / 1e6, 1) + 'M)' : lq.dom + ' liquidated ' + fmt(lq[lq.dom === 'longs' ? 'long' : 'short'] / 1e6, 1) + 'M');
+    if (fl && fl.cvd && isFinite(dp15) && Math.abs(dp15) >= A.OM.flat) who.push('taker flow ' + (Math.sign(fl.cvd) === Math.sign(dp15) ? 'agrees with' : 'disagrees with') + ' price (CVD ' + sgn(fl.cvd / 1e6, 1) + 'M)');
+    if (f) who.push(f.side === 'zero' ? 'funding about zero' : f.side + ' pay funding (' + sgn(f.pct8h, 4) + ' % per 8h)');
+    L.push(bullet('Who (15 min)', 'liquidations and CVD since this page connected; Deribit funding', esc(who.join('; '))));
+    var e = bars.length ? A.oiLastEvent(bars, now) : null, path = null;
+    if (!bars.length) L.push(bullet('Just happened (60 min)', 'Bybit 5m bars', nid(S.om.barsErr || 'Bybit 5m open interest not loaded yet')));
+    else if (!e) L.push(bullet('Just happened (60 min)', 'Bybit 5m: FLUSH / SQUEEZE rule OURS', 'no flush or squeeze'));
+    else {
+      L.push(bullet('Just happened (60 min)', 'Bybit 5m: FLUSH / SQUEEZE rule OURS', '<b>' + esc(A.oiEventText(e, A.liqSum(S.liq, e.lastT + A.OM.barMs, e.lastT - e.t + A.OM.barMs))) + '</b>'));
+      path = A.oiPath(bars, e, bl ? bl.px : NaN, bl ? bl.oi : NaN);
+      var tr = bl ? A.oiTrap(e, path, bl.px, bl.oi) : null;
+      L.push(bullet('Trapped side', 'OURS: OI +0.2 % since the event', tr ? esc(tr.text) : 'none by this rule (Bybit OI since the event ' + (bl ? sgn((bl.oi / e.oi1 - 1) * 100, 2) + ' %' : 'NOT_IN_DATA') + ')'));
+    }
+    var x = A.oiExpect(e, path);
+    L.push(bullet('What to expect', x.measured ? 'MEASURED: ' + x.study + ', n=' + x.n : 'not measured yet', esc(x.text), x.measured ? 'MEASURED' : 'OURS'));
+    $('m-lines').innerHTML = L.join('');
+    $('m-feeds').innerHTML = OMV.map(function (v) {
+      var h = H[v[0]], l = S.om[v[0]].live, t = l.length ? l[l.length - 1].t : 0;
+      return v[1] + ' ' + (t && now - t <= A.OM.staleMs ? Math.round((now - t) / 1000) + ' s' : '<span class="nid">NOT_IN_DATA</span>' + (S.om[v[0]].err ? ' <span class="err">' + esc(S.om[v[0]].err) + '</span>' : '')) + (h.length ? ', ' + Math.round((now - h[0].t) / 60000) + ' min held' : '');
+    }).join(' &middot; ') + ' &middot; Bybit 5m bars ' + (S.om.barsT ? Math.round((now - S.om.barsT) / 1000) + ' s' : NID);
   }
 
   // ---------- liquidations ----------
@@ -898,6 +999,8 @@ details[open] summary { margin-bottom: 8px; }
   setInterval(loadDaily, 300000);
   setInterval(render, 1000);
   loadNews(); setInterval(loadNews, 15000);
+  setInterval(omSample, 10000); loadBybitOi(); setInterval(loadBybitOi, 60000);
+  loadBinanceOi(true); setInterval(function () { loadBinanceOi(false); }, 30000); setInterval(function () { loadBinanceOi(true); }, 300000);
   render();
 })();
 </script>

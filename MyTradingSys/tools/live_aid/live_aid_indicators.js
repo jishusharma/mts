@@ -445,7 +445,128 @@
              or: or.n >= 3 ? { h: or.h, l: or.l, bars: or.n } : null, up: merge(up), down: merge(down), priorDays: np };
   }
 
-  var api = { AV: AV, rosterRead: rosterRead, analystVote: analystVote, levelWatch: levelWatch, zones: zones, lean: lean, actions: actions, NW: NW, newsTags: newsTags, newsMerge: newsMerge, newsPulse: newsPulse, foldBars: foldBars, FD: FD, fundRead: fundRead, premium: premium, bybitTick: bybitTick, LQ: LQ, liqDeribit: liqDeribit, liqBybit: liqBybit, liqBinance: liqBinance, liqSum: liqSum, CP: CP, coilPierce: coilPierce, IT: IT, divergence: divergence, flow: flow, flowLive: flowLive, squeeze: squeeze, dom: dom, supports: supports, vwapTest: vwapTest,
+  // "What the money is doing": price vs open interest (research/eagle_eyes_picture_2026-10-28/OI_COMMENTARY_SPEC.md).
+  // All thresholds OURS, fixed in that spec before use. dp, doi are fractions; flat = under 0.1 % either way.
+  var OM = { flat: 0.001, disagree: 0.002, flushPx: 0.0025, flushOi: 0.002, staleMs: 90000, slackMs: 60000, keepMs: 3900000,
+             wins: [['5 min', 300000], ['15 min', 900000], ['60 min', 3600000]], barMs: 300000, eventMs: 3600000,
+             pathBars: 8, pathOi: 0.002, chop: 0.008, trapOi: 0.002, cluster: 12 };
+  var OS = {
+    'up/up': 'Money entering on the long side: new longs are buying.',
+    'down/up': 'Money entering on the short side: new shorts are selling.',
+    'up/down': 'Money leaving: shorts are covering (a squeeze); the rise is not fed by new buyers.',
+    'down/down': 'Money leaving: longs are closing or being liquidated (a flush).',
+    'flat/up': 'Positions building without a move: both sides adding, pressure stored for the next break.',
+    'flat/down': 'Positions closing quietly; interest is fading.',
+    'up/flat': 'Price rising with positions about unchanged: the move is not fed by new money.',
+    'down/flat': 'Price falling with positions about unchanged: the move is not fed by new money.',
+    'flat/flat': 'Quiet: price and positions about unchanged.' };
+  function omDir(x) { return x >= OM.flat ? 'up' : x <= -OM.flat ? 'down' : 'flat'; }
+  function oiState(dp, doi) {
+    if (!isFinite(dp) || !isFinite(doi)) return null;
+    var k = omDir(dp) + '/' + omDir(doi);
+    return { key: k, money: omDir(doi) === 'up' ? 'in' : omDir(doi) === 'down' ? 'out' : 'flat', text: OS[k] };
+  }
+  // h: one venue's samples [{t, px, oi}] oldest first (oi in the venue's own unit). Base = the newest sample at least ms old,
+  // or the oldest one when it is within slackMs of that. A dead feed, a short history or a 0 value gives {err}, never a guess.
+  function oiWindow(h, now, ms) {
+    if (!h || !h.length) return { err: 'no samples' };
+    var last = h[h.length - 1], base = null;
+    if (now - last.t > OM.staleMs) return { err: 'feed stale, last sample ' + Math.round((now - last.t) / 1000) + ' s ago' };
+    for (var i = h.length - 1; i >= 0; i--) if (h[i].t <= now - ms) { base = h[i]; break; }
+    if (!base && h[0].t <= now - ms + OM.slackMs) base = h[0];
+    if (!base) return { err: 'needs ' + Math.ceil((h[0].t - (now - ms + OM.slackMs)) / 60000) + ' min more of samples' };
+    if (!(base.oi > 0) || !(last.oi > 0)) return { err: '0 OI value' };
+    if (!(base.px > 0) || !(last.px > 0)) return { err: 'no price' };
+    var dp = last.px / base.px - 1, doi = last.oi / base.oi - 1;
+    return { dp: dp, doi: doi, spanMs: last.t - base.t, t: last.t, state: oiState(dp, doi) };
+  }
+  // vs: [{name, w (an oiWindow result), btc (open interest in BTC now)}]. Net = BTC-weighted mean of each venue's own change,
+  // so a price move does not show up as a change in positions (OURS).
+  function oiNet(vs) {
+    var ok = vs.filter(function (v) { return v.w && !v.w.err && v.btc > 0; }), sw = 0, dp = 0, doi = 0;
+    ok.forEach(function (v) { sw += v.btc; dp += v.btc * v.w.dp; doi += v.btc * v.w.doi; });
+    if (!sw) return null;
+    return { dp: dp / sw, doi: doi / sw, n: ok.length, of: vs.length, state: oiState(dp / sw, doi / sw) };
+  }
+  function oiDisagree(vs, netDoi) {
+    var ok = vs.filter(function (v) { return v.w && !v.w.err; });
+    var up = ok.filter(function (v) { return v.w.doi >= OM.disagree; }).map(function (v) { return v.name; });
+    var dn = ok.filter(function (v) { return v.w.doi <= -OM.disagree; }).map(function (v) { return v.name; });
+    if (!up.length || !dn.length) return null;
+    var net = !isFinite(netDoi) || Math.abs(netDoi) < OM.flat ? 'net money about flat' : netDoi > 0 ? 'net money entering' : 'net money leaving';
+    return up.join(' and ') + ' adding, ' + dn.join(' and ') + ' closing: positions moving between exchanges, ' + net + '.';
+  }
+  // 5m bars from klines [[t, o, h, l, c]] and OI snapshots {t: oi}. oi0 = OI at the bar open, oi1 = at its close (snapshot
+  // stamped t + 5 min); a bar without its closing snapshot (the forming one) is left out.
+  function oiBars(kl, ois) {
+    return kl.map(function (k) { return { t: +k[0], o: +k[1], h: +k[2], l: +k[3], c: +k[4], oi0: ois[+k[0]], oi1: ois[+k[0] + OM.barMs] }; })
+      .filter(function (b) { return b.oi0 > 0 && b.oi1 > 0; }).sort(function (a, b) { return a.t - b.t; });
+  }
+  // FLUSH: a 5m bar whose low is 0.25 % or more under the previous close while OI falls 0.2 % or more in the bar;
+  // SQUEEZE: the mirror (high 0.25 % over, OI down 0.2 %). Price uses the wick: the 10-30 18:50Z flush closed -0.05 %.
+  function oiEvents(bars) {
+    var ev = [];
+    bars.forEach(function (b, i) {
+      var pc = i && bars[i - 1].t === b.t - OM.barMs ? bars[i - 1].c : b.o, doi = b.oi1 / b.oi0 - 1;
+      if (doi > -OM.flushOi) return;
+      var lo = b.l / pc - 1, hi = b.h / pc - 1, cl = b.c / pc - 1;
+      if (lo <= -OM.flushPx) ev.push({ kind: 'FLUSH', i: i, t: b.t, px: b.l, move: lo, close: cl, doi: doi, d: b.oi1 - b.oi0, c: b.c, oi1: b.oi1 });
+      else if (hi >= OM.flushPx) ev.push({ kind: 'SQUEEZE', i: i, t: b.t, px: b.h, move: hi, close: cl, doi: doi, d: b.oi1 - b.oi0, c: b.c, oi1: b.oi1 });
+    });
+    return ev;
+  }
+  // Only closed bars count. Same-kind events under 12 bars apart (C24's gap) are one event: the first bar anchors it, legs counts them.
+  function oiLastEvent(bars, now) {
+    var ev = oiEvents(bars.filter(function (b) { return b.t + OM.barMs <= now; })), cl = [];
+    ev.forEach(function (e) {
+      var c = cl[cl.length - 1];
+      if (c && c.kind === e.kind && e.i - c.lastI < OM.cluster) { c.legs++; c.lastI = e.i; c.lastT = e.t; c.ext = e.kind === 'FLUSH' ? Math.min(c.ext, e.px) : Math.max(c.ext, e.px); }
+      else cl.push(Object.assign({}, e, { legs: 1, lastI: e.i, lastT: e.t, ext: e.px }));
+    });
+    var e = cl[cl.length - 1];
+    return e && now - (e.lastT + OM.barMs) <= OM.eventMs ? e : null;
+  }
+  // After an event: OI and price path from the event bar's close. C24 reads the OI change 40 min (8 bars) after the flush bar.
+  function oiPath(bars, e, px, oi) {
+    var after = bars.slice(e.i + 1), k = bars[e.i + OM.pathBars];
+    var done = !!k && k.t === e.t + OM.pathBars * OM.barMs, oiAt = done ? k.oi1 : oi, pxAt = done ? k.c : px;
+    var d = oiAt > 0 ? oiAt / e.oi1 - 1 : NaN;
+    return { done: done, minsLeft: done ? 0 : Math.max(0, (OM.pathBars - after.length) * 5), doi: d,
+             group: !isFinite(d) ? null : d >= OM.pathOi ? 'rebuilding' : d <= -OM.pathOi ? 'falling' : 'flat',
+             chop: pxAt > 0 && Math.abs(pxAt / e.c - 1) <= OM.chop,
+             hi: after.length ? Math.max.apply(null, after.map(function (b) { return b.h; })) : NaN,
+             lo: after.length ? Math.min.apply(null, after.map(function (b) { return b.l; })) : NaN };
+  }
+  function oiTrap(e, path, px, oi) {
+    var since = oi > 0 ? oi / e.oi1 - 1 : NaN;
+    if (!(since >= OM.trapOi)) return null;
+    if (e.kind === 'FLUSH' && px < path.hi) return { short: path.hi, long: e.px, text: 'shorts trapped above ' + Math.round(path.hi) + '; longs trapped below ' + Math.round(e.px) };
+    if (e.kind === 'SQUEEZE' && px > path.lo) return { long: path.lo, short: e.px, text: 'longs trapped below ' + Math.round(path.lo) + '; shorts trapped above ' + Math.round(e.px) };
+    return null;
+  }
+  function oiEventText(e, lq) {
+    var hm = new Date(e.t).toISOString().slice(11, 16) + 'Z', who = e.kind === 'FLUSH' ? 'longs liquidated' : 'shorts squeezed';
+    var usd = lq && (e.kind === 'FLUSH' ? lq.long : lq.short);
+    return e.kind + ' ' + hm + ', ' + (e.kind === 'FLUSH' ? 'low ' : 'high ') + Math.round(e.px) + ', price ' + (e.move * 100).toFixed(2) + ' %, OI ' +
+      (e.doi * 100).toFixed(2) + ' % (' + Math.round(e.d) + ' BTC), ' + who + (usd > 0 ? ' ' + (usd / 1e6).toFixed(1) + 'M seen by this page' : '') +
+      (e.legs > 1 ? '; ' + e.legs + ' bars hit within 60 min, the last ' + new Date(e.lastT).toISOString().slice(11, 16) + 'Z, extreme ' + Math.round(e.ext) : '');
+  }
+  // MEASURED lines only (C24 row, BACKTEST_CANDIDATES.md; oi_after_flush.py, Bybit 5m 07-02..10-30). Anything else: not measured yet.
+  var C24 = { study: 'C24, Bybit 5m 07-02..10-30', baseUp: 52, baseDrop: 6,
+              rebuilding: { n: 18, up: 53 }, flat: { n: 9, up: 56 }, falling: { n: 22, up: 55, drop: 14 } };
+  function oiExpect(e, path) {
+    if (!e) return { measured: false, text: 'No flush or squeeze in the last 60 min. What follows a six-state read is not measured yet (C25, BACKTEST_CANDIDATES.md).' };
+    if (e.kind === 'SQUEEZE') return { measured: false, text: 'What follows a squeeze is not measured yet (C26, BACKTEST_CANDIDATES.md).' };
+    if (!path.done) return { measured: false, text: 'C24 reads the OI path 40 min after the flush, in ' + path.minsLeft + ' min; so far OI ' + (path.group || 'not in data') + '.' };
+    if (!path.chop) return { measured: false, text: 'Price moved more than 0.8 % in the 40 min after the flush: outside the C24 sample, not measured.' };
+    var g = C24[path.group], loose = e.close > -OM.flushPx ? ' C24 counted bars that closed -0.25 % or lower; this one closed ' + (e.close * 100).toFixed(2) + ' %, a loose match.' : '';
+    var t = 'After a flush with OI ' + path.group + ' (n=' + g.n + '): up 4 h later ' + g.up + ' % vs ' + C24.baseUp + ' % base, no direction from OI alone.';
+    if (path.group === 'falling') t += ' A 4 h drop over 1 %: ' + g.drop + ' % vs ' + C24.baseDrop + ' % base, a bigger move twice as likely, direction open.';
+    return { measured: true, n: g.n, study: C24.study, text: t + loose };
+  }
+
+  var api = { OM: OM, oiState: oiState, oiWindow: oiWindow, oiNet: oiNet, oiDisagree: oiDisagree, oiBars: oiBars, oiEvents: oiEvents, oiLastEvent: oiLastEvent, oiPath: oiPath, oiTrap: oiTrap, oiEventText: oiEventText, C24: C24, oiExpect: oiExpect,
+    AV: AV, rosterRead: rosterRead, analystVote: analystVote, levelWatch: levelWatch, zones: zones, lean: lean, actions: actions, NW: NW, newsTags: newsTags, newsMerge: newsMerge, newsPulse: newsPulse, foldBars: foldBars, FD: FD, fundRead: fundRead, premium: premium, bybitTick: bybitTick, LQ: LQ, liqDeribit: liqDeribit, liqBybit: liqBybit, liqBinance: liqBinance, liqSum: liqSum, CP: CP, coilPierce: coilPierce, IT: IT, divergence: divergence, flow: flow, flowLive: flowLive, squeeze: squeeze, dom: dom, supports: supports, vwapTest: vwapTest,
     flagDiv: flagDiv, flagSqueeze: flagSqueeze, flagFlow: flagFlow, flagDom: flagDom, flagVwap: flagVwap, confidence: confidence, rma: rma, sma: sma, rsi: rsi, bollinger: bollinger, atr: atr, dayVwap: dayVwap, utcDays: utcDays, wavetrend: wavetrend,
     inversePnlBtc: inversePnlBtc, closedPnlBtc: closedPnlBtc, columns: columns, UO: UO, usOpen: usOpen };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
