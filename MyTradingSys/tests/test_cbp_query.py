@@ -121,7 +121,7 @@ def test_fabricated_quote_rejected(tmp_path, monkeypatch):
 
 
 def test_old_videos_never_extracted(tmp_path, monkeypatch):
-    st = _setup(tmp_path, monkeypatch, pub="2026-10-18")
+    st = _setup(tmp_path, monkeypatch, pub="2026-09-20")  # older than VERDICT_DAYS (21): never extracted
     called = []
     out = cbp_run.run_once(NOW, fetch=lambda *a: None, extract=lambda v, b: called.append(1) or GOOD, store=st)
     assert out == (0, 0, 0) and called == []
@@ -206,8 +206,9 @@ def test_store_default_agrees_across_cbp_components(tmp_path, monkeypatch):
 def test_cbp_schedule_dry_run_validates_without_registration(tmp_path, capsys):
     xml = cbp_schedule.task_xml(sys.executable, cbp_schedule.Path(cbp_schedule.__file__), tmp_path)
     assert cbp_schedule.validate_task_xml(xml)
-    assert "<StartBoundary>2026-10-26T09:00:00Z</StartBoundary>" in xml
-    assert "<StartBoundary>2026-10-26T13:00:00Z</StartBoundary>" in xml
+    for t in cbp_schedule.WEEKDAY_TIMES + tuple(t for _, t in cbp_schedule.WEEKEND_TIMES):
+        assert "<StartBoundary>2026-11-02T%s:00Z</StartBoundary>" % t in xml
+    assert "<Saturday/>" in xml and "<Sunday/>" in xml
     assert "<RestartOnFailure>" in xml and "<Count>3</Count>" in xml
     assert "<MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>" in xml
     assert "trading" not in xml.lower()
@@ -250,6 +251,7 @@ def test_planted_duplicate_video_id_is_not_extracted_again(tmp_path, monkeypatch
     st = _setup(tmp_path, monkeypatch, vid="P" * 11)
     built, _ = cbp_run.build_row(("P" * 11, "Krown", "2026-10-23", "fixture", None), GOOD, BODY)
     cbp.save({"rows": [built]}, st)
+    st.with_name("verdicts.json").write_text('{"%s": {"analyst": "Krown", "published": "2026-10-23"}}' % ("P" * 11), encoding="utf-8")
 
     def must_not_extract(*args):
         pytest.fail("duplicate video must be stopped before extraction")

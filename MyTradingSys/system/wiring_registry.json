@@ -982,6 +982,10 @@
       "disp": "WIRE",
       "ref": "ask-p0-37-us-open-alert-line",
       "why": "Pure US-open countdown line (T054 step 5, context only); a later live_aid card imports us_open_line. Not wired here because another session owns live_aid."
+    },
+    "MyTradingSys/execution/mutation_check_auto_trader_failclosed.py": {
+      "disp": "TOOL",
+      "why": "Mutation proof for test_auto_trader_failclosed.py: breaks one line of a temp copy of auto_trader.py per test and requires that test to fail (CLAUDE.md: new tests must fail on pre-change code). Run by hand after editing auto_trader.py."
     }
   }
 }
