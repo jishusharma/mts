@@ -1236,5 +1236,5 @@ def test_work_period_keeps_the_supervisor_going(tmp_path):
 
 def test_work_rule_code_and_docs_agree():
     repo = Path(S.__file__).resolve().parents[2]
-    for rel in ("MyTradingSys/system/roles/supervisor.md", "MyTradingSys/system/SUPER_SESSION.md"):
-        assert S.WORK_RULE in (repo / rel).read_text(encoding="utf-8"), rel
+    assert S.WORK_RULE in (repo / "MyTradingSys/system/SUPER_SESSION.md").read_text(encoding="utf-8")
+    assert "SUPER_SESSION.md WORK PERIOD" in (repo / "MyTradingSys/system/roles/supervisor.md").read_text(encoding="utf-8")
