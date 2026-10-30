@@ -1,0 +1,10 @@
+{
+  "done_when": "codex_run.py status lists the 6 audits under Delivered, each report on origin/fast-track (git cherry empty)",
+  "from": "JIS-NB",
+  "id": "20261030-174331-run-the-gpt-lab-on-jis-nuc-6-formula-aud",
+  "need": "On JIS-NUC in the lab tree F:/MTS/mts-codex-lab (your interactive session has the git login; the SSH gate cannot push): python scripts/dev/codex_run.py next, once per 20 min (minimum gap), until the 6 gpt-audit-formulas-vs-*-layer cards are DONE (rsi, wavetrend, wlow_bounce, turn_of_candle, trendlines, positioning). Window is empty (0 pct used, resets 18:01Z), week 53 pct. Do not run codex_run.py on the desktop: it has no OpenAI login (401).",
+  "posted": "2026-10-30T17:43:31Z",
+  "status": "pending",
+  "target": "JIS-NUC",
+  "title": "Run the GPT lab on JIS-NUC: 6 formula audits ready"
+}
