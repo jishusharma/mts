@@ -1,9 +1,8 @@
 """One-line disk report for this machine (STATION_CLEANUP.md roll-call).
 
-Prints free GB on C: and F:, then the size in GB of the usual space eaters that exist here
-(Claude VM bundles, %TEMP%, worktrees beside the primary checkout, .mts_live trees, Dumps),
-then the count of java/python processes. `--send` posts it as `STATION <host>/<login> disk: ...`.
-Read-only: it never deletes anything.
+Prints free GB (C: and F: on Windows, / elsewhere), then the size in GB of the usual space eaters that exist here
+(Claude VM bundles, Claude data, %TEMP%, worktrees beside the primary checkout, the live trees, Dumps), then the count of
+java/python processes. `--send` posts it as `STATION <host> disk: ...`. Read-only: it never deletes anything.
 """
 import argparse
 import os
@@ -16,14 +15,38 @@ import time
 from pathlib import Path
 
 HOME = Path.home()
-CANDIDATES = {
-    "vm_bundles": [Path("F:/ClaudeVM"), Path(os.environ.get("APPDATA", "")) / "Claude" / "vm_bundles"],
-    "claude_data": [Path(os.environ.get("LOCALAPPDATA", "")) / "Claude-Data"],
-    "temp": [Path(tempfile.gettempdir())],
-    "worktrees": [p for p in (HOME / "IdeaProjects").glob("mts-*")] if (HOME / "IdeaProjects").exists() else [],
-    "mts_live": [Path("C:/MTS"), HOME / "IdeaProjects" / "BinanceDataFeed" / ".mts_live"],
-    "dumps": [Path("F:/Dumps"), Path("C:/Dumps"), HOME / "Dumps"],
-}
+
+
+def candidates():
+    proj = HOME / "IdeaProjects"
+    return {
+        "vm_bundles": [Path("F:/ClaudeVM"), Path(os.environ.get("APPDATA", "")) / "Claude" / "vm_bundles"],
+        "claude_data": [Path(os.environ.get("LOCALAPPDATA", "")) / "Claude-Data"],
+        "temp": [Path(tempfile.gettempdir())],
+        "worktrees": list(proj.glob("mts-*")) if proj.exists() else [],
+        "mts_live": [Path("C:/MTS"), proj / "BinanceDataFeed" / ".mts_live"],
+        "dumps": [Path("F:/Dumps"), Path("C:/Dumps"), HOME / "Dumps"],
+    }
+
+
+def drives(windows):
+    return ("C:\\", "F:\\") if windows else ("/",)
+
+
+def drive_label(path, windows):
+    return path[0] if windows else "root"
+
+
+def proc_command(windows):
+    return ["tasklist", "/fo", "csv", "/nh"] if windows else ["ps", "-A", "-o", "comm="]
+
+
+def count_procs(text):
+    """java and python process counts from tasklist csv or `ps -o comm=` output."""
+    names = [ln.split('","')[0].strip('"').strip().rsplit("/", 1)[-1].lower() for ln in text.splitlines() if ln.strip()]
+    java = sum(n in ("java", "java.exe") for n in names)
+    python = sum(n.startswith("python") for n in names)
+    return "java=%d python=%d" % (java, python)
 
 
 def tree_gb(path, budget_s=15):
@@ -48,25 +71,23 @@ def free_gb(drive):
         return None
 
 
-def procs():
+def procs(windows):
     try:
-        out = subprocess.run(["tasklist", "/fo", "csv", "/nh"], capture_output=True, text=True, timeout=30).stdout
+        out = subprocess.run(proc_command(windows), capture_output=True, text=True, timeout=30).stdout
     except (OSError, subprocess.SubprocessError):
-        return "n/a"
-    names = [line.split('","')[0].strip('"').lower() for line in out.splitlines() if line]
-    return "java=%d python=%d" % (sum(x == "java.exe" for x in names), sum(x.startswith("python") for x in names))
+        return "procs=n/a"
+    return count_procs(out)
 
 
 def report():
+    windows = os.name == "nt"
     parts = []
-    drives = ("C:\\", "F:\\") if os.name == "nt" else ("/",)
-    for d in drives:
+    for d in drives(windows):
         g = free_gb(d)
         if g is not None:
-            parts.append("%sfree=%.0fG" % (d[0] if os.name == "nt" else "root", g))
-    for label, paths in CANDIDATES.items():
-        tot = 0.0
-        cut = False
+            parts.append("%sfree=%.0fG" % (drive_label(d, windows), g))
+    for label, paths in candidates().items():
+        tot, cut = 0.0, False
         for p in paths:
             if p.exists():
                 g, c = tree_gb(p)
@@ -74,7 +95,7 @@ def report():
                 cut = cut or c
         if tot >= 0.1:
             parts.append("%s=%.1fG%s" % (label, tot, "+" if cut else ""))
-    parts.append(procs())
+    parts.append(procs(windows))
     return " ".join(parts)
 
 

@@ -14,13 +14,23 @@
   "goal": "MED finding in MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md: SpikeFadeSessionState re-entry cap resets on JVM restart (live path restart rule). Persist it and test restart/reset state. Split from wave1-spikefade-ac1-ac2-mandatory.",
   "id": "spikefade-reentry-cap-not-persisted",
   "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tom-encode-fade-entry-paths: review fixes (builder records attempts, stops from bars, per-",
+      "ref": "51ffc4fe420c",
+      "utc": "2026-10-18T07:00:58Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "PLANNER 2026-10-30: filled and T0-checked; awaits Lab_Guy/reviewer stamp before ready (CRUCIAL+ needs independent review)",
+  "note": "REVIEWED:2026-10-30 ACCEPT planner T0 + scope paths verified",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-30T01:04:43Z",
   "refs": [
     "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md"
   ],
@@ -33,11 +43,12 @@
   "scope_out": [
     "deploy or enabling mts.spikeFade"
   ],
+  "scope_sha": "51ffc4fe420c",
   "size": "S",
   "sources": [
     "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Read ITEM3 row A10 and SpikeFadeSessionState:36-68",
     "Persist the cap by default (no runtime data committed)",
