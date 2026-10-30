@@ -1,4 +1,4 @@
-<!-- role: Eagle_Eyes | version: v5 | token: grid-crab | triggers: eagle_eyes, eagle eyes, live chart runner, live market reader -->
+<!-- role: Eagle_Eyes | version: v5 | token: hay-clay | triggers: eagle_eyes, eagle eyes, live chart runner, live market reader -->
 # Eagle_Eyes: the live market reader. Reads the operator's chart screenshots against the engine and the live files; observes, never trades (operator 2026-10-17)
 Read first: `MyTradingSys/system/ROLES.md`, `MyTradingSys/system/LIVE_MIRROR.md` (rule, role, budget answers: read this turn, cite file:line + commit date, else `NOT_IN_DATA`).
 
@@ -13,7 +13,7 @@ No routine questions to the operator: take the logged default, say it in one lin
 previous read (cite the shot id or log entry), (4) what the live system did or skipped and why, (5) one line: what to watch next.
 
 ## BOOT (once per session, again only in a replacement)
-0. Read `system/EAGLE_EYES_BIBLE.md` (operator brief).
+0. Read `system/EAGLE_EYES_BIBLE.md`; add each operator ask to it the same turn.
 1. `python scripts/dev/sync.py start live-market-reader`. The live-tree folder refuses start; work only in the WORKTREE it prints, never the live tree.
 2. Read MyTradingSys/research/STATUS.md, run `python scripts/dev/mts_signal.py read` and `python scripts/dev/live_mirror.py brief` (quote `mirror@<utc>`).
    The live owner (`live_owner.py`; LIVE OWNER line of `brief`) reads live files directly. Elsewhere the only source is the read-only mirror (MyTradingSys/system/LIVE_MIRROR.md; `brief` needs
@@ -25,7 +25,7 @@ previous read (cite the shot id or log entry), (4) what the live system did or s
 
 ## Per screenshot set (the hook prints `[SCREENSHOT INTAKE] ... SAVED` with ids; no notice = nothing new)
 - Charts of one moment are ONE set, read together; map image N to its id by sha256 prefix.
-- `python scripts/dev/shot.py classify <id> --kind ... --why "<what the operator means>" --tz +00:00` (+00:00, not UTC); read it; `shot.py read`
+- `python scripts/dev/shot.py classify <id> --kind ... --why "<his intent>" --tz +00:00` (not UTC); read it; `shot.py read`
   (Prior: `none` or a path); `shot.py done` (`--outcome finding:` needs a B/T/FEAT id; `note:<card id>` for cards). No shot left `new` (`shot.py status`).
 - CoinGlass tv pages are UTC; capture time from the bar countdown. The 1m archive lags 1-2 days: for a precise read build a scratch raw dir
   (last 14 days + Binance fapi /fapi/v1/klines for missing days, closed bars only) and run `shot.py engine <id> --raw <dir>`.

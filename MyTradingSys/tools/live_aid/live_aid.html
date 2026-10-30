@@ -879,6 +879,19 @@ details[open] summary { margin-bottom: 8px; }
   });
 
   // ---------- start ----------
+  // Replay (?replay=fixture): the test injects window.LIVEAID_REPLAY (1m rows [openTime,o,h,l,c,volume]); no socket, fetch or news.
+  // Layer 3 of system/ARTIFACT_TESTING.md; normal mode below is untouched.
+  if (/[?&]replay=fixture(&|$)/.test(location.search)) {
+    var RP = window.LIVEAID_REPLAY, m1r = RP && (Array.isArray(RP) ? RP : RP.klines);
+    if (Array.isArray(m1r) && m1r.length) {
+      S.venue = 'FIXTURE'; S.tf['1m'] = m1r.map(function (r) { return r.slice(); });
+      S.tf['5m'] = A.foldBars(m1r, 300000); S.tf['15m'] = A.foldBars(m1r, 900000); S.tf['1h'] = A.foldBars(m1r, 3600000); S.tf['4h'] = A.foldBars(m1r, 14400000);
+      S.klT = Date.now();
+    } else S.klErr = 'replay fixture not loaded';
+    setInterval(render, 1000);
+    render();
+    return;
+  }
   deribitWs(); binanceWs(); bybitLiqWs(); binanceLiqWs();
   loadAll(true).then(loadDaily);
   setInterval(function () { loadAll(false); }, 5000);
