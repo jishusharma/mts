@@ -4,14 +4,17 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-30T08:37:20Z",
-    "misses": 18,
+    "folded": "2026-10-30T08:52:01Z",
+    "misses": 24,
     "reads": [
       "scripts/dev/extra_tests.tsv",
+      "MyTradingSys/system/wiring_registry.json",
       "MyTradingSys/items/T054_us_session_news_correlation.md",
       "scripts/dev/sync.py",
       "scripts/dev/tasks.py",
-      "MyTradingSys/research/malkan_extract_2026-10-15/tools/test_check_numbers.py"
+      "scripts/dev/wiring_scan.py",
+      "MyTradingSys/research/malkan_extract_2026-10-15/tools/test_check_numbers.py",
+      "scripts/dev/run_all_tests.py"
     ],
     "session": "agent-aabe8f2378523e244"
   },
