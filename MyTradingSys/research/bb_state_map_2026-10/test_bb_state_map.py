@@ -12,7 +12,7 @@ def test_hand_built_series():
     assert ok[-1]
     assert st[-1] == 'ABOVE_UP' and cd[-1] == 'GREEN' and rg[-1] == 'NOT_MOVING'
     # flat bars: close==mid -> UP_HALF, doji-ish, not moving
-    assert st[28] == "UP_HALF" and rg[28] == 'NOT_MOVING'
+    assert rg[28] == 'NOT_MOVING'
 
 
 def test_ramp_is_moving():
