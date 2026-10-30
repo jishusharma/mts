@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T09:00:59Z",
   "commands": [],
   "context": {
     "calls_to_edit": 20,
@@ -14,14 +15,29 @@
   },
   "created": "2026-10-30T08:05:53Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "live_aid shows the last 12 Tree News headlines and a News-last-hour pulse tile; tests pass",
+  "est_turns": 6,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Show global/BTC news on the live_aid dashboard so events like the 2026-10-29 Binance hack are visible within seconds",
   "id": "live-aid-news-panel",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "News panel + 'News, last hour' tile on live_aid (Tree News free REST, 15 s poll); 26 live_",
+      "ref": "ec203fcca",
+      "utc": "2026-10-30T09:00:59Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "live_aid: News panel + \"News, last hour\" tile (Tree News, free, no key)",
+      "ref": "e74038d3d2a5",
+      "utc": "2026-10-30T08:21:23Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -29,18 +45,31 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-30T09:00:57Z",
   "refs": [
     "MyTradingSys/research/news_feeds_2026-10-30/REPORT.md"
   ],
-  "result": "",
-  "scope_in": [],
+  "result": "News panel + 'News, last hour' tile on live_aid (Tree News free REST, 15 s poll); 26 live_aid tests pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/tools/live_aid"
+  ],
   "scope_out": [],
-  "size": "",
+  "scope_sha": "e74038d3d2a5",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "done",
+  "steps": [
+    "add newsTags/newsMerge/newsPulse to live_aid_indicators.js",
+    "add News panel + tile to live_aid.html"
+  ],
+  "taken": "2026-10-30T09:00:59Z",
+  "tests": "test_live_aid.py test_news_word_tags test_news_pulse_and_merge (fail-first via itnews/itpulse)",
   "title": "live_aid: news headline panel + news pulse tile + word tags (Tree News REST, N1/N2/N6)",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }
