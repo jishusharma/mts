@@ -4,12 +4,14 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-30T19:09:26Z",
-    "misses": 12,
+    "folded": "2026-10-30T20:39:11Z",
+    "misses": 22,
     "reads": [
+      "scripts/dev/artifacts.py",
       "scripts/dev/lane_health.py",
       "MyTradingSys/system/codex_usage.json",
       "MyTradingSys/system/lane_state.json",
+      "MyTradingSys/system/LAYERS.md",
       "MyTradingSys/system/OPERATOR_DECISIONS.md",
       "MyTradingSys/system/roles/session_planner.md",
       "scripts/dev/health_audit.py"
