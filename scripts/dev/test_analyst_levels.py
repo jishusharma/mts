@@ -55,6 +55,12 @@ class Notice(unittest.TestCase):
         self.assertIn("75,000", out)
         self.assertIn("Michael", out)
 
+    def test_chart_paste_rebuilds_live_aid_analyst_data(self):
+        with mock.patch.object(shot, "refresh_live_aid_analysts") as ref, mock.patch.object(al, "hook_block", return_value=""):
+            shot.notice([{"id": "abc123", "ext": "png", "w": 10, "h": 10, "route": "paste"}], [])
+            shot.notice([], [])
+        self.assertEqual(ref.call_count, 1)  # only when a new image landed
+
     def test_hook_block_never_raises(self):
         with mock.patch.object(al, "recent_rows", side_effect=RuntimeError("bad store")):
             self.assertEqual(al.hook_block(), "")

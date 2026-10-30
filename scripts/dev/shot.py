@@ -1037,6 +1037,20 @@ def status_line(S, max_age_hours=24):
     return line, overdue
 
 
+def refresh_live_aid_analysts():
+    """Rebuild live_aid's analyst_data.js on every chart paste (dash-designer 10-30: the panel goes amber after 6 h). Never raises."""
+    try:
+        sys.path.insert(0, str(REPO / "MyTradingSys" / "tools" / "live_aid"))
+        import build_analyst_data as bad
+        try:
+            bad.write(bad.build())
+        except OSError:
+            bad.write(bad.build(offline=True))
+        return True
+    except Exception:
+        return False
+
+
 def notice(new, backlog):
     """What a session is told. Short on purpose: it lands in every prompt that follows a paste."""
     lines = []
@@ -1059,6 +1073,7 @@ def notice(new, backlog):
                 lines.append(block)
         except Exception:
             pass
+        refresh_live_aid_analysts()
     elif backlog:
         lines.append(f"[SCREENSHOT INTAKE] {len(backlog)} saved screenshot(s) are not closed yet (oldest {max(age_hours(s.get('ts_seen') or s.get('ts_landed')) for s in backlog) / 24:.1f} d):"
                      f" {', '.join(s['id'][:8] for s in backlog[:6])}. `python scripts/dev/shot.py list --status pending`")
