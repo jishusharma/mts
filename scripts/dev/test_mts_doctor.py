@@ -285,3 +285,17 @@ def test_stale_claims_limit_is_sync_stale_hours(monkeypatch):
     ep = lambda h: str(int(now.timestamp() - h * 3600))
     claims = [(f"c{i}", {"epoch": ep(30)}) for i in range(6)]    # 30 h old: stale at 24 h, fresh at 48 h
     assert D.stale_claims(".", claims, now)[0] == "OK"
+
+
+def test_supervisor_idle_warns_on_a_login_with_ready_cards_and_no_worker_for_60_min():
+    """bug-supervisor-idles-after-wake-retired (5): a login with READY cards and no worker activity for 60 min is flagged."""
+    from datetime import timedelta
+    now = datetime(2026, 10, 30, 18, 0, tzinfo=timezone.utc)
+    hb = lambda lg, run: f"BUDGET login={lg} 5h=40% week=40% reset=2026-11-03T20:00Z sup=JIS-NB mode=NORMAL run={run} free=1 end=19:00Z"
+    beats = [(now - timedelta(minutes=150), hb("C", 1)), (now - timedelta(minutes=20), hb("C", 0)),
+             (now - timedelta(minutes=5), hb("A", 1))]
+    st, msg = D.supervisor_idle(None, beats=beats, ready_n=4, now=now)
+    assert st == "WARN" and "C idle 150 min" in msg and "A idle" not in msg
+    assert D.supervisor_idle(None, beats=beats, ready_n=0, now=now)[0] == "OK"
+    assert D.supervisor_idle(None, beats=beats[2:], ready_n=4, now=now)[0] == "OK"
+    assert "SUPERVISOR-IDLE" in D.CHECK_NAMES

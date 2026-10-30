@@ -1,28 +1,39 @@
-# Supervisor C handover | written 2026-10-30T02:17Z by JIS-DESKTOP | verify: python scripts/dev/supervisor.py handover --verify   (STALE 0 at last boot)
-Successor task: MTS-SuccWake-C fireAt 2026-10-30T02:18Z (4b2)
+# SUPERVISOR C notes (super-session-1, Agent sonnet, login C, JIS-DESKTOP) - rewritten each wake
 
-## Goal
-Login C on JIS-DESKTOP: mode NORMAL, 5 h 22.0% (reset 2026-10-30T02:40Z), week 28.0% of cap 85.
-Stop at 5 h >= 80%, week >= cap, CI red, no ready cards, the TRANSIT at time, or a 3 h wave.
+Started 2026-10-30T17:20Z. Work until 2026-10-31T05:06Z. Wake 3 at 18:40Z. Usage: parent reading 17:20Z (5h 43, week 39); since then ESTIMATES only (Agents cannot get_usage): 5h ~25, week ~42; 5h reset 22:50Z; plan slots=1 (burn shrink). DECISION (OURS): spawn at most 1 new Sonnet worker per wake until a real reading arrives.
 
-## Truth
-- Peers live at write: A@JIS-NUC, B@JIS-NUC | `python scripts/dev/sync.py where --all` | read at 2026-10-30T02:17Z
-- Last picks: main-checkout-stale-hooks-2026-10-24 | `python scripts/dev/tasks.py dispatch` | read at 2026-10-30T02:17Z
-- Open claims from JIS-DESKTOP: ship-root-cause | `python scripts/dev/sync.py where --all` | read at 2026-10-30T02:17Z
+## Shipped and verified (git cherry empty, Result: in body, CI green after)
+- eba62ccc2 (on trunk 98d5ed195): GPT lane state restored after false auth-down from running codex_run.py on this desktop.
+- 3e32873fd -> c9986aad2: 19 ready cards un-STALEd (24 -> 5; 5 held as delivered). Flags re-fire on any scope-file touch (treadmill): workers run `tasks.py tag --refresh <id>` themselves.
+- Opus F bug-supervisor-idles-after-wake-retired: 2037b9246 + 9b0542273 + 7b66a91a7 in bc20940de; 141 tests pass; card done on trunk.
+- Stream A layer-review-tom-guidance: 843ee79fd (4 sections, verify_extract_quotes exit 0).
+- Planner: 15f050461 (4 cards refined: live-aid-replay, gemini_queue guard, C20 reland, sim-desk-click-test; mirror-share-denied-jisnb parked).
+- Haiku recount 18:50Z (a937a63512ee45648): tom sheet 4 sections x5 headings, no verdict wording; 141 tests pass (supervisor 94, status_board 21, doctor 21, role_budget 5); supervisor.md 7432 B < 7500. All PASS.
 
-## Ruled out
-- none recorded by the tool; add what was tried and closed (`handover --from <file>`).
+- 19:11Z CI RED at Step 4 test_lookahead_lint (3d777c49d C21/C22 research by another session, no revert in 10 min): I reverted it, 740540935 -> f4b49bf01, CI green 19:15Z. Note the author may re-land with fixes.
+- haiku-register-orphan-tests closed 61c26852d: 1 orphan (test_supervisor.py, already skip-reasoned), 0 files registered (Haiku report; card result on trunk).
+- haiku-refresh-stale-ready-cards closed by me (tasks.py done) in the next ship.
+- d-drain-opus-supervisor-c: an Opus Supervisor C was drained on operator order; this session is the one C supervisor.
+- plan RUN line suggests `codex_run.py tick` over the NUC ssh gate: it cannot push (no git login in ssh), skip; GPT goes through desk row 20261030-174331.
 
-## Next 3 steps
-1. `python scripts/dev/sync.py start supervisor-C-<utc date>`; `get_usage`; `python scripts/dev/supervisor.py plan --login C --five <%> --five-reset <utc> --week <%> --week-reset <utc> --running 0`.
-2. 02:20Z TRANSIT. Open: Fable R5 shipped (GRANDFATHER_DECISION 7f02769e; config edit is a CRITICAL card); R7 on O2 hold; reply protocol e8e7e8cd shipped; station_disk_report removed from trunk, needs Linux-safe re-land; successor wake fix e1e0dba8 unproven (proof fire card); b-230ce8 told (GPT/Gemini on NUC); DeepSeek DSA row 39h; A reset conflict.
-3. `python scripts/dev/tasks.py dispatch`; start the next picks.
+## Running
+- Sonnet a27bd342cf0969230: live-aid-replay-mode-fixture-feeds (stream D), waiting on its ship; collision risk with Lenovo claim pizzino-layer-dashboard on live_aid.html.
+- Haiku a1381e3e0a2a0bc81: haiku-register-orphan-tests, waiting on its ship.
 
-## Traps
-- One ship at a time; EXTRA registration forces the ~20 min gate.
+## Open asks
+- desk 20261030-174331 (JIS-NUC): run the 6 GPT audits (desktop codex has NO login; never run codex_run.py here). b-230ce8 ack pending until a run lands.
+- desk 20261030-173120 (JIS-NUC): 4 Gemini cards at :low.
+- signal q-f7aac9 -> desktop-f7iu69n: run testnet-trade-readout-daily (ack due 18:40Z, answer by 21:40Z). live-not-fired-audit-1029 also needs the Lenovo (live files).
 
-## Open
-- Claims above: finish, hand over in the card, or release.
+## Next
+- Verify D and orphan-test ships; Haiku recount of the 5 shipped claims.
+- Feeder: file Gemini blind-read / GPT re-derive check cards for ships with numbers (tom sheet, replay test) if LANE LOW; none printed so far.
+- Stream C follow-up when the Lenovo acks; stream B/E on picks.
+- Noticed: task STALE flag treadmill; test_verify_cli_writes_stale flaky; Tom sheet notes SetupCandidatesBuilder max 5 flags vs TOM_CORE_BT.md:14 ceiling 6.
 
-## Missed last time
-(machine-written by `context_gap.py fold` at the next ship)
+## Opus Supervisor C (session 411bc931, JIS-DESKTOP): DRAINED on operator order 2026-10-31, successor = Super session 1 (Fable session agent)
+- Order: d-drain-opus-supervisor-c ("Yes, drain Opus"). No `supervisor.py handover`, no successor wake; the work period file (until 2026-10-31T05:06Z) is left for Super session 1.
+- Shipped this run (green): 8582e5678 + f876f2f92 (work period + stop guard), 18baf310 (splits guard re-land), bc3b749b0 (B163 v2 alpha/beta re-land), backtest consolidation BACKTEST_CONSOLIDATION_2026-10-30.md.
+- Left running: Builder ad8d395b329477c07 re-landing the tf-break study (ask-p0-45); the drained session verifies its ship when it reports.
+- Open: login B supervisor on JIS-NUC not up (last heartbeat ENDED 17 h); card bug-wait-wakes-on-foreign-stalls (watcher woke 3x on Super session 1's stalled tasks); CI red at 679e3e43 already reverted (740540935), verdict pending.
+

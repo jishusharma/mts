@@ -1,0 +1,67 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-30T16:46:00Z",
+  "depends_on": [],
+  "done_when": "python -m pytest MyTradingSys/research/sim_desk/test_page_click.py passes on the desktop with the rendered trade count 40 and mean 0.25 R (then 0.5 R for x=2) equal to the independent figures; the patched run fails; test_integration_http.py unchanged and green; shipped, git cherry empty.",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Layer 3 for the sim desk local app: open page.html in headless Chromium against a desk server on a free port using the Fake study of test_integration_http.py, click Run, and read the RENDERED verdict, trade count, mean R and trade list against independent maths.",
+  "id": "sim-desk-page-click-test",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "artifact testing: four-layer design (ARTIFACT_TESTING.md) + layer 3 gate: every page opens",
+      "ref": "36f311c44158",
+      "utc": "2026-10-30T16:46:53Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "36f311c44158 artifact testing: four-layer design (ARTIFACT_TESTING.md) + layer 3 gate: eve",
+      "ref": "MyTradingSys/system/ARTIFACT_TESTING.md",
+      "utc": "2026-10-30T16:46:53Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-30 ACCEPT | DECISION (OURS): the Fake study (no market data) is the fixture, so it runs offline and deterministically; only the desktop gate has Chromium (CI skips). The page prints the mean as +0.250 (fmt), compare at that rounding.",
+  "prio": 4,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T18:24:14Z",
+  "refs": [
+    "MyTradingSys/system/ARTIFACT_TESTING.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/test_page_click.py",
+    "scripts/dev/extra_tests.tsv",
+    "MyTradingSys/system/ARTIFACT_TESTING.md"
+  ],
+  "scope_out": [
+    "desk.py and page.html behaviour (a page bug found is filed, not fixed here), real studies and market data, screenshot goldens, the static artifact/index.html"
+  ],
+  "scope_sha": "36f311c44158",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/system/ARTIFACT_TESTING.md; MyTradingSys/research/sim_desk/HANDOVER_SIMV2.md:24"
+  ],
+  "state": "ready",
+  "steps": [
+    "New test_page_click.py: import server fixture and Fake from test_integration_http.py; playwright chromium headless (skip with a reason if playwright or Chromium is missing, like scripts/dev/test_artifact_pages.py); open the server url, no console error.",
+    "Click chip data-study=fakewire, press #run, wait until #say stops saying Running; read #nums and #verdict text. Independent expectation from the Fake definition: 40 trades, 20 at +1.0 and 20 at -0.5, mean +0.25 R; assert the page shows 40 and the mean at the page's rounding.",
+    "Click the first #tltab row: #tchart gets an svg (Fake.chart_trade) with no error text. Second run with x=2: mean doubles to 0.5 R on the page.",
+    "Fail-first: add_init_script that rewrites window.fmt or a +1 trade count makes the numbers test fail once; paste the failing line. Register in scripts/dev/extra_tests.tsv; update the Sim desk (local app) row of ARTIFACT_TESTING.md."
+  ],
+  "tests": "MyTradingSys/research/sim_desk/test_page_click.py::test_run_renders_counts_and_mean, ::test_trade_row_draws_chart, ::test_second_run_doubles_mean; fail-first via add_init_script bump on the rendered count",
+  "title": "Sim desk: open page.html in headless Chromium against the local desk.py server, click Run on one study, assert the result strip and trade list render (page is only node syntax-checked today)",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

@@ -1,0 +1,10 @@
+{
+  "done_when": "AIBridge extension expires a pending run and resyncs with the agent; task=mts-gate exits non-zero on a failed step; the B209 item list is closed or moved to cards with tests",
+  "from": "JIS-NB",
+  "id": "20261030-163838-claude-fix-the-four-aibridge-defects-fro",
+  "need": "Four bridge defects were observed and recorded in one session on JIS-NB, all with reproduction detail in BUGS.md. B210: silent stall, panel stuck on running #NNN with running 0, no timeout, no resync; recovery is hands-free off/on, extension reload, F5. B209: 16 smaller defects (duplicate worktree, oversized boot lists, block/output mis-attribution, task=mts-gate printing PASS over FAILED: 2 step(s), read-only blocks stamped kind=write, a child powershell not inheriting the block cwd, dsa.py end emptying a worktree then failing its last rmdir). B168: auto-run stops between turns. Fix order: B210 lock expiry and resync first, then the task-mode PASS/FAIL, then the rest.",
+  "posted": "2026-10-30T16:38:38Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "Claude: fix the four AIBridge defects from 2026-10-30 (B168, B209, B210, stuck-run lock)"
+}

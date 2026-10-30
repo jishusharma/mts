@@ -1,0 +1,87 @@
+{
+  "approved_by": "d-supervisor-idle-bug",
+  "asks": "",
+  "closed": "2026-10-30T17:58:31Z",
+  "commands": [],
+  "created": "2026-10-30T09:00:00Z",
+  "crucial": true,
+  "depends_on": [],
+  "done_when": "supervisor never idles with READY cards or unread signals (dispatch or arm supervisor.py wait); re-armed watcher after compaction; status shows per-login mode, last dispatch, RED 'idle with ready work'; mode not ENDED while alive; doctor flags 60-min idle login; new tests fail on pre-change code.",
+  "est_turns": 20,
+  "facts": "2026-10-30 operator asked 'rolling super sessions status, how many ran, why are you not running anything, why is work not moving'. Supervisor C ran 1 session (compacted twice), 0 successors. The 02:41Z headless wake failed (expired OAuth login) and was retired in d3570f13b with no replacement, so nothing re-engages the supervisor after a quiet period. The supervisor answered 'idle, nothing needed' for about 8 hours while 3 JIS-NB cards were READY, a signal from A (run bb_state_study.py) sat unacted, login B's supervisor had been ENDED 15 h, and 111 cards were blocked. mts_signal shows login C sup=ENDED while the session was alive. No supervisor.py wait watcher was armed after compaction. Standing operator order 'keep working for next 8 hours' was not honored.",
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Stop rolling supervisors going idle while work is READY: dispatch or watch, re-arm after compaction, show idle-with-ready-work as RED, and make the doctor catch it.",
+  "id": "bug-supervisor-idles-after-wake-retired",
+  "lane": "OPUS",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "status board + doctor flag a login idle >= 60 min with READY cards; handover refuses mode=",
+      "ref": "2037b9246",
+      "utc": "2026-10-30T17:58:31Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Operator 2026-10-30 (voice): 'rolling super sessions status ... why are you not running anything right now?' and 'So why are you feeling low? Did you log a bug?'",
+  "operator_words_note": "Voice-dictated. 'feeling low' probably means 'feeling lazy/idle'.",
+  "operator_words_verbatim": [
+    "I'm talking about rolling super sessions. What is the status on that? How many did you run? And why are you not running anything right now? What about other machines? How many did they run? And what they are doing right now? Why work is not moving? Why nothing is happening? I need an answer. Accurate one.",
+    "So why are you feeling low? Did you log a bug?"
+  ],
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T09:00:00Z",
+  "refs": [
+    "MyTradingSys/system/OPERATOR_DECISIONS.md",
+    "MyTradingSys/system/SCHEDULING_POLICY.md",
+    "MyTradingSys/system/tasks/bug-headless-wake-voice-misread.json"
+  ],
+  "required_fix": [
+    "(a) A supervisor never ends a turn idle while READY cards exist for its lane or signals await it: dispatch a worker or arm supervisor.py wait.",
+    "(b) After compaction the supervisor re-arms the watcher and re-reads signals as its first act.",
+    "(c) Status must show per-login supervisor mode, last dispatch time, and flag 'idle with ready work' as RED.",
+    "(d) Mode must not read ENDED while the session is alive.",
+    "(e) A doctor check (MTS doctor) that flags a login with READY cards and no worker activity for 60 min."
+  ],
+  "result": "status board + doctor flag a login idle >= 60 min with READY cards; handover refuses mode=ENDED inside the work period; IDLE_RULE/REARM_RULE in roles/supervisor.md + D5; 4 fail-first tests (2037b9246)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "Supervisor role doc: never end a turn idle while READY cards or signals await the lane; dispatch a worker or arm supervisor.py wait",
+    "Post-compaction first act: re-arm the watcher and re-read signals",
+    "Status board: per-login supervisor mode, last dispatch time, RED 'idle with ready work'",
+    "Mode field: must not read ENDED while the session is alive",
+    "MTS doctor check: login with READY cards and no worker activity for 60 min is flagged"
+  ],
+  "scope_out": [
+    "Re-enabling the retired headless successor wake",
+    "Editing settings.json (operator-owned)",
+    "Deploys; live tree; mainnet"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/lead/bug_headless_wake_voice_2026-10-30.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Write failing tests for the status RED flag, the ENDED-while-alive mode, and the doctor 60-min idle check; confirm they fail on the pre-change code",
+    "Update the supervisor role doc with the never-idle-with-ready-work rule and the post-compaction re-arm first act",
+    "Implement the status per-login fields and RED flag",
+    "Implement the doctor check",
+    "Run tests, then sync.py ship"
+  ],
+  "taken": "",
+  "tests": "Fail-first: status shows RED for a login with READY cards and no dispatch for 60 min; mode is not ENDED while the session is alive; doctor flags the same login. Each fails on current trunk.",
+  "title": "Rolling supervisor goes idle: no watcher, no dispatch, mode ENDED while session alive",
+  "weight": "",
+  "worker": "session"
+}
