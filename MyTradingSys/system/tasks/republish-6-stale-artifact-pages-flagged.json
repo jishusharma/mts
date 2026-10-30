@@ -1,37 +1,73 @@
 {
   "approved_by": "",
-  "asks": "Needs per-login Artifact publish on jishusharma1985; default: wait for q17-p5-three-pages to retire pages",
-  "commands": [],
+  "asks": "",
+  "commands": [
+    "python scripts/dev/artifacts.py build",
+    "python scripts/dev/artifacts.py stale",
+    "python scripts/dev/artifacts.py publish-record --slug <slug>"
+  ],
+  "context": {
+    "calls_to_edit": 18,
+    "folded": "2026-10-30T21:15:02Z",
+    "misses": 6,
+    "reads": [
+      "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-audit-formulas-vs-rsi-layer.md",
+      "MyTradingSys/system/role_details/session_planner_details.md"
+    ],
+    "session": "agent-a93f5dad7228cf4de"
+  },
   "created": "2026-10-29T17:02:10Z",
   "depends_on": [],
-  "done_when": "artifacts.py stale reports none of the 6 named pages stale (each republished via artifacts.py publish-record, or dropped from the list if q17-p5-three-pages retires it first).",
-  "est_turns": null,
+  "done_when": "artifacts.py stale prints no STALE line for a page login C can edit (count N -> 0); every page skipped is listed with its reason; registry.json pub date for each republished slug is today.",
+  "est_turns": 15,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Noticed by extracted-rules-wiring-audit's sync.py ship (2026-10-29): 6 published pages (mts_control_room, mts_layer_map, tom_fabio_deck, mts_home, research_map, session_planner) are stale vs. the repo.",
+  "goal": "Bring every stale page that login C owns back to its repo build: Artifact read then publish over the page's own url, then publish-record. Pages C does not own or cannot edit are listed, not published.",
   "id": "republish-6-stale-artifact-pages-flagged",
-  "lane": "SONNET",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Republish the 6 stale claude.ai pages and record it",
+      "ref": "abe3d2c6868e",
+      "utc": "2026-10-30T21:07:37Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
   "not_twin_of": [
     "q17-p5-three-pages"
   ],
-  "note": "Raw, filed by Supervisor A from a worker's Noticed: line, not yet refined. | PLANNER 2026-10-30 SKIPPED: 3 of the 6 pages are single copies on login jishusharma1985 (artifacts.py plan: NO COPY) and q17-p5-three-pages (blocked) may retire the rest; needs a per-login Artifact publish, not a repo change.",
+  "note": "REVIEWED:2026-10-31 T0-ONLY Final report ends with a Noticed: line. Blocked? List 2-3 non-destructive fixes, try the safest, verify, then report. | PLANNER 2026-10-31 refined to HAIKU: the 2026-10-30 SKIPPED note is superseded (both remaining stale pages have a jishusharma1985 url; per-login Artifact publish is the step, run from login C). Pages a later q17-p5-three-pages retires are dropped from the list.",
   "prio": 3,
   "refine_tries": 1,
-  "refined_by": "",
+  "refined_by": "planner-20261030-d",
+  "refreshed": "2026-10-30T21:14:19Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/system/artifacts/registry.json",
+    "MyTradingSys/system/artifacts/mts_control_room.html",
+    "MyTradingSys/system/artifacts/layer_map.html"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no product-code edit; never publish a second copy (a new url); no page without edit access ('writer' in Artifact read)"
+  ],
+  "scope_sha": "abe3d2c6868e",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "Republish 6 stale artifact pages flagged by sync.py ship (mts_control_room, mts_layer_map, tom_fabio_deck, mts_home, research_map, session_planner)",
-  "weight": "",
-  "worker": ""
+  "state": "ready",
+  "steps": [
+    "run python scripts/dev/artifacts.py build, then python scripts/dev/artifacts.py stale; keep the STALE lines (2026-10-31: mts_control_room, mts_layer_map)",
+    "per STALE slug: take the url in registry.json under urls.jishusharma1985; Artifact action read that url; only if the header says writer, Artifact publish the repo html over that same url",
+    "after each publish: python scripts/dev/artifacts.py publish-record --slug <slug>",
+    "re-run artifacts.py stale and report the count before and after; list any page skipped (not owned by C, no edit access) with the reason"
+  ],
+  "tests": "count-based: artifacts.py stale STALE-line count before vs after, reported",
+  "title": "Republish the stale artifact pages that login C (jishusharma1985) owns (artifacts.py stale; 2 stale on 2026-10-31, was 6)",
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
