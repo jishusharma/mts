@@ -61,7 +61,7 @@ class ShotTest(unittest.TestCase):
         self.proj.mkdir(parents=True)
         self.t = self.proj / f"{SID}.jsonl"
         env = {"MTS_SHOT_DIR": str(self.store), "MTS_CLAUDE_HOME": str(self.home), "MTS_SHOT_TEMP": str(self.temp),
-               "MTS_SHOT_SLUGS": "SLUG"}
+               "MTS_SHOT_SLUGS": "SLUG", "MTS_SHOT_PARENT_SLUGS": "PARENT"}
         p = mock.patch.dict(os.environ, env)
         p.start()
         self.addCleanup(p.stop)
@@ -437,6 +437,39 @@ class ShotTest(unittest.TestCase):
         self.assertIn(i, out)
         self.assertIn("32 % gone", out)
         rc, out, _ = self.run_main("hook", stdin=self.payload())  # nothing new: silent
+        self.assertEqual((rc, out), (0, ""))
+
+    def test_hook_tells_any_session_about_a_phone_upload_in_the_parent_folder(self):
+        other = "6eafabed-efb6-4446-80bf-18a2b463437b"
+        proj = self.home / "projects" / "PARENT"
+        proj.mkdir(parents=True)
+        (proj / f"{other}.jsonl").write_text(json.dumps({"type": "user", "message": {"role": "user", "content": [
+            {"type": "text", "text": "@\"C:/u/9417f401-image.png\" share these bios screens with the nuc chat"}]}}) + "\n",
+            encoding="utf-8", newline="\n")
+        up = self.home / "uploads" / other
+        up.mkdir(parents=True)
+        (up / "9417f401-image.png").write_bytes(png("bios"))
+        self.write_transcript()
+        rc, out, _ = self.run_main("hook", stdin=self.payload())
+        self.assertEqual(rc, 0)
+        i = next(iter(self.state()))
+        self.assertIn(i, out)
+        self.assertIn("another chat", out)
+        self.assertIn(str(self.store / "img" / f"{i}.png"), out)
+        rc, out, _ = self.run_main("hook", stdin=self.payload())  # told once
+        self.assertEqual((rc, out), (0, ""))
+
+    def test_hook_skips_old_parent_uploads(self):
+        other = "old-chat"
+        proj = self.home / "projects" / "PARENT"
+        proj.mkdir(parents=True)
+        (proj / f"{other}.jsonl").write_text("", encoding="utf-8")
+        up = self.home / "uploads" / other
+        up.mkdir(parents=True)
+        (up / "a.png").write_bytes(png("old"))
+        os.utime(up, (0, 0))
+        self.write_transcript()
+        rc, out, _ = self.run_main("hook", stdin=self.payload())
         self.assertEqual((rc, out), (0, ""))
 
     def test_hook_session_start_reports_the_backlog(self):

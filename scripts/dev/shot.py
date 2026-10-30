@@ -47,6 +47,7 @@ PRIOR_LINE = re.compile(r"^[\s>*-]*Prior(?::\**|\**:)[ \t]*(\S.*?)\s*$", re.M)  
 OUTCOME_ID = re.compile(r"^(B\d{3}|T\d{3}|F-BT-\d+|FEAT-\d+|card:[a-z0-9][a-z0-9-]*)$")   # card: = a task card (tasks.py)
 SET_WINDOW_MIN = 10  # chart shots of one symbol within this many minutes are one set (the 2026-10-08 batch spanned 4)
 NAG_EVERY_HOURS = 6  # the SessionStart backlog reminder repeats at most this often
+PARENT_UPLOAD_HOURS = 48   # older parent-folder uploads predate this hook; never flood a session with them
 MAX_TEXT = 500
 EXT_OK = {".png", ".jpg", ".jpeg", ".webp", ".gif"}
 ENGINE_SYMBOLS = ("BTCUSDT",)  # SnapAt.java hard-codes BTCUSDT
@@ -358,6 +359,37 @@ def save_cursors(store, cur):
     tmp = store / ".cursors.tmp"
     tmp.write_text(json.dumps(cur), encoding="utf-8", newline="\n")
     os.replace(tmp, store / "cursors.json")
+
+
+def parent_slugs():
+    """Claude project folders of the folder above the repo (e.g. C:/Users/<u>/IdeaProjects). Phone and app chats opened there
+    run none of this repo's hooks, so their uploads would reach no MTS session without this."""
+    env = os.environ.get("MTS_SHOT_PARENT_SLUGS")
+    if env is not None:
+        return [s for s in env.split(",") if s]
+    return [slug(main_root().parent)]
+
+
+def ingest_parent_uploads(store, max_age_hours=PARENT_UPLOAD_HOURS):
+    """Uploads of recent chats in the parent folder: land them so the next prompt in any MTS session is told."""
+    new = []
+    up = claude_home() / "uploads"
+    if not up.is_dir():
+        return new
+    now = datetime.now(timezone.utc).timestamp()
+    for sl in parent_slugs():
+        proj = claude_home() / "projects" / sl
+        if not proj.is_dir():
+            continue
+        for d in sorted(up.iterdir()):
+            t = proj / f"{d.name}.jsonl"
+            try:
+                fresh = d.is_dir() and t.is_file() and now - d.stat().st_mtime <= max_age_hours * 3600
+            except OSError:
+                fresh = False
+            if fresh:
+                new += ingest_dir(store, d, "other-chat", d.name, t)
+    return new
 
 
 def ingest_session(store, session, transcript, project_slug=None):
@@ -1013,6 +1045,9 @@ def notice(new, backlog):
         for e in new:
             wh = f"{e['w']}x{e['h']}" if e.get("w") else e["ext"]
             lines.append(f"  {e['id']} {wh} via {e['route']}" + (f' | operator: "{e["operator_text"][:140]}"' if e.get("operator_text") else ""))
+            if e["route"] == "other-chat":
+                lines.append(f"    uploaded in another chat (session {e['session'][:8]}); meant for you if the words fit your work."
+                             f" View it now: Read {store_dir() / 'img' / (e['id'] + '.' + e['ext'])}")
         lines.append("Before you answer from them: python scripts/dev/shot.py classify <id> --kind chart|positions|app|other|noise --why \"<what it is, what the operator meant>\""
                      " (chart also needs --symbol --tf --at [--tz] --source). Reading, claim classes and outcomes: MyTradingSys/methodology/screenshot_intake.md."
                      " No shot may stay 'new' at session end.")
@@ -1030,6 +1065,7 @@ def hook():
         payload = json.loads(raw) if raw.strip() else {}
         sid = payload.get("session_id")
         new = ingest_session(store, sid, payload.get("transcript_path"), slug(payload["cwd"]) if payload.get("cwd") else None) if sid else []
+        new += ingest_parent_uploads(store)
         backlog = []
         if payload.get("hook_event_name") == "SessionStart":
             cur = load_cursors(store)
