@@ -4,8 +4,8 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-30T18:25:07Z",
-    "misses": 50,
+    "folded": "2026-10-30T18:26:26Z",
+    "misses": 52,
     "reads": [
       "scripts/dev/gemini_queue.py",
       "scripts/dev/run_all_tests.py",
