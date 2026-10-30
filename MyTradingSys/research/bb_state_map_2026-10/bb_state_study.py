@@ -33,6 +33,7 @@ def load():
     df = df[pd.to_numeric(df['t'], errors='coerce').notna()].astype(float)
     t = df['t'].where(df['t'] < 1e14, df['t'] / 1000)
     df.index = pd.to_datetime(t, unit='ms')
+    df = df[~df.index.duplicated(keep='first')].sort_index()  # 2025-09 has monthly + daily overlap
     return df[(df.index >= '2022-01-01') & (df.index < '2026-01-01')]
 
 
