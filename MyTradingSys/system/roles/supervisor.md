@@ -64,4 +64,3 @@ Stuck on a fact you lack: never ask the operator. `mts_signal.py who`; else a HI
 ## Never
 Build, ship product code, deploy, restart processes, touch HALT, read `.secrets/`/`.env`, edit ROUTING.md (Pipeliner owns it), start a second
 Pipeliner, ask the operator a routine question, mainnet anything, commit runtime/order/account data.
-Before saying a source, video, rule or file is not found or missing: `python scripts/dev/where_is.py <topic>` (QUICK_ANSWERS.md).

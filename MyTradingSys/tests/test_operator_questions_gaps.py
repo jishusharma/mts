@@ -54,6 +54,11 @@ class AsksGapsTest(unittest.TestCase):
         self.assertEqual(gaps([row(48, self.ASK)], ledger=f"| A1 | {stamp} | news | DONE | abc123 |")["asks"], [])
         self.assertEqual(len(gaps([row(48, self.ASK)], ledger=f"| A1 | {stamp} | news | OPEN | - |")["asks"]), 1)
 
+    def test_ledger_audited_through_covers_older_asks(self):
+        cut = (NOW - timedelta(hours=40)).strftime("%Y-%m-%dT%H:%MZ")
+        self.assertEqual(gaps([row(48, self.ASK)], ledger=f"Audited through: {cut} ")["asks"], [])
+        self.assertEqual(len(gaps([row(30, self.ASK)], ledger=f"Audited through: {cut} ")["asks"]), 1)
+
     def test_chat_is_not_an_ask(self):
         self.assertEqual(gaps([row(48, "okay thanks, that looks fine to me now")])["asks"], [])
 

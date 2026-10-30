@@ -580,7 +580,6 @@ def start(repo, slug=None, here=False, quiet=False, worker=False):
         for p in prior[:12]:
             print(f"  {p}")
     if not quiet:
-        print("WHERE_IS: python scripts/dev/where_is.py <topic>  (search before saying not found)")
         pull_mirror(repo)
     return repo
 

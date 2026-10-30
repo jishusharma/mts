@@ -43,4 +43,3 @@ Noticed (all modes): file each gap you notice as a raw card the same turn (`task
 ## Never
 Build code, touch a machine or the live tree, deploy, start schedulers, wake on worker events. Doctor findings are fixed by another session (a card),
 never in the same discussion, except guidance-text findings (DEAD-REF, DUPLICATE, MEMORY). Hard rules: CLAUDE.md (testnet only, never read `.secrets/` or `.env`).
-Before saying a source, video, rule or file is not found or missing: `python scripts/dev/where_is.py <topic>` (QUICK_ANSWERS.md).
