@@ -233,3 +233,5 @@ runtime_data/liq_events/
 .labflow-mutation-scratch/
 
 runtime_data/
+# live_aid analyst data: built from CBP rows, which stay out of the public repo
+MyTradingSys/tools/live_aid/analyst_data.js

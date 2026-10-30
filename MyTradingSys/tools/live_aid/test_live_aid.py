@@ -238,7 +238,7 @@ def test_pnl_js(js):
 
 
 # ---------- in-trade panel (card live-aid-in-trade-panel): fixed OURS rules, hand-computed expectations ----------
-# Extra LIVE_AID_BREAK modes: itdiv itflow itsqueeze itdom itsupport itvwap itconf itlive itliqside itliqdb itliqsum itfund itbybit itfold itnews itpulse (each must fail one test below).
+# Extra LIVE_AID_BREAK modes: itdiv itflow itsqueeze itdom itsupport itvwap itconf itlive itliqside itliqdb itliqsum itfund itbybit itfold itnews itpulse avroster avwatch avzone avlean avact (each must fail one test below).
 IT_RUNNER = r"""
 const A = require(process.argv[process.argv.length - 1]);
 const brk = process.env.LIVE_AID_BREAK || '';
@@ -302,7 +302,30 @@ const nws = [{_id: 'a', time: now - 10 * M, importance: 7.4}, {_id: 'b', time: n
 let np = [A.newsPulse(nws, now), A.newsPulse(nws.filter(x => x._id !== 'c'), now), A.newsPulse([], now),
           A.newsMerge([{_id: 'a', time: 1}, {_id: 'b', time: 3}], [{_id: 'b', time: 3}, {_id: 'c', time: 2}], 2).map(x => x._id)];
 if (brk === 'itpulse') np[0].level = 'BUSY';
-process.stdout.write(JSON.stringify({dv, fl, sq, dm, sup, vw, fg, cf, lv2, lqv, lqs, fd, bt: [bt, bt2], fo, nt, np}));
+const nowA = Date.parse('2026-10-30T12:00:00Z');
+const rost = [{short: 'Krown', channel: '@ECKrown', enabled: true, ingested: true}, {short: 'Rekt', enabled: true, ingested: true},
+              {short: 'Bob', enabled: true, ingested: false}, {short: 'Malkan', enabled: false, ingested: false}, {short: 'Michael', enabled: true, ingested: true},
+              {short: 'Zed', enabled: true, ingested: true, in_roster: false}];
+const arows = [{analyst: 'Krown', published: '2026-10-24', bias: 'BULLISH'}, {analyst: 'Krown', published: '2026-10-27', bias: 'BEARISH'},
+               {analyst: 'Michael', published: '2026-10-26', bias: 'NEUTRAL'}, {analyst: 'Zed', published: '2026-10-30', bias: 'NO_VIEW'}];
+let an = A.rosterRead(rost, arows, [{analyst: 'Rekt'}, {analyst: 'Krown'}], nowA).map(a => [a.short, a.state, a.rows, a.rejected, a.last, a.bias, a.inRoster]);
+if (brk === 'avroster') an[0][1] = 'STALE';
+const rd = A.rosterRead(rost, arows, [], nowA);
+let avt = [A.analystVote(rd), A.analystVote(A.rosterRead(rost, arows, [], Date.parse('2026-11-20T00:00:00Z'))),
+           A.analystVote([{state: 'FRESH', bias: 'BULLISH'}, {state: 'FRESH', bias: 'BULLISH'}, {state: 'FRESH', bias: 'BEARISH'}, {state: 'STALE', bias: 'BEARISH'}])];
+const lvs = [{level: 80100, analyst: 'K', said: 'a'}, {level: 79000, analyst: 'M'}, {level: 76000, analyst: 'K'}, {level: 90000, analyst: 'M'}, {level: 78000, analyst: 'K', expired: true}, {level: NaN}];
+let lw = A.levelWatch(lvs, 80000).map(x => [x.level, x.zone, x.side, Math.round(x.dist * 1000) / 1000]);
+if (brk === 'avwatch') lw.reverse();
+let ln = [A.lean([1, 1, -1, null]), A.lean([1, -1, 0, null]), A.lean([1, null, null, null]), A.lean([-1, -1, 0, 0]), A.lean([1, 1, -1, -1])].map(x => [x.call, x.bull, x.bear, x.n]);
+if (brk === 'avlean') ln[0][0] = 'MIXED';
+const zl = [{level: 80100}, {level: 80150}, {level: 80300}, {level: 79880}, {level: 79000}];
+let zn = [A.zones(A.levelWatch(zl, 80000), 80000), A.zones(A.levelWatch(zl, 80200), 80200)].map(zz => zz.map(z => [z.lo, z.hi, z.items.length, z.side, z.zone, Math.round(z.dist * 1000) / 1000]));
+if (brk === 'avzone') zn[0][0][1] = 80150;
+let ac = A.actions({call: 'BEARISH LEAN'}, A.zones(A.levelWatch(lvs, 80000), 80000), {level: 'EVENT', n: 4}).map(a => [a.when, a.kind, a.w ? a.w.lo : a.n, !!a.withLean]);
+if (brk === 'avact') ac[2][3] = false;
+let ac2 = A.actions({call: 'MIXED'}, A.zones(A.levelWatch(lvs, 80000), 80000), {level: 'BUSY', n: 1}).map(a => [a.when, !!a.withLean]);
+let ac3 = A.actions({call: 'BULLISH LEAN'}, A.zones(A.levelWatch(zl, 80200), 80200), null).map(a => [a.when, a.kind, !!a.withLean]);
+process.stdout.write(JSON.stringify({dv, fl, sq, dm, sup, vw, fg, cf, lv2, lqv, lqs, fd, bt: [bt, bt2], fo, nt, np, an, avt, lw, zn, ln, ac, ac2, ac3}));
 """
 
 
@@ -459,3 +482,48 @@ def test_news_pulse_and_merge(it):
     assert p[2]["n"] == 0 and p[2]["level"] == "QUIET"
     # merge keeps one copy per _id, newest first, capped
     assert p[3] == ["b", "c"]
+
+
+# ---------- analysts and verdict board (STEPS.md Verdict rules; thresholds OURS, hand-computed) ----------
+def test_analyst_roster_states(it):
+    # now 2026-10-30 12:00Z. Krown newest row 10-27 (2 rows): (12:00 + 3 d) / 1 d floors to 3 <= 3 -> FRESH, bias of the newest row.
+    # Rekt: enabled + ingested, no row -> NO_ROW (1 rejected). Bob: enabled, not ingested -> NOT_FETCHED. Malkan: disabled -> OFF.
+    # Michael newest 10-26: 4 d -> STALE. Zed has a row but is not in the roster file: kept, inRoster false.
+    assert it["an"] == [["Krown", "FRESH", 2, 1, "2026-10-27", "BEARISH", True], ["Rekt", "NO_ROW", 0, 1, "", "", True],
+                        ["Bob", "NOT_FETCHED", 0, 0, "", "", True], ["Malkan", "OFF", 0, 0, "", "", True],
+                        ["Michael", "STALE", 1, 0, "2026-10-26", "NEUTRAL", True], ["Zed", "FRESH", 1, 0, "2026-10-30", "NO_VIEW", False]]
+
+
+def test_analyst_vote(it):
+    # fresh: Krown BEARISH (-1), Zed NO_VIEW skipped -> -1; three weeks later nobody is fresh -> None; +1 +1 -1 (STALE ignored) -> +1
+    assert it["avt"] == [-1, None, 1]
+
+
+def test_level_watch_band_and_zones(it):
+    # price 80,000: 80,100 = +0.125 % AT above; 79,000 = -1.25 % NEAR below; 76,000 = -5 % WATCH; 90,000 = +12.5 % outside 6 %;
+    # 78,000 expired and NaN dropped. Nearest first.
+    assert it["lw"] == [[80100, "AT", "above", 0.125], [79000, "NEAR", "below", -1.25], [76000, "WATCH", "below", -5.0]]
+
+
+def test_zones_merge_and_inside(it):
+    # sorted 79,000 / 79,880 / 80,100 / 80,150 / 80,300: 79,880 -> 80,100 is 0.275 % (> 0.25 %, new zone); 80,100 -> 80,150 0.062 % and
+    # 80,150 -> 80,300 0.187 % join one zone 80,100-80,300. Price 80,000: that zone is +0.125 % (AT, above), 79,880 -0.15 % (AT, below),
+    # 79,000 -1.25 % (NEAR). Price 80,200 sits inside the zone: side 'at', distance 0.
+    assert it["zn"][0] == [[80100, 80300, 3, "above", "AT", 0.125], [79880, 79880, 1, "below", "AT", -0.15], [79000, 79000, 1, "below", "NEAR", -1.25]]
+    assert it["zn"][1][0] == [80100, 80300, 3, "at", "AT", 0]
+
+
+def test_lean_rule(it):
+    # needs 3 votes in data; bull >= 2 and bull >= 2 x bear -> BULLISH LEAN (2 vs 1); 1/1/0 -> MIXED; 1 vote -> NOT ENOUGH DATA;
+    # -1 -1 0 0 -> BEARISH LEAN; 2 vs 2 -> MIXED
+    assert it["ln"] == [["BULLISH LEAN", 2, 1, 3], ["MIXED", 1, 1, 3], ["NOT ENOUGH DATA", 1, 0, 1], ["BEARISH LEAN", 0, 2, 4], ["MIXED", 2, 2, 4]]
+
+
+def test_actions_order_and_lean_direction(it):
+    # news EVENT first (NOW), AT level NOW, NEAR -> NEXT, WATCH -> LATER; bearish lean: levels below are in its direction, above are not
+    assert it["ac"] == [["NOW", "news", 4, False], ["NOW", "resistance", 80100, False], ["NEXT", "support", 79000, True], ["LATER", "support", 76000, True]]
+    # a BUSY pulse adds no row; MIXED lean marks nothing as in its direction
+    assert it["ac2"] == [["NOW", False], ["NEXT", False], ["LATER", False]]
+    # price 80,200 inside the 80,100-80,300 zone: kind 'zone', never in the lean's direction; 79,880 = -0.40 % and 79,000 = -1.496 %
+    # are both NEAR (<= 1.5 %) supports, against a bullish lean.
+    assert it["ac3"] == [["NOW", "zone", False], ["NEXT", "support", False], ["NEXT", "support", False]]
