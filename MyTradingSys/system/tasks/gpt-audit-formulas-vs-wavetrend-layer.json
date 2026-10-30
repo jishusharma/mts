@@ -22,12 +22,6 @@
   "refined_by": "",
   "refreshed": "2026-10-29T22:52:13Z",
   "refs": [],
-  "reroute": {
-    "at": "2026-10-29T23:26:05Z",
-    "desk": "20261029-232605-gpt-audit-formulas-vs-wavetrend-layer",
-    "to": "DSA",
-    "why": "window"
-  },
   "result": "",
   "scope_in": [
     "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-audit-formulas-vs-wavetrend-layer.md"

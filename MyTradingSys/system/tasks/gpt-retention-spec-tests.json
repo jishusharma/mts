@@ -12,7 +12,7 @@
   "goal": "retention.py has no test. Read its docstring/spec, derive expected keep/delete decisions by hand for 6 boundary cases (exactly at limit, one below, one above, empty dir, protected path, dry-run), write scripts/dev/test_retention.py, then 3 scratch mutations must each fail a test.",
   "id": "gpt-retention-spec-tests",
   "kind": "build",
-  "lane": "SONNET",
+  "lane": "CODEX",
   "latest": [],
   "layers": [],
   "live_path": false,
@@ -22,12 +22,6 @@
   "refined_by": "",
   "refreshed": "2026-10-29T22:51:10Z",
   "refs": [],
-  "reroute": {
-    "at": "2026-10-29T23:26:05Z",
-    "from": "CODEX",
-    "to": "SONNET",
-    "why": "window"
-  },
   "result": "",
   "scope_in": [
     "scripts/dev/test_retention.py",

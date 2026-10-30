@@ -1,14 +1,14 @@
 {
-  "detail": "Codex 5-hour window 100% used, resets 2026-10-30 02:29Z",
+  "detail": "allowance window reset",
   "fails": 0,
-  "heartbeat": "2026-10-22T15:08:46Z",
+  "heartbeat": "2026-10-30T01:38:46Z",
   "last_error": "2026-10-29T23:26:05Z",
-  "last_ok": "2026-10-29T21:13:27Z",
+  "last_ok": "2026-10-30T03:00:47Z",
   "last_probe": "2026-10-26T17:04:19Z",
   "override": "",
-  "reason": "window",
-  "resumed": "2026-10-29T20:13:13Z",
-  "since": "2026-10-29T23:26:05Z",
-  "status": "down",
-  "until": "2026-10-30T02:29:05Z"
+  "reason": "",
+  "resumed": "2026-10-30T03:00:47Z",
+  "since": "",
+  "status": "up",
+  "until": ""
 }

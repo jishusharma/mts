@@ -1,12 +1,15 @@
 {
   "card": "gpt-audit-formulas-vs-trendlines-layer",
   "done_when": "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-audit-formulas-vs-trendlines-layer.md lists each formula, FORMULAS.md line, code file:line, toy numbers by hand vs code, SAME/DIFFERENT/NOT_IN_DATA.",
+  "finished": "2026-10-30T03:00:56Z",
   "from": "lane_health",
+  "host": "lane_health",
   "id": "20261029-232605-gpt-audit-formulas-vs-trendlines-layer",
   "need": "Rerouted from the GPT lane (credits/limit/outage) to DSA. Card gpt-audit-formulas-vs-trendlines-layer: GPT audit: FORMULAS.md definitions vs layers/trendlines code (re-derive 3 numbers)\nWorktree: mts-dsa (python scripts/dev/sync.py start first). Data on F:\\MTS\\data is read-only.\nFull brief: python scripts/dev/tasks.py brief gpt-audit-formulas-vs-trendlines-layer\nGoal: For layers/trendlines, find each formula in FORMULAS.md it uses, re-derive 3 outputs by hand on a 10-bar toy series, run the layer code on the same series and report SAME or DIFFERENT with file:\nRead: MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-audit-formulas-vs-trendlines-layer.md\nStep 1: list formulas the layer uses\nStep 2: hand-compute 3 values on a toy series\nStep 3: run layer code and compare\nWrite the report to MyTradingSys/research/layer_lab/reports/2026-10-29_gpt-audit-formulas-vs-trendlines-layer.md: findings or numbers, each with file:line or the command you ran.\nNumbers come only from output you printed in the chat. Change no code or spec. Never read a holdout.\nIf a command fails twice, close the desk row with --failed and the error text.\nClose: python scripts/dev/desk.py done <row id> --result \"<verdict or number + MyTradingSys/research/layer_lab/reports/2026-10-29_gpt-audit-formulas-vs-trendlines-layer.md>\".",
   "posted": "2026-10-29T23:26:05Z",
   "rerouted_from": "CODEX",
-  "status": "pending",
+  "result": "cancelled: GPT lane is back, card returned to CODEX",
+  "status": "failed",
   "target": "DSA",
   "title": "GPT audit: FORMULAS.md definitions vs layers/trendlines code (re-derive 3 numbers)"
 }
