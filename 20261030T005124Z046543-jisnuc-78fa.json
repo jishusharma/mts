@@ -1,0 +1,1 @@
+{"t": "20261030T005124Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "STATION JIS-NUC (manual): Cfree=71G Ffree=200G; station_disk_report.py reverted on trunk (737542fd0) so no script run. Re-land it, then ask again.", "login": "B"}
