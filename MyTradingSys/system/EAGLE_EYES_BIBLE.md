@@ -48,6 +48,9 @@ Why this section exists: the 10-28 session was compacted 6 times; each summary k
 - Volume and RSI 40 (10-30): "RSI coming out of the red line ... left the line ... Volume is also increasing as the price comes down ... apply each idea of volume and see what works". Logged C22.
 - Heatmap live (10-30): "the cluster was forming below the line ... are you reading these when we go to the live mode ... if you are not, then you tell me".
 - Daily lower RSI highs (10-31): "RSI has been making lower lows since the first push ... deflected from the 60 line ... fake out from the center line of the Bollinger ... all these things are quite tradable, you just have to find proper ways". Measured C23.
+- Abide by the Bible (10-31 ~19:45Z): "you need to abide [by] the Bible, because we cannot miss updating it." Rule: every operator ask or teaching lands here (verbatim line + asks-table row) in the SAME turn it is answered; a turn that answers him without it is not done.
+- OI commentary (10-31): "this is the kind of commentary that I need on my dashboard. When OI is changing, then what is the actual scenario? Is the money entering or is the money leaving? What has just happened? What to expect?" Spec: `research/eagle_eyes_picture_2026-10-28/OI_COMMENTARY_SPEC.md`.
+- Stoch RSI (10-31): "do we know how to use Stoch RSI and does MTS need it?" Answer: coded and chart-checked (FORMULAS.md s23, `chart_verify.py`); measured C25: no edge as a trigger on 15m/1h/4h, same as plain RSI; keep it as a chart read only, one daily lead to pre-register.
 - Coil and force (10-30): "what kind of force makes that happen? Try to measure it ... how far it will go ... support and resistances are the target ... I cannot understand in which direction the coil will fire." First answers: `research/pre_us_squeeze_2026-10-29/`, `research/bb_pierce_force_2026-10-29/`.
 
 ## The asks in one table (consolidated 10-30; update here, not in chat)
@@ -61,6 +64,8 @@ Why this section exists: the 10-28 session was compacted 6 times; each summary k
 | Anticipation: if up / if down, daily open, 1d/2d/3d/weekly high-low take-and-fail, US session | card `anticipation-map-from-current-layer-stat` (OPUS p2); scored in `SCENARIO_LEDGER.md` | ledger 2 maps; card raw |
 | Log anything that repeats | `BACKTEST_CANDIDATES.md` (C1-C23) | C13, C16-C18 descriptive; C20 (15m div + BB switch) 0/36 OOS positive; C21 30m breakdown pierce only cell positive in both periods (n=38/35, needs pre-reg); C23 daily shorts none beat the always-short base; C22 idea |
 | Malkan 5-star / 7-star fair test | Indian-equity basket, pre-registered (PRE_REG_TEMPLATE) | not started; BTC n too small |
+| Dashboard OI commentary: money in/out, what just happened, what to expect (measured) | `OI_COMMENTARY_SPEC.md` -> live_aid.html, built by dash-designer | spec 10-31; C24 is its first measured line |
+| Stoch RSI: do we know it, does MTS need it | `stochrsi_vs_rsi.py`, C25 | measured 10-31: no intraday edge; 1d trend-long lead n=16 OOS, needs pre-reg |
 | Heatmap in Eagle_Eyes' own browser tab | Legend tab: layer missing | his shots until the layer loads there |
 | US open, squeeze, pierce force, levels as targets | `research/pre_us_squeeze_2026-10-29/`, `research/bb_pierce_force_2026-10-29/` | ran 10-30; next: OI and RSI/WT coils |
 | Habib whole-plan scoring; Kurisko quad (4 stochastics) on 15m | `research/habib_plan_imbalance_2026-10-20/`; card `kurisko-dev-event-study` | plans never scored; 1m/5m blocked by fees, 15m untested |

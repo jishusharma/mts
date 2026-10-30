@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-30T20:21:57Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_burn_2026-10-31/LIVE_PATH_TEST_PLAN.md exists; every case has file:line and EXISTS/MISSING",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "From execution/auto_trader.py, position_manager and the Java StateMachine entry points, list the concrete test cases the live-path rule requires (restart/reset, non-trade balance move, API error) with the input and the expected fail-closed result; mark which exist.",
+  "id": "gemini-test-plan-live-path-edge-cases-1031",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini rules: facts with file:line only, no trading verdict, no code change; flag UNVERIFIED where the repo has no answer. Focus: catch bugs early (operator 2026-10-31). Final report ends with a Noticed: line.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T20:21:59Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/gemini_burn_2026-10-31/ (new files only)"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code edits; any backtest verdict; .secrets and .env"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "read the modules and their tests",
+    "grep tests for each case",
+    "write the table"
+  ],
+  "tests": "report only; every finding cites file:line and a reproducing input",
+  "title": "[GEMINI] test plan for the live path: restart/reset state, non-trade balance moves, API errors, one case list per module, with file:line",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
