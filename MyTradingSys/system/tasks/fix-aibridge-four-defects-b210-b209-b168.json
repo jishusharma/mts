@@ -1,20 +1,24 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T22:27:56Z",
   "commands": [
     "python scripts/dev/run_all_tests.py --quick"
   ],
   "context": {
-    "calls_to_edit": 25,
-    "folded": "2026-10-30T20:11:19Z",
-    "misses": 55,
+    "calls_to_edit": null,
+    "folded": "2026-10-30T22:29:07Z",
+    "misses": 12,
     "reads": [
-      "scripts/aibridge/src/checks.ps1",
-      "scripts/aibridge/scripts/run-task.ps1",
-      "DSA_SESSION_PROMPT.md",
-      "MyTradingSys/research/BUGS.md"
+      "scripts/dev/artifacts.py",
+      "scripts/dev/cbp_run.py",
+      "scripts/dev/test_artifacts.py",
+      "MyTradingSys/research/eagle_eyes_picture_2026-10-28/oi_after_flush.py",
+      "MyTradingSys/research/news_feeds_2026-10-30/REPORT.md",
+      "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md",
+      "MyTradingSys/system/artifacts/registry.json"
     ],
-    "session": "agent-a69f6c7bf7c4faac1"
+    "session": "agent-a8ceb6f1f3a1e2682"
   },
   "created": "2026-10-30T19:59:57Z",
   "depends_on": [],
@@ -27,7 +31,14 @@
   "id": "fix-aibridge-four-defects-b210-b209-b168",
   "kind": "build",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "12b43fe17",
+      "ref": "b43f83bab",
+      "utc": "2026-10-30T22:27:56Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -39,7 +50,12 @@
   "refs": [
     "MyTradingSys/research/BUGS.md"
   ],
-  "result": "",
+  "result": "12b43fe17",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "aibridge extension and agent code, scripts/dev mts-gate task mode, MyTradingSys/research/BUGS.md, items B209/B210"
   ],
@@ -49,12 +65,13 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read items/B210 and B209, reproduce each from its recorded steps",
     "write the failing test per defect, then fix, B210 first",
     "mark BUGS.md rows and the desk row done, ship once"
   ],
+  "taken": "2026-10-30T22:27:56Z",
   "tests": "tests for lock expiry plus resync, and for mts-gate exit code; fail first on pre-change code",
   "title": "Fix the four AIBridge defects DSA filed 2026-10-30: B210 stuck-run timeout and resync, task=mts-gate PASS over FAILED, rest of B209, B168",
   "weight": "ROUTINE",
