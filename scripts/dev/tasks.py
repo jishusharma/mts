@@ -3,7 +3,7 @@
   python scripts/dev/tasks.py new "<title>" [--id B170] [--ref B170] [--lane SONNET] [--prio 3] [--from-inbox <fb id>] [--layer tom]
   python scripts/dev/tasks.py check [<id>]          # Definition of Ready; promotes raw/refined -> ready when it passes (fail closed)
   python scripts/dev/tasks.py lint                  # every card: a `ready`/`active` card that fails DoR is an error (exit 1)
-  python scripts/dev/tasks.py list [--state ready] [--lane SONNET]
+  python scripts/dev/tasks.py list [--state ready] [--lane SONNET] [--all]   # open cards only; --all adds done/dropped
   python scripts/dev/tasks.py status                # counts + the line the dispatcher reads: REFINE_NEEDED / REFINE_OK
   python scripts/dev/tasks.py tried <id> [--asks "<question>"]   # refiner: a try that did not reach ready; --asks parks it for the operator
   python scripts/dev/tasks.py next [--n 3] [--lane SONNET] [--all]   # the first ready cards no session holds, best first (--all: claimed too, marked)
@@ -802,7 +802,8 @@ def cmd_lint(a):
 
 def cmd_list(a):
     for c in load_all(REPO):
-        if (not a.state or c["state"] == a.state) and (not a.lane or c["lane"] == a.lane):
+        # B209: open cards only by default (done/dropped are ~700 rows of boot noise); --all or --state brings them back
+        if (a.state or a.all or c["state"] not in ("done", "dropped")) and (not a.state or c["state"] == a.state) and (not a.lane or c["lane"] == a.lane):
             # C3: a ready/active card whose work already hit trunk (SHIPPED) or whose scope moved on (STALE) is flagged here
             # too, not only in next/take/brief -- a stale *copy* of an archived card must not read as plain "ready" in the backlog.
             tag = stop_tag(c) if c["state"] in ("ready", "active") else ""
@@ -1682,6 +1683,7 @@ def main(argv=None):
     ls = sp.add_parser("list")
     ls.add_argument("--state", choices=STATES)
     ls.add_argument("--lane", choices=LANES)
+    ls.add_argument("--all", action="store_true", help="include done and dropped cards")
     ls.set_defaults(f=cmd_list)
     sp.add_parser("status").set_defaults(f=cmd_status)
     nx = sp.add_parser("next")

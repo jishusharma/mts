@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T20:30:06Z",
   "commands": [],
   "created": "2026-10-30T20:21:41Z",
   "depends_on": [],
@@ -13,7 +14,14 @@
   "id": "gpt-bug-hunt-auto-trader-fail-closed",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "FIX-FIRST; MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-bug-hunt-auto-trader-fai",
+      "ref": "6cff4f6fb",
+      "utc": "2026-10-30T20:30:06Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -25,7 +33,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "FIX-FIRST; MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-bug-hunt-auto-trader-fail-closed.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/test_hunt_2026-10-31/ (new files only)"
   ],
@@ -35,12 +48,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read MyTradingSys/execution/auto_trader.py and its tests",
     "enumerate error/restart/balance branches",
     "mark tested or NONE by grepping the tests"
   ],
+  "taken": "2026-10-30T20:30:06Z",
   "tests": "report only; every finding cites file:line and a reproducing input",
   "title": "GPT: auto_trader.py fail-closed audit: every error path (API error, restart, non-trade balance move, stale state) and whether a test covers it",
   "weight": "ROUTINE",
