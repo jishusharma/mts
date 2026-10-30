@@ -25,7 +25,8 @@
   "result": "",
   "scope_in": [
     "scripts/dev/test_tom_noise_units.py",
-    "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-spec-tests-tom-noise-units.md"
+    "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-spec-tests-tom-noise-units.md",
+    "scripts/dev/extra_tests.tsv"
   ],
   "scope_out": [
     "any live path",

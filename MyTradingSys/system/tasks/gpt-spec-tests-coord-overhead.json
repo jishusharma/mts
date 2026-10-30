@@ -25,7 +25,8 @@
   "result": "",
   "scope_in": [
     "scripts/dev/test_coord_overhead.py",
-    "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-spec-tests-coord-overhead.md"
+    "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-spec-tests-coord-overhead.md",
+    "scripts/dev/extra_tests.tsv"
   ],
   "scope_out": [
     "any live path",

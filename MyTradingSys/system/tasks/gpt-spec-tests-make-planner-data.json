@@ -25,7 +25,8 @@
   "result": "",
   "scope_in": [
     "scripts/dev/test_make_planner_data.py",
-    "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-spec-tests-make-planner-data.md"
+    "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-spec-tests-make-planner-data.md",
+    "scripts/dev/extra_tests.tsv"
   ],
   "scope_out": [
     "any live path",

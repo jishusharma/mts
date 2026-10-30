@@ -25,7 +25,8 @@
   "result": "",
   "scope_in": [
     "scripts/dev/test_fetch_captions.py",
-    "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-spec-tests-fetch-captions.md"
+    "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-spec-tests-fetch-captions.md",
+    "scripts/dev/extra_tests.tsv"
   ],
   "scope_out": [
     "any live path",

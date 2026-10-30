@@ -25,7 +25,8 @@
   "result": "",
   "scope_in": [
     "scripts/dev/test_check_set_frames.py",
-    "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-spec-tests-check-set-frames.md"
+    "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-spec-tests-check-set-frames.md",
+    "scripts/dev/extra_tests.tsv"
   ],
   "scope_out": [
     "any live path",

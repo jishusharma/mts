@@ -25,7 +25,8 @@
   "result": "",
   "scope_in": [
     "scripts/dev/test_check_sourced_params.py",
-    "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-spec-tests-check-sourced-params.md"
+    "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-spec-tests-check-sourced-params.md",
+    "scripts/dev/extra_tests.tsv"
   ],
   "scope_out": [
     "any live path",

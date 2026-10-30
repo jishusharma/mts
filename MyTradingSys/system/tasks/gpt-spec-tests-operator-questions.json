@@ -25,7 +25,8 @@
   "result": "",
   "scope_in": [
     "scripts/dev/test_operator_questions.py",
-    "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-spec-tests-operator-questions.md"
+    "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-spec-tests-operator-questions.md",
+    "scripts/dev/extra_tests.tsv"
   ],
   "scope_out": [
     "any live path",
