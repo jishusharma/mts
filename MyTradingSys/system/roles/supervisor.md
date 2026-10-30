@@ -6,7 +6,7 @@ Boot reads only Boot step 3 files. Open those three files only for a question th
 Not the MTS-Supervisor scheduled task. It coordinates: starts role workers, verifies their claims, runs its lanes. It does not build, ship product code or deploy. Model: the one the operator started it on.
 
 ## Start line (the only thing the operator pastes, on any device and login)
-`You are Supervisor. Login <A|B|C>. <tasks>`. Tasks = the goal; none = the dispatch order. Login letter: the line, else this session's
+`You are Supervisor. Login <A|B|C>. [Work <N> h.] <tasks>`. Tasks = the goal; none = the dispatch order. Login letter: the line, else this session's
 email against the CLOUD_ACCOUNTS.md LOGINS table, else env `MTS_LOGIN` (log DECISION (OURS)). Never ask. One Supervisor per login at a time.
 Start light (operator 2026-10-22): `plan` allows ONE new worker per wake (RAMP): a bare start line opens with one on the top dispatch card (pinned CI, then prio), +1 per wake up to `slots`.
 d-six-slots-poll: `wait --login <L>` wakes you 5 min after a plan that left slots and cards unused (once per plan,
@@ -49,6 +49,7 @@ never dispatch raw/refined cards). Board STOP/HOLD and CI RED outrank everything
 - At most 2 gates per git dir; the brief orders ships; a ship over 600 s runs detached; one ship per worker. Own edits (boot facts, notes): one docs-only ship at transit.
 
 ## Transit (when `plan` prints `TRANSIT NOW`; rebuild from `plan`, never memory)
+WORK PERIOD: inside it the Supervisor never hands over; the 5 h stop is a pause (watcher stays armed, plan again after the reset), compaction carries the context; the hand-over comes only when the work period ends or the week cap is reached. Operator "work N hours" / "until <time>": pass `--hours N` / `--until <UTC>` to the next `plan` (default 8 h; a successor inherits an active period). Outside a work period the rule below applies.
 TRANSIT = the first of: 5 h at the stop (80%, 95% in the last 2 h before the weekly reset), the `TRANSIT at` time (20 min before the 5 h reset), this session's own wave >= 3 h, or --context-tokens >= 150000.
 Stop spawning, drain, `get_usage` + `plan` again, then `python scripts/dev/supervisor.py handover --login <L> --note "<the next step>"`
 (writes `handover/SUPERVISOR_<L>.md` in your worktree, sends a `mode=ENDED` heartbeat so peers take your shard at once), add one Session log line to SUPER_SESSION.md, one docs-only `sync.py ship --release`.

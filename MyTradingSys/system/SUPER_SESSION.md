@@ -46,6 +46,7 @@ and D5/D6's existing rotation and stop-and-hand-over mechanics; nothing here inv
    (Mechanics "Turn caps": an unattended coordinator runs on that context-size cap, not the 40-tool/10-operator one). The same
    remaining-minutes/40 arithmetic Rule 5 uses to size the next worker wave doubles as the hand-off trigger: once it rounds to
    0, there is no budget left for new work either by a worker or by this coordinator -- hand off.
+   WORK PERIOD: inside it the Supervisor never hands over; the 5 h stop is a pause (watcher stays armed, plan again after the reset), compaction carries the context; the hand-over comes only when the work period ends or the week cap is reached (`plan --hours N|--until <UTC>`, default 8 h; operator 2026-10-30, d-supervisor-idle-bug).
    The code rule `plan` prints as `TRANSIT NOW` (B2, 2026-10-28; same text in roles/supervisor.md): TRANSIT = the first of: 5 h at the stop (80%, 95% in the last 2 h before the weekly reset), the `TRANSIT at` time (20 min before the 5 h reset), this session's own wave >= 3 h, or --context-tokens >= 150000.
    One hand-over writer per login (B1): `handover` refuses while another Supervisor of the login planned < 10 min ago (`--force` when it is gone), and a successor task that is still Running is never registered twice.
 3. Hand off while the window is still open enough to write a clean note: D5 rotation when a successor is already running,

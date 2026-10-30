@@ -233,9 +233,26 @@ class SupervisorWatcherTest(StopGuardTest):
         self._plan(2)
         self.assertEqual(self.run_hook(session_id="sup1"), "")
 
-    def test_blocks_once_per_state(self):
+    def test_blocks_every_idle_turn_inside_the_work_period(self):
+        """2026-10-30: blocked once, then idle 16 h. Each fresh turn end blocks again; only the blocked turn's retry
+        (stop_hook_active) may end."""
         self.assertIn("block", self.run_hook(session_id="sup1"))
+        self.assertIn("block", self.run_hook(session_id="sup1"))
+        self.assertEqual(self.run_hook(session_id="sup1", stop_hook_active=True), "")
+
+    def test_ended_work_period_allows_the_stop(self):
+        (self.home / "B-work.json").write_text(json.dumps({"until": "2026-10-01T00:00Z", "sid": "sup1"}), newline="\n")
         self.assertEqual(self.run_hook(session_id="sup1"), "")
+
+    def test_supervisor_without_role_line_is_found_by_its_plan_readings(self):
+        """The 2026-10-30 Supervisor C had no role line, so the guard failed open; its own `plan` readings name its login."""
+        from datetime import datetime, timezone
+        at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        (self.home / "C.jsonl").write_text(json.dumps({"at": at, "sid": "norole"}) + "\n", newline="\n")
+        out = json.loads(self.run_hook(session_id="norole"))
+        self.assertIn("Supervisor C", out["reason"])
+        (self.home / "C.jsonl").write_text(json.dumps({"at": at, "sid": "successor"}) + "\n", newline="\n")
+        self.assertEqual(self.run_hook(session_id="norole"), "")    # a newer Supervisor of C took over: this one may end
 
     def test_other_roles_and_errors_fail_open(self):
         self.assertEqual(self.run_hook(session_id="not-a-supervisor"), "")
