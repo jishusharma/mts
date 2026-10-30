@@ -1,11 +1,10 @@
 # Frozen allowlist for test_no_own_costs.py (card fix-single-cost-module, T06-F2). DO NOT ADD TO IT.
 # A new study imports MyTradingSys/backtest/fees.py; it never defines its own fee or slippage constant.
-# Section 1: files in scripts/T06/costs.csv with imports_fees=0 and a binding assignment (65 existing files; the audit's 'CSV 164 rows / 70 files' count is by row kind, this is by file).
+# Section 1: files in scripts/T06/costs.csv with imports_fees=0 and a binding assignment (64 existing files, fees.py itself excluded; the audit's 'CSV 164 rows / 70 files' count is by row kind, this is by file).
 # Remove a line when the file moves to fees.py. One path per line, repo-relative, forward slashes.
 MyTradingSys/backtest/bigtrade/exit_policies.py
 MyTradingSys/backtest/bigtrade/mutation_check_bigmoves_capture.py
 MyTradingSys/backtest/bt/bt_engine.py
-MyTradingSys/backtest/fees.py
 MyTradingSys/backtest/layers/fabio/pending_test_fabio_v3.py
 MyTradingSys/backtest/layers/fabio/run_v3_l3.py
 MyTradingSys/backtest/layers/fabio/v3/manage.py

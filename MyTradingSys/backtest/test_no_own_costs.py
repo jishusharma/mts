@@ -84,7 +84,7 @@ def test_allowlist_covers_audit_csv_offenders():
     import csv
     p = REPO / "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/costs.csv"
     rows = list(csv.DictReader(p.open(newline="", encoding="utf-8")))
-    need = {r["file"] for r in rows if r["imports_fees"] == "0" and r["kind"] == "assign" and (REPO / r["file"]).exists()}
+    need = {r["file"] for r in rows if r["imports_fees"] == "0" and r["kind"] == "assign" and r["file"] != "MyTradingSys/backtest/fees.py" and (REPO / r["file"]).exists()}
     assert need <= load_allowlist(), sorted(need - load_allowlist())
 
 
