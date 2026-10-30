@@ -485,6 +485,7 @@ def build_plan(quick):
     add(3, "Static test suite", [sys.executable, "MyTradingSys/execution/testnet/test_suite_static.py"], "Step 3: Static test suite")
     add("3b", "User guide checker tests", [sys.executable, "scripts/dev/test_check_guide.py"], "Step 3b: Guide checker tests")
     add("3c", "User guide in sync with mts.ps1", [sys.executable, "scripts/dev/check_guide.py"], "Step 3c: Guide in sync")
+    add("3abv", "AIBridge version guard tests", [sys.executable, "scripts/dev/test_aibridge_version.py"], "Step 3abv: AIBridge version tests")
     add("3r", "Alert rate checker tests", [sys.executable, "scripts/dev/test_alert_rate_check.py"], "Step 3r: Alert rate checker tests")
     add("3cv", "Chart verify (RSI/BB/StochRSI) tests", [sys.executable, "scripts/dev/test_chart_verify.py"], "Step 3cv: Chart verify tests")
     add("3cva", "Indicator audit sampler/comparator tests", [sys.executable, "scripts/dev/test_indicator_audit.py"], "Step 3cva: Indicator audit tests")
