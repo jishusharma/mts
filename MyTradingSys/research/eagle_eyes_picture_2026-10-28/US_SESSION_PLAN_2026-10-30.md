@@ -10,11 +10,11 @@ Levels are Binance spot. All thresholds and the level picks are OURS; base rates
 
 | TF | RSI | WT1 / WT2 | BB %b | Read (OURS) |
 |---|---|---|---|---|
-| 5m | 41.5 | -52.7 / -48.5 | 0.18 | BandWidth in the lowest 9% of the last 300 bars: coiled |
+| 5m | 41.5 | -52.7 / -48.5 | 0.18 | BandWidth in the lowest 9% of the last 300 5m bars (25 h): coiled on 5m only |
 | 15m | 38.9 | -51.0 / -48.9 | 0.17 | down, at the WT -53 zone |
 | 30m | 36.5 | -41.0 / -37.7 | 0.12 | down since the 08:00Z cross at -7 (the T7 zero rejection) |
 | 1h | 34.8 | -44.9 / -41.9 | 0.27 | down |
-| 4h | 33.2 | -38.1 / -29.7 | 0.01 | on the lower band, 3 falling highs (78,804, 78,241, 77,608) |
+| 4h | 33.2 | -38.1 / -29.7 | 0.01 | on the lower band; bar highs fall (78,804, 78,241, 77,608) but these are not confirmed pivots (see cross-check) |
 | 1D | 34.2 | -51.1 / -41.5 | -0.13 | below the lower band (78,180), under the 10-29 low and close |
 | 1W | 51.0 | 26.0 / 28.9 | 0.62 | crossed down 10-26 |
 
@@ -41,7 +41,7 @@ Agreement: 6 of 6 intraday-to-daily columns say down. The odd one: Bybit OI fell
 | 30m WT reaches -53 and crosses up, 4h WT down (T2) | `wt30_sequence_2026-10-30` | 304 | up 4h 56%; -1% first 49% vs +1% first 42%: a pop, not a turn |
 | 5m: short after a close below the mid touches the lower band | `bb_dance_2026-10-30` | 11,051 | close near the band (%b < 0.25): new low first ~60%; close at %b >= 0.25: ~30%; all exits under 0.2% gross vs 0.12% cost |
 | OI down + price down (30m) | `oi_side_2026-10-30` | 6,296 | up 60 min 53.5%; -0.5% first 46.7% vs +0.5% 43.3%: small lean, below fees |
-| 4h break of the 10-day low after 3 falling 4h highs | `lh_break_2026-10-30` | 22 | 0.5 H reached 73%, 1 H 36% (control 48% / 18%). If 76,500 breaks: H = 78,804 - 76,500 = 2,304 (OURS), 0.5 H = 75,348, 1 H = 74,196 |
+| 4h close below the 10-day low (76,500) | `lh_break_2026-10-30` | 44 | CORRECTED: the last 3 confirmed 4h pivots (81,823, 81,789, 81,971) do not fall, so a break now is a CONTROL break: 0.5 H reached 48%, 1 H 18%, back above S within 24 h 70%. H = highest 4h high of 10 days (84,898) - 76,500 = 8,398, so 0.5 H = 72,301 within 7 days |
 
 ## Scenario maps (no side marked more likely: the base rates are near even)
 
@@ -49,7 +49,7 @@ Agreement: 6 of 6 intraday-to-daily columns say down. The odd one: Bybit OI fell
 |---|---|---|---|
 | Scalp (1-5m) | 5m close below 77,239 with taker delta red and OI flat/up = shorts pressing; next 77,100, 77,000 | 5m close above 77,607 (5m upper band) with delta green and OI up; next 77,667 VWAP | A dies on a 5m close back above 77,438 (5m mid); B dies back below 77,438. The 5m coil says size, not side |
 | Quick (15m-30m) | 30m close below 77,239, WT keeps falling to -53 without a cross: 77,000, then 76,500 | His setup: 30m close above the last lower high 77,866 with the 30m WT crossing up, before or at the open: VWAP held, then 78,019-78,289 | A dies on a 30m close back above 77,667 (VWAP); B dies on a 30m close back below 77,528 |
-| Long (4h-1D) | 4h close below 76,500 after 3 falling highs: lh frame, 75,348 then 75,000 (Michael, Krown) | Daily close back above 77,992 (10-29 close) and 78,180 (daily lower band): back inside the band, 4h WT cross up | A dies on a daily close above 78,180; B dies on a 4h close below 76,500 |
+| Long (4h-1D) | 4h close below 76,500 (a control break by the study rule; 70% closed back above within 24 h): 76,022 daily EMA200, then 75,000 (Michael, Krown) | Daily close back above 77,992 (10-29 close) and 78,180 (daily lower band): back inside the band, 4h WT cross up | A dies on a daily close above 78,180; B dies on a 4h close below 76,500 |
 
 Calendar: monthly (and Krown's 2-month) close is 10-31 24:00Z; Krown named a 2-month close below the 5 EMA at 77,500 as worrisome. Price is under it now. US DST ends 11-01, so today's cash open is 13:30Z.
 
@@ -119,3 +119,22 @@ Pixel scale 3.37 USD/px (78,900 and 78,600 gridlines). Axis labels are IST (19:0
 | m5 | NOT_IN_DATA | big buys at 78.5-78.6k (07:15-07:30Z) and big sells at the 78.7k top (05:45Z) and in the 77.5-77.6k lows; price fell after the big buys | large_trade_absorption_2026-10-30: buy-aggression n=1,155 up 60 min 47.4% |
 
 Reading (OURS): the pre-US box bottom (77,239), the 3-test shelf and the nearest long-liquidation bands line up on the down side (77.05k, then 76.6k); the short-liquidation band 78.8-79.0k sits just above the box top (78,804). Heatmap bands as magnets are not measured (BACKTEST_CANDIDATES C6, 2 instances).
+
+## Cross-check, 13:40Z (operator: "cross check everything")
+
+Each claim of this session re-read against the study code or recomputed from Binance spot klines.
+
+| Claim | Check | Verdict |
+|---|---|---|
+| Pre-US state "middle" (15m BandWidth) | Study rule: BW at 13:30Z ranked in the prior 30 days of 15m bars. Recomputed: rank 68.5% (n=2,880); my first number (42%) used 3 days. Still the middle bucket (20-80%) | number wrong, row right |
+| Box 78,804 / 77,239, range 1,565, US range 1.26x = about 1,970 | Recomputed from 15m bars 05:30-13:30Z | MATCH |
+| 4h "3 falling highs" | Study rule: confirmed pivots (2 bars each side). Last 3 pivots 81,823 / 81,789 / 81,971: not falling. My list used raw bar highs | WRONG, corrected above (control break, 0.5 H = 72,301) |
+| Story B "big sells on a bar that holds: -0.5% first 54.7%" (13:30Z 5m) | That class (sell-absorbed) needs a GREEN bar. The 13:30Z 5m bar closed red (perp 77,250 to about 77,169, spot 77,284 to 77,249). If it was a large-sell bar it is sell-aggression: up 60 min 53.5%, +0.5% first 46.6% vs -0.5% 45.2% (n=1,168). Whether it passed the top-2% large-net cut is NOT_IN_DATA here | WRONG class, corrected |
+| "OI down + price down" row applied to Bybit OI over 7.5 h | Study unit: 30-minute windows, Binance OI change >= 0.25%. Not the same measure | misapplied, dropped |
+| "This is the 16% both-sides case" (13:35Z reply) | Both sides means the BOX (78,804 / 77,239). Only the low broke; 78,804 is untouched | WRONG, withdrawn |
+| Bitstamp vs Binance gap "about 150" | 13:29Z: Bitstamp 77,160 (at 13:29:12) vs Binance 1m close 77,284: 124, not the same second | about 120-150 |
+| Daily EMA200 76,022 | 300 daily bars, EMA seeded at the first close: about 5% seed weight left | approximate |
+| Binance OI +390 BTC on the 13:32-13:33Z drop | CoinGlass shot only (fapi times out here); Bybit OI on the same minutes moved +45 then -99 | venue split, NOT_IN_DATA for Binance |
+| 08:10 ledger row: -1% first? | -1% = 77,234 was crossed in the 13:30Z minute (spot low 77,129); +1% (78,794) never reached | scored in SCENARIO_LEDGER.md |
+
+Mistake pattern: three of the five errors are one kind, quoting a study row without checking that today's reading meets the study's own definition (pivots, bar colour, measurement unit). Rule from now: before quoting a base rate, check the trigger against the study header.
