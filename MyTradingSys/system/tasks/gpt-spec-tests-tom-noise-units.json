@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T04:30:46Z",
   "commands": [],
   "created": "2026-10-29T22:51:37Z",
   "depends_on": [],
@@ -13,7 +14,14 @@
   "id": "gpt-spec-tests-tom-noise-units",
   "kind": "build",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "12 focused tests pass; 3/3 scratch mutations rejected; gate discovery passed (2 tests); re",
+      "ref": "2cb200a9e",
+      "utc": "2026-10-30T04:30:46Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "note": "Producer GPT; reviewer Claude or Gemini. Expected values independent of the code; tests touch temp dirs only, never runtime data. ROUTINE, no live path.",
@@ -22,7 +30,12 @@
   "refined_by": "",
   "refreshed": "2026-10-29T22:51:38Z",
   "refs": [],
-  "result": "",
+  "result": "12 focused tests pass; 3/3 scratch mutations rejected; gate discovery passed (2 tests); report MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-spec-tests-tom-noise-units.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/test_tom_noise_units.py",
     "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-spec-tests-tom-noise-units.md",
@@ -37,12 +50,13 @@
   "sources": [
     "scripts/dev/tom_noise_units.py"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read tom_noise_units.py and list every branch",
     "compute expected values by hand",
     "write tests, run 3 mutations, write report"
   ],
+  "taken": "2026-10-30T04:30:46Z",
   "tests": "python -m pytest scripts/dev/test_tom_noise_units.py -q",
   "title": "Spec-derived tests for scripts/dev/tom_noise_units.py (no test file today)",
   "weight": "ROUTINE",
