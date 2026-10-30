@@ -4,6 +4,19 @@
   "commands": [
     "python -m pytest -q scripts/dev/test_mts_doctor.py"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-30T21:36:27Z",
+    "misses": 12,
+    "reads": [
+      "scripts/dev/test_mts_doctor.py",
+      "scripts/dev/mts_doctor.py",
+      "MyTradingSys/system/artifacts/layers_board.html",
+      "scripts/dev/test_artifact_pages.py",
+      "scripts/dev/make_control_room.py"
+    ],
+    "session": "agent-a9d399a686ba5279e"
+  },
   "created": "2026-10-30T20:58:49Z",
   "depends_on": [],
   "done_when": "python -m pytest -q scripts/dev/test_mts_doctor.py exits 0 with the pinned test passing 20 times in a row (loop of 20 runs of that test, 0 failures).",

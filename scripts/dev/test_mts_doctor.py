@@ -55,8 +55,31 @@ def test_writes_only_the_report_and_names_boot_cost_apart_from_findings(tmp_path
     assert "Boot cost: CLAUDE.md" in text and not any(k == "BOOT-COST" for k, *_ in findings)
 
 
-def test_same_day_run_twice_gives_the_same_report(tmp_path):
+def _fake_disk(monkeypatch, *gbs):
+    """Make shutil.disk_usage report the given free GB in turn (last value repeats)."""
+    import shutil
+    seq = list(gbs)
+
+    def fake(_path):
+        gb = seq.pop(0) if len(seq) > 1 else seq[0]
+        return shutil._ntuple_diskusage(int(1e12), int(1e12 - gb * 1e9), int(gb * 1e9))
+    monkeypatch.setattr(shutil, "disk_usage", fake)
+
+
+def test_report_text_changes_with_disk_reading(tmp_path, monkeypatch):
+    """Why the same-day test must pin disk: a moving free-disk value alone changes the report (CI 93 vs 94 GB)."""
     mem = make_repo(tmp_path)
+    _fake_disk(monkeypatch, 93, 94)
+    a = D.run(tmp_path, tmp_path / "out", mem, process=False, now=DAY)[0].read_text(encoding="utf-8")
+    b = D.run(tmp_path, tmp_path / "out", mem, process=False, now=DAY)[0].read_text(encoding="utf-8")
+    assert a != b
+    diff = [(x, y) for x, y in zip(a.splitlines(), b.splitlines()) if x != y]
+    assert len(a.splitlines()) == len(b.splitlines()) and len(diff) == 1 and "DISK" in diff[0][0], diff
+
+
+def test_same_day_run_twice_gives_the_same_report(tmp_path, monkeypatch):
+    mem = make_repo(tmp_path)
+    _fake_disk(monkeypatch, 93)
     a = D.run(tmp_path, tmp_path / "out", mem, process=False, now=DAY)[0].read_text(encoding="utf-8")
     b = D.run(tmp_path, tmp_path / "out", mem, process=False, now=DAY)[0].read_text(encoding="utf-8")
     assert a == b
