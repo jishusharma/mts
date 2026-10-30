@@ -1,26 +1,28 @@
-# Supervisor hand-over, login C (written by Builder rolling-sessions-decisions, 2026-10-28)
+# Supervisor C handover | written 2026-10-30T02:17Z by JIS-DESKTOP | verify: python scripts/dev/supervisor.py handover --verify   (STALE 0 at last boot)
+Successor task: MTS-SuccWake-C fireAt 2026-10-30T02:18Z (4b2)
 
-Read as history. Current state comes from git and disk this turn. The operator speaks only the short start `Supervisor C` (role_loader.py BARE_LOGIN loads this file from origin/fast-track).
+## Goal
+Login C on JIS-DESKTOP: mode NORMAL, 5 h 22.0% (reset 2026-10-30T02:40Z), week 28.0% of cap 85.
+Stop at 5 h >= 80%, week >= cap, CI red, no ready cards, the TRANSIT at time, or a 3 h wave.
 
-## First discussion with the operator (decision d-measure-rolling-cost, D5)
-Open the session by explaining, in plain words, how context loading is wired today: what loads at boot, hooks, role files, memory, compaction. Source: card `context-loading-wiring-report` (research/context_loading_wiring_2026-10/REPORT.md) once done; until then answer from CLAUDE.md and scripts/dev/role_loader.py.
+## Truth
+- Peers live at write: A@JIS-NUC, B@JIS-NUC | `python scripts/dev/sync.py where --all` | read at 2026-10-30T02:17Z
+- Last picks: main-checkout-stale-hooks-2026-10-24 | `python scripts/dev/tasks.py dispatch` | read at 2026-10-30T02:17Z
+- Open claims from JIS-DESKTOP: ship-root-cause | `python scripts/dev/sync.py where --all` | read at 2026-10-30T02:17Z
 
-## Goals, in order
-1. Verify the 21 gap cards from commit b3375534 landed on `origin/fast-track` (`tasks.py list`, grep `gap-`); dispatch the top ones (`tasks.py dispatch`).
-2. Verify the gateway ships landed on `origin/fast-track` and `origin/green/fast-track` and meet done-when: `handover-log-cap`, `gemini-lane-fix`, `wake-sleeping-sessions` (independent re-run; no recorded real run = not done).
-3. Drive the 3 new cards: `rolling-session-cost-comparison`, `context-loading-wiring-report`, `codex-gpt-exhaust-full`.
-4. Keep CI green: revert a breaking commit, never fix forward.
-5. Keep the Codex (GPT) lane fed to 100% of its session limit (d-gpt-exhaust-full); Gemini lane always `<card>:low`.
+## Ruled out
+- none recorded by the tool; add what was tried and closed (`handover --from <file>`).
 
-## Operator decisions 2026-10-28 (do not ask again; OPERATOR_DECISIONS.md d-rolling-sessions, d-gpt-exhaust-full, d-measure-rolling-cost)
-- Rolling sessions continue on every login. Login A keeps running as is; never restart it.
-- Logins A and C stay active continuously; work proceeds on all logins without gaps.
-- Login C goes down now and then: keep this file current at every hand-over so a fresh session takes over with one spoken word.
+## Next 3 steps
+1. `python scripts/dev/sync.py start supervisor-C-<utc date>`; `get_usage`; `python scripts/dev/supervisor.py plan --login C --five <%> --five-reset <utc> --week <%> --week-reset <utc> --running 0`.
+2. 02:20Z TRANSIT. Open: Fable R5 shipped (GRANDFATHER_DECISION 7f02769e; config edit is a CRITICAL card); R7 on O2 hold; reply protocol e8e7e8cd shipped; station_disk_report removed from trunk, needs Linux-safe re-land; successor wake fix e1e0dba8 unproven (proof fire card); b-230ce8 told (GPT/Gemini on NUC); DeepSeek DSA row 39h; A reset conflict.
+3. `python scripts/dev/tasks.py dispatch`; start the next picks.
 
-## Rules the operator set
-- Never hand him a long prompt to paste. Save it in a file on trunk, give a one-line start.
-- A feature counts as done only when a real end-to-end run is recorded.
-- Gateway sessions: public tracked files only (GATEWAY_NUC.md).
-- Malkan RSI divergence flags are confirmed only in the simulator, never on screenshots.
+## Traps
+- One ship at a time; EXTRA registration forces the ~20 min gate.
 
-Successor: `Supervisor C`
+## Open
+- Claims above: finish, hand over in the card, or release.
+
+## Missed last time
+(machine-written by `context_gap.py fold` at the next ship)
