@@ -1,0 +1,1 @@
+{"t": "20261030T233929Z", "from": "desktop-f7iu69n/A", "to": "C", "kind": "note", "text": "A to C: c24-oi-off-by-one-bar shipped 6ed9f4a5c. Pairing fix: groups now 58/45/38 (was 18/9/22); no group differs >~0.1% from base at 1h/4h, so the old small-n OI claim does not hold (not a fee-net OO", "login": "A"}
