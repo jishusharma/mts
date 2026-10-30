@@ -88,7 +88,7 @@ def run(side):
                 if j >= N or SMA[j] is None or any(Hs[m] > pv["lvl"] for m in range(i, j + 1)) or Cs[j] >= pv["lvl"]:
                     continue
                 trend = "with" if (C[j] > SMA[j]) == (side > 0) else "against"  # highs in an uptrend = 'with'
-                events.append(dict(oos=T[j] >= SPLIT, trend=trend, age=(i - pv["p"]) / 4, t=T[j], lvl=pv["lvl"],
+                events.append(dict(j=j, oos=T[j] >= SPLIT, trend=trend, age=(i - pv["p"]) / 4, t=T[j], lvl=pv["lvl"],
                                    out=forward_outcome(j, pv["lvl"])))
         pivots = [pv for pv in pivots if not (pv["done"] and pv["cdone"])]
     return events, ctrl
@@ -98,25 +98,26 @@ def share(xs, h):
     return 100 * sum(1 for x in xs if x[0] is not None and x[0] <= h * 4) / len(xs)
 
 
-for side, name in ((1, "HIGHS (shorts build under a held high)"), (-1, "LOWS (longs build over a held low)")):
-    ev, ctrl = run(side)
-    print("== %s" % name)
-    for oos, per in ((False, "2022-01..2024-06"), (True, "2024-07..now")):
-        c = [o for f, o in ctrl if f == oos]
-        print("  %s control n=%4d  taken 24h %2.0f%% 48h %2.0f%% 72h %2.0f%%" % (per, len(c), share(c, 24), share(c, 48), share(c, 72)))
-        for tr in ("with", "against", None):
-            x = [e for e in ev if e["oos"] == oos and (tr is None or e["trend"] == tr)]
-            if len(x) < 10:
-                continue
-            o = [e["out"] for e in x]
-            tk = [v for v in o if v[0] is not None]
-            sw = [v for v in tk if v[1]]
-            aft = [v[2] for v in sw if v[2] is not None]
-            print("  %s retest-held %-7s n=%4d taken 24h %2.0f%% 48h %2.0f%% 72h %2.0f%% | age at retest med %4.1fh | retest->take-out med %4.1fh"
-                  " | take-outs that swept back %2.0f%%, 24h later med %+.2f%% (n=%d, - = reversed)" % (
-                      per, tr or "all", len(x), share(o, 24), share(o, 48), share(o, 72), st.median(e["age"] for e in x),
-                      st.median(v[0] / 4 for v in tk) if tk else 0, 100 * len(sw) / max(1, len(tk)), st.median(aft) if aft else 0, len(aft)))
-    for e in ev:
-        if e["t"] >= T[-1] - 4 * 86400000:
-            print("  recent: %s level %.0f age %.1fh -> %s" % (datetime.fromtimestamp(e["t"] / 1000, timezone.utc).strftime("%m-%d %H:%M"),
-                  abs(e["lvl"]), e["age"], "taken after %.1fh, swept back %s" % (e["out"][0] / 4, e["out"][1]) if e["out"][0] else "not taken"))
+if __name__ == "__main__":
+    for side, name in ((1, "HIGHS (shorts build under a held high)"), (-1, "LOWS (longs build over a held low)")):
+        ev, ctrl = run(side)
+        print("== %s" % name)
+        for oos, per in ((False, "2022-01..2024-06"), (True, "2024-07..now")):
+            c = [o for f, o in ctrl if f == oos]
+            print("  %s control n=%4d  taken 24h %2.0f%% 48h %2.0f%% 72h %2.0f%%" % (per, len(c), share(c, 24), share(c, 48), share(c, 72)))
+            for tr in ("with", "against", None):
+                x = [e for e in ev if e["oos"] == oos and (tr is None or e["trend"] == tr)]
+                if len(x) < 10:
+                    continue
+                o = [e["out"] for e in x]
+                tk = [v for v in o if v[0] is not None]
+                sw = [v for v in tk if v[1]]
+                aft = [v[2] for v in sw if v[2] is not None]
+                print("  %s retest-held %-7s n=%4d taken 24h %2.0f%% 48h %2.0f%% 72h %2.0f%% | age at retest med %4.1fh | retest->take-out med %4.1fh"
+                      " | take-outs that swept back %2.0f%%, 24h later med %+.2f%% (n=%d, - = reversed)" % (
+                          per, tr or "all", len(x), share(o, 24), share(o, 48), share(o, 72), st.median(e["age"] for e in x),
+                          st.median(v[0] / 4 for v in tk) if tk else 0, 100 * len(sw) / max(1, len(tk)), st.median(aft) if aft else 0, len(aft)))
+        for e in ev:
+            if e["t"] >= T[-1] - 4 * 86400000:
+                print("  recent: %s level %.0f age %.1fh -> %s" % (datetime.fromtimestamp(e["t"] / 1000, timezone.utc).strftime("%m-%d %H:%M"),
+                      abs(e["lvl"]), e["age"], "taken after %.1fh, swept back %s" % (e["out"][0] / 4, e["out"][1]) if e["out"][0] else "not taken"))

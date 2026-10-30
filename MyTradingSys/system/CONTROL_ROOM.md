@@ -1,5 +1,8 @@
 # CONTROL ROOM - the operator's one page, and how Claude keeps it alive
 
+> **RETIRED 2026-10-31 (operator: old concept, Inbox db empty).** Decisions are answered in chat and recorded in OPERATOR_DECISIONS.md; MTS Home lists what is waiting for him (`make_home.py waiting()`: undecided decisions plus cards whose `asks` is addressed to Jis; machine waits are not counted). The page MNuodX and the jishu.sharma EoHi2q are to be deleted by the operator (registry status `retire`). The text below is history.
+
+
 Pages are listed in `system/artifacts/registry.json` (one url per page per account; `scripts/dev/artifacts.py`).
 Page: https://claude.ai/artifact/MNuodXmi5RiEihX7rFpqUp (2026-10-17 operator: "make a copy of everything from GitHub and publish everything from this account"; owned by jishusharma1985, the home login, so every MTS Home link opens there; its Inbox and decisions db start empty here, earlier answers are in OPERATOR_DECISIONS.md. Before that: https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su on jishu.sharma, now an old copy to delete; the earlier Ep6gA5 opens on no login, operator go; jishu.sharma, NUC; the Inbox and decisions db owner, decision q21; it declares `db` + `user`, republish keeps them, never pass
 `capabilities: {}`; Inbox seeded 2026-10-12 from OPERATOR_INBOX.md, 41 items, status answered/filed; 2026-10-15 (q21) the repo decisions

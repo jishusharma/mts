@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T20:31:55Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -27,6 +28,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "shipped by login A as 386de62f9: RESULT.md, 18 of 27 silent",
+      "ref": "1adc85c4d",
+      "utc": "2026-10-30T20:31:55Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "analyst levels: no hit before the video could exist; cbp_run prompt carries metadata (Argo",
@@ -46,7 +53,12 @@
     "MyTradingSys/system/LAYERS.md",
     "MyTradingSys/system/LIVE_MIRROR.md"
   ],
-  "result": "",
+  "result": "shipped by login A as 386de62f9: RESULT.md, 18 of 27 silent",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/analyst_levels.py"
   ],
@@ -58,10 +70,11 @@
   "sources": [
     "operator quote 2026-10-30 in card note"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Fallback if not on desktop-f7iu69n: python scripts/dev/mts_signal.py broadcast --cmd to the owner for the read-only extract; first check the window still exists in live_runner.log/snapshots (rotation); if rotated, say so in RESULT.md instead of guessing"
   ],
+  "taken": "2026-10-30T20:31:55Z",
   "tests": "No code changes: verify every row cites a log/state line; count layers parsed from LAYERS.md equals rows in RESULT.md (parse then count, no truncated output)",
   "title": "Live not-fired audit 10-29 17:00Z..10-30 08:00Z (82k->76.4k): on the LIVE OWNER (desktop-f7iu69n) list every engine layer, fired or silent, and the reason for each silence, from live_runner.log, state_code.json, snapshots, auto_trades.jsonl (read-only); output research/live_not_fired_2026-10-29/RESULT.md",
   "weight": "IMPORTANT",

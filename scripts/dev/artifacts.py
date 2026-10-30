@@ -228,7 +228,7 @@ def publish_record(reg, slug, today=None, repo=REPO):
 def cmd_build(reg):
     for pg in reg["pages"]:
         g = pg.get("generator") or ""
-        if g.startswith("scripts/"):
+        if g.startswith("scripts/") and pg["status"] != "retire":
             print("build", pg["slug"])
             subprocess.run([sys.executable, str(REPO / g), "--out", str(REPO / pg["html"])], check=True)
 
