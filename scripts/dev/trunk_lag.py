@@ -198,14 +198,18 @@ def sync_hook_files(repo):
 
 def release_synced(repo):
     """Before a fast-forward: put the files this hook took back to HEAD (or remove a new one), so `merge --ff-only` re-applies
-    trunk's copy. Returns False when a tracked edit of anyone else remains (the fast-forward must not run)."""
+    trunk's copy. Anyone else's tracked edit stays and rides along when trunk does not change that path (JIS-NUC 2026-10-31:
+    one SUPERVISOR_LOG.md line kept the main checkout 197 commits behind). Returns False when such an edit is on a path trunk
+    changes (the fast-forward must not run)."""
     status = _z(repo, "status", "--porcelain=v1", "-z", "--untracked-files=no", timeout=30)
     paths = [rec[3:] for rec in status if len(rec) > 3]
     if not paths:
         return True
     head, index, dirty, record = _hook_state(repo)
-    if not all(p in record and index.get(p) == record[p] and p not in dirty for p in paths):
+    foreign = {p for p in paths if not (p in record and index.get(p) == record[p] and p not in dirty)}
+    if foreign & set(_z(repo, "diff", "--name-only", "-z", "HEAD", f"origin/{TRUNK}", timeout=30)):
         return False
+    paths = [p for p in paths if p not in foreign]
     back = [p for p in paths if p in head]
     new = [p for p in paths if p not in head]
     if back and git(repo, "checkout", "HEAD", "--", *back, timeout=60).returncode:
