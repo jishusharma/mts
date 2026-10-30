@@ -13,6 +13,15 @@ Profiles, per side, as a fraction of price:
     default tier. maker 0.0002 (4 bps RT), taker 0.0005 (10 bps RT).
     Source: T055b_PROVEN_SETUPS.md L22-23.
 
+Own constants: frozen allowlist MyTradingSys/backtest/cost_allowlist.txt lists the files that still define their own
+fee/slippage constant (T06-F2); MyTradingSys/backtest/test_no_own_costs.py fails for any other file. Do not add to it.
+
+Fee regimes (T06_cost_fill_realism.md section 7; state the regime next to every verdict):
+  A  all-taker Deribit            10 bp round trip (2 x DERIBIT_TAKER), before slippage
+  B  maker entry + taker exit      5 bp round trip (FEES_DERIBIT: entry/target maker, stop/timeout taker)
+  C  all-maker Deribit             0 bp round trip (DERIBIT_MAKER)
+  D  Binance maker both legs       4 bp round trip (2 x BINANCE_MAKER)
+
 Change rule: edit this file. Then run:
   python -m pytest MyTradingSys/tests MyTradingSys/backtest -q
 """
