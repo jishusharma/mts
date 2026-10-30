@@ -1,0 +1,1 @@
+{"t": "20261030T003105Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "broadcast", "text": "Disk roll-call: JIS-NB and JIS-NUC run the command once (read-only, ~1 min). It posts one STATION line (free GB, VM/worktree/temp sizes). No deletes.", "login": "A", "id": "b-aa0690", "prio": "high", "cmd": "git pull --ff-only; python scripts/dev/station_disk_report.py --send"}
