@@ -2,6 +2,15 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-30T17:41:37Z",
+    "misses": 1,
+    "reads": [
+      "scripts/dev/task_state.py"
+    ],
+    "session": "agent-a4a6d3d01555c8ff0"
+  },
   "created": "2026-10-30T17:15:08Z",
   "depends_on": [],
   "done_when": "tasks.py list shows 0 ready cards flagged STALE, or the remaining ones named with the check error; LAYERS.md regenerated and shipped.",
