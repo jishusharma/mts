@@ -1,7 +1,22 @@
 {
   "approved_by": "operator 2026-10-30: 'log a bug, high priority, fix so you do not sleep again'",
   "asks": "",
+  "closed": "2026-10-30T08:19:07Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-30T08:19:04Z",
+    "misses": 7,
+    "reads": [
+      "scripts/dev/stop_guard.py",
+      "scripts/dev/test_stop_guard.py",
+      "scripts/dev/tasks.py",
+      "scripts/dev/supervisor.py",
+      "MyTradingSys/system/roles/supervisor.md",
+      "scripts/dev/run_all_tests.py"
+    ],
+    "session": "agent-a0857b771b978db50"
+  },
   "created": "2026-10-29T21:00:32Z",
   "depends_on": [],
   "done_when": "Stop hook blocks the end of a Supervisor-role turn while `supervisor.py watchcheck --login <L>` exits non-zero (no live watcher) or no plan ran in the last 10 min; a test fails on the old stop_guard and passes now; the role file's every-wake step says answer, then plan, then watcher",
@@ -13,6 +28,12 @@
   "id": "bug-supervisor-idles-no-watcher",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Already on trunk in efc374bdf: stop_guard.supervisor_reason blocks a Supervisor turn end w",
+      "ref": "46cb2d608",
+      "utc": "2026-10-30T08:19:07Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +60,12 @@
   "refs": [
     "MyTradingSys/research/nuc_restart_2026-10-28/ISSUES_REGISTER.md"
   ],
-  "result": "",
+  "result": "Already on trunk in efc374bdf: stop_guard.supervisor_reason blocks a Supervisor turn end without live watcher or plan <10 min; SupervisorWatcherTest 18 pass; supervisor.md wake order answer, plan, watcher",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/stop_guard.py",
     "scripts/dev/supervisor.py",
@@ -54,12 +80,13 @@
   "scope_sha": "b7d9f3e09aa7",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Reproduce: end a Supervisor turn with no watcher and show the stop hook allows it",
     "Add the watcher and fresh-plan check to stop_guard for Supervisor-role sessions, fail open on errors, once per state",
     "Test it fails on old code; update the role file wake step"
   ],
+  "taken": "2026-10-30T08:19:07Z",
   "tests": "test_stop_guard_supervisor_watcher: fails on old code",
   "title": "HIGH BUG: Supervisor goes idle between operator turns (no plan, no watcher, no worker started)",
   "weight": "",
