@@ -1,0 +1,642 @@
+# Video ID: M_p2k4uvRKc
+# Title: Order Flow Trading Explained: How to Read the Tape (From a Former NYSE ARCA Market Maker)
+# Published: 2026-10-25
+# Source: youtube_transcript_api (manual); uploader: Krown
+# Analyst: Krown
+# Channel: @ECKrown
+# Duration_s:1706
+# Word count: 5685
+# ---
+[00:00:00] everything else on your screen
+[00:00:01] candles, indicators, moving averages
+[00:00:03] is a chart of the tape
+[00:00:04] you've been studying the shadow
+[00:00:06] today we look at the thing
+[00:00:08] that's actually creating the shadow
+[00:00:12] Every candle on your chart is a lie of omission.
+[00:00:14] It's not necessarily false, it's just really a summary.
+[00:00:16] You got four numbers, you're at open high, low close,
+[00:00:19] standing in for thousands of real trades
+[00:00:20] that happened during that period, written after the fact.
+[00:00:23] And the raw feed underneath, well, every trade,
+[00:00:25] every size, every aggressor, in order,
+[00:00:27] that is called the tape.
+[00:00:29] And reading it is a skill, actually, with a real name.
+[00:00:31] It's usually a skill that, you know,
+[00:00:32] more old timers have, but it is an ancient skill
+[00:00:35] and it does definitely matter if you want to go
+[00:00:37] that route, and this is order flow trading effectively.
+[00:00:40] So for seven episodes, you've met everyone inside the machine,
+[00:00:43] the maker, the hunter, the whale, the avalanche.
+[00:00:46] Today, the finale, I hand you the X-ray,
+[00:00:48] the tool that shows you all their footprints,
+[00:00:51] live on a feed, you can open for free, as well.
+[00:00:53] I mean, literally all this stuff you can see
+[00:00:55] without any sort of like a script or anything like this,
+[00:00:57] it is all there for you to view, if you so desire.
+[00:01:00] And realistically, I think most people don't view it
+[00:01:02] because they just don't know,
+[00:01:03] or, well, they just don't think it matters.
+[00:01:05] And the honest truth about what it can do
+[00:01:06] and what it cannot do is what I'm gonna get across
+[00:01:09] in this episode, so let's go deep inside that machine.
+[00:01:13] I'll go over to my next little presentation right here,
+[00:01:16] and let's actually run that again.
+[00:01:18] So, you know, this is what I was referring to right here.
+[00:01:20] A candle is effectively a summary.
+[00:01:22] You know, you got your open, high, low, close,
+[00:01:24] and all of the trades going in between them,
+[00:01:26] that's what actually has actually happened.
+[00:01:28] So anyways, as we move through this one,
+[00:01:30] I should let you know that this is episode number eight
+[00:01:32] of Inside the Machine,
+[00:01:33] and this is actually the last episode of the finale.
+[00:01:36] So the score is full now, the job, the engine,
+[00:01:38] the pools, the hunt, the tricks, the fill, the cascade.
+[00:01:41] Seven episodes so far, seven players,
+[00:01:43] zero mysteries, hopefully, at this point.
+[00:01:45] But this one, the instrument that lets you watch
+[00:01:49] all of them work live at once.
+[00:01:50] That's today, that's the tape,
+[00:01:52] and then we assemble the whole machine together.
+[00:01:54] One final pass, we'll go through it hand in hand,
+[00:01:57] and how will they all interrelate?
+[00:01:59] Same rule, however, one last time, no.
+[00:02:01] Nothing here is gonna predict price, it explains it.
+[00:02:03] So let's finish this up and wrap this up, baby.
+[00:02:06] So let's go into our next slide here.
+[00:02:09] The tape is a source, basically.
+[00:02:11] That is what it is in essence.
+[00:02:13] First, let's reframe the whole episode
+[00:02:15] of what we're gonna be going over.
+[00:02:17] A candle is derived data.
+[00:02:19] You got your open, high, low, close.
+[00:02:21] Four numbers, summarizing thousands of real events,
+[00:02:23] or could be thousands of real events,
+[00:02:25] just all the trades that happened during that period.
+[00:02:27] And it's drawn, of course, after the fact.
+[00:02:29] Now, what is it derived from?
+[00:02:31] You might be asking.
+[00:02:31] Now, if you've been paying attention,
+[00:02:32] you probably don't know the answer.
+[00:02:33] It's a tape.
+[00:02:34] So that is the time and the sales.
+[00:02:37] Every trade that actually happened,
+[00:02:39] price, size, which side was the aggressor?
+[00:02:41] Basically, which size marketed into their position,
+[00:02:43] because that is the only trade
+[00:02:44] that is actually going through the tape.
+[00:02:47] And, of course, the timestamp alongside that as well.
+[00:02:49] In order, and it is there, cemented forever
+[00:02:52] for your viewing.
+[00:02:53] Episode number two told you prints are the truth.
+[00:02:55] Well, the tape, quite literally, is the prints, actually.
+[00:02:58] So everything else on your screen,
+[00:03:00] like candles, indicators, moving averages,
+[00:03:01] is a chart of the tape.
+[00:03:03] It's just taking some facet of the tape
+[00:03:06] and then repatching that into some sort
+[00:03:08] of a mathematical equation that gives you an indicator,
+[00:03:10] hopefully, with an edge.
+[00:03:11] Now you've been studying the shadow.
+[00:03:13] So today we're going to look at the thing
+[00:03:15] that's actually creating the shadow.
+[00:03:18] And without further ado, let's go into it right here.
+[00:03:20] But actually, before we go into it,
+[00:03:21] I do want to kind of tell you a little bit of the story.
+[00:03:23] So, you know, like I said, one of my mentors,
+[00:03:25] when I was a professional market maker,
+[00:03:27] authorized trader on the floor of the United States
+[00:03:28] change ARCA, I feel like I always have to say
+[00:03:30] in that whole thread, but yes, you know,
+[00:03:33] he was an old timer.
+[00:03:34] He had been doing it for, I mean, at that point,
+[00:03:36] I think over 35 years, he was going on about 40.
+[00:03:39] And he actually did still understand the art,
+[00:03:42] or he was like one of the last practitioners of the art,
+[00:03:45] at least on the floor, that would actually read the tape.
+[00:03:47] And when I say read the tape,
+[00:03:48] he would actually look at the list of trades
+[00:03:51] coming through, and he would kind of understand
+[00:03:54] what the market's going to do just based off of that.
+[00:03:56] You know, what are like,
+[00:03:58] based off of all of these aggressive orders,
+[00:04:00] what the hell are they trying to do?
+[00:04:01] So, you know, you can kind of deduce this
+[00:04:04] when like a bro comes into your pit,
+[00:04:05] and they're trying to like sell you an absurd amount,
+[00:04:10] like a quarter million, you know,
+[00:04:12] far out of the money calls, expiring, you know,
+[00:04:14] around typically an important date.
+[00:04:17] That can be an indication that something's coming up.
+[00:04:20] Someone knows something that you don't,
+[00:04:21] or at the very least, you know,
+[00:04:22] they're willing to bet on it.
+[00:04:23] These things are worth paying attention to,
+[00:04:26] and you can find some edge there.
+[00:04:28] But like I said, it's kind of an ancient art,
+[00:04:29] and we do have new modern tools
+[00:04:31] to help us better look at it,
+[00:04:33] which we'll go over a little bit later.
+[00:04:35] Again, it is free.
+[00:04:36] Anyway, so let's go over aggression measured.
+[00:04:38] So yeah, slide number four here.
+[00:04:41] So the tapes first grade number is effectively your delta.
+[00:04:44] Episode two taught you only market orders move the price,
+[00:04:47] which is more or less known as aggression, right?
+[00:04:50] Delta simply counts it.
+[00:04:53] That's all it's doing.
+[00:04:54] So market buys minus market sells
+[00:04:56] over any timeframe that you like, basically.
+[00:05:00] Positive delta means that there is more buyers,
+[00:05:02] basically more buyers marketed into their positions
+[00:05:06] than market sellers during that period.
+[00:05:09] Basically, the buyers cross the spread,
+[00:05:10] is what we like to say,
+[00:05:11] and more people paid up to get in.
+[00:05:13] You know, they paid marketing fees.
+[00:05:14] Well, if you have a negative delta,
+[00:05:17] then basically the opposite happened, right?
+[00:05:19] Sellers crossed down.
+[00:05:20] And why does this matter?
+[00:05:21] Because the price alone hides who did the work.
+[00:05:24] Price can rise on a whisper of buying
+[00:05:25] if the book is thin, of course.
+[00:05:27] Again, we went over this in episode three.
+[00:05:28] Or while buyers fight heroically too,
+[00:05:33] delta is the first number that tells you who was aggressive,
+[00:05:37] not just where price ended up.
+[00:05:39] And that is what we're working towards here.
+[00:05:40] And like I said, you're not gonna actually have to read
+[00:05:42] the tape if you don't want to,
+[00:05:43] because realistically, you don't need to do that.
+[00:05:46] We have an indicator for this
+[00:05:47] that we'll actually calculate this for you,
+[00:05:49] which is called the CVD.
+[00:05:53] This is effectively your odometer.
+[00:05:55] So stretch delta across the whole session.
+[00:05:58] Again, the time frame that we're looking at.
+[00:06:00] And you get the tape's second great number,
+[00:06:01] which is CVD, cumulative volume delta.
+[00:06:05] So that's the running total of aggression.
+[00:06:07] Basically, it's gonna calculate all of that for you.
+[00:06:10] And it's just, you know.
+[00:06:11] one line basically, when it climbs,
+[00:06:13] buyers have been doing the pushing.
+[00:06:15] When it falls, when it's negative, sellers have done it.
+[00:06:17] Think of it as effectively like an aggressive,
+[00:06:20] an aggression odometer.
+[00:06:22] It's telling you which side is more aggressive.
+[00:06:23] It's not telling you where price went,
+[00:06:25] but it's telling you how much aggressive fuel,
+[00:06:27] how much market orders was burned getting there.
+[00:06:30] And the reason you want this number in your screen
+[00:06:32] isn't the line itself,
+[00:06:33] it's what happens when the line and price stop agreeing.
+[00:06:36] That's the money moment,
+[00:06:37] and we're gonna get into that in the next slide.
+[00:06:39] And then we'll also show you this indicator as well
+[00:06:41] because like I said, it is a lot easier
+[00:06:43] than just watching the fucking tape,
+[00:06:44] having your eyes glued to that at all hours of the day.
+[00:06:48] All right, cool.
+[00:06:49] Let's go for effort versus result right here,
+[00:06:51] and then we'll go into some examples.
+[00:06:52] So here's the read that pays for the whole episode,
+[00:06:55] hopefully effort versus result.
+[00:06:57] So panel one, sorry, panel one,
+[00:07:00] price grinds to a new high, right?
+[00:07:02] This is panel one right here.
+[00:07:04] Price grinds to a new high,
+[00:07:05] and I'll just, I'll run this animation again.
+[00:07:08] But CVD barely moves, okay.
+[00:07:11] You got a huge result, but almost no aggressive efforts.
+[00:07:15] So who's lifting it, who's causing it to move
+[00:07:17] or what's causing it to move?
+[00:07:18] Or is there really any like real momentum
+[00:07:21] and aggression behind it?
+[00:07:22] Because aggression is what creates an impulsive move,
+[00:07:25] which are the ones that typically people love the most,
+[00:07:29] like especially breakout moves, for example,
+[00:07:31] are gonna have high aggression.
+[00:07:33] Well, if you have something like that
+[00:07:35] where CVD is low, but price moves a lot,
+[00:07:39] then you have a thin air and a thin book.
+[00:07:42] Basically nobody's actually paying up.
+[00:07:44] That high is hollow.
+[00:07:46] There's not many people behind it.
+[00:07:48] Episode three would call it a pool waiting to be tapped.
+[00:07:51] Most likely it would kind of fit into that venue.
+[00:07:54] Panel two, however, for this one right here,
+[00:07:57] we have a mirror.
+[00:07:58] Delta is massively negative.
+[00:08:00] Again, cumulative volume delta is massively negative.
+[00:08:03] Sellers are fucking hammering.
+[00:08:05] Real aggressive effort.
+[00:08:06] And price, what is price doing?
+[00:08:09] It barely falls.
+[00:08:10] Maybe it doesn't even fall at all,
+[00:08:11] but basically it is sideways.
+[00:08:14] The result is the same.
+[00:08:17] You, you've seen this before as well.
+[00:08:19] This is absorption.
+[00:08:20] This is literally absorption.
+[00:08:21] That is what it looks like.
+[00:08:22] Again, think about it.
+[00:08:25] Extreme, extreme CVD.
+[00:08:28] Extreme CVD, meaning lots of, in this case,
+[00:08:31] shorts marketing into their position,
+[00:08:33] but price is not really going down.
+[00:08:35] In fact, it's going sideways.
+[00:08:37] So what does that tell you?
+[00:08:38] It's being absorbed by limit orders.
+[00:08:40] And what typically happens after that?
+[00:08:42] Probably going to bounce.
+[00:08:43] So it is incredibly useful for those purposes.
+[00:08:47] So what is really going on here?
+[00:08:48] Someone enormous is drinking every sell
+[00:08:50] at that level basically.
+[00:08:52] And whenever and result disagree,
+[00:08:55] somebody is standing on the tape.
+[00:08:57] And now you can see them
+[00:08:58] and that's not a prediction as well.
+[00:09:00] That is actually an expert.
+[00:09:01] You're actually able to see
+[00:09:01] what the fuck is going on right there.
+[00:09:03] And more importantly, this has a real signal for you,
+[00:09:06] or it can have a real signal for you, obviously.
+[00:09:09] So real quick, by the way, if effort versus.
+[00:09:10] Just gave you a brand new pair of eyes
+[00:09:12] This is a crazy part of the video
+[00:09:14] But hit the like button in the subscribe button as well because it will send this series and more videos like it to your inbox
+[00:09:19] When they are most, you know relevant chronologically. All right, cool
+[00:09:22] Anyways, let's go over some foot foot foot footprint charts here
+[00:09:25] So one more tool for your vocabulary here because you will run into it and that is the footprint chart
+[00:09:31] So take a single candle and break it open at every price level inside that candle how much aggressive
+[00:09:37] Buying is going on and how much aggressive selling is going on?
+[00:09:40] What actually traded the candle with its skin off basically you get to see what's actually going on beneath the hood right there
+[00:09:47] Basically, that is just the recent trades list again on coinbase over here. It's just all of these. That's all that it is
+[00:09:54] Where did the buying cluster go? Where did the aggression just die?
+[00:09:58] Where did huge volume trade with zero progress absorption?
+[00:10:01] In other words printed at an exact level you don't need one to trade everything
+[00:10:05] That series works from a free chart and a free book
+[00:10:08] But when someone flashes a footprint at you, you now know exactly what you're looking at the tape folded into
+[00:10:15] You know the candle that is, you know, it's building over here like basically this dissected equals this
+[00:10:19] That's what I'm working towards and and we're gonna go we're gonna again
+[00:10:23] We're gonna go over an indicator that will give you all this without actually you having to you know
+[00:10:28] Stare at this at all hours of the fucking day. Anyways one more slide it then I give you the tool
+[00:10:33] The tape yeah fold it into the candle it built. There we go. Hit all my notes. They're beautiful
+[00:10:36] All right, let's move on to the next one. So let's go over some some you know, some limits here
+[00:10:41] So now the part that's most order flow content
+[00:10:46] that I've seen at least it conveniently skips this a lot and
+[00:10:49] What the tape will never tell you so one intent
+[00:10:53] obviously episode 5 whole lesson the line between real and fake is
+[00:10:57] Intent and intent does not print of course a giant by could be conviction
+[00:11:02] It could be a hedge could be short covering could be like an algo just doing what the hell they're doing
+[00:11:06] The tape says what happened not why and in fact, we never know why anything happened anyways
+[00:11:10] Which is why it's a fool's error to try to guess or make a strategy around the why we don't know why we only know
+[00:11:17] Result and that's what matters if we want to be as objective as possible. Anyways number two the future
+[00:11:23] So episode sevens rule applies here really really well flow is a reading and not a prediction
+[00:11:30] Remember so absorption can fail divergence can persist for hours
+[00:11:34] So that means that you're just looking at a snapshot of right now when you're looking at the current CVD for example
+[00:11:41] If you just wait for another couple periods you're gonna have more information that might change
+[00:11:46] The sort of context of the previous one can definitely happen
+[00:11:50] And it will go for some examples soon enough. Anyways
+[00:11:53] Uh, number three is meaning without context.
+[00:11:56] Uh, so Delta at a random spot is of course, noise the same Delta at a level,
+[00:12:01] however, is information.
+[00:12:03] So when you, um, you know, when you have, uh, uh, like, uh, you know, a
+[00:12:08] massive support level, you know, that you've mapped out on your chart,
+[00:12:11] you start to see CVD printing extreme negatives around that level.
+[00:12:16] Well, guess what?
+[00:12:17] Uh, you probably have a good support region that can abs that
+[00:12:23] typically will occur if you are watching it in the moment, you will see that anyways.
+[00:12:28] Let's now go over some actual examples.
+[00:12:30] So again, all of this right here is CVD.
+[00:12:34] That's tell, I mean, it's, it's telling you what's in the CVD.
+[00:12:36] This is telling me about the Delta.
+[00:12:37] Again, these are all market orders.
+[00:12:38] You get the price that they are executed at plus the amount, um, and the time.
+[00:12:43] All right.
+[00:12:44] Like I said, it's probably way too much to keep an eye on for, you know,
+[00:12:48] you know, many hours of the day.
+[00:12:50] So we have an indicator for this and I'll bring you over here
+[00:12:53] to our chart on trading view to get this indicator.
+[00:12:56] It is a built-in indicator.
+[00:12:56] So it's 100% free on trading view.
+[00:12:58] All you need to do is go to the indicators metrics and strategy
+[00:13:01] tabs right here, boom, bring that up, type in C V and D boom.
+[00:13:05] There we go.
+[00:13:06] It'll be the first one on a technical is cumulative volume Delta.
+[00:13:10] And once you click that, it'll bring up this indicator down here.
+[00:13:12] Now you'll notice it actually doesn't go back that far.
+[00:13:15] In this case, it goes back a couple months for us.
+[00:13:18] Um, but let's just go down into a lower timeframe here.
+[00:13:22] So let's go over.
+[00:13:24] Oh, I know exactly what I'm going to go over.
+[00:13:26] So recently we saw a major massive breakout for, for the altcoins here.
+[00:13:30] Right.
+[00:13:31] This happened back around the 18th, um, of August.
+[00:13:35] And if we go zero in on that, looking at the CVD, what do you expect to see?
+[00:13:39] You probably expect to see crazy high levels of CVD, crazy high positive
+[00:13:45] levels of CVD, and in fact, that's exactly what you see down here.
+[00:13:49] So this CVD indicator is showing an outsized amount of market
+[00:13:53] buying that whole way through and compare that to, you know, to everything
+[00:13:57] previous to that it is multiples higher than what you saw previously.
+[00:14:02] So that would be another way that you could have validated that as a breakout
+[00:14:05] in the moment in comparison to, you know, what a lot of people are looking
+[00:14:09] at with, which was fading this thing because, uh, you know, it's like, oh,
+[00:14:12] well it's still a downtrend, still bear market, blah, blah, blah.
+[00:14:14] But when you start to see volume like this, it's not, it's, it's not coming
+[00:14:18] out of nowhere, like that matters.
+[00:14:20] That matters.
+[00:14:21] When you see outsized volume like that, pay fucking attention.
+[00:14:24] Cause you can get moves like this, of course.
+[00:14:26] Now, on the other hand, we can see recently that there was some nice,
+[00:14:31] uh, negative, I mean, relatively negative, uh, cumulative CVD levels right
+[00:14:36] here, um, while Bitcoin came down, but then it kind of found a support and
+[00:14:40] you've seen that it's more or less traded sideways on that support since then.
+[00:14:43] So what does that tell us?
+[00:14:44] It tells us that that, that low probably is a good area, you know, if
+[00:14:48] you're going to be playing a short-term interim support, basically.
+[00:14:51] Um, same thing over here again.
+[00:14:53] negative, relatively negative CVD levels right here.
+[00:14:56] Again, not anything outsized or anything like that,
+[00:14:59] but happens on a low that more or less marks off
+[00:15:02] the low side of this range as well.
+[00:15:04] Now, I wish we had a lot more price action history here
+[00:15:09] to go over, because it does limit you
+[00:15:11] to the past couple months, because then we could go over,
+[00:15:15] what I really wanted to see was like the last major low
+[00:15:18] for Bitcoin, where you could see extremely, extremely,
+[00:15:20] extremely negative levels of CVD,
+[00:15:23] which we actually did see in the moment,
+[00:15:25] but at some point, you know,
+[00:15:27] Bitcoin just started to go sideways despite all that selling.
+[00:15:30] So what does that tell you?
+[00:15:31] You got really aggressive sellers going into limit orders,
+[00:15:34] which are just absorbing price.
+[00:15:36] The patient guys absorb all of it.
+[00:15:39] So what does that tell you?
+[00:15:40] I mean, it tells you that there's real buy-in interest there
+[00:15:43] and there's real support there.
+[00:15:46] And again, this can be viewed on any timeframe.
+[00:15:48] It's just relevant to that timeframe.
+[00:15:51] Like I said, the only unfortunate part here
+[00:15:53] is that we just have only data going back to June.
+[00:15:55] And unfortunately,
+[00:15:56] that will continue to roll onwards and forwards.
+[00:15:58] I guess they do that, you know,
+[00:15:59] on trading view to, you know,
+[00:16:01] cut down on costs and shit like that.
+[00:16:03] Otherwise, they'd have, you know,
+[00:16:05] I guess they'd have to like conglomerate
+[00:16:06] all of the CVD data,
+[00:16:09] which probably just is a massive burden
+[00:16:12] on their exchange APIs, if I had to guess.
+[00:16:14] But anyways, yes, looking at it right here,
+[00:16:18] we can all see recently that there was some actually
+[00:16:22] good selling coming off of that this red candle
+[00:16:26] after this previous nice green candle.
+[00:16:29] But what happened with price?
+[00:16:31] Price goes sideways.
+[00:16:32] Again, what does that tell you?
+[00:16:33] Support is building within that region.
+[00:16:34] Now that's not saying that things can't come down
+[00:16:36] a little bit more, they certainly can.
+[00:16:37] But you can start to see,
+[00:16:38] you can start to see the writing on the wall.
+[00:16:40] That there are starting to be some,
+[00:16:42] there's some signals of accumulation going on right there.
+[00:16:44] All right, cool.
+[00:16:45] So we've seen again, the recent trades over here,
+[00:16:49] the CVD indicator over here just conglomerates that
+[00:16:51] into a nice and easy to read indicator.
+[00:16:54] And again, you can scroll around
+[00:16:56] to whatever time frame you want
+[00:16:57] to get a look at, you know,
+[00:16:58] what that time frame did basically.
+[00:17:00] And again, when you get these massive, massive, massive,
+[00:17:02] massive, massive spikes, especially above a resistance,
+[00:17:06] let's combine a couple of tools here.
+[00:17:07] If you've been in the TA 101 program,
+[00:17:09] you know that this was an upwards,
+[00:17:12] you know, an upside boundary right here.
+[00:17:14] And that was the top side of the consolidation,
+[00:17:16] you know, all the way.
+[00:17:17] from June of 2026 to August of 2026,
+[00:17:21] like a month and a half, or sorry, two months,
+[00:17:23] about two and a half months actually.
+[00:17:25] And once Bitcoin was back above that upwards boundary
+[00:17:29] on extreme CVD, the breakout's real.
+[00:17:32] You don't need to fade that.
+[00:17:33] In fact, it's not that you don't need to fade that.
+[00:17:35] You don't wanna fucking fade that.
+[00:17:36] If anything, you can jump on the same side of it
+[00:17:38] because you might get one of these screaming rallies
+[00:17:39] like you see right here.
+[00:17:41] That's the point that I wanna get across.
+[00:17:43] Anyways, let's go back into it over here.
+[00:17:45] All right, so how do you actually use this?
+[00:17:48] Well, we've gone over a lot of practical examples already,
+[00:17:50] but yes, you don't have to actually look at the order books,
+[00:17:52] you know, at all hours a day,
+[00:17:53] obviously you can look at the CVD indicator.
+[00:17:57] And again, first mark off your major supports
+[00:18:00] and major persistences,
+[00:18:01] then watch the CVD when price approaches them.
+[00:18:04] That is, or can be a very valid strategy
+[00:18:06] for playing bounces or pullbacks from those zones,
+[00:18:09] or also deciding if it's likely to be a breakout or not.
+[00:18:13] That is incredibly useful, like I said,
+[00:18:15] both for breakout traders or for range traders,
+[00:18:17] and it tells you when to do which,
+[00:18:20] amongst other things, you know,
+[00:18:21] we do have other tools for these things as well,
+[00:18:23] but that is, in my opinion,
+[00:18:25] a very, very worthwhile and valuable tool there.
+[00:18:28] And I know a few people who actually devised
+[00:18:30] like whole strategy setups just purely based off of that.
+[00:18:33] It's not my personal style,
+[00:18:34] but I totally respect it,
+[00:18:35] and like I said, it is ancient knowledge.
+[00:18:38] So now let's lock in the series,
+[00:18:42] the machine being assembled right there
+[00:18:44] in front of your face, beautiful.
+[00:18:46] I love the animations here from my trusty editor.
+[00:18:51] All right, so episode one, that was the job.
+[00:18:54] The market maker quotes both sides of the market
+[00:18:56] and gets paid the spread.
+[00:18:58] The machines idle hump effectively.
+[00:19:00] They are the ones that provide liquidity, basically.
+[00:19:03] Episode number two is the engine.
+[00:19:05] So that is what?
+[00:19:06] That is pertaining to only aggression
+[00:19:09] or read that as market orders can move price.
+[00:19:12] Again, every order that you see going through here,
+[00:19:14] these are all market orders.
+[00:19:15] They have to be.
+[00:19:16] That is who actually moves the price.
+[00:19:19] Every candle is basically just a receipt of who paid up
+[00:19:23] to cross the spread there.
+[00:19:26] Episode number three is the pools, of course.
+[00:19:28] Orders cluster at obvious levels
+[00:19:30] and price bends them like gravities.
+[00:19:33] Remember, when you're at those pools, look at the CVD.
+[00:19:37] That is when it's gonna be incredibly,
+[00:19:38] incredibly valuable, in my opinion.
+[00:19:40] Anyways, episode four,
+[00:19:41] the hunt is gonna be size, drives, price into those pools.
+[00:19:45] And then, and, sorry, I should also acknowledge,
+[00:19:48] why do they do that there?
+[00:19:49] Well, that's because that's where the fills is.
+[00:19:51] That's where the fills are, I should say.
+[00:19:53] Um, that's what liquidity is basically to get their fills for bigger players. It's a strategy not a vendetta
+[00:19:58] They're not hunting you out. No one knows who the fuck you are. Most likely
+[00:20:04] Anyways episode number five the tricks some size is fake and you know the line because deception versus concealment
+[00:20:11] Uh, that was the whole focus of episode six, which was the fill real size slices hides and rests
+[00:20:20] And that is legal if you do it in the proper way not with intent to deceive
+[00:20:25] um, but the tide is
+[00:20:27] Again, not necessarily the same thing as a splash that was the whole purpose of that episode episode number seven
+[00:20:33] Of course, we went over the cascade
+[00:20:35] That is when leverage exits without choosing to exit meaning that they were forced to liquidate their position because it went against them for you
+[00:20:42] know
+[00:20:43] So much that they were uh, they they had to sell out in order to uh in order to maintain their margin obligations or at least like pay
+[00:20:51] Um their borrowing costs, you know something like that depends on the exchange
+[00:20:55] anyways, uh, and of course that leads to the flush and then the v typically the v recovery
+[00:21:00] Um in episode number number eight, which is where we're at right now
+[00:21:04] That is the tape the feed where every one of these footprints lives
+[00:21:08] Live and eight episodes now one machine. Hopefully we have dissolved a lot of mysteries surrounding this
+[00:21:15] And and at the very least at the very least
+[00:21:18] When you actually do have an issue in markets, you can point your finger at the right
+[00:21:22] At the right culprit, which is to be honest yourself
+[00:21:27] Uh in almost all cases unless if there's like quite little deception going on which I guess can happen
+[00:21:32] But it is in my experience quite rare generally speaking. We like to offload our
+[00:21:38] Our mental responsibilities or just responsibilities in general on um
+[00:21:43] On other people, you know, we don't like taking responsibility for when shit goes wrong
+[00:21:47] Uh feels bad to admit that we're wrong
+[00:21:49] But at the end of the day when you're a trader you have to realize that being wrong is part of the job
+[00:21:53] You are guaranteed to be wrong. You are physically
+[00:21:57] Guaranteed to be fucking wrong. I know that if I have a a strategy that has a
+[00:22:02] 65 strike rate i'm going to be losing 35 of my trades, you know somewhere around there at least
+[00:22:09] So, what does that mean? It means that it's inevitable
+[00:22:11] Thus it's okay to just accept that. Hey, this one did not go my way. There wasn't like a grand fucking
+[00:22:18] Like plan to sabotage me it's just markets being markets and that's okay. We do our
+[00:22:25] our best with our tools to avoid such things,
+[00:22:27] but some things are unavoidable
+[00:22:29] because we cannot make a model of the market
+[00:22:31] that incorporates every little facet
+[00:22:33] that ultimately solves the market.
+[00:22:36] That is impossible to my knowledge as of this day.
+[00:22:38] Anyways, let's now move on into your graduation.
+[00:22:42] You're not a tourist anymore, hopefully, at least.
+[00:22:45] So where do you go from here?
+[00:22:47] Because you actually have the foundational knowledge now.
+[00:22:51] So here's a path.
+[00:22:52] If you're new to actually trading this knowledge,
+[00:22:55] then TA Foundations,
+[00:22:56] that is a complete ultra beginner course.
+[00:22:59] That is like, you don't even know
+[00:23:01] what to do on an exchange, basically.
+[00:23:02] You don't understand what the green or red button do.
+[00:23:03] You don't understand a lot of the other fundamental things.
+[00:23:06] That is like uber fucking beginner.
+[00:23:10] Now, that one is free.
+[00:23:11] It's on this channel, of course.
+[00:23:12] And when you're ready to build and test a real strategy,
+[00:23:15] then you can move on to TA 101.
+[00:23:16] That is also, by the way, completely free.
+[00:23:18] And there's a link below as well
+[00:23:20] because we do host that one on Teachable
+[00:23:22] because we can do quizzes and shit like that there.
+[00:23:24] So you can actually validate that you have learned something.
+[00:23:27] And again, it is 100% free.
+[00:23:29] Like, you don't need to pay a fucking dime
+[00:23:30] or nothing like that.
+[00:23:31] Now, if you do go further than that,
+[00:23:33] then we go deep into all of this
+[00:23:38] with significant more case studies,
+[00:23:40] advanced structure, live trades,
+[00:23:42] all sorts of different marked dynamics too,
+[00:23:44] not just classical spot trading,
+[00:23:46] but also, of course, well, derivative trading.
+[00:23:49] We go over options trading.
+[00:23:50] We go over quantitative analysis.
+[00:23:51] We go over classical TA.
+[00:23:53] And then we have trading psychology
+[00:23:55] and then we have long-term investing as well.
+[00:23:57] So it basically covers everything that I know
+[00:23:59] about trading that exists to this date.
+[00:24:02] And that is, of course, a paid program, I will say.
+[00:24:05] And realistically, most of you do not need it.
+[00:24:07] Maybe less than 1% of people watching this video
+[00:24:10] who've gotten this far are actually appropriate
+[00:24:13] for that program.
+[00:24:15] The free material will take you pretty much
+[00:24:17] all the way that you wanna go.
+[00:24:18] Yes, you will need to do more work on your own behalf.
+[00:24:20] The Krown Trading Bible basically is just like,
+[00:24:22] we wanna expedite that learning curve
+[00:24:25] by giving more examples
+[00:24:26] and going a little more into detail with everything.
+[00:24:29] But other than that, I do think,
+[00:24:31] and I do see a lot of people making it
+[00:24:33] with just the TA 101, for example,
+[00:24:35] that does give you the sort of basic cookie cutter way
+[00:24:39] to create, test, and execute a strategy.
+[00:24:42] And then, of course, you wanna put all these things
+[00:24:43] into automatic execution.
+[00:24:46] You can do that for free as well with central command.
+[00:24:48] There is a free course on that as well.
+[00:24:51] It'll take you through all the process
+[00:24:53] on how to set things up.
+[00:24:54] It's really honestly quite simple.
+[00:24:55] You don't even need to know how to code
+[00:24:56] or anything like that.
+[00:24:57] All you need to know how to do
+[00:24:58] is to devise a strategy, test that strategy,
+[00:25:00] which it can help you with as well.
+[00:25:02] And then if you like the results
+[00:25:04] and you wanna go further, then yes,
+[00:25:05] you can go ahead and go live with that.
+[00:25:09] Anyways, the capstone, the capstone indeed.
+[00:25:13] So your final homework.
+[00:25:14] It uses the whole series in one read as well. Step one, you're gonna epsi you are step. Sorry step one
+[00:25:18] We're gonna go back to episode three skill pick one obvious level on any chart a prior low equal highs around number a prior major
+[00:25:26] High anything like that
+[00:25:27] That's where you start step number two today's skill
+[00:25:30] So when price approaches it watch the tape you can watch it again on the recent trades list here
+[00:25:34] Or I would suggest using CVD just get familiar with that. It's gonna be a little more efficient way. I'd say
+[00:25:41] and in watch that when price approaches one of those obvious levels and
+[00:25:47] And then step number three is gonna be episode number four is question call it like call it in the moment
+[00:25:53] Is it gonna be a sweep or is it gonna be a break?
+[00:25:55] It's gonna be like a real breakout or is it just gonna be you know
+[00:25:58] Sweep the high sweep the lows and then you know pull back or bounce, you know back in a range
+[00:26:02] and then comment the full read the level what the Prince did your verdict and what happened and
+[00:26:08] That is gonna be a professional grade observation
+[00:26:10] Honestly and 99% of traders have never once fucking done it and that is what this whole series has really been building up to
+[00:26:15] You needed to know how to do those previous skills in order to get to here and then use this skill to analyze and assess
+[00:26:22] What the what those earlier ones actually mean for current price action? I
+[00:26:28] Will have Claude go ahead and grade them
+[00:26:32] But it will not be announced on the next episode because there is no next episodes here
+[00:26:35] You need to graduate to TA or sorry TA foundations or TA 101
+[00:26:39] But this this playlist is officially kaputs. Anyways last slide here. Just a thank you, man
+[00:26:47] Eight weeks ago, I told you the machine wasn't out to get you and some of you didn't believe me
+[00:26:51] I saw it in the comments. It's all good, man
+[00:26:53] Look, we all we all felt that way at some point in time and maybe at some points, you know in very extreme cases
+[00:26:58] You might be correct. But since then this comment section turned into something. I genuinely honestly did not expect
+[00:27:05] It turned inside it turned it a hundred of sweeps sweep finds like wall watches funding reads full reads that would hold up on
+[00:27:13] a professional desk and
+[00:27:14] that was pretty fucking cool to see like people were getting it and they were doing the homework and they were I
+[00:27:20] Mean you you were doing the homework you were getting it and you well
+[00:27:24] You can do it now you can fucking do it and and notice what we never do it as well
+[00:27:28] We didn't do any predictions not one promise of profit, you know
+[00:27:32] Just the machine opened up piece by piece
+[00:27:34] You know getting demystifying a lot of the confusion because most people just don't even go through the you know
+[00:27:40] The very rudimentary learning of what markets really are
+[00:27:45] so
+[00:27:47] That is probably the most fulfilling part for myself just seeing people, you know, the people actually like try they actually get it
+[00:27:54] Which is cool as hell man. So again more power to you
+[00:27:56] I hope this serves you well on your trading and technical analysis journey or the hell you might be going with it and
+[00:28:02] Perhaps I shall see you in the TA foundations or TA 101 other than that
+[00:28:05] I want to wish you the best best take care much love and see you. Hopefully next time

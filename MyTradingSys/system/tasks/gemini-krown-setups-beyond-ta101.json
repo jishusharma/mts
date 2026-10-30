@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
   "commands": [
     "python scripts/dev/fetch_captions_timed.py --analyst Krown --channel @ECKrown --latest 14 --out MyTradingSys/research/krown_ta101_2026-10-13/transcripts_live_2026-10-31",
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LIVE_SETUPS_2026-10-31.md"
@@ -38,13 +39,14 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "active",
   "steps": [
     "list the ids already covered (MANIFEST.csv, CALL_LEDGER.csv); fetch captions of the latest 10 others (one try each; 429 -> UNVERIFIED)",
     "keyword scan: EMA, squeeze, range, zone, breakout, retest, invalidation, stop, target; read the surrounding lines",
     "write KROWN_LIVE_SETUPS_2026-10-31.md: table setup | trigger | invalidation | timeframe | video id | timestamp | quote",
     "run verify_extract_quotes.py until exit 0; commit on the branch with a Result: line (videos read, setups found)"
   ],
+  "taken": "2026-10-30T20:36:44Z",
   "tests": "verify_extract_quotes.py exit 0 is the gate; docs only",
   "title": "[GEMINI] Krown beyond TA 101: from his latest 10 non-TA101 videos, the EMA-based BTC setups he names (structure, trigger, invalidation) with timed quotes, for the S8 study",
   "weight": "ROUTINE",

@@ -1,0 +1,1201 @@
+# Video ID: ftK2BqggabQ
+# Title: The Coinbase Screen Nobody Opens (I Made a Living Inside It)
+# Published: 2026-10-17
+# Source: yt_dlp captions (manual); uploader: Krown
+# Analyst: Krown
+# Channel: @ECKrown
+# Duration_s:1982
+# Word count: 7097
+# ---
+[00:00:00] the book shows offers
+[00:00:02] it does not show intentions
+[00:00:03] the offers are theater until they fill
+[00:00:05] they are phantoms
+[00:00:06] figments of your imagination
+[00:00:09] If you've ever bought anything on
+[00:00:09] Coinbase,
+[00:00:11] whether that's $5 of Bitcoin or
+[00:00:11] realistically any asset,
+[00:00:13] any amount on any exchange,
+[00:00:14] the screen that we're going over in
+[00:00:14] today's video,
+[00:00:16] the order book screen is what decided
+[00:00:19] what you actually paid for that asset.
+[00:00:20] Most people never even bother opening it,
+[00:00:22] let alone learning about it,
+[00:00:23] but realistically every candle, every
+[00:00:23] wick,
+[00:00:25] every level from the past seven episodes
+[00:00:27] of this TA Foundation series,
+[00:00:29] all of it was born right here,
+[00:00:31] which you can see a nice example
+[00:00:32] of an order book in the background.
+[00:00:34] And I do have a bit of a unique
+[00:00:34] perspective on this
+[00:00:36] because I used to be a market maker
+[00:00:36] authorized trader
+[00:00:39] on the floor of New York Stock Exchange
+[00:00:39] ARCA,
+[00:00:40] which I actually was in the middle of open
+[00:00:40] outcry,
+[00:00:42] which is effectively like people just
+[00:00:42] yelling in your face
+[00:00:45] about all these orders all day long.
+[00:00:47] It drives you absolutely crazy.
+[00:00:48] It's total insanity, but also incredibly
+[00:00:48] fun.
+[00:00:51] And of course on today's video,
+[00:00:53] I should let you know that we're gonna
+[00:00:53] open this up
+[00:00:55] on Coinbase, place real orders with real
+[00:00:55] money
+[00:00:57] so that you can see exactly how it works,
+[00:00:59] but go through a lot of nuances
+[00:01:00] and a lot of I think misconceptions
+[00:01:01] that people have with order books
+[00:01:03] that I typically see just completely
+[00:01:03] bastardized.
+[00:01:06] Anyways, let's go and let's get into,
+[00:01:08] of course, our next slide.
+[00:01:09] And I should let you know that this is
+[00:01:09] actually a part of
+[00:01:11] the TA Foundation series here on Playlist.
+[00:01:13] It's one hundred percent free.
+[00:01:14] This is episode number eight.
+[00:01:15] We've gone over candles, timeframes, trend
+[00:01:15] lines, levels,
+[00:01:18] volume, moving averages and ranges so far,
+[00:01:20] basically everything that reads a chart.
+[00:01:22] Today, we're going under the chart.
+[00:01:24] We're going inside the chart.
+[00:01:25] We're going deep inside the chart.
+[00:01:27] And that is the focus of order books.
+[00:01:30] I sat on the other side of orders like
+[00:01:30] this, by the way,
+[00:01:32] and that is why I think I can provide
+[00:01:36] some nuanced views on this
+[00:01:37] because there are right and wrong ways to
+[00:01:37] look at this.
+[00:01:40] Anyways, let's go over just the
+[00:01:40] fundamentals
+[00:01:42] of the order book first.
+[00:01:43] So the order book is effectively just
+[00:01:43] showing you
+[00:01:45] two lines of people.
+[00:01:47] On Coinbase, it's going to be stacked
+[00:01:47] vertically.
+[00:01:49] On some exchanges, it's horizontal,
+[00:01:50] but it's telling you the same thing to
+[00:01:50] look
+[00:01:52] in some way similar to this.
+[00:01:53] They almost are always like this, by the
+[00:01:53] way.
+[00:01:56] Anyways, top side here, the red portion,
+[00:01:58] that is the international color for
+[00:01:58] sellers.
+[00:02:00] So that is going to be your asks.
+[00:02:03] Effectively, these people are saying,
+[00:02:04] I'll sell at this price and this much.
+[00:02:06] And the green row is, of course,
+[00:02:08] your international color for buying,
+[00:02:10] and that is going to be your bids.
+[00:02:12] And then you got three columns, right?
+[00:02:13] You got price, amount, and total price,
+[00:02:15] the price that that order is going to be
+[00:02:15] affected at,
+[00:02:19] the amount, the amount that you are buying
+[00:02:19] or selling,
+[00:02:22] and then the total is the total amount
+[00:02:24] offered or bid at that price.
+[00:02:27] Anyways, here's the thing.
+[00:02:29] Nobody in the book is guessing, of course.
+[00:02:31] Every row is a real order with real money
+[00:02:31] behind it,
+[00:02:34] sitting there waiting.
+[00:02:35] And waiting is a key word here as well.
+[00:02:37] The chart shows you what already happened.
+[00:02:39] The book is showing you who is waiting.
+[00:02:41] So in order of importance is obviously
+[00:02:45] going to be real filled trades.
+[00:02:47] The order book is showing you potential,
+[00:02:48] potential orders that could be filled
+[00:02:50] and what that would mean.
+[00:02:51] Now let's go over what's in between here,
+[00:02:53] which is effectively the spread.
+[00:02:55] And the spread is when we zoom into the
+[00:02:55] middle right there,
+[00:02:58] the gap between the highest bid and the
+[00:02:58] lowest ask.
+[00:03:01] That's the spread.
+[00:03:02] And it's the most important few pixels on
+[00:03:02] the exchange
+[00:03:05] that you'll see for the order book
+[00:03:06] because the spread is not empty space.
+[00:03:08] The spread is somebody's paycheck.
+[00:03:10] It's actually my former paycheck.
+[00:03:11] Just, you know, as a market maker,
+[00:03:13] that is effectively what you are trying to
+[00:03:13] capture.
+[00:03:17] You're trying to capture the spread.
+[00:03:18] Anyways, maybe a little bit more on that
+[00:03:18] later on.
+[00:03:21] It's not super relevant to our discussion
+[00:03:21] right now.
+[00:03:23] So if you want to buy right now,
+[00:03:24] you have to pay the ask.
+[00:03:25] You have to pay the best offer.
+[00:03:27] If you want to sell right now, you'll hit
+[00:03:27] the bid.
+[00:03:29] You'll be...
+[00:03:30] basically hit the best bid down here.
+[00:03:34] Cross that gap enough times, and of
+[00:03:34] course, it will add up.
+[00:03:37] That gap, like I said, was my salary at
+[00:03:37] one point.
+[00:03:40] And here's what a healthy market will look
+[00:03:40] like.
+[00:03:42] It is going to be extremely small
+[00:03:44] between the best bid and the best ask.
+[00:03:47] That spread, as we call it, in some cases
+[00:03:47] for Bitcoin,
+[00:03:51] it's gonna be one cent, which on an almost
+[00:03:51] $80,000 number
+[00:03:54] is really fucking good.
+[00:03:56] Right now, we can see the best bid
+[00:03:57] is 79, 259, and 99 cents.
+[00:03:59] The best offer is 79, 260.
+[00:04:01] It's literally still one cent right there.
+[00:04:03] So that would be what is known as a deep
+[00:04:03] book,
+[00:04:06] which is cheap to cross.
+[00:04:07] Remember that when we get to fees as well.
+[00:04:10] When things are wider,
+[00:04:11] there's a lot more opportunity for market
+[00:04:11] makers,
+[00:04:12] but again, you probably don't give a shit
+[00:04:12] about that.
+[00:04:13] So all good.
+[00:04:14] All right, let's go into the next slide
+[00:04:14] right here.
+[00:04:18] And let's go over where candles
+[00:04:18] effectively come from
+[00:04:20] because it's all born from this, actually.
+[00:04:22] So where do candles emerge from?
+[00:04:25] Well, if you watch the nice little
+[00:04:25] animations right here,
+[00:04:27] a trade only happens when a buyer and a
+[00:04:27] seller agree,
+[00:04:31] whoops, when a buyer and seller agree,
+[00:04:33] a bid and an ask effectively meet.
+[00:04:35] And the moment they touch a trade prints,
+[00:04:37] you get something that shows up in the
+[00:04:37] recent trades list.
+[00:04:40] So that print is what goes on what's
+[00:04:40] called the tape,
+[00:04:44] the recent trades list effectively.
+[00:04:45] And I'll show you an example of this right
+[00:04:45] here.
+[00:04:46] If you go into Coinbase, for example,
+[00:04:49] you'll usually have a category up here
+[00:04:49] that says order book
+[00:04:53] and next to it will be recent trades.
+[00:04:54] Just hit recent trades.
+[00:04:55] These are the trades that are actually
+[00:04:55] going through.
+[00:04:58] The order book are just the potential
+[00:04:58] ones.
+[00:05:00] Again, potential ones right here, real
+[00:05:00] trades over here.
+[00:05:03] These show up on the chart effectively
+[00:05:05] is what I'm working towards.
+[00:05:06] Anyways, like I said, yes, the print goes
+[00:05:06] on the tape,
+[00:05:10] the trades list, the record of what
+[00:05:10] actually happened
+[00:05:12] and a candle, a candle is just summarizing
+[00:05:12] all of that
+[00:05:15] into whatever time from you're looking at.
+[00:05:16] So if you're looking at a one minute
+[00:05:16] candle,
+[00:05:18] it's telling you about all of the trades
+[00:05:21] that happened during that period.
+[00:05:22] Was it a net gain?
+[00:05:23] Was it a net loss?
+[00:05:24] What was the high?
+[00:05:26] Effectively, what happens?
+[00:05:27] You can also, I mean, you can extrapolate
+[00:05:27] that
+[00:05:28] to any timeframe, but yes.
+[00:05:30] Anyways, it all gets summarized into this
+[00:05:30] little rectangle
+[00:05:33] here with a couple wicks on both sides.
+[00:05:36] Okay, so every candlestick you learned in
+[00:05:36] episode one
+[00:05:39] is a summary of all the agreements
+[00:05:41] that happened inside the machine.
+[00:05:43] Again, that the recent trades list
+[00:05:46] or whatever it might be,
+[00:05:47] sometimes they have slightly different
+[00:05:47] names,
+[00:05:49] but it'll be something like that.
+[00:05:50] The book, as we went over, is the
+[00:05:50] negotiation.
+[00:05:53] Those are the potential agreements
+[00:05:55] that have not been actuated yet.
+[00:05:57] The tape is the receipt.
+[00:05:59] The candle is your summary right here.
+[00:06:01] So seven episodes, we've just been,
+[00:06:03] or I should say for the past seven
+[00:06:03] episodes,
+[00:06:05] we've been just reading candles or the
+[00:06:05] summaries.
+[00:06:07] Today, you're going to go deep inside that
+[00:06:07] negotiation.
+[00:06:10] And let's start off with some nuances with
+[00:06:10] it
+[00:06:13] that everyone who's in the game should
+[00:06:13] know,
+[00:06:15] which is understanding the difference
+[00:06:17] between a maker and a taker.
+[00:06:18] This is how you can actually reduce your
+[00:06:18] fees
+[00:06:20] as much as possible in the most simple way
+[00:06:20] possible.
+[00:06:22] Anyways, and just to say it bluntly,
+[00:06:25] this is the part that actually affects
+[00:06:25] your wallet.
+[00:06:27] And almost nobody on Coinbase knows it.
+[00:06:29] I mean, I assume most people are just,
+[00:06:31] they don't even read the contract
+[00:06:31] specifications fair enough.
+[00:06:34] It's boring, but it does matter.
+[00:06:36] So you can rest an order in the order
+[00:06:36] book.
+[00:06:40] An order that effectively does
+[00:06:42] not get filled immediately.
+[00:06:43] This is what's known as a limit order or a
+[00:06:43] maker order.
+[00:06:47] If you put in a bid effectively below the
+[00:06:47] best bid, then you are adding liquidity to
+[00:06:54] the market.
+[00:06:55] And if I can show you an example right
+[00:06:55] here, let's go back to that order book.
+[00:06:58] Right now, the best bid is 79.264.
+[00:07:00] If I put in a bid for 79.250, for example,
+[00:07:00] lower than that, I am adding liquidity to
+[00:07:05] the order book.
+[00:07:06] Of course, it has not been filled, or at
+[00:07:06] least not been filled yet, but if price
+[00:07:10] does come down to me, then I will get
+[00:07:10] filled, and I'll get filled as what's
+[00:07:13] known as a maker.
+[00:07:15] A maker is actually in reference to a
+[00:07:15] market maker.
+[00:07:18] So if you put in limit orders to the order
+[00:07:18] book, and you're not getting filled
+[00:07:20] at market, you are, in a way, a market
+[00:07:20] maker.
+[00:07:24] Now, you're probably playing a much
+[00:07:24] different game than a market maker.
+[00:07:26] You're probably not a delta neutral
+[00:07:26] trader.
+[00:07:27] You're probably trading direction, fair
+[00:07:27] enough, to each their own.
+[00:07:30] But yes, you are actually a maker by the
+[00:07:30] pure definition of it.
+[00:07:34] And you will get almost always the lowest
+[00:07:34] fees on any exchange by being a
+[00:07:39] maker, just putting in limit orders that
+[00:07:39] are not filled at market.
+[00:07:42] And look, even if you put it one cent
+[00:07:42] below the best bid, you are still a
+[00:07:47] maker and will incur those lower fees.
+[00:07:50] Now, almost always, this is absolutely
+[00:07:50] true, in my experience, in crypto
+[00:07:54] markets, and even in a lot of traditional
+[00:07:54] markets as well.
+[00:07:57] Your market orders will cost you more than
+[00:07:57] maker orders by a strong
+[00:08:02] degree, by the way.
+[00:08:03] And even in a past lifetime when I was a
+[00:08:03] market maker, there was
+[00:08:07] exchanges that would actually pay you to
+[00:08:07] be a maker.
+[00:08:12] So if you got hit on a limit order, you
+[00:08:12] would actually get paid rather
+[00:08:16] than incurring a fee.
+[00:08:17] Now, that's not very common anymore.
+[00:08:19] I don't even think that that happens
+[00:08:19] anymore.
+[00:08:21] But nowadays, you just get lower fees on
+[00:08:21] most exchanges.
+[00:08:25] Some exchanges in traditional markets,
+[00:08:25] they'll give you about equal
+[00:08:28] fees, but for the most part, again, limit
+[00:08:28] orders, lower fees,
+[00:08:32] more money in your pocket, basically.
+[00:08:33] Anyways, the other side of that is a
+[00:08:33] market order, which is where
+[00:08:36] you get filled immediately right now.
+[00:08:38] That is if I were to go to this tab right
+[00:08:38] here on the order
+[00:08:41] entry screen and put in some amount.
+[00:08:43] It's just going to go after whatever the
+[00:08:43] best offer price is if
+[00:08:46] I'm a buyer.
+[00:08:46] Anyways, I should go actually back to our
+[00:08:46] nice little thing
+[00:08:48] right here.
+[00:08:49] Okay, yes, again, maker, that's putting a
+[00:08:49] resting limit
+[00:08:52] order into the order book.
+[00:08:53] You're adding liquidity.
+[00:08:54] The exchange typically will charge you
+[00:08:54] significantly less fees.
+[00:08:58] If you're a taker, you cross that spread
+[00:08:58] right now.
+[00:09:01] It is a market order.
+[00:09:02] You consume liquidity that exists in the
+[00:09:02] order book, and
+[00:09:04] you're going to pay more in terms of fees.
+[00:09:06] That's a part of your cost of doing
+[00:09:06] business.
+[00:09:08] The receipt is your exact fee that shows
+[00:09:08] on the order
+[00:09:11] preview before you confirm, and I'll show
+[00:09:11] you exactly
+[00:09:13] what that looks like so you can actually
+[00:09:13] compare prices.
+[00:09:15] Now, keep in mind, I do have reduced fees
+[00:09:15] myself
+[00:09:17] because I do have an affiliate partner
+[00:09:17] link, I guess,
+[00:09:20] affiliate link, whatever, in the
+[00:09:20] description below.
+[00:09:22] That actually reduces my trading fees by a
+[00:09:22] severe amount.
+[00:09:26] They will reduce your fees by 80% if
+[00:09:26] you're a new user
+[00:09:29] for spot trading and up to, or not up to,
+[00:09:29] but literally
+[00:09:32] 10% for derivative contracts.
+[00:09:34] Anyways, that's available in the
+[00:09:34] description below,
+[00:09:36] and let's get back into the content right
+[00:09:36] here.
+[00:09:38] So yes, okay, just making sure that I've
+[00:09:38] hit everything.
+[00:09:38] All right, patience, literally has a
+[00:09:38] coupon attached.
+[00:09:41] Yes, that's right.
+[00:09:42] So I'm not putting percentages on a slide
+[00:09:42] for this one
+[00:09:46] because different exchanges will have
+[00:09:46] different fees.
+[00:09:49] But like I said, the heuristic that you
+[00:09:49] can almost
+[00:09:51] always trust on is maker orders will incur
+[00:09:51] significantly
+[00:09:54] less fees than taker orders.
+[00:09:56] Anyways, Coinbase does show your exact
+[00:09:56] fee.
+[00:09:59] on the order preview before you click
+[00:09:59] confirm and we'll go over what that
+[00:10:02] exactly looks like in a moment here so
+[00:10:02] let's go back to Coinbase for a moment
+[00:10:06] and let's let's let's do some live
+[00:10:06] examples here so first I'm gonna show
+[00:10:11] you some limit orders limit orders again I
+[00:10:11] don't want to you know I don't want to
+[00:10:17] get filled at market so if I want to be a
+[00:10:17] buyer here I'm going to put in an
+[00:10:20] order that is less than the current best
+[00:10:20] bid so right now the current best
+[00:10:24] bid and this will change around but if you
+[00:10:24] can highlight this number it's 79
+[00:10:27] 166 so if I bid 179 1 now it just changed
+[00:10:27] so now it's 150 okay let's go to
+[00:10:34] 135 all right I'm gonna buy 100 bucks
+[00:10:34] right there and you can see what whoops
+[00:10:41] doing it wrong right there nope now I'm
+[00:10:41] just typing a random numbers my apologies
+[00:10:45] all right 150 I'm gonna do 79 155 okay and
+[00:10:45] I'm gonna buy 100 USDC of Bitcoin
+[00:10:52] right there you can see my fee is about a
+[00:10:52] buck and 19 cents shows you right here
+[00:10:58] once you populate those two things and if
+[00:10:58] I press the buy button it will enter
+[00:11:03] that order in and you will see it show up
+[00:11:03] here and I'll move my face to show
+[00:11:07] you exactly what that looks like you will
+[00:11:07] see the order right here again
+[00:11:11] there's my price 79 155 and I'm buying 100
+[00:11:11] bucks of Bitcoin basically which
+[00:11:16] effectively is not point on not one two
+[00:11:16] four eight one eight of a Bitcoin and and
+[00:11:22] once I get filled I will pay that 119 fee
+[00:11:22] now right now Bitcoin is trading
+[00:11:25] higher than that so my order will not be
+[00:11:25] filled until the market comes down to me
+[00:11:29] so if I want to be a little more
+[00:11:29] aggressive I could raise my bid so
+[00:11:32] that it's closer to the current best bid
+[00:11:32] which is 79,190 so I'm going to do
+[00:11:37] that and I'm gonna do like a little bit
+[00:11:37] lower than that yes there we go all
+[00:11:43] right so now my best bid or my bid is 79
+[00:11:43] 189 hopefully we can be patient enough
+[00:11:47] to get filled on this but while we're
+[00:11:47] waiting for that oh there it is we got
+[00:11:51] filled beautiful okay now let me show you
+[00:11:51] the other side of this and put my
+[00:11:56] face back on right now and let's go sell
+[00:11:56] that Bitcoin so if I want to sell
+[00:12:00] that as a limit order I'm gonna do 79 I
+[00:12:00] don't know 190 something like that and I
+[00:12:07] want to be a seller so I press the red
+[00:12:07] button right here the sell button and
+[00:12:10] I'm gonna sell at 100 bucks Bitcoin all
+[00:12:10] right and let's actually move it down
+[00:12:14] because price is coming down now so we'll
+[00:12:14] do I don't know 160 there we go
+[00:12:18] again that puts my order into the order
+[00:12:18] book I'll move my face you can see
+[00:12:21] right there 79 160 is my offer I actually
+[00:12:21] don't want to sell this but so
+[00:12:27] I'm gonna get rid of that order but let me
+[00:12:27] just show you again the fee this
+[00:12:31] one about 120 so basically the same again
+[00:12:31] we're limit orders right there so
+[00:12:36] lower fees but compare that with what
+[00:12:36] we're gonna go over in just a moment
+[00:12:41] right here with a market order which again
+[00:12:41] gets you filled immediately I'll be
+[00:12:45] a buyer here too I don't want to actually
+[00:12:45] sell this but if I want to buy
+[00:12:49] 100 bucks of a Bitcoin it is oh wow my
+[00:12:49] fees are actually really really low here
+[00:12:55] too hold on that doesn't make sense let's
+[00:12:55] see let's do okay actually it's
+[00:13:02] gonna be really low fees I guess my my fee
+[00:13:02] here is actually really really low
+[00:13:05] right now because of because of that link
+[00:13:05] I guess it's applying both to a
+[00:13:09] limit and market order as well fair enough
+[00:13:09] I don't think that that lasts
+[00:13:11] for forever but hey I'll take it while
+[00:13:11] while it's there anyways if I hit the
+[00:13:15] buy button with a hundred bucks of USDC
+[00:13:15] for Bitcoin what is gonna do is
+[00:13:22] It's going to buy at the at the best offer
+[00:13:22] right now the best offer as my cursor
+[00:13:22] currently highlights is 79 160
+[00:13:27] So if I hit that I'm gonna buy 100 at that
+[00:13:27] price or now 154
+[00:13:30] So I'm gonna do that just to show you it
+[00:13:30] gets filled immediately as you can see and
+[00:13:30] there it goes
+[00:13:35] I can go back to my life after that and it
+[00:13:35] was a put my face back on here. And now
+[00:13:35] let's go over
+[00:13:41] You saw where my order was and the order
+[00:13:41] book all that good stuff
+[00:13:44] You saw the fees. Okay, great
+[00:13:46] Alright now I want to show you I want to
+[00:13:46] give you another example right here where
+[00:13:46] I'm gonna be a buyer
+[00:13:52] So let's say I want to buy at
+[00:13:55] 79,000 just for example and I want to buy
+[00:13:55] a bigger amount a thousand bucks now I can
+[00:13:55] put that order into the order book and
+[00:14:02] As you can see it shows up right there
+[00:14:04] It'll if we scroll down the order book
+[00:14:06] We'd be able to find our order at some
+[00:14:06] point once we get to 79,000 even but
+[00:14:06] here's the thing
+[00:14:12] This order I can cancel at any given
+[00:14:12] moment in time if I hit this X button
+[00:14:12] right here
+[00:14:17] it goes away and
+[00:14:18] The liquidity that you thought was in the
+[00:14:18] order book that was showing us available.
+[00:14:18] There is no longer there
+[00:14:24] that is what we're working towards right
+[00:14:24] here and this is a really big nuance point
+[00:14:24] that I really want to hammer into people's
+[00:14:24] minds because
+[00:14:29] Ultimately when we're talking about order
+[00:14:29] books again, we're only talking about
+[00:14:29] potential orders that can be filled
+[00:14:35] We're not talking about orders that that
+[00:14:35] that have been filled
+[00:14:38] And like I said, you can just as you saw
+[00:14:38] cancel those orders with the click of a
+[00:14:38] button extremely quickly
+[00:14:44] So let's go back to our slideshow right
+[00:14:44] here. And yes, we've gone through the book
+[00:14:44] live. Okay, beautiful now
+[00:14:50] Let's go over or order books in a more
+[00:14:50] visual way
+[00:14:54] So this is what's known as the depth chart
+[00:14:54] and coinbase has it too
+[00:14:58] So the depth chart that you're seeing
+[00:14:58] right here is showing you the whole order
+[00:14:58] book just illustrated effectively the
+[00:14:58] green side
+[00:15:04] That's all of your bids stacked as you go
+[00:15:04] lower and the red side
+[00:15:08] That's all the asks as you stacked as you
+[00:15:08] go higher and the value in the valley in
+[00:15:08] the middle, you know
+[00:15:14] This midline right here. That's
+[00:15:14] effectively your current price. That is
+[00:15:14] where you know, price is actually trading
+[00:15:14] right now and
+[00:15:20] Sometimes you'll see these big steps up on
+[00:15:20] the or you know on the depth chart
+[00:15:25] And that is what many people refer to as a
+[00:15:25] wall or sugar walls
+[00:15:30] It's basically a huge step where somebody
+[00:15:30] is showing an enormous size at one price
+[00:15:30] now beginners a lot of the time and even
+[00:15:30] not beginners
+[00:15:38] Although they should be considered
+[00:15:38] beginners will look at that and say oh my
+[00:15:38] god
+[00:15:42] There's a big wall. Someone is showing
+[00:15:42] that they want to sell a thousand Bitcoin
+[00:15:42] at $80,000 and they will think oh
+[00:15:50] Well dear lord that could never possibly
+[00:15:50] be broken. Thus
+[00:15:53] I'm going to do the opposite or I'm gonna
+[00:15:53] get on the same side of that
+[00:15:57] I'm gonna short before that because
+[00:15:57] obviously that wall cannot be broken
+[00:16:00] Therefore price is gonna bounce off it and
+[00:16:00] come down and I want to be on the same
+[00:16:00] side of it
+[00:16:03] Okay, fair enough makes sense intuitively
+[00:16:03] as a beginner, but as we went over with
+[00:16:03] orders
+[00:16:09] You the the orders in the order book are
+[00:16:09] just like advertisement. They're not a
+[00:16:09] promise
+[00:16:14] It's not a promise you can delete it at
+[00:16:14] any given moment in time and look think
+[00:16:14] about it this way as always
+[00:16:19] Put yourself in the shoes of someone who
+[00:16:19] may have a shit ton of money
+[00:16:23] I'm assuming that you know, if you're
+[00:16:23] watching a video like this
+[00:16:25] You're probably a plug like me and you
+[00:16:25] don't have you know, tens of billions of
+[00:16:25] dollars
+[00:16:28] So if you had billions and billions of
+[00:16:28] dollars
+[00:16:32] Would you?
+[00:16:33] knowingly
+[00:16:35] put limit orders into the order book
+[00:16:36] that show serious and significant size
+[00:16:40] knowing that everyone in their mother can
+[00:16:40] see it
+[00:16:41] and the noobs are intentionally looking
+[00:16:41] for shit like that
+[00:16:45] and think that that is a wise decision.
+[00:16:48] Like would you want, would it be
+[00:16:48] strategic?
+[00:16:51] Would it be wise of you to show everyone
+[00:16:53] exactly what you wanna do?
+[00:16:54] No, so this can be what's known as
+[00:16:54] painting.
+[00:16:58] Painting the order books to imply
+[00:16:58] something
+[00:17:02] that you want other people to see or
+[00:17:02] think.
+[00:17:05] And realistically, this is the part of the
+[00:17:05] episode
+[00:17:07] that I really wanna hammer on
+[00:17:08] because this is where I see a lot of
+[00:17:08] people
+[00:17:10] get the shit wrong.
+[00:17:12] And by the way, just in case you're
+[00:17:12] wondering
+[00:17:13] where the depth chart is on Coinbase,
+[00:17:14] all you need to do is go up here.
+[00:17:16] There will be a nice little plus icon next
+[00:17:16] to order book
+[00:17:19] and you can hit the, it'll show depth
+[00:17:19] chart right here.
+[00:17:23] Anyways, I already have it on
+[00:17:24] so I just need to click on it
+[00:17:25] and it'll show up something like this.
+[00:17:26] You can see big walls on both sides.
+[00:17:29] It's just the ever going and on,
+[00:17:31] the never ending fight between buyers and
+[00:17:31] sellers.
+[00:17:34] Yes, okay, we got that, we got that, we
+[00:17:34] got that.
+[00:17:34] Again, in crypto, it is not illegal
+[00:17:38] to do what's known as spoofing,
+[00:17:39] which technically this is.
+[00:17:40] I mean, it's a spoof, it's a fake order.
+[00:17:42] So when it comes to the offers,
+[00:17:46] these are again, not necessarily
+[00:17:46] intentions and that's okay.
+[00:17:51] One, market orders never appear in the
+[00:17:51] order books.
+[00:17:55] This is why market, sorry,
+[00:17:58] this is why order books are a lot of the
+[00:17:58] time misinterpreted.
+[00:18:03] The market order, the market order,
+[00:18:06] the order that actually moves fucking
+[00:18:06] price,
+[00:18:08] that does not ever show up in the order
+[00:18:08] book.
+[00:18:11] Remember, when we did our market order
+[00:18:11] over here
+[00:18:14] and we were looking at the order book,
+[00:18:16] that order was not listed into the books
+[00:18:16] here
+[00:18:20] because it was just lifting, in our case,
+[00:18:20] the best offer.
+[00:18:24] Again, those are the orders that actually
+[00:18:24] get filled
+[00:18:28] and show up in the recent trades list,
+[00:18:30] which can move price.
+[00:18:32] A limit order cannot move price.
+[00:18:34] These resting orders here, again, they are
+[00:18:34] illusions.
+[00:18:37] They might exist there and you might get
+[00:18:37] filled there,
+[00:18:41] but they are not what is actually moving
+[00:18:41] the market.
+[00:18:43] The market orders is what moves the
+[00:18:43] market.
+[00:18:47] Again, the market order
+[00:18:48] is what moves the actual fucking market.
+[00:18:50] Limit orders cannot move the market.
+[00:18:52] They just show you what's potential at
+[00:18:52] that price
+[00:18:54] and they can be pulled at a moment's
+[00:18:54] notice,
+[00:18:56] so in a lot of cases, they're just
+[00:18:56] illusions.
+[00:18:59] Anyways, hidden size.
+[00:19:01] You can also hide your orders a lot of the
+[00:19:01] time too,
+[00:19:04] and this is certainly a big tactic of a
+[00:19:04] bigger accounts.
+[00:19:07] You can do what's called iceberg orders
+[00:19:08] or just straight up hidden orders.
+[00:19:10] They'll show a small amount of their order
+[00:19:11] at a certain price or none at all,
+[00:19:13] and big players can use this to hide their
+[00:19:13] size.
+[00:19:16] What you'll see is that the order book
+[00:19:18] will just stop at a certain price
+[00:19:19] and then there'll be no liquidity offered
+[00:19:19] at that price,
+[00:19:23] but it is just stopping there for whatever
+[00:19:23] reason.
+[00:19:26] That is how you know that something like
+[00:19:26] that is happening.
+[00:19:28] It will be invisible though.
+[00:19:30] Real walls typically are invisible, by the
+[00:19:30] way, of course,
+[00:19:33] because again, put yourself in their
+[00:19:33] shoes.
+[00:19:34] Would you want to reveal what you want to
+[00:19:34] do
+[00:19:37] to the whole fucking world in this game
+[00:19:40] if you were the person who actually has
+[00:19:40] the power
+[00:19:42] to potentially move markets
+[00:19:44] or if you're just a bigger player in
+[00:19:44] general?
+[00:19:46] Anyways, number three, and this is the one
+[00:19:46] that I watched from the inside and
+[00:19:46] technically this is illegal in traditional
+[00:19:46] markets
+[00:19:51] But I don't think it's illegal in crypto
+[00:19:51] or at least not yet
+[00:19:53] And this is called spoofing and that's
+[00:19:53] where you show big size that you never
+[00:19:53] intend to get filled
+[00:19:58] That's kind of what I was alluding to
+[00:19:58] earlier
+[00:19:59] This can bait newer traders especially and
+[00:19:59] other algos even more importantly because
+[00:19:59] a lot of the time it's algo versus algo
+[00:20:06] And and it can bait them into reacting
+[00:20:06] because a lot of people will set algos to
+[00:20:06] be like, you know
+[00:20:11] To be like a fucking noob and it'll be and
+[00:20:11] it'll say like oh, well if you see this
+[00:20:11] much
+[00:20:13] You know offered here and there's that
+[00:20:13] much liquidity then we need to do x y and
+[00:20:13] z and before you know it that liquidity is
+[00:20:20] pulled it doesn't exist it never really
+[00:20:20] existed and
+[00:20:23] That person who chased it is in a really
+[00:20:23] bad position
+[00:20:27] Anyways, like I said, it's illegal and
+[00:20:27] regulated markets to spoofing. It is not
+[00:20:27] illegal in crypto
+[00:20:32] I don't believe now that probably changes
+[00:20:32] over time. And of course, it's also
+[00:20:32] extremely difficult to prove
+[00:20:38] So you will still you will still see
+[00:20:38] spoofing even in traditional markets
+[00:20:42] It gets attempted because it's it's
+[00:20:42] extremely difficult to prove like from a
+[00:20:42] legal perspective
+[00:20:47] Anyways, so understand what the screen
+[00:20:47] that we've been looking at really shows it
+[00:20:47] the book shows offers
+[00:20:53] It does not show intentions. The offers
+[00:20:53] are theater until they fill they are
+[00:20:53] phantoms. They are figments of your
+[00:20:53] imagination
+[00:21:00] Alright, cool. So let's go into the next
+[00:21:00] one
+[00:21:02] Okay
+[00:21:02] So let me tell you what my job actually
+[00:21:02] was when I was a market maker authorized
+[00:21:02] trader because once you've seen the
+[00:21:02] machine from my
+[00:21:07] from my old seat, you know - perspective.
+[00:21:07] You'll never read a chart
+[00:21:12] In a similar way. I mean it hopefully
+[00:21:12] provides a unique point of view
+[00:21:16] So a market maker's job is honestly very
+[00:21:16] simple you quote both sides of the market
+[00:21:21] You are you are both providing bids and
+[00:21:21] you're but and you're providing asks
+[00:21:25] Yeah, you're providing buys and sells in
+[00:21:25] other words
+[00:21:27] You're quoting the both sides the market
+[00:21:27] basically all day and you're saying I'm
+[00:21:27] willing to buy at this price and sell at
+[00:21:27] that price
+[00:21:33] At the same time thousands of time a day,
+[00:21:33] you know, so on and so forth
+[00:21:36] It's like it it goes into infinity
+[00:21:38] Especially for people who are just you
+[00:21:38] know, looking to scalp relative or lock in
+[00:21:38] like relatively small moves
+[00:21:43] Market makers are generally workhorses, so
+[00:21:43] they will do that. Anyways, I didn't
+[00:21:43] predict anything
+[00:21:47] I didn't care where the stock went. I was
+[00:21:47] playing a game of direction neutral. It's
+[00:21:47] just arbitrage
+[00:21:53] It's what I was doing. I entered the
+[00:21:53] spread now as an equity options market
+[00:21:53] maker
+[00:21:57] The game was a little bit different than
+[00:21:57] like if I was just doing a spot
+[00:22:00] Which is kind of what you see right here.
+[00:22:00] Let me get rid of this little annoying
+[00:22:00] thing on the side here
+[00:22:05] It'll be a little bit different than like
+[00:22:05] a spot market maker, for example
+[00:22:08] But the game is still the same you're
+[00:22:08] playing a game of direction neutral in
+[00:22:08] order to lock in the spread and in the
+[00:22:08] most
+[00:22:14] Simplistic of you know of ways when it
+[00:22:14] comes to spot market makers
+[00:22:18] You are gonna you're gonna look at
+[00:22:18] coinbase for example, and you're gonna say
+[00:22:18] okay right now on coinbase
+[00:22:23] I can buy a Bitcoin for seventy nine
+[00:22:23] thousand one hundred seventy
+[00:22:27] Okay, great if I can then sell that
+[00:22:27] Bitcoin
+[00:22:32] Simultaneously on a different exchange
+[00:22:32] like Kraken for example for hire
+[00:22:36] Well
+[00:22:36] I'm gonna do that as often as I can for as
+[00:22:36] long as I can
+[00:22:40] Because I can lock in the difference
+[00:22:40] between the bid and the out spread between
+[00:22:40] these different exchanges and I will
+[00:22:40] effectively have no risk
+[00:22:46] If I do this simultaneously, which
+[00:22:46] everyone has their you know, they're
+[00:22:46] they're they're algo systems to do
+[00:22:52] And and that that is the game people make
+[00:22:52] their livings like that. They're they're
+[00:22:52] living like that. So again
+[00:22:58] You're looking at one extra actually, let
+[00:22:58] me go to the chart right here
+[00:23:01] So if you look in the right hand side have
+[00:23:01] several different exchanges for Bitcoin.
+[00:23:01] This one's coinbase. This one is by bit
+[00:23:01] for
+[00:23:06] For example, on Coinbase, Bitcoin's
+[00:23:06] trading at $79.172,
+[00:23:09] on Bybit, Bitcoin's trading at $79.124.
+[00:23:12] Well, guess what?
+[00:23:12] If I go buy on Bybit for $79.124
+[00:23:15] and then sell on Coinbase for $79.172,
+[00:23:20] I'm basically making like 50 bucks or $48.
+[00:23:22] I'm gonna do that as often as I can
+[00:23:22] fucking do that, duh.
+[00:23:26] Again, you're not gonna have a risk with
+[00:23:26] that,
+[00:23:28] assuming that you do it simultaneously
+[00:23:30] because you're buying for cheap and
+[00:23:30] selling for expensive.
+[00:23:34] That's all the game is.
+[00:23:35] Now, again, as an equity options market
+[00:23:35] maker,
+[00:23:37] it's slightly different.
+[00:23:38] You're playing reversal and conversion
+[00:23:38] markets.
+[00:23:40] You're basically using options, both puts
+[00:23:40] and calls,
+[00:23:43] to set up the reversal conversion
+[00:23:45] and then you lock it in with stock.
+[00:23:46] Much more complicated and difficult topic.
+[00:23:48] We go over that in the Krown Trading
+[00:23:48] Bible,
+[00:23:50] but you don't need to know that for this,
+[00:23:55] but it's fun to get into
+[00:23:57] when you get into the weeds with all this
+[00:23:57] shit.
+[00:23:59] Anyways, as a market maker, you do this as
+[00:23:59] often
+[00:24:01] as you can over and over and over and
+[00:24:01] over.
+[00:24:04] Because again, you don't care about the
+[00:24:04] direction.
+[00:24:06] You just care about the spread that you
+[00:24:06] can make money on.
+[00:24:08] So a lot of the time you will hear people
+[00:24:10] talk about market makers as the big
+[00:24:10] boogeyman,
+[00:24:12] who are, I don't know, destroying your
+[00:24:12] hopes and dreams.
+[00:24:16] They are the reason why you're unhappy.
+[00:24:18] I don't know, maybe that's true,
+[00:24:19] but I would say usually that anger is
+[00:24:19] severely misplaced.
+[00:24:22] The people who are moving markets,
+[00:24:24] which is realistically where this anger is
+[00:24:24] usually
+[00:24:27] pointed towards, are big quant firms
+[00:24:29] that do have directional risks.
+[00:24:30] Market makers in general do not have
+[00:24:30] directional risks.
+[00:24:33] They don't care about directional risks.
+[00:24:34] If they do, then they are not a market
+[00:24:34] maker by definition.
+[00:24:37] Again, by definition, they are not.
+[00:24:40] We've got that, we've got that, we've got
+[00:24:40] that.
+[00:24:40] Now you know a nuance that almost fucking
+[00:24:40] no one knows
+[00:24:43] because everyone repeats that same
+[00:24:43] bullshit
+[00:24:45] about market makers all the time.
+[00:24:46] But again, who gets a shit at the end of
+[00:24:46] the day?
+[00:24:48] Whatever.
+[00:24:50] People can believe whatever the hell they
+[00:24:50] want to believe.
+[00:24:51] All right, beautiful.
+[00:24:51] So here is the honest verdict.
+[00:24:52] Same thing I told you in this channel,
+[00:24:55] on this channel back in 2018
+[00:24:56] when I made the original TA Foundations
+[00:24:56] playlist.
+[00:24:58] And years on the floor never changed as
+[00:24:58] well.
+[00:25:00] The order book is one of the worst ways to
+[00:25:00] pick directions.
+[00:25:03] Holy shit, it is phantoms.
+[00:25:05] If you haven't gotten this by now, you are
+[00:25:05] irredeemable.
+[00:25:09] No, of course not.
+[00:25:10] Just having a little bit of a joke here.
+[00:25:11] But again, orders in the order books,
+[00:25:14] these are offers that can vanish
+[00:25:16] with the click of a button.
+[00:25:17] And realistically, it's not even someone
+[00:25:17] putting them in.
+[00:25:20] It's an algo most likely doing it.
+[00:25:22] And they're trying to bait other algos
+[00:25:23] or just newer and less experienced, more
+[00:25:23] naive traders.
+[00:25:27] Again, hidden size and iceberg orders
+[00:25:32] or even just breaking orders up
+[00:25:34] are gonna be the way that most big
+[00:25:34] accounts do it.
+[00:25:35] Or a T-WAP, time-weighted average price
+[00:25:35] order,
+[00:25:38] these sort of things.
+[00:25:39] Anyone telling you they predict markets
+[00:25:41] by staring at the book,
+[00:25:42] in my opinion, is misleading you.
+[00:25:43] Now, if you're doing that with the recent
+[00:25:43] trades list,
+[00:25:46] that's different.
+[00:25:47] But again, what is the recent trades list
+[00:25:47] telling you?
+[00:25:49] It's telling you exactly what's in the
+[00:25:49] charts,
+[00:25:50] telling you about real trades that have
+[00:25:50] gone through.
+[00:25:51] That's what you're looking at on Candles.
+[00:25:53] Now, I have seen people that are able to
+[00:25:53] do that.
+[00:25:56] They're usually like very old.
+[00:25:57] And it's like an older school thing
+[00:26:01] before people had access to like the
+[00:26:01] internet
+[00:26:02] and charts and shit like that.
+[00:26:04] So it can be done,
+[00:26:05] but I would argue still,
+[00:26:07] it's just easier to look at price from
+[00:26:07] this perspective.
+[00:26:09] But yes, if you can read the tape,
+[00:26:10] that is a real skill that can be done,
+[00:26:12] but that is significantly different
+[00:26:13] than looking at the order book right here.
+[00:26:15] Again, these are phantoms.
+[00:26:16] They can be pulled at any moment in time.
+[00:26:17] They may exist, they may not exist.
+[00:26:19] Ultimately, the only thing that actually,
+[00:26:19] you know moves price to begin with is
+[00:26:19] market orders
+[00:26:23] And if we go to the recent trades list
+[00:26:23] that's showing you exactly that the market
+[00:26:23] orders
+[00:26:26] And then the chart shows you in a more
+[00:26:26] summarized fashion
+[00:26:29] That is a humongous point. I absolutely
+[00:26:29] want to get across in this video
+[00:26:34] So let me just make sure that hit all my
+[00:26:34] notes here. Yeah, we got that
+[00:26:34] Like I said, direction lives in everything
+[00:26:34] you learned in episodes one through seven
+[00:26:37] But and and again, this was true for the
+[00:26:37] 2018 video as well
+[00:26:41] The book is the best way to understand
+[00:26:41] your execution
+[00:26:45] What you actually pay why your fill was
+[00:26:45] worse than the screen that is where you
+[00:26:45] can incur something like slippage
+[00:26:50] So if I keep it a nuance with this and I'm
+[00:26:50] gonna be you know a market
+[00:26:55] I'm gonna put in a market order right here
+[00:26:57] I want to buy 10 Bitcoin and you can see
+[00:26:57] the best offer right now is only is only
+[00:26:57] offering about a quarter Bitcoin or less
+[00:27:04] Well, if I'm buying 10 Bitcoin guess what
+[00:27:04] my effective price that I get filled out
+[00:27:04] is not gonna be the best offer
+[00:27:10] It's gonna have to chew through all the
+[00:27:10] order book
+[00:27:14] Until it fills that 10 Bitcoin order which
+[00:27:14] right now
+[00:27:17] I mean we can't even can't even scroll up
+[00:27:17] long enough to see where that would be
+[00:27:21] But it would probably be like, I don't
+[00:27:21] know 30 40 bucks higher. So that is what's
+[00:27:21] called slippage
+[00:27:26] So that is one way that the order book
+[00:27:26] does matter if you're buying big amounts
+[00:27:26] with a market order
+[00:27:31] It will tell it can give you an idea of
+[00:27:31] what your real
+[00:27:35] Average price is gonna be because it ain't
+[00:27:35] gonna be out, you know at market if it's
+[00:27:35] if it's anything, you know
+[00:27:40] Somewhat big
+[00:27:41] Realistically, you can see at the market,
+[00:27:41] you know, it's relatively small numbers
+[00:27:41] offered there. All right, cool. Let's go
+[00:27:41] back into it right here
+[00:27:47] Yes - that is what you actually pay.
+[00:27:49] Why your fill may be worse than the screen
+[00:27:51] Especially for using bigger orders and why
+[00:27:51] the limit order also just saves you money
+[00:27:54] You only get filled at the price that you
+[00:27:54] want for a limit order
+[00:27:57] I mean it you also have to depend on the
+[00:27:57] market coming down to you
+[00:28:00] But you know not the topic for another
+[00:28:00] video perhaps
+[00:28:03] Anyways, let's move on from there
+[00:28:06] Okay, so the 10-second habit. So what do
+[00:28:06] you actually do with all this? Like, how
+[00:28:06] do you make this information?
+[00:28:13] Valuable so three checks it should take
+[00:28:13] you know what no more than 10 seconds
+[00:28:13] before you click buy one
+[00:28:19] Look at the spread. Do you have a tight
+[00:28:19] spread? Is it a deep book?
+[00:28:22] Are you in a healthy market or is it a
+[00:28:22] wide spread in which case your paint
+[00:28:22] you're gonna pay a big tax on the chart
+[00:28:28] That is not really gonna show up on the
+[00:28:28] chart. But once you put in that market
+[00:28:28] order, you're gonna be like, oh my god
+[00:28:32] Why was the price showing?
+[00:28:34] $79,000 but actually got filled at 79 100.
+[00:28:34] Well, the order book could have told you
+[00:28:34] that or helped you with that
+[00:28:41] Anyways, yes number two when you're
+[00:28:41] patient prefer the limit order you
+[00:28:46] Almost always on every exchange will have
+[00:28:46] significantly reduced fees for doing that
+[00:28:46] again from for my shill link with coinbase
+[00:28:46] in the description
+[00:28:53] That partnership gets you 80% off of your
+[00:28:53] spot trading fees and 10% off of your
+[00:28:53] derivative trading fees
+[00:28:58] I mean, this is again just money in your
+[00:28:58] pocket. I think that might make it the
+[00:28:58] cheapest place to buy
+[00:29:02] You know spot Bitcoin at this point
+[00:29:05] Again, that is how you become a market
+[00:29:05] maker
+[00:29:07] Basically, you get to choose your price
+[00:29:07] and you get a lower fee so you get paid
+[00:29:07] twice in a way
+[00:29:12] Anyways episode 9 goes all the way into
+[00:29:12] order types, which will go us, you know in
+[00:29:12] significant detail with again
+[00:29:19] We'll give examples. We'll do real you
+[00:29:19] know real stuff
+[00:29:22] And then of course number three respect
+[00:29:22] size versus
+[00:29:25] depth. If your order is big compared to
+[00:29:25] what's resting, you'll move price against
+[00:29:25] yourself
+[00:29:30] before you fill it. We've just kind of
+[00:29:30] stated that as well and showed an example.
+[00:29:30] Slippage,
+[00:29:34] which is effectively a silent tax in a
+[00:29:34] way. Anyways, it should take you 10
+[00:29:34] seconds to
+[00:29:38] look at those. Go practice it as well. Buy
+[00:29:38] tonight for tonight's homework. It is a
+[00:29:38] good
+[00:29:43] thing to kind of just keep an eye on. But
+[00:29:43] like I said, you're going to get the hang
+[00:29:45] of this incredibly fast. And of course, we
+[00:29:45] can go read one of these walls live or
+[00:29:45] hopefully
+[00:29:52] there is a wall here. We've kind of
+[00:29:52] checked this out a little bit earlier, but
+[00:29:52] going
+[00:29:55] into the depth chart right here, you can
+[00:29:55] see, you can see that once you get out to,
+[00:29:55] you
+[00:30:00] know, on the cell side, once you get
+[00:30:00] around here, there's a little bit of a
+[00:30:00] wall right
+[00:30:03] there. Again, does that matter? Maybe,
+[00:30:03] maybe not at the end of the day. This is
+[00:30:03] not a super
+[00:30:09] egregious example of when some like if you
+[00:30:09] see a big wall, it is going to be super
+[00:30:09] fucking
+[00:30:13] obvious. You will know, you will know,
+[00:30:13] believe me, you will know it will be so
+[00:30:13] painfully
+[00:30:17] obvious that it will enormously outweigh
+[00:30:17] anything that is surrounding it. Those are
+[00:30:17] the ones
+[00:30:22] pay attention to because those are
+[00:30:22] typically, you know, spoofing or tricky
+[00:30:22] orders. If you
+[00:30:26] will, someone's trying to make you think
+[00:30:26] that they are doing something that they're
+[00:30:30] probably not anyways. All right, let's go
+[00:30:30] into our next one right here. And let's
+[00:30:30] start
+[00:30:34] to wrap this up. So lock it in. The order
+[00:30:34] book is two lines of people, real orders
+[00:30:34] waiting.
+[00:30:40] The chart is just their summary. That's
+[00:30:40] all that it is. The spread is somebody's
+[00:30:42] paycheck. That is your market maker and
+[00:30:42] maker versus taker decides whether you pay
+[00:30:42] full
+[00:30:47] price across it or whether you get a nice
+[00:30:47] little discount. The book lies by omission
+[00:30:51] as we went over. Market orders never show
+[00:30:51] up there. And those are the ones that
+[00:30:51] actually
+[00:30:54] move price action. Size will be hidden as
+[00:30:54] well with, you know, with iceberg orders,
+[00:30:58] for example, bait can get pulled, you
+[00:30:58] know, that is a tactic by a lot of people
+[00:30:58] and a
+[00:31:03] lot of bots and algos. And ultimately this
+[00:31:03] is the worst compass to use, but it is the
+[00:31:08] best receipt. So directions are sorry, the
+[00:31:08] direction from episode one through seven.
+[00:31:08] And
+[00:31:13] of course, execution exists right here.
+[00:31:13] And that 10 second habit, the spread limit
+[00:31:18] when patient size versus depth, that is
+[00:31:18] what you should be focusing on when it
+[00:31:18] comes to
+[00:31:21] order books, nothing more. And in my
+[00:31:21] opinion, nothing less. Other than that,
+[00:31:21] I've seen many,
+[00:31:26] many good persons lose their minds and
+[00:31:26] fucking order books. Anyways, here's our
+[00:31:26] homework.
+[00:31:31] Of course, like I said, open up Coinbase
+[00:31:31] Advanced, whatever your of course,
+[00:31:31] favorite
+[00:31:35] exchanges, pick an asset you already watch
+[00:31:35] mark one support zone that again, the
+[00:31:35] episode
+[00:31:40] four way, I would suggest what to close
+[00:31:40] and place one small limit buy order inside
+[00:31:43] of it, an amount that genuinely does not
+[00:31:43] matter to you. We're just trying to test
+[00:31:47] things out, whether that's, you know, 50
+[00:31:47] cents a dollar or $10 or a hundred
+[00:31:47] dollars,
+[00:31:51] whatever. This is an exercise in placing
+[00:31:51] an order on purpose at a level you choose
+[00:31:51] as
+[00:31:56] the maker. You're not trying to make a bet
+[00:31:56] here. You know, you can sell it right
+[00:31:56] after
+[00:31:59] that. It's all good, but watch it sit in
+[00:31:59] the book and if it fills and you bought
+[00:31:59] your
+[00:32:03] level, great. If it doesn't cancel it, all
+[00:32:03] good too. These are both worthwhile
+[00:32:08] lessons to see how things work in real
+[00:32:08] time. Yes, we've gone over some examples
+[00:32:08] right
+[00:32:11] here, but of course it's good to, you
+[00:32:11] know, it's good to have your own immediate
+[00:32:15] experience with it too. Anyways, we shall
+[00:32:15] move on from there into the next video.
+[00:32:20] Of course, the Coinbase link is below. If
+[00:32:20] you don't have, you know, already have an
+[00:32:24] account or even if you do have an account,
+[00:32:24] you can, I think you can get the
+[00:32:26] same fee reductions and episode nine,
+[00:32:26] we're going to go over order types,
+[00:32:30] market limit, stop three different
+[00:32:30] buttons. One of them silently will cost
+[00:32:34] you a lot of money every time you press
+[00:32:34] it. And after today, you, you
+[00:32:38] probably already know why realistically
+[00:32:38] anyways, I will leave that for the
+[00:32:41] next episode. As always take care and much
+[00:32:41] love and see you hopefully next time.
