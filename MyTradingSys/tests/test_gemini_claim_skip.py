@@ -17,7 +17,7 @@ class ClaimSkipTest(unittest.TestCase):
 
     def test_run_job_skips_claimed(self):
         with tempfile.TemporaryDirectory() as t, mock.patch.object(gq, "ROOT", Path(t)), \
-                mock.patch.object(gq, "git"), mock.patch("sync.open_claims", return_value=[("tom-v2", {"host": "JIS-NB"})]), \
+                mock.patch.object(gq, "git"), mock.patch.object(gq, "card_gate", return_value=(True, "")), mock.patch("sync.open_claims", return_value=[("tom-v2", {"host": "JIS-NB"})]), \
                 mock.patch.object(gq.subprocess, "run") as run:
             gq.run_job("tom-v2", "low")
             self.assertIn("SKIP", (Path(t) / "tom-v2.log").read_text(encoding="utf-8"))
@@ -31,7 +31,7 @@ class NoHangTest(unittest.TestCase):
         import subprocess
         with tempfile.TemporaryDirectory() as t:
             (Path(t) / "c1").mkdir()
-            with mock.patch.object(gq, "ROOT", Path(t)), mock.patch("sync.open_claims", return_value=[]),                     mock.patch.object(gq, "child_env", return_value={}),                     mock.patch.object(gq.subprocess, "run", side_effect=side_effect) as run:
+            with mock.patch.object(gq, "ROOT", Path(t)), mock.patch.object(gq, "card_gate", return_value=(True, "")), mock.patch("sync.open_claims", return_value=[]),                     mock.patch.object(gq, "child_env", return_value={}),                     mock.patch.object(gq.subprocess, "run", side_effect=side_effect) as run:
                 gq.run_job("c1", "low")
             return run, (Path(t) / "c1.log").read_text(encoding="utf-8")
 
@@ -67,7 +67,7 @@ class ReleaseSlugTest(unittest.TestCase):
         cid = "a-card-name-that-is-deliberately-longer-than-forty-characters"
         with tempfile.TemporaryDirectory() as t:
             (Path(t) / cid).mkdir()
-            with mock.patch.object(gq, "ROOT", Path(t)), mock.patch("sync.open_claims", return_value=[]), \
+            with mock.patch.object(gq, "ROOT", Path(t)), mock.patch.object(gq, "card_gate", return_value=(True, "")), mock.patch("sync.open_claims", return_value=[]), \
                     mock.patch.object(gq, "child_env", return_value={}), \
                     mock.patch.object(gq.subprocess, "run", side_effect=lambda cmd, **kw: subprocess.CompletedProcess(cmd, 0, "", "")) as run:
                 gq.run_job(cid, "low")
