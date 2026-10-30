@@ -21,17 +21,18 @@
   "not_twin_of": [
     "backtest-pre-us-failed-break-dev-run"
   ],
-  "note": "",
+  "note": "PLANNER 2026-10-30: content complete and checked; only blocked by depends_on bb-state-regime-tf-map + setup-review-with-operator (both ready, not done). Becomes served by next once they are done. Holdout untouched.",
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "",
   "refs": [],
   "result": "",
   "scope_in": [
-    "MyTradingSys/research/prev_close_break_2026-10-29/",
-    "MyTradingSys/research/TRIAL_LEDGER.csv"
+    "MyTradingSys/research/bb_mid_reject_2026-10/"
   ],
-  "scope_out": [],
+  "scope_out": [
+    "scripts/"
+  ],
   "size": "M",
   "sources": [
     "MyTradingSys/research/prev_close_break_2026-10-29/RESULT.md"
