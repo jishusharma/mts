@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-30T20:22:14Z",
+  "depends_on": [],
+  "done_when": "new tests pass on current code and fail on the mutated copy (recorded in the commit body); CI green after ship",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Using the gpt-bug-hunt-auto-trader-fail-closed matrix (or your own read if it is not on trunk yet), write pytest cases for MISSING branches; prove each fails against a mutated copy.",
+  "id": "sonnet-live-path-restart-reset-tests",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "test: pin recorded 10-10 settlement log against equity identity (expectedFailure)",
+      "ref": "5136984322fb",
+      "utc": "2026-10-29T23:29:23Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Focus: catch bugs early (operator 2026-10-31). Final report ends with a Noticed: line.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T20:22:15Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/execution/ tests only (no production code change)"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code edits; any backtest verdict; .secrets and .env"
+  ],
+  "scope_sha": "5136984322fb",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "read auto_trader.py and existing tests",
+    "write tests",
+    "mutate a temp copy per test to prove it fails",
+    "ship"
+  ],
+  "tests": "report only; every finding cites file:line and a reproducing input",
+  "title": "Live path: add restart/reset-state, non-trade balance move and API-error tests for auto_trader (each must fail on a deliberately broken copy)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
