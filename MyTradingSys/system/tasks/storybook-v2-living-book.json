@@ -2,6 +2,21 @@
   "approved_by": "operator 2026-10-30 via Eagle_Eyes (d-map-before-backtest, d-setup-review-before-backtest, d-storybook-v2)",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 18,
+    "folded": "2026-10-30T10:44:57Z",
+    "misses": 20,
+    "reads": [
+      "MyTradingSys/research/_archive/loose_2026-10/TOM_FABIO_STORY_2026-10-05.md",
+      "MyTradingSys/research/tom_fabio_concepts_2026-10-29/CONCEPTS.md",
+      "MyTradingSys/research/fabio_cvd_2026-10-30/CVD_CONCEPTS.md",
+      "MyTradingSys/research/eagle_eyes_picture_2026-10-28/SESSION_MAP_2026-10-30.md",
+      "MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md",
+      "MyTradingSys/research/STATUS.md",
+      "MyTradingSys/research/README.md"
+    ],
+    "session": "agent-ae6594c7bc02615aa"
+  },
   "created": "2026-10-29T22:28:43Z",
   "depends_on": [],
   "done_when": "STORYBOOK.md v2 shipped with: regime chapter (live definitions, OURS labelled), timeframe ladder (which close to wait for), proof checklist with thresholds or UNMEASURED, BB chapter (size not direction, F-CVD13), a what-history-says box per idea (n + file), M1-M9 marked fixed/open; quotes pass verify_extract_quotes; deck republished.",
