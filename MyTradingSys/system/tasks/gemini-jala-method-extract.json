@@ -1,6 +1,7 @@
 {
   "approved_by": "",
-  "asks": "captions not on host: verify_extract_quotes.py NO-TRANSCRIPT (raw_transcripts_canonical lacks ids); branch kept on origin/gemini-q",
+  "asks": "",
+  "closed": "2026-10-30T21:25:29Z",
   "commands": [
     "python scripts/dev/fetch_captions_timed.py --analyst Jala --channel @jalacrypto --latest 30 --out MyTradingSys/research/jala_layer_2026-10-31/transcripts",
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/jala_layer_2026-10-31/method_jala.md"
@@ -16,7 +17,14 @@
   "id": "gemini-jala-method-extract",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "22 quotes verified exit 0 (12 captioned videos; 18 UNVERIFIED 429 stay unquoted)",
+      "ref": "2175f9c9f",
+      "utc": "2026-10-30T21:25:29Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -28,7 +36,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "22 quotes verified exit 0 (12 captioned videos; 18 UNVERIFIED 429 stay unquoted)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/jala_layer_2026-10-31/method_jala.md (new), transcripts under research/jala_layer_2026-10-31/transcripts/"
   ],
@@ -38,13 +51,14 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "fetch captions of the latest 30 videos with fetch_captions_timed.py (one try per video; 429 -> UNVERIFIED, no retry loop)",
     "keyword scan: 400, fractal, dominance, altcoin, rotation, NUPL, buy, accumulate, invalidation; read the surrounding lines",
     "write method_jala.md: per concept the definition in his words (timed verbatim quote, video id), timeframe and symbol, entry, stop, target if stated; a dated table of his BTC and alt calls with prices",
     "run verify_extract_quotes.py until exit 0; commit on the branch with a Result: line (videos read, concepts defined, NOT_IN_DATA items)"
   ],
+  "taken": "2026-10-30T21:25:29Z",
   "tests": "verify_extract_quotes.py exit 0 is the gate; docs only",
   "title": "[GEMINI] Jala (@jalacrypto): extract his alt-rotation method, the indicators he reads (400D MA, fractal cycle, dominance) and when he buys alts, timed quotes",
   "weight": "ROUTINE",
