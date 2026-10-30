@@ -140,6 +140,14 @@ details[open] summary { margin-bottom: 8px; }
     <span class="tag">Watch items from analyst calls and our own vote count. None of these is a backtested signal; no size, no orders. You decide.</span>
   </section>
 
+  <!-- 2c. US OPEN LADDER (research/us_open_levels_2026-10-30; descriptive) -->
+  <section id="p-usopen">
+    <div class="hd"><h2>US open: if up, if down</h2><span class="src" title="Levels known at the open: UTC-day-so-far high/low, prior day, prior 3 days, prior 7 days, and the first-15-min opening range: OURS. Odds = MEASURED base rates, Binance BTCUSDT 1m 2022-01..2026-09, 1230 weekdays: how often a level that far from the open price was reached in the first 2 h, and how often the close 60 min after the first touch was still beyond it. No fees, no entries.">MEASURED</span><span class="age" id="age-uo">--</span></div>
+    <div class="vrow"><span class="huge" id="uo-when">--</span><span class="sub" id="uo-box"></span></div>
+    <div class="scroll"><table><thead><tr><th>If price goes</th><th>Level</th><th>Price</th><th>Distance</th><th>Reached in the 2 h after the open</th><th>Still beyond it 60 min after the touch</th></tr></thead><tbody id="uo-rows"></tbody></table></div>
+    <span class="tag">Reach odds fall with distance; a touch holding is a coin flip at every distance. Context for what to expect, never a signal; no size, no orders.</span>
+  </section>
+
   <!-- 3. COLUMNS -->
   <div class="cols">
     <section id="p-intrade">
@@ -209,6 +217,7 @@ details[open] summary { margin-bottom: 8px; }
 
 <script src="live_aid_indicators.js"></script>
 <script src="analyst_data.js"></script>
+<script src="us_open_rates.js"></script>
 <script>
 (function () {
   'use strict';
@@ -521,10 +530,30 @@ details[open] summary { margin-bottom: 8px; }
     $('age-coil').textContent = S.klT ? Math.round((now - S.klT) / 1000) + 's' : '--';
   }
 
+  function renderUsOpen(now) {
+    var open = sessionInfo(now - 7200000).us, px = S.dbtMark || S.dbt || (S.tf['5m'] && S.tf['5m'].length ? +S.tf['5m'][S.tf['5m'].length - 1][4] : NaN), rates = typeof US_OPEN_RATES !== 'undefined' ? US_OPEN_RATES.rates : null;
+    var r = A.usOpen(S.tf['5m'], S.daily ? S.daily.rows : null, open, now, px, rates), tb = $('uo-rows');
+    var m = r.minutes, when = r.phase === 'before' ? 'US open ' + hhmm(open) + ' in ' + (-m) + ' min' : r.phase === 'in' ? 'US opened ' + m + ' min ago' : 'US open + 2 h window over (opened ' + hhmm(open) + ')';
+    $('uo-when').textContent = when;
+    $('uo-box').textContent = (r.box ? 'day so far ' + fmt(r.box.l, 0) + ' - ' + fmt(r.box.h, 0) + ' (' + fmt(100 * (r.box.h - r.box.l) / r.box.l, 2) + '%)' : 'day range: not enough 5m bars') +
+      (r.or ? ' | opening range (15 min) ' + fmt(r.or.l, 0) + ' - ' + fmt(r.or.h, 0) : r.phase === 'before' ? ' | opening range: after the open' : '') + ' | ' + r.priorDays + ' prior days loaded';
+    if (!isFinite(px)) { tb.innerHTML = '<tr><td colspan="6">' + NID + '</td></tr>'; return; }
+    function row(dir, x) {
+      var pct = function (v, n) { return v === null ? '<span class="dim">n too small (' + n + ')</span>' : '<b>' + v + '%</b> (n=' + n + ')'; };
+      return '<tr><td class="' + (dir === 'UP' ? 'up' : 'down') + '"><b>' + dir + '</b></td><td>' + esc(x.name) + '</td><td>' + fmt(x.p, 0) + '</td><td>' + sgn(100 * x.dist, 2) + '%</td><td>' +
+        (x.bucket ? pct(x.touch, x.n) : '<span class="dim">beyond the measured range</span>') + '</td><td>' + (x.bucket ? pct(x.held, x.nt) : '') + '</td></tr>';
+    }
+    var H = r.up.slice(0, 4).map(function (x) { return row('UP', x); }).concat(r.down.slice(0, 4).map(function (x) { return row('DOWN', x); }));
+    tb.innerHTML = H.join('') || '<tr><td colspan="6">no levels yet (5m bars and daily levels still loading)</td></tr>';
+    if (!rates) tb.innerHTML += '<tr><td colspan="6" class="err">us_open_rates.js not found next to this page: run python MyTradingSys/research/us_open_levels_2026-10-30/study.py</td></tr>';
+    $('age-uo').textContent = S.klT ? Math.round((now - S.klT) / 1000) + 's' : '--';
+  }
+
   function render() {
     var now = Date.now();
     S.a15 = atr15();
     renderTop();
+    renderUsOpen(now);
     renderCoil(now);
     renderLiq(now);
     renderFund(now);

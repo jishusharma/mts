@@ -405,9 +405,49 @@
     return out.sort(function (a, b) { return rank[a.when] - rank[b.when]; });
   }
 
+
+  // ---------- US open ladder (research/us_open_levels_2026-10-30; operator 2026-10-30 "anticipation ... if price goes up or down").
+  // Levels known at the open: UTC-day-so-far H/L (box), prior day, prior 3 days, prior 7 days H/L, plus the first-15-min opening range.
+  // rates = US_OPEN_RATES.rates: per level kind and distance bucket, reached-in-2h % and held-60-min-after-touch %. All OURS, descriptive. ----------
+  var UO = { windowMs: 7200000, orMs: 900000, buckets: [['0-0.25', 0, 0.0025], ['0.25-0.5', 0.0025, 0.005], ['0.5-1', 0.005, 0.01], ['1-2', 0.01, 0.02], ['2+', 0.02, 9]],
+             names: { dayH: 'day high so far', dayL: 'day low so far', pdh: 'prev day high', pdl: 'prev day low', d3h: '3-day high', d3l: '3-day low', d7h: '7-day high', d7l: '7-day low', orH: 'opening range high', orL: 'opening range low' } };
+  function uoBucket(x) { for (var i = 0; i < UO.buckets.length; i++) if (x >= UO.buckets[i][1] && x < UO.buckets[i][2]) return UO.buckets[i][0]; return null; }
+  // rows5m: 5m bars; daily: utcDays rows; open: the US open ms (last one if within 2 h, else the next); px: mark; rates: {kind: {bucket: {n, touch, nt, held}}}
+  function usOpen(rows5m, daily, open, now, px, rates) {
+    var phase = now < open ? 'before' : now - open <= UO.windowMs ? 'in' : 'after', d0 = Math.floor(open / DAY) * DAY;
+    var box = { h: -Infinity, l: Infinity, n: 0 }, or = { h: -Infinity, l: Infinity, n: 0 };
+    (rows5m || []).forEach(function (r) {
+      var t = +r[0];
+      if (t >= d0 && t < open) { box.n++; if (+r[2] > box.h) box.h = +r[2]; if (+r[3] < box.l) box.l = +r[3]; }
+      if (t >= open && t < open + UO.orMs && t + 300000 <= now) { or.n++; if (+r[2] > or.h) or.h = +r[2]; if (+r[3] < or.l) or.l = +r[3]; }
+    });
+    var prior = (daily || []).filter(function (r) { return +r[0] < d0; }), np = prior.length, lv = [];
+    function ext(n, hi) { var a = prior.slice(np - n); return hi ? Math.max.apply(null, a.map(function (r) { return +r[2]; })) : Math.min.apply(null, a.map(function (r) { return +r[3]; })); }
+    if (box.n) { lv.push({ k: 'dayH', p: box.h }); lv.push({ k: 'dayL', p: box.l }); }
+    if (np >= 1) { lv.push({ k: 'pdh', p: ext(1, true) }); lv.push({ k: 'pdl', p: ext(1, false) }); }
+    if (np >= 3) { lv.push({ k: 'd3h', p: ext(3, true) }); lv.push({ k: 'd3l', p: ext(3, false) }); }
+    if (np >= 7) { lv.push({ k: 'd7h', p: ext(7, true) }); lv.push({ k: 'd7l', p: ext(7, false) }); }
+    if (or.n >= 3) { lv.push({ k: 'orH', p: or.h }); lv.push({ k: 'orL', p: or.l }); }
+    var up = [], down = [];
+    lv.forEach(function (x) {
+      if (!isFinite(x.p) || !isFinite(px) || x.p === px) return;
+      var dist = (x.p - px) / px, b = uoBucket(Math.abs(dist)), r = rates && rates[x.k] && b ? rates[x.k][b] : null;
+      var row = { k: x.k, name: UO.names[x.k], p: x.p, dist: dist, bucket: b, touch: r && r.n >= 30 ? r.touch : null, held: r && r.nt >= 30 ? r.held : null, n: r ? r.n : 0, nt: r ? r.nt : 0 };
+      (dist > 0 ? up : down).push(row);
+    });
+    up.sort(function (a, b) { return a.dist - b.dist; }); down.sort(function (a, b) { return b.dist - a.dist; });
+    function merge(list) { // same price = one row, names joined
+      var out = [];
+      list.forEach(function (r) { var last = out[out.length - 1]; if (last && last.p === r.p) { last.name += ' = ' + r.name; if (last.touch === null) { last.touch = r.touch; last.held = r.held; last.n = r.n; last.nt = r.nt; } } else out.push(r); });
+      return out;
+    }
+    return { phase: phase, open: open, minutes: Math.round((now - open) / 60000), box: box.n ? { h: box.h, l: box.l, bars: box.n } : null,
+             or: or.n >= 3 ? { h: or.h, l: or.l, bars: or.n } : null, up: merge(up), down: merge(down), priorDays: np };
+  }
+
   var api = { AV: AV, rosterRead: rosterRead, analystVote: analystVote, levelWatch: levelWatch, zones: zones, lean: lean, actions: actions, NW: NW, newsTags: newsTags, newsMerge: newsMerge, newsPulse: newsPulse, foldBars: foldBars, FD: FD, fundRead: fundRead, premium: premium, bybitTick: bybitTick, LQ: LQ, liqDeribit: liqDeribit, liqBybit: liqBybit, liqBinance: liqBinance, liqSum: liqSum, CP: CP, coilPierce: coilPierce, IT: IT, divergence: divergence, flow: flow, flowLive: flowLive, squeeze: squeeze, dom: dom, supports: supports, vwapTest: vwapTest,
     flagDiv: flagDiv, flagSqueeze: flagSqueeze, flagFlow: flagFlow, flagDom: flagDom, flagVwap: flagVwap, confidence: confidence, rma: rma, sma: sma, rsi: rsi, bollinger: bollinger, atr: atr, dayVwap: dayVwap, utcDays: utcDays, wavetrend: wavetrend,
-    inversePnlBtc: inversePnlBtc, closedPnlBtc: closedPnlBtc, columns: columns };
+    inversePnlBtc: inversePnlBtc, closedPnlBtc: closedPnlBtc, columns: columns, UO: UO, usOpen: usOpen };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.LiveAid = api;
 })(typeof self !== 'undefined' ? self : this);

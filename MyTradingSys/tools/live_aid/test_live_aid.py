@@ -527,3 +527,43 @@ def test_actions_order_and_lean_direction(it):
     # price 80,200 inside the 80,100-80,300 zone: kind 'zone', never in the lean's direction; 79,880 = -0.40 % and 79,000 = -1.496 %
     # are both NEAR (<= 1.5 %) supports, against a bullish lean.
     assert it["ac3"] == [["NOW", "zone", False], ["NEXT", "support", False], ["NEXT", "support", False]]
+
+
+def test_us_open_ladder_hand_case():
+    """usOpen: levels above/below a mark from hand-built 5m and daily rows, bucket and rate lookup (LIVE_AID_BREAK=ituo)."""
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("node not installed")
+    day0 = 1_800_000_000_000 - (1_800_000_000_000 % 86_400_000)      # a UTC midnight
+    open_ms = day0 + 13 * 3_600_000 + 30 * 60_000                       # 13:30Z
+    rows5 = []                                                          # 00:00Z..13:30Z box: high 103, low 97; opening range 15 min: high 101.5, low 99.5
+    t = day0
+    while t < open_ms:
+        rows5.append([t, 100, 103 if t == day0 + 3_600_000 else 100.5, 97 if t == day0 + 7_200_000 else 99.5, 100, 1])
+        t += 300_000
+    for i in range(3):
+        rows5.append([open_ms + i * 300_000, 100, 101.5 if i == 1 else 100.2, 99.5 if i == 2 else 99.8, 100, 1])
+    daily = [[day0 - k * 86_400_000, 100, 100 + k, 100 - k, 100, 1] for k in range(8, 0, -1)]  # prior 8 days: highs 101..108, lows 99..92
+    rates = {"pdh": {"0-0.25": {"n": 40, "touch": 80, "nt": 32, "held": 50}}, "d3h": {"0.5-1": {"n": 90, "touch": 40, "nt": 36, "held": 70}},
+             "dayH": {"2+": {"n": 100, "touch": 5, "nt": 5, "held": 30}}, "orH": {}, "orL": {}, "dayL": {}, "pdl": {}, "d3l": {}, "d7h": {}, "d7l": {}}
+    now = open_ms + 16 * 60_000
+    px = 100.8
+    runner = ("const A=require(process.argv[1]);let j='';process.stdin.on('data',d=>j+=d).on('end',()=>{j=JSON.parse(j);"
+              "console.log(JSON.stringify(A.usOpen(j.rows5,j.daily,j.open,j.now,j.px,j.rates)))})")
+    out = subprocess.run([node, "-e", runner, str(JS)], input=json.dumps({"rows5": rows5, "daily": daily, "open": open_ms, "now": now, "px": px, "rates": rates}),
+                         capture_output=True, text=True, timeout=60, env=os.environ.copy())
+    assert out.returncode == 0, out.stderr
+    r = json.loads(out.stdout)
+    assert r["phase"] == "in" and r["minutes"] == 16 and r["priorDays"] == 8
+    assert r["box"] == {"h": 103, "l": 97, "bars": 162} and r["or"] == {"h": 101.5, "l": 99.5, "bars": 3}
+    # Independent expectation: up ladder sorted by distance, same-price levels merged (pdh 101 = 3-day? no: d3h = 103 = dayH)
+    up = [(x["name"], x["p"], x["bucket"]) for x in r["up"]]
+    assert up[0] == ("prev day high", 101, "0-0.25")           # (101-100.8)/100.8 = 0.198 %
+    assert up[1] == ("opening range high", 101.5, "0.5-1")     # 0.694 %
+    assert up[2] == ("day high so far = 3-day high", 103, "2+")  # 2.18 %, merged
+    assert up[3] == ("7-day high", 107, "2+")
+    assert [x["name"] for x in r["down"]][:3] == ["opening range low", "prev day low", "day low so far = 3-day low"]   # 99.5, 99, 97 (merged)
+    assert r["up"][0]["touch"] == 80 and r["up"][0]["held"] == 50 and r["up"][0]["n"] == 40
+    assert r["up"][1]["touch"] is None and r["up"][1]["n"] == 0            # orH has no rates row
+    assert r["up"][2]["touch"] == 5 and r["up"][2]["held"] is None        # dayH 2+: nt=5 under 30 -> held hidden
+    assert all(x["dist"] > 0 for x in r["up"]) and all(x["dist"] < 0 for x in r["down"])
