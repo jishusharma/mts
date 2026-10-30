@@ -4,7 +4,7 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-30T17:03:19Z",
+    "folded": "2026-10-30T17:03:51Z",
     "misses": 5,
     "reads": [
       "scripts/dev/tasks.py",
@@ -17,31 +17,53 @@
   },
   "created": "2026-10-30T09:56:18Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/live_not_fired_2026-10-29/RESULT.md exists with one row per LAYERS.md layer (fired|silent, count in window, evidence file:line or log line, reason) plus a CBP-levels-hit vs silent-layers table; Result line gives silent N of M layers; commit sha on origin/fast-track",
+  "est_turns": 30,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Read-only audit of the live window 2026-10-29 17:00Z to 2026-10-30 08:00Z (BTC 82k to 76.4k): for every engine layer in LAYERS.md state FIRED or SILENT, and for each SILENT layer the reason (no input wired, gate not met, data stale, error), compared with the CBP analyst levels hit in the window (78k, 77.3k, 77k).",
   "id": "live-not-fired-audit-1029",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "analyst levels: no hit before the video could exist; cbp_run prompt carries metadata (Argo",
+      "ref": "589685fbb501",
+      "utc": "2026-10-30T14:30:46Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "OPERATOR QUOTE (10-30): \"Dashboard should be firing all these things, every layer, every important news, and you first of all you have to look into everything that is not fired when you are in live mode.\" Context: no live code reads CBP or news (grep execution/observation/runtime: 0 hits). analyst_levels.py now gives the CBP ladder; compare each silent layer with the analyst levels hit in the window (78k, 77.3k, 77k).",
+  "note": "REVIEWED: Sonnet-reviewer 2026-10-30 ACCEPT-after-FIX (fallback + analyst_levels scope added). DECISION (OURS): worker=session not agent (gate: agent only S and est<=15); read-only, no live-tree change. OPERATOR QUOTE (10-30): Dashboard should be firing all these things, every layer, every important news, and first look into everything not fired in live mode. Context: no live code reads CBP or news (0 hits); analyst_levels.py gives the CBP ladder.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refs": [],
+  "refreshed": "2026-10-30T17:03:47Z",
+  "refs": [
+    "MyTradingSys/system/LAYERS.md",
+    "MyTradingSys/system/LIVE_MIRROR.md"
+  ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "scripts/dev/analyst_levels.py"
+  ],
+  "scope_out": [
+    "any product code, live tree .mts_live, HALT files, deploys, process restarts, .secrets/.env, VALIDATION/HOLDOUT data, mainnet"
+  ],
+  "scope_sha": "589685fbb501",
+  "size": "M",
+  "sources": [
+    "operator quote 2026-10-30 in card note"
+  ],
+  "state": "ready",
+  "steps": [
+    "Fallback if not on desktop-f7iu69n: python scripts/dev/mts_signal.py broadcast --cmd to the owner for the read-only extract; first check the window still exists in live_runner.log/snapshots (rotation); if rotated, say so in RESULT.md instead of guessing"
+  ],
+  "tests": "No code changes: verify every row cites a log/state line; count layers parsed from LAYERS.md equals rows in RESULT.md (parse then count, no truncated output)",
   "title": "Live not-fired audit 10-29 17:00Z..10-30 08:00Z (82k->76.4k): on the LIVE OWNER (desktop-f7iu69n) list every engine layer, fired or silent, and the reason for each silence, from live_runner.log, state_code.json, snapshots, auto_trades.jsonl (read-only); output research/live_not_fired_2026-10-29/RESULT.md",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
