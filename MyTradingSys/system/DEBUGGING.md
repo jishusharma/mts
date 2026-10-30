@@ -30,12 +30,21 @@ the others fail silently, so run it by hand to see the error: `echo {} | python 
 | stop refused | `scripts/dev/stop_guard.py` | `~/.claude/mts-stop-guard.json` |
 | Agent/Task/Workflow spawn refused (`USAGE GATE:`) or no USAGE: reminder | `scripts/dev/usage_reminder.py` (gate: stale get_usage, 2 agents running, 5 h > elapsed% + 10; after get_usage run `usage_reminder.py record --five P --elapsed E`) | `$MTS_USAGE_STATE` or `~/.claude/mts_usage_gate.json` |
 | prompt notice "TRUNK LAG": tree behind origin/fast-track | `scripts/dev/trunk_lag.py` (`MTS_TRUNK_LAG=off`) | `<git dir>/mts_trunk_fetch` |
+| main checkout (where hooks run) far behind: shipped hook fixes never run there | "Main checkout catch-up" below | the main checkout | any session on that machine |
 | commit denied / edit note `PRESHIP` | `python scripts/dev/preship.py check` (rules: its RULES table) | `~/.claude/mts-preship-*.json` |
 | broadcast nobody reacted to | `python scripts/dev/mts_signal.py acks [<id>]` (hosts vs none/told/done); resend with `broadcast "<text>" --prio high --cmd "<command>"` | branch `mts-signals` | the sending session |
 | signal / git windows flash | `scripts/dev/mts_signal.py` | `~/.claude/mts-signals`, branch `mts-signals` |
 | screenshot not picked up (phone chats in the parent folder: hook lands uploads < 48 h as `other-chat`) | `scripts/dev/shot.py` | `~/.claude/uploads/manifest.jsonl` |
 | message "held, waiting for approval... sender's permission mode differs" | app rule, not ours: run every session in the same mode (default Auto); a Bypass session holds messages from Auto ones | session permission mode |
 | C: drive warning or C: full after a restart | `python scripts/dev/c_drive_guard.py status`, then `python scripts/dev/c_drive_guard.py` (dry run) | `%LOCALAPPDATA%\MTS\logs\c_drive_guard.log`; per station: STATION_CLEANUP.md |
+
+Main checkout catch-up (JIS-NUC 2026-10-30: 1891 commits behind, 105 dirty files, 103 of them stale trunk copies left by a
+half-done refresh). 1. Fetch origin and count the commits HEAD lacks from origin/fast-track; 0 = done. 2. Back up first:
+staged and unstaged changes as binary patches plus untracked files into `../_main_backup_<date>/`, and the index as a local
+branch `<host>/main-index-backup-<date>` (write-tree, commit-tree on HEAD). 3. Per dirty, staged or untracked file: content
+equal to some version in the file's origin/fast-track history = stale copy: unstage, restore, remove; a unique edit stays.
+4. Fast-forward only to origin/fast-track; if a kept edit blocks it, back that file up, restore it, retry. Never stash, reset
+or rebase; never `refresh_main_checkout.py --apply` on such a tree (its stash pop puts the stale copies back on top).
 
 ## 3. Cards, desk, lanes
 | Symptom | Command | State | Owner |
