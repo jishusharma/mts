@@ -12,10 +12,11 @@
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Gemini never ships: its output sits on gemini-q/<id> branches (gemini_queue.py). For the 11 [GEMINI] cards NUC task gq15 runs on 2026-10-31 (ids in the decision d-gemini-youtube-feed-weak-layers): fetch each branch, run the verifier, spot-check 3 quotes against the transcript, merge what passes, tasks.py done with the counts, ship once. A failing branch gets tasks.py tried with the reason; never hand-edit a quote.",
+  "goal": "Gemini never ships: its output sits on gemini-q/<id> branches. For the 11 [GEMINI] cards NUC task gq15 runs on 2026-10-31 (ids: decision d-gemini-youtube-feed-weak-layers): fetch each branch, run the verifier, spot-check 3 quotes, merge what passes, tasks.py done with counts, ship once. Failing branch: tasks.py tried with the reason; never hand-edit a quote.",
   "id": "review-ship-gemini-q-branches-1031",
   "kind": "run",
   "lane": "SONNET",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -23,6 +24,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-30T18:58:47Z",
   "refs": [
     "MyTradingSys/system/OPERATOR_DECISIONS.md"
   ],
@@ -33,9 +35,10 @@
   "scope_out": [
     "live tree; engine and layer code; any backtest; editing a Gemini quote by hand; .secrets and .env"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "git fetch origin; git branch -r | grep gemini-q/ to list the branches",
     "per branch: git merge --no-commit origin/gemini-q/<id> into the worktree; run the verifier on the new files; spot-check 3 quotes in the transcript; keep or abort",
