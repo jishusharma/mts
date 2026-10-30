@@ -1,7 +1,24 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T11:43:07Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-30T09:33:52Z",
+    "misses": 25,
+    "reads": [
+      "scripts/dev/extra_tests.tsv",
+      "scripts/dev/sync.py",
+      "MyTradingSys/system/wiring_registry.json",
+      "MyTradingSys/items/T054_us_session_news_correlation.md",
+      "scripts/dev/tasks.py",
+      "scripts/dev/wiring_scan.py",
+      "MyTradingSys/system/OPERATOR_DECISIONS.md",
+      "MyTradingSys/research/malkan_extract_2026-10-15/tools/test_check_numbers.py"
+    ],
+    "session": "agent-aabe8f2378523e244"
+  },
   "created": "2026-10-30T08:24:23Z",
   "depends_on": [],
   "done_when": "usOpenCountdown(now) in live_aid_indicators.js returns minutes to next NYSE open on 6 fixture instants incl. DST edge and weekend; line renders; test_live_aid.py green; shipped.",
@@ -13,6 +30,12 @@
   "id": "ask-p0-37-us-open-alert-line",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/tools/us_open_alert.py us_open_line(), 8 tests, DST-aware, not wired",
+      "ref": "afd551435",
+      "utc": "2026-10-30T11:43:07Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +62,12 @@
   "refs": [
     "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/tools/us_open_alert.py us_open_line(), 8 tests, DST-aware, not wired",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tools/live_aid/live_aid.html",
     "MyTradingSys/tools/live_aid/live_aid_indicators.js",
@@ -56,12 +84,13 @@
   "sources": [
     "us_open.py (open time), T054 N3 'US open in N min' line, ledger P0-37"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "port the open-time logic from us_open.py to JS; test first",
     "show the line 60 min before open, grey otherwise; text says context only",
     "run test_live_aid.py; ship. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
   ],
+  "taken": "2026-10-30T11:43:07Z",
   "tests": "MyTradingSys/tools/live_aid/test_live_aid.py: test_us_open_countdown (summer, winter, Saturday, 13:29, 13:31); red before the function exists.",
   "title": "T054 step 5: context-only 'US open in N min' alert line, never gates Tom (ledger P0-37)",
   "weight": "ROUTINE",

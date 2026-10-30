@@ -31,6 +31,8 @@ Deribit 1D candles open at 08:00Z, so prev-day high/low and weekly open come fro
 | More timeframes | Momentum strip gains 1h (Binance 1h or Deribit resolution 60) and 4h rows. 4h is folded from 1h on UTC 00/04/08/12/16/20Z boundaries because Deribit has no 4h candles; divergence list includes 1h. Maths `foldBars`, test `test_fold_1h_into_4h` (`LIVE_AID_BREAK=itfold`) | BUILT 2026-10-30 |
 
 WaveTrend 10/21/4, 0.015, lines 53/60 = OURS (LazyBear defaults; his chart settings unknown). Parameters: RSI14 Wilder, SMA14 of RSI, BB(20,2) population, ATR14 Wilder, day VWAP hlc3 from 00:00Z = SOURCED (his chart setup). RSI 30/70 flag lines, session names = OURS.
+| News | Glance tile "News, last hour" (QUIET / BUSY / EVENT + count of headlines scoring 7+) and a News panel: last 12 headlines with time, age, score, source, link and word tags. Tree News public REST polled every 15 s while the page is open, no key. Maths `newsTags/newsMerge/newsPulse`, tests `test_news_word_tags`, `test_news_pulse_and_merge` (`LIVE_AID_BREAK=itnews|itpulse`). Research: research/news_feeds_2026-10-30/REPORT.md | BUILT 2026-10-30 |
+| Verdict and analysts | Board under the glance row: lean (4 votes), vote list, watch list NOW / NEXT / LATER from analyst levels within 6 % plus a News EVENT, each row with what to watch, the analyst's words and the evidence label. Analysts panel: every roster analyst with state FRESH / STALE / NO ROW / NOT FETCHED / OFF, newest row, bias, rows, rejected rows, ingestion age; level ladder with a now line. Data: `build_analyst_data.py` -> `analyst_data.js` (gitignored, CBP rows stay private). Maths `rosterRead/analystVote/levelWatch/zones/lean/actions`, tests `test_analyst_roster_states`, `test_analyst_vote`, `test_level_watch_band_and_zones`, `test_zones_merge_and_inside`, `test_lean_rule`, `test_actions_order_and_lean_direction` (`LIVE_AID_BREAK=avroster|avwatch|avzone|avlean|avact`), `test_build_analyst_data.py` | BUILT 2026-10-30 |
 
 ## In-trade rules (OURS, written before any data was looked at; sd = +1 long, -1 short)
 
@@ -69,6 +71,30 @@ WaveTrend 10/21/4, 0.015, lines 53/60 = OURS (LazyBear defaults; his chart setti
 | Premium | mark - index on each venue, in points and bp of index (SOURCED fields) |
 | Cross-venue | Bybit last - Deribit last; Bybit is USDT, Deribit USD, so it includes the USDT/USD rate: shown, never read |
 | Feed state | Deribit as the price feed; Bybit live while a ticker message arrived in the last 15 s |
+
+## News rules (OURS unless marked, written before the panel was built; operator "what is missing from the dashboard is also news" 2026-10-30)
+
+| Rule | Value |
+|---|---|
+| Feed | Tree News `news.treeofalpha.com/api/news` (free, CORS open): `time`, `source`, `title`, `url`, `importance` 0-10 all SOURCED |
+| High | importance 7 or more (normal day 5-9 such items, hack day 2026-10-29 had 42; measured 10-26..10-30) |
+| Pulse | high items with time in the last 60 min: 0 QUIET, 1-2 BUSY, 3+ EVENT |
+| Word tags | hack, halt (withdrawals/deposits/trading), etf/SEC, fed/macro, war/sanctions/tariffs, delist; whole words |
+| Feed state | live while a fetch succeeded in the last 60 s; first load 300 items, then 40 every 15 s, keep 400 |
+| Use | context only: says what is happening, never what to do |
+
+## Verdict rules (OURS unless marked, written before the board was built; operator 2026-10-30 "I need an actionable dashboard that shows clearly the actions that might be taken now or in future wrt trading")
+
+| Rule | Value |
+|---|---|
+| Votes | 4: analysts (sign of the net bias of FRESH rows: BULLISH +1, BEARISH -1, NEUTRAL 0, NO_VIEW skipped), price vs day VWAP, RSI14 1h vs 50, RSI14 4h vs 50; a vote with no data = NOT_IN_DATA |
+| Lean | needs 3 votes in data; BULLISH LEAN at 2+ bull votes and bull >= 2 x bear; BEARISH LEAN mirrored; else MIXED; under 3 = NOT ENOUGH DATA |
+| Watch band | analyst levels within 6 % of price, nearest first; AT within 0.3 % (NOW), NEAR within 1.5 % (NEXT), else WATCH (LATER); expired levels dropped |
+| Zones | a level less than 0.25 % above the previous one joins its zone; price inside a zone = NOW, "inside"; zone distance = nearest edge |
+| News row | a News EVENT (pulse rule above) adds one NOW row |
+| Direction | a level below price is support, above is resistance; it is "in the direction of the lean" when below a BEARISH LEAN or above a BULLISH LEAN |
+| Fresh analyst | newest valid CBP row 3 days old or less (publish day 00:00Z to now, floored); NO ROW = ingested but nothing in the 5-day store; NOT FETCHED = enabled but outside cbp_run's "actionable" profile |
+| Evidence | every row says "analyst call, not backtested" or OURS; no size, no order, no entry/stop wording; the trader decides |
 
 ## Backlog (his words first)
 

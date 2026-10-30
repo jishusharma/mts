@@ -142,6 +142,7 @@ scripts/dev/test_gateway_run.py
 scripts/dev/test_logon_wake.py
 scripts/dev/test_refresh_main_checkout.py
 MyTradingSys/tools/live_aid/test_live_aid.py
+MyTradingSys/tools/live_aid/test_build_analyst_data.py
 scripts/dev/test_sync_push_race.py
 scripts/dev/test_announcements_ids.py
 scripts/dev/test_status_board.py
@@ -150,5 +151,6 @@ scripts/dev/test_retention.py
 scripts/dev/test_tom_noise_units.py
 scripts/dev/test_coord_overhead.py
 scripts/dev/test_check_sourced_params.py
+MyTradingSys/tools/test_us_open_alert.py
 scripts/dev/test_fix_verifier.py
 scripts/dev/test_where_is.py

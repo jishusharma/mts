@@ -1,15 +1,17 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T10:15:59Z",
   "commands": [],
   "context": {
-    "calls_to_edit": null,
-    "folded": "2026-10-30T10:23:04Z",
-    "misses": 50,
+    "calls_to_edit": 20,
+    "folded": "2026-10-30T11:21:52Z",
+    "misses": 33,
     "reads": [
-      "MyTradingSys/tests/test_role_roster.py"
+      "scripts/dev/mts_doctor.py",
+      "MyTradingSys/tests/test_operator_questions_pending.py"
     ],
-    "session": "agent-ae74a25c7b6cdedbb"
+    "session": "5fdeeddb-5a32-4b7b-af79-35c62cbfa6e5"
   },
   "created": "2026-10-30T08:05:53Z",
   "depends_on": [],
@@ -22,6 +24,12 @@
   "id": "live-aid-news-panel",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "News panel + 'News, last hour' tile on live_aid (Tree News free REST, 15 s poll); 26 live_",
+      "ref": "2f1ab0386",
+      "utc": "2026-10-30T10:15:59Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -48,7 +56,12 @@
   "refs": [
     "MyTradingSys/research/news_feeds_2026-10-30/REPORT.md"
   ],
-  "result": "",
+  "result": "News panel + 'News, last hour' tile on live_aid (Tree News free REST, 15 s poll); 26 live_aid tests pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tools/live_aid/live_aid.html",
     "MyTradingSys/tools/live_aid/live_aid_indicators.js",
@@ -66,12 +79,13 @@
   "sources": [
     "REPORT.md section 4 (feed, CORS) and section 6 N1/N2/N6; thresholds labelled OURS"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "add pulse() and wordTags() to live_aid_indicators.js (pure, no DOM) with tests first",
     "fetch https://news.treeofalpha.com/api/news?limit=50 (CORS *, REPORT.md section 4); fail closed to a grey NO FEED tile on error",
     "render panel and tile in live_aid.html; run test_live_aid.py; ship. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
   ],
+  "taken": "2026-10-30T10:15:59Z",
   "tests": "MyTradingSys/tools/live_aid/test_live_aid.py: new test_news_pulse and test_word_tags with a fixture list; red before the functions exist.",
   "title": "live_aid: news headline panel + news pulse tile + word tags (Tree News REST, N1/N2/N6)",
   "weight": "IMPORTANT",

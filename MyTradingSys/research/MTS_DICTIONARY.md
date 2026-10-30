@@ -199,7 +199,7 @@ Files in runtime_data\ that a process reads as a stop signal. Distinct paths, di
 
 ## DIVERGENCE (added 2026-09-22)
 
-Defined per B063 (see MyTradingSys/items/B063_divergence.md). Current state: fragmented. Canonical definition pending B063.
+DEPRECATED 2026-10-04 (B063, see MyTradingSys/items/B063_divergence.md). The snapshot field `cvd.divergence` is removed from the schema and not restored: Tom gives no numeric definition. His only divergence words are a guard: "don't trade the delta divergence alone always use confirmation" (extracts/fresh/extract_rFPCtOcfUMI_fresh.md:71). The detectors below are tooling only and not authoritative.
 
 Four detector implementations exist. No single source is authoritative.
 
@@ -210,5 +210,5 @@ Four detector implementations exist. No single source is authoritative.
 | cvdDivergence | SetupScreener.java L54 | boolean input. Producer not shown on disk. |
 | threshold rule | divergence_monitor.py | price move over 30 points and cumulative volume delta change over 200 and net delta change over 20 between snapshots at least 10 minutes apart. |
 
-Live alerts do not fire on divergence. No condition-file rule reads any of the four. Reconciliation tracked in B063.
+Live alerts do not fire on divergence. No condition-file rule reads any of the four. Closed by the B063 deprecate decision.
 

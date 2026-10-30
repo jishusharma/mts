@@ -320,30 +320,92 @@
     return out;
   }
 
-  // News (card live-aid-news-panel; REPORT.md N1/N2/N6). Tree News `importance` 0-10 and `time` (ms) are SOURCED.
-  // Mark at importance >= 7, 60 min window, EVENT at >= 3 such items: OURS (a normal day has 5-9 items >= 7, the hack day 42). Context only, never gates a trade.
-  var NW = { hi: 7, windowMs: 3600000, event: 3 };
-  function pulse(items, now) {
-    if (!items || !isFinite(+now)) return null;
-    var n = 0;
-    items.forEach(function (x) {
-      var t = +x.time, imp = x.importance;
-      if (typeof imp === 'number' && imp >= NW.hi && isFinite(t) && t <= now && now - t < NW.windowMs) n++;
-    });
-    return { n: n, level: n >= NW.event ? 'EVENT' : n > 0 ? 'BUSY' : 'QUIET' };
+  // News (research/news_feeds_2026-10-30). Tree News `importance` 0-10: SOURCED. Mark at 7, 60 min window, EVENT at 3+: OURS
+  // (normal day 5-9 items at 7 or more, hack day 2026-10-29 had 42; measured 10-26..10-30).
+  var NW = { mark: 7, winMs: 3600000, event: 3 };
+  var NT = [['hack', /\b(hack|hacked|hacker|hackers|exploit|exploited|drain|drained|stolen|theft|heist|breach)\b/i],
+    ['halt', /\b(halts?|halted|suspends?|suspended|pauses?|paused)\b.*\b(withdrawals?|deposits?|trading)\b/i],
+    ['etf', /\b(etfs?|sec)\b/i], ['fed', /\b(fed|fomc|powell|cpi|pce|nfp|payrolls?|rate (cut|hike)s?|inflation)\b/i],
+    ['war', /\b(war|missiles?|sanctions?|tariffs?|invasion)\b/i], ['delist', /\b(delist|delists|delisting|delisted)\b/i],
+    ['btc', /\b(bitcoin|btc)\b/i]];
+  function newsTags(title) {
+    var t = String(title || ''), out = [];
+    NT.forEach(function (c) { if (c[1].test(t)) out.push(c[0]); });
+    return out;
   }
-  // Word classes, OURS list, fixed order. Case-insensitive; returns the class names found in a headline.
-  var WORDS = [['hack', /\b(hack(ed|s|ing)?|exploit(ed|s)?|drain(ed|s|ing)?|stolen|breach)\b/i],
-    ['halt', /\b(halt(ed|s)?|suspend(s|ed)?|suspension|pauses? withdraw\w*|withdrawals? (paused|suspended))\b/i],
-    ['etf', /\b(etfs?|sec)\b/i], ['fed', /\b(fed|fomc|cpi|powell|rate (cut|hike))\b/i],
-    ['war', /\b(war|sanctions?|missile|invasion|strikes?)\b/i], ['delist', /\bdelist(s|ed|ing)?\b/i]];
-  function wordTags(title) {
-    if (title === null || title === undefined) return [];
-    var t = String(title);
-    return WORDS.filter(function (w) { return w[1].test(t); }).map(function (w) { return w[0]; });
+  function newsMerge(list, incoming, max) {
+    var seen = {}, out = [];
+    (incoming || []).concat(list || []).forEach(function (x) { if (x && x._id && !seen[x._id]) { seen[x._id] = 1; out.push(x); } });
+    out.sort(function (a, b) { return b.time - a.time; });
+    return out.slice(0, max);
+  }
+  function newsPulse(items, now) {
+    var hi = (items || []).filter(function (x) { return +x.importance >= NW.mark && x.time <= now && x.time > now - NW.winMs; });
+    return { n: hi.length, level: hi.length >= NW.event ? 'EVENT' : hi.length ? 'BUSY' : 'QUIET', top: hi.sort(function (a, b) { return b.importance - a.importance; })[0] || null };
   }
 
-  var api = { pulse: pulse, wordTags: wordTags, NW: NW, foldBars: foldBars, FD: FD, fundRead: fundRead, premium: premium, bybitTick: bybitTick, LQ: LQ, liqDeribit: liqDeribit, liqBybit: liqBybit, liqBinance: liqBinance, liqSum: liqSum, CP: CP, coilPierce: coilPierce, IT: IT, divergence: divergence, flow: flow, flowLive: flowLive, squeeze: squeeze, dom: dom, supports: supports, vwapTest: vwapTest,
+  // ---------- analysts and verdict board (STEPS.md "Verdict rules"; all thresholds OURS) ----------
+  var AV = { freshDays: 3, band: 6, at: 0.3, near: 1.5, merge: 0.25 };
+  var BIAS = { BULLISH: 1, BEARISH: -1, NEUTRAL: 0 };
+  function dayMs(d) { return Date.parse(String(d) + 'T00:00:00Z'); }
+  // One line per roster analyst: newest valid row, rows/rejected counts, state FRESH / STALE / NO_ROW / NOT_FETCHED / OFF.
+  function rosterRead(roster, rows, rejected, now) {
+    return (roster || []).map(function (a) {
+      var mine = (rows || []).filter(function (r) { return r.analyst === a.short; }).sort(function (x, y) { return x.published < y.published ? 1 : x.published > y.published ? -1 : 0; });
+      var rej = (rejected || []).filter(function (r) { return r.analyst === a.short; }).length, last = mine[0] || null;
+      var ageD = last ? Math.floor((now - dayMs(last.published)) / 86400000) : null;
+      var state = !a.enabled ? 'OFF' : last ? (ageD <= AV.freshDays ? 'FRESH' : 'STALE') : a.ingested === false ? 'NOT_FETCHED' : 'NO_ROW';
+      return { short: a.short, channel: a.channel || '', enabled: !!a.enabled, inRoster: a.in_roster !== false, rows: mine.length, rejected: rej,
+               last: last ? last.published : '', bias: last ? last.bias : '', ageDays: ageD, state: state };
+    });
+  }
+  // Analysts' vote: net of FRESH biases (BULLISH +1, BEARISH -1, NEUTRAL 0, NO_VIEW skipped); null when no fresh view.
+  function analystVote(read) {
+    var s = 0, n = 0;
+    (read || []).forEach(function (a) { if (a.state === 'FRESH' && a.bias in BIAS) { s += BIAS[a.bias]; n++; } });
+    return n ? Math.sign(s) : null;
+  }
+  // Levels within AV.band % of price, nearest first; zone AT (<= at %), NEAR (<= near %), WATCH. Expired levels dropped.
+  function levelWatch(levels, px) {
+    if (!(px > 0)) return [];
+    return (levels || []).filter(function (x) { return !x.expired && isFinite(x.level); }).map(function (x) {
+      var d = (x.level / px - 1) * 100, ad = Math.abs(d);
+      return { level: x.level, analyst: x.analyst, published: x.published, said: x.said, bias: x.bias, hit: x.hit, dist: d,
+               side: d >= 0 ? 'above' : 'below', zone: ad <= AV.at ? 'AT' : ad <= AV.near ? 'NEAR' : 'WATCH' };
+    }).filter(function (x) { return Math.abs(x.dist) <= AV.band; }).sort(function (a, b) { return Math.abs(a.dist) - Math.abs(b.dist); });
+  }
+  // Levels less than AV.merge % above the previous one join its zone (lo..hi, every call in it); price inside a zone = side 'at'.
+  function zones(watch, px) {
+    var s = (watch || []).slice().sort(function (a, b) { return a.level - b.level; }), out = [];
+    s.forEach(function (w) {
+      var z = out[out.length - 1];
+      if (z && (w.level / z.hi - 1) * 100 <= AV.merge) { z.hi = w.level; z.items.push(w); } else out.push({ lo: w.level, hi: w.level, items: [w] });
+    });
+    return out.map(function (z) {
+      var inside = px >= z.lo && px <= z.hi, d = inside ? 0 : px < z.lo ? (z.lo / px - 1) * 100 : (z.hi / px - 1) * 100, ad = Math.abs(d);
+      return { lo: z.lo, hi: z.hi, items: z.items, dist: d, side: inside ? 'at' : d > 0 ? 'above' : 'below', zone: ad <= AV.at ? 'AT' : ad <= AV.near ? 'NEAR' : 'WATCH' };
+    }).sort(function (a, b) { return Math.abs(a.dist) - Math.abs(b.dist); });
+  }
+  // Lean from votes (+1 / -1 / 0; null = not in data): needs 3 available; BULLISH LEAN at 2+ bull and bull >= 2 x bear, mirror for bear.
+  function lean(votes) {
+    var v = (votes || []).filter(function (x) { return x === 1 || x === -1 || x === 0; });
+    var bull = v.filter(function (x) { return x === 1; }).length, bear = v.filter(function (x) { return x === -1; }).length;
+    var call = v.length < 3 ? 'NOT ENOUGH DATA' : bull >= 2 && bull >= 2 * bear ? 'BULLISH LEAN' : bear >= 2 && bear >= 2 * bull ? 'BEARISH LEAN' : 'MIXED';
+    return { bull: bull, bear: bear, n: v.length, total: (votes || []).length, call: call };
+  }
+  // Watch list from zones: NOW (news EVENT, a zone within AT), NEXT (NEAR), LATER (WATCH). withLean = the zone lies in the lean's direction.
+  function actions(ln, zs, pulse) {
+    var out = [];
+    if (pulse && pulse.level === 'EVENT') out.push({ when: 'NOW', kind: 'news', n: pulse.n });
+    (zs || []).forEach(function (w) {
+      out.push({ when: w.zone === 'AT' ? 'NOW' : w.zone === 'NEAR' ? 'NEXT' : 'LATER', kind: w.side === 'at' ? 'zone' : w.side === 'below' ? 'support' : 'resistance', w: w,
+                 withLean: (ln && ln.call === 'BEARISH LEAN' && w.side === 'below') || (ln && ln.call === 'BULLISH LEAN' && w.side === 'above') });
+    });
+    var rank = { NOW: 0, NEXT: 1, LATER: 2 };
+    return out.sort(function (a, b) { return rank[a.when] - rank[b.when]; });
+  }
+
+  var api = { AV: AV, rosterRead: rosterRead, analystVote: analystVote, levelWatch: levelWatch, zones: zones, lean: lean, actions: actions, NW: NW, newsTags: newsTags, newsMerge: newsMerge, newsPulse: newsPulse, foldBars: foldBars, FD: FD, fundRead: fundRead, premium: premium, bybitTick: bybitTick, LQ: LQ, liqDeribit: liqDeribit, liqBybit: liqBybit, liqBinance: liqBinance, liqSum: liqSum, CP: CP, coilPierce: coilPierce, IT: IT, divergence: divergence, flow: flow, flowLive: flowLive, squeeze: squeeze, dom: dom, supports: supports, vwapTest: vwapTest,
     flagDiv: flagDiv, flagSqueeze: flagSqueeze, flagFlow: flagFlow, flagDom: flagDom, flagVwap: flagVwap, confidence: confidence, rma: rma, sma: sma, rsi: rsi, bollinger: bollinger, atr: atr, dayVwap: dayVwap, utcDays: utcDays, wavetrend: wavetrend,
     inversePnlBtc: inversePnlBtc, closedPnlBtc: closedPnlBtc, columns: columns };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

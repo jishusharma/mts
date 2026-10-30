@@ -36,12 +36,26 @@ section, .tile { background: var(--panel); border: 1px solid var(--line); border
 .bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; }
 .bar .inputs { display: grid; grid-template-columns: 96px 130px 130px; gap: 8px; }
 .bar .grow { flex: 1; }
-.glance { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(170px, 100%), 1fr)); }
+.glance { display: grid; gap: 12px; grid-template-columns: minmax(min(200px, 100%), 1.3fr) repeat(auto-fit, minmax(min(140px, 100%), 1fr)); }
 .cols { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(460px, 100%), 1fr)); align-items: start; }
 table { width: 100%; border-collapse: collapse; font: 15px var(--mono); font-variant-numeric: tabular-nums; }
 th { font: 600 11px var(--sans); letter-spacing: .06em; text-transform: uppercase; color: var(--dim); text-align: right; padding: 3px 6px; }
 td { text-align: right; padding: 7px 6px; border-top: 1px solid var(--line); white-space: nowrap; }
 th:first-child, td:first-child { text-align: left; padding-left: 0; }
+.nh { white-space: normal; text-align: left; min-width: 260px; }
+.nh a { color: inherit; text-decoration: none; }
+.nh a:hover { text-decoration: underline; }
+#p-news th:last-child, #p-an th:last-child, #p-verdict th:nth-child(4) { text-align: left; }
+@media (min-width: 1000px) { #p-news, #p-an { grid-column: span 2; } }
+.vrow { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; }
+.vote { font: 14px var(--mono); margin-right: 16px; white-space: nowrap; }
+.when { font: 600 12px var(--sans); letter-spacing: .05em; padding: 1px 7px; border-radius: 3px; border: 1px solid var(--line); color: var(--dim); }
+.when.now { background: var(--amber); border-color: var(--amber); color: var(--bg); }
+.when.next { border-color: var(--amber); color: var(--amber); }
+tr.nowline td { color: var(--accent); font-weight: 600; border-top: 1px dashed var(--accent); }
+.st { font: 600 11px var(--sans); letter-spacing: .05em; }
+.st.fresh { color: var(--up); } .st.stale, .st.norow { color: var(--amber); } .st.nofetch { color: var(--down); }
+tr.hi td { font-weight: 600; }
 .chip { font: 600 11px var(--sans); padding: 0 4px; border-radius: 3px; border: 1px solid var(--amber); color: var(--amber); margin-left: 4px; }
 input, select { background: var(--bg); color: var(--fg); border: 1px solid var(--line); border-radius: 4px; font: 15px var(--mono); padding: 5px 7px; width: 100%; min-width: 0; box-sizing: border-box; }
 input:focus-visible, select:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
@@ -111,17 +125,37 @@ details[open] summary { margin-bottom: 8px; }
       <span class="big" id="g-liq">--</span><span class="sub" id="g-liq-sub"></span></div>
     <div class="tile"><span class="lab">Funding, per 8h<span class="src" title="Deribit funding_8h and Bybit fundingRate (8h interval): SOURCED (venue APIs). Positive = longs pay shorts. About-zero under 0.001 %, high at 0.03 % or more: OURS (STEPS.md).">MIXED</span></span>
       <span class="big" id="g-fund">--</span><span class="sub" id="g-fund-sub"></span></div>
+    <div class="tile"><span class="lab">News, last hour<span class="src" title="Tree News importance score 0-10: SOURCED. Count of items scoring 7 or more in the last 60 min; EVENT at 3 or more, BUSY at 1-2: OURS (STEPS.md News rules; normal day 5-9 such items a day, hack day 42).">MIXED</span></span>
+      <span class="big" id="g-news">--</span><span class="sub" id="g-news-sub"></span></div>
     <div class="tile"><span class="lab">Session<span class="src" title="Session names: OURS. Opens: London 08:00, New York 09:30 local.">OURS</span></span>
       <span class="big" id="session">--</span><span class="sub" id="cd-us"></span><span class="sub" id="cd-eu"></span></div>
-    <div class="tile"><span class="lab">News pulse, 60 min<span class="src" title="Tree News REST (news.treeofalpha.com/api/news), importance 0-10 SOURCED. Mark at 7 or more, 60 min window, EVENT at 3 or more such items, 15 s poll: OURS (research/news_feeds_2026-10-30/REPORT.md N1/N2). Context only, gates nothing.">MIXED</span></span>
-      <span class="big" id="g-news">--</span><span class="sub" id="g-news-sub"></span></div>
   </div>
+
+  <!-- 2b. VERDICT BOARD (watch items, not tested signals) -->
+  <section id="p-verdict">
+    <div class="hd"><h2>Verdict and watch list</h2><span class="src" title="Lean = votes from fresh analyst rows (newest row 3 days old or less), price vs day VWAP, RSI14 1h and 4h vs 50. Needs 3 votes in data; BULLISH LEAN at 2 or more bull votes and bull at least 2 x bear, mirror for bear; else MIXED. Watch list = analyst levels within 6 % of price, AT within 0.3 %, NEAR within 1.5 %, plus a news EVENT. All thresholds OURS (STEPS.md Verdict rules); analyst words SOURCED (CBP rows).">OURS</span><span class="age" id="age-an">--</span></div>
+    <div class="vrow"><span class="huge" id="v-call">--</span><span class="sub" id="v-count"></span></div>
+    <div id="v-votes"></div>
+    <div class="scroll"><table><thead><tr><th>When</th><th>Level</th><th>Distance</th><th>What to watch</th><th class="x">Source</th><th class="x">Evidence</th></tr></thead><tbody id="v-acts"></tbody></table></div>
+    <span class="tag">Watch items from analyst calls and our own vote count. None of these is a backtested signal; no size, no orders. You decide.</span>
+  </section>
 
   <!-- 3. COLUMNS -->
   <div class="cols">
     <section id="p-intrade">
       <div class="hd"><h2>In-trade readings</h2><span class="age" id="age-it">--</span></div>
       <ul id="it" class="it"></ul>
+    </section>
+
+    <section id="p-news">
+      <div class="hd"><h2>News</h2><span class="tag" id="news-feed"></span><span class="age" id="age-news">--</span></div>
+      <div class="scroll"><table><thead><tr><th>Time</th><th>Score</th><th class="x">Source</th><th>Headline</th></tr></thead><tbody id="news"></tbody></table></div>
+    </section>
+
+    <section id="p-an">
+      <div class="hd"><h2>Analysts</h2><span class="tag" id="an-tag"></span></div>
+      <div class="scroll"><table><thead><tr><th>Analyst</th><th>State</th><th>Newest row</th><th>Bias</th><th>Rows</th><th>Rejected</th><th class="x">Channel</th></tr></thead><tbody id="an-roster"></tbody></table></div>
+      <div class="scroll"><table><thead><tr><th>Level</th><th>Distance</th><th>Analyst</th><th>Date</th><th class="x">Bias</th><th class="x">Traded through</th><th>What they said</th></tr></thead><tbody id="an-ladder"></tbody></table></div>
     </section>
 
     <section id="p-liq">
@@ -158,11 +192,6 @@ details[open] summary { margin-bottom: 8px; }
       <ul id="coil" class="it"></ul>
       <span class="tag">Odds = MEASURED base rates, Binance 2022-01..2026-09, no fees, pierces within 2 h of the US open (research/pre_us_squeeze_2026-10-29, research/bb_pierce_force_2026-10-29). Thresholds OURS. Descriptive, not an edge, never an entry call.</span>
     </section>
-    <section id="p-news">
-      <div class="hd"><h2>News headlines</h2><span class="tag" id="news-feed"></span><span class="age" id="age-news">--</span></div>
-      <ul id="news" class="it"></ul>
-      <span class="tag">Tree News, last 12. Score = importance 0-10 (SOURCED). Marked at 7 or more, class tags (hack, halt, ETF, Fed/CPI, war, delist) and the QUIET/BUSY/EVENT tile: OURS. Context only, never an entry or exit call.</span>
-    </section>
   </div>
 
   <!-- 4. NOTES -->
@@ -171,12 +200,15 @@ details[open] summary { margin-bottom: 8px; }
     <p>Inverse contract: P&amp;L BTC = size x (1/average - 1/mark), negated for a short. Distances = level - price on the candle venue; ATR15 = ATR14 of 15m bars.</p>
     <p>RSI14 Wilder, SMA14 of RSI, BB(20,2) population, ATR14 Wilder, day VWAP hlc3 from 00:00Z: SOURCED (your chart setup). WaveTrend 10/21/4, 0.015, lines 53/60, 200-bar warm-up: OURS (LazyBear defaults; your chart settings not yet known). Flag lines 30/70: OURS. Values include the forming bar. 4h = 1h bars folded on UTC 00/04/08/12/16/20Z (Deribit has no 4h candles).</p>
     <p>Funding: Deribit ticker funding_8h (accrues continuously), Bybit tickers.BTCUSDT fundingRate (paid every 8h at nextFundingTime). Positive = longs pay shorts. Mark - index = each venue's own premium. A year = rate x 3 x 365. All SOURCED (venue APIs); "about zero" under 0.001 % per 8h and "high" at 0.03 % or more (3x the 0.01 % interest baseline): OURS (STEPS.md). Bybit - Deribit last mixes USDT and USD, so it includes the USDT/USD rate.</p>
+    <p>Analysts: CBP rows (analyst, publish day, bias, pointers) and the roster in CBP analysts.json, built into analyst_data.js by build_analyst_data.py (any session reading the chart reruns it; by hand: python MyTradingSys/tools/live_aid/build_analyst_data.py). Words and biases SOURCED (the analysts' videos); levels parsed by scripts/dev/analyst_levels.py; FRESH = newest row 3 days old or less, the 6 % band, AT 0.3 % and NEAR 1.5 %: OURS. NOT_FETCHED = an enabled analyst that ingestion skips (it fetches the "actionable" profile only). The store keeps 5 days of rows, so an older row reads NO ROW.</p>
+    <p>News: Tree News public REST (news.treeofalpha.com/api/news), polled every 15 s while this page is open; each item carries its own time, source and importance score 0-10 (SOURCED). Score 7 or more is marked "high"; the glance counts high items in the last 60 min, EVENT at 3 or more (OURS, research/news_feeds_2026-10-30). Word tags hack / halt / etf / fed / war / delist / btc: OURS. On 2026-10-29 this feed had the Binance hack at 20:39:00 UTC, before the 20:40-20:45 fall. Context only.</p>
     <p>Liquidations: Bybit allLiquidation.BTCUSDT (price = bankruptcy price), Binance btcusdt@forceOrder (one print per second at most), Deribit trades carrying the liquidation flag. Side = the position that was liquidated (SOURCED, venue docs). 1/5/15 min sums since this page connected, "longs" or "shorts" when one side is at least 2x the other, big print = 100,000 USD or more: OURS (STEPS.md).</p>
     <p>In-trade readings are descriptive, no advice. Rules and thresholds = OURS, fixed in STEPS.md before data was looked at. Data: Deribit mainnet public trades, book and open interest; candles from the strip venue. Rule R = 3 or more of the available flags against the side you typed; it names no size.</p>
   </details>
 </main>
 
 <script src="live_aid_indicators.js"></script>
+<script src="analyst_data.js"></script>
 <script>
 (function () {
   'use strict';
@@ -187,7 +219,7 @@ details[open] summary { margin-bottom: 8px; }
   var S = { dbt: null, dbtMark: null, dbtT: 0, dbtErr: '', bin: null, binT: 0, binErr: '',
             a15: NaN, tf: {}, venue: null, klErr: '', klT: 0, daily: null,
             trades: [], trT: 0, book: null, bookT: 0, oi: null, oiT: 0, oiHist: [], flowErr: '',
-            news: null, newsT: 0, newsErr: '', liq: [], lq: { BYBIT: { t: 0, err: '' }, BINANCE: { t: 0, err: '' } }, byt: { d: null, t: 0 } };
+            liq: [], lq: { BYBIT: { t: 0, err: '' }, BINANCE: { t: 0, err: '' } }, byt: { d: null, t: 0 }, news: { items: [], t: 0, err: '' } };
 
   function fmt(x, d) { return isFinite(x) ? x.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }) : '--'; }
   function sgn(x, d) { return isFinite(x) ? (x > 0 ? '+' : '') + fmt(x, d) : '--'; }
@@ -490,13 +522,13 @@ details[open] summary { margin-bottom: 8px; }
   }
 
   function render() {
-    renderNews(Date.now());
     var now = Date.now();
     S.a15 = atr15();
     renderTop();
     renderCoil(now);
     renderLiq(now);
     renderFund(now);
+    renderNews(now);
     var a15 = S.a15;
 
     // 3. strip
@@ -558,6 +590,7 @@ details[open] summary { margin-bottom: 8px; }
     age('age-lvl', S.klT);
     renderGlance(L, px, vw);
     renderInTrade(now, L, px, a15, m1);
+    renderVerdict(now, px, vw);
   }
 
   // ---------- liquidations ----------
@@ -611,6 +644,101 @@ details[open] summary { margin-bottom: 8px; }
     var lead = fD || fB;
     $('g-fund').innerHTML = lead ? pct(lead.pct8h, 4) + ' <span class="tag" style="font-size:16px">' + read(lead) + '</span>' : NID;
     $('g-fund-sub').innerHTML = (fD ? 'Deribit' : fB ? 'Bybit' : 'no funding feed reachable') + (fD && fB ? '; Bybit ' + pct(fB.pct8h, 4) + ', next ' + nextB : '');
+  }
+
+  // ---------- news ----------
+  var NEWS_URL = 'https://news.treeofalpha.com/api/news?limit=';
+  function loadNews() {
+    return fetch(NEWS_URL + (S.news.t ? 40 : 300)).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function (a) { if (!Array.isArray(a)) throw new Error('not a list'); S.news.items = A.newsMerge(S.news.items, a, 400); S.news.t = Date.now(); S.news.err = ''; })
+      .catch(function (e) { S.news.err = 'Tree News: ' + e.message; });
+  }
+  function ago(ms) { var m = Math.floor(ms / 60000); return m < 1 ? 'now' : m < 60 ? m + 'm' : Math.floor(m / 60) + 'h' + String(m % 60).padStart(2, '0'); }
+  function headline(x) { return String(x.title || '').split('\n')[0].slice(0, 220); }
+  function renderNews(now) {
+    var live = !!S.news.t && now - S.news.t <= 60000;
+    $('age-news').textContent = S.news.t ? Math.round((now - S.news.t) / 1000) + 's' : '--';
+    $('news-feed').textContent = 'Tree News ' + (live ? 'live' : 'down');
+    if (!live) {
+      $('news').innerHTML = '<tr><td colspan="4"><span title="' + esc(S.news.err || 'not connected yet') + '">' + NID + '</span></td></tr>';
+      $('g-news').innerHTML = NID; $('g-news-sub').textContent = S.news.err || 'connecting'; return;
+    }
+    $('news').innerHTML = S.news.items.slice(0, 12).map(function (x) {
+      var hi = +x.importance >= A.NW.mark, t = esc(headline(x)), u = String(x.url || '');
+      var tags = A.newsTags(headline(x)).filter(function (g) { return g !== 'btc'; }).map(function (g) { return '<span class="chip">' + g + '</span>'; }).join('');
+      return '<tr' + (hi ? ' class="hi"' : '') + '><td>' + new Date(x.time).toISOString().slice(11, 19) + ' <span class="dim">' + ago(now - x.time) + '</span></td><td>' + (isFinite(+x.importance) ? fmt(+x.importance, 1) : '--') +
+        (hi ? '<span class="chip">high</span>' : '') + '</td><td class="x">' + esc(x.source || '') + '</td><td class="nh">' + (/^https:\/\//.test(u) ? '<a href="' + esc(u) + '" target="_blank" rel="noopener noreferrer">' + t + '</a>' : t) + tags + '</td></tr>';
+    }).join('');
+    var p = A.newsPulse(S.news.items, now);
+    $('g-news').innerHTML = p.level + ' <span class="tag" style="font-size:16px">' + p.n + ' high</span>';
+    $('g-news-sub').textContent = p.top ? fmt(+p.top.importance, 1) + ' ' + headline(p.top).slice(0, 90) : 'no headline scored 7+ in 60 min';
+  }
+
+  // ---------- verdict board and analysts (data: analyst_data.js, maths in live_aid_indicators.js) ----------
+  var AD = window.LIVE_AID_ANALYSTS || null;
+  var AN_RUN = 'python MyTradingSys/tools/live_aid/build_analyst_data.py';
+  function rsiVote(k) {
+    var rows = S.tf[k]; if (!rows || rows.length < 40) return null;
+    var r = calc(rows).rsi; return isFinite(r) ? (r > 50 ? 1 : r < 50 ? -1 : 0) : null;
+  }
+  function voteTxt(v) { return v === 1 ? '<span class="up">bull</span>' : v === -1 ? '<span class="down">bear</span>' : v === 0 ? 'flat' : '<span class="nid">NOT_IN_DATA</span>'; }
+  function renderVerdict(now, px, vw) {
+    var read = AD ? A.rosterRead(AD.roster, AD.rows, AD.rejected, now) : [];
+    var votes = [['Analysts (fresh rows)', AD ? A.analystVote(read) : null], ['Price vs day VWAP', isFinite(px) && isFinite(vw) ? Math.sign(px - vw) : null],
+                 ['RSI 1h vs 50', rsiVote('1h')], ['RSI 4h vs 50', rsiVote('4h')]];
+    var ln = A.lean(votes.map(function (v) { return v[1]; }));
+    $('v-call').innerHTML = '<span class="' + (ln.call === 'BULLISH LEAN' ? 'up' : ln.call === 'BEARISH LEAN' ? 'down' : '') + '">' + ln.call + '</span>';
+    $('v-count').textContent = ln.bull + ' bull / ' + ln.bear + ' bear of ' + ln.n + ' votes in data' + (ln.total > ln.n ? ', ' + (ln.total - ln.n) + ' NOT_IN_DATA' : '');
+    $('v-votes').innerHTML = votes.map(function (v) { return '<span class="vote">' + esc(v[0]) + ': ' + voteTxt(v[1]) + '</span>'; }).join('');
+    var live = S.news.t && now - S.news.t <= 60000;
+    var acts = A.actions(ln, AD ? A.zones(A.levelWatch(AD.levels, px), px) : [], live ? A.newsPulse(S.news.items, now) : null);
+    $('v-acts').innerHTML = acts.map(function (a) {
+      var badge = '<td><span class="when ' + a.when.toLowerCase() + '">' + a.when + '</span></td>';
+      if (a.kind === 'news') return '<tr class="hi">' + badge + '<td>--</td><td>--</td><td class="nh">News EVENT: ' + a.n + ' high-impact headlines in the last hour (News panel). Moves can be fast and levels can break without a reaction.</td><td class="x">Tree News</td><td class="x">score SOURCED, EVENT mark OURS</td></tr>';
+      var w = a.w, K = a.kind.charAt(0).toUpperCase() + a.kind.slice(1);
+      var what = a.kind === 'zone' ? 'Price is inside an analyst zone now: watch which edge breaks. Above ' + fmt(w.hi, 0) + ' = buyers took it; below ' + fmt(w.lo, 0) + ' = sellers did.'
+        : a.when === 'NOW' ? K + ' right here: watch the reaction. Holding = ' + a.kind + ' confirmed; a clean break opens the next zone.'
+        : a.withLean ? K + ' in the direction of the lean: a ' + (w.side === 'below' ? 'downside' : 'upside') + ' target if the lean plays out.'
+        : K + ' against the lean: a ' + (w.side === 'below' ? 'bounce' : 'rejection') + ' zone to watch.';
+      var seen = {}, calls = w.items.filter(function (x) { var k = x.analyst + '|' + x.said; if (seen[k]) return false; seen[k] = 1; return true; });
+      var who = calls.map(function (x) { return x.analyst; }).filter(function (v, i, arr) { return arr.indexOf(v) === i; });
+      var said = calls.slice(0, 2).map(function (x) { var t = String(x.said); return esc(x.analyst) + ' ' + esc(String(x.published).slice(5)) + ': &ldquo;' + esc(t.length > 120 ? t.slice(0, 117) + '...' : t) + '&rdquo;'; }).join('<br>') +
+        (calls.length > 2 ? '<br>+' + (calls.length - 2) + ' more in the Analysts panel' : '');
+      return '<tr' + (a.when === 'NOW' ? ' class="hi"' : '') + '>' + badge + '<td>' + fmt(w.lo, 0) + (w.hi > w.lo ? '-' + fmt(w.hi, 0) : '') + '</td><td class="' + cls(w.dist) + '">' + (w.side === 'at' ? 'inside' : sgn(w.dist, 2) + '%') + '</td>' +
+        '<td class="nh">' + esc(what) + '<br><span class="dim">' + said + '</span></td>' +
+        '<td class="x">' + esc(who.join(', ')) + '</td><td class="x">analyst call, not backtested</td></tr>';
+    }).join('') || '<tr><td colspan="6" class="dim">' + (!AD ? 'analyst data NOT_IN_DATA: run ' + AN_RUN : !(px > 0) ? 'no live price yet' : 'no analyst level within ' + A.AV.band + '% of price and no news event') + '</td></tr>';
+    renderAnalysts(now, read, px);
+  }
+  var ST = { FRESH: ['fresh', 'FRESH'], STALE: ['stale', 'STALE'], NO_ROW: ['norow', 'NO ROW'], NOT_FETCHED: ['nofetch', 'NOT FETCHED'], OFF: ['', 'OFF'] };
+  function renderAnalysts(now, read, px) {
+    if (!AD) {
+      $('an-tag').innerHTML = NID; age('age-an', 0);
+      $('an-roster').innerHTML = '<tr><td colspan="7" class="err">analyst_data.js not found next to this page: run ' + esc(AN_RUN) + '</td></tr>'; $('an-ladder').innerHTML = ''; return;
+    }
+    var en = read.filter(function (a) { return a.enabled; }), fr = en.filter(function (a) { return a.state === 'FRESH'; }).length;
+    var nf = en.filter(function (a) { return a.state === 'NOT_FETCHED'; }).length, ing = Date.parse(AD.last_ingest), ingAge = isFinite(ing) ? (now - ing) / 3600000 : NaN;
+    $('an-tag').innerHTML = fr + ' of ' + en.length + ' enabled analysts fresh' + (nf ? ', <span class="st nofetch">' + nf + ' never fetched</span>' : '') +
+      '; ingestion ' + (isFinite(ingAge) ? '<span class="' + (ingAge > 24 ? 'met' : '') + '">last ran ' + esc(AD.last_ingest.slice(0, 16).replace('T', ' ')) + 'Z (' + Math.round(ingAge) + ' h ago)</span>' : NID) +
+      '; data built ' + esc(String(AD.asof).slice(0, 16).replace('T', ' ')) + 'Z';
+    var bt = Date.parse(AD.asof); $('age-an').textContent = isFinite(bt) ? 'built ' + Math.round((now - bt) / 3600000) + ' h ago' : 'no data';
+    $('age-an').className = 'age' + (!isFinite(bt) || now - bt > 6 * 3600000 ? ' stale' : '');
+    var order = { FRESH: 0, STALE: 1, NO_ROW: 2, NOT_FETCHED: 3, OFF: 4 };
+    $('an-roster').innerHTML = read.slice().sort(function (a, b) { return order[a.state] - order[b.state]; }).map(function (a) {
+      var st = ST[a.state], bc = a.bias === 'BULLISH' ? 'up' : a.bias === 'BEARISH' ? 'down' : '';
+      return '<tr><td>' + esc(a.short) + (a.inRoster ? '' : ' <span class="chip">not in roster</span>') + '</td><td><span class="st ' + st[0] + '">' + st[1] + (a.state === 'STALE' ? ' ' + a.ageDays + ' d' : '') + '</span></td>' +
+        '<td>' + (a.last ? esc(a.last) : '--') + '</td><td class="' + bc + '">' + (a.bias ? esc(a.bias) : '--') + '</td><td>' + a.rows + '</td><td>' + (a.rejected || '') + '</td><td class="x">' + esc(a.channel) + '</td></tr>';
+    }).join('');
+    var lv = (AD.levels || []).filter(function (x) { return !x.expired && (!(px > 0) || Math.abs(x.level / px - 1) * 100 <= A.AV.band); }).sort(function (a, b) { return b.level - a.level; });
+    var html = '', placed = !(px > 0);
+    lv.forEach(function (x) {
+      if (!placed && x.level < px) { html += '<tr class="nowline"><td>' + fmt(px, 0) + '</td><td colspan="6">now</td></tr>'; placed = true; }
+      var d = px > 0 ? (x.level / px - 1) * 100 : NaN;
+      html += '<tr><td>' + fmt(x.level, 0) + '</td><td class="' + cls(d) + '">' + (isFinite(d) ? sgn(d, 2) + '%' : '--') + '</td><td>' + esc(x.analyst) + '</td><td>' + esc(String(x.published).slice(5)) + '</td>' +
+        '<td class="x">' + esc(x.bias || '') + '</td><td class="x">' + (x.hit === true ? 'yes' : x.hit === false ? 'not yet' : '--') + '</td><td class="nh">' + esc(x.said) + '</td></tr>';
+    });
+    if (!placed) html += '<tr class="nowline"><td>' + fmt(px, 0) + '</td><td colspan="6">now</td></tr>';
+    $('an-ladder').innerHTML = lv.length ? html : '<tr><td colspan="7" class="dim">no unexpired analyst level within ' + A.AV.band + '% of price</td></tr>';
   }
 
   // ---------- glance tiles: VWAP distance, nearest level each side (built-in + typed) ----------
@@ -693,35 +821,6 @@ details[open] summary { margin-bottom: 8px; }
     age('age-it', Math.max(S.trT, S.bookT, S.oiT));
   }
 
-  // ---------- news (Tree News REST, CORS *; context only) ----------
-  var NEWS_POLL = 15000, NEWS_URL = 'https://news.treeofalpha.com/api/news?limit=50';
-  var TAGNAME = { hack: 'hack', halt: 'halt', etf: 'ETF', fed: 'Fed/CPI', war: 'war', delist: 'delist' };
-  function loadNews() {
-    getJson(NEWS_URL).then(function (j) {
-      if (!Array.isArray(j)) throw new Error('unexpected reply');
-      S.news = j.map(function (x) { return { time: +x.time, importance: typeof x.importance === 'number' ? x.importance : parseFloat(x.importance), title: x.title || x.en || '', source: x.source || x.sourceName || '' }; })
-        .filter(function (x) { return isFinite(x.time); }).sort(function (a, b) { return b.time - a.time; });
-      S.newsT = Date.now(); S.newsErr = '';
-    }, function (e) { S.newsErr = e.name === 'AbortError' ? 'timeout' : e.message; });
-  }
-  function renderNews(now) {
-    var live = S.news && S.newsT && now - S.newsT <= 3 * NEWS_POLL;
-    if (!live) { // fail closed: grey NO FEED, no stale headlines
-      $('g-news').innerHTML = '<span class="dim">NO FEED</span>'; $('g-news-sub').textContent = S.newsErr || 'not connected yet';
-      $('news').innerHTML = '<li>' + NID + ' <span class="err">' + esc(S.newsErr || 'not connected yet') + '</span></li>'; $('news-feed').textContent = 'down'; $('age-news').textContent = '--'; return;
-    }
-    var p = A.pulse(S.news, now);
-    $('g-news').innerHTML = '<span class="' + (p.level === 'EVENT' ? 'down' : p.level === 'BUSY' ? '' : 'dim') + '">' + p.level + '</span>';
-    $('g-news-sub').textContent = p.n + ' item' + (p.n === 1 ? '' : 's') + ' scored ' + A.NW.hi + ' or more in 60 min';
-    $('news-feed').textContent = 'Tree News live';
-    $('news').innerHTML = S.news.slice(0, 12).map(function (x) {
-      var hi = isFinite(x.importance) && x.importance >= A.NW.hi;
-      var tg = A.wordTags(x.title).map(function (k) { return '<span class="chip">' + TAGNAME[k] + '</span>'; }).join('');
-      return '<li><span class="lab">' + hhmm(x.time) + ' ' + esc(x.source) + '<span class="src" title="importance, SOURCED (Tree News)">' + (isFinite(x.importance) ? fmt(x.importance, 1) : '--') + '</span></span><span' + (hi ? ' class="down"' : '') + '>' + (hi ? '&#9650; ' : '') + esc(x.title) + tg + '</span></li>';
-    }).join('') || '<li>no headlines</li>';
-    age('age-news', S.newsT);
-  }
-
   // ---------- inputs ----------
   var UIKEY = 'liveaid.ui.more';
   try { $('more-tog').checked = localStorage.getItem(UIKEY) === '1'; } catch (e) {}
@@ -753,10 +852,10 @@ details[open] summary { margin-bottom: 8px; }
   // ---------- start ----------
   deribitWs(); binanceWs(); bybitLiqWs(); binanceLiqWs();
   loadAll(true).then(loadDaily);
-  loadNews(); setInterval(loadNews, NEWS_POLL);
   setInterval(function () { loadAll(false); }, 5000);
   setInterval(loadDaily, 300000);
   setInterval(render, 1000);
+  loadNews(); setInterval(loadNews, 15000);
   render();
 })();
 </script>
