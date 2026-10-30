@@ -16,6 +16,11 @@ Started 2026-10-30T17:20Z. Work until 2026-10-31T05:06Z. Wake 3 at 18:40Z. Usage
 - d-drain-opus-supervisor-c: an Opus Supervisor C was drained on operator order; this session is the one C supervisor.
 - plan RUN line suggests `codex_run.py tick` over the NUC ssh gate: it cannot push (no git login in ssh), skip; GPT goes through desk row 20261030-174331.
 
+- 20:40Z verified by me (cherry empty, ancestor of trunk, Result: in body, CI ok): stream D replay test 92aa0ab3d (753106da9, 5 tests, registered in extra_tests.tsv); live-aid macro strip bb7731974 (merge d8e143238); sim-desk click test ab4ec73f (4 tests, fail-first 41 vs 40).
+- Noticed -> cards: live-aid-macro-calendar-cors-snapshot (feed has no CORS header: real page reads NO CALENDAR) and codex-run-auth-failure-must-not-mark-gpt-lane-down, both SONNET ready (ship in flight). supervisor-wait-unlink-only-own-marker already exists (raw, p2).
+- Watcher churn: starting a second `wait` while one lives makes the older one exit and wipe the shared marker. Keep ONE watcher; I stopped extras (500,18312,20500,19036) and the parent's 3024.
+- Republish of the 6 stale pages (artifacts.py stale; pages are single-copy on jishusharma1985 = login C): not done yet; needs Artifact publish per page + `artifacts.py publish-record`. Candidate Haiku/own task at a quiet wake or at the final ship.
+
 ## Running
 - Sonnet a27bd342cf0969230: live-aid-replay-mode-fixture-feeds (stream D), waiting on its ship; collision risk with Lenovo claim pizzino-layer-dashboard on live_aid.html.
 - Haiku a1381e3e0a2a0bc81: haiku-register-orphan-tests, waiting on its ship.
