@@ -1,0 +1,56 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-30T21:37:47Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/test_hunt_2026-10-31/gemini_extracts_recheck.md exists with 60 rows (extract, claim, quote, verdict) and a per-extract count",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "For the 6 extracts shipped in 4c42466fd (Krown TA101 missing 4, Jala, Krown setups, Malkan top-12 RSI, CBP altcoin buy plan, CryptoCred stop buffer): take 10 numeric claims per extract, re-derive each from its quoted caption text, mark CONFIRMED / WRONG / NOT_IN_QUOTE. Malkan auto-captions are garbled (about/above, for tea/40): check those first.",
+  "id": "gpt-recheck-gemini-extracts-numbers-1031",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "lab gpt-bug-hunt-auto-trader-fail-closed: DONE (audit)",
+      "ref": "1080ce6f7755",
+      "utc": "2026-10-30T20:30:17Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "GPT lab luna medium. Catch bugs early (operator 2026-10-31). Final report ends with a Noticed: line.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T21:37:48Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/test_hunt_2026-10-31/ (new files only)"
+  ],
+  "scope_out": [
+    "live tree; engine code; editing the extracts; .secrets and .env"
+  ],
+  "scope_sha": "1080ce6f7755",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "read the 6 extract files named in commit 4c42466fd",
+    "pick 10 numeric claims each; locate the quote; re-derive",
+    "write the table with counts"
+  ],
+  "tests": "report only; each row cites the quote file:line",
+  "title": "GPT: cross-vendor recheck of the 6 Gemini extracts shipped 4c42466fd: re-derive every number from the caption quote, mark CONFIRMED / WRONG / NOT_IN_QUOTE",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
