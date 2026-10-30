@@ -1,0 +1,73 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-30T08:42:30Z",
+  "commands": [],
+  "created": "2026-10-30T08:24:18Z",
+  "depends_on": [],
+  "done_when": "d-tick-threshold-rule in OPERATOR_DECISIONS and T040 INDEX row updated",
+  "est_turns": 3,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Rule on data-derived tick thresholds vs Tom-citation-or-exception",
+  "id": "ask-p0-09-tick-threshold-rule",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Ruled: data-derived tick thresholds = OURS, documented exception; recorded d-tick-threshol",
+      "ref": "ddd041a59",
+      "utc": "2026-10-30T08:42:30Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "system: cost checkup (separate from AI health) + card cost-checkup-doctor-section",
+      "ref": "1ce1fd210eff",
+      "utc": "2026-10-30T08:40:52Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "1ce1fd210eff system: cost checkup (separate from AI health) + card cost-checkup-doctor-sec",
+      "ref": "MyTradingSys/system/OPERATOR_DECISIONS.md",
+      "utc": "2026-10-30T08:40:52Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T08:42:28Z",
+  "refs": [
+    "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md"
+  ],
+  "result": "Ruled: data-derived tick thresholds = OURS, documented exception; recorded d-tick-threshold-rule",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/system/OPERATOR_DECISIONS.md"
+  ],
+  "scope_out": [
+    "code, live path"
+  ],
+  "scope_sha": "1ce1fd210eff",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "record decision"
+  ],
+  "taken": "2026-10-30T08:42:30Z",
+  "tests": "docs only",
+  "title": "Decide: data-derived tick thresholds vs Tom-citation-or-exception rule, record in OPERATOR_DECISIONS (ledger P0-09, T040)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

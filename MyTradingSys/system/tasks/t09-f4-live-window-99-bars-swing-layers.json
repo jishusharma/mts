@@ -30,7 +30,8 @@
   ],
   "live_path": true,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-25 ACCEPT (independent Sonnet reviewer, fixes applied). DECISION (OURS): need=1500 bars = backtest window (SOURCED T09_live_parity.md:29, chunked 1000/500), chosen over a smaller guess; first live poll after a deploy is slow (about 2 requests per tf). Live path: no deploy by the builder; needs a different reviewer session (CRITICAL). Depends on t09-f2 so the exits are fixed before more signals reach the trader. Complete and reviewed; promote with tasks.py check once depends_on is done.",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -52,7 +53,7 @@
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T09_live_parity.md:29,59,67",
     "MyTradingSys/backtest/layers/alerts/live_runner_cli.py:344-353"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Read T09_live_parity.md rows T09-F4 (line 67) and 29, live_runner_cli.py:344-430 (HistoryStore, make_history_layer) and 480-525 (registry tuples, the 'need' column).",
     "Write the fail-first test: fake history_fetch with 1,500 15m bars containing one escalation break older than 99 bars; build_default_registry; assert the escalation 15m entry sees it with the new 'need', and sees nothing (stderr line, no event) when the history fetch raises or leaves a gap. Fails today.",

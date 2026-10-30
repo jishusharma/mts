@@ -26,7 +26,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-26 T0-ONLY | DRAFT 2026-10-26 Session_Planner (OURS): supervisor.pick_cards already skips Lab_Guy off the NUC; this moves the rule into tasks.py dispatch so every caller (tick top-8) agrees. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files. | CLUSTER: same file set as dispatch-a-critical (one editor per fil",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
@@ -45,7 +46,7 @@
   "scope_sha": "eb305a9f043c",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Read exclusion() (tasks.py:1384-1416) and supervisor.pick_cards.",
     "Write the failing tests for hosts JIS-NB, DESKTOP-F7IU69N and JIS-NUC.",

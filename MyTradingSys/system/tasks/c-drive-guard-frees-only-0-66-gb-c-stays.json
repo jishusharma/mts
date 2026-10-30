@@ -43,7 +43,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "LAYOUT (SOURCED Get-Partition 2026-10-28): Disk1 Kingston SSD 224 GB = C 121.3 GB, then a 0.6 GB Recovery partition at 122.0, then F 101 GB; D is a separate 932 GB HDD (WHEA errors per DISK_CARE.md). Merge C+F = copy F off (about 54 GB used), delete F and the Recovery partition, extend C; Disk Management cannot do it past the Recovery partition. Existing plan on trunk: DISK_CARE.md (vm_bundles junction to F, weekly MTS-CDriveCare). Quick wins: pagefile 9 GB to F, Chrome cache, IdeaProjects/.claude junction to F with all sessions closed.",
+  "note": "S0 drop 2026-10-30 (D7 roadmap, operator: keep only what is useful): new machinery or superseded; revive by a new card if needed",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -67,7 +68,7 @@
     "card note (SOURCED Get-Partition 2026-10-28 layout)",
     "MyTradingSys/system/DISK_CARE.md"
   ],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "Reproduce: run python scripts/dev/c_drive_guard.py plan and python scripts/dev/wt_maint.py (dry run) from the current main checkout; compare what each lists as prunable against the 2026-10-28 layout note (worktrees about 4 GB) and the guard's actual --apply result (0.66 GB freed).",
     "Leading hypothesis to check first: c_drive_guard's logon-installed run (install()/logon_command()/main_checkout_note()) may point at a stale primary checkout left by a host move (host-move-mirror/ps1/super cards, STALE 166h), so its wt_maint.py call runs against the wrong tree; confirm with python scripts/dev/c_drive_guard.py status --check.",

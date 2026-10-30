@@ -37,7 +37,8 @@
   "not_twin_of": [
     "red-trunk-revert-within-10-min-rule-miss"
   ],
-  "note": "REVIEWED:2026-10-30 ACCEPT (reviewer Agent, FIX lines applied) Refined 2026-10-30 from the parked DECISION (OURS): CRITICAL because it writes trunk history; plan-review (REVIEW <id> PLAN) before code, diff-review before ship. Dry run is the default; the tool never runs unattended.",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "",
@@ -60,7 +61,7 @@
     "scripts/dev/mts_doctor.py:409-434",
     "CLAUDE.md Boot 2 (revert within 10 min)"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Add a helper in mts_doctor.py returning the full first-red head_sha (ci_revert at :409 returns only a status string with the sha cut to 8); ci_revert.py uses it via ci_fetch (:437). Dry run prints the plan by default.",
     "Refuse (print the manual git revert steps) when the breaking commit is a merge, is not on origin/fast-track, or when later commits touch the same files (git diff --name-only vs the later range).",

@@ -1,0 +1,52 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "context": {
+    "calls_to_edit": 14,
+    "folded": "2026-10-30T08:38:27Z",
+    "misses": 15,
+    "reads": [
+      "MyTradingSys/research/fast_track_2026-09-27/BTC_SESSION_SWEEPS_2026-10-04.md",
+      "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md",
+      "scripts/dev/sync.py",
+      "MyTradingSys/items/T058_broken_extremes_sweep_vs_continuation.md",
+      "MyTradingSys/research/session_sweeps/session_open_study.py",
+      "MyTradingSys/backtest/fetch_binance_archive.py",
+      "MyTradingSys/backtest/layers/fabio/v3/day_gates.py",
+      "MyTradingSys/research/h3_ny_open_low_prereg/PRE_REG.md"
+    ],
+    "session": "agent-a7d0a6bf9e7aaa479"
+  },
+  "created": "2026-10-30T08:24:25Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "ask-p0-47-h3-ny-open-low-prereg",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 4,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "H3 NY-open+180 new day low that holds: pre-register, test 2019-09..2021-12 (ledger P0-47)",
+  "weight": "",
+  "worker": ""
+}

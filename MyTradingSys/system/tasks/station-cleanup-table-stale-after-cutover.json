@@ -31,7 +31,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-30 T0-ONLY",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -53,7 +54,7 @@
   "scope_sha": "1ce1b3f5ffbb",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Date the cutover from git log or SUPERVISOR_LOG (NOT CAPTURED if unknown)",
     "Edit the three docs and fill STATION_CLEANUP s1 from the A, B, C answers",

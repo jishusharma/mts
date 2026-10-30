@@ -260,12 +260,26 @@ def task_state(name: str) -> str:
         return ""
 
 
+def auth_preflight(runner=None) -> None:
+    """Refuse to register a headless wake the saved login cannot run (bug-headless-wake-voice-misread, 2026-10-30: the 10-29 and
+    10-30 wakes fired into an expired OAuth session and nothing started). `claude -p ok` must exit 0; any failure raises WakeError."""
+    run = runner or (lambda: subprocess.run(["claude", "-p", "ok"], capture_output=True, text=True, timeout=120))
+    try:
+        r = run()
+    except Exception as e:
+        raise WakeError(f"claude -p ok pre-flight could not run ({e!r}): nothing registered; run `claude /login` as this Windows user")
+    if r.returncode != 0:
+        raise WakeError(f"claude -p ok pre-flight failed (exit {r.returncode}: {((r.stdout or '') + (r.stderr or '')).strip()[:200]}): "
+                        "the saved login cannot run headless; nothing registered; run `claude /login` as this Windows user")
+
+
 def register(login: str, *, at: str | None = None, model: str = DEFAULT_MODEL, prompt_file: str | None = None,
              cwd: str | Path | None = None, dry: bool = False, now: datetime | None = None, plan: dict | None = None,
-             home=None, base: str | None = None, runner=None, probe=None) -> dict:
+             home=None, base: str | None = None, runner=None, probe=None, preflight=None) -> dict:
     """Validate, choose fireAt, build the script, run it (unless dry), record the id line. Raises WakeError (fail closed).
     B10: refuses while MTS-SuccWake-<login> is Running or Queued (its successor is already up); -Force + Start would boot a second.
-    `probe(name) -> state`; default: the real task state, or none when a stub runner is given (tests)."""
+    `probe(name) -> state`; default: the real task state, or none when a stub runner is given (tests).
+    Pre-flight: `claude -p ok` must pass before anything is registered (`preflight()` -> CompletedProcess; skipped only with a stub runner)."""
     now = now or datetime.now(timezone.utc)
     login = (login or "").strip().upper()[:1]
     if login not in ("A", "B", "C"):
@@ -308,6 +322,8 @@ def register(login: str, *, at: str | None = None, model: str = DEFAULT_MODEL, p
     if state in LIVE_STATES and os.environ.get(SELF_ENV) != task_name(login):    # the task's own run may hand over
         raise WakeError(f"{task_name(login)} is already live ({state}): its successor is up; a second registration would start "
                         f"another Supervisor {login}. Refused")
+    if preflight is not None or runner is None:
+        auth_preflight(preflight)
     if runner is None:
         runner = _run_ps
     runner(script)

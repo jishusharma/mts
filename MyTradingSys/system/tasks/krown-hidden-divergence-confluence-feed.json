@@ -34,7 +34,8 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-28 ACCEPT LAB:none CLASS:C1 REVIEWER:sonnet-agent WEIGHT:IMPORTANT. Not live_path: alert wiring untouched, the pin is a test. Sonnet medium. May run before the audits.",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -63,7 +64,7 @@
     "MyTradingSys/research/krown_audit_2026-10-22/LAYER_CONFLUENCE_DESIGN.md:112-115",
     "MyTradingSys/backtest/layers/rsi/rsi_divergence.py:16-24"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Add krown_hidden_div_feed.py: thin causal wrapper over rsi_divergence with hidden kinds, returns events {ts, side, bars, chain}, label OURS, source Krown hNfjyrJEytI 00:16:57-00:17:20 (design T5).",
     "Pin Malkan: its real caller run_divergence_mtf.py (line ~195) passes an explicit regular-only kinds tuple; add a test asserting this and that no hidden_* event appears in its output; live_rsi_divergence is read only (assert in the test, no edit).",

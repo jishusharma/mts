@@ -25,7 +25,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DRAFT 2026-10-28 Session_Planner (OURS): follow-up the FILL_CANARY card (fix-fill-rules-shared, done) asked for; no operator decision conflicts (q-gap-* are unrelated). IMPORTANT (research with a verdict): needs a real REVIEWED stamp before ready. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.\nREVIEWED:2026-10-29 ACCEPT (reviewer-raw-cards-b) Verified manage.py:141-143 gap-through rule and FILL_CANARY.md. Loader path corrected to MyTradingSys/backtest/layers/fabio/v3/tests/test_fabio_golden.py.",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -48,7 +49,7 @@
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/FILL_CANARY.md",
     "MyTradingSys/backtest/layers/fabio/v3/manage.py:141-143"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Load DEV BTCUSDT 1m bars with the loader the fabio v3 golden test uses (MyTradingSys/backtest/layers/fabio/v3/tests/test_fabio_golden.py); run the v3 engine on DEV to get stop exits",
     "For each stop exit: flag gap-through (open beyond stop on a bar after the fill bar, or on the fill bar for the F scenario); report count, share of stop exits, mean and p95 R understatement",

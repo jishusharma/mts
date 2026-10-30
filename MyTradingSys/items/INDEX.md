@@ -19,7 +19,7 @@ T035 | CLOSED  | T035_multi_venue_cvd.md | DEFER - SCREENER module, no Tom sourc
 T037 | CLOSED | T037_test_coverage_gap.md | tests for all 8 files; MarketDataSnapshot bodies filled (21 tests, seam b); mvn test 128 pass
 T038 | CLOSED  | T038_context_bucket_gate.md | spec delivered W3; trigger 21000 labels
 T039 | CLOSED  | T039_functionality_doc_sweep.md | doc sweep; landed
-T040 | OPEN    | T040_tick_delta_layer.md | tick delta layer; thresholds need Tom citation or documented exception
+T040 | OPEN    | T040_tick_delta_layer.md | tick delta layer; data-derived thresholds = OURS, documented exception, flags only until fee-net OOS pass (d-tick-threshold-rule 2026-10-30)
 T041 | CLOSED  | T041_verdict_timeframe_gap.md | reframed: misframe, not a defect; closed 2026-09-23
 T042 | OPEN    | T042_schema_gap.md | 1w/1d/4h structure emitted, no consumer; OI/CVD peak ref not emitted
 T043 | WONTFIX | T043_traceability_gap.md | source-to-code traceability; closed as WONTFIX 2026-09-23
