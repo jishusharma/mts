@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
   "commands": [],
   "created": "2026-10-30T17:15:06Z",
   "depends_on": [],
@@ -35,12 +36,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "active",
   "steps": [
     "git ls-tree origin/fast-track for each sheet; skip missing ones and say so",
     "open every cited file:line and check the number",
     "write FOUND / NOT_IN_DATA / DIFF per number"
   ],
+  "taken": "2026-10-30T20:03:38Z",
   "tests": "see done_when",
   "title": "[GEMINI] blind read of each layer review sheet (layer-review-* cards) as they ship: every number re-found in its cited file or NOT_IN_DATA",
   "weight": "ROUTINE",
