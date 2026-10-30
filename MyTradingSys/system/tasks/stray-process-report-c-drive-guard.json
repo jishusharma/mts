@@ -34,7 +34,8 @@
   "not_twin_of": [
     "c-drive-cleanup-holds"
   ],
-  "note": "Related, not a twin: c-drive-cleanup-holds (worktrees and temp). Goal/fields moved out of note into proper card fields by Session_Planner 2026-10-28; original note text preserved in history.",
+  "note": "S0 drop 2026-10-30 (D7 roadmap, operator: keep only what is useful): new machinery or superseded; revive by a new card if needed",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -49,7 +50,7 @@
   "scope_sha": "1536591a46bb",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "Add safe-pattern entries to the allow list in STRAY_REAP_POLICY.md (operator-edit file; propose the entries, do not assume operator sign-off)",
     "Implement 'procs' (report-only) and 'procs --apply' (kill by PID only) in c_drive_guard.py with the never-kill rules",

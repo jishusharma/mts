@@ -24,7 +24,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-26 T0-ONLY | DRAFT 2026-10-26 Session_Planner (OURS): the cut regex mts_signal.py:178 treats any 32+ char [A-Za-z0-9_-] run as a secret. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
@@ -45,7 +46,7 @@
   "sources": [
     "scripts/dev/mts_signal.py:175-181,400"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Read test_mts_signal.py test_hook_auto_sends_claim_and_ship for the SessionStart fixture.",
     "Write the failing test with a 60 char folder name.",

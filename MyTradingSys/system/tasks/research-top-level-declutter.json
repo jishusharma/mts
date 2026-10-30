@@ -26,7 +26,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "S0 drop 2026-10-30 (D7 roadmap, operator: keep only what is useful): new machinery or superseded; revive by a new card if needed",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "MTS_Doctor arch-cleanup 2026-10-19",
@@ -45,7 +46,7 @@
   "scope_sha": "beeb3d88df10",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "List loose files with their inbound refs.",
     "git mv each to its topic folder; fix refs.",

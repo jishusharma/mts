@@ -41,7 +41,8 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-25 ACCEPT (independent Sonnet reviewer, fixes applied). Depends on confluence-s3-context-read. DECISION (OURS): if S3 fails, run only the layer-free arms (T2, T4) and mark the D1 arms NOT_RUN as the PRE_REG says. Host with F:/MTS/data. Complete and reviewed; promote with tasks.py check once depends_on is done.",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -67,7 +68,7 @@
     "MyTradingSys/research/krown_audit_2026-10-22/PRE_REG_CONFLUENCE.md:35-113",
     "FABLE_CARD_CONFLUENCE.md s4 row S4"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Confirm run/CONTEXT_READ.md exists and read its s3.1 verdict; skip s3.3 and the sizing arm's D1 multiplier if s3.1 did not PASS (PRE_REG s3.2-3.3).",
     "Before any T2 outcome: write run/COUNTS_T2.md (n, weeks, median range height) as PRE_REG s3.5-3.6 require; commit it, then run T2.",

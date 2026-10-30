@@ -24,7 +24,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DRAFT 2026-10-28 Session_Planner (OURS). Evidence: 71/72 steps pass, 3xt FAIL on test_trunk_lag.py, standalone 9/9.",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -44,7 +45,7 @@
     "MyTradingSys/research/fix_verification_2026-10-28/run_all_tests_full_2026-10-28.txt:157",
     "scripts/dev/trunk_lag.py:34"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "Reproduce: python scripts/dev/run_extra_tests.py (default jobs, all 187 files) and capture the test_trunk_lag.py traceback; the full log only has 'FAIL', no traceback.",
     "Check the hypothesis (UNVERIFIED): trunk_lag.git() default timeout=8 (trunk_lag.py:34) raises TimeoutExpired when git subprocesses starve under load (test_refresh_main_checkout.py took 306 s in the same step); else fetch-throttle clock or shared env.",
