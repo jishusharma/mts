@@ -77,3 +77,4 @@ Hard rules and gates live only in CLAUDE.md and are not repeated here; prompt-co
 - PowerShell: `$pid` is reserved; build new paths with Join-Path (Resolve-Path throws on missing files); wrap gate+commit blocks in `& { }`. [10-01 lessons; 10-04 Resolve-Path; 10-03 gate guard]
 - Never put prompt content in a PowerShell here-string; use a temp .py with a triple-quoted string. [10-02 DSA list]
 - No diagnostic line that can throw between the first write and the commit. [10-04 diagnostic line]
+- Never round-trip a tracked file through Get-Content -Raw to edit it; use [IO.File]::ReadAllText with UTF8Encoding(false) or dsa.py edit on an exact anchor. Paste tool output into a Result line before committing; run any tool with -h before a subcommand. [10-30 DSA JIS-NUC]
