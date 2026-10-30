@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-30T00:09:25Z",
   "commands": [
     "C:/Users/E-ngineers/.gemini/bin/agy.exe --print \"Follow the steps of card gemini-param-labels-positioning (python scripts/dev/tasks.py brief gemini-param-labels-positioning). Write only MyTradingSys/research/gemini_audits_2026-10-30/positioning_param_labels.md. Facts with file:line or NOT_IN_DATA; no verdicts.\" --model gemini-4-argon-medium"
   ],
@@ -15,7 +17,14 @@
   "id": "gemini-param-labels-positioning",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "8 parameters swept (3 SOURCED, 5 OURS) in MyTradingSys/research/gemini_audits_2026-10-30/p",
+      "ref": "110c72d9e",
+      "utc": "2026-10-30T00:09:25Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "note": "Producer vendor per title; reviewer is a different vendor. Facts with file:line or NOT_IN_DATA; no verdicts. ROUTINE, no live path.",
@@ -30,7 +39,12 @@
     "to": "DSA",
     "why": "window"
   },
-  "result": "",
+  "result": "8 parameters swept (3 SOURCED, 5 OURS) in MyTradingSys/research/gemini_audits_2026-10-30/positioning_param_labels.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-10-30/positioning_param_labels.md (new file only)"
   ],
@@ -44,12 +58,13 @@
     "MyTradingSys/backtest/layers/positioning",
     "MyTradingSys/backtest/layers/MOVED_RULES.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "list parameters",
     "search extracts for each",
     "write table"
   ],
+  "taken": "2026-10-30T00:08:22Z",
   "tests": "none (run card); proof = every row has file:line",
   "title": "[GEMINI] Argon-medium: every parameter in layers/positioning labelled SOURCED or OURS (file:line)",
   "weight": "ROUTINE",
