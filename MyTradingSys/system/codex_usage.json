@@ -3,10 +3,10 @@
   "plan": "plus",
   "week_resets": 1793780113,
   "week_used": 49.0,
-  "window_resets": 1793347054,
-  "window_used": 28.0
+  "window_resets": 1793365056,
+  "window_used": 1.0
  },
- "at": "2026-10-30T07:29:48Z",
+ "at": "2026-10-30T07:59:41Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -22,10 +22,25 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 2.0,
-  "window_pts": 5.0,
-  "window_runs": 4
+  "window_pts": 1.0,
+  "window_runs": 1
  },
  "runs": [
+  {
+   "at": "2026-10-30T07:58:05Z",
+   "card": "gpt-spec-tests-deploy-untrack-backup",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 89,
+   "tokens_out": 6891,
+   "tokens_total": 628829,
+   "tokens_uncached": 39666,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
   {
    "at": "2026-10-30T07:27:52Z",
    "card": "gpt-spec-tests-check-set-frames",
@@ -160,21 +175,6 @@
    "tokens_uncached": null,
    "week_pts": null,
    "window_pts": null
-  },
-  {
-   "at": "2026-10-27T21:07:23Z",
-   "card": "gpt-argon-score-recount",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 50,
-   "tokens_out": 3583,
-   "tokens_total": 499736,
-   "tokens_uncached": 51865,
-   "week_pts": 1.0,
-   "window_pts": 3.0
   }
  ]
 }

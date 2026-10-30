@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T07:59:36Z",
   "commands": [],
   "created": "2026-10-29T22:51:42Z",
   "depends_on": [],
@@ -13,7 +14,14 @@
   "id": "gpt-spec-tests-deploy-untrack-backup",
   "kind": "build",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "15 tests; 3/3 scratch mutations caught; MyTradingSys/research/layer_lab/reports/2026-10-30",
+      "ref": "d585606e2",
+      "utc": "2026-10-30T07:59:36Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "note": "Producer GPT; reviewer Claude or Gemini. Expected values independent of the code; tests touch temp dirs only, never runtime data. ROUTINE, no live path.",
@@ -22,7 +30,12 @@
   "refined_by": "",
   "refreshed": "2026-10-29T22:51:43Z",
   "refs": [],
-  "result": "",
+  "result": "15 tests; 3/3 scratch mutations caught; MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-spec-tests-deploy-untrack-backup.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/test_deploy_untrack_backup.py",
     "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-spec-tests-deploy-untrack-backup.md",
@@ -37,12 +50,13 @@
   "sources": [
     "scripts/dev/deploy_untrack_backup.py"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read deploy_untrack_backup.py and list every branch",
     "compute expected values by hand",
     "write tests, run 3 mutations, write report"
   ],
+  "taken": "2026-10-30T07:59:36Z",
   "tests": "python -m pytest scripts/dev/test_deploy_untrack_backup.py -q",
   "title": "Spec-derived tests for scripts/dev/deploy_untrack_backup.py (no test file today)",
   "weight": "ROUTINE",
