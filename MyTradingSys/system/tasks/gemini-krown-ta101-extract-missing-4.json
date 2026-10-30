@@ -1,6 +1,6 @@
 {
   "approved_by": "",
-  "asks": "",
+  "asks": "captions not on host: verify_extract_quotes.py NO-TRANSCRIPT (raw_transcripts_canonical lacks ids); branch kept on origin/gemini-q",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_hNfjyrJEytI.md"
   ],
@@ -21,7 +21,7 @@
   "mutation_check": "",
   "note": "Gemini rules: captions first (fetch_captions_timed.py), quote only from the caption file, one fetch try per video, no retry loop, 429 -> mark the video UNVERIFIED with no quotes; run verify_extract_quotes.py until exit 0; facts and quotes only, no trading verdict, no code change. Final report ends with a Noticed: line.",
   "prio": 2,
-  "refine_tries": 0,
+  "refine_tries": 1,
   "refined_by": "",
   "refreshed": "2026-10-30T18:52:37Z",
   "refs": [

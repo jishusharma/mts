@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T21:19:36Z",
   "commands": [],
   "created": "2026-10-30T17:15:04Z",
   "depends_on": [],
@@ -13,7 +14,14 @@
   "id": "gemini-doc-contradiction-scan-v1-plan",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "10 extra contradiction pairs with file:line; 15/21 quotes exact, 6 off by 1 line (spot-che",
+      "ref": "35872ab10",
+      "utc": "2026-10-30T21:19:36Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -25,7 +33,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "10 extra contradiction pairs with file:line; 15/21 quotes exact, 6 off by 1 line (spot-checked 3)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "research/v1_plan_2026-10-20/D7_ROADMAP.md, D8_OPERATIONS.md, D11_PROGRAMME.md, system/ANNOUNCEMENTS.md ACTIVE, WORKERS.md, SUPER_SESSION.md, ROUTING.md (read); one output file"
   ],
@@ -35,13 +48,14 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read D11 section 4 first (known pairs)",
     "read the other files and note every rule sentence",
     "pair the ones that cannot both be followed",
     "write the table with file:line and which is newer"
   ],
+  "taken": "2026-10-30T21:19:36Z",
   "tests": "see done_when",
   "title": "[GEMINI] contradiction scan: D7/D8/D11 vs ANNOUNCEMENTS ACTIVE vs WORKERS vs SUPER_SESSION vs ROUTING, pairs with file:line",
   "weight": "ROUTINE",
