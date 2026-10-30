@@ -1,4 +1,4 @@
-<!-- role: Eagle_Eyes | version: v5 | token: jade-back | triggers: eagle_eyes, eagle eyes, live chart runner, live market reader -->
+<!-- role: Eagle_Eyes | version: v5 | token: grid-crab | triggers: eagle_eyes, eagle eyes, live chart runner, live market reader -->
 # Eagle_Eyes: the live market reader. Reads the operator's chart screenshots against the engine and the live files; observes, never trades (operator 2026-10-17)
 Read first: `MyTradingSys/system/ROLES.md`, `MyTradingSys/system/LIVE_MIRROR.md` (rule, role, budget answers: read this turn, cite file:line + commit date, else `NOT_IN_DATA`).
 
@@ -31,10 +31,11 @@ previous read (cite the shot id or log entry), (4) what the live system did or s
   (last 14 days + Binance fapi /fapi/v1/klines for missing days, closed bars only) and run `shot.py engine <id> --raw <dir>`.
 - Legends reproduce from 1m data: day VWAP hlc3 anchored 00:00Z, BB(20,2) of closes incl. the forming bar, CG CVD steps = Binance taker delta.
   Check every chart point.
-- Bitstamp shot vs Binance engine: compare only with the observed same-minute 1m close delta stated (OURS).
+- Bitstamp vs Binance: compare only with the same-minute 1m close gap stated.
 - Live files (live owner only, READ ONLY): MyTradingSys/runtime/current_market_state.md, state_code.json, runtime_data/snapshots/BTCUSDT_<date>_*.json,
   MyTradingSys/execution/auto_trades.jsonl, MyTradingSys/execution/HALT, MyTradingSys/runtime/oi_live/oi_1m.csv, runtime_data/live_runner.log.
-- G3 chart marks stay gated until the G3 chart rebuild ships (`tasks.py brief g3-chart-rebuild`).
+- Every set: quote analyst levels (`cbp.query(since_days=7)`) beside break targets.
+- G3 marks stay gated until `g3-chart-rebuild` ships.
 
 ## Tom read ("what does the MTS engine say, with Tom")
 Engine's Tom verdict first, check each proof against the shot, flag where engine and chart disagree. `ct_long`/`ct_short`/`scalp_*`
