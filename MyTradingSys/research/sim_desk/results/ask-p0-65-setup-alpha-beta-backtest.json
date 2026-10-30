@@ -1,0 +1,219 @@
+{
+ "id": "ask-p0-65-setup-alpha-beta-backtest",
+ "kind": "backtest",
+ "parity": null,
+ "family": "Setup Alpha / Beta v2",
+ "title": "Setup Alpha (SMA200 long-flat) vs buy-and-hold and Setup Beta (15m sweep + CVD absorption), DEV and VALIDATION",
+ "provenance": "run",
+ "date": "2026-10-30",
+ "what": [
+  {
+   "name": "Source",
+   "value_plain": "chatbot handoff, no trader transcript (NO-SOURCE)",
+   "label": "OURS"
+  },
+  {
+   "name": "Alpha rule",
+   "value_plain": "daily close above SMA200: long next day, else flat; no tuning",
+   "label": "OURS"
+  },
+  {
+   "name": "Beta rule",
+   "value_plain": "15m sweep of previous-day high/low, close back inside, one entry per day and side; CVD arm needs a new 8-bar extreme with taker-buy CVD not confirming; entry next 15m open, stop at the wick, 1.5 R target, 90 min time stop",
+   "label": "OURS"
+  },
+  {
+   "name": "Costs",
+   "value_plain": "0.05% taker per side on every leg (backtest/fees.py), funding included, no slippage",
+   "label": "SOURCED"
+  }
+ ],
+ "how": "Pre-registered (PRE_REG.md frozen in a commit before the run) and run once on BTCUSDT 1m bars. Alpha is a daily position series; Beta counts sweep events, not bars (v1 counted 708,240 bars).",
+ "window": "DEV 2022-01-01 to 2024-06-30 and VALIDATION 2024-07-01 to 2025-06-30; HOLDOUT never loaded",
+ "verdict": {
+  "label": "Alpha FAIL; Beta INCONCLUSIVE (every cell negative)",
+  "tone": "bad"
+ },
+ "why": [
+  "Alpha cut drawdown in DEV (21% vs 68%) but lagged buy-and-hold in VALIDATION (CAGR 5% vs 63%); the frozen rule needs both splits, so FAIL. Only 4 and 11 entries: INCONCLUSIVE as an edge claim.",
+  "Beta primary arm: DEV n 50 (mean -0.58 R), VAL n 23 (mean -0.70 R); below the n floors so INCONCLUSIVE by rule, but all 8 cells are negative after fees; the plain sweep arms (n 344 and 148) are negative at t -7.2 and -4.8.",
+  "Kline-CVD absorption did not beat a plain sweep (S1 -0.58 R vs S0 -0.47 R in DEV). Median taker fee is 0.19 to 0.39 R because the stop is the wick."
+ ],
+ "kpis": [
+  {
+   "label": "Beta S1 DEV n events",
+   "value": "50"
+  },
+  {
+   "label": "Beta S1 DEV mean net R",
+   "value": "-0.583 R",
+   "tone": "bad"
+  },
+  {
+   "label": "Beta S1 VAL n events",
+   "value": "23"
+  },
+  {
+   "label": "Beta S1 VAL mean net R",
+   "value": "-0.697 R",
+   "tone": "bad"
+  },
+  {
+   "label": "Alpha DEV / VAL Sharpe",
+   "value": "1.22 / 0.32"
+  },
+  {
+   "label": "Buy-and-hold DEV / VAL Sharpe",
+   "value": "0.38 / 1.23"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "table",
+   "title": "Alpha vs buy-and-hold, fee-net, funding included",
+   "caption": "percent and R only",
+   "cols": [
+    "split",
+    "arm",
+    "n entries",
+    "win",
+    "mean R",
+    "CAGR",
+    "Sharpe",
+    "max DD"
+   ],
+   "rows": [
+    [
+     "DEV",
+     "Alpha",
+     "4",
+     "50%",
+     "6.18",
+     "45.4%",
+     "1.22",
+     "21.5%"
+    ],
+    [
+     "DEV",
+     "Buy-and-hold",
+     "1",
+     "100%",
+     "-",
+     "6.1%",
+     "0.38",
+     "68.0%"
+    ],
+    [
+     "VAL",
+     "Alpha",
+     "11",
+     "27%",
+     "0.15",
+     "5.3%",
+     "0.32",
+     "32.1%"
+    ],
+    [
+     "VAL",
+     "Buy-and-hold",
+     "1",
+     "100%",
+     "-",
+     "62.7%",
+     "1.23",
+     "29.0%"
+    ]
+   ]
+  },
+  {
+   "kind": "table",
+   "title": "Beta: one entry per sweep event",
+   "caption": "S1 session+CVD is the primary arm; others are sensitivity",
+   "cols": [
+    "arm",
+    "split",
+    "n",
+    "win",
+    "mean R net",
+    "t"
+   ],
+   "rows": [
+    [
+     "S1",
+     "DEV",
+     "50",
+     "30.0%",
+     "-0.583",
+     "-2.54"
+    ],
+    [
+     "S1",
+     "VAL",
+     "23",
+     "21.7%",
+     "-0.697",
+     "-3.21"
+    ],
+    [
+     "S0",
+     "DEV",
+     "344",
+     "37.8%",
+     "-0.470",
+     "-7.19"
+    ],
+    [
+     "S0",
+     "VAL",
+     "148",
+     "34.5%",
+     "-0.669",
+     "-4.82"
+    ],
+    [
+     "A1",
+     "DEV",
+     "92",
+     "39.1%",
+     "-0.533",
+     "-2.86"
+    ],
+    [
+     "A1",
+     "VAL",
+     "53",
+     "34.0%",
+     "-0.456",
+     "-3.23"
+    ],
+    [
+     "A0",
+     "DEV",
+     "605",
+     "39.0%",
+     "-0.513",
+     "-9.75"
+    ],
+    [
+     "A0",
+     "VAL",
+     "269",
+     "37.2%",
+     "-0.567",
+     "-6.28"
+    ]
+   ]
+  },
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported"
+  }
+ ],
+ "source_files": [
+  "MyTradingSys/research/setup_alpha_beta_v2_2026-10/RESULT.md",
+  "MyTradingSys/research/setup_alpha_beta_v2_2026-10/PRE_REG.md",
+  "MyTradingSys/research/setup_alpha_beta_v2_2026-10/setup_v2.py"
+ ],
+ "commit": "this card"
+}
