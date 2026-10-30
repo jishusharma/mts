@@ -2,35 +2,84 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-30T18:25:07Z",
+    "misses": 50,
+    "reads": [
+      "scripts/dev/gemini_queue.py",
+      "scripts/dev/run_all_tests.py",
+      "MyTradingSys/tools/live_aid/live_aid.html",
+      "scripts/dev/run_extra_tests.py",
+      "MyTradingSys/tools/live_aid/test_live_aid.py",
+      "scripts/dev/extra_tests.tsv",
+      "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md",
+      "MyTradingSys/backtest/fees.py"
+    ],
+    "session": "agent-a8f02482b9d1d87a9"
+  },
   "created": "2026-10-30T16:45:59Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "python -m pytest MyTradingSys/tools/live_aid/test_live_aid_replay.py passes on the desktop with 10 rendered numbers (1m and 5m: RSI, SMA, %B, BBw, ATR) equal to Python maths at the printed digits and the 15m row plus vs-VWAP cells reading NOT_IN_DATA; the wrapped-rsi run fails; test_artifact_pages.py and test_live_aid.py stay green; shipped, git cherry empty.",
+  "est_turns": 30,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "live_aid.html opened with ?replay=fixture takes its bars from a fixture (window.LIVEAID_REPLAY, injected by the test from fixture_klines.json) instead of sockets/fetch, with a fixed clock; a browser test reads the RENDERED momentum numbers (ARTIFACT_TESTING layer 3) and compares them with independent Python maths.",
   "id": "live-aid-replay-mode-fixture-feeds",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "artifact testing: four-layer design (ARTIFACT_TESTING.md) + layer 3 gate: every page opens",
+      "ref": "36f311c44158",
+      "utc": "2026-10-30T16:46:53Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "36f311c44158 artifact testing: four-layer design (ARTIFACT_TESTING.md) + layer 3 gate: eve",
+      "ref": "MyTradingSys/system/ARTIFACT_TESTING.md",
+      "utc": "2026-10-30T16:46:53Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-30 ACCEPT | DECISION (OURS): fixture injected by the test (file:// cannot fetch local json); clock via page.clock; only 1m/5m checked (300 1m bars: 15m has 20, day VWAP needs the window to cover 00:00Z). Shares live_aid.html with claimed pizzino-layer-dashboard: take after that claim is released.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-30T18:24:08Z",
   "refs": [
     "MyTradingSys/system/ARTIFACT_TESTING.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/live_aid.html",
+    "MyTradingSys/tools/live_aid/test_live_aid_replay.py",
+    "scripts/dev/extra_tests.tsv",
+    "MyTradingSys/system/ARTIFACT_TESTING.md"
+  ],
+  "scope_out": [
+    "live_aid_indicators.js maths (layer 1 owns it); any live feed, WebSocket or order code; screenshot goldens; pizzino overlay work"
+  ],
+  "scope_sha": "36f311c44158",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/system/ARTIFACT_TESTING.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "In live_aid.html add a replay branch (?replay=fixture only): skip the 4 sockets, news and fetch; load 1m rows from window.LIVEAID_REPLAY and fold them into 5m/15m/1h with A.foldBars; if it is missing show NOT_IN_DATA 'replay fixture not loaded'. Normal mode untouched.",
+    "New test_live_aid_replay.py (playwright, skips without Chromium like scripts/dev/test_artifact_pages.py): add_init_script injects fixture_klines.json; page.clock fixes time at last bar open + 60 s; open file://live_aid.html?replay=fixture; tick #more-tog so the hidden 'x' columns render.",
+    "Read the #strip rows 1m and 5m (RSI 1 dp, SMA 1 dp, %B x100 0 dp, BBw% 2 dp, ATR 1 dp) and compare with Python recomputed from the fixture (py_* helpers of test_live_aid.py, never page code). Also assert the 15m row (20 bars < 40) and every vs-VWAP cell read NOT_IN_DATA: the fixture opens at 00:00Z so the window cannot cover the day start (page rule at live_aid.html:569).",
+    "Fail-first: add_init_script defines a window.LiveAid setter that wraps rsi to return +0.1 percent (the page sets LiveAid after init scripts run, so a plain patch is overwritten); the test must fail once, paste the failing line in the Result.",
+    "Register the test in scripts/dev/extra_tests.tsv; update the Live aid row of ARTIFACT_TESTING.md (gap closed for the momentum strip); run test_artifact_pages.py and test_live_aid.py."
+  ],
+  "tests": "test_live_aid_replay.py::test_rendered_strip_matches_python_maths (1m and 5m rows), ::test_short_windows_read_not_in_data (15m row, vs VWAP), ::test_missing_fixture_reads_not_in_data; fail-first by the LiveAid.rsi setter wrap (+0.1 percent) once",
   "title": "Live aid: replay mode (?replay=fixture) feeds the page fixture_klines.json instead of sockets; test reads the rendered tiles and compares with test_live_aid.py maths",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
