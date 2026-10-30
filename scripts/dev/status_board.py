@@ -304,10 +304,81 @@ def fmt_asks(asks, high):
     return [f"{n} OVERDUE of {len(rows)} waiting"] + table(["", "id", "who", "state", "age", "escalated to", "text"], rows)
 
 
-def result_line(budget, red_min, open_w, failures):
+SUP_IDLE_MIN = 60     # bug-supervisor-idles-after-wake-retired (card: 60 min): READY work and no dispatch/worker this long = RED
+BUDGET_IDLE_MODES = ("STOP", "SUPERVISOR-ONLY")   # the budget itself says no Claude worker: idle by design, not RED (OURS)
+NON_CLAUDE_LANES = ("CODEX", "GEMINI", "OPUS")    # other vendors; OPUS only when the operator names it (OURS)
+HB_LOGIN_RE = re.compile(r"\bBUDGET login=(\w+)\b")
+HB_HOURS = 24
+
+
+def claude_ready(cards):
+    """READY cards a Supervisor dispatches to a Claude worker on its own: not CODEX/GEMINI, not OPUS (operator names it), not DSA-*
+    (run-and-report). Cards carry no login, so every login sees the same fleet-wide count (OURS)."""
+    lane = lambda c: str(c.get("lane", "")).upper()
+    return sum(1 for c in cards if c.get("state") == "ready" and lane(c) not in NON_CLAUDE_LANES and not lane(c).startswith("DSA"))
+
+
+def beats_from_rows(rows, now, hours=HB_HOURS):
+    """[(utc datetime, text)] of the signal records (mts_signal.load) in the last `hours` that are BUDGET lines."""
+    out = []
+    for r in rows:
+        try:
+            t = datetime.strptime(str(r.get("t", "")), "%Y%m%dT%H%M%SZ").replace(tzinfo=timezone.utc)
+        except ValueError:
+            continue
+        if "BUDGET login=" in str(r.get("text", "")) and now - timedelta(hours=hours) <= t <= now + timedelta(minutes=5):
+            out.append((t, str(r["text"])))
+    return out
+
+
+def supervisor_rows(beats, ready_n, now, idle_min=SUP_IDLE_MIN):
+    """Per login from Supervisor heartbeats [(utc datetime, text)] (BUDGET lines carrying sup=; plain budget lines are skipped):
+    the newest mode and its age (a later beat replaces ENDED), last dispatch (a beat whose run rose over the previous one, or the
+    first with run > 0), last worker seen (newest run > 0), idle minutes since that (else since the login's first beat), and
+    red = READY Claude work and idle >= idle_min outside a budget STOP / SUPERVISOR-ONLY."""
+    per = {}
+    for t, x in sorted(beats, key=lambda b: b[0]):
+        m = HB_LOGIN_RE.search(x)
+        if not m or " sup=" not in x or t > now + timedelta(minutes=5):
+            continue
+        kv = dict(re.findall(r"(\w+)=(\S+)", x))
+        run_n = int(kv["run"]) if str(kv.get("run", "")).isdigit() else 0
+        r = per.setdefault(m.group(1), {"first": t, "prev": None, "last_dispatch": None, "last_worker": None})
+        if run_n > 0 and (r["prev"] is None or run_n > r["prev"]):
+            r["last_dispatch"] = t
+        if run_n > 0:
+            r["last_worker"] = t
+        r.update(prev=run_n, mode=kv.get("mode", "?"), mode_at=t)
+    out = []
+    for lg, r in sorted(per.items()):
+        idle = int((now - (r["last_worker"] or r["first"])).total_seconds() // 60)
+        out.append({"login": lg, "mode": r["mode"], "mode_age_min": int((now - r["mode_at"]).total_seconds() // 60),
+                    "last_dispatch": r["last_dispatch"], "last_worker": r["last_worker"], "idle_min": idle,
+                    "red": ready_n > 0 and idle >= idle_min and r["mode"] not in BUDGET_IDLE_MODES})
+    return out
+
+
+def fmt_supervisors(rows, ready_n, now):
+    """Per-login table (mode, last dispatch, last worker, idle) plus one RED line per login idle with ready work."""
+    if not rows:
+        return [nd(f"no Supervisor heartbeat in the last {HB_HOURS} h of signals")] + (
+            [f"RED idle with ready work: no Supervisor of any login, {ready_n} READY Claude card(s)"] if ready_n else [])
+    ago = lambda t: age_text((now - t).total_seconds() / 3600) + " ago" if t else "none seen"
+    lines = table(["Login", "Mode (age)", "Last dispatch", "Last worker seen", "Idle"],
+                  [[r["login"], f"{r['mode']} ({age_text(r['mode_age_min'] / 60)} old)", ago(r["last_dispatch"]), ago(r["last_worker"]),
+                    age_text(r["idle_min"] / 60)] for r in rows])
+    red = [r for r in rows if r["red"]]
+    lines += [f"RED idle with ready work: login {r['login']} idle {r['idle_min']} min (no dispatch or worker; mode {r['mode']}), "
+              f"{ready_n} READY Claude card(s)" for r in red]
+    return lines + ([] if red else [f"No login idle with ready work ({ready_n} READY Claude card(s); RED after {SUP_IDLE_MIN} min)"])
+
+
+def result_line(budget, red_min, open_w, failures, idle=()):
     wk = max((v[2] for v in budget.values()), default=None)
     bits = [f"week budget up to {wk}%" if wk is not None else "budget " + ND, f"CI red {red_min} min" if red_min else "CI green",
             f"{open_w.get('CRITICAL', 0) + open_w.get('CRUCIAL', 0)} CRITICAL/CRUCIAL cards open"]
+    if idle:
+        bits.append("RED idle with ready work: login " + ", ".join(idle))
     if failures:
         bits.append(f"{failures} section(s) NOT_IN_DATA")
     return "**Status: " + "; ".join(bits) + "**"
@@ -414,6 +485,22 @@ def sec_value():
     return fmt_value([c.get("title", c["id"]) for c in done], clean, stuck, stale)
 
 
+@functools.lru_cache(maxsize=None)
+def supervisors():
+    """(rows, ready_n, now) from the signals branch (fetched) and the tree's cards."""
+    import mts_signal
+    h = mts_signal.ensure(REPO)
+    if h is None:
+        raise RuntimeError("no signals clone")
+    now = datetime.now(timezone.utc)
+    ready = claude_ready(cards())
+    return supervisor_rows(beats_from_rows(mts_signal.load(h), now), ready, now), ready, now
+
+
+def sec_supervisors():
+    return fmt_supervisors(*supervisors())
+
+
 def sec_missing():
     cs = cards()
     m = re.search(r"parked=(\d+)", run([sys.executable, str(HERE / "tasks.py"), "status"], 20))
@@ -457,7 +544,8 @@ def sec_hygiene():
     return fmt_hygiene(disks, len(names), sum(1 for n in names if n.startswith("mts_run_")), bundle, trees, strays)
 
 
-SECTIONS = [("Resources: budget and what it bought", sec_budget), ("Speed and health", sec_speed), ("Value added", sec_value),
+SECTIONS = [("Resources: budget and what it bought", sec_budget), ("Speed and health", sec_speed),
+            ("Supervisors: mode, last dispatch, idle with ready work", sec_supervisors), ("Value added", sec_value),
             ("GPT and Gemini", sec_gpt_gemini), ("Still missing", sec_missing), ("Asks waiting for a reply", sec_asks), ("Hygiene", sec_hygiene)]
 
 
@@ -481,7 +569,11 @@ def main():
         red = red_minutes(ci_runs())
     except Exception:
         red = 0
-    print(result_line(parse_budget(signal_text()), red, count_open(cards()), fails))
+    try:
+        idle = [r["login"] for r in supervisors()[0] if r["red"]]
+    except Exception:
+        idle = []
+    print(result_line(parse_budget(signal_text()), red, count_open(cards()), fails, idle))
     print("\n".join(body))
     print(f"\n(board built in {time.time() - t0:.0f} s)")
 
