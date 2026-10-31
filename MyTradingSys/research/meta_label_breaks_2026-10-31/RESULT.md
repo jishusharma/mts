@@ -67,3 +67,14 @@ look-back 10 bars, max hold 24/24/12 bars and CVD as a stand-in for RSI are OURS
   timeframe, known in the last 10 bars, does better than trades without it (15m -0.085 / -0.069 vs -0.105 %; 1h +0.121 (n 65) / +0.015
   (n 58) vs about -0.06 %; 4h +0.493 (n 36) / +0.322 (n 32) vs about -0.20 %). This is a lead to freeze, not a result.
 - Next: card `div-reverse-lower-tf-confirm-2020-2021`, the frozen rule run once on 2020-2021 (data on disk), never seen by this look.
+
+## Fresh-data check 2026-10-31: the reverse-divergence lead FAILS (`confirm_div.py`, rules in `PRE_REG_DIV.md`, frozen at 81a3852b5)
+BTCUSDT 1m 2020-01..2021-12 (1,052,640 bars, none after 2021-12-31), one run, raw numbers `F:/MTS/runs/meta_label_breaks/confirm_div.json`.
+| TF | flagged trades | net % per trade | 95 % CI | Holm p | not flagged net % | verdict |
+|---|---|---|---|---|---|---|
+| 15m | 274 | -0.110 | -0.239..+0.013 | 1.0 | -0.101 | FAIL |
+| 1h | 131 | -0.180 | -0.408..+0.052 | 1.0 | -0.158 | FAIL |
+| 4h | 52 | -0.384 | -1.208..+0.352 | 1.0 | -0.291 | FAIL |
+Card verdict FAIL: every timeframe loses, and flagged trades do no better than the rest (in DEV they did, by 0.2-0.7 %). The DEV lead was
+a chance cell among about 66. Descriptive only: 1h longs with PRD +0.068 % (n 79), shorts with NRD -0.556 % (n 52); 4h 2020 +0.292 (n 27),
+2021 -1.115 (n 25). Not re-tuned, per PRE_REG_DIV. All tf_break trades also lose in 2020-2021 (15m -0.102, 1h -0.160, 4h -0.303 % net).
