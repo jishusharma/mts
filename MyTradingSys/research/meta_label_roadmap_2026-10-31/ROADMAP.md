@@ -32,7 +32,7 @@ and its pre-registration amendments.
   (`backtest/layers/FORMULAS.md:522`, WaveTrend 20.2). A D1 trend sign that reads today's daily close for a 14:30 UTC entry is look-ahead.
   Cowen's band is already "completed weeks only" (`research/sim_desk/PLUGIN.md:40`). BBWP is causal by its definition ("number of the previous
   lookback bbw values strictly below bbw[t]", `FORMULAS.md:544`). Relative volume must be the trailing hour-of-week median (TRIALS.md volume
-  event table row, "hour-of-week median RV (8 wk, OURS)"), not a full-sample normalisation.
+  event table row, "hour-of-week median RV (8 wk, OURS)"), not a full-sample normalisation. (P0 used a trailing 24 h mean instead; a rerun should switch to the hour-of-week median.)
 - Score terciles: the cut points must come from the training fold, not from all DEV scores; otherwise the test fold's bucket membership uses
   its own outcomes' scores. Small leak, but it is the leak that makes "top tercile" look better than it is.
 - Missing test: there is a look-ahead forcing test pattern in the repo (`backtest/layers/alerts/test_lookahead_forcing_fabio_v3.py:50-92`,
@@ -137,7 +137,7 @@ login A 18 % (hook header). Phases 0 and 1 fit this week on login A; phase 2 wai
 
 | Phase | Entry gate | Work | Exit gate (pre-registered, fee-net) | Builds | Cost |
 |---|---|---|---|---|---|
-| P0 Running test | pre-reg frozen (done by the builder) | card `meta-label-tom-vp-fabio-trades` as written, plus the amendments in 2.1 applied before any further read | RESULT.md per setup: Holm-adjusted top-tercile verdict, placebo p, gross/fee split, per-feature splits (descriptive), blocked-CV and week-CV both shown, m stated, funding NOT RUN stated; TRIALS.md rows | nothing | running (1 Sonnet card) |
+| P0 Running test | pre-reg frozen (`4ca494b3a`) | card `meta-label-tom-vp-fabio-trades`; amendments of 2.1 applied POST HOC (one DEV read happened before they arrived) | `research/meta_label_tom_fabio_2026-10-31/numbers.json` + `output.md` | nothing | **DONE 2026-10-31 (`68eac1e27`)**: Tom VP FAILED (top third -0.277 R, CI -0.344..-0.211, n 608, placebo p 0.76, AUC 0.47); Fabio Model C stand-in NOT ENOUGH DATA (top third -0.003 R, CI -0.364..+0.404, n 162, placebo p 0.60). VALIDATION not read. Branches taken: FAIL row for Tom VP, NOT ENOUGH DATA row for Fabio C (card 2 of section 3) |
 | P1 DEV pass stress | P0 PASS on at least one setup: top tercile lower day-block CI > 0 after fees, beats >= 200 shuffles, Holm within the family, same sign 2022 vs 2023-24H1 | trade-through fill rerun; 0.14 % round-trip cost scenario; per-feature attribution (which one carries it); Fable verdict (as confluence S5) | all three stresses keep lower CI > 0; then ONE VALIDATION read of (setup + filter), same sign and lower CI > 0 -> candidate row for `promoted_setups.json`, enters S3 WIP line | nothing (a RESULT.md and a verdict) | 1 Sonnet card + 1 Fable verdict turn |
 | P2 Minimum snapshot | P1 VALIDATION pass AND S0 exit signed (or the operator's word) | `layer_state_at(ts)` shared causal snapshot in `research/sim_desk/studies/_bars.py` (last-closed-bar rule, features of 2.1), look-ahead forcing test, per-trade feature columns in result JSON (existing `kind` rows, no new page); family m logged in TRIALS.md | forcing test green on CI; one study reruns to identical numbers with and without the snapshot; no new page | the snapshot and its test only | 1-2 Sonnet cards |
 | P3 Sizing arm | P2 done AND a second setup passes P1 | sizing by model score vs equal risk, bar copied from `PRE_REG_CONFLUENCE.md:71-75` (Sharpe at equal capital, mean not lower by more than 0.01 %, same sign both halves) | bar met on DEV, then its one VALIDATION read | research code only; live wiring is S5 and needs restart/reset/balance/API-error tests | 1 Sonnet card |
@@ -155,7 +155,7 @@ ships with an automated check: result-JSON shape, bucket trade counts sum to the
 3. Tercile cut points from the training fold (1.1).
 4. Verdict-bearing CV = 6 contiguous blocks; same-sign check 2022 vs 2023-24H1; week-purged K-fold beside (1.4).
 5. Report gross, fee, net per bucket (FORMULAS 18.7); report n per bucket; under 30 per bucket = too few (desk MIN_BUCKET) (1.8).
-6. Funding = NOT RUN (not on disk); say it (1.8).
+6. ~~Funding = NOT RUN (not on disk)~~ Corrected 2026-10-31: funding IS on disk for DEV (`F:/MTS/Dumps/backtest/raw/fundingRate`, BTCUSDT 2020-01..2026-09) and P0 used it (1.8).
 7. Name the setup "Fabio Model C price-only stand-in (ours)" in every table (1.8).
 8. Power line per setup from section 1.5; NOT ENOUGH DATA is a named, expected outcome and builds nothing (1.5).
 
@@ -191,5 +191,5 @@ Rule (Opus, kept): a filter lifts a weak-but-real edge; it does not rescue negat
 2. `meta-label-fabio-c-dev-ext-power` (SONNET, prio 2): the NOT ENOUGH DATA branch rerun on `dev_ext_2019_2021`, frozen features, n target 461 per tercile.
 3. `layer-state-snapshot-causal` (SONNET, prio 3, note S0 park): phase 2 `layer_state_at(ts)` + look-ahead forcing test + the panel of 2.0 with its checks; starts only on a P1 VALIDATION pass and S0 exit.
 
-Noticed (not fixed here): funding data absent for DEV on this host; exported desk kpis carry net only (no gross/fee); Opus step 4 duplicates
+Noticed (not fixed here): ~~funding data absent for DEV on this host~~ (wrong, see 2.1 item 6); exported desk kpis carry net only (no gross/fee); Opus step 4 duplicates
 `layer_lab/TRIALS.md`; three unmerged context families on the same DEV bars (confluence m 18, context_factors m 37/42, meta-label).
