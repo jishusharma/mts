@@ -142,6 +142,7 @@ class RecordedSettlementTests(unittest.TestCase):
         # Cashflow on the profit_as_cashflow trades: -4e-08+4.7e-06-8.2e-07+9.9e-07-3.05e-06-6e-07 = +1.18e-06
         # vs session_rpl +1.17e-06 (summary rounded to 1e-8).
         self.assertAlmostEqual(sum(e["cashflow"] for e in win if e["profit_as_cashflow"] is True), 1.18e-06, delta=1e-12)
+        # Tolerance moved from 1e-9 to 2e-8 because session_rpl in the summary is rounded to 1e-8.
         self.assertAlmostEqual(mp.daily_pnl_btc(win, s), expected, delta=2e-8)
 
     def test_wrong_short_window_is_not_the_identity(self):
@@ -164,7 +165,7 @@ class RecordedSettlementTests(unittest.TestCase):
         self.assertAlmostEqual(mp.daily_pnl_btc(win, s), -7.71e-06, delta=2e-8)
 
     def test_settlement_entry_does_not_add_its_cashflow_again(self):
-        # Fail closed on the shape that would double count: a settlement carrying profit_as_cashflow True.
+        # SYNTHETIC (not a recorded entry): fail closed on the shape that would double count, a settlement carrying profit_as_cashflow True.
         e = {"type": "settlement", "change": -1.59e-06, "cashflow": -1.59e-06, "profit_as_cashflow": True}
         self.assertAlmostEqual(mp.realized_btc([e]), -1.59e-06, places=12)
 
