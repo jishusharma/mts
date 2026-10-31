@@ -1,7 +1,17 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T23:46:54Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": 23,
+    "folded": "2026-10-31T23:47:02Z",
+    "misses": 40,
+    "reads": [
+      "MyTradingSys/research/fast_track_2026-09-27/FABIO_V3_SPEC.md"
+    ],
+    "session": "agent-a4c3a8414cf23a0cd"
+  },
   "created": "2026-10-31T10:04:47Z",
   "depends_on": [],
   "done_when": "FORMULAS.md gains a Fabio v3 section (S1-S8, Models A-D) and a Tom VP return-to-value section, each with a hand worked example and SOURCED/OURS labels; review Agent APPROVE on the diff before ship",
@@ -14,6 +24,12 @@
   "kind": "",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "FORMULAS.md s28 Fabio v3 S1-S9/Models A-D, s29 Tom VP return-to-value, hand worked numbers",
+      "ref": "9b1647ad6",
+      "utc": "2026-10-31T23:46:54Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +54,12 @@
   "refined_by": "",
   "refreshed": "2026-10-31T14:50:00Z",
   "refs": [],
-  "result": "",
+  "result": "FORMULAS.md s28 Fabio v3 S1-S9/Models A-D, s29 Tom VP return-to-value, hand worked numbers",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/FORMULAS.md"
   ],
@@ -48,12 +69,13 @@
   "scope_sha": "d94529dce83d",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read research/fast_track_2026-09-27/FABIO_V3_SPEC.md sections 2-6 and backtest/vp_return_to_value.py docstring plus its PRE_REG.md",
     "write a FORMULAS.md section per item with symbols, units, one worked number each, SOURCED or OURS label per parameter",
     "do not copy numbers from code: derive the worked example by hand"
   ],
+  "taken": "2026-10-31T23:46:54Z",
   "tests": "docs card: python -m pytest MyTradingSys/tests/docs/test_integrity.py -q passes; each new section has a hand worked number",
   "title": "FORMULAS.md has no section for Fabio v3 S1-S8 / Models A-D nor the Tom VP return-to-value count; independent re-derivation has no written formula (SETUP_REVIEW s4 item 6)",
   "weight": "CRUCIAL",
