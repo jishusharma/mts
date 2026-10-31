@@ -167,6 +167,8 @@ ships with an automated check: result-JSON shape, bucket trade counts sum to the
 | NOT ENOUGH DATA (expected) | one rerun card: same frozen features on pre-DEV `dev_ext_2019_2021` for Model C (NY session on 1m klines exists there, A-20261018-2) to lift n toward 461 per tercile; if still NOT ENOUGH DATA, park meta-labelling for these two setups | no snapshot, no panel, no sizing, no new feature hunting |
 | FAIL (top tercile CI below 0 or placebo not beaten) | TRIALS.md row; both meta-label cards closed with the result; meta-labelling returns only when a primary setup first passes gross on DEV (SETUP_REVIEW.md section 6 tests 2 and 3 are the ones that can) | everything |
 
+**2026-10-31 update (dev_ext power check, before any outcome read):** the pre-DEV window is 2020-01-01..2021-12-31 (no 2019 perp 1m data). The Cowen band needs 21 completed weeks, so about 5 months of 2020 drop. Scaled from DEV (27 months gave 162 per third), 2020-21 gives about 140 per third and pooled with DEV about 320, both under the 461-490 needed for a 0.30 R lift. The rerun is therefore NOT ENOUGH DATA by construction, so per the row above meta-labelling is **parked for Tom VP and Fabio C**; card `meta-label-fabio-c-dev-ext-power` is parked, not run. Also blocking: the 2020-21 1m klines are not on JIS-NB (`F:/MTS/data/dev_ext_2019_2021/` absent), and `studies/_bars.py` (WARMUP_FROM 2022-01) and `studies/fabio_v3.py` (dates locked to DEV) cannot read that window. Meta-labelling returns when a primary setup passes gross on DEV.
+
 ### 2.3 Order across primary setups (which are worth meta-labelling at all)
 Rule (Opus, kept): a filter lifts a weak-but-real edge; it does not rescue negative gross. Ranking OURS from the numbers on disk.
 

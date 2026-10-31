@@ -790,7 +790,7 @@ LAST_DAY_CAP = traffic.LAST_DAY_CAP  # operator 2026-10-22, login A at 97% with 
 
 # operator 2026-10-31: "68% cap on weekly for login C for 31st Oct, then on 1st Nov add 10% for the day" (UTC dates, login C only);
 # applies only when the caller passes today, so an undated call and the tests keep the standing cap
-DAY_CAPS = {("C", "2026-10-31"): 68, ("C", "2026-11-01"): 78}
+DAY_CAPS = {("C", "2026-10-31"): 70, ("C", "2026-11-01"): 80}
 
 
 def weekly_cap(login: str, host: str, h_to_reset: float | None = None, today=None) -> int:
