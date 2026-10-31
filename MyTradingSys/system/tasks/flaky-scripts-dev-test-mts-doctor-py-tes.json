@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T00:52:24Z",
   "commands": [
     "python -m pytest -q scripts/dev/test_mts_doctor.py"
   ],
@@ -30,6 +31,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "already fixed on trunk by 3350ac565 (disk reading pinned in the same-day report test)",
+      "ref": "138bb6a6f",
+      "utc": "2026-10-31T00:52:24Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Supervisor never idle with ready work: role rule, re-arm after compaction, status RED, doc",
@@ -46,7 +53,12 @@
   "refined_by": "planner-20261030-d",
   "refreshed": "2026-10-30T21:14:20Z",
   "refs": [],
-  "result": "",
+  "result": "already fixed on trunk by 3350ac565 (disk reading pinned in the same-day report test)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/test_mts_doctor.py",
     "scripts/dev/mts_doctor.py"
@@ -57,12 +69,13 @@
   "scope_sha": "2037b9246c15",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "in test_same_day_run_twice_gives_the_same_report monkeypatch shutil.disk_usage (or D.disk) to a fixed value",
     "fail-first: add test_report_text_changes_with_disk_reading that patches disk_usage to 93 GB then 94 GB between two runs and asserts the two texts differ only on the DISK line; confirm the original unpatched test shape fails under that patch",
     "run python -m pytest -q scripts/dev/test_mts_doctor.py until green"
   ],
+  "taken": "2026-10-31T00:52:24Z",
   "tests": "scripts/dev/test_mts_doctor.py::test_report_text_changes_with_disk_reading fails on the pre-change test shape under a moving disk value; the pinned same-day test passes",
   "title": "flaky: scripts/dev/test_mts_doctor.py test_same_day_run_twice_gives_the_same_report fails on CI when free disk GB changes between the two reports (93 vs 94 GB, run 41126898994); pin disk in the test",
   "weight": "ROUTINE",
