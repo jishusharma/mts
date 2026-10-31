@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T16:59:45Z",
+  "depends_on": [],
+  "done_when": "C30_VALIDATION.md + verdict.json (PASS/FAIL/INCONCLUSIVE per hypothesis, Holm m=2) committed AFTER PRE_REG_C30.md; EXPOSURE_LEDGER row split VALIDATION; sim card eagle-c30-wt-rsi-div updated; HOLDOUT unread",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Run the one pre-registered VALIDATION read (2024-07-01..2025-06-30) of H1/H2 frozen in research/eagle_eyes_picture_2026-10-28/PRE_REG_C30.md and write the verdict file",
+  "id": "c30-validation-read",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Not a twin of rsi-deep-divergence-context (different rule), but both read VALIDATION for bullish RSI divergence: log both reads in EXPOSURE_LEDGER",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T16:59:55Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "fetch Binance spot 5m 2024-04..2025-06 (warm-up before 2024-07-01), reuse wt_rsi_div.run logic unchanged"
+  ],
+  "scope_out": [
+    "no rule change, no new cells, no HOLDOUT (2025-07+), no orders"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "split_dates": [
+    "2024-07-01",
+    "2025-07-01"
+  ],
+  "state": "ready",
+  "steps": [
+    "Confirm PRE_REG_C30.md commit precedes any result commit",
+    "Fetch VALIDATION bars, run preflight",
+    "Compute H1/H2 per PRE_REG section 2, write verdict, ship"
+  ],
+  "tests": "bt_preflight P1/P2/P2b/P6/P7/P8 on VALIDATION bars pass before the verdict",
+  "title": "C30 VALIDATION read: WaveTrend bottom buy + bullish RSI divergence (PRE_REG_C30.md, H1 30m / H2 15m)",
+  "weight": "",
+  "worker": "agent"
+}
