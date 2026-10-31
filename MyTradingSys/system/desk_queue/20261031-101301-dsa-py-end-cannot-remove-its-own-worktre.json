@@ -5,7 +5,9 @@
   "id": "20261031-101301-dsa-py-end-cannot-remove-its-own-worktre",
   "need": "python -m pytest scripts/dev/test_dsa.py -q (full brief: python scripts/dev/tasks.py brief dsa-py-end-cannot-remove-its-own-worktre)",
   "posted": "2026-10-31T10:13:01Z",
-  "status": "pending",
+  "status": "taken",
+  "taken": "2026-10-31T17:49:04Z",
+  "taken_by": "JIS-NB",
   "target": "DSA",
   "title": "dsa.py end cannot remove its own worktree: cmd_end requires cwd inside the tree, then git worktree remove fails Permission denied"
 }

@@ -1,12 +1,15 @@
 {
   "card": "gemini-param-labels-turn_of_candle",
   "done_when": "MyTradingSys/research/gemini_audits_2026-10-30/turn_of_candle_param_labels.md exists: one row per parameter with file:line, label, and source quote or NOT_IN_DATA",
+  "finished": "2026-10-31T17:47:00Z",
   "from": "lane_health",
+  "host": "JIS-NB",
   "id": "20261029-232605-gemini-param-labels-turn-of-candle",
   "need": "Rerouted from the GPT lane (credits/limit/outage) to DSA. Card gemini-param-labels-turn_of_candle: [GEMINI] Argon-medium: every parameter in layers/turn_of_candle labelled SOURCED or OURS (file:line)\nWorktree: mts-dsa (python scripts/dev/sync.py start first). Data on F:\\MTS\\data is read-only.\nFull brief: python scripts/dev/tasks.py brief gemini-param-labels-turn_of_candle\nGoal: List each numeric parameter default in layers/turn_of_candle code, find its source (analyst extract, FORMULAS.md, or none) and label SOURCED (quote + path) or OURS. Report only; no verdicts.\nRead: MyTradingSys/research/gemini_audits_2026-10-30/turn_of_candle_param_labels.md (new file only)\nStep 1: list parameters\nStep 2: search extracts for each\nStep 3: write table\nRun exactly:\n  C:/Users/E-ngineers/.gemini/bin/agy.exe --print \"Follow the steps of card gemini-param-labels-turn_of_candle (python scripts/dev/tasks.py brief gemini-param-labels-turn_of_candle). Write only MyTrad\nWrite the report to MyTradingSys/research/layer_lab/reports/2026-10-29_gemini-param-labels-turn_of_candle.md: findings or numbers, each with file:line or the command you ran.\nNumbers come only from output you printed in the chat. Change no code or spec. Never read a holdout.\nIf a command fails twice, close the desk row with --failed and the error text.\nClose: python scripts/dev/desk.py done <row id> --result \"<verdict or number + MyTradingSys/research/layer_lab/reports/2026-10-29_gemini-param-labels-turn_of_candle.md>\".",
   "posted": "2026-10-29T23:26:05Z",
   "rerouted_from": "CODEX",
-  "status": "pending",
+  "result": "Already completed on fast-track: MyTradingSys/research/gemini_audits_2026-10-30/turn_of_candle_param_labels.md. No new work; the file existed before this session.",
+  "status": "done",
   "target": "DSA",
   "title": "[GEMINI] Argon-medium: every parameter in layers/turn_of_candle labelled SOURCED or OURS (file:line)"
 }
