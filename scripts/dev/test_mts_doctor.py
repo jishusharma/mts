@@ -266,7 +266,7 @@ def test_waiting_on_operator_lists_old_cards_and_questions(tmp_path):
 
 def test_broadcast_warns_on_unacked_and_expired_told_for_a_seen_host():
     import mts_signal as S
-    now = datetime(2026, 10, 25, 12, 0, tzinfo=timezone.utc)
+    now = datetime.now(timezone.utc).replace(microsecond=0)
 
     def t(h):
         return (now.replace(tzinfo=None) - __import__("datetime").timedelta(hours=h)).strftime("%Y%m%dT%H%M%SZ")
