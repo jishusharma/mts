@@ -36,6 +36,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `tom-btc-validation` blocked p2 DSA-NUC: Tom on BTC T7: VALIDATION read once (2025-04..2025-06) of the frozen DEV config
   - `tom-probe-prereg` blocked p2 SONNET: Pre-register the surviving S/Q/M/F arms and write their runner card
   - `tom-probe-runner` blocked p2 SONNET: Run pre-registered Tom management arms on DAX and BTC
+  - `tom-vp-return-late-day-censoring` ready p2 SONNET: Tom VP return study: events with zero or few bars left in the UTC day are forced to no-return (Part A event ba
   - `lab-verify-trend-healthy-in-balance` refined p3 SONNET: LAB-VERIFY 10-18: how often trend_healthy is set inside a multi-day balance (DEV)
   - `tom-btc-other-setups` blocked p3 CODEX: Tom on BTC T8: chart lab + event study for his other trade types (trend continuation pullback to value/VWAP, b
 
@@ -61,6 +62,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Codex lab reports (newest 2 of 2): `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-fabio-gpt-rederive.md`; `MyTradingSys/research/layer_lab/reports/2026-10-25_lf-fabio-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `t09-f4-live-window-99-bars-swing-layers` blocked p2 JIS-NB: T09-F4 S2: 99-bar live window misses 68 of 96 escalation signals; fetch more bars for swing layers
+  - `fabio-of-model-docstring-dst-sessions` ready p3 SONNET: fabio_of_model.py docstring states fixed UTC sessions (London 08:00-13:30, NY 13:30-21:00) but session_bounds 
   - `layer-review-fabio-session` ready p3 SONNET: Layer review sheet: Fabio and session timing (idea, source, backtests, bugs, confluence)
   - `oi-pivot-1h-4h-long-oi-followup` blocked p3 SONNET: OI pivot candidates at 1h/4h: aggregate the 5m metrics archive 2022-01..2024-06 (DEV), same candidates/outcome
   - `fabio-layer-v2-markets` blocked p5 OPUS: Fabio layer v2 spec, part B: data plan per market, cost, stop width, build + recall cards (Opus research)
@@ -269,6 +271,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `pitchfork-operator-charts-prep` blocked p2 SONNET: pitchfork: classify operator's pitchfork charts, measure copy-paste (parallel) forks vs random parallels (spec
   - `sim-desk-plug-in-pitchfork-4h-tine-bounc` refined p2 OPUS: Sim desk: plug in Pitchfork 4H tine-bounce study adapter (Modified Schiff + Volume Profile)
   - `layer-review-rsi-cc-pitchfork-engine` ready p3 SONNET: Layer review sheet: RSI, CryptoCred, pitchfork, live engine (idea, source, backtests, bugs, confluence)
+  - `pitchfork-doc-atr-pivot-filter-vs-code` ready p3 SONNET: Pitchfork research doc says pivots need amplitude >= 2.5 x ATR14 (Rule P-01) but find_pivots_zigzag filters by
 
 ## Pizzino (Jason bar count + Michael nested swing states) (`pizzino`)
 - Status: Indicator module built with fail-first tests from SPEC worked examples. No backtest, no live wiring (pz-4 next).
