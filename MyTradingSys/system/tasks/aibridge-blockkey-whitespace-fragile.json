@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T13:05:02Z",
+  "depends_on": [],
+  "done_when": "block_select.test.js jitter case fails on pre-change code and passes after; both files use the normalised key; runner lists the test",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "blockKey hashes the raw text, so an innerText vs textContent whitespace difference makes block 1 run twice; hash a whitespace-normalised text instead.",
+  "id": "aibridge-blockkey-whitespace-fragile",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "AIBridge 0.7.6: version bump for the E2E script (version guard counts scripts/aibridge/tes",
+      "ref": "4e4e702400e3",
+      "utc": "2026-10-31T13:16:53Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-31 ACCEPT (Sonnet reviewer Agent, FIX applied once, not re-read, planner DECISION OURS).  Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T14:49:45Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/aibridge/extension/content.js",
+    "scripts/aibridge/extension/loop.js",
+    "scripts/aibridge/tests/block_select.test.js"
+  ],
+  "scope_out": [
+    "live tree, extension release/version bump, any other AIBridge file"
+  ],
+  "scope_sha": "4e4e702400e3",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "read blockKey in content.js and loop.js and the existing block_select.test.js",
+    "add a jitter test: same block read with extra or collapsed whitespace must give one key",
+    "normalise whitespace (trim, collapse runs) before hashing in both files",
+    "confirm block_select.test.js is run by the AIBridge test runner (add it if not)"
+  ],
+  "tests": "scripts/aibridge/tests/block_select.test.js: DOM whitespace-jitter case fails on old code, passes after",
+  "title": "AIBridge blockKey hashes raw text: whitespace difference between innerText/textContent reads makes block 1 run twice (content.js, loop.js); done-when: whitespace-normalised key, DOM jitter test fails on old code, passes after; block_select.test.js wired to a runner",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

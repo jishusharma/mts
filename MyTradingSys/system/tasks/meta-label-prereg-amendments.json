@@ -1,0 +1,40 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T13:48:51Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "meta-label-prereg-amendments",
+  "lane": "SONNET",
+  "layers": [
+    "tom",
+    "fabio"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "superseded by 68eac1e27: ROADMAP 2.1 amendments applied POST HOC to the P0 test; sister card meta-label-break-events-layer-features reads ROADMAP 2.1 directly",
+  "pinned": false,
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/meta_label_roadmap_2026-10-31/ROADMAP.md"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "dropped",
+  "steps": [],
+  "tests": "",
+  "title": "Meta-label pre-reg amendments (ROADMAP 2.1) before any further outcome read on meta-label-tom-vp-fabio-trades and meta-label-break-events-layer-features: features stamped at the fill bar open with last-closed-bar rule for HTF values; Holm family m = setups x specs written before the read, BH-FDR beside; tercile cuts from the training fold; verdict CV = 6 contiguous blocks + same sign 2022 vs 2023-24H1, week-purged beside; gross/fee/net per bucket (FORMULAS 18.7); funding NOT RUN (not on disk); name Fabio C as the price-only stand-in; power line per setup; NOT ENOUGH DATA builds nothing. Reads already made are reported as read with the bar applied POST HOC and labelled",
+  "weight": "",
+  "worker": ""
+}

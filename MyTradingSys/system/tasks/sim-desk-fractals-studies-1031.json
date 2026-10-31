@@ -15,7 +15,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "test fails before the module exists",
-  "note": "",
+  "note": "already shipped: 74b3ccbae 5 fractals-*.json + test_fractals_export.py on trunk",
+  "pinned": false,
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
@@ -33,7 +34,7 @@
   "sources": [
     "MyTradingSys/research/fractals_2026-10-31/SYNTHESIS.md"
   ],
-  "state": "raw",
+  "state": "dropped",
   "steps": [
     "write f1/f2/f3 percent-only trade lists",
     "fractals_export.py",

@@ -66,8 +66,8 @@ def test_f3_matches_result_md():
 
 def test_built_results_are_valid():
     res = fx.build_all()
-    assert len(res) == 5
-    assert len({r["id"] for r in res}) == 5
+    assert len(res) == 6
+    assert len({r["id"] for r in res}) == 6
     for r in res:
         assert r["family"] == fx.FAMILY and r["provenance"] == "exported"
         assert all(w["label"] in ("SOURCED", "OURS") for w in r["what"]), r["id"]

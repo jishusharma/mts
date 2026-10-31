@@ -1,0 +1,338 @@
+# Video ID: p9KajODtBsU
+# Title: Making Money with the Altcoins (while waiting for BTC to move)
+# Published: 2026-10-05
+# Source: youtube_transcript_api (auto); uploader: JalaCrypto
+# Analyst: Jala
+# Channel: @jalacrypto
+# Duration_s:793
+# Word count: 2344
+# ---
+[00:00:00] All right. How's everyone doing? This is
+[00:00:02] Halo Pablo. I hope everyone had a lovely
+[00:00:04] weekend. Not too much to report on with
+[00:00:07] u with Bitcoin. We're still uh this is
+[00:00:11] the daily Iron Dome. We're definitely in
+[00:00:15] this kind of rising wedgike structure
+[00:00:19] between the 400 daily and the 100 weekly
+[00:00:24] trending upward.
+[00:00:26] Short-term holders are doing nice.
+[00:00:27] They're in profit here,
+[00:00:32] but looking at it on the grand scheme of
+[00:00:34] things,
+[00:00:36] this is on a three-day.
+[00:00:39] Uh, I mean, it's looking good, man. I
+[00:00:41] mean, we're we're here at the three
+[00:00:42] mark. We know every four years we get
+[00:00:45] this three. Now, the three is the next
+[00:00:46] low that comes in off the lowest low in
+[00:00:49] the bottom pocket. So, we have the one
+[00:00:51] and the two
+[00:00:53] and then the three here. The one and the
+[00:00:55] two constitutes the double bottom. Here
+[00:00:57] was last uh cycles one and two and
+[00:01:00] three. Notice that the three comes right
+[00:01:02] in on the confirmation. See where the
+[00:01:04] nuple turns yellow here and goes up
+[00:01:06] through the zero line next to this uh
+[00:01:10] EMA that goes up alongside it. Those
+[00:01:13] usually fall right in line with the
+[00:01:16] threes. And so we should be getting a
+[00:01:18] three pretty soon if this thing doesn't
+[00:01:19] tank back down beneath the 400 to
+[00:01:23] revisit the 50we SMA.
+[00:01:26] Uh notice where price action goes
+[00:01:29] through the 100 weekly
+[00:01:32] comes in around like where the EMA is.
+[00:01:36] And this marks the the real reversal,
+[00:01:39] the reversal above the EMA. And then
+[00:01:41] here it doesn't really come back down.
+[00:01:43] and it goes all the way up to make
+[00:01:45] either another all-time high or it caps
+[00:01:48] out like it does here. Now, this was
+[00:01:51] back in 2019 for a counter trend rally.
+[00:01:54] Now, counter trends don't go quite as
+[00:01:55] high as the previous all-time high.
+[00:01:57] Still, it's still a pretty juicy swing
+[00:01:59] if you can get into it. It's more than
+[00:02:01] 100%.
+[00:02:03] That came here
+[00:02:05] where the price action comes in after
+[00:02:07] the three and it goes up through the
+[00:02:09] 100. And that's what we're looking for
+[00:02:12] potentially something like that to
+[00:02:13] happen this year.
+[00:02:16] So that's why I'm keeping and I'm
+[00:02:17] emphasizing
+[00:02:20] such such importance on the 100 in price
+[00:02:23] action because it's the it's the golden
+[00:02:25] thread as it were. Look at the cycle
+[00:02:27] before it right here. You got to be
+[00:02:30] careful too because it could be
+[00:02:31] precarious. You see how we had the uh
+[00:02:33] pump and it came back down beneath it.
+[00:02:35] This came in after the three. See how
+[00:02:37] the three came in on the sunrise on the
+[00:02:39] sun confirmation in the nupal
+[00:02:42] but then it came back up above it and
+[00:02:44] then it found support and then from
+[00:02:46] there it created a whole new system uh
+[00:02:50] macro bull market. So we're keeping a
+[00:02:53] very close watch over uh the 100 and and
+[00:02:56] price action.
+[00:03:00] So here uh now here I have the
+[00:03:04] stochastic now this is called the sto
+[00:03:07] stochastic optimized uh trend tracker
+[00:03:10] and I put my own little spin on it here
+[00:03:13] I have the sun zones in the bottom and
+[00:03:15] the moon zones up on top
+[00:03:18] and where we get the sun here this has
+[00:03:21] been the reversal point historically for
+[00:03:26] for Bitcoin
+[00:03:28] see here's the sun zone Now, the sun has
+[00:03:30] to come in within the sun zone. Doesn't
+[00:03:32] count if it comes in higher than the sun
+[00:03:35] zone. This is how I coded it. And so,
+[00:03:38] see how the sun zone came in here, right
+[00:03:41] where it crossed over the 100, we got
+[00:03:43] the sun zone. What about this one? Yeah,
+[00:03:47] this one was above this one was uh was
+[00:03:50] here above the 50.
+[00:03:54] And then this one here is right at the
+[00:03:57] 100.
+[00:03:59] And so sometimes it comes in before the
+[00:04:01] 50 and other times the point is we have
+[00:04:03] we have a lot of pocket play uh which is
+[00:04:06] where we are now also in the pocket. The
+[00:04:09] pocket being the space between the 50
+[00:04:11] week and the 100.
+[00:04:16] Here's the one from 2019.
+[00:04:20] And yeah, we don't have enough info to
+[00:04:23] go back further than that, but it works
+[00:04:25] out pretty well.
+[00:04:27] So that's the way I've coded this thing
+[00:04:29] to to kind of and then like the moon
+[00:04:30] zones are the tops the tops of the now
+[00:04:33] it doesn't mean the top of the macro
+[00:04:35] bull run it's just the moon zone this is
+[00:04:37] where momentum is kind of weakening
+[00:04:40] whereas in the sun zone on the bottom we
+[00:04:42] have more of a potential for a recovery
+[00:04:44] so it's strengthening momentum is
+[00:04:46] strengthening with the sunrise and with
+[00:04:50] the moon with the blood moon the red
+[00:04:52] moon dipping down it's weakening okay
+[00:04:55] Um, and so here, yeah, this is on the
+[00:04:59] 30-minute forensic. We see clearly that
+[00:05:01] rising wedge that we're in. We have this
+[00:05:05] micro trend line support coming all the
+[00:05:08] way
+[00:05:09] from the bottom here, this spring action
+[00:05:11] that we had back in September.
+[00:05:14] Uh, riding it up through here where we
+[00:05:17] where we currently sit. You see, we're
+[00:05:19] not really I just put the 50 in here. We
+[00:05:21] don't really need to pay attention to
+[00:05:23] the 50 anymore. The 50 only comes into
+[00:05:26] relevance if Bitcoin falls beneath the
+[00:05:27] 400. But right now, I mean, we're
+[00:05:31] bouncing around, I guess, between well,
+[00:05:33] we're really not even close to the 100.
+[00:05:35] But if we continue to make stabs at the
+[00:05:37] micro trend resistance of this wedge,
+[00:05:39] then we'll be up in the territory of the
+[00:05:41] of the 100 weekly. And then that's
+[00:05:43] something that we want to we want to pay
+[00:05:45] attention to. We'll be up here. You see
+[00:05:47] where it's right beneath the 100?
+[00:05:51] And so uh and then that would that would
+[00:05:54] put us up above the 100. And like we
+[00:05:56] talked about, we already know what
+[00:05:57] happens when price goes above the 100.
+[00:06:00] So right now, yeah, we see the strength,
+[00:06:04] we see the recovery. It came right in
+[00:06:06] here on the confirmation.
+[00:06:09] And so if this see the little baby wedge
+[00:06:13] here I drew. Um,
+[00:06:16] yeah.
+[00:06:18] So, all this thing needs to do is just
+[00:06:20] get above this 100 and then if that
+[00:06:23] happens, then I'm going to look here for
+[00:06:26] the nuple to turn yellow and then that's
+[00:06:28] that's a long for a potential counter
+[00:06:30] trend. And if not a counter trend, then
+[00:06:34] all the way up past 125,000. I don't
+[00:06:37] it's too soon to kind of forecast
+[00:06:39] something like that, but it's possible.
+[00:06:40] But right now I am looking at a possible
+[00:06:44] counter trend
+[00:06:46] uh to come in um around like maybe
+[00:06:49] before midterms or around thereabouts
+[00:06:51] and after midterms I I I believe it'll
+[00:06:54] probably um come back down like
+[00:06:57] something like we had back in 19
+[00:07:00] which set the stage for COVID flash
+[00:07:02] crash. Who knows what it could be this
+[00:07:03] time around catalyze all this World War
+[00:07:06] II? I don't know. All I know is like you
+[00:07:09] can't you can only hide a gunshot wound
+[00:07:11] for so long with a band-aid.
+[00:07:13] And it's like this economy is gutshot. I
+[00:07:17] think the the just everything the global
+[00:07:20] mayhem it's it's not it's not pretty
+[00:07:22] right now. Look what's going on in
+[00:07:24] France right now. I mean all this is
+[00:07:26] signs of the times. It's all just
+[00:07:28] symptoms of a deeper underlying illness.
+[00:07:32] And so I have a few ideas of what this
+[00:07:34] illness is. I'm not going to say it on
+[00:07:35] this channel because I don't want to
+[00:07:36] polarize people and turn this into a
+[00:07:39] political thing, [clears throat]
+[00:07:42] but uh yeah, it's there and I think it's
+[00:07:44] just going to get it's going to get
+[00:07:45] worse and worse. But like before we have
+[00:07:47] the collapse, I think we're going to
+[00:07:49] we're setting the stage for another uh
+[00:07:51] for something like a counter trend.
+[00:07:52] Something like we saw in 2019 before
+[00:07:54] COVID,
+[00:07:56] right? Where we went up through the 100
+[00:07:58] and this was a this was a pretty juicy
+[00:08:00] swing, right? This was like 116%
+[00:08:04] just eyeballing it. So, we can go 100
+[00:08:07] 100 or so percent 116%. I don't know if
+[00:08:10] we're going to go that high. Where would
+[00:08:11] that bring us from here? I mean, that
+[00:08:14] would that would give us another
+[00:08:15] all-time high, obviously. I don't, you
+[00:08:18] know, we could see something like, you
+[00:08:20] know, if we were, it's we're only 48%
+[00:08:23] from mitigating the previous all-time
+[00:08:25] high. So anyway, it's a little too soon
+[00:08:27] and we still don't have the
+[00:08:28] confirmation, but I do anticipate
+[00:08:30] getting this any day now. And so that's
+[00:08:33] about it. Uh, as far as like swing
+[00:08:35] trades, not really much have been going
+[00:08:36] on. Uh, Aash Network, I did get some of
+[00:08:39] my guys into Aash Network in the Discord
+[00:08:42] group. Um,
+[00:08:45] so this was I even put this chart up.
+[00:08:47] Anyone take notice of Aash Network after
+[00:08:49] I put the chart up? So this this was uh
+[00:08:52] when did I do this chart? Um,
+[00:08:58] here this one I did back in on September
+[00:09:01] 19th. I said when this nupal line turns
+[00:09:04] yellow on a 3-day 3-day log. No, this is
+[00:09:08] actual uh this is is this logarithmic?
+[00:09:10] Yeah, it is logarithmic. So when this
+[00:09:12] nal line turns yellow in the 3-day, I'm
+[00:09:14] buying a cash network. So it hadn't it
+[00:09:16] hadn't turned yellow yet. And then here
+[00:09:19] that was on the 19th. It turned yellow
+[00:09:21] obviously and it shot up. It's still
+[00:09:24] kind of going well. It's retraced since.
+[00:09:26] And so this was uh October 4th. This was
+[00:09:28] yesterday. So it was a pretty it was
+[00:09:30] like a 35 30 37 35 37%
+[00:09:34] swing and it's still blowing and going.
+[00:09:36] This is a cash now. See it turned
+[00:09:39] yellow. Like look at this. So this has
+[00:09:42] gone up um pretty
+[00:09:46] pretty heavily. Other than this, I mean
+[00:09:47] it's it's gone up 53% since I put the
+[00:09:50] chart up. So, and it was just one of
+[00:09:52] those. I have other charts. I'm still
+[00:09:54] waiting for them to pop off, but this is
+[00:09:55] one. And this is AI related. I didn't
+[00:09:57] know much about Acash network and then I
+[00:09:59] did a little bit of a re little bit of
+[00:10:01] research and I found out that it was AI
+[00:10:02] related and I was like, "Aha, that's why
+[00:10:04] I identified the superructure." Well, a
+[00:10:06] lot of these AI coins like virtuals and
+[00:10:09] and such and there's others um seem to
+[00:10:12] have like real bullish um uh
+[00:10:15] superructure super super cycle patterns
+[00:10:18] that look like uh I mean there's like a
+[00:10:20] lot of them I feel like they're just
+[00:10:21] waiting for Bitcoin to lose dominance
+[00:10:23] and then they're going to explode. And
+[00:10:24] others are just like screw it, we're not
+[00:10:26] even going to wait for Bitcoin. They
+[00:10:27] just are popping up on their own. But
+[00:10:29] the common denominator in them all seems
+[00:10:31] to be that they're AI related. They're
+[00:10:33] AI infrastructure related. So, it's just
+[00:10:36] like feeds the whole narrative. I'm
+[00:10:38] bullish on AI. 100% bullish on AI.
+[00:10:41] Everything and anything AI, I'm I'm
+[00:10:44] interested. I'm interested. So, all
+[00:10:47] right. And with that, uh, I don't want
+[00:10:49] this to go on too long. I'm going to
+[00:10:50] call it quits here. Thanks for watching.
+[00:10:53] If you like this sort of technical
+[00:10:54] analysis, like, subscribe. Remember,
+[00:10:56] keep your eyes on the 400 and the 100,
+[00:10:58] the 100 weekly, 400 daily for Bitcoin.
+[00:11:01] Um, looking for that sun confirmation.
+[00:11:04] If the sun confirmation comes in for me,
+[00:11:05] that's a long but. But still, we need to
+[00:11:08] be cautious because of potential traps
+[00:11:10] and fake outs on route to the counter
+[00:11:13] trend to the counter trend top. Don't
+[00:11:15] forget what happened in 2019 before
+[00:11:17] COVID, right? So,
+[00:11:21] yeah, that's this one right here. See,
+[00:11:23] we had this Iron Dome. This is the big
+[00:11:25] Iron Dome for 2018. Here was the
+[00:11:27] all-time high that we had back in
+[00:11:29] December of 17. The Iron Dome came up
+[00:11:32] came up through the 100. So this
+[00:11:34] [clears throat] is kind of like where we
+[00:11:36] are
+[00:11:37] up through the pocket up through the 100
+[00:11:40] right and but look where it capped out.
+[00:11:43] It capped out here. Um and so maybe like
+[00:11:47] 50% up from the all-time high from the
+[00:11:49] previous all-time high and then down.
+[00:11:52] And so uh we've got something like that
+[00:11:55] a potential of uh for something like
+[00:11:58] that happening. And then of course the
+[00:11:59] other one that we got in 15 was a fake
+[00:12:01] out alto together. It went up and then
+[00:12:03] it uh killed the longs, came back down,
+[00:12:05] did a short squeeze and and uh found
+[00:12:07] support on top of the 100 week and then
+[00:12:09] we started the bull run proper from
+[00:12:11] there. So uh there's still a lot of
+[00:12:14] trickery in the books. They don't make
+[00:12:15] it easy. It's just too easy. You know,
+[00:12:17] if it were too easy, we'd all be we'd
+[00:12:19] all be millionaires, multi-millionaires
+[00:12:21] and billionaires many times over just
+[00:12:23] going off these fractals. So it's not
+[00:12:24] that easy. It's not that cut and dry.
+[00:12:26] But we get a pretty good idea. And if
+[00:12:28] we're patient and we exercise caution
+[00:12:29] and we keep our emotions in check, then
+[00:12:32] uh then uh then we have more of a chance
+[00:12:34] of like walking out of the casino at the
+[00:12:36] end uh holding holding the money bags
+[00:12:38] instead of losing our shirt in the end.
+[00:12:40] So uh a lot of it has to do with just
+[00:12:43] keeping a cool head and keeping your
+[00:12:45] emotions in check and patience,
+[00:12:47] patience, patience, patience is
+[00:12:49] definitely a virtue in trading. Um and
+[00:12:52] uh it'll keep you from getting wrecked.
+[00:12:54] So all right guys, love you. I'll talk
+[00:12:56] to you soon. Again, uh like, subscribe,
+[00:12:59] and none of what you've seen or heard
+[00:13:00] here is financial advice. If you need
+[00:13:02] prayer, halapabgmail.com.
+[00:13:03] You know what all that's about. I'm not
+[00:13:05] going to go into it at length here.
+[00:13:06] Probably do it on the next video. But
+[00:13:08] anyway, all right. Love you guys. Talk
+[00:13:10] to you later. Have a great day. Bye-bye.

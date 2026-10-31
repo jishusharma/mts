@@ -1,0 +1,62 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T14:48:12Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-10-31/fractals_synthesis_blind_read.md exists with one row per cited number, each FOUND/DIFF/NOT_IN_DATA",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Open every number or file:line cited in the named file and say FOUND / DIFF / NOT_IN_DATA with the file:line where it was looked up; facts only, no verdicts.",
+  "id": "gemini-blind-read-fractals-synthesis-1031",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "decision d-flexible-min-n-per-case: decision n from per-setup power calc, not a fixed 200",
+      "ref": "1a441d43ce07",
+      "utc": "2026-10-31T09:36:44Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "1a441d43ce07 decision d-flexible-min-n-per-case: decision n from per-setup power calc, not",
+      "ref": "MyTradingSys/research/fractals_2026-10-31/SYNTHESIS.md",
+      "utc": "2026-10-31T09:36:44Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-31 T0-ONLY (planner-a-20261031; machine checks only). Seeded from D11_PROGRAMME.md section 6 (Gemini lane). Producer is Claude/GPT, reviewer Gemini. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T14:48:15Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/fractals_2026-10-31/SYNTHESIS.md",
+    "MyTradingSys/research/gemini_audits_2026-10-31/fractals_synthesis_blind_read.md"
+  ],
+  "scope_out": [
+    "no code edit, no live tree, no VALIDATION or HOLDOUT read, no .secrets or .env"
+  ],
+  "scope_sha": "1a441d43ce07",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "open the named files (read-only)",
+    "one table row per cited number with the lookup file:line",
+    "write MyTradingSys/research/gemini_audits_2026-10-31/fractals_synthesis_blind_read.md and end with a Noticed: line"
+  ],
+  "tests": "audit card: every row of the output has a file:line or command",
+  "title": "[GEMINI] blind read of fractals_2026-10-31/SYNTHESIS.md: every cited number re-found in its file or NOT_IN_DATA",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

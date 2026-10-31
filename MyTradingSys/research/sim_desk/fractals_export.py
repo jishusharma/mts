@@ -343,6 +343,50 @@ def f3_result():
     }
 
 
+# ---------- F4 ----------
+def f4_result():
+    t = pd.read_csv(os.path.join(FR, "f4", "events.csv"))
+    r = t[(t["set"] == "RULE-cont") & (t.h == 6)].reset_index(drop=True)
+    trades = [{"d": x.entry_time[:10], "s": 1 if x.side == "long" else -1, "f": "8h squeeze-break continuation short, 48 h hold", "r": round(float(x.net_r), 3)}
+              for x in r.itertuples()]
+    rows = md_rows(os.path.join(FR, "f4", "RESULT.md"), "set")
+    tab = [[c[0], c[1], c[2], c[3], c[4], c[5], c[6], c[8]] for c in rows]
+    return {
+        "id": "fractals-f4-8h-state-analogs", "kind": "backtest", "parity": None, "family": FAMILY, "provenance": "exported",
+        "title": "8h look-alikes of the operator breakdown setup (BB squeeze-break, volume spike, RSI, StochRSI, CVD proxy)",
+        "date": "2026-10-31",
+        "what": [
+            er.W("Idea", "Find past 8h bars that look like the setup (price shape plus indicator state) and see what a short or a fade did after, fee-net.", O),
+            er.W("Rule event", "Bollinger bandwidth in the lowest 30 % of the last 90 bars, 6 or more bars inside the bands, then an 8h close below the lower band on volume z of 2 or more", O),
+            er.W("Analog event", "20 nearest past breakdown closes on a 24-bar path and 7 indicator values; the neighbours own results pick the side", O),
+            er.W("Trade", "Continuation short (stop at the signal bar high) or fade long (stop at the low), 2R target, 3 / 6 / 9 bars", S),
+            er.W("Fees", "Taker both legs, fees.BINANCE_TAKER", S),
+            er.W("Controls", "Random bars with matched volatility, random breakdown bars, month-block bootstrap, Holm over 9 tests", O),
+        ],
+        "how": "Each event is entered at the next open and walked on 1h bars to a stop, a 2R target or the time exit. Only 28 to 36 trades exist per set, far below the 550 to 2,400 needed to see 0.10 R.",
+        "window": "Binance spot 2017-08-17 to 2025-06-30 (HOLDOUT 2025-07+ never loaded)",
+        "verdict": {"label": "No edge: continuation inconclusive, fade fails, analog negative; too few events to decide", "tone": "warn"},
+        "why": [
+            "Continuation short: +0.109 / -0.115 / -0.138 R per trade at 3 / 6 / 9 bars, all confidence bands cross zero.",
+            "Fade long: about -0.5 R at every horizon; the upper confidence bound is below zero (FAIL).",
+            "Analog selection: +0.02 / -0.56 / -0.50 R, fewer than 30 trades at 6 and 9 bars.",
+            "The card baseline in R is distorted by tiny-risk random bars; a post-hoc percent control shows only the 3-bar continuation standing out (n 36): a lead for the forward log.",
+        ],
+        "kpis": [
+            {"label": "rule events (7.9 years)", "value": "36"},
+            {"label": "continuation 6 bars, net R", "value": "-0.115", "tone": "bad"},
+            {"label": "fade 6 bars, net R", "value": "-0.506", "tone": "bad"},
+            {"label": "trades needed for 0.10 R", "value": "550 - 2,400"},
+        ],
+        "examples": [
+            replay(trades, "R", "Trade replay (continuation short, 6 bars, time order)", "Fee-net R per trade; running total below. No prices."),
+            table("Sets against controls", ["Set", "Bars", "Trades", "Hit", "Net R", "Month-boot 95% CI", "Halves A / B", "Verdict"], tab),
+        ],
+        "source_files": [rel("f4", "RESULT.md"), rel("f4", "PRE_REG.md"), rel("f4", "output.md"), rel("f4", "events.csv")],
+        "commit": er.commit_of([os.path.join(FR, "f4")]),
+    }
+
+
 # ---------- phase tag ----------
 def phase_result():
     t = pd.read_csv(os.path.join(FR, "phase_tag", "tags.csv"))
@@ -384,7 +428,7 @@ def phase_result():
 
 
 def build_all():
-    return [p1b_result(), f1_result(), f2_result(), f3_result(), phase_result()]
+    return [p1b_result(), f1_result(), f2_result(), f3_result(), f4_result(), phase_result()]
 
 
 def main(argv=None):

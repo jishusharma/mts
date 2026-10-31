@@ -1,0 +1,63 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T14:48:21Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-10-31/meta_label_p0_blind_read.md exists with one row per cited number, each FOUND/DIFF/NOT_IN_DATA",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Open every number or file:line cited in the named file and say FOUND / DIFF / NOT_IN_DATA with the file:line where it was looked up; facts only, no verdicts.",
+  "id": "gemini-blind-read-meta-label-p0-result-1031",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "meta-label Tom VP / Fabio C: DEV run, both fail the pre-registered rule; sim-desk exports",
+      "ref": "68eac1e27905",
+      "utc": "2026-10-31T14:14:34Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "68eac1e27905 meta-label Tom VP / Fabio C: DEV run, both fail the pre-registered rule; sim-",
+      "ref": "MyTradingSys/research/meta_label_tom_fabio_2026-10-31/output.md",
+      "utc": "2026-10-31T14:14:34Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-31 T0-ONLY (planner-a-20261031; machine checks only). Seeded from D11_PROGRAMME.md section 6 (Gemini lane). Producer is Claude/GPT, reviewer Gemini. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T14:48:24Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/meta_label_tom_fabio_2026-10-31/output.md",
+    "MyTradingSys/research/meta_label_tom_fabio_2026-10-31/numbers.json",
+    "MyTradingSys/research/gemini_audits_2026-10-31/meta_label_p0_blind_read.md"
+  ],
+  "scope_out": [
+    "no code edit, no live tree, no VALIDATION or HOLDOUT read, no .secrets or .env"
+  ],
+  "scope_sha": "68eac1e27905",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "open the named files (read-only)",
+    "one table row per cited number with the lookup file:line",
+    "write MyTradingSys/research/gemini_audits_2026-10-31/meta_label_p0_blind_read.md and end with a Noticed: line"
+  ],
+  "tests": "audit card: every row of the output has a file:line or command",
+  "title": "[GEMINI] blind read of meta_label_tom_fabio_2026-10-31/output.md against numbers.json and PRE_REG.md",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
