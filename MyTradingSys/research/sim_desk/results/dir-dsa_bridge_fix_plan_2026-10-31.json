@@ -13,10 +13,10 @@
   "tone": "good"
  },
  "why": [
-  "\"\\\"> Write-Output \\\\\\\"EXIT_CODE=$LASTEXITCODE\\\\\\\" as the last line: it turns a failure into exit 0 (from 0.7.4 a line\\\",\",",
-  "\"\\\"> EXIT_CODE=<non-zero> also fails the step). For the gate use task=mts-gate, not an inline copy. A gate result counts only\\\",\",",
-  "\"\\\"> with its summary line ALL TESTS PASSED or FAILED: N step(s); no summary = FAIL, report the log path, do not re-run blind.\\\",\",",
-  "\"\\\"review stamp before ready, and c8 (lane OPUS) also needs approved_by. DECISION (OURS): the planner does not stamp its own\\\"\""
+  "\"\\\"\\\\\\\"> Write-Output \\\\\\\\\\\\\\\"EXIT_CODE=$LASTEXITCODE\\\\\\\\\\\\\\\" as the last line: it turns a failure into exit 0 (from 0.7.4 a line\\\\\\\",\\\",\",",
+  "\"\\\"\\\\\\\"> EXIT_CODE=<non-zero> also fails the step). For the gate use task=mts-gate, not an inline copy. A gate result counts only\\\\\\\",\\\",\",",
+  "\"\\\"\\\\\\\"> with its summary line ALL TESTS PASSED or FAILED: N step(s); no summary = FAIL, report the log path, do not re-run blind.\\\\\\\",\\\",\",",
+  "\"\\\"\\\\\\\"review stamp before ready, and c8 (lane OPUS) also needs approved_by. DECISION (OURS): the planner does not stamp its own\\\\\\\"\\\"\""
  ],
  "kpis": [],
  "examples": [
@@ -36,5 +36,5 @@
  "source_files": [
   "MyTradingSys/research/sim_desk/results/dir-dsa_bridge_fix_plan_2026-10-31.json"
  ],
- "commit": "1d4d59085"
+ "commit": "bde0292a9"
 }

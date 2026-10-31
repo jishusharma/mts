@@ -1,7 +1,7 @@
 {
 "_doc": "Catalogue of known tests on trunk. kind is inferred (kind_source). Built by sim_desk/build_catalogue.py.",
-"count": 307,
-"exported": 307,
+"count": 308,
+"exported": 308,
 "rows": [
 {
 "id": "st-_archive-loose_2026-10-cbp_profile6_result",
@@ -1678,7 +1678,7 @@
 "source": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/PICTURE_AND_PLAN.md",
 "exported": true,
 "result_id": "dir-eagle_eyes_picture_2026-10-28",
-"folder_files": 13,
+"folder_files": 14,
 "date": "2026-10-28",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
@@ -1805,7 +1805,7 @@
 "source": "MyTradingSys/research/sim_desk/results/eagle-c28-wt-structure.json",
 "exported": true,
 "result_id": "eagle-c28-wt-structure",
-"date": null,
+"date": "2026-10-31",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -3785,6 +3785,21 @@
 "date": "2026-10-31",
 "status": "FAILED",
 "verdict_class": "failed"
+},
+{
+"id": "dir-testnet_cotrade_2026-10-31",
+"family": "testnet cotrade",
+"title": "Testnet co-trade: operator calls, Claude places and records (design, 2026-10-31)",
+"kind": "backtest",
+"kind_source": "inferred from text",
+"verdict": ", US-open board levels, OI tile sentence), shots (shot ids), result (order ids, fills, P&L) <main checkout>/runtime_data/cotrade/<YYYY-MM-DD>.jsonl, append-only, gitignored (.gitignore:235 runtime_data/) NO (has order ids, sizes, P&L)",
+"source": "MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md",
+"exported": true,
+"result_id": "dir-testnet_cotrade_2026-10-31",
+"folder_files": 1,
+"date": "2026-10-31",
+"status": "SEE_VERDICT",
+"verdict_class": "other"
 },
 {
 "id": "dir-tom_btc_2026-10-13",
