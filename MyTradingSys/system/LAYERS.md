@@ -105,6 +105,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/rsi_divergence_mtf_2026-10-09`
 - Codex lab reports (newest 3 of 3): `MyTradingSys/research/layer_lab/reports/2026-10-28_malkan-hindi-reread-garble-check.md`; `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-rsi-gpt-rederive.md`; `MyTradingSys/research/layer_lab/reports/2026-10-26_lf-rsi-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
+  - `div-reverse-lower-tf-confirm-2020-2021` raw p2 SONNET: Confirm the divergence lead on fresh data: tf_break trades taken only when a Malkan reverse divergence WITH th
   - `krown-hidden-divergence-confluence-feed` blocked p2 SONNET: Krown hidden divergence as a shared confluence feed any layer (RSI 40-60 included) can consume; Malkan layer s
   - `kurisko-dev-event-study` blocked p2 SONNET: Kurisko Quad Rotation: DEV event study, fee-net, same-window placebo
   - `layer-review-rsi-cc-pitchfork-engine` ready p3 SONNET: Layer review sheet: RSI, CryptoCred, pitchfork, live engine (idea, source, backtests, bugs, confluence)

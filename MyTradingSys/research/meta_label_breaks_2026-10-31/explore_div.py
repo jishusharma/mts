@@ -62,6 +62,12 @@ def first_after(times, lo):
     return int(times[k]) if k < len(times) else None
 
 
+def trade_outcomes(o, c, t, e, d, H, tf):
+    """after the entry, by design: entry at open e+1, gross at the close of e+4 and e+H, and the time bar e+H closes."""
+    entry = o[e + 1]
+    return entry, d * (c[e + 4] / entry - 1), d * (c[e + H] / entry - 1), int(t[e + H]) + tf * 60
+
+
 def build(df):
     rows = []
     for tfn in M.TFS:
@@ -85,9 +91,8 @@ def build(df):
                     continue
                 d = side * M.SGN[ev['cls']]
                 t_entry = int(t[e]) + tf * 60
-                entry = o[e + 1]
-                r = dict(tf=tfn, cls=ev['cls'], t=t_entry, g4=d * (c[e + 4] / entry - 1), gH=d * (c[e + H] / entry - 1))
-                t_end = int(t[e + H]) + tf * 60
+                entry, g4, gH, t_end = trade_outcomes(o, c, t, e, d, H, tf)
+                r = dict(tf=tfn, cls=ev['cls'], t=t_entry, g4=g4, gH=gH)
                 ag = AGAINST_LONG if d > 0 else WITH_LONG
                 wi = WITH_LONG if d > 0 else AGAINST_LONG
                 for where, E in evs.items():
