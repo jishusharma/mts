@@ -18,7 +18,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "2026-10-31: data found on JIS-NB (earlier \"fetch first\" was wrong; spot or perp to be checked from the file header). D7 S3 run list #1.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -33,7 +33,7 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "Meta-label 1h lead, fresh-data check: refit the frozen meta.py 1h model on all DEV, score tf_break 1h events from BTCUSDT perp 1m 2019-09..2021-12 (not on JIS-NB: fetch from data.binance.vision first); pass = best third net > 0 with week-block CI lower > 0; VALIDATION stays sealed",
+  "title": "Meta-label 1h lead, fresh-data check: refit the frozen meta.py 1h model on all DEV, score tf_break 1h events from BTCUSDT 1m 2020-01..2021-12 (on disk: F:/MTS/Dumps/backtest/raw_1m_2019/klines, 24 files); pass = best third net > 0 with week-block CI lower > 0; VALIDATION stays sealed",
   "weight": "",
   "worker": ""
 }
