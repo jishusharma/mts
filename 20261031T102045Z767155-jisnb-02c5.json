@@ -1,0 +1,1 @@
+{"t": "20261031T102045Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "C: reverted 4a26cac5f (Lab_Guy promote dsabr-c1..c8 to ready): CI red Step 3tl, dsabr-c3/c4/c5 review receipts voided. Re-land after a fresh review receipt (tasks.py lint must pass). Shipped db3e68ed.", "login": "C"}
