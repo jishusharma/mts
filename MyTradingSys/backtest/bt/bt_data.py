@@ -132,12 +132,16 @@ def load_funding_strict(base, end_ms=None):
     return rates
 
 
+FUNDING_SNAP_MS = 1000   # settlement stamps are floored to the second (DECISION OURS: boundary jitter rule)
+
+
 def funding_cost_pct(funding, entry_ms, exit_ms, side):
     """Funding cost in % of notional: side x sum(rate of settlements s, entry < s <= exit). side +1 long pays a positive rate,
     side -1 short receives it. entry_ms / exit_ms / side broadcast as numpy arrays; funding = [(t_ms, rate)] sorted."""
     import numpy as np
     ts = np.array([x[0] for x in funding], np.int64)
     cum = np.concatenate(([0.0], np.cumsum([x[1] for x in funding])))
+    ts = ts - ts % FUNDING_SNAP_MS   # archive calc_time is 1-31 ms after the 8h boundary: snap so (entry, exit] sees the nominal stamp
     a = np.searchsorted(ts, np.asarray(entry_ms, np.int64), side="right")
     b = np.searchsorted(ts, np.asarray(exit_ms, np.int64), side="right")
     return np.asarray(side) * (cum[b] - cum[a]) * 100.0

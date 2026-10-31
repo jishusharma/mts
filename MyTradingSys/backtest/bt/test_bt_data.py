@@ -77,4 +77,11 @@ class Hard(unittest.TestCase):
         long_ = d.funding_cost_pct(fr, [999, 1000, 999], [3000, 3000, 1000], [1, 1, 1])
         self.assertTrue(all(abs(a - b) < 1e-12 for a, b in zip(long_, [0.02, 0.01, 0.01])))   # (entry, exit]: entry==settlement excluded
         self.assertAlmostEqual(float(d.funding_cost_pct(fr, 999, 3000, -1)), -0.02)         # short receives
+    def test_funding_boundary_jitter(self):
+        """Archive calc_time is 1-31 ms after the 8h boundary: snapped to the second, so entry-on-boundary is exempt, exit-on-boundary charged."""
+        B = 28800000
+        fr = [(B + 5, 0.0001)]
+        self.assertAlmostEqual(float(d.funding_cost_pct(fr, B, B + 3600000, 1)), 0.0)    # entry on boundary: not charged
+        self.assertAlmostEqual(float(d.funding_cost_pct(fr, B - 3600000, B, 1)), 0.01)   # exit on boundary: charged
+        self.assertAlmostEqual(float(d.funding_cost_pct(fr, B - 1000, B + 1000, 1)), 0.01)
 if __name__ == "__main__": unittest.main()
