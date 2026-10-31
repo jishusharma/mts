@@ -4,17 +4,17 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-31T10:26:56Z",
+    "folded": "2026-10-31T10:51:02Z",
     "misses": 77,
     "reads": [
       "scripts/dev/test_wiring_scan.py",
       "scripts/dev/run_all_tests.py",
+      "scripts/dev/aibridge_version.py",
       "scripts/dev/test_mts_signal.py",
       "MyTradingSys/tests/test_aibridge_task_gate_exit.py",
-      "scripts/dev/aibridge_version.py",
       "scripts/dev/mts_signal.py",
-      "scripts/aibridge/tasks/mts-gate.json",
-      "scripts/aibridge/tasks/mts-ship.json"
+      "scripts/aibridge/extension/loop.js",
+      "scripts/aibridge/extension/manifest.json"
     ],
     "session": "agent-a4820d1730f903702"
   },

@@ -134,23 +134,25 @@ def test_guard_six_blocks_run_once_each_seventh_not_run():
     r = run_page(js, 70000)
     runs = [c["cmd"] for c in r["calls"] if c["type"] == "airun"]
     assert runs == ["Write-Output b%d" % i for i in range(1, 7)], runs
-    assert len(r["posted"]) == 1 and "blocks_seen=7 blocks_run=6 not_run=1" in r["posted"][0]["text"]
+    # the fake chat never answers, so 0.7.4 adds a wake-up notice after 45 s: the BATCH is the first post and the only one
+    assert sum(1 for p in r["posted"] if "[AIRUN BATCH]" in p["text"]) == 1 and "blocks_seen=7 blocks_run=6 not_run=1" in r["posted"][0]["text"]
     assert "NOT RUN: over the per-reply cap" in r["posted"][0]["text"]
 
 
 @needs_browser
-def test_guard_crlf_block_lines_survive_and_duplicates_run_per_occurrence():
+def test_guard_crlf_block_lines_survive_and_a_duplicate_in_one_reply_is_not_run():
     js = ARM + r"""
 setTimeout(function(){ window.dsaReply('go', ['# AIRUN cwd=C:\\x\r\nWrite-Output C1\r\nWrite-Output C2\r\n', '# AIRUN cwd=C:\\x\nWrite-Output DUP', '# AIRUN cwd=C:\\x\nWrite-Output DUP']); }, 8000);
 setTimeout(window.finish, 40000);
 """
     r = run_page(js, 50000)
     runs = [c["cmd"] for c in r["calls"] if c["type"] == "airun"]
-    assert runs == ["Write-Output C1\nWrite-Output C2", "Write-Output DUP", "Write-Output DUP"], runs
+    # 0.7.4 (dsabr-c1): a second identical block in ONE reply gets "NOT RUN: duplicate of block K" (was: ran twice)
+    assert runs == ["Write-Output C1\nWrite-Output C2", "Write-Output DUP"], runs
+    assert "NOT RUN: duplicate of block 2" in r["posted"][0]["text"], r["posted"][0]["text"][:900]
 
 
 @needs_browser
-@pytest.mark.xfail(strict=True, reason="E4 BLOCKER: " + FIX_PENDING)
 def test_E4_block_inside_thinking_section_is_ignored():
     """A fenced AIRUN block in the model's thinking/thought section is not an instruction. Today all three variants run."""
     js = ARM + r"""
@@ -197,7 +199,6 @@ setTimeout(function(){ window.dsaReply('go', ['# AIRUN task=mts-gate repo=C:\\x'
 
 
 @needs_browser
-@pytest.mark.xfail(strict=True, reason="E7 STOPPER (desk task 20261031-095323): " + FIX_PENDING)
 def test_E7_no_final_message_after_result_is_not_silently_abandoned():
     """After a result is posted DSA's generation drops (the chat only shows a thinking spinner, no final message, no new block).
     Within ~60 s the bridge must post an error or a wake-up message to the chat, or show a stop banner. Today it posts nothing:
@@ -213,7 +214,6 @@ setTimeout(window.finish, 120000);
 
 
 @needs_browser
-@pytest.mark.xfail(strict=True, reason="E8 BLOCKER (conditional on DeepSeek DOM): " + FIX_PENDING)
 def test_E8_consecutive_blocks_without_wrapper_text_are_separate_blocks():
     """Three AIRUN blocks as bare <pre> siblings (no prose or header text between) were merged into one command: one receipt, the
     2nd and 3rd '# AIRUN' lines became comments, their cwd/timeout/task ignored."""
@@ -226,3 +226,19 @@ setTimeout(window.finish, 40000);
     r = run_page(js, 50000)
     runs = [c["cmd"] for c in r["calls"] if c["type"] == "airun"]
     assert runs == ["Write-Output one", "Write-Output two", "Write-Output three"], runs
+
+
+@needs_browser
+def test_E7_quiet_dropped_generation_gets_one_notice_then_a_stop_banner():
+    """0.7.4 (dsabr-c2): the chat is idle after our result but no final answer ever comes: ONE wake-up notice under 60 s,
+    and when that is ignored too, hands-free stops with a banner (never a silent 'waiting for DSA')."""
+    js = ARM + r"""
+setTimeout(function(){ window.dsaReply('go', ['# AIRUN cwd=C:\\x\nWrite-Output ONE']); }, 8000);
+setTimeout(window.finish, 150000);
+"""
+    r = run_page(js, 160000)
+    texts = [p["text"] for p in r["posted"]]
+    notices = [p for p in r["posted"] if p["text"].startswith("[AIRUN NOTICE]")]
+    assert len(notices) == 1, texts
+    assert notices[0]["t"] - r["posted"][0]["t"] < 60000, (notices[0]["t"], r["posted"][0]["t"])
+    assert r["banner"] and "never answered" in r["banner"], r["banner"]

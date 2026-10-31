@@ -49,6 +49,7 @@ clean up foreign files. Case 2026-10-24: 109 commits behind, 82 foreign dirty fi
    `python scripts/dev/sync.py claim "<task>" --area <paths>`: it ships a one-file claim at once, so a parallel session on any
    login or device sees it. A claim is refused only when its `--area` paths overlap an open claim's (equal or nested), or the same
    task name is claimed again with no areas to compare; disjoint areas never block. A claim older than 24 h shows STALE: ask, then release.
+   Lease (OURS, 3 h): a claim carries `expires_at`; a crashed holder frees the card when it passes (an expired claim is ignored and overwritten by the next claimer); a long job runs `sync.py heartbeat <slug>` to refresh it (gemini_queue does this itself). Claims without `expires_at` behave as before. A task named by a card id is always claimed (B2's no-claim skip is for free-text tasks only).
 3. Work. Commit small and often, trailer `MTS-Session: <ID>` (that is the session record; commit history is the registry).
    The body has one line `Result: <what works now, or the number it produced>`. A question for the operator:
    `Operator: <question>`. Other sessions' uncommitted files are not yours - never stash, clean or report them.

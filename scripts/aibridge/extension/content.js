@@ -8,7 +8,7 @@
   var CFG = {
     aibridge_quiet_ms: 2000,    // page text must be unchanged this long = reply finished
     aibridge_max_chars: 60000,  // largest single message we send; see HANDOFF.md for the measured limit
-    aibridge_cap: 50,           // blocks run in one chain before auto turns itself off
+    aibridge_cap: 200,          // blocks run in one chain before auto turns itself off
     aibridge_wait_ms: 180000,   // give up waiting for an idle chat after this long
     aibridge_max_blocks: 6      // blocks run, in order, from ONE reply (the rest get an explicit NOT RUN receipt)
   };
@@ -30,6 +30,10 @@
   var lastHref = location.href;
   var lastSend = 0;              // last time a message was sent from this page (operator Enter or our own post)
   var labelBusy = false;
+  var lastIgnored = 0;           // thinking-panel blocks skipped on the last scan
+  var watch = null;              // replyWatch state: a posted result waits for DSA's final answer
+  var postedAnsLen = 0;          // non-thinking page text length when the result was posted
+  var quietSince = 0;            // pump: since when it waits for the page text to settle
 
   // after the extension is reloaded this old copy is orphaned: stop it quietly and say so
   function alive() { try { return !!(chrome.runtime && chrome.runtime.id); } catch (e) { return false; } }
@@ -102,7 +106,7 @@
       for (var i = 0; i < sleepers.length; i++) { if (sleepers[i].due <= now) sleepers[i].fin(); else keep.push(sleepers[i]); }
       sleepers = keep;
     }
-    sampleText(); growCheck(); pump(); watchdog(); labelTick();
+    sampleText(); growCheck(); pump(); watchdog(); labelTick(); replyTick();
   }
   // a page holding a Web Lock is not frozen by Chrome's tab lifecycle while it sits in the background
   try { if (navigator.locks && navigator.locks.request) navigator.locks.request('aibridge-keepalive-' + tabId, function () { return new Promise(function () {}); }); } catch (e) {}
@@ -129,11 +133,22 @@
   function btext(el) { return L.blockText(el); }
   function isMarkerFirst(text) { return firstNonEmptyLine(text).indexOf('# AIRUN') === 0; }
   function stripMarker(s) { return L.stripMarker(s); }
+  function markerCount(text) { var m = String(text).match(/# AIRUN/g); return m ? m.length : 0; }
+  function chainOf(el) {
+    var out = [], cur = el.parentElement;
+    while (cur && cur !== document.body && cur !== document.documentElement) {
+      var own = (cur.textContent || '').replace(/^\s+/, '').slice(0, 40);
+      out.push({ tag: cur.tagName, cls: cur.getAttribute('class') || '', role: cur.getAttribute('role') || '', lead: own });
+      cur = cur.parentElement;
+    }
+    return out;
+  }
   function findBlock(el) {
     var best = el;
     var cur = el.parentElement;
     while (cur && cur !== document.body) {
       if (!isMarkerFirst(cur.textContent || '')) break;
+      if (markerCount(cur.textContent || '') > 1) break;   // a parent holding several blocks is not one block (bare sibling <pre>s; textContent joins them without a newline)
       best = cur;
       cur = cur.parentElement;
     }
@@ -149,17 +164,18 @@
       var b = findBlock(el);
       if (out.indexOf(b) < 0) out.push(b);
     }
-    return out;
+    // thinking-panel drafts are not instructions; unknown containers fail closed (see loop.js selectBlocks)
+    var sel = L.selectBlocks(out.map(function (b) { return { cmd: '', chain: chainOf(b) }; }));
+    lastIgnored = sel.ignored.length;
+    return sel.selected.map(function (i) { return out[i]; });
   }
   function blockCmd(block) { return stripMarker(btext(block)).trim(); }
   function blockKey(block) {
     // fnv(cmd) + occurrence number among blocks with the same command: stable when other blocks shift the index
     var list = allBlocks();
-    var h = L.fnv(blockCmd(block)), occ = 0;
-    for (var i = 0; i < list.length && list[i] !== block; i++) {
-      if (L.fnv(blockCmd(list[i])) === h) occ++;
-    }
-    return h + '@' + occ;
+    var keys = L.batchKeys(list.map(blockCmd));
+    var at = list.indexOf(block);
+    return at >= 0 ? keys[at] : L.fnv(blockCmd(block)) + '@x';
   }
   function dbgDump() {
     if (!alive()) { orphan(); return; }
@@ -365,14 +381,14 @@
     }
     return false;
   }
-  async function postToChat(text, myToken) {
-    var t0 = Date.now();
+  async function postToChat(text, myToken, maxMs) {
+    var t0 = Date.now(), lim = maxMs || CFG.aibridge_wait_ms;
     while (true) {
       if (myToken !== token) return false;
-      if (Date.now() - t0 > CFG.aibridge_wait_ms) { lastPostErr = 'the chat never became idle (or an operator draft sits in the input)'; return false; }
+      if (Date.now() - t0 > lim) { lastPostErr = 'the chat never became idle (or an operator draft sits in the input)'; return false; }
       var el = findInput();
       var idle = !!el && textQuiet() >= CFG.aibridge_quiet_ms;
-      if (L.postGate({ idle: idle, draft: el ? inputText(el) : '', waitedMs: Date.now() - t0, maxMs: CFG.aibridge_wait_ms }) === 'send_keep_draft') break;
+      if (L.postGate({ idle: idle, draft: el ? inputText(el) : '', waitedMs: Date.now() - t0, maxMs: lim }) === 'send_keep_draft') break;
       await sleep(400);
     }
     var el2 = findInput();
@@ -448,11 +464,14 @@
     var items = blocks.map(function (b) { var o = L.parseMarker(btext(b)); return { block: b, cmd: blockCmd(b), opts: o, shown: o.task ? 'TASK ' + o.task + ' ' + JSON.stringify(o.params || {}) + (o.task === 'inline' ? ' plan=' + L.cmdPreview(blockCmd(b), 300) : '') : null }; });
     items.forEach(function (it) { ranKeys[blockKey(it.block)] = true; });
     pending = [];
+    var dups = L.dupOf(items.map(function (it) { return btext(it.block); }));
+    inRun = true;
     var seenN = items.length, cap = CFG.aibridge_max_blocks, ran = 0, stop = null;
     for (var i = 0; i < items.length; i++) {
       var it = items[i];
       resultN++; it.n = resultN; it.rid = newRid(); it.index = i + 1;
       if (i >= cap) { it.resp = { ok: false, cls: 'NOT_RUN', error: 'NOT RUN: over the per-reply cap of ' + cap + ' blocks. Send it in your next reply.' }; continue; }
+      if (dups[i]) { it.resp = { ok: false, cls: 'NOT_RUN', error: 'NOT RUN: duplicate of block ' + dups[i] + ' in this reply. To repeat a command on purpose, change it (add a # again line).' }; continue; }
       if (stop) { it.resp = { ok: false, cls: 'NOT_RUN', error: 'NOT RUN: block ' + stop.idx + ' ended with ' + stop.why + ' and this block may depend on it. Re-send it if it should still run.' }; continue; }
       if (!it.cmd && !it.opts.task) { it.resp = { ok: false, cls: 'NOT_RUN', error: 'NOT RUN: the block has no command after the # AIRUN line.' }; continue; }
       runs++; refreshUi();
@@ -462,10 +481,11 @@
       }), !!it.opts.task);
       it.resp = resp; ran++;
       if (it.block.__aibPanel) { it.block.__aibPanel.style.display = 'block'; it.block.__aibPanel.textContent = '[auto #' + it.n + ']\n' + panelText(resp); }
-      if (myToken !== token) return;
+      if (myToken !== token) { inRun = false; return; }
       var why = failed(resp);
       if (why) stop = { idx: i + 1, why: why };
     }
+    inRun = false;
     var texts = items.map(function (it) {
       return L.formatResult(it.n, it.shown || it.cmd, it.resp, '', { blocks_seen: seenN, blocks_run: ran, index: it.index, rid: it.rid });
     });
@@ -474,6 +494,7 @@
     var ok = await postParts(text, lastN, myToken, '#' + lastN);
     if (!ok) { if (myToken === token) stopAuto('auto OFF: the result was not posted (' + lastPostErr + '). Tick the box again to re-arm.'); return; }
     setStatus('waiting for DSA after #' + lastN);
+    watch = L.replyWatch(watch, { type: 'posted' }, Date.now()).state; postedAnsLen = answerLen();
     // DSA's reply to our result: if it contains no new block it has finished, so hand control back
     var t1 = lastMut;
     for (var w2 = 0; w2 < 100 && lastMut === t1; w2++) await sleep(300);
@@ -481,6 +502,7 @@
     await waitQuiet(myToken, CFG.aibridge_wait_ms);   // on timeout still rescan: never leave a finished reply unread
     if (myToken !== token) return;
     scan(); await sleep(600);
+    if (watch && watch.phase === 'waiting' && pending.length === 0) setStatus('waiting for DSA after #' + lastN + ' (a notice follows if no answer comes)');
     // stay armed: the next DSA block runs without a click; runs resets because the chain ended here
     if (myToken === token && autoRun && pending.length === 0) { runs = 0; refreshUi(); setStatus('armed: waiting for the next DSA block (untick to stop)'); }
   }
@@ -492,11 +514,52 @@
       while (autoRun && pending.length) {
         var item = pending[0];
         if (!item.block.isConnected) { pending.shift(); continue; }
-        if (textQuiet() < CFG.aibridge_quiet_ms) { await sleep(500); continue; }
+        if (textQuiet() < CFG.aibridge_quiet_ms) {
+          if (!quietSince) quietSince = Date.now();
+          setStatus(L.quietWaitStatus(Date.now() - quietSince, CFG.aibridge_wait_ms));   // never a silent loop
+          await sleep(500); continue;
+        }
+        quietSince = 0;
         pending.shift();
         await runBatch(item.block);
       }
-    } finally { working = false; }
+    } finally { working = false; quietSince = 0; }
+  }
+  // page text length without the thinking panel and without our own UI: growth here is DSA's answer arriving
+  function answerLen() {
+    var n = ((document.body && document.body.textContent) || '').length - oursLen();
+    var th = document.querySelectorAll('[class*="think" i], [class*="thought" i], [class*="reason" i], thought, details');
+    for (var i = 0; i < th.length; i++) {
+      var p = th[i].parentElement;
+      if (p && p.closest && p.closest('[class*="think" i], [class*="thought" i], [class*="reason" i], thought, details')) continue;
+      if (!isOurs(th[i])) n -= (th[i].textContent || '').length;
+    }
+    return n;
+  }
+  var replyBusy = false;
+  var inRun = false;             // a block is running (replyWatch never fires then)
+  // one notice per chain when DSA's generation drops after our result, then a stop banner (D4); never during a run
+  async function replyTick() {
+    if (!watch || watch.phase !== 'waiting' || !autoRun || replyBusy) return;
+    var answered = pending.length > 0 || allBlocks().some(function (b) { return !ranKeys[blockKey(b)]; }) ||
+      (textQuiet() >= CFG.aibridge_quiet_ms && answerLen() - postedAnsLen >= 40);
+    if (answered) { watch = L.replyWatch(watch, { type: 'reply' }, Date.now()).state; return; }
+    var r = L.replyWatch(watch, { type: 'tick', busy: inRun }, Date.now());
+    watch = r.state;
+    if (r.action === 'notice') {
+      replyBusy = true;
+      try {
+        var myToken = token;
+        var ok = await postToChat(L.REPLY_NOTICE_TEXT, myToken, 15000);   // a chat that never goes idle gets the stop banner instead
+        if (myToken !== token) return;
+        if (!ok) { stopAuto('DSA showed no final answer after the result and the chat never went idle for a wake-up notice (' + lastPostErr + '). Re-send your request in the chat.'); return; }
+        postedAnsLen = answerLen();
+        setStatus('DSA sent no final answer; posted a notice, waiting once more');
+      } finally { replyBusy = false; }
+    } else if (r.action === 'stop') {
+      watch = null;
+      stopAuto('DSA never answered after the result and the notice (its generation dropped). Re-send your request in the chat.');
+    }
   }
   function growCheck() {
     for (var i = 0; i < pending.length; i++) {
@@ -524,6 +587,7 @@
   setInterval(dbgDump, 1000);
   setInterval(function () { sampleText(); growCheck(); }, 250);
   setInterval(pump, 250);
+  setInterval(replyTick, 1000);
   setInterval(watchdog, 2000);
   setInterval(linkCheck, 1000);
   setInterval(function () { if (location.href !== lastHref) { lastHref = location.href; if (!lastSend || Date.now() - lastSend > 15000) histUntil = Date.now() + 6000; } }, 500);

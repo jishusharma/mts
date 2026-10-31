@@ -187,3 +187,30 @@ def test_prompt_matches_the_bridge_call_format_and_refusals():
     assert "Start-Process" in s and "$env:" in s            # named as refused, not recommended
     assert "starts with Start-Process" not in s
     assert "$env:" not in text(ROOT / "scripts" / "dev" / "bridge_selftest.ps1").replace("No $env: use", "")
+
+
+def test_prompt_carries_the_bridge_0_7_4_rules():
+    # dsabr-c5 (FIX_PLAN section 2): async queue, final-answer-only fences, exit codes, wake-up notice
+    raw = text(PROMPT)
+    assert raw.splitlines()[0].startswith("# SESSION PROMPT - DSA (DeepSeek + AIBridge v0.7.4)")
+    s = " ".join(raw.split())   # line wraps do not matter
+    for sentence in (
+        "Write AIRUN fences only in your final answer, never while thinking.",
+        "the bridge ignores fences inside the thinking panel",
+        'NOT RUN: duplicate of block K',
+        "add a `# again` line",
+        "The bridge is a queue.",
+        "your next input is their [AIRUN RESULT] (or BATCH) message",
+        "Never send a status-check block while a task runs; never put two gate or ship tasks in one reply",
+        "Per chain the bridge runs 200 blocks, then hands-free turns off and says so.",
+        "A step passes on its own exit code.",
+        "`; exit $LASTEXITCODE`",
+        'Never add `Write-Output "EXIT_CODE=$LASTEXITCODE"` as the last line',
+        "For the gate use `task=mts-gate`, not an inline copy.",
+        "`ALL TESTS PASSED` or `FAILED: N step(s)`; no summary = FAIL",
+        "PowerShell keeps going after a non-terminating error",
+        "`$ErrorActionPreference='Stop'` as line 2",
+        "[AIRUN NOTICE] your last reply ended without a final answer",
+        "A second notice in a row turns hands-free off",
+    ):
+        assert sentence in s, sentence
