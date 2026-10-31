@@ -1,0 +1,54 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T10:04:52Z",
+  "depends_on": [],
+  "done_when": "python -m pytest MyTradingSys/backtest/layers/fabio/pending_test_fabio_v3.py -q -k X01 passes",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "pending_test_fabio_v3.py test_X01_reexports fails because BAL_POC_BAND lives in v3/signals.py and is not re-exported by fabio_v3.py; fix the re-export or retire the stale test.",
+  "id": "pending-test-fabio-v3-bal-poc-band",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Complete Fabio v3 core module: convert pytest to unittest for all tests",
+      "ref": "f47b9af2c427",
+      "utc": "2026-10-06T05:52:58Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-31 T0-ONLY (planner-a-20261031; machine checks only). ",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T14:46:43Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/fabio/fabio_v3.py",
+    "MyTradingSys/backtest/layers/fabio/pending_test_fabio_v3.py"
+  ],
+  "scope_out": [
+    "v3 signal maths, live tree"
+  ],
+  "scope_sha": "f47b9af2c427",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "run pytest on pending_test_fabio_v3.py -k X01 and read the missing names",
+    "re-export BAL_POC_BAND from fabio_v3.py (default) or delete the stale X01 contract with a one-line reason",
+    "rename pending_test_ to test_ only if the whole file passes"
+  ],
+  "tests": "pending_test_fabio_v3.py::test_X01_reexports fails now (BAL_POC_BAND missing), passes after",
+  "title": "pending_test_fabio_v3.py test_X01_reexports fails (BAL_POC_BAND not re-exported by fabio_v3.py); file never collected by default pytest; fix or retire",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

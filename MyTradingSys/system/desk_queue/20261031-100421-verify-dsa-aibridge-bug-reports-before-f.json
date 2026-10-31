@@ -1,0 +1,10 @@
+{
+  "done_when": "Claude verifies the bug repro before committing a fix. A note is added to the AIBridge workflow or prompt.",
+  "from": "JIS-NUC",
+  "id": "20261031-100421-verify-dsa-aibridge-bug-reports-before-f",
+  "need": "DSA filed 7 AIBridge bug tickets during exploratory testing on 2026-10-31. 3 were invalid (misinterpreted expected PowerShell behavior with ';' separators, and an unproven thinking-block hypothesis) and have been closed with reasons. Caution for Claude: When picking up an AIBridge defect filed by DSA, independently reproduce and verify the root cause first. Do not blindly fix based on DSA's initial report, because the bridge interacts with PowerShell and Chrome in ways that can produce false positives.",
+  "posted": "2026-10-31T10:04:21Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "Verify DSA AIBridge bug reports before fixing (do not fix blindly)"
+}

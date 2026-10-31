@@ -1,0 +1,86 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-31T13:43:23Z",
+  "commands": [],
+  "context": {
+    "calls_to_edit": 10,
+    "folded": "2026-10-31T13:05:07Z",
+    "misses": 17,
+    "reads": [
+      "scripts/aibridge/src/agent.ps1",
+      "scripts/aibridge/extension/loop.js",
+      "MyTradingSys/tests/test_aibridge_exploratory.py",
+      "scripts/dev/aibridge_verify.py",
+      "scripts/aibridge/tests/block_select.test.js",
+      "scripts/aibridge/RELEASES.json",
+      "scripts/aibridge/scripts/run-task.ps1",
+      "scripts/aibridge/tests/fixtures/deepseek_reply.html"
+    ],
+    "session": "agent-ab4f7332cbd85970f"
+  },
+  "created": "2026-10-31T10:04:28Z",
+  "depends_on": [],
+  "done_when": "script exits 0 only when all rows PASS; JSON output; writes only under <root>/run/e2e",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Build scripts/aibridge/tests/e2e_bridge.py per FIX_PLAN.md section 4 (E0-E5, tier A agent, tier B node over the installed loop.js). Runs after c1-c3.",
+  "id": "dsabr-c6-e2e-script",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "e2e_bridge E0-E5 + fixtures landed ff2135661, AIBridge 0.7.6 4e4e70240 (JIS-NUC); A duplic",
+      "ref": "d641c2684",
+      "utc": "2026-10-31T13:43:23Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "S0 freeze: bug fix with a failing-first test. Plan: MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md\nREVIEW (Lab_Guy 2026-10-31): evidence checked against code at 18b9e4eed; DECISION (OURS): depends_on left empty because check refuses ready while a dependency is not done; ordering is in the first step.\nDECISION (OURS): review receipt binds card text only (card_hash); scope file hashes omitted because the Builders shipping c1-c5 change those files and would void it (the 4a26cac5 revert).",
+  "prio": 2,
+  "producer": "Builder",
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T10:08:56Z",
+  "refs": [
+    "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
+  ],
+  "result": "e2e_bridge E0-E5 + fixtures landed ff2135661, AIBridge 0.7.6 4e4e70240 (JIS-NUC); A duplicate branch dropped",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "review_receipt": {
+    "card_hash": "69de5db0b273",
+    "date": "2026-10-31",
+    "producer": "Builder",
+    "reviewer": "Lab_Guy"
+  },
+  "scope_in": [
+    "scripts/aibridge/tests/e2e_bridge.py; scripts/aibridge/tests/fixtures"
+  ],
+  "scope_out": [
+    "extension; agent.ps1; policy.json"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Wait for c1-c3 to ship; read FIX_PLAN.md (MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31) section 4",
+    "Write e2e_bridge.py rows E0-E5 and fixtures; reuse aibridge_verify roundtrip for the token (never printed)",
+    "Run it against a scratch copy of 0.7.3 bridge files: E1-E4 FAIL; against 0.7.4 sources: PASS; sync.py ship"
+  ],
+  "taken": "2026-10-31T13:43:23Z",
+  "tests": "run e2e_bridge.py against a scratch copy of the 0.7.3 bridge files: E1-E4 report FAIL; against the 0.7.4 sources all rows PASS",
+  "title": "AIBridge E2E script e2e_bridge.py (6-block, thinking, exit-1, dropped generation)",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

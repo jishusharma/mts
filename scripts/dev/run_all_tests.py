@@ -39,6 +39,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))   # gate_select
 PYTEST_LAYER_PATHS = [
     "MyTradingSys/backtest/test_splits.py",
     "MyTradingSys/research/bb_state_map_2026-10/test_bb_state_map.py",
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/test_oi_after_flush_pairing.py",
     "MyTradingSys/backtest/layers/fabio/v3/tests",
     "MyTradingSys/backtest/layers/fabio/test_orderflow_live.py",
     "MyTradingSys/backtest/layers/fabio/test_of_backfill.py",
@@ -55,6 +56,7 @@ PYTEST_LAYER_PATHS = [
     "scripts/dev/test_outcome_labeler_incremental.py",
     "scripts/dev/test_wrapper_load_resilience.py",
     "scripts/dev/test_gate_priority.py",
+    "scripts/dev/test_mts_signal_git_timeout.py",
     "scripts/dev/test_gate_scratch.py",
     "scripts/dev/test_feed_watchdog_script.py",
     "MyTradingSys/observation/tests",
@@ -71,6 +73,7 @@ BACKTEST_PYTEST_PATHS = [
     "MyTradingSys/backtest/test_tom_v2_recall.py",
     "MyTradingSys/backtest/test_tom_dax_bt.py",
     "MyTradingSys/backtest/test_no_own_costs.py",
+    "MyTradingSys/backtest/test_sim_core.py",
 ]
 
 # These steps scan or write checkout state (layer index, artifact registry, wiring --check, STATUS generator, group map), and
@@ -112,7 +115,7 @@ LOCAL_SKIP = ("3k", "4", "3dk", "3ad", "3bk")   # OURS: BRIEF 3.3, dropped from 
 SLOW_FILE_S = 30     # files measured at >= this many seconds stay in their shard only
 CHEAP_STEPS += ("3qn", "3gi")   # 3la (11 s) is not cheap: it runs with the main phase
 # GATE_SPEED X2 (ship only, --fast, smoke mode): the fast path. One phase, tests chosen by gate_impact, a time budget, the rest left to CI.
-FAST_STEP_TIMEOUT_S = 240     # OURS: a fast-gate step still running after this is hung (a held slot would block every later ship)
+FAST_STEP_TIMEOUT_S = 240     # OURS: ceiling (not a target) for a must-pass step; still running at it = hung, the ship fails (a held slot would block every later ship)
 GATE_HARD_STEP_S = 60         # OURS: step-phase deadline of every fast ship; ship overhead measured ~45-80 s on a loaded JIS-NB (2026-10-25: 171 s wall at 90), total stays under 120 s
 GATE_DEADLINE = None          # monotonic time by which a gate-file ship's steps must be done
 TIMEOUT_DEFERS = False        # gate-file ship: a step over the cap is left to CI (reported, not failed); set in main()
@@ -222,13 +225,23 @@ def unbuffer(stream=None):
 
 STEP_TIMEOUT_S = None   # set by the fast path (FAST_STEP_TIMEOUT_S); None = no limit, as before
 _TIMED_OUT_DEFERRED_CMDS: set[str] = set()
+# CI_RED_ROOT_CAUSES 2026-10-31: three reverts in one day (phase tag 3la, F1 cost inventory, sim backfill) shipped because the fast
+# gate's 60 s deadline cut 3la/3xt on a loaded machine and counted the cut as a PASS. Commands here (3la, the 3xm must-pass extras)
+# are never deferred: they get FAST_STEP_TIMEOUT_S from their own start, and a timeout fails the ship.
+# One rule (2026-10-31, operator 10-25 "every ship under 2 minutes" outranks commit 201d47c73): a fast ship targets under 2 minutes.
+# Must-pass steps (NO_DEFER_CMDS) are exempt from deferral; 240 s is their ceiling, not a target (measured 6.6 s together).
+# Every other step still running at the 60 s step deadline is deferred to CI.
+NO_DEFER_CMDS: set[str] = set()
 
 
 def exec_step(cmd, cwd=None):
     """Run one command to completion. Returns (ok, output): ok is True/False, or None with a reason when the executable is missing.
     A step over STEP_TIMEOUT_S (fast path only) fails: a hung step must not hold a gate slot for ever."""
     limit = STEP_TIMEOUT_S
-    if GATE_DEADLINE is not None and limit is not None:
+    must = repr(cmd) in NO_DEFER_CMDS
+    if must and limit is not None:
+        limit = max(limit, FAST_STEP_TIMEOUT_S)
+    elif GATE_DEADLINE is not None and limit is not None:
         limit = max(1.0, min(limit, GATE_DEADLINE - time.monotonic()))   # a step queued behind others gets only what is left of the budget
     try:
         result = subprocess.run(cmd, cwd=cwd or str(REPO), capture_output=True, text=True, errors="replace",
@@ -236,10 +249,10 @@ def exec_step(cmd, cwd=None):
     except FileNotFoundError as e:
         return None, f"not found: {e}"
     except subprocess.TimeoutExpired:
-        if TIMEOUT_DEFERS:
+        if TIMEOUT_DEFERS and not must:
             _TIMED_OUT_DEFERRED_CMDS.add(repr(cmd))
             return True, f"step over the {STEP_TIMEOUT_S} s ship budget: DEFERRED TO CI (a gate-file ship must finish in 2 minutes; CI runs the whole suite)"
-        return False, f"step timed out after {STEP_TIMEOUT_S} s (fast gate limit): treated as a failure"
+        return False, f"step timed out after {limit:g} s (fast gate limit{', must-pass step' if must else ''}): treated as a failure"
     _TIMED_OUT_DEFERRED_CMDS.discard(repr(cmd))
     return result.returncode == 0, result.stdout + result.stderr
 
@@ -254,6 +267,22 @@ def ci_annotation(num, description, output, limit=3000):
     body = "\n".join(lines[first:])[-limit:] or "(no output)"
     body = body.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
     return f"::error title=Step {num} FAIL::{description} | {body}"
+
+
+FAIL_LOG_DIR = REPO / "runtime_data" / "gate_fail_logs"   # gitignored (runtime_data/): one log per failed step, last 200 output lines
+FAIL_LOG_LINES = 200
+
+
+def write_fail_log(num, output):
+    """Keep a failed step's last FAIL_LOG_LINES output lines in a per-run log (the console shows only 15). Returns the path, or None.
+    Diagnostics only: any error here never changes the step's verdict."""
+    try:
+        FAIL_LOG_DIR.mkdir(parents=True, exist_ok=True)
+        path = FAIL_LOG_DIR / (time.strftime("%Y%m%dT%H%M%S") + f"_{os.getpid()}_step-{re.sub(r'[^A-Za-z0-9_.-]', '_', str(num))}.log")
+        path.write_text(chr(10).join((output or "").splitlines()[-FAIL_LOG_LINES:]) + chr(10), encoding="utf-8", newline=chr(10))
+        return path
+    except Exception:
+        return None
 
 
 STEP_SECONDS = {}   # step -> wall seconds of this run; on CI the slowest go out as one ::notice (job logs are not readable off GitHub)
@@ -299,6 +328,9 @@ def format_step(num, description, cmd_text, ok, output, elapsed, progress="", ta
         if out:
             lines.append("  Last output:")
             lines += [f"    {ln}" for ln in (out if (os.environ.get("CI") or tail is None) else out[-tail:])]
+        log = write_fail_log(num, output)
+        if log:
+            lines.append(f"  Full failure tail ({FAIL_LOG_LINES} lines): {log}")
         note = ci_annotation(num, description, output)
         if note:
             lines.append(note)
@@ -470,8 +502,8 @@ def build_plan(quick):
         "test_daily_loss_guard", "test_daily_loss_monitor", "test_mainnet_flag_offline", "test_gh_executor_offline", "test_settlement_skip_offline",
         "test_gh_retry_offline", "test_halt_preflight_offline", "test_kill_switch", "test_kill_switch_account", "test_premainnet1_offline",
         "test_risk_guard", "test_s1_cap_offline", "test_s3_unprotected_offline",
-        "test_s6_orphan_offline", "test_triggered_stop_offline", "test_soak_report", "test_fix3_offline", "test_fix4_offline",
-        "test_plan_compiler", "test_executor_math", "test_auto_trader", "test_dlm_aggregate", "test_b148_reauth_account", "test_b146_fee_to_stop", "test_dlm_failure_cap", "test_dlm_blind_recovery", "test_auto_trader_blocklist", "test_auto_trader_sizes", "test_auto_trader_confirm", "test_auto_trader_promotion", "test_orphan_sweep_loop", "test_fabio_slot", "test_fix3_mutants_offline", "test_capture_txlog_settlement", "test_mts_kill_mainnet", "test_pm_heartbeat", "test_pm_heartbeat_wiring", "test_journal_env", "test_mainnet_plan_check", "test_env_wiring", "test_reconciler_env", "test_deribit_read_account", "test_orphan_watchdog", "test_orphan_watchdog_cli", "test_mainnet_pnl", "test_daily_pnl_wiring", "test_xferfix", "test_time_exit_offline", "test_trade_ledger", "test_netretry", "test_r2_runner_exit", "test_r2_breakeven_move",  # W2 R2: execution-math tests (FORMULAS.md 11)
+        "test_s6_orphan_offline", "test_triggered_stop_offline", "test_soak_report", "test_fix3_offline", "test_margin_drain_offline", "test_fix4_offline",
+        "test_plan_compiler", "test_executor_math", "test_auto_trader", "test_dlm_aggregate", "test_b148_reauth_account", "test_b146_fee_to_stop", "test_dlm_failure_cap", "test_dlm_blind_recovery", "test_auto_trader_blocklist", "test_auto_trader_sizes", "test_auto_trader_confirm", "test_auto_trader_failclosed", "test_auto_trader_promotion", "test_orphan_sweep_loop", "test_fabio_slot", "test_fix3_mutants_offline", "test_capture_txlog_settlement", "test_mts_kill_mainnet", "test_pm_heartbeat", "test_pm_heartbeat_wiring", "test_journal_env", "test_mainnet_plan_check", "test_env_wiring", "test_reconciler_env", "test_deribit_read_account", "test_orphan_watchdog", "test_orphan_watchdog_cli", "test_mainnet_pnl", "test_daily_pnl_wiring", "test_xferfix", "test_time_exit_offline", "test_trade_ledger", "test_netretry", "test_r2_runner_exit", "test_r2_breakeven_move",  # W2 R2: execution-math tests (FORMULAS.md 11)
     ]
     add(1, "Execution module tests", cmd1, "Step 1: Execution tests")
 
@@ -521,6 +553,7 @@ def build_plan(quick):
     add("3sh", "Screenshot intake tests (save, classify, read, close gates)", [sys.executable, "scripts/dev/test_shot.py"], "Step 3sh: Screenshot intake tests")
     add("3al", "Analyst levels ladder (CBP pointers next to chart reads)", [sys.executable, "scripts/dev/test_analyst_levels.py"], "Step 3al: Analyst levels tests")
     add("3cr", "CBP runner prompt carries video metadata", [sys.executable, "scripts/dev/test_cbp_run.py"], "Step 3cr: CBP runner tests")
+    add("3hw", "Hot-wallet drain watch (stubbed RPC)", [sys.executable, "scripts/dev/test_hot_wallet_watch.py"], "Step 3hw: hot wallet watch tests")
     add("3mg", "Project group map tests (every row and file has one group)", [sys.executable, "scripts/dev/test_make_groups.py"], "Step 3mg: Project group map tests")
     add("3xt", "Extra tests outside the collected dirs (B150 discovery)", [sys.executable, "scripts/dev/run_extra_tests.py"], "Step 3xt: Extra tests")
     add("3ad", "Scheduled auto-deploy tests (stops on red gate)", [sys.executable, "scripts/dev/test_auto_deploy.py"], "Step 3ad: Auto-deploy tests")
@@ -750,6 +783,7 @@ def targeted_tests(files, root=REPO):
 FAST_JOBS_MAX = 6
 FAST_SLOTS = 2
 FAST_COSTLY_ALWAYS = ("3w", "3tl", "3dl")   # gate_select.ALWAYS steps of 3-9 s that a fast gate runs only when the change can matter to them
+LOOKAHEAD_MUST = "3la"   # picked by gate_select.LOOKAHEAD_RE; in a fast ship it is must-pass (NO_DEFER_CMDS)
 FAST_ALWAYS = ("4d", "3qn")   # 4d: the doc/tree-scanning pytest tests, 3qn: the quarantine list stays valid (both seconds)
 fast_applied = False
 fast_info = {}
@@ -810,7 +844,7 @@ def apply_fast(plan, files, nums, jobs):
         old = units.get(key)
         units[key] = (e, direct or (old[1] if old else False))
 
-    for n in keep_nums:
+    for n in keep_nums - {LOOKAHEAD_MUST}:   # 3la is must-pass: never left to the budget
         unit(("sc", n), step_est(n), True)
     pyt = {}
     for s in plan:
@@ -825,7 +859,8 @@ def apply_fast(plan, files, nums, jobs):
             if n not in pytest_nums and n not in ("3xt", "5b") and n not in keep_nums:
                 unit(("sc", n), step_est(n), t in reach.direct)
     extras = run_extra_tests.all_tests()
-    ex = {t for t in gate_select.extra_subset(files, extras) if t in extras} | {t for t in extras if t in reach.tests}
+    must_ex = gate_select.must_extras(files, extras)
+    ex = ({t for t in gate_select.extra_subset(files, extras) if t in extras} | {t for t in extras if t in reach.tests}) - set(must_ex)
     for t in ex:
         unit(("ex", t), TEST_FILE_SECONDS.get(Path(t).name, EXTRA_FILE_S), t in reach.direct)
     modules = find_layer_modules()
@@ -874,6 +909,17 @@ def apply_fast(plan, files, nums, jobs):
                 s.est = len(sub) * EXTRA_FILE_S / 2
             else:
                 s.skip = "fast: no extra test reached (CI runs it)"
+            new_plan.append(s)
+            if must_ex:
+                m = Step("3xm", f"Extra tests the change must pass ({len(must_ex)}: changed or tree-wide inventory, never deferred)",
+                         "Step 3xm: Extra tests (must-pass)", cmd=[sys.executable, "scripts/dev/run_extra_tests.py", "--only", *must_ex])
+                m.est = len(must_ex) * EXTRA_FILE_S
+                NO_DEFER_CMDS.add(repr(m.cmd))
+                new_plan.append(m)
+            continue
+        if n == LOOKAHEAD_MUST and n in keep_nums:
+            s.est = step_est(n)
+            NO_DEFER_CMDS.add(repr(s.cmd))
             new_plan.append(s)
             continue
         if n == "5b":
@@ -1311,6 +1357,7 @@ def main(argv=None):
     if fast_applied:
         # Operator 2026-10-25 "every ship under 2 minutes": EVERY fast ship gets the hard cap (it was gate-file ships only, so a
         # signals change hit the 240 s step timeout and failed); what does not finish by the deadline is deferred to CI, not failed.
+        # Must-pass steps (NO_DEFER_CMDS) are the one exception: they keep the 240 s ceiling and fail there (one rule, see above).
         STEP_TIMEOUT_S, TIMEOUT_DEFERS = GATE_HARD_STEP_S, True
         GATE_DEADLINE = time.monotonic() + GATE_HARD_STEP_S   # the whole step phase, not only each step
         print(f"Fast gate (GATE_SPEED X2): {fast_info['reached']} test files reached ({fast_info['direct']} direct), {fast_info['kept']} units kept, "

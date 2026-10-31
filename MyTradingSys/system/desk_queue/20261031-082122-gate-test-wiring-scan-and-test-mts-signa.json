@@ -1,0 +1,10 @@
+{
+  "done_when": "Both tests pass inside the full gate run on a clean machine. They isolate their own temp directories or provide git identity.",
+  "from": "JIS-NUC",
+  "id": "20261031-082122-gate-test-wiring-scan-and-test-mts-signa",
+  "need": "When run standalone, test_wiring_scan.py (18 tests) and test_mts_signal.py (53 tests) pass OK. When run inside the parallel gate (run_all_tests.py --quick), they fail. test_wiring_scan asserts a temp folder is not a repo, but the gate may leave a .git in %TEMP%. test_mts_signal fails 'git commit -q -m signals: start' with empty stderr, likely because the shared %TEMP% git environment lacks user.name/user.email or is locked by parallel shards.",
+  "posted": "2026-10-31T08:21:22Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "Gate: test_wiring_scan and test_mts_signal fail inside shared %TEMP%"
+}

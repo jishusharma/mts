@@ -22,6 +22,7 @@ Every parameter and rule in this layer is directly sourced from canonical litera
 #### Rule P-01: Anchor Confirmation (Mikula 2002:42; Morge 2002:18)
 - **Source:** [SOURCED: Patrick Mikula, *The Best Trendline Methods of Alan Andrews*, p. 42; Timothy Morge, *Trading with Median Lines*, p. 18]
 - Pivots $P_0, P_1, P_2$ must be confirmed swing extrema with a minimum clearance of $N \ge 3$ bars on each side and a swing amplitude exceeding $k \ge 2.5 \times \text{ATR}_{14}$.
+- **DECISION (OURS), 2026-10-31:** the code does NOT implement the ATR clause. `find_pivots_zigzag` uses `lookback=3` (matches N >= 3, SOURCED) and a reversal gate `min_change_pct=0.02` (2 pct of price, [OURS], no ATR, no k=2.5). The 2.5 x ATR14 amplitude is SOURCED text but NOT adopted in code; changing it would alter the verified backtests (PITCHFORK-1D / 4H), so an ATR gate needs its own fee-net OOS test.
 - Pitchfork evaluation begins only after $P_2$ is confirmed (no lookahead bias).
 
 #### Rule P-02: Slope Normalization / Schiff Switch (Schiff; Dologa 2007:65)

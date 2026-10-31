@@ -495,6 +495,22 @@ class TestGateFileShipBudget(unittest.TestCase):
         self.assertLess(time.monotonic() - t0, 10)
         self.assertIn("DEFERRED TO CI", out)
 
+    def test_a_must_pass_step_is_not_cut_by_the_deadline(self):
+        # CI_RED_ROOT_CAUSES 2026-10-31: 3la ran 53 s on a loaded JIS-NB, was cut at the 60 s deadline, reported PASS, CI went red.
+        cmd = [sys.executable, "-c", "import time; time.sleep(3); print('lint ran'); raise SystemExit(1)"]
+        with mock.patch.object(rat, "STEP_TIMEOUT_S", 60), mock.patch.object(rat, "TIMEOUT_DEFERS", True), \
+                mock.patch.object(rat, "GATE_DEADLINE", time.monotonic() + 1), mock.patch.object(rat, "NO_DEFER_CMDS", {repr(cmd)}):
+            ok, out = rat.exec_step(cmd)
+        self.assertFalse(ok)
+        self.assertIn("lint ran", out)
+
+    def test_a_must_pass_step_over_its_cap_fails_instead_of_deferring(self):
+        with mock.patch.object(rat, "STEP_TIMEOUT_S", 1), mock.patch.object(rat, "FAST_STEP_TIMEOUT_S", 1), \
+                mock.patch.object(rat, "TIMEOUT_DEFERS", True), mock.patch.object(rat, "NO_DEFER_CMDS", {repr(self.SLOW)}):
+            ok, out = rat.exec_step(self.SLOW)
+        self.assertFalse(ok)
+        self.assertNotIn("DEFERRED TO CI", out)
+
     def test_gate_file_budget_is_inside_the_two_minute_goal(self):
         import gate_select
         self.assertLess(rat.GATE_HARD_STEP_S + 25, 120)
@@ -698,6 +714,30 @@ class TestPassRecord(unittest.TestCase):
             rat.main(["--quick", "--record"])
         load.assert_not_called()
         save.assert_not_called()
+
+class TestFailedStepRunLog(unittest.TestCase):
+    def test_failed_step_writes_tail_to_run_log(self):
+        out = chr(10).join(f"line {i}" for i in range(500))
+        with tempfile.TemporaryDirectory() as d, mock.patch.object(rat, "FAIL_LOG_DIR", Path(d)):
+            lines = rat.format_step("3sig", "flaky step", "cmd", False, out, 1.0)
+            logs = list(Path(d).glob("*.log"))
+            self.assertEqual(len(logs), 1)
+            text = logs[0].read_text(encoding="utf-8").splitlines()
+            self.assertEqual(len(text), 200)
+            self.assertEqual(text[-1], "line 499")
+            self.assertTrue(any(str(logs[0]) in ln for ln in lines))
+
+    def test_passing_step_writes_no_log(self):
+        with tempfile.TemporaryDirectory() as d, mock.patch.object(rat, "FAIL_LOG_DIR", Path(d)):
+            rat.format_step("3sig", "ok step", "cmd", True, "fine", 1.0)
+            self.assertEqual(list(Path(d).glob("*.log")), [])
+
+    def test_unwritable_log_dir_does_not_change_the_verdict(self):
+        with tempfile.TemporaryDirectory() as d, mock.patch.object(rat, "FAIL_LOG_DIR", Path(d) / "f" / "x"):
+            Path(d, "f").write_text("a file, so mkdir fails")
+            lines = rat.format_step("3sig", "flaky step", "cmd", False, "boom", 1.0)
+        self.assertIn("Step 3sig: FAIL", lines)
+
 
 if __name__ == "__main__":
     unittest.main()

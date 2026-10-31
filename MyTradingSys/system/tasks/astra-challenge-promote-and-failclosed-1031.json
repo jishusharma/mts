@@ -1,0 +1,64 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-30T20:21:53Z",
+  "crucial": true,
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/test_hunt_2026-10-31/astra_challenge.md exists with per-finding CONFIRMED / WRONG / MISSED and file:line",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Read the luna reports for gpt-bug-hunt-promote-gates-vs-tests and gpt-bug-hunt-auto-trader-fail-closed, re-derive 5 findings each from source, and list misses and false alarms.",
+  "id": "astra-challenge-promote-and-failclosed-1031",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "lab gpt-recheck-gemini-extracts-numbers-1031: BLOCKED (audit)",
+      "ref": "f1b1d0b3b18e",
+      "utc": "2026-10-31T05:58:14Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "57708d314997 lab astra-challenge-promote-and-failclosed-1031: BLOCKED (audit)",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-10-30_astra-challenge-promote-and-failclosed-1031.md",
+      "utc": "2026-10-30T21:12:07Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Astra, low effort, ONE run per window (LAYER_LAB.md). Do not start before both luna reports ship. Focus: catch bugs early (operator 2026-10-31). Final report ends with a Noticed: line.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T08:46:40Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/test_hunt_2026-10-31/ (new files only)"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code edits; any backtest verdict; .secrets and .env"
+  ],
+  "scope_sha": "f1b1d0b3b18e",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "wait until both luna reports exist on trunk",
+    "re-derive 5 findings per report independently",
+    "list missed branches"
+  ],
+  "tests": "report only; every finding cites file:line and a reproducing input",
+  "title": "Astra: independent challenge of the two luna bug hunts (promote gates, auto_trader fail-closed): what did they miss, which findings are wrong",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

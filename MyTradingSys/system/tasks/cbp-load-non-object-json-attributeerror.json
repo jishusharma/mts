@@ -1,0 +1,85 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-31T10:24:47Z",
+  "commands": [
+    "python -m unittest MyTradingSys.cbp.test_load_non_object -v"
+  ],
+  "context": {
+    "calls_to_edit": 8,
+    "folded": "2026-10-31T08:22:29Z",
+    "misses": 5,
+    "reads": [
+      "MyTradingSys/cbp/__init__.py",
+      "MyTradingSys/tools/live_aid/build_analyst_data.py",
+      "MyTradingSys/tools/live_aid/test_build_analyst_data.py"
+    ],
+    "session": "agent-ac8048ee764a92ef8"
+  },
+  "created": "2026-10-31T06:38:49Z",
+  "depends_on": [],
+  "done_when": "Tests for [] / \"x\" / 1 / null in cbp.load and live_aid.read_json pass and fail on the pre-change code; a missing or corrupt file still behaves as before; CI green.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "cbp.load and live_aid read_json return the safe default (and log) when the JSON is valid but not an object (list, string, number, null) instead of raising AttributeError.",
+  "id": "cbp-load-non-object-json-attributeerror",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "cbp.load and live_aid read_json return the safe default for non-object JSON; 5 tests, 4 fa",
+      "ref": "62c216a0a",
+      "utc": "2026-10-31T10:24:47Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "fix(cbp): non-object JSON returns the safe default, not AttributeError",
+      "ref": "66c3f4e049fd",
+      "utc": "2026-10-31T08:00:50Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 4,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T08:46:47Z",
+  "refs": [
+    "MyTradingSys/cbp/__init__.py"
+  ],
+  "result": "cbp.load and live_aid read_json return the safe default for non-object JSON; 5 tests, 4 fail on old code (66c3f4e04)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/cbp/__init__.py",
+    "MyTradingSys/cbp/test_load_non_object.py"
+  ],
+  "scope_out": [
+    "live tree",
+    "unrelated cbp logic"
+  ],
+  "scope_sha": "66c3f4e049fd",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/cbp/__init__.py"
+  ],
+  "state": "done",
+  "steps": [
+    "Find live_aid read_json (grep) and cbp.load; write the failing tests",
+    "Add an isinstance(dict) guard returning the same default as the corrupt-file path",
+    "Run tests, ship"
+  ],
+  "taken": "2026-10-31T10:24:47Z",
+  "tests": "MyTradingSys/cbp/test_load_non_object.py: four non-object payloads each return the default dict; fails with AttributeError on current code",
+  "title": "cbp.load and live_aid read_json crash with AttributeError when the file is valid JSON but not an object (e.g. [])",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

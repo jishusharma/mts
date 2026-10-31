@@ -97,7 +97,7 @@
 - Stated mechanics: Real orders with real money, 100 USDC of Bitcoin. A limit bid below the best bid (he fumbles the price a few times and says 7915; the order then shows at 79155) shows a fee of about 1 dollar and 19 cents on the preview and a size of 0.124818 BTC. He raises the bid to 79189 and it fills while he talks. A limit sell shows a fee about 120. A market buy at the best offer fills immediately. The fee on the market order looks low too, and he concludes his fee tier is low because of his affiliate link and applies to both. So the demo does not show a maker versus taker fee gap. Caption numbers are ASR and the fee screens need frames. INFERRED: the fee figures are read from captions only.
 - Quotes:
 > "You can see my fee is about a buck and 19."
-**Source GPS: ftK2BqggabQ | BEGIN | t=00:10:51**
+**Source GPS: ftK2BqggabQ | MIDDLE | t=00:10:51**
 > "I guess my my feed tier is actually really really low right now because of uh because of that link."
 **Source GPS: ftK2BqggabQ | MIDDLE | t=00:13:02**
 > "it gets filled immediately as you can see."

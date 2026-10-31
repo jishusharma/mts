@@ -16,16 +16,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Merge origin/fast-track into jis-nb/simplify-mts (decision renumbered)",
-      "ref": "f289c26726fe",
-      "utc": "2026-10-30T08:41:28Z"
+      "line": "fractals review wave: R2 BTC phases, R3 Jala fractal style, R4 multi-LLM plan; Jala fracta",
+      "ref": "6f91ca6d4e93",
+      "utc": "2026-10-31T06:58:06Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "f289c26726fe Merge origin/fast-track into jis-nb/simplify-mts (decision renumbered)",
+      "line": "6f91ca6d4e93 fractals review wave: R2 BTC phases, R3 Jala fractal style, R4 multi-LLM plan",
       "ref": "MyTradingSys/system/OPERATOR_DECISIONS.md",
-      "utc": "2026-10-30T08:41:28Z"
+      "utc": "2026-10-31T06:58:06Z"
     }
   ],
   "layers": [],
@@ -35,7 +35,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T09:40:03Z",
+  "refreshed": "2026-10-31T08:47:48Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -45,7 +45,7 @@
     "MyTradingSys/system/OPERATOR_DECISIONS.md"
   ],
   "scope_out": [],
-  "scope_sha": "f289c26726fe",
+  "scope_sha": "6f91ca6d4e93",
   "size": "M",
   "sources": [
     "MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md",

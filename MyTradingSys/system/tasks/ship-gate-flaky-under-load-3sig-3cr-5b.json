@@ -2,6 +2,13 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-31T09:24:22Z",
+    "misses": 24,
+    "reads": [],
+    "session": "agent-a819403b27fc12d12"
+  },
   "created": "2026-10-30T09:47:27Z",
   "depends_on": [],
   "done_when": "Three consecutive full sync.py ship gate runs under load pass with the same shard count; a new isolation test fails before the fix and passes after; root cause named in the commit body.",
@@ -16,19 +23,19 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Add on-demand fix_verifier.py (ledger A4-18)",
-      "ref": "792ae66b67d6",
-      "utc": "2026-10-30T08:54:14Z"
+      "line": "fast ship gate: 3la and tree-wide inventory tests are must-pass, never deadline-deferred",
+      "ref": "201d47c735bd",
+      "utc": "2026-10-31T08:25:28Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-30 ACCEPT | CRITICAL (gate code): needs the CRITICAL protocol in session_planner_details.md (review session on plan and diff); not for an Agent.",
+  "note": "REVIEWED:2026-10-30 ACCEPT | CRITICAL (gate code): needs the CRITICAL protocol in session_planner_details.md (review session on plan and diff); not for an Agent. | FINDINGS 2026-10-31 (DECISION OURS, no code change; shared state NOT found): on DESKTOP-F7IU69N, 8 CPU burners + 2 concurrent copies each of test_mts_signal / test_codex_run / test_make_control_room plus test_cbp_run: all 7 exit 0 (3sig 2/2, 3cx 2/2, 3cr 2/2, 3cr ran 160 s vs STEP_EST 8 s, 3cx 86 s vs 11 s); 5b exec_layer_chunks(4 procs) under the same burners passed twice (339 s, 196 s), so no shared temp dir/port/cwd file between copies or chunks (every test isolates via mkdtemp + MTS_* env). Under load steps slow 10-20x; the only load-coupled limits in the gate path are FAST_STEP_TIMEOUT_S=240 (must-pass steps fail on it, run_all_tests.exec_step), GATE_HARD_STEP_S=60 (others defer to CI), mts_signal.git timeout=20 (uncaught TimeoutExpired -> the lone E in 3sig), and test_codex_run.TimeBoxTest boxed(print,30). Next: capture the real failing stderr from a failing ship (run_all_tests output is not kept); candidate fix is catching TimeoutExpired in mts_signal.git + a load-scaled timeout. 5b wlow_bounce nan not reproduced (test_lookahead_forcing_wlow_session is deterministic: fixed bars, injected fetch).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T10:00:32Z",
+  "refreshed": "2026-10-31T08:47:52Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -42,7 +49,7 @@
     "live tree .mts_live",
     "product code under src/ and backtest/layers"
   ],
-  "scope_sha": "792ae66b67d6",
+  "scope_sha": "201d47c735bd",
   "size": "M",
   "sources": [
     "raw card 7e3286249"

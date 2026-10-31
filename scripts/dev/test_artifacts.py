@@ -35,15 +35,15 @@ class Registry(unittest.TestCase):
 
     def test_plan_actions(self):
         text = "\n".join(af.plan(self.reg, "jishusharma1985"))
-        self.assertIn("REPUBLISH    MTS Control Room", text)
-        self.assertIn("RECORD URL   CBP Desk", "\n".join(af.plan(self.reg, "jishu.sharma")))
+        self.assertIn("DELETED      MTS Control Room", text)  # retired and deleted on this login 2026-10-31
+        self.assertIn("OPERATOR UNPIN+DELETE  BTC Live Aid", text)
+        self.assertIn("OPERATOR UNPIN+DELETE  CBP Desk", "\n".join(af.plan(self.reg, "jishu.sharma")))
         # operator 2026-10-17: every page is published from the home login; the Inbox page moved there (MNuodX), Tom and Fabio has no repo html and stays on jishu.sharma
-        self.assertIn("MTS Control Room <- MyTradingSys/system/artifacts/mts_control_room.html  url=https://claude.ai/artifact/MNuodXmi5RiEihX7rFpqUp", text)
         self.assertIn("NO COPY      Tom and Fabio", "\n".join(af.plan(self.reg, "jishu.awgp")))
         self.assertNotIn("CBP Dashboard", text)
         r = copy.deepcopy(self.reg)
-        r["pages"][0]["status"] = "retire"
-        self.assertIn("OPERATOR UNPIN+DELETE  MTS Control Room", "\n".join(af.plan(r, "jishusharma1985")))
+        next(pg for pg in r["pages"] if pg["slug"] == "mts_layer_map")["status"] = "retire"
+        self.assertIn("OPERATOR UNPIN+DELETE  MTS Layers", "\n".join(af.plan(r, "jishusharma1985")))
         self.assertIn("REPUBLISH    MTS Layers", text)
         r = copy.deepcopy(self.reg)
         next(pg for pg in r["pages"] if pg["slug"] == "mts_layer_map")["urls"]["jishusharma1985"] = ""
@@ -70,11 +70,10 @@ class Registry(unittest.TestCase):
     def test_pages_index_one_link_per_page(self):
         import make_control_room as mc
         rows = mc.page_index()
-        self.assertEqual({r["title"] for r in rows}, {"MTS Control Room", "MTS Layers", "Tom and Fabio: what they taught", "CBP Monday Desk",
-                                                      "CBP Consensus Desk", "MTS Home", "MTS Research Map", "MTS Session Planner", "MTS Sim Desk",
-                                                   "CBP Analyst Desk"})
+        self.assertEqual({r["title"] for r in rows}, {"MTS Layers", "Tom and Fabio: what they taught", "MTS Home", "MTS Research Map",
+                                                      "MTS Sim Desk", "CBP Analyst Desk",
+                                                      "Tom and Fabio Setup Review"})  # 2026-10-31: Control Room, old CBP desks, Planner, BTC Live Aid retired
         own = {r["title"]: r["owner"] for r in rows}
-        self.assertEqual(own["MTS Control Room"], "jishusharma1985")
         self.assertEqual(own["Tom and Fabio: what they taught"], "jishusharma1985")
         self.assertEqual(own["MTS Research Map"], "jishusharma1985")
         self.assertTrue(all("/artifact/" in r["url"] for r in rows))
@@ -124,10 +123,12 @@ class Home(unittest.TestCase):
         import make_home as mh
         d = mh.build(self.reg)
         titles = [p["title"] for p in d["pages"]]
-        self.assertEqual(titles[:3], ["MTS Research Map", "MTS Control Room", "MTS Session Planner"])  # where Jis writes, first
+        self.assertEqual(titles[:2], ["MTS Research Map", "MTS Layers"])  # where Jis writes, first
         self.assertNotIn("MTS Home", titles)
         urls = {r["url"] for r in d["retire"]}
-        self.assertIn("https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su", urls)  # 2026-10-17: the jishu.sharma Control Room is now an old copy
+        self.assertIn("https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su", urls)  # the jishu.sharma Control Room is an old copy
+        self.assertNotIn("https://claude.ai/artifact/MNuodXmi5RiEihX7rFpqUp", urls)  # deleted by the operator 2026-10-31
+        self.assertIn("https://claude.ai/artifact/BcD1gSuxhvdfYMrxcPBvff", urls)  # BTC Live Aid: retired, not yet deleted
         self.assertIn("https://claude.ai/artifact/QwsvsN3LaZKNPvD6zPTTAe", urls)  # jishu.sharma MTS Layers
         self.assertFalse(urls & {p["url"] for p in d["pages"]})
         html = mh.render(d)
@@ -147,14 +148,53 @@ class Home(unittest.TestCase):
                 "## q-done | asked 2026-10-13 | Process\n\nDone one?\n\nRecommended: Yes\nAnswer: Yes\n\n"
                 "## q-json | asked 2026-10-16 | Research\n\nOnly json?\n\n```json\n{\"answer\": \"No\"}\n```\n\n"
                 "## q-decided (2026-10-22, Admin_Guy)\n```json\n{\"id\": \"q-decided\", \"status\": \"DECIDED\"}\n```\n", encoding="utf-8")
-            (root / mh.TASKS / "c1.json").write_text('{"id": "c1", "state": "raw", "asks": "May the monitor clear it?", "title": "Halt"}', encoding="utf-8")
+            (root / mh.TASKS / "c1.json").write_text('{"id": "c1", "state": "raw", "asks": "Jis, may the monitor clear it?", "title": "Halt"}', encoding="utf-8")
+            (root / mh.TASKS / "c3.json").write_text('{"id": "c3", "state": "raw", "asks": "Waiting on DSA-NB desk for data from JIS-NB", "title": "m"}', encoding="utf-8")  # a machine wait, not his
             (root / mh.TASKS / "c2.json").write_text('{"id": "c2", "state": "done", "asks": "Old?", "title": "x"}', encoding="utf-8")
             d = mh.build(self.reg, repo=root)
         self.assertEqual([w["id"] for w in d["waiting"]], ["q-open", "c1"])
         self.assertEqual(d["waiting"][0]["title"], "Retire old tasks?")
         self.assertTrue(d["waiting"][0]["explicit"])
-        self.assertEqual(d["answerAt"]["owner"], "jishusharma1985")
+        self.assertIsNone(d["answerAt"])  # decisions are answered in chat (Control Room retired 2026-10-31)
         self.assertIn("waiting for you", mh.render(d))
+
+    def test_home_shows_road_to_v1_with_current_stage_and_counts(self):
+        """Operator 2026-10-31: the road to profitability left with the Control Room; Home shows D7's one line per stage."""
+        import json
+        import tempfile
+        import make_home as mh
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / mh.TASKS).mkdir(parents=True)
+            (root / mh.ROAD).parent.mkdir(parents=True)
+            (root / mh.ROAD).write_text(
+                "# D7\n\n## Stages\nNow: S1 (test)\n\n| Stage | Entry | Work | Exit (measured) | EXPECT |\n|---|---|---|---|---|\n"
+                "| S0 Freeze and clean | a | b | ready cards <= 15 | now |\n| S1 Spec signed | S0 exit | c | D2 signed | 10-29 |\n"
+                "| v2 | S6 | d | separate spec | later |\n\n## Order\n| S9 Not a stage | x | x | x | x |\n", encoding="utf-8")
+            for i, st in enumerate(("ready", "ready", "done")):
+                (root / mh.TASKS / f"k{i}.json").write_text(json.dumps({"id": f"k{i}", "state": st}), encoding="utf-8")
+            (root / mh.PROMOTED).parent.mkdir(parents=True)
+            (root / mh.PROMOTED).write_text('{"version": 1, "entries": [{"id": "x"}]}', encoding="utf-8")
+            d = mh.build(self.reg, repo=root)
+        road = d["road"]
+        self.assertEqual([s["id"] for s in road["stages"]], ["S0", "S1", "v2"])
+        self.assertEqual(road["stages"][1], {"id": "S1", "name": "Spec signed", "exit": "D2 signed", "expect": "10-29", "now": True})
+        self.assertEqual(road["now"], "S1")
+        self.assertEqual(road["counts"], {"ready_cards": 2, "promoted": 1})
+        self.assertIn('id="road"', mh.render(d))
+
+    def test_session_planner_retired_and_listed_for_delete(self):
+        """Operator 2026-10-31: planning happens in the sessions; the Planner page leaves Home and waits for his delete."""
+        import make_home as mh
+        d = mh.build(self.reg)
+        self.assertNotIn("session_planner", [p["slug"] for p in d["pages"]])
+        self.assertNotIn("https://claude.ai/artifact/2Ti4CGqsFwhWpP1jwmw7UU", [r["url"] for r in d["retire"]])  # he deleted it 2026-10-31
+
+    def test_road_reads_the_real_roadmap(self):
+        import make_home as mh
+        road = mh.road(af.REPO)
+        self.assertEqual([s["id"] for s in road["stages"]][:2], ["S0", "S1"])
+        self.assertEqual(sum(s["now"] for s in road["stages"]), 1)  # D7 carries one "Now:" line
 
     def test_every_page_opens_on_the_home_login(self):
         """Operator 2026-10-17: 'make a copy of everything from GitHub and publish everything from this account'."""
@@ -200,7 +240,7 @@ class Home(unittest.TestCase):
         """Operator 2026-10-25: every new development/page must show on MTS Home. A page shows when it is in registry.json."""
         import make_home as mh
         titles = [p["title"] for p in mh.build(self.reg)["pages"]]
-        for t in ("MTS Sim Desk", "CBP Analyst Desk", "MTS Layers", "MTS Control Room"):
+        for t in ("MTS Sim Desk", "CBP Analyst Desk", "MTS Layers", "Tom and Fabio Setup Review"):
             self.assertIn(t, titles)
         reg = copy.deepcopy(self.reg)
         extra = copy.deepcopy(next(p for p in reg["pages"] if p["slug"] == "sim_desk"))
@@ -272,9 +312,28 @@ class Stale(unittest.TestCase):
         with self.assertRaises(SystemExit):
             af.publish_record(self.reg, "nope")
 
+    def test_publish_record_generator_page_without_repo_html(self):
+        pg = next(p for p in self.reg["pages"] if p["slug"] == "sim_desk")
+        self.assertIsNone(pg["html"])
+        pg["published_sha"] = None
+        built = lambda page, repo=af.REPO: "sim desk build"
+        orig = af.build_html
+        af.build_html = built
+        try:
+            sha = af.publish_record(self.reg, "sim_desk", today="2026-10-31")
+            self.assertEqual(pg["published_sha"], af.content_hash("sim desk build"))
+            self.assertEqual(sha, pg["published_sha"])
+            self.assertIn(pg, af.tracked(self.reg))
+            self.assertEqual([s for s in af.stale(self.reg, built) if s[0] == "sim_desk"], [])
+            self.assertFalse(af.behind(self.reg, pg))
+        finally:
+            af.build_html = orig
+        with self.assertRaises(SystemExit):
+            af.publish_record(self.reg, "cbp_analyst_desk")  # no html, no buildable generator
+
     def test_every_page_has_generator_or_hand_made_mark(self):
         for pg in self.reg["pages"]:
-            if pg.get("html") and pg["slug"] in ("research_map", "session_planner", "tom_fabio_deck"):
+            if pg.get("html") and pg["slug"] in ("research_map", "tom_fabio_deck"):
                 self.assertEqual(pg["generator"], "hand-made", pg["slug"])
             self.assertIn("published_sha", pg)
 

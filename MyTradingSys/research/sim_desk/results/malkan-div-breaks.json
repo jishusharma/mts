@@ -1,0 +1,437 @@
+{
+ "id": "malkan-div-breaks",
+ "kind": "backtest",
+ "parity": null,
+ "family": "RSI divergence (Malkan)",
+ "title": "Malkan divergence on timeframe-break trades: exit on divergence, and reverse divergence (PRD/NRD) on the lower TF as an entry filter",
+ "what": [
+  {
+   "name": "Trades",
+   "value_plain": "tf_break events, BTCUSDT 15m / 1h / 4h, entry at the next open, fixed exit 4 bars later (exit study: held to the first divergence against the trade, max 24 / 24 / 12 bars)",
+   "label": "OURS"
+  },
+  {
+   "name": "Divergence detector",
+   "value_plain": "regular 3-10 bars; reverse (PRD / NRD) 5-14 bars with RSI >= 60 / <= 40",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Lower timeframe",
+   "value_plain": "15m -> 5m, 1h -> 15m, 4h -> 1h",
+   "label": "OURS"
+  },
+  {
+   "name": "Entry filter",
+   "value_plain": "reverse divergence WITH the trade (PRD long, NRD short) on the lower TF known in the last 10 bars",
+   "label": "OURS"
+  },
+  {
+   "name": "CVD divergence",
+   "value_plain": "cumulative taker delta in place of RSI (regular kinds only)",
+   "label": "OURS"
+  },
+  {
+   "name": "Costs",
+   "value_plain": "0.10 % round trip (taker both legs), no slippage, no funding",
+   "label": "OURS"
+  }
+ ],
+ "how": "Step 1, exploratory on DEV 2022-01..2024-06: every divergence kind x source x timeframe, at entry and as exit (about 66 cells). Step 2: the one consistent cell frozen in PRE_REG_DIV.md and run once on 2020-2021, week-block bootstrap, Holm over 3 timeframes.",
+ "window": "DEV 2022-01..2024-06 (exploratory); fresh check 2020-01..2021-12; VALIDATION and HOLDOUT not read",
+ "verdict": {
+  "label": "FAIL",
+  "tone": "bad"
+ },
+ "why": [
+  "2020-2021 (never seen): 15m flagged trades -0.110 % per trade (n 274), Holm p 1.00 -> FAIL",
+  "2020-2021 (never seen): 1h flagged trades -0.180 % per trade (n 131), Holm p 1.00 -> FAIL",
+  "2020-2021 (never seen): 4h flagged trades -0.384 % per trade (n 52), Holm p 1.00 -> FAIL",
+  "Flagged trades did no better than the rest on 2020-2021; the DEV lead (best of about 66 cells) was chance.",
+  "Exit on a divergence against the trade (DEV): no better than simply holding longer at any timeframe."
+ ],
+ "kpis": [
+  {
+   "label": "15m 2020-21 flagged net %",
+   "value": "-0.110",
+   "tone": "bad"
+  },
+  {
+   "label": "1h 2020-21 flagged net %",
+   "value": "-0.180",
+   "tone": "bad"
+  },
+  {
+   "label": "4h 2020-21 flagged net %",
+   "value": "-0.384",
+   "tone": "bad"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "table",
+   "title": "Fresh check 2020-2021: trades with a lower-TF reverse divergence with the trade (net % per trade after fees)",
+   "caption": "rule frozen before the data was read; CI = week-block 95 %; Holm over 3 timeframes",
+   "cols": [
+    "TF",
+    "flagged trades",
+    "net",
+    "CI",
+    "Holm p",
+    "not flagged net",
+    "verdict"
+   ],
+   "rows": [
+    [
+     "15m",
+     "274",
+     "-0.110",
+     "-0.239..+0.013",
+     "1.00",
+     "-0.101",
+     "FAIL"
+    ],
+    [
+     "1h",
+     "131",
+     "-0.180",
+     "-0.408..+0.052",
+     "1.00",
+     "-0.158",
+     "FAIL"
+    ],
+    [
+     "4h",
+     "52",
+     "-0.384",
+     "-1.208..+0.352",
+     "1.00",
+     "-0.291",
+     "FAIL"
+    ]
+   ]
+  },
+  {
+   "kind": "table",
+   "title": "2020-2021 split, descriptive (net % per trade, n)",
+   "caption": "not a test: shown so the side and year spread is visible",
+   "cols": [
+    "TF",
+    "longs with PRD",
+    "shorts with NRD",
+    "2020",
+    "2021",
+    "all trades"
+   ],
+   "rows": [
+    [
+     "15m",
+     "-0.048 (159)",
+     "-0.195 (115)",
+     "-0.168 (127)",
+     "-0.060 (147)",
+     "-0.102"
+    ],
+    [
+     "1h",
+     "+0.068 (79)",
+     "-0.556 (52)",
+     "-0.248 (64)",
+     "-0.115 (67)",
+     "-0.160"
+    ],
+    [
+     "4h",
+     "-0.274 (33)",
+     "-0.575 (19)",
+     "+0.292 (27)",
+     "-1.115 (25)",
+     "-0.303"
+    ]
+   ]
+  },
+  {
+   "kind": "table",
+   "title": "DEV (exploratory): the lead cell that was tested (net % per trade)",
+   "caption": "best-looking of about 66 cells, so a big number was expected by chance",
+   "cols": [
+    "TF",
+    "divergence",
+    "n with",
+    "net with",
+    "net without"
+   ],
+   "rows": [
+    [
+     "15m",
+     "PRD (longs)",
+     "143",
+     "-0.085",
+     "-0.105"
+    ],
+    [
+     "15m",
+     "NRD (shorts)",
+     "127",
+     "-0.069",
+     "-0.105"
+    ],
+    [
+     "1h",
+     "PRD (longs)",
+     "65",
+     "+0.121",
+     "-0.062"
+    ],
+    [
+     "1h",
+     "NRD (shorts)",
+     "58",
+     "+0.015",
+     "-0.056"
+    ],
+    [
+     "4h",
+     "PRD (longs)",
+     "36",
+     "+0.493",
+     "-0.205"
+    ],
+    [
+     "4h",
+     "NRD (shorts)",
+     "32",
+     "+0.322",
+     "-0.188"
+    ]
+   ]
+  },
+  {
+   "kind": "table",
+   "title": "DEV (exploratory): exit on the first divergence against the trade vs fixed holds",
+   "caption": "net % per trade after fees; CI = week-block 95 %",
+   "cols": [
+    "TF",
+    "exit",
+    "trades",
+    "net",
+    "CI",
+    "win %",
+    "PF",
+    "net without best 5 %",
+    "median bars held"
+   ],
+   "rows": [
+    [
+     "15m",
+     "fixed 4 bars (meta.py)",
+     "5235",
+     "-0.104",
+     "-0.121..-0.089",
+     "38",
+     "0.56",
+     "-0.177",
+     "4"
+    ],
+    [
+     "15m",
+     "fixed 24 bars",
+     "5235",
+     "-0.072",
+     "-0.104..-0.039",
+     "47",
+     "0.85",
+     "-0.247",
+     "24"
+    ],
+    [
+     "15m",
+     "RSI divergence against, same TF",
+     "5235",
+     "-0.078",
+     "-0.108..-0.046",
+     "47",
+     "0.82",
+     "-0.235",
+     "24"
+    ],
+    [
+     "15m",
+     "CVD divergence against, same TF",
+     "5235",
+     "-0.087",
+     "-0.115..-0.057",
+     "46",
+     "0.78",
+     "-0.237",
+     "24"
+    ],
+    [
+     "15m",
+     "RSI divergence against, lower TF",
+     "5235",
+     "-0.075",
+     "-0.101..-0.048",
+     "49",
+     "0.81",
+     "-0.209",
+     "21"
+    ],
+    [
+     "15m",
+     "CVD divergence against, lower TF",
+     "5235",
+     "-0.089",
+     "-0.115..-0.064",
+     "41",
+     "0.71",
+     "-0.206",
+     "9"
+    ],
+    [
+     "1h",
+     "fixed 4 bars (meta.py)",
+     "1376",
+     "-0.053",
+     "-0.120..+0.017",
+     "48",
+     "0.87",
+     "-0.206",
+     "4"
+    ],
+    [
+     "1h",
+     "fixed 24 bars",
+     "1376",
+     "-0.062",
+     "-0.206..+0.087",
+     "51",
+     "0.94",
+     "-0.413",
+     "24"
+    ],
+    [
+     "1h",
+     "RSI divergence against, same TF",
+     "1376",
+     "-0.141",
+     "-0.281..+0.000",
+     "50",
+     "0.85",
+     "-0.450",
+     "24"
+    ],
+    [
+     "1h",
+     "CVD divergence against, same TF",
+     "1376",
+     "-0.046",
+     "-0.150..+0.068",
+     "49",
+     "0.94",
+     "-0.347",
+     "23"
+    ],
+    [
+     "1h",
+     "RSI divergence against, lower TF",
+     "1376",
+     "-0.115",
+     "-0.250..+0.015",
+     "54",
+     "0.85",
+     "-0.364",
+     "15"
+    ],
+    [
+     "1h",
+     "CVD divergence against, lower TF",
+     "1376",
+     "-0.042",
+     "-0.148..+0.066",
+     "49",
+     "0.92",
+     "-0.248",
+     "6"
+    ],
+    [
+     "4h",
+     "fixed 4 bars (meta.py)",
+     "523",
+     "-0.157",
+     "-0.336..+0.008",
+     "46",
+     "0.82",
+     "-0.468",
+     "4"
+    ],
+    [
+     "4h",
+     "fixed 12 bars",
+     "523",
+     "-0.013",
+     "-0.295..+0.256",
+     "49",
+     "0.99",
+     "-0.526",
+     "12"
+    ],
+    [
+     "4h",
+     "RSI divergence against, same TF",
+     "523",
+     "-0.048",
+     "-0.316..+0.203",
+     "48",
+     "0.96",
+     "-0.524",
+     "12"
+    ],
+    [
+     "4h",
+     "CVD divergence against, same TF",
+     "523",
+     "+0.011",
+     "-0.263..+0.277",
+     "49",
+     "1.01",
+     "-0.470",
+     "12"
+    ],
+    [
+     "4h",
+     "RSI divergence against, lower TF",
+     "523",
+     "-0.132",
+     "-0.445..+0.170",
+     "51",
+     "0.89",
+     "-0.531",
+     "12"
+    ],
+    [
+     "4h",
+     "CVD divergence against, lower TF",
+     "523",
+     "+0.029",
+     "-0.187..+0.242",
+     "48",
+     "1.03",
+     "-0.377",
+     "6"
+    ]
+   ]
+  },
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported (per-trade chart data was not saved)"
+  }
+ ],
+ "source_files": [
+  "MyTradingSys/research/meta_label_breaks_2026-10-31/PRE_REG_DIV.md",
+  "MyTradingSys/research/meta_label_breaks_2026-10-31/explore_div.py",
+  "MyTradingSys/research/meta_label_breaks_2026-10-31/confirm_div.py",
+  "MyTradingSys/research/meta_label_breaks_2026-10-31/RESULT.md"
+ ],
+ "commit": "2203ad50"
+}

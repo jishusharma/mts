@@ -1,0 +1,201 @@
+{
+ "id": "fractals-phase-tag",
+ "kind": "audit",
+ "parity": null,
+ "family": "Fractals + BTC phase",
+ "provenance": "exported",
+ "title": "BTC market-phase tags (cycle year, drawdown, Cowen band, 200/400-day and weekly averages): days in each cell",
+ "date": "2026-10-31",
+ "what": [
+  {
+   "name": "What it is",
+   "value_plain": "A daily tag table used to split other tests by market phase; it is not a trade test and has no R.",
+   "label": "OURS"
+  },
+  {
+   "name": "Causality",
+   "value_plain": "The tag of day t uses only daily bars closed on day t-1 or earlier",
+   "label": "OURS"
+  },
+  {
+   "name": "Halving dates",
+   "value_plain": "2012-11-28, 2016-07-09, 2020-05-11, 2024-04-20 (block timestamps)",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Cycle year / drawdown bins",
+   "value_plain": "1 + floor(days since halving / 365) capped at 4; drawdown from the running close-ATH: shallow above -20 %, mid -20 to -50 %, deep below -50 %",
+   "label": "OURS"
+  },
+  {
+   "name": "Cowen band, averages",
+   "value_plain": "Cowen band side (FORMULAS.md), 200-day and 400-day average side, weekly 10-average above/below and up/down",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Data",
+   "value_plain": "BTCUSDT spot daily closes, 2017-08-17 to 2026-09-30",
+   "label": "SOURCED"
+  }
+ ],
+ "how": "One row per UTC day. The harness checks that a changed bar t leaves the tag of day t alone but changes day t+1, that a planted edge in one cell is found 72 to 100 % of runs at the stated n, and that a no-edge run flags nothing. The P1 split itself was blocked until P1b supplied a frozen event list.",
+ "window": "Tag series 2017-08-17 to 2026-09-30 (a descriptive table; the trade studies that use it stay on DEV 2022-01 to 2025-06)",
+ "verdict": {
+  "label": "Built and tested (15 tests); descriptive only, never a trigger",
+  "tone": "info"
+ },
+ "why": [
+  "3332 daily rows; every cell describes where price sits, not a forecast.",
+  "Only 2 to 3 cycles exist, so cycle-year cells are descriptive and never a rule.",
+  "Used by P1b, F1 and F3 to split results by phase; none of them found a phase in which the tested trade turns positive."
+ ],
+ "kpis": [
+  {
+   "label": "daily rows",
+   "value": "3332"
+  },
+  {
+   "label": "tests passing",
+   "value": "15"
+  },
+  {
+   "label": "planted edge found",
+   "value": "72 to 100 % of runs"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "table",
+   "title": "Days per tag cell",
+   "cols": [
+    "Tag",
+    "Cell",
+    "Days",
+    "Share"
+   ],
+   "rows": [
+    [
+     "cowen_side",
+     "above",
+     1618,
+     "48.6 %"
+    ],
+    [
+     "cowen_side",
+     "below",
+     1412,
+     "42.4 %"
+    ],
+    [
+     "cowen_side",
+     "inside",
+     151,
+     "4.5 %"
+    ],
+    [
+     "sma200_side",
+     "above",
+     1637,
+     "49.1 %"
+    ],
+    [
+     "sma200_side",
+     "below",
+     1495,
+     "44.9 %"
+    ],
+    [
+     "sma400_side",
+     "above",
+     1902,
+     "57.1 %"
+    ],
+    [
+     "sma400_side",
+     "below",
+     1030,
+     "30.9 %"
+    ],
+    [
+     "wsma10_phase",
+     "above_up",
+     1403,
+     "42.1 %"
+    ],
+    [
+     "wsma10_phase",
+     "below_down",
+     1245,
+     "37.4 %"
+    ],
+    [
+     "wsma10_phase",
+     "above_down",
+     302,
+     "9.1 %"
+    ],
+    [
+     "wsma10_phase",
+     "below_up",
+     301,
+     "9.0 %"
+    ],
+    [
+     "dd_bin",
+     "deep",
+     1303,
+     "39.1 %"
+    ],
+    [
+     "dd_bin",
+     "mid",
+     1103,
+     "33.1 %"
+    ],
+    [
+     "dd_bin",
+     "shallow",
+     925,
+     "27.8 %"
+    ],
+    [
+     "cycle_year",
+     "2",
+     1056,
+     "31.7 %"
+    ],
+    [
+     "cycle_year",
+     "3",
+     893,
+     "26.8 %"
+    ],
+    [
+     "cycle_year",
+     "1",
+     730,
+     "21.9 %"
+    ],
+    [
+     "cycle_year",
+     "4",
+     652,
+     "19.6 %"
+    ]
+   ],
+   "caption": "Blank (nan) rows are the warm-up before each average exists."
+  },
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported"
+  }
+ ],
+ "source_files": [
+  "MyTradingSys/research/fractals_2026-10-31/phase_tag/phase_tag.py",
+  "MyTradingSys/research/fractals_2026-10-31/phase_tag/tags.csv",
+  "MyTradingSys/research/fractals_2026-10-31/SYNTHESIS.md",
+  "MyTradingSys/research/fractals_2026-10-31/p1_split/RESULT.md"
+ ],
+ "commit": "614a11e65"
+}

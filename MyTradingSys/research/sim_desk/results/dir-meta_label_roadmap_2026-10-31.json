@@ -1,0 +1,87 @@
+{
+ "id": "dir-meta_label_roadmap_2026-10-31",
+ "kind": "backtest",
+ "family": "Meta Label Roadmap",
+ "title": "Meta-labelling across MTS: review of the Opus analysis and roadmap (2026-10-31)",
+ "provenance": "source-extracted",
+ "date": "2026-10-31",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Rule (Opus, kept): a filter lifts a weak-but-real edge; it does not rescue negative gross. Ranking OURS from the numbers on disk.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "Rank Setup Gross / net on DEV Worth meta-labelling? Why",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "1 Fabio Model C price-only stand-in (ours) net +0.035..+0.071 R, n 515-518, CI spans 0 (results 820e427d, a955213e, b3972cec, b6b13619) yes, first; underpowered 2.7x (1.5) the only candidate with a positive mean; BBWP -…",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "2 tf_break 1h/4h hold/reclaim/sweep events (sister card) see research/tf_break_event_study_2026-10-30/RESULT.md (not re-read here) yes, second, same amendments event counts large; the card is already written",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 5 from the source",
+   "value_plain": "3 Tom VP return / fade / accept net -0.20..-0.26 R, 10 of 12 FAILED not now needs +0.33 R lift; first make a variant pass gross (SETUP_REVIEW.md section 6 test 2, near-band placebo on dev_ext)",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 6 from the source",
+   "value_plain": "4 Tom level touch (POC/VAH/VAL) gross -0.042..+0.010, net -0.185..-",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2022-04-01 to 2024-06-30 (as written in the source)",
+ "verdict": {
+  "label": "in one paragraph",
+  "tone": "info"
+ },
+ "why": [
+  "gross is negative; the question is \"under which conditions does this setup work\" (regime), not \"how many layers agree\" (Q33 0/186 cells,",
+  "(system/tasks/meta-label-tom-vp-fabio-trades.json:36); (3) sizing is proposed before any take/skip pass, on setups with negative gross;",
+  "(4) the snapshot has two look-ahead seams the note does not name (touch time vs fill time, and higher-timeframe values at an intraday entry);",
+  "(every desk setting writes a row before the result shows, PLUGIN.md:25). What does not exist is a merged family: the confluence pre-reg"
+ ],
+ "kpis": [
+  {
+   "label": "trades (first count in the source)",
+   "value": "1812"
+  },
+  {
+   "label": "net R after fees (first value in the source)",
+   "value": "-0.26",
+   "tone": "bad"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 1812,
+   "quote": "1812 trades, -0.257 R, 95 % range -0.296..-0.218). Sizing a negative stream by a probability that is itself unproven produces a"
+  },
+  {
+   "field": "net_r",
+   "value": -0.26,
+   "quote": "the sign. Tom VP's 10 FAILED runs are -0.20 to -0.26 R net per trade (research/sim_desk/results/desk-tom_vp-.json kpis; e.g. c8d2f341:"
+  }
+ ],
+ "missing": {},
+ "source_files": [
+  "MyTradingSys/research/meta_label_roadmap_2026-10-31/ROADMAP.md"
+ ],
+ "commit": "a4a35b4bb"
+}

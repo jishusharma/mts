@@ -1,0 +1,77 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-31T10:24:50Z",
+  "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-31T07:16:51Z",
+    "misses": 22,
+    "reads": [
+      "scripts/dev/run_staged_tests.py",
+      "MyTradingSys/tests/test_gate_discovery_b150.py",
+      "scripts/dev/run_all_tests.py"
+    ],
+    "session": "agent-a3c0e034162d0d228"
+  },
+  "created": "2026-10-31T05:11:50Z",
+  "depends_on": [],
+  "done_when": "test_manager_reacts_to_margin_drain fails on current code and passes after the chosen behaviour is pinned",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Gemini test plan (gap confirmed: no equity or margin reference in position_manager.py; daily_loss_monitor does watch equity, so the gap is liquidation distance, not total loss). Add an offline test with equity falling during the manage loop; decide with the live-path owner whether the manager flattens or relies on daily_loss_monitor, and pin that behaviour. Test and card only.",
+  "id": "test-position-manager-margin-drain",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "test_margin_drain_offline pins flatten/halt; expectedFailure until position_manager reads ",
+      "ref": "62c216a0a",
+      "utc": "2026-10-31T10:24:50Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "B148 part 5 (D10: 10 min heartbeat age) and B146 gate on at 0.3 (D09); Inbox items recorde",
+      "ref": "5c5678d4caa8",
+      "utc": "2026-10-09T08:25:56Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T05:11:52Z",
+  "refs": [
+    "gemini-test-plan-execution-1031"
+  ],
+  "result": "test_margin_drain_offline pins flatten/halt; expectedFailure until position_manager reads margin (a0eb3128f)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/execution/position_manager.py",
+    "MyTradingSys/execution/testnet/offline/test_fix3_offline.py"
+  ],
+  "scope_out": [],
+  "scope_sha": "5c5678d4caa8",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Write the offline test: equity drops below maintenance margin with the stop intact",
+    "Pin the chosen behaviour (halt and flatten, or documented hand-off to daily_loss_monitor)"
+  ],
+  "taken": "2026-10-31T10:24:50Z",
+  "tests": "MyTradingSys/execution/testnet/offline/test_margin_drain_offline.py::test_manager_reacts_to_margin_drain (fails on current code, which keeps managing)",
+  "title": "Test gap: position_manager watches contract count only, no test for margin or equity drain while a position is open (Gemini execution plan, rank 1)",
+  "weight": "",
+  "worker": "agent"
+}

@@ -9,6 +9,8 @@ New layers or analyst sources; new vendors, logins or lanes; new pages; new rule
 shorten); any mainnet step; confluence between layers; the options folder beyond its own plan.
 
 ## Stages
+Now: S0 (operator 2026-10-30, d-simplify-align-s0; MTS Home reads this line, move it when an exit is signed)
+
 | Stage | Entry | Work | Exit (measured) | EXPECT |
 |---|---|---|---|---|
 | S0 Freeze and clean | operator answers q-v1-freeze | ship the unjam branch (review per rule 11); apply D1: release 3 stale claims, retire worktrees after one ship each, close/park cards, BUGS stage-tag pass, GAP-5 reconcile; decide the 22 Windows tasks (q-v1-keepers) and the CBP routine (q-v1-cbp-routine); 2026-10-23 config review (q-v1-config-1023) | ready cards <= 15, claims <= 4 and 0 stale, worktrees <= 8, bookkeeping share of trunk commits < 30 % on STATUS.md, traffic.py jam exits 0 on JIS-NB, no scheduled task outside the keeper list | now to 2026-10-27 |
@@ -19,6 +21,29 @@ shorten); any mainnet step; confluence between layers; the options folder beyond
 | S5 Testnet to the bar | S2 exit and at least one promoted config | the promoted config(s) trade on testnet; daily bar read from trade_ledger.jsonl; the operator's decision page gets one line per week | the revised bar (D3) holds over its rolling window (sign) | 30-60 days from the first promoted config |
 | S6 Mainnet decision | S5 exit | the operator decides mainnet at tiny fixed size with an experiment stop (M7); repo goes private first (CLAUDE.md); keys handled by the operator only | signed decision; builders still never touch keys or enable mainnet | operator's call |
 | v2 | S6 running | options via D6 seams (OPTIONS_PLAN P0-P5), then other markets | separate spec | after v1 |
+
+## S3 run list (the one list of backtests still to run; operator 2026-10-31, d-s3-run-list)
+Rechecks already done, so these are not on the list: re-running 10 published verdicts on today's code (T07: 8 identical, mfe_exit fixed
+ad4e461d6, published_strats has no data here; no verdict flipped); the LC1 keep list against a fair control (0 of 12 keep); Q33 confluence
+(0 of 186); Tom VP (10 of 12 desk runs FAILED); tf_break 15m (FAIL); Setup Alpha/Beta (FAIL / all cells negative); Krown S8 E2
+(INCONCLUSIVE; a forward read needs about 72 months, so Fable run 7 is on hold). A failed test comes back only with a new reason written on
+its card.
+
+| # | Test | Card (state 2026-10-31) | Data | Why it is on the list |
+|---|---|---|---|---|
+| 1 | Meta-label 1h break lead, frozen model scored on 2020-2021 | meta-label-1h-dev-ext-check (raw) | `F:/MTS/Dumps/backtest/raw_1m_2019` (BTCUSDT 1m 2020-01..2021-12) | nearest miss on DEV (best third +0.063 %, Holm p 0.060); fresh years cost no sealed read |
+| 2 | Meta-label Fabio Model C stand-in on 2020-2021 | meta-label-fabio-c-dev-ext-power (ready) | same | NOT ENOUGH DATA on DEV (2.7x underpowered) |
+| 3 | LC4 Levels Confluence: frozen rule, one VALIDATION read | lc-validation (refined, HOLD A-20261018-5 until its base carries a trust tag) | VALIDATION 2025-04..06 | the only frozen rule waiting for its read; check it against the LC1 0-of-12 restatement first |
+| 4 | CryptoCred 4h/1D on DEV, then one VALIDATION read | cryptocred-4h-1d-dev-s3 (raw, filed with this list) | DEV + funding (`Dumps/backtest/raw/fundingRate`) | named in S3 since 10-20 but had no card |
+| 5 | RSI deep-buy: pre-reg, engine, DEV grid | rsi-deep-prereg, rsi-deep-engine(-ladders, -exits), rsi-deep-run-dev (refined) | DEV | S3 next in line |
+| 6 | Tom v2: a variant that passes GROSS first (near-band placebo on 2020-2021, SETUP_REVIEW.md section 6 test 2) | tom-v2-gross-first-dev-ext (raw, filed with this list) | 2020-2021 | S3 next in line; Tom VP net -0.20..-0.26 R, so no filter can rescue it |
+| 7 | Reclaim at the video's timing (enter at the reclaim close, stop on a close back below) | follow-reclaim-daily-close-stop (raw) | DEV | the one untested piece of the Brando price-action note |
+
+Order: 1 and 2 first (cheap, no sealed read), then 3, then 4-6 under WIP = 2; 7 only if a slot is free.
+Every run: rules frozen in PRE_REG.md before any result; fee-net (taker both legs, funding where a hold crosses a stamp); Holm over the
+family with m written first; label-shuffle placebo; contiguous-block CV; same sign 2022 vs 2023-24H1; one VALIDATION read per setup,
+HOLDOUT never; new ideas test on 2020-2021 before DEV/VALIDATION; one TRIALS.md row per setting; results exported to
+`sim_desk/results/<id>.json`. A pass enters `execution/promoted_setups.json` (empty today), and S5 testnet can then start.
 
 ## Order and why
 S0 first because every later stage ships through the gate the jam blocked, and a frozen list is the only list that can

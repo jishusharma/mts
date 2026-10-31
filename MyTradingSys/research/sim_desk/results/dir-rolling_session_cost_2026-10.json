@@ -1,0 +1,36 @@
+{
+ "id": "dir-rolling_session_cost_2026-10",
+ "kind": "thought_experiment",
+ "family": "Rolling Session Cost",
+ "title": "Rolling sessions: measured cost comparison (card rolling-session-cost-comparison, 2026-10-28)",
+ "provenance": "source-extracted",
+ "date": "2026-10-28",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Decision d-measure-rolling-cost (OPERATOR_DECISIONS.md): how long do rolling Supervisor sessions run before data use hurts, and what did past issues look like. Method: committed logs, pilot reports and audits only (grep, no transcripts rea…",
+  "tone": "info"
+ },
+ "why": [],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source",
+  "why": "no sentence in the source states why it passed or failed"
+ },
+ "source_files": [
+  "MyTradingSys/research/rolling_session_cost_2026-10/REPORT.md"
+ ],
+ "commit": "96e60447d"
+}

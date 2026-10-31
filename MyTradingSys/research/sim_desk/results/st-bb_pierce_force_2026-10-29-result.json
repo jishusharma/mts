@@ -1,0 +1,49 @@
+{
+ "id": "st-bb_pierce_force_2026-10-29-result",
+ "kind": "backtest",
+ "family": "Bb Pierce Force",
+ "title": "15m Bollinger pierce near the US open: force behind it, and does it reach the prior-day level (BTCUSDT, 2022-01..2026-0…",
+ "provenance": "source-extracted",
+ "date": "2026-10-29",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Ask (operator, 2026-10-30, shot d73c8ab44f72): \"what kind of force makes that happen? Try to measure it ... how far it will go ...",
+  "tone": "info"
+ },
+ "why": [
+  "REACHED = level traded before a 15m close back across the BB mid; FAILED = mid first; 8 h window. Force proxy = taker buy/sell from klines (no OI in the archive).",
+  "The coil itself does not tell direction or reach. A coiled pierce reaches its level no more often (35% vs 37% matched). The coil predicts",
+  "About half of all pierces close back across the mid first. The \"dance\" fails more often than it runs."
+ ],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "58"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 58,
+   "quote": "their level; distance-matched the gap shrinks to 40% vs 35% (n=58)."
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/bb_pierce_force_2026-10-29/RESULT.md"
+ ],
+ "commit": "58d334dce"
+}

@@ -19,9 +19,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "feat(cbp): add channel to CBP row schema and query filter",
-      "ref": "358a0e50a07c",
-      "utc": "2026-10-29T22:10:27Z"
+      "line": "cbp_run keeps extractor stderr in the error; hot_wallet_watch (N4)",
+      "ref": "9df4dc765627",
+      "utc": "2026-10-30T23:23:21Z"
     },
     {
       "auto": true,
@@ -38,7 +38,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T10:01:04Z",
+  "refreshed": "2026-10-31T08:46:45Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -51,7 +51,7 @@
     "the CBP gates and quote rules",
     "any order or account access"
   ],
-  "scope_sha": "358a0e50a07c",
+  "scope_sha": "9df4dc765627",
   "size": "S",
   "sources": [
     "CBP_AUDIT_2026-10-28.md:18-23"

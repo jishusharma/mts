@@ -2,14 +2,15 @@
 headless Chromium with the network OFF. A page fails on an uncaught script error, on NaN / [object Object] / a bare
 "undefined" cell in its visible text, or (live aid) when its feeds do not fall back to NOT_IN_DATA.
 
-Layer 3 (open it) of MyTradingSys/system/ARTIFACT_TESTING.md. Needs the playwright package and a Chromium (the desktop
-ship gate has both); elsewhere the file skips and says so, it never fails for a missing browser.
+Layer 3 (open it) of MyTradingSys/system/ARTIFACT_TESTING.md. Browser tests need the playwright package and a Chromium (the desktop
+ship gate has both); elsewhere they skip and say so. The *_no_browser tests (static parse) run everywhere, CI included.
 Fail-first: test_planted_defects_are_caught runs the checker on a page with a thrown error and a NaN cell.
 """
 import json
 import os
 import re
 import sys
+from html.parser import HTMLParser
 from pathlib import Path
 
 import pytest
@@ -52,6 +53,69 @@ def check_page(ctx, path, settle_ms=SETTLE_MS):
     if len(text.strip()) < 200:
         problems.append(f"page nearly empty: {len(text.strip())} chars of visible text")
     return problems, text
+
+
+class _Static(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.stack, self.text, self.title, self.opened, self.closed = [], [], False, 0, 0
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "script":
+            self.opened += 1
+        if tag in ("script", "style", "title"):
+            self.stack.append(tag)
+        if tag == "title":
+            self.title = True
+
+    def handle_endtag(self, tag):
+        if tag == "script":
+            self.closed += 1
+        if self.stack and self.stack[-1] == tag:
+            self.stack.pop()
+
+    def handle_data(self, data):
+        if not self.stack:
+            self.text.append(data)
+
+
+def static_problems(html):
+    """Browser-free layer: parse the file, no JS run. Catches an empty file, no <title>, unbalanced <script>, and NaN /
+    [object Object] baked into the static visible text. Runs everywhere (CI has no Chromium); the browser tests do the rest."""
+    if len(html.strip()) < 500:
+        return [f"file nearly empty: {len(html.strip())} chars"]
+    sp = _Static()
+    sp.feed(html)
+    out = []
+    if not sp.title:
+        out.append("no <title>")
+    if sp.opened != sp.closed:
+        out.append(f"unbalanced <script>: {sp.opened} open, {sp.closed} close")
+    out += text_problems(chr(10).join(sp.text))
+    return out
+
+
+@pytest.mark.parametrize("rel", pages())
+def test_page_static_clean_no_browser(rel):
+    problems = static_problems((REPO / rel).read_text(encoding="utf-8", errors="replace"))
+    assert not problems, f"{rel}: " + "; ".join(problems)
+
+
+def test_live_aid_source_has_not_in_data_fallback_no_browser():
+    rel = REPO / "MyTradingSys/tools/live_aid/live_aid.html"
+    if not rel.exists():
+        pytest.skip("live_aid.html not in this tree")
+    assert "NOT_IN_DATA" in rel.read_text(encoding="utf-8", errors="replace"), "live aid source has no NOT_IN_DATA fallback"
+
+
+def test_static_planted_defects_are_caught_no_browser():
+    """Fail-first for the browser-free layer."""
+    bad = ("<html><body><p>" + "filler " * 100 + "</p><table><tr><td>NaN</td></tr><tr><td>undefined</td></tr></table>"
+           "<script>var a=1;</body></html>")
+    joined = "; ".join(static_problems(bad))
+    assert "no <title>" in joined and "unbalanced <script>" in joined and "NaN" in joined and "bare undefined" in joined, joined
+    assert static_problems("<title>t</title><p>" + "ok " * 200 + "</p><script>var x = 'NaN';</script>") == []
+    assert static_problems("<p>x</p>")   # near-empty file flagged
 
 
 @pytest.fixture(scope="module")

@@ -32,16 +32,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "research: US-open OOS replication on 2020-21 (P0-34)",
-      "ref": "fd087f1cea6a",
-      "utc": "2026-10-30T08:37:01Z"
+      "line": "T058 per-TF break event study re-land (ledger P0-45): W/1D/4h/1h/15m, DEV/VAL, fee-net fro",
+      "ref": "e31013dfb104",
+      "utc": "2026-10-30T19:30:37Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "69348c6c07c4 Gross-effect screen pre-registration + card gross-effect-screen-dev (Fable 5.",
-      "ref": "MyTradingSys/research/gross_effect_screen_2026-10-15/PRE_REG.md",
-      "utc": "2026-10-15T17:49:54Z"
+      "line": "e31013dfb104 T058 per-TF break event study re-land (ledger P0-45): W/1D/4h/1h/15m, DEV/VAL",
+      "ref": "MyTradingSys/items/T058_broken_extremes_sweep_vs_continuation.md",
+      "utc": "2026-10-30T19:30:37Z"
     }
   ],
   "layers": [],
@@ -51,7 +51,7 @@
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T10:00:15Z",
+  "refreshed": "2026-10-31T08:46:35Z",
   "refs": [
     "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md"
   ],
@@ -69,7 +69,7 @@
     "VALIDATION/HOLDOUT reads",
     "live code"
   ],
-  "scope_sha": "fd087f1cea6a",
+  "scope_sha": "e31013dfb104",
   "size": "M",
   "sources": [
     "T058 item H3 (2026-10-04), ledger P0-47"

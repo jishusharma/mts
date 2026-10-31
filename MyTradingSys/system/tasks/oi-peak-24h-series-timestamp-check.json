@@ -1,0 +1,62 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "mvn -q -Dtest=MarketDataSnapshotTest,HistoricalSnapshotNoLiveCallsTest test"
+  ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-31T05:00:29Z",
+    "misses": 10,
+    "reads": [
+      "src/test/java/datafeed/MarketDataSnapshotTest.java",
+      "src/main/java/datafeed/BinanceLiquidationAccumulator.java",
+      "src/main/java/datafeed/MarketDataSnapshot.java",
+      "src/test/java/datafeed/LiquidationLogWiringTest.java",
+      "src/main/java/datafeed/BinanceClient.java"
+    ],
+    "session": "agent-a462c125479cc1d24"
+  },
+  "created": "2026-10-31T04:50:13Z",
+  "depends_on": [],
+  "done_when": "A 24-point OI series with one missing hour yields null value and LOW confidence; the test fails on current code; mvn -q -Dtest=MarketDataSnapshotTest,HistoricalSnapshotNoLiveCallsTest test passes.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "oiPeak24h (MarketDataSnapshot.java ~1626) takes the last 24 openInterestHist points without checking timestamps: one skipped hour still gives 24 points spanning >24h and reports HIGH. Require 24 contiguous hourly points (each timestamp exactly 3,600,000 ms after the previous); else null value + LOW. Found by the review of 9cc92bc09.",
+  "id": "oi-peak-24h-series-timestamp-check",
+  "lane": "JIS-NB",
+  "layers": [],
+  "live_path": true,
+  "mutation_check": "",
+  "note": "PLANNER 2026-10-31: live-path follow-up, JIS-NB desktop lane, model sonnet, never deploy. T0 checks pass; only the real Lab_Guy review stamp (CRITICAL) is missing: Lab_Guy adds REVIEWED: Lab_Guy <date>, then tasks.py check promotes. CRITICAL review session needed pre-ship.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "src/main/java/datafeed/MarketDataSnapshot.java",
+    "src/test/java/datafeed/MarketDataSnapshotTest.java"
+  ],
+  "scope_out": [
+    "live tree .mts_live, deploy, restart",
+    "direction/change_1h_pct logic",
+    "any trade rule"
+  ],
+  "size": "S",
+  "sources": [
+    "MarketDataSnapshot.java:1626 oiPeak24h (read 2026-10-31); review of 9cc92bc09"
+  ],
+  "state": "refined",
+  "steps": [
+    "Failing test first: 24 points with one hour missing (extend oiSeries helper with timestamps) -> assertNullPeak; see it fail on current code",
+    "In oiPeak24h read each point's timestamp (long); absent, non-numeric, non-increasing or gap != 3600000 ms in the last 24 points -> peakNode(null,LOW), fail closed like the existing bad-reading path",
+    "Keep existing oiPeak24h tests green (default helper points get contiguous timestamps). Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
+  ],
+  "tests": "MarketDataSnapshotTest: new oiPeak24h_skippedHour_nullAndLow (fails first); duplicate and missing timestamp; 25 points with the gap outside the last 24 stays HIGH; API error/empty/short and zero/negative/NaN (existing). Pure function, no restart state.",
+  "title": "MarketDataSnapshot oi peak_24h: a skipped hour still yields 24 OI points and HIGH confidence, add a timestamp contiguity check",
+  "weight": "CRITICAL",
+  "worker": "agent"
+}

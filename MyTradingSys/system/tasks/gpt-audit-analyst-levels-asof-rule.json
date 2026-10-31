@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T09:03:33Z",
   "commands": [],
   "created": "2026-10-30T17:14:53Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "SOUND; 3/3 SAME, MyTradingSys/research/layer_lab/reports/2026-10-31_gpt-audit-analyst-leve",
+      "ref": "54f27fc48",
+      "utc": "2026-10-31T09:03:33Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,7 +40,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "SOUND; 3/3 SAME, MyTradingSys/research/layer_lab/reports/2026-10-31_gpt-audit-analyst-levels-asof-rule.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/analyst_levels.py, scripts/dev/test_analyst_levels.py (read), a fixture under research/layer_lab/; report file only"
   ],
@@ -43,13 +55,14 @@
   "scope_sha": "589685fbb501",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "write a 3-level fixture with publish dates and bars",
     "derive the expected open/hit rows by hand from the as-of rule in the docstring",
     "run analyst_levels.py on the fixture",
     "report SAME/DIFF per row with file:line of the rule"
   ],
+  "taken": "2026-10-31T09:03:33Z",
   "tests": "see done_when",
   "title": "GPT audit: analyst_levels.py hit/open as-of rule (publish date -> next UTC day) with a planted touch before the instant",
   "weight": "ROUTINE",

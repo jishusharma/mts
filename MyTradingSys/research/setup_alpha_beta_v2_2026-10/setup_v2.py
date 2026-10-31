@@ -216,16 +216,16 @@ def sim_event(ev, b15, m1_t, m1_o, m1_h, m1_l, m1_c, ft, fr):
     f = fund_sum(ft, fr, ent_t, exit_t)
     rp = risk / entry
     r = (side * (exit_p - entry) / entry - 2 * FEE - side * f) / rp
-    return {"R": r, "fee_R": 2 * FEE / rp}
+    return {"R": r, "rt_burden_r": 2 * FEE / rp}
 
 
 def stats(rs, fees):
     n = len(rs)
     if n == 0:
-        return {"n": 0, "win": 0.0, "mean_R": 0.0, "se": 0.0, "t": 0.0, "median_fee_R": 0.0}
+        return {"n": 0, "win": 0.0, "mean_R": 0.0, "se": 0.0, "t": 0.0, "median_rt_burden_r": 0.0}
     a = np.array(rs); se = a.std(ddof=1) / math.sqrt(n) if n > 1 else 0.0
     return {"n": n, "win": float((a > 0).mean()), "mean_R": float(a.mean()), "se": float(se),
-            "t": float(a.mean() / se) if se > 0 else 0.0, "median_fee_R": float(np.median(fees))}
+            "t": float(a.mean() / se) if se > 0 else 0.0, "median_rt_burden_r": float(np.median(fees))}
 
 
 def run_beta(df, ft, fr):
@@ -249,7 +249,7 @@ def run_beta(df, ft, fr):
                 s = e["sim"]
                 if s.get("dropped"): drop += 1; continue
                 if s.get("skipped"): skip += 1; continue
-                rs.append(s["R"]); fees.append(s["fee_R"])
+                rs.append(s["R"]); fees.append(s["rt_burden_r"])
             st = stats(rs, fees); st.update({"events": len(sel), "dropped": drop, "skipped": skip})
             res[f"{arm}_{sp}"] = st
     return res

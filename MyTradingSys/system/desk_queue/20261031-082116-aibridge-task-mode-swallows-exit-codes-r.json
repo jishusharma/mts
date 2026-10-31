@@ -1,0 +1,13 @@
+{
+  "done_when": "Task-mode wrapper propagates the true exit code of the inner process. A test proves a command exiting 1 yields TASK RESULT: FAIL.",
+  "finished": "2026-10-31T10:03:33Z",
+  "from": "JIS-NUC",
+  "host": "JIS-NUC",
+  "id": "20261031-082116-aibridge-task-mode-swallows-exit-codes-r",
+  "need": "Task-mode (task=inline) wrapper reports 'TASK RESULT: PASS' even when the inner command prints 'EXIT_CODE=1'. Proof: Results #11, #12, #13 in chat MTS-2026-10-30-1228Z show 'TASK RESULT: PASS' but end with 'EXIT_CODE=1'. The wrapper is likely catching the PowerShell exit code (which is 0 for the Write-Output line) instead of the Python process exit code, or failing to fail-on-error when the inner command exits non-zero.",
+  "posted": "2026-10-31T08:21:16Z",
+  "result": "Invalid bug: Same as above. The command was 'python ... > log 2>&1; Write-Output EXIT_CODE=0'. The step exited 0 because the last command succeeded. The task runner correctly reported PASS. Not a bridge defect.",
+  "status": "done",
+  "target": "CLAUDE",
+  "title": "AIBridge task-mode swallows exit codes (reports PASS on failure)"
+}

@@ -1,0 +1,60 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T05:11:09Z",
+  "depends_on": [],
+  "done_when": "test_funding_rerun_names_secondary_move fails before the rewording and passes after",
+  "est_turns": 4,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Gemini review of 3d8722a93 (confirmed): FUNDING_RERUN.md line 16 reads as the largest move overall while T06_cost_fill_realism.md:25 shows preopen S1 SHORT h=180 moving +0.0181 pp, and INCONCLUSIVE is forced by n_T=40 < 200 (PRE_REG.md:80), not by funding being small. Reword the doc: primary cell only, cite +0.0181 secondary, state the n rule. Docs only; no verdict changes.",
+  "id": "funding-rerun-label-primary-vs-secondary",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Revert \"Revert real-funding screens: CI red (T06 costs.csv pins screen.py line numbers)\"",
+      "ref": "8cae5e9e285e",
+      "utc": "2026-10-27T22:20:16Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "8cae5e9e285e Revert \"Revert real-funding screens: CI red (T06 costs.csv pins screen.py lin",
+      "ref": "MyTradingSys/research/gross_effect_screen_2026-10-15/FUNDING_RERUN.md",
+      "utc": "2026-10-27T22:20:16Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T05:11:11Z",
+  "refs": [
+    "gemini-method-review-funding-screen-fix-1031"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/FUNDING_RERUN.md",
+    "MyTradingSys/tests/docs/test_integrity.py"
+  ],
+  "scope_out": [],
+  "scope_sha": "8cae5e9e285e",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Reword FUNDING_RERUN.md line 16 with scope, the +0.0181 pp secondary move and the n_T<200 reason",
+    "Add a doc test asserting the file names both +0.0013 and +0.0181"
+  ],
+  "tests": "MyTradingSys/tests/docs/test_integrity.py::test_funding_rerun_names_secondary_move (fails on current text)",
+  "title": "FUNDING_RERUN.md says 'largest arm move +0.0013 pp' but the T06 audit found a secondary cell move of +0.0181 pp; label the scope and the n_T<200 reason",
+  "weight": "",
+  "worker": "agent"
+}

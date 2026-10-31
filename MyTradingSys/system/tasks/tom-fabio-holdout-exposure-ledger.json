@@ -1,0 +1,45 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T10:04:48Z",
+  "depends_on": [],
+  "done_when": "EXPOSURE_LEDGER.csv exists with >=5 rows, 8 columns, each with a source file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Record the VALIDATION/HOLDOUT reads already made by the Tom and Fabio families (SETUP_REVIEW s0 table) in one EXPOSURE_LEDGER.csv so HOLDOUT shows as spent for them.",
+  "id": "tom-fabio-holdout-exposure-ledger",
+  "lane": "HAIKU",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-31 T0-ONLY (planner-a-20261031; machine checks only). ",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T14:46:47Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/tom_fabio_review_2026-10-31/EXPOSURE_LEDGER.csv"
+  ],
+  "scope_out": [
+    "re-running any study, reading VALIDATION or HOLDOUT data"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "read the table in MyTradingSys/research/tom_fabio_review_2026-10-31/SETUP_REVIEW.md lines 17-35",
+    "copy the header of research/context_factors_2026-10-16/EXPOSURE_LEDGER.csv",
+    "one row per family (Tom PHASE2, Tom core BT 0929/1007, Fabio v3 L3, Fabio L1, OF model 2026-07..09) with the file:line source in decision_informed"
+  ],
+  "tests": "docs card: csv parses with the same 8 columns as the context_factors EXPOSURE_LEDGER.csv; each row cites a SETUP_REVIEW file:line",
+  "title": "record VALIDATION/HOLDOUT reads: Tom PHASE2 2022-01..2026-10, tom_core dev/holdout, Fabio L1 OOS, v3 IS/OOS, OF model 2026-07..09 (SETUP_REVIEW s0); HOLDOUT spent for these families",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

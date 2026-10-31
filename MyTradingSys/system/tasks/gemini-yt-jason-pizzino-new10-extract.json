@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-30T21:56:46Z",
+  "commands": [
+    "python scripts/dev/fetch_captions_timed.py --analyst JasonP --channel @JasonPizzinoOfficial --latest 10 --out MyTradingSys/research/yt_feed_2026-10-31/transcripts_jason-pizzino-new10",
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/yt_feed_2026-10-31/JASON_BAR_UPDATE_2026-10-31.md"
+  ],
+  "created": "2026-10-30T20:07:21Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/yt_feed_2026-10-31/JASON_BAR_UPDATE_2026-10-31.md exists; every item has video id, timestamp and a verbatim quote, or NOT_IN_DATA; verify_extract_quotes.py exits 0",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Write MyTradingSys/research/yt_feed_2026-10-31/JASON_BAR_UPDATE_2026-10-31.md: first line counts videos read, captioned and UNVERIFIED; a table of items, then per-video sections with the full quotes.",
+  "id": "gemini-yt-jason-pizzino-new10-extract",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/yt_feed_2026-10-31/JASON_BAR_UPDATE_2026-10-31.md",
+      "ref": "bdb5a3d11",
+      "utc": "2026-10-30T21:56:46Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini rules: captions first (fetch_captions_timed.py), quote only from the caption file, one fetch try per video, no retry loop, 429 -> mark the video UNVERIFIED with no quotes; run verify_extract_quotes.py until exit 0; facts and quotes only, no trading verdict, no code change. Final report ends with a Noticed: line.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T20:07:23Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "reviewed 1031: 48 quotes verified exit 0, 3 spot-checked vs captions",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/yt_feed_2026-10-31/ (new files only)"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code; any backtest; any trading verdict; .secrets and .env"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "python scripts/dev/fetch_captions_timed.py --analyst JasonP --channel @JasonPizzinoOfficial --latest 10 --out MyTradingSys/research/yt_feed_2026-10-31/transcripts_jason-pizzino-new10 (one try per video; 429 -> UNVERIFIED, no retry loop)",
+    "keyword scan each transcript for the topic terms, read the surrounding lines before quoting",
+    "write MyTradingSys/research/yt_feed_2026-10-31/JASON_BAR_UPDATE_2026-10-31.md per the goal; run verify_extract_quotes.py until exit 0; commit on the branch with a Result: line (videos read, items found, NOT_IN_DATA count)"
+  ],
+  "taken": "2026-10-30T21:56:46Z",
+  "tests": "verify_extract_quotes.py exit 0; no code change",
+  "title": "[GEMINI] JasonP (@JasonPizzinoOfficial): latest 10 videos, extract every mention of his bar count (1d, 2d, 3d bars) and the 50% level wit with timed quotes",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

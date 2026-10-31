@@ -1,0 +1,69 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-31T03:27:20Z",
+  "commands": [],
+  "created": "2026-10-31T02:46:00Z",
+  "depends_on": [],
+  "done_when": "grep rsi_wilder MyTradingSys/backtest/layers/FORMULAS.md finds no stale module path and the heading names rsi_core.rsi_core",
+  "est_turns": 3,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "FORMULAS.md:10 heading cites rsi_core.rsi_wilder, but backtest/layers/rsi/rsi_core.py:7 defines rsi_core(closes, period). rsi_wilder only exists in archived bt_rsi.py. Fix the heading to the real name. Found by gemini doc-vs-code audit, confirmed by Builder 10-31.",
+  "id": "formulas-md-cites-rsi-core-rsi-wilder-co",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "FORMULAS.md heading 1 now cites rsi_core.rsi_core",
+      "ref": "4bd7d7087",
+      "utc": "2026-10-31T03:27:20Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "stats: CSCV degenerate-input contract (raise on invalid partitions, NaN Sharpe on zero var",
+      "ref": "732f411af1b1",
+      "utc": "2026-10-28T14:55:01Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "732f411af1b1 stats: CSCV degenerate-input contract (raise on invalid partitions, NaN Sharp",
+      "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
+      "utc": "2026-10-28T14:55:01Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 4,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T02:49:00Z",
+  "refs": [],
+  "result": "FORMULAS.md heading 1 now cites rsi_core.rsi_core",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/backtest/layers/FORMULAS.md"
+  ],
+  "scope_out": [],
+  "scope_sha": "732f411af1b1",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Edit the heading at FORMULAS.md:10"
+  ],
+  "taken": "2026-10-31T03:27:20Z",
+  "tests": "docs only: MyTradingSys/tests/docs/test_integrity.py stays green",
+  "title": "FORMULAS.md cites rsi_core.rsi_wilder, code has rsi_core",
+  "weight": "",
+  "worker": "agent"
+}

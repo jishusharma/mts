@@ -351,13 +351,46 @@ class SyncTest(unittest.TestCase):
         sync.ship(self.a, gate=self.gate)
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
-            sync.claim(self.b, "lab-run", gate=self.gate)
-            sync.claim(self.b, "lab-md", gate=self.gate)
+            sync.claim(self.b, "Lab Run", gate=self.gate)   # free text that slugifies to the card: B2 still applies
+            sync.claim(self.b, "Lab Md", gate=self.gate)
         self.assertIn("no claim needed", out.getvalue())
         self.assertEqual(self.claims_on_origin(), [])
         for name in ("code-task", "mixed", "live", "edits-existing", "no-such-card"):
             sync.claim(self.b, name, gate=self.gate)   # not provably new-files-only (or no card): claims as before
         self.assertEqual(sorted(self.claims_on_origin()), ["code-task", "edits-existing", "live", "mixed", "no-such-card"])
+
+    def test_card_id_task_with_only_new_files_is_claimed_and_second_taker_refused(self):
+        # claim-lease-expiry-and-b2-hole: B2 skipped the claim for new-file cards, so two workers could take one card
+        self.card("lab-run", ["MyTradingSys/research/study_2026-10-17/", "read-only: scripts/dev/sync.py"])
+        sh(self.a, "add", "-A")
+        sh(self.a, "commit", "-q", "-m", "cards")
+        sync.ship(self.a, gate=self.gate)
+        sync.claim(self.b, "lab-run", gate=self.gate)
+        self.assertEqual(self.claims_on_origin(), ["lab-run"])
+        with self.assertRaises(sync.SyncError):
+            sync.claim(self.a, "lab-run", gate=self.gate)
+
+    def test_expired_lease_is_free_and_a_live_or_legacy_claim_still_blocks(self):
+        real = time.time()
+        with mock.patch.object(sync.time, "time", return_value=real - 4 * 3600):   # holder claims 4 h ago, then crashes
+            sync.claim(self.a, "Crashed task", area="scripts/dev", gate=self.gate)
+        self.assertEqual(self.claims_on_origin(), [])          # expired = not open
+        sync.claim(self.b, "Crashed task", area="scripts/dev", gate=self.gate)   # second claimer wins, same slug
+        self.assertEqual(self.claims_on_origin(), ["crashed-task"])
+        with self.assertRaises(sync.SyncError):
+            sync.claim(self.a, "Crashed task", area="scripts/dev", gate=self.gate)   # a live lease blocks
+        self.assertFalse(sync.claim_expired({"task": "old claim without a lease", "epoch": "1"}, real))   # backward compatible
+        self.assertFalse(sync.claim_expired({"expires_at": "garbage"}, real))   # fail closed: unreadable = held
+
+    def test_heartbeat_refreshes_the_lease_and_refuses_a_missing_claim(self):
+        real = time.time()
+        with mock.patch.object(sync.time, "time", return_value=real - 4 * 3600):
+            sync.claim(self.a, "Long job", gate=self.gate)
+        sync.heartbeat(self.a, "long-job")
+        kv = dict(sync.open_claims(self.a))["long-job"]
+        self.assertGreater(int(kv["expires_at"]), real)
+        with self.assertRaises(sync.SyncError):
+            sync.heartbeat(self.a, "no-such-claim")
 
     def test_claim_skip_by_area_and_force_override(self):
         sync.claim(self.b, "Dated report", area="MyTradingSys/research/x_2026-10-17/", gate=self.gate)

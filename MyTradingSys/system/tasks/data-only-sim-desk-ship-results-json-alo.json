@@ -1,0 +1,83 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-31T10:24:48Z",
+  "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-31T08:52:06Z",
+    "misses": 4,
+    "reads": [
+      "scripts/dev/run_all_tests.py",
+      "scripts/dev/test_gate_select.py"
+    ],
+    "session": "agent-a616183bd82acbfc9"
+  },
+  "created": "2026-10-31T08:44:59Z",
+  "depends_on": [],
+  "done_when": "gate_select.explain(['MyTradingSys/research/sim_desk/results/<x>.json']) returns a nonempty step list that includes the one running research/sim_desk/test_backfill.py; test in scripts/dev/test_gate_select.py asserts it.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "gate_select._is_doc treats a .json under DATA_DIRS (sim_desk results) as a doc, so a results-only ship runs 0 gate steps and test_backfill never runs before CI. Add a DOC_STEPS-style step (or a mention rule) so a changed sim_desk results .json selects the test that reads it.",
+  "id": "data-only-sim-desk-ship-results-json-alo",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "gate_select: data-only sim_desk ship is smoke so must-pass 3xm runs; 41 tests, new one fai",
+      "ref": "62c216a0a",
+      "utc": "2026-10-31T10:24:48Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "fast ship gate: 3la and tree-wide inventory tests are must-pass, never deadline-deferred",
+      "ref": "201d47c735bd",
+      "utc": "2026-10-31T08:25:28Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "PLANNER 1031: commit 201d47c73 added step 3xm (gate_select.must_extras: sim_desk/test_backfill on any sim_desk path) but the explain() docs branch (all-doc ships) returns before it; fix = let must_extras apply in the docs branch too.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T08:48:47Z",
+  "refs": [
+    "ci-red-root-causes"
+  ],
+  "result": "gate_select: data-only sim_desk ship is smoke so must-pass 3xm runs; 41 tests, new one fails on old code (c4dd114b6)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/gate_select.py",
+    "scripts/dev/test_gate_select.py"
+  ],
+  "scope_out": [
+    "MyTradingSys/research/sim_desk/",
+    "live tree"
+  ],
+  "scope_sha": "201d47c735bd",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/ci_audit_2026-10-31/CI_RED_ROOT_CAUSES.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Read gate_select.py explain() docs branch (line ~255) and DATA_DIRS/DATA_SUFFIXES",
+    "Write failing test, then add rule (like the WIRING_REGISTRY carve-out)",
+    "Run scripts/dev/test_gate_select.py; ship"
+  ],
+  "taken": "2026-10-31T10:24:48Z",
+  "tests": "scripts/dev/test_gate_select.py: results-json-only ship selects the sim_desk test step; fails on current gate_select (returns 0 steps)",
+  "title": "data-only sim_desk ship (results .json alone) is docs mode and runs 0 gate steps: sim_desk/test_backfill never runs before CI (CI_RED_ROOT_CAUSES.md)",
+  "weight": "",
+  "worker": "agent"
+}

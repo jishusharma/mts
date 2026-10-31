@@ -10,7 +10,7 @@ never stamps REVIEWED, never touches the live tree. A Claude session reviews the
 Flash models only (operator 2026-10-18); the argon option was added by the operator via the gemini-lane-fix task.
 """
 from __future__ import annotations
-import os, random, re, socket, subprocess, sys, time
+import json, os, random, re, socket, subprocess, sys, threading, time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -71,6 +71,18 @@ def claim_holder(card: str, claims) -> str:
     return ''
 
 
+LEASE_REFRESH_S = 3000   # OURS: well inside sync.LEASE_HOURS (3 h); a crashed run stops refreshing and the card frees itself
+
+
+def keep_lease(wt, slug: str, stop, every: float = LEASE_REFRESH_S):
+    """Refresh the claim lease every `every` s until `stop` is set. A failed refresh is not fatal (the next one retries)."""
+    while not stop.wait(every):
+        try:
+            sh([PY, 'scripts/dev/sync.py', 'heartbeat', slug], cwd=wt)
+        except Exception:
+            pass
+
+
 def claim_with_retry(wt, card: str, tries: int = 6, sleep=time.sleep):
     """Claim `card` from worktree `wt`; returns (status, reason), status in ok|skip|fail.
     A busy trunk rejects the claim push: re-run (sync.py re-fetches) up to `tries` times with 2-10 s jittered backoff (OURS).
@@ -94,18 +106,92 @@ def claim_with_retry(wt, card: str, tries: int = 6, sleep=time.sleep):
     return 'fail', f'after {tries} tries: {reason}'
 
 
+def card_gate(card: str) -> tuple[bool, str]:
+    """(ok, why): run only a card that is state ready on origin/fast-track and not tagged SHIPPED/STALE. Unreadable = not ok (fails closed)."""
+    r = git('show', f'origin/fast-track:MyTradingSys/system/tasks/{card}.json', timeout=60)
+    try:
+        c = json.loads(r.stdout)
+        if r.returncode or not isinstance(c, dict):
+            raise ValueError(r.stderr.strip()[:120] or 'not a card')
+    except ValueError as e:
+        return False, f'card unreadable on origin/fast-track ({e})'
+    tag = ''
+    try:
+        import tasks
+        tag = tasks.stop_tag(c, REPO)
+    except BaseException as e:   # SystemExit included: a tag we cannot compute must not start a job
+        return False, f'tag unreadable ({type(e).__name__})'
+    if c.get('state') != 'ready' or tag:
+        return False, f'state {c.get("state")}/{tag or "READY"}'
+    return True, ''
+
+
+class setup_lock:
+    """Exclusive lock file (O_CREAT|O_EXCL poll) so parallel jobs never run git setup at once (NUC 2026-10-24: 2 of 7 jobs
+    died on the .git/config lock). Waits up to `timeout` s (OURS 60); a lock older than `stale` s (OURS 120) is broken.
+    Released on exit, also on an exception."""
+    def __init__(self, timeout: float = 60, stale: float = 120, sleep=time.sleep):
+        self.timeout, self.stale, self.sleep = timeout, stale, sleep
+
+    def __enter__(self):
+        path, t0 = root() / '.git-setup.lock', time.time()
+        path.parent.mkdir(parents=True, exist_ok=True)
+        self.path = path
+        while True:
+            try:
+                os.close(os.open(str(path), os.O_CREAT | os.O_EXCL | os.O_WRONLY))
+                return self
+            except FileExistsError:
+                try:
+                    if time.time() - path.stat().st_mtime > self.stale:
+                        path.unlink()
+                        continue
+                except OSError:
+                    continue
+                if time.time() - t0 > self.timeout:
+                    raise TimeoutError(f'git setup lock {path} busy for {self.timeout}s')
+                self.sleep(0.2)
+
+    def __exit__(self, *exc):
+        try:
+            self.path.unlink()
+        except OSError:
+            pass
+        return False
+
+
+def add_worktree(card: str, wt: Path, tries: int = 3, sleep=time.sleep):
+    """fetch + `git worktree add` for `card` under the setup lock; up to `tries` retries (2 s) on a git lock error.
+    Returns the last CompletedProcess of worktree add (rc 0 = ok); a busy setup lock comes back as rc 124."""
+    try:
+        with setup_lock(sleep=sleep):
+            git('fetch', '-q', 'origin', timeout=60)
+            for n in range(tries + 1):
+                r = git('worktree', 'add', '-b', f'gemini-q/{card}', str(wt), 'origin/fast-track')
+                err = (r.stderr or '').lower()
+                if r.returncode == 0 or not ('could not lock' in err or 'unable to lock' in err) or n == tries:
+                    return r
+                sleep(2)
+    except TimeoutError as e:
+        return subprocess.CompletedProcess([], 124, '', str(e))
+
+
 def run_job(card: str, effort: str, model: str = 'flash') -> None:
     wt = root() / card
     log = root() / f'{card}.log'
     root().mkdir(parents=True, exist_ok=True)
     git('fetch', '-q', 'origin', timeout=60)
     import sync
+    ok, why = card_gate(card)
+    if not ok:
+        log.write_text(f'SKIP {card}: {why}'+chr(10), encoding='utf-8', newline=chr(10))
+        return
     held = claim_holder(card, sync.open_claims(REPO))
     if held:
         log.write_text(f'SKIP {card}: already claimed by {held}\n', encoding='utf-8', newline='\n')
         return
     if not wt.exists():
-        r = git('worktree', 'add', '-b', f'gemini-q/{card}', str(wt), 'origin/fast-track')
+        r = add_worktree(card, wt)
         if r.returncode:
             log.write_text('worktree failed: ' + r.stderr, encoding='utf-8', newline='\n')
             return
@@ -127,7 +213,12 @@ def run_job(card: str, effort: str, model: str = 'flash') -> None:
     with open(log, 'w', encoding='utf-8', newline='\n') as f:
         f.write(f'START {card} {model}\n')
         f.flush()
-        p = subprocess.run(cmd, cwd=wt, stdout=f, stderr=subprocess.STDOUT, text=True, env={**child_env(card, brief), **NOPROMPT})
+        stop = threading.Event()
+        threading.Thread(target=keep_lease, args=(wt, sync.slugify(card), stop), daemon=True).start()   # claim lease: refreshed while the run lasts
+        try:
+            p = subprocess.run(cmd, cwd=wt, stdout=f, stderr=subprocess.STDOUT, text=True, env={**child_env(card, brief), **NOPROMPT})
+        finally:
+            stop.set()
         f.write(f'\nEXIT {p.returncode} after {int(time.time() - t0)}s\n')
     r = sh([PY, 'scripts/dev/sync.py', 'release', sync.slugify(card)], cwd=wt)   # claims are filed under slugify(card) (40 chars): finding 7
     if r.returncode:

@@ -1,0 +1,64 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest -q MyTradingSys/research/eagle_eyes_picture_2026-10-28/test_oi_after_flush_pairing.py",
+    "python MyTradingSys/research/eagle_eyes_picture_2026-10-28/oi_after_flush.py"
+  ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-30T23:37:19Z",
+    "misses": 11,
+    "reads": [],
+    "session": "agent-a4b54a19b06f60628"
+  },
+  "created": "2026-10-30T19:58:17Z",
+  "depends_on": [],
+  "done_when": "test_oi_after_flush_pairing.py passes and failed before the fix; OI_PAIRING_RECHECK.md lists group n for old and new pairing (old: 18/9/22) and states whether any forward-return claim changed.",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Fix the bar/OI pairing in oi_after_flush.py (Bybit OI is stamped at snapshot time t = bar open, so a flush bar's OI change is oi[t+5m]/oi[t]) and recheck the group counts n=18/9/22.",
+  "id": "c24-oi-off-by-one-bar",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "c24: re-land OI pairing fix (off-by-one bar) with reviewed lookahead allowlist rows",
+      "ref": "138bb6a6f0d4",
+      "utc": "2026-10-31T00:02:45Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-31 ACCEPT | Session_Planner (OURS): scope read against oi_after_flush.py lines 52 and 57 (pairing confirmed); fail-first test named; IMPORTANT, no decision numbers set.\nFix runs inside the existing card steps. Final report ends with Noticed:.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "planner-20261030-d",
+  "refreshed": "2026-10-31T08:46:43Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/oi_after_flush.py",
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/test_oi_after_flush_pairing.py"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no product-code edit; public Bybit market data only; no order or account call"
+  ],
+  "scope_sha": "138bb6a6f0d4",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "move the pairing into a pure function flush_oi_change(O, C, I, j) so a test can call it without the network fetch",
+    "fail-first: test_oi_after_flush_pairing.py builds a 4-bar synthetic series where bar 1 drops price 0.4% and I[2]/I[1]-1 = -0.3%; asserts the function returns -0.3%, which the old i vs i-1 pairing does not",
+    "fix the pairing, rerun the script, write both group-count tables (old vs new pairing) to MyTradingSys/research/eagle_eyes_picture_2026-10-28/OI_PAIRING_RECHECK.md; label thresholds OURS"
+  ],
+  "tests": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/test_oi_after_flush_pairing.py fails on the pre-change pairing",
+  "title": "C24 oi_after_flush.py pairs bar i price with bar i-1 OI change (Bybit OI stamped t = snapshot at bar open): 10-30 18:50 wick bar's OI -0.37% is stamped 18:55; recheck n=18/9/22 with oi[t+5m]/oi[t]",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

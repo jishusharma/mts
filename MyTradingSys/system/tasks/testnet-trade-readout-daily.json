@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T05:37:22Z",
   "commands": [
     "python scripts/dev/testnet_status.py --hours 24",
     "python scripts/dev/funnel_report.py --days 1"
@@ -16,6 +17,12 @@
   "id": "testnet-trade-readout-daily",
   "lane": "JIS-NB",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "owner DESKTOP-F7IU69N (live_owner marker); 19 rows, 19 calibration, 0 promoted; live_host.",
+      "ref": "6de4e442e",
+      "utc": "2026-10-31T05:37:22Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -35,7 +42,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "owner DESKTOP-F7IU69N (live_owner marker); 19 rows, 19 calibration, 0 promoted; live_host.txt unchanged (tests block)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/testnet_status.py, funnel_report.py (run), research/testnet_status/ (write), system/live_host.txt (write), STATUS.md Gate Board line, a new test for the NOT_IN_DATA path"
   ],
@@ -45,13 +57,14 @@
   "scope_sha": "02bc91363b0b",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "on the live owner: run the two commands",
     "write the day file with owner, HALT/AUTO_PAUSE existence and labelled rows",
     "add the fail-first test (missing ledger -> NOT_IN_DATA)",
     "fix live_host.txt, ship"
   ],
+  "taken": "2026-10-31T05:37:22Z",
   "tests": "see done_when",
   "title": "Testnet trade readout, daily on the live owner: testnet_status.py + funnel_report.py, one page per day, rows labelled calibration or promoted, engine state stamped; fix live_host.txt",
   "weight": "ROUTINE",

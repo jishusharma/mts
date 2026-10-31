@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T20:08:08Z",
   "commands": [
     "python -m pytest MyTradingSys/tests/test_gemini_queue_lock.py MyTradingSys/tests/test_gemini_claim_skip.py -q"
   ],
@@ -18,11 +19,17 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "add_worktree + setup_lock in gemini_queue.py; 5 new tests fail on old code (5 failed), 10 ",
+      "ref": "bc91631cf",
+      "utc": "2026-10-30T20:08:08Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "Merge origin/fast-track for 5-day wiring audit & fixes",
-      "ref": "a37caf64ec00",
-      "utc": "2026-10-27T22:22:56Z"
+      "line": "gemini_queue: root() reads MTS_GQ_ROOT at call time (laptop)",
+      "ref": "71f3e7aeb2f8",
+      "utc": "2026-10-29T22:50:21Z"
     }
   ],
   "layers": [],
@@ -32,9 +39,14 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-27T22:51:43Z",
+  "refreshed": "2026-10-30T17:40:10Z",
   "refs": [],
-  "result": "",
+  "result": "add_worktree + setup_lock in gemini_queue.py; 5 new tests fail on old code (5 failed), 10 pass now",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/gemini_queue.py",
     "MyTradingSys/tests/test_gemini_queue_lock.py"
@@ -44,19 +56,20 @@
     "gemini-queue-claim-release-push-hangs-fo (separate card, same file: take after it)",
     "any process start or restart on the NUC"
   ],
-  "scope_sha": "a37caf64ec00",
+  "scope_sha": "71f3e7aeb2f8",
   "size": "S",
   "sources": [
     "scripts/dev/gemini_queue.py:55-82",
     "card title: 2 of 7 parallel jobs failed 2026-10-24 on .git/config lock"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read run_job() (gemini_queue.py:55-82) and MyTradingSys/tests/test_gemini_claim_skip.py for how git() is faked.",
     "Write the fail-first test: fake git() returns 'could not lock config file' rc 255 on the first two worktree-add calls, then rc 0; two threads call the setup helper; assert both end with a worktree and the log has no 'worktree failed'. Fails on current code (no retry).",
     "Add helper add_worktree(card): an exclusive lock file ROOT/.git-setup.lock (os.O_CREAT|O_EXCL poll, 60 s timeout, stale after 120 s) around fetch + worktree add, plus up to 3 retries with 2 s sleep when stderr contains 'could not lock' or 'unable to lock'. Use it in run_job().",
     "Run the new test and the existing test_gemini_claim_skip.py."
   ],
+  "taken": "2026-10-30T20:08:08Z",
   "tests": "MyTradingSys/tests/test_gemini_queue_lock.py (retry on lock error, two concurrent setups both succeed, lock released on exception); fails on pre-change code.",
   "title": "gemini_queue parallel runs fail: concurrent git worktree add locks .git/config (2 of 7 failed 2026-10-24)",
   "weight": "IMPORTANT",

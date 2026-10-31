@@ -1,0 +1,80 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-30T21:19:48Z",
+  "commands": [
+    "git branch -r | grep gemini-q/",
+    "python scripts/dev/verify_extract_quotes.py <file>"
+  ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-30T21:19:47Z",
+    "misses": 23,
+    "reads": [
+      "MyTradingSys/system/WORKERS.md",
+      "MyTradingSys/research/v1_plan_2026-10-20/D7_ROADMAP.md",
+      "MyTradingSys/system/layer_index.json",
+      "MyTradingSys/tools/live_aid/live_aid_indicators.js",
+      "MyTradingSys/research/sim_desk/PLUGIN.md",
+      "MyTradingSys/research/mts_doctor/MAINNET_PATH_2026-10-25.md"
+    ],
+    "session": "agent-a94c8ad8f55ad1e50"
+  },
+  "created": "2026-10-30T18:56:22Z",
+  "depends_on": [],
+  "done_when": "every gemini-q branch that exists is merged or tried-with-reason; verify_extract_quotes.py exits 0 on each merged extract; the card states carry the numbers; one ship, git cherry empty",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Gemini never ships: its output sits on gemini-q/<id> branches. For the 11 [GEMINI] cards NUC task gq15 runs on 2026-10-31 (ids: decision d-gemini-youtube-feed-weak-layers): fetch each branch, run the verifier, spot-check 3 quotes, merge what passes, tasks.py done with counts, ship once. Failing branch: tasks.py tried with the reason; never hand-edit a quote.",
+  "id": "review-ship-gemini-q-branches-1031",
+  "kind": "run",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "kept 3, tried 6",
+      "ref": "5f4ed7199",
+      "utc": "2026-10-30T21:19:48Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Branches land one by one over several hours (F:/MTS/gq/gq15.log on the NUC); run after the log says QUEUE DONE or when 6+ branches exist. Final report ends with a Noticed: line.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T18:58:47Z",
+  "refs": [
+    "MyTradingSys/system/OPERATOR_DECISIONS.md"
+  ],
+  "result": "kept 3, tried 6",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/** files the branches add; MyTradingSys/system/tasks/gemini-*.json via tasks.py; MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv via tools/build_ledger.py only"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code; any backtest; editing a Gemini quote by hand; .secrets and .env"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "git fetch origin; git branch -r | grep gemini-q/ to list the branches",
+    "per branch: git merge --no-commit origin/gemini-q/<id> into the worktree; run the verifier on the new files; spot-check 3 quotes in the transcript; keep or abort",
+    "Krown missing-4 merged: run tools/build_ledger.py and check_numbers.py",
+    "tasks.py done <id> --result <counts> per kept card, tasks.py tried for the rest; ship once"
+  ],
+  "taken": "2026-10-30T21:19:48Z",
+  "tests": "verify_extract_quotes.py exit 0 per merged file; no code change",
+  "title": "Review and ship the gemini-q/<id> branches from NUC task gq15 (11 [GEMINI] cards, 2026-10-31): verifier exit 0, quotes spot-checked, tasks.py done, one ship",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

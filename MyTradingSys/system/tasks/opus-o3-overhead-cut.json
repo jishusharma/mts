@@ -31,9 +31,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "observer-severity-context: decision record + design card (docs only)",
-      "ref": "abb02c8e9228",
-      "utc": "2026-10-29T02:31:28Z"
+      "line": "CI red root-cause audit 2026-10-31: 26 red runs, 3 classes, fixes 201d47c73 5273a6f23 d6cc",
+      "ref": "251063ae7a52",
+      "utc": "2026-10-31T08:45:08Z"
     }
   ],
   "layers": [],
@@ -43,7 +43,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-29T16:43:56Z",
+  "refreshed": "2026-10-31T08:47:39Z",
   "refs": [
     "MyTradingSys/system/handover/OPUS_RUNS.md"
   ],
@@ -56,7 +56,7 @@
   "scope_out": [
     "live tree, deploy, mainnet, .secrets, .env, outcome columns and bars >= 2024-07-01"
   ],
-  "scope_sha": "abb02c8e9228",
+  "scope_sha": "251063ae7a52",
   "size": "M",
   "sources": [
     "MyTradingSys/research/opus_run_design_2026-10-28/DESIGN.md"

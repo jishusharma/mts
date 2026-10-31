@@ -1,6 +1,10 @@
 {
   "_doc": "Files the wiring scan finds unrun (TEST-ONLY/ORPHAN), each declared with a disposition and evidence. Checked by scripts/dev/wiring_scan.py --check in the gate. Dispositions: TOOL, REPRO, PARKED, WIRE. A file that becomes LIVE/DEV-TOOL or disappears must be removed from here.",
   "entries": {
+    "MyTradingSys/backtest/splits.py": {
+      "disp": "TOOL",
+      "why": "Backtest library: the one DEV/VALIDATION/HOLDOUT definition plus assert_dev_only guard and holdout_reads.csv logger; imported by research scripts (bb_state_study.py), tested by backtest/test_splits.py."
+    },
     "MyTradingSys/tools/live_aid/build_artifact.py": {
       "disp": "TOOL",
       "why": "Builds the one-file claude.ai Artifact preview of live_aid.html (indicators inlined); run by hand when the live aid page changes, named in tools/live_aid/STEPS.md."
@@ -130,10 +134,6 @@
       "disp": "TOOL",
       "why": "TF3 collection-only backfill of finished days into orderflow_live, run by hand (ran 09-29..10-02): MyTradingSys/runtime/BUILD_PIPELINE.md:44, system/sessions/MTS-2026-10-03-1329Z-CLI-BLD-tf3-fabio-v3-live.md:10."
     },
-    "MyTradingSys/backtest/layers/fabio/run_v3_l3.py": {
-      "disp": "REPRO",
-      "why": "Fabio v3 L3 pre-registered backtest, result L3-FAIL recorded in MyTradingSys/runtime/BUILD_PIPELINE.md:50 and PRE_REG_FABIO_V3.md; kept because that row lists an open follow-up (why models A, B, D almost never fire) that re-runs it."
-    },
     "MyTradingSys/backtest/layers/rsi/run_t090_anchor_probe.py": {
       "disp": "REPRO",
       "ref": "T090",
@@ -230,10 +230,10 @@
       "ref": "tom-v2-recall-fire-rate",
       "why": "Research driver for the Tom v2 DESIGN recall and fire rate and the once-only CHECK read (python tom_v2_recall.py design|check); feeds RECALL_DAX_V2.md. Tested by test_tom_v2_recall.py."
     },
-    "MyTradingSys/backtest/vp_pivot_probe.py": {
+    "MyTradingSys/backtest/vp_return_to_value.py": {
       "disp": "REPRO",
-      "ref": "T082",
-      "why": "Offline research script that regenerates research/tom_core_bt_2026-10-09/phase2/results.md (PHASE2_RESULT.md); run by hand, no live process imports it."
+      "ref": "tom-vp-return-to-value-count",
+      "why": "Count of Tom's 70/30 return-to-value claim on BTC DEV (PRE_REG.md first); run by hand (python vp_return_to_value.py --out <dir>), regenerates research/tom_transfer_2026-10-11/vp_return/RESULT.md and results.json; covered by test_vp_return_to_value.py; imports vp_pivot_probe and splits only; no live process imports it."
     },
     "MyTradingSys/execution/capture_txlog_settlement.py": {
       "disp": "TOOL",
@@ -978,6 +978,14 @@
       "disp": "WIRE",
       "ref": "ask-p0-37-us-open-alert-line",
       "why": "Pure US-open countdown line (T054 step 5, context only); a later live_aid card imports us_open_line. Not wired here because another session owns live_aid."
+    },
+    "MyTradingSys/execution/mutation_check_auto_trader_failclosed.py": {
+      "disp": "TOOL",
+      "why": "Mutation proof for test_auto_trader_failclosed.py: breaks one line of a temp copy of auto_trader.py per test and requires that test to fail (CLAUDE.md: new tests must fail on pre-change code). Run by hand after editing auto_trader.py."
+    },
+    "MyTradingSys/research/krown_free_2026-10-31/silver_cross_dev.py": {
+      "disp": "TOOL",
+      "why": "One-off DEV check of Krown's silver cross (daily EMA21/55 up-cross, 30-day hold, fee-net via fees.py) for PRE_REG.md in the same folder; run by hand (python silver_cross_dev.py), covered by test_silver_cross_dev.py, no live imports."
     }
   }
 }

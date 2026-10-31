@@ -1,0 +1,38 @@
+{
+ "id": "dir-test_hunt_2026-10-31",
+ "kind": "thought_experiment",
+ "family": "Test Hunt",
+ "title": "Vacuous-test audit (card sonnet-new-tests-must-fail-on-old-code-audit)",
+ "provenance": "source-extracted",
+ "date": "2026-10-31",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Method: newest 30 non-merge, non-revert commits (base 239f17a1f) that ADD a test_.py file. For each: detached worktree at the commit, every non-test file the commit touched restored to its parent state (added non-test files deleted), then…",
+  "tone": "bad"
+ },
+ "why": [
+  "Method: newest 30 non-merge, non-revert commits (base 239f17a1f) that ADD a test_.py file. For each: detached worktree at the commit, every non-test file the commit touched restored to its parent state (added non-test files deleted), then only the new test fi…",
+  "Summary: 30 commits, 19 Y, 9 N (7 retro spec tests of unchanged code, 1 fully skipped, 1 pass/skip on live_aid replay), 2 not tests. Retro spec tests cannot fail on \"old code\" by construction; for them the gate needs a mutation check instead (as 771d07995 did…"
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/test_hunt_2026-10-31/VACUOUS_TESTS.md"
+ ],
+ "commit": "de7a5018e"
+}

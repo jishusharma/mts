@@ -1,0 +1,59 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T10:04:50Z",
+  "depends_on": [],
+  "done_when": "banner in the first 5 lines, reproduce path exists in git ls-files, test_integrity.py passes",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "FABIO_OF_REPORT.md needs a SUPERSEDED banner (legacy fees, pre-B102 fixed UTC sessions) and its reproduce path fixed to the archived driver.",
+  "id": "fabio-of-report-superseded",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Fix MSB to use most recent confirmed swing (audit #14); fabio fees to Deribit schedule (B0",
+      "ref": "051084e440af",
+      "utc": "2026-10-06T14:28:50Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "051084e440af Fix MSB to use most recent confirmed swing (audit #14); fabio fees to Deribit",
+      "ref": "MyTradingSys/backtest/layers/fabio/FABIO_OF_REPORT.md",
+      "utc": "2026-10-06T14:28:50Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-31 T0-ONLY (planner-a-20261031; machine checks only). ",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T14:46:40Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/fabio/FABIO_OF_REPORT.md"
+  ],
+  "scope_out": [
+    "rerunning the study, any code"
+  ],
+  "scope_sha": "051084e440af",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "add a top banner: SUPERSEDED, legacy fees 3.5/-1.5 bp and fixed UTC sessions, numbers not reusable",
+    "fix the reproduce path near line 10 to the archive/cleanup-2026-10-08 location (confirm with git ls-files)"
+  ],
+  "tests": "docs card: python -m pytest MyTradingSys/tests/docs/test_integrity.py -q passes; grep SUPERSEDED finds the banner",
+  "title": "FABIO_OF_REPORT.md used legacy fees 3.5/-1.5 bp, pre-B102 fixed UTC sessions, reproduce path :10 points at a moved driver (archive/cleanup-2026-10-08); add SUPERSEDED banner",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

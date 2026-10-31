@@ -752,6 +752,11 @@ def run_card(card, dry=False, env=os.environ, probing=False):
             if n:
                 note += f" | {n} partial file(s) salvaged to {dest}"
             files = []
+        if err == "auth":   # 401: THIS host has no Codex login. Not a GPT-lane fact: write and ship nothing (2026-10-30 JIS-DESKTOP overwrote trunk lane_state/codex_usage)
+            salvage(wt, home, cid, when, files)
+            sh(wt, "scripts/dev/sync.py", "release", sync.slugify(cid))
+            print(f"IDLE host-auth: Codex returned 401 on this host ({lane_health.error_line(logtext) or 'no login'}); lane_state.json and codex_usage.json untouched, nothing shipped. Log in to Codex here, or leave the lab to the host that has it")
+            return 0
         hdr = log_header(logtext)
         use = rollout_usage(home, hdr.get("session"))
         bad = setting_mismatch((model, effort), hdr)

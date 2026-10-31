@@ -1,0 +1,72 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "claim": "",
+  "closed": "2026-10-31T04:46:06Z",
+  "commands": [
+    "git grep -n \"^| \" -- MyTradingSys/system/LAYERS.md | head -5"
+  ],
+  "created": "2026-10-31T02:40:36Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_burn_2026-10-31/LAYERS_VS_CODE_G3.md exists; a row per contradiction (doc file:line, code file:line, what differs) or MATCH counts per layer",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "For each of the layers cryptocred consensus alerts promotion compare the LAYERS.md row and its research notes with the code in backtest/layers/<layer>; list each contradiction with both file:line.",
+  "id": "gemini-doc-vs-code-layers-g3-1031",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_burn_2026-10-31/LAYERS_VS_CODE_G3.md",
+      "ref": "60bec47ca",
+      "utc": "2026-10-31T04:46:06Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 33 file(s)",
+      "ref": "34aac43857c5",
+      "utc": "2026-10-31T02:49:25Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini rules: facts with file:line only, no trading verdict, no code change; NOT_IN_DATA where the repo has no answer; captions first for any YouTube work (fetch_captions_timed.py, quote only from the caption file, one try per video, 429 -> UNVERIFIED), verify_extract_quotes.py exit 0. Operator 2026-10-31: exhaust the Gemini weekly quota before it resets, test-first and catch bugs early. Final report ends with a Noticed: line.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T04:38:12Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "MyTradingSys/research/gemini_burn_2026-10-31/LAYERS_VS_CODE_G3.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/gemini_burn_2026-10-31/ (new files only)"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code edits; any backtest or trading verdict; .secrets and .env"
+  ],
+  "scope_sha": "34aac43857c5",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "read LAYERS.md rows",
+    "open the matching code",
+    "write the table"
+  ],
+  "taken": "2026-10-31T04:38:38Z",
+  "tests": "report only; every finding cites file:line",
+  "title": "[GEMINI] LAYERS.md rows vs code for layers cryptocred consensus alerts promotion: every stated parameter, window or rule the code contradicts",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

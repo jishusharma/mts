@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-30T23:18:08Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/<date>_gpt-rederive-tom-vp-return-to-value.md lists each headline number, the independent value, SAME/DIFFERENT, with file:line",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Recompute the headline numbers of vp_return/RESULT.md independently from PRE_REG.md and FORMULAS.md section 18 (not from the study code); report SAME or DIFFERENT per number with file:line. Report only.",
+  "id": "gpt-rederive-tom-vp-return-to-value",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T23:18:14Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/reports/2026-10-31_gpt-rederive-tom-vp-return-to-value.md"
+  ],
+  "scope_out": [
+    "editing the audited study, VALIDATION or HOLDOUT data"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "read PRE_REG.md and FORMULAS.md section 18, write an independent recount on the DEV days",
+    "compare each headline number to RESULT.md",
+    "write the report with file:line"
+  ],
+  "tests": "audit card: every row has a command or file:line",
+  "title": "GPT re-derive: Tom VP return-to-value share 57.2 pct, placebo 46.8 pct, Part B 51.2/47.8/45.5 (vp_return RESULT.md)",
+  "weight": "",
+  "worker": "agent"
+}

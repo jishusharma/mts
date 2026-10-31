@@ -1,6 +1,6 @@
 {
  "approved_by": "",
- "asks": "Needs Jis as reader 1 on the 20 seed-chosen charts (own blind marks). Can a second blind machine reader replace that? Default (OURS): Claude reads all 80 plus a Gemini/GPT blind reader (A-20261018-7 rules), result labelled NO-HUMAN-READER; Jis marks are added whenever done.",
+ "asks": "Machine readers only (d-tom-btc-no-human-reader, 2026-10-31): Claude reads all 80 plus a Gemini/GPT blind reader (A-20261018-7 rules), result labelled NO-HUMAN-READER.",
  "commands": [],
  "created": "2026-10-13T17:31:44Z",
  "depends_on": [

@@ -1,0 +1,38 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T15:35:03Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "div-reverse-lower-tf-confirm-2020-2021",
+  "lane": "SONNET",
+  "layers": [
+    "rsi"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/meta_label_breaks_2026-10-31/RESULT.md"
+  ],
+  "result": "FAIL on fresh 2020-2021 (PRE_REG_DIV.md, commit 3673313e4): flagged trades 15m -0.110 (n 274), 1h -0.180 (n 131), 4h -0.384 (n 52) % net, Holm p 1.0; no better than unflagged.",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "done",
+  "steps": [],
+  "tests": "",
+  "title": "Confirm the divergence lead on fresh data: tf_break trades taken only when a Malkan reverse divergence WITH the trade (PRD long / NRD short) on the next lower TF is known in the last 10 bars; frozen explore_div.py rule, one run on BTCUSDT 1m 2020-01..2021-12, pass = net > 0 with week-block CI > 0 at 1h or 4h, Holm m=3",
+  "weight": "",
+  "worker": ""
+}

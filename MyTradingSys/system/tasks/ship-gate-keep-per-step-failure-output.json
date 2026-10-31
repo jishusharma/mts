@@ -1,0 +1,84 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-31T09:46:20Z",
+  "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-31T09:29:04Z",
+    "misses": 6,
+    "reads": [
+      "scripts/dev/mts_signal.py",
+      "scripts/dev/dsa.py",
+      "scripts/dev/run_all_tests.py",
+      "scripts/dev/test_dsa.py"
+    ],
+    "session": "agent-a611d7d9c9291820f"
+  },
+  "created": "2026-10-31T09:24:56Z",
+  "depends_on": [],
+  "done_when": "a failing gate step writes its last 200 output lines to a per-run log whose path is printed on failure, and mts_signal.git TimeoutExpired is caught with a clear message; both tests fail on old code",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "A failing sync.py ship gate step leaves its last 200 stdout/stderr lines in a per-run log, so flaky steps (3sig, 3cr, 3cx, 5b) can be diagnosed",
+  "id": "ship-gate-keep-per-step-failure-output",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "failing gate step writes last 200 lines to runtime_data/gate_fail_logs, path printed; mts_",
+      "ref": "ddc2a7348",
+      "utc": "2026-10-31T09:46:20Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "run_all_tests: one rule for the fast-gate cap (must-pass steps exempt from deferral; 240 s",
+      "ref": "89ef3ac4186e",
+      "utc": "2026-10-31T08:58:13Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": " Suspects: 240 s must-pass cap in exec_step, 60 s defer cap, mts_signal.git 20 s TimeoutExpired uncaught, boxed(...,30) in test_codex_run.py.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T09:27:55Z",
+  "refs": [],
+  "result": "failing gate step writes last 200 lines to runtime_data/gate_fail_logs, path printed; mts_signal.git timeout gives RuntimeError",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/run_all_tests.py",
+    "scripts/dev/mts_signal.py",
+    "scripts/dev/test_run_all_tests.py",
+    "scripts/dev/test_mts_signal_git_timeout.py"
+  ],
+  "scope_out": [
+    "MyTradingSys/*"
+  ],
+  "scope_sha": "89ef3ac4186e",
+  "size": "S",
+  "sources": [
+    "ship-gate-flaky findings 2d5b6e80"
+  ],
+  "state": "done",
+  "steps": [
+    "write the two tests first and confirm both fail on current code",
+    "run_all_tests.exec_step/main: on failure write output[-200 lines] to a per-run log under the gitignored run dir and print the path",
+    "mts_signal.git: catch subprocess.TimeoutExpired, raise RuntimeError naming the git args and timeout",
+    "run python scripts/dev/run_all_tests.py --quick, then ship"
+  ],
+  "taken": "2026-10-31T09:46:20Z",
+  "tests": "scripts/dev/test_run_all_tests.py::test_failed_step_writes_tail_to_run_log (fail-first); scripts/dev/test_mts_signal_git_timeout.py::test_timeout_gives_clear_error (fail-first)",
+  "title": "sync.py ship gate keeps no per-step failure output, so flaky steps (3sig, 3cr, 3cx, 5b) cannot be diagnosed (findings 2d5b6e80: steps slow 10-20x under 8-CPU load)",
+  "weight": "",
+  "worker": "agent"
+}

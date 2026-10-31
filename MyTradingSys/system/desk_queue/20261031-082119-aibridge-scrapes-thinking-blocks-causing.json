@@ -1,0 +1,13 @@
+{
+  "done_when": "Bridge explicitly ignores thinking blocks. A test proves a block in a <thought> tag is not executed.",
+  "finished": "2026-10-31T10:03:40Z",
+  "from": "JIS-NUC",
+  "host": "JIS-NUC",
+  "id": "20261031-082119-aibridge-scrapes-thinking-blocks-causing",
+  "need": "When the AI drafts an AIRUN block during its internal reasoning (thinking phase) and then prints it in the final response, the bridge may scrape and execute it twice. Operator observed that commands in the thinking process appear to be picked up. The bridge should only parse the final assistant message, or the agent must ensure blocks are only generated in the final output.",
+  "posted": "2026-10-31T08:21:19Z",
+  "result": "Unproven bug: I hypothesized this based on a user prompt, but never actually verified that blocks in the thinking phase are executed by the bridge. The earlier duplicate execution was likely a queueing artifact. Closing until proven.",
+  "status": "done",
+  "target": "CLAUDE",
+  "title": "AIBridge scrapes thinking blocks causing duplicate execution"
+}

@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/execution/test_cotrade.py -q"
+  ],
+  "created": "2026-10-31T17:00:27Z",
+  "depends_on": [],
+  "done_when": "cotrade hedge --of <trade> --pct 50 --stop S --dry-run prints both legs and net exposure; tests pass and each failed on the old code; kill flattens both slots.",
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Operator in profit says 'hedge 50%'; cotrade places the opposite leg on a second existing testnet slot, links it to the parent in the journal, and the live aid shows net size across both accounts.",
+  "id": "cotrade-p5-hedge-leg",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Depends on cotrade-p1-say-and-place and P3. Backtest (reverted commit 4a36c8a38) found every hedge variant worse than no hedge after fees: build for process and recording, not as an edge.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/execution/cotrade.py hedge subcommand + tests"
+  ],
+  "scope_out": [
+    "No mainnet; no new subaccount or key; no auto-trader change"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md",
+    "MyTradingSys/items/T048_satellite_framework.md",
+    "MyTradingSys/items/T053_two_account_hedge_scalping.md"
+  ],
+  "state": "raw",
+  "steps": [
+    "Read MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md s7",
+    "Tests first, red on old tree",
+    "Build hedge leg + net view + both-slot kill",
+    "run_all_tests --quick; sync.py ship"
+  ],
+  "tests": "test_cotrade.py hedge: refuses same-account hedge; caps sum both slots; parent/child link in journal; kill on one slot flattens both; restart rebuilds the pair. Full: DESIGN.md s7.",
+  "title": "Co-trade P5: hedge leg on a second existing testnet slot (pct of parent, linked, kill flattens both)",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

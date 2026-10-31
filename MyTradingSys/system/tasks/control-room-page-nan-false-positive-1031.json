@@ -1,0 +1,76 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-31T15:44:02Z",
+  "commands": [
+    "python -m pytest -q scripts/dev/test_artifact_pages.py",
+    "python -m pytest -q scripts/dev/test_artifacts.py"
+  ],
+  "created": "2026-10-30T21:14:28Z",
+  "depends_on": [],
+  "done_when": "python -m pytest -q scripts/dev/test_artifact_pages.py reports 12 passed, 0 failed (was 11 passed, 1 failed on mts_control_room.html: NaN); artifacts.py stale shows the page changed so a republish card can follow.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "scripts/dev/test_artifact_pages.py fails on mts_control_room.html with 'NaN' (S3 page gate red on trunk 488dd46db). The only NaN in the page is prose ('...regime boundaries, NaN prices...' inside the embedded data), not a rendering fault; reword that source string so the gate is green without weakening the checker.",
+  "id": "control-room-page-nan-false-positive-1031",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "obsolete: page retired by cdeb1fa24, test no longer exists",
+      "ref": "68d350dc2",
+      "utc": "2026-10-31T15:44:02Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "test_artifact_pages: browser-free static layer so CI runs something",
+      "ref": "fdb2fd4053ce",
+      "utc": "2026-10-31T05:57:30Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "q17-p5-three-pages"
+  ],
+  "note": "REVIEWED:2026-10-31 T0-ONLY Final report ends with a Noticed: line. Blocked? List 2-3 non-destructive fixes, try the safest, verify, then report. Found by the planner's dry run 2026-10-31; the S3 page gate is red on trunk until fixed.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "planner-20261030-d",
+  "refreshed": "2026-10-31T08:46:54Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "obsolete: page retired by cdeb1fa24, test no longer exists",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/make_control_room.py",
+    "MyTradingSys/system/artifacts/mts_control_room.html",
+    "scripts/dev/test_artifact_pages.py"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; the BAD_TEXT regex stays as it is; no Artifact publish"
+  ],
+  "scope_sha": "fdb2fd4053ce",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "grep -rn 'NaN prices' MyTradingSys scripts to find the source line the page data is built from (data file or make_control_room.py)",
+    "reword it to 'not-a-number prices' (meaning unchanged), rebuild with python scripts/dev/artifacts.py build",
+    "run python -m pytest -q scripts/dev/test_artifact_pages.py and scripts/dev/test_artifacts.py"
+  ],
+  "taken": "2026-10-31T15:44:02Z",
+  "tests": "scripts/dev/test_artifact_pages.py::test_page_opens_clean_offline[mts_control_room.html] fails now (NaN) and passes after the reword",
+  "title": "test_artifact_pages fails on mts_control_room.html: prose 'NaN prices' trips the NaN text check",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

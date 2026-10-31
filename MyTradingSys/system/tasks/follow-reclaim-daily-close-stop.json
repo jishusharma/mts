@@ -1,0 +1,67 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/research/reclaim_close_stop_2026-11 -q"
+  ],
+  "created": "2026-10-31T10:13:59Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/reclaim_close_stop_2026-11/RESULT.md gives n, mean fee-net % and week-block CI for 4h and 1D on DEV, plus one VALIDATION read only on a DEV pass; VERDICTS.csv row; HOLDOUT unread.",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Test the video's reclaim timing on 4h/1D: enter at the reclaim close, stop = a close back below the level (Brando cP6xvs2I02s). Distinct from tf_break fade-R, which enters N bars after the break and exits after 4 bars.",
+  "id": "follow-reclaim-daily-close-stop",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "T058 per-TF break event study re-land (ledger P0-45): W/1D/4h/1h/15m, DEV/VAL, fee-net fro",
+      "ref": "e31013dfb104",
+      "utc": "2026-10-30T19:30:37Z"
+    }
+  ],
+  "layers": [
+    "cryptocred"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-31 ACCEPT (Sonnet reviewer Agent, FIX applied once, not re-read, planner DECISION OURS). PLANNER. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T15:38:05Z",
+  "refs": [
+    "MyTradingSys/research/tf_break_event_study_2026-10-30/RESULT.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/tf_break_event_study_2026-10-30/study.py",
+    "MyTradingSys/research/reclaim_close_stop_2026-11/"
+  ],
+  "scope_out": [
+    "HOLDOUT bars",
+    "the mirror idea (trade the failed reclaim)",
+    "live tree"
+  ],
+  "scope_sha": "e31013dfb104",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/tf_break_event_study_2026-10-30/RESULT.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "write test_reclaim.py first and run it red",
+    "read tf_break_event_study_2026-10-30/RESULT.md and study.py; reuse its level and break definitions unchanged",
+    "bars: BTCUSDT klines resampled to 4h/1D via the same loader study.py uses (DEV only, splits.py guard)",
+    "PRE_REG.md: entry = reclaim bar close, exit = first bar close back below the level or a horizon cap of 6 bars on 4h and 5 bars on 1D (OURS); m = 2 timeframes",
+    "freeze, run DEV; one VALIDATION read only if DEV CI lower > 0",
+    "write RESULT.md, backfill VERDICTS.csv"
+  ],
+  "tests": "Fail-first: test_reclaim.py with a hand-built 6-bar series, one reclaim and a close-back-below exit; expected entry, exit and net R computed by hand from FORMULAS; fails before the module exists.",
+  "title": "Reclaim with the video's timing: 4h/1D level reclaim, enter at the reclaim close, stop = close back below (Brando cP6xvs2I02s 03:58-04:02, 08:29-08:35); tf_break fade-R (same side, entry N bars after the break, 4-bar exit) lost -0.42% DEV / -0.63% VAL fee-net at 4h",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

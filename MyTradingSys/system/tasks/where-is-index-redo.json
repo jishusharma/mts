@@ -1,17 +1,16 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T10:28:24Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-30T10:37:22Z",
-    "misses": 6,
+    "folded": "2026-10-31T10:28:35Z",
+    "misses": 4,
     "reads": [
-      "scripts/dev/extra_tests.tsv",
-      "MyTradingSys/system/QUICK_ANSWERS.md",
-      "MyTradingSys/tests/docs/test_integrity.py"
+      "MyTradingSys/system/QUICK_ANSWERS.md"
     ],
-    "session": "agent-a37b94f9c7e6d0bfb"
+    "session": "agent-a5ca7cb52c0093297"
   },
   "created": "2026-10-30T08:30:57Z",
   "depends_on": [],
@@ -25,18 +24,24 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "already on fast-track as c409e3f6b (where_is.py, WHERE_IS.md, test, sync pointer, QUICK_AN",
+      "ref": "e0ead0ac7",
+      "utc": "2026-10-31T10:28:24Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "Add on-demand fix_verifier.py (ledger A4-18)",
-      "ref": "792ae66b67d6",
-      "utc": "2026-10-30T08:54:14Z"
+      "line": "phase tag v1 (P0) + power/planted-edge harness (P-1)",
+      "ref": "7c265f0c248c",
+      "utc": "2026-10-31T07:15:34Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "fcd831a5278f revert WHERE_IS 5e37f0323: role files over byte budget (CI red)",
+      "line": "c409e3f6b3f6 WHERE_IS: re-apply topic index and where_is.py without role-file lines",
       "ref": "MyTradingSys/system/QUICK_ANSWERS.md",
-      "utc": "2026-10-30T08:25:45Z"
+      "utc": "2026-10-30T10:37:23Z"
     }
   ],
   "layers": [],
@@ -46,11 +51,16 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T10:00:30Z",
+  "refreshed": "2026-10-31T08:48:05Z",
   "refs": [
     "MyTradingSys/system/tasks/where-things-are-index.json"
   ],
-  "result": "",
+  "result": "already on fast-track as c409e3f6b (where_is.py, WHERE_IS.md, test, sync pointer, QUICK_ANSWERS row; no role/CLAUDE.md edits); tests green",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/sync.py",
     "scripts/dev/extra_tests.tsv",
@@ -61,17 +71,18 @@
     "MyTradingSys/system/roles/supervisor.md",
     "CLAUDE.md"
   ],
-  "scope_sha": "792ae66b67d6",
+  "scope_sha": "7c265f0c248c",
   "size": "M",
   "sources": [
     "fcd831a52 (revert reason: role files over byte budget)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "git show 5e37f0323 per file; restore where_is.py, WHERE_IS.md, test_where_is.py, the extra_tests.tsv row, the sync.py start pointer line, the QUICK_ANSWERS row",
     "skip the lead.md and supervisor.md lines; run test_role_budget and tests/docs/test_integrity.py; run test_where_is",
     "regenerate WHERE_IS.md once, ship. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
   ],
+  "taken": "2026-10-31T10:28:24Z",
   "tests": "scripts/dev/test_where_is.py (restored from 5e37f0323, new file): asserts the query for a ledger video id returns its file path AND ledger row text; red while where_is.py is absent.",
   "title": "Redo WHERE_IS index: re-apply 5e37f0323 (where_is.py, WHERE_IS.md, tests, sync.py start pointer, QUICK_ANSWERS row) but do NOT add lines to roles/supervisor.md or lead.md (test_role_budget 7500 B cap); revert 'fcd831a5' removed it",
   "weight": "IMPORTANT",

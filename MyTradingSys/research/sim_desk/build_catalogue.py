@@ -28,6 +28,16 @@ EXPORTED_BY_SOURCE = {
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T07_stale_verdicts.md": "t07_stale_verdicts",
     "MyTradingSys/research/wavetrend_2026-10-17/RESULT.md": "wavetrend_atlas",
     "MyTradingSys/research/fable_run6_powered_prereg/CROSSCHECK.md": "krown-s8-e2-desk-crosscheck",
+    "MyTradingSys/research/setup_alpha_beta_v2_2026-10/RESULT.md": "ask-p0-65-setup-alpha-beta-backtest",
+    "MyTradingSys/research/tf_break_event_study_2026-10-30/RESULT.md": "ask-p0-45-tf-break-event-study",
+    "MyTradingSys/research/meta_label_breaks_2026-10-31/RESULT.md": "meta-label-breaks",
+    "MyTradingSys/research/meta_label_breaks_2026-10-31/PRE_REG_DIV.md": "malkan-div-breaks",
+    "MyTradingSys/research/fractals_2026-10-31/p1b_rsi_feenet/RESULT.md": "fractals-p1b-rsi-by-phase",
+    "MyTradingSys/research/fractals_2026-10-31/f1/RESULT.md": "fractals-f1-swing-confluence",
+    "MyTradingSys/research/fractals_2026-10-31/f2/RESULT.md": "fractals-f2-hurst-gate",
+    "MyTradingSys/research/fractals_2026-10-31/f3/RESULT.md": "fractals-f3-phase-analogs",
+    "MyTradingSys/research/fractals_2026-10-31/f4/RESULT.md": "fractals-f4-8h-state-analogs",
+    "MyTradingSys/research/fractals_2026-10-31/phase_tag/phase_tag.py": "fractals-phase-tag",
 }
 
 
@@ -190,6 +200,17 @@ def main(argv=None):
         d = json.load(open(os.path.join(results, rid + ".json"), encoding="utf-8"))
         add(rid, d.get("family", "Desk runs"), d.get("title", rid), d.get("kind", "backtest"), "result file", d["verdict"]["label"],
             "MyTradingSys/research/sim_desk/results/" + rid + ".json", {"exported": True, "result_id": rid})
+    # 8. result files no row claimed (the row that owns their source took another id): flag by id, else by source_files, else add a row
+    claimed = {r["result_id"] for r in rows if r["exported"]}
+    for rid in sorted(have - claimed):
+        d = json.load(open(os.path.join(results, rid + ".json"), encoding="utf-8"))
+        srcs = [s for s in d.get("source_files") or [] if isinstance(s, str)]
+        row = next((r for r in rows if r["id"] == rid and not r["exported"]), None) or             next((r for r in rows if not r["exported"] and r["source"] in srcs), None)
+        if row:
+            row["exported"], row["result_id"] = True, rid
+        elif not any(r["id"] == rid for r in rows):
+            add(rid, d.get("family", "Desk runs"), d.get("title", rid), d.get("kind", "backtest"), "result file",
+                d["verdict"]["label"], "MyTradingSys/research/sim_desk/results/" + rid + ".json", {"exported": True, "result_id": rid})
     rows.sort(key=lambda r: (not r["exported"], r["family"].lower(), r["title"].lower()))
     # NOTE (gap closed by backfill): every row with a result file counts as exported
     doc = {"_doc": "Catalogue of known tests on trunk. kind is inferred (kind_source). Built by sim_desk/build_catalogue.py.",

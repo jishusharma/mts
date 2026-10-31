@@ -192,6 +192,28 @@ def extra_subset(files, tests, root=REPO):
     return [t for t in tests if t in picked]
 
 
+# CI_RED_ROOT_CAUSES 2026-10-31: tree-wide inventory tests a new file trips without importing them, so neither the import graph nor
+# extra_subset reaches them (F1 run_f1.py `cost`, 52c922ae5 fabio slip lines: 8 red runs, 2 reverts; sim C21-C26 catalogue: 6 red
+# runs, 1 revert). A fast ship runs them as must-pass step 3xm whenever a changed path matches. Seconds each (OURS: 6.6 s for both).
+MUST_EXTRAS = {
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/test_cost_inventory.py":
+        re.compile(r"^MyTradingSys/(backtest|research)/(?!(.*/)?test_[^/]*$).*\.py$|^MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/"),
+    "MyTradingSys/research/sim_desk/test_backfill.py": re.compile(r"^MyTradingSys/research/sim_desk/"),
+}
+
+
+def _must_triggered(files):
+    return any(rx.match(f) for rx in MUST_EXTRAS.values() for f in files)
+
+
+def must_extras(files, tests):
+    """The MUST_EXTRAS tests (present in `tests`) a change triggers, plus every changed step-3xt test file: they run in a fast ship
+    whatever the time budget, and a timeout fails the ship (run_all_tests.NO_DEFER_CMDS)."""
+    files = [f.replace("\\", "/") for f in files if f]
+    picked = {t for t, rx in MUST_EXTRAS.items() if any(rx.match(f) for f in files)} | set(files)
+    return [t for t in tests if t in picked]
+
+
 LAYERS = "MyTradingSys/backtest/layers/"
 
 
@@ -234,7 +256,7 @@ def explain(files, steps, mentioned=mentions, named=names_file, step_files=None)
             subset_steps.add("3xt")
         if "5b" in all_nums and code and layer_subset(code, sf.get("5b", [])):
             subset_steps.add("5b")
-    if not code:
+    if not code and not _must_triggered(files):   # a must-pass-extras path (MUST_EXTRAS) is smoke even when data: step 3xm only exists there
         # GATE_SPEED review: the wiring registry is data under system/, but 3x/3w are its only readers (a bad entry would go red only in CI)
         reg = {"3x", "3w"} if any(f == WIRING_REGISTRY for f in files) else set()
         nums = [n for n in all_nums if n in DOC_STEPS or n in reg]

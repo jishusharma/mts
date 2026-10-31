@@ -1,0 +1,55 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-30T20:41:36Z",
+  "depends_on": [],
+  "done_when": "pytest MyTradingSys/tools/live_aid/test_live_aid_replay.py has a test that fails on live_aid.html from before 92aa0ab3d and passes now (run both, quote results).",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Make test_live_aid_replay.py guard commit 92aa0ab3d (replay mode), not just load the page.",
+  "id": "test-live-aid-replay-py-the-one-passing-",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "live_aid replay: position bar pos-dist, pos-atr, uncovered pinned",
+      "ref": "e6376a8d400b",
+      "utc": "2026-10-31T05:45:46Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T08:48:01Z",
+  "refs": [
+    "MyTradingSys/research/test_hunt_2026-10-31/VACUOUS_TESTS.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/test_live_aid_replay.py"
+  ],
+  "scope_out": [
+    "live_aid.html behaviour"
+  ],
+  "scope_sha": "e6376a8d400b",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "read VACUOUS_TESTS.md row 3 and the commit",
+    "add the assertion; verify against old html with git show 92aa0ab3d^:..."
+  ],
+  "tests": "same file: assert replay=fixture renders the fixture numbers; fails on pre-92aa0ab3d html.",
+  "title": "test_live_aid_replay.py: the one passing test does not exercise commit 92aa0ab3d (done when a test fails on pre-92aa0ab3d code); see research/test_hunt_2026-10-31/VACUOUS_TESTS.md",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

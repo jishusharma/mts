@@ -1,0 +1,62 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T14:48:17Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-10-31/setup_review_blind_read.md exists with one row per cited number, each FOUND/DIFF/NOT_IN_DATA",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Open every number or file:line cited in the named file and say FOUND / DIFF / NOT_IN_DATA with the file:line where it was looked up; facts only, no verdicts.",
+  "id": "gemini-blind-read-tom-fabio-setup-review-1031",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Tom and Fabio setup review: code vs source, windows, risks, pre-registered next tests",
+      "ref": "de1783d7ae08",
+      "utc": "2026-10-31T10:05:09Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "de1783d7ae08 Tom and Fabio setup review: code vs source, windows, risks, pre-registered ne",
+      "ref": "MyTradingSys/research/tom_fabio_review_2026-10-31/SETUP_REVIEW.md",
+      "utc": "2026-10-31T10:05:09Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-31 T0-ONLY (planner-a-20261031; machine checks only). Seeded from D11_PROGRAMME.md section 6 (Gemini lane). Producer is Claude/GPT, reviewer Gemini. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T14:48:19Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/tom_fabio_review_2026-10-31/SETUP_REVIEW.md",
+    "MyTradingSys/research/gemini_audits_2026-10-31/setup_review_blind_read.md"
+  ],
+  "scope_out": [
+    "no code edit, no live tree, no VALIDATION or HOLDOUT read, no .secrets or .env"
+  ],
+  "scope_sha": "de1783d7ae08",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "open the named files (read-only)",
+    "one table row per cited number with the lookup file:line",
+    "write MyTradingSys/research/gemini_audits_2026-10-31/setup_review_blind_read.md and end with a Noticed: line"
+  ],
+  "tests": "audit card: every row of the output has a file:line or command",
+  "title": "[GEMINI] blind read of tom_fabio_review_2026-10-31/SETUP_REVIEW.md: every cited file:line number re-found or NOT_IN_DATA",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

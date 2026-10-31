@@ -339,6 +339,8 @@ def main(argv=None):
     a = ap.parse_args(argv)
     rule, rows = ba.load(ba.DEFAULT_SRC)
     outs = [levels_result(ba.build_data(rule, rows)), t09_result(), t06_result(), t07_result(), wavetrend_result()]
+    import fractals_export   # fractals_2026-10-31 studies (P1b, F1, F2, F3, phase tag); needs their committed trade lists
+    outs += fractals_export.build_all()
     return [write(a.out, r) for r in outs]
 
 

@@ -772,4 +772,92 @@ public class StateCodeEmitterTest {
         assertEquals(-3.0, j.get("session_cvd").asDouble(), 1e-9);
         assertEquals(D0, j.get("session_day_start_ms").asLong());
     }
+
+    // statecode-backfill-race-coverage: a socket reconnect while the kline fetch is in flight rejects the result
+    @Test
+    public void reconnectDuringInFlightFetchIsRejectedAndRetriedSoon() throws Exception {
+        FakeKlines src = new FakeKlines();
+        StateCodeEmitter e = fresh(src, NOW1);
+        e.onStreamOpen(CONNECT);
+        e.onMessage(trade(M1 + 5_000L, 100.0, 1.0, false));
+        src.behaviour = (st, en) -> {
+            e.onStreamClosed("ws_closed");
+            e.onStreamOpen(CONNECT);                                   // new socket while the fetch is running
+            return constBars(st, (int) ((en + 1 - st) / MIN));
+        };
+        assertFalse(e.backfillNow());
+        assertEquals(1_000L, e.retryDelayMs);                          // retries the CURRENT connection quickly
+        JsonNode j = emit(e);
+        assertInvalid(j);
+        assertEquals("reconnected_during_backfill", j.get("session_accumulators_reason").asText());
+    }
+
+    // a UTC midnight crossed while the fetch is in flight rejects the (previous-day) result
+    @Test
+    public void dayRollDuringInFlightFetchIsRejectedAndRetried() throws Exception {
+        FakeKlines src = new FakeKlines();
+        long prev = D0 - 86_400_000L;
+        long now = prev + 23 * 3_600_000L + 59 * MIN + 30_000L;
+        StateCodeEmitter e = fresh(src, now);
+        e.onStreamOpen(prev + 23 * 3_600_000L + 55 * MIN);
+        src.behaviour = (st, en) -> {
+            e.nowMsOverride = D0 + 5_000L;                             // clock crosses midnight mid-call
+            return constBars(st, (int) ((en + 1 - st) / MIN));
+        };
+        assertFalse(e.backfillNow());
+        assertEquals(1_000L, e.retryDelayMs);
+        JsonNode j = emit(e);
+        assertInvalid(j);
+        assertEquals("day_rolled_during_backfill", j.get("session_accumulators_reason").asText());
+    }
+
+    // the scheduler itself: a rejected attempt re-queues automatically; the retry recovers, first CVD slope is null
+    @Test
+    public void scheduledRetryRecoversAfterRejectedAttempt() throws Exception {
+        FakeKlines src = new FakeKlines();
+        StateCodeEmitter e = fresh(src, NOW1);
+        e.onStreamOpen(CONNECT);
+        src.behaviour = (st, en) -> {
+            if (src.calls.get() == 1) { e.onStreamClosed("ws_closed"); e.onStreamOpen(CONNECT); }
+            return constBars(st, (int) ((en + 1 - st) / MIN));
+        };
+        Method rb = StateCodeEmitter.class.getDeclaredMethod("requestBackfill", long.class);
+        rb.setAccessible(true);
+        rb.invoke(e, 0L);
+        long deadline = System.currentTimeMillis() + 8_000L;
+        while (src.calls.get() < 2 && System.currentTimeMillis() < deadline) Thread.sleep(25);
+        assertEquals(2, src.calls.get());                              // attempt 1 rejected, attempt 2 scheduled by itself
+        JsonNode j = null;
+        while (System.currentTimeMillis() < deadline) {
+            j = emit(e);
+            if (j.get("session_accumulators_valid").asBoolean()) break;
+            Thread.sleep(25);
+        }
+        assertTrue(j.get("session_accumulators_valid").asBoolean());
+        assertEquals(BARS1 * 4.0, j.get("session_cvd").asDouble(), 1e-6);
+        assertTrue(j.get("signals").get("cvd_slope").isNull());        // first recovered slope is null
+    }
+
+    // statecode-backfill-race-coverage: close then reopen with NO emit in between (no INVALID publish clears the ring
+    // early): the ring must still restart, so the first recovered slope is null
+    @Test
+    public void closeReopenWithoutIntermediateEmitRestartsCvdRing() throws Exception {
+        FakeKlines src = new FakeKlines();
+        StateCodeEmitter e = fresh(src, NOW1);
+        e.onStreamOpen(CONNECT);
+        assertTrue(e.backfillNow());
+        JsonNode j = null;
+        for (int i = 0; i < 12; i++) {
+            e.onMessage(trade(M1 + 1_000L + i * 1_000L, 100.0, 20.0 * (i + 1), false));
+            j = emit(e);
+        }
+        assertFalse(j.get("signals").get("cvd_slope").isNull());        // 12 samples >= 10 while valid
+        e.onStreamClosed("ws_closed");
+        e.onStreamOpen(M1 + 3 * MIN);                                   // no emit between close and reopen
+        e.nowMsOverride = M1 + 4 * MIN + 20_000L;
+        assertTrue(e.backfillNow());
+        j = emit(e);
+        assertTrue(j.get("session_accumulators_valid").asBoolean());
+        assertTrue(j.get("signals").get("cvd_slope").isNull());         // 1 sample in a fresh ring
+    }
 }

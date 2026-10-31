@@ -1,0 +1,79 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-31T03:37:49Z",
+  "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-31T03:36:41Z",
+    "misses": 23,
+    "reads": [
+      "MyTradingSys/research/_archive/loose_2026-10/T064_TF_CONFIRMATION_EXTRACT.md",
+      "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_2-nG9bsMoPQ.md",
+      "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_6aA-P4Gvhrc.md",
+      "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_UqAvU1loT_k.md",
+      "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_ftK2BqggabQ.md",
+      "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_kcMnnQr1VFg.md",
+      "MyTradingSys/research/fast_track_2026-09-27/MISSING_PIECES_2026-09-30.md",
+      "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_SETUP_CATALOG.md"
+    ],
+    "session": "agent-abee7b4661ffeb14e"
+  },
+  "created": "2026-10-31T02:45:10Z",
+  "depends_on": [],
+  "done_when": "verify_extract_quotes.py exit 0 on the file; fixed in 285c4f078",
+  "est_turns": 3,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Fix wrong position tag words in the named extract so verify_extract_quotes.py exits 0 (quote text untouched).",
+  "id": "quote-position-tags-wrong-in-extract-2-n",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "fixed in 285c4f078: tag word only, verifier exit 0",
+      "ref": "285c4f078",
+      "utc": "2026-10-31T03:37:49Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 9 file(s)",
+      "ref": "285c4f078a6b",
+      "utc": "2026-10-31T03:36:46Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T03:37:48Z",
+  "refs": [],
+  "result": "fixed in 285c4f078: tag word only, verifier exit 0",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research"
+  ],
+  "scope_out": [],
+  "scope_sha": "285c4f078a6b",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "change only the tag word",
+    "run the verifier"
+  ],
+  "taken": "2026-10-31T03:37:49Z",
+  "tests": "verifier exit 0 (was failing on the tag)",
+  "title": "Quote position tags wrong in extract_2-nG9bsMoPQ.md:117",
+  "weight": "",
+  "worker": "agent"
+}

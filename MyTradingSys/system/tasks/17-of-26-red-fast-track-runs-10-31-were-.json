@@ -1,0 +1,72 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-31T08:52:29Z",
+  "commands": [],
+  "created": "2026-10-31T08:45:00Z",
+  "depends_on": [],
+  "done_when": "A short report in MyTradingSys/research/ci_audit_2026-10-31/ with counts: reds, pushes landing within latency, false-block risk, and a keep-2 or go-1 verdict; no code change.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "CI_RED_ROOT_CAUSES.md: 17 of 26 red runs were innocent pushes landing on an already red trunk inside CI latency; ci_watch.MIN_STREAK=2 blocks only after 2 finished reds. Measure from run history (gh run list) how many extra pushes a MIN_STREAK=1 would have blocked vs false blocks (first red later superseded green), and write a recommendation.",
+  "id": "17-of-26-red-fast-track-runs-10-31-were-",
+  "kind": "audit",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "keep MIN_STREAK=2: MIN_STREAK=1 gains 18 blocks, costs 19 false blocks over 300 runs (REPO",
+      "ref": "3bd842267",
+      "utc": "2026-10-31T08:52:29Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "CI red root-cause audit 2026-10-31: 26 red runs, 3 classes, fixes 201d47c73 5273a6f23 d6cc",
+      "ref": "251063ae7a52",
+      "utc": "2026-10-31T08:45:08Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 4,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T08:48:48Z",
+  "refs": [
+    "ci-red-root-causes"
+  ],
+  "result": "keep MIN_STREAK=2: MIN_STREAK=1 gains 18 blocks, costs 19 false blocks over 300 runs (REPORT_FIRST_RED.md)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/ci_audit_2026-10-31/"
+  ],
+  "scope_out": [
+    "scripts/dev/ci_watch.py",
+    "live tree"
+  ],
+  "scope_sha": "251063ae7a52",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/ci_audit_2026-10-31/CI_RED_ROOT_CAUSES.md"
+  ],
+  "state": "done",
+  "steps": [
+    "gh run list --branch fast-track --json conclusion,createdAt,updatedAt,headSha -L 300 to a scratch file",
+    "Count reds, pushes inside each red's open window, reds followed by an unrelated green fix",
+    "Write REPORT_FIRST_RED.md with verdict; ship"
+  ],
+  "taken": "2026-10-31T08:52:29Z",
+  "tests": "none: measurement report; numbers parsed from gh run list JSON by a counted script, not eyeballed",
+  "title": "17 of 26 red fast-track runs 10-31 were pushes landing on an already red trunk inside CI latency; ci_state blocks only after 2 finished reds: measure whether blocking on the first finished red is worth it",
+  "weight": "",
+  "worker": "agent"
+}

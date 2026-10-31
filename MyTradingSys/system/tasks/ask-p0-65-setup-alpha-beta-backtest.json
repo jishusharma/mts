@@ -1,7 +1,18 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T09:28:03Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-31T09:28:30Z",
+    "misses": 4,
+    "reads": [
+      "MyTradingSys/research/VERDICTS.csv",
+      "scripts/dev/lookahead_lint.py"
+    ],
+    "session": "agent-a6085b513fea8eed8"
+  },
   "created": "2026-10-30T08:24:29Z",
   "depends_on": [],
   "done_when": "PRE_REG.md frozen before the run, then RESULT.md in MyTradingSys/research/setup_alpha_beta_v2_2026-10/ with n, win, mean R fee-net (funding incl.) on DEV and VAL for Alpha (vs buy-and-hold) and Beta (one entry per sweep); lookahead_lint --new 0 FAIL; exports sim_desk/results/ask-p0-65-setup-alpha-beta-backtest.json; verdict rows added.",
@@ -14,18 +25,24 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MyTradingSys/research/setup_alpha_beta_v2_2026-10/RESULT.md: Alpha FAIL; Beta S1 DEV n50 -",
+      "ref": "839da3ce3",
+      "utc": "2026-10-31T09:28:03Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "raw_1d vs 1m resample: label 9 loaders T01-F2 (EOF, no line shift), DATA_NOTES entry, labe",
-      "ref": "74727bd432bd",
-      "utc": "2026-10-26T18:07:18Z"
+      "line": "B163 v2 re-land: rename fee_R keys (cost inventory), catalogue row + artifact for the expo",
+      "ref": "0036c34450ce",
+      "utc": "2026-10-30T18:07:26Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "f8d0799de2bc research/ top level: 189 -> 14 files; 176 dated loose files into _archive/loo",
+      "line": "737bfb24101b Revert \"Revert B163 v2 alpha/beta study (a43b9fbff, 14502d93b): CI red at Ste",
       "ref": "MyTradingSys/items/B163_setup_alpha_beta_handoff.md",
-      "utc": "2026-10-25T23:02:12Z"
+      "utc": "2026-10-30T18:05:15Z"
     }
   ],
   "layers": [],
@@ -35,11 +52,16 @@
   "prio": 2,
   "refine_tries": 1,
   "refined_by": "",
-  "refreshed": "2026-10-30T17:15:11Z",
+  "refreshed": "2026-10-31T08:46:38Z",
   "refs": [
     "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/setup_alpha_beta_v2_2026-10/RESULT.md: Alpha FAIL; Beta S1 DEV n50 -0.583R, VAL n23 -0.697R (already landed 0036c3445)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/setup_alpha_beta_v2_2026-10/",
     "MyTradingSys/research/setup_alpha_beta_2026-10-10/",
@@ -51,20 +73,21 @@
     "any live layer or trade rule",
     "editing the v1 folder"
   ],
-  "scope_sha": "74727bd432bd",
+  "scope_sha": "0036c34450ce",
   "size": "M",
   "sources": [
     "BUGS.md B163",
     "setup_alpha_beta_2026-10-10/ALPHA_RESULTS.md (B&H CAGR 43.8% beats all variants)",
     "lookahead_lint.py header (pivot-right-neighbour hit at beta_sweep.py:177)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read v1 ALPHA_RESULTS.md, BETA_RESULTS.md, B163 item and research/_archive/loose_2026-10/T5_CVD_DEFINITION_2026-10-01.md; daily bars from 1m resample (T01-F2), not raw_1d",
     "PRE_REG.md: D22 default (Alpha long-flat 2018-2026 with fees+funding, Beta on klines taker-buy); split DEV 2019-09..2023-12, VAL 2024-01..2025-08 (OURS); fees from fees.py, funding via MyTradingSys/backtest/layers/positioning/trade_costs.py; verdicts.py check pasted",
     "Beta: one event per swept level with cooldown, pivot confirmed by delay (no right neighbour of the decision bar); label all setup numbers NO-SOURCE/OURS",
     "Run DEV, VAL once; RESULT.md; verdicts.py backfill; update B163 row. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
   ],
+  "taken": "2026-10-31T09:28:03Z",
   "tests": "MyTradingSys/research/setup_alpha_beta_v2_2026-10/test_beta_events.py: planted single sweep on synthetic 15m bars gives exactly 1 event and uses no bar after the entry bar; fails on the v1 beta_sweep.py logic.",
   "title": "B163: implement and backtest Setup Alpha (1d SMA200 trend) / Beta (sweep + CVD absorption) handoff (ledger P0-65)",
   "weight": "CRUCIAL",

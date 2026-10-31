@@ -17,7 +17,9 @@ import mts_signal as S
 
 
 def sh(cwd, *args):
-    subprocess.run(["git", *args], cwd=cwd, check=True, capture_output=True, text=True)
+    r = subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@example.test", *args], cwd=cwd, capture_output=True, text=True)
+    if r.returncode:   # D5: git reports some failures (hooks, identity) on stdout only
+        raise RuntimeError("git %s: %s %s" % (" ".join(args), r.stderr.strip(), r.stdout.strip()))
 
 
 class SignalTest(unittest.TestCase):
@@ -29,7 +31,8 @@ class SignalTest(unittest.TestCase):
         sh(self.tmp, "init", "-q", "--bare", str(self.origin))
         self.keep = {k: os.environ.get(k) for k in
                      ("MTS_SIGNALS_HOME", "MTS_SIGNALS_ORIGIN", "MTS_SIGNALS_HOST", "MTS_SIGNALS_SYNC", "MTS_ACCOUNT", "MTS_SIGNALS",
-                      "MTS_LOGIN", "MTS_CLAUDE_JSON", "MTS_LOGINS_MD")}
+                      "MTS_LOGIN", "MTS_CLAUDE_JSON", "MTS_LOGINS_MD", "GIT_CEILING_DIRECTORIES")}
+        os.environ["GIT_CEILING_DIRECTORIES"] = os.path.realpath(str(self.tmp.parent)).replace(os.sep, "/")   # D5: TEMP may sit inside a git repo (bridge children)
         os.environ.pop("MTS_LOGIN", None)       # no real login detection in tests: a fake claude.json and table when a test needs one
         os.environ["MTS_CLAUDE_JSON"] = str(self.tmp / "none.json")
         self.md = self.tmp / "ACCOUNTS.md"
@@ -783,6 +786,27 @@ class ExhaustReadTest(unittest.TestCase):
         code, out, err = self.run_main("--read", (self.NOW + timedelta(minutes=2)).strftime("%Y-%m-%dT%H:%MZ"))   # 2 min of clock skew is allowed
         self.assertEqual(code, 0)
 
+
+
+class TempInsideGitRepo(unittest.TestCase):
+    """D5 repro: bridge children get TEMP inside a git repo and may have no global git identity. A signal round trip must still work."""
+
+    def test_round_trip_with_temp_inside_a_repo_and_no_global_git_config(self):
+        if os.environ.get("MTS_D5_INNER"):
+            self.skipTest("inner run")
+        scratch = tempfile.mkdtemp()
+        try:
+            subprocess.run(["git", "-C", scratch, "init", "-q"], check=True, capture_output=True)
+            tmp = os.path.join(scratch, "tmp")
+            os.mkdir(tmp)
+            env = dict(os.environ, TEMP=tmp, TMP=tmp, TMPDIR=tmp, GIT_CONFIG_GLOBAL=os.devnull, GIT_CONFIG_NOSYSTEM="1", MTS_D5_INNER="1")
+            for k in ("GIT_CEILING_DIRECTORIES", "GIT_AUTHOR_NAME", "GIT_AUTHOR_EMAIL", "GIT_COMMITTER_NAME", "GIT_COMMITTER_EMAIL"):
+                env.pop(k, None)
+            r = subprocess.run([sys.executable, "-m", "unittest", "test_mts_signal.SignalTest.test_send_then_other_machine_reads_not_own"],
+                               cwd=str(Path(__file__).resolve().parent), env=env, capture_output=True, text=True, timeout=300)
+            self.assertEqual(r.returncode, 0, r.stdout[-1500:] + r.stderr[-1500:])
+        finally:
+            shutil.rmtree(scratch, ignore_errors=True)
 
 if __name__ == "__main__":
     unittest.main()

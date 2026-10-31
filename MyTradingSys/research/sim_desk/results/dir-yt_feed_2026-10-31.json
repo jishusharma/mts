@@ -1,0 +1,41 @@
+{
+ "id": "dir-yt_feed_2026-10-31",
+ "kind": "thought_experiment",
+ "family": "Yt Feed",
+ "title": "Crypto Crew University (@CryptoCrewUniversity) Rules Extraction (2026-10-31)",
+ "provenance": "source-extracted",
+ "date": "2026-10-31",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "This extraction document compiles stated BTC and alt entry rules, levels, price action structures, and technical indicators (Moving Averages, RSI, Stochastic RSI, Wave Trend, Bull Flag geometry, Halving phases) read wit…",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Videos read: 8 (8 English transcripts captioned, 0 UNVERIFIED).",
+  "tone": "info"
+ },
+ "why": [],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "why": "no sentence in the source states why it passed or failed"
+ },
+ "source_files": [
+  "MyTradingSys/research/yt_feed_2026-10-31/CCU_RULES_2026-10-31.md"
+ ],
+ "commit": "e8420fbb5"
+}

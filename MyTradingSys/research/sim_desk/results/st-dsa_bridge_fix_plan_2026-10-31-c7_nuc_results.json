@@ -1,0 +1,40 @@
+{
+ "id": "st-dsa_bridge_fix_plan_2026-10-31-c7_nuc_results",
+ "kind": "thought_experiment",
+ "family": "Dsa Bridge Fix Plan",
+ "title": "dsabr-c7 install + e2e on JIS-NUC (2026-10-31)",
+ "provenance": "source-extracted",
+ "date": "2026-10-31",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "\": \"PASS\", \"evidence\": \"aibridge_verify: 29 rows, no FAIL\"},",
+  "tone": "bad"
+ },
+ "why": [
+  "Exit 0. Result: aibridge_verify: PASS (0 FAIL of 29).",
+  "aibridge_verify: PASS (0 FAIL of 29)",
+  "E0 PASS aibridge_verify: 29 rows, no FAIL",
+  "E3 PASS 3 failing plans -> exit!=0 + TASK RESULT: FAIL; control PASS; fake command exit 0 (documented)"
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/c7_nuc_results.md"
+ ],
+ "commit": "da76b6df9"
+}

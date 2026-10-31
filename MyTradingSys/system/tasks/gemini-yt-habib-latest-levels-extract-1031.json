@@ -1,0 +1,72 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-31T01:38:01Z",
+  "commands": [
+    "python scripts/dev/fetch_captions_timed.py --analyst Habib --latest 8 --out MyTradingSys/research/gemini_burn_2026-10-31/transcripts_habib",
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/gemini_burn_2026-10-31/HABIB_LATEST_LEVELS.md"
+  ],
+  "created": "2026-10-31T00:53:35Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_burn_2026-10-31/HABIB_LATEST_LEVELS.md exists; every row has video id, timestamp and quote or NOT_IN_DATA; verify_extract_quotes.py exits 0",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "From the latest 8 videos of Habib's channel (see analysts.json): extract dated BTC and alt levels and calls as a table with video id, timestamp and verbatim quote, or NOT_IN_DATA. No verdict.",
+  "id": "gemini-yt-habib-latest-levels-extract-1031",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_burn_2026-10-31/HABIB_LATEST_LEVELS.md",
+      "ref": "4a02a8e22",
+      "utc": "2026-10-31T01:38:01Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 17 file(s)",
+      "ref": "e8420fbb5d82",
+      "utc": "2026-10-31T00:58:27Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini rules: facts with file:line only, no trading verdict, no code change; NOT_IN_DATA where the repo has no answer; captions first for any YouTube work (fetch_captions_timed.py, quote only from the caption file, one try per video, 429 -> UNVERIFIED), verify_extract_quotes.py exit 0. Operator 2026-10-31: exhaust the Gemini weekly quota before it resets, test-first and catch bugs early. Final report ends with a Noticed: line.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T01:25:40Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "MyTradingSys/research/gemini_burn_2026-10-31/HABIB_LATEST_LEVELS.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/gemini_burn_2026-10-31/ (new files only)"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code edits; any backtest or trading verdict; .secrets and .env"
+  ],
+  "scope_sha": "e8420fbb5d82",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "resolve the channel from analysts.json",
+    "fetch captions, keyword scan",
+    "write the file and verify"
+  ],
+  "taken": "2026-10-31T01:38:01Z",
+  "tests": "verify_extract_quotes.py exit 0; no code change",
+  "title": "[GEMINI] Habib (@Qriptal): latest 8 videos, extract his BTC and alt levels and dated calls with timed quotes",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

@@ -1,7 +1,7 @@
 // loop.js - pure helpers for the auto-loop. No DOM, no chrome.* so node can test them.
 (function (root) {
   var L = {};
-  L.VERSION = '0.7.2';
+  L.VERSION = '0.7.7';
 
   L.fnv = function (s) {
     var h = 2166136261;
@@ -172,6 +172,112 @@
   // visible banner text for every auto-off (shown in the page next to the chat, not sent as a message)
   L.stopNotice = function (why) {
     return 'AIBridge hands-free is OFF: ' + (why || 'stopped') + ' Tick the box to re-arm.';
+  };
+
+  // B210: a run whose completion frame is lost leaves the panel on "running #N" forever. The run lock expires at twice the
+  // block timeout (default timeout 120 s, floor 30 s); on expiry the lock is released with a visible reason and the next
+  // block gets a receipt. expireMs(timeout_s) -> ms. expireText(waitedMs, agentRunning) -> the visible reason.
+  // 0.7.7: a task without timeout= runs 600 s on the agent, so its default is 600 s (lock 1200 s); a block stays 120 s.
+  L.expireMs = function (timeoutS, isTask) {
+    var t = (timeoutS && timeoutS > 0) ? timeoutS : (isTask ? 600 : 120);
+    return Math.max(30, t) * 2 * 1000;
+  };
+  // one extension after the first expiry when the agent still reports running > 0: agent hard cap + 60 s (task 1800, block 300)
+  L.extendMs = function (isTask) { return ((isTask ? 1800 : 300) + 60) * 1000; };
+  // 0.7.7 (E5): any non-zero exit stops the rest of the reply, a read included. -> reason text or null
+  L.blockFailed = function (resp) {
+    if (!resp || !resp.ok || resp.status !== 200) return resp && resp.status === 403 ? 'refused' : 'bridge error';
+    var b = resp.body || {};
+    if (b.timed_out) return 'timed out';
+    if (b.exit !== 0) return 'exit ' + b.exit + (b.kind === 'read' ? ' (read)' : '');
+    return null;
+  };
+  L.expireText = function (waitedMs, agentRunning) {
+    var s = Math.round(waitedMs / 1000);
+    return 'run lock released after ' + s + ' s: no completion arrived' +
+      (agentRunning === 0 ? ' and the agent reports running 0, so nothing was running' :
+       (agentRunning == null ? ' and the agent queue could not be read' : ' and the agent still reports running ' + agentRunning + '; the command may still be executing')) +
+      '. Re-send the block; if blocks keep returning nothing: Hands-free off then on, reload the extension, F5.';
+  };
+  // Resolve with p's value, or with an explicit lock-expired response after ms. onExpire(waitedMs) may return a promise of
+  // the agent's running count (0 = idle, null = unknown); it never blocks the release for more than 5 s.
+  L.raceDeadline = function (p, ms, onExpire, extendMs) {
+    return new Promise(function (resolve) {
+      var done = false, t0 = Date.now();
+      var extended = false, timer = setTimeout(function expire() {
+        if (done) return;
+        var finish = function (running) {
+          if (done) return;
+          if (running > 0 && extendMs && !extended) { extended = true; timer = setTimeout(expire, extendMs); return; }   // still running: wait once more
+          done = true;
+          resolve({ ok: false, cls: 'LOCK_EXPIRED', error: L.expireText(Date.now() - t0, running) });
+        };
+        var q; try { q = onExpire ? onExpire(Date.now() - t0) : null; } catch (e) { q = null; }
+        if (!q || !q.then) { finish(q == null ? null : q); return; }
+        var fin = false, g = function (v) { if (!fin) { fin = true; finish(v == null ? null : v); } };
+        setTimeout(function () { g(null); }, 5000);
+        q.then(g, function () { g(null); });
+      }, ms);
+      p.then(function (v) { if (!done) { done = true; clearTimeout(timer); resolve(v); } },
+             function (e) { if (!done) { done = true; clearTimeout(timer); resolve({ ok: false, cls: 'extension_link', error: String(e) }); } });
+    });
+  };
+
+  // ---- block selection (pure; content.js describes each candidate block, this decides) ----
+  // desc = {cmd, chain, nested}; chain = ancestors as {tag, cls, role, lead} (lead = first 40 chars of its own text).
+  // A block inside DeepSeek's thinking panel is a draft, never an instruction. Identified by structure (tag / class / role),
+  // never by the block text. FAIL CLOSED: a collapsible container (details) or a chain the page could not describe is
+  // treated as thinking, so an unknown layout runs nothing instead of running drafts.
+  var THINK_CLS = /think|thought|reason|cot[-_ ]|chain[-_ ]?of/i;
+  L.isThinking = function (chain) {
+    if (!chain || !chain.length) return true;   // cannot describe where the block sits = unknown = not runnable
+    for (var i = 0; i < chain.length; i++) {
+      var c = chain[i] || {}, tag = String(c.tag || '').toLowerCase();
+      if (tag === 'thought' || tag === 'thinking' || tag === 'details' || tag === 'summary') return true;
+      if (THINK_CLS.test(String(c.cls || '')) || THINK_CLS.test(String(c.role || ''))) return true;
+      if (/^\s*(thought for|thinking|deep ?think)/i.test(String(c.lead || '')) && tag !== 'body' && i < 4) return true;   // lead: only the nearest 4 ancestors (a chat root starting with 'Thinking' must not hide every block)
+    }
+    return false;
+  };
+  // -> {selected: [index...], ignored: [index...], status: text or ''}
+  L.selectBlocks = function (descs) {
+    var sel = [], ign = [];
+    (descs || []).forEach(function (d, i) { (L.isThinking(d && d.chain) ? ign : sel).push(i); });
+    return { selected: sel, ignored: ign, status: ign.length ? 'ignored ' + ign.length + ' block(s) inside the thinking panel (only the final answer runs)' : '' };
+  };
+  // key = fnv(text)@occurrence among the SELECTED blocks with the same text: a thinking draft or a collapsing panel never shifts it
+  L.batchKeys = function (texts) {
+    var seen = {};
+    return (texts || []).map(function (t) { var h = L.fnv(String(t)); var o = seen[h] || 0; seen[h] = o + 1; return h + '@' + o; });
+  };
+  // per-batch duplicate guard: -> for each block, the 1-based number of an earlier identical block, or 0
+  L.dupOf = function (texts) {
+    var first = {};
+    return (texts || []).map(function (t, i) { var k = String(t).replace(/\r/g, '').trim(); if (first[k] === undefined) { first[k] = i + 1; return 0; } return first[k]; });
+  };
+
+  // ---- dropped generation (D4): after a result is posted DSA must answer; if it never does, say so ----
+  // state = replyWatch() ; event = {type:'posted'|'reply'|'tick'|'reset', busy: in-flight run or draft being typed}
+  // -> {state, action: 'none'|'notice'|'stop'}. One notice per chain, then stop. noticeMs 45 s (OURS) keeps it under 60 s.
+  L.REPLY_NOTICE_MS = 45000;
+  L.ANSWER_MIN_CHARS = 10;   // OURS: any visible growth after the quiet counts as DSA's answer ('Done, all PASS.' = 15)
+  L.replyWatch = function (state, ev, now, noticeMs) {
+    var s = state ? { phase: state.phase, since: state.since, notices: state.notices } : { phase: 'idle', since: 0, notices: 0 };
+    ev = ev || {};
+    if (ev.type === 'posted') { s.phase = 'waiting'; s.since = now; return { state: s, action: 'none' }; }
+    if (ev.type === 'reply') { s.phase = 'idle'; s.notices = 0; return { state: s, action: 'none' }; }
+    if (ev.type === 'reset') return { state: { phase: 'idle', since: 0, notices: 0 }, action: 'none' };
+    if (s.phase !== 'waiting' || ev.busy) { if (s.phase === 'waiting') s.since = now; return { state: s, action: 'none' }; }
+    if (now - s.since < (noticeMs || L.REPLY_NOTICE_MS)) return { state: s, action: 'none' };
+    if (s.notices >= 1) { s.phase = 'idle'; return { state: s, action: 'stop' }; }
+    s.notices = 1; s.since = now;
+    return { state: s, action: 'notice' };
+  };
+  L.REPLY_NOTICE_TEXT = '[AIRUN NOTICE] your last reply ended without a final answer (your generation dropped after the result). If you already answered, reply ok; do not repeat blocks that already have a result. Otherwise re-send only the blocks that have no result.';
+  // visible status while the page text never settles (spinner text keeps changing)
+  L.quietWaitStatus = function (elapsedMs, waitMs) {
+    var s = Math.round(elapsedMs / 1000);
+    return elapsedMs > waitMs ? 'page text still changing after ' + s + ' s; DSA may be stuck. Untick the box to stop, or wait.' : 'waiting for the reply to settle (' + s + ' s)';
   };
 
   root.AIBridgeLoop = L;

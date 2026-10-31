@@ -13,7 +13,8 @@ Tests: `python tests/agent_live_selftest.py` (36 live checks) and `node tests/lo
   with a receipt per block, headed `[AIRUN BATCH] blocks_seen=N blocks_run=M not_run=K`.
   A block that is not run still gets a receipt that says why: `NOT RUN: over the per-reply cap` or
   `NOT RUN: block 2 ended with exit 1 and this block may depend on it`. After a refusal, error, timeout, or a non-zero exit of a
-  non-read command, the remaining blocks of the reply are skipped (read-only commands may exit non-zero without stopping the batch).
+  command (a read included, receipt `exit N (read)`), the remaining blocks of the reply are skipped (0.7.7; end a search that may find
+  nothing with `; exit 0` when later blocks do not depend on it).
 - Result numbers `#n` are monotonic per chat page (each page keeps its own counter). Each result header carries
   `host= agent= kind=read|write|program|task lines= sha= rid=` plus `ran_at:` and the whole command (first 600 chars, lines joined with ` ; `).
   The extension discards any answer whose `rid` is not the one it asked for (`STALE_REPLY`).
@@ -44,7 +45,7 @@ Every refusal and every result names its kind (`read|write|program|task`). The R
 
 ## Roots, paths, shell, environment
 - Roots: `C:\Users\E-ngineers\IdeaProjects` (all worktrees), `C:\Users\E-ngineers\AppData\Local\Temp`, `F:\AIBridge`, `F:\MTS`. cwd must be inside a root.
-- `$env:` and other variables are NOT refused (open mode). Child TEMP/TMP = `<AIBridge>\run\tmp` (no shared pytest-of-<user> lock); `--basetemp` is no longer needed.
+- `$env:` and other variables are NOT refused (open mode). Child TEMP/TMP = `%LOCALAPPDATA%\AIBridge\run-tmp` (outside any git repo; no shared pytest-of-<user> lock); `--basetemp` is no longer needed.
 - Shell: Windows PowerShell 5.1 (`powershell.exe`). PS7-only syntax (`&&`, `||`, `??`, `?.`, `-AsHashtable`, `-Parallel`, `-Encoding utf8NoBOM` ...)
   is refused BEFORE running with code `ps7_only` and the fix. `shell=pwsh` on the AIRUN line runs the block in PowerShell 7 when the host has pwsh.
 - Environment: each command starts with the machine+user environment read from the registry NOW (JAVA_HOME, PATH changes are live, no agent restart).

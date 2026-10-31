@@ -7,7 +7,7 @@ worked example. Every TEST_PLAN.md in these layers must derive its expected numb
 never from an implementation module (see LESSONS_LEARNED.md 2026-09-28 D1: `layers/rsi/TEST_PLAN.md`
 Case C1 was originally derived from `bt/bt_rsi.py.new`'s `rsi_wilder`, which is off vs textbook Wilder).
 
-## 1. RSI (Wilder, `rsi_core.rsi_wilder`)
+## 1. RSI (Wilder, `rsi_core.rsi_core`)
 
 **Chosen definition (textbook Wilder = TradingView `ta.rsi`):**
 1. `delta[i] = close[i] - close[i-1]` for `i = 1..len-1`.
@@ -576,6 +576,26 @@ Sources: `research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md` s3 and s5, extract `e
 **24.4 Event rule (OURS: no source defines the number for "turn up", KURISKO_SPEC s5 gap 3).** Episode = from the first bar s with all four lines < 20 (strict; exactly 20 is not under 20) until any line is >= 20 or NaN. Long event at the close of the first t > s with all four < 20 on bars s..t-1 and fast[t] > fast[t-1] (strict; fast = the first band, (9,3)); the event bar itself may leave the zone. One event per episode; a later episode can fire again. Mirror (all four > 80 strictly, fast[t] < fast[t-1]) = short, NO-SOURCE, reported apart. Row: t_close (= open_time + tf), side, kind (`quad_rotation_stoch` or `quad_rotation_rsi`), the four values at t, episode_start_t (close time of bar s). Other turn rules (D9 crosses up through 20) are ledger trials, not built.
 
 **24.5 Worked event fixtures (hand-derived, in `test_quad_rotation.py`).** Bands (2,1), (3,1), (4,1), (5,1) (line = raw %K). Bars 0..5 fall one point each with close = low, high = low + 1 (low 100-i): every full-window raw %K is 0, so all four lines are 0 from bar 4 (s = 4). Bar 6 (h 97, l 94.5, c 96.5): lines 80, 80, 57.142857, 44.444444; fast 80 > 0: long event at t = 6, episode_start bar 4. Alternative bar 6 (h 96, l 94, c 94.2) gives 10, 6.666667, 5, 4 (event at 6) and bar 7 (h 95, l 93, c 93.5) gives 16.666667, 16.666667, 12.5, 10: the fast line ticks up again inside the same episode, no second event. Mirror (h' = 200-l, l' = 200-h, c' = 200-c, raw' = 100 - raw): short event at 6 with 90, 93.333333, 95, 96.
+
+## 25. Halving clock (`research/fractals_2026-10-31/phase_tag/phase_tag.py`) - added 2026-10-31
+
+**Chosen definition.** Halving instants (UTC, SOURCED: Bitcoin block timestamps): 2012-11-28, 2016-07-09, 2020-05-11, 2024-04-20 00:09 (block 840,000; pinned per VALIDATION.md 2a, R1 used 04-20 and R2 04-19). `days_since_halving` at tag row t = calendar days from the date of the latest halving that is dated on or before the LAST CLOSED bar (t-1) to the date of bar t-1. The epoch switches on the bar dated the halving day (day 0). Cycle year (OURS) = 1 + floor(days/365), capped at 4. Pure calendar function; with the one-bar shift it uses nothing from bar t. A tag is descriptive context, never a trigger (n = 2-3 cycles).
+
+**Worked example (by hand).** Peak close of the 2024 cycle = bar dated 2025-10-06 (Binance spot 124,658.54). 2024-04-20 -> 2025-04-20 = 365 days; then Apr 20 -> May 20 30, -> Jun 20 31, -> Jul 20 30, -> Aug 20 31, -> Sep 20 31, -> Oct 6 16; 30+31+30+31+31+16 = 169; 365 + 169 = 534. The tag row dated 2025-10-07 reads 534. Row dated 2026-09-30 uses the 2026-09-29 bar: 2024-04-20 -> 2026-04-20 = 730, -> 2026-09-29 = 30+31+30+31+31+9 = 162; 892. Boundary: row for 2024-04-20 uses bar 04-19 -> 1439 days from 2020-05-11 (2020-05-11 -> 2024-05-11 = 1461, minus 22 days); row 2024-04-21 uses bar 04-20 -> 0. Variant not used: counting from 2024-04-19 gives 535 at the peak.
+
+## 26. Cowen band (`research/fractals_2026-10-31/phase_tag/phase_tag.py`) - added 2026-10-31
+
+**Chosen definition.** Weekly closes = close of the Sunday bar (ISO week Mon..Sun, UTC); only completed weeks whose Monday bar exists in the data count. SMA20w = mean of the last 20 weekly closes (SOURCED: Cowen band, R2_BTC_PHASES.md s2, video bWdXPK3Hlok 00:06:02; sim-desk `cowen_bmsb.py:35`). EMA21w: seed = SMA of the first 21 weekly closes (OURS, TradingView `ta.ema` convention), then e = e + (2/22)*(W - e). Both values are carried forward from the last completed Sunday. Side of the last closed bar's DAILY close: above if close > max(SMA20w, EMA21w); below if close < min; else inside (OURS). Only data up to the last closed bar is used; the tag at row t is shifted one bar.
+
+**Worked example (by hand).** Synthetic dates from Monday 2023-01-02, close[i] = 100 + i (i <= 449). Sunday bars i = 6, 13, ..., so weekly close W_k = 106 + 7k. Row i = 250 uses bar 249; completed weeks k = 0..34 (Sunday bar 244). SMA20w = mean(W_15..W_34) = 106 + 7*24.5 = 277.5. EMA21w: seed = mean(W_0..W_20) = 106 + 7*10 = 176 = W_20 - 70, and on a ramp of slope 7 the EMA lag is (1-a)/a * 7 = 10 * 7 = 70, so every step stays on W_k - 70 (check: e + (1/11)(7 + 70) = e + 7); EMA21w at k = 34 is 344 - 70 = 274. Close of bar 249 = 349 > max(277.5, 274): side = above. Weekly SMA10 = 106 + 7*mean(25..34) = 312.5 (one week earlier 305.5: rising), close above: phase above_up. Real data: row 2026-09-30 reads SMA20w 70,366.92, EMA21w 73,695.10, bar 2026-09-29 close 83,663.66: above (independent plain-python recompute matches).
+
+## 27. Rolling DFA Hurst (`research/fractals_2026-10-31/f2/dfa.py`) - added 2026-10-31
+
+**Chosen definition (OURS parameters, SOURCED estimator).** Detrended fluctuation analysis, order 1 (Peng et al. 1994), the estimator Bariviera 2017 uses rolling on BTC (R1 s1b). For a window of n returns x: profile y_j = sum_{i<=j}(x_i - mean(x)). Cut y from the front into nb = floor(n/s) boxes of s points. In each box fit the least-squares line a + b t and take the mean squared residual; F^2(s) = average of the box values over boxes; F(s) = sqrt(F^2(s)). H = OLS slope of log F(s) on log s over s in {8,16,32,60,96,160}. H ~ 0.5 for uncorrelated returns, > 0.5 persistent (trending), < 0.5 anti-persistent (mean-reverting). Window W = 480 consecutive 1h log returns (20 days); H of the window ending at bar i is known at the close of bar i.
+
+**Worked example (by hand).** x = +1,-1,+1,-1,... (mean 0), s = 4: profile per box 1,0,1,0; t - mean(t) = -1.5,-0.5,0.5,1.5, sum of squares 5; slope = (1*(-1.5) + 0 + 1*0.5 + 0)/5 = -0.2; fitted line = 0.5 - 0.2(t - 1.5) = 0.8,0.6,0.4,0.2; residuals 0.2,-0.6,0.6,-0.2; mean square = (0.04+0.36+0.36+0.04)/4 = 0.2. So F^2(4) = 0.2 (test_dfa.py). Random-walk increments give H = 0.5 and fGn with Hurst 0.8 gives about 0.8 (tests with tolerances).
+
+**Known limit.** DFA understates H on short windows (R1 s1b, arXiv 1201.4786); the thresholds 0.45 / 0.55 are not corrected for that bias, and the 480-return window has a wide error band (sd of H over DEV hours is 0.056).
 
 ## Verification note (this audit, 2026-09-28)
 

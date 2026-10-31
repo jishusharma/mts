@@ -1,0 +1,61 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T10:04:47Z",
+  "depends_on": [],
+  "done_when": "FORMULAS.md gains a Fabio v3 section (S1-S8, Models A-D) and a Tom VP return-to-value section, each with a hand worked example and SOURCED/OURS labels; review Agent APPROVE on the diff before ship",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "FORMULAS.md has no section for Fabio v3 S1-S8 / Models A-D nor the Tom VP return-to-value count, so independent re-derivation has no written formula; write both from the specs.",
+  "id": "formulas-fabio-v3-and-vp-return",
+  "kind": "",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "F2 pre-reg: rolling 1h DFA Hurst regime gate, FORMULAS s27, 4 TRIALS rows, DFA module + te",
+      "ref": "d94529dce83d",
+      "utc": "2026-10-31T08:24:27Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "d94529dce83d F2 pre-reg: rolling 1h DFA Hurst regime gate, FORMULAS s27, 4 TRIALS rows, DF",
+      "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
+      "utc": "2026-10-31T08:24:27Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-31 ACCEPT (Sonnet reviewer Agent, FIX applied once, not re-read, planner DECISION OURS). CRUCIAL formulas: review Agent before ship.  Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T14:50:00Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/FORMULAS.md"
+  ],
+  "scope_out": [
+    "any code, results, VALIDATION or HOLDOUT"
+  ],
+  "scope_sha": "d94529dce83d",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "read research/fast_track_2026-09-27/FABIO_V3_SPEC.md sections 2-6 and backtest/vp_return_to_value.py docstring plus its PRE_REG.md",
+    "write a FORMULAS.md section per item with symbols, units, one worked number each, SOURCED or OURS label per parameter",
+    "do not copy numbers from code: derive the worked example by hand"
+  ],
+  "tests": "docs card: python -m pytest MyTradingSys/tests/docs/test_integrity.py -q passes; each new section has a hand worked number",
+  "title": "FORMULAS.md has no section for Fabio v3 S1-S8 / Models A-D nor the Tom VP return-to-value count; independent re-derivation has no written formula (SETUP_REVIEW s4 item 6)",
+  "weight": "CRUCIAL",
+  "worker": "agent"
+}

@@ -236,3 +236,4 @@ runtime_data/
 MyTradingSys/research/setup_review_2026-10/review_page.html
 # live_aid analyst data: built from CBP rows, which stay out of the public repo
 MyTradingSys/tools/live_aid/analyst_data.js
+MyTradingSys/tools/live_aid/ff_calendar_snapshot.js

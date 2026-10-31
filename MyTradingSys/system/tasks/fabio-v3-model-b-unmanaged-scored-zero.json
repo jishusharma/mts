@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "context": {
+    "calls_to_edit": 13,
+    "folded": "2026-10-31T15:39:31Z",
+    "misses": 27,
+    "reads": [
+      "MyTradingSys/research/tom_fabio_review_2026-10-31/SETUP_REVIEW.md",
+      "MyTradingSys/system/role_details/session_planner_details.md",
+      "MyTradingSys/research/v1_plan_2026-10-20/D7_ROADMAP.md"
+    ],
+    "session": "agent-a477af783e6dfe51f"
+  },
+  "created": "2026-10-31T10:04:44Z",
+  "depends_on": [],
+  "done_when": "FABIO_V3_L3_NOT_MEASURED.md states the unmanaged Model B count; new test fails on old code and passes; IS rerun lists Model B net R from managed fills",
+  "est_turns": 35,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Fabio v3 Model B fills still IN_TRADE at the window end are scored 0 R as unmanaged (42 IS + 4 OOS fills); first report them NOT MEASURED, then add the missing Model B management in _manage with a test that fails first.",
+  "id": "fabio-v3-model-b-unmanaged-scored-zero",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "TF8: B099 fixed, L3 re-run complete; row 1.10 LANDED, result L3-FAIL",
+      "ref": "973e9b9b6113",
+      "utc": "2026-10-03T19:00:28Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-31 ACCEPT (Sonnet reviewer Agent, FIX applied once, not re-read, planner DECISION OURS). CRUCIAL: second review by a review Agent on the diff before ship.  Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T14:49:53Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/fabio/v3/engine.py",
+    "MyTradingSys/backtest/layers/fabio/run_v3_l3.py",
+    "MyTradingSys/backtest/layers/fabio/test_run_v3_l3.py",
+    "MyTradingSys/backtest/layers/fabio/FABIO_V3_L3_NOT_MEASURED.md"
+  ],
+  "scope_out": [
+    "live tree, VALIDATION or HOLDOUT bars, changing Models A, C, D numbers"
+  ],
+  "scope_sha": "973e9b9b6113",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "read engine.py lines 90-112 and run_v3_l3.py lines 100-112; count the unmanaged Model B fills per window",
+    "write the NOT MEASURED line into the L3 report (count, share of Model B fills)",
+    "write the failing test: a Model B IN_TRADE path whose hand-computed net R is not 0 (FORMULAS.md, spec 5.2 exits)",
+    "implement B management in _manage so the trade is rebuilt; rerun IS only"
+  ],
+  "tests": "MyTradingSys/backtest/layers/fabio/test_run_v3_l3.py: Model B hand-number case fails on old code (scored 0 R), passes after",
+  "title": "fabio v3 Model B fills scored 0 R as unmanaged (v3/engine.py:100-102, run_v3_l3.py:108-109): 42 IS + 4 OOS fills never measured; report NOT MEASURED, then fix _manage for B with a test failing first",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

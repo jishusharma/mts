@@ -43,6 +43,10 @@ def _template():
         origin = root / "origin.git"
         git(root, "init", "-q", "--bare", str(origin))
         git(origin, "symbolic-ref", "HEAD", "refs/heads/fast-track")
+        # git drops GIT_CONFIG_COUNT for the local receive-pack, so a push here ran detached auto-maintenance in origin.git and
+        # copytree hit its objects/maintenance.lock (CI 41168619722, 41173774113 on 2026-10-31). Off in the repo's own config.
+        for k, v in (("receive.autogc", "false"), ("maintenance.auto", "false"), ("gc.auto", "0")):
+            git(origin, "config", k, v)
         b = git(origin, "hash-object", "-w", "--stdin", stdin="x\n")
         tr = git(origin, "mktree", stdin=f"100644 blob {b}\tREADME.md\n")
         c = git(origin, "commit-tree", tr, "-m", "seed")
@@ -71,7 +75,7 @@ def _held_template():
         root = Path(tempfile.mkdtemp(prefix="lease_held_"))
         atexit.register(shutil.rmtree, str(root), True)
         for n in ("origin.git", "nuc", "lenovo"):
-            shutil.copytree(base / n, root / n)
+            shutil.copytree(base / n, root / n, ignore=shutil.ignore_patterns("*.lock"))
         for n in ("nuc", "lenovo"):
             _repoint(root / n, root / "origin.git")
         lease._LOCAL.env = {"MTS_LEASE_HOST": "JIS-NUC", "MTS_LEASE_SESSION": "sess-a", "MTS_ACCOUNT": "sharma",
@@ -106,7 +110,7 @@ class Base(unittest.TestCase):
         self.a = t / "nuc"
         self.b = t / "lenovo"
         for n in ("origin.git", "nuc", "lenovo") + (("home_nuc",) if held else ()):
-            shutil.copytree(tpl / n, t / n, ignore=shutil.ignore_patterns("hooks", "info", "description"))
+            shutil.copytree(tpl / n, t / n, ignore=shutil.ignore_patterns("hooks", "info", "description", "*.lock"))
         for d in (self.a, self.b):
             _repoint(d, self.origin)
         self.ident_a = {"MTS_LEASE_HOST": "JIS-NUC", "MTS_LEASE_SESSION": "sess-a", "MTS_ACCOUNT": "sharma",

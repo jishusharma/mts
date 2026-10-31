@@ -143,6 +143,9 @@ scripts/dev/test_logon_wake.py
 scripts/dev/test_refresh_main_checkout.py
 MyTradingSys/tools/live_aid/test_live_aid.py
 MyTradingSys/tools/live_aid/test_build_analyst_data.py
+MyTradingSys/tools/live_aid/test_oi_money.py
+MyTradingSys/tools/live_aid/test_live_aid_replay.py
+MyTradingSys/tools/live_aid/test_live_aid_layout.py
 scripts/dev/test_sync_push_race.py
 scripts/dev/test_announcements_ids.py
 scripts/dev/test_status_board.py
@@ -155,3 +158,12 @@ MyTradingSys/tools/test_us_open_alert.py
 scripts/dev/test_fix_verifier.py
 scripts/dev/test_where_is.py
 scripts/dev/test_artifact_pages.py
+MyTradingSys/research/sim_desk/test_page_click.py
+MyTradingSys/research/sim_desk/test_tom_vp.py
+MyTradingSys/backtest/test_vp_return_to_value.py
+MyTradingSys/research/krown_free_2026-10-31/test_silver_cross_dev.py
+MyTradingSys/research/sim_desk/test_cowen_bmsb.py
+MyTradingSys/research/fractals_2026-10-31/phase_tag/test_phase_tag.py
+MyTradingSys/research/sim_desk/test_fabio_v3.py
+MyTradingSys/research/meta_label_tom_fabio_2026-10-31/test_features.py
+MyTradingSys/research/meta_label_tom_fabio_2026-10-31/test_meta_label.py

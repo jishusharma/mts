@@ -1252,3 +1252,75 @@ class LikelyDoneAndDependsBriefTest(unittest.TestCase):
                 self.assertIn("WARN likely already in tree", out)
             finally:
                 T.REPO = old
+
+
+class TestCorruptCard(unittest.TestCase):
+    """One empty or truncated card JSON must not crash the CLI; save must be atomic (card test-tasks-corrupt-card-load-all)."""
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.repo = Path(self._tmp.name)
+        self.addCleanup(self._tmp.cleanup)
+        T.save(self.repo, good("B901"))
+        T.save(self.repo, good("B902"))
+        self.bad_dir = T.tdir(self.repo)
+
+    def _load(self):
+        err = io.StringIO()
+        with contextlib.redirect_stderr(err):
+            cards = T.load_all(self.repo)
+        return cards, err.getvalue()
+
+    def test_load_all_survives_empty_card(self):
+        (self.bad_dir / "EMPTY1.json").write_bytes(b"")
+        cards, err = self._load()
+        self.assertEqual(sorted(c["id"] for c in cards), ["B901", "B902"])
+        self.assertIn("EMPTY1.json", err)
+
+    def test_load_all_survives_truncated_card(self):
+        (self.bad_dir / "CUT1.json").write_text('{"id": "CUT1", "title": "x', encoding="utf-8")
+        cards, err = self._load()
+        self.assertEqual(sorted(c["id"] for c in cards), ["B901", "B902"])
+        self.assertIn("CUT1.json", err)
+
+    def test_load_all_survives_corrupt_archived_card(self):
+        (self.bad_dir / "archive").mkdir()
+        (self.bad_dir / "archive" / "OLD1.json").write_bytes(b"")
+        cards, err = self._load()
+        self.assertEqual(len(cards), 2)
+        self.assertIn("OLD1.json", err)
+
+    def test_list_cli_continues_past_empty_card(self):
+        (self.bad_dir / "EMPTY2.json").write_bytes(b"")
+        old = T.REPO
+        T.REPO = self.repo
+        try:
+            rc, out = run_cli("list")
+        finally:
+            T.REPO = old
+        self.assertEqual(rc, 0)
+        self.assertIn("B901", out)
+        self.assertIn("EMPTY2.json", out)
+
+    def test_save_writes_via_temp_file_and_replace(self):
+        calls = []
+        real = T.os.replace
+
+        def spy(a, b):
+            calls.append((str(a), str(b)))
+            return real(a, b)
+
+        with mock.patch.object(T.os, "replace", spy):
+            T.save(self.repo, good("B903"))
+        self.assertEqual(len(calls), 1)
+        self.assertTrue(calls[0][1].endswith("B903.json"))
+        self.assertNotEqual(calls[0][0], calls[0][1])
+        self.assertEqual([p.name for p in self.bad_dir.glob("*.tmp")], [])
+
+    def test_failed_save_keeps_previous_card_intact(self):
+        before = (self.bad_dir / "B901.json").read_bytes()
+        with mock.patch.object(T.os, "replace", side_effect=OSError("disk full")):
+            with self.assertRaises(OSError):
+                T.save(self.repo, good("B901", title="changed"))
+        self.assertEqual((self.bad_dir / "B901.json").read_bytes(), before)
+        self.assertEqual([p.name for p in self.bad_dir.glob("*.tmp")], [])

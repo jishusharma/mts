@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-31T10:24:49Z",
+  "commands": [],
+  "created": "2026-10-30T23:28:19Z",
+  "depends_on": [],
+  "done_when": "Each of the 5 addresses has a cited Etherscan label URL in a comment, or is removed; test_hot_wallet_watch.py passes.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Verify the 5 ETH addresses in hot_wallet_watch.py against Etherscan public labels (read-only web).",
+  "id": "hot-wallet-watch-py-its-5-eth-addresses-",
+  "kind": "audit",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "5 ETH addresses cited with public Etherscan labels; 5 tests pass (4030c67c3)",
+      "ref": "62c216a0a",
+      "utc": "2026-10-31T10:24:49Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "hot_wallet_watch: cite Etherscan public label for each of the 5 ETH addresses",
+      "ref": "4030c67c3e3c",
+      "utc": "2026-10-31T06:34:26Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T08:47:16Z",
+  "refs": [
+    "scripts/dev/hot_wallet_watch.py"
+  ],
+  "result": "5 ETH addresses cited with public Etherscan labels; 5 tests pass (4030c67c3)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/hot_wallet_watch.py"
+  ],
+  "scope_out": [
+    "running the watcher, any keys"
+  ],
+  "scope_sha": "4030c67c3e3c",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "open each etherscan.io/address page (public) and record the label",
+    "annotate or drop; ship"
+  ],
+  "taken": "2026-10-31T10:24:49Z",
+  "tests": "scripts/dev/test_hot_wallet_watch.py still passes; no new test needed (data check).",
+  "title": "hot_wallet_watch.py: its 5 ETH addresses were typed from memory; verify each against Etherscan labels (done when each address has a cited label or is removed)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

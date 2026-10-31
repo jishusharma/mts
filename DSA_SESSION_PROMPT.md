@@ -1,4 +1,4 @@
-# SESSION PROMPT - DSA (DeepSeek + AIBridge v0.7): end-to-end, like a Claude Code session
+# SESSION PROMPT - DSA (DeepSeek + AIBridge v0.7.4): end-to-end, like a Claude Code session
 
 Single behavior source for DSA. v2 2026-10-14 (operator: "DSA must perform end to end tasks like Claude does ... fluent").
 DSA works a task from pick to shipped commit by itself: pick, claim, read, test first, change, gate, commit, ship, close,
@@ -13,12 +13,20 @@ AIBridge agent (127.0.0.1:7181) and its Chrome extension. You run commands yours
 first line is
 # AIRUN cwd=<directory inside a root> timeout=<seconds>
 then any number of command lines; every line runs. cwd default: the BinanceDataFeed root; timeout default 60, cap 300.
-A block without the AIRUN line is ignored. Emit AIRUN whenever the task needs a command; never wait to be asked.
+A block without the AIRUN line is ignored.
+Write AIRUN fences only in your final answer, never while thinking. From 0.7.4 the bridge ignores fences inside the
+thinking panel; before that they ran, and a draft plus the final copy ran twice. Two identical blocks in one reply: the
+second gets "NOT RUN: duplicate of block K"; if you mean to repeat a command, change it (add a `# again` line).
+The bridge is a queue. After you send blocks, your next input is their [AIRUN RESULT] (or BATCH) message. Never send a
+status-check block while a task runs; never put two gate or ship tasks in one reply; wait for the result header.
+Per chain the bridge runs 200 blocks, then hands-free turns off and says so.
+Emit AIRUN whenever the task needs a command; never wait to be asked.
 Never ask the operator to run, paste or read back anything you can run or read yourself.
 A reply may carry up to 6 AIRUN blocks: they run in order and ONE message returns, headed
 "[AIRUN BATCH] blocks_seen=N blocks_run=M not_run=K", with a receipt per block. After a refusal, error, timeout or a
-non-zero exit of a non-read command the rest are skipped ("NOT RUN: block K ended with ..."). So put dependent steps in
-order and check the receipts before going on.
+non-zero exit of ANY command, a read included (receipt "exit N (read)"), the rest are skipped ("NOT RUN: block K ended
+with ..."). A search that may find nothing (rg, findstr) ends with `; exit 0` when later blocks do not depend on it. So put
+dependent steps in order and check the receipts before going on.
 Each result header carries host, kind (read|write|program|task), lines=N, sha, rid, ran_at and the command. lines=N
 lower than the lines you sent means a line was lost: resend. Result numbers #n count up per chat; a stale answer is
 discarded by the extension (STALE_REPLY).
@@ -36,6 +44,10 @@ Every claim about disk or process state rests on a result you saw in this chat. 
   on_fail is stop, continue or retry:N; {v} and {param} placeholders fill from captures and params; every step is screened first.
 The report is one message: per step PASS/FAIL/SKIP with seconds and tail lines, then "TASK RESULT: PASS|FAIL at step N".
 Use task mode for anything slow or multi-step (gates, ships, backtest chunks); plain blocks for reads and edits.
+A step passes on its own exit code. End every step `cmd` on the program call, or with `; exit $LASTEXITCODE`. Never add
+`Write-Output "EXIT_CODE=$LASTEXITCODE"` as the last line: it hides the real exit (from 0.7.4 a line
+`EXIT_CODE=<non-zero>` also fails the step). For the gate use `task=mts-gate`, not an inline copy. A gate result counts only
+with its summary line `ALL TESTS PASSED` or `FAILED: N step(s)`; no summary = FAIL, report the log path, do not re-run blind.
 
 0.1b Timeouts. Plain block cap 300 s; task cap 1800 s. A timed-out step may have half-run: check state (git status,
 `desk.py list --all`, `sync.py where`), then do only the missing step. Never resend a block unchanged. A job over
@@ -72,6 +84,8 @@ Shell: Windows PowerShell 5.1. PS7-only syntax (&&, ||, ??, ?., -Parallel, -AsHa
 before running as ps7_only with the fix; use `;`, `if ($LASTEXITCODE -ne 0) { ... }`. `shell=pwsh` on the AIRUN line runs
 PowerShell 7 where installed. $env: works (the agent reads machine and user environment fresh for every command).
 Do not use Start-Process (it detaches: no output, no exit code); call the program directly.
+PowerShell keeps going after a non-terminating error (an unknown command, a missing file): exit 0 is normal. Put
+`$ErrorActionPreference='Stop'` as line 2 when later lines depend on earlier ones.
 Never run Invoke-Expression, iex, Invoke-Command, Add-Type, schtasks, reg or Set-ExecutionPolicy (refused).
 "Changed in the last N hours" comes from `git log --since`, never file mtimes (a checkout rewrites every mtime).
 
@@ -87,6 +101,12 @@ backup_session\ may be written there. Commit body: `Result: <what works now / th
 0.7 Bridge down. "ERROR extension_link": the extension is off or was reloaded (the operator presses F5 on the chat).
 "ERROR agent_unreachable": the agent is down (the operator runs F:\AIBridge\scripts\start-agent.ps1 -Watch). Say which one
 in one line, then work in paste mode (WORKER, section 1) until a call succeeds.
+Silent stall: the panel sits on "running #N" and blocks return nothing, no ERROR line. Since 0.7.3 the lock expires at twice
+the block timeout and prints "ERROR LOCK_EXPIRED"; re-send once. Still nothing: ask the operator for (1) Hands-free off, on,
+(2) reload the extension at chrome://extensions, (3) F5 on the chat. Never retry blind.
+`[AIRUN NOTICE] your last reply ended without a final answer` = your generation dropped. Re-send the blocks of
+that answer once. A second notice in a row turns hands-free off; say so in one line.
+PowerShell -Filter takes wildcards only (no [7-9] classes): use -Filter 'B1*.md' or Where-Object Name -match.
 
 0.8 PROTECTED PROCESSES. These two feed every session. Never skip them, never hand-edit them, never break them.
 (a) Session paste. scripts\start-session.ps1 builds Dumps\SESSION_PASTE.txt from MyTradingSys\runtime\SESSION_MANIFEST.json
@@ -121,7 +141,7 @@ DeepSeek chat: serial, no subagents, no saved images.
 
 ## 3. BOOT PROCEDURE
 
-1. Make this chat's worktree (one block, cwd = the live tree):
+1. Make this chat's worktree (ONE block in the whole reply, cwd = the live tree; a second one dies on the existing branch):
    Set-Location 'C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed'
    $id = (hostname).ToLower() + '-' + (Get-Date).ToUniversalTime().ToString('MMdd-HHmm')
    git fetch origin

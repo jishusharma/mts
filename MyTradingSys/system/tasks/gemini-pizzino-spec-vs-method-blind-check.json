@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "claim": "",
+  "closed": "2026-10-30T19:45:51Z",
+  "commands": [
+    "python -c \"import ast,sys;print(len(open('MyTradingSys/backtest/layers/pizzino/pizzino_indicators.py').read().splitlines()))\""
+  ],
+  "created": "2026-10-30T18:52:43Z",
+  "depends_on": [],
+  "done_when": "GEMINI_BLIND_CHECK_2026-10-31.md exists with one row per SPEC rule and one per module constant, each FOUND/NOT_IN_DATA/DIFF or SAME/DIFF with file:line; first line carries the counts.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Second-vendor read of the Pizzino layer the operator asked for (1/2/3-bar indicator, 50% rule). For each rule and number in research/pizzino_layer_2026-10-27/SPEC.md: FOUND (quote file:line) / NOT_IN_DATA / DIFF against the two method files; then each constant in backtest/layers/pizzino/pizzino_indicators.py vs SPEC: SAME/DIFF with file:line. Facts only, no verdict, no code change.",
+  "id": "gemini-pizzino-spec-vs-method-blind-check",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "GEMINI_BLIND_CHECK_2026-10-31.md",
+      "ref": "04b7fa523",
+      "utc": "2026-10-30T19:45:51Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini rules: captions first (fetch_captions_timed.py), quote only from the caption file, one fetch try per video, no retry loop, 429 -> mark the video UNVERIFIED with no quotes; run verify_extract_quotes.py until exit 0; facts and quotes only, no trading verdict, no code change. Final report ends with a Noticed: line.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T18:52:44Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "reviewed 1031: 14 FOUND/18 NOT_IN_DATA/12 SAME, 6 cited lines spot-checked OK; kept",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/pizzino_layer_2026-10-27/GEMINI_BLIND_CHECK_2026-10-31.md (new); read: SPEC.md, method_jason.md, method_michael.md, MyTradingSys/backtest/layers/pizzino/pizzino_indicators.py"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code; any backtest; any trading verdict; .secrets and .env"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "list every rule and number in SPEC.md with its line",
+    "for each, search the two method files for the supporting quote: FOUND with file:line, NOT_IN_DATA, or DIFF (quote says something else)",
+    "list every constant and threshold in pizzino_indicators.py with file:line and its SPEC line: SAME/DIFF",
+    "write the two tables; first line = counts FOUND / NOT_IN_DATA / DIFF and SAME / DIFF; commit on the branch with a Result: line"
+  ],
+  "taken": "2026-10-30T19:38:54Z",
+  "tests": "verify_extract_quotes.py exit 0 is the gate; docs only",
+  "title": "[GEMINI] Pizzino blind check: every SPEC.md rule (1/2/3-bar, 50% level, pivot, retest) re-found in method_jason.md or method_michael.md quotes, and pizzino_indicators.py constants vs SPEC (file:line)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "mvn -q -Dtest=LiquidationLogWiringTest,LiquidationEventLogTest test"
+  ],
+  "created": "2026-10-31T04:53:58Z",
+  "depends_on": [],
+  "done_when": "A test offering one event after the final drain sees it written or counted in logDropped; fails on current code; mvn -q -Dtest=LiquidationLogWiringTest,LiquidationEventLogTest test passes.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "After the writer's final drain returns, the websocket thread can still offer an event (close() is async) that stays in logQueue unwritten and uncounted. Fix: enqueueLog counts logDropped and returns once logRunning is false, and use closeBlocking (bounded) before stopLogWriter plus one more drain after the join. No event may end uncounted.",
+  "id": "liq-accumulator-uncounted-event-after-final-drain",
+  "lane": "JIS-NB",
+  "layers": [],
+  "live_path": true,
+  "mutation_check": "",
+  "note": "PLANNER 2026-10-31: live-path follow-up, JIS-NB desktop lane, model sonnet, never deploy. T0 checks pass; only the real Lab_Guy review stamp (CRITICAL) is missing: Lab_Guy adds REVIEWED: Lab_Guy <date>, then tasks.py check promotes. CRITICAL review session needed pre-ship.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "src/main/java/datafeed/BinanceLiquidationAccumulator.java",
+    "src/test/java/datafeed/LiquidationLogWiringTest.java"
+  ],
+  "scope_out": [
+    "live tree .mts_live, deploy, restart",
+    "reconnect logic",
+    "other accumulators"
+  ],
+  "size": "S",
+  "sources": [
+    "review of a95155258 (stopLogWriter, enqueueLog in BinanceLiquidationAccumulator.java)"
+  ],
+  "state": "refined",
+  "steps": [
+    "Failing test first: shutdown(), then offer one event -> line on disk or logDropped==1, never neither; fails on current code",
+    "enqueueLog: if !logRunning count logDropped and return; closeBlocking before stopLogWriter; drain again after join",
+    "Check enqueued == done + dropped-at-shutdown. Builds on a95155258 (drain+join writer, not yet on fast-track at 2026-10-31): start only after it is on origin/fast-track. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
+  ],
+  "tests": "LiquidationLogWiringTest: new eventAfterFinalDrain_writtenOrCounted (fails first); shutdown twice is safe; full queue still counts; new instance after restart logs again; IO error in final drain counted in logErrors; nothing thrown to the feed thread.",
+  "title": "BinanceLiquidationAccumulator: close() is async, an event offered after the final drain is lost and not counted in logDropped",
+  "weight": "CRITICAL",
+  "worker": "agent"
+}

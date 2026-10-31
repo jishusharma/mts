@@ -41,9 +41,12 @@ class TrunkLagTest(unittest.TestCase):
         self.d.cleanup()
 
     def test_git_timeout_is_overridable_and_defaults_to_the_hook_limit(self):
-        with unittest.mock.patch.dict(os.environ, {"MTS_TRUNK_LAG_GIT_TIMEOUT": "0.000001"}):
+        # assert the timeout git gets, not that a 1 us timer beats `git status`: a fast CI runner finished first (CI 41181218651)
+        with unittest.mock.patch.dict(os.environ, {"MTS_TRUNK_LAG_GIT_TIMEOUT": "0.5"}), \
+                unittest.mock.patch.object(T.subprocess, "run", side_effect=subprocess.TimeoutExpired("git", 0.5)) as run:
             with self.assertRaises(subprocess.TimeoutExpired):
                 T.git(self.tree, "status")
+        self.assertEqual(run.call_args.kwargs["timeout"], 0.5)
         with unittest.mock.patch.dict(os.environ, {"MTS_TRUNK_LAG_GIT_TIMEOUT": "junk"}):
             self.assertEqual(T.git_timeout(), 8)
         env = {k: v for k, v in os.environ.items() if k != "MTS_TRUNK_LAG_GIT_TIMEOUT"}
@@ -104,11 +107,13 @@ class TrunkLagTest(unittest.TestCase):
         (self.origin / ".claude").mkdir()
         (self.origin / ".claude" / "settings.json").write_text("{}", encoding="utf-8")
         sh(self.origin, "add", ".claude")
+        (self.origin / "a").write_text("trunk a", encoding="utf-8")
+        sh(self.origin, "add", "a")
         commit(self.origin, "c", 1_000_200)
         sh(self.tree, "config", "user.email", "t@t")
         sh(self.tree, "config", "user.name", "t")
         (self.tree / "a").write_text("edited", encoding="utf-8")
-        self.assertEqual(T.catch_up(self.tree), "", "tracked edits: left alone")
+        self.assertEqual(T.catch_up(self.tree), "", "a tracked edit on a path trunk changes: left alone")
         sh(self.tree, "checkout", "-q", "--", "a")
         sh(self.tree, "checkout", "-q", "-b", "jis-nb/work")
         commit(self.tree, "own", 1_000_150)
@@ -135,6 +140,8 @@ class TrunkLagTest(unittest.TestCase):
         self.assertEqual(T.lag(wt, fetch=False), (0, 0))
         self.assertEqual(T.lag(self.tree, fetch=False), (0, 0))
         sh(self.tree, "checkout", "-q", "-b", "jis-nb/work")
+        (self.origin / "a").write_text("trunk a", encoding="utf-8")
+        sh(self.origin, "add", "a")
         commit(self.origin, "c", 1_000_200)
         self.assertNotIn("Main checkout", T.catch_up(wt), "a main checkout off fast-track is not moved")
         sh(self.tree, "checkout", "-q", "fast-track")
@@ -184,6 +191,31 @@ class TrunkLagTest(unittest.TestCase):
         T.catch_up(wt, fetch=False)
         self.assertEqual(T.lag(self.tree, fetch=False), (0, 0))
         self.assertEqual(T.git(self.tree, "status", "--porcelain", "--untracked-files=no").stdout.strip(), "")
+
+    def test_main_checkout_with_an_edit_trunk_does_not_touch_fast_forwards_and_keeps_it(self):
+        # JIS-NUC 2026-10-31: one SUPERVISOR_LOG.md line (trunk never changes it) plus 24 taken hook copies kept main 197 behind
+        hooks = self.origin / "scripts" / "dev"
+        hooks.mkdir(parents=True)
+        (hooks / "hook.py").write_text("v1", encoding="utf-8")
+        sh(self.origin, "add", "scripts")
+        commit(self.origin, "b", 1_000_100)
+        wt = Path(self.d.name) / "tree" / ".claude" / "worktrees" / "zen"
+        sh(self.tree, "pull", "-q", "--ff-only")
+        sh(self.tree, "worktree", "add", "-q", "-b", "claude/zen", str(wt))
+        (self.tree / "a").write_text("runtime log line", encoding="utf-8")
+        (hooks / "hook.py").write_text("v2", encoding="utf-8")
+        (hooks / "new.py").write_text("v2", encoding="utf-8")
+        sh(self.origin, "add", "-A")
+        commit(self.origin, "c", 1_000_200)
+        sh(self.tree, "fetch", "-q", "origin")
+        self.assertEqual(T.sync_hook_files(self.tree), 2)            # what an earlier blocked start left: taken copies, staged
+        commit(self.origin, "d", 1_000_300)
+        note = T.catch_up(wt)
+        self.assertIn("Main checkout", note)
+        self.assertNotIn("left alone", note)
+        self.assertEqual(T.lag(self.tree, fetch=False), (0, 0))
+        self.assertEqual((self.tree / "a").read_text(encoding="utf-8"), "runtime log line", "the runtime edit stays")
+        self.assertEqual(T.git(self.tree, "status", "--porcelain", "--untracked-files=no").stdout.split(), ["M", "a"])
 
     def test_registered_first_at_session_start(self):
         root = Path(__file__).resolve().parents[2]

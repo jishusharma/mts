@@ -54,6 +54,9 @@ def load(path=None):
         d = json.loads(p.read_text(encoding="utf-8"))
     except (OSError, ValueError):
         d = {}
+    if not isinstance(d, dict):
+        sys.stderr.write("cbp.load: %s is valid JSON but not an object; using an empty store\n" % p)
+        d = {}
     return {"schema": 1, "rows": d.get("rows", []), "rejected": d.get("rejected", [])}
 
 

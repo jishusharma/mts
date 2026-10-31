@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-30T21:33:05Z",
+  "commands": [
+    "python scripts/dev/fetch_captions_timed.py --analyst Loukas --channel @bobloukas3493 --latest 8 --out MyTradingSys/research/yt_feed_2026-10-31/transcripts_bob-loukas",
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/yt_feed_2026-10-31/LOUKAS_CYCLE_2026-10-31.md"
+  ],
+  "created": "2026-10-30T20:07:07Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/yt_feed_2026-10-31/LOUKAS_CYCLE_2026-10-31.md exists; every item has video id, timestamp and a verbatim quote, or NOT_IN_DATA; verify_extract_quotes.py exits 0",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Write MyTradingSys/research/yt_feed_2026-10-31/LOUKAS_CYCLE_2026-10-31.md: first line counts videos read, captioned and UNVERIFIED; a table of items, then per-video sections with the full quotes.",
+  "id": "gemini-yt-bob-loukas-extract",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "8 videos read, 8 items found, 2 NOT_IN_DATA; LOUKAS_CYCLE_2026-10-31.md",
+      "ref": "03bcaa644",
+      "utc": "2026-10-30T21:33:05Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini rules: captions first (fetch_captions_timed.py), quote only from the caption file, one fetch try per video, no retry loop, 429 -> mark the video UNVERIFIED with no quotes; run verify_extract_quotes.py until exit 0; facts and quotes only, no trading verdict, no code change. Final report ends with a Noticed: line.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T20:07:08Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "reviewed 1031: 18 quotes verified exit 0, 3 spot-checked vs captions; 2 NOT_IN_DATA",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/yt_feed_2026-10-31/ (new files only)"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code; any backtest; any trading verdict; .secrets and .env"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "python scripts/dev/fetch_captions_timed.py --analyst Loukas --channel @bobloukas3493 --latest 8 --out MyTradingSys/research/yt_feed_2026-10-31/transcripts_bob-loukas (one try per video; 429 -> UNVERIFIED, no retry loop)",
+    "keyword scan each transcript for the topic terms, read the surrounding lines before quoting",
+    "write MyTradingSys/research/yt_feed_2026-10-31/LOUKAS_CYCLE_2026-10-31.md per the goal; run verify_extract_quotes.py until exit 0; commit on the branch with a Result: line (videos read, items found, NOT_IN_DATA count)"
+  ],
+  "taken": "2026-10-30T21:33:05Z",
+  "tests": "verify_extract_quotes.py exit 0; no code change",
+  "title": "[GEMINI] Loukas (@bobloukas3493): latest 8 videos, extract his cycle timing rules: cycle length in days or weeks, translation, wh with timed quotes",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

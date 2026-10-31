@@ -1,7 +1,15 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T10:24:20Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-31T09:32:13Z",
+    "misses": 0,
+    "reads": [],
+    "session": "agent-ae1271271e7d92211"
+  },
   "created": "2026-10-30T08:24:24Z",
   "depends_on": [],
   "done_when": "RESULT.md + output.md in MyTradingSys/research/tf_break_event_study_2026-10-30/ with n per TF x class (H/R/W1) and DEV and VAL fee-net mean % with CI; events.csv not in the repo; exports sim_desk/results/ask-p0-45-tf-break-event-study.json; lookahead_lint --new and test_no_own_costs pass.",
@@ -14,18 +22,24 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "study on trunk e31013dfb: 15m fee-net h4 mean -0.07..-0.12% DEV/VAL, CIs below 0; 1h/4h ne",
+      "ref": "db3e68eda",
+      "utc": "2026-10-31T10:24:20Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "T054+T058: BTC session-open sweeps research; descriptive study; B102",
-      "ref": "edec790cdfb2",
-      "utc": "2026-10-03T21:12:52Z"
+      "line": "T058 per-TF break event study re-land (ledger P0-45): W/1D/4h/1h/15m, DEV/VAL, fee-net fro",
+      "ref": "e31013dfb104",
+      "utc": "2026-10-30T19:30:37Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "edec790cdfb2 T054+T058: BTC session-open sweeps research; descriptive study; B102",
+      "line": "e31013dfb104 T058 per-TF break event study re-land (ledger P0-45): W/1D/4h/1h/15m, DEV/VAL",
       "ref": "MyTradingSys/items/T058_broken_extremes_sweep_vs_continuation.md",
-      "utc": "2026-10-03T21:12:52Z"
+      "utc": "2026-10-30T19:30:37Z"
     }
   ],
   "layers": [],
@@ -35,11 +49,16 @@
   "prio": 2,
   "refine_tries": 1,
   "refined_by": "",
-  "refreshed": "2026-10-30T17:15:09Z",
+  "refreshed": "2026-10-31T08:46:32Z",
   "refs": [
     "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md"
   ],
-  "result": "",
+  "result": "study on trunk e31013dfb: 15m fee-net h4 mean -0.07..-0.12% DEV/VAL, CIs below 0; 1h/4h near zero; W/1D too few events",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/tf_break_event_study_2026-10-30/",
     "MyTradingSys/items/T058_broken_extremes_sweep_vs_continuation.md"
@@ -49,19 +68,20 @@
     "OI/funding conditioning (no local data pre 2025-09)",
     "live code"
   ],
-  "scope_sha": "edec790cdfb2",
+  "scope_sha": "e31013dfb104",
   "size": "M",
   "sources": [
     "research/fast_track_2026-09-27/T058_BROKEN_EXTREMES.md s3.2-3.3",
     "eca12f3b6 RESULT.md (reduced run)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Base: git show eca12f3b6 (study.py, analyze.py, RESULT.md); copy into the folder, import fees from MyTradingSys/backtest/fees.py (state regime A or D), no own FEE constant (test_no_own_costs)",
     "PRE_REG.md: L, N, buffer, DEV 2022-01..2024-06, VAL 2024-07..2025-08 all labelled OURS; paste verdicts.py check output",
     "Write events.csv to F:/MTS/runs/ (outside the repo); commit only summary tables (<200 rows); run lookahead_lint.py --new",
     "Run DEV then VAL once; RESULT.md, verdicts.py backfill row, one STATE line in T058 item. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
   ],
+  "taken": "2026-10-31T10:24:20Z",
   "tests": "MyTradingSys/research/tf_break_event_study_2026-10-30/test_study.py: synthetic bars with one planted close-break that holds and one wick sweep give classes H and W1; fails before study.py exists.",
   "title": "T058: per-timeframe (W/D/4h/1h/15m) event study of indicator state before/at/after the break (ledger P0-45)",
   "weight": "IMPORTANT",

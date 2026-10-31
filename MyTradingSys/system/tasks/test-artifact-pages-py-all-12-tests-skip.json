@@ -1,0 +1,80 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-31T10:24:51Z",
+  "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-31T05:57:27Z",
+    "misses": 5,
+    "reads": [
+      "scripts/dev/test_artifact_pages.py",
+      "MyTradingSys/research/test_hunt_2026-10-31/VACUOUS_TESTS.md",
+      "scripts/dev/artifacts.py"
+    ],
+    "session": "agent-a01d81f648b5f27f8"
+  },
+  "created": "2026-10-30T20:41:37Z",
+  "depends_on": [],
+  "done_when": "Either CI/a station with Chromium runs the 12 tests (counts quoted) or a non-browser fallback test fails on pre-36f311c44 code; skip reason names the missing dep.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Make test_artifact_pages.py (36f311c44) run somewhere, not skip all 12 without Chromium.",
+  "id": "test-artifact-pages-py-all-12-tests-skip",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "browser-free static layer: 9 passed, 9 skipped; CI now runs something (fdb2fd405)",
+      "ref": "62c216a0a",
+      "utc": "2026-10-31T10:24:51Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "test_artifact_pages: browser-free static layer so CI runs something",
+      "ref": "fdb2fd4053ce",
+      "utc": "2026-10-31T05:57:30Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T08:47:58Z",
+  "refs": [
+    "MyTradingSys/research/test_hunt_2026-10-31/VACUOUS_TESTS.md"
+  ],
+  "result": "browser-free static layer: 9 passed, 9 skipped; CI now runs something (fdb2fd405)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/test_artifact_pages.py",
+    "scripts/dev/artifacts.py"
+  ],
+  "scope_out": [
+    "installing browsers on the live host"
+  ],
+  "scope_sha": "fdb2fd4053ce",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "see which machine has playwright chromium (mts_signal who)",
+    "add the static fallback and verify on old code"
+  ],
+  "taken": "2026-10-31T10:24:51Z",
+  "tests": "scripts/dev/test_artifact_pages.py: fallback static-HTML check fails on pre-36f311c44 artifacts.py.",
+  "title": "test_artifact_pages.py: all 12 tests skip without headless Chromium so 36f311c44 is untested in CI (done when CI or a fallback runs them); see research/test_hunt_2026-10-31/VACUOUS_TESTS.md",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

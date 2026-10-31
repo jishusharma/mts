@@ -189,7 +189,7 @@ public class MarketDataSnapshotTest {
         assertEquals(new HashSet<>(List.of("net_delta_1m", "net_delta_5m", "net_delta_15m", "net_delta_1h", "confidence")), tf);
         Set<String> oi = new HashSet<>();
         root.get("open_interest").fieldNames().forEachRemaining(oi::add);
-        assertEquals(new HashSet<>(List.of("direction", "change_1h_pct", "delta_state", "delta_state_price", "confidence")), oi);
+        assertEquals(new HashSet<>(List.of("direction", "change_1h_pct", "delta_state", "delta_state_price", "confidence", "peak_24h")), oi);
     }
 
     @Test
@@ -587,5 +587,134 @@ public class MarketDataSnapshotTest {
         assertEquals(0, s.shutdownCalls);
         m.shutdown();
         assertEquals(1, s.shutdownCalls);
+    }
+
+    // ===================================================================================================
+    // P0-12 / T042: open_interest.peak_24h and cvd.peak_24h (reference only; no trade rule reads them)
+    // ===================================================================================================
+
+    private static ArrayNode oiSeries(double... v) {
+        ArrayNode a = MAPPER.createArrayNode();
+        for (double d : v) a.add(MAPPER.createObjectNode().put("sumOpenInterest", String.valueOf(d)));
+        return a;
+    }
+
+    /** 24 hourly points: 100 ... peak 150 at index 10 ... last 120. */
+    private static ArrayNode plantedOi24() {
+        double[] v = new double[24];
+        for (int i = 0; i < 24; i++) v[i] = 100.0 + i;          // 100..123
+        v[10] = 150.0;                                           // peak
+        v[23] = 120.0;                                           // current
+        return oiSeries(v);
+    }
+
+    private static void assertNullPeak(JsonNode peak) {
+        assertTrue(peak != null && peak.isObject(), "peak_24h object must exist");
+        assertTrue(peak.get("value").isNull());
+        assertTrue(peak.get("drawdown_pct").isNull());
+        assertEquals("LOW", peak.get("confidence").asText());
+    }
+
+    /** n 1m bars closing at refMs; bar i has volume 10 and takerBuy buy.applyAsDouble(i) (delta = 2*buy - 10). */
+    private static ArrayNode cvdBars(long refMs, int n, IntToDoubleFunction buy) {
+        ArrayNode out = MAPPER.createArrayNode();
+        for (int i = 0; i < n; i++) {
+            long closeTime = refMs - (long) (n - 1 - i) * 60_000L - 1;
+            out.add(bar(closeTime - 59_999L, 100.0, 100.5, 99.5, 100.0, 10.0, closeTime, buy.applyAsDouble(i)));
+        }
+        return out;
+    }
+
+    @Test
+    void oiPeak24h_plantedSeries_peakAndDrawdown() throws Exception {
+        StubClient s = stubWith(closedBars(nowMs(), 61, i -> 100.0, 10.0, 5.0));
+        s.oiHist = plantedOi24();
+        JsonNode peak = live(s).get("open_interest").get("peak_24h");
+        assertEquals(150.0, peak.get("value").asDouble(), 1e-9);
+        assertEquals(20.0, peak.get("drawdown_pct").asDouble(), 1e-9);   // (150-120)/150*100
+        assertEquals("HIGH", peak.get("confidence").asText());
+    }
+
+    @Test
+    void oiPeak24h_shortHistory_nullAndLow() throws Exception {
+        StubClient s = stubWith(closedBars(nowMs(), 61, i -> 100.0, 10.0, 5.0));
+        s.oiHist = oiSeries(100, 110);                                    // only 2 points
+        ObjectNode snap = live(s);
+        assertNullPeak(snap.get("open_interest").get("peak_24h"));
+        assertEquals("rising", snap.get("open_interest").get("direction").asText()); // direction still works on 2 points
+    }
+
+    @Test
+    void oiPeak24h_apiErrorOrEmpty_nullAndLow() throws Exception {
+        StubClient err = stubWith(closedBars(nowMs(), 61, i -> 100.0, 10.0, 5.0));   // oiHist null -> IOException
+        assertNullPeak(live(err).get("open_interest").get("peak_24h"));
+        StubClient empty = stubWith(closedBars(nowMs(), 61, i -> 100.0, 10.0, 5.0));
+        empty.oiHist = MAPPER.createArrayNode();
+        assertNullPeak(live(empty).get("open_interest").get("peak_24h"));
+    }
+
+    @Test
+    void oiPeak24h_discontinuityZeroNegativeOrMissing_failsClosed() throws Exception {
+        for (double bad : new double[]{0.0, -5.0, Double.NaN}) {
+            double[] v = new double[24];
+            for (int i = 0; i < 24; i++) v[i] = 100.0 + i;
+            v[7] = bad;
+            StubClient s = stubWith(closedBars(nowMs(), 61, i -> 100.0, 10.0, 5.0));
+            s.oiHist = oiSeries(v);
+            assertNullPeak(live(s).get("open_interest").get("peak_24h"));
+        }
+        ArrayNode missing = plantedOi24();
+        ((ObjectNode) missing.get(5)).remove("sumOpenInterest");
+        StubClient s2 = stubWith(closedBars(nowMs(), 61, i -> 100.0, 10.0, 5.0));
+        s2.oiHist = missing;
+        assertNullPeak(live(s2).get("open_interest").get("peak_24h"));
+    }
+
+    @Test
+    void cvdPeak24h_plantedSeries_acrossUtcMidnightReset() throws Exception {
+        // AS_OF 12:00Z: 00:00Z is 720 bars back, so the session CVD resets mid-window. Rolling 1440 bars:
+        // first 700 bars buy 8 (delta +6 each, cum +4200 at bar 699), then 740 bars buy 2 (delta -6 each, final 4200-4440 = -240).
+        ArrayNode bars = cvdBars(AS_OF.toEpochMilli(), 1440, i -> i < 700 ? 8.0 : 2.0);
+        ObjectNode snap = historical(stubWith(bars));
+        JsonNode peak = snap.get("cvd").get("peak_24h");
+        assertEquals(4200.0, peak.get("value").asDouble(), 1e-9);
+        assertEquals(105.71, peak.get("drawdown_pct").asDouble(), 1e-9);   // (4200-(-240))/4200*100 = 105.714..
+        assertEquals("MEDIUM", peak.get("confidence").asText());
+        // session value (since 00:00Z, the last 720 bars all -6) is -4320: the reset did not leak into the peak
+        assertEquals(-4320.0, snap.get("cvd").get("value").asDouble(), 1e-9);
+    }
+
+    @Test
+    void cvdPeak24h_shortOrEmptyHistory_nullAndLow() throws Exception {
+        ObjectNode snap = historical(stubWith(cvdBars(AS_OF.toEpochMilli(), 100, i -> 8.0)));
+        assertNullPeak(snap.get("cvd").get("peak_24h"));
+        ObjectNode liveSnap = live(stubWith(closedBars(nowMs(), 61, i -> 100.0, 10.0, 5.0)));
+        assertNullPeak(liveSnap.get("cvd").get("peak_24h"));
+    }
+
+    @Test
+    void cvdPeak24h_gapInBars_failsClosed() throws Exception {
+        ArrayNode bars = cvdBars(AS_OF.toEpochMilli(), 1440, i -> 8.0);
+        ArrayNode b = (ArrayNode) bars.get(500);
+        b.set(0, MAPPER.getNodeFactory().numberNode(b.get(0).asLong() - 600_000L));
+        assertNullPeak(historical(stubWith(bars)).get("cvd").get("peak_24h"));
+    }
+
+    @Test
+    void cvdPeak24h_live_fullWindow_peakPresent() throws Exception {
+        StubClient s = stubWith(cvdBars(nowMs(), 1440, i -> i < 100 ? 8.0 : 5.0)); // +6 x100 then 0
+        JsonNode peak = live(s).get("cvd").get("peak_24h");
+        assertEquals(600.0, peak.get("value").asDouble(), 1e-9);
+        assertEquals(0.0, peak.get("drawdown_pct").asDouble(), 1e-9);
+    }
+
+    @Test
+    void peak24h_historicalMode_noExtraLiveCall_oiNullFromReplay() throws Exception {
+        StubClient s = stubWith(cvdBars(AS_OF.toEpochMilli(), 1440, i -> 8.0));
+        s.oiHist = plantedOi24();                                          // must NOT be consulted in historical mode
+        ObjectNode snap = historical(s);
+        assertEquals(0, s.liveCalls);
+        assertNullPeak(snap.get("open_interest").get("peak_24h"));
+        assertEquals(8640.0, snap.get("cvd").get("peak_24h").get("value").asDouble(), 1e-9); // 1440 * 6
     }
 }

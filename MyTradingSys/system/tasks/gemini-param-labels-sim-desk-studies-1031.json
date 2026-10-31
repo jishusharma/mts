@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T14:48:26Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-10-31/sim_desk_studies_param_labels.md exists with one row per cited number, each FOUND/DIFF/NOT_IN_DATA",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Open every number or file:line cited in the named file and say FOUND / DIFF / NOT_IN_DATA with the file:line where it was looked up; facts only, no verdicts.",
+  "id": "gemini-param-labels-sim-desk-studies-1031",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 5 file(s)",
+      "ref": "b1f69c1cce5a",
+      "utc": "2026-10-31T06:13:01Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-31 T0-ONLY (planner-a-20261031; machine checks only). Seeded from D11_PROGRAMME.md section 6 (Gemini lane). Producer is Claude/GPT, reviewer Gemini. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T14:48:28Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/studies/rsi.py",
+    "MyTradingSys/research/sim_desk/studies/levels.py",
+    "MyTradingSys/research/sim_desk/studies/krown.py",
+    "MyTradingSys/research/sim_desk/studies/wavetrend.py",
+    "MyTradingSys/research/gemini_audits_2026-10-31/sim_desk_studies_param_labels.md"
+  ],
+  "scope_out": [
+    "no code edit, no live tree, no VALIDATION or HOLDOUT read, no .secrets or .env"
+  ],
+  "scope_sha": "b1f69c1cce5a",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "open the named files (read-only)",
+    "one table row per cited number with the lookup file:line",
+    "write MyTradingSys/research/gemini_audits_2026-10-31/sim_desk_studies_param_labels.md and end with a Noticed: line"
+  ],
+  "tests": "audit card: every row of the output has a file:line or command",
+  "title": "[GEMINI] SOURCED/OURS label for every parameter in sim_desk/studies (rsi, levels, krown, wavetrend, pitchfork, cowen_bmsb)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

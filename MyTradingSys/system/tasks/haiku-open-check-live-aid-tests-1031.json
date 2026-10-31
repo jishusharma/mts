@@ -1,0 +1,83 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-31T12:40:29Z",
+  "commands": [
+    "python -m pytest -q MyTradingSys/tools/live_aid/test_live_aid.py",
+    "python -m pytest -q MyTradingSys/tools/live_aid/test_live_aid_replay.py",
+    "python -m pytest -q MyTradingSys/research/sim_desk/test_page_click.py",
+    "python -m pytest -q scripts/dev/test_artifact_pages.py"
+  ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-31T12:40:34Z",
+    "misses": 0,
+    "reads": [],
+    "session": "agent-ac3a0a46e86a51bdd"
+  },
+  "created": "2026-10-30T21:09:53Z",
+  "depends_on": [],
+  "done_when": "final report holds exactly 4 lines, one per test file, each with passed/failed/skipped counts parsed from that file's own output; no repo file changed.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Open-check (D11 feeder rule: page ship -> Haiku check): run each page test once and report its own pass count; files nothing, edits nothing.",
+  "id": "haiku-open-check-live-aid-tests-1031",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "test_live_aid.py: 1 passed, 0 failed, 33 skipped; test_live_aid_replay.py: 1 passed, 0 fai",
+      "ref": "4411487d2",
+      "utc": "2026-10-31T12:40:29Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nuc/live-aid-posbar-2",
+      "ref": "ab9ff9586bd5",
+      "utc": "2026-10-31T06:04:32Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-31 T0-ONLY Final report ends with a Noticed: line. Blocked? List 2-3 non-destructive fixes, try the safest, verify, then report. PLANNER 2026-10-31 dry run on trunk 488dd46db: 34 + 11 + 4 passed; test_artifact_pages 11 passed, 1 failed (mts_control_room.html: NaN): expect that failure reported, not fixed.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T08:47:14Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "test_live_aid.py: 1 passed, 0 failed, 33 skipped; test_live_aid_replay.py: 1 passed, 0 failed, 14 skipped; test_page_click.py: 0 passed, 0 failed, 4 skipped; test_artifact_pages.py: 8 passed, 0 failed, 8 skipped",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/test_live_aid.py",
+    "MyTradingSys/tools/live_aid/test_live_aid_replay.py",
+    "MyTradingSys/research/sim_desk/test_page_click.py",
+    "scripts/dev/test_artifact_pages.py"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no product-code edit"
+  ],
+  "scope_sha": "ab9ff9586bd5",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "run each command from the repo root, one at a time (these are pytest files: plain python prints nothing); keep the last 15 lines",
+    "parse the pytest summary line of each (passed/failed/skipped); never judge from truncated output",
+    "report 4 lines: <file>: <p> passed, <f> failed, <s> skipped; quote each failure's first error line and file it as a raw card via tasks.py new (id suffix -1031)"
+  ],
+  "taken": "2026-10-31T12:40:29Z",
+  "tests": "count-based: 4 count lines in the report; card not done if any file shows no parsed summary",
+  "title": "Haiku: run the 3 new live-aid tests and test_artifact_pages.py once, report pass counts",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
