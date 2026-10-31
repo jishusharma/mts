@@ -2,6 +2,17 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-31T05:55:05Z",
+    "misses": 3,
+    "reads": [
+      "scripts/dev/test_artifact_pages.py",
+      "MyTradingSys/research/test_hunt_2026-10-31/VACUOUS_TESTS.md",
+      "scripts/dev/artifacts.py"
+    ],
+    "session": "agent-a01d81f648b5f27f8"
+  },
   "created": "2026-10-30T20:41:37Z",
   "depends_on": [],
   "done_when": "Either CI/a station with Chromium runs the 12 tests (counts quoted) or a non-browser fallback test fails on pre-36f311c44 code; skip reason names the missing dep.",
