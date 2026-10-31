@@ -1,0 +1,10 @@
+{
+  "done_when": "Output over the threshold is saved to a file and a preview is returned, or sent as a single artifact, avoiding multi-part chat floods.",
+  "from": "JIS-NUC",
+  "id": "20261031-100219-aibridge-output-truncation-floods-chat-w",
+  "need": "When a command generates an output larger than 262KB, the bridge truncates the text and splits the result into 5 separate chat messages. This floods the context window, takes multiple turns just to read one command's output, and causes deep context loss. Better idea: If output exceeds a safe threshold (e.g., 20KB), the agent should write the full output to a temp file and return only a 1KB preview plus the file path. Alternatively, if it must send it to the chat, it should send it as a single collapsible code block rather than 5 separate massive messages. Proof: Results #57 parts 1-5 in chat MTS-2026-10-30-1228Z.",
+  "posted": "2026-10-31T10:02:19Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "AIBridge output truncation floods chat with 5 massive parts"
+}
