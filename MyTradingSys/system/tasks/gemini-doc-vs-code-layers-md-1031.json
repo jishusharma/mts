@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T01:55:57Z",
   "commands": [
     "git grep -n \"^| \" -- MyTradingSys/system/LAYERS.md | head -5"
   ],
@@ -15,7 +16,14 @@
   "id": "gemini-doc-vs-code-layers-md-1031",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "84 matches, 1 discrepancy in MyTradingSys/research/gemini_burn_2026-10-31/LAYERS_VS_CODE.m",
+      "ref": "786b8c527",
+      "utc": "2026-10-31T01:55:57Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -27,7 +35,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "84 matches, 1 discrepancy in MyTradingSys/research/gemini_burn_2026-10-31/LAYERS_VS_CODE.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_burn_2026-10-31/ (new files only)"
   ],
@@ -37,12 +50,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read LAYERS.md layer rows",
     "open the matching code",
     "write the table"
   ],
+  "taken": "2026-10-31T01:55:57Z",
   "tests": "report only; every finding cites file:line",
   "title": "[GEMINI] LAYERS.md and FORMULAS.md vs the layer code: every stated parameter, window and rule that the code contradicts",
   "weight": "ROUTINE",

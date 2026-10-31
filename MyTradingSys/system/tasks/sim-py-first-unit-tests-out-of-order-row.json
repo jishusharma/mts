@@ -1,0 +1,55 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T02:48:03Z",
+  "depends_on": [],
+  "done_when": "test_sim_core.py::test_run_rejects_out_of_order_rows fails on current sim.py (no error raised) and passes after run() raises ValueError on a decreasing t; zero-risk and stop-first cases also pinned",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "MyTradingSys/backtest/sim.py (run, geom_ok) has no direct unit test. Rows are never sorted or checked, so out-of-order timestamps give silent wrong gap/timeout labels. Add test_sim_core.py and make run() fail closed on t going backwards. Plan rank 1,2,8 in MyTradingSys/research/gemini_burn_2026-10-31/BACKTEST_CORE_TEST_PLAN.md",
+  "id": "sim-py-first-unit-tests-out-of-order-row",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "B081: single fee source fees.py; rewire sim/tom_bt/fabio/rsi/run_bracket_grid consumers",
+      "ref": "1ec7d8fdbaa2",
+      "utc": "2026-10-01T07:21:12Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T02:48:55Z",
+  "refs": [
+    "MyTradingSys/research/gemini_burn_2026-10-31/BACKTEST_CORE_TEST_PLAN.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/sim.py, MyTradingSys/backtest/test_sim_core.py"
+  ],
+  "scope_out": [
+    "no change to fee logic or other backtest modules"
+  ],
+  "scope_sha": "1ec7d8fdbaa2",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Write test_sim_core.py with hand-computed rows (expected R from FORMULAS.md 18.5, not from sim.py); run it, confirm the out-of-order test fails on current code",
+    "Add a monotonic-t check at the top of run() raising ValueError; rerun the tests green",
+    "Run python scripts/dev/run_all_tests.py --quick"
+  ],
+  "tests": "MyTradingSys/backtest/test_sim_core.py::test_run_rejects_out_of_order_rows (fail-first), ::test_geom_ok_rejects_stop_equal_entry, ::test_stop_checked_before_target",
+  "title": "sim.py first unit tests: out-of-order rows fail closed",
+  "weight": "",
+  "worker": "agent"
+}
