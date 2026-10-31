@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "Which holds: gpt-mutation-wavetrend-1031 is audit, prohibits code changes, and LAYER_LAB.md:108-116 permits audit scripts only as res or gpt-mutation-wavetrend-1031 requires new backtest/layers/wavetrend/test_wavetrend_spec.py?",
+  "closed": "2026-10-31T19:01:48Z",
   "commands": [],
   "created": "2026-10-31T18:53:08Z",
   "depends_on": [],
@@ -14,6 +15,14 @@
   "lane": "SONNET",
   "last_seen": "2026-10-31T18:53:08Z",
   "last_session": "",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "DECISION (OURS): audit rule wins (LAYER_LAB.md:108-116: audit cards write only research/la",
+      "ref": "0a8f456fb",
+      "utc": "2026-10-31T19:01:48Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -22,14 +31,20 @@
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
-  "result": "",
+  "result": "DECISION (OURS): audit rule wins (LAYER_LAB.md:108-116: audit cards write only research/layer_lab/*.py.txt). Loser's text fixed: gpt-mutation-wavetrend-1031 tests no longer asks for backtest/layers/wavetrend/test_wavetrend_spec.py.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [],
   "scope_out": [],
   "seen": 1,
   "size": "",
   "sources": [],
-  "state": "raw",
+  "state": "done",
   "steps": [],
+  "taken": "2026-10-31T19:01:48Z",
   "tests": "",
   "title": "Instruction conflict: gpt-mutation-wavetrend-1031 is audit, prohibits co vs gpt-mutation-wavetrend-1031 requires new backtest/",
   "weight": "",

@@ -1,34 +1,59 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest MyTradingSys/backtest/layers/fabio MyTradingSys/backtest/layers/alerts/test_live_runner_layers.py -q"
+  ],
   "created": "2026-10-31T10:04:45Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Both detectors reject the non-matching cases and keep the matching ones; legacy callers reproduce 652 DEV 1h escalation events (event_table REPORT.md) with require_break=False; old-vs-new counts in commit body; review APPROVE on plan and diff",
+  "est_turns": 30,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Make two live Fabio detectors match their quotes. fabio_cvd_absorption.py:88-89 accepts ANY higher low (price >= prev*(1-tol)) though FAB-007 says 'same level'; fabio_escalation.py fires on a record bar at a level with no break test though FAB-003 says breakout. Fix both, tests first.",
   "id": "fabio-detectors-match-quotes",
-  "lane": "SONNET",
+  "lane": "JIS-NB",
   "layers": [],
-  "live_path": false,
+  "live_path": true,
   "mutation_check": "",
-  "note": "",
+  "note": "PLANNER 2026-11-01: content complete, CRITICAL live-path (JIS-NB lane, review SESSION mid and pre-ship, coordinator deploys). Not promoted: needs a real reviewer stamp, not the planner. Break definition (close beyond level) is OURS.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
+  "scope_in": [
+    "MyTradingSys/backtest/layers/fabio/fabio_cvd_absorption.py",
+    "MyTradingSys/backtest/layers/fabio/fabio_escalation.py",
+    "MyTradingSys/backtest/layers/fabio/test_fabio_cvd_absorption.py",
+    "MyTradingSys/backtest/layers/fabio/test_fabio_escalation.py",
+    "MyTradingSys/backtest/layers/fabio/run_backtest.py",
+    "MyTradingSys/backtest/bigtrade/fires_kline.py",
+    "MyTradingSys/research/layer_lab/fabio_escalation_event_table/event_table.py"
+  ],
+  "scope_out": [
+    "live tree, deploy, restart (coordinator deploys)",
+    "any parameter tuning or new edge claim",
+    "live_runner_cli.py wiring"
+  ],
+  "size": "M",
+  "sources": [
+    "fabio_cvd_absorption.py:3-6 (FAB-007 quote 'same level') and :88-89",
+    "fabio_escalation.py:2-3 (FAB-003 breakout), :45-48, :117-123",
+    "live_runner_cli.py:20,438,482",
+    "FORMULAS.md fabio section"
+  ],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Review step: CRITICAL, review session reads card and plan before code (REVIEW <id> PLAN), then the diff",
+    "Tests first, red on old code: (a) cvd: a low 3x tolerance above the prior low must NOT fire, one within +-tol fires; mirror for highs; (b) escalation: record bar at a level whose close stays inside the level must NOT fire, close beyond level fires",
+    "Fix: cvd band abs(price/prev-1)<=price_tolerance both sides; escalation require close beyond the level price in the aggressor direction (kwarg require_break, default True). DECISION (OURS): strict default because the quote is the contract",
+    "Legacy callers (run_backtest.py, fires_kline.py, event_table.py) pass require_break=False / the old band so their published numbers reproduce; live_layers uses strict",
+    "Report DEV 1h event counts old vs new in the commit body (descriptive, no edge claim); run_all_tests --quick; ship; coordinator deploys"
+  ],
+  "tests": "New cases in test_fabio_cvd_absorption.py and test_fabio_escalation.py, each failing on the pre-change code (quote the failure); plus live-path cases: restart (fresh detector, same bars, same events), empty or short bars fail closed (no event, no raise in live_layers)",
   "title": "fabio_cvd_absorption.py:88-89 accepts any higher low (quote: same level); fabio_escalation.py fires with no break test (:45-48,:117-123) vs docstring breakout; both run live via live_runner_cli.py:20,482 -> live-path rules, tests first",
-  "weight": "",
-  "worker": ""
+  "weight": "CRITICAL",
+  "worker": "session"
 }

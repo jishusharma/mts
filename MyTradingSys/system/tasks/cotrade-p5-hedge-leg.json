@@ -5,7 +5,9 @@
     "python -m pytest MyTradingSys/execution/test_cotrade.py -q"
   ],
   "created": "2026-10-31T17:00:27Z",
-  "depends_on": [],
+  "depends_on": [
+    "cotrade-p1-say-and-place"
+  ],
   "done_when": "cotrade hedge --of <trade> --pct 50 --stop S --dry-run prints both legs and net exposure; tests pass and each failed on the old code; kill flattens both slots.",
   "est_turns": 40,
   "formula_id": "",
@@ -17,14 +19,17 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Depends on cotrade-p1-say-and-place and P3. Backtest (reverted commit 4a36c8a38) found every hedge variant worse than no hedge after fees: build for process and recording, not as an edge.",
+  "note": "Depends on cotrade-p1-say-and-place and P3. Backtest (reverted commit 4a36c8a38) found every hedge variant worse than no hedge after fees: build for process and recording, not as an edge. PLANNER 2026-11-01: depends_on set to the only existing card (P1; P3 has no card yet), scope paths made concrete; CRUCIAL needs a real reviewer ACCEPT before ready.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
   "scope_in": [
-    "MyTradingSys/execution/cotrade.py hedge subcommand + tests"
+    "MyTradingSys/execution/cotrade.py",
+    "MyTradingSys/execution/test_cotrade.py",
+    "scripts/dev/run_extra_tests.py",
+    "MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md"
   ],
   "scope_out": [
     "No mainnet; no new subaccount or key; no auto-trader change"
