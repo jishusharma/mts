@@ -5,7 +5,7 @@
   "commands": [],
   "context": {
     "calls_to_edit": 10,
-    "folded": "2026-10-31T19:36:42Z",
+    "folded": "2026-10-31T19:39:57Z",
     "misses": 20,
     "reads": [
       "scripts/dev/bg_watch.py",
