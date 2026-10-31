@@ -715,5 +715,29 @@ class TestPassRecord(unittest.TestCase):
         load.assert_not_called()
         save.assert_not_called()
 
+class TestFailedStepRunLog(unittest.TestCase):
+    def test_failed_step_writes_tail_to_run_log(self):
+        out = chr(10).join(f"line {i}" for i in range(500))
+        with tempfile.TemporaryDirectory() as d, mock.patch.object(rat, "FAIL_LOG_DIR", Path(d)):
+            lines = rat.format_step("3sig", "flaky step", "cmd", False, out, 1.0)
+            logs = list(Path(d).glob("*.log"))
+            self.assertEqual(len(logs), 1)
+            text = logs[0].read_text(encoding="utf-8").splitlines()
+            self.assertEqual(len(text), 200)
+            self.assertEqual(text[-1], "line 499")
+            self.assertTrue(any(str(logs[0]) in ln for ln in lines))
+
+    def test_passing_step_writes_no_log(self):
+        with tempfile.TemporaryDirectory() as d, mock.patch.object(rat, "FAIL_LOG_DIR", Path(d)):
+            rat.format_step("3sig", "ok step", "cmd", True, "fine", 1.0)
+            self.assertEqual(list(Path(d).glob("*.log")), [])
+
+    def test_unwritable_log_dir_does_not_change_the_verdict(self):
+        with tempfile.TemporaryDirectory() as d, mock.patch.object(rat, "FAIL_LOG_DIR", Path(d) / "f" / "x"):
+            Path(d, "f").write_text("a file, so mkdir fails")
+            lines = rat.format_step("3sig", "flaky step", "cmd", False, "boom", 1.0)
+        self.assertIn("Step 3sig: FAIL", lines)
+
+
 if __name__ == "__main__":
     unittest.main()

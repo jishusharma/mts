@@ -28,7 +28,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "PLANNER 2026-10-31 PARKED (S0 freeze): no headline logger exists and a logger card is a new data feed; needs 28 days of log first. Unpark only at S3 or on the operator's word, then add a logger card and a Lab_Guy REVIEWED stamp.",
+  "note": "DROPPED 2026-10-31 planner: no headline logger exists, needs 28 days of log, S0 freeze forbids a new data feed; recapture as logger card at S3.",
+  "pinned": false,
   "prio": 4,
   "refine_tries": 2,
   "refined_by": "",
@@ -48,7 +49,7 @@
   "sources": [
     "REPORT.md N5 (4+ weeks, OOS split)"
   ],
-  "state": "raw",
+  "state": "dropped",
   "steps": [
     "refuse to run unless the log spans >= 28 days (print the day count and stop); pre-register window, threshold and the split in PRE_REG.md before the run",
     "write study.py + test, run on DEV then VAL once; label thresholds OURS",
