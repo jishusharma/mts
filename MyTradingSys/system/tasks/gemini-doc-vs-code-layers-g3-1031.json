@@ -15,7 +15,15 @@
   "id": "gemini-doc-vs-code-layers-g3-1031",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 55 file(s)",
+      "ref": "0e6efa1c61eb",
+      "utc": "2026-10-31T05:15:03Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -23,7 +31,7 @@
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "",
-  "refreshed": "2026-10-31T02:40:36Z",
+  "refreshed": "2026-10-31T05:42:33Z",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
@@ -34,7 +42,7 @@
   "scope_out": [
     "live tree; engine and layer code edits; any backtest or trading verdict; .secrets and .env"
   ],
-  "scope_sha": "",
+  "scope_sha": "0e6efa1c61eb",
   "size": "S",
   "sources": [],
   "state": "ready",
