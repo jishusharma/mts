@@ -319,5 +319,64 @@ def test_money_tile_without_oi_reads_not_in_data(browser):
     assert call == "NOT_IN_DATA" and "FLUSH" not in lines and "NOT_IN_DATA" in lines, (call, lines)
 
 
+# ---------- Position bar: #pos-dist, #pos-atr, #uncovered (live_aid.html renderTop "2. position") ----------
+# The page has no replay hook for the Deribit mark (S is closed over), so the test serves an in-memory copy of live_aid.html
+# with one injected line in the replay branch (S.dbt/S.dbtMark from window.LIVEAID_MARK); live_aid.html itself is untouched.
+# Bars are flat: every 1m bar o=c=100000, h=100010, l=99990, so every 15m bar has range 20 and the Wilder ATR14 is exactly 20.
+# Hand-computed: short, entry 100100, mark 100060 -> entry - mark = +40.0 pts; 40 / 20 = +2.00 x ATR15;
+# size 1000 USD with rungs 300 + 200 -> uncovered 1000 - 500 = 500 USD of 1,000.
+PB_T0 = 1_793_318_400_000          # 2026-10-30 00:00:00Z, a 15m boundary
+PB_ROWS = [[PB_T0 + i * 60_000, 100000, 100010, 99990, 100000, 1] for i in range(600)]   # 40 whole 15m bars
+PB_NOW = PB_ROWS[-1][0] + 60_000
+PB_STORE = {"side": "short", "size": "1000", "entry": "100100", "rungs": [{"price": 100300, "size": 300}, {"price": 100500, "size": 200}], "levels": []}
+PB_HOOK = "setInterval(render, 1000);\n    route();\n    return;"
+PB_WANT = {"pos-dist": "+40.0 pts", "pos-atr": "+2.00 x ATR15", "uncovered": "uncovered 500 USD of 1,000"}
+# Fail-first: each mutation edits one formula in the served copy; the comparison must then differ.
+PB_MUTATIONS = {
+    "dist-sign": ("var d = entry - mark;", "var d = mark - entry;"),
+    "atr-divide": ("sgn(d / a15, 2) + ' x ATR15'", "sgn(d * a15, 2) + ' x ATR15'"),
+    "uncovered-sum": ("fmt(size - covered, 0)", "fmt(size + covered, 0)"),
+}
+
+
+def _posbar(browser, mutate=None):
+    src = PAGE.read_text(encoding="utf-8")
+    assert src.count(PB_HOOK) == 1, "replay branch moved: update PB_HOOK"
+    src = src.replace(PB_HOOK, "S.dbt = S.dbtMark = S.dbtIdx = window.LIVEAID_MARK; S.dbtF8 = 0.0001; S.oi = 1e8; S.oiT = Date.now(); S.dbtT = Date.now();\n    " + PB_HOOK)
+    if mutate:
+        old, new = PB_MUTATIONS[mutate]
+        assert src.count(old) == 1, ("formula text moved", mutate)
+        src = src.replace(old, new)
+    uri = PAGE.resolve().as_uri()
+    ctx = browser.new_context(offline=True, viewport={"width": 1400, "height": 900})
+    page = ctx.new_page()
+    errs = []
+    page.on("pageerror", lambda e: errs.append(str(e).splitlines()[0][:200]))
+    try:
+        page.route(uri + "*", lambda route: route.fulfill(status=200, content_type="text/html", body=src)
+                   if route.request.url.split("?")[0] == uri else route.continue_())
+        page.add_init_script("window.LIVEAID_REPLAY = " + json.dumps(PB_ROWS) + "; window.LIVEAID_MARK = 100060;"
+                             "localStorage.setItem('liveaid.v1', " + json.dumps(json.dumps(PB_STORE)) + ");")
+        page.clock.set_fixed_time(datetime.datetime.fromtimestamp(PB_NOW / 1000, tz=datetime.timezone.utc))
+        page.goto(uri + "?replay=fixture", wait_until="load", timeout=30000)
+        page.wait_for_timeout(1300)
+        return {i: page.inner_text("#" + i).strip() for i in PB_WANT}, errs
+    finally:
+        ctx.close()
+
+
+def test_position_bar_distance_atr_and_uncovered_render(browser):
+    got, errs = _posbar(browser)
+    assert not errs, errs
+    assert got == PB_WANT, got
+
+
+@pytest.mark.parametrize("mutation", sorted(PB_MUTATIONS))
+def test_position_bar_comparison_catches_a_changed_formula(browser, mutation):
+    got, errs = _posbar(browser, mutate=mutation)
+    assert not errs, errs
+    assert got != PB_WANT, (mutation, got)
+
+
 if __name__ == "__main__":
     sys.exit(pytest.main([__file__, "-q", *sys.argv[1:]]))
