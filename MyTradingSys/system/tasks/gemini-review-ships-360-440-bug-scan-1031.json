@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T03:00:38Z",
   "commands": [
     "git log --no-merges --format=%h -n 440 -- MyTradingSys"
   ],
@@ -15,7 +16,21 @@
   "id": "gemini-review-ships-360-440-bug-scan-1031",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_burn_2026-10-31/SHIPS_360_440_REVIEW.md",
+      "ref": "9a688ca85",
+      "utc": "2026-10-31T03:00:38Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 17 file(s)",
+      "ref": "e8420fbb5d82",
+      "utc": "2026-10-31T00:58:27Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -23,26 +38,32 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T02:40:20Z",
+  "refreshed": "2026-10-31T02:55:34Z",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/gemini_burn_2026-10-31/SHIPS_360_440_REVIEW.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_burn_2026-10-31/ (new files only)"
   ],
   "scope_out": [
     "live tree; engine and layer code edits; any backtest or trading verdict; .secrets and .env"
   ],
-  "scope_sha": "",
+  "scope_sha": "e8420fbb5d82",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "git log --no-merges --format=%h -- MyTradingSys, skip 360, take 80",
     "read each diff",
     "write the table"
   ],
+  "taken": "2026-10-31T03:00:38Z",
   "tests": "report only; every finding cites file:line",
   "title": "[GEMINI] bug scan of code commits 360 to 440 back on fast-track: does each diff do what its Result: line says",
   "weight": "ROUTINE",
