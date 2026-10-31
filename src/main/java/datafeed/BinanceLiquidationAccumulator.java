@@ -44,7 +44,9 @@ public class BinanceLiquidationAccumulator extends WebSocketClient {
     private final AtomicLong logDropped = new AtomicLong();
     private final AtomicLong logErrors = new AtomicLong();
     private volatile long lastLogErrPrint = 0;
+    private volatile boolean logRunning = true;
     private Thread logWriter;
+    private static final long LOG_JOIN_MS = 2_000;
 
     public BinanceLiquidationAccumulator(String symbol) throws Exception {
         this(symbol, DEFAULT_LOG_DIR);
@@ -65,11 +67,20 @@ public class BinanceLiquidationAccumulator extends WebSocketClient {
         setConnectionLostTimeout(30);
         this.logDir = logDir;
         this.logQueue = new ArrayBlockingQueue<>(queueCap);
-        if (startWriter) {
-            logWriter = new Thread(this::logLoop, "liq-log-" + symbol);
-            logWriter.setDaemon(true);
-            logWriter.start();
-        }
+        if (startWriter) startLogWriter();
+    }
+
+    /** Starts the writer thread (package-private so tests can queue lines before it runs). */
+    synchronized void startLogWriter() {
+        if (logWriter != null) return;
+        logWriter = new Thread(this::logLoop, "liq-log-" + symbol);
+        logWriter.setDaemon(true);
+        logWriter.start();
+    }
+
+    boolean isLogWriterAlive() {
+        Thread w = logWriter;
+        return w != null && w.isAlive();
     }
 
     /** Never blocks and never throws: a full queue drops the line and counts it (fail open for the feed). */
@@ -82,24 +93,48 @@ public class BinanceLiquidationAccumulator extends WebSocketClient {
     }
 
     private void logLoop() {
-        while (!Thread.currentThread().isInterrupted()) {
-            String line;
-            try {
-                line = logQueue.take();
-            } catch (InterruptedException ie) {
-                return;
+        try {
+            while (logRunning && !Thread.currentThread().isInterrupted()) {
+                String line;
+                try {
+                    line = logQueue.take();
+                } catch (InterruptedException ie) {
+                    break;
+                }
+                writeLine(line);
             }
-            try {
-                Files.createDirectories(logDir);
-                Files.write(logDir.resolve(symbol + ".jsonl"), (line + '\n').getBytes(StandardCharsets.UTF_8),
-                        StandardOpenOption.CREATE, StandardOpenOption.APPEND);
-            } catch (Throwable t) {
-                logErrors.incrementAndGet();
-                logErr("write failed: " + t);
-            } finally {
-                logDone.incrementAndGet();
-            }
+        } finally {
+            drainRemaining();
         }
+    }
+
+    /** Writes every line still queued (shutdown path). Bounded by the queue size; a failing write is counted, never retried. */
+    private void drainRemaining() {
+        Thread.interrupted(); // a pending interrupt would make FileChannel writes fail with ClosedByInterruptException
+        String line;
+        while ((line = logQueue.poll()) != null) writeLine(line);
+    }
+
+    private void writeLine(String line) {
+        try {
+            try {
+                appendLine(line);
+            } catch (java.nio.channels.ClosedByInterruptException ci) {
+                Thread.interrupted();
+                appendLine(line); // interrupted mid-write by shutdown(): one retry so the line is not lost
+            }
+        } catch (Throwable t) {
+            logErrors.incrementAndGet();
+            logErr("write failed: " + t);
+        } finally {
+            logDone.incrementAndGet();
+        }
+    }
+
+    private void appendLine(String line) throws java.io.IOException {
+        Files.createDirectories(logDir);
+        Files.write(logDir.resolve(symbol + ".jsonl"), (line + '\n').getBytes(StandardCharsets.UTF_8),
+                StandardOpenOption.CREATE, StandardOpenOption.APPEND);
     }
 
     private void logErr(String msg) {
@@ -219,8 +254,29 @@ public class BinanceLiquidationAccumulator extends WebSocketClient {
     public void shutdown() {
         shuttingDown = true;
         reconnectExecutor.shutdownNow();
-        if (logWriter != null) logWriter.interrupt();
-        close();
+        try {
+            close(); // stop new events first
+        } finally {
+            stopLogWriter();
+        }
+    }
+
+    /** Stops the writer; it drains the queue before exiting, and we wait up to LOG_JOIN_MS for that. */
+    private void stopLogWriter() {
+        logRunning = false;
+        Thread w = logWriter;
+        if (w == null) {
+            drainRemaining(); // writer never started: still persist what was queued
+            return;
+        }
+        w.interrupt();
+        if (w == Thread.currentThread()) return;
+        try {
+            w.join(LOG_JOIN_MS);
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+        }
+        if (w.isAlive()) logErr("writer still draining after " + LOG_JOIN_MS + " ms, shutdown returning");
     }
 
     public String getSymbol() {
