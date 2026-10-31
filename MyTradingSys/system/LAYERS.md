@@ -277,7 +277,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `pitchfork-operator-charts-prep` blocked p2 SONNET: pitchfork: classify operator's pitchfork charts, measure copy-paste (parallel) forks vs random parallels (spec
   - `sim-desk-plug-in-pitchfork-4h-tine-bounc` refined p2 OPUS: Sim desk: plug in Pitchfork 4H tine-bounce study adapter (Modified Schiff + Volume Profile)
   - `layer-review-rsi-cc-pitchfork-engine` ready p3 SONNET: Layer review sheet: RSI, CryptoCred, pitchfork, live engine (idea, source, backtests, bugs, confluence)
-  - `pitchfork-doc-atr-pivot-filter-vs-code` ready p3 SONNET: Pitchfork research doc says pivots need amplitude >= 2.5 x ATR14 (Rule P-01) but find_pivots_zigzag filters by
 
 ## Pizzino (Jason bar count + Michael nested swing states) (`pizzino`)
 - Status: Indicator module built with fail-first tests from SPEC worked examples. No backtest, no live wiring (pz-4 next).

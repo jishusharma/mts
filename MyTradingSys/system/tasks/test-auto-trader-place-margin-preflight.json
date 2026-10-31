@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T10:24:51Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -23,6 +24,12 @@
   "id": "test-auto-trader-place-margin-preflight",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MarginPreflightGapTest 2 tests, expectedFailure until the pre-flight check lands (36f1a524",
+      "ref": "62c216a0a",
+      "utc": "2026-10-31T10:24:51Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -49,7 +56,12 @@
   "refs": [
     "gemini-test-plan-execution-1031"
   ],
-  "result": "",
+  "result": "MarginPreflightGapTest 2 tests, expectedFailure until the pre-flight check lands (36f1a5248)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/execution/auto_trader.py",
     "MyTradingSys/execution/test_auto_trader_failclosed.py"
@@ -58,12 +70,13 @@
   "scope_sha": "36f1a52487a0",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write the failing test with a fake client reporting low available funds",
     "Add the pre-flight check failing closed (also when the balance call errors)",
     "Run execution tests"
   ],
+  "taken": "2026-10-31T10:24:51Z",
   "tests": "MyTradingSys/execution/test_auto_trader_failclosed.py::test_place_refuses_when_margin_short (fails on current code, which places the order)",
   "title": "Test gap: auto_trader.place never checks available equity or margin before an entry (Gemini execution test plan, rank 2)",
   "weight": "",

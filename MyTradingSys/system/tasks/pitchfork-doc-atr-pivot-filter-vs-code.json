@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T10:24:49Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -25,6 +26,12 @@
   "id": "pitchfork-doc-atr-pivot-filter-vs-code",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "pivot gate relabelled OURS (2 pct, no ATR) in doc; new test fails on old doc, 14 pass (a84",
+      "ref": "62c216a0a",
+      "utc": "2026-10-31T10:24:49Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -51,7 +58,12 @@
   "refs": [
     "gemini-doc-vs-code-layers-g2-1031"
   ],
-  "result": "",
+  "result": "pivot gate relabelled OURS (2 pct, no ATR) in doc; new test fails on old doc, 14 pass (a8419977f)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py",
     "MyTradingSys/research/pitchfork_2026-10-19/RESEARCH_PITCHFORK_LAYER.md",
@@ -61,11 +73,12 @@
   "scope_sha": "a8419977f015",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add a test that a swing smaller than 2.5 x ATR14 but larger than 2 pct is or is not a pivot, per the decision",
     "Edit doc label or code flag to match"
   ],
+  "taken": "2026-10-31T10:24:49Z",
   "tests": "MyTradingSys/backtest/layers/pitchfork/test_pitchfork_detector.py::test_pivot_amplitude_rule_matches_doc (fails on current code if the doc rule is adopted)",
   "title": "Pitchfork research doc says pivots need amplitude >= 2.5 x ATR14 (Rule P-01) but find_pivots_zigzag filters by min_change_pct=0.02 with no ATR",
   "weight": "",
