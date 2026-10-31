@@ -127,7 +127,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `cryptocred-4h-1d-dev-s3` ready p2 SONNET: CryptoCred 4h/1D S3 test: frozen PRE_REG, fee-net DEV run with real funding, then one VALIDATION read (D7 S3 r
   - `lf-cryptocred-gpt-rederive` blocked p2 CODEX: Layer re-derive: cryptocred (independent recount of the headline numbers behind the fact sheet)
   - `meta-label-1h-dev-ext-check` ready p2 SONNET: Meta-label 1h lead, fresh-data check: refit the frozen meta.py 1h model on all DEV, score tf_break 1h events f
-  - `follow-reclaim-daily-close-stop` ready p3 SONNET: Reclaim with the video's timing: 4h/1D level reclaim, enter at the reclaim close, stop = close back below (Bra
   - `layer-review-rsi-cc-pitchfork-engine` ready p3 SONNET: Layer review sheet: RSI, CryptoCred, pitchfork, live engine (idea, source, backtests, bugs, confluence)
 
 ## Positioning (funding, OI, whale / FlowHorse) (`positioning`)
