@@ -781,7 +781,7 @@
       "id": "pitchfork",
       "name": "Pitchfork (Andrews / Schiff / Morge median line)",
       "tracks": "Gemini (study/detector), Claude",
-      "status": "Detector, simulator desk plugin (studies/pitchfork.py), and live Java engine (PitchforkSignalLayer.java with Tine Bounce + Hagopian Failure + Volume Profile confluence) built, wired, and verified on DEV.",
+      "status": "Pivot amplitude gate is OURS (2 pct reversal, no ATR); doc Rule P-01 2.5 x ATR14 not implemented. Detector, simulator desk plugin (studies/pitchfork.py), and live Java engine (PitchforkSignalLayer.java with Tine Bounce + Hagopian Failure + Volume Profile confluence) built, wired, and verified on DEV.",
       "spec": [
         "papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md",
         "papers/02_PITCHFORK_APPLICATION_ON_BTC.md",

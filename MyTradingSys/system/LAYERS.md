@@ -252,7 +252,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `layer-review-krown-wavetrend` ready p3 SONNET: Layer review sheet: Krown and WaveTrend (idea, source, backtests, bugs, confluence)
 
 ## Pitchfork (Andrews / Schiff / Morge median line) (`pitchfork`)
-- Status: Detector, simulator desk plugin (studies/pitchfork.py), and live Java engine (PitchforkSignalLayer.java with Tine Bounce + Hagopian Failure + Volume Profile confluence) built, wired, and verified on DEV.
+- Status: Pivot amplitude gate is OURS (2 pct reversal, no ATR); doc Rule P-01 2.5 x ATR14 not implemented. Detector, simulator desk plugin (studies/pitchfork.py), and live Java engine (PitchforkSignalLayer.java with Tine Bounce + Hagopian Failure + Volume Profile confluence) built, wired, and verified on DEV.
 - Tracks: Gemini (study/detector), Claude
 - Layer `pitchfork_swing`: Detector, sim_desk plugin (studies/pitchfork.py), and live Java engine (PitchforkSignalLayer.java) built and verified (100% pass) | module MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py
 - Backtests (layer_map.json, newest first):
