@@ -49,3 +49,16 @@ Every cell, threshold, horizon and label variant across P1, F1-F3 and L1 is one 
 - Two existing context engines agree on phase only 39-46% (R2 Noticed): P0 replaces neither until compared.
 - A phase filter was tried once with no edge (composite -0.137 R/trade, R2 s5); phase is confounded with year.
 - Daily feeds disagree by ~30 USD on the peak close (124,658.54 Binance vs 124,628.5 pitchfork CSV); one source per study.
+
+## 7. Results so far (2026-10-31)
+| Step | Verdict | Numbers |
+|---|---|---|
+| P-1/P0 phase tag + harness | BUILT | 15 tests; planted edge found 72-100% of runs at stated n; tags.csv 3,332 days |
+| P1 phase split | BLOCKED, then run via P1b | no frozen per-event fee-net list existed for RSI-DIV-MTF or Krown |
+| P1b RSI-DIV-MTF by phase | NEGATIVE | n=640, net -0.229 R/trade; every phase cell negative; shift null flags nothing; 4h only +0.042 R (n=138, under the decide bar) |
+| F1 multi-TF swing confluence | FAIL | confluence n=2556 net -0.267 R, worse than matched random levels by -0.106 R (CI -0.143..-0.070); n far above the power need, not a thin-data null |
+| L1 multi-LLM labelling | GATED OFF | needs a coded detector with DEV edge; F1 gave none |
+
+Reading: fading 1h fractal levels loses after fees, and confluence makes it worse, so price respects those levels less than random ones (it tends to run through them). Testing the opposite trade is a NEW trial with its own pre-reg; rough arithmetic says the gross gap (~0.1 R) is below the ~0.17 R taker fee, so expect it to fail too.
+Next by expected value: F2 rolling Hurst regime gate, F3 phase-matched analogs (both parallel, own pre-regs), J1 Jala extract on Gemini; Krown has no DEV event list (needs its own study before any phase split).
+

@@ -37,7 +37,7 @@
   "refined_by": "",
   "refreshed": "2026-10-31T07:19:33Z",
   "refs": [],
-  "result": "",
+  "result": "DONE 2026-10-31: pipeline built; real run BLOCKED (no per-event fee-net list); unblocked by p1b.",
   "scope_in": [
     "MyTradingSys/research/fractals_2026-10-31/p1_split/ (new)",
     "MyTradingSys/research/layer_lab/TRIALS.md (rows)"
@@ -48,7 +48,7 @@
   "scope_sha": "997ddf61e993",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "find the frozen DEV event lists for RSI-DIV-MTF and Krown (git grep VERDICTS.csv, TRIAL_LEDGER) and note their window; no re-tuning",
     "write PRE_REG.md: tags (cowen_side, sma200_side, wsma10_phase), gates from SYNTHESIS P1 row, placebo tag; commit before running",

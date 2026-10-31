@@ -19,6 +19,7 @@ Permanent. Loaded at boot by every session. Supersedes verbal preferences.
 
 ## LIKES
 - Batch commands. One block, one task.
+- When the operator asks for the session paste, generate it with the clipboard write ON (start-session.ps1 without -NoClipboard) and confirm the clipboard holds it.
 - Standard operations done without asking: reads, non-critical writes, worker dispatch, tool building.
 - .new + diff on critical files. Direct splice on non-critical.
 - Hash + line count + non-ASCII check after any write.
@@ -47,6 +48,7 @@ Do without asking:
 - Write non-critical files (.md, .py, .json, .ps1 outside the critical list).
 - Close any item (BUGS row, items/INDEX.md row, item doc) the moment a decision lands. Do not ask to leave it open.
 - Dispatch workers.
+- File a card the same turn a tool or bridge defect costs a retry: tasks.py new for repo code, desk.py post --target CLAUDE for bridge or app code. A lessons line alone does not close it.
 - Build tools.
 - Change role mid-session.
 - Commit and push on the operator's word. Promotion and merge to main stay with Claude Code.
