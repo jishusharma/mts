@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "PLANNER 2026-10-31: content complete, no twin (live-orderflow-state-line-*, t08-orderflow-default-dev-guard are different); scope files exist. Blocked only on a Lab_Guy REVIEWED stamp (check says needs review stamp); promote after it.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",

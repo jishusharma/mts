@@ -97,7 +97,7 @@ def promote_shared(repo):
     d = tdir(repo)
     if not d.is_dir():
         return
-    cards = [json.loads(p.read_text(encoding="utf-8")) for p in d.glob("*.json")]
+    cards = [c for c in (_read_card(p) for p in d.glob("*.json")) if c is not None]
     by_id = {c.get("id"): c for c in cards}
     cited = set()
     for source in cards:
@@ -117,13 +117,33 @@ def promote_shared(repo):
 def save(repo, card):
     p = path_of(repo, card["id"])
     p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(card, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
+    tmp = p.with_name(p.name + ".tmp")  # atomic: a crash mid-write must not leave a 0-byte card
+    try:
+        tmp.write_text(json.dumps(card, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
+        os.replace(tmp, p)
+    finally:
+        if tmp.exists():
+            tmp.unlink()
     return p
+
+
+def _read_card(p):
+    """One card, or None after a loud stderr line naming the file (empty/truncated/non-UTF-8 JSON): skip-and-report, never crash."""
+    try:
+        card = json.loads(p.read_text(encoding="utf-8"))
+        if not isinstance(card, dict):
+            raise ValueError("not a JSON object")
+        return card
+    except (ValueError, OSError) as e:
+        print(f"WARN corrupt card skipped: {p} ({type(e).__name__}: {e})", file=sys.stderr)
+        return None
 
 
 def load_all(repo=REPO):
     d = tdir(repo)
-    return [json.loads(p.read_text(encoding="utf-8")) for p in sorted([*d.glob("*.json"), *d.glob("archive/*.json")])] if d.is_dir() else []
+    if not d.is_dir():
+        return []
+    return [c for c in (_read_card(p) for p in sorted([*d.glob("*.json"), *d.glob("archive/*.json")])) if c is not None]
 
 
 # Twin cards (doctor 2026-10-23: doctor-main-checkout-behind and jis-nb-fast-forward-the-main-checkout-to sat open 10 h, one job).

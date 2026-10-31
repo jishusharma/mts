@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T06:15:16Z",
   "commands": [],
   "created": "2026-10-31T05:12:24Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "test-build-analyst-data-missing-store-bad-bytes",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "pins existing behaviour: test_missing_store_and_bad_bytes passes now, fails when except Va",
+      "ref": "a17396f11",
+      "utc": "2026-10-31T06:15:16Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,12 @@
   "refs": [
     "gemini-test-plan-tools-1031"
   ],
-  "result": "",
+  "result": "pins existing behaviour: test_missing_store_and_bad_bytes passes now, fails when except ValueError removed in read_json or cbp.load (mutation checked)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tools/live_aid/build_analyst_data.py",
     "MyTradingSys/tools/live_aid/test_build_analyst_data.py"
@@ -41,11 +53,12 @@
   "scope_sha": "1448911c7079",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add test: build() with a store path that does not exist returns an empty block",
     "Add test: roster file with invalid UTF-8 bytes yields the default roster"
   ],
+  "taken": "2026-10-31T06:15:16Z",
   "tests": "MyTradingSys/tools/live_aid/test_build_analyst_data.py::test_missing_store_and_bad_bytes (mutation: fails if either except clause is removed)",
   "title": "Test gap: build_analyst_data has one test; missing store and non-UTF8 roster are handled but unpinned (Gemini tools plan, ranks 1-2)",
   "weight": "",

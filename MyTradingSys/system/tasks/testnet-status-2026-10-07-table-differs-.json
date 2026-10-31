@@ -16,7 +16,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "PLANNER 2026-10-31: content complete; not a twin of haiku-recount-testnet-readout (that is its source, state ready). Blocked only on a Lab_Guy REVIEWED stamp; promote after it.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
