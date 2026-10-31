@@ -6,7 +6,7 @@
   "window_resets": 1793433270,
   "window_used": 11.0
  },
- "at": "2026-10-31T05:35:24Z",
+ "at": "2026-10-31T05:58:13Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -23,16 +23,31 @@
   "astra_runs": 0,
   "week_pts": 9.0,
   "window_pts": 3.0,
-  "window_runs": 6
+  "window_runs": 7
  },
  "runs": [
+  {
+   "at": "2026-10-31T05:57:26Z",
+   "card": "gpt-recheck-gemini-extracts-numbers-1031",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 44,
+   "tokens_out": 3037,
+   "tokens_total": 347599,
+   "tokens_uncached": 37618,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-31T05:34:30Z",
    "card": "gpt-recheck-gemini-extracts-numbers-1031",
    "effort": "medium",
    "kind": "audit",
    "model": "gpt-6-luna",
-   "note": "",
+   "note": " | release failed: sync: no claim gpt-recheck-gemini-extracts-numbers-1031 on origin/claims",
    "outcome": "BLOCKED",
    "seconds": 52,
    "tokens_out": 2647,
@@ -160,21 +175,6 @@
    "tokens_uncached": 72085,
    "week_pts": 0.0,
    "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-30T20:04:24Z",
-   "card": "gpt-audit-formulas-vs-rsi-layer",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 50,
-   "tokens_out": 3520,
-   "tokens_total": 320340,
-   "tokens_uncached": 38676,
-   "week_pts": 0.0,
-   "window_pts": 0.0
   }
  ]
 }
