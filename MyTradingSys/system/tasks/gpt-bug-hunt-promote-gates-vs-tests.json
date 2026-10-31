@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T04:03:03Z",
   "commands": [],
   "created": "2026-10-30T20:21:45Z",
   "depends_on": [],
@@ -13,7 +14,14 @@
   "id": "gpt-bug-hunt-promote-gates-vs-tests",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "1 low finding; MyTradingSys/research/layer_lab/reports/2026-10-31_gpt-bug-hunt-promote-gat",
+      "ref": "afe7b8302",
+      "utc": "2026-10-31T04:03:03Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -25,7 +33,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "1 low finding; MyTradingSys/research/layer_lab/reports/2026-10-31_gpt-bug-hunt-promote-gates-vs-tests.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/test_hunt_2026-10-31/ (new files only)"
   ],
@@ -35,12 +48,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read backtest/layers/promotion/promote.py and tests",
     "build boundary inputs",
     "record actual results read-only"
   ],
+  "taken": "2026-10-31T04:03:03Z",
   "tests": "report only; every finding cites file:line and a reproducing input",
   "title": "GPT: promote.py gate logic vs its tests: boundary values, trade floor, family-wise correction, ordering bugs",
   "weight": "ROUTINE",
