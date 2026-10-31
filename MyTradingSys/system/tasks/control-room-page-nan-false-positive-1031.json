@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T15:44:02Z",
   "commands": [
     "python -m pytest -q scripts/dev/test_artifact_pages.py",
     "python -m pytest -q scripts/dev/test_artifacts.py"
@@ -16,6 +17,12 @@
   "id": "control-room-page-nan-false-positive-1031",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "obsolete: page retired by cdeb1fa24, test no longer exists",
+      "ref": "68d350dc2",
+      "utc": "2026-10-31T15:44:02Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +45,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "obsolete: page retired by cdeb1fa24, test no longer exists",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/make_control_room.py",
     "MyTradingSys/system/artifacts/mts_control_room.html",
@@ -50,12 +62,13 @@
   "scope_sha": "fdb2fd4053ce",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "grep -rn 'NaN prices' MyTradingSys scripts to find the source line the page data is built from (data file or make_control_room.py)",
     "reword it to 'not-a-number prices' (meaning unchanged), rebuild with python scripts/dev/artifacts.py build",
     "run python -m pytest -q scripts/dev/test_artifact_pages.py and scripts/dev/test_artifacts.py"
   ],
+  "taken": "2026-10-31T15:44:02Z",
   "tests": "scripts/dev/test_artifact_pages.py::test_page_opens_clean_offline[mts_control_room.html] fails now (NaN) and passes after the reword",
   "title": "test_artifact_pages fails on mts_control_room.html: prose 'NaN prices' trips the NaN text check",
   "weight": "ROUTINE",
