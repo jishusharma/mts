@@ -1,0 +1,69 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-31T08:37:28Z",
+  "commands": [],
+  "created": "2026-10-31T08:17:06Z",
+  "depends_on": [],
+  "done_when": "PRE_REG committed before any run; RESULT.md with n, hit rate, net %/trade, surrogate CI, Holm p, phase-filtered vs unfiltered, verdict; TRIALS rows; HOLDOUT 2025-07+ never loaded; no rule or gate added; every parameter SOURCED or OURS.",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "SYNTHESIS.md s4 row F3 (R1 rank 4): does a 48-bar z-normalised 1h path matched to its k=10 nearest past windows (expanding library, ended >=24 bars before the query, optionally same cowen_side x sma200_side phase) forecast the next 24 bars fee-net, vs random-walk surrogate libraries and block-shuffled outcomes, on 1h BTC DEV 2022-01..2025-06? Pre-registered in f3/PRE_REG.md.",
+  "id": "fractal-phase-analog-f3",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "DONE 2026-10-31 no edge: 48-bar analog k=10 on 1h BTC DEV, 368 trades net -0.216 %/trade (",
+      "ref": "5c932ae82",
+      "utc": "2026-10-31T08:37:28Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "F3 pre-reg frozen before any outcome",
+      "ref": "5c932ae8237d",
+      "utc": "2026-10-31T08:18:51Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T08:22:49Z",
+  "refs": [
+    "MyTradingSys/research/fractals_2026-10-31/SYNTHESIS.md"
+  ],
+  "result": "DONE 2026-10-31 no edge: 48-bar analog k=10 on 1h BTC DEV, 368 trades net -0.216 %/trade (hit 0.473), CI [-0.505,+0.080], p 0.80-0.92 vs RW-surrogate and shuffled libraries; phase-filtered 359 trades -0.277; verdict INCONCLUSIVE (no support). research/fractals_2026-10-31/f3/RESULT.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/fractals_2026-10-31/f3/"
+  ],
+  "scope_out": [
+    "live tree",
+    "data on or after 2025-07-01"
+  ],
+  "scope_sha": "5c932ae8237d",
+  "size": "M",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Write f3/PRE_REG.md, test_f3.py (fail-first); commit before any run",
+    "Run f3/run_f3.py (1h from 1m DEV only)",
+    "Write RESULT.md, TRIALS rows; run CI steps 3la and 4 locally; ship"
+  ],
+  "taken": "2026-10-31T08:37:28Z",
+  "tests": "MyTradingSys/research/fractals_2026-10-31/f3/test_f3.py: library never overlaps the query outcome (shift test, fails with m=e-1), forecast unchanged when the future is replaced, phase filter, planted pattern found, random walk gives no edge, Holm and block-permute by hand",
+  "title": "F3: phase-matched nearest-neighbour analog forecast on 1h BTC vs random-walk surrogates, fee-net DEV",
+  "weight": "",
+  "worker": "session"
+}
