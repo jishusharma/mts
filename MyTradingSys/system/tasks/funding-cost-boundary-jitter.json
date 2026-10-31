@@ -2,6 +2,20 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-31T06:32:53Z",
+    "misses": 23,
+    "reads": [
+      "MyTradingSys/backtest/layers/fabio/fabio_of_model.py",
+      "MyTradingSys/backtest/bt/bt_data.py",
+      "MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py",
+      "MyTradingSys/backtest/layers/fabio/test_fabio_of_model.py",
+      "MyTradingSys/research/gross_effect_screen_2026-10-15/FUNDING_RERUN.md",
+      "MyTradingSys/backtest/bt/test_bt_data.py"
+    ],
+    "session": "agent-aadee1d497c9bd047"
+  },
   "created": "2026-10-31T05:11:02Z",
   "depends_on": [],
   "done_when": "test_funding_boundary_jitter fails on 3d8722a93 code and passes after; FUNDING_RERUN.md states the boundary rule and the cell move",
