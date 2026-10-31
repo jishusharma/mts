@@ -1,0 +1,431 @@
+{
+ "id": "fractals-f4-8h-state-analogs",
+ "kind": "backtest",
+ "parity": null,
+ "family": "Fractals + BTC phase",
+ "provenance": "exported",
+ "title": "8h look-alikes of the operator breakdown setup (BB squeeze-break, volume spike, RSI, StochRSI, CVD proxy)",
+ "date": "2026-10-31",
+ "what": [
+  {
+   "name": "Idea",
+   "value_plain": "Find past 8h bars that look like the setup (price shape plus indicator state) and see what a short or a fade did after, fee-net.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule event",
+   "value_plain": "Bollinger bandwidth in the lowest 30 % of the last 90 bars, 6 or more bars inside the bands, then an 8h close below the lower band on volume z of 2 or more",
+   "label": "OURS"
+  },
+  {
+   "name": "Analog event",
+   "value_plain": "20 nearest past breakdown closes on a 24-bar path and 7 indicator values; the neighbours own results pick the side",
+   "label": "OURS"
+  },
+  {
+   "name": "Trade",
+   "value_plain": "Continuation short (stop at the signal bar high) or fade long (stop at the low), 2R target, 3 / 6 / 9 bars",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Fees",
+   "value_plain": "Taker both legs, fees.BINANCE_TAKER",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Controls",
+   "value_plain": "Random bars with matched volatility, random breakdown bars, month-block bootstrap, Holm over 9 tests",
+   "label": "OURS"
+  }
+ ],
+ "how": "Each event is entered at the next open and walked on 1h bars to a stop, a 2R target or the time exit. Only 28 to 36 trades exist per set, far below the 550 to 2,400 needed to see 0.10 R.",
+ "window": "Binance spot 2017-08-17 to 2025-06-30 (HOLDOUT 2025-07+ never loaded)",
+ "verdict": {
+  "label": "No edge: continuation inconclusive, fade fails, analog negative; too few events to decide",
+  "tone": "warn"
+ },
+ "why": [
+  "Continuation short: +0.109 / -0.115 / -0.138 R per trade at 3 / 6 / 9 bars, all confidence bands cross zero.",
+  "Fade long: about -0.5 R at every horizon; the upper confidence bound is below zero (FAIL).",
+  "Analog selection: +0.02 / -0.56 / -0.50 R, fewer than 30 trades at 6 and 9 bars.",
+  "The card baseline in R is distorted by tiny-risk random bars; a post-hoc percent control shows only the 3-bar continuation standing out (n 36): a lead for the forward log."
+ ],
+ "kpis": [
+  {
+   "label": "rule events (7.9 years)",
+   "value": "36"
+  },
+  {
+   "label": "continuation 6 bars, net R",
+   "value": "-0.115",
+   "tone": "bad"
+  },
+  {
+   "label": "fade 6 bars, net R",
+   "value": "-0.506",
+   "tone": "bad"
+  },
+  {
+   "label": "trades needed for 0.10 R",
+   "value": "550 - 2,400"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "replay",
+   "title": "Trade replay (continuation short, 6 bars, time order)",
+   "caption": "Fee-net R per trade; running total below. No prices.",
+   "unit": "R",
+   "trades": [
+    {
+     "d": "2017-11-10",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": 1.985
+    },
+    {
+     "d": "2017-12-21",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": 0.063
+    },
+    {
+     "d": "2018-06-10",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": 1.155
+    },
+    {
+     "d": "2018-10-11",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": -0.078
+    },
+    {
+     "d": "2019-01-28",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": 0.206
+    },
+    {
+     "d": "2019-10-23",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": -1.013
+    },
+    {
+     "d": "2019-11-08",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": 0.033
+    },
+    {
+     "d": "2020-02-04",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": -1.077
+    },
+    {
+     "d": "2020-06-15",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": -1.037
+    },
+    {
+     "d": "2020-08-25",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": 0.354
+    },
+    {
+     "d": "2020-09-21",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": -0.091
+    },
+    {
+     "d": "2021-07-08",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": -1.023
+    },
+    {
+     "d": "2021-07-19",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": -1.032
+    },
+    {
+     "d": "2021-11-16",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": 0.359
+    },
+    {
+     "d": "2021-11-26",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": -0.003
+    },
+    {
+     "d": "2021-12-04",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": 1.978
+    },
+    {
+     "d": "2022-02-18",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": 0.248
+    },
+    {
+     "d": "2022-04-06",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": 0.371
+    },
+    {
+     "d": "2022-05-05",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": 0.335
+    },
+    {
+     "d": "2022-08-26",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": 0.668
+    },
+    {
+     "d": "2022-09-07",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": -0.515
+    },
+    {
+     "d": "2023-02-10",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": -0.105
+    },
+    {
+     "d": "2023-03-03",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": -0.033
+    },
+    {
+     "d": "2023-05-24",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": -1.051
+    },
+    {
+     "d": "2023-06-05",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": -1.032
+    },
+    {
+     "d": "2023-06-30",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": -0.431
+    },
+    {
+     "d": "2023-07-24",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": -0.351
+    },
+    {
+     "d": "2023-09-11",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": -1.036
+    },
+    {
+     "d": "2024-04-13",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": 1.974
+    },
+    {
+     "d": "2024-04-30",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": 0.602
+    },
+    {
+     "d": "2024-06-11",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": -1.034
+    },
+    {
+     "d": "2024-08-16",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": -0.871
+    },
+    {
+     "d": "2024-09-04",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": -1.048
+    },
+    {
+     "d": "2024-10-11",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": -1.086
+    },
+    {
+     "d": "2025-04-07",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": 0.492
+    },
+    {
+     "d": "2025-06-06",
+     "s": -1,
+     "f": "8h squeeze-break continuation short, 48 h hold",
+     "r": -1.033
+    }
+   ],
+   "cum": [
+    1.985,
+    2.048,
+    3.203,
+    3.125,
+    3.331,
+    2.318,
+    2.351,
+    1.274,
+    0.237,
+    0.591,
+    0.5,
+    -0.523,
+    -1.555,
+    -1.196,
+    -1.199,
+    0.779,
+    1.027,
+    1.398,
+    1.733,
+    2.401,
+    1.886,
+    1.781,
+    1.748,
+    0.697,
+    -0.335,
+    -0.766,
+    -1.117,
+    -2.153,
+    -0.179,
+    0.423,
+    -0.611,
+    -1.482,
+    -2.53,
+    -3.616,
+    -3.124,
+    -4.157
+   ]
+  },
+  {
+   "kind": "table",
+   "title": "Sets against controls",
+   "cols": [
+    "Set",
+    "Bars",
+    "Trades",
+    "Hit",
+    "Net R",
+    "Month-boot 95% CI",
+    "Halves A / B",
+    "Verdict"
+   ],
+   "rows": [
+    [
+     "RULE continuation short",
+     "3",
+     "36",
+     "0.47",
+     "+0.109",
+     "[-0.18, +0.42]",
+     "+0.29 / -0.08",
+     "INCONCLUSIVE"
+    ],
+    [
+     "RULE continuation short",
+     "6",
+     "36",
+     "0.42",
+     "-0.115",
+     "[-0.43, +0.20]",
+     "+0.08 / -0.31",
+     "INCONCLUSIVE"
+    ],
+    [
+     "RULE continuation short",
+     "9",
+     "36",
+     "0.31",
+     "-0.138",
+     "[-0.48, +0.22]",
+     "+0.21 / -0.49",
+     "INCONCLUSIVE"
+    ],
+    [
+     "RULE fade long",
+     "3 / 6 / 9",
+     "36",
+     "0.31 / 0.25 / 0.28",
+     "-0.475 / -0.506 / -0.471",
+     "upper -0.06 / -0.08 / -0.03",
+     "both halves negative",
+     "FAIL x3"
+    ],
+    [
+     "ANALOG (k = 20 neighbours choose side)",
+     "3",
+     "33",
+     "0.42",
+     "+0.020",
+     "[-0.42, +0.39]",
+     "+0.02 / +0.02",
+     "INCONCLUSIVE"
+    ],
+    [
+     "ANALOG",
+     "6",
+     "28",
+     "0.32",
+     "-0.560",
+     "[-1.23, +0.07]",
+     "-0.67 / -0.45",
+     "NOT_DECIDABLE (n < 30)"
+    ],
+    [
+     "ANALOG",
+     "9",
+     "29",
+     "0.31",
+     "-0.504",
+     "[-1.27, +0.18]",
+     "+0.04 / -1.01",
+     "NOT_DECIDABLE (n < 30)"
+    ]
+   ],
+   "caption": ""
+  }
+ ],
+ "source_files": [
+  "MyTradingSys/research/fractals_2026-10-31/f4/RESULT.md",
+  "MyTradingSys/research/fractals_2026-10-31/f4/PRE_REG.md",
+  "MyTradingSys/research/fractals_2026-10-31/f4/output.md",
+  "MyTradingSys/research/fractals_2026-10-31/f4/events.csv"
+ ],
+ "commit": "669a9b9d4"
+}
