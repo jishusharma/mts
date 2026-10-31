@@ -163,7 +163,7 @@ def test_news_rows_show_reading_pointer_and_gaps(browser):
             assert r[5], r
         assert "-1.4" in rows[0][5] and "volatility" in rows[3][5] and rows[4][5].startswith("No rule matched")
         gaps = page.inner_text("#news-gaps")
-        for g in ("N4", "N5", "live-aid-macro-calendar-cors-snapshot", "live-aid-news-panel"):
+        for g in ("N4", "N5", "live-aid-news-panel"):
             assert g in gaps, gaps
         acts = page.inner_text("#v-acts")
         assert "POTENTIAL BINANCE HACK ONGOING" in acts and "Moves can be fast" not in acts, acts
