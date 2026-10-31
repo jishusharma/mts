@@ -1,34 +1,49 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "mvn -q -Dtest=LiquidationLogWiringTest,LiquidationEventLogTest test"
+  ],
   "created": "2026-10-31T04:53:56Z",
   "depends_on": [],
-  "done_when": "A test where the interrupt lands after a completed write leaves exactly one line for that event; fails on current code; LiquidationLogWiringTest passes",
-  "est_turns": null,
+  "done_when": "A test where the interrupt lands after a completed write leaves exactly one line for that event; fails on current code; mvn -q -Dtest=LiquidationLogWiringTest,LiquidationEventLogTest test passes.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "shutdown() interrupts the writer; a completed write can still throw ClosedByInterruptException and the one-shot retry appends the same line twice. Stop the writer with a flag plus poll timeout or a poison pill, or drop the retry and count the error. Found by the review of a95155258.",
+  "goal": "In a95155258 writeLine retries once after ClosedByInterruptException; if the interrupt lands after the bytes were written, the retry appends the same line twice. Remove the retry: shutdown no longer interrupts mid-write (writer polls with a timeout and checks logRunning, or a poison pill), and a failed write is counted and skipped. Never write a line twice.",
   "id": "liq-accumulator-writeline-retry-duplicate-line",
   "lane": "JIS-NB",
   "layers": [],
-  "live_path": false,
+  "live_path": true,
   "mutation_check": "",
-  "note": "",
+  "note": "PLANNER 2026-10-31: live-path follow-up, JIS-NB desktop lane, model sonnet, never deploy. T0 checks pass; only the real Lab_Guy review stamp (CRITICAL) is missing: Lab_Guy adds REVIEWED: Lab_Guy <date>, then tasks.py check promotes. CRITICAL review session needed pre-ship.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "src/main/java/datafeed/BinanceLiquidationAccumulator.java",
+    "src/test/java/datafeed/LiquidationLogWiringTest.java"
+  ],
+  "scope_out": [
+    "live tree .mts_live, deploy, restart",
+    "event parsing and bucket logic",
+    "other accumulators"
+  ],
+  "size": "S",
+  "sources": [
+    "review of a95155258 (writeLine, drainRemaining in BinanceLiquidationAccumulator.java)"
+  ],
+  "state": "refined",
+  "steps": [
+    "Failing test first: first appendLine writes the line then throws ClosedByInterruptException (test seam) -> file holds exactly one line; fails on current code",
+    "Replace the retry with a poll(timeout) loop on logRunning (or poison pill); on any write exception count logErrors once and move on",
+    "Run LiquidationLogWiringTest and LiquidationEventLogTest. Builds on a95155258 (drain+join writer, not yet on fast-track at 2026-10-31): start only after it is on origin/fast-track. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
+  ],
+  "tests": "LiquidationLogWiringTest: new interruptAfterCompletedWrite_oneLine (fails first); restart append keeps old lines; bad JSON line skipped; IO error (read-only dir) counts logErrors, no throw, no duplicate; shutdown with empty queue returns fast.",
   "title": "BinanceLiquidationAccumulator.writeLine retry after ClosedByInterruptException can append a duplicate line at shutdown",
-  "weight": "",
-  "worker": ""
+  "weight": "CRITICAL",
+  "worker": "agent"
 }
