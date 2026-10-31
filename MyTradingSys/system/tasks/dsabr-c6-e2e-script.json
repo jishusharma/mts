@@ -12,50 +12,34 @@
   "goal": "Build scripts/aibridge/tests/e2e_bridge.py per FIX_PLAN.md section 4 (E0-E5, tier A agent, tier B node over the installed loop.js). Runs after c1-c3.",
   "id": "dsabr-c6-e2e-script",
   "lane": "SONNET",
-  "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "S0 freeze: bug fix with a failing-first test. Plan: MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md\nREVIEW (Lab_Guy 2026-10-31): evidence checked against code at 18b9e4eed; DECISION (OURS): depends_on left empty because check refuses ready while a dependency is not done; ordering is in the first step.",
+  "note": "S0 freeze: bug fix with a failing-first test. Plan: MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md",
   "prio": 2,
-  "producer": "Builder",
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T10:08:56Z",
   "refs": [
     "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
   ],
   "result": "",
-  "review_receipt": {
-    "card_hash": "69de5db0b273",
-    "code_hash": "",
-    "data_hash": "",
-    "date": "2026-10-31",
-    "files": {},
-    "producer": "Builder",
-    "reviewer": "Lab_Guy",
-    "scope_hash": "44136fa355b3",
-    "scope_sha": "",
-    "spec_hash": ""
-  },
   "scope_in": [
     "scripts/aibridge/tests/e2e_bridge.py; scripts/aibridge/tests/fixtures"
   ],
   "scope_out": [
     "extension; agent.ps1; policy.json"
   ],
-  "scope_sha": "",
   "size": "S",
   "sources": [
     "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
   ],
-  "state": "ready",
+  "state": "raw",
   "steps": [
     "Wait for c1-c3 to ship; read FIX_PLAN.md (MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31) section 4",
     "Write e2e_bridge.py rows E0-E5 and fixtures; reuse aibridge_verify roundtrip for the token (never printed)",
     "Run it against a scratch copy of 0.7.3 bridge files: E1-E4 FAIL; against 0.7.4 sources: PASS; sync.py ship"
   ],
-  "tests": "run e2e_bridge.py against a scratch copy of the 0.7.3 bridge files: E1-E4 report FAIL; against the 0.7.4 sources all rows PASS",
+  "tests": "run against an untouched 0.7.3 install it reports FAIL on E1-E4",
   "title": "AIBridge E2E script e2e_bridge.py (6-block, thinking, exit-1, dropped generation)",
   "weight": "IMPORTANT",
   "worker": "agent"
