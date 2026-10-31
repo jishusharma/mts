@@ -183,3 +183,4 @@ B199 | OPEN    | B199_quota_numbers_disagree_by_source_the_u.md | Quota numbers 
 B200 | OPEN    | B200_start_session_initiation_user_asked_sh.md | start_session(initiation=user_asked) showed an 'Allow once' card in a Bypass-per
 B209 | CLOSED  | B209_dsa_aibridge_session_performance_defects.md | DSA/AIBridge performance defects from one session: duplicate worktree, oversized boot lists, block mis-attribution, PASS over FAILED
 B210 | CLOSED  | B210_aibridge_stuck_pending_run.md | AIBridge silent stall: panel stuck on a pending run, no error, no timeout, no resync
+B211 | OPEN    | B211_live_mirror_is_live_tree_ignores_owner.md | is_live_tree trusts .mts_live alone; stale host publishes over the owner and refuses to pull
