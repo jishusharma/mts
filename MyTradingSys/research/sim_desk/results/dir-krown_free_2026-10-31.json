@@ -1,0 +1,48 @@
+{
+ "id": "dir-krown_free_2026-10-31",
+ "kind": "backtest",
+ "family": "Krown Free",
+ "title": "Krown Free Trade Setups, Free Alerts, and Trading App Analysis",
+ "provenance": "source-extracted",
+ "date": "2026-10-31",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "All transcripts fetched from YouTube channel @ECKrown (Eric Krown) via fetch_captions_timed.py on 2026-10-31.",
+  "tone": "info"
+ },
+ "why": [
+  "Video Search Findings: Across all 10 recent videos on @ECKrown, Eric Krown does not speak the phrase \"Free Market Dynamics\" or \"Krown Trading App\" on air. The term \"Free Market Dynamics\" originated from third-party links (such as Linktree) pointing to a dashb…",
+  "Stop Loss: NOT_IN_DATA (Discretionary: failure on close below previous cycle swing low, e.g. $79,700)."
+ ],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "25"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 25,
+   "quote": "10-Day Reconnect Edge Reconnect with 5 EMA on 10-day On reconnect NOT_IN_DATA 10-day holding 10-day 62% green (n=25 since 2018) LMRNBdMiQ2g [00:13:01] \"62% of the time being green with a median retur…"
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/krown_free_2026-10-31/KROWN_FREE_SETUPS.md"
+ ],
+ "commit": "e8420fbb5"
+}

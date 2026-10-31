@@ -1,18 +1,16 @@
-﻿# BLOCKED — GPT recheck of Gemini extracts
+﻿# BLOCKED — Gemini extract number recheck
 
 ## Verdict
-BLOCKED: the six extract artifacts named in task commit `4c42466fd` and their exact caption quote files are unavailable in this workspace view, so I cannot select 10 numeric claims per extract or produce defensible quote-file:line evidence. No claim has been marked by inference.
+BLOCKED: the exact six Gemini extract artifacts and their quote-file bundles from commit `4c42466fd` are not fully available in this workspace, so a 60-row, quote-file:line re-derivation cannot be completed reliably. Per the task instruction, the card is not marked done.
 
-## Checked
-- Read `CLAUDE.md`, `MyTradingSys/system/LAYER_LAB.md`, the task context pack, and registry `MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md`.
-- Enumerated `MyTradingSys/research/layer_lab/test_hunt_2026-10-31/`; it contains existing unrelated hunt files only, no requested Gemini recheck or source extracts.
-- Searched `MyTradingSys/research/` markdown files for the named Krown TA101, Jala, Krown setups, Malkan top-12 RSI, CBP altcoin buy plan, and CryptoCred stop-buffer artifacts. Nearby materials include `research/cbp/ALT_BUY_PLAN_2026-10-31.md`, `research/jala_layer_2026-10-31/method_jala.md`, `research/krown_free_2026-10-31/KROWN_FREE_SETUPS.md`, `research/malkan_rsi_2026-10-31/MALKAN_RULES_2026-10-31.md`, and `research/cryptocred_stop_2026-10-10/STOP_SOURCES.md`, but these are not the six extract files identified by the task nor a complete set of exact caption quote sources. Replacing the requested extracts with neighboring research would change the audit target.
-- `Get-ChildItem` results showed no corresponding extracts in the workspace. The provided external context pack is explicitly read-only context, not a source for numeric claims.
+## Evidence checked
+- The four Krown TA101 files named by the 2026-10-30 extraction report are present under `MyTradingSys/research/krown_ta101_2026-10-13/extracts/` (`extract_hNfjyrJEytI.md`, `extract_fMRvOt26xcA.md`, `extract_LB3DRYxnA0A.md`, `extract__JoJbu_Ug-A.md`); report evidence: `MyTradingSys/research/layer_lab/reports/2026-10-30_gemini-krown-ta101-extract-missing-4.md`.
+- The available Jala, Malkan, CBP, and CryptoCred artifacts are research summaries/deliverables rather than the six specified Gemini extract files: `MyTradingSys/research/jala_layer_2026-10-31/method_jala.md`, `MyTradingSys/research/malkan_rsi_2026-10-31/MALKAN_RULES_2026-10-31.md`, `MyTradingSys/research/cbp/ALT_BUY_PLAN_2026-10-31.md`, and `MyTradingSys/research/cryptocred_stop_2026-10-10/STOP_SOURCE_HUNT_2026-10-31.md`.
+- `Get-ChildItem MyTradingSys/research/jala_layer_2026-10-31 -Recurse -File`, `.../malkan_rsi_2026-10-31...`, and `.../cryptocred_stop_2026-10-10...` showed no caption transcript files in those folders. The source-hunt report says the latest CryptoCred transcripts were written to `transcripts_2026-10-31`, but that folder is absent in this workspace.
+- Malkan's rules summary is present, but the timed transcripts needed to distinguish the garbled auto-caption readings (“about/above”, “for tea/40”) are absent. No guess was substituted for those quotes.
+- The requested `MyTradingSys/research/layer_lab/test_hunt_2026-10-31/gemini_extracts_recheck.md` with 60 evidenced rows is therefore not created.
 
-## Required deliverable status
-`MyTradingSys/research/layer_lab/test_hunt_2026-10-31/gemini_extracts_recheck.md` with 60 audited rows was not created because the source evidence is absent. The requested Malkan auto-caption disambiguation ("about/above", "for tea/40") is likewise not verifiable from the files available here.
+## Needed to unblock
+Make the exact six shipped extract files and their corresponding timed/canonical caption quote files readable in this workspace. Then re-derive ten numeric claims per extract, cite each source file and line, and report per-extract verdict counts.
 
-## Follow-up
-Provide the six shipped extract files together with their exact caption quote files (or make commit `4c42466fd`'s artifacts readable in the workspace). Then re-run the 60-claim recheck. Per instruction, the task was not marked done.
-
-Noticed: The current checkout exposes adjacent research summaries but not the target extract/source bundle required for a line-cited cross-vendor recount.
+Noticed: The present workspace has several related extraction summaries, but not a complete source bundle for this cross-vendor recheck.

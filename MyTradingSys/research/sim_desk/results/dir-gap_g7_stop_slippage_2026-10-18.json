@@ -1,0 +1,65 @@
+{
+ "id": "dir-gap_g7_stop_slippage_2026-10-18",
+ "kind": "backtest",
+ "family": "Gap G7 Stop Slippage",
+ "title": "G7 stop-slippage proxy, BTCUSDT (card gap-g7-stop-slippage)",
+ "provenance": "source-extracted",
+ "date": "2026-10-18",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Stop levels (OURS): every round-100 USD level; an event = one up or down crossing of a level between consecutive trades (reversals and chop at a level each count; events cluster inside a day, hence the day-level bootstr…",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "Slip = adverse signed (price - level) in crossing direction / level, bp. delta 0 = the crossing trade itself (first trade at or beyond the level, tick-bounded optimistic bound). delta 250 / 1000 ms (OURS) = last trade a…",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "R = slip_bp / 40 at the 0.40 % stop (0.20 / 0.80 % columns in summary.json: R scales 2x / 0.5x).",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "Buckets (OURS): terciles of DEV daily range % of BTCUSDT 1m klines (F:/MTS/data/tom_raw, 912 complete days 2022-01-01..2024-06-30; ties go to the higher bucket). Range % spans: low [0.374, 2.71], mid [2.719, 4.497], hig…",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 5 from the source",
+   "value_plain": "Days (OURS): 4 evenly spaced days per tercile (12 days; days.csv holds range %, zip sha256 checked against the Binance .CHECKSUM). Extension rule (events < 500 per bucket -> next 4 days, cap 8): not triggered (every buc…",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 6 from the source",
+   "value_plain": "Bootstrap (OURS): 1000 day-level resamples, seed 20261030, 2.5-97.5 percentile of the bucket median.",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2022-01-01 to 2024-06-30 (as written in the source)",
+ "verdict": {
+  "label": "Trust tag: UNCHECKED. Binance USD-M BTCUSDT aggTrades trade-through / latency proxy: no own order size, not Deribit (REPORT G8). DEV days only (all before 2024-07-01); VALIDATION and HOLDOUT not read.",
+  "tone": "info"
+ },
+ "why": [],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "why": "no sentence in the source states why it passed or failed"
+ },
+ "source_files": [
+  "MyTradingSys/research/gap_g7_stop_slippage_2026-10-18/SLIPPAGE.md"
+ ],
+ "commit": "2877e1fed"
+}

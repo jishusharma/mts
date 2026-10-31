@@ -1,0 +1,43 @@
+{
+ "id": "dir-jala_layer_2026-10-31",
+ "kind": "backtest",
+ "family": "Jala Layer",
+ "title": "Extract Method Jala (@jalacrypto)",
+ "provenance": "source-extracted",
+ "date": "2026-10-31",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Videos read: 30; Captioned: 12; UNVERIFIED (HTTP 429): 18.",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Videos read: 30; Captioned: 12; UNVERIFIED (HTTP 429): 18.",
+  "tone": "info"
+ },
+ "why": [
+  "> \"If we close beneath the 400, then that very well may indicate and confirm a failed cup and handle. And what does that mean? Well, if that happens, then now we look at the fractal.\"",
+  "> \"A close under the 400. Now, this is crucial. If we close beneath the 400, then that very well may indicate and confirm a failed cup and handle.\""
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window"
+ },
+ "source_files": [
+  "MyTradingSys/research/jala_layer_2026-10-31/method_jala.md"
+ ],
+ "commit": "4c42466fd"
+}

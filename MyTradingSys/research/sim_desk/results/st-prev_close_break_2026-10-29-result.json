@@ -1,0 +1,66 @@
+{
+ "id": "st-prev_close_break_2026-10-29-result",
+ "kind": "backtest",
+ "family": "Prev Close Break",
+ "title": "Previous-close break, any TF (operator idea, 10-29): fee-net DEV backtest",
+ "provenance": "source-extracted",
+ "date": "2026-10-29",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "He corrected two things the first test missed.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "Context picks the trade.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "The setup candle touches the BB mid coming back from outside the band. Here it was the 21:35 green candle: high 79,688, mid 79,641.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "He takes only the side away from the mid (here short). The test above took every candle, both sides.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 5 from the source",
+   "value_plain": "The take-profit is at the band, not the trailing stop.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 6 from the source",
+   "value_plain": "Exit (or part) when price nears the lower band.",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Setup:",
+  "tone": "info"
+ },
+ "why": [],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "why": "no sentence in the source states why it passed or failed"
+ },
+ "source_files": [
+  "MyTradingSys/research/prev_close_break_2026-10-29/RESULT.md"
+ ],
+ "commit": "6eecd0e89"
+}

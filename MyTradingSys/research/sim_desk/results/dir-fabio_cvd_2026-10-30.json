@@ -1,0 +1,38 @@
+{
+ "id": "dir-fabio_cvd_2026-10-30",
+ "kind": "backtest",
+ "family": "Fabio Cvd",
+ "title": "Fabio (Fabervaale ENG) and friends on CVD and delta: concepts (2026-10-30)",
+ "provenance": "source-extracted",
+ "date": "2026-10-30",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Operator ask, 10-30: find everything Fabio and his channel mates say about using CVD, for BTC and other markets, as concepts.",
+  "tone": "info"
+ },
+ "why": [
+  "His signal, SOURCED: \"you have a negative delta with a positive price action. That's a very clear divergence in market pressure.\" [9IliXww64uM] He entered on the 5-minute close that confirmed it.",
+  "Already measured on BTC 1m, 10-29 drop study: bounce delta share did not change the odds of the low breaking (43% vs 46%). That is a quick test of F-CVD8 at the bounce, and it was a null."
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/fabio_cvd_2026-10-30/CVD_CONCEPTS.md"
+ ],
+ "commit": "54734e7d4"
+}

@@ -1,0 +1,79 @@
+{
+ "id": "st-lh_break_2026-10-30-result",
+ "kind": "backtest",
+ "family": "Lh Break",
+ "title": "Support break after lower highs: how far does it go? (2026-10-30)",
+ "provenance": "source-extracted",
+ "date": "2026-10-30",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Break bar: 4h close 77,992 (10-29 20:00Z) under S = 79,221.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "On the 4h the last three highs were not falling (81.3k, 81.8k, 81.8k), so the 4h rule called it a control break. The staircase was visible only on the daily, where Michael read it.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "Height H = 2,602:",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "0.5 H = 77,920: hit.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 5 from the source",
+   "value_plain": "1 H = 76,618: hit (low 76,500).",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 6 from the source",
+   "value_plain": "1.618 H = 75,010: Michael's 75k, not reached so far.",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Descriptive counts only: no fees, no edge claim. Definitions in the header of study.py (all OURS). Data: Binance BTCUSDT perp 1m rolled to 4h, DEV 2022-01 to 2025-12.",
+  "tone": "bad"
+ },
+ "why": [
+  "Descriptive counts only: no fees, no edge claim. Definitions in the header of study.py (all OURS). Data: Binance BTCUSDT perp 1m rolled to 4h, DEV 2022-01 to 2025-12.",
+  "Both rows were in F:/CryptoScrapper/cbp_store/rows.json before the break. The Eagle_Eyes reads did not consult them.",
+  "The 24 h snap-back did not cancel the move: lower-highs breaks that closed back above support within 24 h still reached 0.5 H in 73% of cases."
+ ],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "22"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 22,
+   "quote": "- n=22 is small. This is the measuring frame, not a proven rule. Michael's staircase was on the daily (weekly highs 87.4k, 87.2k, 87.0k, 84.4k/84.9k, 81.97k). The daily needs its own count; it will h…"
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window"
+ },
+ "source_files": [
+  "MyTradingSys/research/lh_break_2026-10-30/RESULT.md"
+ ],
+ "commit": "f1aafb501"
+}

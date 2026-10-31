@@ -1,0 +1,46 @@
+{
+ "id": "st-layer_relations_2026-10-results_tables",
+ "kind": "thought_experiment",
+ "family": "Layer Relations",
+ "title": "C1 Data coverage (DEV 2022-01-01..2024-06-30 UTC)",
+ "provenance": "source-extracted",
+ "date": "2026-10-30",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2022-01-01 to 2024-06-30 (as written in the source)",
+ "verdict": {
+  "label": "- kline 5m bars loaded: 262656 (expected 262656); metrics 5m rows loaded: 262528.",
+  "tone": "info"
+ },
+ "why": [],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "262655"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 262655,
+   "quote": "Bars with each series non-null (all DEV bars, n = 262655): r 262655 (100%), D_b 262621 (100%), dOI 262384 (100%), dTA 170759 (65%), dTP 170757 (65%), dGA 257158 (98%)"
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "parameters": "no rule or parameter section found in the source",
+  "why": "no sentence in the source states why it passed or failed",
+  "n_trades": "not a trade test (thought experiment)"
+ },
+ "source_files": [
+  "MyTradingSys/research/layer_relations_2026-10/results_tables.md"
+ ],
+ "commit": "62606b5c5"
+}

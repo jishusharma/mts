@@ -35,14 +35,14 @@
  "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
  "window": "2022-04-01 to 2024-06-30 (as written in the source)",
  "verdict": {
-  "label": "arms (primary cells; mean G % = gross R x width %, SE day-clustered; verdict rule in PRE_REG.md section 4)",
+  "label": "unchanged; no rerun (empty KEEP = no base).",
   "tone": "info"
  },
  "why": [
+  "> (levels_hold.md fair-control section: KEEP none, 0 of 12). The -0.412 R layer-alone base is a legacy figure.",
+  "> FAIL verdict unchanged; no rerun (empty KEEP = no base).",
   "H1 filter: FAIL (filter lifts). H2 veto: FAIL (no veto effect). Study word = FAIL (PASS if either primary passes; FAIL only if both fail; otherwise INCONCLUSIVE). DEV only (bars before 2024-07-01, decisions 2022-04-01..2024-06-30); VALIDATION and HOLDOUT were…",
-  "Only two of the eight families have a positive gross (prior_day_poc +0.072, naked_poc +0.101); every family is negative net (best naked_poc -0.249 R, n 149).",
-  "The veto does not work on this layer. Trades with a high-volume large-body candle at the level net -0.407 R against -0.416 R for the rest (+0.009 R, t +0.27, Holm p 1.0; k = 3: +0.006 R; rr 2: +0.024 R).",
-  "Power is not the issue. The day-clustered MDE of Delta1 is 0.086 R and of Delta2 0.092 R, both under the 0.15 R bar, so both FAILs stand (they are not downgraded to INCONCLUSIVE)."
+  "Only two of the eight families have a positive gross (prior_day_poc +0.072, naked_poc +0.101); every family is negative net (best naked_poc -0.249 R, n 149)."
  ],
  "kpis": [
   {
@@ -70,5 +70,5 @@
  "source_files": [
   "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/RESULT.md"
  ],
- "commit": "b4d4e287c"
+ "commit": "4d80f744a"
 }
