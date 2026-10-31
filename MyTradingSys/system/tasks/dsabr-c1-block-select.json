@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T10:04:23Z",
+  "depends_on": [],
+  "done_when": "node tests/block_select.test.js passes (2 drafts + 6 final -> 6 selected once; duplicate -> NOT_RUN; key stable on collapse); content.js:11 cap 200; RELEASES/manifest/loop VERSION 0.7.4",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Move block selection into pure loop.js helpers; exclude the thinking container; per-batch duplicate guard; cap 50->200; bump 0.7.4",
+  "id": "dsabr-c1-block-select",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "S0 freeze: bug fix with a failing-first test. Plan: MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/aibridge/extension; scripts/aibridge/tests; scripts/aibridge/RELEASES.json"
+  ],
+  "scope_out": [
+    "F:/AIBridge install; policy.json; agent.ps1"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
+  ],
+  "state": "raw",
+  "steps": [
+    "Read FIX_PLAN.md (MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31) rows D1 D2 D7 and content.js:142-163, 441-451",
+    "Save a DeepSeek reply DOM (class names only, no chat text) with a thinking panel as tests/fixtures/deepseek_reply.html",
+    "Write tests/block_select.test.js first; see it fail on 0.7.3",
+    "Add pure selectBlocks/batchKeys to loop.js, call them from content.js; per-batch duplicate -> NOT_RUN; cap 200",
+    "Bump RELEASES.json/manifest/loop VERSION to 0.7.4; node tests + test_aibridge_version_bump pass; sync.py ship"
+  ],
+  "tests": "new tests/block_select.test.js fails on 0.7.3 (8 blocks selected)",
+  "title": "AIBridge: skip DeepSeek thinking-panel blocks, no duplicate run in one reply, cap 200 (D1 D2 D7)",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

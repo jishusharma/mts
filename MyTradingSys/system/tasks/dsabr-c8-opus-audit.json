@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T10:04:30Z",
+  "depends_on": [],
+  "done_when": "audit report MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/AUDIT.md with a verdict per card",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Read-only audit after c7: answer the 12 checklist items with file:line evidence, verdict PASS/FIX per card",
+  "id": "dsabr-c8-opus-audit",
+  "lane": "OPUS",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "S0 freeze: bug fix with a failing-first test. Plan: MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31"
+  ],
+  "scope_out": [
+    "product code"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
+  ],
+  "state": "raw",
+  "steps": [
+    "Wait for c7; read FIX_PLAN.md (MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31) section 5",
+    "Answer the 12 checklist items with file:line evidence; re-run each new test on 0.7.3 files to see it fail",
+    "Write AUDIT.md with PASS/FIX per card; file FIX items as cards; sync.py ship"
+  ],
+  "tests": "n/a (audit card)",
+  "title": "Opus audit of the DSA bridge fixes (c1-c7) against FIX_PLAN.md section 5",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

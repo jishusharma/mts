@@ -1,0 +1,68 @@
+{
+  "approved_by": "operator 2026-10-31 chat (screenshot 477f9045b120)",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T09:50:11Z",
+  "depends_on": [],
+  "done_when": "research/fractals_2026-10-31/f4/PRE_REG.md frozen and committed before the first run; RESULT.md with n, fee-net mean R for continuation AND fade (both pre-registered), random-window baseline, phase split, layer split, harness family-wise verdict; sim_desk result json with trades; every cell a TRIALS.md row; shipped with a Result: line",
+  "est_turns": 35,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Operator 8h setup (shot 477f9045b120): range at BB mid, close below lower band on volume spike, CVD down, RSI ~36 under SMA, StochRSI ~1. Find past 8h look-alikes on shape + indicator state, fee-net vs random windows, then split by BTC phase, then by other layers.",
+  "id": "fractal-state-analog-8h-f4",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "merge origin/fast-track, keep both TRIALS sides",
+      "ref": "84bbe71e3754",
+      "utc": "2026-10-31T08:41:06Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "84bbe71e3754 merge origin/fast-track, keep both TRIALS sides",
+      "ref": "MyTradingSys/research/layer_lab/TRIALS.md",
+      "utc": "2026-10-31T08:41:06Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "\nOPERATOR QUOTE: look for similar fractals that also resemble in approx indicator settings. So first check fractals like this and then apply macro context for breakdown -> then appky filters from different layers to see how fractals behave on different layers to understand behavior\nPRIOR: F3 (1h price-only analogs) no edge, -0.092 R; F1 swing levels worse than random. F4 differs by matching indicator STATE on 8h with longer history.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T09:50:59Z",
+  "refs": [
+    "operator 2026-10-31 screenshot 477f9045b120"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/fractals_2026-10-31/f4/ (new)",
+    "MyTradingSys/research/layer_lab/TRIALS.md (rows)",
+    "sim_desk results (one json)"
+  ],
+  "scope_out": [
+    "live tree; layer code; HOLDOUT 2025-07+; .secrets and .env"
+  ],
+  "scope_sha": "84bbe71e3754",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Two pre-registered events: (a) RULE: BB bandwidth in lowest 30% of past 90 bars, >= 6 bars inside bands, then 8h close below lower band, volume z >= 2; (b) ANALOG: k nearest past windows on [z-scored 24-bar path, %b, bandwidth pct, RSI14, RSI-SMA gap, StochRSI k, volume z, CVD-proxy slope], bars <= t-1, expanding library",
+    "CVD proxy = cumulative (2*taker_buy_base - volume) from Binance kline column 9 (full history). Open interest has no free long history: OI is forward-logged only, never a test feature",
+    "Data: 8h built from 1m/1h Binance spot 2017-08..2025-06-30 (more cycles than 1h DEV; state the window); HOLDOUT 2025-07+ never loaded",
+    "Outcomes at 3/6/9 bars: continuation short (1R stop above breakdown bar high, 2R target) and fade long (mirror); taker fees via fees.BINANCE_TAKER",
+    "Baseline: random 8h windows with matched realised volatility; harness shift_null_test + block bootstrap; Holm over horizons and both directions",
+    "Splits: phase tags (cowen_side, sma200_side, wsma10_phase, drawdown bin, cycle year as descriptive), then existing layer states available point-in-time (RSI-DIV-MTF fired y/n, Hurst regime from F2, analyst-level proximity if a DEV list exists)",
+    "Decision n per d-flexible-min-n-per-case: power() on this setup's own spread; below it = descriptive + forward log"
+  ],
+  "tests": "look-ahead: features at t use bars <= t-1 (shift test); the screenshot window itself is excluded from its own library; planted-edge run detected; CVD proxy reproduces by hand on 3 bars",
+  "title": "F4: 8h look-alike setups matched on shape + indicator state (BB squeeze-break, RSI, StochRSI, volume, CVD proxy), split by BTC phase, then by other layers, fee-net vs random windows",
+  "weight": "",
+  "worker": "session"
+}

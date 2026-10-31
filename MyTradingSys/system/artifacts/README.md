@@ -18,7 +18,7 @@ page, status, generator script, owner app, refresh cadence, url on each account,
 
 | Login | Owns (republish only these, over their url) |
 |---|---|
-| jishusharma1985 (HOME) | MTS Home (generated: `make_home.py`), MTS Research Map (db `requests`), MTS Session Planner (db `selection`) |
+| jishusharma1985 (HOME) | MTS Home (generated: `make_home.py`), MTS Research Map (db `requests`) |
 | jishu.sharma | MTS Control Room (Inbox + decisions db, q21), MTS Layers, Tom and Fabio deck, CBP Monday + Consensus desks (CBP routine) |
 | jishu.awgp | nothing live: old copies only, listed on MTS Home under "Old copies to delete" |
 
@@ -56,4 +56,4 @@ Do each REPUBLISH / PUBLISH NEW / RECORD URL line (read the Artifacts list for a
 ```
 
 ## 2026-10-31 declutter (operator)
-Live set: MTS Home (hub), Research Map, Session Planner, MTS Layers, Sim Desk, CBP Analyst Desk (the one CBP page, rebuilt every CBP run), Tom and Fabio deck + Setup Review, BTC Live Aid. Retired (registry `retire`, operator deletes in the app): MTS Control Room, CBP Monday Desk, CBP Consensus Desk, CBP Desk. Retired pages are skipped by `build`, listed on Home under old copies to delete.
+Live set: MTS Home (hub), Research Map, MTS Layers, Sim Desk, CBP Analyst Desk (the one CBP page, rebuilt every CBP run), Tom and Fabio deck + Setup Review, BTC Live Aid. Retired (registry `retire`, operator deletes in the app): MTS Control Room, CBP Monday Desk, CBP Consensus Desk, CBP Desk. Retired pages are skipped by `build`, listed on Home under old copies to delete.

@@ -12,13 +12,23 @@
   "goal": "Find why orderflow_live.py resumes with an HTTP 400 from its saved resume point (stale fromId in _state.json) in a restart loop since 2026-10-22, and make it fail loudly with an alert.",
   "id": "order-flow-writer-restarts-in-a-loop-474",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Supervisor never idle with ready work: role rule, re-arm after compaction, status RED, doc",
+      "ref": "2037b9246c15",
+      "utc": "2026-10-30T17:58:26Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "PLANNER 2026-10-31: content complete, no twin (live-orderflow-state-line-*, t08-orderflow-default-dev-guard are different); scope files exist. Blocked only on a Lab_Guy REVIEWED stamp (check says needs review stamp); promote after it.",
+  "note": "REVIEWED:2026-10-31 ACCEPT reviewer=sonnet-agent. PLANNER: no twin; scope files exist.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-31T09:43:34Z",
   "refs": [
     "MyTradingSys/backtest/layers/fabio/orderflow_live.py"
   ],
@@ -31,9 +41,10 @@
   "scope_out": [
     "live engine, HALT files, process restarts"
   ],
+  "scope_sha": "2037b9246c15",
   "size": "M",
   "sources": [],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "read the writer log and _state.json (read-only), reproduce the 400 with a fake fetch_fn",
     "fix resume (fall back to start_ms on 400) and exit with a distinct code after repeats",
