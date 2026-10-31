@@ -402,7 +402,7 @@
 - Stated mechanics: He likes entering this way because he does not have to risk as much to figure out if he is wrong. He admits you can be wrong doing this. No numbers given.
 - Quotes:
 > "I personally like to do it that way cuz then I don't have to risk as much to figure out if I'm going to be wrong."
-**Source GPS: kcMnnQr1VFg | MIDDLE | t=00:20:22**
+**Source GPS: kcMnnQr1VFg | END | t=00:20:22**
 
 ### K-kcMnnQr1VFg-49 Enter when volatility is low, exit when volatility is high
 - Type: ENTRY-TRIGGER

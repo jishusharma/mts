@@ -252,7 +252,7 @@
 ## Negative rules
 
 > "Big big volume bar is good small volume bars. Just doesn't really matter"
-**Source GPS: UqAvU1loT_k | MIDDLE | t=00:08:15**
+**Source GPS: UqAvU1loT_k | BEGIN | t=00:08:15**
 > "that low is rarely finished in a really good sign that you're probably going to be heading a lot lower."
 **Source GPS: UqAvU1loT_k | END | t=00:19:12**
 > "nobody underwrote that probably doesn't matter as much."
