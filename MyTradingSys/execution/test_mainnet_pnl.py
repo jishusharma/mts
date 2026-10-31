@@ -125,7 +125,9 @@ class RecordedSettlementTests(unittest.TestCase):
     def _load(name):
         import json
         import os
-        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "research", "loose_code", name)
+        # run_staged_tests copies this file to a temp dir and sets MTS_REPO_ROOT; fall back to the checkout layout.
+        root = os.environ.get("MTS_REPO_ROOT") or os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..")
+        path = os.path.join(root, "MyTradingSys", "research", "loose_code", name)
         with open(path, encoding="utf-8") as f:
             return json.load(f)
 
