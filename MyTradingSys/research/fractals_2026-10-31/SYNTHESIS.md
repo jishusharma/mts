@@ -57,6 +57,7 @@ Every cell, threshold, horizon and label variant across P1, F1-F3 and L1 is one 
 | P1 phase split | BLOCKED, then run via P1b | no frozen per-event fee-net list existed for RSI-DIV-MTF or Krown |
 | P1b RSI-DIV-MTF by phase | NEGATIVE | n=640, net -0.229 R/trade; every phase cell negative; shift null flags nothing; 4h only +0.042 R (n=138, under the decide bar) |
 | F1 multi-TF swing confluence | FAIL | confluence n=2556 net -0.267 R, worse than matched random levels by -0.106 R (CI -0.143..-0.070); n far above the power need, not a thin-data null |
+| F2 rolling 1h DFA Hurst gate | NEGATIVE | RSI-DIV-MTF and F1 fade, 2 thresholds (H<0.45, H<=0.55): no test passes; best lift +0.123 R [-0.109, +0.358] (RSI), fade gate A -0.062 R (wrong way, borderline); every kept side still negative fee-net; pre-registered RSI plant (+0.25 R) not flagged (kept n 119), see f2/RESULT.md |
 | L1 multi-LLM labelling | GATED OFF | needs a coded detector with DEV edge; F1 gave none |
 
 Reading: fading 1h fractal levels loses after fees, and confluence makes it worse, so price respects those levels less than random ones (it tends to run through them). Testing the opposite trade is a NEW trial with its own pre-reg; rough arithmetic says the gross gap (~0.1 R) is below the ~0.17 R taker fee, so expect it to fail too.
