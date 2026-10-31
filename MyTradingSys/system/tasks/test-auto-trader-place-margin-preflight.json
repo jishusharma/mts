@@ -2,6 +2,13 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-31T05:41:14Z",
+    "misses": 4,
+    "reads": [],
+    "session": "agent-ad12a08cb66a50483"
+  },
   "created": "2026-10-31T05:11:43Z",
   "depends_on": [],
   "done_when": "test_place_refuses_when_margin_short fails on current code and passes after; balance-API-error case also refuses",
