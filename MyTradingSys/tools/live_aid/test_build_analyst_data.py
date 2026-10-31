@@ -41,3 +41,30 @@ def test_roster_complete_rows_rejected_and_levels(tmp_path):
     bad.write(b, out)
     text = out.read_text(encoding="utf-8")
     assert text.startswith("window.LIVE_AID_ANALYSTS = ") and json.loads(text[len("window.LIVE_AID_ANALYSTS = "):].rstrip().rstrip(";"))["asof"] == b["asof"]
+
+
+def test_missing_store_and_bad_bytes(tmp_path):
+    """Pins existing behaviour: a missing store, non-UTF-8 store, non-UTF-8 roster and stamp each give an empty, well-formed block, no crash."""
+    now = datetime(2026, 10, 30, 12, tzinfo=timezone.utc)
+    bad_bytes = b"\xff\xfe\x00\xc3\x28 not utf8"
+    nostamp = tmp_path / "nostamp.json"  # missing file
+    # 1. store path that does not exist -> no rows, no rejects, no levels; roster still listed
+    roster = tmp_path / "analysts.json"
+    roster.write_text(json.dumps({"analysts": [{"short": "Krown", "enabled": True, "profile": "actionable"}]}), encoding="utf-8")
+    b = bad.build(str(tmp_path / "nope" / "rows.json"), roster_file=roster, stamp_file=nostamp, offline=True, now=now)
+    assert b["rows"] == [] and b["rejected"] == [] and b["levels"] == [] and b["last_ingest"] == "" and b["price"] is None
+    assert [a["short"] for a in b["roster"]] == ["Krown"]
+    # 2. store with invalid UTF-8 bytes -> same empty block
+    store = tmp_path / "rows.json"
+    store.write_bytes(bad_bytes)
+    b = bad.build(str(store), roster_file=roster, stamp_file=nostamp, offline=True, now=now)
+    assert b["rows"] == [] and b["rejected"] == [] and b["levels"] == []
+    # 3. roster and stamp with invalid UTF-8 bytes -> default (empty) roster and empty last_ingest
+    badroster = tmp_path / "bad_roster.json"
+    badroster.write_bytes(bad_bytes)
+    badstamp = tmp_path / "bad_stamp.json"
+    badstamp.write_bytes(bad_bytes)
+    b = bad.build(str(tmp_path / "nope.json"), roster_file=badroster, stamp_file=badstamp, offline=True, now=now)
+    assert b["roster"] == [] and b["last_ingest"] == ""
+    assert bad.read_json(badroster, {"d": 1}) == {"d": 1}
+    assert bad.read_json(tmp_path / "gone.json", 7) == 7
