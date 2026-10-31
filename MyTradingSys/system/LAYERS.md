@@ -67,7 +67,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Codex lab reports (newest 2 of 2): `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-fabio-gpt-rederive.md`; `MyTradingSys/research/layer_lab/reports/2026-10-25_lf-fabio-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `fabio-v3-l3-is-only-flag` ready p2 SONNET: run_v3_l3.py: add --is-only (phase 1, freeze selection, write is_only.json, exit; OOS never read)
-  - `fabio-v3-model-b-managed-is-rerun` raw p2 JIS-NB: Rerun fabio v3 L3 IS only with managed Model B fills (fix 483a6b035) on JIS-NB; report net R per model
+  - `fabio-v3-model-b-managed-is-rerun` refined p2 JIS-NB: Rerun fabio v3 L3 IS only with managed Model B fills (fix 483a6b035) on JIS-NB; report net R per model
   - `meta-label-fabio-c-dev-ext-power` ready p2 SONNET: Meta-label NOT ENOUGH DATA branch: rerun Fabio Model C stand-in test on pre-DEV dev_ext 2019-2021 (ROADMAP 2.2
   - `sim-desk-tom-fabio-studies` ready p2 SONNET: Sim desk: add per-trade replay studies for Fabio v3 A-D and Tom spike fade / level touch (DEV only, fee-net)
   - `t09-f4-live-window-99-bars-swing-layers` blocked p2 JIS-NB: T09-F4 S2: 99-bar live window misses 68 of 96 escalation signals; fetch more bars for swing layers
