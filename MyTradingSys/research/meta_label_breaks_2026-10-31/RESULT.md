@@ -53,3 +53,17 @@ None of these is a test; each is one cut of 15 on the same trades.
 The 1h result is the one lead. The honest next check is fresh data, not VALIDATION: refit the same frozen model on all DEV and score
 2019-2021 1h break events, which no part of this study has seen. That 1m data is not on JIS-NB (`F:/MTS/data/tom_raw/klines` starts
 2022-01). Card `meta-label-1h-dev-ext-check`.
+
+## Follow-up 2026-10-31: Malkan divergence at entry and as exit (EXPLORATORY, DEV, `explore_div.py`, tables in `explore_div_output.md`)
+Operator ask: plan exits from divergences (RSI regular, reverse PRD/NRD, CVD), on the trade timeframe and the next lower one, and see
+whether divergences separate winners from losers. Malkan settings SOURCED from `backtest/layers/rsi/params/malkan_divergence_default.json`;
+look-back 10 bars, max hold 24/24/12 bars and CVD as a stand-in for RSI are OURS. No pre-registration, so no verdict.
+- Exit on the first divergence against the trade: no better than simply holding longer. 1h: fixed 4 bars -0.053 %, fixed 24 bars -0.062 %,
+  best divergence exit (CVD, lower TF) -0.042 % [-0.148, +0.066]. 4h: fixed 4 -0.157 %, fixed 12 -0.013 %, CVD lower TF +0.029 %
+  [-0.187, +0.242]. The lower-TF CVD exit cuts the hold to about 6 bars and leans less on the best 5 % (1h -0.248 % without them vs
+  -0.413 % for the fixed 24 bars).
+- Divergence at entry: about 66 cells, most under 100 trades, so large means are expected by chance. One pattern holds in all six
+  timeframe x side splits: a Malkan REVERSE divergence in the trade's direction (PRD for a long, NRD for a short) on the next lower
+  timeframe, known in the last 10 bars, does better than trades without it (15m -0.085 / -0.069 vs -0.105 %; 1h +0.121 (n 65) / +0.015
+  (n 58) vs about -0.06 %; 4h +0.493 (n 36) / +0.322 (n 32) vs about -0.20 %). This is a lead to freeze, not a result.
+- Next: card `div-reverse-lower-tf-confirm-2020-2021`, the frozen rule run once on 2020-2021 (data on disk), never seen by this look.
