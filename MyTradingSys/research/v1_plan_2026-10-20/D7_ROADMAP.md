@@ -9,6 +9,8 @@ New layers or analyst sources; new vendors, logins or lanes; new pages; new rule
 shorten); any mainnet step; confluence between layers; the options folder beyond its own plan.
 
 ## Stages
+Now: S0 (operator 2026-10-30, d-simplify-align-s0; MTS Home reads this line, move it when an exit is signed)
+
 | Stage | Entry | Work | Exit (measured) | EXPECT |
 |---|---|---|---|---|
 | S0 Freeze and clean | operator answers q-v1-freeze | ship the unjam branch (review per rule 11); apply D1: release 3 stale claims, retire worktrees after one ship each, close/park cards, BUGS stage-tag pass, GAP-5 reconcile; decide the 22 Windows tasks (q-v1-keepers) and the CBP routine (q-v1-cbp-routine); 2026-10-23 config review (q-v1-config-1023) | ready cards <= 15, claims <= 4 and 0 stale, worktrees <= 8, bookkeeping share of trunk commits < 30 % on STATUS.md, traffic.py jam exits 0 on JIS-NB, no scheduled task outside the keeper list | now to 2026-10-27 |
