@@ -4,7 +4,7 @@
 WT 10/21/4, bands +-53: SOURCED (LazyBear). Rest OURS (see wt_context.py). Binance spot 5m from 2022 (public, cached in temp),
 built into 10m/15m/30m. Window 2022-01..2024-06 only (2024-07+ sealed by wavetrend_2026-10-17/PRE_REG.md). Research only, no orders.
 Usage: python wt_lower_tf.py <repo>"""
-import json, os, sys, tempfile, urllib.request, statistics as st
+import bisect, json, os, sys, tempfile, urllib.request, statistics as st
 from datetime import datetime, timezone
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import wavetrend_dots as WD
@@ -42,11 +42,9 @@ def agg5(k):
 
 def htf_trend(b, mins):
     """Trend of the last 2h bar that has CLOSED by the close of each lower bar."""
-    h = WD.agg(8); htr = WC.structure(h); out = []; j = -1
+    h = WD.agg(8); htr = WC.structure(h); closes = [y[0] + 7200000 for y in h]; out = []
     for x in b:
-        close_t = x[0] + mins * 60000
-        while j + 1 < len(h) and h[j + 1][0] + 7200000 <= close_t:
-            j += 1
+        j = bisect.bisect_right(closes, x[0] + mins * 60000) - 1  # last 2h bar closed by this bar's close
         out.append(htr[j] if j >= 0 else 0)
     return out
 
