@@ -1,7 +1,7 @@
 {
 "_doc": "Catalogue of known tests on trunk. kind is inferred (kind_source). Built by sim_desk/build_catalogue.py.",
-"count": 311,
-"exported": 311,
+"count": 312,
+"exported": 312,
 "rows": [
 {
 "id": "st-_archive-loose_2026-10-cbp_profile6_result",
@@ -1691,7 +1691,7 @@
 "source": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/PICTURE_AND_PLAN.md",
 "exported": true,
 "result_id": "dir-eagle_eyes_picture_2026-10-28",
-"folder_files": 14,
+"folder_files": 15,
 "date": "2026-10-28",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
@@ -1832,7 +1832,7 @@
 "source": "MyTradingSys/research/sim_desk/results/eagle-c29-wt-lower-tf.json",
 "exported": true,
 "result_id": "eagle-c29-wt-lower-tf",
-"date": null,
+"date": "2026-10-31",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -1846,7 +1846,7 @@
 "source": "MyTradingSys/research/sim_desk/results/eagle-c30-wt-rsi-div.json",
 "exported": true,
 "result_id": "eagle-c30-wt-rsi-div",
-"date": null,
+"date": "2026-10-31",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -3561,6 +3561,20 @@
 "verdict_class": "failed"
 },
 {
+"id": "malkan-div-breaks",
+"family": "RSI divergence (Malkan)",
+"title": "Malkan divergence on timeframe-break trades: exit on divergence, and reverse divergence (PRD/NRD) on the lower TF as an entry filter",
+"kind": "backtest",
+"kind_source": "result file",
+"verdict": "FAIL",
+"source": "MyTradingSys/research/meta_label_breaks_2026-10-31/PRE_REG_DIV.md",
+"exported": true,
+"result_id": "malkan-div-breaks",
+"date": "2026-10-31",
+"status": "FAILED",
+"verdict_class": "failed"
+},
+{
 "id": "dir-rsi_kurisko_2026-10-09",
 "family": "rsi kurisko",
 "title": "Kurisko RSI & Indicator Settings Video Search (2026-10-18)",
@@ -4185,7 +4199,7 @@
 "title": "Trial ledger: layer lab",
 "kind": "backtest",
 "kind_source": "path",
-"verdict": "424 trial rows logged (every variant tried)",
+"verdict": "425 trial rows logged (every variant tried)",
 "source": "MyTradingSys/research/layer_lab/TRIALS.md",
 "exported": true,
 "result_id": "ledger-layer_lab-trials-md",

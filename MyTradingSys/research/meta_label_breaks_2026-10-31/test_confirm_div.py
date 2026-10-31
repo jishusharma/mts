@@ -52,5 +52,22 @@ class Verdict(unittest.TestCase):
         self.assertGreater(lo, 0)
 
 
+class SimExportDiv(unittest.TestCase):
+    def test_tables_and_verdict(self):
+        import sim_export_div as E
+        text = '\n'.join([
+            '## 1h (DEV trades 9; x)', '| exit | trades |', '|---|---|', '| fixed 4 bars | 9 | -0.1 | a | 50 | 0.9 | -0.2 | 4 |',
+            'At entry (x)', '| divergence | role |', '|---|---|', '| RSI prd, lower TF | with | 5 % | 13 % | +0.121 | 65 | -0.062 |',
+            '| RSI prd, lower TF | against | 2 % | 1 % | -0.230 | 34 | -0.049 |'])
+        ex = dict(not_flag_net=-0.1, long_net=0.1, long_n=3, short_net=-0.5, short_n=2, y2020_net=0.2, y2020_n=2,
+                  y2021_net=-0.3, y2021_n=3, all_net=-0.16)
+        C = dict(card='FAIL', cells={'1h': dict(n=131, net=-0.18, lo=-0.4, hi=0.05, holm=1.0, verdict='FAIL')}, extra={'1h': ex})
+        d = E.doc(text, C)
+        self.assertEqual(d['verdict']['label'], 'FAIL')
+        self.assertEqual([len(x.get('rows', [])) for x in d['examples']], [1, 1, 1, 1, 0])
+        self.assertEqual(d['examples'][2]['rows'][0], ['1h', 'PRD (longs)', '65', '+0.121', '-0.062'])
+        self.assertTrue(all(w['label'] in ('SOURCED', 'OURS') for w in d['what']))
+
+
 if __name__ == '__main__':
     unittest.main()
