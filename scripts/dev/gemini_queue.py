@@ -10,7 +10,7 @@ never stamps REVIEWED, never touches the live tree. A Claude session reviews the
 Flash models only (operator 2026-10-18); the argon option was added by the operator via the gemini-lane-fix task.
 """
 from __future__ import annotations
-import json, os, random, re, socket, subprocess, sys, time
+import json, os, random, re, socket, subprocess, sys, threading, time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -69,6 +69,18 @@ def claim_holder(card: str, claims) -> str:
         if s == slug:
             return kv.get('host') or kv.get('who') or 'unknown'
     return ''
+
+
+LEASE_REFRESH_S = 3000   # OURS: well inside sync.LEASE_HOURS (3 h); a crashed run stops refreshing and the card frees itself
+
+
+def keep_lease(wt, slug: str, stop, every: float = LEASE_REFRESH_S):
+    """Refresh the claim lease every `every` s until `stop` is set. A failed refresh is not fatal (the next one retries)."""
+    while not stop.wait(every):
+        try:
+            sh([PY, 'scripts/dev/sync.py', 'heartbeat', slug], cwd=wt)
+        except Exception:
+            pass
 
 
 def claim_with_retry(wt, card: str, tries: int = 6, sleep=time.sleep):
@@ -201,7 +213,12 @@ def run_job(card: str, effort: str, model: str = 'flash') -> None:
     with open(log, 'w', encoding='utf-8', newline='\n') as f:
         f.write(f'START {card} {model}\n')
         f.flush()
-        p = subprocess.run(cmd, cwd=wt, stdout=f, stderr=subprocess.STDOUT, text=True, env={**child_env(card, brief), **NOPROMPT})
+        stop = threading.Event()
+        threading.Thread(target=keep_lease, args=(wt, sync.slugify(card), stop), daemon=True).start()   # claim lease: refreshed while the run lasts
+        try:
+            p = subprocess.run(cmd, cwd=wt, stdout=f, stderr=subprocess.STDOUT, text=True, env={**child_env(card, brief), **NOPROMPT})
+        finally:
+            stop.set()
         f.write(f'\nEXIT {p.returncode} after {int(time.time() - t0)}s\n')
     r = sh([PY, 'scripts/dev/sync.py', 'release', sync.slugify(card)], cwd=wt)   # claims are filed under slugify(card) (40 chars): finding 7
     if r.returncode:

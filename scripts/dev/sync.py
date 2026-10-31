@@ -9,6 +9,7 @@
                                            # after the push it returns at once; `sync.py ci [sha]` (or `ship --wait-ci` / SYNC_WAIT_CI=1) waits up to 10 min for the CI run of the sha and prints CI RED at once (exit 3)
   python scripts/dev/sync.py news [hours=24]  # what shipped: feature + Result line per commit, no code
   python scripts/dev/sync.py claim "<task>" [--area <paths>]  # tell parallel sessions what you work on (shipped at once); refused only when --area overlaps an open claim
+  python scripts/dev/sync.py heartbeat <slug>  # refresh a claim's 3 h lease (expires_at); an expired lease is free to claim
   python scripts/dev/sync.py claims  # open claims on origin/fast-track (host, account, task, age); release: `release <slug>`
   python scripts/dev/sync.py where [--all]  # trees holding work not on origin/fast-track (nothing lost?); --all lists every tree
   python scripts/dev/sync.py discard <tree name|path>...  # the operator said discard: save uncommitted work to Dumps/wt_rescue/<tree>/, remove the tree, keep its branch (no app card)
@@ -50,6 +51,7 @@ SHIP_GAP_S = 600           # a second ship from one tree within this many second
 SHIP_STAMP = "mts_last_ship"
 CARDS_DIR = "MyTradingSys/system/tasks"
 STALE_HOURS = 24
+LEASE_HOURS = 3   # OURS: a claim carries expires_at = now + this; a crashed holder frees the card after it, a live worker refreshes with `heartbeat`
 # Generated or whole-file-rewritten files that every session touches. A collision here is never worth a
 # stalled session: origin's text wins, the loser regenerates (STATUS.md) or re-applies its one-line edit.
 TAKE_ORIGIN = ("MyTradingSys/system/NEXT_SESSION.md", "MyTradingSys/research/STATUS.md",
@@ -1420,13 +1422,25 @@ def read_claims(repo, ref):
     return [(s, dict(kv)) for s, kv in rows]
 
 
+def claim_expired(kv, now=None):
+    """True only for a claim with a readable expires_at in the past. No expires_at (claims made before the lease) or an
+    unreadable one = still held (fail closed; the 24 h STALE hint and a manual release still apply)."""
+    v = str(kv.get("expires_at", "")).strip()
+    return v.isdigit() and int(v) < (time.time() if now is None else now)
+
+
+def live_claims(rows):
+    now = time.time()
+    return [(s, kv) for s, kv in rows if not claim_expired(kv, now)]
+
+
 def open_claims(repo, fetch=True):
     """Open claims: the side branch origin/claims, plus any legacy claim file still on the trunk (claims made before the side branch)."""
     if fetch:
         git(repo, "fetch", "--quiet", "origin", CLAIMS_BRANCH, check=False)
     rows = read_claims(repo, f"origin/{CLAIMS_BRANCH}")
     have = {s for s, _ in rows}
-    return rows + [r for r in read_claims(repo, f"origin/{TRUNK}") if r[0] not in have]
+    return live_claims(rows + [r for r in read_claims(repo, f"origin/{TRUNK}") if r[0] not in have])
 
 
 def release_side(repo, slug):
@@ -1451,6 +1465,8 @@ def print_claims(repo, ref=None):
     for slug, kv in rows:
         age_h = (now - int(kv.get("epoch", now))) / 3600
         stale = " STALE (ask the owner or release it)" if age_h > STALE_HOURS else ""
+        if claim_expired(kv, now):
+            stale = " EXPIRED (lease over: free to claim)"
         print(f"claim {slug}: {kv.get('host','?')} / {kv.get('account','?')} - {kv.get('task','?')} "
               f"[area: {kv.get('area','-')}] {age_h:.0f}h old{stale}")
 
@@ -1526,6 +1542,8 @@ def new_files_only_reason(repo, task, area="-"):
     where = "--area"
     if not paths:
         for cid in dict.fromkeys([str(task).strip(), slugify(task)]):
+            if cid == str(task).strip() and git(repo, "cat-file", "-e", f"origin/{TRUNK}:{CARDS_DIR}/{cid}.json", check=False).returncode == 0:
+                return ""   # a task named by a card id is always claimed: B2 is only for free-text tasks (two workers could take one card)
             r = git(repo, "show", f"origin/{TRUNK}:{CARDS_DIR}/{cid}.json", check=False)
             if r.returncode == 0:
                 break
@@ -1597,11 +1615,13 @@ def claim(repo, task, area="-", gate=run_gate, force=False, sleep=time.sleep):
             rows = read_claims(repo, parent) if parent else []
             have = {s for s, _ in rows}
             rows += [r for r in read_claims(repo, f"origin/{TRUNK}") if r[0] not in have]
+            rows = live_claims(rows)   # an expired lease is free (the new claim overwrites its file)
             refuse_conflicts(rows)
             if slug in {s for s, _ in rows}:
                 raise SyncError(f"claim file {slug} appeared on origin/{CLAIMS_BRANCH} while claiming (racing claim); re-checking")
         body = NL.join([f"task: {task}", f"host: {socket.gethostname()}", f"account: {account(repo)}",
-                        f"area: {area}", f"epoch: {int(time.time())}", ""])
+                        f"area: {area}", f"epoch: {int(time.time())}",
+                        f"expires_at: {int(time.time() + LEASE_HOURS * 3600)}", ""])
         msg = NL.join([f"claim {slug}", "", f"Result: {account(repo)} on {socket.gethostname()} works on: {task}"])
         try:
             push_claim_commit(repo, f"{CLAIMS_DIR}/{slug}.md", body, msg, guard=still_free, sleep=sleep)
@@ -1613,6 +1633,29 @@ def claim(repo, task, area="-", gate=run_gate, force=False, sleep=time.sleep):
             continue
         print(f"claimed {slug}; release with: sync.py release {slug}")
         return
+
+
+def heartbeat(repo, slug, sleep=time.sleep):
+    """Refresh the lease of claim `slug` (expires_at = now + LEASE_HOURS) with one plumbing commit on the claims branch.
+    Refuses when the claim is gone (released, or taken over after it expired): the worker must not resurrect it."""
+    rel = f"{CLAIMS_DIR}/{slug}.md"
+
+    def refreshed(parent):
+        r = git(repo, "show", f"{parent}:{rel}", check=False) if parent else None
+        if r is None or r.returncode != 0:
+            raise SyncError(f"no claim {slug} on origin/{CLAIMS_BRANCH} to refresh (released or taken over)")
+        lines = [l for l in r.stdout.splitlines() if not l.startswith("expires_at: ")]
+        return chr(10).join(lines + [f"expires_at: {int(time.time() + LEASE_HOURS * 3600)}", ""])
+    box = {}
+
+    def guard(parent):
+        box["text"] = refreshed(parent)
+    # push_claim_commit takes text up front; build it on the freshly fetched tip first, the guard re-checks on every retry
+    git(repo, "fetch", "--quiet", "origin", CLAIMS_BRANCH, check=False)
+    tip = git(repo, "rev-parse", "--verify", "--quiet", f"origin/{CLAIMS_BRANCH}", check=False).stdout.strip() or None
+    text = refreshed(tip)
+    push_claim_commit(repo, rel, text, f"heartbeat {slug}" + chr(10) * 2 + f"Result: lease of {slug} refreshed", guard=guard, sleep=sleep)
+    print(f"heartbeat {slug}: lease {LEASE_HOURS} h")
 
 
 def release(repo, slug, gate=run_gate, sleep=time.sleep):
@@ -1869,7 +1912,7 @@ def ship_is_cards_docs_only(repo, argv):
 def lease_guard(argv):
     """TRAFFIC_CONTROLLER.md Part A: a singleton-role session (Pipeliner) ships, claims and releases
     only while it holds its lease (scripts/dev/lease.py); fails closed. Any other session: no-op, no network."""
-    if not argv or argv[0] not in ("ship", "claim", "release"):
+    if not argv or argv[0] not in ("ship", "claim", "release", "heartbeat"):
         return 0
     import lease
     try:
@@ -1913,7 +1956,7 @@ def station(repo, apply=False, now=None):
 
 def main(argv):
     cmds = {"start": start, "ship": ship, "news": news, "claims": print_claims, "health": health}
-    extra = {"claim", "release"}
+    extra = {"claim", "release", "heartbeat"}
     refused = lease_guard(argv)
     if refused:
         return refused
@@ -1950,6 +1993,8 @@ def main(argv):
             repo = toplevel(Path.cwd())
             if argv[0] == "release":
                 release(repo, argv[1])
+            elif argv[0] == "heartbeat":
+                heartbeat(repo, argv[1])
             else:
                 area = argv[argv.index("--area") + 1] if "--area" in argv else "-"
                 claim(repo, argv[1], area, force="--force" in argv)
