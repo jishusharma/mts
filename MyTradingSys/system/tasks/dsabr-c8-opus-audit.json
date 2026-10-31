@@ -1,8 +1,9 @@
 {
-  "approved_by": "",
+  "approved_by": "operator 2026-10-31",
   "asks": "",
   "commands": [],
   "created": "2026-10-31T10:04:30Z",
+  "crucial": "Independent no-undo audit of the live-agent and extension fixes before they reach both hosts; the operator named Opus for the fix plan and audit on 2026-10-31.",
   "depends_on": [],
   "done_when": "audit report MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/AUDIT.md with a verdict per card",
   "est_turns": 20,
@@ -12,28 +13,52 @@
   "goal": "Read-only audit after c7: answer the 12 checklist items with file:line evidence, verdict PASS/FIX per card",
   "id": "dsabr-c8-opus-audit",
   "lane": "OPUS",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "DSA bridge fix plan 2026-10-31: 7 defects traced to file:line, 8 fix cards, E2E design, Op",
+      "ref": "5c62ae585965",
+      "utc": "2026-10-31T10:05:13Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "S0 freeze: bug fix with a failing-first test. Plan: MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md",
+  "note": "S0 freeze: bug fix with a failing-first test. Plan: MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md\nREVIEW (Lab_Guy 2026-10-31): evidence checked against code at 18b9e4eed; DECISION (OURS): depends_on left empty because check refuses ready while a dependency is not done; ordering is in the first step.",
   "prio": 2,
+  "producer": "Builder",
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-31T10:08:57Z",
   "refs": [
     "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
   ],
   "result": "",
+  "review_receipt": {
+    "card_hash": "f74ba975582f",
+    "code_hash": "",
+    "data_hash": "",
+    "date": "2026-10-31",
+    "files": {},
+    "producer": "Builder",
+    "reviewer": "Lab_Guy",
+    "scope_hash": "44136fa355b3",
+    "scope_sha": "5c62ae585965",
+    "spec_hash": ""
+  },
   "scope_in": [
     "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31"
   ],
   "scope_out": [
     "product code"
   ],
+  "scope_sha": "5c62ae585965",
   "size": "M",
   "sources": [
     "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Wait for c7; read FIX_PLAN.md (MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31) section 5",
     "Answer the 12 checklist items with file:line evidence; re-run each new test on 0.7.3 files to see it fail",
