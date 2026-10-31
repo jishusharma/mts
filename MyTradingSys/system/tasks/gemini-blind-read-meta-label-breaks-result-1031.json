@@ -1,0 +1,79 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-31T18:01:27Z",
+  "commands": [],
+  "created": "2026-10-31T17:29:29Z",
+  "depends_on": [],
+  "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "[GEMINI] blind read of meta_label_breaks_2026-10-31/RESULT.md: open every number cited and say FOUND / DIFF / NOT_IN_DATA with the output.md file:line; facts only, no verdicts.",
+  "id": "gemini-blind-read-meta-label-breaks-result-1031",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-10-31_gemini-blind-read-meta-label-breaks-res",
+      "ref": "c678a486d",
+      "utc": "2026-10-31T18:01:27Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Malkan reverse-divergence lead fails on fresh 2020-2021 data",
+      "ref": "3673313e4d14",
+      "utc": "2026-10-31T17:03:06Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "3673313e4d14 Malkan reverse-divergence lead fails on fresh 2020-2021 data",
+      "ref": "MyTradingSys/research/meta_label_breaks_2026-10-31/RESULT.md",
+      "utc": "2026-10-31T17:03:06Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refreshed": "2026-10-31T17:29:54Z",
+  "refs": [],
+  "result": "MyTradingSys/research/layer_lab/reports/2026-10-31_gemini-blind-read-meta-label-breaks-result-1031.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/meta_label_breaks_2026-10-31/output.md",
+    "MyTradingSys/research/meta_label_breaks_2026-10-31/RESULT.md"
+  ],
+  "scope_out": [
+    "code or spec changes",
+    "holdout reads",
+    "BTC runs of the current encoding (ROADMAP section 2)"
+  ],
+  "scope_sha": "3673313e4d14",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
+    "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
+    "Report findings as a table: severity HIGH/MED/LOW, file:line, what is wrong, evidence, proposed fix. Change no code and no spec.",
+    "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
+    "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "taken": "2026-10-31T18:01:27Z",
+  "tests": "report one row per cited number",
+  "title": "[GEMINI] blind read of meta_label_breaks RESULT.md numbers",
+  "weight": "",
+  "worker": ""
+}

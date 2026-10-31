@@ -1,0 +1,10 @@
+{
+  "done_when": "expireMs locks blocks for no more than 360s (agent cap + 60) and passes isTask correctly from content.js; a test asserts the exact lock ms for timeout=280 and for a task without timeout",
+  "from": "JIS-NB",
+  "id": "20261031-173311-claude-fix-aibridge-expirems-lock-bug-b2",
+  "need": "Two defects in the extension that leave the UI locked after a timeout. 1) content.js:486 calls L.expireMs(it.opts.timeout_s) but misses the second argument !!it.opts.task. So task-mode blocks without timeout lock for 240s instead of 1200s. 2) loop.js:183 returns Math.max(30, t) * 2 * 1000. The agent hard cap is 300s for a block, but if a user sets timeout=280, the lock is 560s. Change to Math.min(t * 2, 360) for blocks, and Math.min(t * 2, 1860) for tasks. File evidence: scripts/aibridge/extension/loop.js:181-183 and content.js:486. E2E test scripts/aibridge/tests/e2e_bridge.py passes but does not cover this math.",
+  "posted": "2026-10-31T17:33:11Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "Claude: fix AIBridge expireMs lock bug (B212)"
+}

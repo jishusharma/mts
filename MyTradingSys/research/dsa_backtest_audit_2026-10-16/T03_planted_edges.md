@@ -131,3 +131,12 @@ Not applicable: this card ran in a Claude Code session on the Lenovo, not throug
 3. Test that proves it: scripts/T03/t03_canaries.py rows e1-e4 flip from FAIL to PASS (they fail today).
 4. Risk: RSI and CryptoCred net numbers will move by the funding they never paid; rerun them on DEV and compare against the published rows before quoting any.
 5. Rerun after: t03_canaries.py (expect the bt_engine e-rows PASS), then the RSI and CryptoCred DEV runs; and T06 for the screens' flat funding.
+
+
+## Rebuild 2026-10-31 (DSA, JIS-NB)
+
+The control set was rebuilt from the DEV tape at `F:/MTS/data/tom_raw/klines` using the study's own `sets()` function. Counts match exactly: engulf n=1179, control n=2486.
+
+Running `t03_stats.diff_se()` on the rebuilt control yields **DIFF +0.0108, SE 0.0182, t 0.59**. The published RESULT.md reports **DIFF +0.0111, t 0.61**. The difference is 0.0003 in DIFF and 0.02 in t. It does not change the verdict (FAIL).
+
+The small difference is consistent with a minor revision of the raw DEV CSV between the original run and today; the event counts are identical, so the discrepancy is inside the 60-minute return calculation, not in which bars were selected.

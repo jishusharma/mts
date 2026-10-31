@@ -1,10 +1,15 @@
 {
   "done_when": "Both python commands print output (full rejected triple for hymqmEfCGrw, and 500 chars of raw transcript text around 'quarterly pivot'); paste both verbatim into the desk result.",
+  "finished": "2026-10-31T17:34:38Z",
   "from": "DESKTOP-F7IU69N",
+  "host": "JIS-NB",
   "id": "20261029-170046-cbp-pull-habib-hymqmefcgrw-rejected-quot",
   "need": "python -c \"import json,os; home=os.environ.get('CBP_HOME','F:/CryptoScrapper'); d=json.load(open(home+'/cbp_store/rows.json',encoding='utf-8')); print([r for r in d.get('rejected',[]) if r[0]=='hymqmEfCGrw'])\"; python -c \"import sys,os; sys.path.insert(0,'scripts/dev'); import verify_extract_quotes as vq; home=os.environ.get('CBP_HOME','F:/CryptoScrapper'); t=open(home+'/raw_transcripts_canonical/hymqmEfCGrw_raw.txt',encoding='utf-8',errors='replace').read(); i=t.lower().find('quarterly pivot'); print(repr(t[max(0,i-200):i+300]))\"",
   "posted": "2026-10-29T17:00:46Z",
-  "status": "pending",
+  "result": "Rejected triple: [['hymqmEfCGrw', 'Qriptal', 'quote not in transcript: the quarterly pivot at ,000, which for me is the first ta']]. Context: '...So, on Sunday, sorry, what we were saying is that the volume was quite bad in this drop, so personally, I'm not interested in long positions. Furthermore, the second confluence was that we had the quarterly pivot below us at ,000. Now, is this a 12-hour imbalance? I forgot. So, it isn't. However, if you look at the 4- hour chart, you'll see that we have the 4-hour imbalance in confluence with the quarterly pivot, again at ,000. So, overall, as you can see, we don't have very good volume...'. Verdict: the extractor paraphrased 'quarterly pivot below us at ,000' into 'the quarterly pivot at ,000, which for me is the first ta...'; the gate correctly rejected it.",
+  "status": "done",
+  "taken": "2026-10-31T17:34:09Z",
+  "taken_by": "JIS-NB",
   "target": "DSA",
   "title": "CBP: pull Habib hymqmEfCGrw rejected quote + transcript context (gate audit)"
 }
