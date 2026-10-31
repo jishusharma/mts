@@ -27,9 +27,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "ship: 33 file(s)",
-      "ref": "34aac43857c5",
-      "utc": "2026-10-31T02:49:25Z"
+      "line": "research(fabio): extract session timing, CVD rules, and stated levels from latest 8 videos",
+      "ref": "16fa7fbe8da1",
+      "utc": "2026-10-31T05:12:33Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "16fa7fbe8da1 research(fabio): extract session timing, CVD rules, and stated levels from la",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-10-31_gemini-yt-fabio-latest-extract-1031.md",
+      "utc": "2026-10-31T05:12:33Z"
     }
   ],
   "layers": [],
@@ -39,7 +46,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T05:02:24Z",
+  "refreshed": "2026-10-31T13:07:31Z",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
@@ -55,7 +62,7 @@
   "scope_out": [
     "live tree; engine and layer code edits; any backtest or trading verdict; .secrets and .env"
   ],
-  "scope_sha": "34aac43857c5",
+  "scope_sha": "16fa7fbe8da1",
   "size": "S",
   "sources": [],
   "state": "done",
