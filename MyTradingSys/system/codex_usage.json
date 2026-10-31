@@ -4,9 +4,9 @@
   "week_resets": 1793780113,
   "week_used": 59.0,
   "window_resets": 1793433270,
-  "window_used": 11.0
+  "window_used": 12.0
  },
- "at": "2026-10-31T06:21:27Z",
+ "at": "2026-10-31T06:44:25Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -22,10 +22,25 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 9.0,
-  "window_pts": 3.0,
-  "window_runs": 8
+  "window_pts": 4.0,
+  "window_runs": 9
  },
  "runs": [
+  {
+   "at": "2026-10-31T06:43:29Z",
+   "card": "gpt-audit-formulas-vs-wlow_bounce-layer",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 49,
+   "tokens_out": 3878,
+   "tokens_total": 412423,
+   "tokens_uncached": 39905,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
   {
    "at": "2026-10-31T06:20:13Z",
    "card": "gpt-audit-formulas-vs-wavetrend-layer",
@@ -160,21 +175,6 @@
    "tokens_uncached": 13948,
    "week_pts": 1.0,
    "window_pts": 7.0
-  },
-  {
-   "at": "2026-10-30T21:10:43Z",
-   "card": "astra-challenge-promote-and-failclosed-1031",
-   "effort": "low",
-   "kind": "audit",
-   "model": "gpt-6-astra",
-   "note": " | release failed: sync: no claim astra-challenge-promote-and-failclosed-1 on origin/claims",
-   "outcome": "BLOCKED",
-   "seconds": 82,
-   "tokens_out": 2359,
-   "tokens_total": 520619,
-   "tokens_uncached": 43380,
-   "week_pts": 4.0,
-   "window_pts": 24.0
   }
  ]
 }
