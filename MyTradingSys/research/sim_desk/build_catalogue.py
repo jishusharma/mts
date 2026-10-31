@@ -30,6 +30,11 @@ EXPORTED_BY_SOURCE = {
     "MyTradingSys/research/fable_run6_powered_prereg/CROSSCHECK.md": "krown-s8-e2-desk-crosscheck",
     "MyTradingSys/research/setup_alpha_beta_v2_2026-10/RESULT.md": "ask-p0-65-setup-alpha-beta-backtest",
     "MyTradingSys/research/tf_break_event_study_2026-10-30/RESULT.md": "ask-p0-45-tf-break-event-study",
+    "MyTradingSys/research/fractals_2026-10-31/p1b_rsi_feenet/RESULT.md": "fractals-p1b-rsi-by-phase",
+    "MyTradingSys/research/fractals_2026-10-31/f1/RESULT.md": "fractals-f1-swing-confluence",
+    "MyTradingSys/research/fractals_2026-10-31/f2/RESULT.md": "fractals-f2-hurst-gate",
+    "MyTradingSys/research/fractals_2026-10-31/f3/RESULT.md": "fractals-f3-phase-analogs",
+    "MyTradingSys/research/fractals_2026-10-31/phase_tag/phase_tag.py": "fractals-phase-tag",
 }
 
 

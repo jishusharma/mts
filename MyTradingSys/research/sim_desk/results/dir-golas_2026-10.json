@@ -1,25 +1,20 @@
 {
  "id": "dir-golas_2026-10",
- "kind": "backtest",
+ "kind": "thought_experiment",
  "family": "Golas",
- "title": "GOLAS-B: how indicators relate in crypto perps, named setup types (ledger P0-03)",
+ "title": "GOLAS-C: internet consensus on indicator tuning for BTC (ledger P0-04)",
  "provenance": "source-extracted",
  "date": "2026-10-31",
- "what": [
-  {
-   "name": "Rule or setup, line 1 from the source",
-   "value_plain": "Date 2026-10-31. Builder, card ask-p0-03-golas-indicator-relations. Tier bar as in A_DIVERGENCE_METHOD.md: T1 = papers, exchange/platform docs; T2 = exchange/platform education pages; T3 (user posts, blogs) is below the…",
-   "label": "OURS"
-  }
- ],
+ "what": [],
  "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
  "window": null,
  "verdict": {
-  "label": "Date 2026-10-31. Builder, card ask-p0-03-golas-indicator-relations. Tier bar as in A_DIVERGENCE_METHOD.md: T1 = papers, exchange/platform docs; T2 = exchange/platform education pages; T3 (user posts, blogs) is below the bar and listed only…",
+  "label": "Date 2026-10-31. Builder, card ask-p0-04-golas-tuning-consensus. Start point: the archived GOLAS-C note (2026-09-21) had NO URLs, so none of its values could be re-verified at a URL; they are carried below as UNVERIFIED. All rows here come…",
   "tone": "info"
  },
  "why": [
-  "Date 2026-10-31. Builder, card ask-p0-03-golas-indicator-relations. Tier bar as in A_DIVERGENCE_METHOD.md: T1 = papers, exchange/platform docs; T2 = exchange/platform education pages; T3 (user posts, blogs) is below the bar and listed only as a negative findi…"
+  "Pages whose fetch failed (marked UNVERIFIED, not used as evidence): binance.com MACD academy, bingx.com RSI and Bollinger, kucoin.com Bollinger and MACD, bitmex.com Bollinger, coinmarketcap Bollinger, stockcharts (SSL error), tabtrader (DNS), dextools anchore…",
+  "The TradingView Bollinger and MACD support pages fetched did not state 20/2 or 12/26/9 (they describe inputs only), so they are not cited for those values."
  ],
  "kpis": [],
  "examples": [
@@ -33,10 +28,11 @@
  "missing": {
   "n_trades": "the source does not state a trade count",
   "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
-  "window": "the source states no test window"
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
  },
  "source_files": [
-  "MyTradingSys/research/golas_2026-10/B_INDICATOR_RELATIONS.md"
+  "MyTradingSys/research/golas_2026-10/C_TUNING_CONSENSUS.md"
  ],
- "commit": "908cbb858"
+ "commit": "da6f49c25"
 }

@@ -1,0 +1,67 @@
+{
+ "id": "st-fractals_2026-10-31-p1_split-result",
+ "kind": "backtest",
+ "family": "Fractals",
+ "title": "P1 RESULT: BLOCKED (no frozen per-event fee-net list for either layer)",
+ "provenance": "source-extracted",
+ "date": "2026-10-31",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Verdict: no cell was run. Neither RSI-DIV-MTF nor Krown has a frozen DEV per-event fee-net R list on disk, so there is nothing to split without inventing an exit rule (= a new study). No edge claimed, none refuted.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "Layer Tag n fee-net mean R CI Verdict",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "RSI-DIV-MTF cowen_side / sma200_side / wsma10_phase - - - BLOCKED",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "Krown cowen_side / sma200_side / wsma10_phase - - - BLOCKED",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 5 from the source",
+   "value_plain": "What exists (see PRE_REG.md section 0): RSI event table = 643 gross MFE/MAE events, no exit, no fees; RSI MTF study = aggregate 10-bar % returns, no list, window runs into holdout dates; Krown = \"no DEV event study has…",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 6 from the source",
+   "value_plain": "Shipped instead: p1_split.py (join of event day t to tag row t, block-bootstrap CI, harness.shift_null_test, placebo, year and episode rules) and test_p1_split.py (5 tests: tag of day t unchanged when bar t is altered b…",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "no cell was run. Neither RSI-DIV-MTF nor Krown has a frozen DEV per-event fee-net R list on disk, so there is nothing to split without inventing an exit rule (= a new study). No edge claimed, none refuted.",
+  "tone": "bad"
+ },
+ "why": [
+  "Verdict: no cell was run. Neither RSI-DIV-MTF nor Krown has a frozen DEV per-event fee-net R list on disk, so there is nothing to split without inventing an exit rule (= a new study). No edge claimed, none refuted."
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window"
+ },
+ "source_files": [
+  "MyTradingSys/research/fractals_2026-10-31/p1_split/RESULT.md"
+ ],
+ "commit": "d1fd7dca4"
+}

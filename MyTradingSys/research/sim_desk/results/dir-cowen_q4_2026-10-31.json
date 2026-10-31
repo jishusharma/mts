@@ -1,0 +1,47 @@
+{
+ "id": "dir-cowen_q4_2026-10-31",
+ "kind": "audit",
+ "family": "Cowen Q4",
+ "title": "Cowen video bekghgecip8: does MTS already know this, is it used for edge, how to apply (2026-10-31)",
+ "provenance": "source-extracted",
+ "date": "2026-10-31",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2022-04-01 to 2024-06-30 (as written in the source)",
+ "verdict": {
+  "label": "",
+  "tone": "info"
+ },
+ "why": [
+  "Does the desk find an edge in the parts that can be tested? No. All 12 settings finish NOT ENOUGH DATA: 3 to 10 trades each, the desk needs 30. The two-year window cannot rule on a cycle-level view. The one pattern worth a second look is CATCHDOWN, which won…"
+ ],
+ "kpis": [
+  {
+   "label": "trades (first count in the source)",
+   "value": "7"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 7,
+   "quote": "1 Bull market support band = 20-week SMA and 21-week EMA; a bounce off it, then the final drop [W2, W6] Only as text: COWEN_LEVELS and the CBP row. No code, no formula, no layer NO BOUNCE idea, 3 to…"
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "parameters": "no rule or parameter section found in the source",
+  "n_trades": "not a trade test (audit)"
+ },
+ "source_files": [
+  "MyTradingSys/research/cowen_q4_2026-10-31/COWEN_Q4_CONCEPT_CHECK.md"
+ ],
+ "commit": "997ddf61e"
+}
