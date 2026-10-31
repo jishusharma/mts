@@ -1,0 +1,56 @@
+{
+ "id": "st-cowen_q4_2026-10-31-event_study-result",
+ "kind": "backtest",
+ "family": "Cowen Q4",
+ "title": "RESULT: Cowen band, daily event study, BTC 2017-08 .. 2024-06",
+ "provenance": "source-extracted",
+ "date": "2026-10-31",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2017-08-17 to 2024-06-30 (as written in the source)",
+ "verdict": {
+  "label": "",
+  "tone": "info"
+ },
+ "why": [
+  "All four ideas finish below the 30-event floor (n = 19 to 22): NOT ENOUGH DATA, by the pre-registered rule. No idea is a BAND SIGNAL, NEGATIVE or NO EDGE SHOWN verdict; the data cannot rule.",
+  "BOUNCE (n 21, -0.20 R, range spans zero) and CATCHDOWN (n 19, -0.40 R, 4 wins in 19) lean negative but are not proven."
+ ],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "21"
+  },
+  {
+   "label": "net R after fees (first value in the source)",
+   "value": "-0.20",
+   "tone": "bad"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 21,
+   "quote": "- BOUNCE: n = 21, mean net R -0.20 (range -0.74 .. +0.37), 6 wins; placebo difference -0.09 (range -0.81 .. +0.60). NOT ENOUGH DATA."
+  },
+  {
+   "field": "net_r",
+   "value": -0.2,
+   "quote": "- BOUNCE: n = 21, mean net R -0.20 (range -0.74 .. +0.37), 6 wins; placebo difference -0.09 (range -0.81 .. +0.60). NOT ENOUGH DATA."
+  }
+ ],
+ "missing": {
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/cowen_q4_2026-10-31/event_study/RESULT.md"
+ ],
+ "commit": "bdf5e584b"
+}

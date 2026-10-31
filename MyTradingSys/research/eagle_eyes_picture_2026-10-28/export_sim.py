@@ -1,4 +1,4 @@
-"""Write the Eagle_Eyes 10-30/31 chart-idea tests (C21, C23-C28) as simulator result files (sim_desk/DESIGN.md "Result files").
+"""Write the Eagle_Eyes 10-30/31 chart-idea tests (C21, C23-C30) as simulator result files (sim_desk/DESIGN.md "Result files").
 C26 trades are recomputed from c26_arms.py (replay); the others carry the numbers recorded in BACKTEST_CANDIDATES.md.
 Percent, R and timestamps only (no prices: the repo is public). Usage: python export_sim.py <repo>"""
 import json, os, sys
@@ -167,6 +167,49 @@ out.append(dict(base("eagle-c28-wt-structure", "C28: WaveTrend inside market str
             ["1h", "Downtrend sell dot >= 0", "X1", 139, "46%", "-0.259%", "-0.16% / -0.36%"], ["4h", "Downtrend buy dot <= -53", "X4", 44, "45%", "+0.549%", "+0.41% / +0.74%"],
             ["2h", "Downtrend buy dot <= -53", "X1", 66, "68%", "-0.050%", "-1.34% / +1.40%"]])],
     ["wt_context.py", "wavetrend_dots.py"]), window="2022-01-01 to 2024-06-30 only (2024-07+ sealed by wavetrend_2026-10-17/PRE_REG.md)"))
+
+out.append(dict(base("eagle-c29-wt-lower-tf", "C29: red-band WaveTrend sells in a downtrend on 10m / 15m / 30m (trend from the same chart or from 2h)",
+    [P("WaveTrend", "n1 10, n2 21, wt2 = 4-bar average; bands +53 / -53", "SOURCED"),
+     P("Trend", "same chart: swing-break structure on the trading chart; 2h: structure of the last CLOSED 2h bar"),
+     P("Rules / exits", "as C28 (sell dot >= 53 or >= 0 in a downtrend, buy dots in an uptrend; exits X1-X4; cap 60 bars)"), FEE],
+    "wt_lower_tf.py on Binance spot 5m from 2022 built into 10m/15m/30m.",
+    "Frequency fixed, profit not: with the 2h downtrend as context red-band sells happen often (10m n 321, 15m 187, 30m 63) but lose on 10m/15m; 30m about flat.", "bad",
+    ["With the trend read on the same small chart, red-band sells stay rare (3-9 in 2.5 years): the context has to come from a higher chart.",
+     "10m and 15m red-band sells lose with every exit (-0.04% to -0.21% per trade after fees).",
+     "30m with the 2h downtrend: +0.18% per trade with exit X3 (n 61, both halves positive, t 0.5): too weak to call."],
+    [{"label": "10m red-band sells, 2h downtrend", "value": "n 321, -0.09% to -0.17%", "tone": "bad"},
+     {"label": "15m red-band sells, 2h downtrend", "value": "n 187, -0.04% to -0.21%", "tone": "bad"},
+     {"label": "30m red-band sells, 2h downtrend, X3", "value": "n 61, +0.18%", "tone": "warn"}],
+    [table("Downtrend red-band sells (sell dot >= 53), net per trade after fees", ["Chart", "Trend from", "Exit", "n", "Net", "Halves"],
+           [["10m", "2h", "X1", 321, "-0.117%", "-0.08% / -0.16%"], ["10m", "2h", "X4", 458, "-0.094%", "-0.08% / -0.11%"],
+            ["15m", "2h", "X1", 187, "-0.037%", "+0.14% / -0.25%"], ["15m", "2h", "X3", 176, "-0.209%", "-0.06% / -0.39%"],
+            ["30m", "2h", "X3", 61, "+0.181%", "+0.21% / +0.16%"], ["30m", "2h", "X4", 78, "+0.068%", "+0.16% / +0.01%"],
+            ["10m", "same", "X1", 9, "-0.179%", "-"], ["15m", "same", "X1", 4, "-0.532%", "-"]])],
+    ["wt_lower_tf.py", "wt_context.py"]), window="2022-01-01 to 2024-06-30 only (2024-07+ sealed by wavetrend_2026-10-17/PRE_REG.md)"))
+
+out.append(dict(base("eagle-c30-wt-rsi-div", "C30: WaveTrend dots plus RSI divergence (sell tops with bearish, buy bottoms with bullish), 10m to 4h",
+    [P("RSI", "14, Wilder", "SOURCED"), P("WaveTrend", "n1 10, n2 21, wt2 = 4-bar average; bands +53 / -53", "SOURCED"),
+     P("Divergence", "newest high (low) in the last 8 bars beyond the extreme of bars 9-40 back while RSI is lower (higher); first RSI peak >= 60 (trough <= 40)"),
+     P("Trend", "any / same chart / last closed 2h bar"), P("Exits", "X1-X4 as C28; cap 60 bars"), FEE],
+    "wt_rsi_div.py: 5m data built into 10m/15m/30m, 15m data into 1h/2h/4h. About 250 cells: treat every number as in-sample.",
+    "Bottoms YES-ish, tops NO: buy dot <= -53 with bullish RSI divergence is positive on 15m and 30m in both halves; shorts with bearish divergence lose almost everywhere (3 of 65 cells positive).", "warn",
+    ["30m buy dot <= -53 + bullish divergence, exit at the centre line: n 88, win 80%, +0.35% net, both halves positive; it beats the same buy dots without divergence (95th percentile +0.22%) and random bars (+0.13%).",
+     "15m same rule with the 2h trend up, centre-line exit: n 44, win 75%, +0.26%, t 2.8.",
+     "Selected from about 250 cells on one period: needs a pre-registered read of 2024-07+ before anyone trusts it."],
+    [{"label": "30m buy dot <= -53 + bull div, X1", "value": "+0.35% net, n 88, win 80%", "tone": "good"},
+     {"label": "Shorts with bearish divergence", "value": "3 of 65 cells positive", "tone": "bad"},
+     {"label": "Long cells positive", "value": "30 of 62", "tone": "warn"}],
+    [table("Net per trade after fees (n >= 30), 2022-01..2024-06", ["Chart", "Signal", "Trend", "Exit", "n", "Win", "Net", "Halves"],
+           [["30m", "buy dot <= -53 + bull div", "any", "X1", 88, "80%", "+0.346%", "+0.41% / +0.25%"],
+            ["30m", "buy dot <= -53 + bull div", "any", "X2", 87, "61%", "+0.322%", "+0.33% / +0.32%"],
+            ["15m", "buy dot <= -53 + bull div", "2h up", "X1", 44, "75%", "+0.261%", "+0.30% / +0.22%"],
+            ["15m", "buy dot <= -53 + bull div", "2h up", "X2", 42, "60%", "+0.355%", "+0.42% / +0.29%"],
+            ["4h", "buy dot <= 0 + bull div", "any", "X4", 35, "46%", "+0.904%", "+0.80% / +1.10%"],
+            ["2h", "buy dot <= -53 + bull div", "any", "X4", 30, "50%", "+0.609%", "+0.36% / +0.98%"],
+            ["10m", "sell dot >= 53 + bear div", "any", "X1", 249, "-", "-0.137%", "-"],
+            ["15m", "sell dot >= 53 + bear div", "any", "X1", 168, "-", "-0.240%", "-"],
+            ["30m", "sell dot >= 53 + bear div", "any", "X1", 83, "-", "-0.461%", "-"]])],
+    ["wt_rsi_div.py", "wt_lower_tf.py", "wt_context.py"]), window="2022-01-01 to 2024-06-30 only (2024-07+ sealed by wavetrend_2026-10-17/PRE_REG.md)"))
 
 out.append(base("eagle-c21-bb-pierce", "C21: first close under the lower Bollinger band in a falling band, short to the mid",
     [P("Pierce", "first close below BB(20,2) lower band, mid falling, no pierce in the prior 10 bars"),
