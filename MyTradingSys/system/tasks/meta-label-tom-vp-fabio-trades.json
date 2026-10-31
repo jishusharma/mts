@@ -1,0 +1,39 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T13:28:36Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "meta-label-tom-vp-fabio-trades",
+  "lane": "SONNET",
+  "layers": [
+    "tom",
+    "fabio"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/system/tasks/meta-label-break-events-layer-features.json"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Meta-label test (operator 10-31) on sim-desk trades: can other MTS layers' state at entry separate Tom VP winners (largest daily run, ~900-1800 filled) and Fabio Model C winners (~516) from losers? Same protocol as meta-label-break-events-layer-features: features frozen before any outcome read (BBWP, D1 trend, Cowen band side, funding sign, session, RSI zone, WaveTrend zone, volume), entry-time only, logistic with week-purged CV on DEV, shuffled-label placebo, deflate for features tried; pass = top-score bucket fee-net > 0 with day-block CI excluding 0 on DEV, then one VALIDATION read with same sign. Export per-trade feature table to the sim desk so the split is visible as charts.",
+  "weight": "",
+  "worker": ""
+}
