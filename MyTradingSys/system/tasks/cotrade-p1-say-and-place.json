@@ -5,6 +5,13 @@
     "python -m pytest MyTradingSys/execution/test_cotrade.py -q",
     "python scripts/dev/run_all_tests.py --quick"
   ],
+  "context": {
+    "calls_to_edit": 9,
+    "folded": "2026-10-31T19:05:03Z",
+    "misses": 15,
+    "reads": [],
+    "session": "agent-a0d3069673080ffd3"
+  },
   "created": "2026-10-31T15:13:24Z",
   "depends_on": [],
   "done_when": "cotrade place --said '<verbatim>' --side sell --type limit --price P --amount A --stop S --dry-run prints the order and appends one JSON journal line; real path tested with a fake client only; test_cotrade.py passes and each test failed pre-change. First real testnet order is the operator's after he creates the co-trade key.",
