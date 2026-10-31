@@ -6,7 +6,9 @@
   "need": "Rerouted from the GPT lane (credits/limit/outage) to DSA. Card gemini-param-labels-krown: [GEMINI] Argon-medium: every parameter in layers/krown labelled SOURCED or OURS (file:line)\nWorktree: mts-dsa (python scripts/dev/sync.py start first). Data on F:\\MTS\\data is read-only.\nFull brief: python scripts/dev/tasks.py brief gemini-param-labels-krown\nGoal: List each numeric parameter default in layers/krown code, find its source (analyst extract, FORMULAS.md, or none) and label SOURCED (quote + path) or OURS. Report only; no verdicts.\nRead: MyTradingSys/research/gemini_audits_2026-10-30/krown_param_labels.md (new file only)\nStep 1: list parameters\nStep 2: search extracts for each\nStep 3: write table\nRun exactly:\n  C:/Users/E-ngineers/.gemini/bin/agy.exe --print \"Follow the steps of card gemini-param-labels-krown (python scripts/dev/tasks.py brief gemini-param-labels-krown). Write only MyTradingSys/research/ge\nWrite the report to MyTradingSys/research/layer_lab/reports/2026-10-29_gemini-param-labels-krown.md: findings or numbers, each with file:line or the command you ran.\nNumbers come only from output you printed in the chat. Change no code or spec. Never read a holdout.\nIf a command fails twice, close the desk row with --failed and the error text.\nClose: python scripts/dev/desk.py done <row id> --result \"<verdict or number + MyTradingSys/research/layer_lab/reports/2026-10-29_gemini-param-labels-krown.md>\".",
   "posted": "2026-10-29T23:26:05Z",
   "rerouted_from": "CODEX",
-  "status": "pending",
+  "status": "taken",
+  "taken": "2026-10-31T17:38:36Z",
+  "taken_by": "JIS-NB",
   "target": "DSA",
   "title": "[GEMINI] Argon-medium: every parameter in layers/krown labelled SOURCED or OURS (file:line)"
 }
