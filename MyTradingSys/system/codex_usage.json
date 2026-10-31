@@ -4,9 +4,9 @@
   "week_resets": 1793780113,
   "week_used": 58.0,
   "window_resets": 1793433270,
-  "window_used": 7.0
+  "window_used": 8.0
  },
- "at": "2026-10-31T02:55:48Z",
+ "at": "2026-10-31T03:40:00Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -23,16 +23,31 @@
   "astra_runs": 0,
   "week_pts": 8.0,
   "window_pts": 0.0,
-  "window_runs": 0
+  "window_runs": 1
  },
  "runs": [
+  {
+   "at": "2026-10-31T03:39:04Z",
+   "card": "gpt-bug-hunt-fees-sim-edge-cases",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 55,
+   "tokens_out": 4750,
+   "tokens_total": 377259,
+   "tokens_uncached": 38941,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-31T02:54:24Z",
    "card": "astra-challenge-promote-and-failclosed-1031",
    "effort": "low",
    "kind": "audit",
    "model": "gpt-6-astra",
-   "note": "",
+   "note": " | release failed: sync: no claim astra-challenge-promote-and-failclosed-1 on origin/claims",
    "outcome": "INCOMPLETE",
    "seconds": 82,
    "tokens_out": 764,
@@ -158,21 +173,6 @@
    "tokens_out": 5492,
    "tokens_total": 479521,
    "tokens_uncached": 36013,
-   "week_pts": 0.0,
-   "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-30T07:58:05Z",
-   "card": "gpt-spec-tests-deploy-untrack-backup",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 89,
-   "tokens_out": 6891,
-   "tokens_total": 628829,
-   "tokens_uncached": 39666,
    "week_pts": 0.0,
    "window_pts": 1.0
   }
