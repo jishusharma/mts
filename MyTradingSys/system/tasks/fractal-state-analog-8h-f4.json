@@ -1,6 +1,7 @@
 {
   "approved_by": "operator 2026-10-31 chat (screenshot 477f9045b120)",
   "asks": "",
+  "closed": "2026-10-31T12:36:47Z",
   "commands": [],
   "created": "2026-10-31T09:50:11Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "fractal-state-analog-8h-f4",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "No tradable edge on 36 8h squeeze-break events (2017-2025): continuation short +0.109/-0.1",
+      "ref": "669a9b9d4",
+      "utc": "2026-10-31T12:36:47Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +46,12 @@
   "refs": [
     "operator 2026-10-31 screenshot 477f9045b120"
   ],
-  "result": "",
+  "result": "No tradable edge on 36 8h squeeze-break events (2017-2025): continuation short +0.109/-0.115/-0.138 R (3/6/9 bars) INCONCLUSIVE, fade long about -0.5 R FAIL, analog -0.56 R at 6 bars NOT_DECIDABLE; n far below the 550-2400 needed. R-based random baseline is distorted by tiny-risk bars (noted); only post-hoc 3-bar continuation in % stands out: forward-log lead.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/fractals_2026-10-31/f4/ (new)",
     "MyTradingSys/research/layer_lab/TRIALS.md (rows)",
@@ -51,7 +63,7 @@
   "scope_sha": "84bbe71e3754",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Two pre-registered events: (a) RULE: BB bandwidth in lowest 30% of past 90 bars, >= 6 bars inside bands, then 8h close below lower band, volume z >= 2; (b) ANALOG: k nearest past windows on [z-scored 24-bar path, %b, bandwidth pct, RSI14, RSI-SMA gap, StochRSI k, volume z, CVD-proxy slope], bars <= t-1, expanding library",
     "CVD proxy = cumulative (2*taker_buy_base - volume) from Binance kline column 9 (full history). Open interest has no free long history: OI is forward-logged only, never a test feature",
@@ -61,6 +73,7 @@
     "Splits: phase tags (cowen_side, sma200_side, wsma10_phase, drawdown bin, cycle year as descriptive), then existing layer states available point-in-time (RSI-DIV-MTF fired y/n, Hurst regime from F2, analyst-level proximity if a DEV list exists)",
     "Decision n per d-flexible-min-n-per-case: power() on this setup's own spread; below it = descriptive + forward log"
   ],
+  "taken": "2026-10-31T12:36:47Z",
   "tests": "look-ahead: features at t use bars <= t-1 (shift test); the screenshot window itself is excluded from its own library; planted-edge run detected; CVD proxy reproduces by hand on 3 bars",
   "title": "F4: 8h look-alike setups matched on shape + indicator state (BB squeeze-break, RSI, StochRSI, volume, CVD proxy), split by BTC phase, then by other layers, fee-net vs random windows",
   "weight": "",
