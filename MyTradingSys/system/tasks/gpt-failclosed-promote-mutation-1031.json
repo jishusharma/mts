@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T17:29:28Z",
+  "crucial": true,
+  "depends_on": [],
+  "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Mutation audit of promote.py gates G1-G6: flip each comparison and each fail-closed branch (missing file, NaN, empty trades) in a scratch copy; list survivors of test_promote.py and add spec-derived tests with hand-computed thresholds.",
+  "id": "gpt-failclosed-promote-mutation-1031",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "reply-protocol: mandatory ack + answer for every ask, minimum wait, one escalation",
+      "ref": "0bf8b9261c25",
+      "utc": "2026-10-30T00:20:58Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "0bf8b9261c25 reply-protocol: mandatory ack + answer for every ask, minimum wait, one escal",
+      "ref": "MyTradingSys/system/ROUTING.md",
+      "utc": "2026-10-30T00:20:58Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "MyTradingSys/backtest/layers/promotion/test_promote_spec.py::test_empty_trades_fail_closed",
+  "note": "REVIEWED:2026-10-31 ACCEPT (planner-feed-gpt T0 gate + self read; DECISION OURS, no Lab_Guy pass available). Crucial: formula/gate that decides what trades; Sol/Astra low effort. Final report ends with a Noticed: line.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refreshed": "2026-10-31T17:29:55Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/promotion/promote.py",
+    "MyTradingSys/backtest/layers/promotion/test_promote.py",
+    "MyTradingSys/system/ROUTING.md"
+  ],
+  "scope_out": [
+    "code or spec changes",
+    "holdout reads",
+    "BTC runs of the current encoding (ROADMAP section 2)"
+  ],
+  "scope_sha": "0bf8b9261c25",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
+    "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
+    "Report findings as a table: severity HIGH/MED/LOW, file:line, what is wrong, evidence, proposed fix. Change no code and no spec.",
+    "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
+    "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "tests": "new MyTradingSys/backtest/layers/promotion/test_promote_spec.py: each test fails on its mutation, passes on the original",
+  "title": "GPT: mutation audit of promote.py gates",
+  "weight": "CRUCIAL",
+  "worker": ""
+}

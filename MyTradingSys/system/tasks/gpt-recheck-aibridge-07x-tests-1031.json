@@ -1,0 +1,61 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T17:29:27Z",
+  "depends_on": [],
+  "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Cross-vendor recheck of the AIBridge 0.7.x test files: for each assertion say whether it would still pass if the guarded behaviour (task EXIT_CODE gate, cmd kind, payload) were removed; hand-mutate 4 behaviours in a scratch copy; report survivors and write one new failing-first test per survivor.",
+  "id": "gpt-recheck-aibridge-07x-tests-1031",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "AIBridge 0.7.4 runner: native exit code propagates, gate without summary FAILs, child TEMP",
+      "ref": "92024c7daeba",
+      "utc": "2026-10-31T10:27:28Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "MyTradingSys/tests/test_aibridge_07x_survivors.py::test_exit_code_gate_survivor",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refreshed": "2026-10-31T17:29:59Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tests/test_aibridge_task_gate_exit.py",
+    "MyTradingSys/tests/test_aibridge_cmd_kind.py",
+    "MyTradingSys/tests/test_aibridge_payload.py",
+    "scripts/aibridge/extension/background.js"
+  ],
+  "scope_out": [
+    "code or spec changes",
+    "holdout reads",
+    "BTC runs of the current encoding (ROADMAP section 2)"
+  ],
+  "scope_sha": "92024c7daeba",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
+    "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
+    "Report findings as a table: severity HIGH/MED/LOW, file:line, what is wrong, evidence, proposed fix. Change no code and no spec.",
+    "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
+    "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "tests": "new MyTradingSys/tests/test_aibridge_07x_survivors.py: each test fails on the mutated scratch copy and passes on the original",
+  "title": "GPT: cross-vendor recheck of AIBridge 0.7.x tests by mutation",
+  "weight": "",
+  "worker": ""
+}
