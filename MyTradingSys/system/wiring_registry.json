@@ -234,6 +234,11 @@
       "ref": "tom-v2-recall-fire-rate",
       "why": "Research driver for the Tom v2 DESIGN recall and fire rate and the once-only CHECK read (python tom_v2_recall.py design|check); feeds RECALL_DAX_V2.md. Tested by test_tom_v2_recall.py."
     },
+    "MyTradingSys/backtest/vp_return_to_value.py": {
+      "disp": "REPRO",
+      "ref": "tom-vp-return-to-value-count",
+      "why": "Count of Tom's 70/30 return-to-value claim on BTC DEV (PRE_REG.md first); run by hand (python vp_return_to_value.py --out <dir>), regenerates research/tom_transfer_2026-10-11/vp_return/RESULT.md and results.json; covered by test_vp_return_to_value.py; imports vp_pivot_probe and splits only; no live process imports it."
+    },
     "MyTradingSys/backtest/vp_pivot_probe.py": {
       "disp": "REPRO",
       "ref": "T082",

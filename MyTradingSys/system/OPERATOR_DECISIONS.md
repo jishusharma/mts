@@ -1545,3 +1545,8 @@ REMOVED 2026-10-24 (43d3bfc8f): offer_guard.py is gone; the rule now lives in CL
 ```json
 {"id": "d-krown-free-setups-app-check", "order": 92, "date": "2026-10-31", "status": "DECIDED", "question": "Krown offers free trade setups/alerts and has his own Trading App; find them on YouTube and have them checked?", "answer": "OPERATOR (2026-10-31, chat): 'Krown has offered some free trade setups/alerts and he uses his own trading APP - have you seen it? we need to find on youtube abt his free setups and have them checked.' FACT: the app is listed on linktr.ee/erickrown as 'Krown Trading App (Free Market Dynamics)' https://app.krowntrading.net/desk/cryptos/dashboard; our script fetch is refused (443) on 2026-10-09 and 2026-10-31, so it was never seen (KROWN_FREE_VS_PAID.md s1a). DECISION: three cards: gemini-krown-free-setups-alerts-app-search (YouTube extract, captions first), krown-app-probe-in-browser (public pages only, no account), krown-free-setups-dev-check (pre-reg and DEV fee-net check vs his claimed hit-rates).", "done": "cards shipped; Gemini card queued on JIS-NUC gq18"}
 ```
+
+## d-tom-btc-no-human-reader | decided 2026-10-31 | Opus (desktop, login C)
+```json
+{"id": "d-tom-btc-no-human-reader", "order": 90, "date": "2026-10-31", "status": "DECIDED", "question": "Tom-on-BTC cards wait for operator G3 blind chart marks. Will he mark them?", "answer": "No (operator 2026-10-28: rejected candle-only blind marking, one reader only, charts hide his tools). Default applied 2026-10-31 in the artifact declutter: machine readers, results labelled NO-HUMAN-READER; cards tom-btc-eye-read/encode/dev-backtest no longer ask him."}
+```

@@ -2,6 +2,18 @@
   "approved_by": "",
   "asks": "Which logins/devices must open MTS Home (artifacts are per login, 3 pages are single copies on jishusharma1985)? Default: publish a copy per login via artifacts.py plan",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-30T22:31:17Z",
+    "misses": 4,
+    "reads": [
+      "scripts/dev/artifacts.py",
+      "scripts/dev/test_artifacts.py",
+      "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md",
+      "MyTradingSys/system/artifacts/registry.json"
+    ],
+    "session": "agent-ac91e1eabc5f55fbc"
+  },
   "created": "2026-10-30T08:24:31Z",
   "depends_on": [],
   "done_when": "",

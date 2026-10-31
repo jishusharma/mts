@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T23:16:23Z",
   "commands": [],
   "created": "2026-10-30T21:09:06Z",
   "depends_on": [],
@@ -12,19 +13,33 @@
   "goal": "Count Tom's claim that price returns to value ~70% of the time after leaving it (TOM-278/280) on BTCUSDT 1m 2022-2026: per UTC day, first 5m close outside prior-day value (FORMULAS 18.1) -> returns to prior POC that day or not; placebo band shifted d x ATR14 (18.6); Part B split by N closes beyond value (3,6,12). Spec: VP_VIDEO_CONCEPT_CHECK section 3.",
   "id": "tom-vp-return-to-value-count",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "return share 57.2% (CI 53.9..60.7) vs his 70%; +10.4 pp over pooled placebo (CI 6.4..14.4)",
+      "ref": "ace596d9e",
+      "utc": "2026-10-30T23:16:23Z"
+    }
+  ],
   "layers": [
     "tom"
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "Not a trade test: a count of his claim. A share near placebo = property of any band, not of value. If Part B collapses the return share after acceptance, row 3 of the concept check becomes a candidate invalidation rule (separate card).",
+  "note": "REVIEWED:2026-10-31 ACCEPT | Session_Planner (OURS): spec section 18 and PRE-REG-first step checked; count of a claim, no rule added. Not a trade test: a count of his claim. A share near placebo = property of any band, not of value. If Part B collapses the return share after acceptance, row 3 of the concept check becomes a candidate invalidation rule (separate card).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-30T23:00:48Z",
   "refs": [
     "MyTradingSys/research/tom_transfer_2026-10-11/VP_VIDEO_CONCEPT_CHECK_2026-10-31.md"
   ],
-  "result": "",
+  "result": "return share 57.2% (CI 53.9..60.7) vs his 70%; +10.4 pp over pooled placebo (CI 6.4..14.4), placebo within 1 ATR equals real; accepted away N=3/6/12: 51/48/46%",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/vp_return_to_value.py",
     "MyTradingSys/backtest/test_vp_return_to_value.py",
@@ -35,19 +50,21 @@
     "SetupCandidatesBuilder / live tree",
     "tuning N or d by outcome"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [
     "extracts/processed/tom/extract_BB3c8visnkI.md",
     "MyTradingSys/backtest/layers/FORMULAS.md section 18",
     "MyTradingSys/research/tom_core_bt_2026-10-09/PHASE2_RESULT.md"
   ],
-  "state": "raw",
+  "state": "done",
   "steps": [
     "Write PRE_REG.md (event, outcome, placebo, N set, stats) in research/tom_transfer_2026-10-11/vp_return/ before any run; prereg_gate.py if present.",
     "Write the fail-first test, then vp_return_to_value.py reusing vp_pivot_probe.build_profile / value area (18.1) and the 18.7 bootstrap.",
     "Run full range; write RESULT.md Part A, Part B, naked-POC column, per-year; label every number SOURCED/OURS/NO-SOURCE.",
     "Append the verdict line to LAYERS.md tom; tasks.py done with the return share."
   ],
+  "taken": "2026-10-30T23:16:23Z",
   "tests": "MyTradingSys/backtest/test_vp_return_to_value.py from worked examples (3-day toy set: one return, one run-away, one no-event) must fail on a stub first.",
   "title": "Tom VP: count return-to-value after leaving prior-day value on BTC (his 70/30 claim) with placebo + accepted-away split; PRE-REG first",
   "weight": "IMPORTANT",

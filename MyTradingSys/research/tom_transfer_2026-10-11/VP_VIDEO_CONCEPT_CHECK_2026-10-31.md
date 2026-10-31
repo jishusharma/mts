@@ -31,3 +31,27 @@ Checked against trunk at 119ddb7d0 (2026-10-31). Every "tested" cell names the f
 
 ## 4. Noticed
 - `NakedPocTracker.java` is live-loaded into zones with a 0.3 % revisit threshold and has never been backtested or labelled (no LAYERS.md line, no FORMULAS section). Not touched here; the card above reports naked-POC return as a side column so it gets a first number.
+
+## 5. Simulator desk: the concepts as clickable settings, first grid (2026-10-31, DEV 2022-04-01..2024-06-30, BTCUSDT)
+Study `research/sim_desk/studies/tom_vp.py` (test `test_tom_vp.py`, 7 tests, failed before the study existed). Each row is one desk run, ledgered in
+`layer_lab/TRIALS.md` (tries 1-12) and exported to `sim_desk/results/desk-tom_vp-*.json` for the hosted page. Fees 0.02/0.05 % + 0.02 % slip,
+stop 1 x ATR14(1h), market entry next 5m bar, exit at the POC (or one value-area width for ACCEPT) or when the day/week ends. All OURS except the
+concept each row tests. The verdict is the desk's (filled trades, 95 % day-block range).
+| try | Concept on trial | Setting | n | mean net R | 95 % range | win | Verdict |
+|---|---|---|---|---|---|---|---|
+| 1 | returns to value (TOM-275/280) | prior day, RETURN, no exit rule | 1054 | -0.224 | -0.300..-0.148 | 45 % | FAILED |
+| 2 | + accepted away = drop the idea (TOM-273/274) | RETURN, exit after 6 closes outside | 1054 | -0.262 | -0.314..-0.208 | 46 % | FAILED |
+| 3 | + shifted equilibrium filter (TOM-282..284) | RETURN, n6, skip against migration | 918 | -0.258 | -0.314..-0.203 | 47 % | FAILED |
+| 4 | same with our R target | RETURN, n6, target 2R | 1038 | -0.254 | -0.315..-0.192 | 40 % | FAILED |
+| 5 | counter-trade from the value edge (TOM-279) | FADE, no exit rule | 1765 | -0.238 | -0.284..-0.193 | 58 % | FAILED |
+| 6 | FADE + acceptance exit + migration filter | FADE, n6, WITH | 1812 | -0.257 | -0.296..-0.218 | 46 % | FAILED |
+| 7 | accepted away = new fair price, go with it (TOM-274) | ACCEPT after 3 closes | 1640 | -0.250 | -0.317..-0.176 | 36 % | FAILED |
+| 8 | same | ACCEPT after 6 closes | 1420 | -0.202 | -0.277..-0.125 | 36 % | FAILED |
+| 9 | same | ACCEPT after 12 closes | 1180 | -0.264 | -0.339..-0.181 | 36 % | FAILED |
+| 10 | ACCEPT only with the migration | ACCEPT n6, WITH | 1247 | -0.216 | -0.297..-0.133 | 36 % | FAILED |
+| 11 | weekly value, returns to value | prior week, RETURN, n6 | 148 | -0.172 | -0.397..+0.083 | 37 % | NOT ENOUGH DATA |
+| 12 | weekly value, accepted away | prior week, ACCEPT n6 | 365 | +0.081 | -0.206..+0.385 | 23 % | NOT ENOUGH DATA |
+Reading (OURS): every daily-value idea loses 0.20-0.26 R per trade with the whole 95 % range below zero, the same fee-sized loss PHASE2 found for level
+touches; the edge fade wins 58 % of the time and still loses (small wins, full stops); the acceptance exit and the migration filter change nothing
+beyond noise. The two weekly rows are unresolved, not positive: row 12 has 365 trades, a 23 % win rate and a range that spans zero. The 70/30 return
+share itself is not a trade result and stays with card `tom-vp-return-to-value-count`.

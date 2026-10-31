@@ -32,7 +32,7 @@ DECISIONS = "MyTradingSys/system/OPERATOR_DECISIONS.md"
 TASKS = "MyTradingSys/system/tasks"
 NO_ANSWER = ("", "(none yet)")
 # A parked card is the operator's only when its ask is addressed to him; the rest wait on machines (DSA desks, captions, other cards).
-FOR_OPERATOR = re.compile(r"\bJis\b|operator (to|reader|G3|marks)|the operator G3", re.I)
+FOR_OPERATOR = re.compile(r"(?-i:\bJis\b)|operator (to|reader|G3|marks)|the operator G3", re.I)  # "Jis" exact: JIS-NB is a host
 SUPER = "MyTradingSys/system/SUPER_SESSION.md"
 SUPER_HEAD = "## Prompt: start a super session"
 

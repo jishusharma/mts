@@ -1,17 +1,17 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-30T19:50:45Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-30T20:39:11Z",
-    "misses": 22,
+    "folded": "2026-10-30T19:09:26Z",
+    "misses": 12,
     "reads": [
-      "scripts/dev/artifacts.py",
       "scripts/dev/lane_health.py",
       "MyTradingSys/system/codex_usage.json",
       "MyTradingSys/system/lane_state.json",
-      "MyTradingSys/system/LAYERS.md",
       "MyTradingSys/system/OPERATOR_DECISIONS.md",
       "MyTradingSys/system/roles/session_planner.md",
       "scripts/dev/health_audit.py"
@@ -29,7 +29,14 @@
   "id": "gemini-review-gpt-formula-audits-1030",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "research/gemini_audits_2026-10-30/review_gpt_formula_audits.md",
+      "ref": "753106da9",
+      "utc": "2026-10-30T19:50:45Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -41,7 +48,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "reviewed 1031: 17 SAME rows, 6 cited file:line spot-checked OK; kept",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "the 4 report files named in the goal, FORMULAS.md, the 4 layer modules (all read); one output file under research/gemini_audits_2026-10-30/"
   ],
@@ -51,12 +63,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "open each report and list every re-derived number",
     "recompute each from FORMULAS.md and the layer code",
     "write the row table SAME/DIFF with file:line"
   ],
+  "taken": "2026-10-30T19:47:05Z",
   "tests": "see done_when",
   "title": "[GEMINI] cross-vendor review of the 4 GPT formula audits delivered 2026-10-30 (pizzino, pitchfork FIX-FIRST; kurisko, krown SOUND)",
   "weight": "ROUTINE",

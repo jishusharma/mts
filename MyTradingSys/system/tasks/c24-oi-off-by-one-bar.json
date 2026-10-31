@@ -5,6 +5,13 @@
     "python -m pytest -q MyTradingSys/research/eagle_eyes_picture_2026-10-28/test_oi_after_flush_pairing.py",
     "python MyTradingSys/research/eagle_eyes_picture_2026-10-28/oi_after_flush.py"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-30T23:37:19Z",
+    "misses": 11,
+    "reads": [],
+    "session": "agent-a4b54a19b06f60628"
+  },
   "created": "2026-10-30T19:58:17Z",
   "depends_on": [],
   "done_when": "test_oi_after_flush_pairing.py passes and failed before the fix; OI_PAIRING_RECHECK.md lists group n for old and new pairing (old: 18/9/22) and states whether any forward-return claim changed.",
@@ -15,13 +22,23 @@
   "goal": "Fix the bar/OI pairing in oi_after_flush.py (Bybit OI is stamped at snapshot time t = bar open, so a flush bar's OI change is oi[t+5m]/oi[t]) and recheck the group counts n=18/9/22.",
   "id": "c24-oi-off-by-one-bar",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Eagle_Eyes: C24 OI path after a long flush vs next 1h/4h (operator 'OI is favouring what?'",
+      "ref": "bf3fcb862f7f",
+      "utc": "2026-10-30T19:34:59Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "PLANNER 2026-10-31: refined, IMPORTANT, parked as refined until a Sonnet reviewer stamps ACCEPT (no reviewer call this run). Final report ends with a Noticed: line. Blocked? List 2-3 non-destructive fixes, try the safest, verify, then report. Public data (q-gap-c) is pre-approved.",
+  "note": "REVIEWED:2026-10-31 ACCEPT | Session_Planner (OURS): scope read against oi_after_flush.py lines 52 and 57 (pairing confirmed); fail-first test named; IMPORTANT, no decision numbers set.\nFix runs inside the existing card steps. Final report ends with Noticed:.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "planner-20261030-d",
+  "refreshed": "2026-10-30T23:00:48Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -31,9 +48,10 @@
   "scope_out": [
     "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no product-code edit; public Bybit market data only; no order or account call"
   ],
+  "scope_sha": "bf3fcb862f7f",
   "size": "M",
   "sources": [],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "move the pairing into a pure function flush_oi_change(O, C, I, j) so a test can call it without the network fetch",
     "fail-first: test_oi_after_flush_pairing.py builds a 4-bar synthetic series where bar 1 drops price 0.4% and I[2]/I[1]-1 = -0.3%; asserts the function returns -0.3%, which the old i vs i-1 pairing does not",

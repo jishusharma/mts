@@ -1,0 +1,54 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-30T22:45:39Z",
+  "depends_on": [],
+  "done_when": "artifacts.py publish-record --slug sim_desk exits 0 and writes published_sha; test_artifacts.py new test passes; artifacts.py stale lists sim_desk only when its build differs.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "artifacts.py publish-record works for a generator page with html null (sim_desk) by hashing build_html, so sim_desk gets a published_sha and shows in stale/behind.",
+  "id": "artifacts-sim-desk-registry-html",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Home waiting: Jis exact (JIS-NB host no longer counts), Tom-BTC cards take the no-human-re",
+      "ref": "567187eb6bfb",
+      "utc": "2026-10-30T21:52:34Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-31 T0-ONLY (planner, machine checks only)\nPLANNER 2026-10-31: repo-only tooling fix, refs the sim_desk registry row (html null, generator build_artifact.py). DECISION (OURS): ROUTINE, lane HAIKU->SONNET since it needs reading code. Verify: content sha, git cherry empty. End with Noticed:.",
+  "prio": 4,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T23:00:28Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/artifacts.py",
+    "scripts/dev/test_artifacts.py"
+  ],
+  "scope_out": [
+    "registry.json hand edits, sim_desk build_artifact.py, any Artifact publish"
+  ],
+  "scope_sha": "567187eb6bfb",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "publish_record: when html is null and generator is set, hash build_html(pg, repo) instead of repo_html; still SystemExit for neither",
+    "tracked(): include canonical pages with a generator and an owner url even if html is null (stale uses build_html already); behind() returns False-safe for them",
+    "Add test with a fake generator registry page; run test_artifacts.py and test_artifact_pages.py"
+  ],
+  "tests": "New test in test_artifacts.py: publish_record on a page with html null + generator records published_sha. Fails on current code (SystemExit 'no page with repo html').",
+  "title": "artifacts.py registry: sim_desk entry has no repo html path, so publish-record --slug sim_desk refuses after a republish; point it at research/sim_desk/artifact/index.html",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

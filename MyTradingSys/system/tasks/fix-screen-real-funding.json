@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T23:02:23Z",
   "commands": [],
   "context": {
     "calls_to_edit": 10,
@@ -34,6 +35,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "already shipped 3d8722a93 (re-landed 8cae5e9e2): shared funding loader, side x sum(rate); ",
+      "ref": "2e95b7586",
+      "utc": "2026-10-30T23:02:23Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Revert \"Revert real-funding screens: CI red (T06 costs.csv pins screen.py line numbers)\"",
@@ -59,7 +66,12 @@
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T06_cost_fill_realism.md"
   ],
-  "result": "",
+  "result": "already shipped 3d8722a93 (re-landed 8cae5e9e2): shared funding loader, side x sum(rate); DEV d=1 h=60 largest arm move +0.0013 pp (card expected +0.0181), verdict INCONCLUSIVE no flip; fail-first not re-run by supervisor",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/bt/bt_data.py",
     "MyTradingSys/backtest/bt/test_bt_data.py",
@@ -83,13 +95,14 @@
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/t06_funding.py",
     "Dumps/backtest/raw_fund and raw/fundingRate are untracked: run on JIS-NB or JIS-NUC; the loader fails closed elsewhere"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read T06-F1 and T01-F3; reuse bt_data.load_funding and funding_rate_at; add a path resolver (raw_fund first) that raises if no folder exists.",
     "Replace FUND_PCT in screen.py and common.py with side x sum(rate) over settlements in (entry, exit]; keep the flat 1 bp as a column named old_flat_1bp.",
     "Rerun the screen on DEV with scripts/T06/t06_funding.py (about 5 min) and write the old-vs-new table; expect no verdict flip and largest move +0.0181 pp.",
     "Add a fail-first test that a short pays +rate and a long pays -rate on a planted 3-settlement window."
   ],
+  "taken": "2026-10-30T23:02:23Z",
   "tests": "MyTradingSys/research/gross_effect_screen_2026-10-15/test_screen.py new test: a planted long across one +0.01% settlement nets -0.01%, a short +0.01%; fails on the flat-1bp code. bt_data test: both folders missing raises.",
   "title": "Fix T06-F1: screens charge a flat 1 bp funding to both sides; load Dumps/backtest/raw/fundingRate in one shared loader and charge side x sum(rate) (largest published move +0.018 pp, no verdict flips)",
   "weight": "IMPORTANT",

@@ -161,7 +161,10 @@ def llm_extract(video, body, run=subprocess.run):
     # --setting-sources "": project hooks need a session's CLAUDE_PROJECT_DIR and block `claude -p` run from a task
     r = run(["claude", "-p", "--model", MODEL, "--tools", "", "--no-session-persistence", "--setting-sources", ""],
             input=prompt + body, capture_output=True, text=True, encoding="utf-8", timeout=600)
-    r.check_returncode()
+    try:
+        r.check_returncode()
+    except subprocess.CalledProcessError as e:  # keep the cause (OAuth expired etc.): check_returncode drops stderr
+        raise subprocess.CalledProcessError(e.returncode, e.cmd, r.stdout, r.stderr) from e
     m = re.search(r"\{.*\}", r.stdout or "", re.S)
     if not m:
         raise ValueError("no JSON from extractor: " + (r.stderr or r.stdout or "")[:120])
@@ -214,6 +217,11 @@ def build_verdict(video, got, body):
             "alts_general": s(got.get("alts_general")), "alts_general_quote": gq if ok(gq) else ""}
 
 
+def _cause(vid, e):
+    err = (getattr(e, "stderr", None) or "").strip() if not isinstance(e, ValueError) else ""
+    return "%s: %s" % (vid, (err or str(e) or type(e).__name__)[:160])
+
+
 def run_once(now, fetch=fetch_new, extract=llm_extract, store=None):
     """Fetch, extract new videos, write the store and verdicts. Returns (added, total, rejected).
     Rows (window 5 days) feed cbp.query; verdicts (bottom call + alt views, VERDICT_DAYS) feed the dashboard."""
@@ -229,6 +237,7 @@ def run_once(now, fetch=fetch_new, extract=llm_extract, store=None):
     fetch(vcut, known)
     added = rejected = 0
     failures = []
+    cause = []
     for video in local_videos(vcut):
         need_row = video[2] >= cutoff and (video[0], video[1]) not in known
         if not need_row and video[0] in verdicts:
@@ -238,8 +247,9 @@ def run_once(now, fetch=fetch_new, extract=llm_extract, store=None):
             got = extract(video, body)
             row, why = build_row(video, got, body) if need_row else (None, "")
             verdict = build_verdict(video, got, body)
-        except (ValueError, TypeError, AttributeError, OSError, subprocess.SubprocessError):
+        except (ValueError, TypeError, AttributeError, OSError, subprocess.SubprocessError) as e:
             failures.append(video[0])
+            cause.append(_cause(video[0], e))
             continue  # temporary errors must not become permanent rejections
         verdicts[video[0]] = verdict
         if row:
@@ -255,7 +265,7 @@ def run_once(now, fetch=fetch_new, extract=llm_extract, store=None):
     vpath.parent.mkdir(parents=True, exist_ok=True)
     vpath.write_text(json.dumps(verdicts, indent=1, ensure_ascii=False), encoding="utf-8", newline=chr(10))
     if failures:
-        raise RuntimeError("extraction incomplete for %d video(s); retry required" % len(failures))
+        raise RuntimeError("extraction incomplete for %d video(s); retry required: %s" % (len(failures), "; ".join(cause[:3])))
     return added, len(data["rows"]), rejected
 
 

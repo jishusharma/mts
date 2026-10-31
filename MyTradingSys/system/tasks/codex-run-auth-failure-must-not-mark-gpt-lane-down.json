@@ -2,6 +2,17 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-30T23:58:35Z",
+    "misses": 21,
+    "reads": [
+      "scripts/dev/test_codex_run.py",
+      "scripts/dev/codex_run.py",
+      "scripts/dev/lane_health.py"
+    ],
+    "session": "agent-add40fe5eabfc8be7"
+  },
   "created": "2026-10-30T20:31:52Z",
   "depends_on": [],
   "done_when": "codex_run.py tick/next on a host whose Codex returns 401 exits IDLE with a local message and leaves lane_state.json and codex_usage.json unchanged on trunk; test fails on current code; shipped, git cherry empty",
