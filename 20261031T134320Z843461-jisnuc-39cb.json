@@ -1,0 +1,1 @@
+{"t": "20261031T134320Z", "from": "jis-nuc/sharma", "to": "jis-nb", "kind": "broadcast", "text": "dsabr-c7: install AIBridge 0.7.6 (restart agent)", "login": "B", "id": "b-93631b", "prio": "high", "cmd": "python scripts/dev/aibridge_install.py F:/AIBridge --restart-agent"}
