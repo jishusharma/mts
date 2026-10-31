@@ -1,0 +1,309 @@
+# Video ID: KDh8txtcTeU
+# Title: Liquid Tutorial: One Wallet for Stocks, Perps & Prediction Markets
+# Published: 2026-10-28
+# Source: youtube_transcript_api (auto); uploader: Ryan Rossi | Horse
+# Analyst: FlowHorse
+# Channel: @TheFlowHorse
+# Duration_s:660
+# Word count: 2079
+# ---
+[00:00:02] All right, so I've been trading on over
+[00:00:03] 20 years now. And yes, I am that old.
+[00:00:07] I've traded a variety of asset classes.
+[00:00:09] I've used every type of tool that you
+[00:00:11] can imagine. And I could tell you just
+[00:00:13] how important, whether you're in a prop
+[00:00:15] setting or a solo setting on your own as
+[00:00:17] a retail trader, both access and speed
+[00:00:20] are. So, in this video, I'm going to
+[00:00:22] cover a platform that I think excels in
+[00:00:25] every single category beyond those two.
+[00:00:28] And then at the end of this video, I'm
+[00:00:29] going to do a giveaway. I'm going to
+[00:00:31] fund 15 accounts. So, if you're
+[00:00:34] interested, go ahead and type liquid in
+[00:00:37] the comment section below, and I'll go
+[00:00:40] ahead and pick a winners after this
+[00:00:42] video is published. All right, let's get
+[00:00:44] into it. So, what is liquid?
+[00:00:46] Liquid is a non-custodial trading app.
+[00:00:48] So, your account is a wallet that only
+[00:00:50] you control. So, liquid never holds your
+[00:00:53] funds. And that's a big difference
+[00:00:54] between liquid and something like
+[00:00:56] Coinbase or Robinhood.
+[00:00:58] There's no exchange balance sheet that
+[00:00:59] you have to trust. There's no FTX here.
+[00:01:01] Almost everything here is either a
+[00:01:04] perpetual future, right, which is a
+[00:01:06] perp, or a prediction market tool. So,
+[00:01:09] you don't own the Tesla share, you don't
+[00:01:11] own the ounce of gold, you hold a
+[00:01:13] contract that tracks its price. So, you
+[00:01:15] can go long or short. Behind the scenes,
+[00:01:17] your orders route to on-chain venues
+[00:01:19] like hyperliquid and lighter. So, liquid
+[00:01:21] is basically a clean front end on top of
+[00:01:24] pools of liquidity. Signing up takes
+[00:01:26] about a minute. And
+[00:01:28] you could use
+[00:01:30] an email, you could use Google,
+[00:01:32] and access the Privy wallet. You can use
+[00:01:34] Apple, or you could use any of the
+[00:01:37] available crypto wallets. From here,
+[00:01:40] just go ahead and choose a username. And
+[00:01:43] this is the moment where you can get a
+[00:01:45] discount. If you use a code in the
+[00:01:47] description, or if you've clicked on
+[00:01:49] this link, type in horse and you'll get
+[00:01:51] a 10% kickback off of liquid's own fee.
+[00:01:55] The code only works at sign up, so use
+[00:01:58] it now or it's gone. Now here, you'll
+[00:02:00] get the option to pick some traders to
+[00:02:01] follow, so we'll go ahead and pick a
+[00:02:03] few. And now, this is your opportunity
+[00:02:05] to earn some kickback as well. And now
+[00:02:07] you could go ahead and deposit or choose
+[00:02:10] to do that later. Now here's a little
+[00:02:11] bit of a run-through in the platform. I
+[00:02:14] would take a minute or two to watch
+[00:02:15] this, honestly. There's a lot on this
+[00:02:17] platform, so you want to make sure that
+[00:02:19] you're as familiar with it as possible.
+[00:02:21] And from here, you're good to go. Go
+[00:02:23] ahead and make that first deposit. All
+[00:02:25] right, so first a quick tour of the
+[00:02:26] platform. So upper left-hand corner, you
+[00:02:28] have trade, predict, leaderboard, earn,
+[00:02:31] referral, calendar, and co-invest. Trade
+[00:02:33] is where the perpetuals live. This is
+[00:02:34] the screen we're looking at right here,
+[00:02:36] which by the way is entirely
+[00:02:38] customizable. So you could configure
+[00:02:39] this exactly as you would like, whether
+[00:02:41] it's adding windows, removing windows,
+[00:02:43] taking away features, adding features,
+[00:02:46] or just adjusting the layout overall. In
+[00:02:48] terms of perpetuals, you have access to
+[00:02:50] everything. Every crypto pair that you
+[00:02:51] can find on Hyperliquid, that you can
+[00:02:53] find on Lighter, this includes the
+[00:02:55] smaller stuff that's less relevant now.
+[00:02:57] If you want to trade pre-IPO, you want
+[00:02:59] to trade Anthropic, you want to trade
+[00:03:01] Open AI, go ahead, it's available. You
+[00:03:04] could also trade equity indices. You
+[00:03:06] could trade FX. Anything that you could
+[00:03:08] really think of. One of the better
+[00:03:09] features of this platform is that it
+[00:03:11] aggregates everything. Then we have
+[00:03:13] predict. Predict is where the event
+[00:03:15] markets are. So between politics,
+[00:03:18] between sports, crypto, economics,
+[00:03:21] commodities, you name it. It's all
+[00:03:22] priced between zero and a dollar. Then
+[00:03:25] we have the leaderboard, which is where
+[00:03:27] you get a view of what the top traders
+[00:03:30] are doing, which is interesting, but I
+[00:03:31] wouldn't blindly follow anybody. You can
+[00:03:34] follow somebody and keep them under this
+[00:03:36] following only, or you could see what
+[00:03:38] everyone is doing. You have today's
+[00:03:39] performance, you have this week's
+[00:03:41] performance, this month's performance,
+[00:03:43] and so on. If you want to take a look at
+[00:03:46] what someone has been trading, just go
+[00:03:48] ahead and click on their name. You'll
+[00:03:49] get a brief overview of their trading
+[00:03:51] performance and the top asset that they
+[00:03:54] trade. Right away, we could see that
+[00:03:56] this trader often trades equity indices
+[00:03:59] with hype, with Costco, with Google. So,
+[00:04:02] we get a view immediately of what their
+[00:04:04] open positions are. And this trader has
+[00:04:06] quite a few. Then we have earn. Earn has
+[00:04:09] vaults and yield for any idle capital.
+[00:04:12] And like any yield product, you should
+[00:04:14] absolutely understand where the yield
+[00:04:15] comes from. Then we have a calendar,
+[00:04:17] which gives you an idea of the economic
+[00:04:20] events that will be coming through in
+[00:04:21] the coming sessions and the names that
+[00:04:23] are tradable around them. So, on
+[00:04:25] Wednesday, we know we have FOMC. Then we
+[00:04:27] have coinvest. Coinvest is interesting.
+[00:04:30] This is connected to either Claude or
+[00:04:32] ChatGPT or Grokbot. And you can ask,
+[00:04:35] "How is positioning on Bitcoin right
+[00:04:37] now?" And coinvest will connect to your
+[00:04:38] liquid account, connect to ChatGPT,
+[00:04:40] Claude, or Grok, and you can ask
+[00:04:42] anything. You can compare assets, and
+[00:04:44] you can even set up a trade. Now, the
+[00:04:46] trades are going to need your
+[00:04:47] confirmation. I would use this as a
+[00:04:49] research assistant, not necessarily a
+[00:04:51] signal. The AI is not going to know your
+[00:04:53] plan. Obviously, you do. And as a heads
+[00:04:55] up, if you spend a significant amount of
+[00:04:57] time on TradingView, the free extension
+[00:05:00] adds a trade button right onto your
+[00:05:02] chart. So, you can go long or short on
+[00:05:04] the symbol you're looking at without
+[00:05:05] even switching apps. And that's probably
+[00:05:07] one of the more useful features
+[00:05:08] considering most people do use
+[00:05:10] TradingView. Now, placing a trade, and
+[00:05:12] this is one of the things that I think
+[00:05:14] makes Liquid exceptional amongst trading
+[00:05:17] terminals. So, you have your basic order
+[00:05:19] entry. So, to the left, we have the
+[00:05:20] feed. And again, you could customize
+[00:05:22] this and have different things here. We
+[00:05:23] have a feed of traders, and you could go
+[00:05:25] ahead and copy trade them right away.
+[00:05:27] You can go ahead and place an order the
+[00:05:29] way that you would typically on any
+[00:05:32] platform. And just to remind you, this
+[00:05:35] is determining how much margin we're
+[00:05:38] putting up. The leverage is the
+[00:05:40] multiplier of that. Keep in mind the
+[00:05:42] amount of leverage that you're using.
+[00:05:44] The more leverage that you use, the
+[00:05:46] closer that your liquidation value is
+[00:05:48] going to be. So, we'll just do a flat
+[00:05:50] 100 as an example. So, we have $100 in
+[00:05:54] margin and we're going to make this a
+[00:05:57] let's say a 20x trade. So, the notional
+[00:05:59] value is going to be $2,000 and this is
+[00:06:02] in the S&P 500. The liquidation for this
+[00:06:05] position, as you can see, is only going
+[00:06:08] to be 10 points lower because we're
+[00:06:10] using a lot of leverage. And for this
+[00:06:13] example, this is based off of the
+[00:06:15] initial capital that I put on the
+[00:06:17] platform for this video. So, always keep
+[00:06:19] in mind your liquidation value. This is
+[00:06:21] extremely important. In trading, size
+[00:06:24] and risk come before anything else. But
+[00:06:27] outside of that, because I know a lot of
+[00:06:28] people are familiar with this already,
+[00:06:30] the thing that I think makes Liquid
+[00:06:33] extremely useful is the fact that you
+[00:06:35] have this live newsfeed. So, as this
+[00:06:38] live newsfeed comes through, which by
+[00:06:40] the way is completely customizable, we
+[00:06:42] can go ahead and only select for pairs
+[00:06:45] that we want to follow. We could show
+[00:06:47] the entire market, but as these come
+[00:06:49] through, you can click right off of the
+[00:06:52] story. So, these presets, so 100, 500,
+[00:06:56] 100, 500 for sells and buys, you can go
+[00:06:59] ahead and change those presets to
+[00:07:02] whatever value you want. But the value
+[00:07:04] in this is that right away, I can go
+[00:07:06] ahead and just for the sake of this
+[00:07:08] example, I could click right into a
+[00:07:09] position and I am already long
+[00:07:12] immediately. And from here, if I want to
+[00:07:15] go ahead and place a TP and place a stop
+[00:07:19] loss, all these things I can immediately
+[00:07:21] do right from the positions chart. So,
+[00:07:24] obviously, exercising proper risk
+[00:07:26] management, I'm going to go ahead and
+[00:07:28] place a stop on that. Now, I picked STX,
+[00:07:30] okay? This was just to show an example
+[00:07:32] of how fast you can execute right
+[00:07:35] through the news terminal. Let's say we
+[00:07:37] want to go ahead and long oil. So, we
+[00:07:39] click 100 and we're immediately long,
+[00:07:41] right? This is hit scan speed. There's
+[00:07:43] almost no delay whatsoever, which is
+[00:07:45] extremely important as you can imagine
+[00:07:47] if you're going to be trading headlines.
+[00:07:49] This is probably one of the best
+[00:07:50] features of Liquid on top of the fact
+[00:07:53] that you are aggregating multiple venues
+[00:07:56] and you're aggregating with prediction
+[00:07:58] markets. So you have basically
+[00:08:00] everything that you can imagine on one
+[00:08:02] platform and if you have an idea, you
+[00:08:04] have a way to express that. Now I'll go
+[00:08:06] ahead and close these trades out and
+[00:08:08] again, this is basically just a test
+[00:08:09] account. So we'll close the trades. And
+[00:08:11] now let's say you've made all the money
+[00:08:13] that you wanted to make and you want to
+[00:08:15] it withdraw that. So we just go to this
+[00:08:17] icon up here, click on your profile, go
+[00:08:19] to withdraw and I would say make sure
+[00:08:22] that you always and you have the option
+[00:08:24] to withdraw to your bank account. Make
+[00:08:26] sure that you always test the exit
+[00:08:29] before you put any real size on
+[00:08:31] anywhere. Crypto is a dangerous place.
+[00:08:32] The withdraw is easy, but I would always
+[00:08:35] make sure that before you withdraw that
+[00:08:37] you test the address, right? This is
+[00:08:39] just a crypto hygiene sort of best
+[00:08:41] practice. Now this is going to send USDC
+[00:08:45] to Arbitrum for a dollar fee, but it's
+[00:08:47] super easy. Could go ahead and max that
+[00:08:49] out, select the token and add your
+[00:08:51] address and you're good to go. And now
+[00:08:53] an important part and I think that this
+[00:08:55] is something that obviously has to be
+[00:08:57] touched on and most tutorials probably
+[00:08:59] skip. Liquid does add five basis points
+[00:09:01] on top of each fill.
+[00:09:03] So at the base tier that's around
+[00:09:05] 0.095%.
+[00:09:07] Right? That's for taker and 0.065% for
+[00:09:09] maker all in. Again, that's at the base
+[00:09:11] tier. If you went to the exchanges
+[00:09:13] directly, yes, you would pay less. So
+[00:09:15] you are paying a fee, but it's for a
+[00:09:18] convenience fee, right? It's one app,
+[00:09:20] stocks, FX, pre-IPO, perps, commodities,
+[00:09:24] equity indices and a mobile experience
+[00:09:26] that doesn't feel like a trading
+[00:09:28] terminal at all. Now as a reminder, if
+[00:09:29] you're using the link or using my code,
+[00:09:32] you're getting 10% of fees back already.
+[00:09:34] All right, so my verdict. If you're
+[00:09:36] trading traditional markets and you're
+[00:09:37] trading crypto, and you're trading
+[00:09:39] prediction markets as well, then the
+[00:09:41] platform is a no-brainer. Just for the
+[00:09:43] convenience of having all of those
+[00:09:45] aggregated. You also have all of the
+[00:09:47] technical features as well. If you're
+[00:09:48] trading news, and you could just
+[00:09:49] immediately point and click on an
+[00:09:51] update, on a story, that's a huge
+[00:09:53] advantage. You also have the fact that
+[00:09:56] it is a crypto wallet. This is not a
+[00:09:58] custodial wallet. There is no
+[00:10:00] centralized exchange risk, which is a
+[00:10:03] major problem worth mitigating. So, I
+[00:10:06] think Liquid is a phenomenal product.
+[00:10:09] I've actually gone ahead and partnered
+[00:10:10] with them. Because of that, anyone that
+[00:10:13] uses my link gets a 10% off discount of
+[00:10:17] their fees. And that's important because
+[00:10:19] the benefit of this tool doesn't come at
+[00:10:21] no cost. There is a convenience fee. You
+[00:10:23] are paying slightly above what you would
+[00:10:26] pay if you traded on the underlying
+[00:10:28] exchange. But, I think for 99% of
+[00:10:30] people, the tooling, the access, and the
+[00:10:33] fact that all of these are together more
+[00:10:35] than make up for that. So, again, if
+[00:10:37] you're interested in the giveaway, type
+[00:10:39] Liquid below. I'll be doing that
+[00:10:41] giveaway over the coming week. Use the
+[00:10:43] link, take advantage of the discount,
+[00:10:44] and hopefully I'll be able to bring more
+[00:10:46] of things like this to you guys moving
+[00:10:48] forward.
+[00:10:49] Out.

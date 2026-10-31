@@ -1,4 +1,4 @@
-"""Write the Eagle_Eyes 10-30/31 chart-idea tests (C21, C23-C26) as simulator result files (sim_desk/DESIGN.md "Result files").
+"""Write the Eagle_Eyes 10-30/31 chart-idea tests (C21, C23-C30) as simulator result files (sim_desk/DESIGN.md "Result files").
 C26 trades are recomputed from c26_arms.py (replay); the others carry the numbers recorded in BACKTEST_CANDIDATES.md.
 Percent, R and timestamps only (no prices: the repo is public). Usage: python export_sim.py <repo>"""
 import json, os, sys
@@ -116,6 +116,100 @@ out.append(base("eagle-c25-stochrsi", "C25: Stoch RSI cross vs plain RSI as a tr
             ["1h", "Stoch cross short + trend (n 325/316)", "+0.067%", "+0.069%"], ["4h", "Stoch cross long (n 153/151)", "+0.033%", "-0.258%"],
             ["1d", "Stoch cross long + trend (n 17/16)", "+0.680%", "+0.835%"]])],
     ["stochrsi_vs_rsi.py"]))
+
+out.append(dict(base("eagle-c27-wavetrend", "C27: WaveTrend dots (LazyBear WT_CROSS_LB) as triggers, 15m / 1h / 2h / 4h",
+    [P("WaveTrend", "n1 10, n2 21, wt2 = 4-bar average of wt1; overbought / oversold lines +53 / -53", "SOURCED"),
+     P("Signals", "buy dot = wt1 crosses up through wt2 (in the -53 zone, or anywhere); sell dot = the mirror"),
+     P("Hold", "16 x 15m, 12 x 1h, 6 and 12 x 2h, 6 x 4h; entry at the close of the bar after the dot"),
+     P("Edge", "signal mean minus holding the same side for the same time at every bar"), FEE],
+    "wavetrend_dots.py on Binance spot 15m from 2022 (1h/2h/4h built from it); 2024-07+ left sealed for the WaveTrend pre-reg.",
+    "NO as a trigger: no dot type beats fees on any timeframe beyond noise; zone dots (the ones on the chart) are worse than plain dots.", "bad",
+    ["Agrees with the older MTS WaveTrend atlas (wavetrend_2026-10-17: 4 FAIL, 5 INCONCLUSIVE, no fees) and the 30m sequence study.",
+     "Best cell: 4h any buy dot, net +0.14% over 24h, 1 SE 0.14% - one standard error, among 20 cells: luck-sized.",
+     "Use it as context (stretched / turning), never alone; a 2024-07+ check needs its own pre-registration."],
+    [{"label": "2h buy dot <= -53, 24h net", "value": "-0.19% (n 108)", "tone": "bad"},
+     {"label": "2h sell dot >= 53, 24h net", "value": "-0.41% (n 119)", "tone": "bad"},
+     {"label": "Best cell: 4h any buy dot", "value": "+0.14% net, 1 SE 0.14%", "tone": "warn"}],
+    [table("After fees, 2022-01..2024-06", ["Chart / hold", "Signal", "n", "Win", "Edge vs base", "Net"],
+           [["15m / 4h", "buy dot <= -53", 787, "57%", "-0.00%", "-0.09%"], ["15m / 4h", "sell dot >= 53", 825, "51%", "-0.06%", "-0.17%"],
+            ["1h / 12h", "buy dot <= -53", 216, "49%", "-0.15%", "-0.21%"], ["1h / 12h", "sell dot >= 53", 214, "50%", "-0.16%", "-0.30%"],
+            ["2h / 24h", "buy dot <= -53", 108, "52%", "-0.18%", "-0.19%"], ["2h / 24h", "sell dot >= 53", 119, "55%", "-0.22%", "-0.41%"],
+            ["2h / 24h", "any buy dot", 815, "51%", "+0.04%", "+0.02%"], ["4h / 24h", "any buy dot", 405, "54%", "+0.15%", "+0.14%"],
+            ["4h / 24h", "any sell dot", 404, "43%", "-0.16%", "-0.34%"]])],
+    ["wavetrend_dots.py"]), window="2022-01-01 to 2024-06-30 only (2024-07+ sealed by wavetrend_2026-10-17/PRE_REG.md)"))
+
+import wt_context as WC
+_c28 = WC.trades("2h", 8, WC.RULES[4], 2)
+_rows, _cum, _s = [], [], 0.0
+for r in _c28:
+    _s += r["net"]; _cum.append(round(_s, 3))
+    _rows.append({"d": day(r["t"])[:10], "s": r["d"], "f": "2h uptrend buy dot (exit: %s, %d bars)" % (r["why"], r["bars"]),
+                  "l2": 0, "t1": 0, "t2": 0, "r": round(r["net"], 3)})
+out.append(dict(base("eagle-c28-wt-structure", "C28: WaveTrend inside market structure (sell tops in downtrends, buy dots in uptrends), 1h / 2h / 4h",
+    [P("WaveTrend", "n1 10, n2 21, wt2 = 4-bar average; bands +53 / -53", "SOURCED"),
+     P("Trend", "flips down when a close breaks the last swing low, up when a close breaks the last swing high; swings = +-5 bars, known 5 bars later"),
+     P("Entries", "downtrend: sell dot at >= 53 or >= 0, buy dot at <= -53; uptrend: buy dot at <= -53 or <= 0; next bar's open"),
+     P("Exits compared", "X1 centre cross | X2 far band | X3 first opposite dot after the far band | X4 first opposite dot; trend flip ends a with-trend trade; cap 60 bars"),
+     FEE],
+    "wt_context.py on Binance spot 15m built into 1h/2h/4h. Replay = the best cell (2h uptrend buy dot <= 0, exit X3); r = net % per trade (no fixed stop).",
+    "NO for the downtrend shorts; one LEAD: 2h uptrend buy dot, exit at the first sell dot after WT reaches +53 (n 69, +0.45% net, both halves positive).", "warn",
+    ["In a downtrend WT almost never reaches +53: 5 sell-dot-in-the-red-band trades on 1h in 2.5 years, none on 2h/4h.",
+     "Downtrend shorts at sell dots above 0 lose on every timeframe and every exit (-0.15% to -0.55% per trade).",
+     "The lead was chosen as best of about 40 cells on the same data (t 1.0) and beats random entries with the same exit in only 25 of 30 draws (bt_preflight.py P8): it needs a pre-registered read of 2024-07+ before anyone trusts it."],
+    [{"label": "2h uptrend buy dot, exit X3", "value": "+0.45% net, n 69", "tone": "warn"},
+     {"label": "2h downtrend short at sell dot >= 0", "value": "-0.15% to -0.55%", "tone": "bad"},
+     {"label": "Sell dots in the red band during downtrends", "value": "5 in 2.5 years (1h)", "tone": "bad"}],
+    [{"kind": "replay", "title": "2h uptrend buy dot, exit at the first sell dot after +53", "trades": _rows, "cum": _cum},
+     table("Net per trade after fees, 2022-01..2024-06 (halves: to 2023-03 / from 2023-04)", ["Chart", "Rule", "Exit", "n", "Win", "Net", "Halves"],
+           [["2h", "Uptrend buy dot <= 0", "X3", 69, "39%", "+0.454%", "+0.64% / +0.32%"], ["2h", "Uptrend buy dot <= 0", "X1", 85, "56%", "+0.061%", "+0.20% / -0.05%"],
+            ["4h", "Uptrend buy dot <= 0", "X3", 24, "38%", "+0.734%", "+1.12% / +0.41%"], ["1h", "Uptrend buy dot <= 0", "X3", 133, "36%", "-0.005%", "+0.12% / -0.13%"],
+            ["2h", "Downtrend sell dot >= 0", "X1", 83, "46%", "-0.160%", "-0.16% / -0.16%"], ["2h", "Downtrend sell dot >= 0", "X4", 100, "30%", "-0.150%", "-0.08% / -0.23%"],
+            ["1h", "Downtrend sell dot >= 0", "X1", 139, "46%", "-0.259%", "-0.16% / -0.36%"], ["4h", "Downtrend buy dot <= -53", "X4", 44, "45%", "+0.549%", "+0.41% / +0.74%"],
+            ["2h", "Downtrend buy dot <= -53", "X1", 66, "68%", "-0.050%", "-1.34% / +1.40%"]])],
+    ["wt_context.py", "wavetrend_dots.py"]), window="2022-01-01 to 2024-06-30 only (2024-07+ sealed by wavetrend_2026-10-17/PRE_REG.md)"))
+
+out.append(dict(base("eagle-c29-wt-lower-tf", "C29: red-band WaveTrend sells in a downtrend on 10m / 15m / 30m (trend from the same chart or from 2h)",
+    [P("WaveTrend", "n1 10, n2 21, wt2 = 4-bar average; bands +53 / -53", "SOURCED"),
+     P("Trend", "same chart: swing-break structure on the trading chart; 2h: structure of the last CLOSED 2h bar"),
+     P("Rules / exits", "as C28 (sell dot >= 53 or >= 0 in a downtrend, buy dots in an uptrend; exits X1-X4; cap 60 bars)"), FEE],
+    "wt_lower_tf.py on Binance spot 5m from 2022 built into 10m/15m/30m.",
+    "Frequency fixed, profit not: with the 2h downtrend as context red-band sells happen often (10m n 321, 15m 187, 30m 63) but lose on 10m/15m; 30m about flat.", "bad",
+    ["With the trend read on the same small chart, red-band sells stay rare (3-9 in 2.5 years): the context has to come from a higher chart.",
+     "10m and 15m red-band sells lose with every exit (-0.04% to -0.21% per trade after fees).",
+     "30m with the 2h downtrend: +0.18% per trade with exit X3 (n 61, both halves positive, t 0.5): too weak to call."],
+    [{"label": "10m red-band sells, 2h downtrend", "value": "n 321, -0.09% to -0.17%", "tone": "bad"},
+     {"label": "15m red-band sells, 2h downtrend", "value": "n 187, -0.04% to -0.21%", "tone": "bad"},
+     {"label": "30m red-band sells, 2h downtrend, X3", "value": "n 61, +0.18%", "tone": "warn"}],
+    [table("Downtrend red-band sells (sell dot >= 53), net per trade after fees", ["Chart", "Trend from", "Exit", "n", "Net", "Halves"],
+           [["10m", "2h", "X1", 321, "-0.117%", "-0.08% / -0.16%"], ["10m", "2h", "X4", 458, "-0.094%", "-0.08% / -0.11%"],
+            ["15m", "2h", "X1", 187, "-0.037%", "+0.14% / -0.25%"], ["15m", "2h", "X3", 176, "-0.209%", "-0.06% / -0.39%"],
+            ["30m", "2h", "X3", 61, "+0.181%", "+0.21% / +0.16%"], ["30m", "2h", "X4", 78, "+0.068%", "+0.16% / +0.01%"],
+            ["10m", "same", "X1", 9, "-0.179%", "-"], ["15m", "same", "X1", 4, "-0.532%", "-"]])],
+    ["wt_lower_tf.py", "wt_context.py"]), window="2022-01-01 to 2024-06-30 only (2024-07+ sealed by wavetrend_2026-10-17/PRE_REG.md)"))
+
+out.append(dict(base("eagle-c30-wt-rsi-div", "C30: WaveTrend dots plus RSI divergence (sell tops with bearish, buy bottoms with bullish), 10m to 4h",
+    [P("RSI", "14, Wilder", "SOURCED"), P("WaveTrend", "n1 10, n2 21, wt2 = 4-bar average; bands +53 / -53", "SOURCED"),
+     P("Divergence", "newest high (low) in the last 8 bars beyond the extreme of bars 9-40 back while RSI is lower (higher); first RSI peak >= 60 (trough <= 40)"),
+     P("Trend", "any / same chart / last closed 2h bar"), P("Exits", "X1-X4 as C28; cap 60 bars"), FEE],
+    "wt_rsi_div.py: 5m data built into 10m/15m/30m, 15m data into 1h/2h/4h. About 250 cells: treat every number as in-sample.",
+    "Bottoms YES-ish, tops NO: buy dot <= -53 with bullish RSI divergence is positive on 15m and 30m in both halves; shorts with bearish divergence lose almost everywhere (3 of 65 cells positive).", "warn",
+    ["30m buy dot <= -53 + bullish divergence, exit at the centre line: n 88, win 80%, +0.35% net, both halves positive; it beats the same buy dots without divergence (95th percentile +0.22%) and random bars (+0.13%).",
+     "15m same rule with the 2h trend up, centre-line exit: n 44, win 75%, +0.26%, t 2.8.",
+     "Selected from about 250 cells on one period: needs a pre-registered read of 2024-07+ before anyone trusts it."],
+    [{"label": "30m buy dot <= -53 + bull div, X1", "value": "+0.35% net, n 88, win 80%", "tone": "good"},
+     {"label": "Shorts with bearish divergence", "value": "3 of 65 cells positive", "tone": "bad"},
+     {"label": "Long cells positive", "value": "30 of 62", "tone": "warn"}],
+    [table("Net per trade after fees (n >= 30), 2022-01..2024-06", ["Chart", "Signal", "Trend", "Exit", "n", "Win", "Net", "Halves"],
+           [["30m", "buy dot <= -53 + bull div", "any", "X1", 88, "80%", "+0.346%", "+0.41% / +0.25%"],
+            ["30m", "buy dot <= -53 + bull div", "any", "X2", 87, "61%", "+0.322%", "+0.33% / +0.32%"],
+            ["15m", "buy dot <= -53 + bull div", "2h up", "X1", 44, "75%", "+0.261%", "+0.30% / +0.22%"],
+            ["15m", "buy dot <= -53 + bull div", "2h up", "X2", 42, "60%", "+0.355%", "+0.42% / +0.29%"],
+            ["4h", "buy dot <= 0 + bull div", "any", "X4", 35, "46%", "+0.904%", "+0.80% / +1.10%"],
+            ["2h", "buy dot <= -53 + bull div", "any", "X4", 30, "50%", "+0.609%", "+0.36% / +0.98%"],
+            ["10m", "sell dot >= 53 + bear div", "any", "X1", 249, "-", "-0.137%", "-"],
+            ["15m", "sell dot >= 53 + bear div", "any", "X1", 168, "-", "-0.240%", "-"],
+            ["30m", "sell dot >= 53 + bear div", "any", "X1", 83, "-", "-0.461%", "-"]])],
+    ["wt_rsi_div.py", "wt_lower_tf.py", "wt_context.py"]), window="2022-01-01 to 2024-06-30 only (2024-07+ sealed by wavetrend_2026-10-17/PRE_REG.md)"))
 
 out.append(base("eagle-c21-bb-pierce", "C21: first close under the lower Bollinger band in a falling band, short to the mid",
     [P("Pierce", "first close below BB(20,2) lower band, mid falling, no pierce in the prior 10 bars"),

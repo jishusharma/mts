@@ -95,6 +95,25 @@ t('batch of 6: each result carries its own cmd and a swapped reply is rejected',
   });
   assert.ok(L.checkEcho('r2', blocks[1].cmd, reply(blocks[4])).startsWith('STALE_REPLY'));
 });
+t('0.7.7 expireMs: a task without timeout= waits for the agent default (E6)', () => {
+  assert.strictEqual(L.expireMs(undefined, true), 1200000);
+  assert.strictEqual(L.expireMs(undefined), 240000);
+  assert.strictEqual(L.expireMs(1200, true), 2400000);
+  assert.strictEqual(L.extendMs(true), 1860000); assert.strictEqual(L.extendMs(false), 360000);
+});
+t('0.7.7 blockFailed: any non-zero exit stops the batch, a read included (E5)', () => {
+  const r = (b, extra) => Object.assign({ ok: true, status: 200, body: b }, extra || {});
+  assert.strictEqual(L.blockFailed(r({ exit: 128, kind: 'read' })), 'exit 128 (read)');
+  assert.strictEqual(L.blockFailed(r({ exit: 1, kind: 'write' })), 'exit 1');
+  assert.strictEqual(L.blockFailed(r({ exit: 0, kind: 'read' })), null);
+  assert.strictEqual(L.blockFailed(r({ timed_out: true, exit: 0 })), 'timed out');
+  assert.strictEqual(L.blockFailed({ ok: false, status: 403 }), 'refused');
+  assert.strictEqual(L.blockFailed({ ok: false, status: 500 }), 'bridge error');
+});
+t('0.7.7 notice text tells DSA not to repeat blocks that have a result', () => {
+  assert.ok(L.REPLY_NOTICE_TEXT.includes('do not repeat blocks that already have a result'));
+  assert.ok(L.ANSWER_MIN_CHARS <= 15);
+});
 (async () => {
   const never = new Promise(() => {});
   const r = await L.raceDeadline(never, 20, () => Promise.resolve(0));
@@ -107,5 +126,14 @@ t('batch of 6: each result carries its own cmd and a swapped reply is rejected',
   const r2 = await L.raceDeadline(never, 20, () => null);
   assert.strictEqual(r2.cls, 'LOCK_EXPIRED');
   console.log('PASS raceDeadline: lost completion frame releases the lock with a visible reason'); 
+  { // E6: agent still running at expiry -> extended once, the real result arrives, no LOCK_EXPIRED
+    const slow = new Promise(res => setTimeout(() => res({ ok: true, real: 1 }), 80));
+    const got = await L.raceDeadline(slow, 20, () => Promise.resolve(1), 500);
+    assert.deepStrictEqual(got, { ok: true, real: 1 });
+    const never2 = new Promise(() => {});
+    const lost = await L.raceDeadline(never2, 20, () => Promise.resolve(1), 40);   // extended once, then released
+    assert.strictEqual(lost.cls, 'LOCK_EXPIRED');
+    console.log('PASS raceDeadline: running > 0 at expiry extends once (0.7.7)');
+  }
   console.log((n + 1) + ' passed (incl. async)');
 })().catch(e => { console.error(e); process.exit(1); });

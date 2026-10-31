@@ -115,3 +115,6 @@ trendlines_2026-10-17,TL2_1h_V_reclaimed,2026-10-28,DEV,F:/MTS/data/tom_raw/klin
 trendlines_2026-10-17,TL2_sens_wick_log_noage,2026-10-28,DEV,F:/MTS/data/tom_raw/klines 1m->1h/4h/1d,"count-only v2 sensitivity family wick_log_noage; counted, not powered",count-only
 trendlines_2026-10-17,TL2_sens_wick_linear_age500,2026-10-28,DEV,F:/MTS/data/tom_raw/klines 1m->1h/4h/1d,"count-only v2 sensitivity family wick_linear_age500; counted, not powered",count-only
 trendlines_2026-10-17,TL2_sens_close_log_age500,2026-10-28,DEV,F:/MTS/data/tom_raw/klines 1m->1h/4h/1d,"count-only v2 sensitivity family close_log_age500; counted, not powered",count-only
+eagle_c30_dev_search,C27-C30_all_cells,2026-10-31,DEV,Binance spot BTCUSDT 5m/15m klines (public),WaveTrend dots C27-C29 + C30 256 cells (4 signals x 3 trends x 4 exits x 6 charts - 32),explored
+eagle_c30_prereg,H1_30m_buy53_bulldiv_X1,2026-10-31,VALIDATION,Binance spot BTCUSDT 5m klines (public),30m buy dot wt1<=-53 + bullish RSI div any trend exit centre cross,pre-registered
+eagle_c30_prereg,H2_15m_buy53_bulldiv_2hup_X1,2026-10-31,VALIDATION,Binance spot BTCUSDT 5m klines (public),15m same signal with last closed 2h structure up exit centre cross,pre-registered

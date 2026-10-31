@@ -5,7 +5,9 @@
   "id": "20261028-164002-cbp-ingest-habib-s-3-missing-videos-hymq",
   "need": "python scripts/dev/fetch_captions_timed.py --analyst habib --canonical-out <CBP_HOME>/raw_transcripts_canonical hymqmEfCGrw R15Ao0XUoV8 c9qf7QJroAE; python -c \"import sys;sys.path.insert(0,'MyTradingSys');import cbp;d=cbp.load();print(len([r for r in d['rows'] if r['analyst']=='habib']),'habib rows')\" (full brief: python scripts/dev/tasks.py brief cbp-ingest-habib-s-3-missing-videos-hymq)",
   "posted": "2026-10-28T16:40:02Z",
-  "status": "pending",
+  "status": "taken",
+  "taken": "2026-10-31T17:25:47Z",
+  "taken_by": "JIS-NB",
   "target": "DSA",
   "title": "CBP: ingest Habib's 3 missing videos (hymqmEfCGrw, R15Ao0XUoV8, c9qf7QJroAE)"
 }

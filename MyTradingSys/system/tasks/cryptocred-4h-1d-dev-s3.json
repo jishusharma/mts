@@ -1,0 +1,80 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/research/cryptocred_s3_2026-11/test_cc_s3_run.py -q",
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "created": "2026-10-31T15:15:35Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/cryptocred_s3_2026-11/RESULT.md states n, win, mean fee-net R per setup (4h S1, S2, 1d), CI, Holm p and PASS/FAIL/INCONCLUSIVE; sim_desk/results/cryptocred-4h-1d-dev-s3.json exported; VALIDATION read at most once and only after a DEV pass; HOLDOUT untouched; VERDICTS.csv row added.",
+  "est_turns": 35,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Run the frozen CryptoCred 4h/1d redesign on DEV with real funding, fee-net, then exactly one VALIDATION read if DEV passes (D7 S3 run list #4). Parameters come only from PRE_REG_CRYPTOCRED_HTF.md; none tuned.",
+  "id": "cryptocred-4h-1d-dev-s3",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "gate: run-scoped temp root so test scratch dirs no longer pile up in %TEMP%",
+      "ref": "5200e38f8c41",
+      "utc": "2026-10-28T16:27:36Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "dc7452725b7f cryptocred-prereg-4h-1d: Rule 11 fixes to the CryptoCred 4h/1d pre-registrati",
+      "ref": "MyTradingSys/research/cryptocred_htf_2026-10/PRE_REG_CRYPTOCRED_HTF.md",
+      "utc": "2026-10-18T18:33:39Z"
+    }
+  ],
+  "layers": [
+    "cryptocred"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-31 ACCEPT (Sonnet reviewer Agent, FIX applied once, not re-read, planner DECISION OURS). PLANNER (OURS: arms and split per the existing PRE_REG; no new parameters). Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T15:37:55Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D7_ROADMAP.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/cryptocred_htf_2026-10/PRE_REG_CRYPTOCRED_HTF.md",
+    "MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py",
+    "MyTradingSys/research/cryptocred_s3_2026-11/",
+    "MyTradingSys/research/cryptocred_s3_2026-11/test_cc_s3_run.py",
+    "scripts/dev/run_extra_tests.py"
+  ],
+  "scope_out": [
+    "live tree",
+    "HOLDOUT bars",
+    "changing any PRE_REG parameter after the first DEV read",
+    "cc_setups.py logic"
+  ],
+  "scope_sha": "5200e38f8c41",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D7_ROADMAP.md:37",
+    "MyTradingSys/research/cryptocred_htf_2026-10/PRE_REG_CRYPTOCRED_HTF.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "write test_cc_s3_run.py first and run it red",
+    "python scripts/dev/verdicts.py check 'cryptocred 4h 1d'; paste output into a PRE_REG addendum (m first, prereg_gate.py --m auto)",
+    "freeze the addendum (sha in commit) before any outcome is read; bars via splits.py assert_dev_only; funding from Dumps/backtest/raw/fundingRate",
+    "run run_cc_setups.py on DEV per setup; block bootstrap per FORMULAS 18.7; costs fees.py regime A plus funding",
+    "all arms fail or INCONCLUSIVE: write the stop line (PRE_REG 0f); only a DEV pass earns one VALIDATION read",
+    "the one VALIDATION read is gated in code on a DEV pass flag in RESULT.md; write RESULT.md, export results json, backfill VERDICTS.csv"
+  ],
+  "tests": "Fail-first: add test_cc_s3_run.py asserting the runner raises on any bar after 2024-06-30 (assert_dev_only) and that a hand-built 3-trade ledger gives the FORMULAS-computed mean net R; both fail before the wrapper exists. List the file in scripts/dev/run_extra_tests.py EXTRA.",
+  "title": "CryptoCred 4h/1D S3 test: frozen PRE_REG, fee-net DEV run with real funding, then one VALIDATION read (D7 S3 run list #4)",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

@@ -30,6 +30,7 @@ Context already on trunk: `research/yt_feed_2026-10-31/COWEN_LEVELS_2026-10-31.m
 - **Why so few trades?** His ideas fire a few times per year, and the band needs 21 completed weeks, so the first signal is June 2022. Cycle claims with n = 3 never pass a 30-trade floor, whatever the market does.
 - **How to apply exactly, today?** As a context flag only, never a trigger. His reading of the band: 72k to 76k (bWdXPK3Hlok 00:06:02); price 77.3k on 2026-10-31, just above the top. Eagle_Eyes and the CBP dashboard may show: BTC vs band top 76k, the 83k line he calls lost, and his two scenarios (bounce then final drop after the midterms, or an early low). Say it is his thesis, not a layer.
 - **What would settle it?** A pre-registered daily-bar event study on BTC from 2017-08 to 2024-06 (public Binance daily bars, no 1m needed): about 25 BOUNCE and LOSE events, enough to test the band with a 95 % range. Card: `cowen-bmsb-daily-event-study`.
+- **Daily event study result (2026-10-31, card cowen-bmsb-daily-event-study, `event_study/RESULT.md`):** BTC daily bars 2017-08..2024-06, fees in, single run. NOT ENOUGH DATA for all four ideas (n 19 to 22, floor 30). BOUNCE n 21, -0.20 R (-0.74 .. +0.37); LOSE n 22, +0.69 R (+0.07 .. +1.30, placebo difference +0.02 .. +1.50, gain mostly 2018-2019); FAKEOUT n 20, +0.33 R (-0.28 .. +0.93); CATCHDOWN n 19, -0.40 R (-0.87 .. +0.08). No edge proven; LOSE is a lead only. No rule or layer added.
 
 ## 3. The study on the desk
 

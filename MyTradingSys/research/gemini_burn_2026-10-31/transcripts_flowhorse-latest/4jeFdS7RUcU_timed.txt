@@ -1,0 +1,394 @@
+# Video ID: 4jeFdS7RUcU
+# Title: 3 THINGS YOU NEED TO STAY IN THE TREND
+# Published: 2026-08-23
+# Source: youtube_transcript_api (auto); uploader: Ryan Rossi | Horse
+# Analyst: FlowHorse
+# Channel: @TheFlowHorse
+# Duration_s:927
+# Word count: 2762
+# ---
+[00:00:00] All right, so let's talk about three
+[00:00:01] tips or things that you should know when
+[00:00:04] trading trends and markets have been
+[00:00:06] really hot right now. So this can be
+[00:00:08] extremely valuable to most of you out
+[00:00:11] there. So the three questions I want to
+[00:00:13] be able to answer is momentum healthy?
+[00:00:16] What is price respecting currently? So
+[00:00:18] are there some obvious levels price is
+[00:00:20] respecting? Are there some obvious
+[00:00:21] moving averages that price is
+[00:00:23] respecting? and am I giving the trend
+[00:00:27] enough breathing room, the adequate
+[00:00:28] amount of room when we consider noise,
+[00:00:31] the rhythm or overall cadence of the
+[00:00:33] move. So, let's get into these three
+[00:00:35] things. Wrap it up very quickly. All
+[00:00:37] right, so RSI is a great tool. RSI is
+[00:00:40] one of many momentum oscillators.
+[00:00:42] There's the RSI, there's the stochastic,
+[00:00:45] there's the stock RSI, there's the CCI
+[00:00:48] or the commodity channel index, but for
+[00:00:51] the most part, you can use RSI. People
+[00:00:53] use it a variety of ways. They'll use it
+[00:00:55] to determine that there is some kind of
+[00:00:58] divergence in momentum like you have
+[00:00:59] here on the high time frame. Price made
+[00:01:01] a lower low, right? RSI failed to make a
+[00:01:04] lower low. There's declining momentum
+[00:01:06] towards the lows. People will also use
+[00:01:09] it to determine whether or not there is
+[00:01:11] strong momentum or weak momentum to the
+[00:01:13] upside or to the downside. But one of
+[00:01:16] the more common ways that people
+[00:01:18] interpret this is they'll look at a
+[00:01:21] period like this overbought or they'll
+[00:01:24] look at a period like this oversold and
+[00:01:26] they'll almost reflexively begin to fade
+[00:01:29] it. The first thing that you should
+[00:01:31] think of is that the overbought or the
+[00:01:34] oversold especially the first goound is
+[00:01:38] a warning shot. The most important way
+[00:01:40] to interpret this. So when RSI for
+[00:01:44] example on BTC right now, Bitcoin's
+[00:01:46] really strong, the most important way to
+[00:01:49] interpret this initially is that the
+[00:01:51] trend has a lot of strength. So if
+[00:01:54] anything, what we want to do is begin to
+[00:01:57] isolate strong moves based on whether or
+[00:02:00] not this is even evidenced. So I look
+[00:02:03] for pairs where there is actually RSI
+[00:02:06] that is overbought or going overbought
+[00:02:10] the first time around especially when
+[00:02:12] price has reclaimed moving averages or
+[00:02:14] key technical levels. I look at this as
+[00:02:17] a signal that hey this is something that
+[00:02:19] I probably want to look to long. It's
+[00:02:20] something that I want to get behind
+[00:02:22] because momentum is really strong. It's
+[00:02:24] not the case that hey RSI is overbought
+[00:02:28] that means that price has to come back
+[00:02:30] down which brings us to I think the next
+[00:02:34] important point which is how RSI is used
+[00:02:38] after we have a period where it goes
+[00:02:41] into the very positive territory. The
+[00:02:43] way I look at it is during trends when
+[00:02:47] RSI is overbought, what we want to see
+[00:02:50] is that one, yes, there's continuously
+[00:02:53] buyers showing up and the tape is really
+[00:02:55] strong, but while price is correcting,
+[00:02:57] you want to see that RSI is basically
+[00:02:59] able to reset, right? Without price
+[00:03:02] needing to come down much, you know,
+[00:03:04] it's the same ideas that we talk about
+[00:03:06] when we talk about order flow where we
+[00:03:07] say, okay, there's a lot of selling, but
+[00:03:09] price is no longer rewarding it. Well,
+[00:03:11] if momentum is able to cool off and RSI
+[00:03:14] is able to reset and price has not given
+[00:03:18] back much ground, this is a really
+[00:03:20] strong signal. This is often what you'll
+[00:03:23] get in a really strong bull market or
+[00:03:25] really strong bull trend. You won't get
+[00:03:27] price pulling back much. Instead, you'll
+[00:03:30] get just these brief periods where
+[00:03:31] things cool off. And during that period,
+[00:03:33] what you want to look for is that
+[00:03:35] selling volume drops. there's not a ton
+[00:03:36] of selling that comes in and RSI or
+[00:03:39] these momentum oscillators are able
+[00:03:40] basically to reset and if anything a lot
+[00:03:43] of times when these reset so when they
+[00:03:46] come back down to the lower territory or
+[00:03:48] the 70 level or even downwards of the 50
+[00:03:50] level if they're able to do that and
+[00:03:53] come even further down but price is not
+[00:03:55] rewarding that or rather I should say
+[00:03:57] price is not moving down much that's
+[00:03:59] often a really good opportunity to look
+[00:04:02] for entries in the direction of the
+[00:04:04] original trend
+[00:04:06] So you have a situation here where
+[00:04:08] Bitcoin has pushed up really strongly.
+[00:04:10] This one has been overbought quote
+[00:04:13] unquote on the high time frame. RSI is
+[00:04:16] coming off slightly. If we go down to
+[00:04:18] the 4 hour, if we go down to the hourly,
+[00:04:20] it's completely reset and traded back
+[00:04:22] down towards that lower territory. And
+[00:04:24] yet price has for the most part done
+[00:04:27] nothing. So remember this is
+[00:04:29] incorporating a look back period. So we
+[00:04:31] could see that price has done nothing.
+[00:04:33] But something like this is often a very
+[00:04:36] useful way of getting an immediate
+[00:04:38] feedback without that you know
+[00:04:40] subjectivity of price action. So one RSI
+[00:04:45] just being overbought and the opposite
+[00:04:46] works right being oversold the first
+[00:04:49] time around is often a sign that
+[00:04:50] momentum is really strong and that's not
+[00:04:53] a situation where you usually want to
+[00:04:55] again like I said reflexively fade it or
+[00:04:57] start looking for trades on against a
+[00:05:00] trend. And then two sort of subp part of
+[00:05:03] this during the corrective phase you
+[00:05:07] want to see that RSI is reset or just
+[00:05:10] saying that momentum is reset without
+[00:05:12] price having to necessarily reset.
+[00:05:14] Meaning we didn't see a ton of selling
+[00:05:16] come in here. RSI didn't come much lower
+[00:05:18] because price came much lower. So
+[00:05:20] instead it's kind of like the the market
+[00:05:22] is just taking a breather. Okay. Second
+[00:05:24] moving averages. I think people overly
+[00:05:28] simplify these or rather because they're
+[00:05:31] such simple tools. You know, if you're
+[00:05:33] using an SMA, it's a simple arithmetic
+[00:05:35] mean. If you're using an EMA, it's
+[00:05:36] weighted more recently. I think people
+[00:05:38] think because they're so available and
+[00:05:40] so simple that they're maybe not as
+[00:05:42] useful as they actually are. In reality,
+[00:05:45] they are some of the most useful tools
+[00:05:47] for really traders of all time frames.
+[00:05:51] So, the way I like to think of it is
+[00:05:53] location, slope, order, and separation.
+[00:05:56] I personally lean on just a few mo
+[00:05:59] moving averages. So I look at the nine
+[00:06:01] and the 20. I look at the 20 period on
+[00:06:05] the weekly. I look at the 200 on the
+[00:06:07] daily. I use these to many times inform
+[00:06:11] my higher time frame and midtime frame
+[00:06:13] bias. Moving averages are really useful
+[00:06:15] because they basically organize the
+[00:06:17] trend. Obviously in a clean uptrend
+[00:06:19] you're going to see that moving averages
+[00:06:21] are all rising. So here we have a 9 EMA.
+[00:06:24] This is the 200 which we've reclaimed.
+[00:06:26] Again, for me, the 20 period on the
+[00:06:29] weekly is really important. We've
+[00:06:30] reclaimed that. It's not a matter of
+[00:06:34] just the moving averages crossing over
+[00:06:36] as much as it is what direction the
+[00:06:39] moving averages are pointing in.
+[00:06:40] Remember, this is just an average of
+[00:06:43] price. So, you want to see that this
+[00:06:45] continually tracking higher. Moving
+[00:06:48] averages moving sideways don't mean as
+[00:06:49] much as moving averages beginning to
+[00:06:51] turn and then point in a different
+[00:06:53] direction. So the 9 EMA, this tells me
+[00:06:56] the speed of the move. The 20, I think I
+[00:06:58] use this as sort of a gauge of what the
+[00:07:01] intermediate or low time frame trend is.
+[00:07:04] And then the 50, the 200, the 100 you
+[00:07:07] might use. These are more for what the
+[00:07:10] larger higher time frame macro trend is.
+[00:07:14] I personally look at the market
+[00:07:17] completely different when we're trading
+[00:07:19] back above the 200 day, when we're
+[00:07:20] trading back above the 20 period weekly
+[00:07:22] moving average. These to me are
+[00:07:25] extremely important lines in the sand. I
+[00:07:28] think one of the more important things
+[00:07:29] you need to do though is let the market
+[00:07:32] show you what averages are important.
+[00:07:34] So, if we look at this more recent move
+[00:07:36] in Bitcoin or really any of the majors
+[00:07:38] and popular altcoins right now and the
+[00:07:41] same thing in stocks, you're going to
+[00:07:43] find that there are some moving
+[00:07:44] averages. In this case, the nine period
+[00:07:46] on the hourly and this is what I refer
+[00:07:47] to as the hourly trend in the community.
+[00:07:50] I'll look at the nine and the 20. You're
+[00:07:52] going to see that price really respects
+[00:07:54] these. So, this is giving you an idea of
+[00:07:57] the overall cadence or rhythm of the
+[00:07:59] market. Knowing where price is in
+[00:08:01] relation to this and that price is
+[00:08:03] responding off of this consistently can
+[00:08:06] be invaluable information. When price
+[00:08:08] begins to lose those averages, when we
+[00:08:10] come back to those averages for the
+[00:08:11] first time, especially first and second
+[00:08:14] touches, those are often dynamic support
+[00:08:16] levels or resistance levels if it's
+[00:08:18] traveling from the opposite direction.
+[00:08:20] But again, let the market show you what
+[00:08:23] averages are important. You're often
+[00:08:25] going to find that the nine and the 20
+[00:08:27] are going to be important across all
+[00:08:28] time frames. So on the hourly, on the 4
+[00:08:31] hour, on the daily, on the weekly,
+[00:08:34] you're going to see that these are used
+[00:08:35] for a reason. Now, in some markets, you
+[00:08:38] might see that there are going to be
+[00:08:40] systematics that act off of these
+[00:08:41] levels. So, you might have a buy program
+[00:08:44] or a sell program that becomes a lot
+[00:08:46] more obvious because the market is
+[00:08:47] hugging a moving average. This usually
+[00:08:50] is something that you'll see on the
+[00:08:52] lower time frames. So intraday you might
+[00:08:54] look at something and it is really
+[00:08:56] hugging the five minute the five minute
+[00:08:59] 9 EMA. ENA is a great example. If we
+[00:09:01] look at ENA yesterday or the day prior
+[00:09:05] actually just this is the five minute
+[00:09:07] time frame this is holding. I mean if we
+[00:09:09] zoomed in on a one minute or three
+[00:09:11] minute time frame or two-minut time
+[00:09:12] frame the fact that it's holding the
+[00:09:14] averages so cleanly that's often a sign
+[00:09:16] that there is probably some kind of
+[00:09:17] systematic buyer at play in this example
+[00:09:20] uh is probably a T-W. Now, you might
+[00:09:22] notice that I use EMAs and SMAs
+[00:09:25] depending on what look back period. For
+[00:09:28] anything below, we'll say the 20 or the
+[00:09:30] 21. Some people use the 21. I use the
+[00:09:33] 20. Honestly, quite interchangeable. I
+[00:09:36] use EMAs. I want more responsiveness in
+[00:09:40] the average. Anything above that, so
+[00:09:43] you'll see the 50 or the 100 or the 200.
+[00:09:45] I like SMAs. I like something that's
+[00:09:47] slower moving. I like something that is
+[00:09:50] incorporating the higher time frame
+[00:09:52] trend a lot more without weighing more
+[00:09:54] recent price action which can be quite
+[00:09:56] noisy. Now the last thing that's really
+[00:09:58] important is ATR and this is the average
+[00:10:01] true range. This is basically the
+[00:10:04] volatility of the asset depending on
+[00:10:06] what look back period you're using. So
+[00:10:09] down here I've created my own ATR table.
+[00:10:13] So this has it based on the 30 minute,
+[00:10:15] the 4 hour, the daily, the weekly. So I
+[00:10:18] know on average how much something like
+[00:10:21] Bitcoin or any asset moves on any time
+[00:10:25] frame. So this is really important
+[00:10:27] especially for trading trends. I don't
+[00:10:31] want to have the same 1% or 2% stop if
+[00:10:35] I'm trading Bitcoin and I'm trading an
+[00:10:38] altcoin, right? I need to incorporate
+[00:10:41] how much that asset actually moves. So,
+[00:10:45] one of the things you can do is if
+[00:10:47] you're trading trend and you're say for
+[00:10:49] example, we've locked in on the idea
+[00:10:52] that Bitcoin is now in a positive more
+[00:10:56] bullish trend, right? It's retaken 200
+[00:10:58] day moving average. Like I said, it's
+[00:11:01] traded back the 20 period on the weekly.
+[00:11:03] When we look at RSI, we're in a really
+[00:11:05] strong momentum period. It's resetting
+[00:11:08] somewhat. And then we dig into maybe the
+[00:11:10] four or the hourly time frame for an
+[00:11:12] entry. Well, do I just place my stop
+[00:11:15] below this strong three bar sequence or
+[00:11:18] below this 4hour bar break? Maybe. Or
+[00:11:21] maybe I should consider, hey, how much
+[00:11:24] does this asset move on average over a 4
+[00:11:28] hour period, right? I should at least
+[00:11:30] incorporate that. If I'm making my entry
+[00:11:32] based on a 4 hour chart or on an hourly
+[00:11:34] chart, I should incorporate how much the
+[00:11:37] market is set or likely to move over
+[00:11:41] that time interval. So, if we're looking
+[00:11:43] at the hourly, right, it's probably
+[00:11:46] around 600 points or $600 or $700. If we
+[00:11:49] look at the 4 hour, you could see it
+[00:11:51] right down here, it's around $1,200.
+[00:11:54] So, what I should do is at least
+[00:11:56] incorporate that into my stop distance.
+[00:11:58] And the point is that might be a few
+[00:12:01] percent away from price. Maybe it's, you
+[00:12:03] know, if we if we moved that from the
+[00:12:06] low of where price currently is, right?
+[00:12:08] 1,200 points. That is, I mean, that is
+[00:12:10] very small. That is less than 20 basis
+[00:12:13] points. Now, that kind of stop in BTC, a
+[00:12:17] 20 basis point stop, you might get away
+[00:12:19] with, but do you think that you would
+[00:12:21] get away with trading something like
+[00:12:23] pump or lighter or an altcoin where
+[00:12:27] these are going to be moving a lot more,
+[00:12:29] right? In percentage terms, all coins
+[00:12:32] move double what BTC does intraday
+[00:12:35] across basically all look back periods.
+[00:12:37] So, for example, if Bitcoin's ATR is 3%.
+[00:12:42] And all coins are usually 5, 7, 10, 15,
+[00:12:46] 20. Knowing this is really good because
+[00:12:48] it helps you identify, hey, where you
+[00:12:50] want to trade, period. But knowing ATR
+[00:12:52] is really important because it gives you
+[00:12:54] an idea of what the average movement of
+[00:12:55] price is so you can begin to incorporate
+[00:12:58] reasonable stops. Rather than just
+[00:13:00] saying, hey, I'm going to place a stop
+[00:13:01] right below the low, you could start to
+[00:13:03] incorporate a more reasonable buffer.
+[00:13:05] Okay, so three things to wrap it up. RSI
+[00:13:07] tells you about the quality of the
+[00:13:08] momentum. If it's overbought or oversold
+[00:13:11] for the first time, it doesn't mean you
+[00:13:13] take a trade in the opposite direction.
+[00:13:15] If anything, especially after a
+[00:13:17] significant amount of time where price
+[00:13:18] has traded in a range or below key areas
+[00:13:21] of trend, if it's reclaiming those and
+[00:13:24] going overbought for the first time or
+[00:13:25] losing those levels and going oversold,
+[00:13:27] that's probably something that you
+[00:13:29] should lean into, meaning go in the
+[00:13:31] direction of that trend because that is
+[00:13:33] a sign that momentum is really strong.
+[00:13:36] So looking for resets when price resets
+[00:13:39] and is stable while doing so, meaning it
+[00:13:41] doesn't give back a lot of ground. That
+[00:13:43] is very useful information. Two, moving
+[00:13:46] averages tell me where the trend is
+[00:13:48] being respected. You can sometimes see
+[00:13:50] where systematics are getting involved,
+[00:13:51] but if anything, you get kind of an idea
+[00:13:53] of what the natural rhythm of price is
+[00:13:56] or the cadence of price is. And this
+[00:13:59] allows you one to find entry points, but
+[00:14:01] two to know, hey, when things are
+[00:14:03] changing, if price is suddenly losing
+[00:14:05] those key moving averages or if those
+[00:14:08] averages are starting to cross and again
+[00:14:10] point in a different direction, not
+[00:14:12] necessarily just trade flat, but
+[00:14:13] actually start tracking and pointing in
+[00:14:16] a different direction. And then three,
+[00:14:18] ATR tells you how much on average your
+[00:14:22] asset moves. And because of that, it
+[00:14:25] tells you how much room the trend needs
+[00:14:26] to breathe. So don't just go setting
+[00:14:29] stops based on being a tick below the
+[00:14:31] low or above the high. Incorporate on
+[00:14:33] average how price moves so you don't get
+[00:14:35] wicked out just because of noise. And
+[00:14:36] again, yes, all these indicators are
+[00:14:39] very simple and they're so simple, but
+[00:14:42] they work. Trend followers have been
+[00:14:44] using moving averages for years. And as
+[00:14:47] long as your asset class is trending or
+[00:14:50] can trend, moving averages, RSI, and ATR
+[00:14:55] can be invaluable to a trend following
+[00:14:58] or swing trading system. As a reminder,
+[00:15:00] guys, the workshop starts in just over a
+[00:15:02] week from now. So on August 31st, we
+[00:15:05] start our new workshop in the stable. By
+[00:15:07] the way, if you're using the Koshi link
+[00:15:08] below, there's a very good chance that
+[00:15:10] you can gain access to that without
+[00:15:12] paying the monthly membership. So make
+[00:15:14] sure you DM me to sort that out. All of
+[00:15:16] the things we went over today in this
+[00:15:18] short video are extremely surface level.
+[00:15:21] These are the things we're going to be
+[00:15:22] diving into in detail in the workshop.
+[00:15:24] So, I hope to see you there. All right.

@@ -886,12 +886,25 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
   // ---------- macro calendar (ForexFactory weekly JSON; it sends no CORS header today, so a browser block reads NO CALENDAR too) ----------
   var CAL_URL = 'https://nfs.faireconomy.media/ff_calendar_thisweek.json', CAL_DAY = 86400000, CAL_RETRY = 1800000, CAL_MAX_AGE = 26 * 3600000;
   S.cal = { events: null, t: 0, err: 'connecting' };
+  // Same-origin snapshot first (scripts/dev/ff_calendar_snapshot.py writes ff_calendar_snapshot.js; a script tag also works over file://), direct fetch only as fallback.
+  function loadSnap() {
+    return new Promise(function (res, rej) {
+      var el = document.createElement('script'); delete window.LIVEAID_CAL_SNAP;
+      el.onload = function () { el.remove(); var x = window.LIVEAID_CAL_SNAP; if (x && Array.isArray(x.events) && +x.fetched_ms > 0) res(x); else rej(new Error('snapshot unreadable')); };
+      el.onerror = function () { el.remove(); rej(new Error('no snapshot file')); };
+      el.src = 'ff_calendar_snapshot.js?_=' + Date.now(); document.head.appendChild(el);
+    });
+  }
   function loadCal() {
     var ctl = new AbortController(), to = setTimeout(function () { ctl.abort(); }, 8000), next = CAL_RETRY;
-    return fetch(CAL_URL, { signal: ctl.signal }).then(function (r) { clearTimeout(to); if (!r.ok) throw new Error(r.status === 429 ? 'HTTP 429 (rate limited)' : 'HTTP ' + r.status); return r.json(); })
-      .then(function (a) { if (!Array.isArray(a)) throw new Error('not a list'); S.cal.events = a; S.cal.t = Date.now(); S.cal.err = ''; next = CAL_DAY; })
-      .catch(function (e) { clearTimeout(to); S.cal.events = null; S.cal.err = 'ForexFactory feed: ' + (e && e.message ? e.message : 'unreachable'); })
-      .then(function () { setTimeout(loadCal, next); });
+    return loadSnap().then(function (x) {
+        if (Date.now() - x.fetched_ms > CAL_MAX_AGE) throw new Error('snapshot older than 26 h');
+        S.cal.events = x.events; S.cal.t = +x.fetched_ms; S.cal.err = ''; next = CAL_RETRY; clearTimeout(to);   // re-read often: the snapshot script refreshes the file
+      }).catch(function (snapErr) {
+        return fetch(CAL_URL, { signal: ctl.signal }).then(function (r) { clearTimeout(to); if (!r.ok) throw new Error(r.status === 429 ? 'HTTP 429 (rate limited)' : 'HTTP ' + r.status); return r.json(); })
+          .then(function (a) { if (!Array.isArray(a)) throw new Error('not a list'); S.cal.events = a; S.cal.t = Date.now(); S.cal.err = ''; next = CAL_DAY; })
+          .catch(function (e) { clearTimeout(to); S.cal.events = null; S.cal.err = 'ForexFactory feed: ' + (e && e.message ? e.message : 'unreachable') + ' (' + snapErr.message + ')'; });
+      }).then(function () { setTimeout(loadCal, next); });
   }
   function cdText(ms) {
     var m = Math.floor(Math.max(0, ms) / 60000), d = Math.floor(m / 1440), h = Math.floor(m % 1440 / 60);
@@ -915,8 +928,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
   // ---------- news ----------
   var NEWS_URL = 'https://news.treeofalpha.com/api/news?limit=';
   var NEWS_GAPS = 'Gaps in this feed today: Tree News free REST only, items about 15 s late (paid websocket not wired, card live-aid-news-panel); ' +
-    'no exchange hot-wallet watch, so a drain shows on-chain about 15 min before the headline (N4); macro calendar blocked by CORS in a real browser ' +
-    '(card live-aid-macro-calendar-cors-snapshot); no measured BTC move per headline type yet (N5 news log). Source: research/news_feeds_2026-10-30/REPORT.md.';
+    'no exchange hot-wallet watch, so a drain shows on-chain about 15 min before the headline (N4); macro calendar reads the local snapshot (run scripts/dev/ff_calendar_snapshot.py; none or older than 26 h reads NO CALENDAR); no measured BTC move per headline type yet (N5 news log). Source: research/news_feeds_2026-10-30/REPORT.md.';
   function highNews(now) {
     return (S.news.items || []).filter(function (x) { return +x.importance >= A.NW.mark && x.time <= now && x.time > now - A.NW.winMs; });
   }

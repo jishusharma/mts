@@ -1,0 +1,408 @@
+# Video ID: fl5cZac72rM
+# Title: Your Stops Are Wrong
+# Published: 2026-08-14
+# Source: youtube_transcript_api (auto); uploader: Ryan Rossi | Horse
+# Analyst: FlowHorse
+# Channel: @TheFlowHorse
+# Duration_s:840
+# Word count: 2822
+# ---
+[00:00:00] Stops are probably the worst way to
+[00:00:04] manage risk, but you as a retail trader
+[00:00:07] should absolutely be using stops.
+[00:00:11] >> [music]
+[00:00:14] >> Yes, stops are bad, but let's get into
+[00:00:17] it because this is definitely going to
+[00:00:18] be a contentious video and subject
+[00:00:21] because a lot of the trading education
+[00:00:23] that you see online, whether it's on
+[00:00:25] YouTube or Twitter, puts forward the
+[00:00:26] idea that stops are an absolute must.
+[00:00:29] So, let's talk about stops first from an
+[00:00:32] institutional standpoint. Trading firms
+[00:00:35] do not use stops. They will dynamically
+[00:00:37] adjust their risk, but very rarely will
+[00:00:40] you see that there is a hard stop in
+[00:00:42] place. Not to say that there will never
+[00:00:45] be, but it's more often the case that
+[00:00:47] the risk that is put on is calculated
+[00:00:51] and instead of removing a whole position
+[00:00:54] based on a price level being traded, the
+[00:00:57] size is adjusted accordingly. As a
+[00:01:00] position moves in favor or against,
+[00:01:03] stops are probably the worst way to
+[00:01:07] manage risk. Let's just get into the
+[00:01:09] why. So, if you think about it, it
+[00:01:12] doesn't make a whole lot of sense for a
+[00:01:15] trade thesis to be completely
+[00:01:18] invalidated based on price just trading
+[00:01:20] through a level. And I'm saying trading
+[00:01:22] through a level because a lot of the
+[00:01:23] times the focus on stops and the
+[00:01:27] education around stops is, you know,
+[00:01:30] just place a hard stop, a market stop
+[00:01:32] order through the low or through the
+[00:01:34] high if you're short. Just give it a
+[00:01:36] little bit of breathing room, and
+[00:01:37] there's not really much science behind
+[00:01:39] it, but it's basically if price doesn't
+[00:01:42] move through this perfect path, then I'm
+[00:01:45] going to be taken out of the position.
+[00:01:47] It should be obvious at this point, if
+[00:01:48] you've been trading long enough, price
+[00:01:50] action is really noisy. Price can go
+[00:01:51] from point A to point B many different
+[00:01:54] ways. So, you don't necessarily want
+[00:01:57] your positions to be overly constrained
+[00:02:00] and path determined. Price trading
+[00:02:02] through a level doesn't automatically
+[00:02:05] invalidate a thesis. We know that price
+[00:02:07] can trade through levels quite often
+[00:02:10] just for the sake of sweeping
+[00:02:13] what is known pockets of liquidity. So,
+[00:02:15] especially in markets that are easily
+[00:02:17] pushed around, yes, positioning will be
+[00:02:19] hunted. And you could look at a chart
+[00:02:22] and very quickly identify where retail
+[00:02:26] most likely puts their stops. You know,
+[00:02:28] it's going to be beyond the obvious
+[00:02:29] swing points, beyond the obvious pivot
+[00:02:31] points. So, the idea that you'd be
+[00:02:33] stopped out just because price wicked
+[00:02:35] through that level seems kind of silly,
+[00:02:36] especially when you consider that often
+[00:02:37] those levels are traded through. And
+[00:02:39] price can trade through levels for more
+[00:02:41] reasons than that, clearly, right? Just
+[00:02:43] through randomness, just through some
+[00:02:45] news hitting the tape, right? Algos
+[00:02:47] responding, you know, the book
+[00:02:49] evaporating, and you know, price very
+[00:02:51] quickly moves from point A to point B,
+[00:02:53] and then next thing you know, the trade
+[00:02:55] is back in the original direction, and
+[00:02:57] you were stopped out of the position
+[00:02:58] just because you had a hard stop. So, it
+[00:03:01] definitely shouldn't be the case that
+[00:03:03] you're just placing stops randomly below
+[00:03:05] highs and lows. There is a way to do
+[00:03:07] this in a more efficient manner, but if
+[00:03:09] you get into a conversation with the
+[00:03:11] quants, they're going to tell you that
+[00:03:12] placing stops is generally something
+[00:03:15] that negatively impacts your
+[00:03:17] performance. Really quick sponsor break,
+[00:03:19] and I do all of my prediction market
+[00:03:21] trading on Kalshi, but right now it's
+[00:03:23] important to remind you guys of two
+[00:03:24] things. One, they're offering up to $500
+[00:03:26] in bonus for people who sign up through
+[00:03:27] that link below, but more importantly,
+[00:03:30] if you're already signed up through my
+[00:03:31] Kalshi link, you may have access to my
+[00:03:33] upcoming trading workshop on August
+[00:03:35] 31st, no charge. So, that is completely
+[00:03:38] free. Again, if you signed up through
+[00:03:40] me, send me a DM, and I'll get you the
+[00:03:42] details. The link is below. It's not for
+[00:03:44] people that already signed up. If you
+[00:03:46] sign up now, you have a chance of
+[00:03:47] getting access to the upcoming workshop.
+[00:03:49] It's worth it. Okay, now, aside from all
+[00:03:52] of that, let's talk about why you as a
+[00:03:54] retail trader should absolutely be using
+[00:03:58] stops. And like I said, we're going to
+[00:03:59] get into the way that I think you're
+[00:04:00] better off placing them or things that I
+[00:04:02] think that you should consider when
+[00:04:04] placing them, but you should absolutely
+[00:04:06] be using stops. You're not Jane Street,
+[00:04:08] you're not DRW, you're not Citadel. You
+[00:04:10] are John Smith trying to make it on your
+[00:04:13] own, trying to make it as a retail
+[00:04:15] trader, and your primary focus, whether
+[00:04:17] you're a beginner or you're a veteran,
+[00:04:20] is to stay at the table. So, your
+[00:04:21] primary focus is survival, and stops are
+[00:04:23] one of the things that allow you to stay
+[00:04:26] in the game. Now, you can get back into
+[00:04:28] positions after you're stopped out. I do
+[00:04:30] it all the time. Not necessarily stopped
+[00:04:32] out through a hard stop, but I take
+[00:04:34] myself out and I get back in. You know,
+[00:04:35] the idea that you have to be right the
+[00:04:37] first time is silly. But, after a
+[00:04:39] catastrophic loss, you can't come back.
+[00:04:41] So, you can get back into a position
+[00:04:43] when you're stopped out, but if you are
+[00:04:44] blown out and carried out, you're not
+[00:04:46] going to be able to play anymore. The
+[00:04:48] most important thing is to ensure that
+[00:04:51] you are keeping your seat at the table.
+[00:04:53] So, stops are about survival. For retail
+[00:04:55] traders, especially, stops are about
+[00:04:58] survival. Another thing is, it protects
+[00:05:00] your psychology. Try stepping away from
+[00:05:02] a position without a stop versus with a
+[00:05:05] stop. I'm not someone who trades with
+[00:05:07] hard stops all the time. I'd say maybe
+[00:05:09] at this point, maybe half the time. A
+[00:05:11] lot of the times when I'm placing hard
+[00:05:12] stop, it's like a tail risk stop, and
+[00:05:15] it's set so that I don't step away, go
+[00:05:17] to the bathroom, go to jujitsu, and get
+[00:05:20] carried out by some left tail event.
+[00:05:22] But, for the most part, everyone should
+[00:05:24] be placing hard stops. Okay, so let's
+[00:05:28] talk about the correct order of
+[00:05:29] operations for stops, how you should be
+[00:05:32] considering them. Again, not Jane Street
+[00:05:34] trader, but John Smith retail trader.
+[00:05:36] The first thing we have to cover is that
+[00:05:39] if you missed the boat, if you didn't
+[00:05:40] get the perfect entry,
+[00:05:42] that's it. You didn't get the perfect
+[00:05:43] entry. You have to size based on that.
+[00:05:46] If the thesis is still intact, you can
+[00:05:48] still get into a position, but you
+[00:05:49] clearly can't get into the same position
+[00:05:51] as if you got the perfect entry. So,
+[00:05:54] don't just try to make up for it with
+[00:05:55] the same position size, the same amount
+[00:05:57] of risk, and a tighter stop. You're
+[00:05:59] going to get taken out just off of
+[00:06:00] intraday noise alone. The correct order
+[00:06:03] is, what is your thesis, what is the
+[00:06:05] invalidation of your thesis, how far
+[00:06:07] away is that invalidation, and then that
+[00:06:08] informs the position size. And the
+[00:06:11] invalidation can be many things. And
+[00:06:13] what I think it often should be is some
+[00:06:15] level of volatility. If you're trading
+[00:06:17] trend, what are the characteristics of
+[00:06:19] this trend? It might be that it's
+[00:06:20] holding
+[00:06:22] certain moving averages. It might be
+[00:06:23] that there's this amount of daily or
+[00:06:25] weekly volatility. And when that begins
+[00:06:27] to change, hey, maybe the trend is
+[00:06:28] changing. This is the correct order. It
+[00:06:30] is not, "Oh, crap, I missed buying low.
+[00:06:34] I'm going to size with my original size,
+[00:06:35] and I'm going to place a really tight
+[00:06:36] stop, and I'm going to try to do this
+[00:06:38] over and over again until I catch the
+[00:06:39] breaker." That's not how to do it. So,
+[00:06:42] you're going to have to get comfortable
+[00:06:43] with taking various amounts of risk
+[00:06:45] based on this. Again, it dictates it in
+[00:06:48] that order. Thesis, invalidation of that
+[00:06:51] thesis, and you know, by all means, like
+[00:06:53] there are many times when, especially in
+[00:06:55] equities more recently, when breakouts
+[00:06:58] have been great trades. And there's a
+[00:06:59] lot of breakout trades where I say,
+[00:07:01] "Okay, if this is a legitimate breakout,
+[00:07:04] and this is a clearing event where the
+[00:07:05] market has just broken through this
+[00:07:07] level, gapped above it, this daily low
+[00:07:10] should be very important. I'm going to
+[00:07:11] place a hard stop below that daily low,
+[00:07:13] and I'm going to take risk that I'm
+[00:07:14] comfortable with and give it some wiggle
+[00:07:15] room. And yes, if it's back below that
+[00:07:18] daily low, well, then it's kind of black
+[00:07:19] and white. It's not a breakout, right?
+[00:07:21] If it's back in the prior range, it's
+[00:07:22] not a breakout. So, it's not to say that
+[00:07:24] you can't place structural-based stops,
+[00:07:26] but there's a variety of stops that are
+[00:07:28] not just based on, "Hey, price is above
+[00:07:30] this level or below that level." Okay,
+[00:07:32] so let's just run through some examples
+[00:07:34] of how I think about stops, and we'll
+[00:07:35] start it off with two very useful things
+[00:07:38] that you can use, whether you're trading
+[00:07:39] futures or you're trading equities, you
+[00:07:41] might use one or the other, and that is
+[00:07:42] ADR or ATR. And the best way I could
+[00:07:45] frame it is if you're placing a 2% stop
+[00:07:48] or a $2 stop, don't you want to
+[00:07:50] understand how much that asset moves on
+[00:07:52] average when it's doing nothing? So,
+[00:07:54] let's take a look at some charts right
+[00:07:55] now. Okay, so the first type of stop
+[00:07:57] we're going to talk about is very
+[00:07:58] simple. This is something that I use,
+[00:08:00] especially recently with a lot of the
+[00:08:02] software names, reclaiming the 200-day
+[00:08:04] moving average, which is a very
+[00:08:06] important trend level in equities. For
+[00:08:08] me, this is simple. It's not exactly at
+[00:08:11] the 200-day, but it's below the 200-day
+[00:08:14] within one daily ADR, so the average day
+[00:08:17] range, which is six points for now. It's
+[00:08:19] within that region below the 200-day,
+[00:08:21] where I start to say, "Okay, if the
+[00:08:23] market is back below this, I've taken
+[00:08:26] the amount of risk that I'm comfortable
+[00:08:27] with taking if it trades slightly below
+[00:08:29] it, but if it's starting to get accepted
+[00:08:31] back below there, I want to be out of
+[00:08:32] position." So, it's not a hard stop
+[00:08:35] because the 200 is going to be changing.
+[00:08:37] It's dynamic. It's an average, right?
+[00:08:40] It's an arithmetic mean, but it is the
+[00:08:41] case that I say, "This is the thing that
+[00:08:44] is defining what I consider reasonable
+[00:08:46] change." And this is a trade that was
+[00:08:48] shared in the stable. And something like
+[00:08:50] this, you might be asking what target I
+[00:08:53] have. I start to think about taking
+[00:08:55] profit, especially for swing moves,
+[00:08:57] somewhere between one weekly or two
+[00:08:59] weeks ATR. So, it's usually going to be
+[00:09:01] a multiple, but this is a moving average
+[00:09:03] stop, which is incorporating trend. Or
+[00:09:07] it's not the case that it's the local
+[00:09:08] trend, which you could actually use. You
+[00:09:10] could say the same thing about this
+[00:09:11] nine-period EMA, right? What is the
+[00:09:13] defining feature of the structure? Well,
+[00:09:15] it's bouncing off the nine. Okay, so
+[00:09:16] where's change likely to have occurred
+[00:09:18] or where this is invalidated? Hey, maybe
+[00:09:20] it's back below the moving averages.
+[00:09:21] These are technical tools that you can
+[00:09:23] lean on that are, again, the moving
+[00:09:25] average is at one price today, it's
+[00:09:27] going to be at a different price
+[00:09:28] tomorrow. It's just a mean. Now, I said
+[00:09:30] with breakout trades, it might be a
+[00:09:32] different story, right? You've had
+[00:09:33] something like Dell that has been
+[00:09:35] flirting with this range high now for
+[00:09:37] going on 2 months. And this is something
+[00:09:39] where I say, if we've had a really
+[00:09:41] strong move through and this is going to
+[00:09:43] be the breakout, why would we trade back
+[00:09:45] below that low again? So, I've been
+[00:09:46] getting filled on Dell and I'm using
+[00:09:48] yesterday's close or yesterday's open
+[00:09:51] rather as a line in the sand. It's not a
+[00:09:53] shoreline, it's not a loose area, it's a
+[00:09:55] line in the sand. If we're trading back
+[00:09:56] below that, then the idea that this is a
+[00:09:59] significant breakout begins to evaporate
+[00:10:02] when you consider that if something is
+[00:10:03] important, the market should arrive to
+[00:10:05] it pretty violently. So, this is a case
+[00:10:07] where I will use a stop that is more
+[00:10:09] based on a precise technical level than
+[00:10:12] not. And that would be on a breakout
+[00:10:14] trade, this is just the low of the prior
+[00:10:17] day or the low of the breakout. Now,
+[00:10:19] here's a really important point because
+[00:10:20] I talked about ADR and I talked about
+[00:10:22] ATR. I don't want to have my stop just
+[00:10:24] within what is a normal behavior or
+[00:10:27] range of prices. I want to consider that
+[00:10:30] if I'm going to have a stop and there is
+[00:10:31] meaningful change, it'll probably exceed
+[00:10:34] those average or normal values. So, as
+[00:10:37] an example, this is a platform that I
+[00:10:38] created. We'll just look up Dell. So,
+[00:10:41] we'll show you what Dell's ADR is, which
+[00:10:44] again
+[00:10:45] is going to help me immediately identify
+[00:10:48] where I want to have my stop at least
+[00:10:51] outside of. So, Dell's ADR from a
+[00:10:54] percent standpoint is 6.3%. It's down
+[00:10:57] here as you can see. The ADR from a
+[00:10:59] point standpoint is $28. So, as you can
+[00:11:02] see, if we go back to this, this stop
+[00:11:04] distance is 36 points. It is outside of
+[00:11:07] that average daily range. Now, you can
+[00:11:10] do this with something like trading
+[00:11:12] Bitcoin, right? If you're intraday
+[00:11:13] trading Bitcoin, look at the average
+[00:11:16] 30-minute rotation size. I've actually
+[00:11:18] created an indicator for this, so you
+[00:11:20] can see on the bottom right-hand corner
+[00:11:21] of the screen, there is the ATR for the
+[00:11:23] 30-minute, the 4-hour, and the daily.
+[00:11:26] So, I know if I go to Bitcoin, the ATR
+[00:11:29] for the 30-minute is 218 points. If I'm
+[00:11:32] trading Bitcoin intraday and we're
+[00:11:34] looking at it on a 5-minute timeframe,
+[00:11:36] do I want to have my stop within 200
+[00:11:38] points? Well, history would show, at
+[00:11:40] least recent history, that if you have a
+[00:11:42] stop that is significantly tighter than
+[00:11:44] that, you're probably going to get taken
+[00:11:45] out just off of noise alone. So, there's
+[00:11:47] a lot of other different ways that I
+[00:11:49] incorporate hard stops and soft stops
+[00:11:52] and volatility-based stops, and I go
+[00:11:54] into these in this table. But, what you
+[00:11:56] should absolutely be doing is making
+[00:11:58] sure that you're at least matching your
+[00:12:00] time horizon with your stop placement.
+[00:12:02] If you're trading the weekly chart,
+[00:12:04] you're not going to be setting a stop
+[00:12:05] based on the 5-minute chart. If you're
+[00:12:06] trading the 5-minute chart, you're not
+[00:12:08] going to be giving it a stop based on
+[00:12:09] the monthly chart. So, the most
+[00:12:10] important thing is what is my thesis?
+[00:12:13] What makes this thesis wrong?
+[00:12:15] Incorporate some level of volatility, as
+[00:12:17] in the example of Dell, you don't want
+[00:12:19] to be trading a breakout in Dell if it
+[00:12:20] has an average daily range of 28 points
+[00:12:22] and you have a two-point stop. Doesn't
+[00:12:25] make any sense. And then you size your
+[00:12:27] positions based on where the
+[00:12:28] invalidation sits. You don't get into
+[00:12:30] position and just start firing bullets
+[00:12:33] the same size based on all
+[00:12:35] invalidations. If you missed the boat
+[00:12:37] for the perfect entry, that's it. You
+[00:12:38] have to size your position differently.
+[00:12:40] And like I said in the beginning, this
+[00:12:41] is absolutely something that retail
+[00:12:44] traders should do. You should try to
+[00:12:46] stay in the game as long as possible.
+[00:12:48] You have a variety of things that are
+[00:12:49] already going to be trying to take you
+[00:12:50] out every single day. But, as you gain
+[00:12:52] more and more experience, like myself, I
+[00:12:54] do not use hard stops all the time. I do
+[00:12:57] not use them more than 50% of the time.
+[00:12:59] And there is a whole cohort of traders
+[00:13:02] that will argue about stops online and
+[00:13:04] how they actually will end up detracting
+[00:13:07] from your trading performance. And it
+[00:13:09] makes sense. The way that most people
+[00:13:10] play stops, it makes sense. But, there
+[00:13:13] are ways to go about placing stops and
+[00:13:16] taking risk. And as you get more
+[00:13:18] experienced, again, something to
+[00:13:19] consider is, and this is what I do, as a
+[00:13:21] position goes against me, why do you
+[00:13:23] take the whole position off? All right,
+[00:13:25] why don't you have varying levels of
+[00:13:27] stops for fractions of the position? The
+[00:13:30] position moves against you by X amount,
+[00:13:32] you don't take out the whole position,
+[00:13:34] you remove just enough so that you're
+[00:13:35] still comfortable with that amount of
+[00:13:37] risk. So, that being said, trade smart,
+[00:13:39] make sure that you are paying attention
+[00:13:41] in the next 2 weeks cuz I'm going to be
+[00:13:42] posting a lot about the upcoming
+[00:13:44] workshop. I'm really excited to host it
+[00:13:46] again. This time it's for all skill
+[00:13:48] levels, everyone is welcome. Until next
+[00:13:50] time, trade smart, use stops, stay in
+[00:13:54] the game.

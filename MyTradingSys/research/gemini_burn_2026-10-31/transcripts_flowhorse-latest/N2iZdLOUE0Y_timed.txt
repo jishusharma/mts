@@ -1,0 +1,600 @@
+# Video ID: N2iZdLOUE0Y
+# Title: AI Debt Bomb - Did CoreWeave Just Crack the AI Trade?
+# Published: 2026-10-17
+# Source: youtube_transcript_api (auto); uploader: Ryan Rossi | Horse
+# Analyst: FlowHorse
+# Channel: @TheFlowHorse
+# Duration_s:1369
+# Word count: 4250
+# ---
+[00:00:00] Okay, so the NASDAQ finished down over
+[00:00:02] 5%, one of the worst weeks since April
+[00:00:06] 2025. AI companies lost over a trillion
+[00:00:09] dollars and people are asking or
+[00:00:12] debating whether or not it's 1996 and
+[00:00:15] the music's still playing and there's a
+[00:00:17] lot of time left or it's 1999 and we are
+[00:00:20] standing on the uh edge of oblivion. So,
+[00:00:22] we'll do a quick recap and then by the
+[00:00:24] end of this short video, I'll give you
+[00:00:26] my plan going into this week. Hopefully,
+[00:00:30] it's a good trading week. This last week
+[00:00:32] was crazy to say the least. So, let's
+[00:00:35] get into it. All right, before we get
+[00:00:36] into this week, if you're someone that
+[00:00:38] benefits from a written checklist or a
+[00:00:41] guide, I've made one that I use entirely
+[00:00:44] free. Click the link below. It's at the
+[00:00:46] top of the info portion of this video.
+[00:00:48] I'll send you a copy. It's like nine
+[00:00:49] pages long. It's really comprehensive.
+[00:00:52] Throw out the stuff you don't use. Take
+[00:00:54] from it what is valuable and be on your
+[00:00:56] merry way. But again, it's entirely
+[00:00:58] free. Click the link, drop your email,
+[00:01:00] I'll send you a copy ASAP, and we can
+[00:01:03] move on to tackling this week. So,
+[00:01:06] starting with Friday, and Friday was
+[00:01:07] just Friday wasn't, you know, it wasn't
+[00:01:10] violent as much as it was persistent.
+[00:01:13] So, looking at the stable board, it
+[00:01:15] looks very one-sided, and it was, right?
+[00:01:18] It was one-sided all session. After CPI,
+[00:01:21] it was actually a little bit more
+[00:01:22] violent, it seemed. But Friday was just
+[00:01:25] persistent. You know, we could look at
+[00:01:26] on the stable board, which again, this
+[00:01:28] is a name of this is a group of 261
+[00:01:31] names filtered just for this. And then I
+[00:01:33] have the entire market in everything
+[00:01:35] else. There are only two names up more
+[00:01:37] than 4%. And there are 115 names down
+[00:01:39] more than 4%. Market breath in these
+[00:01:42] names atrocious. So only a quarter of
+[00:01:44] them above their 20, only 37% above
+[00:01:47] their 200. Just a really bad session
+[00:01:49] overall. And it was a continuation of
+[00:01:51] what we had seen throughout the week and
+[00:01:53] in the week plus leading up to this. So
+[00:01:56] energy continued to lead defenses
+[00:01:58] defensives started catching a bid. We we
+[00:02:01] don't want to see defensive defensives
+[00:02:03] catch a bid. You know that one I don't
+[00:02:07] personally trade defensives and two it
+[00:02:09] just gives you an indication of the
+[00:02:10] overall risk appetite in the market and
+[00:02:12] the fear in the market. So I think that
+[00:02:14] that is pretty telling. Inflation has
+[00:02:18] been sticky. Energy prices being higher
+[00:02:21] have been sticky. Inflation has been
+[00:02:22] sticky without energy prices being
+[00:02:24] higher. There's a lot of things right
+[00:02:26] now working against the market. So CPI
+[00:02:28] came in hot, PPI came in hot. The market
+[00:02:31] went from, you know, all in a very short
+[00:02:34] amount of time. It went from pricing in
+[00:02:36] no hike in the end of October to pricing
+[00:02:40] in a hike and then we're back to no hike
+[00:02:44] on October 28th's meeting. And I believe
+[00:02:46] that's back because of Wars' late night
+[00:02:49] meeting. This was I think this was
+[00:02:51] Thursday evening at 11:30 p.m. But we
+[00:02:53] have again there's a lot of back and
+[00:02:56] forth. And now add to this this week we
+[00:02:58] also had the market show a lot more fear
+[00:03:02] around or fear around the AI trade which
+[00:03:06] has been like off the you know off the
+[00:03:08] top of the leaderboard for a while now.
+[00:03:10] This is only this is a well this is
+[00:03:12] versus QQQ
+[00:03:14] over the last 20 days and again it's
+[00:03:17] still energy defensives software has
+[00:03:20] been trading better than AI names
+[00:03:22] biotech has continued to stay at the top
+[00:03:24] of this you say AI applications in six
+[00:03:27] but that that's versus QQQ on its own I
+[00:03:30] mean AI has just been getting beat up
+[00:03:33] and this week there's been I think much
+[00:03:36] greater fears for very obvious reasons
+[00:03:39] one because of what happened with
+[00:03:41] Cororeweave. So do a Google search of
+[00:03:43] Cororee and there's hundreds of news
+[00:03:45] stories around Coree's debt issue right
+[00:03:47] now. The entire AI trade is built on a
+[00:03:51] ton of debt. And it's predicated upon
+[00:03:54] the idea that it's all going to be paid
+[00:03:56] off and then some because this is this
+[00:03:58] massively transformational technology,
+[00:04:00] which I think is right, but I think the
+[00:04:03] timeline is possibly wrong around how
+[00:04:06] long it takes to get back above that or
+[00:04:09] get out of the red, so to speak. So,
+[00:04:12] core long-term bonds sold off. Coreweave
+[00:04:16] sold off. We had Taiwan semiconductors
+[00:04:19] have good earnings. Market still traded
+[00:04:22] lower. Most of the AI chip names,
+[00:04:25] hardware names, memory names have traded
+[00:04:28] really poorly. We had anthropic come
+[00:04:32] through with underwhelming numbers. So,
+[00:04:34] you know, for companies that are
+[00:04:37] trillion dollar companies, you know,
+[00:04:39] expecting to have hundreds of billions
+[00:04:42] of dollars of revenue and and potential
+[00:04:44] moving forward, they are barely
+[00:04:46] scratching the surface in what investors
+[00:04:49] are looking for or rather at this point
+[00:04:51] the market is requiring them to them to
+[00:04:55] produce based on the amount of debt that
+[00:04:56] has gone into this trade. So Friday was
+[00:04:59] just I mean it was the culmination of
+[00:05:02] what began in the middle of the week
+[00:05:03] again CPI that was on Wednesday. We had
+[00:05:07] PPI and you know that was the first that
+[00:05:10] was the first nasty move by the market.
+[00:05:12] This is this is Wednesday session. This
+[00:05:15] right here this is your CPI candle
+[00:05:17] basically down only from that point. And
+[00:05:20] then Friday session we'll just look at
+[00:05:22] the QQQ. Friday session same thing. So,
+[00:05:26] one-sided price action from the open and
+[00:05:29] into the close. And it really just
+[00:05:31] looked like, if you're looking at like
+[00:05:32] the level two, it just looked like a
+[00:05:34] sell program the entire session, like
+[00:05:37] someone on the offer offloading size
+[00:05:39] mechanically, systematically, and
+[00:05:42] unrelenting.
+[00:05:44] And you know, the market loves to spin
+[00:05:47] up a narrative. You know, what pot is
+[00:05:49] blowing up, what fund is blowing up,
+[00:05:51] who's getting carried out. And the truth
+[00:05:52] is like same price action on Wednesday.
+[00:05:56] The reality is like so many people are
+[00:05:58] in the same exact trade, right? So many
+[00:06:00] people are hinging the entire market
+[00:06:03] success around the persistence of the AI
+[00:06:07] trade, right? To continue to pull
+[00:06:09] rabbits out of hats. And it looks like
+[00:06:12] maybe we have gotten to the end of
+[00:06:15] whatever road we're on with that. So I
+[00:06:18] personally can't extrapolate too much on
+[00:06:22] the fundamentals or the technicals
+[00:06:23] around the AI trade, but I do think that
+[00:06:26] the technicals from a market standpoint,
+[00:06:29] from a price action standpoint are worth
+[00:06:31] respecting. Okay, when you have down
+[00:06:34] only price action, when the market looks
+[00:06:36] like someone of size is getting carried
+[00:06:38] out, and again, I doubt that's the case.
+[00:06:40] There's a lot of people getting carried
+[00:06:42] out because this is all one large
+[00:06:44] leverage trade that everyone is
+[00:06:45] basically
+[00:06:47] sharing at this point. There's a ton of
+[00:06:48] correlation in this market. And then
+[00:06:50] there's the leverage ETF products that
+[00:06:52] add a ton of reflexivity to this. And
+[00:06:54] when you consider the fact that like
+[00:06:55] this is over the last couple of sessions
+[00:06:57] and this is a really poor weekly
+[00:06:59] performance. Again, look at the QQQ.
+[00:07:01] Really nasty week, but the market is
+[00:07:03] still like kind of it's at the highs.
+[00:07:05] Like this is not really blowup
+[00:07:07] territory. Like LEO got carried out
+[00:07:09] once, he got back in. Probably going to
+[00:07:11] get carried out again, but this is not
+[00:07:13] really in blowup territory. So that's
+[00:07:15] pretty alarming if you know all of this
+[00:07:17] is taking place and we're closer to be
+[00:07:19] the beginning of a much larger draw
+[00:07:21] down. Um and this is the type of pain
+[00:07:23] that the market is is unable to deal
+[00:07:26] with or the reality that this trade
+[00:07:29] might not have legs in the short to near
+[00:07:32] term the near to midterm like
+[00:07:35] anticipated. So going into this week, we
+[00:07:39] have S&P below the 50-day, we have QQQ
+[00:07:42] below the 50-day. Only recently, over
+[00:07:45] the last week, by the way, has equal
+[00:07:47] weighted S&P. So really since the
+[00:07:50] beginning of October, so the last two
+[00:07:51] weeks, has the equal weighted S&P
+[00:07:53] started to trade a bit more durably? And
+[00:07:56] really what it looks like is it is a
+[00:07:58] little bit of meanversion as the market
+[00:07:59] has spread out a bit at the index level.
+[00:08:02] If you looked at the S&P up to this
+[00:08:03] point, really like nothing going on. You
+[00:08:05] know, if we looked at the S&P to gauge
+[00:08:08] market weakness or market strength, hey
+[00:08:11] man, it's not doing much, right? Again,
+[00:08:13] VIX wasn't even doing much. Only until
+[00:08:15] Friday, the VIX was basically doing
+[00:08:17] nothing. And you know, people were
+[00:08:19] talking about how calm the VIX was for a
+[00:08:21] long time and they were referencing
+[00:08:22] things that again, you know, the VIX is
+[00:08:24] based on the S&P, right? If you looked
+[00:08:27] at the NASDAQ, if you looked at the
+[00:08:28] QQQs, if you looked at anything
+[00:08:29] techrelated, it was a much different
+[00:08:31] story. Underneath the S&P, there was a
+[00:08:33] lot of offsetting flows. So, you'd have
+[00:08:34] names were up a bunch on a on a day and
+[00:08:36] the names were down a bunch and the S&P
+[00:08:38] would remain flat. MAG 7 started trading
+[00:08:41] a bit better and now MAG 7's starting to
+[00:08:43] look a bit shittier as well. So, it's a
+[00:08:46] really it's a precarious spot. So even
+[00:08:49] bonds which you know with higher
+[00:08:52] inflation you would expect that bonds
+[00:08:55] would continue to sell off and they
+[00:08:56] would not look attractive. But right now
+[00:08:58] bonds are bit up in a way that kind of
+[00:09:02] indicates that there is something else
+[00:09:05] the market is more worried about than
+[00:09:07] inflation. So all this is it it seems
+[00:09:10] like for the first time in a long time
+[00:09:13] it's coming to a head. And again, we
+[00:09:16] have, you know, we have a week ahead, a
+[00:09:17] week and a half ahead of the next rate
+[00:09:20] decision. Like I said, it looks like
+[00:09:23] it's pretty much a lock that we're not
+[00:09:26] going to get a hike, but a lot can
+[00:09:28] change in a short amount of time. And
+[00:09:29] that's basically what we've seen
+[00:09:31] constantly, like the on and off again
+[00:09:35] war in the Middle East. And I say on and
+[00:09:37] off again a bit tongue and cheek because
+[00:09:39] it's basically just off headlines. You
+[00:09:41] would think it's on and off again based
+[00:09:42] on what Trump is saying. But there's a
+[00:09:45] lot I think working against any level of
+[00:09:48] certainty in the market right now. It's
+[00:09:50] getting DDoSed, as I've said before,
+[00:09:52] left and right. And now I think for the
+[00:09:56] first time in a long time, the AI trade
+[00:09:58] is really getting called into question.
+[00:10:00] And that was like I think that is a
+[00:10:02] thing that during any other misstep, you
+[00:10:05] know, energy prices up, inflation up,
+[00:10:08] during any other misstep, it seemed like
+[00:10:10] the market could lean on that a little
+[00:10:12] bit more, right? because yeah we have
+[00:10:14] that like at the end of the day you know
+[00:10:16] this is transformational technology you
+[00:10:18] know next industrial revolution so
+[00:10:21] market's going to continue to go up
+[00:10:22] without any you know meaningful
+[00:10:24] pullbacks
+[00:10:25] so that that brings us to to this
+[00:10:29] upcoming week and I'm still kicking
+[00:10:31] myself over Thursday's mishap so
+[00:10:34] Thursday you know in the stable we
+[00:10:37] talked about this leading up to the open
+[00:10:39] long bias look for the bounce in in one
+[00:10:41] of five leading names I ended up picking
+[00:10:43] Micron longed Micron according to plan.
+[00:10:46] Everything went perfectly. Then I closed
+[00:10:48] Micron out for a scalp and then it ran
+[00:10:50] and there was no reason to close a trade
+[00:10:52] out. And I'm happy I didn't chase that
+[00:10:54] and I'm happy I set a high bar because
+[00:10:56] again it was basically just down only
+[00:10:57] price action the following session into
+[00:11:00] Friday. So my thoughts are that going
+[00:11:04] into Friday or going into Monday,
+[00:11:07] there's a strong possibility that we see
+[00:11:10] a continuation of Friday's activity
+[00:11:13] initially. I would expect that the
+[00:11:15] market gaps down on Monday. If we were
+[00:11:18] going to bounce, I said that it would be
+[00:11:20] anywhere between Friday and Monday based
+[00:11:24] on Friday's price action. And really, I
+[00:11:27] don't think so far the weekends are a
+[00:11:29] good place for anything good to come
+[00:11:31] out. You know, it is that window of
+[00:11:32] opportunity where Trump can come out and
+[00:11:34] say something to help assuage any fears
+[00:11:36] or calm the market down or really just
+[00:11:38] give it a boost. I think at this point
+[00:11:40] the market is kind of on to the fact
+[00:11:42] that that is a a stick, but we haven't
+[00:11:44] had anything yet. I don't see signs in
+[00:11:47] any other risk assets. you know, BTC
+[00:11:50] minor bounce, but I would expect that if
+[00:11:53] we're going to get a bounce, you know, a
+[00:11:55] as cliche as it is, the turnaround
+[00:11:59] Tuesday comes into mind. So, I would be
+[00:12:02] looking at, you know, coreweave has been
+[00:12:05] the story of the last few days. So, you
+[00:12:08] know, other Neo clouds, MBIS is a good
+[00:12:10] one that's related, appear, and again,
+[00:12:13] these are all at this point, they're all
+[00:12:14] just trading together. This is just one
+[00:12:16] trade, right? So it doesn't that's why
+[00:12:18] you don't need just one person to blow
+[00:12:20] up, right? Everyone is in the same
+[00:12:21] trade. These names are all
+[00:12:23] hyperorrelated.
+[00:12:25] I think being cautious on Monday makes
+[00:12:27] sense, right? Seeing how futures open on
+[00:12:30] Sunday, letting them fall, right?
+[00:12:33] Letting the the chips fall where they
+[00:12:34] may, I should say, not letting the
+[00:12:36] market fall and then seeing what kind of
+[00:12:37] open we get on Monday. If it's stable on
+[00:12:40] Monday, if we have a little bit of a
+[00:12:41] pullback Monday and the market doesn't
+[00:12:44] give back much ground and I think you
+[00:12:45] have good proxies to lean on with what
+[00:12:48] giving back a lot of ground looks like
+[00:12:51] and if it was the beginning of an
+[00:12:52] acceleration period, what to benchmark
+[00:12:55] the next move against. So again, if we
+[00:12:57] look at QQQ, you know, someone was just
+[00:13:00] smothering this on the way down on
+[00:13:02] Friday. If we get a weak Monday open,
+[00:13:05] right, market gaps lower, but then by
+[00:13:08] mid session, we're not continuing to
+[00:13:11] trend lower into the close. Maybe we
+[00:13:13] have kind of a split close, close about
+[00:13:15] the midpoint of the session or even
+[00:13:17] start closing back within Friday's RTH,
+[00:13:20] so Friday's regular trading hours. I
+[00:13:22] think it's probably safe to look for
+[00:13:26] some kind of mean reversion play because
+[00:13:27] we saw max fear, right? If the market
+[00:13:30] doesn't continue to reward sellers on
+[00:13:31] Monday, I think that we have a good
+[00:13:34] signal to uh to look for longs or look
+[00:13:37] for the other side at least for a mean
+[00:13:38] erosion play because these are extended.
+[00:13:41] A lot of these are at key areas of
+[00:13:42] market structure. A lot of them are
+[00:13:44] through key averages which I think when
+[00:13:47] averages start to turn and cross over
+[00:13:50] then I think it's safe to assume that
+[00:13:51] the trend is picking up speed. But the
+[00:13:54] first closes through you get some
+[00:13:56] significant traps that develop. So you
+[00:13:58] get these counter trend moves. So I
+[00:14:00] would probably play it pretty light on
+[00:14:02] Monday. Going into next week, it's also
+[00:14:04] worth considering that it is the window
+[00:14:07] of weakness post opex. So there are less
+[00:14:09] gamma effects, which works in both
+[00:14:11] directions. So the market will be a
+[00:14:13] little bit more freed up, right? It's
+[00:14:16] not the case that it's going to have as
+[00:14:17] much accelerant or stabilization forces,
+[00:14:19] but it's just one less imposing force is
+[00:14:22] going to be present in the market, which
+[00:14:23] I think allows it to open up to any of
+[00:14:26] the current prevailing flows that are
+[00:14:28] are pushing it around. So, I think
+[00:14:30] Tuesday, Wednesday, if we're not
+[00:14:33] bottoming by Tuesday, I would be
+[00:14:34] surprised. I'm not going to be buying in
+[00:14:36] anticipation of that though. I will be
+[00:14:38] looking at QQQ. I'll be looking at DRAM.
+[00:14:41] And then we also have, by the way, you
+[00:14:43] know, we have Meta earnings coming up.
+[00:14:45] We have MBIS earnings coming up as well.
+[00:14:48] We have Tesla earnings coming up. You
+[00:14:50] know, Tesla, I was looking for a two-day
+[00:14:53] play of that news of the flying car, but
+[00:14:56] the reality was that car is not seeing
+[00:14:57] the road anytime soon. So, I was
+[00:14:59] expecting maybe retail would jump into
+[00:15:00] this on a second day play, but we didn't
+[00:15:02] even get that. So, I think I think
+[00:15:04] there's a lot of signs right now that
+[00:15:05] the market is you have to be really
+[00:15:08] sensitive right now with positions and
+[00:15:10] play things really close outside of like
+[00:15:12] I said outside of of AI chip names,
+[00:15:15] memory names, and any hardware names,
+[00:15:18] any hardware related names. Microsoft or
+[00:15:21] excuse me, Meta didn't look bad. So,
+[00:15:24] Meta trading better over the last few
+[00:15:26] weeks, right? Had this multi-week,
+[00:15:28] multimonth breakout. I would expect that
+[00:15:31] honestly if we're going to get a bounce
+[00:15:33] that of the mags if we're going to get a
+[00:15:35] bounce this week that Meta is probably
+[00:15:37] the the better name to to play in to
+[00:15:41] play the long side in. But like I said,
+[00:15:43] I mean I think there's a lot of signs
+[00:15:44] right now that these are the some of the
+[00:15:47] more significant cracks in the surface
+[00:15:49] that we've had in a really long time.
+[00:15:51] Not only, you know, from a debt
+[00:15:52] standpoint, but also like just bad again
+[00:15:55] indications of good news, bad price. So,
+[00:15:58] we had Taiwan semiconductors again, good
+[00:16:01] earnings, big beat, and yet price is
+[00:16:04] still moving lower, which usually is one
+[00:16:06] of the better signals when you have
+[00:16:09] something that's positive being
+[00:16:10] reflected with negative price action.
+[00:16:13] And the inverse works as well, right, in
+[00:16:15] bare trends. As far as crypto goes, you
+[00:16:19] know, BTC is not trading terribly, but
+[00:16:22] it's also really not doing enough for me
+[00:16:24] to be really bullish on it. Like I think
+[00:16:27] that this is going to go sideways much
+[00:16:29] longer. I think that the areas that make
+[00:16:31] sense to look to get involved are if we
+[00:16:33] get a deeper stab into the 70s or if
+[00:16:35] we're cleanly back above 84. You know,
+[00:16:38] cleanly back above 84. Another really
+[00:16:40] significant level. And I mentioned this
+[00:16:43] last week is if we're just back above
+[00:16:45] the yearly open, right? Back above the
+[00:16:47] yearly open. You know, that's might
+[00:16:49] sound silly to some people. That's like
+[00:16:51] right through 876, but back above the
+[00:16:54] yearly open, there's really no debate at
+[00:16:56] that point. So, you also go from again
+[00:16:59] the entire year being in the red to
+[00:17:01] suddenly flipping a signal green, which
+[00:17:03] I think would probably be the only point
+[00:17:06] of this structure where I would have
+[00:17:08] seriously or would really seriously
+[00:17:10] consider that momentum might come into
+[00:17:12] the market in a really violent way. Up
+[00:17:14] to this point, like I've said, this is
+[00:17:16] not the period to expect that. This is
+[00:17:19] the beginning ideally of a much longer
+[00:17:21] bullish trend, but it's also it's it's
+[00:17:24] the slow and steady part, right? It's
+[00:17:27] it's closer to the beginning. So, it's
+[00:17:28] not as many people involved. It's
+[00:17:30] there's no chase involved right now.
+[00:17:32] Derivative markets are pretty tame. Spot
+[00:17:35] markets are not doing much. you know,
+[00:17:37] sailor strategy being removed from MSCI
+[00:17:40] that brings one set of force flows out
+[00:17:42] of strategy, which I think people look
+[00:17:45] at that as a potential, right, avenue
+[00:17:47] into BTC and and flow into BTC. So, you
+[00:17:50] know, that's reflexive on the way up and
+[00:17:52] on the way down. Bitcoin's not really
+[00:17:54] doing a whole lot here. It's still, you
+[00:17:56] know, from a weekly time frame
+[00:17:57] standpoint, I think this trend has
+[00:18:00] cleanly shown signs of shifting, but
+[00:18:02] shifting could just mean sideways longer
+[00:18:04] before we continue to move up. averages
+[00:18:06] still holding, right? Weekly averages,
+[00:18:08] daily structure still intact, but it's
+[00:18:11] just there's not a whole lot to get
+[00:18:12] excited about here. I think this is
+[00:18:14] going to continue lower. And the same
+[00:18:15] thing with Zcash. Like I think a
+[00:18:18] structure like this is going to end up
+[00:18:20] puking much lower. I think Zcash is
+[00:18:21] going to trade into the 900s. But going
+[00:18:25] into this week, I think we have to be
+[00:18:26] really cautious. I think anticipate that
+[00:18:28] fear comes back into the market on
+[00:18:30] Monday, look to buy the dip on Tuesday,
+[00:18:32] and hopefully we have the exact opposite
+[00:18:34] opposite emotion going into the end of
+[00:18:35] the week. By the way, I shared this and
+[00:18:38] I pulled this chart up. I've been trying
+[00:18:40] out this platform and I ended up teaming
+[00:18:43] up with them. It's an awesome platform.
+[00:18:46] Honestly, everyone is used to trading
+[00:18:47] through single exchange interfa
+[00:18:50] interfaces. If you're trading stocks,
+[00:18:52] for example, you're trading on software,
+[00:18:54] right? Or you're trading through a
+[00:18:55] broker. I trade through Dash Trader. I
+[00:18:57] trade through Clear Street. Um, that's
+[00:18:59] one of my brokers. But then all the
+[00:19:01] routing is through a bunch of different
+[00:19:02] exchanges, right? This is not an
+[00:19:06] exchange. So, Liquid is not an exchange.
+[00:19:08] This connects to exchanges like
+[00:19:10] Hyperlid, Lighter, AI, and I'm sure a
+[00:19:13] lot more coming. It also connects to
+[00:19:15] prediction markets. It's decentralized
+[00:19:17] though. So, the benefit is you're not
+[00:19:20] exposed to one exchange. There's no
+[00:19:22] counterparty risk there. It's
+[00:19:24] decentralized. You control your own
+[00:19:26] wallet. You control your own funds. One
+[00:19:28] of the coolest things about it is that
+[00:19:29] it's just built for trading. Like if I
+[00:19:32] want, I could long oil right now by just
+[00:19:35] clicking into oil, right? Clicking into
+[00:19:37] oil, and I'm long oil right here. And I
+[00:19:40] could click right off of the news story.
+[00:19:42] So I could filter this for the exact
+[00:19:45] names that I want to see, the things
+[00:19:46] that I want to see on it. And I could
+[00:19:48] just click into oil very easily. Be long
+[00:19:51] oil based on a news update. I have all
+[00:19:54] these presets for the size that I want
+[00:19:55] to be in, right? And it's it's a really
+[00:19:58] cool platform. I've I just started using
+[00:20:00] it recently. I started talking to the
+[00:20:02] team and I only want to moving forward.
+[00:20:06] I only want to partner with and support
+[00:20:10] things that I genuinely like because I
+[00:20:12] found in the past, you know, this is me
+[00:20:14] being as transparent as possible. I
+[00:20:16] found that I've gotten excited about
+[00:20:18] things and partnering with some names
+[00:20:20] and I've really barely done it compared
+[00:20:22] to a lot of other people and then I just
+[00:20:24] realized like I actually am not that
+[00:20:26] excited about this. Like I and it's very
+[00:20:29] difficult for me to to fake excitement.
+[00:20:32] You know, I was partnered with a
+[00:20:34] prediction market company and I was just
+[00:20:36] not using it. Like one month in I'm like
+[00:20:38] I'm not even using this. I I can't show
+[00:20:41] any level of excitement about it.
+[00:20:43] Meanwhile, this is extremely cool. And
+[00:20:46] that's like that's how I know that I've
+[00:20:49] that I'm hooked if I just have like a
+[00:20:51] very dudish surferish response to
+[00:20:53] something and, you know, lose all the
+[00:20:56] ability to describe it in any kind of
+[00:20:58] articulate manner. But I'll share the
+[00:21:00] link, you know, see if you could get
+[00:21:02] people who follow some some funds to to
+[00:21:05] play around with it. Um, it's worth
+[00:21:07] checking out on your own. just it's set
+[00:21:09] up for trading and again it's not
+[00:21:12] through you know this is not just
+[00:21:14] through Hyperlid right it's not just
+[00:21:16] through lighter it's not it's not an
+[00:21:18] exchange right it's routing and
+[00:21:20] connecting to all of the best liquidity
+[00:21:23] right across the market on decentralized
+[00:21:26] exchanges and then not only that like
+[00:21:27] this has a leaderboard function which is
+[00:21:29] really cool because you could follow you
+[00:21:33] could follow traders and you see I've
+[00:21:35] barely done any trading on this this is
+[00:21:37] my P&L the entirety of You could follow
+[00:21:39] traders on this and then just follow
+[00:21:41] into their trades as well, which right
+[00:21:44] now obviously is a really popular thing
+[00:21:46] taking place. The social aspect of
+[00:21:48] trading is huge and I think that'll
+[00:21:50] continue to grow. So anyhow guys,
+[00:21:52] hopefully you guys have a great weekend.
+[00:21:55] Hopefully this week is a exciting
+[00:21:57] trading week. You know, based on
+[00:21:59] Friday's price action, it looks like bad
+[00:22:02] news is going to drop over the weekend,
+[00:22:03] but really nothing has happened so far
+[00:22:05] as far as I can tell. But I would
+[00:22:07] anticipate Monday we see a little bit
+[00:22:08] more fear come back into the market and
+[00:22:09] then hopefully we'll have a bounce by
+[00:22:11] midweek. Until then, until next time, I
+[00:22:14] will keep you guys informed with my next
+[00:22:16] videos coming out. Maybe surprise you
+[00:22:18] from time to time. But the stable
+[00:22:19] workshop has about two weeks left, three
+[00:22:22] weeks left in it and then I'll be back
+[00:22:24] into the swing of things. If you're
+[00:22:25] interested, the link is below. I've put
+[00:22:28] out what I think is an incredible
+[00:22:30] workshop so far. Extremely organized.
+[00:22:32] Like I said, take someone from zero to
+[00:22:34] hero. No skill level required to start
+[00:22:38] with really. I'm trying to make
+[00:22:40] something that helps people start from
+[00:22:41] the ground up. I think I've done a good
+[00:22:43] job of that so far. The reception is is
+[00:22:45] phenomenal. And yeah, that's that. I'll
+[00:22:47] let you guys get on to the rest of your
+[00:22:48] evening.

@@ -1579,3 +1579,28 @@ Conflict: commit 201d47c73 (3la + 3xm must-pass, 240 s cap) vs operator 10-25 "e
 ```json
 {"id": "d-retire-btc-live-aid-artifact", "order": 97, "date": "2026-10-31", "status": "DECIDED", "question": "Operator: anything else to delete among the existing artifacts?", "answer": "Default (OURS): retire the BTC Live Aid artifact. On claude.ai every feed reads NOT_IN_DATA; the working page is tools/live_aid/live_aid.html from disk. Keep Setup Review (open S1 step, 0 of 22 answered). Deleted by the operator 2026-10-31 on login C: Control Room, CBP Monday Desk, CBP Consensus Desk, Session Planner (registry `deleted`)."}
 ```
+
+## d-jala-fractal-next-studies | decided 2026-10-31 | Lead (desktop, login C)
+```json
+{"id": "d-jala-fractal-next-studies", "order": 96, "date": "2026-10-31", "status": "DECIDED", "question": "Jala fractal lessons and next fractal studies?", "answer": "OPERATOR (2026-10-31, chat): 'what abt Jala's fractal analysis? what MTS can learn from it? What other studies needs applying - anything latest cutting edge?' DECISION (OURS): run card gemini-jala-fractal-method on NUC Gemini (low); file jala-400d-close-trigger-study (fractal as context after a 400D close break, n from alts) and tsfm-zero-shot-vs-analog (foundation-model forecasts vs kNN analogs). Meta-label and CSCV already carded.", "done": "cards filed, Gemini broadcast"}
+```
+
+## d-meta-label-panel-simple-self-tested | decided 2026-10-31 | Fable (jis-nb, login C)
+```json
+{"id": "d-meta-label-panel-simple-self-tested", "order": 98, "date": "2026-10-31", "status": "DECIDED", "question": "Shape and testing of the meta-label simulator panel (Opus step 5, ROADMAP P2)?", "answer": "OPERATOR (2026-10-31, via the Opus review session): 'I need it simplified and easy to test - so check it yourself'. Binding: the panel is one table per study (Layer reading | trades | win % | average R after fees) plus one verdict line (Best third by filter vs random third -> PASSED / FAILED / NOT ENOUGH DATA) plus the existing 6 example charts; nothing more. Testing is ours, not his: every panel change ships with an automated check (JSON shape, bucket counts sum to filled trades, page click test like research/sim_desk/test_page_click.py) and the building session verifies the rendered page itself before reporting. Build gate unchanged: ROADMAP P2 (one VALIDATION pass and S0 exit); card layer-state-snapshot-causal carries it.", "refs": ["MyTradingSys/research/meta_label_roadmap_2026-10-31/ROADMAP.md"]}
+```
+
+## d-s3-run-list | decided 2026-10-31 | Opus (desktop, login C)
+```json
+{"id": "d-s3-run-list", "order": 99, "date": "2026-10-31", "status": "DECIDED", "question": "Which backtests must be run again, and is there one planned list?", "answer": "OPERATOR (2026-10-31, login C desktop session): 'Yes, write it'. One S3 run list lives in research/v1_plan_2026-10-20/D7_ROADMAP.md (section 'S3 run list'): 7 tests in order, the rechecks already done that are not re-run, and the run rules. New cards cryptocred-4h-1d-dev-s3 and tom-v2-gross-first-dev-ext filed raw.", "refs": ["MyTradingSys/research/v1_plan_2026-10-20/D7_ROADMAP.md"]}
+```
+
+## d-cotrade-use-existing-account | decided 2026-10-31 | Opus (desktop, login C)
+```json
+{"id": "d-cotrade-use-existing-account", "order": 100, "date": "2026-10-31", "status": "DECIDED", "question": "Which testnet account does the co-trade command use; does the operator create a new subaccount key?", "answer": "OPERATOR (2026-10-31, chat): 'no - just use what ever a/c we have - i will just say fire these trades and you will do it. that os it'. Binding: no new subaccount or key; co-trade uses an existing testnet slot: the spare jishu_22 (auto_trader_config _accounts_note), else the main slot via the existing missing-secret fallback. Flow is his words 'fire these trades' -> Claude places on testnet and journals; no extra confirmation step from him. Account-wide kill/flatten on a shared slot can close his position: journaled as a known risk.", "refs": ["MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md"]}
+```
+
+## d-cotrade-testnet-carveout | decided 2026-10-31 | Opus (desktop, login C)
+```json
+{"id": "d-cotrade-testnet-carveout", "order": 101, "date": "2026-10-31", "status": "DECIDED", "question": "May a session place testnet trades the operator calls (co-trade), despite the hard rule 'Builders never open trades'?", "answer": "OPERATOR (2026-10-31, chat): 'approved' to the proposed wording 'testnet orders I call by name, placed only through the co-trade tool, recorded, never mainnet'. Binding: exception written into CLAUDE.md hard rule and MOVED_RULES.md; scope = MyTradingSys/execution/cotrade.py only, operator words journaled, testnet only; mainnet stays a separate money gate. Closes bug-conflict-4d90d026fa.", "refs": ["MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md", "MyTradingSys/system/MOVED_RULES.md"]}
+```

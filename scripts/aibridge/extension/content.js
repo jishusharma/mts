@@ -235,11 +235,7 @@
     return problem ? { ok: false, cls: 'bridge_mismatch', error: problem } : resp;
   }
   function failed(resp) {
-    if (!resp || !resp.ok || resp.status !== 200) return resp && resp.status === 403 ? 'refused' : 'bridge error';
-    var b = resp.body || {};
-    if (b.timed_out) return 'timed out';
-    if (b.exit !== 0 && b.kind !== 'read') return 'exit ' + b.exit;
-    return null;
+    return L.blockFailed(resp);
   }
 
   // ---- posting several results as one message ----
@@ -422,7 +418,7 @@
     ui.box.className = 'aibridge-ctl' + (autoRun ? ' on' : '');
   }
   function stopAuto(why) {
-    autoRun = false; stopHold = true; token++; pending = [];
+    autoRun = false; stopHold = true; token++; pending = []; watch = null;
     setStatus(why || 'stopped');
     showStopBanner(L.stopNotice(why));
     refreshUi();
@@ -476,9 +472,9 @@
       if (!it.cmd && !it.opts.task) { it.resp = { ok: false, cls: 'NOT_RUN', error: 'NOT RUN: the block has no command after the # AIRUN line.' }; continue; }
       runs++; refreshUi();
       setStatus('running #' + it.n + (seenN > 1 ? ' (block ' + (i + 1) + '/' + seenN + ')' : '') + ': ' + it.cmd.split('\n')[0].slice(0, 60));
-      var resp = vet(it.rid, it.cmd, await L.raceDeadline(callWithRetry(it.cmd, it.opts, true, it.rid), L.expireMs(it.opts.timeout_s), function () {
+      var resp = vet(it.rid, it.cmd, await L.raceDeadline(callWithRetry(it.cmd, it.opts, true, it.rid), L.expireMs(it.opts.timeout_s, !!it.opts.task), function () {
         return ping(it.opts.host).then(function (r) { return (r && r.ok && r.body && r.body.running != null) ? r.body.running : null; });
-      }), !!it.opts.task);
+      }, L.extendMs(!!it.opts.task)), !!it.opts.task);
       it.resp = resp; ran++;
       if (it.block.__aibPanel) { it.block.__aibPanel.style.display = 'block'; it.block.__aibPanel.textContent = '[auto #' + it.n + ']\n' + panelText(resp); }
       if (myToken !== token) { inRun = false; return; }
@@ -542,9 +538,9 @@
   async function replyTick() {
     if (!watch || watch.phase !== 'waiting' || !autoRun || replyBusy) return;
     var answered = pending.length > 0 || allBlocks().some(function (b) { return !ranKeys[blockKey(b)]; }) ||
-      (textQuiet() >= CFG.aibridge_quiet_ms && answerLen() - postedAnsLen >= 40);
+      (textQuiet() >= CFG.aibridge_quiet_ms && answerLen() - postedAnsLen >= L.ANSWER_MIN_CHARS);
     if (answered) { watch = L.replyWatch(watch, { type: 'reply' }, Date.now()).state; return; }
-    var r = L.replyWatch(watch, { type: 'tick', busy: inRun }, Date.now());
+    var r = L.replyWatch(watch, { type: 'tick', busy: inRun || !!inputText(findInput() || {}) }, Date.now());
     watch = r.state;
     if (r.action === 'notice') {
       replyBusy = true;
@@ -573,7 +569,9 @@
     if (Date.now() - lastWatch < 2000) return;
     lastWatch = Date.now();
     if (!alive() || baseline || working || textQuiet() < CFG.aibridge_quiet_ms) return;
-    var unrun = allBlocks().filter(function (b) { return !ranKeys[blockKey(b)]; });
+    var seen = allBlocks();
+    if (!seen.length && lastIgnored > 0 && !stopHold) setStatus('ignored ' + lastIgnored + ' block(s) inside the thinking panel (only the final answer runs)');
+    var unrun = seen.filter(function (b) { return !ranKeys[blockKey(b)]; });
     if (!unrun.length) return;
     if (autoRun && pending.length === 0) {
       var u = unrun[unrun.length - 1];

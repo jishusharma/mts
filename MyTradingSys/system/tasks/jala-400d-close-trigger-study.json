@@ -1,0 +1,70 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/research/jala_layer_2026-10-31/trigger_study -q"
+  ],
+  "created": "2026-10-31T13:25:37Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/jala_layer_2026-10-31/TRIGGER_RESULT.md gives n events per universe, mean fee-net forward return with week-block CI vs the random-day null and a verdict per horizon; PRE_REG frozen before the run; HOLDOUT unread.",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Test Jala's trigger as stated: daily close under/over the 400D SMA (and the 200/400 Iron Dome cross) on BTC plus top-20 alts; fee-net forward 10/30/60d returns vs random days. Context gate for fractals F1-F4.",
+  "id": "jala-400d-close-trigger-study",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 27 file(s)",
+      "ref": "4c42466fd976",
+      "utc": "2026-10-30T21:25:43Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "4c42466fd976 ship: 27 file(s)",
+      "ref": "MyTradingSys/research/jala_layer_2026-10-31/method_jala.md",
+      "utc": "2026-10-30T21:25:43Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-31 ACCEPT (Sonnet reviewer Agent, FIX applied once, not re-read, planner DECISION OURS). PLANNER. Alt universe rule (top-20 by volume at DEV start) is OURS. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T15:38:02Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/jala_layer_2026-10-31/method_jala.md",
+    "MyTradingSys/research/jala_layer_2026-10-31/trigger_study/"
+  ],
+  "scope_out": [
+    "HOLDOUT 2025-07+",
+    "order or live code",
+    "fractal detector changes",
+    "VALIDATION bars (DEV only)"
+  ],
+  "scope_sha": "4c42466fd976",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/jala_layer_2026-10-31/method_jala.md:4-23"
+  ],
+  "state": "ready",
+  "steps": [
+    "find daily klines for BTC and the top-20 alts under F:/MTS/Dumps/backtest (or fetch_binance_archive.py, public data); the 400D SMA needs 400 days of pre-window warmup, use warmup bars only to compute the SMA; if data is missing post a DSA desk task and park",
+    "quote the 400D lines from method_jala.md (lines 4-23, 79) into PRE_REG.md; SMA lengths SOURCED, horizons and universe OURS",
+    "m = universe x horizons x 2 triggers; run prereg_gate.py --m <m>; freeze",
+    "write the runner on DEV daily klines only (splits.py guard), random-day null 2000 draws",
+    "write TRIGGER_RESULT.md, backfill VERDICTS.csv"
+  ],
+  "tests": "Fail-first: test_trigger_study.py with a 5-day synthetic series where the close crosses under the SMA on a known day; the event list must equal that day (hand-computed); fails before the module exists.",
+  "title": "Jala trigger test: BTC + top-20 alts daily close under/over 400D SMA (and 200/400 Iron Dome cross) -> fee-net fwd 10/30/60d vs random days; n from alts; context gate for fractals F1-F4",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

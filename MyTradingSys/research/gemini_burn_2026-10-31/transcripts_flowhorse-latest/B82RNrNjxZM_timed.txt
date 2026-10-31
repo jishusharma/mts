@@ -1,0 +1,545 @@
+# Video ID: B82RNrNjxZM
+# Title: Weekend Market Update | Stream Recap
+# Published: 2026-08-30
+# Source: youtube_transcript_api (auto); uploader: Ryan Rossi | Horse
+# Analyst: FlowHorse
+# Channel: @TheFlowHorse
+# Duration_s:1044
+# Word count: 3837
+# ---
+[00:00:00] So, I think this is something that we
+[00:00:01] could say within reason is clearly the
+[00:00:03] bottom.
+[00:00:08] What's going on, guys? Equities ended up
+[00:00:10] having a pretty poor session on Friday.
+[00:00:12] We saw yields push back up. The short
+[00:00:14] end, especially, so the 2-year 10-year,
+[00:00:16] but what started off as a decent
+[00:00:18] session. We had some strength in the MAG
+[00:00:19] 7 software held up much better than
+[00:00:21] semis and memory really began to fall
+[00:00:24] apart up until the close. So there's
+[00:00:26] basically a complete flip and yields and
+[00:00:28] the dollar continue to finish higher.
+[00:00:30] It's very clear that right now yields
+[00:00:32] and stocks obviously move inversely.
+[00:00:35] This is not always the case, but anytime
+[00:00:37] we have a sharp move in yields, equities
+[00:00:38] have a really difficult time keeping
+[00:00:40] their footing. So I think that besides
+[00:00:42] the knee-jerk response, I don't think
+[00:00:44] this is going to have any larger
+[00:00:45] implications for equities. I think that
+[00:00:47] the ES and the NQ will probably continue
+[00:00:50] up into Q4. Regardless, [snorts] I think
+[00:00:52] that this is probably what was Wars's
+[00:00:56] attempt to jawbone or raise rates in
+[00:01:00] some meaningful way, talk them up rather
+[00:01:02] than having to actually do it in the
+[00:01:04] September FOMC meeting. So, that's all I
+[00:01:06] think this was. I think this was just
+[00:01:07] rhetoric. As a reminder, guys, this
+[00:01:09] stream is sponsored in part by Kali and
+[00:01:11] Kali is where I do all my prediction
+[00:01:13] market trading. Right now they're doing
+[00:01:14] a bonus, but on top of that bonus, if
+[00:01:17] you're a user of the link below, there's
+[00:01:18] a good chance you have access to the
+[00:01:20] upcoming stable workshop on August 31st.
+[00:01:22] So, if you're someone who's using that
+[00:01:24] link, make sure you DM me and we'll sort
+[00:01:26] it out. Right now, we have I think the
+[00:01:28] first real meaningful signs of change.
+[00:01:31] So, a few things from a technical
+[00:01:33] standpoint, reclaiming the 200. One of
+[00:01:35] my key areas or key levels, you know,
+[00:01:38] kind of dynamic level is the 20 period
+[00:01:40] on the weekly. So, that is the 20 EMA.
+[00:01:42] So, we've reclaimed that. You know,
+[00:01:43] you've had this kind of shadow across
+[00:01:45] the bow type of move, a [ __ ] you candle,
+[00:01:47] 25% up in a week roughly, I think. So,
+[00:01:50] really strong technical response. It's
+[00:01:52] not only a strong technical response,
+[00:01:54] but this is something that I talked
+[00:01:56] about for the last few weeks. You know,
+[00:01:58] Bitcoin was looking for a narrative. You
+[00:02:00] know, this was off of the
+[00:02:02] reestablishment or the rekindling of the
+[00:02:05] debasement trade, which is off the back
+[00:02:07] of the Treasury's plan for buybacks,
+[00:02:09] which the original announcement was $4
+[00:02:11] billion, but I think they continue to
+[00:02:12] raise the roof on that. So, we saw hard
+[00:02:14] assets respond positively. Gold respond
+[00:02:16] positively. BTC and gold had their
+[00:02:18] strongest correlation in a very long
+[00:02:20] time. So, very much positively
+[00:02:22] correlated except for the last few
+[00:02:24] sessions, which I think was not very
+[00:02:26] meaningful feedback, but useful
+[00:02:27] feedback. So, we've had a response that
+[00:02:29] was positive from a technical
+[00:02:31] standpoint, response that was positive
+[00:02:33] from a narrative standpoint, and it's
+[00:02:34] not even like the narrative has to be
+[00:02:36] 100% true. All that is required is that
+[00:02:39] enough people believe it for it to be
+[00:02:41] durable. And sentiment has improved
+[00:02:42] drastically. There is definitely a
+[00:02:45] change in price action. Whereas we know
+[00:02:47] that there were a lot of people waiting
+[00:02:48] for the moment, waiting for some kind of
+[00:02:50] sign that the market was back on,
+[00:02:52] there's definitely been a I'd say
+[00:02:55] redeployment, obvious redeployment from
+[00:02:57] capital off the sidelines because things
+[00:02:59] are staying a lot more bid than they
+[00:03:01] have previously. They're trading a lot
+[00:03:02] more constructively. Price action is
+[00:03:04] more impulsive and responsive and there
+[00:03:06] seems to be a level of haste, you know,
+[00:03:09] haste, right? Sense of urgency. So these
+[00:03:11] things are all good. Other things that
+[00:03:13] stand out you know if we look at IBIT if
+[00:03:15] we look at 25 delta skew this is the
+[00:03:17] first time since back in January where
+[00:03:21] we are in positive territory okay so
+[00:03:23] this is put minus call so this is
+[00:03:25] basically indicating to us that calls
+[00:03:27] are a little bit more aggressively
+[00:03:28] bought it could depress IV from puts
+[00:03:30] being sold too okay so whether it's
+[00:03:32] buying upside exposure whether it's
+[00:03:34] selling downside exposure right selling
+[00:03:36] puts the impact on the skew is making it
+[00:03:38] positive where in the past this has not
+[00:03:41] been the case Again, going back to
+[00:03:42] January, so a lot of these sharper moves
+[00:03:45] down. You've seen insurance bought.
+[00:03:46] You've seen people buy protection. So,
+[00:03:48] this is the first time in a while where
+[00:03:49] we've actually seen the opposite. You
+[00:03:51] know, last couple days, it looks like
+[00:03:52] maybe there was a little bit of hedging
+[00:03:53] going into yesterday's close. You had
+[00:03:55] some more puts bought versus calls sold.
+[00:03:58] But leading up to this, this move has
+[00:03:59] been participated in, which is good. One
+[00:04:02] thing I will say is that from a implied
+[00:04:04] volatility standpoint, this move is
+[00:04:06] still not very rich. So if you were
+[00:04:09] making a bet on BTC, it's not a bad idea
+[00:04:12] to take a longer term view, you know, at
+[00:04:14] least outside of, you know, a month or a
+[00:04:16] couple months using calls because right
+[00:04:18] now, if we look at IV rank, so in terms
+[00:04:20] of percentiles, this is still pretty
+[00:04:22] low. It looks like the market has woken
+[00:04:24] up, but it's not the case that there's
+[00:04:25] any real sign of absolute balls to the
+[00:04:28] wall aggression. So we've had a big
+[00:04:29] change in technicals, in sentiment,
+[00:04:31] started seeing it shift in positioning.
+[00:04:33] So, you know, this move right now is for
+[00:04:36] the most part after the squeeze has been
+[00:04:38] one where there is a significant amount
+[00:04:40] of spot participation. So, we see the
+[00:04:42] Coinbase premium is back. We see the
+[00:04:44] prices are remaining elevated and OI is
+[00:04:47] for the most part completely repriced
+[00:04:49] lower. We were stuck in that OI range
+[00:04:50] for a bit. So, it's not the case that
+[00:04:52] this trade looks saturated. There's a
+[00:04:54] lot of good things right now. So, this
+[00:04:56] is all great. The things that stand out
+[00:04:59] are that yes, you know, this is still
+[00:05:01] technically a lower high, lower high
+[00:05:04] relative to this May high. 83 828 is
+[00:05:08] like the real line in the sand. On the
+[00:05:10] weekly, we're trading back to the 50
+[00:05:11] period moving average, which is a
+[00:05:13] significant level. Historically, has
+[00:05:14] been a significant level on the way up
+[00:05:16] and on the way down. There's a good
+[00:05:18] amount of confluence and there's a few
+[00:05:20] factors that line up that make this, I'd
+[00:05:22] say, somewhat predictable sticky point
+[00:05:24] for prices. So far for this move again
+[00:05:26] like a 27% move but we've had basically
+[00:05:29] I think from the top to the bottom of
+[00:05:31] this pullback we've had like a 6%
+[00:05:32] pullback which is not that substantial
+[00:05:35] especially when you consider other
+[00:05:36] significant shots across the board from
+[00:05:38] the lows right so moves up off of the
+[00:05:40] lows prior lows pullbacks have been in
+[00:05:42] the territory of 10 13% right would be
+[00:05:45] part for the course 26% 27% move up
+[00:05:48] right now and we've only given back like
+[00:05:49] 5 6% that's not that significant we
+[00:05:52] could have a deeper pullback and it
+[00:05:53] would still be completely within within
+[00:05:55] reason. Where I stand right now, I think
+[00:05:57] that one I I think this sign of change
+[00:05:59] is meaningful, right? So I think this is
+[00:06:01] something that we could say within
+[00:06:03] reason is clearly the bottom. One thing
+[00:06:05] that I think is also clear is that in
+[00:06:07] the beginning, I think we're more likely
+[00:06:09] to consolidate a little bit longer.
+[00:06:11] Right? The beginning of the trend, you
+[00:06:12] have people that are slow to react, but
+[00:06:13] it's not a really high momentum period.
+[00:06:16] We've already had the very big move,
+[00:06:18] right? It would make sense for the
+[00:06:19] market to consolidate a lot more. For
+[00:06:21] now, as the trend matures and
+[00:06:23] progresses, that's when things start
+[00:06:25] speeding up. That's when you start to
+[00:06:26] have a lot more risk-taking in
+[00:06:28] derivative products. It'll start to show
+[00:06:30] up in that there'll be a little bit of
+[00:06:31] froth. Corrections will be shorter in
+[00:06:33] duration, right? Moves will be a lot
+[00:06:35] more parabolic, overextended, left
+[00:06:38] without bases around here. If anything,
+[00:06:40] what we want is we want to see a
+[00:06:42] multi-week, even multimonth period
+[00:06:44] buildout. We want to see that, you know,
+[00:06:45] if we've had value established lower
+[00:06:47] over the course of this trend, these
+[00:06:49] periods where the market has built out
+[00:06:51] structure, all we want to see now is
+[00:06:52] we're able to transition this balance
+[00:06:54] higher. And if this takes place over the
+[00:06:56] course of the next couple months, that
+[00:06:58] would be better than for us to continue
+[00:06:59] to just rock it up from here. So, what I
+[00:07:01] think is the market is doing actually a
+[00:07:03] decent job right now of communicating
+[00:07:04] that Bitcoin is a little bit gassed out,
+[00:07:06] right? So, we've had multiple periods of
+[00:07:08] overlap from the origin of this move
+[00:07:09] where VWAP is. You know, we've lost that
+[00:07:12] one standard deviation ban. We're
+[00:07:13] trading back to that anchored VWAP.
+[00:07:15] We're trading right now under where bulk
+[00:07:17] of the activity is taking place, right?
+[00:07:19] So for the duration of this move, we're
+[00:07:20] trading below. Not the PC, it's
+[00:07:22] basically this is the PC. We're building
+[00:07:24] out up here still. It's still good, but
+[00:07:25] we're starting to trade back within
+[00:07:26] prior value. If you look at momentum
+[00:07:28] oscillators beginning to cool off, all
+[00:07:30] of this is good because price is not
+[00:07:32] giving back much. If we look at just the
+[00:07:34] level of aggression through those local
+[00:07:35] highs, so this more recent high relative
+[00:07:38] to that high, you could see that both
+[00:07:40] PERPS pulled off, spot pulled off,
+[00:07:43] notably Binance pulled off. And if we
+[00:07:45] look at what is advertised, right, we
+[00:07:47] see that as we got to those highs,
+[00:07:49] things really started to firm up. And
+[00:07:50] right now, you have an offer that is
+[00:07:52] quite obvious sitting right above us.
+[00:07:54] That's for 398 BTC and per. And then
+[00:07:57] this is your spot market. So you can see
+[00:07:59] things really start to get sticky again
+[00:08:01] through 81 82 but they also firm up
+[00:08:04] below down through 76 75 74. So I think
+[00:08:06] there's a good chance that this overshot
+[00:08:09] right with gold. So BTC put in a really
+[00:08:11] strong move with gold. Gold is now
+[00:08:13] cooling off a lot more a lot more
+[00:08:14] responsive to that macro commentary. A
+[00:08:16] lot more responsive again to what we saw
+[00:08:18] happen on Friday which by the way if you
+[00:08:21] look at this Fed decision I think at
+[00:08:22] this point like the idea that they would
+[00:08:24] hike going into midterms to me seems
+[00:08:25] extremely unlikely. Anyhow, I think the
+[00:08:27] gold trade is actually somewhat of a
+[00:08:29] leading indicator too. The move
+[00:08:31] originated one because there was a
+[00:08:33] market that was sidelined in in a place
+[00:08:35] where not necessarily offsides but
+[00:08:37] imagine sidelined is to some extent
+[00:08:39] offsides poorly positioned for the move.
+[00:08:41] So there was a bit of a chase. There was
+[00:08:43] this narrative right push from gold
+[00:08:45] market very responsive to that. Leading
+[00:08:47] up to this BTC had a ton of evidence
+[00:08:50] that there was you know bad news good
+[00:08:52] price right? So, a bunch of things that
+[00:08:54] should have arguably brought price lower
+[00:08:55] but did not. Once again, Sailor was not
+[00:08:57] responsible for this move. We saw that
+[00:08:59] with his more recent announcement that
+[00:09:00] there was no BTC purchase. Instead,
+[00:09:02] there was BTC sold. But now, gold is
+[00:09:04] pulling off. Gold put in a pretty
+[00:09:05] extended move, right, to where target
+[00:09:07] made sense, right? So, it traded back
+[00:09:09] within this prior consolidation. I had
+[00:09:11] between 48 and 49 as a level to look for
+[00:09:13] a high. We're pulling back now. I think
+[00:09:16] gold can build out. You know, it's
+[00:09:17] retrading back towards the averages.
+[00:09:20] Gold comes down, tests the 200 day
+[00:09:21] again. If gold begins to base out, I
+[00:09:24] think if anything, if we see gold starts
+[00:09:25] to trade more constructively, has this
+[00:09:28] kind of pullback and then base that is
+[00:09:30] established, that is probably a leading
+[00:09:32] indicator or something that BTC can
+[00:09:34] latch on to. But I think it's likely
+[00:09:35] that BTC actually spends more time
+[00:09:39] ranging now over the next few weeks. the
+[00:09:42] area where you're wrong or where it's
+[00:09:45] just obvious that it makes sense to get
+[00:09:46] aggressive again on the long side which
+[00:09:48] by the way right now all bias right now
+[00:09:50] is long. So if anything I'm positioning
+[00:09:53] spot but I'm looking for entries on the
+[00:09:55] long side to trade tactically around my
+[00:09:58] core spot positions add spot if we trade
+[00:10:00] lower or to get aggressive if we end up
+[00:10:02] trading higher. And I think if we end up
+[00:10:04] trading through these highs it's more
+[00:10:06] than likely that we have an
+[00:10:07] overextension type of move into the mid
+[00:10:09] and high 80s. And then if we trade up to
+[00:10:11] 90 again, I think you'd start to see
+[00:10:12] maybe there'll be some level of
+[00:10:13] stickiness. I think ultimately like this
+[00:10:15] now builds just a higher range. And I
+[00:10:18] would want that. The last thing you want
+[00:10:20] is another move that's straight up here
+[00:10:21] cuz I think this is unhealthy structure.
+[00:10:23] You want a structure that builds out
+[00:10:26] post IBIT, post ETFs. This market trades
+[00:10:28] differently. It's not lockout except for
+[00:10:30] over the course of a couple days. It's
+[00:10:32] not going to lock out over the course of
+[00:10:33] a couple weeks. It's a bigger asset. You
+[00:10:35] have a lot of things that kind of dampen
+[00:10:36] volatility. Best bet is we build a big
+[00:10:38] range up here. But the way I'm breaking
+[00:10:40] it up is I want to be a dip buyer down
+[00:10:42] in the 76s and below. I don't want to be
+[00:10:44] as aggressive as we trade back towards
+[00:10:46] 80s again or 81. If we're trading back
+[00:10:49] above this high, so that's right around
+[00:10:51] 83. I think there's definitely momentum
+[00:10:54] longs to get behind. What we have right
+[00:10:56] now is what you want, which is like
+[00:10:57] across the board, multiple time frames
+[00:11:00] RSI. So, it's reset. And what I said, I
+[00:11:02] put out a video, I think over a week ago
+[00:11:04] now of, hey, this is the change. And
+[00:11:06] we've already gone up, you know, 10,000
+[00:11:07] points from that. But what I said was
+[00:11:09] focus on RSI because when it comes off,
+[00:11:12] the first move overbought is a warning
+[00:11:14] shot. When it comes off and it resets,
+[00:11:16] like you're gonna get another move
+[00:11:17] towards the highs. I also said to the
+[00:11:19] stable members, buy the first red close.
+[00:11:21] So, we've been within this structure for
+[00:11:23] a while now and have had multiple
+[00:11:24] opportunities on the long side. Now, I
+[00:11:26] think we go through a longer cooling
+[00:11:27] period. Whether we're looking at the
+[00:11:28] hourly chart, too, so or the 4 hour,
+[00:11:31] you've had multiple resets that are
+[00:11:33] good, right? So, momentum coming off and
+[00:11:35] price not really giving back much, which
+[00:11:37] is a good piece of feedback. It's not
+[00:11:39] the case that momentum reset or the RSI
+[00:11:41] reset because market moved lower, right?
+[00:11:44] It's the case that it just reset because
+[00:11:45] the market went through time. It's just
+[00:11:47] working off of a 14 period look back.
+[00:11:48] Sideways long enough resets that again.
+[00:11:50] If you think about what that means, it's
+[00:11:52] like the adequate amount of time has
+[00:11:53] passed. Nothing has happened. Sellers
+[00:11:55] have not tried to drive this lower. You
+[00:11:57] know, we have some overheating and alts
+[00:11:59] that took place. But this is chart is I
+[00:12:01] think a little bit misleading now. you
+[00:12:02] know this dominance by open interest
+[00:12:04] chart. I started sharing this years ago.
+[00:12:05] I've talked about this the coinalized
+[00:12:07] guy before this website became big. He
+[00:12:09] was making indicators for me and this
+[00:12:11] has been something I've been sharing now
+[00:12:12] for years but I think it's less useful
+[00:12:14] now. I always talked about or I coined
+[00:12:15] the term the pinch and that's when
+[00:12:18] others dominance and BTC and ET
+[00:12:20] dominance cross. So, it's just an
+[00:12:22] indication that's often following after
+[00:12:24] a period of BTC moves up and then
+[00:12:25] capital goes out the risk curve into
+[00:12:27] alts and then they get saturated and if
+[00:12:29] everything stalls out at that point and
+[00:12:31] you see funding rates continue to go up
+[00:12:32] but buyers aren't being rewarded, you
+[00:12:34] know, there's decay on those positions,
+[00:12:35] then you look for a wash out. A word of
+[00:12:37] advice, not financial advice, but a
+[00:12:38] little piece of wisdom. I don't think
+[00:12:40] you want to do the thing of like
+[00:12:41] starting to just look across the board
+[00:12:43] at every single alt, right? You know,
+[00:12:45] you're going to find things that go up,
+[00:12:46] right? They're moving. And you know, for
+[00:12:49] an intraday trader, there might be some
+[00:12:51] good opportunities, but I don't think
+[00:12:53] you want to just start deploying across
+[00:12:54] the board into dead alts or alts of last
+[00:12:57] cycle or the prior cycle. There's alts
+[00:12:59] now, they have revenue, they have mind
+[00:13:01] share, they're newer, they don't have a
+[00:13:04] bunch of underwater holders to work
+[00:13:05] through, a ton of unlocks. So, you know,
+[00:13:08] Hype is a great example. Lighter is a
+[00:13:10] great example. Pump is a great example.
+[00:13:11] The names that have done the best during
+[00:13:13] the bare market are the names that
+[00:13:15] should be focused on. And arguably, just
+[00:13:17] look at how they're trading right now,
+[00:13:18] right? ETH is not responding positively
+[00:13:20] to this move. They're all, this is still
+[00:13:22] kind of in the same range, too. But if
+[00:13:24] you just look at the price action of BTC
+[00:13:27] over the last few sessions, still very
+[00:13:29] much contained. We're above that move
+[00:13:31] now. Above it in Salana as pawns. So, I
+[00:13:33] think the market's doing a good job
+[00:13:35] right now of telling you where you
+[00:13:36] should be focused. I don't think you
+[00:13:37] want to stray too far from that,
+[00:13:38] thinking that, you know, the lagards are
+[00:13:40] going to catch up. There's sympathy
+[00:13:41] plays that you're positioning for
+[00:13:43] that'll be bit up at some point. I don't
+[00:13:45] think that that that's going to work out
+[00:13:46] in your favor. I mean, if we look at the
+[00:13:47] ES, this was the idea earlier this week
+[00:13:49] for the stable. We had had this overlap,
+[00:13:51] clean setups in either direction. So,
+[00:13:54] the trade was acceptance outside of this
+[00:13:56] multi-day range, trading to these highs
+[00:13:58] for ES. So, we traded in that direction.
+[00:14:00] That's good. ES is still holding
+[00:14:02] all-time highs, right? Still holding
+[00:14:04] this retest. It's right back at the
+[00:14:05] level, which is not great, but I think
+[00:14:07] they're going to do as much as they can
+[00:14:08] to continue to support equities into the
+[00:14:10] midterms. And there's been a large
+[00:14:12] reshuffleling underneath the surface.
+[00:14:14] There's a couple days last week where
+[00:14:16] breath was just terrible, you know, but
+[00:14:17] ES is still trading at the highs. I
+[00:14:19] mean, you had the MAG 7 start to perform
+[00:14:21] well. So, we had strong moves in Amazon
+[00:14:24] on Friday. Apple for the most part, it
+[00:14:27] was seven out of seven were up and then
+[00:14:29] Tesla and Nvidia gave back. I think the
+[00:14:32] AI trade is not as reliable right now.
+[00:14:35] If Nvidia starts making new all-time
+[00:14:37] highs, there's no point in fading that.
+[00:14:38] If Nvidia is making new all-time highs,
+[00:14:40] like that's great. everyone can get back
+[00:14:42] on the boat. That would be great
+[00:14:43] feedback for the entire market, right?
+[00:14:45] That would stoke the confidence at least
+[00:14:46] a ton. But I don't think that's really
+[00:14:48] necessary right now. I think it's clear
+[00:14:50] that uh the AI trade has taken a
+[00:14:53] significant breather and we went from
+[00:14:55] like for the most part all semis doing
+[00:14:58] well, all memory names doing well. The
+[00:15:00] market is has a high bar. It's not just
+[00:15:01] a case that you have good earnings
+[00:15:03] because the market's selling off
+[00:15:04] regardless. I think there's a lot of
+[00:15:05] shuffling underneath the surface. So
+[00:15:07] it's not the case that it's a rising
+[00:15:09] tide for all semi-names or all memory
+[00:15:12] names. I think now you're going to see
+[00:15:13] that quality is going to attract most of
+[00:15:14] the capital. So you're seeing strength
+[00:15:17] in SNDK. You're seeing strength in
+[00:15:19] Micron. This trade is definitely taking
+[00:15:20] a breather. Whether you're looking at
+[00:15:22] the daily and you just see that market's
+[00:15:24] trading in a range now, which is good.
+[00:15:26] The benefit of trading so clean like
+[00:15:27] this is like you know where a transition
+[00:15:29] is taking place like the supply zone in
+[00:15:31] in micron around a thousand. like if
+[00:15:33] we're cleanly through that, I think you
+[00:15:35] get on board this for a move towards the
+[00:15:36] highs. SNDK really strong as well. This
+[00:15:39] is consolidating. Easy to make a case
+[00:15:41] for this forming a higher low here. But
+[00:15:43] overall, there's been a big shift. We
+[00:15:44] went from SAS being killed by uh I don't
+[00:15:47] know that people thought that people
+[00:15:48] were going to spin up software
+[00:15:50] competitors with LLMs to a complete
+[00:15:52] recovery by software. So, we've been
+[00:15:54] talking about software in the stable now
+[00:15:55] for a while, but software is really
+[00:15:57] strong. a lot of software names trading
+[00:15:59] into earnings right now that I think are
+[00:16:01] great plays into earnings. And I covered
+[00:16:03] these ideas in the stable and recently a
+[00:16:05] really good example of them was
+[00:16:07] Salesforce. You know, a lot of these
+[00:16:09] names spent a ton of time under
+[00:16:10] averages, a ton of time under the 200,
+[00:16:13] really depressed, really short. People
+[00:16:14] kind of rode off software again like it
+[00:16:16] was going through this extinction event.
+[00:16:18] And I said months ago, start focusing on
+[00:16:20] the names that are starting to reclaim
+[00:16:21] ground because this is clearly a dip
+[00:16:23] buying opportunity in those names. This
+[00:16:24] is these are not going to go to zero.
+[00:16:25] So, a lot of the names that are trading
+[00:16:27] into earnings right now, I think are
+[00:16:29] good trades into earnings and even
+[00:16:31] through earnings. If you're trying to
+[00:16:32] make big returns in stocks, you have to
+[00:16:34] be willing to hold through earnings. I a
+[00:16:36] lot of times I try to go flat into
+[00:16:37] events. But if if you're trying to
+[00:16:39] capture big moves in stocks, you have to
+[00:16:41] hold through earnings. And I think a lot
+[00:16:43] of the upcoming software names that are
+[00:16:45] trading into earnings are going to be
+[00:16:46] longs through earnings. I think a lot of
+[00:16:48] it's because of the market's positioning
+[00:16:50] into that. like any beat is going to
+[00:16:53] shove offside positioning into a really
+[00:16:55] uncomfortable spot. Workshop starts next
+[00:16:57] week. It's the normal cost of the
+[00:16:58] community. Back to the normal stream and
+[00:17:00] YouTube cadence. Until next time, guys.
+[00:17:02] Thank you for tuning in. All in all,
+[00:17:03] things look really constructive. There's
+[00:17:05] good reason to be very confident right
+[00:17:07] now on the market. I don't think you
+[00:17:09] want to rush into anything. Try to make
+[00:17:10] up for lost ground. Run your own race. I
+[00:17:13] just be happy that finally we have good
+[00:17:14] trading conditions. And that about does
+[00:17:17] it. That's it from me. Out.

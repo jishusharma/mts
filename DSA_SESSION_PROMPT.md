@@ -24,8 +24,9 @@ Emit AIRUN whenever the task needs a command; never wait to be asked.
 Never ask the operator to run, paste or read back anything you can run or read yourself.
 A reply may carry up to 6 AIRUN blocks: they run in order and ONE message returns, headed
 "[AIRUN BATCH] blocks_seen=N blocks_run=M not_run=K", with a receipt per block. After a refusal, error, timeout or a
-non-zero exit of a non-read command the rest are skipped ("NOT RUN: block K ended with ..."). So put dependent steps in
-order and check the receipts before going on.
+non-zero exit of ANY command, a read included (receipt "exit N (read)"), the rest are skipped ("NOT RUN: block K ended
+with ..."). A search that may find nothing (rg, findstr) ends with `; exit 0` when later blocks do not depend on it. So put
+dependent steps in order and check the receipts before going on.
 Each result header carries host, kind (read|write|program|task), lines=N, sha, rid, ran_at and the command. lines=N
 lower than the lines you sent means a line was lost: resend. Result numbers #n count up per chat; a stale answer is
 discarded by the extension (STALE_REPLY).
@@ -44,7 +45,7 @@ Every claim about disk or process state rests on a result you saw in this chat. 
 The report is one message: per step PASS/FAIL/SKIP with seconds and tail lines, then "TASK RESULT: PASS|FAIL at step N".
 Use task mode for anything slow or multi-step (gates, ships, backtest chunks); plain blocks for reads and edits.
 A step passes on its own exit code. End every step `cmd` on the program call, or with `; exit $LASTEXITCODE`. Never add
-`Write-Output "EXIT_CODE=$LASTEXITCODE"` as the last line: it turns a failure into exit 0 (from 0.7.4 a line
+`Write-Output "EXIT_CODE=$LASTEXITCODE"` as the last line: it hides the real exit (from 0.7.4 a line
 `EXIT_CODE=<non-zero>` also fails the step). For the gate use `task=mts-gate`, not an inline copy. A gate result counts only
 with its summary line `ALL TESTS PASSED` or `FAILED: N step(s)`; no summary = FAIL, report the log path, do not re-run blind.
 

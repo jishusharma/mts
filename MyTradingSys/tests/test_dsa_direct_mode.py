@@ -212,5 +212,7 @@ def test_prompt_carries_the_bridge_0_7_4_rules():
         "`$ErrorActionPreference='Stop'` as line 2",
         "[AIRUN NOTICE] your last reply ended without a final answer",
         "A second notice in a row turns hands-free off",
+        "non-zero exit of ANY command, a read included",
+        "A search that may find nothing (rg, findstr) ends with `; exit 0`",
     ):
         assert sentence in s, sentence

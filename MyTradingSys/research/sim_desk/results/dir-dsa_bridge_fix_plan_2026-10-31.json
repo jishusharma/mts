@@ -1,0 +1,40 @@
+{
+ "id": "dir-dsa_bridge_fix_plan_2026-10-31",
+ "kind": "backtest",
+ "family": "Dsa Bridge Fix Plan",
+ "title": "DSA bridge fix plan (AIBridge 0.7.3), 2026-10-31",
+ "provenance": "source-extracted",
+ "date": "2026-10-31",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "PASS/FIX per card",
+  "tone": "good"
+ },
+ "why": [
+  "\"\\\"\\\\\\\"\\\\\\\\\\\\\\\"> Write-Output \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"EXIT_CODE=$LASTEXITCODE\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\" as the last line: it turns a failure into exit 0 (from 0.7.4 a line\\\\\\\\\\\\\\\",\\\\\\\",\\\",\",",
+  "\"\\\"\\\\\\\"\\\\\\\\\\\\\\\"> EXIT_CODE=<non-zero> also fails the step). For the gate use task=mts-gate, not an inline copy. A gate result counts only\\\\\\\\\\\\\\\",\\\\\\\",\\\",\",",
+  "\"\\\"\\\\\\\"\\\\\\\\\\\\\\\"> with its summary line ALL TESTS PASSED or FAILED: N step(s); no summary = FAIL, report the log path, do not re-run blind.\\\\\\\\\\\\\\\",\\\\\\\",\\\",\",",
+  "\"\\\"\\\\\\\"\\\\\\\\\\\\\\\"review stamp before ready, and c8 (lane OPUS) also needs approved_by. DECISION (OURS): the planner does not stamp its own\\\\\\\\\\\\\\\"\\\\\\\"\\\"\""
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/sim_desk/results/dir-dsa_bridge_fix_plan_2026-10-31.json"
+ ],
+ "commit": "222c2bcc1"
+}
