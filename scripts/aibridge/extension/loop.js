@@ -1,7 +1,7 @@
 // loop.js - pure helpers for the auto-loop. No DOM, no chrome.* so node can test them.
 (function (root) {
   var L = {};
-  L.VERSION = '0.7.5';
+  L.VERSION = '0.7.6';
 
   L.fnv = function (s) {
     var h = 2166136261;

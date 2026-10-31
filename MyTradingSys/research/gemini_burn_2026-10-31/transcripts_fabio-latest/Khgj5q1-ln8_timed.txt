@@ -1,0 +1,281 @@
+# Video ID: Khgj5q1-ln8
+# Title: My Signature Orderflow Model
+# Published: 2026-02-21
+# Source: yt_dlp captions (manual); uploader: Fabervaale ENG
+# Analyst: Fabio
+# Channel: @fabervaaleEng
+# Duration_s:692
+# Word count: 1947
+# ---
+[00:00:00] In this video, I will show you our
+[00:00:02] proprietary trading model that I built
+[00:00:05] after years and years of research. This
+[00:00:08] study use granular order flow data to
+[00:00:12] spot where volume is effortlessly moving
+[00:00:16] price. Hence, where is the path of least
+[00:00:19] resistance? I use this edge as part of
+[00:00:23] my daily trading routine and I've done
+[00:00:26] extensive quantitative validation around
+[00:00:30] it. I will show you how to use it and
+[00:00:32] contextualize with deep trades to take
+[00:00:35] the highest probability areas. As a part
+[00:00:39] of my contribution to the deep charts
+[00:00:42] research and development program, I
+[00:00:44] worked in the role of alpha research to
+[00:00:47] make it available exclusively on deep
+[00:00:50] charts. And now, let's go through the
+[00:00:53] deep effort together and understand the
+[00:00:56] logic behind how it works and why this
+[00:00:59] is an amazing
+[00:01:00] tool to get more precise using order
+[00:01:03] flow. I come from a study called volume
+[00:01:06] spread analysis, the VSA. I started this
+[00:01:09] study when I was using vertical volume
+[00:01:11] to refine the area of confirmation using
+[00:01:17] the relationship between volume and
+[00:01:20] result of price. If I have a wall of
+[00:01:22] orders here and I have the price
+[00:01:24] striking here with a lot of volume, I
+[00:01:27] see that there is no result, so no
+[00:01:29] follow through of all this effort and
+[00:01:32] the effort is going on. This one for me
+[00:01:35] becomes an area, becomes a potential
+[00:01:37] point of reversal, becomes a level that
+[00:01:41] I wants to notice. At the same time, if
+[00:01:44] I see the market doing an amazing
+[00:01:46] movement with really low efforts, okay,
+[00:01:49] on the buy side and I see buyers
+[00:01:52] interacting really aggressively to break
+[00:01:55] this level and then I see low effort to
+[00:01:57] make an amazing result. What the market
+[00:01:59] is telling me? That the balance between
+[00:02:01] forces here change. And now the path of
+[00:02:05] least resistance is on the buy side.
+[00:02:07] It's like a traffic light gives me areas
+[00:02:10] and gives me situation where the edge is
+[00:02:13] on my side in a specific moment of the
+[00:02:17] chart. And the logic behind it was built
+[00:02:20] is because when you use volume analysis,
+[00:02:23] for example, you can get into
+[00:02:25] consolidation area and you can try to
+[00:02:28] execute multiple times taking a lot of
+[00:02:31] break even. So, the logic behind was I
+[00:02:34] only want levels where everything is
+[00:02:38] telling me that one side is more
+[00:02:41] aggressive than the other. So, having an
+[00:02:43] a directional edge and a specific area
+[00:02:47] edge, so I can have a clear stop loss in
+[00:02:50] the direction of the model. For example,
+[00:02:52] you can pair this with the statistical
+[00:02:54] model of IVB. Now, all this logic behind
+[00:02:59] that you can use here is based on one
+[00:03:02] simple order flow concept. And this
+[00:03:05] concept is the law of effort and result.
+[00:03:09] And this is really important because you
+[00:03:11] need to understand that volume and price
+[00:03:14] gives you two different information. The
+[00:03:16] volume is telling you how many orders
+[00:03:19] are entering. The result is telling you
+[00:03:22] how much these orders are having an
+[00:03:26] impact in price movement. So, if we are
+[00:03:30] here, for example, on this floor and we
+[00:03:34] see aggressive market participants
+[00:03:37] striking on this level with a huge
+[00:03:40] volume. And we see that every time the
+[00:03:43] maximum they can do is printing weak. I
+[00:03:45] will not consider a continuation because
+[00:03:48] I see that this level getting really
+[00:03:49] interesting from a passive participants
+[00:03:53] perspective. They are keeping all these
+[00:03:56] orders, okay, they are absorbing here.
+[00:03:59] This is a usual pattern of a absorption.
+[00:04:01] And this one comes also from the volume
+[00:04:03] spread analysis. So, you are not
+[00:04:05] considering only one side, only the
+[00:04:07] price, but you are taking also into
+[00:04:09] consideration the volume. At the same
+[00:04:11] time, on the other way, when we see
+[00:04:15] aggression of the buyers and at the same
+[00:04:17] candle aggression of the sellers, and we
+[00:04:20] see that the sellers are completely
+[00:04:24] absorbed and the buyers are rewarded,
+[00:04:26] what the market is telling us here is
+[00:04:28] that in this battle they have maybe the
+[00:04:30] same effort, but the result it's heavy
+[00:04:33] skew on the upside. So, what I can do as
+[00:04:36] an analyst, I can understand that the
+[00:04:38] probability that we continue higher, so
+[00:04:41] we go to tap into this high is the
+[00:04:43] biggest one, but the effort is the same.
+[00:04:45] Maybe you have the same effort from
+[00:04:47] aggressive buyers and aggressive
+[00:04:48] sellers, but the sellers are completely
+[00:04:50] absorbed. So, we need to put this and to
+[00:04:53] frame this into one single law, the law
+[00:04:56] of effort and results. And the step that
+[00:04:58] we did later was, how can we make sure
+[00:05:01] that this
+[00:05:02] it's transferred into one script and
+[00:05:05] that is taking into consideration
+[00:05:07] everything. And after this study came
+[00:05:09] out, the logic of putting in
+[00:05:13] relationship price, volume and putting
+[00:05:15] also in relationship the granularity of
+[00:05:18] the order inside. And on this we have a
+[00:05:21] proprietary model that is capable of
+[00:05:24] filtering all the noise and is giving
+[00:05:26] you what I like to call triggers,
+[00:05:28] triggers to potentially execute. And
+[00:05:32] it's giving you an edge when you have,
+[00:05:35] for example, frame your area, your point
+[00:05:37] of interest maybe using price action,
+[00:05:39] using everything, and you approach the
+[00:05:41] level back again here and you have your
+[00:05:43] deep effort telling you, "Look that from
+[00:05:46] this moment we are askew on the
+[00:05:48] downside. So, you have your area. And
+[00:05:50] what this is telling you that the
+[00:05:52] probability from this box on is to
+[00:05:55] continue lower. And this can be amazing
+[00:05:57] also for profit taking because when you
+[00:05:59] see a an opposite area on the buy side,
+[00:06:02] you can understand that now this selling
+[00:06:06] pressure it's almost exhausted and the
+[00:06:08] probability instead of continuing that
+[00:06:10] you will go up to this level it's
+[00:06:12] higher. So, the consideration that you
+[00:06:14] can make is that it's not worth to risk
+[00:06:16] all this profit that I make just to make
+[00:06:19] an additional small movement by risking
+[00:06:21] all this profit. So, I take it out my
+[00:06:24] position. What I do? I consider putting
+[00:06:26] stop below. So, if the market wants to
+[00:06:29] continue, I'm into the position again. I
+[00:06:32] took profit on the first one and I have
+[00:06:33] my liquidation here. This is a smart way
+[00:06:36] of managing trades. Now, let's go to the
+[00:06:38] chart and let's understand together how
+[00:06:41] the deep effort it's giving you an edge.
+[00:06:45] We are in Nasdaq on this week and we
+[00:06:49] will see some session where you have a
+[00:06:50] consolidation phase, some session when
+[00:06:53] you have a directional phase and we will
+[00:06:55] understand how much this is powerful
+[00:06:57] when paired with logic of regression and
+[00:07:01] logic of bias of the day. So, the bias
+[00:07:04] for the 26 and the bias for 27 was long.
+[00:07:08] So, I had a clear bias for the day and
+[00:07:11] for this I use profile framing. So, all
+[00:07:13] the short setup if I have a bias, I'm
+[00:07:16] not interested into taking, okay? So, I
+[00:07:19] can save the counter trend setups.
+[00:07:22] Amazing. As you can see, it start giving
+[00:07:25] you areas where the buying pressure is
+[00:07:28] dominant. From this, we have an overlap
+[00:07:30] of two cluster here. This one is the
+[00:07:32] first area that the model identify
+[00:07:35] aligned with the long term. So, you can
+[00:07:37] build from here the first positions as a
+[00:07:40] trigger in direction of the overall
+[00:07:43] trend. Now, not all the days will be so
+[00:07:46] directional, so it's smarter to have
+[00:07:48] multiple profit targets. One position
+[00:07:51] you take out, for example, at 50% of the
+[00:07:54] full profit, and the other one you leave
+[00:07:55] a runner. The second area that gave us
+[00:07:59] is this one. This one it's a momentum
+[00:08:01] setup. Why momentum setup? Because it
+[00:08:03] closed above it and never test. So, this
+[00:08:05] one you couldn't take because the market
+[00:08:08] don't give you a test. Here it gives you
+[00:08:10] an area, immediately test, gives you
+[00:08:11] another area, immediately test, so you
+[00:08:13] could make a lot of trades on this one.
+[00:08:14] Then you have a small stop loss here
+[00:08:16] because even if you are right on the
+[00:08:18] direction, if you want to be precise,
+[00:08:20] you need to accept some stop loss. So,
+[00:08:22] if we go to count it, we have Let's not
+[00:08:24] consider the full take profit. Let's
+[00:08:26] consider one to three. You have three R
+[00:08:28] here. This one it's unfulfilled. You
+[00:08:30] have minus one R here. Okay. You have
+[00:08:32] another unfulfilled. Okay. You have a
+[00:08:34] stop loss here. So, you have minus R.
+[00:08:37] And finally, the market comes back to
+[00:08:38] your area. Okay. So, you have an entry
+[00:08:41] point here because this is a virgin
+[00:08:42] area, and the market immediately
+[00:08:44] confirmed this with another area that
+[00:08:47] unfortunately it's unfulfilled. So,
+[00:08:49] let's consider this small cluster of
+[00:08:51] setups. You took six R of profit, okay,
+[00:08:55] three and three, and you lost two. You
+[00:08:57] are four R positive just by taking
+[00:08:59] setups in line with the direction bias
+[00:09:02] of the day with profile framing. Now,
+[00:09:05] also this day, as I explained to you, I
+[00:09:06] was long in in bias from profile
+[00:09:09] framing. So, the volume profile is
+[00:09:10] telling me that the pressure is building
+[00:09:12] on the upside. So, I don't take short
+[00:09:13] even if this were would have been one to
+[00:09:16] 2.5, one to three, all take profit, I
+[00:09:18] don't consider them. I start to consider
+[00:09:20] the market from this one. And as you can
+[00:09:23] see, this area it's amazing because it
+[00:09:25] give me exactly the pressure. What's
+[00:09:27] unfortunate here that these two setups
+[00:09:30] are unfulfilled because the market is so
+[00:09:32] aggressive that it's not back really
+[00:09:33] high. The first setup that I will be
+[00:09:35] able to take is the test of this virgin
+[00:09:38] area. This one would have been an
+[00:09:39] amazing one to three risk to reward and
+[00:09:42] you close the day with only these
+[00:09:43] setups. So, you need to take into
+[00:09:45] consideration that there will be days
+[00:09:47] where you don't have any setups, okay?
+[00:09:49] Also, for this day here, I am long in
+[00:09:53] bias, okay? So, when we open the New
+[00:09:55] York session here, okay? I have one
+[00:09:57] setup that it's some filled,
+[00:09:59] unfortunately, here and then I have
+[00:10:01] another setup that it's filled. So, I
+[00:10:03] have one stop loss in this area and then
+[00:10:06] the market break the structure. This is
+[00:10:08] the beginning of the range. So, when it
+[00:10:11] breaks on the opposite side using the
+[00:10:12] deep effort, I don't go trend counter
+[00:10:15] trend on this one. So, I need to wait
+[00:10:17] that we have another confirmation of
+[00:10:19] directional. But, unfortunately, this
+[00:10:21] day we never go back to this level till
+[00:10:24] late in the session. Look how much this
+[00:10:26] would have been amazing with these
+[00:10:28] setups. What's the problem that we are
+[00:10:30] late in the night, okay? This would have
+[00:10:32] been like six take profit at once, but
+[00:10:35] this was not viable for me because we
+[00:10:37] broke below the initial balance and as
+[00:10:40] you know, I like to pair the NASDAQ
+[00:10:42] effort with the IVB model. So, you need
+[00:10:44] to keep in mind a profile framing or IVB
+[00:10:48] directional bias paired with the deep
+[00:10:51] effort to give you a confirmation. I
+[00:10:54] want to show you this setup even if
+[00:10:55] these one are not executed cuz I want to
+[00:10:58] show you how the market is not
+[00:11:00] identifying momentum candle, but it's
+[00:11:02] identifying for you areas that are
+[00:11:05] potential strong point retest. This one
+[00:11:07] have been retested perfectly. This one
+[00:11:11] have been retested perfectly. And in
+[00:11:13] situation of long momentum, it's not so
+[00:11:16] difficult to take amazing risk to reward
+[00:11:20] by covering below the areas, okay?
+[00:11:22] Unfortunately, when they are outside the
+[00:11:24] timing or counter trend in respect to
+[00:11:27] the bias, we don't take it. This is was
+[00:11:28] the night. I hope you enjoyed the video.
+[00:11:30] See you on the next one.

@@ -1,0 +1,5 @@
+{
+  "note": "E1 fixture: 6 final-answer blocks in one DeepSeek reply, no thinking panel. {N} is replaced by a per-run nonce.",
+  "chain": [{"tag": "div", "cls": "chat-message"}, {"tag": "div", "cls": "ds-markdown"}],
+  "commands": ["Write-Output E1-{N}-1", "Write-Output E1-{N}-2", "Write-Output E1-{N}-3", "Write-Output E1-{N}-4", "Write-Output E1-{N}-5", "Write-Output E1-{N}-6"]
+}

@@ -1,0 +1,908 @@
+# Video ID: LQvv5xgy_ik
+# Title: Exposing my Risk Management Protocol
+# Published: 2026-05-13
+# Source: yt_dlp captions (auto); uploader: Fabervaale ENG
+# Analyst: Fabio
+# Channel: @fabervaaleEng
+# Duration_s:2039
+# Word count: 5972
+# ---
+[00:00:00] In this video, I will take you behind
+[00:00:02] the scenes of my risk management
+[00:00:04] protocols. From how I manage a prop firm
+[00:00:07] account to how I manage a competition
+[00:00:09] account to how I manage my personal
+[00:00:12] account. The prop firm risk geometry,
+[00:00:14] it's different from what they sell on
+[00:00:17] social media, okay? It's not about
+[00:00:18] sniper entry, it's not about high risk
+[00:00:20] to reward low win rate. This is the
+[00:00:22] blueprint for failure in a prop
+[00:00:24] environment, but is and all the way up
+[00:00:28] to [music] hedge fund risk management
+[00:00:30] protocols. Because while retail only
+[00:00:32] focus on technical analysis and
+[00:00:35] strategies, [music] professional only
+[00:00:38] holy grail is risk management. So, I'm
+[00:00:41] sure this video will help you to set up
+[00:00:44] your risk management and money
+[00:00:46] management better in your trading.
+[00:00:48] [music] Let's get started. Let's go over
+[00:00:51] the risk profile blueprints. Let's start
+[00:00:53] with the first one, and the first one
+[00:00:54] that we will cover today is the hedge
+[00:00:56] fund approach. What is the goal of the
+[00:00:59] hedge fund? The goal of the hedge fund
+[00:01:01] is maximize sustainable risk adjust
+[00:01:04] compounding over time. At the same time,
+[00:01:07] achieving the highest possible long-term
+[00:01:09] return for a given level of acceptable
+[00:01:12] risk and survivability. The rule should
+[00:01:15] be that you need to do this following
+[00:01:18] all the legal guidelines of the
+[00:01:20] regulators. But as you know, there are
+[00:01:22] thousands of cases where the hedge fund
+[00:01:25] maybe takes a fine of 200, 300 million,
+[00:01:28] but they make a profit for market
+[00:01:29] manipulation of 1, 2, 3 billion, okay?
+[00:01:33] So,
+[00:01:34] this one
+[00:01:35] should be like this, okay? But the top
+[00:01:38] five, the top 10 hedge fund in the world
+[00:01:40] have multiple cases related to this to
+[00:01:42] market manipulation, okay?
+[00:01:44] And let's go over the hedge fund
+[00:01:45] structure and risk framework. They are
+[00:01:48] diversified, okay? They are risk aware,
+[00:01:50] and they point at asymmetric return
+[00:01:52] because they want the minimum amount of
+[00:01:53] risk and the potential upside, okay?
+[00:01:56] Related to this. So, they start from the
+[00:01:58] risk protocol. They don't start from the
+[00:02:00] raw return protocol, for example, like
+[00:02:03] competition environment, okay?
+[00:02:05] And let's go over how hedge fund
+[00:02:07] diversify. They diversify by strategy.
+[00:02:09] You can have global macro, you can have
+[00:02:11] event driven, you can have quantitative,
+[00:02:14] you can have trend following, you can
+[00:02:15] have a blend of these, you can have a
+[00:02:16] multi-strategy, you can have arbitrage,
+[00:02:19] you can have HFT. There are thousands of
+[00:02:22] strategies that you can implement in an
+[00:02:24] hedge fund. And they pointed having
+[00:02:26] multiple of them to have the best
+[00:02:28] possible diversification. Recently, we
+[00:02:31] saw how much this one is important when
+[00:02:33] we saw the the conflict in the Middle
+[00:02:35] East, no? Because if you were completely
+[00:02:37] exposed, let's say, for example, you are
+[00:02:39] an hedge fund that is exposed in the
+[00:02:40] financial markets of the UAE, you would
+[00:02:43] have taken a huge hit recently. But they
+[00:02:45] are they have a diversified global
+[00:02:48] exposure. So, they pointed minimizing
+[00:02:50] this. Also, the legal structure we will
+[00:02:52] not over go over the legal structure,
+[00:02:54] but they are divided in the portfolio
+[00:02:55] management side. They have a research
+[00:02:57] and analytics. They have operations in
+[00:02:59] the back office. They they trading the
+[00:03:01] execution side is divided. They have um
+[00:03:04] department that are for risk profiling.
+[00:03:06] So, it's all separated, okay? They have
+[00:03:08] auditors, they have their own
+[00:03:10] infrastructure to execute, they have the
+[00:03:12] legal side. So, it's it's a whole
+[00:03:15] corporate entity, okay? It's not a
+[00:03:17] strategy that you put there and you open
+[00:03:19] the hedge fund. It's it's a different
+[00:03:21] entity. And this will be my dream
+[00:03:22] because this excite me so much. Right
+[00:03:24] now, I only managed to be in the
+[00:03:26] research and analytics side for the
+[00:03:28] hedge fund. I still didn't manage to
+[00:03:30] open mine, and I hope in 2027 I 2027
+[00:03:34] 2028 I will manage to do it. Now, going
+[00:03:37] on, we can see, for example, the 2025
+[00:03:40] performance of multiple hedge fund using
+[00:03:43] aggregated strategy, okay? They can use
+[00:03:44] quant macro, they can use CTA, they can
+[00:03:46] use credit, they can use event driven,
+[00:03:48] they can use convertible, volatility,
+[00:03:50] discretionary macro, all of them. And
+[00:03:51] you can see the index performance. And
+[00:03:54] here comes the usual retail trader,
+[00:03:56] okay? The usual retail trader see this,
+[00:03:58] they only watch the performance, the raw
+[00:04:00] return, okay? Like they do in the
+[00:04:02] competition, and they see, "Oh, you did
+[00:04:04] 20% with MCA world, you did 17.5%
+[00:04:08] in the S&P 500. So, it's useless all the
+[00:04:11] infrastructure for this year 2025 of the
+[00:04:13] hedge fund is not like this." And they
+[00:04:15] will explain you why. Because the goal
+[00:04:17] of the hedge fund is not to optimize for
+[00:04:20] maximum return. The goal of the hedge
+[00:04:22] fund is to optimize for maximum risk,
+[00:04:25] okay? So, they want to take the minimum
+[00:04:28] possible amount of risk, and they put a
+[00:04:30] maximum on it, okay? And they see how
+[00:04:32] much they can do with this maximum
+[00:04:34] amount of risk. Maybe to make this 20%
+[00:04:37] 2025, they had a maximum drawdown during
+[00:04:40] Trump tariff, for example, of 30%, of
+[00:04:43] 20, of 18. And maybe to do this 14%,
+[00:04:46] they had a maximum drawdown of 5% on the
+[00:04:49] account. So, you can understand that
+[00:04:50] when you introduce the concept of
+[00:04:53] risk-adjust return, everything change.
+[00:04:56] And if you optimize for
+[00:04:59] maximum performance, so raw return, you
+[00:05:01] are
+[00:05:02] focusing yourself on only one matrix of
+[00:05:05] the trading world. Now,
+[00:05:08] going on,
+[00:05:09] how what would you think about this,
+[00:05:10] okay? In 1988 and 1989, the Medallion
+[00:05:14] Fund, so one should know it, did 15%,
+[00:05:18] okay? And 1%. So, if Jim Simons was
+[00:05:22] there online, okay, talking
+[00:05:25] everywhere about his model or about his
+[00:05:28] infrastructure and about his enthusiasm
+[00:05:30] of starting this quantitative journey,
+[00:05:33] he would have been attacked. You see,
+[00:05:35] "Look, you cannot even beat
+[00:05:38] the S&P 500 return, okay? You did 1%
+[00:05:42] here and 15% here." And this is the
+[00:05:44] reason why
+[00:05:46] professionals often laugh
+[00:05:48] at the comments of retail traders, no?
+[00:05:51] Because they don't understand that maybe
+[00:05:53] he had this with 10 times less risk,
+[00:05:56] okay? And in trading you can have a
+[00:05:59] negative week, you can have a negative
+[00:06:01] month, and in the worst case you can
+[00:06:03] also have a negative full year, okay?
+[00:06:05] Specifically, if you have something that
+[00:06:08] is called the black swan, something
+[00:06:10] unpredictable, let's take for example
+[00:06:12] what happened in the UAE now, okay? On
+[00:06:14] the real estate side, there was a black
+[00:06:16] swan, okay? You had a flash crash of the
+[00:06:19] prices on the value of real estate,
+[00:06:22] already recovered, but you had something
+[00:06:23] like this. And if you were exposed in
+[00:06:25] geopolitical condition on this field,
+[00:06:28] you would have experienced something
+[00:06:30] that it's not measurable in the in
+[00:06:33] sample. So, you can test everything, you
+[00:06:35] can make all the evaluation, but you
+[00:06:37] could have not predicted something like
+[00:06:39] this, okay?
+[00:06:40] So, the concept of a return they
+[00:06:41] correlated from the market and the risk
+[00:06:44] adjusted return. The outline of
+[00:06:45] Medallion, now let's see how they
+[00:06:47] behave. As you can see, if you take
+[00:06:50] only this portion, okay? You will think,
+[00:06:52] no, doesn't make sense for me to invest
+[00:06:54] in the Medallion fund. But then you go
+[00:06:56] in the next year and you see the S&P 500
+[00:06:58] close negative, okay? And they close
+[00:07:00] 57%, okay? When the S&P 500 close 26,
+[00:07:05] they close 43, okay? And then the
+[00:07:07] momentum and the compounding also start
+[00:07:09] to kick in. What you want to do with the
+[00:07:11] hedge fund is minimize this, okay? For
+[00:07:14] an investor to have three negative year,
+[00:07:17] okay? On the S&P 500 return will be a
+[00:07:20] disaster, okay? In 2008, when the market
+[00:07:24] did minus 46%, they did a 92.5%,
+[00:07:29] okay? And this is important. You don't
+[00:07:31] need to You don't need to take only the
+[00:07:33] isolated return. You need to take the
+[00:07:36] risk adjusted return to related to it,
+[00:07:38] okay?
+[00:07:39] For example, this
+[00:07:41] is the project that is only B2B, okay?
+[00:07:43] Edge Forge in mainland Abu Dhabi that
+[00:07:47] I'm using to provide research to the
+[00:07:50] hedge fund, okay? So, I'm in this side
+[00:07:52] here. I don't talk about this on the
+[00:07:53] social media, but I'm also active, okay?
+[00:07:56] In the hedge fund perspective. Not
+[00:07:58] operational. To build a structure like
+[00:08:00] this, I think it will take me still one
+[00:08:03] or two years, and I will need to do an
+[00:08:05] audit out of sample of each model I
+[00:08:08] trade independently if I wants to
+[00:08:11] implement here, and also the liquidity
+[00:08:13] capabilities of the model. This is
+[00:08:14] something that no retail will think
+[00:08:16] about, but every model have a maximum
+[00:08:18] liquidity capability, okay? You cannot
+[00:08:20] put billions in a scalping model, okay?
+[00:08:23] You will take too much slippage, and the
+[00:08:25] model will not be profitable. So, you
+[00:08:27] need also to do a lot of measurements
+[00:08:29] that neither in the retail war are
+[00:08:30] completely ignored, okay? Now, let's go
+[00:08:33] on the prop risk model breakdown. The
+[00:08:36] goal here is high pass rate and high
+[00:08:39] probability of payout. Now, the prop
+[00:08:41] firm risk geometry survival blueprint
+[00:08:44] it's different from what they sell on
+[00:08:46] social media, okay? It's not about
+[00:08:47] sniper entry, it's not about high risk
+[00:08:50] to reward low win rate. This is the
+[00:08:52] blueprint for failure in a prop
+[00:08:54] environment, but is understanding the
+[00:08:57] risk geometry based on the rules of the
+[00:09:01] prop firm, okay? And here I did some
+[00:09:03] infographics to explain why high win
+[00:09:06] rate risk geometry is the best for prop
+[00:09:08] firm because the goal here is to
+[00:09:11] optimize for the variance of the
+[00:09:15] results, okay? So, you don't want to
+[00:09:16] have a huge amount of profit, but
+[00:09:17] variable. Maybe this strategy in the
+[00:09:19] month after does like this. So, does a
+[00:09:21] crazy amount of profit, but you have a
+[00:09:23] higher probability of getting
+[00:09:25] consecutive losses, and over a large
+[00:09:27] number of sample this one goes way
+[00:09:29] higher because the blacks one is always
+[00:09:31] there, and maybe this strategy is
+[00:09:32] profitable, but the variation needs to
+[00:09:34] high of burning the account. What you
+[00:09:36] have here the high win rate geometry, is
+[00:09:38] going on models that have win rate above
+[00:09:41] 60-70%
+[00:09:43] and are capable of getting you a higher
+[00:09:47] probability of pass rate, a lower risk
+[00:09:49] of ruin, and a lower max drawdown. And
+[00:09:52] you will think, "Oh, but it takes me
+[00:09:53] more time to pass the prop firm because
+[00:09:55] I cannot take the sniper one to 10 that
+[00:09:57] happens one times every week." Yes, I
+[00:10:00] agree with you, but maybe in the attempt
+[00:10:02] to take that sniper, you go in the low
+[00:10:05] variance and you lose, okay? You lose
+[00:10:07] your account. Remember that is not a
+[00:10:09] personal account. You cannot manage as a
+[00:10:11] personal account. And here I show some
+[00:10:13] tests, two paths, two probabilities, and
+[00:10:15] you can see that both the strategy are
+[00:10:17] profitable. So, you can have a strategy
+[00:10:20] that goes around this line, okay? Or
+[00:10:22] around this line, around this line, but
+[00:10:24] you have a higher variance. Why? Because
+[00:10:27] you could incur a large amount of
+[00:10:29] drawdown. This one is a simulation on
+[00:10:31] only 3 months, okay? Not on the long
+[00:10:33] term for scalping. So, these are both
+[00:10:37] valuable strategy, but this one have a
+[00:10:40] lower cone of probabilities, okay?
+[00:10:43] So, the amount that you will incur, a
+[00:10:45] streak of stop loss that will make you
+[00:10:47] waste the money for the prop firm, is
+[00:10:49] lower. And that's the reason I strongly
+[00:10:52] analyze that from a probability
+[00:10:54] perspective, the best approach that you
+[00:10:56] can have is the low variance risk
+[00:10:58] geometry. So, having high win rate,
+[00:11:00] okay? Moderate risk per trade and going
+[00:11:03] for moderate risk reward, one to one,
+[00:11:06] even one to 0.75,
+[00:11:08] maximum one to 1.5. This is the best for
+[00:11:11] prop firm survival, okay? Specifically
+[00:11:14] in the pass rate. And here I gave you a
+[00:11:16] summary of the optimal low variance
+[00:11:18] path, okay? And the high variance path,
+[00:11:21] okay? They can make way more profit than
+[00:11:24] this, okay? But they can be
+[00:11:26] inconsistent, so maybe you have a period
+[00:11:28] like this and then you have three
+[00:11:30] amazing months. But in the period like
+[00:11:32] this, you burn the prop firm, okay? So,
+[00:11:34] you need to understand that this needs
+[00:11:35] to be treated following the game theory,
+[00:11:39] okay? You need to understand the goal,
+[00:11:40] you need to understand the rule. I
+[00:11:42] strongly think that prop firm trading is
+[00:11:44] way different from real trading, okay?
+[00:11:46] Because you are not trading the real
+[00:11:48] market, you are trading the rules that
+[00:11:51] another entity put on you. So, you are
+[00:11:54] trading a synthetic market.
+[00:11:57] Here is the prop firm risk geometry
+[00:11:59] across phases, okay? You can see that on
+[00:12:01] the evaluation phase, the best one is
+[00:12:03] the low variance zone, okay? And on the
+[00:12:05] funded phase, you need to optimize for
+[00:12:08] high outcome, because you want to get a
+[00:12:10] payout, okay? The goal here is to get a
+[00:12:13] payout, and there is a a thing that no
+[00:12:15] one consider here, okay? And I will
+[00:12:17] share one experience about my life.
+[00:12:19] Some years ago, there was one prop firm
+[00:12:22] in the CFD space. I will not make the
+[00:12:24] name, that was based in Canada, okay?
+[00:12:27] And I requested from them
+[00:12:30] more than $50,000 in one payout, okay?
+[00:12:34] When I received in the bank account that
+[00:12:37] payout, this payout got flagged for
+[00:12:39] review. Why? Because the prop was having
+[00:12:42] problems with the regulator. So, you
+[00:12:44] also needs to input the probability
+[00:12:48] that the prop firm have way more risk
+[00:12:50] than a brokerage, okay? So, compounding
+[00:12:53] on the prop and keeping all the money on
+[00:12:55] the prop is not the best option, okay?
+[00:12:58] The best option is to withdraw as much
+[00:13:00] as you can and put in your personal
+[00:13:02] account. Here I did some projection of
+[00:13:04] one approach that I've made. This one I
+[00:13:06] think was the trading pit. I traded a
+[00:13:08] live the prop firm some years ago with
+[00:13:10] the community
+[00:13:11] using the order flow approach, and I
+[00:13:15] tried to go on the side
+[00:13:18] of the low variance part. This one I use
+[00:13:20] a risk reward that it's even too high,
+[00:13:22] but I had a really high win rate on this
+[00:13:25] one. It was a
+[00:13:27] a phase where the regime of the market
+[00:13:29] was completely directional and I did
+[00:13:31] some stress test to pass the prop firm.
+[00:13:33] And after a lot of test and also a lot
+[00:13:35] of review on the community, I noticed
+[00:13:37] that the high win rate model with low
+[00:13:41] variance and with low risk to reward is
+[00:13:43] the best one probability of passing it,
+[00:13:46] okay? Then you can go on this side on
+[00:13:48] aggressive optimization and yes, if you
+[00:13:51] have a high probability model, you could
+[00:13:53] try to optimize for the maximum amount
+[00:13:55] of withdrawal. But then you you need to
+[00:13:57] consider also the rules about the prop,
+[00:13:59] okay? because some some prop have
+[00:14:01] consistency rules. Now, let's go in the
+[00:14:03] CME Group equity cap breakdown. The goal
+[00:14:06] here is to build equity fast with
+[00:14:08] minimum downside possible, extremely
+[00:14:11] limited time and symmetric incentives,
+[00:14:14] okay?
+[00:14:15] The rules, single account, so you cannot
+[00:14:18] test on sequential real account, no
+[00:14:20] test, okay? And here you have an
+[00:14:23] extremely limited time. So, in the
+[00:14:25] equity cup, the CME Group, for those who
+[00:14:27] don't know, the CME Group is the biggest
+[00:14:29] exchange in the world and they organize
+[00:14:32] a cup one time per year, okay? One time
+[00:14:34] I decided to participate because
+[00:14:36] their platform is really amazing, okay?
+[00:14:38] And what I did here is I had only one
+[00:14:43] approach, so I didn't have time to test
+[00:14:45] regime and I didn't even have the
+[00:14:47] possibility to test the live market
+[00:14:49] environment. So, what I did, I used the
+[00:14:50] best model that I have
+[00:14:52] and the best model that I have is this
+[00:14:54] one.
+[00:14:56] Is the order flow high win rate scalping
+[00:14:58] low variance, the one that you saw me
+[00:14:59] using in all the podcast in the world
+[00:15:03] where I traded live or in the live
+[00:15:04] trading session, okay? And the goal here
+[00:15:07] is to unlock margin to go heavier. So,
+[00:15:11] as you can see here,
+[00:15:14] the goal is to keep the drawdown as low
+[00:15:17] as possible because the time is limited,
+[00:15:19] so if you go in drawdown, you have even
+[00:15:21] less margin. So,
+[00:15:22] it's almost guaranteed that you will not
+[00:15:24] be in the top percentile of the
+[00:15:26] competition, okay?
+[00:15:28] And I got a positive drift in the
+[00:15:30] beginning, okay? I was positioned in the
+[00:15:32] top 0.7, 0.6%, I don't remember, 0.6%,
+[00:15:36] okay? And the risk-reward payoff is
+[00:15:39] amazing. So, everyone that will see
+[00:15:41] this, okay, will say, "Okay, you did 50,
+[00:15:43] 60 execution, you had a net profit of
+[00:15:46] 54.6%,
+[00:15:47] a maximum drawdown 0.42, okay? You are
+[00:15:51] better than funds." No, no, no, no, no.
+[00:15:53] First of all,
+[00:15:54] the risk protocol and approach that got
+[00:15:57] used here, it's aggressive. This
+[00:15:59] protocol here, everyone will be crazy to
+[00:16:02] apply this protocol in a net fund, okay?
+[00:16:05] Second of all, okay, you are approaching
+[00:16:09] here in a positive drift. So,
+[00:16:12] in this case here, probably, I took
+[00:16:14] this, okay? I took this positive. If you
+[00:16:17] continue with this risk, when you take
+[00:16:19] the negative, okay? Maybe you will
+[00:16:21] approach a drawdown that is 10 times
+[00:16:23] this. It's still acceptable, huh? Still
+[00:16:25] acceptable. But maybe for a certain prop
+[00:16:28] firm that allocate a maximum risk per
+[00:16:30] model, not prop firm, sorry, hedge fund,
+[00:16:32] a maximum risk per model is not
+[00:16:33] acceptable, okay? Here are all the
+[00:16:36] execution that I took in the cup. And as
+[00:16:38] you can see, okay, you have the
+[00:16:40] execution compounding on the heavy side
+[00:16:43] when I release margin, okay? The more I
+[00:16:45] was releasing margin, the more I was
+[00:16:47] getting aggressive, okay?
+[00:16:49] And on this one, also, what you can see
+[00:16:53] is that the incentive, okay, is to
+[00:16:56] optimize not only for performance, but
+[00:16:58] to optimize also for maximum drawdown,
+[00:17:01] because the leaderboard and the
+[00:17:02] competition is composed that everyone,
+[00:17:04] okay, can see the maximum profit and the
+[00:17:08] max drawdown of the user, okay? So, it's
+[00:17:09] a completely different competition
+[00:17:12] environment here. And also, you cannot
+[00:17:16] test, you don't have time to test the
+[00:17:18] regime and to test sequential. You need
+[00:17:20] to go there with the most the model that
+[00:17:22] you are the most confident and you have
+[00:17:24] one opportunity. Okay? Now, let's go on
+[00:17:26] the World Trading Cup competition. Okay?
+[00:17:28] The goal, terminal rank position, convex
+[00:17:31] upside, and the symmetric incentive,
+[00:17:33] limited time. Why terminal rank
+[00:17:35] position? Because in this cup here, and
+[00:17:37] you can see from the composition of the
+[00:17:39] leaderboard, the final goal is the
+[00:17:41] percentage. Okay? So, the approach is
+[00:17:44] totally different from personal account,
+[00:17:47] okay? Also from prop firm account, and
+[00:17:49] from the hedge fund approach. Okay? And
+[00:17:51] I explain this because I request I see I
+[00:17:53] receive I receive a lot of requests
+[00:17:55] related to, "But why if you can do 500%?
+[00:18:00] Okay? You don't do this in an hedge fund
+[00:18:02] that you don't manage capital." Guys,
+[00:18:04] you don't understand the goal of the
+[00:18:06] competition. The goal of the competition
+[00:18:08] is not optimized for risk of ruin. It's
+[00:18:11] not optimized for maximum drawdown. It's
+[00:18:14] optimized, okay? For terminal rank
+[00:18:17] positioning. And in the game theory, we
+[00:18:19] will go over this, okay? You need to
+[00:18:22] understand, first of all, the goal of
+[00:18:24] what you are doing is different from
+[00:18:26] personal, is different from hedge fund,
+[00:18:28] is different from prop firm, is
+[00:18:30] different from active management
+[00:18:31] certificate, is different on investment,
+[00:18:34] it's completely different on everything.
+[00:18:36] And you need to understand this. So,
+[00:18:38] the rules. You don't need to use
+[00:18:40] simultaneous account to avoid edging.
+[00:18:41] For example, one account long or one
+[00:18:43] account short that can influence the
+[00:18:45] performance or illegal trading tactics.
+[00:18:48] For example, I don't know, arbitrage or
+[00:18:50] something like this. And the sequential
+[00:18:52] account are allowed. So, you are allowed
+[00:18:54] to test multiple models and strategy. Of
+[00:18:56] course, in a short-term competition, you
+[00:18:59] will be stupid, okay? To test too many
+[00:19:01] strategy because you don't have the
+[00:19:02] time. So, you don't have the time to
+[00:19:04] appear in the leaderboard then.
+[00:19:06] And from a game theory perspective, this
+[00:19:08] completely change the optimal
+[00:19:10] equilibrium strategy. So, you need to
+[00:19:12] take controlled enough controlled
+[00:19:14] variance to maximize profitability of
+[00:19:17] top percentile outcome at the same time
+[00:19:21] minimizing the probability of total
+[00:19:22] elimination.
+[00:19:24] Nash equilibrium implies that the
+[00:19:26] optimal strategy depends on how other
+[00:19:29] competitors are expected to behave under
+[00:19:31] the same incentives, okay? Most
+[00:19:34] participants deploy aggression too
+[00:19:36] early. If you open the leaderboard in
+[00:19:38] the beginning is 200% 100% and then they
+[00:19:41] disappear, okay? Because they optimize
+[00:19:44] for immediate ranking instead of
+[00:19:46] long-term positioning, okay? Early
+[00:19:50] uncontrolled aggression increase the
+[00:19:52] variance
+[00:19:54] before you have enough information,
+[00:19:56] first of all, about the regime of the
+[00:19:58] market. So, if the market is compressing
+[00:19:59] like it was last week, okay? Or if the
+[00:20:02] market is expanding under the peace
+[00:20:05] treaty of Trump and Iran, you need to
+[00:20:07] use completely different models, okay?
+[00:20:09] And the leaderboard structure, okay,
+[00:20:12] here is known, okay? So, at the second
+[00:20:15] third month, you know what's your goal.
+[00:20:18] And if your goal is to beat, for
+[00:20:21] example, hide to my friend Nazri Khan
+[00:20:23] that did that 120%,
+[00:20:26] you cannot use a conservative approach.
+[00:20:27] You will not even appear in the
+[00:20:29] leaderboard. So, you need to input the
+[00:20:31] maximum amount of aggression in the late
+[00:20:33] stage. But before you need to know who
+[00:20:35] is your competitor. Accounting for World
+[00:20:37] Trading Cup commission and real
+[00:20:38] execution cost prevent false positive
+[00:20:40] expectancy model. For example, I
+[00:20:43] deployed model, I tried model in the
+[00:20:44] World Trading Cup that comes from the
+[00:20:47] quant, okay? Uh for example, the
+[00:20:49] automated and you can see that with the
+[00:20:52] markup on execution, okay, and the
+[00:20:55] slippage, they are making profit but
+[00:20:58] never enough to win this kind of
+[00:20:59] competition, okay? So, the first one
+[00:21:01] framework optimize, information
+[00:21:04] acquisition, validation, and then
+[00:21:06] asymmetric payoff deployment last. This
+[00:21:09] is the 3 months competition structure.
+[00:21:10] This is the blueprint, okay, for this
+[00:21:12] kind of competition. Any competition
+[00:21:14] environment can have a different. The
+[00:21:16] phase one
+[00:21:17] is regime detection and testing out of
+[00:21:19] sample. So, you have strategy that are
+[00:21:21] profitable on the long term. But
+[00:21:23] remember that here you have only 3
+[00:21:24] months. So, you need to test in a live
+[00:21:27] market environment. So, in the cap,
+[00:21:29] okay, three strategy in my case I I
+[00:21:32] used. One account that trend following
+[00:21:34] strategy I tested. One account that has
+[00:21:36] the mean reverting and one account I
+[00:21:38] tested the volatility breakout, okay?
+[00:21:40] And I have a matrix of the one that is
+[00:21:42] sustainable to scale risk, okay? If I
+[00:21:45] see that the regime is compressing,
+[00:21:47] trend following strategy, even if it's
+[00:21:50] profitable on the long term, in this
+[00:21:52] phase here will not give me a
+[00:21:54] leaderboard positioning. So, this one is
+[00:21:55] discarded. If the market is rewarding
+[00:21:58] the compression, okay, and I see in the
+[00:22:00] first month, okay, here, I use this one,
+[00:22:04] okay?
+[00:22:05] The second month is validation and
+[00:22:07] moderate risk. So,
+[00:22:09] what you need to do? You won this first
+[00:22:12] phase test, okay? The mean reverting
+[00:22:14] strategy, perfect. So, you open the
+[00:22:15] account, okay, and you deploy risk on
+[00:22:18] the mean reverting strategy. And you
+[00:22:20] say, "Oh, but you lost 1 month for
+[00:22:22] testing." No, you didn't lost 1 month
+[00:22:24] because first of all, now you have
+[00:22:26] information about who is your enemy, the
+[00:22:28] leaderboard. And second of all, you have
+[00:22:31] the perfect model for the regime, okay?
+[00:22:34] Now, you can test also this one, okay,
+[00:22:36] in a simulation environment. But in a
+[00:22:39] simulation environment, you will not
+[00:22:40] have the exact commission and you will
+[00:22:42] not have the ex- the exact live
+[00:22:44] slippage. And as you know, for models
+[00:22:46] that have, like the one that I use,
+[00:22:49] 500-600
+[00:22:50] execution per quarter, the slippage and
+[00:22:53] commission are a huge part of it, okay?
+[00:22:56] So, in the second part, use the model,
+[00:22:58] you validate it, okay, and you start to
+[00:23:01] scale.
+[00:23:02] You start to scale using this this risk
+[00:23:05] protocol.
+[00:23:06] In the third phase is when you do
+[00:23:08] convexity exploitation, okay? So, you
+[00:23:11] want to be in the first slot, second
+[00:23:13] slot, third slot. Usually, they are
+[00:23:14] above
+[00:23:16] 50 to 150%, okay? So, it's a huge
+[00:23:19] performance for 3 months. So, you need
+[00:23:21] to deploy maximum aggression on this.
+[00:23:24] And here is when the maximum amount of
+[00:23:26] execution is concentrated. In the second
+[00:23:29] half of the middle month and the third
+[00:23:31] month is where I make 3-400 trades. I
+[00:23:35] stay there 6 hours per day scalping with
+[00:23:38] the model that I choose. And this is
+[00:23:39] what gave me
+[00:23:41] then the results, okay? If I go on the
+[00:23:44] 1-year competition,
+[00:23:46] it's possible that I will do it, okay? I
+[00:23:48] will use the quarter for testing, so
+[00:23:50] okay? So, I will open an account with
+[00:23:53] trend following test, mean reverting,
+[00:23:55] volatility, and I will choose the
+[00:23:56] winner, okay? To then approach
+[00:24:00] extreme risk and deploying capital in
+[00:24:03] this, okay? So, I will
+[00:24:05] probably make in 9 months the total that
+[00:24:08] I make in 12 months of competition,
+[00:24:10] okay? So, I will make probably more than
+[00:24:11] 2,000 execution. And it's really
+[00:24:13] important that you make this test
+[00:24:16] properly because if you don't account
+[00:24:18] for commission and you do this test in
+[00:24:19] simulation, not real account, if you
+[00:24:21] don't put the correct slippage, a
+[00:24:24] profitable strategy can become an
+[00:24:26] unprofitable strategy, okay? This is the
+[00:24:28] validation of it. I already published
+[00:24:30] this. This is the podium account
+[00:24:32] reconstruction performance. The
+[00:24:34] cumulative month is the 68 and 22%,
+[00:24:38] uh
+[00:24:38] 22% maximum drawdown. We had 89.5%, 158%
+[00:24:43] cumulative. Uh this one went losing,
+[00:24:45] yeah? As you can see, even if you make
+[00:24:47] all the possible test, here,
+[00:24:51] I lost
+[00:24:52] for
+[00:24:53] 2 weeks, okay? Not that but I was in
+[00:24:56] drawdown for the first week and I
+[00:24:58] recovered for the second, too. Okay. And
+[00:25:00] then I deployed aggression in the late
+[00:25:03] phase. Was not enough to win. This
+[00:25:04] performance for an edge fund that it's
+[00:25:06] it's amazing. Okay. And this is why you
+[00:25:08] cannot compare an edge fund with a
+[00:25:10] competition or an edge fund with a
+[00:25:12] personal account. Okay?
+[00:25:14] And for example, I give you the
+[00:25:15] breakdown of the first one. The
+[00:25:17] consideration that I make is someone
+[00:25:19] considered to join swing trading have is
+[00:25:22] too slow. You have for the quarterly
+[00:25:24] competition, you don't have enough
+[00:25:25] sample. If you want to win, you should
+[00:25:27] take a huge amount of risk in one or two
+[00:25:29] position.
+[00:25:30] And from my point of view, winning a
+[00:25:32] World Cup with three, four, five
+[00:25:34] position,
+[00:25:35] it's not a sample validation that will
+[00:25:38] give you any kind of satisfaction. Okay?
+[00:25:40] Because it can also be luck.
+[00:25:42] And so it's not enough sample. This one
+[00:25:44] is discarded and also
+[00:25:47] the small account. So if you enter with
+[00:25:49] 2,500, you pay more commission. Okay?
+[00:25:52] Because you need to open micro and your
+[00:25:55] edge will will pay a huge amount of
+[00:25:57] commission. It will be deployed. Okay?
+[00:25:58] It will Sorry, it will not survive the
+[00:26:01] execution of 300, 400, 500 trades. Okay?
+[00:26:05] This is all stuff that I tested. I
+[00:26:06] understood. No. If you want to optimize
+[00:26:09] for optimal rank positioning, you will
+[00:26:11] never survive with this. So the regime
+[00:26:12] test, for example, I give you the
+[00:26:13] example of the first one. The mean
+[00:26:15] reverting bad performance. The market
+[00:26:17] was directional. Okay? The account two,
+[00:26:19] trend following. Amazing performance
+[00:26:21] directional market. This is the first
+[00:26:23] choice. This is the second choice. This
+[00:26:26] is the third choice. Okay? This one is
+[00:26:27] discarded. This one is discarded. This
+[00:26:29] is the model that is telling me you can
+[00:26:31] deploy risk. Okay? Perfect. I open the
+[00:26:34] account that I that will go to podium.
+[00:26:36] Okay? Where I deploy risk. And on this
+[00:26:38] one, I go aggressively trend following
+[00:26:41] scalping. Okay? 500, 600 in one quarter,
+[00:26:44] if I'm not wrong, 650 execution. Of
+[00:26:46] course, these results are not typical.
+[00:26:48] This doesn't mean that if you use this
+[00:26:51] approach, you will have the same results
+[00:26:52] and all the disclaimer. Now, let's go on
+[00:26:54] the personal account. What's the goal on
+[00:26:56] the personal account? Risk adjust
+[00:26:58] return, psychological stability, and
+[00:27:00] long-term compounding. Only if moderate
+[00:27:03] risk tolerance, you can compound profit,
+[00:27:06] okay? So, if you are not super
+[00:27:08] conservative, but you are moderate like
+[00:27:10] me, and you have a month where you make
+[00:27:11] an exceptional performance, I don't
+[00:27:13] know, six figures in profit, you could
+[00:27:15] use part of this profit to input
+[00:27:18] additional risk in the next sample,
+[00:27:21] maybe the triple A sample, okay? This is
+[00:27:23] of course a moderate approach, it's not
+[00:27:25] a conservative approach. You also need
+[00:27:26] to have multiple account and multiple
+[00:27:28] brokerage on the personal account, and I
+[00:27:31] explain you why. I had a trauma, I don't
+[00:27:33] know how many of you remember with FTX,
+[00:27:35] okay? I was ranking in the leaderboard
+[00:27:37] of FTX, I was an extremely active crypto
+[00:27:40] scalper, and in this case, FTX decided
+[00:27:44] to shut down everything. So, I tried to
+[00:27:46] access to the portal, there is no
+[00:27:47] access, okay? This created for me a
+[00:27:49] trauma on the single brokerage use for
+[00:27:52] the field. So, if I do crypto now, I
+[00:27:53] don't use only one broker, okay? If I do
+[00:27:55] futures, I have four, five, six broker,
+[00:27:57] okay? Maybe one is perfect for more
+[00:28:00] scalping, one is more perfect for
+[00:28:01] investment, okay? But I use multiple of
+[00:28:04] them, and they needs to have insurance.
+[00:28:06] You need to isolate tail risk, okay?
+[00:28:08] Unpredictable situation like the the
+[00:28:10] failure of the brokerage, the default.
+[00:28:12] This can happen, guys, okay? So, if you
+[00:28:14] keep everything in one, maybe you have
+[00:28:16] an extremely accurate risk management in
+[00:28:19] your personal account, then something
+[00:28:21] happen and you lose everything, okay?
+[00:28:22] So, the diversification is not with only
+[00:28:25] models and account, but it's also with
+[00:28:27] multiple brokerage and models, okay?
+[00:28:29] Discretionary, algo, short-term,
+[00:28:31] long-term. For example, I have one
+[00:28:33] portfolio that is not managed by me, but
+[00:28:35] it's managed by one person that it's
+[00:28:38] paid by me to do exactly this, and it's
+[00:28:40] the options one portfolio with
+[00:28:42] algorithmic strategy on the option side,
+[00:28:44] okay? I have my discretionary models,
+[00:28:47] and I have also an algo model, one model
+[00:28:49] that
+[00:28:50] Luca validated on the multi-charts and
+[00:28:53] also we receive an audit from a market
+[00:28:55] maker
+[00:28:57] that generated 30 million in profit,
+[00:28:59] Matteo.
+[00:29:00] He did an audit, no, of the model
+[00:29:02] because I show the the model logic on
+[00:29:05] YouTube for free, the IVB model, and he
+[00:29:08] validated if the volume was actually
+[00:29:10] contributing to improve the model, okay?
+[00:29:13] He did a video about it and he also
+[00:29:15] texts me to give me to say, "Look, it's
+[00:29:17] it looks really amazing, okay?" And so,
+[00:29:20] if you need to have multiple models,
+[00:29:22] okay, you need also to diversify with
+[00:29:25] multiple platforms and with multiple
+[00:29:27] brokerage account, okay? And in this
+[00:29:29] case, the personal account strategy, I
+[00:29:31] know I'm moderate, but if you want to be
+[00:29:34] really conservative, it should be 1.25%,
+[00:29:37] 0.5% per trade, okay? And I know that
+[00:29:39] now the retail trading world will say,
+[00:29:41] "But you are crazy." But it's I I will
+[00:29:43] never live with 1,000 if I put this
+[00:29:47] risk. The problem is not the risk that
+[00:29:49] I'm saying. The problem is the
+[00:29:50] conception in the industry where you can
+[00:29:52] live out of trading with $500, $1,000
+[00:29:55] because this is what your mentor told,
+[00:29:56] okay? And the fact that he put a photo
+[00:29:59] with a Lamborghini convinced you that
+[00:30:01] you can live, okay, with $500. If this
+[00:30:03] was possible, okay, if living with this
+[00:30:06] small amount was possible, okay, I will
+[00:30:09] be billionaire with the amount that I
+[00:30:11] trade, okay? But it's not like this
+[00:30:12] because the risk profiling is extremely
+[00:30:15] important specifically for survival
+[00:30:18] rate. If you risk, for example, I saw
+[00:30:19] some people risking 5%, okay? If you
+[00:30:22] incur in a streak of a drawdown, you
+[00:30:24] will destroy. And as you see, look at
+[00:30:26] the how the pyramid is inverted.
+[00:30:29] The pyramid of risk is the opposite of
+[00:30:31] the competition. First point is the
+[00:30:33] ability, okay? Second point is risk
+[00:30:35] management, risk adjusted return, and in
+[00:30:38] the end the real return. Here,
+[00:30:40] okay,
+[00:30:42] the goal
+[00:30:43] terminal rank positioning. So, or
+[00:30:45] return. That's the reason it's called a
+[00:30:46] competition. Even, okay,
+[00:30:48] on this, I think this one was the best
+[00:30:51] experience that I've ever had of stress,
+[00:30:54] okay? Because you are competing against
+[00:30:57] people that input a huge amount of risk,
+[00:31:00] like big props to to Nasri Khan, is a
+[00:31:02] footprint scalper, and you need to push
+[00:31:04] yourself, even if you are I will be
+[00:31:06] happy already with the performance that
+[00:31:08] I did the first 2 weeks, okay? But no,
+[00:31:10] if you want to be in the leaderboard,
+[00:31:12] you need to step it on the gas. And you
+[00:31:15] need, of course, to have a plan, okay, a
+[00:31:18] tolerance of risk. You need to have an
+[00:31:20] execution model that should be also
+[00:31:23] automated in terms of blocking the
+[00:31:26] maximum risk per day, the maximum risk
+[00:31:28] per week, and you need to track. If
+[00:31:30] there is no measurement, there is no
+[00:31:31] improvement in trading, okay? And then
+[00:31:33] there is all the adaptation and
+[00:31:35] optimization part that quant traders are
+[00:31:37] well aware of, but retail traders never
+[00:31:40] do. So, if, for example, I give you an
+[00:31:42] example, no? On this strategy, the IVB,
+[00:31:45] that is based on the fact that the
+[00:31:47] nature of the US equities have
+[00:31:51] predictable behavior during the opening,
+[00:31:53] okay? And that the bottom of the first
+[00:31:55] 30 minutes is giving a lot of value in
+[00:31:57] the direction of the day, can be
+[00:31:59] improved. For example, can be improved
+[00:32:01] with option flow, and this is the study
+[00:32:03] that I'm doing. But a lot of people are
+[00:32:04] not happy, okay? They they they don't
+[00:32:06] want to do this, okay? They are happy
+[00:32:09] with what they have at the moment. So,
+[00:32:11] what they do is just till it's
+[00:32:13] profitable, I will not implement new
+[00:32:15] concepts, okay? And this is the reason
+[00:32:17] then the strategy break. On the
+[00:32:18] investment side, okay, I have multiple
+[00:32:20] models. One of the models is the earning
+[00:32:22] surprise that the riff portfolio, this
+[00:32:24] is a well-documented
+[00:32:26] situation that is post earnings drift,
+[00:32:29] okay? Surprise, of course, when there is
+[00:32:31] a a mismatch between the expectation and
+[00:32:34] the surprise. They use a model for this.
+[00:32:36] I use
+[00:32:37] uh blockchain intelligence. This is one
+[00:32:39] model that I created for the long-term
+[00:32:40] investment to create an accumulation
+[00:32:43] plan on Bitcoin that is smart, that is
+[00:32:45] based on this mathematical constraint
+[00:32:48] and infrastructure. So, it takes into
+[00:32:50] account the miner. Also, I never talk
+[00:32:52] about crypto in this channel. Please let
+[00:32:54] me know if you would like me to make a
+[00:32:56] master class about the blockchain
+[00:32:58] intelligence model on the long term for
+[00:33:00] free, okay? And uh then I do a lot of
+[00:33:03] data research, okay? So, I tried to see
+[00:33:07] who which kind of holders and how much
+[00:33:09] it's heavy these holders is buying
+[00:33:11] certain stocks. If it's in the
+[00:33:13] congressman, so it's a politician. If
+[00:33:16] it's um uh for example, an hedge fund
+[00:33:19] that can deploy a huge amount of capital
+[00:33:21] like BlackRock. They have always the
+[00:33:23] best analysis team. And these data are
+[00:33:25] public, are completely legal, okay? It's
+[00:33:28] published from the government. So, if
+[00:33:29] you have enough time and you want to do
+[00:33:31] research, this one it's an amazing way
+[00:33:32] to build a stock portfolio, okay? And
+[00:33:35] this is the five point of the risk
+[00:33:39] protocol that I use in all environment
+[00:33:41] of trading. I hope you enjoyed it. Let
+[00:33:43] me know in the comment if you want more
+[00:33:45] video like this. And if you would like
+[00:33:46] to give me a breakdown of the long-term
+[00:33:48] model for free in the YouTube channel.
+[00:33:51] Have a great day. If you enjoyed this
+[00:33:52] video, leave a like and a comment, and
+[00:33:55] let me know which risk protocol works
+[00:33:57] best for you.
