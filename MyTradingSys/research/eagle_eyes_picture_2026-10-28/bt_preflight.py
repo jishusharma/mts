@@ -3,6 +3,7 @@ And then do a testing around it before you even attempt the backtesting").
 Each check targets a bug class that already bit us; a study result is not reported until its checks pass.
   P1 data coverage   resampled bars vs the span (C27 1h/2h/4h silently lost ~half the bars to an alignment bug)
   P2 prefix test     indicator / trend at bar i is identical when computed on bars[:i+1] only (look-ahead, unconfirmed pivots: WT C1)
+  P2b same for the 2h trend mapped onto lower charts and RSI divergence (C29/C30)
   P3 twin variants   (n >= 5) different rules or exits must not give identical trade lists (C28 counter-trend exit fired on bar 1 for all 4 exits)
   P4 hold degeneracy (n >= 5) median hold of 1 bar or one hold value for all trades = an exit firing at once
   P5 rarity          a rule with n < 30 in 2.5 years is unreachable as written (C28 red-band sell dots in downtrends: n=5)
@@ -40,6 +41,20 @@ def p2_prefix(k=8, cuts=25):
         pw1, pw2 = WD.wavetrend(b[:i + 1]); ptr = WC.structure(b[:i + 1])
         bad += abs(pw1[-1] - w1[i]) > 1e-9 or abs(pw2[-1] - w2[i]) > 1e-9 or ptr[-1] != tr[i]
     check("P2 prefix: WT and trend at bar i use bars <= i only", bad == 0, "%d of %d cut points differ" % (bad, cuts))
+
+
+def p2b_prefix_lower(cuts=15):
+    """C29/C30: 2h trend mapped onto 30m bars and RSI divergence use only bars <= i."""
+    import wt_lower_tf as LT, wt_rsi_div as V
+    b = LT.agg5(6); tr = LT.htf_trend(b, 30); H = [x[2] for x in b]; L = [x[3] for x in b]; R = V.rsi([x[4] for x in b])
+    rnd = random.Random(5); bad = 0; cut15 = WD.R15
+    for i in rnd.sample(range(2000, len(b) - 1), cuts):
+        WD.R15 = [x for x in cut15 if x[0] + 900000 <= b[i][0] + 1800000]  # 15m bars closed by the 30m close
+        pb = b[:i + 1]; ptr = LT.htf_trend(pb, 30); pR = V.rsi([x[4] for x in pb])
+        bad += ptr[-1] != tr[i] or abs(pR[-1] - R[i]) > 1e-9 or any(
+            V.divergence([x[2] for x in pb], [x[3] for x in pb], pR, i, sd) != V.divergence(H, L, R, i, sd) for sd in (1, -1))
+    WD.R15 = cut15
+    check("P2b prefix: 2h trend on 30m, RSI, divergence use bars <= i only", bad == 0, "%d of %d cut points differ" % (bad, cuts))
 
 
 def sig(tr):
@@ -89,5 +104,5 @@ def p8_random(tf, k, rule, real, draws=30):
 
 
 if __name__ == "__main__":
-    p1_coverage(); p2_prefix(); p3_to_p8()
+    p1_coverage(); p2_prefix(); p2b_prefix_lower(); p3_to_p8()
     print("FAILS: %d %s" % (len(FAILS), FAILS[:12]))

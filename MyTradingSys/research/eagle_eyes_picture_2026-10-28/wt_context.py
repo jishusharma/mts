@@ -33,8 +33,8 @@ def structure(b):
     return tr
 
 
-def forward_trade(b, w1, w2, tr, i, side, ex, guard=True):
-    O = [x[1] for x in b]; n = len(b)
+def forward_trade(b, w1, w2, tr, i, side, ex, guard=True, O=None):
+    O = O or [x[1] for x in b]; n = len(b)
     if i + 1 >= n:
         return None
     E = O[i + 1]; far = False
