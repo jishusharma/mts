@@ -4,6 +4,22 @@
   "commands": [
     "python scripts/dev/sync.py start krown-free-dev-check"
   ],
+  "context": {
+    "calls_to_edit": 11,
+    "folded": "2026-10-31T01:04:41Z",
+    "misses": 10,
+    "reads": [
+      "MyTradingSys/backtest/splits.py",
+      "MyTradingSys/backtest/PRE_REG_TEMPLATE.md",
+      "MyTradingSys/research/TRIAL_LEDGER.csv",
+      "scripts/dev/trial_ledger.py",
+      "MyTradingSys/research/rsi_deep_buy_2026-10-19/test_econ_floor.py",
+      "scripts/dev/prereg_gate.py",
+      "MyTradingSys/research/rsi_deep_buy_2026-10-19/econ_floor.py",
+      "scripts/dev/run_extra_tests.py"
+    ],
+    "session": "agent-af080053a67ac2e71"
+  },
   "created": "2026-10-30T21:43:04Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/krown_free_2026-10-31/DEV_CHECK.md has per-setup n, hit-rate, fee-net mean R vs the claim; PRE_REG frozen before the run; look-ahead shift check passes; shipped with a Result: line",
@@ -15,7 +31,15 @@
   "id": "krown-free-setups-dev-check",
   "kind": "build",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 17 file(s)",
+      "ref": "e8420fbb5d82",
+      "utc": "2026-10-31T00:58:27Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -23,7 +47,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T21:43:10Z",
+  "refreshed": "2026-10-31T00:59:43Z",
   "refs": [
     "MyTradingSys/options/research/KROWN_FREE_VS_PAID.md"
   ],
@@ -34,7 +58,7 @@
   "scope_out": [
     "live tree; engine and layer code; creating accounts or paying; .secrets and .env; VALIDATION and holdout windows"
   ],
-  "scope_sha": "",
+  "scope_sha": "e8420fbb5d82",
   "size": "M",
   "sources": [],
   "state": "ready",
