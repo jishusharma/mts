@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T07:58:22Z",
   "commands": [
     "python scripts/dev/lookahead_lint.py",
     "python scripts/dev/run_all_tests.py --quick"
@@ -17,6 +18,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "already re-landed on trunk by another session: f0fe63f63, 5d430529d, d1fd7dca4, 614a11e65 ",
+      "ref": "da57d8bec",
+      "utc": "2026-10-31T07:58:22Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -41,7 +48,12 @@
   "refined_by": "",
   "refreshed": "2026-10-31T07:41:34Z",
   "refs": [],
-  "result": "",
+  "result": "already re-landed on trunk by another session: f0fe63f63, 5d430529d, d1fd7dca4, 614a11e65 (np.repeat labels + one allowlist row); test_lookahead_lint 25 passed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/fractals_2026-10-31/phase_tag/",
     "MyTradingSys/backtest/layers/FORMULAS.md",
@@ -56,12 +68,13 @@
   "sources": [
     "git show bcbe36875"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "git show the reverted commits, restore files (git checkout bcbe36875^ -- paths)",
     "Reproduce lookahead_lint and pytest failures locally, fix tests first",
     "Run run_all_tests.py --quick, ship"
   ],
+  "taken": "2026-10-31T07:58:22Z",
   "tests": "test_phase_tag.py passes; the test that failed in Step 4 is named in the commit body and passes",
   "title": "Re-land reverted phase tag v1 + P1 split (bcbe36875): fix look-ahead lint hit at phase_tag/harness.py:43 (reviewed allowlist row or rewrite) and the Step 4 pytest failure, tests first",
   "weight": "ROUTINE",

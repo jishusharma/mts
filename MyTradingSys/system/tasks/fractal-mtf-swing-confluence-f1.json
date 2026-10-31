@@ -1,51 +1,51 @@
 {
- "approved_by": "",
- "asks": "",
- "commands": [
-  "python MyTradingSys/research/fractals_2026-10-31/f1/run_f1.py"
- ],
- "created": "2026-10-31T07:04:36Z",
- "depends_on": [
-  "btc-phase-context-layer-1031"
- ],
- "done_when": "PRE_REG committed before any run; RESULT.md with n, mean net R (fee-net), 95% range, placebo random-levels difference; verdict row; HOLDOUT 2025-07+ never loaded; no rule or gate added; every parameter labelled SOURCED or OURS.",
- "est_turns": 30,
- "formula_id": "",
- "formula_ids": [],
- "from_inbox": "",
- "goal": "SYNTHESIS.md s4 row F1: do 1h Williams pivots that line up with 4h/daily pivots beat random levels fee-net on 1m DEV 2022-01-01..2025-06-30 (n >= 200)? Pre-register every cell/threshold as TRIALS.md rows before outcomes are read.",
- "id": "fractal-mtf-swing-confluence-f1",
- "lane": "SONNET",
- "layers": [],
- "live_path": false,
- "mutation_check": "",
- "note": "OPERATOR QUOTE: We need this layer. Spec SYNTHESIS.md s4 row F1; waits for btc-phase-context-layer-1031 (P-1 harness).",
- "prio": 2,
- "refine_tries": 0,
- "refined_by": "",
- "refs": [
-  "MyTradingSys/research/fractals_2026-10-31/SYNTHESIS.md"
- ],
- "result": "",
- "scope_in": [
-  "MyTradingSys/research/fractals_2026-10-31/f1/"
- ],
- "scope_out": [
-  "live tree",
-  "data on or after 2025-07-01"
- ],
- "size": "M",
- "sources": [
-  "MyTradingSys/research/fractals_2026-10-31/SYNTHESIS.md"
- ],
- "state": "raw",
- "steps": [
-  "Wait for btc-phase-context-layer-1031 (P-1 harness) to land",
-  "Write PRE_REG.md and TRIALS rows, tests first",
-  "Run DEV, RESULT.md with placebo, verdict"
- ],
- "tests": "MyTradingSys/research/fractals_2026-10-31/f1/test_f1.py: hand-computed pivot alignment on a synthetic series; fails before the module exists",
- "title": "F1 fractal layer: 1h Williams pivots aligned with 4h/daily pivots vs random levels, fee-net, DEV 2022-01..2025-06",
- "weight": "IMPORTANT",
- "worker": "session"
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/research/fractals_2026-10-31/f1/run_f1.py"
+  ],
+  "created": "2026-10-31T07:04:36Z",
+  "depends_on": [
+    "btc-phase-context-layer-1031"
+  ],
+  "done_when": "PRE_REG committed before any run; RESULT.md with n, mean net R (fee-net), 95% range, random-levels difference; verdict row; HOLDOUT 2025-07+ never loaded; no rule or gate added; every parameter labelled SOURCED or OURS.",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "SYNTHESIS.md s4 row F1: do 1h Williams pivots that line up (0.5 ATR, OURS) with 4h/daily pivots beat random levels with matched distance, fee-net, on 1m DEV 2022-01-01..2025-06-30 (n >= 200)? Pre-registered in f1/PRE_REG.md; TRIALS rows written before outcomes were read.",
+  "id": "fractal-mtf-swing-confluence-f1",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "OPERATOR QUOTE: We need this layer. Spec SYNTHESIS.md s4 row F1; waits for btc-phase-context-layer-1031 (P-1 harness).",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/fractals_2026-10-31/SYNTHESIS.md"
+  ],
+  "result": "DONE 2026-10-31 FAIL: 1h Williams pivots with 4h/1d confluence n=2556 net -0.267 R, worse than matched random levels by -0.106 R [-0.143,-0.070]; no-confluence n=4860 -0.226 R. CI green 645a4175. research/fractals_2026-10-31/f1/RESULT.md",
+  "scope_in": [
+    "MyTradingSys/research/fractals_2026-10-31/f1/"
+  ],
+  "scope_out": [
+    "live tree",
+    "data on or after 2025-07-01"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/fractals_2026-10-31/SYNTHESIS.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Write f1/PRE_REG.md, test_f1.py (fail-first) and TRIALS rows; commit before any run",
+    "Run python MyTradingSys/research/fractals_2026-10-31/f1/run_f1.py (1m DEV only)",
+    "Write RESULT.md with n, net mean R, CI, random-level difference, phase split, verdict; update TRIALS rows; ship"
+  ],
+  "tests": "MyTradingSys/research/fractals_2026-10-31/f1/test_f1.py: pivot known only 2 bars later (shift test), confluence uses only already-confirmed higher-TF pivots, random-level control, planted edge detected, hand-computed trades",
+  "title": "F1 fractal layer: 1h Williams pivots aligned with 4h/daily pivots vs random levels, fee-net, DEV 2022-01..2025-06",
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

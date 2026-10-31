@@ -259,6 +259,29 @@ class FastPlan(unittest.TestCase):
         rec = json.loads(rat.record_path(d).read_text(encoding="utf-8"))
         self.assertEqual(rec.get("deferred"), deferred_tests)
 
+    def test_new_research_file_runs_lint_and_cost_inventory_as_must_pass(self):
+        # CI_RED_ROOT_CAUSES 2026-10-31: run_f1.py (ca807e364) and the phase tag harness (32756080e) shipped with 3la/3xt cut by the
+        # 60 s deadline and counted as PASS; the cost inventory test was not even selected.
+        cost = "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/test_cost_inventory.py"
+        self.addCleanup(rat.NO_DEFER_CMDS.clear)
+        plan, mode, _ = self.select(["MyTradingSys/research/fractals_2026-10-31/f1/run_f1.py"], reach=lambda files: gi.Reach())
+        self.assertEqual(mode, "smoke")
+        self.assertTrue(rat.fast_applied)
+        run = {s.num: s for s in plan if not s.skip}
+        self.assertIn("3la", run)
+        self.assertIn("3xm", run)
+        self.assertIn(cost, run["3xm"].cmd)
+        self.assertIn(repr(run["3la"].cmd), rat.NO_DEFER_CMDS)
+        self.assertIn(repr(run["3xm"].cmd), rat.NO_DEFER_CMDS)
+
+    def test_sim_desk_results_change_runs_the_catalogue_backfill_test_as_must_pass(self):
+        self.addCleanup(rat.NO_DEFER_CMDS.clear)
+        # the files of 0cc1b2000 (sim C21-C26, reverted in 23cbee722): an export script elsewhere writes catalogue rows
+        plan, _, _ = self.select(["MyTradingSys/research/eagle_eyes_picture_2026-10-28/export_sim.py",
+                                  "MyTradingSys/research/sim_desk/results/_catalogue.json"], reach=lambda files: gi.Reach())
+        run = {s.num: s for s in plan if not s.skip}
+        self.assertIn("MyTradingSys/research/sim_desk/test_backfill.py", run["3xm"].cmd)
+
     def test_fast_gate_reason_does_not_report_unreached_always_steps(self):
         plan, mode, out = self.select(["scripts/dev/nowin.py"])
         self.assertEqual(mode, "smoke")

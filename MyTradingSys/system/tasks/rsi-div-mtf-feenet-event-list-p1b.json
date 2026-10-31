@@ -4,14 +4,30 @@
   "commands": [],
   "created": "2026-10-31T07:28:20Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "PRE_REG committed before outcomes; events_feenet.csv and RESULT.md under research/fractals_2026-10-31/p1b_rsi_feenet; TRIALS rows added; tests and CI lookahead lint green.",
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Freeze a 24-bar ATR14 bracket + taker fees for the 643 RSI-DIV-MTF DEV events, write the per-event fee-net R list and rerun the P1 phase split on it.",
   "id": "rsi-div-mtf-feenet-event-list-p1b",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "P1: tested phase-split pipeline; real run BLOCKED, no frozen per-event fee-net list",
+      "ref": "d1fd7dca49a0",
+      "utc": "2026-10-31T07:28:27Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "d1fd7dca49a0 P1: tested phase-split pipeline; real run BLOCKED, no frozen per-event fee-ne",
+      "ref": "MyTradingSys/research/layer_lab/TRIALS.md",
+      "utc": "2026-10-31T07:28:27Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,16 +35,29 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-31T07:52:12Z",
   "refs": [],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "result": "DONE 2026-10-31 honest negative: RSI-DIV-MTF n=640 net -0.229 R/trade (1R stop, 2R target, 24 bars, taker fees); every phase cell negative, shift null flags nothing. research/fractals_2026-10-31/p1b_rsi_feenet/RESULT.md",
+  "scope_in": [
+    "MyTradingSys/research/fractals_2026-10-31/p1b_rsi_feenet/",
+    "MyTradingSys/research/layer_lab/TRIALS.md"
+  ],
+  "scope_out": [
+    "p1_split pipeline code, live tree, backtest/fees.py, holdout data"
+  ],
+  "scope_sha": "d1fd7dca49a0",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "done",
+  "steps": [
+    "write PRE_REG.md and commit it",
+    "fail-first tests",
+    "builder + events_feenet.csv",
+    "rerun p1_split per tag, RESULT.md, TRIALS rows",
+    "lint + pytest + ship"
+  ],
+  "tests": "python -m pytest MyTradingSys/research/fractals_2026-10-31/p1b_rsi_feenet/test_build_feenet.py (exit logic on hand-built bars, fee once per side, no bar after exit, DEV only)",
   "title": "P1b: pre-register a fee-net exit for RSI-DIV-MTF (24-bar ATR14 bracket from event_table.py) on DEV, write the per-event R list P1 needs",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }
