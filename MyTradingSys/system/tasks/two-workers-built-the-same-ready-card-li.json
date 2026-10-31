@@ -28,9 +28,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "gemini_queue: root() reads MTS_GQ_ROOT at call time (laptop)",
-      "ref": "71f3e7aeb2f8",
-      "utc": "2026-10-29T22:50:21Z"
+      "line": "merge origin/fast-track into batch5-a",
+      "ref": "ca6dcf3d9317",
+      "utc": "2026-10-30T20:11:10Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "dd38c0609af9 gemini_queue: run_job refuses non-ready/SHIPPED/STALE/unreadable cards",
+      "ref": "MyTradingSys/research/two_workers_collision_2026-10-30/FINDING.md",
+      "utc": "2026-10-30T20:10:02Z"
     }
   ],
   "layers": [],
@@ -40,7 +47,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T18:24:10Z",
+  "refreshed": "2026-10-31T08:48:03Z",
   "refs": [
     "f8c5e4895"
   ],
@@ -53,7 +60,7 @@
   "scope_out": [
     "tasks.py promotion rules, sync.py claim logic, the planner, any other lane runner, product code"
   ],
-  "scope_sha": "71f3e7aeb2f8",
+  "scope_sha": "ca6dcf3d9317",
   "size": "M",
   "sources": [
     "git: f8c5e4895, e74038d3d, 2db125d50"

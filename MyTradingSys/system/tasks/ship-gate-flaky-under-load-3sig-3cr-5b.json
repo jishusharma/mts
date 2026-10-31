@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "splits module + holdout guard; BB state map re-run DEV-only",
-      "ref": "46cb4255e79f",
-      "utc": "2026-10-30T17:13:41Z"
+      "line": "fast ship gate: 3la and tree-wide inventory tests are must-pass, never deadline-deferred",
+      "ref": "201d47c735bd",
+      "utc": "2026-10-31T08:25:28Z"
     }
   ],
   "layers": [],
@@ -28,7 +28,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T17:40:57Z",
+  "refreshed": "2026-10-31T08:47:52Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -42,7 +42,7 @@
     "live tree .mts_live",
     "product code under src/ and backtest/layers"
   ],
-  "scope_sha": "46cb4255e79f",
+  "scope_sha": "201d47c735bd",
   "size": "M",
   "sources": [
     "raw card 7e3286249"

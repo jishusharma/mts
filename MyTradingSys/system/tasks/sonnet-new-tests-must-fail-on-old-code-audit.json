@@ -29,7 +29,15 @@
   "id": "sonnet-new-tests-must-fail-on-old-code-audit",
   "kind": "audit",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "merge fast-track; keep trunk VACUOUS_TESTS.md, mine as function-level companion",
+      "ref": "119f43a2329b",
+      "utc": "2026-10-30T20:42:15Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -37,7 +45,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T20:22:11Z",
+  "refreshed": "2026-10-31T08:47:56Z",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
@@ -48,7 +56,7 @@
   "scope_out": [
     "live tree; engine and layer code edits; any backtest verdict; .secrets and .env"
   ],
-  "scope_sha": "",
+  "scope_sha": "119f43a2329b",
   "size": "S",
   "sources": [],
   "state": "ready",

@@ -26,9 +26,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Eagle_Eyes: C24 OI path after a long flush vs next 1h/4h (operator 'OI is favouring what?'",
-      "ref": "bf3fcb862f7f",
-      "utc": "2026-10-30T19:34:59Z"
+      "line": "c24: re-land OI pairing fix (off-by-one bar) with reviewed lookahead allowlist rows",
+      "ref": "138bb6a6f0d4",
+      "utc": "2026-10-31T00:02:45Z"
     }
   ],
   "layers": [],
@@ -38,7 +38,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "planner-20261030-d",
-  "refreshed": "2026-10-30T23:00:48Z",
+  "refreshed": "2026-10-31T08:46:43Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -48,7 +48,7 @@
   "scope_out": [
     "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no product-code edit; public Bybit market data only; no order or account call"
   ],
-  "scope_sha": "bf3fcb862f7f",
+  "scope_sha": "138bb6a6f0d4",
   "size": "M",
   "sources": [],
   "state": "ready",

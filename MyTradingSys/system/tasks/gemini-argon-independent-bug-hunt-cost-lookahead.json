@@ -13,7 +13,15 @@
   "id": "gemini-argon-independent-bug-hunt-cost-lookahead",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "merge gemini-q doc-vs-code layers g3",
+      "ref": "64b656889955",
+      "utc": "2026-10-31T06:05:16Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -21,7 +29,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T20:22:07Z",
+  "refreshed": "2026-10-31T08:47:00Z",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
@@ -32,7 +40,7 @@
   "scope_out": [
     "live tree; engine and layer code edits; any backtest verdict; .secrets and .env"
   ],
-  "scope_sha": "",
+  "scope_sha": "64b656889955",
   "size": "S",
   "sources": [],
   "state": "ready",

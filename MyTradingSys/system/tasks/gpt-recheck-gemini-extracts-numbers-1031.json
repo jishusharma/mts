@@ -17,9 +17,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "lab gpt-bug-hunt-auto-trader-fail-closed: DONE (audit)",
-      "ref": "1080ce6f7755",
-      "utc": "2026-10-30T20:30:17Z"
+      "line": "lab gpt-recheck-gemini-extracts-numbers-1031: BLOCKED (audit)",
+      "ref": "f1b1d0b3b18e",
+      "utc": "2026-10-31T05:58:14Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "f1b1d0b3b18e lab gpt-recheck-gemini-extracts-numbers-1031: BLOCKED (audit)",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-10-31_gpt-recheck-gemini-extracts-numbers-1031.md",
+      "utc": "2026-10-31T05:58:14Z"
     }
   ],
   "layers": [],
@@ -29,7 +36,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T21:37:48Z",
+  "refreshed": "2026-10-31T08:47:08Z",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
@@ -40,7 +47,7 @@
   "scope_out": [
     "live tree; engine code; editing the extracts; .secrets and .env"
   ],
-  "scope_sha": "1080ce6f7755",
+  "scope_sha": "f1b1d0b3b18e",
   "size": "S",
   "sources": [],
   "state": "ready",

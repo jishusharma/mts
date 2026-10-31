@@ -26,9 +26,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "live_aid replay: money tile reads window.LIVEAID_OI; 10-30 18:50Z flush replayed through t",
-      "ref": "7f33c6067818",
-      "utc": "2026-10-30T20:41:52Z"
+      "line": "live_aid replay: position bar pos-dist, pos-atr, uncovered pinned",
+      "ref": "e6376a8d400b",
+      "utc": "2026-10-31T05:45:46Z"
     }
   ],
   "layers": [],
@@ -38,7 +38,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T02:48:58Z",
+  "refreshed": "2026-10-31T08:47:37Z",
   "refs": [
     "MyTradingSys/research/gemini_burn_2026-10-31/LIVE_AID_TEST_PLAN.md"
   ],
@@ -49,7 +49,7 @@
   "scope_out": [
     "no edits to live_aid.html or live_aid_indicators.js"
   ],
-  "scope_sha": "7f33c6067818",
+  "scope_sha": "e6376a8d400b",
   "size": "S",
   "sources": [],
   "state": "ready",

@@ -27,16 +27,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "T054+T058: BTC session-open sweeps research; descriptive study; B102",
-      "ref": "edec790cdfb2",
-      "utc": "2026-10-03T21:12:52Z"
+      "line": "T058 per-TF break event study re-land (ledger P0-45): W/1D/4h/1h/15m, DEV/VAL, fee-net fro",
+      "ref": "e31013dfb104",
+      "utc": "2026-10-30T19:30:37Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "edec790cdfb2 T054+T058: BTC session-open sweeps research; descriptive study; B102",
+      "line": "e31013dfb104 T058 per-TF break event study re-land (ledger P0-45): W/1D/4h/1h/15m, DEV/VAL",
       "ref": "MyTradingSys/items/T058_broken_extremes_sweep_vs_continuation.md",
-      "utc": "2026-10-03T21:12:52Z"
+      "utc": "2026-10-30T19:30:37Z"
     }
   ],
   "layers": [],
@@ -46,7 +46,7 @@
   "prio": 2,
   "refine_tries": 1,
   "refined_by": "",
-  "refreshed": "2026-10-30T17:15:09Z",
+  "refreshed": "2026-10-31T08:46:32Z",
   "refs": [
     "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md"
   ],
@@ -60,7 +60,7 @@
     "OI/funding conditioning (no local data pre 2025-09)",
     "live code"
   ],
-  "scope_sha": "edec790cdfb2",
+  "scope_sha": "e31013dfb104",
   "size": "M",
   "sources": [
     "research/fast_track_2026-09-27/T058_BROKEN_EXTREMES.md s3.2-3.3",

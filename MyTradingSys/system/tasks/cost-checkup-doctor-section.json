@@ -13,7 +13,22 @@
   "goal": "Add a COST section (separate from AI health) to mts_doctor that runs the MyTradingSys/system/COST_CHECKUP.md checklist (items a-i), reports hidden costs with measured readings and the savings, and records the first run as a before/after comparison around Remote Control off (turned OFF 2026-10-30 ~08:36Z).",
   "id": "cost-checkup-doctor-section",
   "lane": "OPUS",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Re-land cost checkup (reworded line 15 so test_integrity passes)",
+      "ref": "3a4b03b4e7e5",
+      "utc": "2026-10-30T08:58:31Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "3a4b03b4e7e5 Re-land cost checkup (reworded line 15 so test_integrity passes)",
+      "ref": "MyTradingSys/system/COST_CHECKUP.md",
+      "utc": "2026-10-30T08:58:31Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -21,7 +36,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T08:39:52Z",
+  "refreshed": "2026-10-31T08:46:56Z",
   "refs": [
     "MyTradingSys/system/COST_CHECKUP.md",
     "MyTradingSys/system/MTS_DOCTOR.md",
@@ -36,7 +51,7 @@
     "AI health checks and their scoring",
     "live tree and trading code; settings.json (operator-owned); no scheduled tasks"
   ],
-  "scope_sha": "",
+  "scope_sha": "3a4b03b4e7e5",
   "size": "M",
   "sources": [],
   "state": "ready",

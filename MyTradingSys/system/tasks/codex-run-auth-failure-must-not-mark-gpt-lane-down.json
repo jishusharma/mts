@@ -27,9 +27,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "status: GPT reading flagged EXHAUSTED at the source, every number carries its age",
-      "ref": "deb867b26ee3",
-      "utc": "2026-10-29T23:40:26Z"
+      "line": "codex_run: a 401 on this host is IDLE host-auth, writes and ships no lane_state/codex_usag",
+      "ref": "0b1bf4e204a1",
+      "utc": "2026-10-30T23:58:35Z"
     }
   ],
   "layers": [],
@@ -39,7 +39,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T20:38:56Z",
+  "refreshed": "2026-10-31T08:46:52Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -47,7 +47,7 @@
     "scripts/dev/lane_health.py"
   ],
   "scope_out": [],
-  "scope_sha": "deb867b26ee3",
+  "scope_sha": "0b1bf4e204a1",
   "size": "S",
   "sources": [],
   "state": "ready",

@@ -26,9 +26,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "auto_trader fail-closed tests (19, 19/19 mutants caught) + vacuous-test audit of last 30 t",
-      "ref": "9cf5a2191909",
-      "utc": "2026-10-30T20:42:05Z"
+      "line": "test: auto_trader.place margin pre-flight gap (2 expectedFailure tests)",
+      "ref": "36f1a52487a0",
+      "utc": "2026-10-31T05:41:17Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "0e6efa1c61eb ship: 55 file(s)",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-10-31_gemini-test-plan-execution-1031.md",
+      "utc": "2026-10-31T05:15:03Z"
     }
   ],
   "layers": [],
@@ -38,7 +45,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T05:11:45Z",
+  "refreshed": "2026-10-31T08:48:00Z",
   "refs": [
     "gemini-test-plan-execution-1031"
   ],
@@ -48,7 +55,7 @@
     "MyTradingSys/execution/test_auto_trader_failclosed.py"
   ],
   "scope_out": [],
-  "scope_sha": "9cf5a2191909",
+  "scope_sha": "36f1a52487a0",
   "size": "S",
   "sources": [],
   "state": "ready",

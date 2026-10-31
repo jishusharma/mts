@@ -29,9 +29,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "feat(cbp): add channel to CBP row schema and query filter",
-      "ref": "358a0e50a07c",
-      "utc": "2026-10-29T22:10:27Z"
+      "line": "fix(cbp): non-object JSON returns the safe default, not AttributeError",
+      "ref": "66c3f4e049fd",
+      "utc": "2026-10-31T08:00:50Z"
     }
   ],
   "layers": [],
@@ -41,7 +41,7 @@
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T07:41:18Z",
+  "refreshed": "2026-10-31T08:46:47Z",
   "refs": [
     "MyTradingSys/cbp/__init__.py"
   ],
@@ -54,7 +54,7 @@
     "live tree",
     "unrelated cbp logic"
   ],
-  "scope_sha": "358a0e50a07c",
+  "scope_sha": "66c3f4e049fd",
   "size": "S",
   "sources": [
     "MyTradingSys/cbp/__init__.py"

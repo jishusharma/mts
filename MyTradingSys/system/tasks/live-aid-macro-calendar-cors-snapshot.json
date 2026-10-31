@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "ship: 7 file(s)",
-      "ref": "bb7731974f57",
-      "utc": "2026-10-30T19:52:44Z"
+      "line": "live_aid: Now table on top, click-through detail pages, news headlines with a BTC reading",
+      "ref": "30ac62e9fee3",
+      "utc": "2026-10-30T21:42:13Z"
     }
   ],
   "layers": [],
@@ -28,7 +28,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T20:38:54Z",
+  "refreshed": "2026-10-31T08:47:35Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -36,7 +36,7 @@
     "MyTradingSys/tools/live_aid/test_live_aid.py"
   ],
   "scope_out": [],
-  "scope_sha": "bb7731974f57",
+  "scope_sha": "30ac62e9fee3",
   "size": "S",
   "sources": [],
   "state": "ready",

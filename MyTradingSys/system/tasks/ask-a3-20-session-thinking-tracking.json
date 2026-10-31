@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "registry: carry live-tree-only edits (INDEX, BUGS, apparatus_fixes) onto fast-track; close",
-      "ref": "cddac74169f2",
-      "utc": "2026-10-14T12:32:30Z"
+      "line": "token_audit: per-session load_tokens and thinking_chars columns (A3-20)",
+      "ref": "135c8a848dd5",
+      "utc": "2026-10-30T14:29:17Z"
     },
     {
       "auto": true,
@@ -35,7 +35,7 @@
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T10:01:01Z",
+  "refreshed": "2026-10-31T08:46:30Z",
   "refs": [
     "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md"
   ],
@@ -49,7 +49,7 @@
     "Claude transcripts content (read only, nothing copied into the repo)",
     "scheduling any recurring run"
   ],
-  "scope_sha": "cddac74169f2",
+  "scope_sha": "135c8a848dd5",
   "size": "S",
   "sources": [
     "ledger A3-20 (P0511); B172 token audit"

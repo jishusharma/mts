@@ -20,16 +20,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "B163 v2: run Alpha vs buy-and-hold and Beta per-sweep on DEV/VAL; RESULT, export, verdict ",
-      "ref": "a43b9fbff2e4",
-      "utc": "2026-10-30T17:26:25Z"
+      "line": "wiring registry: drop vp_pivot_probe.py REPRO entry (now LIVE via gate_select MUST_EXTRAS ",
+      "ref": "b31679764b1e",
+      "utc": "2026-10-31T08:30:01Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "85cbb15e4d9c planner: refine 8 raw cards (T058 re-land, B163 v2, live-path OI/CVD + analys",
-      "ref": "MyTradingSys/system/LAYERS.md",
-      "utc": "2026-10-30T17:16:36Z"
+      "line": "997ddf61e993 cowen: extract bekghgecip8 (Q4 dump, 2026-10-30), concept check, band study o",
+      "ref": "MyTradingSys/research/sim_desk/PLUGIN.md",
+      "utc": "2026-10-31T06:43:23Z"
     }
   ],
   "layers": [
@@ -46,7 +46,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T17:40:25Z",
+  "refreshed": "2026-10-31T08:47:26Z",
   "refs": [
     "MyTradingSys/research/mts_doctor/MAINNET_PATH_2026-10-25.md"
   ],
@@ -71,7 +71,7 @@
     "VALIDATION and HOLDOUT reads",
     "layer_map.json, layer_index.json or code edits"
   ],
-  "scope_sha": "a43b9fbff2e4",
+  "scope_sha": "b31679764b1e",
   "size": "M",
   "sources": [
     "MyTradingSys/system/ANTIGRAVITY_LAPTOP.md section C (fact-sheet format)",
