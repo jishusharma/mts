@@ -1,0 +1,1 @@
+{"t": "20261031T064053Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "note", "text": "A reverted 52c922ae5 (funding snap/fabio slip, gemini-queue) as 3ec1f0e2: CI RED T06 test_cost_inventory, 3 cost constants not in costs.csv (FUNDING_SNAP_MS, fabio slip x2). Re-land with costs.csv row", "login": "A"}
