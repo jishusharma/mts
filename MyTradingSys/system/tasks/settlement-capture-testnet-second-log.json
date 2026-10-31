@@ -20,16 +20,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "test: pin recorded 10-10 settlement log against equity identity (expectedFailure)",
-      "ref": "5136984322fb",
-      "utc": "2026-10-29T23:29:23Z"
+      "line": "test: review nits on settlement identity (tolerance note, synthetic label, REFUTED wording",
+      "ref": "c06d84352108",
+      "utc": "2026-10-31T05:02:18Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "5136984322fb test: pin recorded 10-10 settlement log against equity identity (expectedFail",
+      "line": "c06d84352108 test: review nits on settlement identity (tolerance note, synthetic label, RE",
       "ref": "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEMS_1_2_5.md",
-      "utc": "2026-10-29T23:29:23Z"
+      "utc": "2026-10-31T05:02:18Z"
     }
   ],
   "layers": [],
@@ -42,7 +42,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T17:40:48Z",
+  "refreshed": "2026-10-31T08:47:46Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -54,7 +54,7 @@
   "scope_out": [
     "any order or position (existing testnet activity only), mainnet, .secrets contents, mainnet_pnl.py edits"
   ],
-  "scope_sha": "5136984322fb",
+  "scope_sha": "c06d84352108",
   "size": "S",
   "sources": [],
   "state": "ready",

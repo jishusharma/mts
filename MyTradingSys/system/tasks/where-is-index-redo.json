@@ -27,16 +27,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Add on-demand fix_verifier.py (ledger A4-18)",
-      "ref": "792ae66b67d6",
-      "utc": "2026-10-30T08:54:14Z"
+      "line": "phase tag v1 (P0) + power/planted-edge harness (P-1)",
+      "ref": "7c265f0c248c",
+      "utc": "2026-10-31T07:15:34Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "fcd831a5278f revert WHERE_IS 5e37f0323: role files over byte budget (CI red)",
+      "line": "c409e3f6b3f6 WHERE_IS: re-apply topic index and where_is.py without role-file lines",
       "ref": "MyTradingSys/system/QUICK_ANSWERS.md",
-      "utc": "2026-10-30T08:25:45Z"
+      "utc": "2026-10-30T10:37:23Z"
     }
   ],
   "layers": [],
@@ -46,7 +46,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T10:00:30Z",
+  "refreshed": "2026-10-31T08:48:05Z",
   "refs": [
     "MyTradingSys/system/tasks/where-things-are-index.json"
   ],
@@ -61,7 +61,7 @@
     "MyTradingSys/system/roles/supervisor.md",
     "CLAUDE.md"
   ],
-  "scope_sha": "792ae66b67d6",
+  "scope_sha": "7c265f0c248c",
   "size": "M",
   "sources": [
     "fcd831a52 (revert reason: role files over byte budget)"

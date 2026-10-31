@@ -27,9 +27,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "test: pin recorded 10-10 settlement log against equity identity (expectedFailure)",
-      "ref": "5136984322fb",
-      "utc": "2026-10-29T23:29:23Z"
+      "line": "test: position_manager margin/equity drain (expectedFailure, gap confirmed)",
+      "ref": "a0eb3128fa37",
+      "utc": "2026-10-31T06:53:51Z"
     }
   ],
   "layers": [],
@@ -39,7 +39,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T20:22:15Z",
+  "refreshed": "2026-10-31T08:47:54Z",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
@@ -50,7 +50,7 @@
   "scope_out": [
     "live tree; engine and layer code edits; any backtest verdict; .secrets and .env"
   ],
-  "scope_sha": "5136984322fb",
+  "scope_sha": "a0eb3128fa37",
   "size": "S",
   "sources": [],
   "state": "ready",

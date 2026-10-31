@@ -21,6 +21,7 @@ Status: VALIDATED WITH FIXES by Fable (`VALIDATION.md`); all 18 fixes from its s
 - Never align on a peak or bottom date: unknown at the time. Allowed anchors: halving dates, running ATH, running drawdown, completed weekly/daily bars (R1 s5).
 - The tag or gate value used at bar t is computed from bars closing at or before t-1; every step's shift test asserts this.
 - Halving date = block 840,000 timestamp 2024-04-20 00:09 UTC (FORMULAS.md entry); day counts from it (peak close 2025-10-06 = day 534).
+- Decision n is per case (operator 2026-10-31, d-flexible-min-n-per-case): each pre-reg states the n its own per-trade spread needs to see a fee-sized effect at 80% power (harness power()); 30 is the report floor; rare setups below the power need are descriptive + forward-logged, not failed. The fixed 30/200 numbers in the s4 table are superseded by this rule.
 - Matches must beat random paths with BTC's volatility, not zero (R1 s5).
 - Every parameter labelled SOURCED (link/quote) or OURS; FORMULAS.md entries for halving clock, Hurst/DFA, DTW written first (R1 Noticed).
 

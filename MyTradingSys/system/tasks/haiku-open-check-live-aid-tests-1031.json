@@ -21,9 +21,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Merge remote-tracking branch 'origin/fast-track' into claude/live-aid-design-c4174e",
-      "ref": "9b758204cea2",
-      "utc": "2026-10-30T20:42:03Z"
+      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nuc/live-aid-posbar-2",
+      "ref": "ab9ff9586bd5",
+      "utc": "2026-10-31T06:04:32Z"
     }
   ],
   "layers": [],
@@ -33,7 +33,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T21:10:01Z",
+  "refreshed": "2026-10-31T08:47:14Z",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
@@ -47,7 +47,7 @@
   "scope_out": [
     "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no product-code edit"
   ],
-  "scope_sha": "9b758204cea2",
+  "scope_sha": "ab9ff9586bd5",
   "size": "S",
   "sources": [],
   "state": "ready",

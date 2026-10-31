@@ -19,9 +19,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Republish the 6 stale claude.ai pages and record it",
-      "ref": "abe3d2c6868e",
-      "utc": "2026-10-30T21:07:37Z"
+      "line": "ship: 3 file(s)",
+      "ref": "32a3ee613a8f",
+      "utc": "2026-10-31T00:54:14Z"
     }
   ],
   "layers": [],
@@ -31,7 +31,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T21:14:18Z",
+  "refreshed": "2026-10-31T08:47:11Z",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
@@ -43,7 +43,7 @@
   "scope_out": [
     "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no product-code edit; no Artifact publish"
   ],
-  "scope_sha": "abe3d2c6868e",
+  "scope_sha": "32a3ee613a8f",
   "size": "S",
   "sources": [],
   "state": "ready",

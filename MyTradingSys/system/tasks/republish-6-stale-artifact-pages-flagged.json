@@ -30,9 +30,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Republish the 6 stale claude.ai pages and record it",
-      "ref": "abe3d2c6868e",
-      "utc": "2026-10-30T21:07:37Z"
+      "line": "Record Home + Layers republish (Layers recorded before Home build, so Home's behind badge ",
+      "ref": "dd972da535c7",
+      "utc": "2026-10-30T21:54:04Z"
     }
   ],
   "layers": [],
@@ -45,7 +45,7 @@
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "planner-20261030-d",
-  "refreshed": "2026-10-30T21:14:19Z",
+  "refreshed": "2026-10-31T08:47:45Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -56,7 +56,7 @@
   "scope_out": [
     "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no product-code edit; never publish a second copy (a new url); no page without edit access ('writer' in Artifact read)"
   ],
-  "scope_sha": "abe3d2c6868e",
+  "scope_sha": "dd972da535c7",
   "size": "S",
   "sources": [],
   "state": "ready",

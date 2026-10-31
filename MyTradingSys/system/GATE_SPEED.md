@@ -52,7 +52,7 @@ need the 544 s full gate; docs ships already take ~10 s.
 - X2 `ship` passes `--fast` for smoke ships: pytest steps run only their reached files (split over workers), script-style test steps run when their test
   is reached, 3xt/5b use the closure too. Direct tests (they name the changed file) are never deferred; the transitive ones fill FAST_BUDGET_S = 30 s
   at EFFECTIVE_WORKERS = 3 (measured: 6 workers give 2-3x on this box, not 6x) by estimated seconds (STEP_EST, TEST_FILE_SECONDS); the rest is
-  DEFERRED to CI and printed by name. Per-step timeout 240 s. ALWAYS steps 3w/3tl/3dl run only when a changed file, test or ride-along doc concerns them.
+  DEFERRED to CI and printed by name. Must-pass steps (3la, 3xm) are never deferred; 240 s is their ceiling, not a target. ALWAYS steps 3w/3tl/3dl run only when a changed file, test or ride-along doc concerns them.
 - X3 Fast gates use their own slot pool `gate-slots-fast` (2): never queued behind 9-minute full gates. Full/live/unknown ships keep slots and steps.
   An empty slot file is its creator mid-write (busy, not a dead owner 0) unless older than 10 s.
 - X4 wiring_scan.build: suffix index + memo for `resolve`, per-file facts cached by content hash in the git common dir (a pure function of the text; a
@@ -92,6 +92,6 @@ FIFO slot queue; Windows CI on selected steps only. (Done: Machine-wide process 
 
 ## Three tiers by path (gate-tiers-by-path, operator q-v1-gate-tiers 2026-10-20)
 1. **Docs** (.md/.txt, data under research/system/items/methodology, task cards, pages): `gate_select` mode `docs` selects no steps and `sync.py ship` runs no gate (fetch, merge, push, record); CI gates behind. The wiring registry still runs 3x/3w.
-2. **Smoke** (non-live code): only the tests that import the changed module (fast path), every step capped at 240 s; 4t only when a test file is in the diff, 3tl only when a card is; doc size caps and banner checks only on diff files (`MTS_GATE_CHANGED_FILES`).
+2. **Smoke** (non-live code): only the tests that import the changed module (fast path), one rule: a fast ship targets under 2 minutes, steps past the deadline defer to CI, must-pass steps keep the 240 s ceiling; 4t only when a test file is in the diff, 3tl only when a card is; doc size caps and banner checks only on diff files (`MTS_GATE_CHANGED_FILES`).
 3. **Live path / unknown path**: the full quick gate, unchanged (fail closed).
 Claims and releases live on the `claims` branch of origin (no claim/release commit on the trunk; `sync.py claims` reads it plus legacy trunk claims). A second ship from one tree within 10 min is refused: `ship --again` (or `SYNC_ALLOW_SECOND_SHIP=1`) overrides. DECISION (OURS): wall times for one docs and one code ship on JIS-NB are not measured in this card; read them in gate_timing.jsonl after the next ships.

@@ -202,6 +202,10 @@ MUST_EXTRAS = {
 }
 
 
+def _must_triggered(files):
+    return any(rx.match(f) for rx in MUST_EXTRAS.values() for f in files)
+
+
 def must_extras(files, tests):
     """The MUST_EXTRAS tests (present in `tests`) a change triggers, plus every changed step-3xt test file: they run in a fast ship
     whatever the time budget, and a timeout fails the ship (run_all_tests.NO_DEFER_CMDS)."""
@@ -252,7 +256,7 @@ def explain(files, steps, mentioned=mentions, named=names_file, step_files=None)
             subset_steps.add("3xt")
         if "5b" in all_nums and code and layer_subset(code, sf.get("5b", [])):
             subset_steps.add("5b")
-    if not code:
+    if not code and not _must_triggered(files):   # a must-pass-extras path (MUST_EXTRAS) is smoke even when data: step 3xm only exists there
         # GATE_SPEED review: the wiring registry is data under system/, but 3x/3w are its only readers (a bad entry would go red only in CI)
         reg = {"3x", "3w"} if any(f == WIRING_REGISTRY for f in files) else set()
         nums = [n for n in all_nums if n in DOC_STEPS or n in reg]

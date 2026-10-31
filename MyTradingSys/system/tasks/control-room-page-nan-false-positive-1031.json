@@ -19,9 +19,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Republish the 6 stale claude.ai pages and record it",
-      "ref": "abe3d2c6868e",
-      "utc": "2026-10-30T21:07:37Z"
+      "line": "test_artifact_pages: browser-free static layer so CI runs something",
+      "ref": "fdb2fd4053ce",
+      "utc": "2026-10-31T05:57:30Z"
     }
   ],
   "layers": [],
@@ -34,7 +34,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "planner-20261030-d",
-  "refreshed": "2026-10-30T21:14:41Z",
+  "refreshed": "2026-10-31T08:46:54Z",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
@@ -47,7 +47,7 @@
   "scope_out": [
     "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; the BAD_TEXT regex stays as it is; no Artifact publish"
   ],
-  "scope_sha": "abe3d2c6868e",
+  "scope_sha": "fdb2fd4053ce",
   "size": "S",
   "sources": [],
   "state": "ready",

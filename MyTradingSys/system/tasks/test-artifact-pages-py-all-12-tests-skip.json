@@ -28,9 +28,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "ship: 3 file(s)",
-      "ref": "32a3ee613a8f",
-      "utc": "2026-10-31T00:54:14Z"
+      "line": "test_artifact_pages: browser-free static layer so CI runs something",
+      "ref": "fdb2fd4053ce",
+      "utc": "2026-10-31T05:57:30Z"
     }
   ],
   "layers": [],
@@ -40,7 +40,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T05:42:14Z",
+  "refreshed": "2026-10-31T08:47:58Z",
   "refs": [
     "MyTradingSys/research/test_hunt_2026-10-31/VACUOUS_TESTS.md"
   ],
@@ -52,7 +52,7 @@
   "scope_out": [
     "installing browsers on the live host"
   ],
-  "scope_sha": "32a3ee613a8f",
+  "scope_sha": "fdb2fd4053ce",
   "size": "S",
   "sources": [],
   "state": "ready",

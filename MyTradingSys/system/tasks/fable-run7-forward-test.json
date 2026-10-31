@@ -17,9 +17,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "card: re-land the C20 BB+RSI study with the fees.py import (its own cost constant broke CI",
-      "ref": "e55fa5125075",
-      "utc": "2026-10-30T17:25:28Z"
+      "line": "CI red root-cause audit 2026-10-31: 26 red runs, 3 classes, fixes 201d47c73 5273a6f23 d6cc",
+      "ref": "251063ae7a52",
+      "utc": "2026-10-31T08:45:08Z"
     },
     {
       "auto": true,
@@ -36,7 +36,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T17:39:58Z",
+  "refreshed": "2026-10-31T08:46:58Z",
   "refs": [
     "MyTradingSys/system/handover/FABLE_RUN_R7.md"
   ],
@@ -49,7 +49,7 @@
   "scope_out": [
     "live tree, deploy, mainnet, .secrets, .env, outcome columns and bars >= 2024-07-01"
   ],
-  "scope_sha": "e55fa5125075",
+  "scope_sha": "251063ae7a52",
   "size": "M",
   "sources": [
     "MyTradingSys/research/fable_run_design_2026-10-28/DESIGN_R7.md"

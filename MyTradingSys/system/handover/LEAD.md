@@ -42,3 +42,4 @@ Every parameter is SOURCED (quote + file:line) or OURS.
 
 ## Discussions
 - 2026-10-27 guide GPT for CBP: research/cbp/GPT_CBP_GUIDE.md + CODEX cards cbp-scorecard-recount, cbp-quote-gate-review, cbp-gates-planted-bad-row (GPT lane down on credits since 10-25; cards wait for the probe or move to DSA).
+- 2026-10-31 fractals + BTC phase context (d-fractals-layer-phase-context): reviews R1-R4 + Fable VALIDATION, then P0 phase tag built; P1b RSI-DIV-MTF -0.229 R net in every phase; F1 swing confluence FAIL (-0.106 R vs random); F2 Hurst gate NEGATIVE; F3 analogs no edge. L1 multi-LLM gated off. Open: J1 gemini-jala-fractal-method (NUC), Krown DEV event list, forward log of Molnar window to 2026-11-16. All in research/fractals_2026-10-31/SYNTHESIS.md s7.

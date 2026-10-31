@@ -16,16 +16,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Revert \"research: C20 BB + RSI divergence direction-switch study on 15m BTC\"",
-      "ref": "e6c30a6f3583",
-      "utc": "2026-10-30T17:23:54Z"
+      "line": "C26 arms run once per pre-registration: ride-to-level and fade-swept-take-out both NO",
+      "ref": "f00f800ebca8",
+      "utc": "2026-10-30T21:36:34Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "e6c30a6f3583 Revert \"research: C20 BB + RSI divergence direction-switch study on 15m BTC\"",
+      "line": "f00f800ebca8 C26 arms run once per pre-registration: ride-to-level and fade-swept-take-out",
       "ref": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md",
-      "utc": "2026-10-30T17:23:54Z"
+      "utc": "2026-10-30T21:36:34Z"
     }
   ],
   "layers": [],
@@ -35,7 +35,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T18:24:12Z",
+  "refreshed": "2026-10-31T08:47:43Z",
   "refs": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md"
   ],
@@ -47,7 +47,7 @@
   "scope_out": [
     "cost_allowlist.txt (frozen), fees.py (add no constant), any change to the study rules or variants, the 36-variant list, other research folders"
   ],
-  "scope_sha": "e6c30a6f3583",
+  "scope_sha": "f00f800ebca8",
   "size": "S",
   "sources": [
     "git: 3478f85eb (study), e6c30a6f3 (revert, reason), MyTradingSys/backtest/fees.py:32 (DERIBIT_TAKER)"
