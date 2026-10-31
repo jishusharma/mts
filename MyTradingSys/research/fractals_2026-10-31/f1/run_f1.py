@@ -112,9 +112,9 @@ def trade_outcome(t, o, h, l, c, anchor, expiry, level, kind, atr):
         gross, why = TARGET_R, "target"
     else:
         gross, why = side * (c[j1 - 1] - entry) / risk, "time"
-    cost = 2 * FEE_SIDE * entry / risk
+    rt_r = 2 * FEE_SIDE * entry / risk
     pct = (gross * risk / entry) * 100 - 2 * FEE_SIDE * 100
-    return dict(t=int(t[m]), net_r=gross - cost, gross_r=gross, net_pct=pct, why=why)
+    return dict(t=int(t[m]), net_r=gross - rt_r, gross_r=gross, net_pct=pct, why=why)
 
 
 def week_boot(ts_a, y_a, ts_b=None, y_b=None, B=2000, seed=SEED):
