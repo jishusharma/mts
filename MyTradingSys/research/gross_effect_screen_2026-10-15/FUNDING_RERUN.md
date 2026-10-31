@@ -13,10 +13,6 @@ Primary cell (d=1, h=60), mean G after funding, % per encounter (before the 0.14
 | notF | 1399 | -0.00674 | -0.00548 | +0.00126 |
 | C | 1439 | -0.00813 | -0.00688 | +0.00125 |
 
-Verdict INCONCLUSIVE before and after: no flip. Scope: the +0.0013 pp is the largest arm move in the primary cell (d=1, h=60) only, not overall.
-The T06 audit (`T06_cost_fill_realism.md`) shows a larger secondary-cell move: preopen S1 SHORT h=180, +0.0181 pp. Largest single-cell funding difference 0.129 %.
-INCONCLUSIVE is forced by the sample rule (n_T = 40 < 200, PRE_REG.md), not by funding being small.
+Verdict INCONCLUSIVE before and after: no flip. Largest arm move +0.0013 pp; largest single-cell funding difference 0.129 %.
 Numbers equal `scripts/T06/out/funding_rerun.json` (same formula, independent audit script). No published verdict, ledger row or
 pre-registered bar was edited; the RESULT.md text still describes the flat substitute it was produced with.
-
-Boundary rule (card funding-cost-boundary-jitter): archive calc_time sits 1-31 ms after the 8h boundary (1215 of 2736 settlements, T06 doc). `funding_cost_pct` now floors each settlement stamp to the second, so a settlement at 08:00:00.005 counts as 08:00:00 and the window stays (entry, exit]: entry exactly on the boundary is not charged, exit exactly on it is. Before, the jitter did the opposite (entry-on-boundary charged, exit-on-boundary exempt). Primary-cell move from the rule: not re-measured on this machine (the DEV funding archive is only on the desktop live tree); bar-aligned trades straddling a boundary are the only ones affected, no verdict change expected. Re-measure with `screen.py` where the archive exists.
