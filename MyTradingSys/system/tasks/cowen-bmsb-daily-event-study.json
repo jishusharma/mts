@@ -14,26 +14,45 @@
   "goal": "Pre-register, then test Cowen's band ideas (research/cowen_q4_2026-10-31/COWEN_Q4_CONCEPT_CHECK.md) on BTC daily bars 2017-08..2024-06 (public Binance daily klines): BOUNCE, LOSE, FAKEOUT, CATCHDOWN as in sim_desk/studies/cowen_bmsb.py; fees in, day-block bootstrap 95% range (FORMULAS 18.7), placebo band shifted (18.6).",
   "id": "cowen-bmsb-daily-event-study",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "cowen: extract bekghgecip8 (Q4 dump, 2026-10-30), concept check, band study on the sim des",
+      "ref": "997ddf61e993",
+      "utc": "2026-10-31T06:43:23Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "997ddf61e993 cowen: extract bekghgecip8 (Q4 dump, 2026-10-30), concept check, band study o",
+      "ref": "MyTradingSys/research/cowen_q4_2026-10-31/COWEN_Q4_CONCEPT_CHECK.md",
+      "utc": "2026-10-31T06:43:23Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Desk grid gave 3 to 10 trades per idea (floor 30): NOT ENOUGH DATA. Daily bars need no 1m files. Counts of a claim, no rule added.",
+  "note": "REVIEWED:2026-10-31 ACCEPT reviewer=sonnet-agent. Desk grid gave 3 to 10 trades per idea (floor 30). Counts of a claim, no rule added.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-31T09:43:37Z",
   "refs": [
     "MyTradingSys/research/cowen_q4_2026-10-31/COWEN_Q4_CONCEPT_CHECK.md"
   ],
   "result": "",
   "scope_in": [
-    "MyTradingSys/research/cowen_q4_2026-10-31/event_study/"
+    "MyTradingSys/research/cowen_q4_2026-10-31/event_study/",
+    "MyTradingSys/research/cowen_q4_2026-10-31/COWEN_Q4_CONCEPT_CHECK.md"
   ],
   "scope_out": [
     "live tree; engine and layer code; sealed data after 2024-06-30; any trading rule"
   ],
+  "scope_sha": "997ddf61e993",
   "size": "M",
   "sources": [],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "write PRE-REG.md (ideas, daily bars, completed-week band, fees, 30-event floor) and commit it before any run",
     "fetch public Binance BTCUSDT daily klines 2017-08..2024-06 into a gitignored folder; run each idea; write RESULT.md",

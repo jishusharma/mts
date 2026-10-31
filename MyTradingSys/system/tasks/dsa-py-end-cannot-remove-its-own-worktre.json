@@ -1,18 +1,29 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest scripts/dev/test_dsa.py -q"
+  ],
   "created": "2026-10-30T13:09:43Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "dsa.py end from inside a dsa worktree on Windows exits 0 with the tree gone, or prints the exact remove command to run from the main tree; test fails on old code",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "dsa.py end removes the worktree it runs in, or falls back to a clear NEXT line, instead of dying on Permission denied from git worktree remove",
   "id": "dsa-py-end-cannot-remove-its-own-worktre",
   "kind": "build",
   "lane": "DSA",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "dsa.py: ignore the .gateway_owner marker in the unshipped check",
+      "ref": "26edaadab251",
+      "utc": "2026-10-27T22:03:15Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -20,16 +31,27 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-31T09:28:43Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/dsa.py",
+    "scripts/dev/test_dsa.py"
+  ],
+  "scope_out": [
+    "MyTradingSys/*"
+  ],
+  "scope_sha": "26edaadab251",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "write the test: stub git remove to fail Permission denied, expect rc 0 retry or a printed fallback command; confirm it fails now",
+    "cmd_end (dsa.py ~l.682): chdir out to main, retry the remove once after a short wait, on repeat failure print 'git -C <main> worktree remove --force <root>' as NEXT and return 0 if only the dir removal failed",
+    "python scripts/dev/run_all_tests.py --quick, then ship"
+  ],
+  "tests": "scripts/dev/test_dsa.py::test_end_permission_denied_prints_fallback (fail-first, stubbed git worktree remove returning Permission denied)",
   "title": "dsa.py end cannot remove its own worktree: cmd_end requires cwd inside the tree, then git worktree remove fails Permission denied",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }

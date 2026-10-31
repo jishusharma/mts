@@ -22,7 +22,7 @@
     "test-position-manager-margin-drain",
     "test-auto-trader-place-margin-preflight"
   ],
-  "note": "Live path: review Agent before ship; deploy by coordinator only. Distinct: test-auto-trader-place-margin-preflight (claimed) pins the tests only; sonnet-live-path-restart-reset-tests is the broad restart/reset suite; test-position-manager-margin-drain is position_manager.",
+  "note": "PLANNER 2026-10-31: content complete, CRITICAL live path (JIS-NB, review SESSION mid and pre-ship; coordinator deploys). Not promoted: needs a real reviewer stamp from Lab_Guy/review session, not the planner. Distinct from test-auto-trader-place-margin-preflight (tests only), sonnet-live-path-restart-reset-tests, test-position-manager-margin-drain.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
