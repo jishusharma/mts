@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.normpath(os.path.join(HERE, '..', '..')))
 import study  # noqa: E402
 from backtest import fees  # noqa: E402
 
-RT_FEE = 2 * fees.BINANCE_TAKER
+TAKER_X2 = 2 * fees.BINANCE_TAKER
 CAP = {'4h': 6, '1D': 5}  # OURS horizon cap in bars after the reclaim bar
 CFG = {k: (study.CFG[k][0], study.CFG[k][1], study.CFG[k][2]) for k in CAP}  # (tf minutes, L, N): same as the break study
 
@@ -31,6 +31,13 @@ def simulate(c, lv, side, j, cap):
             k = q
             break
     return k, (c[k] / c[j] - 1) * d
+
+
+def forward_reclaim(c, i, N, lv, side):
+    """Outcome scan after the break bar i: index of the first close back inside within N bars, else None."""
+    fwd = c[i + 1:i + N + 1]
+    back = fwd >= lv if side < 0 else fwd <= lv
+    return i + 1 + int(back.argmax()) if back.any() else None
 
 
 def events(b, tfname, cfg=None, cap=None):
@@ -57,10 +64,10 @@ def events(b, tfname, cfg=None, cap=None):
             buf = 0.1 * atr[i]
             if not ((c[i] < lv - buf) if side < 0 else (c[i] > lv + buf)):
                 continue  # wick sweep, not a break
-            j = next((i + q for q in range(1, N + 1) if (c[i + q] >= lv if side < 0 else c[i + q] <= lv)), None)
+            j = forward_reclaim(c, i, N, lv, side)
             if j is None:
                 continue  # break held: no reclaim, no trade
             k, g = simulate(c, lv, side, j, cap)
-            out.append(dict(tf=tfname, side='low' if side < 0 else 'high', t=t[j], gross=g, net=g - RT_FEE, hold=k - j,
+            out.append(dict(tf=tfname, side='low' if side < 0 else 'high', t=t[j], gross=g, net=g - TAKER_X2, hold=k - j,
                             exit='stop' if k - j < cap or (c[k] < lv if side < 0 else c[k] > lv) else 'cap'))
     return sorted(out, key=lambda r: r['t'])
