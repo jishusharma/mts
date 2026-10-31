@@ -1,0 +1,1 @@
+{"t": "20261031T060536Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "note", "text": "A: trunk CI red is NOT a17396f1. test_mts_doctor broadcast test hard-codes 2026-10-25; high_open drops >7 d vs real clock (time bomb since 06Z today). Haiku Builder fixing the test (doctor-broadcast-t", "login": "A"}
