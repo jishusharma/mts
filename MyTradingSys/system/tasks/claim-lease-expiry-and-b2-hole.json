@@ -1,7 +1,15 @@
 {
   "approved_by": "operator 2026-10-30 Eagle_Eyes chat (\"why picking cards is not made atomic\")",
   "asks": "",
+  "closed": "2026-10-31T10:44:36Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-31T10:44:41Z",
+    "misses": 28,
+    "reads": [],
+    "session": "agent-aa37058f00d7f64ea"
+  },
   "created": "2026-10-29T23:58:49Z",
   "depends_on": [],
   "done_when": "Claim files carry a lease (expires_at); sync.py and gemini_queue treat an expired lease as free and refresh it while working; a task named by a card id is always claimed (B2 kept only for free-text tasks); tests cover crash-then-reclaim and two takers of a new-file card (second refused).",
@@ -13,6 +21,12 @@
   "id": "claim-lease-expiry-and-b2-hole",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "claims carry expires_at (3 h lease), sync.py heartbeat, expired = free, card-id tasks alwa",
+      "ref": "eee2e65f2",
+      "utc": "2026-10-31T10:44:36Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,7 +54,12 @@
   "refined_by": "",
   "refreshed": "2026-10-31T08:46:50Z",
   "refs": [],
-  "result": "",
+  "result": "claims carry expires_at (3 h lease), sync.py heartbeat, expired = free, card-id tasks always claimed; test_sync.py +3 tests, test_gemini_queue.py +1",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/sync.py",
     "scripts/dev/gemini_queue.py",
@@ -54,13 +73,14 @@
     "scripts/dev/sync.py:1472-1611",
     "MyTradingSys/research/large_trade_absorption_2026-10-30/RESULT.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add expires_at to the claim body (default 3 h, OURS) and a sync.py heartbeat verb that pushes a refreshed lease",
     "open_claims ignores expired leases; gemini_queue and codex_run refresh while running and treat their own host as ok",
     "new_files_only_reason applies only when the task is not a card id",
     "Tests: crash leaves lease, after expiry a second claimer wins; two claimers of a new-file card, second refused; PARALLEL.md one line"
   ],
+  "taken": "2026-10-31T10:44:36Z",
   "tests": "test_sync.py: (a) an expired claim does not block; (b) a card-id task with only new files is still claimed and a second claim is refused. Both fail on the current code.",
   "title": "Claims: add a lease (heartbeat + expiry) so a crashed holder frees the card, and close the B2 hole where a card with only new files is worked without a claim (two workers can pick it)",
   "weight": "",
