@@ -273,6 +273,25 @@ class Stale(unittest.TestCase):
         with self.assertRaises(SystemExit):
             af.publish_record(self.reg, "nope")
 
+    def test_publish_record_generator_page_without_repo_html(self):
+        pg = next(p for p in self.reg["pages"] if p["slug"] == "sim_desk")
+        self.assertIsNone(pg["html"])
+        pg["published_sha"] = None
+        built = lambda page, repo=af.REPO: "sim desk build"
+        orig = af.build_html
+        af.build_html = built
+        try:
+            sha = af.publish_record(self.reg, "sim_desk", today="2026-10-31")
+            self.assertEqual(pg["published_sha"], af.content_hash("sim desk build"))
+            self.assertEqual(sha, pg["published_sha"])
+            self.assertIn(pg, af.tracked(self.reg))
+            self.assertEqual([s for s in af.stale(self.reg, built) if s[0] == "sim_desk"], [])
+            self.assertFalse(af.behind(self.reg, pg))
+        finally:
+            af.build_html = orig
+        with self.assertRaises(SystemExit):
+            af.publish_record(self.reg, "cbp_analyst_desk")  # no html, no buildable generator
+
     def test_every_page_has_generator_or_hand_made_mark(self):
         for pg in self.reg["pages"]:
             if pg.get("html") and pg["slug"] in ("research_map", "session_planner", "tom_fabio_deck"):
