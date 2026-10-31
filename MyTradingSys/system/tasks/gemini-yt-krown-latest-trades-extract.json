@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T22:39:54Z",
   "commands": [
     "python scripts/dev/fetch_captions_timed.py --analyst Krown --channel @ECKrown --latest 10 --out MyTradingSys/research/yt_feed_2026-10-31/transcripts_krown-latest-trades",
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/yt_feed_2026-10-31/KROWN_LATEST_TRADES_2026-10-31.md"
@@ -16,7 +17,21 @@
   "id": "gemini-yt-krown-latest-trades-extract",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/yt_feed_2026-10-31/KROWN_LATEST_TRADES_2026-10-31.md",
+      "ref": "ebbedec86",
+      "utc": "2026-10-30T22:39:54Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 17 file(s)",
+      "ref": "b43f83bab31f",
+      "utc": "2026-10-30T22:09:58Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -24,26 +39,32 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T20:07:27Z",
+  "refreshed": "2026-10-30T22:30:23Z",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/yt_feed_2026-10-31/KROWN_LATEST_TRADES_2026-10-31.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/yt_feed_2026-10-31/ (new files only)"
   ],
   "scope_out": [
     "live tree; engine and layer code; any backtest; any trading verdict; .secrets and .env"
   ],
-  "scope_sha": "",
+  "scope_sha": "b43f83bab31f",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "python scripts/dev/fetch_captions_timed.py --analyst Krown --channel @ECKrown --latest 10 --out MyTradingSys/research/yt_feed_2026-10-31/transcripts_krown-latest-trades (one try per video; 429 -> UNVERIFIED, no retry loop)",
     "keyword scan each transcript for the topic terms, read the surrounding lines before quoting",
     "write MyTradingSys/research/yt_feed_2026-10-31/KROWN_LATEST_TRADES_2026-10-31.md per the goal; run verify_extract_quotes.py until exit 0; commit on the branch with a Result: line (videos read, items found, NOT_IN_DATA count)"
   ],
+  "taken": "2026-10-30T22:39:54Z",
   "tests": "verify_extract_quotes.py exit 0; no code change",
   "title": "[GEMINI] Krown (@ECKrown): latest 10 videos, extract his latest stated trade setups on BTC and alts: entry, stop, target, t with timed quotes",
   "weight": "ROUTINE",

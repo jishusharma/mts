@@ -161,3 +161,4 @@ scripts/dev/test_artifact_pages.py
 MyTradingSys/research/sim_desk/test_page_click.py
 MyTradingSys/research/sim_desk/test_tom_vp.py
 MyTradingSys/backtest/test_vp_return_to_value.py
+MyTradingSys/research/krown_free_2026-10-31/test_silver_cross_dev.py

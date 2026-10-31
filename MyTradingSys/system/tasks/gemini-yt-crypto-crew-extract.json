@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T22:07:23Z",
   "commands": [
     "python scripts/dev/fetch_captions_timed.py --analyst CCU --channel @CryptoCrewUniversity --latest 8 --out MyTradingSys/research/yt_feed_2026-10-31/transcripts_crypto-crew",
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/yt_feed_2026-10-31/CCU_RULES_2026-10-31.md"
@@ -16,7 +17,14 @@
   "id": "gemini-yt-crypto-crew-extract",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/yt_feed_2026-10-31/CCU_RULES_2026-10-31.md (8 videos read, 32 items,",
+      "ref": "8f354d684",
+      "utc": "2026-10-30T22:07:23Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -28,7 +36,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/yt_feed_2026-10-31/CCU_RULES_2026-10-31.md (8 videos read, 32 items, 8 NOT_IN_DATA)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/yt_feed_2026-10-31/ (new files only)"
   ],
@@ -38,12 +51,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "python scripts/dev/fetch_captions_timed.py --analyst CCU --channel @CryptoCrewUniversity --latest 8 --out MyTradingSys/research/yt_feed_2026-10-31/transcripts_crypto-crew (one try per video; 429 -> UNVERIFIED, no retry loop)",
     "keyword scan each transcript for the topic terms, read the surrounding lines before quoting",
     "write MyTradingSys/research/yt_feed_2026-10-31/CCU_RULES_2026-10-31.md per the goal; run verify_extract_quotes.py until exit 0; commit on the branch with a Result: line (videos read, items found, NOT_IN_DATA count)"
   ],
+  "taken": "2026-10-30T22:07:23Z",
   "tests": "verify_extract_quotes.py exit 0; no code change",
   "title": "[GEMINI] CCU (@CryptoCrewUniversity): latest 8 videos, extract his stated BTC and alt entry rules, levels and the indicators he reads with timed quotes",
   "weight": "ROUTINE",

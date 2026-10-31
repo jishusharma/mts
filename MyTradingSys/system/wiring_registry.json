@@ -991,6 +991,10 @@
     "MyTradingSys/execution/mutation_check_auto_trader_failclosed.py": {
       "disp": "TOOL",
       "why": "Mutation proof for test_auto_trader_failclosed.py: breaks one line of a temp copy of auto_trader.py per test and requires that test to fail (CLAUDE.md: new tests must fail on pre-change code). Run by hand after editing auto_trader.py."
+    },
+    "MyTradingSys/research/krown_free_2026-10-31/silver_cross_dev.py": {
+      "disp": "TOOL",
+      "why": "One-off DEV check of Krown's silver cross (daily EMA21/55 up-cross, 30-day hold, fee-net via fees.py) for PRE_REG.md in the same folder; run by hand (python silver_cross_dev.py), covered by test_silver_cross_dev.py, no live imports."
     }
   }
 }

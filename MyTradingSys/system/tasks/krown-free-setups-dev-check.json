@@ -1,9 +1,26 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T01:04:42Z",
   "commands": [
     "python scripts/dev/sync.py start krown-free-dev-check"
   ],
+  "context": {
+    "calls_to_edit": 11,
+    "folded": "2026-10-31T01:04:41Z",
+    "misses": 10,
+    "reads": [
+      "MyTradingSys/backtest/splits.py",
+      "MyTradingSys/backtest/PRE_REG_TEMPLATE.md",
+      "MyTradingSys/research/TRIAL_LEDGER.csv",
+      "scripts/dev/trial_ledger.py",
+      "MyTradingSys/research/rsi_deep_buy_2026-10-19/test_econ_floor.py",
+      "scripts/dev/prereg_gate.py",
+      "MyTradingSys/research/rsi_deep_buy_2026-10-19/econ_floor.py",
+      "scripts/dev/run_extra_tests.py"
+    ],
+    "session": "agent-af080053a67ac2e71"
+  },
   "created": "2026-10-30T21:43:04Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/krown_free_2026-10-31/DEV_CHECK.md has per-setup n, hit-rate, fee-net mean R vs the claim; PRE_REG frozen before the run; look-ahead shift check passes; shipped with a Result: line",
@@ -15,7 +32,21 @@
   "id": "krown-free-setups-dev-check",
   "kind": "build",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Silver Cross 1-month DEV n=6 hit 50% (claim 83%) mean net +7.87% INCONCLUSIVE; 4 other set",
+      "ref": "7106c0de6",
+      "utc": "2026-10-31T01:04:42Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 17 file(s)",
+      "ref": "e8420fbb5d82",
+      "utc": "2026-10-31T00:58:27Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -23,26 +54,32 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T21:43:10Z",
+  "refreshed": "2026-10-31T00:59:43Z",
   "refs": [
     "MyTradingSys/options/research/KROWN_FREE_VS_PAID.md"
   ],
-  "result": "",
+  "result": "Silver Cross 1-month DEV n=6 hit 50% (claim 83%) mean net +7.87% INCONCLUSIVE; 4 other setup groups NOT_TESTABLE",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/krown_free_2026-10-31/ (new files only); MyTradingSys/research/ trial ledger rows via the existing tool"
   ],
   "scope_out": [
     "live tree; engine and layer code; creating accounts or paying; .secrets and .env; VALIDATION and holdout windows"
   ],
-  "scope_sha": "",
+  "scope_sha": "e8420fbb5d82",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "wait until KROWN_FREE_SETUPS.md is on trunk",
     "write and freeze PRE_REG; run on DEV; shift check",
     "write DEV_CHECK.md and ship"
   ],
+  "taken": "2026-10-31T01:04:42Z",
   "tests": "pre-reg frozen before first run; one-bar shift look-ahead check; trial ledger rows added",
   "title": "Check Krown's free setups: pre-register and run each complete-rule setup from KROWN_FREE_SETUPS.md on DEV fee-net, compare with his claimed hit-rate",
   "weight": "ROUTINE",

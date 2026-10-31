@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T22:51:14Z",
   "commands": [
     "python scripts/dev/fetch_captions_timed.py --analyst Krown --channel @ECKrown --latest 10 --out MyTradingSys/research/krown_free_2026-10-31/transcripts",
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/krown_free_2026-10-31/KROWN_FREE_SETUPS.md"
@@ -16,7 +17,21 @@
   "id": "gemini-krown-free-setups-alerts-app-search",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/krown_free_2026-10-31/KROWN_FREE_SETUPS.md",
+      "ref": "6371bd183",
+      "utc": "2026-10-30T22:51:14Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 3 file(s)",
+      "ref": "a2b3c3d803e3",
+      "utc": "2026-10-30T22:00:15Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -24,26 +39,32 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T21:43:00Z",
+  "refreshed": "2026-10-30T22:41:02Z",
   "refs": [
     "MyTradingSys/options/research/KROWN_FREE_VS_PAID.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/krown_free_2026-10-31/KROWN_FREE_SETUPS.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/krown_free_2026-10-31/ (new files only)"
   ],
   "scope_out": [
     "live tree; engine and layer code; creating accounts or paying; .secrets and .env"
   ],
-  "scope_sha": "",
+  "scope_sha": "a2b3c3d803e3",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "search channel and interviews for: free setup, free alert, Krown Trading App, Free Market Dynamics",
     "fetch captions for each hit, quote only from the caption files",
     "write the file and run verify_extract_quotes.py until exit 0"
   ],
+  "taken": "2026-10-30T22:51:14Z",
   "tests": "verify_extract_quotes.py exit 0; no code change",
   "title": "[GEMINI] Krown free trade setups, free alerts and his Trading App (Free Market Dynamics): find on YouTube where he describes them, extract the exact setups with timed caption quotes",
   "weight": "ROUTINE",
