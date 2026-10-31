@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T17:49:22Z",
   "commands": [],
   "created": "2026-10-30T20:21:53Z",
   "crucial": true,
@@ -15,6 +16,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/test_hunt_2026-10-31/astra_challenge.md: A 5/5 CONFIRMED; ",
+      "ref": "2afe8b9ab",
+      "utc": "2026-10-31T17:49:22Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -41,7 +48,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/layer_lab/test_hunt_2026-10-31/astra_challenge.md: A 5/5 CONFIRMED; B 4 stale-WRONG, 3 CONFIRMED, 3 MISSED",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/test_hunt_2026-10-31/ (new files only)"
   ],
@@ -51,12 +63,13 @@
   "scope_sha": "f1b1d0b3b18e",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "wait until both luna reports exist on trunk",
     "re-derive 5 findings per report independently",
     "list missed branches"
   ],
+  "taken": "2026-10-31T17:49:22Z",
   "tests": "report only; every finding cites file:line and a reproducing input",
   "title": "Astra: independent challenge of the two luna bug hunts (promote gates, auto_trader fail-closed): what did they miss, which findings are wrong",
   "weight": "ROUTINE",
