@@ -837,4 +837,27 @@ public class StateCodeEmitterTest {
         assertEquals(BARS1 * 4.0, j.get("session_cvd").asDouble(), 1e-6);
         assertTrue(j.get("signals").get("cvd_slope").isNull());        // first recovered slope is null
     }
+
+    // statecode-backfill-race-coverage: close then reopen with NO emit in between (no INVALID publish clears the ring
+    // early): the ring must still restart, so the first recovered slope is null
+    @Test
+    public void closeReopenWithoutIntermediateEmitRestartsCvdRing() throws Exception {
+        FakeKlines src = new FakeKlines();
+        StateCodeEmitter e = fresh(src, NOW1);
+        e.onStreamOpen(CONNECT);
+        assertTrue(e.backfillNow());
+        JsonNode j = null;
+        for (int i = 0; i < 12; i++) {
+            e.onMessage(trade(M1 + 1_000L + i * 1_000L, 100.0, 20.0 * (i + 1), false));
+            j = emit(e);
+        }
+        assertFalse(j.get("signals").get("cvd_slope").isNull());        // 12 samples >= 10 while valid
+        e.onStreamClosed("ws_closed");
+        e.onStreamOpen(M1 + 3 * MIN);                                   // no emit between close and reopen
+        e.nowMsOverride = M1 + 4 * MIN + 20_000L;
+        assertTrue(e.backfillNow());
+        j = emit(e);
+        assertTrue(j.get("session_accumulators_valid").asBoolean());
+        assertTrue(j.get("signals").get("cvd_slope").isNull());         // 1 sample in a fresh ring
+    }
 }
