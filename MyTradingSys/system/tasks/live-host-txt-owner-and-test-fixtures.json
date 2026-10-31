@@ -55,7 +55,7 @@
     "MyTradingSys/system/live_host.txt:1",
     "scripts/dev/test_live_mirror.py:381-387"
   ],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "Confirm owner: python scripts/dev/live_owner.py check (heartbeat < 10 s) and live_mirror.py brief name DESKTOP-F7IU69N; if not, stop and note it",
     "Fail-first: first write DESKTOP-F7IU69N to live_host.txt only in the working copy and run test_live_mirror.py: the two named tests fail (record it)",
