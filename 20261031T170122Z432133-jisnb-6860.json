@@ -1,0 +1,1 @@
+{"t": "20261031T170122Z", "from": "jis-nb/C", "to": "all", "kind": "done", "text": "ship Result: DESIGN.md s7 says a same-account counter order only closes part of the trade on Deribit; 14 hedge variants all lost vs no hedge after fees (reverted 4a36c8a38); s8: not ready, P1 unbuilt ", "login": "C", "sid": "d189e5f6d4"}
