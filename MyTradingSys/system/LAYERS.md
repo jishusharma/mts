@@ -29,6 +29,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Roadmap: `MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md`; `MyTradingSys/research/tom_transfer_2026-10-11/PRE_REG_DAX.md`
 - Codex lab reports (newest 4 of 4): `MyTradingSys/research/layer_lab/reports/2026-10-28_tom-corr-live-captions.md`; `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-tom-gpt-rederive.md`; `MyTradingSys/research/layer_lab/reports/2026-10-25_lf-tom-gemini-facts.md`; `MyTradingSys/research/layer_lab/reports/2026-10-22_tom-btc-other-setups.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
+  - `meta-label-prereg-amendments` raw p1 SONNET: Meta-label pre-reg amendments (ROADMAP 2.1) before any further outcome read on meta-label-tom-vp-fabio-trades 
   - `tom-btc-eye-read` blocked p1 SONNET: Tom on BTC T3: eye read of the 80 lab charts by two readers (Claude + Jis), blind; agreement per Tom concept
   - `live-divergence-event-log` blocked p2 DSA: Live divergence event log: record each BTC vs ES/NQ divergence read with outcomes at +30/60/120 min (forward e
   - `meta-label-tom-vp-fabio-trades` raw p2 SONNET: Meta-label test (operator 10-31) on sim-desk trades: can other MTS layers' state at entry separate Tom VP winn
@@ -41,6 +42,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `tom-probe-prereg` blocked p2 SONNET: Pre-register the surviving S/Q/M/F arms and write their runner card
   - `tom-probe-runner` blocked p2 SONNET: Run pre-registered Tom management arms on DAX and BTC
   - `lab-verify-trend-healthy-in-balance` refined p3 SONNET: LAB-VERIFY 10-18: how often trend_healthy is set inside a multi-day balance (DEV)
+  - `layer-state-snapshot-causal` raw p3 SONNET: S0 park. Meta-label phase 2 (ROADMAP P2): shared causal layer_state_at(ts) snapshot in research/sim_desk/studi
   - `tom-btc-other-setups` blocked p3 CODEX: Tom on BTC T8: chart lab + event study for his other trade types (trend continuation pullback to value/VWAP, b
   - `tom-btc-other-setups-void-result` raw p3 HAIKU: card tom-btc-other-setups result says 504 candidates; 100 blind charts but its report layer_lab/reports/2026-1
 
@@ -65,7 +67,9 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Roadmap: `MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md`
 - Codex lab reports (newest 2 of 2): `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-fabio-gpt-rederive.md`; `MyTradingSys/research/layer_lab/reports/2026-10-25_lf-fabio-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
+  - `meta-label-prereg-amendments` raw p1 SONNET: Meta-label pre-reg amendments (ROADMAP 2.1) before any further outcome read on meta-label-tom-vp-fabio-trades 
   - `fabio-v3-model-b-unmanaged-scored-zero` raw p2 SONNET: fabio v3 Model B fills scored 0 R as unmanaged (v3/engine.py:100-102, run_v3_l3.py:108-109): 42 IS + 4 OOS fil
+  - `meta-label-fabio-c-dev-ext-power` raw p2 SONNET: Meta-label NOT ENOUGH DATA branch (ROADMAP 2.2): rerun the Fabio Model C price-only stand-in meta-label test w
   - `meta-label-tom-vp-fabio-trades` raw p2 SONNET: Meta-label test (operator 10-31) on sim-desk trades: can other MTS layers' state at entry separate Tom VP winn
   - `sim-desk-tom-fabio-studies` raw p2 SONNET: Sim desk: Tom and Fabio setups have no per-trade replay. Only tom_vp.py is a runnable study (12 runs, equity c
   - `t09-f4-live-window-99-bars-swing-layers` blocked p2 JIS-NB: T09-F4 S2: 99-bar live window misses 68 of 96 escalation signals; fetch more bars for swing layers
@@ -73,6 +77,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `fabio-of-model-docstring-dst-sessions` ready p3 SONNET: fabio_of_model.py docstring states fixed UTC sessions (London 08:00-13:30, NY 13:30-21:00) but session_bounds 
   - `fabio-of-report-superseded` raw p3 HAIKU: FABIO_OF_REPORT.md used legacy fees 3.5/-1.5 bp, pre-B102 fixed UTC sessions, reproduce path :10 points at a m
   - `layer-review-fabio-session` ready p3 SONNET: Layer review sheet: Fabio and session timing (idea, source, backtests, bugs, confluence)
+  - `layer-state-snapshot-causal` raw p3 SONNET: S0 park. Meta-label phase 2 (ROADMAP P2): shared causal layer_state_at(ts) snapshot in research/sim_desk/studi
   - `oi-pivot-1h-4h-long-oi-followup` blocked p3 SONNET: OI pivot candidates at 1h/4h: aggregate the 5m metrics archive 2022-01..2024-06 (DEV), same candidates/outcome
   - `fabio-layer-v2-markets` blocked p5 OPUS: Fabio layer v2 spec, part B: data plan per market, cost, stop width, build + recall cards (Opus research)
   - `fabio-layer-v2-spec` blocked p5 OPUS: Fabio layer v2 spec, part A: setup families + sourced rules from his ledger (Opus research)
@@ -249,6 +254,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `krown-hidden-divergence-confluence-feed` blocked p2 SONNET: Krown hidden divergence as a shared confluence feed any layer (RSI 40-60 included) can consume; Malkan layer s
   - `meta-label-break-events-layer-features` raw p2 SONNET: Meta-label test (operator 10-31): on the tf_break 1h/4h hold/reclaim/sweep events + follow-reclaim, can other 
   - `layer-review-krown-wavetrend` ready p3 SONNET: Layer review sheet: Krown and WaveTrend (idea, source, backtests, bugs, confluence)
+  - `layer-state-snapshot-causal` raw p3 SONNET: S0 park. Meta-label phase 2 (ROADMAP P2): shared causal layer_state_at(ts) snapshot in research/sim_desk/studi
   - `trendline-ledger-registry-hygiene` blocked p3 SONNET: Trend-line daily ledger schema v2 enforcement + register the module in layer_index and wiring_registry (audit 
 
 ## WaveTrend (LazyBear oscillator) (`wavetrend`)
