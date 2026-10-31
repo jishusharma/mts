@@ -1,14 +1,15 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T21:07:05Z",
   "commands": [
     "python -m pytest MyTradingSys/execution/test_cotrade.py -q",
     "python scripts/dev/run_all_tests.py --quick"
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-31T21:07:01Z",
-    "misses": 31,
+    "folded": "2026-10-31T21:27:38Z",
+    "misses": 32,
     "reads": [
       "MyTradingSys/execution/cotrade.py",
       "MyTradingSys/execution/test_cotrade.py"
@@ -29,6 +30,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MyTradingSys/execution/cotrade.py + test_cotrade.py: 4 review findings fixed, 33 tests pas",
+      "ref": "0711c65f5",
+      "utc": "2026-10-31T21:07:05Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "cotrade P1: operator words -> one testnet order with stop, journaled",
@@ -45,7 +52,12 @@
   "refined_by": "",
   "refreshed": "2026-10-31T20:37:28Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/execution/cotrade.py + test_cotrade.py: 4 review findings fixed, 33 tests pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/execution/cotrade.py",
     "MyTradingSys/execution/test_cotrade.py"
@@ -58,7 +70,7 @@
   "sources": [
     "review of b6f7515ca: cotrade.py:284-288, :167-170, :235-237; test_cotrade.py:277-284"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "1 Tests first (fail on old code): FakeClient limit rests unfilled then fills; place must poll get_order/position (bounded, e.g. 5 tries) and place the reduce-only stop on fill, else refuse resting limits (ok False, reason, journal state). Poll-or-refuse: OURS. Also: poll times out after a fill goes through _flatten_and_halt",
     "2 Kill test: fake client records HALT-file existence at the first cancel_by_label and close_position call; assert True at both (kill writes HALT via executor.write_manual_halt before authenticate)",
@@ -66,6 +78,7 @@
     "4 place_order (cotrade.py:235-237): scan back through non-dry_run records for unknown; stop the scan at stop_placed, stop_failed_flattened or killed (not at error/kill_errors); test unknown then later error",
     "5 Run test_cotrade.py and run_all_tests.py --quick; REVIEW session PLAN then DIFF (session_planner_details.md CRITICAL protocol) before sync.py ship"
   ],
+  "taken": "2026-10-31T21:07:05Z",
   "tests": "New tests in MyTradingSys/execution/test_cotrade.py: resting_limit_fills_later_gets_stop, kill_halt_before_cancel_and_close, stop_wrong_size_or_price_not_counted, unknown_not_last_record; each must fail on b6f7515ca code",
   "title": "cotrade.py review fixes (b6f7515ca): resting limit fills later has no stop, kill test lacks HALT-first order, stop-exists ignores size/price, only last journal record checked",
   "weight": "CRITICAL",
