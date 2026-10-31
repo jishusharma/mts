@@ -1,0 +1,47 @@
+{
+ "id": "lm-pitchfork-1d-20261019",
+ "kind": "backtest",
+ "family": "Pitchfork Swing",
+ "title": "Phase 1 Daily Pitchfork Event Study (Standard, Schiff, Modified Schiff, Log Modified Schiff)",
+ "provenance": "source-extracted",
+ "date": "2026-10-19",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Finding: In Modified Schiff and Log-Modified Schiff variants, price reached the Median Line in 76.8% to 81.2% of confirmed setups.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "Significance: This provides rigorous, non-repainting empirical confirmation that Alan Andrews' classical 80% Rule holds true for Bitcoin swing structures when properly slope-normalized.",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2020-01-01 to 2026-09-26 (as written in the source)",
+ "verdict": {
+  "label": "PASS (Modified Schiff +1.50% mean net/trade, 72.12% ML reach)",
+  "tone": "good"
+ },
+ "why": [
+  "Hagopian failures occurred in approximately 18% - 22% of structures.",
+  "When a Hagopian failure triggered (price rolled over before reaching ML and violated the origin tine), subsequent measured-move expansion hit the 1x channel target 74.1% of the time, delivering high reward-to-risk ($R:R > 3.2:1$) breakout trades."
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)"
+ },
+ "source_files": [
+  "MyTradingSys/research/pitchfork_2026-10-19/PHASE1_EVENT_STUDY.md"
+ ],
+ "commit": "1339d6af9"
+}

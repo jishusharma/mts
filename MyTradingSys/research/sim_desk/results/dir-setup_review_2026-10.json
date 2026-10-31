@@ -1,0 +1,81 @@
+{
+ "id": "dir-setup_review_2026-10",
+ "kind": "audit",
+ "family": "Setup Review",
+ "title": "Setup review sheet: 22 chart setups from Tom and Fabio (2026-10-30)",
+ "provenance": "source-extracted",
+ "date": "2026-10-30",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "What this is: one page per setup, taken from setup_catalog_2026-10-15/SETUP_CATALOG.md. Nothing here is tested. No results are claimed.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "How you answer: read 3-4 setups, then write keep / rewrite / reject on the \"Operator verdict\" line of each. Say it in chat; the coordinator fills the Verdict log at the bottom.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "After all verdicts, pick 2-3 setups to test first (the \"Picks\" table at the bottom).",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "SOURCED = the trader's own words, with the video id. OURS = a number or rule we added; never his. NOT STATED = he gives nothing in words (he often points: \"here\").",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 5 from the source",
+   "value_plain": "Captions are machine-translated (Tom) or auto-captions (Fabio): a quote shows what he looks at, never an exact price or time.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 6 from the source",
+   "value_plain": "Example charts: examples/<id>.png (drawn separately). BTC = Binance BTCUSDT data we hold: candles, every trade (the \"tape\"), volume profiles. We hold no order-book history, no news, no stock/index data.",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "\" line of each. Say it in chat; the coordinator fills the Verdict log at the bottom.",
+  "tone": "info"
+ },
+ "why": [
+  "He calls a P shape [a profile bulging at the top] both a trend sign and an exhaustion short (T6hDJcHrVBM); we only resolved it by reading it as a failed upside break.",
+  "Rule in one breath: WHEN VWAP is flat and the day is not trending (SOURCED: 43JaKHRvxHk) THEN short the top and buy the bottom of the range (SOURCED: 43JaKHRvxHk; trigger NOT STATED) STOP NOT STATED (he asks \"where do I give up on my trade?\" and does not answ…",
+  "What you see on the chart: A stock or index opens far from yesterday's close. After the open the push fails, price settles into a range, then leaves it with volume rising again. Price then trades back into the gap, toward yesterday's value.",
+  "Rule in one breath: WHEN a cash-session gap with no big news behind it, the extension fails, a range forms and price leaves it with liquidity [trading activity] returning (SOURCED: 96iPFDpXEcU, lO-Iptd29t4) THEN trade toward the gap close (SOURCED: 96iPFDpXEc…"
+ ],
+ "kpis": [
+  {
+   "label": "trades (first count in the source)",
+   "value": "0"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 0,
+   "quote": "- Evidence so far: 0 trades. No MTS backtest measured."
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "n_trades": "not a trade test (audit)"
+ },
+ "source_files": [
+  "MyTradingSys/research/setup_review_2026-10/SETUP_REVIEW.md"
+ ],
+ "commit": "96fcb57cd"
+}

@@ -1,0 +1,37 @@
+{
+ "id": "dir-news_feeds_2026-10-30",
+ "kind": "backtest",
+ "family": "News Feeds",
+ "title": "News for MTS: what to watch, where from, how fast (2026-10-30)",
+ "provenance": "source-extracted",
+ "date": "2026-10-30",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Operator ask (2026-10-30, voice): \"what is missing from the dashboard is also news ... yesterday we saw the market",
+  "tone": "info"
+ },
+ "why": [
+  "https://www.fxstreet.com/cryptocurrencies/news/bitcoin-price-all-eyes-on-fomc-negative-inflation-could-slash-hopes-for-crypto-202209201630"
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/news_feeds_2026-10-30/REPORT.md"
+ ],
+ "commit": "12a473da6"
+}

@@ -1,0 +1,48 @@
+{
+ "id": "st-wt30_sequence_2026-10-30-result",
+ "kind": "backtest",
+ "family": "Wt30 Sequence",
+ "title": "30m WaveTrend: what the sequence tells (2026-10-30)",
+ "provenance": "source-extracted",
+ "date": "2026-10-30",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Descriptive counts only: no fees, no edge claim. Definitions in the header of study.py. WT 10/21/4 and ±53 are SOURCED (LazyBear); event rules and outcomes are OURS. Data: Binance BTCUSDT perp 1m rolled to 30m, DEV 2022-01 to 2024-06. The…",
+  "tone": "bad"
+ },
+ "why": [
+  "Descriptive counts only: no fees, no edge claim. Definitions in the header of study.py. WT 10/21/4 and ±53 are SOURCED (LazyBear); event rules and outcomes are OURS. Data: Binance BTCUSDT perp 1m rolled to 30m, DEV 2022-01 to 2024-06. The WT validation window…",
+  "From above (T8, came from the top, rejected at 0): up after 12 h only 40% (n=163, about 2.5 SE below base). The bounce failed and price continued lower."
+ ],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "465"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 465,
+   "quote": "One standard error is about 2.3 points at n=465, 4 points at n=150, 7 points at n=50."
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/wt30_sequence_2026-10-30/RESULT.md"
+ ],
+ "commit": "f33b66d7a"
+}

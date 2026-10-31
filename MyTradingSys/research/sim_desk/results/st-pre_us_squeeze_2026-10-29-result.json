@@ -1,0 +1,48 @@
+{
+ "id": "st-pre_us_squeeze_2026-10-29-result",
+ "kind": "backtest",
+ "family": "Pre Us Squeeze",
+ "title": "Pre-US Bollinger contraction: what the US session does next (BTCUSDT 15m, 2022-01..2026-09)",
+ "provenance": "source-extracted",
+ "date": "2026-10-29",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Ask (operator, 2026-10-30, shot 0241bf1e7e8d): \"just before the US session, price is contracting ... what happens when the price",
+  "tone": "info"
+ },
+ "why": [
+  "Phase (F6) does not change the direction beyond noise. Squeeze rows: markup 28/35/37 (n=79), markdown 28/24/49 (n=72);",
+  "2024 was the ETF bull year. The trend of the year shows up; the weekly-SMA phase label does not capture it."
+ ],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "79"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 79,
+   "quote": "3. Phase (F6) does not change the direction beyond noise. Squeeze rows: markup 28/35/37 (n=79), markdown 28/24/49 (n=72);"
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/pre_us_squeeze_2026-10-29/RESULT.md"
+ ],
+ "commit": "74376bf7b"
+}
