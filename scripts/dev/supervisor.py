@@ -788,12 +788,19 @@ LAST_DAY_H = traffic.LAST_DAY_H      # weekly room left this close to the reset 
 LAST_DAY_CAP = traffic.LAST_DAY_CAP  # operator 2026-10-22, login A at 97% with 15 h to reset: "do not exhaust it completely, but still use it ... slowly"
 
 
-def weekly_cap(login: str, host: str, h_to_reset: float | None = None) -> int:
+# operator 2026-10-31: "68% cap on weekly for login C for 31st Oct, then on 1st Nov add 10% for the day" (UTC dates, login C only);
+# applies only when the caller passes today, so an undated call and the tests keep the standing cap
+DAY_CAPS = {("C", "2026-10-31"): 68, ("C", "2026-11-01"): 78}
+
+
+def weekly_cap(login: str, host: str, h_to_reset: float | None = None, today=None) -> int:
     """SUPER_SESSION.md "Budget policy": B and C on JIS-NB stop at 75% / 85% of the week (operator choice), else 95%; in the last
     LAST_DAY_H before the weekly reset every login's cap is LAST_DAY_CAP, so the last points are spent slowly instead of lost
     (pace_plan spreads them). The desktop caps do not outlive the week they protect (operator 2026-10-28, weekly-reset-radar)."""
     if h_to_reset is not None and 0 < h_to_reset <= LAST_DAY_H:
         return LAST_DAY_CAP
+    if today is not None and (login, str(today)) in DAY_CAPS:
+        return DAY_CAPS[(login, str(today))]
     if CN(host) == NB and login == "C":
         return 85    # operator 2026-10-26: raised from 75
     if CN(host) == NB and login == "B":
@@ -1161,7 +1168,7 @@ def idle_hosts(live: dict, dispatch, now: datetime, no_fetch: bool = True, view=
                 fresh = bool(at) and 0 <= (now - at).total_seconds() <= traffic.BUDGET_FRESH_H * 3600
                 rs = traffic.utc(r.get("reset"))
                 try:
-                    room = r.get("week") is not None and float(r["week"]) < weekly_cap(lg, h, (rs - now).total_seconds() / 3600 if rs else None)
+                    room = r.get("week") is not None and float(r["week"]) < weekly_cap(lg, h, (rs - now).total_seconds() / 3600 if rs else None, now.date())
                 except (TypeError, ValueError):
                     room = False
                 if lg not in live and lg not in used and fresh and r.get("state") in ("SPEND", "NORMAL") and room:
@@ -1225,7 +1232,7 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
     hist = record_reading(login, rd, home)
     rw = _utc(rd.get("week_reset"))
     gs = read_gate_slots(repo)
-    pl = pace_plan(now, rd, weekly_cap(login, host, (rw - now).total_seconds() / 3600 if rw else None), hist[:-1], running)
+    pl = pace_plan(now, rd, weekly_cap(login, host, (rw - now).total_seconds() / 3600 if rw else None, now.date()), hist[:-1], running)
     prev = _last_plan(login, home)
     notes, ctx = [], {}
     wp = work_period(login, now, rd["sid"], work_hours, work_until, home, write=send)
