@@ -108,6 +108,22 @@ class BgWatchTest(unittest.TestCase):
         self.assertFalse(bg_watch.unbounded_loop("python scripts/dev/bg_watch.py until --file f --pattern y"))
         self.assertEqual(bg_watch.CAPS["poll-loop"], 10)
 
+    def test_bare_until_grep_loop_is_flagged_and_names_taskstop(self):
+        bare = "until grep -q passed out.txt; do :; done"          # no sleep: old code did not even call it a poll loop
+        self.assertTrue(bg_watch.unbounded_loop(bare))
+        self.assertEqual(bg_watch.kind_of("Bash", bare), ("poll-loop", 10))
+        self.assertTrue(bg_watch.unbounded_loop("while ! grep -q passed out.txt; do tail -f out.txt; done"))
+        self.assertFalse(bg_watch.unbounded_loop("python scripts/dev/bg_watch.py until --file f --pattern passed --timeout 60"))
+        self.write(start("t1", "Bash", {"command": bare, "run_in_background": True},
+                         "Command running in background with ID: bbare0001.", 161))
+        out = self.lines()
+        self.assertEqual(len(out), 1, out)
+        self.assertIn("run TaskStop bbare0001 now", out[0])
+        self.assertIn("only allowed poll", out[0])
+        self.write(start("t2", "Bash", {"command": "python scripts/dev/bg_watch.py until --file f --pattern y --timeout 60",
+                                        "run_in_background": True}, "Command running in background with ID: bok00002.", 5))
+        self.assertEqual(self.lines(), [])                          # allowed call, young: nothing
+
     def test_kind_caps(self):
         k = bg_watch.kind_of
         self.assertEqual(k("Bash", "python scripts/dev/supervisor.py wait --timeout 50m --login C"), ("watcher", 55))
