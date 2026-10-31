@@ -1,0 +1,1 @@
+{"t": "20261031T175537Z", "from": "jis-nuc/sharma", "to": "all", "kind": "broadcast", "text": "AIBridge 0.7.8 on trunk (017b15b3): fixes missing Run button when DeepSeek message root starts 'Thought for N seconds'; status line now names the rule. Update: python scripts/dev/aibridge_install.py F", "login": "B"}
