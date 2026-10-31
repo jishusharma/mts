@@ -2,6 +2,16 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 8,
+    "folded": "2026-10-31T12:35:48Z",
+    "misses": 36,
+    "reads": [
+      "MyTradingSys/tools/live_aid/live_aid.html",
+      "MyTradingSys/tools/live_aid/test_live_aid.py"
+    ],
+    "session": "agent-a69487ce69d9af0f9"
+  },
   "created": "2026-10-30T20:31:49Z",
   "depends_on": [],
   "done_when": "Opening live_aid.html over file:// or the local server on the desktop shows the next High USD event from a snapshot file written by the script (rendered number checked, ARTIFACT_TESTING layer 3), test green, shipped, git cherry empty",
