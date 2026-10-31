@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/fetch_captions_timed.py --analyst Rumers --out MyTradingSys/research/rumers_2026-11-01/transcripts 6WfTIyJ-YzQ EoQDQVblmMY N6zlfBJsoRc kozesVBKkg4 aTMFouI9mF4",
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_1.md"
+  ],
+  "created": "2026-10-31T19:16:29Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_1.md exists; every row has video id, timestamp and verbatim quote or NOT_IN_DATA; a TESTABLE shortlist; verify_extract_quotes.py exits 0",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "For these videos 6WfTIyJ-YzQ EoQDQVblmMY N6zlfBJsoRc kozesVBKkg4 aTMFouI9mF4: extract each complete trading rule or setup the speaker states, as a table with video id, timestamp, verbatim caption quote, entry, stop, target, timeframe, claimed hit-rate, or NOT_IN_DATA. Mark which rules are mechanical enough to backtest. No verdict.",
+  "id": "gemini-yt-rumers-extract-1",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini rules: captions first (fetch_captions_timed.py), quote only from the caption file, one fetch try per video, no retry loop, 429 -> UNVERIFIED with no quotes; verify_extract_quotes.py exit 0; facts and quotes only, no verdict, no code change. Operator 2026-11-01: channel @the.rumers, he finds these videos interesting; backtests follow. Final report ends with a Noticed: line.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T19:16:30Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/rumers_2026-11-01/ (new files only)"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code; any trading verdict; .secrets and .env"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "fetch captions for the listed videos",
+    "keyword scan, read surrounding lines before quoting",
+    "write MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_1.md, verify until exit 0"
+  ],
+  "tests": "verify_extract_quotes.py exit 0; no code change",
+  "title": "[GEMINI] The Rumers (@the.rumers) operator-picked videos 1/2: extract every stated trading rule (entry, stop, target, timeframe, indicator, claimed hit-rate) with timed quotes",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

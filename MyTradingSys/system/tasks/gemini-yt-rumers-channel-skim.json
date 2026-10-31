@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/fetch_captions_timed.py --analyst Rumers --channel @the.rumers --latest 20 --out MyTradingSys/research/rumers_2026-11-01/transcripts_skim",
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/rumers_2026-11-01/RUMERS_CHANNEL_SKIM.md"
+  ],
+  "created": "2026-10-31T19:16:34Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/rumers_2026-11-01/RUMERS_CHANNEL_SKIM.md exists; 20 rows (id, title, idea, MECHANICAL Y/N, quote or NOT_IN_DATA); verify_extract_quotes.py exits 0",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "List the newest 20 uploads of @the.rumers (excluding the 10 operator-picked ids) with one line each on the trading idea taught and whether it has a mechanical entry/exit; captions first, quotes only from captions.",
+  "id": "gemini-yt-rumers-channel-skim",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini rules: captions first (fetch_captions_timed.py), quote only from the caption file, one fetch try per video, no retry loop, 429 -> UNVERIFIED with no quotes; verify_extract_quotes.py exit 0; facts and quotes only, no verdict, no code change. Operator 2026-11-01: channel @the.rumers, he finds these videos interesting; backtests follow. Final report ends with a Noticed: line.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T19:16:35Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/rumers_2026-11-01/ (new files only)"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code; any trading verdict; .secrets and .env"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "list channel uploads",
+    "fetch captions for the 20",
+    "write the table and verify"
+  ],
+  "tests": "verify_extract_quotes.py exit 0; no code change",
+  "title": "[GEMINI] The Rumers (@the.rumers): skim the newest 20 videos, list titles and the trading idea each teaches, flag those with mechanical rules",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
