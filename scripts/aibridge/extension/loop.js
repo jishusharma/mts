@@ -1,7 +1,7 @@
 // loop.js - pure helpers for the auto-loop. No DOM, no chrome.* so node can test them.
 (function (root) {
   var L = {};
-  L.VERSION = '0.7.7';
+  L.VERSION = '0.7.8';
 
   L.fnv = function (s) {
     var h = 2166136261;
@@ -229,21 +229,23 @@
   // never by the block text. FAIL CLOSED: a collapsible container (details) or a chain the page could not describe is
   // treated as thinking, so an unknown layout runs nothing instead of running drafts.
   var THINK_CLS = /think|thought|reason|cot[-_ ]|chain[-_ ]?of/i;
-  L.isThinking = function (chain) {
-    if (!chain || !chain.length) return true;   // cannot describe where the block sits = unknown = not runnable
+  // thinkWhy: '' = final answer, else the rule + ancestor that made it thinking (shown in the status line: no DOM guessing)
+  L.thinkWhy = function (chain) {
+    if (!chain || !chain.length) return 'no ancestor chain';   // cannot describe where the block sits = unknown = not runnable
     for (var i = 0; i < chain.length; i++) {
-      var c = chain[i] || {}, tag = String(c.tag || '').toLowerCase();
-      if (tag === 'thought' || tag === 'thinking' || tag === 'details' || tag === 'summary') return true;
-      if (THINK_CLS.test(String(c.cls || '')) || THINK_CLS.test(String(c.role || ''))) return true;
-      if (/^\s*(thought for|thinking|deep ?think)/i.test(String(c.lead || '')) && tag !== 'body' && i < 4) return true;   // lead: only the nearest 4 ancestors (a chat root starting with 'Thinking' must not hide every block)
+      var c = chain[i] || {}, tag = String(c.tag || '').toLowerCase(), who = tag + '.' + String(c.cls || '').split(/\s+/)[0].slice(0, 24) + '@' + i;
+      if (tag === 'thought' || tag === 'thinking' || tag === 'details' || tag === 'summary') return 'tag ' + who;
+      if (THINK_CLS.test(String(c.cls || '')) || THINK_CLS.test(String(c.role || ''))) return 'class ' + who;
+      if (/^\s*(thought for|thinking|deep ?think)/i.test(String(c.lead || '')) && tag !== 'body' && i < 2) return 'lead ' + who;   // lead: nearest 2 ancestors only (0.7.8: a message root starting 'Thought for 5 seconds' holds the final answer too)
     }
-    return false;
+    return '';
   };
+  L.isThinking = function (chain) { return !!L.thinkWhy(chain); };
   // -> {selected: [index...], ignored: [index...], status: text or ''}
   L.selectBlocks = function (descs) {
-    var sel = [], ign = [];
-    (descs || []).forEach(function (d, i) { (L.isThinking(d && d.chain) ? ign : sel).push(i); });
-    return { selected: sel, ignored: ign, status: ign.length ? 'ignored ' + ign.length + ' block(s) inside the thinking panel (only the final answer runs)' : '' };
+    var sel = [], ign = [], why = '';
+    (descs || []).forEach(function (d, i) { var w = L.thinkWhy(d && d.chain); if (w) { ign.push(i); why = why || w; } else sel.push(i); });
+    return { selected: sel, ignored: ign, status: ign.length ? 'ignored ' + ign.length + ' block(s) inside the thinking panel (only the final answer runs) [' + why + ']' : '' };
   };
   // key = fnv(text)@occurrence among the SELECTED blocks with the same text: a thinking draft or a collapsing panel never shifts it
   L.batchKeys = function (texts) {
