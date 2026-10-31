@@ -204,8 +204,14 @@ def analyse(ev, n_piv, out_dir):
     flagged = [(names[c], sn["gaps"].get(c, float("nan"))) for c in sn["flagged"]]
     # planted edge and null run through the same test (CONF_ANY events = label 1/2 merged into cell 1)
     lab2 = (lab > 0).astype(int)
-    pl = harness.shift_null_test(y, lab2, n_shifts=300, rng=np.random.default_rng(SEED))
-    y_p, _ = harness.inject_edge(y, lab2, 1, delta=0.3, frac=0.2, rng=np.random.default_rng(SEED))
+    # The planted-edge check runs on outcomes with each cell's own mean removed (real variance and order kept), so the
+    # real confluence-vs-none gap cannot mask or fake the planted +0.3 %. Raw (not demeaned) binary run kept for the record.
+    raw = harness.shift_null_test(y, lab2, n_shifts=300, rng=np.random.default_rng(SEED))
+    yd = y.copy()
+    for c_ in (0, 1):
+        yd[lab2 == c_] -= yd[lab2 == c_].mean()
+    pl = harness.shift_null_test(yd, lab2, n_shifts=300, rng=np.random.default_rng(SEED))
+    y_p, _ = harness.inject_edge(yd, lab2, 1, delta=0.3, frac=0.2, rng=np.random.default_rng(SEED))
     pl2 = harness.shift_null_test(y_p, lab2, n_shifts=300, rng=np.random.default_rng(SEED))
     sd = float(np.std(y, ddof=1))
     nneed = harness.power_n(sd, 0.10)
@@ -235,7 +241,8 @@ def analyse(ev, n_piv, out_dir):
     tail = [
         "", f"1h pivots with live window inside DEV: {n_piv}.",
         f"Shift null (labels NONE/CONF_4H/CONF_1D, net % per trade): max gap {sn['max_gap']:.4f} vs 95th pct threshold {sn['threshold']:.4f}, p_global {sn['p_global']:.3f}, flagged {flagged}.",
-        f"Planted edge (+0.3 % on 20 % of confluence events): flagged without {pl['flagged']}, with {pl2['flagged']} (cell 1 = confluence).",
+        f"Binary confluence-vs-none shift null on the real outcomes: flagged {raw['flagged']} (cell 1 = confluence; its gap is negative, i.e. worse than none).",
+        f"Planted edge on cell-demeaned outcomes (+0.3 % on 20 % of confluence events): flagged without {pl['flagged']}, with {pl2['flagged']}.",
         f"Power: per-trade sd {sd:.3f} %; n needed per cell to see 0.10 % at 80 % power = {nneed}; CONF_ANY n = {ca['n']}.",
         "", "Exit mix (real events):", why.to_string(), "",
         "Phase split (descriptive, NO verdict): group, tag, n, net mean R", "| group | tag | n | net mean R |", "|---|---|---|---|", *ph,
