@@ -302,5 +302,25 @@ class LookaheadStep(unittest.TestCase):
         self.assertNotIn("3la", self.sel("MyTradingSys/research/x/test_study.py")[1])
 
 
+class DataOnlyMustExtras(unittest.TestCase):
+    """CI_RED_ROOT_CAUSES: a sim_desk results .json alone was docs mode (0 steps), so must-pass step 3xm (sim_desk/test_backfill) never ran."""
+
+    def sel(self, *files):
+        return gs.explain(list(files), STEPS, mentioned=mentioned, named=lambda b, c: False)[:2]
+
+    def test_sim_desk_results_json_alone_is_not_docs_and_keeps_the_always_steps(self):
+        mode, nums = self.sel("MyTradingSys/research/sim_desk/results/x.json")
+        self.assertEqual(mode, "smoke")
+        self.assertTrue({"3w", "3x", "3gd", "3dl"} <= set(nums), nums)
+
+    def test_must_extras_is_triggered_for_that_ship(self):
+        f = "MyTradingSys/research/sim_desk/results/x.json"
+        tests = ["MyTradingSys/research/sim_desk/test_backfill.py", "MyTradingSys/research/other/test_z.py"]
+        self.assertEqual(gs.must_extras([f], tests), tests[:1])
+
+    def test_other_research_data_stays_docs(self):
+        self.assertEqual(self.sel("MyTradingSys/research/other/results/x.json"), ("docs", []))
+
+
 if __name__ == "__main__":
     unittest.main()
