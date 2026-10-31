@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T10:04:27Z",
+  "depends_on": [],
+  "done_when": "prompt carries every section 2 sentence; test_dsa_direct_mode.py asserts them; test_integrity size caps pass",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Apply FIX_PLAN.md section 2 text to sections 0.1/0.1a/0.5/0.7 and the header. Runs after c1-c3 ship.",
+  "id": "dsabr-c5-dsa-prompt",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "S0 freeze: bug fix with a failing-first test. Plan: MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "DSA_SESSION_PROMPT.md; MyTradingSys/tests/test_dsa_direct_mode.py"
+  ],
+  "scope_out": [
+    "scripts/aibridge"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
+  ],
+  "state": "raw",
+  "steps": [
+    "Wait for c1-c3 to ship; read FIX_PLAN.md (MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31) section 2",
+    "Add asserts for each sentence to test_dsa_direct_mode.py; see them fail",
+    "Edit DSA_SESSION_PROMPT.md 0.1/0.1a/0.5/0.7 and the header; tests and size caps pass; sync.py ship"
+  ],
+  "tests": "new asserts in test_dsa_direct_mode.py fail before the edit",
+  "title": "DSA_SESSION_PROMPT.md: bridge 0.7.4 rules (final-answer fences only, queue, exit codes, notice) (D6)",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}
