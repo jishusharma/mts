@@ -16,7 +16,15 @@
   "id": "gemini-yt-fabio-latest-extract-1031",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 33 file(s)",
+      "ref": "34aac43857c5",
+      "utc": "2026-10-31T02:49:25Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -24,7 +32,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T02:40:43Z",
+  "refreshed": "2026-10-31T05:02:24Z",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
@@ -35,7 +43,7 @@
   "scope_out": [
     "live tree; engine and layer code edits; any backtest or trading verdict; .secrets and .env"
   ],
-  "scope_sha": "",
+  "scope_sha": "34aac43857c5",
   "size": "S",
   "sources": [],
   "state": "ready",
