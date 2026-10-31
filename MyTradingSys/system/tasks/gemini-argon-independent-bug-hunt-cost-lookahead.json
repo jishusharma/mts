@@ -17,9 +17,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "merge gemini-q doc-vs-code layers g3",
-      "ref": "64b656889955",
-      "utc": "2026-10-31T06:05:16Z"
+      "line": "Merge branch 'gemini-q/gemini-yt-flowhorse-latest-extract-1031' into jis-nuc/gemini-burn-b",
+      "ref": "6689d9abf448",
+      "utc": "2026-10-31T13:33:43Z"
     }
   ],
   "layers": [],
@@ -29,7 +29,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T08:47:00Z",
+  "refreshed": "2026-10-31T15:39:04Z",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
@@ -40,7 +40,7 @@
   "scope_out": [
     "live tree; engine and layer code edits; any backtest verdict; .secrets and .env"
   ],
-  "scope_sha": "64b656889955",
+  "scope_sha": "6689d9abf448",
   "size": "S",
   "sources": [],
   "state": "ready",

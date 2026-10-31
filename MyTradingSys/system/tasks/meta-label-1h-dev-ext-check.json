@@ -1,39 +1,68 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest MyTradingSys/research/meta_label_breaks_2026-10-31/test_meta.py -q"
+  ],
   "created": "2026-10-31T14:22:02Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/meta_label_breaks_2026-10-31/EXT_RESULT.md states n per third, best-third mean fee-net % with week-block CI, label-shuffle p and PASS/FAIL; VERDICTS.csv row added; VALIDATION and HOLDOUT unread.",
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Refit the frozen meta.py 1h model on all DEV and score tf_break 1h events from BTCUSDT 1m 2020-01..2021-12 (fresh years, no sealed read). Pass = best third net > 0 with week-block CI lower > 0.",
   "id": "meta-label-1h-dev-ext-check",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sim desk: export the meta-label + early-exit break test (tables: filter, early exit, 1h re",
+      "ref": "ea06b616943a",
+      "utc": "2026-10-31T14:54:53Z"
+    }
+  ],
   "layers": [
     "cryptocred",
     "krown"
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "2026-10-31: data found on JIS-NB (earlier \"fetch first\" was wrong; spot or perp to be checked from the file header). D7 S3 run list #1.",
+  "note": "REVIEWED:2026-10-31 ACCEPT (Sonnet reviewer Agent, FIX applied once, not re-read, planner DECISION OURS). PLANNER. Data lives on JIS-NB per the card note; if the path is missing on the executing host, step 1 applies. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-31T15:37:58Z",
   "refs": [
     "MyTradingSys/research/meta_label_breaks_2026-10-31/RESULT.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/meta_label_breaks_2026-10-31/meta.py",
+    "MyTradingSys/research/meta_label_breaks_2026-10-31/report.py",
+    "MyTradingSys/research/meta_label_breaks_2026-10-31/test_meta.py"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "refitting on any 2020-2021 bar",
+    "new features or thresholds"
+  ],
+  "scope_sha": "ea06b616943a",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/meta_label_breaks_2026-10-31/RESULT.md:6-9",
+    "MyTradingSys/research/v1_plan_2026-10-20/D7_ROADMAP.md:34"
+  ],
+  "state": "ready",
+  "steps": [
+    "confirm F:/MTS/Dumps/backtest/raw_1m_2019/klines has BTCUSDT 1m 2020-01..2021-12 (24 files), spot or perp from the header; if absent post a DSA desk task and park",
+    "write EXT_PRE_REG.md first: frozen model, pass rule, m=1 (prereg_gate.py); commit before scoring",
+    "add an ext mode to meta.py: fit on DEV only, score only 2020-2021 events",
+    "run, write EXT_RESULT.md, backfill VERDICTS.csv"
+  ],
+  "tests": "Fail-first in test_meta.py: ext mode must never put a 2020-2021 row in the fit set, and a planted-edge fixture gives best third > 0; both fail on current meta.py (no ext mode).",
   "title": "Meta-label 1h lead, fresh-data check: refit the frozen meta.py 1h model on all DEV, score tf_break 1h events from BTCUSDT 1m 2020-01..2021-12 (on disk: F:/MTS/Dumps/backtest/raw_1m_2019/klines, 24 files); pass = best third net > 0 with week-block CI lower > 0; VALIDATION stays sealed",
-  "weight": "",
-  "worker": ""
+  "weight": "CRUCIAL",
+  "worker": "session"
 }
