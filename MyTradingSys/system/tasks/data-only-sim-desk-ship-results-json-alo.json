@@ -2,6 +2,16 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-31T08:52:06Z",
+    "misses": 4,
+    "reads": [
+      "scripts/dev/run_all_tests.py",
+      "scripts/dev/test_gate_select.py"
+    ],
+    "session": "agent-a616183bd82acbfc9"
+  },
   "created": "2026-10-31T08:44:59Z",
   "depends_on": [],
   "done_when": "gate_select.explain(['MyTradingSys/research/sim_desk/results/<x>.json']) returns a nonempty step list that includes the one running research/sim_desk/test_backfill.py; test in scripts/dev/test_gate_select.py asserts it.",
