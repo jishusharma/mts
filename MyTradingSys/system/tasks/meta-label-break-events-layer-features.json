@@ -1,0 +1,39 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T13:17:46Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "meta-label-break-events-layer-features",
+  "lane": "SONNET",
+  "layers": [
+    "cryptocred",
+    "krown"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/tf_break_event_study_2026-10-30/RESULT.md"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Meta-label test (operator 10-31): on the tf_break 1h/4h hold/reclaim/sweep events + follow-reclaim, can other layers' state at entry (BBWP, D1 trend, funding sign, session, RSI zone, volume) separate winners from losers? Features frozen before any outcome read; logistic, week-purged CV on DEV, shuffled-label placebo, one VAL read; pass = top-score bucket net > 0 fee-net with CI excluding 0 in DEV and same sign VAL. Prior: Q33 0/186 cells, confluence S3 direction FAIL but BBWP->realised vol rho 0.24 t 7.9",
+  "weight": "",
+  "worker": ""
+}
