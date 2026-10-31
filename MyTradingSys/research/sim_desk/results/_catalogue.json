@@ -1,7 +1,7 @@
 {
 "_doc": "Catalogue of known tests on trunk. kind is inferred (kind_source). Built by sim_desk/build_catalogue.py.",
-"count": 302,
-"exported": 302,
+"count": 306,
+"exported": 306,
 "rows": [
 {
 "id": "st-_archive-loose_2026-10-cbp_profile6_result",
@@ -1046,7 +1046,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-fabio_v3-305051dc.json",
 "exported": true,
 "result_id": "desk-fabio_v3-305051dc",
-"date": null,
+"date": "2026-10-31",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -1060,7 +1060,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-fabio_v3-0694292f.json",
 "exported": true,
 "result_id": "desk-fabio_v3-0694292f",
-"date": null,
+"date": "2026-10-31",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -1074,7 +1074,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-fabio_v3-cc240f2b.json",
 "exported": true,
 "result_id": "desk-fabio_v3-cc240f2b",
-"date": null,
+"date": "2026-10-31",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -1088,7 +1088,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-fabio_v3-3441877d.json",
 "exported": true,
 "result_id": "desk-fabio_v3-3441877d",
-"date": null,
+"date": "2026-10-31",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -1102,7 +1102,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-fabio_v3-7da588cc.json",
 "exported": true,
 "result_id": "desk-fabio_v3-7da588cc",
-"date": null,
+"date": "2026-10-31",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -1116,7 +1116,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-fabio_v3-a955213e.json",
 "exported": true,
 "result_id": "desk-fabio_v3-a955213e",
-"date": null,
+"date": "2026-10-31",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -1130,7 +1130,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-fabio_v3-b3972cec.json",
 "exported": true,
 "result_id": "desk-fabio_v3-b3972cec",
-"date": null,
+"date": "2026-10-31",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -1144,7 +1144,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-fabio_v3-b6b13619.json",
 "exported": true,
 "result_id": "desk-fabio_v3-b6b13619",
-"date": null,
+"date": "2026-10-31",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -1158,7 +1158,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-fabio_v3-dd786e4e.json",
 "exported": true,
 "result_id": "desk-fabio_v3-dd786e4e",
-"date": null,
+"date": "2026-10-31",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -1172,7 +1172,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-fabio_v3-820e427d.json",
 "exported": true,
 "result_id": "desk-fabio_v3-820e427d",
-"date": null,
+"date": "2026-10-31",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -1627,18 +1627,31 @@
 },
 {
 "id": "dir-dsa_bridge_fix_plan_2026-10-31",
-"family": "dsa bridge fix plan",
+"family": "Dsa Bridge Fix Plan",
 "title": "DSA bridge fix plan (AIBridge 0.7.3), 2026-10-31",
 "kind": "backtest",
-"kind_source": "inferred from text",
+"kind_source": "result file",
 "verdict": "PASS/FIX per card",
-"source": "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md",
+"source": "MyTradingSys/research/sim_desk/results/dir-dsa_bridge_fix_plan_2026-10-31.json",
 "exported": true,
 "result_id": "dir-dsa_bridge_fix_plan_2026-10-31",
-"folder_files": 1,
 "date": "2026-10-31",
 "status": "SEE_VERDICT",
 "verdict_class": "passed"
+},
+{
+"id": "st-dsa_bridge_fix_plan_2026-10-31-c7_nuc_results",
+"family": "dsa bridge fix plan",
+"title": "dsabr-c7 install + e2e on JIS-NUC (2026-10-31)",
+"kind": "thought_experiment",
+"kind_source": "inferred from text",
+"verdict": "\": \"PASS\", \"evidence\": \"aibridge_verify: 29 rows, no FAIL\"},",
+"source": "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/c7_nuc_results.md",
+"exported": true,
+"result_id": "st-dsa_bridge_fix_plan_2026-10-31-c7_nuc_results",
+"date": "2026-10-31",
+"status": "FAILED",
+"verdict_class": "failed"
 },
 {
 "id": "dir-dsa_bridge_keepalive_2026-10-17",
@@ -1765,6 +1778,20 @@
 "exported": true,
 "result_id": "eagle-c26-magnet",
 "date": "2026-10-31",
+"status": "SEE_VERDICT",
+"verdict_class": "other"
+},
+{
+"id": "eagle-c27-wavetrend",
+"family": "Eagle_Eyes chart ideas (operator, 10-30/31)",
+"title": "C27: WaveTrend dots (LazyBear WT_CROSS_LB) as triggers, 15m / 1h / 2h / 4h",
+"kind": "backtest",
+"kind_source": "result file",
+"verdict": "NO as a trigger: no dot type beats fees on any timeframe beyond noise; zone dots (the ones on the chart) are worse than plain dots.",
+"source": "MyTradingSys/research/sim_desk/results/eagle-c27-wavetrend.json",
+"exported": true,
+"result_id": "eagle-c27-wavetrend",
+"date": null,
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -2249,7 +2276,7 @@
 "source": "MyTradingSys/research/gemini_burn_2026-10-31/SHIPS_120_200_REVIEW.md",
 "exported": true,
 "result_id": "dir-gemini_burn_2026-10-31",
-"folder_files": 26,
+"folder_files": 29,
 "date": "2026-10-31",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
@@ -2435,14 +2462,14 @@
 {
 "id": "dir-jala_layer_2026-10-31",
 "family": "jala layer",
-"title": "Extract Method Jala (@jalacrypto)",
-"kind": "backtest",
+"title": "Jala (@jalacrypto): Fractal Selection & Evaluation Method",
+"kind": "thought_experiment",
 "kind_source": "inferred from text",
-"verdict": "Videos read: 30; Captioned: 12; UNVERIFIED (HTTP 429): 18.",
-"source": "MyTradingSys/research/jala_layer_2026-10-31/method_jala.md",
+"verdict": "Videos read: 50; Captioned: 12; UNVERIFIED: 38; Videos with 'fractal': 11.",
+"source": "MyTradingSys/research/jala_layer_2026-10-31/FRACTAL_METHOD_JALA.md",
 "exported": true,
 "result_id": "dir-jala_layer_2026-10-31",
-"folder_files": 1,
+"folder_files": 2,
 "date": "2026-10-31",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
@@ -2818,18 +2845,48 @@
 "verdict_class": "other"
 },
 {
+"id": "dir-meta_label_roadmap_2026-10-31",
+"family": "meta label roadmap",
+"title": "Meta-labelling across MTS: review of the Opus analysis and roadmap (2026-10-31)",
+"kind": "backtest",
+"kind_source": "inferred from text",
+"verdict": "in one paragraph",
+"source": "MyTradingSys/research/meta_label_roadmap_2026-10-31/ROADMAP.md",
+"exported": true,
+"result_id": "dir-meta_label_roadmap_2026-10-31",
+"folder_files": 1,
+"date": "2026-10-31",
+"status": "SEE_VERDICT",
+"verdict_class": "other"
+},
+{
+"id": "dir-meta_label_tom_fabio_2026-10-31",
+"family": "meta label tom fabio",
+"title": "PRE_REG: meta-label test on sim-desk trades, Tom VP and Fabio Model C (card meta-label-tom-vp-fabio-trades, operator \"r…",
+"kind": "backtest",
+"kind_source": "inferred from text",
+"verdict": "words: PASSED = the rule is met; NOT ENOUGH DATA = fewer than 100 trades in the top tercile; otherwise FAILED. ONLY if a study passes on DEV: exactly one VALIDATION read (2024-07-01..2025-06-30) of that frozen model, reported as same sign…",
+"source": "MyTradingSys/research/meta_label_tom_fabio_2026-10-31/PRE_REG.md",
+"exported": true,
+"result_id": "dir-meta_label_tom_fabio_2026-10-31",
+"folder_files": 2,
+"date": "2026-10-31",
+"status": "FAILED",
+"verdict_class": "failed"
+},
+{
 "id": "meta-label-breaks",
 "family": "Meta-label (layer filter)",
 "title": "Meta-label + early exit on timeframe-break trades: can other layers pick the winners, and does getting out early help?",
 "kind": "backtest",
 "kind_source": "result file",
 "verdict": "INCONCLUSIVE",
-"source": "MyTradingSys/research/sim_desk/results/meta-label-breaks.json",
+"source": "MyTradingSys/research/meta_label_breaks_2026-10-31/RESULT.md",
 "exported": true,
 "result_id": "meta-label-breaks",
 "date": "2026-10-31",
-"status": "SEE_VERDICT",
-"verdict_class": "unclear"
+"status": "FAILED",
+"verdict_class": "failed"
 },
 {
 "id": "desk-meta_label_fabio_c",
@@ -3503,7 +3560,7 @@
 "source": "MyTradingSys/research/screenshots/2026-10-07_BTCUSDT_29ff2b488f13.md",
 "exported": true,
 "result_id": "dir-screenshots",
-"folder_files": 32,
+"folder_files": 33,
 "date": "2026-10-07",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
@@ -4058,7 +4115,7 @@
 "title": "Trial ledger: layer lab",
 "kind": "backtest",
 "kind_source": "path",
-"verdict": "411 trial rows logged (every variant tried)",
+"verdict": "423 trial rows logged (every variant tried)",
 "source": "MyTradingSys/research/layer_lab/TRIALS.md",
 "exported": true,
 "result_id": "ledger-layer_lab-trials-md",

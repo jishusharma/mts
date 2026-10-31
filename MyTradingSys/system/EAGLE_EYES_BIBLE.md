@@ -55,6 +55,7 @@ Why this section exists: the 10-28 session was compacted 6 times; each summary k
 - Pre-register (10-31): "Yes, pre-register." Done: rules committed first (21fbba6b), run once: both C26 trading arms NO after fees; the magnet is real, the trade is not.
 - Simulator (11-01): "I need to see these backtestings in simulator." Rule: every Eagle_Eyes test also writes `sim_desk/results/eagle-<id>.json` (`export_sim.py`), then `build_catalogue.py` + `artifact/build_artifact.py`, same turn.
 - Update 10-31 14:53Z (footprint 15m shot): "Updates?" Answer = scenario map + same-day base rate (day high/low so far vs rest of UTC day).
+- WaveTrend 10-31 (2h Bitstamp shot): "what abt wavetrend analysis? how do we use it?"
 - Coil and force (10-30): "what kind of force makes that happen? Try to measure it ... how far it will go ... support and resistances are the target ... I cannot understand in which direction the coil will fire." First answers: `research/pre_us_squeeze_2026-10-29/`, `research/bb_pierce_force_2026-10-29/`.
 
 ## The asks in one table (consolidated 10-30; update here, not in chat)
@@ -74,6 +75,7 @@ Why this section exists: the 10-28 session was compacted 6 times; each summary k
 | Pre-register the two C26 trades | `C26_PRE_REG.md`, `c26_arms.py` | run 10-31: ride NO, fade NO (gross ~0, fee 0.10%); closed |
 | See these backtests in the simulator | `export_sim.py` -> 7 result files `eagle-c21..c26`, simulator page rebuilt | done 11-01: C26 arms with full trade replay (2866 / 1700 trades) |
 | Updates? (15m footprint, 10-31) | base rate: close 0.1-0.6% under day high at 14:45Z -> high taken later same day 70% all days (n=488), 63% weekends (n=198); low 23% / 31% | done 10-31 |
+| What about WaveTrend, how do we use it? | C27 `wavetrend_dots.py` fee-net 15m/1h/2h/4h, 2022-01..2024-06 (2024-07+ sealed); sim card eagle-c27-wavetrend | done 10-31: NO as trigger, context only |
 | Heatmap in Eagle_Eyes' own browser tab | Legend tab: layer missing | his shots until the layer loads there |
 | US open, squeeze, pierce force, levels as targets | `research/pre_us_squeeze_2026-10-29/`, `research/bb_pierce_force_2026-10-29/` | ran 10-30; next: OI and RSI/WT coils |
 | Habib whole-plan scoring; Kurisko quad (4 stochastics) on 15m | `research/habib_plan_imbalance_2026-10-20/`; card `kurisko-dev-event-study` | plans never scored; 1m/5m blocked by fees, 15m untested |
