@@ -36,14 +36,13 @@ def rolling_alpha(r, window=WINDOW, scales=SCALES, chunk=1500):
     """H[i] = dfa_alpha(r[i-window+1 : i+1]); NaN for i < window-1. r is a 1-D array of returns (NaN-free)."""
     r = np.asarray(r, float)
     n = len(r)
-    out = np.full(n, np.nan)
     if n < window:
-        return out
+        return np.full(n, np.nan)
     win = np.lib.stride_tricks.sliding_window_view(r, window)   # (n-window+1, window)
     lx = np.log(scales)
     xm = lx - lx.mean()
-    for a in range(0, len(win), chunk):
-        w = win[a:a + chunk]
+    parts = [np.full(window - 1, np.nan)]
+    for w in np.array_split(win, max(1, -(-len(win) // chunk))):
         lf = np.stack([0.5 * np.log(fluct2(w, s)) for s in scales], axis=1)
-        out[window - 1 + a: window - 1 + a + len(w)] = (lf * xm).sum(1) / (xm ** 2).sum()
-    return out
+        parts.append((lf * xm).sum(1) / (xm ** 2).sum())
+    return np.concatenate(parts)

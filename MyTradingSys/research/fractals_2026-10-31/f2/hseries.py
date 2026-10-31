@@ -31,10 +31,8 @@ def h_from_closes(bar_open, close, window=dfa.WINDOW):
     ok = np.r_[False, np.diff(bo) == 3600]          # return k is a true 1h return
     r0 = np.where(ok, r, 0.0)
     h_all = dfa.rolling_alpha(r0, window=window)
-    cs = np.r_[0, np.cumsum(~ok)]                   # count of bad returns in each window
-    for_ok = np.zeros(n, bool)
-    idx = np.arange(window - 1, n)
-    for_ok[idx] = (cs[idx + 1] - cs[idx + 1 - window]) == 0
+    bad = pd.Series((~ok).astype(float)).rolling(window).sum().to_numpy()   # bad returns inside the window
+    for_ok = bad == 0
     h[for_ok] = h_all[for_ok]
     return h
 
