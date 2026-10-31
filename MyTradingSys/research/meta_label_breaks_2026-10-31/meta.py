@@ -194,7 +194,7 @@ def early_gross(p_k, gross):
 
 def bucket_stats(g, t):
     lo, hi = wk_boot(g - RT, t)
-    return dict(n=int(len(g)), gross=100 * g.mean(), fee=100 * RT, net=100 * (g.mean() - RT), lo=100 * lo, hi=100 * hi)
+    return dict(n=int(len(g)), gross=100 * g.mean(), net=100 * (g.mean() - RT), lo=100 * lo, hi=100 * hi)  # cost: rt_pct
 
 
 def dev(out):
