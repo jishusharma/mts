@@ -27,8 +27,8 @@ def test_iron_dome_cross_known_day():
 
 def test_net_forward_return_sign_and_cost():
     c = pd.Series([100.0, 110, 99], index=IDX[:3])
-    long_net = ts.fwd_net(c, [IDX[0]], 1, +1, cost=0.002)
-    short_net = ts.fwd_net(c, [IDX[1]], 1, -1, cost=0.002)
+    long_net = ts.fwd_net(c, [IDX[0]], 1, +1, rt=0.002)
+    short_net = ts.fwd_net(c, [IDX[1]], 1, -1, rt=0.002)
     assert abs(long_net[0] - (0.10 - 0.002)) < 1e-12
     assert abs(short_net[0] - (0.10 - 0.002)) < 1e-12
 

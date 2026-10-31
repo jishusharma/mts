@@ -8,7 +8,7 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "backtest"))
 import splits  # noqa: E402
 
-COST = 0.002  # round trip, spot taker 0.1% x2 (OURS)
+RT_DRAG = 0.002  # round trip, spot taker 0.1% x2 (OURS)
 HORIZONS = (10, 30, 60)  # OURS
 DIRECTION = {"under": -1, "death": -1, "over": +1, "golden": +1}  # OURS: trade the side Jala's text implies
 
@@ -47,9 +47,9 @@ def dev_event_filter(close, dates, h):
     return out
 
 
-def fwd_net(close, dates, h, sign, cost=COST):
+def fwd_net(close, dates, h, sign, rt=RT_DRAG):
     c = close
-    return np.array([sign * (c[t + pd.Timedelta(days=h)] / c[t] - 1) - cost for t in dates])
+    return np.array([sign * (c[t + pd.Timedelta(days=h)] / c[t] - 1) - rt for t in dates])
 
 
 def eligible_days(close, h):
@@ -58,10 +58,10 @@ def eligible_days(close, h):
     return dev_event_filter(close, days, h)
 
 
-def null_means(elig_by_sym, closes, sym_counts, h, sign, draws=2000, seed=7, cost=COST):
+def null_means(elig_by_sym, closes, sym_counts, h, sign, draws=2000, seed=7, rt=RT_DRAG):
     """Per draw: for each symbol pick as many random eligible days as it has events; mean net over all picks."""
     rng = np.random.default_rng(seed)
-    pre = {s: fwd_net(closes[s], elig_by_sym[s], h, sign, cost) for s in sym_counts if sym_counts[s] and len(elig_by_sym[s])}
+    pre = {s: fwd_net(closes[s], elig_by_sym[s], h, sign, rt) for s in sym_counts if sym_counts[s] and len(elig_by_sym[s])}
     out = np.empty(draws)
     for i in range(draws):
         tot, n = 0.0, 0
