@@ -9,7 +9,7 @@
  "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
  "window": null,
  "verdict": {
-  "label": "Ledger rows: 302; transcripts: 145. Counts:",
+  "label": "Ledger rows: 303; transcripts: 145. Counts:",
   "tone": "info"
  },
  "why": [
@@ -36,5 +36,5 @@
  "source_files": [
   "MyTradingSys/research/extraction_ledger_2026-10/GAPS.md"
  ],
- "commit": "a47fce415"
+ "commit": "0430c00ac"
 }

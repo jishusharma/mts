@@ -1,0 +1,49 @@
+{
+ "id": "st-bounce_shift_2026-10-30-result",
+ "kind": "backtest",
+ "family": "Bounce Shift",
+ "title": "Oversold 5m cascade: does a bounce come, and do momentum-shift signals call it? (2026-10-30)",
+ "provenance": "source-extracted",
+ "date": "2026-10-30",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Descriptive counts only: no fees, no edge claim. Definitions in the header of study.py (all OURS). Data: Binance USD-M BTCUSDT 1m archive rolled to 5m, OI from the metrics archive, DEV 2022-2025. 2026 untouched.",
+  "tone": "bad"
+ },
+ "why": [
+  "Descriptive counts only: no fees, no edge claim. Definitions in the header of study.py (all OURS). Data: Binance USD-M BTCUSDT 1m archive rolled to 5m, OI from the metrics archive, DEV 2022-2025. 2026 untouched.",
+  "OI, round numbers and the prior-day low did not change the odds by more than 2 points.",
+  "MTS does not anticipate bounces accurately yet, and the tested shift signals do not either; the honest live read is the base rates above."
+ ],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "755"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 755,
+   "quote": "At the trigger (n=755)"
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/bounce_shift_2026-10-30/RESULT.md"
+ ],
+ "commit": "a4730f362"
+}

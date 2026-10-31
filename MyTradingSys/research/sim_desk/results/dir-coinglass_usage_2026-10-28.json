@@ -1,0 +1,37 @@
+{
+ "id": "dir-coinglass_usage_2026-10-28",
+ "kind": "backtest",
+ "family": "Coinglass Usage",
+ "title": "Group C: Order flow (CoinGlass usage research, 2026-10-28)",
+ "provenance": "source-extracted",
+ "date": "2026-10-28",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Reader: Sonnet agent for Eagle_Eyes. Plan: PLAN.md. All links opened 2026-10-28. Tiers: T1 paper, T2 exchange/vendor docs, T3 practitioner. A T3 usage idea is a hypothesis to try, not evidence. No backtests, no numbers from memory. \"Seen v…",
+  "tone": "info"
+ },
+ "why": [
+  "Footprint 5m: negative-delta new highs and first retest of stacked-imbalance zones."
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/coinglass_usage_2026-10-28/C_order_flow.md"
+ ],
+ "commit": "6a58df366"
+}

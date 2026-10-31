@@ -1,0 +1,68 @@
+{
+ "id": "dir-critical_test_wave1_2026-10-30",
+ "kind": "backtest",
+ "family": "Critical Test Wave1",
+ "title": "Item 3: spike-fade, scoring/confidence/tier, classifyState, switch census (critical test wave 1, 2026-10-30)",
+ "provenance": "source-extracted",
+ "date": "2026-10-30",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Source: none from Tom. Weights come from MyTradingSys/market_data/dsa_task_012_setup_candidates.md:495-512 (\"for ranking only, NOT a verdict\"); tier cap numbers are screener inventions (tracker _archive/loose_2026-10/AU…",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "Rule Spec Code Verdict",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "B1 raw = min(95, 50 + 7 x proofs + 10 confluence); B>=70, C+>=55, C>=40 else D dsa_task_012:495-512 :189-197 MATCH to DSA spec (hand tables, 3 build() scenarios). U-FINDING LOW: constants have no trader source (OURS, ra…",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "B2 Confluence: other candidate zone within 0.3 % of this zone's price, +10 dsa_task_012 step 8 :47, :176-180, :565-575 MATCH: 100.2 pair +10/+10; 100.3 inclusive +10/+10; 100.31 -> 0/0. Reference price is the zone's own…",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 5 from the source",
+   "value_plain": "B3 Tier: <=0.1 % trigger_ready, <=cap conditional, else ignore B066 tierFor :52-54, :452-461 MATCH (boundaries 0.1, 0.4, 0.2 hand-tested; 0.05 % -> trigger_ready, 0.2501 % -> conditional). Caps NO-SOURCE (U LOW)",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 6 from the source",
+   "value_plain": "B4 net R:R = (T-E - 2 f E)/(E-S + 2 f E), f = 0.0005 BTC FORMULAS 17 ExecutionMathConstants:36-43 MATCH: 0.67 (E 100, T 99.5, S 100.5), 1.38 (1040/1010/1060), 0.93 (1040/1010/1070)",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "",
+  "tone": "info"
+ },
+ "why": [
+  "Source: none from Tom. Weights come from MyTradingSys/market_data/dsa_task_012_setup_candidates.md:495-512 (\"for ranking only, NOT a verdict\"); tier cap numbers are screener inventions (tracker _archive/loose_2026-10/AUDIT_2026-09-17_TRACKER.md \"Condition-fil…",
+  "New classes (11 tests, all pass: Tests run: 5 + Tests run: 6, 0 failures, parsed from target/surefire-reports):"
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window"
+ },
+ "source_files": [
+  "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md"
+ ],
+ "commit": "ebc7a556b"
+}

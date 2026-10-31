@@ -1,0 +1,74 @@
+{
+ "id": "dir-pre_us_failed_break_2026-10",
+ "kind": "backtest",
+ "family": "Pre Us Failed Break",
+ "title": "PRE-REGISTRATION: pre-US failed-break short build, BTC 1m (frozen 2026-10-28)",
+ "provenance": "source-extracted",
+ "date": "2026-10-28",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Card backtest-the-operator-s-pre-us-failed-br. Docs only. The commit that adds this file precedes any commit that adds a result;",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "git log is the proof (convention of research/gross_effect_screen_2026-10-15/PRE_REG.md, the template). Status: EXPLORATORY TRIAL.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "Nothing here adopts a rule. The run is a separate card (backtest-pre-us-failed-break-dev-run), raw, executing sections 1-7 as written.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "Labels: SOURCED = file:line or operator shot id. OURS = our judgement (DECISION (OURS), most conservative reading). Operator shots are the",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 5 from the source",
+   "value_plain": "only source for the behaviour; they give no numeric rule, so every number below is OURS unless a SOURCED tag is shown.",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2022-01-01 to 2024-06-30 (as written in the source)",
+ "verdict": {
+  "label": "word first: PASS INCONCLUSIVE FAIL), DATA_MANIFEST.csv. The result commit comes after this file's commit. Forward-index hits (x[i + 1]) in the script need reviewed rows in scripts/dev/lookahead_allowlist.tsv in the same commit.",
+  "tone": "bad"
+ },
+ "why": [
+  "Card backtest-the-operator-s-pre-us-failed-br. Docs only. The commit that adds this file precedes any commit that adds a result;",
+  "Nothing here adopts a rule. The run is a separate card (backtest-pre-us-failed-break-dev-run), raw, executing sections 1-7 as written.",
+  "failed break of a high before the US open, no stop, exit by limit at lower levels. The net figure is testnet, one day, selected after the fact;",
+  "Also printed: win rate, mean winner, mean loser, MAE distribution, count and sum of time-cap days, max drawdown of the cumulative net (in % of K) vs buy-and-hold BTC max drawdown over DEV (exceeding it is FAIL)."
+ ],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "300"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 300,
+   "quote": "Gate call parameters: n = 300 episodes (OURS estimate: about 30 % of the 912 DEV days; the real n is counted before the outcome run and the gate re-run), sd = 60 bps of K per episode (OURS estimate,…"
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)"
+ },
+ "source_files": [
+  "MyTradingSys/research/pre_us_failed_break_2026-10/PRE_REG.md"
+ ],
+ "commit": "04112bfe2"
+}

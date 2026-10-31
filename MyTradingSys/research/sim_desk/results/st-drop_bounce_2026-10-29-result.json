@@ -1,0 +1,50 @@
+{
+ "id": "st-drop_bounce_2026-10-29-result",
+ "kind": "backtest",
+ "family": "Drop Bounce",
+ "title": "Fast 1m drop, bounce to the BB mid: what next? (2026-10-29)",
+ "provenance": "source-extracted",
+ "date": "2026-10-29",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "These are descriptive counts only: no fees and no edge claim. Definitions are in the headers of study.py and fractal.py. The data is the Binance USD-M BTCUSDT 1m archive, 2022-01 to 2026-09.",
+  "tone": "bad"
+ },
+ "why": [
+  "These are descriptive counts only: no fees and no edge claim. Definitions are in the headers of study.py and fractal.py. The data is the Binance USD-M BTCUSDT 1m archive, 2022-01 to 2026-09.",
+  "After the push: the delta went back to slightly negative. The cumulative delta since the low is -174 BTC.",
+  "Bounce quality: whether the bounce had more taker buying did not change the odds. Only a very thin bounce, with volume under half the drop's, raised the break rate a little.",
+  "Selling into the fade did not raise the break rate. It was lower: 38% vs 46% within 4h."
+ ],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "813"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 813,
+   "quote": "All events (n=813). The window is the next 4 hours:"
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/drop_bounce_2026-10-29/RESULT.md"
+ ],
+ "commit": "54734e7d4"
+}

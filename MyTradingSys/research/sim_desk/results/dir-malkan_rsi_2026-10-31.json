@@ -1,0 +1,42 @@
+{
+ "id": "dir-malkan_rsi_2026-10-31",
+ "kind": "backtest",
+ "family": "Malkan Rsi",
+ "title": "Malkan RSI 40-60 Rules Extraction (2026-10-31)",
+ "provenance": "source-extracted",
+ "date": "2026-10-31",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "This extraction document compiles the RSI 40-60 rules, multi-timeframe Grandfather-Father-Son (GFS) relationships, momentum reads, entries, and invalidations from the top 12 ranked @malkansview YouTube videos identified…",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Videos read: 12 (6 English transcripts with extracted rules, 6 Hindi transcripts with NOT_IN_DATA per non-English transcript policy).",
+  "tone": "info"
+ },
+ "why": [
+  "> \"positive reverse divergence and negative reverse divergence so one is bullish and bearish one is positive even not negative\""
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window"
+ },
+ "source_files": [
+  "MyTradingSys/research/malkan_rsi_2026-10-31/MALKAN_RULES_2026-10-31.md"
+ ],
+ "commit": "4c42466fd"
+}

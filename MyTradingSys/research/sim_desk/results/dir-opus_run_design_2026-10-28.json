@@ -1,0 +1,55 @@
+{
+ "id": "dir-opus_run_design_2026-10-28",
+ "kind": "backtest",
+ "family": "Opus Run Design",
+ "title": "Opus run design, 2026-10-28 (Lead, Opus, login C): top 3",
+ "provenance": "source-extracted",
+ "date": "2026-10-28",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Operator ask 2026-10-28: \"design the next best Opus runs\", \"include self-healing mechanisms for AI health / mechanisms / hooks\".",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "Opus is used where the work is judgement plus careful code that a Sonnet worker gets wrong (hooks, gates, statistics review); recount and plain build stay on Sonnet (CLAUDE.md \"Cost and routing\").",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "Start text for all three: system/handover/OPUS_RUNS.md; the operator types Run OPUS_RUNS.md O1 (or O2, O3) in a new Code session on Opus.",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "",
+  "tone": "info"
+ },
+ "why": [
+  "AI health: mts_doctor.py only reports (\"Reports only; nothing was edited\", REPORT_2026-10-27.md Part 1); it has no apply mode. The 2026-10-27 report shows 6 WARNs that recur: 58 stale claims (limit 5), CI red 18-27 min to green (limit 10), main checkout 243 b…",
+  "Live path: R3 F-GAP-1 (BLOCKS-LIVE) already has a Sonnet card with a failing test (fable-r3-stop-gap-early-return); not an Opus job.",
+  "Output: research/self_heal_2026-10-28/HEAL_MAP.md (one row per check: symptom, class, heal action, trigger hook, test) and code: mts_doctor.py --heal running only HEAL rows, each with a test that fails on today's code. Build the top 3 HEAL rows in this run (O…",
+  "Done when: HEAL_MAP.md on trunk; mts_doctor.py --heal exists; 3 tests that failed before now pass; next doctor run shows STALE-CLAIMS and BROADCAST counts lower than 2026-10-27 (58 and 8); commit body Result: = WARN count before -> after."
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window"
+ },
+ "source_files": [
+  "MyTradingSys/research/opus_run_design_2026-10-28/DESIGN.md"
+ ],
+ "commit": "989d2f03c"
+}

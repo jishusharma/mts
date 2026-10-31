@@ -1,0 +1,52 @@
+{
+ "id": "dir-audit_inventory",
+ "kind": "audit",
+ "family": "Audit Inventory",
+ "title": "MTS audit inventory (read-only, 2026-10-30)",
+ "provenance": "source-extracted",
+ "date": "2026-10-30",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Touched: AUDIT_2026-09-17_TRACKER (inventory only, steps 2-7 pending); core_readiness_2026-09-27 (SetupCandidatesBuilder proof count D4, replay on 9,175 snapshots, 14 JUnit); PROVENANCE_AUDIT_TOM (74 params, 2 sourced);…",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "Java tests now present in src/test/java/datafeed/ (SetupCandidatesBuilder x4, SpikeFade x4, StateCodeEmitterTest, etc.), but no audit I read checks their quality or mutation strength.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "NEVER checked: SpikeFadeDetector/SpikeFadePaths/SpikeFadeProfile/SpikeFadeSessionState have no audit file of their own (only mentioned as \"no candidate type until 10-13\" in mts_flow_audit and as inputs to Tom specs). No…",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "and findings sections of each file (skimmed, not read in full). \"n/s\" = not stated in what I read. \"Open\" is what the document itself says; I did NOT re-verify whether a later commit fixed it, except where noted.",
+  "tone": "info"
+ },
+ "why": [
+  "Root: MyTradingSys/ unless a path starts otherwise. Source: heads, verdict and findings sections of each file (skimmed, not read in full). \"n/s\" = not stated in what I read. \"Open\" is what the document itself says; I did NOT re-verify whether a later commit f…"
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window"
+ },
+ "source_files": [
+  "MyTradingSys/research/audit_inventory/AUDIT_INVENTORY.md"
+ ],
+ "commit": "1863b9e42"
+}

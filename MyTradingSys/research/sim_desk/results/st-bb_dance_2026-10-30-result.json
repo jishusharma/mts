@@ -1,0 +1,68 @@
+{
+ "id": "st-bb_dance_2026-10-30-result",
+ "kind": "backtest",
+ "family": "Bb Dance",
+ "title": "Bollinger dance: when is it over, and does an early take-profit lose the big leg? (2026-10-30)",
+ "provenance": "source-extracted",
+ "date": "2026-10-30",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Exit Mean Median Share > 0",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "First close back inside after a touch +0.178% +0.094% 76%",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "Three bars without a touch +0.178% +0.067% 64%",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "First close with %b >= 0.25 (left the band) +0.172% +0.062% 69%",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 5 from the source",
+   "value_plain": "Close above the mid (hold) +0.168% +0.005% 51%",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 6 from the source",
+   "value_plain": "On average, holding to the mid did not pay more than leaving early. The means are the same within noise.",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "These are descriptive counts only: no fees and no edge claim. Definitions are in the header of study.py (all OURS). The data is the Binance USD-M BTCUSDT 1m archive, built into 5m bars, DEV 2022-2025 only. The trigger was the operator's sh…",
+  "tone": "bad"
+ },
+ "why": [
+  "These are descriptive counts only: no fees and no edge claim. Definitions are in the header of study.py (all OURS). The data is the Binance USD-M BTCUSDT 1m archive, built into 5m bars, DEV 2022-2025 only. The trigger was the operator's shot 32fd5d2253ee: a s…",
+  "On average, holding to the mid did not pay more than leaving early. The means are the same within noise."
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window"
+ },
+ "source_files": [
+  "MyTradingSys/research/bb_dance_2026-10-30/RESULT.md"
+ ],
+ "commit": "48e51ff6e"
+}

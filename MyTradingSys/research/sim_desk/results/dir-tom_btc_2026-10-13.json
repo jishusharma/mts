@@ -14,7 +14,8 @@
  },
  "why": [
   "(+0.13 R median) and negative after them (FABIO_OF_REPORT.md:127-128). T4 tells us early, before any build.",
-  "against no anchor at all."
+  "against no anchor at all.",
+  "the extreme does not show the opposite side dominating."
  ],
  "kpis": [],
  "examples": [
@@ -33,5 +34,5 @@
  "source_files": [
   "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md"
  ],
- "commit": "68f2f372a"
+ "commit": "b0f4e115a"
 }
