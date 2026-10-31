@@ -13,9 +13,9 @@
   "tone": "info"
  },
  "why": [
-  "\"\\\"\\\\\\\"In the Phase 1 Daily (1D) event study, classical pitchfork geometry exhibited high Median Line reach (86.15% to 90.03%), but naive market entries suffered small negative fee drag (-0.95% to -1.12% per trade).\\\\\\\",\\\",\",",
-  "\"\\\"\\\\\\\"This severely shrinks the remaining reward while leaving the full stop-loss distance intact, producing negative returns (-0.16% to -1.31%) across every test condition.\\\\\\\",\\\",\",",
-  "\"\\\"\\\\\\\"Placing resting limit orders at the active tine ($LML$ for longs, $UML$ for shorts) completely eliminates negative fee drag.\\\\\\\",\\\"\""
+  "\"\\\"\\\\\\\"\\\\\\\\\\\\\\\"In the Phase 1 Daily (1D) event study, classical pitchfork geometry exhibited high Median Line reach (86.15% to 90.03%), but naive market entries suffered small negative fee drag (-0.95% to -1.12% per trade).\\\\\\\\\\\\\\\",\\\\\\\",\\\",\",",
+  "\"\\\"\\\\\\\"\\\\\\\\\\\\\\\"This severely shrinks the remaining reward while leaving the full stop-loss distance intact, producing negative returns (-0.16% to -1.31%) across every test condition.\\\\\\\\\\\\\\\",\\\\\\\",\\\",\",",
+  "\"\\\"\\\\\\\"\\\\\\\\\\\\\\\"Placing resting limit orders at the active tine ($LML$ for longs, $UML$ for shorts) completely eliminates negative fee drag.\\\\\\\\\\\\\\\",\\\\\\\"\\\"\""
  ],
  "kpis": [
   {
@@ -38,12 +38,12 @@
   {
    "field": "n_trades",
    "value": 279,
-   "quote": "\"quote\": \"\\\"quote\\\": \\\"\\\\\\\"quote\\\\\\\": \\\\\\\"- Modified Schiff: Mean Net PnL +0.61%, Profit Factor 1.63, 279 filled trades.\\\\\\\"\\\"\""
+   "quote": "\"quote\": \"\\\"quote\\\": \\\"\\\\\\\"quote\\\\\\\": \\\\\\\"\\\\\\\\\\\\\\\"quote\\\\\\\\\\\\\\\": \\\\\\\\\\\\\\\"- Modified Schiff: Mean Net PnL +0.61%, Profit Factor 1.63, 279 filled trades.\\\\\\\\\\\\\\\"\\\\\\\"\\\"\""
   },
   {
    "field": "net_r",
    "value": 0.05,
-   "quote": "\"quote\": \"\\\"quote\\\": \\\"\\\\\\\"quote\\\\\\\": \\\\\\\"- Across all four geometric models, every single unfiltered tine limit test turned net returns POSITIVE (+0.05% to +0.39%) with Profit Factors $> 1.0$.\\\\\\\"\\\"\""
+   "quote": "\"quote\": \"\\\"quote\\\": \\\"\\\\\\\"quote\\\\\\\": \\\\\\\"\\\\\\\\\\\\\\\"quote\\\\\\\\\\\\\\\": \\\\\\\\\\\\\\\"- Across all four geometric models, every single unfiltered tine limit test turned net returns POSITIVE (+0.05% to +0.39%) wit…"
   }
  ],
  "missing": {
@@ -53,5 +53,5 @@
  "source_files": [
   "MyTradingSys/research/sim_desk/results/dir-pitchfork_2026-10-19.json"
  ],
- "commit": "74b3ccbae"
+ "commit": "aef982b8c"
 }
