@@ -1,0 +1,10 @@
+{
+  "done_when": "Set-Location to a path outside the roots returns an error and aborts the block.",
+  "from": "JIS-NUC",
+  "id": "20261031-100020-aibridge-cwd-sandbox-escape-via-set-loca",
+  "need": "The bridge enforces cwd restrictions on the AIRUN header (cwd=...), but a manual 'Set-Location C:\\Windows' inside the block succeeds and allows reading/writing outside the allowed roots. Proof: Result #45. Fix: The agent should block Set-Location to paths outside the allowed roots, or run the script in a locked-down container.",
+  "posted": "2026-10-31T10:00:20Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "AIBridge CWD sandbox escape via Set-Location"
+}
