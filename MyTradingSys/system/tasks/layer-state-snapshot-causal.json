@@ -1,0 +1,41 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T13:48:54Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "layer-state-snapshot-causal",
+  "lane": "SONNET",
+  "layers": [
+    "krown",
+    "tom",
+    "fabio"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/meta_label_roadmap_2026-10-31/ROADMAP.md",
+    "MyTradingSys/system/OPERATOR_DECISIONS.md"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "S0 park. Meta-label phase 2 (ROADMAP P2 + 2.0): causal layer_state_at(ts) snapshot in sim_desk/studies/_bars.py with a look-ahead forcing test, plus the one-table-one-verdict-line panel (d-meta-label-panel-simple-self-tested) shipped with JSON-shape, counts-sum and page click checks; builder verifies the rendered page. Entry: one meta-labelled setup passes VALIDATION AND S0 exit signed",
+  "weight": "",
+  "worker": ""
+}
