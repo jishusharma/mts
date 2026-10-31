@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T04:13:17Z",
   "commands": [
     "git grep -n \"=\" -- MyTradingSys/backtest/layers/fabio | head -5"
   ],
@@ -15,7 +16,21 @@
   "id": "gemini-param-labels-layers-g2-1031",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_burn_2026-10-31/LAYER_PARAM_LABELS_G2.md",
+      "ref": "192b78d34",
+      "utc": "2026-10-31T04:13:17Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 33 file(s)",
+      "ref": "34aac43857c5",
+      "utc": "2026-10-31T02:49:25Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -23,26 +38,32 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T02:40:30Z",
+  "refreshed": "2026-10-31T04:06:06Z",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/gemini_burn_2026-10-31/LAYER_PARAM_LABELS_G2.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_burn_2026-10-31/ (new files only)"
   ],
   "scope_out": [
     "live tree; engine and layer code edits; any backtest or trading verdict; .secrets and .env"
   ],
-  "scope_sha": "",
+  "scope_sha": "34aac43857c5",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "list constants per module",
     "search research notes and extracts for each source",
     "write the table"
   ],
+  "taken": "2026-10-31T04:13:17Z",
   "tests": "report only; every finding cites file:line",
   "title": "[GEMINI] label every tunable constant in layers pitchfork trendlines timeframe tick wlow_bounce SOURCED or OURS with source quote or NOT_IN_DATA",
   "weight": "ROUTINE",
