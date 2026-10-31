@@ -1,34 +1,63 @@
 {
-  "approved_by": "",
+  "approved_by": "operator 2026-10-31 (chat: fractals + BTC phase context, reviews then implementation)",
   "asks": "",
   "commands": [],
   "created": "2026-10-31T06:53:31Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "research/fractals_2026-10-31/phase_tag/ has phase_tag.py, harness.py, tests (shift test, 5 hand-checked dates, planted-edge detect + null stays null) all green; FORMULAS.md entry for the halving clock (block 840,000, 2024-04-20 00:09 UTC, SOURCED) and Cowen band (20W SMA/21W EMA, SOURCED); tags.csv for 2017-08-17..2026-09-30; shipped with a Result: line",
+  "est_turns": 30,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "A tested module that gives, for any daily bar t, phase tags computed only from bars closed by t-1, plus a harness that proves a split test can find a planted edge and rejects when none exists. Spec: research/fractals_2026-10-31/SYNTHESIS.md s3-s4 rows P-1 and P0.",
   "id": "btc-phase-context-layer-1031",
-  "lane": "OPUS",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 7 file(s)",
+      "ref": "fd70f3d9de72",
+      "utc": "2026-10-31T03:31:28Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "fd70f3d9de72 ship: 7 file(s)",
+      "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
+      "utc": "2026-10-31T03:31:28Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "OPERATOR QUOTE: Almost Every layer needs the context of BTC phases - all possible types (research avilable MTS files & Internet). The idea is to apply right context. Applying right context must increase edge on all layers that relates to it. Depends on review research/fractals_2026-10-31/reviews/R2_BTC_PHASES.md and Fable validation.",
+  "note": "OPERATOR QUOTE: Almost Every layer needs the context of BTC phases - all possible types (research avilable MTS files & Internet). The idea is to apply right context. Applying right context must increase edge on all layers that relates to it. Depends on review research/fractals_2026-10-31/reviews/R2_BTC_PHASES.md and Fable validation.\nREFINED: Lead 2026-10-31 after Fable validation (VALIDATION.md). Opus not required: no live money, reversible.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-31T07:04:44Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/fractals_2026-10-31/phase_tag/ (new)",
+    "MyTradingSys/backtest/layers/FORMULAS.md (2 new entries)"
+  ],
+  "scope_out": [
+    "live tree; layer and engine code; HOLDOUT 2025-07+ for any edge reading; .secrets and .env"
+  ],
+  "scope_sha": "fd70f3d9de72",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "BTC phase context layer: nested point-in-time phase labels (4y cycle > intermediate > swing > intraday), then split every related layer's fee-net DEV result by phase",
+  "state": "ready",
+  "steps": [
+    "write fail-first tests: shift test (tag at t uses bars <= t-1), 5 hand-computed dates, planted +0.3% in 20% of one cell detected, no-injection run null",
+    "FORMULAS.md entries for halving clock and Cowen band, expected values computed by hand",
+    "phase_tag.py: days since halving, drawdown from running ATH, Cowen band side (completed weeks only), 200D and 400D SMA side, weekly SMA10 phase",
+    "harness.py: power (n for 0.10% at 80%), planted-edge injection/removal, circular-shift family-wise null",
+    "tags.csv from F:/MTS/data/krown_daily/BTCUSDT_1d.csv only; ship"
+  ],
+  "tests": "shift test fails on a version that uses bar t; planted-edge detected at stated n and in no other cell; null run stays null",
+  "title": "BTC phase tag v1 (P-1 power/planted-edge harness + P0 point-in-time phase tags) on daily BTC 2017-08..2026-09",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }

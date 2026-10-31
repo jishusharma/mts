@@ -26,7 +26,7 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "Review stage done 2026-10-31 on desktop login C: reviews R1-R4 + SYNTHESIS.md + Fable VALIDATION.md (VALIDATED WITH FIXES) in research/fractals_2026-10-31/. Verdict: no published fee-net OOS fractal edge on BTC; fractals start as context. Own DEV test moves to btc-phase-context-layer-1031 (P-1/P0) then F1 swing-confluence card.",
   "scope_in": [
     "MyTradingSys/research/fractals_2026-10-31/ (new files only)"
   ],
@@ -36,7 +36,7 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "literature sweep with links; note which claims are fee-net and out-of-sample",
     "write PRE_REG.md, freeze, commit",
