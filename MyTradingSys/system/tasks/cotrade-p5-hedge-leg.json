@@ -8,7 +8,7 @@
   "depends_on": [
     "cotrade-p1-say-and-place"
   ],
-  "done_when": "cotrade hedge --of <trade> --pct 50 --stop S --dry-run prints both legs and net exposure; tests pass and each failed on the old code; kill flattens both slots.",
+  "done_when": "cotrade hedge --of <trade> --pct 50 --stop S [--at P] --dry-run prints both legs and net exposure; tests pass and each failed on old code; kill flattens both slots.",
   "est_turns": 40,
   "formula_id": "",
   "formula_ids": [],
@@ -16,39 +16,56 @@
   "goal": "Operator in profit says 'hedge 50%'; cotrade places the opposite leg on a second existing testnet slot, links it to the parent in the journal, and the live aid shows net size across both accounts.",
   "id": "cotrade-p5-hedge-leg",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "cotrade P1: operator words -> one testnet order with stop, journaled",
+      "ref": "b6f7515ca2aa",
+      "utc": "2026-10-31T19:05:05Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "7ede104247a0 co-trade: operator approved testnet carve-out to 'never open trades'",
+      "ref": "MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md",
+      "utc": "2026-10-31T17:08:53Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Depends on cotrade-p1-say-and-place and P3. Backtest (reverted commit 4a36c8a38) found every hedge variant worse than no hedge after fees: build for process and recording, not as an edge. PLANNER 2026-11-01: depends_on set to the only existing card (P1; P3 has no card yet), scope paths made concrete; CRUCIAL needs a real reviewer ACCEPT before ready.",
+  "note": "REVIEWED:2026-11-01 ACCEPT (Sonnet reviewer Agent, FIX applied once, not re-read, planner DECISION OURS). Raised to CRITICAL (order and HALT code, testnet). Verify: content sha, git cherry origin/fast-track <sha> empty, ls-tree lists files. Backtest (reverted 4a36c8a38): hedges worse after fees; build for process, not edge. Order: run after cotrade-p1-review-fixes-1101 ships (same file set).",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-31T20:38:47Z",
   "refs": [],
   "result": "",
   "scope_in": [
     "MyTradingSys/execution/cotrade.py",
     "MyTradingSys/execution/test_cotrade.py",
-    "scripts/dev/run_extra_tests.py",
     "MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md"
   ],
   "scope_out": [
     "No mainnet; no new subaccount or key; no auto-trader change"
   ],
+  "scope_sha": "b6f7515ca2aa",
   "size": "M",
   "sources": [
     "MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md",
     "MyTradingSys/items/T048_satellite_framework.md",
     "MyTradingSys/items/T053_two_account_hedge_scalping.md"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
-    "Read MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md s7",
-    "Tests first, red on old tree",
-    "Build hedge leg + net view + both-slot kill",
-    "run_all_tests --quick; sync.py ship"
+    "Read DESIGN.md s7 (incl --at)",
+    "Tests first, red on old tree; add: hedge slot asserts testnet env; hedge has own reduce-only stop; hedge refused while HALT set; hedge fails after parent filled -> parent keeps its stop, journal state, no naked leg",
+    "Build hedge leg + net view + both-slot kill; restart rebuilds the pair from exchange positions, not only the journal",
+    "run_all_tests --quick; REVIEW session PLAN+DIFF; sync.py ship"
   ],
   "tests": "test_cotrade.py hedge: refuses same-account hedge; caps sum both slots; parent/child link in journal; kill on one slot flattens both; restart rebuilds the pair. Full: DESIGN.md s7.",
   "title": "Co-trade P5: hedge leg on a second existing testnet slot (pct of parent, linked, kill flattens both)",
-  "weight": "CRUCIAL",
+  "weight": "CRITICAL",
   "worker": "session"
 }
