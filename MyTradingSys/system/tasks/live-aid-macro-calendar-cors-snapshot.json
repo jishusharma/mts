@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T12:35:50Z",
   "commands": [],
   "context": {
     "calls_to_edit": 8,
@@ -24,6 +25,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "scripts/dev/ff_calendar_snapshot.py writes live_aid/ff_calendar_snapshot.js; Chrome test: ",
+      "ref": "f11e947e4",
+      "utc": "2026-10-31T12:35:50Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "live_aid: Now table on top, click-through detail pages, news headlines with a BTC reading",
@@ -40,7 +47,12 @@
   "refined_by": "",
   "refreshed": "2026-10-31T08:47:35Z",
   "refs": [],
-  "result": "",
+  "result": "scripts/dev/ff_calendar_snapshot.py writes live_aid/ff_calendar_snapshot.js; Chrome test: strip reads 'in 30 min' (Advance GDP 12:30Z), red on old html",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tools/live_aid/live_aid.html",
     "MyTradingSys/tools/live_aid/test_live_aid.py"
@@ -49,12 +61,13 @@
   "scope_sha": "30ac62e9fee3",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "write scripts/dev/ff_calendar_snapshot.py (or reuse an existing snapshot writer) saving the weekly ForexFactory JSON next to live_aid.html",
     "live_aid.html reads the same-origin snapshot first, direct fetch only as fallback, NO CALENDAR on error or copy older than 26 h",
     "browser test: strip shows the snapshot's next High USD event; red on trunk, green after; ship"
   ],
+  "taken": "2026-10-31T12:35:50Z",
   "tests": "test_live_aid_replay-style browser test: strip shows the snapshot's next High event; fails on current trunk (reads NO CALENDAR)",
   "title": "live_aid macro strip reads NO CALENDAR in a real browser: faireconomy feed sends no CORS header, add a local snapshot script/file the page reads",
   "weight": "",

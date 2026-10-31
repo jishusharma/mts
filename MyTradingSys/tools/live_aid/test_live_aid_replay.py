@@ -98,8 +98,11 @@ def browser():
     with sync_playwright() as p:
         try:
             b = p.chromium.launch(headless=True)
-        except Exception as ex:  # no browser here: say so, never fail
-            pytest.skip("no Chromium for playwright: " + str(ex).splitlines()[0][:120])
+        except Exception as ex:  # no bundled Chromium: try the installed Chrome, else say so, never fail
+            try:
+                b = p.chromium.launch(channel="chrome", headless=True)
+            except Exception:
+                pytest.skip("no Chromium for playwright: " + str(ex).splitlines()[0][:120])
         try:
             yield b
         finally:
@@ -260,6 +263,58 @@ def test_no_calendar_on_429_then_numbers_on_200(browser):
                 assert nxt == "NO CALENDAR" and "429" in page.inner_text("#mc-sub") and page.query_selector_all("#mc-rows tr") == [], (nxt, page.inner_text("#mc-sub"))
         finally:
             ctx.close()
+
+
+def _snap_page_text(browser, snap_js, cors_feed=False):
+    """Normal mode, every network call aborted (the feed has no CORS header), the same-origin snapshot file served as snap_js (None = file missing)."""
+    ctx, page, errs = _cal_page(browser, "2026-10-29T12:00:00Z", offline=False)
+    try:
+        def local(route):
+            if "ff_calendar_snapshot.js" in route.request.url:
+                if snap_js is None:
+                    route.abort()
+                else:
+                    route.fulfill(status=200, body=snap_js, content_type="application/javascript")
+            elif route.request.url.startswith("file:"):
+                route.continue_()
+            else:
+                route.abort()                                    # incl. nfs.faireconomy.media: blocked like a real CORS failure
+        page.route("**/*", local)
+        page.clock.set_fixed_time(datetime.datetime(2026, 10, 29, 12, 0, tzinfo=datetime.timezone.utc))
+        page.goto(PAGE.resolve().as_uri(), wait_until="load", timeout=30000)
+        page.wait_for_timeout(1500)
+        return page.inner_text("#mc-next"), page.inner_text("#mc-sub")
+    finally:
+        ctx.close()
+
+
+def test_snapshot_file_feeds_the_strip_when_the_feed_is_cors_blocked(browser):
+    """Snapshot written by ff_calendar_snapshot.render, 1 h old at 12:00Z 10-29: next High USD = Advance GDP at 12:30Z -> 'in 30 min'."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("ffsnap", HERE.parents[2] / "scripts/dev/ff_calendar_snapshot.py")
+    m = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m)
+    now_ms = int(datetime.datetime(2026, 10, 29, 12, 0, tzinfo=datetime.timezone.utc).timestamp() * 1000)
+    nxt, sub = _snap_page_text(browser, m.render(FF, now_ms - 3600_000))
+    assert nxt == "in 30 min" and "Advance GDP q/q at 12:30Z" in sub, (nxt, sub)
+    nxt, sub = _snap_page_text(browser, m.render(FF, now_ms - 27 * 3600_000))      # 27 h old -> too old
+    assert nxt == "NO CALENDAR", (nxt, sub)
+    nxt, sub = _snap_page_text(browser, None)                                       # no file, feed blocked
+    assert nxt == "NO CALENDAR" and "no snapshot file" in sub, (nxt, sub)
+    nxt, sub = _snap_page_text(browser, "window.LIVEAID_CAL_SNAP = {};")            # unreadable copy
+    assert nxt == "NO CALENDAR", (nxt, sub)
+
+
+def test_snapshot_script_render_and_refusal():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("ffsnap", HERE.parents[2] / "scripts/dev/ff_calendar_snapshot.py")
+    m = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m)
+    out = m.render(FF, 1234)
+    assert out.startswith("window.LIVEAID_CAL_SNAP = {\"fetched_ms\":1234,\"events\":[") and out.endswith(";" + chr(10))
+    assert json.loads(out[len("window.LIVEAID_CAL_SNAP = "):-2])["events"] == FF
+    with pytest.raises(ValueError):
+        m.render([], 1)
 
 
 # ---------- "What the money is doing" (OI_COMMENTARY_SPEC.md): the 10-30 18:50Z flush replayed through the rendered tile ----------
