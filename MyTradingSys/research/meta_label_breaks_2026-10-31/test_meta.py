@@ -22,6 +22,14 @@ def bars(n, seed=0):
                              c=c, v=v, tbv=v * rng.uniform(0.3, 0.7, n)))
 
 
+def fwd_shock(b, e):
+    """the bars after e, changed on purpose (prices x1.5, volume x10)."""
+    shocked = b.copy()
+    shocked.loc[e + 1:, ['o', 'h', 'l', 'c']] *= 1.5
+    shocked.loc[e + 1:, 'v'] *= 10
+    return shocked
+
+
 class FeaturesCausal(unittest.TestCase):
     def test_no_bar_after_e_changes_a_feature(self):
         b = bars(1600)
@@ -36,10 +44,7 @@ class FeaturesCausal(unittest.TestCase):
             return M.features_at(s, i, e, 1, 'H', 'low', 0.5, t_entry, h4, dd, tv)
 
         base = feats(b)
-        shocked = b.copy()
-        shocked.loc[e + 1:, ['o', 'h', 'l', 'c']] *= 1.5
-        shocked.loc[e + 1:, 'v'] *= 10
-        after = feats(shocked)
+        after = feats(fwd_shock(b, e))
         for k in base:
             self.assertTrue(np.isclose(base[k], after[k], equal_nan=True), k)
 
