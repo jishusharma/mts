@@ -1,0 +1,58 @@
+{
+ "id": "dir-eagle_eyes_picture_2026-10-28",
+ "kind": "backtest",
+ "family": "Eagle Eyes Picture",
+ "title": "MTS picture and plan of actions (Eagle_Eyes draft, corrected by an Opus review, 2026-10-28)",
+ "provenance": "source-extracted",
+ "date": "2026-10-28",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Modern practice (SOURCED web, read 2026-10-28; links in the spec): one notification surface, not a window per alert; replace-by-key and group-by-key instead of stacking duplicates (Windows toast tag/group, PagerDuty ded…",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "MTS redesign: one single-instance \"MTS Alert Dock\" docked to a screen corner; all producers append to one inbox file instead of spawning windows; cards grouped by key with a repeat count; four severities; max 3 cards vi…",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "across all families Tom, Fabio, Krown: UNTESTABLE-AS-BUILT; Malkan intraday, Levels: DEAD. Every 1m-2h family is dead on cost: best gross effect ever measured on DEV 3.8 bp/trade vs a 14 bp round trip (SOURCED R1 s.1, s.3; breakeven.csv:2-…",
+  "tone": "info"
+ },
+ "why": [
+  "The operator's own practice: take a bias, build a position, trade the setups Tom describes, read the chart from screenshots (SOURCED Bible). MTS does not encode this method today (section 3).",
+  "Blunt summary: nothing in MTS is a proven BTC trading edge. The only fee-net out-of-sample PASS is carry, a funding yield that has decayed every year (15.35 -> 12.06 -> 6.26 %/yr) and whose latest year is unread. A first mainnet trade \"on the simplest edge\" t…"
+ ],
+ "kpis": [
+  {
+   "label": "trades (first count in the source)",
+   "value": "0"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 0,
+   "quote": "- Stale mirror, 500 rows 2026-10-17 22:15Z .. 2026-10-20 17:45Z of execution/auto_trades.jsonl (counts only, OURS): 0 trades placed; 414 skipped_halt with brakes HALT + HALT_DAILY_LOSS; 85 signal_rej…"
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window"
+ },
+ "source_files": [
+  "MyTradingSys/research/eagle_eyes_picture_2026-10-28/PICTURE_AND_PLAN.md"
+ ],
+ "commit": "3399af49d"
+}

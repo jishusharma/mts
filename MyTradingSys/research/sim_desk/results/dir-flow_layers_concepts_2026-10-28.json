@@ -1,0 +1,39 @@
+{
+ "id": "dir-flow_layers_concepts_2026-10-28",
+ "kind": "backtest",
+ "family": "Flow Layers Concepts",
+ "title": "Flow layers as concepts: CVD, net delta, OI, net longs/shorts, top-trader ratios (BTCUSDT, 2026-10-28)",
+ "provenance": "source-extracted",
+ "date": "2026-10-28",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Author: Eagle_Eyes (observer; no trade advice, no edge claim, no VALIDATION or HOLDOUT).",
+  "tone": "bad"
+ },
+ "why": [
+  "Author: Eagle_Eyes (observer; no trade advice, no edge claim, no VALIDATION or HOLDOUT).",
+  "The top-trader long/short ratios move slowly and opposite to the hours-long price swing (down while price rose from 10-27 16Z to 10-28 10:45Z, up while price fell since), and they did not react to the 1-minute drop at 13:36-13:50; test their lead/lag against…",
+  "Reading: understand each layer as a concept first; the working idea is confluence of layers, not one winning layer. No edge is claimed here."
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/flow_layers_concepts_2026-10-28/README.md"
+ ],
+ "commit": "9370d5ff9"
+}

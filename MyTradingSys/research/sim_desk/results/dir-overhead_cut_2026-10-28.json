@@ -1,0 +1,36 @@
+{
+ "id": "dir-overhead_cut_2026-10-28",
+ "kind": "thought_experiment",
+ "family": "Overhead Cut",
+ "title": "O3 — Overhead cut: stop-doing list for non-research commits",
+ "provenance": "source-extracted",
+ "date": "2026-10-28",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2026-10-22 to 2026-10-29 (as written in the source)",
+ "verdict": {
+  "label": "Card opus-o3-overhead-cut. Measured from 7 days of origin/fast-track with",
+  "tone": "info"
+ },
+ "why": [
+  "test_context_gap.py CUT1/CUT2/CUT3 tests fail on the pre-change code and pass now (verified via"
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/overhead_cut_2026-10-28/CUTS.md"
+ ],
+ "commit": "9c246ccf9"
+}

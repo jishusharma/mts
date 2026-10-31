@@ -1,0 +1,37 @@
+{
+ "id": "dir-liquidation_layer_2026-10-28",
+ "kind": "backtest",
+ "family": "Liquidation Layer",
+ "title": "Liquidation layer: is it worth trusting? (operator 2026-10-28: \"find out how much of this is actually useful - worth tr…",
+ "provenance": "source-extracted",
+ "date": "2026-10-28",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Layer = CoinGlass Legend \"Liquidation Heatmap (BTCUSDT, Leverage)\" and the Hyperliquid liquidation map. It is a MODELLED estimate of where leveraged positions would liquidate, not executed liquidations. Colour scale and units are not shown…",
+  "tone": "info"
+ },
+ "why": [
+  "Count only fee-net or out-of-sample results as evidence; failed H goes in the trial ledger; n below 56 touches = no conclusion (same bar as CBP Gate 4)."
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/liquidation_layer_2026-10-28/README.md"
+ ],
+ "commit": "8804c7ff6"
+}

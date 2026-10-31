@@ -1,0 +1,45 @@
+{
+ "id": "st-us_open_levels_2026-10-30-result",
+ "kind": "backtest",
+ "family": "Us Open Levels",
+ "title": "US open: levels reached in the first 2 h, and whether a touch holds 60 min later",
+ "provenance": "source-extracted",
+ "date": "2026-10-30",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2022-01-01 to 2026-09-26 (as written in the source)",
+ "verdict": {
+  "label": "BTCUSDT 1m 2022-01-01..2026-09-26, 1230 weekdays. Window = 120 min from the 09:30 New York open; held = close 60 min after the first touch is still beyond the level. Definitions in study.py (OURS), fixed before the run. Descriptive, no fee…",
+  "tone": "info"
+ },
+ "why": [],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "92"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 92,
+   "quote": "dayH 0-0.25 % 105 88 % 42 % (n=92)"
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "parameters": "no rule or parameter section found in the source",
+  "why": "no sentence in the source states why it passed or failed"
+ },
+ "source_files": [
+  "MyTradingSys/research/us_open_levels_2026-10-30/RESULT.md"
+ ],
+ "commit": "122323253"
+}

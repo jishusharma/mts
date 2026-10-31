@@ -1,0 +1,48 @@
+{
+ "id": "dir-us_open_oos_2026-10-30",
+ "kind": "backtest",
+ "family": "Us Open Oos",
+ "title": "US-open findings: out-of-sample replication on 2020-01..2021-12 (ask P0-34, T054 N1)",
+ "provenance": "source-extracted",
+ "date": "2026-10-30",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Method: session_sweeps/session_open_study.py re-run unchanged via run_oos.py (text-substitutes only data dir, date range, holiday list, output path). Data: Binance USD-M BTCUSDT 1m, F:/MTS/Dumps/backtest/raw_1m_2019/klines (24 monthly file…",
+  "tone": "info"
+ },
+ "why": [
+  "Limits: (1) perp 1m klines are public only from 2019-12-31, so 2019-09..12 does not exist for this series; window is 2020-01..2021-12 (the DEV_EXT segment, D3). (2) 2020-21 NYSE closures were typed from memory (OURS, verify); early closes not removed. (3) DEV…",
+  "Does not replicate: magnitude (1.36-1.39x vs 1.92-2.03x; volume 1.5-1.6x vs 2.5-2.8x) and rank: 00:00 UTC is the top ret bucket in 2020-21 (it is not in the top 6 in the original). In std-time days the highest volume bucket is 16:00 UTC (1.89x), not the open."
+ ],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "75"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 75,
+   "quote": "T3 base P(US up)=0.549 [0.505,0.591]; no class separates from base with n>=50 (H_sweep_back 0.493 n=75, none 0.600 n=75). T4 classes n<=34 so uninformative (H_sweep_back 0.647 n=34, CI [0.48,0.79]).…"
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/us_open_oos_2026-10-30/REPORT.md"
+ ],
+ "commit": "fd087f1ce"
+}

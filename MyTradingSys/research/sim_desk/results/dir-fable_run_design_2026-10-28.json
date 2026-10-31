@@ -1,0 +1,50 @@
+{
+ "id": "dir-fable_run_design_2026-10-28",
+ "kind": "backtest",
+ "family": "Fable Run Design",
+ "title": "Fable run design, 2026-10-28 (Lead, Opus, login C): R6 DECIDING PRE-REG",
+ "provenance": "source-extracted",
+ "date": "2026-10-28",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Goal (one sentence): freeze the one pre-registered, powered, fee-net test that confirms or kills the BTC trading-edge program, using event counts only (no outcome read), so a Sonnet session can run it mechanically and o…",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "Value, as the operator defines it (SOURCED PROJECT_VISION.md:226-229): \"MTS exists to trade BTC with a proven net edge after fees\"; stage S3 = walk-forward OOS net R > 0, CI above 0; no source has passed S3. Fee-net OOS…",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "Why now: R1 (research/fable_runs_2026-10-28/R1_EDGE_OR_STOP.md sec. 4) found every 1m-2h family dead on cost (best gross 3.8 bp vs 14 bp) and named the only open path: a 4h-and-up rule with enough events (E1 counts scre…",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2022-01-01 to 2024-06-30 (as written in the source)",
+ "verdict": {
+  "label": "",
+  "tone": "info"
+ },
+ "why": [],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "why": "no sentence in the source states why it passed or failed"
+ },
+ "source_files": [
+  "MyTradingSys/research/fable_run_design_2026-10-28/DESIGN.md"
+ ],
+ "commit": "d6020f043"
+}

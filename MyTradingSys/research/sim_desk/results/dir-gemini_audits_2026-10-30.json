@@ -1,0 +1,55 @@
+{
+ "id": "dir-gemini_audits_2026-10-30",
+ "kind": "audit",
+ "family": "Gemini Audits",
+ "title": "Layer Review Sheets Blind Read Audit Report",
+ "provenance": "source-extracted",
+ "date": "2026-10-30",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2024-11-04 to 2026-04-10 (as written in the source)",
+ "verdict": {
+  "label": "Notes",
+  "tone": "info"
+ },
+ "why": [],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "254"
+  },
+  {
+   "label": "net R after fees (first value in the source)",
+   "value": "-0.30",
+   "tone": "bad"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 254,
+   "quote": "L49 tom_core > Backtests ) / same no-fitted-parameter statement; MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT_RERUN_2026-10-06.md:19 -2.80, -4.77, -0.75 -2.80, -4.77, -0.75 FOUND Exact mat…"
+  },
+  {
+   "field": "net_r",
+   "value": -0.3,
+   "quote": "L49 tom_core > Backtests 2. TOM-CORE-1007 (run tom_core_20261007, MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT_RERUN_2026-10-06.md:18 2, -1007, 20261007, 2026, -09, -27, 2026, -10, -06, 20…"
+  }
+ ],
+ "missing": {
+  "parameters": "no rule or parameter section found in the source",
+  "why": "no sentence in the source states why it passed or failed",
+  "n_trades": "not a trade test (audit)"
+ },
+ "source_files": [
+  "MyTradingSys/research/gemini_audits_2026-10-30/layer_sheets_blind_read.md"
+ ],
+ "commit": "0a7950d9e"
+}
