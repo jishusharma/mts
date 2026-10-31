@@ -4,35 +4,59 @@
   "commands": [],
   "created": "2026-10-31T13:48:52Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "RESULT.md exists with n per tercile, CI, placebo p; sim_desk/results export exists; window test passes; PRE_REG_EXT.md committed before RESULT.md",
+  "est_turns": 35,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "P0 ended NOT ENOUGH DATA for the Fabio Model C stand-in (n 162, top third -0.003 R); rerun the same frozen features and ROADMAP 2.1 amendments on pre-DEV dev_ext 2019-2021 to lift n toward 461 per tercile.",
   "id": "meta-label-fabio-c-dev-ext-power",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "meta-label Tom VP / Fabio C: DEV run, both fail the pre-registered rule; sim-desk exports",
+      "ref": "68eac1e27905",
+      "utc": "2026-10-31T14:14:34Z"
+    }
+  ],
   "layers": [
     "fabio"
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-31 ACCEPT (Sonnet reviewer Agent, FIX applied once, not re-read, planner DECISION OURS). CRUCIAL; runs on a host with F:/MTS/data klines (not JIS-NB). Review Agent on the diff before ship.  Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-31T14:49:55Z",
   "refs": [
     "MyTradingSys/research/meta_label_roadmap_2026-10-31/ROADMAP.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/meta_label_tom_fabio_2026-10-31/gen_trades.py",
+    "MyTradingSys/research/meta_label_tom_fabio_2026-10-31/analyze.py",
+    "MyTradingSys/research/meta_label_dev_ext_2026-10-31/",
+    "MyTradingSys/research/sim_desk/results/",
+    "MyTradingSys/research/context_factors_2026-10-16/dev_ext.py (read)"
+  ],
+  "scope_out": [
+    "VALIDATION and HOLDOUT, new features, changing frozen PRE_REG.md, live tree"
+  ],
+  "scope_sha": "68eac1e27905",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "Meta-label NOT ENOUGH DATA branch (ROADMAP 2.2): rerun the Fabio Model C price-only stand-in meta-label test with the same frozen features and amendments on pre-DEV dev_ext_2019_2021 (A-20261018-2) to lift n toward 461 per tercile (sd ~2.3 R, delta 0.30 R); same Holm family, placebo, blocked CV; if still NOT ENOUGH DATA park meta-labelling for Tom VP and Fabio C. Runs only after meta-label-tom-vp-fabio-trades ends NOT ENOUGH DATA; never VALIDATION/HOLDOUT",
-  "weight": "",
-  "worker": ""
+  "state": "ready",
+  "steps": [
+    "read PRE_REG.md and ROADMAP 2.2 NOT ENOUGH DATA row; find the 1m kline source of dev_ext (research/context_factors_2026-10-16/dev_ext.py)",
+    "write PRE_REG_EXT.md (same family m, same placebo, 6 block CV) before any outcome read",
+    "run gen_trades and analyze on 2019-09..2022-03 only",
+    "write RESULT.md with n per tercile, CI, placebo p, power line; NOT ENOUGH DATA again parks meta-labelling for Tom VP and Fabio C"
+  ],
+  "tests": "MyTradingSys/research/meta_label_dev_ext_2026-10-31/test_dev_ext_window.py: asserts no bar at or after 2022-04-01 is read (fails on a window one bar too wide)",
+  "title": "Meta-label NOT ENOUGH DATA branch: rerun Fabio Model C stand-in test on pre-DEV dev_ext 2019-2021 (ROADMAP 2.2)",
+  "weight": "CRUCIAL",
+  "worker": "session"
 }

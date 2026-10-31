@@ -5,38 +5,7 @@
  "title": "DSA bridge fix plan (AIBridge 0.7.3), 2026-10-31",
  "provenance": "source-extracted",
  "date": "2026-10-31",
- "what": [
-  {
-   "name": "Rule or setup, line 1 from the source",
-   "value_plain": "python scripts/aibridge/tests/e2e_bridge.py [F:/AIBridge] [--json] - read-only for the repo; writes only under",
-   "label": "OURS"
-  },
-  {
-   "name": "Rule or setup, line 2 from the source",
-   "value_plain": "<root>/run/e2e/<utc>/. Exit 0 = every row PASS. Rows print E<n> PASSFAILNOT_CHECKED <evidence>.",
-   "label": "OURS"
-  },
-  {
-   "name": "Rule or setup, line 3 from the source",
-   "value_plain": "E0 install: reuse aibridge_verify.py (file:/fix:/agent_ping/roundtrip rows); version = RELEASES.json current.",
-   "label": "OURS"
-  },
-  {
-   "name": "Rule or setup, line 4 from the source",
-   "value_plain": "E1 six-block reply (tier B, node): load the INSTALLED extension/loop.js; feed tests/fixtures/six_blocks.json (6 final blocks,",
-   "label": "OURS"
-  },
-  {
-   "name": "Rule or setup, line 5 from the source",
-   "value_plain": "nonces N1..N6) to selectBlocks -> exactly 6, order 1..6, no key twice. Then tier A: POST the 6 commands to the agent in",
-   "label": "OURS"
-  },
-  {
-   "name": "Rule or setup, line 6 from the source",
-   "value_plain": "order (Write-Output E1-<nonce>); count each nonce in audit.jsonl since the run start = 1 each.",
-   "label": "OURS"
-  }
- ],
+ "what": [],
  "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
  "window": null,
  "verdict": {
@@ -44,10 +13,10 @@
   "tone": "good"
  },
  "why": [
-  "> Write-Output \"EXIT_CODE=$LASTEXITCODE\" as the last line: it turns a failure into exit 0 (from 0.7.4 a line",
-  "> EXIT_CODE=<non-zero> also fails the step). For the gate use task=mts-gate, not an inline copy. A gate result counts only",
-  "> with its summary line ALL TESTS PASSED or FAILED: N step(s); no summary = FAIL, report the log path, do not re-run blind.",
-  "review stamp before ready, and c8 (lane OPUS) also needs approved_by. DECISION (OURS): the planner does not stamp its own"
+  "\"\\\"\\\\\\\"> Write-Output \\\\\\\\\\\\\\\"EXIT_CODE=$LASTEXITCODE\\\\\\\\\\\\\\\" as the last line: it turns a failure into exit 0 (from 0.7.4 a line\\\\\\\",\\\",\",",
+  "\"\\\"\\\\\\\"> EXIT_CODE=<non-zero> also fails the step). For the gate use task=mts-gate, not an inline copy. A gate result counts only\\\\\\\",\\\",\",",
+  "\"\\\"\\\\\\\"> with its summary line ALL TESTS PASSED or FAILED: N step(s); no summary = FAIL, report the log path, do not re-run blind.\\\\\\\",\\\",\",",
+  "\"\\\"\\\\\\\"review stamp before ready, and c8 (lane OPUS) also needs approved_by. DECISION (OURS): the planner does not stamp its own\\\\\\\"\\\"\""
  ],
  "kpis": [],
  "examples": [
@@ -61,10 +30,11 @@
  "missing": {
   "n_trades": "the source does not state a trade count",
   "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
-  "window": "the source states no test window"
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
  },
  "source_files": [
-  "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
+  "MyTradingSys/research/sim_desk/results/dir-dsa_bridge_fix_plan_2026-10-31.json"
  ],
- "commit": "5c62ae585"
+ "commit": "bde0292a9"
 }

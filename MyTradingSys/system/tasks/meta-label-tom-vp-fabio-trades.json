@@ -2,6 +2,17 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 27,
+    "folded": "2026-10-31T14:14:32Z",
+    "misses": 49,
+    "reads": [
+      "MyTradingSys/research/sim_desk/results/desk-tom_vp-0fd1a3c0.json",
+      "MyTradingSys/research/sim_desk/studies/_bars.py",
+      "MyTradingSys/research/sim_desk/results/desk-tom_vp-c8d2f341.json"
+    ],
+    "session": "agent-a2b94a287cd77621a"
+  },
   "created": "2026-10-31T13:28:36Z",
   "depends_on": [],
   "done_when": "",
@@ -18,7 +29,8 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "already shipped: 68eac1e27 Tom VP FAILED, Fabio C NOT ENOUGH DATA",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -30,7 +42,7 @@
   "scope_out": [],
   "size": "",
   "sources": [],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "Meta-label test (operator 10-31) on sim-desk trades: can other MTS layers' state at entry separate Tom VP winners (largest daily run, ~900-1800 filled) and Fabio Model C winners (~516) from losers? Same protocol as meta-label-break-events-layer-features: features frozen before any outcome read (BBWP, D1 trend, Cowen band side, funding sign, session, RSI zone, WaveTrend zone, volume), entry-time only, logistic with week-purged CV on DEV, shuffled-label placebo, deflate for features tried; pass = top-score bucket fee-net > 0 with day-block CI excluding 0 on DEV, then one VALIDATION read with same sign. Export per-trade feature table to the sim desk so the split is visible as charts.",

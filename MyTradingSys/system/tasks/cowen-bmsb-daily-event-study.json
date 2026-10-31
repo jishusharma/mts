@@ -1,10 +1,21 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "2026-10-31T15:44:10Z",
+  "closed": "2026-10-31T14:21:37Z",
   "commands": [
     "python MyTradingSys/research/cowen_q4_2026-10-31/event_study/run_event_study.py"
   ],
+  "context": {
+    "calls_to_edit": 10,
+    "folded": "2026-10-31T14:21:50Z",
+    "misses": 45,
+    "reads": [
+      "MyTradingSys/research/cowen_q4_2026-10-31/COWEN_Q4_CONCEPT_CHECK.md",
+      "MyTradingSys/research/sim_desk/studies/cowen_bmsb.py",
+      "MyTradingSys/research/sim_desk/test_cowen_bmsb.py"
+    ],
+    "session": "agent-a729f2cc3effad73e"
+  },
   "created": "2026-10-31T06:42:26Z",
   "depends_on": [],
   "done_when": "PRE-REG file committed before any run; RESULT.md with n, mean net R, 95% range, wins, per-year split and placebo difference per idea; verdict line appended; no rule or gate added anywhere.",
@@ -18,9 +29,9 @@
   "latest": [
     {
       "kind": "ship",
-      "line": "n 19-22 per idea, all NOT ENOUGH DATA (floor 30); LOSE +0.69R lead only; bdf5e584b",
-      "ref": "68d350dc2",
-      "utc": "2026-10-31T15:44:10Z"
+      "line": "MyTradingSys/research/cowen_q4_2026-10-31/event_study/RESULT.md: n 19-22 per idea, NOT ENO",
+      "ref": "eca1f72fc",
+      "utc": "2026-10-31T14:21:37Z"
     },
     {
       "auto": true,
@@ -48,7 +59,7 @@
   "refs": [
     "MyTradingSys/research/cowen_q4_2026-10-31/COWEN_Q4_CONCEPT_CHECK.md"
   ],
-  "result": "n 19-22 per idea, all NOT ENOUGH DATA (floor 30); LOSE +0.69R lead only; bdf5e584b",
+  "result": "MyTradingSys/research/cowen_q4_2026-10-31/event_study/RESULT.md: n 19-22 per idea, NOT ENOUGH DATA; LOSE n22 +0.69R net lead only",
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"
@@ -70,7 +81,7 @@
     "fetch public Binance BTCUSDT daily klines 2017-08..2024-06 into a gitignored folder; run each idea; write RESULT.md",
     "append the verdict line to COWEN_Q4_CONCEPT_CHECK.md section 2; ship with a Result: line"
   ],
-  "taken": "2026-10-31T15:44:10Z",
+  "taken": "2026-10-31T14:21:37Z",
   "tests": "MyTradingSys/research/cowen_q4_2026-10-31/event_study/test_event_study.py: band numbers hand-computed from FORMULAS-style weekly closes; fails on the pre-change tree (file absent)",
   "title": "Cowen band: pre-registered daily event study 2017-08..2024-06 (BOUNCE and LOSE need about 25 events)",
   "weight": "IMPORTANT",

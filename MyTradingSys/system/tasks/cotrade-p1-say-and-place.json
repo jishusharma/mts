@@ -1,0 +1,55 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/execution/test_cotrade.py -q",
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "created": "2026-10-31T15:13:24Z",
+  "depends_on": [],
+  "done_when": "cotrade place --said '<verbatim>' --side sell --type limit --price P --amount A --stop S --dry-run prints the order and appends one JSON journal line; real path tested with a fake client only; test_cotrade.py passes and each test failed pre-change. First real testnet order is the operator's after he creates the co-trade key.",
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Operator speaks a trade ('short 100 at 110500 stop 111000'); Claude turns it into one structured order, shows it, places it on the existing TESTNET slot (spare jishu_22, else main; operator 2026-10-31: no new account) with a server-side reduce-only stop on fill, and appends a journal line holding his exact words, the reading and the market state.",
+  "id": "cotrade-p1-say-and-place",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-31 ACCEPT (Sonnet reviewer Agent, FIX applied once, not re-read, planner DECISION OURS). Live-path rules apply: tests for restart state, non-trade balance moves and API errors; fail closed. Account: operator decision d-cotrade-use-existing-account (no new key, spare jishu_22 else main). His 'fire' = go, no extra confirm. PLANNER: CRUCIAL, review Agent on the diff before ship. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T15:38:22Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "new MyTradingSys/execution/cotrade.py and test_cotrade.py; read-only reuse of deribit_orders.place/stop_market/cancel/close_position, executor HALT checks, risk_guard, journal style"
+  ],
+  "scope_out": [
+    "No mainnet path; no change to auto_trader, executor, position_manager behaviour; no ladder (P2); no live-aid edits; never read .secrets; no committed runtime data"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md",
+    "MyTradingSys/execution/deribit_orders.py",
+    "MyTradingSys/execution/executor.py",
+    "MyTradingSys/execution/TESTNET_SUBACCOUNTS.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md sections 1,3,5",
+    "Write test_cotrade.py first, run it red on the old tree",
+    "Build cotrade.py: parse args, preflight (env, HALT, caps, account secret present, exchange position/open-orders vs journal), place entry, ensure stop on fill, journal",
+    "Add a kill subcommand = cancel_by_label cotrade + close_position on the co-trade account + write HALT",
+    "python scripts/dev/run_all_tests.py --quick; sync.py ship"
+  ],
+  "tests": "test_cotrade.py (fake client, no network): refuses no stop / not testnet / HALT present / over cap; journal line keeps said verbatim; restart mismatch refuses; OrderStateUnknown journaled, no retry. Full list: DESIGN.md s5 P1.",
+  "title": "Co-trade P1: operator words -> one testnet order with stop, journaled",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

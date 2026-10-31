@@ -1,0 +1,67 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/backtest/test_vp_return_to_value.py -q"
+  ],
+  "created": "2026-10-31T15:15:37Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/tom_v2_gross_first_2026-11/RESULT.md gives n events, real-minus-placebo diff in pp with CI, and PASS (CI lower > 0) or FAIL; sim_desk/results/tom-v2-gross-first-dev-ext.json exported; VERDICTS.csv row; DEV, VALIDATION, HOLDOUT unread.",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Tom return-to-value with the near-band placebo as PRIMARY (real minus placebo, |d|<=1) on fresh pre-DEV data dev_ext_2019_2021, same code and rules as vp_return/PRE_REG.md (SETUP_REVIEW.md section 6 test 2; D7 S3 #6).",
+  "id": "tom-v2-gross-first-dev-ext",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tom-vp-return: keep original forward-index line (lookahead allowlist)",
+      "ref": "730a4795280c",
+      "utc": "2026-10-31T05:35:20Z"
+    }
+  ],
+  "layers": [
+    "tom"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-31 ACCEPT (Sonnet reviewer Agent, FIX applied once, not re-read, planner DECISION OURS). PLANNER. Re-derive card gpt-rederive-tom-vp-return-to-value (CODEX, ready) should land first; do not cite 57.2 until it is SAME. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files. Dependency on the re-derive card dropped: this card cites no 57.2 figure (DECISION OURS).",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T15:38:19Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D7_ROADMAP.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/vp_return_to_value.py",
+    "MyTradingSys/backtest/test_vp_return_to_value.py",
+    "MyTradingSys/research/tom_v2_gross_first_2026-11/"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "any filter or stop tuning",
+    "live tree"
+  ],
+  "scope_sha": "730a4795280c",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/tom_fabio_review_2026-10-31/SETUP_REVIEW.md:244-248",
+    "MyTradingSys/research/v1_plan_2026-10-20/D7_ROADMAP.md:39"
+  ],
+  "state": "ready",
+  "steps": [
+    "read SETUP_REVIEW.md section 6 test 2 and the vp_return PRE_REG; run verdicts.py check 'tom vp return'",
+    "write PRE_REG.md (H1 diff>0, CI lower>0, n~870 per 911 days; m first), commit before running",
+    "restrict placebo to |d|<=1 in a wrapper, run on 2019-2021 data, 2000 day-block bootstrap",
+    "write RESULT.md, export json, backfill VERDICTS.csv"
+  ],
+  "tests": "Fail-first: test_vp_return_to_value.py gains a case where a placebo with |d|=3 must be excluded from the primary diff (hand-computed 3-event table); fails on the unrestricted code, passes after.",
+  "title": "Tom v2 gross-first: near-band placebo on 2019-2021 1m (SETUP_REVIEW.md section 6 test 2) before any DEV or filter work (D7 S3 run list #6)",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

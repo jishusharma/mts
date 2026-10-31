@@ -4,36 +4,61 @@
   "commands": [],
   "created": "2026-10-31T11:20:54Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "results/*.json for the new studies list >=1 trade each with entry/stop/target/exit, catalogue marks them exported, tests pass",
+  "est_turns": 40,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Tom and Fabio setups have no per-trade replay in the simulator; add fabio_v3 A/B/C/D (Model B scored) and tom spike fade / level touch studies that export per-trade examples, DEV 2022-04-01..2024-06-30, fee-net.",
   "id": "sim-desk-tom-fabio-studies",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "meta-label Tom VP / Fabio C: DEV run, both fail the pre-registered rule; sim-desk exports",
+      "ref": "68eac1e27905",
+      "utc": "2026-10-31T14:14:34Z"
+    }
+  ],
   "layers": [
     "tom",
     "fabio"
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-31 ACCEPT (Sonnet reviewer Agent, FIX applied once, not re-read, planner DECISION OURS). Model B rows export NOT MEASURED until fabio-v3-model-b-unmanaged-scored-zero ships.  Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-31T14:49:58Z",
   "refs": [
     "MyTradingSys/research/tom_fabio_review_2026-10-31/SETUP_REVIEW.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/studies/fabio_v3.py",
+    "MyTradingSys/research/sim_desk/studies/tom_vp.py",
+    "MyTradingSys/research/sim_desk/studies/tom_spike_level.py (new)",
+    "MyTradingSys/research/sim_desk/test_fabio_v3.py",
+    "MyTradingSys/research/sim_desk/results/_catalogue.json",
+    "MyTradingSys/research/sim_desk/results/"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT, live tree, publishing the artifact"
+  ],
+  "scope_sha": "68eac1e27905",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "Sim desk: Tom and Fabio setups have no per-trade replay. Only tom_vp.py is a runnable study (12 runs, equity curve only); all Fabio rows and Tom spike/level-touch/Model C are text cards with 'no example trades exported'. Add studies (fabio_v3 A/B/C/D with Model B scored, tom spike fade, tom level touch) that export per-trade examples (entry/stop/target/exit + bars), DEV 2022-04-01..2024-06-30 only, fee-net",
-  "weight": "",
-  "worker": ""
+  "state": "ready",
+  "steps": [
+    "read DESIGN.md and studies/fabio_v3.py; list which models already export trades",
+    "add per-trade export (entry, stop, target, exit, bars) for Models A-D and the Tom spike/level-touch cases",
+    "hand-compute one trade per study as the test number",
+    "rebuild the catalogue; check the DEV window clamp"
+  ],
+  "tests": "MyTradingSys/research/sim_desk/test_fabio_v3.py: per-trade hand case fails on old code (no trades exported), passes after",
+  "title": "Sim desk: add per-trade replay studies for Fabio v3 A-D and Tom spike fade / level touch (DEV only, fee-net)",
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

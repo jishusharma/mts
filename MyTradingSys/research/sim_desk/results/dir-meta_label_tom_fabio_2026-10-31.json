@@ -1,0 +1,79 @@
+{
+ "id": "dir-meta_label_tom_fabio_2026-10-31",
+ "kind": "backtest",
+ "family": "Meta Label Tom Fabio",
+ "title": "PRE_REG: meta-label test on sim-desk trades, Tom VP and Fabio Model C (card meta-label-tom-vp-fabio-trades, operator \"r…",
+ "provenance": "source-extracted",
+ "date": "2026-10-31",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Existing MTS layer code is used unchanged: krown_core.bbwp (FORMULAS 21.5, basis 7, lookback 100), rsi_core (Wilder 14), wavetrend.compute (10/21/4, zone), cowen_bmsb.features (completed-week band, daily SMA50). Bar tim…",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "feature definition at t0 model column(s)",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "1 BBWP percentile BBWP of the last closed 1h bar, 0..100 bbwp/100",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "2 D1 trend sign sign(close - SMA50) of the last closed daily bar d1 x side",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 5 from the source",
+   "value_plain": "3 Cowen band side last closed daily close above band top = +1, below band bottom = -1, inside = 0 (band from COMPLETED weeks) cowen x side",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 6 from the source",
+   "value_plain": "4 Funding sign sign of the last funding rate with calc_time <= t0 (data on disk covers DEV: F:/MTS/Dumps/backtest/raw/fundingRate, BTCUSDT 2020-01..2026-09, read only up to 2024-06) fund x side",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2022-04-01 to 2024-06-30 (as written in the source)",
+ "verdict": {
+  "label": "words: PASSED = the rule is met; NOT ENOUGH DATA = fewer than 100 trades in the top tercile; otherwise FAILED. ONLY if a study passes on DEV: exactly one VALIDATION read (2024-07-01..2025-06-30) of that frozen model, reported as same sign…",
+  "tone": "bad"
+ },
+ "why": [
+  "PASS = top-tercile fee-net mean > 0 with the 95 % day-block CI lower bound > 0 on DEV AND the real spread above the placebo 95th percentile. Sim-desk verdict words: PASSED = the rule is met; NOT ENOUGH DATA = fewer than 100 trades in the top tercile; otherwis…",
+  "Features tried per study: 8 (10 columns, one model fit, no feature selection). Across both studies 16 feature-study pairs. Single-feature splits are DESCRIPTIVE only (they do not enter the pass rule): for each of the 8 features, trades are grouped by the raw…",
+  "test_features.py: perturbation test (all 1m bars at or after t0 are replaced with garbage; every feature at t0 must be bit-identical) plus a meta-test that a deliberately leaky implementation (bar counted as closed at its OPEN) is caught. It is also run once…",
+  "Export: one sim-desk result JSON per study (desk-meta_label_tom_vp, desk-meta_label_fabio_c kinds backtest) with exactly three parts: (1) a table \"Layer reading trades win % average R after fees\", one row per reading value, each feature's rows summing to the…"
+ ],
+ "kpis": [
+  {
+   "label": "trades (first count in the source)",
+   "value": "100"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 100,
+   "quote": "PASS = top-tercile fee-net mean > 0 with the 95 % day-block CI lower bound > 0 on DEV AND the real spread above the placebo 95th percentile. Sim-desk verdict words: PASSED = the rule is met; NOT ENOU…"
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)"
+ },
+ "source_files": [
+  "MyTradingSys/research/meta_label_tom_fabio_2026-10-31/PRE_REG.md"
+ ],
+ "commit": "4ca494b3a"
+}
