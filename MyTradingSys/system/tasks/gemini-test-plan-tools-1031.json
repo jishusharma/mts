@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T03:56:40Z",
   "commands": [
     "git grep -n \"def test_\" -- MyTradingSys/tools"
   ],
@@ -15,7 +16,21 @@
   "id": "gemini-test-plan-tools-1031",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_burn_2026-10-31/TEST_PLAN_TOOLS.md",
+      "ref": "afe7b8302",
+      "utc": "2026-10-31T03:56:40Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 33 file(s)",
+      "ref": "34aac43857c5",
+      "utc": "2026-10-31T02:49:25Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -23,26 +38,32 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T02:40:27Z",
+  "refreshed": "2026-10-31T03:53:36Z",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/gemini_burn_2026-10-31/TEST_PLAN_TOOLS.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_burn_2026-10-31/ (new files only)"
   ],
   "scope_out": [
     "live tree; engine and layer code edits; any backtest or trading verdict; .secrets and .env"
   ],
-  "scope_sha": "",
+  "scope_sha": "34aac43857c5",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read the code and its tests",
     "grep tests per case",
     "write the table"
   ],
+  "taken": "2026-10-31T03:56:40Z",
   "tests": "report only; every finding cites file:line",
   "title": "[GEMINI] test plan for MyTradingSys/tools: boundary and failure cases per function (missing input files, bad JSON, encoding, timezone edges), which exist, which are missing",
   "weight": "ROUTINE",
