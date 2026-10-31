@@ -143,6 +143,12 @@ login A 18 % (hook header). Phases 0 and 1 fit this week on login A; phase 2 wai
 | P3 Sizing arm | P2 done AND a second setup passes P1 | sizing by model score vs equal risk, bar copied from `PRE_REG_CONFLUENCE.md:71-75` (Sharpe at equal capital, mean not lower by more than 0.01 %, same sign both halves) | bar met on DEV, then its one VALIDATION read | research code only; live wiring is S5 and needs restart/reset/balance/API-error tests | 1 Sonnet card |
 | P4 Live | S5 (`D7_ROADMAP.md:21`) | not in this roadmap | - | - | - |
 
+### 2.0 Panel shape (operator decision d-meta-label-panel-simple-self-tested, 2026-10-31: "simplified and easy to test - check it yourself")
+Built in P2 only. Per study: one table `Layer reading | trades | win % | average R after fees`, one verdict line
+`Best third by filter vs random third -> PASSED / FAILED / NOT ENOUGH DATA`, the existing 6 example charts; nothing more. Every panel change
+ships with an automated check: result-JSON shape, bucket trade counts sum to the filled trades, and a page click test like
+`research/sim_desk/test_page_click.py`; the building session opens the rendered page and checks it before reporting. Testing is ours, not his.
+
 ### 2.1 Amendments to the running test (apply before any further outcome read; if a DEV read already happened, report it as read and apply the bar post hoc, labelled POST HOC)
 1. Stamp features at the fill bar open (`entry[0]`), last-closed-bar rule for every higher-timeframe value (1.1).
 2. Holm family, m = setups x specifications, written in RESULT.md before the read; the placebo p per cell; BH-FDR reported beside (1.2).
@@ -183,7 +189,7 @@ Rule (Opus, kept): a filter lifts a weak-but-real edge; it does not rescue negat
 ## 3. Cards filed (raw, this commit; `system/tasks/` checked for duplicates: none for these three)
 1. `meta-label-prereg-amendments` (SONNET, prio 1): apply section 2.1 to the running test and its sister before any further read.
 2. `meta-label-fabio-c-dev-ext-power` (SONNET, prio 2): the NOT ENOUGH DATA branch rerun on `dev_ext_2019_2021`, frozen features, n target 461 per tercile.
-3. `layer-state-snapshot-causal` (SONNET, prio 3, note S0 park): phase 2 `layer_state_at(ts)` + look-ahead forcing test; starts only on a P1 VALIDATION pass and S0 exit.
+3. `layer-state-snapshot-causal` (SONNET, prio 3, note S0 park): phase 2 `layer_state_at(ts)` + look-ahead forcing test + the panel of 2.0 with its checks; starts only on a P1 VALIDATION pass and S0 exit.
 
 Noticed (not fixed here): funding data absent for DEV on this host; exported desk kpis carry net only (no gross/fee); Opus step 4 duplicates
 `layer_lab/TRIALS.md`; three unmerged context families on the same DEV bars (confluence m 18, context_factors m 37/42, meta-label).
