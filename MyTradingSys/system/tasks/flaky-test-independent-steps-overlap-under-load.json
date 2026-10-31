@@ -4,32 +4,51 @@
   "commands": [],
   "created": "2026-10-31T13:43:25Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "the test has no sleep-based overlap assert and passes 20 consecutive runs while a busy loop runs",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "test_independent_steps_overlap_and_all_results_come_back asserts a wall-clock overlap and fails the ship gate under host load; make it deterministic.",
   "id": "flaky-test-independent-steps-overlap-under-load",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship gate: failing step keeps last 200 output lines in a per-run log; mts_signal.git timeo",
+      "ref": "91f02a537dd7",
+      "utc": "2026-10-31T09:46:21Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-31 ACCEPT (Sonnet reviewer Agent, FIX applied once, not re-read, planner DECISION OURS).  Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-31T14:49:47Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/test_run_all_tests.py"
+  ],
+  "scope_out": [
+    "run_all_tests.py behaviour, gate steps"
+  ],
+  "scope_sha": "91f02a537dd7",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "read fake(), max_overlap() and the test near line 261",
+    "replace the timing assert with an event barrier (each fake step waits on a threading.Barrier the others release) so overlap holds by construction",
+    "run the test 20x with a CPU hog in parallel"
+  ],
+  "tests": "scripts/dev/test_run_all_tests.py::test_independent_steps_overlap_and_all_results_come_back fails on old code under a slow start, passes 20x under load",
   "title": "test_run_all_tests.py::test_independent_steps_overlap_and_all_results_come_back is timing-flaky under host load and fails ship gate 3g when other ships run; done-when: deterministic (no wall-clock overlap assert) test fails on old code, passes 20x under load",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "agent"
 }

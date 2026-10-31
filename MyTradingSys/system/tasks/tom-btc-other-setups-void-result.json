@@ -1,34 +1,41 @@
 {
   "approved_by": "",
-  "asks": "",
+  "asks": "Clear result on tom-btc-other-setups although its trust is UNCHECKED? Default: fold into the trust check of tom-btc-other-setups.",
   "commands": [],
   "created": "2026-10-31T10:04:42Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "tom-btc-other-setups.json result no longer says 504 candidates or 100 blind charts and names BLOCKED; tasks.py lint passes",
+  "est_turns": 5,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Card tom-btc-other-setups carries result 504 candidates / 100 blind charts but its report says BLOCKED, no event study, 105 candidates void; clear the result.",
   "id": "tom-btc-other-setups-void-result",
   "lane": "HAIKU",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-31 T0-ONLY (planner-a-20261031; machine checks only). ",
   "prio": 3,
-  "refine_tries": 0,
+  "refine_tries": 1,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/system/tasks/tom-btc-other-setups.json"
+  ],
+  "scope_out": [
+    "the report, any research file"
+  ],
+  "size": "S",
   "sources": [],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "read MyTradingSys/research/layer_lab/reports/2026-10-22_tom-btc-other-setups.md lines 1-9",
+    "set result to the report BLOCKED line (JSON, sorted keys, LF newline)"
+  ],
+  "tests": "docs card: python scripts/dev/tasks.py lint passes",
   "title": "card tom-btc-other-setups result says 504 candidates; 100 blind charts but its report layer_lab/reports/2026-10-22_tom-btc-other-setups.md:1-9 says BLOCKED, no event study, 105 candidates void; clear the result field",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

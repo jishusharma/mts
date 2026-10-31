@@ -4,32 +4,61 @@
   "commands": [],
   "created": "2026-10-31T13:29:46Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "test_bg_watch.py passes with the new cases, which fail on pre-change code; supervisor.md carries the same-wake rule",
+  "est_turns": 22,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "A background poll loop (until grep ... pytest output) ran 161 min unnoticed; make bg_watch.py until the only allowed pattern and make the plan STALLED-BG line name the TaskStop to run.",
   "id": "bg-poll-loop-ran-161m-no-deadline",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Supervisor idle fix: fit role budget, retoken, isolate successor_wake handover tests from ",
+      "ref": "7b66a91a7a68",
+      "utc": "2026-10-30T18:03:01Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "7b66a91a7a68 Supervisor idle fix: fit role budget, retoken, isolate successor_wake handove",
+      "ref": "MyTradingSys/system/roles/supervisor.md",
+      "utc": "2026-10-30T18:03:01Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-31 ACCEPT (Sonnet reviewer Agent, FIX applied once, not re-read, planner DECISION OURS).  Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-31T14:49:50Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/bg_watch.py",
+    "scripts/dev/test_bg_watch.py",
+    "MyTradingSys/system/roles/supervisor.md"
+  ],
+  "scope_out": [
+    "live tree, hook installation on other machines, scheduler or cron of any kind"
+  ],
+  "scope_sha": "7b66a91a7a68",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "Stalled background poll-loops (until grep ... pytest output) run for hours with no deadline: supervisor plan flagged bqp7yp729 at 161 min and nobody stopped it; done-when: bg_watch.py until is the only allowed pattern (hook/lint rejects bare until-grep loops), plan STALLED-BG auto-prints TaskStop and the Supervisor role requires acting on it the same wake",
-  "weight": "",
-  "worker": ""
+  "state": "ready",
+  "steps": [
+    "read bg_watch.unbounded_loop and stalled(); list what the supervisor plan prints for a stalled task",
+    "extend unbounded_loop so a bare until/while grep loop is flagged, and the STALLED-BG line prints the TaskStop target",
+    "write tests for a flagged bare loop, an allowed bg_watch.py until call and a young task",
+    "add one line to supervisor.md: act on STALLED-BG in the same wake"
+  ],
+  "tests": "scripts/dev/test_bg_watch.py: new cases for bare until-grep (fail on old code) and the printed TaskStop line",
+  "title": "Stalled background poll loops run for hours: make bg_watch.py until the only allowed pattern and make the plan STALLED-BG line name the TaskStop to run (161 min case)",
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
