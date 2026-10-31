@@ -84,4 +84,43 @@ t('stopNotice: states why and how to re-arm', () => {
   assert.ok(/OFF/.test(L.stopNotice()));
 });
 
+
+
+// ---- D4 replyWatch: a dropped generation after a posted result gets one notice (< 60 s), then a stop ----
+{
+  const W = L.replyWatch;
+  const step = (st, ev, now) => W(st, ev, now);
+  t('replyWatch: posted, no reply for 45 s -> notice once; another 45 s -> stop', () => {
+    let r = step(null, { type: 'posted' }, 0);
+    r = step(r.state, { type: 'tick' }, 30000); assert.strictEqual(r.action, 'none');
+    r = step(r.state, { type: 'tick' }, 45000); assert.strictEqual(r.action, 'notice');
+    r = step(r.state, { type: 'tick' }, 60000); assert.strictEqual(r.action, 'none');
+    r = step(r.state, { type: 'tick' }, 90000); assert.strictEqual(r.action, 'stop');
+  });
+  t('replyWatch: the notice is under 60 s after the post', () => {
+    assert.ok(L.REPLY_NOTICE_MS < 60000);
+  });
+  t('replyWatch: a reply arriving resets the watch (no notice, notices back to 0)', () => {
+    let r = step(null, { type: 'posted' }, 0);
+    r = step(r.state, { type: 'reply' }, 20000);
+    r = step(r.state, { type: 'tick' }, 200000); assert.strictEqual(r.action, 'none');
+    assert.strictEqual(r.state.notices, 0);
+  });
+  t('replyWatch: never while a run is in flight', () => {
+    let r = step(null, { type: 'posted' }, 0);
+    r = step(r.state, { type: 'tick', busy: true }, 100000); assert.strictEqual(r.action, 'none');
+    r = step(r.state, { type: 'tick' }, 120000); assert.strictEqual(r.action, 'none');   // timer restarted by the busy tick
+    r = step(r.state, { type: 'tick' }, 146000); assert.strictEqual(r.action, 'notice');
+  });
+  t('replyWatch: idle state never acts; reset clears', () => {
+    assert.strictEqual(step(null, { type: 'tick' }, 1e9).action, 'none');
+    let r = step(null, { type: 'posted' }, 0); r = step(r.state, { type: 'tick' }, 50000);
+    r = step(r.state, { type: 'reset' }, 51000); assert.strictEqual(r.state.notices, 0); assert.strictEqual(r.state.phase, 'idle');
+  });
+  t('quietWaitStatus: always visible text, louder past the wait limit', () => {
+    assert.ok(/waiting/.test(L.quietWaitStatus(5000, 180000)));
+    assert.ok(/still changing/.test(L.quietWaitStatus(190000, 180000)));
+  });
+}
+
 console.log(n + ' tests passed');

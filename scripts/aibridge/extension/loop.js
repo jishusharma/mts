@@ -1,7 +1,7 @@
 // loop.js - pure helpers for the auto-loop. No DOM, no chrome.* so node can test them.
 (function (root) {
   var L = {};
-  L.VERSION = '0.7.3';
+  L.VERSION = '0.7.4';
 
   L.fnv = function (s) {
     var h = 2166136261;
@@ -207,6 +207,62 @@
       p.then(function (v) { if (!done) { done = true; clearTimeout(timer); resolve(v); } },
              function (e) { if (!done) { done = true; clearTimeout(timer); resolve({ ok: false, cls: 'extension_link', error: String(e) }); } });
     });
+  };
+
+  // ---- block selection (pure; content.js describes each candidate block, this decides) ----
+  // desc = {cmd, chain, nested}; chain = ancestors as {tag, cls, role, lead} (lead = first 40 chars of its own text).
+  // A block inside DeepSeek's thinking panel is a draft, never an instruction. Identified by structure (tag / class / role),
+  // never by the block text. FAIL CLOSED: a collapsible container (details) or a chain the page could not describe is
+  // treated as thinking, so an unknown layout runs nothing instead of running drafts.
+  var THINK_CLS = /think|thought|reason|cot[-_ ]|chain[-_ ]?of/i;
+  L.isThinking = function (chain) {
+    if (!chain || !chain.length) return true;   // cannot describe where the block sits = unknown = not runnable
+    for (var i = 0; i < chain.length; i++) {
+      var c = chain[i] || {}, tag = String(c.tag || '').toLowerCase();
+      if (tag === 'thought' || tag === 'thinking' || tag === 'details' || tag === 'summary') return true;
+      if (THINK_CLS.test(String(c.cls || '')) || THINK_CLS.test(String(c.role || ''))) return true;
+      if (/^\s*(thought for|thinking|deep ?think)/i.test(String(c.lead || '')) && tag !== 'body') return true;
+    }
+    return false;
+  };
+  // -> {selected: [index...], ignored: [index...], status: text or ''}
+  L.selectBlocks = function (descs) {
+    var sel = [], ign = [];
+    (descs || []).forEach(function (d, i) { (L.isThinking(d && d.chain) ? ign : sel).push(i); });
+    return { selected: sel, ignored: ign, status: ign.length ? 'ignored ' + ign.length + ' block(s) inside the thinking panel (only the final answer runs)' : '' };
+  };
+  // key = fnv(text)@occurrence among the SELECTED blocks with the same text: a thinking draft or a collapsing panel never shifts it
+  L.batchKeys = function (texts) {
+    var seen = {};
+    return (texts || []).map(function (t) { var h = L.fnv(String(t)); var o = seen[h] || 0; seen[h] = o + 1; return h + '@' + o; });
+  };
+  // per-batch duplicate guard: -> for each block, the 1-based number of an earlier identical block, or 0
+  L.dupOf = function (texts) {
+    var first = {};
+    return (texts || []).map(function (t, i) { var k = String(t).replace(/\r/g, '').trim(); if (first[k] === undefined) { first[k] = i + 1; return 0; } return first[k]; });
+  };
+
+  // ---- dropped generation (D4): after a result is posted DSA must answer; if it never does, say so ----
+  // state = replyWatch() ; event = {type:'posted'|'reply'|'tick'|'reset', busy: in-flight run or draft being typed}
+  // -> {state, action: 'none'|'notice'|'stop'}. One notice per chain, then stop. noticeMs 45 s (OURS) keeps it under 60 s.
+  L.REPLY_NOTICE_MS = 45000;
+  L.replyWatch = function (state, ev, now, noticeMs) {
+    var s = state ? { phase: state.phase, since: state.since, notices: state.notices } : { phase: 'idle', since: 0, notices: 0 };
+    ev = ev || {};
+    if (ev.type === 'posted') { s.phase = 'waiting'; s.since = now; return { state: s, action: 'none' }; }
+    if (ev.type === 'reply') { s.phase = 'idle'; s.notices = 0; return { state: s, action: 'none' }; }
+    if (ev.type === 'reset') return { state: { phase: 'idle', since: 0, notices: 0 }, action: 'none' };
+    if (s.phase !== 'waiting' || ev.busy) { if (s.phase === 'waiting') s.since = now; return { state: s, action: 'none' }; }
+    if (now - s.since < (noticeMs || L.REPLY_NOTICE_MS)) return { state: s, action: 'none' };
+    if (s.notices >= 1) { s.phase = 'idle'; return { state: s, action: 'stop' }; }
+    s.notices = 1; s.since = now;
+    return { state: s, action: 'notice' };
+  };
+  L.REPLY_NOTICE_TEXT = '[AIRUN NOTICE] your last reply ended without a final answer (your generation dropped after the result). Re-send the blocks of that answer once.';
+  // visible status while the page text never settles (spinner text keeps changing)
+  L.quietWaitStatus = function (elapsedMs, waitMs) {
+    var s = Math.round(elapsedMs / 1000);
+    return elapsedMs > waitMs ? 'page text still changing after ' + s + ' s; DSA may be stuck. Untick the box to stop, or wait.' : 'waiting for the reply to settle (' + s + ' s)';
   };
 
   root.AIBridgeLoop = L;
