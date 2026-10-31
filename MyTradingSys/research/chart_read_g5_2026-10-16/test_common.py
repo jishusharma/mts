@@ -127,5 +127,22 @@ class TestVerdict(unittest.TestCase):
         self.assertEqual(K.verdict_arm(good, day, good + rng.normal(0, 0.01, n), day, t, 1000.0)["verdict"], "FAIL")
 
 
+
+class TestFamilyWise(unittest.TestCase):
+    def test_nominal_pass_missing_family_bar_is_inconclusive(self):
+        rng = np.random.default_rng(3)
+        z = rng.standard_normal(400)
+        z = (z - z.mean()) / z.std(ddof=1)
+        g, gc = 0.2 + 0.48 * z, -0.05 + 0.48 * z[::-1]
+        day, t = np.arange(400), np.arange(400)
+        one = K.verdict_arm(g, day, gc, day, t, 1e9, m=2)
+        many = K.verdict_arm(g, day, gc, day, t, 1e9, m=90)
+        self.assertGreaterEqual(one["t_net"], 2.0)
+        self.assertLess(one["t_net"], many["t_bar"])
+        self.assertEqual(one["verdict"], "PASS")
+        self.assertEqual(many["verdict"], "INCONCLUSIVE")
+        self.assertEqual(many["verdict_uncorrected"], "PASS")
+
+
 if __name__ == "__main__":
     unittest.main()

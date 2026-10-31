@@ -13,6 +13,7 @@ import datetime as dt
 import hashlib
 import sys
 import warnings
+from statistics import NormalDist
 from pathlib import Path
 
 import numpy as np
@@ -220,6 +221,33 @@ def diff_cluster(g, f, day):
     return b[1], float(np.sqrt(V[1, 1]))
 
 
+# Family-wise correction (LABEL_MOVES.md): Holm over all DEV variants, family alpha 0.05, OURS.
+FAMILY_ALPHA = 0.05
+M_FAMILY = 90          # OURS: verdicts.py count --split DEV on 2026-11-01 (lower bound)
+
+
+def t_bar(m, alpha=FAMILY_ALPHA):
+    """Corrected two-sided t bar for one verdict among m >= 2 (DECISION OURS, conservative): Holm step 1 = Bonferroni, z = inv_cdf(1 - alpha/(2m))."""
+    if int(m) < 2:
+        raise ValueError(f"t_bar needs a family of m >= 2 tests, got {m}")
+    z = NormalDist().inv_cdf(1.0 - alpha / (2 * int(m)))
+    df = N_MIN - 1                                    # smallest allowed n; Cornish-Fisher Student-t quantile, no scipy
+    return max(2.0, z + (z ** 3 + z) / (4.0 * df))
+
+
+def holm_reject(pvals, alpha=FAMILY_ALPHA):
+    """Holm step-down: boolean array, True where the hypothesis is rejected at family-wise alpha."""
+    p = np.asarray(pvals, float)
+    order = np.argsort(p)
+    rej = np.zeros(len(p), bool)
+    for rank, i in enumerate(order):
+        if p[i] <= alpha / (len(p) - rank):
+            rej[i] = True
+        else:
+            break
+    return rej
+
+
 def tstat(num, se):
     if se == 0 or np.isnan(se):
         return float("inf") if num > 0 else (float("-inf") if num < 0 else float("nan"))
@@ -245,10 +273,11 @@ def arm_masks(led):
     return {"T": F, "notF": ~F, "C": np.ones(len(F), bool)}
 
 
-def evaluate(cells, A, ndays):                                      
+def evaluate(cells, A, ndays, m=None):                                    
     led = cells["led"]
     masks = arm_masks(led)
     d, h = PRIMARY
+    bar = t_bar(M_FAMILY if m is None else m)
     Gf = cells["G"][PRIMARY] - cells["FUND"][PRIMARY]
     ok = ~np.isnan(Gf)
     out = {"mdd_bh": bh_mdd(A)}
@@ -268,17 +297,20 @@ def evaluate(cells, A, ndays):
     out["diff"], out["diff_se"] = diff, dse
     out["t_diff"] = float(tstat(diff, dse)) if not np.isnan(diff) else float("nan")
     T, Cc = out["T"], out["C"]
-    pf = (T["n"] >= N_MIN and T["mean"] >= C_PCT and T["t_cost"] >= 2.0 and diff >= 0.05 and out["t_diff"] >= 2.0
-          and T["mdd"] <= out["mdd_bh"])
-    pc = (not pf and Cc["n"] >= N_MIN and Cc["mean"] >= C_PCT and Cc["t_cost"] >= 2.0 and Cc["mdd"] <= out["mdd_bh"])
-    if pf:
-        out["verdict"] = "PASS_FLOW"
-    elif pc:
-        out["verdict"] = "PASS_CONTROL"
-    elif T["n"] < N_MIN:
-        out["verdict"] = "INCONCLUSIVE"
-    else:
-        out["verdict"] = "FAIL"
+    def _verdict(tb):
+        pf = (T["n"] >= N_MIN and T["mean"] >= C_PCT and T["t_cost"] >= tb and diff >= 0.05 and out["t_diff"] >= tb
+              and T["mdd"] <= out["mdd_bh"])
+        pc = (not pf and Cc["n"] >= N_MIN and Cc["mean"] >= C_PCT and Cc["t_cost"] >= tb and Cc["mdd"] <= out["mdd_bh"])
+        if pf:
+            return "PASS_FLOW"
+        if pc:
+            return "PASS_CONTROL"
+        return "INCONCLUSIVE" if T["n"] < N_MIN else "FAIL"
+    out["verdict_uncorrected"] = _verdict(2.0)
+    out["verdict"] = _verdict(bar)
+    if out["verdict_uncorrected"].startswith("PASS") and not out["verdict"].startswith("PASS"):
+        out["verdict"] = "INCONCLUSIVE"      # nominal pass that misses the family bar (OURS, LABEL_MOVES.md)
+    out["t_bar"] = bar
     out["mde_T"] = 2.8 * T["se"] if T["n"] else float("nan")
     return out
 
