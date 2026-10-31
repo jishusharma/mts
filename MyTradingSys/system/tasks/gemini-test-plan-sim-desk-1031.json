@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T05:13:35Z",
   "commands": [
     "git grep -n \"def test_\" -- MyTradingSys/research/sim_desk"
   ],
@@ -15,7 +16,14 @@
   "id": "gemini-test-plan-sim-desk-1031",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "kept: top 2 confirmed; cards test-sim-desk-levels-symbol-ignored, test-sim-desk-resample-m",
+      "ref": "49ede5fbf",
+      "utc": "2026-10-31T05:13:35Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -27,7 +35,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "kept: top 2 confirmed; cards test-sim-desk-levels-symbol-ignored, test-sim-desk-resample-missing-minutes",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_burn_2026-10-31/ (new files only)"
   ],
@@ -37,12 +50,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read the code and its tests",
     "grep tests per case",
     "write the table"
   ],
+  "taken": "2026-10-31T05:13:35Z",
   "tests": "report only; every finding cites file:line",
   "title": "[GEMINI] test plan for MyTradingSys/research/sim_desk: boundary and failure cases per function (empty data, gaps, symbol switch, catalogue rebuild, export), which exist, which are missing",
   "weight": "ROUTINE",

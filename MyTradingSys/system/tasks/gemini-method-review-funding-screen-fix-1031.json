@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T05:13:23Z",
   "commands": [
     "git show 3d8722a93 --stat"
   ],
@@ -15,7 +16,14 @@
   "id": "gemini-method-review-funding-screen-fix-1031",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "kept: funding review; F1 jitter and F4 label confirmed (cards funding-cost-boundary-jitter",
+      "ref": "49ede5fbf",
+      "utc": "2026-10-31T05:13:23Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -27,7 +35,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "kept: funding review; F1 jitter and F4 label confirmed (cards funding-cost-boundary-jitter, funding-rerun-label-primary-vs-secondary); F2 reversed window and F3 duplicates not filed (no caller, 7395 stamps 0 duplicates); no verdict change",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_burn_2026-10-31/ (new files only)"
   ],
@@ -37,12 +50,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "git show 3d8722a93 --stat",
     "read the study code and its pre-reg",
     "write the findings"
   ],
+  "taken": "2026-10-31T05:13:23Z",
   "tests": "report only; every finding cites file:line",
   "title": "[GEMINI] cross-vendor method review of the screens real funding fix (commit 3d8722a93): look-ahead, selection, cost, n, claims that outrun the data",
   "weight": "ROUTINE",

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T05:13:13Z",
   "commands": [
     "git show 80b0c19b --stat"
   ],
@@ -15,7 +16,14 @@
   "id": "gemini-method-review-tom-vp-study-1031",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "kept: Tom method review; 2 findings confirmed (boundary-bar and day-end censoring, card to",
+      "ref": "49ede5fbf",
+      "utc": "2026-10-31T05:13:13Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -27,7 +35,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "kept: Tom method review; 2 findings confirmed (boundary-bar and day-end censoring, card tom-vp-return-late-day-censoring), event-bar POC touch is pre-registered by design; no verdict change shown",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_burn_2026-10-31/ (new files only)"
   ],
@@ -37,12 +50,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "git show 80b0c19b --stat",
     "read the study code and its pre-reg",
     "write the findings"
   ],
+  "taken": "2026-10-31T05:13:13Z",
   "tests": "report only; every finding cites file:line",
   "title": "[GEMINI] cross-vendor method review of the Tom value-area return study (commit 80b0c19b): look-ahead, selection, cost, n, claims that outrun the data",
   "weight": "ROUTINE",

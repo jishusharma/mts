@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T05:13:39Z",
   "commands": [
     "git grep -n \"def test_\" -- MyTradingSys/tools"
   ],
@@ -15,7 +16,14 @@
   "id": "gemini-test-plan-tools-1031",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "kept: ranks 1-2 code already safe (cbp.load and read_json catch); one pin-test card test-b",
+      "ref": "49ede5fbf",
+      "utc": "2026-10-31T05:13:39Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -27,7 +35,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "kept: ranks 1-2 code already safe (cbp.load and read_json catch); one pin-test card test-build-analyst-data-missing-store-bad-bytes",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_burn_2026-10-31/ (new files only)"
   ],
@@ -37,12 +50,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read the code and its tests",
     "grep tests per case",
     "write the table"
   ],
+  "taken": "2026-10-31T05:13:39Z",
   "tests": "report only; every finding cites file:line",
   "title": "[GEMINI] test plan for MyTradingSys/tools: boundary and failure cases per function (missing input files, bad JSON, encoding, timezone edges), which exist, which are missing",
   "weight": "ROUTINE",

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T05:13:37Z",
   "commands": [
     "git grep -n \"def test_\" -- scripts/dev"
   ],
@@ -15,7 +16,14 @@
   "id": "gemini-test-plan-dev-scripts-1031",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "kept: rank 1 confirmed (card test-tasks-corrupt-card-load-all); rank 2 take-race not filed",
+      "ref": "49ede5fbf",
+      "utc": "2026-10-31T05:13:37Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -27,7 +35,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "kept: rank 1 confirmed (card test-tasks-corrupt-card-load-all); rank 2 take-race not filed (sequential double take tested at test_tasks.py:318, claims go through leases)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_burn_2026-10-31/ (new files only)"
   ],
@@ -37,12 +50,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read the code and its tests",
     "grep tests per case",
     "write the table"
   ],
+  "taken": "2026-10-31T05:13:37Z",
   "tests": "report only; every finding cites file:line",
   "title": "[GEMINI] test plan for scripts/dev (sync.py, tasks.py, supervisor.py, mts_signal.py): boundary and failure cases per function (claim races, ship while CI red, stale marker files, partial writes), which exist, which are missing",
   "weight": "ROUTINE",

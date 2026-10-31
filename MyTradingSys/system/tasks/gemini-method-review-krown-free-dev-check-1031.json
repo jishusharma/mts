@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T05:13:22Z",
   "commands": [
     "git show abf939506 --stat"
   ],
@@ -15,7 +16,14 @@
   "id": "gemini-method-review-krown-free-dev-check-1031",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "kept: Krown review; 0 findings confirmed as defects (n=6 and setup pruning are disclosed i",
+      "ref": "49ede5fbf",
+      "utc": "2026-10-31T05:13:22Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -27,7 +35,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "kept: Krown review; 0 findings confirmed as defects (n=6 and setup pruning are disclosed in PRE_REG/DEV_CHECK; slippage per fees.py convention); INCONCLUSIVE stands; its code line cites are off (21/99/165 not 18/79-80/116)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_burn_2026-10-31/ (new files only)"
   ],
@@ -37,12 +50,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "git show abf939506 --stat",
     "read the study code and its pre-reg",
     "write the findings"
   ],
+  "taken": "2026-10-31T05:13:22Z",
   "tests": "report only; every finding cites file:line",
   "title": "[GEMINI] cross-vendor method review of the Krown free setups DEV check (commit abf939506): look-ahead, selection, cost, n, claims that outrun the data",
   "weight": "ROUTINE",
