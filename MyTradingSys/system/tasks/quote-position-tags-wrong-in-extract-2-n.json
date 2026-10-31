@@ -2,6 +2,22 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-31T03:36:41Z",
+    "misses": 23,
+    "reads": [
+      "MyTradingSys/research/_archive/loose_2026-10/T064_TF_CONFIRMATION_EXTRACT.md",
+      "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_2-nG9bsMoPQ.md",
+      "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_6aA-P4Gvhrc.md",
+      "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_UqAvU1loT_k.md",
+      "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_ftK2BqggabQ.md",
+      "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_kcMnnQr1VFg.md",
+      "MyTradingSys/research/fast_track_2026-09-27/MISSING_PIECES_2026-09-30.md",
+      "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_SETUP_CATALOG.md"
+    ],
+    "session": "agent-abee7b4661ffeb14e"
+  },
   "created": "2026-10-31T02:45:10Z",
   "depends_on": [],
   "done_when": "python scripts/dev/verify_extract_quotes.py on the file exits 0 (fix the tag from the real caption position, never edit quote text)",
