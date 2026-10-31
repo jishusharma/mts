@@ -1,7 +1,21 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T19:32:39Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": 10,
+    "folded": "2026-10-31T19:36:42Z",
+    "misses": 20,
+    "reads": [
+      "scripts/dev/bg_watch.py",
+      "scripts/dev/test_bg_watch.py",
+      "MyTradingSys/system/roles/supervisor.md",
+      "MyTradingSys/tests/docs/test_integrity.py",
+      "scripts/dev/supervisor.py"
+    ],
+    "session": "agent-aa98916daa3759f66"
+  },
   "created": "2026-10-31T13:29:46Z",
   "depends_on": [],
   "done_when": "test_bg_watch.py passes with the new cases, which fail on pre-change code; supervisor.md carries the same-wake rule",
@@ -14,6 +28,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "scripts/dev/bg_watch.py + test_bg_watch.py",
+      "ref": "f7e61c019",
+      "utc": "2026-10-31T19:32:39Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +58,12 @@
   "refined_by": "",
   "refreshed": "2026-10-31T14:49:50Z",
   "refs": [],
-  "result": "",
+  "result": "scripts/dev/bg_watch.py + test_bg_watch.py",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/bg_watch.py",
     "scripts/dev/test_bg_watch.py",
@@ -50,13 +75,14 @@
   "scope_sha": "7b66a91a7a68",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read bg_watch.unbounded_loop and stalled(); list what the supervisor plan prints for a stalled task",
     "extend unbounded_loop so a bare until/while grep loop is flagged, and the STALLED-BG line prints the TaskStop target",
     "write tests for a flagged bare loop, an allowed bg_watch.py until call and a young task",
     "add one line to supervisor.md: act on STALLED-BG in the same wake"
   ],
+  "taken": "2026-10-31T19:32:39Z",
   "tests": "scripts/dev/test_bg_watch.py: new cases for bare until-grep (fail on old code) and the printed TaskStop line",
   "title": "Stalled background poll loops run for hours: make bg_watch.py until the only allowed pattern and make the plan STALLED-BG line name the TaskStop to run (161 min case)",
   "weight": "IMPORTANT",
