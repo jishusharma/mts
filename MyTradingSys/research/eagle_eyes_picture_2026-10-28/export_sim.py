@@ -155,7 +155,7 @@ out.append(dict(base("eagle-c28-wt-structure", "C28: WaveTrend inside market str
     "NO for the downtrend shorts; one LEAD: 2h uptrend buy dot, exit at the first sell dot after WT reaches +53 (n 69, +0.45% net, both halves positive).", "warn",
     ["In a downtrend WT almost never reaches +53: 5 sell-dot-in-the-red-band trades on 1h in 2.5 years, none on 2h/4h.",
      "Downtrend shorts at sell dots above 0 lose on every timeframe and every exit (-0.15% to -0.55% per trade).",
-     "The lead was chosen as best of about 40 cells on the same data (t 1.0): it needs a pre-registered read of 2024-07+ before anyone trusts it."],
+     "The lead was chosen as best of about 40 cells on the same data (t 1.0) and beats random entries with the same exit in only 25 of 30 draws (bt_preflight.py P8): it needs a pre-registered read of 2024-07+ before anyone trusts it."],
     [{"label": "2h uptrend buy dot, exit X3", "value": "+0.45% net, n 69", "tone": "warn"},
      {"label": "2h downtrend short at sell dot >= 0", "value": "-0.15% to -0.55%", "tone": "bad"},
      {"label": "Sell dots in the red band during downtrends", "value": "5 in 2.5 years (1h)", "tone": "bad"}],
