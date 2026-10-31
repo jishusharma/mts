@@ -13,6 +13,12 @@ RPC_URL = "https://ethereum-rpc.publicnode.com"
 DROP_PCT = 20.0
 WINDOW_S = 600
 POLL_S = 60
+# Each address verified against its public Etherscan label (read-only web, 2026-10-31):
+#   Binance 14   0x28C6c06298d514Db089934071355E5743bf21d60  label "Binance 14"          https://etherscan.io/address/0x28C6c06298d514Db089934071355E5743bf21d60
+#   Binance 7    0xBE0eB53F46cd790Cd13851d5EFf43D12404d33E8  label "Binance: Cold Wallet 7" https://etherscan.io/address/0xBE0eB53F46cd790Cd13851d5EFf43D12404d33E8
+#   Coinbase 1   0x71660c4005BA85c37ccec55d0C4493E66Fe775d3  label "Coinbase 1"           https://etherscan.io/address/0x71660c4005BA85c37ccec55d0C4493E66Fe775d3
+#   OKX 1        0x6cC5F688a315f3dC28A7781717a9A798a59fDA7b  label "OKX" (Exchange)       https://etherscan.io/address/0x6cC5F688a315f3dC28A7781717a9A798a59fDA7b
+#   Bybit hot    0xf89d7b9c864f589bbF53a82105107622B35EaA40  label "Bybit: Hot Wallet"    https://etherscan.io/address/0xf89d7b9c864f589bbF53a82105107622B35EaA40
 WALLETS = {
     "Binance 14": "0x28C6c06298d514Db089934071355E5743bf21d60",
     "Binance 7": "0xBE0eB53F46cd790Cd13851d5EFf43D12404d33E8",
