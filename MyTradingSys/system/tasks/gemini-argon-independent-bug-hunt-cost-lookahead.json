@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T17:54:27Z",
   "commands": [],
   "created": "2026-10-30T20:22:06Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_burn_2026-10-31/ARGON_COST_LOOKAHEAD.md: 10 findings with fil",
+      "ref": "8b0e66597",
+      "utc": "2026-10-31T17:54:27Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,7 +40,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/gemini_burn_2026-10-31/ARGON_COST_LOOKAHEAD.md: 10 findings with file:line and minimal reproducing inputs across fees.py, sim.py and the 5 newest backtest runners",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_burn_2026-10-31/ (new files only)"
   ],
@@ -43,12 +55,13 @@
   "scope_sha": "6689d9abf448",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "open mts-gemini folder in Antigravity, model Gemini 4 Argon (View Usage > 25% left)",
     "read the files named in the goal",
     "write the report, verify with sync.py ship"
   ],
+  "taken": "2026-10-31T17:54:27Z",
   "tests": "report only; every finding cites file:line and a reproducing input",
   "title": "[GEMINI ARGON, 2nd account, Antigravity laptop] independent hunt: cost/fee/funding assumptions and look-ahead across the layer backtests",
   "weight": "ROUTINE",

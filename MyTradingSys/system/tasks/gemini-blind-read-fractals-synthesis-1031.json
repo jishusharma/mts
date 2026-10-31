@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "2026-10-31T17:36:10Z",
+  "closed": "2026-10-31T17:58:26Z",
   "commands": [],
   "created": "2026-10-31T14:48:12Z",
   "depends_on": [],
@@ -18,8 +18,8 @@
     {
       "kind": "ship",
       "line": "MyTradingSys/research/gemini_audits_2026-10-31/fractals_synthesis_blind_read.md",
-      "ref": "f3ca98068",
-      "utc": "2026-10-31T17:36:10Z"
+      "ref": "aa5aa2203",
+      "utc": "2026-10-31T17:58:26Z"
     },
     {
       "auto": true,
@@ -67,7 +67,7 @@
     "one table row per cited number with the lookup file:line",
     "write MyTradingSys/research/gemini_audits_2026-10-31/fractals_synthesis_blind_read.md and end with a Noticed: line"
   ],
-  "taken": "2026-10-31T17:36:10Z",
+  "taken": "2026-10-31T17:58:26Z",
   "tests": "audit card: every row of the output has a file:line or command",
   "title": "[GEMINI] blind read of fractals_2026-10-31/SYNTHESIS.md: every cited number re-found in its file or NOT_IN_DATA",
   "weight": "ROUTINE",

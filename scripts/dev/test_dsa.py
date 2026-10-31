@@ -346,7 +346,12 @@ class BeginEndTest(Base):
         code, out = call(["end"])
         self.assertEqual(code, 0, out)
         self.assertIn("released: refresh-section-4-tom-fabio", out)
-        self.assertFalse(wt.exists())
+        if os.name == "nt" and wt.exists():
+            # Windows holds an open handle on the cwd; the fallback is to print the exact command.
+            self.assertIn("Run this by hand from", out)
+            self.assertIn(f"git worktree remove --force {wt}", out)
+        else:
+            self.assertFalse(wt.exists())
         r = subprocess.run(["git", "-C", str(self.origin), "cat-file", "-e",
                             "claims:MyTradingSys/system/claims/refresh-section-4-tom-fabio.md"], capture_output=True)
         self.assertNotEqual(r.returncode, 0)                                              # claim file gone on origin

@@ -682,6 +682,9 @@ def cmd_end(a):
     os.chdir(str(main))
     rc, out, err = git(main, "worktree", "remove", "--force", str(root), check=False, timeout=120)
     if rc != 0:
+        if os.name == 'nt' and root.exists():
+            print(f"remove: FAILED (Windows file lock). Run this by hand from {main}: git worktree remove --force {root}")
+            return 0
         print(f"remove: FAILED {(err or out).strip()[:300]}")
         return 1
     git(main, "worktree", "prune", check=False)
