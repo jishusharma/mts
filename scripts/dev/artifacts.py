@@ -131,6 +131,9 @@ def plan(reg, account):
     out = [f"ACCOUNT {account}: align artifacts with registry.json, republish over the existing url, never publish a second copy."]
     for pg in reg["pages"]:
         u = pg["urls"].get(account, "")
+        if account in (pg.get("deleted") or {}):   # the operator deleted this copy; the url stays as a record
+            out.append(f"  DELETED      {pg['title']}  {u}  (operator, {pg['deleted'][account]})")
+            continue
         if pg.get("single_owner") and account != pg["single_owner"]:
             # one live copy only (operator 2026-10-15: no duplicate Control Room): other logins hold a pointer page, never a copy
             if u:

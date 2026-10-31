@@ -35,7 +35,8 @@ class Registry(unittest.TestCase):
 
     def test_plan_actions(self):
         text = "\n".join(af.plan(self.reg, "jishusharma1985"))
-        self.assertIn("OPERATOR UNPIN+DELETE  MTS Control Room", text)  # retired 2026-10-31
+        self.assertIn("DELETED      MTS Control Room", text)  # retired and deleted on this login 2026-10-31
+        self.assertIn("OPERATOR UNPIN+DELETE  BTC Live Aid", text)
         self.assertIn("OPERATOR UNPIN+DELETE  CBP Desk", "\n".join(af.plan(self.reg, "jishu.sharma")))
         # operator 2026-10-17: every page is published from the home login; the Inbox page moved there (MNuodX), Tom and Fabio has no repo html and stays on jishu.sharma
         self.assertIn("NO COPY      Tom and Fabio", "\n".join(af.plan(self.reg, "jishu.awgp")))
@@ -71,9 +72,8 @@ class Registry(unittest.TestCase):
         rows = mc.page_index()
         self.assertEqual({r["title"] for r in rows}, {"MTS Layers", "Tom and Fabio: what they taught", "MTS Home", "MTS Research Map",
                                                       "MTS Sim Desk", "CBP Analyst Desk",
-                                                      "Tom and Fabio Setup Review", "BTC Live Aid"})  # 2026-10-31: Control Room + old CBP desks retired
+                                                      "Tom and Fabio Setup Review"})  # 2026-10-31: Control Room, old CBP desks, Planner, BTC Live Aid retired
         own = {r["title"]: r["owner"] for r in rows}
-        self.assertEqual(own["BTC Live Aid"], "jishusharma1985")
         self.assertEqual(own["Tom and Fabio: what they taught"], "jishusharma1985")
         self.assertEqual(own["MTS Research Map"], "jishusharma1985")
         self.assertTrue(all("/artifact/" in r["url"] for r in rows))
@@ -127,7 +127,8 @@ class Home(unittest.TestCase):
         self.assertNotIn("MTS Home", titles)
         urls = {r["url"] for r in d["retire"]}
         self.assertIn("https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su", urls)  # the jishu.sharma Control Room is an old copy
-        self.assertIn("https://claude.ai/artifact/MNuodXmi5RiEihX7rFpqUp", urls)  # 2026-10-31: the retired Control Room itself
+        self.assertNotIn("https://claude.ai/artifact/MNuodXmi5RiEihX7rFpqUp", urls)  # deleted by the operator 2026-10-31
+        self.assertIn("https://claude.ai/artifact/BcD1gSuxhvdfYMrxcPBvff", urls)  # BTC Live Aid: retired, not yet deleted
         self.assertIn("https://claude.ai/artifact/QwsvsN3LaZKNPvD6zPTTAe", urls)  # jishu.sharma MTS Layers
         self.assertFalse(urls & {p["url"] for p in d["pages"]})
         html = mh.render(d)
@@ -187,7 +188,7 @@ class Home(unittest.TestCase):
         import make_home as mh
         d = mh.build(self.reg)
         self.assertNotIn("session_planner", [p["slug"] for p in d["pages"]])
-        self.assertIn("https://claude.ai/artifact/2Ti4CGqsFwhWpP1jwmw7UU", [r["url"] for r in d["retire"]])
+        self.assertNotIn("https://claude.ai/artifact/2Ti4CGqsFwhWpP1jwmw7UU", [r["url"] for r in d["retire"]])  # he deleted it 2026-10-31
 
     def test_road_reads_the_real_roadmap(self):
         import make_home as mh
@@ -239,7 +240,7 @@ class Home(unittest.TestCase):
         """Operator 2026-10-25: every new development/page must show on MTS Home. A page shows when it is in registry.json."""
         import make_home as mh
         titles = [p["title"] for p in mh.build(self.reg)["pages"]]
-        for t in ("MTS Sim Desk", "CBP Analyst Desk", "MTS Layers", "BTC Live Aid"):
+        for t in ("MTS Sim Desk", "CBP Analyst Desk", "MTS Layers", "Tom and Fabio Setup Review"):
             self.assertIn(t, titles)
         reg = copy.deepcopy(self.reg)
         extra = copy.deepcopy(next(p for p in reg["pages"] if p["slug"] == "sim_desk"))
