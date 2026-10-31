@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T05:24:06Z",
   "commands": [
     "mvn -q test -Dtest=LiquidationLogWiringTest+LiquidationEventLogTest",
     "python scripts/dev/sync.py ship --result \"liq accumulator wired into statemachine JVM\" -m \"wire BinanceLiquidationAccumulator into Main statemachine\""
@@ -30,18 +31,24 @@
   "lane": "JIS-NB",
   "latest": [
     {
+      "kind": "ship",
+      "line": "already shipped 4a038ed5b: Main.startLiquidationLogs/closeAll on trunk (Main.java:28,44,75",
+      "ref": "4a85ff560",
+      "utc": "2026-10-31T05:24:06Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "Add Lenovo deploy steps for the liquidation event log",
-      "ref": "8b81377d7aaa",
-      "utc": "2026-10-29T18:43:33Z"
+      "line": "liq accumulator: drain log queue and join writer on shutdown",
+      "ref": "a95155258874",
+      "utc": "2026-10-31T04:53:04Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "8b81377d7aaa Add Lenovo deploy steps for the liquidation event log",
+      "line": "4a038ed5b96c wire BinanceLiquidationAccumulator into Main statemachine",
       "ref": "MyTradingSys/research/nuc_restart_2026-10-28/LIQ_DEPLOY.md",
-      "utc": "2026-10-29T18:43:33Z"
+      "utc": "2026-10-29T23:00:48Z"
     }
   ],
   "layers": [],
@@ -51,14 +58,19 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-29T22:04:17Z",
+  "refreshed": "2026-10-31T05:24:03Z",
   "refs": [
     "MyTradingSys/research/nuc_restart_2026-10-28/LIQ_DEPLOY.md",
     "src/main/java/datafeed/Main.java",
     "src/main/java/datafeed/Scheduler.java",
     "scripts/core/start-trading-day.ps1"
   ],
-  "result": "",
+  "result": "already shipped 4a038ed5b: Main.startLiquidationLogs/closeAll on trunk (Main.java:28,44,75,79), LiquidationLogWiringTest 8/8; verified by supervisor; Lenovo claim released",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "src/main/java/datafeed/Main.java",
     "src/test/java/datafeed/LiquidationLogWiringTest.java",
@@ -67,14 +79,14 @@
   "scope_out": [
     "position_manager, auto_trader, HALT files, StateCodeEmitter.java logic, Scheduler.java, BinanceLiquidationAccumulator.java, scripts/core/*.ps1, the live tree and any JVM restart (coordinator only)"
   ],
-  "scope_sha": "8b81377d7aaa",
+  "scope_sha": "a95155258874",
   "size": "S",
   "sources": [
     "src/main/java/datafeed/Scheduler.java:27-28 (only construction site)",
     "scripts/core/start-trading-day.ps1:434,445",
     "scripts/core/loop-supervisor.ps1:149"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Main.java: add package-private static startLiquidationLogs(List<String> syms, Function<String,BinanceLiquidationAccumulator> factory) returning the connected list; each symbol in try/catch(Throwable) so a failure logs one line and never stops the emitter; default call uses syms BTCUSDT,ETHUSDT and new BinanceLiquidationAccumulator(sym).",
     "Also package-private closeAll(List<BinanceLiquidationAccumulator>) in Main (each shutdown in try/catch).",
@@ -83,6 +95,7 @@
     "Run mvn -q test -Dtest=LiquidationLogWiringTest+LiquidationEventLogTest; git stash Main.java change and confirm the new test fails to compile/fails (fail-first), restore.",
     "Edit LIQ_DEPLOY.md steps 4-5: restart the statemachine JVM via the loop (JVM-restart window with NO open position_manager trades, coordinator-run per DEPLOY_RUNBOOK.md section 2); check BTCUSDT.jsonl and ETHUSDT.jsonl. Note that scheduler mode (Scheduler.java) also writes the same files and must not run alongside."
   ],
+  "taken": "2026-10-31T05:24:06Z",
   "tests": "src/test/java/datafeed/LiquidationLogWiringTest.java: (1) statemachine helper constructs accumulators for BTCUSDT+ETHUSDT (fails pre-change: no helper in Main); (2) a throwing factory never propagates (feed never blocks); (3) closeAll shuts all down. Restart/API-error rule: websocket failure is async in onError/onClose.",
   "title": "Wire BinanceLiquidationAccumulator into the live JVM path: statemachine mode never constructs it, so liq_events never records",
   "weight": "CRITICAL",
