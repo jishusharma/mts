@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T05:11:20Z",
+  "depends_on": [],
+  "done_when": "test_docstring_names_dst_sessions fails before the docstring edit and passes after; fabio tests unchanged",
+  "est_turns": 4,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Gemini doc-vs-code g1 (confirmed): the module docstring at fabio_of_model.py:8 gives fixed UTC session hours, while session_bounds (about line 118) moves London to 07:00 in UK BST and NY to 14:30 outside US DST. Fix the docstring to say fixed UTC base with DST shift per B102; no code or number change.",
+  "id": "fabio-of-model-docstring-dst-sessions",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Fix MSB to use most recent confirmed swing (audit #14); fabio fees to Deribit schedule (B0",
+      "ref": "051084e440af",
+      "utc": "2026-10-06T14:28:50Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T05:11:22Z",
+  "refs": [
+    "gemini-doc-vs-code-layers-g1-1031"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/fabio/fabio_of_model.py",
+    "MyTradingSys/backtest/layers/fabio/test_fabio_of_model.py"
+  ],
+  "scope_out": [],
+  "scope_sha": "051084e440af",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Reword the State paragraph to name B102 and session_bounds",
+    "Add a test that the module docstring mentions B102"
+  ],
+  "tests": "MyTradingSys/backtest/layers/fabio/test_fabio_of_model.py::test_docstring_names_dst_sessions (fails on current docstring)",
+  "title": "fabio_of_model.py docstring states fixed UTC sessions (London 08:00-13:30, NY 13:30-21:00) but session_bounds is DST-aware (B102)",
+  "weight": "",
+  "worker": "agent"
+}

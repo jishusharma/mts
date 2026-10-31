@@ -1,6 +1,6 @@
 {
   "approved_by": "",
-  "asks": "",
+  "asks": "Rejected: ATR_LEN 14 labelled SOURCED (Wilder) but TRENDLINE_CONTRACT.md:54,94 say length 14 is OURS (quote in the audit row itself says so). Redo with labels checked against the cited contract.",
   "commands": [
     "git grep -n \"=\" -- MyTradingSys/backtest/layers/fabio | head -5"
   ],
@@ -21,7 +21,7 @@
   "mutation_check": "",
   "note": "Gemini rules: facts with file:line only, no trading verdict, no code change; NOT_IN_DATA where the repo has no answer; captions first for any YouTube work (fetch_captions_timed.py, quote only from the caption file, one try per video, 429 -> UNVERIFIED), verify_extract_quotes.py exit 0. Operator 2026-10-31: exhaust the Gemini weekly quota before it resets, test-first and catch bugs early. Final report ends with a Noticed: line.",
   "prio": 2,
-  "refine_tries": 0,
+  "refine_tries": 1,
   "refined_by": "",
   "refreshed": "2026-10-31T02:40:30Z",
   "refs": [

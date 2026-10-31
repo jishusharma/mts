@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T05:12:17Z",
+  "depends_on": [],
+  "done_when": "test_load_all_survives_empty_card fails on current code and passes after; test_tasks passes",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Gemini test plan (gap confirmed: scripts/dev/tasks.py:117 save uses write_text, :124 load_all has no try/except, no test for a bad card). Add a test where one card file is empty: list/lint must name the bad file and continue, and save must write via temp file plus os.replace.",
+  "id": "test-tasks-corrupt-card-load-all",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "AIBridge 0.7.3: run-lock expiry (B210), task gate FAILED=FAIL, kind from command, open-onl",
+      "ref": "12b43fe17a3b",
+      "utc": "2026-10-30T20:11:33Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T05:12:19Z",
+  "refs": [
+    "gemini-test-plan-dev-scripts-1031"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/tasks.py",
+    "scripts/dev/test_tasks.py"
+  ],
+  "scope_out": [],
+  "scope_sha": "12b43fe17a3b",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Write the failing test with a 0-byte card in the tasks dir",
+    "Make load_all skip with a loud warning naming the file; make save atomic"
+  ],
+  "tests": "scripts/dev/test_tasks.py::TestCorruptCard.test_load_all_survives_empty_card (fails on current code with JSONDecodeError)",
+  "title": "Test gap: tasks.py load_all crashes the whole CLI on one empty or truncated card JSON; save is not atomic (Gemini dev-scripts plan, rank 1)",
+  "weight": "",
+  "worker": "agent"
+}

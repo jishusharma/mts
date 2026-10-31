@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T05:12:05Z",
+  "depends_on": [],
+  "done_when": "test_resample_empty_input fails on current code and passes after; the gapped-minutes test passes",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Gemini test plan (gap confirmed: test_resample_hour_bars uses a gapless array; the docstring says missing minutes are simply absent). Pin the documented behaviour with a gapped input (a bucket with 3 of 60 minutes keeps the right open/high/low/close) and decide the empty-array case (currently an IndexError in reduceat).",
+  "id": "test-sim-desk-resample-missing-minutes",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sim desk: exit reasons (STOP/T1/T2/TIME/SIGNAL/HOLD/NOFILL) + breakdown group",
+      "ref": "c054737d37c5",
+      "utc": "2026-10-27T20:34:56Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T05:12:07Z",
+  "refs": [
+    "gemini-test-plan-sim-desk-1031"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/studies/_bars.py",
+    "MyTradingSys/research/sim_desk/test_studies.py"
+  ],
+  "scope_out": [],
+  "scope_sha": "c054737d37c5",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Write a gapped-minutes resample test and an empty-input test",
+    "Make empty input return an empty (0,5) array"
+  ],
+  "tests": "MyTradingSys/research/sim_desk/test_studies.py::test_resample_empty_input (fails on current code with an IndexError)",
+  "title": "Test gap: sim_desk _bars.resample with missing minutes or empty input has no test (Gemini sim-desk plan, rank 2)",
+  "weight": "",
+  "worker": "agent"
+}

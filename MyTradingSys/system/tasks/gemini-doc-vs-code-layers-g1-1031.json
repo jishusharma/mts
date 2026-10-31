@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T05:13:41Z",
   "commands": [
     "git grep -n \"^| \" -- MyTradingSys/system/LAYERS.md | head -5"
   ],
@@ -15,7 +16,14 @@
   "id": "gemini-doc-vs-code-layers-g1-1031",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "kept: 2 contradictions claimed; fabio_of_model docstring confirmed (card fabio-of-model-do",
+      "ref": "49ede5fbf",
+      "utc": "2026-10-31T05:13:41Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -27,7 +35,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "kept: 2 contradictions claimed; fabio_of_model docstring confirmed (card fabio-of-model-docstring-dst-sessions), session_levels is a labelled NO-SOURCE placeholder, not filed; some code line cites drifted",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_burn_2026-10-31/ (new files only)"
   ],
@@ -37,12 +50,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read LAYERS.md rows",
     "open the matching code",
     "write the table"
   ],
+  "taken": "2026-10-31T05:13:41Z",
   "tests": "report only; every finding cites file:line",
   "title": "[GEMINI] LAYERS.md rows vs code for layers fabio kurisko pizzino session session_levels: every stated parameter, window or rule the code contradicts",
   "weight": "ROUTINE",
