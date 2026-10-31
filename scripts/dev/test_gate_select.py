@@ -226,6 +226,10 @@ class GateSpeedRules(unittest.TestCase):
         for f in ("MyTradingSys/research/x_2026/out.tsv", "MyTradingSys/research/x_2026/bars.json.gz", "MyTradingSys/research/x/run.err"):
             self.assertEqual(self.sel(f)[0], "docs", f)
 
+    def test_research_nested_gitignore_is_docs(self):
+        self.assertEqual(self.sel("MyTradingSys/research/x_2026/.gitignore")[0], "docs")
+        self.assertNotEqual(self.sel("scripts/dev/.gitignore")[0], "docs")
+
     def test_config_files_are_smoke_not_full_and_settings_gets_its_json_step(self):
         steps = STEPS + [("3js", "python scripts/dev/test_config_check.py")]
         for f in (".gitignore", ".aiexclude", "scripts/dev/lookahead_allowlist.tsv", "scripts/dev/control_room.tpl.html"):
