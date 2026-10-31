@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T05:27:50Z",
   "commands": [
     "python scripts/dev/fetch_captions_timed.py --analyst FlowHorse --channel @TheFlowHorse --latest 8 --out MyTradingSys/research/gemini_burn_2026-10-31/transcripts_flowhorse-latest",
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/gemini_burn_2026-10-31/FLOWHORSE_LATEST.md"
@@ -16,7 +17,21 @@
   "id": "gemini-yt-flowhorse-latest-extract-1031",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_burn_2026-10-31/FLOWHORSE_LATEST.md",
+      "ref": "49ede5fbf",
+      "utc": "2026-10-31T05:27:50Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 33 file(s)",
+      "ref": "34aac43857c5",
+      "utc": "2026-10-31T02:49:25Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -24,25 +39,31 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T02:40:44Z",
+  "refreshed": "2026-10-31T05:14:24Z",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/gemini_burn_2026-10-31/FLOWHORSE_LATEST.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_burn_2026-10-31/ (new files only)"
   ],
   "scope_out": [
     "live tree; engine and layer code edits; any backtest or trading verdict; .secrets and .env"
   ],
-  "scope_sha": "",
+  "scope_sha": "34aac43857c5",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "fetch captions, keyword scan",
     "write the file and verify"
   ],
+  "taken": "2026-10-31T05:27:50Z",
   "tests": "verify_extract_quotes.py exit 0; no code change",
   "title": "[GEMINI] FlowHorse (@TheFlowHorse): latest 8 videos, extract his stated BTC levels, flow reads and trade setups with timed quotes",
   "weight": "ROUTINE",
