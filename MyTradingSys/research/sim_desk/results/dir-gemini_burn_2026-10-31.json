@@ -1,0 +1,54 @@
+{
+ "id": "dir-gemini_burn_2026-10-31",
+ "kind": "audit",
+ "family": "Gemini Burn",
+ "title": "Cross-Vendor Bug Scan of Fast-Track Code Commits 120 to 200 Back",
+ "provenance": "source-extracted",
+ "date": "2026-10-31",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2022-04-01 to 2024-06-30 (as written in the source)",
+ "verdict": {
+  "label": "File:Line / Citation Analysis & Evidence",
+  "tone": "info"
+ },
+ "why": [],
+ "kpis": [
+  {
+   "label": "trades (first count in the source)",
+   "value": "420"
+  },
+  {
+   "label": "net R after fees (first value in the source)",
+   "value": "0.005"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 420,
+   "quote": "153 2b80d7ecf E2: Krown S8 4h frozen pre-reg run once on DEV 2020-01..2024-06: INCONCLUSIVE C0 n 420 trades on 332 entry days (<439 needed; busy rule), mean net R +0.131, t 1.73 (<3.364): INCONCLUSIV…"
+  },
+  {
+   "field": "net_r",
+   "value": 0.005,
+   "quote": "123 2d7edabf2 T06-F3 follow-up: size how often a stop is gapped on real bars 4,166,484 entries -> 0 next-bar gaps beyond the stop; 8 of 2,111,225 stop-outs gapped (0.00038%), max mean overshoot 0.005…"
+  }
+ ],
+ "missing": {
+  "parameters": "no rule or parameter section found in the source",
+  "why": "no sentence in the source states why it passed or failed",
+  "n_trades": "not a trade test (audit)"
+ },
+ "source_files": [
+  "MyTradingSys/research/gemini_burn_2026-10-31/SHIPS_120_200_REVIEW.md"
+ ],
+ "commit": "0e6efa1c6"
+}

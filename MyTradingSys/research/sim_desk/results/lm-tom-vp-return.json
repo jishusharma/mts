@@ -1,0 +1,51 @@
+{
+ "id": "lm-tom-vp-return",
+ "kind": "backtest",
+ "family": "Tom Vp Pivot",
+ "title": "Tom 70/30 claim: return to prior-day POC after leaving value (count, not a trade test)",
+ "provenance": "source-extracted",
+ "date": "2026-10-31",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Return share 57.2% (95 % day-block CI 53.9..60.7) vs placebo 46.8%; difference +10.4 pp (CI 6.4..14.4).",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "his 70 % is above the CI: it does not reproduce on BTC UTC-day value; share above placebo, CI excludes zero: value-specific excess over a shifted band.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "Caution (post-hoc, OURS): placebo bands within 1 ATR of the real value return 55.8% vs real 55.0% on the same days (difference -0.8 pp, CI -5.2..3.7), so the pooled excess comes from the far-shifted bands; a band near v…",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2022-01-02 to 2024-06-30 (as written in the source)",
+ "verdict": {
+  "label": "return share 57.2% (CI 53.9..60.7) vs his 70%: not reproduced; +10.4 pp over pooled placebo (CI 6.4..14.4) but placebo within 1 ATR equals real (-0.8 pp); accepted away N=3/6/12 lowers it to 51/48/46%",
+  "tone": "info"
+ },
+ "why": [
+  "his 70 % is above the CI: it does not reproduce on BTC UTC-day value; share above placebo, CI excludes zero: value-specific excess over a shifted band."
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)"
+ },
+ "source_files": [
+  "MyTradingSys/research/tom_transfer_2026-10-11/vp_return/RESULT.md"
+ ],
+ "commit": "58b4f8f6a"
+}

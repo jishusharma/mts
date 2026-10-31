@@ -1,0 +1,47 @@
+{
+ "id": "dir-asks_audit_2026-10-30",
+ "kind": "audit",
+ "family": "Asks Audit",
+ "title": "Operator asks ledger, 2026-10-30",
+ "provenance": "source-extracted",
+ "date": "2026-10-30",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2026-09-28 to 2026-10-30 (as written in the source)",
+ "verdict": {
+  "label": ", decide after ~21000 outcome labels OPEN INDEX says CLOSED \"spec delivered W3\" but code change was deferred to label count; no card tracks the re-check no (verdict-path, Tom gate rules removed by q14)",
+  "tone": "bad"
+ },
+ "why": [
+  "Method caveats: classification by Sonnet agents; some prompts carry two asks (two rows); agents did not re-open every DONE proof file. Chat prompts (status questions, acks, pasted logs) are dropped: 955 prompts -> ~240 chat/pasted dropped by the agents' count…"
+ ],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "6"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 6,
+   "quote": "P0-47 2026-10-04 1 T058 2026-10-04 Candidate H3: new day low at NY open+180 that holds, pre-register and test on 2019-09..2021-12 OPEN built then reverted 59c9c414: H3 FAIL on n=6; re-land with costs…"
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "parameters": "no rule or parameter section found in the source",
+  "n_trades": "not a trade test (audit)"
+ },
+ "source_files": [
+  "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md"
+ ],
+ "commit": "22073ef1e"
+}

@@ -1,0 +1,40 @@
+{
+ "id": "dir-self_heal_2026-10-28",
+ "kind": "thought_experiment",
+ "family": "Self Heal",
+ "title": "MTS doctor report 2026-10-28",
+ "provenance": "source-extracted",
+ "date": "2026-10-28",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "s-and-ledger-rows + fable-run2-regate-fixes-1to8: likely the same job (title 0.47; same files MyTradingSys/research/fable_audit_2026-10-18/REGATE_AUDIT.md, verdicts.py) fix: drop one, or add the other id to not_twin_of",
+  "tone": "info"
+ },
+ "why": [
+  "Boot cost: CLAUDE.md 7168 B loaded every turn; largest guidance files: OPERATOR_DECISIONS.md 97341, 03_FILE_INDEX.md 79735, LESSONS_LEARNED.md 40669, LAYERS.md 37600, 01_AI_BEHAVIOR.md 35285. Trim only if the cap test fails (the cache makes the prefix cheap).",
+  "30 runs: success 25, failure 5 newest finished: success",
+  "RED 10-28T13:01 4be68ddc: failed Offline gate 1 step(s) failed: Step 3xt: Extra tests",
+  "RED 10-28T12:37 d407956e: failed Offline gate 1 step(s) failed: Step 4d: Pytest doc tests"
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/self_heal_2026-10-28/before/REPORT_2026-10-28.md"
+ ],
+ "commit": "c3b48e508"
+}

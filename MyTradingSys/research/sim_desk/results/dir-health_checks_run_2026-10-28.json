@@ -1,0 +1,68 @@
+{
+ "id": "dir-health_checks_run_2026-10-28",
+ "kind": "audit",
+ "family": "Health Checks Run",
+ "title": "Health and Check Scripts Comprehensive Triage Report (2026-10-28)",
+ "provenance": "source-extracted",
+ "date": "2026-10-28",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "scripts/dev/reply_shape_check.py:",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "Issue: When invoked with no command-line arguments, line 7–8 unconditionally executes sys.stdin.read(). In non-interactive or batch environments where stdin is inherited but not closed, the process hangs indefinitely un…",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "Recommendation: Add a tty check (if sys.stdin.isatty(): return usage) or require explicit - to read from stdin.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "scripts/dev/daily_hygiene.py:",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 5 from the source",
+   "value_plain": "Issue: Although named \"hygiene\", it is a heavyweight multi-stage batch runner. Step 1 executes python scripts/dev/run_all_tests.py --quick with a 1500-second timeout. It cannot serve as a quick operational check.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 6 from the source",
+   "value_plain": "Recommendation: Decouple test gate execution from operational hygiene checks.",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Task: all-health-checks-run-and-triage",
+  "tone": "info"
+ },
+ "why": [
+  "Fail-Closed Isolation: Each check runs with a strict 5-second subprocess timeout; any hanging check is terminated without stalling the suite.",
+  "Status (OK / WARN / FAIL)"
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window"
+ },
+ "source_files": [
+  "MyTradingSys/research/health_checks_run_2026-10-28/REPORT.md"
+ ],
+ "commit": "4a6864ec2"
+}

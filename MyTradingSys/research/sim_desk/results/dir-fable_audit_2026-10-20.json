@@ -1,0 +1,59 @@
+{
+ "id": "dir-fable_audit_2026-10-20",
+ "kind": "audit",
+ "family": "Fable Audit",
+ "title": "GRANDFATHER_DECISION: the 27 pre-pipeline testnet sources (Fable run 5, written 2026-10-30, brief system/fable_run_5_br…",
+ "provenance": "source-extracted",
+ "date": "2026-10-20",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2022-01-01 to 2026-10-07 (as written in the source)",
+ "verdict": {
+  "label": "S.csv has 2 PASS rows, both carry_basis (L26-27), which is not a live source), while every layer-sourced testnet trade exits on a NO-SOURCE bracket of 1 % stop / 2 % target / 8-bar time exit (QUOTED auto_trader.py:75-78) or Tom's 120-minut…",
+  "tone": "good"
+ },
+ "why": [
+  "Do now (one CRITICAL config card, Fable does not edit): keep ONE plumbing canary (tom, 20 USD), DROP 8 prefixes to trade_blocklist, take the other 18 out of pre_pipeline_sources (= collection-only). Per prefix: KEEP 1 / SHADOW 12 / RE-TEST 6 (shadow meanwhile…",
+  "The one number: 0 of 27 sources has a fee-net out-of-sample PASS (QUOTED promoted_setups.json:3 \"entries\": []; VERDICTS.csv has 2 PASS rows, both carry_basis (L26-27), which is not a live source), while every layer-sourced testnet trade exits on a NO-SOURCE b…",
+  "Still unknown: (a) whether the testnet is trading at all today (QUOTED LAYERS.md:189 \"Testnet HALT since 2026-10-12 09:46Z (executor fail_closed); supervisor clears it\", date may be stale; runtime not in this brief); (b) the per-source exit-reason counts behi…",
+  "Prefix tally (RE-DERIVED from config:143-250): KEEP 1 (tom); DROP 8 (layer:positioning:, layer:session:, layer:turn_of_candle:, layer:rsi_divergence:, layer:cryptocred:fib_pullback:15m, layer:cryptocred:sr_flip:15m, layer:rsi:rsi_events:15m, layer:rsi:rsi_eve…"
+ ],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "181"
+  },
+  {
+   "label": "net R after fees (first value in the source)",
+   "value": "-0.1038",
+   "tone": "bad"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 181,
+   "quote": "1 Tom (tom; 20 / 5, config:25-26; verdicts SETUP_FORMING, SETUP_CONFIRMED, WAIT_RR :27-31) layer_map.json tom_core status \"STOP: do not backtest or tune the current BTC encoding (tom_transfer ROADMAP…"
+  },
+  {
+   "field": "net_r",
+   "value": -0.1038,
+   "quote": "3 Fabio (layer:fabio:, :cvd_absorption:15m, :cvd_absorption:1h, :escalation:, :volume_fvg:; 100-1000 / 3-20, config:72-87) layer_map.json fabio_cvd_absorption / fabio_escalation \"L1 no edge / insuffi…"
+  }
+ ],
+ "missing": {
+  "parameters": "no rule or parameter section found in the source",
+  "n_trades": "not a trade test (audit)"
+ },
+ "source_files": [
+  "MyTradingSys/research/fable_audit_2026-10-20/GRANDFATHER_DECISION.md"
+ ],
+ "commit": "363ef65e5"
+}
