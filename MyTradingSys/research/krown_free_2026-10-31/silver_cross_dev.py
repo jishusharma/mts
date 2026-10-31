@@ -18,7 +18,7 @@ MTS = HERE.parents[1]
 sys.path.insert(0, str(MTS / "backtest"))
 import fees  # noqa: E402
 
-FEE_RT = 2 * fees.BINANCE_TAKER                  # SOURCED fees.py (0.10 % round trip)
+FEE_RT = fees.BINANCE_TAKER * 2                 # SOURCED fees.py (0.10 % round trip)
 FAST, SLOW, HOLD = 21, 55, 30                    # 21/55 SOURCED (bXug2l6qICc 00:00:44); 30 days OURS ("one month")
 CUTOFF_MS = int(np.datetime64("2024-07-01T00:00", "ms").astype("int64"))
 FIRST_EVENT_MS = int(np.datetime64("2022-04-01T00:00", "ms").astype("int64"))
