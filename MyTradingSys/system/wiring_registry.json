@@ -134,10 +134,6 @@
       "disp": "TOOL",
       "why": "TF3 collection-only backfill of finished days into orderflow_live, run by hand (ran 09-29..10-02): MyTradingSys/runtime/BUILD_PIPELINE.md:44, system/sessions/MTS-2026-10-03-1329Z-CLI-BLD-tf3-fabio-v3-live.md:10."
     },
-    "MyTradingSys/backtest/layers/fabio/run_v3_l3.py": {
-      "disp": "REPRO",
-      "why": "Fabio v3 L3 pre-registered backtest, result L3-FAIL recorded in MyTradingSys/runtime/BUILD_PIPELINE.md:50 and PRE_REG_FABIO_V3.md; kept because that row lists an open follow-up (why models A, B, D almost never fire) that re-runs it."
-    },
     "MyTradingSys/backtest/layers/rsi/run_t090_anchor_probe.py": {
       "disp": "REPRO",
       "ref": "T090",
