@@ -2,6 +2,22 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-31T10:26:56Z",
+    "misses": 77,
+    "reads": [
+      "scripts/dev/test_wiring_scan.py",
+      "scripts/dev/run_all_tests.py",
+      "scripts/dev/test_mts_signal.py",
+      "MyTradingSys/tests/test_aibridge_task_gate_exit.py",
+      "scripts/dev/aibridge_version.py",
+      "scripts/dev/mts_signal.py",
+      "scripts/aibridge/tasks/mts-gate.json",
+      "scripts/aibridge/tasks/mts-ship.json"
+    ],
+    "session": "agent-a4820d1730f903702"
+  },
   "created": "2026-10-31T10:04:25Z",
   "depends_on": [],
   "done_when": "test_aibridge_task_gate_exit.py: python exit 1 then Write-Output -> FAIL rc 1; EXIT_CODE=1 line -> FAIL; gate step without summary -> FAIL; control Write-Output ok -> PASS",
