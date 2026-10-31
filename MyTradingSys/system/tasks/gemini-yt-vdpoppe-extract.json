@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T22:17:40Z",
   "commands": [
     "python scripts/dev/fetch_captions_timed.py --analyst vdPoppe --channel @michaelvdpoppe --latest 8 --out MyTradingSys/research/yt_feed_2026-10-31/transcripts_vdpoppe",
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/yt_feed_2026-10-31/VDPOPPE_LEVELS_2026-10-31.md"
@@ -16,7 +17,14 @@
   "id": "gemini-yt-vdpoppe-extract",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/yt_feed_2026-10-31/VDPOPPE_LEVELS_2026-10-31.md",
+      "ref": "f882bc38e",
+      "utc": "2026-10-30T22:17:40Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -28,7 +36,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/yt_feed_2026-10-31/VDPOPPE_LEVELS_2026-10-31.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/yt_feed_2026-10-31/ (new files only)"
   ],
@@ -38,12 +51,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "python scripts/dev/fetch_captions_timed.py --analyst vdPoppe --channel @michaelvdpoppe --latest 8 --out MyTradingSys/research/yt_feed_2026-10-31/transcripts_vdpoppe (one try per video; 429 -> UNVERIFIED, no retry loop)",
     "keyword scan each transcript for the topic terms, read the surrounding lines before quoting",
     "write MyTradingSys/research/yt_feed_2026-10-31/VDPOPPE_LEVELS_2026-10-31.md per the goal; run verify_extract_quotes.py until exit 0; commit on the branch with a Result: line (videos read, items found, NOT_IN_DATA count)"
   ],
+  "taken": "2026-10-30T22:17:40Z",
   "tests": "verify_extract_quotes.py exit 0; no code change",
   "title": "[GEMINI] vdPoppe (@michaelvdpoppe): latest 8 videos, extract his stated BTC levels, bias calls and the indicators he reads (monitor with timed quotes",
   "weight": "ROUTINE",
