@@ -46,7 +46,8 @@ None of these is a test; each is one cut of 15 on the same trades.
   PRE_REG did not say how missing values are handled; the "2022" half is effectively 2022-07..12.
 - `move_e` thirds are lopsided (all W1 trades are 0 by definition); the binary rows in `output.md` show value 0 / value 1 under the first
   two third columns.
-- Funding: NOT RUN (not on disk for DEV). No slippage. Exit at the bar close (not the next open).
+- Funding: NOT RUN. Corrected 2026-10-31: it IS on disk (`F:/MTS/Dumps/backtest/raw/fundingRate`, 81 files; I looked only under
+  `F:/MTS/data`). A 4-bar hold crosses at most one 8-hourly funding stamp at 15m/1h, so the effect is small, but it is not in these numbers. No slippage. Exit at the bar close (not the next open).
 
 ## Next (card filed)
 The 1h result is the one lead. The honest next check is fresh data, not VALIDATION: refit the same frozen model on all DEV and score
