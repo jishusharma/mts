@@ -51,7 +51,9 @@ def analyse_day(levels, h, l, c, ns=NS):
     e = int(np.argmax(out))
     side = 1 if c[e] > vah else -1
     bars_left = len(c) - 1 - e                       # 5m bars after the event bar in this UTC day
-    returned = _touch(h[e + 1:], l[e + 1:], poc) if bars_left > 0 else None   # None = CENSORED (no later bar to test)
+    returned = _touch(h[e + 1:], l[e + 1:], poc)
+    if bars_left == 0:
+        returned = None                              # CENSORED: no later bar to test
     cl = c[e + 1:]
     back_inside = bool(np.any((cl >= val) & (cl <= vah)))
     acc = {}
