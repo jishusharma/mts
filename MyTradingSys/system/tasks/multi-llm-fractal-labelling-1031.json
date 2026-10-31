@@ -1,34 +1,49 @@
 {
-  "approved_by": "",
-  "asks": "",
-  "commands": [],
-  "created": "2026-10-31T06:53:32Z",
-  "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
-  "formula_id": "",
-  "formula_ids": [],
-  "from_inbox": "",
-  "goal": "",
-  "id": "multi-llm-fractal-labelling-1031",
-  "lane": "SONNET",
-  "layers": [],
-  "live_path": false,
-  "mutation_check": "",
-  "note": "OPERATOR QUOTE: I need all available models across LLMs to detect and test fractals only if there is value, logic and edge seeking goals. Waits for R4_MULTI_LLM_PLAN.md + Fable validation.",
-  "prio": 3,
-  "refine_tries": 0,
-  "refined_by": "",
-  "refs": [],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "Multi-LLM fractal labelling: blind chart windows to Claude/GPT/Gemini, kappa vs coded detector, stop if no outcome lift on DEV",
-  "weight": "",
-  "worker": ""
+ "approved_by": "",
+ "asks": "",
+ "commands": [
+  "python MyTradingSys/research/fractals_2026-10-31/llm_label/run_label.py"
+ ],
+ "created": "2026-10-31T06:53:32Z",
+ "depends_on": [
+  "fractal-mtf-swing-confluence-f1"
+ ],
+ "done_when": "Fable-validated plan quoted in the PRE_REG; kappa per model and outcome lift on DEV reported with n; stop line written if no lift; spend capped at 10% of one login's week; HOLDOUT untouched.",
+ "est_turns": 30,
+ "formula_id": "",
+ "formula_ids": [],
+ "from_inbox": "",
+ "goal": "R4_MULTI_LLM_PLAN s3.4 value gate: blind rendered DEV windows to Claude/GPT/Gemini, label fractal geometry only, kappa vs the coded detector, stop if no outcome lift on DEV. LLMs never produce trade claims.",
+ "id": "multi-llm-fractal-labelling-1031",
+ "lane": "SONNET",
+ "layers": [],
+ "live_path": false,
+ "mutation_check": "",
+ "note": "OPERATOR QUOTE: I need all available models across LLMs to detect and test fractals only if there is value, logic and edge seeking goals. Waits for R4_MULTI_LLM_PLAN.md + Fable validation.",
+ "prio": 3,
+ "refine_tries": 0,
+ "refined_by": "",
+ "refs": [],
+ "result": "",
+ "scope_in": [
+  "MyTradingSys/research/fractals_2026-10-31/llm_label/"
+ ],
+ "scope_out": [
+  "live tree",
+  "any LLM output feeding a trade rule"
+ ],
+ "size": "M",
+ "sources": [
+  "MyTradingSys/research/fractals_2026-10-31/reviews/R4_MULTI_LLM_PLAN.md"
+ ],
+ "state": "raw",
+ "steps": [
+  "Wait for Fable validation of R4_MULTI_LLM_PLAN.md and fractal-mtf-swing-confluence-f1 coded detector with DEV edge",
+  "PRE_REG, render windows, run models, kappa",
+  "RESULT.md and stop/go line"
+ ],
+ "tests": "MyTradingSys/research/fractals_2026-10-31/llm_label/test_kappa.py: hand-computed Cohen kappa on a 2x2 table; fails before the module exists",
+ "title": "Multi-LLM fractal labelling: blind chart windows to Claude/GPT/Gemini, kappa vs coded detector, stop if no outcome lift on DEV",
+ "weight": "IMPORTANT",
+ "worker": "session"
 }
