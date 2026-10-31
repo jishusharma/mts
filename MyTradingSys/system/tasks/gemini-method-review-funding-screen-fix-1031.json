@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T05:01:20Z",
   "commands": [
     "git show 3d8722a93 --stat"
   ],
@@ -15,7 +16,21 @@
   "id": "gemini-method-review-funding-screen-fix-1031",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_burn_2026-10-31/METHOD_REVIEW_FUNDING_SCREEN_FIX.md",
+      "ref": "2010c029f",
+      "utc": "2026-10-31T05:01:20Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 33 file(s)",
+      "ref": "34aac43857c5",
+      "utc": "2026-10-31T02:49:25Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -23,26 +38,32 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T02:40:41Z",
+  "refreshed": "2026-10-31T04:57:50Z",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/gemini_burn_2026-10-31/METHOD_REVIEW_FUNDING_SCREEN_FIX.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_burn_2026-10-31/ (new files only)"
   ],
   "scope_out": [
     "live tree; engine and layer code edits; any backtest or trading verdict; .secrets and .env"
   ],
-  "scope_sha": "",
+  "scope_sha": "34aac43857c5",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "git show 3d8722a93 --stat",
     "read the study code and its pre-reg",
     "write the findings"
   ],
+  "taken": "2026-10-31T05:01:20Z",
   "tests": "report only; every finding cites file:line",
   "title": "[GEMINI] cross-vendor method review of the screens real funding fix (commit 3d8722a93): look-ahead, selection, cost, n, claims that outrun the data",
   "weight": "ROUTINE",
