@@ -1,0 +1,1 @@
+{"t": "20261031T180044Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "CI RED since 05d896ae: test_aibridge_version_bump fails (2 tests) after af34821d8 AIBridge 0.7.8; RELEASES.json hash record does not match bridge files. NUC Supervisor: fix forward or revert within 10", "login": "C"}
