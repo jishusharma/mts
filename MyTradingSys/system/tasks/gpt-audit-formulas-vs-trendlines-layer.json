@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T07:30:32Z",
   "commands": [],
   "created": "2026-10-29T22:52:20Z",
   "depends_on": [],
@@ -13,7 +14,14 @@
   "id": "gpt-audit-formulas-vs-trendlines-layer",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "SOUND; 2026-10-31_gpt-audit-formulas-vs-trendlines-layer.md",
+      "ref": "bcbe36875",
+      "utc": "2026-10-31T07:30:32Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "note": "Producer vendor per title; reviewer is a different vendor. Facts with file:line or NOT_IN_DATA; no verdicts. ROUTINE, no live path.",
@@ -22,7 +30,12 @@
   "refined_by": "",
   "refreshed": "2026-10-29T22:52:21Z",
   "refs": [],
-  "result": "",
+  "result": "SOUND; 2026-10-31_gpt-audit-formulas-vs-trendlines-layer.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-audit-formulas-vs-trendlines-layer.md"
   ],
@@ -36,12 +49,13 @@
     "MyTradingSys/backtest/layers/FORMULAS.md",
     "MyTradingSys/backtest/layers/trendlines"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "list formulas the layer uses",
     "hand-compute 3 values on a toy series",
     "run layer code and compare"
   ],
+  "taken": "2026-10-31T07:30:32Z",
   "tests": "none (audit card); proof = every row has file:line quotes",
   "title": "GPT audit: FORMULAS.md definitions vs layers/trendlines code (re-derive 3 numbers)",
   "weight": "ROUTINE",
