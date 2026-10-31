@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
   "commands": [
     "git grep -n \"def test_\" -- MyTradingSys/backtest"
   ],
@@ -15,7 +16,15 @@
   "id": "gemini-test-plan-backtest-core-1031",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 17 file(s)",
+      "ref": "e8420fbb5d82",
+      "utc": "2026-10-31T00:58:27Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -23,7 +32,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T00:53:25Z",
+  "refreshed": "2026-10-31T01:01:56Z",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
@@ -34,15 +43,16 @@
   "scope_out": [
     "live tree; engine and layer code edits; any backtest or trading verdict; .secrets and .env"
   ],
-  "scope_sha": "",
+  "scope_sha": "e8420fbb5d82",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "active",
   "steps": [
     "read the four modules and their tests",
     "grep tests for each case",
     "write the table"
   ],
+  "taken": "2026-10-31T01:02:30Z",
   "tests": "report only; every finding cites file:line",
   "title": "[GEMINI] test plan for backtest core (fees.py, sim.py, promote.py, prob_table.py): boundary and failure cases per function, which exist, which are missing",
   "weight": "ROUTINE",
