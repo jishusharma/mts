@@ -381,7 +381,7 @@ The eye test "obvious" has no formula; it becomes a fire-rate ceiling at G5, not
 **Source GPS: 6aA-P4Gvhrc | BEGIN | t=00:10:32**
 
 > "I don't want to say always because nothing is ever always, but it's damn close."
-**Source GPS: 6aA-P4Gvhrc | BEGIN | t=00:10:49**
+**Source GPS: 6aA-P4Gvhrc | MIDDLE | t=00:10:49**
 
 > "it's telling you sellers are getting more aggressive while buyers are not"
 **Source GPS: 6aA-P4Gvhrc | MIDDLE | t=00:15:39**
@@ -620,7 +620,7 @@ The eye test "obvious" has no formula; it becomes a fire-rate ceiling at G5, not
 **Source GPS: kcMnnQr1VFg | MIDDLE | t=00:11:39**
 
 > "I personally like to do it that way cuz then I don't have to risk as much to figure out if I'm going to be wrong."
-**Source GPS: kcMnnQr1VFg | MIDDLE | t=00:20:22**
+**Source GPS: kcMnnQr1VFg | END | t=00:20:22**
 
    - Stop [stop class: CLEAR, structure only]: the opposite side of the compression zone; for an upside break a close below the bottom of the range; after the break it can move to the breakout area. Distance beyond the structure: NOT STATED.
 

@@ -115,7 +115,7 @@
 - Stated mechanics: after another sideways consolidation inside the uptrend, price breaks out with a higher high; continuation is confirmed as soon as price breaks above the range high. No numbers given.
 - Quotes:
 > "And then boom, breaks out with a higher high. Thus, continuation is confirmed as soon as you break above this range high right here."
-**Source GPS: 2-nG9bsMoPQ | BEGIN | t=00:08:07**
+**Source GPS: 2-nG9bsMoPQ | MIDDLE | t=00:08:07**
 
 ### K-2-nG9bsMoPQ-14 Dominant high and dominant low (uptrend: dominant low)
 - Type: LEVEL

@@ -656,7 +656,7 @@ Merged into TOM-4 on 2026-10-16 (D3): a pullback to prior-day value or the POC a
    Stop: NOT STATED for a breakout entry (STR s10 gaps 6-7). Target: the next high-volume price (quote above). Management: hold for the explosion, not the scalper's exit:
 
 > "As I said, for the scalpers, they're getting out up here now. But we intraday swing traders, breakout traders who are waiting for the explosion. We wait"
-**Source GPS: 4MoNjEQ2Dd8 | MIDDLE**
+**Source GPS: 4MoNjEQ2Dd8 | BEGIN**
 
 4. **Context.** Balance resolving or trend accelerating; overlap zones (YmygDgtoxO8, STR 6.3, not re-verified here). Time, news: NOT STATED.
    - Added 2026-10-15 from never-extracted videos (batch 1, section 6.1a), where a breakout is allowed and what proof he wants (uk4PZV59nYw, gFJBg8Bsw68, uFxYcpiaOpw). He says the three basic trader types are breakout, trend following and counter trading (gFJB, paraphrase). Location and proof:

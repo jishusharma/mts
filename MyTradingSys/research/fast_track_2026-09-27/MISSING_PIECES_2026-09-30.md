@@ -173,7 +173,7 @@ ES (tick 0.25): stop 12 ticks = 3 pts, about 0.044% of 6,790; target 97 ticks = 
 **Source GPS: yRvMW6lgN1o | MIDDLE**
 
 > "This is a so-called intraday swing trade, and I'm going to let it run."
-**Source GPS: yRvMW6lgN1o | END**
+**Source GPS: yRvMW6lgN1o | MIDDLE**
 
 > "theoretically you can lose four to five trades with this trading style and still make money."
 **Source GPS: yRvMW6lgN1o | END**
