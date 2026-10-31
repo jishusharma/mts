@@ -4,6 +4,17 @@
   "commands": [
     "python -m unittest MyTradingSys.cbp.test_load_non_object -v"
   ],
+  "context": {
+    "calls_to_edit": 8,
+    "folded": "2026-10-31T08:00:55Z",
+    "misses": 5,
+    "reads": [
+      "MyTradingSys/cbp/__init__.py",
+      "MyTradingSys/tools/live_aid/build_analyst_data.py",
+      "MyTradingSys/tools/live_aid/test_build_analyst_data.py"
+    ],
+    "session": "agent-ac8048ee764a92ef8"
+  },
   "created": "2026-10-31T06:38:49Z",
   "depends_on": [],
   "done_when": "Tests for [] / \"x\" / 1 / null in cbp.load and live_aid.read_json pass and fail on the pre-change code; a missing or corrupt file still behaves as before; CI green.",
