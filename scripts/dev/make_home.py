@@ -35,6 +35,38 @@ NO_ANSWER = ("", "(none yet)")
 FOR_OPERATOR = re.compile(r"(?-i:\bJis\b)|operator (to|reader|G3|marks)|the operator G3", re.I)  # "Jis" exact: JIS-NB is a host
 SUPER = "MyTradingSys/system/SUPER_SESSION.md"
 SUPER_HEAD = "## Prompt: start a super session"
+ROAD = "MyTradingSys/research/v1_plan_2026-10-20/D7_ROADMAP.md"   # the road to profitability (Control Room's road retired 2026-10-31)
+PROMOTED = "MyTradingSys/execution/promoted_setups.json"
+
+
+def road(repo):
+    """D7's stage table (under "## Stages") as one line per stage, the stage named on its "Now:" line, and two live counts:
+    ready cards (S0 exit: <= 15) and promoted setups (S3 exit: >= 1). Missing file: no stages."""
+    repo = Path(repo)
+    f = repo / ROAD
+    text = f.read_text(encoding="utf-8") if f.is_file() else ""
+    sec = re.search(r"(?ms)^## Stages\n(.*?)(?=^## |\Z)", text)
+    sec = sec.group(1) if sec else ""
+    now = re.search(r"(?m)^Now: *(S\d+|v\d+)", sec)
+    now = now.group(1) if now else ""
+    stages = []
+    for ln in sec.splitlines():
+        cells = [c.strip() for c in ln.strip().strip("|").split("|")]
+        m = re.match(r"(S\d+|v\d+)\b *(.*)", cells[0]) if len(cells) >= 5 else None
+        if m:
+            stages.append({"id": m.group(1), "name": m.group(2), "exit": cells[3], "expect": cells[4], "now": m.group(1) == now})
+    ready = 0
+    tdir = repo / TASKS
+    for t in tdir.glob("*.json") if tdir.is_dir() else []:
+        try:
+            ready += json.loads(t.read_text(encoding="utf-8")).get("state") == "ready"
+        except ValueError:
+            continue
+    try:
+        promoted = len(json.loads((repo / PROMOTED).read_text(encoding="utf-8")).get("entries", []))
+    except (OSError, ValueError):
+        promoted = 0
+    return {"doc": ROAD, "now": now, "stages": stages, "counts": {"ready_cards": ready, "promoted": promoted}}
 
 
 def super_prompt(repo):
@@ -123,7 +155,7 @@ def build(reg, now=None, repo=None):
     answer = None  # 2026-10-31: decisions are answered in chat and recorded in OPERATOR_DECISIONS.md; the Control Room is retired
     return {"generated": now.strftime("%Y-%m-%d %H:%M UTC"), "home": home, "homeUrl": af.home_url(reg), "pages": pages,
             "retire": retire, "share": share, "logins": list(reg["accounts"]), "waiting": waiting(repo or af.REPO), "answerAt": answer,
-            "superPrompt": super_prompt(repo or af.REPO),
+            "superPrompt": super_prompt(repo or af.REPO), "road": road(repo or af.REPO),
             "recipes": [dict(zip(("name", "when", "line", "get"), r)) for r in RECIPES]}
 
 
@@ -200,6 +232,13 @@ details.fold>summary::after{content:"Show";font:600 .76rem var(--f-body);color:v
 details.fold[open]>summary::after{content:"Hide"}
 details.fold .in{padding:0 0 12px;display:grid;gap:8px}
 details.fold pre{margin:0;padding:10px;background:var(--sunk);border:1px solid var(--line);border-radius:8px;font:.76rem/1.5 var(--f-mono);white-space:pre-wrap;overflow-wrap:anywhere}
+.road{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:6px}
+.stg{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--line);border-radius:8px;padding:7px 9px;display:grid;gap:2px;align-content:start;min-width:0}
+.stg.done{border-top-color:var(--pass);opacity:.75}
+.stg.now{border-top-color:var(--warn);background:var(--warn-soft)}
+.stg b{font:750 .86rem var(--f-display);font-stretch:90%}
+.stg .x{font-size:.74rem;color:var(--muted);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.stg.now .x{-webkit-line-clamp:unset}
 .ritem{display:flex;flex-wrap:wrap;gap:2px 10px;align-items:baseline;font-size:.88rem}
 .ritem .url{font:.72rem var(--f-mono);color:var(--muted);overflow-wrap:anywhere}
 @media (max-width:640px){
@@ -216,6 +255,11 @@ details.fold pre{margin:0;padding:10px;background:var(--sunk);border:1px solid v
 
   <section aria-labelledby="h-wait">
     <div class="need" id="need"></div>
+  </section>
+
+  <section aria-labelledby="h-road">
+    <div class="sechead"><h2 id="h-road">Road to profitability</h2><span class="sub small" id="roadsub"></span></div>
+    <div class="road" id="road"></div>
   </section>
 
   <section aria-labelledby="h-pages">
@@ -262,6 +306,11 @@ $("need").innerHTML = W.length
     + W.slice(0, 3).map(qrow).join("")
     + (W.length > 3 ? `<details><summary class="small sub" style="cursor:pointer">${W.length - 3} more</summary>${W.slice(3).map(qrow).join("")}</details>` : "")
   : `<div class="sechead"><h2 id="h-wait">Nothing waiting for you</h2><span class="small">${ans}</span></div>`;
+const R = DATA.road, ni = R.stages.findIndex(s => s.now);
+$("roadsub").innerHTML = `Now <b>${esc(R.now || "?")}</b> · ready cards ${R.counts.ready_cards} (S0 bar ≤ 15) · promoted setups ${R.counts.promoted} (S3 needs ≥ 1) · <code>${esc(R.doc.split("/").pop())}</code>`;
+$("road").innerHTML = R.stages.length ? R.stages.map((s, i) => `
+  <div class="stg${s.now ? " now" : ni >= 0 && i < ni ? " done" : ""}"><b>${esc(s.id)} ${esc(s.name)}</b><span class="x">Exit: ${esc(s.exit)}</span><span class="x">${esc(s.expect)}</span></div>`).join("")
+  : `<p class="sub small">Roadmap missing: ${esc(R.doc)}</p>`;
 $("pages").innerHTML = DATA.pages.map(p => `
   <article class="tile${p.write ? " w" : ""}">
     <a class="name" href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.title)}</a>

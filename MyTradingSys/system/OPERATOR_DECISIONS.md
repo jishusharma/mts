@@ -1559,3 +1559,8 @@ REMOVED 2026-10-24 (43d3bfc8f): offer_guard.py is gone; the rule now lives in CL
 ## bug-conflict-6a20d35469 | decided 2026-10-31 | Builder (DESKTOP-F7IU69N, login C)
 
 Conflict: commit 201d47c73 (3la + 3xm must-pass, 240 s cap) vs operator 10-25 "every ship under 2 minutes". DECISION (OURS default, order outranks the commit): must-pass steps stay (measured 6.6 s together); the 240 s cap is reworded as a ceiling in run_all_tests.py and GATE_SPEED.md; one rule stated in both. No gate logic changed.
+
+## d-flexible-min-n-per-case | decided 2026-10-31 | Lead (desktop, login C)
+```json
+{"id": "d-flexible-min-n-per-case", "order": 94, "date": "2026-10-31", "status": "DECIDED", "question": "The fixed 200-trade decision minimum blocks small but real setups (e.g. RSI-DIV-MTF 4h n=138). Keep it fixed?", "answer": "OPERATOR (2026-10-31, chat): 'wrt - fall below the 200-trade minimum - make it flexible for what makes sense in each case. I need to see all these back tests in simulator - make sure it is available' DECISION (OURS): no fixed 200. Each pre-reg states its own decision n from a power calculation on that setup's own per-trade spread: the n needed to see its fee-sized effect (at least the round-trip fee in R) at 80% power (phase_tag/harness.py power()). Floor 30 to report. Setups that fire rarely (macro/cycle, n under the power need) are judged descriptive + forward-logged, never 'failed' for low n; a strong effect may decide at lower n if its CI already excludes 0 after the family-wise correction. Simulator: every fractals_2026-10-31 study (P1b, F1, F2, F3, phase tag) gets a sim_desk result file with its trades.", "done": "SYNTHESIS.md s3 rule added; simulator export card started"}
+```

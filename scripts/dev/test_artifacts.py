@@ -157,6 +157,37 @@ class Home(unittest.TestCase):
         self.assertIsNone(d["answerAt"])  # decisions are answered in chat (Control Room retired 2026-10-31)
         self.assertIn("waiting for you", mh.render(d))
 
+    def test_home_shows_road_to_v1_with_current_stage_and_counts(self):
+        """Operator 2026-10-31: the road to profitability left with the Control Room; Home shows D7's one line per stage."""
+        import json
+        import tempfile
+        import make_home as mh
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / mh.TASKS).mkdir(parents=True)
+            (root / mh.ROAD).parent.mkdir(parents=True)
+            (root / mh.ROAD).write_text(
+                "# D7\n\n## Stages\nNow: S1 (test)\n\n| Stage | Entry | Work | Exit (measured) | EXPECT |\n|---|---|---|---|---|\n"
+                "| S0 Freeze and clean | a | b | ready cards <= 15 | now |\n| S1 Spec signed | S0 exit | c | D2 signed | 10-29 |\n"
+                "| v2 | S6 | d | separate spec | later |\n\n## Order\n| S9 Not a stage | x | x | x | x |\n", encoding="utf-8")
+            for i, st in enumerate(("ready", "ready", "done")):
+                (root / mh.TASKS / f"k{i}.json").write_text(json.dumps({"id": f"k{i}", "state": st}), encoding="utf-8")
+            (root / mh.PROMOTED).parent.mkdir(parents=True)
+            (root / mh.PROMOTED).write_text('{"version": 1, "entries": [{"id": "x"}]}', encoding="utf-8")
+            d = mh.build(self.reg, repo=root)
+        road = d["road"]
+        self.assertEqual([s["id"] for s in road["stages"]], ["S0", "S1", "v2"])
+        self.assertEqual(road["stages"][1], {"id": "S1", "name": "Spec signed", "exit": "D2 signed", "expect": "10-29", "now": True})
+        self.assertEqual(road["now"], "S1")
+        self.assertEqual(road["counts"], {"ready_cards": 2, "promoted": 1})
+        self.assertIn('id="road"', mh.render(d))
+
+    def test_road_reads_the_real_roadmap(self):
+        import make_home as mh
+        road = mh.road(af.REPO)
+        self.assertEqual([s["id"] for s in road["stages"]][:2], ["S0", "S1"])
+        self.assertEqual(sum(s["now"] for s in road["stages"]), 1)  # D7 carries one "Now:" line
+
     def test_every_page_opens_on_the_home_login(self):
         """Operator 2026-10-17: 'make a copy of everything from GitHub and publish everything from this account'."""
         import make_home as mh
