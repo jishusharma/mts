@@ -182,7 +182,7 @@ Every row maps a core parameter requested in R3 section 4 with video ID, timesta
 > "And then of course the other one that we got in 15 was a fake out alto together. It went up and then it killed the longs, came back down, did a short squeeze and found support on top of the 100 week and then we started the bull run proper from there."
 **Source GPS: p9KajODtBsU | END**
 
-> "this is 13 days ago, the last video I did, The fall under 79K may come soon. Um, we see all this from the fractals. We kind of knew all this was"
+> "this was 13 days ago, the last video I did, the fall under 79K may come soon. Um, we see all this from the fractals. We kind of knew all this was"
 **Source GPS: dmC1U_r8PFc | BEGIN**
 
 > "Bitcoin has come down and uh touched the 50 uh like we talked about like which was projected in the uh in the fractals."
