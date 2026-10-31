@@ -1,7 +1,18 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T23:36:51Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": 7,
+    "folded": "2026-10-31T23:38:45Z",
+    "misses": 18,
+    "reads": [
+      "MyTradingSys/backtest/layers/fabio/test_run_v3_l3.py",
+      "MyTradingSys/backtest/layers/fabio/run_v3_l3.py"
+    ],
+    "session": "agent-a02c01f57bfd1dd68"
+  },
   "created": "2026-10-31T20:28:51Z",
   "depends_on": [],
   "done_when": "pytest test_run_v3_l3.py green; --is-only writes out/is_only.json and selection.json and the OOS window list is never passed to run_cells; test fails on old code.",
@@ -14,6 +25,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "run_v3_l3 --is-only + test, 12 pass",
+      "ref": "d92a7373a",
+      "utc": "2026-10-31T23:36:51Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -31,7 +48,12 @@
   "refined_by": "",
   "refreshed": "2026-10-31T20:31:33Z",
   "refs": [],
-  "result": "",
+  "result": "run_v3_l3 --is-only + test, 12 pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/fabio/run_v3_l3.py",
     "MyTradingSys/backtest/layers/fabio/test_run_v3_l3.py"
@@ -42,12 +64,13 @@
   "scope_sha": "483a6b035782",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Make main(argv=None) call ap.parse_args(argv); add ap.add_argument('--is-only', action='store_true'). After the selection freeze block and before 'phase 2', if a.is_only: pool.shutdown(), write out/is_only.json, log, return.",
     "Test in test_run_v3_l3.py: stub build_windows (needs F: data) and run_cells; main(['--is-only','--out',tmp]) writes is_only.json and selection.json and never calls run_cells with OOS windows. Fails on old code (main takes no argv).",
     "Verify: content commit sha; git cherry origin/fast-track <sha> empty; git ls-tree -r origin/fast-track --name-only lists the delivered files."
   ],
+  "taken": "2026-10-31T23:36:51Z",
   "tests": "MyTradingSys/backtest/layers/fabio/test_run_v3_l3.py::test_is_only_never_touches_oos_windows (fails on old code: unrecognised --is-only)",
   "title": "run_v3_l3.py: add --is-only (phase 1, freeze selection, write is_only.json, exit; OOS never read)",
   "weight": "IMPORTANT",
