@@ -1,7 +1,24 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T09:02:11Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": 17,
+    "folded": "2026-10-31T08:58:18Z",
+    "misses": 10,
+    "reads": [
+      "scripts/dev/run_all_tests.py",
+      "MyTradingSys/system/OPERATOR_DECISIONS.md",
+      "MyTradingSys/system/GATE_SPEED.md",
+      "scripts/dev/test_run_all_tests.py",
+      "scripts/dev/test_ship_time_guard.py",
+      "scripts/dev/test_ci_split.py",
+      "scripts/dev/test_gate_select.py",
+      "MyTradingSys/system/PARALLEL.md"
+    ],
+    "session": "agent-a522a2ef6a35d00e5"
+  },
   "created": "2026-10-31T08:45:01Z",
   "depends_on": [],
   "done_when": "run_all_tests.py comment and the ship docs state one rule (must-pass steps are exempt from deferral, ships target under 2 min, 240 s is a ceiling); a measured gate_timing.jsonl line shows 3la+3xm total; conflict row noted in OPERATOR_DECISIONS.md.",
@@ -15,6 +32,12 @@
   "last_seen": "2026-10-31T08:45:01Z",
   "last_session": "5883fb83-86e9-4a66-9105-84b9c74a9b0a",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "wording: must-pass 3la/3xm never deferred, 240 s ceiling, ships target <2 min (89ef3ac41)",
+      "ref": "5d1129bfb",
+      "utc": "2026-10-31T09:02:11Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +62,12 @@
   "refined_by": "",
   "refreshed": "2026-10-31T08:49:26Z",
   "refs": [],
-  "result": "",
+  "result": "wording: must-pass 3la/3xm never deferred, 240 s ceiling, ships target <2 min (89ef3ac41)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/run_all_tests.py",
     "MyTradingSys/system/OPERATOR_DECISIONS.md"
@@ -51,12 +79,13 @@
   "seen": 1,
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read run_all_tests.py NO_DEFER_CMDS and the 1336 comment; read the 10-25 decision row",
     "Align the comment/doc text to the one rule",
     "Run test_run_all_tests.py; ship"
   ],
+  "taken": "2026-10-31T09:02:11Z",
   "tests": "none: wording and a measured timing; existing test_run_all_tests TestGateFileShipBudget still passes",
   "title": "Instruction conflict: CI root-cause fix 201d47c73: 3la + 3xm must finish vs operator 10-25: every ship under 2 minutes, deadli",
   "weight": "ROUTINE",
