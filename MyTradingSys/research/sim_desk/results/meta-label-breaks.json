@@ -1,0 +1,321 @@
+{
+ "id": "meta-label-breaks",
+ "kind": "backtest",
+ "parity": null,
+ "family": "Meta-label (layer filter)",
+ "title": "Meta-label + early exit on timeframe-break trades: can other layers pick the winners, and does getting out early help?",
+ "what": [
+  {
+   "name": "Trades",
+   "value_plain": "tf_break events (break of a prior-period high/low; classes H follow, R reclaim, W1 wick-sweep fade), BTCUSDT 15m / 1h / 4h, entry at the open of the bar after the signal, exit at the close 4 bars later",
+   "label": "OURS"
+  },
+  {
+   "name": "Costs",
+   "value_plain": "0.10 % round trip (taker both legs), no slippage, no funding",
+   "label": "OURS"
+  },
+  {
+   "name": "Filter",
+   "value_plain": "logistic score (L2 1.0) from 15 readings at entry: BBWP (basis 7, lookback 100) on the trade TF and 4h, daily trend, RSI, taker flow, relative volume, distance to level, move since break, realised vol, session, setup class",
+   "label": "OURS"
+  },
+  {
+   "name": "BBWP settings",
+   "value_plain": "basis 7, lookback 100 (Krown, KR-Q01)",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Early exit",
+   "value_plain": "exit at the close of bar 1 or 2 if not in profit, else hold the 4 bars",
+   "label": "OURS"
+  }
+ ],
+ "how": "Scored every trade out of fold (6 purged time blocks, 7-day purge, score cut from the training fold), compared the best third with all trades; 200 label shuffles as placebo, Holm over 3 timeframes, week-block bootstrap CI. Rules frozen in PRE_REG.md before any result.",
+ "window": "DEV only, 2022-01 to 2024-06 (trades before about 2022-07-19 dropped: daily SMA200 warm-up); VALIDATION and HOLDOUT not read",
+ "verdict": {
+  "label": "INCONCLUSIVE",
+  "tone": "warn"
+ },
+ "why": [
+  "15m: best third -0.080 % per trade after fees, placebo p 0.090, Holm p 0.129 -> FAIL",
+  "1h: best third +0.063 % per trade after fees, placebo p 0.020, Holm p 0.060 -> INCONCLUSIVE",
+  "4h: best third +0.097 % per trade after fees, placebo p 0.065, Holm p 0.129 -> FAIL",
+  "Early exit: every difference CI includes zero. After one bar about 28 % of eventual winners are still under water and about 65 % of losers, so \"not in profit yet\" cuts winners almost as often as losers.",
+  "1h lead: best third positive in both halves (+0.129 / +0.035 %); next check is 2019-2021 data never seen (card meta-label-1h-dev-ext-check)."
+ ],
+ "kpis": [
+  {
+   "label": "15m trades",
+   "value": "4114"
+  },
+  {
+   "label": "1h trades",
+   "value": "1078"
+  },
+  {
+   "label": "4h trades",
+   "value": "417"
+  },
+  {
+   "label": "1h best third, net % per trade",
+   "value": "+0.063",
+   "tone": "warn"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "table",
+   "title": "Filter: does the best third by score beat the rest? (net % per trade after fees)",
+   "caption": "CI = week-block 95 %; placebo p = share of label shuffles doing as well; Holm over 3 timeframes",
+   "cols": [
+    "TF",
+    "trades",
+    "all net",
+    "best third n",
+    "best third net",
+    "best third CI",
+    "worst third net",
+    "placebo p",
+    "Holm p",
+    "verdict"
+   ],
+   "rows": [
+    [
+     "15m",
+     "4114",
+     "-0.094",
+     "1379",
+     "-0.080",
+     "-0.121..-0.036",
+     "-0.108",
+     "0.090",
+     "0.129",
+     "FAIL"
+    ],
+    [
+     "1h",
+     "1078",
+     "-0.033",
+     "360",
+     "+0.063",
+     "-0.048..+0.179",
+     "-0.101",
+     "0.020",
+     "0.060",
+     "INCONCLUSIVE"
+    ],
+    [
+     "4h",
+     "417",
+     "-0.153",
+     "145",
+     "+0.097",
+     "-0.210..+0.403",
+     "-0.223",
+     "0.065",
+     "0.129",
+     "FAIL"
+    ]
+   ]
+  },
+  {
+   "kind": "table",
+   "title": "Early exit: get out at bar k if not in profit vs hold 4 bars (all trades, net % per trade)",
+   "caption": "under water at k = share of eventual winners / losers below entry at the close of bar k",
+   "cols": [
+    "TF",
+    "k",
+    "hold net",
+    "early-exit net",
+    "difference",
+    "difference CI",
+    "winners under water",
+    "losers under water",
+    "verdict"
+   ],
+   "rows": [
+    [
+     "15m",
+     "1",
+     "-0.094",
+     "-0.101",
+     "-0.007",
+     "-0.016..+0.002",
+     "27 %",
+     "62 %",
+     "NO DIFFERENCE SHOWN"
+    ],
+    [
+     "15m",
+     "2",
+     "-0.094",
+     "-0.097",
+     "-0.004",
+     "-0.012..+0.005",
+     "18 %",
+     "66 %",
+     "NO DIFFERENCE SHOWN"
+    ],
+    [
+     "1h",
+     "1",
+     "-0.033",
+     "-0.062",
+     "-0.029",
+     "-0.066..+0.007",
+     "28 %",
+     "65 %",
+     "NO DIFFERENCE SHOWN"
+    ],
+    [
+     "1h",
+     "2",
+     "-0.033",
+     "-0.031",
+     "+0.003",
+     "-0.023..+0.031",
+     "17 %",
+     "69 %",
+     "NO DIFFERENCE SHOWN"
+    ],
+    [
+     "4h",
+     "1",
+     "-0.154",
+     "-0.065",
+     "+0.089",
+     "-0.019..+0.211",
+     "28 %",
+     "67 %",
+     "NO DIFFERENCE SHOWN"
+    ],
+    [
+     "4h",
+     "2",
+     "-0.154",
+     "-0.081",
+     "+0.072",
+     "-0.017..+0.165",
+     "20 %",
+     "71 %",
+     "NO DIFFERENCE SHOWN"
+    ]
+   ]
+  },
+  {
+   "kind": "table",
+   "title": "1h: net % per trade by each reading's DEV thirds (descriptive, not a test; 0/1 readings show value 0 / value 1)",
+   "caption": "each reading is one cut of 15 on the same trades: a lead to test, not a rule",
+   "cols": [
+    "reading at entry",
+    "low third (n)",
+    "middle third (n)",
+    "high third (n)"
+   ],
+   "rows": [
+    [
+     "BBWP on the trade timeframe",
+     "-0.051 (357)",
+     "-0.022 (359)",
+     "-0.026 (362)"
+    ],
+    [
+     "BBWP on 4h",
+     "-0.087 (357)",
+     "-0.021 (361)",
+     "+0.009 (360)"
+    ],
+    [
+     "daily trend with the trade (close vs SMA200)",
+     "-0.103 (359)",
+     "-0.037 (359)",
+     "+0.041 (360)"
+    ],
+    [
+     "RSI(14) at entry",
+     "-0.022 (359)",
+     "-0.035 (359)",
+     "-0.043 (360)"
+    ],
+    [
+     "taker flow with the trade, last 5 bars",
+     "+0.072 (359)",
+     "-0.059 (359)",
+     "-0.112 (360)"
+    ],
+    [
+     "relative volume (hour of week)",
+     "-0.085 (359)",
+     "-0.003 (359)",
+     "-0.012 (360)"
+    ],
+    [
+     "distance to the level in ATR",
+     "-0.022 (359)",
+     "-0.039 (359)",
+     "-0.038 (360)"
+    ],
+    [
+     "move from the break to entry",
+     "-0.103 (91)",
+     "na (0)",
+     "-0.027 (987)"
+    ],
+    [
+     "realised volatility",
+     "-0.039 (359)",
+     "-0.044 (359)",
+     "-0.017 (360)"
+    ],
+    [
+     "Europe session (1 = yes)",
+     "-0.036 (889)",
+     "-0.021 (189)",
+     ""
+    ],
+    [
+     "US session (1 = yes)",
+     "+0.008 (645)",
+     "-0.095 (433)",
+     ""
+    ],
+    [
+     "late session (1 = yes)",
+     "-0.047 (915)",
+     "+0.045 (163)",
+     ""
+    ],
+    [
+     "reclaim trade (1 = yes)",
+     "-0.052 (849)",
+     "+0.037 (229)",
+     ""
+    ],
+    [
+     "wick-sweep fade (1 = yes)",
+     "+0.018 (437)",
+     "-0.068 (641)",
+     ""
+    ],
+    [
+     "break of a high (1 = yes)",
+     "-0.057 (525)",
+     "-0.011 (553)",
+     ""
+    ]
+   ]
+  },
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported (per-trade chart data was not saved)"
+  }
+ ],
+ "source_files": [
+  "MyTradingSys/research/meta_label_breaks_2026-10-31/PRE_REG.md",
+  "MyTradingSys/research/meta_label_breaks_2026-10-31/meta.py",
+  "MyTradingSys/research/meta_label_breaks_2026-10-31/RESULT.md"
+ ],
+ "commit": "c6a6bb3b"
+}

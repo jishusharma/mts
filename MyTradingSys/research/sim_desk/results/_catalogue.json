@@ -1,7 +1,7 @@
 {
 "_doc": "Catalogue of known tests on trunk. kind is inferred (kind_source). Built by sim_desk/build_catalogue.py.",
-"count": 301,
-"exported": 301,
+"count": 302,
+"exported": 302,
 "rows": [
 {
 "id": "st-_archive-loose_2026-10-cbp_profile6_result",
@@ -2816,6 +2816,20 @@
 "date": "2026-10-19",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
+},
+{
+"id": "meta-label-breaks",
+"family": "Meta-label (layer filter)",
+"title": "Meta-label + early exit on timeframe-break trades: can other layers pick the winners, and does getting out early help?",
+"kind": "backtest",
+"kind_source": "result file",
+"verdict": "INCONCLUSIVE",
+"source": "MyTradingSys/research/sim_desk/results/meta-label-breaks.json",
+"exported": true,
+"result_id": "meta-label-breaks",
+"date": "2026-10-31",
+"status": "SEE_VERDICT",
+"verdict_class": "unclear"
 },
 {
 "id": "desk-meta_label_fabio_c",

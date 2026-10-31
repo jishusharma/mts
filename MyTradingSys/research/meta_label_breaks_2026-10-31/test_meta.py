@@ -93,5 +93,25 @@ class Hand(unittest.TestCase):
         self.assertEqual(tr.tolist(), [True, False, False])
 
 
+class SimExport(unittest.TestCase):
+    def test_overall_verdict_and_tables(self):
+        import sim_export as X
+        side = dict(n=10, net=0.01, lo=-0.1, hi=0.1)
+
+        def cell(v):
+            return dict(n_all=30, all=dict(net=-0.03), top=side, bottom=dict(net=-0.1), placebo_p=0.02, holm_p=0.06,
+                        top_net_2022=0.1, top_net_2023=0.03, verdict=v)
+        e = dict(hold_net=-0.03, early_net=-0.06, diff=-0.03, diff_lo=-0.07, diff_hi=0.01, winners_underwater=0.28,
+                 losers_underwater=0.65, verdict='no difference')
+        R = dict(rt_pct=0.1, meta={'15m': cell('FAIL'), '1h': cell('INCONCLUSIVE')}, early={'1h': {'k1': e}},
+                 features={'1h': {'flow_e': dict(thirds=[dict(net=0.07, n=3), dict(net=0.0, n=3), dict(net=-0.1, n=3)])}})
+        d = X.doc(R)
+        self.assertEqual(d['verdict']['label'], 'INCONCLUSIVE')
+        self.assertEqual([len(x.get('rows', [])) for x in d['examples']], [2, 1, 1, 0])
+        self.assertTrue(all(w['label'] in ('SOURCED', 'OURS') for w in d['what']))
+        R['meta']['1h']['verdict'] = 'FAIL'
+        self.assertEqual(X.doc(R)['verdict']['label'], 'FAIL')
+
+
 if __name__ == '__main__':
     unittest.main()
