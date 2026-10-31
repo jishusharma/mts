@@ -589,6 +589,14 @@ Sources: `research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md` s3 and s5, extract `e
 
 **Worked example (by hand).** Synthetic dates from Monday 2023-01-02, close[i] = 100 + i (i <= 449). Sunday bars i = 6, 13, ..., so weekly close W_k = 106 + 7k. Row i = 250 uses bar 249; completed weeks k = 0..34 (Sunday bar 244). SMA20w = mean(W_15..W_34) = 106 + 7*24.5 = 277.5. EMA21w: seed = mean(W_0..W_20) = 106 + 7*10 = 176 = W_20 - 70, and on a ramp of slope 7 the EMA lag is (1-a)/a * 7 = 10 * 7 = 70, so every step stays on W_k - 70 (check: e + (1/11)(7 + 70) = e + 7); EMA21w at k = 34 is 344 - 70 = 274. Close of bar 249 = 349 > max(277.5, 274): side = above. Weekly SMA10 = 106 + 7*mean(25..34) = 312.5 (one week earlier 305.5: rising), close above: phase above_up. Real data: row 2026-09-30 reads SMA20w 70,366.92, EMA21w 73,695.10, bar 2026-09-29 close 83,663.66: above (independent plain-python recompute matches).
 
+## 27. Rolling DFA Hurst (`research/fractals_2026-10-31/f2/dfa.py`) - added 2026-10-31
+
+**Chosen definition (OURS parameters, SOURCED estimator).** Detrended fluctuation analysis, order 1 (Peng et al. 1994), the estimator Bariviera 2017 uses rolling on BTC (R1 s1b). For a window of n returns x: profile y_j = sum_{i<=j}(x_i - mean(x)). Cut y from the front into nb = floor(n/s) boxes of s points. In each box fit the least-squares line a + b t and take the mean squared residual; F^2(s) = average of the box values over boxes; F(s) = sqrt(F^2(s)). H = OLS slope of log F(s) on log s over s in {8,16,32,60,96,160}. H ~ 0.5 for uncorrelated returns, > 0.5 persistent (trending), < 0.5 anti-persistent (mean-reverting). Window W = 480 consecutive 1h log returns (20 days); H of the window ending at bar i is known at the close of bar i.
+
+**Worked example (by hand).** x = +1,-1,+1,-1,... (mean 0), s = 4: profile per box 1,0,1,0; t - mean(t) = -1.5,-0.5,0.5,1.5, sum of squares 5; slope = (1*(-1.5) + 0 + 1*0.5 + 0)/5 = -0.2; fitted line = 0.5 - 0.2(t - 1.5) = 0.8,0.6,0.4,0.2; residuals 0.2,-0.6,0.6,-0.2; mean square = (0.04+0.36+0.36+0.04)/4 = 0.2. So F^2(4) = 0.2 (test_dfa.py). Random-walk increments give H = 0.5 and fGn with Hurst 0.8 gives about 0.8 (tests with tolerances).
+
+**Known limit.** DFA understates H on short windows (R1 s1b, arXiv 1201.4786); the thresholds 0.45 / 0.55 are not corrected for that bias, and the 480-return window has a wide error band (sd of H over DEV hours is 0.056).
+
 ## Verification note (this audit, 2026-09-28)
 
 Every case number in `layers/timeframe/TEST_PLAN.md`, `layers/rsi/TEST_PLAN.md`,
