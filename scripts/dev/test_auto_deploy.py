@@ -558,14 +558,18 @@ class TestGateTimeAndTimeout(unittest.TestCase):
         self.addCleanup(reap)
         self.assertEqual(rc, 124)
         self.assertLess(took, 20, "sh waited for the surviving grandchild")
+        def state():
+            try:
+                return Path(f"/proc/{pid}/stat").read_text().rsplit(")", 1)[1].split()[0]
+            except (OSError, IndexError):
+                return ""
+
+        # A zombie ('Z') is dead: killed, waiting for a reaper. The CI container's PID 1 does not reap orphans, so the killed
+        # grandchild stays 'Z' and kill(pid, 0) still succeeds (CI runs 41140240177, 41175038690 on 2026-10-30/31).
         deadline = time.monotonic() + 30   # bounded poll: a loaded runner / windows needs a moment to retire a SIGKILLed process
-        while ad._pid_alive(pid) and time.monotonic() < deadline:
+        while ad._pid_alive(pid) and state() != "Z" and time.monotonic() < deadline:
             time.sleep(0.2)
-        try:
-            state = Path(f"/proc/{pid}/stat").read_text().rsplit(")", 1)[1].split()[0]
-        except (OSError, IndexError):
-            state = ""
-        self.assertTrue(pid and not ad._pid_alive(pid), "grandchild still alive 30s after the timeout (proc state %r)" % state)
+        self.assertTrue(pid and (not ad._pid_alive(pid) or state() == "Z"), "grandchild still alive 30s after the timeout (proc state %r)" % state())
 
     def test_tasklist_pid_match_is_exact_not_a_substring_of_other_columns(self):
         out = '"python.exe","999","Console","1","1,234 K"'

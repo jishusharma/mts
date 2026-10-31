@@ -41,9 +41,12 @@ class TrunkLagTest(unittest.TestCase):
         self.d.cleanup()
 
     def test_git_timeout_is_overridable_and_defaults_to_the_hook_limit(self):
-        with unittest.mock.patch.dict(os.environ, {"MTS_TRUNK_LAG_GIT_TIMEOUT": "0.000001"}):
+        # assert the timeout git gets, not that a 1 us timer beats `git status`: a fast CI runner finished first (CI 41181218651)
+        with unittest.mock.patch.dict(os.environ, {"MTS_TRUNK_LAG_GIT_TIMEOUT": "0.5"}), \
+                unittest.mock.patch.object(T.subprocess, "run", side_effect=subprocess.TimeoutExpired("git", 0.5)) as run:
             with self.assertRaises(subprocess.TimeoutExpired):
                 T.git(self.tree, "status")
+        self.assertEqual(run.call_args.kwargs["timeout"], 0.5)
         with unittest.mock.patch.dict(os.environ, {"MTS_TRUNK_LAG_GIT_TIMEOUT": "junk"}):
             self.assertEqual(T.git_timeout(), 8)
         env = {k: v for k, v in os.environ.items() if k != "MTS_TRUNK_LAG_GIT_TIMEOUT"}
