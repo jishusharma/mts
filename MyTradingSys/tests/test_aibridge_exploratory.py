@@ -172,7 +172,6 @@ setTimeout(function(){
 
 
 @needs_browser
-@pytest.mark.xfail(strict=True, reason="E5 MINOR/BLOCKER: " + FIX_PENDING)
 def test_E5_failed_read_kind_command_stops_the_dependent_block():
     """exit=128 on a kind=read command (git fetch) must stop the batch like any other failure; today block 2 still runs."""
     js = ARM + r"""
@@ -186,7 +185,6 @@ setTimeout(window.finish, 40000);
 
 
 @needs_browser
-@pytest.mark.xfail(strict=True, reason="E6 STOPPER/BLOCKER (B210 gap): " + FIX_PENDING)
 def test_E6_task_without_timeout_keeps_its_lock_for_the_agent_default():
     """task=mts-gate without timeout= runs under the agent's 600 s task default; the extension released the lock at 240 s with
     LOCK_EXPIRED while the gate was still running (agent running=1), losing the real result and inviting a duplicate run."""
@@ -244,3 +242,24 @@ setTimeout(window.finish, 150000);
     assert len(notices) == 1, texts
     assert notices[0]["t"] - r["posted"][0]["t"] < 60000, (notices[0]["t"], r["posted"][0]["t"])
     assert r["banner"] and "never answered" in r["banner"], r["banner"]
+
+
+# ---- 0.7.7 source guards for the content.js fixes (the page-level behaviour is covered by the browser tests above) ----
+def _src(rel):
+    from pathlib import Path
+    return (Path(__file__).resolve().parents[2] / rel).read_text(encoding="utf-8")
+
+
+def test_077_stop_resets_the_reply_watch_and_draft_counts_as_busy():
+    c = _src("scripts/aibridge/extension/content.js")
+    stop = c[c.index("function stopAuto"):]
+    stop = stop[:stop.index("}")]
+    assert "watch = null" in stop, "a stale watch survives an operator untick (c2)"
+    assert "busy: inRun || !!inputText(findInput()" in c, "a draft being typed must hold the notice (c2)"
+    assert "L.blockFailed(resp)" in c, "E5: exit rule lives in loop.js"
+    assert "L.expireMs(it.opts.timeout_s, !!it.opts.task)" in c, "E6: task default"
+
+
+def test_077_agent_task_default_follows_the_playbook_budget():
+    a = _src("scripts/aibridge/src/agent.ps1")
+    assert "$sumS + 60" in a and "[Math]::Min($hardS, [Math]::Max(600, $sumS + 60))" in a

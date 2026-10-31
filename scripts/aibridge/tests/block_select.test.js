@@ -61,3 +61,10 @@ t('fixture deepseek_reply.html: class names in the fixture are recognised', () =
 });
 
 console.log(n + ' tests passed');
+
+t('0.7.7 lead text is only checked on the nearest 4 ancestors', () => {
+  const far = [{ tag: 'div', cls: 'a' }, { tag: 'div', cls: 'b' }, { tag: 'div', cls: 'c' }, { tag: 'div', cls: 'd' }, { tag: 'main', cls: 'chat', lead: 'Thinking about the plan' }];
+  assert.strictEqual(L.isThinking(far), false);
+  assert.strictEqual(L.isThinking([{ tag: 'div', cls: 'a', lead: 'Thinking about it' }]), true);
+});
+console.log(n + ' passed');
