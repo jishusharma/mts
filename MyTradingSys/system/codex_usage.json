@@ -2,11 +2,11 @@
  "allowance": {
   "plan": "plus",
   "week_resets": 1793780113,
-  "week_used": 58.0,
+  "week_used": 59.0,
   "window_resets": 1793433270,
   "window_used": 9.0
  },
- "at": "2026-10-31T04:03:15Z",
+ "at": "2026-10-31T04:26:38Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -21,18 +21,33 @@
  "host": "JIS-NUC",
  "lab": {
   "astra_runs": 0,
-  "week_pts": 8.0,
+  "week_pts": 9.0,
   "window_pts": 1.0,
-  "window_runs": 2
+  "window_runs": 3
  },
  "runs": [
+  {
+   "at": "2026-10-31T04:25:40Z",
+   "card": "gpt-bug-hunt-lookahead-snapshots-prob-table",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 56,
+   "tokens_out": 4034,
+   "tokens_total": 366747,
+   "tokens_uncached": 40793,
+   "week_pts": 1.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-31T04:02:07Z",
    "card": "gpt-bug-hunt-promote-gates-vs-tests",
    "effort": "medium",
    "kind": "audit",
    "model": "gpt-6-luna",
-   "note": "",
+   "note": " | release failed: sync: no claim gpt-bug-hunt-promote-gates-vs-tests on origin/claims",
    "outcome": "DONE",
    "seconds": 66,
    "tokens_out": 6446,
@@ -158,21 +173,6 @@
    "tokens_out": 3587,
    "tokens_total": 457447,
    "tokens_uncached": 53220,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-30T09:27:43Z",
-   "card": "gpt-audit-formulas-vs-krown-layer",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 51,
-   "tokens_out": 3295,
-   "tokens_total": 330477,
-   "tokens_uncached": 46350,
    "week_pts": 0.0,
    "window_pts": 0.0
   }
