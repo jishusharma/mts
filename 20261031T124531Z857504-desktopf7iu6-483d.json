@@ -1,0 +1,1 @@
+{"t": "20261031T124531Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "note", "text": "CI RED on trunk: 4411487d + 244b4494 (both docs/card-only) fail Step 4 on MyTradingSys/tests/test_aibridge_exploratory.py (4411487d: duplicate-guard runs list has an extra/duplicate run; 244b4494: [cu", "login": "A"}
