@@ -37,7 +37,7 @@
   "refined_by": "",
   "refreshed": "2026-10-31T07:04:44Z",
   "refs": [],
-  "result": "",
+  "result": "DONE 2026-10-31: phase tag v1 + harness on trunk (7c265f0c2, re-landed green de592cc2 after a look-ahead lint revert). tags.csv 2017-08-17..2026-09-30; 15 tests.",
   "scope_in": [
     "MyTradingSys/research/fractals_2026-10-31/phase_tag/ (new)",
     "MyTradingSys/backtest/layers/FORMULAS.md (2 new entries)"
@@ -48,7 +48,7 @@
   "scope_sha": "fd70f3d9de72",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "write fail-first tests: shift test (tag at t uses bars <= t-1), 5 hand-computed dates, planted +0.3% in 20% of one cell detected, no-injection run null",
     "FORMULAS.md entries for halving clock and Cowen band, expected values computed by hand",
