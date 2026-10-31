@@ -10,7 +10,7 @@ state name: IDLE | IMPULSE | PROBE | ARMED | SIGNAL | IN_TRADE | DONE. The first
 Imports: stdlib + v3 siblings only (spec header). Nothing from execution/ or layers/alerts/.
 """
 from .day_gates import ENTRY_CUTOFF, WINDOW_BARS, day_gate_open
-from .models import (model_a_trade, model_c, model_d_trade, scan_model_a, scan_model_b, scan_model_c,
+from .models import (model_a_trade, model_b, model_c, model_d_trade, scan_model_a, scan_model_b, scan_model_c,
                      scan_model_d)
 from .signals import B_PROF, K_BAL, effort_arrays, failed_auction, volume_tier
 
@@ -98,8 +98,11 @@ def _manage(mdl, st, bars, o, i, cfg, ctx):
         if fa is None:
             return None
         r = model_d_trade(bars, st["armed_idx"], fa["s"], fa["edge"], fa["lvl"], f, DMAX, entry_mode=mode, **kw)
+    elif mdl == "B":         # scan_model_b IN_TRADE returns the probe bar + balance: replay model_b on them (spec 4 / 5.2)
+        r = model_b(bars, st["probe_idx"], st["bal"], f=f, dmax=DMAX, entry_mode=mode,
+                    target_mode=cfg.get("target_mode", "edge"), **kw)
     else:
-        return None          # unknown: scan_model_b IN_TRADE returns no balance / Xp, so the trade cannot be rebuilt
+        return None
     return r["trades"][0] if r["trades"] else None
 
 

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T19:04:51Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -26,6 +27,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "B IN_TRADE now managed; test 19/7 R; NOT_MEASURED.md (42 IS+4 OOS per card; IS rerun pendi",
+      "ref": "ff48cdd99",
+      "utc": "2026-10-31T19:04:51Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "TF8: B099 fixed, L3 re-run complete; row 1.10 LANDED, result L3-FAIL",
@@ -42,7 +49,12 @@
   "refined_by": "",
   "refreshed": "2026-10-31T14:49:53Z",
   "refs": [],
-  "result": "",
+  "result": "B IN_TRADE now managed; test 19/7 R; NOT_MEASURED.md (42 IS+4 OOS per card; IS rerun pending, F: absent)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/fabio/v3/engine.py",
     "MyTradingSys/backtest/layers/fabio/run_v3_l3.py",
@@ -55,13 +67,14 @@
   "scope_sha": "973e9b9b6113",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read engine.py lines 90-112 and run_v3_l3.py lines 100-112; count the unmanaged Model B fills per window",
     "write the NOT MEASURED line into the L3 report (count, share of Model B fills)",
     "write the failing test: a Model B IN_TRADE path whose hand-computed net R is not 0 (FORMULAS.md, spec 5.2 exits)",
     "implement B management in _manage so the trade is rebuilt; rerun IS only"
   ],
+  "taken": "2026-10-31T19:04:51Z",
   "tests": "MyTradingSys/backtest/layers/fabio/test_run_v3_l3.py: Model B hand-number case fails on old code (scored 0 R), passes after",
   "title": "fabio v3 Model B fills scored 0 R as unmanaged (v3/engine.py:100-102, run_v3_l3.py:108-109): 42 IS + 4 OOS fills never measured; report NOT MEASURED, then fix _manage for B with a test failing first",
   "weight": "CRUCIAL",
