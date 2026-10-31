@@ -2,6 +2,22 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-31T10:08:50Z",
+    "misses": 30,
+    "reads": [
+      "scripts/aibridge/extension/content.js",
+      "scripts/dev/test_wiring_scan.py",
+      "scripts/aibridge/extension/loop.js",
+      "MyTradingSys/tests/docs/test_integrity.py",
+      "scripts/dev/mts_signal.py",
+      "scripts/aibridge/tasks/mts-gate.json",
+      "scripts/aibridge/extension/manifest.json",
+      "scripts/aibridge/RELEASES.json"
+    ],
+    "session": "agent-a7ce27aa2535a03b6"
+  },
   "created": "2026-10-31T10:04:23Z",
   "depends_on": [],
   "done_when": "node tests/block_select.test.js passes (2 drafts + 6 final -> 6 selected once; duplicate -> NOT_RUN; key stable on collapse); content.js:11 cap 200; RELEASES/manifest/loop VERSION 0.7.4",
