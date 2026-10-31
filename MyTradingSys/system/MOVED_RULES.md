@@ -13,7 +13,7 @@ Moved 2026-10-25 by the Lead to make room for the operator principles. Text is v
 
 - Live-path changes need a test for restart/reset state, non-trade balance moves and API errors; safety checks fail closed. New timeframe or layer family: grep every TF/family map. Whoever sets AUTO_PAUSE logs owner + expected end in SUPERVISOR_LOG; each wake clears or escalates an overdue pause.
 
-- The live tree (`.mts_live`) runs the testnet system and changes only by a manual or coordinator-run deploy (DEPLOY_RUNBOOK.md). Builders never deploy, stop/restart processes, touch HALT files or open trades. No scheduled tasks or routines on any device.
+- The live tree (`.mts_live`) runs the testnet system and changes only by a manual or coordinator-run deploy (DEPLOY_RUNBOOK.md). Builders never deploy, stop/restart processes, touch HALT files or open trades. Exception (operator, 2026-10-31, d-cotrade-testnet-carveout): testnet orders the operator calls by name, placed only through MyTradingSys/execution/cotrade.py, journaled; never mainnet. No scheduled tasks or routines on any device (CLAUDE.md Boot 4 keeps this).
 
 5. SHORT SESSIONS (unattended workers; an operator-driven session ends on his word, q-v1-turn-caps): one session = one task; hand over when it is done, after 10 operator turns or the tool-turn cap (WORKERS.md rule 5), whichever first (commit, then steps 3-4, one line, stop). Live market threads: after 5 screenshot reads.
 

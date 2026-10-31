@@ -116,6 +116,6 @@ A kill on one slot must flatten BOTH legs (else a half-closed hedge becomes a na
 | Item | State |
 |---|---|
 | Ready to fire your trades now? | NO. P1 (`cotrade.py`) is a ready card, not built. |
-| Rule blocking it | CLAUDE.md hard rule: "Builders never ... open trades". Co-trading needs a written carve-out first (conflict filed): "testnet orders the operator calls by name, placed only through cotrade.py, journaled; never mainnet". |
+| Rule blocking it | CLEARED 2026-10-31 (d-cotrade-testnet-carveout, operator 'approved'): exception now in CLAUDE.md + MOVED_RULES.md. Wording: "testnet orders the operator calls by name, placed only through cotrade.py, journaled; never mainnet". |
 | Showing it in the browser | After P1: you say "fire ...", the reply shows the order, and the same order appears on test.deribit.com (Chrome) under Open orders / Positions. |
 | Mainnet afterwards | Separate money gate, your call only. Exists: `--mainnet` + typed confirmation, $50 per order cap (`deribit_orders.py:84-87`), `execution/MAINNET_READINESS_CHECKLIST.md`. Repo goes private at mainnet (CLAUDE.md). |

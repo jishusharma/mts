@@ -1599,3 +1599,8 @@ Conflict: commit 201d47c73 (3la + 3xm must-pass, 240 s cap) vs operator 10-25 "e
 ```json
 {"id": "d-cotrade-use-existing-account", "order": 100, "date": "2026-10-31", "status": "DECIDED", "question": "Which testnet account does the co-trade command use; does the operator create a new subaccount key?", "answer": "OPERATOR (2026-10-31, chat): 'no - just use what ever a/c we have - i will just say fire these trades and you will do it. that os it'. Binding: no new subaccount or key; co-trade uses an existing testnet slot: the spare jishu_22 (auto_trader_config _accounts_note), else the main slot via the existing missing-secret fallback. Flow is his words 'fire these trades' -> Claude places on testnet and journals; no extra confirmation step from him. Account-wide kill/flatten on a shared slot can close his position: journaled as a known risk.", "refs": ["MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md"]}
 ```
+
+## d-cotrade-testnet-carveout | decided 2026-10-31 | Opus (desktop, login C)
+```json
+{"id": "d-cotrade-testnet-carveout", "order": 101, "date": "2026-10-31", "status": "DECIDED", "question": "May a session place testnet trades the operator calls (co-trade), despite the hard rule 'Builders never open trades'?", "answer": "OPERATOR (2026-10-31, chat): 'approved' to the proposed wording 'testnet orders I call by name, placed only through the co-trade tool, recorded, never mainnet'. Binding: exception written into CLAUDE.md hard rule and MOVED_RULES.md; scope = MyTradingSys/execution/cotrade.py only, operator words journaled, testnet only; mainnet stays a separate money gate. Closes bug-conflict-4d90d026fa.", "refs": ["MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md", "MyTradingSys/system/MOVED_RULES.md"]}
+```

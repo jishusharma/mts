@@ -33,7 +33,7 @@ CLAUDE.md is in context; never Read it. Code mode only (DSA chat: `DSA_SESSION_P
 - Commit body carries `Result: <what works now / the number>`. Others' uncommitted files: leave them alone.
 - Testnet only (Deribit test); no mainnet orders/accounts (public market data OK: q-gap-c); never read `.secrets/`, `.env`, keys.
 - Repo is PUBLIC: never commit runtime/order/account data; backups go only to local F:/MTS_backup.git; go private at mainnet or the first fee-net OOS pass, whichever first (q-go-private-on-edge).
-- The live tree (`.mts_live`) changes only by a manual or coordinator-run deploy (DEPLOY_RUNBOOK.md). Builders never deploy, stop/restart processes, touch HALT files or open trades. No scheduled tasks anywhere.
+- Live tree (`.mts_live`) changes only by a manual/coordinator deploy (DEPLOY_RUNBOOK.md). Builders never deploy, stop/restart processes, touch HALT or open trades, bar operator-called testnet (cotrade.py).
 - Live-path changes need a test for restart/reset state, non-trade balance moves and API errors; safety checks fail closed (more: MOVED_RULES.md).
 - Layers and numbers: no fixed core, fee-net out-of-sample results decide what trades; label each parameter SOURCED or OURS, never call OURS the trader's (MOVED_RULES.md).
 - Anything off: report -> independent audit -> fix. Never conclude from truncated output; parse, then count.
