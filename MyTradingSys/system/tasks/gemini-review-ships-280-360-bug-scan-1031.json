@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T02:54:49Z",
   "commands": [
     "git log --no-merges --format=%h -n 360 -- MyTradingSys"
   ],
@@ -16,6 +17,12 @@
   "kind": "run",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_burn_2026-10-31/SHIPS_280_360_REVIEW.md",
+      "ref": "a3beaf452",
+      "utc": "2026-10-31T02:54:49Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -35,7 +42,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/gemini_burn_2026-10-31/SHIPS_280_360_REVIEW.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_burn_2026-10-31/ (new files only)"
   ],
@@ -45,12 +57,13 @@
   "scope_sha": "e8420fbb5d82",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "git log --no-merges --format=%h -- MyTradingSys, skip 280, take 80",
     "read each diff",
     "write the table"
   ],
+  "taken": "2026-10-31T02:54:49Z",
   "tests": "report only; every finding cites file:line",
   "title": "[GEMINI] bug scan of code commits 280 to 360 back on fast-track: does each diff do what its Result: line says",
   "weight": "ROUTINE",
