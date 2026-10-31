@@ -1,9 +1,11 @@
 import importlib.util
+import sys
 from pathlib import Path
 
 import numpy as np
 
-from MyTradingSys.backtest.fees import BINANCE_TAKER
+sys.path.insert(0, str(Path(__file__).resolve().parents[4]))
+from MyTradingSys.backtest.fees import BINANCE_TAKER  # noqa: E402
 
 _P = Path(__file__).with_name("build_feenet.py")
 _S = importlib.util.spec_from_file_location("build_feenet", _P)
