@@ -2,11 +2,11 @@
  "allowance": {
   "plan": "plus",
   "week_resets": 1793780113,
-  "week_used": 59.0,
-  "window_resets": 1793452602,
-  "window_used": 1.0
+  "week_used": 60.0,
+  "window_resets": 1793452601,
+  "window_used": 3.0
  },
- "at": "2026-10-31T09:03:38Z",
+ "at": "2026-10-31T12:55:02Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -21,11 +21,56 @@
  "host": "JIS-NUC",
  "lab": {
   "astra_runs": 0,
-  "week_pts": 9.0,
-  "window_pts": 1.0,
-  "window_runs": 2
+  "week_pts": 10.0,
+  "window_pts": 3.0,
+  "window_runs": 5
  },
  "runs": [
+  {
+   "at": "2026-10-31T12:53:30Z",
+   "card": "gpt-audit-testnet-counting-rule-vs-bar",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 85,
+   "tokens_out": 5387,
+   "tokens_total": 699675,
+   "tokens_uncached": 60560,
+   "week_pts": 1.0,
+   "window_pts": 1.0
+  },
+  {
+   "at": "2026-10-31T09:56:52Z",
+   "card": "gpt-mutation-tests-sim-desk-conditions",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "2 uncommitted file(s) left in F:\\MTS\\mts-codex-lab: MyTradingSys/research/sim_desk/test_conditions_spec.py",
+   "outcome": "OUT_OF_SCOPE",
+   "seconds": 85,
+   "tokens_out": 6675,
+   "tokens_total": 507949,
+   "tokens_uncached": 40218,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
+  {
+   "at": "2026-10-31T09:25:58Z",
+   "card": "gpt-mutation-tests-sim-desk-conditions",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "3 uncommitted file(s) left in F:\\MTS\\mts-codex-lab: MyTradingSys/research/sim_desk/test_conditions_spec.py",
+   "outcome": "OUT_OF_SCOPE",
+   "seconds": 105,
+   "tokens_out": 9197,
+   "tokens_total": 755735,
+   "tokens_uncached": 43050,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
   {
    "at": "2026-10-31T09:02:42Z",
    "card": "gpt-audit-analyst-levels-asof-rule",
@@ -128,51 +173,6 @@
    "tokens_out": 3878,
    "tokens_total": 412423,
    "tokens_uncached": 39905,
-   "week_pts": 0.0,
-   "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-31T06:20:13Z",
-   "card": "gpt-audit-formulas-vs-wavetrend-layer",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 66,
-   "tokens_out": 6793,
-   "tokens_total": 484794,
-   "tokens_uncached": 42801,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-31T05:57:26Z",
-   "card": "gpt-recheck-gemini-extracts-numbers-1031",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": " | release failed: sync: no claim gpt-recheck-gemini-extracts-numbers-1031 on origin/claims",
-   "outcome": "BLOCKED",
-   "seconds": 44,
-   "tokens_out": 3037,
-   "tokens_total": 347599,
-   "tokens_uncached": 37618,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-31T05:34:30Z",
-   "card": "gpt-recheck-gemini-extracts-numbers-1031",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": " | release failed: sync: no claim gpt-recheck-gemini-extracts-numbers-1031 on origin/claims",
-   "outcome": "BLOCKED",
-   "seconds": 52,
-   "tokens_out": 2647,
-   "tokens_total": 374274,
-   "tokens_uncached": 54699,
    "week_pts": 0.0,
    "window_pts": 1.0
   }
