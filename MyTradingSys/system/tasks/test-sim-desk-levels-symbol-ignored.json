@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T06:02:54Z",
   "commands": [],
   "created": "2026-10-31T05:11:57Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "test-sim-desk-levels-symbol-ignored",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "levels.normalize raises ValueError for non-BTC symbol (was silent drop, BTC data)",
+      "ref": "a17396f11",
+      "utc": "2026-10-31T06:02:54Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,12 @@
   "refs": [
     "gemini-test-plan-sim-desk-1031"
   ],
-  "result": "",
+  "result": "levels.normalize raises ValueError for non-BTC symbol (was silent drop, BTC data)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/sim_desk/studies/levels.py",
     "MyTradingSys/research/sim_desk/test_studies.py"
@@ -41,11 +53,12 @@
   "scope_sha": "c054737d37c5",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write the failing test: levels.normalize({'symbol':'ETHUSDT'}) raises ValueError",
     "Reject unknown keys for symbol in levels.normalize"
   ],
+  "taken": "2026-10-31T06:02:54Z",
   "tests": "MyTradingSys/research/sim_desk/test_studies.py::test_levels_rejects_other_symbol (fails on current code, which drops the key silently)",
   "title": "Test gap: sim_desk levels.normalize silently drops a symbol key, so ETHUSDT runs BTC data (Gemini sim-desk plan, rank 1)",
   "weight": "",
