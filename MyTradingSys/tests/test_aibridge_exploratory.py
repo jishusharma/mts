@@ -124,6 +124,8 @@ def test_E3_mts_ship_does_not_ship_after_crashed_gate(tmp_path):
 
 # ---------------------------------------------------------------- extension side (real content.js in headless Edge)
 
+# a "dry" airun is the button-label preflight (content.js ~l.311), sent whenever a block is first scanned - under CPU load it lands after
+# the batch and is not a run; only non-dry calls count as executions.
 def _ps_blocks(n):
     return [("# AIRUN cwd=C:\\x\nWrite-Output b%d" % i) for i in range(1, n + 1)]
 
@@ -132,7 +134,7 @@ def _ps_blocks(n):
 def test_guard_six_blocks_run_once_each_seventh_not_run():
     js = ARM + "setTimeout(function(){ window.dsaReply('go', %s); }, 8000); setTimeout(window.finish, 60000);" % json.dumps(_ps_blocks(7))
     r = run_page(js, 70000)
-    runs = [c["cmd"] for c in r["calls"] if c["type"] == "airun"]
+    runs = [c["cmd"] for c in r["calls"] if c["type"] == "airun" and not c.get("dry")]
     assert runs == ["Write-Output b%d" % i for i in range(1, 7)], runs
     # the fake chat never answers, so 0.7.4 adds a wake-up notice after 45 s: the BATCH is the first post and the only one
     assert sum(1 for p in r["posted"] if "[AIRUN BATCH]" in p["text"]) == 1 and "blocks_seen=7 blocks_run=6 not_run=1" in r["posted"][0]["text"]
@@ -146,7 +148,7 @@ setTimeout(function(){ window.dsaReply('go', ['# AIRUN cwd=C:\\x\r\nWrite-Output
 setTimeout(window.finish, 40000);
 """
     r = run_page(js, 50000)
-    runs = [c["cmd"] for c in r["calls"] if c["type"] == "airun"]
+    runs = [c["cmd"] for c in r["calls"] if c["type"] == "airun" and not c.get("dry")]
     # 0.7.4 (dsabr-c1): a second identical block in ONE reply gets "NOT RUN: duplicate of block K" (was: ran twice)
     assert runs == ["Write-Output C1\nWrite-Output C2", "Write-Output DUP"], runs
     assert "NOT RUN: duplicate of block 2" in r["posted"][0]["text"], r["posted"][0]["text"][:900]
@@ -165,7 +167,7 @@ setTimeout(function(){
 }, 8000); setTimeout(window.finish, 40000);
 """
     r = run_page(js, 50000)
-    runs = [c["cmd"] for c in r["calls"] if c["type"] == "airun"]
+    runs = [c["cmd"] for c in r["calls"] if c["type"] == "airun" and not c.get("dry")]
     assert runs == [], runs
 
 
@@ -179,7 +181,7 @@ setTimeout(function(){ window.dsaReply('go', ['# AIRUN cwd=C:\\x\ngit fetch FAIL
 setTimeout(window.finish, 40000);
 """
     r = run_page(js, 50000)
-    runs = [c["cmd"] for c in r["calls"] if c["type"] == "airun"]
+    runs = [c["cmd"] for c in r["calls"] if c["type"] == "airun" and not c.get("dry")]
     assert runs == ["git fetch FAILME"], runs
 
 
@@ -224,7 +226,7 @@ setTimeout(function(){ var d=document.createElement('div'); d.className='dsa';
 setTimeout(window.finish, 40000);
 """
     r = run_page(js, 50000)
-    runs = [c["cmd"] for c in r["calls"] if c["type"] == "airun"]
+    runs = [c["cmd"] for c in r["calls"] if c["type"] == "airun" and not c.get("dry")]
     assert runs == ["Write-Output one", "Write-Output two", "Write-Output three"], runs
 
 
