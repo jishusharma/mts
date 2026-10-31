@@ -1,6 +1,7 @@
 {
   "Verify": "pytest -q MyTradingSys/execution/test_mainnet_pnl.py",
   "asks": "",
+  "closed": "2026-10-31T04:59:01Z",
   "commands": [
     "python -m pytest -q MyTradingSys/execution/test_mainnet_pnl.py"
   ],
@@ -25,6 +26,12 @@
   "lane": "JIS-NB",
   "latest": [
     {
+      "kind": "ship",
+      "line": "36h identity test fixed (window after 10-09T08:00Z), double-count REFUTED on recorded log;",
+      "ref": "9ea1ce266",
+      "utc": "2026-10-31T04:59:01Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "test: pin recorded 10-10 settlement log against equity identity (expectedFailure)",
@@ -47,6 +54,12 @@
   "prio": 2,
   "priority": "IMPORTANT",
   "refreshed": "2026-10-30T17:15:20Z",
+  "result": "36h identity test fixed (window after 10-09T08:00Z), double-count REFUTED on recorded log; test_mainnet_pnl 23 passed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/execution/test_mainnet_pnl.py",
     "MyTradingSys/execution/mainnet_pnl.py",
@@ -63,13 +76,14 @@
   "sources": [
     "MyTradingSys/research/gemini_audits_2026-10-30/CRITICAL_24H_AUDIT_2026-10-30.md Finding 1"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/gemini_audits_2026-10-30/CRITICAL_24H_AUDIT_2026-10-30.md Finding 1 and the B149 docstring (daily_loss_monitor.py:52-59); verify the 36h sums on txlog_capture_2026-10-10_jishu_11.json/_13.json (cashflow +1.18e-06 vs session_rpl +1.17e-06)",
     "Test fix: in test_recorded_settlement_identity (line ~121) slice from the last settlement ts (2026-10-09T08:00:00Z), drop expectedFailure",
     "Double-count: with the same logs, compute realized_btc (mainnet_pnl.py:14-38; trade cashflow + settlement change) vs session_rpl; if it overstates, write the failing test then fix (fail closed), else document REFUTED in ITEMS_1_2_5.md",
     "Worktree only; builders never deploy. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
   ],
+  "taken": "2026-10-31T04:59:01Z",
   "tests": "MyTradingSys/execution/test_mainnet_pnl.py: settlement identity on the 36h slice passes without expectedFailure; fails on the current 4h slice. If double-count is proven, a 07:30Z trade + 08:00Z settlement test fails on current realized_btc.",
   "title": "Wave-1 Item 2: fix 36h session_rpl window mismatch in test_recorded_settlement_identity and pre-08:00 UTC settlement double-count in mainnet_pnl.py",
   "weight": "CRITICAL",
