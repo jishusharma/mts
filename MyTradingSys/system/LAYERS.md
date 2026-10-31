@@ -36,7 +36,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `tom-btc-validation` blocked p2 DSA-NUC: Tom on BTC T7: VALIDATION read once (2025-04..2025-06) of the frozen DEV config
   - `tom-probe-prereg` blocked p2 SONNET: Pre-register the surviving S/Q/M/F arms and write their runner card
   - `tom-probe-runner` blocked p2 SONNET: Run pre-registered Tom management arms on DAX and BTC
-  - `tom-vp-return-late-day-censoring` ready p2 SONNET: Tom VP return study: events with zero or few bars left in the UTC day are forced to no-return (Part A event ba
   - `lab-verify-trend-healthy-in-balance` refined p3 SONNET: LAB-VERIFY 10-18: how often trend_healthy is set inside a multi-day balance (DEV)
   - `tom-btc-other-setups` blocked p3 CODEX: Tom on BTC T8: chart lab + event study for his other trade types (trend continuation pullback to value/VWAP, b
 
