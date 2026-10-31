@@ -31,6 +31,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `tom-btc-eye-read` blocked p1 SONNET: Tom on BTC T3: eye read of the 80 lab charts by two readers (Claude + Jis), blind; agreement per Tom concept
   - `live-divergence-event-log` blocked p2 DSA: Live divergence event log: record each BTC vs ES/NQ divergence read with outcomes at +30/60/120 min (forward e
+  - `meta-label-tom-vp-fabio-trades` raw p2 SONNET: Meta-label test (operator 10-31) on sim-desk trades: can other MTS layers' state at entry separate Tom VP winn
   - `sim-desk-tom-fabio-studies` raw p2 SONNET: Sim desk: Tom and Fabio setups have no per-trade replay. Only tom_vp.py is a runnable study (12 runs, equity c
   - `tom-btc-cards-window-rescope` raw p2 SONNET: tom-btc-* cards (eye-read, encode, dev-backtest, validation, other-setups) name DEV 2024-12..2025-03 and VALID
   - `tom-btc-dev-backtest` blocked p2 CODEX: Tom on BTC T6: DEV backtest + adjustments (both fills, maker vs taker entry, management arms) - every variant 
@@ -65,6 +66,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Codex lab reports (newest 2 of 2): `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-fabio-gpt-rederive.md`; `MyTradingSys/research/layer_lab/reports/2026-10-25_lf-fabio-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `fabio-v3-model-b-unmanaged-scored-zero` raw p2 SONNET: fabio v3 Model B fills scored 0 R as unmanaged (v3/engine.py:100-102, run_v3_l3.py:108-109): 42 IS + 4 OOS fil
+  - `meta-label-tom-vp-fabio-trades` raw p2 SONNET: Meta-label test (operator 10-31) on sim-desk trades: can other MTS layers' state at entry separate Tom VP winn
   - `sim-desk-tom-fabio-studies` raw p2 SONNET: Sim desk: Tom and Fabio setups have no per-trade replay. Only tom_vp.py is a runnable study (12 runs, equity c
   - `t09-f4-live-window-99-bars-swing-layers` blocked p2 JIS-NB: T09-F4 S2: 99-bar live window misses 68 of 96 escalation signals; fetch more bars for swing layers
   - `fabio-detectors-match-quotes` raw p3 SONNET: fabio_cvd_absorption.py:88-89 accepts any higher low (quote: same level); fabio_escalation.py fires with no br
@@ -121,6 +123,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-25_lf-cryptocred-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `lf-cryptocred-gpt-rederive` blocked p2 CODEX: Layer re-derive: cryptocred (independent recount of the headline numbers behind the fact sheet)
+  - `meta-label-break-events-layer-features` raw p2 SONNET: Meta-label test (operator 10-31): on the tf_break 1h/4h hold/reclaim/sweep events + follow-reclaim, can other 
   - `follow-reclaim-daily-close-stop` raw p3 SONNET: Follow the reclaim (not fade): 4h/1D level reclaim, enter on close back above, stop = close back below (Brando
   - `layer-review-rsi-cc-pitchfork-engine` ready p3 SONNET: Layer review sheet: RSI, CryptoCred, pitchfork, live engine (idea, source, backtests, bugs, confluence)
 
@@ -244,6 +247,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `krown-dev-event-study-candles` refined p2 SONNET: Krown DEV event study 3/3: candle hypotheses H-C1, H-C2 (H-T1 not run); DONE when: DEV_RESULTS.md has N, power
   - `krown-dev-event-study-levels` refined p2 SONNET: Krown DEV event study 2/3: level and moving-average hypotheses H-M1, H-M3, H-Z1 (H-M2 not run); DONE when: DEV
   - `krown-hidden-divergence-confluence-feed` blocked p2 SONNET: Krown hidden divergence as a shared confluence feed any layer (RSI 40-60 included) can consume; Malkan layer s
+  - `meta-label-break-events-layer-features` raw p2 SONNET: Meta-label test (operator 10-31): on the tf_break 1h/4h hold/reclaim/sweep events + follow-reclaim, can other 
   - `layer-review-krown-wavetrend` ready p3 SONNET: Layer review sheet: Krown and WaveTrend (idea, source, backtests, bugs, confluence)
   - `trendline-ledger-registry-hygiene` blocked p3 SONNET: Trend-line daily ledger schema v2 enforcement + register the module in layer_index and wiring_registry (audit 
 

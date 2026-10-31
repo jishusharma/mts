@@ -115,5 +115,24 @@ def make(study, q, res):
             tr = study.chart_trade(ref, q)
             if tr is None:
                 continue
-            out.append({'kind': kind, 'ref': ref, 'net_r': tr['net_r'], 'svg': svg(tr)})
+            out.append({'kind': kind, 'ref': ref, 'net_r': tr['net_r'], 'svg': svg(tr), 'note': tr.get('note', '')})
     return out
+
+
+PRICE_ATTRS = ('data-stop', 'data-exit', 'data-target', 'data-fill')
+
+
+def strip_prices(svg_text):
+    """The exported page carries percent, R and times only (DESIGN.md "Result files"): drop the data-* attributes that hold raw prices.
+    The drawing itself has pixel positions and no price labels."""
+    import re
+    return re.sub(r'\s(?:%s)="[^"]*"' % '|'.join(PRICE_ATTRS), '', svg_text)
+
+
+def export_example(items):
+    """The result-file example (kind 'charts') for desk.export_result from make()'s items; None when there are no charts."""
+    if not items:
+        return None
+    return {'kind': 'charts', 'title': 'Example trades: ' + RULE, 'caption': 'Each chart: candles, entry (blue dot), stop (red), target (green), exit (cross), '
+            'time in UTC, net R after fees and the reason the trade ended. No prices are stored.',
+            'items': [{'kind': it['kind'], 'net_r': round(float(it['net_r']), 4), 'note': it.get('note', ''), 'svg': strip_prices(it['svg'])} for it in items]}
