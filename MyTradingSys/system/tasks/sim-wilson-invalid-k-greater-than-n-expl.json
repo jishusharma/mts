@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-31T03:27:18Z",
+  "commands": [],
+  "created": "2026-10-31T02:48:05Z",
+  "depends_on": [],
+  "done_when": "test_sim_core.py::test_wilson_k_greater_than_n_raises_clear_error fails on current code (message is math domain error) and passes after wilson raises ValueError naming k and n",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "MyTradingSys/backtest/sim.py wilson(k,n) with k>n or n<0 dies with an opaque math domain error. Make it raise a clear ValueError, with tests. Plan rank 6 in MyTradingSys/research/gemini_burn_2026-10-31/BACKTEST_CORE_TEST_PLAN.md",
+  "id": "sim-wilson-invalid-k-greater-than-n-expl",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "wilson raises ValueError naming k and n for k>n, k<0, n<0",
+      "ref": "4bd7d7087",
+      "utc": "2026-10-31T03:27:18Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "B081: single fee source fees.py; rewire sim/tom_bt/fabio/rsi/run_bracket_grid consumers",
+      "ref": "1ec7d8fdbaa2",
+      "utc": "2026-10-01T07:21:12Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 4,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T02:48:56Z",
+  "refs": [
+    "MyTradingSys/research/gemini_burn_2026-10-31/BACKTEST_CORE_TEST_PLAN.md"
+  ],
+  "result": "wilson raises ValueError naming k and n for k>n, k<0, n<0",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/backtest/sim.py, MyTradingSys/backtest/test_sim_core.py"
+  ],
+  "scope_out": [
+    "do not touch run() ordering (separate card)"
+  ],
+  "scope_sha": "1ec7d8fdbaa2",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Add the two wilson tests; confirm the first fails on current code",
+    "Add an explicit 0<=k<=n check to wilson raising ValueError with k and n in the message",
+    "Run python scripts/dev/run_all_tests.py --quick"
+  ],
+  "taken": "2026-10-31T03:27:18Z",
+  "tests": "MyTradingSys/backtest/test_sim_core.py::test_wilson_k_greater_than_n_raises_clear_error (fail-first), ::test_wilson_zero_n_returns_zero_pair",
+  "title": "sim.wilson invalid k greater than n explicit error",
+  "weight": "",
+  "worker": "agent"
+}

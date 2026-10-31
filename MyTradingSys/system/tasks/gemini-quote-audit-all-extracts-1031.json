@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-10-31T01:00:49Z",
   "commands": [
     "git ls-files MyTradingSys/research | grep -i -E \"extract|_levels|rules\""
   ],
@@ -15,7 +17,14 @@
   "id": "gemini-quote-audit-all-extracts-1031",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_burn_2026-10-31/QUOTE_AUDIT.md",
+      "ref": "832eff6b7",
+      "utc": "2026-10-31T01:00:49Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -27,7 +36,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/gemini_burn_2026-10-31/QUOTE_AUDIT.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_burn_2026-10-31/ (new files only)"
   ],
@@ -37,12 +51,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "git ls-files MyTradingSys/research | grep -i extract",
     "run the verifier read-only on each",
     "write the table"
   ],
+  "taken": "2026-10-31T00:56:04Z",
   "tests": "report only; every finding cites file:line",
   "title": "[GEMINI] run verify_extract_quotes.py on every committed extract that has a caption file on this host and list failures: invented quotes caught early",
   "weight": "ROUTINE",
