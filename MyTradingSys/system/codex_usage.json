@@ -3,10 +3,10 @@
   "plan": "plus",
   "week_resets": 1793780113,
   "week_used": 59.0,
-  "window_resets": 1793433270,
-  "window_used": 13.0
+  "window_resets": 1793452602,
+  "window_used": 0
  },
- "at": "2026-10-31T07:54:07Z",
+ "at": "2026-10-31T08:17:10Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -22,10 +22,25 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 9.0,
-  "window_pts": 5.0,
-  "window_runs": 12
+  "window_pts": 0.0,
+  "window_runs": 0
  },
  "runs": [
+  {
+   "at": "2026-10-31T08:16:28Z",
+   "card": "gpt-audit-live-aid-indicators-vs-formulas",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 34,
+   "tokens_out": 2219,
+   "tokens_total": 291005,
+   "tokens_uncached": 45202,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-31T07:53:05Z",
    "card": "gpt-audit-formulas-vs-positioning-layer",
@@ -160,21 +175,6 @@
    "tokens_uncached": 68048,
    "week_pts": 0.0,
    "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-31T04:25:40Z",
-   "card": "gpt-bug-hunt-lookahead-snapshots-prob-table",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": " | release failed: sync: no claim gpt-bug-hunt-lookahead-snapshots-prob-ta on origin/claims",
-   "outcome": "DONE",
-   "seconds": 56,
-   "tokens_out": 4034,
-   "tokens_total": 366747,
-   "tokens_uncached": 40793,
-   "week_pts": 1.0,
-   "window_pts": 0.0
   }
  ]
 }

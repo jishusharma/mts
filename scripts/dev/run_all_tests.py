@@ -224,13 +224,20 @@ def unbuffer(stream=None):
 
 STEP_TIMEOUT_S = None   # set by the fast path (FAST_STEP_TIMEOUT_S); None = no limit, as before
 _TIMED_OUT_DEFERRED_CMDS: set[str] = set()
+# CI_RED_ROOT_CAUSES 2026-10-31: three reverts in one day (phase tag 3la, F1 cost inventory, sim backfill) shipped because the fast
+# gate's 60 s deadline cut 3la/3xt on a loaded machine and counted the cut as a PASS. Commands here (3la, the 3xm must-pass extras)
+# are never deferred: they get FAST_STEP_TIMEOUT_S from their own start, and a timeout fails the ship.
+NO_DEFER_CMDS: set[str] = set()
 
 
 def exec_step(cmd, cwd=None):
     """Run one command to completion. Returns (ok, output): ok is True/False, or None with a reason when the executable is missing.
     A step over STEP_TIMEOUT_S (fast path only) fails: a hung step must not hold a gate slot for ever."""
     limit = STEP_TIMEOUT_S
-    if GATE_DEADLINE is not None and limit is not None:
+    must = repr(cmd) in NO_DEFER_CMDS
+    if must and limit is not None:
+        limit = max(limit, FAST_STEP_TIMEOUT_S)
+    elif GATE_DEADLINE is not None and limit is not None:
         limit = max(1.0, min(limit, GATE_DEADLINE - time.monotonic()))   # a step queued behind others gets only what is left of the budget
     try:
         result = subprocess.run(cmd, cwd=cwd or str(REPO), capture_output=True, text=True, errors="replace",
@@ -238,10 +245,10 @@ def exec_step(cmd, cwd=None):
     except FileNotFoundError as e:
         return None, f"not found: {e}"
     except subprocess.TimeoutExpired:
-        if TIMEOUT_DEFERS:
+        if TIMEOUT_DEFERS and not must:
             _TIMED_OUT_DEFERRED_CMDS.add(repr(cmd))
             return True, f"step over the {STEP_TIMEOUT_S} s ship budget: DEFERRED TO CI (a gate-file ship must finish in 2 minutes; CI runs the whole suite)"
-        return False, f"step timed out after {STEP_TIMEOUT_S} s (fast gate limit): treated as a failure"
+        return False, f"step timed out after {limit:g} s (fast gate limit{', must-pass step' if must else ''}): treated as a failure"
     _TIMED_OUT_DEFERRED_CMDS.discard(repr(cmd))
     return result.returncode == 0, result.stdout + result.stderr
 
@@ -753,6 +760,7 @@ def targeted_tests(files, root=REPO):
 FAST_JOBS_MAX = 6
 FAST_SLOTS = 2
 FAST_COSTLY_ALWAYS = ("3w", "3tl", "3dl")   # gate_select.ALWAYS steps of 3-9 s that a fast gate runs only when the change can matter to them
+LOOKAHEAD_MUST = "3la"   # picked by gate_select.LOOKAHEAD_RE; in a fast ship it is must-pass (NO_DEFER_CMDS)
 FAST_ALWAYS = ("4d", "3qn")   # 4d: the doc/tree-scanning pytest tests, 3qn: the quarantine list stays valid (both seconds)
 fast_applied = False
 fast_info = {}
@@ -813,7 +821,7 @@ def apply_fast(plan, files, nums, jobs):
         old = units.get(key)
         units[key] = (e, direct or (old[1] if old else False))
 
-    for n in keep_nums:
+    for n in keep_nums - {LOOKAHEAD_MUST}:   # 3la is must-pass: never left to the budget
         unit(("sc", n), step_est(n), True)
     pyt = {}
     for s in plan:
@@ -828,7 +836,8 @@ def apply_fast(plan, files, nums, jobs):
             if n not in pytest_nums and n not in ("3xt", "5b") and n not in keep_nums:
                 unit(("sc", n), step_est(n), t in reach.direct)
     extras = run_extra_tests.all_tests()
-    ex = {t for t in gate_select.extra_subset(files, extras) if t in extras} | {t for t in extras if t in reach.tests}
+    must_ex = gate_select.must_extras(files, extras)
+    ex = ({t for t in gate_select.extra_subset(files, extras) if t in extras} | {t for t in extras if t in reach.tests}) - set(must_ex)
     for t in ex:
         unit(("ex", t), TEST_FILE_SECONDS.get(Path(t).name, EXTRA_FILE_S), t in reach.direct)
     modules = find_layer_modules()
@@ -877,6 +886,17 @@ def apply_fast(plan, files, nums, jobs):
                 s.est = len(sub) * EXTRA_FILE_S / 2
             else:
                 s.skip = "fast: no extra test reached (CI runs it)"
+            new_plan.append(s)
+            if must_ex:
+                m = Step("3xm", f"Extra tests the change must pass ({len(must_ex)}: changed or tree-wide inventory, never deferred)",
+                         "Step 3xm: Extra tests (must-pass)", cmd=[sys.executable, "scripts/dev/run_extra_tests.py", "--only", *must_ex])
+                m.est = len(must_ex) * EXTRA_FILE_S
+                NO_DEFER_CMDS.add(repr(m.cmd))
+                new_plan.append(m)
+            continue
+        if n == LOOKAHEAD_MUST and n in keep_nums:
+            s.est = step_est(n)
+            NO_DEFER_CMDS.add(repr(s.cmd))
             new_plan.append(s)
             continue
         if n == "5b":
