@@ -2,6 +2,16 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-31T09:27:47Z",
+    "misses": 3,
+    "reads": [
+      "scripts/dev/mts_signal.py",
+      "scripts/dev/run_all_tests.py"
+    ],
+    "session": "agent-a611d7d9c9291820f"
+  },
   "created": "2026-10-31T09:24:56Z",
   "depends_on": [],
   "done_when": "",
