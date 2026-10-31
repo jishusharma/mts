@@ -34,7 +34,10 @@
       "note": "Retired 2026-10-31 (operator: old concept). Its Inbox/decisions db is empty; decisions are answered in chat and recorded in OPERATOR_DECISIONS.md, Home shows what is waiting.",
       "purpose": "Decisions waiting on you (Inbox), testnet health, road to profitability.",
       "notes_go_to": "Inbox answers save to this page's decisions list. One Inbox only (q21).",
-      "published_sha": "2796d8cf8a710d9affe275a9089cc2c731fdcd8f6a9d0dfce090b1de31a731de"
+      "published_sha": "2796d8cf8a710d9affe275a9089cc2c731fdcd8f6a9d0dfce090b1de31a731de",
+      "deleted": {
+        "jishusharma1985": "2026-10-31"
+      }
     },
     {
       "slug": "mts_layer_map",
@@ -61,7 +64,7 @@
       "note": "2026-10-13: the old Layer Map (backtest matrix + configurator, make_layer_map.py) was replaced at the SAME url by MTS Layers (per-layer road, stuck days, missing steps, decisions waiting on Jis, How MTS runs). make_layer_map.py still builds the old page if wanted. Published on all three logins.",
       "purpose": "Every trading layer's road and where it is stuck.",
       "notes_go_to": "Read only. Put notes on the Research Map.",
-      "published_sha": "fc97713b98d7cb58e41fc874ffc5c3a11fa815a2834d095604af8344d2c1dafb"
+      "published_sha": "715135175e7cb311fc6badf3d15c936b935de6b4b57a3914596117d04565daa4"
     },
     {
       "slug": "tom_fabio_deck",
@@ -115,7 +118,10 @@
       "note": "Retired 2026-10-31: stale since 2026-10-09; replaced by CBP Analyst Desk (rebuilt every CBP run).",
       "purpose": "Weekly CBP crypto desk, every Monday.",
       "notes_go_to": "Read only.",
-      "published_sha": "b33e69c59255be3d967202d71c4ad59d3d34aa454d796e95f878623aef5421bd"
+      "published_sha": "b33e69c59255be3d967202d71c4ad59d3d34aa454d796e95f878623aef5421bd",
+      "deleted": {
+        "jishusharma1985": "2026-10-31"
+      }
     },
     {
       "slug": "cbp_consensus_desk",
@@ -142,7 +148,10 @@
       "note": "Retired 2026-10-31: stale since 2026-10-09; replaced by CBP Analyst Desk.",
       "purpose": "Daily CBP consensus desk.",
       "notes_go_to": "Read only.",
-      "published_sha": "56e06bbfc2d7b5168d4017a66f3f4278074f13bcca2676ef0fb532c422b3fd7a"
+      "published_sha": "56e06bbfc2d7b5168d4017a66f3f4278074f13bcca2676ef0fb532c422b3fd7a",
+      "deleted": {
+        "jishusharma1985": "2026-10-31"
+      }
     },
     {
       "slug": "cbp_desk",
@@ -240,7 +249,7 @@
       "purpose": "This list: every MTS page, its owner login, where your notes go, and how to open it from any login.",
       "notes_go_to": "Nothing to write here.",
       "note": "The hub (operator 2026-10-16: 'all my artifacts available from one place'). Generated from registry.json; pinned on the home login.",
-      "published_sha": "6e32fcf35e3a81f8df88fc391c22a75c9451d1092573340cf4bea0764c6fec96"
+      "published_sha": "1806f80ee05e315cbab2650b4a37ab7fd8bba10ef2153fff2d66ced608872af3"
     },
     {
       "slug": "research_map",
@@ -298,7 +307,10 @@
       "purpose": "Builds the prompt for the next super session: pick a goal and hours, copy, paste into a new session.",
       "notes_go_to": "nothing to send. Copy the prompt; your ticks and goal stay saved on this page.",
       "note": "Retired 2026-10-31 (operator: planning happens in the sessions now). Nothing lost: its prompt was an older copy of SUPER_SESSION.md; tasks.py next already orders by depends_on; the saved pick (2026-10-16) named 4 deleted and 2 blocked cards. Operator deletes the page.",
-      "published_sha": "c89b122558ca5da4bb144c30d0efbff1893de7285486c2066018fa864330fbc7"
+      "published_sha": "c89b122558ca5da4bb144c30d0efbff1893de7285486c2066018fa864330fbc7",
+      "deleted": {
+        "jishusharma1985": "2026-10-31"
+      }
     },
     {
       "slug": "tom_fabio_setup_review",
@@ -326,7 +338,7 @@
     },
     {
       "slug": "btc_live_aid",
-      "status": "canonical",
+      "status": "retire",
       "pinned": false,
       "generator": "hand-made",
       "single_owner": "jishusharma1985",
@@ -345,7 +357,7 @@
       "db": [],
       "purpose": "Live BTC aid page for reading the market.",
       "notes_go_to": "Read only.",
-      "note": "Registered 2026-10-31 (was published but unlisted).",
+      "note": "Retired 2026-10-31: on claude.ai every feed reads NOT_IN_DATA (the viewer blocks exchange connections). The working page is MyTradingSys/tools/live_aid/live_aid.html, opened from disk.",
       "published_sha": null
     }
   ],

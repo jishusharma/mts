@@ -1,0 +1,410 @@
+[00:00] Once you learn price action, trading
+[00:01] becomes embarrassingly simple. Most
+[00:03] retail traders lose money, and pretty
+[00:05] much all of them think the fix is a
+[00:06] better indicator. It's not. I've been
+[00:08] trading for 16 years, and every trader
+[00:10] I've watched finally turn the corner did
+[00:12] the same boring thing. They stopped
+[00:14] trying to predict the market and started
+[00:16] reading it. And this next part should
+[00:18] honestly make you angry. Price action
+[00:20] was never complicated. It got
+[00:21] complicated because the internet buried
+[00:24] it under 100 indicators and 1,000
+[00:26] options. Strip all of that off, and
+[00:28] what's left is embarrassingly simple. In
+[00:30] the next few minutes, I'm going to show
+[00:31] you how I actually read a chart. The
+[00:34] exact things I look for before I risk a
+[00:36] simple dollar, and why, once this
+[00:38] clicks, the most of your setups are
+[00:40] going to start looking obvious. By the
+[00:42] end of this, you'll look at the chart
+[00:43] the way that someone with real screen
+[00:45] time does, instead of guessing the loop
+[00:47] you're stuck in. Let me describe
+[00:48] something that might sound familiar.
+[00:50] You've got five indicators on your
+[00:51] chart. Three of them say buy, two say
+[00:53] sell. You're sitting there staring at
+[00:55] it, trying to figure out what to do. You
+[00:56] take the trade, it goes against you
+[00:58] immediately. So, you go looking for the
+[01:00] indicator that would have caught it. You
+[01:01] find one, you add it to the chart, and
+[01:03] the whole cycle starts over. I've
+[01:05] watched this exact loop more times than
+[01:07] I can count, and I've lived a version of
+[01:09] it myself early on. The problem is
+[01:11] there's no simple framework underneath
+[01:12] the decisions. So, every chart is a
+[01:15] guess dressed up as analysis. The
+[01:17] traders who turn the corner don't add
+[01:19] more to their screen. They strip it
+[01:21] down. They read the same few things the
+[01:23] same way every single time. And before I
+[01:25] go any further, simple does not mean
+[01:27] safe. Trading carries real risk, and you
+[01:30] can lose money. That doesn't change.
+[01:31] What simple means is repeatable, and
+[01:33] repeatable is the only thing that gives
+[01:35] you a chance. The moment that changed
+[01:36] things for me was when I pulled up a
+[01:38] chart I'd been watching for weeks,
+[01:40] covered in indicators, all of them
+[01:42] disagreeing, and I just deleted
+[01:43] everything, all of it. Left the price,
+[01:45] left the candles, and drew one
+[01:47] horizontal line at a level that had
+[01:49] clearly held multiple times, and
+[01:51] suddenly the chart made sense. Not
+[01:53] because I'd found a better indicator,
+[01:54] because I'd stopped adding noise on top
+[01:56] of what was already there. What changed
+[01:58] was that I started seeing the chart for
+[02:00] what it actually is, a record of
+[02:01] decisions made by buyers and sellers at
+[02:04] specific prices. Once you strip
+[02:05] everything else off, those decisions
+[02:07] become visible. You can see where
+[02:09] sellers showed up and stopped the move.
+[02:11] You can see where buyers stepped in and
+[02:12] held the level. That information was
+[02:14] always there. I just couldn't see it
+[02:16] through everything I'd put on top of it.
+[02:17] So, what does that simple framework look
+[02:19] like? It's four things. They fit
+[02:21] together and the first one is the only
+[02:23] map you actually need. Pillar one, the
+[02:26] map. When most people look at a chart
+[02:27] for the first time, they see noise.
+[02:29] Candles going up, candles going down, no
+[02:31] logic, no pattern. So, they react to
+[02:33] every little wiggle and get chopped up
+[02:35] trying to trade all of it. Here's what's
+[02:37] actually happening underneath that
+[02:38] noise. Price is not random. It moves
+[02:41] between levels where buyers and sellers
+[02:42] have already shown up there. Support is
+[02:44] where buyers keep stepping in, price
+[02:46] area where demand has actually come in
+[02:48] consistently enough to stop the move
+[02:49] lower. Resistance is where sellers kept
+[02:52] stepping in, a price where supply has
+[02:53] come in consistently enough to stop the
+[02:55] move higher. Those levels are your map
+[02:57] and here's why this is pillar one. Once
+[02:59] the levels are drawn, the chart stops
+[03:01] being noise. You're no longer guessing
+[03:03] where the price might go. You're
+[03:05] watching how it behaves at a level that
+[03:07] already matters. That's a completely
+[03:08] different kind of trading. The map
+[03:10] doesn't predict a move, tells you where
+[03:12] to watch. That one shift changes
+[03:14] everything about how you read a chart.
+[03:15] Now, how do I actually draw these
+[03:17] levels? I'm looking for areas where
+[03:19] price has touched, reacted, and moved
+[03:21] away multiple times. One touch is
+[03:23] interesting, two touches makes it real
+[03:25] and three or four makes it significant.
+[03:26] I draw one clean horizontal line, not a
+[03:28] wide zone, a very specific price.
+[03:31] Because when you're in real time, you
+[03:32] need to know exactly where you're going
+[03:34] to act. I also pay close attention to
+[03:36] where candles close relative to the
+[03:38] level, not just where they touch it. A
+[03:39] wick that tests a level and a close that
+[03:41] confirms it are two very different
+[03:43] things. The setups I actually trade off
+[03:46] levels are straightforward. The first is
+[03:47] a hold above a level that was previously
+[03:50] resistance. Once that level flips as
+[03:52] support and the price holds above it on
+[03:54] a retest, I want to be long above that
+[03:56] level. The second is a reclaim. Price
+[03:58] breaks below a level, comes back above
+[04:00] it, holds a close, and I enter on the
+[04:02] confirmation of that reclaim. The third
+[04:04] is a rejection at resistance. The price
+[04:06] approaches a significant overhead level.
+[04:08] It shows me a rejection candle there on
+[04:10] a daily candle, and I can trade the
+[04:12] short side on that right under that
+[04:14] level. Notice what all three of these
+[04:15] have in common. They all start with a
+[04:17] level. I didn't look at a random price
+[04:18] and decide to trade. I found a level the
+[04:20] market had already proved it cared
+[04:22] about, and I waited for the price to
+[04:24] tell me what it was going to do when it
+[04:26] got back there. The level is just a
+[04:27] location. Price action at the level is
+[04:30] what gives me the permission to act. One
+[04:32] thing I want to be clear about, a level
+[04:34] is not a guarantee. The price can still
+[04:36] slice right through it. That's exactly
+[04:38] why the next three pillars exist. The
+[04:40] map alone is not the trade. Pillar two,
+[04:42] confirmation. Let me tell you about the
+[04:43] most expensive lesson I've learned in 16
+[04:45] years of trading. Early this year in
+[04:47] 2026, I tried to buy the dip futures. I
+[04:51] bought when it dipped from $120 down to
+[04:53] 95, and I bought 30 lots, and I just
+[04:56] bought too early before there was
+[04:58] confirmation of a bottom, and silver
+[05:00] dipped to about $67, and I was down $3.7
+[05:04] million
+[05:05] in about 3 hours. Fortunately, I was
+[05:07] able to catch a small bounce, and I
+[05:09] secured a loss at 1.9 million. But, the
+[05:11] lesson here is that you have to read the
+[05:14] price for what it's telling you. I
+[05:15] thought buying the dip during a falling
+[05:17] knife was a good idea. At the time, I
+[05:19] thought silver couldn't dip any more
+[05:21] than 20% in a day, but it clearly did.
+[05:24] Silver dipped, I think, 40%, [music]
+[05:26] and that caused me to have the biggest
+[05:28] loss I've ever incurred in one day. And
+[05:30] the lesson that came out of that, the
+[05:32] one I will never forget, predictions
+[05:33] cost, reactions pay. And that's what
+[05:36] pillar two is, confirmation. Here's what
+[05:38] it looks like without it. You see price
+[05:40] approaching a level, you decide it's
+[05:41] going to bounce, you buy early. You are
+[05:43] front running a move that hasn't
+[05:45] happened yet. You're not trading what
+[05:46] the chart is doing, you're trading what
+[05:48] you think it should do. These are two
+[05:49] completely different things.
+[05:51] Confirmation fixes this. Before you
+[05:53] enter, you decide exactly what the price
+[05:55] has to do at your level before you're
+[05:57] allowed in. Not it looks strong,
+[05:59] specific action. A hold, a reclaim, a
+[06:01] break and retest, [music] something that
+[06:03] actually happen and nothing you're
+[06:05] hoping it's about to do. The level tells
+[06:07] you where to watch, confirmation tells
+[06:09] you when to act. The distinction is a
+[06:11] line between betting on your opinion and
+[06:13] reacting to proof. And once you
+[06:15] internalize that, you stop taking half
+[06:17] the trades you used to take. Not because
+[06:19] you got more selective, because the ones
+[06:21] you used to force just don't qualify
+[06:22] anymore. Here's what confirmation looks
+[06:24] like on the reclaim setup. The price
+[06:26] breaks below the level. Let's say a
+[06:27] weekly support that has held three times
+[06:29] before and it closes below it. Now I'm
+[06:31] watching. I'm not entering. I'm waiting
+[06:33] to see what the price does when it comes
+[06:35] back to test that level from below. If
+[06:36] it comes back, pushes above the level
+[06:38] and then closes back above on the daily,
+[06:40] that's confirmation. The level has been
+[06:42] retested and held. The market has shown
+[06:44] me specifically that the buyers are
+[06:46] defending that price. What I'm not doing
+[06:48] is entering when the price approaches a
+[06:50] level. I'm not entering because it looks
+[06:52] like it might hold. I'm entering because
+[06:53] it's shown me with the close that it
+[06:55] held. That one distinction is the entire
+[06:57] difference between confirmation and
+[06:59] prediction. And [music] that situation I
+[07:01] described with silver earlier with
+[07:03] predicting cost me a lot of money.
+[07:05] Reacting to what price actually does is
+[07:07] the only version of this game that gives
+[07:09] you a consistent edge. Confirmation
+[07:11] doesn't make you right, it makes you
+[07:12] disciplined. You're still going to lose
+[07:13] trades. You just stop losing the ones
+[07:16] that were never trades to begin with.
+[07:17] Pillar three, invalidation. I want to
+[07:19] describe a feeling that every trader
+[07:21] knows. You're in a trade, it starts
+[07:23] going against you. And instead of
+[07:24] getting out, you start negotiating with
+[07:26] yourself. Maybe it comes back, maybe
+[07:28] this is just noise. So you slide your
+[07:30] stop lower or you add to the position.
+[07:33] Now what was a small loss is turning
+[07:35] into something that actually hurts. That
+[07:37] feeling, the moment of negotiation,
+[07:39] that's what happens when you didn't have
+[07:41] the invalidation before you enter.
+[07:43] Pillar three is simple. Before you enter
+[07:45] a trade, you already know the exact
+[07:47] price that proves you wrong. Not a
+[07:49] feeling, not if it goes much lower, a
+[07:51] specific level. If the price loses that
+[07:53] level or breaks a structure that you got
+[07:55] in, you're out. No discussion, no
+[07:57] renegotiation, out. Here's why this is a
+[08:00] pillar and not just a footnote. Knowing
+[08:02] where you're wrong does two things at
+[08:04] the same time. It makes the decision
+[08:06] automatic. You're not trying to figure
+[08:08] out what to do while you're bleeding.
+[08:10] You've already decided while you were
+[08:11] calm before any emotion was involved,
+[08:13] and it makes the sizing safe because
+[08:15] your invalidation point tells you how
+[08:18] much you can risk on this trade. The
+[08:20] math controls the size, not your
+[08:21] confidence level in the moment. The
+[08:23] dollar amount is just what happens to
+[08:25] follow from that level given my size. On
+[08:27] the reclaim setup, my invalidation is
+[08:29] below the level I just bought.
+[08:31] Specifically, if the price closes back
+[08:33] below the level I just reclaimed on the
+[08:35] daily, my thesis is wrong. The market
+[08:37] told me that level was reclaimed. I
+[08:39] entered on that read. And if it loses
+[08:41] that level again on a closing basis, the
+[08:43] read was incorrect and I'm out. That is
+[08:45] not negotiation I have with myself while
+[08:47] I'm in the trade. That's a decision I
+[08:48] made before I entered. The reason I
+[08:50] think about it as a close rather than a
+[08:52] tick below it is that intraday noise can
+[08:55] push the price through a level without
+[08:56] actually breaking it. A close below that
+[08:58] level is a market making a statement. A
+[09:00] wick below it is a market testing that
+[09:02] level. I give price room to test. I do
+[09:04] not give it room to close below and come
+[09:06] back. If it closes below, the level is
+[09:08] broken and I treat it as broken until
+[09:11] the market proves otherwise. A stop
+[09:12] doesn't protect you from losing. It
+[09:14] protects you from a small loss turning
+[09:15] into an account ender. The difference is
+[09:17] the whole game. Pillar four, context.
+[09:19] Here's a mistake I've seen cost traders
+[09:21] real money. They find a clean setup on a
+[09:23] single name. Everything looks right,
+[09:25] level's there, confirmation's there.
+[09:27] They get in and then they get run over
+[09:29] because the whole market was rolling
+[09:30] over the same time and they never looked
+[09:32] up from the one chart they were focused
+[09:34] on. That's what pillar four is about. A
+[09:36] single chart doesn't exist in a vacuum.
+[09:38] Before I size into anything, I check the
+[09:40] bigger picture. The three context checks
+[09:42] I run before I size into any trade in
+[09:45] the order I actually run them. First,
+[09:47] what is the overall market doing right
+[09:48] now? I pull up SPX or QQQ on the daily
+[09:51] chart and ask whether it's in a clear
+[09:52] trend, extended after a big run, or in a
+[09:55] choppy sideways range. A long setup on a
+[09:57] stock into a market that is rolling over
+[09:59] is fighting the tape. I want the broader
+[10:01] market moving the same direction as my
+[10:03] trade or at a minimum not actively
+[10:06] working against it. Second, how extended
+[10:08] is the move I'm entering? If the stock
+[10:10] has run five days in a row without a
+[10:12] meaningful pullback, the risk profile on
+[10:14] a new long entry is completely different
+[10:16] than if it just broke out of a
+[10:17] three-week consolidation. Same setup,
+[10:19] different context. The extended move
+[10:21] gets smaller size or I pass it entirely.
+[10:23] Third, is there a catalyst nearby?
+[10:25] Earnings after the close, CPI tomorrow
+[10:28] morning, a Fed speaker this afternoon.
+[10:30] These events change the risk profile of
+[10:32] any trade regardless of how clean the
+[10:34] setup looks. I do not avoid all news,
+[10:36] but I do size down into known catalyst.
+[10:39] A setup I would take at full size on a
+[10:41] calm Tuesday gets half the size or less
+[10:43] going into a number. The chart setup
+[10:45] might be perfect, but the news events
+[10:47] can override anything. Context decides
+[10:49] whether a clean setup deserves full
+[10:51] size, half size, or a pass. Same setup,
+[10:54] different context, completely different
+[10:55] trade. Context won't make a bad setup
+[10:57] good, but ignoring it will turn a good
+[10:59] setup into a loss you never saw coming.
+[11:01] The payoff. Let me put all four side by
+[11:03] side. The hard way looks like this. 12
+[11:06] indicators predicting tops and bottoms,
+[11:08] 10 browser tabs, a different plan every
+[11:10] single session. No framework underneath
+[11:12] any of it. Just guessing with extra
+[11:14] steps. The simple way looks like this.
+[11:16] The map, where are the levels that have
+[11:17] already proven themselves? Confirmation,
+[11:19] what does price have to do at that level
+[11:21] before I'm allowed in? Invalidation,
+[11:23] where am I wrong? Decide before I enter
+[11:26] while I'm still thinking clearly.
+[11:27] Context, what is the broader market
+[11:30] doing and does this setup deserve full
+[11:32] size, half size, or a pass? Four things
+[11:34] run the same way every single time.
+[11:36] Notice what's not on the list. No secret
+[11:39] indicator, no prediction, no trying to
+[11:41] be smarter than the market. You're not
+[11:43] guessing anymore. You have a process. A
+[11:45] complicated system falls apart the
+[11:47] second real money is on the line. A
+[11:49] simple one is the only kind you can
+[11:51] actually run under pressure. And running
+[11:53] it the same way every time is exactly
+[11:55] where the edge comes from. The chart was
+[11:56] never noise. Once you strip your own
+[11:59] noise off of it and read these four
+[12:00] things, the setups worth taking start
+[12:03] looking obvious. And the ones you used
+[12:05] to force just disappear because they
+[12:07] never actually qualified. You just
+[12:09] didn't have a framework to see that. Now
+[12:10] you do. What changed for me was that I
+[12:12] stopped reacting to noise. Before I had
+[12:15] this framework, every wiggle on the
+[12:16] chart felt like something I needed to
+[12:18] respond to. Every candle was potentially
+[12:20] a signal. Every move felt like something
+[12:22] I was either catching or missing. It was
+[12:23] exhausting and it was expensive. Once
+[12:25] these four things became the filter, the
+[12:27] map, the confirmation, the invalidation,
+[12:29] the context, the noise disappeared. Not
+[12:31] because the market got cleaner, because
+[12:33] I had a clear answer to the only
+[12:35] question that actually mattered. Does
+[12:36] this qualify or doesn't it? And when the
+[12:38] answer is no, I do nothing. When the
+[12:40] answer is yes, I know exactly what I'm
+[12:42] doing and why before I ever click buy.
+[12:44] The clarity is what the four pillars
+[12:46] actually give you. Not a prediction, not
+[12:48] a guarantee. A repeatable process you
+[12:50] can run the same way every time. And
+[12:52] that consistency is where the edge comes
+[12:54] from. But reading the chart is only half
+[12:56] of it. The other half is what happens
+[12:58] inside your head the second real money
+[13:00] is on the line because that's where most
+[13:02] traders freeze, move their stop, and
+[13:04] hand it all back. Even the ones who can
+[13:06] read a chart perfectly. I broke that
+[13:08] entire side down in the video on your
+[13:10] screen right now. Go watch that one
+[13:12] next.

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T10:24:52Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -20,6 +21,12 @@
   "id": "haiku-recount-layer-review-and-gpt-audit-tables",
   "lane": "HAIKU",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "5 of 6 tables match claimed counts; kurisko 4 rows no count claimed (125114916)",
+      "ref": "62c216a0a",
+      "utc": "2026-10-31T10:24:52Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -46,7 +53,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "5 of 6 tables match claimed counts; kurisko 4 rows no count claimed (125114916)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/reports/layer_review_tom_guidance.md",
     "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-audit-formulas-vs-krown-layer.md",
@@ -61,12 +73,13 @@
   "scope_sha": "449b10bf09b6",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "layer_review_tom_guidance.md: count lines starting '## ' (expect 4: tom_core, tom_proofs, tom_vp_pivot, bb_lvn_triggers) and '### ' under each (expect 5 each: Idea and source, Parameters, Backtests, Bugs and assumptions, Confluence); compare with the 4 layers its line 7 names",
     "each gpt-audit-formulas-vs-*.md: count the data rows of its 'Formula inventory' table, and count the distinct FORMULAS.md section numbers its 'What was checked' line cites; for each report note rows with MATCH vs not (rsi report: 7 rows, 6 MATCH, 1 NOT_IN_DATA)",
     "report one line per file: <file>: <n> counted vs <m> claimed, SAME or DIFF; a DIFF is filed as a raw card via tasks.py new"
   ],
+  "taken": "2026-10-31T10:24:52Z",
   "tests": "count-based: 6 SAME/DIFF lines; the rsi audit must show 7 rows / 6 MATCH / 1 NOT_IN_DATA or a DIFF explaining why",
   "title": "Haiku: recount layer_review_tom_guidance headings and the 5 gpt-audit-formulas-vs reports (rows vs their own claims)",
   "weight": "ROUTINE",

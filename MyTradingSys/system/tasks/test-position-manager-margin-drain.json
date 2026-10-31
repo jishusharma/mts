@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T10:24:50Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -25,6 +26,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "test_margin_drain_offline pins flatten/halt; expectedFailure until position_manager reads ",
+      "ref": "62c216a0a",
+      "utc": "2026-10-31T10:24:50Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "B148 part 5 (D10: 10 min heartbeat age) and B146 gate on at 0.3 (D09); Inbox items recorde",
@@ -43,7 +50,12 @@
   "refs": [
     "gemini-test-plan-execution-1031"
   ],
-  "result": "",
+  "result": "test_margin_drain_offline pins flatten/halt; expectedFailure until position_manager reads margin (a0eb3128f)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/execution/position_manager.py",
     "MyTradingSys/execution/testnet/offline/test_fix3_offline.py"
@@ -52,11 +64,12 @@
   "scope_sha": "5c5678d4caa8",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write the offline test: equity drops below maintenance margin with the stop intact",
     "Pin the chosen behaviour (halt and flatten, or documented hand-off to daily_loss_monitor)"
   ],
+  "taken": "2026-10-31T10:24:50Z",
   "tests": "MyTradingSys/execution/testnet/offline/test_margin_drain_offline.py::test_manager_reacts_to_margin_drain (fails on current code, which keeps managing)",
   "title": "Test gap: position_manager watches contract count only, no test for margin or equity drain while a position is open (Gemini execution plan, rank 1)",
   "weight": "",
