@@ -16,7 +16,7 @@
   "latest": [],
   "layers": [],
   "live_path": false,
-  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks | DROPPED 2026-10-31: make_planner_data.py removed with the retired Session Planner page.",
   "pinned": false,
   "prio": 3,
   "refine_tries": 0,
@@ -38,7 +38,7 @@
   "sources": [
     "scripts/dev/make_planner_data.py"
   ],
-  "state": "blocked",
+  "state": "dropped",
   "steps": [
     "read make_planner_data.py and list every branch",
     "compute expected values by hand",

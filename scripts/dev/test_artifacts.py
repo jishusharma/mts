@@ -70,7 +70,7 @@ class Registry(unittest.TestCase):
         import make_control_room as mc
         rows = mc.page_index()
         self.assertEqual({r["title"] for r in rows}, {"MTS Layers", "Tom and Fabio: what they taught", "MTS Home", "MTS Research Map",
-                                                      "MTS Session Planner", "MTS Sim Desk", "CBP Analyst Desk",
+                                                      "MTS Sim Desk", "CBP Analyst Desk",
                                                       "Tom and Fabio Setup Review", "BTC Live Aid"})  # 2026-10-31: Control Room + old CBP desks retired
         own = {r["title"]: r["owner"] for r in rows}
         self.assertEqual(own["BTC Live Aid"], "jishusharma1985")
@@ -123,7 +123,7 @@ class Home(unittest.TestCase):
         import make_home as mh
         d = mh.build(self.reg)
         titles = [p["title"] for p in d["pages"]]
-        self.assertEqual(titles[:3], ["MTS Research Map", "MTS Session Planner", "MTS Layers"])  # where Jis writes, first
+        self.assertEqual(titles[:2], ["MTS Research Map", "MTS Layers"])  # where Jis writes, first
         self.assertNotIn("MTS Home", titles)
         urls = {r["url"] for r in d["retire"]}
         self.assertIn("https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su", urls)  # the jishu.sharma Control Room is an old copy
@@ -181,6 +181,13 @@ class Home(unittest.TestCase):
         self.assertEqual(road["now"], "S1")
         self.assertEqual(road["counts"], {"ready_cards": 2, "promoted": 1})
         self.assertIn('id="road"', mh.render(d))
+
+    def test_session_planner_retired_and_listed_for_delete(self):
+        """Operator 2026-10-31: planning happens in the sessions; the Planner page leaves Home and waits for his delete."""
+        import make_home as mh
+        d = mh.build(self.reg)
+        self.assertNotIn("session_planner", [p["slug"] for p in d["pages"]])
+        self.assertIn("https://claude.ai/artifact/2Ti4CGqsFwhWpP1jwmw7UU", [r["url"] for r in d["retire"]])
 
     def test_road_reads_the_real_roadmap(self):
         import make_home as mh
@@ -325,7 +332,7 @@ class Stale(unittest.TestCase):
 
     def test_every_page_has_generator_or_hand_made_mark(self):
         for pg in self.reg["pages"]:
-            if pg.get("html") and pg["slug"] in ("research_map", "session_planner", "tom_fabio_deck"):
+            if pg.get("html") and pg["slug"] in ("research_map", "tom_fabio_deck"):
                 self.assertEqual(pg["generator"], "hand-made", pg["slug"])
             self.assertIn("published_sha", pg)
 

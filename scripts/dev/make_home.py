@@ -27,7 +27,7 @@ sys.path.insert(0, str(HERE))
 import artifacts as af  # noqa: E402
 
 OUT = af.REPO / "MyTradingSys" / "system" / "artifacts" / "mts_home.html"
-WRITE_FIRST = ("research_map", "session_planner")  # pages where Jis writes, shown first
+WRITE_FIRST = ("research_map",)  # pages where Jis writes, shown first
 DECISIONS = "MyTradingSys/system/OPERATOR_DECISIONS.md"
 TASKS = "MyTradingSys/system/tasks"
 NO_ANSWER = ("", "(none yet)")
