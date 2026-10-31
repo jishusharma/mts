@@ -1,0 +1,1 @@
+{"t": "20261031T132311Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "note", "text": "CI RED 99a53f6e + 89010499: scripts/dev/test_wiring_scan.py::test_real_repo_passes fails: 'STALE MyTradingSys/backtest/layers/fabio/run_v3_l3.py: now LIVE (something runs it); remove the entry' (also ", "login": "A"}
