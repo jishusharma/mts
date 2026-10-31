@@ -249,5 +249,24 @@ class TestPitchforkDetector(unittest.TestCase):
         self.assertGreaterEqual(rr_ratio, 2.0)  # Tine entry guarantees favorable R:R >= 2:1
 
 
+class TestPivotAmplitudeRule(unittest.TestCase):
+    def test_pivot_amplitude_rule_matches_doc(self):
+        """Doc Rule P-01 (2.5 x ATR14) vs code (2 pct, no ATR): the doc must label the code rule OURS,
+        and the code must stay ATR-free (a 3 pct swing is a pivot whatever the bar range)."""
+        import inspect, os
+        self.assertNotIn("atr", inspect.signature(find_pivots_zigzag).parameters)
+        highs = [100, 100, 100, 100, 103, 100, 100, 100, 100, 100, 100, 100.0]
+        lows = [99.9, 99.9, 99.9, 99.9, 99.9, 99.9, 99.9, 96.9, 99.9, 99.9, 99.9, 99.9]
+        piv = find_pivots_zigzag(highs, lows)
+        prices = [p.price for p in piv]
+        self.assertIn(103, prices)
+        self.assertIn(96.9, prices)
+        here = os.path.dirname(os.path.abspath(__file__))
+        doc = os.path.join(here, "..", "..", "..", "research", "pitchfork_2026-10-19", "RESEARCH_PITCHFORK_LAYER.md")
+        text = open(doc, encoding="utf-8").read()
+        self.assertIn("min_change_pct=0.02", text)
+        self.assertIn("[OURS]", text)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -2,22 +2,17 @@
  "id": "dir-wiring_audit_2026-10",
  "kind": "audit",
  "family": "Wiring Audit",
- "title": "Recent 5-Day Wiring & Operator-Requirements Audit (2026-10-23 .. 2026-10-28)",
+ "title": "Quotes used by WIRING_TOM_FABIO_HABIB.csv (generated; one block per verified fragment)",
  "provenance": "source-extracted",
  "date": "2026-10-28",
  "what": [],
  "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
- "window": "2026-10-23 to 2026-10-28 (as written in the source)",
+ "window": null,
  "verdict": {
-  "label": "(claude-opus-5-5-low): REVIEW VERDICT: ACCEPT. The patch set can go to trunk. (All 4 Pass 2 conditions and all 8 findings verified resolved).",
-  "tone": "good"
+  "label": "Check: python scripts/dev/verify_extract_quotes.py MyTradingSys/research/wiring_audit_2026-10/QUOTES_USED_TOM_FABIO.md (exit 0).",
+  "tone": "info"
  },
- "why": [
-  "Pre-Fix Red Tests (Fail-First Proof):",
-  "scripts/dev/test_successor_wake.py -> failed pre-fix with ModuleNotFoundError: No module named 'successor_wake'.",
-  "MyTradingSys/tests/dev/test_exhaust_radar.py -> failed pre-fix (3/3) with AttributeError: module 'exhaust' has no attribute 'roll_weekly_reset'.",
-  "scripts/dev/test_supervisor.py::test_pick_cards_jis_nb_lane_follows_the_live_host_file -> failed pre-fix with AssertionError: assert 'JIS-DESKTOP' == 'JIS-NB'."
- ],
+ "why": [],
  "kpis": [],
  "examples": [
   {
@@ -30,10 +25,12 @@
  "missing": {
   "n_trades": "the source does not state a trade count",
   "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
-  "parameters": "no rule or parameter section found in the source"
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source",
+  "why": "no sentence in the source states why it passed or failed"
  },
  "source_files": [
-  "MyTradingSys/research/wiring_audit_2026-10/RECENT_5D_WIRING_AUDIT_2026-10-28.md"
+  "MyTradingSys/research/wiring_audit_2026-10/QUOTES_USED_TOM_FABIO.md"
  ],
- "commit": "eb305a9f0"
+ "commit": "bcfd46cfc"
 }

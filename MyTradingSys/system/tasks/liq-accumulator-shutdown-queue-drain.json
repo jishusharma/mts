@@ -1,11 +1,13 @@
 {
-  "id": "liq-accumulator-shutdown-queue-drain",
-  "title": "BinanceLiquidationAccumulator: drain logQueue on shutdown before interrupting logWriter",
-  "state": "raw",
-  "priority": "IMPORTANT",
-  "lane": "JIS-NB",
+  "Verify": "mvn -q -Dtest=LiquidationLogWiringTest test",
+  "asks": "",
+  "closed": "2026-10-31T04:53:11Z",
+  "commands": [
+    "mvn -q -Dtest=LiquidationLogWiringTest test"
+  ],
   "created": "2026-10-30",
-  "goal": "Fix the shutdown queue-drop defect in src/main/java/datafeed/BinanceLiquidationAccumulator.java:80-92,219-224 uncovered by CRITICAL_24H_AUDIT_2026-10-30.md Finding 4: shutdown() sets running=false and immediately calls logWriter.interrupt(), which causes logLoop() to exit on InterruptedException at logQueue.poll(1, TimeUnit.SECONDS) without draining remaining queued liquidation events in logQueue.",
+  "done_when": "mvn -q -Dtest=LiquidationLogWiringTest test passes with a test that events enqueued right before shutdown() are all in the .jsonl after it returns; fails before the fix.",
+  "est_turns": 12,
   "files_to_read": [
     "MyTradingSys/research/gemini_audits_2026-10-30/CRITICAL_24H_AUDIT_2026-10-30.md",
     "src/main/java/datafeed/BinanceLiquidationAccumulator.java",
@@ -16,14 +18,60 @@
     "src/main/java/datafeed/BinanceLiquidationAccumulator.java",
     "src/test/java/datafeed/LiquidationLogWiringTest.java"
   ],
-  "steps": [
-    "In BinanceLiquidationAccumulator.java:80-92, ensure that when InterruptedException occurs or running becomes false, logLoop() drains any remaining strings in logQueue and flushes the BufferedWriter before closing.",
-    "In shutdown() (lines 219-224), join logWriter briefly (e.g. logWriter.join(2000)) after interrupting so queued events are guaranteed to be on disk when shutdown() returns.",
-    "Extend LiquidationLogWiringTest.java to assert that liquidation events enqueued right before shutdown() are flushed to the .jsonl file."
+  "goal": "Drain logQueue and flush before BinanceLiquidationAccumulator.shutdown() returns so queued liquidation events are not lost on stop (CRITICAL_24H_AUDIT Finding 4); liquidation history feeds later backtests.",
+  "id": "liq-accumulator-shutdown-queue-drain",
+  "lane": "JIS-NB",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "shutdown drains queue; 7/7 tests, full 272 pass; 4 fail on old",
+      "ref": "a95155258",
+      "utc": "2026-10-31T04:53:11Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "wire BinanceLiquidationAccumulator into Main statemachine",
+      "ref": "4a038ed5b96c",
+      "utc": "2026-10-29T23:00:48Z"
+    }
   ],
-  "done_when": "mvn -q -Dtest=LiquidationLogWiringTest test passes with a test verifying all queued liquidation events are flushed on shutdown().",
-  "Verify": "mvn -q -Dtest=LiquidationLogWiringTest test",
+  "live_path": true,
+  "note": "REVIEWED:2026-10-30 ACCEPT PLANNER 2026-10-30: DECISION (OURS): S sized but live-feed Java, so CRITICAL review SESSION; builder never deploys.",
   "notes": [
     "Filed by Gemini 4 Argon (Low) 24h critical audit (MTS-20261030-GEM-AUD-gemini-24h-critical-audit)."
-  ]
+  ],
+  "prio": 2,
+  "priority": "IMPORTANT",
+  "refreshed": "2026-10-30T17:15:24Z",
+  "result": "shutdown drains queue; 7/7 tests, full 272 pass; 4 fail on old",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "src/main/java/datafeed/BinanceLiquidationAccumulator.java",
+    "src/test/java/datafeed/LiquidationLogWiringTest.java"
+  ],
+  "scope_out": [
+    "Main.java wiring",
+    "deploy or restart"
+  ],
+  "scope_sha": "4a038ed5b96c",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/gemini_audits_2026-10-30/CRITICAL_24H_AUDIT_2026-10-30.md Finding 4"
+  ],
+  "state": "done",
+  "steps": [
+    "logLoop (lines 80-92): on InterruptedException or running=false drain remaining logQueue strings and flush the writer before close",
+    "shutdown() (219-224): after interrupt, logWriter.join(2000)",
+    "Extend LiquidationLogWiringTest (restart = shutdown then new instance appends, no duplicates). Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
+  ],
+  "taken": "2026-10-31T04:53:11Z",
+  "tests": "src/test/java/datafeed/LiquidationLogWiringTest.java: N events enqueued then shutdown() gives N lines on disk; fails on current BinanceLiquidationAccumulator.java.",
+  "title": "BinanceLiquidationAccumulator: drain logQueue on shutdown before interrupting logWriter",
+  "weight": "CRITICAL",
+  "worker": "agent"
 }

@@ -1,0 +1,55 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T02:48:08Z",
+  "depends_on": [],
+  "done_when": "test_live_aid_replay.py::test_liq_tape_replays_known_cluster asserts the rendered #liq-sum total and tape rows equal hand-summed fixture values; fails if liqSum is broken",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "live_aid #liq-tape and #liq-sum are only tested with synthetic dicts (test_live_aid.py:428-435), never through the rendered DOM. Add a fixture of a known liquidation cluster and a replay test. live_aid is owned by the dash-designer session: coordinate, test files only. Plan: MyTradingSys/research/gemini_burn_2026-10-31/LIVE_AID_TEST_PLAN.md",
+  "id": "live-aid-liquidation-tape-replay-fixture",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "live_aid replay: money tile reads window.LIVEAID_OI; 10-30 18:50Z flush replayed through t",
+      "ref": "7f33c6067818",
+      "utc": "2026-10-30T20:41:52Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 4,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T02:48:59Z",
+  "refs": [
+    "MyTradingSys/research/gemini_burn_2026-10-31/LIVE_AID_TEST_PLAN.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/test_live_aid_replay.py, MyTradingSys/tools/live_aid/fixture_liq_cluster.json"
+  ],
+  "scope_out": [
+    "no edits to live_aid.html or indicators"
+  ],
+  "scope_sha": "7f33c6067818",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Message dash-designer; build fixture_liq_cluster.json from a public liquidation feed sample (no account data)",
+    "Write the replay test with hand-summed expected totals",
+    "Prove fail-first by mutation in a scratch copy; run the live_aid tests"
+  ],
+  "tests": "MyTradingSys/tools/live_aid/test_live_aid_replay.py::test_liq_tape_replays_known_cluster (fail-first via mutating liqSum in a scratch copy)",
+  "title": "live_aid liquidation tape replay fixture liq-tape liq-sum",
+  "weight": "",
+  "worker": "agent"
+}

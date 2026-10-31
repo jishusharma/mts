@@ -1,0 +1,62 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-30T22:24:37Z",
+  "commands": [],
+  "created": "2026-10-30T20:22:01Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_burn_2026-10-31/RECENT_SHIPS_REVIEW.md exists with 40 rows and file:line for each FIX",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "git log the last 40 non-merge commits touching .py/.java/.js under MyTradingSys; for each, check the diff against the Result: line; mark OK, FIX or UNVERIFIED with file:line.",
+  "id": "gemini-review-recent-ships-bug-scan-1031",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_burn_2026-10-31/RECENT_SHIPS_REVIEW.md",
+      "ref": "3ec08bf7f",
+      "utc": "2026-10-30T22:24:37Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini rules: facts with file:line only, no trading verdict, no code change; flag UNVERIFIED where the repo has no answer. Focus: catch bugs early (operator 2026-10-31). Final report ends with a Noticed: line.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T20:22:03Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "MyTradingSys/research/gemini_burn_2026-10-31/RECENT_SHIPS_REVIEW.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/gemini_burn_2026-10-31/ (new files only)"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code edits; any backtest verdict; .secrets and .env"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "git log --no-merges -40 --format=%h -- MyTradingSys",
+    "read each diff",
+    "write the table"
+  ],
+  "taken": "2026-10-30T22:24:37Z",
+  "tests": "report only; every finding cites file:line and a reproducing input",
+  "title": "[GEMINI] cross-vendor bug scan of the last 40 non-merge code commits on fast-track: does each diff do what its Result: line says",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

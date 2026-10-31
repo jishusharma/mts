@@ -1,0 +1,38 @@
+{
+ "id": "st-tom_correlation_trick_2026-10-26-result",
+ "kind": "backtest",
+ "family": "Tom Correlation Trick",
+ "title": "RESULT: TOM-CTX-DIV (2026-10-29)",
+ "provenance": "source-extracted",
+ "date": "2026-10-26",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "NOT-ADD. Neither primary variant has positive fee-net expectancy on DEV, and neither passes VALIDATION. Holdout not read (rule: only if VALIDATION passes). All parameters OURS; PRE_REG.md frozen before any outcome.",
+  "tone": "good"
+ },
+ "why": [
+  "Control (a), same move without cross-market condition: H1 DEV +1 bps (n 116), VALIDATION -59 bps (n 35); H2 DEV -99 bps (n 167), VALIDATION +16 bps (n 42). H1 signal did not beat control (a) on VALIDATION in a useful way (both negative); H2 VALIDATION signal…",
+  "Power: VALIDATION n is 8/16 and HOLDOUT would be 11/7, all below 30 by construction (INCONCLUSIVE at best); the DEV result is the informative one, and it is a clear fail."
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/tom_correlation_trick_2026-10-26/RESULT.md"
+ ],
+ "commit": "9b637d2c4"
+}

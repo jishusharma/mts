@@ -31,3 +31,4 @@ per-year sign flips). Post-hoc control finding F6 (n=59): at NY open+180 min a n
 6.5 h 73% [60, 83], all 5 years positive = candidate for H3 (fade) family; must be pre-registered and tested on untouched
 2019-09..2021-12 before any use. Corpus: Tom rejects stop hunting as intent (RwQBdF9TSvc:13); Fabio's "book sweeping" at NY
 session highs (FawPrRUGNpk:249-260) is order-flow based -> Fabio v3 S5D failed_auction is the sourced test (rerun after B099).
+2026-10-31 PER-TF EVENT STUDY RE-LANDED (ledger P0-45): research/tf_break_event_study_2026-10-30/RESULT.md. BTCUSDT 1m DEV 2022-01..2024-06, VAL 2024-07..2025-06, fee-net (fees.py regime A 0.10% RT). No class pays at any TF: 15m follow-H / fade-R / fade-W1 all negative with CI below 0 (FAIL); 1h and 4h around zero, CIs span zero; W and 1D too few events. The reverted run had the continuation sign flipped; fixed and tested.

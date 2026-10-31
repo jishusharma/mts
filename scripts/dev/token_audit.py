@@ -36,6 +36,7 @@ def audit_file(path):
     kick = False
     started = None
     tools = 0
+    think = {}  # message id -> thinking chars (streaming repeats: max)
     with open(path, encoding="utf-8", errors="replace") as fh:
         for line in fh:
             try:
@@ -61,9 +62,14 @@ def audit_file(path):
                     if mid not in usage:
                         order.append(mid)
                     usage[mid] = u
+                mid2 = msg.get("id") or d.get("uuid") or str(len(order))
+                tc = 0
                 for b in msg.get("content") or []:
                     if isinstance(b, dict) and b.get("type") == "tool_use":
                         tools += 1
+                    elif isinstance(b, dict) and b.get("type") == "thinking":
+                        tc += len(b.get("thinking") or "")
+                think[mid2] = max(think.get(mid2, 0), tc)
     totals = {f: 0 for f in FIELDS}
     for mid in order:
         for f in FIELDS:
@@ -78,7 +84,8 @@ def audit_file(path):
     else:
         label = "other"
     return {"path": path, "label": label, "turns": len(order), "totals": totals,
-            "first_input": first_input, "tools": tools, "started": started}
+            "first_input": first_input, "load_tokens": first_input,
+            "thinking_chars": sum(think.values()), "tools": tools, "started": started}
 
 
 def audit_root(root, days):
@@ -117,11 +124,11 @@ def render(rows, days):
         n = s["n"]
         L.append(f"| {k} | {n} | {s['turns']//n} | {s['first']//n} | {s['read']//n} | {s['write']//n} | {s['inp']//n} | {s['out']//n} |")
     L += ["", "## Per session", "",
-          "| started | label | turns | tools | first-turn input | cache read | cache write | output |",
-          "|---|---|---|---|---|---|---|---|"]
+          "| started | label | turns | tools | load_tokens | thinking_chars | cache read | cache write | output |",
+          "|---|---|---|---|---|---|---|---|---|"]
     for r in rows:
         t = r["totals"]
-        L.append(f"| {r['started'] or ''} | {r['label']} | {r['turns']} | {r['tools']} | {r['first_input']} | "
+        L.append(f"| {r['started'] or ''} | {r['label']} | {r['turns']} | {r['tools']} | {r['load_tokens']} | {r['thinking_chars']} | "
                  f"{t['cache_read_input_tokens']} | {t['cache_creation_input_tokens']} | {t['output_tokens']} |")
     return "\n".join(L) + "\n"
 

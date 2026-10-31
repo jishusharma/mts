@@ -1,11 +1,13 @@
 {
-  "id": "spikefade-a-s1-cap-misapplied-and-replay-drift",
-  "title": "SpikeFade: fix 80e6ff471 A-S1 cap falling back to $20 BTC A-S2 stop and reconcile c4ad479e0 A-C2 removal across ItemFourReplay and Paths/Profile",
-  "state": "raw",
-  "priority": "IMPORTANT",
-  "lane": "SONNET",
+  "Verify": "mvn -q -Dtest=SpikeFadeCriticalWave1Test test",
+  "asks": "",
+  "closed": "2026-10-30T21:12:58Z",
+  "commands": [
+    "mvn -q -Dtest=SpikeFadeCriticalWave1Test,SpikeFadeTest,SpikeFadePathsTest,SpikeFadeProfileTest test"
+  ],
   "created": "2026-10-30",
-  "goal": "Fix three SpikeFade regressions introduced in the last 24h (CRITICAL_24H_AUDIT_2026-10-30.md Finding 2): (1) Commit 80e6ff471 capped A-S1 stop selection (<= 3%) in SpikeFadeDetector.java:189-197 instead of capping the priorHigh proxy (dayHigh[LOOKBACK-1]) requested by spikefade-prior-day-high-proxy-cap, causing >3% prior highs to fall back to A-S2 (high + 20.0 DAX points = $20 stop on BTC!) rather than returning null. (2) Commit c4ad479e0 removed the A-C2 gate from SpikeFadeDetector.detect(), silently altering SpikeFadePaths.java:13 and SpikeFadeProfile.java:13 which assume A-C2 is enforced by detect(). (3) ItemFourReplay.java:188 still blocks on G4_A-C2_CLOSE_NOT_ABOVE_PRIOR_DAY_HIGH, contradicting SpikeFadeDetector.detect() on 129 bars of 2026-10-29.",
+  "done_when": "mvn -q -Dtest=SpikeFadeCriticalWave1Test,SpikeFadeTest,SpikeFadePathsTest,SpikeFadeProfileTest test passes with a test that a >3% prior high returns null (no high+20 stop), and ItemFourReplay.gate() agrees with detect() on every bar of the 2026-10-29 replay (1,178 bars; fade fires on 5, 16:06-16:10Z).",
+  "est_turns": 22,
   "files_to_read": [
     "MyTradingSys/research/gemini_audits_2026-10-30/CRITICAL_24H_AUDIT_2026-10-30.md",
     "src/main/java/datafeed/SpikeFadeDetector.java",
@@ -22,15 +24,65 @@
     "src/test/java/datafeed/SpikeFadeCriticalWave1Test.java",
     "MyTradingSys/research/critical_test_wave1_2026-10-30/ItemFourReplay.java"
   ],
-  "steps": [
-    "Read CRITICAL_24H_AUDIT_2026-10-30.md Finding 2 and spikefade-prior-day-high-proxy-cap.json.",
-    "In SpikeFadeDetector.java, ensure an out-of-cap prior-day high proxy does not silently fall back to the unscaled 20-point DAX buffer (high + 20.0 = $20 on BTC), and align SpikeFadeCriticalWave1Test with spikefade-prior-day-high-proxy-cap done_when.",
-    "Check whether SpikeFadePaths.java and SpikeFadeProfile.java should require sig.c2_above_prior_day or keep C2 as an annotated tag only, and update their comments/logic accordingly.",
-    "Synchronize ItemFourReplay.java:188 with SpikeFadeDetector.detect() so the diagnostic gate trace matches the live detector."
+  "goal": "Fix SpikeFade regressions (CRITICAL_24H_AUDIT Finding 2): A-S1 cap must cap the priorHigh proxy and return null, not fall back to the 20-point A-S2 stop on BTC; reconcile the c4ad479e0 A-C2 removal in SpikeFadePaths/Profile; align ItemFourReplay with detect().",
+  "id": "spikefade-a-s1-cap-misapplied-and-replay-drift",
+  "lane": "JIS-NB",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "caseG: proxy >3% above zone returns null (failed pre-change); replay G4 aligned; SpikeFade",
+      "ref": "a07da3cb7",
+      "utc": "2026-10-30T21:12:58Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "SpikeFade: cap A-S1 prior-day-high proxy distance (OURS 3 %)",
+      "ref": "80e6ff471008",
+      "utc": "2026-10-30T01:32:53Z"
+    }
   ],
-  "done_when": "mvn -q -Dtest=SpikeFadeCriticalWave1Test,SpikeFadeDetectorTest test passes and ItemFourReplay.java gate() matches SpikeFadeDetector.detect().",
-  "Verify": "mvn -q -Dtest=SpikeFadeCriticalWave1Test test",
+  "live_path": true,
+  "note": "REVIEWED:2026-10-30 ACCEPT PLANNER 2026-10-30: DECISION (OURS): JIS-NB + CRITICAL (stop selection on the order path). Normalised from the Gemini audit card.",
   "notes": [
     "Filed by Gemini 4 Argon (Low) 24h critical audit (MTS-20261030-GEM-AUD-gemini-24h-critical-audit)."
-  ]
+  ],
+  "prio": 2,
+  "priority": "IMPORTANT",
+  "refreshed": "2026-10-30T17:15:22Z",
+  "result": "caseG: proxy >3% above zone returns null (failed pre-change); replay G4 aligned; SpikeFade* mvn green",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "src/main/java/datafeed/SpikeFadeDetector.java",
+    "src/main/java/datafeed/SpikeFadePaths.java",
+    "src/main/java/datafeed/SpikeFadeProfile.java",
+    "src/test/java/datafeed/SpikeFadeCriticalWave1Test.java",
+    "MyTradingSys/research/critical_test_wave1_2026-10-30/ItemFourReplay.java"
+  ],
+  "scope_out": [
+    "deploy or restart",
+    "new entry rules",
+    "order code"
+  ],
+  "scope_sha": "80e6ff471008",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/gemini_audits_2026-10-30/CRITICAL_24H_AUDIT_2026-10-30.md Finding 2"
+  ],
+  "state": "done",
+  "steps": [
+    "Read MyTradingSys/research/gemini_audits_2026-10-30/CRITICAL_24H_AUDIT_2026-10-30.md Finding 2 and spikefade-prior-day-high-proxy-cap.json done_when",
+    "SpikeFadeDetector.java:189-197: cap the priorHigh proxy (dayHigh[LOOKBACK-1]) not the stop choice; out of cap gives null, never high+20.0",
+    "SpikeFadePaths.java:13 and SpikeFadeProfile.java:13: decide C2 enforced vs annotation-only after c4ad479e0; fix comments/logic, log DECISION (OURS)",
+    "ItemFourReplay.java:188 follows detect(); worktree only. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
+  ],
+  "taken": "2026-10-30T21:12:58Z",
+  "tests": "src/test/java/datafeed/SpikeFadeCriticalWave1Test.java: >3% prior-day high gives null stop (not high+20); fails on current SpikeFadeDetector.java:189-197.",
+  "title": "SpikeFade: fix 80e6ff471 A-S1 cap falling back to $20 BTC A-S2 stop and reconcile c4ad479e0 A-C2 removal across ItemFourReplay and Paths/Profile",
+  "weight": "CRITICAL",
+  "worker": "session"
 }

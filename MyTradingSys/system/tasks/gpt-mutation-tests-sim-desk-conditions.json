@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-30T17:14:55Z",
+  "depends_on": [],
+  "done_when": "test file committed on the lab branch, 3/3 mutations killed and listed in the report; expected values stated independently of the code.",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Write spec-derived tests from the docstrings and DESIGN.md (never from the code) into a new test file beside conditions.py; mutate 3 operators by hand and show each mutation is killed.",
+  "id": "gpt-mutation-tests-sim-desk-conditions",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sim-v2 (b): shared CONDITIONS panel for any layer (side, UTC hours, EMA trend, ATR percent",
+      "ref": "de7acbac616c",
+      "utc": "2026-10-24T20:33:36Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Final report ends with a Noticed: line. Blocked? List 2-3 non-destructive fixes, try the safest, verify, then report.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T17:15:59Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/conditions.py (read), DESIGN.md (read), new file MyTradingSys/research/sim_desk/test_conditions_spec.py; report"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change to any file outside the named ones"
+  ],
+  "scope_sha": "de7acbac616c",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "list each condition function and its documented rule",
+    "write expected values by hand from the rule, not the code",
+    "write the test file and run it",
+    "mutate 3 operators in a scratch copy, show each is killed, restore"
+  ],
+  "tests": "see done_when",
+  "title": "GPT: mutation-kill tests for MyTradingSys/research/sim_desk/conditions.py (the simulator conditions the operator relies on)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

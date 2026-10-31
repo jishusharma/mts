@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-30T23:01:13Z",
+    "misses": 39,
+    "reads": [
+      "scripts/dev/artifacts.py",
+      "MyTradingSys/research/sim_desk/build_catalogue.py",
+      "scripts/dev/cbp_run.py",
+      "scripts/dev/test_artifact_pages.py",
+      "MyTradingSys/research/sim_desk/artifact/test_artifact.py"
+    ],
+    "session": "agent-ad1adba0f00f4dd9c"
+  },
+  "created": "2026-10-30T19:28:11Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "supervisor-wait-unlink-only-own-marker",
+  "kind": "build",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "S0 park 2026-10-31 (planner-refine; DECISION (OURS): conservative default, card serves none of setup-review, storybook-v2, S3 funnel); unpark at S3 first pass or when the operator asks",
+  "pinned": false,
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "scripts/dev/supervisor.py"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "blocked",
+  "steps": [],
+  "tests": "",
+  "title": "supervisor.py wait: on exit unlink the login watcher marker only when its pid is our own (two coordinators on one login wipe each other's wake source: Opus drain 2026-10-31 and parent/Super-session-1 collision); add a test that a foreign-pid marker survives wait exit",
+  "weight": "",
+  "worker": ""
+}

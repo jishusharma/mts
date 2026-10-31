@@ -121,7 +121,7 @@
 > "The tighter it winds, the bigger the release as well."
 **Source GPS: 6aA-P4Gvhrc | BEGIN | t=00:10:11**
 > "I don't want to say always because nothing is ever always, but it's damn close."
-**Source GPS: 6aA-P4Gvhrc | BEGIN | t=00:10:49**
+**Source GPS: 6aA-P4Gvhrc | MIDDLE | t=00:10:49**
 
 ### K-6aA-P4Gvhrc-13 Volume near half of average as breakout timing cue
 - Type: INDICATOR

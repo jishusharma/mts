@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T19:52:40Z",
   "commands": [],
   "created": "2026-10-30T08:05:54Z",
   "depends_on": [],
@@ -14,11 +15,17 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "nextHighEvent() + macro strip in live_aid.html: next High USD event countdown and last 3 r",
+      "ref": "753106da9",
+      "utc": "2026-10-30T19:52:40Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "research: news feeds for MTS (Binance hack timeline, free feeds tested, wiring plan) + 4 c",
-      "ref": "12a473da6c81",
-      "utc": "2026-10-30T08:06:10Z"
+      "line": "ship: 6 file(s)",
+      "ref": "92aa0ab3d0c2",
+      "utc": "2026-10-30T18:34:39Z"
     },
     {
       "auto": true,
@@ -35,11 +42,16 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T09:58:04Z",
+  "refreshed": "2026-10-30T19:47:22Z",
   "refs": [
     "MyTradingSys/research/news_feeds_2026-10-30/REPORT.md"
   ],
-  "result": "",
+  "result": "nextHighEvent() + macro strip in live_aid.html: next High USD event countdown and last 3 results (actual vs forecast); test_next_high_event red-first, green; NO CALENDAR on error/429/CORS block/old copy; replay + artifact tests green",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tools/live_aid/live_aid.html",
     "MyTradingSys/tools/live_aid/live_aid_indicators.js",
@@ -50,17 +62,18 @@
     "news headline panel (live-aid-news-panel)",
     "gating any trade"
   ],
-  "scope_sha": "12a473da6c81",
+  "scope_sha": "92aa0ab3d0c2",
   "size": "S",
   "sources": [
     "REPORT.md section 4 and N3; impact field SOURCED (ForexFactory)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "write nextHighEvent() and the test first; fixture copied from one real fetch of nfs.faireconomy.media/ff_calendar_thisweek.json",
     "fetch once on load and then once a day (429 if hit twice a minute, REPORT.md section 4); on error or 429 show NO CALENDAR, never stale numbers",
     "render the strip; ship. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
   ],
+  "taken": "2026-10-30T19:52:40Z",
   "tests": "MyTradingSys/tools/live_aid/test_live_aid.py: test_next_high_event with a fixture of 6 events; red before the function exists.",
   "title": "live_aid: macro calendar strip from ForexFactory JSON (N3)",
   "weight": "ROUTINE",

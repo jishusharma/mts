@@ -1,0 +1,73 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-31T06:38:10Z",
+    "misses": 24,
+    "reads": [
+      "MyTradingSys/backtest/layers/pitchfork/test_pitchfork_detector.py",
+      "MyTradingSys/research/pitchfork_2026-10-19/RESEARCH_PITCHFORK_LAYER.md",
+      "MyTradingSys/system/layer_index.json",
+      "scripts/dev/make_layers_md.py"
+    ],
+    "session": "agent-a1b647f1dda1b8247"
+  },
+  "created": "2026-10-31T05:11:28Z",
+  "depends_on": [],
+  "done_when": "test_pivot_amplitude_rule_matches_doc fails on current code and passes after doc or code is aligned",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Gemini doc-vs-code g2 (confirmed): RESEARCH_PITCHFORK_LAYER.md:24 (Mikula/Morge rule, SOURCED) says N>=3 bars and amplitude >= 2.5 x ATR14; pitchfork_detector.py:334-339 uses lookback=3 and min_change_pct=0.02, no ATR. Either mark the code value OURS in the doc and LAYERS.md, or add the ATR gate behind a flag. Decide, record DECISION (OURS).",
+  "id": "pitchfork-doc-atr-pivot-filter-vs-code",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "pitchfork: integrate sim_desk plugin, Java Hagopian + B070 netRR + 1m proof, live wiring, ",
+      "ref": "60cda535ecec",
+      "utc": "2026-10-28T10:11:22Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "91d2e43c3133 Pitchfork Layer: Wire Modified Schiff tine bounce and Volume Profile confluen",
+      "ref": "MyTradingSys/research/pitchfork_2026-10-19/RESEARCH_PITCHFORK_LAYER.md",
+      "utc": "2026-10-21T01:04:20Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T05:11:29Z",
+  "refs": [
+    "gemini-doc-vs-code-layers-g2-1031"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py",
+    "MyTradingSys/research/pitchfork_2026-10-19/RESEARCH_PITCHFORK_LAYER.md",
+    "MyTradingSys/backtest/layers/pitchfork/test_pitchfork_detector.py"
+  ],
+  "scope_out": [],
+  "scope_sha": "60cda535ecec",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Add a test that a swing smaller than 2.5 x ATR14 but larger than 2 pct is or is not a pivot, per the decision",
+    "Edit doc label or code flag to match"
+  ],
+  "tests": "MyTradingSys/backtest/layers/pitchfork/test_pitchfork_detector.py::test_pivot_amplitude_rule_matches_doc (fails on current code if the doc rule is adopted)",
+  "title": "Pitchfork research doc says pivots need amplitude >= 2.5 x ATR14 (Rule P-01) but find_pivots_zigzag filters by min_change_pct=0.02 with no ATR",
+  "weight": "",
+  "worker": "agent"
+}

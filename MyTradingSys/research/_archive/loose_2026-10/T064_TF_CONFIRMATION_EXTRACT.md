@@ -39,7 +39,7 @@ raw_transcripts_canonical/HySZZSjMxF8_raw.txt:38-52. zone TF = top-down from the
 
 ### T064-Tom-02 [Q1,Q2]
 > "This is the hourly chart now and now I'll do the following and say I want to trade this on the 15-minute chart to define my risk well. And I know now what I'm looking for and where. That means I'm looking here, for example, for the possibility of a short position if the market it was trading above this level and then runs back in. I'm specifically looking for a clear reversal signal here right when the market reaches this critical point as that would confirm my setup for a potential entry"
-**Source GPS: HySZZSjMxF8 | END**
+**Source GPS: HySZZSjMxF8 | MIDDLE**
 raw_transcripts_canonical/HySZZSjMxF8_raw.txt:215-229. worked example: zones on 1h/daily, execution on 15m; confirmation = clear reversal signal AT the pre-marked point.
 
 ### T064-Tom-03 [Q1]
@@ -94,7 +94,7 @@ raw_transcripts_canonical/zAwEX_tRUfE_raw.txt:9 (single-paragraph line, char 567
 
 ### T064-Tom-13 [Q4]
 > "after such an extreme in combination with low liquidity, a correction follows"
-**Source GPS: 7BQPMJ39WpI | MIDDLE**
+**Source GPS: 7BQPMJ39WpI | BEGIN**
 raw_transcripts_canonical/7BQPMJ39WpI_raw.txt:96-98. extreme + low liquidity -> correction (no depth given).
 
 ### T064-Tom-14 [Q4]

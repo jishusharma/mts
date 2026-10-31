@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-31T05:37:24Z",
+  "commands": [],
+  "created": "2026-10-31T05:10:39Z",
+  "depends_on": [],
+  "done_when": "test_last_bar_event_is_censored fails on 80b0c19b code and passes after; RESULT.md shows censored event count and the restricted share",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Gemini cross-vendor review of 80b0c19b (confirmed in code): analyse_day scores an event on the last 5m bar (Part A) or acceptance ending on it (Part B) as no-return because the scan slice is empty. Quantify how many events have <N bars left and report the 57.2 pct share restricted to events with >=12 bars left, beside the pre-registered number. No verdict change claimed until measured.",
+  "id": "tom-vp-return-late-day-censoring",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "shipped f38e17805: last-bar events censored, pre-registered 57.2% unchanged",
+      "ref": "4a85ff560",
+      "utc": "2026-10-31T05:37:24Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 11 file(s)",
+      "ref": "80b0c19b80d0",
+      "utc": "2026-10-30T23:16:39Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T05:10:51Z",
+  "refs": [
+    "gemini-method-review-tom-vp-study-1031"
+  ],
+  "result": "shipped f38e17805: last-bar events censored, pre-registered 57.2% unchanged",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/backtest/vp_return_to_value.py",
+    "MyTradingSys/backtest/test_vp_return_to_value.py",
+    "MyTradingSys/research/tom_transfer_2026-10-11/vp_return/"
+  ],
+  "scope_out": [],
+  "scope_sha": "80b0c19b80d0",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Add a test: analyse_day with the event on the last bar returns returned None (not False) or is counted in a censored field",
+    "Add censored counts and a bars-left>=12 sensitivity row to the study output, DEV only",
+    "Write the sensitivity row into RESULT.md as post-hoc OURS beside the unchanged pre-registered verdict"
+  ],
+  "taken": "2026-10-31T05:37:24Z",
+  "tests": "MyTradingSys/backtest/test_vp_return_to_value.py::test_last_bar_event_is_censored (fails on current code, which returns returned False)",
+  "title": "Tom VP return study: events with zero or few bars left in the UTC day are forced to no-return (Part A event bar 287, Part B e+n-1 = 287)",
+  "weight": "",
+  "worker": "agent"
+}

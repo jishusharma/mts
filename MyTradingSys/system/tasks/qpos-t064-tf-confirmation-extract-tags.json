@@ -1,0 +1,63 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-31T03:37:58Z",
+  "commands": [],
+  "created": "2026-10-31T02:45:25Z",
+  "depends_on": [],
+  "done_when": "verify_extract_quotes.py exit 0 on the file; fixed in 285c4f078",
+  "est_turns": 3,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Fix wrong position tag words in the named extract so verify_extract_quotes.py exits 0 (quote text untouched).",
+  "id": "qpos-t064-tf-confirmation-extract-tags",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "fixed in 285c4f078: tag word only, verifier exit 0",
+      "ref": "285c4f078",
+      "utc": "2026-10-31T03:37:58Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 9 file(s)",
+      "ref": "285c4f078a6b",
+      "utc": "2026-10-31T03:36:46Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T03:37:57Z",
+  "refs": [],
+  "result": "fixed in 285c4f078: tag word only, verifier exit 0",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research"
+  ],
+  "scope_out": [],
+  "scope_sha": "285c4f078a6b",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "change only the tag word",
+    "run the verifier"
+  ],
+  "taken": "2026-10-31T03:37:58Z",
+  "tests": "verifier exit 0 (was failing on the tag)",
+  "title": "qpos T064 TF confirmation extract tags",
+  "weight": "",
+  "worker": "agent"
+}

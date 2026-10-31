@@ -1,0 +1,70 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-31T01:49:47Z",
+  "commands": [
+    "git grep -n \"test\" -- MyTradingSys/tools/live_aid | head -5"
+  ],
+  "created": "2026-10-31T00:53:31Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_burn_2026-10-31/LIVE_AID_TEST_PLAN.md exists; a row per displayed number (file:line, source field, test or NONE)",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "List every number the live aid page displays, its feed field and its formula; mark which a test pins (replay fixture or node unit test) and which none does.",
+  "id": "gemini-test-plan-live-aid-js-1031",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_burn_2026-10-31/LIVE_AID_TEST_PLAN.md",
+      "ref": "664eb8fc1",
+      "utc": "2026-10-31T01:49:47Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 17 file(s)",
+      "ref": "e8420fbb5d82",
+      "utc": "2026-10-31T00:58:27Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini rules: facts with file:line only, no trading verdict, no code change; NOT_IN_DATA where the repo has no answer; captions first for any YouTube work (fetch_captions_timed.py, quote only from the caption file, one try per video, 429 -> UNVERIFIED), verify_extract_quotes.py exit 0. Operator 2026-10-31: exhaust the Gemini weekly quota before it resets, test-first and catch bugs early. Final report ends with a Noticed: line.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T01:45:19Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "MyTradingSys/research/gemini_burn_2026-10-31/LIVE_AID_TEST_PLAN.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/gemini_burn_2026-10-31/ (new files only)"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code edits; any backtest or trading verdict; .secrets and .env"
+  ],
+  "scope_sha": "e8420fbb5d82",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "read tools/live_aid/*.js and their tests",
+    "write the table"
+  ],
+  "taken": "2026-10-31T01:49:47Z",
+  "tests": "report only; every finding cites file:line",
+  "title": "[GEMINI] test plan for tools/live_aid/*.js: every displayed number and its source field, the replay fixture checks that exist and the ones missing",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

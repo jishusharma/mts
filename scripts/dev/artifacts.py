@@ -176,10 +176,16 @@ def repo_html(pg, repo=REPO):
     return (Path(repo) / pg["html"]).read_text(encoding="utf-8")
 
 
+def generated_only(pg):
+    """A page with no repo html whose generator is a .py in this repo (sim_desk): it exists only as build output."""
+    g = pg.get("generator") or ""
+    return not pg.get("html") and g.endswith(".py") and "(" not in g
+
+
 def build_html(pg, repo=REPO):
     """The page as the repo would build it now, in a temp file: generator output, else the hand-made html file."""
     g = pg.get("generator") or ""
-    if not g.startswith("scripts/"):
+    if not (g.startswith("scripts/") or generated_only(pg)):
         return repo_html(pg, repo)
     with tempfile.TemporaryDirectory() as d:
         out = Path(d) / "page.html"
@@ -189,7 +195,7 @@ def build_html(pg, repo=REPO):
 
 def tracked(reg):
     """Pages that are live on their owner's login and have repo html: the ones that can lag the repo."""
-    return [pg for pg in reg["pages"] if pg["status"] == "canonical" and pg.get("html") and pg["urls"].get(owner(pg))]
+    return [pg for pg in reg["pages"] if pg["status"] == "canonical" and (pg.get("html") or generated_only(pg)) and pg["urls"].get(owner(pg))]
 
 
 def stale(reg, builder=build_html):
@@ -211,16 +217,17 @@ def stale_lines(reg, builder=build_html):
 def behind(reg, pg, repo=REPO):
     """MTS Home badge: the repo html on disk differs from what was last published (no generator run, so Home can build itself)."""
     try:
-        return content_hash(repo_html(pg, repo)) != pg.get("published_sha")
-    except OSError:
+        html = build_html(pg, repo) if generated_only(pg) else repo_html(pg, repo)
+        return content_hash(html) != pg.get("published_sha")
+    except (OSError, subprocess.CalledProcessError):
         return True
 
 
 def publish_record(reg, slug, today=None, repo=REPO):
     pg = next((p for p in reg["pages"] if p["slug"] == slug), None)
-    if not pg or not pg.get("html"):
-        raise SystemExit(f"artifacts: no page {slug!r} with repo html")
-    pg["published_sha"] = content_hash(repo_html(pg, repo))
+    if not pg or not (pg.get("html") or generated_only(pg)):
+        raise SystemExit(f"artifacts: no page {slug!r} with repo html or a buildable generator")
+    pg["published_sha"] = content_hash(build_html(pg, repo) if generated_only(pg) else repo_html(pg, repo))
     pg["last_published"][owner(pg)] = today or date.today().isoformat()
     return pg["published_sha"]
 
@@ -228,7 +235,7 @@ def publish_record(reg, slug, today=None, repo=REPO):
 def cmd_build(reg):
     for pg in reg["pages"]:
         g = pg.get("generator") or ""
-        if g.startswith("scripts/"):
+        if g.startswith("scripts/") and pg["status"] != "retire":
             print("build", pg["slug"])
             subprocess.run([sys.executable, str(REPO / g), "--out", str(REPO / pg["html"])], check=True)
 

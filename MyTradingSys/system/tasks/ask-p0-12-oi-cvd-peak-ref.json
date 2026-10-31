@@ -1,36 +1,78 @@
 {
   "approved_by": "",
-  "asks": "Peak over which window for the OI/CVD peak in MarketDataSnapshot (UTC day, rolling 24h)? Live-path Java, lane JIS-NB only. Default: rolling 24h, field names oi_peak_24h/cvd_peak_24h",
-  "commands": [],
+  "asks": "",
+  "closed": "2026-10-31T04:06:24Z",
+  "commands": [
+    "mvn -q -Dtest=MarketDataSnapshotTest,HistoricalSnapshotNoLiveCallsTest test",
+    "mvn -q test"
+  ],
   "created": "2026-10-30T08:24:19Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "mvn -q -Dtest=MarketDataSnapshotTest test passes with new tests: peak and drawdown correct on a planted OI/CVD series, null and LOW confidence on short or failed history, no extra live call in historical mode; mvn -q test green.",
+  "est_turns": 22,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Add oi_peak_24h and cvd_peak_24h (rolling 24h peak, with drawdown from peak) to MarketDataSnapshot JSON; missing history yields null + low confidence, never a guess (fail closed). Ledger P0-12 / T042.",
   "id": "ask-p0-12-oi-cvd-peak-ref",
-  "lane": "SONNET",
+  "lane": "JIS-NB",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "open_interest.peak_24h + cvd.peak_24h emitted; 10 tests fail-first then green; mvn test 26",
+      "ref": "9cc92bc09",
+      "utc": "2026-10-31T04:06:24Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "StateCodeEmitter: kline backfill of session CVD/VWAP sums, fail closed; vwap_anchor_utc = ",
+      "ref": "e4bcc09fd3a3",
+      "utc": "2026-10-19T20:48:44Z"
+    }
+  ],
   "layers": [],
-  "live_path": false,
+  "live_path": true,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-30 ACCEPT PLANNER 2026-10-30: DECISION (OURS): window = rolling 24h (ask default); fields nested as peak_24h objects. Live path: CRITICAL review SESSION mid + pre-ship; builders never deploy.",
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "",
+  "refreshed": "2026-10-30T17:15:14Z",
   "refs": [
     "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md"
   ],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "result": "open_interest.peak_24h + cvd.peak_24h emitted; 10 tests fail-first then green; mvn test 268/0 fail",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "src/main/java/datafeed/MarketDataSnapshot.java",
+    "src/test/java/datafeed/MarketDataSnapshotTest.java"
+  ],
+  "scope_out": [
+    "deploy or restart of any JVM",
+    "any trade rule using the peaks",
+    "weakening HistoricalSnapshotNoLiveCallsTest"
+  ],
+  "scope_sha": "e4bcc09fd3a3",
+  "size": "M",
+  "sources": [
+    "research/asks_audit_2026-10-30/LEDGER.md P0-12",
+    "MarketDataSnapshot.java:388-405"
+  ],
+  "state": "done",
+  "steps": [
+    "OI: oiFromHistory (MarketDataSnapshot.java:1534) calls openInterestHist(symbol,1h,2); widen to limit 24 and state how historical mode gets it (replay input, no live call); CVD: max of cvdSeries from buildCvdRolling over the 1440 1m bars (buildCvd resets at 00:00 UTC, do not use it)",
+    "Emit under open_interest.peak_24h and cvd.peak_24h {value, drawdown_pct, confidence}; null/LOW on any failure",
+    "Tests per live-path rule: restart/reset state (UTC 00:00 CVD reset must not break the 24h peak), API error, short history; run HistoricalSnapshotNoLiveCallsTest",
+    "Commit in worktree only; deploy is a manual DEPLOY_RUNBOOK step. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
+  ],
+  "taken": "2026-10-31T04:06:24Z",
+  "tests": "src/test/java/datafeed/MarketDataSnapshotTest.java: planted 24h OI series gives peak and drawdown; short history gives null; fails before the fields exist.",
   "title": "Emit OI peak and CVD peak reference in MarketDataSnapshot, with tests (ledger P0-12, T042; live path)",
-  "weight": "",
-  "worker": ""
+  "weight": "CRITICAL",
+  "worker": "session"
 }

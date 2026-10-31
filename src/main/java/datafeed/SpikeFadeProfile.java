@@ -10,7 +10,7 @@ import java.time.LocalDate;
 /**
  * Family A "imbalance fade", PROFILE arm (TOM_LAYER_V2_SPEC sections 2.1 A-C3, 2.2 A-P3 / A-P8, 12, 13; card
  * tom-encode-fade-profile-proofs). Runs beside the PRICE arm behind {@code -Dmts.spikeFade=true}: it takes the A1 candidate
- * of the same instant (idea A-C1, A-C2 already true), adds the volume-profile idea A-C3 as a gate and the profile proofs
+ * of the same instant (idea A-C1 true; A-C2 annotation-only since c4ad479e0, DECISION OURS), adds the volume-profile idea A-C3 as a gate and the profile proofs
  * A-P3 / A-P8, and returns a separate candidate labelled {@code arm = profile}. The PRICE candidate is never touched.
  *
  * <p>Labels. SOURCED (Tom's words, spec 2.1 / 2.2): thin top with the volume below (k0zm5NYn0IQ:21-22,

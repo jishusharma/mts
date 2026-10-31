@@ -1,0 +1,64 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-30T21:45:57Z",
+  "commands": [
+    "python scripts/dev/sync.py start krown-app-probe"
+  ],
+  "created": "2026-10-30T21:42:30Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/krown_free_2026-10-31/KROWN_APP_PROBE.md exists with date and time, what loaded, what is behind a login and the list of free signals (name, fields); or the result APP BLOCKED with the error and the tests tried",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Script fetch of app.krowntrading.net is refused (443) though linktr.ee/erickrown lists it (KROWN_FREE_VS_PAID.md s1a). Open https://app.krowntrading.net/desk/cryptos/dashboard in Claude in Chrome: public only, no account, payment or login. Record what loads, the free signals and fields; stop at a login wall.",
+  "id": "krown-app-probe-in-browser",
+  "kind": "run",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "APP BLOCKED (443 unreachable); 0 free signals",
+      "ref": "c18a00dfb",
+      "utc": "2026-10-30T21:45:57Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Public pages only: never create an account, enter credentials or click subscribe/buy. Chrome MCP tools are deferred: load them with ToolSearch first. Operator 2026-10-31. Final report ends with a Noticed: line.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T21:43:02Z",
+  "refs": [
+    "MyTradingSys/options/research/KROWN_FREE_VS_PAID.md"
+  ],
+  "result": "APP BLOCKED (443 unreachable); 0 free signals",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/krown_free_2026-10-31/ (new files only)"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code; creating accounts or paying; .secrets and .env"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "ToolSearch select the claude-in-chrome tools; open a new tab on the app URL",
+    "read the page text and visible panels; note any login wall",
+    "write KROWN_APP_PROBE.md and ship"
+  ],
+  "taken": "2026-10-30T21:45:57Z",
+  "tests": "report only",
+  "title": "Probe app.krowntrading.net (Krown Trading App, Free Market Dynamics) in a real browser: what is public, what needs a login, what the free dashboard shows",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

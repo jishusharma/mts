@@ -19,6 +19,12 @@ Entry format: `### A-<yyyymmdd>-<n> <kind> <title>` with kind one of INFO, DO-NO
 - What: machinery stays as built (3 stations, super sessions, lanes) but does not grow: no new roles, pages, rule documents, vendors, lanes or dashboards (D7 freeze list). Research breadth is not cut (discovery phase). New cards that add machinery go raw and stay parked unless they fix a collision, a wrong ship or a stale claim. Ready cards are the 28 kept on 2026-10-30; parked cards carry note 'S0 park', unpark only at S3 first pass or on the operator's word. Direction: setup-review-with-operator and storybook-v2-living-book first (S1), then the S3 two-layer funnel.
 - Why: trunk measured 0 promoted setups against 250 system docs, 250 dev scripts, 251 open cards and ~90 % of 30-day edits in process files; the operator chose to keep only what is useful and align to the roadmap.
 
+### A-20261030-2 INFO Super-session work programme D11 is in force (operator 2026-10-30, d-super-session-programme)
+- Applies to: every super session, planner and worker.
+- Until: replaced by a newer D-file or the operator's word.
+- What: `research/v1_plan_2026-10-20/D11_PROGRAMME.md`: six streams in order (F machinery repair for one wake, then A setup truth, C testnet picture, D live guidance in parallel; B funnel on A's picks; E hardening on live-path files); cheap models first (Haiku counts, Gemini labels and blind reads, GPT audits and spec tests, Sonnet builds, Opus only when named); feeder rule: every ship files its check in another vendor's lane the same wake; `supervisor.py plan` prints `LANE LOW` under the floors SONNET 6, HAIKU 3, GEMINI 4, CODEX 8. Testnet rows are calibration (never count toward the bar) or promoted (count); the daily readout labels them. The Codex lab stays the NUC's; with no NUC supervisor heartbeat under 2 h, the desktop super session claims and runs `codex_run.py tick` once per wake.
+- Why: 2026-10-30 the GPT lane sat 20.8 h with 6 ready cards, Gemini and Haiku had 0 ready, no super session ran, and the operator asked for a programme that keeps every lane fed and aligned to D7.
+
 ### A-20261026-1 DO-NOW NUC runs on a Gateway profile: login B is off there, send the heavy load to the NUC (operator 2026-10-26)
 - Applies to: every session; coordinators route work, NUC sessions work the queue.
 - Until: the operator posts the end of it.

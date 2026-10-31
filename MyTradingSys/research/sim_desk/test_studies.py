@@ -87,6 +87,34 @@ def test_resample_hour_bars():
     assert list(h[1]) == [3600000., 60., 120., 59., 119.5]
 
 
+def test_resample_gapped_minutes():
+    # hand-worked: hour 0 has only minutes 5, 20, 50; hour 1 only minute 61; hour 2 absent; hour 3 only minute 180
+    M = 60000
+    a = np.array([[5 * M, 10, 12, 9, 11], [20 * M, 11, 15, 8, 14], [50 * M, 14, 13, 10, 12],
+                  [61 * M, 20, 21, 19, 20], [180 * M, 30, 31, 29, 30.5]])
+    h = _bars.resample(a, 60)
+    assert h.shape == (3, 5)
+    assert list(h[0]) == [0., 10., 15., 8., 12.]           # open of first, max high, min low, close of last present minute
+    assert list(h[1]) == [3600000., 20., 21., 19., 20.]
+    assert list(h[2]) == [3 * 3600000., 30., 31., 29., 30.5]   # empty hour 2 is not invented
+
+
+def test_resample_empty_input():
+    h = _bars.resample(np.zeros((0, 5)), 60)
+    assert h.shape == (0, 5)
+
+
+def test_levels_rejects_other_symbol():
+    # levels has no coin choice (BTC data only); a non-BTC symbol must be refused, never silently run on BTC
+    lv = desk.load_studies()['levels']
+    with pytest.raises(ValueError, match='symbol'):
+        lv.normalize({'symbol': 'ETHUSDT'})
+    with pytest.raises(ValueError, match='symbol'):
+        lv.normalize({'symbol': 'DOGEUSDT'})
+    assert lv.normalize({'symbol': 'BTCUSDT'}) == lv.normalize({})
+    assert lv.normalize({'symbol': ''}) == lv.normalize({})
+
+
 def test_rsi_and_wavetrend_found_and_labelled():
     found = desk.load_studies()
     assert {'levels', 'rsi', 'wavetrend'} <= set(found)

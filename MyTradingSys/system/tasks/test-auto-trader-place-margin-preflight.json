@@ -1,0 +1,64 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-31T06:08:29Z",
+    "misses": 6,
+    "reads": [
+      "scripts/dev/run_all_tests.py",
+      "MyTradingSys/execution/test_auto_trader_failclosed.py"
+    ],
+    "session": "agent-ad12a08cb66a50483"
+  },
+  "created": "2026-10-31T05:11:43Z",
+  "depends_on": [],
+  "done_when": "test_place_refuses_when_margin_short fails on current code and passes after; balance-API-error case also refuses",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Gemini test plan (gap confirmed: no margin or available_funds check in auto_trader.py, executor.py or position_manager.py, no test). Add an offline test with a fake client whose available funds are below the plan margin; place() must refuse with a named reason and spawn no manager. Live-path: test and card only; any code change goes through the live-path gates and a coordinator deploy.",
+  "id": "test-auto-trader-place-margin-preflight",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "auto_trader fail-closed tests (19, 19/19 mutants caught) + vacuous-test audit of last 30 t",
+      "ref": "9cf5a2191909",
+      "utc": "2026-10-30T20:42:05Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T05:11:45Z",
+  "refs": [
+    "gemini-test-plan-execution-1031"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/execution/auto_trader.py",
+    "MyTradingSys/execution/test_auto_trader_failclosed.py"
+  ],
+  "scope_out": [],
+  "scope_sha": "9cf5a2191909",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Write the failing test with a fake client reporting low available funds",
+    "Add the pre-flight check failing closed (also when the balance call errors)",
+    "Run execution tests"
+  ],
+  "tests": "MyTradingSys/execution/test_auto_trader_failclosed.py::test_place_refuses_when_margin_short (fails on current code, which places the order)",
+  "title": "Test gap: auto_trader.place never checks available equity or margin before an entry (Gemini execution test plan, rank 2)",
+  "weight": "",
+  "worker": "agent"
+}

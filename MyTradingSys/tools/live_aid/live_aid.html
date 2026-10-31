@@ -45,7 +45,7 @@ th:first-child, td:first-child { text-align: left; padding-left: 0; }
 .nh { white-space: normal; text-align: left; min-width: 260px; }
 .nh a { color: inherit; text-decoration: none; }
 .nh a:hover { text-decoration: underline; }
-#p-news th:last-child, #p-an th:last-child, #p-verdict th:nth-child(4) { text-align: left; }
+#p-news th:nth-last-child(-n+3), #p-an th:last-child, #p-verdict th:nth-child(4) { text-align: left; }
 @media (min-width: 1000px) { #p-news, #p-an { grid-column: span 2; } }
 .vrow { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; }
 .vote { font: 14px var(--mono); margin-right: 16px; white-space: nowrap; }
@@ -73,6 +73,18 @@ body:not(.more) .x { display: none; }
 .it li:first-child { border-top: 0; padding-top: 0; }
 details summary { cursor: pointer; color: var(--dim); font: 600 13px var(--sans); }
 details[open] summary { margin-bottom: 8px; }
+/* Now table (operator 10-31): one row per panel, decision rows first; a row opens that panel alone (#hash route). */
+#ov td { padding: 5px 6px; } #ov td:first-child { font: 600 13px var(--sans); letter-spacing: .04em; color: var(--accent); }
+#ov td.nw, #ov td.mo { white-space: normal; text-align: left; } #ov td.mo { color: var(--dim); font-size: 13px; }
+#p-ov th:nth-child(2), #p-ov th:nth-child(3) { text-align: left; }
+#ov tr[data-go] { cursor: pointer; } #ov tr[data-go]:hover td, #ov tr[data-go]:focus-visible td { background: #1b222b; }
+#ov tr[data-go] td:first-child::after { content: " \25B8"; color: var(--dim); }
+.off { display: none !important; }
+#back { display: flex; gap: 16px; align-items: baseline; font: 600 14px var(--sans); }
+#back a { color: var(--accent); text-decoration: none; } #back a:hover { text-decoration: underline; }
+body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { grid-column: auto; }
+.rd { font: 600 11px var(--sans); letter-spacing: .05em; } .rd.POSITIVE { color: var(--up); } .rd.NEGATIVE { color: var(--down); } .rd.UNKNOWN { color: var(--amber); } .rd.NEUTRAL { color: var(--dim); }
+#news td.re { white-space: normal; text-align: left; min-width: 220px; font-size: 12px; color: var(--dim); }
 .notes p { margin: 6px 0; font: 13px/1.45 var(--sans); color: var(--dim); }
 @media (max-width: 560px) {
   .huge { font-size: 34px; } .big { font-size: 24px; }
@@ -105,6 +117,15 @@ details[open] summary { margin-bottom: 8px; }
         <button id="rung-add" type="button">Add rung</button>
       </div>
     </details>
+  </section>
+
+  <!-- 1b. BACK BAR (detail pages only) -->
+  <div id="back" class="off"><a href="#">&larr; Back to top table</a><span class="lab" id="back-name"></span><span class="num" id="back-px"></span><span class="num dim" id="back-utc"></span></div>
+
+  <!-- 1c. NOW TABLE: what matters at a glance, one screen; click a row for its panel -->
+  <section id="p-ov">
+    <div class="hd"><h2>Now</h2><span class="big" id="ov-px">--</span><span class="sub" id="ov-px-sub"></span><span class="tag">click a row for its page; Back returns here</span><span class="age" id="age-ov">--</span></div>
+    <div class="scroll"><table><thead><tr><th>Panel</th><th>Now</th><th>More</th><th>Age</th></tr></thead><tbody id="ov"></tbody></table></div>
   </section>
 
   <!-- 2. GLANCE -->
@@ -140,6 +161,31 @@ details[open] summary { margin-bottom: 8px; }
     <span class="tag">Watch items from analyst calls and our own vote count. None of these is a backtested signal; no size, no orders. You decide.</span>
   </section>
 
+  <!-- 2c. US OPEN LADDER (research/us_open_levels_2026-10-30; descriptive) -->
+  <section id="p-usopen">
+    <div class="hd"><h2>US open: if up, if down</h2><span class="src" title="Levels known at the open: UTC-day-so-far high/low, prior day, prior 3 days, prior 7 days, and the first-15-min opening range: OURS. Odds = MEASURED base rates, Binance BTCUSDT 1m 2022-01..2026-09, 1230 weekdays: how often a level that far from the open price was reached in the first 2 h, and how often the close 60 min after the first touch was still beyond it. No fees, no entries.">MEASURED</span><span class="age" id="age-uo">--</span></div>
+    <div class="vrow"><span class="huge" id="uo-when">--</span><span class="sub" id="uo-box"></span></div>
+    <div class="scroll"><table><thead><tr><th>If price goes</th><th>Level</th><th>Price</th><th>Distance</th><th>Reached in the 2 h after the open</th><th>Still beyond it 60 min after the touch</th></tr></thead><tbody id="uo-rows"></tbody></table></div>
+    <span class="tag">Reach odds fall with distance; a touch holding is a coin flip at every distance. Context for what to expect, never a signal; no size, no orders.</span>
+  </section>
+
+  <!-- 2d. WHAT THE MONEY IS DOING (research/eagle_eyes_picture_2026-10-28/OI_COMMENTARY_SPEC.md; descriptive) -->
+  <section id="p-money">
+    <div class="hd"><h2>What the money is doing</h2><span class="src" title="Price vs open interest per venue over 5 / 15 / 60 min. Six-state sentences, flat under 0.1 %, venues disagree at 0.2 % up vs 0.2 % down, FLUSH / SQUEEZE = a Bybit 5m bar with its wick 0.25 % past the previous close while OI falls 0.2 %, trapped line at OI +0.2 % since the event: OURS (spec fixed before use). Lines marked MEASURED come from C24 (Bybit 5m 07-02..10-30, oi_after_flush.py). Feeds SOURCED: Deribit ticker, Bybit tickers + REST open-interest, Binance fapi openInterest.">OURS + MEASURED</span><span class="tag" id="m-feeds"></span></div>
+    <div class="vrow"><span class="huge" id="m-call">--</span><span class="sub" id="m-sub"></span></div>
+    <div class="scroll"><table><thead><tr><th>Window</th><th>Price</th><th>Deribit OI</th><th>Bybit OI</th><th>Binance OI</th><th>All venues OI</th><th>What it means</th></tr></thead><tbody id="m-rows"></tbody></table></div>
+    <ul id="m-lines" class="it"></ul>
+    <span class="tag">Says where positions are going, not where price goes next. Only lines marked MEASURED carry a base rate; no size, no orders.</span>
+  </section>
+
+  <!-- 2d. MACRO CALENDAR (card live-aid-macro-calendar; ForexFactory JSON, impact SOURCED) -->
+  <section id="p-macro">
+    <div class="hd"><h2>Macro calendar</h2><span class="src" title="Next High-impact USD event and the last 3 High-impact USD results, from the ForexFactory weekly JSON (nfs.faireconomy.media). Impact rating SOURCED (ForexFactory). Fetched once on load, then once a day; on any error, a 429 or an old copy the strip reads NO CALENDAR, never stale numbers. A result is shown only once its time has passed. The feed has no actual column today, so Actual reads not in feed.">SOURCED</span><span class="age" id="age-mc">--</span></div>
+    <div class="vrow"><span class="huge" id="mc-next">--</span><span class="sub" id="mc-sub"></span></div>
+    <div class="scroll"><table><thead><tr><th>Time</th><th>Last results</th><th>Actual</th><th>Forecast</th><th>Previous</th></tr></thead><tbody id="mc-rows"></tbody></table></div>
+    <span class="tag">Context only: a scheduled-event clock. It gates nothing; no size, no orders.</span>
+  </section>
+
   <!-- 3. COLUMNS -->
   <div class="cols">
     <section id="p-intrade">
@@ -149,7 +195,9 @@ details[open] summary { margin-bottom: 8px; }
 
     <section id="p-news">
       <div class="hd"><h2>News</h2><span class="tag" id="news-feed"></span><span class="age" id="age-news">--</span></div>
-      <div class="scroll"><table><thead><tr><th>Time</th><th>Score</th><th class="x">Source</th><th>Headline</th></tr></thead><tbody id="news"></tbody></table></div>
+      <div class="scroll"><table><thead><tr><th>Time</th><th>Score</th><th>Source</th><th>Headline</th><th>Reading for BTC</th><th>How it usually reacts</th></tr></thead><tbody id="news"></tbody></table></div>
+      <span class="tag">Reading = word rules (OURS), a label on the headline, never a forecast; UNKNOWN when the headline gives no basis. "How it usually reacts" quotes a study only where one exists (research/news_feeds_2026-10-30/REPORT.md section 3), else says not measured.</span>
+      <span class="tag" id="news-gaps"></span>
     </section>
 
     <section id="p-an">
@@ -203,12 +251,14 @@ details[open] summary { margin-bottom: 8px; }
     <p>Analysts: CBP rows (analyst, publish day, bias, pointers) and the roster in CBP analysts.json, built into analyst_data.js by build_analyst_data.py (any session reading the chart reruns it; by hand: python MyTradingSys/tools/live_aid/build_analyst_data.py). Words and biases SOURCED (the analysts' videos); levels parsed by scripts/dev/analyst_levels.py; FRESH = newest row 3 days old or less, the 6 % band, AT 0.3 % and NEAR 1.5 %: OURS. NOT_FETCHED = an enabled analyst that ingestion skips (it fetches the "actionable" profile only). The store keeps 5 days of rows, so an older row reads NO ROW.</p>
     <p>News: Tree News public REST (news.treeofalpha.com/api/news), polled every 15 s while this page is open; each item carries its own time, source and importance score 0-10 (SOURCED). Score 7 or more is marked "high"; the glance counts high items in the last 60 min, EVENT at 3 or more (OURS, research/news_feeds_2026-10-30). Word tags hack / halt / etf / fed / war / delist / btc: OURS. On 2026-10-29 this feed had the Binance hack at 20:39:00 UTC, before the 20:40-20:45 fall. Context only.</p>
     <p>Liquidations: Bybit allLiquidation.BTCUSDT (price = bankruptcy price), Binance btcusdt@forceOrder (one print per second at most), Deribit trades carrying the liquidation flag. Side = the position that was liquidated (SOURCED, venue docs). 1/5/15 min sums since this page connected, "longs" or "shorts" when one side is at least 2x the other, big print = 100,000 USD or more: OURS (STEPS.md).</p>
+    <p>What the money is doing: price vs open interest per venue (Deribit ticker open_interest in USD contracts, Bybit tickers openInterest and REST open-interest 5min in BTC, Binance fapi openInterest and openInterestHist in BTC: SOURCED). Each venue's change is in its own unit; "All venues" weights each venue's change by its open interest in BTC so a price move is not counted as new positions. Six sentences from the spec, flat under 0.1 %, venues disagree at +0.2 % vs -0.2 %, FLUSH = a 5m bar with its low 0.25 % or more under the previous close while Bybit OI falls 0.2 % or more (SQUEEZE mirrored), bars under 12 apart are one event, trapped line at OI +0.2 % since the event: OURS (research/eagle_eyes_picture_2026-10-28/OI_COMMENTARY_SPEC.md). MEASURED lines: C24 in BACKTEST_CANDIDATES.md. A feed older than 90 s reads NOT_IN_DATA.</p>
     <p>In-trade readings are descriptive, no advice. Rules and thresholds = OURS, fixed in STEPS.md before data was looked at. Data: Deribit mainnet public trades, book and open interest; candles from the strip venue. Rule R = 3 or more of the available flags against the side you typed; it names no size.</p>
   </details>
 </main>
 
 <script src="live_aid_indicators.js"></script>
 <script src="analyst_data.js"></script>
+<script src="us_open_rates.js"></script>
 <script>
 (function () {
   'use strict';
@@ -219,7 +269,8 @@ details[open] summary { margin-bottom: 8px; }
   var S = { dbt: null, dbtMark: null, dbtT: 0, dbtErr: '', bin: null, binT: 0, binErr: '',
             a15: NaN, tf: {}, venue: null, klErr: '', klT: 0, daily: null,
             trades: [], trT: 0, book: null, bookT: 0, oi: null, oiT: 0, oiHist: [], flowErr: '',
-            liq: [], lq: { BYBIT: { t: 0, err: '' }, BINANCE: { t: 0, err: '' } }, byt: { d: null, t: 0 }, news: { items: [], t: 0, err: '' } };
+            liq: [], lq: { BYBIT: { t: 0, err: '' }, BINANCE: { t: 0, err: '' } }, byt: { d: null, t: 0 }, news: { items: [], t: 0, err: '' },
+            om: { DERIBIT: { live: [], rest: [], err: '' }, BYBIT: { live: [], rest: [], err: '' }, BINANCE: { live: [], rest: [], err: '' }, bars: [], barsT: 0, barsErr: '' } };
 
   function fmt(x, d) { return isFinite(x) ? x.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }) : '--'; }
   function sgn(x, d) { return isFinite(x) ? (x > 0 ? '+' : '') + fmt(x, d) : '--'; }
@@ -335,6 +386,49 @@ details[open] summary { margin-bottom: 8px; }
   function getJson(url) {
     var ctl = new AbortController(); var to = setTimeout(function () { ctl.abort(); }, 8000);
     return fetch(url, { signal: ctl.signal }).then(function (r) { clearTimeout(to); if (!r.ok) throw new Error('HTTP ' + r.status + ' ' + url); return r.json(); });
+  }
+
+  // ---------- open interest for "What the money is doing" ----------
+  // Live samples every 10 s per venue (Deribit and Bybit from their open sockets, Binance by REST every 30 s); the last 2 h of
+  // 5m history from Bybit (and Binance when reachable) fill the 15 / 60 min windows before the page has been open that long.
+  function omPush(v, px, oi, btc) {
+    var L = S.om[v].live, t = Date.now();
+    if (!(px > 0) || !isFinite(oi)) return;
+    L.push({ t: t, px: px, oi: oi, btc: btc }); while (L.length && L[0].t < t - A.OM.keepMs) L.shift();
+  }
+  function omSample() {
+    var now = Date.now(), b = S.byt.d;
+    if (S.oiT && now - S.oiT < STALE_MS && S.dbt > 0) omPush('DERIBIT', S.dbt, S.oi, S.oi / S.dbt);
+    if (b && S.byt.t && now - S.byt.t < STALE_MS) omPush('BYBIT', +b.lastPrice, +b.openInterest, +b.openInterest);
+  }
+  function omHist(v) {
+    var o = S.om[v], t0 = o.live.length ? o.live[0].t : Infinity;
+    return o.rest.filter(function (x) { return x.t < t0; }).concat(o.live);
+  }
+  function loadBybitOi() {
+    var k = 'https://api.bybit.com/v5/market/kline?category=linear&symbol=BTCUSDT&interval=5&limit=25';
+    var o = 'https://api.bybit.com/v5/market/open-interest?category=linear&symbol=BTCUSDT&intervalTime=5min&limit=26';
+    Promise.all([getJson(k), getJson(o)]).then(function (r) {
+      var kl = r[0].result.list, ois = {};
+      r[1].result.list.forEach(function (x) { ois[+x.timestamp] = +x.openInterest; });
+      S.om.bars = A.oiBars(kl, ois); S.om.barsT = Date.now(); S.om.barsErr = '';
+      S.om.BYBIT.rest = kl.map(function (x) { return { t: +x[0], px: +x[1], oi: ois[+x[0]], btc: ois[+x[0]] }; })
+        .filter(function (x) { return x.oi > 0; }).sort(function (a, b) { return a.t - b.t; });
+    }, function (e) { S.om.barsErr = 'Bybit open-interest REST failed: ' + (e.name === 'AbortError' ? 'timeout' : e.message); });
+  }
+  function loadBinanceOi(hist) {
+    var st = S.om.BINANCE;
+    getJson('https://fapi.binance.com/fapi/v1/openInterest?symbol=BTCUSDT').then(function (j) {
+      st.err = ''; if (S.binT && Date.now() - S.binT < STALE_MS) omPush('BINANCE', S.bin, +j.openInterest, +j.openInterest);
+      else st.err = 'Binance price feed down';
+    }, function (e) { st.err = 'fapi.binance.com openInterest failed (blocked on some networks): ' + (e.name === 'AbortError' ? 'timeout' : e.message); });
+    if (!hist) return;
+    Promise.all([getJson('https://fapi.binance.com/futures/data/openInterestHist?symbol=BTCUSDT&period=5m&limit=25'),
+                 getJson('https://fapi.binance.com/fapi/v1/klines?symbol=BTCUSDT&interval=5m&limit=25')]).then(function (r) {
+      var px = {}; r[1].forEach(function (k) { px[+k[0]] = +k[1]; });
+      st.rest = r[0].map(function (x) { return { t: +x.timestamp, px: px[+x.timestamp], oi: +x.sumOpenInterest, btc: +x.sumOpenInterest }; })
+        .filter(function (x) { return x.px > 0 && x.oi > 0; }).sort(function (a, b) { return a.t - b.t; });
+    }, function () {});
   }
 
   var TFS = [{ k: '1m', ms: 60000, n: 1500, dr: '1' }, { k: '5m', ms: 300000, n: 300, dr: '5' }, { k: '15m', ms: 900000, n: 1500, dr: '15' }, { k: '1h', ms: 3600000, n: 1500, dr: '60' }];
@@ -458,6 +552,8 @@ details[open] summary { margin-bottom: 8px; }
     $('bin-sub').textContent = S.binErr;
     $('basis').innerHTML = !feedDown(S.dbtT, S.dbtErr) && !feedDown(S.binT, S.binErr) ? '<span class="' + cls(S.dbt - S.bin) + '">' + sgn(S.dbt - S.bin, 1) + '</span>' : NID;
     $('utc').textContent = new Date(now).toISOString().slice(11, 19);
+    $('ov-px').innerHTML = 'BTC ' + $('dbt-last').innerHTML; $('ov-px-sub').textContent = 'Deribit perp' + (S.dbtMark ? ', mark ' + fmt(S.dbtMark, 1) : ''); age('age-ov', S.dbtT);
+    $('back-px').innerHTML = 'BTC ' + $('dbt-last').innerHTML; $('back-utc').textContent = $('utc').textContent + ' UTC';
     var si = sessionInfo(now);
     $('session').textContent = si.name;
     $('cd-us').textContent = 'US ' + hhmm(si.us) + ' in ' + cd(si.us - now);
@@ -499,7 +595,7 @@ details[open] summary { margin-bottom: 8px; }
     $('coil-venue').textContent = S.venue ? S.venue + ' perp' : '';
     if (!rows || !rows.length) { el.innerHTML = '<li>' + NID + '</li>'; return; }
     var pd = prevDayHL(now), r = A.coilPierce(rows, 900000, now, pd.h, pd.l);
-    if (!r) { el.innerHTML = '<li>not enough 15m bars yet</li>'; return; }
+    if (!r) { el.innerHTML = '<li>not enough 15m bars yet</li>'; return null; }
     var us = sessionInfo(now - 7200000).us, inWin = us - now <= 7200000;
     var x = r.ctx, L = [];
     L.push('<li><b>' + (r.coil ? 'COIL' : 'no coil') + '</b>: band width ' + fmt(100 * r.width, 2) + '% is at the ' + fmt(100 * r.bwPct, 0) +
@@ -519,16 +615,39 @@ details[open] summary { margin-bottom: 8px; }
     L.push('<li class="dim">' + (inWin ? 'Inside' : 'OUTSIDE') + ' the measured window (US open ± 2 h, next US open ' + hhmm(sessionInfo(now).us) + ').' + (inWin ? '' : ' Odds measured near the US open only.') + '</li>');
     el.innerHTML = L.join('');
     $('age-coil').textContent = S.klT ? Math.round((now - S.klT) / 1000) + 's' : '--';
+    return r;
+  }
+
+  function renderUsOpen(now) {
+    var open = sessionInfo(now - 7200000).us, px = S.dbtMark || S.dbt || (S.tf['5m'] && S.tf['5m'].length ? +S.tf['5m'][S.tf['5m'].length - 1][4] : NaN), rates = typeof US_OPEN_RATES !== 'undefined' ? US_OPEN_RATES.rates : null;
+    var r = A.usOpen(S.tf['5m'], S.daily ? S.daily.rows : null, open, now, px, rates), tb = $('uo-rows');
+    var m = r.minutes, when = r.phase === 'before' ? 'US open ' + hhmm(open) + ' in ' + (-m) + ' min' : r.phase === 'in' ? 'US opened ' + m + ' min ago' : 'US open + 2 h window over (opened ' + hhmm(open) + ')';
+    $('uo-when').textContent = when;
+    $('uo-box').textContent = (r.box ? 'day so far ' + fmt(r.box.l, 0) + ' - ' + fmt(r.box.h, 0) + ' (' + fmt(100 * (r.box.h - r.box.l) / r.box.l, 2) + '%)' : 'day range: not enough 5m bars') +
+      (r.or ? ' | opening range (15 min) ' + fmt(r.or.l, 0) + ' - ' + fmt(r.or.h, 0) : r.phase === 'before' ? ' | opening range: after the open' : '') + ' | ' + r.priorDays + ' prior days loaded';
+    if (!isFinite(px)) { tb.innerHTML = '<tr><td colspan="6">' + NID + '</td></tr>'; return; }
+    function row(dir, x) {
+      var pct = function (v, n) { return v === null ? '<span class="dim">n too small (' + n + ')</span>' : '<b>' + v + '%</b> (n=' + n + ')'; };
+      return '<tr><td class="' + (dir === 'UP' ? 'up' : 'down') + '"><b>' + dir + '</b></td><td>' + esc(x.name) + '</td><td>' + fmt(x.p, 0) + '</td><td>' + sgn(100 * x.dist, 2) + '%</td><td>' +
+        (x.bucket ? pct(x.touch, x.n) : '<span class="dim">beyond the measured range</span>') + '</td><td>' + (x.bucket ? pct(x.held, x.nt) : '') + '</td></tr>';
+    }
+    var H = r.up.slice(0, 4).map(function (x) { return row('UP', x); }).concat(r.down.slice(0, 4).map(function (x) { return row('DOWN', x); }));
+    tb.innerHTML = H.join('') || '<tr><td colspan="6">no levels yet (5m bars and daily levels still loading)</td></tr>';
+    if (!rates) tb.innerHTML += '<tr><td colspan="6" class="err">us_open_rates.js not found next to this page: run python MyTradingSys/research/us_open_levels_2026-10-30/study.py</td></tr>';
+    $('age-uo').textContent = S.klT ? Math.round((now - S.klT) / 1000) + 's' : '--';
   }
 
   function render() {
     var now = Date.now();
     S.a15 = atr15();
     renderTop();
-    renderCoil(now);
+    renderUsOpen(now);
+    var coilR = renderCoil(now);
     renderLiq(now);
     renderFund(now);
     renderNews(now);
+    renderMoney(now);
+    renderCal(now);
     var a15 = S.a15;
 
     // 3. strip
@@ -540,6 +659,7 @@ details[open] summary { margin-bottom: 8px; }
       if (dayStart(c1.t[0]) < dayStart(now)) vw = v[v.length - 1]; // only if the window covers 00:00Z
     }
     // One momentum table: RSI, %B and WaveTrend zone/cross always; SMA, BB width, ATR, VWAP and wt1/wt2 under "More detail".
+    var MOM = {};
     $('strip').innerHTML = STRIP.map(function (tf) {
       var rows = S.tf[tf.k];
       if (!rows || rows.length < 40) return '<tr><td>' + tf.k + '</td><td colspan="10">' + NID + ' <span class="err">' + esc(S.klErr) + '</span></td></tr>';
@@ -547,6 +667,7 @@ details[open] summary { margin-bottom: 8px; }
       if (k.rsi < 30) flags += '<span class="chip">&lt;30</span>'; if (k.rsi > 70) flags += '<span class="chip">&gt;70</span>';
       var band = k.pctB > 1 ? '<span class="chip">above band</span>' : k.pctB < 0 ? '<span class="chip">below band</span>' : '';
       var c = k.cols, w = A.wavetrend(c.t, c.h, c.l, c.c, tf.ms, 200), n = c.c.length - 1, a = w.wt1[n], b = w.wt2[n], wt;
+      MOM[tf.k] = { rsi: k.rsi, pctB: k.pctB };
       if (!isFinite(a)) wt = '<td class="x">--</td><td class="x">--</td><td>' + NID + '</td><td class="err">' + (n + 1) + ' bars, needs 200 + warm-up</td>';
       else {
         var zone = a >= 60 ? 'above 60' : a >= 53 ? '53 to 60' : a <= -60 ? 'below -60' : a <= -53 ? '-60 to -53' : a >= 0 ? '0 to 53' : '-53 to 0';
@@ -554,6 +675,7 @@ details[open] summary { margin-bottom: 8px; }
         var j = n; while (j >= 0 && !w.event[j]) j--;
         var cross = j < 0 ? '--' : '<span class="' + (w.event[j] > 0 ? 'up' : 'down') + '">' + (w.event[j] > 0 ? 'up ' : 'down ') + '</span>' + (j === n ? 'now' : (n - j) + ' bars ago') +
           '<span class="x"> @ ' + fmt(w.wt1[j], 0) + (j === n ? ', forming bar' : '') + '</span>';
+        MOM[tf.k].wt = zone + (j < 0 ? '' : ', cross ' + (w.event[j] > 0 ? 'up ' : 'down ') + (j === n ? 'now' : (n - j) + ' bars ago'));
         wt = '<td class="x ' + (a > b ? 'up' : a < b ? 'down' : '') + '">' + fmt(a, 1) + '</td><td class="x">' + fmt(b, 1) + '</td><td class="' + zc + '">' + zone + '</td><td>' + cross + '</td>';
       }
       return '<tr><td>' + tf.k + '</td><td>' + fmt(k.rsi, 1) + flags + '</td><td class="x">' + fmt(k.rsiSma, 1) + '</td><td>' + fmt(k.pctB * 100, 0) + band +
@@ -591,6 +713,121 @@ details[open] summary { margin-bottom: 8px; }
     renderGlance(L, px, vw);
     renderInTrade(now, L, px, a15, m1);
     renderVerdict(now, px, vw);
+    renderOverview(now, MOM, L, px, a15, coilR);
+  }
+
+  // ---------- Now table and detail pages (operator 10-31: no long scroll, click-through) ----------
+  // Each row copies numbers already computed for its panel (same feed fields); a click sets #<view>, which shows that panel alone.
+  var VIEWS = { momentum: ['p-strip', 'Momentum'], levels: ['p-levels', 'Levels'], coil: ['p-coil', 'Coil and pierce'], pierce: ['p-coil', 'Coil and pierce'],
+                money: ['p-money', 'What the money is doing'], news: ['p-news', 'News'], verdict: ['p-verdict', 'Verdict and watch list'], liq: ['p-liq', 'Liquidations'],
+                fund: ['p-fund', 'Funding and premium'], macro: ['p-macro', 'Macro calendar'], usopen: ['p-usopen', 'US open'], intrade: ['p-intrade', 'In-trade readings'], analysts: ['p-an', 'Analysts'] };
+  S.view = '';
+  function route() {
+    var v = location.hash.replace(/^#/, ''), vw = VIEWS[v], id = vw ? vw[0] : '';
+    S.view = vw ? v : '';
+    document.body.classList.toggle('detail', !!vw);
+    Array.prototype.forEach.call(document.querySelector('main').children, function (el) {
+      if (el.id === 'back') el.classList.toggle('off', !vw);
+      else el.classList.toggle('off', !!vw && el.id !== id && !el.querySelector('#' + id));
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('.cols > section'), function (el) { el.classList.toggle('off', !!vw && el.id !== id); });
+    $('back-name').textContent = vw ? vw[1] : '';
+    window.scrollTo(0, 0);
+    render();
+  }
+  function ovAge(t, now) { return t ? Math.round((now - t) / 1000) + 's' : '--'; }
+  function html(id) { return $(id).innerHTML; }
+  function renderOverview(now, MOM, L, px, a15, cr) {
+    var R = [], kt = ovAge(S.klT, now);
+    function row(go, name, nowH, moreH, ageT, key) { R.push('<tr data-go="' + go + '" tabindex="0"' + (key ? ' class="key"' : '') + '><td>' + name + '</td><td class="nw">' + nowH + '</td><td class="mo">' + (moreH || '') + '</td><td>' + ageT + '</td></tr>'); }
+    // 1. momentum: RSI per timeframe; 15m WaveTrend
+    var mom = STRIP.map(function (tf) { var m = MOM[tf.k]; return tf.k + ' ' + (m ? '<b class="' + (m.rsi > 70 ? 'down' : m.rsi < 30 ? 'up' : '') + '">' + fmt(m.rsi, 1) + '</b>' : NID); }).join(' &middot; ');
+    var m15 = MOM['15m'];
+    row('momentum', 'Momentum', 'RSI ' + mom, '15m WaveTrend ' + (m15 && m15.wt ? esc(m15.wt) : NID) + (m15 ? ', %B ' + fmt(m15.pctB * 100, 0) : ''), kt, 1);
+    // 2. levels: nearest above and below the candle-venue price (same list as the Levels panel, typed levels included)
+    var all = L.concat(store.levels.map(function (l) { return { n: (l.name || 'custom') + ' (typed)', p: +l.price }; })).filter(function (l) { return isFinite(l.p); });
+    if (!(px > 0)) row('levels', 'Levels', NID + ' <span class="err">' + esc((S.venue || 'candle venue') + ' live price missing: no distances') + '</span>', all.length + ' levels loaded', kt, 1);
+    else {
+      var up = all.filter(function (l) { return l.p > px; }).sort(function (a, b) { return a.p - b.p; })[0], dn = all.filter(function (l) { return l.p <= px; }).sort(function (a, b) { return b.p - a.p; })[0];
+      var lv = function (l) { return l ? esc(l.n) + ' ' + fmt(l.p, 1) + ' <span class="' + cls(l.p - px) + '">(' + sgn(l.p - px, 1) + (isFinite(a15) ? ', ' + sgn((l.p - px) / a15, 2) + ' ATR' : '') + ')</span>' : NID; };
+      row('levels', 'Levels', 'above ' + lv(up) + ' &middot; below ' + lv(dn), 'price ' + fmt(px, 1) + ' (' + esc(S.venue || '') + ')', kt, 1);
+    }
+    // 3-4. coil and pierce (15m)
+    if (!cr) {
+      var why = S.tf['15m'] && S.tf['15m'].length ? 'not enough 15m bars yet' : '15m bars not loaded';
+      row('coil', 'Coil', NID + ' <span class="err">' + why + '</span>', '', kt, 1); row('pierce', 'Pierce', NID + ' <span class="err">' + why + '</span>', '', kt, 1);
+    } else {
+      row('coil', 'Coil', '<b>' + (cr.coil ? 'COIL' : 'no coil') + '</b>, band width ' + fmt(100 * cr.width, 2) + '% at the ' + fmt(100 * cr.bwPct, 0) + 'th percentile',
+        'coil = lowest 20 %; before the US open: range ' + cr.ctx.expand + 'x the 8 h box (n=' + cr.ctx.n + ')', kt, 1);
+      var p = cr.pierce;
+      row('pierce', 'Pierce', p ? '<b class="' + (p.side === 'up' ? 'up' : 'down') + '">PIERCE ' + p.side.toUpperCase() + '</b> ' + hhmm(p.t) + ' (' + p.ageBars + ' bars ago), close ' + fmt(p.close, 1) + ', force ' + esc(p.force) : 'no 15m close outside the band in 2 h',
+        p ? 'reach / fail by force ' + p.byForce.reach + '% / ' + p.byForce.fail + '% (n=' + p.byForce.n + ')' + (p.midBack ? ', already back across the mid' : '') : 'band ' + fmt(cr.lower, 1) + ' / ' + fmt(cr.mid, 1) + ' / ' + fmt(cr.upper, 1), kt, 1);
+    }
+    // 5+. the rest: the panel's own headline value
+    row('money', 'Money', html('m-call'), esc($('m-sub').textContent), '');
+    var nLive = !!S.news.t && now - S.news.t <= 60000;
+    if (!nLive) row('news', 'News', NID + ' <span class="err">' + esc(S.news.err || 'connecting') + '</span>', '', ovAge(S.news.t, now));
+    else {
+      var top = highNews(now).sort(function (a, b) { return b.time - a.time; })[0], pl = A.newsPulse(S.news.items, now), rd = top ? A.newsRead(top) : null;
+      row('news', 'News', '<b>' + pl.level + '</b> ' + pl.n + ' high in 60 min' + (top ? ': ' + hhmm(top.time) + ' ' + esc(headline(top).slice(0, 90)) + ' <span class="rd ' + rd.tag + '">' + rd.tag + '</span>' : ''),
+        top ? esc(top.source || '') + '; ' + esc(rd.react.slice(0, 100)) : 'no headline scored 7+ in 60 min', ovAge(S.news.t, now));
+    }
+    row('verdict', 'Verdict', html('v-call'), esc($('v-count').textContent), '');
+    row('liq', 'Liquidations 5 min', html('g-liq'), esc($('g-liq-sub').textContent), '');
+    row('fund', 'Funding 8h', html('g-fund'), html('g-fund-sub'), '');
+    row('macro', 'Macro', html('mc-next'), esc($('mc-sub').textContent), '');
+    row('usopen', 'US open', esc($('uo-when').textContent), esc($('uo-box').textContent), '');
+    row('intrade', 'In trade', html('g-stay'), esc($('g-rule').textContent), '');
+    $('ov').innerHTML = R.join('');
+  }
+  $('ov').addEventListener('click', function (e) { var tr = e.target.closest('tr[data-go]'); if (tr && !e.target.closest('a')) location.hash = tr.dataset.go; });
+  $('ov').addEventListener('keydown', function (e) { var tr = e.target.closest('tr[data-go]'); if (tr && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); location.hash = tr.dataset.go; } });
+  window.addEventListener('hashchange', route);
+
+  // ---------- what the money is doing (maths in live_aid_indicators.js, spec OI_COMMENTARY_SPEC.md) ----------
+  var OMV = [['DERIBIT', 'Deribit'], ['BYBIT', 'Bybit'], ['BINANCE', 'Binance']];
+  function omCell(w) { return w.err ? '<td title="' + esc(w.err) + '">' + NID + '</td>' : '<td class="' + cls(w.doi) + '">' + sgn(w.doi * 100, 2) + '%</td>'; }
+  function renderMoney(now) {
+    var H = {}; OMV.forEach(function (v) { H[v[0]] = omHist(v[0]); });
+    var rows = A.OM.wins.map(function (wn) {
+      var vs = OMV.map(function (v) { var h = H[v[0]]; return { name: v[1], w: A.oiWindow(h, now, wn[1]), btc: h.length ? h[h.length - 1].btc : NaN }; });
+      var net = A.oiNet(vs); return { label: wn[0], vs: vs, net: net, dis: net ? A.oiDisagree(vs, net.doi) : null };
+    });
+    var head = rows[1].net ? rows[1] : rows[0].net ? rows[0] : null;
+    if (head) {
+      var m = head.net.state.money;
+      $('m-call').innerHTML = '<span class="' + (m === 'in' ? 'up' : m === 'out' ? 'down' : '') + '">' + esc(head.net.state.text) + '</span>';
+      $('m-sub').textContent = head.label + ', ' + head.net.n + ' of ' + head.net.of + ' venues: price ' + sgn(head.net.dp * 100, 2) + ' %, open interest ' + sgn(head.net.doi * 100, 2) + ' %';
+    } else { $('m-call').innerHTML = NID; $('m-sub').textContent = 'no venue has open-interest samples yet'; }
+    $('m-rows').innerHTML = rows.map(function (r) {
+      var px = r.vs.filter(function (v) { return !v.w.err; })[0];
+      return '<tr><td>' + r.label + '</td><td class="' + (px ? cls(px.w.dp) : '') + '">' + (r.net ? sgn(r.net.dp * 100, 2) + '%' : '--') + '</td>' + r.vs.map(function (v) { return omCell(v.w); }).join('') +
+        (r.net ? '<td class="' + cls(r.net.doi) + '">' + sgn(r.net.doi * 100, 2) + '%</td><td class="nh">' + esc(r.net.state.text) + '</td>' : '<td>' + NID + '</td><td></td>') + '</tr>';
+    }).join('');
+    var L = [], bars = S.om.bars, bh = H.BYBIT, bl = bh[bh.length - 1];
+    var dis = rows.filter(function (r) { return r.dis; })[0];
+    if (dis) L.push(bullet('Venues disagree (' + dis.label + ')', 'OURS: one venue +0.2 %, another -0.2 %', esc(dis.dis)));
+    var lq = A.liqSum(S.liq, now, 900000), fl = A.flow(S.trades, now), f = A.fundRead(S.dbtF8), dp15 = rows[1].net ? rows[1].net.dp : NaN, who = [];
+    who.push(lq.dom === 'none' ? 'no liquidations seen in 15 min' : lq.dom === 'mixed' ? 'liquidations mixed (longs ' + fmt(lq.long / 1e6, 1) + 'M, shorts ' + fmt(lq.short / 1e6, 1) + 'M)' : lq.dom + ' liquidated ' + fmt(lq[lq.dom === 'longs' ? 'long' : 'short'] / 1e6, 1) + 'M');
+    if (fl && fl.cvd && isFinite(dp15) && Math.abs(dp15) >= A.OM.flat) who.push('taker flow ' + (Math.sign(fl.cvd) === Math.sign(dp15) ? 'agrees with' : 'disagrees with') + ' price (CVD ' + sgn(fl.cvd / 1e6, 1) + 'M)');
+    if (f) who.push(f.side === 'zero' ? 'funding about zero' : f.side + ' pay funding (' + sgn(f.pct8h, 4) + ' % per 8h)');
+    L.push(bullet('Who (15 min)', 'liquidations and CVD since this page connected; Deribit funding', esc(who.join('; '))));
+    var e = bars.length ? A.oiLastEvent(bars, now) : null, path = null;
+    if (!bars.length) L.push(bullet('Just happened (60 min)', 'Bybit 5m bars', nid(S.om.barsErr || 'Bybit 5m open interest not loaded yet')));
+    else if (!e) L.push(bullet('Just happened (60 min)', 'Bybit 5m: FLUSH / SQUEEZE rule OURS', 'no flush or squeeze'));
+    else {
+      L.push(bullet('Just happened (60 min)', 'Bybit 5m: FLUSH / SQUEEZE rule OURS', '<b>' + esc(A.oiEventText(e, A.liqSum(S.liq, e.lastT + A.OM.barMs, e.lastT - e.t + A.OM.barMs))) + '</b>'));
+      path = A.oiPath(bars, e, bl ? bl.px : NaN, bl ? bl.oi : NaN);
+      var tr = bl ? A.oiTrap(e, path, bl.px, bl.oi) : null;
+      L.push(bullet('Trapped side', 'OURS: OI +0.2 % since the event', tr ? esc(tr.text) : 'none by this rule (Bybit OI since the event ' + (bl ? sgn((bl.oi / e.oi1 - 1) * 100, 2) + ' %' : 'NOT_IN_DATA') + ')'));
+    }
+    var x = A.oiExpect(e, path);
+    L.push(bullet('What to expect', x.measured ? 'MEASURED: ' + x.study + ', n=' + x.n : 'not measured yet', esc(x.text), x.measured ? 'MEASURED' : 'OURS'));
+    $('m-lines').innerHTML = L.join('');
+    $('m-feeds').innerHTML = OMV.map(function (v) {
+      var h = H[v[0]], l = S.om[v[0]].live, t = l.length ? l[l.length - 1].t : 0;
+      return v[1] + ' ' + (t && now - t <= A.OM.staleMs ? Math.round((now - t) / 1000) + ' s' : '<span class="nid">NOT_IN_DATA</span>' + (S.om[v[0]].err ? ' <span class="err">' + esc(S.om[v[0]].err) + '</span>' : '')) + (h.length ? ', ' + Math.round((now - h[0].t) / 60000) + ' min held' : '');
+    }).join(' &middot; ') + ' &middot; Bybit 5m bars ' + (S.om.barsT ? Math.round((now - S.om.barsT) / 1000) + ' s' : NID);
   }
 
   // ---------- liquidations ----------
@@ -646,8 +883,43 @@ details[open] summary { margin-bottom: 8px; }
     $('g-fund-sub').innerHTML = (fD ? 'Deribit' : fB ? 'Bybit' : 'no funding feed reachable') + (fD && fB ? '; Bybit ' + pct(fB.pct8h, 4) + ', next ' + nextB : '');
   }
 
+  // ---------- macro calendar (ForexFactory weekly JSON; it sends no CORS header today, so a browser block reads NO CALENDAR too) ----------
+  var CAL_URL = 'https://nfs.faireconomy.media/ff_calendar_thisweek.json', CAL_DAY = 86400000, CAL_RETRY = 1800000, CAL_MAX_AGE = 26 * 3600000;
+  S.cal = { events: null, t: 0, err: 'connecting' };
+  function loadCal() {
+    var ctl = new AbortController(), to = setTimeout(function () { ctl.abort(); }, 8000), next = CAL_RETRY;
+    return fetch(CAL_URL, { signal: ctl.signal }).then(function (r) { clearTimeout(to); if (!r.ok) throw new Error(r.status === 429 ? 'HTTP 429 (rate limited)' : 'HTTP ' + r.status); return r.json(); })
+      .then(function (a) { if (!Array.isArray(a)) throw new Error('not a list'); S.cal.events = a; S.cal.t = Date.now(); S.cal.err = ''; next = CAL_DAY; })
+      .catch(function (e) { clearTimeout(to); S.cal.events = null; S.cal.err = 'ForexFactory feed: ' + (e && e.message ? e.message : 'unreachable'); })
+      .then(function () { setTimeout(loadCal, next); });
+  }
+  function cdText(ms) {
+    var m = Math.floor(Math.max(0, ms) / 60000), d = Math.floor(m / 1440), h = Math.floor(m % 1440 / 60);
+    return d ? d + 'd ' + String(h).padStart(2, '0') + 'h' : h ? h + 'h ' + String(m % 60).padStart(2, '0') + 'm' : m < 1 ? '<1 min' : m + ' min';
+  }
+  function renderCal(now) {
+    var ok = S.cal.events && S.cal.t && now - S.cal.t <= CAL_MAX_AGE, tb = $('mc-rows');
+    $('age-mc').textContent = S.cal.t ? Math.round((now - S.cal.t) / 60000) + 'm' : '--';
+    if (!ok) {
+      $('mc-next').innerHTML = '<span class="nid">NO CALENDAR</span>'; $('mc-sub').textContent = S.cal.events ? 'calendar copy older than 26 h' : S.cal.err; tb.innerHTML = ''; return;
+    }
+    var r = A.nextHighEvent(S.cal.events, now), nx = r.next;
+    $('mc-next').textContent = nx ? 'in ' + cdText(nx.countdownMs) : 'none left';
+    $('mc-sub').textContent = nx ? nx.title + ' at ' + hhmm(nx.t) + ' (forecast ' + (nx.forecast || '--') + ', previous ' + (nx.previous || '--') + ')' : "no further High-impact USD event in this week's file";
+    tb.innerHTML = r.last.map(function (x) {
+      return '<tr><td>' + new Date(x.t).toISOString().slice(5, 16).replace('T', ' ') + 'Z</td><td>' + esc(x.title) + '</td><td>' + (x.actual === null ? '<span class="dim">not in feed</span>' : esc(x.actual)) +
+        '</td><td>' + esc(x.forecast || '--') + '</td><td>' + esc(x.previous || '--') + '</td></tr>';
+    }).join('') || '<tr><td colspan="5" class="dim">no High-impact USD result yet in this week\'s file</td></tr>';
+  }
+
   // ---------- news ----------
   var NEWS_URL = 'https://news.treeofalpha.com/api/news?limit=';
+  var NEWS_GAPS = 'Gaps in this feed today: Tree News free REST only, items about 15 s late (paid websocket not wired, card live-aid-news-panel); ' +
+    'no exchange hot-wallet watch, so a drain shows on-chain about 15 min before the headline (N4); macro calendar blocked by CORS in a real browser ' +
+    '(card live-aid-macro-calendar-cors-snapshot); no measured BTC move per headline type yet (N5 news log). Source: research/news_feeds_2026-10-30/REPORT.md.';
+  function highNews(now) {
+    return (S.news.items || []).filter(function (x) { return +x.importance >= A.NW.mark && x.time <= now && x.time > now - A.NW.winMs; });
+  }
   function loadNews() {
     return fetch(NEWS_URL + (S.news.t ? 40 : 300)).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
       .then(function (a) { if (!Array.isArray(a)) throw new Error('not a list'); S.news.items = A.newsMerge(S.news.items, a, 400); S.news.t = Date.now(); S.news.err = ''; })
@@ -659,15 +931,17 @@ details[open] summary { margin-bottom: 8px; }
     var live = !!S.news.t && now - S.news.t <= 60000;
     $('age-news').textContent = S.news.t ? Math.round((now - S.news.t) / 1000) + 's' : '--';
     $('news-feed').textContent = 'Tree News ' + (live ? 'live' : 'down');
+    $('news-gaps').textContent = NEWS_GAPS;
     if (!live) {
-      $('news').innerHTML = '<tr><td colspan="4"><span title="' + esc(S.news.err || 'not connected yet') + '">' + NID + '</span></td></tr>';
+      $('news').innerHTML = '<tr><td colspan="6"><span title="' + esc(S.news.err || 'not connected yet') + '">' + NID + '</span></td></tr>';
       $('g-news').innerHTML = NID; $('g-news-sub').textContent = S.news.err || 'connecting'; return;
     }
-    $('news').innerHTML = S.news.items.slice(0, 12).map(function (x) {
-      var hi = +x.importance >= A.NW.mark, t = esc(headline(x)), u = String(x.url || '');
+    $('news').innerHTML = S.news.items.slice(0, S.view === 'news' ? 60 : 12).map(function (x) {
+      var hi = +x.importance >= A.NW.mark, t = esc(headline(x)), u = String(x.url || ''), rd = A.newsRead(x);
       var tags = A.newsTags(headline(x)).filter(function (g) { return g !== 'btc'; }).map(function (g) { return '<span class="chip">' + g + '</span>'; }).join('');
       return '<tr' + (hi ? ' class="hi"' : '') + '><td>' + new Date(x.time).toISOString().slice(11, 19) + ' <span class="dim">' + ago(now - x.time) + '</span></td><td>' + (isFinite(+x.importance) ? fmt(+x.importance, 1) : '--') +
-        (hi ? '<span class="chip">high</span>' : '') + '</td><td class="x">' + esc(x.source || '') + '</td><td class="nh">' + (/^https:\/\//.test(u) ? '<a href="' + esc(u) + '" target="_blank" rel="noopener noreferrer">' + t + '</a>' : t) + tags + '</td></tr>';
+        (hi ? '<span class="chip">high</span>' : '') + '</td><td>' + esc(x.source || '') + '</td><td class="nh">' + (/^https:\/\//.test(u) ? '<a href="' + esc(u) + '" target="_blank" rel="noopener noreferrer">' + t + '</a>' : t) + tags +
+        '</td><td><span class="rd ' + rd.tag + '" title="' + esc(rd.why + ' (OURS)') + '">' + rd.tag + '</span></td><td class="re">' + esc(rd.react) + (rd.src === 'SOURCED' ? '<span class="src">SOURCED</span>' : '') + '</td></tr>';
     }).join('');
     var p = A.newsPulse(S.news.items, now);
     $('g-news').innerHTML = p.level + ' <span class="tag" style="font-size:16px">' + p.n + ' high</span>';
@@ -694,7 +968,9 @@ details[open] summary { margin-bottom: 8px; }
     var acts = A.actions(ln, AD ? A.zones(A.levelWatch(AD.levels, px), px) : [], live ? A.newsPulse(S.news.items, now) : null);
     $('v-acts').innerHTML = acts.map(function (a) {
       var badge = '<td><span class="when ' + a.when.toLowerCase() + '">' + a.when + '</span></td>';
-      if (a.kind === 'news') return '<tr class="hi">' + badge + '<td>--</td><td>--</td><td class="nh">News EVENT: ' + a.n + ' high-impact headlines in the last hour (News panel). Moves can be fast and levels can break without a reaction.</td><td class="x">Tree News</td><td class="x">score SOURCED, EVENT mark OURS</td></tr>';
+      if (a.kind === 'news') return '<tr class="hi">' + badge + '<td>--</td><td>--</td><td class="nh">News EVENT, ' + a.n + ' headlines scored 7+ in 60 min: ' + highNews(now).sort(function (x, y) { return y.time - x.time; }).slice(0, 3).map(function (x) {
+        var rd = A.newsRead(x); return hhmm(x.time) + ' ' + esc(x.source || '') + ': ' + esc(headline(x).slice(0, 110)) + ' <span class="rd ' + rd.tag + '">' + rd.tag + '</span>';
+      }).join('; ') + ' <a href="#news">all headlines</a></td><td class="x">Tree News</td><td class="x">score SOURCED, EVENT mark and reading OURS</td></tr>';
       var w = a.w, K = a.kind.charAt(0).toUpperCase() + a.kind.slice(1);
       var what = a.kind === 'zone' ? 'Price is inside an analyst zone now: watch which edge breaks. Above ' + fmt(w.hi, 0) + ' = buyers took it; below ' + fmt(w.lo, 0) + ' = sellers did.'
         : a.when === 'NOW' ? K + ' right here: watch the reaction. Holding = ' + a.kind + ' confirmed; a clean break opens the next zone.'
@@ -850,12 +1126,42 @@ details[open] summary { margin-bottom: 8px; }
   });
 
   // ---------- start ----------
+  // Replay (?replay=fixture): the test injects window.LIVEAID_REPLAY (1m rows [openTime,o,h,l,c,volume]); no socket, fetch or news.
+  // Layer 3 of system/ARTIFACT_TESTING.md; normal mode below is untouched.
+  if (/[?&]replay=fixture(&|$)/.test(location.search)) {
+    var RP = window.LIVEAID_REPLAY, m1r = RP && (Array.isArray(RP) ? RP : RP.klines);
+    if (Array.isArray(m1r) && m1r.length) {
+      S.venue = 'FIXTURE'; S.tf['1m'] = m1r.map(function (r) { return r.slice(); });
+      S.tf['5m'] = A.foldBars(m1r, 300000); S.tf['15m'] = A.foldBars(m1r, 900000); S.tf['1h'] = A.foldBars(m1r, 3600000); S.tf['4h'] = A.foldBars(m1r, 14400000);
+      S.klT = Date.now();
+    } else S.klErr = 'replay fixture not loaded';
+    // Calendar in replay: the test injects window.LIVEAID_CAL (ForexFactory rows); without it the strip reads NO CALENDAR. No fetch.
+    if (Array.isArray(window.LIVEAID_CAL)) { S.cal.events = window.LIVEAID_CAL; S.cal.t = Date.now(); S.cal.err = ''; } else S.cal.err = 'replay: no calendar injected';
+    // Open interest in replay: window.LIVEAID_OI = {klines: [[t,o,h,l,c]], oi: {t: value}} (Bybit 5m); rows after now are dropped,
+    // as the live REST call would not have them. Deribit and Binance get no samples, so they read NOT_IN_DATA.
+    var RO = window.LIVEAID_OI, t0 = Date.now();
+    if (RO && Array.isArray(RO.klines)) {
+      var kl = RO.klines.filter(function (k) { return +k[0] <= t0; }), ois = {};
+      Object.keys(RO.oi || {}).forEach(function (t) { if (+t <= t0) ois[+t] = +RO.oi[t]; });
+      S.om.bars = A.oiBars(kl, ois); S.om.barsT = t0; S.om.barsErr = '';
+      S.om.BYBIT.rest = kl.map(function (x) { return { t: +x[0], px: +x[1], oi: ois[+x[0]], btc: ois[+x[0]] }; })
+        .filter(function (x) { return x.oi > 0; }).sort(function (a, b) { return a.t - b.t; });
+    } else S.om.barsErr = 'replay: no open interest injected';
+    // News in replay: window.LIVEAID_NEWS = Tree News items; without it the panel reads NOT_IN_DATA. No fetch.
+    if (Array.isArray(window.LIVEAID_NEWS)) { S.news.items = A.newsMerge([], window.LIVEAID_NEWS, 400); S.news.t = Date.now(); S.news.err = ''; } else S.news.err = 'replay: no news injected';
+    setInterval(render, 1000);
+    route();
+    return;
+  }
   deribitWs(); binanceWs(); bybitLiqWs(); binanceLiqWs();
   loadAll(true).then(loadDaily);
   setInterval(function () { loadAll(false); }, 5000);
   setInterval(loadDaily, 300000);
   setInterval(render, 1000);
   loadNews(); setInterval(loadNews, 15000);
-  render();
+  setInterval(omSample, 10000); loadBybitOi(); setInterval(loadBybitOi, 60000);
+  loadBinanceOi(true); setInterval(function () { loadBinanceOi(false); }, 30000); setInterval(function () { loadBinanceOi(true); }, 300000);
+  loadCal();
+  route();
 })();
 </script>

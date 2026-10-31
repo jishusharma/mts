@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-31T06:02:54Z",
+  "commands": [],
+  "created": "2026-10-31T05:11:57Z",
+  "depends_on": [],
+  "done_when": "test_levels_rejects_other_symbol fails on current code and passes after; sim_desk tests pass",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Gemini test plan (gap confirmed): studies/levels.py normalize keeps only keys in DEFAULT, and levels has no symbol param, while test_symbol_box covers only rsi and wavetrend. A request with symbol ETHUSDT is accepted and returns BTC results unlabelled. Add a test that levels rejects or visibly refuses a non-BTC symbol, then make it so.",
+  "id": "test-sim-desk-levels-symbol-ignored",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "levels.normalize raises ValueError for non-BTC symbol (was silent drop, BTC data)",
+      "ref": "a17396f11",
+      "utc": "2026-10-31T06:02:54Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sim desk: exit reasons (STOP/T1/T2/TIME/SIGNAL/HOLD/NOFILL) + breakdown group",
+      "ref": "c054737d37c5",
+      "utc": "2026-10-27T20:34:56Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T05:11:59Z",
+  "refs": [
+    "gemini-test-plan-sim-desk-1031"
+  ],
+  "result": "levels.normalize raises ValueError for non-BTC symbol (was silent drop, BTC data)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/studies/levels.py",
+    "MyTradingSys/research/sim_desk/test_studies.py"
+  ],
+  "scope_out": [],
+  "scope_sha": "c054737d37c5",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Write the failing test: levels.normalize({'symbol':'ETHUSDT'}) raises ValueError",
+    "Reject unknown keys for symbol in levels.normalize"
+  ],
+  "taken": "2026-10-31T06:02:54Z",
+  "tests": "MyTradingSys/research/sim_desk/test_studies.py::test_levels_rejects_other_symbol (fails on current code, which drops the key silently)",
+  "title": "Test gap: sim_desk levels.normalize silently drops a symbol key, so ETHUSDT runs BTC data (Gemini sim-desk plan, rank 1)",
+  "weight": "",
+  "worker": "agent"
+}

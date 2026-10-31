@@ -1,0 +1,62 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-30T21:19:37Z",
+  "commands": [],
+  "created": "2026-10-30T17:15:06Z",
+  "depends_on": [],
+  "done_when": "research/gemini_audits_2026-10-30/layer_sheets_blind_read.md with one row per cited number per sheet: FOUND / NOT_IN_DATA / DIFF.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "For each shipped layer review sheet (5 cards layer-review-*), open every cited file:line and say whether the number is there; facts only. Runs once per sheet as it lands; skip sheets not on origin/fast-track and say so.",
+  "id": "gemini-blind-read-layer-review-sheets",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "audit of layer_review_tom_guidance 273 items (215 FOUND, 48 DIFF, 10 NOT_IN_DATA); 4 sheet",
+      "ref": "35872ab10",
+      "utc": "2026-10-30T21:19:37Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Final report ends with a Noticed: line. Blocked? List 2-3 non-destructive fixes, try the safest, verify, then report.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T17:16:08Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "audit of layer_review_tom_guidance 273 items (215 FOUND, 48 DIFF, 10 NOT_IN_DATA); 4 sheets missing on trunk; 3 rows spot-checked",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "the shipped layer review sheets (files named in cards layer-review-*), their cited files (read); one output file"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change to any file outside the named ones"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "git ls-tree origin/fast-track for each sheet; skip missing ones and say so",
+    "open every cited file:line and check the number",
+    "write FOUND / NOT_IN_DATA / DIFF per number"
+  ],
+  "taken": "2026-10-30T21:19:37Z",
+  "tests": "see done_when",
+  "title": "[GEMINI] blind read of each layer review sheet (layer-review-* cards) as they ship: every number re-found in its cited file or NOT_IN_DATA",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

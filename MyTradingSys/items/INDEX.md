@@ -139,6 +139,7 @@ B180 | OPEN    | B180_dsa_host_routing_and_scheduler.md | operator: DSA picks it
 B181 | OPEN    | B181_control_room_inbox_progress.md | operator: Control Room Inbox shows no progress per item; an item without a registry ref shows nothing
 B182 | OPEN    | B182_dsa_parallel_sessions_nb_nuc_scope.md | DSA AIBridge tasks run in parallel with NB/NUC scope kept; split units, per-host lane, claim per task
 B183 | OPEN    | B183_session_start_ritual_audit.md | session start ritual audit after AI-health changes; measure boot reads against the B172 token plan
+B184 | OPEN    | B184_aibridge_multiblock_and_auto_run.md | AIBridge multi-block replies miscounted and half-run; fixed build plus extension version bump needed on NB
 T081 | OPEN    | T081_backtest_d_stop_tuning.md | Backtest D: walk-forward stop_buffer_atr; Tom part NO 2026-10-09, tight-stop layers blocked on B143
 T082 | OPEN    | T082_capture_matrix_rerun.md | re-run capture matrix + Tom core after Stage 1 data fixes
 T083 | OPEN    | T083_rsi_events_1h_lead_check.md | rsi_events 1h on full 2022-2026 history with fees
@@ -169,3 +170,16 @@ B195 | OPEN    | B195_task_mode_block_silent_drop.md | task-mode gate block sile
 B196 | OPEN    | B196_aibridge_auto_off_operator_draft.md | auto-OFF on operator draft blocks runs silently; ignore drafts, post a receipt on auto-off
 B197 | OPEN    | B197_search_discipline_content_before_absence.md | content search before absence; lessons go in LESSONS_DIGEST.md not apparatus_fixes.md
 B198 | OPEN    | B198_aibridge_background_tab_stall.md | hands-free stalls when tab backgrounded; Chrome throttling pauses loop, misfires on wake
+B201 | OPEN    | B201_operator_live_market_chart_shots_canno.md | Operator live-market chart shots cannot be closed cheaply: `shot.py done` refuse
+B202 | OPEN    | B202_a_live_watcher_cannot_outlive_30_minut.md | A live watcher cannot outlive 30 minutes: the Monitor tool expires at 30 min and
+B203 | OPEN    | B203_desk_py_post_target_dsa_accepts_a_car.md | `desk.py post --target DSA` accepts a card id that exists only as an uncommitted
+B204 | OPEN    | B204_card_lint_rules_are_only_discovered_af.md | Card lint rules are only discovered after the card is written, one error at a ti
+B205 | OPEN    | B205_hook_reminders_for_operator_run_items.md | Hook reminders for operator-run items repeat every turn and after every compacti
+B206 | OPEN    | B206_role_worktree_starts_stale_and_the_hoo.md | Role worktree starts stale and the hook says so on every prompt: the Eagle_Eyes 
+B207 | OPEN    | B207_eagle_eyes_pinned_never_compacted_repl.md | Eagle_Eyes 'pinned, never compacted, replaced at the cap' (roles/eagle_eyes.md l
+B208 | OPEN    | B208_eagle_eyes_does_not_get_smarter_with_u.md | Eagle_Eyes does not get smarter with use: lessons, habits and call results live 
+B187 | OPEN    | B187_pit_levels_power_gate_blocker.md | PIT price-level study blocked by power gate; use every usable data source, unblock only by written operator decision
+B199 | OPEN    | B199_quota_numbers_disagree_by_source_the_u.md | Quota numbers disagree by source: the usage panel showed weekly 99% ("Starts whe
+B200 | OPEN    | B200_start_session_initiation_user_asked_sh.md | start_session(initiation=user_asked) showed an 'Allow once' card in a Bypass-per
+B209 | CLOSED  | B209_dsa_aibridge_session_performance_defects.md | DSA/AIBridge performance defects from one session: duplicate worktree, oversized boot lists, block mis-attribution, PASS over FAILED
+B210 | CLOSED  | B210_aibridge_stuck_pending_run.md | AIBridge silent stall: panel stuck on a pending run, no error, no timeout, no resync

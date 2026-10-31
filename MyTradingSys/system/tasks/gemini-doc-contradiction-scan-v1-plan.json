@@ -1,0 +1,63 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-30T21:19:36Z",
+  "commands": [],
+  "created": "2026-10-30T17:15:04Z",
+  "depends_on": [],
+  "done_when": "research/gemini_audits_2026-10-30/doc_contradictions.md with a table pair | file:line A | file:line B | which newer; the first line says how many pairs beyond D11 section 4.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Read the six files and list every pair of sentences that cannot both be followed (freeze lists, worker types, lanes, caps, who runs the Codex lab); facts with file:line, no verdicts; D11 section 4 lists 9 known pairs, find the ones it misses.",
+  "id": "gemini-doc-contradiction-scan-v1-plan",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "10 extra contradiction pairs with file:line; 15/21 quotes exact, 6 off by 1 line (spot-che",
+      "ref": "35872ab10",
+      "utc": "2026-10-30T21:19:36Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Final report ends with a Noticed: line. Blocked? List 2-3 non-destructive fixes, try the safest, verify, then report.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T17:16:06Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "10 extra contradiction pairs with file:line; 15/21 quotes exact, 6 off by 1 line (spot-checked 3)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "research/v1_plan_2026-10-20/D7_ROADMAP.md, D8_OPERATIONS.md, D11_PROGRAMME.md, system/ANNOUNCEMENTS.md ACTIVE, WORKERS.md, SUPER_SESSION.md, ROUTING.md (read); one output file"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change to any file outside the named ones"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "read D11 section 4 first (known pairs)",
+    "read the other files and note every rule sentence",
+    "pair the ones that cannot both be followed",
+    "write the table with file:line and which is newer"
+  ],
+  "taken": "2026-10-30T21:19:36Z",
+  "tests": "see done_when",
+  "title": "[GEMINI] contradiction scan: D7/D8/D11 vs ANNOUNCEMENTS ACTIVE vs WORKERS vs SUPER_SESSION vs ROUTING, pairs with file:line",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

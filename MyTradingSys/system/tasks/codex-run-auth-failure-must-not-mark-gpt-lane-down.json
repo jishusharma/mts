@@ -1,0 +1,63 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-30T23:58:35Z",
+    "misses": 21,
+    "reads": [
+      "scripts/dev/test_codex_run.py",
+      "scripts/dev/codex_run.py",
+      "scripts/dev/lane_health.py"
+    ],
+    "session": "agent-add40fe5eabfc8be7"
+  },
+  "created": "2026-10-30T20:31:52Z",
+  "depends_on": [],
+  "done_when": "codex_run.py tick/next on a host whose Codex returns 401 exits IDLE with a local message and leaves lane_state.json and codex_usage.json unchanged on trunk; test fails on current code; shipped, git cherry empty",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "A host without a Codex login (401 Unauthorized) must not ship 'GPT lane down (auth)' and a zeroed codex_usage.json to trunk, which hides the real lab on the NUC and lets lane_health reroute ready CODEX cards (seen 2026-10-30 on JIS-DESKTOP, reverted eba62ccc2).",
+  "id": "codex-run-auth-failure-must-not-mark-gpt-lane-down",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "status: GPT reading flagged EXHAUSTED at the source, every number carries its age",
+      "ref": "deb867b26ee3",
+      "utc": "2026-10-29T23:40:26Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "From the Supervisor C first wake 2026-10-30; codex_run.py is a central file, one editor",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T20:38:56Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/codex_run.py",
+    "scripts/dev/lane_health.py"
+  ],
+  "scope_out": [],
+  "scope_sha": "deb867b26ee3",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "add a failing test: a Codex log with 401 Unauthorized classifies as host-auth, not lane-down",
+    "codex_run.py / lane_health.py: on host-auth print IDLE locally, no lane_state or codex_usage write, no ship",
+    "run codex_run and lane_health tests, ship"
+  ],
+  "tests": "test in the codex_run test file feeding a 401 log to the classify path: no ship, no state change; red on trunk today",
+  "title": "codex_run.py on a host with no OpenAI login (401) overwrote trunk lane_state.json and codex_usage.json with GPT down",
+  "weight": "",
+  "worker": "agent"
+}

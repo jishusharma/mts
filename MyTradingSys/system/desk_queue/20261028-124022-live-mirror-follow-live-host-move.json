@@ -5,7 +5,9 @@
   "id": "20261028-124022-live-mirror-follow-live-host-move",
   "need": "python scripts/dev/live_owner.py check; python scripts/dev/live_mirror.py publish; python scripts/dev/live_mirror.py brief (full brief: python scripts/dev/tasks.py brief live-mirror-follow-live-host-move)",
   "posted": "2026-10-28T12:40:22Z",
-  "status": "pending",
+  "status": "taken",
+  "taken": "2026-10-30T16:41:27Z",
+  "taken_by": "JIS-NB",
   "target": "DSA",
   "title": "live_mirror.py hard-codes JIS-NB (LIVE_HOST, share \\JIS-NB\\MTS-Mirror); live loop is on desktop-f7iu69n (Lenovo, heartbeat live), so no session off the Lenovo can read live state. Make mirror root/owner follow the live-owner heartbeat; publish from Lenovo; test"
 }

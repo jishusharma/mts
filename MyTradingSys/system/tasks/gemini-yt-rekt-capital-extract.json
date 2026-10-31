@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-30T21:22:46Z",
+  "commands": [
+    "python scripts/dev/fetch_captions_timed.py --analyst Rekt --channel @RektCapital --latest 8 --out MyTradingSys/research/yt_feed_2026-10-31/transcripts_rekt-capital",
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/yt_feed_2026-10-31/REKT_LEVELS_2026-10-31.md"
+  ],
+  "created": "2026-10-30T20:07:03Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/yt_feed_2026-10-31/REKT_LEVELS_2026-10-31.md exists; every item has video id, timestamp and a verbatim quote, or NOT_IN_DATA; verify_extract_quotes.py exits 0",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Write MyTradingSys/research/yt_feed_2026-10-31/REKT_LEVELS_2026-10-31.md: first line counts videos read, captioned and UNVERIFIED; a table of items, then per-video sections with the full quotes.",
+  "id": "gemini-yt-rekt-capital-extract",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "videos read 8, items found 16, NOT_IN_DATA count 0; verify_extract_quotes.py exit 0",
+      "ref": "5e1b7528d",
+      "utc": "2026-10-30T21:22:46Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini rules: captions first (fetch_captions_timed.py), quote only from the caption file, one fetch try per video, no retry loop, 429 -> mark the video UNVERIFIED with no quotes; run verify_extract_quotes.py until exit 0; facts and quotes only, no trading verdict, no code change. Final report ends with a Noticed: line.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T20:07:05Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "reviewed 1031: 16 quotes verified exit 0, 3 spot-checked vs captions",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/yt_feed_2026-10-31/ (new files only)"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code; any backtest; any trading verdict; .secrets and .env"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "python scripts/dev/fetch_captions_timed.py --analyst Rekt --channel @RektCapital --latest 8 --out MyTradingSys/research/yt_feed_2026-10-31/transcripts_rekt-capital (one try per video; 429 -> UNVERIFIED, no retry loop)",
+    "keyword scan each transcript for the topic terms, read the surrounding lines before quoting",
+    "write MyTradingSys/research/yt_feed_2026-10-31/REKT_LEVELS_2026-10-31.md per the goal; run verify_extract_quotes.py until exit 0; commit on the branch with a Result: line (videos read, items found, NOT_IN_DATA count)"
+  ],
+  "taken": "2026-10-30T21:22:46Z",
+  "tests": "verify_extract_quotes.py exit 0; no code change",
+  "title": "[GEMINI] Rekt (@RektCapital): latest 8 videos, extract his cycle and range levels: re-accumulation ranges, support and resist with timed quotes",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

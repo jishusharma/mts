@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-30T17:14:53Z",
+  "depends_on": [],
+  "done_when": "report under research/layer_lab/reports with the fixture, the independent expected rows and SAME/DIFF per row; a DIFF is a finding; no code change.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Re-derive the ladder and the hit column from a fixture independently of the code: a level published on day D with a touch on day D must be open, a touch on D+1 bar close must be hit; compare with scripts/dev/analyst_levels.py output; state the rule as implemented with file:line.",
+  "id": "gpt-audit-analyst-levels-asof-rule",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "analyst levels: no hit before the video could exist; cbp_run prompt carries metadata (Argo",
+      "ref": "589685fbb501",
+      "utc": "2026-10-30T14:30:46Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Final report ends with a Noticed: line. Blocked? List 2-3 non-destructive fixes, try the safest, verify, then report.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T17:15:57Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/analyst_levels.py, scripts/dev/test_analyst_levels.py (read), a fixture under research/layer_lab/; report file only"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change to any file outside the named ones"
+  ],
+  "scope_sha": "589685fbb501",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "write a 3-level fixture with publish dates and bars",
+    "derive the expected open/hit rows by hand from the as-of rule in the docstring",
+    "run analyst_levels.py on the fixture",
+    "report SAME/DIFF per row with file:line of the rule"
+  ],
+  "tests": "see done_when",
+  "title": "GPT audit: analyst_levels.py hit/open as-of rule (publish date -> next UTC day) with a planted touch before the instant",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

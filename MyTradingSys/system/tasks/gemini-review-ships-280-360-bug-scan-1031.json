@@ -1,0 +1,64 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-31T05:13:27Z",
+  "commands": [
+    "git log --no-merges --format=%h -n 360 -- MyTradingSys"
+  ],
+  "created": "2026-10-31T02:40:18Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_burn_2026-10-31/SHIPS_280_360_REVIEW.md exists with 80 rows; every FIX has file:line and a reproducing input",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "git log the non-merge commits touching .py/.java/.js under MyTradingSys, skip the newest 280, take the next 80; check each diff against its Result: line; mark OK, FIX or UNVERIFIED with file:line and a reproducing input for each FIX.",
+  "id": "gemini-review-ships-280-360-bug-scan-1031",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "kept: 0 FIX rows, 0 bug cards",
+      "ref": "49ede5fbf",
+      "utc": "2026-10-31T05:13:27Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini rules: facts with file:line only, no trading verdict, no code change; NOT_IN_DATA where the repo has no answer; captions first for any YouTube work (fetch_captions_timed.py, quote only from the caption file, one try per video, 429 -> UNVERIFIED), verify_extract_quotes.py exit 0. Operator 2026-10-31: exhaust the Gemini weekly quota before it resets, test-first and catch bugs early. Final report ends with a Noticed: line.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T02:40:19Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "kept: 0 FIX rows, 0 bug cards",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/gemini_burn_2026-10-31/ (new files only)"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code edits; any backtest or trading verdict; .secrets and .env"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "git log --no-merges --format=%h -- MyTradingSys, skip 280, take 80",
+    "read each diff",
+    "write the table"
+  ],
+  "taken": "2026-10-31T05:13:27Z",
+  "tests": "report only; every finding cites file:line",
+  "title": "[GEMINI] bug scan of code commits 280 to 360 back on fast-track: does each diff do what its Result: line says",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

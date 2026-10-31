@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T07:40:09Z",
   "commands": [],
   "created": "2026-10-14T11:26:02Z",
   "depends_on": [],
@@ -14,11 +15,17 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "Done: 2877e1fed (G7 proxy, SLIPPAGE.md, release b3ddf992a), 5240de07e (Gemini audit SOUND)",
+      "ref": "af5db11a6",
+      "utc": "2026-10-31T07:40:09Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "bt_data.load_klines: convert microsecond stamps, raise on conflicting duplicates, report d",
-      "ref": "8f8a52814868",
-      "utc": "2026-10-26T00:53:00Z"
+      "line": "Revert \"Revert real-funding screens: CI red (T06 costs.csv pins screen.py line numbers)\"",
+      "ref": "8cae5e9e285e",
+      "utc": "2026-10-27T22:20:16Z"
     },
     {
       "auto": true,
@@ -34,13 +41,18 @@
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-27T19:29:52Z",
+  "refreshed": "2026-10-30T17:40:05Z",
   "refs": [
     "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md",
     "MyTradingSys/research/lab_guy/specs/gap-g7-stop-slippage.md",
     "MyTradingSys/research/worktree_disposition_20261026/REPORT.md"
   ],
-  "result": "",
+  "result": "Done: 2877e1fed (G7 proxy, SLIPPAGE.md, release b3ddf992a), 5240de07e (Gemini audit SOUND). Medians 0 bp all buckets, p90 up to 5.9 bp at 1 s. GPT BLOCKED is a non-gate re-check; nothing left",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/tom_bt.py",
     "MyTradingSys/backtest/maker_model.py",
@@ -53,13 +65,13 @@
     "any day on or after 2024-07-01 (VALIDATION/HOLDOUT)",
     "live tree"
   ],
-  "scope_sha": "8f8a52814868",
+  "scope_sha": "8cae5e9e285e",
   "size": "M",
   "sources": [
     "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md section 5 G7 (tom_bt.py:176 slip=0.0; maker_model.py:19 not modelled)",
     "MyTradingSys/backtest/fetch_binance_archive.py:13 (aggTrades size)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Do steps 2-3 first. Do NOT fetch aggTrades (step 4) until the NUC spec review is in this note as a REVIEW-SPEC: ACCEPT|FIX|REWORK line (C2); apply a FIX before fetching.",
     "Tests first (red), hand-computed numbers: first_trade_beyond (gap returns price-level, exact hit 0, none -> None, both directions), price_after(delta_ms) on a synthetic series (5 USD gap gives 5.0 at delta 0), tercile ties. Spec item 2.",
@@ -68,6 +80,7 @@
     "Per day, every round-100 USD level crossed (OURS proxy): signed adverse slip in bp at delta 0 ms (first trade at or beyond the level; tick-bounded, mostly 0) and delta 250 and 1000 ms (OURS: last trade at or before t_cross+delta, a stop-market fills after latency); R at stop widths 0.20/0.40/0.80 %. Spec item 5.",
     "SLIPPAGE.md: n events, n days, median, p90 per bucket x delta, day-bootstrap range (OURS 1000 resamples, seed recorded); name it a Binance USD-M BTCUSDT trade-through/latency proxy (no own size, not Deribit, REPORT G8); propose default (OURS: delta 250 ms median, delta 0 optimistic bound), tag UNCHECKED; no tom_bt.py edit (adoption = own C2 card); TRIALS.md rows. Spec item 6."
   ],
+  "taken": "2026-10-31T07:40:09Z",
   "tests": "test_slippage.py (new, in the output folder) fails before slippage.py exists, passes after: python -m pytest MyTradingSys/research/gap_g7_stop_slippage_2026-10-18/test_slippage.py -q; includes the synthetic 5 USD gap case at delta 0 and a hand value at delta 250 ms, and a check that a day on or after 2024-07-01 is refused",
   "title": "G7 measure BTC stop slippage from aggTrades by volatility bucket",
   "updated": "2026-10-18T10:00:00Z",

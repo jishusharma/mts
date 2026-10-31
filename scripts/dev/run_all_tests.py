@@ -37,6 +37,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))   # gate_select
 
 # Function-style pytest tests that step 5b (unittest) collects only partly: Fabio v3 + live writers (TF1, E7).
 PYTEST_LAYER_PATHS = [
+    "MyTradingSys/backtest/test_splits.py",
+    "MyTradingSys/research/bb_state_map_2026-10/test_bb_state_map.py",
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/test_oi_after_flush_pairing.py",
     "MyTradingSys/backtest/layers/fabio/v3/tests",
     "MyTradingSys/backtest/layers/fabio/test_orderflow_live.py",
     "MyTradingSys/backtest/layers/fabio/test_of_backfill.py",
@@ -69,6 +72,7 @@ BACKTEST_PYTEST_PATHS = [
     "MyTradingSys/backtest/test_tom_v2_recall.py",
     "MyTradingSys/backtest/test_tom_dax_bt.py",
     "MyTradingSys/backtest/test_no_own_costs.py",
+    "MyTradingSys/backtest/test_sim_core.py",
 ]
 
 # These steps scan or write checkout state (layer index, artifact registry, wiring --check, STATUS generator, group map), and
@@ -468,8 +472,8 @@ def build_plan(quick):
         "test_daily_loss_guard", "test_daily_loss_monitor", "test_mainnet_flag_offline", "test_gh_executor_offline", "test_settlement_skip_offline",
         "test_gh_retry_offline", "test_halt_preflight_offline", "test_kill_switch", "test_kill_switch_account", "test_premainnet1_offline",
         "test_risk_guard", "test_s1_cap_offline", "test_s3_unprotected_offline",
-        "test_s6_orphan_offline", "test_triggered_stop_offline", "test_soak_report", "test_fix3_offline", "test_fix4_offline",
-        "test_plan_compiler", "test_executor_math", "test_auto_trader", "test_dlm_aggregate", "test_b148_reauth_account", "test_b146_fee_to_stop", "test_dlm_failure_cap", "test_dlm_blind_recovery", "test_auto_trader_blocklist", "test_auto_trader_sizes", "test_auto_trader_confirm", "test_auto_trader_promotion", "test_orphan_sweep_loop", "test_fabio_slot", "test_fix3_mutants_offline", "test_capture_txlog_settlement", "test_mts_kill_mainnet", "test_pm_heartbeat", "test_pm_heartbeat_wiring", "test_journal_env", "test_mainnet_plan_check", "test_env_wiring", "test_reconciler_env", "test_deribit_read_account", "test_orphan_watchdog", "test_orphan_watchdog_cli", "test_mainnet_pnl", "test_daily_pnl_wiring", "test_xferfix", "test_time_exit_offline", "test_trade_ledger", "test_netretry", "test_r2_runner_exit", "test_r2_breakeven_move",  # W2 R2: execution-math tests (FORMULAS.md 11)
+        "test_s6_orphan_offline", "test_triggered_stop_offline", "test_soak_report", "test_fix3_offline", "test_margin_drain_offline", "test_fix4_offline",
+        "test_plan_compiler", "test_executor_math", "test_auto_trader", "test_dlm_aggregate", "test_b148_reauth_account", "test_b146_fee_to_stop", "test_dlm_failure_cap", "test_dlm_blind_recovery", "test_auto_trader_blocklist", "test_auto_trader_sizes", "test_auto_trader_confirm", "test_auto_trader_failclosed", "test_auto_trader_promotion", "test_orphan_sweep_loop", "test_fabio_slot", "test_fix3_mutants_offline", "test_capture_txlog_settlement", "test_mts_kill_mainnet", "test_pm_heartbeat", "test_pm_heartbeat_wiring", "test_journal_env", "test_mainnet_plan_check", "test_env_wiring", "test_reconciler_env", "test_deribit_read_account", "test_orphan_watchdog", "test_orphan_watchdog_cli", "test_mainnet_pnl", "test_daily_pnl_wiring", "test_xferfix", "test_time_exit_offline", "test_trade_ledger", "test_netretry", "test_r2_runner_exit", "test_r2_breakeven_move",  # W2 R2: execution-math tests (FORMULAS.md 11)
     ]
     add(1, "Execution module tests", cmd1, "Step 1: Execution tests")
 
@@ -518,6 +522,8 @@ def build_plan(quick):
     add("3e", "DSA browser worker + queue lane tests", [sys.executable, "scripts/worker/test_dsa_worker.py"], "Step 3e: DSA worker tests")
     add("3sh", "Screenshot intake tests (save, classify, read, close gates)", [sys.executable, "scripts/dev/test_shot.py"], "Step 3sh: Screenshot intake tests")
     add("3al", "Analyst levels ladder (CBP pointers next to chart reads)", [sys.executable, "scripts/dev/test_analyst_levels.py"], "Step 3al: Analyst levels tests")
+    add("3cr", "CBP runner prompt carries video metadata", [sys.executable, "scripts/dev/test_cbp_run.py"], "Step 3cr: CBP runner tests")
+    add("3hw", "Hot-wallet drain watch (stubbed RPC)", [sys.executable, "scripts/dev/test_hot_wallet_watch.py"], "Step 3hw: hot wallet watch tests")
     add("3mg", "Project group map tests (every row and file has one group)", [sys.executable, "scripts/dev/test_make_groups.py"], "Step 3mg: Project group map tests")
     add("3xt", "Extra tests outside the collected dirs (B150 discovery)", [sys.executable, "scripts/dev/run_extra_tests.py"], "Step 3xt: Extra tests")
     add("3ad", "Scheduled auto-deploy tests (stops on red gate)", [sys.executable, "scripts/dev/test_auto_deploy.py"], "Step 3ad: Auto-deploy tests")

@@ -1,0 +1,10 @@
+{
+  "done_when": "gemini_queue.py status shows all 4 jobs finished and each card's report file is on origin/fast-track (git cherry empty)",
+  "from": "JIS-NB",
+  "id": "20261030-173120-run-4-gemini-cards-on-jis-nuc-low-effort",
+  "need": "On JIS-NUC (agy lives there): cd to a worktree at origin/fast-track, then python scripts/dev/gemini_queue.py run gemini-review-gpt-formula-audits-1030:low gemini-param-labels-live-aid-analyst-levels:low gemini-doc-contradiction-scan-v1-plan:low gemini-blind-read-layer-review-sheets:low (jobs run one after another; Gemini never ships, a Claude/NUC session reviews each gemini-q/<id> branch and ships). D11 programme stream A/D review lane, programme feeder rule.",
+  "posted": "2026-10-30T17:31:20Z",
+  "status": "pending",
+  "target": "JIS-NUC",
+  "title": "Run 4 Gemini cards on JIS-NUC (low effort)"
+}

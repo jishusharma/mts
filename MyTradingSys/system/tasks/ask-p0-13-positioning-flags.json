@@ -1,21 +1,26 @@
 {
   "approved_by": "",
-  "asks": "net_longs/net_shorts flags: boolean or strength 0-1 (ledger P0-13 says output type awaits operator)? Live-path Java. Default: boolean, OI x CVD cross over 15m",
-  "commands": [],
+  "asks": "",
+  "commands": [
+    "mvn -q -Dtest=MarketDataSnapshotTest,HistoricalSnapshotNoLiveCallsTest test",
+    "mvn -q test"
+  ],
   "created": "2026-10-30T08:24:20Z",
-  "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "depends_on": [
+    "ask-p0-12-oi-cvd-peak-ref"
+  ],
+  "done_when": "mvn -q -Dtest=MarketDataSnapshotTest test passes with a 4-quadrant test (OI up/down x CVD up/down on 15m, plus the new variants) and a missing-OI case; mvn -q test green; flags are display only.",
+  "est_turns": 22,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Add boolean flags net_longs, net_longs_new, net_shorts, net_shorts_new to MarketDataSnapshot from the 15m OI x CVD cross (ledger P0-13 / T034); unavailable inputs give all false + LOW confidence (fail closed).",
   "id": "ask-p0-13-positioning-flags",
-  "lane": "SONNET",
+  "lane": "JIS-NB",
   "layers": [],
-  "live_path": false,
+  "live_path": true,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-10-30 ACCEPT PLANNER 2026-10-30: DECISION (OURS): boolean (ask default), 15m cross; thresholds OURS. Same file as ask-p0-12: runs after it. Live path: CRITICAL review SESSION.",
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "",
@@ -23,14 +28,30 @@
     "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "src/main/java/datafeed/MarketDataSnapshot.java",
+    "src/test/java/datafeed/MarketDataSnapshotTest.java",
+    "MyTradingSys/items/T034_positioning_states.md"
+  ],
+  "scope_out": [
+    "trade rules",
+    "deploy or restart",
+    "strength 0-1 output"
+  ],
+  "size": "M",
+  "sources": [
+    "research/asks_audit_2026-10-30/LEDGER.md P0-13",
+    "items/T034_positioning_states.md"
+  ],
+  "state": "refined",
+  "steps": [
+    "Read T034 item and classifyOiDeltaState; OI is fetched only at 1h (limit 2): add an openInterestHist(...,15m,...) call and cover it in HistoricalSnapshotNoLiveCallsTest; cross = OI 15m change sign x CVD 15m delta sign; new = flag flipped on in the last 15m bar",
+    "Emit under positioning {net_longs, net_longs_new, net_shorts, net_shorts_new, confidence}",
+    "Tests: quadrants, missing OI (all false, LOW), UTC 00:00 CVD reset must not fake a flip, API error path",
+    "Commit in worktree only; deploy is manual. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
+  ],
+  "tests": "src/test/java/datafeed/MarketDataSnapshotTest.java: the 4 OI x CVD quadrants and an unavailable-OI case each give the expected flag set; fails before the fields exist.",
   "title": "Add net_longs/net_shorts (+new) flags from OI x CVD cross (ledger P0-13, T034)",
-  "weight": "",
-  "worker": ""
+  "weight": "CRITICAL",
+  "worker": "session"
 }

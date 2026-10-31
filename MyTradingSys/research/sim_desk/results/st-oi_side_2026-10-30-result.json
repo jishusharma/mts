@@ -1,0 +1,50 @@
+{
+ "id": "st-oi_side_2026-10-30-result",
+ "kind": "backtest",
+ "family": "Oi Side",
+ "title": "Which side is open interest picking? (2026-10-30)",
+ "provenance": "source-extracted",
+ "date": "2026-10-30",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "These are descriptive counts only: no fees and no edge claim. Definitions are in the header of study.py (all OURS).",
+  "tone": "bad"
+ },
+ "why": [
+  "These are descriptive counts only: no fees and no edge claim. Definitions are in the header of study.py (all OURS).",
+  "What differs is who was in a hurry (the aggressor, seen in the taker delta) and who absorbed (the passive side, seen when price does not move).",
+  "Direction: every row sits between 48% and 54%. OI, with or without price, did not tell the next direction.",
+  "Sellers aggressive while price does not fall, with OI rising (the shot): that is passive buyers absorbing new shorts (Fabio F-CVD3)."
+ ],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "35963"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 35963,
+   "quote": "- DEV 2022-2025 only. Events do not overlap. n = 35,963 30-minute windows with OI up or down by at least 0.25%."
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/oi_side_2026-10-30/RESULT.md"
+ ],
+ "commit": "1eb5a0f1e"
+}

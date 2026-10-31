@@ -1,0 +1,72 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-31T05:37:22Z",
+  "commands": [
+    "python scripts/dev/testnet_status.py --hours 24",
+    "python scripts/dev/funnel_report.py --days 1"
+  ],
+  "created": "2026-10-30T17:15:15Z",
+  "depends_on": [],
+  "done_when": "first day file on trunk with the engine state line and labelled rows; live_host.txt = the real owner; test: a missing ledger yields NOT_IN_DATA (fail-first); a line in STATUS.md Gate Board pointing at the newest day file.",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Daily readout of what the fixed layers trade on testnet (D11 stream C): on the live owner run testnet_status.py and funnel_report.py, write research/testnet_status/TESTNET_STATUS_<date>.md with owner host, HALT and AUTO_PAUSE existence, per-source rows labelled calibration (pre_pipeline_sources) or promoted (promoted_setups.json), NOT_IN_DATA for a missing file; correct system/live_host.txt.",
+  "id": "testnet-trade-readout-daily",
+  "lane": "JIS-NB",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "owner DESKTOP-F7IU69N (live_owner marker); 19 rows, 19 calibration, 0 promoted; live_host.",
+      "ref": "6de4e442e",
+      "utc": "2026-10-31T05:37:22Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Daily sanitized testnet status script + gate step 3s",
+      "ref": "02bc91363b0b",
+      "utc": "2026-09-30T19:19:51Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Final report ends with a Noticed: line. Blocked? List 2-3 non-destructive fixes, try the safest, verify, then report.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T17:16:13Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "owner DESKTOP-F7IU69N (live_owner marker); 19 rows, 19 calibration, 0 promoted; live_host.txt unchanged (tests block)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/testnet_status.py, funnel_report.py (run), research/testnet_status/ (write), system/live_host.txt (write), STATUS.md Gate Board line, a new test for the NOT_IN_DATA path"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change to any file outside the named ones"
+  ],
+  "scope_sha": "02bc91363b0b",
+  "size": "M",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "on the live owner: run the two commands",
+    "write the day file with owner, HALT/AUTO_PAUSE existence and labelled rows",
+    "add the fail-first test (missing ledger -> NOT_IN_DATA)",
+    "fix live_host.txt, ship"
+  ],
+  "taken": "2026-10-31T05:37:22Z",
+  "tests": "see done_when",
+  "title": "Testnet trade readout, daily on the live owner: testnet_status.py + funnel_report.py, one page per day, rows labelled calibration or promoted, engine state stamped; fix live_host.txt",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

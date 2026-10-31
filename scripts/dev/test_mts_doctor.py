@@ -55,8 +55,31 @@ def test_writes_only_the_report_and_names_boot_cost_apart_from_findings(tmp_path
     assert "Boot cost: CLAUDE.md" in text and not any(k == "BOOT-COST" for k, *_ in findings)
 
 
-def test_same_day_run_twice_gives_the_same_report(tmp_path):
+def _fake_disk(monkeypatch, *gbs):
+    """Make shutil.disk_usage report the given free GB in turn (last value repeats)."""
+    import shutil
+    seq = list(gbs)
+
+    def fake(_path):
+        gb = seq.pop(0) if len(seq) > 1 else seq[0]
+        return shutil._ntuple_diskusage(int(1e12), int(1e12 - gb * 1e9), int(gb * 1e9))
+    monkeypatch.setattr(shutil, "disk_usage", fake)
+
+
+def test_report_text_changes_with_disk_reading(tmp_path, monkeypatch):
+    """Why the same-day test must pin disk: a moving free-disk value alone changes the report (CI 93 vs 94 GB)."""
     mem = make_repo(tmp_path)
+    _fake_disk(monkeypatch, 93, 94)
+    a = D.run(tmp_path, tmp_path / "out", mem, process=False, now=DAY)[0].read_text(encoding="utf-8")
+    b = D.run(tmp_path, tmp_path / "out", mem, process=False, now=DAY)[0].read_text(encoding="utf-8")
+    assert a != b
+    diff = [(x, y) for x, y in zip(a.splitlines(), b.splitlines()) if x != y]
+    assert len(a.splitlines()) == len(b.splitlines()) and len(diff) == 1 and "DISK" in diff[0][0], diff
+
+
+def test_same_day_run_twice_gives_the_same_report(tmp_path, monkeypatch):
+    mem = make_repo(tmp_path)
+    _fake_disk(monkeypatch, 93)
     a = D.run(tmp_path, tmp_path / "out", mem, process=False, now=DAY)[0].read_text(encoding="utf-8")
     b = D.run(tmp_path, tmp_path / "out", mem, process=False, now=DAY)[0].read_text(encoding="utf-8")
     assert a == b
@@ -243,7 +266,7 @@ def test_waiting_on_operator_lists_old_cards_and_questions(tmp_path):
 
 def test_broadcast_warns_on_unacked_and_expired_told_for_a_seen_host():
     import mts_signal as S
-    now = datetime(2026, 10, 25, 12, 0, tzinfo=timezone.utc)
+    now = datetime.now(timezone.utc).replace(microsecond=0)
 
     def t(h):
         return (now.replace(tzinfo=None) - __import__("datetime").timedelta(hours=h)).strftime("%Y%m%dT%H%M%SZ")
@@ -285,3 +308,17 @@ def test_stale_claims_limit_is_sync_stale_hours(monkeypatch):
     ep = lambda h: str(int(now.timestamp() - h * 3600))
     claims = [(f"c{i}", {"epoch": ep(30)}) for i in range(6)]    # 30 h old: stale at 24 h, fresh at 48 h
     assert D.stale_claims(".", claims, now)[0] == "OK"
+
+
+def test_supervisor_idle_warns_on_a_login_with_ready_cards_and_no_worker_for_60_min():
+    """bug-supervisor-idles-after-wake-retired (5): a login with READY cards and no worker activity for 60 min is flagged."""
+    from datetime import timedelta
+    now = datetime(2026, 10, 30, 18, 0, tzinfo=timezone.utc)
+    hb = lambda lg, run: f"BUDGET login={lg} 5h=40% week=40% reset=2026-11-03T20:00Z sup=JIS-NB mode=NORMAL run={run} free=1 end=19:00Z"
+    beats = [(now - timedelta(minutes=150), hb("C", 1)), (now - timedelta(minutes=20), hb("C", 0)),
+             (now - timedelta(minutes=5), hb("A", 1))]
+    st, msg = D.supervisor_idle(None, beats=beats, ready_n=4, now=now)
+    assert st == "WARN" and "C idle 150 min" in msg and "A idle" not in msg
+    assert D.supervisor_idle(None, beats=beats, ready_n=0, now=now)[0] == "OK"
+    assert D.supervisor_idle(None, beats=beats[2:], ready_n=4, now=now)[0] == "OK"
+    assert "SUPERVISOR-IDLE" in D.CHECK_NAMES

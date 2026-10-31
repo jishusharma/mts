@@ -1,0 +1,72 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-30T22:51:14Z",
+  "commands": [
+    "python scripts/dev/fetch_captions_timed.py --analyst Krown --channel @ECKrown --latest 10 --out MyTradingSys/research/krown_free_2026-10-31/transcripts",
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/krown_free_2026-10-31/KROWN_FREE_SETUPS.md"
+  ],
+  "created": "2026-10-30T21:42:28Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/krown_free_2026-10-31/KROWN_FREE_SETUPS.md exists; every row has video id, timestamp and a verbatim caption quote or NOT_IN_DATA; verify_extract_quotes.py exits 0; the testable shortlist is listed",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Write MyTradingSys/research/krown_free_2026-10-31/KROWN_FREE_SETUPS.md: video list (id, date, title, captioned or UNVERIFIED), a table of setups (name, trigger, entry, stop, target, timeframe, claimed hit-rate, video id, timestamp, verbatim quote), an app and free-alerts section, NOT_IN_DATA where he gives no number, and a shortlist of rows with a complete trigger and exit.",
+  "id": "gemini-krown-free-setups-alerts-app-search",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/krown_free_2026-10-31/KROWN_FREE_SETUPS.md",
+      "ref": "6371bd183",
+      "utc": "2026-10-30T22:51:14Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 3 file(s)",
+      "ref": "a2b3c3d803e3",
+      "utc": "2026-10-30T22:00:15Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini rules: captions first, one fetch try per video, 429 -> UNVERIFIED with no quotes, facts only, no trading verdict. Operator 2026-10-31: find his free setups on YouTube and have them checked (follow-up card krown-free-setups-dev-check). Final report ends with a Noticed: line.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T22:41:02Z",
+  "refs": [
+    "MyTradingSys/options/research/KROWN_FREE_VS_PAID.md"
+  ],
+  "result": "MyTradingSys/research/krown_free_2026-10-31/KROWN_FREE_SETUPS.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/krown_free_2026-10-31/ (new files only)"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code; creating accounts or paying; .secrets and .env"
+  ],
+  "scope_sha": "a2b3c3d803e3",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "search channel and interviews for: free setup, free alert, Krown Trading App, Free Market Dynamics",
+    "fetch captions for each hit, quote only from the caption files",
+    "write the file and run verify_extract_quotes.py until exit 0"
+  ],
+  "taken": "2026-10-30T22:51:14Z",
+  "tests": "verify_extract_quotes.py exit 0; no code change",
+  "title": "[GEMINI] Krown free trade setups, free alerts and his Trading App (Free Market Dynamics): find on YouTube where he describes them, extract the exact setups with timed caption quotes",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

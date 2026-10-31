@@ -1,0 +1,69 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-30T18:18:11Z",
+  "commands": [],
+  "created": "2026-10-30T17:15:11Z",
+  "depends_on": [],
+  "done_when": "report with the orphan count before and after; every registered file passes once; extra_tests.tsv shipped.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Compare the set of test files on disk with what run_all_tests.py (incl. research auto-discovery) and scripts/dev/extra_tests.tsv run; list orphans; register each in extra_tests.tsv or add a skip reason line; run each once.",
+  "id": "haiku-register-orphan-tests",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "orphans 1 -> 1: scripts/dev/test_supervisor.py (only orphan; already skip-reasoned in B150",
+      "ref": "8b4467e5f",
+      "utc": "2026-10-30T18:18:11Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "artifact testing: four-layer design (ARTIFACT_TESTING.md) + layer 3 gate: every page opens",
+      "ref": "36f311c44158",
+      "utc": "2026-10-30T16:46:53Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Final report ends with a Noticed: line. Blocked? List 2-3 non-destructive fixes, try the safest, verify, then report.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T17:16:10Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "orphans 1 -> 1: scripts/dev/test_supervisor.py (only orphan; already skip-reasoned in B150 SKIP; passes alone 92/92, 33s; left unregistered). 0 files registered, 0 tsv lines changed; 64 research test files run via auto-discovery",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/extra_tests.tsv, scripts/dev/run_all_tests.py (read), test files on disk"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change to any file outside the named ones"
+  ],
+  "scope_sha": "36f311c44158",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "list test_*.py under scripts/dev and MyTradingSys/research",
+    "diff against what run_all_tests.py and extra_tests.tsv run",
+    "register or add a skip reason per orphan, run each once",
+    "report counts, ship"
+  ],
+  "taken": "2026-10-30T18:18:11Z",
+  "tests": "see done_when",
+  "title": "Haiku: find test_*.py under scripts/dev and MyTradingSys/research not run by run_all_tests.py or extra_tests.tsv; register or skip with a reason; report the count",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

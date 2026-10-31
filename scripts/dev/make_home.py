@@ -27,10 +27,12 @@ sys.path.insert(0, str(HERE))
 import artifacts as af  # noqa: E402
 
 OUT = af.REPO / "MyTradingSys" / "system" / "artifacts" / "mts_home.html"
-WRITE_FIRST = ("research_map", "mts_control_room", "session_planner")  # pages where Jis writes, shown first
+WRITE_FIRST = ("research_map", "session_planner")  # pages where Jis writes, shown first
 DECISIONS = "MyTradingSys/system/OPERATOR_DECISIONS.md"
 TASKS = "MyTradingSys/system/tasks"
 NO_ANSWER = ("", "(none yet)")
+# A parked card is the operator's only when its ask is addressed to him; the rest wait on machines (DSA desks, captions, other cards).
+FOR_OPERATOR = re.compile(r"(?-i:\bJis\b)|operator (to|reader|G3|marks)|the operator G3", re.I)  # "Jis" exact: JIS-NB is a host
 SUPER = "MyTradingSys/system/SUPER_SESSION.md"
 SUPER_HEAD = "## Prompt: start a super session"
 
@@ -50,6 +52,8 @@ def waiting(repo):
     text = dec.read_text(encoding="utf-8") if dec.is_file() else ""
     for sec in re.split(r"(?m)^## ", text)[1:]:
         head, _, body = sec.partition("\n")
+        if re.search(r"\bdecided\b", head, re.I):
+            continue
         ans = re.search(r"(?m)^Answer: *(.*)$", body)
         if (ans and ans.group(1).strip() not in NO_ANSWER) or '"answer"' in body or '"status": "DECIDED"' in body:
             continue
@@ -65,7 +69,7 @@ def waiting(repo):
             c = json.loads(f.read_text(encoding="utf-8"))
         except ValueError:
             continue
-        if c.get("asks") and c.get("state") not in ("done", "dropped"):
+        if c.get("asks") and c.get("state") not in ("done", "dropped") and FOR_OPERATOR.search(c["asks"]):
             out.append({"id": c.get("id", f.stem), "kind": "task", "title": c["asks"], "recommended": "",
                         "asked": str(c.get("created", ""))[:10], "topic": c.get("title", ""), "explicit": True})
     return out
@@ -94,6 +98,10 @@ def build(reg, now=None, repo=None):
     for pg in reg["pages"]:
         own = af.owner(pg)
         url = pg["urls"].get(own, "")
+        if pg["status"] == "retire":
+            for a, u in pg["urls"].items():
+                if u:
+                    retire.append({"login": a, "title": pg["title"], "url": u, "why": "retired: " + pg.get("note", "")[:90]})
         if pg["status"] != "canonical" or not url or pg["slug"] == reg["home_slug"]:
             continue
         pages.append({"slug": pg["slug"], "title": pg["title"], "url": url, "owner": own, "purpose": pg.get("purpose", ""),
@@ -112,8 +120,7 @@ def build(reg, now=None, repo=None):
     owners = sorted({p["owner"] for p in pages} | {home})
     share = [{"owner": o, "titles": [p["title"] for p in pages if p["owner"] == o] + (["MTS Home"] if o == home else []),
               "invite": [a for a in reg["accounts"] if a != o]} for o in owners]
-    cr = next((pg for pg in reg["pages"] if pg["slug"] == "mts_control_room"), None)
-    answer = {"title": cr["title"], "url": cr["urls"].get(af.owner(cr), ""), "owner": af.owner(cr)} if cr else None
+    answer = None  # 2026-10-31: decisions are answered in chat and recorded in OPERATOR_DECISIONS.md; the Control Room is retired
     return {"generated": now.strftime("%Y-%m-%d %H:%M UTC"), "home": home, "homeUrl": af.home_url(reg), "pages": pages,
             "retire": retire, "share": share, "logins": list(reg["accounts"]), "waiting": waiting(repo or af.REPO), "answerAt": answer,
             "superPrompt": super_prompt(repo or af.REPO),
@@ -247,7 +254,7 @@ const copyText = async (btn, text) => {
 $("stamp").textContent = "Built " + DATA.generated;
 $("homelogin").textContent = DATA.home;
 const W = DATA.waiting, A = DATA.answerAt;
-const ans = A ? `<a href="${esc(A.url)}" target="_blank" rel="noopener">Answer in the ${esc(A.title)}</a>` : "";
+const ans = A ? `<a href="${esc(A.url)}" target="_blank" rel="noopener">Answer in the ${esc(A.title)}</a>` : "answer in the chat session";
 const qrow = w => `<div class="q"><span class="id">${esc(w.id)}</span><span class="t">${esc(w.title)}</span></div>`;
 $("need").className = "need" + (W.length ? "" : " none");
 $("need").innerHTML = W.length

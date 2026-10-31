@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-30T22:07:23Z",
+  "commands": [
+    "python scripts/dev/fetch_captions_timed.py --analyst CCU --channel @CryptoCrewUniversity --latest 8 --out MyTradingSys/research/yt_feed_2026-10-31/transcripts_crypto-crew",
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/yt_feed_2026-10-31/CCU_RULES_2026-10-31.md"
+  ],
+  "created": "2026-10-30T20:07:10Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/yt_feed_2026-10-31/CCU_RULES_2026-10-31.md exists; every item has video id, timestamp and a verbatim quote, or NOT_IN_DATA; verify_extract_quotes.py exits 0",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Write MyTradingSys/research/yt_feed_2026-10-31/CCU_RULES_2026-10-31.md: first line counts videos read, captioned and UNVERIFIED; a table of items, then per-video sections with the full quotes.",
+  "id": "gemini-yt-crypto-crew-extract",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/yt_feed_2026-10-31/CCU_RULES_2026-10-31.md (8 videos read, 32 items,",
+      "ref": "8f354d684",
+      "utc": "2026-10-30T22:07:23Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini rules: captions first (fetch_captions_timed.py), quote only from the caption file, one fetch try per video, no retry loop, 429 -> mark the video UNVERIFIED with no quotes; run verify_extract_quotes.py until exit 0; facts and quotes only, no trading verdict, no code change. Final report ends with a Noticed: line.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T20:07:12Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "MyTradingSys/research/yt_feed_2026-10-31/CCU_RULES_2026-10-31.md (8 videos read, 32 items, 8 NOT_IN_DATA)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/yt_feed_2026-10-31/ (new files only)"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code; any backtest; any trading verdict; .secrets and .env"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "python scripts/dev/fetch_captions_timed.py --analyst CCU --channel @CryptoCrewUniversity --latest 8 --out MyTradingSys/research/yt_feed_2026-10-31/transcripts_crypto-crew (one try per video; 429 -> UNVERIFIED, no retry loop)",
+    "keyword scan each transcript for the topic terms, read the surrounding lines before quoting",
+    "write MyTradingSys/research/yt_feed_2026-10-31/CCU_RULES_2026-10-31.md per the goal; run verify_extract_quotes.py until exit 0; commit on the branch with a Result: line (videos read, items found, NOT_IN_DATA count)"
+  ],
+  "taken": "2026-10-30T22:07:23Z",
+  "tests": "verify_extract_quotes.py exit 0; no code change",
+  "title": "[GEMINI] CCU (@CryptoCrewUniversity): latest 8 videos, extract his stated BTC and alt entry rules, levels and the indicators he reads with timed quotes",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

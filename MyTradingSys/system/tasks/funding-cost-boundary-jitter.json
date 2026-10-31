@@ -1,0 +1,76 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-31T06:32:53Z",
+    "misses": 23,
+    "reads": [
+      "MyTradingSys/backtest/layers/fabio/fabio_of_model.py",
+      "MyTradingSys/backtest/bt/bt_data.py",
+      "MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py",
+      "MyTradingSys/backtest/layers/fabio/test_fabio_of_model.py",
+      "MyTradingSys/research/gross_effect_screen_2026-10-15/FUNDING_RERUN.md",
+      "MyTradingSys/backtest/bt/test_bt_data.py"
+    ],
+    "session": "agent-aadee1d497c9bd047"
+  },
+  "created": "2026-10-31T05:11:02Z",
+  "depends_on": [],
+  "done_when": "test_funding_boundary_jitter fails on 3d8722a93 code and passes after; FUNDING_RERUN.md states the boundary rule and the cell move",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Gemini review of 3d8722a93 (confirmed): archive calc_time is 1-31 ms after the 8h boundary (T06 doc, 1215 of 2736), so searchsorted(side=right) on bar-aligned entry/exit charges entry-on-boundary and exempts exit-on-boundary; an exact-stamp rule does the opposite. Decide the convention, snap stamps in the loader or document it, and measure the DEV primary-cell move. No verdict change expected.",
+  "id": "funding-cost-boundary-jitter",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Revert \"Revert real-funding screens: CI red (T06 costs.csv pins screen.py line numbers)\"",
+      "ref": "8cae5e9e285e",
+      "utc": "2026-10-27T22:20:16Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "8cae5e9e285e Revert \"Revert real-funding screens: CI red (T06 costs.csv pins screen.py lin",
+      "ref": "MyTradingSys/research/gross_effect_screen_2026-10-15/FUNDING_RERUN.md",
+      "utc": "2026-10-27T22:20:16Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T05:11:04Z",
+  "refs": [
+    "gemini-method-review-funding-screen-fix-1031"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/bt/bt_data.py",
+    "MyTradingSys/backtest/bt/test_bt_data.py",
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/FUNDING_RERUN.md"
+  ],
+  "scope_out": [],
+  "scope_sha": "8cae5e9e285e",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Add a test with a settlement stamped 5 ms after the boundary, entry at the boundary, then at the boundary as exit, pinning the chosen rule",
+    "Apply the rule (snap or documented) in load_funding or funding_cost_pct",
+    "Rerun the screen primary cell and record the move in FUNDING_RERUN.md"
+  ],
+  "tests": "MyTradingSys/backtest/bt/test_bt_data.py::test_funding_boundary_jitter (fails on current code: entry at 28800000 with settlement 28800005 is charged)",
+  "title": "funding_cost_pct: a settlement stamped a few ms after 08:00 is charged to a trade entered at 08:00:00 and missed by one exited at 08:00:00",
+  "weight": "",
+  "worker": "agent"
+}

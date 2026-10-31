@@ -9,7 +9,7 @@
  "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
  "window": null,
  "verdict": {
-  "label": "Numbers match the labels on the charts. R = regular, H = hidden; BULL = at a swing low, BEAR = at a swing high. Price = close (Malkan: close to close). Window 3-10 bars A..B inclusive. Hidden definition and its use of the 3-10 window are O…",
+  "label": "Numbers match the labels on the charts. Malkan flags: R-BULL / R-BEAR regular divergence (window 3-10 bars A..B inclusive, SOURCED); PRD = price higher low + RSI lower low in an uptrend (RSI >= 60 at both points), NRD = price lower high +…",
   "tone": "info"
  },
  "why": [],
@@ -32,5 +32,5 @@
  "source_files": [
   "MyTradingSys/research/malkan_div_flags_2026-10-28/BTCUSDT_divergences.md"
  ],
- "commit": "441faf009"
+ "commit": "51b4b9a6f"
 }

@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-10-30T21:25:29Z",
+  "commands": [
+    "python scripts/dev/fetch_captions_timed.py --analyst Jala --channel @jalacrypto --latest 30 --out MyTradingSys/research/jala_layer_2026-10-31/transcripts",
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/jala_layer_2026-10-31/method_jala.md"
+  ],
+  "created": "2026-10-30T18:52:38Z",
+  "depends_on": [],
+  "done_when": "method_jala.md exists; each indicator and rule has video id, timestamp and verbatim quote, or NOT_IN_DATA; the first line counts videos read, captioned, UNVERIFIED; verify_extract_quotes.py exits 0.",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "The operator wants Jala's trading-style indicators as a possible MTS layer. From the latest 30 videos of @jalacrypto: which indicators and levels he reads (400-day MA, fractal cycle overlay, BTC dominance, NUPL or others), his alt rotation rule (when BTC vs alts), entry and invalidation when stated, with timed verbatim quotes and video id. No verdict, no invention.",
+  "id": "gemini-jala-method-extract",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "22 quotes verified exit 0 (12 captioned videos; 18 UNVERIFIED 429 stay unquoted)",
+      "ref": "2175f9c9f",
+      "utc": "2026-10-30T21:25:29Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini rules: captions first (fetch_captions_timed.py), quote only from the caption file, one fetch try per video, no retry loop, 429 -> mark the video UNVERIFIED with no quotes; run verify_extract_quotes.py until exit 0; facts and quotes only, no trading verdict, no code change. Final report ends with a Noticed: line.",
+  "prio": 2,
+  "refine_tries": 1,
+  "refined_by": "",
+  "refreshed": "2026-10-30T18:52:39Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "22 quotes verified exit 0 (12 captioned videos; 18 UNVERIFIED 429 stay unquoted)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/jala_layer_2026-10-31/method_jala.md (new), transcripts under research/jala_layer_2026-10-31/transcripts/"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code; any backtest; any trading verdict; .secrets and .env"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "fetch captions of the latest 30 videos with fetch_captions_timed.py (one try per video; 429 -> UNVERIFIED, no retry loop)",
+    "keyword scan: 400, fractal, dominance, altcoin, rotation, NUPL, buy, accumulate, invalidation; read the surrounding lines",
+    "write method_jala.md: per concept the definition in his words (timed verbatim quote, video id), timeframe and symbol, entry, stop, target if stated; a dated table of his BTC and alt calls with prices",
+    "run verify_extract_quotes.py until exit 0; commit on the branch with a Result: line (videos read, concepts defined, NOT_IN_DATA items)"
+  ],
+  "taken": "2026-10-30T21:25:29Z",
+  "tests": "verify_extract_quotes.py exit 0 is the gate; docs only",
+  "title": "[GEMINI] Jala (@jalacrypto): extract his alt-rotation method, the indicators he reads (400D MA, fractal cycle, dominance) and when he buys alts, timed quotes",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

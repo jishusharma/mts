@@ -1,0 +1,38 @@
+{
+ "id": "dir-fix_verification_2026-10-28",
+ "kind": "thought_experiment",
+ "family": "Fix Verification",
+ "title": "Fix verification report, 2026-10-28",
+ "provenance": "source-extracted",
+ "date": "2026-10-28",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Trunk tested: e50d547a9. CI: last 5 runs green.",
+  "tone": "info"
+ },
+ "why": [
+  "Result: 20 PASS / 3 FAIL / 1 CANNOT TEST (CT-1..CT-3 listed below; three further fail-first checks not done).",
+  "Also not done: fail-first check (new tests must fail on pre-change code) for commits 37742aa6e, 02b9db8db, c50c6191d. Card: failfirst-check-37742aa6e-02b9db8db-c50c6191d."
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/fix_verification_2026-10-28/REPORT.md"
+ ],
+ "commit": "2a1ee9ddb"
+}

@@ -1,0 +1,74 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-31T06:30:43Z",
+    "misses": 11,
+    "reads": [],
+    "session": "agent-a54cda79a7ddbc89a"
+  },
+  "created": "2026-10-30T21:13:07Z",
+  "depends_on": [],
+  "done_when": "report has 6 lines (1 sheet + 5 audits), each with a counted number and the file's own claimed number side by side, SAME or DIFF; no repo file changed.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Recount structure claims by hand: the layer review sheet's headings and each GPT formula-audit report's inventory rows against what the report itself says it covers. SAME/DIFF per file, no edits.",
+  "id": "haiku-recount-layer-review-and-gpt-audit-tables",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "lab gpt-audit-formulas-vs-rsi-layer: DONE (audit)",
+      "ref": "449b10bf09b6",
+      "utc": "2026-10-30T20:05:21Z"
+    },
+    {
+      "auto": true,
+      "kind": "audit",
+      "line": "449b10bf09b6 lab gpt-audit-formulas-vs-rsi-layer: DONE (audit)",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-audit-formulas-vs-rsi-layer.md",
+      "utc": "2026-10-30T20:05:21Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-10-31 T0-ONLY Final report ends with a Noticed: line. Blocked? List 2-3 non-destructive fixes, try the safest, verify, then report.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-30T21:14:16Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/reports/layer_review_tom_guidance.md",
+    "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-audit-formulas-vs-krown-layer.md",
+    "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-audit-formulas-vs-kurisko-layer.md",
+    "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-audit-formulas-vs-pitchfork-layer.md",
+    "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-audit-formulas-vs-pizzino-layer.md",
+    "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-audit-formulas-vs-rsi-layer.md"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no product-code edit; the audited files are read only"
+  ],
+  "scope_sha": "449b10bf09b6",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "layer_review_tom_guidance.md: count lines starting '## ' (expect 4: tom_core, tom_proofs, tom_vp_pivot, bb_lvn_triggers) and '### ' under each (expect 5 each: Idea and source, Parameters, Backtests, Bugs and assumptions, Confluence); compare with the 4 layers its line 7 names",
+    "each gpt-audit-formulas-vs-*.md: count the data rows of its 'Formula inventory' table, and count the distinct FORMULAS.md section numbers its 'What was checked' line cites; for each report note rows with MATCH vs not (rsi report: 7 rows, 6 MATCH, 1 NOT_IN_DATA)",
+    "report one line per file: <file>: <n> counted vs <m> claimed, SAME or DIFF; a DIFF is filed as a raw card via tasks.py new"
+  ],
+  "tests": "count-based: 6 SAME/DIFF lines; the rsi audit must show 7 rows / 6 MATCH / 1 NOT_IN_DATA or a DIFF explaining why",
+  "title": "Haiku: recount layer_review_tom_guidance headings and the 5 gpt-audit-formulas-vs reports (rows vs their own claims)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

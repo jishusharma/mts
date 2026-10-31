@@ -483,3 +483,17 @@ replay harness needs a volume-carrying constructor before BTC profile replays). 
 thin, top 400 -> not thin, POC in the top third -> not thin; failed P breakout and lower b-shape by hand numbers in its header; DAX
 NOT_IN_DATA; no volume; flag off). They did not compile before the class existed (`cannot find symbol SpikeFadeProfile`); the
 SpikeFade PRICE, paths and golden tests are unchanged and pass (41 tests in all four classes).
+
+## 20. Source addendum: video BB3c8visnkI "How to Use Volume Profile Like a Pro! (2026)" (Tom, published 2026-10-30; 2026-10-31)
+Extract: `extracts/processed/tom/extract_BB3c8visnkI.md` (19 quotes, verify_extract_quotes exit 0); index rows TOM-271..TOM-289. Captions: auto/en, 2186 words.
+Beginner-level video; it adds no new entry trigger, stop or target. What it does change for the layer, each line SOURCED or OURS:
+| # | Statement | Label | Effect on layer |
+|---|---|---|---|
+| 1 | Balance (60-70% of profiles) -> counter-trade from value edge back to equilibrium; breakout runs away "only about 30% of the time" [TOM-278..TOM-280] | SOURCED (his statistic, unverified; matches TOM-046) | Supports family A (imbalance fade). Not a sourced edge number: the 70% is his claim, never a gate |
+| 2 | Thin (low volume) area crossed fast, then acceptance above = "new fair price"; the old range behind it is left [TOM-273, TOM-274] | SOURCED | Adds the invalidation for a return-to-value trade: after acceptance above a thin area, the return target (old POC) is stale. OURS: encode as a "accepted away" flag only after a card tests it |
+| 3 | LVN behaviour matters more than POC [TOM-276] | SOURCED | Priority order for the map: thin-area reaction first, POC second (matches CONCEPTS A2) |
+| 4 | Daily profile, cash session only; equilibrium (value + POC) moving after an excess move = trend change signal [TOM-281..TOM-284] | SOURCED | Context item for side choice (CONCEPTS A1.2). Needs RTH session profiles; BTC has no cash session (OURS: use the 00:00 UTC day, labelled as such) |
+| 5 | Open gap need not close if the new equilibrium moved [TOM-285, TOM-286] | SOURCED | Narrows family C (section 4): gap-close long applies only when the prior-day equilibrium was not shifted by the gap day. Still parked (one trade) |
+| 6 | Test of value area high: rejection first, then acceptance of higher prices [TOM-287, TOM-288] | SOURCED | Same shape as TOM-011 failed-break; no new rule |
+Open test (OURS, not run): his 70/30 claim on BTC. Count days where price leaves the prior-day value area and returns to it the same day vs not, over all history, with a placebo of random day offsets (PRE-REG first, FORMULAS.md section 18 profile definition). No result is claimed here.
+Concept-by-concept check against trunk (known? tested? how to apply): `VP_VIDEO_CONCEPT_CHECK_2026-10-31.md`; card `tom-vp-return-to-value-count` (awaits Lab_Guy review stamp).

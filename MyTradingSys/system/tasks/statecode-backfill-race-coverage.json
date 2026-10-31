@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-30T21:12:57Z",
   "commands": [
     "mvn -q test -Dtest=StateCodeEmitterTest,MarketDataSnapshotTest"
   ],
@@ -17,6 +18,12 @@
   "id": "statecode-backfill-race-coverage",
   "lane": "JIS-NB",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "already shipped 4994a088a (StateCodeEmitter tests: in-flight reconnect/day-roll rejection,",
+      "ref": "a07da3cb7",
+      "utc": "2026-10-30T21:12:57Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -36,7 +43,12 @@
   "refined_by": "",
   "refreshed": "2026-10-27T22:51:55Z",
   "refs": [],
-  "result": "",
+  "result": "already shipped 4994a088a (StateCodeEmitter tests: in-flight reconnect/day-roll rejection, scheduled retry recover); card STALE, no new work",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "src/main/java/datafeed/StateCodeEmitter.java",
     "src/test/java/datafeed/StateCodeEmitterTest.java"
@@ -50,13 +62,14 @@
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-20_review-statecode-backfill-gpt.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the GPT review report and reproduce the cited scenario.",
     "Change clock across UTC midnight during fetch; reconnect during fetch; fail a scheduled attempt then recover; close/reopen without intermediate emit and assert cvd ring restarts.",
     "Mutation check: revert each behaviour under test in turn (retry schedule, INVALID on rejection, cvd ring reset) and show the matching new test fails; restore.",
     "Run the focused Maven tests, required live-path gates, and obtain a fresh independent review before deployment."
   ],
+  "taken": "2026-10-30T21:12:57Z",
   "tests": "Change clock across UTC midnight during fetch; reconnect during fetch; fail a scheduled attempt then recover; close/reopen without intermediate emit and assert cvd ring restarts.",
   "title": "StateCodeEmitter: cover in-flight rollover reconnect and retry scheduling",
   "weight": "CRUCIAL",

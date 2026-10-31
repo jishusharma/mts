@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-31T06:04:26Z",
+    "misses": 8,
+    "reads": [
+      "scripts/dev/run_all_tests.py",
+      "scripts/dev/run_extra_tests.py"
+    ],
+    "session": "agent-aa0e62ef72b352071"
+  },
+  "created": "2026-10-31T02:48:07Z",
+  "depends_on": [],
+  "done_when": "test_live_aid_replay.py::test_position_bar_distance_atr_and_uncovered_render asserts hand-computed pts, x ATR15 and uncovered USD; it fails if the three formulas are changed",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Live aid position bar numbers #pos-dist, #pos-atr and #uncovered (live_aid.html:574-584) have no test of any kind. Add a replay test in tools/live_aid/test_live_aid_replay.py. The live_aid files are owned by the dash-designer session: coordinate, do not edit live_aid.html. Plan: MyTradingSys/research/gemini_burn_2026-10-31/LIVE_AID_TEST_PLAN.md",
+  "id": "live-aid-position-bar-replay-test-pos-di",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "live_aid replay: money tile reads window.LIVEAID_OI; 10-30 18:50Z flush replayed through t",
+      "ref": "7f33c6067818",
+      "utc": "2026-10-30T20:41:52Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T02:48:58Z",
+  "refs": [
+    "MyTradingSys/research/gemini_burn_2026-10-31/LIVE_AID_TEST_PLAN.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/test_live_aid_replay.py"
+  ],
+  "scope_out": [
+    "no edits to live_aid.html or live_aid_indicators.js"
+  ],
+  "scope_sha": "7f33c6067818",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Message the dash-designer session before touching tools/live_aid; add the test only",
+    "Seed store.size/entry/side/rungs in the replay page, compute expected entry-mark, d/ATR15 and size-covered by hand",
+    "Prove fail-first by mutating each formula in a scratch copy, then run the live_aid tests"
+  ],
+  "tests": "MyTradingSys/tools/live_aid/test_live_aid_replay.py::test_position_bar_distance_atr_and_uncovered_render (fail-first: mutate the formula in a scratch copy and see it fail)",
+  "title": "live_aid position bar replay test pos-dist pos-atr uncovered",
+  "weight": "",
+  "worker": "agent"
+}

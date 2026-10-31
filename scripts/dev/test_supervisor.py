@@ -1210,3 +1210,86 @@ def test_pid_alive_platform_helper():
     assert S._pid_alive(2147483647) is False
     assert S._pid_alive(0) is False
     assert S._pid_alive(-1) is False
+
+
+def test_plan_lines_lane_floors_every_lane_not_only_codex():
+    """D11 programme (2026-10-30): a lane under its floor prints LANE LOW so the Planner feeds it; the Gemini count reads the
+    [GEMINI] title prefix (ROUTING.md row), since no card carries a vendor field."""
+    p = S.pace_plan(T0, _rd(10, 20), 95)
+    live = {"A": {"host": "JIS-NUC", "mode": "NORMAL", "run": 0, "free": 3, "at": "x", "dsa": "up"}}
+    ctx = {"ci": {"red": False}, "picks": [], "codex_ready": 9, "sonnet_ready": 2, "haiku_ready": 0, "gemini_ready": 1}
+    out = "\n".join(S.plan_lines("A", "JIS-NUC", p, live, ctx, gate_key=False))
+    assert "LANE LOW SONNET 2 (< 6)" in out and "LANE LOW HAIKU 0 (< 3)" in out and "LANE LOW GEMINI 1 (< 4)" in out
+    assert "LANE LOW CODEX" not in out
+    full = "\n".join(S.plan_lines("A", "JIS-NUC", p, live, dict(ctx, sonnet_ready=6, haiku_ready=3, gemini_ready=4), gate_key=False))
+    assert "LANE LOW" not in full
+    cards = [{"state": "ready", "lane": "CODEX", "title": "[GEMINI] label x"}, {"state": "ready", "lane": "CODEX", "title": "GPT audit y"},
+             {"state": "ready", "lane": "SONNET", "title": "s"}, {"state": "ready", "lane": "HAIKU", "title": "h"}]
+    assert S.lane_counts(cards) == {"codex": 1, "gemini": 1, "sonnet": 1, "haiku": 1}
+
+
+def test_work_period_keeps_the_supervisor_going(tmp_path):
+    """bug-supervisor-idles-after-wake-retired (2026-10-30): every Supervisor handed over within 3 h and nothing started the next.
+    Inside the work period only the week cap ends it; a successor inherits an active period; the 5 h stop is a PAUSE line."""
+    now = datetime(2026, 10, 30, 18, 0, tzinfo=timezone.utc)
+    pl = {"five": 85, "ceil": 80, "transit": "2026-10-30T17:00Z", "week": 40, "cap": 85}
+    end = now + timedelta(hours=2)
+    assert S.transit_reason(pl, now, 200_000, now - timedelta(hours=5), end) == ""
+    assert "week 90% >= cap 85%" in S.transit_reason({**pl, "week": 90}, now, work_end=end)
+    assert "work period ended" in S.transit_reason(pl, end, work_end=end)
+    wp = S.work_period("C", now, "s1", home=tmp_path)
+    assert wp["source"] == "default" and S._utc(wp["until"]) == now + timedelta(hours=S.WORK_DEFAULT_H)
+    assert S.work_period("C", now + timedelta(hours=1), "s2", home=tmp_path)["sid"] == "s1"          # successor inherits
+    assert S.work_period("C", now, "s1", hours=12, home=tmp_path)["source"] == "operator"
+    late = now + timedelta(hours=13)
+    assert S.work_period("C", late, "s1", home=tmp_path)["sid"] == "s1"                                # own ended period stays ended
+    assert S.work_period("C", late, "s3", home=tmp_path)["sid"] == "s3"                                # a new session gets a new one
+    full = {**S.pace_plan(now, _rd(85, 40), 85), "five": 85, "ceil": 80}
+    L = S.plan_lines("C", "JIS-DESKTOP", full, {}, {"work": wp}, False)
+    assert any(x.startswith("WORK until") for x in L) and any(x.startswith("PAUSE 5 h") for x in L)
+    assert not any(x.startswith("TRANSIT at") for x in L)
+
+
+def test_work_rule_code_and_docs_agree():
+    repo = Path(S.__file__).resolve().parents[2]
+    assert S.WORK_RULE in (repo / "MyTradingSys/system/SUPER_SESSION.md").read_text(encoding="utf-8")
+    assert "SUPER_SESSION.md WORK PERIOD" in (repo / "MyTradingSys/system/roles/supervisor.md").read_text(encoding="utf-8")
+
+
+def test_handover_refuses_inside_the_work_period_so_mode_never_reads_ended_while_alive(tmp_path, monkeypatch):
+    """bug-supervisor-idles-after-wake-retired (4): ENDED was written only by handover(), which checked only another planner, so a
+    Supervisor could call it mid-period and its heartbeat read mode=ENDED while the session was alive. Inside the work period it
+    refuses (even with --force, and nothing is sent) unless the period is over or the week cap is reached."""
+    import sync
+    import mts_signal
+    monkeypatch.setattr(sync, "read_claims", lambda repo, ref: [])
+    sent = []
+    monkeypatch.setattr(mts_signal, "send", lambda text, **kw: sent.append(text) or True)
+    home = tmp_path / "home"
+    home.mkdir()
+    now = datetime(2026, 10, 30, 20, 0, tzinfo=timezone.utc)
+    S.work_period("C", now - timedelta(hours=1), "s1", hours=12, home=home)
+    pl = S.pace_plan(now, _rd(30, 40, five_reset="2026-10-30T22:00Z", week_reset="2026-11-03T20:00Z"), 85)
+    (home / "C-last-plan.json").write_text(json.dumps({"plan": pl}), encoding="utf-8")
+    with pytest.raises(ValueError) as e:
+        S.handover(tmp_path, "c", host="JIS-NB", home=home, now=now, sid="s1", send=True, force=True)
+    assert "work period" in str(e.value) and "supervisor.py wait" in str(e.value)
+    assert not S.handover_path(tmp_path, "C").exists() and not any("mode=ENDED" in x for x in sent)
+    (home / "C-last-plan.json").write_text("{", encoding="utf-8")                      # cap unknown: fail closed
+    with pytest.raises(ValueError):
+        S.handover(tmp_path, "c", host="JIS-NB", home=home, now=now, sid="s1")
+    (home / "C-last-plan.json").write_text(json.dumps({"plan": {**pl, "week": 90}}), encoding="utf-8")
+    assert S.handover(tmp_path, "c", host="JIS-NB", home=home, now=now, sid="s1", send=True).is_file()   # week cap reached
+    assert any("mode=ENDED" in x for x in sent)
+    (home / "C-last-plan.json").write_text(json.dumps({"plan": pl}), encoding="utf-8")
+    assert S.handover(tmp_path, "c", host="JIS-NB", home=home, now=now + timedelta(hours=12), sid="s1").is_file()   # period over
+
+
+def test_idle_rules_code_and_docs_agree():
+    """bug-supervisor-idles-after-wake-retired (1, 2): the never-idle rule and the post-compaction re-arm are quoted verbatim."""
+    repo = Path(S.__file__).resolve().parents[2]
+    role = (repo / "MyTradingSys/system/roles/supervisor.md").read_text(encoding="utf-8")
+    ss = (repo / "MyTradingSys/system/SUPER_SESSION.md").read_text(encoding="utf-8")
+    assert S.IDLE_RULE in role and S.REARM_RULE in role
+    d5 = next(x for x in ss.splitlines() if x.startswith("| D5 |"))
+    assert S.REARM_RULE in d5 and S.IDLE_RULE in d5

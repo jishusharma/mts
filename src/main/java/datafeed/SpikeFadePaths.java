@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Family A entry paths A2 and A3 (TOM_LAYER_V2_SPEC sections 2.3, 2.4 A-S3, 2.6 A-M5, 13, card tom-encode-fade-entry-paths),
  * behind {@code -Dmts.spikeFade=true}. Path A1 stays in {@link SpikeFadeDetector} untouched. Both paths need the same idea
- * (A-C1, A-C2) as A1: they are derived from the A1 candidate of the same instant (zone = session extreme, target A-T1,
+ * (A-C1 gate; A-C2 is annotation-only since c4ad479e0, DECISION OURS) as A1: they are derived from the A1 candidate of the same instant (zone = session extreme, target A-T1,
  * proofs), so nothing fires on a day the idea fails. Entry is a reference price here; the fill is the NEXT bar's open
  * ({@link #entryOpen}), which a snapshot cannot know.
  *

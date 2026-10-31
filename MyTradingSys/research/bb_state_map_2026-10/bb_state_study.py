@@ -1,7 +1,10 @@
-"""BB state x candle x regime x TF map. DEV 2022-2025 only. Definitions: MAP.md."""
-import glob, sys
+"""BB state x candle x regime x TF map. DEV only (backtest/splits.py: 2022-01-01..2024-06-30). Definitions: MAP.md."""
+import glob, os, sys
 import numpy as np
 import pandas as pd
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'backtest'))
+import splits
 
 SRC = sys.argv[1] if len(sys.argv) > 1 else 'F:/MTS/data/tom_raw/klines/BTCUSDT-1m-*.csv'
 H = 12
@@ -25,7 +28,7 @@ def classify(o, h, l, c, n=20):
 
 
 def load():
-    fs = [f for f in sorted(glob.glob(SRC)) if '2026' not in f]
+    fs = [f for f in sorted(glob.glob(SRC)) if splits.window_of(os.path.basename(f).split('1m-')[-1][:7] + '-01') in ('DEV', 'PRE_DEV')]
     if not fs:
         sys.exit('no data at ' + SRC)
     df = pd.concat([pd.read_csv(f, usecols=[0, 1, 2, 3, 4], header=None if False else 'infer') for f in fs], ignore_index=True)
@@ -33,7 +36,10 @@ def load():
     df = df[pd.to_numeric(df['t'], errors='coerce').notna()].astype(float)
     t = df['t'].where(df['t'] < 1e14, df['t'] / 1000)
     df.index = pd.to_datetime(t, unit='ms')
-    return df[(df.index >= '2022-01-01') & (df.index < '2026-01-01')]
+    df = df[~df.index.duplicated(keep='first')].sort_index()  # 2025-09 has monthly + daily overlap
+    df = splits.dev_only(df)
+    splits.assert_dev_only(df.index.min(), df.index.max())
+    return df
 
 
 def cells(df, tf):
