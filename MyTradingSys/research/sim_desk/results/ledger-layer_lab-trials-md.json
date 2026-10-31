@@ -9,14 +9,14 @@
  "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
  "window": "2022-04-01 to 2024-06-30 (as written in the source)",
  "verdict": {
-  "label": "411 trial rows logged (every variant tried)",
+  "label": "423 trial rows logged (every variant tried)",
   "tone": "info"
  },
  "why": [],
  "kpis": [
   {
    "label": "trial rows logged",
-   "value": "411"
+   "value": "423"
   },
   {
    "label": "net R after fees (first value in the source)",
@@ -45,5 +45,5 @@
  "source_files": [
   "MyTradingSys/research/layer_lab/TRIALS.md"
  ],
- "commit": "488c01b8e"
+ "commit": "43b68d9dd"
 }
