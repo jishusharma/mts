@@ -1,0 +1,71 @@
+{
+ "id": "dir-nuc_restart_2026-10-28",
+ "kind": "thought_experiment",
+ "family": "Nuc Restart",
+ "title": "NUC restart and Supervisor loop: issues register (2026-10-28, Supervisor B, JIS-NUC)",
+ "provenance": "source-extracted",
+ "date": "2026-10-28",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "TOM-056 and TOM-140 are marked wired (SetupCandidatesBuilder.java:284,463) but cite a stitched quote that is not in the transcript; same for TOM-159 and TOM-174.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "TOM-103, 172, 194 and 023 (VWAP as target) were dropped as NO-SOURCE although their quotes verify; TOM-049 (VWAP side as bias) is unused. Rank H for wiring.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "40 Tom ids have a different quote in conditions/.md than in TOM_VERBATIM_INDEX.md; the index's 1:1 claim is false.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "446 rows: wired 203, unwired-worth-wiring 76, not-worth-wiring 167, NO_QUOTE 17.",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Recorded by Supervisor B from one session. Status: VERIFIED = seen in this session's output; SUSPECTED = inferred, not reproduced.",
+  "tone": "info"
+ },
+ "why": [
+  "Cards with raw state not dispatchable: backtest-pre-us-failed-break-dev-run waits for its PRE_REG freeze.",
+  "B15 (M, VERIFIED): pytest's default temp folder is access-denied in the agent sandbox, so preship \"own unit tests\" fails there while the tests pass with --basetemp. Fix: preship passes a basetemp under the repo scratch or the temp dir that is writable.",
+  "Shipped by the ship-speed session: f6c7c446b (ship returns when origin has the commit, B8), 223bb7c01 (ship --result, bg_watch.py until, poll cap 600 s). Open: skip unchanged gate steps (gate_select.py, blocked by JIS-NB's stale claim ship-gate-let-a-new-look…",
+  "LC1 re-state 10dca8a07: 0 of 12 families KEEP on the fair control (published 8)."
+ ],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "300"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 300,
+   "quote": "- Wiring audit bcfd46cfc: 446 rows. PRE_REG 04112bfe2: pre-US failed-break freeze (gate inputs n=300, sd=60 bps are estimates)."
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "n_trades": "not a trade test (thought experiment)"
+ },
+ "source_files": [
+  "MyTradingSys/research/nuc_restart_2026-10-28/ISSUES_REGISTER.md"
+ ],
+ "commit": "21b560745"
+}

@@ -1,0 +1,55 @@
+{
+ "id": "st-fable_run6_powered_prereg-result",
+ "kind": "backtest",
+ "family": "Fable Run6 Powered Prereg",
+ "title": "RESULT: E2, Krown S8 squeeze break on 4h, BTC+ETH+SOL pooled, DEV stage 2020-01-01..2024-06-30 (run once 2026-10-28)",
+ "provenance": "source-extracted",
+ "date": "2026-10-28",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2020-01-01 to 2024-06-30 (as written in the source)",
+ "verdict": {
+  "label": "INCONCLUSIVE. C0 n 420 trades on 332 entry days (need >= 439), mean net R +0.1312, SE 0.0760, t +1.73 (need >= 3.364), mean gross R +0.1527 vs 4 x mean fee R 0.0861.",
+  "tone": "bad"
+ },
+ "why": [
+  "Verdict: INCONCLUSIVE. C0 n 420 trades on 332 entry days (need >= 439), mean net R +0.1312, SE 0.0760, t +1.73 (need >= 3.364), mean gross R +0.1527 vs 4 x mean fee R 0.0861.",
+  "FAIL means stop: no detector, chart, layer or management work on the Krown S8 squeeze-break family on 4h BTC, ETH or SOL with this 10-bar stop; and, this being the last powered family of R1 E1, the R1 section 5 STOP list applies to the BTC trading-edge progra…"
+ ],
+ "kpis": [
+  {
+   "label": "trades (first count in the source)",
+   "value": "420"
+  },
+  {
+   "label": "net R after fees (first value in the source)",
+   "value": "+0.1312"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 420,
+   "quote": "Verdict: INCONCLUSIVE. C0 n 420 trades on 332 entry days (need >= 439), mean net R +0.1312, SE 0.0760, t +1.73 (need >= 3.364), mean gross R +0.1527 vs 4 x mean fee R 0.0861."
+  },
+  {
+   "field": "net_r",
+   "value": 0.1312,
+   "quote": "Verdict: INCONCLUSIVE. C0 n 420 trades on 332 entry days (need >= 439), mean net R +0.1312, SE 0.0760, t +1.73 (need >= 3.364), mean gross R +0.1527 vs 4 x mean fee R 0.0861."
+  }
+ ],
+ "missing": {
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/fable_run6_powered_prereg/RESULT.md"
+ ],
+ "commit": "2b80d7ecf"
+}

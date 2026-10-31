@@ -1,0 +1,37 @@
+{
+ "id": "st-live_not_fired_2026-10-29-result",
+ "kind": "thought_experiment",
+ "family": "Live Not Fired",
+ "title": "Live not-fired audit, window 2026-10-29 17:00Z .. 2026-10-30 08:00Z (card live-not-fired-audit-1029)",
+ "provenance": "source-extracted",
+ "date": "2026-10-29",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "WATCH; 531/532 WAIT_PROOF; 534/540/544 WAIT_TRIGGER Fires from the Java state machine; every alert was rejected by the trader (1 net_rr, 7 verdict not in allowed list). The other alert nos in 528..544 do not appear in E2 (not explained her…",
+  "tone": "info"
+ },
+ "why": [
+  "Real faults (not design): (a) order-flow writer stuck since 2026-10-22 10:33Z with HTTP 400 and 474 restarts, killing fabio_v3 for 8 days; (b) 15 of 60 turn_of_candle entries refused by R8 on shared account jishu_1, plus 8 skipped_busy; (c) 9 RSI cross events…"
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/live_not_fired_2026-10-29/RESULT.md"
+ ],
+ "commit": "a89e3288c"
+}

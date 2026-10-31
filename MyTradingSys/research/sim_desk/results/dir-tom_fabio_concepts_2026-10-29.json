@@ -1,0 +1,39 @@
+{
+ "id": "dir-tom_fabio_concepts_2026-10-29",
+ "kind": "backtest",
+ "family": "Tom Fabio Concepts",
+ "title": "Tom and Fabio as stand-alone concepts (side, trade build, intensity) - 2026-10-29",
+ "provenance": "source-extracted",
+ "date": "2026-10-29",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "(FABIO_L1_REPORT.md:62) used volume spread uniformly over each bar (fabio_volume_fvg.py:11-15), which cannot produce Fabio's per-price lowest-volume level; FAB-006 (price rejects at that level: \"this is exactly where the price will reject.…",
+  "tone": "info"
+ },
+ "why": [
+  "OURS = our judgement (labelled). NOT_SEEN = I did not find it in the sources read. Every quoted string was machine-checked against its",
+  "Tom splits setups by regime and does not use one setup everywhere: \"you absolutely have to divide your setups that are suitable for short trades into counter trend continuation or breakout.\" [TOM-066 BVpYGKz9PBU:19]",
+  "Failed auction here means a break attempt that gets absorbed, then the other side's aggression: \"capitalize on the failed auction of the seller and then aggression of the level of the buyers\" [fZlNGWvd2Ko:39-42]"
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/tom_fabio_concepts_2026-10-29/CONCEPTS.md"
+ ],
+ "commit": "90b6d08d1"
+}

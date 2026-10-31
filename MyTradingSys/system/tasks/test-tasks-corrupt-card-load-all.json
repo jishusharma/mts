@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T06:15:14Z",
   "commands": [],
   "created": "2026-10-31T05:12:17Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "test-tasks-corrupt-card-load-all",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "scripts/dev/test_tasks.py TestCorruptCard 6 tests (6 failed on old code, pass now; full te",
+      "ref": "a17396f11",
+      "utc": "2026-10-31T06:15:14Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,12 @@
   "refs": [
     "gemini-test-plan-dev-scripts-1031"
   ],
-  "result": "",
+  "result": "scripts/dev/test_tasks.py TestCorruptCard 6 tests (6 failed on old code, pass now; full test_tasks 122 passed): load_all skips empty/truncated cards with stderr WARN naming file, save atomic via tmp+os.replace",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/tasks.py",
     "scripts/dev/test_tasks.py"
@@ -41,11 +53,12 @@
   "scope_sha": "12b43fe17a3b",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write the failing test with a 0-byte card in the tasks dir",
     "Make load_all skip with a loud warning naming the file; make save atomic"
   ],
+  "taken": "2026-10-31T06:15:14Z",
   "tests": "scripts/dev/test_tasks.py::TestCorruptCard.test_load_all_survives_empty_card (fails on current code with JSONDecodeError)",
   "title": "Test gap: tasks.py load_all crashes the whole CLI on one empty or truncated card JSON; save is not atomic (Gemini dev-scripts plan, rank 1)",
   "weight": "",

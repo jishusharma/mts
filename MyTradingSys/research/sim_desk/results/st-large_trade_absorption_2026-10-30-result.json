@@ -1,0 +1,39 @@
+{
+ "id": "st-large_trade_absorption_2026-10-30-result",
+ "kind": "backtest",
+ "family": "Large Trade Absorption",
+ "title": "Large trades: buying vs absorption on 5m bars (2026-10-30)",
+ "provenance": "source-extracted",
+ "date": "2026-10-30",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "These are descriptive counts only: no fees and no edge claim. Definitions are in the header of study.py (all OURS).",
+  "tone": "bad"
+ },
+ "why": [
+  "These are descriptive counts only: no fees and no edge claim. Definitions are in the header of study.py (all OURS).",
+  "On its own, absorption did not reverse price as the textbook says.",
+  "Fabio's reading needs his context, which this count does not have: the absorption sits at a level (VAH/VAL, daily high/low) after a push. The shot is that case: absorbed buys right after the run to 81.95k."
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/large_trade_absorption_2026-10-30/RESULT.md"
+ ],
+ "commit": "5f24edeb5"
+}

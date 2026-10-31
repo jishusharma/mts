@@ -1,0 +1,63 @@
+{
+  "approved_by": "operator 2026-10-31 (chat: apply right BTC-phase context to every related layer)",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T07:19:17Z",
+  "depends_on": [],
+  "done_when": "research/fractals_2026-10-31/p1_split/PRE_REG.md frozen and committed before the first run; RESULT.md with per-cell n, fee-net mean R, block-bootstrap CI, circular-shift family-wise verdict; every cell a TRIALS.md row; shipped with a Result: line",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Does BTC phase context change the fee-net result of existing layers? Split frozen DEV event lists of RSI-DIV-MTF and Krown by fast-cycling phase tags from phase_tag/tags.csv. Spec: research/fractals_2026-10-31/SYNTHESIS.md s4 row P1.",
+  "id": "phase-split-existing-layers-p1",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "cowen: extract bekghgecip8 (Q4 dump, 2026-10-30), concept check, band study on the sim des",
+      "ref": "997ddf61e993",
+      "utc": "2026-10-31T06:43:23Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "997ddf61e993 cowen: extract bekghgecip8 (Q4 dump, 2026-10-30), concept check, band study o",
+      "ref": "MyTradingSys/research/layer_lab/TRIALS.md",
+      "utc": "2026-10-31T06:43:23Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "\nOPERATOR QUOTE: Applying right context must increase edge on all layers that relates to it. Depends on btc-phase-context-layer-1031 (shipped 32756080).",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T07:19:33Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/fractals_2026-10-31/p1_split/ (new)",
+    "MyTradingSys/research/layer_lab/TRIALS.md (rows)"
+  ],
+  "scope_out": [
+    "live tree; layer code; HOLDOUT 2025-07+; .secrets and .env"
+  ],
+  "scope_sha": "997ddf61e993",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "find the frozen DEV event lists for RSI-DIV-MTF and Krown (git grep VERDICTS.csv, TRIAL_LEDGER) and note their window; no re-tuning",
+    "write PRE_REG.md: tags (cowen_side, sma200_side, wsma10_phase), gates from SYNTHESIS P1 row, placebo tag; commit before running",
+    "join events to tags at the event's day using tag of t (built from bars <= t-1)",
+    "run harness.py shift_null_test + block bootstrap; report >=30 per cell, decide only >=200",
+    "write RESULT.md; ship"
+  ],
+  "tests": "join test: an event on day t gets the tag row for t, which a test proves uses no bar t data; planted-edge run through the same pipeline is detected",
+  "title": "P1: split frozen DEV results of RSI-DIV-MTF and Krown events by phase tag (Cowen band side, 200D side, weekly SMA10), fee-net, family-wise null",
+  "weight": "",
+  "worker": "session"
+}

@@ -1,0 +1,55 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-30T23:28:19Z",
+  "depends_on": [],
+  "done_when": "Each of the 5 addresses has a cited Etherscan label URL in a comment, or is removed; test_hot_wallet_watch.py passes.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Verify the 5 ETH addresses in hot_wallet_watch.py against Etherscan public labels (read-only web).",
+  "id": "hot-wallet-watch-py-its-5-eth-addresses-",
+  "kind": "audit",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "cbp_run keeps extractor stderr in the error; hot_wallet_watch (N4)",
+      "ref": "9df4dc765627",
+      "utc": "2026-10-30T23:23:21Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T05:42:16Z",
+  "refs": [
+    "scripts/dev/hot_wallet_watch.py"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/hot_wallet_watch.py"
+  ],
+  "scope_out": [
+    "running the watcher, any keys"
+  ],
+  "scope_sha": "9df4dc765627",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "open each etherscan.io/address page (public) and record the label",
+    "annotate or drop; ship"
+  ],
+  "tests": "scripts/dev/test_hot_wallet_watch.py still passes; no new test needed (data check).",
+  "title": "hot_wallet_watch.py: its 5 ETH addresses were typed from memory; verify each against Etherscan labels (done when each address has a cited label or is removed)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

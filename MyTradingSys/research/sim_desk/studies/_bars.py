@@ -110,6 +110,8 @@ def load_1m(progress=None, symbol='BTCUSDT'):
 
 def resample(a, tf_min):
     """UTC-aligned bars of tf_min minutes: (open time, open, high, low, close); missing minutes are simply absent."""
+    if len(a) == 0:
+        return np.zeros((0, 5))
     k = (a[:, 0] // (tf_min * MIN)).astype(np.int64)
     starts = np.flatnonzero(np.r_[True, k[1:] != k[:-1]])
     ends = np.r_[starts[1:], len(a)] - 1

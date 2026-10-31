@@ -1,0 +1,81 @@
+{
+ "id": "desk-cowen_bmsb-245ae944",
+ "kind": "backtest",
+ "parity": null,
+ "family": "Desk runs",
+ "title": "Cowen bull market support band: bounce, band lost, 50-day fake-out, others-at-the-band catch-down, BTCUSDT or ETHUSDT: BOUNCE exit0 stop 2ATR target 2R hold 30d fees 0.02/0.05% slip 0.02% 2022-04-01..2024-06-30",
+ "what": [
+  {
+   "name": "Study",
+   "value_plain": "Cowen bull market support band: bounce, band lost, 50-day fake-out, others-at-the-band catch-down, BTCUSDT or ETHUSDT: BTC / USDT, band = 20-week SMA and 21-week EMA of completed weeks: when a daily bar dips to the top of the band from above and closes above its bottom, go long; market entry at the next day's open, stop 2 x ATR14 (daily) from the signal close, exit at a target at 2 x risk; no level exit, or after 30 days; fees 0.02 % limit / 0.05 % market, plus 0.02 % slippage on market and stop fills; 2022-04-01 to 2024-06-30, development window only. The band needs 21 completed weeks, so the first signals come in June 2022.",
+   "label": "OURS"
+  },
+  {
+   "name": "Settings",
+   "value_plain": "BOUNCE exit0 stop 2ATR target 2R hold 30d fees 0.02/0.05% slip 0.02% 2022-04-01..2024-06-30",
+   "label": "OURS"
+  },
+  {
+   "name": "Condition",
+   "value_plain": "none",
+   "label": "OURS"
+  }
+ ],
+ "how": "Run on the local simulator desk: the study re-simulates every idea on development data; the optional condition then keeps only matching trades (post-filter on the cached run). Fees are included; a never-filled idea is not a trade.",
+ "window": "DEV only, 2022-04-01 to 2024-06-30 (VALIDATION and HOLDOUT never offered)",
+ "verdict": {
+  "label": "NOT ENOUGH DATA",
+  "tone": "warn"
+ },
+ "why": [
+  "only 3 filled trades; at least 30 are needed before the desk calls it"
+ ],
+ "kpis": [
+  {
+   "label": "filled trades",
+   "value": "3"
+  },
+  {
+   "label": "ideas never filled",
+   "value": "0"
+  },
+  {
+   "label": "average per trade, after fees",
+   "value": "+1.986 R"
+  },
+  {
+   "label": "95 % range",
+   "value": "+1.981 to +1.988 R"
+  },
+  {
+   "label": "if you put in $1,000",
+   "value": "$1060"
+  },
+  {
+   "label": "try number",
+   "value": "2"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "curve",
+   "title": "Running total of net R, filled trades in time order",
+   "r": [
+    1.9881,
+    3.976,
+    5.9572
+   ],
+   "usd": [
+    1019.88,
+    1039.76,
+    1059.57
+   ],
+   "start_usd": 1000.0,
+   "risk_pct": 1.0
+  }
+ ],
+ "source_files": [
+  "MyTradingSys/research/sim_desk/desk.py"
+ ],
+ "commit": "local desk run"
+}

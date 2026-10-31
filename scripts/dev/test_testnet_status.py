@@ -199,6 +199,43 @@ class T(unittest.TestCase):
             self.assertRegex(text, name + r"[^\n]*not found")
         self.assertIn("Window", text)
 
+    def test_missing_ledger_is_not_in_data_not_zero(self):
+        # log present, ledger file absent: the ledger-derived cells must say NOT_IN_DATA, never 0
+        d = pathlib.Path(self.ex)
+        (d / "auto_trader_config.json").write_text(json.dumps(CONFIG), encoding="utf-8")
+        jl(d / "auto_trades.jsonl", [{"ts": "2026-09-29T13:00:00Z", "event": "trade_attempt", "source": TOC,
+                                      "outcome": "entered", "plan_id": "P1", "account": "jishu_1"}])
+        text = self.report()
+        row = [ln for ln in text.splitlines() if ln.startswith("| turn_of_candle | jishu_1 |")][0]
+        self.assertEqual(row.count("NOT_IN_DATA"), 4, row)             # Closed, Wins, Net USD, Unresolved
+        self.assertNotIn("+0.0000", row)
+
+    def test_missing_log_is_not_in_data_not_zero(self):
+        d = pathlib.Path(self.ex)
+        (d / "auto_trader_config.json").write_text(json.dumps(CONFIG), encoding="utf-8")
+        text = self.report()
+        row = [ln for ln in text.splitlines() if ln.startswith("| tom | main |")][0]
+        self.assertIn("NOT_IN_DATA", row)
+        self.assertNotIn("FLAG 0 trades", text)                         # a missing log is not a zero-trade day
+
+    def test_labels_owner_brakes_and_engine_state(self):
+        d = pathlib.Path(self.ex)
+        cfg = dict(CONFIG, pre_pipeline_sources={"layer:turn_of_candle:": {"reason": "x"}})
+        (d / "auto_trader_config.json").write_text(json.dumps(cfg), encoding="utf-8")
+        (d / "HALT").write_text("x", encoding="utf-8")
+        jl(d / "auto_trades.jsonl", [{"ts": "2026-09-29T13:00:00Z", "event": "trade_attempt", "source": TOC,
+                                      "outcome": "entered", "plan_id": "P1", "account": "jishu_1"},
+                                     {"ts": "2026-09-29T13:05:00Z", "event": "trade_attempt", "source": FAB,
+                                      "outcome": "entered", "plan_id": "P2", "account": "jishu_3"}])
+        text = self.report()
+        self.assertRegex(text, r"\| turn_of_candle \| jishu_1 \| calibration \|")
+        self.assertRegex(text, r"\| fabio \| jishu_3 \| unlabelled \|")
+        self.assertIn("HALT: present", text)
+        self.assertIn("AUTO_PAUSE: absent", text)
+        self.assertIn("Owner host: UNCONFIRMED", text)
+        self.assertRegex(text, r"Engine state: .*last log row 2026-09-29T13:05:00Z")
+        self.assertIn("promoted_setups.json: NOT_IN_DATA", text)
+
     def test_missing_dir_entirely(self):
         rc = run(self.root / "nope", self.out)
         self.assertEqual(rc, 0)

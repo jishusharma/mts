@@ -1,0 +1,45 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-30T23:48:17Z",
+  "depends_on": [],
+  "done_when": "A section in the status file lists each of the 4 rows with cause (window, counting rule or bug); each bug has a filed card.",
+  "est_turns": 18,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Explain every row where TESTNET_STATUS_2026-10-07 differs from funnel_report --day for rsi/jishu_2, rsi/jishu_3, tom, turn_of_candle.",
+  "id": "testnet-status-2026-10-07-table-differs-",
+  "kind": "audit",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "PLANNER 2026-10-31: content complete; not a twin of haiku-recount-testnet-readout (that is its source, state ready). Blocked only on a Lab_Guy REVIEWED stamp; promote after it.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/testnet_status/TESTNET_STATUS_2026-10-07.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/testnet_status/TESTNET_STATUS_2026-10-07.md",
+    "scripts/dev/funnel_report.py"
+  ],
+  "scope_out": [
+    "live engine, ledger edits"
+  ],
+  "size": "M",
+  "sources": [],
+  "state": "raw",
+  "steps": [
+    "run funnel_report --day 2026-10-07 and diff per source against the table",
+    "read the haiku recount e806c75a5; attribute each diff"
+  ],
+  "tests": "none (audit); if a bug is fixed, a test failing on old funnel_report.py.",
+  "title": "TESTNET_STATUS_2026-10-07 table differs from funnel_report --day for rsi/jishu_2, rsi/jishu_3, tom, turn_of_candle (done when each diff is explained: window, counting rule or bug; see haiku recount e806c75a5)",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T05:37:24Z",
   "commands": [],
   "created": "2026-10-31T05:10:39Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "tom-vp-return-late-day-censoring",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "shipped f38e17805: last-bar events censored, pre-registered 57.2% unchanged",
+      "ref": "4a85ff560",
+      "utc": "2026-10-31T05:37:24Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,12 @@
   "refs": [
     "gemini-method-review-tom-vp-study-1031"
   ],
-  "result": "",
+  "result": "shipped f38e17805: last-bar events censored, pre-registered 57.2% unchanged",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/vp_return_to_value.py",
     "MyTradingSys/backtest/test_vp_return_to_value.py",
@@ -42,12 +54,13 @@
   "scope_sha": "80b0c19b80d0",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add a test: analyse_day with the event on the last bar returns returned None (not False) or is counted in a censored field",
     "Add censored counts and a bars-left>=12 sensitivity row to the study output, DEV only",
     "Write the sensitivity row into RESULT.md as post-hoc OURS beside the unchanged pre-registered verdict"
   ],
+  "taken": "2026-10-31T05:37:24Z",
   "tests": "MyTradingSys/backtest/test_vp_return_to_value.py::test_last_bar_event_is_censored (fails on current code, which returns returned False)",
   "title": "Tom VP return study: events with zero or few bars left in the UTC day are forced to no-return (Part A event bar 287, Part B e+n-1 = 287)",
   "weight": "",
