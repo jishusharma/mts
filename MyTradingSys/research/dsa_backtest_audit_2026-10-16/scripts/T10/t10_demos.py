@@ -71,18 +71,21 @@ def main():
     H, N, REPS = 390, 200, 1000
     fwd = (c[H:] / c[:-H] - 1) * 100  # forward 390-bar return from close i
     p(f"\nD3 multiple arms under a placebo null (random entry, random sign, hold {H} bars, n={N}/arm, {REPS} reps, seed {SEED})")
+    from statistics import NormalDist
     for K in (1, 4, 12, 40):
-        anyp_g = anyp_n = 0
+        anyp_g = anyp_n = anyp_c = 0
+        z = NormalDist().inv_cdf(1 - 0.05 / K); bar = max(2.0, z + (z**3 + z) / (4 * 199))   # LABEL_MOVES.md family-wise bar
         for _ in range(REPS):
-            pg = pn = False
+            pg = pn = pc = False
             for _k in range(K):
                 idx = rng.integers(0, len(fwd), N)
                 r = fwd[idx] * rng.choice([-1, 1], N)
                 m, se = r.mean(), r.std(ddof=1) / np.sqrt(N)
                 if m >= COST and m / se >= 2: pg = True          # gross mean >= 0.14 and t_gross >= 2
                 if (m - COST) / se >= 2: pn = True               # t_net >= 2
-            anyp_g += pg; anyp_n += pn
-        p(f"  K={K:2d} arms: P(any arm passes gross>=0.14 & t_gross>=2) = {anyp_g/REPS*100:.1f}%;  P(any arm t_net>=2) = {anyp_n/REPS*100:.2f}%")
+                if m >= COST and m / se >= bar: pc = True        # corrected bar
+            anyp_g += pg; anyp_n += pn; anyp_c += pc
+        p(f"  K={K:2d} arms: P(any arm passes gross>=0.14 & t_gross>=2) = {anyp_g/REPS*100:.1f}%;  P(any arm t_net>=2) = {anyp_n/REPS*100:.2f}%;  corrected bar t>={bar:.3f}: {anyp_c/REPS*100:.1f}%")
     # D4 regime drift
     yr = pd.to_datetime(df.open_time, unit="ms", utc=True).dt.year.to_numpy()[:-H]
     p("\nD4 regime drift: mean 390-bar forward return (long-only, %) per calendar year, and a 70/30 long/short random-sign arm")
