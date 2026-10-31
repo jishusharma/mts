@@ -2,6 +2,22 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 17,
+    "folded": "2026-10-31T08:58:18Z",
+    "misses": 10,
+    "reads": [
+      "scripts/dev/run_all_tests.py",
+      "MyTradingSys/system/OPERATOR_DECISIONS.md",
+      "MyTradingSys/system/GATE_SPEED.md",
+      "scripts/dev/test_run_all_tests.py",
+      "scripts/dev/test_ship_time_guard.py",
+      "scripts/dev/test_ci_split.py",
+      "scripts/dev/test_gate_select.py",
+      "MyTradingSys/system/PARALLEL.md"
+    ],
+    "session": "agent-a522a2ef6a35d00e5"
+  },
   "created": "2026-10-31T08:45:01Z",
   "depends_on": [],
   "done_when": "run_all_tests.py comment and the ship docs state one rule (must-pass steps are exempt from deferral, ships target under 2 min, 240 s is a ceiling); a measured gate_timing.jsonl line shows 3la+3xm total; conflict row noted in OPERATOR_DECISIONS.md.",
