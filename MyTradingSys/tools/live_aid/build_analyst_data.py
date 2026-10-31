@@ -27,9 +27,13 @@ VAR = "LIVE_AID_ANALYSTS"
 
 def read_json(p, default):
     try:
-        return json.loads(Path(p).read_text(encoding="utf-8"))
+        data = json.loads(Path(p).read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return default
+    if not isinstance(data, dict):
+        sys.stderr.write("read_json: %s is valid JSON but not an object; using default\n" % p)
+        return default
+    return data
 
 
 def build(store=None, roster_file=None, stamp_file=None, days=10, offline=False, now=None):
