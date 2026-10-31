@@ -4,7 +4,9 @@
   "id": "20261029-183725-gemini-quota-status-exhaustion-dispatch",
   "need": "Broadcast: Gemini session on JIS-NUC has ~73% weekly limit remaining and 100% 5-hour limit remaining. Weekly reset in 1d 23h. Target is 100% exhaustion before reset. Please assign/file high-volume CODEX lane tasks (audits, doc work, spec-derived tests) or dispatch batches to Gemini queue. Gemini is actively picking and running unassigned CODEX tasks.",
   "posted": "2026-10-29T18:37:25Z",
-  "status": "pending",
+  "status": "taken",
+  "taken": "2026-10-31T18:39:01Z",
+  "taken_by": "JIS-NB",
   "target": "JIS-NB",
   "title": "gemini-quota-status-exhaustion-dispatch"
 }

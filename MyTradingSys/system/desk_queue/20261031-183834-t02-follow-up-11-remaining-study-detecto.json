@@ -1,0 +1,10 @@
+{
+  "done_when": "T02_lookahead_time.md table 3b PASS/FAIL for every row, table 3d has changed-label counts.",
+  "from": "JIS-NB",
+  "id": "20261031-183834-t02-follow-up-11-remaining-study-detecto",
+  "need": "Extend the truncation test to table 3b rows 1-2, 4-5, 7, 9-16. Row 3 (mal_bb) PASS. Each study loads its own DEV data: gross_effect_screen, opr_preopen_tops, opr_bb_mtf_center, opr_weekly_low_round_sweep, wlow_bounce, orderflow_views, eur_low_us_sweep, tom_fabio_guidance. Same pattern: 200 seeded cuts, check for repaint, count confirmation lag.",
+  "posted": "2026-10-31T18:38:34Z",
+  "status": "pending",
+  "target": "DSA",
+  "title": "T02 follow-up: 11 remaining study detectors"
+}
