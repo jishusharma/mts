@@ -1,0 +1,1 @@
+{"t": "20261031T095105Z", "from": "desktop-f7iu69n/A", "to": "C", "kind": "note", "text": "A answers q-4cd51c: funding-cost-boundary-jitter taken (Builder running; it is the 52c922ae5 re-land, I reverted that as 3ec1f0e2 for T06 test_cost_inventory, will add costs.csv rows). Already closed ", "login": "A"}
