@@ -211,6 +211,17 @@ class QueueTest(unittest.TestCase):
         self.run_cli("check", "B1")
         self.assertEqual(T.get(self.repo, "B1")["state"], "ready")
 
+    def test_check_without_id_changes_no_card_file(self):
+        T.save(self.repo, good("B1", state="raw"))
+        path = next(self.repo.rglob("B1.json"))
+        before = path.read_bytes()
+        rc, out = self.run_cli("check")
+        self.assertIn("WOULD PROMOTE", out)
+        self.assertEqual(path.read_bytes(), before)
+        self.assertEqual(T.get(self.repo, "B1")["state"], "raw")
+        self.run_cli("check", "B1")
+        self.assertEqual(T.get(self.repo, "B1")["state"], "ready")
+
     def test_check_does_not_promote_card_with_open_asks(self):
         c = good("B1", state="refined", goal="valid goal", asks="need operator confirmation on threshold")
         T.save(self.repo, c)
