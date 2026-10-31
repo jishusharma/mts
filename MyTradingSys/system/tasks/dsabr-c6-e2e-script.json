@@ -2,6 +2,22 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 10,
+    "folded": "2026-10-31T13:05:07Z",
+    "misses": 17,
+    "reads": [
+      "scripts/aibridge/src/agent.ps1",
+      "scripts/aibridge/extension/loop.js",
+      "MyTradingSys/tests/test_aibridge_exploratory.py",
+      "scripts/dev/aibridge_verify.py",
+      "scripts/aibridge/tests/block_select.test.js",
+      "scripts/aibridge/RELEASES.json",
+      "scripts/aibridge/scripts/run-task.ps1",
+      "scripts/aibridge/tests/fixtures/deepseek_reply.html"
+    ],
+    "session": "agent-ab4f7332cbd85970f"
+  },
   "created": "2026-10-31T10:04:28Z",
   "depends_on": [],
   "done_when": "script exits 0 only when all rows PASS; JSON output; writes only under <root>/run/e2e",
