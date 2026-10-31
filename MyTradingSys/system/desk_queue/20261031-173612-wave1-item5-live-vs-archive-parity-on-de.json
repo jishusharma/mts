@@ -1,0 +1,10 @@
+{
+  "done_when": "ITEM5_PARITY_RESULT.md on fast-track with: minutes compared, mismatch count per feed, candidates vs alerts counts",
+  "from": "JIS-NB",
+  "id": "20261031-173612-wave1-item5-live-vs-archive-parity-on-de",
+  "need": "Rerouted from JIS-NB because the live data for 2026-10-29 is not on this machine. Run the same brief on the Lenovo: compare per minute live-recorded aggTrades volume+count, OI and liquidation sums vs the archived copy (data.binance.vision futures/um daily aggTrades + metrics zips for perp) and every setup candidate/order logged that day vs alerts shown. Write MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM5_PARITY_RESULT.md.",
+  "posted": "2026-10-31T17:36:12Z",
+  "status": "pending",
+  "target": "DESKTOP-F7IU69N",
+  "title": "Wave1 item5: live-vs-archive parity on DESKTOP-F7IU69N"
+}
