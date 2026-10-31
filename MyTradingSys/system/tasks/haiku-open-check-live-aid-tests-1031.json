@@ -1,12 +1,20 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T12:40:29Z",
   "commands": [
     "python -m pytest -q MyTradingSys/tools/live_aid/test_live_aid.py",
     "python -m pytest -q MyTradingSys/tools/live_aid/test_live_aid_replay.py",
     "python -m pytest -q MyTradingSys/research/sim_desk/test_page_click.py",
     "python -m pytest -q scripts/dev/test_artifact_pages.py"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-31T12:40:34Z",
+    "misses": 0,
+    "reads": [],
+    "session": "agent-ac3a0a46e86a51bdd"
+  },
   "created": "2026-10-30T21:09:53Z",
   "depends_on": [],
   "done_when": "final report holds exactly 4 lines, one per test file, each with passed/failed/skipped counts parsed from that file's own output; no repo file changed.",
@@ -18,6 +26,12 @@
   "id": "haiku-open-check-live-aid-tests-1031",
   "lane": "HAIKU",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "test_live_aid.py: 1 passed, 0 failed, 33 skipped; test_live_aid_replay.py: 1 passed, 0 fai",
+      "ref": "4411487d2",
+      "utc": "2026-10-31T12:40:29Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -37,7 +51,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "test_live_aid.py: 1 passed, 0 failed, 33 skipped; test_live_aid_replay.py: 1 passed, 0 failed, 14 skipped; test_page_click.py: 0 passed, 0 failed, 4 skipped; test_artifact_pages.py: 8 passed, 0 failed, 8 skipped",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tools/live_aid/test_live_aid.py",
     "MyTradingSys/tools/live_aid/test_live_aid_replay.py",
@@ -50,12 +69,13 @@
   "scope_sha": "ab9ff9586bd5",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "run each command from the repo root, one at a time (these are pytest files: plain python prints nothing); keep the last 15 lines",
     "parse the pytest summary line of each (passed/failed/skipped); never judge from truncated output",
     "report 4 lines: <file>: <p> passed, <f> failed, <s> skipped; quote each failure's first error line and file it as a raw card via tasks.py new (id suffix -1031)"
   ],
+  "taken": "2026-10-31T12:40:29Z",
   "tests": "count-based: 4 count lines in the report; card not done if any file shows no parsed summary",
   "title": "Haiku: run the 3 new live-aid tests and test_artifact_pages.py once, report pass counts",
   "weight": "ROUTINE",

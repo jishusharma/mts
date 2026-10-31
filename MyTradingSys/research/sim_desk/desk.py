@@ -431,7 +431,7 @@ def export_result(out, study, results_dir=RESULTS):
                     {'label': '95 % range', 'value': f"{out['lo']:+.3f} to {out['hi']:+.3f} R" if out.get('lo') is not None else '-'},
                     {'label': 'if you put in $1,000', 'value': f"${c['usd'][-1]:.0f}" if c.get('n') else '-'},
                     {'label': 'try number', 'value': str(out['try_no'])}],
-           'examples': ex, 'source_files': ['MyTradingSys/research/sim_desk/desk.py'], 'commit': 'local desk run'}
+           'examples': ex + _chart_examples(out), 'source_files': ['MyTradingSys/research/sim_desk/desk.py'], 'commit': 'local desk run'}
     for k in doc['kpis']:
         if k.get('tone') is None:
             k.pop('tone', None)
@@ -440,6 +440,13 @@ def export_result(out, study, results_dir=RESULTS):
     (d / f'{rid}.json').write_text(json.dumps(doc, indent=1, ensure_ascii=False) + NL, encoding='utf-8', newline=NL)
     refresh_catalogue(d)
     return rid
+
+
+def _chart_examples(out):
+    """[the 'charts' example] when the run carries the desk's 3 winners + 3 losers (run_setting(..., charts=True)), else []."""
+    import charts as ch
+    e = ch.export_example(out.get('charts') or [])
+    return [e] if e else []
 
 
 def refresh_catalogue(results_dir=RESULTS):
