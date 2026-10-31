@@ -6,7 +6,7 @@
   "window_resets": 1793433270,
   "window_used": 13.0
  },
- "at": "2026-10-31T07:30:47Z",
+ "at": "2026-10-31T07:54:07Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -23,9 +23,24 @@
   "astra_runs": 0,
   "week_pts": 9.0,
   "window_pts": 5.0,
-  "window_runs": 11
+  "window_runs": 12
  },
  "runs": [
+  {
+   "at": "2026-10-31T07:53:05Z",
+   "card": "gpt-audit-formulas-vs-positioning-layer",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 54,
+   "tokens_out": 4083,
+   "tokens_total": 461594,
+   "tokens_uncached": 34983,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-31T07:29:45Z",
    "card": "gpt-audit-formulas-vs-trendlines-layer",
@@ -160,21 +175,6 @@
    "tokens_uncached": 40793,
    "week_pts": 1.0,
    "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-31T04:02:07Z",
-   "card": "gpt-bug-hunt-promote-gates-vs-tests",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": " | release failed: sync: no claim gpt-bug-hunt-promote-gates-vs-tests on origin/claims",
-   "outcome": "DONE",
-   "seconds": 66,
-   "tokens_out": 6446,
-   "tokens_total": 614610,
-   "tokens_uncached": 56484,
-   "week_pts": 0.0,
-   "window_pts": 1.0
   }
  ]
 }
