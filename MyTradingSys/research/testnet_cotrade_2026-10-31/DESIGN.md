@@ -85,3 +85,37 @@ Ideas (OURS, to test with his recorded sessions, not rules yet):
 - Testnet fills, depth and wicks are not real: results show process (speed, discipline, recording), not edge. Fees (the repo's runs assume 0.05 % taker per side, OURS) and slippage are not in testnet P&L; the extract must subtract them.
 - "Quick trades" mean market orders in the most volatile 15 min of the day: expect worse prices than he sees.
 - To answer "does his entry beat the layers": per call record which layers fired in the same 15 min (from the live aid), the entry, 15/60/240 min outcome, MFE/MAE, fee-net R; compare with (a) the layer's own signal and (b) a random entry at the same minute. Need about 50 calls before reading anything.
+
+## 7. Hedge in profit ("satellite / cluster"), added 2026-10-31
+
+Ask (operator, voice, 2026-10-31): "if I am in a trade and I am in profit, I would like to launch a counter trade, which will be my hedge
+... how much hedge we should do should be understood ... depending on how the market is changing ... this should also be built into this."
+
+| What the repo already has | Source |
+|---|---|
+| The idea, written down: any open position can spawn small, separately-stopped counter positions on a separate subaccount | `items/T048_satellite_framework.md` (OPEN, design only) |
+| His two-account hedge ask (hedge after fees+profit are covered; hedge at a Bollinger/divergence extreme) | `items/T053_two_account_hedge_scalping.md` |
+| Practitioner research: no external evidence that hedge loops pay; an equal-size hedge is flat, so any profit must come from the un-hedge rule | `research/_archive/loose_2026-10/T053_TWO_ACCOUNT_HEDGE_RESEARCH.md` |
+| Backtest of 14 hedge variants, 1m BTC 2022-01..2025-08, 0.05 % taker per side (OURS): EVERY variant was worse than not hedging, by 9 to 250 bp per trade (t -5 to -125) | commit 4a36c8a38, `t053_hedge_variants_2026-10-30/results.txt`; later reverted from trunk (lint), so it is not on trunk now |
+| Which outcome class could trigger a hedge (proposal) | `research/fast_track_2026-09-27/T058_BROKEN_EXTREMES.md` |
+
+Corrections to the idea (OURS):
+- Deribit nets one BTC-PERPETUAL position per account. A counter order on the SAME account is not a hedge; it just closes part of the
+  trade. A real two-sided hedge needs the second leg on ANOTHER existing slot (jishu_1..4 / jishu_22 / main: no new key, per his decision).
+- A hedge of equal size locks the profit and pays two more fees plus funding on both legs. Economically that equals taking profit,
+  but costs more. A part-size hedge equals a part close. The only thing a hedge buys is keeping the first trade open for a later target.
+- So "how much to hedge" is really "how much to take off, and when to put it back". Size rule options to test on his recorded sessions:
+  fixed share (25/50/100 % of the open size), share that grows with open profit in R, or full hedge at a named level/extreme.
+
+Build (P5, after P1-P3): `cotrade.py hedge --of <trade> --pct 50 --at <price|now> --stop S` places the opposite leg on a second
+existing slot, journals the parent/child link, and the live aid shows net size across both accounts. Caps sum both accounts.
+A kill on one slot must flatten BOTH legs (else a half-closed hedge becomes a naked trade).
+
+## 8. Where we are today (2026-10-31)
+
+| Item | State |
+|---|---|
+| Ready to fire your trades now? | NO. P1 (`cotrade.py`) is a ready card, not built. |
+| Rule blocking it | CLAUDE.md hard rule: "Builders never ... open trades". Co-trading needs a written carve-out first (conflict filed): "testnet orders the operator calls by name, placed only through cotrade.py, journaled; never mainnet". |
+| Showing it in the browser | After P1: you say "fire ...", the reply shows the order, and the same order appears on test.deribit.com (Chrome) under Open orders / Positions. |
+| Mainnet afterwards | Separate money gate, your call only. Exists: `--mainnet` + typed confirmation, $50 per order cap (`deribit_orders.py:84-87`), `execution/MAINNET_READINESS_CHECKLIST.md`. Repo goes private at mainnet (CLAUDE.md). |
