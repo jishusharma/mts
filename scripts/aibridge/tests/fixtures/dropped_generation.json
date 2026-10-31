@@ -1,0 +1,11 @@
+{
+  "note": "E4 fixture (virtual seconds): result posted at t0, reply grows to t0+5 s (busy), then no final text and a quiet page to t0+50 s.",
+  "events": [
+    {"t": 0, "type": "posted"},
+    {"t": 1, "type": "tick", "busy": true}, {"t": 3, "type": "tick", "busy": true}, {"t": 5, "type": "tick", "busy": true},
+    {"t": 10, "type": "tick", "busy": false}, {"t": 20, "type": "tick", "busy": false}, {"t": 30, "type": "tick", "busy": false},
+    {"t": 40, "type": "tick", "busy": false}, {"t": 50, "type": "tick", "busy": false}, {"t": 60, "type": "tick", "busy": false},
+    {"t": 70, "type": "tick", "busy": false}, {"t": 110, "type": "tick", "busy": false}, {"t": 130, "type": "tick", "busy": false}
+  ],
+  "notice_by_s": 60
+}

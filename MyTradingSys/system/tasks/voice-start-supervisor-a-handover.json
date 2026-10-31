@@ -2,6 +2,22 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-31T13:52:27Z",
+    "misses": 47,
+    "reads": [
+      "scripts/dev/tasks.py",
+      "scripts/dev/mts_signal.py",
+      "scripts/dev/sync.py",
+      "scripts/dev/supervisor.py",
+      "scripts/dev/usage_reminder.py",
+      "scripts/dev/test_artifact_pages.py",
+      "scripts/dev/role_loader.py",
+      "scripts/dev/health_audit.py"
+    ],
+    "session": "50329dcd-4bc6-42b4-9b80-42153f9c1686"
+  },
   "created": "2026-10-28T06:36:45Z",
   "depends_on": [],
   "done_when": "The three phrases ('Supervisor A', 'supervisor login a', 'login a') each print the ROLE LOADED banner plus the hand-over goals in a recorded run.",
