@@ -1,0 +1,39 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T14:22:02Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "meta-label-1h-dev-ext-check",
+  "lane": "SONNET",
+  "layers": [
+    "cryptocred",
+    "krown"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/meta_label_breaks_2026-10-31/RESULT.md"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Meta-label 1h lead, fresh-data check: refit the frozen meta.py 1h model on all DEV, score tf_break 1h events from BTCUSDT perp 1m 2019-09..2021-12 (not on JIS-NB: fetch from data.binance.vision first); pass = best third net > 0 with week-block CI lower > 0; VALIDATION stays sealed",
+  "weight": "",
+  "worker": ""
+}

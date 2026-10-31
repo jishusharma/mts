@@ -17,7 +17,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "CORRECTED 2026-10-31: tf_break 'fade R' already trades back inside the level (= follows the reclaim) and lost; the old title read it backwards. What stays untested is the video's timing: entry at the reclaim close (tf_break enters N bars after the break) and the stop on a close back below (tf_break exits after 4 bars). The mirror (trade the failed reclaim, break direction) is a separate idea, under 1.1 SE in both splits.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -32,7 +32,7 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "Follow the reclaim (not fade): 4h/1D level reclaim, enter on close back above, stop = close back below (Brando cP6xvs2I02s 03:58-04:02, 08:29-08:35); tf_break 4h fade-R lost -0.42% DEV / -0.63% VAL fee-net, so test the opposite side fee-net with placebo",
+  "title": "Reclaim with the video's timing: 4h/1D level reclaim, enter at the reclaim close, stop = close back below (Brando cP6xvs2I02s 03:58-04:02, 08:29-08:35); tf_break fade-R (same side, entry N bars after the break, 4-bar exit) lost -0.42% DEV / -0.63% VAL fee-net at 4h",
   "weight": "",
   "worker": ""
 }
