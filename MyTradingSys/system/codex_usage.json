@@ -2,11 +2,11 @@
  "allowance": {
   "plan": "plus",
   "week_resets": 1793780113,
-  "week_used": 60.0,
+  "week_used": 69.0,
   "window_resets": 1793485599,
-  "window_used": 1.0
+  "window_used": 61.0
  },
- "at": "2026-10-31T17:29:28Z",
+ "at": "2026-10-31T18:53:52Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -20,12 +20,57 @@
  },
  "host": "JIS-NUC",
  "lab": {
-  "astra_runs": 0,
-  "week_pts": 10.0,
-  "window_pts": 1.0,
-  "window_runs": 1
+  "astra_runs": 1,
+  "week_pts": 16.0,
+  "window_pts": 42.0,
+  "window_runs": 4
  },
  "runs": [
+  {
+   "at": "2026-10-31T18:52:09Z",
+   "card": "gpt-mutation-wavetrend-1031",
+   "effort": "low",
+   "kind": "audit",
+   "model": "gpt-6-astra",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 96,
+   "tokens_out": 6936,
+   "tokens_total": 770746,
+   "tokens_uncached": 57634,
+   "week_pts": 6.0,
+   "window_pts": 39.0
+  },
+  {
+   "at": "2026-10-31T18:29:07Z",
+   "card": "gpt-mutation-trendline-core-1031",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "4 uncommitted file(s) left in F:\\MTS\\mts-codex-lab: MyTradingSys/backtest/layers/trendlines/test_trendline_core_spec.py",
+   "outcome": "OUT_OF_SCOPE",
+   "seconds": 59,
+   "tokens_out": 3691,
+   "tokens_total": 441243,
+   "tokens_uncached": 50352,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
+  {
+   "at": "2026-10-31T17:52:23Z",
+   "card": "gpt-mutation-trendline-core-1031",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "6 uncommitted file(s) left in F:\\MTS\\mts-codex-lab: MyTradingSys/backtest/layers/trendlines/test_trendline_core_spec.py",
+   "outcome": "OUT_OF_SCOPE",
+   "seconds": 183,
+   "tokens_out": 12941,
+   "tokens_total": 1512233,
+   "tokens_uncached": 80156,
+   "week_pts": 0.0,
+   "window_pts": 2.0
+  },
   {
    "at": "2026-10-31T17:27:10Z",
    "card": "gpt-rederive-tom-vp-return-to-value",
@@ -128,51 +173,6 @@
    "tokens_out": 2219,
    "tokens_total": 291005,
    "tokens_uncached": 45202,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-31T07:53:05Z",
-   "card": "gpt-audit-formulas-vs-positioning-layer",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 54,
-   "tokens_out": 4083,
-   "tokens_total": 461594,
-   "tokens_uncached": 34983,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-31T07:29:45Z",
-   "card": "gpt-audit-formulas-vs-trendlines-layer",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 55,
-   "tokens_out": 4186,
-   "tokens_total": 438119,
-   "tokens_uncached": 51981,
-   "week_pts": 0.0,
-   "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-31T07:06:46Z",
-   "card": "gpt-audit-formulas-vs-turn_of_candle-layer",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 33,
-   "tokens_out": 2294,
-   "tokens_total": 331156,
-   "tokens_uncached": 40734,
    "week_pts": 0.0,
    "window_pts": 0.0
   }

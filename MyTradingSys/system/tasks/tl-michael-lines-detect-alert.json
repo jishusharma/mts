@@ -1,34 +1,53 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python MyTradingSys/research/trendlines_2026-10-17/count_only.py --split DEV --tfs 1d,4h --out MyTradingSys/research/michael_lines_2026-11/counts"
+  ],
   "created": "2026-10-31T13:36:46Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/michael_lines_2026-11/STATED_LINES.md (>= 1 row per video that mentions a line) and RESULT.md with event counts n per kind and a go/no-go line; VALIDATION and HOLDOUT untouched",
+  "est_turns": 30,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Step 1 of the operator ask: table every trend line Michael states in the 2026-10-31 yt_feed transcripts (quote, video, timestamp, asset, line type), replay trendline_core on BTC DEV, and report how many detector events (touch, bounce, break, retest) exist per line kind. Descriptive only; live alerts are a later card.",
   "id": "tl-michael-lines-detect-alert",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "PLANNER 2026-11-01: DECISION (OURS): split the ask; live alert events change the live path (CRITICAL) and wait for this card's verdict; the coordinator files that card. Needs a Sonnet reviewer ACCEPT (IMPORTANT).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
+  "scope_in": [
+    "MyTradingSys/research/yt_feed_2026-10-31/transcripts_michael-pizzino-new10/",
+    "MyTradingSys/backtest/layers/trendlines/trendline_core.py",
+    "MyTradingSys/research/trendlines_2026-10-17/count_only.py",
+    "MyTradingSys/research/michael_lines_2026-11/"
+  ],
+  "scope_out": [
+    "live_layers.py / live_runner_cli.py (alert wiring is a separate live-path card after this verdict)",
+    "orders, VALIDATION/HOLDOUT bars",
+    "any edge claim"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/yt_feed_2026-10-31/MICHAEL_BAR_UPDATE_2026-10-31.md:30,56,69 (line quotes)",
+    "MyTradingSys/research/trendlines_2026-10-17/TRENDLINE_CONTRACT.md (E5, B6)",
+    "MyTradingSys/backtest/splits.py:1-26"
+  ],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Grep the 10 transcripts for 'trend line|trendline' and write michael_lines_2026-11/STATED_LINES.md: video id, timestamp, quote, asset, kind (support/resistance, break, retest); NOT_IN_DATA where the line exists only in the chart frame",
+    "Replay trendline_core via count_only.py on BTC 4h/1d DEV (2022-01-01..2024-06-30, splits.py guard) and write counts per event kind (touch, bounce, break, retest)",
+    "RESULT.md: stated-line kinds vs detector event kinds, n for each, what cannot be compared (frames not in repo), and a go/no-go line for the alert card; label each parameter OURS or SOURCED"
+  ],
+  "tests": "MyTradingSys/research/michael_lines_2026-11/test_stated_lines.py: the extractor finds the known quote at 7wl0C1lVfRE 00:03:51 ('our trend line, our 50% level') and rejects a line with no timestamp; fails before the extractor exists",
   "title": "Trend lines as Michael draws them (his charts, yt_feed_2026-10-31 transcripts + chart frames): replay trendline_core on BTC DEV, compare to his stated lines; add live alert-only events (touch, bounce, break, retest) via live_layers; no orders; operator ask 10-31",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

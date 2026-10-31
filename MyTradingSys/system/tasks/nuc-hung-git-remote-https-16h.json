@@ -1,34 +1,59 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest scripts/dev/test_mts_doctor.py scripts/dev/test_git_net_deadline.py -q",
+    "python scripts/dev/mts_doctor.py --no-process"
+  ],
   "created": "2026-10-31T13:08:36Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "mts_doctor.py prints a GIT-HUNG line (OK on a clean host); the source-scan test passes with zero unguarded network git calls in scope_in; audit table in the commit body",
+  "est_turns": 28,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "A git fetch/push hung 16 h on git-credential-manager on the NUC (2026-10-31 02:31Z). sync.py git() already has a 180 s deadline and GIT_TERMINAL_PROMPT=0 (sync.py:76-92); other tools do not. Give every network git caller a deadline and no-prompt env, and add a doctor check for git network processes older than 30 min.",
   "id": "nuc-hung-git-remote-https-16h",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "PLANNER 2026-11-01: half the card was already shipped (sync.py git(), e1ac77891); scope narrowed to the other callers + doctor. Needs a Sonnet reviewer ACCEPT before ready (IMPORTANT).",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
+  "scope_in": [
+    "scripts/dev/mts_doctor.py",
+    "scripts/dev/test_mts_doctor.py",
+    "scripts/dev/auto_deploy.py",
+    "scripts/dev/dsa.py",
+    "scripts/dev/trunk_lag.py",
+    "scripts/dev/lane_health.py",
+    "scripts/dev/nuc_wake.py",
+    "scripts/dev/test_git_net_deadline.py",
+    "scripts/dev/run_extra_tests.py"
+  ],
+  "scope_out": [
+    "global git config on any machine (goes out as mts_signal.py broadcast --cmd after the doctor check lands)",
+    "sync.py git() (already done)",
+    "killing processes"
+  ],
+  "size": "M",
+  "sources": [
+    "scripts/dev/sync.py:75-92 (existing deadline, bg-process-audit 2026-10-28)",
+    "card title (hang 2026-10-31 02:31Z, parent cmd.exe from 10-30 21:01Z)"
+  ],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Audit: grep subprocess git fetch/push/pull/ls-remote/clone in scripts/dev (non-test) and list which lack timeout= and GIT_TERMINAL_PROMPT in the commit body; fix those in scope_in (reuse sync.GIT_NOPROMPT, sync.GIT_NET_TIMEOUT_S)",
+    "Doctor check GIT-HUNG (add to CHECK_NAMES): stdlib process list (Get-CimInstance Win32_Process on Windows, ps elsewhere) via an injectable procs_fn; WARN when a git or git-credential-manager process running fetch/push/pull/credential is older than 30 min (OURS), naming pid, age and parent",
+    "Tests first, red on old code: fake process list with a 40 min git fetch -> WARN, 10 min -> OK, no git -> OK; a source scan test that no network git subprocess in scope_in lacks timeout=",
+    "Register test_git_net_deadline.py in run_extra_tests.py EXTRA; run_all_tests --quick; ship"
+  ],
+  "tests": "scripts/dev/test_git_net_deadline.py (source scan) and new GIT-HUNG cases in test_mts_doctor.py; both fail on the current tree",
   "title": "NUC: a git fetch/push hung 16 h on git-credential-manager (started 2026-10-31 02:31Z, parent cmd.exe from 10-30 21:01Z); add a hard timeout and GIT_TERMINAL_PROMPT=0 / credential.interactive=never to sync.py and tool git calls, and a doctor check for git processes older than 30 min",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

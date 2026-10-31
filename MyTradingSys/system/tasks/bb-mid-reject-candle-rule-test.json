@@ -21,14 +21,15 @@
   "not_twin_of": [
     "backtest-pre-us-failed-break-dev-run"
   ],
-  "note": "PLANNER 2026-10-31: content complete; parked behind depends_on bb-state-regime-tf-map (blocked) + setup-review-with-operator (ready). S0: unpark when both are done; no further refining needed.",
+  "note": "PLANNER 2026-10-31: content complete; parked behind depends_on bb-state-regime-tf-map (blocked) + setup-review-with-operator (ready). S0: unpark when both are done; no further refining needed. PLANNER 2026-11-01: scope_in lists run_extra_tests.py for test_bb_mid_reject.py; weight IMPORTANT (decision numbers) needs a reviewer ACCEPT when unparked.",
   "prio": 3,
   "refine_tries": 2,
   "refined_by": "",
   "refs": [],
   "result": "",
   "scope_in": [
-    "MyTradingSys/research/bb_mid_reject_2026-10/"
+    "MyTradingSys/research/bb_mid_reject_2026-10/",
+    "scripts/dev/run_extra_tests.py"
   ],
   "scope_out": [
     "scripts/"
@@ -45,6 +46,6 @@
   ],
   "tests": "test_bb_mid_reject.py: the 10-29 21:35-22:05 bars give one short at 79,553 with stop 79,688; fails before the rule exists",
   "title": "Operator BB-mid rejection candle rule (shot 8faf2cac14be): pre-reg and fee-net DEV test after the map and his setup pick",
-  "weight": "",
+  "weight": "IMPORTANT",
   "worker": "session"
 }

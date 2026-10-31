@@ -33,8 +33,8 @@ copy `tests/*.py.new` to `*.py` next to promoted modules (imports are
 `.py.new` files under that package name (not in the repo). Fail-first: with the modules absent, collection fails.
 
 ## Open items / unknowns (not guessed)
-- `engine.py`: `prior_ranges` container shape; one S4 tier for the whole replay; model A `confirm` and model B
-  IN_TRADE are reported without management (the scanners do not return what the trade functions need);
+- `engine.py`: `prior_ranges` container shape; one S4 tier for the whole replay; model A `confirm`
+  IN_TRADE is reported without management (the scanner does not return what the trade function needs);
   `open_idx` default; verdict when nothing is mid-state is IDLE with model None.
 - `manage.py`: multi-leg adds are not executed (`add_allowed`/`add_size` are decision helpers only).
 - `models.py` docstring lists the readings of the spec made for model A impulse step, model A confirm touch rule,
