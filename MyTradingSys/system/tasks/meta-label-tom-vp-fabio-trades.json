@@ -2,6 +2,17 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 27,
+    "folded": "2026-10-31T14:14:32Z",
+    "misses": 49,
+    "reads": [
+      "MyTradingSys/research/sim_desk/results/desk-tom_vp-0fd1a3c0.json",
+      "MyTradingSys/research/sim_desk/studies/_bars.py",
+      "MyTradingSys/research/sim_desk/results/desk-tom_vp-c8d2f341.json"
+    ],
+    "session": "agent-a2b94a287cd77621a"
+  },
   "created": "2026-10-31T13:28:36Z",
   "depends_on": [],
   "done_when": "",
