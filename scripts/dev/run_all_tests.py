@@ -114,7 +114,7 @@ LOCAL_SKIP = ("3k", "4", "3dk", "3ad", "3bk")   # OURS: BRIEF 3.3, dropped from 
 SLOW_FILE_S = 30     # files measured at >= this many seconds stay in their shard only
 CHEAP_STEPS += ("3qn", "3gi")   # 3la (11 s) is not cheap: it runs with the main phase
 # GATE_SPEED X2 (ship only, --fast, smoke mode): the fast path. One phase, tests chosen by gate_impact, a time budget, the rest left to CI.
-FAST_STEP_TIMEOUT_S = 240     # OURS: a fast-gate step still running after this is hung (a held slot would block every later ship)
+FAST_STEP_TIMEOUT_S = 240     # OURS: ceiling (not a target) for a must-pass step; still running at it = hung, the ship fails (a held slot would block every later ship)
 GATE_HARD_STEP_S = 60         # OURS: step-phase deadline of every fast ship; ship overhead measured ~45-80 s on a loaded JIS-NB (2026-10-25: 171 s wall at 90), total stays under 120 s
 GATE_DEADLINE = None          # monotonic time by which a gate-file ship's steps must be done
 TIMEOUT_DEFERS = False        # gate-file ship: a step over the cap is left to CI (reported, not failed); set in main()
@@ -227,6 +227,9 @@ _TIMED_OUT_DEFERRED_CMDS: set[str] = set()
 # CI_RED_ROOT_CAUSES 2026-10-31: three reverts in one day (phase tag 3la, F1 cost inventory, sim backfill) shipped because the fast
 # gate's 60 s deadline cut 3la/3xt on a loaded machine and counted the cut as a PASS. Commands here (3la, the 3xm must-pass extras)
 # are never deferred: they get FAST_STEP_TIMEOUT_S from their own start, and a timeout fails the ship.
+# One rule (2026-10-31, operator 10-25 "every ship under 2 minutes" outranks commit 201d47c73): a fast ship targets under 2 minutes.
+# Must-pass steps (NO_DEFER_CMDS) are exempt from deferral; 240 s is their ceiling, not a target (measured 6.6 s together).
+# Every other step still running at the 60 s step deadline is deferred to CI.
 NO_DEFER_CMDS: set[str] = set()
 
 
@@ -1334,6 +1337,7 @@ def main(argv=None):
     if fast_applied:
         # Operator 2026-10-25 "every ship under 2 minutes": EVERY fast ship gets the hard cap (it was gate-file ships only, so a
         # signals change hit the 240 s step timeout and failed); what does not finish by the deadline is deferred to CI, not failed.
+        # Must-pass steps (NO_DEFER_CMDS) are the one exception: they keep the 240 s ceiling and fail there (one rule, see above).
         STEP_TIMEOUT_S, TIMEOUT_DEFERS = GATE_HARD_STEP_S, True
         GATE_DEADLINE = time.monotonic() + GATE_HARD_STEP_S   # the whole step phase, not only each step
         print(f"Fast gate (GATE_SPEED X2): {fast_info['reached']} test files reached ({fast_info['direct']} direct), {fast_info['kept']} units kept, "
