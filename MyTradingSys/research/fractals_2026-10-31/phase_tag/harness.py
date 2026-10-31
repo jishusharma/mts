@@ -35,15 +35,16 @@ def power_n(sd, effect=0.10, alpha=0.05, power=0.80, n_cells=1):
 
 def block_labels(n, n_cells, mean_block, rng):
     """Autocorrelated cell labels: contiguous blocks of random length (geometric, mean mean_block)."""
-    lab = np.empty(n, dtype=int)
-    i = 0
+    runs, lens = [], []
+    total = 0
     cur = int(rng.integers(n_cells))
-    while i < n:
+    while total < n:
         L = int(rng.geometric(1.0 / mean_block))
-        lab[i:i + L] = cur
-        i += L
+        runs.append(cur)
+        lens.append(L)
+        total += L
         cur = int((cur + rng.integers(1, n_cells)) % n_cells) if n_cells > 1 else 0
-    return lab
+    return np.repeat(np.array(runs, dtype=int), lens)[:n]
 
 
 def inject_edge(outcomes, labels, cell, delta=0.3, frac=0.2, rng=None):
