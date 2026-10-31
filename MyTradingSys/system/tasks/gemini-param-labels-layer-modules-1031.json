@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "git grep -n \"=\" -- MyTradingSys/backtest/layers/wavetrend | head -5"
+  ],
+  "created": "2026-10-31T00:53:28Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_burn_2026-10-31/LAYER_PARAM_LABELS.md exists; a row per parameter (file:line, value, label, source or NOT_IN_DATA); a list of unlabelled constants",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "For every tunable constant in MyTradingSys/backtest/layers/{wavetrend,rsi,krown,positioning,turn_of_candle}: label SOURCED (with analyst quote path and line) or OURS; flag any labelled SOURCED without a quote.",
+  "id": "gemini-param-labels-layer-modules-1031",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini rules: facts with file:line only, no trading verdict, no code change; NOT_IN_DATA where the repo has no answer; captions first for any YouTube work (fetch_captions_timed.py, quote only from the caption file, one try per video, 429 -> UNVERIFIED), verify_extract_quotes.py exit 0. Operator 2026-10-31: exhaust the Gemini weekly quota before it resets, test-first and catch bugs early. Final report ends with a Noticed: line.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T00:53:28Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/gemini_burn_2026-10-31/ (new files only)"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code edits; any backtest or trading verdict; .secrets and .env"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "list constants per module",
+    "search research notes and extracts for each source",
+    "write the table"
+  ],
+  "tests": "report only; every finding cites file:line",
+  "title": "[GEMINI] label every parameter in the layer modules (wavetrend, rsi, krown, positioning, turn_of_candle) SOURCED or OURS with the source quote or NOT_IN_DATA",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
