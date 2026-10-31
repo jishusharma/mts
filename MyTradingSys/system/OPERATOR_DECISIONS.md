@@ -1579,3 +1579,8 @@ Conflict: commit 201d47c73 (3la + 3xm must-pass, 240 s cap) vs operator 10-25 "e
 ```json
 {"id": "d-retire-btc-live-aid-artifact", "order": 97, "date": "2026-10-31", "status": "DECIDED", "question": "Operator: anything else to delete among the existing artifacts?", "answer": "Default (OURS): retire the BTC Live Aid artifact. On claude.ai every feed reads NOT_IN_DATA; the working page is tools/live_aid/live_aid.html from disk. Keep Setup Review (open S1 step, 0 of 22 answered). Deleted by the operator 2026-10-31 on login C: Control Room, CBP Monday Desk, CBP Consensus Desk, Session Planner (registry `deleted`)."}
 ```
+
+## d-jala-fractal-next-studies | decided 2026-10-31 | Lead (desktop, login C)
+```json
+{"id": "d-jala-fractal-next-studies", "order": 96, "date": "2026-10-31", "status": "DECIDED", "question": "Jala fractal lessons and next fractal studies?", "answer": "OPERATOR (2026-10-31, chat): 'what abt Jala's fractal analysis? what MTS can learn from it? What other studies needs applying - anything latest cutting edge?' DECISION (OURS): run card gemini-jala-fractal-method on NUC Gemini (low); file jala-400d-close-trigger-study (fractal as context after a 400D close break, n from alts) and tsfm-zero-shot-vs-analog (foundation-model forecasts vs kNN analogs). Meta-label and CSCV already carded.", "done": "cards filed, Gemini broadcast"}
+```
