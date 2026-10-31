@@ -23,7 +23,7 @@
   "mutation_check": "",
   "note": "PLANNER 2026-11-01: content complete; entry gate is ROADMAP P2 (P1 VALIDATION pass AND S0 exit). Panel (2.0) split off as a follow-up so this stays <= 30 turns. Needs a Sonnet reviewer ACCEPT (IMPORTANT).",
   "prio": 3,
-  "refine_tries": 0,
+  "refine_tries": 1,
   "refined_by": "",
   "refs": [
     "MyTradingSys/research/meta_label_roadmap_2026-10-31/ROADMAP.md",
