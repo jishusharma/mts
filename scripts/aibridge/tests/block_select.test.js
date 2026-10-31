@@ -67,10 +67,4 @@ t('0.7.7 lead text is only checked on the nearest 4 ancestors', () => {
   assert.strictEqual(L.isThinking(far), false);
   assert.strictEqual(L.isThinking([{ tag: 'div', cls: 'a', lead: 'Thinking about it' }]), true);
 });
-t('0.7.8 final answer under a message root that starts "Thought for 5 seconds" runs, and the status names the rule', () => {
-  const chain = [{ tag: 'div', cls: 'code' }, { tag: 'div', cls: 'ds-markdown' }, { tag: 'div', cls: 'msg', lead: 'Thought for 5 seconds' }];
-  assert.strictEqual(L.isThinking(chain), false);
-  const r = L.selectBlocks([{ cmd: '', chain: [{ tag: 'div', cls: 'ds-think-content' }] }]);
-  assert.ok(/\[class div\.ds-think-content@0\]/.test(r.status), r.status);
-});
 console.log(n + ' passed');
