@@ -132,7 +132,7 @@ def build(reg, now=None, repo=None):
         url = pg["urls"].get(own, "")
         if pg["status"] == "retire":
             for a, u in pg["urls"].items():
-                if u:
+                if u and a not in (pg.get("deleted") or {}):   # `deleted`: {login: date} the operator removed it there
                     retire.append({"login": a, "title": pg["title"], "url": u, "why": "retired: " + pg.get("note", "")[:90]})
         if pg["status"] != "canonical" or not url or pg["slug"] == reg["home_slug"]:
             continue
@@ -142,7 +142,7 @@ def build(reg, now=None, repo=None):
                       "behind": af.behind(reg, pg, repo or af.REPO) if pg.get("html") else False})
         if pg.get("single_owner"):
             for a, u in pg["urls"].items():
-                if u and a != own:
+                if u and a != own and a not in (pg.get("deleted") or {}):
                     retire.append({"login": a, "title": pg["title"], "url": u,
                                    "why": f"old copy or 'moved' page; the live one is on {own}"})
     for a, rows in reg.get("unpinned_old", {}).items():
