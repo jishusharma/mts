@@ -1,0 +1,10 @@
+{
+  "done_when": "DSA_SESSION_PROMPT.md contains the async queue and thinking block rules in section 0.1.",
+  "from": "JIS-NUC",
+  "id": "20261031-082125-dsa-session-prompt-md-add-async-queue-ru",
+  "need": "Add to DSA_SESSION_PROMPT.md section 0.1: 'The bridge is an asynchronous queue. While a long task (mts-gate, mts-ship, inline gate) is running, DSA MUST NOT send status-check blocks. It MUST wait for the [AIRUN RESULT] header of the running task before issuing the next command. Sending polling blocks queues them and creates false negatives of stalled execution. Also, DSA MUST only emit AIRUN blocks in the final response, never in thinking blocks, to avoid duplicate execution.'",
+  "posted": "2026-10-31T08:21:25Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "DSA_SESSION_PROMPT.md: add async queue rules"
+}

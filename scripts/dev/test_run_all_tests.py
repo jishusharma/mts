@@ -495,6 +495,22 @@ class TestGateFileShipBudget(unittest.TestCase):
         self.assertLess(time.monotonic() - t0, 10)
         self.assertIn("DEFERRED TO CI", out)
 
+    def test_a_must_pass_step_is_not_cut_by_the_deadline(self):
+        # CI_RED_ROOT_CAUSES 2026-10-31: 3la ran 53 s on a loaded JIS-NB, was cut at the 60 s deadline, reported PASS, CI went red.
+        cmd = [sys.executable, "-c", "import time; time.sleep(3); print('lint ran'); raise SystemExit(1)"]
+        with mock.patch.object(rat, "STEP_TIMEOUT_S", 60), mock.patch.object(rat, "TIMEOUT_DEFERS", True), \
+                mock.patch.object(rat, "GATE_DEADLINE", time.monotonic() + 1), mock.patch.object(rat, "NO_DEFER_CMDS", {repr(cmd)}):
+            ok, out = rat.exec_step(cmd)
+        self.assertFalse(ok)
+        self.assertIn("lint ran", out)
+
+    def test_a_must_pass_step_over_its_cap_fails_instead_of_deferring(self):
+        with mock.patch.object(rat, "STEP_TIMEOUT_S", 1), mock.patch.object(rat, "FAST_STEP_TIMEOUT_S", 1), \
+                mock.patch.object(rat, "TIMEOUT_DEFERS", True), mock.patch.object(rat, "NO_DEFER_CMDS", {repr(self.SLOW)}):
+            ok, out = rat.exec_step(self.SLOW)
+        self.assertFalse(ok)
+        self.assertNotIn("DEFERRED TO CI", out)
+
     def test_gate_file_budget_is_inside_the_two_minute_goal(self):
         import gate_select
         self.assertLess(rat.GATE_HARD_STEP_S + 25, 120)

@@ -239,11 +239,6 @@
       "ref": "tom-vp-return-to-value-count",
       "why": "Count of Tom's 70/30 return-to-value claim on BTC DEV (PRE_REG.md first); run by hand (python vp_return_to_value.py --out <dir>), regenerates research/tom_transfer_2026-10-11/vp_return/RESULT.md and results.json; covered by test_vp_return_to_value.py; imports vp_pivot_probe and splits only; no live process imports it."
     },
-    "MyTradingSys/backtest/vp_pivot_probe.py": {
-      "disp": "REPRO",
-      "ref": "T082",
-      "why": "Offline research script that regenerates research/tom_core_bt_2026-10-09/phase2/results.md (PHASE2_RESULT.md); run by hand, no live process imports it."
-    },
     "MyTradingSys/execution/capture_txlog_settlement.py": {
       "disp": "TOOL",
       "ref": "B149",
