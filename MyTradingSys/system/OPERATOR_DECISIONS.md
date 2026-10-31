@@ -1589,3 +1589,8 @@ Conflict: commit 201d47c73 (3la + 3xm must-pass, 240 s cap) vs operator 10-25 "e
 ```json
 {"id": "d-meta-label-panel-simple-self-tested", "order": 98, "date": "2026-10-31", "status": "DECIDED", "question": "Shape and testing of the meta-label simulator panel (Opus step 5, ROADMAP P2)?", "answer": "OPERATOR (2026-10-31, via the Opus review session): 'I need it simplified and easy to test - so check it yourself'. Binding: the panel is one table per study (Layer reading | trades | win % | average R after fees) plus one verdict line (Best third by filter vs random third -> PASSED / FAILED / NOT ENOUGH DATA) plus the existing 6 example charts; nothing more. Testing is ours, not his: every panel change ships with an automated check (JSON shape, bucket counts sum to filled trades, page click test like research/sim_desk/test_page_click.py) and the building session verifies the rendered page itself before reporting. Build gate unchanged: ROADMAP P2 (one VALIDATION pass and S0 exit); card layer-state-snapshot-causal carries it.", "refs": ["MyTradingSys/research/meta_label_roadmap_2026-10-31/ROADMAP.md"]}
 ```
+
+## d-s3-run-list | decided 2026-10-31 | Opus (desktop, login C)
+```json
+{"id": "d-s3-run-list", "order": 99, "date": "2026-10-31", "status": "DECIDED", "question": "Which backtests must be run again, and is there one planned list?", "answer": "OPERATOR (2026-10-31, login C desktop session): 'Yes, write it'. One S3 run list lives in research/v1_plan_2026-10-20/D7_ROADMAP.md (section 'S3 run list'): 7 tests in order, the rechecks already done that are not re-run, and the run rules. New cards cryptocred-4h-1d-dev-s3 and tom-v2-gross-first-dev-ext filed raw.", "refs": ["MyTradingSys/research/v1_plan_2026-10-20/D7_ROADMAP.md"]}
+```

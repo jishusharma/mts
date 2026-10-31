@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/execution/test_cotrade.py -q",
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "created": "2026-10-31T15:13:25Z",
+  "depends_on": [],
+  "done_when": "python -m MyTradingSys.execution.cotrade ladder --said '<verbatim>' --side sell --from 110500 --to 111500 --steps 5 --x 100 --stop 112000 --dry-run prints the rung table and worst case matching ladder_math.py for the same inputs; a ladder whose summed size or loss-at-stop breaks a cap places NOTHING; tests pass and each failed on the pre-change code.",
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Operator says 'short 100 doubling from 110500 to 111500, 5 steps'; cotrade shows every rung price and size (adds 1,2,3,6,12 X: each add after the second equals the current total), the total, the loss at the stop and margin, then places all rungs as resting limits on testnet; one stop covers the filled size; stop hit cancels the unfilled rungs.",
+  "id": "cotrade-p2-doubling-ladder",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Depends on cotrade-p1-say-and-place. Martingale: the cap preflight is the safety item, it must fail closed.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/execution/cotrade.py ladder subcommand, size-rule helper (plan_compiler.py may gain size rule double_total if needed), test_cotrade.py"
+  ],
+  "scope_out": [
+    "No per-fill take-profit (P3); no live-aid panel (P4); no auto_trader routing change; no mainnet"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md",
+    "MyTradingSys/research/testnet_cotrade_2026-10-31/ladder_math.py",
+    "MyTradingSys/execution/plan_compiler.py",
+    "MyTradingSys/research/eur_low_us_sweep_2026-10-14/RESULT.md"
+  ],
+  "state": "raw",
+  "steps": [
+    "Read MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md sections 2 and 5",
+    "Tests first, red on old tree",
+    "Rung generator + worst-case preflight + placement + cancel-rest-on-stop",
+    "run_all_tests --quick; sync.py ship"
+  ],
+  "tests": "test_cotrade.py: double_total sizes 1,2,3,6,12 X; rungs in % and points, both sides; worst case equals ladder_math.py; over cap or rungs refuses before any order; stop cancels rest; restart mid-ladder. Full list: DESIGN.md s5 P2.",
+  "title": "Co-trade P2: doubling-total ladder (1,2,3,6,12 X) with worst-case cap preflight",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}
