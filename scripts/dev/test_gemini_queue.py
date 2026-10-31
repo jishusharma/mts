@@ -215,5 +215,24 @@ class TwoProcessClaimRaceTest(unittest.TestCase):
         self._race(precreate_claims=False)
 
 
+class LeaseKeepAliveTest(unittest.TestCase):
+    def test_keep_lease_heartbeats_until_stopped(self):
+        import threading
+        stop = threading.Event()
+        calls = []
+        with mock.patch.object(gq, "sh", side_effect=lambda cmd, **k: calls.append(cmd) or cp(0)):
+            t = threading.Thread(target=gq.keep_lease, args=(Path("."), "card-x", stop, 0.01))
+            t.start()
+            for _ in range(200):
+                if len(calls) >= 2:
+                    break
+                stop.wait(0.01)
+            stop.set()
+            t.join(2)
+        self.assertGreaterEqual(len(calls), 2)
+        self.assertEqual(calls[0][-2:], ["heartbeat", "card-x"])
+        self.assertFalse(t.is_alive())
+
+
 if __name__ == "__main__":
     unittest.main()
