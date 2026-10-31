@@ -1,0 +1,67 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T17:29:00Z",
+  "depends_on": [],
+  "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Hand-mutate 5 operators/constants in trendline_core.py (line_price, atr_sma, penetration, close_loc, pivot confirm) in a scratch copy; report which mutations test_trendline_core.py fails to kill; write spec-derived tests (expected values from FORMULAS.md, never the code) for each survivor.",
+  "id": "gpt-mutation-trendline-core-1031",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "F2 pre-reg: rolling 1h DFA Hurst regime gate, FORMULAS s27, 4 TRIALS rows, DFA module + te",
+      "ref": "d94529dce83d",
+      "utc": "2026-10-31T08:24:27Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "d94529dce83d F2 pre-reg: rolling 1h DFA Hurst regime gate, FORMULAS s27, 4 TRIALS rows, DF",
+      "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
+      "utc": "2026-10-31T08:24:27Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "MyTradingSys/backtest/layers/trendlines/test_trendline_core_spec.py::test_line_price_log_transform",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refreshed": "2026-10-31T17:29:57Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/trendlines/trendline_core.py",
+    "MyTradingSys/backtest/layers/trendlines/test_trendline_core.py",
+    "MyTradingSys/backtest/layers/FORMULAS.md"
+  ],
+  "scope_out": [
+    "code or spec changes",
+    "holdout reads",
+    "BTC runs of the current encoding (ROADMAP section 2)"
+  ],
+  "scope_sha": "d94529dce83d",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
+    "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
+    "Report findings as a table: severity HIGH/MED/LOW, file:line, what is wrong, evidence, proposed fix. Change no code and no spec.",
+    "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
+    "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "tests": "new MyTradingSys/backtest/layers/trendlines/test_trendline_core_spec.py: each added test fails on the mutated scratch copy and passes on the original",
+  "title": "GPT: mutation-kill audit of trendline_core.py (survivors get spec-derived tests)",
+  "weight": "",
+  "worker": ""
+}
