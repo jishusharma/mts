@@ -2,6 +2,16 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-31T06:19:59Z",
+    "misses": 8,
+    "reads": [
+      "scripts/dev/run_all_tests.py",
+      "scripts/dev/run_extra_tests.py"
+    ],
+    "session": "agent-aa0e62ef72b352071"
+  },
   "created": "2026-10-31T02:48:07Z",
   "depends_on": [],
   "done_when": "test_live_aid_replay.py::test_position_bar_distance_atr_and_uncovered_render asserts hand-computed pts, x ATR15 and uncovered USD; it fails if the three formulas are changed",
