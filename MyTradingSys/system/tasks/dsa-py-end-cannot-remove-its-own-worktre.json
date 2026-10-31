@@ -4,15 +4,24 @@
   "commands": [],
   "created": "2026-10-30T13:09:43Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "scripts/dev/test_dsa.py new test passes: end run with cwd inside the tree returns 0 or prints a NEXT line naming the folder to leave; tree gone or NEXT printed; run_all_tests --quick green.",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "dsa.py end must remove its own worktree on Windows: today git worktree remove fails Permission denied because the caller shell cwd sits inside the tree; make end succeed or print the exact two-command finish.",
   "id": "dsa-py-end-cannot-remove-its-own-worktre",
   "kind": "build",
-  "lane": "DSA",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "dsa.py: ignore the .gateway_owner marker in the unshipped check",
+      "ref": "26edaadab251",
+      "utc": "2026-10-27T22:03:15Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -20,16 +29,28 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-31T09:42:31Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/dsa.py",
+    "scripts/dev/test_dsa.py"
+  ],
+  "scope_out": [
+    "sync.py; live tree; other dsa commands"
+  ],
+  "scope_sha": "26edaadab251",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read cmd_end (dsa.py ~643-692) and test_end_releases_claim_and_removes_worktree_when_clean (test_dsa.py ~340)",
+    "Add failing test that patches the remove call to return Permission denied",
+    "Fix: chdir to main before git calls, on denial retry once then print NEXT: leave the folder and run git worktree remove --force <path>; return 0 only if the claim was released",
+    "Run python -m unittest scripts/dev/test_dsa.py; ship. Verify: content sha, git cherry origin/fast-track <sha> empty, files in ls-tree."
+  ],
+  "tests": "scripts/dev/test_dsa.py: test_end_when_remove_denied simulates git worktree remove rc!=0 Permission denied; expects fallback (prune + retry after chdir to main, else NEXT line), fails on current dsa.py",
   "title": "dsa.py end cannot remove its own worktree: cmd_end requires cwd inside the tree, then git worktree remove fails Permission denied",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

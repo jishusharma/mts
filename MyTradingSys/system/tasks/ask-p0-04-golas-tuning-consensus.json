@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T07:57:25Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -24,6 +25,12 @@
   "id": "ask-p0-04-golas-tuning-consensus",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "C_TUNING_CONSENSUS.md 18 rows 10 urls",
+      "ref": "da6f49c25",
+      "utc": "2026-10-31T07:57:25Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -50,7 +57,12 @@
   "refs": [
     "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md"
   ],
-  "result": "",
+  "result": "C_TUNING_CONSENSUS.md 18 rows 10 urls",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/_archive/loose_2026-10/GOLAS_CD_WEB_2026-09-21.md",
     "MyTradingSys/research/MTS_DICTIONARY.md"
@@ -64,11 +76,12 @@
   "sources": [
     "ledger P0-04"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "start from the archived GOLAS C web note (2026-09-21, unverified web); re-verify each value at its URL",
     "add timeframes it missed; write C_TUNING_CONSENSUS.md, ship. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
   ],
+  "taken": "2026-10-31T07:57:25Z",
   "tests": "Doc card: tests/docs/test_integrity.py green; each row cites at least one URL (count in commit body).",
   "title": "GOLAS-C: internet consensus on tuning indicators for BTC (ledger P0-04)",
   "weight": "IMPORTANT",
