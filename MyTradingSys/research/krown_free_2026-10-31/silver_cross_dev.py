@@ -2,7 +2,7 @@
 
 Run: python silver_cross_dev.py [--klines F:/MTS/data/tom_raw/klines]
 Refuses to run unless PRE_REG.md ends with a FROZEN_UTC line. Reads klines 2022-01..2024-06 only (loader refuses any bar
-opening at/after 2024-07-01). Fee = 2 x fees.BINANCE_TAKER (SOURCED backtest/fees.py). Everything else is labelled in PRE_REG.md.
+opening at/after 2024-07-01). Round-trip cost: twice fees.BINANCE_TAKER (SOURCED backtest/fees.py). Everything else is labelled in PRE_REG.md.
 Output: RESULT.csv (aggregates and per-event rows, no account data).
 """
 import argparse
