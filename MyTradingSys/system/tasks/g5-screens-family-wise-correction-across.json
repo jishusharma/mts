@@ -14,6 +14,15 @@
   "goal": "Add family-wise correction across arms, horizons and variants to the gross screen (screen.py:220-250) and the G5 common.py:192-230 so a PASS needs the corrected bar; a placebo run of K arms must pass at most the nominal rate (T10 D3: 23.8% at 12 arms, 60.5% at 40 today). Report which past PASS or KEEP labels move.",
   "id": "g5-screens-family-wise-correction-across",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Revert \"Revert real-funding screens: CI red (T06 costs.csv pins screen.py line numbers)\"",
+      "ref": "8cae5e9e285e",
+      "utc": "2026-10-27T22:20:16Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -21,6 +30,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
+  "refreshed": "2026-10-31T18:54:40Z",
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T10_missing_aspects.md"
   ],
@@ -38,12 +48,13 @@
     "restating any published verdict, ledger row or pre-registered bar",
     "live path"
   ],
+  "scope_sha": "8cae5e9e285e",
   "size": "M",
   "sources": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T10_missing_aspects.md (T10-F1, handover)",
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/t10_demos.py"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Read T10-F1 and the handover; run t10_demos.py D3 to reproduce 23.8% / 60.5%.",
     "Write the correction rule (Holm over arms x horizons x variants; m = verdicts.py count --split DEV plus new cells, OURS) at the top of LABEL_MOVES.md before any rerun, and the placebo test.",

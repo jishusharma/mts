@@ -1,35 +1,64 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest MyTradingSys/tools/live_aid/test_build_analyst_data.py -q",
+    "python scripts/dev/wiring_scan.py"
+  ],
   "created": "2026-10-31T14:12:08Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "wiring_scan prints no NO-READER for scripts/dev/ff_calendar_snapshot.py; the four new tests pass and fail on the old code",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "ff_calendar_snapshot.py has no caller, so the live_aid macro strip says NO CALENDAR after 26 h. Make build_analyst_data.py (the script run before every chart read) refresh the snapshot when the file is missing or older than 20 h; offline runs never fetch. No scheduler.",
   "id": "ff-calendar-snapshot-needs-a-runner",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "live_aid: macro strip reads a same-origin calendar snapshot (feed has no CORS header)",
+      "ref": "87fadd77ec53",
+      "utc": "2026-10-31T12:35:51Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "PLANNER 2026-11-01: DECISION (OURS): the reader is the existing pre-read rebuild script, not a station loop (loops are agent sessions, not schedulers). REVIEWED:2026-11-01 T0-ONLY",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-31T19:01:05Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/build_analyst_data.py",
+    "MyTradingSys/tools/live_aid/test_build_analyst_data.py",
+    "scripts/dev/ff_calendar_snapshot.py"
+  ],
+  "scope_out": [
+    "live_aid.html",
+    "any scheduler or cron (SCHEDULING_POLICY.md)",
+    "calendar parsing"
+  ],
+  "scope_sha": "87fadd77ec53",
+  "size": "S",
+  "sources": [
+    "scripts/dev/ff_calendar_snapshot.py:1-8 (26 h rule, 'run by hand or from a station loop')",
+    "build_analyst_data.py:6-9 (rebuilt before a chart read)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Add test first: with an injected snapshot_fn, a missing or 30 h old ff_calendar_snapshot.js triggers one refresh; a 2 h old one does not; --offline never calls it; a failing fetch keeps the old file and the build still succeeds",
+    "In build_analyst_data.main: after write, call ff_calendar_snapshot.main(out) under those rules (STALE_H = 20, below the page's 26 h cut-off, OURS), catch and print any error",
+    "Run the live_aid tests and python scripts/dev/wiring_scan.py: the NO-READER line for ff_calendar_snapshot.py is gone"
+  ],
+  "tests": "MyTradingSys/tools/live_aid/test_build_analyst_data.py: new stale/fresh/offline/fetch-fail cases, red on the old build_analyst_data.py (no refresh call)",
   "title": "ff_calendar_snapshot.py has no reader (wiring_scan NO-READER) so live_aid macro strip goes NO CALENDAR after 26 h; done-when: an existing station loop or live_aid launcher runs it at start and daily without a scheduler (SCHEDULING_POLICY), wiring_scan clean, test proves a stale snapshot is refreshed",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
