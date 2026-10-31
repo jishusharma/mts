@@ -19,7 +19,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-31 ACCEPT (Sonnet reviewer Agent, FIX applied once, not re-read, planner DECISION OURS). Live-path rules apply: tests for restart state, non-trade balance moves and API errors; fail closed. Account: operator decision d-cotrade-use-existing-account (no new key, spare jishu_22 else main). His 'fire' = go, no extra confirm. PLANNER: CRUCIAL, review Agent on the diff before ship. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "note": "REVIEWED:2026-10-31 ACCEPT (Sonnet reviewer Agent, FIX applied once, not re-read, planner DECISION OURS). Live-path rules apply: tests for restart state, non-trade balance moves and API errors; fail closed. Account: operator decision d-cotrade-use-existing-account (no new key, spare jishu_22 else main). His 'fire' = go, no extra confirm. PLANNER: CRUCIAL, review Agent on the diff before ship. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files. Rule cleared: d-cotrade-testnet-carveout (operator-called testnet orders via cotrade.py allowed).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
