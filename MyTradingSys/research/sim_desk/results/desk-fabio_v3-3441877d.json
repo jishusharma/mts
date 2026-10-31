@@ -1,0 +1,156 @@
+{
+ "id": "desk-fabio_v3-3441877d",
+ "kind": "backtest",
+ "parity": null,
+ "family": "Desk runs",
+ "title": "Fabio v3, price-only parts: Model C (first-30-minute breakout) and Model B (failed breakout), BTCUSDT, NY window: B N240 f0.5% rule exit fees 0.02/0.05% slip 0.02% 2022-04-01..2024-06-30",
+ "what": [
+  {
+   "name": "Study",
+   "value_plain": "Fabio v3, price-only parts: Model C (first-30-minute breakout) and Model B (failed breakout), BTCUSDT, NY window: BTC / USDT, Fabio v3 price-only: on 1m candles in the same window, find a balance box over the last 240 candles (real v3 test: range under 0.8 x sqrt(N) x ATR and close near the volume peak); a close outside it that comes back inside within 5 candles is a failed breakout: trade back the other way at the next candle, stop beyond the probe extreme (floor 0.5 % of entry, dropped if wider than 1 %); the order-flow absorption test is left out; exit at the opposite edge of the balance box, or at the end of the window; fees 0.02 % limit / 0.05 % market, plus 0.02 % slippage on market and stop fills; 2022-04-01 to 2024-06-30, development window only. Models A and D, the big-trade push, absorption and order-flow exits need data that starts 2024-12 and are not here.",
+   "label": "OURS"
+  },
+  {
+   "name": "Settings",
+   "value_plain": "B N240 f0.5% rule exit fees 0.02/0.05% slip 0.02% 2022-04-01..2024-06-30",
+   "label": "OURS"
+  },
+  {
+   "name": "Condition",
+   "value_plain": "none",
+   "label": "OURS"
+  }
+ ],
+ "how": "Run on the local simulator desk: the study re-simulates every idea on development data; the optional condition then keeps only matching trades (post-filter on the cached run). Fees are included; a never-filled idea is not a trade.",
+ "window": "DEV only, 2022-04-01 to 2024-06-30 (VALIDATION and HOLDOUT never offered)",
+ "verdict": {
+  "label": "NOT ENOUGH DATA",
+  "tone": "warn"
+ },
+ "why": [
+  "only 19 filled trades; at least 30 are needed before the desk calls it"
+ ],
+ "kpis": [
+  {
+   "label": "filled trades",
+   "value": "19"
+  },
+  {
+   "label": "ideas never filled",
+   "value": "0"
+  },
+  {
+   "label": "average per trade, after fees",
+   "value": "-0.437 R"
+  },
+  {
+   "label": "95 % range",
+   "value": "-0.936 to +0.104 R"
+  },
+  {
+   "label": "if you put in $1,000",
+   "value": "$917"
+  },
+  {
+   "label": "try number",
+   "value": "8"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "curve",
+   "title": "Running total of net R, filled trades in time order",
+   "r": [
+    1.4844,
+    0.2037,
+    -1.0756,
+    -2.2976,
+    -3.5769,
+    -4.8562,
+    -6.1355,
+    -5.2834,
+    -4.2565,
+    -5.5372,
+    -4.1363,
+    -5.2865,
+    -4.4504,
+    -3.1658,
+    -4.4465,
+    -5.654,
+    -5.7335,
+    -7.0128,
+    -8.2935
+   ],
+   "usd": [
+    1014.84,
+    1002.04,
+    989.24,
+    977.02,
+    964.23,
+    951.44,
+    938.65,
+    947.17,
+    957.44,
+    944.63,
+    958.64,
+    947.13,
+    955.5,
+    968.34,
+    955.53,
+    943.46,
+    942.66,
+    929.87,
+    917.06
+   ],
+   "start_usd": 1000.0,
+   "risk_pct": 1.0
+  },
+  {
+   "kind": "charts",
+   "title": "Example trades: 3 winners and 3 losers closest to the typical (median) winner and loser",
+   "caption": "Each chart: candles, entry (blue dot), stop (red), target (green), exit (cross), time in UTC, net R after fees and the reason the trade ended. No prices are stored.",
+   "items": [
+    {
+     "kind": "winner",
+     "net_r": 1.0269,
+     "note": "Model B: close outside the balance box, back inside within 5 candles; market entry at the next candle; stop beyond the probe extreme; target the far edge of the box",
+     "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 300 160\" width=\"300\" height=\"160\" data-net=\"1.0269\"><path d=\"M4.5 62.7V65.5M13.6 59.4V65.3M22.7 36.7V62.0M31.8 43.7V78.6M40.9 70.3V91.4M50.0 56.7V79.4M59.1 10.9V87.4M68.2 41.0V82.5M77.3 44.5V62.3M86.4 42.4V60.1M95.5 17.1V54.5M104.5 26.3V41.7M113.6 29.7V70.6M122.7 44.4V64.2M131.8 45.3V61.6M140.9 52.4V74.7M150.0 54.4V65.1M159.1 32.8V60.1M168.2 35.2V53.4M177.3 40.0V54.9M186.4 46.2V56.7M195.5 50.6V59.4M204.5 51.6V74.8M213.6 60.8V84.5M222.7 63.8V77.2M231.8 66.0V94.2M240.9 83.5V104.2M250.0 75.7V96.9M259.1 75.1V89.8M268.2 84.2V133.1M277.3 81.4V102.9M286.4 64.2V90.2M295.5 55.2V71.8\" stroke=\"#8a8f98\" stroke-width=\"1\"/><path d=\"M1.4 63.7h6.4V65.0h-6.4ZM10.5 61.9h6.4V63.8h-6.4ZM19.5 43.7h6.4V61.9h-6.4ZM46.8 62.4h6.4V79.2h-6.4ZM65.0 45.0h6.4V70.0h-6.4ZM83.2 47.4h6.4V54.0h-6.4ZM92.3 32.8h6.4V47.4h-6.4ZM119.5 46.7h6.4V62.9h-6.4ZM146.8 57.8h6.4V60.6h-6.4ZM155.9 35.2h6.4V57.8h-6.4ZM246.8 87.5h6.4V92.1h-6.4ZM255.9 85.3h6.4V87.5h-6.4ZM274.1 86.0h6.4V97.0h-6.4ZM283.2 67.4h6.4V86.0h-6.4ZM292.3 64.7h6.4V67.4h-6.4Z\" fill=\"#9fb8a6\"/><path d=\"M28.6 43.7h6.4V77.5h-6.4ZM37.7 77.5h6.4V79.2h-6.4ZM55.9 62.4h6.4V70.0h-6.4ZM74.1 45.0h6.4V54.0h-6.4ZM101.4 32.7h6.4V33.4h-6.4ZM110.5 33.4h6.4V62.9h-6.4ZM128.6 46.7h6.4V60.5h-6.4ZM137.7 60.5h6.4V61.1h-6.4ZM165.0 35.2h6.4V41.7h-6.4ZM174.1 41.7h6.4V52.7h-6.4ZM183.2 52.7h6.4V53.3h-6.4ZM192.3 52.8h6.4V53.9h-6.4ZM201.4 53.9h6.4V69.2h-6.4ZM210.5 69.2h6.4V72.8h-6.4ZM219.5 72.8h6.4V74.8h-6.4ZM228.6 74.8h6.4V85.8h-6.4ZM237.7 85.9h6.4V92.1h-6.4ZM265.0 85.3h6.4V97.0h-6.4Z\" fill=\"#c4a3a3\"/><path d=\"M0 36.7H300\" stroke=\"#6b7280\" stroke-width=\"1.2\" stroke-dasharray=\"3 3\"/><text x=\"298\" y=\"34.7\" text-anchor=\"end\" font-size=\"9\" fill=\"#6b7280\">level</text><path d=\"M0 55.9H300\" stroke=\"#2563eb\" stroke-width=\"1.2\" stroke-dasharray=\"1 2\"/><text x=\"298\" y=\"53.9\" text-anchor=\"end\" font-size=\"9\" fill=\"#2563eb\">filled</text><path d=\"M0 10.9H300\" stroke=\"#c0392b\" stroke-width=\"1.2\"/><text x=\"298\" y=\"8.9\" text-anchor=\"end\" font-size=\"9\" fill=\"#c0392b\">stop</text><path d=\"M0 107.1H300\" stroke=\"#1e8449\" stroke-width=\"1.2\"/><text x=\"298\" y=\"105.1\" text-anchor=\"end\" font-size=\"9\" fill=\"#1e8449\">target</text><circle cx=\"66.4\" cy=\"55.9\" r=\"3.2\" fill=\"#2563eb\"/><path d=\"M272.5 104.1l6 6m0 -6l-6 6\" stroke=\"#111\" stroke-width=\"1.6\"/><text x=\"4\" y=\"153\" font-size=\"11\" font-family=\"sans-serif\" fill=\"#1e8449\">2023-02-20 14:44 UTC  +1.03 R short, hit target (5m)</text></svg>"
+    },
+    {
+     "kind": "winner",
+     "net_r": 1.2845,
+     "note": "Model B: close outside the balance box, back inside within 5 candles; market entry at the next candle; stop beyond the probe extreme; target the far edge of the box",
+     "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 300 160\" width=\"300\" height=\"160\" data-net=\"1.2845\"><path d=\"M2.4 43.5V67.1M7.3 39.1V55.0M12.1 43.5V63.8M16.9 49.4V63.1M21.8 39.7V53.2M26.6 39.5V54.4M31.5 25.6V62.7M36.3 52.0V65.1M41.1 47.1V76.8M46.0 57.4V79.9M50.8 61.5V78.6M55.6 64.5V93.4M60.5 62.0V79.4M65.3 52.5V68.4M70.2 45.6V57.7M75.0 52.9V65.3M79.8 39.8V61.0M84.7 31.9V48.5M89.5 42.0V52.1M94.4 34.6V46.1M99.2 34.7V51.3M104.0 36.5V52.2M108.9 34.6V43.5M113.7 37.5V50.7M118.5 44.7V59.0M123.4 49.6V61.3M128.2 44.9V61.0M133.1 41.0V50.1M137.9 42.2V55.4M142.7 41.0V54.2M147.6 43.7V50.8M152.4 39.7V51.0M157.3 32.9V46.0M162.1 37.5V49.5M166.9 40.9V51.2M171.8 39.6V46.9M176.6 42.6V55.4M181.5 51.8V64.2M186.3 47.6V62.8M191.1 30.9V48.8M196.0 31.9V42.3M200.8 37.8V54.6M205.6 49.0V63.0M210.5 52.6V59.9M215.3 43.2V55.2M220.2 44.0V54.7M225.0 41.2V49.1M229.8 35.5V45.1M234.7 24.5V37.1M239.5 17.4V35.6M244.4 16.9V36.9M249.2 35.3V43.3M254.0 39.7V50.9M258.9 44.5V51.5M263.7 49.6V80.9M268.5 59.8V72.8M273.4 56.6V80.0M278.2 72.8V87.5M283.1 71.3V97.0M287.9 68.8V90.8M292.7 62.7V75.6M297.6 62.8V74.1\" stroke=\"#8a8f98\" stroke-width=\"1\"/><path d=\"M5.6 43.7h3.4V51.6h-3.4ZM15.2 53.2h3.4V56.1h-3.4ZM20.1 47.3h3.4V53.2h-3.4ZM24.9 39.7h3.4V47.3h-3.4ZM34.6 52.0h3.4V58.0h-3.4ZM44.3 61.6h3.4V73.5h-3.4ZM54.0 77.6h3.4V78.2h-3.4ZM58.8 65.1h3.4V77.6h-3.4ZM63.6 53.4h3.4V65.1h-3.4ZM78.1 42.7h3.4V60.6h-3.4ZM87.8 45.7h3.4V47.7h-3.4ZM92.7 35.1h3.4V45.7h-3.4ZM102.3 39.3h3.4V47.8h-3.4ZM126.5 45.5h3.4V61.0h-3.4ZM131.4 44.1h3.4V45.5h-3.4ZM141.0 44.9h3.4V52.7h-3.4ZM155.6 43.1h3.4V46.0h-3.4ZM165.2 42.1h3.4V48.6h-3.4ZM184.6 48.8h3.4V61.4h-3.4ZM189.4 36.0h3.4V48.8h-3.4ZM208.8 55.1h3.4V55.7h-3.4ZM213.6 52.0h3.4V55.1h-3.4ZM218.5 47.5h3.4V52.0h-3.4ZM223.3 41.4h3.4V47.5h-3.4ZM228.1 35.8h3.4V41.4h-3.4ZM233.0 30.1h3.4V35.8h-3.4ZM237.8 29.6h3.4V30.2h-3.4ZM266.9 62.2h3.4V72.8h-3.4ZM276.5 73.9h3.4V79.7h-3.4ZM286.2 70.5h3.4V79.3h-3.4ZM291.0 63.8h3.4V70.5h-3.4Z\" fill=\"#9fb8a6\"/><path d=\"M0.7 44.2h3.4V51.6h-3.4ZM10.4 43.6h3.4V56.1h-3.4ZM29.8 39.7h3.4V58.0h-3.4ZM39.4 52.0h3.4V73.4h-3.4ZM49.1 61.6h3.4V77.8h-3.4ZM68.5 53.4h3.4V54.2h-3.4ZM73.3 54.2h3.4V60.6h-3.4ZM83.0 42.7h3.4V47.7h-3.4ZM97.5 35.1h3.4V47.8h-3.4ZM107.2 39.3h3.4V40.4h-3.4ZM112.0 40.4h3.4V47.7h-3.4ZM116.9 47.7h3.4V57.4h-3.4ZM121.7 57.5h3.4V61.0h-3.4ZM136.2 44.1h3.4V52.7h-3.4ZM145.9 44.9h3.4V45.5h-3.4ZM150.7 45.1h3.4V46.0h-3.4ZM160.4 43.1h3.4V48.6h-3.4ZM170.1 42.1h3.4V45.6h-3.4ZM174.9 45.6h3.4V52.1h-3.4ZM179.8 52.1h3.4V61.4h-3.4ZM194.3 36.0h3.4V39.7h-3.4ZM199.1 39.7h3.4V54.4h-3.4ZM204.0 54.4h3.4V55.4h-3.4ZM242.7 29.5h3.4V36.0h-3.4ZM247.5 36.0h3.4V40.4h-3.4ZM252.3 40.4h3.4V46.7h-3.4ZM257.2 46.7h3.4V51.1h-3.4ZM262.0 51.1h3.4V72.8h-3.4ZM271.7 62.2h3.4V79.7h-3.4ZM281.4 73.9h3.4V79.3h-3.4ZM295.9 63.8h3.4V73.7h-3.4Z\" fill=\"#c4a3a3\"/><path d=\"M0 35.5H300\" stroke=\"#6b7280\" stroke-width=\"1.2\" stroke-dasharray=\"3 3\"/><text x=\"298\" y=\"33.5\" text-anchor=\"end\" font-size=\"9\" fill=\"#6b7280\">level</text><path d=\"M0 37.6H300\" stroke=\"#2563eb\" stroke-width=\"1.2\" stroke-dasharray=\"1 2\"/><text x=\"298\" y=\"35.6\" text-anchor=\"end\" font-size=\"9\" fill=\"#2563eb\">filled</text><path d=\"M0 10.9H300\" stroke=\"#c0392b\" stroke-width=\"1.2\"/><text x=\"298\" y=\"8.9\" text-anchor=\"end\" font-size=\"9\" fill=\"#c0392b\">stop</text><path d=\"M0 133.1H300\" stroke=\"#1e8449\" stroke-width=\"1.2\"/><text x=\"298\" y=\"131.1\" text-anchor=\"end\" font-size=\"9\" fill=\"#1e8449\">target</text><circle cx=\"33.4\" cy=\"37.6\" r=\"3.2\" fill=\"#2563eb\"/><path d=\"M283.9 76.3l6 6m0 -6l-6 6\" stroke=\"#111\" stroke-width=\"1.6\"/><text x=\"4\" y=\"153\" font-size=\"11\" font-family=\"sans-serif\" fill=\"#1e8449\">2024-03-11 15:37 UTC  +1.28 R short, held to the time limit (5m)</text></svg>"
+    },
+    {
+     "kind": "winner",
+     "net_r": 1.4008,
+     "note": "Model B: close outside the balance box, back inside within 5 candles; market entry at the next candle; stop beyond the probe extreme; target the far edge of the box",
+     "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 300 160\" width=\"300\" height=\"160\" data-net=\"1.4008\"><path d=\"M2.4 76.3V84.5M7.3 75.6V84.7M12.1 77.4V92.7M16.9 71.1V97.7M21.8 68.7V100.7M26.6 89.3V97.5M31.5 88.0V108.2M36.3 91.6V113.8M41.1 100.0V116.0M46.0 100.2V112.8M50.8 91.6V104.3M55.6 100.7V118.1M60.5 105.1V125.9M65.3 103.0V110.9M70.2 89.9V105.6M75.0 92.8V100.4M79.8 88.7V98.2M84.7 83.3V91.2M89.5 90.2V99.5M94.4 89.8V103.1M99.2 87.8V104.9M104.0 87.8V97.7M108.9 90.4V99.0M113.7 87.8V100.8M118.5 87.1V98.1M123.4 95.0V114.5M128.2 85.2V102.2M133.1 88.3V95.5M137.9 90.4V97.4M142.7 89.2V103.1M147.6 83.6V102.3M152.4 74.5V88.5M157.3 72.3V80.7M162.1 60.6V79.4M166.9 59.9V70.1M171.8 57.8V68.0M176.6 57.9V66.4M181.5 59.9V67.0M186.3 61.4V70.2M191.1 49.4V68.0M196.0 42.1V53.6M200.8 38.6V52.3M205.6 44.6V54.3M210.5 49.7V58.0M215.3 53.5V61.4M220.2 57.1V63.3M225.0 56.2V61.5M229.8 54.6V63.3M234.7 51.3V63.1M239.5 44.6V59.8M244.4 47.7V59.0M249.2 43.0V55.9M254.0 44.8V59.5M258.9 28.0V51.1M263.7 31.3V47.3M268.5 26.6V43.7M273.4 24.2V43.4M278.2 21.2V47.3M283.1 41.6V69.6M287.9 44.2V62.4M292.7 54.6V61.0M297.6 46.7V59.9\" stroke=\"#8a8f98\" stroke-width=\"1\"/><path d=\"M0.7 80.2h3.4V84.0h-3.4ZM5.6 79.9h3.4V80.5h-3.4ZM15.2 74.8h3.4V90.8h-3.4ZM24.9 89.3h3.4V94.9h-3.4ZM39.4 102.4h3.4V110.9h-3.4ZM44.3 100.6h3.4V102.4h-3.4ZM58.8 107.6h3.4V113.2h-3.4ZM63.6 105.6h3.4V107.6h-3.4ZM68.5 94.8h3.4V105.6h-3.4ZM78.1 91.1h3.4V97.4h-3.4ZM83.0 90.2h3.4V91.1h-3.4ZM97.5 87.8h3.4V100.8h-3.4ZM112.0 89.9h3.4V98.4h-3.4ZM121.7 96.0h3.4V96.6h-3.4ZM126.5 89.4h3.4V95.9h-3.4ZM136.2 91.8h3.4V94.0h-3.4ZM145.9 84.5h3.4V97.2h-3.4ZM150.7 76.3h3.4V84.5h-3.4ZM160.4 64.2h3.4V77.3h-3.4ZM165.2 60.8h3.4V64.2h-3.4ZM170.1 59.0h3.4V60.8h-3.4ZM184.6 64.9h3.4V66.4h-3.4ZM189.4 52.8h3.4V64.8h-3.4ZM194.3 43.4h3.4V52.8h-3.4ZM228.1 56.4h3.4V60.5h-3.4ZM233.0 54.2h3.4V56.4h-3.4ZM237.8 53.2h3.4V54.3h-3.4ZM242.7 51.6h3.4V53.2h-3.4ZM252.3 48.9h3.4V55.1h-3.4ZM257.2 39.1h3.4V49.0h-3.4ZM262.0 31.6h3.4V39.1h-3.4ZM271.7 24.2h3.4V40.0h-3.4ZM281.4 44.2h3.4V44.8h-3.4ZM291.0 57.1h3.4V61.0h-3.4ZM295.9 51.3h3.4V57.1h-3.4Z\" fill=\"#9fb8a6\"/><path d=\"M10.4 79.9h3.4V90.8h-3.4ZM20.1 74.7h3.4V94.9h-3.4ZM29.8 89.3h3.4V99.8h-3.4ZM34.6 99.7h3.4V110.9h-3.4ZM49.1 100.6h3.4V101.2h-3.4ZM54.0 101.1h3.4V113.2h-3.4ZM73.3 94.9h3.4V97.4h-3.4ZM87.8 90.2h3.4V92.4h-3.4ZM92.7 92.4h3.4V100.8h-3.4ZM102.3 87.8h3.4V96.4h-3.4ZM107.2 96.4h3.4V98.4h-3.4ZM116.9 89.9h3.4V96.4h-3.4ZM131.4 89.4h3.4V94.0h-3.4ZM141.0 91.8h3.4V97.2h-3.4ZM155.6 76.3h3.4V77.3h-3.4ZM174.9 59.0h3.4V59.9h-3.4ZM179.8 59.9h3.4V66.3h-3.4ZM199.1 43.4h3.4V50.4h-3.4ZM204.0 50.4h3.4V51.0h-3.4ZM208.8 50.8h3.4V53.5h-3.4ZM213.6 53.5h3.4V58.6h-3.4ZM218.5 58.6h3.4V59.2h-3.4ZM223.3 59.3h3.4V60.6h-3.4ZM247.5 51.6h3.4V55.2h-3.4ZM266.9 31.6h3.4V40.0h-3.4ZM276.5 24.2h3.4V44.5h-3.4ZM286.2 44.2h3.4V61.0h-3.4Z\" fill=\"#c4a3a3\"/><path d=\"M0 101.6H300\" stroke=\"#6b7280\" stroke-width=\"1.2\" stroke-dasharray=\"3 3\"/><text x=\"298\" y=\"99.6\" text-anchor=\"end\" font-size=\"9\" fill=\"#6b7280\">level</text><path d=\"M0 100.0H300\" stroke=\"#2563eb\" stroke-width=\"1.2\" stroke-dasharray=\"1 2\"/><text x=\"298\" y=\"98.0\" text-anchor=\"end\" font-size=\"9\" fill=\"#2563eb\">filled</text><path d=\"M0 133.1H300\" stroke=\"#c0392b\" stroke-width=\"1.2\"/><text x=\"298\" y=\"131.1\" text-anchor=\"end\" font-size=\"9\" fill=\"#c0392b\">stop</text><path d=\"M0 10.9H300\" stroke=\"#1e8449\" stroke-width=\"1.2\"/><text x=\"298\" y=\"8.9\" text-anchor=\"end\" font-size=\"9\" fill=\"#1e8449\">target</text><circle cx=\"34.4\" cy=\"100.0\" r=\"3.2\" fill=\"#2563eb\"/><path d=\"M283.9 41.2l6 6m0 -6l-6 6\" stroke=\"#111\" stroke-width=\"1.6\"/><text x=\"4\" y=\"153\" font-size=\"11\" font-family=\"sans-serif\" fill=\"#1e8449\">2024-01-17 16:38 UTC  +1.40 R long, held to the time limit (5m)</text></svg>"
+    },
+    {
+     "kind": "loser",
+     "net_r": -1.2793,
+     "note": "Model B: close outside the balance box, back inside within 5 candles; market entry at the next candle; stop beyond the probe extreme; target the far edge of the box",
+     "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 300 160\" width=\"300\" height=\"160\" data-net=\"-1.2793\"><path d=\"M3.8 51.6V58.7M11.2 46.3V71.9M18.8 44.9V58.0M26.2 42.3V58.5M33.8 46.0V60.1M41.2 50.8V70.8M48.8 64.6V81.0M56.2 59.8V69.8M63.8 55.8V69.1M71.2 48.8V59.9M78.8 44.9V62.7M86.2 62.3V88.0M93.8 78.0V100.9M101.2 72.5V85.8M108.8 57.5V72.9M116.2 60.5V75.9M123.8 59.4V68.1M131.2 63.6V80.9M138.8 70.8V86.1M146.2 78.3V93.5M153.8 78.9V90.6M161.2 69.3V88.8M168.8 67.3V88.8M176.2 66.0V73.1M183.8 58.5V71.7M191.2 55.2V63.9M198.8 56.0V68.9M206.2 52.7V67.2M213.8 56.4V64.7M221.2 56.6V66.0M228.8 59.2V71.1M236.2 64.8V75.2M243.8 68.7V80.0M251.2 72.1V82.4M258.8 75.3V95.7M266.2 92.5V108.7M273.8 105.8V129.6M281.2 111.1V133.1M288.8 123.7V132.4M296.2 123.9V133.1\" stroke=\"#8a8f98\" stroke-width=\"1\"/><path d=\"M8.6 51.2h5.2V58.7h-5.2ZM16.1 44.9h5.2V51.2h-5.2ZM31.1 54.6h5.2V58.5h-5.2ZM46.1 64.6h5.2V65.7h-5.2ZM53.6 59.8h5.2V64.6h-5.2ZM61.1 58.7h5.2V59.8h-5.2ZM68.6 51.6h5.2V58.7h-5.2ZM91.1 83.3h5.2V87.4h-5.2ZM98.6 72.5h5.2V83.3h-5.2ZM106.1 70.2h5.2V72.5h-5.2ZM113.6 62.3h5.2V70.2h-5.2ZM151.1 81.3h5.2V87.2h-5.2ZM166.1 67.9h5.2V85.9h-5.2ZM181.1 62.2h5.2V68.0h-5.2ZM188.6 61.3h5.2V62.2h-5.2ZM203.6 57.5h5.2V64.8h-5.2ZM226.1 64.8h5.2V66.0h-5.2ZM248.6 77.1h5.2V79.0h-5.2ZM293.6 126.2h5.2V131.1h-5.2Z\" fill=\"#9fb8a6\"/><path d=\"M1.1 51.6h5.2V58.7h-5.2ZM23.6 44.9h5.2V58.5h-5.2ZM38.6 54.6h5.2V65.7h-5.2ZM76.1 51.6h5.2V62.3h-5.2ZM83.6 62.3h5.2V87.4h-5.2ZM121.1 62.2h5.2V65.7h-5.2ZM128.6 65.7h5.2V74.9h-5.2ZM136.1 74.9h5.2V86.1h-5.2ZM143.6 86.0h5.2V87.2h-5.2ZM158.6 81.3h5.2V85.9h-5.2ZM173.6 67.9h5.2V68.5h-5.2ZM196.1 61.3h5.2V64.8h-5.2ZM211.1 57.5h5.2V63.7h-5.2ZM218.6 63.7h5.2V66.0h-5.2ZM233.6 64.8h5.2V69.3h-5.2ZM241.1 69.3h5.2V79.1h-5.2ZM256.1 77.1h5.2V92.5h-5.2ZM263.6 92.5h5.2V107.1h-5.2ZM271.1 107.1h5.2V111.5h-5.2ZM278.6 111.5h5.2V127.5h-5.2ZM286.1 127.5h5.2V131.1h-5.2Z\" fill=\"#c4a3a3\"/><path d=\"M0 71.9H300\" stroke=\"#6b7280\" stroke-width=\"1.2\" stroke-dasharray=\"3 3\"/><text x=\"298\" y=\"69.9\" text-anchor=\"end\" font-size=\"9\" fill=\"#6b7280\">level</text><path d=\"M0 68.3H300\" stroke=\"#2563eb\" stroke-width=\"1.2\" stroke-dasharray=\"1 2\"/><text x=\"298\" y=\"66.3\" text-anchor=\"end\" font-size=\"9\" fill=\"#2563eb\">filled</text><path d=\"M0 109.8H300\" stroke=\"#c0392b\" stroke-width=\"1.2\"/><text x=\"298\" y=\"107.8\" text-anchor=\"end\" font-size=\"9\" fill=\"#c0392b\">stop</text><path d=\"M0 10.9H300\" stroke=\"#1e8449\" stroke-width=\"1.2\"/><text x=\"298\" y=\"8.9\" text-anchor=\"end\" font-size=\"9\" fill=\"#1e8449\">target</text><circle cx=\"54.8\" cy=\"68.3\" r=\"3.2\" fill=\"#2563eb\"/><path d=\"M270.8 106.8l6 6m0 -6l-6 6\" stroke=\"#111\" stroke-width=\"1.6\"/><text x=\"4\" y=\"153\" font-size=\"11\" font-family=\"sans-serif\" fill=\"#c0392b\">2022-08-18 14:04 UTC  -1.28 R long, stopped (5m)</text></svg>"
+    },
+    {
+     "kind": "loser",
+     "net_r": -1.2793,
+     "note": "Model B: close outside the balance box, back inside within 5 candles; market entry at the next candle; stop beyond the probe extreme; target the far edge of the box",
+     "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 300 160\" width=\"300\" height=\"160\" data-net=\"-1.2793\"><path d=\"M15.0 30.3V39.1M45.0 29.7V35.1M75.0 31.0V44.8M105.0 44.2V59.4M135.0 47.9V68.4M165.0 53.0V85.7M195.0 67.2V133.1M225.0 87.2V124.4M255.0 91.1V114.8M285.0 101.3V114.1\" stroke=\"#8a8f98\" stroke-width=\"1\"/><path d=\"M4.5 32.3h21.0V33.8h-21.0ZM34.5 32.1h21.0V32.7h-21.0ZM214.5 100.6h21.0V122.4h-21.0ZM274.5 107.9h21.0V110.8h-21.0Z\" fill=\"#9fb8a6\"/><path d=\"M64.5 32.1h21.0V44.4h-21.0ZM94.5 44.4h21.0V50.3h-21.0ZM124.5 50.3h21.0V59.1h-21.0ZM154.5 59.1h21.0V67.2h-21.0ZM184.5 67.2h21.0V122.4h-21.0ZM244.5 100.6h21.0V110.8h-21.0Z\" fill=\"#c4a3a3\"/><path d=\"M0 85.7H300\" stroke=\"#6b7280\" stroke-width=\"1.2\" stroke-dasharray=\"3 3\"/><text x=\"298\" y=\"83.7\" text-anchor=\"end\" font-size=\"9\" fill=\"#6b7280\">level</text><path d=\"M0 82.6H300\" stroke=\"#2563eb\" stroke-width=\"1.2\" stroke-dasharray=\"1 2\"/><text x=\"298\" y=\"80.6\" text-anchor=\"end\" font-size=\"9\" fill=\"#2563eb\">filled</text><path d=\"M0 114.2H300\" stroke=\"#c0392b\" stroke-width=\"1.2\"/><text x=\"298\" y=\"112.2\" text-anchor=\"end\" font-size=\"9\" fill=\"#c0392b\">stop</text><path d=\"M0 10.9H300\" stroke=\"#1e8449\" stroke-width=\"1.2\"/><text x=\"298\" y=\"8.9\" text-anchor=\"end\" font-size=\"9\" fill=\"#1e8449\">target</text><circle cx=\"207.0\" cy=\"82.6\" r=\"3.2\" fill=\"#2563eb\"/><path d=\"M216.0 111.2l6 6m0 -6l-6 6\" stroke=\"#111\" stroke-width=\"1.6\"/><text x=\"4\" y=\"153\" font-size=\"11\" font-family=\"sans-serif\" fill=\"#c0392b\">2024-06-11 15:42 UTC  -1.28 R long, stopped (5m)</text></svg>"
+    },
+    {
+     "kind": "loser",
+     "net_r": -1.2793,
+     "note": "Model B: close outside the balance box, back inside within 5 candles; market entry at the next candle; stop beyond the probe extreme; target the far edge of the box",
+     "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 300 160\" width=\"300\" height=\"160\" data-net=\"-1.2793\"><path d=\"M15.0 40.2V62.8M45.0 56.9V67.5M75.0 53.3V67.5M105.0 59.3V66.6M135.0 57.7V73.0M165.0 64.5V84.2M195.0 78.6V109.2M225.0 101.7V127.6M255.0 115.7V130.6M285.0 118.1V133.1\" stroke=\"#8a8f98\" stroke-width=\"1\"/><path d=\"M34.5 56.9h21.0V59.5h-21.0ZM94.5 60.2h21.0V63.5h-21.0ZM244.5 124.2h21.0V126.1h-21.0Z\" fill=\"#9fb8a6\"/><path d=\"M4.5 52.6h21.0V59.5h-21.0ZM64.5 56.9h21.0V63.6h-21.0ZM124.5 60.2h21.0V68.4h-21.0ZM154.5 68.4h21.0V79.8h-21.0ZM184.5 79.8h21.0V108.4h-21.0ZM214.5 108.4h21.0V126.1h-21.0ZM274.5 124.2h21.0V130.5h-21.0Z\" fill=\"#c4a3a3\"/><path d=\"M0 96.6H300\" stroke=\"#6b7280\" stroke-width=\"1.2\" stroke-dasharray=\"3 3\"/><text x=\"298\" y=\"94.6\" text-anchor=\"end\" font-size=\"9\" fill=\"#6b7280\">level</text><path d=\"M0 95.8H300\" stroke=\"#2563eb\" stroke-width=\"1.2\" stroke-dasharray=\"1 2\"/><text x=\"298\" y=\"93.8\" text-anchor=\"end\" font-size=\"9\" fill=\"#2563eb\">filled</text><path d=\"M0 107.9H300\" stroke=\"#c0392b\" stroke-width=\"1.2\"/><text x=\"298\" y=\"105.9\" text-anchor=\"end\" font-size=\"9\" fill=\"#c0392b\">stop</text><path d=\"M0 10.9H300\" stroke=\"#1e8449\" stroke-width=\"1.2\"/><text x=\"298\" y=\"8.9\" text-anchor=\"end\" font-size=\"9\" fill=\"#1e8449\">target</text><circle cx=\"207.0\" cy=\"95.8\" r=\"3.2\" fill=\"#2563eb\"/><path d=\"M210.0 104.9l6 6m0 -6l-6 6\" stroke=\"#111\" stroke-width=\"1.6\"/><text x=\"4\" y=\"153\" font-size=\"11\" font-family=\"sans-serif\" fill=\"#c0392b\">2022-06-15 16:32 UTC  -1.28 R long, stopped (5m)</text></svg>"
+    }
+   ]
+  }
+ ],
+ "source_files": [
+  "MyTradingSys/research/sim_desk/desk.py"
+ ],
+ "commit": "local desk run"
+}
