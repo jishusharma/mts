@@ -7,7 +7,7 @@ worked example. Every TEST_PLAN.md in these layers must derive its expected numb
 never from an implementation module (see LESSONS_LEARNED.md 2026-09-28 D1: `layers/rsi/TEST_PLAN.md`
 Case C1 was originally derived from `bt/bt_rsi.py.new`'s `rsi_wilder`, which is off vs textbook Wilder).
 
-## 1. RSI (Wilder, `rsi_core.rsi_wilder`)
+## 1. RSI (Wilder, `rsi_core.rsi_core`)
 
 **Chosen definition (textbook Wilder = TradingView `ta.rsi`):**
 1. `delta[i] = close[i] - close[i-1]` for `i = 1..len-1`.

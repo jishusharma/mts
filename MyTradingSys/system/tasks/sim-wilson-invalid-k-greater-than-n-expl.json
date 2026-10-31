@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T03:27:18Z",
   "commands": [],
   "created": "2026-10-31T02:48:05Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "sim-wilson-invalid-k-greater-than-n-expl",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "wilson raises ValueError naming k and n for k>n, k<0, n<0",
+      "ref": "4bd7d7087",
+      "utc": "2026-10-31T03:27:18Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,12 @@
   "refs": [
     "MyTradingSys/research/gemini_burn_2026-10-31/BACKTEST_CORE_TEST_PLAN.md"
   ],
-  "result": "",
+  "result": "wilson raises ValueError naming k and n for k>n, k<0, n<0",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/sim.py, MyTradingSys/backtest/test_sim_core.py"
   ],
@@ -42,12 +54,13 @@
   "scope_sha": "1ec7d8fdbaa2",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add the two wilson tests; confirm the first fails on current code",
     "Add an explicit 0<=k<=n check to wilson raising ValueError with k and n in the message",
     "Run python scripts/dev/run_all_tests.py --quick"
   ],
+  "taken": "2026-10-31T03:27:18Z",
   "tests": "MyTradingSys/backtest/test_sim_core.py::test_wilson_k_greater_than_n_raises_clear_error (fail-first), ::test_wilson_zero_n_returns_zero_pair",
   "title": "sim.wilson invalid k greater than n explicit error",
   "weight": "",

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T03:27:17Z",
   "commands": [],
   "created": "2026-10-31T02:48:03Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "sim-py-first-unit-tests-out-of-order-row",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "test_sim_core.py: run() raises ValueError on decreasing t; zero-risk and stop-first pinned",
+      "ref": "4bd7d7087",
+      "utc": "2026-10-31T03:27:17Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,12 @@
   "refs": [
     "MyTradingSys/research/gemini_burn_2026-10-31/BACKTEST_CORE_TEST_PLAN.md"
   ],
-  "result": "",
+  "result": "test_sim_core.py: run() raises ValueError on decreasing t; zero-risk and stop-first pinned",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/sim.py, MyTradingSys/backtest/test_sim_core.py"
   ],
@@ -42,12 +54,13 @@
   "scope_sha": "1ec7d8fdbaa2",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write test_sim_core.py with hand-computed rows (expected R from FORMULAS.md 18.5, not from sim.py); run it, confirm the out-of-order test fails on current code",
     "Add a monotonic-t check at the top of run() raising ValueError; rerun the tests green",
     "Run python scripts/dev/run_all_tests.py --quick"
   ],
+  "taken": "2026-10-31T03:27:17Z",
   "tests": "MyTradingSys/backtest/test_sim_core.py::test_run_rejects_out_of_order_rows (fail-first), ::test_geom_ok_rejects_stop_equal_entry, ::test_stop_checked_before_target",
   "title": "sim.py first unit tests: out-of-order rows fail closed",
   "weight": "",

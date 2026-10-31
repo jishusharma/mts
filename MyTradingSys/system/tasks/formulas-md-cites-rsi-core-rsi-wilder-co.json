@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T03:27:20Z",
   "commands": [],
   "created": "2026-10-31T02:46:00Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "formulas-md-cites-rsi-core-rsi-wilder-co",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "FORMULAS.md heading 1 now cites rsi_core.rsi_core",
+      "ref": "4bd7d7087",
+      "utc": "2026-10-31T03:27:20Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -37,7 +44,12 @@
   "refined_by": "",
   "refreshed": "2026-10-31T02:49:00Z",
   "refs": [],
-  "result": "",
+  "result": "FORMULAS.md heading 1 now cites rsi_core.rsi_core",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/FORMULAS.md"
   ],
@@ -45,10 +57,11 @@
   "scope_sha": "732f411af1b1",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Edit the heading at FORMULAS.md:10"
   ],
+  "taken": "2026-10-31T03:27:20Z",
   "tests": "docs only: MyTradingSys/tests/docs/test_integrity.py stays green",
   "title": "FORMULAS.md cites rsi_core.rsi_wilder, code has rsi_core",
   "weight": "",

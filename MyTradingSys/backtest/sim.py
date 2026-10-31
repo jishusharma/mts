@@ -32,6 +32,8 @@ GAP, TIMEOUT = 180, 12 * 3600
 
 
 def wilson(k, n, z=1.96):
+    if n < 0 or k < 0 or k > n:
+        raise ValueError("wilson needs 0 <= k <= n, got k=%d n=%d" % (k, n))
     if n == 0:
         return (0.0, 0.0)
     p = k / n; d = 1 + z * z / n; c = p + z * z / (2 * n)
@@ -44,6 +46,9 @@ def geom_ok(d, e, s, t):
 
 
 def run(rows, rule, stops, taker, maker):
+    for a, b in zip(rows, rows[1:]):
+        if b["t"] < a["t"]:
+            raise ValueError("rows out of order: t=%s follows t=%s" % (b["t"], a["t"]))
     trades, i, n = [], 0, len(rows)
     while i < n:
         r = rows[i]
