@@ -1,47 +1,50 @@
 {
- "approved_by": "operator 2026-10-31 (chat: start Opus on login A, deep research)",
- "asks": "",
- "commands": [],
- "created": "2026-10-30T21:39:22Z",
- "depends_on": [],
- "done_when": "MyTradingSys/research/fractals_2026-10-31/REPORT.md (literature table with links), MyTradingSys/research/fractals_2026-10-31/PRE_REG.md frozen before the run, results csv and a verdict section exist; look-ahead check passes; shipped with a Result: line",
- "est_turns": 40,
- "formula_id": "",
- "formula_ids": [],
- "from_inbox": "",
- "goal": "Verdict in plain words: tradeable, tradeable only as a context filter for an existing layer, or not tradeable, with the n of trades, fee-net R and what would change the answer.",
- "id": "opus-fractals-btc-deep-research-1031",
- "kind": "audit",
- "lane": "OPUS",
- "layers": [],
- "live_path": false,
- "mutation_check": "",
- "note": "Operator 2026-10-31: start Opus, deep research, on login A. Prior art in repo: research/drop_bounce_2026-10-29/fractal.py (descriptive shape search, no fees). Honest negative result is a valid outcome. Final report ends with a Noticed: line.",
- "prio": 2,
- "refine_tries": 0,
- "refined_by": "REVIEWED: coordinator-C 2026-10-31 (brief checked against PRE_REG rules; no Lab_Guy pass run)",
- "refs": [
-  "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
- ],
- "result": "",
- "scope_in": [
-  "MyTradingSys/research/fractals_2026-10-31/ (new files only)"
- ],
- "scope_out": [
-  "live tree; engine and layer code; VALIDATION and holdout windows; .secrets and .env"
- ],
- "size": "M",
- "sources": [],
- "state": "raw",
- "steps": [
-  "literature sweep with links; note which claims are fee-net and out-of-sample",
-  "write PRE_REG.md, freeze, commit",
-  "run on DEV with fees.py, shuffle null and shifted-bar look-ahead check",
-  "write REPORT.md verdict; ship"
- ],
- "tests": "pre-reg frozen before first run; a planted-edge or shuffle null shows the test can detect and can reject; look-ahead shift test",
- "title": "Opus deep research: the fractals studied on BTC (Williams fractals, fractal dimension and Hurst, multi-timeframe self-similarity); can any be traded fee-net? literature, our own DEV test, verdict",
- "weight": "CRUCIAL",
- "worker": "session",
- "crucial": "a no-undo design call: whether fractal structure becomes a traded layer is decided on a frozen pre-registration; the operator named Opus"
+  "approved_by": "operator 2026-10-31 (chat: start Opus on login A, deep research)",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-30T21:39:22Z",
+  "crucial": "a no-undo design call: whether fractal structure becomes a traded layer is decided on a frozen pre-registration; the operator named Opus",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/fractals_2026-10-31/REPORT.md (literature table with links), MyTradingSys/research/fractals_2026-10-31/PRE_REG.md frozen before the run, results csv and a verdict section exist; look-ahead check passes; shipped with a Result: line",
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Verdict in plain words: tradeable, tradeable only as a context filter for an existing layer, or not tradeable, with the n of trades, fee-net R and what would change the answer.",
+  "id": "opus-fractals-btc-deep-research-1031",
+  "kind": "audit",
+  "lane": "OPUS",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Operator 2026-10-31: start Opus, deep research, on login A. Prior art in repo: research/drop_bounce_2026-10-29/fractal.py (descriptive shape search, no fees). Honest negative result is a valid outcome. Final report ends with a Noticed: line.\nREVIEWED: coordinator-C 2026-10-31 (brief checked against PRE_REG rules; no Lab_Guy pass run)",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "REVIEWED: coordinator-C 2026-10-31 (brief checked against PRE_REG rules; no Lab_Guy pass run)",
+  "refreshed": "2026-10-31T00:54:07Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/fractals_2026-10-31/ (new files only)"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code; VALIDATION and holdout windows; .secrets and .env"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "literature sweep with links; note which claims are fee-net and out-of-sample",
+    "write PRE_REG.md, freeze, commit",
+    "run on DEV with fees.py, shuffle null and shifted-bar look-ahead check",
+    "write REPORT.md verdict; ship"
+  ],
+  "tests": "pre-reg frozen before first run; a planted-edge or shuffle null shows the test can detect and can reject; look-ahead shift test",
+  "title": "Opus deep research: the fractals studied on BTC (Williams fractals, fractal dimension and Hurst, multi-timeframe self-similarity); can any be traded fee-net? literature, our own DEV test, verdict",
+  "weight": "CRUCIAL",
+  "worker": "session"
 }
