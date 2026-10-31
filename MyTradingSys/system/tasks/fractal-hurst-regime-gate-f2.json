@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/research/fractals_2026-10-31/f2/run_f2.py"
+  ],
+  "created": "2026-10-31T08:17:45Z",
+  "depends_on": [],
+  "done_when": "PRE_REG.md committed first; 4 TRIALS rows (2 thresholds x 2 layers) before outcomes; RESULT.md with verdict; fail-first tests pass; CI green.",
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Test whether a rolling 1h DFA Hurst regime gate lifts fee-net R of RSI-DIV-MTF and the F1 pivot fade, vs shuffled-H, random same-fraction and circular-shift nulls (DEV 2022-01..2025-06 only).",
+  "id": "fractal-hurst-regime-gate-f2",
+  "lane": "SONNET",
+  "layers": [
+    "rsi"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/fractals_2026-10-31/SYNTHESIS.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/fractals_2026-10-31/f2/",
+    "MyTradingSys/research/layer_lab/TRIALS.md",
+    "MyTradingSys/backtest/layers/FORMULAS.md"
+  ],
+  "scope_out": [
+    "live path, .mts_live, holdout 2025-07+"
+  ],
+  "size": "M",
+  "sources": [],
+  "state": "raw",
+  "steps": [
+    "write PRE_REG + FORMULAS entry + TRIALS rows, commit",
+    "build f2 code + fail-first tests",
+    "run, RESULT.md, ship"
+  ],
+  "tests": "research/fractals_2026-10-31/f2/test_f2.py: DFA random walk ~0.5, persistent fGn >0.5, gate uses only past bars (truncation shift test), shift null, planted edge.",
+  "title": "F2: rolling 1h Hurst (DFA) regime gate on existing layers vs shuffled and random gates, fee-net DEV",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}
