@@ -1,7 +1,7 @@
 {
 "_doc": "Catalogue of known tests on trunk. kind is inferred (kind_source). Built by sim_desk/build_catalogue.py.",
-"count": 286,
-"exported": 286,
+"count": 289,
+"exported": 287,
 "rows": [
 {
 "id": "st-_archive-loose_2026-10-cbp_profile6_result",
@@ -1893,6 +1893,20 @@
 "result_id": "dir-flow_layers_concepts_2026-10-28",
 "folder_files": 1,
 "date": "2026-10-28",
+"status": "FAILED",
+"verdict_class": "failed"
+},
+{
+"id": "st-fractals_2026-10-31-f4-result",
+"family": "fractals",
+"title": "F4 RESULT: 8h look-alikes of the operator setup (BB squeeze-break + volume spike, RSI, StochRSI, CVD proxy), BTCUSDT sp…",
+"kind": "backtest",
+"kind_source": "inferred from text",
+"verdict": "no tradable edge. No set passes the frozen rule. Continuation short is INCONCLUSIVE (about zero after fees), fade long FAILS (CI upper < 0 at all 3 horizons), the ANALOG selection is negative at 6 and 9 bars. Honest negative; the samples (…",
+"source": "MyTradingSys/research/fractals_2026-10-31/f4/RESULT.md",
+"exported": true,
+"result_id": "fractals-f4-8h-state-analogs",
+"date": "2026-10-31",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -3832,7 +3846,7 @@
 "title": "Trial ledger: layer lab",
 "kind": "backtest",
 "kind_source": "path",
-"verdict": "400 trial rows logged (every variant tried)",
+"verdict": "411 trial rows logged (every variant tried)",
 "source": "MyTradingSys/research/layer_lab/TRIALS.md",
 "exported": true,
 "result_id": "ledger-layer_lab-trials-md",
@@ -4172,6 +4186,36 @@
 "exported": true,
 "result_id": "dir-yt_feed_2026-10-31",
 "folder_files": 8,
+"date": "2026-10-31",
+"status": "SEE_VERDICT",
+"verdict_class": "other"
+},
+{
+"id": "dir-dsa_bridge_fix_plan_2026-10-31",
+"family": "dsa bridge fix plan",
+"title": "DSA bridge fix plan (AIBridge 0.7.3), 2026-10-31",
+"kind": "backtest",
+"kind_source": "inferred from text",
+"verdict": "PASS/FIX per card",
+"source": "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md",
+"exported": false,
+"result_id": null,
+"folder_files": 1,
+"date": "2026-10-31",
+"status": "SEE_VERDICT",
+"verdict_class": "passed"
+},
+{
+"id": "dir-tom_fabio_review_2026-10-31",
+"family": "tom fabio review",
+"title": "Tom and Fabio setup review (technical), 2026-10-31",
+"kind": "audit",
+"kind_source": "inferred from text",
+"verdict": "s pending). That sheet says what each setup is; this one says what our code does with it, what was measured,",
+"source": "MyTradingSys/research/tom_fabio_review_2026-10-31/SETUP_REVIEW.md",
+"exported": false,
+"result_id": null,
+"folder_files": 1,
 "date": "2026-10-31",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
