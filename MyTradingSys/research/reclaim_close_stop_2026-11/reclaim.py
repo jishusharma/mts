@@ -16,7 +16,6 @@ sys.path.insert(0, os.path.normpath(os.path.join(HERE, '..', '..')))
 import study  # noqa: E402
 from backtest import fees  # noqa: E402
 
-TAKER_X2 = 2 * fees.BINANCE_TAKER
 CAP = {'4h': 6, '1D': 5}  # OURS horizon cap in bars after the reclaim bar
 CFG = {k: (study.CFG[k][0], study.CFG[k][1], study.CFG[k][2]) for k in CAP}  # (tf minutes, L, N): same as the break study
 
@@ -68,6 +67,6 @@ def events(b, tfname, cfg=None, cap=None):
             if j is None:
                 continue  # break held: no reclaim, no trade
             k, g = simulate(c, lv, side, j, cap)
-            out.append(dict(tf=tfname, side='low' if side < 0 else 'high', t=t[j], gross=g, net=g - TAKER_X2, hold=k - j,
+            out.append(dict(tf=tfname, side='low' if side < 0 else 'high', t=t[j], gross=g, net=g - 2 * fees.BINANCE_TAKER, hold=k - j,
                             exit='stop' if k - j < cap or (c[k] < lv if side < 0 else c[k] > lv) else 'cap'))
     return sorted(out, key=lambda r: r['t'])
