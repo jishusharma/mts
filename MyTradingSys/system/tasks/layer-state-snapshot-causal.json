@@ -35,7 +35,7 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "S0 park. Meta-label phase 2 (ROADMAP P2 + 2.0): shared causal layer_state_at(ts) snapshot in research/sim_desk/studies/_bars.py (last-closed-bar rule) with a look-ahead forcing test, plus the one-table-one-verdict-line panel per d-meta-label-panel-simple-self-tested, shipped with JSON-shape, counts-sum and page click checks; the builder checks the rendered page itself. Entry gate: one meta-labelled setup passes VALIDATION AND S0 exit signed",
+  "title": "S0 park. Meta-label phase 2 (ROADMAP P2 + 2.0): causal layer_state_at(ts) snapshot in sim_desk/studies/_bars.py with a look-ahead forcing test, plus the one-table-one-verdict-line panel (d-meta-label-panel-simple-self-tested) shipped with JSON-shape, counts-sum and page click checks; builder verifies the rendered page. Entry: one meta-labelled setup passes VALIDATION AND S0 exit signed",
   "weight": "",
   "worker": ""
 }
