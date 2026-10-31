@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T01:04:42Z",
   "commands": [
     "python scripts/dev/sync.py start krown-free-dev-check"
   ],
@@ -33,6 +34,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "Silver Cross 1-month DEV n=6 hit 50% (claim 83%) mean net +7.87% INCONCLUSIVE; 4 other set",
+      "ref": "7106c0de6",
+      "utc": "2026-10-31T01:04:42Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "ship: 17 file(s)",
@@ -51,7 +58,12 @@
   "refs": [
     "MyTradingSys/options/research/KROWN_FREE_VS_PAID.md"
   ],
-  "result": "",
+  "result": "Silver Cross 1-month DEV n=6 hit 50% (claim 83%) mean net +7.87% INCONCLUSIVE; 4 other setup groups NOT_TESTABLE",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/krown_free_2026-10-31/ (new files only); MyTradingSys/research/ trial ledger rows via the existing tool"
   ],
@@ -61,12 +73,13 @@
   "scope_sha": "e8420fbb5d82",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "wait until KROWN_FREE_SETUPS.md is on trunk",
     "write and freeze PRE_REG; run on DEV; shift check",
     "write DEV_CHECK.md and ship"
   ],
+  "taken": "2026-10-31T01:04:42Z",
   "tests": "pre-reg frozen before first run; one-bar shift look-ahead check; trial ledger rows added",
   "title": "Check Krown's free setups: pre-register and run each complete-rule setup from KROWN_FREE_SETUPS.md on DEV fee-net, compare with his claimed hit-rate",
   "weight": "ROUTINE",
