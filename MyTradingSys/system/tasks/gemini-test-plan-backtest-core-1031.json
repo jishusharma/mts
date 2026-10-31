@@ -2,6 +2,7 @@
   "approved_by": "",
   "asks": "",
   "claim": "",
+  "closed": "2026-10-31T01:07:58Z",
   "commands": [
     "git grep -n \"def test_\" -- MyTradingSys/backtest"
   ],
@@ -17,6 +18,12 @@
   "kind": "run",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_burn_2026-10-31/BACKTEST_CORE_TEST_PLAN.md",
+      "ref": "36fa219a4",
+      "utc": "2026-10-31T01:07:58Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -36,7 +43,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/gemini_burn_2026-10-31/BACKTEST_CORE_TEST_PLAN.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_burn_2026-10-31/ (new files only)"
   ],
@@ -46,7 +58,7 @@
   "scope_sha": "e8420fbb5d82",
   "size": "S",
   "sources": [],
-  "state": "active",
+  "state": "done",
   "steps": [
     "read the four modules and their tests",
     "grep tests for each case",
