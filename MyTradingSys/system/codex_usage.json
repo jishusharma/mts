@@ -6,7 +6,7 @@
   "window_resets": 1793452602,
   "window_used": 1.0
  },
- "at": "2026-10-31T08:40:15Z",
+ "at": "2026-10-31T09:03:38Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -23,9 +23,24 @@
   "astra_runs": 0,
   "week_pts": 9.0,
   "window_pts": 1.0,
-  "window_runs": 1
+  "window_runs": 2
  },
  "runs": [
+  {
+   "at": "2026-10-31T09:02:42Z",
+   "card": "gpt-audit-analyst-levels-asof-rule",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 48,
+   "tokens_out": 3603,
+   "tokens_total": 317782,
+   "tokens_uncached": 28867,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-10-31T08:39:26Z",
    "card": "gpt-audit-live-aid-indicators-vs-formulas",
@@ -160,21 +175,6 @@
    "tokens_uncached": 54699,
    "week_pts": 0.0,
    "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-31T05:11:26Z",
-   "card": "gemini-argon-independent-bug-hunt-cost-lookahead",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "3 uncommitted file(s) left in F:\\MTS\\mts-codex-lab: MyTradingSys/research/gemini_burn_2026-10-31/ARGON_COST_LOOKAHEAD.md | release failed: sync: no claim gemini",
-   "outcome": "OUT_OF_SCOPE",
-   "seconds": 74,
-   "tokens_out": 6848,
-   "tokens_total": 676041,
-   "tokens_uncached": 72969,
-   "week_pts": 0.0,
-   "window_pts": 0.0
   }
  ]
 }

@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "rows": [
+    {
+      "analyst": "Analyst1",
+      "video_id": "fixture-1",
+      "published": "2026-10-28",
+      "bias": "NEUTRAL",
+      "symbols": [
+        "BTC"
+      ],
+      "quotes": [
+        "fixture quote"
+      ],
+      "trades": [],
+      "pointers": [
+        "support 75k"
+      ],
+      "quote_verified": true,
+      "expires_at": "2099-12-31T00:00:00Z"
+    },
+    {
+      "analyst": "Analyst2",
+      "video_id": "fixture-2",
+      "published": "2026-10-28",
+      "bias": "NEUTRAL",
+      "symbols": [
+        "BTC"
+      ],
+      "quotes": [
+        "fixture quote"
+      ],
+      "trades": [],
+      "pointers": [
+        "pivot 76k"
+      ],
+      "quote_verified": true,
+      "expires_at": "2099-12-31T00:00:00Z"
+    },
+    {
+      "analyst": "Analyst3",
+      "video_id": "fixture-3",
+      "published": "2026-10-28",
+      "bias": "NEUTRAL",
+      "symbols": [
+        "BTC"
+      ],
+      "quotes": [
+        "fixture quote"
+      ],
+      "trades": [],
+      "pointers": [
+        "resistance 77k"
+      ],
+      "quote_verified": true,
+      "expires_at": "2099-12-31T00:00:00Z"
+    }
+  ],
+  "rejected": [],
+  "bars": [
+    [
+      1793149200,
+      75000,
+      74900,
+      75000
+    ],
+    [
+      1793235600,
+      76100,
+      76000,
+      76000
+    ]
+  ]
+}
