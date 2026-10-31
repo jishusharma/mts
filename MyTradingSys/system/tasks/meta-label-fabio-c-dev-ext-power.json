@@ -1,0 +1,38 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T13:48:52Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "meta-label-fabio-c-dev-ext-power",
+  "lane": "SONNET",
+  "layers": [
+    "fabio"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/meta_label_roadmap_2026-10-31/ROADMAP.md"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Meta-label NOT ENOUGH DATA branch (ROADMAP 2.2): rerun the Fabio Model C price-only stand-in meta-label test with the same frozen features and amendments on pre-DEV dev_ext_2019_2021 (A-20261018-2) to lift n toward 461 per tercile (sd ~2.3 R, delta 0.30 R); same Holm family, placebo, blocked CV; if still NOT ENOUGH DATA park meta-labelling for Tom VP and Fabio C. Runs only after meta-label-tom-vp-fabio-trades ends NOT ENOUGH DATA; never VALIDATION/HOLDOUT",
+  "weight": "",
+  "worker": ""
+}
