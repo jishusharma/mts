@@ -1,7 +1,7 @@
 {
 "_doc": "Catalogue of known tests on trunk. kind is inferred (kind_source). Built by sim_desk/build_catalogue.py.",
-"count": 306,
-"exported": 306,
+"count": 307,
+"exported": 307,
 "rows": [
 {
 "id": "st-_archive-loose_2026-10-cbp_profile6_result",
@@ -1791,6 +1791,20 @@
 "source": "MyTradingSys/research/sim_desk/results/eagle-c27-wavetrend.json",
 "exported": true,
 "result_id": "eagle-c27-wavetrend",
+"date": "2026-10-31",
+"status": "SEE_VERDICT",
+"verdict_class": "other"
+},
+{
+"id": "eagle-c28-wt-structure",
+"family": "Eagle_Eyes chart ideas (operator, 10-30/31)",
+"title": "C28: WaveTrend inside market structure (sell tops in downtrends, buy dots in uptrends), 1h / 2h / 4h",
+"kind": "backtest",
+"kind_source": "result file",
+"verdict": "NO for the downtrend shorts; one LEAD: 2h uptrend buy dot, exit at the first sell dot after WT reaches +53 (n 69, +0.45% net, both halves positive).",
+"source": "MyTradingSys/research/sim_desk/results/eagle-c28-wt-structure.json",
+"exported": true,
+"result_id": "eagle-c28-wt-structure",
 "date": null,
 "status": "SEE_VERDICT",
 "verdict_class": "other"
@@ -3560,7 +3574,7 @@
 "source": "MyTradingSys/research/screenshots/2026-10-07_BTCUSDT_29ff2b488f13.md",
 "exported": true,
 "result_id": "dir-screenshots",
-"folder_files": 33,
+"folder_files": 34,
 "date": "2026-10-07",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
