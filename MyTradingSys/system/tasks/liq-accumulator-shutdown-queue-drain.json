@@ -1,6 +1,7 @@
 {
   "Verify": "mvn -q -Dtest=LiquidationLogWiringTest test",
   "asks": "",
+  "closed": "2026-10-31T04:53:11Z",
   "commands": [
     "mvn -q -Dtest=LiquidationLogWiringTest test"
   ],
@@ -22,6 +23,12 @@
   "lane": "JIS-NB",
   "latest": [
     {
+      "kind": "ship",
+      "line": "shutdown drains queue; 7/7 tests, full 272 pass; 4 fail on old",
+      "ref": "a95155258",
+      "utc": "2026-10-31T04:53:11Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "wire BinanceLiquidationAccumulator into Main statemachine",
@@ -37,6 +44,12 @@
   "prio": 2,
   "priority": "IMPORTANT",
   "refreshed": "2026-10-30T17:15:24Z",
+  "result": "shutdown drains queue; 7/7 tests, full 272 pass; 4 fail on old",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "src/main/java/datafeed/BinanceLiquidationAccumulator.java",
     "src/test/java/datafeed/LiquidationLogWiringTest.java"
@@ -50,12 +63,13 @@
   "sources": [
     "MyTradingSys/research/gemini_audits_2026-10-30/CRITICAL_24H_AUDIT_2026-10-30.md Finding 4"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "logLoop (lines 80-92): on InterruptedException or running=false drain remaining logQueue strings and flush the writer before close",
     "shutdown() (219-224): after interrupt, logWriter.join(2000)",
     "Extend LiquidationLogWiringTest (restart = shutdown then new instance appends, no duplicates). Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
   ],
+  "taken": "2026-10-31T04:53:11Z",
   "tests": "src/test/java/datafeed/LiquidationLogWiringTest.java: N events enqueued then shutdown() gives N lines on disk; fails on current BinanceLiquidationAccumulator.java.",
   "title": "BinanceLiquidationAccumulator: drain logQueue on shutdown before interrupting logWriter",
   "weight": "CRITICAL",
