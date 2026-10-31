@@ -117,6 +117,53 @@ class RunJobTest(unittest.TestCase):
         self.assertTrue(log.startswith("CLAIM FAILED"), log)
 
 
+class ModelTokenTest(unittest.TestCase):
+    """Operator order 2026-10-31: every Antigravity model reachable from `run <card>[:effort][:model]`."""
+
+    def _parse(self, spec):
+        with mock.patch.object(gq, "run_job") as rj:
+            rc = gq.main(["run", spec])
+        return rc, rj.call_args
+
+    def test_token_parsing_each_model(self):
+        for spec, want in (("c1", ("c1", "low", "flash")), ("c1:flash", ("c1", "low", "flash")),
+                           ("c1:high:argon", ("c1", "high", "argon")), ("c1:opus:medium", ("c1", "medium", "opus")),
+                           ("c1:sonnet", ("c1", "low", "sonnet")), ("c1:gpt", ("c1", "low", "gpt")),
+                           ("c1:high:gpt", ("c1", "high", "gpt"))):
+            rc, call = self._parse(spec)
+            self.assertEqual((rc, call.args), (0, want), spec)
+
+    def test_bad_model_rejected(self):
+        rc, call = self._parse("c1:llama")
+        self.assertEqual(rc, 2)
+        self.assertIsNone(call)
+
+    def _agy_cmd(self, effort, model):
+        with tempfile.TemporaryDirectory() as t:
+            (Path(t) / "c1").mkdir()
+            with mock.patch.object(gq, "ROOT", Path(t)), mock.patch.object(gq, "git", return_value=cp(0)),                     mock.patch("sync.open_claims", return_value=[]),                     mock.patch.object(gq, "card_gate", return_value=(True, "")),                     mock.patch.object(gq, "claim_with_retry", return_value=("ok", "")),                     mock.patch.object(gq, "keep_lease"),                     mock.patch.object(gq, "sh", return_value=cp(0, "BRIEF")),                     mock.patch.object(gq.subprocess, "run", return_value=cp(0)) as run:
+                gq.run_job("c1", effort, model)
+            return run.call_args.args[0]
+
+    def test_exact_model_id_passed_to_agy(self):
+        for effort, model, want in (("low", "flash", "gemini-3.8-flash-low"), ("high", "argon", "gemini-4-argon-high"),
+                                    ("medium", "opus", "claude-opus-5-5-medium"), ("low", "sonnet", "claude-sonnet-5-5-low"),
+                                    ("high", "sonnet", "claude-sonnet-5-5-high")):
+            cmd = self._agy_cmd(effort, model)
+            self.assertEqual(cmd[cmd.index("--model") + 1], want)
+            self.assertEqual(cmd[cmd.index("--effort") + 1], effort)
+
+    def test_gpt_fixed_id_ignores_effort(self):
+        for effort in ("low", "high"):
+            cmd = self._agy_cmd(effort, "gpt")
+            self.assertEqual(cmd[cmd.index("--model") + 1], "gpt-oss-120b-medium")
+            self.assertNotIn("--effort", cmd)
+
+    def test_rules_name_actual_model(self):
+        self.assertNotIn("Gemini Flash worker", gq.rules_for("opus"))
+        self.assertIn("claude-opus-5-5-high", gq.rules_for("opus", "claude-opus-5-5-high"))
+
+
 class CardGateTest(unittest.TestCase):
     def _gate(self, out, rc=0, tag=""):
         with mock.patch.object(gq, "git", return_value=subprocess.CompletedProcess([], rc, out, "boom")),                 mock.patch("tasks.stop_tag", return_value=tag):

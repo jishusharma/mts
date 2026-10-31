@@ -1,0 +1,67 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T17:29:28Z",
+  "depends_on": [],
+  "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Commit 9f4eec024 said the 2h trend lookup via bisect gives the same numbers: run old (git show 9f4eec024^) vs new on the same bars, diff every output row, and check the lookup never reads a 2h bar that closes after the signal bar (look-ahead).",
+  "id": "gpt-recheck-wt-lower-tf-bisect-1031",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "C30 pre-registration: freeze the WaveTrend bottom-buy lead for one VALIDATION read",
+      "ref": "bb124f5cdc7e",
+      "utc": "2026-10-31T17:00:10Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "bb124f5cdc7e C30 pre-registration: freeze the WaveTrend bottom-buy lead for one VALIDATION",
+      "ref": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/PRE_REG_C30.md",
+      "utc": "2026-10-31T17:00:10Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refreshed": "2026-10-31T17:30:00Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/wt_lower_tf.py",
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/wavetrend_dots.py",
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/PRE_REG_C30.md"
+  ],
+  "scope_out": [
+    "code or spec changes",
+    "holdout reads",
+    "BTC runs of the current encoding (ROADMAP section 2)"
+  ],
+  "scope_sha": "bb124f5cdc7e",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
+    "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
+    "Report findings as a table: severity HIGH/MED/LOW, file:line, what is wrong, evidence, proposed fix. Change no code and no spec.",
+    "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
+    "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "tests": "report states row-diff count (expect 0) and the look-ahead test result with a hand-made 3-bar fixture",
+  "title": "GPT: recheck wt_lower_tf bisect change for equality and look-ahead",
+  "weight": "",
+  "worker": ""
+}

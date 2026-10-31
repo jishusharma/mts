@@ -3,10 +3,10 @@
   "plan": "plus",
   "week_resets": 1793780113,
   "week_used": 60.0,
-  "window_resets": 1793452601,
-  "window_used": 3.0
+  "window_resets": 1793485599,
+  "window_used": 1.0
  },
- "at": "2026-10-31T12:55:02Z",
+ "at": "2026-10-31T17:29:28Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -22,10 +22,25 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 10.0,
-  "window_pts": 3.0,
-  "window_runs": 5
+  "window_pts": 1.0,
+  "window_runs": 1
  },
  "runs": [
+  {
+   "at": "2026-10-31T17:27:10Z",
+   "card": "gpt-rederive-tom-vp-return-to-value",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 131,
+   "tokens_out": 7987,
+   "tokens_total": 686039,
+   "tokens_uncached": 41636,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
   {
    "at": "2026-10-31T12:53:30Z",
    "card": "gpt-audit-testnet-counting-rule-vs-bar",
@@ -160,21 +175,6 @@
    "tokens_uncached": 40734,
    "week_pts": 0.0,
    "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-31T06:43:29Z",
-   "card": "gpt-audit-formulas-vs-wlow_bounce-layer",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 49,
-   "tokens_out": 3878,
-   "tokens_total": 412423,
-   "tokens_uncached": 39905,
-   "week_pts": 0.0,
-   "window_pts": 1.0
   }
  ]
 }

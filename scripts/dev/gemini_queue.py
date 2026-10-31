@@ -1,13 +1,15 @@
 """Queue task cards onto Gemini through the Antigravity CLI (`agy`), one throwaway worktree per card.
 
   python scripts/dev/gemini_queue.py run <card-id>[:<effort>][:<model>] ...  run the jobs one after another
-    effort in low|medium|high (default low); model in flash|argon (default flash); tokens may appear in either order
+    effort in low|medium|high (default low); model in flash|argon|opus|sonnet|gpt (default flash; gpt = gpt-oss-120b-medium, effort ignored);
+    tokens may appear in either order
   python scripts/dev/gemini_queue.py status                                last log line per job
 
-Each job: worktree F:/MTS/gq/<id> on branch gemini-q/<id> cut from origin/fast-track, `agy --print` with a
-Flash model, prompt = the card brief plus the lane rules. Gemini commits on its branch only: it never ships,
+Each job: worktree F:/MTS/gq/<id> on branch gemini-q/<id> cut from origin/fast-track, `agy --print` with the
+chosen Antigravity model, prompt = the card brief plus the lane rules. Gemini commits on its branch only: it never ships,
 never stamps REVIEWED, never touches the live tree. A Claude session reviews the branch and ships it.
-Flash models only (operator 2026-10-18); the argon option was added by the operator via the gemini-lane-fix task.
+Every Antigravity quota model is allowed (operator order 2026-10-31: use every model in the quota; this replaces
+'Flash models only' of 2026-10-18; argon was added via the gemini-lane-fix task). Branch naming stays gemini-q/<id>.
 """
 from __future__ import annotations
 import json, os, random, re, socket, subprocess, sys, threading, time
@@ -26,7 +28,7 @@ def root() -> Path:
     env = os.environ.get('MTS_GQ_ROOT')
     return Path(env) if env else ROOT
 
-RULES = """You are a Gemini Flash worker in the MTS repo. Work ONLY in this directory (a throwaway git worktree).
+RULES = """You are a {MODEL} worker in the MTS repo. Work ONLY in this directory (a throwaway git worktree).
 Read CLAUDE.md first (it applies to you). Do the card below end to end.
 Hard rules: do NOT run sync.py ship, do NOT push, do NOT stamp REVIEWED, do NOT touch the live tree, HALT files,
 .secrets or .env. New tests must fail on the old code first. Label every number SOURCED (quote + file:line) or OURS.
@@ -176,6 +178,20 @@ def add_worktree(card: str, wt: Path, tries: int = 3, sleep=time.sleep):
         return subprocess.CompletedProcess([], 124, '', str(e))
 
 
+MODELS = ('flash', 'argon', 'opus', 'sonnet', 'gpt')
+MODEL_PREFIX = {'flash': 'gemini-3.8-flash', 'argon': 'gemini-4-argon', 'opus': 'claude-opus-5-5', 'sonnet': 'claude-sonnet-5-5'}
+GPT_ID = 'gpt-oss-120b-medium'   # no effort variants
+
+
+def model_id(model: str, effort: str) -> str:
+    """Exact `agy --model` id (ids from `agy models` on the NUC, 2026-10-31)."""
+    return GPT_ID if model == 'gpt' else f'{MODEL_PREFIX[model]}-{effort}'
+
+
+def rules_for(model: str, mid: str | None = None) -> str:
+    return RULES.replace('{MODEL}', mid or model_id(model, 'low'))
+
+
 def run_job(card: str, effort: str, model: str = 'flash') -> None:
     wt = root() / card
     log = root() / f'{card}.log'
@@ -206,12 +222,12 @@ def run_job(card: str, effort: str, model: str = 'flash') -> None:
         return
     brief = sh([PY, 'scripts/dev/tasks.py', 'brief', card], cwd=wt).stdout
     # NUC 2026-10-28 (gemini-lane-fix): argon ids from `agy models` on this NUC; flash stays 3.8
-    model = f'{"gemini-4-argon" if model == "argon" else "gemini-3.8-flash"}-{effort}'
-    cmd = [str(AGY), '--print', RULES + brief, '--model', model, '--effort', effort,
+    mid = model_id(model, effort)
+    cmd = [str(AGY), '--print', rules_for(model, mid) + brief, '--model', mid] + ([] if model == 'gpt' else ['--effort', effort]) + [
            '--mode', 'accept-edits', '--dangerously-skip-permissions', '--print-timeout', '2400s']
     t0 = time.time()
     with open(log, 'w', encoding='utf-8', newline='\n') as f:
-        f.write(f'START {card} {model}\n')
+        f.write(f'START {card} {mid}\n')
         f.flush()
         stop = threading.Event()
         threading.Thread(target=keep_lease, args=(wt, sync.slugify(card), stop), daemon=True).start()   # claim lease: refreshed while the run lasts
@@ -245,7 +261,7 @@ def main(argv: list[str]) -> int:
         for t in parts[1:]:
             if t in ('low', 'medium', 'high'):
                 effort = t
-            elif t in ('flash', 'argon'):
+            elif t in MODELS:
                 model = t
             else:
                 print('bad token', spec, t)
