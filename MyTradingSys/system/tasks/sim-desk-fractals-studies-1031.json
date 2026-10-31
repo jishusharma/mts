@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "I need to see all these back tests in simulator - make sure it is available",
+  "commands": [],
+  "created": "2026-10-31T09:39:14Z",
+  "depends_on": [],
+  "done_when": "results/fractals-*.json (5) exist, catalogue marks them exported, built index.html lists them, test_fractals_export.py passes",
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Operator 2026-10-31: all fractals_2026-10-31 backtests visible in the simulator, with trades.",
+  "id": "sim-desk-fractals-studies-1031",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "test fails before the module exists",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/sim_desk",
+    "MyTradingSys/research/fractals_2026-10-31"
+  ],
+  "scope_out": [
+    "live tree",
+    "publishing the artifact"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/fractals_2026-10-31/SYNTHESIS.md"
+  ],
+  "state": "raw",
+  "steps": [
+    "write f1/f2/f3 percent-only trade lists",
+    "fractals_export.py",
+    "catalogue + artifact build"
+  ],
+  "tests": "MyTradingSys/research/sim_desk/test_fractals_export.py (fails with ImportError before fractals_export.py exists; n and net R vs RESULT.md)",
+  "title": "Simulator: add every fractals_2026-10-31 backtest (P1b RSI by phase, F1 swing confluence, F2 Hurst gate, F3 analogs, phase tag) with trades",
+  "weight": "",
+  "worker": "session"
+}

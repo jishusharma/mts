@@ -13,10 +13,10 @@
   "tone": "info"
  },
  "why": [
-  "\"\\\"Primary variant (one, named): H1 = DAX top-quintile 2-day move (vs trailing 250 d) with sign opposite to the median of ES, Nikkei, BTC; trigger fires at CONVERGENCE START (basket turns toward the DAX direction and the DAX fails to make a new extreme); shor…",
-  "\"\\\"Events non-overlapping; cluster-robust SE. Expected raw events about 12-18/yr, so about 100-150 on 2017+ BTC-era data; n>=30 in the holdout may be unreachable: state in advance that a holdout with n<30 is reported as INCONCLUSIVE, not pass.\\\"\",",
-  "\"\\\"n_trades\\\": \\\"the source does not state a trade count\\\",\"",
-  "\"n_trades\": \"the source does not state a trade count\","
+  "\"\\\"\\\\\\\"Primary variant (one, named): H1 = DAX top-quintile 2-day move (vs trailing 250 d) with sign opposite to the median of ES, Nikkei, BTC; trigger fires at CONVERGENCE START (basket turns toward the DAX direction and the DAX fails to make a new extreme);…",
+  "\"\\\"\\\\\\\"Events non-overlapping; cluster-robust SE. Expected raw events about 12-18/yr, so about 100-150 on 2017+ BTC-era data; n>=30 in the holdout may be unreachable: state in advance that a holdout with n<30 is reported as INCONCLUSIVE, not pass.\\\\\\\"\\\",\",",
+  "\"\\\"\\\\\\\"n_trades\\\\\\\": \\\\\\\"the source does not state a trade count\\\\\\\",\\\"\",",
+  "\"\\\"n_trades\\\": \\\"the source does not state a trade count\\\",\""
  ],
  "kpis": [],
  "examples": [
@@ -36,5 +36,5 @@
  "source_files": [
   "MyTradingSys/research/sim_desk/results/dir-tom_correlation_trick_2026-10-26.json"
  ],
- "commit": "73ff49f7a"
+ "commit": "c7bc447ea"
 }

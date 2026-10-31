@@ -259,7 +259,7 @@ def run_variant(use_phase, Zr, vr, fwd, qe, split_e, ph, r, rng):
     taken, net, hit = trade_net(pos, qe, fwd)
     real = summarise(net, hit, taken, qe, split_e)
     real.update(forecasts=int(ans.sum()), forecastsA=int((ans & (qe < split_e)).sum()),
-                forecastsB=int((ans & (qe >= split_e)).sum()), net=net, taken=taken)
+                forecastsB=int((ans & (qe >= split_e)).sum()), net=net, taken=taken, pos=pos)
     shuf = []
     for _ in range(DRAWS):
         fs = shuffled_fwd(fwd, BLOCK, rng)
@@ -293,6 +293,14 @@ def main():
     for name, use_phase in (("UNFILT", False), ("PHASE", True)):
         res[name] = run_variant(use_phase, Zr, vr, fwd, qe, split_e, ph, r, rng)
         print(name, "done", flush=True)
+    rows = ["variant,time,side,net_pct,split"]   # percent only, no prices (read by sim_desk/fractals_export.py)
+    for name in ("UNFILT", "PHASE"):
+        rl = res[name][0]
+        for k in np.flatnonzero(rl["taken"]):
+            ts = pd.Timestamp(int(t[qe[k]]), unit="s", tz="UTC").strftime("%Y-%m-%dT%H:%M:%SZ")
+            rows.append(f"{name},{ts},{'long' if rl['pos'][k] > 0 else 'short'},{rl['net'][k]:.6f},{'A' if qe[k] < split_e else 'B'}")
+    with open(os.path.join(HERE, "trades_pct.csv"), "w", newline=chr(10)) as f:
+        f.write(chr(10).join(rows) + chr(10))
     keys, p_all = [], []
     for name in ("UNFILT", "PHASE"):
         real, shuf, rw = res[name]

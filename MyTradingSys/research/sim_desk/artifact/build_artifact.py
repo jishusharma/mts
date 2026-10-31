@@ -195,20 +195,20 @@ function sides(x){if(!x.rows.length)return '<p class="note">no example trades ex
 return '<div class="kpis">'+x.rows.map(r=>{const opp=r.live==="opposite";
 return '<div class="kpi"><svg viewBox="0 0 200 84" role="img" aria-label="'+esc(r.when)+'"><rect x="92" y="30" width="16" height="22" fill="var(--mute)" opacity=".5"/>'+
 arrow(50,opp?"opposite":r.live,"live","var(--bad)")+arrow(150,r.backtest,"backtest","var(--acc)")+"</svg><span>"+esc(r.when)+"</span></div>"}).join("")+"</div>";}
-function replay(x,id){const tr=x.trades,cum=x.cum,n=tr.length,W=600,H=200,P=28,mn=Math.min(0,...cum),mx=Math.max(0,...cum);
+function replay(x,id){const U=x.unit||"R",LB=x.labels||{},tr=x.trades,cum=x.cum,n=tr.length,W=600,H=200,P=28,mn=Math.min(0,...cum),mx=Math.max(0,...cum);
 const X=i=>P+i*(W-P-8)/(n-1||1),Y=v=>H-P-(v-mn)/(mx-mn||1)*(H-P-10);
-let h='<svg viewBox="0 0 600 200" role="img" aria-label="Running total of net R"><line x1="'+P+'" x2="'+(W-8)+'" y1="'+Y(0)+'" y2="'+Y(0)+'" stroke="var(--line)"/><polyline fill="none" stroke="var(--acc)" stroke-width="1.5" points="'+cum.map((v,i)=>X(i).toFixed(1)+","+Y(v).toFixed(1)).join(" ")+'"/><circle id="dot" r="4" fill="var(--bad)"/><text x="'+P+'" y="12" font-size="11" fill="var(--mute)">Running total of net R (high '+mx.toFixed(1)+", low "+mn.toFixed(1)+", end "+cum[n-1].toFixed(1)+")</text></svg>";
+let h='<svg viewBox="0 0 600 200" role="img" aria-label="Running total of net R"><line x1="'+P+'" x2="'+(W-8)+'" y1="'+Y(0)+'" y2="'+Y(0)+'" stroke="var(--line)"/><polyline fill="none" stroke="var(--acc)" stroke-width="1.5" points="'+cum.map((v,i)=>X(i).toFixed(1)+","+Y(v).toFixed(1)).join(" ")+'"/><circle id="dot" r="4" fill="var(--bad)"/><text x="'+P+'" y="12" font-size="11" fill="var(--mute)">Running total of net '+U+' (high '+mx.toFixed(1)+", low "+mn.toFixed(1)+", end "+cum[n-1].toFixed(1)+")</text></svg>";
 h+='<div class="ctl"><button id="prev" aria-label="Previous trade">&lt;</button><button id="play">Play</button><button id="next" aria-label="Next trade">&gt;</button><input id="slider" type="range" min="0" max="'+(n-1)+'" value="0" aria-label="Trade number"><select id="pick" aria-label="Jump to example"></select></div><svg id="ladder" viewBox="0 0 600 190" role="img" aria-label="Planned ladder of the selected trade"></svg><div id="tinfo" class="note"></div>';
 return {html:h,init:()=>{const sl=$("slider"),idx=tr.map((t,i)=>i),ex=[];
 [...idx].sort((a,b)=>tr[b].r-tr[a].r).slice(0,3).forEach(i=>ex.push(["Big win",i]));
 [...idx].sort((a,b)=>tr[a].r-tr[b].r).slice(0,3).forEach(i=>ex.push(["Big loss",i]));
 [...idx].sort((a,b)=>Math.abs(tr[a].r)-Math.abs(tr[b].r)).slice(0,2).forEach(i=>ex.push(["Flat",i]));
-$("pick").innerHTML='<option value="">Examples</option>'+ex.map(e=>'<option value="'+e[1]+'">'+e[0]+" #"+(e[1]+1)+" ("+f2(tr[e[1]].r)+" R)</option>").join("");
+$("pick").innerHTML='<option value="">Examples</option>'+ex.map(e=>'<option value="'+e[1]+'">'+e[0]+" #"+(e[1]+1)+" ("+f2(tr[e[1]].r)+" "+U+")</option>").join("");
 function show(i){i=Math.max(0,Math.min(n-1,+i));sl.value=i;const t=tr[i];$("dot").setAttribute("cx",X(i));$("dot").setAttribute("cy",Y(cum[i]));
-const ys=[0,t.l2,t.t1,t.t2],lo=Math.min(...ys),hi=Math.max(...ys),sp=(hi-lo)||1,y=v=>170-(v-lo)/sp*150;
+const ys=t.l2==null?[0]:[0,t.l2,t.t1,t.t2],lo=Math.min(...ys),hi=Math.max(...ys),sp=(hi-lo)||1,y=v=>170-(v-lo)/sp*150;
 const row=(v,l,c)=>'<line x1="150" x2="560" y1="'+y(v)+'" y2="'+y(v)+'" stroke="'+c+'" stroke-dasharray="4 3"/><text x="146" y="'+(y(v)+4)+'" text-anchor="end" font-size="11" fill="var(--ink)">'+l+'</text><text x="564" y="'+(y(v)+4)+'" font-size="11" fill="var(--mute)">'+(v>=0?"+":"")+v.toFixed(2)+"%</text>";
-$("ladder").innerHTML=row(t.t2,"Target 2","var(--good)")+row(t.t1,"Target 1","var(--good)")+row(0,"Touched level","var(--acc)")+row(t.l2,"Deeper entry (filled here)","var(--warn)")+'<text x="150" y="186" font-size="11" fill="var(--mute)">Distance from the touched level; up is in favour of the trade</text>';
-$("tinfo").innerHTML="Trade "+(i+1)+" of "+n+": "+esc(t.d)+", "+(t.s>0?"long":"short")+" at "+esc(t.f)+'. Result <b class="'+(t.r<0?"bad":"good")+'">'+f2(t.r)+" R</b> after fees.";}
+$("ladder").innerHTML=t.l2==null?"":row(t.t2,LB.t2||"Target 2","var(--good)")+row(t.t1,LB.t1||"Target 1","var(--good)")+row(0,LB.zero||"Touched level","var(--acc)")+row(t.l2,LB.l2||"Deeper entry (filled here)","var(--warn)")+'<text x="150" y="186" font-size="11" fill="var(--mute)">Distance from the touched level; up is in favour of the trade</text>';
+$("tinfo").innerHTML="Trade "+(i+1)+" of "+n+": "+esc(t.d)+", "+(t.s>0?"long":"short")+" at "+esc(t.f)+'. Result <b class="'+(t.r<0?"bad":"good")+'">'+f2(t.r)+" "+U+"</b> after fees.";}
 sl.oninput=()=>show(sl.value);$("prev").onclick=()=>show(+sl.value-1);$("next").onclick=()=>show(+sl.value+1);
 $("pick").onchange=e=>{if(e.target.value!=="")show(e.target.value)};
 $("play").onclick=()=>{if(tm){clearInterval(tm);tm=null;$("play").textContent="Play";return}$("play").textContent="Pause";tm=setInterval(()=>{if(+sl.value>=n-1){$("play").onclick();return}show(+sl.value+1)},120)};
