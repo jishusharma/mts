@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T22:31:05Z",
   "commands": [],
   "created": "2026-10-31T19:03:45Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "research .gitignore -> docs, test_gate_select 42 OK",
+      "ref": "8a31f384a",
+      "utc": "2026-10-31T22:31:05Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -31,7 +38,12 @@
   "refined_by": "",
   "refreshed": "2026-10-31T20:31:31Z",
   "refs": [],
-  "result": "",
+  "result": "research .gitignore -> docs, test_gate_select 42 OK",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/gate_select.py",
     "scripts/dev/test_gate_select.py"
@@ -42,12 +54,13 @@
   "scope_sha": "c4dd114b678b",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "In _is_doc add: f.startswith(DATA_DIRS) and basename == .gitignore -> True (a nested ignore only hides untracked files; no test reads it).",
     "Test in test_gate_select.py next to test_research_tsv_gz_and_err_are_data_not_a_full_gate (line ~225): sel of MyTradingSys/research/x_2026/.gitignore gives docs; scripts/dev/.gitignore stays non-docs. Run it on old code first: it must fail.",
     "CRITICAL (gate code): review session on plan and diff (planner details: CRITICAL protocol). Verify: content commit sha; git cherry origin/fast-track <sha> empty; git ls-tree -r origin/fast-track --name-only lists the delivered files."
   ],
+  "taken": "2026-10-31T22:31:05Z",
   "tests": "scripts/dev/test_gate_select.py::test_research_nested_gitignore_is_docs (fails on old code: mode full)",
   "title": "gate_select: a .gitignore inside a research data folder is docs, not a full gate",
   "weight": "CRITICAL",
