@@ -5,7 +5,9 @@
   "id": "20261030-142732-settlement-capture-testnet-second-log",
   "need": "python MyTradingSys/execution/capture_txlog_settlement.py --hours 36 --out MyTradingSys/research/txlog_capture_2026-10-31_before.json; python MyTradingSys/execution/capture_txlog_settlement.py --hours 36 --out MyTradingSys/research/txlog_capture_2026-10-31_after.json; python MyTradingSys/research/critical_test_wave1_2026-10-30/item2_settlement_identity.py (full brief: python scripts/dev/tasks.py brief settlement-capture-testnet-second-log)",
   "posted": "2026-10-30T14:27:32Z",
-  "status": "pending",
+  "status": "taken",
+  "taken": "2026-10-31T18:47:03Z",
+  "taken_by": "JIS-NUC",
   "target": "DSA-NUC",
   "title": "Capture a second Deribit testnet transaction log spanning one 08:00Z settlement with equity at both ends (feeds wave1-settlement-pnl-identity-gap)"
 }
