@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T10:04:28Z",
+  "depends_on": [],
+  "done_when": "script exits 0 only when all rows PASS; JSON output; writes only under <root>/run/e2e",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Build scripts/aibridge/tests/e2e_bridge.py per FIX_PLAN.md section 4 (E0-E5, tier A agent, tier B node over the installed loop.js). Runs after c1-c3.",
+  "id": "dsabr-c6-e2e-script",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "S0 freeze: bug fix with a failing-first test. Plan: MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/aibridge/tests/e2e_bridge.py; scripts/aibridge/tests/fixtures"
+  ],
+  "scope_out": [
+    "extension; agent.ps1; policy.json"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
+  ],
+  "state": "raw",
+  "steps": [
+    "Wait for c1-c3 to ship; read FIX_PLAN.md (MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31) section 4",
+    "Write e2e_bridge.py rows E0-E5 and fixtures; reuse aibridge_verify roundtrip for the token (never printed)",
+    "Run it against a scratch copy of 0.7.3 bridge files: E1-E4 FAIL; against 0.7.4 sources: PASS; sync.py ship"
+  ],
+  "tests": "run against an untouched 0.7.3 install it reports FAIL on E1-E4",
+  "title": "AIBridge E2E script e2e_bridge.py (6-block, thinking, exit-1, dropped generation)",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

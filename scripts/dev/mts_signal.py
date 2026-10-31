@@ -177,8 +177,11 @@ def stamp(dt=None):
 
 
 def git(cwd, *args, check=True, timeout=20):
-    r = subprocess.run(["git", "-C", str(cwd), *args], capture_output=True, text=True, encoding="utf-8",
-                       errors="replace", timeout=timeout, creationflags=0x08000000 if os.name == "nt" else 0)
+    try:
+        r = subprocess.run(["git", "-C", str(cwd), *args], capture_output=True, text=True, encoding="utf-8",
+                           errors="replace", timeout=timeout, creationflags=0x08000000 if os.name == "nt" else 0)
+    except subprocess.TimeoutExpired:   # fail closed, but say which git call hung (a loaded box makes 20 s too short)
+        raise RuntimeError("git %s: timed out after %s s (machine under load? retry)" % (" ".join(args), timeout)) from None
     if check and r.returncode:
         raise RuntimeError("git %s: %s" % (" ".join(args), r.stderr.strip()))
     return r

@@ -1,0 +1,47 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T10:04:24Z",
+  "depends_on": [],
+  "done_when": "handsfree.test.js timeline: notice once under 60 s (45 s OURS), second miss -> stop; pump past aibridge_wait_ms shows a status; version bumped",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Pure loop.js replyWatch state; content.js post-result wait (476-485) and pump quiet loop (495) get a deadline, one notice, then stop banner. Runs after dsabr-c1-block-select ships.",
+  "id": "dsabr-c2-dropped-gen",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "S0 freeze: bug fix with a failing-first test. Plan: MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/aibridge/extension; scripts/aibridge/tests; scripts/aibridge/RELEASES.json"
+  ],
+  "scope_out": [
+    "agent.ps1; run-task.ps1"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
+  ],
+  "state": "raw",
+  "steps": [
+    "Wait for dsabr-c1-block-select to ship; read FIX_PLAN.md (MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31) row D4",
+    "Write the replyWatch timeline cases in handsfree.test.js first; see them fail",
+    "Add pure replyWatch to loop.js; wire content.js post-result wait and pump quiet loop to it (notice once, then stop banner)",
+    "Bump the version; node tests pass; sync.py ship"
+  ],
+  "tests": "new handsfree.test.js cases fail on 0.7.3 (no replyWatch)",
+  "title": "AIBridge: notice DSA when its generation drops, no silent 'waiting for DSA' (D4)",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

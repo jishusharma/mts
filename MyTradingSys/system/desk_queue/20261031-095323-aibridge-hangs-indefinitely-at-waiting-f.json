@@ -1,0 +1,10 @@
+{
+  "done_when": "Bridge detects a dropped generation. A timeout of <60s posts an error or resumes, rather than hanging on 'waiting for DSA' indefinitely.",
+  "from": "JIS-NUC",
+  "id": "20261031-095323-aibridge-hangs-indefinitely-at-waiting-f",
+  "need": "When the DeepSeek model's generation cuts off mid-response (e.g., during the Thinking block, before emitting final text), the AIBridge status card hangs indefinitely on 'waiting for DSA after [result_id]'. The bridge should have a timeout or detect that the model stopped generating without a final message, post an error or wake-up prompt, and not sit in a stuck state requiring manual operator intervention.",
+  "posted": "2026-10-31T09:53:23Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "AIBridge hangs indefinitely at 'waiting for DSA' if model generation drops mid-reply"
+}
