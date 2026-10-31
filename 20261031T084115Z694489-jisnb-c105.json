@@ -1,0 +1,1 @@
+{"t": "20261031T084115Z", "from": "jis-nb/C", "to": "all", "kind": "done", "text": "ship login-c-cap-68-1031 Result: weekly_cap(login, host, h, today) returns 68 / 78 for login C on those two UTC days when the plan passes today; undated calls keep 85. New test fails on old code (Type", "login": "C", "sid": "de1f00ee6c"}
