@@ -1,17 +1,33 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T03:37:53Z",
   "commands": [],
   "created": "2026-10-31T02:45:19Z",
   "depends_on": [],
-  "done_when": "python scripts/dev/verify_extract_quotes.py on the file exits 0 (fix the tag from the real caption position, never edit quote text)",
-  "est_turns": null,
+  "done_when": "verify_extract_quotes.py exit 0 on the file; fixed in 285c4f078",
+  "est_turns": 3,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "verify_extract_quotes.py FAILS on MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_UqAvU1loT_k.md: line 254 tagged MIDDLE, found BEGIN. Quote text is found; the BEGIN/MIDDLE/END tag is wrong. Found by gemini quote audit, re-run by Builder 10-31.",
+  "goal": "Fix wrong position tag words in the named extract so verify_extract_quotes.py exits 0 (quote text untouched).",
   "id": "qpos-uqavu1lot-k-extract-position-tag",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "fixed in 285c4f078: tag word only, verifier exit 0",
+      "ref": "285c4f078",
+      "utc": "2026-10-31T03:37:53Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 9 file(s)",
+      "ref": "285c4f078a6b",
+      "utc": "2026-10-31T03:36:46Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,16 +35,29 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-31T03:37:52Z",
   "refs": [],
-  "result": "",
-  "scope_in": [],
+  "result": "fixed in 285c4f078: tag word only, verifier exit 0",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research"
+  ],
   "scope_out": [],
-  "size": "",
+  "scope_sha": "285c4f078a6b",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "done",
+  "steps": [
+    "change only the tag word",
+    "run the verifier"
+  ],
+  "taken": "2026-10-31T03:37:53Z",
+  "tests": "verifier exit 0 (was failing on the tag)",
   "title": "qpos UqAvU1loT_k extract position tag",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }
