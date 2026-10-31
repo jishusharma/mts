@@ -397,6 +397,7 @@ public class MarketDataSnapshot {
         }
         oi.put("delta_state_price", classifyOiDeltaState(oiDirection, priceDelta1h));
         oi.put("confidence", oiAvailable ? CONFIDENCE_HIGH : CONFIDENCE_LOW);
+        oi.set("peak_24h", oiFetch.get("peak_24h"));
         root.set("open_interest", oi);
         root.set("session", buildSession(klines1m, priorDayClose, currentPrice, dailyVp.get("vah").asDouble(), dailyVp.get("val").asDouble(), priorDayVp.get("high").asDouble(), priorDayVp.get("low").asDouble()));
         root.set("session_timing", sessionTiming);
@@ -750,6 +751,7 @@ public class MarketDataSnapshot {
             node.set("last_3_delta", mapper.valueToTree(List.of()));
             node.putObject("cvd_recent");
             node.put("confidence", CONFIDENCE_LOW);
+            node.set("peak_24h", peakNode(mapper, null, 0, false, CONFIDENCE_LOW));
             return node;
         }
         double cvd = 0;
@@ -784,7 +786,73 @@ public class MarketDataSnapshot {
         recent.put("delta_1h", Math.round(delta1h*1000.0)/1000.0);
         recent.put("delta_4h", Math.round(delta4h*1000.0)/1000.0);
         node.put("confidence", CONFIDENCE_MEDIUM);
+        node.set("peak_24h", cvdPeak24h(klines));
         return node;
+    }
+
+    /**
+     * P0-12 / T042: rolling 24h CVD peak (reference only, no trade rule reads it). Uses the cumulative sum over the
+     * last 1440 contiguous 1m bars, NOT the session CVD (which resets at 00:00 UTC). Short history, a gap in the bar
+     * times, or a non-finite / negative reading yields value null + LOW (fail closed, never a guess).
+     */
+    static ObjectNode cvdPeak24h(JsonNode klines) {
+        ObjectMapper m = new ObjectMapper();
+        try {
+            if (klines == null || klines.size() < CVD_PEAK_BARS) return peakNode(m, null, 0, false, CONFIDENCE_LOW);
+            int from = klines.size() - CVD_PEAK_BARS;
+            double[] series = new double[CVD_PEAK_BARS];
+            double cvd = 0;
+            long prevOpen = Long.MIN_VALUE;
+            for (int i = 0; i < CVD_PEAK_BARS; i++) {
+                JsonNode bar = klines.get(from + i);
+                long open = bar.get(0).asLong();
+                double vol = bar.get(5).asDouble(), buy = bar.get(9).asDouble();
+                if (prevOpen != Long.MIN_VALUE && open - prevOpen != 60_000L) return peakNode(m, null, 0, false, CONFIDENCE_LOW);
+                if (!Double.isFinite(vol) || !Double.isFinite(buy) || vol < 0 || buy < 0 || buy > vol * (1 + 1e-9))
+                    return peakNode(m, null, 0, false, CONFIDENCE_LOW);
+                prevOpen = open;
+                cvd += (buy - (vol - buy));
+                series[i] = cvd;
+            }
+            return peakNode(m, series, CVD_PEAK_BARS, false, CONFIDENCE_MEDIUM);
+        } catch (Exception e) {
+            return peakNode(m, null, 0, false, CONFIDENCE_LOW);
+        }
+    }
+
+    private static final int CVD_PEAK_BARS = 1440;
+    private static final int OI_PEAK_POINTS = 24;
+
+    /**
+     * {value, drawdown_pct, confidence}. value = max of the series, drawdown_pct = (peak - last) / peak * 100 (needs peak
+     * &gt; 0). Null series, fewer than minPoints, a non-finite point, or (requirePositive) a point &lt;= 0 gives all-null + LOW.
+     */
+    static ObjectNode peakNode(ObjectMapper m, double[] series, int minPoints, boolean requirePositive, String okConfidence) {
+        ObjectNode n = m.createObjectNode();
+        boolean ok = series != null && series.length > 0 && series.length >= minPoints;
+        double peak = Double.NEGATIVE_INFINITY;
+        if (ok) {
+            for (double d : series) {
+                if (!Double.isFinite(d) || (requirePositive && d <= 0)) { ok = false; break; }
+                if (d > peak) peak = d;
+            }
+        }
+        if (!ok) {
+            n.putNull("value");
+            n.putNull("drawdown_pct");
+            n.put("confidence", CONFIDENCE_LOW);
+            return n;
+        }
+        n.put("value", Math.round(peak * 1000.0) / 1000.0);
+        if (peak > 0) {
+            double last = series[series.length - 1];
+            n.put("drawdown_pct", Math.round((peak - last) / peak * 10000.0) / 100.0);
+            n.put("confidence", okConfidence);
+        } else {
+            n.putNull("drawdown_pct");   // peak <= 0: a percentage drawdown from it is undefined
+            n.put("confidence", CONFIDENCE_LOW);
+        }
+        return n;
     }
 
     private ObjectNode buildStructure(Map<String, JsonNode> mtf, double currentPrice) {
@@ -1277,6 +1345,8 @@ public class MarketDataSnapshot {
         oi.put("delta_state", "neutral");
         oi.put("delta_state_price", "neutral");
         oi.put("confidence", "LOW");
+        // P0-12: no OI series in the replay input (HistoricalSource has none), and historical mode makes no live call.
+        oi.set("peak_24h", peakNode(mapper, null, 0, true, CONFIDENCE_LOW));
         root.set("open_interest", oi);
         ObjectNode sessionTiming = buildSessionTiming(now);
         root.set("session_timing", sessionTiming);
@@ -1531,10 +1601,11 @@ public class MarketDataSnapshot {
     static ObjectNode oiFromHistory(BinanceClient client, String symbol, ObjectMapper mapper) {
         ObjectNode n = mapper.createObjectNode();
         try {
-            JsonNode h = client.openInterestHist(symbol, "1h", 2);
+            JsonNode h = client.openInterestHist(symbol, "1h", OI_PEAK_POINTS);  // P0-12: 24 hourly points feed peak_24h
+            n.set("peak_24h", oiPeak24h(h, mapper));
             if (h != null && h.size() >= 2) {
-                double prev = h.get(0).get("sumOpenInterest").asDouble();
-                double curr = h.get(1).get("sumOpenInterest").asDouble();
+                double prev = h.get(h.size() - 2).get("sumOpenInterest").asDouble();
+                double curr = h.get(h.size() - 1).get("sumOpenInterest").asDouble();
                 String dir = "flat";
                 if (curr > prev * 1.001) dir = "rising";
                 else if (curr < prev * 0.999) dir = "falling";
@@ -1547,7 +1618,21 @@ public class MarketDataSnapshot {
         n.put("direction", "UNAVAILABLE");
         n.putNull("change_1h_pct");
         n.put("confidence", "LOW");
+        if (!n.has("peak_24h")) n.set("peak_24h", peakNode(mapper, null, 0, true, CONFIDENCE_LOW));
         return n;
+    }
+
+    /** Rolling 24h OI peak from the last 24 hourly openInterestHist points; any short/invalid series gives null + LOW. */
+    static ObjectNode oiPeak24h(JsonNode h, ObjectMapper mapper) {
+        try {
+            if (h == null || h.size() < OI_PEAK_POINTS) return peakNode(mapper, null, 0, true, CONFIDENCE_LOW);
+            double[] v = new double[OI_PEAK_POINTS];
+            int from = h.size() - OI_PEAK_POINTS;
+            for (int i = 0; i < OI_PEAK_POINTS; i++) v[i] = h.get(from + i).get("sumOpenInterest").asDouble(Double.NaN);
+            return peakNode(mapper, v, OI_PEAK_POINTS, true, CONFIDENCE_HIGH);
+        } catch (Exception e) {
+            return peakNode(mapper, null, 0, true, CONFIDENCE_LOW);
+        }
     }
 
         // OI delta 4-state classifier per INDICATOR_IMPLEMENTATION_HANDOFF.md Phase 2.

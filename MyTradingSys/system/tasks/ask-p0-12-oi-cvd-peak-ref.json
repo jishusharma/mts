@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T04:06:24Z",
   "commands": [
     "mvn -q -Dtest=MarketDataSnapshotTest,HistoricalSnapshotNoLiveCallsTest test",
     "mvn -q test"
@@ -16,6 +17,12 @@
   "id": "ask-p0-12-oi-cvd-peak-ref",
   "lane": "JIS-NB",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "open_interest.peak_24h + cvd.peak_24h emitted; 10 tests fail-first then green; mvn test 26",
+      "ref": "9cc92bc09",
+      "utc": "2026-10-31T04:06:24Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -35,7 +42,12 @@
   "refs": [
     "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md"
   ],
-  "result": "",
+  "result": "open_interest.peak_24h + cvd.peak_24h emitted; 10 tests fail-first then green; mvn test 268/0 fail",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "src/main/java/datafeed/MarketDataSnapshot.java",
     "src/test/java/datafeed/MarketDataSnapshotTest.java"
@@ -51,13 +63,14 @@
     "research/asks_audit_2026-10-30/LEDGER.md P0-12",
     "MarketDataSnapshot.java:388-405"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "OI: oiFromHistory (MarketDataSnapshot.java:1534) calls openInterestHist(symbol,1h,2); widen to limit 24 and state how historical mode gets it (replay input, no live call); CVD: max of cvdSeries from buildCvdRolling over the 1440 1m bars (buildCvd resets at 00:00 UTC, do not use it)",
     "Emit under open_interest.peak_24h and cvd.peak_24h {value, drawdown_pct, confidence}; null/LOW on any failure",
     "Tests per live-path rule: restart/reset state (UTC 00:00 CVD reset must not break the 24h peak), API error, short history; run HistoricalSnapshotNoLiveCallsTest",
     "Commit in worktree only; deploy is a manual DEPLOY_RUNBOOK step. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
   ],
+  "taken": "2026-10-31T04:06:24Z",
   "tests": "src/test/java/datafeed/MarketDataSnapshotTest.java: planted 24h OI series gives peak and drawdown; short history gives null; fails before the fields exist.",
   "title": "Emit OI peak and CVD peak reference in MarketDataSnapshot, with tests (ledger P0-12, T042; live path)",
   "weight": "CRITICAL",

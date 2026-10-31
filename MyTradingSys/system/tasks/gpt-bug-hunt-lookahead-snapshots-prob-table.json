@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T04:26:29Z",
   "commands": [],
   "created": "2026-10-30T20:21:49Z",
   "depends_on": [],
@@ -13,7 +14,14 @@
   "id": "gpt-bug-hunt-lookahead-snapshots-prob-table",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "1 finding; MyTradingSys/research/layer_lab/reports/2026-10-31_gpt-bug-hunt-lookahead-snaps",
+      "ref": "6ad7b4011",
+      "utc": "2026-10-31T04:26:29Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -25,7 +33,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "1 finding; MyTradingSys/research/layer_lab/reports/2026-10-31_gpt-bug-hunt-lookahead-snapshots-prob-table.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/test_hunt_2026-10-31/ (new files only)"
   ],
@@ -35,12 +48,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read snapshots.py, prob_table.py and test_prob_table*.py",
     "perturb future bars in a copy and check outputs at t are unchanged",
     "record each check"
   ],
+  "taken": "2026-10-31T04:26:29Z",
   "tests": "report only; every finding cites file:line and a reproducing input",
   "title": "GPT: look-ahead hunt in backtest/snapshots.py and prob_table.py: any value at bar t that uses t+1 data",
   "weight": "ROUTINE",
