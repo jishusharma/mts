@@ -1,5 +1,6 @@
 {
   "asks": "",
+  "closed": "2026-10-31T13:30:17Z",
   "commands": [
     "python scripts/dev/fetch_captions_timed.py --analyst Jala --channel @jalacrypto --latest 50 --out MyTradingSys/research/jala_layer_2026-10-31/transcripts",
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/jala_layer_2026-10-31/FRACTAL_METHOD_JALA.md"
@@ -10,6 +11,12 @@
   "kind": "run",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "FRACTAL_METHOD_JALA.md",
+      "ref": "4c06805ce",
+      "utc": "2026-10-31T13:30:17Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -26,6 +33,12 @@
     "MyTradingSys/research/jala_layer_2026-10-31/method_jala.md",
     "MyTradingSys/research/fractals_2026-10-31/reviews/R3_JALA_FRACTALS.md"
   ],
+  "result": "FRACTAL_METHOD_JALA.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/jala_layer_2026-10-31/ (new files only: FRACTAL_METHOD_JALA.md, transcripts/)"
   ],
@@ -34,7 +47,7 @@
   ],
   "scope_sha": "4c42466fd976",
   "size": "M",
-  "state": "ready",
+  "state": "done",
   "steps": [
     "list latest 50 videos of @jalacrypto (ids, dates, titles)",
     "fetch captions with fetch_captions_timed.py, one try per video, 429 -> UNVERIFIED with no quotes, no retry loop",
@@ -42,6 +55,7 @@
     "write FRACTAL_METHOD_JALA.md: the video list, the statement table, a 'not stated' list",
     "run verify_extract_quotes.py until exit 0; fix or delete any failing quote"
   ],
+  "taken": "2026-10-31T13:30:17Z",
   "tests": "verify_extract_quotes.py exit 0 is the gate; docs only",
   "title": "[GEMINI] Jala (@jalacrypto): how he chooses and judges fractals (cycle overlaid, alignment anchor, timeframe, confirm/fail rule, outcome), timed quotes",
   "weight": "ROUTINE",

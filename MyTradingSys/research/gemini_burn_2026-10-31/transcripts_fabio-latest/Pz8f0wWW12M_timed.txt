@@ -1,0 +1,956 @@
+# Video ID: Pz8f0wWW12M
+# Title: The Only Orderflow Guide You'll Ever Need
+# Published: 2026-02-11
+# Source: yt_dlp captions (auto); uploader: Fabervaale ENG
+# Analyst: Fabio
+# Channel: @fabervaaleEng
+# Duration_s:2464
+# Word count: 6606
+# ---
+[00:00:00] In this video, I will teach you from
+[00:00:02] scratch what is order flow and how you
+[00:00:04] can use it in your trading. Order flow,
+[00:00:07] unlike price action, uses a deeper level
+[00:00:10] of information. It uses charts that show
+[00:00:13] you the real interaction between buyers
+[00:00:16] and sellers and the battle between big
+[00:00:19] traders and institutions that happens in
+[00:00:21] the market every single day. This is a
+[00:00:24] trading style that is widely known and
+[00:00:27] used [music] in the institutional
+[00:00:30] trading space and that I used to trade
+[00:00:32] live in front of millions of people all
+[00:00:36] over the internet and to trade
+[00:00:38] profitably my personal account over the
+[00:00:40] last decade. In this complete guide, we
+[00:00:43] will start from what order flow actually
+[00:00:46] is, how order flow creates price
+[00:00:49] movements, and how you can read order
+[00:00:52] flow in real time to find the best
+[00:00:55] trading setups. And I will show you my
+[00:00:57] favorite order flow tool that allows me
+[00:01:00] to filter out only the big traders to
+[00:01:04] truly follow the footprint of the smart
+[00:01:07] money in the market. Let's get started.
+[00:01:10] By the way, I will share with you this
+[00:01:12] entire map on my Telegram channel. Let's
+[00:01:15] start by understanding what the market
+[00:01:17] is. So, the market is made by the
+[00:01:19] interaction of two forces, the intent to
+[00:01:23] buy and the intent to sell, rooted
+[00:01:26] through a central exchange for regulated
+[00:01:28] markets and represented
+[00:01:30] as volume. Now, let's see how this
+[00:01:33] interaction unfold. We have two type of
+[00:01:36] forces in the markets, the aggressive
+[00:01:39] participants and the passive
+[00:01:41] participants. And in this example, you
+[00:01:43] can see on the right side the order book
+[00:01:46] and on the left side the market orders.
+[00:01:49] Now, let's assume that
+[00:01:52] a market order by 25 contracts it's
+[00:01:55] about to hit the book. And these
+[00:01:57] aggressive buyers are accepting the
+[00:01:59] prices by the best ask, the so-called
+[00:02:02] passive sellers, the passive forces that
+[00:02:05] we saw before, that are providing 33
+[00:02:07] units at a price level of 101. Now, the
+[00:02:11] 33 unit of passive sell orders are
+[00:02:14] sufficient to satisfy the 25 buy market
+[00:02:18] orders that are the aggressive forces.
+[00:02:21] And after execution, only eight sell
+[00:02:24] orders remain in the best ask, and the
+[00:02:26] price moves up to 101. Price is now
+[00:02:29] here. Here, we can see a new candle with
+[00:02:32] the order flow tool that represented the
+[00:02:35] executed order called the footprint and
+[00:02:38] a record, a detailed record of what
+[00:02:40] occurred on both the bid on the left
+[00:02:43] side and the ask on the right. And it
+[00:02:45] provide a list of all the aggressive
+[00:02:47] sellers who entered the market, and on
+[00:02:50] the right of all the aggressive buyers
+[00:02:53] that joined the action. Now, the 41
+[00:02:57] passive buy orders are sufficient to
+[00:03:00] satisfy the interaction of the 25
+[00:03:04] sell market orders. And after the
+[00:03:06] execution, there are 16 contract year
+[00:03:10] buy orders that remain in best bid, and
+[00:03:12] the price moves down to 99. The
+[00:03:16] footprint, now, have recorded both the
+[00:03:19] 25 execution that we saw before and the
+[00:03:22] sell order that we see executed on the
+[00:03:25] horizontal level 99. Now, in the
+[00:03:27] previous case, we have seen how the
+[00:03:29] price move and interact when the best
+[00:03:31] bid and ask are able to satisfy the
+[00:03:35] market order that are coming. Now, we
+[00:03:37] need to see what happens when the best
+[00:03:40] bid and ask are insufficient to fulfill
+[00:03:44] the demand. So, when we see 75
+[00:03:47] aggressive participants market order
+[00:03:50] that enters here, what happens to the
+[00:03:52] market? And in this case, the 75 buy
+[00:03:56] market order found only eight contract
+[00:03:59] on the 101 level, so the best ask. And
+[00:04:03] they moved directly to 102
+[00:04:06] to fill the remaining 67
+[00:04:10] contract. And you have a reflection on
+[00:04:12] this on the footprint that shows you the
+[00:04:15] executed order of
+[00:04:17] 25 on the 99 and 32 on the 101. So we
+[00:04:23] move to the 102 level with 67 contract
+[00:04:28] of aggressive market participants. The
+[00:04:30] 102 level don't have enough sell limit
+[00:04:34] order to be able to satisfy the buy
+[00:04:37] market demand. So, considering the order
+[00:04:40] matching, execution moved to the next
+[00:04:42] level available, that is 103. So we have
+[00:04:45] in the end on the footprint, we have 32
+[00:04:48] execution on the 101 level and 42
+[00:04:52] contract executed on 102 level and we
+[00:04:55] are moving
+[00:04:56] to the next level, that is 103. In this
+[00:04:59] case, the 75 aggressive orders that we
+[00:05:02] saw in the beginning received and
+[00:05:04] experienced a slippage of three tick
+[00:05:08] going to be filled completely at the 103
+[00:05:11] level with 31 remaining contract
+[00:05:15] available. So to summarize, we have two
+[00:05:18] forces that have different features. We
+[00:05:20] start with the passive forces, the limit
+[00:05:23] order that have pricing authority and
+[00:05:26] price certainty because they choose the
+[00:05:29] level where they want to be filled, but
+[00:05:32] they experience the execution
+[00:05:35] uncertainty. So they don't have the
+[00:05:37] guarantee to be filled because to be
+[00:05:40] filled, someone else need to accept this
+[00:05:42] level. The market orders have execution
+[00:05:45] authority and execution certainty
+[00:05:47] Because when you press buy market, it's
+[00:05:50] a guarantee that you will be executed,
+[00:05:52] but you don't know where. You don't have
+[00:05:54] price certainty because you can be
+[00:05:57] filled, for example, you can press buy
+[00:06:00] market on the 101 and be filled at 102
+[00:06:03] because maybe your order experience
+[00:06:05] execution. That's the reason they have
+[00:06:08] different features. The market orders
+[00:06:10] have price uncertainty and the limit
+[00:06:12] order have execution uncertainty. So now
+[00:06:15] we are on the Order Flow platform, deep
+[00:06:17] charts, and we will watch some live
+[00:06:19] interaction between execution, so
+[00:06:22] aggressive orders and passive liquidity.
+[00:06:26] As you can see, now we have 13 executed
+[00:06:31] sell market order at this horizontal
+[00:06:33] level, 6,841,
+[00:06:37] and now the price is rejecting. You can
+[00:06:39] see that the level of the price is
+[00:06:42] getting lower. This means that
+[00:06:43] aggressive sellers are executing order
+[00:06:47] at 6,841,
+[00:06:50] and they are meeting the liquidity on
+[00:06:54] the downside, and they are pushing the
+[00:06:57] passive liquidity down. They are eating
+[00:07:00] levels on the book on the downside, and
+[00:07:02] this is the reason you are watching this
+[00:07:04] interaction and price going down.
+[00:07:07] Because as we saw before in the example,
+[00:07:09] and you can see this also from the
+[00:07:11] closure of the candle in the footprint,
+[00:07:14] the candle it's in the majority
+[00:07:17] controlled by aggressive sell orders,
+[00:07:20] and is showing you also the level where
+[00:07:22] this sell aggressive market order are
+[00:07:25] concentrated. That is the horizontal
+[00:07:28] level where you see the yellow box and
+[00:07:31] the 53
+[00:07:33] aggressive order executed. And on the
+[00:07:36] book, we can see on the left side that
+[00:07:39] the liquidity is more thick on the
+[00:07:41] upside. as you can see there are 28 33
+[00:07:44] here and only 10. And this is the reason
+[00:07:46] we saw exactly in real time the sweeping
+[00:07:50] of the book. So, the aggressive orders
+[00:07:53] entering on the sell side and eating
+[00:07:55] three different level on the book. So,
+[00:07:58] the the aggressive orders, the sell
+[00:08:00] aggressive order are pushing and eating
+[00:08:03] levels of the book. Now you are seeing
+[00:08:05] an interaction where we have a maximum
+[00:08:08] level of aggression that is the 6 6,840
+[00:08:13] where the buyers are in complete control
+[00:08:16] and now the auction is changing. Now the
+[00:08:19] aggressive market order are pushing the
+[00:08:22] passive liquidity up. As you can see.
+[00:08:26] Sellers again protecting and we are
+[00:08:29] watching the live interaction of the
+[00:08:31] market. So, every time we go to this
+[00:08:33] level, the 6,841.5,
+[00:08:37] you can see that the aggressive sell
+[00:08:41] order enter back and push the liquidity
+[00:08:44] level down. Now we are back to 6,840.5,
+[00:08:49] so you can expect that now the buyers
+[00:08:52] protect this level and these aggressive
+[00:08:54] sellers get absorbed completely on this
+[00:08:57] level. Let's see how it goes. As you can
+[00:09:00] see, we have only five and 16 here and
+[00:09:02] we have 23 25 18 14. So, the path of
+[00:09:07] least resistance is on the upside. This
+[00:09:09] is what I call the path of least
+[00:09:11] resistance. And this is exactly what
+[00:09:12] happened. As you can see, the price
+[00:09:13] reached this level, rejected, and now
+[00:09:16] it's going back to the fair value of
+[00:09:18] this range. Now we are watching this
+[00:09:20] interaction in the London session, so
+[00:09:23] there is not a huge amount of volatility
+[00:09:26] and
+[00:09:28] interaction between participants, but as
+[00:09:30] you can see, we saw the horizontal level
+[00:09:34] of control of the sellers that is the
+[00:09:36] 6,841.5,
+[00:09:38] and the horizontal point of control of
+[00:09:41] the buyers, that is the 6,840.
+[00:09:44] And this is the range where they
+[00:09:46] interact, and this is the range where
+[00:09:48] you see that the interaction between
+[00:09:50] aggressive and passive orders shift. So,
+[00:09:53] from the example that we saw before, we
+[00:09:56] understood the two forces, and we
+[00:09:59] understood their role. The role of
+[00:10:01] aggressive market forces is creating
+[00:10:04] pressure, okay? Moving the market. And
+[00:10:08] the role of passive orders is creating
+[00:10:12] resistance. And you can see this by
+[00:10:15] observing the book. Let's make this
+[00:10:16] example, okay? We have 122 total
+[00:10:20] contract on this
+[00:10:22] block here [snorts] on the book, and we
+[00:10:25] have a total of 273
+[00:10:29] on this part, okay? Which part do you
+[00:10:32] think will be more difficult to pierce
+[00:10:36] from the side of aggressive market
+[00:10:38] participants? Of course, this one is the
+[00:10:41] easier side to pierce. This one is the
+[00:10:45] more difficult. Why? Because this one
+[00:10:48] hold more resistance from passive market
+[00:10:52] participants. So, you need a lot more
+[00:10:54] aggression to pierce through this. Let's
+[00:10:57] go on, and let's understand in this
+[00:10:59] example that from the concept of path of
+[00:11:03] least resistance, it's easier for the
+[00:11:07] market to continue higher here and
+[00:11:12] pierce through these passive orders
+[00:11:15] instead of breaching through this level.
+[00:11:19] The concept of probability and the
+[00:11:22] concept of what's easier doesn't mean
+[00:11:25] that it's always like this, but it's an
+[00:11:27] information that we can use. In this
+[00:11:30] example that we have here, we have a
+[00:11:32] breakdown of forces. We have buyers on
+[00:11:36] the right side and the sellers on the
+[00:11:38] left side. And here we can see a huge
+[00:11:41] effort on the top from the buyers to
+[00:11:45] break this level that got completely
+[00:11:48] absorbed by passive forces. The sellers
+[00:11:51] on the other side received a lot of
+[00:11:54] result more because they did less effort
+[00:11:58] to achieve more results. The candle
+[00:11:59] closed sell here. So we have a short
+[00:12:02] candle with left less effort from the
+[00:12:05] sellers and a lot of effort from the
+[00:12:08] buyers that received zero reward. This
+[00:12:11] is the perfect case of absorption. Why?
+[00:12:15] Because you have no reward for buyers
+[00:12:19] and you have a lot of buy pressure.
+[00:12:20] Probably this candle will have positive
+[00:12:22] delta but negative closure. This is the
+[00:12:25] textbook example for absorption. Let's
+[00:12:28] see now an an example of aggression. So
+[00:12:32] I have word and high results. You have
+[00:12:34] the same breakdowns on the right of the
+[00:12:36] candle you can see the aggressive market
+[00:12:39] participants
+[00:12:41] on the buy side and you can see that
+[00:12:44] this strong move on the upside had a lot
+[00:12:47] of effort backing it and they got also
+[00:12:51] rewarded. Probably here we see a lot of
+[00:12:53] levels from the book that got swept and
+[00:12:57] we managed to close with a full green
+[00:13:00] candle. It means that in this case the
+[00:13:02] big buy effort got rewarded and you have
+[00:13:06] what we call an initiative auction and a
+[00:13:09] confirmation of the aggression of the
+[00:13:11] buyers. So in this case you can probably
+[00:13:15] guess that in the balance of forces
+[00:13:18] buyers won the battle and it's more it's
+[00:13:22] higher probability to see a continuation
+[00:13:25] on the next candles. Now let's go
+[00:13:27] through an example of book sweeping. So,
+[00:13:30] low effort and high result. In this
+[00:13:33] case, we see a lot of executed orders on
+[00:13:36] the bottom side of the candle, and then
+[00:13:38] we see a candle that closed with an
+[00:13:40] amazing reward. So, there is movement of
+[00:13:42] the candle, but there is an absence of
+[00:13:44] participants. So, we can see that there
+[00:13:46] are no sell limit players in all this
+[00:13:49] area. There are, but they are few, and
+[00:13:51] price moves, but not the money. So, in
+[00:13:54] this case, we show an example where the
+[00:13:56] effort is low and the result is high
+[00:13:59] because in this case, in this area that
+[00:14:02] I'm lining up for you, there were no
+[00:14:06] sell limit player. So, a small
+[00:14:09] aggression from the buyers swept
+[00:14:12] multiple levels of the book. Now, let's
+[00:14:14] introduce a new concept that is called
+[00:14:17] delta. Delta is the difference between
+[00:14:20] aggressive market participants on the
+[00:14:22] buy side and aggressive market
+[00:14:24] participants on the sell side. So, it's
+[00:14:26] the different on the horizontal level
+[00:14:28] from aggressive sell and aggressive buy
+[00:14:32] market participants. And we can have two
+[00:14:34] different representation of this
+[00:14:35] information. We can have an horizontal
+[00:14:39] visualization, and we can have a
+[00:14:41] vertical reference for the delta. On the
+[00:14:44] left side, what we are seeing here, it's
+[00:14:46] a delta footprint profile, and we can
+[00:14:49] see, for example, that the delta it's
+[00:14:51] really high from the point of view of
+[00:14:54] the sellers on the downside, but the
+[00:14:56] candle closed by. This is the perfect
+[00:14:59] absorption example that you can see from
+[00:15:02] delta footprint profile. On the right
+[00:15:04] side, if you want to use the vertical
+[00:15:06] delta information, we have
+[00:15:09] a market that is in a consolidation
+[00:15:11] phase here, and we can spot that all
+[00:15:14] these aggressive market participants
+[00:15:16] here got absorbed and the candle closed
+[00:15:19] green. This is a potential continuation
+[00:15:22] of the move and an absorption pattern
+[00:15:24] that you can spot using the delta per
+[00:15:27] candle in a vertical pack of data that
+[00:15:31] it's available on deep charts. And this
+[00:15:34] one needs to be set because usually you
+[00:15:37] will find the footprint on the left side
+[00:15:40] that is showing you the bid and ask. You
+[00:15:42] can set by choosing the difference
+[00:15:45] between them and it's called
+[00:15:46] specifically delta footprint. Now, let's
+[00:15:49] see an example of initiative auction.
+[00:15:52] So, a concept that is usually
+[00:15:53] representing follow-up and reward. In
+[00:15:56] this case, we can see from the executed
+[00:15:59] order a constant aggression of the
+[00:16:01] buyers. So, there is consistent pressure
+[00:16:04] on the upside. One side print that is
+[00:16:06] also called imbalance and you can use as
+[00:16:09] a really strong point to join the trend
+[00:16:12] when it's developing and you have a
+[00:16:13] strong delta. So, you have coherence of
+[00:16:16] information. A strong delta and a candle
+[00:16:18] that close on the upside. And in this
+[00:16:21] case, you can see that is the delta that
+[00:16:23] is leading the price on the upside. This
+[00:16:26] is the best example that you can have of
+[00:16:29] aggressive momentum and it's represented
+[00:16:32] by what we call initiative auction that
+[00:16:35] can also be spotted when you have an
+[00:16:37] outline from the vertical volume with a
+[00:16:40] reward from the close of the candle. So,
+[00:16:43] the market is telling you the price is
+[00:16:45] closing on the upside. So, you have an
+[00:16:47] actual result and the volume is
+[00:16:49] supporting this movement closing above
+[00:16:52] the average. This is aggressive market
+[00:16:56] participants putting the feet on the gas
+[00:16:58] and joining the trend on the upside and
+[00:17:01] it's usually an amazing signal if you
+[00:17:04] are a trend following trader. Now, let's
+[00:17:06] go through an example of absorption and
+[00:17:09] we can see here that we have an
+[00:17:11] absorption in the middle of the candle.
+[00:17:13] Okay? And we have value. So, an
+[00:17:16] efficiency and the price is the white
+[00:17:19] line that we can see here and we have a
+[00:17:21] sudden drop in the delta when this big
+[00:17:25] aggression arrive from the market orders
+[00:17:28] or the aggressive participant on the
+[00:17:29] sell side and it got completely
+[00:17:31] absorbed, got run through and
+[00:17:34] this market order got completely
+[00:17:37] absorbed on this horizontal level and
+[00:17:39] the price continued to push it down and
+[00:17:40] close the candle long. So you have the
+[00:17:42] price going up like ignoring this small
+[00:17:46] inefficiency in delta and the delta
+[00:17:49] followed through the price and the
+[00:17:50] candle closed long. This example here is
+[00:17:53] the reason I always watch the matching
+[00:17:56] of value and the matching of volume
+[00:17:58] here. So what the volume is doing, what
+[00:18:01] the aggressive market participants are
+[00:18:03] doing and what is the result, so the
+[00:18:06] correlation between the effort and the
+[00:18:08] results of the player. If we go on the
+[00:18:10] right, this one can be seen as a general
+[00:18:13] absorption because from the horizontal
+[00:18:15] volume you can see a lot of effort here,
+[00:18:17] but the candle closed green. So what is
+[00:18:19] telling us that all this input of volume
+[00:18:22] delta got absorbed and probably this
+[00:18:25] absorption happened here and we will
+[00:18:27] continue on the upside. The next example
+[00:18:29] that we can have is an exhaustion. In
+[00:18:31] this case we can see that there is a
+[00:18:33] decreasing volume, so the aggression of
+[00:18:35] the market participants from the volume
+[00:18:38] standpoint is getting lower and lower
+[00:18:40] and we have also a contrarian imbalance,
+[00:18:43] so we have an imbalance at the top from
+[00:18:45] the sellers. So you have the price going
+[00:18:48] up up up up up not being followed by the
+[00:18:51] volume, so you have this divergence and
+[00:18:54] the price snap back to the value, to the
+[00:18:57] efficiency of the market and you can see
+[00:18:59] that you have a rejection here. This
+[00:19:01] These signals are usually amazing
+[00:19:04] opportunities to capitalize on a
+[00:19:06] reversal trade. And from the concept of
+[00:19:10] vertical volume you can find an
+[00:19:12] exhaustion where you can see that the
+[00:19:14] market is pushing really strong,
+[00:19:15] printing another green candle, but the
+[00:19:17] volume is getting lower and lower. This
+[00:19:19] is a dry up in volume, and usually what
+[00:19:22] you see this in a pattern order flow is
+[00:19:24] that you have a sudden reversal in
+[00:19:26] price. Now, let's go through the volume
+[00:19:28] profile. Every time a limit order is
+[00:19:30] matched with a market order, we have a
+[00:19:32] transaction. Every successful
+[00:19:34] transaction, we can visualize in a way
+[00:19:38] that is distributed for each tick. And
+[00:19:40] what comes out from this point of view
+[00:19:43] is this distribution. This distribution
+[00:19:46] is the volume profile. Now, when we are
+[00:19:48] watching the volume profile, we are not
+[00:19:50] extracting from the market information
+[00:19:52] related to imbalance, not information
+[00:19:54] related to aggression, but we are
+[00:19:56] watching how market participants are
+[00:19:59] interacting from an horizontal point of
+[00:20:02] view. If we go on the right, we can see
+[00:20:04] that what the volume profile gave us,
+[00:20:07] it's a Gaussian distribution, where we
+[00:20:09] have the majority of the volume being
+[00:20:11] exchanged in this 68%
+[00:20:14] and as we move from the mean, we have a
+[00:20:17] condition that is called imbalance
+[00:20:19] market. And if we manage to go out from
+[00:20:21] the value area, usually it's where trend
+[00:20:24] start. Now, going on the concept of
+[00:20:27] value area, value area is where the
+[00:20:29] majority of the volume for the volume
+[00:20:32] profile that you are visualizing it's
+[00:20:33] exchange. And the value area is clearly
+[00:20:36] defined by value area high and value
+[00:20:38] area low. They are the points where the
+[00:20:41] 68% of the volume of the distribution
+[00:20:44] took place. The point where you can see
+[00:20:46] the maximum level of transaction,
+[00:20:48] example, if we take this level here, we
+[00:20:50] can see 90 transaction happening at this
+[00:20:53] level. This one takes the name of the
+[00:20:55] POC, the so-called point of control. Why
+[00:20:59] point of control? Because from a fair
+[00:21:01] value standpoint and from a concept
+[00:21:03] related to single transaction, this one
+[00:21:06] is the level that hold the most amount
+[00:21:08] of transaction of the day if we are
+[00:21:11] talking about the daily volume profile
+[00:21:14] distribution. Now, we can see that the
+[00:21:17] highest density of executed transaction
+[00:21:20] take place here between the value area
+[00:21:23] high and the value area low. And high
+[00:21:25] execution mean strong price acceptance.
+[00:21:28] So, institutions are really happy
+[00:21:31] to transact in this area. And big
+[00:21:34] players can find a counterparty. This is
+[00:21:37] the so-called balance market condition.
+[00:21:40] Now, going on, this type of market can
+[00:21:43] be traded with multiple strategy.
+[00:21:45] Usually, strategy that fade the top and
+[00:21:48] the bottom using order flow. And this
+[00:21:50] market takes the name of range bound or
+[00:21:53] compression or consolidation. And is the
+[00:21:56] driver of the trend that is coming
+[00:21:59] after. Why you need to understand this?
+[00:22:02] Because if you want to join the trend
+[00:22:04] early in its development, you need to
+[00:22:07] understand that the when the the price
+[00:22:09] accept and the volume accept below the
+[00:22:12] value area low or the value area high,
+[00:22:14] the market participants are telling you
+[00:22:16] that we are in a situation of out of
+[00:22:18] balance. So, the accumulation or the
+[00:22:20] distribution is finished and you are
+[00:22:22] ready for the real move of the price.
+[00:22:25] Now, let's go through the concept of low
+[00:22:28] volume node. In our distribution of the
+[00:22:31] profile, we will have some point where
+[00:22:33] you can see that the price is really
+[00:22:35] low. So, on this level, the transaction
+[00:22:37] was not so efficient, okay? The delivery
+[00:22:41] was not so efficient. So, the price
+[00:22:43] probably jumped from one level to the
+[00:22:45] other with really low volume. And this
+[00:22:47] is the levels where the interaction
+[00:22:50] inefficient. You have poor fills, you
+[00:22:52] have dissatisfied market participants,
+[00:22:55] and you have low execution. So, no price
+[00:22:58] acceptance. In this case, there is an
+[00:23:00] absence of transaction. These levels are
+[00:23:04] usually the most important levels if you
+[00:23:06] want to hop in in an imbalance level
+[00:23:09] that is acting as a rejection. So, let's
+[00:23:13] say that we are balanced inside this
+[00:23:15] condition and we manage to break and we
+[00:23:18] create an imbalance here in the profile.
+[00:23:20] Usually, the market like to rebalance
+[00:23:22] the low volume node before continuing in
+[00:23:25] the direction of the trend. So, these
+[00:23:26] area are really important area from a
+[00:23:29] volume point of view because it's an
+[00:23:31] area where you don't have high density
+[00:23:34] of executed transaction. So, you don't
+[00:23:37] have a price acceptance and big players
+[00:23:39] cannot find counterparty there. So, it's
+[00:23:41] areas where you usually see a ceiling or
+[00:23:44] a bottom before resuming to the
+[00:23:46] direction of the auction. Now, price
+[00:23:48] discovery, bullish move, buy side
+[00:23:50] intent, unfilled buyers due to low
+[00:23:53] volume. Now, let's go through an example
+[00:23:55] of what I was telling you here. When you
+[00:23:57] have a low volume node and the market
+[00:23:59] goes in price discovery, you can clearly
+[00:24:02] see a lot of days the price coming back
+[00:24:05] to rebalance in this low volume node and
+[00:24:08] using this as a pivot before resuming
+[00:24:11] the direction of the auction. In this
+[00:24:12] case, you have a lot of unfilled buyers
+[00:24:15] due to the low volume node. This one
+[00:24:17] it's where you can use confluence and
+[00:24:20] order flow pattern to join the market
+[00:24:22] direction. Now, going to the auction
+[00:24:24] market theory and market structure. How
+[00:24:27] can you define where institutions, hedge
+[00:24:30] fund, banks are building value. So, big
+[00:24:33] market participants by watching what for
+[00:24:35] them is accepted as value. You can see
+[00:24:38] from here the value accepted was this.
+[00:24:41] When they go in a situation of out of
+[00:24:43] balance, they come back and they go in
+[00:24:46] price discovery on the downside and we
+[00:24:48] can mark the low volume node of this
+[00:24:51] previous distribution and this is
+[00:24:53] exactly where the price likes to come
+[00:24:56] back in the future. We are stationary
+[00:24:59] here, so we accept the value on the
+[00:25:01] downside. So, this value area high
+[00:25:04] becomes for us a strong rejection point
+[00:25:06] that paired with the low volume node
+[00:25:08] gives us all the market condition to
+[00:25:10] join the trend using order flow pattern
+[00:25:14] on this level. After this, we can see
+[00:25:16] that we have also a continuation setup.
+[00:25:18] So, when the price goes above the fair
+[00:25:21] value, that is this horizontal line, and
+[00:25:23] you can use also the merge of this
+[00:25:25] profile, the market slides back inside
+[00:25:28] the value area, and you have the setup
+[00:25:30] that brings the price from one side of
+[00:25:32] the value area to the other side. You
+[00:25:34] can also try to go in price discovery if
+[00:25:37] the price is strongly directional. After
+[00:25:39] this, we go aggressively down, and we
+[00:25:41] created another value area on the
+[00:25:43] downside, and the market start to
+[00:25:45] accumulate.
+[00:25:46] After this, we have an acceptance day,
+[00:25:49] so we have a market shift in value, and
+[00:25:52] we print multiple levels of low volume
+[00:25:55] node here. That is where the price will
+[00:25:57] likely come to rebalance because these
+[00:26:00] levels are inefficient price and volume
+[00:26:03] delivery from institutions. We accept
+[00:26:06] the value area here, and we have our
+[00:26:08] setup below the value area low joined
+[00:26:11] with low volume node, and here is where
+[00:26:13] we want to see what the market is
+[00:26:15] telling us. After this, we continue the
+[00:26:18] price delivery on the upside. We have
+[00:26:20] horizontal value being built, and when
+[00:26:23] we go back
+[00:26:26] to the value area low and down, we do
+[00:26:29] what we call the hook. So, they do a
+[00:26:31] failed auction, they try to break, they
+[00:26:33] get rejected. So, all this it's a
+[00:26:35] rejection area, and when you go back
+[00:26:37] inside, you have your continuation
+[00:26:39] trade, and so on. Now, let's see how
+[00:26:42] institutions are accepting this delivery
+[00:26:45] of volume. We have the value building on
+[00:26:48] the upside. This is what we call the P
+[00:26:50] shape. It's where the buyers are really
+[00:26:52] aggressive and you close the cash
+[00:26:54] session on the upside, so you can expect
+[00:26:57] a directional move also on the day
+[00:26:59] after. And we see another acceptance of
+[00:27:02] the value. We have the profile closing
+[00:27:06] on the upside, so we expect another
+[00:27:08] fading of the value area low to go high
+[00:27:11] or a continuation trade where we break
+[00:27:15] the value area high of the previous day.
+[00:27:16] And when the the day close, as you can
+[00:27:19] see, we continue to accept value, so we
+[00:27:22] only consider long position here. After
+[00:27:25] price having a hard time breaking the
+[00:27:28] previous value area low, you can see
+[00:27:31] that it also hook [snorts]
+[00:27:33] the value area high from the downside.
+[00:27:35] And this is what we like to call a fake
+[00:27:37] out, a failed auction, trap traders, and
+[00:27:39] you can use all the tools of order flow
+[00:27:42] to understand this in real time. And
+[00:27:44] when you have this, usually the price
+[00:27:47] slice through the value area high to go
+[00:27:49] to seek orders on the value area low.
+[00:27:52] This is one really profitable setup with
+[00:27:55] high win rate. And when you shift the
+[00:27:57] auction again, you have the shift here,
+[00:27:59] you continue to search for position
+[00:28:02] lining with the general direction of the
+[00:28:05] market when the market gives you a
+[00:28:06] premium. This is the real concept of
+[00:28:08] premium and discount. When you are going
+[00:28:11] lower with the value and the market
+[00:28:13] gives you the opportunity to join the
+[00:28:15] trend from a point that is considered
+[00:28:17] expensive in the distribution of the
+[00:28:19] volume. You have a trade that you can
+[00:28:22] join bringing heat to the value area low
+[00:28:24] or projecting it for additional price
+[00:28:27] discovery on the downside. This is the
+[00:28:30] institutional reference on how to
+[00:28:33] analyze the bias using volume, so actual
+[00:28:36] executed orders, not theory. And this
+[00:28:40] should be your starting point to build
+[00:28:42] your bias to confirm with all the order
+[00:28:45] flow tools. So now let's go in the chart
+[00:28:48] of Nasdaq. We are using a template of
+[00:28:51] deep charts that is representing the
+[00:28:53] volume profile, specifically the cash
+[00:28:56] session of the volume profile because
+[00:28:58] it's giving us the majority of the
+[00:29:00] volume of the day, and I only trade in
+[00:29:02] the New York session for US indices
+[00:29:05] because it's where the majority of the
+[00:29:07] volume get traded, and I find it from
+[00:29:10] statistical validation, the London
+[00:29:12] session to be usually for US indices not
+[00:29:15] so valuable to add to the profile. So, I
+[00:29:18] only use the cash session profile. Now,
+[00:29:20] going through single example, I want to
+[00:29:22] break down for you everything that we
+[00:29:24] saw live with the students of deep
+[00:29:27] charts from a profile framing approach.
+[00:29:30] And we will go through the last 2 months
+[00:29:34] of volume and price, so from the 20th of
+[00:29:37] November to the actual price action, so
+[00:29:39] the full 2 months from the point of view
+[00:29:42] of profile, and we will see what
+[00:29:43] information was this volume distribution
+[00:29:47] giving us in terms of bias. We'll start
+[00:29:49] from here, and we can see that we will
+[00:29:52] take this as the first reference, okay?
+[00:29:54] We have a value area here, so the
+[00:29:56] majority of the volume gets traded here,
+[00:29:59] and we will treat this as a neutral
+[00:30:01] information, okay? Now, after this, the
+[00:30:04] market tell us they accept value. We
+[00:30:07] have a strong move up. This is a
+[00:30:09] P-shape, so the buyers from daily point
+[00:30:12] of view are in control of the movement.
+[00:30:14] You can see that also the POC is higher.
+[00:30:17] It's located above the 50%. This means
+[00:30:20] that this movement is really aggressive,
+[00:30:22] and you have a clearly defined value
+[00:30:25] area low with all these rejection on the
+[00:30:28] downside. The gray area is all the
+[00:30:30] rejection, so where the price never
+[00:30:32] accepted, and this part is below the
+[00:30:35] value area low. This usually act as
+[00:30:37] support, so we want to mark it in green.
+[00:30:41] The bias is long, it's clear. We have a
+[00:30:44] clear rejection area that is the value
+[00:30:47] area low and all this absorption that
+[00:30:49] happened during the cash session of this
+[00:30:52] day, okay? The day after, the market
+[00:30:55] tried to break from the downside but
+[00:30:58] reject exactly below the value area low
+[00:31:01] in the rejection point, so the gray area
+[00:31:05] where they accumulated and absorbed the
+[00:31:07] movement the day before. Closing exactly
+[00:31:10] at the same level. So, these two profile
+[00:31:12] can be merged. You can merge them
+[00:31:15] and you can see one piece of information
+[00:31:18] because when they are overlapping on the
+[00:31:20] same level, they are just telling you
+[00:31:22] that they stayed in this balance area
+[00:31:25] for two days. After this, we have an
+[00:31:27] acceptance the day after, okay? We have
+[00:31:30] a higher POC, higher value area high and
+[00:31:33] we have a really strong movement. As you
+[00:31:35] can see, this is a double distribution
+[00:31:37] profile where you have a really thin
+[00:31:39] low. The first point that is interesting
+[00:31:42] is where the value area low is located
+[00:31:43] and then you have a big profile on the
+[00:31:45] upside that where the majority of the
+[00:31:47] volume got traded. So, you can mark all
+[00:31:51] these rejection area
+[00:31:53] from the downside and as you can see,
+[00:31:55] the price stays stationary the day
+[00:31:57] after. It stays inside. So, what you can
+[00:32:00] do, you can do from here merge and do a
+[00:32:04] double day profile on a single level and
+[00:32:07] you can have a really precise value area
+[00:32:10] low point. The day after, the market
+[00:32:13] accept higher and comes to rebalance
+[00:32:17] from the horizontal level here exactly
+[00:32:19] on this level, the 25,500
+[00:32:22] that is a psychological level and these
+[00:32:25] two profile that you can see here are on
+[00:32:27] the horizontal level. So, you can also
+[00:32:30] merge both of them.
+[00:32:32] Okay? And as you can see, the auction is
+[00:32:35] really clear. This was amazing long
+[00:32:37] trade. After this, you have three
+[00:32:40] profile on an horizontal level. Also, we
+[00:32:43] can merge them and you can identify how
+[00:32:46] much it was beautiful the rejection that
+[00:32:49] we saw from the value area low. All this
+[00:32:52] information can be paired with order
+[00:32:54] flow pattern to take precision trade.
+[00:32:58] After this, we have an acceptance and
+[00:33:00] then we start to notice something
+[00:33:01] interesting. For two day, they reject
+[00:33:04] the top here and they go lower in the
+[00:33:08] POC and the value area. So, they don't
+[00:33:11] have the value area I matching, but they
+[00:33:13] go down. So, they are starting to
+[00:33:15] distribute. So, what you can do is
+[00:33:18] noticing and putting this as a warning
+[00:33:20] because you already rejected for today
+[00:33:22] on the same level. This one could be a
+[00:33:24] market shift. Okay, so you can put
+[00:33:27] orange because you want to monitor this
+[00:33:29] properly. The market tries to go back up
+[00:33:31] again and failed. It stays still inside
+[00:33:34] the same area. So, you can decide to
+[00:33:36] merge
+[00:33:37] these two profile and you can see that
+[00:33:40] again the third day you have an amazing
+[00:33:43] rejection. So, the market is telling you
+[00:33:45] that this is a strong wall and you have
+[00:33:48] a breakout of the previous value area
+[00:33:51] low. So, this day here is telling you,
+[00:33:53] "Look, they are rejecting again." When
+[00:33:55] you exit from this whole area of
+[00:33:57] balance, you will have a trend. And this
+[00:33:59] is our confirmation day.
+[00:34:02] Look how much it was clear that they are
+[00:34:05] continuing to push the low without
+[00:34:07] accepting the high. You have a
+[00:34:09] rejection, an amazing rejection here. It
+[00:34:11] gives us a clear trend. And as you can
+[00:34:14] see from here, another test of the value
+[00:34:16] area high, amazing short here. Another
+[00:34:19] test of the value area high, amazing
+[00:34:20] short here. Another test of the value
+[00:34:23] area high, amazing short. And another
+[00:34:25] test and an amazing short. After this,
+[00:34:27] what we have? We have the market
+[00:34:29] shifting the auction. So, from a down
+[00:34:31] profile, you go in an up profile. It's
+[00:34:33] not a P-shape, so it's still balanced.
+[00:34:36] You can use this as indecision. You can
+[00:34:39] put blue instead of green, and then you
+[00:34:41] have our P-shape. Low volume on the
+[00:34:43] downside, completely absorbed, and we
+[00:34:45] have a strong P. What can we expect?
+[00:34:48] That we will have the following days of
+[00:34:50] strong trend up. And we have 1 2 3 and 4
+[00:34:53] days of strong trend up. Notice also how
+[00:34:56] much is precise the value area low
+[00:34:59] as a rejection in the cash session. Also
+[00:35:01] here, after this, you have a clear
+[00:35:04] shift. Here, you can see up and down.
+[00:35:07] And again, from here, you want to start
+[00:35:10] noticing the rejection area. Okay, so
+[00:35:12] you want to start noticing the market
+[00:35:14] joining the trend on the downside
+[00:35:16] because you are going down with the
+[00:35:18] auction. So, you have one trade, you
+[00:35:20] have down, you have all these
+[00:35:22] rejections. See, they try to break the
+[00:35:24] value area low, this two value area low,
+[00:35:25] and all this was a fake out. They got
+[00:35:27] rejected, and the market goes back down
+[00:35:29] after this shift. So, this one is an
+[00:35:31] indecision day, okay?
+[00:35:36] Where the market changed the auction
+[00:35:37] Sorry, not an indecision day. A change
+[00:35:39] of the auction here. And here, you can
+[00:35:41] see how they sustain this movement for
+[00:35:44] three following days. After this, they
+[00:35:47] tried to shift down, they failed because
+[00:35:50] this one, if you try a short, would have
+[00:35:52] been a stop loss, the first stop loss in
+[00:35:53] all these days, and they bring the
+[00:35:56] auction up. And this is a setup that we
+[00:35:58] saw in the live community together. This
+[00:36:01] long, okay? Also, this long was a setup
+[00:36:04] that we saw till the moment we shifted.
+[00:36:06] And when we shift, we start to see the
+[00:36:08] rejection on the upside, and the market
+[00:36:11] collapsed, as you can see here. [snorts]
+[00:36:13] I took this short from here. Then, it
+[00:36:15] shifted again, and then you go down,
+[00:36:18] okay? So, here, if you try to short this
+[00:36:20] value area you would have taken a stop
+[00:36:22] loss. You have a shift again, and these
+[00:36:24] two trades would pay you out. But why
+[00:36:27] the market when it reached this
+[00:36:28] sensitive level is having a stronger
+[00:36:30] rejection? Because we are on the upper
+[00:36:33] part of the distribution. So, this one
+[00:36:36] was completely predictable. And this is
+[00:36:39] the level that I gave to the community
+[00:36:41] multiple times to try the long. Also,
+[00:36:44] this one this long was anticipated. I
+[00:36:47] explained to them that they will see a
+[00:36:49] rejection from the 25,200, 180,
+[00:36:53] 200 that will be really strong to go on
+[00:36:55] the upside. And this is exactly what
+[00:36:58] happened again. Now, we are going back
+[00:37:00] to the fair value of the distribution.
+[00:37:02] Now that we saw all the logic related to
+[00:37:04] the profile framing, we can go to the
+[00:37:06] execution part and the order flow
+[00:37:09] pattern. So, we saw the absorption, we
+[00:37:11] saw the exhaustion, we saw the
+[00:37:12] initiative auction. And for my first
+[00:37:15] year of order flow trading, I was using
+[00:37:17] the full profile footprint. Then, after
+[00:37:20] I became a scalper, so I have the
+[00:37:22] necessity to visualize information in a
+[00:37:26] fast and efficient way. To take fast
+[00:37:28] decision, I created this template. This
+[00:37:31] is the deep trades view and is giving
+[00:37:33] you a filter on executed orders based on
+[00:37:37] the sides. So, I only want to see big
+[00:37:39] market participants. And in this case,
+[00:37:41] for example, this was an area qualified
+[00:37:44] for the short that you can qualified as
+[00:37:46] I show you previously using the profile,
+[00:37:49] using your technical analysis
+[00:37:51] strategies, using everything. What I
+[00:37:54] watch is the interaction between my
+[00:37:56] level and the market participants, the
+[00:37:58] big market participants. In this case
+[00:38:01] here, I can see that all these effort
+[00:38:03] effort 72, 61, 60, 62. So, a total of
+[00:38:08] 300 contract on this horizontal level
+[00:38:11] where also the aggressive sellers
+[00:38:13] already show their strong aggression
+[00:38:16] with result showing me that all this
+[00:38:19] effort is being absorbed. So, this is a
+[00:38:21] perfect example of absorption. This is a
+[00:38:24] confirmation for me to start building my
+[00:38:27] position on the downside and the
+[00:38:30] information for me that I can put my
+[00:38:32] position at risk-free comes immediately
+[00:38:34] 3 minutes after when the market is
+[00:38:36] telling me, "Look at that. They are
+[00:38:38] adding short position." And the result
+[00:38:41] of the candle is really strong. So, I
+[00:38:43] can capitalize on this movement. Here,
+[00:38:46] you can see what we saw in the example
+[00:38:48] before. So, an absorption mid candle.
+[00:38:50] So, buyers try to enter aggressively
+[00:38:52] here, but got completely absorbed and
+[00:38:55] the candle closed sell. Now, let's go on
+[00:38:57] the up example that I took on the long
+[00:39:00] side on my account. It was a qualified
+[00:39:03] area to search for longs and the market
+[00:39:06] comes back to this area the first time.
+[00:39:08] It comes back and you can see 105
+[00:39:10] executed order on Nasdaq on this
+[00:39:12] horizontal level on the week. So, it
+[00:39:14] means that these aggressive orders got
+[00:39:17] rejected. They didn't add a result. They
+[00:39:19] got completely absorbed. The market
+[00:39:22] tried again. Fail. The market tried
+[00:39:24] again another time and the last time
+[00:39:27] that it tried, it tried with 101
+[00:39:29] contract always on the same horizontal
+[00:39:31] level. So, let's do a summary. You have
+[00:39:34] a method of qualifying important areas
+[00:39:36] that it can be volume profile, it can be
+[00:39:39] view up, it can be anything you like to
+[00:39:41] use supply and demand. And then you have
+[00:39:43] an information from the execution point
+[00:39:45] of view of the market participants. And
+[00:39:48] you can see here that also the buyers
+[00:39:50] had an hard time having a result because
+[00:39:53] they got completely absorbed. So, now we
+[00:39:55] are stuck here. You can do this ping
+[00:39:57] pong till here. And when you break this
+[00:40:00] level, you can decide to put your stop
+[00:40:01] loss to break even. So, if you decide to
+[00:40:03] enter here like this with a target here,
+[00:40:07] okay, you can decide to go from 1 to 2
+[00:40:10] to 1 to 5 and put your stop loss to
+[00:40:12] break even. What happened yesterday was
+[00:40:14] the following. So, you have another
+[00:40:16] attempt after breaking out of the
+[00:40:18] sellers of breaking complete absorption
+[00:40:21] and you have an amazing explosion on the
+[00:40:23] upside where you can trail and this for
+[00:40:26] example is my momentum model that you
+[00:40:28] saw live for 1,000 time. You can trail
+[00:40:31] your position following the aggression
+[00:40:33] of the market. So, this one print a new
+[00:40:35] one, you bring your stop loss here and
+[00:40:37] you continue, okay? And yesterday was an
+[00:40:40] amazing move on the market was really
+[00:40:43] aggressive and this is how I merge the
+[00:40:46] information that I get from volume
+[00:40:47] analysis, the information that I get
+[00:40:50] from order flow analysis and the
+[00:40:52] information that I get from result, so
+[00:40:54] from price. So, if you enjoy this video,
+[00:40:57] you will find this full map on my
+[00:40:59] Telegram and don't forget to subscribe
+[00:41:01] to the channel. I will see you in the
+[00:41:03] next video.
