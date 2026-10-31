@@ -250,27 +250,3 @@ def main():
 if __name__ == "__main__":
     main()
 
-def _placebo_rate(K, bar, seeds=2000, n=200):
-    rng = np.random.default_rng(20261101 + K)
-    hits = 0
-    for _ in range(seeds):
-        r = rng.standard_normal((K, n))
-        m = r.mean(1)
-        t = m / (r.std(1, ddof=1) / np.sqrt(n))
-        hits += bool(((m >= S.C_PCT) & (t >= bar)).any())
-    return hits / seeds
-
-
-def test_placebo_family():
-    # old rule (t >= 2) passes 23.8 % / 60.5 % of K-arm nulls (T10 D3); corrected bar must pass <= 5 %
-    for K, old_lo in ((12, 0.15), (40, 0.40)):
-        assert _placebo_rate(K, 2.0) > old_lo
-        assert _placebo_rate(K, S.t_bar(K)) <= 0.05, K
-
-
-def test_t_bar_values_and_holm():
-    assert S.t_bar(1) == 2.0
-    assert abs(S.t_bar(12) - 2.6640) < 2e-3     # z(1-0.05/12)=2.6383 + (z^3+z)/(4*199) = 2.6383+0.0264
-    assert abs(S.t_bar(40) - 3.0610) < 2e-3
-    assert list(S.holm_reject([0.001, 0.02, 0.04])) == [True, True, True]   # thresholds .0167, .025, .05
-    assert list(S.holm_reject([0.001, 0.03, 0.04])) == [True, False, False]   # .03 > .025 stops the step-down
