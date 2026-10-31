@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T08:39:59Z",
   "commands": [],
   "created": "2026-10-30T17:14:51Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "2 SAME; WaveTrend unavailable by 200-bar warmup, report MyTradingSys/research/layer_lab/re",
+      "ref": "0afaadf74",
+      "utc": "2026-10-31T08:39:59Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,7 +40,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "2 SAME; WaveTrend unavailable by 200-bar warmup, report MyTradingSys/research/layer_lab/reports/2026-10-31_gpt-audit-live-aid-indicators-vs-formulas.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tools/live_aid/live_aid_indicators.js, fixture_klines.json, MyTradingSys/backtest/layers/FORMULAS.md; report file only"
   ],
@@ -43,13 +55,14 @@
   "scope_sha": "122323253c92",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read FORMULAS.md RSI, BB, ATR, VWAP, WaveTrend sections",
     "compute RSI(14), BB(20,2), WaveTrend by hand on the last 60 bars of fixture_klines.json",
     "run node on the js functions with the same bars",
     "write SAME/DIFF per number and the SOURCED/OURS table"
   ],
+  "taken": "2026-10-31T08:39:59Z",
   "tests": "see done_when",
   "title": "GPT audit: live_aid_indicators.js (RSI, BB, ATR, VWAP, WaveTrend) vs FORMULAS.md, re-derive 3 numbers from fixture_klines.json",
   "weight": "ROUTINE",

@@ -93,7 +93,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/rsi_divergence_mtf_2026-10-09`
 - Codex lab reports (newest 3 of 3): `MyTradingSys/research/layer_lab/reports/2026-10-28_malkan-hindi-reread-garble-check.md`; `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-rsi-gpt-rederive.md`; `MyTradingSys/research/layer_lab/reports/2026-10-26_lf-rsi-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `fractal-hurst-regime-gate-f2` raw p2 SONNET: F2: rolling 1h Hurst (DFA) regime gate on existing layers vs shuffled and random gates, fee-net DEV
   - `krown-hidden-divergence-confluence-feed` blocked p2 SONNET: Krown hidden divergence as a shared confluence feed any layer (RSI 40-60 included) can consume; Malkan layer s
   - `kurisko-dev-event-study` blocked p2 SONNET: Kurisko Quad Rotation: DEV event study, fee-net, same-window placebo
   - `layer-review-rsi-cc-pitchfork-engine` ready p3 SONNET: Layer review sheet: RSI, CryptoCred, pitchfork, live engine (idea, source, backtests, bugs, confluence)
