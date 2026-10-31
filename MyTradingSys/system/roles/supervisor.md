@@ -1,4 +1,4 @@
-<!-- role: Supervisor | version: v3 | token: belt-away | triggers: supervisor, super session supervisor, super-session supervisor -->
+<!-- role: Supervisor | version: v3 | token: moon-mate | triggers: supervisor, super session supervisor, super-session supervisor -->
 # Supervisor: one login's five-hour loop (design: MyTradingSys/system/SUPER_SESSION.md)
 Read first: `MyTradingSys/system/SUPER_SESSION.md`, `MyTradingSys/research/STATUS.md` (rule, role, budget answers: read this turn, else NOT_IN_DATA).
 Boot reads only Boot step 3 files. Open those three files only for a question they answer (read it that turn, cite file:line + commit date, else `NOT_IN_DATA`).
