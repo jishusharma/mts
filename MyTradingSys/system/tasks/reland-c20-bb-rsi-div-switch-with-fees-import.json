@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T13:52:20Z",
   "commands": [],
   "created": "2026-10-30T17:25:10Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "reland-c20-bb-rsi-div-switch-with-fees-import",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "already on trunk 2b69616cd: imports fees.BINANCE_TAKER (FEE=2*BINANCE_TAKER), test_no_own_",
+      "ref": "64d07da2b",
+      "utc": "2026-10-31T13:52:20Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +46,12 @@
   "refs": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md"
   ],
-  "result": "",
+  "result": "already on trunk 2b69616cd: imports fees.BINANCE_TAKER (FEE=2*BINANCE_TAKER), test_no_own_costs passes; card COST_RT variant not applied",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/bb_rsi_div_switch.py",
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md"
@@ -52,12 +64,13 @@
   "sources": [
     "git: 3478f85eb (study), e6c30a6f3 (revert, reason), MyTradingSys/backtest/fees.py:32 (DERIBIT_TAKER)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Restore the script: git show 3478f85eb:MyTradingSys/research/eagle_eyes_picture_2026-10-28/bb_rsi_div_switch.py > the same path; restore the C20 row in BACKTEST_CANDIDATES.md from the same commit.",
     "Replace line 13 FEE = 0.0012 by: from MyTradingSys.backtest import fees; COST_RT = 2 * fees.DERIBIT_TAKER + 2 * 1e-4 (10 bp taker RT regime A + 2 bp slip, OURS, comment says so); use COST_RT where FEE was; no name containing fee/slip/taker/maker assigned a bare number.",
     "Run python MyTradingSys/backtest/test_no_own_costs.py (must pass without allowlist change) and python -m pytest MyTradingSys/backtest -q; run the study once (needs Binance public klines) and compare headline lines with the Result of 3478f85eb: 36 variants, all fee-net negative, OOS -0.08 to -0.18 percent per trade."
   ],
+  "taken": "2026-10-31T13:52:20Z",
   "tests": "MyTradingSys/backtest/test_no_own_costs.py: fails on the 3478f85eb version of the script (own FEE constant), passes on the re-landed one; plus a one-line check abs(COST_RT - 0.0012) < 1e-12 pasted in the Result",
   "title": "Re-land C20 BB+RSI divergence switch study (3478f85eb, reverted: own fee constant) importing MyTradingSys/backtest/fees.py",
   "weight": "IMPORTANT",
