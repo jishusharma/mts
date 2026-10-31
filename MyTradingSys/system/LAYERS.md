@@ -207,7 +207,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `live-engine-analyst-levels` ready p2 JIS-NB: Live engine context: carry the CBP analyst-level ladder (analyst_levels.py --json) into current_market_state a
   - `state-code-accumulator-backfill` refined p2 JIS-NB: StateCodeEmitter: backfill session CVD/cum_pv/cum_vol after restart and WS reconnect, fail closed on backfill 
   - `layer-review-rsi-cc-pitchfork-engine` ready p3 SONNET: Layer review sheet: RSI, CryptoCred, pitchfork, live engine (idea, source, backtests, bugs, confluence)
-  - `live-aid-macro-calendar-cors-snapshot` ready p3 SONNET: live_aid macro strip reads NO CALENDAR in a real browser: faireconomy feed sends no CORS header, add a local s
   - `live-aid-position-bar-replay-test-pos-di` ready p3 SONNET: live_aid position bar replay test pos-dist pos-atr uncovered
   - `live-loop-timeouts-b191` refined p3 SONNET: Network: re-check live-loop timeouts after B191 plus wrapper priority and snapshot.cp (read-only report first)
   - `live-orderflow-state-line-1m-5m-15m-pric` refined p3 SONNET: Live read: one order-flow state line per TF (1m/5m/15m price swing vs Binance CVD swing vs OI change), descrip
