@@ -89,3 +89,14 @@ def test_event_ignores_future_bars():
     h = list(D1["h"]); l = list(D1["l"]); c = list(D1["c"])
     h[4], l[4], c[4] = 500, 1, 2
     assert V.analyse_day(LV, h, l, c)["event"] == 1
+
+
+def test_last_bar_event_is_censored():
+    # event on the LAST bar (bar2 c=112 > VAH): no later bar exists, so the return is untested (None), not False
+    r = V.analyse_day(LV, [101, 105, 114], [99, 100, 111], [100, 105, 112])
+    assert r["event"] == 2 and r["bars_left"] == 0
+    assert r["returned"] is None
+    # Part B: accepted with nothing after the N-th close is censored too
+    r = V.analyse_day(LV, [101, 113, 114], [99, 111, 112], [100, 112, 113], ns=(2,))
+    assert r["acc"][2]["accepted"] is True and r["acc"][2]["returned"] is None
+    assert V.analyse_day(LV, D1["h"], D1["l"], D1["c"])["bars_left"] == 3

@@ -46,11 +46,12 @@ def analyse_day(levels, h, l, c, ns=NS):
     poc, vah, val = levels["poc_price"], levels["vah"], levels["val"]
     out = (c > vah) | (c < val)
     if not out.any():
-        return {"event": None, "side": 0, "returned": None, "back_inside": None,
+        return {"event": None, "side": 0, "returned": None, "back_inside": None, "bars_left": None,
                 "acc": {n: {"applicable": False, "accepted": False, "returned": None} for n in ns}}
     e = int(np.argmax(out))
     side = 1 if c[e] > vah else -1
-    returned = _touch(h[e + 1:], l[e + 1:], poc)
+    bars_left = len(c) - 1 - e                       # 5m bars after the event bar in this UTC day
+    returned = _touch(h[e + 1:], l[e + 1:], poc) if bars_left > 0 else None   # None = CENSORED (no later bar to test)
     cl = c[e + 1:]
     back_inside = bool(np.any((cl >= val) & (cl <= vah)))
     acc = {}
@@ -62,9 +63,9 @@ def analyse_day(levels, h, l, c, ns=NS):
             seg = c[e:e + n]
             accepted = bool(np.all(seg > vah)) if side == 1 else bool(np.all(seg < val))
             if accepted:
-                ret = _touch(h[e + n:], l[e + n:], poc)
+                ret = _touch(h[e + n:], l[e + n:], poc) if len(h) > e + n else None   # None = censored
         acc[n] = {"applicable": applicable, "accepted": accepted, "returned": ret}
-    return {"event": e, "side": side, "returned": returned, "back_inside": back_inside, "acc": acc}
+    return {"event": e, "side": side, "returned": returned, "back_inside": back_inside, "bars_left": bars_left, "acc": acc}
 
 
 # ------------------------------------------------------------------ study over the DEV window
@@ -118,8 +119,9 @@ def study(days):
 
     def blank():
         z = lambda: np.zeros(nd)  # noqa: E731
-        return {"event": z(), "ret": z(), "inside": z(), "up": z(), "naked_exact": z(), "naked_near": z(),
-                "acc_app": {n: z() for n in NS}, "acc": {n: z() for n in NS}, "acc_ret": {n: z() for n in NS}}
+        return {"event": z(), "bars_left": np.full(nd, np.nan), "cens_a": z(), "ret": z(), "inside": z(), "up": z(), "naked_exact": z(), "naked_near": z(),
+                "acc_app": {n: z() for n in NS}, "acc": {n: z() for n in NS}, "acc_ret": {n: z() for n in NS},
+                "acc_cens": {n: z() for n in NS}}
 
     res = {"real": blank(), "placebo": blank()}
     dvals = np.zeros(nd)
@@ -134,7 +136,9 @@ def study(days):
             if r["event"] is None:
                 continue
             o["event"][i] = 1
-            o["ret"][i] = r["returned"]
+            o["ret"][i] = bool(r["returned"])            # censored (None) still counts as no-return: the pre-registered number
+            o["bars_left"][i] = r["bars_left"]
+            o["cens_a"][i] = r["returned"] is None
             o["inside"][i] = r["back_inside"]
             o["up"][i] = r["side"] == 1
             for n in NS:
@@ -142,6 +146,7 @@ def study(days):
                 o["acc_app"][n][i] = a["applicable"]
                 o["acc"][n][i] = a["accepted"]
                 o["acc_ret"][n][i] = bool(a["returned"])
+                o["acc_cens"][n][i] = a["accepted"] and a["returned"] is None
     return res, dvals
 
 
@@ -178,6 +183,21 @@ def underpowered(n):
     return "UNDERPOWERED (n<100)" if n < 100 else ""
 
 
+CENS_MIN_LEFT = 12                               # post-hoc sensitivity threshold, from the review card (OURS)
+
+
+def censoring(R, mask):
+    """Post-hoc (OURS) censoring audit: events with few bars left in the UTC day; the verdict stays the pre-registered one."""
+    ev = (R["event"] == 1) & mask
+    bl = R["bars_left"]
+    with np.errstate(invalid="ignore"):
+        keep = (ev & (bl >= CENS_MIN_LEFT)).astype(float)
+        left_lt = {k: int((ev & (bl < k)).sum()) for k in (1, 3, 6, CENS_MIN_LEFT)}
+    return {"events": int(ev.sum()), "censored_a": int(R["cens_a"][mask].sum()), "bars_left_lt": left_lt,
+            "min_left": CENS_MIN_LEFT, "restricted": share(R["ret"], keep, mask),
+            "censored_b": {n: int(R["acc_cens"][n][mask].sum()) for n in NS}}
+
+
 def compute(res, days, dvals, dropped, meta):
     nd = len(days)
     yrs = np.array([datetime.fromtimestamp(d["d"] * DAY_MS / 1000, timezone.utc).year for d in days])
@@ -205,6 +225,7 @@ def compute(res, days, dvals, dropped, meta):
                "vs_A": diff(R["acc_ret"][n], R["acc"][n], R["ret"], R["event"], allm),
                "accepted_of_applicable": {"applicable": int(R["acc_app"][n].sum()), "accepted": int(R["acc"][n].sum())}}
         out["B"][n] = row
+    out["censoring"] = censoring(R, allm)
     out["naked"] = {k: {"real": float(R[k].mean()), "placebo": float(Pl[k].mean())} for k in ("naked_exact", "naked_near")}
     out["naked_ci"] = {k: {"real": share(R[k], np.ones(nd), allm), "placebo": share(Pl[k], np.ones(nd), allm),
                            "diff": diff(R[k], np.ones(nd), Pl[k], np.ones(nd), allm)}
@@ -304,6 +325,14 @@ def render_md(out):
     for k, lab in (("naked_exact", "bar range contains POC"), ("naked_near", "bar range within 0.3 % of POC")):
         r = nc[k]
         w(f"| {lab} | {_p(r['real']['share'])} | {_ci(r['real']['ci'])} | {_p(r['placebo']['share'])} | {_dp(r['diff']['diff'])} | {_ci(r['diff']['ci'])} |")
+    c = out["censoring"]
+    w("\n## Late-day censoring (post-hoc, OURS; sensitivity beside the unchanged pre-registered verdict above)")
+    w("`analyse_day` scores an event on the last 5m bar of the UTC day as no-return because no later bar exists (censored, not tested); the pre-registered share keeps that convention.")
+    w(f"- Events {c['events']}; censored (event on the last bar) {c['censored_a']}; events with fewer bars left than k: "
+      + ", ".join(f"k={k}: {v}" for k, v in c["bars_left_lt"].items()) + ".")
+    w(f"- Return share restricted to events with >= {c['min_left']} bars left: {_p(c['restricted']['share'])} (n {c['restricted']['n']}, CI {_ci(c['restricted']['ci'])}) "
+      f"vs pre-registered {_p(A['real']['share'])} (n {A['real']['n']}). No verdict change is claimed.")
+    w("- Part B accepted events with no bar after the N-th close (censored): " + ", ".join(f"N={n}: {v}" for n, v in c["censored_b"].items()) + ".")
     w("\n## Not in data / limits")
     w("- Cash-session profile (TOM-281): NOT_IN_DATA for BTC; every value here is a UTC-day value (OURS). His drawn levels: NOT_IN_DATA.")
     w("- LVN: not built; \"beyond the LVN side\" is read as beyond the value-area edge (OURS).")
