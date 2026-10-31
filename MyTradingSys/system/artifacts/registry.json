@@ -3,7 +3,7 @@
   "accounts": {
     "jishu.sharma": "login A (jishu.sharma@gmail.com, GitHub jishusharma), JIS-NUC; owns the Control Room with the Inbox and decisions db (q21). Until 2026-10-15 these urls were filed under jishu.awgp: checked 2026-10-15: a session whose Claude login is jishu.sharma@gmail.com on JIS-NUC owns Ep6gA5 and the other pages filed until then under 'jishu.awgp' (Artifact list), and cannot read EoHi2q. Pins: Control Room, MTS Layers, Tom and Fabio, CBP Consensus Desk, CBP Monday Desk",
     "jishu.awgp": "the JIS-NB login that published the pages filed until 2026-10-15 under jishu.sharma (pins 2026-10-14: Control Room, MTS Layers, CBP Desk = consensus desk, CBP Monday Desk). Which login it is was inferred, not checked: a session on JIS-NB confirms with Artifact list",
-    "jishusharma1985": "HOME login (2026-10-16): owns MTS Home, MTS Research Map (db requests) and MTS Session Planner (db selection). Third account (Claude Max, added 2026-10-14), JIS-NB and JIS-NUC; runs the super sessions. Checked 2026-10-16 by Artifact list from a session on this login: it owns 9nqpZe, 2Ti4CG and three 'Moved to Control Room' stubs, and cannot read Ep6gA5 (not shared with it yet)."
+    "jishusharma1985": "HOME login (2026-10-16): owns MTS Home, MTS Research Map (db requests). Third account (Claude Max, added 2026-10-14), JIS-NB and JIS-NUC; runs the super sessions. Checked 2026-10-16 by Artifact list from a session on this login: it owns 9nqpZe, 2Ti4CG and three 'Moved to Control Room' stubs, and cannot read Ep6gA5 (not shared with it yet)."
   },
   "pages": [
     {
@@ -61,7 +61,7 @@
       "note": "2026-10-13: the old Layer Map (backtest matrix + configurator, make_layer_map.py) was replaced at the SAME url by MTS Layers (per-layer road, stuck days, missing steps, decisions waiting on Jis, How MTS runs). make_layer_map.py still builds the old page if wanted. Published on all three logins.",
       "purpose": "Every trading layer's road and where it is stuck.",
       "notes_go_to": "Read only. Put notes on the Research Map.",
-      "published_sha": "c2e689f1863fb7f11722c257102d4fe7636876b79876470d10a8d9ece914f75a"
+      "published_sha": "fc97713b98d7cb58e41fc874ffc5c3a11fa815a2834d095604af8344d2c1dafb"
     },
     {
       "slug": "tom_fabio_deck",
@@ -240,7 +240,7 @@
       "purpose": "This list: every MTS page, its owner login, where your notes go, and how to open it from any login.",
       "notes_go_to": "Nothing to write here.",
       "note": "The hub (operator 2026-10-16: 'all my artifacts available from one place'). Generated from registry.json; pinned on the home login.",
-      "published_sha": "fd74121f2935b7a385a15c0ce7898447d73998871f8c2cdcde0a917007b7ebb7"
+      "published_sha": "6e32fcf35e3a81f8df88fc391c22a75c9451d1092573340cf4bea0764c6fec96"
     },
     {
       "slug": "research_map",
@@ -273,8 +273,8 @@
     },
     {
       "slug": "session_planner",
-      "status": "canonical",
-      "pinned": true,
+      "status": "retire",
+      "pinned": false,
       "generator": "hand-made",
       "single_owner": "jishusharma1985",
       "urls": {
@@ -288,8 +288,8 @@
         "jishu.awgp": "never"
       },
       "title": "MTS Session Planner",
-      "html": "MyTradingSys/system/artifacts/session_planner.html",
-      "banner": true,
+      "html": null,
+      "banner": false,
       "owner_app": "jishusharma1985; DATA line from scripts/dev/make_planner_data.py --html",
       "refresh": "when task cards change (make_planner_data.py)",
       "db": [
@@ -297,7 +297,7 @@
       ],
       "purpose": "Builds the prompt for the next super session: pick a goal and hours, copy, paste into a new session.",
       "notes_go_to": "nothing to send. Copy the prompt; your ticks and goal stay saved on this page.",
-      "note": "Capability db (keep it: republish without passing capabilities).",
+      "note": "Retired 2026-10-31 (operator: planning happens in the sessions now). Nothing lost: its prompt was an older copy of SUPER_SESSION.md; tasks.py next already orders by depends_on; the saved pick (2026-10-16) named 4 deleted and 2 blocked cards. Operator deletes the page.",
       "published_sha": "c89b122558ca5da4bb144c30d0efbff1893de7285486c2066018fa864330fbc7"
     },
     {

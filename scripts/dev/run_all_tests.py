@@ -56,6 +56,7 @@ PYTEST_LAYER_PATHS = [
     "scripts/dev/test_outcome_labeler_incremental.py",
     "scripts/dev/test_wrapper_load_resilience.py",
     "scripts/dev/test_gate_priority.py",
+    "scripts/dev/test_mts_signal_git_timeout.py",
     "scripts/dev/test_gate_scratch.py",
     "scripts/dev/test_feed_watchdog_script.py",
     "MyTradingSys/observation/tests",
@@ -268,6 +269,22 @@ def ci_annotation(num, description, output, limit=3000):
     return f"::error title=Step {num} FAIL::{description} | {body}"
 
 
+FAIL_LOG_DIR = REPO / "runtime_data" / "gate_fail_logs"   # gitignored (runtime_data/): one log per failed step, last 200 output lines
+FAIL_LOG_LINES = 200
+
+
+def write_fail_log(num, output):
+    """Keep a failed step's last FAIL_LOG_LINES output lines in a per-run log (the console shows only 15). Returns the path, or None.
+    Diagnostics only: any error here never changes the step's verdict."""
+    try:
+        FAIL_LOG_DIR.mkdir(parents=True, exist_ok=True)
+        path = FAIL_LOG_DIR / (time.strftime("%Y%m%dT%H%M%S") + f"_{os.getpid()}_step-{re.sub(r'[^A-Za-z0-9_.-]', '_', str(num))}.log")
+        path.write_text(chr(10).join((output or "").splitlines()[-FAIL_LOG_LINES:]) + chr(10), encoding="utf-8", newline=chr(10))
+        return path
+    except Exception:
+        return None
+
+
 STEP_SECONDS = {}   # step -> wall seconds of this run; on CI the slowest go out as one ::notice (job logs are not readable off GitHub)
 
 
@@ -311,6 +328,9 @@ def format_step(num, description, cmd_text, ok, output, elapsed, progress="", ta
         if out:
             lines.append("  Last output:")
             lines += [f"    {ln}" for ln in (out if (os.environ.get("CI") or tail is None) else out[-tail:])]
+        log = write_fail_log(num, output)
+        if log:
+            lines.append(f"  Full failure tail ({FAIL_LOG_LINES} lines): {log}")
         note = ci_annotation(num, description, output)
         if note:
             lines.append(note)
