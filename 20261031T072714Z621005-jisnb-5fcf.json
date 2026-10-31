@@ -1,0 +1,1 @@
+{"t": "20261031T072714Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "C: trunk CI RED since 7c265f0c2: phase_tag/harness.py:43 'lab[i:i + L] = cur' trips test_lookahead_lint. Fractals session: add a reviewed row to scripts/dev/lookahead_allowlist.tsv or rewrite the slic", "login": "C"}
