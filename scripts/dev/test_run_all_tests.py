@@ -5,6 +5,7 @@ import os
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 import unittest
 from unittest import mock
@@ -259,11 +260,27 @@ class TestConcurrentGate(unittest.TestCase):
         return results, buf.getvalue()
 
     def test_independent_steps_overlap_and_all_results_come_back(self):
-        log = []
-        plan = [fake(n, log) for n in ("3a", "3b", "3c", "3d")]
+        # Event barrier, not a wall-clock assert: every step blocks until all four are running at once, so overlap holds
+        # by construction (a serial runner breaks the barrier and fails the step, however loaded the host is).
+        barrier = threading.Barrier(4, timeout=30)
+
+        def run():
+            barrier.wait()
+            return True, "ok"
+        nums = ("3a", "3b", "3c", "3d")
+        plan = [rat.Step(n, "desc " + n, "Step " + n + ": label", run=run, cmd_text="fake " + n) for n in nums]
         results, _ = self.run_plan(plan, 4)
-        self.assertEqual(results, {"3a": True, "3b": True, "3c": True, "3d": True})
-        self.assertGreaterEqual(max_overlap(log, {"3a", "3b", "3c", "3d"}), 2)
+        self.assertEqual(results, {n: True for n in nums})
+
+    def test_serial_runner_cannot_pass_the_overlap_barrier(self):
+        barrier = threading.Barrier(2, timeout=0.2)
+
+        def run():
+            barrier.wait()
+            return True, "ok"
+        plan = [rat.Step(n, "d", "Step " + n + ": l", run=run, cmd_text="fake " + n) for n in ("3a", "3b")]
+        results, _ = self.run_plan(plan, 1)
+        self.assertFalse(all(results.values()))
 
     def test_jobs_1_runs_one_at_a_time_in_definition_order(self):
         log = []
