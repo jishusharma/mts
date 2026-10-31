@@ -196,6 +196,40 @@ class PlaceRefusalTest(Base):
         self.assertEqual(spawned, [("p9", "jishu_2")])
 
 
+class MarginPreflightGapTest(Base):
+    """GAP (card test-auto-trader-place-margin-preflight): place() never checks available funds before an entry.
+    DECISION (OURS): live-path code change needs coordinator gates, so these are expectedFailure until a
+    pre-flight exists. Contract they pin: seam at.available_funds_btc(account) -> float|None (None = unreadable);
+    sig["margin_btc"] = margin the plan needs; short or unreadable funds -> outcome "margin_short", no --go, no manager.
+    Remove the decorators when the check lands (an unexpected pass then flags it)."""
+    SIG = {"plan_args": ["--side", "long"], "executor_args": [], "margin_btc": 0.01}
+
+    def _place(self, funds):
+        calls = []
+        at.run = lambda cmd, timeout=900, account=None: (calls.append(cmd), (0, "SAVED p1 filled"))[1]
+        at.spawn_manager = lambda *a, **k: self.fail("manager spawned despite short margin")
+        if isinstance(funds, Exception):
+            def funds_fn(account=None):
+                raise funds
+        else:
+            def funds_fn(account=None):
+                return funds
+        with mock.patch.object(at, "available_funds_btc", funds_fn, create=True):
+            return at.place(self.SIG, False), calls
+
+    @unittest.expectedFailure
+    def test_place_refuses_when_margin_short(self):
+        out, calls = self._place(0.0001)
+        self.assertEqual(out["outcome"], "margin_short")
+        self.assertFalse(any("--go" in c for c in calls))
+
+    @unittest.expectedFailure
+    def test_place_refuses_when_balance_call_errors(self):
+        out, calls = self._place(OSError("timeout"))
+        self.assertEqual(out["outcome"], "margin_short")
+        self.assertFalse(any("--go" in c for c in calls))
+
+
 def entered(pid, acct=None, src="s"):
     return {"event": "trade_attempt", "outcome": "entered", "plan_id": pid, "source": src,
             **({"account": acct} if acct else {})}

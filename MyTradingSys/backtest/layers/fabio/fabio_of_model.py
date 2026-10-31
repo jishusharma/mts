@@ -5,7 +5,8 @@ Offline research module (never imported by live code; Fabio stays a separate lay
 Replaces the fixed-horizon "every trigger fire" test of FABIO_L1 with the model the videos describe
 (state -> location -> trigger -> management), simulated bar by bar on 1m.
 
-State   : session (UTC) Asia 00:00-08:00, London 08:00-13:30, NY 13:30-21:00. Prior session = the previous session in
+State   : session (UTC), fixed base Asia 00:00-08:00, London 08:00-13:30, NY 13:30-21:00 shifted by DST per B102 in
+          session_bounds (London opens 07:00 in UK BST; NY opens 13:30 in US DST, else 14:30; widths kept). Prior session = the previous session in
           that sequence (Asia's prior = previous day's NY). Prior-session volume profile (10 USD bins, real footprint
           volume) -> POC, 70% value area (VAH/VAL), LVNs (interior local minima <= 0.5 x median bin) and HVNs
           (local maxima >= 0.6 x POC). Session state is fixed from the close of the first STATE_MIN minutes:

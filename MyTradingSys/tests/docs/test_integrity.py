@@ -209,3 +209,9 @@ def test_10_workers_blocked_solve_it_rule():
     """bug-ai-health-stops-at-first-blocker (NUC 2026-10-26): a refusal is solved and verified, then reported."""
     t = (MTS / "system" / "WORKERS.md").read_text(encoding="utf-8")
     assert "Blocked" in t and "report AND continue" in t and "brief template" in t.lower()
+
+
+def test_funding_rerun_names_secondary_move():
+    """funding-rerun-label-primary-vs-secondary: the primary-cell move is labelled and the +0.0181 pp secondary move is cited."""
+    t = (MTS / "research" / "gross_effect_screen_2026-10-15" / "FUNDING_RERUN.md").read_text(encoding="utf-8")
+    assert "+0.0013" in t and "+0.0181" in t and "n_T" in t and "200" in t

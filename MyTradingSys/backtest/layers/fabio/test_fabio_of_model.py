@@ -273,5 +273,12 @@ class TestStats(unittest.TestCase):
         self.assertEqual(M.trade_stats([])["n"], 0)
 
 
+class TestDocstring(unittest.TestCase):
+    def test_docstring_names_dst_sessions(self):
+        self.assertIn("B102", M.__doc__)
+        self.assertIn("session_bounds", M.__doc__)
+
+
+
 if __name__ == "__main__":
     unittest.main()
