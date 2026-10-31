@@ -1,34 +1,52 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m unittest MyTradingSys.execution.test_auto_trader_failclosed -v"
+  ],
   "created": "2026-10-31T06:31:25Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Remove both expectedFailure markers in MyTradingSys/execution/test_auto_trader_failclosed.py MarginPreflightGapTest; both tests pass; restart/non-trade-balance/API-error cases covered; mutated copy without the check fails them; review Agent before ship; coordinator deploys",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Add a fail-closed margin pre-flight to auto_trader.place(): seam available_funds_btc(account) -> float|None; refuse with outcome margin_short when funds < sig margin_btc or the balance call errors/returns None; no --go, no manager spawn.",
   "id": "auto-trader-place-margin-preflight-check",
-  "lane": "SONNET",
+  "lane": "JIS-NB",
   "layers": [],
-  "live_path": false,
+  "live_path": true,
   "mutation_check": "",
-  "note": "",
+  "not_twin_of": [
+    "sonnet-live-path-restart-reset-tests",
+    "test-position-manager-margin-drain",
+    "test-auto-trader-place-margin-preflight"
+  ],
+  "note": "Live path: review Agent before ship; deploy by coordinator only. Distinct: test-auto-trader-place-margin-preflight (claimed) pins the tests only; sonnet-live-path-restart-reset-tests is the broad restart/reset suite; test-position-manager-margin-drain is position_manager.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/execution/auto_trader.py",
+    "MyTradingSys/execution/test_auto_trader_failclosed.py"
+  ],
+  "scope_out": [
+    "position_manager.py (card test-position-manager-margin-drain)",
+    "live tree / deploy"
+  ],
+  "size": "S",
   "sources": [],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Read test_auto_trader_failclosed.py MarginPreflightGapTest and auto_trader.place (line ~643)",
+    "Add available_funds_btc(account) seam and the check in place(): short, None or exception -> outcome margin_short, before any --go or spawn_manager",
+    "Remove the two expectedFailure decorators; add restart/non-trade-balance/API-error cases; show tests fail on a copy without the check",
+    "Ship via sync.py ship; review Agent before ship; coordinator deploys"
+  ],
+  "tests": "python -m unittest MyTradingSys.execution.test_auto_trader_failclosed",
   "title": "auto_trader.place() has no margin pre-flight: add available_funds check that refuses (fail closed on short margin or balance-call error), remove expectedFailure from MarginPreflightGapTest in test_auto_trader_failclosed.py. Live path: review Agent before ship; deploy by coordinator only. Done when: both tests pass without the marker; restart/non-trade-balance/API-error cases covered.",
-  "weight": "",
-  "worker": ""
+  "weight": "CRITICAL",
+  "worker": "agent"
 }
