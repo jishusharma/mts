@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T17:29:27Z",
+  "depends_on": [],
+  "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent re-derive of the Malkan reverse-divergence FAIL on 2020-2021 (commit 3673313e4): recompute every number in RESULT.md and the malkan-div-breaks.json trade count and mean R from raw bars with your own code; check the PRE_REG_DIV rules were applied as frozen (no look-ahead in pivot confirmation).",
+  "id": "gpt-rederive-malkan-div-fail-1031",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Simulator: Malkan divergence test on tf_break trades",
+      "ref": "f897395aee70",
+      "utc": "2026-10-31T17:10:01Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "3673313e4d14 Malkan reverse-divergence lead fails on fresh 2020-2021 data",
+      "ref": "MyTradingSys/research/meta_label_breaks_2026-10-31/RESULT.md",
+      "utc": "2026-10-31T17:03:06Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "codex_run.py ask",
+  "refreshed": "2026-10-31T17:30:01Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/meta_label_breaks_2026-10-31/RESULT.md",
+    "MyTradingSys/research/meta_label_breaks_2026-10-31/confirm_div.py",
+    "MyTradingSys/research/meta_label_breaks_2026-10-31/PRE_REG_DIV.md",
+    "MyTradingSys/research/sim_desk/results/malkan-div-breaks.json"
+  ],
+  "scope_out": [
+    "code or spec changes",
+    "holdout reads",
+    "BTC runs of the current encoding (ROADMAP section 2)"
+  ],
+  "scope_sha": "f897395aee70",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
+    "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
+    "Report findings as a table: severity HIGH/MED/LOW, file:line, what is wrong, evidence, proposed fix. Change no code and no spec.",
+    "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
+    "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+  ],
+  "tests": "report lists each cited number FOUND/DIFF with own recomputed value; scratch script under the report folder",
+  "title": "GPT: re-derive Malkan divergence FAIL numbers and look-ahead check",
+  "weight": "",
+  "worker": ""
+}
