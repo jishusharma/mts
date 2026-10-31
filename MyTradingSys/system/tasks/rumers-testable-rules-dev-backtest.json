@@ -1,0 +1,47 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/sync.py start rumers-dev-check"
+  ],
+  "created": "2026-10-31T19:16:36Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/rumers_2026-11-01/DEV_CHECK.md has per-rule n, hit-rate, fee-net mean R vs claim; PRE_REG frozen before the run; one-bar shift look-ahead check passes; shipped with a Result: line",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Take the TESTABLE shortlists from MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_1.md and _2.md. Freeze a PRE_REG, run each rule on DEV 2022-04-01..2024-06-30 BTC 1m fee-net with fees.py, report n, hit-rate, mean R and the claimed hit-rate.",
+  "id": "rumers-testable-rules-dev-backtest",
+  "kind": "build",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini rules: captions first (fetch_captions_timed.py), quote only from the caption file, one fetch try per video, no retry loop, 429 -> UNVERIFIED with no quotes; verify_extract_quotes.py exit 0; facts and quotes only, no verdict, no code change. Operator 2026-11-01: channel @the.rumers, he finds these videos interesting; backtests follow. Final report ends with a Noticed: line.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/rumers_2026-11-01/ (new files only)"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code; any trading verdict; .secrets and .env"
+  ],
+  "size": "M",
+  "sources": [],
+  "state": "raw",
+  "steps": [
+    "wait until both extracts are on trunk",
+    "write and freeze PRE_REG; run on DEV; shift check",
+    "write DEV_CHECK.md and ship"
+  ],
+  "tests": "pre-reg frozen before first run; one-bar shift look-ahead check; trial ledger rows added",
+  "title": "Backtest the testable Rumers rules from RUMERS_EXTRACT_1/2 on DEV fee-net: frozen PRE_REG, n, hit-rate, mean R vs claim",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}
