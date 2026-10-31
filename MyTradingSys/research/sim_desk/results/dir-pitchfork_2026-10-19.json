@@ -13,20 +13,11 @@
   "tone": "info"
  },
  "why": [
-  "\"\\\"\\\\\\\"\\\\\\\\\\\\\\\"In the Phase 1 Daily (1D) event study, classical pitchfork geometry exhibited high Median Line reach (86.15% to 90.03%), but naive market entries suffered small negative fee drag (-0.95% to -1.12% per trade).\\\\\\\\\\\\\\\",\\\\\\\",\\\",\",",
-  "\"\\\"\\\\\\\"\\\\\\\\\\\\\\\"This severely shrinks the remaining reward while leaving the full stop-loss distance intact, producing negative returns (-0.16% to -1.31%) across every test condition.\\\\\\\\\\\\\\\",\\\\\\\",\\\",\",",
-  "\"\\\"\\\\\\\"\\\\\\\\\\\\\\\"Placing resting limit orders at the active tine ($LML$ for longs, $UML$ for shorts) completely eliminates negative fee drag.\\\\\\\\\\\\\\\",\\\\\\\"\\\"\""
+  "\"\\\"\\\\\\\"\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"In the Phase 1 Daily (1D) event study, classical pitchfork geometry exhibited high Median Line reach (86.15% to 90.03%), but naive market entries suffered small negative fee drag (-0.95% to -1.12%…",
+  "\"\\\"\\\\\\\"\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"This severely shrinks the remaining reward while leaving the full stop-loss distance intact, producing negative returns (-0.16% to -1.31%) across every test condition.\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\…",
+  "\"\\\"\\\\\\\"\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"Placing resting limit orders at the active tine ($LML$ for longs, $UML$ for shorts) completely eliminates negative fee drag.\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\",\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\"\\\\\\\"\\\"\""
  ],
- "kpis": [
-  {
-   "label": "trades (first count in the source)",
-   "value": "279"
-  },
-  {
-   "label": "net R after fees (first value in the source)",
-   "value": "+0.05"
-  }
- ],
+ "kpis": [],
  "examples": [
   {
    "kind": "none",
@@ -34,24 +25,15 @@
    "caption": "no example trades exported: source-extracted, the source holds no trade list"
   }
  ],
- "evidence": [
-  {
-   "field": "n_trades",
-   "value": 279,
-   "quote": "\"quote\": \"\\\"quote\\\": \\\"\\\\\\\"quote\\\\\\\": \\\\\\\"\\\\\\\\\\\\\\\"quote\\\\\\\\\\\\\\\": \\\\\\\\\\\\\\\"- Modified Schiff: Mean Net PnL +0.61%, Profit Factor 1.63, 279 filled trades.\\\\\\\\\\\\\\\"\\\\\\\"\\\"\""
-  },
-  {
-   "field": "net_r",
-   "value": 0.05,
-   "quote": "\"quote\": \"\\\"quote\\\": \\\"\\\\\\\"quote\\\\\\\": \\\\\\\"\\\\\\\\\\\\\\\"quote\\\\\\\\\\\\\\\": \\\\\\\\\\\\\\\"- Across all four geometric models, every single unfiltered tine limit test turned net returns POSITIVE (+0.05% to +0.39%) wit…"
-  }
- ],
+ "evidence": [],
  "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
   "window": "the source states no test window",
   "parameters": "no rule or parameter section found in the source"
  },
  "source_files": [
   "MyTradingSys/research/sim_desk/results/dir-pitchfork_2026-10-19.json"
  ],
- "commit": "aef982b8c"
+ "commit": "bde0292a9"
 }

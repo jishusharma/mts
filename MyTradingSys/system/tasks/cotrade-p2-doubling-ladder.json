@@ -6,7 +6,9 @@
     "python scripts/dev/run_all_tests.py --quick"
   ],
   "created": "2026-10-31T15:13:25Z",
-  "depends_on": [],
+  "depends_on": [
+    "cotrade-p1-say-and-place"
+  ],
   "done_when": "python -m MyTradingSys.execution.cotrade ladder --said '<verbatim>' --side sell --from 110500 --to 111500 --steps 5 --x 100 --stop 112000 --dry-run prints the rung table and worst case matching ladder_math.py for the same inputs; a ladder whose summed size or loss-at-stop breaks a cap places NOTHING; tests pass and each failed on the pre-change code.",
   "est_turns": 40,
   "formula_id": "",
@@ -18,7 +20,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Depends on cotrade-p1-say-and-place. Martingale: the cap preflight is the safety item, it must fail closed.",
+  "note": "REVIEWED:2026-10-31 ACCEPT (Sonnet reviewer Agent, FIX applied once, not re-read, planner DECISION OURS). Depends on cotrade-p1-say-and-place. Martingale: the cap preflight is the safety item, it must fail closed. PLANNER: CRUCIAL, review Agent on the diff before ship. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -37,7 +39,7 @@
     "MyTradingSys/execution/plan_compiler.py",
     "MyTradingSys/research/eur_low_us_sweep_2026-10-14/RESULT.md"
   ],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "Read MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md sections 2 and 5",
     "Tests first, red on old tree",

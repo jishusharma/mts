@@ -2,16 +2,48 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 23,
+    "folded": "2026-10-31T15:35:27Z",
+    "misses": 54,
+    "reads": [
+      "scripts/aibridge/extension/content.js",
+      "scripts/aibridge/src/agent.ps1",
+      "scripts/aibridge/docs/V07_CONTRACT.md",
+      "scripts/aibridge/extension/loop.js",
+      "MyTradingSys/tests/test_dsa_direct_mode.py",
+      "scripts/aibridge/tests/loop.test.js",
+      "scripts/aibridge/extension/manifest.json",
+      "scripts/aibridge/tests/block_select.test.js"
+    ],
+    "session": "agent-ac9df3dcb1cbfce7e"
+  },
   "created": "2026-10-31T13:52:17Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "AIBridge 0.7.7 on trunk (RELEASES.json current 0.7.7); the two xfails in test_aibridge_exploratory.py now pass; e2e_bridge.py scratch run E0-E5 exit 0; node and pytest tests for each FIX pass",
+  "est_turns": 40,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Close every FIX and the E5/E6 xfails in AUDIT.md (linked in refs); ship as AIBridge 0.7.7.",
   "id": "dsabr-c9-audit-fixes-077",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "AIBridge 0.7.6: version bump for the E2E script (version guard counts scripts/aibridge/tes",
+      "ref": "4e4e702400e3",
+      "utc": "2026-10-31T13:16:53Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "6b2e089fc7b9 AIBridge 0.7.4: thinking-panel fences ignored, per-reply duplicate guard, dro",
+      "ref": "DSA_SESSION_PROMPT.md",
+      "utc": "2026-10-31T10:19:42Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,16 +51,38 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refs": [],
+  "refreshed": "2026-10-31T15:30:42Z",
+  "refs": [
+    "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/AUDIT.md"
+  ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/aibridge/extension/content.js",
+    "scripts/aibridge/extension/loop.js",
+    "scripts/aibridge/src/agent.ps1",
+    "scripts/aibridge/tasks/mts-gate.json",
+    "scripts/aibridge/RELEASES.json",
+    "scripts/aibridge/tests",
+    "MyTradingSys/tests/test_aibridge_exploratory.py",
+    "DSA_SESSION_PROMPT.md"
+  ],
+  "scope_out": [
+    "live trading code",
+    "F:/AIBridge install"
+  ],
+  "scope_sha": "4e4e702400e3",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "DSA bridge 0.7.7 from AUDIT.md (research/dsa_bridge_fix_plan_2026-10-31/AUDIT.md): show the why-nothing-ran status (content.js:169, loop.js:232), fail closed beyond empty ancestor chain, stopAuto must not keep old watch, short final answer must not ask re-send of blocks (content.js:545), E5 drop kind=read exemption (content.js:241), E6 default timeout 600sx2 + extend while agent running>0 (content.js:479, loop.js:180), mts-gate step 900s vs 600s default; then re-run e2e_bridge incl jis-nb verify",
+  "state": "ready",
+  "steps": [
+    "Read AUDIT.md and the cited lines",
+    "Write each fail-first test (remove the two xfail marks for E5/E6)",
+    "Fix content.js/loop.js/agent.ps1/mts-gate.json",
+    "Update DSA_SESSION_PROMPT.md rules",
+    "Bump RELEASES.json to 0.7.7 and ship with sync.py ship --release dsabr-c9"
+  ],
+  "tests": "MyTradingSys/tests/test_aibridge_exploratory.py E5/E6 xfails turned into passing tests (fail on 0.7.6); node tests for status line, stopAuto and short-final-answer; pytest needs --basetemp on this host",
+  "title": "DSA bridge 0.7.7: fixes from AUDIT.md (c1/c2/c4/c7 FIX, E5, E6)",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }

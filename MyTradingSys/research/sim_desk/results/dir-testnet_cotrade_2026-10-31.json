@@ -1,0 +1,58 @@
+{
+ "id": "dir-testnet_cotrade_2026-10-31",
+ "kind": "backtest",
+ "family": "Testnet Cotrade",
+ "title": "Testnet co-trade: operator calls, Claude places and records (design, 2026-10-31)",
+ "provenance": "source-extracted",
+ "date": "2026-10-31",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Ask (operator, 2026-10-31, condensed by the Super Session): trade on the Deribit TESTNET together; he watches the chart and says",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "\"short 100 here / buy here with a double\", Claude places it and RECORDS his exact words and what he is watching; scale-in",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "ladders that double the total (X, 2X, 3X, 6X ...); orders resting before the wick, exits ready at once; US open hours.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "Status: design only, nothing built. Testnet only. Numbers: SOURCED = exchange/clock facts, OURS = our runs or choices.",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": ", US-open board levels, OI tile sentence), shots (shot ids), result (order ids, fills, P&L) <main checkout>/runtime_data/cotrade/<YYYY-MM-DD>.jsonl, append-only, gitignored (.gitignore:235 runtime_data/) NO (has order ids, sizes, P&L)",
+  "tone": "info"
+ },
+ "why": [
+  "Range = the levels the live aid's US-open board already shows (day H/L so far, PDH/PDL, 15-min opening range). Fade sweeps of a level within 0.25-0.5 %, never add after a break that does not reclaim within 30-60 min.",
+  "The doubling ladder is a martingale. It wins most days and loses big on trend days; the repo already measured no edge for 1-1-2-3 (mean -0.02 %). With caps the loss is bounded ($76 worst case at X=$100); without them it is unbounded."
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window"
+ },
+ "source_files": [
+  "MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md"
+ ],
+ "commit": "078bd6877"
+}

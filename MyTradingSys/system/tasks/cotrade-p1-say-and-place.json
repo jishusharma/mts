@@ -7,21 +7,23 @@
   ],
   "created": "2026-10-31T15:13:24Z",
   "depends_on": [],
-  "done_when": "python -m MyTradingSys.execution.cotrade place --said '<verbatim>' --side sell --type limit --price P --amount A --stop S --dry-run prints the order and appends one JSON line to <main checkout>/runtime_data/cotrade/<date>.jsonl; the same without --dry-run places it on testnet only; all tests in test_cotrade.py pass and each failed on the pre-change code.",
+  "done_when": "cotrade place --said '<verbatim>' --side sell --type limit --price P --amount A --stop S --dry-run prints the order and appends one JSON journal line; real path tested with a fake client only; test_cotrade.py passes and each test failed pre-change. First real testnet order is the operator's after he creates the co-trade key.",
   "est_turns": 40,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Operator speaks a trade ('short 100 at 110500 stop 111000'); Claude turns it into one structured order, shows it, places it on the dedicated co-trade TESTNET subaccount with a server-side reduce-only stop on fill, and appends a journal line holding his exact words, the reading and the market state.",
+  "goal": "Operator speaks a trade ('short 100 at 110500 stop 111000'); Claude turns it into one structured order, shows it, places it on the existing TESTNET slot (spare jishu_22, else main; operator 2026-10-31: no new account) with a server-side reduce-only stop on fill, and appends a journal line holding his exact words, the reading and the market state.",
   "id": "cotrade-p1-say-and-place",
   "lane": "SONNET",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Live-path rules apply: tests for restart state, non-trade balance moves and API errors; fail closed. Operator must create a testnet subaccount key for co-trade (default name jishu_cotrade); until then only --dry-run works.",
+  "note": "REVIEWED:2026-10-31 ACCEPT (Sonnet reviewer Agent, FIX applied once, not re-read, planner DECISION OURS). Live-path rules apply: tests for restart state, non-trade balance moves and API errors; fail closed. Account: operator decision d-cotrade-use-existing-account (no new key, spare jishu_22 else main). His 'fire' = go, no extra confirm. PLANNER: CRUCIAL, review Agent on the diff before ship. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-31T15:38:22Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -30,6 +32,7 @@
   "scope_out": [
     "No mainnet path; no change to auto_trader, executor, position_manager behaviour; no ladder (P2); no live-aid edits; never read .secrets; no committed runtime data"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [
     "MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md",
@@ -37,7 +40,7 @@
     "MyTradingSys/execution/executor.py",
     "MyTradingSys/execution/TESTNET_SUBACCOUNTS.md"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Read MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md sections 1,3,5",
     "Write test_cotrade.py first, run it red on the old tree",
@@ -45,7 +48,7 @@
     "Add a kill subcommand = cancel_by_label cotrade + close_position on the co-trade account + write HALT",
     "python scripts/dev/run_all_tests.py --quick; sync.py ship"
   ],
-  "tests": "test_cotrade.py (fake client, no network): refuses no stop / not testnet / HALT present / over cap / co-trade secret missing; journal line keeps said verbatim; restart mismatch refuses; OrderStateUnknown journaled, no retry. Full list: DESIGN.md s5 P1.",
+  "tests": "test_cotrade.py (fake client, no network): refuses no stop / not testnet / HALT present / over cap; journal line keeps said verbatim; restart mismatch refuses; OrderStateUnknown journaled, no retry. Full list: DESIGN.md s5 P1.",
   "title": "Co-trade P1: operator words -> one testnet order with stop, journaled",
   "weight": "CRUCIAL",
   "worker": "session"
