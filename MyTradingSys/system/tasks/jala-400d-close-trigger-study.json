@@ -4,6 +4,19 @@
   "commands": [
     "python -m pytest MyTradingSys/research/jala_layer_2026-10-31/trigger_study -q"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-31T19:35:10Z",
+    "misses": 61,
+    "reads": [
+      "scripts/dev/verdicts.py",
+      "MyTradingSys/research/jala_layer_2026-10-31/method_jala.md",
+      "MyTradingSys/backtest/splits.py",
+      "scripts/dev/prereg_gate.py",
+      "MyTradingSys/research/VERDICTS.csv"
+    ],
+    "session": "agent-a9e4b4767d859a469"
+  },
   "created": "2026-10-31T13:25:37Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/jala_layer_2026-10-31/TRIGGER_RESULT.md gives n events per universe, mean fee-net forward return with week-block CI vs the random-day null and a verdict per horizon; PRE_REG frozen before the run; HOLDOUT unread.",
