@@ -4,32 +4,52 @@
   "commands": [],
   "created": "2026-10-31T19:03:43Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "python scripts/dev/test_tasks.py green; test_check_without_id_changes_no_card_file fails on pre-change tasks.py and passes now.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "`tasks.py check` with no id promotes every passing raw/refined card to ready (cmd_check, tasks.py:766): a casual listing mutates cards and skips the review stamp flow. Make the no-id form read-only; only `check <id>` promotes.",
   "id": "tasks-check-no-id-promotes-cards",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 5 file(s)",
+      "ref": "e90eb529141d",
+      "utc": "2026-10-31T06:15:48Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-01 ACCEPT",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-31T20:31:29Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/tasks.py",
+    "scripts/dev/test_tasks.py"
+  ],
+  "scope_out": [
+    "--demote (explicit flag keeps writing); lint; promotion_problems rules"
+  ],
+  "scope_sha": "e90eb529141d",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "tasks.py check with no id writes (promotes raw cards): make it read-only. Done when: check with no id changes no card file, test fails on old code first",
-  "weight": "",
-  "worker": ""
+  "state": "ready",
+  "steps": [
+    "In cmd_check, when a.id is empty and the card is raw/refined and passes: print `<id>: WOULD PROMOTE (run check <id>)`, no c.update/save/TS.refresh.",
+    "Test in test_tasks.py (pattern: existing run_cli('check', ...) tests at lines ~198-242): temp repo, one complete raw card; check with no id leaves the file bytes identical and state raw; check <id> promotes. Run the no-id test against the old code first: it must fail.",
+    "Update TASK_REFINEMENT.md line 31 only if it says no-id promotes. Verify: content commit sha; git cherry origin/fast-track <sha> empty; git ls-tree -r origin/fast-track --name-only lists the delivered files."
+  ],
+  "tests": "scripts/dev/test_tasks.py::test_check_without_id_changes_no_card_file (fails on old code: state becomes ready)",
+  "title": "tasks.py check with no id must not write cards (dry-run for raw/refined)",
+  "weight": "IMPORTANT",
+  "worker": "agent"
 }

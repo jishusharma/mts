@@ -4,32 +4,52 @@
   "commands": [],
   "created": "2026-10-31T19:03:45Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "python scripts/dev/test_gate_select.py green; sel of a research-folder .gitignore returns mode docs; test fails on the old gate_select.py.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "A .gitignore under MyTradingSys/research/** (e.g. research/sim_desk/.gitignore) matches no doc/config rule in gate_select.py, so ship picks the 45-min full gate. Classify it as docs (DATA_DIRS prefix + basename .gitignore). Repo-root .gitignore keeps its CONFIG_FILES smoke rule.",
   "id": "gitignore-in-research-folder-forces-full-gate",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "gate_select: a data-only sim_desk ship is smoke, so must-pass 3xm (test_backfill) runs",
+      "ref": "c4dd114b678b",
+      "utc": "2026-10-31T08:52:08Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-01 ACCEPT class=C2 gate code",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-31T20:31:31Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/gate_select.py",
+    "scripts/dev/test_gate_select.py"
+  ],
+  "scope_out": [
+    "root .gitignore handling; FULL_RE live-path rules; run_all_tests.py"
+  ],
+  "scope_sha": "c4dd114b678b",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "A .gitignore inside a research folder forces the 45-min full ship gate: classify it as docs-safe. Done when: ship of a research-folder .gitignore runs the quick gate, test fails on old code first",
-  "weight": "",
-  "worker": ""
+  "state": "ready",
+  "steps": [
+    "In _is_doc add: f.startswith(DATA_DIRS) and basename == .gitignore -> True (a nested ignore only hides untracked files; no test reads it).",
+    "Test in test_gate_select.py next to test_research_tsv_gz_and_err_are_data_not_a_full_gate (line ~225): sel of MyTradingSys/research/x_2026/.gitignore gives docs; scripts/dev/.gitignore stays non-docs. Run it on old code first: it must fail.",
+    "CRITICAL (gate code): review session on plan and diff (planner details: CRITICAL protocol). Verify: content commit sha; git cherry origin/fast-track <sha> empty; git ls-tree -r origin/fast-track --name-only lists the delivered files."
+  ],
+  "tests": "scripts/dev/test_gate_select.py::test_research_nested_gitignore_is_docs (fails on old code: mode full)",
+  "title": "gate_select: a .gitignore inside a research data folder is docs, not a full gate",
+  "weight": "CRITICAL",
+  "worker": "agent"
 }

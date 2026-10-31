@@ -1,0 +1,55 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T20:28:51Z",
+  "depends_on": [],
+  "done_when": "pytest test_run_v3_l3.py green; --is-only writes out/is_only.json and selection.json and the OOS window list is never passed to run_cells; test fails on old code.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "run_v3_l3.main always runs phase 2 (OOS grid) after the IS grid, so the managed-Model-B rerun cannot be IS only. Add --is-only: stop after the IS grid, variants and selection freeze, write is_only.json (n_is, chosen, per-model IS mean net R, per-window R of the chosen cells), skip all oos_w work and the stats.",
+  "id": "fabio-v3-l3-is-only-flag",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "fabio v3: manage Model B IN_TRADE fills instead of scoring 0 R",
+      "ref": "483a6b035782",
+      "utc": "2026-10-31T19:04:52Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-01 ACCEPT",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T20:31:33Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/fabio/run_v3_l3.py",
+    "MyTradingSys/backtest/layers/fabio/test_run_v3_l3.py"
+  ],
+  "scope_out": [
+    "grid, cost or window definitions; phases 2-3; any change to selection logic or the frozen selection.json"
+  ],
+  "scope_sha": "483a6b035782",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Make main(argv=None) call ap.parse_args(argv); add ap.add_argument('--is-only', action='store_true'). After the selection freeze block and before 'phase 2', if a.is_only: pool.shutdown(), write out/is_only.json, log, return.",
+    "Test in test_run_v3_l3.py: stub build_windows (needs F: data) and run_cells; main(['--is-only','--out',tmp]) writes is_only.json and selection.json and never calls run_cells with OOS windows. Fails on old code (main takes no argv).",
+    "Verify: content commit sha; git cherry origin/fast-track <sha> empty; git ls-tree -r origin/fast-track --name-only lists the delivered files."
+  ],
+  "tests": "MyTradingSys/backtest/layers/fabio/test_run_v3_l3.py::test_is_only_never_touches_oos_windows (fails on old code: unrecognised --is-only)",
+  "title": "run_v3_l3.py: add --is-only (phase 1, freeze selection, write is_only.json, exit; OOS never read)",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

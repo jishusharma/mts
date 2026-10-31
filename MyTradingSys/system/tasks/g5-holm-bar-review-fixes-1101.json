@@ -5,32 +5,61 @@
   "created": "2026-10-31T19:24:13Z",
   "crucial": true,
   "depends_on": [],
-  "done_when": " ALSO: re-land the reverted Holm bar (6db6e0433, reverted for CI red) with test_research_kit docstring line refs (cluster_mean_se) updated; run MyTradingSys/tests/test_research_kit.py before ship.",
-  "est_turns": null,
+  "done_when": "origin/fast-track has the Holm bar, two-sided with m<2 refused, tests above __main__, test_research_kit.py green; LABEL_MOVES.md states the sidedness.",
+  "est_turns": 30,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Re-land the Holm family-wise bar reverted by afdea5e0d (CI red: test_research_kit.py docstring says screen.py cluster_mean_se :196, now :197), with the 4 review fixes. DECISION (OURS): two-sided z=inv_cdf(1-alpha/(2m)), conservative.",
   "id": "g5-holm-bar-review-fixes-1101",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Revert G5 Holm bar 6db6e0433: CI red, test_research_kit docstring line number (screen.py c",
+      "ref": "afdea5e0dc2e",
+      "utc": "2026-10-31T19:53:53Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-01 ACCEPT DECISION (OURS) 2026-11-01 planner: two-sided bar; alpha 0.05 and M_FAMILY=90 stay OURS (verdicts.py count --split DEV).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-31T20:31:28Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "Review of 6db6e0433 found: screen.py:232 z=inv_cdf(1-alpha/m) is one-sided, spec/two-sided gives 2.898/3.274/3.509 at m=12/40/90; m=1 accepted drops bar to 2.0; new tests sit after the __main__ block in test_screen.py. Done when: sided choice decided and stated in LABEL_MOVES.md (default two-sided if the gate uses |t|), m<2 refused, tests moved above __main__, each test fails on old code first ALSO: re-land the reverted Holm bar (6db6e0433, reverted for CI red) with test_research_kit docstring line refs (cluster_mean_se) updated; run MyTradingSys/tests/test_research_kit.py before ship.",
-  "weight": "",
-  "worker": ""
+  "scope_in": [
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py",
+    "MyTradingSys/research/gross_effect_screen_2026-10-15/test_screen.py",
+    "MyTradingSys/research/chart_read_g5_2026-10-16/common.py",
+    "MyTradingSys/research/chart_read_g5_2026-10-16/test_common.py",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/LABEL_MOVES.md",
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/t10_demos.py",
+    "MyTradingSys/tests/test_research_kit.py"
+  ],
+  "scope_out": [
+    "any ledger row, RESULT.md or published verdict; PASS terms other than the t bar; VALIDATION/HOLDOUT data"
+  ],
+  "scope_sha": "afdea5e0dc2e",
+  "size": "M",
+  "sources": [
+    "6db6e0433 review (screen.py:232 one-sided; two-sided 2.898/3.274/3.509); revert afdea5e0d; DECISION (OURS) two-sided: gate reads signed t but conservative default"
+  ],
+  "state": "ready",
+  "steps": [
+    "git revert afdea5e0d (re-lands 6db6e0433 as its own commit). Do not hand-copy.",
+    "screen.py t_bar: z=NormalDist().inv_cdf(1-alpha/(2*m)); raise ValueError when int(m)<2 (m=1 silently gave 2.0). Update the LABEL_MOVES.md rule text: sided choice, new bars 2.898/3.274/3.509 at m=12/40/90 (hand: z + (z^3+z)/796).",
+    "Move the new tests above the `if __name__ == __main__:` block in test_screen.py (check test_common.py too). New tests: t_bar(12/40/90) hand values, t_bar(1) and t_bar(0) raise; each must fail on the re-landed 6db6e0433 code (run before the fix).",
+    "Recompute every screen.py:N / common.py:N ref in the test_research_kit.py docstring (lines 8-12, 21) with grep -n after the edits; git grep 'screen.py:[0-9]' for other pins read by tests (T06 costs.csv).",
+    "Run pytest MyTradingSys/tests/test_research_kit.py, screen/common tests, T06 test_cost_inventory.py, then ship. Verify: content commit sha; git cherry origin/fast-track <sha> empty; git ls-tree -r origin/fast-track --name-only lists the delivered files."
+  ],
+  "tests": "test_screen.py: test_t_bar_two_sided_values (2.898/3.274/3.509 +-2e-3), test_t_bar_refuses_m_below_2; both fail on 6db6e0433 code. test_research_kit.py passes.",
+  "title": "G5 Holm bar: re-land 6db6e0433 with review fixes (two-sided, m<2 refused, tests above __main__, docstring line refs)",
+  "weight": "CRUCIAL",
+  "worker": "session"
 }

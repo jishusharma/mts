@@ -4,32 +4,51 @@
   "commands": [],
   "created": "2026-10-31T19:42:24Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "python scripts/dev/test_run_all_tests.py green; real runtime_data/gate_fail_logs file count unchanged after the run; the new test fails without the patch.",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Tests that run failing fake steps (test_a_failing_and_a_crashing_step..., test_failure_shows_the_tail..., TestCiAnnotation) call rat.format_step -> write_fail_log into the real FAIL_LOG_DIR, leaving step-4h-style logs. Point FAIL_LOG_DIR at a tmp dir for the whole module.",
   "id": "gate-fake-step-logs-pollute-gate-fail-logs",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "test_run_all_tests: overlap test uses a Barrier, no wall-clock assert",
+      "ref": "f1e0be09697b",
+      "utc": "2026-10-31T19:36:44Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-01 T0-ONLY",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-31T20:28:39Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/test_run_all_tests.py"
+  ],
+  "scope_out": [
+    "run_all_tests.py itself; the 3 TestFailedStepRunLog tests that already patch the dir"
+  ],
+  "scope_sha": "f1e0be09697b",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "test_run_all_tests.py fake steps write step-4h-style logs into real runtime_data/gate_fail_logs. Done when: tests use a tmp dir, real dir untouched after pytest, test fails on old code first",
-  "weight": "",
-  "worker": ""
+  "state": "ready",
+  "steps": [
+    "Add setUpModule/tearDownModule: patch rat.FAIL_LOG_DIR to a tempfile.TemporaryDirectory (mock.patch.object(...).start()/stop(), dir cleaned).",
+    "Add a test: count *.log in the real FAIL_LOG_DIR (path captured at import) before/after a failing fake step through run_plan; equal. Drop the module patch temporarily to confirm it fails on old code.",
+    "Do not delete existing real logs (runtime_data is gitignored). Verify: content commit sha; git cherry origin/fast-track <sha> empty; git ls-tree -r origin/fast-track --name-only lists the delivered files."
+  ],
+  "tests": "scripts/dev/test_run_all_tests.py::test_failing_fake_step_leaves_real_fail_log_dir_untouched (fails without the module patch)",
+  "title": "test_run_all_tests: fake failing steps must not write to the real runtime_data/gate_fail_logs",
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
