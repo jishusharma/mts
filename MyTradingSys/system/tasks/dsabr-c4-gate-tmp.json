@@ -9,38 +9,56 @@
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Bridge children get TEMP=F:/AIBridge/src/run/tmp inside the F:/AIBridge repo (agent.ps1:132-134). Make test_wiring_scan.py:205 and test_mts_signal hermetic: own mkdtemp, GIT_CEILING_DIRECTORIES, -c user.name/email, capture commit stdout",
+  "goal": "Bridge children get TEMP=F:/AIBridge/src/run/tmp inside the F:/AIBridge repo (scripts/aibridge/src/agent.ps1:132-134). Make test_wiring_scan.py:205 and test_mts_signal hermetic: own mkdtemp, GIT_CEILING_DIRECTORIES, -c user.name/email, capture commit stdout",
   "id": "dsabr-c4-gate-tmp",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "wiring: name readers for gateway_run.py and refresh_main_checkout.py in QUICK_ANSWERS",
+      "ref": "47e98166bd9b",
+      "utc": "2026-10-28T11:43:33Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "S0 freeze: bug fix with a failing-first test. Plan: MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md",
+  "note": "S0 freeze: bug fix with a failing-first test. Plan: MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md\nREVIEW (Lab_Guy 2026-10-31): evidence checked against code at 18b9e4eed; DECISION (OURS): depends_on left empty because check refuses ready while a dependency is not done; ordering is in the first step.\nDECISION (OURS): review receipt binds card text only (card_hash); scope file hashes omitted because the Builders shipping c1-c5 change those files and would void it (the 4a26cac5 revert).",
   "prio": 2,
+  "producer": "Builder",
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-31T10:08:54Z",
   "refs": [
     "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
   ],
   "result": "",
+  "review_receipt": {
+    "card_hash": "2b1b80d58ba9",
+    "date": "2026-10-31",
+    "producer": "Builder",
+    "reviewer": "Lab_Guy"
+  },
   "scope_in": [
     "scripts/dev/test_wiring_scan.py; scripts/dev/test_mts_signal.py; scripts/dev/mts_signal.py"
   ],
   "scope_out": [
     "scripts/aibridge"
   ],
+  "scope_sha": "47e98166bd9b",
   "size": "S",
   "sources": [
     "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Read FIX_PLAN.md (MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31) row D5",
     "Reproduce: run both tests with TEMP inside a scratch git repo and GIT_CONFIG_GLOBAL=NUL; capture commit stdout",
     "Make the tests hermetic (own mkdtemp, GIT_CEILING_DIRECTORIES, -c identity); keep the failing repro as a test",
     "Gate --quick passes; sync.py ship"
   ],
-  "tests": "repro with TEMP inside a scratch repo fails today",
+  "tests": "scripts/dev/test_wiring_scan.py and scripts/dev/test_mts_signal.py gain a repro case with TEMP inside a scratch git repo and GIT_CONFIG_GLOBAL=NUL; it fails on the current code",
   "title": "Gate: test_wiring_scan and test_mts_signal pass when TEMP sits inside a git repo (bridge children) (D5)",
   "weight": "IMPORTANT",
   "worker": "agent"

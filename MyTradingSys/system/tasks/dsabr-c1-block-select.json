@@ -20,7 +20,7 @@
   },
   "created": "2026-10-31T10:04:23Z",
   "depends_on": [],
-  "done_when": "node tests/block_select.test.js passes (2 drafts + 6 final -> 6 selected once; duplicate -> NOT_RUN; key stable on collapse); content.js:11 cap 200; RELEASES/manifest/loop VERSION 0.7.4",
+  "done_when": "node scripts/aibridge/tests/block_select.test.js passes (2 drafts + 6 final -> 6 selected once; duplicate -> NOT_RUN; key stable on collapse); content.js:11 cap 200; RELEASES/manifest/loop VERSION 0.7.4",
   "est_turns": 30,
   "formula_id": "",
   "formula_ids": [],
@@ -28,36 +28,54 @@
   "goal": "Move block selection into pure loop.js helpers; exclude the thinking container; per-batch duplicate guard; cap 50->200; bump 0.7.4",
   "id": "dsabr-c1-block-select",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "AIBridge 0.7.3: run-lock expiry (B210), task gate FAILED=FAIL, kind from command, open-onl",
+      "ref": "12b43fe17a3b",
+      "utc": "2026-10-30T20:11:33Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "S0 freeze: bug fix with a failing-first test. Plan: MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md",
+  "note": "S0 freeze: bug fix with a failing-first test. Plan: MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md\nREVIEW (Lab_Guy 2026-10-31): evidence checked against code at 18b9e4eed; DECISION (OURS): depends_on left empty because check refuses ready while a dependency is not done; ordering is in the first step.\nDECISION (OURS): review receipt binds card text only (card_hash); scope file hashes omitted because the Builders shipping c1-c5 change those files and would void it (the 4a26cac5 revert).",
   "prio": 2,
+  "producer": "Builder",
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-31T10:08:52Z",
   "refs": [
     "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
   ],
   "result": "",
+  "review_receipt": {
+    "card_hash": "148bfdafd2c3",
+    "date": "2026-10-31",
+    "producer": "Builder",
+    "reviewer": "Lab_Guy"
+  },
   "scope_in": [
     "scripts/aibridge/extension; scripts/aibridge/tests; scripts/aibridge/RELEASES.json"
   ],
   "scope_out": [
     "F:/AIBridge install; policy.json; agent.ps1"
   ],
+  "scope_sha": "12b43fe17a3b",
   "size": "M",
   "sources": [
     "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Read FIX_PLAN.md (MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31) rows D1 D2 D7 and content.js:142-163, 441-451",
-    "Save a DeepSeek reply DOM (class names only, no chat text) with a thinking panel as tests/fixtures/deepseek_reply.html",
-    "Write tests/block_select.test.js first; see it fail on 0.7.3",
+    "Save a DeepSeek reply DOM (class names only, no chat text) with a thinking panel as scripts/aibridge/tests/fixtures/deepseek_reply.html; if no live snapshot is reachable, hand-build it and mark it HAND-BUILT in the file; selectBlocks must FAIL CLOSED (select none, status says why) when the thinking container cannot be identified",
+    "Write scripts/aibridge/tests/block_select.test.js first; see it fail on 0.7.3",
     "Add pure selectBlocks/batchKeys to loop.js, call them from content.js; per-batch duplicate -> NOT_RUN; cap 200",
-    "Bump RELEASES.json/manifest/loop VERSION to 0.7.4; node tests + test_aibridge_version_bump pass; sync.py ship"
+    "Bump scripts/aibridge/RELEASES.json, extension/manifest.json and extension/loop.js:4 VERSION to 0.7.4; node tests + MyTradingSys/tests/test_aibridge_version_bump.py pass; sync.py ship"
   ],
-  "tests": "new tests/block_select.test.js fails on 0.7.3 (8 blocks selected)",
+  "tests": "new scripts/aibridge/tests/block_select.test.js fails on 0.7.3 (8 blocks selected instead of 6); run: node scripts/aibridge/tests/block_select.test.js",
   "title": "AIBridge: skip DeepSeek thinking-panel blocks, no duplicate run in one reply, cap 200 (D1 D2 D7)",
   "weight": "IMPORTANT",
   "worker": "session"
