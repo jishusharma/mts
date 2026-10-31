@@ -1,0 +1,39 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-31T11:20:54Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "sim-desk-tom-fabio-studies",
+  "lane": "SONNET",
+  "layers": [
+    "tom",
+    "fabio"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/tom_fabio_review_2026-10-31/SETUP_REVIEW.md"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Sim desk: Tom and Fabio setups have no per-trade replay. Only tom_vp.py is a runnable study (12 runs, equity curve only); all Fabio rows and Tom spike/level-touch/Model C are text cards with 'no example trades exported'. Add studies (fabio_v3 A/B/C/D with Model B scored, tom spike fade, tom level touch) that export per-trade examples (entry/stop/target/exit + bars), DEV 2022-04-01..2024-06-30 only, fee-net",
+  "weight": "",
+  "worker": ""
+}
