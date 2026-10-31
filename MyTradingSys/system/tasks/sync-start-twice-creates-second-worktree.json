@@ -4,32 +4,53 @@
   "commands": [],
   "created": "2026-10-31T19:23:43Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Second `sync.py start s` prints the first WORKTREE path, no -2 worktree or branch exists, uncommitted file intact; test_sync.py green.",
+  "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "new_worktree (sync.py:~451) reuses only a FINISHED tree (reuse_finished_tree: clean, merged, idle REUSE_IDLE_HOURS); a second `start <slug>` while the first tree is in progress makes mts-<host>-<slug>-2 and a second branch. Return the existing tree for the same host+slug instead.",
   "id": "sync-start-twice-creates-second-worktree",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "claims: 3 h lease (expires_at) + heartbeat; card-id tasks always claimed",
+      "ref": "d0c0f135300b",
+      "utc": "2026-10-31T10:44:42Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-01 ACCEPT class=C2 sync.py gate. DECISION (OURS): reuse even with uncommitted work, never reset it.",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-31T20:31:32Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/sync.py",
+    "scripts/dev/test_sync.py"
+  ],
+  "scope_out": [
+    "live/gateway trees (refuse as now); other hosts' trees; claims logic; --worker isolation rule B3 for different slugs"
+  ],
+  "scope_sha": "d0c0f135300b",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "sync.py start run twice for one slug creates a -2 worktree. Done when: second start reuses the existing worktree, test fails on old code first",
-  "weight": "",
-  "worker": ""
+  "state": "ready",
+  "steps": [
+    "In new_worktree: if path exists, is a worktree of this repo, not LIVE_MARKER/GATEWAY_MARKER, branch not trunk: return it as is (merge_trunk in start() updates it; never switch branch or touch uncommitted files). Print `reusing existing tree <path> (N uncommitted)`.",
+    "Keep reuse_finished_tree for the finished case; only the in-progress case is new. Check start(--worker) still gets a fresh tree for a different slug.",
+    "Test in test_sync.py beside test_start_reuses_a_finished_same_slug_tree_instead_of_dash_2 (line 813): start twice with an uncommitted file; assert same path, no -2 dir, file untouched. Fails on old code first.",
+    "CRITICAL (sync.py): review session on plan and diff. Verify: content commit sha; git cherry origin/fast-track <sha> empty; git ls-tree -r origin/fast-track --name-only lists the delivered files."
+  ],
+  "tests": "scripts/dev/test_sync.py::test_start_twice_same_slug_reuses_unfinished_tree (fails on old code: path ends -2)",
+  "title": "sync.py start: a second start for the same slug reuses the unfinished tree, no -2",
+  "weight": "CRITICAL",
+  "worker": "session"
 }

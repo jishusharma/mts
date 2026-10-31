@@ -4,32 +4,51 @@
   "commands": [],
   "created": "2026-10-31T19:23:41Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "pytest over dsa_backtest_audit_2026-10-16 passes 51 tests in under 30 s wall, 12 families still asserted; Result line gives before/after seconds.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Measured 2026-11-01: pytest over MyTradingSys/research/dsa_backtest_audit_2026-10-16 = 51 passed in 71 s; test_stability_lc1.py::test_lc1_legacy_rows... 32.7 s and ::test_lc1_rows_cover_all_families 31.0 s (each builds _walk(45) = 64800 bars and recomputes lc1_rows several times). Everything else is 5.5 s or less.",
   "id": "pytest-audit-dir-has-no-quick-path",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 5 file(s)",
+      "ref": "eac7837a0f9c",
+      "utc": "2026-10-28T16:44:45Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-01 T0-ONLY",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-31T20:30:49Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/test_stability_lc1.py"
+  ],
+  "scope_out": [
+    "stability.py and every other study code; assertions' meaning (all 12 families, legacy 8, DEV_END refusal stay)"
+  ],
+  "scope_sha": "eac7837a0f9c",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "pytest over dsa_backtest_audit_2026-10-16 takes >2 min with no quick path. Done when: a quick marker or subset runs under 30 s and the ship gate uses it",
-  "weight": "",
-  "worker": ""
+  "state": "ready",
+  "steps": [
+    "Find the smallest _walk(days) that still yields all 12 LC_FAMILIES (try 21 then 28 days; start 2022-03-21, analysis from 2022-04-01).",
+    "Compute _walk, stab.lc1_rows, lc1_family_rows and _reference once (module-scoped pytest fixture or functools.lru_cache keyed on days) and reuse them in both tests.",
+    "Time: python -m pytest MyTradingSys/research/dsa_backtest_audit_2026-10-16 -q --durations=5 must show under 30 s total. A marker adds nothing: these files run through step 3xt with no marker support. Verify: content commit sha; git cherry origin/fast-track <sha> empty; git ls-tree -r origin/fast-track --name-only lists the delivered files."
+  ],
+  "tests": "same test file, assertions unchanged; fail-first n/a (speed only): record 71 s before and the new time in Result.",
+  "title": "dsa_backtest_audit tests: cut the 71 s directory run under 30 s (two lc1 tests cost 63 s)",
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
