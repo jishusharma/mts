@@ -1,7 +1,7 @@
 {
 "_doc": "Catalogue of known tests on trunk. kind is inferred (kind_source). Built by sim_desk/build_catalogue.py.",
 "count": 308,
-"exported": 307,
+"exported": 308,
 "rows": [
 {
 "id": "st-_archive-loose_2026-10-cbp_profile6_result",
@@ -1678,7 +1678,7 @@
 "source": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/PICTURE_AND_PLAN.md",
 "exported": true,
 "result_id": "dir-eagle_eyes_picture_2026-10-28",
-"folder_files": 13,
+"folder_files": 14,
 "date": "2026-10-28",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
@@ -3787,6 +3787,21 @@
 "verdict_class": "failed"
 },
 {
+"id": "dir-testnet_cotrade_2026-10-31",
+"family": "testnet cotrade",
+"title": "Testnet co-trade: operator calls, Claude places and records (design, 2026-10-31)",
+"kind": "backtest",
+"kind_source": "inferred from text",
+"verdict": ", US-open board levels, OI tile sentence), shots (shot ids), result (order ids, fills, P&L) <main checkout>/runtime_data/cotrade/<YYYY-MM-DD>.jsonl, append-only, gitignored (.gitignore:235 runtime_data/) NO (has order ids, sizes, P&L)",
+"source": "MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md",
+"exported": true,
+"result_id": "dir-testnet_cotrade_2026-10-31",
+"folder_files": 1,
+"date": "2026-10-31",
+"status": "SEE_VERDICT",
+"verdict_class": "other"
+},
+{
 "id": "dir-tom_btc_2026-10-13",
 "family": "tom btc",
 "title": "Tom on BTC: everything he trades, what we applied right, wrong or never, and the plan to apply it ourselves (2026-10-13)",
@@ -4469,21 +4484,6 @@
 "exported": true,
 "result_id": "dir-yt_feed_2026-10-31",
 "folder_files": 8,
-"date": "2026-10-31",
-"status": "SEE_VERDICT",
-"verdict_class": "other"
-},
-{
-"id": "dir-testnet_cotrade_2026-10-31",
-"family": "testnet cotrade",
-"title": "Testnet co-trade: operator calls, Claude places and records (design, 2026-10-31)",
-"kind": "backtest",
-"kind_source": "inferred from text",
-"verdict": ", US-open board levels, OI tile sentence), shots (shot ids), result (order ids, fills, P&L) <main checkout>/runtime_data/cotrade/<YYYY-MM-DD>.jsonl, append-only, gitignored (.gitignore:235 runtime_data/) NO (has order ids, sizes, P&L)",
-"source": "MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md",
-"exported": false,
-"result_id": null,
-"folder_files": 1,
 "date": "2026-10-31",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
