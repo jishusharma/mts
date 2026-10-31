@@ -2,6 +2,22 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 23,
+    "folded": "2026-10-31T15:35:27Z",
+    "misses": 54,
+    "reads": [
+      "scripts/aibridge/extension/content.js",
+      "scripts/aibridge/src/agent.ps1",
+      "scripts/aibridge/docs/V07_CONTRACT.md",
+      "scripts/aibridge/extension/loop.js",
+      "MyTradingSys/tests/test_dsa_direct_mode.py",
+      "scripts/aibridge/tests/loop.test.js",
+      "scripts/aibridge/extension/manifest.json",
+      "scripts/aibridge/tests/block_select.test.js"
+    ],
+    "session": "agent-ac9df3dcb1cbfce7e"
+  },
   "created": "2026-10-31T13:52:17Z",
   "depends_on": [],
   "done_when": "AIBridge 0.7.7 on trunk (RELEASES.json current 0.7.7); the two xfails in test_aibridge_exploratory.py now pass; e2e_bridge.py scratch run E0-E5 exit 0; node and pytest tests for each FIX pass",
