@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "git show abf939506 --stat"
+  ],
+  "created": "2026-10-31T02:40:39Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_burn_2026-10-31/METHOD_REVIEW_KROWN_FREE_DEV_CHECK.md exists; each finding has file:line and a reproducing input, or NO ISSUE FOUND with what was checked",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Read commit abf939506 and the files it adds; list every look-ahead risk, selection effect, missing cost, too-small n and claim stronger than its data, each with file:line and a reproducing input; say what you could not check.",
+  "id": "gemini-method-review-krown-free-dev-check-1031",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini rules: facts with file:line only, no trading verdict, no code change; NOT_IN_DATA where the repo has no answer; captions first for any YouTube work (fetch_captions_timed.py, quote only from the caption file, one try per video, 429 -> UNVERIFIED), verify_extract_quotes.py exit 0. Operator 2026-10-31: exhaust the Gemini weekly quota before it resets, test-first and catch bugs early. Final report ends with a Noticed: line.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T02:40:39Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/gemini_burn_2026-10-31/ (new files only)"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code edits; any backtest or trading verdict; .secrets and .env"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "git show abf939506 --stat",
+    "read the study code and its pre-reg",
+    "write the findings"
+  ],
+  "tests": "report only; every finding cites file:line",
+  "title": "[GEMINI] cross-vendor method review of the Krown free setups DEV check (commit abf939506): look-ahead, selection, cost, n, claims that outrun the data",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

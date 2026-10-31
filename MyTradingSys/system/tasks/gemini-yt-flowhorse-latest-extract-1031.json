@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/fetch_captions_timed.py --analyst FlowHorse --channel @TheFlowHorse --latest 8 --out MyTradingSys/research/gemini_burn_2026-10-31/transcripts_flowhorse-latest",
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/gemini_burn_2026-10-31/FLOWHORSE_LATEST.md"
+  ],
+  "created": "2026-10-31T02:40:43Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_burn_2026-10-31/FLOWHORSE_LATEST.md exists; every row has video id, timestamp and quote or NOT_IN_DATA; verify_extract_quotes.py exits 0",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "From the latest 8 videos of @TheFlowHorse: extract his stated BTC levels, flow reads and trade setups as a table with video id, timestamp and verbatim caption quote, or NOT_IN_DATA. No verdict.",
+  "id": "gemini-yt-flowhorse-latest-extract-1031",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini rules: facts with file:line only, no trading verdict, no code change; NOT_IN_DATA where the repo has no answer; captions first for any YouTube work (fetch_captions_timed.py, quote only from the caption file, one try per video, 429 -> UNVERIFIED), verify_extract_quotes.py exit 0. Operator 2026-10-31: exhaust the Gemini weekly quota before it resets, test-first and catch bugs early. Final report ends with a Noticed: line.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T02:40:44Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/gemini_burn_2026-10-31/ (new files only)"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code edits; any backtest or trading verdict; .secrets and .env"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "fetch captions, keyword scan",
+    "write the file and verify"
+  ],
+  "tests": "verify_extract_quotes.py exit 0; no code change",
+  "title": "[GEMINI] FlowHorse (@TheFlowHorse): latest 8 videos, extract his stated BTC levels, flow reads and trade setups with timed quotes",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
