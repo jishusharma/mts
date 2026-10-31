@@ -34,6 +34,7 @@ EXPORTED_BY_SOURCE = {
     "MyTradingSys/research/fractals_2026-10-31/f1/RESULT.md": "fractals-f1-swing-confluence",
     "MyTradingSys/research/fractals_2026-10-31/f2/RESULT.md": "fractals-f2-hurst-gate",
     "MyTradingSys/research/fractals_2026-10-31/f3/RESULT.md": "fractals-f3-phase-analogs",
+    "MyTradingSys/research/fractals_2026-10-31/f4/RESULT.md": "fractals-f4-8h-state-analogs",
     "MyTradingSys/research/fractals_2026-10-31/phase_tag/phase_tag.py": "fractals-phase-tag",
 }
 

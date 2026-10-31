@@ -1897,20 +1897,6 @@
 "verdict_class": "failed"
 },
 {
-"id": "st-fractals_2026-10-31-f4-result",
-"family": "fractals",
-"title": "F4 RESULT: 8h look-alikes of the operator setup (BB squeeze-break + volume spike, RSI, StochRSI, CVD proxy), BTCUSDT sp…",
-"kind": "backtest",
-"kind_source": "inferred from text",
-"verdict": "no tradable edge. No set passes the frozen rule. Continuation short is INCONCLUSIVE (about zero after fees), fade long FAILS (CI upper < 0 at all 3 horizons), the ANALOG selection is negative at 6 and 9 bars. Honest negative; the samples (…",
-"source": "MyTradingSys/research/fractals_2026-10-31/f4/RESULT.md",
-"exported": true,
-"result_id": "fractals-f4-8h-state-analogs",
-"date": "2026-10-31",
-"status": "FAILED",
-"verdict_class": "failed"
-},
-{
 "id": "st-fractals_2026-10-31-p1_split-result",
 "family": "fractals",
 "title": "P1 RESULT: BLOCKED (no frozen per-event fee-net list for either layer)",
@@ -1920,6 +1906,20 @@
 "source": "MyTradingSys/research/fractals_2026-10-31/p1_split/RESULT.md",
 "exported": true,
 "result_id": "st-fractals_2026-10-31-p1_split-result",
+"date": "2026-10-31",
+"status": "FAILED",
+"verdict_class": "failed"
+},
+{
+"id": "fractals-f4-8h-state-analogs",
+"family": "Fractals + BTC phase",
+"title": "8h look-alikes of the operator breakdown setup (BB squeeze-break, volume spike, RSI, StochRSI, CVD proxy)",
+"kind": "backtest",
+"kind_source": "result file",
+"verdict": "No edge: continuation inconclusive, fade fails, analog negative; too few events to decide",
+"source": "MyTradingSys/research/fractals_2026-10-31/f4/RESULT.md",
+"exported": true,
+"result_id": "fractals-f4-8h-state-analogs",
 "date": "2026-10-31",
 "status": "FAILED",
 "verdict_class": "failed"
