@@ -127,6 +127,10 @@ def _validate(side, order_type, price, amount, stop) -> list:
     return r
 
 
+def _same_num(a, b) -> bool:
+    return _num(a) and _num(b) and abs(float(a) - float(b)) < 1e-9
+
+
 def _stop_side(position_size: float) -> str:
     return "BUY" if position_size < 0 else "SELL"
 
@@ -164,18 +168,33 @@ def ensure_stop(client=None, account=None, journal_dir=None, halt_path=None, hal
         if size == 0:
             return {"ok": True, "stop_pending": True, "note": "flat: nothing to protect yet"}
         orders = client.get_open_orders(token, INSTRUMENT)
-        have = [o for o in orders if o.get("label") == LABEL and o.get("order_type") == "stop_market"
+        mine = [o for o in orders if o.get("label") == LABEL and o.get("order_type") == "stop_market"
                 and o.get("reduce_only", True)]
+        want_amt = int(abs(size))
+        have = [o for o in mine if _same_num(o.get("amount"), want_amt) and _same_num(o.get("trigger_price"), stop_px)]
+        wrong = [o for o in mine if o not in have]
         if have:
             return {"ok": True, "stop_pending": False, "stop_order_id": have[0].get("order_id"), "note": "stop exists"}
-        res = client.stop_market(token, INSTRUMENT, _stop_side(size), int(abs(size)), stop_px, LABEL)
+        res = client.stop_market(token, INSTRUMENT, _stop_side(size), want_amt, stop_px, LABEL)
         oid = ((res or {}).get("order") or {}).get("order_id")
         if not oid:
             raise do.OrderStateUnknown("private/stop", LABEL, "no_order_in_response")
         _append(jdir, {"said": (last.get("said")), "heard": "ensure_stop", "env": do.active_env(),
-                       "action": {"kind": "stop", "amount_usd": int(abs(size)), "stop": stop_px},
+                       "action": {"kind": "stop", "amount_usd": want_amt, "stop": stop_px},
                        "market": {}, "result": {"state": "stop_placed", "stop_order_id": oid}})
-        return {"ok": True, "stop_pending": False, "stop_order_id": oid}
+        # the correct stop is live; only now remove the wrong-size / wrong-price ones (never unprotected)
+        cancel_errs = []
+        for o in wrong:
+            try:
+                client.cancel(token, o.get("order_id"))
+            except Exception as e:  # noqa: BLE001 - protected already; report it
+                cancel_errs.append({"order_id": o.get("order_id"), "error": repr(e)})
+        out = {"ok": True, "stop_pending": False, "stop_order_id": oid}
+        if wrong:
+            out["replaced_wrong_stops"] = [o.get("order_id") for o in wrong]
+        if cancel_errs:
+            out["cancel_errors"] = cancel_errs
+        return out
     except Exception as e:  # noqa: BLE001 - includes OrderStateUnknown: never retry, protect the account
         errs = []
         try:
@@ -232,9 +251,15 @@ def place_order(said, side, order_type, price, amount, stop, dry_run=False, clie
     token = None
     pos_size = None
     if not reasons:
-        last_real = next((r for r in reversed(recs) if (r.get("result") or {}).get("state") != "dry_run"), None)
-        if last_real and (last_real.get("result") or {}).get("state") == "unknown":
-            reasons.append("journal: last order state is unknown - reconcile on the exchange, then run kill or stop")
+        for r in reversed(recs):
+            st = (r.get("result") or {}).get("state")
+            if st == "dry_run":
+                continue
+            if st == "unknown":
+                reasons.append("journal: an order state is unknown - reconcile on the exchange, then run kill or stop")
+                break
+            if st in ("stop_placed", "stop_failed_flattened", "killed"):
+                break   # reconciled by a later stop/flatten/kill; error and kill_errors do NOT reconcile
     if not reasons and not dry_run:
         try:
             token = client.authenticate(account)
@@ -285,12 +310,37 @@ def place_order(said, side, order_type, price, amount, stop, dry_run=False, clie
                                             "order_state": order.get("order_state"),
                                             "filled_amount": order.get("filled_amount"),
                                             "stop_pending": True}})
+    filled = order.get("order_state") == "filled" or (
+        _num(order.get("filled_amount")) and order.get("filled_amount") >= amount)
+    if not filled:
+        return _refuse_resting(client, token, account, jdir, halt_path, base, order, reading)
     st = ensure_stop(client=client, account=account, journal_dir=jdir, halt_path=halt_path, token=token)
     out = {"ok": st["ok"], "reading": reading, "order_id": order.get("order_id"),
            "stop_pending": st.get("stop_pending", True), "seq": rec["seq"]}
     if not st["ok"]:
         out["reasons"] = st.get("reasons")
     return out
+
+
+def _refuse_resting(client, token, account, jdir, halt_path, base, order, reading) -> dict:
+    """DECISION (OURS): a resting (unfilled) entry cannot be guaranteed a stop when it fills later, so it is
+    refused: cancel it, then protect whatever filled before the cancel landed. Any failure flattens + HALTs."""
+    why = "resting entry refused: a later fill would have no stop"
+    errs, stop_res = [], None
+    try:
+        client.cancel_by_label(token, LABEL)
+        pos = float(client.get_position(token, INSTRUMENT).get("size", 0))
+        if pos != 0:   # filled (partly) before the cancel landed: stop over the full filled size
+            stop_res = ensure_stop(client=client, account=account, journal_dir=jdir, halt_path=halt_path, token=token)
+            if not stop_res.get("ok"):
+                errs.append({"op": "ensure_stop", "error": stop_res.get("reasons")})
+    except Exception as e:  # noqa: BLE001 - cannot prove it is cancelled/protected: flatten + HALT
+        errs = _flatten_and_halt(client, token, halt_path, f"resting entry cancel failed: {e!r}")
+        errs.append({"op": "cancel_resting", "error": repr(e)})
+    _append(jdir, {**base, "result": {"state": "resting_refused", "order_id": order.get("order_id"),
+                                      "errors": errs, "filled_before_cancel": bool(stop_res)}})
+    return {"ok": False, "reasons": [why] + ([f"errors: {errs}"] if errs else []), "reading": reading,
+            "order_id": order.get("order_id")}
 
 
 # ---------------------------------------------------------------- kill

@@ -20,8 +20,16 @@ class FakeClient:
         self.place_exc = place_exc
         self.stop_exc = stop_exc
         self.calls = []
+        self.halt_path = None
+        self.halt_seen = {}      # call name -> HALT file existed at that moment
+        self.fill_on_cancel = 0  # simulate a fill landing just before the cancel
+
+    def _see(self, name):
+        if self.halt_path is not None:
+            self.halt_seen.setdefault(name, Path(self.halt_path).exists())
 
     def authenticate(self, account=None):
+        self._see("authenticate")
         self.calls.append(("authenticate", account))
         return "tok"
 
@@ -47,14 +55,25 @@ class FakeClient:
         self.calls.append(("stop_market", side, amount, trigger_price, label))
         if self.stop_exc:
             raise self.stop_exc
-        self.orders.append({"order_id": "S1", "label": label, "order_type": "stop_market", "reduce_only": True})
-        return {"order": {"order_id": "S1"}}
+        n = sum(1 for o in self.orders if o.get("order_type") == "stop_market") + 1
+        self.orders.append({"order_id": f"S{n}", "label": label, "order_type": "stop_market", "reduce_only": True,
+                            "amount": amount, "trigger_price": trigger_price})
+        return {"order": {"order_id": f"S{n}"}}
+
+    def cancel(self, token, order_id):
+        self.calls.append(("cancel", order_id))
+        self.orders = [o for o in self.orders if o.get("order_id") != order_id]
+        return {}
 
     def cancel_by_label(self, token, label, currency="BTC"):
+        self._see("cancel_by_label")
         self.calls.append(("cancel_by_label", label))
+        if self.fill_on_cancel:
+            self.position = -self.fill_on_cancel
         return 1
 
     def close_position(self, token, instrument_name="BTC-PERPETUAL"):
+        self._see("close_position")
         self.calls.append(("close_position",))
         self.position = 0
         return {}
@@ -182,6 +201,25 @@ class TestRestartReconcile(Base):
         self.assertFalse(r["ok"])
         self.assertNotIn("place", c2.names())
 
+    def test_unknown_not_last_record(self):
+        c = FakeClient(place_exc=do.OrderStateUnknown("private/sell", "lbl", 10050))
+        self.run_place(c)
+        cotrade._append(self.jdir, {"said": "x", "action": {"kind": "place"}, "result": {"state": "error"}})
+        cotrade._append(self.jdir, {"said": "k", "action": {"kind": "kill"}, "result": {"state": "kill_errors"}})
+        self.assertEqual(self.lines()[-1]["result"]["state"], "kill_errors")
+        c3 = FakeClient()
+        r = self.run_place(c3)
+        self.assertFalse(r["ok"])
+        self.assertIn("unknown", " ".join(r["reasons"]).lower())
+        self.assertNotIn("place", c3.names())
+
+    def test_unknown_cleared_by_later_kill(self):
+        c = FakeClient(place_exc=do.OrderStateUnknown("private/sell", "lbl", 10050))
+        self.run_place(c)
+        cotrade.kill(client=FakeClient(), account=None, journal_dir=self.jdir, halt_path=self.halt)
+        self.halt.unlink()
+        self.assertTrue(self.run_place(FakeClient())["ok"])
+
     def test_unknown_state_in_journal_blocks_next_order(self):
         c = FakeClient(place_exc=do.OrderStateUnknown("private/sell", "lbl", 10050))
         self.run_place(c)
@@ -209,27 +247,75 @@ class TestPlaceFlow(Base):
         self.assertIn("heard", recs[-1])
         self.assertEqual(recs[-1]["action"]["stop"], 111000.0)
 
-    def test_resting_limit_has_no_stop_yet_and_says_so(self):
+    def test_resting_limit_fills_later_gets_stop(self):
+        # the entry rests unfilled: it must be cancelled and refused, never left to fill without a stop
         c = FakeClient(fill=False)
         r = self.run_place(c)
-        self.assertTrue(r["ok"])
-        self.assertNotIn("stop_market", c.names())
-        self.assertTrue(r["stop_pending"])
-        self.assertTrue(self.lines()[-1]["result"]["stop_pending"])
+        self.assertFalse(r["ok"])
+        self.assertIn("resting", " ".join(r["reasons"]))
+        self.assertIn("cancel_by_label", c.names())
+        self.assertEqual(self.lines()[-1]["result"]["state"], "resting_refused")
+        self.assertEqual(c.position, 0)
+
+    def test_resting_limit_filled_before_cancel_gets_stop(self):
+        c = FakeClient(fill=False)
+        c.fill_on_cancel = 100
+        r = self.run_place(c)
+        self.assertFalse(r["ok"])
+        self.assertEqual([x for x in c.calls if x[0] == "stop_market"][0][2], 100)
+        self.assertLess(c.names().index("cancel_by_label"), c.names().index("stop_market"))
+
+    def test_resting_limit_cancel_failure_flattens_and_halts(self):
+        class Bad(FakeClient):
+            def cancel_by_label(self, *a, **k):
+                raise do.DeribitError("x", {"code": 1, "message": "m"})
+        c = Bad(fill=False)
+        r = self.run_place(c)
+        self.assertFalse(r["ok"])
+        self.assertTrue(self.halt.exists())
+        self.assertIn("close_position", c.names())
 
     def test_ensure_stop_after_later_fill(self):
         c = FakeClient(fill=False)
         self.run_place(c)
-        c.position = -100  # filled later
+        c.position = -100  # filled later (manual `stop` command path)
         r = cotrade.ensure_stop(client=c, account=None, journal_dir=self.jdir,
                                 halt_path=self.halt, halt_daily_loss_path=self.halt_dl)
         self.assertTrue(r["ok"], r)
         self.assertEqual([x for x in c.calls if x[0] == "stop_market"][0][2], 100)
-        # second call: stop exists, no second stop
         n = c.names().count("stop_market")
         cotrade.ensure_stop(client=c, account=None, journal_dir=self.jdir,
                             halt_path=self.halt, halt_daily_loss_path=self.halt_dl)
         self.assertEqual(c.names().count("stop_market"), n)
+
+    def _stop_case(self, amount, trigger):
+        c = FakeClient()
+        self.run_place(c)                      # position -100, correct stop S1 (100 @ 111000)
+        c.orders = [{"order_id": "W1", "label": "cotrade", "order_type": "stop_market", "reduce_only": True,
+                     "amount": amount, "trigger_price": trigger}]
+        c.calls.clear()
+        r = cotrade.ensure_stop(client=c, account=None, journal_dir=self.jdir, halt_path=self.halt)
+        return c, r
+
+    def test_stop_wrong_size_or_price_not_counted(self):
+        for amount, trigger in ((50, 111000.0), (100, 111500.0)):
+            c, r = self._stop_case(amount, trigger)
+            self.assertTrue(r["ok"], r)
+            self.assertEqual(c.names().count("stop_market"), 1, (amount, trigger))
+            self.assertEqual(r["replaced_wrong_stops"], ["W1"])
+            # correct stop placed FIRST, then the wrong one cancelled (never unprotected)
+            self.assertLess(c.names().index("stop_market"), c.names().index("cancel"))
+            sm = [x for x in c.calls if x[0] == "stop_market"][0]
+            self.assertEqual((sm[2], sm[3]), (100, 111000.0))
+
+    def test_correct_stop_not_replaced(self):
+        c = FakeClient()
+        self.run_place(c)
+        c.calls.clear()
+        r = cotrade.ensure_stop(client=c, account=None, journal_dir=self.jdir, halt_path=self.halt)
+        self.assertTrue(r["ok"])
+        self.assertNotIn("stop_market", c.names())
+        self.assertNotIn("cancel", c.names())
 
     def test_stop_failure_after_fill_flattens_and_halts(self):
         c = FakeClient(stop_exc=do.DeribitError("private/buy", {"code": 1, "message": "no"}))
@@ -276,12 +362,20 @@ class TestAccountAndKill(Base):
 
     def test_kill_halts_first_cancels_and_flattens(self):
         c = FakeClient(position=-100)
+        c.halt_path = self.halt
         r = cotrade.kill(client=c, account=None, journal_dir=self.jdir, halt_path=self.halt)
         self.assertTrue(self.halt.exists())
         self.assertEqual(c.names()[1:], ["cancel_by_label", "close_position"])
         self.assertEqual(c.calls[1][1], "cotrade")
         self.assertTrue(r["ok"])
         self.assertEqual(self.lines()[-1]["action"]["kind"], "kill")
+
+    def test_kill_halt_before_cancel_and_close(self):
+        c = FakeClient(position=-100)
+        c.halt_path = self.halt
+        self.assertFalse(self.halt.exists())
+        cotrade.kill(client=c, account=None, journal_dir=self.jdir, halt_path=self.halt)
+        self.assertEqual(c.halt_seen, {"authenticate": True, "cancel_by_label": True, "close_position": True})
 
     def test_kill_still_halts_when_exchange_errors(self):
         class Bad(FakeClient):
