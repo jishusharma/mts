@@ -2,6 +2,13 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-31T06:30:43Z",
+    "misses": 11,
+    "reads": [],
+    "session": "agent-a54cda79a7ddbc89a"
+  },
   "created": "2026-10-30T21:13:07Z",
   "depends_on": [],
   "done_when": "report has 6 lines (1 sheet + 5 audits), each with a counted number and the file's own claimed number side by side, SAME or DIFF; no repo file changed.",
