@@ -1,0 +1,1 @@
+{"t": "20261031T154751Z", "from": "jis-nb/C", "to": "all", "kind": "done", "text": "ship aibridge-lead-thinking-fix Result: block_select repro now passes (failed before); a block inside a real thinking panel is still ignored; loop/block_select/handsfree node tests + version/payload p", "login": "C", "sid": "de1f00ee6c"}
