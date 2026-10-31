@@ -1,0 +1,10 @@
+{
+  "done_when": "A failing command in the middle of a block aborts the script and returns exit=1 by default.",
+  "from": "JIS-NUC",
+  "id": "20261031-100013-aibridge-ignores-powershell-command-fail",
+  "need": "By default, PowerShell inside the bridge runs with 'Continue' error preference. A block with 'Fake-Command ; Write-Output OK' prints a CommandNotFound error to stderr but continues, returning exit=0. This causes DSA to blindly run subsequent commands (like shipping) after a failure. Fix: The agent must force ErrorActionPreference Stop when generating the .ps1 script, OR the bridge must check stderr for errors and override the exit code. Proof: Result #42 vs #46.",
+  "posted": "2026-10-31T10:00:13Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "AIBridge ignores PowerShell command failures (exit=0 on error)"
+}
