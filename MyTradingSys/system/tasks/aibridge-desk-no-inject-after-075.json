@@ -1,35 +1,68 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/aibridge_install.py F:/AIBridge --restart-agent",
+    "python scripts/dev/aibridge_health.py",
+    "node scripts/aibridge/tests/block_select.test.js"
+  ],
   "created": "2026-10-31T14:29:28Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/desk_inject_check.md exists with the three versions equal and the post-F5 panel count; plus either 'blocks run on 0.7.9' or a merged fix with its failing-first test",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Desk report: DeepSeek panel showed agent 0.7.5 but 0/200 and hands-free blocks not run after F5. Repo extension is now 0.7.9 (extension/manifest.json). Install 0.7.9, reload, retest; if blocks still do not run, find the failing DeepSeek selector (content.js:158 block finder) and add a failing fixture test.",
   "id": "aibridge-desk-no-inject-after-075",
   "kind": "build",
-  "lane": "SONNET",
+  "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "AIBridge 0.7.9 (re-land of reverted 0.7.8): thinking lead rule nearest 2 ancestors; status",
+      "ref": "9714413b8697",
+      "utc": "2026-10-31T18:23:15Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "PLANNER 2026-11-01: run-and-report on the Desk host (JIS-NB lane, precedent aibridge-072-desktop-install); DECISION (OURS): retest on current 0.7.9 before touching code, report is 4 releases old. One operator click (Chrome reload) cannot be automated. REVIEWED:2026-11-01 T0-ONLY",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-31T19:01:01Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "scripts/aibridge/extension/content.js",
+    "scripts/aibridge/tests/fixtures/deepseek_reply.html",
+    "scripts/aibridge/tests/block_select.test.js",
+    "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/desk_inject_check.md"
+  ],
+  "scope_out": [
+    "Agent/runner changes (agent.ps1)",
+    "any other host",
+    "live tree"
+  ],
+  "scope_sha": "9714413b8697",
+  "size": "S",
+  "sources": [
+    "scripts/aibridge/RELEASES.json (0.7.9 current)",
+    "scripts/aibridge/extension/manifest.json:4",
+    "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/c7_nuc_results.md (same install flow on NUC)"
+  ],
+  "state": "ready",
+  "steps": [
+    "On the Desk host: git fetch + merge origin/fast-track; python scripts/dev/aibridge_install.py F:/AIBridge --restart-agent; python scripts/dev/aibridge_health.py",
+    "OPERATOR-ONLY click (agents cannot drive Chrome): chrome://extensions > AIBridge > Reload in each profile, then F5 the DeepSeek tab; record panel count n/200 and whether a posted block ran",
+    "Works on 0.7.9: write desk_inject_check.md (installed = running = trunk version, count, evidence) and mark the card done; the 0.7.5 report was a stale install",
+    "Still fails: save the DeepSeek reply DOM as a new fixture, write the failing block_select test first, fix content.js, bump version per RELEASES.json rules, re-install"
+  ],
+  "tests": "Works case: aibridge_health.py prints installed=running=trunk 0.7.9. Fails case: new block_select test on the saved DeepSeek DOM fails on the old content.js, passes after the fix.",
   "title": "AIBridge 0.7.5 on Desk: DeepSeek panel shows agent 0.7.5 but 0/200, blocks not run after F5 (hands-free on); check content-script injection vs DeepSeek DOM, chrome://extensions reload",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }

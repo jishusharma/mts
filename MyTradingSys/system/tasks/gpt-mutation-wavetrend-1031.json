@@ -17,27 +17,27 @@
   "latest": [
     {
       "auto": true,
-      "kind": "ship",
-      "line": "F2 pre-reg: rolling 1h DFA Hurst regime gate, FORMULAS s27, 4 TRIALS rows, DFA module + te",
-      "ref": "d94529dce83d",
-      "utc": "2026-10-31T08:24:27Z"
+      "kind": "report",
+      "line": "0a8f456fb3cd lab gpt-mutation-wavetrend-1031: BLOCKED (audit)",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-10-31_gpt-mutation-wavetrend-1031.md",
+      "utc": "2026-10-31T18:53:52Z"
     },
     {
       "auto": true,
-      "kind": "report",
-      "line": "d94529dce83d F2 pre-reg: rolling 1h DFA Hurst regime gate, FORMULAS s27, 4 TRIALS rows, DF",
-      "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
+      "kind": "ship",
+      "line": "F2 pre-reg: rolling 1h DFA Hurst regime gate, FORMULAS s27, 4 TRIALS rows, DFA module + te",
+      "ref": "d94529dce83d",
       "utc": "2026-10-31T08:24:27Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "MyTradingSys/backtest/layers/wavetrend/test_wavetrend_spec.py::test_wt_ema_alpha",
-  "note": "REVIEWED:2026-10-31 ACCEPT (planner-feed-gpt T0 gate + self read; DECISION OURS, no Lab_Guy pass available). Crucial: formula/gate that decides what trades; Sol/Astra low effort. Final report ends with a Noticed: line.",
+  "note": "REVIEWED:2026-10-31 ACCEPT (planner-feed-gpt T0 gate + self read; DECISION OURS, no Lab_Guy pass available). Crucial: formula/gate that decides what trades; Sol/Astra low effort. Final report ends with a Noticed: line. PLANNER 2026-11-01: conflict bug-conflict-ea7682bf74 resolved, audit rule wins (LAYER_LAB.md:108-116 guard); tests text no longer asks for test_wavetrend_spec.py.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
-  "refreshed": "2026-10-31T17:29:58Z",
+  "refreshed": "2026-10-31T19:01:42Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -62,7 +62,7 @@
     "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
     "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
   ],
-  "tests": "new MyTradingSys/backtest/layers/wavetrend/test_wavetrend_spec.py: every added test fails on its mutated scratch copy, passes on the original",
+  "tests": "audit, no repo test file: scratch mutation script saved as MyTradingSys/research/layer_lab/gpt-mutation-wavetrend-1031/mutations.py.txt; the report shows each of the 5 mutations as killed or surviving; any new test for a surviving mutation goes in a follow-up SONNET card",
   "title": "GPT: mutation-kill and independent recompute of wavetrend.py vs FORMULAS.md",
   "weight": "CRUCIAL",
   "worker": ""

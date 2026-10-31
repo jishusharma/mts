@@ -1,34 +1,55 @@
 {
   "approved_by": "",
-  "asks": "",
-  "commands": [],
+  "asks": "OK to pip-install torch + chronos-forecasting/timesfm and download public model weights (~1 GB) on JIS-NB? Default: yes, venv outside the repo, public hubs only.",
+  "commands": [
+    "python MyTradingSys/research/tsfm_2026-11/run_tsfm.py --split DEV"
+  ],
   "created": "2026-10-31T13:25:38Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "research/tsfm_2026-11/RESULT.md with calibration table, fee-net R/trade with CI for 4h and 8h, controls, verdict row in VERDICTS.csv; HOLDOUT untouched; test file registered in run_extra_tests.py",
+  "est_turns": 35,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Zero-shot foundation models (Chronos-Bolt, TimesFM; public weights) on BTC 4h/8h bars: quantile calibration and fee-net direction vs the F3/F4 analog result and a random control, on project DEV only.",
   "id": "tsfm-zero-shot-vs-analog",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "PLANNER 2026-11-01: parked on the install question (new software and downloads); torch/chronos are not installed on the desktop. DECISION (OURS): DEV window cut to splits.py DEV, not the 2017-2025 range in the title.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
+  "scope_in": [
+    "MyTradingSys/research/tsfm_2026-11/",
+    "MyTradingSys/research/fractals_2026-10-31/f3/RESULT.md",
+    "MyTradingSys/research/fractals_2026-10-31/f4/RESULT.md",
+    "MyTradingSys/backtest/splits.py",
+    "scripts/dev/run_extra_tests.py"
+  ],
+  "scope_out": [
+    "VALIDATION and HOLDOUT bars (splits.py: DEV ends 2024-06-30; F3/F4 ran to 2025-06-30, compare on the overlap only)",
+    "live tree",
+    "any trade rule"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/fractals_2026-10-31/f3/RESULT.md (1h analogs: no edge)",
+    "MyTradingSys/research/fractals_2026-10-31/f4/RESULT.md (8h look-alikes: no edge)",
+    "MyTradingSys/backtest/splits.py:1-26"
+  ],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Freeze PRE_REG.md first: context length, horizon, quantile levels, trade rule (long if median forecast beats fees, else flat), all OURS; run verdicts.py check; Holm m from verdicts.py",
+    "Environment: pip install torch and chronos-forecasting/timesfm in a venv outside the repo; pin versions; weights from the public hubs only",
+    "Run 4h and 8h DEV 2022-01-01..2024-06-30: pinball loss and 80 % interval coverage per model; fee-net hit rate and R/trade (fees.BINANCE_TAKER both legs) vs random-direction and shuffled controls; week-block bootstrap CI",
+    "RESULT.md: PASS / FAIL / INCONCLUSIVE by the frozen rule, n, power line (harness.power_n), side-by-side with F3/F4 on the same window"
+  ],
+  "tests": "MyTradingSys/research/tsfm_2026-11/test_tsfm.py: hand-computed pinball loss and coverage on a 5-point example; the runner refuses a bar >= 2024-07-01; both fail before the module exists",
   "title": "Zero-shot time-series foundation models (Chronos-Bolt / TimesFM, public weights) on BTC 4h/8h 2017-2025: quantile calibration + fee-net direction vs F3/F4 kNN analogs and random; HOLDOUT untouched",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

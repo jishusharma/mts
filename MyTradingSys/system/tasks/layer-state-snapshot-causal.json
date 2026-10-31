@@ -1,15 +1,17 @@
 {
   "approved_by": "",
-  "asks": "",
-  "commands": [],
+  "asks": "Is S0 exit signed or a P1 VALIDATION pass on file for any meta-labelled setup? Default: no (P0 Tom VP FAILED, Fabio C NOT ENOUGH DATA), card stays parked.",
+  "commands": [
+    "python -m pytest MyTradingSys/research/sim_desk/studies/test_layer_state.py -q"
+  ],
   "created": "2026-10-31T13:48:54Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Forcing test green on CI; a named study rerun gives identical numbers with and without the snapshot (both quoted); result JSON carries per-trade feature columns; no new page",
+  "est_turns": 30,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "ROADMAP P2: add causal layer_state_at(ts) to sim_desk/studies/_bars.py (last-closed-bar rule: HTF value at t = last bar with open+tf <= t, FORMULAS.md:522) with a look-ahead forcing test and per-trade feature columns in the result JSON. The panel of ROADMAP 2.0 is a follow-up card.",
   "id": "layer-state-snapshot-causal",
   "lane": "SONNET",
   "layers": [
@@ -19,7 +21,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "PLANNER 2026-11-01: content complete; entry gate is ROADMAP P2 (P1 VALIDATION pass AND S0 exit). Panel (2.0) split off as a follow-up so this stays <= 30 turns. Needs a Sonnet reviewer ACCEPT (IMPORTANT).",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -28,14 +30,30 @@
     "MyTradingSys/system/OPERATOR_DECISIONS.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/studies/_bars.py",
+    "MyTradingSys/research/sim_desk/studies/test_layer_state.py",
+    "scripts/dev/run_extra_tests.py",
+    "MyTradingSys/research/meta_label_roadmap_2026-10-31/ROADMAP.md"
+  ],
+  "scope_out": [
+    "panel / page (2.0 follow-up card)",
+    "live wiring (S5)",
+    "VALIDATION and HOLDOUT reads"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/meta_label_roadmap_2026-10-31/ROADMAP.md:142 (P2) and :146-150 (2.0 panel)",
+    "MyTradingSys/backtest/layers/FORMULAS.md:522"
+  ],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Write test_layer_state.py first (pattern: alerts/test_lookahead_forcing_fabio_v3.py:50-92): shift a future bar, assert no feature at ts changes; HTF value at a mid-bar ts uses only closed bars",
+    "Implement layer_state_at(ts) with the features of ROADMAP 2.1; stamp at the fill-bar open; terciles cut from the training fold",
+    "One existing study reruns to identical numbers with and without the snapshot; add feature columns to the result JSON; log family m in TRIALS.md; register the test in run_extra_tests.py"
+  ],
+  "tests": "test_layer_state.py forcing test, red on the pre-change code (function missing, then a deliberately look-ahead variant must fail it)",
   "title": "S0 park. Meta-label phase 2 (ROADMAP P2 + 2.0): causal layer_state_at(ts) snapshot in sim_desk/studies/_bars.py with a look-ahead forcing test, plus the one-table-one-verdict-line panel (d-meta-label-panel-simple-self-tested) shipped with JSON-shape, counts-sum and page click checks; builder verifies the rendered page. Entry: one meta-labelled setup passes VALIDATION AND S0 exit signed",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
