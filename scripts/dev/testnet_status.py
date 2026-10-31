@@ -92,6 +92,47 @@ def load_config(path):
         return {}, False
 
 
+def load_calibration(path):
+    """Prefixes listed under pre_pipeline_sources in the trader config (calibration, not promoted), or None."""
+    try:
+        cfg = json.loads(pathlib.Path(path).read_text(encoding="utf-8"))
+        pre = cfg.get("pre_pipeline_sources")
+        return [str(k) for k in pre] if isinstance(pre, dict) else []
+    except (OSError, ValueError, AttributeError):
+        return None
+
+
+def load_promoted(path):
+    """Source names in promoted_setups.json entries, or None when the file is missing/unreadable."""
+    try:
+        d = json.loads(pathlib.Path(path).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    ents = d.get("entries") if isinstance(d, dict) else d
+    out = set()
+    for e in ents if isinstance(ents, list) else []:
+        if isinstance(e, dict) and e.get("source"):
+            out.add(str(e["source"]))
+        elif isinstance(e, str):
+            out.add(e)
+    return out
+
+
+def label_of(sources, calibration, promoted):
+    """calibration / promoted / unlabelled / mixed / n/a (no source seen). Calibration never counts toward the bar."""
+    if not sources:
+        return "n/a"
+    labs = set()
+    for src in sources:
+        if promoted and src in promoted:
+            labs.add("promoted")
+        elif any(str(src).startswith(pfx) for pfx in calibration or []):
+            labs.add("calibration")
+        else:
+            labs.add("unlabelled")
+    return labs.pop() if len(labs) == 1 else "mixed"
+
+
 def family_of(source):
     source = str(source or "")
     if source == "tom" or source.startswith("tom:"):
@@ -129,7 +170,10 @@ def analyse(log_rows, ledger_rows, accounts, t0, t1):
     rows, open_by_acct, skipped_halt = {}, {}, 0
 
     def cell(row):
-        return rows.setdefault((family_of(row.get("source")), account_of(row, accounts)), blank())
+        c = rows.setdefault((family_of(row.get("source")), account_of(row, accounts)), blank())
+        if row.get("source"):
+            c.setdefault("sources", set()).add(str(row["source"]))
+        return c
 
     def in_win(r):
         t = parse_ts(r.get("ts"))
@@ -207,12 +251,32 @@ def fmt_ts(dt):
     return dt.strftime(TS_FMT)
 
 
-def build_report(paths, now, hours):
+LOG_COLS = ("Alerts", "Entered", "Busy", "AutoPause", "Unmapped", "Rejected", "Halt", "Failed")
+LEDGER_COLS = ("Closed", "Wins", "Net USD", "Unresolved")
+NID = "NOT_IN_DATA"
+STALE_HOURS = 6
+
+
+def build_report(paths, now, hours, owner=None):
     t1, t0 = now, now - timedelta(hours=hours)
     accounts, cfg_ok = load_config(paths["config"])
     log_rows, log_bad = read_jsonl(paths["auto_log"])
     led_rows, led_bad = read_jsonl(paths["ledger"])
     rows, open_by_acct, skipped_halt, start_brakes, ignored = analyse(log_rows, led_rows, accounts, t0, t1)
+    # a missing file is NOT_IN_DATA, never 0; a file whose newest row predates the window is flagged stale below
+    def newest(rs):
+        ts = [parse_ts(r.get("ts")) for r in rs or []]
+        ts = [x for x in ts if x]
+        return max(ts) if ts else None
+    log_new, led_new = newest(log_rows), newest(led_rows)
+    log_missing, led_missing = log_rows is None, led_rows is None
+    stale_window = log_new is not None and log_new < t0
+    all_sources = {}                                          # whole-log sources per row key: labels only, no counts
+    for r in (log_rows or []) + (led_rows or []):
+        if r.get("source"):
+            all_sources.setdefault((family_of(r.get("source")), account_of(r, accounts)), set()).add(str(r["source"]))
+    calibration = load_calibration(paths["config"])
+    promoted = load_promoted(paths["promoted"])
     for k in expected_keys(accounts):
         rows.setdefault(k, blank())
     hl = f"{hours:g} h"
@@ -222,6 +286,21 @@ def build_report(paths, now, hours):
     L.append(f"- Window: {fmt_ts(t0)} to {fmt_ts(t1)} ({hl}). Generated {fmt_ts(now)} by scripts/dev/testnet_status.py "
              "on the desktop.")
     L.append("- Sanitized: no order/plan/client ids, keys or balances; P/L is per-trade net USD only.")
+    L.append("")
+    L.append(f"- Owner host: {owner or 'UNCONFIRMED (not passed with --owner; this script cannot tell which host runs the loop)'}")
+    stamps = [parse_ts(r.get("ts")) for r in log_rows or []]
+    stamps = [x for x in stamps if x]
+    if log_rows is None:
+        L.append(f"- Engine state: {NID} (auto_trades.jsonl not found; no engine reading possible)")
+    elif not stamps:
+        L.append(f"- Engine state: {NID} (auto_trades.jsonl has no timestamped row)")
+    else:
+        last = max(stamps)
+        age = (now - last).total_seconds() / 3600
+        L.append(f"- Engine state: last log row {fmt_ts(last)} ({age:.1f} h before window end): "
+                 + (f"STALE (over {STALE_HOURS} h; this copy is not a live reading)" if age > STALE_HOURS
+                    else "fresh"))
+    L.append("- Calibration rows (pre_pipeline_sources) never count toward the GO_LIVE_BAR.")
     L.append("")
     L.append("## Sources")
     if log_rows is None:
@@ -235,26 +314,41 @@ def build_report(paths, now, hours):
                  f"{ignored} non-trade row(s) ignored")
     L.append(f"- {paths['config'].name}: " + (f"found, {len(accounts)} routing prefixes" if cfg_ok else
                                                "not found (routing unknown: unrouted sources shown as main)"))
+    if promoted is None:
+        L.append(f"- {paths['promoted'].name}: {NID}")
+    else:
+        L.append(f"- {paths['promoted'].name}: found, {len(promoted)} promoted source(s)")
+    if calibration is None:
+        L.append(f"- pre_pipeline_sources: {NID} (config not found; rows cannot be labelled calibration)")
+    else:
+        L.append(f"- pre_pipeline_sources: {len(calibration)} calibration prefix(es)")
     L.append("")
     L.append(f"## Per family x account ({hl})")
     L.append("")
-    L.append("| Family | Account | " + " | ".join(COLS) + " |")
-    L.append("|---|---|" + "|".join("---:" for _ in COLS) + "|")
+    L.append("| Family | Account | Label | " + " | ".join(COLS) + " |")
+    L.append("|---|---|---|" + "|".join("---:" for _ in COLS) + "|")
     for (fam, acct) in sorted(rows):
         c = rows[(fam, acct)]
         vals = [c["alerts"], c["entered"], c["closed"], c["wins"], f"{c['net']:+.4f}", c["busy"], c["auto_pause"],
                 c["unmapped"], c["rejected"], c["halt"], c["failed"], c["unresolved"]]
-        L.append(f"| {safe_name(fam)} | {safe_name(acct)} | " + " | ".join(str(v) for v in vals) + " |")
+        vals = [NID if (log_missing and n in LOG_COLS) or (led_missing and n in LEDGER_COLS) else v
+                for n, v in zip(COLS, vals)]                      # a missing source is NOT_IN_DATA, never 0
+        lab = label_of(c.get("sources") or all_sources.get((fam, acct)), calibration, promoted)
+        L.append(f"| {safe_name(fam)} | {safe_name(acct)} | {lab} | " + " | ".join(str(v) for v in vals) + " |")
     L.append("")
+    if stale_window:
+        L.append("STALE: the newest auto_trades.jsonl row predates this window, so the zeros above mean "
+                 "no data in the window, not no trading. Read the live owner's files for a live number.")
+        L.append("")
     L.append("Alerts = signals the trader logged a decision for (rejected, skipped, attempted). Entered = trade_attempt "
              "outcome entered. Closed/Wins/Net = resolved ledger rows stamped in the window (win = net > 0). "
              "Failed = attempt that did not enter. Unresolved = ledger row without an outcome.")
     L.append("")
     L.append("## Zero-trade flags")
     flags = [f"- FLAG 0 trades in {hl}: {safe_name(f)} / {safe_name(a)}" for (f, a), c in sorted(rows.items())
-             if c["entered"] == 0]
-    if log_rows is None:
-        L.append("- auto_trades.jsonl not found: flags below are not meaningful")
+             if c["entered"] == 0 and not log_missing]
+    if log_missing:
+        L.append(f"- auto_trades.jsonl {NID} for this window (file missing): no zero-trade flags")
     L += flags or ["- none"]
     L.append("")
     L.append("## Open positions (last logged, not live)")
@@ -272,6 +366,8 @@ def build_report(paths, now, hours):
     present = [b for b in BRAKE_FILES if paths["exec"].joinpath(b).exists()]
     L.append("- Brake files at run time: " + (", ".join(present) if present else "none present")
              + " (existence only; checked when this script ran)")
+    for b in BRAKE_FILES:
+        L.append(f"- {b}: {'present' if b in present else 'absent'}")
     L.append(f"- skipped_halt decisions in window: {skipped_halt}")
     L.append(f"- auto_trader starts with a brake set in window: {start_brakes}")
     hd = paths["halt_dir"]
@@ -321,6 +417,8 @@ def main(argv=None):
     ap.add_argument("--alerts-log")
     ap.add_argument("--halt-dir")
     ap.add_argument("--config")
+    ap.add_argument("--promoted")
+    ap.add_argument("--owner", help="live owner host as determined by the caller (default: UNCONFIRMED)")
     ap.add_argument("--out-dir", default=str(DEFAULT_OUT))
     a = ap.parse_args(argv)
     ex = pathlib.Path(a.exec_dir)
@@ -329,11 +427,12 @@ def main(argv=None):
              "ledger": pathlib.Path(a.ledger) if a.ledger else ex / "trade_ledger.jsonl",
              "alerts_log": pathlib.Path(a.alerts_log) if a.alerts_log else ex / "OPERATOR_ALERTS.log",
              "halt_dir": pathlib.Path(a.halt_dir) if a.halt_dir else ex / "halt_history",
-             "config": pathlib.Path(a.config) if a.config else ex / "auto_trader_config.json"}
+             "config": pathlib.Path(a.config) if a.config else ex / "auto_trader_config.json",
+             "promoted": pathlib.Path(a.promoted) if a.promoted else ex / "promoted_setups.json"}
     now = parse_ts(a.now) if a.now else datetime.now(timezone.utc).replace(microsecond=0)
     if now is None:
         ap.error("--now must look like 2026-09-30T12:00:00Z")
-    text = build_report(paths, now, a.hours)
+    text = build_report(paths, now, a.hours, a.owner)
     out = pathlib.Path(a.out_dir)
     out.mkdir(parents=True, exist_ok=True)
     target = out / f"TESTNET_STATUS_{now.strftime('%Y-%m-%d')}.md"
