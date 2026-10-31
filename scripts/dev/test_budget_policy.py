@@ -103,3 +103,10 @@ def test_heartbeat_window_covers_a_supervisors_real_cadence():   # A heartbeats 
 def test_plan_never_names_the_merged_pipeliner_role():       # merged into Lead 2026-10-25 (2c9bbaf9c)
     src = Path(S.__file__).read_text(encoding="utf-8")
     assert "SPAWN Pipeliner" not in src and "You are Pipeliner" not in src
+
+
+def test_operator_day_caps_for_login_c_oct31_nov01():
+    assert S.weekly_cap("C", "JIS-NB", 80, "2026-10-31") == 68
+    assert S.weekly_cap("C", "JIS-NB", 80, "2026-11-01") == 78
+    assert S.weekly_cap("C", "JIS-NB", 80, "2026-11-02") == 85 and S.weekly_cap("C", "JIS-NB", 80) == 85
+    assert S.weekly_cap("B", "JIS-NB", 80, "2026-10-31") == 75
