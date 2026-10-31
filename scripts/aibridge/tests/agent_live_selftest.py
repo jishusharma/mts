@@ -147,7 +147,8 @@ try:
     st, r = run('Write-Output (Get-Date).Year; $env:USERNAME')
     check('$env: is allowed', st == 200 and r['exit'] == 0, r)
     st, r = run('Write-Output $env:TEMP')
-    check('child TEMP is the bridge run\\tmp folder, not the shared Temp', st == 200 and r['out'].strip().lower().endswith('run\\tmp'), r)
+    check('child TEMP is the bridge run\\tmp folder (AIBridge\\run-tmp when the bridge sits in a git repo), not the shared Temp',
+          st == 200 and r['out'].strip().lower().endswith(('run\\tmp', 'aibridge\\run-tmp')), r)
     st, r = run('Get-ChildItem -Path "$env:TEMP" | Select-Object -First 1')
     check('temp folder usable', st == 200 and r['exit'] == 0, r)
 

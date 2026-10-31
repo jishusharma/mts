@@ -8,6 +8,7 @@ import tempfile
 import unittest
 from contextlib import redirect_stdout
 from pathlib import Path
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import wiring_scan as ws
@@ -202,7 +203,10 @@ class ScanSpeed(unittest.TestCase):
         self.assertIsNone(ws.ImportCache(d).get('missing'))
         Path(c.path).write_text('{ not json', encoding='utf-8')
         self.assertIsNone(ws.ImportCache(d).get('k1'))            # corrupt: no exception, the scan just recomputes
-        self.assertEqual(ws.ImportCache(tempfile.gettempdir()).rows, {})   # a folder that is not a repo: no cache
+        with tempfile.TemporaryDirectory() as plain:                       # a folder that is not a repo: no cache
+            # D5: under the bridge TEMP itself sits inside a git repo, so cut git's upward search at TEMP
+            with mock.patch.dict(os.environ, {'GIT_CEILING_DIRECTORIES': os.path.realpath(os.path.dirname(plain)).replace(os.sep, '/')}):
+                self.assertEqual(ws.ImportCache(plain).rows, {})
 
     def test_warm_corrupt_and_cold_scans_find_the_same_edges(self):
         d = self.git_root()
@@ -215,6 +219,25 @@ class ScanSpeed(unittest.TestCase):
         self.assertIn('scripts/live/runner.py', {a for a, bs in cold.items() if 'MyTradingSys/runtime/live_mod.py' in bs})
         self.assertIn('scripts/dev/helper.py', cold['scripts/dev/tool.py'])
 
+
+
+class TempInsideGitRepo(unittest.TestCase):
+    """D5 repro: bridge children get TEMP inside a git repo (F:/AIBridge). Run the cache test that way, with a cache file already
+    in that repo's .git (what an earlier bridge run leaves), and no global git config. It failed before the test cut git's search."""
+
+    def test_cache_test_passes_with_temp_inside_a_repo_holding_a_cache(self):
+        if os.environ.get('MTS_D5_INNER'):
+            self.skipTest('inner run')
+        with tempfile.TemporaryDirectory() as scratch:
+            subprocess.run(['git', '-C', scratch, 'init', '-q'], check=True, capture_output=True)
+            Path(scratch, '.git', ws.ImportCache.NAME).write_text(json.dumps({'k': {'imp': [], 'fr': [], 'mr': []}}), encoding='utf-8')
+            tmp = os.path.join(scratch, 'tmp')
+            os.mkdir(tmp)
+            env = dict(os.environ, TEMP=tmp, TMP=tmp, TMPDIR=tmp, GIT_CONFIG_GLOBAL=os.devnull, GIT_CONFIG_NOSYSTEM='1', MTS_D5_INNER='1')
+            env.pop('GIT_CEILING_DIRECTORIES', None)
+            r = subprocess.run([sys.executable, '-m', 'unittest', 'test_wiring_scan.ScanSpeed.test_cache_round_trip_and_a_corrupt_cache_recomputes'],
+                               cwd=str(Path(__file__).resolve().parent), env=env, capture_output=True, text=True, timeout=300)
+            self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
 
 class GateRunsIt(unittest.TestCase):
     def test_run_all_tests_runs_wiring_check_before_quick_cutoff(self):

@@ -1,5 +1,5 @@
 $ErrorActionPreference = 'Stop'
-$AgentVersion = '0.7.3'
+$AgentVersion = '0.7.4'
 $AgentStart = Get-Date
 $root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $config = Get-Content -Raw -LiteralPath (Join-Path $root 'config.json') | ConvertFrom-Json
@@ -114,7 +114,7 @@ function Set-FreshEnv {
 
 function Start-Cmd {
     param([string]$Cmd, [string]$Cwd, [int]$MaxBytes, $pol, [string]$Shell)
-    $wrapped = "`$ProgressPreference='SilentlyContinue'; [Console]::OutputEncoding=[Text.Encoding]::UTF8; " + $Cmd
+    $wrapped = "`$ProgressPreference='SilentlyContinue'; [Console]::OutputEncoding=[Text.Encoding]::UTF8; `$global:LASTEXITCODE=`$null`r`n" + $Cmd + "`r`nif (`$null -ne `$global:LASTEXITCODE) { exit [int]`$global:LASTEXITCODE }`r`n"
     $runDir = Join-Path $root 'run'
     if (-not (Test-Path -LiteralPath $runDir)) { [void](New-Item -ItemType Directory -Path $runDir) }
     $tmpPs1 = Join-Path $runDir ([guid]::NewGuid().ToString('N') + '.ps1')
@@ -130,7 +130,13 @@ function Start-Cmd {
     $psi.CreateNoWindow = $true
     $psi.WorkingDirectory = $Cwd
     $tmpDir = [string]$pol.child_temp
-    if (-not $tmpDir) { $tmpDir = Join-Path $root 'run\tmp' } elseif (-not [IO.Path]::IsPathRooted($tmpDir)) { $tmpDir = Join-Path $root $tmpDir }
+    if (-not $tmpDir) {
+        $tmpDir = Join-Path $root 'run\tmp'
+        # D5: git finds a repo above the child TEMP when the bridge folder sits inside one (F:\AIBridge has a .git): tests expecting a plain Temp then fail.
+        $up = $root; $inRepo = $false
+        while ($up) { if (Test-Path -LiteralPath (Join-Path $up '.git')) { $inRepo = $true; break }; $up = Split-Path -Parent $up }
+        if ($inRepo) { $lad = $env:LOCALAPPDATA; if (-not $lad) { $lad = [IO.Path]::GetTempPath() }; $tmpDir = Join-Path $lad 'AIBridge\run-tmp' }
+    } elseif (-not [IO.Path]::IsPathRooted($tmpDir)) { $tmpDir = Join-Path $root $tmpDir }
     if ([string]$pol.fresh_env -ne 'false') { try { Set-FreshEnv $psi $tmpDir } catch {} }
     $p = [Diagnostics.Process]::Start($psi)
     $ro = New-Object CapReader($p.StandardOutput, $MaxBytes)

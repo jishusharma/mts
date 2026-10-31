@@ -67,7 +67,9 @@ foreach ($st in $steps) {
     do {
         $attempt++
         $ps1 = Join-Path $base ('run\' + [guid]::NewGuid().ToString('N') + '.ps1')
-        [IO.File]::WriteAllText($ps1, "`$ProgressPreference='SilentlyContinue'; [Console]::OutputEncoding=[Text.Encoding]::UTF8; " + $cmd, [Text.UTF8Encoding]::new($true))
+        # D3: a step ending on a successful statement exits 0 even when a native command before it failed. Reset $LASTEXITCODE first, and
+        # if a native command ran (it is set) propagate its code; pure cmdlet steps leave it null and keep their own exit.
+        [IO.File]::WriteAllText($ps1, "`$ProgressPreference='SilentlyContinue'; `$env:PYTHONUNBUFFERED='1'; [Console]::OutputEncoding=[Text.Encoding]::UTF8; `$global:LASTEXITCODE=`$null`r`n" + $cmd + "`r`nif (`$null -ne `$global:LASTEXITCODE) { exit [int]`$global:LASTEXITCODE }`r`n", [Text.UTF8Encoding]::new($true))
         $so = $ps1 + '.out'; $se = $ps1 + '.err'
         $sw = [Diagnostics.Stopwatch]::StartNew()
         try {
@@ -87,12 +89,12 @@ foreach ($st in $steps) {
         }
         # B209: a gate that prints "FAILED: N step(s)" but exits 0 is a FAIL, never PASS over FAILED. fail_on overrides the pattern.
         if ($ok) {
-            $fo = if ($st.fail_on) { Expand-Vars ([string]$st.fail_on) } else { '(?m)^\s*FAILED:\s*[1-9]\d*\s+step' }
+            $fo = if ($st.fail_on) { Expand-Vars ([string]$st.fail_on) } else { '(?m)^\s*(FAILED:\s*[1-9]\d*\s+step|EXIT_CODE=[1-9]\d*\s*$)' }
             if ($out -match $fo) { $ok = $false; $why = "output matched fail pattern /$fo/ although exit was $code" }
         }
         if (-not $ok -and -not $why) { $why = "exit $code" }
     } while (-not $ok -and $attempt -le $retries)
-    Add-Content -LiteralPath $logFile -Value ("=== step {0} {1} exit={2} ms={3} ok={4}`n{5}`n" -f $i, $sname, $code, $ms, $ok, $out) -Encoding UTF8
+    Add-Content -LiteralPath $logFile -Value ("=== step {0} {1} exit={2} ms={3} ok={4}`ncmd: {5}`ncwd: {6}`n{7}`n" -f $i, $sname, $code, $ms, $ok, $cmd, $cwd, $out) -Encoding UTF8
     $lines = @(($out -split "`r?`n") | Where-Object { $_.Trim() -ne '' })
     if ($ok -and $st.capture) {
         foreach ($c in $st.capture.PSObject.Properties) { $m = [regex]::Match($out, [string]$c.Value); if ($m.Success) { $vars[$c.Name] = $m.Groups[1].Value.Trim() } }
