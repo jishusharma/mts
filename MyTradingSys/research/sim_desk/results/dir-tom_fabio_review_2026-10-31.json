@@ -1,0 +1,89 @@
+{
+ "id": "dir-tom_fabio_review_2026-10-31",
+ "kind": "audit",
+ "family": "Tom Fabio Review",
+ "title": "Tom and Fabio setup review (technical), 2026-10-31",
+ "provenance": "source-extracted",
+ "date": "2026-10-31",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Operator order 2026-10-31 via the login C coordinator (\"Tom and Fabio setup review\", Opus). Feeds D11 stream A \"setup truth\"",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "(research/v1_plan_2026-10-20/D11_PROGRAMME.md:29) next to the operator-facing sheet research/setup_review_2026-10/SETUP_REVIEW.md",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "(22 setups, his verdicts pending). That sheet says what each setup is; this one says what our code does with it, what was measured,",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "on which dates, and what is wrong or untested. No trading verdict: no Tom or Fabio setup has a fee-net out-of-sample pass.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 5 from the source",
+   "value_plain": "Paths are relative to MyTradingSys/ unless they start with src/ or F:/. Quotes are copied from the catalog",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 6 from the source",
+   "value_plain": "(research/setup_catalog_2026-10-15/SETUP_CATALOG.md, \"CAT\"), which took them from captions checked by check_spec_quotes.py",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2022-01-01 to 2024-06-30 (as written in the source)",
+ "verdict": {
+  "label": "s pending). That sheet says what each setup is; this one says what our code does with it, what was measured,",
+  "tone": "info"
+ },
+ "why": [
+  "Consequence: the only DEV-clean, fee-net TRADE numbers for either trader are the Tom sim_desk tries (all negative, section 2.2).",
+  "Status keys: NOT CODED; CODED-UNSCORED (code exists, no fee-net outcome); NEG (fee-net negative); COUNT (a count, no trade).",
+  "watch_episode 2880, net -2.91 R driven by tiny stops (fee ~2.76 R/trade) (TOM_CORE_BT_RERUN_2026-10-06.md:13-22). B146: gross R negative in",
+  "every stop-width bucket (TOM_STOP_WIDTH_2026-10-09.md:6-19). Encoding 2: DAX recall best 2 of 5 at k=1, DESIGN FAIL, no outcome computed"
+ ],
+ "kpis": [
+  {
+   "label": "trades (first count in the source)",
+   "value": "1812"
+  },
+  {
+   "label": "net R after fees (first value in the source)",
+   "value": "-0.1038",
+   "tone": "bad"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 1812,
+   "quote": "TOM-2 + 70/30 claim Sell top / buy bottom of balance; return to value after leaving it backtest/vp_return_to_value.py; research/sim_desk/studies/tom_vp.py count 57.2 % vs placebo 46.8 % (near-band pl…"
+  },
+  {
+   "field": "net_r",
+   "value": -0.1038,
+   "quote": "FAB-6 IVB, first 30 min of US open v3 Model C (v3/models.py:194-228) OOS mean -0.1038 R/day, CI -0.2087..-0.0053 79 OOS trade days NO NEG"
+  }
+ ],
+ "missing": {
+  "n_trades": "not a trade test (audit)"
+ },
+ "source_files": [
+  "MyTradingSys/research/tom_fabio_review_2026-10-31/SETUP_REVIEW.md"
+ ],
+ "commit": "de1783d7a"
+}

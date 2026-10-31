@@ -281,4 +281,8 @@ def chart_trade(ref, q):
     tr = _bars.replay(a, ref, q)
     if tr is None or not tr['filled']:
         return None
-    return _bars.chart(a, ref, tr, ref[8])
+    out = _bars.chart(a, ref, tr, ref[8])
+    out['note'] = {'RETURN': 'Return to value: first 5m close outside the previous period value area; trade back toward the point of control',
+                   'FADE': 'Edge fade: a 5m bar touched the value-area edge from inside and closed back in; trade toward the point of control',
+                   'ACCEPT': 'Accepted away: N consecutive 5m closes outside value; trade on in that direction'}[q['setup']]
+    return out

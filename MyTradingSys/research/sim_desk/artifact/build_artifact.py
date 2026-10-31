@@ -149,6 +149,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 select{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:4px}
 .tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:3px 6px;border-bottom:1px solid var(--line);text-align:right}th:first-child,td:first-child{text-align:left}
 .note{font-size:12px;color:var(--mute);margin:4px 0}
+.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;margin:8px 0}.cg figure{margin:0;border:1px solid var(--line);border-radius:6px;padding:4px;background:#fff}.cg figcaption{font-size:11px;color:var(--mute);padding:2px 4px}
 .ex{border-top:1px solid var(--line);padding-top:4px}
 ul{margin:4px 0;padding-left:20px}li{margin:3px 0}
 .src{font-size:12px;color:var(--mute);word-break:break-all}
@@ -219,6 +220,7 @@ return '<svg viewBox="0 0 600 160" role="img" aria-label="Running total of net R
 function example(x){const inits=[];let h='<div class="ex"><h3>'+esc(x.title||"Example")+"</h3>";
 if(x.kind==="table")h+=table(x);else if(x.kind==="stack")h+=stack(x);else if(x.kind==="sides")h+=sides(x);
 else if(x.kind==="curve"&&x.r&&x.r.length)h+=curveEx(x);
+else if(x.kind==="charts"&&x.items&&x.items.length)h+='<div class="cg">'+x.items.map(c=>"<figure>"+c.svg+"<figcaption>"+esc((c.kind==="winner"?"typical winner":"typical loser")+(c.note?": "+c.note:""))+"</figcaption></figure>").join("")+"</div>";
 else if(x.kind==="replay"){const r=replay(x);h+=r.html;inits.push(r.init);}
 else h+='<p class="note">no example trades exported</p>';
 if(x.caption)h+='<p class="note">'+esc(x.caption)+"</p>";return {html:h+"</div>",inits};}
