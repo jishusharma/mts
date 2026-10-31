@@ -12,61 +12,35 @@
   "goal": "run-task.ps1:70 append exit $LASTEXITCODE when a native command ran; default fail_on adds ^EXIT_CODE=[1-9]; mts-gate/mts-ship expect ALL TESTS PASSED; PYTHONUNBUFFERED=1; task log records cmd+cwd",
   "id": "dsabr-c3-task-exit",
   "lane": "SONNET",
-  "latest": [
-    {
-      "auto": true,
-      "kind": "ship",
-      "line": "AIBridge 0.7.3: run-lock expiry (B210), task gate FAILED=FAIL, kind from command, open-onl",
-      "ref": "12b43fe17a3b",
-      "utc": "2026-10-30T20:11:33Z"
-    }
-  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "S0 freeze: bug fix with a failing-first test. Plan: MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md\nREVIEW (Lab_Guy 2026-10-31): evidence checked against code at 18b9e4eed; DECISION (OURS): depends_on left empty because check refuses ready while a dependency is not done; ordering is in the first step.",
+  "note": "S0 freeze: bug fix with a failing-first test. Plan: MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md",
   "prio": 2,
-  "producer": "Builder",
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T10:08:53Z",
   "refs": [
     "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
   ],
   "result": "",
-  "review_receipt": {
-    "card_hash": "6a6b6b1b35bc",
-    "code_hash": "",
-    "data_hash": "",
-    "date": "2026-10-31",
-    "files": {
-      "scripts/aibridge/scripts/run-task.ps1": "a95859a9025b"
-    },
-    "producer": "Builder",
-    "reviewer": "Lab_Guy",
-    "scope_hash": "215a67fd6471",
-    "scope_sha": "12b43fe17a3b",
-    "spec_hash": ""
-  },
   "scope_in": [
     "scripts/aibridge/scripts/run-task.ps1; scripts/aibridge/tasks; MyTradingSys/tests/test_aibridge_task_gate_exit.py; scripts/aibridge/RELEASES.json"
   ],
   "scope_out": [
     "extension; agent.ps1"
   ],
-  "scope_sha": "12b43fe17a3b",
   "size": "S",
   "sources": [
     "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
   ],
-  "state": "ready",
+  "state": "raw",
   "steps": [
     "Read FIX_PLAN.md (MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31) rows D3 D3b and run-task.ps1:70-95",
-    "Add the three cases (each asserts TASK RESULT: FAIL) plus the control (Write-Output ok -> PASS) to MyTradingSys/tests/test_aibridge_task_gate_exit.py; see the three fail on 0.7.3 (task reports PASS)",
-    "Fix scripts/aibridge/scripts/run-task.ps1 (append exit $LASTEXITCODE only when a native command ran; EXIT_CODE fail_on; PYTHONUNBUFFERED; cmd+cwd in the log); mts-gate/mts-ship playbooks get expect ALL TESTS PASSED",
+    "Add the three failing cases to test_aibridge_task_gate_exit.py; see them PASS-wrongly today",
+    "Fix run-task.ps1 (exit propagation, EXIT_CODE fail_on, PYTHONUNBUFFERED, cmd+cwd in the log); gate playbooks expect ALL TESTS PASSED",
     "Bump the version; tests pass; sync.py ship"
   ],
-  "tests": "MyTradingSys/tests/test_aibridge_task_gate_exit.py: the three new cases FAIL on 0.7.3 today (task wrongly reports PASS) and pass after the fix",
+  "tests": "the three new cases PASS on 0.7.3 today (must FAIL after the fix)",
   "title": "AIBridge task mode: a failed step command never reports PASS (EXIT_CODE=1 under exit 0) (D3 D3b)",
   "weight": "IMPORTANT",
   "worker": "agent"
