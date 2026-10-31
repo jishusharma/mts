@@ -7,39 +7,49 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-31T20:36:11Z",
-    "misses": 14,
+    "folded": "2026-10-31T20:38:33Z",
+    "misses": 21,
     "reads": [
       "scripts/dev/verdicts.py",
       "scripts/dev/test_verdicts.py",
       "MyTradingSys/research/VERDICTS.csv",
-      "scripts/dev/run_extra_tests.py",
       "scripts/dev/run_all_tests.py",
+      "scripts/dev/run_extra_tests.py",
       "MyTradingSys/tests/test_verdicts.py",
-      "MyTradingSys/system/roles/session_planner.md",
-      "MyTradingSys/system/role_details/session_planner_details.md"
+      "MyTradingSys/execution/auto_trader.py",
+      "MyTradingSys/execution/test_auto_trader_failclosed.py"
     ],
     "session": "agent-a1a122904e279d2a9"
   },
   "created": "2026-10-31T20:29:19Z",
   "crucial": true,
   "depends_on": [],
-  "done_when": "pytest MyTradingSys/execution/test_cotrade.py passes with 4 new tests that each fail on the old code, HALT-first call order asserted, offline fake client only, no real order; Result line gives content sha, git cherry empty, ls-tree lists both files",
+  "done_when": "pytest test_cotrade.py passes with 4 new tests that each fail on old code, HALT-first call order asserted, fake client only, no real order; Result gives content sha, git cherry empty, ls-tree lists both files",
   "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Close the 4 review findings on cotrade.py (b6f7515ca): a resting limit that fills later must never sit unprotected; kill must provably write HALT first; stop-exists must verify size and price; unknown state must be checked across the journal. Testnet only, fake client.",
+  "goal": "Close the 4 review findings on cotrade.py (b6f7515ca): a resting limit that fills later must never sit unprotected; kill must provably write HALT first; stop-exists must verify size and price; unknown state checked across the journal. Testnet only, fake client.",
   "id": "cotrade-p1-review-fixes-1101",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "cotrade P1: operator words -> one testnet order with stop, journaled",
+      "ref": "b6f7515ca2aa",
+      "utc": "2026-10-31T19:05:05Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-01 ACCEPT (Sonnet reviewer Agent, FIX applied once, not re-read, planner DECISION OURS). CRITICAL (HALT/order code, testnet): review session PLAN+DIFF per CRITICAL protocol. Operator called it CRUCIAL; raised not lowered. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists delivered files.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-31T20:37:28Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -49,20 +59,21 @@
   "scope_out": [
     "No mainnet path; no change to deribit_orders, executor, auto_trader; no real order; never read .secrets; test_cotrade is already in run_all_tests.py:506 so no gate edit"
   ],
+  "scope_sha": "b6f7515ca2aa",
   "size": "M",
   "sources": [
     "review of b6f7515ca: cotrade.py:284-288, :167-170, :235-237; test_cotrade.py:277-284"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
-    "1 Tests first (fail on old code): FakeClient limit rests unfilled then fills; place must poll get_order/position (bounded, e.g. 5 tries) and place the reduce-only stop on fill, else refuse resting limits (return ok False, reason, journal state). Pick poll-or-refuse, DECISION OURS",
-    "2 Kill test: fake client records HALT-file existence at the first cancel_by_label and close_position call; assert exists True at both (cotrade.py kill, executor.write_manual_halt before authenticate)",
-    "3 ensure_stop (cotrade.py:167-170): count a stop as existing only if order amount == abs(position) and trigger price == journal stop; otherwise cancel it and re-place (or replace) the right one; tests for wrong size and wrong price",
-    "4 place_order (cotrade.py:235-237): scan all non-dry_run journal records back to the last flat/killed/stop_placed marker for state unknown, not only the last one; test with unknown followed by a later error record",
-    "5 Run test_cotrade.py, run_all_tests.py --quick; REVIEW session PLAN then DIFF per session_planner_details.md CRITICAL protocol before ship"
+    "1 Tests first (fail on old code): FakeClient limit rests unfilled then fills; place must poll get_order/position (bounded, e.g. 5 tries) and place the reduce-only stop on fill, else refuse resting limits (ok False, reason, journal state). Poll-or-refuse: OURS. Also: poll times out after a fill goes through _flatten_and_halt",
+    "2 Kill test: fake client records HALT-file existence at the first cancel_by_label and close_position call; assert True at both (kill writes HALT via executor.write_manual_halt before authenticate)",
+    "3 ensure_stop (cotrade.py:167-170): a stop counts only if amount == abs(position) and trigger == journal stop; else place the correct stop FIRST, then cancel the wrong one (never unprotected); tests for wrong size, wrong price, call order",
+    "4 place_order (cotrade.py:235-237): scan back through non-dry_run records for unknown; stop the scan at stop_placed, stop_failed_flattened or killed (not at error/kill_errors); test unknown then later error",
+    "5 Run test_cotrade.py and run_all_tests.py --quick; REVIEW session PLAN then DIFF (session_planner_details.md CRITICAL protocol) before sync.py ship"
   ],
   "tests": "New tests in MyTradingSys/execution/test_cotrade.py: resting_limit_fills_later_gets_stop, kill_halt_before_cancel_and_close, stop_wrong_size_or_price_not_counted, unknown_not_last_record; each must fail on b6f7515ca code",
-  "title": "cotrade.py review of b6f7515ca: (1) MAJOR cotrade.py:284-288 a resting limit that fills later has no stop until 'cotrade.py stop' is run: place must wait/poll for the fill and place the reduce-only stop, or refuse resting limits; (2) MAJOR test_cotrade.py:277-284 kill test does not prove HALT is written BEFORE cancel/close; (3) MINOR stale stop of wrong size/price counts as 'stop exists' (cotrade.py:167-170); only last journal record checked for unknown (235-237). Done when: a resting-limit-fills-later test fails on old code and passes, kill test asserts HALT-first call order, stop-exists checks size and price, all offline with a fake client; no real order",
+  "title": "cotrade.py review fixes (b6f7515ca): resting limit fills later has no stop, kill test lacks HALT-first order, stop-exists ignores size/price, only last journal record checked",
   "weight": "CRITICAL",
   "worker": "session"
 }
