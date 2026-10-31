@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T06:02:53Z",
   "commands": [],
   "created": "2026-10-31T05:12:05Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "test-sim-desk-resample-missing-minutes",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "empty input returns (0,5) (was IndexError); gapped-minutes test pins existing behaviour",
+      "ref": "a17396f11",
+      "utc": "2026-10-31T06:02:53Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,12 @@
   "refs": [
     "gemini-test-plan-sim-desk-1031"
   ],
-  "result": "",
+  "result": "empty input returns (0,5) (was IndexError); gapped-minutes test pins existing behaviour",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/sim_desk/studies/_bars.py",
     "MyTradingSys/research/sim_desk/test_studies.py"
@@ -41,11 +53,12 @@
   "scope_sha": "c054737d37c5",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write a gapped-minutes resample test and an empty-input test",
     "Make empty input return an empty (0,5) array"
   ],
+  "taken": "2026-10-31T06:02:53Z",
   "tests": "MyTradingSys/research/sim_desk/test_studies.py::test_resample_empty_input (fails on current code with an IndexError)",
   "title": "Test gap: sim_desk _bars.resample with missing minutes or empty input has no test (Gemini sim-desk plan, rank 2)",
   "weight": "",

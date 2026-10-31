@@ -62,6 +62,9 @@ def params():
 def normalize(p):
     """Fill defaults, type and validate; raises ValueError on a bad value or a date outside DEV."""
     import desk
+    sym = (p or {}).get('symbol')
+    if sym not in (None, '', 'BTCUSDT'):
+        raise ValueError(f'symbol: levels runs on BTCUSDT only, got {sym!r}')
     q = dict(DEFAULT)
     q.update({k: v for k, v in (p or {}).items() if k in DEFAULT and v not in (None, '')})
     for k, table in (('entry', ENTRY), ('scale', SCALE), ('stop', STOP), ('exit', EXIT)):
