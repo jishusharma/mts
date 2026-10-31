@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-10-31T10:24:48Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -25,6 +26,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "gate_select: data-only sim_desk ship is smoke so must-pass 3xm runs; 41 tests, new one fai",
+      "ref": "62c216a0a",
+      "utc": "2026-10-31T10:24:48Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "fast ship gate: 3la and tree-wide inventory tests are must-pass, never deadline-deferred",
@@ -43,7 +50,12 @@
   "refs": [
     "ci-red-root-causes"
   ],
-  "result": "",
+  "result": "gate_select: data-only sim_desk ship is smoke so must-pass 3xm runs; 41 tests, new one fails on old code (c4dd114b6)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/gate_select.py",
     "scripts/dev/test_gate_select.py"
@@ -57,12 +69,13 @@
   "sources": [
     "MyTradingSys/research/ci_audit_2026-10-31/CI_RED_ROOT_CAUSES.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read gate_select.py explain() docs branch (line ~255) and DATA_DIRS/DATA_SUFFIXES",
     "Write failing test, then add rule (like the WIRING_REGISTRY carve-out)",
     "Run scripts/dev/test_gate_select.py; ship"
   ],
+  "taken": "2026-10-31T10:24:48Z",
   "tests": "scripts/dev/test_gate_select.py: results-json-only ship selects the sim_desk test step; fails on current gate_select (returns 0 steps)",
   "title": "data-only sim_desk ship (results .json alone) is docs mode and runs 0 gate steps: sim_desk/test_backfill never runs before CI (CI_RED_ROOT_CAUSES.md)",
   "weight": "",
