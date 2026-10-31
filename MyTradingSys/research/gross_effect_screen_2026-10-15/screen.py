@@ -226,9 +226,11 @@ FAMILY_ALPHA = 0.05
 M_FAMILY = 90          # OURS: verdicts.py count --split DEV on 2026-11-01 (lower bound)
 
 
-def t_bar(m=1, alpha=FAMILY_ALPHA):
-    """Corrected one-sided t bar for one verdict among m: Holm step 1 = Bonferroni, never below the nominal 2.0."""
-    z = NormalDist().inv_cdf(1.0 - alpha / max(int(m), 1))
+def t_bar(m, alpha=FAMILY_ALPHA):
+    """Corrected two-sided t bar for one verdict among m >= 2 (DECISION OURS, conservative): Holm step 1 = Bonferroni, z = inv_cdf(1 - alpha/(2m))."""
+    if int(m) < 2:
+        raise ValueError(f"t_bar needs a family of m >= 2 tests, got {m}")
+    z = NormalDist().inv_cdf(1.0 - alpha / (2 * int(m)))
     df = N_MIN - 1                                    # smallest allowed n; Cornish-Fisher Student-t quantile, no scipy
     return max(2.0, z + (z ** 3 + z) / (4.0 * df))
 

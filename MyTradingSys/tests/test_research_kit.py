@@ -5,11 +5,11 @@ isolation, the frozen studies are not imported, run or edited). "edge" = n = 1 o
 
 | copy | file:line | regular input | edge input | verdict |
 |---|---|---|---|---|
-| cluster_mean_se | research/gross_effect_screen_2026-10-15/screen.py:196 | = kit | SE 0.0 (t = inf), kit NaN | agrees (edge differs) |
-| diff_cluster | research/gross_effect_screen_2026-10-15/screen.py:206 | = kit (OLS sandwich = same-day-aware) | not guarded for 1-row groups | agrees (edge differs) |
+| cluster_mean_se | research/gross_effect_screen_2026-10-15/screen.py:197 | = kit | SE 0.0 (t = inf), kit NaN | agrees (edge differs) |
+| diff_cluster | research/gross_effect_screen_2026-10-15/screen.py:207 | = kit (OLS sandwich = same-day-aware) | not guarded for 1-row groups | agrees (edge differs) |
 | cm_se | research/chart_read_g5_2026-10-16/common.py:104 | = kit | SE 0.0, kit NaN | agrees (edge differs) |
-| mde=2.8*se (verdict_arm) | research/chart_read_g5_2026-10-16/common.py:218 | = kit.mde | - | agrees |
-| mde_T = 2.8*se | research/gross_effect_screen_2026-10-15/screen.py:254 | = kit.mde | - | agrees |
+| mde=2.8*se (verdict_arm) | research/chart_read_g5_2026-10-16/common.py:227 | = kit.mde | - | agrees |
+| mde_T = 2.8*se | research/gross_effect_screen_2026-10-15/screen.py:314 | = kit.mde | - | agrees |
 | cluster_se | research/wlow_bounce_bbrsi60_2026-10-16/study.py:80 | = kit | n=1 NaN, one day SE 0.0, kit NaN | agrees (edge differs) |
 | diff_stats | research/wlow_bounce_bbrsi60_2026-10-16/study.py:131 | SE 1.9319 vs kit 2.3431 on groups sharing days | - | DISAGREES: sqrt(se_a^2 + se_b^2) drops the same-day covariance |
 | mde | research/volume_2026-10-09/vstats.py:130 | 0.4973 vs kit 0.5600 (sd 2.0, n 100) | - | DISAGREES: one-sided alpha 0.05 (z 1.645 + 0.8416 = 2.4866) vs 2.8 |
@@ -18,7 +18,7 @@ isolation, the frozen studies are not imported, run or edited). "edge" = n = 1 o
 | holm | research/published_strats_2026-10-13/run_pub.py:503 | = kit | - | agrees |
 
 Summary: 3 copies disagree on regular input (wlow diff_stats, vstats mde, krown cost_r); 4 more differ only at the edge
-(screen.py:196 and :191, common.py:104, wlow study.py:80). The studies are frozen; their numbers stand with these caveats.
+(screen.py:197 and :207, common.py:104, wlow study.py:80). The studies are frozen; their numbers stand with these caveats.
 `backtest/power_mde.py` (win-rate MDE) is kept as is and is checked below for agreement with kit.mde.
 """
 import ast
@@ -194,7 +194,7 @@ F = np.array([1, 0, 1, 0, 1, 0, 1, 0.])
 
 
 def test_docstring_line_numbers_are_true():
-    for rel, name, line in ((SCREEN, "cluster_mean_se", 196), (SCREEN, "diff_cluster", 206), (G5, "cm_se", 104),
+    for rel, name, line in ((SCREEN, "cluster_mean_se", 197), (SCREEN, "diff_cluster", 207), (G5, "cm_se", 104),
                             (WLOW, "cluster_se", 80), (WLOW, "diff_stats", 131), (VSTATS, "mde", 130),
                             (KROWN, "mde_block", 303), (PUB, "holm", 503)):
         _, got = _grab(rel, name, _base() | {"mean": lambda x: sum(x) / len(x)})
@@ -277,7 +277,7 @@ def test_copy_run_pub_holm_agrees():
 
 
 def test_copy_mde_constants_in_screens_equal_kit():
-    # screen.py:254 and common.py:218 hardcode 2.8 * se
+    # screen.py:314 and common.py:227 hardcode 2.8 * se
     for rel in (SCREEN, G5):
         assert "2.8 * " in (RESEARCH / rel).read_text(encoding="utf-8")
     assert K.MDE_Z == 2.8
