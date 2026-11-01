@@ -978,7 +978,6 @@ CI_FILE_DEFAULT_S = 1.5
 QUICK_PARTS = 4
 QUICK_PART_MAX_S = 600
 CI_MODULE_DEFAULT_S = 0.3   # a layer module not in CI_FILE_S (78 modules took 61 s, two of them 38 s)
-QUICK_PARTS = 4            # smallest N where largest --quick shard <= 600 s estimate on Windows
 
 
 def shard_est(num, win=None):
@@ -1351,8 +1350,6 @@ def main(argv=None):
         spec = args[args.index("--shard") + 1]
         plan = apply_shard(plan, spec)
         print(f"Shard {spec}: {sum(1 for x in plan if not x.skip)} steps here (est {sum(x.est if x.est is not None else shard_est(x.num) for x in plan if not x.skip):.0f} s)", flush=True)
-    elif quick and not os.environ.get("CI"):
-        print(f"run in {QUICK_PARTS} parts: --quick --shard K/N", flush=True)
     if mode and mode != "full" and changed_files(args):
         files = changed_files(args)
         if len(chr(10).join(files)) > 30000:   # Windows caps an env var at 32767 chars (a card sweep moves hundreds of files); card json carries no doc caps
