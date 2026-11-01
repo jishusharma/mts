@@ -1,36 +1,91 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest MyTradingSys/backtest/layers/fabio/v3/tests -q"
+  ],
+  "context": {
+    "calls_to_edit": 21,
+    "folded": "2026-11-01T01:08:15Z",
+    "misses": 43,
+    "reads": [
+      "MyTradingSys/system/roles/session_planner.md",
+      "MyTradingSys/execution/cotrade.py",
+      "MyTradingSys/research/fractals_2026-10-31/reviews/R4_MULTI_LLM_PLAN.md",
+      "MyTradingSys/system/role_details/session_planner_details.md"
+    ],
+    "session": "agent-a73df76d97924baf7"
+  },
   "created": "2026-11-01T00:17:49Z",
   "crucial": true,
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "v3/tests green incl. new tests; T-C expects net R -0.500667 (gross 0) from the s28 add example; FORMULAS.md s28.6 replaced by a RESOLVED line naming the sha; Result lists golden numbers moved (expected: none, adds not wired) and the two mutation results.",
+  "est_turns": 30,
   "formula_id": "",
-  "formula_ids": [],
+  "formula_ids": [
+    "28"
+  ],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Resolve the 3 s28.6 differences (ATR/balance contiguity, first-leg-only simulate_trade, day gate on empty history) with fail-first tests from the s28 hand numbers. Planner DECISION (OURS): 1 and 3 amend the spec (code fails closed), 2 builds multi-leg adds. Detail: MyTradingSys/research/fabio_v3_s28_diffs_2026-11-01/BRIEF.md",
   "id": "fabio-v3-code-vs-formulas-s28-diffs",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "FORMULAS s28 Fabio v3 S1-S9 / Models A-D and s29 Tom VP return-to-value, hand worked examp",
+      "ref": "d3c2a9bf628f",
+      "utc": "2026-10-31T23:47:03Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "d3c2a9bf628f FORMULAS s28 Fabio v3 S1-S9 / Models A-D and s29 Tom VP return-to-value, hand",
+      "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
+      "utc": "2026-10-31T23:47:03Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-01 ACCEPT (Sonnet reviewer Agent, FIX applied once, not re-read, planner DECISION OURS). PLANNER 2026-11-01 DECISION (OURS): diffs 1 and 3 resolve by amending the spec (code is the fail-closed reading, ATR needs c[i-N]); diff 2 resolves by building multi-leg add execution as a new function. CRUCIAL (formulas): review Agent on the diff before ship. Verify: content sha, git cherry origin/fast-track <sha> empty, ls-tree lists the files. run_extra_tests.py already lists v3/tests.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-01T01:08:04Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/fabio/v3/manage.py",
+    "MyTradingSys/backtest/layers/fabio/v3/signals.py",
+    "MyTradingSys/backtest/layers/fabio/v3/day_gates.py",
+    "MyTradingSys/backtest/layers/fabio/v3/__init__.py",
+    "MyTradingSys/backtest/layers/fabio/v3/tests/test_manage.py",
+    "MyTradingSys/backtest/layers/fabio/v3/tests/test_signals.py",
+    "MyTradingSys/backtest/layers/fabio/v3/tests/test_day_gates.py",
+    "MyTradingSys/backtest/layers/fabio/v3/README.md",
+    "MyTradingSys/backtest/layers/FORMULAS.md",
+    "MyTradingSys/research/fabio_v3_s28_diffs_2026-11-01/BRIEF.md"
+  ],
+  "scope_out": [
+    "engine.py and models.py (adds are NOT wired into the engine here; simulate_trade one-leg contract and its callers stay byte-identical)",
+    "any backtest rerun or verdict",
+    "live tree",
+    "fee/cost constants (costs.py)"
+  ],
+  "scope_sha": "d3c2a9bf628f",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "FORMULAS.md s28.6 lists 3 Fabio v3 code differences from spec: (1) balance and atr need one more contiguous bar than the spec window; (2) simulate_trade handles the first leg only, adds never execute; (3) day_gate_open fails closed with no prior ranges (check spec). Done when: each difference has a test using the s28 hand numbers that fails on current code, and the code or spec is fixed per FORMULAS.md, IS only, numbers moved listed",
-  "weight": "",
-  "worker": ""
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/fabio_v3_s28_diffs_2026-11-01/BRIEF.md (decisions, hand numbers, mutation checks) and FORMULAS.md s28",
+    "Write tests first (T-A contiguity, T-B day gate, T-C multi-leg add net R -0.500667); only T-C is red on the unchanged tree, T-A and T-B are proven red by the mutation checks",
+    "Implement simulate_trade_legs in manage.py; amend FORMULAS.md s28.1/28.2/28.5; replace s28.6 with RESOLVED; update README",
+    "Run both mutation checks from the brief; v3/tests, then run_all_tests --quick; review Agent on the diff; sync.py ship"
+  ],
+  "tests": "v3/tests/test_signals.py (gap before bar i-N+1 and mid-window -> None, s28 ATR 2.25), test_day_gates.py (s28 G=0.8 open, 0.79 closed, empty and zero-median closed), test_manage.py (multi-leg add numbers above); T-C fails on the pre-change tree (function missing); T-A and T-B pin spec amendments and fail by the mutation check.",
+  "title": "Fabio v3: resolve the 3 FORMULAS.md s28.6 code-vs-spec differences, each with an s28 hand-number test that is red first",
+  "weight": "CRUCIAL",
+  "worker": "session"
 }

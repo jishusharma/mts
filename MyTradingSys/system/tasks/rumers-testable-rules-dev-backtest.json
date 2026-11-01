@@ -5,7 +5,10 @@
     "python scripts/dev/sync.py start rumers-dev-check"
   ],
   "created": "2026-10-31T19:16:36Z",
-  "depends_on": [],
+  "depends_on": [
+    "gemini-yt-rumers-extract-1",
+    "gemini-yt-rumers-extract-2"
+  ],
   "done_when": "MyTradingSys/research/rumers_2026-11-01/DEV_CHECK.md has per-rule n, hit-rate, fee-net mean R vs claim; PRE_REG frozen before the run; one-bar shift look-ahead check passes; shipped with a Result: line",
   "est_turns": 20,
   "formula_id": "",
@@ -18,9 +21,9 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Gemini rules: captions first (fetch_captions_timed.py), quote only from the caption file, one fetch try per video, no retry loop, 429 -> UNVERIFIED with no quotes; verify_extract_quotes.py exit 0; facts and quotes only, no verdict, no code change. Operator 2026-11-01: channel @the.rumers, he finds these videos interesting; backtests follow. Final report ends with a Noticed: line.",
+  "note": "Gemini rules: captions first (fetch_captions_timed.py), quote only from the caption file, one fetch try per video, no retry loop, 429 -> UNVERIFIED with no quotes; verify_extract_quotes.py exit 0; facts and quotes only, no verdict, no code change. Operator 2026-11-01: channel @the.rumers, he finds these videos interesting; backtests follow. Final report ends with a Noticed: line. PLANNER 2026-11-01: depends_on added (extract cards still ready, no RUMERS_EXTRACT files on trunk); stays raw until both are done, then refine against the testable shortlists (PRE_REG frozen before first run).",
   "prio": 1,
-  "refine_tries": 0,
+  "refine_tries": 1,
   "refined_by": "",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
