@@ -31,7 +31,7 @@
   "live_path": false,
   "mutation_check": "",
   "not_twin_of": "discord-module-read-habib-and-krown-chan",
-  "note": "PLANNER 2026-11-02 DECISION (OURS): log goes in its own analysts/watch/POSTS_LOG.csv, not CALL_LEDGER.csv (schema differs: a post is not a scored call). Blocked-by-hardware parts: Discord computer-use needs the operator's one-time approval; YouTube IP lock to 2026-11-02T17:21Z, honoured by the guard. Routine hours/schedule: none allowed (SCHEDULING_POLICY.md), so a coordinator starts runs.",
+  "note": "PLANNER 2026-11-02 DECISION (OURS): log goes in its own analysts/watch/POSTS_LOG.csv, not CALL_LEDGER.csv (schema differs: a post is not a scored call). Blocked-by-hardware parts: Discord computer-use needs the operator's one-time approval; YouTube IP lock to 2026-11-02T17:21Z, honoured by the guard. Routine hours/schedule: none allowed (SCHEDULING_POLICY.md), so a coordinator starts runs. Weight ROUTINE (read-only, no trade logic). REVIEWED:2026-11-02 T0-ONLY",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "planner-b-1102c",
@@ -67,6 +67,6 @@
   ],
   "tests": "MyTradingSys/research/analysts/watch/test_watch_posts.py (fails first: module absent; block-live case must write zero rows)",
   "title": "Routine: Haiku reads Habib/Krown new YouTube videos (captions) and Discord Qriptal #trading-updates/#trading-thoughts posts (screen read, read-only), logs rows with channel and UTC time beside CBP",
-  "weight": "IMPORTANT",
+  "weight": "ROUTINE",
   "worker": "session"
 }
