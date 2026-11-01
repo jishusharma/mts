@@ -1,0 +1,278 @@
+{
+ "id": "c26-range-ladder",
+ "kind": "backtest",
+ "family": "Eagle_Eyes chart ideas (operator, 10-30/31)",
+ "provenance": "run",
+ "title": "C26 Candidate C, measure first: the range above a taken high and the divergence legs inside it (recent design window)",
+ "date": "2026-11-01",
+ "what": [
+  {
+   "name": "Source",
+   "value_plain": "operator 2026-11-01: martingale shorts on 1m-5m RSI divergence inside a range above the taken high, no per-leg stop inside it; card c26-scenario-roadmap-sequence Candidate C",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Events",
+   "value_plain": "C26 held highs (lows mirrored) that were taken, phase1_recent.py, 15m Binance spot",
+   "label": "OURS"
+  },
+  {
+   "name": "Range measured",
+   "value_plain": "highest high from the take-out to the exit (low reaches L1, else 24h), in % above H1",
+   "label": "OURS"
+  },
+  {
+   "name": "Legs",
+   "value_plain": "RSI(14) bearish divergence on 1m/2m/3m/5m bars: pivot +-3 bars, prior pivot within 60 bars lower in price and higher in RSI, counted at its confirmation close, above H1, after the 1m bar that broke H1",
+   "label": "OURS"
+  },
+  {
+   "name": "Trades",
+   "value_plain": "none: counts and distances, no size ladder, no fees, no P&L",
+   "label": "OURS"
+  }
+ ],
+ "how": "phase1_range.py <repo> <cache> --until 2026-11-01T07:45 --sim-json <this file>; 1m bars from data-api.binance.vision (fetch_1m.py).",
+ "window": "RECENT design window 2026-07-01 .. 2026-11-01 (SEEN: tuned here, tested on DEV later)",
+ "verdict": {
+  "label": "Measure only: DOWN highs that came back to L1 went 0.37 % (median) / 0.64 % (80th) beyond H1 first; 12 of 30 did not come back in 24h",
+  "tone": "warn"
+ },
+ "why": [
+  "The range a ladder must survive is the excursion of the take-outs that DO come back; the ones that do not are the ladder's loss.",
+  "A range top X stops the ladder on every take-out whose excursion exceeds X; the grid shows how many of those were false stops.",
+  "Divergence legs: how many 1m-5m signals fired inside the window says how many legs a martingale would have carried.",
+  "Nothing frozen: Phase 2 picks X, leg count and size step from this, then DEV 2022-04..2024-06 scores the book vs a single short."
+ ],
+ "kpis": [
+  {
+   "label": "DOWN-high take-outs",
+   "value": "30"
+  },
+  {
+   "label": "came back to L1 <=24h",
+   "value": "60 %",
+   "tone": "warn"
+  },
+  {
+   "label": "range of those (median / 80th)",
+   "value": "0.37 / 0.64 %"
+  },
+  {
+   "label": "widest that still came back",
+   "value": "2.28 %"
+  },
+  {
+   "label": "did not come back (range break)",
+   "value": "12",
+   "tone": "bad"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "charts",
+   "title": "DOWN highs: the range a ladder had to survive (percent from the held high)",
+   "items": [
+    {
+     "kind": "event",
+     "label": "worst DOWN high that still came back",
+     "note": "the widest range a ladder had to survive",
+     "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 300 160\" width=\"300\" height=\"160\"><path d=\"M4.3 94.8V125.7M12.9 89.1V103.0M21.4 82.1V106.3M30.0 97.0V106.9M38.6 100.3V107.7M47.1 99.6V110.2M55.7 99.7V105.5M64.3 93.4V102.6M72.9 95.9V109.2M81.4 88.0V107.2M90.0 73.5V96.7M98.6 27.0V81.9M107.1 23.1V45.5M115.7 41.7V60.4M124.3 52.4V59.7M132.9 32.9V64.3M141.4 38.9V52.0M150.0 40.1V49.7M158.6 37.9V46.1M167.1 32.1V44.8M175.7 12.0V41.1M184.3 14.5V53.2M192.9 49.8V80.6M201.4 72.0V87.6M210.0 81.3V117.2M218.6 95.6V114.7M227.1 105.0V132.0M235.7 108.8V124.4M244.3 108.4V119.6M252.9 107.5V112.8M261.4 107.6V110.4M270.0 106.7V111.5M278.6 102.0V107.8M287.1 103.5V106.2M295.7 102.7V109.1\" stroke=\"#8a8f98\" stroke-width=\"1\"/><path d=\"M1.3 94.9h6.0V117.0h-6.0ZM27.0 100.4h6.0V105.9h-6.0ZM44.1 102.7h6.0V106.7h-6.0ZM52.7 101.7h6.0V102.7h-6.0ZM61.3 99.1h6.0V101.7h-6.0ZM78.4 94.3h6.0V105.9h-6.0ZM87.0 81.8h6.0V94.3h-6.0ZM95.6 27.6h6.0V81.8h-6.0ZM129.9 41.5h6.0V57.5h-6.0ZM147.0 41.2h6.0V48.4h-6.0ZM155.6 40.4h6.0V41.2h-6.0ZM164.1 33.7h6.0V40.4h-6.0ZM215.6 105.6h6.0V106.9h-6.0ZM232.7 115.4h6.0V122.9h-6.0ZM241.3 112.3h6.0V115.4h-6.0ZM249.9 109.1h6.0V112.3h-6.0ZM258.4 107.6h6.0V109.1h-6.0ZM275.6 105.8h6.0V107.8h-6.0ZM284.1 104.9h6.0V105.8h-6.0Z\" fill=\"#9fb8a6\"/><path d=\"M9.9 94.9h6.0V99.0h-6.0ZM18.4 99.0h6.0V105.9h-6.0ZM35.6 100.4h6.0V106.7h-6.0ZM69.9 99.1h6.0V105.9h-6.0ZM104.1 27.6h6.0V43.5h-6.0ZM112.7 43.5h6.0V55.0h-6.0ZM121.3 55.0h6.0V57.5h-6.0ZM138.4 41.5h6.0V48.4h-6.0ZM172.7 33.7h6.0V34.3h-6.0ZM181.3 34.1h6.0V53.0h-6.0ZM189.9 53.0h6.0V74.5h-6.0ZM198.4 74.5h6.0V85.5h-6.0ZM207.0 85.5h6.0V106.9h-6.0ZM224.1 105.6h6.0V122.9h-6.0ZM267.0 107.6h6.0V108.2h-6.0ZM292.7 104.9h6.0V108.8h-6.0Z\" fill=\"#c4a3a3\"/><path d=\"M0 82.1H300\" stroke=\"#6b7280\" stroke-width=\"1.2\" stroke-dasharray=\"3 3\"/><text x=\"298\" y=\"80.1\" text-anchor=\"end\" font-size=\"9\" fill=\"#6b7280\">held high 0%</text><path d=\"M0 109.2H300\" stroke=\"#2563eb\" stroke-width=\"1.2\"/><text x=\"298\" y=\"107.2\" text-anchor=\"end\" font-size=\"9\" fill=\"#2563eb\">L1 -0.9%</text><circle cx=\"21.4\" cy=\"82.1\" r=\"3\" fill=\"#6b7280\"/><circle cx=\"92.1\" cy=\"85.2\" r=\"3.2\" fill=\"#2563eb\"/><path d=\"M91.3 79.1l6 6m0 -6l-6 6\" stroke=\"#111\" stroke-width=\"1.6\"/><text x=\"4\" y=\"153\" font-size=\"10\" font-family=\"sans-serif\" fill=\"#374151\">2026-10-01 18:30 DOWN high: taken 0h (ASIA), 24h -0.9%, beyond H1 2.28%</text></svg>"
+    },
+    {
+     "kind": "event",
+     "label": "typical DOWN high",
+     "note": "median excursion, back to L1",
+     "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 300 160\" width=\"300\" height=\"160\"><path d=\"M3.2 98.6V122.5M9.6 63.4V100.4M16.0 30.1V120.1M22.3 57.6V91.3M28.7 31.2V69.5M35.1 53.3V91.2M41.5 48.2V70.7M47.9 46.5V70.6M54.3 55.7V74.8M60.6 55.7V70.4M67.0 63.1V87.7M73.4 43.1V67.7M79.8 38.6V53.0M86.2 33.6V63.5M92.6 33.3V74.3M98.9 62.4V81.0M105.3 67.4V81.1M111.7 64.5V86.9M118.1 68.2V99.1M124.5 73.6V95.2M130.9 42.9V77.6M137.2 34.3V61.9M143.6 13.9V58.5M150.0 12.0V71.7M156.4 51.4V90.5M162.8 49.9V132.0M169.1 79.4V115.8M175.5 80.2V121.5M181.9 78.0V100.9M188.3 83.5V106.2M194.7 80.0V90.3M201.1 80.2V87.8M207.4 73.5V104.5M213.8 88.5V106.0M220.2 77.5V90.4M226.6 76.3V83.5M233.0 80.1V96.4M239.4 76.7V88.9M245.7 76.7V89.4M252.1 81.8V89.9M258.5 82.0V93.4M264.9 85.0V91.0M271.3 83.5V91.8M277.7 76.9V84.9M284.0 65.2V86.1M290.4 77.6V86.7M296.8 73.6V78.1\" stroke=\"#8a8f98\" stroke-width=\"1\"/><path d=\"M1.0 98.8h4.5V111.7h-4.5ZM7.3 71.4h4.5V98.8h-4.5ZM20.1 69.5h4.5V90.4h-4.5ZM26.5 57.0h4.5V69.5h-4.5ZM39.3 50.9h4.5V69.7h-4.5ZM52.0 65.0h4.5V70.2h-4.5ZM71.2 46.6h4.5V66.9h-4.5ZM77.6 44.1h4.5V46.6h-4.5ZM83.9 35.9h4.5V44.1h-4.5ZM103.1 74.9h4.5V80.5h-4.5ZM122.2 77.6h4.5V95.1h-4.5ZM128.6 50.1h4.5V77.6h-4.5ZM141.4 13.9h4.5V56.0h-4.5ZM154.1 58.0h4.5V63.3h-4.5ZM166.9 84.6h4.5V109.0h-4.5ZM173.3 84.1h4.5V84.7h-4.5ZM186.1 84.8h4.5V87.0h-4.5ZM192.4 81.8h4.5V84.8h-4.5ZM211.6 88.5h4.5V102.3h-4.5ZM218.0 81.2h4.5V88.5h-4.5ZM224.4 80.4h4.5V81.2h-4.5ZM237.1 76.8h4.5V88.5h-4.5ZM249.9 85.5h4.5V87.9h-4.5ZM269.0 84.1h4.5V90.9h-4.5ZM275.4 80.0h4.5V84.1h-4.5ZM288.2 78.1h4.5V83.6h-4.5ZM294.6 74.7h4.5V78.1h-4.5Z\" fill=\"#9fb8a6\"/><path d=\"M13.7 71.4h4.5V90.4h-4.5ZM32.9 57.0h4.5V69.7h-4.5ZM45.6 50.9h4.5V70.2h-4.5ZM58.4 65.0h4.5V65.6h-4.5ZM64.8 65.3h4.5V66.9h-4.5ZM90.3 35.9h4.5V70.0h-4.5ZM96.7 70.0h4.5V80.5h-4.5ZM109.5 74.9h4.5V77.7h-4.5ZM115.9 77.7h4.5V95.1h-4.5ZM135.0 50.1h4.5V56.0h-4.5ZM147.8 13.9h4.5V63.3h-4.5ZM160.5 58.0h4.5V109.0h-4.5ZM179.7 84.1h4.5V87.0h-4.5ZM198.8 81.8h4.5V86.2h-4.5ZM205.2 86.2h4.5V102.3h-4.5ZM230.7 80.4h4.5V88.5h-4.5ZM243.5 76.8h4.5V87.9h-4.5ZM256.3 85.5h4.5V86.5h-4.5ZM262.7 86.5h4.5V90.9h-4.5ZM281.8 80.0h4.5V83.6h-4.5Z\" fill=\"#c4a3a3\"/><path d=\"M0 30.1H300\" stroke=\"#6b7280\" stroke-width=\"1.2\" stroke-dasharray=\"3 3\"/><text x=\"298\" y=\"28.1\" text-anchor=\"end\" font-size=\"9\" fill=\"#6b7280\">held high 0%</text><path d=\"M0 76.3H300\" stroke=\"#2563eb\" stroke-width=\"1.2\"/><text x=\"298\" y=\"74.3\" text-anchor=\"end\" font-size=\"9\" fill=\"#2563eb\">L1 -0.9%</text><circle cx=\"16.0\" cy=\"30.1\" r=\"3\" fill=\"#6b7280\"/><circle cx=\"52.7\" cy=\"70.2\" r=\"3.2\" fill=\"#2563eb\"/><path d=\"M67.0 76.3l4 7h-8Z\" fill=\"#d97706\"/><path d=\"M145.4 27.1l6 6m0 -6l-6 6\" stroke=\"#111\" stroke-width=\"1.6\"/><text x=\"4\" y=\"153\" font-size=\"10\" font-family=\"sans-serif\" fill=\"#374151\">2026-09-24 14:15 DOWN high: taken 15h (LONDON), 24h -1.2%, beyond H1 0.37%</text></svg>"
+    },
+    {
+     "kind": "event",
+     "label": "DOWN high range break",
+     "note": "never came back to L1 within 24h: the ladder's loss case",
+     "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 300 160\" width=\"300\" height=\"160\"><path d=\"M4.2 101.6V116.1M12.5 96.8V106.8M20.8 95.3V104.6M29.2 101.4V128.0M37.5 120.2V132.0M45.8 110.9V120.9M54.2 104.9V125.1M62.5 106.4V114.3M70.8 106.2V118.0M79.2 107.1V125.6M87.5 97.9V121.1M95.8 85.7V112.8M104.2 89.2V105.9M112.5 75.7V101.9M120.8 69.9V87.8M129.2 81.3V90.4M137.5 82.2V91.0M145.8 87.3V93.1M154.2 84.3V91.8M162.5 81.0V88.6M170.8 79.3V86.8M179.2 78.4V92.3M187.5 72.4V82.0M195.8 61.1V72.4M204.2 21.1V64.6M212.5 28.4V51.5M220.8 45.4V52.0M229.2 43.4V55.2M237.5 29.2V46.4M245.8 35.4V45.1M254.2 33.4V43.2M262.5 31.6V40.1M270.8 12.0V39.1M279.2 14.1V34.4M287.5 23.4V66.3M295.8 55.5V67.2\" stroke=\"#8a8f98\" stroke-width=\"1\"/><path d=\"M1.3 104.5h5.8V115.1h-5.8ZM9.6 99.1h5.8V104.5h-5.8ZM34.6 120.7h5.8V124.7h-5.8ZM42.9 114.3h5.8V120.7h-5.8ZM51.2 108.8h5.8V114.3h-5.8ZM76.2 109.6h5.8V115.6h-5.8ZM84.6 106.3h5.8V109.6h-5.8ZM92.9 102.9h5.8V106.3h-5.8ZM101.2 101.8h5.8V102.9h-5.8ZM109.6 80.8h5.8V101.8h-5.8ZM151.2 85.5h5.8V91.6h-5.8ZM159.6 81.6h5.8V85.5h-5.8ZM176.2 80.7h5.8V84.4h-5.8ZM184.6 72.4h5.8V80.7h-5.8ZM192.9 62.8h5.8V72.4h-5.8ZM201.2 28.9h5.8V62.8h-5.8ZM226.3 45.6h5.8V48.5h-5.8ZM234.6 41.3h5.8V45.6h-5.8ZM242.9 37.5h5.8V41.3h-5.8ZM259.6 35.7h5.8V39.4h-5.8ZM267.9 24.2h5.8V35.7h-5.8Z\" fill=\"#9fb8a6\"/><path d=\"M17.9 99.1h5.8V104.2h-5.8ZM26.2 104.2h5.8V124.7h-5.8ZM59.6 108.8h5.8V110.6h-5.8ZM67.9 110.6h5.8V115.6h-5.8ZM117.9 80.8h5.8V83.9h-5.8ZM126.3 83.9h5.8V87.7h-5.8ZM134.6 87.7h5.8V88.9h-5.8ZM142.9 88.9h5.8V91.6h-5.8ZM167.9 81.6h5.8V84.4h-5.8ZM209.6 28.9h5.8V48.2h-5.8ZM217.9 48.2h5.8V48.8h-5.8ZM251.3 37.5h5.8V39.4h-5.8ZM276.2 24.2h5.8V31.5h-5.8ZM284.6 31.5h5.8V57.6h-5.8ZM292.9 57.6h5.8V59.0h-5.8Z\" fill=\"#c4a3a3\"/><path d=\"M0 95.3H300\" stroke=\"#6b7280\" stroke-width=\"1.2\" stroke-dasharray=\"3 3\"/><text x=\"298\" y=\"93.3\" text-anchor=\"end\" font-size=\"9\" fill=\"#6b7280\">held high 0%</text><path d=\"M0 125.1H300\" stroke=\"#2563eb\" stroke-width=\"1.2\"/><text x=\"298\" y=\"123.1\" text-anchor=\"end\" font-size=\"9\" fill=\"#2563eb\">L1 -1.2%</text><circle cx=\"20.8\" cy=\"95.3\" r=\"3\" fill=\"#6b7280\"/><circle cx=\"68.8\" cy=\"110.6\" r=\"3.2\" fill=\"#2563eb\"/><path d=\"M81.3 125.1l4 7h-8Z\" fill=\"#d97706\"/><path d=\"M92.8 92.3l6 6m0 -6l-6 6\" stroke=\"#111\" stroke-width=\"1.6\"/><text x=\"4\" y=\"153\" font-size=\"10\" font-family=\"sans-serif\" fill=\"#374151\">2026-10-01 06:00 DOWN high: taken 3h (US), 24h +1.8%, beyond H1 3.32%</text></svg>"
+    }
+   ],
+   "caption": "Grey dot = the high, blue dot = retest held, cross = taken; dashed = H1, blue line = L1. 24h after the take-out shown."
+  },
+  {
+   "kind": "table",
+   "title": "Range top X for DOWN highs",
+   "cols": [
+    "X above H1",
+    "stopped out",
+    "false stops (came back anyway)",
+    "not stopped: back to L1 / n"
+   ],
+   "rows": [
+    [
+     "0.30 %",
+     "22/30",
+     "12",
+     "6/8"
+    ],
+    [
+     "0.50 %",
+     "17/30",
+     "7",
+     "11/13"
+    ],
+    [
+     "0.65 %",
+     "13/30",
+     "3",
+     "15/17"
+    ],
+    [
+     "0.80 %",
+     "12/30",
+     "2",
+     "16/18"
+    ],
+    [
+     "1.00 %",
+     "9/30",
+     "2",
+     "16/21"
+    ],
+    [
+     "1.50 %",
+     "5/30",
+     "2",
+     "16/25"
+    ],
+    [
+     "2.00 %",
+     "2/30",
+     "1",
+     "17/28"
+    ]
+   ],
+   "caption": "stopped = excursion > X before the exit"
+  },
+  {
+   "kind": "table",
+   "title": "Divergence legs inside the window, DOWN highs",
+   "cols": [
+    "TF",
+    "take-outs with a signal",
+    "signals (median)",
+    "first signal after the break",
+    "first signal above H1 (median)"
+   ],
+   "rows": [
+    [
+     "1m",
+     "29/30",
+     "16",
+     "12 min",
+     "0.14 %"
+    ],
+    [
+     "2m",
+     "29/30",
+     "12",
+     "25 min",
+     "0.14 %"
+    ],
+    [
+     "3m",
+     "27/30",
+     "11",
+     "31 min",
+     "0.21 %"
+    ],
+    [
+     "5m",
+     "25/30",
+     "8",
+     "63 min",
+     "0.24 %"
+    ]
+   ],
+   "caption": "1m-5m bars aggregated from Binance spot 1m"
+  },
+  {
+   "kind": "table",
+   "title": "Ladder shapes on the DOWN-high take-outs",
+   "cols": [
+    "shape",
+    "events filled",
+    "exits L1 / 24h / stop",
+    "mean net unit-%",
+    "sum",
+    "worst event",
+    "mean net per max unit",
+    "max units"
+   ],
+   "rows": [
+    [
+     "A single short, stop 1.0",
+     "30/30",
+     "17 / 8 / 5",
+     "+0.35",
+     "+10.54",
+     "-1.49",
+     "+0.35",
+     "1"
+    ],
+    [
+     "A single short, stop 1.5",
+     "30/30",
+     "17 / 10 / 3",
+     "+0.34",
+     "+10.17",
+     "-1.99",
+     "+0.34",
+     "1"
+    ],
+    [
+     "flat 3 legs 1-1-1, stop 1.0",
+     "30/30",
+     "16 / 5 / 9",
+     "+0.59",
+     "+17.79",
+     "-2.40",
+     "+0.20",
+     "3"
+    ],
+    [
+     "martingale 1-2-4, stop 1.0",
+     "30/30",
+     "16 / 5 / 9",
+     "+1.02",
+     "+30.67",
+     "-4.70",
+     "+0.15",
+     "7"
+    ],
+    [
+     "nested tiers 0.65/1.0/1.5, sizes 1/2/4, stop 1.5",
+     "30/30",
+     "16 / 9 / 5",
+     "+0.38",
+     "+11.34",
+     "-10.10",
+     "+0.03",
+     "14"
+    ],
+    [
+     "nested tiers, flat sizes 1/1/1, stop 1.5",
+     "30/30",
+     "16 / 9 / 5",
+     "+0.54",
+     "+16.12",
+     "-5.55",
+     "+0.09",
+     "6"
+    ]
+   ],
+   "caption": "design look, gross arithmetic on 30 events: unit-% = units x move in % of H1, fee 0.10 % per unit per leg; 'per max unit' = mean net divided by the biggest stack the shape carries. Operator 2026-11-01: ladder per tier 0.65 / 1.0 / 1.5 ('martingale inside a martingale')"
+  }
+ ],
+ "source_files": [
+  "MyTradingSys/research/c26_roadmap_2026-11-01/PHASE1_RANGE.md",
+  "MyTradingSys/research/c26_roadmap_2026-11-01/phase1_ladder_look.py",
+  "MyTradingSys/research/c26_roadmap_2026-11-01/phase1_range.py"
+ ],
+ "commit": "this card"
+}

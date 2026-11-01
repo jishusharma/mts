@@ -24,13 +24,19 @@ What it prunes (only entries whose newest file is older than the age limit; lock
                               uncommitted files only when their branch is on trunk and they are idle 24 h, patch saved to Dumps/wt_rescue first;
                               never unshipped commits, lane, codex, gemini, gpt or live trees; merged local branches deleted
   %TEMP%/claude/<proj>/<sid>  Claude session scratch + background-task output: 3 days
+  caches outside %TEMP% (buckets; dry run prints GB per bucket): Dumps/wt_rescue regenerable caches (wt_maint.RESCUE_SKIP);
+                              Chrome/Edge Cache, Code Cache, GPUCache only while that browser is not running (never Service Worker
+                              storage, cookies or profiles); older playwright browser revisions; Claude session logs
+                              (~/.claude/projects/*/<uuid>) older than 14 days (never memory/); sibling mts-* and .claude/worktrees
+                              folders with no .git that are no worktree, idle 7 days. The Claude app VM image is only reported.
 What it never prunes: KEEP_NAMES (state other code reads: role injection records, host health, gate slots, relay).
 What it only reports: a Claude background-task .output file over 500 MB (a runaway, e.g. a bare `python -` REPL looping on
 WinError 6 wrote 3.5 GB at ~0.5 MB/s on 2026-10-18). Stopping the process is the operator's call; the line names the file.
-Never touches the repo, .secrets, F:, the live tree or anything outside %TEMP%.
+Never touches tracked repo files, .secrets, .env, browser profiles, F:, the live tree or anything not named above.
 Who writes each prefix, and where the logs are: MyTradingSys/system/STATION_CLEANUP.md.
 """
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -156,8 +162,179 @@ def reason(path):
                                                                       next(x for x in PREFIXES if name.startswith(x)), TEMP_AGE_H)
 
 
+# ---- regenerable caches outside %TEMP% (buckets): dry run lists GB per bucket, --apply / logon prune them ----
+# Measured on JIS-NB 2026-11-01 (C: 9.3 GB free of 121): Dumps/wt_rescue 6.55 GB, of which 6.37 GB was sim_desk/cache/bars that
+# wt_maint copied out of every retired tree (rebuilt by `desk.py --build` in about a minute); real rescued work was 3 MB.
+HOME = Path(os.environ.get("MTS_GUARD_HOME") or os.path.expanduser("~"))
+LOCALAPPDATA = Path(os.environ.get("MTS_GUARD_LOCALAPPDATA") or os.path.expandvars(r"%LOCALAPPDATA%"))
+MAIN = None                     # primary checkout; None = main_checkout() (tests set a folder)
+BROWSERS = (("Google/Chrome/User Data", "chrome.exe"), ("Microsoft/Edge/User Data", "msedge.exe"))
+BROWSER_CACHES = ("Cache", "Code Cache", "GPUCache")    # per profile; never Service Worker storage, cookies or the profile itself
+BROWSER_SHARED = ("GrShaderCache", "ShaderCache", "GraphiteDawnCache")
+CLAUDE_LOG_DAYS = 14            # DECISION (OURS): token_audit reads the last 7 days; twice that, then session logs go
+ORPHAN_DAYS = 7                 # DECISION (OURS): a sibling mts-* folder with no .git, not a worktree, untouched this long
+PLAYWRIGHT_DAYS = 1
+LIVE_MARKER = ".mts_live"       # sync.LIVE_MARKER: the live tree is never pruned
+UUID_RE = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(\.jsonl)?$")
+
+
+def main_root():
+    return Path(MAIN) if MAIN else main_checkout()
+
+
+def worktree_paths(main):
+    """Resolved paths of every git worktree of `main`, or None when git cannot say (callers then prune nothing)."""
+    try:
+        r = subprocess.run(["git", "-C", str(main), "worktree", "list", "--porcelain"], capture_output=True, text=True,
+                           timeout=60, creationflags=NO_WINDOW)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    if r.returncode != 0:
+        return None
+    return {os.path.normcase(str(Path(l[9:]).resolve())) for l in r.stdout.splitlines() if l.startswith("worktree ")}
+
+
+def running(image):
+    try:
+        return any(p["name"].lower() == image for p in hh.snapshot())
+    except Exception:           # unknown = running: never prune a cache a browser may hold open
+        return True
+
+
+def stale_rows(bucket, paths, cutoff, why):
+    out = []
+    for p in paths:
+        try:
+            stale, size = stale_size(str(p), cutoff)
+        except OSError:
+            continue
+        if stale:
+            out.append((bucket, str(p), size, why))
+    return out
+
+
+def rescue_cache_rows(main):
+    """Regenerable caches wt_maint copied into Dumps/wt_rescue (wt_maint.RESCUE_SKIP); the rest of a rescue is kept."""
+    from wt_maint import RESCUE_SKIP
+    ends = tuple("/" + s.lower() for s in RESCUE_SKIP)    # any depth: older rescues sit under <tree>/files/
+    paths, todo = [], [str(Path(main) / "Dumps" / "wt_rescue")]
+    while todo:
+        for e in scan(todo.pop()):
+            if not e.is_dir(follow_symlinks=False) or not dir_not_reparse(e.path):
+                continue
+            if e.path.replace("\\", "/").lower().endswith(ends):
+                paths.append(e.path)
+            else:
+                todo.append(e.path)
+    return stale_rows("rescue-cache", paths, time.time(), "regenerable cache copied by wt_maint")
+
+
+def browser_rows(local, run=None):
+    run = run or running
+    out = []
+    for rel, image in BROWSERS:
+        root = Path(local) / rel
+        if not dir_not_reparse(root):
+            continue
+        if run(image):
+            continue            # its cache files are open: next logon run, before the browser starts
+        dirs = [root / s for s in BROWSER_SHARED]
+        for prof in scan(root):
+            if prof.is_dir(follow_symlinks=False):
+                dirs += [Path(prof.path) / c for c in BROWSER_CACHES]
+        out += stale_rows("browser-cache", [d for d in dirs if dir_not_reparse(d)], time.time(), image + " not running")
+    return out
+
+
+def playwright_rows(local, now=None):
+    """Older revisions of a playwright browser when a newer one of the same kind sits beside it."""
+    root = Path(local) / "ms-playwright"
+    newest = {}
+    for e in scan(root):
+        kind, _, rev = e.name.rpartition("-")
+        if kind and rev.isdigit() and e.is_dir(follow_symlinks=False):
+            newest.setdefault(kind, []).append((int(rev), e.path))
+    old = [p for revs in newest.values() for _, p in sorted(revs)[:-1]]
+    return stale_rows("playwright-old", old, (now or time.time()) - PLAYWRIGHT_DAYS * 86400, "a newer revision is installed")
+
+
+def claude_log_rows(home, now=None):
+    """Claude session logs (<uuid>.jsonl and <uuid>/) untouched CLAUDE_LOG_DAYS; never memory/ or any other name."""
+    paths = []
+    for proj in scan(Path(home) / ".claude" / "projects"):
+        if proj.is_dir(follow_symlinks=False):
+            paths += [e.path for e in scan(proj.path) if UUID_RE.match(e.name)]
+    return stale_rows("claude-logs", paths, (now or time.time()) - CLAUDE_LOG_DAYS * 86400,
+                      "session log older than %d days" % CLAUDE_LOG_DAYS)
+
+
+def orphan_rows(main, trees=None, now=None):
+    """Sibling mts-* folders and .claude/worktrees/* that are no git worktree and hold no .git: what a failed removal leaves."""
+    trees = worktree_paths(main) if trees is None else trees
+    if trees is None:
+        return []
+    cands = [Path(e.path) for e in scan(Path(main).parent) if e.name.startswith("mts-")]
+    cands += [Path(e.path) for e in scan(Path(main) / ".claude" / "worktrees")]
+    cands = [p for p in cands if dir_not_reparse(p) and os.path.normcase(str(p.resolve())) not in trees
+             and not (p / ".git").exists() and not (p / LIVE_MARKER).exists()]
+    return stale_rows("orphan-tree", cands, (now or time.time()) - ORPHAN_DAYS * 86400,
+                      "no .git, not a worktree, idle %d days" % ORPHAN_DAYS)
+
+
+def bucket_rows():
+    """(bucket, path, bytes, reason) for every cache prunable outside %TEMP%. Never raises: a failing bucket adds nothing."""
+    main = main_root()
+    jobs = [lambda: browser_rows(LOCALAPPDATA), lambda: playwright_rows(LOCALAPPDATA), lambda: claude_log_rows(HOME)]
+    if main:
+        jobs += [lambda: rescue_cache_rows(main), lambda: orphan_rows(main)]
+    out = []
+    for job in jobs:
+        try:
+            out += job()
+        except Exception:
+            pass
+    return out
+
+
+def report_only():
+    """(label, GB) of big items the guard never deletes, so the report names them."""
+    out = []
+    for vm in (LOCALAPPDATA / "Claude-Data").glob("*/vm_bundles"):
+        out.append(("Claude app VM image (app-managed, never deleted)", dir_bytes(vm) / 1e9))
+    return out
+
+
+def dir_bytes(p):
+    total, todo = 0, [str(p)]
+    while todo:
+        for e in scan(todo.pop()):
+            try:
+                if e.is_dir(follow_symlinks=False):
+                    todo.append(e.path)
+                else:
+                    total += e.stat(follow_symlinks=False).st_size
+            except OSError:
+                pass
+    return total
+
+
+def prune_buckets(apply, rows=None):
+    """-> {bucket: [n, bytes]} of what was (or would be) freed."""
+    out = {}
+    for bucket, path, size, _ in (bucket_rows() if rows is None else rows):
+        if not apply or remove(path):
+            n = out.setdefault(bucket, [0, 0])
+            n[0] += 1
+            n[1] += size
+    return out
+
+
+def bucket_text(done):
+    return ", ".join("%s %d (%.2f GB)" % (b, n, s / 1e9) for b, (n, s) in sorted(done.items())) or "none"
+
+
 NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0)   # every child: no console window on the operator's screen, ever
-LOCK = LOG.parent / "c_drive_guard.lock"                 # one copy per host and user (LOG lives under LOCALAPPDATA)
+LOCK =LOG.parent / "c_drive_guard.lock"                 # one copy per host and user (LOG lives under LOCALAPPDATA)
 LOCK_STALE_H = 2
 
 
@@ -242,7 +419,7 @@ def repo_args(argv):
 
 def plan():
     """Dry-run listing: (kind, path-or-name, bytes, reason) for everything --apply would delete. Deletes nothing."""
-    rows = [("temp", p, size, reason(p)) for p, size in candidates()]
+    rows = [("temp", p, size, reason(p)) for p, size in candidates()] + bucket_rows()
     for line in run_tidy(False):
         if line.startswith("would remove  "):
             name, _, why = line[len("would remove  "):].partition(": ")
@@ -448,11 +625,12 @@ def apply_all(tag):
     before = free_gb()
     n, freed = prune(apply=True)
     gone = [l for l in run_tidy(True) if l.startswith("removed  ")]
+    done = prune_buckets(True)      # after tidy: a tree retired now has its rescue cache pruned in the same run
     after = free_gb()
-    log("%s: C free %.1f GB -> %.1f GB (freed %.2f GB); %d temp entries (%.2f GB); %d worktrees retired; %s; procs (report only): %s"
+    log("%s: C free %.1f GB -> %.1f GB (freed %.2f GB); %d temp entries (%.2f GB); %d worktrees retired; caches: %s; %s; procs (report only): %s"
         % (tag, before, after, max(after - before, 0) if after != float("inf") else 0, n, freed / 1e9, len(gone),
-           main_checkout_note(), procs_summary()))
-    return n, freed, len(gone)
+           bucket_text(done), main_checkout_note(), procs_summary()))
+    return n, freed + sum(s for _, s in done.values()), len(gone)
 
 
 def daily_due(now=None):
@@ -504,8 +682,9 @@ def logon(repos=()):
         before = free_gb()
         n, freed = prune(apply=True)
         gone = [l for l in (run_tidy(True, repos) if repos else run_tidy(True)) if l.startswith("removed  ")]
-        log("logon: C free %.1f GB -> %.1f GB; pruned %d temp entries, %.2f GB; %d worktrees retired; runaway outputs %d"
-            % (before, free_gb(), n, freed / 1e9, len(gone), len(runaways())))
+        done = prune_buckets(True)
+        log("logon: C free %.1f GB -> %.1f GB; pruned %d temp entries, %.2f GB; %d worktrees retired; caches: %s; runaway outputs %d"
+            % (before, free_gb(), n, freed / 1e9, len(gone), bucket_text(done), len(runaways())))
     except Exception as e:     # the log says why; a restart must not show an error box
         log("logon: error %r" % (e,))
     return 0
@@ -639,11 +818,17 @@ def main(argv):
             n, freed, trees = apply_all("apply")
         finally:
             drop_lock()
-        print(f"pruned {n} temp entries, {freed / 1e9:.2f} GB; retired {trees} worktrees")
+        print(f"pruned {n} temp entries + caches, {freed / 1e9:.2f} GB; retired {trees} worktrees")
         print(f"C: free now {free_gb():.2f} GB")
         return 0
     n, freed = prune(False)
-    print(f"would prune {n} temp entries, {freed / 1e9:.2f} GB (dry run; `plan` lists each with its reason, --apply prunes)")
+    print("%-15s %5s %8s" % ("bucket", "items", "GB"))
+    print("%-15s %5d %8.2f" % ("temp", n, freed / 1e9))
+    for bucket, (k, size) in sorted(prune_buckets(False).items()):
+        print("%-15s %5d %8.2f" % (bucket, k, size / 1e9))
+    for label, gb in report_only():
+        print("report only: %s %.2f GB" % (label, gb))
+    print("dry run: nothing deleted (`plan` lists each item with its reason, --apply prunes)")
     return 0
 
 

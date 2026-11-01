@@ -45,8 +45,11 @@ class GuardTest(unittest.TestCase):
         self.real_check = g.start_check_detached
         g.start_check_detached = lambda: None          # never post a real device-tasks report from a test
         g.run_tidy = lambda apply: []                  # never run the real worktree job against this checkout from a test
+        self.old_roots = g.HOME, g.LOCALAPPDATA, g.MAIN
+        g.HOME = g.LOCALAPPDATA = g.MAIN = self.root / "_sandbox"   # never prune the real browser caches or session logs
 
     def tearDown(self):
+        g.HOME, g.LOCALAPPDATA, g.MAIN = self.old_roots
         g.TEMP, g.LOG, g.STAMP = self.old_temp, self.old_log, self.old_stamp
         g.LOCK = self.old_lock
         g.run_tidy = self.real_tidy

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T08:54:10Z",
   "commands": [],
   "created": "2026-10-31T17:29:26Z",
   "depends_on": [],
@@ -15,18 +16,24 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "SOUND: 24/24 mutants killed (old 7/24); MyTradingSys/research/layer_lab/reports/2026-11-01",
+      "ref": "1bbfef9c9",
+      "utc": "2026-11-01T08:54:10Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "F2 pre-reg: rolling 1h DFA Hurst regime gate, FORMULAS s27, 4 TRIALS rows, DFA module + te",
-      "ref": "d94529dce83d",
-      "utc": "2026-10-31T08:24:27Z"
+      "line": "fabio v3: resolve the three FORMULAS.md s28.6 code-vs-spec differences",
+      "ref": "b69d699f3164",
+      "utc": "2026-11-01T01:15:41Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "d94529dce83d F2 pre-reg: rolling 1h DFA Hurst regime gate, FORMULAS s27, 4 TRIALS rows, DF",
+      "line": "b69d699f3164 fabio v3: resolve the three FORMULAS.md s28.6 code-vs-spec differences",
       "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
-      "utc": "2026-10-31T08:24:27Z"
+      "utc": "2026-11-01T01:15:41Z"
     }
   ],
   "layers": [],
@@ -36,9 +43,14 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
-  "refreshed": "2026-10-31T17:29:56Z",
+  "refreshed": "2026-11-01T08:47:37Z",
   "refs": [],
-  "result": "",
+  "result": "SOUND: 24/24 mutants killed (old 7/24); MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-mutation-pizzino-indicators-1031.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/pizzino/pizzino_indicators.py",
     "MyTradingSys/backtest/layers/pizzino/test_pizzino_indicators.py",
@@ -49,10 +61,10 @@
     "holdout reads",
     "BTC runs of the current encoding (ROADMAP section 2)"
   ],
-  "scope_sha": "d94529dce83d",
+  "scope_sha": "b69d699f3164",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
     "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
@@ -60,6 +72,7 @@
     "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
     "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
   ],
+  "taken": "2026-11-01T08:54:10Z",
   "tests": "new MyTradingSys/backtest/layers/pizzino/test_pizzino_spec.py: each added test fails on its mutation, passes on the original",
   "title": "GPT: mutation-kill audit of pizzino_indicators.py",
   "weight": "",

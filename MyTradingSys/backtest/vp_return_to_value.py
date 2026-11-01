@@ -181,6 +181,19 @@ def diff(numA, denA, numB, denB, mask):
     return {"diff": float(a.sum() / b.sum() - c.sum() / d.sum()), "ci": _pct(x)}
 
 
+NEAR_MAX_D = 1.0                                 # tom-v2-gross-first-dev-ext primary: placebo restricted to |d| <= 1 (SETUP_REVIEW sec 6 test 2)
+
+
+def near_band_primary(res, dvals, max_d=NEAR_MAX_D):
+    """Primary of tom-v2-gross-first-dev-ext: real minus placebo return share over the days whose placebo |d| <= max_d.
+    Same events, same outcome rule and same day-block bootstrap as Part A; only the day mask differs."""
+    mask = np.abs(np.asarray(dvals, float)) <= max_d
+    R, Pl = res["real"], res["placebo"]
+    return {"max_abs_d": float(max_d), "n_days": int(mask.sum()),
+            "real": share(R["ret"], R["event"], mask), "placebo": share(Pl["ret"], Pl["event"], mask),
+            "diff": diff(R["ret"], R["event"], Pl["ret"], Pl["event"], mask)}
+
+
 def underpowered(n):
     return "UNDERPOWERED (n<100)" if n < 100 else ""
 
