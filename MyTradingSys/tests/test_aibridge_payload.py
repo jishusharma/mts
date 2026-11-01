@@ -94,3 +94,12 @@ def test_agent_live_selftest():
     fails = [ln for ln in r.stdout.splitlines() if ln.startswith("FAIL")]
     assert r.returncode == 0 and not fails, "\n".join(fails)[:3000] or r.stderr[-2000:]
     assert re.search(r"\d+ passed, 0 failed", r.stdout)
+
+
+def test_post_run_and_ping_fetch_disables_cache_no_store():
+    """aibridge-extension-guard-no-store-respon: POST /run and GET /ping fetch must specify cache: 'no-store'."""
+    bg = (PAYLOAD / "extension" / "background.js").read_text(encoding="utf-8")
+    assert "cache: 'no-store'" in bg, "background.js fetch must set cache: 'no-store'"
+    # Verify both the ping GET and the run POST explicitly include cache: 'no-store'
+    assert re.search(r"fetch\([^)]*\/ping['\"][^}]*cache:\s*['\"]no-store['\"]", bg), "GET /ping must specify cache: 'no-store'"
+    assert re.search(r"fetch\([^,]+,\s*\{[^}]*method:\s*['\"]POST['\"][^}]*cache:\s*['\"]no-store['\"]", bg), "POST /run must specify cache: 'no-store'"

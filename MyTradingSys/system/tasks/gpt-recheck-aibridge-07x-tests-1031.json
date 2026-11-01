@@ -1,19 +1,26 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T11:46:24Z",
   "commands": [],
   "created": "2026-10-31T17:29:27Z",
   "depends_on": [],
-  "done_when": "The report has the findings table (or 'no findings' plus what was checked) and one verdict line: SOUND / FIX-FIRST / BLOCKED.",
+  "done_when": "Report includes the assertion map, four executed mutation outcomes, spec-derived tests demonstrating every survivor on original and mutant, exact reproduction commands and a committed .py.txt harness; one verdict SOUND / FIX-FIRST / BLOCKED. Permanent suite changes are follow-up builds, not audit outputs.",
   "est_turns": null,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Cross-vendor recheck of the AIBridge 0.7.x test files: for each assertion say whether it would still pass if the guarded behaviour (task EXIT_CODE gate, cmd kind, payload) were removed; hand-mutate 4 behaviours in a scratch copy; report survivors and write one new failing-first test per survivor.",
+  "goal": "Cross-vendor recheck of the AIBridge 0.7.x test files: map each assertion to its guarded behaviour (task EXIT_CODE gate, cmd kind, payload); execute 4 hand mutations in disposable scratch copies; report survivors and derive one failing-first test per survivor in a reproducible audit harness.",
   "id": "gpt-recheck-aibridge-07x-tests-1031",
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "FIX-FIRST; 3/4 mutants killed, M4 survivor and scratch contract proof; MyTradingSys/resear",
+      "ref": "7c4f25664",
+      "utc": "2026-11-01T11:46:24Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -24,19 +31,27 @@
   ],
   "layers": [],
   "live_path": false,
-  "mutation_check": "MyTradingSys/tests/test_aibridge_07x_survivors.py::test_exit_code_gate_survivor",
-  "note": "",
+  "mutation_check": "",
+  "note": "Scope repaired after shipped BLOCKED report f16517b70 (2026-11-01): audit/no-code guard conflicted with mandatory permanent test file. Keep the mutation evidence requirement; outputs are scratch demonstrations plus reproducible .py.txt under research/layer_lab. No production/spec changes.",
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "codex_run.py ask",
-  "refreshed": "2026-10-31T17:29:59Z",
+  "refined_by": "codex-queue-scope-repair",
+  "refreshed": "2026-11-01T11:41:33Z",
   "refs": [],
-  "result": "",
+  "result": "FIX-FIRST; 3/4 mutants killed, M4 survivor and scratch contract proof; MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-recheck-aibridge-07x-tests-1031.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tests/test_aibridge_task_gate_exit.py",
     "MyTradingSys/tests/test_aibridge_cmd_kind.py",
     "MyTradingSys/tests/test_aibridge_payload.py",
-    "scripts/aibridge/extension/background.js"
+    "scripts/aibridge/extension/background.js",
+    "scripts/aibridge/scripts/run-task.ps1",
+    "scripts/aibridge/src/checks.ps1",
+    "MyTradingSys/research/layer_lab/"
   ],
   "scope_out": [
     "code or spec changes",
@@ -46,15 +61,18 @@
   "scope_sha": "92024c7daeba",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
     "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
-    "Report findings as a table: severity HIGH/MED/LOW, file:line, what is wrong, evidence, proposed fix. Change no code and no spec.",
+    "Report findings as a table: severity HIGH/MED/LOW, file:line, what is wrong, evidence, proposed fix. Change no production code, permanent test suite or spec. Mutate only disposable scratch copies and save the reproducible harness as research/layer_lab/aibridge_07x_mutation_audit.py.txt.",
     "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
-    "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
+    "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET.",
+    "Execute the baseline and all 4 mutants; do not substitute source-to-assertion predictions for recorded mutation results. Derive survivor tests from the documented contract and show each passes on original and fails on its mutant. Include exact commands, mutation diffs and exit/results in the report.",
+    "For a surviving behaviour, capture the permanent regression-test fix as a follow-up SONNET build card with its required test and gate-registration paths; this audit delivers the scratch demonstration, not a permanent test file."
   ],
-  "tests": "new MyTradingSys/tests/test_aibridge_07x_survivors.py: each test fails on the mutated scratch copy and passes on the original",
+  "taken": "2026-11-01T11:46:24Z",
+  "tests": "Run the original focused tests and 4 scratch mutants. For every survivor, execute a spec-derived test that passes on original and fails on its mutant. Preserve the runnable harness as MyTradingSys/research/layer_lab/aibridge_07x_mutation_audit.py.txt, with exact copy/run commands and original/mutant outcomes in the report. Do not add a permanent test_*.py in this audit.",
   "title": "GPT: cross-vendor recheck of AIBridge 0.7.x tests by mutation",
   "weight": "",
   "worker": ""

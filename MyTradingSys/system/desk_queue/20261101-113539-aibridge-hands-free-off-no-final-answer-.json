@@ -1,0 +1,10 @@
+{
+  "done_when": "Extension re-arms without manual intervention or operator F5 after a successful 6-block run.",
+  "from": "JIS-NUC",
+  "id": "20261101-113539-aibridge-hands-free-off-no-final-answer-",
+  "need": "AIBridge hands-free turned OFF with banner: 'DSA showed no final answer after the result and the chat never went idle for a wake-up notice'. This happened after a 6-block reply. The chat required re-arming. Screenshot shows running 0 and the red error.",
+  "posted": "2026-11-01T11:35:39Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "aibridge-hands-free-off-no-final-answer-11-01"
+}

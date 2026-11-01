@@ -275,3 +275,12 @@ class TestStats(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def test_docstring_names_dst_sessions():
+    """fabio-of-model-docstring-dst-sessions: module docstring mentions B102 and session_bounds DST shifts."""
+    import MyTradingSys.backtest.layers.fabio.fabio_of_model as M
+    doc = M.__doc__ or ""
+    assert "B102" in doc, "docstring must mention B102"
+    assert "session_bounds" in doc, "docstring must mention session_bounds"
+    assert "DST" in doc, "docstring must mention DST"

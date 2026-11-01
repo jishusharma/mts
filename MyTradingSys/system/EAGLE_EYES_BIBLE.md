@@ -95,6 +95,8 @@ Why this section exists: the 10-28 session was compacted 6 times; each summary k
 | Liquidation heatmap: what was hit | C6 row; heatmap history NOT_IN_DATA (no recorder) | 2 instances |
 | His 15 recurring chart patterns | `OPERATOR_POINTERS.md` | digest 10-29 |
 | Analyst views | `ANALYST_VIEWS_2026-10-29.md` | 10-29 |
+| First touch after the bottom (11-01): RSI 15m divergence + bars apart, close outside BB, StochRSI top, CVD "forces" (impulses per session, does it fire after entry, RSI then), OI at the level | `research/c26_roadmap_2026-11-01/phase1_touch_look.py`, PHASE1_RANGE.md Q5 | measured 11-01 on 30 SEEN take-outs: StochRSI >= 80 and "no CVD up-impulse at/after the touch" split the shorts; BB and WT cross select nothing; 74 % of up-impulses at RSI >= 50 |
+| WaveTrend as a reference beside the touch, so we know what to compare in the backtest (11-01) | same Q5, columns wt1 / WT cross dn | cross down within 2h in 25/30 touches = context, not trigger (C27/C28 agree) |
 
 ## Per-shot frame (OURS, from the teachings above)
 

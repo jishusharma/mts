@@ -1,0 +1,78 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T12:04:51Z",
+  "commands": [],
+  "created": "2026-11-01T11:45:16Z",
+  "depends_on": [],
+  "done_when": "The focused assertion passes on current background.js and fails if the POST fetch cache setting is removed; relevant focused tests pass.",
+  "est_turns": 2,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Add a permanent regression assertion that POST /run from the extension disables caching per scripts/aibridge/docs/V07_CONTRACT.md, and preserve current request forwarding.",
+  "id": "aibridge-extension-guard-no-store-respon",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Added test_post_run_and_ping_fetch_disables_cache_no_store in test_aibridge_payload.py ass",
+      "ref": "82734786d",
+      "utc": "2026-11-01T12:04:51Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "AIBridge 0.7.7: E5 any non-zero exit stops the batch, E6 task lock follows agent default, ",
+      "ref": "a9300f5bd71f",
+      "utc": "2026-10-31T15:35:55Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "a9300f5bd71f AIBridge 0.7.7: E5 any non-zero exit stops the batch, E6 task lock follows ag",
+      "ref": "scripts/aibridge/docs/V07_CONTRACT.md",
+      "utc": "2026-10-31T15:35:55Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Surviving M4 from gpt-recheck-aibridge-07x-tests-1031 audit. Scratch proof: contract assertion passes on original and fails when POST cache:no-store is removed.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-01T11:45:35Z",
+  "refs": [],
+  "result": "Added test_post_run_and_ping_fetch_disables_cache_no_store in test_aibridge_payload.py asserting background.js POST /run and GET /ping fetch set cache: 'no-store'; proved red on scratch mutation and green on clean code",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/aibridge/extension/background.js",
+    "scripts/aibridge/docs/V07_CONTRACT.md",
+    "MyTradingSys/tests/test_aibridge_payload.py",
+    "scripts/dev/run_extra_tests.py"
+  ],
+  "scope_out": [
+    "Permanent unrelated AIBridge behavior changes"
+  ],
+  "scope_sha": "a9300f5bd71f",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Inspect the POST /run request and V07 no-cache contract; add a failing-first regression assertion.",
+    "Verify the test gate registration and run the focused test against original and cache-setting mutation.",
+    "Run the relevant focused payload suite and report results."
+  ],
+  "taken": "2026-11-01T12:02:11Z",
+  "tests": "Add contract-derived test coverage in MyTradingSys/tests/test_aibridge_payload.py for POST /run cache: no-store. Run python -m pytest MyTradingSys/tests/test_aibridge_payload.py -k <new-test> and the focused payload suite; prove red on a scratch mutation first. Confirm registration in scripts/dev/run_extra_tests.py EXTRA; include that path if registration is needed.",
+  "title": "AIBridge extension: guard no-store response delivery with a contract regression",
+  "weight": "",
+  "worker": "session"
+}

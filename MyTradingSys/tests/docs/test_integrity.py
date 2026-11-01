@@ -209,3 +209,11 @@ def test_10_workers_blocked_solve_it_rule():
     """bug-ai-health-stops-at-first-blocker (NUC 2026-10-26): a refusal is solved and verified, then reported."""
     t = (MTS / "system" / "WORKERS.md").read_text(encoding="utf-8")
     assert "Blocked" in t and "report AND continue" in t and "brief template" in t.lower()
+
+
+def test_funding_rerun_names_secondary_move():
+    """funding-rerun-label-primary-vs-secondary: FUNDING_RERUN.md names both primary and secondary moves and n_T<200 reason."""
+    doc = (REPO / "MyTradingSys" / "research" / "gross_effect_screen_2026-10-15" / "FUNDING_RERUN.md").read_text(encoding="utf-8")
+    assert "+0.0013" in doc, "missing primary cell move +0.0013"
+    assert "+0.0181" in doc, "missing secondary cell move +0.0181"
+    assert "n_T" in doc or "n < 200" in doc, "missing n_T<200 reason"
