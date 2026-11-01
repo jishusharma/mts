@@ -99,3 +99,12 @@ A second AIBridge + DeepSeek chat now runs on the NUC next to the one on the des
 5. Re-run every RESULT.md number from its script monthly; report drift (cheap regression check).
 6. Daily: `run_all_tests.py --quick`, STATUS regenerate, `sync.py where`, stale-claim sweep, one line to the inbox.
 7. Fetch refresh: klines/funding up to yesterday for the symbols in the registry.
+
+## Standing setup (operator 2026-11-01: all testing tasks go to DSA; one bridge on JIS-NB, one on JIS-NUC)
+Cheapest shape: DSA does the work (no Claude budget); the supervisor only watches; Haiku only (re)starts a chat.
+- Where: Chrome profile jishu.awgp@gmail.com ("Profile 4"), tab chat.deepseek.com, AIBridge extension from F:\AIBridge\extension. One chat per host; leave it open.
+- Work in: testing runs are desk rows (`desk.py post ... --target DSA-NB|DSA-NUC`; `desk.py assign` posts every ready DSA-lane card). Standing rows: a `run_all_tests.py --quick` sweep per host.
+- Watch (zero tokens): `python scripts/dev/dsa_watch.py` in the supervisor stop-guard. Exit 0 = nothing stalled (`--stale-hours`, default 3); exit 1 = a bridge has a pending row older than that. Only exit 1 needs a Claude look.
+- On exit 1 the supervisor spawns ONE Haiku Agent (never Sonnet) to: open the DeepSeek tab in Profile 4, paste `Dumps\SESSION_PASTE.txt` (`scripts\start-session.ps1`), send "Check the desk tasks for DSA-<host> and do them." It never types credentials and stops at a login wall (report to the operator).
+- Operator-only steps: reload the extension in chrome://extensions after an AIBridge install; tick Hands-free in the panel.
+- Close-out: a supervisor spot-checks ONE number per DSA report (section above), never redoes a closed row.
