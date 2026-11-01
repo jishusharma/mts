@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-29T22:56:42Z",
+  "depends_on": [],
+  "done_when": "189 cards remain reachable; no numeric result changes; Cloud verifies before merge.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Repair mojibake punctuation in generated catalogue text without changing numeric results.",
+  "id": "audit48-catalogue-unicode",
+  "kind": "build",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "MyTradingSys/research/sim_desk/test_backfill.py::test_corrupt_catalogue_is_empty",
+  "note": "IMPLEMENTED, AWAITING CLOUD REVIEW.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/results/_catalogue.json",
+    "MyTradingSys/research/sim_desk/artifact/index.html"
+  ],
+  "scope_out": [
+    "source notes",
+    "numeric KPIs",
+    "live tree"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "active",
+  "steps": [
+    "Compare catalogue titles with committed source notes; repair UTF-8 punctuation decoded as cp1251.",
+    "Rebuild artifact and verify counts and numeric leaves unchanged; Cloud reviews diff."
+  ],
+  "tests": "17 tests and 9 subtests pass; 29 string fields repaired; zero numeric changes.",
+  "title": "48h audit: repair source-extracted catalogue punctuation encoding",
+  "weight": "ROUTINE",
+  "worker": "session"
+}
