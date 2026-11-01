@@ -15,13 +15,23 @@
   "goal": "A git fetch/push hung 16 h on git-credential-manager on the NUC (2026-10-31 02:31Z). sync.py git() already has a 180 s deadline and GIT_TERMINAL_PROMPT=0 (sync.py:76-92); other tools do not. Give every network git caller a deadline and no-prompt env, and add a doctor check for git network processes older than 30 min.",
   "id": "nuc-hung-git-remote-https-16h",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "orderflow_live: HTTP 400 resume point resets, loud exit 4; doctor OF-RESTARTS",
+      "ref": "b3067646a0aa",
+      "utc": "2026-11-01T01:34:34Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "PLANNER 2026-11-01: half the card was already shipped (sync.py git(), e1ac77891); scope narrowed to the other callers + doctor. Needs a Sonnet reviewer ACCEPT before ready (IMPORTANT).",
+  "note": "REVIEWED:2026-11-01 ACCEPT (Sonnet reviewer Agent, planner-refine-1101). PLANNER 2026-11-01: half the card was already shipped (sync.py git(), e1ac77891); scope narrowed to the other callers + doctor. ",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-01T04:11:29Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -40,12 +50,13 @@
     "sync.py git() (already done)",
     "killing processes"
   ],
+  "scope_sha": "b3067646a0aa",
   "size": "M",
   "sources": [
     "scripts/dev/sync.py:75-92 (existing deadline, bg-process-audit 2026-10-28)",
     "card title (hang 2026-10-31 02:31Z, parent cmd.exe from 10-30 21:01Z)"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Audit: grep subprocess git fetch/push/pull/ls-remote/clone in scripts/dev (non-test) and list which lack timeout= and GIT_TERMINAL_PROMPT in the commit body; fix those in scope_in (reuse sync.GIT_NOPROMPT, sync.GIT_NET_TIMEOUT_S)",
     "Doctor check GIT-HUNG (add to CHECK_NAMES): stdlib process list (Get-CimInstance Win32_Process on Windows, ps elsewhere) via an injectable procs_fn; WARN when a git or git-credential-manager process running fetch/push/pull/credential is older than 30 min (OURS), naming pid, age and parent",

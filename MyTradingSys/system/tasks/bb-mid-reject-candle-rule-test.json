@@ -2,6 +2,20 @@
   "approved_by": "operator 2026-10-30 via Eagle_Eyes (d-map-before-backtest, d-setup-review-before-backtest, d-storybook-v2)",
   "asks": "Which setup pick (map result) should the BB-mid rejection pre-reg use? Default: wait for the map.",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-01T04:11:55Z",
+    "misses": 6,
+    "reads": [
+      "scripts/dev/test_auto_deploy.py",
+      "MyTradingSys/execution/auto_trader.py",
+      "MyTradingSys/system/roles/session_planner.md",
+      "MyTradingSys/system/role_details/session_planner_details.md",
+      "scripts/dev/run_all_tests.py",
+      "scripts/dev/auto_deploy.py"
+    ],
+    "session": "agent-ae71de0f2b57c91b1"
+  },
   "created": "2026-10-29T22:28:47Z",
   "depends_on": [
     "bb-state-regime-tf-map",
