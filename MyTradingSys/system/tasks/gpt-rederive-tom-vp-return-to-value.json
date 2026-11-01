@@ -13,7 +13,22 @@
   "id": "gpt-rederive-tom-vp-return-to-value",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "lab gpt-rederive-tom-vp-return-to-value: BLOCKED (audit)",
+      "ref": "f07d4247d150",
+      "utc": "2026-10-31T17:29:29Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "f07d4247d150 lab gpt-rederive-tom-vp-return-to-value: BLOCKED (audit)",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-10-31_gpt-rederive-tom-vp-return-to-value.md",
+      "utc": "2026-10-31T17:29:29Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -21,7 +36,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T23:18:14Z",
+  "refreshed": "2026-11-01T08:38:33Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -30,7 +45,7 @@
   "scope_out": [
     "editing the audited study, VALIDATION or HOLDOUT data"
   ],
-  "scope_sha": "",
+  "scope_sha": "f07d4247d150",
   "size": "S",
   "sources": [],
   "state": "ready",
