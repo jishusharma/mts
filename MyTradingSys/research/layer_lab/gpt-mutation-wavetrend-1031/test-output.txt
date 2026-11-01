@@ -1,0 +1,248 @@
+test_available_at_is_bar_close (audit_tests.TestGolden.test_available_at_is_bar_close) ... ok
+test_events_match_golden_after_warmup (audit_tests.TestGolden.test_events_match_golden_after_warmup) ... ok
+test_values_match_golden_after_warmup (audit_tests.TestGolden.test_values_match_golden_after_warmup) ... ok
+test_warmup_outputs_are_nan (audit_tests.TestGolden.test_warmup_outputs_are_nan) ... ok
+test_flat_input_is_nan_never_zero_or_inf (audit_tests.TestHandFixtures.test_flat_input_is_nan_never_zero_or_inf) ... ok
+test_nan_bar_drops_state_and_warms_up_again (audit_tests.TestHandFixtures.test_nan_bar_drops_state_and_warms_up_again) ... ok
+test_sma4_hand_values (audit_tests.TestHandFixtures.test_sma4_hand_values) ... ok
+test_tie_conventions (audit_tests.TestHandFixtures.test_tie_conventions) ... ok
+test_time_gap_treated_as_missing (audit_tests.TestHandFixtures.test_time_gap_treated_as_missing) ... ok
+test_two_bar_hand_value (audit_tests.TestHandFixtures.test_two_bar_hand_value) ... ok
+test_zone_boundaries (audit_tests.TestHandFixtures.test_zone_boundaries) ... ok
+test_htf_uses_last_closed_bar_only (audit_tests.TestLookAhead.test_htf_uses_last_closed_bar_only) ... ok
+test_planted_future_spike_changes_nothing_before_it (audit_tests.TestLookAhead.test_planted_future_spike_changes_nothing_before_it) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.020s
+
+OK
+
+MUTATION channel_length
+test_available_at_is_bar_close (audit_tests.TestGolden.test_available_at_is_bar_close) ... ok
+test_events_match_golden_after_warmup (audit_tests.TestGolden.test_events_match_golden_after_warmup) ... FAIL
+test_values_match_golden_after_warmup (audit_tests.TestGolden.test_values_match_golden_after_warmup) ... FAIL
+test_warmup_outputs_are_nan (audit_tests.TestGolden.test_warmup_outputs_are_nan) ... ok
+test_flat_input_is_nan_never_zero_or_inf (audit_tests.TestHandFixtures.test_flat_input_is_nan_never_zero_or_inf) ... ok
+test_nan_bar_drops_state_and_warms_up_again (audit_tests.TestHandFixtures.test_nan_bar_drops_state_and_warms_up_again) ... ok
+test_sma4_hand_values (audit_tests.TestHandFixtures.test_sma4_hand_values) ... ok
+test_tie_conventions (audit_tests.TestHandFixtures.test_tie_conventions) ... ok
+test_time_gap_treated_as_missing (audit_tests.TestHandFixtures.test_time_gap_treated_as_missing) ... ok
+test_two_bar_hand_value (audit_tests.TestHandFixtures.test_two_bar_hand_value) ... FAIL
+test_zone_boundaries (audit_tests.TestHandFixtures.test_zone_boundaries) ... ok
+test_htf_uses_last_closed_bar_only (audit_tests.TestLookAhead.test_htf_uses_last_closed_bar_only) ... ok
+test_planted_future_spike_changes_nothing_before_it (audit_tests.TestLookAhead.test_planted_future_spike_changes_nothing_before_it) ... ok
+
+======================================================================
+FAIL: test_events_match_golden_after_warmup (audit_tests.TestGolden.test_events_match_golden_after_warmup)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "F:\MTS\mts-codex-lab\MyTradingSys\backtest\layers\wavetrend\test_wavetrend.py", line 45, in test_events_match_golden_after_warmup
+    self.assertEqual(got, exp)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: Lists differ: [0, 0[342 chars], 0, 0, 1, 0, 0, 0, -1, 0, 0, 0, 0, 0, 1, 0, 0[216 chars]0, 0] != [0, 0[342 chars], 0, 1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 1, 0, 0[216 chars]0, 0]
+
+First differing element 114:
+0
+1
+
+Diff is 1223 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_values_match_golden_after_warmup (audit_tests.TestGolden.test_values_match_golden_after_warmup)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "F:\MTS\mts-codex-lab\MyTradingSys\backtest\layers\wavetrend\test_wavetrend.py", line 37, in test_values_match_golden_after_warmup
+    self.assertAlmostEqual(rows[i].wt1, gold[i][0], delta=1e-9, msg=f"wt1 bar {i}")
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 3.1922630135999555 != 3.197653821521 within 1e-09 delta (0.005390807921044516 difference) : wt1 bar 200
+
+======================================================================
+FAIL: test_two_bar_hand_value (audit_tests.TestHandFixtures.test_two_bar_hand_value)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "F:\MTS\mts-codex-lab\MyTradingSys\backtest\layers\wavetrend\test_wavetrend.py", line 67, in test_two_bar_hand_value
+    self.assertAlmostEqual(rows[1].wt1, 5.5 / 0.015, delta=1e-9)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 400.00000000000006 != 366.6666666666667 within 1e-09 delta (33.33333333333337 difference)
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.026s
+
+FAILED (failures=3)
+
+MUTATION average_length
+test_available_at_is_bar_close (audit_tests.TestGolden.test_available_at_is_bar_close) ... ok
+test_events_match_golden_after_warmup (audit_tests.TestGolden.test_events_match_golden_after_warmup) ... FAIL
+test_values_match_golden_after_warmup (audit_tests.TestGolden.test_values_match_golden_after_warmup) ... FAIL
+test_warmup_outputs_are_nan (audit_tests.TestGolden.test_warmup_outputs_are_nan) ... ok
+test_flat_input_is_nan_never_zero_or_inf (audit_tests.TestHandFixtures.test_flat_input_is_nan_never_zero_or_inf) ... ok
+test_nan_bar_drops_state_and_warms_up_again (audit_tests.TestHandFixtures.test_nan_bar_drops_state_and_warms_up_again) ... ok
+test_sma4_hand_values (audit_tests.TestHandFixtures.test_sma4_hand_values) ... ok
+test_tie_conventions (audit_tests.TestHandFixtures.test_tie_conventions) ... ok
+test_time_gap_treated_as_missing (audit_tests.TestHandFixtures.test_time_gap_treated_as_missing) ... ok
+test_two_bar_hand_value (audit_tests.TestHandFixtures.test_two_bar_hand_value) ... ok
+test_zone_boundaries (audit_tests.TestHandFixtures.test_zone_boundaries) ... ok
+test_htf_uses_last_closed_bar_only (audit_tests.TestLookAhead.test_htf_uses_last_closed_bar_only) ... ok
+test_planted_future_spike_changes_nothing_before_it (audit_tests.TestLookAhead.test_planted_future_spike_changes_nothing_before_it) ... ok
+
+======================================================================
+FAIL: test_events_match_golden_after_warmup (audit_tests.TestGolden.test_events_match_golden_after_warmup)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "F:\MTS\mts-codex-lab\MyTradingSys\backtest\layers\wavetrend\test_wavetrend.py", line 45, in test_events_match_golden_after_warmup
+    self.assertEqual(got, exp)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: Lists differ: [0, 0[250 chars], 0, 1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0[309 chars]0, 0] != [0, 0[250 chars], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,[308 chars]0, 0]
+
+First differing element 84:
+1
+0
+
+Diff is 1236 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_values_match_golden_after_warmup (audit_tests.TestGolden.test_values_match_golden_after_warmup)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "F:\MTS\mts-codex-lab\MyTradingSys\backtest\layers\wavetrend\test_wavetrend.py", line 37, in test_values_match_golden_after_warmup
+    self.assertAlmostEqual(rows[i].wt1, gold[i][0], delta=1e-9, msg=f"wt1 bar {i}")
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2.3883247301425468 != 3.197653821521 within 1e-09 delta (0.8093290913784532 difference) : wt1 bar 200
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.025s
+
+FAILED (failures=2)
+
+MUTATION ema_alpha
+test_available_at_is_bar_close (audit_tests.TestGolden.test_available_at_is_bar_close) ... ok
+test_events_match_golden_after_warmup (audit_tests.TestGolden.test_events_match_golden_after_warmup) ... FAIL
+test_values_match_golden_after_warmup (audit_tests.TestGolden.test_values_match_golden_after_warmup) ... FAIL
+test_warmup_outputs_are_nan (audit_tests.TestGolden.test_warmup_outputs_are_nan) ... ok
+test_flat_input_is_nan_never_zero_or_inf (audit_tests.TestHandFixtures.test_flat_input_is_nan_never_zero_or_inf) ... ok
+test_nan_bar_drops_state_and_warms_up_again (audit_tests.TestHandFixtures.test_nan_bar_drops_state_and_warms_up_again) ... ok
+test_sma4_hand_values (audit_tests.TestHandFixtures.test_sma4_hand_values) ... ok
+test_tie_conventions (audit_tests.TestHandFixtures.test_tie_conventions) ... ok
+test_time_gap_treated_as_missing (audit_tests.TestHandFixtures.test_time_gap_treated_as_missing) ... ok
+test_two_bar_hand_value (audit_tests.TestHandFixtures.test_two_bar_hand_value) ... FAIL
+test_zone_boundaries (audit_tests.TestHandFixtures.test_zone_boundaries) ... ok
+test_htf_uses_last_closed_bar_only (audit_tests.TestLookAhead.test_htf_uses_last_closed_bar_only) ... ok
+test_planted_future_spike_changes_nothing_before_it (audit_tests.TestLookAhead.test_planted_future_spike_changes_nothing_before_it) ... ok
+
+======================================================================
+FAIL: test_events_match_golden_after_warmup (audit_tests.TestGolden.test_events_match_golden_after_warmup)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "F:\MTS\mts-codex-lab\MyTradingSys\backtest\layers\wavetrend\test_wavetrend.py", line 45, in test_events_match_golden_after_warmup
+    self.assertEqual(got, exp)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: Lists differ: [-1, 0, 1, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, [568 chars]0, 0] != [0, 0, 0, 1, -1, 0, 0, 1, 0, 0, 0, 0, 0, 0[567 chars]0, 0]
+
+First differing element 0:
+-1
+0
+
+Diff is 1402 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_values_match_golden_after_warmup (audit_tests.TestGolden.test_values_match_golden_after_warmup)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "F:\MTS\mts-codex-lab\MyTradingSys\backtest\layers\wavetrend\test_wavetrend.py", line 37, in test_values_match_golden_after_warmup
+    self.assertAlmostEqual(rows[i].wt1, gold[i][0], delta=1e-9, msg=f"wt1 bar {i}")
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: -1.852721555613356 != 3.197653821521 within 1e-09 delta (5.0503753771343565 difference) : wt1 bar 200
+
+======================================================================
+FAIL: test_two_bar_hand_value (audit_tests.TestHandFixtures.test_two_bar_hand_value)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "F:\MTS\mts-codex-lab\MyTradingSys\backtest\layers\wavetrend\test_wavetrend.py", line 67, in test_two_bar_hand_value
+    self.assertAlmostEqual(rows[1].wt1, 5.5 / 0.015, delta=1e-9)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 733.3333333333334 != 366.6666666666667 within 1e-09 delta (366.6666666666667 difference)
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.027s
+
+FAILED (failures=3)
+
+MUTATION cross_rule
+test_available_at_is_bar_close (audit_tests.TestGolden.test_available_at_is_bar_close) ... ok
+test_events_match_golden_after_warmup (audit_tests.TestGolden.test_events_match_golden_after_warmup) ... ok
+test_values_match_golden_after_warmup (audit_tests.TestGolden.test_values_match_golden_after_warmup) ... ok
+test_warmup_outputs_are_nan (audit_tests.TestGolden.test_warmup_outputs_are_nan) ... ok
+test_flat_input_is_nan_never_zero_or_inf (audit_tests.TestHandFixtures.test_flat_input_is_nan_never_zero_or_inf) ... ok
+test_nan_bar_drops_state_and_warms_up_again (audit_tests.TestHandFixtures.test_nan_bar_drops_state_and_warms_up_again) ... ok
+test_sma4_hand_values (audit_tests.TestHandFixtures.test_sma4_hand_values) ... ok
+test_tie_conventions (audit_tests.TestHandFixtures.test_tie_conventions) ... FAIL
+test_time_gap_treated_as_missing (audit_tests.TestHandFixtures.test_time_gap_treated_as_missing) ... ok
+test_two_bar_hand_value (audit_tests.TestHandFixtures.test_two_bar_hand_value) ... ok
+test_zone_boundaries (audit_tests.TestHandFixtures.test_zone_boundaries) ... ok
+test_htf_uses_last_closed_bar_only (audit_tests.TestLookAhead.test_htf_uses_last_closed_bar_only) ... ok
+test_planted_future_spike_changes_nothing_before_it (audit_tests.TestLookAhead.test_planted_future_spike_changes_nothing_before_it) ... ok
+
+======================================================================
+FAIL: test_tie_conventions (audit_tests.TestHandFixtures.test_tie_conventions)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "F:\MTS\mts-codex-lab\MyTradingSys\backtest\layers\wavetrend\test_wavetrend.py", line 98, in test_tie_conventions
+    self.assertEqual(sides(1, 0, -1), [0, 0, -1])    # through a tie bar: one down-cross, at the first strict bar
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [0, 0, 0] != [0, 0, -1]
+
+First differing element 2:
+0
+-1
+
+- [0, 0, 0]
+?        ^
+
++ [0, 0, -1]
+?        ^^
+
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.020s
+
+FAILED (failures=1)
+
+MUTATION overbought_level
+test_available_at_is_bar_close (audit_tests.TestGolden.test_available_at_is_bar_close) ... ok
+test_events_match_golden_after_warmup (audit_tests.TestGolden.test_events_match_golden_after_warmup) ... ok
+test_values_match_golden_after_warmup (audit_tests.TestGolden.test_values_match_golden_after_warmup) ... ok
+test_warmup_outputs_are_nan (audit_tests.TestGolden.test_warmup_outputs_are_nan) ... ok
+test_flat_input_is_nan_never_zero_or_inf (audit_tests.TestHandFixtures.test_flat_input_is_nan_never_zero_or_inf) ... ok
+test_nan_bar_drops_state_and_warms_up_again (audit_tests.TestHandFixtures.test_nan_bar_drops_state_and_warms_up_again) ... ok
+test_sma4_hand_values (audit_tests.TestHandFixtures.test_sma4_hand_values) ... ok
+test_tie_conventions (audit_tests.TestHandFixtures.test_tie_conventions) ... ok
+test_time_gap_treated_as_missing (audit_tests.TestHandFixtures.test_time_gap_treated_as_missing) ... ok
+test_two_bar_hand_value (audit_tests.TestHandFixtures.test_two_bar_hand_value) ... ok
+test_zone_boundaries (audit_tests.TestHandFixtures.test_zone_boundaries) ... FAIL
+test_htf_uses_last_closed_bar_only (audit_tests.TestLookAhead.test_htf_uses_last_closed_bar_only) ... ok
+test_planted_future_spike_changes_nothing_before_it (audit_tests.TestLookAhead.test_planted_future_spike_changes_nothing_before_it) ... ok
+
+======================================================================
+FAIL: test_zone_boundaries (audit_tests.TestHandFixtures.test_zone_boundaries)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "F:\MTS\mts-codex-lab\MyTradingSys\backtest\layers\wavetrend\test_wavetrend.py", line 105, in test_zone_boundaries
+    self.assertEqual([z(v) for v in (60, 59.99, 53, 52.99, 0)], ["ob2", "ob1", "ob1", "mid", "mid"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['ob1', 'ob1', 'ob1', 'mid', 'mid'] != ['ob2', 'ob1', 'ob1', 'mid', 'mid']
+
+First differing element 0:
+'ob1'
+'ob2'
+
+- ['ob1', 'ob1', 'ob1', 'mid', 'mid']
+?                -------
+
++ ['ob2', 'ob1', 'ob1', 'mid', 'mid']
+?  +++++++
+
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.020s
+
+FAILED (failures=1)
