@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T02:53:37Z",
   "commands": [
     "python scripts/dev/test_verdicts.py",
     "python scripts/dev/run_all_tests.py --quick"
@@ -18,6 +19,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "fixed in 2f7231dff (backfill byte-identical rerun, kill_scope honoured)",
+      "ref": "0e3c1fe91",
+      "utc": "2026-11-01T02:53:37Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "test: make regate fixes 3-7 DEV pin count-agnostic",
@@ -34,7 +41,12 @@
   "refined_by": "",
   "refreshed": "2026-10-31T20:37:31Z",
   "refs": [],
-  "result": "",
+  "result": "fixed in 2f7231dff (backfill byte-identical rerun, kill_scope honoured)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/verdicts.py",
     "scripts/dev/test_verdicts.py"
@@ -47,13 +59,14 @@
   "sources": [
     "MyTradingSys/research/VERDICTS.csv:90-92 (T058 15m FAIL); scripts/dev/verdicts.py:311,386"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "1 Repro: run backfill twice on a copy of VERDICTS.csv (--csv tmp), diff; list which of the ~180 rows change and why (row order, quoting, git_info date/commit drift)",
     "2 Fail-first tests in scripts/dev/test_verdicts.py: backfill twice gives identical bytes; check on a 4h query does not BLOCK on 15m FAIL rows (VERDICTS.csv:90-93+) whose kill_scope names 15m only",
     "3 Fix cmd_backfill (verdicts.py:311) for stable output; fix cmd_check (:386): read timeframe tokens (15m,1h,4h,1D) in kill_scope, ignore a FAIL whose scope names other frames; 'weekly and daily' is not a 4h match (OURS)",
     "4 Run test_verdicts.py and run_all_tests.py --quick; commit only code and tests, not a regenerated CSV unless the rerun diff is empty"
   ],
+  "taken": "2026-11-01T02:53:37Z",
   "tests": "scripts/dev/test_verdicts.py: backfill_twice_identical and check_honours_kill_scope_timeframe; both fail on current verdicts.py",
   "title": "verdicts.py backfill rewrites ~180 rows of VERDICTS.csv and verdicts.py check flags T058 15m FAIL as blocking a 4h/1D study though T058 kill_scope excludes it. Done when: backfill is idempotent (no diff on rerun) and check honours kill_scope, test fails on old code first",
   "weight": "IMPORTANT",
