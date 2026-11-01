@@ -17,6 +17,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import phase1_range as R  # noqa: E402
 import phase1_ladder_look as LL  # noqa: E402
+import phase1_card as CARD  # noqa: E402
 
 ROW, TOPQ, IMB = 100.0, 0.25, 3.0  # OURS
 
@@ -56,8 +57,9 @@ def main():
         rows.append([P.utc(P.T[take]).strftime("%m-%d %H:%M"), "%.0f" % lvl, "%d" % (ext - take + 1), "%+.1f" % top_d,
                      "%.0f %%" % (100 * top_share), "%.2f" % poc_pos, str(imb), "%+.2f %s" % (net, why)])
     print("## Q9. Footprint proxy over the excursion above H1 at the DOWN-high take-outs (design look, OURS, n=%d)\n" % len(recs))
-    print(R.table(["take-out (UTC)", "H1", "excursion bars", "top-quarter taker delta (BTC)", "top-quarter volume share",
-                   "POC position (0 low, 1 high)", "sell-imbalance rows at top", "single short net, exit"], rows))
+    cols = ["take-out (UTC)", "H1", "excursion bars", "top-quarter taker delta (BTC)", "top-quarter volume share",
+            "POC position (0 low, 1 high)", "sell-imbalance rows at top", "single short net, exit"]
+    print(R.table(cols, rows))
     facts = (("top-quarter delta negative (sellers won the high)", lambda r: r["top_d"] < 0),
              ("top-quarter volume share >= 35 % (stacked top)", lambda r: r["top_share"] >= 0.35),
              ("POC in the lower half (top rejected)", lambda r: r["poc_pos"] < 0.5),
@@ -70,7 +72,33 @@ def main():
             cells.append("%d: %d L1, %+.2f" % (len(g), sum(1 for r in g if r["why"] == "L1"), sum(r["net"] for r in g) / len(g)) if g else "0")
         out.append([name] + cells)
     print()
-    print(R.table(["footprint fact over the excursion", "yes: n, reached L1, mean net unit-%", "no: n, reached L1, mean net unit-%"], out))
+    fcols = ["footprint fact over the excursion", "yes: n, reached L1, mean net unit-%", "no: n, reached L1, mean net unit-%"]
+    print(R.table(fcols, out))
+    if CARD.arg("--card"):
+        sellers = sum(1 for r in recs if r["top_d"] < 0)
+        imbs = sum(1 for r in recs if r["imb"] > 0)
+        CARD.write(CARD.arg("--card"), CARD.card(
+            "c26-q9-footprint",
+            "C26 Q9: a footprint proxy over the excursion above H1 (taker delta per 100 USD row) at the DOWN-high take-outs",
+            [CARD.P("Events", "C26 held highs taken out in a DOWN phase (phase1_recent.py), 15m Binance spot BTCUSDT"),
+             CARD.P("Footprint proxy", "1m bars of the excursion above H1 binned into %.0f USD rows by close: taker buy and taker sell volume per row "
+                                       "(a footprint chart has this per price level per bar; the 1m close is the proxy)" % ROW),
+             CARD.P("Top quarter", "rows in the top %.0f %% of the excursion's high-low range" % (100 * TOPQ)),
+             CARD.P("Sell-imbalance row", "sell volume >= %.0fx buy volume in a top-quarter row (footprint '300 %%' rule)" % IMB),
+             CARD.P("Outcome read", "single short: first 15m close back under H1, stop H1 + 1.0 %, target L1, 24h, fee-net"),
+             CARD.FEE],
+            "phase1_fp_look.py <repo> <cache> --until 2026-11-01T07:45 --card <this file>; 1m bars from data.binance.vision (fetch_1m.py). "
+            "CoinGlass Footprint 4H shots c0a8fc721e58 (aggregated) and 82d84b32fe1a (Binance perp) set what to rebuild.",
+            "Design look on SEEN, n=%d: buyers won the top quarter in %d of %d (taker delta positive); %d take-outs had a sell-imbalance row at the top"
+            % (len(recs), len(recs) - sellers, len(recs), imbs), "info",
+            ["The high of a take-out is made by buyers lifting offers, so a positive top-quarter delta is the normal case, not a tell.",
+             "A footprint 'absorption' read needs sellers winning the top rows; it almost never shows here, so it is no Phase 3 filter.",
+             "The CoinGlass page's 'Absorption bullish' label is its bottom signal and was stale (fired before the 82k top), not a top signal."],
+            [{"label": "take-outs", "value": str(len(recs))}, {"label": "buyers won the top quarter", "value": "%d of %d" % (len(recs) - sellers, len(recs))},
+             {"label": "sell-imbalance row at the top", "value": str(imbs)}],
+            [CARD.table("The take-outs, footprint proxy over the excursion", cols, rows, "no prices: the H1 column is dropped on this page"),
+             CARD.table("Each footprint fact split yes / no", fcols, out, "n, how many reached L1, mean fee-net unit-% of the single short")],
+            ["phase1_fp_look.py", "PHASE1_RANGE.md"]))
 
 
 if __name__ == "__main__":

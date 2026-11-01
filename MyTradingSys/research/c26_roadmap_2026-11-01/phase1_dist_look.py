@@ -15,6 +15,7 @@ import importlib.util, os, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import phase1_range as R  # noqa: E402
+import phase1_card as CARD  # noqa: E402
 
 _spec = importlib.util.spec_from_file_location("mts_fees", os.path.join(os.path.dirname(os.path.dirname(HERE)), "backtest", "fees.py"))
 fees = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(fees)
@@ -70,7 +71,8 @@ def main():
             ["MAE after entry: highest high above entry (%)"] + ["%.2f" % pct([d["mae"] for d in E], q) for q in QS],
             ["MFE after entry: deepest low under entry (%)"] + ["%.2f" % pct([d["mfe"] for d in E], q) for q in QS],
             ["L1 below entry (%)"] + ["%.2f" % pct([d["l1d"] for d in E], q) for q in QS]]
-    print(R.table(["quantity", "p25", "p50", "p75", "p90"], rows))
+    qcols = ["quantity", "p25", "p50", "p75", "p90"]
+    print(R.table(qcols, rows))
     print("\n%d of %d take-outs never closed back under H1 inside the hold (no entry)." % (len(D) - len(E), len(D)))
     stops = [round(pct([d["mae"] for d in E], q), 2) for q in (0.5, 0.75, 0.9)] + [1.0]
     tgts = [round(pct([d["mfe"] for d in E], q), 2) for q in (0.25, 0.5, 0.75)]
@@ -82,9 +84,43 @@ def main():
             grid.append(["%.2f" % s, "%.2f" % t, "%d / %d / %d" % tuple(sum(1 for r in res if r[1] == w) for w in ("tgt", "24h", "stop")),
                          "%+.2f" % (sum(r[0] for r in res) / n), "%+.2f" % sum(r[0] for r in res), "%+.2f" % min(r[0] for r in res)])
     print()
-    print(R.table(["stop (% of H1, MAE quantile p50/p75/p90 + 1.0)", "target (% of H1, MFE quantile p25/p50/p75)", "exits tgt / 24h / stop",
-                   "mean net %", "sum", "worst"], grid))
+    gcols = ["stop (% of H1, MAE quantile p50/p75/p90 + 1.0)", "target (% of H1, MFE quantile p25/p50/p75)", "exits tgt / 24h / stop",
+             "mean net %", "sum", "worst"]
+    print(R.table(gcols, grid))
     print("\nStops and targets are read off the same 30 events they are scored on: a SEEN-window shape, not a result. Fee %.2f %% per round trip." % FEE)
+    if CARD.arg("--card"):
+        means = [float(g[3]) for g in grid]
+        p50 = {r[0].split(" (")[0].split(":")[0]: r[2] for r in rows}  # quantity -> p50
+        CARD.write(CARD.arg("--card"), CARD.card(
+            "c26-q10-path-distribution",
+            "C26 Q10: the probability-distribution layer on the take-out: quantiles of the path (overshoot, wait, MAE, MFE, L1) and a stop x target grid read off them",
+            [CARD.P("Events", "C26 held highs taken out in a DOWN phase (phase1_recent.py), 15m Binance spot BTCUSDT"),
+             CARD.P("Layer", "operator's standing probability-distribution layer (research/prob_dist_layer_brief_2026-10-16/BRIEF.md, design D2 "
+                             "'outcome after event'): read what price did off its own quantiles instead of a fixed stop and target"),
+             CARD.P("Path", "overshoot above H1 before the first 15m close back under it; bars waited; after that entry close within 96 bars: MAE = highest "
+                            "high above entry, MFE = deepest low under entry, L1 = the pull-back low; all in % of H1"),
+             CARD.P("Grid", "short from the entry close; stop = MAE p50 / p75 / p90 and 1.0 %%; target = MFE p25 / p50 / p75; else exit at the 24h close; "
+                            "stop checked before target; fee %.2f %% per round trip" % FEE),
+             CARD.P("Quantiles", "linear interpolation, p25 / p50 / p75 / p90"),
+             CARD.FEE],
+            "phase1_dist_look.py <repo> <cache> --until 2026-11-01T07:45 --card <this file>. The stops and targets are read off the same %d events they are "
+            "scored on, so the grid is a shape, not a result: Phase 2 freezes the quantiles on SEEN and scores them once on VALIDATION." % len(E),
+            "Design look on SEEN, n=%d: the stop x target grid is flat, mean net %+.2f to %+.2f %%: the drift after the reclaim makes the trade, not the exit shape"
+            % (len(E), min(means), max(means)), "info",
+            ["Every stop x target pair lands in the same narrow band of mean net, so the exit shape is not where the edge would come from.",
+             "Half the reclaims come on the take-out bar or the next (wait p50 %s bars) with overshoot p50 %s %%; the slow tenth (p90) is the Q7 band-overshoot case."
+             % (p50.get("bars to the first close back under H1", "?"), p50.get("overshoot above H1 before the reclaim", "?")),
+             "MFE p50 %s %% against MAE p50 %s %% is about 2:1 before fees, but L1 p50 %s %% sits at half the available move, so L1 as target takes the first half."
+             % (p50.get("MFE after entry", "?"), p50.get("MAE after entry", "?"), p50.get("L1 below entry", "?")),
+             "Right use: freeze stop / target quantiles from SEEN (Phase 2 card), score once on VALIDATION; a grid searched on VALIDATION is the overfit the roadmap forbids."],
+            [{"label": "take-outs / entries", "value": "%d / %d" % (len(D), len(E))},
+             {"label": "overshoot p50 (% of H1)", "value": p50.get("overshoot above H1 before the reclaim", "?")},
+             {"label": "MAE p50 (%)", "value": p50.get("MAE after entry", "?")}, {"label": "MFE p50 (%)", "value": p50.get("MFE after entry", "?")},
+             {"label": "L1 below entry p50 (%)", "value": p50.get("L1 below entry", "?")},
+             {"label": "grid mean net, worst .. best pair", "value": "%+.2f .. %+.2f %%" % (min(means), max(means))}],
+            [CARD.table("Quantiles of the path around the take-out (% of H1, bars)", qcols, rows),
+             CARD.table("Stop x target grid read off those quantiles, fee-net", gcols, grid, "exits: target / 24h close / stop; mean, sum and worst in % per trade")],
+            ["phase1_dist_look.py", "PHASE1_RANGE.md"]))
 
 
 if __name__ == "__main__":

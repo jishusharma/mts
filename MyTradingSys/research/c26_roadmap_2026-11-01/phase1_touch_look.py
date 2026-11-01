@@ -15,6 +15,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import phase1_range as R  # noqa: E402
 import phase1_ladder_look as LL  # noqa: E402
+import phase1_card as CARD  # noqa: E402
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 _spec = importlib.util.spec_from_file_location("chart_verify", os.path.join(REPO, "scripts", "dev", "chart_verify.py"))
@@ -106,21 +107,49 @@ def main():
             g = [r for r in recs if f(r) is not None and f(r) == want]
             cells.append("%d: %d L1, %+.2f" % (len(g), sum(1 for r in g if r["why"] == "L1"), sum(r["net"] for r in g) / len(g)) if g else "0")
         out.append([name] + cells)
-    print(R.table(["factor at the touch", "yes: n, reached L1, mean net unit-%", "no: n, reached L1, mean net unit-%"], out))
+    fcols = ["factor at the touch", "yes: n, reached L1, mean net unit-%", "no: n, reached L1, mean net unit-%"]
+    print(R.table(fcols, out))
     sess = {}
     for k in range(IMP_W, P.N):
         s = P.session(P.T[k])
         sess.setdefault(s, [0, 0, 0]); sess[s][0] += 1; sess[s][1] += IMP[k] == 1; sess[s][2] += IMP[k] == -1
     print("\nCVD impulses per session over the whole window (bars, up, down, up per 24h of that session):\n")
-    print(R.table(["session", "bars", "up", "down", "up per session-day"],
-                  [[s, str(v[0]), str(v[1]), str(v[2]), "%.2f" % (v[1] / (v[0] / {"ASIA": 28, "LONDON": 26, "US": 26, "LATE": 16}[s]))]
-                   for s, v in sess.items()]))
+    scols = ["session", "bars", "up", "down", "up per session-day"]
+    srows = [[s, str(v[0]), str(v[1]), str(v[2]), "%.2f" % (v[1] / (v[0] / {"ASIA": 28, "LONDON": 26, "US": 26, "LATE": 16}[s]))]
+             for s, v in sess.items()]
+    print(R.table(scols, srows))
     bins = {"<40": 0, "40-50": 0, "50-60": 0, ">=60": 0}
     for k in range(IMP_W, P.N):
         if IMP[k] == 1 and P.RSI[k] is not None:
             r = P.RSI[k]; bins["<40" if r < 40 else "40-50" if r < 50 else "50-60" if r < 60 else ">=60"] += 1
     print("\nRSI(14) 15m at the bar of every up-impulse (operator: the next push comes near the 40 line):\n")
-    print(R.table(["RSI at up-impulse", "count"], [[k, str(v)] for k, v in bins.items()]))
+    brows = [[k, str(v)] for k, v in bins.items()]
+    print(R.table(["RSI at up-impulse", "count"], brows))
+    if CARD.arg("--card"):
+        srow = next(r for r in out if r[0] == "StochRSI K >= 80")
+        CARD.write(CARD.arg("--card"), CARD.card(
+            "c26-q5-touch-factors",
+            "C26 Q5: what the 15m chart showed at the 30 DOWN-high take-outs (nine chart factors vs the single short's outcome)",
+            [CARD.P("Events", "C26 held highs taken out in a DOWN phase (phase1_recent.py), 15m Binance spot BTCUSDT"),
+             CARD.P("Factors", "RSI(14) divergence vs H1; close above the Bollinger upper band; StochRSI K; WaveTrend wt1 and cross; "
+                               "Binance USDT-M open interest -1..+4 bars; 15m CVD impulses from Binance spot taker delta"),
+             CARD.P("Outcome read", "single short: first 15m close back under H1, stop H1 + 1.0 %, target L1, 24h time stop, fee-net"),
+             CARD.FEE],
+            "phase1_touch_look.py <repo> <cache> --until 2026-11-01T07:45 --card <this file>; chart shots e40e870ab33b and b98031bacd10 "
+            "(CoinGlass 15m) and the TradingView WT_CROSS_LB shot of 11:33Z set which factors to read. Each factor is split yes / no and "
+            "the single short's mean net is read on both sides.",
+            "Design look on SEEN, n=%d: StochRSI K >= 80 split %s against %s; the Phase 3 DEV run did not confirm it" % (len(ev), srow[1], srow[2]),
+            "info",
+            ["A factor earns a Phase 3 filter only when its yes side beats its no side here; that is a design choice, not evidence.",
+             "On DEV (card c26-h1-structural-lower-high) the StochRSI arm F1 made -0.230 % (C26 set) and -0.146 % (Krown set) per trade: the SEEN split did not carry over.",
+             "The session and RSI-at-impulse tables are context for the operator's '40 line' remark, not filters."],
+            [{"label": "take-outs", "value": str(len(ev))}, {"label": "factors split", "value": str(len(out))},
+             {"label": "StochRSI K >= 80, yes side", "value": srow[1]}, {"label": "StochRSI K >= 80, no side", "value": srow[2]}],
+            [CARD.table("The take-outs, factor by factor", cols, rows, "no prices: the H1 column is dropped on this page"),
+             CARD.table("Each factor split yes / no", fcols, out, "n, how many reached L1, mean fee-net unit-% of the single short"),
+             CARD.table("CVD impulses per session (whole window)", scols, srows),
+             CARD.table("RSI(14) at every up-impulse", ["RSI at up-impulse", "count"], brows)],
+            ["phase1_touch_look.py", "PHASE1_RANGE.md"]))
 
 
 if __name__ == "__main__":
