@@ -4,8 +4,8 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-01T08:47:35Z",
-    "misses": 85,
+    "folded": "2026-11-01T10:23:12Z",
+    "misses": 108,
     "reads": [
       "scripts/dev/tasks.py",
       "scripts/dev/supervisor.py",
@@ -14,7 +14,7 @@
       "scripts/dev/usage_reminder.py",
       "scripts/dev/test_artifact_pages.py",
       "scripts/dev/gate_select.py",
-      "scripts/dev/test_mts_doctor.py"
+      "MyTradingSys/system/LAYERS.md"
     ],
     "session": "50329dcd-4bc6-42b4-9b80-42153f9c1686"
   },

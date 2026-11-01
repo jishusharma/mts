@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T08:40:59Z",
   "commands": [
     "python -m pytest MyTradingSys/backtest/test_vp_return_to_value.py -q"
   ],
@@ -15,6 +16,12 @@
   "id": "tom-v2-gross-first-dev-ext",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "FAIL: near-band diff +4.4pp CI -0.3..8.9, n 352/353; MyTradingSys/research/tom_v2_gross_fi",
+      "ref": "619dc89ad",
+      "utc": "2026-11-01T08:40:59Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -36,7 +43,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D7_ROADMAP.md"
   ],
-  "result": "",
+  "result": "FAIL: near-band diff +4.4pp CI -0.3..8.9, n 352/353; MyTradingSys/research/tom_v2_gross_first_2026-11/RESULT.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/vp_return_to_value.py",
     "MyTradingSys/backtest/test_vp_return_to_value.py",
@@ -53,13 +65,14 @@
     "MyTradingSys/research/tom_fabio_review_2026-10-31/SETUP_REVIEW.md:244-248",
     "MyTradingSys/research/v1_plan_2026-10-20/D7_ROADMAP.md:39"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read SETUP_REVIEW.md section 6 test 2 and the vp_return PRE_REG; run verdicts.py check 'tom vp return'",
     "write PRE_REG.md (H1 diff>0, CI lower>0, n~870 per 911 days; m first), commit before running",
     "restrict placebo to |d|<=1 in a wrapper, run on 2019-2021 data, 2000 day-block bootstrap",
     "write RESULT.md, export json, backfill VERDICTS.csv"
   ],
+  "taken": "2026-11-01T08:40:59Z",
   "tests": "Fail-first: test_vp_return_to_value.py gains a case where a placebo with |d|=3 must be excluded from the primary diff (hand-computed 3-event table); fails on the unrestricted code, passes after.",
   "title": "Tom v2 gross-first: near-band placebo on 2019-2021 1m (SETUP_REVIEW.md section 6 test 2) before any DEV or filter work (D7 S3 run list #6)",
   "weight": "CRUCIAL",

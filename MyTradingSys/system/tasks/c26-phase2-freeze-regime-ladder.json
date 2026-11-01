@@ -1,0 +1,60 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/prereg_gate.py MyTradingSys/research/c26_roadmap_2026-11-01/PRE_REG_C26_REGIME.md"
+  ],
+  "created": "2026-11-01T08:46:17Z",
+  "depends_on": [],
+  "done_when": "research/c26_roadmap_2026-11-01/PRE_REG_C26_REGIME.md committed with the regime rule, the three candidates' legs, X, sizes, exits, fee lines and pass rule; TRIAL_REGISTRY row per candidate; 3 operator-chart encodings written in; no P&L number anywhere in it; c26-phase3-dev-book depends_on it.",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Freeze the C26 regime-conditioned rules before any DEV P&L: regime rule, Candidate A single short, B hedge book, C ladder in H1..H1+X, X, size steps, exits, fee lines, pass rule. Proposals and reasons: C26_REVALIDATION_2026-11-01.md section 3. Operator confirms the encoding on >= 3 of his charts (PRE_REG_TEMPLATE 0g) before the file is final.",
+  "id": "c26-phase2-freeze-regime-ladder",
+  "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sim desk: C26 roadmap Phase 1 and Rumers harness on the simulator; martingale Candidate C ",
+      "ref": "b0c7fee5333c",
+      "utc": "2026-11-01T08:24:10Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED: Lab_Guy 2026-11-01 class C1 (B-shared: c26-phase3-dev-book reads its output); E4 check = the non-Claude spec review of PRE_REG_C26_REGIME.md is step 3 of the card before the file is final; self-authored, the operator chart confirmation is the second pair of eyes",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-01T08:49:33Z",
+  "refs": [
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/C26_PRE_REG.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/c26_roadmap_2026-11-01/"
+  ],
+  "scope_out": [
+    "any backtest run; any change to phase1_recent.py definitions"
+  ],
+  "scope_sha": "b0c7fee5333c",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/c26_roadmap_2026-11-01/C26_REVALIDATION_2026-11-01.md",
+    "MyTradingSys/research/c26_roadmap_2026-11-01/PHASE1_RANGE.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read C26_REVALIDATION_2026-11-01.md sections 2-3 and PHASE1_RANGE.md; copy the proposals into PRE_REG_C26_REGIME.md with every number labelled OURS",
+    "Encode 3 operator charts as event rows (date, H1, L1, regime by the rule) and write them in",
+    "Run prereg_gate.py on the file; add one TRIAL_REGISTRY row per candidate; ship"
+  ],
+  "tests": "none (a pre-registration document); prereg_gate.py passes on the file",
+  "title": "C26 Phase 2: freeze the regime rule and Candidates A (single short), B (hedge) and C (ladder in the range) before any DEV P&L; operator confirms on 3 charts",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}
