@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/backtest/layers/positioning/test_trade_costs.py -q"
+  ],
+  "created": "2026-11-01T19:15:43Z",
+  "depends_on": [],
+  "done_when": "trade_costs.py slip_rt default is 0.0004; test_trade_costs.py passes and asserts total round-trip cost is 0.14 %; git diff shows only trade_costs.py and test_trade_costs.py touched.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Update trade_costs.py net_return default slip_rt from 0.0002 to 0.0004 so that total default round-trip cost (fee_rt 0.0010 + slip_rt 0.0004 = 0.0014 = 0.14 %) exactly matches research_kit.TAKER_RT_PCT (0.14 %), eliminating the 0.12 % vs 0.14 % discrepancy identified in COST_FIGURES.md.",
+  "id": "update-trade-costs-default-slip-rt-0004",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": "fee-figure-unify",
+  "note": "Follow-up code change card from fee-figure-unify and MyTradingSys/research/COST_FIGURES.md. Reviewer ACCEPT required before ready.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/COST_FIGURES.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/positioning/trade_costs.py",
+    "MyTradingSys/backtest/layers/positioning/test_trade_costs.py"
+  ],
+  "scope_out": [
+    "live tree",
+    ".secrets and .env"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "raw",
+  "steps": [
+    "Update slip_rt: float = 0.0004 in net_return in trade_costs.py",
+    "Update assertions in test_trade_costs.py",
+    "Run tests and verify callers"
+  ],
+  "tests": "MyTradingSys/backtest/layers/positioning/test_trade_costs.py",
+  "title": "Update trade_costs.py slip_rt default to 0.0004 to unify with research_kit TAKER_RT_PCT (0.14 %)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

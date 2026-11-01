@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T19:16:16Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -24,6 +26,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "Created MyTradingSys/research/COST_FIGURES.md documenting the three coexisting round-trip ",
+      "ref": "a897f21b0",
+      "utc": "2026-11-01T19:16:16Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "fix-single-cost-module: test_no_own_costs + frozen cost allowlist, fee regimes A-D in fees",
@@ -42,7 +50,12 @@
   "refs": [
     "MyTradingSys/backtest/fees.py"
   ],
-  "result": "",
+  "result": "Created MyTradingSys/research/COST_FIGURES.md documenting the three coexisting round-trip cost figures (fees.py 0.10%, trade_costs.py 0.12%, research_kit.py 0.14%), counted callers across all files, recommended canonical taker RT 0.14% / maker-in RT 0.09% pair, and filed follow-up code change card update-trade-costs-default-slip-rt-0004.json.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/COST_FIGURES.md",
     "MyTradingSys/backtest/fees.py",
@@ -57,12 +70,13 @@
   "scope_sha": "2d7d4d49cf4c",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "grep -rn 'trade_costs\\|TAKER_RT_PCT\\|BINANCE_TAKER' to list the callers",
     "write the table with line quotes",
     "recommend one canonical figure (maker/taker pair) and the callers that would move"
   ],
+  "taken": "2026-11-01T19:14:15Z",
   "tests": "docs card: python scripts/dev/tasks.py lint passes; every table row quotes a file:line that grep confirms.",
   "title": "One round-trip cost figure: fees.py 0.10 %, trade_costs.py 0.12 %, research_kit TAKER_RT_PCT 0.14 % disagree; pick one (or a named pair) and point every doc at it",
   "weight": "ROUTINE",
