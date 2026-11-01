@@ -1,0 +1,47 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "echo none"
+  ],
+  "created": "2026-11-01T12:55:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/rumers_2026-11-01/RUMERS_DIRECT_VIEW_DEEP.md exists: 5 videos, per-rule table with entry/stop/target/timeframe/indicators, NOT_STATED where missing, no quotation marks around spoken words",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Take the top 5 ranked candidates in RUMERS_DIRECT_VIEW.md. Re-watch each; for every rule write entry, stop, target, timeframe, indicator settings as stated, marked UNVERIFIED-PARAPHRASE with approx minute, no quotation marks. Mark each number SOURCED (stated in video) or NOT_STATED; never fill a gap.",
+  "id": "gemini-yt-rumers-direct-view-deep-1101",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini low effort. Facts and paraphrase only, no trading verdict. Do NOT run fetch_captions_timed.py or yt-dlp (IP blocked; the guard refuses). Final report ends with a Noticed: line.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "scope_in": [
+    "MyTradingSys/research/rumers_2026-11-01/ (new files only)"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code; any backtest; .secrets and .env"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "re-watch each of the 5 videos",
+    "write the per-rule table",
+    "ship via sync.py ship"
+  ],
+  "tests": "report only; no quote claims; no code change",
+  "title": "[GEMINI] The Rumers: second direct-view pass on the 5 top-ranked videos from RUMERS_DIRECT_VIEW.md, pin down exact entry, stop, target, timeframe per rule",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
