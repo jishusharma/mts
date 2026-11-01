@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T17:58:16Z",
   "commands": [],
   "created": "2026-11-01T17:37:46Z",
   "depends_on": [],
@@ -13,7 +15,14 @@
   "id": "gemini-param-labels-studies-b-1101",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "SOURCED/OURS parameter labels for sim_desk studies krown, pitchfork, wavetrend: 24 SOURCED",
+      "ref": "79f1d402e",
+      "utc": "2026-11-01T17:58:16Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -25,7 +34,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "SOURCED/OURS parameter labels for sim_desk studies krown, pitchfork, wavetrend: 24 SOURCED, 40 OURS across 64 parameters; deliverable studies_param_labels_b.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "research/sim_desk/studies/{krown,pitchfork,wavetrend}.py and the extracts under research/ (read); one output file research/gemini_audits_2026-11-01/studies_param_labels_b.md"
   ],
@@ -35,12 +49,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "list every numeric parameter per study with file:line",
     "grep the extracts for a quote supporting each value",
     "label SOURCED or OURS"
   ],
+  "taken": "2026-11-01T17:55:44Z",
   "tests": "see done_when (audit card, output file is the test)",
   "title": "[GEMINI] SOURCED/OURS parameter labels for sim_desk studies krown, pitchfork, wavetrend",
   "weight": "ROUTINE",
