@@ -43,6 +43,8 @@ def build_script(model: str, prompt: str = PROMPT, name: str = "default", card: 
         target_dir = f"F:/MTS/mts-jis-nuc-{card}"
         branch = f"jis-nuc/{card}"
         setup_lines.extend([
+            f'$env:GIT_TERMINAL_PROMPT = "0"',
+            f'$env:GCM_INTERACTIVE = "never"',
             f'Set-Location F:/MTS',
             f'git fetch -q origin fast-track',
             f'if (!(Test-Path "{target_dir}")) {{',
@@ -59,6 +61,8 @@ def build_script(model: str, prompt: str = PROMPT, name: str = "default", card: 
 
     lines = [
         '$env:Path += ";C:/Users/E-ngineers/.local/bin"',
+        '$env:GIT_TERMINAL_PROMPT = "0"',
+        '$env:GCM_INTERACTIVE = "never"',
         f'$d = "F:/MTS/nuc_wake/{name}"; New-Item -ItemType Directory -Force $d | Out-Null',
     ] + setup_lines + [
         "$p = @'",

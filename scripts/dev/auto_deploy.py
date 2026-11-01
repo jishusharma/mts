@@ -40,7 +40,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from sync import GateSlotTimeout
+from sync import GateSlotTimeout, GIT_NOPROMPT, GIT_NET_TIMEOUT_S
 
 REPO = Path(__file__).resolve().parents[2]
 SCHED = REPO / "MyTradingSys" / "runtime" / "sched"
@@ -158,8 +158,9 @@ def kill_tree(proc):
 
 def sh(argv, cwd=REPO, timeout=300):
     kw = {"start_new_session": True} if os.name != "nt" else {}
+    env = {**os.environ, **GIT_NOPROMPT}
     try:
-        proc = subprocess.Popen(argv, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, **kw)
+        proc = subprocess.Popen(argv, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, env=env, **kw)
     except OSError as e:
         return 127, f"could not start: {e}"
     try:
@@ -240,7 +241,7 @@ def plan_untracked(ops, target, changed):
 class Ops:
     """The side effects, injectable for tests."""
 
-    def git(self, *a, timeout=300):
+    def git(self, *a, timeout=GIT_NET_TIMEOUT_S):
         return sh(["git", *a], timeout=timeout)
 
     def is_live(self):

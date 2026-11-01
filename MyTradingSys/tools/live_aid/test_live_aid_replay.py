@@ -123,6 +123,10 @@ def open_replay(browser, fixture=True, wrap=False):
         page.clock.set_fixed_time(datetime.datetime.fromtimestamp(NOW_MS / 1000, tz=datetime.timezone.utc))  # a bare number is read as seconds
         page.goto(PAGE.resolve().as_uri() + "?replay=fixture", wait_until="load", timeout=30000)
         page.check("#more-tog")     # the SMA, BBw, ATR, vs VWAP columns are hidden until "More detail"
+        try:
+            page.wait_for_selector("#strip td.x", state="visible", timeout=5000)
+        except Exception:
+            pass
         page.wait_for_timeout(1300)  # one 1 s render tick on top of the first render
         assert page.evaluate("Date.now()") == NOW_MS, "clock is not fixed at last bar open + 60 s"
         rows = page.eval_on_selector_all("#strip tr", "rs => rs.map(r => Array.from(r.children).map(c => c.innerText))")

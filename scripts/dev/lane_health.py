@@ -21,6 +21,7 @@ State: MyTradingSys/system/lane_state.json (git, so every host and the Control R
 """
 import argparse
 import json
+import os
 import re
 import subprocess
 import sys
@@ -374,8 +375,11 @@ def status_text(v):
 
 
 # ---- running it -----------------------------------------------------------------------------------------------------------------
-def git(repo, *args, check=True):
-    return subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, check=check)
+def git(repo, *args, check=True, timeout=None):
+    from sync import GIT_NOPROMPT, GIT_NET_TIMEOUT_S, GIT_NET_VERBS
+    timeout = GIT_NET_TIMEOUT_S if (timeout is None and args and args[0] in GIT_NET_VERBS) else (timeout or 60)
+    return subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, check=check,
+                          timeout=timeout, env={**os.environ, **GIT_NOPROMPT})
 
 
 def commit_ship(repo, paths, msg):

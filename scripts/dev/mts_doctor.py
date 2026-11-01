@@ -15,9 +15,11 @@ parks are dry-run by default and apply with `--apply`.
 """
 import argparse
 import json
+import os
 import re
 import subprocess
 import sys
+import time
 from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
@@ -368,7 +370,8 @@ SHIP_MAX_S = 120            # OURS: the operator's 2-minute ship; WARN when the 
 HOOKS_BEHIND_MAX = 50       # OURS
 DISK_MIN_GB = 15            # OURS
 HOOK_NAMES = ("role_loader", "ci_watch")
-CHECK_NAMES = ("SIZE-HEADROOM", "CI-REVERT", "SHIP-TIME", "HOOK-REG", "DISK", "CONTEXT-GAP", "WAITING-ON-OPERATOR", "BROADCAST", "STALE-CLAIMS", "SCRATCH-TRACKED", "CONFLICT-OPEN", "ASK-GAPS", "SUPERVISOR-IDLE", "OF-RESTARTS", "OF-STALE")
+GIT_HUNG_MAX_S = 30 * 60         # OURS: a git fetch/push/credential running over 30 min is hung
+CHECK_NAMES = ("SIZE-HEADROOM", "CI-REVERT", "SHIP-TIME", "HOOK-REG", "DISK", "CONTEXT-GAP", "WAITING-ON-OPERATOR", "BROADCAST", "STALE-CLAIMS", "SCRATCH-TRACKED", "CONFLICT-OPEN", "ASK-GAPS", "SUPERVISOR-IDLE", "OF-RESTARTS", "OF-STALE", "GIT-HUNG")
 
 
 def _load(path, name):
@@ -698,6 +701,88 @@ def of_stale(repo, now=None, mtime=None):
     return "OK", f"order-flow log written {age:.0f} min ago"
 
 
+def _default_git_procs():
+    """List of process dicts [{"pid": ..., "ppid": ..., "name": ..., "cmd": ..., "created": epoch_s}]."""
+    procs = []
+    if os.name == "nt":
+        ps_cmd = (
+            "Get-CimInstance Win32_Process | "
+            "Where-Object { $_.Name -match 'git' } | "
+            "ForEach-Object { [pscustomobject]@{pid=[int]$_.ProcessId; ppid=[int]$_.ParentProcessId; "
+            "name=$_.Name; cmd=$_.CommandLine; "
+            "created=$(if($_.CreationDate){([DateTimeOffset]$_.CreationDate).ToUnixTimeSeconds()}else{0})} } | "
+            "ConvertTo-Json -Compress"
+        )
+        try:
+            r = subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", ps_cmd],
+                               capture_output=True, text=True, timeout=15)
+            if r.returncode == 0 and r.stdout.strip():
+                data = json.loads(r.stdout.strip())
+                if isinstance(data, dict):
+                    data = [data]
+                procs = data
+        except Exception:
+            pass
+    else:
+        try:
+            r = subprocess.run(["ps", "-eo", "pid,ppid,etimes,comm,args"],
+                               capture_output=True, text=True, timeout=10)
+            if r.returncode == 0:
+                lines = r.stdout.splitlines()[1:]
+                for ln in lines:
+                    parts = ln.split(None, 4)
+                    if len(parts) >= 5 and "git" in parts[3].lower():
+                        procs.append({
+                            "pid": int(parts[0]),
+                            "ppid": int(parts[1]),
+                            "age": int(parts[2]),
+                            "name": parts[3],
+                            "cmd": parts[4]
+                        })
+        except Exception:
+            pass
+    return procs
+
+
+def git_hung(procs_fn=None, now=None):
+    """Check for git or git-credential-manager processes running network/credential operations older than 30 min.
+    Returns (status, detail)."""
+    now_epoch = now.timestamp() if isinstance(now, datetime) else (float(now) if now is not None else time.time())
+    fn = procs_fn if procs_fn is not None else _default_git_procs
+    try:
+        procs = fn()
+    except Exception as e:
+        return "unavailable", f"process list failed ({type(e).__name__}: {str(e)[:60]})"
+
+    hung = []
+    net_verbs = ("fetch", "push", "pull", "credential")
+    for p in procs:
+        name = (p.get("name") or "").lower()
+        cmd = (p.get("cmd") or "").lower()
+        is_git_target = "git" in name or "git-credential-manager" in name
+        if not is_git_target:
+            continue
+        runs_net = any(v in cmd for v in net_verbs) or "credential" in name or "git-remote-https" in name
+        if not runs_net:
+            continue
+
+        if "age" in p:
+            age_s = float(p["age"])
+        elif p.get("created"):
+            age_s = max(0.0, now_epoch - float(p["created"]))
+        else:
+            continue
+
+        if age_s > GIT_HUNG_MAX_S:
+            age_min = age_s / 60
+            hung.append(f"PID {p.get('pid')} ({p.get('name')}) age {age_min:.0f} min (parent {p.get('ppid')})")
+
+    if hung:
+        return "WARN", f"{len(hung)} hung git process(es) older than 30 min: " + "; ".join(hung)
+    return "OK", "0 hung git processes"
+
+
+
 def scratch_tracked(repo, files=None):
     """WARN when a scratch or ship-log file is tracked (the repo is public; PILOT3 committed scratch ship logs, removed in f97ecc125)."""
     files = tracked(repo) if files is None else files
@@ -757,7 +842,8 @@ def checklist(repo, process=True, now=None):
            ("ASK-GAPS", lambda: ask_gaps(repo)),
            ("SUPERVISOR-IDLE", lambda: supervisor_idle(repo, now=now) if process else ("unavailable", "skipped (--no-process, no network)")),
            ("OF-RESTARTS", lambda: of_restarts(repo, now=now)),
-           ("OF-STALE", lambda: of_stale(repo, now=now)))
+           ("OF-STALE", lambda: of_stale(repo, now=now)),
+           ("GIT-HUNG", lambda: git_hung(now=now) if process else ("unavailable", "skipped (--no-process, no process inspection)")))
     out = []
     for name, fn in fns:
         try:
