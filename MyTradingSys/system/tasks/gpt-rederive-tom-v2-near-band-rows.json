@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-01T18:07:48Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-rederive-tom-v2-near-band-rows.md has one row per figure (n, shares, CIs, diff, verdict FAIL rule) with your value, the file value and SAME/DIFFERENT/NOT_IN_DATA, and a first line with the three counts.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "From research/tom_v2_gross_first_2026-11/results.json primary_near, recompute the real and placebo shares (k/n), their Wilson 95 % CIs, the difference, and say whether the day-block bootstrap CI -0.3..8.9 pp is consistent with the stated n 352/353 and 365 days; use full_report.md only for the stated rule, not for numbers. Report SAME within rounding, DIFFERENT or NOT_IN_DATA per figure.",
+  "id": "gpt-rederive-tom-v2-near-band-rows",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-01 T0-ONLY Producer GPT (codex_run.py), reviewer is another vendor. Expected values are derived by hand from the spec or docstring, never from the code under test. ROUTINE, no live path. D11 s3/s6 feeder seed. planner-b-1101b.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-01T18:07:49Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-rederive-tom-v2-near-band-rows.md"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change to any file outside the named outputs"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "read RESULT.md for the stated numbers and results.json primary_near",
+    "recompute shares and Wilson CIs by hand, diff and the FAIL rule (CI lower bound not above 0)",
+    "write the table; no verdict on the strategy"
+  ],
+  "tests": "see done_when (audit card, the output file is the test)",
+  "title": "[GPT] Re-derive the Tom near-band placebo headline (63.4 % vs 58.9 %, diff 4.4 pp, CI -0.3..8.9) from results.json",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

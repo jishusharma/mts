@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-01T18:07:41Z",
+  "depends_on": [],
+  "done_when": "scripts/dev/test_traffic_report.py has >= 8 passing tests, 3/3 scratch mutations (e.g. > to >= on parents, drop 'release', total 0 divide) each fail one, traffic_report.py unchanged, test listed in scripts/dev/extra_tests.tsv.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "traffic_report.py has no test. From its docstring and TRAFFIC_BUSTERS.md derive by hand the expected output of classify() (merge when parents > 1, claim/release by first word, else other) and report() with an injected runner (empty log, one of each kind, hours arg), then write scripts/dev/test_traffic_report.py with >= 8 tests; no real git call.",
+  "id": "gpt-spec-tests-traffic-report",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "register test_yt_guard_fleet in extra_tests.tsv",
+      "ref": "0b9fe01245bb",
+      "utc": "2026-11-01T17:29:24Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "REVIEWED:2026-11-01 T0-ONLY Producer GPT (codex_run.py), reviewer is another vendor. Expected values are derived by hand from the spec or docstring, never from the code under test. ROUTINE, no live path. D11 s3/s6 feeder seed. planner-b-1101b.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-01T18:08:09Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/test_traffic_report.py",
+    "scripts/dev/extra_tests.tsv",
+    "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-spec-tests-traffic-report.md"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change to any file outside the named outputs"
+  ],
+  "scope_sha": "0b9fe01245bb",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "read traffic_report.py and list every branch",
+    "hand-compute expected strings for 6 inputs incl. empty log (0%) and a merge with the word claim",
+    "write tests with the injected runner, run 3 scratch mutations, add the extra_tests.tsv line, write the report"
+  ],
+  "tests": "python -m pytest scripts/dev/test_traffic_report.py -q (must fail on a mutated copy; mutation list in the report)",
+  "title": "[GPT] Spec-derived tests for scripts/dev/traffic_report.py (no test file today)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

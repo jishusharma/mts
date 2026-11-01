@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-01T18:07:53Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-01/done_cards_missing_paths.md has one row per missing path (card id, path, nearest existing file or NONE) and a first line with cards scanned, paths checked, paths missing.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "For every card in MyTradingSys/system/tasks/*.json with state done and closed >= 2026-10-31 (161 today), list each repo path named in result or done_when and check it exists with git ls-files; report the cards whose named file is missing, with card id, path and the closest existing file if any.",
+  "id": "gemini-scan-done-cards-missing-paths-1101",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-01 T0-ONLY Gemini effort low: load as <id>:low (gemini_queue.py run <id>:low). Reads local files only, no YouTube or caption fetch. Facts with file:line or NOT_IN_DATA, no verdicts. Final report ends with a Noticed: line. D11 s6 seed. planner-b-1101b.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-01T18:07:54Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/gemini_audits_2026-11-01/done_cards_missing_paths.md"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change to any file outside the named outputs"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "list done cards closed since 2026-10-31 and extract path-like strings from result and done_when",
+    "check each with git ls-files",
+    "write the rows; paths that are patterns or future outputs are marked SKIPPED with the reason"
+  ],
+  "tests": "see done_when (audit card, the output file is the test)",
+  "title": "[GEMINI] scan task cards done since 2026-10-31: result or done_when names a repo file that is not in the tree",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

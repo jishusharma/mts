@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-01T18:07:47Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-audit-formulas-vs-bollinger-chart-verify.md lists each case, FORMULAS.md line, code file:line, hand vs code value for both functions, SAME/DIFFERENT/NOT_IN_DATA.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "For scripts/dev/chart_verify.py bollinger() and layers/alerts/live_bb_top_reversal.bollinger, re-derive by hand the s22 worked example (n=4, mult=2, closes 8,10,10,12,14,12: upper 14.828427, lower 9.171573), one first-window value, and the sample-sd variant difference (2.6 % at n=20). Run both functions on the same inputs, report SAME or DIFFERENT with file:line. Report only.",
+  "id": "gpt-audit-formulas-vs-bollinger-chart-verify",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-01 T0-ONLY Producer GPT (codex_run.py), reviewer is another vendor. Expected values are derived by hand from the spec or docstring, never from the code under test. ROUTINE, no live path. D11 s3/s6 feeder seed. planner-b-1101b.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-01T18:07:47Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-audit-formulas-vs-bollinger-chart-verify.md"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change to any file outside the named outputs"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "read FORMULAS.md s22 and both functions",
+    "hand-compute 3 values",
+    "run both functions and compare incl. the None-until-n-closes rule"
+  ],
+  "tests": "see done_when (audit card, the output file is the test)",
+  "title": "[GPT] audit FORMULAS.md s22 Bollinger Bands against chart_verify.py bollinger(): population sd, 3 outputs re-derived",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
