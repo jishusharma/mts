@@ -19,7 +19,7 @@
  "layers": [],
  "live_path": false,
  "mutation_check": "",
- "note": " PLANNER 2026-11-01 (session-planner-refine): content complete; waits on c26-phase2-freeze-regime-ladder (ready, JIS-NB lane, not done). Needs reviewer ACCEPT (IMPORTANT) when phase 2 is done; PRE_REG must be frozen first.",
+ "note": " PLANNER 2026-11-01 (session-planner-refine): content complete; waits on c26-phase2-freeze-regime-ladder (ready, JIS-NB lane, not done). Needs reviewer ACCEPT (IMPORTANT) when phase 2 is done; PRE_REG must be frozen first. PLANNER 2026-11-01 (session-planner-refine-2): still waits on c26-phase2-freeze-regime-ladder (ready, not done); no change.",
  "prio": 2,
  "refine_tries": 0,
  "refined_by": "",

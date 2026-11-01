@@ -7,13 +7,14 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-01T17:10:38Z",
-    "misses": 19,
+    "folded": "2026-11-01T17:22:21Z",
+    "misses": 20,
     "reads": [
       "scripts/dev/test_cbp_run.py",
       "scripts/dev/cbp_schedule.py",
       "scripts/dev/cbp_run.py",
       "scripts/dev/test_cbp_schedule.py",
+      "MyTradingSys/tests/test_cbp_query.py",
       "MyTradingSys/research/cbp/CBP_AUDIT_2026-10-28.md",
       "MyTradingSys/research/cbp/INGESTION_WIRING_2026-10-27.md"
     ],
