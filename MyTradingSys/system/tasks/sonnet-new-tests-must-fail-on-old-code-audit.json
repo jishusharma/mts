@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T19:12:26Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -30,6 +32,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "Audit of 30 test-adding commits against pre-change parent trees in MyTradingSys/research/t",
+      "ref": "52ab3e0ca",
+      "utc": "2026-11-01T19:12:26Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "merge fast-track; keep trunk VACUOUS_TESTS.md, mine as function-level companion",
@@ -48,7 +56,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "Audit of 30 test-adding commits against pre-change parent trees in MyTradingSys/research/test_hunt_2026-10-31/VACUOUS_TESTS.md: 19 Y (failed on parent code), 9 N (7 retro spec tests of existing code, 1 skipped, 1 test_live_aid_replay.py with card already filed), 2 not tests. Added Noticed: line on mutation-testing requirements.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/test_hunt_2026-10-31/ (new files only); MyTradingSys/system/tasks/ via tasks.py"
   ],
@@ -58,12 +71,13 @@
   "scope_sha": "119f43a2329b",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "git log --no-merges for commits adding tests",
     "git worktree add --detach <parent>; run the test",
     "write the table; tasks.py new raw cards for vacuous ones"
   ],
+  "taken": "2026-11-01T19:12:06Z",
   "tests": "report only; every finding cites file:line and a reproducing input",
   "title": "Audit the last 30 test-adding commits: does each new test fail on the pre-change code (CLAUDE.md gate)? list the ones that pass on old code",
   "weight": "ROUTINE",
