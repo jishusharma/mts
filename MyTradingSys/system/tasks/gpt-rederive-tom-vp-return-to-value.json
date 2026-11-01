@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T11:54:04Z",
   "commands": [],
   "created": "2026-10-30T23:18:08Z",
   "depends_on": [],
@@ -14,6 +16,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "All headline numbers (Part A real 498/871=57.2%, placebo 413/883=46.8%, diff +10.4 pp; Par",
+      "ref": "0d11f30e3",
+      "utc": "2026-11-01T11:54:04Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +46,12 @@
   "refined_by": "",
   "refreshed": "2026-11-01T08:38:33Z",
   "refs": [],
-  "result": "",
+  "result": "All headline numbers (Part A real 498/871=57.2%, placebo 413/883=46.8%, diff +10.4 pp; Part B N=3/6/12 51.2%/47.8%/45.5%, placebo 42.6%/39.9%/36.6%) and all 8 per-d placebo rows reproduce SAME in MyTradingSys/research/layer_lab/reports/2026-10-31_gpt-rederive-tom-vp-return-to-value.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/reports/2026-10-31_gpt-rederive-tom-vp-return-to-value.md"
   ],
@@ -48,12 +61,13 @@
   "scope_sha": "f07d4247d150",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read PRE_REG.md and FORMULAS.md section 18, write an independent recount on the DEV days",
     "compare each headline number to RESULT.md",
     "write the report with file:line"
   ],
+  "taken": "2026-11-01T11:50:11Z",
   "tests": "audit card: every row has a command or file:line",
   "title": "GPT re-derive: Tom VP return-to-value share 57.2 pct, placebo 46.8 pct, Part B 51.2/47.8/45.5 (vp_return RESULT.md)",
   "weight": "",

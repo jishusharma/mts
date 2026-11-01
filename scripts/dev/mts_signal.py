@@ -491,9 +491,9 @@ def handle(payload):
     return "\n".join(t for t in (note, got) if t)
 
 
-def high_open(rows):
+def high_open(rows, at=None):
     """HIGH broadcasts that have not expired (any age up to KEEP_DAYS), oldest first."""
-    cutoff = stamp(now() - timedelta(days=KEEP_DAYS))
+    cutoff = stamp((at or now()) - timedelta(days=KEEP_DAYS))
     return [r for r in rows if r.get("kind") == "broadcast" and r.get("prio") == "high" and r.get("id") and r.get("t", "") >= cutoff]
 
 
@@ -545,7 +545,7 @@ def pending(rows, hostname, at=None):
     `since` is when it began to need action (broadcast time, or told-ack time + TOLD_TTL_H); `hours` = how long it has waited since."""
     at = at or now()
     out = []
-    for b in high_open(rows):
+    for b in high_open(rows, at):
         if not to_me(b.get("to"), hostname) or not needs_action(rows, b, hostname, at):
             continue
         exp = told_expired(rows, b, hostname, at)
@@ -577,9 +577,10 @@ def own_state(rows, b):
     return best
 
 
-def hosts_seen(rows):
+def hosts_seen(rows, at=None):
     """Hosts with any record in the last KEEP_DAYS (a record stamped in the future does not count)."""
-    cutoff, lim = stamp(now() - timedelta(days=KEEP_DAYS)), future_limit()
+    at = at or now()
+    cutoff, lim = stamp(at - timedelta(days=KEEP_DAYS)), stamp(at + timedelta(minutes=FUTURE_MIN))
     out = set()
     for r in rows:
         if cutoff <= r.get("t", "") <= lim:

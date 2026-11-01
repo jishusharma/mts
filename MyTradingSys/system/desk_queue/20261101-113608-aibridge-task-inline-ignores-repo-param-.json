@@ -1,0 +1,10 @@
+{
+  "done_when": "Inline task steps execute from the path passed in repo=.",
+  "from": "JIS-NUC",
+  "id": "20261101-113608-aibridge-task-inline-ignores-repo-param-",
+  "need": "task=inline with repo=... ran commands in F:\\AIBridge instead of the given repo. Result #6: all steps failed with 'can't open file F:\\AIBridge\\scripts\\dev\\tasks.py'.",
+  "posted": "2026-11-01T11:36:08Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "aibridge-task-inline-ignores-repo-param-11-01"
+}
