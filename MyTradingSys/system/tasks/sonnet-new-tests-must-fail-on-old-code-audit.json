@@ -4,12 +4,13 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-01T18:47:06Z",
-    "misses": 34,
+    "folded": "2026-11-01T18:56:08Z",
+    "misses": 35,
     "reads": [
       "scripts/dev/extra_tests.tsv",
       "MyTradingSys/research/trendlines_2026-10-17/count_only.py",
       "scripts/dev/run_extra_tests.py",
+      "scripts/dev/run_all_tests.py",
       "MyTradingSys/research/test_hunt_2026-10-31/VACUOUS_TESTS.md",
       "MyTradingSys/research/test_hunt_2026-10-31/VACUOUS_TESTS_function_level.md",
       "MyTradingSys/research/yt_feed_2026-10-31/transcripts_michael-pizzino-new10/7wl0C1lVfRE_timed.txt"
