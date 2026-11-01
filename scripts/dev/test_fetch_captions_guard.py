@@ -21,6 +21,9 @@ class T(unittest.TestCase):
         p = mock.patch.dict(os.environ, {"YT_BLOCK_FILE": str(self.rec)})
         p.start()
         self.addCleanup(p.stop)
+        ip = mock.patch.object(f, "public_ip", return_value="203.0.113.7")   # no real ipify request
+        ip.start()
+        self.addCleanup(ip.stop)
         s = mock.patch.object(f.time, "sleep")
         self.sleep = s.start()
         self.addCleanup(s.stop)
