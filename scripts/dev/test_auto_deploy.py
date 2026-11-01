@@ -482,6 +482,26 @@ class ClockOps(FakeOps):
         return next(self.ticks)
 
 
+def _wait_dead(pid, state_fn, alive_fn, timeout, kill_fn=None, sleep=None, now=None):
+    """True once pid is dead: gone, or a zombie ('Z'). Polls until `timeout` seconds. If the proc state is unreadable ('')
+    and the pid is still alive at the deadline, kill it once and re-check (kill-confirm) instead of failing on a slow retire."""
+    import time
+    sleep = sleep or time.sleep
+    now = now or time.monotonic
+    deadline = now() + timeout
+    while alive_fn(pid) and state_fn() != "Z" and now() < deadline:
+        sleep(0.2)
+    if not alive_fn(pid) or state_fn() == "Z":
+        return True
+    if state_fn() == "" and kill_fn is not None:
+        kill_fn()
+        for _ in range(25):
+            if not alive_fn(pid) or state_fn() == "Z":
+                return True
+            sleep(0.2)
+    return False
+
+
 class TestGateTimeAndTimeout(unittest.TestCase):
     """2026-10-16 04:45Z: the gate on green d938be1a ended STOP_RED with gate_tail ['timed out'] after the hard-coded 1500 s while parallel
     sessions held the 8 CPUs at 100% (a quiet quick gate is ~290 s, DEPLOY_RUNBOOK Quick-gate speed). Now: 2700 s default, env override,
@@ -566,10 +586,27 @@ class TestGateTimeAndTimeout(unittest.TestCase):
 
         # A zombie ('Z') is dead: killed, waiting for a reaper. The CI container's PID 1 does not reap orphans, so the killed
         # grandchild stays 'Z' and kill(pid, 0) still succeeds (CI runs 41140240177, 41175038690 on 2026-10-30/31).
-        deadline = time.monotonic() + 30   # bounded poll: a loaded runner / windows needs a moment to retire a SIGKILLed process
-        while ad._pid_alive(pid) and state() != "Z" and time.monotonic() < deadline:
-            time.sleep(0.2)
-        self.assertTrue(pid and (not ad._pid_alive(pid) or state() == "Z"), "grandchild still alive 30s after the timeout (proc state %r)" % state())
+        # Unreadable state ('') with the pid still alive at the deadline: _wait_dead force-kills once and re-checks.
+        dead = _wait_dead(pid, state, ad._pid_alive, 30, kill_fn=reap)
+        self.assertTrue(pid and dead, "grandchild still alive 30s after the timeout (proc state %r)" % state())
+
+    def test_wait_dead_kill_confirms_when_proc_state_is_unreadable(self):
+        alive = iter([True, True, True, False, False])   # still alive at the deadline, dead after the forced kill
+        killed = []
+        clock = iter([0, 0, 100, 100, 100, 100, 100])
+        ok = _wait_dead(7, lambda: "", lambda p: next(alive), 1, kill_fn=lambda: killed.append(1),
+                        sleep=lambda s: None, now=lambda: next(clock))
+        self.assertTrue(ok)
+        self.assertEqual(killed, [1])
+
+    def test_wait_dead_reports_alive_if_kill_does_not_help(self):
+        ok = _wait_dead(7, lambda: "", lambda p: True, 0, kill_fn=lambda: None, sleep=lambda s: None, now=lambda: 0)
+        self.assertFalse(ok)
+
+    def test_wait_dead_zombie_counts_as_dead_without_kill(self):
+        killed = []
+        self.assertTrue(_wait_dead(7, lambda: "Z", lambda p: True, 1, kill_fn=lambda: killed.append(1)))
+        self.assertEqual(killed, [])
 
     def test_tasklist_pid_match_is_exact_not_a_substring_of_other_columns(self):
         out = '"python.exe","999","Console","1","1,234 K"'
