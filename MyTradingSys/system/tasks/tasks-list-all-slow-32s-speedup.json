@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T17:40:16Z",
   "commands": [],
   "created": "2026-11-01T08:58:31Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "tasks-list-all-slow-32s-speedup",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "tasks.py list --all 16-32 s -> 2 s, 1 git spawn",
+      "ref": "10e2a7d56",
+      "utc": "2026-11-01T17:40:16Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -30,7 +37,12 @@
   "refined_by": "",
   "refreshed": "2026-11-01T17:05:16Z",
   "refs": [],
-  "result": "",
+  "result": "tasks.py list --all 16-32 s -> 2 s, 1 git spawn",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/tasks.py",
     "scripts/dev/task_state.py",
@@ -44,12 +56,13 @@
   "scope_sha": "66bbbcf80d92",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "in cmd_list batch the git lookups: one `git log --name-only` (or one `git diff --name-only` per distinct scope_sha) cached across cards, or compute stop_tag only for state ready/active when not --all",
     "keep stop_tag per-card for next/take/brief",
     "time before and after; compare output for equality"
   ],
+  "taken": "2026-11-01T17:40:16Z",
   "tests": "MyTradingSys/tests/test_tasks.py::test_list_spawns_few_git_processes (new): monkeypatch subprocess.run counter over 20 ready cards, assert <= 5 calls; fails on current code (about 60).",
   "title": "tasks.py list --all takes ~32 s quiet (root of the timeout flake). Done when: list --all under 10 s on this repo or the slow step is named in a note",
   "weight": "ROUTINE",
