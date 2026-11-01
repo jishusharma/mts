@@ -48,6 +48,9 @@ class T(unittest.TestCase):
         p = mock.patch.dict("os.environ", {"YT_BLOCK_FILE": str(pathlib.Path(self._td.name) / "b.json")})
         p.start()
         self.addCleanup(p.stop)
+        ip = mock.patch.object(f, "public_ip", return_value="203.0.113.7")   # no real ipify request
+        ip.start()
+        self.addCleanup(ip.stop)
 
     def test_partial_rate_limit_fails_even_with_cached_video(self):
         with mock.patch.object(f, "list_channel", return_value=LISTING[:2]), \

@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/test_yt_vpn_fetch.py"
+  ],
+  "created": "2026-11-01T08:03:07Z",
+  "depends_on": [],
+  "done_when": "scripts/dev/yt_vpn_fetch.py and IP-aware block record ship with offline tests",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Run the guarded YouTube caption fetch through a short-lived OpenVPN session with verified IP change and guaranteed teardown",
+  "id": "yt-vpn-fetch-wrapper",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "YouTube caption fetch: one guard (budget, 6h block record, --status)",
+      "ref": "785d75b86711",
+      "utc": "2026-11-01T06:08:48Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "not_twin_of cbp-quote-row-84-jason-bo88aebojf8-retry",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-01T08:03:26Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/yt_vpn_fetch.py",
+    "scripts/dev/fetch_captions_timed.py",
+    "scripts/dev/test_yt_vpn_fetch.py",
+    "scripts/dev/test_fetch_captions_guard.py"
+  ],
+  "scope_out": [
+    "no VPN start, no network, no live tree"
+  ],
+  "scope_sha": "785d75b86711",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "build wrapper",
+    "IP-aware block record",
+    "offline tests"
+  ],
+  "tests": "scripts/dev/test_yt_vpn_fetch.py",
+  "title": "Wrap guarded YouTube caption fetch in a short-lived OpenVPN session",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

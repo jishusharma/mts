@@ -21,6 +21,10 @@ fetches per run, extra ids print DEFERRED; ONE try per video, 20 s between video
 ~/.mts/yt_block.json (outside the repo; override with env YT_BLOCK_FILE), prints the rest as UNVERIFIED and stops.
 While blocked every run (any job) exits 3 with a message and makes no request. `--status` prints blocked/not blocked
 and the last run's budget use, with no network call.
+The record also stores the public IP it was written from (one api.ipify.org request at write time); when a record is
+still live the guard makes one more ipify request and ignores a record written from a different IP, so a VPN exit
+(scripts/dev/yt_vpn_fetch.py) is not treated as blocked by the home IP's record, while a 429 on the new IP writes a record
+for that IP (the home IP's entry is kept in `by_ip`). A record without an IP, or an unreadable current IP, stands.
 """
 import argparse
 import json
@@ -30,6 +34,8 @@ import re
 import sys
 import tempfile
 import time
+import ipaddress
+import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -71,24 +77,59 @@ def write_block(**upd):
     p.write_text(json.dumps(rec, indent=1), encoding="utf-8", newline="\n")
 
 
-def blocked_until():
-    """datetime the block ends, or None when not blocked (record missing, unreadable or expired)."""
+def public_ip():
+    """Current public IP via one tiny api.ipify.org request, or None when it cannot be read (tests patch this)."""
     try:
-        t = datetime.fromisoformat(read_block().get("blocked_until") or "")
-    except ValueError:
+        with urllib.request.urlopen("https://api.ipify.org", timeout=8) as r:
+            return str(ipaddress.ip_address(r.read().decode("ascii").strip()))
+    except Exception:
         return None
+
+
+def _future(iso):
+    try:
+        t = datetime.fromisoformat(iso or "")
+    except (ValueError, TypeError):
+        return None
+    if t.tzinfo is None:
+        t = t.replace(tzinfo=timezone.utc)
     return t if t > _utcnow() else None
+
+
+def blocked_until(check_ip=True):
+    """datetime the block ends, or None when not blocked (record missing, unreadable, expired, or written from a
+    different public IP than the current one). The ipify request is made only when a live record exists."""
+    rec = read_block()
+    top = _future(rec.get("blocked_until"))
+    by_ip = rec.get("by_ip") if isinstance(rec.get("by_ip"), dict) else {}
+    if not (top or any(_future(v) for v in by_ip.values())):
+        return None
+    if not check_ip or not rec.get("ip"):
+        return top   # legacy record (no IP) or offline status view: stands
+    cur = public_ip()
+    if cur is None or cur == rec["ip"]:
+        return top   # cannot tell: fail closed
+    return _future(by_ip.get(cur))
 
 
 def mark_blocked():
     until = _utcnow() + timedelta(hours=BLOCK_HOURS)
-    write_block(blocked_until=until.isoformat(timespec="seconds"), host=socket.gethostname())
+    stamp = until.isoformat(timespec="seconds")
+    ip = public_ip()
+    rec = read_block()
+    by_ip = {k: v for k, v in (rec.get("by_ip") or {}).items() if _future(v)} if isinstance(rec.get("by_ip"), dict) else {}
+    if rec.get("ip") and _future(rec.get("blocked_until")):
+        by_ip.setdefault(rec["ip"], rec["blocked_until"])   # keep the previous IP's block
+    if ip:
+        by_ip[ip] = stamp
+    write_block(blocked_until=stamp, host=socket.gethostname(), ip=ip, by_ip=by_ip)
     return until
 
 
 def guard_status():
-    until, rec = blocked_until(), read_block()
-    head = (f"BLOCKED until {until.isoformat(timespec='seconds')} (host {rec.get('host', '?')})" if until
+    until, rec = blocked_until(check_ip=False), read_block()   # --status makes no network call
+    head = (f"BLOCKED until {until.isoformat(timespec='seconds')} (host {rec.get('host', '?')}, "
+            f"ip {rec.get('ip') or '?'})" if until
             else "NOT BLOCKED")
     return head + f"; last run budget used {rec.get('last_used', 0)} of {rec.get('last_max', '?')}"
 
