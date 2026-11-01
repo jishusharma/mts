@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T16:49:23Z",
   "commands": [
     "python scripts/dev/fetch_captions_timed.py --analyst Rumers --out MyTradingSys/research/rumers_2026-11-01/transcripts 6WfTIyJ-YzQ EoQDQVblmMY N6zlfBJsoRc kozesVBKkg4 aTMFouI9mF4",
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_1.md"
@@ -16,7 +18,21 @@
   "id": "gemini-yt-rumers-extract-1",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_1.md (25 rules, 25 quotes verified ",
+      "ref": "e658515ed",
+      "utc": "2026-11-01T16:49:23Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Rumers redo of 4 mis-titled skim rows (Gemini); two are not Rumers videos",
+      "ref": "a95aaa5ed834",
+      "utc": "2026-11-01T15:32:25Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -24,26 +40,32 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T19:16:30Z",
+  "refreshed": "2026-11-01T16:45:07Z",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_1.md (25 rules, 25 quotes verified across all 5 videos, 4 testable mechanical setups; verify_extract_quotes.py PASS)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/rumers_2026-11-01/ (new files only)"
   ],
   "scope_out": [
     "live tree; engine and layer code; any trading verdict; .secrets and .env"
   ],
-  "scope_sha": "",
+  "scope_sha": "a95aaa5ed834",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "fetch captions for the listed videos",
     "keyword scan, read surrounding lines before quoting",
     "write MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_1.md, verify until exit 0"
   ],
+  "taken": "2026-11-01T16:45:13Z",
   "tests": "verify_extract_quotes.py exit 0; no code change",
   "title": "[GEMINI] The Rumers (@the.rumers) operator-picked videos 1/2: extract every stated trading rule (entry, stop, target, timeframe, indicator, claimed hit-rate) with timed quotes",
   "weight": "ROUTINE",
