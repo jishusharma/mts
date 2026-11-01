@@ -123,3 +123,5 @@ User stories that actually fixed a NUC10-class box ("What users did" section + I
 - Changed (operator, Visual BIOS 0059): Dynamic Power Technology = Custom, OSACPI C2 Report = Disabled. One variable only. Clean user restarts 14:13 and 14:18 (event 1074, no 41/142), Windows back 14:51 local. Not readable from Windows; per operator.
 - Verdict 2026-11-01 ~14:51: nuc_health.ps1 -Days 2. 0 event-142 = idle C-state was the cause. Any reset = set Dynamic Power back, then adapter swap (order then), then BIOS 0067 + CR2032, mdsched, SSD firmware.
 - Side effect seen: Windows Night light greyed out, its CloudStore keys missing (driver and HDMI monitor OK; still grey after sign-out). Likely lost in a hard reset (OURS, unproven). Operator uses the monitor's own warm mode.
+
+- 2026-11-01 (operator): JIS-NUC FIXED. The restart/hang problem is gone (consistent with the loose DC plug replaced 2026-10-24). Card `nuc-unexpected-shutdown` is closed on the operator word. NUC-specific workarounds are reviewed in card `nuc-fixed-review-workarounds-1101`; generic guards (no credential prompt, git-setup lock, runaway guard) stay.

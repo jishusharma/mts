@@ -10,6 +10,31 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import reply_shape_check as rsc  # noqa: E402
 
+START_TIMEOUT = 60  # generous: only a true hang should trip it, not a loaded gate
+SCRIPT = Path(rsc.__file__).resolve()
+
+
+def run_cli(args, input_text=None, stdin=None, timeout=START_TIMEOUT, start_delay=0.0):
+    """Run the CLI with stdin passed explicitly (never inherited from a backgrounded gate)."""
+    code = f"import time,runpy,sys; time.sleep({start_delay}); sys.argv=[{str(SCRIPT)!r}]+sys.argv[1:]; runpy.run_path({str(SCRIPT)!r}, run_name='__main__')"
+    if input_text is not None:
+        stdin = subprocess.PIPE
+    elif stdin is None:
+        stdin = subprocess.DEVNULL
+    proc = subprocess.Popen([sys.executable, "-c", code, *args], stdin=stdin,
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    try:
+        if input_text is None:
+            proc.wait(timeout=timeout)  # stdin stays open (PIPE) or is /dev/null: a CLI that reads it would hang here
+            out, err = proc.stdout.read(), proc.stderr.read()
+        else:
+            out, err = proc.communicate(input_text, timeout=timeout)
+    except subprocess.TimeoutExpired:
+        proc.kill()
+        proc.communicate()
+        raise AssertionError("CLI hung (waited on stdin or never started)")
+    return proc.returncode, out, err
+
 
 # Deliberately overlong + no bold result line: violates BOTH det checks of h-reply-shape (max_lines:8, bold_first_line).
 OVERLONG_REPLY = "\n".join(
@@ -71,54 +96,30 @@ class ReplyShape(unittest.TestCase):
             Path(name).unlink(missing_ok=True)
 
     def test_no_args_with_open_stdin_exits_promptly(self):
-        script = Path(rsc.__file__).resolve()
-        proc = subprocess.Popen(
-            [sys.executable, str(script)],
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-        )
-        try:
-            try:
-                rc = proc.wait(timeout=2)
-            except subprocess.TimeoutExpired:
-                proc.kill()
-                proc.communicate()
-                self.fail("CLI waited for EOF on stdin when no input source was named")
-            _stdout, stderr = proc.communicate(timeout=1)
-            self.assertEqual(rc, 2, stderr)
-            self.assertIn("REPLY_FILE or - is required", stderr)
-        finally:
-            if proc.poll() is None:
-                proc.kill()
-                proc.communicate()
+        rc, _out, err = run_cli([], stdin=subprocess.PIPE, timeout=START_TIMEOUT)
+        self.assertEqual(rc, 2, err)
+        self.assertIn("REPLY_FILE or - is required", err)
+
+    def test_no_args_with_devnull_stdin_exits_2(self):
+        rc, _out, err = run_cli([], stdin=subprocess.DEVNULL, timeout=START_TIMEOUT)
+        self.assertEqual(rc, 2, err)
 
     def test_explicit_dash_reads_piped_input(self):
-        script = Path(rsc.__file__).resolve()
-        proc = subprocess.run(
-            [sys.executable, str(script), "-"],
-            input=GOOD_REPLY,
-            text=True,
-            capture_output=True,
-            timeout=2,
-            check=False,
-        )
-        self.assertEqual(proc.returncode, 0, proc.stderr)
-        self.assertIn("reply-shape: ok", proc.stdout)
+        rc, out, err = run_cli(["-"], input_text=GOOD_REPLY, timeout=START_TIMEOUT)
+        self.assertEqual(rc, 0, err)
+        self.assertIn("reply-shape: ok", out)
 
     def test_explicit_dash_rejects_dummy_reply(self):
-        script = Path(rsc.__file__).resolve()
-        proc = subprocess.run(
-            [sys.executable, str(script), "-"],
-            input="dummy reply",
-            text=True,
-            capture_output=True,
-            timeout=2,
-            check=False,
-        )
-        self.assertNotEqual(proc.returncode, 0, proc.stdout)
-        self.assertIn("VIOLATION bold_first_line", proc.stdout)
+        rc, out, _err = run_cli(["-"], input_text="dummy reply", timeout=START_TIMEOUT)
+        self.assertNotEqual(rc, 0, out)
+        self.assertIn("VIOLATION bold_first_line", out)
+
+    def test_slow_interpreter_start_does_not_fail_the_gate(self):
+        # A loaded ship gate can delay python start-up past a tight timeout; the harness must tolerate it
+        # (pre-change tests used a fixed 2 s wait and failed here).
+        rc, out, err = run_cli(["-"], input_text=GOOD_REPLY, timeout=START_TIMEOUT, start_delay=2.5)
+        self.assertEqual(rc, 0, err)
+        self.assertIn("reply-shape: ok", out)
 
 
 if __name__ == "__main__":

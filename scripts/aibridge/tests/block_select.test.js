@@ -73,4 +73,19 @@ t('0.7.8 final answer under a message root that starts "Thought for 5 seconds" r
   const r = L.selectBlocks([{ cmd: '', chain: [{ tag: 'div', cls: 'ds-think-content' }] }]);
   assert.ok(/\[class div\.ds-think-content@0\]/.test(r.status), r.status);
 });
+t('4-block reply (block 3 after a fenced block, block 4 multi-line): 4 selected, 4 non-empty commands, no duplicates', () => {
+  const texts = [
+    '# AIRUN host=a\necho one\n',
+    '# AIRUN host=a\necho two\n',
+    '# AIRUN host=a\ncat > f.py <<EOF\n```\nprint(1)\n```\nEOF\n',
+    '# AIRUN host=a\npython - <<EOF\nimport os\n\nprint(os.getcwd())\nEOF\n'
+  ];
+  const r = L.selectBlocks(texts.map(x => d(x, answer)));
+  assert.deepStrictEqual(r.selected, [0, 1, 2, 3]);
+  const cmds = texts.map(x => L.stripMarker(x).trim());
+  cmds.forEach(c => assert.ok(c.length > 0));
+  assert.ok(/os\.getcwd/.test(cmds[3]) && /```/.test(cmds[2]));
+  assert.deepStrictEqual(L.dupOf(texts), [0, 0, 0, 0]);
+  assert.strictEqual(new Set(L.batchKeys(cmds)).size, 4);
+});
 console.log(n + ' passed');
