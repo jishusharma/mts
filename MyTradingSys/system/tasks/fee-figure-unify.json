@@ -12,13 +12,23 @@
   "goal": "Three round-trip cost figures coexist: fees.py (taker 0.0005/side = 0.10 %), trade_costs.py 0.12 %, research_kit.TAKER_RT_PCT 0.14 %. Step 1 is a table only: name each figure, its source and which studies use it, and propose one canonical set; no number in code changes in this card.",
   "id": "fee-figure-unify",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "fix-single-cost-module: test_no_own_costs + frozen cost allowlist, fee regimes A-D in fees",
+      "ref": "2d7d4d49cf4c",
+      "utc": "2026-10-30T09:55:18Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "PLANNER 2026-11-01 DECISION (OURS): doc-first because changing a cost figure moves every fee-net result (decision numbers); needs a reviewer ACCEPT when promoted. Locate trade_costs.py with find before step 1.",
+  "note": "REVIEWED:2026-11-01 T0-ONLY PLANNER 2026-11-01 DECISION (OURS): doc-first because changing a cost figure moves every fee-net result (decision numbers); needs a reviewer ACCEPT when promoted. Locate trade_costs.py with find before step 1. PLANNER 2026-11-01 (session-planner-refine): weight lowered IMPORTANT->ROUTINE (planner-set, not a human weight): this card is a table only, no number in code changes; each follow-up code card carries IMPORTANT and its own review. trade_costs.py is at backtest/layers/positioning/.",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-01T17:12:44Z",
   "refs": [
     "MyTradingSys/backtest/fees.py"
   ],
@@ -26,16 +36,18 @@
   "scope_in": [
     "MyTradingSys/research/COST_FIGURES.md",
     "MyTradingSys/backtest/fees.py",
-    "MyTradingSys/backtest/research_kit.py"
+    "MyTradingSys/backtest/research_kit.py",
+    "MyTradingSys/backtest/layers/positioning/trade_costs.py"
   ],
   "scope_out": [
     "editing any cost constant",
     "re-running any backtest",
     "trade_costs.py edits"
   ],
+  "scope_sha": "2d7d4d49cf4c",
   "size": "S",
   "sources": [],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "grep -rn 'trade_costs\\|TAKER_RT_PCT\\|BINANCE_TAKER' to list the callers",
     "write the table with line quotes",
@@ -43,6 +55,6 @@
   ],
   "tests": "docs card: python scripts/dev/tasks.py lint passes; every table row quotes a file:line that grep confirms.",
   "title": "One round-trip cost figure: fees.py 0.10 %, trade_costs.py 0.12 %, research_kit TAKER_RT_PCT 0.14 % disagree; pick one (or a named pair) and point every doc at it",
-  "weight": "IMPORTANT",
+  "weight": "ROUTINE",
   "worker": "agent"
 }
