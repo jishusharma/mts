@@ -58,12 +58,34 @@ def _reference(bars):
     return res
 
 
+WALK_DAYS = 35     # smallest walk that still yields all 12 families (21 and 28 days miss prior_week_*); analysis starts 2022-04-01
+_CACHE = {}
+
+
+def _computed(days=WALK_DAYS):
+    """_walk + lc1_rows + lc1_family_rows + _reference once per days, shared by the tests (speed only)."""
+    if days not in _CACHE:
+        bars = _walk(days)
+        calls = []
+        real = stab.lc1_family_rows
+
+        def once(bars=None):          # lc1_rows/lc1_legacy_rows each call lc1_family_rows: run the analysis once
+            if not calls:
+                calls.append(real(bars))
+            return calls[0]
+        stab.lc1_family_rows = once
+        try:
+            _CACHE[days] = {"rows": stab.lc1_rows(bars=bars), "fam_rows": stab.lc1_family_rows(bars=bars),
+                            "legacy": stab.lc1_legacy_rows(bars=bars), "res": _reference(bars), "n_calls": len(calls)}
+        finally:
+            stab.lc1_family_rows = real
+    return _CACHE[days]
+
+
 def test_lc1_rows_cover_all_families():
-    bars = _walk(45)
-    rows = stab.lc1_rows(bars=bars)
-    res = _reference(bars)
+    c = _computed()
+    rows, res, fam_rows = c["rows"], c["res"], c["fam_rows"]
     assert set(res["families"]) == LC_FAMILIES          # 12 families on the synthetic bars
-    fam_rows = stab.lc1_family_rows(bars=bars)
     assert {r[0] for r in fam_rows} == LC_FAMILIES     # no keep filter: all 12 present
     assert len(rows) == len(res["touches"]) == len(fam_rows)
     rate = {k: v["random_hold_rate"] for k, v in res["families"].items()}
@@ -73,10 +95,9 @@ def test_lc1_rows_cover_all_families():
 
 
 def test_lc1_legacy_rows_are_the_8_old_keep_families_only():
-    bars = _walk(45)
-    legacy = stab.lc1_legacy_rows(bars=bars)
-    assert 0 < len(legacy) < len(stab.lc1_rows(bars=bars))
-    assert {r[0] for r in stab.lc1_family_rows(bars=bars) if r[0] in stab.LC1_LEGACY_KEEP} == set(stab.LC1_LEGACY_KEEP)
+    c = _computed()
+    assert 0 < len(c["legacy"]) < len(c["rows"])
+    assert {r[0] for r in c["fam_rows"] if r[0] in stab.LC1_LEGACY_KEEP} == set(stab.LC1_LEGACY_KEEP)
 
 
 def test_lc1_rows_refuse_bars_past_dev_end():
