@@ -6,7 +6,7 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-01T06:45:26Z",
+    "folded": "2026-11-01T07:26:17Z",
     "misses": 25,
     "reads": [
       "MyTradingSys/execution/cotrade.py",
