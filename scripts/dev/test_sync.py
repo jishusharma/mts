@@ -226,6 +226,20 @@ class SyncTest(unittest.TestCase):
         sh(self.a, "fetch", "-q", "origin")
         self.assertEqual(sync.open_claims(self.a), [])
 
+    def test_ship_release_drops_the_gateway_hold_of_its_own_tree_only(self):
+        # 2026-11-01 JIS-NB: 51 shipped trees kept 8.4 GB of C: for 12 h each because .gateway_owner outlived the task
+        sh(self.a, "checkout", "-q", "-b", f"{sync.socket.gethostname()}/task-g-2")
+        hold = self.a / sync.GATEWAY_MARKER
+        hold.write_text("x", newline=chr(10))
+        sync.claim(self.a, "Task other", area="scripts/dev", gate=self.gate)
+        sync.release(self.a, "task-other", gate=self.gate)
+        self.assertTrue(hold.exists())          # another slug's release: the tree is still this session's
+        sync.claim(self.a, "Task g", area="scripts/dev", gate=self.gate)
+        commit(self.a, "g.py", "g" + chr(10))
+        sync.ship(self.a, gate=self.gate, release_slug="task-g")
+        self.assertFalse(hold.exists())
+        self.assertIn("g.py", self.head_files(self.a))
+
     def race_claim(self, task_b, area_a="-", area_b="-"):
         """coordination audit 2026-10-26 finding 1: clone b's claim lands between a's open-claims check and a's push. Returns
         (a's SyncError text or None, number of 'claimed' lines printed, final open claims {slug: account})."""
