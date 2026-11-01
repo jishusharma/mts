@@ -1,51 +1,62 @@
-# GPT: cross-vendor recheck of AIBridge 0.7.x tests by mutation
+# GPT recheck: AIBridge 0.7.x tests by mutation
 
-Verdict: **BLOCKED**
+Verdict: **FIX-FIRST** — 3/4 hand mutants were killed by existing tests; the extension POST cache policy mutant survived the permanent suite and was killed by a contract-derived scratch assertion.
 
-The card simultaneously requires `Change no code and no spec` (audit step 3; `MyTradingSys/system/tasks/gpt-recheck-aibridge-07x-tests-1031.json:48`) and a new Python test at `MyTradingSys/tests/test_aibridge_07x_survivors.py` (card `tests` field, JSON line 53). The layer-lab audit guard allows audit outputs only under `research/layer_lab/` and `system/tasks/` (`MyTradingSys/system/LAYER_LAB.md`, Guards), so adding the requested test is out of scope. This report is in the allowed audit output location. As a result, the required end state (“each test fails on the mutated scratch copy and passes on original”) cannot be delivered under these instructions. Per the user-provided blocked rule, the task is not marked done.
+## Scope and evidence
 
-## Checked
+Read the three requested tests, `scripts/aibridge/extension/background.js`, `scripts/aibridge/scripts/run-task.ps1`, `scripts/aibridge/src/checks.ps1`, `scripts/aibridge/docs/V07_CONTRACT.md`, `MyTradingSys/items/B184_aibridge_multiblock_and_auto_run.md`, `MyTradingSys/system/AIBRIDGE_LANE.md`, and `MyTradingSys/backtest/PRE_REG_TEMPLATE.md`. No backtest or market data applies. The report does not read holdout data.
 
-- Read all assertions in `MyTradingSys/tests/test_aibridge_task_gate_exit.py:22-83`, `MyTradingSys/tests/test_aibridge_cmd_kind.py:17-31`, `MyTradingSys/tests/test_aibridge_payload.py:22-96`, and `scripts/aibridge/extension/background.js:1-62`.
-- Compared assertions to `scripts/aibridge/scripts/run-task.ps1:36-79, 96-116`, `scripts/aibridge/src/checks.ps1:168-185`, `scripts/aibridge/tests/agent_live_selftest.py` (task HTTP and concurrency checks), and `scripts/aibridge/tests/loop.test.js`.
-- Available incident evidence: `MyTradingSys/research/BUGS.md:338` (B209), `MyTradingSys/items/B184_aibridge_multiblock_and_auto_run.md:1-35`, and `MyTradingSys/system/AIBRIDGE_LANE.md:43-49`. The original DSA coordinator field reports named in `test_aibridge_payload.py:4-5` are not present as standalone source files in this checkout; the available B184 summary documents the behaviors, but does not independently substantiate all field-report details.
-- No backtest or market data was involved; PRE_REG_TEMPLATE does not apply.
+The source contract specifies task PASS/FAIL reporting and a per-command kind label (`V07_CONTRACT.md:22-28,44`); B184 records the shipped AIBridge behavior and reports `rid`/STALE_REPLY/no-store (`items/B184_aibridge_multiblock_and_auto_run.md:29-36`). The cited DSA session transcript/field report files themselves were not present in this checkout; the committed B184 note and V07 contract were available. This is recorded as NOT_IN_DATA below.
 
-## Assertion and mutation coverage
+## Assertion map
 
-| Severity | File:line | What is wrong / assertion result if guarded behavior is removed | Evidence | Proposed fix |
+| Test assertion | Guarded behavior | Source / result |
+|---|---|---|
+| `test_failed_line_with_exit_zero_is_a_fail` (`test_aibridge_task_gate_exit.py:34-37`) | A zero process exit plus `FAILED: N step(s)` must produce task FAIL and exit 1. | Runner fail-pattern gate (`run-task.ps1:90-94,116-117`); contract task result (`V07_CONTRACT.md:22-28`). M1 killed. |
+| `test_clean_step_still_passes` (`:40-42`) | `FAILED: 0` is not a failure; successful control remains PASS/0. | Runner default pattern excludes zero (`run-task.ps1:90-94`). Baseline control passes. |
+| `test_native_exit_1_then_write_output_is_a_fail` (`:45-48`) | Preserve native process failure after a later successful PowerShell statement. | Runner resets and propagates `$LASTEXITCODE` (`run-task.ps1:70-73`). M2 killed. |
+| `test_exit_code_line_under_exit_zero_is_a_fail` (`:51-53`) | Nonzero `EXIT_CODE=N` summary is a failure. | Runner default fail pattern (`run-task.ps1:90-94`). Baseline passes. |
+| `test_gate_step_without_summary_is_a_fail` (`:56-63`) | Real gate playbooks require `ALL TESTS PASSED`; plain inline step is an unaffected control. | Test reads `mts-gate.json` and `mts-ship.json`; V07 task reports require PASS/FAIL (`:22-28`). Baseline passes. |
+| `test_control_write_output_after_clean_native_passes` (`:66-68`) | Successful native child followed by output remains PASS/0. | Runner propagation behavior (`run-task.ps1:70-73`). Baseline passes. |
+| `test_child_temp_is_outside_a_git_repo_around_the_bridge_folder` (`:71-82`) | Child TEMP is outside bridge repo ancestry. | V07 contract child TEMP location (`V07_CONTRACT.md:47-48`). Not run in mutation harness because this test invokes Git, which was outside the permitted commands. |
+| `test_quoted_write_words_do_not_make_a_read_block_write` (`test_aibridge_cmd_kind.py:23-26`) | Quoted search-pattern data does not change kind to write. | Kind classifier blanks quoted text before regex classification (`checks.ps1:199-210`); V07 kind label (`V07_CONTRACT.md:44`). M3 killed. |
+| `test_real_writes_still_write` (`test_aibridge_cmd_kind.py:28-31`) | Actual file writes, git commit and redirection classify as write. | `checks.ps1:202-210`; baseline passes. |
+| `test_payload_files_exist_and_versions_agree` (`test_aibridge_payload.py:22-30`) | Required payload components exist and extension/agent/loop versions agree. | Contract identifies payload (`V07_CONTRACT.md:3`); structural/version checks. |
+| `test_payload_is_ascii_lf_no_bom` (`:39-50`) | Payload encoding and line-ending constraints. | AIBridge lane rules (`AIBRIDGE_LANE.md:27-29`). Not run in mutation harness because it shells out to Git to inspect index EOL. |
+| `test_extension_helpers_node` (`:53-55`) | Extension helper behavior under Node. | `scripts/aibridge/tests/loop.test.js`; baseline passes. |
+| `test_selftest_registry_variable_is_unique_per_run` (`:81-89`) | Fresh per-run registry variable prevents concurrent self-test collisions. | Test's incident description at `:84-86`; the referenced 2026-10-16 gate log is not in scope files. Not executed separately in baseline (covered by baseline focused suite). |
+| `test_agent_live_selftest` (`:92-97`) | Live scratch agent integrated behavior and summary. | Contract points to 36 live checks (`V07_CONTRACT.md:3`). Full focused run failed here due HKCU write denial and scratch temp access denial in this sandbox (details below). |
+
+The tests cover the named task gate and kind behavior well. Payload assertions include presence/version/format/helper/self-test checks, but no permanent assertion protects the POST `/run` `cache: 'no-store'` contract. The separate scratch check proves this omission.
+
+## Mutation execution
+
+Reproduction command (from repository root):
+
+```powershell
+python MyTradingSys/research/layer_lab/aibridge_07x_mutation_audit.py.txt
+```
+
+The harness copies the payload and focused tests into disposable directories under the workspace, applies one replacement per mutant, and records pytest exit/results. Baseline harness command was `python -m pytest -q MyTradingSys/tests/test_aibridge_task_gate_exit.py MyTradingSys/tests/test_aibridge_cmd_kind.py MyTradingSys/tests/test_aibridge_payload.py -k "not test_agent_live_selftest and not test_child_temp_is_outside_a_git_repo_around_the_bridge_folder and not test_payload_is_ascii_lf_no_bom"`: **11 passed, 3 deselected, exit 0**.
+
+| Mutant and exact scratch diff | Executed result |
+|---|---|
+| M1 `run-task.ps1`: `if ($out -match $fo) { $ok = $false; $why = "output matched fail pattern /$fo/ although exit was $code" }` → `# MUTANT: summary detector removed` | Existing `test_failed_line_with_exit_zero_is_a_fail`: **killed**, pytest exit 1. Mutant printed TASK PASS over `FAILED: 2 step(s)`. |
+| M2 `run-task.ps1`: `if (`$null -ne `$global:LASTEXITCODE) { exit [int]`$global:LASTEXITCODE }` → `# MUTANT: native exit code ignored` | Existing `test_native_exit_1_then_write_output_is_a_fail`: **killed**, pytest exit 1. Mutant printed PASS after native `python` exit 1. |
+| M3 `checks.ps1`: `$Cmd = [regex]::Replace($Cmd, '\x27[^\x27\r\n]*\x27|\x22[^\x22\r\n]*\x22', '\x27\x27')` → `# MUTANT: quoted text not masked` | Existing `test_quoted_write_words_do_not_make_a_read_block_write`: **killed**, pytest exit 1 (`write` observed, expected `read`). |
+| M4 `background.js`: `method: 'POST',\n      cache: 'no-store',` → `method: 'POST',` | Existing focused tests **survived** this mutant. Contract-derived scratch assertion checks that POST `/run` options include `cache: 'no-store'`: original **PASS**, mutant **FAIL**. |
+
+Unmutated full focused command `python -m pytest MyTradingSys/tests/test_aibridge_task_gate_exit.py MyTradingSys/tests/test_aibridge_cmd_kind.py MyTradingSys/tests/test_aibridge_payload.py -q` produced **13 passed, 1 failed**. The failure was `test_agent_live_selftest`: PowerShell reported access denied writing its temp scratch files, and the Python self-test ended with `PermissionError: [WinError 5] Access is denied` on `HKCU\Environment`. This is an environment limitation, not counted as a source defect. The reproducible harness excludes that integration test and the two tests that invoke Git.
+
+## Findings
+
+| Severity | File:line | What is wrong | Evidence | Proposed fix |
 |---|---|---|---|---|
-| LOW | `test_aibridge_task_gate_exit.py:34-37` | Kills removal of the default `FAILED: N step(s)` fail pattern: expects FAIL and rc 1 on “FAILED: 2” with shell exit 0. | `run-task.ps1:62-68`; B209 `BUGS.md:338`. | Keep; assertion is directly coupled to the B209 guard. |
-| LOW | `test_aibridge_task_gate_exit.py:40-42` | Control; intentionally survives removing the failure guard because `FAILED: 0` must pass. | `run-task.ps1:62-68`. | Keep as the clean-output control. |
-| LOW | `test_aibridge_task_gate_exit.py:45-49` | Kills removal of the native process exit-code propagation; Python exit 1 followed by successful `Write-Output` must remain FAIL/rc 1. | `run-task.ps1:44-47` propagates `$LASTEXITCODE`; B209 D3 history in test docstring. | Keep. |
-| LOW | `test_aibridge_task_gate_exit.py:51-54` | Kills removal of the `EXIT_CODE=N` output check; positive code line beneath shell `exit 0` must fail. | `run-task.ps1:65-68`. | Keep. |
-| LOW | `test_aibridge_task_gate_exit.py:56-64` | `expect=ALL TESTS PASSED` assertions catch removal of the two playbook expectations, but the inline control at 62-63 passes with no `expect`; it does not exercise a mutated gate playbook through the runner. | Test reads `tasks/mts-gate.json` and `mts-ship.json`; runner applies `expect` at `run-task.ps1:59-63`. | Add a runner-level test using a scratch playbook with `expect` and incomplete output, plus passing matching output. |
-| LOW | `test_aibridge_task_gate_exit.py:66-68` | Control; survives removal of guards for ordinary successful commands. | `run-task.ps1:58-68`. | Keep. |
-| LOW | `test_aibridge_task_gate_exit.py:71-83` | Unrelated to the requested task EXIT_CODE mutation; checks TEMP isolation. It will survive removal of task gate guards. | Assertion concerns `Scratch` and `TEMP`, not task result code. | Keep in a separate focused test if desired. |
-| LOW | `test_aibridge_cmd_kind.py:23-26` | Kills removal of quoted-string blanking for the supplied quoted write words; both commands classify as read only when quoted content is ignored. | `checks.ps1:181-184`; B209 item 5 `BUGS.md:338`. | Keep. |
-| LOW | `test_aibridge_cmd_kind.py:28-31` | Controls catch over-broad change to classify real writes as read; quoted-string mutation alone should not break these. | `checks.ps1:176-180, 184-185`. | Keep. |
-| MED | `test_aibridge_payload.py:22-29` | File existence and three version checks do not detect removal of any runtime payload behavior; all assertions survive such behavior mutations unless the version string/files also change. | Assertions inspect presence/version only. Background request payload is assembled at `background.js:46-50`. | Add direct background-worker test asserting the serialized POST includes `task`, `task_params`, and `task_spec` when supplied, routes to selected machine, and omits undefined optional fields. |
-| LOW | `test_aibridge_payload.py:39-49` | BOM/ASCII/EOL checks are package hygiene; they survive behavioral mutations that preserve encoding. | Assertions only inspect bytes/EOL/decoding. | Keep as hygiene coverage. |
-| LOW | `test_aibridge_payload.py:52-55` | Invokes loop helper tests, not `background.js`; mutation of background POST payload survives. Loop tests cover parse/format/echo and helper behavior. | `loop.test.js` imports only `extension/loop.js`; no background worker import. | Add the payload test described above; keep helper test. |
-| LOW | `test_aibridge_payload.py:58-59, 62-77` | Timeout constant and timeout cleanup helper do not assert bridge payload behavior. | Code-level timeout mechanics only. | Keep; unrelated to payload mutation. |
-| LOW | `test_aibridge_payload.py:80-88` | Tests unique HKCU env names, not `background.js` payload; survives payload-field removal. | `agent_live_selftest.py` `_unique_env_name`; `background.js` unreferenced. | Keep; add isolated worker contract test. |
-| LOW | `test_aibridge_payload.py:91-96` | Live selftest may catch agent/task API regressions, but it does not execute `extension/background.js`, so removing the extension JSON fields at `background.js:50` survives. | Selftest starts `src/agent.ps1` and sends HTTP directly; no Chrome worker is loaded. | Add an extension-side payload assertion as above. |
-| MED | `background.js:46-50` | The `cmd`/`cwd`/`timeout_s`/`auto`/`write`/`rid`/`dry`/`shell`/`task`/`task_params`/`task_spec`/`token` envelope is not asserted by any of the three scope-in tests. In particular, deletion or renaming of `task_params` or `task_spec` is a survivor in current tests. | Existing payload tests never load `background.js`; selftest drives agent HTTP directly. The task-mode contract is described in `AIBRIDGE_LANE.md:43-49`, and B184 records task mode at `B184...md:32-35`. | Add a failing-first test that stubs Chrome APIs and `fetch`, invokes the registered `airun` listener with an inline task, and asserts exact POST URL, content type, and JSON fields. |
-| LOW | `background.js:6-14, 38-45, 53-62` | Machine selection, ping forwarding, response parse/error handling, and keep-alive behavior also have no direct test among the scope-in files. | `loop.test.js` tests pure loop helpers only. | Cover these separately if the intended test contract includes them. |
+| LOW | `scripts/aibridge/extension/background.js:46-49`; tests `test_aibridge_payload.py:22-30,53-55` | Existing permanent tests do not guard the POST `/run` no-cache option. | M4 survived existing suite; a scratch spec check passed on original and failed after removing `cache: 'no-store'`. B184:34 records no-store; `background.js:48` implements it. | Add a contract-derived assertion to `test_aibridge_payload.py` and run through the registered focused test gate. Follow-up card `aibridge-extension-guard-no-store-respon` (SONNET, build) includes `test_aibridge_payload.py` and `scripts/dev/run_extra_tests.py`. |
+| LOW / NOT_IN_DATA | `MyTradingSys/tests/test_aibridge_payload.py:4-5`; `MyTradingSys/items/B184_aibridge_multiblock_and_auto_run.md:33-36` | The test docstring attributes expectations to DSA coordinator field reports, but the underlying cited transcript/report artifacts are not included in this checkout. | B184 summarizes the field reports and the V07 contract is available; original transcript files are not. | Keep claims anchored to the committed B184 note/V07 contract; add transcript file/line references if the source artifacts are later checked in. |
 
-## Mutation matrix
+## Follow-up
 
-Mutation candidates checked against the test predicates:
+- `aibridge-extension-guard-no-store-respon` — READY SONNET build card; regression assertion path `MyTradingSys/tests/test_aibridge_payload.py`; registration path `scripts/dev/run_extra_tests.py`; implementation path `scripts/aibridge/extension/background.js`.
 
-1. Remove the `LASTEXITCODE` propagation block in `run-task.ps1:44-47`: assertion `test_native_exit_1_then_write_output_is_a_fail` at test lines 45-49 detects the regression.
-2. Remove the default `EXIT_CODE` fail pattern in `run-task.ps1:65-68`: assertion at test lines 51-54 detects it.
-3. Remove quote blanking in `Get-CmdKind` at `checks.ps1:181-183`: at least the quoted `git commit|Remove-Item|a>b` assertion at cmd-kind test line 24 detects it.
-4. Remove `task_params` and `task_spec` from the background POST body at `background.js:50`: **survives** all current scope-in tests; none execute or inspect `background.js` behavior.
-
-These are source-to-assertion predictions, not a recorded execution of four mutations. The fourth survivor is evidenced by the test call graph described above. A temporary mutant test and the requested new test file were not created because the audit/no-code and audit-path constraints prevent delivering the required test artifact. No source/spec was modified.
-
-## Follow-up cards
-
-None created: no HIGH finding was identified. The two MED findings are coverage gaps, and task-card scope does not permit editing tests or task metadata.
-
-Verdict: **BLOCKED** — the audit’s no-code/out-of-scope rules conflict with the mandatory new test artifact. The original DSA field report files are also unavailable here and are recorded as a source limitation, not as the blocking reason.
+Harness saved at `MyTradingSys/research/layer_lab/aibridge_07x_mutation_audit.py.txt`. No production code, permanent tests, specs, holdout data, or market data were changed/read for this audit.

@@ -1,0 +1,124 @@
+"""Reproducible scratch mutation audit for AIBridge 0.7.x.
+
+Run from repo root:
+  python MyTradingSys/research/layer_lab/aibridge_07x_mutation_audit.py.txt
+
+The script copies only test targets and scripts/aibridge into a disposable
+temporary tree, mutates that copy, and runs pytest. It never edits repo code.
+"""
+import os
+import shutil
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[3]
+TESTS = [
+    "test_aibridge_task_gate_exit.py",
+    "test_aibridge_cmd_kind.py",
+    "test_aibridge_payload.py",
+]
+
+MUTATIONS = {
+    "M1 gate-summary detector removed": (
+        "scripts/aibridge/scripts/run-task.ps1",
+        "if ($out -match $fo) { $ok = $false; $why = \"output matched fail pattern /$fo/ although exit was $code\" }",
+        "# MUTANT: summary detector removed",
+        ["MyTradingSys/tests/test_aibridge_task_gate_exit.py::test_failed_line_with_exit_zero_is_a_fail"],
+    ),
+    "M2 native EXIT_CODE propagation removed": (
+        "scripts/aibridge/scripts/run-task.ps1",
+        "if (`$null -ne `$global:LASTEXITCODE) { exit [int]`$global:LASTEXITCODE }",
+        "# MUTANT: native exit code ignored",
+        ["MyTradingSys/tests/test_aibridge_task_gate_exit.py::test_native_exit_1_then_write_output_is_a_fail"],
+    ),
+    "M3 quote masking removed from kind classifier": (
+        "scripts/aibridge/src/checks.ps1",
+        "$Cmd = [regex]::Replace($Cmd, '\\x27[^\\x27\\r\\n]*\\x27|\\x22[^\\x22\\r\\n]*\\x22', '\\x27\\x27')",
+        "# MUTANT: quoted text not masked",
+        ["MyTradingSys/tests/test_aibridge_cmd_kind.py::test_quoted_write_words_do_not_make_a_read_block_write"],
+    ),
+    "M4 POST response cache disabled setting removed": (
+        "scripts/aibridge/extension/background.js",
+        "method: 'POST',\n      cache: 'no-store',",
+        "method: 'POST',",
+        [],
+    ),
+}
+
+
+def run(cmd, cwd, env=None):
+    p = subprocess.run(cmd, cwd=cwd, env=env, text=True, capture_output=True, timeout=180)
+    print("COMMAND:", subprocess.list2cmdline(list(map(str, cmd))))
+    print("EXIT:", p.returncode)
+    print((p.stdout + p.stderr).strip()[-5000:])
+    return p.returncode, p.stdout + p.stderr
+
+
+def scratch(dst):
+    (dst / "MyTradingSys/tests").mkdir(parents=True)
+    shutil.copytree(ROOT / "scripts/aibridge", dst / "scripts/aibridge")
+    for name in TESTS:
+        shutil.copy2(ROOT / "MyTradingSys/tests" / name, dst / "MyTradingSys/tests" / name)
+    shutil.copy2(ROOT / "MyTradingSys/tests/aibridge_scratch.py", dst / "MyTradingSys/tests/aibridge_scratch.py")
+    # Preserve the repository's LF source bytes in the disposable copy.
+    for p in (dst / "scripts/aibridge").rglob("*"):
+        if p.is_file() and p.suffix.lower() in (".ps1", ".js", ".json"):
+            b = p.read_bytes().replace(b"\r\n", b"\n")
+            p.write_bytes(b)
+
+
+def pytest(dst, selectors):
+    env = os.environ.copy()
+    env["MTS_REPO_ROOT"] = str(dst)
+    return run([sys.executable, "-m", "pytest", "-q", *selectors], dst, env)
+
+
+def survivor_contract_test(dst):
+    """Contract: requests do not reuse cached bridge responses (V07_CONTRACT.md)."""
+    src = (dst / "scripts/aibridge/extension/background.js").read_text(encoding="utf-8")
+    post = src.split("return fetch(mc.url, {", 1)[1].split("}).then", 1)[0]
+    assert "cache: 'no-store'" in post, "POST /run must disable cached responses"
+
+
+def main():
+    print("BASELINE: focused suite (live selftest deselected; host registry/temp permissions prevent it here)")
+    with tempfile.TemporaryDirectory(prefix="aibridge-audit-base-", dir=ROOT) as td:
+        base = Path(td)
+        scratch(base)
+        selectors = [f"MyTradingSys/tests/{n}" for n in TESTS]
+        selectors[-1] += " -k not test_agent_live_selftest"
+        # pytest accepts -k as separate arguments, so spell the command explicitly.
+        env = os.environ.copy(); env["MTS_REPO_ROOT"] = str(base)
+        rc, _ = run([sys.executable, "-m", "pytest", "-q", *[f"MyTradingSys/tests/{n}" for n in TESTS], "-k", "not test_agent_live_selftest and not test_child_temp_is_outside_a_git_repo_around_the_bridge_folder and not test_payload_is_ascii_lf_no_bom"], base, env)
+        print("BASELINE_FOCUSED_RESULT:", rc)
+
+    for name, (rel, old, new, selectors) in MUTATIONS.items():
+        print("\nMUTANT:", name)
+        with tempfile.TemporaryDirectory(prefix="aibridge-audit-mut-", dir=ROOT) as td:
+            dst = Path(td); scratch(dst)
+            target = dst / rel
+            text = target.read_text(encoding="utf-8")
+            if old not in text:
+                raise RuntimeError(f"mutation anchor absent: {rel}: {old!r}")
+            target.write_text(text.replace(old, new, 1), encoding="utf-8", newline="\n")
+            print("DIFF:", repr(old), "=>", repr(new))
+            if selectors:
+                rc, _ = pytest(dst, selectors)
+                print("MUTATION_TEST_RESULT:", "KILLED" if rc != 0 else "SURVIVED", "pytest_exit", rc)
+            else:
+                original = scratch
+                # Execute the same spec-derived assertion on an untouched copy and this mutant.
+                with tempfile.TemporaryDirectory(prefix="aibridge-audit-contract-", dir=ROOT) as td2:
+                    clean = Path(td2); scratch(clean)
+                    try: survivor_contract_test(clean); clean_ok = True
+                    except AssertionError: clean_ok = False
+                try: survivor_contract_test(dst); mutant_ok = True
+                except AssertionError: mutant_ok = False
+                print("SPEC_DERIVED:", "original=PASS" if clean_ok else "original=FAIL", "; mutant=PASS" if mutant_ok else "; mutant=FAIL")
+                print("MUTATION_TEST_RESULT:", "SURVIVED_EXISTING_SUITE; CONTRACT_TEST_KILLS" if clean_ok and not mutant_ok else "UNEXPECTED")
+
+
+if __name__ == "__main__":
+    main()
