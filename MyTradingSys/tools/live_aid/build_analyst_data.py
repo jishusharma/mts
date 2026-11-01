@@ -9,7 +9,9 @@ Rebuild after CBP ingestion or before a chart read:
 """
 import argparse
 import json
+import re
 import sys
+import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -20,9 +22,12 @@ for p in (ROOT / "MyTradingSys", ROOT / "scripts" / "dev"):
         sys.path.insert(0, str(p))
 import cbp  # noqa: E402
 import analyst_levels as al  # noqa: E402
+import ff_calendar_snapshot as ffc  # noqa: E402
 
 OUT = HERE / "analyst_data.js"
 VAR = "LIVE_AID_ANALYSTS"
+SNAP = HERE / "ff_calendar_snapshot.js"
+STALE_H = 20  # OURS: refresh a calendar snapshot older than 20 h; live_aid.html drops it at 26 h
 
 
 def read_json(p, default):
@@ -76,7 +81,36 @@ def write(block, out=OUT):
     out.write_text("window." + VAR + " = " + json.dumps(block, indent=1) + ";\n", encoding="utf-8", newline="\n")
 
 
-def main(argv=None):
+def snapshot_age_h(path, now_ms=None):
+    """Hours since the snapshot's fetched_ms; None when the file is missing or unreadable (counts as stale)."""
+    try:
+        m = re.search(r'"fetched_ms"\s*:\s*(\d+)', Path(path).read_text(encoding="utf-8"))
+    except OSError:
+        return None
+    if not m:
+        return None
+    return ((time.time() * 1000 if now_ms is None else now_ms) - int(m.group(1))) / 3600000.0
+
+
+def refresh_calendar(snapshot_fn=None, path=SNAP, offline=False, now_ms=None, stale_h=STALE_H):
+    """Refresh the FF calendar snapshot when it is missing or older than stale_h. Never fetches offline. Any error
+    (including a non-zero return of snapshot_fn, the ff_calendar_snapshot.main convention) is printed, the old file stays.
+    Returns True when a refresh was attempted and succeeded."""
+    if offline:
+        return False
+    age = snapshot_age_h(path, now_ms)
+    if age is not None and age <= stale_h:
+        return False
+    fn = snapshot_fn or ffc.main
+    try:
+        rc = fn(path)
+    except Exception as ex:
+        print("ff_calendar_snapshot: refresh failed, old file kept: %s" % ex, file=sys.stderr)
+        return False
+    return not rc
+
+
+def main(argv=None, snapshot_fn=None, snapshot_path=SNAP):
     ap = argparse.ArgumentParser()
     ap.add_argument("--offline", action="store_true")
     ap.add_argument("--days", type=int, default=10)
@@ -86,6 +120,7 @@ def main(argv=None):
     b = build(a.store, days=a.days, offline=a.offline)
     write(b, Path(a.out))
     print("analyst_data.js: %d analysts, %d rows, %d rejected, %d levels -> %s" % (len(b["roster"]), len(b["rows"]), len(b["rejected"]), len(b["levels"]), a.out))
+    refresh_calendar(snapshot_fn, snapshot_path, a.offline)
 
 
 if __name__ == "__main__":

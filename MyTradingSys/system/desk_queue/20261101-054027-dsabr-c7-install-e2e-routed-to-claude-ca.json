@@ -1,0 +1,10 @@
+{
+  "done_when": "Card title and body state 0.7.9 (or current agent version); install/verify/e2e PASS on both hosts with JSON quoted in a shipped commit Result",
+  "from": "JIS-NUC",
+  "id": "20261101-054027-dsabr-c7-install-e2e-routed-to-claude-ca",
+  "need": "Card is bridge install/verify/e2e on JIS-NUC and jis-nb (aibridge_install.py, aibridge_verify.py, e2e_bridge.py --json, mts_signal.py broadcast). Section 5d keeps F:\\AIBridge and scripts\\aibridge\\ with Claude. Card title carries 0.7.4; AIRUN result #38/#39 headers show agent=0.7.9 on JIS-NUC. F:\\AIBridge\\VERSION does not exist; scripts\\aibridge\\docs\\V07_CONTRACT.md line 1 still reads 'AIBridge v0.7.0 contract'. Card text needs the version refreshed before anyone runs it, and install/verify must not downgrade the live agent.",
+  "posted": "2026-11-01T05:40:27Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "dsabr-c7-install-e2e routed to Claude: card title says 0.7.4, bridge on JIS-NUC is 0.7.9"
+}

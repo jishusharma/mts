@@ -1,0 +1,28 @@
+study,variant,run_utc,split,data_source,description,status
+c26_roadmap_2026-11-01,P1_oi_up_UP,2026-11-01,DESIGN_RECENT,binance spot 15m + USDT-M metrics 2026-07-01..11-01,OI up L1->retest vs taken/back-to-L1 (UP phase),count_only
+c26_roadmap_2026-11-01,P1_oi_up_DOWN,2026-11-01,DESIGN_RECENT,binance spot 15m + USDT-M metrics 2026-07-01..11-01,OI up L1->retest vs taken/back-to-L1 (DOWN phase),count_only
+c26_roadmap_2026-11-01,P1_rsi_div_UP,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,RSI divergence at H1 (UP phase),count_only
+c26_roadmap_2026-11-01,P1_rsi_div_DOWN,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,RSI divergence at H1 (DOWN phase),count_only
+c26_roadmap_2026-11-01,P1_wt_ob_UP,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,WaveTrend OB at H1 (UP phase),count_only
+c26_roadmap_2026-11-01,P1_wt_ob_DOWN,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,WaveTrend OB at H1 (DOWN phase),count_only
+c26_roadmap_2026-11-01,P1_hvn_UP,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,H1 at 72h HVN (UP phase),count_only
+c26_roadmap_2026-11-01,P1_hvn_DOWN,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,H1 at 72h HVN (DOWN phase),count_only
+c26_roadmap_2026-11-01,P1_l1_sweep_UP,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,L1 swept before take-out (UP phase),count_only
+c26_roadmap_2026-11-01,P1_l1_sweep_DOWN,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,L1 swept before take-out (DOWN phase),count_only
+c26_roadmap_2026-11-01,P1_session_UP,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,retest held in US/LATE (UP phase),count_only
+c26_roadmap_2026-11-01,P1_session_DOWN,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,retest held in US/LATE (DOWN phase),count_only
+c26_roadmap_2026-11-01,P1_range_exc_UP_H,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,excursion beyond H1 before back to L1 / 24h (UP highs),count_only
+c26_roadmap_2026-11-01,P1_range_exc_UP_L,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,excursion beyond the level before back to L1 / 24h (UP lows),count_only
+c26_roadmap_2026-11-01,P1_range_exc_DOWN_H,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,excursion beyond H1 before back to L1 / 24h (DOWN highs),count_only
+c26_roadmap_2026-11-01,P1_range_exc_DOWN_L,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,excursion beyond the level before back to L1 / 24h (DOWN lows),count_only
+c26_roadmap_2026-11-01,P1_range_top_grid,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,range top X in 0.3..2.0 %: stopped / false stops / back to L1 (4 groups),count_only
+c26_roadmap_2026-11-01,P1_div_legs_1m,2026-11-01,DESIGN_RECENT,binance spot 1m 2026-06-21..11-01,RSI14 bearish divergence signals (K=3 LB=60) inside the take-out window on 1m bars,count_only
+c26_roadmap_2026-11-01,P1_div_legs_2m,2026-11-01,DESIGN_RECENT,binance spot 1m 2026-06-21..11-01,same on 2m bars,count_only
+c26_roadmap_2026-11-01,P1_div_legs_3m,2026-11-01,DESIGN_RECENT,binance spot 1m 2026-06-21..11-01,same on 3m bars,count_only
+c26_roadmap_2026-11-01,P1_div_legs_5m,2026-11-01,DESIGN_RECENT,binance spot 1m 2026-06-21..11-01,same on 5m bars,count_only
+c26_roadmap_2026-11-01,P1_shape_A_stop1.0,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,single short at the close back under H1 stop 1.0 % (DOWN highs n=30 gross unit-%),design_gross
+c26_roadmap_2026-11-01,P1_shape_A_stop1.5,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,single short stop 1.5 %,design_gross
+c26_roadmap_2026-11-01,P1_shape_flat3_stop1.0,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,flat 3 legs 1-1-1 at 0/0.3/0.6 % stop 1.0 %,design_gross
+c26_roadmap_2026-11-01,P1_shape_mart124_stop1.0,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,martingale 1-2-4 at 0/0.3/0.6 % stop 1.0 %,design_gross
+c26_roadmap_2026-11-01,P1_shape_nested_mart_stop1.5,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,operator nested tiers 0.65/1.0/1.5 sizes 1/2/4 stop 1.5 %,design_gross
+c26_roadmap_2026-11-01,P1_shape_nested_flat_stop1.5,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,nested tiers flat sizes stop 1.5 %,design_gross

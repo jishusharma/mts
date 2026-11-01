@@ -15,13 +15,28 @@ fetch_captions.py) unless it exists. Existing timed files are skipped. One 20 s 
 When yt-dlp gets HTTP 429 on the timedtext endpoint (IP-level, still happens with impersonation), the fetch falls back to
 the youtube-transcript-api package (pip install youtube-transcript-api) which uses a different endpoint; the title/date
 still come from yt-dlp metadata. Header `# Source:` says which path produced the file.
+YouTube guard (shared with fetch_captions.py; we throttle, never evade): at most --max-videos (default 5) network
+fetches per run, extra ids print DEFERRED; ONE try per video, 20 s between videos. The first 429 / "Sign in to confirm"
+(yt-dlp and the transcript-api fallback both refused) writes blocked_until = now + 6 h plus the host name to
+~/.mts/yt_block.json (outside the repo; override with env YT_BLOCK_FILE), prints the rest as UNVERIFIED and stops.
+While blocked every run (any job) exits 3 with a message and makes no request. `--status` prints blocked/not blocked
+and the last run's budget use, with no network call.
+The record also stores the public IP it was written from (one api.ipify.org request at write time); when a record is
+still live the guard makes one more ipify request and ignores a record written from a different IP, so a VPN exit
+(scripts/dev/yt_vpn_fetch.py) is not treated as blocked by the home IP's record, while a 429 on the new IP writes a record
+for that IP (the home IP's entry is kept in `by_ip`). A record without an IP, or an unreadable current IP, stands.
 """
 import argparse
+import json
 import os
+import socket
 import re
 import sys
 import tempfile
 import time
+import ipaddress
+import urllib.request
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 try:
@@ -34,6 +49,125 @@ CBP_HOME = Path(os.environ["CBP_HOME"]) if os.environ.get("CBP_HOME") else None
 CANON = CBP_HOME / "raw_transcripts_canonical" if CBP_HOME else ROOT / "raw_transcripts_canonical"
 ID_RE = re.compile(r"(?:v=|youtu\.be/|^)([A-Za-z0-9_-]{11})(?:[&?#]|$)")
 TS_RE = re.compile(r"(\d+):(\d+):(\d+)[.,](\d+)\s+-->")
+BLOCK_HOURS = 6
+BLOCK_MARKS = ("429", "Too Many Requests", "Sign in to confirm")
+EXIT_BLOCKED = 3
+
+
+def block_file():
+    return Path(os.environ.get("YT_BLOCK_FILE") or Path.home() / ".mts" / "yt_block.json")
+
+
+def _utcnow():
+    return datetime.now(timezone.utc)
+
+
+def read_block():
+    try:
+        return json.loads(block_file().read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+
+
+def write_block(**upd):
+    rec = read_block()
+    rec.update(upd)
+    p = block_file()
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(rec, indent=1), encoding="utf-8", newline="\n")
+
+
+def public_ip():
+    """Current public IP via one tiny api.ipify.org request, or None when it cannot be read (tests patch this)."""
+    try:
+        with urllib.request.urlopen("https://api.ipify.org", timeout=8) as r:
+            return str(ipaddress.ip_address(r.read().decode("ascii").strip()))
+    except Exception:
+        return None
+
+
+def _future(iso):
+    try:
+        t = datetime.fromisoformat(iso or "")
+    except (ValueError, TypeError):
+        return None
+    if t.tzinfo is None:
+        t = t.replace(tzinfo=timezone.utc)
+    return t if t > _utcnow() else None
+
+
+def blocked_until(check_ip=True):
+    """datetime the block ends, or None when not blocked (record missing, unreadable, expired, or written from a
+    different public IP than the current one). The ipify request is made only when a live record exists."""
+    rec = read_block()
+    top = _future(rec.get("blocked_until"))
+    by_ip = rec.get("by_ip") if isinstance(rec.get("by_ip"), dict) else {}
+    if not (top or any(_future(v) for v in by_ip.values())):
+        return None
+    if not check_ip or not rec.get("ip"):
+        return top   # legacy record (no IP) or offline status view: stands
+    cur = public_ip()
+    if cur is None or cur == rec["ip"]:
+        return top   # cannot tell: fail closed
+    return _future(by_ip.get(cur))
+
+
+def mark_blocked():
+    until = _utcnow() + timedelta(hours=BLOCK_HOURS)
+    stamp = until.isoformat(timespec="seconds")
+    ip = public_ip()
+    rec = read_block()
+    by_ip = {k: v for k, v in (rec.get("by_ip") or {}).items() if _future(v)} if isinstance(rec.get("by_ip"), dict) else {}
+    if rec.get("ip") and _future(rec.get("blocked_until")):
+        by_ip.setdefault(rec["ip"], rec["blocked_until"])   # keep the previous IP's block
+    if ip:
+        by_ip[ip] = stamp
+    write_block(blocked_until=stamp, host=socket.gethostname(), ip=ip, by_ip=by_ip)
+    return until
+
+
+def guard_status():
+    until, rec = blocked_until(check_ip=False), read_block()   # --status makes no network call
+    head = (f"BLOCKED until {until.isoformat(timespec='seconds')} (host {rec.get('host', '?')}, "
+            f"ip {rec.get('ip') or '?'})" if until
+            else "NOT BLOCKED")
+    return head + f"; last run budget used {rec.get('last_used', 0)} of {rec.get('last_max', '?')}"
+
+
+def guarded_run(items, fetch_one, max_videos, pause=20):
+    """items: [(id, dest_path)]. fetch_one(id)->status. Returns [(id, status)]; ids past the budget are DEFERRED,
+    ids after a block are UNVERIFIED, EXISTS files cost no budget."""
+    out, used, stopped = [], 0, False
+    for vid, dest in items:
+        if stopped:
+            out.append((vid, "UNVERIFIED"))
+        elif dest is not None and Path(dest).exists():
+            out.append((vid, "EXISTS"))
+        elif used >= max_videos:
+            out.append((vid, "DEFERRED"))
+        else:
+            if used:
+                time.sleep(pause)
+            used += 1
+            r = fetch_one(vid)
+            out.append((vid, r))
+            if r == "BLOCKED":
+                mark_blocked()
+                stopped = True
+    write_block(last_used=used, last_max=max_videos, last_run=_utcnow().isoformat(timespec="seconds"))
+    return out
+
+
+def guard_gate(a):
+    """Exit code to return now (--status or still blocked), else None."""
+    if a.status:
+        print(guard_status())
+        return 0
+    until = blocked_until()
+    if until:
+        print(f"YT_BLOCKED until {until.isoformat(timespec='seconds')}: no request made. {guard_status()}")
+        return EXIT_BLOCKED
+    return None
 
 
 def parse_vtt(vtt):
@@ -127,37 +261,30 @@ def fetch(vid, analyst, langs, outdir, channel="", cookies=None):
     if dest.exists():
         return "EXISTS"
     url = f"https://www.youtube.com/watch?v={vid}"
-    delay = 60
-    for _ in range(4):
-        try:
-            with tempfile.TemporaryDirectory() as td:
-                opts = {"skip_download": True, "quiet": True, "no_warnings": True, "writesubtitles": True,
-                        "writeautomaticsub": True, "subtitleslangs": langs, "subtitlesformat": "vtt",
-                        "outtmpl": str(Path(td) / "%(id)s")}
-                if cookies:
-                    opts["cookiefile"] = cookies
-                with yt_dlp.YoutubeDL(opts) as y:
-                    info = y.extract_info(url, download=True)
-                vtts = list(Path(td).glob("*.vtt"))
-                if not vtts:
-                    return "NOCAPS"
-                kind = "manual" if (info.get("subtitles") or {}) else "auto"
-                cues = parse_vtt(vtts[0].read_text(encoding="utf-8", errors="replace"))
-            return store(vid, analyst, outdir, channel, info, kind, cues, "yt_dlp captions")
-        except yt_dlp.utils.DownloadError as e:
-            msg = str(e)
-            if "429" in msg or "Too Many Requests" in msg or "Sign in to confirm" in msg:
-                if "Sign in to confirm" in msg:
-                    return "BOTCHECK"
-                got = transcript_api_cues(vid, langs)   # other endpoint; not blocked when timedtext 429s
-                if got:
-                    return store(vid, analyst, outdir, channel, meta(vid, cookies), got[1], got[0],
-                                 "youtube_transcript_api")
-                time.sleep(delay)
-                delay *= 2
-                continue
-            return f"ERROR {msg[:80]}"
-    return "RATELIMIT"
+    try:
+        with tempfile.TemporaryDirectory() as td:
+            opts = {"skip_download": True, "quiet": True, "no_warnings": True, "writesubtitles": True,
+                    "writeautomaticsub": True, "subtitleslangs": langs, "subtitlesformat": "vtt",
+                    "outtmpl": str(Path(td) / "%(id)s")}
+            if cookies:
+                opts["cookiefile"] = cookies
+            with yt_dlp.YoutubeDL(opts) as y:
+                info = y.extract_info(url, download=True)
+            vtts = list(Path(td).glob("*.vtt"))
+            if not vtts:
+                return "NOCAPS"
+            kind = "manual" if (info.get("subtitles") or {}) else "auto"
+            cues = parse_vtt(vtts[0].read_text(encoding="utf-8", errors="replace"))
+        return store(vid, analyst, outdir, channel, info, kind, cues, "yt_dlp captions")
+    except yt_dlp.utils.DownloadError as e:
+        msg = str(e)
+        if any(m in msg for m in BLOCK_MARKS):
+            got = transcript_api_cues(vid, langs)   # other endpoint; not blocked when timedtext 429s
+            if got:
+                return store(vid, analyst, outdir, channel, meta(vid, cookies), got[1], got[0],
+                             "youtube_transcript_api")
+            return "BLOCKED"   # ONE try per video; the guard records the block and stops the run
+        return f"ERROR {msg[:80]}"
 
 
 def fetch_channel(a):
@@ -165,17 +292,21 @@ def fetch_channel(a):
         rows = list_channel(a.channel, a.scan, a.cookies)
     except yt_dlp.utils.DownloadError as e:
         print(f"{a.channel} LIST_FAILED {str(e)[:80]}")
+        if any(m in str(e) for m in BLOCK_MARKS):
+            mark_blocked()
         return 1
     inc, exc = re.compile(a.include) if a.include else None, re.compile(a.exclude) if a.exclude else None
     picked = 0
     failed = False
+    outdir = Path(a.out)
+    used, stopped = 0, False
     for vid, title in rows:
         if picked >= a.latest:
             break
         if (exc and exc.search(title)) or (inc and not inc.search(title)):
             print(f"{vid} SKIP_OFFTOPIC", flush=True)
             continue
-        if a.since:
+        if a.since and not stopped:
             published = video_date(vid, a.cookies)
             if not published:
                 print(f"{vid} DATE_FAILED", flush=True)
@@ -184,23 +315,30 @@ def fetch_channel(a):
             if published < a.since:
                 print(f"{vid} OLDER_THAN_{a.since}", flush=True)
                 continue  # pinned uploads need not be in date order
-        r = fetch(vid, a.analyst, a.langs.split(","), Path(a.out), a.channel, a.cookies)
+        if stopped:
+            r = "UNVERIFIED"
+        elif (outdir / f"{vid}_timed.txt").exists():
+            r = "EXISTS"
+        elif used >= a.max_videos:
+            r = "DEFERRED"
+        else:
+            if used:
+                time.sleep(20)
+            used += 1
+            r = fetch(vid, a.analyst, a.langs.split(","), outdir, a.channel, a.cookies)
+            if r == "BLOCKED":
+                mark_blocked()
+                stopped = True
         picked += r.startswith(("OK", "EXISTS"))
         failed |= not r.startswith(("OK", "EXISTS"))
         print(f"{vid} {r}", flush=True)
-        if r in ("BOTCHECK", "RATELIMIT"):
-            return 1
-        if not r.startswith("EXISTS"):
-            time.sleep(20)
+    write_block(last_used=used, last_max=a.max_videos, last_run=_utcnow().isoformat(timespec="seconds"))
     print(f"{a.channel}: {picked} of {a.latest}")
     return 1 if failed else 0
 
 
 def main(argv):
     global CANON
-    if yt_dlp is None:
-        print("yt_dlp not installed: pip install yt-dlp")
-        return 2
     ap = argparse.ArgumentParser()
     ap.add_argument("--analyst", required=True)
     ap.add_argument("--out", default=str(CANON))
@@ -213,27 +351,36 @@ def main(argv):
     ap.add_argument("--since", default="", help="YYYY-MM-DD: with --channel, stop at the first video older than this")
     ap.add_argument("--cookies", default=None)
     ap.add_argument("--langs", default="en")
+    ap.add_argument("--max-videos", type=int, default=5, help="network fetches per run; extra ids are DEFERRED")
+    ap.add_argument("--status", action="store_true", help="print blocked/not blocked + budget used; no network")
     ap.add_argument("videos", nargs="*")
     a = ap.parse_args(argv)
+    gate = guard_gate(a)
+    if gate is not None:
+        return gate
+    if yt_dlp is None:
+        print("yt_dlp not installed: pip install yt-dlp")
+        return 2
     if a.canonical_out:
         CANON = a.canonical_out
-    bad = 0
     if a.channel:
         return fetch_channel(a)
     if not a.videos:
         ap.error("give video ids/URLs or --channel")
+    ids, bad = [], 0
     for v in a.videos:
         m = ID_RE.search(v.strip())
         if not m:
             print(f"{v} BADID")
             bad += 1
-            continue
-        r = fetch(m.group(1), a.analyst, a.langs.split(","), Path(a.out))
+        else:
+            ids.append(m.group(1))
+    outdir = Path(a.out)
+    res = guarded_run([(i, outdir / f"{i}_timed.txt") for i in ids],
+                      lambda i: fetch(i, a.analyst, a.langs.split(","), outdir), a.max_videos)
+    for vid, r in res:
         bad += not r.startswith(("OK", "EXISTS"))
-        print(f"{m.group(1)} {r}", flush=True)
-        if r == "BOTCHECK":
-            break
-        time.sleep(20)
+        print(f"{vid} {r}", flush=True)
     return 1 if bad else 0
 
 

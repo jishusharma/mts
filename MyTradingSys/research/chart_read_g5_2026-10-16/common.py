@@ -197,18 +197,19 @@ def excursion(A, e, side, h, atr):
 
 
 # ------------------------------------------------------------------ verdict (template PRE_REG s.4, one arm vs one control)
-def verdict_arm(g, day, gc, dayc, t, mdd_bh, n_min=N_MIN):
+def verdict_arm(g, day, gc, dayc, t, mdd_bh, n_min=N_MIN, m=None):
     """g, gc = side-signed gross % after funding (NaN allowed); day = UTC day id; t = time order for the drawdown.
     PASS iff n >= n_min and mean >= C and t_cost >= 2 and DIFF >= +0.05 % and t_DIFF >= 2 and MDD <= buy-and-hold MDD.
     INCONCLUSIVE iff n < n_min (never relabelled FAIL). FAIL otherwise. Cluster-robust by UTC day."""
     g, gc = np.asarray(g, float), np.asarray(gc, float)
     day, dayc, t = np.asarray(day), np.asarray(dayc), np.asarray(t)
+    bar = S.t_bar(S.M_FAMILY if m is None else m)      # family-wise bar, LABEL_MOVES.md
     ok, okc = ~np.isnan(g), ~np.isnan(gc)
     n = int(ok.sum())
     r = dict(n=n, n_ctrl=int(okc.sum()))
     if n == 0:
         r.update(mean=np.nan, se=np.nan, net=np.nan, t_net=np.nan, mean_ctrl=np.nan, diff=np.nan, se_diff=np.nan, t_diff=np.nan,
-                 mdd=np.nan, mdd_bh=mdd_bh, mde=np.nan, verdict="INCONCLUSIVE")
+                 mdd=np.nan, mdd_bh=mdd_bh, mde=np.nan, verdict="INCONCLUSIVE", verdict_uncorrected="INCONCLUSIVE", t_bar=bar)
         return r
     mean, se = cm_se(g[ok], day[ok])
     order = np.argsort(t[ok], kind="stable")
@@ -224,9 +225,18 @@ def verdict_arm(g, day, gc, dayc, t, mdd_bh, n_min=N_MIN):
     t_diff = tstat(diff, dse) if not np.isnan(diff) else float("nan")
     r.update(mean=mean, se=se, net=mean - C_PCT, t_net=t_net, mean_ctrl=mean_c, diff=diff, se_diff=dse, t_diff=t_diff, mdd=mdd,
              mdd_bh=mdd_bh, mde=2.8 * se)
-    ok_pass = (n >= n_min and mean >= C_PCT and t_net >= 2.0 and not np.isnan(diff) and diff >= 0.05 and t_diff >= 2.0
-               and mdd <= mdd_bh)
-    r["verdict"] = "PASS" if ok_pass else ("INCONCLUSIVE" if n < n_min else "FAIL")
+    def _pass(tb):
+        return (n >= n_min and mean >= C_PCT and t_net >= tb and not np.isnan(diff) and diff >= 0.05 and t_diff >= tb
+                and mdd <= mdd_bh)
+    nominal = _pass(2.0)
+    r["verdict_uncorrected"] = "PASS" if nominal else ("INCONCLUSIVE" if n < n_min else "FAIL")
+    r["t_bar"] = bar
+    if _pass(bar):
+        r["verdict"] = "PASS"
+    elif nominal:
+        r["verdict"] = "INCONCLUSIVE"        # clears t >= 2 but not the family bar (OURS, LABEL_MOVES.md)
+    else:
+        r["verdict"] = r["verdict_uncorrected"]
     return r
 
 

@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/research/c26_roadmap_2026-11-01/phase3_dev.py <repo> <cache> --dev 2022-04-01:2024-06-30"
+  ],
+  "created": "2026-11-01T10:02:26Z",
+  "depends_on": [],
+  "done_when": "DEV table (2022-04-01..2024-06-30, BTC 15m from 1m) per H1 set x filter: n, mean net %, Holm p vs base, power at n; TRIAL_LEDGER row per arm; sim card; one line in PHASE1_RANGE.md Q6; no VALIDATION/HOLDOUT bars touched",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Phase 3 DEV run of the C26 DOWN-regime fade with two H1 sets: C26 pivot +-16 (OURS) and the Krown structural lower high (SOURCED, KR-S12). Rule, costs, shift, Holm and the pre-registered H2 filters: PHASE1_RANGE.md Q5 reading and this card's note. Report which H1 set the fade holds on, fee-net, with n and power.",
+  "id": "c26-h1-structural-lower-high",
+  "kind": "audit",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Q5 (phase1_touch_look.py, 2026-11-01): filters above are pre-registered, never fit after. WaveTrend = context column only (cross down in 25/30 touches). Operator 2026-11-01: compare WaveTrend behaviour so we know what to compare in the backtest. Operator did not answer 'switch H1 to Krown?' (11-01): default = run both sets.\nREVIEWED: Lab_Guy 2026-11-01",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-01T11:38:39Z",
+  "refs": [
+    "MyTradingSys/research/c26_roadmap_2026-11-01/PHASE1_RANGE.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/c26_roadmap_2026-11-01/phase3_dev.py (new), PHASE1_RANGE.md Q6, TRIAL_LEDGER.csv rows, sim_desk result card"
+  ],
+  "scope_out": [
+    "no change to phase1_*.py definitions; no new H1 rule beyond the two named; no OOS/VALIDATION read"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Build the Krown structural lower-high finder on 15m bars (known-at-the-time: a high is dominant once a lower low than the prior low prints after it); unit test it on the operator's 6 lines of 2026-10-30/31 (PHASE1_RANGE.md Q4) — test must fail first",
+    "Run both H1 sets on DEV with the single-short rule and each H2 filter (power gate before reading p)",
+    "Write Q6, ledger rows, sim card; ship"
+  ],
+  "tests": "research run, no live path: python scripts/dev/run_all_tests.py --quick must pass (gate 3xm cost inventory, 4e no own costs: import fees.py)",
+  "title": "C26 H1: operator draws every lower high of the descent (Krown KR-S12 dominant lower high = high from which a new low was made, no width); C26 pivot +-16 (OURS) catches 3 of his 6 lines and adds range highs he does not draw. Define H1 structurally (SOURCED), run both in Phase 3 DEV, report which H1 set the DOWN-regime fade holds on",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

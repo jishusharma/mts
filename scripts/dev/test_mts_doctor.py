@@ -322,3 +322,31 @@ def test_supervisor_idle_warns_on_a_login_with_ready_cards_and_no_worker_for_60_
     assert D.supervisor_idle(None, beats=beats, ready_n=0, now=now)[0] == "OK"
     assert D.supervisor_idle(None, beats=beats[2:], ready_n=4, now=now)[0] == "OK"
     assert "SUPERVISOR-IDLE" in D.CHECK_NAMES
+
+
+def test_of_restarts_warns_on_loop():
+    now = datetime(2026, 10, 22, 12, 0, tzinfo=timezone.utc)
+
+    def start(m):
+        return f"2026-10-22T11:{m:02d}:00+00:00 START pid=1 out=x"
+    loop = [start(m) for m in range(30, 40)] + ["2026-10-22T11:41:00+00:00 ok rows=0"]
+    st, msg = D.of_restarts(None, now=now, lines=loop)
+    assert st == "WARN" and "10x" in msg
+    assert D.of_restarts(None, now=now, lines=loop[:3])[0] == "OK"
+    old = [f"2026-10-22T09:{m:02d}:00+00:00 START pid=1 out=x" for m in range(10, 30)]
+    assert D.of_restarts(None, now=now, lines=old)[0] == "OK"  # outside the hour
+    assert "OF-RESTARTS" in D.CHECK_NAMES
+
+
+def test_of_stale_warns_when_log_older_than_60min():
+    now = datetime(2026, 11, 1, 12, 0, tzinfo=timezone.utc)
+    st, msg = D.of_stale(None, now=now, mtime=datetime(2026, 10, 23, 8, 0, tzinfo=timezone.utc))
+    assert st == "WARN" and "orderflow_live.log" in msg and "writer may be dead or stuck" in msg
+    assert D.of_stale(None, now=now, mtime=datetime(2026, 11, 1, 10, 30, tzinfo=timezone.utc))[0] == "WARN"  # 90 min
+    assert "OF-STALE" in D.CHECK_NAMES
+
+
+def test_of_stale_ok_fresh_or_absent(tmp_path):
+    now = datetime(2026, 11, 1, 12, 0, tzinfo=timezone.utc)
+    assert D.of_stale(None, now=now, mtime=datetime(2026, 11, 1, 11, 30, tzinfo=timezone.utc))[0] == "OK"
+    assert D.of_stale(tmp_path, now=now)[0] == "OK"  # no log under tmp_path

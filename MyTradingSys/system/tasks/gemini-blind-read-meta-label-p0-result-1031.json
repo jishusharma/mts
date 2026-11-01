@@ -1,8 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "claim": "",
-  "closed": "2026-10-31T17:48:11Z",
+  "closed": "2026-11-01T06:22:19Z",
   "commands": [],
   "created": "2026-10-31T14:48:21Z",
   "depends_on": [],
@@ -19,8 +18,8 @@
     {
       "kind": "ship",
       "line": "MyTradingSys/research/gemini_audits_2026-10-31/meta_label_p0_blind_read.md",
-      "ref": "42feb3824",
-      "utc": "2026-10-31T17:48:11Z"
+      "ref": "029f68598",
+      "utc": "2026-11-01T06:22:19Z"
     },
     {
       "auto": true,
@@ -69,7 +68,7 @@
     "one table row per cited number with the lookup file:line",
     "write MyTradingSys/research/gemini_audits_2026-10-31/meta_label_p0_blind_read.md and end with a Noticed: line"
   ],
-  "taken": "2026-10-31T17:40:52Z",
+  "taken": "2026-11-01T06:22:19Z",
   "tests": "audit card: every row of the output has a file:line or command",
   "title": "[GEMINI] blind read of meta_label_tom_fabio_2026-10-31/output.md against numbers.json and PRE_REG.md",
   "weight": "ROUTINE",

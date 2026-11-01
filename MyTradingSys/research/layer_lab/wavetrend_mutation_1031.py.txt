@@ -1,0 +1,127 @@
+"""Audit-only reproducer. Run with python -B from repository root. No production writes."""
+import csv
+import io
+import json
+import math
+import sys
+import types
+import unittest
+from decimal import Decimal, localcontext
+from pathlib import Path
+
+ROOT = Path.cwd()
+HERE = ROOT / 'MyTradingSys/backtest/layers/wavetrend'
+OUT = ROOT / 'MyTradingSys/research/layer_lab'
+source = (HERE / 'wavetrend.py').read_text(encoding='utf-8')
+tests = (HERE / 'test_wavetrend.py').read_text(encoding='utf-8')
+bars_csv = list(csv.DictReader((HERE / 'fixture_btcusdt_1h_dev_2022-01.csv').open()))
+gold = list(csv.DictReader((HERE / 'golden_wt_btcusdt_1h_dev_2022-01.csv').open()))
+assert len(bars_csv) == len(gold) == 400
+assert all(int(b['open_time']) < 1719792000000 for b in bars_csv)
+assert [b['open_time'] for b in bars_csv] == [g['open_time'] for g in gold]
+
+def independent(prices):
+    # FORMULAS 20.1-20.3: high precision, separate full passes, no module constants.
+    with localcontext() as ctx:
+        ctx.prec = 50
+        def smooth(values, period):
+            state = None
+            answer = []
+            for value in values:
+                if value is None:
+                    state = None
+                elif state is None:
+                    state = value
+                else:
+                    state += Decimal(2) * (value - state) / Decimal(period + 1)
+                answer.append(state)
+            return answer
+        esa = smooth(prices, 10)
+        dev = smooth([abs(p-e) for p,e in zip(prices, esa)], 10)
+        ci = [None if d <= Decimal('1e-9')*abs(p) else (p-e)/(Decimal('0.015')*d)
+              for p,e,d in zip(prices, esa, dev)]
+        first = smooth(ci, 21)
+        second = [None]*len(first)
+        for i in range(3,len(first)):
+            window = first[i-3:i+1]
+            if all(x is not None for x in window):
+                second[i] = sum(window)/4
+        return first, second
+
+mutations = {
+    'channel_10_to_11': ('10, 21, 4, 0.015', '11, 21, 4, 0.015'),
+    'average_21_to_22': ('10, 21, 4, 0.015', '10, 22, 4, 0.015'),
+    'alpha_2_to_1': ('a1, a2 = 2.0 /', 'a1, a2 = 1.0 /'),
+    'cross_forget_tie': ('if side != 0:\n            last = side', 'if True:\n            last = side'),
+    'overbought_60_to_61': ('OB1, OB2 = 60.0, 53.0', 'OB1, OB2 = 61.0, 53.0'),
+}
+
+def module(text):
+    m = types.ModuleType('wavetrend')
+    exec(compile(text, str(HERE/'wavetrend.py'), 'exec'), m.__dict__)
+    return m
+
+def run_existing(m):
+    sys.modules['wavetrend'] = m
+    suite_module = types.ModuleType('audit_existing_tests')
+    suite_module.__file__ = str(HERE/'test_wavetrend.py')
+    exec(compile(tests, suite_module.__file__, 'exec'), suite_module.__dict__)
+    suite = unittest.defaultTestLoader.loadTestsFromModule(suite_module)
+    result = unittest.TextTestRunner(stream=io.StringIO()).run(suite)
+    assert not result.errors, result.errors
+    return {'run': result.testsRun, 'failures': [t.id() for t,_ in result.failures]}
+
+prices = [Decimal(x) for x in [10,12,9,14,8,15,11,17,10,13,8,19,16,12,20,14,9,21,11,18,13,22,10,17]]
+expected = independent(prices)
+synthetic = [(i*3600000,float(p),float(p),float(p)) for i,p in enumerate(prices)]
+
+def spec_tests(m):
+    rows = m.compute(synthetic, 3600000, warmup=0)
+    return {
+        'test_wt_channel_length': abs(rows[1].wt1 - float(expected[0][1])) < 1e-9,
+        'test_wt_average_length': abs(rows[10].wt1 - float(expected[0][10])) < 1e-9,
+        'test_wt_ema_alpha': abs(rows[4].wt2 - float(expected[1][4])) < 1e-9,
+        'test_wt_cross_rule': m.cross_events([-1.,0.,1.],[0.,0.,0.]) == [0,0,1],
+        'test_wt_overbought_level': m.zone(60.) == 'ob2',
+    }
+
+results = {}
+for name, (old,new) in mutations.items():
+    assert source.count(old) == 1, name
+    scratch = source.replace(old,new)
+    m = module(scratch)
+    results[name] = {'mutation': [old,new], 'existing': run_existing(m), 'spec': spec_tests(m)}
+    assert results[name]['existing']['failures'], name
+    assert not all(results[name]['spec'].values()), name
+
+# Original deliberately evaluated AFTER failing mutated copies.
+original = module(source)
+results['original'] = {'existing':run_existing(original), 'spec':spec_tests(original)}
+assert not results['original']['existing']['failures']
+assert all(results['original']['spec'].values())
+ap = [(Decimal(b['high'])+Decimal(b['low'])+Decimal(b['close']))/3 for b in bars_csv]
+ind1, ind2 = independent(ap)
+bars = [(int(b['open_time']),float(b['high']),float(b['low']),float(b['close'])) for b in bars_csv]
+rows = original.compute(bars,3600000)
+comparison = []
+for i in range(200,220):
+    record = {'bar':i,'open_time':bars[i][0]}
+    for label, independent_values in [('wt1',ind1),('wt2',ind2)]:
+        expected_value = float(independent_values[i])
+        record[label+'_independent'] = expected_value
+        record[label+'_module'] = getattr(rows[i],label)
+        record[label+'_golden'] = float(gold[i][label])
+        record[label+'_module_error'] = abs(expected_value-getattr(rows[i],label))
+        record[label+'_golden_error'] = abs(expected_value-float(gold[i][label]))
+        assert record[label+'_module_error'] < 1e-9
+        assert record[label+'_golden_error'] < 1e-9
+    comparison.append(record)
+with (OUT/'wavetrend_recompute_1031.csv').open('w',newline='',encoding='utf-8') as f:
+    writer = csv.DictWriter(f, fieldnames=list(comparison[0]),lineterminator='\n')
+    writer.writeheader()
+    writer.writerows(comparison)
+results['recompute'] = {'pairs':20,'bars':[200,219], 'fixture_rows':len(bars),
+    'max_module_error':max(r[k] for r in comparison for k in r if k.endswith('module_error')),
+    'max_golden_error':max(r[k] for r in comparison for k in r if k.endswith('golden_error'))}
+(OUT/'wavetrend_mutation_1031_results.json').write_text(json.dumps(results,indent=2)+'\n',encoding='utf-8',newline='\n')
+print(json.dumps(results,indent=2))

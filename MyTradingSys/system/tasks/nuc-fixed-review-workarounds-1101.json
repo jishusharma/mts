@@ -1,0 +1,64 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-01T06:17:13Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/system/NUC_FIXED_REVIEW.md has a table with one row per item (item, file, KEEP|REVERT, reason); every REVERT removed; run_all_tests.py --quick green",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "JIS-NUC restarts are fixed (operator 2026-11-01). Decide per NUC-hang workaround: KEEP generic guards, REVERT NUC-only ones, so the policy stops carrying dead workarounds.",
+  "id": "nuc-fixed-review-workarounds-1101",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Supervisor idle fix: fit role budget, retoken, isolate successor_wake handover tests from ",
+      "ref": "7b66a91a7a68",
+      "utc": "2026-10-30T18:03:01Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "7b66a91a7a68 Supervisor idle fix: fit role budget, retoken, isolate successor_wake handove",
+      "ref": "MyTradingSys/system/SUPER_SESSION.md",
+      "utc": "2026-10-30T18:03:01Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-01 ACCEPT (Sonnet reviewer Agent, FIX applied once, not re-read, planner DECISION OURS). PLANNER 2026-11-01 DECISION (OURS): IMPORTANT, removal shrinks policy; builder decides 4c/4d from grep evidence.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-01T08:37:06Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/ISSUES_REGISTER.md",
+    "MyTradingSys/system/SUPER_SESSION.md"
+  ],
+  "scope_out": [
+    "KEEP items (gemini_queue NOPROMPT+lock, RUNAWAY_GUARD checks, mts_signal broken-clone repair) are not edited; no live tree; no registry or scheduled-task change on any machine"
+  ],
+  "scope_sha": "7b66a91a7a68",
+  "size": "M",
+  "sources": [
+    "operator 2026-11-01 (NUC restarts fixed); SCHEDULING_POLICY.md 4c, 4d; RUNAWAY_GUARD.md; NUC_HARVEST.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "1 List items with file:line: SCHEDULING_POLICY 4d (:35-36) + logon_wake.py, 4b3 text naming 4d, 4c (:38) c_drive_guard.py, NUC_HARVEST no-push rule, RUNAWAY_GUARD.md:34 NUC-hang test hold; check DEVICES.md for which hosts run each",
+    "2 Decide KEEP or REVERT: 4c default KEEP (all hosts); NUC_HARVEST no-push is a credential-prompt hang, default KEEP unless verified fixed; RUNAWAY_GUARD:34 hold is a doc-only REVERT candidate; 4d REVERT only if no host needs it (ISSUES_REGISTER R2, I7, SUPER_SESSION:109 updated or left as history). Write NUC_FIXED_REVIEW.md",
+    "3 Remove REVERT items (code, policy, tests) in one commit; per host with the Run value: mts_signal.py broadcast --cmd 'logon_wake.py uninstall' (value exists only where installed); run_all_tests.py --quick; sync.py ship"
+  ],
+  "tests": "docs+removal card: test_logon_wake.py, test_gemini_queue.py, test_runaway_check.py and scheduling-policy tests pass after removal; a test that asserts a removed item is deleted with it, none weakened",
+  "title": "JIS-NUC restarts are fixed (operator 2026-11-01): review each NUC-hang workaround, KEEP or REVERT in NUC_FIXED_REVIEW.md",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

@@ -1,0 +1,71 @@
+{
+  "baseline": {
+    "tests": 13,
+    "failures": [],
+    "errors": []
+  },
+  "mutations": {
+    "channel_length": {
+      "tests": 13,
+      "failures": [
+        "audit_tests.TestGolden.test_events_match_golden_after_warmup",
+        "audit_tests.TestGolden.test_values_match_golden_after_warmup",
+        "audit_tests.TestHandFixtures.test_two_bar_hand_value"
+      ],
+      "errors": [],
+      "suite": "KILLED",
+      "golden_csv": "KILLED"
+    },
+    "average_length": {
+      "tests": 13,
+      "failures": [
+        "audit_tests.TestGolden.test_events_match_golden_after_warmup",
+        "audit_tests.TestGolden.test_values_match_golden_after_warmup"
+      ],
+      "errors": [],
+      "suite": "KILLED",
+      "golden_csv": "KILLED"
+    },
+    "ema_alpha": {
+      "tests": 13,
+      "failures": [
+        "audit_tests.TestGolden.test_events_match_golden_after_warmup",
+        "audit_tests.TestGolden.test_values_match_golden_after_warmup",
+        "audit_tests.TestHandFixtures.test_two_bar_hand_value"
+      ],
+      "errors": [],
+      "suite": "KILLED",
+      "golden_csv": "KILLED"
+    },
+    "cross_rule": {
+      "tests": 13,
+      "failures": [
+        "audit_tests.TestHandFixtures.test_tie_conventions"
+      ],
+      "errors": [],
+      "suite": "KILLED",
+      "golden_csv": "SURVIVING"
+    },
+    "overbought_level": {
+      "tests": 13,
+      "failures": [
+        "audit_tests.TestHandFixtures.test_zone_boundaries"
+      ],
+      "errors": [],
+      "suite": "KILLED",
+      "golden_csv": "SURVIVING"
+    }
+  },
+  "independent": {
+    "pairs": 20,
+    "max_module_error": 6.465938895416912e-12,
+    "max_golden_error": 6.7914562862370076e-12
+  },
+  "hashes": {
+    "fixture_btcusdt_1h_dev_2022-01.csv": "a513e4410c90e1fb77eafa100bdd1d179ecd1d0a0dedc77ad40b1ddade47d92c",
+    "golden_wt_btcusdt_1h_dev_2022-01.csv": "b364af2fe47d934e841fb47d7858166610224f1108ab1e5c788eba27801fc3a9",
+    "make_golden.py": "02a57e30718adf81728d9107770335c1137275df2f2bf7d95a68a8cf728f4e6a",
+    "test_wavetrend.py": "fe63030ea47d0f38fec85368e4d1d8714a832f20019a9962a1f8072e78fd9a4f",
+    "wavetrend.py": "0f2a849f2ab42dbce6f12685ca704d321bcce48718380069b8da39c72f32875a"
+  }
+}

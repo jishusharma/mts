@@ -1,0 +1,75 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/execution/test_cotrade.py"
+  ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-01T07:26:17Z",
+    "misses": 25,
+    "reads": [
+      "MyTradingSys/execution/cotrade.py",
+      "MyTradingSys/execution/deribit_orders.py",
+      "MyTradingSys/tests/test_tasks_list_open_only.py"
+    ],
+    "session": "agent-a29c0459da93b9240"
+  },
+  "created": "2026-11-01T04:11:00Z",
+  "crucial": true,
+  "depends_on": [],
+  "done_when": "test_cotrade.py green with the new cases, each shown failing on 3681623be code (recorded in the commit body); run_all_tests --quick green; git cherry origin/fast-track <sha> empty",
+  "est_turns": 22,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Fix 4 review minors of cotrade P5 (3681623be): parent-side ensure_stop in hedge() must use the stop of the parent chosen by --of; kill/net/ensure_stop must refuse when env != test; hedge without --said must not journal invented text; hedge refusal tests must assert the specific reason.",
+  "id": "cotrade-p5-review-minors-1101",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "cotrade P5: hedge leg on a second slot, net view, two-slot kill, rebuild from exchange",
+      "ref": "3681623be7b3",
+      "utc": "2026-11-01T03:00:45Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-01 ACCEPT (Sonnet reviewer Agent, planner-a-1101f). PLANNER: CRITICAL (order-path, fail-closed): needs REVIEW session plan+diff (CRITICAL protocol); builder in a worktree only, fake client only, never deploys. Reviewer notes: give kill/net/ensure_stop an injectable env param (default do.active_env()) like hedge so tests can run; (c) is refuse, not label. Lines are current (637 parent ensure_stop). DECISION (OURS): kill writes HALT first under a non-test env, cancels/flattens nothing.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-01T05:04:39Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/execution/cotrade.py",
+    "MyTradingSys/execution/test_cotrade.py"
+  ],
+  "scope_out": [
+    "executor.py, deribit_orders, the live tree, any mainnet account or real order (fake client only), ladder/place_order behaviour beyond the env guard",
+    "run_all_tests.py (test_cotrade is already in its shard list)"
+  ],
+  "scope_sha": "3681623be7b3",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/execution/cotrade.py:180-192,257,497,509,634-637,649-682,702",
+    "MyTradingSys/execution/test_cotrade.py:453-482"
+  ],
+  "state": "ready",
+  "steps": [
+    "Write failing tests first in test_cotrade.py: (a) two parents with different stops, hedge(of=<older id>) must stop the parent at THAT parent's action.stop (line 637 passes no stop_px, so ensure_stop takes the newest place); (b) non-test env: kill, net, ensure_stop make no exchange call and write no journal line; (c) hedge without said is refused or labelled",
+    "cotrade.py: pass stop_px=pa.get('stop') at 637; add env guard ('REFUSED: cotrade is testnet-only') to ensure_stop and net/rebuild; kill still writes HALT first but cancels/flattens nothing under a non-test env (fail closed, DECISION OURS)",
+    "hedge(): require --said in the CLI (like place at 689); hedge() called without said is refused. Add injectable env to kill/net/ensure_stop. DECISION (OURS)",
+    "Strengthen tests 1, 2, 4 (test_cotrade.py:453-482): assert the exact reason ('second slot', 'testnet-only', 'HALT') plus a positive control per test (same setup minus the fault places the hedge), so an always-refuse stub fails",
+    "Run test_cotrade.py then run_all_tests.py --quick; show each new test failing on the 3681623be code; ship; report the content sha"
+  ],
+  "tests": "MyTradingSys/execution/test_cotrade.py: new test_hedge_of_older_parent_uses_that_parents_stop, test_kill_net_ensure_stop_refuse_mainnet_env, test_hedge_said_required_or_labelled, positive controls for 1/2/4; each fails on the pre-change cotrade.py",
+  "title": "Review minors of cotrade P5 (3681623be): older-parent stop with --of, env==test guard on kill/net/ensure_stop, hedge --said, weak refusal tests (order-path code)",
+  "weight": "CRITICAL",
+  "worker": "session"
+}

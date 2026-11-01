@@ -1,0 +1,10 @@
+{
+  "done_when": "operator ran the stop command or allow-listed the pattern in MyTradingSys/system/STRAY_REAP_POLICY.md",
+  "from": "DESKTOP-F7IU69N",
+  "id": "20261101-032940-stray-cpu-hog-on-desktop-f7iu69n",
+  "need": "STRAY PID 2052 python.exe cpu=3610s age=59.0h chain: (parent gone)\n    cmd: \"C:\\Users\\e-ngineers\\AppData\\Local\\Programs\\Python\\Python314\\python.exe\"  MyTradingSys\\execution\\daily_loss_monitor.py\n    stop: taskkill /PID 2052 /T /F",
+  "posted": "2026-11-01T03:29:40Z",
+  "status": "pending",
+  "target": "JIS-NB",
+  "title": "Stray CPU hog on DESKTOP-F7IU69N"
+}

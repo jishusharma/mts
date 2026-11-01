@@ -1,7 +1,22 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T02:49:02Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": 9,
+    "folded": "2026-11-01T02:50:02Z",
+    "misses": 6,
+    "reads": [
+      "MyTradingSys/backtest/layers/fabio/pending_test_fabio_v3.py",
+      "MyTradingSys/backtest/layers/fabio/FABIO_OF_REPORT.md",
+      "MyTradingSys/backtest/layers/fabio/fabio_v3.py",
+      "MyTradingSys/backtest/layers/fabio/fabio_v3_signals.py",
+      "MyTradingSys/backtest/layers/fabio/fabio_v3_exec.py",
+      "MyTradingSys/backtest/layers/fabio/v3/__init__.py"
+    ],
+    "session": "agent-a7a746c57daa4b40f"
+  },
   "created": "2026-10-31T10:04:50Z",
   "depends_on": [],
   "done_when": "banner in the first 5 lines, reproduce path exists in git ls-files, test_integrity.py passes",
@@ -13,6 +28,12 @@
   "id": "fabio-of-report-superseded",
   "lane": "HAIKU",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "banner + reproduce path fixed: 5212cdba2",
+      "ref": "5212cdba2",
+      "utc": "2026-11-01T02:49:02Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -37,7 +58,12 @@
   "refined_by": "",
   "refreshed": "2026-10-31T14:46:40Z",
   "refs": [],
-  "result": "",
+  "result": "banner + reproduce path fixed: 5212cdba2",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/fabio/FABIO_OF_REPORT.md"
   ],
@@ -47,11 +73,12 @@
   "scope_sha": "051084e440af",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "add a top banner: SUPERSEDED, legacy fees 3.5/-1.5 bp and fixed UTC sessions, numbers not reusable",
     "fix the reproduce path near line 10 to the archive/cleanup-2026-10-08 location (confirm with git ls-files)"
   ],
+  "taken": "2026-11-01T02:49:02Z",
   "tests": "docs card: python -m pytest MyTradingSys/tests/docs/test_integrity.py -q passes; grep SUPERSEDED finds the banner",
   "title": "FABIO_OF_REPORT.md used legacy fees 3.5/-1.5 bp, pre-B102 fixed UTC sessions, reproduce path :10 points at a moved driver (archive/cleanup-2026-10-08); add SUPERSEDED banner",
   "weight": "ROUTINE",

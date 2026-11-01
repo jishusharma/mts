@@ -17,6 +17,22 @@
   "goal": "Add boolean flags net_longs, net_longs_new, net_shorts, net_shorts_new to MarketDataSnapshot from the 15m OI x CVD cross (ledger P0-13 / T034); unavailable inputs give all false + LOW confidence (fail closed).",
   "id": "ask-p0-13-positioning-flags",
   "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "MarketDataSnapshot: open_interest.peak_24h and cvd.peak_24h (P0-12 / T042)",
+      "ref": "9cc92bc09a07",
+      "utc": "2026-10-31T04:06:23Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "acca1d02569f session 1100Z: folder flatten, PROJECT_VISION boot, post_funding demoted, DSA",
+      "ref": "MyTradingSys/items/T034_positioning_states.md",
+      "utc": "2026-09-24T13:51:32Z"
+    }
+  ],
   "layers": [],
   "live_path": true,
   "mutation_check": "",
@@ -24,6 +40,7 @@
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "",
+  "refreshed": "2026-10-31T18:54:34Z",
   "refs": [
     "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md"
   ],
@@ -38,12 +55,13 @@
     "deploy or restart",
     "strength 0-1 output"
   ],
+  "scope_sha": "9cc92bc09a07",
   "size": "M",
   "sources": [
     "research/asks_audit_2026-10-30/LEDGER.md P0-13",
     "items/T034_positioning_states.md"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Read T034 item and classifyOiDeltaState; OI is fetched only at 1h (limit 2): add an openInterestHist(...,15m,...) call and cover it in HistoricalSnapshotNoLiveCallsTest; cross = OI 15m change sign x CVD 15m delta sign; new = flag flipped on in the last 15m bar",
     "Emit under positioning {net_longs, net_longs_new, net_shorts, net_shorts_new, confidence}",

@@ -1,0 +1,10 @@
+{
+  "done_when": "Login C reads the note and applies the proxy and yt-dlp fixes on NUC",
+  "from": "JIS-NB",
+  "id": "20261101-060221-cbp-youtube-block-on-nuc-root-cause-and-",
+  "need": "DSA research 2026-11-01. Note at Dumps/operator/context/CBP_NOTE_YOUTUBE_BLOCK_2026-11-01.md in worktree mts-dsa-jis-nb-1101-0528. Cause: YouTube 2026 IP reputation and TLS fingerprinting distrust data-center IPs; PO tokens and SABR break old downloaders; two accounts one IP raise chain-ban risk. Fixes: rotating residential proxy, browser profile plus proxy per account, yt-dlp nightly with bgutil PO token provider and player_client=tv,mweb.",
+  "posted": "2026-11-01T06:02:21Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "CBP YouTube block on NUC - root cause and fixes for Login C"
+}

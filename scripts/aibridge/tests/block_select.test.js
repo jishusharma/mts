@@ -67,4 +67,25 @@ t('0.7.7 lead text is only checked on the nearest 4 ancestors', () => {
   assert.strictEqual(L.isThinking(far), false);
   assert.strictEqual(L.isThinking([{ tag: 'div', cls: 'a', lead: 'Thinking about it' }]), true);
 });
+t('0.7.8 final answer under a message root that starts "Thought for 5 seconds" runs, and the status names the rule', () => {
+  const chain = [{ tag: 'div', cls: 'code' }, { tag: 'div', cls: 'ds-markdown' }, { tag: 'div', cls: 'msg', lead: 'Thought for 5 seconds' }];
+  assert.strictEqual(L.isThinking(chain), false);
+  const r = L.selectBlocks([{ cmd: '', chain: [{ tag: 'div', cls: 'ds-think-content' }] }]);
+  assert.ok(/\[class div\.ds-think-content@0\]/.test(r.status), r.status);
+});
+t('4-block reply (block 3 after a fenced block, block 4 multi-line): 4 selected, 4 non-empty commands, no duplicates', () => {
+  const texts = [
+    '# AIRUN host=a\necho one\n',
+    '# AIRUN host=a\necho two\n',
+    '# AIRUN host=a\ncat > f.py <<EOF\n```\nprint(1)\n```\nEOF\n',
+    '# AIRUN host=a\npython - <<EOF\nimport os\n\nprint(os.getcwd())\nEOF\n'
+  ];
+  const r = L.selectBlocks(texts.map(x => d(x, answer)));
+  assert.deepStrictEqual(r.selected, [0, 1, 2, 3]);
+  const cmds = texts.map(x => L.stripMarker(x).trim());
+  cmds.forEach(c => assert.ok(c.length > 0));
+  assert.ok(/os\.getcwd/.test(cmds[3]) && /```/.test(cmds[2]));
+  assert.deepStrictEqual(L.dupOf(texts), [0, 0, 0, 0]);
+  assert.strictEqual(new Set(L.batchKeys(cmds)).size, 4);
+});
 console.log(n + ' passed');

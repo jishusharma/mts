@@ -364,7 +364,7 @@ def scan_model_b(bars, open_idx, i, N, k_bal, entry_mode, f, dmax, absb, target_
             if d_and_stop(s, entry, abs(Xp - entry) + tick, f, dmax) is None:
                 b = j + 1
                 continue
-            return _setup("B", "IN_TRADE", s, fill_idx=j + 1, reclaim_idx=j)
+            return _setup("B", "IN_TRADE", s, fill_idx=j + 1, reclaim_idx=j, probe_idx=b, bal={"H": bal["H"], "L": bal["L"]})
         price = bars[j]["c"]
         plan = d_and_stop(s, price, abs(Xp - price) + tick, f, dmax)
         if plan is None:
@@ -372,7 +372,8 @@ def scan_model_b(bars, open_idx, i, N, k_bal, entry_mode, f, dmax, absb, target_
             continue
         fl = find_fill(bars, j, s, price, tick=tick, end_idx=min(j + REST_VALID_B, i))
         if fl is not None:
-            return _setup("B", "IN_TRADE", s, fill_idx=fl[0], reclaim_idx=j, price=price)
+            return _setup("B", "IN_TRADE", s, fill_idx=fl[0], reclaim_idx=j, price=price, probe_idx=b,
+                          bal={"H": bal["H"], "L": bal["L"]})
         if i < j + REST_VALID_B:
             return _setup("B", "ARMED", s, price=price, D=plan[0], stop=plan[1], target=target, anchor=Xp,
                           armed_idx=j, valid_through=j + REST_VALID_B)

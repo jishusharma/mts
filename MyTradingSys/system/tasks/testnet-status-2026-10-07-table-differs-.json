@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T01:56:55Z",
   "commands": [],
   "created": "2026-10-30T23:48:17Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "4 rows explained (window/counting rule/key), no bugs; section appended to TESTNET_STATUS_2",
+      "ref": "50513f89d",
+      "utc": "2026-11-01T01:56:55Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,7 +47,12 @@
   "refs": [
     "MyTradingSys/research/testnet_status/TESTNET_STATUS_2026-10-07.md"
   ],
-  "result": "",
+  "result": "4 rows explained (window/counting rule/key), no bugs; section appended to TESTNET_STATUS_2026-10-07.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/testnet_status/TESTNET_STATUS_2026-10-07.md",
     "scripts/dev/funnel_report.py"
@@ -51,13 +63,14 @@
   "scope_sha": "e806c75a5474",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "run funnel_report --day 2026-10-07 and diff per source against the table",
     "read the haiku recount e806c75a5; attribute each diff (window, counting rule or bug)",
     "append a section to TESTNET_STATUS_2026-10-07.md listing the 4 rows with cause",
     "per bug: tasks.py new a card; ship with Result line"
   ],
+  "taken": "2026-11-01T01:56:55Z",
   "tests": "none (audit); if a bug is fixed, a test failing on old funnel_report.py.",
   "title": "TESTNET_STATUS_2026-10-07 table differs from funnel_report --day for rsi/jishu_2, rsi/jishu_3, tom, turn_of_candle (done when each diff is explained: window, counting rule or bug; see haiku recount e806c75a5)",
   "weight": "IMPORTANT",

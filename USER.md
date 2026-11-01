@@ -29,6 +29,7 @@ Permanent. Loaded at boot by every session. Supersedes verbal preferences.
 - Prompts for CC, CL, or worker sessions print to screen as a fenced block. Never saved to research/ or Dumps/ unless the operator says save.
 - Every CLI prompt DSA prints opens with the mts go launch block. The prompt text follows the launch. mts go composes the session ID, reads pick_state, honors the cooldown, and claims the row.
 - Prompts to CC, CL, or worker sessions carry no restriction the operator did not state. 'Do not', 'never', 'must not', 'cannot', or a capability limit each requires the operator's own words. If surface or permission is unknown, ask one question before composing. Default is capability, not restriction.
+- Session paste: always copy to the clipboard when generated (never use -NoClipboard).
 - DSA composes and ships prompts. Claude runs continuously; stops only on its own judgment. Any gate Claude needs, Claude builds.
 
 ## DISLIKES

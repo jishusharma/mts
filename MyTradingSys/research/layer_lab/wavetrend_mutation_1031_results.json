@@ -1,0 +1,125 @@
+{
+  "channel_10_to_11": {
+    "mutation": [
+      "10, 21, 4, 0.015",
+      "11, 21, 4, 0.015"
+    ],
+    "existing": {
+      "run": 13,
+      "failures": [
+        "audit_existing_tests.TestGolden.test_events_match_golden_after_warmup",
+        "audit_existing_tests.TestGolden.test_values_match_golden_after_warmup",
+        "audit_existing_tests.TestHandFixtures.test_two_bar_hand_value"
+      ]
+    },
+    "spec": {
+      "test_wt_channel_length": false,
+      "test_wt_average_length": false,
+      "test_wt_ema_alpha": false,
+      "test_wt_cross_rule": true,
+      "test_wt_overbought_level": true
+    }
+  },
+  "average_21_to_22": {
+    "mutation": [
+      "10, 21, 4, 0.015",
+      "10, 22, 4, 0.015"
+    ],
+    "existing": {
+      "run": 13,
+      "failures": [
+        "audit_existing_tests.TestGolden.test_events_match_golden_after_warmup",
+        "audit_existing_tests.TestGolden.test_values_match_golden_after_warmup"
+      ]
+    },
+    "spec": {
+      "test_wt_channel_length": true,
+      "test_wt_average_length": false,
+      "test_wt_ema_alpha": false,
+      "test_wt_cross_rule": true,
+      "test_wt_overbought_level": true
+    }
+  },
+  "alpha_2_to_1": {
+    "mutation": [
+      "a1, a2 = 2.0 /",
+      "a1, a2 = 1.0 /"
+    ],
+    "existing": {
+      "run": 13,
+      "failures": [
+        "audit_existing_tests.TestGolden.test_events_match_golden_after_warmup",
+        "audit_existing_tests.TestGolden.test_values_match_golden_after_warmup",
+        "audit_existing_tests.TestHandFixtures.test_two_bar_hand_value"
+      ]
+    },
+    "spec": {
+      "test_wt_channel_length": false,
+      "test_wt_average_length": false,
+      "test_wt_ema_alpha": false,
+      "test_wt_cross_rule": true,
+      "test_wt_overbought_level": true
+    }
+  },
+  "cross_forget_tie": {
+    "mutation": [
+      "if side != 0:\n            last = side",
+      "if True:\n            last = side"
+    ],
+    "existing": {
+      "run": 13,
+      "failures": [
+        "audit_existing_tests.TestHandFixtures.test_tie_conventions"
+      ]
+    },
+    "spec": {
+      "test_wt_channel_length": true,
+      "test_wt_average_length": true,
+      "test_wt_ema_alpha": true,
+      "test_wt_cross_rule": false,
+      "test_wt_overbought_level": true
+    }
+  },
+  "overbought_60_to_61": {
+    "mutation": [
+      "OB1, OB2 = 60.0, 53.0",
+      "OB1, OB2 = 61.0, 53.0"
+    ],
+    "existing": {
+      "run": 13,
+      "failures": [
+        "audit_existing_tests.TestHandFixtures.test_zone_boundaries"
+      ]
+    },
+    "spec": {
+      "test_wt_channel_length": true,
+      "test_wt_average_length": true,
+      "test_wt_ema_alpha": true,
+      "test_wt_cross_rule": true,
+      "test_wt_overbought_level": false
+    }
+  },
+  "original": {
+    "existing": {
+      "run": 13,
+      "failures": []
+    },
+    "spec": {
+      "test_wt_channel_length": true,
+      "test_wt_average_length": true,
+      "test_wt_ema_alpha": true,
+      "test_wt_cross_rule": true,
+      "test_wt_overbought_level": true
+    }
+  },
+  "recompute": {
+    "pairs": 20,
+    "bars": [
+      200,
+      219
+    ],
+    "fixture_rows": 400,
+    "max_module_error": 5.186961971048731e-12,
+    "max_golden_error": 5.491607169005874e-12
+  }
+}

@@ -4,17 +4,17 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-31T15:47:53Z",
-    "misses": 52,
+    "folded": "2026-11-01T10:23:12Z",
+    "misses": 108,
     "reads": [
       "scripts/dev/tasks.py",
-      "scripts/dev/mts_signal.py",
       "scripts/dev/supervisor.py",
       "scripts/dev/sync.py",
+      "scripts/dev/mts_signal.py",
       "scripts/dev/usage_reminder.py",
       "scripts/dev/test_artifact_pages.py",
       "scripts/dev/gate_select.py",
-      "scripts/dev/role_loader.py"
+      "MyTradingSys/system/LAYERS.md"
     ],
     "session": "50329dcd-4bc6-42b4-9b80-42153f9c1686"
   },

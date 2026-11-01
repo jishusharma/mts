@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T08:58:20Z",
   "commands": [],
   "created": "2026-10-30T21:37:47Z",
   "depends_on": [],
@@ -15,11 +16,17 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/test_hunt_2026-10-31/gemini_extracts_recheck.md",
+      "ref": "0043a256d",
+      "utc": "2026-11-01T08:58:20Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "lab gpt-recheck-gemini-extracts-numbers-1031: BLOCKED (audit)",
-      "ref": "f1b1d0b3b18e",
-      "utc": "2026-10-31T05:58:14Z"
+      "line": "lab astra-challenge-promote-and-failclosed-1031: DONE (audit)",
+      "ref": "1131668afbd4",
+      "utc": "2026-10-31T17:49:27Z"
     },
     {
       "auto": true,
@@ -36,26 +43,32 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T08:47:08Z",
+  "refreshed": "2026-11-01T08:38:30Z",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/layer_lab/test_hunt_2026-10-31/gemini_extracts_recheck.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/test_hunt_2026-10-31/ (new files only)"
   ],
   "scope_out": [
     "live tree; engine code; editing the extracts; .secrets and .env"
   ],
-  "scope_sha": "f1b1d0b3b18e",
+  "scope_sha": "1131668afbd4",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read the 6 extract files named in commit 4c42466fd",
     "pick 10 numeric claims each; locate the quote; re-derive",
     "write the table with counts"
   ],
+  "taken": "2026-11-01T08:58:20Z",
   "tests": "report only; each row cites the quote file:line",
   "title": "GPT: cross-vendor recheck of the 6 Gemini extracts shipped 4c42466fd: re-derive every number from the caption quote, mark CONFIRMED / WRONG / NOT_IN_QUOTE",
   "weight": "ROUTINE",

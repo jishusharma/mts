@@ -66,7 +66,7 @@ For the three history layers the cut run uses the same window start as the full 
 |---|---|---|---|---|
 | 1 | Session-extreme fade + 1m delta | gross_effect_screen_2026-10-15/screen.py | 1m DEV (tom_raw klines), index = (open_time - TS0)/60000 (`screen.py:4`) | BLOCKED-DATA |
 | 2 | Pre-open tops | opr_preopen_tops_2026-10-16/study.py | 1m tape, New York 09:30 (`:29`) | BLOCKED-DATA |
-| 3 | MAL BB mid engulf | mal_bb_mid_engulf_2026-10-16/study.py | 1m DEV, 5m/1h views | BLOCKED-DATA |
+| 3 | MAL BB mid engulf | mal_bb_mid_engulf_2026-10-16/study.py | 1m DEV, 5m/1h views | **PASS** (2026-10-31, DSA JIS-NB): 200 seeded cuts, **0 repaint**, 104,072 confirmation-lag events (expected for 5m bars); out/t02_study_trunc_mal_bb.json |
 | 4 | BB MTF centre | opr_bb_mtf_center_2026-10-16/study.py | 1m with higher-timeframe bands | BLOCKED-DATA |
 | 5 | Weekly-low round sweep | opr_weekly_low_round_sweep_2026-10-16/study.py | 1m | BLOCKED-DATA |
 | 6 | Weekly-low bounce | wlow_bounce_bbrsi60_2026-10-16/study.py + layers/wlow_bounce/detector.py | 1h from 1m (`study.py:57`), entry open[t+1] (`:97-101`) | detector run on synthetic bars: NOT DECISIVE (table 3a); DEV run BLOCKED-DATA |

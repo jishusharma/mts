@@ -1,0 +1,71 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-01T08:48:38Z",
+  "commands": [
+    "echo none"
+  ],
+  "created": "2026-11-01T07:43:05Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/rumers_2026-11-01/RUMERS_DIRECT_VIEW.md exists: 10 videos, each row marked UNVERIFIED-PARAPHRASE with approx minute, no quotation marks around spoken words, plus a ranked candidate list",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "NO verbatim quotes (not verifiable without captions): every row is marked UNVERIFIED-PARAPHRASE with the approximate minute. Add a ranked list of the rules that have a complete entry and exit, as candidates for a later caption check and a DEV backtest.",
+  "id": "gemini-yt-rumers-direct-view-1101",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/rumers_2026-11-01/RUMERS_DIRECT_VIEW.md",
+      "ref": "603c72915",
+      "utc": "2026-11-01T08:48:38Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Revert \"Merge branch 'gemini-q/gemini-yt-rumers-extract-1' into DESKTOP-F7IU69N/supervisor",
+      "ref": "8b2cd581efe4",
+      "utc": "2026-11-01T08:36:00Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini low effort. Facts and paraphrase only, no trading verdict. Do NOT run fetch_captions_timed.py or yt-dlp (IP blocked; the guard refuses). Final report ends with a Noticed: line.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-01T08:38:28Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "MyTradingSys/research/rumers_2026-11-01/RUMERS_DIRECT_VIEW.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/rumers_2026-11-01/ (new files only)"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code; any backtest; .secrets and .env"
+  ],
+  "scope_sha": "8b2cd581efe4",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "open each video in Gemini's viewer, one at a time",
+    "write the table and the ranked candidates",
+    "ship via sync.py ship"
+  ],
+  "taken": "2026-11-01T08:48:38Z",
+  "tests": "report only; no quote claims; no code change",
+  "title": "[GEMINI] The Rumers: watch the 10 operator-picked videos directly (no caption fetch), list the trading rules each teaches as UNVERIFIED candidates",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

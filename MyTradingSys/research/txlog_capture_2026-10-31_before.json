@@ -1,0 +1,15 @@
+{
+ "kind": "documented_absence",
+ "capture_attempted": false,
+ "captured_utc": null,
+ "hours": 36.0,
+ "currency": "BTC",
+ "entries": [],
+ "summary": {"count": 0, "by_type": {}, "settlements": []},
+ "account_summary": null,
+ "host": "JIS-NUC",
+ "written_utc": "2026-10-31T18:58:00Z",
+ "why": "capture_txlog_settlement.py refuses to run on this host: deribit_orders._load_secret raises MISSING for both the default and the named testnet credential file. No testnet credential exists in this worktree or in the live tree on JIS-NUC, so no read-only API call can be made from here.",
+ "also_checked": "no daily_loss_monitor position record on this host: loop health reports java absent and supervisor absent, MyTradingSys/execution/journal holds only .gitkeep, and runtime_data/live_monitor.txt is a 2026-09-20 price snapshot, not a position log. So there is no evidence of a testnet position open across any 08:00Z settlement within 36 h, and none was opened (the card forbids it).",
+ "next": "run this same script on a host that holds the testnet credential, once shortly before 08:00Z with a position open and once after that settlement; then point item2_settlement_identity.py at the _after file and move its window start to that settlement date."
+}

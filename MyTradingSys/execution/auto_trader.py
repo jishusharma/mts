@@ -355,6 +355,43 @@ def apply_venue_price(sig: dict, mark_fn=None):
     return None
 
 
+MARGIN_BUFFER = 1.1   # OURS (not SOURCED): 1x notional, no leverage, +10% for fees/slippage; no exchange margin API call
+
+
+def margin_need_btc(size_usd, price):
+    """BTC margin the entry needs = size_usd / price x MARGIN_BUFFER (inverse perp: USD notional / price). Fail closed:
+    returns None for a missing, non-numeric, non-finite or non-positive size or price (never a small number)."""
+    try:
+        size, px = float(size_usd), float(price)
+    except (TypeError, ValueError):
+        return None
+    if not (math.isfinite(size) and math.isfinite(px)) or size <= 0 or px <= 0:
+        return None
+    return size / px * MARGIN_BUFFER
+
+
+def attach_margin(sig: dict, mark_fn=None):
+    """Set sig['margin_btc'] from the --size and the entry price of sig['plan_args'] (--price for limit entries, else
+    the Deribit mark for market entries). Returns None when set, else the reject reason (fail closed: no order)."""
+    a = sig.get("plan_args") or []
+    try:
+        size = a[a.index("--size") + 1]
+    except (ValueError, IndexError):
+        return "margin: no --size in plan_args"
+    try:
+        if "--price" in a and a[a.index("--entry") + 1] == "limit":
+            price = a[a.index("--price") + 1]
+        else:
+            price = (mark_fn or deribit_mark)()
+    except Exception as e:  # noqa: BLE001 - unreadable price refuses the entry
+        return f"margin: entry price unreadable: {type(e).__name__}: {str(e)[:120]}"
+    need = margin_need_btc(size, price)
+    if need is None:
+        return f"margin: unusable size {size!r} or price {price!r}"
+    sig["margin_btc"] = need
+    return None
+
+
 # ---------------------------------------------------------------- layer signals
 
 # (RSI level, cross direction) -> side. MLK-R1 (backtest/layers/rsi/malkan_40_60.py): a bull regime cannot cross 40 downward,
@@ -640,9 +677,55 @@ def run(cmd: list, timeout: int = 900, account: str = None) -> tuple:
     return r.returncode, (r.stdout or "") + (r.stderr or "")
 
 
+def available_funds_btc(account: str = None):
+    """Read-only available_funds (BTC) for one account, or None when it could not be read. Raises nothing."""
+    prev = os.environ.get("MTS_ACCOUNT")
+    try:
+        if str(HERE) not in sys.path:
+            sys.path.insert(0, str(HERE))
+        import deribit_orders as do
+        if account:
+            os.environ["MTS_ACCOUNT"] = account
+        else:
+            os.environ.pop("MTS_ACCOUNT", None)
+        v = do.get_account_summary(do.authenticate(), "BTC").get("available_funds")
+        return None if v is None else float(v)
+    except (Exception, SystemExit):  # noqa: BLE001 - unreadable funds
+        return None
+    finally:
+        if prev is not None:
+            os.environ["MTS_ACCOUNT"] = prev
+        else:
+            os.environ.pop("MTS_ACCOUNT", None)
+
+
+def margin_ok(sig: dict, account: str = None):
+    """(ok, detail). Fail closed: unreadable/short/non-positive funds refuse. need = sig margin_btc (0 if unset)."""
+    try:
+        funds = available_funds_btc(account)
+    except Exception as e:  # noqa: BLE001
+        return False, f"balance_error {e!r}"[:120]
+    if funds is None or not math.isfinite(funds):
+        return False, "balance_unreadable"
+    try:
+        need = float(sig.get("margin_btc") or 0)
+    except (TypeError, ValueError):
+        return False, "margin_btc_invalid"
+    if not math.isfinite(need):
+        return False, "margin_btc_invalid"
+    if funds <= 0 or funds < need:
+        return False, f"funds={funds} need={need}"
+    return True, ""
+
+
 def place(sig: dict, dry_run: bool, account: str = None) -> dict:
-    """new_plan -> executor --go -> start position_manager. Returns an outcome dict (never raises)."""
+    """margin check (live only) -> new_plan -> executor --go -> start position_manager. A margin refusal saves no plan. Returns an outcome dict (never raises)."""
     py = sys.executable
+    if not dry_run:                          # margin first: a refusal must leave no saved plan behind
+        ok, why = margin_ok(sig, account)
+        if not ok:
+            log({"event": "margin_short", "account": account, "detail": why})
+            return {"outcome": "margin_short", "output": why}
     rc, out = run([py, str(HERE / "new_plan.py"), *sig["plan_args"], "--yes"], timeout=60, account=account)
     m = re.search(r"SAVED (\S+)", out)
     if rc != 0 or not m:
@@ -914,6 +997,12 @@ def cycle(state: dict, cfg: dict, dry_run: bool, active: dict, now: datetime = N
                     log({"event": "signal_rejected", **base, "reason": why})
                     continue
                 base.update(sig["log"])
+            if not dry_run:
+                why = attach_margin(sig)
+                if why:
+                    log({"event": "signal_rejected", **base, "reason": why})
+                    continue
+                base["margin_btc"] = round(sig["margin_btc"], 8)
             res = place(sig, dry_run, acct) if acct else place(sig, dry_run)
             proc = res.pop("proc", None)
             log({"event": "trade_attempt", **base, **res, "account": acct})

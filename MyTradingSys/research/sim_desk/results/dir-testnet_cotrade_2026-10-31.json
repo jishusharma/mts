@@ -35,7 +35,9 @@
  },
  "why": [
   "Range = the levels the live aid's US-open board already shows (day H/L so far, PDH/PDL, 15-min opening range). Fade sweeps of a level within 0.25-0.5 %, never add after a break that does not reclaim within 30-60 min.",
-  "The doubling ladder is a martingale. It wins most days and loses big on trend days; the repo already measured no edge for 1-1-2-3 (mean -0.02 %). With caps the loss is bounded ($76 worst case at X=$100); without them it is unbounded."
+  "The doubling ladder is a martingale. It wins most days and loses big on trend days; the repo already measured no edge for 1-1-2-3 (mean -0.02 %). With caps the loss is bounded ($76 worst case at X=$100); without them it is unbounded.",
+  "Any failure of the second leg (place, unfilled, stop) writes HALT first and flattens BOTH slots; a flatten error leaves state",
+  "order), one failing slot never skips the next. net rebuilds the pair and net size from exchange positions on all existing slots."
  ],
  "kpis": [],
  "examples": [
@@ -54,5 +56,5 @@
  "source_files": [
   "MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md"
  ],
- "commit": "fcfc74bfa"
+ "commit": "3681623be"
 }

@@ -1,0 +1,76 @@
+"""YouTube guard in fetch_captions_timed / fetch_captions: budget cap, first-429 block record, blocked run, --status. Offline."""
+import os
+import pathlib
+import sys
+import tempfile
+import unittest
+from unittest import mock
+
+HERE = pathlib.Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
+import fetch_captions_timed as f  # noqa: E402
+
+IDS = [f"{c}" * 11 for c in "abcdefg"]   # 7 distinct 11-char ids
+
+
+class T(unittest.TestCase):
+    def setUp(self):
+        self.td = tempfile.TemporaryDirectory()
+        self.addCleanup(self.td.cleanup)
+        self.rec = pathlib.Path(self.td.name) / "yt_block.json"
+        p = mock.patch.dict(os.environ, {"YT_BLOCK_FILE": str(self.rec)})
+        p.start()
+        self.addCleanup(p.stop)
+        ip = mock.patch.object(f, "public_ip", return_value="203.0.113.7")   # no real ipify request
+        ip.start()
+        self.addCleanup(ip.stop)
+        s = mock.patch.object(f.time, "sleep")
+        self.sleep = s.start()
+        self.addCleanup(s.stop)
+
+    def run_main(self, ids, fetch_effect, extra=()):
+        with mock.patch.object(f, "yt_dlp", mock.Mock()), mock.patch.object(f, "fetch", side_effect=fetch_effect) as m:
+            code = f.main(["--analyst", "K", "--out", self.td.name, *extra, *ids])
+        return code, m
+
+    def test_budget_cap_defers_sixth_video(self):
+        code, m = self.run_main(IDS[:6], lambda *a, **k: "OK auto 5w")
+        self.assertEqual(m.call_count, 5)
+        self.assertEqual([c.args[0] for c in m.call_args_list], IDS[:5])
+        self.assertEqual(code, 1)   # deferred counts as not done
+        self.assertFalse(f.blocked_until())
+
+    def test_first_429_writes_record_and_stops(self):
+        code, m = self.run_main(IDS[:4], ["OK auto 5w", "BLOCKED", "OK auto 5w", "OK auto 5w"])
+        self.assertEqual(m.call_count, 2)   # no call after the block
+        self.assertIsNotNone(f.blocked_until())
+        rec = f.read_block()
+        self.assertTrue(rec["host"])
+        self.assertEqual(code, 1)
+
+    def test_blocked_record_means_zero_calls(self):
+        f.mark_blocked()
+        code, m = self.run_main(IDS[:2], lambda *a, **k: "OK auto 5w")
+        self.assertEqual(m.call_count, 0)
+        self.assertEqual(code, f.EXIT_BLOCKED)
+
+    def test_status_zero_calls(self):
+        f.mark_blocked()
+        with mock.patch.object(f, "yt_dlp", mock.Mock()) as y, mock.patch.object(f, "fetch") as m, \
+                mock.patch.object(f, "list_channel") as lc:
+            self.assertEqual(f.main(["--analyst", "K", "--status"]), 0)
+            self.assertEqual(f.main(["--analyst", "K", "--status", "--channel", "@x"]), 0)
+        self.assertEqual((m.call_count, lc.call_count, len(y.mock_calls)), (0, 0, 0))
+
+    def test_channel_mode_shares_guard(self):
+        rows = [(i, "t") for i in IDS[:3]]
+        with mock.patch.object(f, "yt_dlp", mock.Mock()), mock.patch.object(f, "list_channel", return_value=rows), \
+                mock.patch.object(f, "fetch", side_effect=["BLOCKED"]) as m:
+            code = f.main(["--analyst", "K", "--out", self.td.name, "--channel", "@x", "--latest", "3"])
+        self.assertEqual(m.call_count, 1)
+        self.assertIsNotNone(f.blocked_until())
+        self.assertEqual(code, 1)
+
+
+if __name__ == "__main__":
+    unittest.main()

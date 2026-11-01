@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "2026-10-31T18:07:17Z",
+  "closed": "2026-11-01T06:46:42Z",
   "commands": [],
   "created": "2026-10-31T14:48:17Z",
   "depends_on": [],
@@ -17,9 +17,9 @@
   "latest": [
     {
       "kind": "ship",
-      "line": "MyTradingSys/research/gemini_audits_2026-10-31/setup_review_blind_read.md (103 items audit",
-      "ref": "f5eed1a9f",
-      "utc": "2026-10-31T18:07:17Z"
+      "line": "MyTradingSys/research/gemini_audits_2026-10-31/setup_review_blind_read.md",
+      "ref": "d51d5f9de",
+      "utc": "2026-11-01T06:46:42Z"
     },
     {
       "auto": true,
@@ -45,7 +45,7 @@
   "refined_by": "",
   "refreshed": "2026-10-31T14:48:19Z",
   "refs": [],
-  "result": "MyTradingSys/research/gemini_audits_2026-10-31/setup_review_blind_read.md (103 items audited: 99 FOUND, 4 DIFF, 0 NOT_IN_DATA)",
+  "result": "MyTradingSys/research/gemini_audits_2026-10-31/setup_review_blind_read.md",
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"
@@ -67,7 +67,7 @@
     "one table row per cited number with the lookup file:line",
     "write MyTradingSys/research/gemini_audits_2026-10-31/setup_review_blind_read.md and end with a Noticed: line"
   ],
-  "taken": "2026-10-31T18:07:17Z",
+  "taken": "2026-11-01T06:46:42Z",
   "tests": "audit card: every row of the output has a file:line or command",
   "title": "[GEMINI] blind read of tom_fabio_review_2026-10-31/SETUP_REVIEW.md: every cited file:line number re-found or NOT_IN_DATA",
   "weight": "ROUTINE",

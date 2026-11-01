@@ -1,0 +1,71 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-01T06:12:48Z",
+    "misses": 15,
+    "reads": [
+      "MyTradingSys/research/BUGS.md"
+    ],
+    "session": "agent-a1bc5351962960a01"
+  },
+  "created": "2026-11-01T05:34:12Z",
+  "depends_on": [],
+  "done_when": "PARITY_CONTRACT.md s3 EMA-seed row states only the measured bound (<1e-3 after bar 144, one 1500-bar synthetic path) with no universal event claim; the open-bar row separates input/golden fixtures (open_time) from emitted rows (available_at); grep -c 'cannot affect any event' is 0",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Fix two overclaims in PARITY_CONTRACT.md found by gpt-mutation-wavetrend-1031 (report 2026-11-01): s3 seed row says seed choice cannot affect any event; s3 open-bar row says a fixture without both timestamps is invalid but the golden CSV has only open_time.",
+  "id": "wavetrend-parity-contract-audit-1101",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "wavetrend-priority-source-parity: store Pine snapshots as .pine.txt (doc-only gate)",
+      "ref": "76971de961f3",
+      "utc": "2026-10-17T06:17:17Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "76971de961f3 wavetrend-priority-source-parity: store Pine snapshots as .pine.txt (doc-only",
+      "ref": "MyTradingSys/research/wavetrend_2026-10-17/PARITY_CONTRACT.md",
+      "utc": "2026-10-17T06:17:17Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-01T06:08:38Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/wavetrend_2026-10-17/PARITY_CONTRACT.md"
+  ],
+  "scope_out": [
+    "wavetrend.py, golden CSV, tests, FORMULAS.md"
+  ],
+  "scope_sha": "76971de961f3",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-mutation-wavetrend-1031.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Edit the EMA-seed Evidence cell: keep the measured bound, drop 'so the seed choice cannot affect any event after warm-up'",
+    "Edit the Open bar row: timestamp rule applies to emitted rows; input and golden fixtures carry open_time only",
+    "grep check, tasks.py lint"
+  ],
+  "tests": "docs card: grep -c 'cannot affect any event' MyTradingSys/research/wavetrend_2026-10-17/PARITY_CONTRACT.md is 0 (1 before); tasks.py lint passes",
+  "title": "WaveTrend parity contract: bound seed-convergence claim and reconcile fixture timestamps (gpt-mutation-wavetrend-1031 report)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

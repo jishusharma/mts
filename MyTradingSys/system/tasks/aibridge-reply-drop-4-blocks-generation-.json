@@ -1,0 +1,71 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-01T06:13:48Z",
+  "commands": [
+    "node --test scripts/aibridge/tests/block_select.test.js"
+  ],
+  "created": "2026-11-01T05:48:32Z",
+  "depends_on": [],
+  "done_when": "A 4-block reply fixture in block_select.test.js runs; either the skip/empty is reproduced and fixed (test fails before, passes after) or the test passes and the card note records 'DSA-side drop, no extension defect'; node test run output quoted",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "2026-11-01 DSA reply with 4 AIRUN blocks: 1-2 ran, 3 skipped, 4 empty_command, then 'no final answer'; files not written. Find whether the extension block scan skips or empties a block in a 4-block reply (LESSONS_LEARNED 2026-11-01 holds only the re-send rule).",
+  "id": "aibridge-reply-drop-4-blocks-generation-",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "DSA-side drop, no extension defect: 4-block fixture (fenced block 3, multi-line block 4) s",
+      "ref": "f4fb3ca13",
+      "utc": "2026-11-01T06:13:48Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "AIBridge 0.7.9 (re-land of reverted 0.7.8): thinking lead rule nearest 2 ancestors; status",
+      "ref": "9714413b8697",
+      "utc": "2026-10-31T18:23:15Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-01T06:08:49Z",
+  "refs": [],
+  "result": "DSA-side drop, no extension defect: 4-block fixture (fenced block 3, multi-line block 4) selects 4 non-empty unique commands; block_select.test.js 10 passed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/aibridge/extension/content.js",
+    "scripts/aibridge/tests/block_select.test.js"
+  ],
+  "scope_out": [
+    "live tree, DSA_SESSION_PROMPT, other extension files"
+  ],
+  "scope_sha": "9714413b8697",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/system/LESSONS_LEARNED.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Read the extension block scan in content.js (ranKeys, lastIgnored) and block_select.test.js fixtures",
+    "Add the 4-block fixture test; run it",
+    "If it fails fix content.js minimal and rerun all aibridge node tests; else record the finding in note"
+  ],
+  "taken": "2026-11-01T06:13:48Z",
+  "tests": "scripts/aibridge/tests/block_select.test.js: new case with 4 AIRUN blocks (block 3 after a fenced block, block 4 multi-line) expects 4 selected non-empty commands; run with node --test",
+  "title": "AIBridge reply drop: 4 blocks, generation dropped after block 2, files not written",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

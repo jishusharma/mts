@@ -220,7 +220,7 @@ return '<svg viewBox="0 0 600 160" role="img" aria-label="Running total of net R
 function example(x){const inits=[];let h='<div class="ex"><h3>'+esc(x.title||"Example")+"</h3>";
 if(x.kind==="table")h+=table(x);else if(x.kind==="stack")h+=stack(x);else if(x.kind==="sides")h+=sides(x);
 else if(x.kind==="curve"&&x.r&&x.r.length)h+=curveEx(x);
-else if(x.kind==="charts"&&x.items&&x.items.length)h+='<div class="cg">'+x.items.map(c=>"<figure>"+c.svg+"<figcaption>"+esc((c.kind==="winner"?"typical winner":"typical loser")+(c.note?": "+c.note:""))+"</figcaption></figure>").join("")+"</div>";
+else if(x.kind==="charts"&&x.items&&x.items.length)h+='<div class="cg">'+x.items.map(c=>"<figure>"+c.svg+"<figcaption>"+esc((c.label||(c.kind==="winner"?"typical winner":"typical loser"))+(c.note?": "+c.note:""))+"</figcaption></figure>").join("")+"</div>";
 else if(x.kind==="replay"){const r=replay(x);h+=r.html;inits.push(r.init);}
 else h+='<p class="note">no example trades exported</p>';
 if(x.caption)h+='<p class="note">'+esc(x.caption)+"</p>";return {html:h+"</div>",inits};}

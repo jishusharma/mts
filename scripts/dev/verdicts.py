@@ -171,7 +171,7 @@ def kill_scope_of(*texts):
 
 def git_info(path):
     try:
-        out = subprocess.run(["git", "-C", str(path.parent), "log", "-1", "--format=%h|%cd", "--date=short", "--", path.name],
+        out = subprocess.run(["git", "-C", str(path.parent), "log", "-1", "--abbrev=8", "--format=%h|%cd", "--date=short", "--", path.name],
                              capture_output=True, text=True, timeout=30).stdout.strip()
     except Exception:
         out = ""
@@ -315,8 +315,20 @@ def cmd_backfill(a):
         new.extend(parse_study(d))
     apply_overrides(new, load_overrides(getattr(a, "overrides", None) or OVERRIDES_PATH))
     names = {d.name for d in studies}
-    kept = [r for r in load(a.csv) if r["study_dir"] not in names]
-    save(a.csv, kept + new)
+    old_rows = load(a.csv)
+    kept = [r for r in old_rows if r["study_dir"] not in names]
+    by_study = {}
+    for r in new:
+        by_study.setdefault(r["study_dir"], []).append(r)
+    merged = []                              # idempotent: a re-parsed study takes the slot of its first old row, rows of other studies keep theirs
+    for r in old_rows:
+        if r["study_dir"] not in names:
+            merged.append(r)
+        elif r["study_dir"] in by_study:
+            merged.extend(by_study.pop(r["study_dir"]))
+    for rs in by_study.values():
+        merged.extend(rs)
+    save(a.csv, merged)
     rows = load(a.csv)                       # count only after re-reading what was written
     bad = {}
     for r in new:
@@ -372,8 +384,17 @@ def power_line(row):
     return "power: " + " ".join(parts)
 
 
+FRAME = re.compile(r"(?<![a-z0-9])(15m|1h|4h|1d)(?![a-z0-9])")
+
+
+def frames(s):
+    """Timeframe tokens (15m, 1h, 4h, 1D) named in a text; 'weekly and daily' is not a match (OURS)."""
+    return set(FRAME.findall(s.lower()))
+
+
 def cmd_check(a):
     q = stems(a.words)
+    qf = frames(a.words)
     if not q:
         print("check: no usable words in query")
         return 2
@@ -383,6 +404,9 @@ def cmd_check(a):
         hay = stems(" ".join([r["study_dir"], r["family"], r["arm"], r["kill_scope"]]))
         if len(q & hay) >= need:
             hits.append(r)
+            sf = frames(r["kill_scope"])
+            if r["verdict"] == "FAIL" and r["kill_scope"] != "none" and qf and sf and not (qf & sf):
+                continue                     # FAIL kill_scope names only other timeframes: it does not kill this query's frame
             if r["one_run"] == "yes" or (r["verdict"] == "FAIL" and r["kill_scope"] != "none"):
                 block.append(r)
     if not hits:

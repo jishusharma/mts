@@ -291,3 +291,76 @@ class StallLoopTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class HTTP400(Exception):
+    code = 400
+
+
+class Resume400Exchange(FakeExchange):
+    """Binance answers 400 to any startTime older than `min_ok` (a stale/invalid resume point)."""
+
+    def __init__(self, trades, min_ok):
+        super().__init__(trades)
+        self.min_ok = min_ok
+
+    def __call__(self, symbol, start_ms=None, from_id=None, limit=1000):
+        if from_id is None and start_ms < self.min_ok:
+            self.calls += 1
+            raise HTTP400("HTTP Error 400: Bad Request")
+        return super().__call__(symbol, start_ms=start_ms, from_id=from_id, limit=limit)
+
+
+class Resume400Tests(unittest.TestCase):
+    NOW = T0 + 10 * 60000
+
+    def test_stale_resume_point_resets_instead_of_looping(self):
+        with tempfile.TemporaryDirectory() as d:
+            prior_hist(d)
+            ol.save_state(d, {"next_ms": T0 - 3 * 86400000})
+            ex = Resume400Exchange(TRADES, min_ok=T0)
+            r = ol.run_cycle(d, ex, now_ms=self.NOW)
+            self.assertTrue(r["http400"])
+            self.assertIn("HTTP 400", r["error"])
+            self.assertEqual(r["next_ms"], self.NOW // 60000 * 60000)
+            st = ol.load_state(d)
+            self.assertEqual(st["next_ms"], self.NOW // 60000 * 60000)  # persisted: next start does not retry the bad point
+            self.assertEqual(st["resets"], 1)
+
+    def test_non_400_error_keeps_resume_point(self):
+        with tempfile.TemporaryDirectory() as d:
+            ol.save_state(d, {"next_ms": T0})
+            r = ol.run_cycle(d, FakeExchange(TRADES, fail=True), now_ms=self.NOW)
+            self.assertFalse(r["http400"])
+            self.assertEqual(ol.load_state(d)["next_ms"], T0)
+
+    def test_loop_logs_reset_and_start(self):
+        with tempfile.TemporaryDirectory() as d:
+            prior_hist(d)
+            ol.save_state(d, {"next_ms": T0 - 86400000})
+            clock, logs = FakeClock(), []
+            code = ol.run_loop(d, Resume400Exchange(TRADES, min_ok=T0), "BTCUSDT", None, 10, 20, sleep=clock.sleep,
+                               clock=clock, log=logs.append, max_cycles=1)
+            self.assertEqual(code, 0)
+            self.assertTrue(logs[0].startswith("START"))
+            self.assertTrue(any(m.startswith("RESET") for m in logs))
+
+    def test_persistent_400_exits_with_distinct_code(self):
+        with tempfile.TemporaryDirectory() as d:
+            ol.save_state(d, {"next_ms": T0})
+            clock, logs = FakeClock(), []
+
+            def always400(symbol, start_ms=None, from_id=None, limit=1000):
+                raise HTTP400("HTTP Error 400")
+            # the clock moves one minute per cycle so each cycle has a closed minute to fetch
+            import time as _t
+            real = _t.time
+            ticks = iter(range(10 ** 6))
+            ol.time.time = lambda: (self.NOW + next(ticks) * 60000) / 1000.0
+            try:
+                code = ol.run_loop(d, always400, "BTCUSDT", None, 10, 20, sleep=clock.sleep, clock=clock, log=logs.append,
+                                   stall_minutes=10 ** 6, max_cycles=20)
+            finally:
+                ol.time.time = real
+            self.assertEqual(code, ol.BAD_RESUME_EXIT_CODE)
+            self.assertTrue(any(m.startswith("BAD_RESUME") for m in logs))

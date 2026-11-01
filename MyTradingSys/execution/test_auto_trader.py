@@ -848,6 +848,9 @@ class TF5EntryWaitTest(unittest.TestCase):
         saved = at.run
         at.run = fake_run
         self.addCleanup(lambda: setattr(at, "run", saved))
+        saved_f = at.available_funds_btc
+        at.available_funds_btc = lambda account=None: 1.0       # margin pre-flight is not under test here
+        self.addCleanup(lambda: setattr(at, "available_funds_btc", saved_f))
         s = at.tom_signal(tom_alert(), {"tom_last_alert_no": 0}, cfg(), NOW)
         self.assertEqual(at.place(s, dry_run=False)["outcome"], "no_fill")
         go = [c for c in cmds if "--go" in c][0]
@@ -1004,6 +1007,80 @@ class LayerExitTest(unittest.TestCase):
                                    "t_close": self.T1H}, cfg(), NOW)):
             src = s["log"]["bracket_source"]
             self.assertTrue(src == "SAMPLING" or src.startswith("TESTED:") and ":" in src[len("TESTED:"):], src)
+
+
+class MarginWireCycleTest(unittest.TestCase):
+    """Card signal-margin-btc-wire-1101: every sig reaching place() carries margin_btc = size_usd / entry price x 1.1."""
+    setUp, tearDown, rows_of, events = CycleTest.setUp, CycleTest.tearDown, CycleTest.rows_of, CycleTest.events
+
+    def _layer(self, st):
+        f = at.LAYER_ALERT_DIR / "15m.jsonl"
+        f.write_text("", encoding="utf-8")
+        at.read_new_layer_alerts(st)
+        f.write_text(json.dumps({"layer": "rsi", "sub": "rsi_events", "event": "support", "tf": "15m",
+                                 "t_close": LayerSignalTest.T15}) + "\n", encoding="utf-8")
+
+    def test_sig_gets_margin_btc_from_size_and_price(self):
+        self.mark = 83523.8
+        at.TOM_ALERT.write_text(json.dumps(tom_alert()), encoding="utf-8")
+        at.cycle({"tom_last_alert_no": 43}, cfg(), False, {}, NOW)
+        a = self.placed[0]["plan_args"]
+        size, price = float(a[a.index("--size") + 1]), float(a[a.index("--price") + 1])
+        self.assertAlmostEqual(self.placed[0]["margin_btc"], size / price * 1.1, places=12)
+        self.assertGreater(self.placed[0]["margin_btc"], 0)
+
+    def test_layer_market_entry_uses_mark_price(self):
+        self.mark = 50000.0
+        st = {}
+        self._layer(st)
+        at.cycle(st, cfg(), False, {}, NOW)
+        sig = self.placed[0]
+        a = sig["plan_args"]
+        self.assertEqual(a[a.index("--entry") + 1], "market")
+        self.assertAlmostEqual(sig["margin_btc"], float(a[a.index("--size") + 1]) / 50000.0 * 1.1, places=12)
+
+    def test_missing_or_bad_price_fails_closed_and_places_nothing(self):
+        for bad in (OSError("down"), 0.0, -5.0, float("nan"), None):
+            with self.subTest(bad=bad):
+                self.placed.clear()
+                def mark(instrument="BTC-PERPETUAL", bad=bad):
+                    if isinstance(bad, Exception):
+                        raise bad
+                    return bad
+                at.deribit_mark = mark
+                st = {}
+                self._layer(st)
+                at.cycle(st, cfg(), False, {}, NOW)
+                self.assertEqual(self.placed, [])
+                self.assertTrue(any(r["reason"].startswith("margin:") for r in self.rows_of("signal_rejected")))
+
+    def test_short_margin_refused_with_real_need_and_enough_passes(self):
+        self.mark = 50000.0
+        st = {}
+        self._layer(st)
+        at.cycle(st, cfg(), False, {}, NOW)
+        sig = self.placed[0]
+        need = sig["margin_btc"]
+        saved = at.available_funds_btc
+        self.addCleanup(lambda: setattr(at, "available_funds_btc", saved))
+        at.available_funds_btc = lambda account=None: need * 0.5          # positive but short
+        self.assertFalse(at.margin_ok(sig)[0])
+        at.available_funds_btc = lambda account=None: need * 2
+        self.assertTrue(at.margin_ok(sig)[0])
+        at.available_funds_btc = lambda account=None: None                # API error / restart: unreadable refuses
+        self.assertFalse(at.margin_ok(sig)[0])
+
+    def test_margin_is_recomputed_each_cycle_not_cached_across_restart(self):
+        self.mark = 50000.0
+        st = {}
+        self._layer(st)
+        at.cycle(st, cfg(), False, {}, NOW)
+        first = self.placed[0]["margin_btc"]
+        self.mark = 25000.0
+        st2 = {}                                   # fresh state = restart
+        self._layer(st2)
+        at.cycle(st2, cfg(), False, {}, NOW)
+        self.assertAlmostEqual(self.placed[1]["margin_btc"], first * 2, places=12)
 
 
 if __name__ == "__main__":

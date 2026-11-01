@@ -1,0 +1,39 @@
+{
+ "id": "dir-cryptocred_s3_2026-11",
+ "kind": "backtest",
+ "family": "Cryptocred S3",
+ "title": "BLOCKED: power gate fails (2026-11-01, card cryptocred-4h-1d-dev-s3)",
+ "provenance": "source-extracted",
+ "date": "2026-11-01",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "word: BLOCKED. No outcome computed: no bar was loaded, no trade simulated, no VALIDATION/HOLDOUT bar read. cc_s3_run.py is built and tested but was never run on data.",
+  "tone": "bad"
+ },
+ "why": [
+  "Why a recount does not unblock: a resting limit fills on the level alone (run_cc_setups.find_limit_fill), so the new ATR stop does not change which limits fill; N stays about 207 / 200 (PRE_REG \"Provenance\": N is re-counted, and it falls short of 540 either w…",
+  "What would unblock (each is a new PRE_REG, not a parameter search): (a) a longer or wider DEV sample with at least 540 fills per setup (more symbols, for example ETH, which the PRE_REG home market names), (b) an operator overrule of the 0.30 R plausible-gross…",
+  "FAIL/INCONCLUSIVE: stop; this BLOCK (count-only, no outcome read) covers only the 6 registered 4h CryptoCred redesign cells (Setups 1 and 2 x ATR buffer 0.5/1.0/1.5, fixed 1.5 R bracket, Deribit all_taker) on BTCUSDT DEV at n about 200 each; it blocks on powe…"
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/cryptocred_s3_2026-11/BLOCKED.md"
+ ],
+ "commit": "7501e2816"
+}

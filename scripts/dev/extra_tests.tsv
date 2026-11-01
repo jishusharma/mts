@@ -114,6 +114,7 @@ scripts/dev/test_run_extra_tests.py
 scripts/dev/test_ci_deps_lint.py
 scripts/dev/test_ci_watch.py
 scripts/dev/test_c_drive_guard.py
+scripts/dev/test_c_drive_buckets.py
 scripts/dev/test_host_health.py
 scripts/dev/test_context_gap.py
 scripts/dev/test_behavior_eval.py
@@ -167,4 +168,8 @@ MyTradingSys/research/fractals_2026-10-31/phase_tag/test_phase_tag.py
 MyTradingSys/research/sim_desk/test_fabio_v3.py
 MyTradingSys/research/meta_label_tom_fabio_2026-10-31/test_features.py
 MyTradingSys/research/meta_label_tom_fabio_2026-10-31/test_meta_label.py
-scripts/dev/test_setup_review_blind_read.py
+MyTradingSys/research/cryptocred_s3_2026-11/test_cc_s3_run.py
+scripts/dev/test_fetch_captions_guard.py
+MyTradingSys/research/eagle_eyes_picture_2026-10-28/test_oi_after_flush_pairing.py
+scripts/dev/test_yt_vpn_fetch.py
+scripts/dev/test_dsa_watch.py

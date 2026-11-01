@@ -1,0 +1,14 @@
+{
+ "kind": "documented_absence",
+ "capture_attempted": false,
+ "captured_utc": null,
+ "hours": 36.0,
+ "currency": "BTC",
+ "entries": [],
+ "summary": {"count": 0, "by_type": {}, "settlements": []},
+ "account_summary": null,
+ "host": "JIS-NUC",
+ "written_utc": "2026-10-31T18:58:00Z",
+ "why": "same block as the _before file: no testnet credential on JIS-NUC, so the post-settlement capture could not be taken either. Written at 18:58Z, before the next 08:00Z settlement (2026-11-01T08:00:00Z), so there is no settled window to capture yet.",
+ "next": "after a settlement with a position open across it, run capture_txlog_settlement.py --hours 36 --out this_path on the host that holds the testnet credential and replace this file with that output."
+}

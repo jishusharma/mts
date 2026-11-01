@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/test_auto_deploy.py"
+  ],
+  "created": "2026-11-01T03:01:27Z",
+  "depends_on": [],
+  "done_when": "scripts/dev/test_auto_deploy.py passes 20 consecutive local runs; the unreadable-state case is handled by an explicit assertion path (kill-confirm via a second _pid_alive after taskkill/kill -9) and a unit test fails on the old assertion",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "test_sh_timeout_kills_the_whole_process_tree failed once on CI trunk 0e3c1fe9 with 'grandchild still alive 30s after the timeout (proc state empty)'. d6cc31796 (10-31) already treats /proc state Z as dead, but state()=='' (no /proc, or stat unreadable) with _pid_alive true still fails. Make that branch deterministic.",
+  "id": "autodeploy-grandchild-timeout-test-flaky-on-ci",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "CI flakes: three timing/environment-dependent tests made deterministic",
+      "ref": "d6cc31796b82",
+      "utc": "2026-10-31T08:41:49Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "PLANNER 2026-11-01: REVIEWED:2026-11-01 T0-ONLY (planner-refine-1101; ROUTINE test-only change, machine checks only). Evidence: d6cc31796 precedes 0e3c1fe9, so the fix did not cover the empty-state case.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-01T04:10:41Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/test_auto_deploy.py"
+  ],
+  "scope_out": [
+    "scripts/dev/auto_deploy.py behaviour, other tests"
+  ],
+  "scope_sha": "d6cc31796b82",
+  "size": "S",
+  "sources": [
+    "scripts/dev/test_auto_deploy.py:566-572"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read test_auto_deploy.py:538-572 and CI run logs for 0e3c1fe9 (gh run list --commit 0e3c1fe91)",
+    "Extract the poll into a helper _wait_dead(pid, state_fn, alive_fn, deadline) that, when state is unreadable and the pid is still alive at the deadline, force-kills once and re-checks; write its unit test first",
+    "Run the file 20 times; ship"
+  ],
+  "tests": "scripts/dev/test_auto_deploy.py: new test feeds a stub state()==''/_pid_alive True then False and asserts the helper returns dead; fails against the current inline poll at lines 566-572",
+  "title": "Flaky CI test_auto_deploy sh-timeout tree kill: 'grandchild still alive 30s (proc state empty)' on trunk 0e3c1fe9; make the unreadable-state branch deterministic",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

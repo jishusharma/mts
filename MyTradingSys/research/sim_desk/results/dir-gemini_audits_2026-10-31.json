@@ -1,0 +1,55 @@
+{
+ "id": "dir-gemini_audits_2026-10-31",
+ "kind": "audit",
+ "family": "Gemini Audits",
+ "title": "Blind Read Audit: fractals_2026-10-31/SYNTHESIS.md",
+ "provenance": "source-extracted",
+ "date": "2026-10-31",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2017-08-17 to 2026-09-30 (as written in the source)",
+ "verdict": {
+  "label": "s.",
+  "tone": "info"
+ },
+ "why": [],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "640"
+  },
+  {
+   "label": "net R after fees (first value in the source)",
+   "value": "-0.20",
+   "tone": "bad"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 640,
+   "quote": "P1b RSI-DIV-MTF by phase: NEGATIVE; n=640, net -0.229 R/trade; every phase cell negative; shift null flags nothing; 4h only +0.042 R (n=138, under decide bar) Section 7 (Line 59) Table s7 research/fr…"
+  },
+  {
+   "field": "net_r",
+   "value": -0.2,
+   "quote": "F2 rolling 1h DFA Hurst gate: NEGATIVE; 2 thresholds (H<0.45, H<=0.55): no test passes; best lift +0.123 R [-0.109, +0.358] (RSI); fade gate A -0.062 R (wrong way, borderline); every kept side negati…"
+  }
+ ],
+ "missing": {
+  "parameters": "no rule or parameter section found in the source",
+  "why": "no sentence in the source states why it passed or failed",
+  "n_trades": "not a trade test (audit)"
+ },
+ "source_files": [
+  "MyTradingSys/research/gemini_audits_2026-10-31/fractals_synthesis_blind_read.md"
+ ],
+ "commit": "ad16ee4f7"
+}

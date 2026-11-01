@@ -29,7 +29,8 @@ class Base(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory()
         d = Path(self.tmp.name)
         self.saved = {k: getattr(at, k) for k in ("LOG_PATH", "OPERATOR_ALERTS", "spawn_manager", "exchange_flat",
-                                                   "record_ledger", "run")}
+                                                   "record_ledger", "run", "available_funds_btc")}
+        at.available_funds_btc = lambda account=None: 1.0      # default: ample margin; margin tests override
         at.LOG_PATH = d / "log.jsonl"
         at.OPERATOR_ALERTS = d / "alerts.log"
 
@@ -198,10 +199,9 @@ class PlaceRefusalTest(Base):
 
 class MarginPreflightGapTest(Base):
     """GAP (card test-auto-trader-place-margin-preflight): place() never checks available funds before an entry.
-    DECISION (OURS): live-path code change needs coordinator gates, so these are expectedFailure until a
-    pre-flight exists. Contract they pin: seam at.available_funds_btc(account) -> float|None (None = unreadable);
+    Pre-flight now exists (card auto-trader-place-margin-preflight-check). Contract they pin: seam at.available_funds_btc(account) -> float|None (None = unreadable);
     sig["margin_btc"] = margin the plan needs; short or unreadable funds -> outcome "margin_short", no --go, no manager.
-    Remove the decorators when the check lands (an unexpected pass then flags it)."""
+    Unreadable funds always refuse (fail closed); margin_btc unset means need 0 but funds must still be > 0."""
     SIG = {"plan_args": ["--side", "long"], "executor_args": [], "margin_btc": 0.01}
 
     def _place(self, funds):
@@ -217,17 +217,150 @@ class MarginPreflightGapTest(Base):
         with mock.patch.object(at, "available_funds_btc", funds_fn, create=True):
             return at.place(self.SIG, False), calls
 
-    @unittest.expectedFailure
     def test_place_refuses_when_margin_short(self):
         out, calls = self._place(0.0001)
         self.assertEqual(out["outcome"], "margin_short")
         self.assertFalse(any("--go" in c for c in calls))
 
-    @unittest.expectedFailure
     def test_place_refuses_when_balance_call_errors(self):
         out, calls = self._place(OSError("timeout"))
         self.assertEqual(out["outcome"], "margin_short")
         self.assertFalse(any("--go" in c for c in calls))
+
+
+    def test_enough_margin_goes_on_to_go_and_spawns(self):
+        calls = []
+        at.run = lambda cmd, timeout=900, account=None: (calls.append(cmd), (0, "SAVED p1 filled"))[1]
+        at.spawn_manager = lambda *a, **k: Proc()
+        with mock.patch.object(at, "available_funds_btc", lambda account=None: 0.5):
+            out = at.place(self.SIG, False)
+        self.assertEqual(out["outcome"], "entered")
+        self.assertTrue(any("--go" in c for c in calls))
+
+    def test_none_zero_negative_nan_funds_refuse_even_without_margin_btc(self):
+        for funds in (None, 0.0, -1.0, float("nan")):
+            with self.subTest(funds=funds):
+                out, calls = self._place_sig({"plan_args": [], "executor_args": []}, funds)
+                self.assertEqual(out["outcome"], "margin_short")
+                self.assertFalse(any("--go" in c for c in calls))
+
+    def test_inf_funds_and_bad_margin_btc_refuse_without_raising(self):
+        for funds, mb in ((float("inf"), 0.01), (1.0, float("nan")), (1.0, "abc")):
+            with self.subTest(funds=funds, mb=mb):
+                out, calls = self._place_sig({"plan_args": [], "executor_args": [], "margin_btc": mb}, funds)
+                self.assertEqual(out["outcome"], "margin_short")
+                self.assertFalse(any("--go" in c for c in calls))
+
+    def test_refusal_is_logged_and_not_cached_so_restart_rereads_funds(self):
+        out, _ = self._place(0.0001)
+        self.assertIn("margin_short", self.names())
+        out2, _ = self._place_sig(self.SIG, 0.5, spawn=True)     # same process, funds restored: next call re-reads
+        self.assertEqual(out2["outcome"], "entered")
+
+    def test_account_is_passed_to_balance_seam(self):
+        seen = []
+        at.run = lambda cmd, timeout=900, account=None: (0, "SAVED p1 filled")
+        at.spawn_manager = lambda *a, **k: Proc()
+        with mock.patch.object(at, "available_funds_btc", lambda account=None: seen.append(account) or 1.0):
+            at.place(self.SIG, False, "jishu_2")
+        self.assertEqual(seen, ["jishu_2"])
+
+    def test_dry_run_does_not_touch_balance(self):
+        at.run = lambda cmd, timeout=900, account=None: (0, "SAVED p1 filled")
+        with mock.patch.object(at, "available_funds_btc", lambda account=None: self.fail("balance read on dry run")):
+            self.assertEqual(at.place(self.SIG, True)["outcome"], "dry_run")
+
+    def test_refusal_runs_no_new_plan_so_no_orphan_plan(self):
+        for funds in (0.0001, OSError("timeout"), None):
+            with self.subTest(funds=funds):
+                out, calls = self._place(funds)
+                self.assertEqual(out["outcome"], "margin_short")
+                self.assertNotIn("plan_id", out)
+                self.assertEqual(calls, [])            # new_plan.py never ran: nothing saved
+
+    def test_refusal_log_has_no_plan_id_and_ok_path_still_plans_after_check(self):
+        self._place(0.0001)
+        ev = [e for e in self.events() if e.get("event") == "margin_short"]
+        self.assertTrue(ev)
+        self.assertNotIn("plan_id", ev[-1])
+        order = []
+        at.run = lambda cmd, timeout=900, account=None: (order.append(Path(cmd[1]).name), (0, "SAVED p1 filled"))[1]
+        at.spawn_manager = lambda *a, **k: Proc()
+        with mock.patch.object(at, "available_funds_btc", lambda account=None: order.append("funds") or 0.5):
+            self.assertEqual(at.place(self.SIG, False)["outcome"], "entered")
+        self.assertEqual(order, ["funds", "new_plan.py", "executor.py"])
+
+    def _place_sig(self, sig, funds, spawn=False):
+        calls = []
+        at.run = lambda cmd, timeout=900, account=None: (calls.append(cmd), (0, "SAVED p1 filled"))[1]
+        at.spawn_manager = (lambda *a, **k: Proc()) if spawn else (lambda *a, **k: self.fail("manager spawned"))
+        with mock.patch.object(at, "available_funds_btc", lambda account=None: funds):
+            return at.place(sig, False), calls
+
+
+class MarginNeedTest(Base):
+    def test_need_formula_and_fail_closed_inputs(self):
+        self.assertAlmostEqual(at.margin_need_btc(100, 50000), 100 / 50000 * 1.1, places=12)
+        for size, px in ((None, 5e4), (100, None), (0, 5e4), (100, 0), (100, -1), ("x", 5e4), (float("nan"), 5e4),
+                         (100, float("inf")), (-100, 5e4)):
+            with self.subTest(size=size, px=px):
+                self.assertIsNone(at.margin_need_btc(size, px))
+
+    def test_attach_margin_limit_market_and_refusals(self):
+        s = {"plan_args": ["--side", "long", "--entry", "limit", "--price", "80000", "--size", "100"]}
+        self.assertIsNone(at.attach_margin(s, mark_fn=lambda: self.fail("mark read for limit")))
+        self.assertAlmostEqual(s["margin_btc"], 100 / 80000 * 1.1, places=12)
+        m = {"plan_args": ["--side", "long", "--entry", "market", "--size", "100"]}
+        self.assertIsNone(at.attach_margin(m, mark_fn=lambda: 50000.0))
+        self.assertAlmostEqual(m["margin_btc"], 100 / 50000 * 1.1, places=12)
+        for args, fn in ((["--entry", "market"], lambda: 5e4), (["--entry", "market", "--size", "100"], lambda: 0.0),
+                         (["--entry", "market", "--size", "100"], lambda: 1 / 0),
+                         (["--entry", "market", "--size", "abc"], lambda: 5e4), ([], lambda: 5e4)):
+            sig = {"plan_args": args}
+            self.assertIsNotNone(at.attach_margin(sig, mark_fn=fn))
+            self.assertNotIn("margin_btc", sig)
+
+
+class AvailableFundsSeamTest(Base):
+    """The real reader: non-trade balance moves (deposit/withdraw/fee/funding) just change available_funds; the reader
+    returns what the exchange says now, and any API error is None, never a number."""
+    def setUp(self):
+        self.real = at.available_funds_btc          # before Base swaps in the ample-funds stub
+        super().setUp()
+
+    def _do(self, summary):
+        m = types.ModuleType("deribit_orders")
+        m.authenticate = lambda: "tok"
+        m.get_account_summary = summary
+        return mock.patch.dict(sys.modules, {"deribit_orders": m})
+
+    def test_reads_available_funds_and_tracks_non_trade_balance_moves(self):
+        vals = iter([0.5, 0.0, 0.2])                       # deposit, then withdrawal drains it, then partial
+        with self._do(lambda token, cur: {"available_funds": next(vals)}):
+            self.assertEqual([self.real() for _ in range(3)], [0.5, 0.0, 0.2])
+
+    def test_api_error_missing_field_and_garbage_are_none(self):
+        def boom(token, cur):
+            raise OSError("timeout")
+        for fn in (boom, lambda t, c: {}, lambda t, c: {"available_funds": "x"}):
+            with self._do(fn):
+                self.assertIsNone(self.real())
+
+    def test_account_env_restored_after_error_and_success(self):
+        os.environ.pop("MTS_ACCOUNT", None)
+        with self._do(lambda t, c: {"available_funds": 1}):
+            self.real("jishu_2")
+        self.assertNotIn("MTS_ACCOUNT", os.environ)
+
+    def test_systemexit_from_client_is_none(self):
+        def die(token, cur):
+            raise SystemExit(2)
+        with self._do(die):
+            self.assertIsNone(self.real())
+
+    def test_unreadable_module_import_is_none(self):
+        with mock.patch.dict(sys.modules, {"deribit_orders": None}):
+            self.assertIsNone(self.real())
 
 
 def entered(pid, acct=None, src="s"):

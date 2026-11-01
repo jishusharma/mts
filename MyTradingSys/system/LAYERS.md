@@ -42,8 +42,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `lab-verify-trend-healthy-in-balance` refined p3 SONNET: LAB-VERIFY 10-18: how often trend_healthy is set inside a multi-day balance (DEV)
   - `layer-state-snapshot-causal` raw p3 SONNET: S0 park. Meta-label phase 2 (ROADMAP P2 + 2.0): causal layer_state_at(ts) snapshot in sim_desk/studies/_bars.p
   - `tom-btc-other-setups` blocked p3 CODEX: Tom on BTC T8: chart lab + event study for his other trade types (trend continuation pullback to value/VWAP, b
-  - `tom-btc-other-setups-void-result` raw p3 HAIKU: card tom-btc-other-setups result says 504 candidates; 100 blind charts but its report layer_lab/reports/2026-1
-  - `tom-v2-gross-first-dev-ext` ready p3 SONNET: Tom v2 gross-first: near-band placebo on 2019-2021 1m (SETUP_REVIEW.md section 6 test 2) before any DEV or fil
 
 ## Fabio (order-flow layer) (`fabio`)
 - Status: v3 tried 2026-10-04: OOS FAIL (only model C evaluable, 79 trades, mean -0.1038R); holdout 2026-06-26.. NOT read for Fabio (P2_FABIO_V3_HOLDOUT_STATUS.md, B147); ledger audit FIX-FIRST; being redefined as Fabio v2 (waits on ledger repairs).
@@ -66,13 +64,12 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Roadmap: `MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md`
 - Codex lab reports (newest 2 of 2): `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-fabio-gpt-rederive.md`; `MyTradingSys/research/layer_lab/reports/2026-10-25_lf-fabio-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `fabio-v3-model-b-unmanaged-scored-zero` ready p2 SONNET: fabio v3 Model B fills scored 0 R as unmanaged (v3/engine.py:100-102, run_v3_l3.py:108-109): 42 IS + 4 OOS fil
+  - `fabio-v3-model-b-managed-is-rerun` ready p2 JIS-NB: Rerun fabio v3 L3 IS only with managed Model B fills (fix 483a6b035) on JIS-NB; report net R per model
   - `meta-label-fabio-c-dev-ext-power` ready p2 SONNET: Meta-label NOT ENOUGH DATA branch: rerun Fabio Model C stand-in test on pre-DEV dev_ext 2019-2021 (ROADMAP 2.2
   - `sim-desk-tom-fabio-studies` ready p2 SONNET: Sim desk: add per-trade replay studies for Fabio v3 A-D and Tom spike fade / level touch (DEV only, fee-net)
   - `t09-f4-live-window-99-bars-swing-layers` blocked p2 JIS-NB: T09-F4 S2: 99-bar live window misses 68 of 96 escalation signals; fetch more bars for swing layers
-  - `fabio-detectors-match-quotes` raw p3 SONNET: fabio_cvd_absorption.py:88-89 accepts any higher low (quote: same level); fabio_escalation.py fires with no br
+  - `fabio-detectors-match-quotes` ready p3 JIS-NB: fabio_cvd_absorption.py:88-89 accepts any higher low (quote: same level); fabio_escalation.py fires with no br
   - `fabio-of-model-docstring-dst-sessions` ready p3 SONNET: fabio_of_model.py docstring states fixed UTC sessions (London 08:00-13:30, NY 13:30-21:00) but session_bounds 
-  - `fabio-of-report-superseded` ready p3 HAIKU: FABIO_OF_REPORT.md used legacy fees 3.5/-1.5 bp, pre-B102 fixed UTC sessions, reproduce path :10 points at a m
   - `layer-review-fabio-session` ready p3 SONNET: Layer review sheet: Fabio and session timing (idea, source, backtests, bugs, confluence)
   - `layer-state-snapshot-causal` raw p3 SONNET: S0 park. Meta-label phase 2 (ROADMAP P2 + 2.0): causal layer_state_at(ts) snapshot in sim_desk/studies/_bars.p
   - `oi-pivot-1h-4h-long-oi-followup` blocked p3 SONNET: OI pivot candidates at 1h/4h: aggregate the 5m metrics archive 2022-01..2024-06 (DEV), same candidates/outcome
@@ -124,10 +121,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/cryptocred_stop_2026-10-10`
 - Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-25_lf-cryptocred-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `cryptocred-4h-1d-dev-s3` ready p2 SONNET: CryptoCred 4h/1D S3 test: frozen PRE_REG, fee-net DEV run with real funding, then one VALIDATION read (D7 S3 r
   - `lf-cryptocred-gpt-rederive` blocked p2 CODEX: Layer re-derive: cryptocred (independent recount of the headline numbers behind the fact sheet)
-  - `meta-label-1h-dev-ext-check` ready p2 SONNET: Meta-label 1h lead, fresh-data check: refit the frozen meta.py 1h model on all DEV, score tf_break 1h events f
-  - `follow-reclaim-daily-close-stop` ready p3 SONNET: Reclaim with the video's timing: 4h/1D level reclaim, enter at the reclaim close, stop = close back below (Bra
   - `layer-review-rsi-cc-pitchfork-engine` ready p3 SONNET: Layer review sheet: RSI, CryptoCred, pitchfork, live engine (idea, source, backtests, bugs, confluence)
 
 ## Positioning (funding, OI, whale / FlowHorse) (`positioning`)
@@ -210,7 +204,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Codex lab reports (newest 2 of 2): `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-live_engine-gpt-rederive.md`; `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-live_engine-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `live-mirror-follow-live-host-move` blocked p1 DSA: live_mirror.py hard-codes JIS-NB (LIVE_HOST, share \JIS-NB\MTS-Mirror); live loop is on desktop-f7iu69n (Lenov
-  - `live-engine-analyst-levels` ready p2 JIS-NB: Live engine context: carry the CBP analyst-level ladder (analyst_levels.py --json) into current_market_state a
   - `state-code-accumulator-backfill` refined p2 JIS-NB: StateCodeEmitter: backfill session CVD/cum_pv/cum_vol after restart and WS reconnect, fail closed on backfill 
   - `layer-review-rsi-cc-pitchfork-engine` ready p3 SONNET: Layer review sheet: RSI, CryptoCred, pitchfork, live engine (idea, source, backtests, bugs, confluence)
   - `live-aid-position-bar-replay-test-pos-di` ready p3 SONNET: live_aid position bar replay test pos-dist pos-atr uncovered
@@ -249,7 +242,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `krown-dev-event-study-candles` refined p2 SONNET: Krown DEV event study 3/3: candle hypotheses H-C1, H-C2 (H-T1 not run); DONE when: DEV_RESULTS.md has N, power
   - `krown-dev-event-study-levels` refined p2 SONNET: Krown DEV event study 2/3: level and moving-average hypotheses H-M1, H-M3, H-Z1 (H-M2 not run); DONE when: DEV
   - `krown-hidden-divergence-confluence-feed` blocked p2 SONNET: Krown hidden divergence as a shared confluence feed any layer (RSI 40-60 included) can consume; Malkan layer s
-  - `meta-label-1h-dev-ext-check` ready p2 SONNET: Meta-label 1h lead, fresh-data check: refit the frozen meta.py 1h model on all DEV, score tf_break 1h events f
   - `layer-review-krown-wavetrend` ready p3 SONNET: Layer review sheet: Krown and WaveTrend (idea, source, backtests, bugs, confluence)
   - `layer-state-snapshot-causal` raw p3 SONNET: S0 park. Meta-label phase 2 (ROADMAP P2 + 2.0): causal layer_state_at(ts) snapshot in sim_desk/studies/_bars.p
   - `trendline-ledger-registry-hygiene` blocked p3 SONNET: Trend-line daily ledger schema v2 enforcement + register the module in layer_index and wiring_registry (audit 
@@ -266,6 +258,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `wavetrend-c1-v2` refined p1 SONNET: WaveTrend C1 detector correction and new count-only prereg
   - `layer-review-krown-wavetrend` ready p3 SONNET: Layer review sheet: Krown and WaveTrend (idea, source, backtests, bugs, confluence)
+  - `wavetrend-parity-contract-audit-1101` ready p3 SONNET: WaveTrend parity contract: bound seed-convergence claim and reconcile fixture timestamps (gpt-mutation-wavetre
 
 ## Pitchfork (Andrews / Schiff / Morge median line) (`pitchfork`)
 - Status: Pivot amplitude gate is OURS (2 pct reversal, no ATR); doc Rule P-01 2.5 x ATR14 not implemented. Detector, simulator desk plugin (studies/pitchfork.py), and live Java engine (PitchforkSignalLayer.java with Tine Bounce + Hagopian Failure + Volume Profile confluence) built, wired, and verified on DEV.

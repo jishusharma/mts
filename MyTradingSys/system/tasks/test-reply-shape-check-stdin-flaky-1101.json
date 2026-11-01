@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/test_reply_shape_check.py"
+  ],
+  "created": "2026-11-01T05:34:24Z",
+  "depends_on": [],
+  "done_when": "test_reply_shape_check.py passes with stdin attached and with stdin closed; fails on the pre-change code in the attached case; shipped with a Result: line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "test_reply_shape_check.py fails once when the ship gate runs backgrounded with stdin attached (reply-shape CLI requires explicit stdin, commit ef0503d2c); make the test pass its own stdin (NUL/devnull) so the gate is not flaky.",
+  "id": "test-reply-shape-check-stdin-flaky-1101",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "reply-shape CLI requires explicit stdin",
+      "ref": "ef0503d2cc40",
+      "utc": "2026-10-28T10:04:00Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Found by the margin Builder 2026-11-01: one full-gate failure, green on retry.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-01T05:35:27Z",
+  "refs": [
+    "MyTradingSys/system/tasks/auto-trader-place-saves-plan-before-margin-check.json"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/test_reply_shape_check.py"
+  ],
+  "scope_out": [
+    "live tree; production code"
+  ],
+  "scope_sha": "ef0503d2cc40",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "reproduce with stdin attached",
+    "pass stdin explicitly in the test",
+    "ship"
+  ],
+  "tests": "new case fails on old code",
+  "title": "test_reply_shape_check fails under a backgrounded gate with stdin attached (ef0503d2c): flaky ship gate",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

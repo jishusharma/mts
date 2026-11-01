@@ -19,14 +19,15 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "OPERATOR QUOTE: I need all available models across LLMs to detect and test fractals only if there is value, logic and edge seeking goals. Waits for R4_MULTI_LLM_PLAN.md + Fable validation.\nGATED OFF 2026-10-31: R4/SYNTHESIS gate says L1 runs only if F1 gives a coded detector with DEV edge; F1 FAILED. Stays raw until a fractal detector passes.",
+  "note": "OPERATOR QUOTE: I need all available models across LLMs to detect and test fractals only if there is value, logic and edge seeking goals. GATED OFF 2026-10-31: R4/SYNTHESIS gate runs L1 only if F1 gives a coded detector with DEV edge; F1 FAILED. PLANNER 2026-11-01: scope_in lists run_extra_tests.py; needs a reviewer ACCEPT when unparked. PLANNER 2026-11-01 DECISION (OURS): PARKED. Gate A in R4_MULTI_LLM_PLAN s3.4 compares LLMs to a coded detector D; F1 (FAIL, -0.267 R), F2, F3, F4 all negative, so no D with DEV edge exists and Gate C cannot be met; the plan default is no chart labelling. Unpark only when a coded fractal/pivot detector shows fee-net DEV edge; then refine (est 30 turns, IMPORTANT, reviewer ACCEPT needed).",
   "prio": 3,
-  "refine_tries": 0,
+  "refine_tries": 1,
   "refined_by": "",
   "refs": [],
   "result": "",
   "scope_in": [
-    "MyTradingSys/research/fractals_2026-10-31/llm_label/"
+    "MyTradingSys/research/fractals_2026-10-31/llm_label/",
+    "scripts/dev/run_extra_tests.py"
   ],
   "scope_out": [
     "live tree",
