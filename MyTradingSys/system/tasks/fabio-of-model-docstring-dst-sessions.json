@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T12:07:40Z",
   "commands": [],
   "created": "2026-10-31T05:11:20Z",
   "depends_on": [],
@@ -13,6 +15,12 @@
   "id": "fabio-of-model-docstring-dst-sessions",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Updated fabio_of_model.py module docstring to state fixed UTC base with DST shifts via ses",
+      "ref": "c3e97c055",
+      "utc": "2026-11-01T12:07:40Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +40,12 @@
   "refs": [
     "gemini-doc-vs-code-layers-g1-1031"
   ],
-  "result": "",
+  "result": "Updated fabio_of_model.py module docstring to state fixed UTC base with DST shifts via session_bounds per B102; added test_docstring_names_dst_sessions in test_fabio_of_model.py",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/fabio/fabio_of_model.py",
     "MyTradingSys/backtest/layers/fabio/test_fabio_of_model.py"
@@ -41,11 +54,12 @@
   "scope_sha": "051084e440af",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Reword the State paragraph to name B102 and session_bounds",
     "Add a test that the module docstring mentions B102"
   ],
+  "taken": "2026-11-01T12:06:46Z",
   "tests": "MyTradingSys/backtest/layers/fabio/test_fabio_of_model.py::test_docstring_names_dst_sessions (fails on current docstring)",
   "title": "fabio_of_model.py docstring states fixed UTC sessions (London 08:00-13:30, NY 13:30-21:00) but session_bounds is DST-aware (B102)",
   "weight": "",
