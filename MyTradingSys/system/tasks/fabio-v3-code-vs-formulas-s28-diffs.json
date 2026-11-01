@@ -1,10 +1,12 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest MyTradingSys/backtest/layers/fabio/v3/tests -q"
+  ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-01T01:06:25Z",
+    "folded": "2026-11-01T01:07:06Z",
     "misses": 43,
     "reads": [
       "MyTradingSys/system/roles/session_planner.md",
@@ -17,32 +19,57 @@
   "created": "2026-11-01T00:17:49Z",
   "crucial": true,
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "v3/tests green incl. new tests; T-C expects net R -0.500667 (gross 0) from the s28 add example; FORMULAS.md s28.6 replaced by a RESOLVED line naming the sha; Result lists golden numbers moved (expected: none, adds not wired) and the two mutation results.",
+  "est_turns": 30,
   "formula_id": "",
-  "formula_ids": [],
+  "formula_ids": [
+    "28"
+  ],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Close the 3 recorded differences between FORMULAS.md s28 and layers/fabio/v3 (s28.6), each with a test built from the s28 hand numbers that goes red on the pre-change tree. DECISION (OURS, planner 2026-11-01): (1) the CODE is right, the SPEC TEXT is amended: ATR_N(i) = mean(TR[i-N+1..i]) reads c[i-N] via TR, so balance/atr need [i-N, i] contiguous (fail closed on a gap); (2) CODE is built: a multi-leg walk applying the s28.4 add rules; (3) the SPEC is amended: no prior ranges or median <= 0 -> day gate closed (SAFETY, fail closed). IS/DEV only; no engine wiring, no backtest rerun.",
   "id": "fabio-v3-code-vs-formulas-s28-diffs",
   "kind": "build",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "PLANNER 2026-11-01 DECISION (OURS): diffs 1 and 3 resolve by amending the spec (code is the fail-closed reading, ATR needs c[i-N]); diff 2 resolves by building multi-leg add execution as a new function. CRUCIAL (formulas): review Agent on the diff before ship. Verify: content sha, git cherry origin/fast-track <sha> empty, ls-tree lists the files. run_extra_tests.py already lists v3/tests.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/fabio/v3/manage.py",
+    "MyTradingSys/backtest/layers/fabio/v3/signals.py",
+    "MyTradingSys/backtest/layers/fabio/v3/day_gates.py",
+    "MyTradingSys/backtest/layers/fabio/v3/__init__.py",
+    "MyTradingSys/backtest/layers/fabio/v3/tests/test_manage.py",
+    "MyTradingSys/backtest/layers/fabio/v3/tests/test_signals.py",
+    "MyTradingSys/backtest/layers/fabio/v3/tests/test_day_gates.py",
+    "MyTradingSys/backtest/layers/fabio/v3/README.md",
+    "MyTradingSys/backtest/layers/FORMULAS.md"
+  ],
+  "scope_out": [
+    "engine.py and models.py (adds are NOT wired into the engine here; simulate_trade one-leg contract and its callers stay byte-identical)",
+    "any backtest rerun or verdict",
+    "live tree",
+    "fee/cost constants (costs.py)"
+  ],
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read FORMULAS.md s28.1-28.6 and v3/README.md; list current golden numbers (tests/test_fabio_golden.py) so you can state none moved",
+    "Write tests FIRST, run them red on the unchanged tree. T-A (diff 1): s28 6-bar worked example, i=4 N=4 gives balance {102,99,3,100.5} and ATR 2.25 (hand: TR 3,2,2,2); same bars with a time gap between bar 0 and bar 1 -> atr and balance None (needs c[i-N]); gap between bars 2 and 3 -> None. T-B (diff 3): day_gate_open(60, 800, [1000]*20, 0.8) True, (60, 790, ...) False, (60, 800, [], 0.8) False, (60, 800, [0]*20, 0.8) False. T-C (diff 2): new walk with adds, numbers in the next step",
+    "T-C hand numbers (s28.4, q1=1, long, e1=100000, D1=300, stop0=99700): mode be, stop moved to 100100, add at pa=100200: locked 100, dist 100, q_add 1; stopped out at 100100: gross R = (100-100)/300 = 0. Fees (maker leg 1, taker add, taker stop exits): leg1 (0+0.0005)*100000/300 = 0.166667, leg2 (0.0005+0.0005)*100200/300 = 0.334, net R = -0.500667. Stop at e1 (100000): q_add 0 -> no add, trade identical to simulate_trade. Mode day, closed day R 0.5, D1 300, r1 1: q_add 0.1667 < 0.25 -> skip. Third add refused (cap 2). Compute independently of the code",
+    "Implement simulate_trade_legs (name OURS) in manage.py: reuses walk_trade for stop/S8 per bar, calls add_allowed/add_size on each close, executes the add as a taker at o[i+1] per s28.4, returns the one-leg trade dict plus legs=[{q,entry,kind}] and total net_r. simulate_trade unchanged. Export from __init__.py",
+    "Amend FORMULAS.md s28.1/s28.2 (window and ATR contiguity wording) and s28.5 (day gate closed on empty history or median <= 0, SAFETY); replace s28.6 with a RESOLVED line citing the commit; update v3/README.md",
+    "Mutation check: change contiguous(bars, i - N, i) to (i - N + 1, i) in atr -> T-A red; make day_gate_open open on empty history -> T-B red; list both in the Result",
+    "python -m pytest MyTradingSys/backtest/layers/fabio/v3/tests -q; python scripts/dev/run_all_tests.py --quick; sync.py ship"
+  ],
+  "tests": "v3/tests/test_signals.py (gap before bar i-N+1 and mid-window -> None, s28 ATR 2.25), test_day_gates.py (s28 G=0.8 open, 0.79 closed, empty and zero-median closed), test_manage.py (multi-leg add numbers above); T-C fails on the pre-change tree (function missing); T-A and T-B pin spec amendments and fail by the mutation check.",
   "title": "FORMULAS.md s28.6 lists 3 Fabio v3 code differences from spec: (1) balance and atr need one more contiguous bar than the spec window; (2) simulate_trade handles the first leg only, adds never execute; (3) day_gate_open fails closed with no prior ranges (check spec). Done when: each difference has a test using the s28 hand numbers that fails on current code, and the code or spec is fixed per FORMULAS.md, IS only, numbers moved listed",
-  "weight": "",
-  "worker": ""
+  "weight": "CRUCIAL",
+  "worker": "agent"
 }
