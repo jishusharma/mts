@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T18:00:48Z",
   "commands": [],
   "created": "2026-11-01T17:12:16Z",
   "depends_on": [],
@@ -13,7 +14,14 @@
   "id": "gemini-blind-read-recent-results-1101",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "research/gemini_audits_2026-11-01/recent_results_blind_read.md (221 numbers: 201 FOUND, 20",
+      "ref": "4e536f6dc",
+      "utc": "2026-11-01T18:00:48Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -25,7 +33,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "research/gemini_audits_2026-11-01/recent_results_blind_read.md (221 numbers: 201 FOUND, 20 NOT_IN_DATA, 0 DIFF)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "the five RESULT.md files and what they cite (read); one output file research/gemini_audits_2026-11-01/recent_results_blind_read.md"
   ],
@@ -35,12 +48,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "list every number in each RESULT.md with its cited source",
     "open the source and check the number",
     "write FOUND / NOT_IN_DATA / DIFF per number"
   ],
+  "taken": "2026-11-01T18:00:48Z",
   "tests": "see done_when (audit card, output file is the test)",
   "title": "[GEMINI] blind re-read of tom_v2_gross_first, reclaim_close_stop, meta_label_breaks, cowen event_study, tf_break RESULT.md: numbers vs cited files",
   "weight": "ROUTINE",
