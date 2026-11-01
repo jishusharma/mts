@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T19:00:48Z",
   "commands": [],
   "created": "2026-11-01T18:07:45Z",
   "depends_on": [],
@@ -13,7 +15,14 @@
   "id": "gpt-audit-formulas-vs-dfa-hurst",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Audited FORMULAS.md s27 against fractals f2/dfa.py: 3 outputs re-derived analytically by h",
+      "ref": "067c2e3ca",
+      "utc": "2026-11-01T19:00:48Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -31,7 +40,12 @@
     "to": "DSA",
     "why": "window"
   },
-  "result": "",
+  "result": "Audited FORMULAS.md s27 against fractals f2/dfa.py: 3 outputs re-derived analytically by hand (s=4 F^2=0.20, s=8 F^2=5/21, log-log slope alpha=0.125769) matching code output to float precision (SAME). Report: MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-audit-formulas-vs-dfa-hurst.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-audit-formulas-vs-dfa-hurst.md"
   ],
@@ -41,12 +55,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "list the formulas the code uses (profile, boxes, line fit, slope)",
     "hand-compute 3 values on a toy series",
     "run dfa.py on the same series and compare"
   ],
+  "taken": "2026-11-01T18:58:31Z",
   "tests": "see done_when (audit card, the output file is the test)",
   "title": "[GPT] audit FORMULAS.md s27 rolling DFA Hurst against fractals f2/dfa.py: 3 outputs re-derived by hand",
   "weight": "ROUTINE",
