@@ -1,0 +1,10 @@
+{
+  "done_when": "CBP Claude reads note and applies yt-dlp/proxy fixes",
+  "from": "JIS-NB",
+  "id": "20261101-060149-cbp-youtube-block-on-nuc-root-cause-and-",
+  "need": "DSA researched YDLT blocking. See Dumps/operator/context/CBP_NOTE_YOUTUBE_BLOCK_2026-11-01.md",
+  "posted": "2026-11-01T06:01:49Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "CBP YouTube block on NUC: root cause and fixes"
+}
