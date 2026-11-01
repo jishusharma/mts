@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T18:49:17Z",
   "commands": [],
   "created": "2026-11-01T18:07:47Z",
   "depends_on": [],
@@ -13,7 +14,14 @@
   "id": "gpt-audit-formulas-vs-bollinger-chart-verify",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-audit-formulas-vs-bollinger-chart-v",
+      "ref": "fd384c869",
+      "utc": "2026-11-01T18:49:17Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -25,7 +33,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-audit-formulas-vs-bollinger-chart-verify.md: 3 hand-derived cases SAME, warm-up SAME; invalid-input policy DIFFERENT",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-audit-formulas-vs-bollinger-chart-verify.md"
   ],
@@ -35,12 +48,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read FORMULAS.md s22 and both functions",
     "hand-compute 3 values",
     "run both functions and compare incl. the None-until-n-closes rule"
   ],
+  "taken": "2026-11-01T18:49:17Z",
   "tests": "see done_when (audit card, the output file is the test)",
   "title": "[GPT] audit FORMULAS.md s22 Bollinger Bands against chart_verify.py bollinger(): population sd, 3 outputs re-derived",
   "weight": "ROUTINE",
