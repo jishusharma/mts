@@ -5,7 +5,7 @@
 - **Date**: 2026-11-01
 - **Auditor**: Gemini worker (Antigravity JIS-NUC)
 - **Studies Audited**: `krown.py`, `pitchfork.py`, `wavetrend.py`
-- **Primary Deliverable**: `research/gemini_audits_2026-11-01/studies_param_labels_b.md`
+- **Primary Deliverable**: `MyTradingSys/research/gemini_audits_2026-11-01/studies_param_labels_b.md`
 
 ---
 

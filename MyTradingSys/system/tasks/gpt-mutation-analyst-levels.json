@@ -12,7 +12,7 @@
   "goal": "analyst_levels.py (162 lines) is tested by test_analyst_levels.py (9 tests). Make 6 scratch mutations (publish-day bar counted as a hit, price band 40k..200k edges, sort order, --offline path, open vs hit flag, dedupe) and report which survive; write a spec-derived test for each survivor, expected values from the module docstring by hand.",
   "id": "gpt-mutation-analyst-levels",
   "kind": "build",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
@@ -32,6 +32,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
+  "reroute": {
+    "at": "2026-11-01T18:55:25Z",
+    "from": "CODEX",
+    "to": "SONNET",
+    "why": "window"
+  },
   "result": "",
   "scope_in": [
     "scripts/dev/test_analyst_levels.py",

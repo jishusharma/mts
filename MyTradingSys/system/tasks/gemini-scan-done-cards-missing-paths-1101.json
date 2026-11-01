@@ -25,6 +25,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
+  "reroute": {
+    "at": "2026-11-01T18:55:25Z",
+    "desk": "20261101-185525-gemini-scan-done-cards-missing-paths-110",
+    "to": "DSA",
+    "why": "window"
+  },
   "result": "",
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-11-01/done_cards_missing_paths.md"

@@ -12,7 +12,7 @@
   "goal": "research_kit.py is the shared home of the clustered SE, Holm and MDE maths every screen and the C26 plan cite. Mutate it 6 ways (Holm running max dropped, n-1 vs n, NaN guard for one day removed, MDE_Z 2.8 -> 2.0, cost_in_r units, norm_p_two sign) and report which survive tests/test_research_kit.py; survivors get a hand-derived test.",
   "id": "gpt-mutation-research-kit",
   "kind": "build",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
@@ -32,6 +32,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
+  "reroute": {
+    "at": "2026-11-01T18:55:25Z",
+    "from": "CODEX",
+    "to": "SONNET",
+    "why": "window"
+  },
   "result": "",
   "scope_in": [
     "MyTradingSys/tests/test_research_kit.py",

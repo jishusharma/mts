@@ -25,7 +25,7 @@ This report delivers the complete blind read audit of all six `RESULT.md` files 
   - `NOT_IN_DATA`: 0 (0.0%)
 - **Overall Verdict**: `SOUND` (Precise reporting; 100% of reported numbers and statistical tables match their underlying data files; all research tracks adhered to pre-registered designs and honestly reported negative or inconclusive findings).
 - **Primary Deliverables**:
-  - `research/gemini_audits_2026-11-01/fractal_results_blind_read.md`
+  - `MyTradingSys/research/gemini_audits_2026-11-01/fractal_results_blind_read.md`
   - `MyTradingSys/research/gemini_audits_2026-11-01/fractal_results_blind_read.md`
 
 ---
@@ -108,7 +108,7 @@ This report delivers the complete blind read audit of all six `RESULT.md` files 
 ## 3. Findings & Deliverable Reference
 
 The full 146-row audit table has been written to:
-- `research/gemini_audits_2026-11-01/fractal_results_blind_read.md`
+- `MyTradingSys/research/gemini_audits_2026-11-01/fractal_results_blind_read.md`
 - `MyTradingSys/research/gemini_audits_2026-11-01/fractal_results_blind_read.md`
 
 Every audited item includes:

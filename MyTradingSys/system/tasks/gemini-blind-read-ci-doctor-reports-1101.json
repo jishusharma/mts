@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T18:19:05Z",
   "commands": [],
   "created": "2026-11-01T17:37:48Z",
   "depends_on": [],
@@ -13,7 +14,14 @@
   "id": "gemini-blind-read-ci-doctor-reports-1101",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "research/gemini_audits_2026-11-01/ci_doctor_blind_read.md (202 numbers: 167 FOUND, 35 NOT_",
+      "ref": "b426ec7df",
+      "utc": "2026-11-01T18:19:05Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -31,7 +39,12 @@
     "to": "DSA",
     "why": "window"
   },
-  "result": "",
+  "result": "research/gemini_audits_2026-11-01/ci_doctor_blind_read.md (202 numbers: 167 FOUND, 35 NOT_IN_DATA, 0 DIFF)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "the two report files and what they cite (read); one output file research/gemini_audits_2026-11-01/ci_doctor_blind_read.md"
   ],
@@ -41,12 +54,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "list every number and file reference",
     "open the cited source and compare",
     "write FOUND / NOT_IN_DATA / DIFF per number"
   ],
+  "taken": "2026-11-01T18:19:05Z",
   "tests": "see done_when (audit card, output file is the test)",
   "title": "[GEMINI] blind re-read of ci_audit REPORT_FIRST_RED.md and mts_doctor REPORT_2026-11-01.md: numbers vs cited files",
   "weight": "ROUTINE",

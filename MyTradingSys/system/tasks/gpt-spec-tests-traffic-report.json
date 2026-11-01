@@ -12,7 +12,7 @@
   "goal": "traffic_report.py has no test. From its docstring and TRAFFIC_BUSTERS.md derive by hand the expected output of classify() (merge when parents > 1, claim/release by first word, else other) and report() with an injected runner (empty log, one of each kind, hours arg), then write scripts/dev/test_traffic_report.py with >= 8 tests; no real git call.",
   "id": "gpt-spec-tests-traffic-report",
   "kind": "build",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
@@ -32,6 +32,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
+  "reroute": {
+    "at": "2026-11-01T18:55:25Z",
+    "from": "CODEX",
+    "to": "SONNET",
+    "why": "window"
+  },
   "result": "",
   "scope_in": [
     "scripts/dev/test_traffic_report.py",

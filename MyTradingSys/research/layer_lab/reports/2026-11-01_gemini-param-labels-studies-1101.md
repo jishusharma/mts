@@ -5,7 +5,7 @@
 - **Date**: 2026-11-01
 - **Auditor**: Gemini worker (Antigravity JIS-NUC)
 - **Studies Audited**: `fabio_v3.py`, `tom_vp.py`, `cowen_bmsb.py`, `levels.py`
-- **Primary Deliverable**: `research/gemini_audits_2026-11-01/studies_param_labels.md`
+- **Primary Deliverable**: `MyTradingSys/research/gemini_audits_2026-11-01/studies_param_labels.md`
 
 ---
 

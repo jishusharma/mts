@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T18:51:37Z",
   "commands": [],
   "created": "2026-11-01T17:37:50Z",
   "depends_on": [],
@@ -13,7 +14,14 @@
   "id": "gpt-audit-formulas-vs-stochastic-rsi-chart-verify",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "SAME MyTradingSys/research/layer_lab/reports/2026-11-02_gpt-audit-formulas-vs-stochastic-r",
+      "ref": "20bddf989",
+      "utc": "2026-11-01T18:51:37Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -31,7 +39,12 @@
     "to": "DSA",
     "why": "window"
   },
-  "result": "",
+  "result": "SAME MyTradingSys/research/layer_lab/reports/2026-11-02_gpt-audit-formulas-vs-stochastic-rsi-chart-verify.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-audit-formulas-vs-stochastic-rsi-chart-verify.md"
   ],
@@ -41,12 +54,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "list formulas the code uses",
     "hand-compute 3 values on a toy series",
     "run code and compare"
   ],
+  "taken": "2026-11-01T18:51:37Z",
   "tests": "see done_when (audit card, output file is the test)",
   "title": "[GPT] audit FORMULAS.md s23 Stochastic RSI against scripts/dev/chart_verify.py: 3 outputs re-derived by hand",
   "weight": "ROUTINE",

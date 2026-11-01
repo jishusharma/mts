@@ -5,7 +5,7 @@
 - **Date**: 2026-11-01
 - **Auditor**: Gemini worker (Antigravity JIS-NUC)
 - **Extracts Audited**: `MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_1.md` and `RUMERS_EXTRACT_2.md`
-- **Primary Deliverable**: `research/gemini_audits_2026-11-01/rumers_extract_blind_read.md`
+- **Primary Deliverable**: `MyTradingSys/research/gemini_audits_2026-11-01/rumers_extract_blind_read.md`
 
 ---
 
