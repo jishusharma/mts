@@ -137,17 +137,21 @@ def rescue_patch(repo, row):
     dest = primary(repo) / "Dumps" / "wt_rescue" / row["name"]
     try:
         dest.mkdir(parents=True, exist_ok=True)
-        diff = sync.git(p, "diff", "--binary", "HEAD", check=False)
+        diff = subprocess.run(["git", "-C", str(p), "--no-optional-locks", "diff", "--binary", "HEAD"], capture_output=True)
         if diff.returncode != 0:
             return None
-        (dest / "uncommitted.patch").write_bytes(diff.stdout.encode("utf-8", "surrogateescape"))
+        (dest / "uncommitted.patch").write_bytes(diff.stdout)
         head = f"{row['name']} [{row['branch']}] {datetime.now(timezone.utc):%Y-%m-%d %H:%MZ}"
         (dest / "STATUS.txt").write_text(head + chr(10) + sync.git(p, "status", "--short", check=False).stdout,
                                          encoding="utf-8", newline=chr(10))
         for f in untracked_files(p):
+            src = p / f
             tgt = dest / "untracked" / f
             tgt.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(p / f, tgt)
+            if src.is_dir():
+                shutil.copytree(src, tgt, dirs_exist_ok=True)
+            elif src.exists():
+                shutil.copy2(src, tgt)
         return dest
     except OSError:
         return None
