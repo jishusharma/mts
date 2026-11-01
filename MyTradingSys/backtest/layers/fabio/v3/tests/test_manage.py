@@ -4,7 +4,7 @@ import unittest
 import pytest
 
 from MyTradingSys.backtest.layers.fabio.v3 import (add_allowed, add_size, be_update, defended_level, opp_stop,
-                                                   simulate_trade, trail_update)
+                                                   simulate_trade, simulate_trade_legs, trail_update)
 
 
 def mk(rows):
@@ -156,6 +156,74 @@ class TestFabioV3Manage(unittest.TestCase):
         t53, _, _ = self._get_t53_data()
         with self.assertRaises(ValueError):
             simulate_trade(mk(t53), 0, 1, 100.0, 1.0, 99.0, mgmt="x")
+
+
+    # ---- multi-leg adds (FORMULAS.md 28.4 worked add; 28.6 RESOLVED diff 2). Expected numbers are hand arithmetic.
+    def _add_bars(self):
+        # bar 0 fill (long 100000, D 300, stop0 99700); bar 1 absorbed sellers: pb = 100100.1 -> E_opp stop 100100.0;
+        # bar 2 opens 100200 (= pa), low 100050 <= 100100 -> stopped at 100100 (open is above the stop)
+        return mk([(100000, 100050, 99900, 100000), (100150, 100300, 100100.1, 100250),
+                   (100200, 100250, 100050, 100100)])
+
+    def _legs_kw(self):
+        return dict(mgmt="event", ctrl=[0, 1, 0], absorbed=[0, -1, 0], open_idx=0, push_ok=[True] * 3,
+                    curve_states=["fair"] * 3)
+
+    def test_s28_add_net_r_matches_hand_number(self):
+        t = simulate_trade_legs(self._add_bars(), 0, 1, 100000.0, 300.0, 99700.0, **self._legs_kw())
+        self.assertEqual(t["n_adds"], 1)
+        self.assertEqual(t["add_idx"], [2])
+        self.assertEqual([(q, e) for q, e, _ in t["legs"]], [(1.0, 100000.0), (1.0, 100200.0)])
+        self.assertEqual(t["reason"], "opp")
+        self.ap(t["exit"], 100100.0)
+        self.ap(t["gross_r"], 0.0)                                      # (100 - 100) / 300
+        self.ap(t["fee_r"], 0.5006666667)                               # 0.0005*100000/300 + 0.001*100200/300
+        self.ap(t["net_r"], -0.500667, places=6)
+
+    def test_s28_add_stop_at_e1_skips_and_equals_simulate_trade(self):
+        bars = mk([(100000, 100050, 99900, 100000), (100050, 100300, 100000.1, 100250),
+                   (100200, 100250, 99950, 100000)])                     # E_opp cands {100000, 100000.0}: stop = e1
+        kw = self._legs_kw()
+        t = simulate_trade_legs(bars, 0, 1, 100000.0, 300.0, 99700.0, **kw)
+        base = simulate_trade(bars, 0, 1, 100000.0, 300.0, 99700.0, mgmt="event", ctrl=kw["ctrl"],
+                              absorbed=kw["absorbed"])
+        self.assertEqual(t["n_adds"], 0)
+        for k in ("gross_r", "fee_r", "net_r", "exit", "exit_idx", "reason"):
+            self.assertEqual(t[k], base[k])
+
+    def test_s28_add_day_mode_below_minimum_is_skipped(self):
+        # day mode, closed day R 0.5, D1 300, r1 1 -> budget 150; stop 99900 (100 under e1): locked -100, dist 300,
+        # q_add = 50/300 = 0.1667 < 0.25 -> skip
+        bars = mk([(100000, 100050, 99950, 100000), (100100, 100300, 99999, 100250), (100200, 100250, 99800, 99900)])
+        t = simulate_trade_legs(bars, 0, 1, 100000.0, 300.0, 99900.0, mgmt="dist", be_k=9.0, ctrl=[0, 1, 0],
+                                add_mode="day", day_r=0.5, r1=1.0, push_ok=[True] * 3, curve_states=["fair"] * 3)
+        self.assertEqual(t["n_adds"], 0)
+        # same bars, day R 1.0 -> budget 300: q_add = min(1, 200/300) = 0.6667 >= 0.25 -> one add
+        t = simulate_trade_legs(bars, 0, 1, 100000.0, 300.0, 99900.0, mgmt="dist", be_k=9.0, ctrl=[0, 1, 0],
+                                add_mode="day", day_r=1.0, r1=1.0, push_ok=[True] * 3, curve_states=["fair"] * 3)
+        self.assertEqual(t["n_adds"], 1)
+        self.ap(t["legs"][1][0], 2 / 3)
+
+    def test_s28_third_add_is_refused_cap_two(self):
+        # each bar k=1..3 has absorbed sellers and opens at its low, so E_opp ratchets the stop to (low - 0.1):
+        # 100500.0, 100600.0, 100700.0; adds at o[2] = 100600.1 and o[3] = 100700.1 (q 1 each); decision at bar 3 is
+        # refused (2 adds). Stopped at 100700.0 in bar 4.
+        bars = mk([(100000, 100050, 99900, 100000), (100500.1, 100600, 100500.1, 100550),
+                   (100600.1, 100800, 100600.1, 100700), (100700.1, 100900, 100700.1, 100800),
+                   (100800, 100850, 100650, 100700)])
+        t = simulate_trade_legs(bars, 0, 1, 100000.0, 300.0, 99700.0, mgmt="event", ctrl=[0, 1, 1, 1, 0],
+                                absorbed=[0, -1, -1, -1, 0], open_idx=0, push_ok=[True] * 5, curve_states=["fair"] * 5)
+        self.assertEqual(t["n_adds"], 2)
+        self.assertEqual(t["add_idx"], [2, 3])
+        self.ap(t["exit"], 100700.0)
+        self.ap(t["gross_r"], 799.8 / 300)                              # (700 + 99.9 - 0.1) / 300
+        self.ap(t["fee_r"], (50 + 100.6001 + 100.7001) / 300)
+        self.ap(t["net_r"], 799.8 / 300 - (50 + 100.6001 + 100.7001) / 300)
+
+    def test_s28_adds_unknown_inputs_fail_closed(self):
+        t = simulate_trade_legs(self._add_bars(), 0, 1, 100000.0, 300.0, 99700.0, mgmt="event", ctrl=[0, 1, 0],
+                                absorbed=[0, -1, 0])                     # no push_ok / curve_states -> no add
+        self.assertEqual(t["n_adds"], 0)
 
 
 if __name__ == "__main__":

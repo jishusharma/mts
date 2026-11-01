@@ -93,6 +93,48 @@ class Hand(unittest.TestCase):
         self.assertEqual(tr.tolist(), [True, False, False])
 
 
+class ExtMode(unittest.TestCase):
+    """ext mode (EXT_PRE_REG.md): fit on DEV only, score only 2020-2021 events."""
+
+    @staticmethod
+    def table(n, t0, seed, split='DEV', edge=True):
+        rng = np.random.default_rng(seed)
+        D = pd.DataFrame(rng.normal(size=(n, len(M.FEATS))), columns=M.FEATS)
+        D['tf'], D['split'] = '1h', split
+        D['t'] = t0 + np.sort(rng.integers(0, 300 * M.DAY, n))
+        D['fwd_gross'] = 0.0005 + 0.004 * (D['rsi_e'] if edge else 0) + rng.normal(0, 0.01, n)
+        return D
+
+    def test_fit_set_never_holds_a_fresh_year_row(self):
+        t2020 = int(pd.Timestamp('2020-03-01', tz='UTC').timestamp())
+        t2022 = int(pd.Timestamp('2022-03-01', tz='UTC').timestamp())
+        mixed = pd.concat([self.table(50, t2020, 1), self.table(200, t2022, 2)], ignore_index=True)
+        fit = M.ext_fit_set(mixed)
+        self.assertEqual(len(fit), 200)
+        self.assertTrue((fit.t >= M.DEV_START).all())
+        self.assertTrue((fit.t < M.DEV_END).all())
+
+    def test_ext_set_rejects_dev_and_later_rows(self):
+        t2022 = int(pd.Timestamp('2022-03-01', tz='UTC').timestamp())
+        with self.assertRaises(ValueError):
+            M.ext_score_set(self.table(20, t2022, 3))
+
+    def test_planted_edge_gives_positive_best_third(self):
+        t2020 = int(pd.Timestamp('2020-03-01', tz='UTC').timestamp())
+        t2022 = int(pd.Timestamp('2022-03-01', tz='UTC').timestamp())
+        r = M.ext_run(self.table(3000, t2022, 4), self.table(1500, t2020, 5), nplac=20)
+        self.assertGreater(r['top']['net'], 0)
+        self.assertGreater(r['top']['lo'], 0)
+        self.assertGreater(r['top']['n'], 100)
+        self.assertLess(r['placebo_p'], 0.1)
+
+    def test_no_edge_gives_no_pass(self):
+        t2020 = int(pd.Timestamp('2020-03-01', tz='UTC').timestamp())
+        t2022 = int(pd.Timestamp('2022-03-01', tz='UTC').timestamp())
+        r = M.ext_run(self.table(3000, t2022, 6, edge=False), self.table(1500, t2020, 7, edge=False), nplac=20)
+        self.assertNotEqual(r['verdict'], 'PASS')
+
+
 class SimExport(unittest.TestCase):
     def test_overall_verdict_and_tables(self):
         import sim_export as X

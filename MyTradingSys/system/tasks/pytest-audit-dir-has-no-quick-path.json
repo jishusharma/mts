@@ -1,7 +1,19 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T01:14:25Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-01T01:15:47Z",
+    "misses": 35,
+    "reads": [
+      "scripts/dev/test_run_all_tests.py",
+      "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/test_stability_lc1.py",
+      "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/stability.py"
+    ],
+    "session": "agent-a3bb7fda6d34e5d82"
+  },
   "created": "2026-10-31T19:23:41Z",
   "depends_on": [],
   "done_when": "pytest over dsa_backtest_audit_2026-10-16 passes 51 tests in under 30 s wall, 12 families still asserted; Result line gives before/after seconds.",
@@ -14,6 +26,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "71s -> 21.9s, test_stability_lc1.py",
+      "ref": "1e0b5cf40",
+      "utc": "2026-11-01T01:14:25Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -31,7 +49,12 @@
   "refined_by": "",
   "refreshed": "2026-10-31T20:30:49Z",
   "refs": [],
-  "result": "",
+  "result": "71s -> 21.9s, test_stability_lc1.py",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/test_stability_lc1.py"
   ],
@@ -41,12 +64,13 @@
   "scope_sha": "eac7837a0f9c",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Find the smallest _walk(days) that still yields all 12 LC_FAMILIES (try 21 then 28 days; start 2022-03-21, analysis from 2022-04-01).",
     "Compute _walk, stab.lc1_rows, lc1_family_rows and _reference once (module-scoped pytest fixture or functools.lru_cache keyed on days) and reuse them in both tests.",
     "Time: python -m pytest MyTradingSys/research/dsa_backtest_audit_2026-10-16 -q --durations=5 must show under 30 s total. A marker adds nothing: these files run through step 3xt with no marker support. Verify: content commit sha; git cherry origin/fast-track <sha> empty; git ls-tree -r origin/fast-track --name-only lists the delivered files."
   ],
+  "taken": "2026-11-01T01:14:25Z",
   "tests": "same test file, assertions unchanged; fail-first n/a (speed only): record 71 s before and the new time in Result.",
   "title": "dsa_backtest_audit tests: cut the 71 s directory run under 30 s (two lc1 tests cost 63 s)",
   "weight": "ROUTINE",
