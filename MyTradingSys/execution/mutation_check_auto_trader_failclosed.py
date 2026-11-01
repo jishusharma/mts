@@ -34,6 +34,7 @@ MUTANTS = [
      "    if False:\n        return {\"outcome\": \"entry_failed\""),
     ("PlaceRefusalTest.test_no_fill_spawns_no_manager", 'if "no_fill" in out:', 'if "no_fill_x" in out:'),
     ("PlaceRefusalTest.test_dry_run_never_sends_go", "    if dry_run:\n        rc, out", "    if False:\n        rc, out"),
+    ("MarginPreflightGapTest.test_refusal_runs_no_new_plan_so_no_orphan_plan", "    if not dry_run:                          # margin first", "    if False:                          # margin first"),
     ("MarginPreflightGapTest.test_place_refuses_when_margin_short", "if funds <= 0 or funds < need:", "if funds <= 0:"),
     ("MarginPreflightGapTest.test_place_refuses_when_balance_call_errors", "        return False, f\"balance_error {e!r}\"[:120]",
      "        return True, \"\""),

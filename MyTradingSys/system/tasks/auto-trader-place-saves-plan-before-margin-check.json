@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T04:16:43Z",
   "commands": [
     "python MyTradingSys/execution/test_auto_trader_failclosed.py"
   ],
@@ -18,6 +19,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "place() runs margin_ok before new_plan; margin_short saves no plan; 2 new tests fail on ol",
+      "ref": "6218f34b6",
+      "utc": "2026-11-01T04:16:43Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "auto_trader: wire margin_btc into every placed signal (margin_need_btc, attach_margin)",
@@ -34,7 +41,12 @@
   "refined_by": "",
   "refreshed": "2026-11-01T04:11:30Z",
   "refs": [],
-  "result": "",
+  "result": "place() runs margin_ok before new_plan; margin_short saves no plan; 2 new tests fail on old code",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/execution/auto_trader.py",
     "MyTradingSys/execution/test_auto_trader_failclosed.py"
@@ -47,12 +59,13 @@
   "sources": [
     "MyTradingSys/execution/auto_trader.py:721-736"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read auto_trader.py:702-736 and test_auto_trader_failclosed.py:200-260; write the failing test first (fake run(), count plan files)",
     "In place(): for not dry_run call margin_ok(sig, account) before new_plan; on refusal log margin_short (no plan_id) and return outcome margin_short; keep fail-closed on every error",
     "Update mutation_check_auto_trader_failclosed.py only if its mutant strings moved; run test_auto_trader_failclosed.py then run_all_tests.py --quick; ship"
   ],
+  "taken": "2026-11-01T04:16:43Z",
   "tests": "MyTradingSys/execution/test_auto_trader_failclosed.py: new MarginPreflightGapTest case asserts no plan file is written and new_plan.py is not run on margin_short, balance_error and balance_unreadable; fails on the current auto_trader.py:721-736",
   "title": "auto_trader.place() saves a plan before the margin_ok check, so a margin_short refusal leaves an orphan plan (planner finding). Done when: a margin_short refusal leaves no saved plan (restart/reset state clean), test with fake client fails on old code first; live-path rules apply (fail closed, API-error and non-trade-balance cases tested)",
   "weight": "CRITICAL",
