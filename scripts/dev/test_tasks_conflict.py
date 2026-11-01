@@ -72,6 +72,11 @@ class DoctorAndHintTest(unittest.TestCase):
             self.assertEqual(D.conflict_open(repo)[0], "WARN")
             for p in (repo / T.DIR).glob("bug-conflict-*.json"):
                 c = json.loads(p.read_text(encoding="utf-8"))
+                c["state"] = "dropped"
+                p.write_text(json.dumps(c), encoding="utf-8")
+            self.assertEqual(D.conflict_open(repo)[0], "OK")
+            for p in (repo / T.DIR).glob("bug-conflict-*.json"):
+                c = json.loads(p.read_text(encoding="utf-8"))
                 c["state"] = "done"
                 p.write_text(json.dumps(c), encoding="utf-8")
             self.assertEqual(D.conflict_open(repo)[0], "OK")
