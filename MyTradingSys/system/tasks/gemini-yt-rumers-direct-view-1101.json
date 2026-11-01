@@ -15,7 +15,15 @@
   "id": "gemini-yt-rumers-direct-view-1101",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Revert \"Merge branch 'gemini-q/gemini-yt-rumers-extract-1' into DESKTOP-F7IU69N/supervisor",
+      "ref": "8b2cd581efe4",
+      "utc": "2026-11-01T08:36:00Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -23,7 +31,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-01T07:43:06Z",
+  "refreshed": "2026-11-01T08:38:28Z",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
@@ -34,7 +42,7 @@
   "scope_out": [
     "live tree; engine and layer code; any backtest; .secrets and .env"
   ],
-  "scope_sha": "",
+  "scope_sha": "8b2cd581efe4",
   "size": "S",
   "sources": [],
   "state": "ready",
