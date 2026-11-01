@@ -25,6 +25,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
+  "reroute": {
+    "at": "2026-11-01T18:55:25Z",
+    "desk": "20261101-185525-gpt-audit-formulas-vs-dfa-hurst",
+    "to": "DSA",
+    "why": "window"
+  },
   "result": "",
   "scope_in": [
     "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-audit-formulas-vs-dfa-hurst.md"

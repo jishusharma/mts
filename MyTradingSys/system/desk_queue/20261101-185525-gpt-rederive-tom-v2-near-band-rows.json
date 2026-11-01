@@ -1,0 +1,12 @@
+{
+  "card": "gpt-rederive-tom-v2-near-band-rows",
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-rederive-tom-v2-near-band-rows.md has one row per figure (n, shares, CIs, diff, verdict FAIL rule) with your value, the file value and SAME/DIFFERENT/NOT_IN_DATA, and a first line with the three counts.",
+  "from": "lane_health",
+  "id": "20261101-185525-gpt-rederive-tom-v2-near-band-rows",
+  "need": "Rerouted from the GPT lane (credits/limit/outage) to DSA. Card gpt-rederive-tom-v2-near-band-rows: [GPT] Re-derive the Tom near-band placebo headline (63.4 % vs 58.9 %, diff 4.4 pp, CI -0.3..8.9) from\nWorktree: mts-dsa (python scripts/dev/sync.py start first). Data on F:\\MTS\\data is read-only.\nFull brief: python scripts/dev/tasks.py brief gpt-rederive-tom-v2-near-band-rows\nGoal: From research/tom_v2_gross_first_2026-11/results.json primary_near, recompute the real and placebo shares (k/n), their Wilson 95 % CIs, the difference, and say whether the day-block bootstrap CI\nRead: MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-rederive-tom-v2-near-band-rows.md\nStep 1: read RESULT.md for the stated numbers and results.json primary_near\nStep 2: recompute shares and Wilson CIs by hand, diff and the FAIL rule (CI lower bound not above 0)\nStep 3: write the table; no verdict on the strategy\nWrite the report to MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-rederive-tom-v2-near-band-rows.md: findings or numbers, each with file:line or the command you ran.\nNumbers come only from output you printed in the chat. Change no code or spec. Never read a holdout.\nIf a command fails twice, close the desk row with --failed and the error text.\nClose: python scripts/dev/desk.py done <row id> --result \"<verdict or number + MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-rederive-tom-v2-near-band-rows.md>\".",
+  "posted": "2026-11-01T18:55:25Z",
+  "rerouted_from": "CODEX",
+  "status": "pending",
+  "target": "DSA",
+  "title": "[GPT] Re-derive the Tom near-band placebo headline (63.4 % vs 58.9 %, diff 4.4 pp, CI -0.3..8.9) from results.json"
+}
