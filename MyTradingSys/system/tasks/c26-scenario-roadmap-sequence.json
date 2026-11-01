@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "Operator 2026-11-01 HEDGE framing: the legs are not each a trade to judge alone. Core = the position on the main idea (e.g. short from H1 for the final drop); hedge = a temporary opposite position on the leg against it (e.g. long into the held-retest / H1 take-out), closed when that leg plays out, because the reversal back to the core idea is expected. Score the BOOK, not the legs: core alone vs core + hedge on net P&L after fees.py fees on every leg, max adverse excursion, and core stop-outs avoided. A hedge leg with gross about 0 (C26 arm A) can still pay if it lets the core survive the squeeze; it is a NO if the extra fees exceed the drawdown it saves. Execution note for Phase 2: a same-venue hedge in one-way mode just nets the position (needs hedge mode, a second venue, or options); testnet only.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
