@@ -1,0 +1,76 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "claim": "tasks-list-timeout",
+  "closed": "2026-11-01T06:33:41Z",
+  "commands": [
+    "python -m pytest MyTradingSys/tests/test_tasks_list_open_only.py -q"
+  ],
+  "context": {
+    "calls_to_edit": 4,
+    "folded": "2026-11-01T06:34:03Z",
+    "misses": 0,
+    "reads": [],
+    "session": "agent-a347031c465efdcf3"
+  },
+  "created": "2026-11-01T05:57:14Z",
+  "depends_on": [],
+  "done_when": "subprocess timeout in test_tasks_list_open_only.py is 600; test file passes",
+  "est_turns": 3,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Stop tasks.py list --all timeout flake under load in test_tasks_list_open_only.py",
+  "id": "test-tasks-list-all-timeout-flaky-under-load",
+  "kind": "build",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "timeout 120->600",
+      "ref": "77ceb021c",
+      "utc": "2026-11-01T06:33:41Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "AIBridge 0.7.3: run-lock expiry (B210), task gate FAILED=FAIL, kind from command, open-onl",
+      "ref": "12b43fe17a3b",
+      "utc": "2026-10-30T20:11:33Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-01T06:33:32Z",
+  "refs": [],
+  "result": "timeout 120->600",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/tests/test_tasks_list_open_only.py"
+  ],
+  "scope_out": [
+    "everything else"
+  ],
+  "scope_sha": "12b43fe17a3b",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "change timeout=120 to timeout=600 on the subprocess.run line",
+    "run that test file with pytest"
+  ],
+  "taken": "2026-11-01T06:33:39Z",
+  "tests": "MyTradingSys/tests/test_tasks_list_open_only.py::test_all_flag_brings_closed_cards_back",
+  "title": "test_tasks_list_open_only::test_all_flag_brings_closed_cards_back: tasks.py list --all takes ~105 s vs 120 s subprocess timeout, fails ship gate under load. Done when: test passes in under 60 s alone or timeout is 300 s, gate no longer flakes on it.",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
