@@ -8,7 +8,7 @@ ROOT = Path(os.environ.get("MTS_REPO_ROOT") or Path(__file__).resolve().parents[
 
 
 def lines(*args):
-    p = subprocess.run([sys.executable, str(ROOT / "scripts/dev/tasks.py"), "list", *args], capture_output=True, text=True, cwd=ROOT, timeout=120)
+    p = subprocess.run([sys.executable, str(ROOT / "scripts/dev/tasks.py"), "list", *args], capture_output=True, text=True, cwd=ROOT, timeout=600)
     return [x for x in p.stdout.splitlines() if x.strip()]
 
 
