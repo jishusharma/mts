@@ -88,6 +88,14 @@ def test_cluster_diff_small_groups_nan():
     assert all(math.isnan(x) for x in K.cluster_diff([], [], [1, 2], [0, 1]))
 
 
+def test_cluster_diff_single_day_union_returns_nan_se():
+    # both groups have n >= 2, but all observations fall on the same single day (k = 1 distinct day)
+    # docstring: 'NaN SE when either group has < 2 items or the union has one day'
+    d, se = K.cluster_diff([1.0, 2.0], [0, 0], [3.0, 4.0], [0, 0])
+    assert d == -2.0
+    assert math.isnan(se)
+
+
 def test_t_stat_edges():
     assert K.t_stat(1.0, 0.5) == 2.0
     assert K.t_stat(1.0, 0.0) == float("inf")
@@ -154,6 +162,12 @@ def test_holm_caps_at_one_and_larger_family():
 
 def test_holm_reject():
     assert list(K.holm_reject([0.01, 0.04, 0.03], alpha=0.05)) == [True, False, False]   # adjusted .03 .06 .06
+
+
+def test_holm_reject_boundary_at_alpha():
+    # boundary check: adjusted p equal to alpha is rejected (p <= alpha)
+    assert list(K.holm_reject([0.05], alpha=0.05)) == [True]
+    assert list(K.holm_reject([0.01, 0.025], alpha=0.025)) == [True, True]
 
 
 def test_cost_in_r():

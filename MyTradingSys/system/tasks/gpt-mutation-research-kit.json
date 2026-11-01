@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T19:08:57Z",
   "commands": [],
   "created": "2026-11-01T18:07:44Z",
   "depends_on": [],
@@ -14,6 +16,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Mutation-kill audit of backtest/research_kit.py vs tests/test_research_kit.py: 6 core muta",
+      "ref": "e6ef9091f",
+      "utc": "2026-11-01T19:08:57Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +46,12 @@
     "to": "SONNET",
     "why": "window"
   },
-  "result": "",
+  "result": "Mutation-kill audit of backtest/research_kit.py vs tests/test_research_kit.py: 6 core mutations killed, 2 boundary survivors identified and killed with 2 new spec-derived tests (test_holm_reject_boundary_at_alpha, test_cluster_diff_single_day_union_returns_nan_se). 30/30 tests pass, research_kit.py unchanged. Report: MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-mutation-research-kit.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tests/test_research_kit.py",
     "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-mutation-research-kit.md"
@@ -49,12 +62,13 @@
   "scope_sha": "fc06a2f1892b",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read the research_kit docstring conventions and the existing tests",
     "mutate a scratch copy 6 ways and run the tests",
     "hand-derive expected values for survivors (shown in each test), add tests, write the report"
   ],
+  "taken": "2026-11-01T19:04:48Z",
   "tests": "python -m pytest MyTradingSys/tests/test_research_kit.py -q (each new test fails on its mutation)",
   "title": "[GPT] Mutation-kill audit of backtest/research_kit.py (Holm, clustered SE, MDE, cost in R) vs tests/test_research_kit.py",
   "weight": "ROUTINE",
