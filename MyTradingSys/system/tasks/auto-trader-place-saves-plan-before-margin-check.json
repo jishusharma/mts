@@ -6,7 +6,7 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-01T05:55:14Z",
+    "folded": "2026-11-01T05:55:23Z",
     "misses": 25,
     "reads": [
       "MyTradingSys/execution/auto_trader.py",
