@@ -594,3 +594,8 @@ RULE: two sessions report the same red gate test, so the coordinator starts a So
 What happened: (1) NEXT_SESSION.md was round-tripped through Get-Content -Raw and written back; PowerShell 5.1 decoded the old bytes with the wrong encoding and the write baked 48 Cyrillic codepoints into a tracked file. Restored from origin/fast-track, byte count 32650, Cyrillic 0. (2) Two commits carried a Result line saying relay lint was green while lint was FAIL; both were corrected in 8cb1e865. (3) desk.py show was used; it is not a subcommand.
 Rule that prevents it: read a tracked file with [IO.File]::ReadAllText(path, UTF8Encoding(false)) or edit it with dsa.py edit on an exact anchor, never Get-Content -Raw plus a rewrite; paste the tool output into the Result line before committing, never assert it; run the tool with -h before using a subcommand.
 Where the rule lives: LESSONS_DIGEST.md section 6; USER.md AUTHORITY card rule.
+
+## 2026-11-01 - bridge dropped a 4-block reply and lost the writes
+What happened: sent 4 AIRUN blocks. Blocks 1-2 ran, block 3 was skipped, block 4 was empty_command. The generation dropped with 'no final answer'. The files were not written.
+Rule: after a drop notice, re-send the blocks once. If a second drop happens, turn hands-free off.
+Where the rule lives: DSA_SESSION_PROMPT.md section 0.7.
