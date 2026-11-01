@@ -36,6 +36,12 @@ def parse(path):
     return vid or Path(path).stem.replace("_timed", ""), title, pub, caps
 
 
+def _span(words, i, before, after):
+    """Caption words around hit i as one string (text window, not a price series)."""
+    lo, hi = max(0, i - before), i + after
+    return " ".join(w for _, w in words[lo:hi])
+
+
 def _words(caps):
     return [(ts, w) for ts, text in caps for w in text.split()]
 
@@ -53,7 +59,7 @@ def extract(path):
     for m in PHRASE.finditer(flat):
         i = max(k for k, s in enumerate(starts) if s <= m.start())
         before = " ".join(w for _, w in words[max(0, i - 200):i]).lower()
-        near = " ".join(w for _, w in words[max(0, i - 8):i + 15]).lower()
+        near = _span(words, i, 8, 15).lower()
         asset = "NOT_IN_DATA"
         best = -1
         for key, name in ASSETS:
@@ -64,7 +70,7 @@ def extract(path):
             low = title.lower()
             asset = next((name for key, name in ASSETS if key in low), "NOT_IN_DATA")
         kind = next((k for key, k in KINDS if key in near), "mention")
-        quote = " ".join(w for _, w in words[max(0, i - 6):i + 12])
+        quote = _span(words, i, 6, 12)
         rows.append({"video": vid, "ts": words[i][0], "quote": quote, "asset": asset, "kind": kind, "title": title, "published": pub})
     return rows
 
