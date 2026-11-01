@@ -5,15 +5,16 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-01T09:39:59Z",
-    "misses": 28,
+    "folded": "2026-11-01T11:14:30Z",
+    "misses": 30,
     "reads": [
       "MyTradingSys/execution/test_auto_trader_failclosed.py",
       "MyTradingSys/execution/auto_trader.py",
       "MyTradingSys/execution/mutation_check_auto_trader_failclosed.py",
       "MyTradingSys/execution/test_auto_trader.py",
       "MyTradingSys/tests/test_aibridge_exploratory.py",
-      "MyTradingSys/tests/aibridge_dom.py"
+      "MyTradingSys/tests/aibridge_dom.py",
+      "MyTradingSys/tools/live_aid/test_live_aid_replay.py"
     ],
     "session": "agent-aae04cf56e4c5c506"
   },
