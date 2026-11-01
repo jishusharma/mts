@@ -221,16 +221,20 @@ class TestGateKeepsEveryStep(unittest.TestCase):
 
 
 class TestShardedPytest(unittest.TestCase):
-    def test_quick_shards_each_under_600s_estimate(self):
-        """--quick run in QUICK_PARTS parts: the largest part's est stays within QUICK_PART_MAX_S (the 15 min shell cap), and QUICK_PARTS is the smallest N that does."""
-        def loads(n):
-            out = []
-            for k in range(1, n + 1):
-                plan = rat.apply_shard(rat.build_plan(True), f"{k}/{n}")
-                out.append(sum(x.est if x.est is not None else rat.shard_est(x.num) for x in plan if not x.skip))
-            return out
-        self.assertLessEqual(max(loads(rat.QUICK_PARTS)), rat.QUICK_PART_MAX_S)
-        self.assertGreater(max(loads(rat.QUICK_PARTS - 1)), rat.QUICK_PART_MAX_S)
+    def test_quick_parts_partition_every_step_once_and_stay_under_cap(self):
+        """--quick in QUICK_PARTS parts: every runnable step runs in exactly one part, and the largest part by the committed est table is
+        within QUICK_PART_MAX_S on this platform. No 'smallest N' claim: the est table is per platform (Linux CI is far lower than Windows)."""
+        n = rat.QUICK_PARTS
+        self.assertGreater(n, 1)
+        want = sorted((s.num, s.desc) for s in rat.split_for_shards(rat.build_plan(True), n) if not s.skip)
+        seen, loads = [], []
+        for k in range(1, n + 1):
+            run = [x for x in rat.apply_shard(rat.build_plan(True), f"{k}/{n}") if not x.skip]
+            seen += [(x.num, x.desc) for x in run]
+            loads.append(sum(x.est if x.est is not None else rat.shard_est(x.num) for x in run))
+        self.assertEqual(sorted(seen), want)
+        self.assertEqual(len(seen), len(set(seen)))
+        self.assertLessEqual(max(loads), rat.QUICK_PART_MAX_S)
 
     def test_every_test_file_of_the_tests_dir_is_in_exactly_one_shard(self):
         plan = {s.num: s for s in rat.build_plan(True)}
