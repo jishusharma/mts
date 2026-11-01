@@ -1,6 +1,7 @@
 {
   "approved_by": "operator order 2026-10-30 (voice/chat), decision d-cost-checkup in OPERATOR_DECISIONS.md; Opus named",
   "asks": "",
+  "closed": "2026-11-01T20:04:45Z",
   "commands": [],
   "created": "2026-10-30T08:39:36Z",
   "crucial": true,
@@ -14,6 +15,12 @@
   "id": "cost-checkup-doctor-section",
   "lane": "OPUS",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "scripts/dev/mts_doctor.py, MyTradingSys/research/mts_doctor/REPORT_2026-11-01.md",
+      "ref": "43ed8cd7a",
+      "utc": "2026-11-01T20:04:45Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -42,7 +49,12 @@
     "MyTradingSys/system/MTS_DOCTOR.md",
     "MyTradingSys/system/OPERATOR_DECISIONS.md"
   ],
-  "result": "",
+  "result": "scripts/dev/mts_doctor.py, MyTradingSys/research/mts_doctor/REPORT_2026-11-01.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/COST_CHECKUP.md",
     "mts_doctor report generation (MTS_DOCTOR.md, research/mts_doctor/)"
@@ -54,13 +66,14 @@
   "scope_sha": "3a4b03b4e7e5",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read COST_CHECKUP.md and MTS_DOCTOR.md",
     "Add the COST section as a separate block in the doctor report, not inside AI health",
     "Run items a-i and record readings with mts_signal.py budget",
     "Write the first-run table and the next cut"
   ],
+  "taken": "2026-11-01T20:04:45Z",
   "tests": "python -m pytest scripts/dev/test_mts_signal.py -q (plus the new COST test, which must fail before the change)",
   "title": "Add a COST section (separate from AI health) to mts_doctor: run the COST_CHECKUP.md items, report hidden costs + savings; first run compares usage readings before/after Remote Control off",
   "weight": "",

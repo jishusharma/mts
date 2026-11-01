@@ -350,3 +350,17 @@ def test_of_stale_ok_fresh_or_absent(tmp_path):
     now = datetime(2026, 11, 1, 12, 0, tzinfo=timezone.utc)
     assert D.of_stale(None, now=now, mtime=datetime(2026, 11, 1, 11, 30, tzinfo=timezone.utc))[0] == "OK"
     assert D.of_stale(tmp_path, now=now)[0] == "OK"  # no log under tmp_path
+
+
+def test_cost_checkup_section_in_doctor_report(tmp_path):
+    mem = make_repo(tmp_path)
+    report_path, _ = D.run(tmp_path, tmp_path / "out", mem, process=False, now=DAY)
+    text = report_path.read_text(encoding="utf-8")
+    assert "Part 3: Cost checkup (COST, separate from AI health)" in text
+    for item_id in ("a", "b", "c", "d", "e", "f", "g", "h", "i"):
+        assert f"| {item_id} |" in text, f"Missing item {item_id} in COST section"
+    assert "2026-10-30 02:17" in text
+    assert "2026-10-30 08:37" in text
+    assert "Remote Control" in text
+    assert "Next cut:" in text
+
