@@ -6,13 +6,15 @@ legs at H1 + X (filled at that price; a bar that reaches a leg and the stop fill
 P&L in unit-% of H1: units x (entry - exit) / H1 x 100, minus fees.py BINANCE_TAKER x 2 per unit per leg. All numbers OURS.
 Usage: python phase1_ladder_look.py <repo> <cache> [--until 2026-11-01T07:45] [--card FILE]  (--card appends the table to a card)
 """
-import json, os, sys
+import importlib.util, json, os, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import phase1_range as R  # noqa: E402
 
-FEE = 0.10  # % per unit per leg round trip (fees.py BINANCE_TAKER x 2), SOURCED
+_spec = importlib.util.spec_from_file_location("mts_fees", os.path.join(os.path.dirname(os.path.dirname(HERE)), "backtest", "fees.py"))
+fees = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(fees)
+FEE = fees.BINANCE_TAKER * 2 * 100  # % per unit per leg round trip (taker in + taker out), SOURCED from fees.py
 HOLD = 96
 SHAPES = {
     # name: (legs [(step % above H1, units)], stop X %); the single short enters at the first 15m close back under H1 instead
