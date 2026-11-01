@@ -4,32 +4,55 @@
   "commands": [],
   "created": "2026-11-01T05:56:05Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "place(sig without margin_btc, dry_run=False) returns outcome margin_short and runs no new_plan; dry_run unchanged; cycle() path with attach_margin unchanged; new tests fail on old code",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "place() reads sig margin_btc via margin_ok, which treats unset as need 0 (auto_trader.py:711); a direct caller skipping cycle()/attach_margin passes with any positive funds. Make unset, None, zero or negative margin_btc refuse on live.",
   "id": "auto-trader-place-missing-margin-btc-failclosed",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "auto_trader: margin check before new_plan, refusal saves no orphan plan",
+      "ref": "ca895a0cc4f0",
+      "utc": "2026-11-01T04:16:48Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-01 ACCEPT (Sonnet reviewer Agent, FIX applied once, not re-read, planner DECISION OURS). PLANNER 2026-11-01 planner-A-1101 DECISION (OURS): lane SONNET like twin signal-margin-btc-wire-1101; REVIEW session PLAN+DIFF before ship (CRITICAL, order path); no deploy.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-01T08:37:03Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/execution/auto_trader.py",
+    "MyTradingSys/execution/test_auto_trader_failclosed.py",
+    "MyTradingSys/execution/mutation_check_auto_trader_failclosed.py"
+  ],
+  "scope_out": [
+    "No deploy, restart, mainnet; no change to attach_margin, new_plan.py, executor.py; no new margin number"
+  ],
+  "scope_sha": "ca895a0cc4f0",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/execution/auto_trader.py:702-731 margin_ok/place; signal-margin-btc-wire-1101 reviewer Noticed"
+  ],
+  "state": "ready",
+  "steps": [
+    "1 Read margin_ok (auto_trader.py:702-718), place (721). Existing self.SIG tests already carry margin_btc 0.01; only test_none_zero_negative_nan_funds_refuse_even_without_margin_btc (:240) lacks it: add margin_btc 0.01 there and fix the :204 docstring",
+    "2 In margin_ok replace 'or 0' with v = sig.get('margin_btc'); None -> (False,'margin_btc_missing'); parse (bad type -> margin_btc_invalid); non-finite or <= 0 -> refuse. attach_margin never emits 0 (cycle path unchanged)",
+    "3 Add the 4 tests (2 fail on old code); add mutation_check rows for the missing-key and <=0 refusals; run the test file; sync.py ship"
+  ],
+  "tests": "MyTradingSys/execution/test_auto_trader_failclosed.py: place_without_margin_btc_refuses, margin_btc_none_zero_negative_refuse, cycle_sig_with_attach_margin_still_places, dry_run_without_margin_btc_ok; first two fail on old code",
   "title": "auto_trader.place(): direct callers bypassing cycle()/attach_margin treat missing margin_btc as need 0; fail closed. Done when: place() without margin_btc refuses (test fails on old code), cycle() path unchanged.",
-  "weight": "",
-  "worker": ""
+  "weight": "CRITICAL",
+  "worker": "agent"
 }

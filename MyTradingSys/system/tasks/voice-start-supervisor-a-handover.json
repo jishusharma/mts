@@ -4,8 +4,8 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-01T08:35:59Z",
-    "misses": 80,
+    "folded": "2026-11-01T08:47:35Z",
+    "misses": 85,
     "reads": [
       "scripts/dev/tasks.py",
       "scripts/dev/supervisor.py",

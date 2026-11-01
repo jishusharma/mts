@@ -17,9 +17,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "lab gpt-recheck-gemini-extracts-numbers-1031: BLOCKED (audit)",
-      "ref": "f1b1d0b3b18e",
-      "utc": "2026-10-31T05:58:14Z"
+      "line": "lab astra-challenge-promote-and-failclosed-1031: DONE (audit)",
+      "ref": "1131668afbd4",
+      "utc": "2026-10-31T17:49:27Z"
     },
     {
       "auto": true,
@@ -36,7 +36,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T08:47:08Z",
+  "refreshed": "2026-11-01T08:38:30Z",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
@@ -47,7 +47,7 @@
   "scope_out": [
     "live tree; engine code; editing the extracts; .secrets and .env"
   ],
-  "scope_sha": "f1b1d0b3b18e",
+  "scope_sha": "1131668afbd4",
   "size": "S",
   "sources": [],
   "state": "ready",
