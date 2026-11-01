@@ -7,17 +7,17 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-01T01:17:48Z",
+    "folded": "2026-11-01T01:28:01Z",
     "misses": 45,
     "reads": [
+      "MyTradingSys/system/LAYERS.md",
       "scripts/dev/lookahead_allowlist.tsv",
       "MyTradingSys/backtest/layers/fabio/v3/manage.py",
       "MyTradingSys/tests/docs/test_integrity.py",
       "MyTradingSys/backtest/cost_allowlist.txt",
       "README.md",
       "MyTradingSys/backtest/layers/fabio/v3/__init__.py",
-      "MyTradingSys/backtest/layers/fabio/v3/tests/test_manage.py",
-      "MyTradingSys/system/LAYERS.md"
+      "MyTradingSys/backtest/layers/fabio/v3/tests/test_manage.py"
     ],
     "session": "agent-a346927d21edc87cd"
   },
