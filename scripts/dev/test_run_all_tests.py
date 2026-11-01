@@ -221,6 +221,17 @@ class TestGateKeepsEveryStep(unittest.TestCase):
 
 
 class TestShardedPytest(unittest.TestCase):
+    def test_quick_shards_each_under_600s_estimate(self):
+        """--quick run in QUICK_PARTS parts: the largest part's est stays within QUICK_PART_MAX_S (the 15 min shell cap), and QUICK_PARTS is the smallest N that does."""
+        def loads(n):
+            out = []
+            for k in range(1, n + 1):
+                plan = rat.apply_shard(rat.build_plan(True), f"{k}/{n}")
+                out.append(sum(x.est if x.est is not None else rat.shard_est(x.num) for x in plan if not x.skip))
+            return out
+        self.assertLessEqual(max(loads(rat.QUICK_PARTS)), rat.QUICK_PART_MAX_S)
+        self.assertGreater(max(loads(rat.QUICK_PARTS - 1)), rat.QUICK_PART_MAX_S)
+
     def test_every_test_file_of_the_tests_dir_is_in_exactly_one_shard(self):
         plan = {s.num: s for s in rat.build_plan(True)}
         shards = [plan[n].cmd_text for n in rat.PYTEST_SHARD_NUMS + ("4d",)]
