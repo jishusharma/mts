@@ -12,8 +12,11 @@ One run: fetch origin/fast-track; retire finished worktrees (sync.py tidy's rule
 Dumps/worktree_report.txt (gitignored) and append one line to the SUPERVISOR_LOG.
 A tree with uncommitted files whose branch is fully on origin/fast-track and that has been idle DIRTY_IDLE_HOURS is patch-saved
 (Dumps/wt_rescue/<tree>/uncommitted.patch + untracked/) and then removed. `--no-log` skips the SUPERVISOR_LOG line (the guard uses it).
+A clean tree with commits not on origin/fast-track, idle PARK_IDLE_HOURS, is PARKED: branch pushed to origin and kept locally, folder
+removed (restore: git worktree add ../<name> <branch>). A "trunk copy" (HEAD unresolvable, index = one trunk commit: a hand-made tree
+whose case-mismatched branch was deleted) counts as clean and on trunk; only its non-"A " rows are work.
 Never touched: the primary tree, the tree we run in, the live tree (.mts_live), lane trees, Codex trees, any tree changed in the
-last 30 minutes, any tree with commits not on origin/fast-track, or with uncommitted files that are recent, conflicted or too big to save. Never stash / reset / force-push. Idempotent.
+last 30 minutes, any tree with unshipped commits AND uncommitted files, or with uncommitted files that are recent, conflicted or too big to save. Never stash / reset / force-push. Idempotent.
 Ignored data worth keeping (not regenerable, see sync.REGENERABLE) is moved to <primary>/Dumps/wt_rescue/<tree>/ before removal.
 """
 import json
@@ -41,6 +44,10 @@ IDLE_HOURS = sync.TIDY_IDLE_HOURS
 DIRTY_IDLE_HOURS = 24      # DECISION (OURS, operator 2026-10-26 "same mechanism on all devices, periodically"): a tree whose branch is fully on trunk
                            # but holds uncommitted files is patch-saved and removed only after this many idle hours; unshipped commits never
 BIG_UNTRACKED_MB = 50      # an untracked file this large is not copied into the rescue: the tree stays
+PARK_IDLE_HOURS = 72       # DECISION (OURS, operator 2026-11-01 "ship, clean work trees - every machine"): a clean tree whose commits are not
+                           # on trunk and that nobody touched for this long is PARKED: its branch is pushed to origin and kept locally, only the
+                           # folder goes (restore: git worktree add ../<name> <branch>). No commit is ever lost; 8 such trees held ~1.5 GB each.
+TRUNK_TREE_DEPTH = 6000    # trunk commits whose tree hash identifies a "trunk copy" (a hand-made tree whose branch vanished, see classify)
 # Ignored caches inside an ignored dir that rescue_data must not copy: rebuilt for free. sim_desk/cache/bars (~0.17 GB per tree,
 # `desk.py --build`) filled Dumps/wt_rescue with 6.4 GB on JIS-NB by 2026-11-01; cache/results (TRIALS counting) is still rescued.
 RESCUE_SKIP = ("MyTradingSys/research/sim_desk/cache/bars",
@@ -108,12 +115,12 @@ def newest_file_mtime(p, limit=4000):
     return best
 
 
-def dirty_removable(repo, p, branch, work, now):
-    """True when a tree with uncommitted files may be patch-saved and removed: branch fully on origin/<trunk>, no merge conflict,
-    tree and every dirty file idle DIRTY_IDLE_HOURS, no untracked file over BIG_UNTRACKED_MB."""
+def dirty_removable(repo, p, branch, work, now, on_trunk=False):
+    """True when a tree with uncommitted files may be patch-saved and removed: branch fully on origin/<trunk> (or `on_trunk`: a trunk
+    copy, see classify), no merge conflict, tree and every dirty file idle DIRTY_IDLE_HOURS, no untracked file over BIG_UNTRACKED_MB."""
     if any(l[:2] in ("UU", "AA", "DD", "AU", "UA", "DU", "UD") for l in work):
         return False
-    if sync.git(repo, "merge-base", "--is-ancestor", branch, f"origin/{sync.TRUNK}", check=False).returncode != 0:
+    if not on_trunk and sync.git(repo, "merge-base", "--is-ancestor", branch, f"origin/{sync.TRUNK}", check=False).returncode != 0:
         return False
     if sync.idle_hours(p, branch, now) < DIRTY_IDLE_HOURS or now - newest_file_mtime(p) < DIRTY_IDLE_HOURS * 3600:
         return False
@@ -137,7 +144,9 @@ def rescue_patch(repo, row):
     dest = primary(repo) / "Dumps" / "wt_rescue" / row["name"]
     try:
         dest.mkdir(parents=True, exist_ok=True)
-        diff = subprocess.run(["git", "-C", str(p), "--no-optional-locks", "diff", "--binary", "HEAD"], capture_output=True)
+        # a trunk copy has no HEAD: its index IS the trunk commit, so index-vs-worktree holds exactly the real edits
+        diff = subprocess.run(["git", "-C", str(p), "--no-optional-locks", "diff", "--binary"] + ([] if row.get("copy") else ["HEAD"]),
+                              capture_output=True)
         if diff.returncode != 0:
             return None
         (dest / "uncommitted.patch").write_bytes(diff.stdout)
@@ -157,10 +166,27 @@ def rescue_patch(repo, row):
         return None
 
 
+def trunk_trees(repo):
+    """Tree hashes of the last TRUNK_TREE_DEPTH origin/<trunk> commits."""
+    out = sync.git(repo, "log", f"origin/{sync.TRUNK}", f"-{TRUNK_TREE_DEPTH}", "--format=%T", check=False).stdout
+    return set(out.split())
+
+
+def is_trunk_copy(repo, p, trees):
+    """True for a tree whose HEAD does not resolve while its index is exactly one trunk commit's tree: a hand-made
+    `git worktree add -b jis-nb/x` whose ref landed under an existing JIS-NB/ dir (case-insensitive FS) and was later deleted as
+    an unchecked-out merged branch. git then shows every file as staged-new ("A "), 7,000+ "uncommitted files" that are trunk
+    content (5 trees, ~7 GB on JIS-NB, 2026-11-01). Only the rows that are not "A " can be real work."""
+    if sync.git(p, "rev-parse", "-q", "--verify", "HEAD", check=False).returncode == 0:
+        return False
+    return sync.git(p, "write-tree", check=False).stdout.strip() in trees
+
+
 def classify(repo, now=None):
-    """-> list of dicts {path, name, branch, action: 'remove'|'keep', why, data}. One per non-primary worktree."""
+    """-> list of dicts {path, name, branch, action: 'remove'|'park'|'keep', why, data}. One per non-primary worktree."""
     now = time.time() if now is None else now
     prim, here = primary(repo), Path(repo).resolve()
+    trees = None
     out = []
     for path, branch in sync.worktrees(repo):
         p = Path(path)
@@ -174,11 +200,18 @@ def classify(repo, now=None):
             row["why"] = "folder gone (git worktree prune)"
             continue
         status = [l for l in sync.git(p, "status", "--short", check=False).stdout.splitlines() if l]
+        copy = False
+        if any(l.startswith("A") for l in status):     # "A " / "AM": staged-new rows, the trunk-copy signature (cheap pre-check)
+            trees = trunk_trees(repo) if trees is None else trees
+            copy = is_trunk_copy(repo, p, trees)
+            if copy:
+                row["copy"] = True
+                status = [l for l in status if not l.startswith("A ")]
         work = [l for l in status if not sync.is_noise(l)]
         if work:
-            row["why"] = f"{len(work)} uncommitted file(s)"
+            row["why"] = f"{len(work)} uncommitted file(s)" + (" in a trunk copy (branch gone)" if copy else "")
             row["report"] = True
-            if dirty_removable(repo, p, branch, work, now):
+            if dirty_removable(repo, p, branch, work, now, on_trunk=copy):
                 row["action"], row["save_patch"], row["report"] = "remove", True, False
                 row["why"] = f"{len(work)} uncommitted file(s), branch on origin/{sync.TRUNK}, idle {DIRTY_IDLE_HOURS} h+: patch saved first"
                 row["data"] = sync.ignored_data(p)
@@ -186,31 +219,38 @@ def classify(repo, now=None):
         if time.time() - newest_file_mtime(p) < RECENT_MIN * 60 and status:
             row["why"] = "files changed in the last 30 min"
             continue
-        anc = sync.git(repo, "merge-base", "--is-ancestor", branch, f"origin/{sync.TRUNK}", check=False).returncode
+        anc = 0 if copy else sync.git(repo, "merge-base", "--is-ancestor", branch, f"origin/{sync.TRUNK}", check=False).returncode
         if anc > 1:
             row["why"] = f"HEAD names {branch}, not a branch"
             row["report"] = True
             continue
+        idle = sync.idle_hours(p, branch, now)
         if anc == 1:
             n = sync.git(p, "rev-list", "--count", f"origin/{sync.TRUNK}..HEAD", check=False).stdout.strip()
             row["why"] = f"{n} commit(s) not on origin/{sync.TRUNK}"
             row["report"] = True
+            if idle >= PARK_IDLE_HOURS:
+                row["action"], row["report"] = "park", False
+                row["why"] = f"{n} commit(s) not on origin/{sync.TRUNK}, idle {PARK_IDLE_HOURS} h+: branch pushed to origin and kept, folder removed"
+                row["data"] = sync.ignored_data(p)
+                row["noise"] = bool(status)
             continue
-        idle = sync.idle_hours(p, branch, now)
         if idle < IDLE_HOURS:
             row["why"] = f"active {idle:.1f} h ago (waits {IDLE_HOURS} h)"
             continue
         row["action"] = "remove"
         row["data"] = sync.ignored_data(p)
-        row["noise"] = bool(status)
+        row["noise"] = bool(status) or copy      # git counts a trunk copy's staged files as dirt: --force removes them, nothing is lost
     return out
 
 
 def merged_branches(repo, now=None):
-    """Local branches fully merged into origin/fast-track that no worktree has checked out and that are not protected/new."""
+    """Local branches fully merged into origin/fast-track that no worktree has checked out and that are not protected/new.
+    Checked-out is compared ignoring case: a worktree HEAD naming `jis-nb/x` holds the ref file `JIS-NB/x` on Windows, and
+    `git branch -d jis-nb/x` happily deleted it (the trunk copies above)."""
     now = time.time() if now is None else now
-    checked = {b for _, b in sync.worktrees(repo)}
-    lanes = {b for p, b in sync.worktrees(repo) if Path(p).name in sync.LANE_WORKTREES}
+    checked = {b.lower() for _, b in sync.worktrees(repo)}
+    lanes = {b.lower() for p, b in sync.worktrees(repo) if Path(p).name in sync.LANE_WORKTREES}
     names = [l.strip().lstrip("*+ ").strip() for l in
              sync.git(repo, "branch", "--format=%(refname:short)", "--merged", f"origin/{sync.TRUNK}").stdout.splitlines()]
     common = Path(sync.git(repo, "rev-parse", "--git-common-dir").stdout.strip())
@@ -218,7 +258,7 @@ def merged_branches(repo, now=None):
         common = Path(repo) / common
     out = []
     for b in names:
-        if not b or b in checked or b in lanes or b in PROTECT_BRANCHES:
+        if not b or b.lower() in checked or b.lower() in lanes or b in PROTECT_BRANCHES:
             continue
         stamp = sync.last_reflog_stamp(common / "logs" / "refs" / "heads" / b)
         if stamp is not None and now - stamp < RECENT_MIN * 60:
@@ -253,8 +293,19 @@ def remove_tree(repo, row):
     if r.returncode != 0:
         row["action"], row["why"] = "keep", f"remove failed ({r.stderr.strip()[:80]})"
         return False
-    sync.git(repo, "branch", "-d", row["branch"], check=False)   # -d, never -D: git refuses an unmerged branch
+    if row["action"] != "park":
+        sync.git(repo, "branch", "-d", row["branch"], check=False)   # -d, never -D: git refuses an unmerged branch
     return True
+
+
+def park_tree(repo, row):
+    """Push the tree's branch to origin (same bytes `sync.py ship` would push), then remove the folder; the local branch stays.
+    The push failing keeps the tree: a folder goes only once its commits exist in two places."""
+    r = sync.git(repo, "push", "-q", "origin", f"{row['branch']}:{row['branch']}", check=False)
+    if r.returncode != 0:
+        row["action"], row["why"], row["report"] = "keep", f"park: push failed ({r.stderr.strip()[:80]})", True
+        return False
+    return remove_tree(repo, row)
 
 
 def run(repo=REPO, apply=False, now=None, log=print, host=None, write_log=True):
@@ -264,8 +315,18 @@ def run(repo=REPO, apply=False, now=None, log=print, host=None, write_log=True):
     if apply:
         sync.repair_heads(repo)
     rows = classify(repo, now)
-    removed, rescued = [], []
+    removed, rescued, parked = [], [], []
     for r in rows:
+        if r["action"] == "park":
+            if apply:
+                if r["data"]:
+                    rescued.append(str(rescue_data(repo, r)))
+                if not park_tree(repo, r):
+                    log(f"kept  {r['name']}: {r['why']}")
+                    continue
+            log(f"{'parked' if apply else 'would park'}  {r['name']} [{r['branch']}]: {r['why']}; restore: git worktree add ../{r['name']} {r['branch']}")
+            parked.append(r["name"])
+            continue
         if r["action"] != "remove":
             continue
         if apply:
@@ -294,13 +355,14 @@ def run(repo=REPO, apply=False, now=None, log=print, host=None, write_log=True):
         deleted.append(b)
     log(f"{'deleted' if apply else 'would delete'} {len(deleted)} merged local branch(es)")
     held = [r for r in rows if r.get("report")]
-    s = dict(device=device_name(host), apply=apply, removed=removed, branches=deleted, held=held,
+    s = dict(device=device_name(host), apply=apply, removed=removed, branches=deleted, held=held, parked=parked,
+             parked_rows=[r for r in rows if r["name"] in parked],
              kept=sum(1 for r in rows if r["action"] == "keep"), rescued=rescued)
     write_report(repo, s)
     if apply and write_log:
         append_log(repo, s)
-    log(f"{s['device']}: {'removed' if apply else 'would remove'} {len(removed)} tree(s), {'deleted' if apply else 'would delete'} "
-        f"{len(deleted)} branch(es), kept {s['kept']}, {len(held)} hold unshipped work -> Dumps/worktree_report.txt")
+    log(f"{s['device']}: {'removed' if apply else 'would remove'} {len(removed)} tree(s), {'parked' if apply else 'would park'} {len(parked)}, "
+        f"{'deleted' if apply else 'would delete'} {len(deleted)} branch(es), kept {s['kept']}, {len(held)} hold unshipped work -> Dumps/worktree_report.txt")
     return s
 
 
@@ -310,6 +372,9 @@ def write_report(repo, s):
     lines = [f"worktree report {datetime.now(timezone.utc):%Y-%m-%d %H:%MZ} device={s['device']} mode={'apply' if s['apply'] else 'dry-run'}",
              f"trees holding work not on origin/{sync.TRUNK} (reported, never deleted): {len(s['held'])}"]
     lines += [f"  {r['name']} [{r['branch']}]: {r['why']}  {r['path']}" for r in s["held"]]
+    if s.get("parked_rows"):
+        lines.append(f"parked (folder removed, branch kept locally and on origin; restore: git worktree add ../<name> <branch>): {len(s['parked_rows'])}")
+        lines += [f"  {r['name']} [{r['branch']}]: {r['why']}" for r in s["parked_rows"]]
     f.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
     return f
 
