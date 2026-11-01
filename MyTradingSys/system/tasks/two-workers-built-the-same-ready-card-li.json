@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T20:51:43Z",
   "commands": [],
   "context": {
     "calls_to_edit": 14,
@@ -26,11 +28,17 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "FINDING.md and card_gate in gemini_queue.run_job skip non-ready/SHIPPED/STALE cards (commi",
+      "ref": "1834b98f1",
+      "utc": "2026-11-01T20:51:43Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "merge origin/fast-track into batch5-a",
-      "ref": "ca6dcf3d9317",
-      "utc": "2026-10-30T20:11:10Z"
+      "line": "gemini_queue: run <card>[:effort][:model] accepts flash|argon|opus|sonnet|gpt",
+      "ref": "feb8b31b912a",
+      "utc": "2026-10-31T17:28:10Z"
     },
     {
       "auto": true,
@@ -47,11 +55,16 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T08:48:03Z",
+  "refreshed": "2026-11-01T20:50:19Z",
   "refs": [
     "f8c5e4895"
   ],
-  "result": "",
+  "result": "FINDING.md and card_gate in gemini_queue.run_job skip non-ready/SHIPPED/STALE cards (commit dd38c0609)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/gemini_queue.py",
     "scripts/dev/test_gemini_queue.py",
@@ -60,18 +73,19 @@
   "scope_out": [
     "tasks.py promotion rules, sync.py claim logic, the planner, any other lane runner, product code"
   ],
-  "scope_sha": "ca6dcf3d9317",
+  "scope_sha": "feb8b31b912a",
   "size": "M",
   "sources": [
     "git: f8c5e4895, e74038d3d, 2db125d50"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Timeline from git: git log --format='%h %an %ad' on MyTradingSys/system/tasks/live-aid-news-panel.json and on live_aid.html; the card state when gemini-queue claimed (read its log or the claims branch); note whether the session ever filed a claim.",
     "Read gemini_queue.run_job (lines 97-135) and tasks.stop_tag/exclusion (tasks.py ~820, ~1470): run_job checks open claims only, never the card state or tag. Write FINDING.md: cause, 6 lines max, with sha for each fact.",
     "Fix in gemini_queue.run_job only: after the fetch, read the card from origin/fast-track; skip with a log line 'SKIP <card>: state <x>/<tag>' unless state is ready and the tag is READY. Keep the existing claim skip.",
     "Tests in test_gemini_queue.py: a done card, a SHIPPED-tag card and an unreadable card each skip (no worktree add, no agy call); a ready card still runs. Fail-first on the pre-change run_job."
   ],
+  "taken": "2026-11-01T20:51:39Z",
   "tests": "scripts/dev/test_gemini_queue.py: test_done_card_skipped, test_shipped_tag_skipped, test_unreadable_card_fails_closed (each fails on current run_job: it calls worktree add), test_ready_card_runs",
   "title": "Two workers built the same READY card: live-aid-news-panel was built in a session worktree and again by gemini-queue (f8c5e4895, 20 min earlier); the planner promoted the raw card to ready while the session held it unclaimed. Find why claim/ready did not block the second pickup",
   "weight": "IMPORTANT",
