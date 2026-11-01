@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T17:09:55Z",
   "commands": [
     "python scripts/dev/fetch_captions_timed.py --analyst Rumers --channel @the.rumers --latest 20 --out MyTradingSys/research/rumers_2026-11-01/transcripts_skim",
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/rumers_2026-11-01/RUMERS_CHANNEL_SKIM.md"
@@ -16,7 +18,21 @@
   "id": "gemini-yt-rumers-channel-skim",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/rumers_2026-11-01/RUMERS_CHANNEL_SKIM.md (20 videos, 20 verbatim ver",
+      "ref": "57f91c5f4",
+      "utc": "2026-11-01T17:09:55Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "task(gemini-yt-rumers-extract-2): extract 5 Rumers videos with 25 verified quotes",
+      "ref": "db6760d80b04",
+      "utc": "2026-11-01T17:02:38Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -24,26 +40,32 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T19:16:35Z",
+  "refreshed": "2026-11-01T17:03:59Z",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/rumers_2026-11-01/RUMERS_CHANNEL_SKIM.md (20 videos, 20 verbatim verified quotes, 14 mechanical setups, 6 non-mechanical; verify_extract_quotes.py PASS)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/rumers_2026-11-01/ (new files only)"
   ],
   "scope_out": [
     "live tree; engine and layer code; any trading verdict; .secrets and .env"
   ],
-  "scope_sha": "",
+  "scope_sha": "db6760d80b04",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "list channel uploads",
     "fetch captions for the 20",
     "write the table and verify"
   ],
+  "taken": "2026-11-01T17:04:04Z",
   "tests": "verify_extract_quotes.py exit 0; no code change",
   "title": "[GEMINI] The Rumers (@the.rumers): skim the newest 20 videos, list titles and the trading idea each teaches, flag those with mechanical rules",
   "weight": "ROUTINE",
