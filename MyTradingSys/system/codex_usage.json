@@ -2,11 +2,11 @@
  "allowance": {
   "plan": "plus",
   "week_resets": 1793780113,
-  "week_used": 77.0,
-  "window_resets": 1793521871,
-  "window_used": 49.0
+  "week_used": 78.0,
+  "window_resets": 1793540300,
+  "window_used": 1.0
  },
- "at": "2026-11-01T05:34:54Z",
+ "at": "2026-11-01T08:39:23Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -20,12 +20,27 @@
  },
  "host": "JIS-NUC",
  "lab": {
-  "astra_runs": 1,
+  "astra_runs": 0,
   "week_pts": 24.0,
-  "window_pts": 49.0,
-  "window_runs": 1
+  "window_pts": 0.0,
+  "window_runs": 0
  },
  "runs": [
+  {
+   "at": "2026-11-01T08:38:06Z",
+   "card": "gpt-recheck-aibridge-07x-tests-1031",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 70,
+   "tokens_out": 5307,
+   "tokens_total": 592958,
+   "tokens_uncached": 79619,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
   {
    "at": "2026-11-01T05:32:58Z",
    "card": "gpt-mutation-wavetrend-1031",
@@ -160,21 +175,6 @@
    "tokens_uncached": 28867,
    "week_pts": 0.0,
    "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-31T08:39:26Z",
-   "card": "gpt-audit-live-aid-indicators-vs-formulas",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 41,
-   "tokens_out": 3240,
-   "tokens_total": 299642,
-   "tokens_uncached": 43858,
-   "week_pts": 0.0,
-   "window_pts": 1.0
   }
  ]
 }
