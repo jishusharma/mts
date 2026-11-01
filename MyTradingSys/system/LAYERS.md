@@ -259,7 +259,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `wavetrend-c1-v2` refined p1 SONNET: WaveTrend C1 detector correction and new count-only prereg
   - `layer-review-krown-wavetrend` ready p3 SONNET: Layer review sheet: Krown and WaveTrend (idea, source, backtests, bugs, confluence)
-  - `wavetrend-parity-contract-audit-1101` raw p3 SONNET: WaveTrend parity contract: bound seed-convergence claim and reconcile fixture timestamps (gpt-mutation-wavetre
+  - `wavetrend-parity-contract-audit-1101` ready p3 SONNET: WaveTrend parity contract: bound seed-convergence claim and reconcile fixture timestamps (gpt-mutation-wavetre
 
 ## Pitchfork (Andrews / Schiff / Morge median line) (`pitchfork`)
 - Status: Pivot amplitude gate is OURS (2 pct reversal, no ATR); doc Rule P-01 2.5 x ATR14 not implemented. Detector, simulator desk plugin (studies/pitchfork.py), and live Java engine (PitchforkSignalLayer.java with Tine Bounce + Hagopian Failure + Volume Profile confluence) built, wired, and verified on DEV.
