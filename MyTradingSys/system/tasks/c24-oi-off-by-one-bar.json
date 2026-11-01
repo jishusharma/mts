@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T17:00:21Z",
   "commands": [
     "python -m pytest -q MyTradingSys/research/eagle_eyes_picture_2026-10-28/test_oi_after_flush_pairing.py",
     "python MyTradingSys/research/eagle_eyes_picture_2026-10-28/oi_after_flush.py"
@@ -24,6 +25,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "already landed 138bb6a6f; OI_PAIRING_RECHECK.md old 18/9/22 new 58/45/38; tests pass",
+      "ref": "243514eef",
+      "utc": "2026-11-01T17:00:21Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "c24: re-land OI pairing fix (off-by-one bar) with reviewed lookahead allowlist rows",
@@ -40,7 +47,12 @@
   "refined_by": "planner-20261030-d",
   "refreshed": "2026-10-31T08:46:43Z",
   "refs": [],
-  "result": "",
+  "result": "already landed 138bb6a6f; OI_PAIRING_RECHECK.md old 18/9/22 new 58/45/38; tests pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/oi_after_flush.py",
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/test_oi_after_flush_pairing.py"
@@ -51,12 +63,13 @@
   "scope_sha": "138bb6a6f0d4",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "move the pairing into a pure function flush_oi_change(O, C, I, j) so a test can call it without the network fetch",
     "fail-first: test_oi_after_flush_pairing.py builds a 4-bar synthetic series where bar 1 drops price 0.4% and I[2]/I[1]-1 = -0.3%; asserts the function returns -0.3%, which the old i vs i-1 pairing does not",
     "fix the pairing, rerun the script, write both group-count tables (old vs new pairing) to MyTradingSys/research/eagle_eyes_picture_2026-10-28/OI_PAIRING_RECHECK.md; label thresholds OURS"
   ],
+  "taken": "2026-11-01T17:00:21Z",
   "tests": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/test_oi_after_flush_pairing.py fails on the pre-change pairing",
   "title": "C24 oi_after_flush.py pairs bar i price with bar i-1 OI change (Bybit OI stamped t = snapshot at bar open): 10-30 18:50 wick bar's OI -0.37% is stamped 18:55; recheck n=18/9/22 with oi[t+5m]/oi[t]",
   "weight": "IMPORTANT",
