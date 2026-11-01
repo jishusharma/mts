@@ -1,37 +1,62 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest MyTradingSys/execution/test_auto_trader_failclosed.py -q"
+  ],
   "created": "2026-11-01T01:25:44Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Every sig reaching place() carries margin_btc = size_usd / entry price x MARGIN_BUFFER; a test with funds below that need gets outcome margin_short and one with funds above goes on; 4 new tests fail on old code; Result gives content sha.",
+  "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "auto_trader sets sig margin_btc for every signal it places so margin_ok (auto_trader.py:665) refuses short margin, not only zero or unreadable funds.",
   "id": "signal-margin-btc-wire-1101",
   "kind": "build",
-  "lane": "SONNET",
+  "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "auto_trader margin pre-flight: update mutation anchors, close card",
+      "ref": "c216f4d6b0fc",
+      "utc": "2026-11-01T00:29:55Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-01 ACCEPT (reviewer FIX applied once, planner DECISION OURS). Planner draft 2026-11-01. Number is OURS (1x notional x1.1); a Deribit initial-margin source can replace it later. Reviewer noticed: place() saves a plan before margin_ok, so a margin_short leaves an orphan plan; out of scope here.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-01T02:52:33Z",
   "refs": [
     "MyTradingSys/execution/auto_trader.py"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/execution/auto_trader.py",
+    "MyTradingSys/execution/test_auto_trader_failclosed.py",
+    "MyTradingSys/execution/mutation_check_auto_trader_failclosed.py"
+  ],
+  "scope_out": [
+    "No deploy, no restart, no mainnet; no change to new_plan.py or executor.py; no leverage or exchange margin API call"
+  ],
+  "scope_sha": "c216f4d6b0fc",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/execution/auto_trader.py:665-699 margin_ok and place; commit 697c239eb (pre-flight)"
+  ],
+  "state": "ready",
+  "steps": [
+    "1 Read margin_ok and place (auto_trader.py:665-700) and where sig dicts are built (lines ~315 and ~554); fail-first tests incl. restart state, non-trade balance move, API error (CLAUDE.md live-path rule)",
+    "2 Add helper margin_need_btc(size_usd, price) = size_usd / price x 1.1 (OURS: 1x notional, no leverage; not SOURCED). Compute sig margin_btc in ONE place: cycle() just before place(), after apply_venue_price (auto_trader.py ~323-335, ~933+), price = venue price or mark for market entries (layer signals, line 554); no price or <= 0 = refuse (fail closed)",
+    "3 Extend the mutation check, run the tests; REVIEW session PLAN+DIFF (CRITICAL, order path); sync.py ship; deploy stays manual Verify: content commit sha; git cherry origin/fast-track <sha> empty; git ls-tree -r origin/fast-track --name-only lists the delivered files."
+  ],
+  "tests": "test_auto_trader_failclosed.py: sig_gets_margin_btc_from_size_and_price, short_margin_refused_with_real_need, enough_margin_passes, missing_price_fails_closed, layer_market_entry_uses_mark_price; each fails on current code (need is 0 when unset)",
   "title": "Wire a real margin_btc into production signals so the place() margin pre-flight (697c239e) can refuse short margin, not only zero or unreadable funds",
-  "weight": "",
-  "worker": ""
+  "weight": "CRITICAL",
+  "worker": "session"
 }
