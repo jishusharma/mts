@@ -1,0 +1,60 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/test_tasks.py",
+    "python scripts/dev/tasks.py dispatch"
+  ],
+  "created": "2026-11-01T01:35:12Z",
+  "depends_on": [],
+  "done_when": "Dispatch excludes such a card with reason_code likely_done; check WARN also fires for non-test_/cmd_ identifiers such as thinking_chars; a card whose identifiers are absent stays listed; 3 new tests fail on old code; Result gives content sha.",
+  "est_turns": 18,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "tasks.py dispatch excludes a card whose done_when/tests identifiers (snake_case names, column names) already appear in its scope_in files, instead of spawning a Builder for shipped work.",
+  "id": "dispatch-lists-cards-already-shipped",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tasks.py check with no id is read-only: prints WOULD PROMOTE, only check <id> promotes",
+      "ref": "66bbbcf80d92",
+      "utc": "2026-10-31T22:31:02Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-01 ACCEPT Planner draft 2026-11-01 Reviewer Agent FIX applied once (planner DECISION OURS).",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-01T02:50:56Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/tasks.py",
+    "scripts/dev/test_tasks.py"
+  ],
+  "scope_out": [
+    "No card edits; no sync.py change; cards stay in their state (exclusion is a dispatch view only)"
+  ],
+  "scope_sha": "66bbbcf80d92",
+  "size": "M",
+  "sources": [
+    "scripts/dev/tasks.py:737-763,1587-1600; card ask-a3-20-session-thinking-tracking done_when"
+  ],
+  "state": "ready",
+  "steps": [
+    "1 Fail-first tests with a temp repo: scope_in .py holding the string thinking_chars, done_when naming it (case ask-a3-20-session-thinking-tracking shipped in 135c8a848dd5)",
+    "2 tasks.py likely_done_reason (line ~744): extend _LIKELY_FN_RE with snake_case tokens (a letter then underscore, >=2 parts) from done_when and tests; match as a substring in scope_in .py/.md text (not only def); ALL tokens must match (OURS)",
+    "3 exclusion() (called at tasks.py:1598): add reason_code likely_done with the reason text for ready cards; run tasks.py dispatch and list which current cards it newly excludes in the Result Verify: content commit sha; git cherry origin/fast-track <sha> empty; git ls-tree -r origin/fast-track --name-only lists the delivered files."
+  ],
+  "tests": "test_tasks.py: dispatch_excludes_card_whose_done_when_identifiers_are_in_scope, dispatch_keeps_card_with_absent_identifier, check_warns_on_snake_case_column_names; each fails on current tasks.py",
+  "title": "tasks.py dispatch listed ask-a3-20-session-thinking-tracking as ready although token_audit.py already shipped it (135c8a848dd5): a Builder spawn was wasted. Done when: dispatch/check flags a card whose scope_in files already contain the done-when strings (like the existing 'likely already in tree' WARN) and excludes it from batches, test fails on old code first",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

@@ -355,6 +355,43 @@ def apply_venue_price(sig: dict, mark_fn=None):
     return None
 
 
+MARGIN_BUFFER = 1.1   # OURS (not SOURCED): 1x notional, no leverage, +10% for fees/slippage; no exchange margin API call
+
+
+def margin_need_btc(size_usd, price):
+    """BTC margin the entry needs = size_usd / price x MARGIN_BUFFER (inverse perp: USD notional / price). Fail closed:
+    returns None for a missing, non-numeric, non-finite or non-positive size or price (never a small number)."""
+    try:
+        size, px = float(size_usd), float(price)
+    except (TypeError, ValueError):
+        return None
+    if not (math.isfinite(size) and math.isfinite(px)) or size <= 0 or px <= 0:
+        return None
+    return size / px * MARGIN_BUFFER
+
+
+def attach_margin(sig: dict, mark_fn=None):
+    """Set sig['margin_btc'] from the --size and the entry price of sig['plan_args'] (--price for limit entries, else
+    the Deribit mark for market entries). Returns None when set, else the reject reason (fail closed: no order)."""
+    a = sig.get("plan_args") or []
+    try:
+        size = a[a.index("--size") + 1]
+    except (ValueError, IndexError):
+        return "margin: no --size in plan_args"
+    try:
+        if "--price" in a and a[a.index("--entry") + 1] == "limit":
+            price = a[a.index("--price") + 1]
+        else:
+            price = (mark_fn or deribit_mark)()
+    except Exception as e:  # noqa: BLE001 - unreadable price refuses the entry
+        return f"margin: entry price unreadable: {type(e).__name__}: {str(e)[:120]}"
+    need = margin_need_btc(size, price)
+    if need is None:
+        return f"margin: unusable size {size!r} or price {price!r}"
+    sig["margin_btc"] = need
+    return None
+
+
 # ---------------------------------------------------------------- layer signals
 
 # (RSI level, cross direction) -> side. MLK-R1 (backtest/layers/rsi/malkan_40_60.py): a bull regime cannot cross 40 downward,
@@ -959,6 +996,12 @@ def cycle(state: dict, cfg: dict, dry_run: bool, active: dict, now: datetime = N
                     log({"event": "signal_rejected", **base, "reason": why})
                     continue
                 base.update(sig["log"])
+            if not dry_run:
+                why = attach_margin(sig)
+                if why:
+                    log({"event": "signal_rejected", **base, "reason": why})
+                    continue
+                base["margin_btc"] = round(sig["margin_btc"], 8)
             res = place(sig, dry_run, acct) if acct else place(sig, dry_run)
             proc = res.pop("proc", None)
             log({"event": "trade_attempt", **base, **res, "account": acct})

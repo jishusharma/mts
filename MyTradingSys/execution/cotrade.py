@@ -20,7 +20,9 @@ Journal (append-only, gitignored): <repo>/runtime_data/cotrade/<UTC date>.jsonl,
 Usage (all testnet):
   python cotrade.py place --said "<verbatim>" --side sell --type limit --price 110500 --amount 100 --stop 111000 [--dry-run]
   python cotrade.py stop     # place the missing reduce-only stop for a filled resting entry
-  python cotrade.py kill     # HALT first, cancel label cotrade, flatten the co-trade account
+  python cotrade.py kill     # HALT first, cancel label cotrade, flatten EVERY co-trade slot (parent and hedge)
+  python cotrade.py hedge --pct 50 --stop 104000 [--of <order id>] [--at P] [--dry-run]   # P5: opposite leg, 2nd slot
+  python cotrade.py net      # net size across the co-trade slots, rebuilt from exchange positions
 """
 import sys
 sys.dont_write_bytecode = True
@@ -90,6 +92,32 @@ def _journaled_order_ids(recs: list) -> set:
     return ids
 
 
+def _nm(account) -> str:
+    return account or "main"
+
+
+def _acct(name):
+    return None if name in (None, "main") else name
+
+
+UNRECONCILED = ("unknown", "hedge_pending", "hedge_placed")   # hedge_pending/placed = half-placed hedge = unknown
+RECONCILED = ("stop_placed", "stop_failed_flattened", "killed", "hedge_failed")
+
+
+def _unknown_state(recs: list):
+    """Newest non-dry-run state decides: an unreconciled one refuses new orders (fail closed)."""
+    for r in reversed(recs):
+        st = (r.get("result") or {}).get("state")
+        if st == "dry_run":
+            continue
+        if st in UNRECONCILED:
+            return ("journal: an order state is unknown - reconcile on the exchange, then run kill or stop"
+                    + (" (half-placed hedge)" if st != "unknown" else ""))
+        if st in RECONCILED:
+            return None   # reconciled by a later stop/flatten/kill; error and kill_errors do NOT reconcile
+    return None
+
+
 def _last_real_place(recs: list):
     for r in reversed(recs):
         if (r.get("action") or {}).get("kind") == "place" and (r.get("result") or {}).get("state") != "dry_run":
@@ -150,7 +178,7 @@ def _flatten_and_halt(client, token, halt_path, why: str) -> list:
 # ---------------------------------------------------------------- stop
 
 def ensure_stop(client=None, account=None, journal_dir=None, halt_path=None, halt_daily_loss_path=None,
-                token=None) -> dict:
+                token=None, stop_px=None, extra=None) -> dict:
     """Reduce-only server-side stop over the FULL filled size. No stop for a flat account. Idempotent.
     If the stop cannot be placed on an open position: flatten and write HALT (fail closed)."""
     client = client or do
@@ -160,7 +188,8 @@ def ensure_stop(client=None, account=None, journal_dir=None, halt_path=None, hal
     last = _last_real_place(recs)
     if last is None:
         return {"ok": False, "reasons": ["no co-trade order in the journal"]}
-    stop_px = (last.get("action") or {}).get("stop")
+    stop_px = stop_px if stop_px is not None else (last.get("action") or {}).get("stop")
+    extra = dict(extra or {})
     try:
         token = token or client.authenticate(account)
         pos = client.get_position(token, INSTRUMENT)
@@ -180,6 +209,7 @@ def ensure_stop(client=None, account=None, journal_dir=None, halt_path=None, hal
         if not oid:
             raise do.OrderStateUnknown("private/stop", LABEL, "no_order_in_response")
         _append(jdir, {"said": (last.get("said")), "heard": "ensure_stop", "env": do.active_env(),
+                       "account": _nm(account), **extra,
                        "action": {"kind": "stop", "amount_usd": want_amt, "stop": stop_px},
                        "market": {}, "result": {"state": "stop_placed", "stop_order_id": oid}})
         # the correct stop is live; only now remove the wrong-size / wrong-price ones (never unprotected)
@@ -204,6 +234,7 @@ def ensure_stop(client=None, account=None, journal_dir=None, halt_path=None, hal
             executor.write_manual_halt(f"cotrade: stop failed and flatten impossible: {e2!r}", halt_path)
             errs = [{"op": "authenticate", "error": repr(e2)}]
         _append(jdir, {"said": last.get("said"), "heard": "ensure_stop", "env": do.active_env(),
+                       "account": _nm(account), **extra,
                        "action": {"kind": "stop", "stop": stop_px}, "market": {},
                        "result": {"state": "stop_failed_flattened", "error": repr(e), "flatten_errors": errs}})
         return {"ok": False, "reasons": [f"stop failed, account flattened and HALT written: {e!r}"]}
@@ -251,15 +282,9 @@ def place_order(said, side, order_type, price, amount, stop, dry_run=False, clie
     token = None
     pos_size = None
     if not reasons:
-        for r in reversed(recs):
-            st = (r.get("result") or {}).get("state")
-            if st == "dry_run":
-                continue
-            if st == "unknown":
-                reasons.append("journal: an order state is unknown - reconcile on the exchange, then run kill or stop")
-                break
-            if st in ("stop_placed", "stop_failed_flattened", "killed"):
-                break   # reconciled by a later stop/flatten/kill; error and kill_errors do NOT reconcile
+        why_unknown = _unknown_state(recs)
+        if why_unknown:
+            reasons.append(why_unknown)
     if not reasons and not dry_run:
         try:
             token = client.authenticate(account)
@@ -343,24 +368,316 @@ def _refuse_resting(client, token, account, jdir, halt_path, base, order, readin
             "order_id": order.get("order_id")}
 
 
+# ---------------------------------------------------------------- slots, exchange view (P5)
+
+HEDGE_SLOTS = ["jishu_1", "jishu_2", "jishu_3", "jishu_4", SPARE_ACCOUNT, None]   # existing testnet slots; None = main
+
+
+def _default_secret_exists(a) -> bool:
+    return do.secret_path_for("test", a).exists()   # existence only, never read
+
+
+def pick_hedge_account(parent_account, secret_exists=None):
+    """First existing slot that is not the parent account. Returns (found, account). Never a new key."""
+    secret_exists = secret_exists or _default_secret_exists
+    for a in HEDGE_SLOTS:
+        if _nm(a) != _nm(parent_account) and secret_exists(a):
+            return True, a
+    return False, None
+
+
+def _journal_accounts(recs: list) -> list:
+    """Account names of co-trade legs since the last completed kill (parents and hedges)."""
+    names = []
+    for r in recs:
+        st = (r.get("result") or {}).get("state")
+        if st == "killed":
+            names = []
+            continue
+        kind = (r.get("action") or {}).get("kind")
+        if kind in ("place", "hedge") and st not in ("dry_run", "refused") and r.get("account"):
+            if r["account"] not in names:
+                names.append(r["account"])
+    return names
+
+
+def _slot_view(client, name) -> dict:
+    tok = client.authenticate(_acct(name))
+    size = float(client.get_position(tok, INSTRUMENT).get("size", 0))
+    orders = client.get_open_orders(tok, INSTRUMENT)
+    mine = [o for o in orders if o.get("label") == LABEL]
+    stops = [o for o in mine if o.get("order_type") == "stop_market"]
+    return {"account": name, "size": size, "label_orders": len(mine),
+            "stop_ok": size == 0 or any(_same_num(o.get("amount"), abs(size)) for o in stops)}
+
+
+def rebuild(client=None, journal_dir=None, secret_exists=None) -> dict:
+    """Rebuild the co-trade pair from the EXCHANGE (positions + label-cotrade orders on every existing slot),
+    not only the journal: a slot is ours if the journal names it since the last kill or it carries a cotrade
+    order. Other slots with a position are listed as unowned and never counted or touched."""
+    client = client or do
+    jdir = Path(journal_dir) if journal_dir else globals()["journal_dir"]()
+    secret_exists = secret_exists or _default_secret_exists
+    recs = _records(jdir)
+    jnames = _journal_accounts(recs)
+    placed_by = {r.get("account") for r in recs if (r.get("action") or {}).get("kind") == "place"
+                 and (r.get("result") or {}).get("state") not in ("dry_run", "refused")}
+    names = list(jnames)
+    for a in HEDGE_SLOTS:
+        if _nm(a) not in names and secret_exists(a):
+            names.append(_nm(a))
+    views, errors = [], []
+    for n in names:
+        try:
+            views.append(_slot_view(client, n))
+        except Exception as e:  # noqa: BLE001 - unreadable slot: report, fail closed
+            errors.append({"account": n, "error": repr(e)})
+    owned = [v for v in views if v["account"] in jnames or v["label_orders"] > 0]
+    unowned = [{"account": v["account"], "size": v["size"]} for v in views if v not in owned and v["size"] != 0]
+    open_ = [v for v in owned if v["size"] != 0]
+    pair = None
+    if len(open_) == 2 and open_[0]["size"] * open_[1]["size"] < 0:
+        open_.sort(key=lambda v: (v["account"] in placed_by, abs(v["size"])), reverse=True)
+        pair = {"parent": open_[0]["account"], "hedge": open_[1]["account"]}
+    return {"ok": not errors and all(v["stop_ok"] for v in owned), "slots": owned, "pair": pair,
+            "net_usd": sum(v["size"] for v in owned), "unowned_positions": unowned, "errors": errors,
+            "stop_missing": [v["account"] for v in owned if not v["stop_ok"]]}
+
+
+def net(client=None, journal_dir=None, secret_exists=None) -> dict:
+    """Live aid: net size across the co-trade slots, from exchange positions (DECISION OURS: printed by cotrade.py)."""
+    r = rebuild(client=client, journal_dir=journal_dir, secret_exists=secret_exists)
+    return {**r, "net_side": "long" if r["net_usd"] > 0 else "short" if r["net_usd"] < 0 else "flat"}
+
+
+# ---------------------------------------------------------------- hedge (P5)
+
+def _find_parent(recs: list, of):
+    """The real placed co-trade entry: the order id given, else the newest one."""
+    for r in reversed(recs):
+        res = r.get("result") or {}
+        if (r.get("action") or {}).get("kind") == "place" and res.get("state") == "placed":
+            if of in (None, "last") or res.get("order_id") == of:
+                return r
+    return None
+
+
+def _hedge_size(parent_amount, pct) -> int:
+    """pct of the parent filled size, FLOORED to AMOUNT_STEP_USD (70 at 50 pct = 35 -> 30)."""
+    return int(math.floor(round(float(parent_amount) * float(pct) / 100.0 / AMOUNT_STEP_USD, 9))) * AMOUNT_STEP_USD
+
+
+def _hedge_fail(client, jdir, halt_path, base, why, toks, extra=None) -> dict:
+    """The second leg failed: HALT first, flatten BOTH slots (each step tried), journal it. Unflattened = unknown."""
+    errs = []
+    for name, tok in toks:
+        if tok is None:
+            errs.append({"account": name, "op": "authenticate", "error": "no token"})
+            continue
+        for e in _flatten_and_halt(client, tok, halt_path, f"hedge failed: {why}"):
+            errs.append({"account": name, **e})
+    _append(jdir, {**base, "result": {"state": "unknown" if errs else "hedge_failed", "error": why,
+                                      "flatten_errors": errs, "parent_order_id": base.get("parent_order_id"),
+                                      **(extra or {})}})
+    return {"ok": False, "reasons": [f"hedge failed, both slots flattened and HALT written: {why}"
+                                     + (f" (errors: {errs})" if errs else "")]}
+
+
+def hedge(of="last", pct=50, stop=None, at=None, dry_run=False, client=None, hedge_account="auto",
+          journal_dir=None, halt_path=None, halt_daily_loss_path=None, env=None, said=None,
+          secret_exists=None) -> dict:
+    """Opposite leg of pct of the parent filled size on a second existing slot. Only marketable hedges are placed
+    (a resting --at is refused). Both legs carry a server-side reduce-only stop; any second-leg failure flattens both."""
+    client = client or do
+    jdir = Path(journal_dir) if journal_dir else globals()["journal_dir"]()
+    halt_path = halt_path or executor.HALT_PATH
+    halt_dl = halt_daily_loss_path or executor.HALT_DAILY_LOSS_PATH
+    env = env or do.active_env()
+    secret_exists = secret_exists or _default_secret_exists
+    if env != "test":
+        return {"ok": False, "reasons": ["REFUSED: cotrade is testnet-only"]}   # nothing touched, nothing journaled
+    reasons = []
+    if not _num(pct) or not 0 < pct <= 100:
+        reasons.append(f"pct must be in (0, 100], got {pct!r}")
+    if not _num(stop) or stop <= 0:
+        reasons.append("REFUSED: a stop is mandatory (stop > 0)")
+    if at is not None and (not _num(at) or at <= 0):
+        reasons.append(f"--at must be a price > 0, got {at!r}")
+    reasons += executor._check_halt_files(Path(halt_path), Path(halt_dl))
+    recs = _records(jdir)
+    parent = _find_parent(recs, of)
+    base = {"said": said or f"hedge {pct} pct", "env": env, "account": None, "market": {},
+            "action": {"kind": "hedge", "pct": pct, "stop": stop, "price": at, "instrument": INSTRUMENT}}
+    hacct = hname = pact = poid = pa = ps = hs = None
+    if parent is None:
+        reasons.append("no filled co-trade parent order in the journal")
+    else:
+        pact = parent.get("account") or "main"
+        pa = parent["action"]
+        poid = parent["result"].get("order_id")
+        ps = pa["side"]
+        hs = "buy" if ps == "sell" else "sell"
+        base.update({"parent_order_id": poid, "parent_account": pact})
+        base["action"]["side"] = hs
+        if hedge_account == "auto":
+            found, hacct = pick_hedge_account(_acct(pact), secret_exists)
+            if found:
+                hname = _nm(hacct)
+            else:
+                reasons.append("no second existing slot with a key file to hold the hedge")
+        else:
+            hacct, hname = hedge_account, _nm(hedge_account)
+            if hname == pact:
+                reasons.append(f"hedge must be on a second slot, not the parent account {pact}")
+            elif not secret_exists(hacct):
+                reasons.append(f"account secret missing for {hname}")
+        base["account"] = hname
+        why_unknown = _unknown_state(recs)
+        if why_unknown:
+            reasons.append(why_unknown)
+        killed_at = max([i for i, r in enumerate(recs) if (r.get("result") or {}).get("state") == "killed"] or [-1])
+        if any(r.get("parent_order_id") == poid and (r.get("action") or {}).get("kind") == "hedge"
+               and (r.get("result") or {}).get("state") == "hedge_placed" for r in recs[killed_at + 1:]):
+            reasons.append("parent already hedged")
+    psize = hsize = entry = None
+    market = {}
+    if parent is not None and not reasons:
+        psize = float(parent["result"].get("filled_amount") or pa["amount_usd"])
+        hsize = _hedge_size(psize, pct)
+        if hsize <= 0:
+            reasons.append(f"hedge size rounds to 0 ({pct} pct of {psize})")
+    ptok = htok = None
+    if parent is not None and not reasons and not dry_run:
+        market = _market(client)
+        base["market"] = market
+        try:
+            ptok = client.authenticate(_acct(pact))
+            ppos = float(client.get_position(ptok, INSTRUMENT).get("size", 0))
+            porders = client.get_open_orders(ptok, INSTRUMENT)
+            htok = client.authenticate(hacct)
+            hpos = float(client.get_position(htok, INSTRUMENT).get("size", 0))
+            horders = client.get_open_orders(htok, INSTRUMENT)
+        except Exception as e:  # noqa: BLE001 - unreadable exchange state fails closed
+            reasons.append(f"exchange state unreadable: {e!r}")
+        else:
+            if ppos == 0 or (ppos < 0) != (ps == "sell"):
+                reasons.append(f"parent position not open as {ps} on the exchange ({ppos})")
+            else:
+                psize = abs(ppos)
+                hsize = _hedge_size(psize, pct)
+                if hsize <= 0:
+                    reasons.append(f"hedge size rounds to 0 ({pct} pct of {psize})")
+            if not any(o.get("label") == LABEL and o.get("order_type") == "stop_market"
+                       and _same_num(o.get("amount"), int(psize)) and _same_num(o.get("trigger_price"), pa["stop"])
+                       for o in porders):
+                reasons.append("parent has no matching server-side stop - refused (protect it first)")
+            if hpos != 0 or horders:
+                reasons.append(f"hedge slot {hname} is not flat (position {hpos}, {len(horders)} open orders)")
+            if hsize:
+                chk = risk_guard.check_new_plan_against_cap(risk_guard.account_position_notional(hpos, None),
+                                                            float(hsize))
+                if not chk["ok"]:
+                    reasons.append(chk["reason"])
+    if parent is not None and not reasons:
+        mark = market.get("mark") if market else pa.get("entry_ref")   # dry-run: offline, parent entry as reference
+        entry = at if at is not None else mark
+        if not _num(entry) or entry <= 0:
+            reasons.append("no usable hedge entry price (needs a readable mark)")
+        else:
+            if at is not None and not dry_run:   # marketable only: a resting hedge is refused like P1
+                bid, ask = market.get("bid"), market.get("ask")
+                if not _num(bid) or not _num(ask):
+                    reasons.append("no readable bid/ask to prove the hedge --at is marketable")
+                elif (hs == "buy" and at < ask) or (hs == "sell" and at > bid):
+                    reasons.append(f"hedge --at {at} would rest (bid {bid}, ask {ask}) - refused, only marketable hedges")
+            if hs == "sell" and stop <= entry:
+                reasons.append(f"short stop {stop} must be above entry {entry}")
+            if hs == "buy" and stop >= entry:
+                reasons.append(f"long stop {stop} must be below entry {entry}")
+            ploss = psize * abs(pa["entry_ref"] - pa["stop"]) / pa["entry_ref"]
+            hloss = hsize * abs(entry - stop) / entry
+            if ploss + hloss > MAX_LOSS_AT_STOP_USD:
+                reasons.append(f"loss at both stops ${ploss + hloss:.2f} (parent ${ploss:.2f} + hedge ${hloss:.2f})"
+                               f" > cap ${MAX_LOSS_AT_STOP_USD:.0f}")
+    if hsize is not None:
+        base["action"].update({"amount_usd": hsize, "entry_ref": entry, "parent_amount_usd": psize,
+                               "type": "limit" if at is not None else "market"})
+    reading = (f"hedge {pct}% of {pact} {psize} USD: {hs} {hsize} USD on {hname}, stop {stop}"
+               if parent is not None else "hedge: no parent")
+    base["heard"] = reading
+    if reasons:
+        _append(jdir, {**base, "result": {"state": "refused", "reasons": reasons}})
+        return {"ok": False, "reasons": reasons, "reading": reading}
+    psigned = psize if ps == "buy" else -psize
+    hsigned = hsize if hs == "buy" else -hsize
+    legs = [{"role": "parent", "account": pact, "side": ps, "amount_usd": psize, "stop": pa["stop"]},
+            {"role": "hedge", "account": hname, "side": hs, "amount_usd": hsize, "stop": stop, "entry_ref": entry}]
+    if dry_run:
+        _append(jdir, {**base, "result": {"state": "dry_run", "note": "offline checks only"}})
+        return {"ok": True, "dry_run": True, "reading": reading, "legs": legs, "net_usd": psigned + hsigned}
+
+    _append(jdir, {**base, "result": {"state": "hedge_pending", "parent_order_id": poid}})   # half-placed = unknown
+    toks = [(hname, htok), (pact, ptok)]
+    try:
+        order = client.place(htok, hs, INSTRUMENT, hsize, "limit" if at is not None else "market", at, label=LABEL)
+    except Exception as e:  # noqa: BLE001 - incl. OrderStateUnknown: never retried, both slots flattened
+        return _hedge_fail(client, jdir, halt_path, base, f"hedge place failed: {e!r}", toks)
+    rec = _append(jdir, {**base, "result": {"state": "hedge_placed", "order_id": order.get("order_id"),
+                                            "order_state": order.get("order_state"), "parent_order_id": poid,
+                                            "filled_amount": order.get("filled_amount"), "stop_pending": True}})
+    filled = order.get("order_state") == "filled" or (
+        _num(order.get("filled_amount")) and order.get("filled_amount") >= hsize)
+    if not filled:
+        return _hedge_fail(client, jdir, halt_path, base, "hedge leg did not fill", toks,
+                           {"order_id": order.get("order_id")})
+    link = {"parent_order_id": poid, "parent_account": pact}
+    st = ensure_stop(client=client, account=hacct, journal_dir=jdir, halt_path=halt_path, token=htok,
+                     stop_px=stop, extra=link)
+    if st["ok"]:
+        pst = ensure_stop(client=client, account=_acct(pact), journal_dir=jdir, halt_path=halt_path, token=ptok)
+        if not pst["ok"]:
+            st = pst
+    if not st["ok"]:
+        return _hedge_fail(client, jdir, halt_path, base, f"stop failed: {st.get('reasons')}", toks,
+                           {"order_id": order.get("order_id")})
+    return {"ok": True, "reading": reading, "order_id": order.get("order_id"), "parent_order_id": poid,
+            "legs": legs, "net_usd": psigned + hsigned, "seq": rec["seq"]}
+
+
 # ---------------------------------------------------------------- kill
 
-def kill(client=None, account=None, journal_dir=None, halt_path=None) -> dict:
-    """HALT first (survives the process), then cancel label cotrade, then flatten the co-trade account.
-    Keeps going after a failed step; ok=False if any step failed."""
+def kill(client=None, account=None, journal_dir=None, halt_path=None, secret_exists=None) -> dict:
+    """HALT first (survives the process), then for EVERY co-trade slot (given account, journal legs since the last
+    kill, and with secret_exists also any slot carrying a cotrade order): cancel label cotrade, flatten.
+    Keeps going after a failed step or slot; ok=False if any step failed."""
     client = client or do
     jdir = Path(journal_dir) if journal_dir else globals()["journal_dir"]()
     halt_path = halt_path or executor.HALT_PATH
     executor.write_manual_halt("cotrade kill", halt_path)
+    slots = [_nm(account)]
+    for n in _journal_accounts(_records(jdir)):
+        if n not in slots:
+            slots.append(n)
     errs = []
-    try:
-        token = client.authenticate(account)
-        errs = _flatten_and_halt(client, token, halt_path, "kill")
-    except Exception as e:  # noqa: BLE001
-        errs = [{"op": "authenticate", "error": repr(e)}]
+    if secret_exists is not None:
+        for a in HEDGE_SLOTS:
+            if _nm(a) not in slots and secret_exists(a):
+                try:
+                    tok = client.authenticate(a)
+                    if any(o.get("label") == LABEL for o in client.get_open_orders(tok, INSTRUMENT)):
+                        slots.append(_nm(a))
+                except Exception as e:  # noqa: BLE001
+                    errs.append({"account": _nm(a), "op": "scan", "error": repr(e)})
+    for n in slots:
+        try:
+            tok = client.authenticate(_acct(n))
+            errs += [{"account": n, **e} for e in _flatten_and_halt(client, tok, halt_path, "kill")]
+        except Exception as e:  # noqa: BLE001 - one slot failing never skips the others
+            errs.append({"account": n, "op": "authenticate", "error": repr(e)})
     _append(jdir, {"said": "kill", "heard": "kill", "env": do.active_env(), "action": {"kind": "kill"},
-                   "market": {}, "result": {"state": "killed" if not errs else "kill_errors", "errors": errs}})
-    return {"ok": not errs, "errors": errs}
+                   "market": {}, "result": {"state": "killed" if not errs else "kill_errors", "errors": errs,
+                                            "slots": slots}})
+    return {"ok": not errs, "errors": errs, "slots": slots}
 
 
 # ---------------------------------------------------------------- CLI
@@ -377,6 +694,14 @@ def main(argv=None) -> int:
     p.add_argument("--amount", type=int, required=True, help="USD contracts, multiple of 10")
     p.add_argument("--stop", type=float, help="mandatory trigger price of the reduce-only stop")
     p.add_argument("--dry-run", action="store_true")
+    h = sub.add_parser("hedge", help="opposite leg of --pct of the parent filled size on a second existing slot")
+    h.add_argument("--of", default="last", help="parent order id (default: the newest co-trade entry)")
+    h.add_argument("--pct", type=float, required=True)
+    h.add_argument("--stop", type=float, help="mandatory trigger price of the hedge's reduce-only stop")
+    h.add_argument("--at", type=float, help="marketable limit price; a hedge that would rest is refused")
+    h.add_argument("--said", help="the operator's exact words")
+    h.add_argument("--dry-run", action="store_true")
+    sub.add_parser("net", help="net size across the co-trade slots from exchange positions")
     sub.add_parser("stop")
     sub.add_parser("kill")
     a = ap.parse_args(argv)
@@ -387,10 +712,14 @@ def main(argv=None) -> int:
     if a.cmd == "place":
         r = place_order(a.said, a.side, a.order_type, a.price, a.amount, a.stop, dry_run=a.dry_run,
                         account=acct, heard=a.heard, secret_exists=None if a.dry_run else secret_exists)
+    elif a.cmd == "hedge":
+        r = hedge(of=a.of, pct=a.pct, stop=a.stop, at=a.at, dry_run=a.dry_run, said=a.said)
+    elif a.cmd == "net":
+        r = net()
     elif a.cmd == "stop":
         r = ensure_stop(account=acct)
     else:
-        r = kill(account=acct)
+        r = kill(account=acct, secret_exists=secret_exists)
     print(json.dumps(r, indent=2, default=str))
     return 0 if r.get("ok") else 1
 

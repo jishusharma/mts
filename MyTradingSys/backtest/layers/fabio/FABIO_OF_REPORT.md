@@ -1,3 +1,6 @@
+> **SUPERSEDED:** this report used legacy fees (3.5 bp taker / -1.5 bp maker rebate per side) and fixed UTC sessions
+> (pre-B102). Its numbers are not reusable. The driver it cites is archived; see Reproduce below.
+>
 > **Fee note (2026-10-06, bug B081 residue):** results in this report were produced with the legacy fee pair
 > (3.5 bp taker, -1.5 bp maker rebate, per side), not the fees stated in the text below (taker 5 bp, maker 2 bp). The
 > API-verified Deribit schedule (fees.py) is taker 5 bp, maker 0. Correct fees only lower net R, so the 'no edge /
@@ -7,7 +10,7 @@
 
 Modules: `orderflow_bars.py` (aggTrades -> 1m order-flow bars), `fabio_of_model.py` (state/location/trigger/management
 simulator), `run_of_model.py` (driver), tests `test_orderflow_bars.py`, `test_fabio_of_model.py`. Raw results (off C:):
-`F:\MTS\data\fabio_of\results.json`, `tables.md`. Reproduce: `python -m MyTradingSys.backtest.layers.fabio.run_of_model`.
+`F:\MTS\data\fabio_of\results.json`, `tables.md`. Reproduce (archived driver, not runnable as a module): `MyTradingSys/archive/cleanup-2026-10-08/fabio_of_model/run_of_model.py`.
 
 ## Read this first (limits)
 - Data: Binance USD-M BTCUSDT aggTrades, 2026-06-01..2026-09-28 (120 days, 1,440 bars/day, no gaps). Big-trade thresholds

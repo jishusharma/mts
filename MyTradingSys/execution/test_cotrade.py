@@ -23,6 +23,8 @@ class FakeClient:
         self.halt_path = None
         self.halt_seen = {}      # call name -> HALT file existed at that moment
         self.fill_on_cancel = 0  # simulate a fill landing just before the cancel
+        self.prefix = ""         # order id prefix (P5: one fake per account)
+        self.close_exc = None
 
     def _see(self, name):
         if self.halt_path is not None:
@@ -49,16 +51,16 @@ class FakeClient:
             raise self.place_exc
         if self.fill:
             self.position = -amount if side == "sell" else amount
-        return {"order_id": "E1", "filled_amount": amount if self.fill else 0, "order_state": "filled" if self.fill else "open"}
+        return {"order_id": self.prefix + "E1", "filled_amount": amount if self.fill else 0, "order_state": "filled" if self.fill else "open"}
 
     def stop_market(self, token, instrument_name, side, amount, trigger_price, label, trigger="mark_price"):
         self.calls.append(("stop_market", side, amount, trigger_price, label))
         if self.stop_exc:
             raise self.stop_exc
         n = sum(1 for o in self.orders if o.get("order_type") == "stop_market") + 1
-        self.orders.append({"order_id": f"S{n}", "label": label, "order_type": "stop_market", "reduce_only": True,
+        self.orders.append({"order_id": f"{self.prefix}S{n}", "label": label, "order_type": "stop_market", "reduce_only": True,
                             "amount": amount, "trigger_price": trigger_price})
-        return {"order": {"order_id": f"S{n}"}}
+        return {"order": {"order_id": f"{self.prefix}S{n}"}}
 
     def cancel(self, token, order_id):
         self.calls.append(("cancel", order_id))
@@ -75,6 +77,8 @@ class FakeClient:
     def close_position(self, token, instrument_name="BTC-PERPETUAL"):
         self._see("close_position")
         self.calls.append(("close_position",))
+        if self.close_exc:
+            raise self.close_exc
         self.position = 0
         return {}
 
@@ -386,6 +390,285 @@ class TestAccountAndKill(Base):
         self.assertTrue(self.halt.exists())
         self.assertFalse(r["ok"])
         self.assertIn("close_position", c.names())  # keeps going after a failed cancel
+
+
+class MultiClient:
+    """One fake exchange: one FakeClient per account, token = account name."""
+    def __init__(self, names=("main", "jishu_22", "jishu_1", "jishu_2", "jishu_3", "jishu_4"), **kw):
+        self.subs = {n: FakeClient(**kw.get(n, {})) for n in names}
+        for n, c in self.subs.items():
+            c.prefix = n + "-"
+        self.auth_exc = {}
+        self.calls = []
+
+    def authenticate(self, account=None):
+        n = account or "main"
+        self.calls.append(("authenticate", n))
+        if n in self.auth_exc:
+            raise self.auth_exc[n]
+        return n
+
+    def get_ticker(self, instrument_name="BTC-PERPETUAL"):
+        return self.subs["main"].get_ticker(instrument_name)
+
+    def __getattr__(self, name):
+        def f(tok, *a, **k):
+            self.calls.append((name, tok))
+            return getattr(self.subs[tok], name)(tok, *a, **k)
+        return f
+
+    def set_halt(self, path):
+        for c in self.subs.values():
+            c.halt_path = path
+
+    def on(self, acct, name):
+        return [c for c in self.subs[acct].calls if c[0] == name]
+
+
+ALL_KEYS = lambda a: True  # noqa: E731
+
+
+def cotrade_stop(n):
+    return [{"order_id": "s", "label": "cotrade", "order_type": "stop_market", "amount": n}]
+
+
+class HedgeBase(Base):
+    def parent(self, mc, amount=70, **kw):
+        r = self.run_place(mc, amount=amount, **kw)
+        self.assertTrue(r["ok"], r)
+        return r
+
+    def run_hedge(self, mc, **kw):
+        args = dict(of="last", pct=50, stop=109900.0, at=None, dry_run=False, client=mc, hedge_account="auto",
+                    journal_dir=self.jdir, halt_path=self.halt, halt_daily_loss_path=self.halt_dl, env="test",
+                    secret_exists=ALL_KEYS)
+        args.update(kw)
+        return cotrade.hedge(**args)
+
+    def hedge_lines(self):
+        return [x for x in self.lines() if (x.get("action") or {}).get("kind") == "hedge"]
+
+
+class TestHedgeRefusals(HedgeBase):
+    def test_1_refuses_same_account_and_missing_key(self):
+        mc = MultiClient()
+        self.parent(mc)
+        r = self.run_hedge(mc, hedge_account=None)   # None = main = the parent account
+        self.assertFalse(r["ok"])
+        self.assertIn("second slot", " ".join(r["reasons"]))
+        r = self.run_hedge(mc, hedge_account="jishu_2", secret_exists=lambda a: a != "jishu_2")
+        self.assertFalse(r["ok"])
+        self.assertIn("secret missing", " ".join(r["reasons"]))
+        r = self.run_hedge(mc, secret_exists=lambda a: a is None)   # auto, but only the parent has a key
+        self.assertFalse(r["ok"])
+        for n in ("jishu_1", "jishu_2", "jishu_22"):
+            self.assertEqual(mc.on(n, "place"), [])
+
+    def test_2_testnet_env_asserted_before_any_call(self):
+        mc = MultiClient()
+        self.parent(mc)
+        n_calls, n_lines = len(mc.calls), len(self.lines())
+        r = self.run_hedge(mc, env="mainnet")
+        self.assertFalse(r["ok"])
+        self.assertEqual(len(mc.calls), n_calls)
+        self.assertEqual(len(self.lines()), n_lines)
+
+    def test_4_refused_while_halt_set(self):
+        mc = MultiClient()
+        self.parent(mc)
+        self.halt.write_text("x", encoding="utf-8")
+        r = self.run_hedge(mc)
+        self.assertFalse(r["ok"])
+        self.assertIn("HALT", " ".join(r["reasons"]))
+        self.assertEqual(mc.on("jishu_1", "place"), [])
+
+    def test_5_sum_of_both_max_losses_capped(self):
+        mc = MultiClient()
+        self.parent(mc, amount=9000, price=110500.0, stop=116000.0)   # parent loss at stop ~ $448
+        r = self.run_hedge(mc, stop=104400.0)                          # hedge 4500, ~ $245: sum > 500
+        self.assertFalse(r["ok"])
+        self.assertIn("both stops", " ".join(r["reasons"]))
+        self.assertEqual(mc.on("jishu_1", "place"), [])
+        self.assertTrue(self.run_hedge(mc, stop=110000.0)["ok"])       # tight hedge stop: sum ~ $464, allowed
+
+    def test_13_hedge_at_that_would_rest_is_refused(self):
+        mc = MultiClient()
+        self.parent(mc)
+        r = self.run_hedge(mc, at=110000.0)   # buy hedge below the ask 110401 would rest
+        self.assertFalse(r["ok"])
+        self.assertIn("rest", " ".join(r["reasons"]))
+        self.assertEqual(mc.on("jishu_1", "place"), [])
+        r = self.run_hedge(mc, at=110500.0)   # marketable limit is placed
+        self.assertTrue(r["ok"], r)
+        self.assertEqual(mc.on("jishu_1", "place")[0][3:5], ("limit", 110500.0))
+
+    def test_unprotected_parent_or_busy_slot_refused(self):
+        mc = MultiClient()
+        self.parent(mc)
+        mc.subs["main"].orders = []   # parent stop gone
+        self.assertFalse(self.run_hedge(mc)["ok"])
+        mc2 = MultiClient(jishu_1=dict(position=40))
+        self.parent(mc2)
+        self.assertFalse(self.run_hedge(mc2)["ok"])
+        self.assertEqual(mc2.on("jishu_1", "place"), [])
+
+
+class TestHedgePlace(HedgeBase):
+    def test_3_hedge_has_its_own_stop_amount_and_trigger_match(self):
+        mc = MultiClient()
+        self.parent(mc)
+        r = self.run_hedge(mc)
+        self.assertTrue(r["ok"], r)
+        sm = mc.on("jishu_1", "stop_market")
+        self.assertEqual(len(sm), 1)
+        self.assertEqual(sm[0][1:], ("SELL", 30, 109900.0, "cotrade"))   # buy hedge -> sell reduce-only stop
+        o = mc.subs["jishu_1"].orders[0]
+        self.assertTrue(o["reduce_only"] and o["amount"] == 30 and o["trigger_price"] == 109900.0)
+        self.assertEqual(len(mc.subs["main"].orders), 1)                 # parent keeps its own stop
+
+    def test_6_hedge_place_fails_no_naked_leg_journal_hedge_failed(self):
+        mc = MultiClient()
+        self.parent(mc)
+        mc.subs["jishu_1"].place_exc = do.DeribitError("private/buy", {"code": 1, "message": "x"})
+        r = self.run_hedge(mc)
+        self.assertFalse(r["ok"])
+        self.assertEqual(self.hedge_lines()[-1]["result"]["state"], "hedge_failed")
+        self.assertEqual(mc.subs["jishu_1"].position, 0)
+        self.assertEqual(mc.subs["main"].position, 0)   # card default: second-leg failure flattens both
+        self.assertTrue(self.halt.exists())
+
+    def test_hedge_stop_failure_flattens_both_and_halts(self):
+        mc = MultiClient()
+        self.parent(mc)
+        mc.subs["jishu_1"].stop_exc = do.DeribitError("private/sell", {"code": 1, "message": "no"})
+        r = self.run_hedge(mc)
+        self.assertFalse(r["ok"])
+        self.assertTrue(self.halt.exists())
+        self.assertEqual((mc.subs["jishu_1"].position, mc.subs["main"].position), (0, 0))
+
+    def test_hedge_unfilled_flattens_both(self):
+        mc = MultiClient()
+        self.parent(mc)
+        mc.subs["jishu_1"].fill = False
+        r = self.run_hedge(mc)
+        self.assertFalse(r["ok"])
+        self.assertTrue(self.halt.exists())
+        self.assertIn("close_position", [c[0] for c in mc.subs["main"].calls])
+
+    def test_hedge_unflattenable_is_unknown(self):
+        mc = MultiClient()
+        self.parent(mc)
+        mc.subs["jishu_1"].place_exc = do.OrderStateUnknown("private/buy", "lbl", 10050)
+        mc.subs["main"].close_exc = do.DeribitError("x", {"code": 1, "message": "m"})
+        self.assertFalse(self.run_hedge(mc)["ok"])
+        self.assertEqual(self.hedge_lines()[-1]["result"]["state"], "unknown")
+
+    def test_7_child_journal_record_carries_parent_order_id(self):
+        mc = MultiClient()
+        self.parent(mc)
+        self.assertTrue(self.run_hedge(mc)["ok"])
+        placed = [x for x in self.hedge_lines() if x["result"]["state"] == "hedge_placed"][0]
+        self.assertEqual(placed["parent_order_id"], "main-E1")
+        self.assertEqual(placed["result"]["parent_order_id"], "main-E1")
+        self.assertEqual(placed["account"], "jishu_1")
+        self.assertEqual(placed["parent_account"], "main")
+
+    def test_14_size_is_pct_of_parent_filled_floored_to_step_and_opposite_side(self):
+        self.assertEqual(cotrade._hedge_size(70, 50), 30)    # 35 -> floor to the 10 USD step = 30
+        self.assertEqual(cotrade._hedge_size(70, 100), 70)
+        self.assertEqual(cotrade._hedge_size(70, 10), 0)
+        mc = MultiClient()
+        self.parent(mc, amount=70)
+        self.assertTrue(self.run_hedge(mc, pct=50)["ok"])
+        pl = mc.on("jishu_1", "place")
+        self.assertEqual((pl[0][1], pl[0][2]), ("buy", 30))   # parent was a sell
+
+    def test_14b_rounds_to_zero_refused(self):
+        mc = MultiClient()
+        self.parent(mc, amount=70)
+        r = self.run_hedge(mc, pct=10)
+        self.assertFalse(r["ok"])
+        self.assertEqual(mc.on("jishu_1", "place"), [])
+
+
+class TestHedgeDryRunAndViews(HedgeBase):
+    def test_11_dry_run_prints_both_legs_and_net_no_call(self):
+        self.parent(MultiClient())
+        mc = MultiClient()
+        r = self.run_hedge(mc, dry_run=True)
+        self.assertTrue(r["ok"], r)
+        self.assertEqual(mc.calls, [])
+        self.assertEqual([(x["role"], x["account"], x["side"], x["amount_usd"]) for x in r["legs"]],
+                         [("parent", "main", "sell", 70.0), ("hedge", "jishu_1", "buy", 30)])
+        self.assertEqual(r["net_usd"], -40.0)
+        json.dumps(r)
+
+    def test_12_net_view_two_positions_plus30_minus10(self):
+        mc = MultiClient(jishu_22=dict(position=-10, orders=cotrade_stop(10)),
+                         jishu_1=dict(position=30, orders=cotrade_stop(30)))
+        r = cotrade.net(client=mc, journal_dir=self.jdir, secret_exists=ALL_KEYS)
+        self.assertEqual(r["net_usd"], 20.0)
+        self.assertEqual(r["net_side"], "long")
+
+    def test_9_rebuild_pair_from_exchange_not_only_journal(self):
+        mc = MultiClient(jishu_22=dict(position=-70, orders=cotrade_stop(70)),
+                         jishu_1=dict(position=30, orders=cotrade_stop(30)),
+                         jishu_2=dict(position=500))   # not ours: no cotrade order, not in the journal
+        self.assertFalse(self.jdir.exists())            # empty journal
+        r = cotrade.rebuild(client=mc, journal_dir=self.jdir, secret_exists=ALL_KEYS)
+        self.assertEqual(r["pair"], {"parent": "jishu_22", "hedge": "jishu_1"})
+        self.assertEqual(r["net_usd"], -40.0)
+        self.assertEqual(r["unowned_positions"], [{"account": "jishu_2", "size": 500.0}])
+        self.assertTrue(r["ok"])
+
+    def test_10_half_placed_hedge_is_unknown(self):
+        self.parent(MultiClient())
+        cotrade._append(self.jdir, {"said": "h", "account": "jishu_1", "action": {"kind": "hedge"},
+                                    "result": {"state": "hedge_pending"}})
+        r = self.run_hedge(MultiClient())
+        self.assertFalse(r["ok"])
+        self.assertIn("unknown", " ".join(r["reasons"]).lower())
+        r2 = self.run_place(MultiClient())
+        self.assertFalse(r2["ok"])
+        self.assertIn("half-placed", " ".join(r2["reasons"]))
+
+
+class TestTwoSlotKill(HedgeBase):
+    def _pair(self):
+        mc = MultiClient()
+        self.parent(mc)
+        self.assertTrue(self.run_hedge(mc)["ok"])
+        mc.set_halt(self.halt)
+        return mc
+
+    def test_8_kill_flattens_both_even_if_first_flatten_raises(self):
+        mc = self._pair()
+        mc.subs["main"].close_exc = do.DeribitError("x", {"code": 1, "message": "m"})
+        r = cotrade.kill(client=mc, account=None, journal_dir=self.jdir, halt_path=self.halt)
+        self.assertFalse(r["ok"])
+        self.assertEqual(mc.subs["jishu_1"].position, 0)
+        self.assertEqual(mc.subs["main"].halt_seen["cancel_by_label"], True)   # HALT before the first cancel
+        self.assertEqual(mc.subs["jishu_1"].halt_seen["cancel_by_label"], True)
+        last = self.lines()[-1]
+        self.assertEqual(last["result"]["state"], "kill_errors")
+        self.assertEqual([e["account"] for e in last["result"]["errors"]], ["main"])
+        self.assertEqual(last["result"]["slots"], ["main", "jishu_1"])
+
+    def test_8b_kill_second_slot_flattened_when_first_authenticate_raises(self):
+        mc = self._pair()
+        mc.auth_exc["main"] = do.DeribitError("auth", {"code": 1, "message": "m"})
+        r = cotrade.kill(client=mc, account=None, journal_dir=self.jdir, halt_path=self.halt)
+        self.assertFalse(r["ok"])
+        self.assertTrue(self.halt.exists())
+        self.assertEqual(mc.subs["jishu_1"].position, 0)
+        self.assertEqual(r["errors"][0]["account"], "main")
+
+    def test_8c_kill_finds_hedge_slot_from_exchange_when_journal_lost_it(self):
+        mc = MultiClient(jishu_1=dict(position=30, orders=cotrade_stop(30)), jishu_2=dict(position=500))
+        r = cotrade.kill(client=mc, account=None, journal_dir=self.jdir, halt_path=self.halt, secret_exists=ALL_KEYS)
+        self.assertTrue(r["ok"], r)
+        self.assertEqual(mc.subs["jishu_1"].position, 0)
+        self.assertEqual(mc.subs["jishu_2"].position, 500)   # not ours: never touched
 
 
 if __name__ == "__main__":

@@ -17,13 +17,30 @@
   "id": "fabio-v3-model-b-managed-is-rerun",
   "kind": "run",
   "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "fabio v3: manage Model B IN_TRADE fills instead of scoring 0 R",
+      "ref": "483a6b035782",
+      "utc": "2026-10-31T19:04:52Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "483a6b035782 fabio v3: manage Model B IN_TRADE fills instead of scoring 0 R",
+      "ref": "MyTradingSys/backtest/layers/fabio/FABIO_V3_L3_NOT_MEASURED.md",
+      "utc": "2026-10-31T19:04:52Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-01 ACCEPT. Waits for fabio-v3-l3-is-only-flag to be done (depends_on); then check promotes it.",
+  "note": "REVIEWED:2026-11-01 ACCEPT Dependency fabio-v3-l3-is-only-flag done (d92a7373ae18). Lane JIS-NB: needs F:/MTS/data; post the desk task from commands.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-01T02:48:41Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -32,9 +49,10 @@
   "scope_out": [
     "OOS windows (never read), HOLDOUT, run_v3_l3.py code, the registered F:/MTS/data/fabio_v3_bt/selection.json (use a new --out)"
   ],
+  "scope_sha": "483a6b035782",
   "size": "S",
   "sources": [],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Wait for fabio-v3-l3-is-only-flag to be done, then post the desk task from commands (JIS-NB lane; run-and-report is never a builder).",
     "Desk host runs the command, copies the IS numbers (mean net R at 2 bps per model, n windows, Model B fill count) into FABIO_V3_L3_NOT_MEASURED.md, labels them IS and DEV-only, ships. Verify: content commit sha; git cherry origin/fast-track <sha> empty; git ls-tree -r origin/fast-track --name-only lists the delivered files."

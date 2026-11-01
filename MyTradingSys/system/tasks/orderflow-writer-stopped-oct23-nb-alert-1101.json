@@ -1,37 +1,61 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest scripts/dev/test_mts_doctor.py -q"
+  ],
   "created": "2026-11-01T01:53:07Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "mts_doctor.py has check OF-STALE (in CHECK_NAMES and the fns list) that returns WARN for a log mtime older than 60 min, OK for a fresh one and OK when the log is absent; 3 asserts in test_mts_doctor.py fail on old code; Result gives content sha.",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "mts_doctor WARNs when runtime_data/orderflow_live.log has not been written for over 60 min, so a dead order-flow writer (stopped 2026-10-23, unseen for 8 days) is flagged like OF-RESTARTS flags a loop.",
   "id": "orderflow-writer-stopped-oct23-nb-alert-1101",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "orderflow_live: HTTP 400 resume point resets, loud exit 4; doctor OF-RESTARTS",
+      "ref": "b3067646a0aa",
+      "utc": "2026-11-01T01:34:34Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-01 T0-ONLY. Planner draft 2026-11-01. Caveat: STALL lines can keep the mtime fresh while stuck; mtime check is the card's ask, a data-file freshness check is a follow-up.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-01T02:52:06Z",
   "refs": [
     "MyTradingSys/scripts/dev/mts_doctor.py"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "scripts/dev/mts_doctor.py",
+    "scripts/dev/test_mts_doctor.py"
+  ],
+  "scope_out": [
+    "No writer change (orderflow_live.py), no restart, no process control, no live tree"
+  ],
+  "scope_sha": "b3067646a0aa",
+  "size": "S",
+  "sources": [
+    "scripts/dev/mts_doctor.py:652-679; MyTradingSys/research/live_not_fired_2026-10-29/RESULT.md:31 (stuck 8 days)"
+  ],
+  "state": "ready",
+  "steps": [
+    "1 Fail-first tests with an injected mtime and now (pattern: test_of_restarts_warns_on_loop, test_mts_doctor.py:327)",
+    "2 mts_doctor.py after of_restarts (line 655): of_stale(repo, now=None, mtime=None) with constant OF_STALE_MIN = 60 (OURS); WARN text names the log path and 'writer may be dead or stuck (exit 4 = HTTP 400 resume point)'",
+    "3 add OF-STALE to CHECK_NAMES (line 370) and the fns tuple (line ~740); run test_mts_doctor.py and mts_doctor.py once Verify: content commit sha; git cherry origin/fast-track <sha> empty; git ls-tree -r origin/fast-track --name-only lists the delivered files."
+  ],
+  "tests": "scripts/dev/test_mts_doctor.py: test_of_stale_warns_when_log_older_than_60min, test_of_stale_ok_fresh_or_absent; both fail on current code (no of_stale)",
   "title": "Order-flow writer log on JIS-NB stops at Oct 23 with no alert: add a staleness check (log mtime older than 1 h) next to OF-RESTARTS in mts_doctor",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
