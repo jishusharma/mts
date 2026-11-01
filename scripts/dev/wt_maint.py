@@ -41,6 +41,10 @@ IDLE_HOURS = sync.TIDY_IDLE_HOURS
 DIRTY_IDLE_HOURS = 24      # DECISION (OURS, operator 2026-10-26 "same mechanism on all devices, periodically"): a tree whose branch is fully on trunk
                            # but holds uncommitted files is patch-saved and removed only after this many idle hours; unshipped commits never
 BIG_UNTRACKED_MB = 50      # an untracked file this large is not copied into the rescue: the tree stays
+# Ignored caches inside an ignored dir that rescue_data must not copy: rebuilt for free. sim_desk/cache/bars (~0.17 GB per tree,
+# `desk.py --build`) filled Dumps/wt_rescue with 6.4 GB on JIS-NB by 2026-11-01; cache/results (TRIALS counting) is still rescued.
+RESCUE_SKIP = ("MyTradingSys/research/sim_desk/cache/bars",
+               "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/.gapfreq_cache")
 PROTECT_BRANCHES = ("fast-track", "main", "master")
 TASK_PREFIX = "MTS-WorktreeMaint"
 # hostname (lower) -> canonical device name; the Lenovo laptop reports DESKTOP-F7IU69N (DEVICES.md s0)
@@ -221,12 +225,19 @@ def merged_branches(repo, now=None):
 
 def rescue_data(repo, row):
     dest = primary(repo) / "Dumps" / "wt_rescue" / row["name"]
+    root = Path(row["path"])
+    skip = {os.path.normcase(str(root / s)) for s in RESCUE_SKIP}
+
+    def regenerable(d, names):
+        return [n for n in names if os.path.normcase(os.path.join(d, n)) in skip]
     for rel in row["data"]:
-        src = Path(row["path"]) / rel.strip('"')
+        src = root / rel.strip('"')
+        if os.path.normcase(str(src).rstrip("\\/")) in skip:
+            continue
         tgt = dest / rel.strip('"').rstrip("/")
         tgt.parent.mkdir(parents=True, exist_ok=True)
         if src.is_dir():
-            shutil.copytree(src, tgt, dirs_exist_ok=True)
+            shutil.copytree(src, tgt, dirs_exist_ok=True, ignore=regenerable)
         elif src.exists():
             shutil.copy2(src, tgt)
     return dest
