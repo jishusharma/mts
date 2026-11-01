@@ -4,31 +4,53 @@
   "commands": [],
   "created": "2026-11-01T08:58:29Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "a pytest with a fake browser script (empty dump first, good dump second) shows find_browser returns the second; the 8 test_aibridge_exploratory tests pass on JIS-LAPTOP with no AIB_BROWSER set.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "find_browser (MyTradingSys/tests/aibridge_dom.py:20) returns the first existing path, msedge before chrome; headless Edge on JIS-LAPTOP dumps an empty DOM, so 8 tests in test_aibridge_exploratory.py fail and block full-gate ships. Make it skip a browser whose --dump-dom of a trivial data: page is empty and fall back to the next candidate.",
   "id": "aibridge-dom-find-browser-edge-headless-empty",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "AIBridge 0.7.7: E5 any non-zero exit stops the batch, E6 task lock follows agent default, ",
+      "ref": "a9300f5bd71f",
+      "utc": "2026-10-31T15:35:55Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "PLANNER 2026-11-01 (planner-refine-a): file is MyTradingSys/tests/aibridge_dom.py, not scripts/aibridge. Run needs the laptop (JIS-LAPTOP) for the 8-test check; the fake-browser test runs anywhere.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-01T17:05:14Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/tests/aibridge_dom.py",
+    "MyTradingSys/tests/test_aibridge_exploratory.py"
+  ],
+  "scope_out": [
+    "scripts/aibridge/extension/",
+    "live tree",
+    "any change to the AIBridge product code"
+  ],
+  "scope_sha": "a9300f5bd71f",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "add _probe(path): run it headless with --dump-dom on a data: URL holding a marker string, 15 s timeout, True only if the marker is in stdout",
+    "find_browser returns the first candidate that exists and passes _probe (cache the result per process)",
+    "add the fake-browser test; run test_aibridge_exploratory.py on JIS-LAPTOP"
+  ],
+  "tests": "MyTradingSys/tests/test_aibridge_exploratory.py::test_find_browser_skips_empty_dump (new, fake browser): fails on the current find_browser, which returns the first existing path.",
   "title": "aibridge_dom.find_browser picks msedge first; on JIS-LAPTOP headless Edge returns an empty DOM (rc 0, no output) so 8 test_aibridge_exploratory tests fail and block every full-gate ship; add a smoke probe and fall back to Chrome. Done when: find_browser skips a browser whose dump-dom of a trivial page is empty (test with a fake browser), and the 8 tests pass on JIS-LAPTOP",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
