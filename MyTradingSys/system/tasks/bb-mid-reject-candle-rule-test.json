@@ -4,17 +4,19 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-01T04:11:55Z",
-    "misses": 6,
+    "folded": "2026-11-01T06:09:08Z",
+    "misses": 10,
     "reads": [
-      "scripts/dev/test_auto_deploy.py",
-      "MyTradingSys/execution/auto_trader.py",
-      "MyTradingSys/system/roles/session_planner.md",
-      "MyTradingSys/system/role_details/session_planner_details.md",
-      "scripts/dev/run_all_tests.py",
-      "scripts/dev/auto_deploy.py"
+      "MyTradingSys/system/LESSONS_LEARNED.md",
+      "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-mutation-wavetrend-1031.md",
+      "MyTradingSys/backtest/layers/wavetrend/fixture_btcusdt_1h_dev_2022-01.csv",
+      "MyTradingSys/backtest/layers/wavetrend/test_wavetrend.py",
+      "MyTradingSys/research/wavetrend_2026-10-17/PARITY_CONTRACT.md",
+      "scripts/aibridge/extension/content.js",
+      "scripts/aibridge/extension/loop.js",
+      "scripts/aibridge/tests/block_select.test.js"
     ],
-    "session": "agent-ae71de0f2b57c91b1"
+    "session": "agent-a897bd141a57b5158"
   },
   "created": "2026-10-29T22:28:47Z",
   "depends_on": [
