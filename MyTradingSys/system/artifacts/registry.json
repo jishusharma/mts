@@ -199,7 +199,7 @@
       "purpose": "Simulator desk: what each study tested, verdicts and example trades. The runnable desk itself is the local app (research/sim_desk/desk.py).",
       "notes_go_to": "Read only.",
       "note": "Added to the registry 2026-10-25 (operator: new development must show on MTS Home). No repo html path: the sim-desk sessions publish it; staleness is not tracked here.",
-      "published_sha": "40db493a9cce4cb3445da2e90d5d9685cc6977bf28c1b7ebb3ba1d5c8b4cd1e5"
+      "published_sha": "802c84db3154f73e2a7b793dbaa8ae945a921b9538f39bbf04b4bbb2e09bbce6"
     },
     {
       "slug": "cbp_analyst_desk",
