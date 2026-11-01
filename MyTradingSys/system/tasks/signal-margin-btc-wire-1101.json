@@ -4,6 +4,17 @@
   "commands": [
     "python -m pytest MyTradingSys/execution/test_auto_trader_failclosed.py -q"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-01T03:43:21Z",
+    "misses": 38,
+    "reads": [
+      "MyTradingSys/execution/test_auto_trader.py",
+      "MyTradingSys/execution/test_auto_trader_failclosed.py",
+      "MyTradingSys/execution/mutation_check_auto_trader_failclosed.py"
+    ],
+    "session": "agent-a5d6c6e12fa6db1ad"
+  },
   "created": "2026-11-01T01:25:44Z",
   "depends_on": [],
   "done_when": "Every sig reaching place() carries margin_btc = size_usd / entry price x MARGIN_BUFFER; a test with funds below that need gets outcome margin_short and one with funds above goes on; 4 new tests fail on old code; Result gives content sha.",
