@@ -1,0 +1,68 @@
+{
+ "id": "tom-v2-gross-first-dev-ext",
+ "kind": "backtest",
+ "parity": null,
+ "family": "Tom return-to-value (volume profile)",
+ "title": "Tom return-to-value with near-band placebo (|d|<=1) as primary, fresh pre-DEV data BTCUSDT 2020-2021",
+ "provenance": "run",
+ "date": "2026-11-01",
+ "what": [
+  {
+   "name": "Source",
+   "value_plain": "Tom Vorwald 70/30 return-to-value claim (extract_BB3c8visnkI.md:38); test from SETUP_REVIEW sec 6 test 2",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Event and outcome",
+   "value_plain": "first 5m close outside prior UTC-day value area (bin 10 USD, VA 70%); RETURN = a later 5m bar that touches the prior POC",
+   "label": "OURS"
+  },
+  {
+   "name": "Placebo",
+   "value_plain": "same levels shifted by d x ATR14(1h), primary restricted to |d|<=1 (d in -1,-0.5,0.5,1)",
+   "label": "OURS"
+  },
+  {
+   "name": "Costs",
+   "value_plain": "none: a count of a claim, no trade",
+   "label": "OURS"
+  }
+ ],
+ "how": "Count of return shares, real band vs shifted band on the same kind of days; 95% day-block bootstrap (2000 resamples) of the difference. Pre-registered before the run.",
+ "window": "DEV_EXT 2020-01-02 to 2021-12-31 (before DEV); DEV, VALIDATION and HOLDOUT not read",
+ "verdict": {
+  "label": "FAIL: real minus near-band placebo +4.4 pp, CI -0.3..8.9 includes 0",
+  "tone": "bad"
+ },
+ "why": [
+  "Real prior-day value returns to POC 63.4% of event days vs 58.9% for a band shifted by at most one ATR; the CI of the gap spans zero (n 352 / 353).",
+  "The large pooled gap (+12.9 pp) comes from far-shifted bands (|d|>=2), which are unlike value for any reason; a band near value behaves like value.",
+  "Fewer events than the card's ~870 (352 vs ~870) because |d|<=1 keeps half the days and perp 1m data starts 2020-01; a true +4 pp gap is not excluded."
+ ],
+ "kpis": [
+  {
+   "label": "Real return share (|d|<=1 days)",
+   "value": "63.4%"
+  },
+  {
+   "label": "Near-band placebo share",
+   "value": "58.9%"
+  },
+  {
+   "label": "Difference, 95% CI",
+   "value": "4.4 pp (-0.3..8.9)",
+   "tone": "bad"
+  },
+  {
+   "label": "Events real / placebo",
+   "value": "352 / 353"
+  }
+ ],
+ "examples": [],
+ "source_files": [
+  "MyTradingSys/research/tom_v2_gross_first_2026-11/RESULT.md",
+  "MyTradingSys/research/tom_v2_gross_first_2026-11/PRE_REG.md",
+  "MyTradingSys/backtest/vp_return_to_value.py"
+ ],
+ "commit": "pending"
+}
