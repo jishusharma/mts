@@ -42,6 +42,13 @@ class FakeYDL:
 
 
 class T(unittest.TestCase):
+    def setUp(self):   # never touch the real ~/.mts/yt_block.json
+        self._td = tempfile.TemporaryDirectory()
+        self.addCleanup(self._td.cleanup)
+        p = mock.patch.dict("os.environ", {"YT_BLOCK_FILE": str(pathlib.Path(self._td.name) / "b.json")})
+        p.start()
+        self.addCleanup(p.stop)
+
     def test_partial_rate_limit_fails_even_with_cached_video(self):
         with mock.patch.object(f, "list_channel", return_value=LISTING[:2]), \
                 mock.patch.object(f, "fetch", side_effect=["EXISTS", "RATELIMIT"]), \
@@ -95,7 +102,7 @@ class T(unittest.TestCase):
             self.assertIn("youtube_transcript_api", (canon / "zzzzzzzzzzz_timed.txt").read_text())
             self.assertIn("hello api", (canon / "zzzzzzzzzzz_raw.txt").read_text())
 
-    def test_429_without_fallback_still_rate_limits(self):
+    def test_429_without_fallback_is_blocked(self):
         class Blocked(FakeYDL):
             def extract_info(self, url, download=True):
                 raise f.yt_dlp.utils.DownloadError("HTTP Error 429: Too Many Requests")
@@ -104,7 +111,7 @@ class T(unittest.TestCase):
             canon = pathlib.Path(td) / "canon"
             with mock.patch.object(f.yt_dlp, "YoutubeDL", Blocked), mock.patch.object(f, "CANON", canon), \
                     mock.patch.object(f.time, "sleep"), mock.patch.object(f, "transcript_api_cues", return_value=None):
-                self.assertEqual(f.fetch("zzzzzzzzzzz", "Krown", ["en"], canon), "RATELIMIT")
+                self.assertEqual(f.fetch("zzzzzzzzzzz", "Krown", ["en"], canon), "BLOCKED")
 
     def test_video_ids_still_work(self):
         rc, raws, _ = self.run_main(["zzzzzzzzzzz"])

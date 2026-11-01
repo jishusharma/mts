@@ -2,6 +2,15 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-01T06:12:48Z",
+    "misses": 15,
+    "reads": [
+      "MyTradingSys/research/BUGS.md"
+    ],
+    "session": "agent-a1bc5351962960a01"
+  },
   "created": "2026-11-01T05:34:12Z",
   "depends_on": [],
   "done_when": "PARITY_CONTRACT.md s3 EMA-seed row states only the measured bound (<1e-3 after bar 144, one 1500-bar synthetic path) with no universal event claim; the open-bar row separates input/golden fixtures (open_time) from emitted rows (available_at); grep -c 'cannot affect any event' is 0",
