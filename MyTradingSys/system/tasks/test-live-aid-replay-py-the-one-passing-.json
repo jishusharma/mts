@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T21:08:34Z",
   "commands": [],
   "created": "2026-10-30T20:41:36Z",
   "depends_on": [],
@@ -15,11 +17,17 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "test_live_aid_replay verifies rendered replay mode against fixture (commits 7f33c6067, e63",
+      "ref": "f5205f4ad",
+      "utc": "2026-11-01T21:08:34Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "live_aid replay: position bar pos-dist, pos-atr, uncovered pinned",
-      "ref": "e6376a8d400b",
-      "utc": "2026-10-31T05:45:46Z"
+      "line": "live_aid: macro strip reads a same-origin calendar snapshot (feed has no CORS header)",
+      "ref": "87fadd77ec53",
+      "utc": "2026-10-31T12:35:51Z"
     }
   ],
   "layers": [],
@@ -29,25 +37,31 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T08:48:01Z",
+  "refreshed": "2026-11-01T21:07:54Z",
   "refs": [
     "MyTradingSys/research/test_hunt_2026-10-31/VACUOUS_TESTS.md"
   ],
-  "result": "",
+  "result": "test_live_aid_replay verifies rendered replay mode against fixture (commits 7f33c6067, e6376a8d4)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tools/live_aid/test_live_aid_replay.py"
   ],
   "scope_out": [
     "live_aid.html behaviour"
   ],
-  "scope_sha": "e6376a8d400b",
+  "scope_sha": "87fadd77ec53",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read VACUOUS_TESTS.md row 3 and the commit",
     "add the assertion; verify against old html with git show 92aa0ab3d^:..."
   ],
+  "taken": "2026-11-01T21:08:28Z",
   "tests": "same file: assert replay=fixture renders the fixture numbers; fails on pre-92aa0ab3d html.",
   "title": "test_live_aid_replay.py: the one passing test does not exercise commit 92aa0ab3d (done when a test fails on pre-92aa0ab3d code); see research/test_hunt_2026-10-31/VACUOUS_TESTS.md",
   "weight": "ROUTINE",
