@@ -119,6 +119,12 @@ class Page(unittest.TestCase):
         self.assertIn("prefers-color-scheme:dark", h)
         self.assertIn("What was tested", h)
 
+    def test_event_charts_use_their_own_label(self):
+        # event studies (no winners/losers) caption each chart with its label, not "typical loser"
+        h = self._build(_result("ev", examples=[{"kind": "charts", "title": "t", "items": [
+            {"kind": "event", "label": "operator chart", "note": "n", "svg": "<svg></svg>"}]}]))
+        self.assertIn('esc((c.label||(c.kind==="winner"', h)
+
     def test_bad_result_files_fail_the_build(self):
         bad = _result("x")
         del bad["why"]

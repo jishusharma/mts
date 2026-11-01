@@ -1606,3 +1606,4 @@ Conflict: commit 201d47c73 (3la + 3xm must-pass, 240 s cap) vs operator 10-25 "e
 ```
 
 - 2026-11-01 (operator, chat): lifts the DeepSeek-bridge hold. ALL testing tasks go to DSA; two instances run, one on JIS-NUC and one on the Desktop (JIS-NB), launched in the jishu.awgp@gmail.com Chrome profile (Windows profile "Profile 4", AIBridge extension already loaded from F:\AIBridge\extension) by Haiku workers. Route testing cards/rows with `desk.py post --target DSA-NB|DSA-NUC`.
+- 2026-11-01 (operator, chat, to Lab_Guy): every test he is shown must be on the simulator (result card in sim_desk/results, charts where possible). Same message: add a martingale short inside a range (RSI divergence legs on 1m/2m/3m/5m, WaveTrend, OI/CVD if useful, no per-leg stop inside the range) to the C26 roadmap; recorded as Phase 2 Candidate C in card c26-scenario-roadmap-sequence, with the range top as the ladder's one stop.

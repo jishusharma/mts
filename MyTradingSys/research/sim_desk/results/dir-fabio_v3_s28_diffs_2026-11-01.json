@@ -1,0 +1,77 @@
+{
+ "id": "dir-fabio_v3_s28_diffs_2026-11-01",
+ "kind": "backtest",
+ "family": "Fabio V3 S28 Diffs",
+ "title": "Brief: Fabio v3 code vs FORMULAS.md s28.6 (planner 2026-11-01)",
+ "provenance": "source-extracted",
+ "date": "2026-11-01",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "T-A (diff 1): s28 6-bar worked example, i=4, N=4: balance {H 102, L 99, R 3, poc 100.5}, ATR 2.25 (TR 3,2,2,2). Same bars with a timestamp gap between bar 0 and bar 1: atr and balance None. Gap between bars 2 and 3: Non…",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "T-B (diff 3): day_gate_open(60, 800, [1000]20, 0.8) True; (60, 790, same) False; (60, 800, [], 0.8) False; (60, 800, [0]20, 0.8) False.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "T-C (diff 2), s28.4 worked add, long, q1 = 1, e1 = 100000, D1 = 300, stop0 = 99700:",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "mode be, stop at 100100, add at pa = 100200: locked 100, dist 100, q_add 1. Stopped at 100100: gross R = (100 - 100)/300 = 0.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 5 from the source",
+   "value_plain": "Fees: leg 1 maker in, taker stop out: (0 + 0.0005)100000/300 = 0.166667; leg 2 taker in and out: 0.001100200/300 = 0.334. Net R = -0.500667.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 6 from the source",
+   "value_plain": "stop at e1: q_add 0, no add, result equals simulate_trade. Mode day, closed day R 0.5, D1 300, r1 1: q_add 0.1667 < 0.25, skip. A third add is refused (cap 2).",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "Card: fabio-v3-code-vs-formulas-s28-diffs. Code: MyTradingSys/backtest/layers/fabio/v3/. Spec: layers/FORMULAS.md s28.",
+  "tone": "info"
+ },
+ "why": [],
+ "kpis": [
+  {
+   "label": "net R after fees (first value in the source)",
+   "value": "-0.500667",
+   "tone": "bad"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "net_r",
+   "value": -0.500667,
+   "quote": "- Fees: leg 1 maker in, taker stop out: (0 + 0.0005)100000/300 = 0.166667; leg 2 taker in and out: 0.001100200/300 = 0.334. Net R = -0.500667."
+  }
+ ],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "window": "the source states no test window",
+  "why": "no sentence in the source states why it passed or failed"
+ },
+ "source_files": [
+  "MyTradingSys/research/fabio_v3_s28_diffs_2026-11-01/BRIEF.md"
+ ],
+ "commit": "d87af8706"
+}

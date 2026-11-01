@@ -1,7 +1,7 @@
 {
 "_doc": "Catalogue of known tests on trunk. kind is inferred (kind_source). Built by sim_desk/build_catalogue.py.",
-"count": 312,
-"exported": 312,
+"count": 320,
+"exported": 320,
 "rows": [
 {
 "id": "st-_archive-loose_2026-10-cbp_profile6_result",
@@ -511,6 +511,21 @@
 "verdict_class": "passed"
 },
 {
+"id": "dir-c26_roadmap_2026-11-01",
+"family": "c26 roadmap",
+"title": "Phase 1 output (generated 2026-11-01 08:06Z, bars to 2026-11-01 07:45 UTC)",
+"kind": "thought_experiment",
+"kind_source": "inferred from text",
+"verdict": "window 2026-07-01 .. 2026-11-01; top 87396 at 2026-09-21 20:15 splits UP / DOWN; OI days missing: 2026-11-01",
+"source": "MyTradingSys/research/c26_roadmap_2026-11-01/PHASE1_EVENTS.md",
+"exported": true,
+"result_id": "dir-c26_roadmap_2026-11-01",
+"folder_files": 2,
+"date": "2026-11-01",
+"status": "SEE_VERDICT",
+"verdict_class": "other"
+},
+{
 "id": "lm-candle-p1",
 "family": "candle patterns",
 "title": "Classical candle patterns pilot P0/P1",
@@ -835,6 +850,21 @@
 "date": "2026-10-17",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
+},
+{
+"id": "dir-cryptocred_s3_2026-11",
+"family": "cryptocred s3",
+"title": "BLOCKED: power gate fails (2026-11-01, card cryptocred-4h-1d-dev-s3)",
+"kind": "backtest",
+"kind_source": "inferred from text",
+"verdict": "word: BLOCKED. No outcome computed: no bar was loaded, no trade simulated, no VALIDATION/HOLDOUT bar read. cc_s3_run.py is built and tested but was never run on data.",
+"source": "MyTradingSys/research/cryptocred_s3_2026-11/BLOCKED.md",
+"exported": true,
+"result_id": "dir-cryptocred_s3_2026-11",
+"folder_files": 1,
+"date": "2026-11-01",
+"status": "FAILED",
+"verdict_class": "failed"
 },
 {
 "id": "dir-cryptocred_stop_2026-10-10",
@@ -1971,6 +2001,21 @@
 "verdict_class": "other"
 },
 {
+"id": "dir-fabio_v3_s28_diffs_2026-11-01",
+"family": "fabio v3 s28 diffs",
+"title": "Brief: Fabio v3 code vs FORMULAS.md s28.6 (planner 2026-11-01)",
+"kind": "backtest",
+"kind_source": "inferred from text",
+"verdict": "Card: fabio-v3-code-vs-formulas-s28-diffs. Code: MyTradingSys/backtest/layers/fabio/v3/. Spec: layers/FORMULAS.md s28.",
+"source": "MyTradingSys/research/fabio_v3_s28_diffs_2026-11-01/BRIEF.md",
+"exported": true,
+"result_id": "dir-fabio_v3_s28_diffs_2026-11-01",
+"folder_files": 1,
+"date": "2026-11-01",
+"status": "SEE_VERDICT",
+"verdict_class": "other"
+},
+{
 "id": "dir-fabio_video_search_2026-10-17",
 "family": "fabio video search",
 "title": "Fabio trade-recap video search (card find-more-fabio-trade-recap-videos-yt-dl, 2026-10-17)",
@@ -2307,6 +2352,21 @@
 "verdict_class": "other"
 },
 {
+"id": "dir-gemini_audits_2026-10-31",
+"family": "gemini audits",
+"title": "Blind Read Audit: fractals_2026-10-31/SYNTHESIS.md",
+"kind": "audit",
+"kind_source": "inferred from text",
+"verdict": "s.",
+"source": "MyTradingSys/research/gemini_audits_2026-10-31/fractals_synthesis_blind_read.md",
+"exported": true,
+"result_id": "dir-gemini_audits_2026-10-31",
+"folder_files": 2,
+"date": "2026-10-31",
+"status": "SEE_VERDICT",
+"verdict_class": "other"
+},
+{
 "id": "dir-gemini_audits_2026-10-30",
 "family": "gemini audits",
 "title": "Layer Review Sheets Blind Read Audit Report",
@@ -2331,7 +2391,7 @@
 "source": "MyTradingSys/research/gemini_burn_2026-10-31/SHIPS_120_200_REVIEW.md",
 "exported": true,
 "result_id": "dir-gemini_burn_2026-10-31",
-"folder_files": 29,
+"folder_files": 30,
 "date": "2026-10-31",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
@@ -2516,18 +2576,31 @@
 },
 {
 "id": "dir-jala_layer_2026-10-31",
-"family": "jala layer",
+"family": "Jala Layer",
 "title": "Jala (@jalacrypto): Fractal Selection & Evaluation Method",
 "kind": "thought_experiment",
-"kind_source": "inferred from text",
+"kind_source": "result file",
 "verdict": "Videos read: 50; Captioned: 12; UNVERIFIED: 38; Videos with 'fractal': 11.",
-"source": "MyTradingSys/research/jala_layer_2026-10-31/FRACTAL_METHOD_JALA.md",
+"source": "MyTradingSys/research/sim_desk/results/dir-jala_layer_2026-10-31.json",
 "exported": true,
 "result_id": "dir-jala_layer_2026-10-31",
-"folder_files": 2,
 "date": "2026-10-31",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
+},
+{
+"id": "st-jala_layer_2026-10-31-trigger_result",
+"family": "jala layer",
+"title": "TRIGGER_RESULT - Jala 400D close trigger study (DEV 2022-01-01..2024-07-01 only)",
+"kind": "backtest",
+"kind_source": "inferred from text",
+"verdict": "no cell passes. Nothing in Jala's 400D trigger (close under/over, 200/400 cross) shows a fee-net edge over random days on DEV; 0 of 12 alt cells reach Holm p < 0.05 (smallest Holm p = 1.000 at m=24). HOLDOUT and VALIDATION unread. Run exac…",
+"source": "MyTradingSys/research/jala_layer_2026-10-31/TRIGGER_RESULT.md",
+"exported": true,
+"result_id": "st-jala_layer_2026-10-31-trigger_result",
+"date": "2026-10-31",
+"status": "SEE_VERDICT",
+"verdict_class": "passed"
 },
 {
 "id": "dir-krown_audit_2026-10-22",
@@ -2898,6 +2971,20 @@
 "date": "2026-10-19",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
+},
+{
+"id": "st-meta_label_breaks_2026-10-31-ext_result",
+"family": "meta label breaks",
+"title": "EXT_RESULT: meta-label 1h lead on fresh 2020-2021 data (2026-11-01, JIS-NB)",
+"kind": "backtest",
+"kind_source": "inferred from text",
+"verdict": "FAIL. Even the",
+"source": "MyTradingSys/research/meta_label_breaks_2026-10-31/EXT_RESULT.md",
+"exported": true,
+"result_id": "st-meta_label_breaks_2026-10-31-ext_result",
+"date": "2026-10-31",
+"status": "FAILED",
+"verdict_class": "failed"
 },
 {
 "id": "dir-meta_label_roadmap_2026-10-31",
@@ -3456,6 +3543,20 @@
 "verdict_class": "other"
 },
 {
+"id": "st-reclaim_close_stop_2026-11-result",
+"family": "reclaim close stop",
+"title": "RESULT: reclaim at the close, stop = close back beyond the level (4h, 1D), DEV only",
+"kind": "backtest",
+"kind_source": "inferred from text",
+"verdict": "",
+"source": "MyTradingSys/research/reclaim_close_stop_2026-11/RESULT.md",
+"exported": true,
+"result_id": "st-reclaim_close_stop_2026-11-result",
+"date": "2026-11-01",
+"status": "SEE_VERDICT",
+"verdict_class": "other"
+},
+{
 "id": "dir-review_chart_cards_2026-10-17",
 "family": "review chart cards",
 "title": "Review of chart checklist, two cards and screenshot extract c5e7b5c17d90 (2026-10-17)",
@@ -3601,6 +3702,21 @@
 "result_id": "lm-l1-d3",
 "date": "2026-09-27",
 "window": "BTCUSDT 1m 2022-01-01..2026-09-26, resampled 15m/1h/4h/1d",
+"status": "SEE_VERDICT",
+"verdict_class": "other"
+},
+{
+"id": "dir-rumers_2026-11-01",
+"family": "rumers",
+"title": "Rumers (@the.rumers) backtest harness: written BEFORE any rule is known (Lab_Guy, 2026-11-01)",
+"kind": "backtest",
+"kind_source": "inferred from text",
+"verdict": "rubric (applied to each extracted rule)",
+"source": "MyTradingSys/research/rumers_2026-11-01/HARNESS.md",
+"exported": true,
+"result_id": "dir-rumers_2026-11-01",
+"folder_files": 1,
+"date": "2026-11-01",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -3851,7 +3967,7 @@
 "source": "MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md",
 "exported": true,
 "result_id": "dir-testnet_cotrade_2026-10-31",
-"folder_files": 1,
+"folder_files": 2,
 "date": "2026-10-31",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
@@ -4132,7 +4248,7 @@
 "source": "MyTradingSys/research/trendlines_2026-10-17/REPORT.md",
 "exported": true,
 "result_id": "dir-trendlines_2026-10-17",
-"folder_files": 27,
+"folder_files": 28,
 "date": "2026-10-17",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
@@ -4199,11 +4315,11 @@
 "title": "Trial ledger: layer lab",
 "kind": "backtest",
 "kind_source": "path",
-"verdict": "425 trial rows logged (every variant tried)",
+"verdict": "427 trial rows logged (every variant tried)",
 "source": "MyTradingSys/research/layer_lab/TRIALS.md",
 "exported": true,
 "result_id": "ledger-layer_lab-trials-md",
-"date": "2026-10-31",
+"date": "2026-11-01",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },

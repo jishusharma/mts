@@ -1,0 +1,227 @@
+{
+ "id": "dir-rumers_2026-11-01",
+ "kind": "thought_experiment",
+ "parity": null,
+ "family": "Rumers (the.rumers)",
+ "provenance": "run",
+ "date": "2026-11-01",
+ "title": "Rumers rules: test harness and fee / power gate (no rule run yet)",
+ "what": [
+  {
+   "name": "Source",
+   "value_plain": "10 @the.rumers videos (coordinator order 2026-11-01); rules come from the caption extracts, not yet on trunk (YouTube caption block on this machine)",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Fees",
+   "value_plain": "backtest/fees.py Binance taker 0.05 % per side (0.10 % round trip); stress column 0.14 % (research_kit, fee + 2+2 bp slippage)",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Stops, win rates, RR",
+   "value_plain": "stops 0.3 / 0.5 / 1 / 2 %, win 40 % x 2R, 55 % x 1R, 33 % x 3R: plausible shapes, replaced by each video's own claim once extracted",
+   "label": "OURS"
+  },
+  {
+   "name": "Run rules",
+   "value_plain": "DEV 2022-04-01..2024-06-30 BTC 1m, decision on a closed bar and +-1 bar shift check, Holm over all rules, every variant in the trial registry, labels SOURCED / OURS",
+   "label": "OURS"
+  }
+ ],
+ "how": "power_table.py: for each stop and shape, cost in R from fees.py, then power_mde (two-sided, alpha 0.05) gives the fills needed for 80 % power and the smallest net edge each sample size can see. Re-run: python power_table.py --sim-json <file>.",
+ "window": "none yet (a gate computed before any data is read); rule runs will use DEV 2022-04-01..2024-06-30",
+ "verdict": {
+  "label": "Not run yet: harness ready, waiting for the caption extracts",
+  "tone": "warn"
+ },
+ "why": [
+  "6 of 12 stop / shape cells lose after fees alone (net <= 0 R), including every 0.3 % stop: tight-stop rules need a large RR to survive.",
+  "A 27-month DEV swing rule with 50-300 fills only detects a net edge of about 0.3-0.5 R; smaller edges read NOT ENOUGH DATA, not PASSED.",
+  "Each Rumers rule gets its own card here when it runs, with example trades on the chart."
+ ],
+ "kpis": [
+  {
+   "label": "cells dead on fees",
+   "value": "6 / 12",
+   "tone": "bad"
+  },
+  {
+   "label": "fee round trip",
+   "value": "0.10 %"
+  },
+  {
+   "label": "rules run",
+   "value": "0"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "table",
+   "title": "Fee and power gate per stop and win-rate shape",
+   "cols": [
+    "stop %",
+    "cost R (fees.py)",
+    "cost R (stress 0.14 %)",
+    "win p",
+    "RR",
+    "gross R",
+    "net R",
+    "N for 80 % power",
+    "power at n=30 / 100 / 300 / 1000",
+    "MDE net R at n=30 / 100 / 300 / 1000"
+   ],
+   "rows": [
+    [
+     "0.3",
+     "0.33",
+     "0.47",
+     "0.40",
+     "2.0",
+     "+0.20",
+     "-0.13",
+     "never (net <= 0)",
+     "n/a",
+     "0.75 / 0.41 / 0.24 / 0.13"
+    ],
+    [
+     "0.3",
+     "0.33",
+     "0.47",
+     "0.55",
+     "1.0",
+     "+0.10",
+     "-0.23",
+     "never (net <= 0)",
+     "n/a",
+     "0.51 / 0.28 / 0.16 / 0.09"
+    ],
+    [
+     "0.3",
+     "0.33",
+     "0.47",
+     "0.33",
+     "3.0",
+     "+0.32",
+     "-0.01",
+     "never (net <= 0)",
+     "n/a",
+     "0.96 / 0.53 / 0.30 / 0.17"
+    ],
+    [
+     "0.5",
+     "0.20",
+     "0.28",
+     "0.40",
+     "2.0",
+     "+0.20",
+     "+0.00",
+     "never (net <= 0)",
+     "n/a",
+     "0.75 / 0.41 / 0.24 / 0.13"
+    ],
+    [
+     "0.5",
+     "0.20",
+     "0.28",
+     "0.55",
+     "1.0",
+     "+0.10",
+     "-0.10",
+     "never (net <= 0)",
+     "n/a",
+     "0.51 / 0.28 / 0.16 / 0.09"
+    ],
+    [
+     "0.5",
+     "0.20",
+     "0.28",
+     "0.33",
+     "3.0",
+     "+0.32",
+     "+0.12",
+     "1928",
+     "6% / 10% / 20% / 52%",
+     "0.96 / 0.53 / 0.30 / 0.17"
+    ],
+    [
+     "1.0",
+     "0.10",
+     "0.14",
+     "0.40",
+     "2.0",
+     "+0.20",
+     "+0.10",
+     "1695",
+     "7% / 10% / 22% / 58%",
+     "0.75 / 0.41 / 0.24 / 0.13"
+    ],
+    [
+     "1.0",
+     "0.10",
+     "0.14",
+     "0.55",
+     "1.0",
+     "+0.10",
+     "+0.00",
+     "never (net <= 0)",
+     "n/a",
+     "0.51 / 0.28 / 0.16 / 0.09"
+    ],
+    [
+     "1.0",
+     "0.10",
+     "0.14",
+     "0.33",
+     "3.0",
+     "+0.32",
+     "+0.22",
+     "574",
+     "10% / 22% / 53% / 96%",
+     "0.96 / 0.53 / 0.30 / 0.17"
+    ],
+    [
+     "2.0",
+     "0.05",
+     "0.07",
+     "0.40",
+     "2.0",
+     "+0.20",
+     "+0.15",
+     "753",
+     "9% / 18% / 42% / 90%",
+     "0.75 / 0.41 / 0.24 / 0.13"
+    ],
+    [
+     "2.0",
+     "0.05",
+     "0.07",
+     "0.55",
+     "1.0",
+     "+0.10",
+     "+0.05",
+     "3108",
+     "6% / 8% / 14% / 36%",
+     "0.51 / 0.28 / 0.16 / 0.09"
+    ],
+    [
+     "2.0",
+     "0.05",
+     "0.07",
+     "0.33",
+     "3.0",
+     "+0.32",
+     "+0.27",
+     "381",
+     "12% / 30% / 70% / 100%",
+     "0.96 / 0.53 / 0.30 / 0.17"
+    ]
+   ],
+   "caption": "never (net <= 0) = the shape loses after fees at that stop, so no sample size helps"
+  }
+ ],
+ "source_files": [
+  "MyTradingSys/research/rumers_2026-11-01/HARNESS.md",
+  "MyTradingSys/research/rumers_2026-11-01/power_table.py"
+ ],
+ "commit": "this card"
+}

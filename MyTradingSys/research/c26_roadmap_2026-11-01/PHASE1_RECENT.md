@@ -21,7 +21,7 @@ Move after the take-out (median; + = kept going through the level, - = reversed)
 |---|---|---|
 | UP highs | +0.13 % | 0.57 % / 1.06 % |
 | UP lows | -0.37 % | 0.70 % / 1.41 % |
-| DOWN highs | -0.95 % | 0.37 % / 0.65 % |
+| DOWN highs | -0.94 % | 0.37 % / 0.65 % |
 | DOWN lows | +0.15 % | 0.85 % / 1.67 % |
 
 ## 2. Context splits (highs and lows pooled, mirrored; closed events; small n = description, not evidence)
@@ -44,7 +44,7 @@ Move after the take-out (median; + = kept going through the level, - = reversed)
 1. The magnet did not change with the phase: 68-76 % of held levels were taken within 24h in both UP and DOWN, the same as
    the 4-year C26 rate (72 %). "The held high gets taken" is not where the context matters.
 2. The context decides what happens AFTER the take-out. A take-out against the trend reverses: in DOWN, a taken high closed
-   back under within 1h 77 % of the time, fell back to L1 within 24h 60 %, median -0.95 % 24h later; in UP the same step was
+   back under within 1h 77 % of the time, fell back to L1 within 24h 60 %, median -0.94 % 24h later; in UP the same step was
    56 %, 38 %, +0.13 % (it kept going). Lows mirror it: taken lows in UP bounced (-0.37 %), in DOWN they kept going (+0.15 %).
    The operator's "H1 taken, then price falls" is the DOWN-phase version of the roadmap.
 3. The full five-step chain is the minority path: L1 swept first AND then H1 taken = 17/73 UP highs, 8/38 DOWN highs (about

@@ -1,0 +1,38 @@
+{
+ "id": "st-meta_label_breaks_2026-10-31-ext_result",
+ "kind": "backtest",
+ "family": "Meta Label Breaks",
+ "title": "EXT_RESULT: meta-label 1h lead on fresh 2020-2021 data (2026-11-01, JIS-NB)",
+ "provenance": "source-extracted",
+ "date": "2026-10-31",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "FAIL. Even the",
+  "tone": "bad"
+ },
+ "why": [
+  "Pass rule: top third net > 0 with CI lower > 0 and p <= 0.05. Top third net is -0.199 %, CI upper -0.017 < 0. Verdict FAIL. Even the",
+  "Power: the gate gave a minimum detectable top-third net of 0.19 % + cost at n about 260; the observed top third (n 303) is negative by"
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/meta_label_breaks_2026-10-31/EXT_RESULT.md"
+ ],
+ "commit": "951a37209"
+}

@@ -1,0 +1,38 @@
+{
+ "id": "st-reclaim_close_stop_2026-11-result",
+ "kind": "backtest",
+ "family": "Reclaim Close Stop",
+ "title": "RESULT: reclaim at the close, stop = close back beyond the level (4h, 1D), DEV only",
+ "provenance": "source-extracted",
+ "date": "2026-11-01",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "",
+  "tone": "info"
+ },
+ "why": [
+  "Answer: INCONCLUSIVE at 4h and 1D. The video's timing (enter at the reclaim close, stop on a close back below) gives a positive but not distinguishable-from-zero fee-net mean at 4h, and 1D has too few events to say anything. DEV CI lower bound is not above 0,…",
+  "FAIL/PASS scope: none reached. What this does not say: the mirror (trading the failed reclaim, excluded by the card), intrabar stops (stop fills at the bar close, which understates slippage on a gap), maker fees, other swing definitions or caps, other symbols."
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/reclaim_close_stop_2026-11/RESULT.md"
+ ],
+ "commit": "425a4de0e"
+}

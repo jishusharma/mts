@@ -13,7 +13,8 @@
   "tone": "info"
  },
  "why": [
-  "> \"If we close beneath the 400, then that very well may indicate and confirm a failed cup and handle. And what does that mean? Well, if that happens, then now we look at the fractal.\""
+  "\"> \\\"If we close beneath the 400, then that very well may indicate and confirm a failed cup and handle. And what does that mean? Well, if that happens, then now we look at the fractal.\\\"\"",
+  "\"n_trades\": \"the source does not state a trade count\","
  ],
  "kpis": [],
  "examples": [
@@ -31,7 +32,7 @@
   "parameters": "no rule or parameter section found in the source"
  },
  "source_files": [
-  "MyTradingSys/research/jala_layer_2026-10-31/FRACTAL_METHOD_JALA.md"
+  "MyTradingSys/research/sim_desk/results/dir-jala_layer_2026-10-31.json"
  ],
- "commit": "ebf18f19d"
+ "commit": "1d4d59085"
 }

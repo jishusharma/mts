@@ -1,0 +1,49 @@
+{
+ "id": "st-jala_layer_2026-10-31-trigger_result",
+ "kind": "backtest",
+ "family": "Jala Layer",
+ "title": "TRIGGER_RESULT - Jala 400D close trigger study (DEV 2022-01-01..2024-07-01 only)",
+ "provenance": "source-extracted",
+ "date": "2026-10-31",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2022-01-01 to 2024-07-01 (as written in the source)",
+ "verdict": {
+  "label": "no cell passes. Nothing in Jala's 400D trigger (close under/over, 200/400 cross) shows a fee-net edge over random days on DEV; 0 of 12 alt cells reach Holm p < 0.05 (smallest Holm p = 1.000 at m=24). HOLDOUT and VALIDATION unread. Run exac…",
+  "tone": "good"
+ },
+ "why": [
+  "Verdict: no cell passes. Nothing in Jala's 400D trigger (close under/over, 200/400 cross) shows a fee-net edge over random days on DEV; 0 of 12 alt cells reach Holm p < 0.05 (smallest Holm p = 1.000 at m=24). HOLDOUT and VALIDATION unread. Run exactly as in P…",
+  "Alts pooled = 20 coins; BTC = n 1-2 per cell, descriptive only (INCONCLUSIVE, no inference).",
+  "Close-under then short: mean fee-net is slightly negative at every horizon (-1.0 %, -1.1 %, -0.1 %) and not better than random days (null means are as negative or more because DEV was a bear market). The \"failed cup and handle\" signal does not add short edge…",
+  "Close-over then long: +0.2 %, +3.8 %, +1.2 % fee-net, all CI straddling zero, p 0.18-0.87: INCONCLUSIVE, not a signal."
+ ],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "2"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 2,
+   "quote": "- Close-under then short: mean fee-net is slightly negative at every horizon (-1.0 %, -1.1 %, -0.1 %) and not better than random days (null means are as negative or more because DEV was a bear market…"
+  }
+ ],
+ "missing": {
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/jala_layer_2026-10-31/TRIGGER_RESULT.md"
+ ],
+ "commit": "59755f5de"
+}
