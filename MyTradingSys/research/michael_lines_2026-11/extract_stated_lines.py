@@ -22,7 +22,7 @@ def extract_lines(lines, video, radius=6):
         asset = next((a for a in ASSETS if re.search(r"\b" + re.escape(a), low)), "NOT_IN_DATA")
         kinds = [k for k, rx in KINDS if re.search(rx, low)] or ["unspecified"]
         out.append({"video": video, "timestamp": m.group(1), "quote": m.group(2).strip(),
-                    "quote_window": " ".join(p.group(2) for p in parsed[max(0, i - 1):i + 2] if p),
+                    "quote_window": " ".join(p.group(2) for p in (parsed[j] for j in (i - 1, i, i + 1) if 0 <= j < len(parsed)) if p),
                     "asset": asset, "kind": "/".join(kinds)})
     return out
 
