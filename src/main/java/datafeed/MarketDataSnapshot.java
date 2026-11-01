@@ -399,6 +399,8 @@ public class MarketDataSnapshot {
         oi.put("confidence", oiAvailable ? CONFIDENCE_HIGH : CONFIDENCE_LOW);
         oi.set("peak_24h", oiFetch.get("peak_24h"));
         root.set("open_interest", oi);
+        ObjectNode positioning = buildPositioning(client, symbol, klines1m, nd15m, mapper);
+        root.set("positioning", positioning);
         root.set("session", buildSession(klines1m, priorDayClose, currentPrice, dailyVp.get("vah").asDouble(), dailyVp.get("val").asDouble(), priorDayVp.get("high").asDouble(), priorDayVp.get("low").asDouble()));
         root.set("session_timing", sessionTiming);
         root.set("spot_perp_basis", spotPerpBasis);
@@ -1348,6 +1350,13 @@ public class MarketDataSnapshot {
         // P0-12: no OI series in the replay input (HistoricalSource has none), and historical mode makes no live call.
         oi.set("peak_24h", peakNode(mapper, null, 0, true, CONFIDENCE_LOW));
         root.set("open_interest", oi);
+        ObjectNode positioning = mapper.createObjectNode();
+        positioning.put("net_longs", false);
+        positioning.put("net_longs_new", false);
+        positioning.put("net_shorts", false);
+        positioning.put("net_shorts_new", false);
+        positioning.put("confidence", CONFIDENCE_LOW);
+        root.set("positioning", positioning);
         ObjectNode sessionTiming = buildSessionTiming(now);
         root.set("session_timing", sessionTiming);
         root.set("spot_perp_basis", spotPerpBasis);
@@ -1366,7 +1375,7 @@ public class MarketDataSnapshot {
         ObjectNode dataQuality = mapper.createObjectNode();
         ArrayNode unavailableFields = dataQuality.putArray("unavailable_fields");
         for (String f : new String[]{"spot_perp_basis", "oi_breakdown", "trade_flow.net_delta_1m", "trade_flow.net_delta_5m",
-                "trade_flow.net_delta_15m", "trade_flow.net_delta_1h", "conditions.book_imbalance", "order_book_depth.bid_ask_ratio", "funding.current_rate"}) {
+                "trade_flow.net_delta_15m", "trade_flow.net_delta_1h", "conditions.book_imbalance", "order_book_depth.bid_ask_ratio", "funding.current_rate", "positioning"}) {
             unavailableFields.add(f);
         }
         dataQuality.put("reason", "historical reconstruction from klines only; live-only inputs are null/UNAVAILABLE, never 0.0");
@@ -1632,6 +1641,67 @@ public class MarketDataSnapshot {
             return peakNode(mapper, v, OI_PEAK_POINTS, true, CONFIDENCE_HIGH);
         } catch (Exception e) {
             return peakNode(mapper, null, 0, true, CONFIDENCE_LOW);
+        }
+    }
+
+    /**
+     * P0-13 / T034: 15m OI x CVD cross positioning flags.
+     * net_longs: 15m OI rising and 15m CVD > 0
+     * net_shorts: 15m OI rising and 15m CVD < 0
+     * net_longs_new / net_shorts_new: flag newly flipped on in the last 15m bar
+     * If OI hist is missing or unavailable: all false + LOW confidence (fail closed).
+     */
+    static ObjectNode buildPositioning(BinanceClient client, String symbol, JsonNode klines1m, double curCvd15m, ObjectMapper mapper) {
+        ObjectNode node = mapper.createObjectNode();
+        try {
+            JsonNode oiHist = client.openInterestHist(symbol, "15m", 5);
+            if (oiHist == null || oiHist.size() < 2) {
+                node.put("net_longs", false);
+                node.put("net_longs_new", false);
+                node.put("net_shorts", false);
+                node.put("net_shorts_new", false);
+                node.put("confidence", CONFIDENCE_LOW);
+                return node;
+            }
+            int oiSize = oiHist.size();
+            double currOi = oiHist.get(oiSize - 1).get("sumOpenInterest").asDouble();
+            double prevOi = oiHist.get(oiSize - 2).get("sumOpenInterest").asDouble();
+            double dOi = currOi - prevOi;
+
+            boolean netLongs = dOi > 0 && curCvd15m > 0;
+            boolean netShorts = dOi > 0 && curCvd15m < 0;
+
+            boolean prevNetLongs = false;
+            boolean prevNetShorts = false;
+
+            if (oiSize >= 3 && klines1m != null && klines1m.size() >= 30) {
+                double prev2Oi = oiHist.get(oiSize - 3).get("sumOpenInterest").asDouble();
+                double prevDOi = prevOi - prev2Oi;
+                int n = klines1m.size();
+                double prevCvd15m = 0.0;
+                for (int i = n - 30; i < n - 15; i++) {
+                    JsonNode bar = klines1m.get(i);
+                    double barVol = bar.get(5).asDouble();
+                    double barTakerBuy = bar.get(9).asDouble();
+                    prevCvd15m += (barTakerBuy * 2.0) - barVol;
+                }
+                prevNetLongs = prevDOi > 0 && prevCvd15m > 0;
+                prevNetShorts = prevDOi > 0 && prevCvd15m < 0;
+            }
+
+            node.put("net_longs", netLongs);
+            node.put("net_longs_new", netLongs && !prevNetLongs);
+            node.put("net_shorts", netShorts);
+            node.put("net_shorts_new", netShorts && !prevNetShorts);
+            node.put("confidence", CONFIDENCE_HIGH);
+            return node;
+        } catch (Exception e) {
+            node.put("net_longs", false);
+            node.put("net_longs_new", false);
+            node.put("net_shorts", false);
+            node.put("net_shorts_new", false);
+            node.put("confidence", CONFIDENCE_LOW);
+            return node;
         }
     }
 
