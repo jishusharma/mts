@@ -4,6 +4,21 @@
   "commands": [
     "python -m pytest MyTradingSys/backtest/layers/fabio MyTradingSys/backtest/layers/alerts/test_live_runner_layers.py MyTradingSys/research/layer_lab/fabio_escalation_event_table/test_event_table.py -q"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-01T17:25:02Z",
+    "misses": 26,
+    "reads": [
+      "MyTradingSys/research/layer_lab/fabio_escalation_event_table/event_table.py",
+      "MyTradingSys/backtest/layers/fabio/run_backtest.py",
+      "MyTradingSys/research/layer_lab/fabio_escalation_event_table/test_event_table.py",
+      "MyTradingSys/backtest/layers/run_bracket_grid.py",
+      "MyTradingSys/backtest/tom_bt_run.py",
+      "MyTradingSys/research/layer_lab/fabio_escalation_event_table/REPORT.md",
+      "MyTradingSys/backtest/layers/fabio/test_fabio_escalation_edge.py"
+    ],
+    "session": "agent-ad39499640ca5daa2"
+  },
   "created": "2026-10-31T10:04:45Z",
   "depends_on": [],
   "done_when": "Both detectors reject the non-matching cases and keep the matching ones; legacy callers reproduce 652 DEV 1h escalation events (event_table REPORT.md) with require_break=False; old-vs-new counts in commit body; review APPROVE on plan and diff",
