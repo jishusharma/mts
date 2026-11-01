@@ -1,9 +1,19 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T05:04:30Z",
   "commands": [
     "python -m pytest scripts/dev/test_mts_doctor.py -q"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-01T05:04:34Z",
+    "misses": 11,
+    "reads": [
+      "scripts/dev/mts_doctor.py"
+    ],
+    "session": "agent-aeab041c303f3ae32"
+  },
   "created": "2026-11-01T01:53:07Z",
   "depends_on": [],
   "done_when": "mts_doctor.py has check OF-STALE (in CHECK_NAMES and the fns list) that returns WARN for a log mtime older than 60 min, OK for a fresh one and OK when the log is absent; 3 asserts in test_mts_doctor.py fail on old code; Result gives content sha.",
@@ -16,6 +26,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "OF-STALE in mts_doctor.py",
+      "ref": "282d95e35",
+      "utc": "2026-11-01T05:04:30Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -35,7 +51,12 @@
   "refs": [
     "MyTradingSys/scripts/dev/mts_doctor.py"
   ],
-  "result": "",
+  "result": "OF-STALE in mts_doctor.py",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/mts_doctor.py",
     "scripts/dev/test_mts_doctor.py"
@@ -48,12 +69,13 @@
   "sources": [
     "scripts/dev/mts_doctor.py:652-679; MyTradingSys/research/live_not_fired_2026-10-29/RESULT.md:31 (stuck 8 days)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "1 Fail-first tests with an injected mtime and now (pattern: test_of_restarts_warns_on_loop, test_mts_doctor.py:327)",
     "2 mts_doctor.py after of_restarts (line 655): of_stale(repo, now=None, mtime=None) with constant OF_STALE_MIN = 60 (OURS); WARN text names the log path and 'writer may be dead or stuck (exit 4 = HTTP 400 resume point)'",
     "3 add OF-STALE to CHECK_NAMES (line 370) and the fns tuple (line ~740); run test_mts_doctor.py and mts_doctor.py once Verify: content commit sha; git cherry origin/fast-track <sha> empty; git ls-tree -r origin/fast-track --name-only lists the delivered files."
   ],
+  "taken": "2026-11-01T05:04:30Z",
   "tests": "scripts/dev/test_mts_doctor.py: test_of_stale_warns_when_log_older_than_60min, test_of_stale_ok_fresh_or_absent; both fail on current code (no of_stale)",
   "title": "Order-flow writer log on JIS-NB stops at Oct 23 with no alert: add a staleness check (log mtime older than 1 h) next to OF-RESTARTS in mts_doctor",
   "weight": "ROUTINE",
