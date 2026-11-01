@@ -177,6 +177,47 @@ class Safety(Env):
         self.assertIn("jis/mts-x-ahead", g(self.prim, "branch"))
         self.assertEqual([r["name"] for r in s["held"]], ["mts-x-ahead"])
 
+    def test_hand_made_tree_whose_branch_vanished_is_a_trunk_copy_and_removed(self):
+        p = self.tree("mts-x-lost")
+        g(self.prim, "update-ref", "-d", "refs/heads/jis/mts-x-lost")     # what `branch -d JIS/x` did to a jis/x worktree on Windows
+        self.assertIn("A  a.txt", g(p, "status", "--short"))               # git now shows all of trunk as staged-new
+        s, out = self.run_maint()
+        self.assertFalse(p.exists())
+        self.assertEqual(s["held"], [])
+        self.assertIn("mts-x-lost", s["removed"])
+
+    def test_trunk_copy_with_real_edits_is_reported_then_patch_saved(self):
+        p = self.tree("mts-x-lostdirty")
+        g(self.prim, "update-ref", "-d", "refs/heads/jis/mts-x-lostdirty")
+        (p / "a.txt").write_text("changed")
+        (p / "scratch.txt").write_text("untracked work")
+        s, _ = self.run_maint(now=time.time() + 10 * 3600)
+        self.assertTrue(p.exists())
+        self.assertEqual([r["why"] for r in s["held"]], ["2 uncommitted file(s) in a trunk copy (branch gone)"])
+        s, _ = self.run_maint()
+        self.assertFalse(p.exists())
+        dest = self.prim / "Dumps" / "wt_rescue" / "mts-x-lostdirty"
+        self.assertIn("+changed", (dest / "uncommitted.patch").read_text())
+        self.assertEqual((dest / "untracked" / "scratch.txt").read_text(), "untracked work")
+
+    def test_merged_branch_a_worktree_names_in_another_case_is_kept(self):
+        p = self.tree("mts-x-case", branch="jis/mixed")
+        (p / ".mts_live").write_text("")
+        g(p, "symbolic-ref", "HEAD", "refs/heads/jis/MIXED")              # how a hand-made tree looks on a case-insensitive FS
+        self.run_maint()
+        self.assertIn("jis/mixed", g(self.prim, "branch"))
+
+    def test_idle_tree_with_unshipped_commits_is_parked_branch_kept_and_pushed(self):
+        p = self.tree("mts-x-park", commit=True)
+        s, out = self.run_maint(now=time.time() + (wt_maint.PARK_IDLE_HOURS + 8) * 3600)
+        self.assertFalse(p.exists())
+        self.assertEqual(s["parked"], ["mts-x-park"])
+        self.assertEqual(s["held"], [])
+        self.assertIn("jis/mts-x-park", g(self.prim, "branch"))
+        self.assertIn("jis/mts-x-park", g(self.prim, "ls-remote", "--heads", "origin"))
+        self.assertIn("parked", (self.prim / "Dumps" / "worktree_report.txt").read_text())
+        self.assertTrue(any("restore: git worktree add ../mts-x-park jis/mts-x-park" in l for l in out))
+
     def test_ignored_data_moved_to_dumps_before_removal(self):
         (self.prim / ".gitignore").write_text("out/\n")
         g(self.prim, "add", ".")
