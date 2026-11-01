@@ -13,6 +13,6 @@ Primary cell (d=1, h=60), mean G after funding, % per encounter (before the 0.14
 | notF | 1399 | -0.00674 | -0.00548 | +0.00126 |
 | C | 1439 | -0.00813 | -0.00688 | +0.00125 |
 
-Verdict INCONCLUSIVE before and after: no flip. Largest arm move +0.0013 pp; largest single-cell funding difference 0.129 %.
+Verdict INCONCLUSIVE before and after: no flip; INCONCLUSIVE is forced by the pre-registered sample size rule n_T=40 < 200 (PRE_REG.md:80), not by funding impact being negligible. Largest arm move in the primary cell is +0.0013 pp (T06 audit found a secondary cell move of up to +0.0181 pp for preopen S1 SHORT h=180); largest single-cell funding difference 0.129 %.
 Numbers equal `scripts/T06/out/funding_rerun.json` (same formula, independent audit script). No published verdict, ledger row or
 pre-registered bar was edited; the RESULT.md text still describes the flat substitute it was produced with.
