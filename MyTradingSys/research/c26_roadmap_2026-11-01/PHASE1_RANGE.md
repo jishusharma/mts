@@ -142,3 +142,86 @@ confirms a reversal (higher timeframes outrank it; 4h/1D are still inside the le
 which went back to L1 in 18 of 30 cases in Phase 1 (seen period). Two SOURCED readings of one event point opposite ways; only DEV settles it.
 (5) Tom's levels are a different family (FORMULAS 18.4: POC/VAH/VAL anchored at the last meaningful pivots), not swing highs; the Coinglass
 panel adds OI rising into the test (97.6K) with CVD flat (-18.8K), which Phase 1 counted as P1_oi_up (no edge found).
+
+<!-- Q5 appended 2026-11-01 12:10Z by phase1_touch_look.py (shots e40e870ab33b, b98031bacd10 CoinGlass 15m; TradingView WT_CROSS_LB shot 11:33Z) -->
+## Q5. The touch after the bottom: what the 15m chart showed at the 30 DOWN-high take-outs (design look, n=30)
+
+| take-out (UTC) | H1 | RSI div vs H1 | close > BB up | StochRSI K | wt1 | WT cross dn (h) | OI -1..+4 bars % | CVD impulse at touch | up / down impulses after | first up-impulse (h) | RSI then | single short net, exit |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 09-23 01:00 | 86718 | no | yes | 99 | 27 | 0.8 | -0.36 | up | 3 / 8 | 1.2 | 57 | +0.63 L1 |
+| 09-24 14:15 | 84670 | no | yes | 98 | 50 | 0.5 | -0.28 | - | 1 / 5 | 20.8 | 69 | +0.69 L1 |
+| 09-25 11:00 | 84942 | yes 84b | yes | 86 | 43 | 0.8 | -0.66 | up | 0 / 3 | - | - | +0.82 L1 |
+| 09-25 11:00 | 84888 | no | yes | 86 | 43 | 0.8 | -0.66 | up | 0 / 3 | - | - | +1.04 L1 |
+| 09-30 12:45 | 85159 | no | yes | 95 | 63 | 0.8 | -2.53 | up | 2 / 3 | 19.2 | 36 | -0.02 L1 |
+| 09-29 11:45 | 84381 | no | yes | 58 | 49 | 1.8 | -0.07 | - | 2 / 4 | 3.8 | 31 | +0.42 24h |
+| 10-01 15:00 | 84420 | yes 122b | exc | 89 | 31 | 0.5 | +0.92 | up | 6 / 7 | 0.0 | 57 | -1.49 stop |
+| 10-02 03:00 | 85274 | yes 72b | yes | 91 | 47 | 2.2 | +1.43 | up | 0 / 1 | - | - | +0.71 L1 |
+| 10-02 04:15 | 85650 | yes 190b | yes | 97 | 70 | 1.0 | +1.30 | up | 0 / 2 | - | - | +1.20 24h |
+| 10-06 09:45 | 86130 | yes 56b | exc | 75 | 30 | 2.5 | +0.31 | - | 5 / 3 | 3.8 | 61 | +0.89 L1 |
+| 10-09 11:45 | 83521 | no | yes | 78 | 47 | 1.0 | +0.52 | - | 6 / 2 | 11.0 | 53 | +0.79 L1 |
+| 10-09 11:30 | 82776 | no | yes | 49 | 32 | 1.2 | -0.36 | - | 6 / 2 | 11.2 | 53 | -0.50 24h |
+| 10-11 15:45 | 83529 | yes 268b | yes | 81 | 62 | 1.2 | -0.22 | up | 4 / 5 | 9.2 | 69 | +0.76 24h |
+| 10-12 05:00 | 84199 | yes 53b | yes | 100 | 21 | 1.0 | +0.89 | - | 4 / 5 | 1.8 | 62 | +0.60 L1 |
+| 10-13 03:30 | 83148 | no | exc | 99 | 22 | 2.5 | +0.77 | - | 2 / 5 | 22.0 | 48 | -0.97 24h |
+| 10-14 03:30 | 83850 | no | yes | 100 | 43 | 1.5 | -0.17 | - | 3 / 6 | 4.5 | 65 | +0.89 L1 |
+| 10-16 11:00 | 82634 | no | yes | 86 | 8 | 1.2 | +0.10 | up | 2 / 3 | 6.5 | 45 | +0.57 L1 |
+| 10-18 01:30 | 81821 | no | yes | 100 | 40 | 2.8 | -0.63 | up | 9 / 8 | 0.5 | 58 | +0.55 L1 |
+| 10-18 01:30 | 81770 | no | yes | 100 | 40 | 2.8 | -0.63 | up | 9 / 8 | 0.5 | 58 | +0.92 L1 |
+| 10-19 00:30 | 82295 | yes 88b | no | 96 | 51 | 1.2 | +0.61 | up | 0 / 2 | - | - | +0.52 24h |
+| 10-19 07:30 | 82941 | yes 273b | no | 72 | 59 | 0.2 | +0.69 | - | 3 / 5 | 17.2 | 39 | +1.48 24h |
+| 10-20 04:15 | 82270 | no | no | 97 | 22 | 1.0 | +0.08 | - | 8 / 3 | 3.2 | 38 | +0.53 L1 |
+| 10-21 08:45 | 83439 | yes 103b | exc | 92 | 46 | 1.2 | +0.86 | up | 5 / 15 | 0.0 | 65 | -1.33 stop |
+| 10-24 23:30 | 80846 | no | yes | 100 | 43 | 1.5 | -0.55 | - | 1 / 2 | 21.5 | 44 | +0.72 L1 |
+| 10-27 21:30 | 81034 | no | yes | 47 | 56 | 1.0 | -0.13 | up | 15 / 1 | 0.0 | 66 | -0.46 24h |
+| 10-27 21:30 | 80952 | no | yes | 47 | 56 | 1.0 | -0.13 | up | 14 / 1 | 4.2 | 60 | -1.15 stop |
+| 10-27 12:45 | 80388 | no | yes | 100 | 42 | 0.8 | +0.16 | up | 16 / 1 | 0.0 | 69 | -1.13 stop |
+| 10-27 21:30 | 80845 | no | yes | 47 | 56 | 1.0 | -0.13 | up | 14 / 1 | 4.2 | 60 | -1.16 stop |
+| 10-29 15:45 | 81823 | yes 126b | no | 92 | 69 | 0.5 | -1.51 | - | 0 / 9 | - | - | +1.59 L1 |
+| 10-29 15:45 | 81789 | no | no | 92 | 69 | 0.5 | -1.51 | - | 0 / 9 | - | - | +2.43 L1 |
+
+RSI div = excursion-high bar above H1 with lower RSI(14) than the H1 bar, 'Nb' = bars between the two highs; BB = close of the take-out bar above the upper band ('exc' = some bar of the excursion was); impulses counted from the single short's entry (else the take-out) to its exit; OI = Binance USDT-M sum_open_interest, close of the bar before the touch to 1h after.
+
+| factor at the touch | yes: n, reached L1, mean net unit-% | no: n, reached L1, mean net unit-% |
+|---|---|---|
+| RSI div vs H1 | 11: 5 L1, +0.52 | 19: 12 L1, +0.25 |
+| close > BB up at touch | 21: 13 L1, +0.33 | 9: 4 L1, +0.41 |
+| close > BB up in excursion | 25: 14 L1, +0.16 | 5: 3 L1, +1.31 |
+| StochRSI K >= 80 | 22: 15 L1, +0.46 | 8: 2 L1, +0.04 |
+| WT OB (wt1 >= 53) | 9: 3 L1, +0.52 | 21: 14 L1, +0.28 |
+| WT cross down <= 2h | 25: 13 L1, +0.34 | 5: 4 L1, +0.42 |
+| OI up -1..+4 bars | 13: 6 L1, +0.18 | 17: 11 L1, +0.48 |
+| CVD up-impulse at touch | 17: 8 L1, +0.06 | 13: 9 L1, +0.73 |
+| CVD up-impulse within 2h after entry | 8: 4 L1, -0.21 | 22: 13 L1, +0.56 |
+
+CVD impulses per session over the whole window (bars, up, down, up per 24h of that session):
+
+| session | bars | up | down | up per session-day |
+|---|---|---|---|---|
+| ASIA | 3724 | 176 | 195 | 1.32 |
+| LONDON | 3436 | 166 | 202 | 1.26 |
+| US | 3432 | 236 | 181 | 1.79 |
+| LATE | 2112 | 61 | 81 | 0.46 |
+
+RSI(14) 15m at the bar of every up-impulse (operator: the next push comes near the 40 line):
+
+| RSI at up-impulse | count |
+|---|---|
+| <40 | 66 |
+| 40-50 | 97 |
+| 50-60 | 160 |
+| >=60 | 316 |
+
+Reading (OURS, n=30 take-outs = ~22 distinct touches, 3 same-bar duplicates on 10-27 21:30 and 2 on 09-25 / 10-18 / 10-29):
+1. StochRSI K >= 80 at the touch is the one split that moved both counts and money (22 yes: 15 reached L1, +0.46; 8 no: 2, +0.04).
+2. RSI(14) bearish divergence vs H1 helped the mean (+0.52 vs +0.25) but 2 of the 4 stops carried one (10-01, 10-21); the bars apart
+   (53..273) show no pattern at this n. A 15m close outside the upper band did not discriminate (21 of 30 had it; +0.33 vs +0.41).
+3. WaveTrend: the cross down came within 2h in 25 of 30 touches, so it confirms almost every touch and selects nothing; OB (wt1 >= 53)
+   at the touch 9 of 30, +0.52 vs +0.28. Compare it in Phase 3 as context (OB yes/no), never as the trigger (C27/C28 said the same).
+4. CVD forces: an up-impulse AT the touch (17 of 30) = the short did worse (+0.06 vs +0.73); an up-impulse in the first 2h after entry
+   (8 of 30) = -0.21 vs +0.56. The operator's "is CVD still firing" question has a measurable form: no up-impulse in the first 2h.
+   Over the window up-impulses come 1.3-1.8 per session-day (US most, LATE 0.46) and 74 % of them at RSI >= 50; only 10 % at RSI < 40,
+   so "the next push comes near the 40 line" is not the common case here (first up-impulse after entry: RSI 31..69, median ~57).
+5. OI rising into the touch (-1..+4 bars) went with the weaker shorts (+0.18 vs +0.48): OI that keeps climbing through the level is
+   the continuation case he described.
+Not evidence: SEEN window, the single short's own stop/target, factors read after the fact. They become pre-registered H2 filters
+of Phase 3 (DEV 2022-04..2024-06, fee-net, one-bar shift, Holm): StochRSI >= 80, no CVD up-impulse at the touch, OI not rising.
