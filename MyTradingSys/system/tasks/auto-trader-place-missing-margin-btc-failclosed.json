@@ -3,6 +3,18 @@
   "asks": "",
   "closed": "2026-11-01T08:41:40Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-01T08:42:01Z",
+    "misses": 25,
+    "reads": [
+      "MyTradingSys/execution/test_auto_trader_failclosed.py",
+      "MyTradingSys/execution/auto_trader.py",
+      "MyTradingSys/execution/mutation_check_auto_trader_failclosed.py",
+      "MyTradingSys/execution/test_auto_trader.py"
+    ],
+    "session": "agent-aae04cf56e4c5c506"
+  },
   "created": "2026-11-01T05:56:05Z",
   "depends_on": [],
   "done_when": "place(sig without margin_btc, dry_run=False) returns outcome margin_short and runs no new_plan; dry_run unchanged; cycle() path with attach_margin unchanged; new tests fail on old code",
