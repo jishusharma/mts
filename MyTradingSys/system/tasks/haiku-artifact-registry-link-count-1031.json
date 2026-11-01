@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T21:11:45Z",
   "commands": [
     "python scripts/dev/artifacts.py check",
     "python scripts/dev/artifacts.py audit-links"
@@ -17,11 +19,17 @@
   "lane": "HAIKU",
   "latest": [
     {
+      "kind": "ship",
+      "line": "pages ok 13 of 13 (2026-10-31 ref: 11); links OK 2, not OK 2 (2026-10-31 ref: 5 OK): mts_l",
+      "ref": "a3a9ce040",
+      "utc": "2026-11-01T21:11:45Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "ship: 3 file(s)",
-      "ref": "32a3ee613a8f",
-      "utc": "2026-10-31T00:54:14Z"
+      "line": "sim_desk page republished (version 14, field guide card)",
+      "ref": "156e3e22330c",
+      "utc": "2026-11-01T17:44:12Z"
     }
   ],
   "layers": [],
@@ -31,11 +39,16 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T08:47:11Z",
+  "refreshed": "2026-11-01T21:11:33Z",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "pages ok 13 of 13 (2026-10-31 ref: 11); links OK 2, not OK 2 (2026-10-31 ref: 5 OK): mts_layer_map, mts_home NEWER_REPO_COPY",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/artifacts/registry.json",
     "scripts/dev/artifacts.py"
@@ -43,15 +56,16 @@
   "scope_out": [
     "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no product-code edit; no Artifact publish"
   ],
-  "scope_sha": "32a3ee613a8f",
+  "scope_sha": "156e3e22330c",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "run python scripts/dev/artifacts.py check and keep the final summary line (reference 2026-10-31: 'artifacts: 11 pages ok')",
     "run python scripts/dev/artifacts.py audit-links and count rows whose status column is OK vs anything else (reference: 5 link rows, all OK)",
     "report: <n> pages ok of <total>; <k> link rows OK, <j> not OK with each not-OK row quoted; a changed number is filed as a raw card via tasks.py new"
   ],
+  "taken": "2026-11-01T21:11:39Z",
   "tests": "count-based: both numbers present; card not done on a command crash or an empty parse",
   "title": "Haiku: count artifacts.py check pages and audit-links OK vs not-OK rows, report",
   "weight": "ROUTINE",
