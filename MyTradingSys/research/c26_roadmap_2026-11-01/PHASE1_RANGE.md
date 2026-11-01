@@ -90,5 +90,55 @@ simulator card `c26-range-ladder`. All numbers OURS.
 K=3, LB=60 bars, divergence = pivot high above a prior pivot high (<= LB bars back) with a lower RSI; known 3 bars after the pivot.
 Window = from the 1m bar that broke H1 to the 15m bar that reached L1, else 24h. cut = exit beyond the data end, excluded (none here).
 
+## Q3. Ladder shapes on the DOWN-high take-outs (design look, gross arithmetic, n=30; `phase1_ladder_look.py`)
+
+Operator 2026-11-01 (chat): "do a martingale in the first range, then continue in the 1 % range and 1.5 %: a martingale inside a martingale".
+Shapes below sell at fixed prices above H1 (filled when a 15m high reaches the price), one stop for all legs at H1 + X, target = L1 touch,
+time = 24h. unit-% = units x move in % of H1, fee 0.10 % per unit per leg (fees.py). The single short enters at the first 15m close back under H1.
+
+| shape | events filled | exits L1 / 24h / stop | mean net unit-% | sum | worst event | mean net per max unit | max units |
+|---|---|---|---|---|---|---|---|
+| A single short, stop 1.0 | 30/30 | 17 / 8 / 5 | +0.35 | +10.54 | -1.49 | +0.35 | 1 |
+| A single short, stop 1.5 | 30/30 | 17 / 10 / 3 | +0.34 | +10.17 | -1.99 | +0.34 | 1 |
+| flat 3 legs 1-1-1, stop 1.0 | 30/30 | 16 / 5 / 9 | +0.59 | +17.79 | -2.40 | +0.20 | 3 |
+| martingale 1-2-4, stop 1.0 | 30/30 | 16 / 5 / 9 | +1.02 | +30.67 | -4.70 | +0.15 | 7 |
+| nested tiers 0.65/1.0/1.5, sizes 1/2/4, stop 1.5 | 30/30 | 16 / 9 / 5 | +0.38 | +11.34 | -10.10 | +0.03 | 14 |
+| nested tiers, flat sizes 1/1/1, stop 1.5 | 30/30 | 16 / 9 / 5 | +0.54 | +16.12 | -5.55 | +0.09 | 6 |
+
+Reading (design look, SEEN, n=30; a verdict needs the DEV book run):
+1. Every ladder shows more unit-% than the single short only because it carries more units. Per unit of margin the shape must hold, the order
+   reverses: single short +0.35, flat 3 legs +0.20, martingale 1-2-4 +0.15, nested flat +0.09, nested martingale +0.03.
+2. The nested martingale (operator's shape) puts 14 units behind one stop: it won 16 of 30 but its 5 stops cost -10.1 unit-% each at worst,
+   27 times the single short's worst event (-1.49). Its mean per max unit (+0.03) is below the 0.10 % fee of a single leg.
+3. Nesting does not change the stop: all legs still leave together at the outer top (1.5 %), and 5 of 30 take-outs went there.
+4. Where the edge sits (if anywhere) is the same in every row: 16-17 of 30 reach L1. A ladder changes how much is bet on that count, not the count.
+5. Ranking the shapes on n=30 is itself a selection: all six are logged; the DEV book run tests A first, then the ladders against it.
+
 Re-run: `python phase1_range.py <repo> <cache> --until 2026-11-01T07:45 --sim-json sim_desk/results/c26-range-ladder.json` (1m cache from
-`fetch_1m.py`, public Binance klines, not committed). Looks logged in `TRIAL_REGISTRY_c26_roadmap.csv` (9 rows, count_only).
+`fetch_1m.py`, public Binance klines, not committed); `python phase1_ladder_look.py <repo> <cache> --until 2026-11-01T07:45 --card <that card>`.
+Looks logged in `TRIAL_REGISTRY_c26_roadmap.csv` (15 rows, count_only / design_gross).
+
+
+## Q4 (2026-11-01 09:54Z): the operator's six hand-drawn lines vs the repo's level rules
+
+Operator lines (TradingView, Bitstamp BTCUSD 15m, top to bottom): 81,888 / 80,842 / 79,688 / 79,131 / 78,644 / 77,937. Binance spot 15m
+(this cache) runs +0.10..0.22 % above Bitstamp, so the match is by swing, not by cent. Script: scratch levels_check.py (Krown walk, FORMULAS 18.2 fractals).
+
+| Line | Binance 15m swing | Krown KR-S12 dominant (new low made after it) | C26 pivot +-16 (OURS) | fractal +-3 |
+|---|---|---|---|---|
+| 81,888 | 10-29 16:00 81,971 | yes (top) | yes | yes |
+| 80,842 | 10-29 18:15 80,946 | yes | no (within 16 bars of the top) | yes |
+| 79,688 | 10-29 21:15 79,811 | yes | no | no (+-2 yes) |
+| 79,131 | 10-29 22:15 79,272 | no: a 1-bar retest high before the crash | no | no |
+| 78,644 | 10-30 06:30 78,804 | no: the next new low (10-30 18:45) came after 77,937, not from this high | yes | yes |
+| 77,937 | 10-30 15:15 78,110 | yes: the dominant lower high now | yes | yes |
+
+Reading. (1) The lines are the lower highs of the descent: every one is a swing high on 15m, five of six at +-2 or wider. (2) Krown's rule
+(KROWN_SETUP_CATALOG.md line 820, KR-L09) has no width: a lower high counts when a new low follows it; that keeps 4 of the 6 and names 77,937 the
+dominant one. (3) C26's +-16 (OURS) keeps 3 of 6 and adds three range highs (77.5-77.8k Bitstamp) he does not draw: the two H1 definitions
+disagree on the fast part of the descent. Card c26-h1-structural-lower-high: define H1 structurally (SOURCED), run both sets in Phase 3.
+(4) The 09:45Z 15m close (78,107 Binance / 77,990 Bitstamp) is the first close above the dominant lower high: Krown calls that the reclaim that
+confirms a reversal (higher timeframes outrank it; 4h/1D are still inside the leg down from 81.9k); C26 calls it the H1 take-out in a DOWN regime,
+which went back to L1 in 18 of 30 cases in Phase 1 (seen period). Two SOURCED readings of one event point opposite ways; only DEV settles it.
+(5) Tom's levels are a different family (FORMULAS 18.4: POC/VAH/VAL anchored at the last meaningful pivots), not swing highs; the Coinglass
+panel adds OI rising into the test (97.6K) with CVD flat (-18.8K), which Phase 1 counted as P1_oi_up (no edge found).
