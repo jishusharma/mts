@@ -111,6 +111,15 @@ Build (P5, after P1-P3): `cotrade.py hedge --of <trade> --pct 50 --at <price|now
 existing slot, journals the parent/child link, and the live aid shows net size across both accounts. Caps sum both accounts.
 A kill on one slot must flatten BOTH legs (else a half-closed hedge becomes a naked trade).
 
+P5 as built (2026-11-01, DECISIONS OURS): `cotrade.py hedge --pct 50 --stop S [--of ID] [--at P] [--dry-run]`.
+Hedge = pct of the parent filled size floored to 10 USD, opposite side, on the first existing slot that is not the parent
+(jishu_1..4, jishu_22, main). Only marketable hedges: an --at that would rest is refused. Both legs carry a reduce-only stop
+(amount and trigger must match); loss at both stops summed <= $500. Journal: hedge_pending, hedge_placed (carries
+parent_order_id), then stop_placed; hedge_pending/hedge_placed without a later stop_placed = unknown, which refuses new orders.
+Any failure of the second leg (place, unfilled, stop) writes HALT first and flattens BOTH slots; a flatten error leaves state
+unknown. `kill` flattens every slot the journal names since the last kill (and with key files, any slot carrying a cotrade
+order), one failing slot never skips the next. `net` rebuilds the pair and net size from exchange positions on all existing slots.
+
 ## 8. Where we are today (2026-10-31)
 
 | Item | State |
