@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T18:46:30Z",
   "commands": [],
   "created": "2026-11-01T18:07:52Z",
   "depends_on": [],
@@ -13,7 +15,14 @@
   "id": "gemini-blind-read-c26-phase1-reports-1101",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Blind re-read of C26 PHASE1_RECENT.md, PHASE1_EVENTS.md, PHASE1_RANGE.md: 138 audited item",
+      "ref": "66f14b887",
+      "utc": "2026-11-01T18:46:30Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -25,7 +34,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "Blind re-read of C26 PHASE1_RECENT.md, PHASE1_EVENTS.md, PHASE1_RANGE.md: 138 audited items (135 FOUND, 3 NOT_IN_DATA vendor elements, 0 DIFF); report MyTradingSys/research/gemini_audits_2026-11-01/c26_phase1_blind_read.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-11-01/c26_phase1_blind_read.md"
   ],
@@ -35,12 +49,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "list every number in each report with its cited source",
     "open the source and check it",
     "write FOUND / NOT_IN_DATA / DIFF per number"
   ],
+  "taken": "2026-11-01T18:37:43Z",
   "tests": "see done_when (audit card, the output file is the test)",
   "title": "[GEMINI] blind re-read of C26 PHASE1_RANGE.md, PHASE1_EVENTS.md and PHASE1_RECENT.md: every number found in its cited file",
   "weight": "ROUTINE",
