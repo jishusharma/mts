@@ -1,7 +1,7 @@
 {
 "_doc": "Catalogue of known tests on trunk. kind is inferred (kind_source). Built by sim_desk/build_catalogue.py.",
-"count": 328,
-"exported": 328,
+"count": 329,
+"exported": 329,
 "rows": [
 {
 "id": "st-_archive-loose_2026-10-cbp_profile6_result",
@@ -656,6 +656,20 @@
 "result_id": "dir-cloud_ai_health_2026-10-26",
 "folder_files": 2,
 "date": "2026-10-26",
+"status": "SEE_VERDICT",
+"verdict_class": "other"
+},
+{
+"id": "dir-coinglass_field_guide_2026-11-01",
+"family": "Coinglass Survey",
+"title": "CoinGlass field guide: walls, bubbles, book and footprint vs our engines (2026-11-01)",
+"kind": "backtest",
+"kind_source": "result file",
+"verdict": "Walls are events, not levels: in the loaded two days 191 walls were placed, 1 filled, 176 pulled (CoinGlass counter, SEEN). The page is for validation and context; the one new measurable is a wall pulled before touch, which no public source quantifies. Depth-band check on our snapshot filed as a card.",
+"source": "MyTradingSys/research/sim_desk/results/dir-coinglass_field_guide_2026-11-01.json",
+"exported": true,
+"result_id": "dir-coinglass_field_guide_2026-11-01",
+"date": "2026-11-01",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -1848,7 +1862,7 @@
 "source": "MyTradingSys/research/sim_desk/results/c26-q10-path-distribution.json",
 "exported": true,
 "result_id": "c26-q10-path-distribution",
-"date": null,
+"date": "2026-11-01",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -1862,7 +1876,7 @@
 "source": "MyTradingSys/research/sim_desk/results/c26-q5-touch-factors.json",
 "exported": true,
 "result_id": "c26-q5-touch-factors",
-"date": null,
+"date": "2026-11-01",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -1876,7 +1890,7 @@
 "source": "MyTradingSys/research/sim_desk/results/c26-q7-liquidation-bands.json",
 "exported": true,
 "result_id": "c26-q7-liquidation-bands",
-"date": null,
+"date": "2026-11-01",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -1890,7 +1904,7 @@
 "source": "MyTradingSys/research/sim_desk/results/c26-q8-cvd-divergence.json",
 "exported": true,
 "result_id": "c26-q8-cvd-divergence",
-"date": null,
+"date": "2026-11-01",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -1904,7 +1918,7 @@
 "source": "MyTradingSys/research/sim_desk/results/c26-q9-footprint.json",
 "exported": true,
 "result_id": "c26-q9-footprint",
-"date": null,
+"date": "2026-11-01",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -3813,7 +3827,7 @@
 "source": "MyTradingSys/research/rumers_2026-11-01/RUMERS_DIRECT_VIEW_DEEP.md",
 "exported": true,
 "result_id": "dir-rumers_2026-11-01",
-"folder_files": 5,
+"folder_files": 6,
 "date": "2026-11-01",
 "status": "SEE_VERDICT",
 "verdict_class": "passed"
