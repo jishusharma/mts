@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T18:56:37Z",
   "commands": [],
   "created": "2026-11-01T18:07:53Z",
   "depends_on": [],
@@ -13,7 +15,14 @@
   "id": "gemini-scan-done-cards-missing-paths-1101",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Scan of 169 done task cards closed since 2026-10-31: 300 repo path references checked, 271",
+      "ref": "cda625f4c",
+      "utc": "2026-11-01T18:56:37Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -31,7 +40,12 @@
     "to": "DSA",
     "why": "window"
   },
-  "result": "",
+  "result": "Scan of 169 done task cards closed since 2026-10-31: 300 repo path references checked, 271 found (90.3%), 29 missing (9.7%) classified with nearest existing files and reasons in MyTradingSys/research/gemini_audits_2026-11-01/done_cards_missing_paths.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-11-01/done_cards_missing_paths.md"
   ],
@@ -41,12 +55,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "list done cards closed since 2026-10-31 and extract path-like strings from result and done_when",
     "check each with git ls-files",
     "write the rows; paths that are patterns or future outputs are marked SKIPPED with the reason"
   ],
+  "taken": "2026-11-01T18:51:56Z",
   "tests": "see done_when (audit card, the output file is the test)",
   "title": "[GEMINI] scan task cards done since 2026-10-31: result or done_when names a repo file that is not in the tree",
   "weight": "ROUTINE",
