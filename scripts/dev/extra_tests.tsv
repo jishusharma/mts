@@ -169,3 +169,4 @@ MyTradingSys/research/meta_label_tom_fabio_2026-10-31/test_features.py
 MyTradingSys/research/meta_label_tom_fabio_2026-10-31/test_meta_label.py
 MyTradingSys/research/cryptocred_s3_2026-11/test_cc_s3_run.py
 scripts/dev/test_fetch_captions_guard.py
+MyTradingSys/research/eagle_eyes_picture_2026-10-28/test_oi_after_flush_pairing.py
