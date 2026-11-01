@@ -1,57 +1,74 @@
 {
- "approved_by": "",
- "asks": "",
- "commands": [
-  "python MyTradingSys/research/c26_roadmap_2026-11-01/phase3_dev_book.py <repo> --split 2024-07-01"
- ],
- "created": "2026-11-01T08:46:17Z",
- "depends_on": [
-  "c26-phase2-freeze-regime-ladder"
- ],
- "done_when": "research/c26_roadmap_2026-11-01/PHASE3_DEV_BOOK.md with the tables above, verdict per candidate per regime by the pre-registered pass rule; three simulator cards (c26-regime-A, c26-regime-B, c26-regime-C) in sim_desk/results with charts; TRIAL_REGISTRY rows; lookahead_lint.py clean; test that the one-bar shift fails on a deliberately leaked signal.",
- "est_turns": 25,
- "formula_id": "",
- "formula_ids": [],
- "from_inbox": "",
- "goal": "Run the frozen PRE_REG_C26_REGIME.md on USDT-M perp 1m: DEV 2022-04-01..2024-06-30 (first look, SEEN-PERIOD label) and 2024-07-01..2026-06-30 (one confirmation look); per regime and side, Candidates A, B, C scored as a BOOK net of fees.py per leg and at 0.14 %, worst book loss, range-break rate; power gate, one-bar shift, Holm. Design: C26_REVALIDATION_2026-11-01.md sections 2-4.",
- "id": "c26-phase3-dev-book",
- "lane": "SONNET",
- "layers": [],
- "live_path": false,
- "mutation_check": "",
- "note": " PLANNER 2026-11-01 (session-planner-refine): content complete; waits on c26-phase2-freeze-regime-ladder (ready, JIS-NB lane, not done). Needs reviewer ACCEPT (IMPORTANT) when phase 2 is done; PRE_REG must be frozen first. PLANNER 2026-11-01 (session-planner-refine-2): still waits on c26-phase2-freeze-regime-ladder (ready, not done); no change.",
- "prio": 2,
- "refine_tries": 0,
- "refined_by": "",
- "refs": [
-  "MyTradingSys/backtest/fees.py",
-  "MyTradingSys/backtest/research_kit.py"
- ],
- "result": "",
- "scope_in": [
-  "MyTradingSys/research/c26_roadmap_2026-11-01/",
-  "MyTradingSys/research/sim_desk/results/"
- ],
- "scope_out": [
-  "any live path, any order, any rule change after the pre-reg"
- ],
- "size": "M",
- "sources": [
-  "MyTradingSys/research/c26_roadmap_2026-11-01/PRE_REG_C26_REGIME.md",
-  "MyTradingSys/research/c26_roadmap_2026-11-01/C26_REVALIDATION_2026-11-01.md"
- ],
- "split_dates": [
-  "2024-07-01"
- ],
- "state": "raw",
- "steps": [
-  "Rebuild the 15m C26 events from perp 1m; report the event count vs the spot run first",
-  "Implement A, B, C exactly as PRE_REG_C26_REGIME.md; test file first (shift, fee, ladder stop), it fails on the pre-change code",
-  "Run DEV, then the one confirmation look; tables, Holm, power; PHASE3_DEV_BOOK.md",
-  "Three simulator cards with charts; catalogue rebuild; sim_desk tests; ship"
- ],
- "tests": "test_c26_regime_book.py: one-bar shift breaks a leaked signal; fee per leg equals fees.py BINANCE_TAKER*2; ladder stop fires on the first bar beyond H1+X; fails on the pre-change code",
- "title": "C26 Phase 3: DEV 2022-04..2024-06 perp 1m book backtest of the frozen A / B / C per regime, net of fees per leg, power gate, one-bar shift, Holm; simulator cards",
- "weight": "IMPORTANT",
- "worker": "session"
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/research/c26_roadmap_2026-11-01/phase3_dev_book.py <repo> --split 2024-07-01"
+  ],
+  "created": "2026-11-01T08:46:17Z",
+  "depends_on": [
+    "c26-phase2-freeze-regime-ladder"
+  ],
+  "done_when": "research/c26_roadmap_2026-11-01/PHASE3_DEV_BOOK.md with the tables above, verdict per candidate per regime by the pre-registered pass rule; three simulator cards (c26-regime-A, c26-regime-B, c26-regime-C) in sim_desk/results with charts; TRIAL_REGISTRY rows; lookahead_lint.py clean; test that the one-bar shift fails on a deliberately leaked signal.",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Run the frozen PRE_REG_C26_REGIME.md on USDT-M perp 1m: DEV 2022-04-01..2024-06-30 (first look, SEEN-PERIOD label) and 2024-07-01..2026-06-30 (one confirmation look); per regime and side, Candidates A, B, C scored as a BOOK net of fees.py per leg and at 0.14 %, worst book loss, range-break rate; power gate, one-bar shift, Holm. Design: C26_REVALIDATION_2026-11-01.md sections 2-4.",
+  "id": "c26-phase3-dev-book",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "report",
+      "line": "Q6 Phase 3 DEV done (card c26-h1-structural-lower-high): the DOWN-regime fade nets below z",
+      "ref": "MyTradingSys/research/c26_roadmap_2026-11-01/PHASE1_RANGE.md",
+      "utc": "2026-11-01T17:56:25Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into JIS-NB/rumers-lab-harness-3",
+      "ref": "22ca49c5865c",
+      "utc": "2026-11-01T17:43:06Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": " PLANNER 2026-11-01 (session-planner-refine): content complete; waits on c26-phase2-freeze-regime-ladder (ready, JIS-NB lane, not done). Needs reviewer ACCEPT (IMPORTANT) when phase 2 is done; PRE_REG must be frozen first. PLANNER 2026-11-01 (session-planner-refine-2): still waits on c26-phase2-freeze-regime-ladder (ready, not done); no change.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-01T17:56:25Z",
+  "refs": [
+    "MyTradingSys/backtest/fees.py",
+    "MyTradingSys/backtest/research_kit.py"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/c26_roadmap_2026-11-01/",
+    "MyTradingSys/research/sim_desk/results/"
+  ],
+  "scope_out": [
+    "any live path, any order, any rule change after the pre-reg"
+  ],
+  "scope_sha": "22ca49c5865c",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/c26_roadmap_2026-11-01/PRE_REG_C26_REGIME.md",
+    "MyTradingSys/research/c26_roadmap_2026-11-01/C26_REVALIDATION_2026-11-01.md"
+  ],
+  "split_dates": [
+    "2024-07-01"
+  ],
+  "state": "raw",
+  "steps": [
+    "Rebuild the 15m C26 events from perp 1m; report the event count vs the spot run first",
+    "Implement A, B, C exactly as PRE_REG_C26_REGIME.md; test file first (shift, fee, ladder stop), it fails on the pre-change code",
+    "Run DEV, then the one confirmation look; tables, Holm, power; PHASE3_DEV_BOOK.md",
+    "Three simulator cards with charts; catalogue rebuild; sim_desk tests; ship"
+  ],
+  "tests": "test_c26_regime_book.py: one-bar shift breaks a leaked signal; fee per leg equals fees.py BINANCE_TAKER*2; ladder stop fires on the first bar beyond H1+X; fails on the pre-change code",
+  "title": "C26 Phase 3: DEV 2022-04..2024-06 perp 1m book backtest of the frozen A / B / C per regime, net of fees per leg, power gate, one-bar shift, Holm; simulator cards",
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
