@@ -190,10 +190,88 @@
     ]
    ],
    "caption": "1m-5m bars aggregated from Binance spot 1m"
+  },
+  {
+   "kind": "table",
+   "title": "Ladder shapes on the DOWN-high take-outs",
+   "cols": [
+    "shape",
+    "events filled",
+    "exits L1 / 24h / stop",
+    "mean net unit-%",
+    "sum",
+    "worst event",
+    "mean net per max unit",
+    "max units"
+   ],
+   "rows": [
+    [
+     "A single short, stop 1.0",
+     "30/30",
+     "17 / 8 / 5",
+     "+0.35",
+     "+10.54",
+     "-1.49",
+     "+0.35",
+     "1"
+    ],
+    [
+     "A single short, stop 1.5",
+     "30/30",
+     "17 / 10 / 3",
+     "+0.34",
+     "+10.17",
+     "-1.99",
+     "+0.34",
+     "1"
+    ],
+    [
+     "flat 3 legs 1-1-1, stop 1.0",
+     "30/30",
+     "16 / 5 / 9",
+     "+0.59",
+     "+17.79",
+     "-2.40",
+     "+0.20",
+     "3"
+    ],
+    [
+     "martingale 1-2-4, stop 1.0",
+     "30/30",
+     "16 / 5 / 9",
+     "+1.02",
+     "+30.67",
+     "-4.70",
+     "+0.15",
+     "7"
+    ],
+    [
+     "nested tiers 0.65/1.0/1.5, sizes 1/2/4, stop 1.5",
+     "30/30",
+     "16 / 9 / 5",
+     "+0.38",
+     "+11.34",
+     "-10.10",
+     "+0.03",
+     "14"
+    ],
+    [
+     "nested tiers, flat sizes 1/1/1, stop 1.5",
+     "30/30",
+     "16 / 9 / 5",
+     "+0.54",
+     "+16.12",
+     "-5.55",
+     "+0.09",
+     "6"
+    ]
+   ],
+   "caption": "design look, gross arithmetic on 30 events: unit-% = units x move in % of H1, fee 0.10 % per unit per leg; 'per max unit' = mean net divided by the biggest stack the shape carries. Operator 2026-11-01: ladder per tier 0.65 / 1.0 / 1.5 ('martingale inside a martingale')"
   }
  ],
  "source_files": [
   "MyTradingSys/research/c26_roadmap_2026-11-01/PHASE1_RANGE.md",
+  "MyTradingSys/research/c26_roadmap_2026-11-01/phase1_ladder_look.py",
   "MyTradingSys/research/c26_roadmap_2026-11-01/phase1_range.py"
  ],
  "commit": "this card"

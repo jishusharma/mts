@@ -90,5 +90,30 @@ simulator card `c26-range-ladder`. All numbers OURS.
 K=3, LB=60 bars, divergence = pivot high above a prior pivot high (<= LB bars back) with a lower RSI; known 3 bars after the pivot.
 Window = from the 1m bar that broke H1 to the 15m bar that reached L1, else 24h. cut = exit beyond the data end, excluded (none here).
 
+## Q3. Ladder shapes on the DOWN-high take-outs (design look, gross arithmetic, n=30; `phase1_ladder_look.py`)
+
+Operator 2026-11-01 (chat): "do a martingale in the first range, then continue in the 1 % range and 1.5 %: a martingale inside a martingale".
+Shapes below sell at fixed prices above H1 (filled when a 15m high reaches the price), one stop for all legs at H1 + X, target = L1 touch,
+time = 24h. unit-% = units x move in % of H1, fee 0.10 % per unit per leg (fees.py). The single short enters at the first 15m close back under H1.
+
+| shape | events filled | exits L1 / 24h / stop | mean net unit-% | sum | worst event | mean net per max unit | max units |
+|---|---|---|---|---|---|---|---|
+| A single short, stop 1.0 | 30/30 | 17 / 8 / 5 | +0.35 | +10.54 | -1.49 | +0.35 | 1 |
+| A single short, stop 1.5 | 30/30 | 17 / 10 / 3 | +0.34 | +10.17 | -1.99 | +0.34 | 1 |
+| flat 3 legs 1-1-1, stop 1.0 | 30/30 | 16 / 5 / 9 | +0.59 | +17.79 | -2.40 | +0.20 | 3 |
+| martingale 1-2-4, stop 1.0 | 30/30 | 16 / 5 / 9 | +1.02 | +30.67 | -4.70 | +0.15 | 7 |
+| nested tiers 0.65/1.0/1.5, sizes 1/2/4, stop 1.5 | 30/30 | 16 / 9 / 5 | +0.38 | +11.34 | -10.10 | +0.03 | 14 |
+| nested tiers, flat sizes 1/1/1, stop 1.5 | 30/30 | 16 / 9 / 5 | +0.54 | +16.12 | -5.55 | +0.09 | 6 |
+
+Reading (design look, SEEN, n=30; a verdict needs the DEV book run):
+1. Every ladder shows more unit-% than the single short only because it carries more units. Per unit of margin the shape must hold, the order
+   reverses: single short +0.35, flat 3 legs +0.20, martingale 1-2-4 +0.15, nested flat +0.09, nested martingale +0.03.
+2. The nested martingale (operator's shape) puts 14 units behind one stop: it won 16 of 30 but its 5 stops cost -10.1 unit-% each at worst,
+   27 times the single short's worst event (-1.49). Its mean per max unit (+0.03) is below the 0.10 % fee of a single leg.
+3. Nesting does not change the stop: all legs still leave together at the outer top (1.5 %), and 5 of 30 take-outs went there.
+4. Where the edge sits (if anywhere) is the same in every row: 16-17 of 30 reach L1. A ladder changes how much is bet on that count, not the count.
+5. Ranking the shapes on n=30 is itself a selection: all six are logged; the DEV book run tests A first, then the ladders against it.
+
 Re-run: `python phase1_range.py <repo> <cache> --until 2026-11-01T07:45 --sim-json sim_desk/results/c26-range-ladder.json` (1m cache from
-`fetch_1m.py`, public Binance klines, not committed). Looks logged in `TRIAL_REGISTRY_c26_roadmap.csv` (9 rows, count_only).
+`fetch_1m.py`, public Binance klines, not committed); `python phase1_ladder_look.py <repo> <cache> --until 2026-11-01T07:45 --card <that card>`.
+Looks logged in `TRIAL_REGISTRY_c26_roadmap.csv` (15 rows, count_only / design_gross).
