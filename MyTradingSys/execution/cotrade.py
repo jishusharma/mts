@@ -163,6 +163,9 @@ def _stop_side(position_size: float) -> str:
     return "BUY" if position_size < 0 else "SELL"
 
 
+_NOT_TESTNET = "REFUSED: cotrade is testnet-only"
+
+
 def _flatten_and_halt(client, token, halt_path, why: str) -> list:
     errs = []
     executor.write_manual_halt(f"cotrade: {why}", halt_path)
@@ -178,10 +181,12 @@ def _flatten_and_halt(client, token, halt_path, why: str) -> list:
 # ---------------------------------------------------------------- stop
 
 def ensure_stop(client=None, account=None, journal_dir=None, halt_path=None, halt_daily_loss_path=None,
-                token=None, stop_px=None, extra=None) -> dict:
+                token=None, stop_px=None, extra=None, env=None) -> dict:
     """Reduce-only server-side stop over the FULL filled size. No stop for a flat account. Idempotent.
     If the stop cannot be placed on an open position: flatten and write HALT (fail closed)."""
     client = client or do
+    if (env or do.active_env()) != "test":
+        return {"ok": False, "reasons": [_NOT_TESTNET]}   # nothing touched, nothing journaled
     jdir = Path(journal_dir) if journal_dir else globals()["journal_dir"]()
     halt_path = halt_path or executor.HALT_PATH
     recs = _records(jdir)
@@ -411,10 +416,12 @@ def _slot_view(client, name) -> dict:
             "stop_ok": size == 0 or any(_same_num(o.get("amount"), abs(size)) for o in stops)}
 
 
-def rebuild(client=None, journal_dir=None, secret_exists=None) -> dict:
+def rebuild(client=None, journal_dir=None, secret_exists=None, env=None) -> dict:
     """Rebuild the co-trade pair from the EXCHANGE (positions + label-cotrade orders on every existing slot),
     not only the journal: a slot is ours if the journal names it since the last kill or it carries a cotrade
     order. Other slots with a position are listed as unowned and never counted or touched."""
+    if (env or do.active_env()) != "test":
+        return {"ok": False, "reasons": [_NOT_TESTNET]}   # no exchange call
     client = client or do
     jdir = Path(journal_dir) if journal_dir else globals()["journal_dir"]()
     secret_exists = secret_exists or _default_secret_exists
@@ -444,9 +451,11 @@ def rebuild(client=None, journal_dir=None, secret_exists=None) -> dict:
             "stop_missing": [v["account"] for v in owned if not v["stop_ok"]]}
 
 
-def net(client=None, journal_dir=None, secret_exists=None) -> dict:
+def net(client=None, journal_dir=None, secret_exists=None, env=None) -> dict:
     """Live aid: net size across the co-trade slots, from exchange positions (DECISION OURS: printed by cotrade.py)."""
-    r = rebuild(client=client, journal_dir=journal_dir, secret_exists=secret_exists)
+    r = rebuild(client=client, journal_dir=journal_dir, secret_exists=secret_exists, env=env)
+    if "net_usd" not in r:
+        return r
     return {**r, "net_side": "long" if r["net_usd"] > 0 else "short" if r["net_usd"] < 0 else "flat"}
 
 
@@ -495,8 +504,10 @@ def hedge(of="last", pct=50, stop=None, at=None, dry_run=False, client=None, hed
     env = env or do.active_env()
     secret_exists = secret_exists or _default_secret_exists
     if env != "test":
-        return {"ok": False, "reasons": ["REFUSED: cotrade is testnet-only"]}   # nothing touched, nothing journaled
+        return {"ok": False, "reasons": [_NOT_TESTNET]}   # nothing touched, nothing journaled
     reasons = []
+    if not (isinstance(said, str) and said.strip()):
+        reasons.append("REFUSED: --said is required (the operator's exact words); nothing is invented")
     if not _num(pct) or not 0 < pct <= 100:
         reasons.append(f"pct must be in (0, 100], got {pct!r}")
     if not _num(stop) or stop <= 0:
@@ -506,7 +517,7 @@ def hedge(of="last", pct=50, stop=None, at=None, dry_run=False, client=None, hed
     reasons += executor._check_halt_files(Path(halt_path), Path(halt_dl))
     recs = _records(jdir)
     parent = _find_parent(recs, of)
-    base = {"said": said or f"hedge {pct} pct", "env": env, "account": None, "market": {},
+    base = {"said": said, "env": env, "account": None, "market": {},
             "action": {"kind": "hedge", "pct": pct, "stop": stop, "price": at, "instrument": INSTRUMENT}}
     hacct = hname = pact = poid = pa = ps = hs = None
     if parent is None:
@@ -632,9 +643,10 @@ def hedge(of="last", pct=50, stop=None, at=None, dry_run=False, client=None, hed
                            {"order_id": order.get("order_id")})
     link = {"parent_order_id": poid, "parent_account": pact}
     st = ensure_stop(client=client, account=hacct, journal_dir=jdir, halt_path=halt_path, token=htok,
-                     stop_px=stop, extra=link)
+                     stop_px=stop, extra=link, env=env)
     if st["ok"]:
-        pst = ensure_stop(client=client, account=_acct(pact), journal_dir=jdir, halt_path=halt_path, token=ptok)
+        pst = ensure_stop(client=client, account=_acct(pact), journal_dir=jdir, halt_path=halt_path, token=ptok,
+                          stop_px=pa.get("stop"), env=env)
         if not pst["ok"]:
             st = pst
     if not st["ok"]:
@@ -646,7 +658,7 @@ def hedge(of="last", pct=50, stop=None, at=None, dry_run=False, client=None, hed
 
 # ---------------------------------------------------------------- kill
 
-def kill(client=None, account=None, journal_dir=None, halt_path=None, secret_exists=None) -> dict:
+def kill(client=None, account=None, journal_dir=None, halt_path=None, secret_exists=None, env=None) -> dict:
     """HALT first (survives the process), then for EVERY co-trade slot (given account, journal legs since the last
     kill, and with secret_exists also any slot carrying a cotrade order): cancel label cotrade, flatten.
     Keeps going after a failed step or slot; ok=False if any step failed."""
@@ -654,6 +666,8 @@ def kill(client=None, account=None, journal_dir=None, halt_path=None, secret_exi
     jdir = Path(journal_dir) if journal_dir else globals()["journal_dir"]()
     halt_path = halt_path or executor.HALT_PATH
     executor.write_manual_halt("cotrade kill", halt_path)
+    if (env or do.active_env()) != "test":   # fail closed: HALT is written, nothing is cancelled/flattened/journaled
+        return {"ok": False, "errors": [], "slots": [], "reasons": [_NOT_TESTNET + " (HALT written only)"]}
     slots = [_nm(account)]
     for n in _journal_accounts(_records(jdir)):
         if n not in slots:
@@ -699,7 +713,7 @@ def main(argv=None) -> int:
     h.add_argument("--pct", type=float, required=True)
     h.add_argument("--stop", type=float, help="mandatory trigger price of the hedge's reduce-only stop")
     h.add_argument("--at", type=float, help="marketable limit price; a hedge that would rest is refused")
-    h.add_argument("--said", help="the operator's exact words")
+    h.add_argument("--said", required=True, help="the operator's exact words")
     h.add_argument("--dry-run", action="store_true")
     sub.add_parser("net", help="net size across the co-trade slots from exchange positions")
     sub.add_parser("stop")

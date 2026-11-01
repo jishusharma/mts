@@ -441,7 +441,7 @@ class HedgeBase(Base):
     def run_hedge(self, mc, **kw):
         args = dict(of="last", pct=50, stop=109900.0, at=None, dry_run=False, client=mc, hedge_account="auto",
                     journal_dir=self.jdir, halt_path=self.halt, halt_daily_loss_path=self.halt_dl, env="test",
-                    secret_exists=ALL_KEYS)
+                    secret_exists=ALL_KEYS, said="hedge half of it on the other account")
         args.update(kw)
         return cotrade.hedge(**args)
 
@@ -461,8 +461,12 @@ class TestHedgeRefusals(HedgeBase):
         self.assertIn("secret missing", " ".join(r["reasons"]))
         r = self.run_hedge(mc, secret_exists=lambda a: a is None)   # auto, but only the parent has a key
         self.assertFalse(r["ok"])
+        self.assertIn("no second existing slot", " ".join(r["reasons"]))
         for n in ("jishu_1", "jishu_2", "jishu_22"):
             self.assertEqual(mc.on(n, "place"), [])
+        r = self.run_hedge(mc)   # positive control: same setup, a real second slot with a key places the hedge
+        self.assertTrue(r["ok"], r)
+        self.assertEqual(len(mc.on("jishu_1", "place")), 1)
 
     def test_2_testnet_env_asserted_before_any_call(self):
         mc = MultiClient()
@@ -470,8 +474,10 @@ class TestHedgeRefusals(HedgeBase):
         n_calls, n_lines = len(mc.calls), len(self.lines())
         r = self.run_hedge(mc, env="mainnet")
         self.assertFalse(r["ok"])
+        self.assertIn("testnet-only", " ".join(r["reasons"]))
         self.assertEqual(len(mc.calls), n_calls)
         self.assertEqual(len(self.lines()), n_lines)
+        self.assertTrue(self.run_hedge(mc)["ok"])   # positive control: env=test places it
 
     def test_4_refused_while_halt_set(self):
         mc = MultiClient()
@@ -481,6 +487,8 @@ class TestHedgeRefusals(HedgeBase):
         self.assertFalse(r["ok"])
         self.assertIn("HALT", " ".join(r["reasons"]))
         self.assertEqual(mc.on("jishu_1", "place"), [])
+        self.halt.unlink()
+        self.assertTrue(self.run_hedge(mc)["ok"])   # positive control: no HALT places it
 
     def test_5_sum_of_both_max_losses_capped(self):
         mc = MultiClient()
@@ -511,6 +519,64 @@ class TestHedgeRefusals(HedgeBase):
         self.parent(mc2)
         self.assertFalse(self.run_hedge(mc2)["ok"])
         self.assertEqual(mc2.on("jishu_1", "place"), [])
+
+
+class TestP5Minors(HedgeBase):
+    def test_hedge_of_older_parent_uses_that_parents_stop(self):
+        mc = MultiClient()
+        self.parent(mc, stop=111000.0)                      # older parent: id main-E1, stop 111000
+        mc.subs["main"].position, mc.subs["main"].orders, mc.subs["main"].prefix = 0, [], "p2-"
+        self.parent(mc, stop=111500.0)                      # newer parent: id p2-E1, stop 111500
+        mc.subs["main"].position = -70                      # exchange: the OLDER parent is the open one
+        mc.subs["main"].orders = [{"order_id": "OLD", "label": "cotrade", "order_type": "stop_market",
+                                   "reduce_only": True, "amount": 70, "trigger_price": 111000.0}]
+        before = len(mc.on("main", "stop_market")) + len(mc.on("main", "cancel"))
+        r = self.run_hedge(mc, of="main-E1")
+        self.assertTrue(r["ok"], r)
+        self.assertEqual(len(mc.on("main", "stop_market")) + len(mc.on("main", "cancel")), before)  # no new stop/cancel
+        self.assertEqual([o["trigger_price"] for o in mc.subs["main"].orders], [111000.0])
+
+    def test_kill_net_ensure_stop_refuse_mainnet_env(self):
+        mc = MultiClient()
+        self.parent(mc)
+        n_calls, n_lines = len(mc.calls), len(self.lines())
+        for fn in (lambda: cotrade.ensure_stop(client=mc, account=None, journal_dir=self.jdir, halt_path=self.halt,
+                                               env="mainnet"),
+                   lambda: cotrade.net(client=mc, journal_dir=self.jdir, secret_exists=ALL_KEYS, env="mainnet"),
+                   lambda: cotrade.rebuild(client=mc, journal_dir=self.jdir, secret_exists=ALL_KEYS, env="mainnet"),
+                   lambda: cotrade.kill(client=mc, account=None, journal_dir=self.jdir, halt_path=self.halt,
+                                        secret_exists=ALL_KEYS, env="mainnet")):
+            r = fn()
+            self.assertFalse(r["ok"])
+            self.assertIn("testnet-only", " ".join(r["reasons"]))
+            self.assertEqual(len(mc.calls), n_calls)         # no exchange call
+            self.assertEqual(len(self.lines()), n_lines)     # no journal line
+        self.assertTrue(self.halt.exists())                  # kill: HALT first, even refused
+        self.halt.unlink()
+        self.assertTrue(cotrade.net(client=mc, journal_dir=self.jdir, secret_exists=ALL_KEYS, env="test")["ok"])
+        self.assertTrue(cotrade.kill(client=mc, account=None, journal_dir=self.jdir, halt_path=self.halt,
+                                     env="test")["ok"])      # positive control
+        self.assertIn("close_position", [c[0] for c in mc.subs["main"].calls])
+
+    def test_hedge_said_required(self):
+        mc = MultiClient()
+        self.parent(mc)
+        n = len(mc.calls)
+        for bad in (None, "", "   "):
+            r = self.run_hedge(mc, said=bad)
+            self.assertFalse(r["ok"])
+            self.assertIn("--said is required", " ".join(r["reasons"]))
+        self.assertEqual(mc.on("jishu_1", "place"), [])
+        for x in self.hedge_lines():
+            self.assertNotIn("hedge 50 pct", x["said"] or "")   # no invented text journaled as the operator's words
+        r = self.run_hedge(mc, said="hedge half please")
+        self.assertTrue(r["ok"], r)
+        self.assertEqual(self.hedge_lines()[-1]["said"], "hedge half please")
+        self.assertGreater(len(mc.calls), n)
+
+    def test_cli_hedge_requires_said(self):
+        with self.assertRaises(SystemExit):
+            cotrade.main(["hedge", "--pct", "50", "--stop", "109900"])
 
 
 class TestHedgePlace(HedgeBase):
