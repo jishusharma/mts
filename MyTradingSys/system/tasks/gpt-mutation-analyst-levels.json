@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T20:44:15Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -25,11 +26,24 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "11 mutations, 7 survived 9 tests, 0 survive 14 tests; analyst_levels.py unchanged (commit ",
+      "ref": "498e9ba96",
+      "utc": "2026-11-01T20:44:15Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "analyst levels: no hit before the video could exist; cbp_run prompt carries metadata (Argo",
-      "ref": "589685fbb501",
-      "utc": "2026-10-30T14:30:46Z"
+      "line": "analyst_levels: 5 spec-derived tests kill 7 surviving mutations",
+      "ref": "9261aa56e79d",
+      "utc": "2026-11-01T18:59:20Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "9261aa56e79d analyst_levels: 5 spec-derived tests kill 7 surviving mutations",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-mutation-analyst-levels.md",
+      "utc": "2026-11-01T18:59:20Z"
     }
   ],
   "layers": [],
@@ -38,7 +52,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-01T18:08:10Z",
+  "refreshed": "2026-11-01T20:43:46Z",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
@@ -48,7 +62,12 @@
     "to": "SONNET",
     "why": "window"
   },
-  "result": "",
+  "result": "11 mutations, 7 survived 9 tests, 0 survive 14 tests; analyst_levels.py unchanged (commit 9261aa56e)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/test_analyst_levels.py",
     "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-mutation-analyst-levels.md"
@@ -56,15 +75,16 @@
   "scope_out": [
     "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change to any file outside the named outputs"
   ],
-  "scope_sha": "589685fbb501",
+  "scope_sha": "9261aa56e79d",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read analyst_levels.py docstring and the 9 tests, list the branches no test pins",
     "apply each mutation to a scratch copy and run the tests",
     "for survivors write a hand-derived test, re-run all mutations, write the report"
   ],
+  "taken": "2026-11-01T20:44:15Z",
   "tests": "python -m pytest scripts/dev/test_analyst_levels.py -q (each new test fails on its mutation)",
   "title": "[GPT] Mutation-kill audit of scripts/dev/analyst_levels.py vs its 9 tests (as-of hit rule, price band, sort)",
   "weight": "ROUTINE",
