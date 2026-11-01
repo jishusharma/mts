@@ -3,7 +3,7 @@
     python scripts/dev/cbp_run.py --due     # only if a UTC window is open and not yet done in it
     python scripts/dev/cbp_run.py --force   # whenever the operator asks
 
-Windows (UTC, OURS): EU 09:00-13:00, pre-US 13:00-midnight. Scheduled starts: 09:00 and 13:00;
+Windows (UTC, OURS): EU 04:00-12:00, pre-US 12:00-midnight. Scheduled starts: 05:00 and 20:00 (Sat 05:30, Sun 16:30);
 windows stay open for retries and catch-up. A coordinator may also call --due on each wake;
 the stamp file lives outside the repo (CBP_STAMP, default CBP_HOME/cbp_store/stamp.json).
 Only the actionable analysts in <CBP_HOME>/cbp_v2/analysts.json are fetched; videos already in the store
@@ -39,7 +39,7 @@ default_cbp_home = cbp.default_cbp_home
 CBP_HOME = default_cbp_home()
 TRANSCRIPTS = Path(os.environ.get("CBP_TRANSCRIPTS", str(CBP_HOME / "raw_transcripts_canonical")))
 VERDICT_DAYS = 21  # a thesis analyst who posts every 2 weeks (Jala, Bob) must still have a latest vote
-WINDOWS = (("EU", time(9, 0), time(13, 0)), ("PRE_US", time(13, 0), None))
+WINDOWS = (("EU", time(4, 0), time(12, 0)), ("PRE_US", time(12, 0), None))  # holds the 05:00, 05:30 and 20:00, 16:30 starts
 MODEL = os.environ.get("CBP_MODEL", "claude-sonnet-5-5")
 PROMPT = """You extract what ONE crypto analyst says in ONE video.
 Analyst: %(analyst)s. Published: %(published)s. Title: "%(title)s".

@@ -44,3 +44,9 @@ python scripts/dev/cbp_schedule.py status
 
 Record LastTaskResult=0, a fresh stamp and rows queryable from the MTS consumer host before calling
 the twice-daily feed operational. YouTube 429 and Claude login/model availability are external dependencies.
+
+## 2026-11-01 firing-gap finding (cbp-daily-firing-gap)
+- Caller = Windows task MTS-CBP-Ingestion on JIS-NB (installed, runs `cbp_schedule.py run` = `cbp_run.py --force`); the coordinator `--due` is not the caller.
+- Cause 1: the 10-31 schedule change (05:00/20:00 UTC) left WINDOWS at EU 09-13 / PRE_US 13-24, so the 05:00 run stamped nothing. Windows are now EU 04:00-12:00, PRE_US 12:00-24:00 (tests pin every scheduled start to a window).
+- Cause 2: the reinstalled task's StartBoundary was 2026-11-02, so Sat 10-31 and Sun 11-01 never fired (Last Run 1999, never). Boundary is now 2026-10-26; re-run `cbp_schedule.py install --home F:/CryptoScrapper` on JIS-NB to pick it up (otherwise first fire is Mon 11-02 05:00 UTC, on the old boundary).
+- Analyst filter already covers all enabled feeds (Benjamin, Bob, Jala, CCU included).
