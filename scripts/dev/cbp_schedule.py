@@ -39,9 +39,9 @@ def task_xml(python, script, home, utcoffset=None):
 
     def trigger(utc_days, hhmm):
         hh, mm = map(int, hhmm.split(":"))
-        shift = (datetime(2026, 11, 2, hh, mm) + utcoffset).date() - datetime(2026, 11, 2).date()
+        shift = (datetime(2026, 10, 26, hh, mm) + utcoffset).date() - datetime(2026, 10, 26).date()
         names = [DAYS[(DAYS.index(d) + shift.days) % 7] for d in utc_days]
-        return ('<CalendarTrigger><StartBoundary>2026-11-02T%s:00Z</StartBoundary><Enabled>true</Enabled>'
+        return ('<CalendarTrigger><StartBoundary>2026-10-26T%s:00Z</StartBoundary><Enabled>true</Enabled>'
                 '<ScheduleByWeek><DaysOfWeek>%s</DaysOfWeek><WeeksInterval>1</WeeksInterval></ScheduleByWeek>'
                 '</CalendarTrigger>' % (hhmm, "".join("<%s/>" % d for d in names)))
     triggers = "".join(trigger(DAYS[:5], t) for t in WEEKDAY_TIMES)
@@ -65,7 +65,7 @@ def task_xml(python, script, home, utcoffset=None):
 
 def validate_task_xml(xml):
     """Fail closed unless the generated task is the CBP-only retrying weekday-twice, Saturday-once, Sunday-once task."""
-    required = tuple("<StartBoundary>2026-11-02T%s:00Z</StartBoundary>" % t for t in WEEKDAY_TIMES + tuple(t for _, t in WEEKEND_TIMES)) + (
+    required = tuple("<StartBoundary>2026-10-26T%s:00Z</StartBoundary>" % t for t in WEEKDAY_TIMES + tuple(t for _, t in WEEKEND_TIMES)) + (
                 "<Saturday/>", "<Sunday/>", "<Friday/>",
                 "<MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>",
                 "<Interval>PT15M</Interval><Count>3</Count>", "cbp_schedule.py", "run", "--home")

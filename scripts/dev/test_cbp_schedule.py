@@ -14,7 +14,7 @@ def test_schedule_contract():
     root = ET.fromstring(xml)
     ns = {"t": "http://schemas.microsoft.com/windows/2004/02/mit/task"}
     assert [n.text for n in root.findall('.//t:StartBoundary', ns)] == [
-        '2026-11-02T05:00:00Z', '2026-11-02T20:00:00Z', '2026-11-02T05:30:00Z', '2026-11-02T16:30:00Z']
+        '2026-10-26T05:00:00Z', '2026-10-26T20:00:00Z', '2026-10-26T05:30:00Z', '2026-10-26T16:30:00Z']
     weeks = [[d.tag.split('}')[1] for d in n] for n in root.findall('.//t:DaysOfWeek', ns)]
     assert weeks == [['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']] * 2 + [['Saturday'], ['Sunday']]
     schedule.validate_task_xml(xml)
@@ -52,3 +52,11 @@ def test_scheduled_run_uses_same_store_and_propagates_error(tmp_path):
         assert kwargs['env']['CBP_STORE'] == str(tmp_path / 'cbp_store' / 'rows.json')
         assert kwargs['env']['CBP_TRANSCRIPTS'] == str(tmp_path / 'raw_transcripts_canonical')
         assert kwargs['env']['CBP_STAMP'] == str(tmp_path / 'cbp_store' / 'stamp.json')
+
+
+def test_trigger_start_is_in_the_past_so_the_first_week_is_not_skipped():
+    from datetime import date
+    xml = schedule.task_xml('p', 's', 'h', utcoffset=timedelta(0))
+    for n in ET.fromstring(xml).findall('.//{*}StartBoundary'):
+        d = date.fromisoformat(n.text[:10])
+        assert d <= date(2026, 10, 26), "a future StartBoundary left 10-31/11-01 unfired after the reinstall"
