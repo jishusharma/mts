@@ -6,6 +6,13 @@
   "commands": [
     "python -m pytest MyTradingSys/tests/test_tasks_list_open_only.py -q"
   ],
+  "context": {
+    "calls_to_edit": 4,
+    "folded": "2026-11-01T06:34:03Z",
+    "misses": 0,
+    "reads": [],
+    "session": "agent-a347031c465efdcf3"
+  },
   "created": "2026-11-01T05:57:14Z",
   "depends_on": [],
   "done_when": "subprocess timeout in test_tasks_list_open_only.py is 600; test file passes",
