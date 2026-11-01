@@ -4,8 +4,9 @@ Usage (repo root):
     python scripts/dev/fetch_captions.py --analyst Malkan [--langs en,en-IN,hi] [--wait 0] ID_OR_URL [...]
 IDs may start with '-' (pass them after '--' or as full URLs).
 Manual English track first, then auto English, then the other langs. Existing files are never
-overwritten. HTTP 429 -> exponential backoff (60s, 120s, ... up to 4 tries) per video.
-One line per video: OK / EXISTS / NOCAPS / PRIVATE / RATELIMIT / ERROR.
+overwritten. One try per video; budget, 429 block record and --status come from the shared guard in
+fetch_captions_timed.py (see its docstring). One line per video: OK / EXISTS / NOCAPS / PRIVATE / BLOCKED /
+DEFERRED / UNVERIFIED / ERROR.
 """
 import argparse
 import re
@@ -13,6 +14,8 @@ import sys
 import tempfile
 import time
 from pathlib import Path
+
+import fetch_captions_timed as guard   # shared YouTube guard: budget, blocked-until record, --status
 
 import yt_dlp
 
@@ -60,8 +63,7 @@ def fetch(vid, analyst, langs):
         return "EXISTS"
     url = f"https://www.youtube.com/watch?v={vid}"
     base = {"skip_download": True, "quiet": True, "no_warnings": True}
-    delay = 60
-    for attempt in range(4):
+    if True:   # ONE try per video (guard)
         try:
             with yt_dlp.YoutubeDL(base) as y:
                 info = y.extract_info(url, download=False)
@@ -88,14 +90,11 @@ def fetch(vid, analyst, langs):
             return f"OK {kind}/{lang} {len(text.split())}w"
         except yt_dlp.utils.DownloadError as e:
             msg = str(e)
-            if "429" in msg or "Too Many Requests" in msg:
-                time.sleep(delay)
-                delay *= 2
-                continue
+            if any(m in msg for m in guard.BLOCK_MARKS):
+                return "BLOCKED"
             if "Private" in msg or "members" in msg.lower():
                 return "PRIVATE"
             return f"ERROR {msg[:80]}"
-    return "RATELIMIT"
 
 
 def main(argv):
@@ -103,16 +102,22 @@ def main(argv):
     ap.add_argument("--analyst", required=True)
     ap.add_argument("--langs", default="en,en-IN,en-US,hi")
     ap.add_argument("--wait", type=int, default=0, help="seconds to sleep first (rate-limit cooldown)")
-    ap.add_argument("videos", nargs="+")
+    ap.add_argument("--max-videos", type=int, default=5, help="network fetches per run; extra ids are DEFERRED")
+    ap.add_argument("--status", action="store_true", help="print blocked/not blocked + budget used; no network")
+    ap.add_argument("videos", nargs="*")
     a = ap.parse_args(argv)
+    gate = guard.guard_gate(a)
+    if gate is not None:
+        return gate
+    if not a.videos:
+        ap.error("give video ids/URLs")
     time.sleep(a.wait)
+    res = guard.guarded_run([(vid_of(v), OUT / f"{vid_of(v)}_raw.txt") for v in a.videos],
+                            lambda i: fetch(i, a.analyst, a.langs.split(",")), a.max_videos)
     bad = 0
-    for v in a.videos:
-        vid = vid_of(v)
-        r = fetch(vid, a.analyst, a.langs.split(","))
+    for vid, r in res:
         bad += not r.startswith(("OK", "EXISTS"))
         print(f"{vid} {r}", flush=True)
-        time.sleep(20)  # be gentle between videos
     return 1 if bad else 0
 
 
