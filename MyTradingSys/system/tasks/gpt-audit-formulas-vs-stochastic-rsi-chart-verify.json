@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-01T17:37:50Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-audit-formulas-vs-stochastic-rsi-chart-verify.md lists each formula, FORMULAS.md line, code file:line, toy numbers by hand vs code, SAME/DIFFERENT/NOT_IN_DATA.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "For scripts/dev/chart_verify.py, find the Stochastic RSI formulas in FORMULAS.md s23, re-derive 3 outputs by hand on a 10-bar toy series, run the code on the same series and report SAME or DIFFERENT with file:line. Report only; do not edit code.",
+  "id": "gpt-audit-formulas-vs-stochastic-rsi-chart-verify",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Producer GPT (codex_run.py), reviewer is another vendor. Facts with file:line or NOT_IN_DATA; no verdicts. ROUTINE, no live path. planner-B-1101.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-01T17:37:51Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-audit-formulas-vs-stochastic-rsi-chart-verify.md"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change to any file outside the named output"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "list formulas the code uses",
+    "hand-compute 3 values on a toy series",
+    "run code and compare"
+  ],
+  "tests": "see done_when (audit card, output file is the test)",
+  "title": "[GPT] audit FORMULAS.md s23 Stochastic RSI against scripts/dev/chart_verify.py: 3 outputs re-derived by hand",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

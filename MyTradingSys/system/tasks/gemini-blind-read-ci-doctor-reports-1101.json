@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-01T17:37:48Z",
+  "depends_on": [],
+  "done_when": "research/gemini_audits_2026-11-01/ci_doctor_blind_read.md has one row per number: FOUND / NOT_IN_DATA / DIFF, and a first line with the three counts.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Check every number and file reference in research/ci_audit_2026-10-31/REPORT_FIRST_RED.md and research/mts_doctor/REPORT_2026-11-01.md against the file or command it cites; facts only.",
+  "id": "gemini-blind-read-ci-doctor-reports-1101",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini effort low: load as <id>:low (gemini_queue.py run <id>:low). Reads local files only, no YouTube or caption fetch. Final report ends with a Noticed: line. Facts only, no verdicts. D11_PROGRAMME s6 seed. planner-B-1101.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-01T17:37:48Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "the two report files and what they cite (read); one output file research/gemini_audits_2026-11-01/ci_doctor_blind_read.md"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change to any file outside the named output"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "list every number and file reference",
+    "open the cited source and compare",
+    "write FOUND / NOT_IN_DATA / DIFF per number"
+  ],
+  "tests": "see done_when (audit card, output file is the test)",
+  "title": "[GEMINI] blind re-read of ci_audit REPORT_FIRST_RED.md and mts_doctor REPORT_2026-11-01.md: numbers vs cited files",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

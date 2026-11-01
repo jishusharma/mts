@@ -11,7 +11,7 @@
   "effort": "medium",
   "est_turns": 30,
   "from_inbox": "",
-  "goal": "Extend chart_lab.py with a setup switch so it finds and renders blind charts for trend-continuation pullbacks (setup_type_rules.md s5) and breakout / break-in (s6) on BTC DEV 2024-12-01..2025-03-31. Charts and candidate index only. The event-study table is not part of this card: it is superseded until G3 marks and G4 recall exist.",
+  "goal": "Extend chart_lab.py with a setup switch so it finds and renders blind charts for trend-continuation pullbacks (setup_type_rules.md s5) and breakout / break-in (s6) on BTC DEV 2022-04-01..2024-06-30. Charts and candidate index only. The event-study table is not part of this card: it is superseded until G3 marks and G4 recall exist.",
   "id": "tom-btc-other-setups",
   "kind": "build",
   "lane": "CODEX",
@@ -41,7 +41,7 @@
     "tom"
   ],
   "live_path": false,
-  "note": "BLOCKED: requested 2024-12-01..2025-03-31 bars exceed permitted pre-2024-07-01 data cutoff.",
+  "note": "BLOCKED: requested 2022-04-01..2024-06-30 bars exceed permitted pre-2024-07-01 data cutoff.",
   "pinned": false,
   "prio": 3,
   "refine_tries": 0,
@@ -75,7 +75,7 @@
   ],
   "state": "blocked",
   "steps": [
-    "pre-flight (stop and report BLOCKED within 5 turns if any fails): F:/MTS/data/orderflow_1m has the 120 DEV date files 2024-12-02..2025-03-31, chart_lab.py runs unchanged and reproduces candidates=105",
+    "pre-flight (stop and report BLOCKED within 5 turns if any fails): F:/MTS/data/orderflow_1m has the DEV date files 2022-04-01..2024-06-30 (count them first), chart_lab.py runs unchanged and reproduces candidates=105",
     "read setup_type_rules.md s5 (pullback to VWAP/value in a volume-backed trend) and s6 (balance resolves with proof); add detect_tc and detect_bo beside detect_candidates and a --setup {fade,tc,bo} switch defaulting to fade so old output is byte-identical; numeric thresholds labelled OURS on the chart",
     "for tc and bo: scan DEV only, decision-time rows only (no future bars), write candidates_tc_bo.csv and sample 40 + 10 random blind charts to charts_tc_bo/ with a separate _key.csv",
     "write MyTradingSys/research/layer_lab/reports/2026-10-18_tom-btc-other-setups.md: counts per setup and anchor, the pre-flight result, and the note that the event study is deferred to G3/G4"

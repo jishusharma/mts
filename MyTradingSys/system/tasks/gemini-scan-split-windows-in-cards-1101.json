@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-01T17:37:47Z",
+  "depends_on": [],
+  "done_when": "research/gemini_audits_2026-11-01/split_windows_scan.md has one row per labelled window (file:line, text, AGREES/DISAGREES) and a first line with the two counts; DISAGREES rows each quote the exact text.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Read backtest/splits.py:1-12 (DEV before 2024-07-01, VALIDATION 2024-07-01..2025-07-01, HOLDOUT after) then list every card JSON under system/tasks and every PRE_REG*.md under research that names a date window labelled DEV, VALIDATION or HOLDOUT, with file:line and AGREES / DISAGREES with splits.py.",
+  "id": "gemini-scan-split-windows-in-cards-1101",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini effort low: load as <id>:low (gemini_queue.py run <id>:low). Reads local files only, no YouTube or caption fetch. Final report ends with a Noticed: line. Facts only, no verdicts. D11_PROGRAMME s6 seed. planner-B-1101.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-01T17:37:56Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "the card JSON files in the system tasks folder, every PRE_REG file under MyTradingSys/research, and MyTradingSys/backtest/splits.py (read); one output file research/gemini_audits_2026-11-01/split_windows_scan.md"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change to any file outside the named output"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "read splits.py",
+    "grep cards and PRE_REGs for DEV / VALIDATION / HOLDOUT near a date",
+    "write the table, DISAGREES first"
+  ],
+  "tests": "see done_when (audit card, output file is the test)",
+  "title": "[GEMINI] scan task cards and PRE_REGs for DEV/VALIDATION date windows that disagree with backtest/splits.py",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

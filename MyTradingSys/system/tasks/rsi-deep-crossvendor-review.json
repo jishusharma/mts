@@ -26,7 +26,7 @@
     "rsi-deep-engine-exits",
     "rsi-deep-run-dev"
   ],
-  "note": "REVIEWED:2026-10-26 ACCEPT (Sonnet reviewer Agent reviewers, after 2nd FIX applied once, not re-read, planner DECISION OURS). Created 2026-10-26 (SPEC s6.5 card that did not exist). Producer GPT, reviewer Gemini via gemini_queue.py; run-dev waits on this card. FIX r2 2026-10-26: weight CRUCIAL (it gates the run-dev verdict numbers), est_turns 12, mutations run only in the throwaway gemini_queue worktree and are never committed, look-ahead and ladder-bookkeeping row added (SPEC s6.5). Brief ends: Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "note": "PLANNER 2026-11-01 DECISION (OURS) planner-B-1101: not promoted; depends_on three engine cards still refined (not done). Content complete; promote when they are done. REVIEWED:2026-10-26 ACCEPT",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
