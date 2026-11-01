@@ -8,7 +8,8 @@ import unittest
 
 from MyTradingSys.backtest.layers.fabio.fabio_escalation import escalation_events
 
-KW = dict(left=1, right=1, use_body=True, level_tolerance=0.001, aggression_k=2.0, record_lookback=3)
+KW = dict(left=1, right=1, use_body=True, level_tolerance=0.001, aggression_k=2.0, record_lookback=3,
+          require_break=False)  # edge tests cover other behaviours on the legacy fixture (closes inside level)
 
 
 def bar(t, o, c, v, tbv, h=None, l=None):

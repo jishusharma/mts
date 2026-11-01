@@ -42,7 +42,8 @@ def cumulative_cvd(bars: list) -> list:
     return result
 
 
-def cvd_absorption_events(bars: list, left: int = 2, right: int = 2, use_body: bool = True, price_tolerance: float = 0.001) -> list:
+def cvd_absorption_events(bars: list, left: int = 2, right: int = 2, use_body: bool = True, price_tolerance: float = 0.001,
+                         same_level_only: bool = True) -> list:
     """
     Detects FAB-007 bullish and (symmetric-extension) bearish absorption between CONSECUTIVE
     same-kind confirmed swings.
@@ -77,6 +78,15 @@ def cvd_absorption_events(bars: list, left: int = 2, right: int = 2, use_body: b
     swings = find_swings(bars, left=left, right=right, use_body=use_body)
     cvd = cumulative_cvd(bars)
 
+    # FAB-007 'price is still on the same level': two-sided band |cur/prev - 1| <= price_tolerance.
+    # same_level_only=False is the legacy one-sided test (any higher low / lower high passes), kept so
+    # published backtest numbers reproduce.
+    def _low_ok(cur, prev):
+        return cur >= prev * (1 - price_tolerance) and (not same_level_only or cur <= prev * (1 + price_tolerance))
+
+    def _high_ok(cur, prev):
+        return cur <= prev * (1 + price_tolerance) and (not same_level_only or cur >= prev * (1 - price_tolerance))
+
     events = []
     prev_low = None
     prev_high = None
@@ -86,7 +96,7 @@ def cvd_absorption_events(bars: list, left: int = 2, right: int = 2, use_body: b
             if prev_low is not None:
                 # Check for bullish absorption
                 if (cvd[swing["i"]] < cvd[prev_low["i"]] and
-                        swing["price"] >= prev_low["price"] * (1 - price_tolerance)):
+                        _low_ok(swing["price"], prev_low["price"])):
                     events.append({
                         "t": bars[swing["confirmed_i"]]["t"],
                         "i": swing["confirmed_i"],
@@ -103,7 +113,7 @@ def cvd_absorption_events(bars: list, left: int = 2, right: int = 2, use_body: b
             if prev_high is not None:
                 # Check for bearish absorption (symmetric extension)
                 if (cvd[swing["i"]] > cvd[prev_high["i"]] and
-                        swing["price"] <= prev_high["price"] * (1 + price_tolerance)):
+                        _high_ok(swing["price"], prev_high["price"])):
                     events.append({
                         "t": bars[swing["confirmed_i"]]["t"],
                         "i": swing["confirmed_i"],

@@ -217,12 +217,12 @@ def _c(key):
 
 def _absorption(bars, funding):
     from MyTradingSys.backtest.layers.fabio.fabio_cvd_absorption import cvd_absorption_events
-    return cvd_absorption_events(bars)
+    return cvd_absorption_events(bars, same_level_only=False)  # legacy band: published grid numbers
 
 
 def _escalation(bars, funding):
     from MyTradingSys.backtest.layers.fabio.fabio_escalation import escalation_events
-    return escalation_events(bars)
+    return escalation_events(bars, require_break=False)  # legacy: published grid numbers
 
 
 # data: run_t055 candidate whose loader/roots to use; tf: bar timeframe; default layer parameters
