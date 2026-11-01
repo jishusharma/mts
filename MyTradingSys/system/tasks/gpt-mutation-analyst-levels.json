@@ -2,6 +2,16 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-01T18:59:17Z",
+    "misses": 16,
+    "reads": [
+      "scripts/dev/analyst_levels.py",
+      "scripts/dev/test_analyst_levels.py"
+    ],
+    "session": "agent-a13f5129d9336503d"
+  },
   "created": "2026-11-01T18:07:42Z",
   "depends_on": [],
   "done_when": "report lists >= 6 mutations with KILLED/SURVIVED, every survivor has a new passing test in scripts/dev/test_analyst_levels.py that fails on that mutation, analyst_levels.py unchanged (git diff empty).",

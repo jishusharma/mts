@@ -85,5 +85,50 @@ class Notice(unittest.TestCase):
             self.assertEqual(al.hook_block(), "")
 
 
+class MutationKills(unittest.TestCase):
+    """Spec-derived (module docstring: prices 40k..200k, one level per video, hit = traded through, --offline = no network)."""
+
+    def test_band_edges_inclusive(self):
+        self.assertEqual(al.parse_levels("floor 40,000"), [40000])
+        self.assertEqual(al.parse_levels("cap 200,000"), [200000])
+        self.assertEqual(al.parse_levels("below 39,999"), [])
+        self.assertEqual(al.parse_levels("above 200,001"), [])
+
+    def test_same_level_two_videos_both_kept(self):
+        rows = [row("Michael", ["support 75k"], vid="v1"), row("Krown", ["wick to 75k"], vid="v2")]
+        lv = al.ladder(rows)
+        self.assertEqual([(x["level"], x["analyst"]) for x in lv], [(75000, "Michael"), (75000, "Krown")])
+
+    def test_hit_touch_on_bar_extreme_counts(self):
+        t = int(datetime(2026, 10, 30, tzinfo=timezone.utc).timestamp())
+        bars = [(t, 80_000.0, 79_000.0, 79_500.0)]  # next day after publish 10-29
+        lv = [dict(level=lv_, published="2026-10-29", expires_at="") for lv_ in (80_000.0, 79_000.0, 80_001.0, 78_999.0)]
+        al.mark(lv, bars, datetime(2026, 10, 31, tzinfo=timezone.utc))
+        self.assertEqual([x["hit"] for x in lv], [True, True, False, False])
+
+    def test_render_hit_vs_open_tag(self):
+        base = dict(analyst="Michael", published="2026-10-29", bias="BEARISH", video_id="v1", said="s", expires_at="")
+        hit = al.render([dict(base, level=75000.0, hit=True, dist_pct=-5.0)], price=79000.0)
+        opn = al.render([dict(base, level=75000.0, hit=False, dist_pct=-5.0)], price=79000.0)
+        self.assertIn("-5.00% HIT ", hit)
+        self.assertNotIn("open", hit)
+        self.assertIn("-5.00% open", opn)
+        self.assertNotIn("HIT", opn)
+
+    def test_main_offline_makes_no_network_call(self):
+        import contextlib
+        import io
+        with tempfile.TemporaryDirectory() as d:
+            store = os.path.join(d, "rows.json")
+            json.dump({"schema": 1, "rows": [row("Michael", ["support 75k"])], "rejected": []}, open(store, "w"))
+            buf = io.StringIO()
+            with mock.patch.object(al, "spot_1h", side_effect=AssertionError("network")), contextlib.redirect_stdout(buf):
+                al.main(["--offline", "--json", "--store", store])
+        out = json.loads(buf.getvalue())
+        self.assertIsNone(out["price"])
+        self.assertEqual([x["level"] for x in out["levels"]], [75000])
+        self.assertNotIn("hit", out["levels"][0])
+
+
 if __name__ == "__main__":
     unittest.main()
