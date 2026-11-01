@@ -29,6 +29,20 @@ SAMPLE = ("window.extra = {st: []}; setInterval(function(){ var s=document.query
           " window.extra.st.push([Math.round((Date.now()-window.T0)/1000), s?s.textContent:null]); }, 5000);\n")
 
 
+def test_find_browser_skips_empty_dump(tmp_path):
+    import aibridge_dom
+    empty = tmp_path / 'empty.cmd'
+    good = tmp_path / 'good.cmd'
+    if os.name == 'nt':
+        empty.write_text('@echo off' + chr(13) + chr(10) + 'exit /b 0' + chr(13) + chr(10), newline='')
+        good.write_text('@echo off' + chr(13) + chr(10) + 'echo aib-probe-ok' + chr(13) + chr(10), newline='')
+    else:
+        empty.write_text('#!/bin/sh' + chr(10) + 'exit 0' + chr(10)); good.write_text('#!/bin/sh' + chr(10) + 'echo aib-probe-ok' + chr(10))
+        empty.chmod(0o755); good.chmod(0o755)
+    assert aibridge_dom.find_browser([str(empty), str(good)]) == str(good)
+    assert aibridge_dom.find_browser([str(empty)]) is None
+
+
 # ---------------------------------------------------------------- agent side (exit codes)
 
 @pytest.fixture

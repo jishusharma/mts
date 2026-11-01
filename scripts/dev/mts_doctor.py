@@ -593,14 +593,14 @@ CONFLICT_WARN = 3   # OURS: more open bug-conflict cards than this = WARN
 
 
 def conflict_open(repo):
-    """WARN when more than CONFLICT_WARN bug-conflict-* cards are open (not done): contradicting instructions nobody settled."""
+    """WARN when more than CONFLICT_WARN bug-conflict-* cards are open (not done or dropped): contradicting instructions nobody settled."""
     open_ids = []
     for p in sorted((Path(repo) / "MyTradingSys" / "system" / "tasks").glob("bug-conflict-*.json")):
         try:
             c = json.loads(p.read_text(encoding="utf-8"))
         except (OSError, ValueError):
             continue
-        if c.get("state") != "done":
+        if c.get("state") not in ("done", "dropped"):
             open_ids.append(c.get("id", p.stem))
     if len(open_ids) > CONFLICT_WARN:
         return "WARN", f"{len(open_ids)} open conflict card(s) (limit {CONFLICT_WARN}): {', '.join(open_ids[:6])} | fix: operator picks the winner, then fix the loser's text and tasks.py done"

@@ -823,12 +823,15 @@ def cmd_lint(a):
 
 
 def cmd_list(a):
-    for c in load_all(REPO):
+    cards = load_all(REPO)
+    claims, reg = open_claims(REPO), registry(REPO)   # once per list, not once per card (193 git spawns = 20-32 s)
+    TS.prefetch_changes(REPO)
+    for c in cards:
         # B209: open cards only by default (done/dropped are ~700 rows of boot noise); --all or --state brings them back
         if (a.state or a.all or c["state"] not in ("done", "dropped")) and (not a.state or c["state"] == a.state) and (not a.lane or c["lane"] == a.lane):
             # C3: a ready/active card whose work already hit trunk (SHIPPED) or whose scope moved on (STALE) is flagged here
             # too, not only in next/take/brief -- a stale *copy* of an archived card must not read as plain "ready" in the backlog.
-            tag = stop_tag(c) if c["state"] in ("ready", "active") else ""
+            tag = stop_tag(c, claims=claims, reg=reg) if c["state"] in ("ready", "active") else ""
             flag = f" [{tag}]" if tag else ""
             print(f"{c['id']:<24} {c['state']:<8} p{c.get('prio', 3)} {c.get('lane', '-'):<8} {c.get('size') or '-':<2} {c['title'][:70]}{flag}")
 
@@ -840,10 +843,10 @@ def cmd_status(a):
     print(status_line(cards))
 
 
-def stop_tag(c, repo=None, claims=None):
+def stop_tag(c, repo=None, claims=None, reg=None):
     """The STATE tag when the card's work is already on trunk (SHIPPED) or its scope moved on (STALE), else ''."""
     repo = repo or REPO
-    tag = TS.state_tag(c, repo, claim_of(c, open_claims(repo) if claims is None else claims), registry(repo))
+    tag = TS.state_tag(c, repo, claim_of(c, open_claims(repo) if claims is None else claims), registry(repo) if reg is None else reg)
     # DECISION (OURS): "latest never refreshed" is a fresh card without pointers, not stale work: it stays dispatchable
     return tag if tag.startswith(("SHIPPED", "STALE")) and "never refreshed" not in tag else ""
 

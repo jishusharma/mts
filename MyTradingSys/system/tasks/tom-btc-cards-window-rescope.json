@@ -15,7 +15,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-31 ACCEPT (Sonnet reviewer Agent, FIX applied once, not re-read, planner DECISION OURS).  Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files. PLANNER 2026-11-01 DECISION (OURS): stays raw, parked on asks; unpark after Lab_Guy sets trust C1 on the 5 cited tom-btc results (also clears the stale tom-btc-other-setups result 504 candidates).",
+  "note": "PLANNER 2026-11-01 DECISION (OURS): done directly by planner-B-1101: DEV windows in tom-btc-dev-backtest and tom-btc-other-setups now 2022-04-01..2024-06-30; tom-btc-validation now 2024-07-01..2025-06-30 (splits.py:4-6). Card text edits only, no result cited as trusted.",
+  "pinned": false,
   "prio": 2,
   "refine_tries": 1,
   "refined_by": "",
@@ -33,7 +34,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "raw",
+  "state": "dropped",
   "steps": [
     "grep those JSONs for the windows 2024-12 and 2025-04..06",
     "replace with DEV 2022-04-01..2024-06-30; mark any VALIDATION step sealed until promotion",

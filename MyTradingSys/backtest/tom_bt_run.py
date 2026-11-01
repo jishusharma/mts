@@ -82,10 +82,10 @@ def _fabio_job(args):
     bars = tom_bt.resample_dicts(b, tf_min)
     ev = []
     if det == "cvd_absorption":
-        for e in cvd_absorption_events(bars, **FABIO_CFG[det][tf_min]):
+        for e in cvd_absorption_events(bars, same_level_only=False, **FABIO_CFG[det][tf_min]):
             ev.append((e["t"], e["side"]))
     elif det == "escalation":
-        for e in rb.chunked_events(escalation_events, bars, **FABIO_CFG[det][tf_min]):
+        for e in rb.chunked_events(escalation_events, bars, require_break=False, **FABIO_CFG[det][tf_min]):
             ev.append((e["t"], e["side"]))
     else:  # fvg_bounce: same event definition as run_backtest.run_fvg 'real' + 'bounce'
         closes = [x["c"] for x in bars]

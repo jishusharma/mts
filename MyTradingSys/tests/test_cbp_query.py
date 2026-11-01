@@ -59,14 +59,14 @@ def test_query_symbol_aliases(tmp_path):
 
 def test_window_logic_injected_clock():
     assert cbp_run.open_window(at(9)) == "EU" and cbp_run.open_window(at(10, 59)) == "EU"
-    assert cbp_run.open_window(at(11)) == "EU" and cbp_run.open_window(at(8, 59)) is None
-    assert cbp_run.open_window(at(12, 59)) == "EU" and cbp_run.open_window(at(13)) == "PRE_US"
+    assert cbp_run.open_window(at(11)) == "EU" and cbp_run.open_window(at(3, 59)) is None
+    assert cbp_run.open_window(at(11, 59)) == "EU" and cbp_run.open_window(at(12)) == "PRE_US"
     assert cbp_run.open_window(at(23, 59)) == "PRE_US"
     assert cbp_run.is_due(at(10), {}) == "EU"
     assert cbp_run.is_due(at(10), {"done": ["2026-10-24:EU"]}) is None  # done in this window today
     assert cbp_run.is_due(at(13), {"done": ["2026-10-24:EU"]}) == "PRE_US"
     assert cbp_run.is_due(at(10), {"done": ["2026-10-23:EU"]}) == "EU"  # yesterday's run does not count
-    assert cbp_run.is_due(at(8), {}) is None
+    assert cbp_run.is_due(at(3), {}) is None
 
 
 def test_main_due_and_force(tmp_path, monkeypatch):
@@ -74,7 +74,7 @@ def test_main_due_and_force(tmp_path, monkeypatch):
     monkeypatch.setenv("CBP_STORE", str(tmp_path / "s.json"))
     calls = []
     monkeypatch.setattr(cbp_run, "run_once", lambda now: calls.append(now) or (0, 0, 0))
-    assert cbp_run.main(["--due"], now=at(8)) == 0 and calls == []  # no window open
+    assert cbp_run.main(["--due"], now=at(3)) == 0 and calls == []  # no window open
     cbp_run.main(["--due"], now=at(10))
     cbp_run.main(["--due"], now=at(10, 30))  # same window, already done
     assert len(calls) == 1
@@ -207,7 +207,7 @@ def test_cbp_schedule_dry_run_validates_without_registration(tmp_path, capsys):
     xml = cbp_schedule.task_xml(sys.executable, cbp_schedule.Path(cbp_schedule.__file__), tmp_path)
     assert cbp_schedule.validate_task_xml(xml)
     for t in cbp_schedule.WEEKDAY_TIMES + tuple(t for _, t in cbp_schedule.WEEKEND_TIMES):
-        assert "<StartBoundary>2026-11-02T%s:00Z</StartBoundary>" % t in xml
+        assert "<StartBoundary>2026-10-26T%s:00Z</StartBoundary>" % t in xml
     assert "<Saturday/>" in xml and "<Sunday/>" in xml
     assert "<RestartOnFailure>" in xml and "<Count>3</Count>" in xml
     assert "<MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>" in xml

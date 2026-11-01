@@ -17,13 +17,42 @@ ROOT = Path(os.environ.get("MTS_REPO_ROOT") or Path(__file__).resolve().parents[
 EXT = ROOT / "scripts" / "aibridge" / "extension"
 
 
-def find_browser():
-    for c in (os.environ.get("AIB_BROWSER"), shutil.which("msedge"), shutil.which("chrome"),
-              r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
-              r"C:\Program Files\Microsoft\Edge\Application\msedge.exe",
-              r"C:\Program Files\Google\Chrome\Application\chrome.exe",
-              r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"):
-        if c and os.path.exists(c):
+_PROBE_MARK = "aib-probe-ok"
+_PROBE_CACHE = {}
+
+
+def _probe(path):
+    """True only if headless --dump-dom of a trivial data: page prints the marker (headless Edge on some hosts dumps nothing)."""
+    if path in _PROBE_CACHE:
+        return _PROBE_CACHE[path]
+    prof = tempfile.mkdtemp(prefix="aib_probe_")
+    ok = False
+    try:
+        p = subprocess.run([path, "--headless=new", "--disable-gpu", "--no-first-run", "--user-data-dir=" + prof,
+                            "--dump-dom", "data:text/html," + _PROBE_MARK],
+                           capture_output=True, text=True, timeout=15)
+        ok = _PROBE_MARK in (p.stdout or "")
+    except Exception:
+        ok = False
+    finally:
+        shutil.rmtree(prof, ignore_errors=True)
+    _PROBE_CACHE[path] = ok
+    return ok
+
+
+def find_browser(candidates=None):
+    """First existing candidate that passes _probe; AIB_BROWSER (explicit) is trusted unprobed. Cached per process."""
+    if candidates is None:
+        env = os.environ.get("AIB_BROWSER")
+        if env and os.path.exists(env):
+            return env
+        candidates = (shutil.which("msedge"), shutil.which("chrome"),
+                      r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
+                      r"C:\Program Files\Microsoft\Edge\Application\msedge.exe",
+                      r"C:\Program Files\Google\Chrome\Application\chrome.exe",
+                      r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe")
+    for c in candidates:
+        if c and os.path.exists(c) and _probe(c):
             return c
     return None
 

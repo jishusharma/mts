@@ -1,7 +1,20 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T17:32:37Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-01T17:07:48Z",
+    "misses": 4,
+    "reads": [
+      "DSA_SESSION_PROMPT.md",
+      "MyTradingSys/tests/test_dsa_direct_mode.py",
+      "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md",
+      "MyTradingSys/tests/docs/test_integrity.py"
+    ],
+    "session": "agent-ab04ca434fe15fa3a"
+  },
   "created": "2026-10-31T10:04:27Z",
   "depends_on": [],
   "done_when": "prompt carries every section 2 sentence; test_dsa_direct_mode.py asserts them; test_integrity size caps pass",
@@ -13,6 +26,12 @@
   "id": "dsabr-c5-dsa-prompt",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "already on trunk via 6b2e089fc (0.7.4 rules in DSA_SESSION_PROMPT.md); tests 33 passed",
+      "ref": "10e2a7d56",
+      "utc": "2026-11-01T17:32:37Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,7 +59,12 @@
   "refs": [
     "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
   ],
-  "result": "",
+  "result": "already on trunk via 6b2e089fc (0.7.4 rules in DSA_SESSION_PROMPT.md); tests 33 passed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "review_receipt": {
     "card_hash": "30ea426c9b97",
     "date": "2026-10-31",
@@ -58,12 +82,13 @@
   "sources": [
     "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Wait for c1-c3 to ship; read FIX_PLAN.md (MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31) section 2",
     "Add asserts for each sentence to test_dsa_direct_mode.py; see them fail",
     "Edit DSA_SESSION_PROMPT.md 0.1/0.1a/0.5/0.7 and the header; tests and size caps pass; sync.py ship"
   ],
+  "taken": "2026-11-01T17:32:37Z",
   "tests": "new asserts in MyTradingSys/tests/test_dsa_direct_mode.py fail before the DSA_SESSION_PROMPT.md edit",
   "title": "DSA_SESSION_PROMPT.md: bridge 0.7.4 rules (final-answer fences only, queue, exit codes, notice) (D6)",
   "weight": "IMPORTANT",

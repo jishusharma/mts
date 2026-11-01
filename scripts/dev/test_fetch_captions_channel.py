@@ -98,7 +98,7 @@ class T(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             canon = pathlib.Path(td) / "canon"
             with mock.patch.object(f.yt_dlp, "YoutubeDL", Blocked), mock.patch.object(f, "CANON", canon), \
-                    mock.patch.object(f.time, "sleep"), \
+                    mock.patch.object(f.time, "sleep"), mock.patch.object(f, "ALLOW_FALLBACK", True), \
                     mock.patch.object(f, "transcript_api_cues", return_value=([(1, "hello api")], "auto")):
                 r = f.fetch("zzzzzzzzzzz", "Krown", ["en"], canon)
             self.assertEqual(r, "OK auto 2w")

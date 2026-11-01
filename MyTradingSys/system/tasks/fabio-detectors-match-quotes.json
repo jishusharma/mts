@@ -4,6 +4,22 @@
   "commands": [
     "python -m pytest MyTradingSys/backtest/layers/fabio MyTradingSys/backtest/layers/alerts/test_live_runner_layers.py MyTradingSys/research/layer_lab/fabio_escalation_event_table/test_event_table.py -q"
   ],
+  "context": {
+    "calls_to_edit": 60,
+    "folded": "2026-11-01T17:27:08Z",
+    "misses": 24,
+    "reads": [
+      "scripts/dev/tasks.py",
+      "MyTradingSys/system/OPERATOR_DECISIONS.md",
+      "scripts/dev/sync.py",
+      "MyTradingSys/system/LAYERS.md",
+      "MyTradingSys/research/STATUS.md",
+      "MyTradingSys/system/ANNOUNCEMENTS.md",
+      "MyTradingSys/backtest/layers/FORMULAS.md",
+      "CLAUDE.md"
+    ],
+    "session": "3d145224-2ecc-4910-b835-38575cd4ee11"
+  },
   "created": "2026-10-31T10:04:45Z",
   "depends_on": [],
   "done_when": "Both detectors reject the non-matching cases and keep the matching ones; legacy callers reproduce 652 DEV 1h escalation events (event_table REPORT.md) with require_break=False; old-vs-new counts in commit body; review APPROVE on plan and diff",

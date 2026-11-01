@@ -1,7 +1,23 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T17:04:50Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-01T17:04:59Z",
+    "misses": 80,
+    "reads": [
+      "MyTradingSys/research/sim_desk/results/eagle-c30-wt-rsi-div.json",
+      "MyTradingSys/system/RUNAWAY_GUARD.md",
+      "MyTradingSys/research/gross_effect_screen_2026-10-15/EXPOSURE_LEDGER.csv",
+      "MyTradingSys/system/PROMOTION_PIPELINE.md",
+      "MyTradingSys/research/nuc_restart_2026-10-28/ISSUES_REGISTER.md",
+      "MyTradingSys/tests/docs/test_integrity.py",
+      "scripts/dev/logon_wake.py"
+    ],
+    "session": "agent-a150d79f79d717911"
+  },
   "created": "2026-10-31T16:59:45Z",
   "depends_on": [],
   "done_when": "C30_VALIDATION.md + verdict.json (PASS/FAIL/INCONCLUSIVE per hypothesis, Holm m=2) committed AFTER PRE_REG_C30.md; EXPOSURE_LEDGER row split VALIDATION; sim card eagle-c30-wt-rsi-div updated; HOLDOUT unread",
@@ -12,7 +28,14 @@
   "goal": "Run the one pre-registered VALIDATION read (2024-07-01..2025-06-30) of H1/H2 frozen in research/eagle_eyes_picture_2026-10-28/PRE_REG_C30.md and write the verdict file",
   "id": "c30-validation-read",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "H1 FAIL n35 -0.07%; H2 INCONCLUSIVE n22 +0.22% Holm p 0.218; C30_VALIDATION.md",
+      "ref": "243514eef",
+      "utc": "2026-11-01T17:04:50Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -22,7 +45,12 @@
   "refined_by": "",
   "refreshed": "2026-10-31T16:59:55Z",
   "refs": [],
-  "result": "",
+  "result": "H1 FAIL n35 -0.07%; H2 INCONCLUSIVE n22 +0.22% Holm p 0.218; C30_VALIDATION.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "fetch Binance spot 5m 2024-04..2025-06 (warm-up before 2024-07-01), reuse wt_rsi_div.run logic unchanged"
   ],
@@ -36,12 +64,13 @@
     "2024-07-01",
     "2025-07-01"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Confirm PRE_REG_C30.md commit precedes any result commit",
     "Fetch VALIDATION bars, run preflight",
     "Compute H1/H2 per PRE_REG section 2, write verdict, ship"
   ],
+  "taken": "2026-11-01T17:04:50Z",
   "tests": "bt_preflight P1/P2/P2b/P6/P7/P8 on VALIDATION bars pass before the verdict",
   "title": "C30 VALIDATION read: WaveTrend bottom buy + bullish RSI divergence (PRE_REG_C30.md, H1 30m / H2 15m)",
   "weight": "",

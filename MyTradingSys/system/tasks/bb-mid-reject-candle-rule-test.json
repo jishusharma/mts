@@ -4,19 +4,13 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-01T06:09:08Z",
-    "misses": 10,
+    "folded": "2026-11-01T17:38:09Z",
+    "misses": 28,
     "reads": [
-      "MyTradingSys/system/LESSONS_LEARNED.md",
-      "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-mutation-wavetrend-1031.md",
-      "MyTradingSys/backtest/layers/wavetrend/fixture_btcusdt_1h_dev_2022-01.csv",
-      "MyTradingSys/backtest/layers/wavetrend/test_wavetrend.py",
-      "MyTradingSys/research/wavetrend_2026-10-17/PARITY_CONTRACT.md",
-      "scripts/aibridge/extension/content.js",
-      "scripts/aibridge/extension/loop.js",
-      "scripts/aibridge/tests/block_select.test.js"
+      "scripts/dev/tasks.py",
+      "MyTradingSys/backtest/splits.py"
     ],
-    "session": "agent-a897bd141a57b5158"
+    "session": "agent-a48206ff8ed2a5d44"
   },
   "created": "2026-10-29T22:28:47Z",
   "depends_on": [
@@ -37,7 +31,8 @@
   "not_twin_of": [
     "backtest-pre-us-failed-break-dev-run"
   ],
-  "note": "PLANNER 2026-10-31: content complete; parked behind depends_on bb-state-regime-tf-map (blocked) + setup-review-with-operator (ready). S0: unpark when both are done; no further refining needed. PLANNER 2026-11-01: scope_in lists run_extra_tests.py for test_bb_mid_reject.py; weight IMPORTANT (decision numbers) needs a reviewer ACCEPT when unparked. PLANNER 2026-11-01 (planner-A-1101): re-checked, still blocked on depends_on bb-state-regime-tf-map; no change.",
+  "note": "PLANNER 2026-11-01 DECISION (OURS) planner-B-1101: held, 3 tries; content complete, only blocker is bb-state-regime-tf-map (blocked on data on another host). Release when it leaves blocked.",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 3,
   "refined_by": "",
@@ -54,7 +49,7 @@
   "sources": [
     "MyTradingSys/research/prev_close_break_2026-10-29/RESULT.md"
   ],
-  "state": "raw",
+  "state": "blocked",
   "steps": [
     "Wait for bb-state-regime-tf-map and setup-review-with-operator",
     "Pre-reg with his TF, clearance from the map distribution, 2 stop configs",

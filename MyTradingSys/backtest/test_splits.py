@@ -22,6 +22,17 @@ def test_guard_raises_before_dev():
         splits.assert_dev_only('2021-12-31', '2022-02-01')
 
 
+def test_desk_dev_start():
+    # Desk lock (sim_desk/ROADMAP.md): DEV for the desk starts 2022-04-01, a subset of DEV_START.
+    assert splits.DESK_DEV_START == pd.Timestamp('2022-04-01')
+    assert splits.DESK_DEV_START >= splits.DEV_START
+    splits.assert_desk_dev_only('2022-04-01', '2024-06-30 23:59')
+    with pytest.raises(splits.SplitViolation):
+        splits.assert_desk_dev_only('2022-03-31', '2024-06-30')
+    with pytest.raises(splits.SplitViolation):
+        splits.assert_desk_dev_only('2022-04-01', '2024-07-01')
+
+
 def test_dev_only_filter():
     idx = pd.DatetimeIndex([pd.Timestamp(x) for x in ['2021-12-31', '2022-01-01', '2024-06-30 23:59', '2024-07-01', '2025-08-01']])
     df = pd.DataFrame({'x': range(5)}, index=idx)

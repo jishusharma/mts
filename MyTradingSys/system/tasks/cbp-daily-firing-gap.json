@@ -5,6 +5,21 @@
     "python scripts/dev/cbp_schedule.py status",
     "python scripts/dev/cbp_run.py --due"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-01T17:22:21Z",
+    "misses": 20,
+    "reads": [
+      "scripts/dev/test_cbp_run.py",
+      "scripts/dev/cbp_schedule.py",
+      "scripts/dev/cbp_run.py",
+      "scripts/dev/test_cbp_schedule.py",
+      "MyTradingSys/tests/test_cbp_query.py",
+      "MyTradingSys/research/cbp/CBP_AUDIT_2026-10-28.md",
+      "MyTradingSys/research/cbp/INGESTION_WIRING_2026-10-27.md"
+    ],
+    "session": "agent-a99508ecdea583d01"
+  },
   "created": "2026-10-30T08:32:44Z",
   "depends_on": [],
   "done_when": "cbp_store/stamp.json shows the EU and the next window both stamped on one UTC date after the fix; result line names the caller; shipped if any repo file changed.",
