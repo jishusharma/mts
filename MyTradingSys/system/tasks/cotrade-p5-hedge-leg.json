@@ -6,8 +6,8 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-01T02:52:04Z",
-    "misses": 39,
+    "folded": "2026-11-01T02:52:59Z",
+    "misses": 49,
     "reads": [
       "scripts/dev/run_all_tests.py",
       "MyTradingSys/execution/auto_trader.py",
