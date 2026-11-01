@@ -11,3 +11,12 @@ c26_roadmap_2026-11-01,P1_l1_sweep_UP,2026-11-01,DESIGN_RECENT,binance spot 15m 
 c26_roadmap_2026-11-01,P1_l1_sweep_DOWN,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,L1 swept before take-out (DOWN phase),count_only
 c26_roadmap_2026-11-01,P1_session_UP,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,retest held in US/LATE (UP phase),count_only
 c26_roadmap_2026-11-01,P1_session_DOWN,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,retest held in US/LATE (DOWN phase),count_only
+c26_roadmap_2026-11-01,P1_range_exc_UP_H,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,excursion beyond H1 before back to L1 / 24h (UP highs),count_only
+c26_roadmap_2026-11-01,P1_range_exc_UP_L,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,excursion beyond the level before back to L1 / 24h (UP lows),count_only
+c26_roadmap_2026-11-01,P1_range_exc_DOWN_H,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,excursion beyond H1 before back to L1 / 24h (DOWN highs),count_only
+c26_roadmap_2026-11-01,P1_range_exc_DOWN_L,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,excursion beyond the level before back to L1 / 24h (DOWN lows),count_only
+c26_roadmap_2026-11-01,P1_range_top_grid,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,range top X in 0.3..2.0 %: stopped / false stops / back to L1 (4 groups),count_only
+c26_roadmap_2026-11-01,P1_div_legs_1m,2026-11-01,DESIGN_RECENT,binance spot 1m 2026-06-21..11-01,RSI14 bearish divergence signals (K=3 LB=60) inside the take-out window on 1m bars,count_only
+c26_roadmap_2026-11-01,P1_div_legs_2m,2026-11-01,DESIGN_RECENT,binance spot 1m 2026-06-21..11-01,same on 2m bars,count_only
+c26_roadmap_2026-11-01,P1_div_legs_3m,2026-11-01,DESIGN_RECENT,binance spot 1m 2026-06-21..11-01,same on 3m bars,count_only
+c26_roadmap_2026-11-01,P1_div_legs_5m,2026-11-01,DESIGN_RECENT,binance spot 1m 2026-06-21..11-01,same on 5m bars,count_only
