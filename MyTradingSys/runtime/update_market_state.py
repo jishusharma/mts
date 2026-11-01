@@ -11,6 +11,8 @@ import json
 import glob
 import os
 import tempfile
+import subprocess
+from datetime import datetime, timezone
 from pathlib import Path
 
 # Paths
@@ -21,6 +23,60 @@ STATE_FILE = RUNTIME / "current_market_state.md"
 
 sys.path.insert(0, str(RUNTIME))
 from mts_math import parse_state, diff_state, update_state, format_state
+
+
+# ANALYST_LEVELS: display-only NOTE layer. Never a trade input; any failure gives 'no levels'.
+# LEVELS_TIMEOUT_S and LEVELS_MAX_AGE_S are OURS (no source quote): short so the state refresh is never held up.
+LEVELS_SCRIPT = ROOT / "scripts" / "dev" / "analyst_levels.py"
+LEVELS_TIMEOUT_S = 25
+LEVELS_MAX_AGE_S = 3600
+NO_LEVELS = "no levels"
+
+
+def fetch_levels(timeout=LEVELS_TIMEOUT_S):
+    """Run analyst_levels.py --json; return the parsed dict or None on any error/timeout/bad output."""
+    try:
+        r = subprocess.run([sys.executable, str(LEVELS_SCRIPT), "--json"], capture_output=True,
+                           text=True, timeout=timeout, encoding="utf-8")
+        if r.returncode != 0:
+            return None
+        data = json.loads(r.stdout)
+        return data if isinstance(data, dict) else None
+    except Exception:
+        return None
+
+
+def levels_section(data, now=None):
+    """Text for the ANALYST_LEVELS section: nearest open level above/below price. Fails closed."""
+    now = now or datetime.now(timezone.utc)
+    lines = ["## ANALYST_LEVELS", "note: display only, not a trade input"]
+    try:
+        price = float(data["price"])
+        asof = datetime.fromisoformat(data["asof"])
+        if asof.tzinfo is None:
+            asof = asof.replace(tzinfo=timezone.utc)
+        if abs((now - asof).total_seconds()) > LEVELS_MAX_AGE_S:
+            raise ValueError("stale")
+        lv = [x for x in data["levels"] if not x.get("expired")]
+        above = sorted((x for x in lv if float(x["level"]) > price), key=lambda x: x["level"])
+        below = sorted((x for x in lv if float(x["level"]) <= price), key=lambda x: -x["level"])
+        if not above and not below:
+            raise ValueError("empty")
+
+        def row(tag, x):
+            lines.append("%s: %s | %s | published %s | %s" % (
+                tag, x["level"], x["analyst"], str(x["published"])[:10], "hit" if x.get("hit") else "open"))
+
+        for tag, grp in (("nearest_above", above), ("nearest_below", below)):
+            if grp:
+                row(tag, grp[0])
+            else:
+                lines.append("%s: %s" % (tag, NO_LEVELS))
+        lines.append("price: %s" % price)
+        lines.append("asof: %s" % data["asof"])
+    except Exception:
+        lines = ["## ANALYST_LEVELS", "note: display only, not a trade input", "levels: " + NO_LEVELS]
+    return "\n".join(lines) + "\n"
 
 
 def find_latest_snapshot():
@@ -56,6 +112,7 @@ def main():
     old_state = {}
     if STATE_FILE.exists():
         old_state = parse_state(str(STATE_FILE))
+        old_state.pop("ANALYST_LEVELS", None)  # note layer is rebuilt every run, never diffed
         print("  loaded old state, updated_utc:", old_state.get("META", {}).get("updated_utc", "(none)"))
     else:
         print("  no existing state file, starting fresh")
@@ -79,6 +136,11 @@ def main():
     new_state = update_state(old_state, snapshot)
 
     content = format_state(new_state)
+    try:
+        sec = levels_section(fetch_levels())
+    except Exception:
+        sec = "## ANALYST_LEVELS\nlevels: " + NO_LEVELS + "\n"
+    content = content.rstrip("\n") + "\n\n" + sec
     atomic_write(STATE_FILE, content)
 
     print()
