@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T21:05:27Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -23,18 +25,24 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "contract states measured bound only and clarifies fixture vs emitted timestamps (commit d5",
+      "ref": "cc213d3a7",
+      "utc": "2026-11-01T21:05:27Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "wavetrend-priority-source-parity: store Pine snapshots as .pine.txt (doc-only gate)",
-      "ref": "76971de961f3",
-      "utc": "2026-10-17T06:17:17Z"
+      "line": "wavetrend parity contract: bound seed-convergence claim, clarify fixture timestamps",
+      "ref": "d5a31e827b34",
+      "utc": "2026-11-01T06:12:50Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "76971de961f3 wavetrend-priority-source-parity: store Pine snapshots as .pine.txt (doc-only",
+      "line": "d5a31e827b34 wavetrend parity contract: bound seed-convergence claim, clarify fixture time",
       "ref": "MyTradingSys/research/wavetrend_2026-10-17/PARITY_CONTRACT.md",
-      "utc": "2026-10-17T06:17:17Z"
+      "utc": "2026-11-01T06:12:50Z"
     }
   ],
   "layers": [],
@@ -44,26 +52,32 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-01T06:08:38Z",
+  "refreshed": "2026-11-01T21:05:02Z",
   "refs": [],
-  "result": "",
+  "result": "contract states measured bound only and clarifies fixture vs emitted timestamps (commit d5a31e827)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/wavetrend_2026-10-17/PARITY_CONTRACT.md"
   ],
   "scope_out": [
     "wavetrend.py, golden CSV, tests, FORMULAS.md"
   ],
-  "scope_sha": "76971de961f3",
+  "scope_sha": "d5a31e827b34",
   "size": "S",
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-mutation-wavetrend-1031.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Edit the EMA-seed Evidence cell: keep the measured bound, drop 'so the seed choice cannot affect any event after warm-up'",
     "Edit the Open bar row: timestamp rule applies to emitted rows; input and golden fixtures carry open_time only",
     "grep check, tasks.py lint"
   ],
+  "taken": "2026-11-01T21:05:18Z",
   "tests": "docs card: grep -c 'cannot affect any event' MyTradingSys/research/wavetrend_2026-10-17/PARITY_CONTRACT.md is 0 (1 before); tasks.py lint passes",
   "title": "WaveTrend parity contract: bound seed-convergence claim and reconcile fixture timestamps (gpt-mutation-wavetrend-1031 report)",
   "weight": "ROUTINE",
