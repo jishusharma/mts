@@ -1,7 +1,18 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T17:40:15Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-01T17:40:42Z",
+    "misses": 54,
+    "reads": [
+      "MyTradingSys/tests/aibridge_dom.py",
+      "MyTradingSys/tests/test_aibridge_exploratory.py"
+    ],
+    "session": "agent-a772ac6772e9af817"
+  },
   "created": "2026-11-01T08:58:29Z",
   "depends_on": [],
   "done_when": "a pytest with a fake browser script (empty dump first, good dump second) shows find_browser returns the second; the 8 test_aibridge_exploratory tests pass on JIS-LAPTOP with no AIB_BROWSER set.",
@@ -13,6 +24,12 @@
   "id": "aibridge-dom-find-browser-edge-headless-empty",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "find_browser probes headless dump-dom, skips empty Edge; 17/17 exploratory pass",
+      "ref": "10e2a7d56",
+      "utc": "2026-11-01T17:40:15Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -30,7 +47,12 @@
   "refined_by": "",
   "refreshed": "2026-11-01T17:05:14Z",
   "refs": [],
-  "result": "",
+  "result": "find_browser probes headless dump-dom, skips empty Edge; 17/17 exploratory pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tests/aibridge_dom.py",
     "MyTradingSys/tests/test_aibridge_exploratory.py"
@@ -43,12 +65,13 @@
   "scope_sha": "a9300f5bd71f",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "add _probe(path): run it headless with --dump-dom on a data: URL holding a marker string, 15 s timeout, True only if the marker is in stdout",
     "find_browser returns the first candidate that exists and passes _probe (cache the result per process)",
     "add the fake-browser test; run test_aibridge_exploratory.py on JIS-LAPTOP"
   ],
+  "taken": "2026-11-01T17:40:15Z",
   "tests": "MyTradingSys/tests/test_aibridge_exploratory.py::test_find_browser_skips_empty_dump (new, fake browser): fails on the current find_browser, which returns the first existing path.",
   "title": "aibridge_dom.find_browser picks msedge first; on JIS-LAPTOP headless Edge returns an empty DOM (rc 0, no output) so 8 test_aibridge_exploratory tests fail and block every full-gate ship; add a smoke probe and fall back to Chrome. Done when: find_browser skips a browser whose dump-dom of a trivial page is empty (test with a fake browser), and the 8 tests pass on JIS-LAPTOP",
   "weight": "ROUTINE",
