@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T21:00:52Z",
   "commands": [],
   "created": "2026-10-31T10:04:26Z",
   "depends_on": [],
@@ -14,11 +16,17 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "hermetic TEMP and GIT_CONFIG_GLOBAL in test_wiring_scan and test_mts_signal (commit 92024c",
+      "ref": "40ce4c284",
+      "utc": "2026-11-01T21:00:52Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "wiring: name readers for gateway_run.py and refresh_main_checkout.py in QUICK_ANSWERS",
-      "ref": "47e98166bd9b",
-      "utc": "2026-10-28T11:43:33Z"
+      "line": "AIBridge 0.7.4 runner: native exit code propagates, gate without summary FAILs, child TEMP",
+      "ref": "92024c7daeba",
+      "utc": "2026-10-31T10:27:28Z"
     }
   ],
   "layers": [],
@@ -29,11 +37,16 @@
   "producer": "Builder",
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T10:08:54Z",
+  "refreshed": "2026-11-01T21:00:35Z",
   "refs": [
     "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
   ],
-  "result": "",
+  "result": "hermetic TEMP and GIT_CONFIG_GLOBAL in test_wiring_scan and test_mts_signal (commit 92024c7da)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "review_receipt": {
     "card_hash": "2b1b80d58ba9",
     "date": "2026-10-31",
@@ -46,18 +59,19 @@
   "scope_out": [
     "scripts/aibridge"
   ],
-  "scope_sha": "47e98166bd9b",
+  "scope_sha": "92024c7daeba",
   "size": "S",
   "sources": [
     "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read FIX_PLAN.md (MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31) row D5",
     "Reproduce: run both tests with TEMP inside a scratch git repo and GIT_CONFIG_GLOBAL=NUL; capture commit stdout",
     "Make the tests hermetic (own mkdtemp, GIT_CEILING_DIRECTORIES, -c identity); keep the failing repro as a test",
     "Gate --quick passes; sync.py ship"
   ],
+  "taken": "2026-11-01T21:00:48Z",
   "tests": "scripts/dev/test_wiring_scan.py and scripts/dev/test_mts_signal.py gain a repro case with TEMP inside a scratch git repo and GIT_CONFIG_GLOBAL=NUL; it fails on the current code",
   "title": "Gate: test_wiring_scan and test_mts_signal pass when TEMP sits inside a git repo (bridge children) (D5)",
   "weight": "IMPORTANT",
