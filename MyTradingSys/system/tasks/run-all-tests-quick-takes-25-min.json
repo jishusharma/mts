@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T19:23:14Z",
   "commands": [
     "python scripts/dev/run_all_tests.py --quick --shard 1/3",
     "python scripts/dev/test_run_all_tests.py"
@@ -18,6 +20,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "Added QUICK_PARTS = 4 to scripts/dev/run_all_tests.py (smallest N where largest shard is <",
+      "ref": "2e4cfa08b",
+      "utc": "2026-11-01T19:23:14Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "test_run_all_tests: fake failing steps write fail logs to a tmp dir, not runtime_data/gate",
@@ -34,7 +42,12 @@
   "refined_by": "",
   "refreshed": "2026-11-01T02:50:57Z",
   "refs": [],
-  "result": "",
+  "result": "Added QUICK_PARTS = 4 to scripts/dev/run_all_tests.py (smallest N where largest shard is <= 600 s on Windows estimates: Shard 1/4 530.6 s, 2/4 528.2 s, 3/4 529.1 s, 4/4 529.7 s, all <= 600 s); added advice print for --quick without --shard on non-CI host; verified by test_quick_shards_each_under_600s_estimate and test_quick_without_shard_prints_advice (69/69 tests pass).",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/run_all_tests.py",
     "scripts/dev/test_run_all_tests.py"
@@ -47,12 +60,13 @@
   "sources": [
     "scripts/dev/run_all_tests.py:1041-1060 apply_shard, 996 split_for_shards; card text: layer tests 659-907 s, run_extra_tests ~1000 s"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "1 Measure on this host: run --quick --shard 1/3, 2/3, 3/3 one at a time in background shells, record wall seconds per part (Maven and backtest are not in --quick)",
     "2 split_for_shards already splits 5b and 3xt under --shard; add constant QUICK_PARTS and print 'run in QUICK_PARTS parts: --quick --shard K/N' for --quick without --shard on a non-CI host; split further only if a measured part exceeds 600 s",
     "3 Fail-first test; run the three parts, then the full test_run_all_tests.py; REVIEW session PLAN+DIFF (CRITICAL: gate file); sync.py ship Verify: content commit sha; git cherry origin/fast-track <sha> empty; git ls-tree -r origin/fast-track --name-only lists the delivered files."
   ],
+  "taken": "2026-11-01T19:20:20Z",
   "tests": "test_run_all_tests.py: quick_shards_each_under_600s_estimate (balance over the plan with shard_est and CI_FILE_S, N from a constant QUICK_PARTS); fails on current code because QUICK_PARTS does not exist",
   "title": "run_all_tests.py --quick takes 20-25 min on JIS-LAPTOP (layer tests 659-907 s, run_extra_tests ~1000 s), over the 15 min worker shell cap; three Builders hit it. Done when: --quick finishes under 10 min on this host or splits into named parts with a documented per-part time, test or timing report shows it",
   "weight": "CRITICAL",

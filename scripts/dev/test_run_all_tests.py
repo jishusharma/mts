@@ -52,6 +52,25 @@ class LocalSkip(unittest.TestCase):
         self.assertEqual(self._skipped([]), set())
         self.assertEqual(self._skipped(["--precheck"], {"CI": "1"}), set())
 
+    def test_quick_shards_each_under_600s_estimate(self):
+        n = getattr(rat, "QUICK_PARTS", None)
+        self.assertIsNotNone(n, "QUICK_PARTS constant does not exist in run_all_tests")
+        self.assertGreater(n, 1)
+        loads = [0.0] * n
+        p = rat.build_plan(quick=True)
+        p = rat.split_for_shards(p, n)
+        est = lambda x: x.est if x.est is not None else rat.shard_est(x.num)
+        for st in sorted((x for x in p if not x.skip), key=lambda x: (x.num != "5", -est(x), x.num)):
+            j = min(range(n), key=lambda i: (loads[i], i))
+            loads[j] += est(st)
+        self.assertLessEqual(max(loads), 600.0, f"Largest quick shard exceeds 600s: {max(loads):.1f} s (loads={loads})")
+
+    def test_quick_without_shard_prints_advice(self):
+        buf = io.StringIO()
+        with mock.patch("sys.stdout", buf), mock.patch.dict(os.environ, {}, clear=True), mock.patch.object(rat, "run_plan", return_value={}):
+            rat.main(["--quick"])
+        self.assertIn(f"run in {rat.QUICK_PARTS} parts: --quick --shard K/N", buf.getvalue())
+
 
 class GateCoverage(unittest.TestCase):
     def test_pytest_paths_cover_v3_and_live_writers(self):
