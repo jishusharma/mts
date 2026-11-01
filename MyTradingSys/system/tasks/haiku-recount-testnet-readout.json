@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T19:13:46Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -23,7 +25,14 @@
   "goal": "After testnet-trade-readout-daily ships a day file, recount the per-source rows from its own table and from funnel_report.py --day on the same inputs if reachable; SAME or DIFF with the numbers.",
   "id": "haiku-recount-testnet-readout",
   "lane": "HAIKU",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Recounted TESTNET_STATUS_2026-10-31.md: 19/19 sources verified SAME against funnel_report.",
+      "ref": "e298a30e2",
+      "utc": "2026-11-01T19:13:46Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -35,7 +44,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "Recounted TESTNET_STATUS_2026-10-31.md: 19/19 sources verified SAME against funnel_report.py --day 2026-10-31 (all 0 rows due to stale JIS-NB engine log files predating the window by 251.8h). Appended 19-source recount lines and Noticed: observation to TESTNET_STATUS_2026-10-31.md.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "the newest research/testnet_status/TESTNET_STATUS_<date>.md (read, then one appended line per source)"
   ],
@@ -45,13 +59,14 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read the day file table",
     "recount rows per source from the file's own rows",
     "append SAME/DIFF lines",
     "report"
   ],
+  "taken": "2026-11-01T19:13:12Z",
   "tests": "see done_when",
   "title": "Haiku: recount one day of the testnet readout (rows per source, calibration vs promoted) from the published research/testnet_status file; report SAME/DIFF",
   "weight": "ROUTINE",
