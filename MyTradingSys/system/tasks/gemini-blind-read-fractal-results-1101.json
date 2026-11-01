@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T17:49:13Z",
   "commands": [],
   "created": "2026-11-01T17:12:13Z",
   "depends_on": [],
@@ -13,7 +14,14 @@
   "id": "gemini-blind-read-fractal-results-1101",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "research/gemini_audits_2026-11-01/fractal_results_blind_read.md (146 items audited: 146 FO",
+      "ref": "21a1d05f8",
+      "utc": "2026-11-01T17:49:13Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -25,7 +33,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "research/gemini_audits_2026-11-01/fractal_results_blind_read.md (146 items audited: 146 FOUND, 0 DIFF, 0 NOT_IN_DATA)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "research/fractals_2026-10-31/*/RESULT.md and the files they cite (read); one output file research/gemini_audits_2026-11-01/fractal_results_blind_read.md"
   ],
@@ -35,12 +48,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "list every number in each RESULT.md with its cited source",
     "open the source and check the number",
     "write FOUND / NOT_IN_DATA / DIFF per number"
   ],
+  "taken": "2026-11-01T17:49:13Z",
   "tests": "see done_when (audit card, output file is the test)",
   "title": "[GEMINI] blind re-read of the fractal RESULT.md files (f1-f4, p1_split, p1b_rsi_feenet): every number re-found in its cited file or NOT_IN_DATA",
   "weight": "ROUTINE",
