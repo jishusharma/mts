@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T09:05:14Z",
   "commands": [],
   "created": "2026-10-30T17:14:55Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "3/3 mutations killed; 19 tests in MyTradingSys/research/sim_desk/test_conditions_spec.py",
+      "ref": "c7b5fb980",
+      "utc": "2026-11-01T09:05:14Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,7 +40,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "3/3 mutations killed; 19 tests in MyTradingSys/research/sim_desk/test_conditions_spec.py",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/sim_desk/conditions.py (read), DESIGN.md (read), new file MyTradingSys/research/sim_desk/test_conditions_spec.py; report"
   ],
@@ -43,13 +55,14 @@
   "scope_sha": "de7acbac616c",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "list each condition function and its documented rule",
     "write expected values by hand from the rule, not the code",
     "write the test file and run it",
     "mutate 3 operators in a scratch copy, show each is killed, restore"
   ],
+  "taken": "2026-11-01T09:05:14Z",
   "tests": "see done_when",
   "title": "GPT: mutation-kill tests for MyTradingSys/research/sim_desk/conditions.py (the simulator conditions the operator relies on)",
   "weight": "ROUTINE",
