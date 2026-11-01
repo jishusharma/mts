@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T05:34:45Z",
   "commands": [],
   "created": "2026-10-31T17:29:26Z",
   "crucial": true,
@@ -15,6 +16,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "FIX-FIRST; suite kills 5/5, golden 3/5; 20 pairs error <6.8e-12; MyTradingSys/research/lay",
+      "ref": "0009137d6",
+      "utc": "2026-11-01T05:34:45Z"
+    },
     {
       "auto": true,
       "kind": "report",
@@ -39,7 +46,12 @@
   "refined_by": "codex_run.py ask",
   "refreshed": "2026-10-31T19:01:42Z",
   "refs": [],
-  "result": "",
+  "result": "FIX-FIRST; suite kills 5/5, golden 3/5; 20 pairs error <6.8e-12; MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-mutation-wavetrend-1031.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/wavetrend/wavetrend.py",
     "MyTradingSys/backtest/layers/wavetrend/test_wavetrend.py",
@@ -54,7 +66,7 @@
   "scope_sha": "d94529dce83d",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read every scope_in file and each source it cites (trade ledger rows, transcript quote file:line).",
     "Check each rule, parameter and number against its source; where a backtest is involved apply the 12 items of MyTradingSys/backtest/PRE_REG_TEMPLATE.md.",
@@ -62,6 +74,7 @@
     "A source you cannot reach (video frames, data on another machine) is a NOT_IN_DATA finding, not a reason for BLOCKED: finish the audit and mark the card done.",
     "For each HIGH finding capture a follow-up card: python scripts/dev/tasks.py new \"<title>\" --lane SONNET."
   ],
+  "taken": "2026-11-01T05:34:45Z",
   "tests": "audit, no repo test file: scratch mutation script saved as MyTradingSys/research/layer_lab/gpt-mutation-wavetrend-1031/mutations.py.txt; the report shows each of the 5 mutations as killed or surviving; any new test for a surviving mutation goes in a follow-up SONNET card",
   "title": "GPT: mutation-kill and independent recompute of wavetrend.py vs FORMULAS.md",
   "weight": "CRUCIAL",
