@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T21:09:39Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -24,11 +26,17 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "test_position_bar_distance_atr_and_uncovered_render pins formulas with 3 mutation tests (c",
+      "ref": "67b49f8cd",
+      "utc": "2026-11-01T21:09:39Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "live_aid replay: position bar pos-dist, pos-atr, uncovered pinned",
-      "ref": "e6376a8d400b",
-      "utc": "2026-10-31T05:45:46Z"
+      "line": "live_aid: macro strip reads a same-origin calendar snapshot (feed has no CORS header)",
+      "ref": "87fadd77ec53",
+      "utc": "2026-10-31T12:35:51Z"
     }
   ],
   "layers": [],
@@ -38,26 +46,32 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T08:47:37Z",
+  "refreshed": "2026-11-01T21:09:07Z",
   "refs": [
     "MyTradingSys/research/gemini_burn_2026-10-31/LIVE_AID_TEST_PLAN.md"
   ],
-  "result": "",
+  "result": "test_position_bar_distance_atr_and_uncovered_render pins formulas with 3 mutation tests (commit e6376a8d4)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tools/live_aid/test_live_aid_replay.py"
   ],
   "scope_out": [
     "no edits to live_aid.html or live_aid_indicators.js"
   ],
-  "scope_sha": "e6376a8d400b",
+  "scope_sha": "87fadd77ec53",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Message the dash-designer session before touching tools/live_aid; add the test only",
     "Seed store.size/entry/side/rungs in the replay page, compute expected entry-mark, d/ATR15 and size-covered by hand",
     "Prove fail-first by mutating each formula in a scratch copy, then run the live_aid tests"
   ],
+  "taken": "2026-11-01T21:09:34Z",
   "tests": "MyTradingSys/tools/live_aid/test_live_aid_replay.py::test_position_bar_distance_atr_and_uncovered_render (fail-first: mutate the formula in a scratch copy and see it fail)",
   "title": "live_aid position bar replay test pos-dist pos-atr uncovered",
   "weight": "",
