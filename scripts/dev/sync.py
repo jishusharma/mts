@@ -457,6 +457,13 @@ def new_worktree(repo, slug=None):
     reused = reuse_finished_tree(repo, path)
     if reused:
         return reused
+    if path.exists() and not (path / LIVE_MARKER).exists() and not (path / GATEWAY_MARKER).exists():
+        mine = {Path(p).resolve(): b for p, b in worktrees(repo)[1:]}
+        branch = mine.get(path.resolve())
+        if branch and branch not in ("(detached)", TRUNK, "master", "main"):
+            dirty = [l for l in git(path, "status", "--short", check=False).stdout.splitlines() if l and not is_noise(l)]
+            print(f"reusing existing tree {path} ({len(dirty)} uncommitted)")
+            return path
     n = 1
     while path.exists():
         n += 1

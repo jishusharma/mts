@@ -836,21 +836,41 @@ class SyncTest(unittest.TestCase):
         self.assertEqual(second.resolve(), first.resolve())
         self.assertFalse(second.with_name(second.name + "-2").exists())
 
-    def test_start_makes_dash_2_when_the_same_slug_tree_is_dirty_unshipped_or_busy(self):
+    def test_start_twice_same_slug_reuses_unfinished_tree(self):
+        with contextlib.redirect_stdout(io.StringIO()) as out:
+            first = sync.new_worktree(self.a, "unfinished")
+            (first / "wip.txt").write_text("in-progress\n", newline="\n")
+            second = sync.new_worktree(self.a, "unfinished")
+        self.assertEqual(second.resolve(), first.resolve())
+        self.assertFalse(first.with_name(first.name + "-2").exists())
+        self.assertTrue((first / "wip.txt").exists())
+        self.assertEqual((first / "wip.txt").read_text(encoding="utf-8"), "in-progress\n")
+        self.assertIn(f"reusing existing tree {first} (1 uncommitted)", out.getvalue())
+
+        # Unshipped commit also reuses same unfinished tree
+        commit(first, "done.py", "d\n")
         with contextlib.redirect_stdout(io.StringIO()):
-            busy = sync.new_worktree(self.a, "busy")
-            dirty = sync.new_worktree(self.a, "dirt")
-            ahead = sync.new_worktree(self.a, "ahd")
-            (dirty / "x.txt").write_text("wip\n", newline="\n")
-            commit(ahead, "u.py", "u\n")
-            self.assertNotEqual(sync.new_worktree(self.a, "busy").resolve(), busy.resolve())   # just started: a session may be in it
-            real_idle = sync.idle_hours
-            sync.idle_hours = lambda *a, **k: 5.0
-            try:
-                self.assertNotEqual(sync.new_worktree(self.a, "dirt").resolve(), dirty.resolve())
-                self.assertNotEqual(sync.new_worktree(self.a, "ahd").resolve(), ahead.resolve())
-            finally:
-                sync.idle_hours = real_idle
+            third = sync.new_worktree(self.a, "unfinished")
+        self.assertEqual(third.resolve(), first.resolve())
+
+        # start(--worker) gets a fresh tree for a different slug
+        with contextlib.redirect_stdout(io.StringIO()):
+            worker_tree = sync.start(first, slug="diff-worker-slug", worker=True)
+        self.assertNotEqual(worker_tree.resolve(), first.resolve())
+        self.assertIn("diff-worker-slug", worker_tree.name)
+
+    def test_start_makes_dash_2_when_the_same_slug_tree_is_live_or_gateway(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            live = sync.new_worktree(self.a, "live")
+            gw = sync.new_worktree(self.a, "gw")
+            (live / sync.LIVE_MARKER).write_text("", newline="\n")
+            (gw / sync.GATEWAY_MARKER).write_text("", newline="\n")
+            live2 = sync.new_worktree(self.a, "live")
+            gw2 = sync.new_worktree(self.a, "gw")
+        self.assertNotEqual(live2.resolve(), live.resolve())
+        self.assertTrue(live2.name.endswith("-2"))
+        self.assertNotEqual(gw2.resolve(), gw.resolve())
+        self.assertTrue(gw2.name.endswith("-2"))
 
     def test_tidy_and_reuse_work_under_any_hostname(self):
         real = sync.socket.gethostname
