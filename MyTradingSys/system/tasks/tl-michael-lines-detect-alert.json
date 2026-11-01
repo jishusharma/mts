@@ -4,6 +4,16 @@
   "commands": [
     "python MyTradingSys/research/trendlines_2026-10-17/count_only.py --split DEV --tfs 1d,4h --out MyTradingSys/research/michael_lines_2026-11/counts"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-01T18:44:32Z",
+    "misses": 48,
+    "reads": [
+      "scripts/dev/extra_tests.tsv",
+      "MyTradingSys/research/trendlines_2026-10-17/count_only.py"
+    ],
+    "session": "agent-a2ba2f7bb7148a8f1"
+  },
   "created": "2026-10-31T13:36:46Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/michael_lines_2026-11/STATED_LINES.md (>= 1 row per video that mentions a line) and RESULT.md with event counts n per kind and a go/no-go line; VALIDATION and HOLDOUT untouched",
