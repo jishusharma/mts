@@ -100,3 +100,20 @@ def test_last_bar_event_is_censored():
     r = V.analyse_day(LV, [101, 113, 114], [99, 111, 112], [100, 112, 113], ns=(2,))
     assert r["acc"][2]["accepted"] is True and r["acc"][2]["returned"] is None
     assert V.analyse_day(LV, D1["h"], D1["l"], D1["c"])["bars_left"] == 3
+
+
+def test_near_band_primary_excludes_far_placebo():
+    # Hand-worked 3-day table (SETUP_REVIEW sec 6 test 2). All three days fire for real and placebo (event = 1).
+    #   day0 d=+0.5: real returns 1, placebo returns 0
+    #   day1 d=-1.0: real returns 0, placebo returns 0
+    #   day2 d=+3.0: real returns 1, placebo returns 1   (|d| = 3 > 1: must be EXCLUDED from the primary)
+    # Restricted (days 0,1): real 1/2, placebo 0/2, diff +0.5, n 2. Unrestricted (all 3): real 2/3, placebo 1/3, diff +1/3.
+    import numpy as np
+    z = lambda *a: np.array(a, float)  # noqa: E731
+    res = {"real": {"event": z(1, 1, 1), "ret": z(1, 0, 1)}, "placebo": {"event": z(1, 1, 1), "ret": z(0, 0, 1)}}
+    r = V.near_band_primary(res, z(0.5, -1.0, 3.0))
+    assert r["n_days"] == 2 and r["real"]["n"] == 2 and r["placebo"]["n"] == 2
+    assert r["real"]["share"] == pytest.approx(0.5) and r["placebo"]["share"] == pytest.approx(0.0)
+    assert r["diff"]["diff"] == pytest.approx(0.5)
+    assert r["diff"]["diff"] != pytest.approx(1 / 3)          # the unrestricted pooled value
+    assert r["max_abs_d"] == 1.0
