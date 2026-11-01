@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T19:03:38Z",
   "commands": [],
   "created": "2026-11-01T18:07:48Z",
   "depends_on": [],
@@ -13,7 +15,14 @@
   "id": "gpt-rederive-tom-v2-near-band-rows",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Re-derived Tom near-band placebo headline numbers from results.json (real 63.4%, placebo 5",
+      "ref": "fd7223bcb",
+      "utc": "2026-11-01T19:03:38Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -31,7 +40,12 @@
     "to": "DSA",
     "why": "window"
   },
-  "result": "",
+  "result": "Re-derived Tom near-band placebo headline numbers from results.json (real 63.4%, placebo 58.9%, diff +4.4 pp, bootstrap CI -0.3..8.9 pp, paired SE 2.35 pp, FAIL verdict) matching all 18 audited figures (SAME: 18, DIFFERENT: 0, NOT_IN_DATA: 0). Report: MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-rederive-tom-v2-near-band-rows.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-rederive-tom-v2-near-band-rows.md"
   ],
@@ -41,12 +55,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read RESULT.md for the stated numbers and results.json primary_near",
     "recompute shares and Wilson CIs by hand, diff and the FAIL rule (CI lower bound not above 0)",
     "write the table; no verdict on the strategy"
   ],
+  "taken": "2026-11-01T19:01:38Z",
   "tests": "see done_when (audit card, the output file is the test)",
   "title": "[GPT] Re-derive the Tom near-band placebo headline (63.4 % vs 58.9 %, diff 4.4 pp, CI -0.3..8.9) from results.json",
   "weight": "ROUTINE",
