@@ -36,6 +36,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `tom-btc-dev-backtest` blocked p2 CODEX: Tom on BTC T6: DEV backtest + adjustments (both fills, maker vs taker entry, management arms) - every variant 
   - `tom-btc-encode` blocked p2 CODEX: Tom on BTC T5: encode the concepts that separated into a flag-gated BTC detector (entry paths A1-A3, stop at t
   - `tom-btc-validation` blocked p2 DSA-NUC: Tom on BTC T7: VALIDATION read once (2025-04..2025-06) of the frozen DEV config
+  - `tom-fabio-holdout-exposure-ledger` ready p2 HAIKU: record VALIDATION/HOLDOUT reads: Tom PHASE2 2022-01..2026-10, tom_core dev/holdout, Fabio L1 OOS, v3 IS/OOS, O
   - `tom-probe-prereg` blocked p2 SONNET: Pre-register the surviving S/Q/M/F arms and write their runner card
   - `tom-probe-runner` blocked p2 SONNET: Run pre-registered Tom management arms on DAX and BTC
   - `lab-verify-trend-healthy-in-balance` refined p3 SONNET: LAB-VERIFY 10-18: how often trend_healthy is set inside a multi-day balance (DEV)
@@ -65,7 +66,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Roadmap: `MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md`
 - Codex lab reports (newest 2 of 2): `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-fabio-gpt-rederive.md`; `MyTradingSys/research/layer_lab/reports/2026-10-25_lf-fabio-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `fabio-v3-code-vs-formulas-s28-diffs` raw p2 SONNET: FORMULAS.md s28.6 lists 3 Fabio v3 code differences from spec: (1) balance and atr need one more contiguous ba
   - `fabio-v3-model-b-managed-is-rerun` refined p2 JIS-NB: Rerun fabio v3 L3 IS only with managed Model B fills (fix 483a6b035) on JIS-NB; report net R per model
   - `meta-label-fabio-c-dev-ext-power` ready p2 SONNET: Meta-label NOT ENOUGH DATA branch: rerun Fabio Model C stand-in test on pre-DEV dev_ext 2019-2021 (ROADMAP 2.2
   - `sim-desk-tom-fabio-studies` ready p2 SONNET: Sim desk: add per-trade replay studies for Fabio v3 A-D and Tom spike fade / level touch (DEV only, fee-net)
