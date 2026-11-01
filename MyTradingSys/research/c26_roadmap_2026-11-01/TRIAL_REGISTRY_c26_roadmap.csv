@@ -26,3 +26,15 @@ c26_roadmap_2026-11-01,P1_shape_flat3_stop1.0,2026-11-01,DESIGN_RECENT,binance s
 c26_roadmap_2026-11-01,P1_shape_mart124_stop1.0,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,martingale 1-2-4 at 0/0.3/0.6 % stop 1.0 %,design_gross
 c26_roadmap_2026-11-01,P1_shape_nested_mart_stop1.5,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,operator nested tiers 0.65/1.0/1.5 sizes 1/2/4 stop 1.5 %,design_gross
 c26_roadmap_2026-11-01,P1_shape_nested_flat_stop1.5,2026-11-01,DESIGN_RECENT,binance spot 15m 2026-07-01..11-01,nested tiers flat sizes stop 1.5 %,design_gross
+c26_roadmap_2026-11-01,P3_c26_F0,2026-11-01,DEV,Binance spot BTCUSDT 1m->15m 2022-04..2024-06 + USDT-M metrics,"DOWN-regime fade, H1=c26, filter F0: traded 97, mean net -0.216 %, Holm p 1.000",pre-registered
+c26_roadmap_2026-11-01,P3_c26_F1,2026-11-01,DEV,Binance spot BTCUSDT 1m->15m 2022-04..2024-06 + USDT-M metrics,"DOWN-regime fade, H1=c26, filter F1: traded 65, mean net -0.230 %, Holm p 1.000",pre-registered
+c26_roadmap_2026-11-01,P3_c26_F2,2026-11-01,DEV,Binance spot BTCUSDT 1m->15m 2022-04..2024-06 + USDT-M metrics,"DOWN-regime fade, H1=c26, filter F2: traded 45, mean net -0.327 %, Holm p 1.000",pre-registered
+c26_roadmap_2026-11-01,P3_c26_F3,2026-11-01,DEV,Binance spot BTCUSDT 1m->15m 2022-04..2024-06 + USDT-M metrics,"DOWN-regime fade, H1=c26, filter F3: traded 97, mean net -0.191 %, Holm p 1.000",pre-registered
+c26_roadmap_2026-11-01,P3_c26_F4,2026-11-01,DEV,Binance spot BTCUSDT 1m->15m 2022-04..2024-06 + USDT-M metrics,"DOWN-regime fade, H1=c26, filter F4: traded 60, mean net -0.207 %, Holm p 1.000",pre-registered
+c26_roadmap_2026-11-01,P3_c26_F4c,2026-11-01,DEV,Binance spot BTCUSDT 1m->15m 2022-04..2024-06 + USDT-M metrics,"DOWN-regime fade, H1=c26, filter F4c: traded 65, mean net -0.131 %, Holm p 1.000",pre-registered
+c26_roadmap_2026-11-01,P3_krown_F0,2026-11-01,DEV,Binance spot BTCUSDT 1m->15m 2022-04..2024-06 + USDT-M metrics,"DOWN-regime fade, H1=krown, filter F0: traded 661, mean net -0.117 %, Holm p 1.000",pre-registered
+c26_roadmap_2026-11-01,P3_krown_F1,2026-11-01,DEV,Binance spot BTCUSDT 1m->15m 2022-04..2024-06 + USDT-M metrics,"DOWN-regime fade, H1=krown, filter F1: traded 456, mean net -0.146 %, Holm p 1.000",pre-registered
+c26_roadmap_2026-11-01,P3_krown_F2,2026-11-01,DEV,Binance spot BTCUSDT 1m->15m 2022-04..2024-06 + USDT-M metrics,"DOWN-regime fade, H1=krown, filter F2: traded 450, mean net -0.112 %, Holm p 1.000",pre-registered
+c26_roadmap_2026-11-01,P3_krown_F3,2026-11-01,DEV,Binance spot BTCUSDT 1m->15m 2022-04..2024-06 + USDT-M metrics,"DOWN-regime fade, H1=krown, filter F3: traded 661, mean net -0.129 %, Holm p 1.000",pre-registered
+c26_roadmap_2026-11-01,P3_krown_F4,2026-11-01,DEV,Binance spot BTCUSDT 1m->15m 2022-04..2024-06 + USDT-M metrics,"DOWN-regime fade, H1=krown, filter F4: traded 389, mean net -0.117 %, Holm p 1.000",pre-registered
+c26_roadmap_2026-11-01,P3_krown_F4c,2026-11-01,DEV,Binance spot BTCUSDT 1m->15m 2022-04..2024-06 + USDT-M metrics,"DOWN-regime fade, H1=krown, filter F4c: traded 428, mean net -0.106 %, Holm p 1.000",pre-registered

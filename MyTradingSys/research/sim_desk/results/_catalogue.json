@@ -1,7 +1,7 @@
 {
 "_doc": "Catalogue of known tests on trunk. kind is inferred (kind_source). Built by sim_desk/build_catalogue.py.",
-"count": 322,
-"exported": 322,
+"count": 323,
+"exported": 323,
 "rows": [
 {
 "id": "st-_archive-loose_2026-10-cbp_profile6_result",
@@ -1825,6 +1825,20 @@
 "verdict_class": "other"
 },
 {
+"id": "c26-h1-structural-lower-high",
+"family": "Eagle_Eyes chart ideas (operator, 10-30/31)",
+"title": "C26 DOWN-regime fade on DEV: C26 pivot vs Krown dominant lower high as H1, with the pre-registered H2 filters",
+"kind": "backtest",
+"kind_source": "result file",
+"verdict": "NO on DEV: 0 of 12 arms net above zero after fees, none beats random entries after Holm; underpowered arms (MDE above +0.20 %): c26 6/6, krown 0/6",
+"source": "MyTradingSys/research/sim_desk/results/c26-h1-structural-lower-high.json",
+"exported": true,
+"result_id": "c26-h1-structural-lower-high",
+"date": null,
+"status": "SEE_VERDICT",
+"verdict_class": "other"
+},
+{
 "id": "eagle-c26-magnet",
 "family": "Eagle_Eyes chart ideas (operator, 10-30/31)",
 "title": "C26: a held 15m high/low is taken out later (base rates)",
@@ -2375,7 +2389,7 @@
 "source": "MyTradingSys/research/gemini_audits_2026-10-31/setup_review_blind_read.md",
 "exported": true,
 "result_id": "dir-gemini_audits_2026-10-31",
-"folder_files": 4,
+"folder_files": 5,
 "date": "2026-10-31",
 "status": "SEE_VERDICT",
 "verdict_class": "other"

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T12:17:09Z",
   "commands": [
     "python MyTradingSys/research/c26_roadmap_2026-11-01/phase3_dev.py <repo> <cache> --dev 2022-04-01:2024-06-30"
   ],
@@ -15,7 +16,14 @@
   "id": "c26-h1-structural-lower-high",
   "kind": "audit",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Phase 3 DEV: 0 of 12 arms net > 0 fee-net; Krown dominant lower high F0 n=661 mean net -0.",
+      "ref": "a2fe652ef",
+      "utc": "2026-11-01T12:17:09Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -27,7 +35,12 @@
   "refs": [
     "MyTradingSys/research/c26_roadmap_2026-11-01/PHASE1_RANGE.md"
   ],
-  "result": "",
+  "result": "Phase 3 DEV: 0 of 12 arms net > 0 fee-net; Krown dominant lower high F0 n=661 mean net -0.117 % (Holm p 1.000, powered, MDE 0.10 %), C26 pivot F0 n=97 mean net -0.216 % (underpowered, MDE 0.30 %, no verdict); no filter F1-F4c beats random entries",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/c26_roadmap_2026-11-01/phase3_dev.py (new), PHASE1_RANGE.md Q6, TRIAL_LEDGER.csv rows, sim_desk result card"
   ],
@@ -37,12 +50,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Build the Krown structural lower-high finder on 15m bars (known-at-the-time: a high is dominant once a lower low than the prior low prints after it); unit test it on the operator's 6 lines of 2026-10-30/31 (PHASE1_RANGE.md Q4) — test must fail first",
     "Run both H1 sets on DEV with the single-short rule and each H2 filter (power gate before reading p)",
     "Write Q6, ledger rows, sim card; ship"
   ],
+  "taken": "2026-11-01T12:17:09Z",
   "tests": "research run, no live path: python scripts/dev/run_all_tests.py --quick must pass (gate 3xm cost inventory, 4e no own costs: import fees.py)",
   "title": "C26 H1: operator draws every lower high of the descent (Krown KR-S12 dominant lower high = high from which a new low was made, no width); C26 pivot +-16 (OURS) catches 3 of his 6 lines and adds range highs he does not draw. Define H1 structurally (SOURCED), run both in Phase 3 DEV, report which H1 set the DOWN-regime fade holds on",
   "weight": "IMPORTANT",

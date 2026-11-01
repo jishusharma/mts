@@ -225,3 +225,66 @@ Reading (OURS, n=30 take-outs = ~22 distinct touches, 3 same-bar duplicates on 1
    the continuation case he described.
 Not evidence: SEEN window, the single short's own stop/target, factors read after the fact. They become pre-registered H2 filters
 of Phase 3 (DEV 2022-04..2024-06, fee-net, one-bar shift, Holm): StochRSI >= 80, no CVD up-impulse at the touch, OI not rising.
+
+
+## Q6. Phase 3 DEV: the DOWN-regime fade on two H1 sets, fee-net, with the Q5 filters (card c26-h1-structural-lower-high, 2026-11-01)
+
+Run once, `phase3_dev.py`, DEV only (2022-04-01 .. 2024-06-30; VALIDATION and HOLDOUT bars never loaded, the loader refuses any bar from 2024-07-01).
+Data: Binance spot BTCUSDT 1m -> 15m (public klines, `F:/MTS/data/bigtrade/spot_raw`, not committed), OI = USDT-M 5m metrics.
+Rule (all OURS unless marked): H1 taken out in a DOWN regime (close before the take-out below the 200-bar mean of 15m closes), short at the first 15m
+close back under H1 (next-bar open = shifted, primary), one stop H1 + 1.0 %, target L1, 24h; fee 0.10 % round trip (fees.py, SOURCED), no slippage or funding.
+H1 set 1 = C26 pivot +-16 (OURS). H1 set 2 = Krown KR-S12 dominant lower high (principle SOURCED, KROWN_SETUP_CATALOG.md line 820; finder OURS: fractal +-2
+FORMULAS 18.2, new low = below the low H rallied from AND a 12-bar record low, fixed once so the operator's six 10-30/31 lines come out as Q4 says: 4 kept, 2 dropped;
+`test_phase3_dev.py`). Arms F0..F4c as pre-registered in Q5 (F3 is an exit rule, F4 reads bars after the entry in most trades so F4c is its causal twin).
+Stats per distinct take-out bar (highest H1). Base = same exits on 20 random DOWN-regime entries per event, paired, Holm over the 12 arms, power at alpha 0.05/12;
+the power gate is MDE (80 %) <= the +0.20 % design effect (OURS); power at the observed effect is printed but is a function of p. Shifted and unshifted entries
+give the same numbers because a 15m spot open equals the previous close.
+
+Bars: 81883 15m bars 2022-03-01 .. 2024-06-30 23:45 UTC (spot BTCUSDT, built from 1m; 1 gaps in the 15m series, 1 bars with < 15 minutes); DEV window events: H1 pivot on or after 2022-04-01; OI days missing: none; random-entry pool 39125 DOWN-regime bars.
+
+**C26 pivot +-16 (OURS)**: 595 take-outs (495 distinct bars), DOWN 123 (108 distinct), UP 472 (387 distinct)
+
+| arm | events | distinct bars | traded | mean net % | median | win % | sum % | worst % | mean net % unshifted | base mean % | mean minus base % | p | Holm p | power (observed) | MDE 80 % | power at +0.20 % | read |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| F0 | 123 | 108 | 97 | -0.216 | -0.115 | 46 | -21.0 | -1.72 | -0.216 | -0.082 | -0.134 | 0.214 | 1.000 | 0.05 | 0.30 | 0.16 | underpowered, no verdict (MDE 0.30 %) |
+| F1 | 77 | 71 | 65 | -0.230 | -0.166 | 45 | -15.0 | -1.52 | -0.230 | -0.096 | -0.135 | 0.299 | 1.000 | 0.03 | 0.36 | 0.09 | underpowered, no verdict (MDE 0.36 %) |
+| F2 | 50 | 49 | 45 | -0.327 | -1.119 | 38 | -14.7 | -1.52 | -0.327 | -0.069 | -0.259 | 0.117 | 1.000 | 0.10 | 0.46 | 0.05 | underpowered, no verdict (MDE 0.46 %) |
+| F3 | 123 | 108 | 97 | -0.191 | -0.339 | 40 | -18.5 | -1.72 | -0.191 | -0.119 | -0.072 | 0.466 | 1.000 | 0.02 | 0.27 | 0.20 | underpowered, no verdict (MDE 0.27 %) |
+| F4 | 78 | 67 | 60 | -0.207 | -0.073 | 48 | -12.4 | -1.72 | -0.207 | -0.074 | -0.134 | 0.352 | 1.000 | 0.03 | 0.40 | 0.07 | underpowered, no verdict (MDE 0.40 %) |
+| F4c | 74 | 65 | 65 | -0.131 | -0.066 | 49 | -8.5 | -1.72 | -0.131 | -0.093 | -0.038 | 0.778 | 1.000 | 0.00 | 0.38 | 0.08 | underpowered, no verdict (MDE 0.38 %) |
+
+exits (shifted, distinct): F0: L1 39 / stop 44 / 24h 14; F1: L1 25 / stop 31 / 24h 9; F2: L1 16 / stop 24 / 24h 5; F3: L1 33 / stop 28 / 24h 10 / F3 26; F4: L1 25 / stop 26 / 24h 9; F4c: L1 29 / stop 26 / 24h 10; F4 pre-registered window read bars after the entry in 47 of 60 trades
+
+context (not in the family): F0 in the UP regime, n=342 mean net +0.010 %; WaveTrend at the take-out, DOWN F0 trades: wt1 >= 53 at take-out: n=20, +0.172 %; wt1 < 53 at take-out: n=76, -0.336 %; WT cross down within 2h of the take-out: n=74, -0.091 %; no WT cross down within 2h: n=22, -0.699 %
+
+**Krown dominant lower high (KR-S12)**: 2248 take-outs (1683 distinct bars), DOWN 923 (695 distinct), UP 1325 (988 distinct)
+
+| arm | events | distinct bars | traded | mean net % | median | win % | sum % | worst % | mean net % unshifted | base mean % | mean minus base % | p | Holm p | power (observed) | MDE 80 % | power at +0.20 % | read |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| F0 | 923 | 695 | 661 | -0.117 | +0.117 | 57 | -77.1 | -2.11 | -0.117 | -0.094 | -0.023 | 0.516 | 1.000 | 0.01 | 0.10 | 1.00 | powered, no edge vs base (MDE 0.10 %) |
+| F1 | 619 | 479 | 456 | -0.146 | +0.104 | 55 | -66.7 | -2.11 | -0.146 | -0.095 | -0.051 | 0.251 | 1.000 | 0.04 | 0.13 | 0.95 | powered, no edge vs base (MDE 0.13 %) |
+| F2 | 545 | 461 | 450 | -0.112 | +0.121 | 58 | -50.6 | -1.76 | -0.112 | -0.092 | -0.020 | 0.629 | 1.000 | 0.01 | 0.12 | 0.98 | powered, no edge vs base (MDE 0.12 %) |
+| F3 | 923 | 695 | 661 | -0.129 | -0.020 | 49 | -85.3 | -2.11 | -0.129 | -0.093 | -0.036 | 0.270 | 1.000 | 0.04 | 0.09 | 1.00 | powered, no edge vs base (MDE 0.09 %) |
+| F4 | 568 | 406 | 389 | -0.117 | +0.084 | 55 | -45.4 | -2.11 | -0.117 | -0.097 | -0.019 | 0.686 | 1.000 | 0.01 | 0.13 | 0.91 | powered, no edge vs base (MDE 0.13 %) |
+| F4c | 584 | 429 | 428 | -0.106 | +0.095 | 56 | -45.5 | -2.11 | -0.106 | -0.081 | -0.026 | 0.568 | 1.000 | 0.01 | 0.13 | 0.94 | powered, no edge vs base (MDE 0.13 %) |
+
+exits (shifted, distinct): F0: L1 380 / stop 215 / 24h 56; F1: L1 252 / stop 164 / 24h 36; F2: L1 266 / stop 140 / 24h 38; F3: L1 316 / stop 152 / 24h 45 / F3 138; F4: L1 218 / stop 125 / 24h 40; F4c: L1 243 / stop 136 / 24h 40; F4 pre-registered window read bars after the entry in 320 of 389 trades
+
+context (not in the family): F0 in the UP regime, n=919 mean net -0.098 %; WaveTrend at the take-out, DOWN F0 trades: wt1 >= 53 at take-out: n=45, -0.187 %; wt1 < 53 at take-out: n=613, -0.110 %; WT cross down within 2h of the take-out: n=469, -0.004 %; no WT cross down within 2h: n=189, -0.390 %
+
+Reading (OURS; every number above is a DEV count, nothing else was read):
+1. Fee-net the fade earns nothing: 0 of 12 arms have a positive mean net. Krown F0 -0.117 % (n 661 traded, win 57 %, median +0.117 but 215 stops), C26 F0 -0.216 % (n 97, win 46 %).
+2. Neither H1 definition beats random DOWN-regime entries with the same exits: mean minus base -0.023 % (Krown F0, p 0.516) and -0.134 % (C26 F0, p 0.214); every Holm p is 1.000
+   (smallest raw p 0.117, C26 F2, and that arm is worse than its base).
+3. Power: the Krown set is powered (MDE 0.09-0.13 % per trade against +0.20 %; verdict NO for this fade: no edge of about 0.1 % or more over random entries). The C26 set is
+   underpowered in all 6 arms (MDE 0.27-0.46 %): no verdict. Only 108 of 495 distinct C26 take-outs fall in the DOWN regime (97 traded), against 695 of 1683 for Krown.
+4. No filter rescued it. F1 (StochRSI K >= 80, the Q5 favourite) is worse than F0 in both sets (-0.230 / -0.146); F2 -0.327 / -0.112; F3 (exit at the first CVD up-impulse) lowers the win rate
+   (40 % / 49 %) and does not lift the mean (-0.191 / -0.129); F4 read bars after the entry in 47 of 60 (C26) and 320 of 389 (Krown) trades, its causal twin F4c is -0.131 / -0.106.
+   The Q5 splits on the 30 SEEN take-outs (K >= 80: +0.46 vs +0.04) did not carry to DEV, as a design look at n=30 should be expected not to.
+5. Regime and WaveTrend (context, not in the family): the same fade in the UP regime nets +0.010 % (C26, n 342) and -0.098 % (Krown, n 919), so the DOWN split does not separate for Krown
+   and C26 is the reverse of Phase 1's story. WaveTrend: a cross down within 2h of the take-out went with -0.09 % vs -0.70 % (C26) and -0.004 % vs -0.39 % (Krown); that is read
+   after the fact (look-ahead) and OB at the take-out is mixed (+0.17 % n 20 vs -0.34 % C26; -0.19 % vs -0.11 % Krown): it is a lead for a new pre-registration, not a finding.
+Limits: spot bars, one 15m gap in 27 months, fees only (no slippage, funding, or maker fills), overlapping holds not modelled, one regime definition (a 50h mean is short next to
+Phase 1's multi-week DOWN phase), Krown finder parameters set on six hand lines, F0 take-outs not traded (no close back under H1 inside the 24h window, or the window runs past the DEV end): 11 of 108 C26, 34 of 695 Krown.
+Re-run: `python phase3_dev.py <repo> <cache> --dev 2022-04-01:2024-06-30 --md out.md --sim-json <card> --registry <csv>`; 12 rows in `TRIAL_REGISTRY_c26_roadmap.csv`
+(P3_<set>_<arm>, split DEV); card `sim_desk/results/c26-h1-structural-lower-high.json`.
