@@ -1,36 +1,60 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python MyTradingSys/execution/test_auto_trader_failclosed.py"
+  ],
   "created": "2026-11-01T02:53:38Z",
   "crucial": true,
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "A margin_short refusal leaves no new file in execution/plans/ and returns outcome margin_short; test_auto_trader_failclosed.py new case fails on old code and passes; run_all_tests --quick green",
+  "est_turns": 14,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "auto_trader.place() runs new_plan.py (saves a plan file) before margin_ok(); a margin_short refusal leaves an orphan plan in execution/plans. Run margin_ok first for the non-dry-run path so a refusal saves nothing.",
   "id": "auto-trader-place-saves-plan-before-margin-check",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "auto_trader: wire margin_btc into every placed signal (margin_need_btc, attach_margin)",
+      "ref": "ecfe82396040",
+      "utc": "2026-11-01T03:43:27Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-01 ACCEPT (Sonnet reviewer Agent, planner-refine-1101). PLANNER 2026-11-01: CRITICAL (order-path code, fail-closed): needs REVIEW session plan+diff (session_planner_details CRITICAL protocol) and a REVIEWED stamp; builder works in a worktree only, never deploys.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-01T04:11:30Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/execution/auto_trader.py",
+    "MyTradingSys/execution/test_auto_trader_failclosed.py"
+  ],
+  "scope_out": [
+    "executor.py, position_manager.py, the live tree, any mainnet account, dry_run path behaviour"
+  ],
+  "scope_sha": "ecfe82396040",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/execution/auto_trader.py:721-736"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read auto_trader.py:702-736 and test_auto_trader_failclosed.py:200-260; write the failing test first (fake run(), count plan files)",
+    "In place(): for not dry_run call margin_ok(sig, account) before new_plan; on refusal log margin_short (no plan_id) and return outcome margin_short; keep fail-closed on every error",
+    "Update mutation_check_auto_trader_failclosed.py only if its mutant strings moved; run test_auto_trader_failclosed.py then run_all_tests.py --quick; ship"
+  ],
+  "tests": "MyTradingSys/execution/test_auto_trader_failclosed.py: new MarginPreflightGapTest case asserts no plan file is written and new_plan.py is not run on margin_short, balance_error and balance_unreadable; fails on the current auto_trader.py:721-736",
   "title": "auto_trader.place() saves a plan before the margin_ok check, so a margin_short refusal leaves an orphan plan (planner finding). Done when: a margin_short refusal leaves no saved plan (restart/reset state clean), test with fake client fails on old code first; live-path rules apply (fail closed, API-error and non-trade-balance cases tested)",
-  "weight": "",
-  "worker": ""
+  "weight": "CRITICAL",
+  "worker": "session"
 }
