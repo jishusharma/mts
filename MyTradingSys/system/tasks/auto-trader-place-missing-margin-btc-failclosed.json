@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T08:41:40Z",
   "commands": [],
   "created": "2026-11-01T05:56:05Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/execution/auto_trader.py margin_ok fails closed on missing margin_btc",
+      "ref": "7c98efd08",
+      "utc": "2026-11-01T08:41:40Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -31,7 +38,12 @@
   "refined_by": "",
   "refreshed": "2026-11-01T08:37:03Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/execution/auto_trader.py margin_ok fails closed on missing margin_btc",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/execution/auto_trader.py",
     "MyTradingSys/execution/test_auto_trader_failclosed.py",
@@ -45,12 +57,13 @@
   "sources": [
     "MyTradingSys/execution/auto_trader.py:702-731 margin_ok/place; signal-margin-btc-wire-1101 reviewer Noticed"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "1 Read margin_ok (auto_trader.py:702-718), place (721). Existing self.SIG tests already carry margin_btc 0.01; only test_none_zero_negative_nan_funds_refuse_even_without_margin_btc (:240) lacks it: add margin_btc 0.01 there and fix the :204 docstring",
     "2 In margin_ok replace 'or 0' with v = sig.get('margin_btc'); None -> (False,'margin_btc_missing'); parse (bad type -> margin_btc_invalid); non-finite or <= 0 -> refuse. attach_margin never emits 0 (cycle path unchanged)",
     "3 Add the 4 tests (2 fail on old code); add mutation_check rows for the missing-key and <=0 refusals; run the test file; sync.py ship"
   ],
+  "taken": "2026-11-01T08:41:40Z",
   "tests": "MyTradingSys/execution/test_auto_trader_failclosed.py: place_without_margin_btc_refuses, margin_btc_none_zero_negative_refuse, cycle_sig_with_attach_margin_still_places, dry_run_without_margin_btc_ok; first two fail on old code",
   "title": "auto_trader.place(): direct callers bypassing cycle()/attach_margin treat missing margin_btc as need 0; fail closed. Done when: place() without margin_btc refuses (test fails on old code), cycle() path unchanged.",
   "weight": "CRITICAL",
