@@ -25,6 +25,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
+  "reroute": {
+    "at": "2026-11-01T18:03:33Z",
+    "desk": "20261101-180333-gemini-scan-split-windows-in-cards-1101",
+    "to": "DSA",
+    "why": "window"
+  },
   "result": "",
   "scope_in": [
     "the card JSON files in the system tasks folder, every PRE_REG file under MyTradingSys/research, and MyTradingSys/backtest/splits.py (read); one output file research/gemini_audits_2026-11-01/split_windows_scan.md"

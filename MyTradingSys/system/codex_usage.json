@@ -2,11 +2,11 @@
  "allowance": {
   "plan": "plus",
   "week_resets": 1793780113,
-  "week_used": 89.0,
-  "window_resets": 1793540300,
-  "window_used": 74.0
+  "week_used": 95.0,
+  "window_resets": 1793571563,
+  "window_used": 12.0
  },
- "at": "2026-11-01T11:46:31Z",
+ "at": "2026-11-01T18:03:33Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -16,17 +16,17 @@
   "window_reserve": 10
  },
  "exhausted": {
-  "at": "2026-11-01T11:46:31Z",
+  "at": "2026-11-01T18:03:33Z",
   "flag": true,
   "until": "2026-11-04T08:15:13Z",
-  "why": "Codex weekly allowance 89% used, resets 2026-11-04 08:15Z"
+  "why": "Codex weekly allowance 95% used, resets 2026-11-04 08:15Z"
  },
  "host": "JIS-NUC",
  "lab": {
   "astra_runs": 0,
   "week_pts": 28.0,
-  "window_pts": 29.0,
-  "window_runs": 1
+  "window_pts": 0.0,
+  "window_runs": 0
  },
  "runs": [
   {

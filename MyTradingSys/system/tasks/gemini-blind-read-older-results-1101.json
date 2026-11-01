@@ -25,6 +25,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
+  "reroute": {
+    "at": "2026-11-01T18:03:33Z",
+    "desk": "20261101-180333-gemini-blind-read-older-results-1101",
+    "to": "DSA",
+    "why": "window"
+  },
   "result": "",
   "scope_in": [
     "the five result files and what they cite (read); one output file research/gemini_audits_2026-11-01/older_results_blind_read.md"
