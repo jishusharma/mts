@@ -11,8 +11,9 @@ P25 NS-fixed add cap q1 and min add 0.25 q1; P11 FABIO S7 add gate; P16 S8(d) on
 tick, fill rules. Function defaults (mgmt "dist", be_k 1.0, add_mode "be", s7 True) keep T01-T50 valid (spec :366) and
 are not selected grid values.
 
-Not implemented here (documented in the package README): multi-leg add execution. `add_allowed` / `add_size` are the
-decision helpers (T32, T33, T62); simulate_trade manages the FIRST LEG only (the contract's trade dict has one entry).
+Multi-leg adds: `simulate_trade_legs` (name OURS, FORMULAS.md 28.6 RESOLVED diff 2) applies the 28.4 add rules on top of
+the same single-stop walk; it is NOT wired into the engine. `simulate_trade` manages the FIRST LEG only (the contract's
+trade dict has one entry) and is unchanged. `add_allowed` / `add_size` are the decision helpers (T32, T33, T62).
 """
 from .costs import EPS, TICK, leg_r
 from .day_gates import entry_allowed
@@ -219,3 +220,55 @@ def simulate_trade(bars, fill_idx, s, entry, D, stop, q1=1.0, entry_kind="maker"
             "gross_r": r["gross_r"], "fee_r": r["fee_r"], "slip_r": r["slip_r"], "net_r": r["net_r"],
             "fill_idx": fill_idx, "exit_idx": w["exit_idx"], "target": target, "moves": w["moves"], "s": s, "q1": q1,
             "entry_kind": entry_kind, "mgmt": mgmt, "exit_kind": w["exit_kind"]}
+
+
+def simulate_trade_legs(bars, fill_idx, s, entry, D, stop, q1=1.0, entry_kind="maker", be_k=1.0, ctrl=None, tick=TICK,
+                        end_idx=None, target=None, slip_bps=0.0, mgmt="dist", absorbed=None, s8_kw=None,
+                        stop_first=True, open_idx=0, push_ok=None, curve_states=None, add_mode="be", s7=True,
+                        day_r=0.0, r1=1.0):
+    """First leg plus the s28.4 adds (name OURS; not wired into the engine). The stop, S8 and target are shared by all
+    legs, so the exit comes from the same walk as simulate_trade; adds only add legs that exit at that same price.
+
+    Decision at the close of each bar i in (fill_idx, exit): after the stop moves of bar i (and not on an S8 bar),
+    add_allowed(s, entry, stop in force, n_adds, i, open_idx, ctrl[i], push_ok[i], curve_states[i], add_mode, s7); the
+    add fills taker at o[i+1] with q_add = add_size(...). push_ok / curve_states are per-bar lists (None = unknown ->
+    fail closed, no add). add_mode "day": budget = max(0, day_r) * q1*D/r1 (U = q1*D1/r1, spec 6). Max 2 adds.
+    R unit = q1*D; every leg's fee is on its ENTRY notional (also on a stop exit). Returns the simulate_trade dict with
+    gross_r/fee_r/slip_r/net_r summed over the legs, plus legs [(q, entry, entry_kind)], n_adds, add_idx.
+    """
+    base = simulate_trade(bars, fill_idx, s, entry, D, stop, q1=q1, entry_kind=entry_kind, be_k=be_k, ctrl=ctrl,
+                          tick=tick, end_idx=end_idx, target=target, slip_bps=slip_bps, mgmt=mgmt, absorbed=absorbed,
+                          s8_kw=s8_kw, stop_first=stop_first)
+    exit_idx = base["exit_idx"]
+    last_dec = exit_idx - 1 if base["reason"] == "s8" else exit_idx   # exclusive upper bound of decision bars
+    budget = max(0.0, day_r) * q1 * D / r1 if add_mode == "day" else 0.0
+    legs = [(q1, entry, entry_kind)]
+    sizing = [(q1, entry)]
+    add_idx = []
+    cur, mk_ = base["stop0"], 0
+    moves = base["moves"]
+    for i in range(fill_idx + 1, last_dec):
+        while mk_ < len(moves) and moves[mk_][0] <= i:
+            cur = moves[mk_][1]
+            mk_ += 1
+        c_i = ctrl[i] if ctrl is not None and i < len(ctrl) else 0
+        p_i = bool(push_ok[i]) if push_ok is not None and i < len(push_ok) else False
+        cs_i = curve_states[i] if curve_states is not None and i < len(curve_states) else None
+        if not add_allowed(s, entry, cur, len(add_idx), i, open_idx, c_i, p_i, cs_i, add_mode, s7):
+            continue
+        pa = bars[i + 1]["o"]
+        q_add = add_size(s, sizing, cur, pa, q1, budget)
+        if q_add > 0:
+            legs.append((q_add, pa, "taker"))
+            sizing.append((q_add, pa))
+            add_idx.append(i + 1)
+    gross = fee = slip = 0.0
+    for (q, e, kind) in legs:
+        r = leg_r(s, q, e, base["exit"], kind, base["exit_kind"], q1 * D, slip_bps)
+        gross += r["gross_r"]
+        fee += r["fee_r"]
+        slip += r["slip_r"]
+    out = dict(base)
+    out.update({"gross_r": gross, "fee_r": fee, "slip_r": slip, "net_r": gross - fee - slip, "legs": legs,
+                "n_adds": len(add_idx), "add_idx": add_idx})
+    return out
