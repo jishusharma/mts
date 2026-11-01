@@ -42,14 +42,44 @@ def scope_paths(card, repo):
     return out
 
 
-def last_change(repo, paths):
-    """(short sha, utc, subject) of the newest commit touching any of paths, or None."""
+_LC_LOG = {}   # repo -> [(sha, iso, subj, files)] newest first, filled by prefetch_changes (one git call for a whole list)
+
+
+def prefetch_changes(repo, n=5000):
+    """One `git log -n N --name-only` for a whole list: last_change answers from memory (tasks.py list: 1 spawn, not 3 per card).
+    A path with no hit in the window falls back to its own git call, unless the card's refresh is newer than the window (see hint)."""
+    if is_shallow(repo):
+        return
+    out = git(repo, "log", "-n", str(n), "-c", "--name-only", "--no-renames", "--format=%x01%H%x09%cI%x09%s")
+    rows = []
+    for blk in out.split(chr(1))[1:]:
+        head, _, files = blk.partition(chr(10))
+        sha, iso, subj = head.split(chr(9), 2)
+        rows.append((sha, iso, subj, [f for f in files.split(chr(10)) if f.strip()]))
+    _LC_LOG[str(repo)] = rows
+
+
+def _hit(f, p):
+    return f == p or f.startswith(p.rstrip("/") + "/")
+
+
+def last_change(repo, paths, hint=None):
+    """(short sha, utc, subject) of the newest commit touching any of paths, or None.
+    hint = (scope_sha, refreshed_utc): when the prefetch window has no hit and the refresh is newer than the window's oldest
+    commit, nothing touched the paths since the refresh, so the last change is still scope_sha (returned with empty utc/subject)."""
     if not paths:
         return None
+    rows = _LC_LOG.get(str(repo))
+    if rows:
+        for sha, iso, subj, files in rows:
+            if any(_hit(f, p) for f in files for p in paths):
+                return sha[:12], utc_of(iso), subj
+        if hint and hint[0] and hint[1] and hint[1] > utc_of(rows[-1][1]):
+            return hint[0], "", ""
     row = git(repo, "log", "-1", "--format=%H%x09%cI%x09%s", "--", *paths)
     if not row:
         return None
-    sha, iso, subj = row.split("\t", 2)
+    sha, iso, subj = row.split(chr(9), 2)
     return sha[:12], utc_of(iso), subj
 
 
@@ -131,7 +161,7 @@ def stale_reason(card, repo):
         return "latest never refreshed (tasks.py tag <id> --refresh)"
     if is_shallow(repo):
         return ""
-    lc = last_change(repo, scope_paths(card, repo))
+    lc = last_change(repo, scope_paths(card, repo), hint=(card.get("scope_sha"), card.get("refreshed")))
     if lc and lc[0] != card.get("scope_sha"):
         return f"scope changed {lc[0]} {lc[1]} after refresh {card['refreshed']}"
     return ""

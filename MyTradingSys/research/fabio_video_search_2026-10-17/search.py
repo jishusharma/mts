@@ -1,4 +1,5 @@
 """Metadata-only yt-dlp search for Fabio Valentini trade-recap videos. No downloads, no captions."""
+raise SystemExit("REFUSED: unguarded YouTube caller (no lockout, no budget). Use scripts/dev/fetch_captions_timed.py (guarded; --status shows budget and lockout).")
 import json, subprocess, sys, csv
 QUERIES = ["Fabio Valentini live trade recap", "Fabio Valentini NQ session", "Fabio Valentini order flow trade breakdown",
            "Fabio Valentini ES futures trade", "Fabio Valentini volume profile live trading", "Fabio Valentini Robbins world cup trades"]

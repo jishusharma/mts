@@ -337,7 +337,7 @@ def unseen_for(rows, since, sid=""):
     mine = {a["id"] for a in asks_from_me(rows)}
     answers = [r for r in rows if since < r.get("t", "") <= lim and r.get("kind") == "ack" and r.get("state") == "done" and r.get("id") in mine]
     return answers + [r for r in rows if since < r.get("t", "") <= lim and to_me(r.get("to"))
-            and r.get("kind") not in ("ack", "ask", "esc") and r.get("prio") != "high"
+            and r.get("kind") not in ("ack", "ask", "esc", "ytblock", "ytuse", "ytclean") and r.get("prio") != "high"
             and (r.get("from") != me or (r.get("kind") == "broadcast" and r.get("sid", "") != tag))]
 
 

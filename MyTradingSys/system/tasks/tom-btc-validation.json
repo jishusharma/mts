@@ -3,7 +3,7 @@
   "asks": "",
   "class": "C2",
   "commands": [
-    "python MyTradingSys/backtest/tom_bt.py --config MyTradingSys/research/tom_btc_2026-10-13/DEV_FROZEN.json --start 2025-04-01 --end 2025-06-30 --out MyTradingSys/research/tom_btc_2026-10-13/VALIDATION.md"
+    "python MyTradingSys/backtest/tom_bt.py --config MyTradingSys/research/tom_btc_2026-10-13/DEV_FROZEN.json --start 2024-07-01 --end 2025-06-30 --out MyTradingSys/research/tom_btc_2026-10-13/VALIDATION.md"
   ],
   "created": "2026-10-13T17:31:44Z",
   "depends_on": [
