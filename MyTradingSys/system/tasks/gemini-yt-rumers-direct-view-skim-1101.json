@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T13:19:05Z",
   "commands": [
     "echo none"
   ],
@@ -15,7 +16,14 @@
   "id": "gemini-yt-rumers-direct-view-skim-1101",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/rumers_2026-11-01/RUMERS_SKIM_DIRECT.md",
+      "ref": "b3c4589ee",
+      "utc": "2026-11-01T13:19:05Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -26,6 +34,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
+  "result": "MyTradingSys/research/rumers_2026-11-01/RUMERS_SKIM_DIRECT.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/rumers_2026-11-01/ (new files only)"
   ],
@@ -34,12 +48,13 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "open each video in Gemini viewer, one at a time",
     "write the table",
     "ship via sync.py ship"
   ],
+  "taken": "2026-11-01T13:19:05Z",
   "tests": "report only; no quote claims; no code change",
   "title": "[GEMINI] The Rumers (@the.rumers): watch the newest 20 videos directly (no caption fetch), list title and the trading idea each teaches, flag mechanical ones",
   "weight": "ROUTINE",
