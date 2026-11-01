@@ -7,8 +7,8 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-01T18:45:58Z",
-    "misses": 49,
+    "folded": "2026-11-01T18:47:03Z",
+    "misses": 54,
     "reads": [
       "scripts/dev/extra_tests.tsv",
       "MyTradingSys/research/trendlines_2026-10-17/count_only.py"
