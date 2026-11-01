@@ -7,8 +7,8 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-01T03:00:56Z",
-    "misses": 16,
+    "folded": "2026-11-01T03:29:37Z",
+    "misses": 17,
     "reads": [
       "MyTradingSys/execution/test_cotrade.py",
       "MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md",
