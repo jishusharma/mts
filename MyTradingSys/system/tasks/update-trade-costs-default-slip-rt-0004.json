@@ -4,6 +4,15 @@
   "commands": [
     "python -m pytest MyTradingSys/backtest/layers/positioning/test_trade_costs.py -q"
   ],
+  "context": {
+    "calls_to_edit": 6,
+    "folded": "2026-11-01T19:25:49Z",
+    "misses": 1,
+    "reads": [
+      "MyTradingSys/backtest/layers/positioning/test_trade_costs.py"
+    ],
+    "session": "agent-a5c6d1d8d71e75bde"
+  },
   "created": "2026-11-01T19:15:43Z",
   "depends_on": [],
   "done_when": "trade_costs.net_return default slip_rt is 0.0004; test_trade_costs.py asserts a default call costs 0.0014 and passes; git diff touches only trade_costs.py and test_trade_costs.py.",
