@@ -700,18 +700,21 @@ def available_funds_btc(account: str = None):
 
 
 def margin_ok(sig: dict, account: str = None):
-    """(ok, detail). Fail closed: unreadable/short/non-positive funds refuse. need = sig margin_btc (0 if unset)."""
+    """(ok, detail). Fail closed: unreadable/short/non-positive funds refuse. need = sig margin_btc, which must be set and > 0."""
     try:
         funds = available_funds_btc(account)
     except Exception as e:  # noqa: BLE001
         return False, f"balance_error {e!r}"[:120]
     if funds is None or not math.isfinite(funds):
         return False, "balance_unreadable"
+    raw = sig.get("margin_btc")
+    if raw is None:                          # a direct caller that skipped cycle()/attach_margin: never need 0
+        return False, "margin_btc_missing"
     try:
-        need = float(sig.get("margin_btc") or 0)
+        need = float(raw)
     except (TypeError, ValueError):
         return False, "margin_btc_invalid"
-    if not math.isfinite(need):
+    if not math.isfinite(need) or need <= 0:
         return False, "margin_btc_invalid"
     if funds <= 0 or funds < need:
         return False, f"funds={funds} need={need}"

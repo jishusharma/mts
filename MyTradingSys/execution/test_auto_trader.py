@@ -852,6 +852,7 @@ class TF5EntryWaitTest(unittest.TestCase):
         at.available_funds_btc = lambda account=None: 1.0       # margin pre-flight is not under test here
         self.addCleanup(lambda: setattr(at, "available_funds_btc", saved_f))
         s = at.tom_signal(tom_alert(), {"tom_last_alert_no": 0}, cfg(), NOW)
+        s["margin_btc"] = 0.01                                  # cycle() attaches this; the direct call must carry it
         self.assertEqual(at.place(s, dry_run=False)["outcome"], "no_fill")
         go = [c for c in cmds if "--go" in c][0]
         self.assertEqual(go[go.index("--max-entry-seconds") + 1], "600")
