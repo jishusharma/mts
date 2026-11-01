@@ -1,7 +1,7 @@
 """Meta-label and early-exit test on the tf_break events (PRE_REG.md, frozen first). Every rule here is in PRE_REG.md.
 Stages: build (events + features F1-F15 + outcomes -> table.csv outside the repo), dev (verdict-bearing DEV run -> dev.json),
 val (VALIDATION read, only for cells PRE_REG lets through -> val.json).
-Usage: python meta.py build|dev|val [out_dir]   (default F:/MTS/runs/meta_label_breaks)"""
+Usage: python meta.py build|dev|val|ext_build|ext [out_dir]   (default F:/MTS/runs/meta_label_breaks)"""
 import json
 import os
 import sys
@@ -21,6 +21,8 @@ from backtest.layers.krown import krown_core as KC  # noqa: E402
 TFS = ('15m', '1h', '4h')
 RT = 2 * fees.BINANCE_TAKER
 DAY, WEEK = 86400, 604800
+DEV_START = pd.Timestamp('2022-01-01', tz='UTC').timestamp()
+EXT_START = pd.Timestamp('2020-01-01', tz='UTC').timestamp()
 DEV_END = pd.Timestamp('2024-07-01', tz='UTC').timestamp()
 HALF = pd.Timestamp('2023-01-01', tz='UTC').timestamp()
 DEFAULT_OUT = 'F:/MTS/runs/meta_label_breaks'
@@ -279,6 +281,85 @@ def dev(out):
     return res
 
 
+# ---- ext mode (EXT_PRE_REG.md): fit on all DEV, score only fresh 2020-2021 events ----------------------------------
+
+def ext_fit_set(T, tfn='1h'):
+    """DEV rows of one TF with every feature present, inside DEV_START..DEV_END; nothing from 2020-2021 can enter."""
+    D = T[(T.tf == tfn) & (T.split == 'DEV') & (T.t >= DEV_START) & (T.t < DEV_END)]
+    return D.dropna(subset=FEATS).reset_index(drop=True)
+
+
+def ext_score_set(T, tfn='1h'):
+    """fresh rows of one TF; raises if any row is outside 2020-01-01..2021-12-31."""
+    D = T[T.tf == tfn].dropna(subset=FEATS).reset_index(drop=True)
+    if len(D) and (D.t.min() < EXT_START or D.t.max() >= DEV_START):
+        raise ValueError('ext rows must lie in 2020-01-01..2021-12-31')
+    return D
+
+
+def ext_scores(Xf, yf, Xe):
+    """fit on the fit set (its own mean/sd), return (fit scores, ext scores)."""
+    mu, sd = Xf.mean(0), Xf.std(0)
+    sd[sd == 0] = 1
+    w = fit_logit((Xf - mu) / sd, yf)
+    return score(w, (Xf - mu) / sd), score(w, (Xe - mu) / sd)
+
+
+def ext_buckets(Xf, yf, Xe):
+    s_f, s_e = ext_scores(Xf, yf, Xe)
+    c1, c2 = np.quantile(s_f, [1 / 3, 2 / 3])
+    return np.where(s_e >= c2, 2, np.where(s_e < c1, 0, 1))
+
+
+def ext_run(T_dev, T_ext, tfn='1h', nplac=NPLAC):
+    F, E = ext_fit_set(T_dev, tfn), ext_score_set(T_ext, tfn)
+    if len(E) and len(F) and E.t.max() >= F.t.min():
+        raise ValueError('ext rows overlap the fit window')
+    Xf, Xe = F[FEATS].to_numpy(float), E[FEATS].to_numpy(float)
+    yf = (F.fwd_gross.to_numpy(float) - RT > 0).astype(float)
+    g, t = E.fwd_gross.to_numpy(float), E.t.to_numpy(np.int64)
+    bk = ext_buckets(Xf, yf, Xe)
+    top = bk == 2
+    real = (g[top] - RT).mean() - (g - RT).mean()
+    rng = np.random.default_rng(31)
+    plac = []
+    for _ in range(nplac):
+        bp = ext_buckets(Xf, rng.permutation(yf), Xe)
+        plac.append((g[bp == 2] - RT).mean() - (g - RT).mean() if (bp == 2).any() else -np.inf)
+    p = (1 + sum(x >= real for x in plac)) / (nplac + 1)
+    y21 = pd.Timestamp('2021-01-01', tz='UTC').timestamp()
+    res = dict(n_fit=int(len(F)), n_ext=int(len(E)), all=bucket_stats(g, t), top=bucket_stats(g[top], t[top]) if top.any() else None,
+               mid=bucket_stats(g[bk == 1], t[bk == 1]), bottom=bucket_stats(g[bk == 0], t[bk == 0]),
+               lift=100 * real, placebo_p=p, placebo_mean=100 * float(np.mean(plac)),
+               top_net_2020=100 * (g[top & (t < y21)] - RT).mean(), top_net_2021=100 * (g[top & (t >= y21)] - RT).mean(),
+               n_top_2020=int((top & (t < y21)).sum()), n_top_2021=int((top & (t >= y21)).sum()))
+    tp = res['top']
+    if tp is None or tp['n'] < 100:
+        res['verdict'] = 'NOT ENOUGH DATA'
+    elif tp['net'] > 0 and tp['lo'] > 0 and p <= 0.05:
+        res['verdict'] = 'PASS'
+    elif tp['net'] <= 0 or tp['hi'] < 0:
+        res['verdict'] = 'FAIL'
+    else:
+        res['verdict'] = 'INCONCLUSIVE'
+    return res
+
+
+def ext(out):
+    """stage ext: needs table.csv (DEV) and ext_table.csv (stage ext_build); writes ext.json."""
+    res = ext_run(pd.read_csv(os.path.join(out, 'table.csv')), pd.read_csv(os.path.join(out, 'ext_table.csv')))
+    json.dump(res, open(os.path.join(out, 'ext.json'), 'w', newline=chr(10)), indent=1, default=float)
+    return res
+
+
+def ext_build(out):
+    import confirm_div as C
+    df = C.load_fresh()
+    T = build(df)
+    T.to_csv(os.path.join(out, 'ext_table.csv'), index=False, lineterminator=chr(10))
+    print('bars', len(df), 'events', len(T), file=sys.stderr)
+
+
 def main():
     stage = sys.argv[1]
     out = sys.argv[2] if len(sys.argv) > 2 else DEFAULT_OUT
@@ -288,6 +369,10 @@ def main():
         build(df[df.t < S.END]).to_csv(os.path.join(out, 'table.csv'), index=False, lineterminator='\n')
     elif stage == 'dev':
         dev(out)
+    elif stage == 'ext_build':
+        ext_build(out)
+    elif stage == 'ext':
+        print(json.dumps(ext(out), indent=1, default=float))
     else:
         raise SystemExit('val stage runs only for a DEV PASS (PRE_REG 3, 4); see RESULT.md')
 
