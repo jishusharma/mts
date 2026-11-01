@@ -9,7 +9,7 @@
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Operator order 2026-11-01: understand the recent phases FIRST, then decide how to backtest. Phase 1 (design set, look freely): walk the recent BTC 15m/1h from the 60k low through the 87k top to now; mark every H1, L1, held retest, L1 sweep, H1 take-out and the drop after, with time of day (US session), OI change during the retest, WaveTrend/RSI divergence at H1 and the nearest volume node; a dated table plus chart screenshots. Phase 2: from what Phase 1 shows, write the step definitions and the trade legs and freeze them (OURS, operator confirms on >= 3 of his own charts, PRE_REG_TEMPLATE 0g). Phase 3: test the frozen rules on DEV 2022-04..2024-06 split by up/down regime; the recent window is seen and never counts as the test.",
   "id": "c26-scenario-roadmap-sequence",
   "lane": "SONNET",
   "layers": [],
