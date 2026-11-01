@@ -51,3 +51,9 @@ The following 5 setups emerge as top candidates from this skim set [OURS]:
 3. **`RUMERS-SKIM-20EMA-TREND-PULLBACK` (`8vufTzGZqiI` / S04):** Daily trend alignment with 5m 20 EMA pullback bounce, stop below swing low, fixed 1:2 RR target.
 4. **`RUMERS-SKIM-OPEN-TRAP-FADE` (`LuCo80sOn3k` / S06 & `lANSXWlbINE` / S11):** Sucker move / morning trap wick fade with stop beyond trap high/low and target at midpoint / prior demand.
 5. **`RUMERS-SKIM-SUNDAY-GAP-FADE` (`9ba0p8ZPL4c` / S05):** Weekend futures gap fade toward Friday settlement price on 5m rejection.
+
+## 3. Title check (Supervisor A, 2026-11-01, noembed.com public oEmbed title vs the row title)
+
+- 16 of 20 rows match the real title (3 differ only in apostrophe encoding: 8vufTzGZqiI, y4ca1B9RKVY, R7XkHW9i65g).
+- 4 rows carry a WRONG title, so their idea text is likely not from that video: OYLv6Ev-kVE (real: "LIVE TRADING GOLD & BITCOIN || Challenge Day-04"), lUr32iqWHz8 (real: "My Simple 3-Step Swing Strategy"), 4zazKDSXlh8 (real: "The 15-Minute Candle Strategy I Will Use For Life"), NMUd0oX_7Pg (real: "The SIMPLE First 15 Minutes Strategy ..."). Treat S02, S09, and the rows for 4zazKDSXlh8 and NMUd0oX_7Pg as NOT USABLE until re-watched.
+- All idea text is UNVERIFIED-PARAPHRASE; no row is a backtest input yet.
