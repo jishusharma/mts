@@ -367,7 +367,7 @@ SHIP_MAX_S = 120            # OURS: the operator's 2-minute ship; WARN when the 
 HOOKS_BEHIND_MAX = 50       # OURS
 DISK_MIN_GB = 15            # OURS
 HOOK_NAMES = ("role_loader", "ci_watch")
-CHECK_NAMES = ("SIZE-HEADROOM", "CI-REVERT", "SHIP-TIME", "HOOK-REG", "DISK", "CONTEXT-GAP", "WAITING-ON-OPERATOR", "BROADCAST", "STALE-CLAIMS", "SCRATCH-TRACKED", "CONFLICT-OPEN", "ASK-GAPS", "SUPERVISOR-IDLE")
+CHECK_NAMES = ("SIZE-HEADROOM", "CI-REVERT", "SHIP-TIME", "HOOK-REG", "DISK", "CONTEXT-GAP", "WAITING-ON-OPERATOR", "BROADCAST", "STALE-CLAIMS", "SCRATCH-TRACKED", "CONFLICT-OPEN", "ASK-GAPS", "SUPERVISOR-IDLE", "OF-RESTARTS")
 
 
 def _load(path, name):
@@ -649,6 +649,36 @@ def stale_claims(repo, claims=None, now=None):
     return "OK", f"{len(old)} stale claim(s) of {len(claims)} open"
 
 
+OF_RESTART_WARN = 6   # OURS: orderflow_live.py START lines in the last hour at or above this = restart loop (474 restarts went unseen 2026-10-22)
+
+
+def of_restarts(repo, now=None, lines=None):
+    """WARN when the order-flow writer logged >= OF_RESTART_WARN START lines in the last hour (restart loop). Reads runtime_data/orderflow_live.log."""
+    if lines is None:
+        p = Path(repo) / "runtime_data" / "orderflow_live.log"
+        if not p.exists():
+            return "OK", "no orderflow_live.log on this machine"
+        with open(p, "rb") as f:  # tail only: the log is megabytes
+            f.seek(0, 2)
+            f.seek(max(0, f.tell() - 400000))
+            lines = f.read().decode("utf-8", "replace").splitlines()
+    now = now or datetime.now(timezone.utc)
+    n = 0
+    for ln in lines:
+        head, _, rest = ln.partition(" ")
+        if not rest.startswith("START"):
+            continue
+        try:
+            t = datetime.fromisoformat(head)
+        except ValueError:
+            continue
+        if 0 <= (now - t).total_seconds() <= 3600:
+            n += 1
+    if n >= OF_RESTART_WARN:
+        return "WARN", f"order-flow writer restarted {n}x in the last hour (limit {OF_RESTART_WARN}): read runtime_data/orderflow_live.log (RESET / BAD_RESUME / STALL lines), exit 4 = HTTP 400 resume point"
+    return "OK", f"{n} order-flow writer start(s) in the last hour"
+
+
 def scratch_tracked(repo, files=None):
     """WARN when a scratch or ship-log file is tracked (the repo is public; PILOT3 committed scratch ship logs, removed in f97ecc125)."""
     files = tracked(repo) if files is None else files
@@ -706,7 +736,8 @@ def checklist(repo, process=True, now=None):
            ("STALE-CLAIMS", lambda: stale_claims(repo, now=now) if process else ("unavailable", "skipped (--no-process, no network)")),
            ("SCRATCH-TRACKED", lambda: scratch_tracked(repo)), ("CONFLICT-OPEN", lambda: conflict_open(repo)),
            ("ASK-GAPS", lambda: ask_gaps(repo)),
-           ("SUPERVISOR-IDLE", lambda: supervisor_idle(repo, now=now) if process else ("unavailable", "skipped (--no-process, no network)")))
+           ("SUPERVISOR-IDLE", lambda: supervisor_idle(repo, now=now) if process else ("unavailable", "skipped (--no-process, no network)")),
+           ("OF-RESTARTS", lambda: of_restarts(repo, now=now)))
     out = []
     for name, fn in fns:
         try:

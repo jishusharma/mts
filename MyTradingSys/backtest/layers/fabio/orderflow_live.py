@@ -29,6 +29,7 @@ Run:  python -m MyTradingSys.backtest.layers.fabio.orderflow_live            (lo
 import argparse
 import csv
 import json
+import os
 import sys
 import time
 import urllib.parse
@@ -192,7 +193,7 @@ def run_cycle(out, fetch_fn, symbol="BTCUSDT", now_ms=None, since_ms=None, hist_
     nxt = st.get("next_ms")
     if nxt is None:
         nxt = since_ms // MIN_MS * MIN_MS if since_ms is not None else cur_min
-    res = {"rows": 0, "pages": 0, "next_ms": nxt, "thr_days": None, "error": None}
+    res = {"rows": 0, "pages": 0, "next_ms": nxt, "thr_days": None, "error": None, "http400": False, "fetched": False}
     if nxt >= cur_min:
         st["next_ms"] = nxt
         save_state(out, st)
@@ -201,7 +202,17 @@ def run_cycle(out, fetch_fn, symbol="BTCUSDT", now_ms=None, since_ms=None, hist_
         trades, capped, res["error"] = fetch_trades(fetch_fn, symbol, nxt, cur_min, max_pages)
     except Exception as exc:  # noqa: BLE001 - any network/parse error: write nothing, retry next cycle
         res["error"] = repr(exc)
+        if is_http_400(exc):
+            # HTTP 400 on the first page = the saved resume point is invalid (2026-10-22: 474 restarts, nothing advanced).
+            # Retrying the same point can never work: drop to the current minute (a gap, logged loudly by run_loop as
+            # RESET) so the writer resumes; run_loop exits BAD_RESUME_EXIT_CODE if 400 keeps coming after the reset.
+            res["http400"], res["reset_from"], res["next_ms"] = True, nxt, cur_min
+            res["error"] = f"HTTP 400 at resume point next_ms={nxt}: reset to {cur_min} (gap {cur_min - nxt} ms): {exc!r}"
+            st["next_ms"] = cur_min
+            st["resets"] = int(st.get("resets", 0)) + 1
+            save_state(out, st)
         return res
+    res["fetched"] = True
     if capped and trades and trades[-1][5] // MIN_MS * MIN_MS <= nxt // MIN_MS * MIN_MS and max_pages < OVERFLOW_PAGES:
         try:  # the first minute alone fills the page budget: refetch it with the overflow budget
             trades, capped, res["error"] = fetch_trades(fetch_fn, symbol, nxt, cur_min, OVERFLOW_PAGES)
@@ -248,6 +259,11 @@ def run_cycle(out, fetch_fn, symbol="BTCUSDT", now_ms=None, since_ms=None, hist_
     return res
 
 
+def is_http_400(exc):
+    """True for an HTTP 400 answer (urllib HTTPError.code, or any exception carrying code 400)."""
+    return getattr(exc, "code", None) == 400
+
+
 # ---------------------------------------------------------------- stall guard + loop
 # OURS (2026-10-15): the recorder hung ~30 h with no log (fetch failures were swallowed, the process stayed alive, so
 # loop-supervisor never relaunched it). If next_ms has not advanced for this many wall-clock minutes the process logs
@@ -256,6 +272,10 @@ def run_cycle(out, fetch_fn, symbol="BTCUSDT", now_ms=None, since_ms=None, hist_
 STALL_MINUTES = 15
 BACKOFF_MAX_S = 300
 STALL_EXIT_CODE = 3
+# OURS (2026-11-01): HTTP 400 after the resume point was already reset this many cycles in a row = not a stale point;
+# exit with a distinct code and a BAD_RESUME line so the restart loop is loud instead of silent.
+BAD_RESUME_MAX = 3
+BAD_RESUME_EXIT_CODE = 4
 LOG_FILE = REPO / "runtime_data" / "orderflow_live.log"
 
 
@@ -301,7 +321,8 @@ def run_loop(out, fetch_fn, symbol, since_ms, keep_days, poll, once=False, sleep
     cycle = cycle or run_cycle
     if not load_state(out).get("next_ms") and since_ms is None:
         log(f"WARN no readable next_ms in {out}/_state.json: starting from the current minute (existing behaviour)")
-    guard, errors, n = StallGuard(clock(), stall_minutes), 0, 0
+    log(f"START pid={os.getpid()} out={out}")  # mts_doctor RESTART-LOOP counts these lines per hour
+    guard, errors, n, bad400 = StallGuard(clock(), stall_minutes), 0, 0, 0
     while True:
         n += 1
         try:
@@ -309,10 +330,19 @@ def run_loop(out, fetch_fn, symbol, since_ms, keep_days, poll, once=False, sleep
         except Exception as exc:  # noqa: BLE001 - never die silently, never swallow
             r = {"rows": 0, "next_ms": None, "thr_days": None, "error": "cycle raised " + repr(exc)}
         errors = errors + 1 if r["error"] else 0
+        if r.get("http400"):
+            bad400 += 1
+        elif r.get("fetched"):  # a fetch really succeeded: the point is good; idle caught-up cycles do not clear the count
+            bad400 = 0
+        if r.get("http400"):
+            log(f"RESET resume point {r.get('reset_from')} rejected with HTTP 400, now {r['next_ms']} ({bad400}/{BAD_RESUME_MAX})")
         log(f"{'ERROR' if r['error'] else 'ok'} rows={r['rows']} next_ms={r['next_ms']} thr_days={r['thr_days']} "
             f"error={r['error']} consecutive_errors={errors}")
         if once:
             return 1 if r["error"] else 0
+        if bad400 >= BAD_RESUME_MAX:
+            log(f"BAD_RESUME HTTP 400 {bad400} cycles in a row even after resetting the resume point: exiting {BAD_RESUME_EXIT_CODE}")
+            return BAD_RESUME_EXIT_CODE
         if not guard.update(r["next_ms"], clock()):
             log(f"STALL next_ms={guard.best} has not advanced for {stall_minutes} min (consecutive_errors={errors}): "
                 f"exiting {STALL_EXIT_CODE} so loop-supervisor relaunches and resumes from _state.json")

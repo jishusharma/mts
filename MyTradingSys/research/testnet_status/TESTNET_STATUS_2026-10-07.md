@@ -59,3 +59,19 @@ Method: day-file table re-summed from its own rows (Entered 6 = Closed 6, Wins 3
 - tom / main: DIFF. Day file alerts 19, rejected 17, entered 1, net +0.0018; funnel tom 2026-10-06 rejected 12, entered 0; 2026-10-07 rejected 13, entered 1, net +0.0018. Rejected count is 17 in the day file vs 25 across the two UTC days; not reconciled.
 - turn_of_candle / jishu_1: DIFF. Day file alerts 934 (all skipped_halt), entered 0; funnel turn_of_candle alerts 99 (2026-10-06) + 93 (2026-10-07), 6 filled and net -0.0921 on 2026-10-07 (after the day file was generated). Halt-skip vs alert definition differs.
 Overall: DIFF. Table re-sum is internally consistent (SAME on the table itself); cross-source agreement holds only for cryptocred and fabio, the other four rows do not reconcile on the same window and key.
+
+## Diff causes (testnet-status-2026-10-07-table-differs-)
+
+Re-run 2026-11-01 on the desktop-copy inputs (execution/auto_trades.jsonl, 5802 rows; `funnel_report.py --day 2026-10-06` and `--day 2026-10-07`), and the day-file window 2026-10-06T02:30:02Z to 2026-10-07T02:30:02Z re-counted straight from auto_trades.jsonl. No row is a bug; every diff is one of three rules:
+- Window: the day file is 24 h from 02:30Z; funnel is a whole UTC day, so one day-file window spans two funnel days and clips both.
+- Counting rule (verdicts): funnel `skipped` counts only skipped_busy and skipped_auto_pause. skipped_halt (the day-file Halt column) and layer_trade_blocked are not in any funnel column. The day-file Alerts column is every auto_trader decision; funnel alerts are runtime/alerts rows (tom has none, so funnel alerts is 0).
+- Key: funnel has no account column (source is layer:sub:tf); the day file routes source to account through auto_trader_config.json.
+
+| Row | Day file | Funnel | Cause |
+|---|---|---|---|
+| rsi / jishu_2 | 4 alerts, 0 entered | no account key | Counting rule + key: all 4 are skipped_halt (not a funnel column) and jishu_2 cannot be isolated. In-window rsi decisions: 22 skipped_halt (4 jishu_2 + 18 jishu_3), 9 skipped_busy, 3 entered. Funnel rsi entries on 10-07 (13) mostly fall after 02:30Z. |
+| rsi / jishu_3 | 30 alerts = 3 entered + 9 busy + 18 halt; 3 closed, net +0.0886 | 10-06: 1 filled, 7 skipped; 10-07: 13 filled | Window + counting rule: the 3 in-window entries are split across two UTC days, the 18 halts are uncounted, and 12 layer_trade_blocked rows appear in neither. |
+| tom / main | 19 alerts, 17 rejected, 1 entered, 1 failed, net +0.0018 | 10-06: 12 rejected; 10-07: 13 rejected, 2 attempts (1 filled, 1 nofill) | Window: 17 is the 02:30Z slice of the 12 + 13 = 25 whole-day rejects. Failed 1 = funnel nofill 1; entered 1 and net +0.0018 match. Alerts 19 vs 0: tom has no runtime alert rows. |
+| turn_of_candle / jishu_1 | 934 alerts, all skipped_halt, 0 entered | 99 + 93 alerts; 6 filled, net -0.0921 on 10-07 | Counting rule + window: halt skips are not a funnel column, funnel alerts are runtime rows (99/93), and the 6 fills are on 10-07 after the day file was written (0 turn_of_candle attempts in the window; 43 layer_trade_blocked uncounted). |
+
+Verdict: table is right for its own window and key; funnel is right for its UTC day. Only cryptocred and fabio line up because they have a single account and no halt skips. Bugs found: none, so no card filed. Possible later improvement (not a bug): a funnel `halt` column so the two reports share a verdict vocabulary.
