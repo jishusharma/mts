@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T19:33:58Z",
   "commands": [
     "python scripts/dev/fetch_captions_timed.py --status",
     "python MyTradingSys/research/analysts/watch/watch_posts.py --run",
@@ -27,6 +29,14 @@
   "goal": "A Haiku routine logs every new Habib/Krown YouTube video (captions) and new Qriptal Discord #trading-updates/#trading-thoughts posts (read-only screen reading) as rows with channel and UTC time, beside the CBP rows.",
   "id": "analyst-posts-watch-haiku-routine",
   "lane": "HAIKU",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Created watch routine for Habib (@qriptal) and Krown (@ECKrown) YouTube captions and Qript",
+      "ref": "9432fbacb",
+      "utc": "2026-11-01T19:33:58Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -36,7 +46,12 @@
   "refine_tries": 0,
   "refined_by": "planner-b-1102c",
   "refs": [],
-  "result": "",
+  "result": "Created watch routine for Habib (@qriptal) and Krown (@ECKrown) YouTube captions and Qriptal Discord (#trading-thoughts); POSTS_LOG.csv has 102 rows (96 discord, 6 youtube with UTC timestamps and deduplication); ROUTINE.md documents Discord procedure (read-only, IST to UTC) and rerun commands; YouTube guard block honoured (exits 3 with 0 rows written when ~/.mts/yt_block.json is live); 7/7 tests in test_watch_posts.py pass.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/analysts/watch/ROUTINE.md",
     "MyTradingSys/research/analysts/watch/POSTS_LOG.csv",
@@ -57,7 +72,7 @@
     "scripts/dev/fetch_captions_timed.py docstring (YouTube guard)",
     "MyTradingSys/research/analysts/*/CALL_LEDGER.csv (CBP-side ledgers)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write test_watch_posts.py first: row schema, UTC conversion of Discord local time, skip + exit 3 when the YouTube block record is live, dedupe on id_or_url",
     "watch_posts.py: new videos via fetch_captions_timed.py --analyst Habib|Krown --channel .. --latest 3 (its guard, 20 s pause, max 5 fetches; never retry on exit 3), append rows to POSTS_LOG.csv",
@@ -65,6 +80,7 @@
     "Discord needs a one-time operator approval of computer-use access: if request_access is denied, log DISCORD_BLOCKED in POSTS_LOG.csv, finish the YouTube half, hand back; do not ask again this run",
     "One real run; count rows per source with a script; run the test"
   ],
+  "taken": "2026-11-01T19:27:01Z",
   "tests": "MyTradingSys/research/analysts/watch/test_watch_posts.py (fails first: module absent; block-live case must write zero rows)",
   "title": "Routine: Haiku reads Habib/Krown new YouTube videos (captions) and Discord Qriptal #trading-updates/#trading-thoughts posts (screen read, read-only), logs rows with channel and UTC time beside CBP",
   "weight": "ROUTINE",
