@@ -1,0 +1,474 @@
+Shard 12/12: 9 steps here (est 199 s)
+
+[Step 1] Execution module tests
+Step 1: SKIP (shard 4/12 runs it)
+
+[Step 2] G1G2 offline script test
+Step 2: SKIP (shard 8/12 runs it)
+
+[Step 3] Static test suite
+Step 3: SKIP (shard 2/12 runs it)
+
+[Step 3b] User guide checker tests
+Step 3b: SKIP (shard 3/12 runs it)
+
+[Step 3c] User guide in sync with mts.ps1
+Step 3c: SKIP (shard 1/12 runs it)
+
+[Step 3r] Alert rate checker tests
+Step 3r: SKIP (shard 3/12 runs it)
+
+[Step 3cv] Chart verify (RSI/BB/StochRSI) tests
+Step 3cv: SKIP (shard 10/12 runs it)
+
+[Step 3cva] Indicator audit sampler/comparator tests
+Step 3cva: SKIP (shard 5/12 runs it)
+
+[Step 3tm] One timeframe map tests
+Step 3tm: SKIP (shard 11/12 runs it)
+
+[Step 3s] Testnet status summary tests
+Step 3s: SKIP (shard 4/12 runs it)
+
+[Step 3f] Funnel report tests
+Step 3f: SKIP (shard 8/12 runs it)
+
+[Step 3dk] Desk board tests
+Step 3dk: SKIP (shard 4/12 runs it)
+
+[Step 3td] Tom ledger date tests
+Step 3td: SKIP (shard 6/12 runs it)
+
+[Step 3hs] Tom holdout split tests
+Step 3hs: SKIP (shard 1/12 runs it)
+
+[Step 3sq] Spec quote checker tests
+Step 3sq: SKIP (shard 5/12 runs it)
+
+[Step 3cx] Layer lab runner tests
+Step 3cx: SKIP (shard 8/12 runs it)
+
+[Step 3nl] NUC lab wrapper tests (tick/status/gemini over the ssh gate)
+Step 3nl: SKIP (shard 11/12 runs it)
+
+[Step 3cy] ask_model tests
+Step 3cy: SKIP (shard 6/12 runs it)
+
+[Step 3tl] Task cards meet the Definition of Ready
+Step 3tl: SKIP (shard 5/12 runs it)
+
+[Step 3q] INDEX/BUGS consistency
+Step 3q: SKIP (shard 2/12 runs it)
+
+[Step 3p] P4 corrected script tests
+Step 3p: SKIP (shard 9/12 runs it)
+
+[Step 3d] Extract quote checker tests
+Step 3d: SKIP (shard 11/12 runs it)
+
+[Step 3h] Launcher verb static tests (runner, orphans)
+Step 3h: SKIP (shard 3/12 runs it)
+
+[Step 3k.1] sync.py tests part 1/12
+Step 3k.1: SKIP (shard 2/12 runs it)
+
+[Step 3k.2] sync.py tests part 2/12
+Step 3k.2: SKIP (shard 4/12 runs it)
+
+[Step 3k.3] sync.py tests part 3/12
+Step 3k.3: SKIP (shard 10/12 runs it)
+
+[Step 3k.4] sync.py tests part 4/12
+Step 3k.4: SKIP (shard 5/12 runs it)
+
+[Step 3k.6] sync.py tests part 6/12
+Step 3k.6: SKIP (shard 6/12 runs it)
+
+[Step 3k.7] sync.py tests part 7/12
+Step 3k.7: SKIP (shard 11/12 runs it)
+
+[Step 3k.8] sync.py tests part 8/12
+Step 3k.8: SKIP (shard 2/12 runs it)
+
+[Step 3k.9] sync.py tests part 9/12
+Step 3k.9: SKIP (shard 9/12 runs it)
+
+[Step 3k.10] sync.py tests part 10/12
+Step 3k.10: SKIP (shard 7/12 runs it)
+
+[Step 3k.11] sync.py tests part 11/12
+Step 3k.11: SKIP (shard 3/12 runs it)
+
+[Step 3k.12] sync.py tests part 12/12
+Step 3k.12: SKIP (shard 1/12 runs it)
+
+[Step 3gs] Gate selector tests (path -> smoke steps, fail closed)
+Step 3gs: SKIP (shard 7/12 runs it)
+
+[Step 3rc] Red CI task card tests (one card per red run)
+Step 3rc: SKIP (shard 1/12 runs it)
+
+[Step 3sg] Stop guard tests (a session cannot end holding unshipped work)
+Step 3sg: SKIP (shard 2/12 runs it)
+
+[Step 3sig] Signals between logins (mts_signal.py)
+Step 3sig: SKIP (shard 4/12 runs it)
+
+[Step 3e] DSA browser worker + queue lane tests
+Step 3e: SKIP (shard 9/12 runs it)
+
+[Step 3sh] Screenshot intake tests (save, classify, read, close gates)
+Step 3sh: SKIP (shard 10/12 runs it)
+
+[Step 3mg] Project group map tests (every row and file has one group)
+Step 3mg: SKIP (shard 6/12 runs it)
+
+[Step 3xt.1] Extra tests part 1 (1 files)
+Step 3xt.1: SKIP (shard 2/12 runs it)
+
+[Step 3xt.2] Extra tests part 2 (11 files)
+Step 3xt.2: SKIP (shard 1/12 runs it)
+
+[Step 3xt.3] Extra tests part 3 (11 files)
+Step 3xt.3: SKIP (shard 7/12 runs it)
+
+[Step 3xt.4] Extra tests part 4 (14 files)
+Step 3xt.4: SKIP (shard 9/12 runs it)
+
+[Step 3xt.5] Extra tests part 5 (16 files)
+Step 3xt.5: SKIP (shard 9/12 runs it)
+
+[Step 3xt.6] Extra tests part 6 (20 files)
+Step 3xt.6: SKIP (shard 10/12 runs it)
+
+[Step 3xt.7] Extra tests part 7 (20 files)
+Step 3xt.7: SKIP (shard 11/12 runs it)
+
+[Step 3xt.8] Extra tests part 8 (20 files)
+Step 3xt.8: SKIP (shard 10/12 runs it)
+
+[Step 3xt.10] Extra tests part 10 (23 files)
+Step 3xt.10: SKIP (shard 7/12 runs it)
+
+[Step 3xt.11] Extra tests part 11 (23 files)
+Step 3xt.11: SKIP (shard 8/12 runs it)
+
+[Step 3xt.12] Extra tests part 12 (22 files)
+Step 3xt.12: SKIP (shard 11/12 runs it)
+
+[Step 3ad] Scheduled auto-deploy tests (stops on red gate)
+Step 3ad: SKIP (shard 3/12 runs it)
+
+[Step 3hy] Daily hygiene job tests
+Step 3hy: SKIP (shard 4/12 runs it)
+
+[Step 3ms] STATUS.md generator tests (commit-dated reports, CI green line)
+Step 3ms: SKIP (shard 10/12 runs it)
+
+[Step 3cs] Cloud SessionStart hook tests (no-op off cloud)
+Step 3cs: SKIP (shard 4/12 runs it)
+
+[Step 3pc] Prompt contract tests (DSA_SESSION_PROMPT 5d, B155)
+Step 3pc: SKIP (shard 8/12 runs it)
+
+[Step 3ds] DSA helper CLI tests (dsa.py)
+Step 3ds: SKIP (shard 1/12 runs it)
+
+[Step 3cr] Control Room page generator tests
+Step 3cr: SKIP (shard 4/12 runs it)
+
+[Step 3lh] GPT lane health tests (down/up rules, reroute, pause, resume, DSA prompt)
+Step 3lh: SKIP (shard 11/12 runs it)
+
+[Step 3rb] Claude-GPT relay board tests (shared notes, lanes, pack)
+Step 3rb: SKIP (shard 7/12 runs it)
+
+[Step 3af] Artifact registry tests (one url per page per account)
+Step 3af: SKIP (shard 7/12 runs it)
+
+[Step 3ul] Usage ledger tests (usage_log.py row, parser, idle, summary)
+Step 3ul: SKIP (shard 9/12 runs it)
+
+[Step 3bk] Backup snapshot tests (dirty/untracked work reaches the remote)
+Step 3bk: SKIP (shard 3/12 runs it)
+
+[Step 3vd] Verdict registry override tests (sourced hand corrections survive backfill)
+Step 3vd: SKIP (shard 8/12 runs it)
+
+[Step 3lm] Live mirror tests (read-only desktop->work-tree data, fail-closed)
+Step 3lm: SKIP (shard 7/12 runs it)
+
+[Step 3js] Config check (settings.json parses, hook scripts exist, secrets stay ignored)
+Step 3js: SKIP (shard 10/12 runs it)
+
+[Step 3gi] Gate impact tests (import-graph test selection, budget, quarantine)
+Step 3gi: SKIP (shard 2/12 runs it)
+
+[Step 3qn] Gate quarantine list valid (owner, reason, not expired)
+Step 3qn: SKIP (shard 7/12 runs it)
+
+[Step 3sg] Sourced-rule guard: every layer param has SOURCED quote/locator or OURS label
+Step 3sg: SKIP (shard 2/12 runs it)
+
+[Step 3w] Wiring gate tests
+Step 3w: SKIP (shard 6/12 runs it)
+
+[Step 3x] Wiring check: no undeclared unwired code (wiring_scan.py --check)
+Step 3x: SKIP (shard 11/12 runs it)
+
+[Step 3gd] Gate discovery: every tracked test file is gated (B150)
+Step 3gd: SKIP (shard 2/12 runs it)
+
+[Step 3la] Look-ahead lint: no new unreviewed FAIL hit (lookahead_lint.py --new)
+Step 3la: SKIP (shard 5/12 runs it)
+
+[Step 3dl] CI deps lint: no gated test hard-imports a package the ci.yml pip line lacks
+Step 3dl: SKIP (shard 3/12 runs it)
+
+[Step 4d] Pytest doc size/contract tests
+Step 4d: SKIP (shard 5/12 runs it)
+
+[Step 4e] Pytest backtest function-style tests
+Step 4e: SKIP (shard 6/12 runs it)
+
+[Step 4f] Pytest layer + live-writer tests
+Step 4f: SKIP (shard 5/12 runs it)
+
+[Step 5] Maven Java tests
+Step 5: SKIP (shard 1/12 runs it)
+
+[Step 5b.1] Layer tests part 1 (1 modules)
+Step 5b.1: SKIP (shard 3/12 runs it)
+
+[Step 5b.2] Layer tests part 2 (1 modules)
+Step 5b.2: SKIP (shard 8/12 runs it)
+
+[Step 5b.3] Layer tests part 3 (1 modules)
+Step 5b.3: SKIP (shard 9/12 runs it)
+
+[Step 5b.4] Layer tests part 4 (1 modules)
+Step 5b.4: SKIP (shard 9/12 runs it)
+
+[Step 5b.5] Layer tests part 5 (10 modules)
+Step 5b.5: SKIP (shard 7/12 runs it)
+
+[Step 5b.6] Layer tests part 6 (10 modules)
+Step 5b.6: SKIP (shard 3/12 runs it)
+
+[Step 5b.7] Layer tests part 7 (10 modules)
+Step 5b.7: SKIP (shard 1/12 runs it)
+
+[Step 5b.8] Layer tests part 8 (10 modules)
+Step 5b.8: SKIP (shard 10/12 runs it)
+
+[Step 5b.10] Layer tests part 10 (10 modules)
+Step 5b.10: SKIP (shard 10/12 runs it)
+
+[Step 5b.11] Layer tests part 11 (10 modules)
+Step 5b.11: SKIP (shard 9/12 runs it)
+
+[Step 5b.12] Layer tests part 12 (10 modules)
+Step 5b.12: SKIP (shard 11/12 runs it)
+
+[Step 5c] Options module tests
+Step 5c: SKIP (shard 8/12 runs it)
+
+[Step 6] Backtest tests (5 modules)
+Step 6: SKIP (shard 6/12 runs it)
+
+[Step 4.1] Pytest MyTradingSys/tests part 1 (4 files)
+Step 4.1: SKIP (shard 5/12 runs it)
+
+[Step 4.2] Pytest MyTradingSys/tests part 2 (5 files)
+Step 4.2: SKIP (shard 6/12 runs it)
+
+[Step 4.3] Pytest MyTradingSys/tests part 3 (6 files)
+Step 4.3: SKIP (shard 7/12 runs it)
+
+[Step 4.4] Pytest MyTradingSys/tests part 4 (7 files)
+Step 4.4: SKIP (shard 5/12 runs it)
+
+[Step 4.6] Pytest MyTradingSys/tests part 6 (10 files)
+Step 4.6: SKIP (shard 6/12 runs it)
+
+[Step 4.7] Pytest MyTradingSys/tests part 7 (10 files)
+Step 4.7: SKIP (shard 11/12 runs it)
+
+[Step 4.8] Pytest MyTradingSys/tests part 8 (10 files)
+Step 4.8: SKIP (shard 9/12 runs it)
+
+[Step 4.9] Pytest MyTradingSys/tests part 9 (10 files)
+Step 4.9: SKIP (shard 10/12 runs it)
+
+[Step 4.10] Pytest MyTradingSys/tests part 10 (10 files)
+Step 4.10: SKIP (shard 4/12 runs it)
+
+[Step 4.11] Pytest MyTradingSys/tests part 11 (10 files)
+Step 4.11: SKIP (shard 3/12 runs it)
+
+[Step 4.12] Pytest MyTradingSys/tests part 12 (10 files)
+Step 4.12: SKIP (shard 1/12 runs it)
+Gate: 9 steps, 2 at a time
+
+[Step 3xt.9] Extra tests part 9 (23 files)
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/run_extra_tests.py --only MyTradingSys/backtest/bigtrade/test_relabel_fires_split.py MyTradingSys/execution/tests/test_executor_reject_diag.py MyTradingSys/research/analysts/rlinda/test_rlinda_ingestion.py MyTradingSys/research/candle_patterns_2026-10-04/pilot/test_pilot.py MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/test_cost_inventory.py MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/test_stability.py MyTradingSys/research/fabio_date_match_2026-10-18/test_date_match.py MyTradingSys/research/fast_track_2026-09-27/backtest_xcheck/test_ref_ladder.py MyTradingSys/research/layer_lab/bb_top_reversal_event_table/test_event_table.py MyTradingSys/research/layer_lab/cc_msb_event_table/test_event_table.py MyTradingSys/research/layer_lab/malkan_rsi_event_table/test_event_table.py MyTradingSys/research/level_ledger_2026-10-16/test_zone_standard.py MyTradingSys/research/mfe_exit_2026-10-13/test_mfe_exit_study.py MyTradingSys/research/qriptal_2026-10-10/test_ledger.py MyTradingSys/research/sim_desk/test_conditions.py MyTradingSys/research/sim_desk/test_sealed_cache.py MyTradingSys/research/wavetrend_2026-10-17/test_count_events.py scripts/dev/test_asr_to_canonical.py scripts/dev/test_device_tasks.py scripts/dev/test_live_cross_read.py scripts/dev/test_prereg_gate.py scripts/dev/test_status_board.py scripts/worker/test_audit_rotation.py
+  Elapsed: 23.0s (1/9 done, +23s)
+Step 3xt.9: PASS
+
+[Step 3tk] Task card tests
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_tasks.py
+  Elapsed: 29.7s (2/9 done, +30s)
+Step 3tk: PASS
+
+[Step 4.5] Pytest MyTradingSys/tests part 5 (10 files)
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe -m pytest MyTradingSys/tests/dev MyTradingSys/tests/test_b074_rule_order.py MyTradingSys/tests/test_b128_cc_range_noise_filter.py MyTradingSys/tests/test_carry_basis.py MyTradingSys/tests/test_desk_sweep.py MyTradingSys/tests/test_handoff_freshness.py MyTradingSys/tests/test_operator_questions_pending.py MyTradingSys/tests/test_role_budget.py MyTradingSys/tests/test_sourced_rule_guard.py MyTradingSys/tests/test_tasks_stop.py -q -p no:cacheprovider --ignore-glob=F:\MTS\mts-jis-nuc-codex-48h-value-audit*[/\]tmp[a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_] --basetemp=C:\Users\E-NGIN~1\AppData\Local\Temp\mts_s4_f7__k7al\bt
+  Elapsed: 17.8s (3/9 done, +41s)
+Step 4.5: PASS
+
+[Step 3g] Gate coverage tests (Fabio v3 + live writers)
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_run_all_tests.py
+  Elapsed: 15.7s (4/9 done, +45s)
+Step 3g: PASS
+
+[Step 3t] T093 turn-of-candle imbalance tests
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe MyTradingSys/research/loose_code/test_t093_toc_imbalance_klines.py
+  Elapsed: 0.3s (5/9 done, +46s)
+Step 3t: PASS
+
+[Step 3cxp] Codex status parser tests
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_codex_status_parse.py
+  Elapsed: 0.1s (6/9 done, +46s)
+Step 3cxp: PASS
+
+[Step 3k.5] sync.py tests part 5/12
+  Command: python -m unittest (scripts/dev/test_sync.py, 3 shards)
+  Elapsed: 16.1s (7/9 done, +62s)
+Step 3k.5: PASS
+
+[Step 5b.9] Layer tests part 9 (10 modules)
+  Command: python -m unittest (10 modules)
+  Elapsed: 52.0s (8/9 done, +93s)
+Step 5b.9: PASS
+
+[Step 3ly] Layer index tests
+  Command: C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\python.exe scripts/dev/test_make_layers_md.py
+  Elapsed: 0.2s (9/9 done, +93s)
+Step 3ly: PASS
+
+======================================================================
+SUMMARY
+======================================================================
+Step 1: Execution tests: SKIP
+Step 2: G1G2 offline test: SKIP
+Step 3: Static test suite: SKIP
+Step 3b: Guide checker tests: SKIP
+Step 3c: Guide in sync: SKIP
+Step 3r: Alert rate checker tests: SKIP
+Step 3cv: Chart verify tests: SKIP
+Step 3cva: Indicator audit tests: SKIP
+Step 3tm: TF map tests: SKIP
+Step 3s: Testnet status tests: SKIP
+Step 3f: Funnel report tests: SKIP
+Step 3dk: Desk board tests: SKIP
+Step 3tk: Task card tests: PASS
+Step 3td: Tom ledger date tests: SKIP
+Step 3hs: Tom holdout split tests: SKIP
+Step 3sq: Spec quote checker tests: SKIP
+Step 3ly: Layer index tests: PASS
+Step 3cx: Layer lab runner tests: SKIP
+Step 3nl: NUC lab wrapper tests: SKIP
+Step 3cy: ask_model tests: SKIP
+Step 3tl: Task card lint: SKIP
+Step 3q: INDEX/BUGS consistency: SKIP
+Step 3p: P4 corrected script tests: SKIP
+Step 3t: T093 imbalance tests: PASS
+Step 3d: Quote checker tests: SKIP
+Step 3h: Launcher static tests: SKIP
+Step 3g: Gate coverage tests: PASS
+Step 3k: sync.py tests: SKIP
+Step 3k: sync.py tests: SKIP
+Step 3k: sync.py tests: SKIP
+Step 3k: sync.py tests: SKIP
+Step 3k: sync.py tests: PASS
+Step 3k: sync.py tests: SKIP
+Step 3k: sync.py tests: SKIP
+Step 3k: sync.py tests: SKIP
+Step 3k: sync.py tests: SKIP
+Step 3k: sync.py tests: SKIP
+Step 3k: sync.py tests: SKIP
+Step 3k: sync.py tests: SKIP
+Step 3gs: Gate selector tests: SKIP
+Step 3rc: Red CI card tests: SKIP
+Step 3sg: Stop guard tests: SKIP
+Step 3cxp: Codex status parser tests: PASS
+Step 3sig: Signals tests: SKIP
+Step 3e: DSA worker tests: SKIP
+Step 3sh: Screenshot intake tests: SKIP
+Step 3mg: Project group map tests: SKIP
+Step 3xt: Extra tests: SKIP
+Step 3xt: Extra tests: SKIP
+Step 3xt: Extra tests: SKIP
+Step 3xt: Extra tests: SKIP
+Step 3xt: Extra tests: SKIP
+Step 3xt: Extra tests: SKIP
+Step 3xt: Extra tests: SKIP
+Step 3xt: Extra tests: SKIP
+Step 3xt: Extra tests: PASS
+Step 3xt: Extra tests: SKIP
+Step 3xt: Extra tests: SKIP
+Step 3xt: Extra tests: SKIP
+Step 3ad: Auto-deploy tests: SKIP
+Step 3hy: Daily hygiene tests: SKIP
+Step 3ms: make_status tests: SKIP
+Step 3cs: Cloud setup hook tests: SKIP
+Step 3pc: Prompt contract tests: SKIP
+Step 3ds: DSA helper CLI tests: SKIP
+Step 3cr: Control Room tests: SKIP
+Step 3lh: GPT lane health tests: SKIP
+Step 3rb: Relay board tests: SKIP
+Step 3af: Artifact registry tests: SKIP
+Step 3ul: Usage ledger tests: SKIP
+Step 3bk: Backup snapshot tests: SKIP
+Step 3vd: Verdict registry tests: SKIP
+Step 3lm: Live mirror tests: SKIP
+Step 3js: Config check: SKIP
+Step 3gi: Gate impact tests: SKIP
+Step 3qn: Quarantine check: SKIP
+Step 3sg: Sourced-rule guard: SKIP
+Step 3w: Wiring gate tests: SKIP
+Step 3x: Wiring check: SKIP
+Step 3gd: Gate discovery: SKIP
+Step 3la: Look-ahead lint: SKIP
+Step 3dl: CI deps lint: SKIP
+Step 4d: Pytest doc tests: SKIP
+Step 4e: Pytest backtest tests: SKIP
+Step 4f: Pytest layer tests: SKIP
+Step 5: Maven tests: SKIP
+Step 5b: Layer tests: SKIP
+Step 5b: Layer tests: SKIP
+Step 5b: Layer tests: SKIP
+Step 5b: Layer tests: SKIP
+Step 5b: Layer tests: SKIP
+Step 5b: Layer tests: SKIP
+Step 5b: Layer tests: SKIP
+Step 5b: Layer tests: SKIP
+Step 5b: Layer tests: PASS
+Step 5b: Layer tests: SKIP
+Step 5b: Layer tests: SKIP
+Step 5b: Layer tests: SKIP
+Step 5c: Options tests: SKIP
+Step 6: Backtest tests: SKIP
+Step 4: Pytest tests: SKIP
+Step 4: Pytest tests: SKIP
+Step 4: Pytest tests: SKIP
+Step 4: Pytest tests: SKIP
+Step 4: Pytest tests: PASS
+Step 4: Pytest tests: SKIP
+Step 4: Pytest tests: SKIP
+Step 4: Pytest tests: SKIP
+Step 4: Pytest tests: SKIP
+Step 4: Pytest tests: SKIP
+Step 4: Pytest tests: SKIP
+Step 4: Pytest tests: SKIP
+======================================================================
+ALL TESTS PASSED

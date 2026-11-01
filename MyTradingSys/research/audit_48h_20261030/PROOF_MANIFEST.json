@@ -1,0 +1,237 @@
+[
+  {
+    "file": "artifact-rebuild.txt",
+    "bytes": 92,
+    "sha256": "0bf7c255c69569dcc2b69eeebf3c2434732cba3ac724ae13fd0abaaed0be1854"
+  },
+  {
+    "file": "card-lint.txt",
+    "bytes": 6373,
+    "sha256": "741ea221aa2d9d5c1df32f3c387dce62b09598e9c61314fbfd7a80ec0b99f2e2"
+  },
+  {
+    "file": "catalogue-invariants.txt",
+    "bytes": 111,
+    "sha256": "805fce1f6f14d2af9cd97bf5c787af7d20ad874b818042ba649c1338cf4985bf"
+  },
+  {
+    "file": "cbp-green.txt",
+    "bytes": 99,
+    "sha256": "d4cf36447e11a617b84ca57efd46287cccd535514ad15f6240216cf77a8286bf"
+  },
+  {
+    "file": "cbp-red.txt",
+    "bytes": 9784,
+    "sha256": "6a96923839f5dcdaf9bc46bf14198355b026379964d2085af104adbce5a7d0a1"
+  },
+  {
+    "file": "diff-check.txt",
+    "bytes": 23,
+    "sha256": "75ebccfc18cc5b1a8b32589edccfa2e9f53d9f4dcde857010b3235519655e37f"
+  },
+  {
+    "file": "doctor-date-green.txt",
+    "bytes": 113,
+    "sha256": "184fa7d13e7301b74cc0e5747020a8550da56cb16280bdb4ccb5c78a930e7462"
+  },
+  {
+    "file": "doctor-date-red.txt",
+    "bytes": 741,
+    "sha256": "dd043dd8eaa6d54eba2df1069d5a511f313d45d710aa17b65001e6bc68b3a3fc"
+  },
+  {
+    "file": "final-focused.txt",
+    "bytes": 167,
+    "sha256": "826feb680fe8d5b61dcd38229e0aef0357989e571d66131378c4ee0c38cebc1c"
+  },
+  {
+    "file": "gate12-1.txt",
+    "bytes": 15600,
+    "sha256": "83644589c77f067584fae273f17a2cde9d07fc899181c4d424388abad7e09570"
+  },
+  {
+    "file": "gate12-10.txt",
+    "bytes": 17600,
+    "sha256": "3d5bd75cb66eb97c099142b7a7a2db44b7b0d82c5141a8fff3e6ec147c4e5135"
+  },
+  {
+    "file": "gate12-11.txt",
+    "bytes": 17831,
+    "sha256": "bdae2cf22699418ada5a8d109f0dea484ad383409f738e4517f2391e926b99a6"
+  },
+  {
+    "file": "gate12-12.txt",
+    "bytes": 16573,
+    "sha256": "706e1e520e75123695055040e9bcaed4466375d1474f1658d012e6f5af86d43d"
+  },
+  {
+    "file": "gate12-2.txt",
+    "bytes": 14705,
+    "sha256": "3de230b8eaa6897a4639314017d3de4b7ee8504084205b98c916a6b4e5867490"
+  },
+  {
+    "file": "gate12-3.txt",
+    "bytes": 15257,
+    "sha256": "30bb0587b5f473dc21e6cf486581ae7bc7797c8ac669042c8d0939eed30f4402"
+  },
+  {
+    "file": "gate12-4.txt",
+    "bytes": 17012,
+    "sha256": "2cb5872f66cb8ac7b1c1e3bf46800b9601d8b70f8c8bdc6f4475188ea21e3325"
+  },
+  {
+    "file": "gate12-5.txt",
+    "bytes": 17833,
+    "sha256": "33dd2524f2727915958575d9617a173d7a4c2a84e3832775de993a6b04017801"
+  },
+  {
+    "file": "gate12-6.txt",
+    "bytes": 16298,
+    "sha256": "81919cd69523abb43b21667e03459c008d61f76ff5eb30445311e67f7419f296"
+  },
+  {
+    "file": "gate12-7.txt",
+    "bytes": 16993,
+    "sha256": "7a672c3caeb0b802a5cfd45e5bb683e87b1fc814b741e9bb7a3e83079bfd5116"
+  },
+  {
+    "file": "gate12-8.txt",
+    "bytes": 16225,
+    "sha256": "088d6db9c83eba538fd5c2ae393e56b00b983fa8b354f4c6ea029fb481508a46"
+  },
+  {
+    "file": "gate12-9-initial.txt",
+    "bytes": 18412,
+    "sha256": "7c5ccebecd1cd322a97fb8e8c354da7cf63b61c0de8f6538ab2027acb14c6a13"
+  },
+  {
+    "file": "gate12-9.txt",
+    "bytes": 17092,
+    "sha256": "3183945c9fc665741503b4539dacd2880f453c8728436b1057965afd8c250136"
+  },
+  {
+    "file": "liq-drain-mutant.txt",
+    "bytes": 2418,
+    "sha256": "2f110042d4318379178aa55597008503c0b689d7236dc1d416248aa88652b2af"
+  },
+  {
+    "file": "liq-green.txt",
+    "bytes": 2102,
+    "sha256": "de5f97e720f78f1a6c7296f95b8add75459216b51ca59275ae84715278545fa1"
+  },
+  {
+    "file": "liq-red.txt",
+    "bytes": 5218,
+    "sha256": "5ed45d7a14a56d99637b764d4dc7186f7253f9a75f411274588495c16b5ccba8"
+  },
+  {
+    "file": "liq-reporting-mutant.txt",
+    "bytes": 2294,
+    "sha256": "51e140de26bf8d0ba67c97ebe494d8983bea5feef21665e0875d293cdf99b285"
+  },
+  {
+    "file": "liq-reviewed-green.txt",
+    "bytes": 2710,
+    "sha256": "50eb85e3a1d545fbbeb874e27b548646be0cbb899975b99e1a42d4aacc22c902"
+  },
+  {
+    "file": "liq-reviewed-surefire.txt",
+    "bytes": 315,
+    "sha256": "72e8324d0fecc3006bc1d8427dcf0ffb161f5fc9df1a468ffd8305fd8834b031"
+  },
+  {
+    "file": "liq-surefire.txt",
+    "bytes": 314,
+    "sha256": "07945cdc25d3b5bc7e638fb76850982bb493ab3947f79be207bdd542fece8c59"
+  },
+  {
+    "file": "liquidation-review-inline.txt",
+    "bytes": 5190,
+    "sha256": "5b2d158742426ef35ffa9fe4744a40291a0c37df7d2f1fe95699363aac6a3dc9"
+  },
+  {
+    "file": "liquidation-review-sonnet.txt",
+    "bytes": 372,
+    "sha256": "cee83b5ed6ecf6f0905dd2becd874b7514d974753e10fda1ff2e40dad173d574"
+  },
+  {
+    "file": "liquidation-review.txt",
+    "bytes": 1855,
+    "sha256": "52e08069298afb43c6809ea4e542dbbdb1ba98f2d22c32e9535795b2ae21fd0b"
+  },
+  {
+    "file": "lv-disk-green.txt",
+    "bytes": 104,
+    "sha256": "98917e007e84aba95db7f7f61f049b283f921359bed30274e862f36f4ae64958"
+  },
+  {
+    "file": "lv-disk-red.txt",
+    "bytes": 1513,
+    "sha256": "2a75065dff00f45ddd57475fdb61912c3f9d0524c670c676b8b007ecd050dadd"
+  },
+  {
+    "file": "lv-green.txt",
+    "bytes": 104,
+    "sha256": "127d0ba841db218ccc144cf94f3066d00e8c8b63a41456e429d63a439bcfbafe"
+  },
+  {
+    "file": "lv-red.txt",
+    "bytes": 12503,
+    "sha256": "75c1d21a5e62278cf005832a45fb34bcde05992c213b0ed8d17f09f6c73e5700"
+  },
+  {
+    "file": "python-syntax.txt",
+    "bytes": 70,
+    "sha256": "a8324dffe8c2f92ce7e8aa498bde3c3084e18b2e163f46f2db654db89678a389"
+  },
+  {
+    "file": "REVIEW_DISPOSITION.md",
+    "bytes": 2055,
+    "sha256": "92d14e6216a41b7ee5bd3c572a7e6d01cac4e387901fdbd8c039e67c9a826bf7"
+  },
+  {
+    "file": "score-green.txt",
+    "bytes": 116,
+    "sha256": "6271db4f685166cfc69de75b02f8e0f4e6b1cd91d20487d0e9279290822af99b"
+  },
+  {
+    "file": "score-red.txt",
+    "bytes": 2092,
+    "sha256": "c82c1ecaf1d1352bb772157e52aded90c3a036a3da64b665f48bb289ec71087b"
+  },
+  {
+    "file": "sim-green.txt",
+    "bytes": 121,
+    "sha256": "d52367d4f49ac9476984831676347d9301ab7371210bf1694325201f6d4b64a9"
+  },
+  {
+    "file": "sim-red.txt",
+    "bytes": 4890,
+    "sha256": "6a24c749e88b44eeb68f66c262f5ae8d5e1dd99012703769bfc01b3cd7d0a450"
+  },
+  {
+    "file": "tasks-green.txt",
+    "bytes": 204,
+    "sha256": "cffac2123cd2c1c15ea39fb9fae6ac08f9bf8ad5ed5baf8addf77662648bc0d3"
+  },
+  {
+    "file": "ui-smoke.txt",
+    "bytes": 540,
+    "sha256": "6cb92a1b06fed83933594f7598050f1c3624a38a5987f11b0e66d5bf503aa95d"
+  },
+  {
+    "file": "unicode-green.txt",
+    "bytes": 109,
+    "sha256": "f2dd1cab1bc6f9b9bb667949e1a1c6b606c6d1e46396cd115864d1555276a7dd"
+  },
+  {
+    "file": "verdict-green.txt",
+    "bytes": 104,
+    "sha256": "26af04a7e207f90ef3d108cd8335e77110bf2b3c999274a5067aec5d113977a1"
+  },
+  {
+    "file": "verdict-red.txt",
+    "bytes": 817,
+    "sha256": "47401eb76121c7028aa5d195498dda79d01c2b1f85797b30075ef96b0221990b"
+  }
+]

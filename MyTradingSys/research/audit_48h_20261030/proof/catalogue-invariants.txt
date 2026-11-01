@@ -1,0 +1,1 @@
+Catalogue proof: same 189 row IDs; identical numeric leaves; 29 punctuation string fields repaired in 25 rows.

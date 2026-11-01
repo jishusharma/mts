@@ -1,0 +1,84 @@
+{
+  "completed_utc": "2026-11-01T17:19:36.168326+00:00",
+  "code_head": "a19ce28e39210808d6f0ad25533fb1789e3a40af",
+  "fetched_trunk_reference": "197e5cd2afa7c7258fc20b4beccbb2362e730c58",
+  "shards": [
+    {
+      "shard": "1/12",
+      "status": "PASS",
+      "proof": "proof/gate12-1.txt",
+      "source_log_mtime": "2026-10-29T23:02:47.714440+00:00"
+    },
+    {
+      "shard": "2/12",
+      "status": "PASS",
+      "proof": "proof/gate12-2.txt",
+      "source_log_mtime": "2026-10-29T23:03:06.478391+00:00"
+    },
+    {
+      "shard": "3/12",
+      "status": "PASS",
+      "proof": "proof/gate12-3.txt",
+      "source_log_mtime": "2026-11-01T11:42:55.911611+00:00"
+    },
+    {
+      "shard": "4/12",
+      "status": "PASS",
+      "proof": "proof/gate12-4.txt",
+      "source_log_mtime": "2026-11-01T11:43:17.415755+00:00"
+    },
+    {
+      "shard": "5/12",
+      "status": "PASS",
+      "proof": "proof/gate12-5.txt",
+      "source_log_mtime": "2026-11-01T11:45:11.368697+00:00"
+    },
+    {
+      "shard": "6/12",
+      "status": "PASS",
+      "proof": "proof/gate12-6.txt",
+      "source_log_mtime": "2026-11-01T11:44:21.319711+00:00"
+    },
+    {
+      "shard": "7/12",
+      "status": "PASS",
+      "proof": "proof/gate12-7.txt",
+      "source_log_mtime": "2026-11-01T11:47:32.279831+00:00"
+    },
+    {
+      "shard": "8/12",
+      "status": "PASS",
+      "proof": "proof/gate12-8.txt",
+      "source_log_mtime": "2026-11-01T11:46:13.598553+00:00"
+    },
+    {
+      "shard": "9/12",
+      "status": "PASS",
+      "proof": "proof/gate12-9.txt",
+      "source_log_mtime": "2026-11-01T11:51:59.998676+00:00"
+    },
+    {
+      "shard": "10/12",
+      "status": "PASS",
+      "proof": "proof/gate12-10.txt",
+      "source_log_mtime": "2026-11-01T11:49:03.908449+00:00"
+    },
+    {
+      "shard": "11/12",
+      "status": "PASS",
+      "proof": "proof/gate12-11.txt",
+      "source_log_mtime": "2026-11-01T11:50:22.372956+00:00"
+    },
+    {
+      "shard": "12/12",
+      "status": "PASS",
+      "proof": "proof/gate12-12.txt",
+      "source_log_mtime": "2026-11-01T11:50:51.257613+00:00"
+    }
+  ],
+  "local_gate": "PASS_12_OF_12",
+  "hosted_ci": "NOT_RUN",
+  "cloud_review": "REQUESTED_PENDING",
+  "trunk_merge": "NOT_PERFORMED",
+  "first_two_shards": "Saved passing runs from 30 October; 3-12 completed on 1 November. Only intervening code change is the existing trunk date-test fix, exercised by rerun shard 9."
+}

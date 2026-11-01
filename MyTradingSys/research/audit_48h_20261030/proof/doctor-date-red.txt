@@ -1,0 +1,12 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+______ test_broadcast_warns_on_unacked_and_expired_told_for_a_seen_host _______
+scripts\dev\test_mts_doctor.py:255: in test_broadcast_warns_on_unacked_and_expired_told_for_a_seen_host
+    assert status == "WARN" and "desktop-lenovo b-aaaaaa" in detail and "jis-desktop b-aaaaaa" in detail
+E   AssertionError: assert ('OK' == 'WARN'
+E     
+E     - WARN
+E     + OK)
+=========================== short test summary info ===========================
+FAILED scripts/dev/test_mts_doctor.py::test_broadcast_warns_on_unacked_and_expired_told_for_a_seen_host
+1 failed, 19 deselected in 0.29s
