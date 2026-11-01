@@ -159,7 +159,7 @@ class PlaceRefusalTest(Base):
     def spawn_forbidden(self):
         at.spawn_manager = lambda *a, **k: self.fail("manager spawned without a confirmed entry")
 
-    SIG = {"plan_args": ["--side", "long"], "executor_args": []}
+    SIG = {"plan_args": ["--side", "long"], "executor_args": [], "margin_btc": 0.01}
 
     def test_plan_refused_nonzero_or_no_saved_id_never_reaches_executor(self):
         self.spawn_forbidden()
@@ -201,7 +201,7 @@ class MarginPreflightGapTest(Base):
     """GAP (card test-auto-trader-place-margin-preflight): place() never checks available funds before an entry.
     Pre-flight now exists (card auto-trader-place-margin-preflight-check). Contract they pin: seam at.available_funds_btc(account) -> float|None (None = unreadable);
     sig["margin_btc"] = margin the plan needs; short or unreadable funds -> outcome "margin_short", no --go, no manager.
-    Unreadable funds always refuse (fail closed); margin_btc unset means need 0 but funds must still be > 0."""
+    Unreadable funds always refuse (fail closed); margin_btc unset, None, zero or negative refuses (no implicit need 0)."""
     SIG = {"plan_args": ["--side", "long"], "executor_args": [], "margin_btc": 0.01}
 
     def _place(self, funds):
@@ -240,9 +240,32 @@ class MarginPreflightGapTest(Base):
     def test_none_zero_negative_nan_funds_refuse_even_without_margin_btc(self):
         for funds in (None, 0.0, -1.0, float("nan")):
             with self.subTest(funds=funds):
-                out, calls = self._place_sig({"plan_args": [], "executor_args": []}, funds)
+                out, calls = self._place_sig({"plan_args": [], "executor_args": [], "margin_btc": 0.01}, funds)
                 self.assertEqual(out["outcome"], "margin_short")
                 self.assertFalse(any("--go" in c for c in calls))
+
+    def test_place_without_margin_btc_refuses(self):
+        out, calls = self._place_sig({"plan_args": [], "executor_args": []}, 5.0)
+        self.assertEqual(out["outcome"], "margin_short")
+        self.assertIn("margin_btc_missing", out["output"])
+        self.assertEqual(calls, [])                # no new_plan, no --go
+
+    def test_margin_btc_none_zero_negative_refuse(self):
+        for mb in (None, 0, 0.0, -0.01, "0"):
+            with self.subTest(mb=mb):
+                out, calls = self._place_sig({"plan_args": [], "executor_args": [], "margin_btc": mb}, 5.0)
+                self.assertEqual(out["outcome"], "margin_short")
+                self.assertEqual(calls, [])
+
+    def test_cycle_sig_with_attach_margin_still_places(self):
+        out, calls = self._place_sig({"plan_args": [], "executor_args": [], "margin_btc": 0.0123}, 5.0, spawn=True)
+        self.assertEqual(out["outcome"], "entered")
+        self.assertTrue(any("--go" in c for c in calls))
+
+    def test_dry_run_without_margin_btc_ok(self):
+        at.run = lambda cmd, timeout=900, account=None: (0, "SAVED p1 filled")
+        with mock.patch.object(at, "available_funds_btc", lambda account=None: self.fail("balance read on dry run")):
+            self.assertEqual(at.place({"plan_args": [], "executor_args": []}, True)["outcome"], "dry_run")
 
     def test_inf_funds_and_bad_margin_btc_refuse_without_raising(self):
         for funds, mb in ((float("inf"), 0.01), (1.0, float("nan")), (1.0, "abc")):

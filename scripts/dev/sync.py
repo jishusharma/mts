@@ -514,6 +514,22 @@ def mark_gateway(repo):
     return True
 
 
+def drop_gateway_hold(repo, slug):
+    """The task this tree was made for is released: remove its GATEWAY_MARKER so tidy / wt_maint retire it after TIDY_IDLE_HOURS
+    instead of wt_maint.GATEWAY_IDLE_HOURS (51 marked trees held 8.4 GB of JIS-NB's C: on 2026-11-01). Only the tree whose branch is
+    `<this host>/<slug>[-n]`: releasing another slug's claim leaves the hold alone. The clean / on-trunk checks still decide removal."""
+    branch = git(repo, "branch", "--show-current", check=False).stdout.strip()
+    head, sep, own = branch.partition("/")
+    if not sep or head.lower() != socket.gethostname().lower() or re.sub(r"-\d+$", "", own.lower()) != slugify(slug):
+        return False
+    try:
+        (Path(repo) / GATEWAY_MARKER).unlink()
+    except OSError:
+        return False
+    print(f"tree hold dropped: {Path(repo).name} is retired once idle {TIDY_IDLE_HOURS} h")
+    return True
+
+
 def other_session_tree(repo, slug):
     """B3: the branch of the session this tree was made for, when that is another slug than `slug` (a worker Agent booting in
     its Supervisor's tree), else None. Only `<this host>/<slug>[-n]` branches count: never the primary checkout, trunk or a lane tree."""
@@ -1220,6 +1236,8 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
                 if release_slug and not released:
                     released = release_side(repo, release_slug)
                 print(f"shipped {len(files)} file(s) to origin/{TRUNK}" + (f"; released {release_slug}" if released else ""))
+                if released:
+                    drop_gateway_hold(repo, release_slug)
                 pages.report()
                 return Pushed(git(repo, "rev-parse", "HEAD").stdout.strip(), list(files))   # main() waits for this sha's CI after the timing rows are written
             if not push_race_lost(r):     # auth/network/timeout: another merge + gate would fail the same way
@@ -1671,6 +1689,7 @@ def release(repo, slug, gate=run_gate, sleep=time.sleep):
         print(f"hint (B4): this tree has {ahead} unshipped commit(s); `sync.py ship --release {slug}` closes the claim in the same push and saves a commit")
     push_claim_commit(repo, rel, None, f"release {slug}" + chr(10) * 2 + f"Result: claim {slug} closed", branch=CLAIMS_BRANCH if side else TRUNK, sleep=sleep)
     print(f"released {slug}")
+    drop_gateway_hold(repo, slug)
 
 
 # Fixed lanes other tooling points at (dispatcher prompts, codex lab, push recipe): `tidy --all` still keeps them.
