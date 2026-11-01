@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "F:\MTS\mts-jis-nuc-codex-48h-value-audit\scripts\dev\ask_model.py", line 120, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "F:\MTS\mts-jis-nuc-codex-48h-value-audit\scripts\dev\ask_model.py", line 113, in main
+    code, out, wd = run(a.which, prompt, a.model, a.effort, a.file)
+                    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\MTS\mts-jis-nuc-codex-48h-value-audit\scripts\dev\ask_model.py", line 92, in run
+    r = subprocess.run(gemini_cmd(prompt, model or 'flash', effort), cwd=wd, capture_output=True, text=True, timeout=timeout)
+  File "C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\Lib\subprocess.py", line 557, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\Lib\subprocess.py", line 1221, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+                     ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\E-ngineers\AppData\Local\Programs\Python\Python314\Lib\subprocess.py", line 1664, in _communicate
+    raise TimeoutExpired(self.args, orig_timeout)
+subprocess.TimeoutExpired: Command '['C:\\Users\\E-ngineers\\.gemini\\bin\\agy.exe', '--print', 'Files in this folder (open them as needed): liquidation-review.diff, BinanceLiquidationAccumulator.java, LiquidationEventLogTest.java.\nReview the attached diff for concrete correctness, concurrency, shutdown loss, or test gaps. Read both source and tests. Report actionable findings with severity and lines; otherwise say no actionable findings. Independent pre-merge review; do not modify files or access outside staged files.', '--model', 'gemini-4-argon-high']' timed out after 300 seconds

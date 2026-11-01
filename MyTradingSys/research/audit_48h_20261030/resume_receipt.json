@@ -1,0 +1,10 @@
+{
+  "resumed_client_date": "2026-11-01",
+  "fetched_trunk": "7c4f25664606b5cfca7f73f28b9120da4fc204bb",
+  "audit_head_before_handoff": "abffadc70ccb0219b18a00b3a5959bb8b0cc3727",
+  "trunk_overlap": [
+    "MyTradingSys/cbp/__init__.py",
+    "src/main/java/datafeed/BinanceLiquidationAccumulator.java"
+  ],
+  "merge_status": "PENDING_CLOUD_REVIEW_NO_TRUNK_MERGE"
+}

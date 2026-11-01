@@ -1,0 +1,6 @@
+Read-only browser smoke: Simulator desk on an ephemeral localhost port.
+Initial heading: All tests (189 of 189).
+Kind filter Audits: All tests (35 of 189).
+Clicked Recent 5-Day Wiring & Operator-Requirements Audit: result card rendered title, verdict, source-extracted provenance, and evidence.
+No studies run, market data fetched, questions saved, or existing processes restarted. Own server and browser tab closed after check.
+GitHub review access: CLI auth status = not logged in; browser repository header shows Sign in. No PR created.

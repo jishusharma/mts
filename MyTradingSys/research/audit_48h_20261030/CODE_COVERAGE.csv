@@ -1,0 +1,202 @@
+file,added,removed,review_depth
+MyTradingSys/backtest/bt/bt_stats.py,15,5,manual source/diff review plus available tests
+MyTradingSys/backtest/bt/ref_pbo.py,8,2,manual source/diff review plus available tests
+MyTradingSys/backtest/bt/test_bt_stats.py,32,1,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/backtest/bt/test_ref_pbo.py,30,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/backtest/layers/alerts/live_levels_confluence.py,9,2,manual source/diff review plus available tests
+MyTradingSys/backtest/layers/alerts/live_validation.py,210,0,manual source/diff review plus available tests
+MyTradingSys/backtest/layers/alerts/test_live_levels_confluence.py,13,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py,163,5,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/backtest/layers/rsi/div_flags_chart.py,49,25,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/backtest/layers/rsi/krown_hidden_divergence.py,48,0,manual source/diff review plus available tests
+MyTradingSys/backtest/layers/rsi/rsi_divergence.py,36,9,manual source/diff review plus available tests
+MyTradingSys/backtest/layers/rsi/test_div_flags_chart.py,77,17,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/cbp/__init__.py,51,11,manual source/diff review plus available tests
+MyTradingSys/execution/auto_trader.py,5,1,manual source/diff review plus available tests
+MyTradingSys/execution/test_auto_trader.py,12,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/analysts/run_scorecard.py,38,2,manual source/diff review plus available tests
+MyTradingSys/research/analysts/test_analysts_ingestion_and_scorecard.py,17,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/context_loading_wiring_2026-10/measure.py,46,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/critical_test_wave1_2026-10-30/ItemFourReplay.java,191,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/critical_test_wave1_2026-10-30/item1_prefix_check.py,57,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/critical_test_wave1_2026-10-30/item2_settlement_identity.py,23,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/critical_test_wave1_2026-10-30/item4_summarise.py,51,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/critical_test_wave1_2026-10-30/replay_prep_spot_days.py,20,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/dsa_backtest_audit_2026-10-16/fill_gap_frequency.py,114,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T05/t05_lc1.py,11,5,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/fill_canary.py,187,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/gap_frequency.py,146,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/test_fill_canary.py,61,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/test_gap_frequency.py,43,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/stability.py,33,14,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/test_stability_lc1.py,90,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/dsa_backtest_audit_2026-10-16/test_fill_gap_frequency.py,50,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/eagle_eyes_picture_2026-10-28/daily_wt_rsi_analogs.py,157,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/eagle_eyes_picture_2026-10-28/us_rally_fade_next24h.py,32,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/extraction_ledger_2026-10/build_coverage_audit.py,290,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/extraction_ledger_2026-10/cross_method_qa.py,654,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/extraction_ledger_2026-10/test_cross_method_qa.py,83,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/fable_run6_powered_prereg/counts_only.py,289,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/fable_run6_powered_prereg/crosscheck_desk.py,536,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/fable_run6_powered_prereg/e2_run.py,272,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/fable_run6_powered_prereg/recount_o2.py,294,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/fable_run6_powered_prereg/test_crosscheck_desk.py,79,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/fable_run6_powered_prereg/test_e2_run.py,81,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/fable_run6_powered_prereg/test_recount_o2.py,47,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/filter_join.py,1,1,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/layer_relations_2026-10/layer_relations_study.py,352,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/levels_confluence_2026-10-14/event_table.py,1,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/levels_confluence_2026-10-14/ladder_run.py,2,1,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.py,97,8,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/levels_confluence_2026-10-14/levels_hold_fair_run.py,62,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/levels_confluence_2026-10-14/test_levels_hold_fair.py,47,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/live_reads/2026-10-28_lab_verify_mtf_bias_ladder/run.py,384,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/live_reads/append_divergence_event.py,119,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/multi_tf_bias_2026-10-18/study.py,187,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/multi_tf_bias_2026-10-18/test_study.py,191,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/overhead_cut_2026-10-28/count_commit_mix.py,95,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/overhead_cut_2026-10-28/test_count_commit_mix.py,99,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/pipeliner/station_watcher_monitor.py,183,36,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/pitchfork_2026-10-19/run_pitchfork_4h_poc_study.py,3,2,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/pitchfork_2026-10-19/run_pitchfork_event_study.py,6,5,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/pre_us_squeeze_2026-10-29/study.py,84,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/rolling_session_cost_2026-10/build_table.py,131,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/sim_desk/artifact/build_artifact.py,23,9,manual source/diff review plus available tests
+MyTradingSys/research/sim_desk/artifact/index.html,22,11,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/sim_desk/backfill_results.py,199,0,manual source/diff review plus available tests
+MyTradingSys/research/sim_desk/build_catalogue.py,25,0,manual source/diff review plus available tests
+MyTradingSys/research/sim_desk/desk.py,5,0,manual source/diff review plus available tests
+MyTradingSys/research/sim_desk/export_results.py,1,1,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/sim_desk/page.html,43,0,manual source/diff review plus available tests
+MyTradingSys/research/sim_desk/runs_view.py,27,0,manual source/diff review plus available tests
+MyTradingSys/research/sim_desk/studies/pitchfork.py,181,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/sim_desk/test_backfill.py,90,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/sim_desk/test_integration_http.py,177,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/sim_desk/test_pitchfork.py,120,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/sim_desk/test_t09_export_counts.py,17,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/tom_correlation_trick_2026-10-26/export_results.py,49,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/tom_correlation_trick_2026-10-26/fetch_data.py,66,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/tom_correlation_trick_2026-10-26/run_div.py,307,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/tom_correlation_trick_2026-10-26/test_run_div.py,78,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/trendlines_2026-10-17/count_only.py,140,68,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/trendlines_2026-10-17/test_count_only.py,90,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/wiring_audit_2026-10/build_wiring_malkan_krown.py,412,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/wiring_audit_2026-10/test_wiring_malkan_krown.py,45,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/research/wiring_audit_2026-10/test_wiring_tom_fabio_habib.py,52,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/tests/dev/test_popup_kill_regex.py,45,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/tests/docs/test_debugging_spine.py,2,1,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/tests/test_aibridge_payload.py,5,3,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/tests/test_aibridge_version_bump.py,34,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/tests/test_builder_role.py,1,1,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/tests/test_cbp_query.py,77,1,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/tests/test_cbp_scorecard.py,36,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/tests/test_gate_discovery_b150.py,2,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/tests/test_lease.py,33,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/tests/test_role_lint.py,8,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/tests/test_role_loader.py,46,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/tests/test_sourced_rule_guard.py,82,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/tests/test_station_watcher_monitor.py,91,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/tests/test_tasks_dispatch.py,38,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/tests/validation/__init__.py,0,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/tests/validation/test_live_validation_store.py,116,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/tools/live_aid/build_artifact.py,24,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/tools/live_aid/live_aid.html,572,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/tools/live_aid/live_aid_indicators.js,246,0,inventory and applicable repository gates; no claim of exhaustive manual review
+MyTradingSys/tools/live_aid/test_live_aid.py,335,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scratch_r3/kill_switch.py,247,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scratch_r3/test_kill_switch_real_client_r3.py,60,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scratch_r3/test_stop_gap_r3.py,128,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/aibridge/extension/loop.js,1,1,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/aibridge/src/agent.ps1,1,1,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/aibridge/tests/agent_live_selftest.py,2,1,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/core/show-alert.ps1,18,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/core/start-trading-day.ps1,4,4,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/aibridge_health.py,66,4,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/aibridge_install.py,3,2,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/aibridge_verify.py,2,2,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/aibridge_version.py,118,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/api_batch.py,143,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/bg_watch.py,247,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/c_drive_guard.py,135,12,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/cbp_run.py,27,29,manual source/diff review plus available tests
+scripts/dev/cbp_schedule.py,26,4,manual source/diff review plus available tests
+scripts/dev/cbp_scorecard.py,42,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/check_sourced_params.py,133,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/context_gap.py,16,3,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/device_tasks.py,231,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/exhaust.py,2,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/fetch_captions_timed.py,3,1,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/gateway_run.py,373,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/gemini_queue.py,26,12,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/host_health.py,1,8,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/indicator_audit_compare.py,0,20,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/lease.py,3,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/logon_wake.py,249,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/make_layers_md.py,0,4,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/mts_doctor.py,222,8,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/mts_signal.py,14,9,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/nuc_lab.py,13,2,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/nuc_wake.py,5,1,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/preship.py,54,1,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/refresh_main_checkout.py,198,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/reply_shape_check.py,7,4,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/role_line.py,0,3,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/role_loader.py,29,27,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/run_all_tests.py,99,11,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/run_extra_tests.py,4,2,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/run_staged_tests.py,4,1,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/status_board.py,378,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/stop_guard.py,44,2,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/successor_wake.py,127,19,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/supervisor.py,175,33,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/sync.py,291,28,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/task_state.py,7,1,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/tasks.py,43,7,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_announcements_ids.py,43,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_api_batch.py,83,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_auto_deploy.py,6,2,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_bg_watch.py,159,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_budget_policy.py,105,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_c_drive_guard.py,137,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_context_gap.py,68,1,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_dedupe_dead_code.py,48,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_device_tasks.py,122,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_gate_scratch.py,26,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_gateway_run.py,115,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_gemini_queue.py,92,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_host_health.py,7,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_lab_flow.py,58,22,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_lab_query.py,21,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_logon_wake.py,167,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_mts_doctor.py,10,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_mts_doctor_heal.py,229,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_mts_signal.py,20,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_nuc_lab.py,28,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_prereg_gate.py,86,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_preship.py,96,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_refresh_main_checkout.py,185,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_reply_shape_check.py,51,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_run_all_tests.py,34,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_status_board.py,96,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_stop_guard.py,110,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_successor_wake.py,149,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_supervisor.py,165,4,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_sync.py,217,1,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_sync_push_race.py,19,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_tasks.py,42,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_trunk_lag.py,13,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_verdicts.py,7,1,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_verify_extract_quotes.py,15,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_wiring_scan.py,16,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/test_wt_maint.py,31,0,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/traffic.py,23,5,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/trunk_lag.py,12,1,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/verify_extract_quotes.py,2,2,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/dev/wt_maint.py,7,2,inventory and applicable repository gates; no claim of exhaustive manual review
+scripts/worker/test_dsa_worker.py,14,2,inventory and applicable repository gates; no claim of exhaustive manual review
+src/main/java/datafeed/BinanceLiquidationAccumulator.java,102,0,manual source/diff review plus available tests
+src/main/java/datafeed/PitchforkSignalLayer.java,123,20,inventory and applicable repository gates; no claim of exhaustive manual review
+src/test/java/datafeed/LiquidationEventLogTest.java,95,0,inventory and applicable repository gates; no claim of exhaustive manual review
+src/test/java/datafeed/PitchforkSignalLayerTest.java,102,1,inventory and applicable repository gates; no claim of exhaustive manual review
+src/test/java/datafeed/SetupCandidatesCriticalWave1Test.java,206,0,inventory and applicable repository gates; no claim of exhaustive manual review
+src/test/java/datafeed/SpikeFadeCriticalWave1Test.java,208,0,inventory and applicable repository gates; no claim of exhaustive manual review
