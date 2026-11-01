@@ -4,18 +4,18 @@
   "commands": [],
   "created": "2026-11-01T08:46:19Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/COST_FIGURES.md has one row per figure (file:line, value, SOURCED/OURS, callers counted by grep) and a recommended single pair; a follow-up card exists per code change (filed by the builder's Noticed: line).",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Three round-trip cost figures coexist: fees.py (taker 0.0005/side = 0.10 %), trade_costs.py 0.12 %, research_kit.TAKER_RT_PCT 0.14 %. Step 1 is a table only: name each figure, its source and which studies use it, and propose one canonical set; no number in code changes in this card.",
   "id": "fee-figure-unify",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "PLANNER 2026-11-01 DECISION (OURS): doc-first because changing a cost figure moves every fee-net result (decision numbers); needs a reviewer ACCEPT when promoted. Locate trade_costs.py with find before step 1.",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
@@ -23,14 +23,26 @@
     "MyTradingSys/backtest/fees.py"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/COST_FIGURES.md",
+    "MyTradingSys/backtest/fees.py",
+    "MyTradingSys/backtest/research_kit.py"
+  ],
+  "scope_out": [
+    "editing any cost constant",
+    "re-running any backtest",
+    "trade_costs.py edits"
+  ],
+  "size": "S",
   "sources": [],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "grep -rn 'trade_costs\\|TAKER_RT_PCT\\|BINANCE_TAKER' to list the callers",
+    "write the table with line quotes",
+    "recommend one canonical figure (maker/taker pair) and the callers that would move"
+  ],
+  "tests": "docs card: python scripts/dev/tasks.py lint passes; every table row quotes a file:line that grep confirms.",
   "title": "One round-trip cost figure: fees.py 0.10 %, trade_costs.py 0.12 %, research_kit TAKER_RT_PCT 0.14 % disagree; pick one (or a named pair) and point every doc at it",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "agent"
 }

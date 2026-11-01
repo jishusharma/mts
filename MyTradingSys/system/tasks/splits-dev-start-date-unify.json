@@ -4,33 +4,54 @@
   "commands": [],
   "created": "2026-11-01T08:46:18Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "splits.py exports DESK_DEV_START (2022-04-01) with a SOURCE comment; its test asserts DESK_DEV_START >= DEV_START and that assert_desk_dev_only rejects a 2022-03-31 bar; the module docstring DECISION paragraph names both.",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "splits.py:26 DEV_START = 2022-01-01 follows the operator decision (OPERATOR_DECISIONS.md:899); the desk locks DEV at 2022-04-01 (sim_desk/ROADMAP.md 2.1) as a subset. Keep DEV_START and add a named DESK_DEV_START = 2022-04-01 plus assert_desk_dev_only(), so both dates live in code with their sources; no study silently changes window.",
   "id": "splits-dev-start-date-unify",
   "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Revert \"Revert splits guard + DEV-only BB map (46cb4255e): CI red at Step 3w wiring gate (",
+      "ref": "ee93a23e1598",
+      "utc": "2026-10-30T17:45:47Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "PLANNER 2026-11-01 DECISION (OURS): the card title said 'make the code carry the desk lock'; changing DEV_START would contradict the sourced operator decision and move every DEV study, so the safe form is an added named constant. Verify the test file name with ls before editing.",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-01T17:05:18Z",
   "refs": [
     "MyTradingSys/backtest/splits.py"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/backtest/splits.py",
+    "MyTradingSys/tests/test_splits.py"
+  ],
+  "scope_out": [
+    "changing DEV_START, DEV_END or any existing caller",
+    "VALIDATION and HOLDOUT bounds"
+  ],
+  "scope_sha": "ee93a23e1598",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "read splits.py assert_dev_only and its test",
+    "add DESK_DEV_START and assert_desk_dev_only beside it",
+    "extend the test; update the docstring"
+  ],
+  "tests": "MyTradingSys/tests/test_splits.py::test_desk_dev_start: fails before (no DESK_DEV_START, ImportError).",
   "title": "splits.py says DEV starts 2022-01-01, the desk and cards lock 2022-04-01: make the code carry the desk lock (or both, named) and update its tests",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

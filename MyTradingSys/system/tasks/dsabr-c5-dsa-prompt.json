@@ -2,6 +2,18 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-01T17:07:48Z",
+    "misses": 4,
+    "reads": [
+      "DSA_SESSION_PROMPT.md",
+      "MyTradingSys/tests/test_dsa_direct_mode.py",
+      "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md",
+      "MyTradingSys/tests/docs/test_integrity.py"
+    ],
+    "session": "agent-ab04ca434fe15fa3a"
+  },
   "created": "2026-10-31T10:04:27Z",
   "depends_on": [],
   "done_when": "prompt carries every section 2 sentence; test_dsa_direct_mode.py asserts them; test_integrity size caps pass",

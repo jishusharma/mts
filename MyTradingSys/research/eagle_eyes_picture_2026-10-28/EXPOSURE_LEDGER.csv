@@ -1,0 +1,2 @@
+study,run_utc,data_source,window_read,split,rule_sha256,verdict,decision_informed
+eagle_c30_prereg,2026-11-01,Binance spot BTCUSDT 5m (public),2024-07-01..2025-06-30,VALIDATION,PRE_REG_C30.md@bb124f5cd,H1 FAIL; H2 INCONCLUSIVE (Holm p 0.218),whether the C30 WaveTrend bottom-buy + bullish RSI divergence lead survives out of sample; HOLDOUT unread

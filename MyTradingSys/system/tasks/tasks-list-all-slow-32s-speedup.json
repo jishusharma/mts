@@ -4,31 +4,54 @@
   "commands": [],
   "created": "2026-11-01T08:58:31Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "python scripts/dev/tasks.py list --all finishes in under 10 s on this repo (time quoted in the commit body) with the same SHIPPED/STALE flags as before on a fixed card set.",
+  "est_turns": 14,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "tasks.py list --all takes 20-32 s. cProfile (planner-refine-a, 2026-11-01): 19.3 of 20.0 s sit in cmd_list -> stop_tag (tasks.py:843) -> task_state.state_tag, which runs 193 git subprocesses for 64 ready/active cards (about 3 per card). Remove the per-card git spawn from list.",
   "id": "tasks-list-all-slow-32s-speedup",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tasks.py check with no id is read-only: prints WOULD PROMOTE, only check <id> promotes",
+      "ref": "66bbbcf80d92",
+      "utc": "2026-10-31T22:31:02Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "PLANNER 2026-11-01 (planner-refine-a): root cause named by profile (git subprocesses in stop_tag), so the card is a fix, not a hunt. Fallback if the batch is too invasive: list skips stop_tag unless --tags is passed (default list stays under 10 s).",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-01T17:05:16Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/tasks.py",
+    "scripts/dev/task_state.py",
+    "MyTradingSys/tests/test_tasks.py"
+  ],
+  "scope_out": [
+    "next/take/brief semantics",
+    "card JSON format",
+    "live tree"
+  ],
+  "scope_sha": "66bbbcf80d92",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "in cmd_list batch the git lookups: one `git log --name-only` (or one `git diff --name-only` per distinct scope_sha) cached across cards, or compute stop_tag only for state ready/active when not --all",
+    "keep stop_tag per-card for next/take/brief",
+    "time before and after; compare output for equality"
+  ],
+  "tests": "MyTradingSys/tests/test_tasks.py::test_list_spawns_few_git_processes (new): monkeypatch subprocess.run counter over 20 ready cards, assert <= 5 calls; fails on current code (about 60).",
   "title": "tasks.py list --all takes ~32 s quiet (root of the timeout flake). Done when: list --all under 10 s on this repo or the slow step is named in a note",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
