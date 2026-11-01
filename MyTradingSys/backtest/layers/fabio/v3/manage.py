@@ -223,9 +223,9 @@ def simulate_trade(bars, fill_idx, s, entry, D, stop, q1=1.0, entry_kind="maker"
 
 
 def simulate_trade_legs(bars, fill_idx, s, entry, D, stop, q1=1.0, entry_kind="maker", be_k=1.0, ctrl=None, tick=TICK,
-                        end_idx=None, target=None, slip_bps=0.0, mgmt="dist", absorbed=None, s8_kw=None,
+                        end_idx=None, target=None, mgmt="dist", absorbed=None, s8_kw=None,
                         stop_first=True, open_idx=0, push_ok=None, curve_states=None, add_mode="be", s7=True,
-                        day_r=0.0, r1=1.0):
+                        day_r=0.0, r1=1.0, **trade_kw):
     """First leg plus the s28.4 adds (name OURS; not wired into the engine). The stop, S8 and target are shared by all
     legs, so the exit comes from the same walk as simulate_trade; adds only add legs that exit at that same price.
 
@@ -234,11 +234,11 @@ def simulate_trade_legs(bars, fill_idx, s, entry, D, stop, q1=1.0, entry_kind="m
     add fills taker at o[i+1] with q_add = add_size(...). push_ok / curve_states are per-bar lists (None = unknown ->
     fail closed, no add). add_mode "day": budget = max(0, day_r) * q1*D/r1 (U = q1*D1/r1, spec 6). Max 2 adds.
     R unit = q1*D; every leg's fee is on its ENTRY notional (also on a stop exit). Returns the simulate_trade dict with
-    gross_r/fee_r/slip_r/net_r summed over the legs, plus legs [(q, entry, entry_kind)], n_adds, add_idx.
+    gross_r/fee_r/slip_r/net_r summed over the legs (trade_kw = simulate_trade's slip_bps stress, applied to every leg), plus legs [(q, entry, entry_kind)], n_adds, add_idx.
     """
     base = simulate_trade(bars, fill_idx, s, entry, D, stop, q1=q1, entry_kind=entry_kind, be_k=be_k, ctrl=ctrl,
-                          tick=tick, end_idx=end_idx, target=target, slip_bps=slip_bps, mgmt=mgmt, absorbed=absorbed,
-                          s8_kw=s8_kw, stop_first=stop_first)
+                          tick=tick, end_idx=end_idx, target=target, mgmt=mgmt, absorbed=absorbed,
+                          s8_kw=s8_kw, stop_first=stop_first, **trade_kw)
     exit_idx = base["exit_idx"]
     last_dec = exit_idx - 1 if base["reason"] == "s8" else exit_idx   # exclusive upper bound of decision bars
     budget = max(0.0, day_r) * q1 * D / r1 if add_mode == "day" else 0.0
@@ -262,13 +262,14 @@ def simulate_trade_legs(bars, fill_idx, s, entry, D, stop, q1=1.0, entry_kind="m
             legs.append((q_add, pa, "taker"))
             sizing.append((q_add, pa))
             add_idx.append(i + 1)
-    gross = fee = slip = 0.0
+    gross = fee_sum = slp_sum = 0.0
+    stress = trade_kw.get("slip_bps", 0.0)
     for (q, e, kind) in legs:
-        r = leg_r(s, q, e, base["exit"], kind, base["exit_kind"], q1 * D, slip_bps)
+        r = leg_r(s, q, e, base["exit"], kind, base["exit_kind"], q1 * D, stress)
         gross += r["gross_r"]
-        fee += r["fee_r"]
-        slip += r["slip_r"]
+        fee_sum += r["fee_r"]
+        slp_sum += r["slip_r"]
     out = dict(base)
-    out.update({"gross_r": gross, "fee_r": fee, "slip_r": slip, "net_r": gross - fee - slip, "legs": legs,
+    out.update({"gross_r": gross, "fee_r": fee_sum, "slip_r": slp_sum, "net_r": gross - fee_sum - slp_sum, "legs": legs,
                 "n_adds": len(add_idx), "add_idx": add_idx})
     return out
