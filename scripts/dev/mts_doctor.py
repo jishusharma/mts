@@ -367,7 +367,7 @@ SHIP_MAX_S = 120            # OURS: the operator's 2-minute ship; WARN when the 
 HOOKS_BEHIND_MAX = 50       # OURS
 DISK_MIN_GB = 15            # OURS
 HOOK_NAMES = ("role_loader", "ci_watch")
-CHECK_NAMES = ("SIZE-HEADROOM", "CI-REVERT", "SHIP-TIME", "HOOK-REG", "DISK", "CONTEXT-GAP", "WAITING-ON-OPERATOR", "BROADCAST", "STALE-CLAIMS", "SCRATCH-TRACKED", "CONFLICT-OPEN", "ASK-GAPS", "SUPERVISOR-IDLE", "OF-RESTARTS")
+CHECK_NAMES = ("SIZE-HEADROOM", "CI-REVERT", "SHIP-TIME", "HOOK-REG", "DISK", "CONTEXT-GAP", "WAITING-ON-OPERATOR", "BROADCAST", "STALE-CLAIMS", "SCRATCH-TRACKED", "CONFLICT-OPEN", "ASK-GAPS", "SUPERVISOR-IDLE", "OF-RESTARTS", "OF-STALE")
 
 
 def _load(path, name):
@@ -679,6 +679,24 @@ def of_restarts(repo, now=None, lines=None):
     return "OK", f"{n} order-flow writer start(s) in the last hour"
 
 
+OF_STALE_MIN = 60   # OURS: a live order-flow writer appends every few minutes; no write for this long = dead or stuck (log sat unwritten 2026-10-23..10-31 unseen)
+
+
+def of_stale(repo, now=None, mtime=None):
+    """WARN when runtime_data/orderflow_live.log has not been written for over OF_STALE_MIN minutes. Read-only; OK when the log is absent. mtime: injected aware datetime."""
+    p = Path(repo) / "runtime_data" / "orderflow_live.log" if repo is not None else Path("runtime_data/orderflow_live.log")
+    if mtime is None:
+        try:
+            mtime = datetime.fromtimestamp(p.stat().st_mtime, timezone.utc)
+        except OSError:
+            return "OK", "no orderflow_live.log on this machine"
+    now = now or datetime.now(timezone.utc)
+    age = (now - mtime).total_seconds() / 60
+    if age > OF_STALE_MIN:
+        return "WARN", f"{p.as_posix()} not written for {age:.0f} min (limit {OF_STALE_MIN}): writer may be dead or stuck (exit 4 = HTTP 400 resume point)"
+    return "OK", f"order-flow log written {age:.0f} min ago"
+
+
 def scratch_tracked(repo, files=None):
     """WARN when a scratch or ship-log file is tracked (the repo is public; PILOT3 committed scratch ship logs, removed in f97ecc125)."""
     files = tracked(repo) if files is None else files
@@ -737,7 +755,8 @@ def checklist(repo, process=True, now=None):
            ("SCRATCH-TRACKED", lambda: scratch_tracked(repo)), ("CONFLICT-OPEN", lambda: conflict_open(repo)),
            ("ASK-GAPS", lambda: ask_gaps(repo)),
            ("SUPERVISOR-IDLE", lambda: supervisor_idle(repo, now=now) if process else ("unavailable", "skipped (--no-process, no network)")),
-           ("OF-RESTARTS", lambda: of_restarts(repo, now=now)))
+           ("OF-RESTARTS", lambda: of_restarts(repo, now=now)),
+           ("OF-STALE", lambda: of_stale(repo, now=now)))
     out = []
     for name, fn in fns:
         try:
