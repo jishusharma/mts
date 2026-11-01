@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T20:46:07Z",
   "commands": [],
   "created": "2026-11-01T08:46:18Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "splits-dev-start-date-unify",
   "lane": "HAIKU",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/backtest/splits.py DESK_DEV_START=2022-04-01 + assert_desk_dev_only; test_des",
+      "ref": "de7072976",
+      "utc": "2026-11-01T20:46:07Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,12 @@
   "refs": [
     "MyTradingSys/backtest/splits.py"
   ],
-  "result": "",
+  "result": "MyTradingSys/backtest/splits.py DESK_DEV_START=2022-04-01 + assert_desk_dev_only; test_desk_dev_start (commit 7cff68200)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/splits.py",
     "MyTradingSys/tests/test_splits.py"
@@ -44,12 +56,13 @@
   "scope_sha": "ee93a23e1598",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read splits.py assert_dev_only and its test",
     "add DESK_DEV_START and assert_desk_dev_only beside it",
     "extend the test; update the docstring"
   ],
+  "taken": "2026-11-01T20:46:07Z",
   "tests": "MyTradingSys/tests/test_splits.py::test_desk_dev_start: fails before (no DESK_DEV_START, ImportError).",
   "title": "splits.py says DEV starts 2022-01-01, the desk and cards lock 2022-04-01: make the code carry the desk lock (or both, named) and update its tests",
   "weight": "ROUTINE",
