@@ -55,6 +55,9 @@ MUTANTS = [
     ("RecoveryTest.test_manager_pids_exact_plan_token_and_python_only", r"(\s|$)'", "'"),
     ("RecoveryTest.test_process_enumeration_failure_returns_empty_list", "    except Exception:  # noqa: BLE001\n        return []\n\n\ndef manager_pids",
      "    except OSError:  # noqa: BLE001\n        return []\n\n\ndef manager_pids"),
+    ("MarginPreflightGapTest.test_place_without_margin_btc_refuses", "    if raw is None:                          # a direct caller that skipped cycle()/attach_margin: never need 0\n        return False, \"margin_btc_missing\"\n",
+     "    if raw is None:\n        raw = 0\n"),
+    ("MarginPreflightGapTest.test_margin_btc_none_zero_negative_refuse", "not math.isfinite(need) or need <= 0", "not math.isfinite(need)"),
 ]
 
 
