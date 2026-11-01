@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T18:50:41Z",
   "commands": [],
   "created": "2026-11-01T18:07:50Z",
   "depends_on": [],
@@ -13,7 +15,14 @@
   "id": "gemini-param-labels-c26-scripts-1101",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Parameter labels audit for C26 roadmap scripts (phase1_recent.py, phase1_range.py, phase3_",
+      "ref": "20bddf989",
+      "utc": "2026-11-01T18:50:41Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -25,7 +34,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "Parameter labels audit for C26 roadmap scripts (phase1_recent.py, phase1_range.py, phase3_dev.py): 49 parameters audited (15 SOURCED with quotes, 34 OURS engineering defaults); report MyTradingSys/research/gemini_audits_2026-11-01/c26_scripts_param_labels.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-11-01/c26_scripts_param_labels.md"
   ],
@@ -35,12 +49,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "list every constant in the three scripts with file:line",
     "search the extracts and C26_REVALIDATION doc for a quote for each",
     "write the table, SOURCED only with a quote"
   ],
+  "taken": "2026-11-01T18:47:51Z",
   "tests": "see done_when (audit card, the output file is the test)",
   "title": "[GEMINI] SOURCED/OURS parameter labels for the C26 roadmap scripts phase3_dev.py, phase1_recent.py, phase1_range.py",
   "weight": "ROUTINE",
