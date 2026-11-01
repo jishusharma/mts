@@ -6,11 +6,12 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-01T05:08:04Z",
-    "misses": 24,
+    "folded": "2026-11-01T05:24:02Z",
+    "misses": 25,
     "reads": [
       "MyTradingSys/execution/cotrade.py",
-      "MyTradingSys/execution/deribit_orders.py"
+      "MyTradingSys/execution/deribit_orders.py",
+      "MyTradingSys/tests/test_tasks_list_open_only.py"
     ],
     "session": "agent-a29c0459da93b9240"
   },
