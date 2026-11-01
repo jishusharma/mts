@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-01T17:12:19Z",
+  "depends_on": [],
+  "done_when": "research/gemini_audits_2026-11-01/studies_param_labels.md has one row per parameter for the four studies with SOURCED/OURS and the quote file:line, and a first line with the two counts.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "For each tunable parameter in research/sim_desk/studies/fabio_v3.py, tom_vp.py, cowen_bmsb.py, levels.py name the value, file:line, and label SOURCED (quote + source file:line from the trader extract) or OURS (no quote found); same format as gemini_audits_2026-10-30/rsi_param_labels.md.",
+  "id": "gemini-param-labels-studies-1101",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini effort low: load as <id>:low (gemini_queue.py run <id>:low). Final report ends with a Noticed: line. Facts only, no verdicts. Blocked? List 2-3 non-destructive fixes, try the safest, verify, then report. D11_PROGRAMME s6 seed.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-01T17:12:21Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "research/sim_desk/studies/{fabio_v3,tom_vp,cowen_bmsb,levels}.py and the extracts under research/ (read); one output file research/gemini_audits_2026-11-01/studies_param_labels.md"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change to any file outside the named ones"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "read rsi_param_labels.md for the format",
+    "list each parameter with file:line",
+    "grep the extracts for a quote; label SOURCED or OURS"
+  ],
+  "tests": "see done_when (audit card, output file is the test)",
+  "title": "[GEMINI] SOURCED/OURS parameter labels for sim_desk studies fabio_v3, tom_vp, cowen_bmsb, levels (no label file yet)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

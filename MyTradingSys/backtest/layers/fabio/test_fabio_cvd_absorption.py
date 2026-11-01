@@ -65,6 +65,36 @@ class TestCvdAbsorptionEvents(unittest.TestCase):
         events = cvd_absorption_events(bars, left=1, right=1, use_body=True, price_tolerance=0.001)
         self.assertEqual(events, [])
 
+    def test_higher_low_beyond_tolerance_does_not_fire(self):
+        # FAB-007 'same level': a second low 0.3% ABOVE the first (3x tol) is not the same level.
+        bars = _bullish_fixture()
+        bars[4] = bar(4, 95.285, 125, 20, 7)
+        self.assertEqual(cvd_absorption_events(bars, left=1, right=1, price_tolerance=0.001), [])
+        legacy = cvd_absorption_events(bars, left=1, right=1, price_tolerance=0.001, same_level_only=False)
+        self.assertEqual([e["i"] for e in legacy], [5])
+
+    def test_higher_low_within_tolerance_fires(self):
+        bars = _bullish_fixture()
+        bars[4] = bar(4, 95.04, 125, 20, 7)    # +0.042%
+        self.assertEqual([e["i"] for e in cvd_absorption_events(bars, left=1, right=1, price_tolerance=0.001)], [5])
+
+    def test_bearish_mirror_band_both_sides(self):
+        def fx(h2):
+            return [bar(0, 100, 95, 20, 10), bar(1, 105, 110, 20, 12), bar(2, 100, 95, 20, 10),
+                    bar(3, 101, 96, 20, 10), bar(4, 105, h2, 20, 16), bar(5, 100, 95, 20, 10),
+                    bar(6, 98, 94, 20, 10)]
+        kw = dict(left=1, right=1, price_tolerance=0.001)
+        self.assertEqual([e["kind"] for e in cvd_absorption_events(fx(109.95), **kw)], ["bearish_absorption"])
+        self.assertEqual(cvd_absorption_events(fx(109.67), **kw), [])      # 0.3% lower high: not same level
+        self.assertEqual(len(cvd_absorption_events(fx(109.67), same_level_only=False, **kw)), 1)
+
+    def test_short_input_fails_closed(self):
+        self.assertEqual(cvd_absorption_events(_bullish_fixture()[:3], left=1, right=1), [])
+
+    def test_restart_same_bars_same_events(self):
+        b = _bullish_fixture()
+        self.assertEqual(cvd_absorption_events(b, left=1, right=1), cvd_absorption_events(list(b), left=1, right=1))
+
     def test_negative_price_tolerance_raises(self):
         bars = _bullish_fixture()
         with self.assertRaises(ValueError):
