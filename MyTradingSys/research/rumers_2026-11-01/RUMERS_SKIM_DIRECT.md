@@ -57,3 +57,7 @@ The following 5 setups emerge as top candidates from this skim set [OURS]:
 - 16 of 20 rows match the real title (3 differ only in apostrophe encoding: 8vufTzGZqiI, y4ca1B9RKVY, R7XkHW9i65g).
 - 4 rows carry a WRONG title, so their idea text is likely not from that video: OYLv6Ev-kVE (real: "LIVE TRADING GOLD & BITCOIN || Challenge Day-04"), lUr32iqWHz8 (real: "My Simple 3-Step Swing Strategy"), 4zazKDSXlh8 (real: "The 15-Minute Candle Strategy I Will Use For Life"), NMUd0oX_7Pg (real: "The SIMPLE First 15 Minutes Strategy ..."). Treat S02, S09, and the rows for 4zazKDSXlh8 and NMUd0oX_7Pg as NOT USABLE until re-watched.
 - All idea text is UNVERIFIED-PARAPHRASE; no row is a backtest input yet.
+
+## 4. Redo result (Supervisor A, 2026-11-01)
+
+RUMERS_REDO4.md re-opened the 4 wrong rows. Real titles now match YouTube. Two of them (OYLv6Ev-kVE, NMUd0oX_7Pg) are not Rumers videos at all, so drop them from the Rumers set. S02, S09 and the two 15-minute rows in section 1 stay NOT USABLE; use RUMERS_REDO4.md for those ids.
