@@ -151,7 +151,8 @@ def refuse_live(repo):
     if (repo / LIVE_MARKER).exists():
         raise SyncError(
             f"{repo} is the live tree ({LIVE_MARKER} present). Sessions do not work here.\n"
-            f"Make a worktree:  git worktree add ../mts-<slug> -b {socket.gethostname().lower()}/<slug> origin/{TRUNK}")
+            f"Make a worktree:  python scripts/dev/sync.py start <slug>  (never `git worktree add -b` by hand: on Windows the ref "
+            f"lands under an existing {branch_prefix(repo, socket.gethostname())}/ dir in another case and HEAD never resolves)")
 
 
 FETCH_TRIES = 3
