@@ -17,16 +17,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "F2 pre-reg: rolling 1h DFA Hurst regime gate, FORMULAS s27, 4 TRIALS rows, DFA module + te",
-      "ref": "d94529dce83d",
-      "utc": "2026-10-31T08:24:27Z"
+      "line": "fabio v3: resolve the three FORMULAS.md s28.6 code-vs-spec differences",
+      "ref": "b69d699f3164",
+      "utc": "2026-11-01T01:15:41Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "d94529dce83d F2 pre-reg: rolling 1h DFA Hurst regime gate, FORMULAS s27, 4 TRIALS rows, DF",
+      "line": "b69d699f3164 fabio v3: resolve the three FORMULAS.md s28.6 code-vs-spec differences",
       "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
-      "utc": "2026-10-31T08:24:27Z"
+      "utc": "2026-11-01T01:15:41Z"
     }
   ],
   "layers": [],
@@ -36,7 +36,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",
-  "refreshed": "2026-10-31T17:29:57Z",
+  "refreshed": "2026-11-01T08:47:41Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -49,7 +49,7 @@
     "holdout reads",
     "BTC runs of the current encoding (ROADMAP section 2)"
   ],
-  "scope_sha": "d94529dce83d",
+  "scope_sha": "b69d699f3164",
   "size": "S",
   "sources": [],
   "state": "ready",

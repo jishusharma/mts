@@ -1,7 +1,7 @@
 {
 "_doc": "Catalogue of known tests on trunk. kind is inferred (kind_source). Built by sim_desk/build_catalogue.py.",
-"count": 320,
-"exported": 320,
+"count": 321,
+"exported": 321,
 "rows": [
 {
 "id": "st-_archive-loose_2026-10-cbp_profile6_result",
@@ -2354,14 +2354,14 @@
 {
 "id": "dir-gemini_audits_2026-10-31",
 "family": "gemini audits",
-"title": "Blind Read Audit: fractals_2026-10-31/SYNTHESIS.md",
+"title": "Blind Read Audit: tom_fabio_review_2026-10-31/SETUP_REVIEW.md",
 "kind": "audit",
 "kind_source": "inferred from text",
-"verdict": "s.",
-"source": "MyTradingSys/research/gemini_audits_2026-10-31/fractals_synthesis_blind_read.md",
+"verdict": "s. Every number is labeled SOURCED (quote + file:line) or OURS.",
+"source": "MyTradingSys/research/gemini_audits_2026-10-31/setup_review_blind_read.md",
 "exported": true,
 "result_id": "dir-gemini_audits_2026-10-31",
-"folder_files": 2,
+"folder_files": 4,
 "date": "2026-10-31",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
@@ -4164,6 +4164,20 @@
 "date": "2026-10-31",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
+},
+{
+"id": "st-tom_v2_gross_first_2026-11-result",
+"family": "tom v2 gross first",
+"title": "RESULT: Tom return-to-value, near-band placebo (d <= 1) as PRIMARY, fresh pre-DEV data 2020-2021",
+"kind": "backtest",
+"kind_source": "inferred from text",
+"verdict": "FAIL (CI lower bound -0.3 pp is not above 0)",
+"source": "MyTradingSys/research/tom_v2_gross_first_2026-11/RESULT.md",
+"exported": true,
+"result_id": "st-tom_v2_gross_first_2026-11-result",
+"date": "2026-11-01",
+"status": "FAILED",
+"verdict_class": "failed"
 },
 {
 "id": "lm-tom-vp-return",
