@@ -117,3 +117,28 @@ Reading (design look, SEEN, n=30; a verdict needs the DEV book run):
 Re-run: `python phase1_range.py <repo> <cache> --until 2026-11-01T07:45 --sim-json sim_desk/results/c26-range-ladder.json` (1m cache from
 `fetch_1m.py`, public Binance klines, not committed); `python phase1_ladder_look.py <repo> <cache> --until 2026-11-01T07:45 --card <that card>`.
 Looks logged in `TRIAL_REGISTRY_c26_roadmap.csv` (15 rows, count_only / design_gross).
+
+
+## Q4 (2026-11-01 09:54Z): the operator's six hand-drawn lines vs the repo's level rules
+
+Operator lines (TradingView, Bitstamp BTCUSD 15m, top to bottom): 81,888 / 80,842 / 79,688 / 79,131 / 78,644 / 77,937. Binance spot 15m
+(this cache) runs +0.10..0.22 % above Bitstamp, so the match is by swing, not by cent. Script: scratch levels_check.py (Krown walk, FORMULAS 18.2 fractals).
+
+| Line | Binance 15m swing | Krown KR-S12 dominant (new low made after it) | C26 pivot +-16 (OURS) | fractal +-3 |
+|---|---|---|---|---|
+| 81,888 | 10-29 16:00 81,971 | yes (top) | yes | yes |
+| 80,842 | 10-29 18:15 80,946 | yes | no (within 16 bars of the top) | yes |
+| 79,688 | 10-29 21:15 79,811 | yes | no | no (+-2 yes) |
+| 79,131 | 10-29 22:15 79,272 | no: a 1-bar retest high before the crash | no | no |
+| 78,644 | 10-30 06:30 78,804 | no: the next new low (10-30 18:45) came after 77,937, not from this high | yes | yes |
+| 77,937 | 10-30 15:15 78,110 | yes: the dominant lower high now | yes | yes |
+
+Reading. (1) The lines are the lower highs of the descent: every one is a swing high on 15m, five of six at +-2 or wider. (2) Krown's rule
+(KROWN_SETUP_CATALOG.md line 820, KR-L09) has no width: a lower high counts when a new low follows it; that keeps 4 of the 6 and names 77,937 the
+dominant one. (3) C26's +-16 (OURS) keeps 3 of 6 and adds three range highs (77.5-77.8k Bitstamp) he does not draw: the two H1 definitions
+disagree on the fast part of the descent. Card c26-h1-structural-lower-high: define H1 structurally (SOURCED), run both sets in Phase 3.
+(4) The 09:45Z 15m close (78,107 Binance / 77,990 Bitstamp) is the first close above the dominant lower high: Krown calls that the reclaim that
+confirms a reversal (higher timeframes outrank it; 4h/1D are still inside the leg down from 81.9k); C26 calls it the H1 take-out in a DOWN regime,
+which went back to L1 in 18 of 30 cases in Phase 1 (seen period). Two SOURCED readings of one event point opposite ways; only DEV settles it.
+(5) Tom's levels are a different family (FORMULAS 18.4: POC/VAH/VAL anchored at the last meaningful pivots), not swing highs; the Coinglass
+panel adds OI rising into the test (97.6K) with CVD flat (-18.8K), which Phase 1 counted as P1_oi_up (no edge found).
