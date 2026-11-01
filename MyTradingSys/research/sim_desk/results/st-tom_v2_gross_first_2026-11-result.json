@@ -58,7 +58,13 @@
    "value": "352 / 353"
   }
  ],
- "examples": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades: a count of return shares, no trade list (RESULT.md holds the day-block bootstrap)"
+  }
+ ],
  "source_files": [
   "MyTradingSys/research/tom_v2_gross_first_2026-11/RESULT.md",
   "MyTradingSys/research/tom_v2_gross_first_2026-11/PRE_REG.md",
