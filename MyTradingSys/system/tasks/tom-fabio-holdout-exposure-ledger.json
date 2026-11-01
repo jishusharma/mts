@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T20:48:42Z",
   "commands": [],
   "context": {
     "calls_to_edit": 5,
@@ -21,7 +22,14 @@
   "goal": "Record the VALIDATION/HOLDOUT reads already made by the Tom and Fabio families (SETUP_REVIEW s0 table) in one EXPOSURE_LEDGER.csv so HOLDOUT shows as spent for them.",
   "id": "tom-fabio-holdout-exposure-ledger",
   "lane": "HAIKU",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/tom_fabio_review_2026-10-31/EXPOSURE_LEDGER.csv with 6 family rows, ",
+      "ref": "d9e175a6c",
+      "utc": "2026-11-01T20:48:42Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -31,7 +39,12 @@
   "refined_by": "",
   "refreshed": "2026-10-31T14:46:47Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/tom_fabio_review_2026-10-31/EXPOSURE_LEDGER.csv with 6 family rows, 8 columns, each citing SETUP_REVIEW.md + source file:line (commit 87886859d)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/tom_fabio_review_2026-10-31/EXPOSURE_LEDGER.csv"
   ],
@@ -41,12 +54,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read the table in MyTradingSys/research/tom_fabio_review_2026-10-31/SETUP_REVIEW.md lines 17-35",
     "copy the header of research/context_factors_2026-10-16/EXPOSURE_LEDGER.csv",
     "one row per family (Tom PHASE2, Tom core BT 0929/1007, Fabio v3 L3, Fabio L1, OF model 2026-07..09) with the file:line source in decision_informed"
   ],
+  "taken": "2026-11-01T20:48:42Z",
   "tests": "docs card: csv parses with the same 8 columns as the context_factors EXPOSURE_LEDGER.csv; each row cites a SETUP_REVIEW file:line",
   "title": "record VALIDATION/HOLDOUT reads: Tom PHASE2 2022-01..2026-10, tom_core dev/holdout, Fabio L1 OOS, v3 IS/OOS, OF model 2026-07..09 (SETUP_REVIEW s0); HOLDOUT spent for these families",
   "weight": "ROUTINE",
