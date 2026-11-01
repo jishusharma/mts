@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T17:54:23Z",
   "commands": [],
   "created": "2026-11-01T17:19:46Z",
   "depends_on": [],
@@ -13,7 +15,14 @@
   "id": "gemini-blind-read-rumers-extracts-1101",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "blind re-read of 8 Rumers extract setup rules: 2 SUPPORTED, 6 PARTLY, 0 NOT_IN_QUOTE; deli",
+      "ref": "4e536f6dc",
+      "utc": "2026-11-01T17:54:23Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -28,7 +37,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "blind re-read of 8 Rumers extract setup rules: 2 SUPPORTED, 6 PARTLY, 0 NOT_IN_QUOTE; deliverable rumers_extract_blind_read.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "research/rumers_2026-11-01/RUMERS_EXTRACT_1.md and _2.md and the caption files they cite (read); one output file research/gemini_audits_2026-11-01/rumers_extract_blind_read.md"
   ],
@@ -38,12 +52,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read the s3 shortlist of each extract",
     "open the caption line cited for each field",
     "write one row per rule with status and file:line"
   ],
+  "taken": "2026-11-01T17:50:32Z",
   "tests": "see done_when (audit card, output file is the test)",
   "title": "[GEMINI] blind re-read of RUMERS_EXTRACT_1 and _2 testable shortlists: does each rule's entry, stop, target follow from its quoted caption line",
   "weight": "ROUTINE",
