@@ -1,0 +1,56 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-01T18:07:42Z",
+  "depends_on": [],
+  "done_when": "report lists >= 6 mutations with KILLED/SURVIVED, every survivor has a new passing test in scripts/dev/test_analyst_levels.py that fails on that mutation, analyst_levels.py unchanged (git diff empty).",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "analyst_levels.py (162 lines) is tested by test_analyst_levels.py (9 tests). Make 6 scratch mutations (publish-day bar counted as a hit, price band 40k..200k edges, sort order, --offline path, open vs hit flag, dedupe) and report which survive; write a spec-derived test for each survivor, expected values from the module docstring by hand.",
+  "id": "gpt-mutation-analyst-levels",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "analyst levels: no hit before the video could exist; cbp_run prompt carries metadata (Argo",
+      "ref": "589685fbb501",
+      "utc": "2026-10-30T14:30:46Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "REVIEWED:2026-11-01 T0-ONLY Producer GPT (codex_run.py), reviewer is another vendor. Expected values are derived by hand from the spec or docstring, never from the code under test. ROUTINE, no live path. D11 s3/s6 feeder seed. planner-b-1101b.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-01T18:08:10Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/test_analyst_levels.py",
+    "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-mutation-analyst-levels.md"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change to any file outside the named outputs"
+  ],
+  "scope_sha": "589685fbb501",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "read analyst_levels.py docstring and the 9 tests, list the branches no test pins",
+    "apply each mutation to a scratch copy and run the tests",
+    "for survivors write a hand-derived test, re-run all mutations, write the report"
+  ],
+  "tests": "python -m pytest scripts/dev/test_analyst_levels.py -q (each new test fails on its mutation)",
+  "title": "[GPT] Mutation-kill audit of scripts/dev/analyst_levels.py vs its 9 tests (as-of hit rule, price band, sort)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

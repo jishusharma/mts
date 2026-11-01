@@ -1,0 +1,56 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-01T18:07:44Z",
+  "depends_on": [],
+  "done_when": "report lists >= 6 mutations KILLED/SURVIVED, each survivor has a new test in MyTradingSys/tests/test_research_kit.py failing on it, research_kit.py unchanged (git diff empty), tests pass.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "research_kit.py is the shared home of the clustered SE, Holm and MDE maths every screen and the C26 plan cite. Mutate it 6 ways (Holm running max dropped, n-1 vs n, NaN guard for one day removed, MDE_Z 2.8 -> 2.0, cost_in_r units, norm_p_two sign) and report which survive tests/test_research_kit.py; survivors get a hand-derived test.",
+  "id": "gpt-mutation-research-kit",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "G5 Holm bar review fixes: two-sided bar, refuse m<2, tests above __main__, docstring line ",
+      "ref": "fc06a2f1892b",
+      "utc": "2026-10-31T20:36:26Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "REVIEWED:2026-11-01 T0-ONLY Producer GPT (codex_run.py), reviewer is another vendor. Expected values are derived by hand from the spec or docstring, never from the code under test. ROUTINE, no live path. D11 s3/s6 feeder seed. planner-b-1101b.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-01T18:08:10Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tests/test_research_kit.py",
+    "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-mutation-research-kit.md"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change to any file outside the named outputs"
+  ],
+  "scope_sha": "fc06a2f1892b",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "read the research_kit docstring conventions and the existing tests",
+    "mutate a scratch copy 6 ways and run the tests",
+    "hand-derive expected values for survivors (shown in each test), add tests, write the report"
+  ],
+  "tests": "python -m pytest MyTradingSys/tests/test_research_kit.py -q (each new test fails on its mutation)",
+  "title": "[GPT] Mutation-kill audit of backtest/research_kit.py (Holm, clustered SE, MDE, cost in R) vs tests/test_research_kit.py",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-01T18:07:52Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-01/c26_phase1_blind_read.md has one row per number per report: FOUND / NOT_IN_DATA / DIFF, and a first line with the three counts.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Open research/c26_roadmap_2026-11-01/PHASE1_RANGE.md, PHASE1_EVENTS.md and PHASE1_RECENT.md and check every number against the file it cites (TRIAL_REGISTRY_c26_roadmap.csv, sim_desk/results/*.json, fixture_btc15m_2026-10-28_31.json); facts only, no verdicts.",
+  "id": "gemini-blind-read-c26-phase1-reports-1101",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-01 T0-ONLY Gemini effort low: load as <id>:low (gemini_queue.py run <id>:low). Reads local files only, no YouTube or caption fetch. Facts with file:line or NOT_IN_DATA, no verdicts. Final report ends with a Noticed: line. D11 s6 seed. planner-b-1101b.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-01T18:07:52Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/gemini_audits_2026-11-01/c26_phase1_blind_read.md"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change to any file outside the named outputs"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "list every number in each report with its cited source",
+    "open the source and check it",
+    "write FOUND / NOT_IN_DATA / DIFF per number"
+  ],
+  "tests": "see done_when (audit card, the output file is the test)",
+  "title": "[GEMINI] blind re-read of C26 PHASE1_RANGE.md, PHASE1_EVENTS.md and PHASE1_RECENT.md: every number found in its cited file",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
