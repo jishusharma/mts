@@ -1,0 +1,394 @@
+{
+ "id": "c26-q9-footprint",
+ "kind": "backtest",
+ "family": "Eagle_Eyes chart ideas (operator, 10-30/31)",
+ "provenance": "run",
+ "title": "C26 Q9: a footprint proxy over the excursion above H1 (taker delta per 100 USD row) at the DOWN-high take-outs",
+ "date": "2026-11-01",
+ "what": [
+  {
+   "name": "Events",
+   "value_plain": "C26 held highs taken out in a DOWN phase (phase1_recent.py), 15m Binance spot BTCUSDT",
+   "label": "OURS"
+  },
+  {
+   "name": "Footprint proxy",
+   "value_plain": "1m bars of the excursion above H1 binned into 100 USD rows by close: taker buy and taker sell volume per row (a footprint chart has this per price level per bar; the 1m close is the proxy)",
+   "label": "OURS"
+  },
+  {
+   "name": "Top quarter",
+   "value_plain": "rows in the top 25 % of the excursion's high-low range",
+   "label": "OURS"
+  },
+  {
+   "name": "Sell-imbalance row",
+   "value_plain": "sell volume >= 3x buy volume in a top-quarter row (footprint '300 %' rule)",
+   "label": "OURS"
+  },
+  {
+   "name": "Outcome read",
+   "value_plain": "single short: first 15m close back under H1, stop H1 + 1.0 %, target L1, 24h, fee-net",
+   "label": "OURS"
+  },
+  {
+   "name": "Costs",
+   "value_plain": "0.10 % per round trip (Binance taker x2, backtest/fees.py); slippage and funding not modelled",
+   "label": "SOURCED"
+  }
+ ],
+ "how": "phase1_fp_look.py <repo> <cache> --until 2026-11-01T07:45 --card <this file>; 1m bars from data.binance.vision (fetch_1m.py). CoinGlass Footprint 4H shots c0a8fc721e58 (aggregated) and 82d84b32fe1a (Binance perp) set what to rebuild.",
+ "window": "RECENT design window 2026-06-21 .. 2026-11-01 (SEEN: looked at here, nothing here is evidence; DEV scores come from phase3_dev.py, card c26-h1-structural-lower-high)",
+ "verdict": {
+  "label": "Design look on SEEN, n=30: buyers won the top quarter in 29 of 30 (taker delta positive); 0 take-outs had a sell-imbalance row at the top",
+  "tone": "info"
+ },
+ "why": [
+  "The high of a take-out is made by buyers lifting offers, so a positive top-quarter delta is the normal case, not a tell.",
+  "A footprint 'absorption' read needs sellers winning the top rows; it almost never shows here, so it is no Phase 3 filter.",
+  "The CoinGlass page's 'Absorption bullish' label is its bottom signal and was stale (fired before the 82k top), not a top signal."
+ ],
+ "kpis": [
+  {
+   "label": "take-outs",
+   "value": "30"
+  },
+  {
+   "label": "buyers won the top quarter",
+   "value": "29 of 30"
+  },
+  {
+   "label": "sell-imbalance row at the top",
+   "value": "0"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "table",
+   "title": "The take-outs, footprint proxy over the excursion",
+   "caption": "no prices: the H1 column is dropped on this page",
+   "cols": [
+    "take-out (UTC)",
+    "excursion bars",
+    "top-quarter taker delta (BTC)",
+    "top-quarter volume share",
+    "POC position (0 low, 1 high)",
+    "sell-imbalance rows at top",
+    "single short net, exit"
+   ],
+   "rows": [
+    [
+     "09-23 01:00",
+     "15",
+     "+46.9",
+     "15 %",
+     "0.48",
+     "0",
+     "+0.63 L1"
+    ],
+    [
+     "09-24 14:15",
+     "1",
+     "+44.8",
+     "30 %",
+     "0.82",
+     "0",
+     "+0.69 L1"
+    ],
+    [
+     "09-25 11:00",
+     "2",
+     "+378.9",
+     "44 %",
+     "0.72",
+     "0",
+     "+0.82 L1"
+    ],
+    [
+     "09-25 11:00",
+     "2",
+     "+378.9",
+     "44 %",
+     "0.72",
+     "0",
+     "+1.04 L1"
+    ],
+    [
+     "09-30 12:45",
+     "2",
+     "+508.5",
+     "55 %",
+     "0.72",
+     "0",
+     "-0.02 L1"
+    ],
+    [
+     "09-29 11:45",
+     "7",
+     "+10.8",
+     "5 %",
+     "0.39",
+     "0",
+     "+0.42 24h"
+    ],
+    [
+     "10-01 15:00",
+     "87",
+     "+339.6",
+     "24 %",
+     "0.08",
+     "0",
+     "-1.49 stop"
+    ],
+    [
+     "10-02 03:00",
+     "39",
+     "+361.7",
+     "14 %",
+     "0.55",
+     "0",
+     "+0.71 L1"
+    ],
+    [
+     "10-02 04:15",
+     "34",
+     "+278.3",
+     "11 %",
+     "0.48",
+     "0",
+     "+1.20 24h"
+    ],
+    [
+     "10-06 09:45",
+     "22",
+     "+72.4",
+     "14 %",
+     "0.28",
+     "0",
+     "+0.89 L1"
+    ],
+    [
+     "10-09 11:45",
+     "1",
+     "+70.2",
+     "39 %",
+     "0.95",
+     "0",
+     "+0.79 L1"
+    ],
+    [
+     "10-09 11:30",
+     "2",
+     "+76.4",
+     "41 %",
+     "0.97",
+     "0",
+     "-0.50 24h"
+    ],
+    [
+     "10-11 15:45",
+     "61",
+     "+175.2",
+     "11 %",
+     "0.58",
+     "0",
+     "+0.76 24h"
+    ],
+    [
+     "10-12 05:00",
+     "8",
+     "+106.8",
+     "27 %",
+     "0.74",
+     "0",
+     "+0.60 L1"
+    ],
+    [
+     "10-13 03:30",
+     "19",
+     "+215.3",
+     "25 %",
+     "0.61",
+     "0",
+     "-0.97 24h"
+    ],
+    [
+     "10-14 03:30",
+     "19",
+     "+103.5",
+     "11 %",
+     "0.08",
+     "0",
+     "+0.89 L1"
+    ],
+    [
+     "10-16 11:00",
+     "2",
+     "+47.7",
+     "42 %",
+     "0.81",
+     "0",
+     "+0.57 L1"
+    ],
+    [
+     "10-18 01:30",
+     "33",
+     "+4.7",
+     "7 %",
+     "0.17",
+     "0",
+     "+0.55 L1"
+    ],
+    [
+     "10-18 01:30",
+     "33",
+     "+4.7",
+     "7 %",
+     "0.17",
+     "0",
+     "+0.92 L1"
+    ],
+    [
+     "10-19 00:30",
+     "29",
+     "+13.1",
+     "8 %",
+     "0.36",
+     "0",
+     "+0.52 24h"
+    ],
+    [
+     "10-19 07:30",
+     "1",
+     "+40.6",
+     "28 %",
+     "-0.04",
+     "0",
+     "+1.48 24h"
+    ],
+    [
+     "10-20 04:15",
+     "1",
+     "+0.0",
+     "0 %",
+     "0.11",
+     "0",
+     "+0.53 L1"
+    ],
+    [
+     "10-21 08:45",
+     "32",
+     "-17.5",
+     "32 %",
+     "0.76",
+     "0",
+     "-1.33 stop"
+    ],
+    [
+     "10-24 23:30",
+     "16",
+     "+73.2",
+     "21 %",
+     "0.42",
+     "0",
+     "+0.72 L1"
+    ],
+    [
+     "10-27 21:30",
+     "45",
+     "+106.2",
+     "5 %",
+     "0.23",
+     "0",
+     "-0.46 24h"
+    ],
+    [
+     "10-27 21:30",
+     "45",
+     "+106.2",
+     "5 %",
+     "0.23",
+     "0",
+     "-1.15 stop"
+    ],
+    [
+     "10-27 12:45",
+     "80",
+     "+198.9",
+     "4 %",
+     "0.37",
+     "0",
+     "-1.13 stop"
+    ],
+    [
+     "10-27 21:30",
+     "45",
+     "+106.2",
+     "5 %",
+     "0.23",
+     "0",
+     "-1.16 stop"
+    ],
+    [
+     "10-29 15:45",
+     "2",
+     "+14.6",
+     "10 %",
+     "0.39",
+     "0",
+     "+1.59 L1"
+    ],
+    [
+     "10-29 15:45",
+     "2",
+     "+14.6",
+     "10 %",
+     "0.39",
+     "0",
+     "+2.43 L1"
+    ]
+   ]
+  },
+  {
+   "kind": "table",
+   "title": "Each footprint fact split yes / no",
+   "caption": "n, how many reached L1, mean fee-net unit-% of the single short",
+   "cols": [
+    "footprint fact over the excursion",
+    "yes: n, reached L1, mean net unit-%",
+    "no: n, reached L1, mean net unit-%"
+   ],
+   "rows": [
+    [
+     "top-quarter delta negative (sellers won the high)",
+     "1: 0 L1, -1.33",
+     "29: 17 L1, +0.41"
+    ],
+    [
+     "top-quarter volume share >= 35 % (stacked top)",
+     "6: 5 L1, +0.45",
+     "24: 12 L1, +0.33"
+    ],
+    [
+     "POC in the lower half (top rejected)",
+     "18: 9 L1, +0.41",
+     "12: 8 L1, +0.26"
+    ],
+    [
+     "a sell-imbalance row at the top",
+     "0",
+     "30: 17 L1, +0.35"
+    ]
+   ]
+  }
+ ],
+ "evidence": [
+  "MyTradingSys/research/c26_roadmap_2026-11-01/PHASE1_RANGE.md"
+ ],
+ "missing": [],
+ "source_files": [
+  "MyTradingSys/research/c26_roadmap_2026-11-01/phase1_fp_look.py",
+  "MyTradingSys/research/c26_roadmap_2026-11-01/PHASE1_RANGE.md"
+ ],
+ "commit": "see git log"
+}

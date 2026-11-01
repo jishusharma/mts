@@ -19,6 +19,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import phase1_range as R  # noqa: E402
 import phase1_ladder_look as LL  # noqa: E402
+import phase1_card as CARD  # noqa: E402
 
 LEV = (10, 25, 50, 100)  # OURS, after CoinGlass's own "Model 1 = 10x 25x 50x 100x" statement (A_liquidation.md S1)
 GRID, NEAR, TOP, HOLD = 0.001, 5.0, 0.20, 96  # OURS
@@ -157,8 +158,36 @@ def main():
                                                                sum(r["net"] for r in g) / len(g),
                                                                sum(r["overshoot"] for r in g) / len(g)) if g else "0")
         out.append([name] + cells)
-    print(R.table(["fact at the touch", "yes: n, reached L1, mean net unit-%, mean overshoot %",
-                   "no: n, reached L1, mean net unit-%, mean overshoot %"], out))
+    fcols = ["fact at the touch", "yes: n, reached L1, mean net unit-%, mean overshoot %",
+             "no: n, reached L1, mean net unit-%, mean overshoot %"]
+    print(R.table(fcols, out))
+    if CARD.arg("--card"):
+        reach = next(r for r in out if r[0] == "excursion reached the band")
+        base_pct = 100.0 * base_near / max(1, base_n)
+        CARD.write(CARD.arg("--card"), CARD.card(
+            "c26-q7-liquidation-bands",
+            "C26 Q7: a liquidation-band proxy at the DOWN-high take-outs (bands built from Binance open-interest rises, %dh window)" % WINDOW_H,
+            [CARD.P("Events", "C26 held highs taken out in a DOWN phase (phase1_recent.py), 15m Binance spot BTCUSDT"),
+             CARD.P("Band proxy", "a liquidation band is where leveraged entries would be liquidated: each 15m open-interest rise is spread over "
+                                  "10x/25x/50x/100x liquidation prices in 100 USD buckets, decays over the window, dies when price trades through it "
+                                  "(a CoinGlass-heatmap-like model; nothing from CoinGlass itself)"),
+             CARD.P("Strong band", "top 20 % of bucket density within 5 % of price, from bars before the take-out only"),
+             CARD.P("Outcome read", "single short: first 15m close back under H1, stop H1 + 1.0 %, target L1, 24h time stop, fee-net"),
+             CARD.FEE],
+            "phase1_liq_look.py <repo> <cache> --until 2026-11-01T07:45 --window %d --card <this file>; open interest from the Binance USDT-M 5m "
+            "metrics files. Shot fd1787b08c1b (CoinGlass Legend 15m heatmap) is what the proxy imitates; `--standing` prints today's bands." % WINDOW_H,
+            "Design look on SEEN, n=%d: excursions that reached the short band above H1: %s; that stopped short of it: %s; base rate of a strong "
+            "band within 0.5 %% above price %.0f %%" % (len(ev), reach[1], reach[2], base_pct), "info",
+            ["The band above H1 marks how far the take-out overshoots: when the excursion stops short of the band the single short wins, when it "
+             "reaches the band it loses on average.",
+             "A strong band stands close above price most of the time (base rate), so 'a band is there' is not a filter; 'the excursion reached it' is a "
+             "candidate for the Phase 3b card (band consumed -> reclaim under H1 -> short, stop above the band top).",
+             "OURS proxy, not the vendor's heatmap: the Binance liquidation log (Lenovo, runtime_data/liq_events) is the stable source to compare against."],
+            [{"label": "take-outs", "value": str(len(ev))}, {"label": "strong band within 0.5 % above price (base rate)", "value": "%.0f %%" % base_pct},
+             {"label": "excursion reached the band", "value": reach[1]}, {"label": "stopped short of the band", "value": reach[2]}],
+            [CARD.table("The take-outs and the nearest bands", cols, rows, "no prices: the H1 and band columns are dropped; distances in % of H1 stay"),
+             CARD.table("Each band fact split yes / no", fcols, out, "n, how many reached L1, mean fee-net unit-% of the single short, mean overshoot above H1")],
+            ["phase1_liq_look.py", "PHASE1_RANGE.md", "BANDS_LEDGER.csv"]))
 
 
 if __name__ == "__main__":
