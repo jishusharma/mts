@@ -8,7 +8,7 @@ The fixed window is 2026-10-27 22:43:13 UTC to 2026-10-29 22:43:13 UTC (28 Octob
 
 The complete git inventory contains **711 non-merge commits**, touching 6,833 distinct paths during the window. Intermediate restore/revert churn inflates that number. The net baseline-to-tip change is **1,085 paths, including 201 code/UI/workflow files**. `inventory.json`, `inventory.txt`, and `net_changes.tsv` preserve both views. `CODE_COVERAGE.csv` distinguishes manual inspection from inventory/gate coverage. This is a risk-prioritized audit of the committed change inventory; it does not claim every research sentence or every intermediate version was independently re-derived. Foreign uncommitted work and unpublished branches were preserved and were not treated as audited.
 
-Priority was execution and data integrity, sealed-window boundaries, human validation correctness, ingestion and scorecard functionality, then basic UI and repository checks. Claims were acquired before edits; foreign claims and worktrees were left alone. All edits are in an isolated worktree. The five-hour allowance is a maximum; elapsed time is recorded in the final receipt, without spending time merely to fill it.
+Priority was execution and data integrity, sealed-window boundaries, human validation correctness, ingestion and scorecard functionality, then basic UI and repository checks. Claims were acquired before edits; foreign claims and worktrees were left alone. All edits are in an isolated worktree. The five-hour allowance is a maximum; work was stopped and resumed as described below.
 
 ## Confirmed bugs and fixes
 
