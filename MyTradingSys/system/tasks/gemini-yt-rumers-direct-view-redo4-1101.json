@@ -1,0 +1,47 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "echo none"
+  ],
+  "created": "2026-11-01T14:05:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/rumers_2026-11-01/RUMERS_REDO4.md exists: 4 rows, real title copied from the page, per-rule table, CANNOT_OPEN allowed, no quotation marks around spoken words",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "The skim in RUMERS_SKIM_DIRECT.md section 3 shows these 4 ids had wrong titles. Open each id, copy its REAL title as shown on the page, then paraphrase the rules (entry, stop, target, timeframe, indicators; NOT_STATED where absent). UNVERIFIED-PARAPHRASE, approx minute, no quotation marks around spoken words. If a video cannot be opened write CANNOT_OPEN, never guess.",
+  "id": "gemini-yt-rumers-direct-view-redo4-1101",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini low effort. Facts and paraphrase only, no trading verdict. Do NOT run fetch_captions_timed.py or yt-dlp (IP blocked; the guard refuses). Final report ends with a Noticed: line.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "scope_in": [
+    "MyTradingSys/research/rumers_2026-11-01/ (new files only)"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code; any backtest; .secrets and .env"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "open each of the 4 ids",
+    "write the table",
+    "ship via sync.py ship"
+  ],
+  "tests": "report only; no quote claims; no code change",
+  "title": "[GEMINI] The Rumers: re-watch 4 videos whose skim rows had wrong titles (OYLv6Ev-kVE, lUr32iqWHz8, 4zazKDSXlh8, NMUd0oX_7Pg) and write the real rules",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
