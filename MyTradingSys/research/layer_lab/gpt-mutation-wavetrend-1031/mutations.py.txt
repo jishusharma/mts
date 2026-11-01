@@ -1,0 +1,79 @@
+"""Audit only. Run with python -B <this file>; no production writes/import cache.
+Independent oracle: FORMULAS 20, Decimal 50-digit separate series passes.
+"""
+import csv, hashlib, io, json, math, sys, types, unittest
+from decimal import Decimal as D, getcontext
+from pathlib import Path
+sys.dont_write_bytecode = True
+ROOT = Path(__file__).resolve().parents[4]
+HERE = ROOT / 'MyTradingSys/backtest/layers/wavetrend'
+OUT = Path(__file__).resolve().parent
+source = (HERE / 'wavetrend.py').read_text()
+test_source = (HERE / 'test_wavetrend.py').read_text()
+mutations = {
+ 'channel_length': ('10, 21, 4, 0.015', '11, 21, 4, 0.015'),
+ 'average_length': ('10, 21, 4, 0.015', '10, 22, 4, 0.015'),
+ 'ema_alpha': ('2.0 / (N1 + 1)', '1.0 / (N1 + 1)'),
+ 'cross_rule': ('if side != 0:\n            last = side', 'if True:\n            last = side'),
+ 'overbought_level': ('60.0, 53.0', '61.0, 53.0'),
+}
+def module(text):
+    m = types.ModuleType('wavetrend')
+    exec(compile(text, str(HERE/'wavetrend.py'), 'exec'), m.__dict__)
+    return m
+def run_tests(m):
+    sys.modules['wavetrend'] = m
+    t = types.ModuleType('audit_tests')
+    t.__file__ = str(HERE/'test_wavetrend.py')
+    exec(compile(test_source, t.__file__, 'exec'), t.__dict__)
+    stream = io.StringIO()
+    r = unittest.TextTestRunner(stream=stream, verbosity=2).run(unittest.defaultTestLoader.loadTestsFromModule(t))
+    return {'tests': r.testsRun, 'failures': [x.id() for x,_ in r.failures], 'errors': [x.id() for x,_ in r.errors]}, stream.getvalue()
+base = module(source)
+baseline, log = run_tests(base)
+assert baseline['tests'] and not baseline['failures'] and not baseline['errors'], log
+results = {'baseline': baseline, 'mutations': {}}
+for name, (old,new) in mutations.items():
+    assert source.count(old) == 1
+    mutant = source.replace(old,new)
+    (OUT/(name+'.py.txt')).write_text(mutant, newline='\n')
+    stats, detail = run_tests(module(mutant))
+    assert not stats['errors'], detail
+    stats['suite'] = 'KILLED' if stats['failures'] else 'SURVIVING'
+    stats['golden_csv'] = 'KILLED' if any('test_values_match_golden' in x or 'test_events_match_golden' in x for x in stats['failures']) else 'SURVIVING'
+    results['mutations'][name] = stats
+    log += '\nMUTATION '+name+'\n'+detail
+(OUT/'test-output.txt').write_text(log, newline='\n')
+with (HERE/'fixture_btcusdt_1h_dev_2022-01.csv').open() as f: data=list(csv.DictReader(f))
+with (HERE/'golden_wt_btcusdt_1h_dev_2022-01.csv').open() as f: golden=list(csv.DictReader(f))
+assert len(data)==len(golden)==400
+assert all(int(r['open_time']) < 1719792000000 for r in data)
+assert all(int(b['open_time'])-int(a['open_time'])==3600000 for a,b in zip(data,data[1:]))
+assert all(a['open_time']==b['open_time'] for a,b in zip(data,golden))
+getcontext().prec=50
+def ema(values, length):
+    prev=None; out=[]
+    for x in values:
+        if x is None: prev=None
+        else: prev=x if prev is None else prev+(x-prev)*D(2)/D(length+1)
+        out.append(prev)
+    return out
+ap=[sum(D(r[k]) for k in ('high','low','close'))/D(3) for r in data]
+esa=ema(ap,10)
+dev=ema([abs(p-e) for p,e in zip(ap,esa)],10)
+ci=[None if d<=D('1e-9')*abs(p) else (p-e)/(D('0.015')*d) for p,e,d in zip(ap,esa,dev)]
+one=ema(ci,21)
+two=[None if i<3 or any(x is None for x in one[i-3:i+1]) else sum(one[i-3:i+1])/D(4) for i in range(400)]
+got=base.compute([(int(r['open_time']),*(float(r[k]) for k in ('high','low','close'))) for r in data],3600000)
+# Fixed evenly spaced post-warmup indices, selected before looking at deviations.
+samples=[]
+for i in range(200,400,10):
+    samples.append({'index':i,'open_time':data[i]['open_time'],'wt1_independent':str(one[i]),'wt2_independent':str(two[i]),'wt1_module':got[i].wt1,'wt2_module':got[i].wt2,'wt1_golden':golden[i]['wt1'],'wt2_golden':golden[i]['wt2']})
+with (OUT/'independent-20.csv').open('w',newline='') as f:
+    w=csv.DictWriter(f,fieldnames=samples[0].keys(),lineterminator='\n');w.writeheader();w.writerows(samples)
+results['independent']={'pairs':len(samples),'max_module_error':max(abs(float(s['wt'+str(j)+'_independent'])-s['wt'+str(j)+'_module']) for s in samples for j in (1,2)), 'max_golden_error':max(abs(float(s['wt'+str(j)+'_independent'])-float(s['wt'+str(j)+'_golden'])) for s in samples for j in (1,2))}
+assert results['independent']['max_module_error']<1e-9
+assert results['independent']['max_golden_error']<1e-9
+results['hashes']={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in HERE.iterdir() if p.suffix in ('.py','.csv')}
+(OUT/'results.json').write_text(json.dumps(results,indent=2)+'\n',newline='\n')
+print(json.dumps(results,indent=2))

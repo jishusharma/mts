@@ -1,0 +1,10 @@
+{
+  "done_when": "Both pages republished and artifacts.py publish-record --slug mts_layer_map / mts_home recorded",
+  "from": "JIS-NUC",
+  "id": "20261101-060117-republish-mts-layer-map-and-mts-home-bot",
+  "need": "Two ships from this chat regenerated LAYERS.md and touched NEXT_SESSION.md; artifacts.py build run. sync.py ship flagged: STALE mts_layer_map https://claude.ai/artifact/7eeXJJ9Sb44LaJeCu8jxfJ and STALE mts_home https://claude.ai/artifact/8hKA1rhNRo6RAEdt5mtLg3 (repo build differs from last publish).",
+  "posted": "2026-11-01T06:01:17Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "Republish mts_layer_map and mts_home (both stale after 391f33e9a and 4bd181ca)"
+}

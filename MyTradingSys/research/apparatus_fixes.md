@@ -134,3 +134,9 @@ the session ran on JIS-NB):
 - section 9 gives Maven at D:\tools\apache-maven-3.9.14; that path
   does not exist on JIS-NB. Actual Maven on JIS-NB:
   C:\Users\E-ngineers\Maven\apache-maven-3.6.3\bin\mvn.cmd.
+
+## 2026-11-01 DSA JIS-NUC: bridge dropped a 4-block reply
+- Sent 4 AIRUN blocks. Blocks 1-2 ran. Block 3 was skipped, block 4 was empty_command.
+- Result: your last reply ended without a final answer. The files _c30_p1.py, _c30_p2.py, _c30_p3.py were not written.
+- Rule: after a drop notice, re-send the blocks once. If a second drop happens, turn hands-free off.
+- This cost one retry and one wasted verify turn.

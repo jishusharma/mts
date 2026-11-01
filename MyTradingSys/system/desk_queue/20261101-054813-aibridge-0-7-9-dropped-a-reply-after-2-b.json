@@ -1,0 +1,10 @@
+{
+  "done_when": "Bridge holds a 4-block reply in one generation without dropping, and writes the files.",
+  "from": "JIS-NUC",
+  "id": "20261101-054813-aibridge-0-7-9-dropped-a-reply-after-2-b",
+  "need": "Sent 4 AIRUN blocks (dsa.py put of _c30_p1.py, _c30_p2.py, _c30_p3.py, then a read). Result #49 showed blocks 1-2 ran. Block 3 was skipped, block 4 came back empty_command. Result #50: 'your last reply ended without a final answer'. The three part files did not exist on disk afterward (result #51). The bridge did not write the files, or the blocks were not run.",
+  "posted": "2026-11-01T05:48:13Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "AIBridge 0.7.9 dropped a reply after 2 blocks; files not written"
+}

@@ -270,6 +270,26 @@ class MarginPreflightGapTest(Base):
         with mock.patch.object(at, "available_funds_btc", lambda account=None: self.fail("balance read on dry run")):
             self.assertEqual(at.place(self.SIG, True)["outcome"], "dry_run")
 
+    def test_refusal_runs_no_new_plan_so_no_orphan_plan(self):
+        for funds in (0.0001, OSError("timeout"), None):
+            with self.subTest(funds=funds):
+                out, calls = self._place(funds)
+                self.assertEqual(out["outcome"], "margin_short")
+                self.assertNotIn("plan_id", out)
+                self.assertEqual(calls, [])            # new_plan.py never ran: nothing saved
+
+    def test_refusal_log_has_no_plan_id_and_ok_path_still_plans_after_check(self):
+        self._place(0.0001)
+        ev = [e for e in self.events() if e.get("event") == "margin_short"]
+        self.assertTrue(ev)
+        self.assertNotIn("plan_id", ev[-1])
+        order = []
+        at.run = lambda cmd, timeout=900, account=None: (order.append(Path(cmd[1]).name), (0, "SAVED p1 filled"))[1]
+        at.spawn_manager = lambda *a, **k: Proc()
+        with mock.patch.object(at, "available_funds_btc", lambda account=None: order.append("funds") or 0.5):
+            self.assertEqual(at.place(self.SIG, False)["outcome"], "entered")
+        self.assertEqual(order, ["funds", "new_plan.py", "executor.py"])
+
     def _place_sig(self, sig, funds, spawn=False):
         calls = []
         at.run = lambda cmd, timeout=900, account=None: (calls.append(cmd), (0, "SAVED p1 filled"))[1]
