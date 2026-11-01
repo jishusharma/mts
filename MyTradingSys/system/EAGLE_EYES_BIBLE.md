@@ -97,6 +97,7 @@ Why this section exists: the 10-28 session was compacted 6 times; each summary k
 | Analyst views | `ANALYST_VIEWS_2026-10-29.md` | 10-29 |
 | First touch after the bottom (11-01): RSI 15m divergence + bars apart, close outside BB, StochRSI top, CVD "forces" (impulses per session, does it fire after entry, RSI then), OI at the level | `research/c26_roadmap_2026-11-01/phase1_touch_look.py`, PHASE1_RANGE.md Q5 | measured 11-01 on 30 SEEN take-outs: StochRSI >= 80 and "no CVD up-impulse at/after the touch" split the shorts; BB and WT cross select nothing; 74 % of up-impulses at RSI >= 50 |
 | WaveTrend as a reference beside the touch, so we know what to compare in the backtest (11-01) | same Q5, columns wt1 / WT cross dn | cross down within 2h in 25/30 touches = context, not trigger (C27/C28 agree) |
+| Liquidation levels as a short layer; how to read the heatmap across timeframes (11-01, shot fd1787b08c1b) | `research/c26_roadmap_2026-11-01/phase1_liq_look.py` (OURS proxy from Binance OI, window = the heatmap timeframe), PHASE1_RANGE.md Q7; vendor history: liquidation_layer_2026-10-28/README.md (none, BANDS_LEDGER 7 rows) | measured 11-01 on 25 SEEN take-out bars: the band above H1 marks the overshoot; touches whose excursion stopped short of it did better (72h: +0.52 vs +0.24; 24h: +0.88 vs -0.10); long bands never nearer than L1 |
 
 ## Per-shot frame (OURS, from the teachings above)
 
