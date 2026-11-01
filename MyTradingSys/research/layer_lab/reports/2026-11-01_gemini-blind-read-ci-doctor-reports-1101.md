@@ -7,7 +7,7 @@
 - **Reports Audited**:
   1. `MyTradingSys/research/ci_audit_2026-10-31/REPORT_FIRST_RED.md`
   2. `MyTradingSys/research/mts_doctor/REPORT_2026-11-01.md`
-- **Primary Deliverable**: `research/gemini_audits_2026-11-01/ci_doctor_blind_read.md`
+- **Primary Deliverable**: `MyTradingSys/research/gemini_audits_2026-11-01/ci_doctor_blind_read.md`
 
 ---
 

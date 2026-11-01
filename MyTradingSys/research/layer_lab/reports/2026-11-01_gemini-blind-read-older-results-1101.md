@@ -10,7 +10,7 @@
   3. `MyTradingSys/research/us_open_oos_2026-10-30/REPORT.md` (cited `results_oos_2020_2021.json`, `session_sweeps/results_2026-10-04.json`)
   4. `MyTradingSys/research/wt30_sequence_2026-10-30/RESULT.md` (cited `output.txt`, `study.py`)
   5. `MyTradingSys/research/tom_transfer_2026-10-11/vp_return/RESULT.md` (cited `results.json`, `extract_BB3c8visnkI.md:38`, `NakedPocTracker.java:26`)
-- **Primary Deliverable**: `research/gemini_audits_2026-11-01/older_results_blind_read.md`
+- **Primary Deliverable**: `MyTradingSys/research/gemini_audits_2026-11-01/older_results_blind_read.md`
 
 ---
 

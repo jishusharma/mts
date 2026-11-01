@@ -10,7 +10,7 @@
   3. `MyTradingSys/research/meta_label_breaks_2026-10-31/RESULT.md`
   4. `MyTradingSys/research/cowen_q4_2026-10-31/event_study/RESULT.md`
   5. `MyTradingSys/research/tf_break_event_study_2026-10-30/RESULT.md`
-- **Primary Deliverable**: `research/gemini_audits_2026-11-01/recent_results_blind_read.md`
+- **Primary Deliverable**: `MyTradingSys/research/gemini_audits_2026-11-01/recent_results_blind_read.md`
 
 ---
 
