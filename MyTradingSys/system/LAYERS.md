@@ -42,7 +42,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `lab-verify-trend-healthy-in-balance` refined p3 SONNET: LAB-VERIFY 10-18: how often trend_healthy is set inside a multi-day balance (DEV)
   - `layer-state-snapshot-causal` raw p3 SONNET: S0 park. Meta-label phase 2 (ROADMAP P2 + 2.0): causal layer_state_at(ts) snapshot in sim_desk/studies/_bars.p
   - `tom-btc-other-setups` blocked p3 CODEX: Tom on BTC T8: chart lab + event study for his other trade types (trend continuation pullback to value/VWAP, b
-  - `tom-btc-other-setups-void-result` raw p3 HAIKU: card tom-btc-other-setups result says 504 candidates; 100 blind charts but its report layer_lab/reports/2026-1
   - `tom-v2-gross-first-dev-ext` ready p3 SONNET: Tom v2 gross-first: near-band placebo on 2019-2021 1m (SETUP_REVIEW.md section 6 test 2) before any DEV or fil
 
 ## Fabio (order-flow layer) (`fabio`)
@@ -260,6 +259,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `wavetrend-c1-v2` refined p1 SONNET: WaveTrend C1 detector correction and new count-only prereg
   - `layer-review-krown-wavetrend` ready p3 SONNET: Layer review sheet: Krown and WaveTrend (idea, source, backtests, bugs, confluence)
+  - `wavetrend-parity-contract-audit-1101` raw p3 SONNET: WaveTrend parity contract: bound seed-convergence claim and reconcile fixture timestamps (gpt-mutation-wavetre
 
 ## Pitchfork (Andrews / Schiff / Morge median line) (`pitchfork`)
 - Status: Pivot amplitude gate is OURS (2 pct reversal, no ATR); doc Rule P-01 2.5 x ATR14 not implemented. Detector, simulator desk plugin (studies/pitchfork.py), and live Java engine (PitchforkSignalLayer.java with Tine Bounce + Hagopian Failure + Volume Profile confluence) built, wired, and verified on DEV.

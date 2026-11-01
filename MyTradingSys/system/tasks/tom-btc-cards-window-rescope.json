@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-31 ACCEPT (Sonnet reviewer Agent, FIX applied once, not re-read, planner DECISION OURS).  Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "note": "REVIEWED:2026-10-31 ACCEPT (Sonnet reviewer Agent, FIX applied once, not re-read, planner DECISION OURS).  Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files. PLANNER 2026-11-01 DECISION (OURS): stays raw, parked on asks; unpark after Lab_Guy sets trust C1 on the 5 cited tom-btc results (also clears the stale tom-btc-other-setups result 504 candidates).",
   "prio": 2,
   "refine_tries": 1,
   "refined_by": "",

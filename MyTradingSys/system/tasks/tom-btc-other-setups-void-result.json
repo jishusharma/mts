@@ -15,7 +15,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-31 T0-ONLY (planner-a-20261031; machine checks only). ",
+  "note": "PLANNER 2026-11-01 DECISION (OURS): dropped; the stale result on tom-btc-other-setups (blocked, pre-2024-07 data cutoff) is cleared in the Lab_Guy trust check that also gates tom-btc-cards-window-rescope; a separate C0-gated card cannot promote.",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "",
@@ -29,7 +30,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "raw",
+  "state": "dropped",
   "steps": [
     "read MyTradingSys/research/layer_lab/reports/2026-10-22_tom-btc-other-setups.md lines 1-9",
     "set result to the report BLOCKED line (JSON, sorted keys, LF newline)"
