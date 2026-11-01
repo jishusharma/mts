@@ -1,0 +1,10 @@
+{
+  "done_when": "Inline task returns FAIL if any step fails.",
+  "from": "JIS-NUC",
+  "id": "20261101-113613-aibridge-task-inline-reports-pass-on-fai",
+  "need": "task=inline with on_fail=continue printed 'TASK RESULT: PASS' even though all 6 steps exited 2 (Result #6).",
+  "posted": "2026-11-01T11:36:13Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "aibridge-task-inline-reports-pass-on-failure-11-01"
+}
