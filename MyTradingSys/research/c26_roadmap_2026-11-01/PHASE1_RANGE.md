@@ -288,3 +288,156 @@ Limits: spot bars, one 15m gap in 27 months, fees only (no slippage, funding, or
 Phase 1's multi-week DOWN phase), Krown finder parameters set on six hand lines, F0 take-outs not traded (no close back under H1 inside the 24h window, or the window runs past the DEV end): 11 of 108 C26, 34 of 695 Krown.
 Re-run: `python phase3_dev.py <repo> <cache> --dev 2022-04-01:2024-06-30 --md out.md --sim-json <card> --registry <csv>`; 12 rows in `TRIAL_REGISTRY_c26_roadmap.csv`
 (P3_<set>_<arm>, split DEV); card `sim_desk/results/c26-h1-structural-lower-high.json`.
+
+<!-- Q7 appended 2026-11-01 by phase1_liq_look.py (shot fd1787b08c1b, CoinGlass Legend 15m with Liquidation Heatmap) -->
+## Q7. Liquidation bands at the touch: a proxy heatmap, three windows (design look on the SEEN window, not a test)
+
+The operator's ask (11-01): do liquidation levels say where to short if we add this layer, and how are the heatmaps read when
+they "develop in different timeframes". No CoinGlass history exists in the repo (liquidation_layer_2026-10-28/README.md:
+BANDS_LEDGER has 7 hand-read rows), so `phase1_liq_look.py` builds the same KIND of picture the vendor describes for its
+Model 1 (OURS, no claim it matches the vendor's numbers): every 15m rise in Binance USDT-M open interest adds positions at
+that bar's close, half long and half short, liquidating at close x (1 -/+ 1/L) for L = 10, 25, 50, 100; 100 USD buckets; a
+bucket is cleared the moment a later bar trades through it; a bucket older than the window is dropped. The window IS the
+heatmap timeframe: the 24h view holds only yesterday's positions, the 7d view holds the week's. Bars before the take-out only.
+
+| window | strong short band within 0.5 % above H1 (n, mean net) | not (n, mean net) | excursion reached the band (n, L1, mean net, overshoot) | stopped short (n, L1, mean net, overshoot) |
+|---|---|---|---|---|
+| 24h | 16: +0.22 | 9: +0.62 | 13: 4 L1, -0.10, 1.35 % | 12: 10 L1, +0.88, 0.33 % |
+| 72h | 16: +0.46 | 9: +0.21 | 14: 7 L1, +0.24, 1.16 % | 11: 7 L1, +0.52, 0.48 % |
+| 7d | 8: +0.72 | 17: +0.20 | 12: 5 L1, +0.15, 1.29 % | 13: 9 L1, +0.57, 0.47 % |
+
+25 distinct take-out bars (the 30 events collapse same-bar duplicates). Base rate: a strong short band within 0.5 % above the
+close stood at 10 % of hourly samples over the window; at take-outs it is 64 % (72h), by construction: shorts built under H1
+liquidate just above it, so a take-out through H1 is where the band sits. Proxy long bands sit 1.2-4 % under H1 and are never
+nearer than L1 (0 of 25 at 72h and 7d, 3 of 25 at 24h); "the trade reached the long band" = it reached L1 first.
+
+Reading:
+1. The band above H1 does not say WHERE to short; it says how far the overshoot goes. Touches whose excursion ran into the band
+   carry every one of the 4 stops; touches that stopped short of it carried the winners (24h: +0.88 vs -0.10). A 1 % stop above
+   H1 sits inside the band's reach.
+2. So the testable version of the layer is a sequence, not a level: band above H1 traded through (consumed) -> first close back
+   under H1 -> short. On this proxy that is the "reached the band" group, and it is the poorer one with the fixed 1 % stop; the
+   question for Phase 3b is whether the stop above the consumed band's top (not H1 + 1 %) turns it around. Not pre-registered in
+   Phase 3; a candidate for the next card, with the short-window (24h) proxy, since that view separated the two groups most.
+3. Timeframes: the 24h view answers "what is above the next hour", the 7d view "what is the week's magnet". The 24h split is the
+   sharpest here; the 7d view thins the "band within 0.5 %" group to 8. For a backtest the window is a parameter (24h first).
+4. The vendor's bands end where price traded through them; so do these. A band that "held" is one the excursion did not reach,
+   which is only known after the excursion. Any live read of the heatmap is therefore a read of the overshoot risk, not a trigger.
+5. Gap that makes this a proxy, not the layer: the vendor's leverage mix and exchange coverage are NOT_IN_DATA (A_liquidation.md);
+   recorded Binance forceOrder prints (BinanceLiquidationAccumulator in the Java feed) are a lower bound of real liquidations and
+   are not yet in the research cache. Pasted heatmap bands go on in BANDS_LEDGER.csv per the 10-28 pre-registered forward test.
+
+Not evidence: SEEN window, one proxy, factors read after the fact, n = 25.
+
+<!-- Q8 appended 2026-11-01 by phase1_cvd_div.py (CoinGlass CVD page shots f0c96ab4648f 8a0a7c7df46c 66e5bd1cba25 e6ffb95a80ef 2075e46d6f75 01954b8d332f) -->
+## Q8. CVD divergence as the CoinGlass CVD page draws it, with Malkan's 12-18 candle rule (design look, OURS)
+
+The operator's ask (11-01): the CoinGlass CVD page marks "Bear div / Bull div" on every bar size and prints a hit rate at
++12 bars (its panel today: 1D 58 % of 31, 1H 58 % of 19, 30m 21 % of 14, 15m 35 % of 20, 5m 71 % of 21, 1m 53 % of 17);
+do we have a match, given Malkan's rule that the two legs of a divergence are at most 12-18 candles apart. CVD = the running
+sum of taker buy minus taker sell volume; the page's "Futures vs spot" keeps two sums. `phase1_cvd_div.py` rebuilds the shape
+on our data (Binance SPOT 1m taker delta, not the vendor's 8-market combined CVD): pivot = high above the 3 bars either side,
+bear div = two consecutive pivot highs, the later higher in price and lower in CVD, confirmed 3 bars after the second pivot;
+bull mirrored; hit = the close 12 bars after confirmation moved the divergence's way. Four months, 2026-06-21 to 11-01.
+
+| bars | legs apart | bear div: n, hit rate at +12, mean move | bull div: n, hit rate, mean move | base rate down / up |
+|---|---|---|---|---|
+| 1m | 2-18 | 1699: 49 %, -0.00 % | 1655: 50 %, +0.00 % | 50 / 50 |
+| 5m | 2-18 | 585: 50 %, -0.01 % | 473: 56 %, +0.03 % | 50 / 50 |
+| 15m | 2-18 | 205: 50 %, +0.00 % | 177: 51 %, +0.08 % | 49 / 51 |
+| 60m | 2-18 | 43: 40 %, -0.20 % | 50: 64 %, +0.07 % | 47 / 53 |
+| 15m | 19-60 | 11: 27 %, -0.24 % | 8: 62 %, -0.02 % | 49 / 51 |
+
+At the 30 DOWN-high take-outs: a 15m CVD bear divergence with legs <= 18 bars was confirmed within 4 bars of the touch on 2
+(single short +1.04 mean, 1 L1); the other 28: +0.30 mean, 16 L1. The RSI divergence of Q5 at the touch has legs 53-273 bars
+apart, so under Malkan's bar none of the Q5 divergences count.
+
+Reading:
+1. The shape alone has no follow-through: every bar size within Malkan's 18 bars sits on the base rate, with n in the hundreds
+   to thousands. The vendor's 21-71 % are n = 14-31 readings of the same coin flip.
+2. "Match" with the vendor: not testable one-to-one (its CVD is 8 markets combined, its pivot rule is NOT_IN_DATA); the shape is
+   the same, and ours finds the vendor's 15m count order of magnitude (20 in 2 days there, 205 in 4 months here at K = 3).
+3. CVD divergence is not a C26 trigger candidate. If it enters anywhere it is as a context column beside the touch (Q5 already
+   has the CVD impulse columns, which did split the shorts: no up-impulse at/after the touch).
+4. The 60m bear row (40 % on 43) and the 15m 19-60 row (27 % on 11) are the only ones away from 50 %, both on the wrong side
+   of the base rate and both small n: noise until a VALIDATION read says otherwise.
+
+SOURCED from the page's own article (coinglass.com/cvd, read 2026-11-01 via Chrome, operator's ask "read the latest about the
+CoinGlass pages"): CVD = running sum of per-bar taker buy minus taker sell; "Combined" = the markets ticked in the picker, today
+8 of 21 (Binance, OKX, Bybit perp + spot, Coinbase spot, Hyperliquid perp), each weighted by its share of volume; divergence =
+"price higher high, CVD lower high ... no taker buying behind the rally"; the "Spot vs futures" card says whether a move is
+perp-driven (futures CVD up, spot CVD down: "leveraged move that can unwind as fast") or spot-driven. Pivot rule and the +12-bar
+scoring: NOT_IN_DATA. How to use it, per the vendor: as a who-pushed read on a move already seen, not as a trigger; our Q5
+impulse columns (15m taker delta beyond 1.5 sigma) are the same quantity read per bar instead of cumulated.
+
+Not evidence: SEEN window, OURS pivot rule, spot-only CVD, one +12-bar horizon.
+
+<!-- Q9 appended 2026-11-01 by phase1_fp_look.py (CoinGlass Footprint 4H shots c0a8fc721e58 aggregated 4/4, 82d84b32fe1a Binance perp) -->
+## Q9. Footprint at the touch: a taker-delta-per-row proxy over the excursion above H1 (design look, OURS, n=30)
+
+The operator sent the CoinGlass Footprint page (4H, bid x ask cells, imbalance ratio 300 %, volume profile with POC and value
+area, signals: imbalance / absorption / unfinished auction) and asked what its "Latest signal: Absorption, Bullish, selling
+absorbed at the low, 19d ago (Binance perp) / 23d ago (aggregated)" means. We have no bid x ask per price row; `phase1_fp_look.py`
+puts each Binance SPOT 1m bar's taker delta on the 100 USD row of its close over the excursion (take-out bar to the excursion
+high) and reads the top quarter of that range the way the page reads a bar's top: who won the auction there, how much volume
+stacked there, where the POC sits, whether any top row has taker sells >= 3 x taker buys.
+
+| footprint fact over the excursion | yes: n, reached L1, mean net unit-% | no: n, reached L1, mean net unit-% |
+|---|---|---|
+| top-quarter delta negative (sellers won the high) | 1: 0 L1, -1.33 | 29: 17 L1, +0.41 |
+| top-quarter volume share >= 35 % (stacked top) | 6: 5 L1, +0.45 | 24: 12 L1, +0.33 |
+| POC in the lower half (top rejected) | 18: 9 L1, +0.41 | 12: 8 L1, +0.26 |
+| a sell-imbalance row at the top (sells >= 3 x buys) | 0 | 30: 17 L1, +0.35 |
+
+Reading:
+1. The take-out through H1 is taker buying by definition: 29 of 30 excursions have buyers winning the top quarter, and no top
+   row ever shows the page's 300 % sell imbalance. The footprint cannot tell the 17 winners from the 4 stops at the touch.
+2. "Absorption, bullish, selling absorbed at the low" is the page's BOTTOM signal: a 4H bar where heavy taker selling at the
+   bar's low did not push price lower. Its last firing was 19 days ago on Binance perp (about 10-13) and 23 days ago on the
+   aggregated set (about 10-09), both before the 82k top and the 10-30 drop: a stale read, and the detector printed nothing
+   through the whole fall (no absorption = sellers were not met). The two dates differ because the detector runs per data set.
+3. A stacked top (6 touches, 5 reached L1) is the only footprint fact leaning the short's way; n = 6, noise until Phase 3b.
+4. Aggregated (4 markets) vs Binance perp: same shape, twice the volume, POC 77,600 vs 77,800. For a backtest the per-exchange
+   taker data is what exists (Binance spot/perp 1m); the aggregated footprint is a vendor view with no history in the repo.
+
+Not evidence: SEEN window, spot-only taker delta at 1m resolution instead of bid x ask per row, n = 30.
+
+<!-- Q10 appended 2026-11-01 by phase1_dist_look.py (operator: "keep in mind the probability distribution layer to find entries and exits") -->
+## Q10. The probability-distribution layer on the C26 event: quantiles of the path around the take-out (design look, OURS, n=30)
+
+The operator's standing layer (research/prob_dist_layer_brief_2026-10-16/BRIEF.md, design D2 "outcome-after-event table";
+backtest/prob_table.py exists but never produced an evidence run) applied to the one event this folder studies: the DOWN-high
+take-out. Instead of the fixed stop 1 % / target L1 of Q3, read what price did off its own quantiles, all in % of H1:
+
+| quantity | p25 | p50 | p75 | p90 |
+|---|---|---|---|---|
+| overshoot above H1 before the reclaim | 0.13 | 0.33 | 0.53 | 1.07 |
+| 15m bars to the first close back under H1 | 0 | 1 | 4 | 42 |
+| MAE after entry: highest high above the entry close within 96 bars | 0.25 | 0.71 | 1.08 | 1.67 |
+| MFE after entry: deepest low under the entry close within 96 bars | 0.91 | 1.50 | 2.04 | 3.68 |
+| L1 below the entry close | 0.80 | 1.01 | 1.55 | 2.48 |
+
+All 30 take-outs closed back under H1 inside the hold. Stop x target grid read off those quantiles, fee-net (0.10 % per round trip):
+
+| stop (MAE quantile) | target (MFE quantile) | exits tgt / 24h / stop | mean net % | sum | worst |
+|---|---|---|---|---|---|
+| 0.71 (p50) | 0.91 (p25) | 16 / 1 / 13 | +0.10 | +2.95 | -0.81 |
+| 0.71 | 1.50 (p50) | 12 / 3 / 15 | +0.21 | +6.29 | -0.81 |
+| 1.00 (Q3 stop) | 0.91 | 20 / 2 / 8 | +0.25 | +7.42 | -1.10 |
+| 1.00 | 1.50 | 14 / 5 / 11 | +0.31 | +9.44 | -1.10 |
+| 1.08 (p75) | 2.04 (p75) | 8 / 13 / 9 | +0.33 | +9.99 | -1.18 |
+| 1.67 (p90) | 1.50 | 14 / 13 / 3 | +0.37 | +11.06 | -1.77 |
+| 1.67 | 2.04 | 8 / 19 / 3 | +0.39 | +11.56 | -1.77 |
+
+Reading:
+1. The grid is flat: every stop x target pair lands between +0.10 and +0.39 mean net. The shape of the exit does not make the
+   trade; the small drift after the reclaim does. A distribution layer's first job here is to say exactly that, and it does.
+2. Entry: half the reclaims come on the take-out bar or the next (p50 wait 1 bar) with a 0.33 % overshoot; the slow tenth
+   (p90 42 bars, 1.07 % overshoot) is the Q7 band-overshoot case. Legs above H1 beyond 0.5 % fill on one touch in four.
+3. Exit: MFE p50 1.50 % against MAE p50 0.71 % is a 2:1 shape before fees, but the median L1 sits at 1.01 %, so L1 as target
+   takes the first half of the available move. Wider stops win by holding to 24h (13-19 of 30 exits), i.e. by drift, not by
+   a better exit.
+4. These quantiles are fitted on the same 30 events they are scored on. The right use: freeze stop/target quantiles from SEEN
+   (Phase 2 card) and score them once on the VALIDATION window; a grid searched on VALIDATION is the overfit the roadmap forbids.
+
+Not evidence: SEEN window, n = 30, quantiles and scoring on the same events.

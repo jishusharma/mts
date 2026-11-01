@@ -6,3 +6,9 @@ obs_utc,price_at_obs,band_lo,band_hi,density,side,status,source_shot,note
 2026-10-27T21:30Z,NA,81150,81250,cream,above,consumed (price wick high about 81260),5m e5ede7c82a58,outcome after touch NOT_MEASURED (needs Binance 1m klines)
 2026-10-28T08:30Z,NA,81300,81800,cream+pink,above,consumed (day high 81800.0),15m shot / 8H 141978a1a838,outcome: price 80613 about 5h later = -1187 from the high (SOURCED 8H/1D legend + shots); no placebo comparison
 2026-10-27T15:00Z,NA,79500,79600,cream,below,consumed (low wick about 79450),5m e5ede7c82a58,outcome after touch NOT_MEASURED
+2026-11-01T12:19Z,77725,79000,79250,pink,above,standing,1H f878c6b98345,standing since the 10-30 drop; read off axis +-100 (OURS)
+2026-11-01T12:19Z,77725,78300,78400,purple,above,standing,1H f878c6b98345,faint band from 10-31; read off axis +-100 (OURS)
+2026-11-01T12:19Z,77725,82000,82400,purple,above,standing,1H f878c6b98345,faint; from 10-28 to 10-29 highs
+2026-11-01T12:19Z,77725,76000,76300,pink-cream,below,standing,1H f878c6b98345,densest low band in the 1H view; 10-31 low 76270 sat on its top
+2026-10-29T15:45Z,NA,81900,82000,purple,above,consumed (high 81953.7 on 10-29 then the 10-30 drop),1H f878c6b98345,matches phase1_liq_look.py proxy band 81900 at the 10-29 15:45 take-out (Q7); single short +2.43 L1
+2026-10-30T14:00Z,NA,78900,79300,cream+pink,below,consumed (10-30 drop traded through to 76270),1H f878c6b98345,densest band of the week did not hold: a magnet, not support

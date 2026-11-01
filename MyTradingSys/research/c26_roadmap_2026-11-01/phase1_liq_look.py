@@ -80,9 +80,28 @@ class Heat:
         return max(below) if below else None
 
 
+def standing(P, heat, k):
+    """The proxy's strong bands around the close of bar k (what the vendor's picture would show at the right edge)."""
+    price = P.C[k]
+    out = []
+    for name, side in (("short bands above", heat.short), ("long bands below", heat.long)):
+        strong, cut = heat.bands(side, price)
+        tot = sum(strong.values()) or 1.0
+        for b, d in sorted(strong.items(), key=lambda x: -x[1])[:4]:
+            out.append([name, "%.0f" % (b * 100.0), "%+.2f" % ((b * 100.0 / price - 1) * 100), "%.0f %%" % (100 * d / tot)])
+    print("\nStanding proxy bands at %s (close %.0f), window %dh, share of the strong bands' density:\n"
+          % (P.utc(P.T[k]).strftime("%m-%d %H:%M"), price, WINDOW_H))
+    print(R.table(["side", "band", "dist % from close", "share"], out))
+
+
 def main():
     R._load()
     P = R.P
+    if "--standing" in sys.argv:
+        heat = Heat(P)
+        for k in range(P.N):
+            heat.step(k)
+        return standing(P, heat, P.N - 1)
     ev = [e for e in P.run(1) if e["_take"] is not None and e["phase"] == "DOWN"]
     takes = {e["_take"]: e for e in ev}
     heat = Heat(P)
