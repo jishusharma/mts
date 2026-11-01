@@ -104,3 +104,28 @@ class ExtractorFailure(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def test_every_scheduled_start_lands_in_a_window_and_two_windows_per_day():
+    """Schedule fires 05:00 + 20:00 UTC weekdays, Sat 05:30, Sun 16:30; each must stamp a window (10-30 gap)."""
+    import cbp_schedule
+    from datetime import datetime, timezone
+    starts = [t for t in cbp_schedule.WEEKDAY_TIMES] + [t for _, t in cbp_schedule.WEEKEND_TIMES]
+    names = []
+    for hhmm in starts:
+        hh, mm = map(int, hhmm.split(":"))
+        w = cbp_run.open_window(datetime(2026, 11, 2, hh, mm, tzinfo=timezone.utc))
+        assert w, hhmm + " UTC fires outside every window, so the stamp never records it"
+        names.append(w)
+    assert names[0] != names[1]  # weekday pair = two different windows = two stamps per UTC date
+
+
+def test_two_windows_stamp_in_one_day(tmp_path, monkeypatch):
+    from datetime import datetime, timezone
+    monkeypatch.setenv("CBP_STAMP", str(tmp_path / "stamp.json"))
+    for hh in (5, 20):
+        now = datetime(2026, 11, 3, hh, 0, tzinfo=timezone.utc)
+        w = cbp_run.is_due(now, cbp_run.read_stamp())
+        assert w
+        cbp_run.write_stamp(now, w)
+    assert cbp_run.read_stamp()["done"] == ["2026-11-03:EU", "2026-11-03:PRE_US"]
