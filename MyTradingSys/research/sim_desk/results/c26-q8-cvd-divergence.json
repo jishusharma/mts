@@ -1,0 +1,161 @@
+{
+ "id": "c26-q8-cvd-divergence",
+ "kind": "backtest",
+ "family": "Eagle_Eyes chart ideas (operator, 10-30/31)",
+ "provenance": "run",
+ "title": "C26 Q8: CVD divergence as the CoinGlass CVD page draws it, with Malkan's 12-18 candle rule, on 1m/5m/15m/60m bars",
+ "date": "2026-11-01",
+ "what": [
+  {
+   "name": "CVD",
+   "value_plain": "cumulative volume delta from Binance spot taker buy minus taker sell volume per 1m bar, summed to the bar size",
+   "label": "OURS"
+  },
+  {
+   "name": "Divergence",
+   "value_plain": "price makes a higher high (lower low) while CVD makes a lower high (higher low): pivots +-3 bars, counted at the confirmation close, two legs 2-60 bars apart",
+   "label": "OURS"
+  },
+  {
+   "name": "Legs apart 12-18",
+   "value_plain": "Malkan's rule for a valid divergence (QRIPTAL / Malkan extracts)",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Hit",
+   "value_plain": "the close 12 bars after confirmation moved the divergence's way; compared with the base rate of all 12-bar moves",
+   "label": "OURS"
+  },
+  {
+   "name": "Outcome read at the take-outs",
+   "value_plain": "single short: first 15m close back under H1, stop H1 + 1.0 %, target L1, 24h, fee-net",
+   "label": "OURS"
+  },
+  {
+   "name": "Costs",
+   "value_plain": "0.10 % per round trip (Binance taker x2, backtest/fees.py); slippage and funding not modelled",
+   "label": "SOURCED"
+  }
+ ],
+ "how": "phase1_cvd_div.py <repo> <cache> --until 2026-11-01T07:45 --card <this file>; 1m bars from data.binance.vision (fetch_1m.py). CoinGlass CVD page shots f0c96ab4648f 8a0a7c7df46c 66e5bd1cba25 e6ffb95a80ef 2075e46d6f75 01954b8d332f set what to rebuild.",
+ "window": "RECENT design window 2026-06-21 .. 2026-11-01 (SEEN: looked at here, nothing here is evidence; DEV scores come from phase3_dev.py, card c26-h1-structural-lower-high)",
+ "verdict": {
+  "label": "Design look: on every bar size the hit rate sits at the 12-bar base rate; a 15m bear divergence stood within 4 bars of 2 of 30 take-outs",
+  "tone": "info"
+ },
+ "why": [
+  "Hundreds of divergences fire per bar size and leg gap; their hit rate is the base rate of the market moving that way, so the signal alone carries no edge on this window.",
+  "At the C26 take-outs the divergence is rare (2 of 30), so it cannot be a Phase 3 filter; it stays a chart-reading aid.",
+  "Malkan's 12-18 bar rule is SOURCED; the pivot width, the +12-bar hit and the bar sizes are OURS."
+ ],
+ "kpis": [
+  {
+   "label": "bar sizes x leg gaps",
+   "value": "8"
+  },
+  {
+   "label": "15m bear div at a take-out",
+   "value": "2 of 30"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "table",
+   "title": "Divergences per bar size and leg gap, hit rate vs base rate",
+   "caption": "",
+   "cols": [
+    "bars",
+    "legs apart",
+    "bear div: n, hit rate at +12, mean move",
+    "bull div: n, hit rate at +12, mean move",
+    "base rate: 12-bar move down / up"
+   ],
+   "rows": [
+    [
+     "1m",
+     "2-18",
+     "1699: hit 49 % , mean -0.00 %",
+     "1655: hit 50 % , mean +0.00 %",
+     "50 % / 50 %"
+    ],
+    [
+     "1m",
+     "19-60",
+     "407: hit 49 % , mean -0.01 %",
+     "416: hit 50 % , mean -0.00 %",
+     "50 % / 50 %"
+    ],
+    [
+     "5m",
+     "2-18",
+     "585: hit 50 % , mean -0.01 %",
+     "473: hit 56 % , mean +0.03 %",
+     "50 % / 50 %"
+    ],
+    [
+     "5m",
+     "19-60",
+     "36: hit 61 % , mean -0.04 %",
+     "49: hit 55 % , mean +0.02 %",
+     "50 % / 50 %"
+    ],
+    [
+     "15m",
+     "2-18",
+     "205: hit 50 % , mean +0.00 %",
+     "177: hit 51 % , mean +0.08 %",
+     "49 % / 51 %"
+    ],
+    [
+     "15m",
+     "19-60",
+     "11: hit 27 % , mean -0.24 %",
+     "8: hit 62 % , mean -0.02 %",
+     "49 % / 51 %"
+    ],
+    [
+     "60m",
+     "2-18",
+     "43: hit 40 % , mean -0.20 %",
+     "50: hit 64 % , mean +0.07 %",
+     "47 % / 53 %"
+    ],
+    [
+     "60m",
+     "19-60",
+     "3: hit 33 % , mean -0.03 %",
+     "4: hit 75 % , mean +0.82 %",
+     "47 % / 53 %"
+    ]
+   ]
+  },
+  {
+   "kind": "table",
+   "title": "At the take-outs",
+   "caption": "n, how many reached L1, mean fee-net unit-% of the single short",
+   "cols": [
+    "at the 30 DOWN-high take-outs",
+    "n, reached L1, single short mean net unit-%"
+   ],
+   "rows": [
+    [
+     "15m CVD bear div (legs <= 18) confirmed within 4 bars of the take-out",
+     "2: 1 L1, +1.04"
+    ],
+    [
+     "none",
+     "28: 16 L1, +0.30"
+    ]
+   ]
+  }
+ ],
+ "evidence": [
+  "MyTradingSys/research/c26_roadmap_2026-11-01/PHASE1_RANGE.md"
+ ],
+ "missing": [],
+ "source_files": [
+  "MyTradingSys/research/c26_roadmap_2026-11-01/phase1_cvd_div.py",
+  "MyTradingSys/research/c26_roadmap_2026-11-01/PHASE1_RANGE.md"
+ ],
+ "commit": "see git log"
+}

@@ -1,0 +1,385 @@
+{
+ "id": "c26-q7-liquidation-bands",
+ "kind": "backtest",
+ "family": "Eagle_Eyes chart ideas (operator, 10-30/31)",
+ "provenance": "run",
+ "title": "C26 Q7: a liquidation-band proxy at the DOWN-high take-outs (bands built from Binance open-interest rises, 72h window)",
+ "date": "2026-11-01",
+ "what": [
+  {
+   "name": "Events",
+   "value_plain": "C26 held highs taken out in a DOWN phase (phase1_recent.py), 15m Binance spot BTCUSDT",
+   "label": "OURS"
+  },
+  {
+   "name": "Band proxy",
+   "value_plain": "a liquidation band is where leveraged entries would be liquidated: each 15m open-interest rise is spread over 10x/25x/50x/100x liquidation prices in 100 USD buckets, decays over the window, dies when price trades through it (a CoinGlass-heatmap-like model; nothing from CoinGlass itself)",
+   "label": "OURS"
+  },
+  {
+   "name": "Strong band",
+   "value_plain": "top 20 % of bucket density within 5 % of price, from bars before the take-out only",
+   "label": "OURS"
+  },
+  {
+   "name": "Outcome read",
+   "value_plain": "single short: first 15m close back under H1, stop H1 + 1.0 %, target L1, 24h time stop, fee-net",
+   "label": "OURS"
+  },
+  {
+   "name": "Costs",
+   "value_plain": "0.10 % per round trip (Binance taker x2, backtest/fees.py); slippage and funding not modelled",
+   "label": "SOURCED"
+  }
+ ],
+ "how": "phase1_liq_look.py <repo> <cache> --until 2026-11-01T07:45 --window 72 --card <this file>; open interest from the Binance USDT-M 5m metrics files. Shot fd1787b08c1b (CoinGlass Legend 15m heatmap) is what the proxy imitates; `--standing` prints today's bands.",
+ "window": "RECENT design window 2026-06-21 .. 2026-11-01 (SEEN: looked at here, nothing here is evidence; DEV scores come from phase3_dev.py, card c26-h1-structural-lower-high)",
+ "verdict": {
+  "label": "Design look on SEEN, n=30: excursions that reached the short band above H1: 14: 7 L1, +0.24, overshoot 1.16; that stopped short of it: 11: 7 L1, +0.52, overshoot 0.48; base rate of a strong band within 0.5 % above price 10 %",
+  "tone": "info"
+ },
+ "why": [
+  "The band above H1 marks how far the take-out overshoots: when the excursion stops short of the band the single short wins, when it reaches the band it loses on average.",
+  "A strong band stands close above price most of the time (base rate), so 'a band is there' is not a filter; 'the excursion reached it' is a candidate for the Phase 3b card (band consumed -> reclaim under H1 -> short, stop above the band top).",
+  "OURS proxy, not the vendor's heatmap: the Binance liquidation log (Lenovo, runtime_data/liq_events) is the stable source to compare against."
+ ],
+ "kpis": [
+  {
+   "label": "take-outs",
+   "value": "30"
+  },
+  {
+   "label": "strong band within 0.5 % above price (base rate)",
+   "value": "10 %"
+  },
+  {
+   "label": "excursion reached the band",
+   "value": "14: 7 L1, +0.24, overshoot 1.16"
+  },
+  {
+   "label": "stopped short of the band",
+   "value": "11: 7 L1, +0.52, overshoot 0.48"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "table",
+   "title": "The take-outs and the nearest bands",
+   "caption": "no prices: the H1 and band columns are dropped; distances in % of H1 stay",
+   "cols": [
+    "take-out (UTC)",
+    "dist % above H1",
+    "excursion % above H1",
+    "excursion reached band",
+    "dist % below H1",
+    "L1 dist % below H1",
+    "trade reached long band",
+    "single short net, exit"
+   ],
+   "rows": [
+    [
+     "09-23 01:00",
+     "+0.67",
+     "+0.65",
+     "no",
+     "2.21",
+     "0.83",
+     "yes",
+     "+0.63 L1"
+    ],
+    [
+     "09-24 14:15",
+     "+0.51",
+     "+0.32",
+     "no",
+     "2.56",
+     "1.09",
+     "no",
+     "+0.69 L1"
+    ],
+    [
+     "09-25 11:00",
+     "+0.25",
+     "+0.43",
+     "yes",
+     "1.52",
+     "1.34",
+     "yes",
+     "+1.04 L1"
+    ],
+    [
+     "09-29 11:45",
+     "+0.26",
+     "+0.22",
+     "no",
+     "2.23",
+     "1.90",
+     "no",
+     "+0.42 24h"
+    ],
+    [
+     "09-30 12:45",
+     "+0.40",
+     "+0.58",
+     "yes",
+     "2.42",
+     "0.84",
+     "no",
+     "-0.02 L1"
+    ],
+    [
+     "10-01 15:00",
+     "+0.21",
+     "+3.32",
+     "yes",
+     "1.56",
+     "1.19",
+     "no",
+     "-1.49 stop"
+    ],
+    [
+     "10-02 03:00",
+     "+0.27",
+     "+2.28",
+     "yes",
+     "2.55",
+     "0.88",
+     "no",
+     "+0.71 L1"
+    ],
+    [
+     "10-02 04:15",
+     "+0.06",
+     "+1.83",
+     "yes",
+     "2.98",
+     "2.88",
+     "no",
+     "+1.20 24h"
+    ],
+    [
+     "10-06 09:45",
+     "+0.89",
+     "+0.66",
+     "no",
+     "1.78",
+     "1.15",
+     "yes",
+     "+0.89 L1"
+    ],
+    [
+     "10-09 11:30",
+     "+1.60",
+     "+0.91",
+     "no",
+     "3.11",
+     "1.63",
+     "no",
+     "-0.50 24h"
+    ],
+    [
+     "10-09 11:45",
+     "+0.69",
+     "+0.01",
+     "no",
+     "3.98",
+     "1.21",
+     "no",
+     "+0.79 L1"
+    ],
+    [
+     "10-11 15:45",
+     "+0.44",
+     "+0.99",
+     "yes",
+     "1.59",
+     "1.49",
+     "no",
+     "+0.76 24h"
+    ],
+    [
+     "10-12 05:00",
+     "+0.12",
+     "+0.18",
+     "yes",
+     "2.37",
+     "0.91",
+     "yes",
+     "+0.60 L1"
+    ],
+    [
+     "10-13 03:30",
+     "+1.51",
+     "+1.23",
+     "no",
+     "3.06",
+     "2.54",
+     "no",
+     "-0.97 24h"
+    ],
+    [
+     "10-14 03:30",
+     "+0.42",
+     "+0.35",
+     "no",
+     "1.25",
+     "1.03",
+     "yes",
+     "+0.89 L1"
+    ],
+    [
+     "10-16 11:00",
+     "+0.08",
+     "+0.37",
+     "yes",
+     "1.37",
+     "1.15",
+     "yes",
+     "+0.57 L1"
+    ],
+    [
+     "10-18 01:30",
+     "+0.77",
+     "+0.64",
+     "no",
+     "1.19",
+     "1.16",
+     "yes",
+     "+0.92 L1"
+    ],
+    [
+     "10-19 00:30",
+     "+0.13",
+     "+1.05",
+     "yes",
+     "2.42",
+     "1.96",
+     "no",
+     "+0.52 24h"
+    ],
+    [
+     "10-19 07:30",
+     "+0.31",
+     "+0.26",
+     "no",
+     "3.06",
+     "2.72",
+     "no",
+     "+1.48 24h"
+    ],
+    [
+     "10-20 04:15",
+     "+1.01",
+     "+0.00",
+     "no",
+     "1.42",
+     "0.86",
+     "no",
+     "+0.53 L1"
+    ],
+    [
+     "10-21 08:45",
+     "+0.19",
+     "+1.75",
+     "yes",
+     "2.80",
+     "1.25",
+     "no",
+     "-1.33 stop"
+    ],
+    [
+     "10-24 23:30",
+     "+0.19",
+     "+0.23",
+     "yes",
+     "2.28",
+     "0.90",
+     "no",
+     "+0.72 L1"
+    ],
+    [
+     "10-27 12:45",
+     "+0.89",
+     "+1.78",
+     "yes",
+     "1.73",
+     "1.10",
+     "no",
+     "-1.13 stop"
+    ],
+    [
+     "10-27 21:30",
+     "+0.32",
+     "+1.21",
+     "yes",
+     "2.03",
+     "1.66",
+     "no",
+     "-1.16 stop"
+    ],
+    [
+     "10-29 15:45",
+     "+0.14",
+     "+0.22",
+     "yes",
+     "2.80",
+     "2.54",
+     "yes",
+     "+2.43 L1"
+    ]
+   ]
+  },
+  {
+   "kind": "table",
+   "title": "Each band fact split yes / no",
+   "caption": "n, how many reached L1, mean fee-net unit-% of the single short, mean overshoot above H1",
+   "cols": [
+    "fact at the touch",
+    "yes: n, reached L1, mean net unit-%, mean overshoot %",
+    "no: n, reached L1, mean net unit-%, mean overshoot %"
+   ],
+   "rows": [
+    [
+     "short band within 0.5 % above H1",
+     "16: 8 L1, +0.46, overshoot 0.95",
+     "9: 6 L1, +0.21, overshoot 0.69"
+    ],
+    [
+     "short band within 1.0 % above H1",
+     "22: 13 L1, +0.46, overshoot 0.88",
+     "3: 1 L1, -0.32, overshoot 0.71"
+    ],
+    [
+     "excursion reached the band",
+     "14: 7 L1, +0.24, overshoot 1.16",
+     "11: 7 L1, +0.52, overshoot 0.48"
+    ],
+    [
+     "excursion stopped short of the band",
+     "11: 7 L1, +0.52, overshoot 0.48",
+     "14: 7 L1, +0.24, overshoot 1.16"
+    ],
+    [
+     "long band nearer than L1",
+     "0",
+     "25: 14 L1, +0.37, overshoot 0.86"
+    ],
+    [
+     "trade reached the long band",
+     "8: 8 L1, +1.00, overshoot 0.44",
+     "17: 6 L1, +0.07, overshoot 1.06"
+    ]
+   ]
+  }
+ ],
+ "evidence": [
+  "MyTradingSys/research/c26_roadmap_2026-11-01/PHASE1_RANGE.md"
+ ],
+ "missing": [],
+ "source_files": [
+  "MyTradingSys/research/c26_roadmap_2026-11-01/phase1_liq_look.py",
+  "MyTradingSys/research/c26_roadmap_2026-11-01/PHASE1_RANGE.md",
+  "MyTradingSys/research/c26_roadmap_2026-11-01/BANDS_LEDGER.csv"
+ ],
+ "commit": "see git log"
+}
