@@ -46,9 +46,11 @@ class Base(unittest.TestCase):
         return {"outcome": "entered", "plan_id": f"p{len(self.placed)}", "proc": Proc()}
 
     def run_cycle(self, sources, active, extra):
-        sigs = [{"source": s, "key": f"k{i}{s}", "side": "long", "plan_args": []} for i, s in enumerate(sources)]
+        sigs = [{"source": s, "key": f"k{i}{s}", "side": "long",
+                 "plan_args": ["--side", "long", "--entry", "market", "--size", "100"]} for i, s in enumerate(sources)]
         with mock.patch.object(at, "layer_signal", lambda a, c, n: a), \
                 mock.patch.object(at, "read_new_layer_alerts", lambda st: sigs), \
+                mock.patch.object(at, "deribit_mark", lambda instrument="BTC-PERPETUAL": 50000.0), \
                 mock.patch.object(at, "place", self.fake_place):
             return at.cycle({}, self.cfg, False, active, extra=extra)
 
