@@ -66,10 +66,12 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Roadmap: `MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md`
 - Codex lab reports (newest 2 of 2): `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-fabio-gpt-rederive.md`; `MyTradingSys/research/layer_lab/reports/2026-10-25_lf-fabio-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
+  - `fabio-v3-code-vs-formulas-s28-diffs` ready p2 SONNET: Fabio v3: resolve the 3 FORMULAS.md s28.6 code-vs-spec differences, each with an s28 hand-number test that is 
+  - `fabio-v3-model-b-managed-is-rerun` refined p2 JIS-NB: Rerun fabio v3 L3 IS only with managed Model B fills (fix 483a6b035) on JIS-NB; report net R per model
   - `meta-label-fabio-c-dev-ext-power` ready p2 SONNET: Meta-label NOT ENOUGH DATA branch: rerun Fabio Model C stand-in test on pre-DEV dev_ext 2019-2021 (ROADMAP 2.2
   - `sim-desk-tom-fabio-studies` ready p2 SONNET: Sim desk: add per-trade replay studies for Fabio v3 A-D and Tom spike fade / level touch (DEV only, fee-net)
   - `t09-f4-live-window-99-bars-swing-layers` blocked p2 JIS-NB: T09-F4 S2: 99-bar live window misses 68 of 96 escalation signals; fetch more bars for swing layers
-  - `fabio-detectors-match-quotes` raw p3 JIS-NB: fabio_cvd_absorption.py:88-89 accepts any higher low (quote: same level); fabio_escalation.py fires with no br
+  - `fabio-detectors-match-quotes` ready p3 JIS-NB: fabio_cvd_absorption.py:88-89 accepts any higher low (quote: same level); fabio_escalation.py fires with no br
   - `fabio-of-model-docstring-dst-sessions` ready p3 SONNET: fabio_of_model.py docstring states fixed UTC sessions (London 08:00-13:30, NY 13:30-21:00) but session_bounds 
   - `fabio-of-report-superseded` ready p3 HAIKU: FABIO_OF_REPORT.md used legacy fees 3.5/-1.5 bp, pre-B102 fixed UTC sessions, reproduce path :10 points at a m
   - `layer-review-fabio-session` ready p3 SONNET: Layer review sheet: Fabio and session timing (idea, source, backtests, bugs, confluence)
@@ -125,8 +127,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `cryptocred-4h-1d-dev-s3` ready p2 SONNET: CryptoCred 4h/1D S3 test: frozen PRE_REG, fee-net DEV run with real funding, then one VALIDATION read (D7 S3 r
   - `lf-cryptocred-gpt-rederive` blocked p2 CODEX: Layer re-derive: cryptocred (independent recount of the headline numbers behind the fact sheet)
-  - `meta-label-1h-dev-ext-check` ready p2 SONNET: Meta-label 1h lead, fresh-data check: refit the frozen meta.py 1h model on all DEV, score tf_break 1h events f
-  - `follow-reclaim-daily-close-stop` ready p3 SONNET: Reclaim with the video's timing: 4h/1D level reclaim, enter at the reclaim close, stop = close back below (Bra
   - `layer-review-rsi-cc-pitchfork-engine` ready p3 SONNET: Layer review sheet: RSI, CryptoCred, pitchfork, live engine (idea, source, backtests, bugs, confluence)
 
 ## Positioning (funding, OI, whale / FlowHorse) (`positioning`)
@@ -248,7 +248,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `krown-dev-event-study-candles` refined p2 SONNET: Krown DEV event study 3/3: candle hypotheses H-C1, H-C2 (H-T1 not run); DONE when: DEV_RESULTS.md has N, power
   - `krown-dev-event-study-levels` refined p2 SONNET: Krown DEV event study 2/3: level and moving-average hypotheses H-M1, H-M3, H-Z1 (H-M2 not run); DONE when: DEV
   - `krown-hidden-divergence-confluence-feed` blocked p2 SONNET: Krown hidden divergence as a shared confluence feed any layer (RSI 40-60 included) can consume; Malkan layer s
-  - `meta-label-1h-dev-ext-check` ready p2 SONNET: Meta-label 1h lead, fresh-data check: refit the frozen meta.py 1h model on all DEV, score tf_break 1h events f
   - `layer-review-krown-wavetrend` ready p3 SONNET: Layer review sheet: Krown and WaveTrend (idea, source, backtests, bugs, confluence)
   - `layer-state-snapshot-causal` raw p3 SONNET: S0 park. Meta-label phase 2 (ROADMAP P2 + 2.0): causal layer_state_at(ts) snapshot in sim_desk/studies/_bars.p
   - `trendline-ledger-registry-hygiene` blocked p3 SONNET: Trend-line daily ledger schema v2 enforcement + register the module in layer_index and wiring_registry (audit 

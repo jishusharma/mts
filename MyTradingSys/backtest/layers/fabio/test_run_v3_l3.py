@@ -110,3 +110,31 @@ def test_model_b_in_trade_fill_is_managed_not_scored_zero(monkeypatch):
     t = engine._manage("B", st, bars, 0, 4, cfg, ctx)
     assert t is not None and t["reason"] == "target"
     assert abs(t["net_r"] - 19 / 7) < 1e-9
+
+
+def test_is_only_never_touches_oos_windows(monkeypatch, tmp_path):
+    # Hand numbers: 2 IS windows; every cell returns per-window R [1.0, 0.5] -> mean 0.75 per model; ties pick the first cell of each model.
+    d_is, d_oos = r.IS_RANGE[0], r.OOS_RANGE[0]
+    wins = [{"date": d_is, "bars": [], "prior": None}, {"date": r.IS_RANGE[0] + dt.timedelta(days=1), "bars": [], "prior": None},
+            {"date": d_oos, "bars": [], "prior": None}]
+    monkeypatch.setattr(r, "build_windows", lambda a, b: (wins, {}))
+    seen = []
+
+    class _P:
+        def shutdown(self, *a, **k):
+            pass
+
+    monkeypatch.setattr(r, "ProcessPoolExecutor", lambda **k: _P())
+
+    def fake(pool, w, cells, slip, name):
+        seen.append((name, [x["date"] for x in w]))
+        return {k: {"r": [1.0, 0.5], "tag": {}} for k in cells}
+
+    monkeypatch.setattr(r, "run_cells", fake)
+    r.main(["--is-only", "--out", str(tmp_path)])
+    import json
+    io = json.loads((tmp_path / "is_only.json").read_text(encoding="utf-8"))
+    assert (tmp_path / "selection.json").exists()
+    assert io["n_is"] == 2 and set(io["chosen"]) == set("ABCD")
+    assert all(v == 0.75 for v in io["is_mean_net_r"].values()) and all(v == [1.0, 0.5] for v in io["is_window_r"].values())
+    assert seen and all(not n.startswith(("oos", "stress")) and d_oos not in ds for n, ds in seen)

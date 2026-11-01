@@ -5,6 +5,7 @@ import os
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 import unittest
 from unittest import mock
@@ -15,6 +16,23 @@ import run_all_tests as rat
 
 # tests that run fake plans must not append to the real runtime_data/gate_timing.jsonl
 os.environ["MTS_GATE_TIMING"] = os.path.join(tempfile.mkdtemp(prefix="gate_timing_test_"), "t.jsonl")
+
+# ... nor write failing-fake-step logs into the real runtime_data/gate_fail_logs: the whole module uses a tmp dir
+REAL_FAIL_LOG_DIR = rat.FAIL_LOG_DIR
+_FAIL_LOG_TMP = None
+_FAIL_LOG_PATCH = None
+
+
+def setUpModule():
+    global _FAIL_LOG_TMP, _FAIL_LOG_PATCH
+    _FAIL_LOG_TMP = tempfile.TemporaryDirectory(prefix="gate_fail_logs_test_")
+    _FAIL_LOG_PATCH = mock.patch.object(rat, "FAIL_LOG_DIR", Path(_FAIL_LOG_TMP.name))
+    _FAIL_LOG_PATCH.start()
+
+
+def tearDownModule():
+    _FAIL_LOG_PATCH.stop()
+    _FAIL_LOG_TMP.cleanup()
 
 
 class LocalSkip(unittest.TestCase):
@@ -259,11 +277,27 @@ class TestConcurrentGate(unittest.TestCase):
         return results, buf.getvalue()
 
     def test_independent_steps_overlap_and_all_results_come_back(self):
-        log = []
-        plan = [fake(n, log) for n in ("3a", "3b", "3c", "3d")]
+        # Event barrier, not a wall-clock assert: every step blocks until all four are running at once, so overlap holds
+        # by construction (a serial runner breaks the barrier and fails the step, however loaded the host is).
+        barrier = threading.Barrier(4, timeout=30)
+
+        def run():
+            barrier.wait()
+            return True, "ok"
+        nums = ("3a", "3b", "3c", "3d")
+        plan = [rat.Step(n, "desc " + n, "Step " + n + ": label", run=run, cmd_text="fake " + n) for n in nums]
         results, _ = self.run_plan(plan, 4)
-        self.assertEqual(results, {"3a": True, "3b": True, "3c": True, "3d": True})
-        self.assertGreaterEqual(max_overlap(log, {"3a", "3b", "3c", "3d"}), 2)
+        self.assertEqual(results, {n: True for n in nums})
+
+    def test_serial_runner_cannot_pass_the_overlap_barrier(self):
+        barrier = threading.Barrier(2, timeout=0.2)
+
+        def run():
+            barrier.wait()
+            return True, "ok"
+        plan = [rat.Step(n, "d", "Step " + n + ": l", run=run, cmd_text="fake " + n) for n in ("3a", "3b")]
+        results, _ = self.run_plan(plan, 1)
+        self.assertFalse(all(results.values()))
 
     def test_jobs_1_runs_one_at_a_time_in_definition_order(self):
         log = []
@@ -737,6 +771,17 @@ class TestFailedStepRunLog(unittest.TestCase):
             Path(d, "f").write_text("a file, so mkdir fails")
             lines = rat.format_step("3sig", "flaky step", "cmd", False, "boom", 1.0)
         self.assertIn("Step 3sig: FAIL", lines)
+
+
+class TestFakeStepsLeaveRealFailLogsAlone(unittest.TestCase):
+    def test_failing_fake_step_leaves_real_fail_log_dir_untouched(self):
+        def count():
+            return len(list(REAL_FAIL_LOG_DIR.glob("*.log"))) if REAL_FAIL_LOG_DIR.exists() else 0
+        before = count()
+        plan = [rat.Step("4h", "d", "Step 4h: l", run=lambda: (False, "boom" + chr(10)), cmd_text="fake 4h")]
+        results = rat.run_plan(plan, 1, out=io.StringIO())
+        self.assertTrue(results)
+        self.assertEqual(count(), before)
 
 
 if __name__ == "__main__":

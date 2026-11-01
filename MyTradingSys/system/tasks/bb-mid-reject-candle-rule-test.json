@@ -1,6 +1,6 @@
 {
   "approved_by": "operator 2026-10-30 via Eagle_Eyes (d-map-before-backtest, d-setup-review-before-backtest, d-storybook-v2)",
-  "asks": "",
+  "asks": "Which setup pick (map result) should the BB-mid rejection pre-reg use? Default: wait for the map.",
   "commands": [],
   "created": "2026-10-29T22:28:47Z",
   "depends_on": [
@@ -23,7 +23,7 @@
   ],
   "note": "PLANNER 2026-10-31: content complete; parked behind depends_on bb-state-regime-tf-map (blocked) + setup-review-with-operator (ready). S0: unpark when both are done; no further refining needed. PLANNER 2026-11-01: scope_in lists run_extra_tests.py for test_bb_mid_reject.py; weight IMPORTANT (decision numbers) needs a reviewer ACCEPT when unparked.",
   "prio": 3,
-  "refine_tries": 2,
+  "refine_tries": 3,
   "refined_by": "",
   "refs": [],
   "result": "",

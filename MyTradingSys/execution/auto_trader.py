@@ -640,6 +640,47 @@ def run(cmd: list, timeout: int = 900, account: str = None) -> tuple:
     return r.returncode, (r.stdout or "") + (r.stderr or "")
 
 
+def available_funds_btc(account: str = None):
+    """Read-only available_funds (BTC) for one account, or None when it could not be read. Raises nothing."""
+    prev = os.environ.get("MTS_ACCOUNT")
+    try:
+        if str(HERE) not in sys.path:
+            sys.path.insert(0, str(HERE))
+        import deribit_orders as do
+        if account:
+            os.environ["MTS_ACCOUNT"] = account
+        else:
+            os.environ.pop("MTS_ACCOUNT", None)
+        v = do.get_account_summary(do.authenticate(), "BTC").get("available_funds")
+        return None if v is None else float(v)
+    except (Exception, SystemExit):  # noqa: BLE001 - unreadable funds
+        return None
+    finally:
+        if prev is not None:
+            os.environ["MTS_ACCOUNT"] = prev
+        else:
+            os.environ.pop("MTS_ACCOUNT", None)
+
+
+def margin_ok(sig: dict, account: str = None):
+    """(ok, detail). Fail closed: unreadable/short/non-positive funds refuse. need = sig margin_btc (0 if unset)."""
+    try:
+        funds = available_funds_btc(account)
+    except Exception as e:  # noqa: BLE001
+        return False, f"balance_error {e!r}"[:120]
+    if funds is None or not math.isfinite(funds):
+        return False, "balance_unreadable"
+    try:
+        need = float(sig.get("margin_btc") or 0)
+    except (TypeError, ValueError):
+        return False, "margin_btc_invalid"
+    if not math.isfinite(need):
+        return False, "margin_btc_invalid"
+    if funds <= 0 or funds < need:
+        return False, f"funds={funds} need={need}"
+    return True, ""
+
+
 def place(sig: dict, dry_run: bool, account: str = None) -> dict:
     """new_plan -> executor --go -> start position_manager. Returns an outcome dict (never raises)."""
     py = sys.executable
@@ -652,6 +693,10 @@ def place(sig: dict, dry_run: bool, account: str = None) -> dict:
     if dry_run:
         rc, out = run([py, str(HERE / "executor.py"), str(plan_file)], timeout=60, account=account)
         return {"outcome": "dry_run", "plan_id": plan_id, "rc": rc, "output": out.strip()[-300:]}
+    ok, why = margin_ok(sig, account)
+    if not ok:
+        log({"event": "margin_short", "plan_id": plan_id, "account": account, "detail": why})
+        return {"outcome": "margin_short", "plan_id": plan_id, "output": why}
     rc, out = run([py, str(HERE / "executor.py"), str(plan_file), "--go", *sig.get("executor_args", [])],
                   account=account)
     if rc != 0:

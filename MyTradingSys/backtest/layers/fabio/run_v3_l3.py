@@ -187,11 +187,12 @@ def summ(x):
             "win": (sum(1 for v in tr if v > 0) / len(tr)) if tr else None}
 
 
-def main():
+def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default="F:/MTS/data/fabio_v3_bt")
     ap.add_argument("--days-limit", type=int, default=0, help="smoke test: first N IS windows and N OOS windows only")
-    a = ap.parse_args()
+    ap.add_argument("--is-only", action="store_true", help="phase 1 only: IS grid, freeze selection, write is_only.json, exit; no OOS window is run")
+    a = ap.parse_args(argv)
     global _OUT
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
@@ -231,6 +232,14 @@ def main():
         else:
             frozen.write_text(json.dumps(sel, indent=1), encoding="utf-8", newline="\n")
             log("selection frozen: %s" % chosen)
+        if a.is_only:              # IS-only run: no OOS work, no stats
+            pool.shutdown()
+            io = {"n_is": len(is_w), "chosen": chosen,
+                  "is_mean_net_r": {m: statistics.fmean(is_res[chosen[m]]["r"]) for m in "ABCD"},
+                  "is_window_r": {m: is_res[chosen[m]]["r"] for m in "ABCD"}}
+            (out / "is_only.json").write_text(json.dumps(io, indent=1), encoding="utf-8", newline="\n")
+            log("--is-only: selection frozen, is_only.json written, OOS not run: %s" % chosen)
+            return
         # phase 2: OOS for the whole main grid (PBO matrix) and the variants
         oos_res = run_cells(pool, oos_w, cells, SLIP_SEL, "oos_grid")
         vres_oos = {m: run_cells(pool, oos_w, {vn: (m, vc) for vn, vc in is_var[m].items()}, SLIP_SEL, "oos_var_" + m) for m in "ABCD"}

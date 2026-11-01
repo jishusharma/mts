@@ -2,6 +2,15 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 5,
+    "folded": "2026-11-01T01:05:21Z",
+    "misses": 1,
+    "reads": [
+      "MyTradingSys/research/context_factors_2026-10-16/EXPOSURE_LEDGER.csv"
+    ],
+    "session": "agent-a21968ddd30783fb3"
+  },
   "created": "2026-10-31T10:04:48Z",
   "depends_on": [],
   "done_when": "EXPOSURE_LEDGER.csv exists with >=5 rows, 8 columns, each with a source file:line",

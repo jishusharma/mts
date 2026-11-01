@@ -68,3 +68,52 @@ def test_missing_store_and_bad_bytes(tmp_path):
     assert b["roster"] == [] and b["last_ingest"] == ""
     assert bad.read_json(badroster, {"d": 1}) == {"d": 1}
     assert bad.read_json(tmp_path / "gone.json", 7) == 7
+
+
+# ---- FF calendar snapshot refresh (card ff-calendar-snapshot-needs-a-runner)
+def _snap(path, age_h, now_ms):
+    path.write_text('window.LIVEAID_CAL_SNAP = {"fetched_ms":%d,"events":[1]};' % int(now_ms - age_h * 3600000), encoding="utf-8")
+
+
+def _run_main(tmp_path, monkeypatch, snap, fn, offline=False):
+    monkeypatch.setattr(bad, "build", lambda *a, **k: dict(roster=[], rows=[], rejected=[], levels=[], asof="x"))
+    argv = ["--out", str(tmp_path / "a.js")] + (["--offline"] if offline else [])
+    bad.main(argv, snapshot_fn=fn, snapshot_path=snap)
+
+
+def test_snapshot_missing_or_30h_old_refreshes_once(tmp_path, monkeypatch):
+    calls = []
+    snap = tmp_path / "ff_calendar_snapshot.js"
+    _run_main(tmp_path, monkeypatch, snap, lambda out: calls.append(out) or 0)       # missing
+    assert calls == [snap]
+    _snap(snap, 30, __import__("time").time() * 1000)
+    _run_main(tmp_path, monkeypatch, snap, lambda out: calls.append(out) or 0)       # 30 h old
+    assert len(calls) == 2
+
+
+def test_snapshot_2h_old_not_refreshed(tmp_path, monkeypatch):
+    calls = []
+    snap = tmp_path / "ff_calendar_snapshot.js"
+    _snap(snap, 2, __import__("time").time() * 1000)
+    _run_main(tmp_path, monkeypatch, snap, lambda out: calls.append(out) or 0)
+    assert calls == []
+
+
+def test_snapshot_offline_never_fetches(tmp_path, monkeypatch):
+    calls = []
+    _run_main(tmp_path, monkeypatch, tmp_path / "ff_calendar_snapshot.js", lambda out: calls.append(out) or 0, offline=True)
+    assert calls == []
+
+
+def test_snapshot_failing_fetch_keeps_old_file_and_build_succeeds(tmp_path, monkeypatch, capsys):
+    snap = tmp_path / "ff_calendar_snapshot.js"
+    _snap(snap, 30, __import__("time").time() * 1000)
+    before = snap.read_text(encoding="utf-8")
+
+    def boom(out):
+        raise OSError("network down")
+    _run_main(tmp_path, monkeypatch, snap, boom)
+    assert snap.read_text(encoding="utf-8") == before and (tmp_path / "a.js").exists()
+    assert "refresh failed" in capsys.readouterr().err
+    _run_main(tmp_path, monkeypatch, snap, lambda out: 1)       # ff_calendar_snapshot.main returns 1 on a failed fetch
+    assert snap.read_text(encoding="utf-8") == before

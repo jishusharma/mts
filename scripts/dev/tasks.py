@@ -777,7 +777,9 @@ def cmd_check(a):
             miss = ["review stamp voided or missing: scope or card changed after review"]
         likely = likely_done_reason(c, REPO)
         if not miss:
-            if c["state"] in ("raw", "refined"):
+            if c["state"] in ("raw", "refined") and not a.id:
+                print(f"{c['id']}: WOULD PROMOTE (run check {c['id']})" + (f" [WARN {likely}]" if likely else ""))
+            elif c["state"] in ("raw", "refined"):
                 c.update(state="ready", asks="")
                 TS.refresh(c, REPO, now())
                 save(REPO, c)

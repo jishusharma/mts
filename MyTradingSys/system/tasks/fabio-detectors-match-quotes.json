@@ -2,7 +2,7 @@
   "approved_by": "",
   "asks": "",
   "commands": [
-    "python -m pytest MyTradingSys/backtest/layers/fabio MyTradingSys/backtest/layers/alerts/test_live_runner_layers.py -q"
+    "python -m pytest MyTradingSys/backtest/layers/fabio MyTradingSys/backtest/layers/alerts/test_live_runner_layers.py MyTradingSys/research/layer_lab/fabio_escalation_event_table/test_event_table.py -q"
   ],
   "created": "2026-10-31T10:04:45Z",
   "depends_on": [],
@@ -14,13 +14,23 @@
   "goal": "Make two live Fabio detectors match their quotes. fabio_cvd_absorption.py:88-89 accepts ANY higher low (price >= prev*(1-tol)) though FAB-007 says 'same level'; fabio_escalation.py fires on a record bar at a level with no break test though FAB-003 says breakout. Fix both, tests first.",
   "id": "fabio-detectors-match-quotes",
   "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "T09-F3: live RSI trades only support@40 long; cross, failure, rejection are alert-only",
+      "ref": "f04a3cbad6ee",
+      "utc": "2026-10-26T20:59:34Z"
+    }
+  ],
   "layers": [],
   "live_path": true,
   "mutation_check": "",
-  "note": "PLANNER 2026-11-01: content complete, CRITICAL live-path (JIS-NB lane, review SESSION mid and pre-ship, coordinator deploys). Not promoted: needs a real reviewer stamp, not the planner. Break definition (close beyond level) is OURS.",
+  "note": "REVIEWED:2026-11-01 ACCEPT (Sonnet reviewer Agent, FIX applied once, not re-read, planner DECISION OURS). CRITICAL live-path JIS-NB: review session PLAN+DIFF; coordinator deploys. Break definition (close beyond level) is OURS. Verify: content sha, git cherry empty, ls-tree lists files.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-10-31T20:38:38Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -30,13 +40,18 @@
     "MyTradingSys/backtest/layers/fabio/test_fabio_escalation.py",
     "MyTradingSys/backtest/layers/fabio/run_backtest.py",
     "MyTradingSys/backtest/bigtrade/fires_kline.py",
-    "MyTradingSys/research/layer_lab/fabio_escalation_event_table/event_table.py"
+    "MyTradingSys/research/layer_lab/fabio_escalation_event_table/event_table.py",
+    "MyTradingSys/backtest/layers/fabio/test_fabio_escalation_edge.py",
+    "MyTradingSys/backtest/layers/alerts/live_layers.py",
+    "MyTradingSys/backtest/bigtrade/run_bracket_grid.py",
+    "MyTradingSys/backtest/bigtrade/tom_bt_run.py"
   ],
   "scope_out": [
     "live tree, deploy, restart (coordinator deploys)",
     "any parameter tuning or new edge claim",
     "live_runner_cli.py wiring"
   ],
+  "scope_sha": "f04a3cbad6ee",
   "size": "M",
   "sources": [
     "fabio_cvd_absorption.py:3-6 (FAB-007 quote 'same level') and :88-89",
@@ -44,12 +59,12 @@
     "live_runner_cli.py:20,438,482",
     "FORMULAS.md fabio section"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Review step: CRITICAL, review session reads card and plan before code (REVIEW <id> PLAN), then the diff",
     "Tests first, red on old code: (a) cvd: a low 3x tolerance above the prior low must NOT fire, one within +-tol fires; mirror for highs; (b) escalation: record bar at a level whose close stays inside the level must NOT fire, close beyond level fires",
     "Fix: cvd band abs(price/prev-1)<=price_tolerance both sides; escalation require close beyond the level price in the aggressor direction (kwarg require_break, default True). DECISION (OURS): strict default because the quote is the contract",
-    "Legacy callers (run_backtest.py, fires_kline.py, event_table.py) pass require_break=False / the old band so their published numbers reproduce; live_layers uses strict",
+    "Legacy callers (run_backtest.py, fires_kline.py, event_table.py, run_bracket_grid.py:219-225, tom_bt_run.py:65-67) pass require_break=False / the old band so published numbers reproduce; live_layers.py relies on the strict default and is tested via test_live_runner_layers.py. Pin the 652 DEV 1h repro as a test",
     "Report DEV 1h event counts old vs new in the commit body (descriptive, no edge claim); run_all_tests --quick; ship; coordinator deploys"
   ],
   "tests": "New cases in test_fabio_cvd_absorption.py and test_fabio_escalation.py, each failing on the pre-change code (quote the failure); plus live-path cases: restart (fresh detector, same bars, same events), empty or short bars fail closed (no event, no raise in live_layers)",

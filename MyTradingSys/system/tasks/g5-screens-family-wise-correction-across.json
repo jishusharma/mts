@@ -2,6 +2,19 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-10-31T19:15:51Z",
+    "misses": 44,
+    "reads": [
+      "MyTradingSys/research/gross_effect_screen_2026-10-15/test_screen.py",
+      "MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py",
+      "scripts/dev/verdicts.py",
+      "MyTradingSys/research/chart_read_g5_2026-10-16/test_common.py",
+      "MyTradingSys/research/chart_read_g5_2026-10-16/common.py"
+    ],
+    "session": "agent-adce46d3541701853"
+  },
   "created": "2026-10-24T10:24:25Z",
   "depends_on": [
     "fix-screen-real-funding"

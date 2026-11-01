@@ -34,6 +34,9 @@ NOTIF_RE = re.compile(r"<task-id>([a-z0-9]+)</task-id>")
 PROBE_RE = re.compile(r"^\s*(cat|ls|grep|head|tail|git (log|status|show|diff|cherry)|wc|find|date)\b")
 
 
+POLL_RE = re.compile(r"\b(until|while)\b.*(\bsleep\b|\bgrep\b|\btail\s+-[a-zA-Z]*f)")
+
+
 def projects_root() -> Path:
     return Path(os.environ.get("MTS_BG_WATCH_ROOT") or (Path.home() / ".claude" / "projects"))
 
@@ -56,7 +59,7 @@ def kind_of(tool: str, what: str) -> tuple[str, int]:
         return "gemini", CAPS["gemini"]
     if "sync.py ship" in w:
         return "ship", CAPS["ship"]
-    if re.search(r"\b(until|while)\b.*\bsleep\b", w):
+    if POLL_RE.search(w):
         return "poll-loop", CAPS["poll-loop"]
     if "run_all_tests.py" in w or "pytest" in w:
         return "tests", CAPS["tests"]
@@ -192,7 +195,7 @@ DEADLINE_RE = re.compile(r"bg_watch\.py until|\btimeout\b|\$SECONDS|\bdate \+%s|
 
 def unbounded_loop(what: str) -> bool:
     """True for an until/while-sleep loop with no deadline of its own: it ends only when its condition comes true."""
-    return bool(re.search(r"\b(until|while)\b.*\bsleep\b", what or "")) and not DEADLINE_RE.search(what or "")
+    return bool(POLL_RE.search(what or "")) and not DEADLINE_RE.search(what or "")
 
 
 def wait_until(path, pattern, timeout_s=600.0, interval_s=5.0, sleep=time.sleep, now_fn=time.monotonic) -> int:
@@ -214,9 +217,11 @@ def report_lines(repo: Path, root: Path | None = None, now: float | None = None)
     lines = []
     for r in stalled(root, now):
         quiet = f", no output {r['silent']:.0f}m" if r["silent"] is not None and r["silent"] >= 5 else ""
+        bare = r["kind"] == "poll-loop" and unbounded_loop(r["what"])
         lines.append(f"STALLED-BG {r['kind']} {r['id']} {r['age']:.0f}m > cap {r['cap']}m{quiet} (session {r['session']}): "
                      f"{r['what'][:70]} -> owner: TaskStop {r['id']}, say why in one line"
-                     + (" (no deadline in the loop: next time `bg_watch.py until --file F --pattern RE --timeout S`)" if r["kind"] == "poll-loop" and unbounded_loop(r["what"]) else ""))
+                     + (" (bare poll loop, no deadline: run TaskStop " + r["id"] + " now; the only allowed poll is "
+                        "`bg_watch.py until --file F --pattern RE --timeout S`)" if bare else ""))
     raw = raw_aged(repo, now)
     if raw:
         top = ", ".join(f"{i} {h:.0f}h" for i, h in raw[:3])

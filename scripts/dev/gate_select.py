@@ -65,6 +65,8 @@ def _is_doc(f):
         return True
     if f.endswith(".txt"):
         return not FULL_RE.match(f)   # a .txt on the live path (resources, run lists) is read by live code: not a doc
+    if f.startswith(DATA_DIRS) and PurePosixPath(f).name == ".gitignore":
+        return True   # a nested ignore only hides untracked files; no test reads it (repo-root .gitignore stays CONFIG_FILES)
     return f.endswith(DATA_SUFFIXES) and f.startswith(DATA_DIRS)
 
 

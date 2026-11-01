@@ -251,6 +251,61 @@ class PowerLine(unittest.TestCase):
         self.assertIsNone(V.power_line(row))
 
 
+class BackfillIdempotentAndCheckScope(unittest.TestCase):
+    def test_backfill_twice_identical(self):
+        # Hand case: root holds one study (demo); the registry has a hand row for a foreign study BEFORE it and one AFTER it.
+        # Backfill must leave their slots alone: run 1 == run 2 == the original bytes (old code moved the foreign rows around the study).
+        tmp = tempfile.mkdtemp()
+        root = make_root(tmp)
+        ov = Path(tmp) / "ov.csv"
+        write_csv(ov, V.OVERRIDE_COLS, [])
+        out = Path(tmp) / "v.csv"
+        V.cmd_backfill(Args(root, out, ov))
+        demo = V.load(out)
+        first = {c: "x" for c in V.COLS}
+        last = dict(first, study_dir="zzz")
+        first["study_dir"] = "aaa"
+        V.save(out, [first] + demo + [last])
+        before = out.read_bytes()
+        V.cmd_backfill(Args(root, out, ov))
+        self.assertEqual(out.read_bytes(), before)
+        V.cmd_backfill(Args(root, out, ov))
+        self.assertEqual(out.read_bytes(), before)
+
+    def test_git_info_abbrev_is_fixed_width(self):
+        seen = []
+        real = V.subprocess.run
+        V.subprocess.run = lambda cmd, **k: seen.append(cmd) or type("R", (), {"stdout": "abcdef12|2026-01-02\n"})()
+        try:
+            self.assertEqual(V.git_info(Path("x") / "RESULT.md"), ["abcdef12", "2026-01-02"])
+        finally:
+            V.subprocess.run = real
+        self.assertIn("--abbrev=8", seen[0])
+
+    def _csv(self, scope, one_run="yes"):
+        tmp = tempfile.mkdtemp()
+        p = Path(tmp) / "v.csv"
+        r = {c: "x" for c in V.COLS}
+        r.update(study_dir="tf_break_event_study_2026-10-30", family="break event study T058", arm="15m follow H DEV",
+                 verdict="FAIL", kill_scope=scope, one_run=one_run)
+        V.save(p, [r])
+        return p
+
+    def _check(self, p, words):
+        import contextlib
+        import io
+        a = type("A", (), {"words": words, "csv": str(p)})()
+        with contextlib.redirect_stdout(io.StringIO()):
+            return V.cmd_check(a)
+
+    def test_check_honours_kill_scope_timeframe(self):
+        p = self._csv("FAIL means stop: a held close-break at 15m on BTCUSDT; not the weekly and daily frames.")
+        self.assertEqual(self._check(p, "T058 4h 1D break event study"), 0)      # 15m-only FAIL does not block a 4h/1D study
+        self.assertEqual(self._check(p, "T058 15m break event study"), 1)        # same frame still blocks
+        self.assertEqual(self._check(p, "T058 break event study"), 1)            # no frame in the query: stay blocked
+        self.assertEqual(self._check(self._csv("FAIL means stop: the weekly and daily frames"), "T058 4h break event study"), 1)  # no token: family-wide
+
+
 if __name__ == "__main__":
     unittest.main()
 

@@ -1,0 +1,61 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/test_verdicts.py",
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "created": "2026-10-31T20:22:41Z",
+  "depends_on": [],
+  "done_when": "test_verdicts.py passes with 2 new tests failing on old code; backfill rerun on a CSV copy gives zero diff; check on T058 4h words no longer BLOCKs on the 15m FAIL rows (one_run=yes 4h/1h rows may still block); Result gives content sha",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "verdicts.py backfill must be idempotent (rerun leaves VERDICTS.csv byte-identical) and verdicts.py check must not BLOCK on a FAIL row whose kill_scope excludes the queried family (T058 15m FAIL vs a 4h/1D study).",
+  "id": "verdicts-backfill-rewrites-180-rows",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "test: make regate fixes 3-7 DEV pin count-agnostic",
+      "ref": "e654654b06a9",
+      "utc": "2026-10-28T10:43:28Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-01 ACCEPT (Sonnet reviewer Agent, FIX applied once, not re-read, planner DECISION OURS).  Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists delivered files.",
+  "prio": 4,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-10-31T20:37:31Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/verdicts.py",
+    "scripts/dev/test_verdicts.py"
+  ],
+  "scope_out": [
+    "No hand edits to MyTradingSys/research/VERDICTS.csv rows; no change to VERDICTS_OVERRIDES.csv semantics; test_verdicts already in run_all_tests.py:571"
+  ],
+  "scope_sha": "e654654b06a9",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/VERDICTS.csv:90-92 (T058 15m FAIL); scripts/dev/verdicts.py:311,386"
+  ],
+  "state": "ready",
+  "steps": [
+    "1 Repro: run backfill twice on a copy of VERDICTS.csv (--csv tmp), diff; list which of the ~180 rows change and why (row order, quoting, git_info date/commit drift)",
+    "2 Fail-first tests in scripts/dev/test_verdicts.py: backfill twice gives identical bytes; check on a 4h query does not BLOCK on 15m FAIL rows (VERDICTS.csv:90-93+) whose kill_scope names 15m only",
+    "3 Fix cmd_backfill (verdicts.py:311) for stable output; fix cmd_check (:386): read timeframe tokens (15m,1h,4h,1D) in kill_scope, ignore a FAIL whose scope names other frames; 'weekly and daily' is not a 4h match (OURS)",
+    "4 Run test_verdicts.py and run_all_tests.py --quick; commit only code and tests, not a regenerated CSV unless the rerun diff is empty"
+  ],
+  "tests": "scripts/dev/test_verdicts.py: backfill_twice_identical and check_honours_kill_scope_timeframe; both fail on current verdicts.py",
+  "title": "verdicts.py backfill rewrites ~180 rows of VERDICTS.csv and verdicts.py check flags T058 15m FAIL as blocking a 4h/1D study though T058 kill_scope excludes it. Done when: backfill is idempotent (no diff on rerun) and check honours kill_scope, test fails on old code first",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

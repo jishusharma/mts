@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T01:21:06Z",
   "commands": [
     "python -m pytest MyTradingSys/research/meta_label_breaks_2026-10-31/test_meta.py -q"
   ],
@@ -15,6 +16,12 @@
   "id": "meta-label-1h-dev-ext-check",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "FAIL: ext top third n303 net -0.199% CI -0.411..-0.017, shuffle p 0.811; EXT_RESULT.md",
+      "ref": "604fe4308",
+      "utc": "2026-11-01T01:21:06Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -37,7 +44,12 @@
   "refs": [
     "MyTradingSys/research/meta_label_breaks_2026-10-31/RESULT.md"
   ],
-  "result": "",
+  "result": "FAIL: ext top third n303 net -0.199% CI -0.411..-0.017, shuffle p 0.811; EXT_RESULT.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/meta_label_breaks_2026-10-31/meta.py",
     "MyTradingSys/research/meta_label_breaks_2026-10-31/report.py",
@@ -54,13 +66,14 @@
     "MyTradingSys/research/meta_label_breaks_2026-10-31/RESULT.md:6-9",
     "MyTradingSys/research/v1_plan_2026-10-20/D7_ROADMAP.md:34"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "confirm F:/MTS/Dumps/backtest/raw_1m_2019/klines has BTCUSDT 1m 2020-01..2021-12 (24 files), spot or perp from the header; if absent post a DSA desk task and park",
     "write EXT_PRE_REG.md first: frozen model, pass rule, m=1 (prereg_gate.py); commit before scoring",
     "add an ext mode to meta.py: fit on DEV only, score only 2020-2021 events",
     "run, write EXT_RESULT.md, backfill VERDICTS.csv"
   ],
+  "taken": "2026-11-01T01:21:06Z",
   "tests": "Fail-first in test_meta.py: ext mode must never put a 2020-2021 row in the fit set, and a planted-edge fixture gives best third > 0; both fail on current meta.py (no ext mode).",
   "title": "Meta-label 1h lead, fresh-data check: refit the frozen meta.py 1h model on all DEV, score tf_break 1h events from BTCUSDT 1m 2020-01..2021-12 (on disk: F:/MTS/Dumps/backtest/raw_1m_2019/klines, 24 files); pass = best third net > 0 with week-block CI lower > 0; VALIDATION stays sealed",
   "weight": "CRUCIAL",
