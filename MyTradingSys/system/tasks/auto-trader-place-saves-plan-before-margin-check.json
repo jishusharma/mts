@@ -28,7 +28,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-01 ACCEPT (Sonnet reviewer Agent, planner-refine-1101). PLANNER 2026-11-01: CRITICAL (order-path code, fail-closed): needs REVIEW session plan+diff (session_planner_details CRITICAL protocol) and a REVIEWED stamp; builder works in a worktree only, never deploys.",
+  "not_twin_of": [
+    "sonnet-live-path-restart-reset-tests"
+  ],
+  "note": "REVIEWED:2026-11-01 ACCEPT (Sonnet reviewer Agent, planner-refine-1101). PLANNER 2026-11-01: CRITICAL (order-path code, fail-closed): needs REVIEW session plan+diff (session_planner_details CRITICAL protocol) and a REVIEWED stamp; builder works in a worktree only, never deploys. NOT TWIN of sonnet-live-path-restart-reset-tests (2026-11-01 planner-a-1101f): that card is tests-only with no production change; this one changes place() order of calls. Both may touch test_auto_trader_failclosed.py, so land one then merge (one writer per file set). DECISION (OURS).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
