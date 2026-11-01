@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T00:28:08Z",
   "commands": [
     "python -m pytest MyTradingSys/execution/test_auto_trader_failclosed.py -q",
     "python scripts/dev/run_all_tests.py --quick"
@@ -17,6 +18,12 @@
   "kind": "build",
   "lane": "JIS-NB",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/execution/auto_trader.py margin_short pre-flight; 31 tests + 24/24 mutants",
+      "ref": "19cf7a957",
+      "utc": "2026-11-01T00:28:08Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +46,12 @@
   "refined_by": "",
   "refreshed": "2026-10-31T20:37:34Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/execution/auto_trader.py margin_short pre-flight; 31 tests + 24/24 mutants",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/execution/auto_trader.py",
     "MyTradingSys/execution/test_auto_trader_failclosed.py"
@@ -52,13 +64,14 @@
   "sources": [
     "card title; test_auto_trader_failclosed.py:199"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "1 Read MarginPreflightGapTest (test_auto_trader_failclosed.py:199), the expectedFailure marker is the fail-first test",
     "2 Add available_funds pre-flight in auto_trader.place() before the executor --go call: build the at.available_funds_btc(account) seam from deribit_read available_funds, populate sig margin_btc there; refuse on short margin, on missing margin_btc and on balance-call error (fail closed); dry_run skips it (OURS); journal refusal",
     "3 Remove expectedFailure; add tests: restart/reset state, non-trade balance move between check and place, API error",
     "4 Run run_all_tests.py --quick; review session PLAN then DIFF; ship; coordinator deploys"
   ],
+  "taken": "2026-11-01T00:28:08Z",
   "tests": "MarginPreflightGapTest passes without expectedFailure (fails on old code as the marker proves) plus restart, non-trade balance and API-error tests",
   "title": "auto_trader.place() has no margin pre-flight: add available_funds check that refuses (fail closed on short margin or balance-call error), remove expectedFailure from MarginPreflightGapTest in test_auto_trader_failclosed.py. Live path: review Agent before ship; deploy by coordinator only. Done when: both tests pass without the marker; restart/non-trade-balance/API-error cases covered.",
   "weight": "CRITICAL",
