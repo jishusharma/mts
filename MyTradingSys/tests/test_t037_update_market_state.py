@@ -85,6 +85,7 @@ def _stub(monkeypatch, tmp_path, existing_state):
     monkeypatch.setattr(ums, "parse_state", parse)
     monkeypatch.setattr(ums, "diff_state", lambda old, snap: {"changes": [], "price_delta_pct": 0.0})
     monkeypatch.setattr(ums, "update_state", upd)
+    monkeypatch.setattr(ums, "fetch_levels", lambda *a, **k: None)
     monkeypatch.setattr(ums, "format_state", lambda s: "NEW-STATE %s\n" % s["META"]["updated_utc"])
     return state, calls
 
@@ -92,7 +93,7 @@ def _stub(monkeypatch, tmp_path, existing_state):
 def test_main_fresh_start_writes_formatted_state(tmp_path, monkeypatch, capsys):
     state, calls = _stub(monkeypatch, tmp_path, existing_state=False)
     ums.main()
-    assert state.read_text(encoding="utf-8") == "NEW-STATE T1\n"
+    assert state.read_text(encoding="utf-8").startswith("NEW-STATE T1\n")
     assert "parsed" not in calls and calls["old"] == {} and calls["snap"] == {"current_price": 100.0}
     assert "no existing state file" in capsys.readouterr().out
 
@@ -102,7 +103,7 @@ def test_main_existing_state_is_parsed_and_passed_as_old(tmp_path, monkeypatch):
     ums.main()
     assert calls["parsed"] == str(state)
     assert calls["old"] == {"META": {"updated_utc": "T0"}}
-    assert state.read_text(encoding="utf-8") == "NEW-STATE T1\n"
+    assert state.read_text(encoding="utf-8").startswith("NEW-STATE T1\n")
 
 
 def test_main_without_snapshots_raises_and_writes_nothing(tmp_path, monkeypatch):
@@ -111,3 +112,87 @@ def test_main_without_snapshots_raises_and_writes_nothing(tmp_path, monkeypatch)
     with pytest.raises(FileNotFoundError):
         ums.main()
     assert not state.exists()
+
+
+# ---- ANALYST_LEVELS note layer (display only) ----
+from datetime import datetime, timezone
+
+NOW = datetime(2026, 11, 1, 12, 0, tzinfo=timezone.utc)
+
+
+def _data(**kw):
+    d = {"asof": "2026-11-01T11:50:00+00:00", "price": 100000.0, "levels": [
+        {"level": 105000, "analyst": "A1", "published": "2026-10-30", "hit": False, "expired": False},
+        {"level": 103000, "analyst": "A2", "published": "2026-10-29", "hit": True, "expired": False},
+        {"level": 98000, "analyst": "A3", "published": "2026-10-28", "hit": False, "expired": False},
+        {"level": 99500, "analyst": "A4", "published": "2026-10-20", "hit": False, "expired": True}]}
+    d.update(kw)
+    return d
+
+
+def test_levels_section_nearest_above_below_skips_expired():
+    out = ums.levels_section(_data(), NOW)
+    assert "nearest_above: 103000 | A2 | published 2026-10-29 | hit" in out
+    assert "nearest_below: 98000 | A3 | published 2026-10-28 | open" in out
+    assert "not a trade input" in out
+
+
+@pytest.mark.parametrize("bad", [None, {}, "x", _data(levels=[]), _data(price=None),
+                                 _data(asof="2026-10-01T00:00:00+00:00"), _data(asof="garbage")])
+def test_levels_section_fails_closed_to_no_levels(bad):
+    out = ums.levels_section(bad, NOW)
+    assert "levels: no levels" in out and "nearest_" not in out
+
+
+def test_fetch_levels_error_nonzero_timeout_and_garbage_give_none(monkeypatch):
+    import subprocess
+
+    class R:
+        def __init__(self, rc, out):
+            self.returncode, self.stdout = rc, out
+
+    monkeypatch.setattr(ums.subprocess, "run", lambda *a, **k: R(1, "{}"))
+    assert ums.fetch_levels() is None
+    monkeypatch.setattr(ums.subprocess, "run", lambda *a, **k: R(0, "not json"))
+    assert ums.fetch_levels() is None
+    monkeypatch.setattr(ums.subprocess, "run", lambda *a, **k: R(0, "[1]"))
+    assert ums.fetch_levels() is None
+
+    def boom(*a, **k):
+        raise subprocess.TimeoutExpired("x", 1)
+
+    monkeypatch.setattr(ums.subprocess, "run", boom)
+    assert ums.fetch_levels() is None
+    monkeypatch.setattr(ums.subprocess, "run", lambda *a, **k: R(0, json.dumps(_data())))
+    assert ums.fetch_levels()["price"] == 100000.0
+
+
+def test_main_writes_ladder_section_from_stub_levels(tmp_path, monkeypatch):
+    state, _ = _stub(monkeypatch, tmp_path, existing_state=False)
+    d = _data(asof=datetime.now(timezone.utc).isoformat(timespec="seconds"))
+    monkeypatch.setattr(ums, "fetch_levels", lambda *a, **k: d)
+    ums.main()
+    txt = state.read_text(encoding="utf-8")
+    assert txt.startswith("NEW-STATE T1\n") and "## ANALYST_LEVELS" in txt
+    assert "nearest_above: 103000" in txt and "nearest_below: 98000" in txt
+
+
+def test_main_levels_failure_still_writes_state_with_no_levels(tmp_path, monkeypatch):
+    state, _ = _stub(monkeypatch, tmp_path, existing_state=False)
+
+    def boom(*a, **k):
+        raise RuntimeError("api down")
+
+    monkeypatch.setattr(ums, "fetch_levels", boom)
+    ums.main()
+    txt = state.read_text(encoding="utf-8")
+    assert txt.startswith("NEW-STATE T1\n") and "levels: no levels" in txt
+
+
+def test_main_restart_drops_old_levels_section_before_diff(tmp_path, monkeypatch):
+    state, calls = _stub(monkeypatch, tmp_path, existing_state=True)
+    monkeypatch.setattr(ums, "parse_state", lambda p: {"META": {}, "ANALYST_LEVELS": {"price": "1"}})
+    seen = {}
+    monkeypatch.setattr(ums, "update_state", lambda old, snap: seen.update(old=old) or {"META": {"updated_utc": "T1"}})
+    ums.main()
+    assert "ANALYST_LEVELS" not in seen["old"]
