@@ -721,6 +721,11 @@ def margin_ok(sig: dict, account: str = None):
 def place(sig: dict, dry_run: bool, account: str = None) -> dict:
     """new_plan -> executor --go -> start position_manager. Returns an outcome dict (never raises)."""
     py = sys.executable
+    if not dry_run:                          # margin first: a refusal must not leave an orphan plan in execution/plans
+        ok, why = margin_ok(sig, account)
+        if not ok:
+            log({"event": "margin_short", "account": account, "detail": why})
+            return {"outcome": "margin_short", "output": why}
     rc, out = run([py, str(HERE / "new_plan.py"), *sig["plan_args"], "--yes"], timeout=60, account=account)
     m = re.search(r"SAVED (\S+)", out)
     if rc != 0 or not m:
@@ -730,10 +735,6 @@ def place(sig: dict, dry_run: bool, account: str = None) -> dict:
     if dry_run:
         rc, out = run([py, str(HERE / "executor.py"), str(plan_file)], timeout=60, account=account)
         return {"outcome": "dry_run", "plan_id": plan_id, "rc": rc, "output": out.strip()[-300:]}
-    ok, why = margin_ok(sig, account)
-    if not ok:
-        log({"event": "margin_short", "plan_id": plan_id, "account": account, "detail": why})
-        return {"outcome": "margin_short", "plan_id": plan_id, "output": why}
     rc, out = run([py, str(HERE / "executor.py"), str(plan_file), "--go", *sig.get("executor_args", [])],
                   account=account)
     if rc != 0:

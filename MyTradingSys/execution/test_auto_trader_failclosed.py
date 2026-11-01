@@ -228,6 +228,24 @@ class MarginPreflightGapTest(Base):
         self.assertFalse(any("--go" in c for c in calls))
 
 
+    def test_refusal_never_runs_new_plan_so_no_orphan_plan(self):
+        """Card auto-trader-place-saves-plan-before-margin-check: margin is checked before new_plan.py saves a plan."""
+        for funds in (0.0001, OSError("timeout"), None):
+            with self.subTest(funds=funds):
+                out, calls = self._place(funds)
+                self.assertEqual(out["outcome"], "margin_short")
+                self.assertNotIn("plan_id", out)
+                self.assertEqual(calls, [], "new_plan.py/executor ran despite margin refusal")
+        self.assertEqual([e for e in self.events() if e["event"] == "margin_short" and "plan_id" in e], [])
+
+    def test_dry_run_still_saves_plan_without_margin_check(self):
+        calls = []
+        at.run = lambda cmd, timeout=900, account=None: (calls.append(cmd), (0, "SAVED p1 filled"))[1]
+        with mock.patch.object(at, "available_funds_btc", lambda account=None: self.fail("margin read in dry_run")):
+            out = at.place(self.SIG, True)
+        self.assertEqual(out["outcome"], "dry_run")
+        self.assertEqual(len(calls), 2)
+
     def test_enough_margin_goes_on_to_go_and_spawns(self):
         calls = []
         at.run = lambda cmd, timeout=900, account=None: (calls.append(cmd), (0, "SAVED p1 filled"))[1]
