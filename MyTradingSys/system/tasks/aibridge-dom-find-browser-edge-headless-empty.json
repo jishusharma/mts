@@ -5,7 +5,7 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-01T17:40:42Z",
+    "folded": "2026-11-01T17:41:29Z",
     "misses": 54,
     "reads": [
       "MyTradingSys/tests/aibridge_dom.py",
