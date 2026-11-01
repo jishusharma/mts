@@ -40,6 +40,8 @@ MUTANTS = [
     ("MarginPreflightGapTest.test_none_zero_negative_nan_funds_refuse_even_without_margin_btc", "if funds is None or not math.isfinite(funds):",
      "if not math.isfinite(funds):"),
     ("MarginPreflightGapTest.test_enough_margin_goes_on_to_go_and_spawns", "if funds <= 0 or funds < need:", "if True:"),
+    ("MarginNeedTest.test_need_formula_and_fail_closed_inputs", "or size <= 0 or px <= 0:", ":"),
+    ("MarginNeedTest.test_attach_margin_limit_market_and_refusals", "    sig[\"margin_btc\"] = need\n    return None\n", "    return None\n"),
     ("AvailableFundsSeamTest.test_api_error_missing_field_and_garbage_are_none", "float(v)\n    except (Exception, SystemExit):  # noqa: BLE001 - unreadable funds\n        return None",
      "float(v)\n    except (Exception, SystemExit):  # noqa: BLE001 - unreadable funds\n        return 1.0"),
     ("RecoveryTest.test_reentered_plan_after_close_is_open_again_and_garbage_lines_skipped", "            closed.discard(pid)\n", "            pass\n"),
