@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T12:04:51Z",
   "commands": [],
   "created": "2026-11-01T11:45:16Z",
   "depends_on": [],
@@ -14,6 +16,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Added test_post_run_and_ping_fetch_disables_cache_no_store in test_aibridge_payload.py ass",
+      "ref": "82734786d",
+      "utc": "2026-11-01T12:04:51Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +46,12 @@
   "refined_by": "",
   "refreshed": "2026-11-01T11:45:35Z",
   "refs": [],
-  "result": "",
+  "result": "Added test_post_run_and_ping_fetch_disables_cache_no_store in test_aibridge_payload.py asserting background.js POST /run and GET /ping fetch set cache: 'no-store'; proved red on scratch mutation and green on clean code",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/aibridge/extension/background.js",
     "scripts/aibridge/docs/V07_CONTRACT.md",
@@ -51,12 +64,13 @@
   "scope_sha": "a9300f5bd71f",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Inspect the POST /run request and V07 no-cache contract; add a failing-first regression assertion.",
     "Verify the test gate registration and run the focused test against original and cache-setting mutation.",
     "Run the relevant focused payload suite and report results."
   ],
+  "taken": "2026-11-01T12:02:11Z",
   "tests": "Add contract-derived test coverage in MyTradingSys/tests/test_aibridge_payload.py for POST /run cache: no-store. Run python -m pytest MyTradingSys/tests/test_aibridge_payload.py -k <new-test> and the focused payload suite; prove red on a scratch mutation first. Confirm registration in scripts/dev/run_extra_tests.py EXTRA; include that path if registration is needed.",
   "title": "AIBridge extension: guard no-store response delivery with a contract regression",
   "weight": "",

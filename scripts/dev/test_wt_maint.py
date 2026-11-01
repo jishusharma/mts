@@ -131,6 +131,17 @@ class Safety(Env):
         self.assertEqual((dest / "untracked" / "scratch.txt").read_text(), "untracked work")
         self.assertTrue(any("saved to Dumps/wt_rescue/mts-x-olddirty" in l for l in out))
 
+    def test_dirty_shipped_tree_with_binary_diff_and_untracked_dir_rescued_safely(self):
+        p = self.tree("mts-x-bindir")
+        (p / "a.txt").write_bytes(b"changed \x98 binary \xff")
+        (p / "subdir").mkdir()
+        (p / "subdir" / "nested.txt").write_text("nested")
+        s, out = self.run_maint()
+        self.assertFalse(p.exists())
+        dest = self.prim / "Dumps" / "wt_rescue" / "mts-x-bindir"
+        self.assertTrue((dest / "uncommitted.patch").exists())
+        self.assertEqual((dest / "untracked" / "subdir" / "nested.txt").read_text(), "nested")
+
     def test_dirty_tree_with_unshipped_commits_is_never_removed_however_idle(self):
         p = self.tree("mts-x-aheaddirty", commit=True)
         (p / "a.txt").write_text("changed")

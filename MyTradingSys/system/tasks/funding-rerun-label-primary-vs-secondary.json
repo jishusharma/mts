@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T12:00:04Z",
   "commands": [],
   "created": "2026-10-31T05:11:09Z",
   "depends_on": [],
@@ -13,6 +15,12 @@
   "id": "funding-rerun-label-primary-vs-secondary",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "FUNDING_RERUN.md line 16 reworded with primary cell scope, secondary move +0.0181 pp and n",
+      "ref": "a2fe652ef",
+      "utc": "2026-11-01T12:00:04Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +47,12 @@
   "refs": [
     "gemini-method-review-funding-screen-fix-1031"
   ],
-  "result": "",
+  "result": "FUNDING_RERUN.md line 16 reworded with primary cell scope, secondary move +0.0181 pp and n_T=40 < 200 reason; test_integrity.py::test_funding_rerun_names_secondary_move passes",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gross_effect_screen_2026-10-15/FUNDING_RERUN.md",
     "MyTradingSys/tests/docs/test_integrity.py"
@@ -48,11 +61,12 @@
   "scope_sha": "8cae5e9e285e",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Reword FUNDING_RERUN.md line 16 with scope, the +0.0181 pp secondary move and the n_T<200 reason",
     "Add a doc test asserting the file names both +0.0013 and +0.0181"
   ],
+  "taken": "2026-11-01T11:58:23Z",
   "tests": "MyTradingSys/tests/docs/test_integrity.py::test_funding_rerun_names_secondary_move (fails on current text)",
   "title": "FUNDING_RERUN.md says 'largest arm move +0.0013 pp' but the T06 audit found a secondary cell move of +0.0181 pp; label the scope and the n_T<200 reason",
   "weight": "",
