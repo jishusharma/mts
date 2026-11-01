@@ -4,6 +4,16 @@
   "commands": [
     "python MyTradingSys/execution/test_auto_trader_failclosed.py"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-01T05:09:18Z",
+    "misses": 25,
+    "reads": [
+      "MyTradingSys/execution/auto_trader.py",
+      "MyTradingSys/execution/test_auto_trader_failclosed.py"
+    ],
+    "session": "agent-a6e2eb5719f046f59"
+  },
   "created": "2026-11-01T02:53:38Z",
   "crucial": true,
   "depends_on": [],
