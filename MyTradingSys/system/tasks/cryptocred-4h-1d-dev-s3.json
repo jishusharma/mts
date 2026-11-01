@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T01:28:39Z",
   "commands": [
     "python -m pytest MyTradingSys/research/cryptocred_s3_2026-11/test_cc_s3_run.py -q",
     "python scripts/dev/run_all_tests.py --quick"
@@ -16,6 +17,12 @@
   "id": "cryptocred-4h-1d-dev-s3",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "BLOCKED by prereg_gate: n207 sd1.24 m111 MDE 0.375R+cost 0.068R > 0.30R; no outcome read; ",
+      "ref": "955062fcc",
+      "utc": "2026-11-01T01:28:39Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -44,7 +51,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D7_ROADMAP.md"
   ],
-  "result": "",
+  "result": "BLOCKED by prereg_gate: n207 sd1.24 m111 MDE 0.375R+cost 0.068R > 0.30R; no outcome read; MyTradingSys/research/cryptocred_s3_2026-11/BLOCKED.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/cryptocred_htf_2026-10/PRE_REG_CRYPTOCRED_HTF.md",
     "MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py",
@@ -64,7 +76,7 @@
     "MyTradingSys/research/v1_plan_2026-10-20/D7_ROADMAP.md:37",
     "MyTradingSys/research/cryptocred_htf_2026-10/PRE_REG_CRYPTOCRED_HTF.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "write test_cc_s3_run.py first and run it red",
     "python scripts/dev/verdicts.py check 'cryptocred 4h 1d'; paste output into a PRE_REG addendum (m first, prereg_gate.py --m auto)",
@@ -73,6 +85,7 @@
     "all arms fail or INCONCLUSIVE: write the stop line (PRE_REG 0f); only a DEV pass earns one VALIDATION read",
     "the one VALIDATION read is gated in code on a DEV pass flag in RESULT.md; write RESULT.md, export results json, backfill VERDICTS.csv"
   ],
+  "taken": "2026-11-01T01:28:39Z",
   "tests": "Fail-first: add test_cc_s3_run.py asserting the runner raises on any bar after 2024-06-30 (assert_dev_only) and that a hand-built 3-trade ledger gives the FORMULAS-computed mean net R; both fail before the wrapper exists. List the file in scripts/dev/run_extra_tests.py EXTRA.",
   "title": "CryptoCred 4h/1D S3 test: frozen PRE_REG, fee-net DEV run with real funding, then one VALIDATION read (D7 S3 run list #4)",
   "weight": "CRUCIAL",

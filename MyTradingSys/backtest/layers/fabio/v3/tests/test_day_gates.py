@@ -92,6 +92,12 @@ class TestFabioV3DayGates(unittest.TestCase):
         self.assertFalse(day_gate_open(59, 10000, prior, 0.8))                         # before open+60
         self.assertFalse(day_gate_open(60, 400, [], 0.8))                              # fail closed: no history
 
+    def test_s28_day_gate_boundaries_and_empty_history(self):                   # FORMULAS.md 28.5 SAFETY (T-B)
+        self.assertTrue(day_gate_open(60, 800, [1000] * 20, 0.8))                      # G = 0.8 open
+        self.assertFalse(day_gate_open(60, 790, [1000] * 20, 0.8))                     # G = 0.79 closed
+        self.assertFalse(day_gate_open(60, 800, [], 0.8))                              # empty history: closed
+        self.assertFalse(day_gate_open(60, 800, [0] * 20, 0.8))                        # median 0: closed
+
     def test_ci_halfwidth_spec_example(self):                                              # spec 8: n 30, SD 1.5 -> 0.537R
         self.ap(ci_halfwidth(1.5, 30), 0.53677, places=5)
 

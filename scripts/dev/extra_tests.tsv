@@ -167,3 +167,4 @@ MyTradingSys/research/fractals_2026-10-31/phase_tag/test_phase_tag.py
 MyTradingSys/research/sim_desk/test_fabio_v3.py
 MyTradingSys/research/meta_label_tom_fabio_2026-10-31/test_features.py
 MyTradingSys/research/meta_label_tom_fabio_2026-10-31/test_meta_label.py
+MyTradingSys/research/cryptocred_s3_2026-11/test_cc_s3_run.py

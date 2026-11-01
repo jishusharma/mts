@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T01:34:33Z",
   "commands": [],
   "created": "2026-10-30T17:11:49Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "order-flow-writer-restarts-in-a-loop-474",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "orderflow_live.py: HTTP 400 on resume resets next_ms to current minute, exit 4 after 3 rep",
+      "ref": "34e9335a0",
+      "utc": "2026-11-01T01:34:33Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,12 @@
   "refs": [
     "MyTradingSys/backtest/layers/fabio/orderflow_live.py"
   ],
-  "result": "",
+  "result": "orderflow_live.py: HTTP 400 on resume resets next_ms to current minute, exit 4 after 3 repeats; mts_doctor OF-RESTARTS check; 5 new tests",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/fabio/orderflow_live.py",
     "MyTradingSys/backtest/layers/fabio/test_orderflow_live.py",
@@ -44,12 +56,13 @@
   "scope_sha": "2037b9246c15",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read the writer log and _state.json (read-only), reproduce the 400 with a fake fetch_fn",
     "fix resume (fall back to start_ms on 400) and exit with a distinct code after repeats",
     "add restart-loop count WARN to mts_doctor; ship"
   ],
+  "taken": "2026-11-01T01:34:33Z",
   "tests": "MyTradingSys/backtest/layers/fabio/test_orderflow_live.py: fetch_fn raising HTTP 400 on fromId resumes by minute and does not loop (fails before the fix).",
   "title": "Order-flow writer restarts in a loop (474x, HTTP 400 from resume point since 2026-10-22 10:33Z), nothing alerts; done when: writer resumes or fails loudly and an alert fires on restart loops",
   "weight": "IMPORTANT",

@@ -31,6 +31,17 @@ class TestFabioV3Signals(unittest.TestCase):
     def test_t01_atr(self):
         self.ap(atr(f1(), 4, 4), 2.25)                                  # TR 3, 2, 2, 2
 
+    def test_s28_contiguity_gap_fails_closed(self):                     # FORMULAS.md 28.6 RESOLVED diff 1 (T-A)
+        # ATR_4(4) reads TR[1..4]; TR[1] reads c[0], so bars 0..4 must be contiguous (a gap anywhere -> None)
+        self.ap(atr(f1(), 4, 4), 2.25)
+        self.assertEqual(balance(f1(), 4, 4, 0.8, 1.0)["R"], 3)
+        for gap_before in (1, 3):                                       # gap between bars 0-1, and between bars 2-3
+            bars = f1()
+            for b in bars[gap_before:]:
+                b["t"] += 60000
+            self.assertIsNone(atr(bars, 4, 4))
+            self.assertIsNone(balance(bars, 4, 4, 0.8, 1.0))
+
     def test_t02_balance_needs_i_ge_n(self):
         self.assertIsNone(balance(f1(), 3, 4, 0.8, 1.0))
 
