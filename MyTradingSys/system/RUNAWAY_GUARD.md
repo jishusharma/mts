@@ -31,7 +31,7 @@ Policy fit (SCHEDULING_POLICY.md): no standing scheduled tasks, no routines. All
 
 ## 4. Safety rules for any version
 - Report first; kill only the allowlist; never a live-tree, trading, Java, Python, claude or Codex process.
-- No new scheduled task, no routine, no admin, no reboot, no change to power/BIOS/NUC settings. The NUC hang test (single variable) must not be disturbed: the guard reads, it does not tune.
+- No new scheduled task, no routine, no admin, no reboot, no change to power/BIOS/NUC settings. The guard reads, it does not tune.
 - Runtime data stays out of the repo (public repo): logs on C:\ under `%LOCALAPPDATA%\MTS\logs`.
 - Every detector has a test that FAILS on a fake runaway (a helper process holding >100k handles or a looping `find`) and PASSES on a clean host. Thresholds are OURS, not sourced; label them so.
 - Fail open: if the scan errors, say nothing and never block a session.
