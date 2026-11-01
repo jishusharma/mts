@@ -278,6 +278,29 @@ class MarginPreflightGapTest(Base):
             return at.place(sig, False), calls
 
 
+class MarginNeedTest(Base):
+    def test_need_formula_and_fail_closed_inputs(self):
+        self.assertAlmostEqual(at.margin_need_btc(100, 50000), 100 / 50000 * 1.1, places=12)
+        for size, px in ((None, 5e4), (100, None), (0, 5e4), (100, 0), (100, -1), ("x", 5e4), (float("nan"), 5e4),
+                         (100, float("inf")), (-100, 5e4)):
+            with self.subTest(size=size, px=px):
+                self.assertIsNone(at.margin_need_btc(size, px))
+
+    def test_attach_margin_limit_market_and_refusals(self):
+        s = {"plan_args": ["--side", "long", "--entry", "limit", "--price", "80000", "--size", "100"]}
+        self.assertIsNone(at.attach_margin(s, mark_fn=lambda: self.fail("mark read for limit")))
+        self.assertAlmostEqual(s["margin_btc"], 100 / 80000 * 1.1, places=12)
+        m = {"plan_args": ["--side", "long", "--entry", "market", "--size", "100"]}
+        self.assertIsNone(at.attach_margin(m, mark_fn=lambda: 50000.0))
+        self.assertAlmostEqual(m["margin_btc"], 100 / 50000 * 1.1, places=12)
+        for args, fn in ((["--entry", "market"], lambda: 5e4), (["--entry", "market", "--size", "100"], lambda: 0.0),
+                         (["--entry", "market", "--size", "100"], lambda: 1 / 0),
+                         (["--entry", "market", "--size", "abc"], lambda: 5e4), ([], lambda: 5e4)):
+            sig = {"plan_args": args}
+            self.assertIsNotNone(at.attach_margin(sig, mark_fn=fn))
+            self.assertNotIn("margin_btc", sig)
+
+
 class AvailableFundsSeamTest(Base):
     """The real reader: non-trade balance moves (deposit/withdraw/fee/funding) just change available_funds; the reader
     returns what the exchange says now, and any API error is None, never a number."""
