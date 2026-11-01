@@ -1,0 +1,10 @@
+{
+  "done_when": "desk.py done with exit code and the list of failing tests (or none)",
+  "from": "JIS-NB",
+  "id": "20261101-081239-test-sweep-on-trunk-nb-run-all-tests-py-",
+  "need": "cd to your mts-dsa worktree; python scripts/dev/dsa.py begin 'test sweep NB'; python scripts/dev/run_all_tests.py --quick > sweep_NB.txt 2>&1; print the last 40 lines; if a command fails twice close --failed with the error text",
+  "posted": "2026-11-01T08:12:39Z",
+  "status": "pending",
+  "target": "DSA-NB",
+  "title": "Test sweep on trunk (NB): run_all_tests.py --quick, report failures verbatim"
+}
