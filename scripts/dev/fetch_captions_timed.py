@@ -25,8 +25,18 @@ The record also stores the public IP it was written from (one api.ipify.org requ
 still live the guard makes one more ipify request and ignores a record written from a different IP, so a VPN exit
 (scripts/dev/yt_vpn_fetch.py) is not treated as blocked by the home IP's record, while a 429 on the new IP writes a record
 for that IP (the home IP's entry is kept in `by_ip`). A record without an IP, or an unreadable current IP, stands.
+Fleet guard (2026-11-01; one public IP is shared by several machines, so a per-machine record is not enough):
+ - a 429 is also sent as a `ytblock` signal on the mts-signals branch (mts_signal.py channel), keyed by a short hash of the
+   public IP (8 hex chars, never the address: the repo is public); every machine reads it before its next request. Remote
+   state unreadable and no local record: old behaviour plus a printed warning.
+ - rolling 24 h request budget per public IP (YT_DAILY_BUDGET, default 40, OURS): EVERY network call counts (caption fetch,
+   metadata, channel listing, transcript-api); over budget = DEFERRED, no request. Other machines' use arrives as `ytuse` signals.
+ - escalating lockout on consecutive blocks 6 h, 24 h, 72 h (OURS); a clean fetch resets the count (`ytclean` signal).
+ - a yt-dlp 429 ends the video there: the transcript-api fallback (plus its metadata call) is OFF unless --fallback, and then
+   each of its calls is counted against the budget.
 """
 import argparse
+import hashlib
 import json
 import os
 import socket
@@ -50,8 +60,32 @@ CANON = CBP_HOME / "raw_transcripts_canonical" if CBP_HOME else ROOT / "raw_tran
 ID_RE = re.compile(r"(?:v=|youtu\.be/|^)([A-Za-z0-9_-]{11})(?:[&?#]|$)")
 TS_RE = re.compile(r"(\d+):(\d+):(\d+)[.,](\d+)\s+-->")
 BLOCK_HOURS = 6
+BLOCK_LEVELS_H = (6, 24, 72)   # OURS: lockout hours on the 1st, 2nd, 3rd+ consecutive block
+BUDGET_WINDOW_H = 24
+DAILY_BUDGET = 40              # OURS: YouTube requests per public IP per rolling 24 h (env YT_DAILY_BUDGET)
+ALLOW_FALLBACK = False         # transcript-api fallback after a 429 is a second network path: off by default
 BLOCK_MARKS = ("429", "Too Many Requests", "Sign in to confirm")
 EXIT_BLOCKED = 3
+
+
+class YTBlocked(Exception):
+    """A live block (local or fleet) is in force: no request may be made."""
+
+
+class BudgetExceeded(Exception):
+    """The rolling 24 h request budget of this public IP is used up."""
+
+
+def daily_budget():
+    try:
+        return int(os.environ.get("YT_DAILY_BUDGET") or DAILY_BUDGET)
+    except ValueError:
+        return DAILY_BUDGET
+
+
+def ip_hash(ip):
+    """8 hex chars of sha256(ip): pseudonymous key for the public signals branch (the address itself never travels)."""
+    return hashlib.sha256(("mts-yt:" + str(ip)).encode("ascii", "replace")).hexdigest()[:8] if ip else ""
 
 
 def block_file():
@@ -97,6 +131,24 @@ def _future(iso):
 
 
 def blocked_until(check_ip=True):
+    """Local record or fleet signal, whichever ends later (see _local_blocked_until). The fleet is read only when check_ip."""
+    local = _local_blocked_until(check_ip)
+    if not check_ip:
+        return local
+    rows = fleet_rows()
+    if rows is None:
+        if not read_block().get("blocked_until") and not _warned:
+            _warned.append("x")
+            print("YT_GUARD WARNING: fleet block state unreadable and no local record: using this machine's record only.")
+        return local
+    if not any(r.get("kind") == "ytblock" and _future(r.get("until")) for r in rows):
+        return local
+    ip = public_ip()
+    remote = fleet_block(rows, ip_hash(ip) if ip else "")
+    return max([t for t in (local, remote) if t], default=None)
+
+
+def _local_blocked_until(check_ip=True):
     """datetime the block ends, or None when not blocked (record missing, unreadable, expired, or written from a
     different public IP than the current one). The ipify request is made only when a live record exists."""
     rec = read_block()
@@ -112,26 +164,199 @@ def blocked_until(check_ip=True):
     return _future(by_ip.get(cur))
 
 
-def mark_blocked():
-    until = _utcnow() + timedelta(hours=BLOCK_HOURS)
-    stamp = until.isoformat(timespec="seconds")
+_warned = []
+_last_rows = []
+_unflushed = [0, ""]   # requests made by this process not yet announced, and their ip hash
+
+
+def _sig():
+    if os.environ.get("MTS_SIGNALS", "").lower() == "off" or os.environ.get("YT_FLEET", "").lower() == "off":
+        return None
+    if os.environ.get("PYTEST_CURRENT_TEST") and os.environ.get("YT_FLEET", "").lower() != "on":
+        return None   # a test must never post to the real signals branch (it did once, 2026-11-01)
+    try:
+        import mts_signal
+        return mts_signal
+    except Exception:
+        return None
+
+
+def _host():
+    s = _sig()
+    return s.host() if s else socket.gethostname().lower()
+
+
+def fleet_rows(fetch=True):
+    """yt* signals from the mts-signals branch (the channel mts_signal.py uses), or None when unreadable.
+    fetch=False reads the local clone only (no network; used by --status)."""
+    s = _sig()
+    if s is None:
+        return None
+    try:
+        h = s.ensure() if fetch else (s.home() if (s.home() / ".git").exists() else None)
+        if h is None:
+            return None
+        return [r for r in s.load(h) if str(r.get("kind", "")).startswith("yt")]
+    except Exception:
+        return None
+
+
+def fleet_send(kind, text, **extra):
+    s = _sig()
+    if s is None:
+        return False
+    try:
+        return bool(s.send(text, to="all", kind=kind, extra=dict(extra, host=_host())))
+    except Exception:
+        return False
+
+
+def _rt(r):
+    try:
+        return datetime.strptime(r["t"], "%Y%m%dT%H%M%SZ").replace(tzinfo=timezone.utc)
+    except (KeyError, ValueError):
+        return None
+
+
+def fleet_block(rows, ih):
+    """Latest end of a live fleet block for this IP hash (None: none). A newer ytclean for the same IP voids older blocks.
+    ih "" (own IP unknown): any live block counts (fail closed)."""
+    best, clean_t = None, None
+    for r in rows or []:
+        if ih and r.get("ih") != ih:
+            continue
+        t = _rt(r)
+        if r.get("kind") == "ytclean" and t and (clean_t is None or t > clean_t):
+            clean_t = t
+    for r in rows or []:
+        if r.get("kind") != "ytblock" or (ih and r.get("ih") != ih):
+            continue
+        t, u = _rt(r), _future(r.get("until"))
+        if u and not (clean_t and t and t <= clean_t) and (best is None or u > best):
+            best = u
+    return best
+
+
+def current_level(rows, ih, rec=None):
+    """Consecutive-block count now: the newest of the local record and the fleet's ytblock/ytclean rows for this IP."""
+    rec = read_block() if rec is None else rec
+    ev = []
+    lt = None
+    try:
+        lt = datetime.fromisoformat(rec.get("level_t") or "")
+        lt = lt if lt.tzinfo else lt.replace(tzinfo=timezone.utc)
+    except (ValueError, TypeError):
+        pass
+    if lt:
+        ev.append((lt, int(rec.get("level") or 0)))
+    for r in rows or []:
+        if r.get("kind") in ("ytblock", "ytclean") and (not ih or r.get("ih") == ih) and _rt(r):
+            ev.append((_rt(r), int(r.get("level") or 0) if r.get("kind") == "ytblock" else 0))
+    return max(ev, key=lambda e: e[0])[1] if ev else 0
+
+
+def _stamps(rec, ih):
+    cutoff = _utcnow() - timedelta(hours=BUDGET_WINDOW_H)
+    out = []
+    req = rec.get("req") if isinstance(rec.get("req"), dict) else {}
+    for v in req.get(ih, []):
+        try:
+            t = datetime.fromisoformat(v)
+            t = t if t.tzinfo else t.replace(tzinfo=timezone.utc)
+        except (ValueError, TypeError):
+            continue
+        if t > cutoff:
+            out.append(t.isoformat(timespec="seconds"))
+    return out
+
+
+def budget_used(rows, ih, rec=None):
+    """Requests of the last 24 h from this IP: this machine's record plus other machines' ytuse signals."""
+    rec = read_block() if rec is None else rec
+    cutoff = _utcnow() - timedelta(hours=BUDGET_WINDOW_H)
+    used = len(_stamps(rec, ih))
+    for r in rows or []:
+        t = _rt(r)
+        if r.get("kind") == "ytuse" and r.get("ih") == ih and r.get("host") != _host() and t and t > cutoff:
+            try:
+                used += int(r.get("n") or 0)
+            except (TypeError, ValueError):
+                pass
+    return used
+
+
+def spend(what="request"):
+    """Call immediately before ANY YouTube network request (fetch, metadata, listing, fallback). Raises YTBlocked or
+    BudgetExceeded without making the request; otherwise counts it against the rolling 24 h budget."""
+    global _last_rows
+    until = blocked_until()
+    if until:
+        raise YTBlocked(until.isoformat(timespec="seconds"))
     ip = public_ip()
+    ih = ip_hash(ip) if ip else "unknown"
+    rows = fleet_rows()
+    _last_rows = rows or []
+    if budget_used(rows, ih) >= daily_budget():
+        raise BudgetExceeded(f"{what}: {daily_budget()} requests per 24 h used for this IP")
+    rec = read_block()
+    req = rec.get("req") if isinstance(rec.get("req"), dict) else {}
+    req = {k: _stamps(rec, k) for k in req if k != ih and _stamps(rec, k)}
+    req[ih] = _stamps(rec, ih) + [_utcnow().isoformat(timespec="seconds")]
+    write_block(req=req)
+    _unflushed[0] += 1
+    _unflushed[1] = ih
+
+
+def flush_fleet():
+    """Announce this process's request count to the other machines (one ytuse signal)."""
+    n, ih = _unflushed
+    if n:
+        _unflushed[0] = 0
+        fleet_send("ytuse", f"yt-guard used {n} requests", ih=ih, n=n)
+
+
+def mark_clean():
+    """A clean fetch: the consecutive-block count goes back to 0 (and the fleet is told)."""
+    ip = public_ip()
+    ih = ip_hash(ip) if ip else ""
+    if current_level(_last_rows, ih) > 0:
+        write_block(level=0, level_t=_utcnow().isoformat(timespec="seconds"))
+        fleet_send("ytclean", "yt-guard clean fetch, lockout level reset", ih=ih)
+
+
+def mark_blocked():
+    ip = public_ip()
+    ih = ip_hash(ip)
+    rows = fleet_rows()
+    level = min(current_level(rows, ih) + 1, len(BLOCK_LEVELS_H))
+    until = _utcnow() + timedelta(hours=BLOCK_LEVELS_H[level - 1])
+    stamp = until.isoformat(timespec="seconds")
     rec = read_block()
     by_ip = {k: v for k, v in (rec.get("by_ip") or {}).items() if _future(v)} if isinstance(rec.get("by_ip"), dict) else {}
     if rec.get("ip") and _future(rec.get("blocked_until")):
         by_ip.setdefault(rec["ip"], rec["blocked_until"])   # keep the previous IP's block
     if ip:
         by_ip[ip] = stamp
-    write_block(blocked_until=stamp, host=socket.gethostname(), ip=ip, by_ip=by_ip)
+    write_block(blocked_until=stamp, host=socket.gethostname(), ip=ip, ih=ih, by_ip=by_ip, level=level,
+                level_t=_utcnow().isoformat(timespec="seconds"))
+    fleet_send("ytblock", f"yt-guard 429: IP locked level {level} until {stamp}", ih=ih, until=stamp, level=level)
     return until
 
 
 def guard_status():
     until, rec = blocked_until(check_ip=False), read_block()   # --status makes no network call
+    ih = rec.get("ih") or ip_hash(rec.get("ip"))
+    rows = fleet_rows(fetch=False) or []
+    fb = fleet_block(rows, ih) if ih else None
+    until = max([t for t in (until, fb) if t], default=None)
     head = (f"BLOCKED until {until.isoformat(timespec='seconds')} (host {rec.get('host', '?')}, "
             f"ip {rec.get('ip') or '?'})" if until
             else "NOT BLOCKED")
-    return head + f"; last run budget used {rec.get('last_used', 0)} of {rec.get('last_max', '?')}"
+    lvl = current_level(rows, ih, rec)
+    used = budget_used(rows, ih, rec) if ih else 0
+    return (head + f"; lockout level {lvl} of {len(BLOCK_LEVELS_H)} ({'/'.join(map(str, BLOCK_LEVELS_H))} h, OURS)"
+            + f"; budget used {used} of {daily_budget()} in 24 h (OURS, ip {ih or '?'}); "
+            f"last run budget used {rec.get('last_used', 0)} of {rec.get('last_max', '?')}")
 
 
 def guarded_run(items, fetch_one, max_videos, pause=20):
@@ -154,6 +379,10 @@ def guarded_run(items, fetch_one, max_videos, pause=20):
             if r == "BLOCKED":
                 mark_blocked()
                 stopped = True
+            elif r == "UNVERIFIED":   # a live block appeared (another machine's 429): stop, no new record
+                stopped = True
+            elif r.startswith("OK"):
+                mark_clean()
     write_block(last_used=used, last_max=max_videos, last_run=_utcnow().isoformat(timespec="seconds"))
     return out
 
@@ -192,6 +421,7 @@ def parse_vtt(vtt):
 
 def list_channel(handle, scan, cookies=None):
     """Newest `scan` uploads of a channel as [(video_id, title)] (flat listing, no per-video calls)."""
+    spend("channel listing")
     opts = {"quiet": True, "no_warnings": True, "extract_flat": True, "playlistend": scan}
     if cookies:
         opts["cookiefile"] = cookies
@@ -202,6 +432,7 @@ def list_channel(handle, scan, cookies=None):
 
 def video_date(vid, cookies=None):
     """Upload date YYYY-MM-DD of one video (metadata only, no captions); "" when unknown."""
+    spend("metadata")
     opts = {"quiet": True, "no_warnings": True, "skip_download": True}
     if cookies:
         opts["cookiefile"] = cookies
@@ -215,6 +446,7 @@ def video_date(vid, cookies=None):
 
 def transcript_api_cues(vid, langs):
     """([(start_s, text)], "auto"|"manual") from youtube-transcript-api, or None (not installed, no captions, blocked)."""
+    spend("transcript-api")
     try:
         from youtube_transcript_api import YouTubeTranscriptApi
         t = YouTubeTranscriptApi().fetch(vid, languages=list(langs))
@@ -226,6 +458,7 @@ def transcript_api_cues(vid, langs):
 
 def meta(vid, cookies=None):
     """Title/date/uploader/duration of one video (metadata only); {} when YouTube refuses."""
+    spend("metadata")
     opts = {"quiet": True, "no_warnings": True, "skip_download": True}
     if cookies:
         opts["cookiefile"] = cookies
@@ -262,6 +495,12 @@ def fetch(vid, analyst, langs, outdir, channel="", cookies=None):
         return "EXISTS"
     url = f"https://www.youtube.com/watch?v={vid}"
     try:
+        spend("caption fetch")
+    except YTBlocked:
+        return "UNVERIFIED"
+    except BudgetExceeded:
+        return "DEFERRED"
+    try:
         with tempfile.TemporaryDirectory() as td:
             opts = {"skip_download": True, "quiet": True, "no_warnings": True, "writesubtitles": True,
                     "writeautomaticsub": True, "subtitleslangs": langs, "subtitlesformat": "vtt",
@@ -279,10 +518,14 @@ def fetch(vid, analyst, langs, outdir, channel="", cookies=None):
     except yt_dlp.utils.DownloadError as e:
         msg = str(e)
         if any(m in msg for m in BLOCK_MARKS):
-            got = transcript_api_cues(vid, langs)   # other endpoint; not blocked when timedtext 429s
-            if got:
-                return store(vid, analyst, outdir, channel, meta(vid, cookies), got[1], got[0],
-                             "youtube_transcript_api")
+            if ALLOW_FALLBACK:   # opt-in second network path; every call below is counted against the budget
+                try:
+                    got = transcript_api_cues(vid, langs)
+                    if got:
+                        return store(vid, analyst, outdir, channel, meta(vid, cookies), got[1], got[0],
+                                     "youtube_transcript_api")
+                except (YTBlocked, BudgetExceeded):
+                    pass
             return "BLOCKED"   # ONE try per video; the guard records the block and stops the run
         return f"ERROR {msg[:80]}"
 
@@ -290,6 +533,12 @@ def fetch(vid, analyst, langs, outdir, channel="", cookies=None):
 def fetch_channel(a):
     try:
         rows = list_channel(a.channel, a.scan, a.cookies)
+    except YTBlocked as e:
+        print(f"{a.channel} UNVERIFIED (blocked until {e}): no request made")
+        return 1
+    except BudgetExceeded as e:
+        print(f"{a.channel} DEFERRED ({e}): no request made")
+        return 1
     except yt_dlp.utils.DownloadError as e:
         print(f"{a.channel} LIST_FAILED {str(e)[:80]}")
         if any(m in str(e) for m in BLOCK_MARKS):
@@ -307,7 +556,12 @@ def fetch_channel(a):
             print(f"{vid} SKIP_OFFTOPIC", flush=True)
             continue
         if a.since and not stopped:
-            published = video_date(vid, a.cookies)
+            try:
+                published = video_date(vid, a.cookies)
+            except (YTBlocked, BudgetExceeded):
+                print(f"{vid} DEFERRED", flush=True)
+                failed = True
+                break
             if not published:
                 print(f"{vid} DATE_FAILED", flush=True)
                 failed = True
@@ -329,6 +583,10 @@ def fetch_channel(a):
             if r == "BLOCKED":
                 mark_blocked()
                 stopped = True
+            elif r == "UNVERIFIED":
+                stopped = True
+            elif r.startswith("OK"):
+                mark_clean()
         picked += r.startswith(("OK", "EXISTS"))
         failed |= not r.startswith(("OK", "EXISTS"))
         print(f"{vid} {r}", flush=True)
@@ -338,7 +596,14 @@ def fetch_channel(a):
 
 
 def main(argv):
-    global CANON
+    try:
+        return _main(argv)
+    finally:
+        flush_fleet()
+
+
+def _main(argv):
+    global CANON, ALLOW_FALLBACK
     ap = argparse.ArgumentParser()
     ap.add_argument("--analyst", required=True)
     ap.add_argument("--out", default=str(CANON))
@@ -352,12 +617,14 @@ def main(argv):
     ap.add_argument("--cookies", default=None)
     ap.add_argument("--langs", default="en")
     ap.add_argument("--max-videos", type=int, default=5, help="network fetches per run; extra ids are DEFERRED")
-    ap.add_argument("--status", action="store_true", help="print blocked/not blocked + budget used; no network")
+    ap.add_argument("--status", action="store_true", help="print lockout level/until + 24 h budget used; no network")
+    ap.add_argument("--fallback", action="store_true", help="after a yt-dlp 429 also try transcript-api (counted; off by default)")
     ap.add_argument("videos", nargs="*")
     a = ap.parse_args(argv)
     gate = guard_gate(a)
     if gate is not None:
         return gate
+    ALLOW_FALLBACK = a.fallback
     if yt_dlp is None:
         print("yt_dlp not installed: pip install yt-dlp")
         return 2

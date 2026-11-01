@@ -5,6 +5,7 @@ Usage (repo root):
     python MyTradingSys/research/video_priority_2026-10-15/fetch_meta.py detail ID [ID ...]  # full metadata -> data/detail/<id>.json
 Rate: one request per 5 s at most; on HTTP 429 wait 60 s and retry once per id, then record the failure.
 """
+raise SystemExit("REFUSED: unguarded YouTube caller (no lockout, no budget). Use scripts/dev/fetch_captions_timed.py (guarded; --status shows budget and lockout).")
 import json
 import sys
 import time

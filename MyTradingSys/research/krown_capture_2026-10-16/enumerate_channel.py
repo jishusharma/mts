@@ -1,3 +1,4 @@
+raise SystemExit("REFUSED: unguarded YouTube caller (no lockout, no budget). Use scripts/dev/fetch_captions_timed.py (guarded; --status shows budget and lockout).")
 import subprocess,re,sys
 def run(a): return subprocess.run(['yt-dlp']+a,capture_output=True).stdout.decode('utf8','replace')
 for l in open('playlists.txt','rb').read().decode('utf8','replace').splitlines():
