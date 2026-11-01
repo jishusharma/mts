@@ -1,7 +1,7 @@
 {
 "_doc": "Catalogue of known tests on trunk. kind is inferred (kind_source). Built by sim_desk/build_catalogue.py.",
-"count": 321,
-"exported": 321,
+"count": 322,
+"exported": 322,
 "rows": [
 {
 "id": "st-_archive-loose_2026-10-cbp_profile6_result",
@@ -520,7 +520,7 @@
 "source": "MyTradingSys/research/c26_roadmap_2026-11-01/PHASE1_EVENTS.md",
 "exported": true,
 "result_id": "dir-c26_roadmap_2026-11-01",
-"folder_files": 2,
+"folder_files": 4,
 "date": "2026-11-01",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
@@ -1807,6 +1807,20 @@
 "exported": true,
 "result_id": "eagle-c26-fade",
 "date": "2026-10-31",
+"status": "SEE_VERDICT",
+"verdict_class": "other"
+},
+{
+"id": "c26-range-ladder",
+"family": "Eagle_Eyes chart ideas (operator, 10-30/31)",
+"title": "C26 Candidate C, measure first: the range above a taken high and the divergence legs inside it (recent design window)",
+"kind": "backtest",
+"kind_source": "result file",
+"verdict": "Measure only: DOWN highs that came back to L1 went 0.37 % (median) / 0.64 % (80th) beyond H1 first; 12 of 30 did not come back in 24h",
+"source": "MyTradingSys/research/sim_desk/results/c26-range-ladder.json",
+"exported": true,
+"result_id": "c26-range-ladder",
+"date": "2026-11-01",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -3708,14 +3722,14 @@
 {
 "id": "dir-rumers_2026-11-01",
 "family": "rumers",
-"title": "Rumers (@the.rumers) backtest harness: written BEFORE any rule is known (Lab_Guy, 2026-11-01)",
+"title": "The Rumers (@the.rumers) Direct View Extraction: 10 Operator-Picked Videos",
 "kind": "backtest",
 "kind_source": "inferred from text",
-"verdict": "rubric (applied to each extracted rule)",
-"source": "MyTradingSys/research/rumers_2026-11-01/HARNESS.md",
+"verdict": "- Card ID: gemini-yt-rumers-direct-view-1101 [SOURCED: MyTradingSys/system/tasks/gemini-yt-rumers-direct-view-1101.json:15]",
+"source": "MyTradingSys/research/rumers_2026-11-01/RUMERS_DIRECT_VIEW.md",
 "exported": true,
 "result_id": "dir-rumers_2026-11-01",
-"folder_files": 1,
+"folder_files": 2,
 "date": "2026-11-01",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
