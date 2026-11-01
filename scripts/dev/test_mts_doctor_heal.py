@@ -14,7 +14,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import mts_doctor as D
 import mts_signal as S
 
-NOW = datetime(2026, 10, 28, 12, 0, tzinfo=timezone.utc)
+NOW = datetime.now(timezone.utc).replace(minute=0, second=0, microsecond=0)  # relative: mts_signal keeps KEEP_DAYS by the real clock (CI red 2026-11-01 when a fixed 10-28 fixture aged out)
 NL = chr(10)
 STAMP = NOW - timedelta(hours=72)          # a claim 3 days old (past sync.STALE_HOURS = 24)
 FRESH = NOW - timedelta(hours=1)
