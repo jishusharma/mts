@@ -117,9 +117,9 @@ def heal_expire_unackable_broadcasts(repo, rows=None, now=None, send_fn=None):
         rows = S.load(h) if h else []
     active = S.hosts_active(rows, BROADCAST_SEEN_H, now)
     rows_f = [r for r in rows if r.get("aud") != "top"]
-    b_by_id = {b["id"]: b for b in S.high_open(rows_f)}
+    b_by_id = {b["id"]: b for b in S.high_open(rows_f, now)}
     out = []
-    for host in sorted(S.hosts_seen(rows_f)):
+    for host in sorted(S.hosts_seen(rows_f, now)):
         if host in active:
             continue                       # a session ran there recently: it can still ack
         for p in S.pending(rows_f, host, now):
