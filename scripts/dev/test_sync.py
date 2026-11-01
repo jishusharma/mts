@@ -1899,6 +1899,41 @@ class ShipResultFlagTest(unittest.TestCase):
             self.assertEqual(g("status", "--short", "--", sync.LAYERS_REL).strip(), "")
             self.assertIn("other.txt", g("status", "--short"))   # unrelated file untouched
 
+    def test_stage_layers_regenerates_stale_layers_md(self):
+        with tempfile.TemporaryDirectory() as td:
+            g = self.make_repo(td)
+            idx = Path(td) / "MyTradingSys" / "system" / "layer_index.json"
+            idx.parent.mkdir(parents=True)
+            idx.write_text("{}", encoding="utf-8")
+            f = Path(td) / sync.LAYERS_REL
+            f.parent.mkdir(parents=True, exist_ok=True)
+            f.write_text("old content", encoding="utf-8")
+            g("add", "-A")
+            g("commit", "-q", "-m", "init layers")
+
+            fake = mock.Mock()
+            fake.write = lambda r: f.write_text("regenerated content", encoding="utf-8")
+            with mock.patch.dict(sys.modules, {"make_layers_md": fake}):
+                self.assertTrue(sync.stage_layers(td))
+                self.assertEqual(f.read_text(encoding="utf-8"), "regenerated content")
+                self.assertIn("Result:", g("log", "-1", "--format=%B"))
+                self.assertEqual(g("status", "--short").strip(), "")
+
+    def test_ship_refuses_staged_uncommitted_files(self):
+        with tempfile.TemporaryDirectory() as td:
+            g = self.make_repo(td)
+            staged_file = Path(td) / "staged.txt"
+            staged_file.write_text("staged content", encoding="utf-8")
+            g("add", "staged.txt")
+            with mock.patch.object(sync, "toplevel", return_value=Path(td)), \
+                 mock.patch.object(sync, "run_host_health"), \
+                 mock.patch.object(sync, "ship"), \
+                 contextlib.redirect_stderr(io.StringIO()) as err:
+                rc = sync.main(["ship"])
+                self.assertEqual(rc, 1)
+                self.assertIn("staged but not committed", err.getvalue())
+                self.assertIn("staged.txt", err.getvalue())
+
     def test_cli_result_commits_before_ship_and_m_without_result_is_refused(self):
         with mock.patch.object(sync, "toplevel", return_value=Path(".")), mock.patch.object(sync, "run_host_health"),                 mock.patch.object(sync, "ship", return_value=None) as mock_ship,                 mock.patch.object(sync, "commit_pending", return_value=1) as mock_commit:
             self.assertEqual(sync.main(["ship", "--result", "it works", "-m", "subj"]), 0)

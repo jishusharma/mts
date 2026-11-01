@@ -682,6 +682,31 @@ class RefreshLayersAnnounceTest(unittest.TestCase):
                     T.refresh_layers(repo)
                 self.assertNotIn("regenerated", buf2.getvalue())
 
+    def test_check_and_tag_leave_layers_md_unchanged(self):
+        with tempfile.TemporaryDirectory() as d:
+            repo, old_repo = Path(d), T.REPO
+            T.REPO = repo
+            try:
+                (repo / T.LAYER_INDEX).parent.mkdir(parents=True)
+                (repo / T.LAYER_INDEX).write_text("{}", encoding="utf-8")
+                layers_md = repo / "MyTradingSys" / "system" / "LAYERS.md"
+                layers_md.write_text("original content", encoding="utf-8")
+                c = T.blank("test-card-1", "Test Card", state="ready")
+                c["goal"] = "test goal"
+                c["worker"] = "SONNET"
+                c["size"] = "S"
+                c["est_turns"] = 5
+                T.save(repo, c)
+                fake = mock.Mock()
+                fake.write = lambda r: layers_md.write_text("OVERWRITTEN", encoding="utf-8")
+                with mock.patch.dict(sys.modules, {"make_layers_md": fake}):
+                    T.main(["check", "test-card-1"])
+                    self.assertEqual(layers_md.read_text(encoding="utf-8"), "original content")
+                    T.main(["tag", "test-card-1", "--refresh"])
+                    self.assertEqual(layers_md.read_text(encoding="utf-8"), "original content")
+            finally:
+                T.REPO = old_repo
+
 
 class LabMachineChecksTest(unittest.TestCase):
     def setUp(self):

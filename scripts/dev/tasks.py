@@ -260,7 +260,7 @@ def layer_families(repo=REPO):
 
 
 def refresh_layers(repo=REPO):
-    """Regenerate LAYERS.md after a card change, so its open-card lists never go stale. Never fails the card command."""
+    """Regenerate LAYERS.md via make_layers_md. Kept for manual or test use; mutating commands no longer call this automatically."""
     if not (Path(repo) / LAYER_INDEX).is_file():
         return
     f = Path(repo) / "MyTradingSys" / "system" / "LAYERS.md"
@@ -1767,8 +1767,6 @@ def main(argv=None):
     s.set_defaults(f=cmd_sweep)
     a = ap.parse_args(argv)
     rc = a.f(a) or 0
-    if a.cmd in MUTATING:
-        refresh_layers(REPO)
     return rc
 
 

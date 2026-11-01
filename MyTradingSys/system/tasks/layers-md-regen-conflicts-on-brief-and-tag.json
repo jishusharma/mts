@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T21:57:31Z",
   "commands": [
     "python scripts/dev/test_tasks.py",
     "python -m unittest scripts.dev.test_sync"
@@ -18,11 +20,17 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "tasks.py check/tag never mutate LAYERS.md, sync.py stage_layers regenerates via make_layer",
+      "ref": "e294f987c",
+      "utc": "2026-11-01T21:57:31Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "tasks.py check with no id is read-only: prints WOULD PROMOTE, only check <id> promotes",
-      "ref": "66bbbcf80d92",
-      "utc": "2026-10-31T22:31:02Z"
+      "line": "aibridge find_browser skips empty-dump browsers; tasks list batches git",
+      "ref": "d7a9c9484cbd",
+      "utc": "2026-11-01T17:41:30Z"
     }
   ],
   "layers": [],
@@ -32,9 +40,14 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-01T02:50:54Z",
+  "refreshed": "2026-11-01T21:47:10Z",
   "refs": [],
-  "result": "",
+  "result": "tasks.py check/tag never mutate LAYERS.md, sync.py stage_layers regenerates via make_layers_md, sync.py ship refuses staged uncommitted files; all tests pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/tasks.py",
     "scripts/dev/sync.py",
@@ -44,18 +57,19 @@
   "scope_out": [
     "No change to make_layers_md.py output format; no gate change beyond ship staging; no live tree"
   ],
-  "scope_sha": "66bbbcf80d92",
+  "scope_sha": "d7a9c9484cbd",
   "size": "M",
   "sources": [
     "tasks.py:262-275 refresh_layers, 1766-1768 main; sync.py:1132-1145 stage_layers, 2070 ship; test_tasks.py:665 RefreshLayersAnnounceTest"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "1 Fail-first tests in test_tasks.py and test_sync.py (names in tests); update RefreshLayersAnnounceTest (test_tasks.py:665; the function is tasks.py:262) to the new contract",
     "2 tasks.py main (line ~1766): stop calling refresh_layers after MUTATING commands (keep the function); sync.py stage_layers (line 1132): call make_layers_md.write(repo) first, guarded by the layer_index file, then compare and commit as now (OURS)",
     "3 sync.py ship (before stage_layers, line ~2070): if git diff --cached --name-only lists files, raise SyncError 'staged but not committed: <files>; git commit them or use --result' (OURS: refuse, not auto-commit)",
     "4 Run test_tasks.py, test_sync.py, run_all_tests.py --quick; REVIEW session PLAN+DIFF (CRITICAL: ship gate); sync.py ship Verify: content commit sha; git cherry origin/fast-track <sha> empty; git ls-tree -r origin/fast-track --name-only lists the delivered files."
   ],
+  "taken": "2026-11-01T21:48:15Z",
   "tests": "test_tasks.py: check_and_tag_leave_layers_md_unchanged; test_sync.py: stage_layers_regenerates_stale_layers_md and ship_refuses_staged_uncommitted_files; each fails on current code",
   "title": "tasks.py brief/tag/check regenerate LAYERS.md as a side effect, which conflicts on trunk during ship (Builders took theirs by hand twice), and sync.py ship does not commit already-staged files. Done when: brief/tag/check never write LAYERS.md (only the ship step regenerates it) and ship either commits staged files or refuses with a clear message, tests fail on old code first",
   "weight": "CRITICAL",
