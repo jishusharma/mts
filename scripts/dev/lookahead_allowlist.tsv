@@ -344,3 +344,4 @@ MyTradingSys/research/sim_desk/studies/fabio_v3.py	fwd-index	entry = bars[j + 1]
 MyTradingSys/research/sim_desk/studies/fabio_v3.py	fwd-index	ib = bars[o:o + IB_LEN]	the first 30 minutes of the window; read only for decisions on bars at or after open+30
 MyTradingSys/research/sim_desk/studies/fabio_v3.py	fwd-index	if bars[b + 1]['t'] - bars[b]['t'] != _bars.MIN:	contiguity check of the market-entry bar b+1; the signal is the close of bar b (v3 confirm mode, models.py:418)
 MyTradingSys/research/sim_desk/studies/fabio_v3.py	fwd-index	entry = bars[b + 1]['o']	market entry at the open of the bar after the breakout close; order price only, never the signal
+MyTradingSys/backtest/layers/fabio/v3/manage.py	fwd-index	pa = bars[i + 1]["o"]	SAFE: add decided on bars<=i at the close (add_allowed/add_size read stop and ctrl[i] only); fills taker at the next open o[i+1] (spec 28.4)

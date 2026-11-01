@@ -9,7 +9,8 @@ from .day_gates import (ENTRY_CUTOFF, US_CLOSED, WINDOW_BARS, aggregate_day_r, a
                         day_gate_open, day_type, entry_allowed, first_leg_allowed, first_leg_risk, london_open_utc,
                         ny_open_utc, sample_size, uk_bst, us_dst, window_bars)
 from .fill import find_fill, fills_in_bar, missed_winner, taker_fill
-from .manage import (add_allowed, add_size, be_update, opp_stop, simulate_trade, trail_update, walk_trade)
+from .manage import (add_allowed, add_size, be_update, opp_stop, simulate_trade, simulate_trade_legs,
+                     trail_update, walk_trade)
 from .models import (d_and_stop, model_a_trade, model_b, model_c, model_d_trade, scan_model_a, scan_model_b,
                      scan_model_c, scan_model_d)
 from .signals import (B_PROF, atr, balance, big_push, breakout, build_profile, contiguous, control_level, curve,
