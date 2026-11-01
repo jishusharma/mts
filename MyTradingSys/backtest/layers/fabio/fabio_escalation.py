@@ -13,7 +13,11 @@ def bar_delta(bar: dict) -> float:
     """Returns `2 * bar["tbv"] - bar["v"]`."""
     return 2 * bar["tbv"] - bar["v"]
 
-def escalation_events(bars: list, left: int = 2, right: int = 2, use_body: bool = True, level_tolerance: float = 0.001, aggression_k: float = 2.0, record_lookback: int = 20) -> list:
+def escalation_events(bars: list, left: int = 2, right: int = 2, use_body: bool = True, level_tolerance: float = 0.001, aggression_k: float = 2.0, record_lookback: int = 20, require_break: bool = True) -> list:
+    """require_break=True (default): FAB-003 is a BREAKOUT, so the record bar must also CLOSE beyond the level price in
+    the aggressor's direction (high level: close > price, aggressor up; low level: close < price, aggressor down).
+    The break definition (strict close beyond the swing price) is OURS, not the video's. require_break=False is the
+    legacy reading (no break test) kept so published backtest numbers reproduce."""
     if level_tolerance < 0:
         raise ValueError("level_tolerance must be >= 0")
     if aggression_k <= 0:
@@ -121,6 +125,11 @@ def escalation_events(bars: list, left: int = 2, right: int = 2, use_body: bool 
                 max_delta = max(window_deltas_magnitude)
 
                 if bars[i]["v"] == max_volume and abs(delta_k) == max_delta:
+                    if require_break:
+                        broke = (lvl["kind"] == "high" and direction_k == "up" and bar["c"] > lvl["price"]) or                                 (lvl["kind"] == "low" and direction_k == "down" and bar["c"] < lvl["price"])
+                        if not broke:
+                            i += 1
+                            continue
                     # Fire escalation event
                     result.append({
                         "t": bar["t"],

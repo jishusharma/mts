@@ -107,3 +107,14 @@ def test_short_forward_window_is_not_in_data():
 
 def test_bars_before_dev_start_are_dropped():
     assert event_table.build_event_table(_long(START - 100 * HOUR)) == []
+
+
+def test_dev_1h_legacy_reproduces_652_events_strict_default_is_fewer():
+    """Pins REPORT.md: 652 DEV 1h events with the legacy (no break test) reading; the strict FAB-003 default is a subset."""
+    import os
+    if not os.path.exists(str(event_table.DEFAULT_INPUT)):
+        pytest.skip("DEV 1h npz not on this machine")
+    bars = event_table.load_dev_npz(str(event_table.DEFAULT_INPUT))
+    assert len(event_table.build_event_table(bars)) == 652
+    data = sorted((b for b in bars if event_table.DEV_START_MS <= b["t"] < event_table.DEV_END_MS), key=lambda b: b["t"])
+    assert len(event_table.escalation_events(data)) < 652

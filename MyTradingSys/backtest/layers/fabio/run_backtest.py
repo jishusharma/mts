@@ -166,11 +166,12 @@ ESCALATION_GRID = [
 
 
 def escalation_fn(bars, **p):
-    return chunked_events(escalation_events, bars, **p)
+    # legacy reading (no break test) so published grid numbers reproduce
+    return chunked_events(escalation_events, bars, **{"require_break": False, **p})
 
 
 def cvd_fn(bars, **p):
-    return cvd_absorption_events(bars, **p)
+    return cvd_absorption_events(bars, **{"same_level_only": False, **p})
 
 
 def run_fvg(bars, n_is, n_bins=20, seed=42, max_wait=200):

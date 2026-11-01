@@ -69,7 +69,7 @@ def build_event_table(bars, horizon=HORIZON):
         return []
     times = [b["t"] for b in data]
     rows = []
-    for ev in escalation_events(data):
+    for ev in escalation_events(data, require_break=False):  # legacy: 652 DEV 1h events
         i = ev["i"]
         row = {"timestamp": ev["t"], "side": ev["side"], "level_kind": ev["level_kind"],
                "level_price": ev["level_price"], "absorbed_t": times[ev["absorbed_i"]],
