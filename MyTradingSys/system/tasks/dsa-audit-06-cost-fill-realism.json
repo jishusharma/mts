@@ -30,7 +30,7 @@
     "MyTradingSys/backtest/fees.py",
     "MyTradingSys/execution/auto_trader_config.json"
   ],
-  "result": "",
+  "result": "T06_cost_fill_realism.md on trunk 0d738711f (2026-10-25), re-checked 2026-10-26 (test_cost_inventory 2 passed, funding rerun byte-identical); close-out 78c23c8e9",
   "scope_in": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T06_cost_fill_realism.md and MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/ (new files only)",
     "read-only: repo code, result files, data under F:/MTS/data and Dumps (windows per brief section 5)"
@@ -45,7 +45,7 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "refined",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md sections 1-7, then section 8 'T06' (full method).",
     "Cost inventory (lead L3): every fee/slippage/spread/funding constant under backtest/ and research/ with file:line, unit, side, fees.py import; costs.csv.",
