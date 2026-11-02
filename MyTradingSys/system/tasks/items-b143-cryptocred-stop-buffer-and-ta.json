@@ -37,11 +37,11 @@
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T16:05:46Z",
+  "refreshed": "2026-11-02T16:30:00Z",
   "refs": [
     "B143"
   ],
-  "result": "",
+  "result": "9 cites fixed in 4 lines of the B143 item (C14, C15, C19/C23, receipt setup 3 anchor); verifier PASS 0 problem(s); NO-SOURCE verdicts unchanged",
   "scope_in": [
     "MyTradingSys/items/B143_cryptocred_stop_buffer_and_target_unsourced.md",
     "MyTradingSys/backtest/layers/cryptocred/cc_setups.py (read only)"
@@ -55,7 +55,7 @@
   "sources": [
     "MyTradingSys/items/B143_cryptocred_stop_buffer_and_target_unsourced.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "grep -n stop_buffer_pct and target_r in MyTradingSys/backtest/layers/cryptocred/cc_setups.py; read setup 1-3 bodies",
     "replace each stale cite in the item Findings and Evidence with the current line; keep verdicts",
