@@ -1,12 +1,12 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "2026-11-02T17:02:47Z",
+  "closed": "2026-11-02T16:56:26Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-02T17:02:45Z",
-    "misses": 40,
+    "folded": "2026-11-02T17:03:31Z",
+    "misses": 42,
     "reads": [
       "scripts/dev/test_sync.py",
       "scripts/dev/test_trial_ledger.py",
@@ -30,9 +30,9 @@
   "latest": [
     {
       "kind": "ship",
-      "line": "merge_trunk restores a dirty LAYERS.md (only blocker) and retries; 2 tests, restore test f",
-      "ref": "3ccb11d28",
-      "utc": "2026-11-02T17:02:47Z"
+      "line": "sync.py merge_trunk restores a dirty LAYERS.md and retries; 2 tests in test_sync.py",
+      "ref": "3961c25ef",
+      "utc": "2026-11-02T16:56:26Z"
     },
     {
       "auto": true,
@@ -51,7 +51,7 @@
   "refined_by": "",
   "refreshed": "2026-11-02T16:20:04Z",
   "refs": [],
-  "result": "merge_trunk restores a dirty LAYERS.md (only blocker) and retries; 2 tests, restore test failed on old code",
+  "result": "sync.py merge_trunk restores a dirty LAYERS.md and retries; 2 tests in test_sync.py",
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"
@@ -78,7 +78,7 @@
     "add test_merge_trunk_restores_dirty_layers_md and test_merge_trunk_keeps_other_dirty_file_blocking beside the stage_layers tests (test_sync.py:1906)",
     "run the new test on the old code first to see it fail"
   ],
-  "taken": "2026-11-02T17:02:47Z",
+  "taken": "2026-11-02T16:56:26Z",
   "tests": "python -m pytest scripts/dev/test_sync.py -q -k merge_trunk --basetemp=F:/MTS/_pt_b (fail-first: test_merge_trunk_restores_dirty_layers_md)",
   "title": "sync.py merge_trunk: a dirty generated LAYERS.md must not abort the merge of origin/fast-track",
   "weight": "ROUTINE",

@@ -13,7 +13,7 @@
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Desk report: DeepSeek panel showed agent 0.7.5 but 0/200 and hands-free blocks not run after F5. Repo extension is now 0.7.9 (extension/manifest.json). Install 0.7.9, reload, retest; if blocks still do not run, find the failing DeepSeek selector (content.js:158 block finder) and add a failing fixture test.",
+  "goal": "Desk report: DeepSeek panel showed agent 0.7.5 but 0/200 and hands-free blocks not run after F5. Repo extension is now 0.7.19 (extension/manifest.json; 0.7.19 commit 8464ce557 reads blocks only when complete). Install 0.7.19, reload, retest; if blocks still do not run, find the failing DeepSeek selector (content.js:158 block finder) and add a failing fixture test.",
   "id": "aibridge-desk-no-inject-after-075",
   "kind": "build",
   "lane": "JIS-NB",
@@ -21,9 +21,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "AIBridge 0.7.11: idle signal tolerates timer wobble and operator typing; one retry before ",
-      "ref": "6913c301f3bd",
-      "utc": "2026-11-02T06:40:35Z"
+      "line": "AIBridge 0.7.19: blocks read only when complete, busy-chat results queued and retried, sto",
+      "ref": "8464ce557b64",
+      "utc": "2026-11-02T16:25:04Z"
     }
   ],
   "layers": [],
@@ -33,7 +33,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T11:04:30Z",
+  "refreshed": "2026-11-02T16:47:04Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -47,7 +47,7 @@
     "any other host",
     "live tree"
   ],
-  "scope_sha": "6913c301f3bd",
+  "scope_sha": "8464ce557b64",
   "size": "S",
   "sources": [
     "scripts/aibridge/RELEASES.json (0.7.9 current)",

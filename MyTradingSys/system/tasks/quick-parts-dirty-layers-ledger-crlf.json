@@ -24,16 +24,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "ship: regenerated LAYERS.md",
-      "ref": "9492956d3cba",
-      "utc": "2026-11-02T11:09:44Z"
+      "line": "merge origin/fast-track into JIS-NB/eagle-oi-cvd-2 (OPERATOR_DECISIONS: keep both 11-02 en",
+      "ref": "4c8a8c9bab35",
+      "utc": "2026-11-02T16:29:45Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "9492956d3cba ship: regenerated LAYERS.md",
+      "line": "4c8a8c9bab35 merge origin/fast-track into JIS-NB/eagle-oi-cvd-2 (OPERATOR_DECISIONS: keep ",
       "ref": "MyTradingSys/system/LAYERS.md",
-      "utc": "2026-11-02T11:09:44Z"
+      "utc": "2026-11-02T16:29:45Z"
     }
   ],
   "layers": [],
@@ -43,7 +43,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T11:10:45Z",
+  "refreshed": "2026-11-02T16:47:36Z",
   "refs": [],
   "result": "source: test_hand_kept_trial_ledger_untouched ran main() on the real repo rewriting TRIAL_LEDGER_BUILT.csv; now scratch root (fail-first shown); LF-byte guards added for both generators; test_sync rc 3/4 flake NOT diagnosed",
   "result_receipt": {
@@ -59,7 +59,7 @@
   "scope_out": [
     "live tree; gate step selection and QUICK_PARTS partition (26ff2273e already fixed that)"
   ],
-  "scope_sha": "9492956d3cba",
+  "scope_sha": "4c8a8c9bab35",
   "size": "M",
   "sources": [
     "run-all-tests-quick-1102 agent Noticed"

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T16:46:50Z",
   "commands": [],
   "created": "2026-11-02T11:09:04Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "2beebeb65: gemini blind re-read of GRANDFATHER_DECISION_API_RERUN.md (grandfather_api_reru",
+      "ref": "4b6f57b35",
+      "utc": "2026-11-02T16:46:50Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -41,7 +48,12 @@
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
   "reroute_failed": "20261102-112522-gemini-blind-read-grandfather-api-rerun-",
-  "result": "",
+  "result": "2beebeb65: gemini blind re-read of GRANDFATHER_DECISION_API_RERUN.md (grandfather_api_rerun_blind_read.md; 6 NOT_IN_DATA)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/fable_audit_2026-10-20/GRANDFATHER_DECISION_API_RERUN.md (read)",
     "files it cites (read)",
@@ -53,12 +65,13 @@
   "scope_sha": "f024d2af66a6",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "list every number and file:line citation in the document",
     "open each cited file and check it",
     "write FOUND / NOT_IN_DATA / DIFF per item, counts on line 1"
   ],
+  "taken": "2026-11-02T16:46:50Z",
   "tests": "see done_when (audit card, output file is the test)",
   "title": "[GEMINI] blind re-read of GRANDFATHER_DECISION_API_RERUN.md: quoted numbers vs the files it cites",
   "weight": "ROUTINE",

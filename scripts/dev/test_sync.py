@@ -1082,33 +1082,6 @@ class SyncTest(unittest.TestCase):
         tracked = subprocess.run(["git", "-C", str(self.b), "ls-files", "runtime_data/_mirror"], capture_output=True, text=True).stdout
         self.assertEqual(tracked.strip(), "")
 
-    def layers_changed_upstream(self):
-        (self.a / "MyTradingSys" / "system").mkdir(parents=True)
-        commit(self.a, sync.LAYERS_REL, "L0\n")
-        sync.ship(self.a, gate=self.gate)
-        sh(self.b, "pull", "-q", "origin", "fast-track")
-        commit(self.a, sync.LAYERS_REL, "L1\n")
-        sync.ship(self.a, gate=self.gate)
-
-    def test_merge_trunk_restores_dirty_layers_md(self):
-        """A stale/CRLF local LAYERS.md (generated) that origin also changed must not abort the merge."""
-        self.layers_changed_upstream()
-        (self.b / sync.LAYERS_REL).write_bytes(b"L0\r\nlocal\r\n")
-        self.assertEqual(sync.merge_trunk(self.b), 1)
-        self.assertEqual((self.b / sync.LAYERS_REL).read_text(), "L1\n")
-
-    def test_merge_trunk_keeps_other_dirty_file_blocking(self):
-        commit(self.a, "other.txt", "o0\n")
-        sync.ship(self.a, gate=self.gate)
-        self.layers_changed_upstream()
-        commit(self.a, "other.txt", "o1\n")
-        sync.ship(self.a, gate=self.gate)
-        (self.b / "other.txt").write_text("mine\n", newline="\n")
-        (self.b / sync.LAYERS_REL).write_bytes(b"L0\r\nlocal\r\n")
-        with self.assertRaises(sync.SyncError):
-            sync.merge_trunk(self.b)
-        self.assertEqual((self.b / "other.txt").read_text(), "mine\n")
-
     def test_start_keeps_a_tree_whose_only_dirt_is_the_pulled_mirror(self):
         self.track_mirror()
         sh(self.b, "pull", "-q", "origin", "fast-track")
@@ -1945,6 +1918,42 @@ class ShipResultFlagTest(unittest.TestCase):
             self.assertIn("Result:", g("log", "-1", "--format=%B"))
             self.assertEqual(g("status", "--short", "--", sync.LAYERS_REL).strip(), "")
             self.assertIn("other.txt", g("status", "--short"))   # unrelated file untouched
+
+    def _trunk_changes(self, td, extra=None):
+        """Repo whose origin/fast-track is one commit ahead (LAYERS.md changed, plus a.txt when extra); HEAD stays behind."""
+        g = self.make_repo(td)
+        f = Path(td) / sync.LAYERS_REL
+        f.parent.mkdir(parents=True)
+        f.write_text("base\n", encoding="utf-8", newline="\n")
+        g("add", "-A")
+        g("commit", "-q", "-m", "layers")
+        mine = g("rev-parse", "HEAD").strip()
+        f.write_text("trunk\n", encoding="utf-8", newline="\n")
+        if extra:
+            (Path(td) / "a.txt").write_text("trunk a", encoding="utf-8")
+        g("commit", "-aqm", "trunk change")
+        g("update-ref", f"refs/remotes/origin/{sync.TRUNK}", "HEAD")
+        g("reset", "-q", "--hard", mine)
+        return g, f
+
+    def test_merge_trunk_restores_dirty_layers_md(self):
+        with tempfile.TemporaryDirectory() as td:
+            g, f = self._trunk_changes(td)
+            f.write_text("local crlf\r\n", encoding="utf-8", newline="")
+            with mock.patch.object(sync, "fetch_trunk"):
+                self.assertEqual(sync.merge_trunk(td), 1)
+            self.assertEqual(f.read_text(encoding="utf-8"), "trunk\n")
+
+    def test_merge_trunk_keeps_other_dirty_file_blocking(self):
+        with tempfile.TemporaryDirectory() as td:
+            g, f = self._trunk_changes(td, extra=True)
+            f.write_text("local\n", encoding="utf-8", newline="\n")
+            (Path(td) / "a.txt").write_text("my work", encoding="utf-8")
+            with mock.patch.object(sync, "fetch_trunk"):
+                with self.assertRaises(sync.SyncError):
+                    sync.merge_trunk(td)
+            self.assertEqual((Path(td) / "a.txt").read_text(encoding="utf-8"), "my work")
+            self.assertEqual(f.read_text(encoding="utf-8"), "local\n")
 
     def test_stage_layers_regenerates_stale_layers_md(self):
         with tempfile.TemporaryDirectory() as td:
