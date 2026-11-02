@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T11:03:10Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -28,6 +29,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "snap in load_funding; test fails before, passes after",
+      "ref": "c2abdce23",
+      "utc": "2026-11-02T11:03:10Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Revert \"Revert real-funding screens: CI red (T06 costs.csv pins screen.py line numbers)\"",
@@ -53,7 +60,12 @@
   "refs": [
     "gemini-method-review-funding-screen-fix-1031"
   ],
-  "result": "",
+  "result": "snap in load_funding; test fails before, passes after",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/bt/bt_data.py",
     "MyTradingSys/backtest/bt/test_bt_data.py",
@@ -63,12 +75,13 @@
   "scope_sha": "8cae5e9e285e",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add a test with a settlement stamped 5 ms after the boundary, entry at the boundary, then at the boundary as exit, pinning the chosen rule",
     "Apply the rule (snap or documented) in load_funding or funding_cost_pct",
     "Rerun the screen primary cell and record the move in FUNDING_RERUN.md"
   ],
+  "taken": "2026-11-02T11:03:10Z",
   "tests": "MyTradingSys/backtest/bt/test_bt_data.py::test_funding_boundary_jitter (fails on current code: entry at 28800000 with settlement 28800005 is charged)",
   "title": "funding_cost_pct: a settlement stamped a few ms after 08:00 is charged to a trade entered at 08:00:00 and missed by one exited at 08:00:00",
   "weight": "",

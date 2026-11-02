@@ -162,6 +162,7 @@ def load_funding(root):
                 reader = itertools.chain([first_row], reader)
             for row in reader:
                 t = int(row[0])  # calc_time
+                t -= t % 1000    # archive stamps sit 1-31 ms after the 8h boundary: snap down to the second so (entry, exit] is exact
                 rate = float(row[2])
                 rates.append((t, rate))
     rates.sort()

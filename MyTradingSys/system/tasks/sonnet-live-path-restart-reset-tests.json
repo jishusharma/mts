@@ -1,16 +1,19 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T11:03:07Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-30T20:41:15Z",
-    "misses": 4,
+    "folded": "2026-11-02T11:03:02Z",
+    "misses": 13,
     "reads": [
-      "src/main/java/datafeed/StateCodeEmitter.java",
-      "src/test/java/datafeed/StateCodeEmitterTest.java"
+      "MyTradingSys/execution/mutation_check_auto_trader_failclosed.py",
+      "MyTradingSys/backtest/bt/bt_data.py",
+      "MyTradingSys/backtest/bt/test_bt_data.py",
+      "MyTradingSys/research/gross_effect_screen_2026-10-15/FUNDING_RERUN.md"
     ],
-    "session": "agent-a89c1365ba6060227"
+    "session": "agent-a28760b4712dc3fa0"
   },
   "created": "2026-10-30T20:22:14Z",
   "depends_on": [],
@@ -24,6 +27,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "already on trunk: test_auto_trader_failclosed.py covers restart/non-trade balance/API erro",
+      "ref": "5c29ed556",
+      "utc": "2026-11-02T11:03:07Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -43,7 +52,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "already on trunk: test_auto_trader_failclosed.py covers restart/non-trade balance/API error, mutation_check 29/29 proven at 4ced92fd4; no new work",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/execution/ tests only (no production code change)"
   ],
@@ -53,13 +67,14 @@
   "scope_sha": "a0eb3128fa37",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read auto_trader.py and existing tests",
     "write tests",
     "mutate a temp copy per test to prove it fails",
     "ship"
   ],
+  "taken": "2026-11-02T11:03:07Z",
   "tests": "report only; every finding cites file:line and a reproducing input",
   "title": "Live path: add restart/reset-state, non-trade balance move and API-error tests for auto_trader (each must fail on a deliberately broken copy)",
   "weight": "ROUTINE",
