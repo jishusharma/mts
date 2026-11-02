@@ -34,6 +34,11 @@ class BucketTest(unittest.TestCase):
         self.root = Path(self.d.name)
         self.old = g.HOME, g.LOCALAPPDATA, g.MAIN
         g.HOME, g.LOCALAPPDATA, g.MAIN = self.root / "home", self.root / "local", self.root / "repo" / "main"
+        # the runner's real %LOCALAPPDATA% must never leak in (a fresh guard import reads these env vars)
+        env = mock.patch.dict(os.environ, {"LOCALAPPDATA": str(self.root / "local"),
+                                           "MTS_GUARD_LOCALAPPDATA": str(self.root / "local")})
+        env.start()
+        self.addCleanup(env.stop)
 
     def tearDown(self):
         g.HOME, g.LOCALAPPDATA, g.MAIN = self.old
@@ -105,7 +110,8 @@ class BucketTest(unittest.TestCase):
             self.assertEqual(g.orphan_rows(g.MAIN), [])
 
     def test_dry_run_prints_gb_per_bucket_and_deletes_nothing(self):
-        f = make(self.root, "local/Google/Chrome/User Data/Default/Cache/f", size=5000)
+        # aged 2 days: a cache written this tick sits exactly on the guard's cutoff on a coarse-clock runner (mtime >= cutoff = not stale)
+        f = make(self.root, "local/Google/Chrome/User Data/Default/Cache/f", age_d=2, size=5000)
         out = io.StringIO()
         with mock.patch.object(g, "running", return_value=False), mock.patch.object(g, "TEMP", self.root / "temp"), \
                 contextlib.redirect_stdout(out):
