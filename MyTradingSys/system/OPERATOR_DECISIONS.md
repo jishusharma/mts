@@ -1629,3 +1629,8 @@ Operator (via Supervisor B): DeepSeek gets the same working level as a Claude Co
 
 ## 2026-11-02 - Live trading aid dashboard wanted
 Operator (voice, 16:30Z, in a BTC short): the Eagle_Eyes multi-timeframe indicator reading (WaveTrend, RSI, BB, OI, CVD) with the measured base rate for the current state must become a live trading aid page: good visuals, less text, actionable content. Requirements: MyTradingSys/research/eagle_eyes_picture_2026-10-28/LIVE_AID_REQUIREMENTS.md; raw card filed the same turn. No entry/exit/size calls on it (Eagle_Eyes rule), mainnet accounts out.
+
+## 2026-11-02 - Machines, Gemini accounts, API launch from the NUC, weekly cap
+Operator (voice): login A = Lenovo laptop with the Gemini Antigravity app; login B = JIS-NUC with the Gemini Antigravity plugin in VS Code; login C = desktop, Claude Max, no Gemini. Table: CLOUD_ACCOUNTS.md.
+Console API jobs must launch from the NUC as well as the desktop. Copying F:/ClaudePlaform/key.txt to the NUC is authorized by the operator; this replaces "never copy the key" in PLAN_NIGHT_2026-11-02.md. Never in git, signals or chat, never printed.
+Login B: work freely up to 45% weekly (cap for this week). Design Gemini Argon tasks for both Gemini accounts; run cheap Haiku and Sonnet jobs on the API credit.

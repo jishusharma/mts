@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-02T16:51:56Z",
   "commands": [],
   "created": "2026-11-02T16:18:54Z",
   "depends_on": [],
@@ -15,11 +17,17 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "10 tests; 3/3 mutations detected; report MyTradingSys/research/layer_lab/reports/2026-11-0",
+      "ref": "dcd03675d",
+      "utc": "2026-11-02T16:51:56Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "lab gpt-spec-tests-aibridge-health: DONE (build)",
-      "ref": "fbae4b1d6d2f",
-      "utc": "2026-11-02T15:24:36Z"
+      "line": "lab gpt-spec-tests-fetch-captions-timed: DONE (tests)",
+      "ref": "dcd03675d12d",
+      "utc": "2026-11-02T16:49:47Z"
     }
   ],
   "layers": [],
@@ -28,9 +36,14 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T16:19:22Z",
+  "refreshed": "2026-11-02T16:51:57Z",
   "refs": [],
-  "result": "",
+  "result": "10 tests; 3/3 mutations detected; report MyTradingSys/research/layer_lab/reports/2026-11-02_gpt-spec-tests-asr-transcribe.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/test_asr_transcribe.py",
     "MyTradingSys/research/layer_lab/reports/2026-11-02_gpt-spec-tests-asr-transcribe.md",
@@ -40,17 +53,18 @@
     "any live path",
     "editing the audited source file"
   ],
-  "scope_sha": "fbae4b1d6d2f",
+  "scope_sha": "dcd03675d12d",
   "size": "S",
   "sources": [
     "scripts/dev/asr_transcribe.py"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read asr_transcribe.py and list every branch",
     "compute expected values by hand (no running the code first)",
     "write tests, register in extra_tests.tsv, run 3 mutations, write report; verify: content sha, git cherry origin/fast-track empty, git ls-tree shows the files"
   ],
+  "taken": "2026-11-02T16:50:32Z",
   "tests": "python -m pytest scripts/dev/test_asr_transcribe.py -q --basetemp=F:/MTS/_pt_b (fail-first: each of the 3 mutations makes it fail)",
   "title": "Spec-derived tests for scripts/dev/asr_transcribe.py (no test file today)",
   "weight": "ROUTINE",

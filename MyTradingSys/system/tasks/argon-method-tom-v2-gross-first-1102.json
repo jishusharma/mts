@@ -1,0 +1,80 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-02T18:46:37Z",
+  "commands": [],
+  "created": "2026-11-02T18:25:34Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/argon_audits_2026-11-02/method_tom-v2-gross-first.md exists and its first line holds the counts or the ranked finding total; every row carries file:line.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independently review the method behind MyTradingSys/research/tom_v2_gross_first_2026-11/RESULT.md; facts with file:line, no new backtest.",
+  "id": "argon-method-tom-v2-gross-first-1102",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/argon_audits_2026-11-02/method_tom-v2-gross-first.md (OK: 5, PROBLEM",
+      "ref": "e80dc4775",
+      "utc": "2026-11-02T18:46:37Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tom-v2-gross-first-dev-ext: RESULT FAIL, near-band diff +4.4 pp CI -0.3..8.9",
+      "ref": "619dc89ad56a",
+      "utc": "2026-11-01T08:40:51Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "619dc89ad56a tom-v2-gross-first-dev-ext: RESULT FAIL, near-band diff +4.4 pp CI -0.3..8.9",
+      "ref": "MyTradingSys/research/tom_v2_gross_first_2026-11/RESULT.md",
+      "utc": "2026-11-01T08:40:51Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Argon: load as argon-method-tom-v2-gross-first-1102:medium:argon (gemini_queue.py run). Account: gemini-laptop. Final report ends with a Noticed: line. Operator order 2026-11-02. REVIEWED:2026-11-02 T0-ONLY",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-02T18:25:34Z",
+  "refs": [
+    "MyTradingSys/system/GEMINI_START.md"
+  ],
+  "result": "MyTradingSys/research/argon_audits_2026-11-02/method_tom-v2-gross-first.md (OK: 5, PROBLEM: 0, NOT_IN_DATA: 0)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/argon_audits_2026-11-02/method_tom-v2-gross-first.md (new)",
+    "MyTradingSys/research/tom_v2_gross_first_2026-11/RESULT.md (read)",
+    "MyTradingSys/research/tom_v2_gross_first_2026-11/PRE_REG.md (read)",
+    "MyTradingSys/research/tom_v2_gross_first_2026-11/run_near_placebo.py (read)",
+    "MyTradingSys/research/tom_v2_gross_first_2026-11/results.json (read)"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env or key read; no change outside the output file"
+  ],
+  "scope_sha": "619dc89ad56a",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "read the frozen pre-registration first, then the runner code, then the result",
+    "check lookahead, window leakage, fee and slippage handling, trial count and whether the verdict follows the frozen rule",
+    "write one row per check: OK / PROBLEM / NOT_IN_DATA with file:line and the exact sequence; first line holds the three counts"
+  ],
+  "taken": "2026-11-02T18:46:37Z",
+  "tests": "see done_when (audit card, output file is the test)",
+  "title": "[GEMINI] Argon method review: tom_v2_gross_first FAIL",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

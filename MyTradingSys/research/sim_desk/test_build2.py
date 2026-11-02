@@ -90,3 +90,22 @@ def test_rebuild_flags_result_whose_id_differs_from_the_row_that_claimed_its_sou
     assert doc['exported'] == 2
     assert next(r for r in doc['rows'] if r['result_id'] == 'zz-a')['id'] == 'lm-pitchfork-4h-vp-20261028'
     assert len({r['id'] for r in doc['rows']}) == len(doc['rows'])
+
+
+def test_date_of_uses_unix_timestamp(monkeypatch):
+    """git older than 2.21 prints the literal %cs; date_of asks for %ct and formats the UTC date itself.
+    1730000000 s is 2024-10-27 UTC (hand: 20023 days x 86400 = 1729987200 is 2024-10-27 00:00, remainder 12800 s)."""
+    import build_catalogue as bc
+    seen = {}
+
+    def fake_run(cmd, **kw):
+        seen['cmd'] = cmd
+
+        class R:
+            stdout = '1730000000\n'
+        return R()
+    monkeypatch.setattr(bc.subprocess, 'run', fake_run)
+    assert bc.date_of('MyTradingSys/research/x/test_x.py') == '2024-10-27'
+    assert '--format=%ct' in seen['cmd']
+    monkeypatch.setattr(bc.subprocess, 'run', lambda cmd, **kw: type('R', (), {'stdout': ''})())
+    assert bc.date_of('MyTradingSys/research/x/test_x.py') is None

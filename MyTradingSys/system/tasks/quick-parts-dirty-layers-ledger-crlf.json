@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T17:02:49Z",
   "commands": [],
   "created": "2026-11-02T06:42:38Z",
   "depends_on": [],
@@ -15,18 +16,24 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "source: test_hand_kept_trial_ledger_untouched ran main() on the real repo rewriting TRIAL_",
+      "ref": "3ccb11d28",
+      "utc": "2026-11-02T17:02:49Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "ship: regenerated LAYERS.md",
-      "ref": "9492956d3cba",
-      "utc": "2026-11-02T11:09:44Z"
+      "line": "merge origin/fast-track into JIS-NB/eagle-oi-cvd-2 (OPERATOR_DECISIONS: keep both 11-02 en",
+      "ref": "4c8a8c9bab35",
+      "utc": "2026-11-02T16:29:45Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "9492956d3cba ship: regenerated LAYERS.md",
+      "line": "4c8a8c9bab35 merge origin/fast-track into JIS-NB/eagle-oi-cvd-2 (OPERATOR_DECISIONS: keep ",
       "ref": "MyTradingSys/system/LAYERS.md",
-      "utc": "2026-11-02T11:09:44Z"
+      "utc": "2026-11-02T16:29:45Z"
     }
   ],
   "layers": [],
@@ -36,9 +43,14 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T11:10:45Z",
+  "refreshed": "2026-11-02T16:47:36Z",
   "refs": [],
-  "result": "",
+  "result": "source: test_hand_kept_trial_ledger_untouched ran main() on the real repo rewriting TRIAL_LEDGER_BUILT.csv; now scratch root (fail-first shown); LF-byte guards added for both generators; test_sync rc 3/4 flake NOT diagnosed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/run_all_tests.py",
     "scripts/dev/test_sync.py",
@@ -47,17 +59,18 @@
   "scope_out": [
     "live tree; gate step selection and QUICK_PARTS partition (26ff2273e already fixed that)"
   ],
-  "scope_sha": "9492956d3cba",
+  "scope_sha": "4c8a8c9bab35",
   "size": "M",
   "sources": [
     "run-all-tests-quick-1102 agent Noticed"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "run run_all_tests.py --quick on JIS-NUC from a clean worktree, then git status: name the step that writes LAYERS.md and TRIAL_LEDGER_BUILT.csv (grep for the generators, open() without newline)",
     "write the failing test first: the generator output has no CR bytes (open(...,'rb').read().count(b'\\r') == 0), fails on current code",
     "fix the writer with newline='\\n'; separately read the test_sync rc 3/4 failures (ship tests under load) and fix or file the cause with file:line"
   ],
+  "taken": "2026-11-02T17:02:49Z",
   "tests": "new test asserting the generated LAYERS.md and TRIAL_LEDGER_BUILT.csv bytes contain no CR; fails on current code, passes after",
   "title": "run_all_tests --quick parts leave LAYERS.md and TRIAL_LEDGER_BUILT.csv dirty (CRLF); test_sync ship tests flake rc 3/4 under the gate",
   "weight": "ROUTINE",

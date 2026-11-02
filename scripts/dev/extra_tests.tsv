@@ -183,4 +183,10 @@ MyTradingSys/research/tsfm_2026-11/test_tsfm.py
 scripts/dev/test_role_hook_launcher.py
 scripts/dev/test_aibridge_health.py
 scripts/dev/test_role_line.py
+scripts/dev/test_fetch_captions_timed.py
+scripts/dev/test_asr_transcribe.py
+scripts/dev/test_declutter_backups.py
+scripts/dev/test_run_argon_pipeline.py
 MyTradingSys/research/sim_desk/test_desk.py
+scripts/dev/test_cbp_scorecard.py
+scripts/dev/test_ff_calendar_snapshot.py

@@ -1,0 +1,81 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-02T18:48:47Z",
+  "commands": [],
+  "created": "2026-11-02T18:25:28Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/argon_audits_2026-11-02/aibridge_hands_free_review.md exists and its first line holds the counts or the ranked finding total; every row carries file:line.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Find every remaining way hands-free mode can silently stop, hang, skip, double-run or run a partial block, especially in a hidden tab.",
+  "id": "argon-aibridge-hands-free-review-1102",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/argon_audits_2026-11-02/aibridge_hands_free_review.md (11 ranked fin",
+      "ref": "8dada1b16",
+      "utc": "2026-11-02T18:48:47Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "AIBridge 0.7.20: tests assert the retry, bodyless and EXT-EVENT audit rows",
+      "ref": "193540ce772f",
+      "utc": "2026-11-02T16:40:49Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "8464ce557b64 AIBridge 0.7.19: blocks read only when complete, busy-chat results queued and",
+      "ref": "MyTradingSys/research/aibridge_rootcause_2026-11/ROOT_CAUSES.md",
+      "utc": "2026-11-02T16:25:04Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Argon: load as argon-aibridge-hands-free-review-1102:high:argon (gemini_queue.py run). Account: gemini-nuc. Final report ends with a Noticed: line. Operator order 2026-11-02. REVIEWED:2026-11-02 T0-ONLY",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-02T18:25:29Z",
+  "refs": [
+    "MyTradingSys/system/GEMINI_START.md"
+  ],
+  "result": "MyTradingSys/research/argon_audits_2026-11-02/aibridge_hands_free_review.md (11 ranked findings: 3 High, 5 Medium, 3 Low-Medium)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/argon_audits_2026-11-02/aibridge_hands_free_review.md (new)",
+    "MyTradingSys/research/aibridge_rootcause_2026-11/ROOT_CAUSES.md (read)",
+    "scripts/aibridge/extension/content.js (read)",
+    "scripts/aibridge/extension/loop.js (read)",
+    "scripts/aibridge/extension/background.js (read)",
+    "MyTradingSys/tests/test_aibridge_complete_read.py (read)"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env or key read; no change outside the output file"
+  ],
+  "scope_sha": "193540ce772f",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "read the root causes, then the extension code and the local agent under scripts/aibridge/src",
+    "trace timer throttling, MV3 worker sleep, extension reload, failed post and stream pause",
+    "rank findings by likelihood in an unattended run with file:line, sequence of events and smallest fix; state what the code cannot show; never suggest weakening a safety check"
+  ],
+  "taken": "2026-11-02T18:48:47Z",
+  "tests": "see done_when (audit card, output file is the test)",
+  "title": "[GEMINI] Argon independent review: AIBridge hands-free failure paths after 0.7.19",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

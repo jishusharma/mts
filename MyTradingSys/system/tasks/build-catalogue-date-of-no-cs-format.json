@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T16:38:03Z",
   "commands": [],
   "created": "2026-11-02T16:20:03Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "build-catalogue-date-of-no-cs-format",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "date_of uses %ct and formats the UTC date; test_date_of_uses_unix_timestamp failed on old ",
+      "ref": "f7ef1b741",
+      "utc": "2026-11-02T16:38:03Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -30,7 +37,12 @@
   "refined_by": "",
   "refreshed": "2026-11-02T16:20:04Z",
   "refs": [],
-  "result": "",
+  "result": "date_of uses %ct and formats the UTC date; test_date_of_uses_unix_timestamp failed on old code, passes (1730000000 -> 2024-10-27); 6 of 8 test_build2 tests pass, 2 error on host temp-dir permission",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/sim_desk/build_catalogue.py",
     "MyTradingSys/research/sim_desk/test_build2.py"
@@ -44,12 +56,13 @@
   "sources": [
     "MyTradingSys/research/sim_desk/build_catalogue.py:53"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "in date_of replace --format=%cs with --format=%ct; parse int and return datetime.fromtimestamp(t, UTC).date().isoformat(); keep None on empty or error",
     "add test_date_of_uses_unix_timestamp (monkeypatch subprocess.run to return stdout 1730000000); 1730000000 UTC is 2024-10-27 (computed by hand: 20023 days x 86400 = 1729987200 is 2024-10-27 00:00; remainder 12800 s is the same day)",
     "run it against the old code first to see it fail"
   ],
+  "taken": "2026-11-02T16:38:03Z",
   "tests": "python -m pytest MyTradingSys/research/sim_desk/test_build2.py -q --basetemp=F:/MTS/_pt_b (fail-first: test_date_of_uses_unix_timestamp)",
   "title": "build_catalogue.date_of: use %ct (unix) instead of %cs so old git (NUC 2.24) writes real dates",
   "weight": "ROUTINE",

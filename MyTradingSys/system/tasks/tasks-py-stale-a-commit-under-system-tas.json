@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-02T16:53:43Z",
+  "depends_on": [],
+  "done_when": "task_state.last_change ignores commits whose only hits inside a directory scope path are MyTradingSys/system/tasks/*.json (a scope path that names a card file itself still counts); cmd_stale calls TS.prefetch_changes like cmd_list; a test shows both commands agree and a card-only commit leaves a ready card not stale.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "A commit that only edits task card JSON under MyTradingSys/system/tasks/ no longer marks other cards STALE, and tasks.py list and tasks.py stale give the same verdict.",
+  "id": "tasks-py-stale-a-commit-under-system-tas",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "supervisor plan: IDLE lines + measured k from USAGE_PILOT rows; Q: open-question rule + ta",
+      "ref": "f8bd5922dae4",
+      "utc": "2026-11-02T17:02:08Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-02T18:54:41Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/task_state.py",
+    "scripts/dev/tasks.py",
+    "scripts/dev/test_tasks.py"
+  ],
+  "scope_out": [
+    "grace period GRACE_H and card schema"
+  ],
+  "scope_sha": "f8bd5922dae4",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Cause: task_state.last_change counts any commit touching a scope path; a scope of MyTradingSys/system/tasks/ is hit by every card commit. tasks.py cmd_stale (line ~899) does not call prefetch_changes, cmd_list (line ~829) does, so the two take different code paths (window+hint vs per-path git log).",
+    "In task_state add CARD_RE (MyTradingSys/system/tasks/*.json) and helper _counts(f, p): _hit(f,p) and not (CARD_RE matches f and p is a directory, not f itself). Use it in the prefetch loop of last_change.",
+    "Same rule in the git fallback: when a path is a directory add pathspec ':(exclude)MyTradingSys/system/tasks/*.json' only for dir paths; keep exact card-file paths unexcluded.",
+    "In tasks.py cmd_stale call TS.prefetch_changes(REPO) first, as cmd_list does, so both use one path.",
+    "Add the tests from the tests field to scripts/dev/test_tasks.py (temp repo, git init); confirm they fail with the edits stashed.",
+    "Run python scripts/dev/test_tasks.py and tasks.py stale on the real repo; ship."
+  ],
+  "tests": "New tests in scripts/dev/test_tasks.py on a temp git repo: card with scope_in MyTradingSys/system/tasks, refresh, commit only a tasks/x.json, stale_reason == '' (fails on old code); then commit a non-card file in scope, stale_reason != ''; stale and list tags equal for both states.",
+  "title": "tasks.py stale: a commit under system/tasks/ re-stales every card whose scope_in includes that dir, and list vs stale disagree on refresh time; done-when: card-only commits do not re-stale and both commands agree, with a test",
+  "weight": "",
+  "worker": "agent"
+}

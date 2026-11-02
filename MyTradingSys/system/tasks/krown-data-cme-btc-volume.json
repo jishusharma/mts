@@ -14,7 +14,7 @@
   "goal": "Daily CME BTC futures volume for 2017-2026 from a free public source, next to the Binance and Coinbase daily series on F:/MTS/data/krown_daily, so Krown volume rules can be tested on all three (operator q-krown-volume-venue 2026-10-17: include CME).",
   "id": "krown-data-cme-btc-volume",
   "kind": "run",
-  "lane": "SONNET",
+  "lane": "JIS-NB",
   "latest": [
     {
       "auto": true,
@@ -33,11 +33,11 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "[PLAN 2026-10-18 weight=ROUTINE lab-touch=yes class=C0 reviewer=machine checks + Flash low pass] Public market data only (CLAUDE.md pre-approval). If no free source exists say so; do not scrape behind a login.\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C1 weight=IMPORTANT); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.",
+  "note": "[PLAN 2026-10-18 weight=ROUTINE lab-touch=yes class=C0 reviewer=machine checks + Flash low pass] Public market data only (CLAUDE.md pre-approval). If no free source exists say so; do not scrape behind a login.\nT0 2026-10-18 - refined by gemini-nuc (class=C1 weight=IMPORTANT); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.\nREVIEWED:2026-11-02 ACCEPT | planner-refined2 (OURS): public free data only, no code change; lane JIS-NB because output goes to F:/MTS/data/krown_daily.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "gemini-nuc",
-  "refreshed": "2026-10-18T10:00:42Z",
+  "refreshed": "2026-11-02T16:53:37Z",
   "refs": [
     "q-krown-volume-venue"
   ],
@@ -55,13 +55,13 @@
   "scope_sha": "d8a77746809b",
   "size": "S",
   "sources": [],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Search for a free public CME BTC futures daily volume source (CME settlement pages, public data mirrors).",
     "Fetch it to F:/MTS/data/krown_daily/ with the same file layout as the Coinbase series.",
     "Report rows, date range and gaps."
   ],
-  "tests": "",
+  "tests": "Run lane: no code. Fail-first = the CSV does not exist before the run; pass = CSV or NOT AVAILABLE in result.",
   "title": "Krown CME BTC futures daily volume (public data only) as third volume arm",
   "updated": "2026-10-18T10:00:00Z",
   "weight": "IMPORTANT",

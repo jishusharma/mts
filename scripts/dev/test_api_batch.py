@@ -78,6 +78,73 @@ class ApiBatchTest(unittest.TestCase):
         with self.assertRaises(SystemExit):
             api_batch.call('GET', api_batch.API + '/x')
 
+    def _keyfile(self, text):
+        d = Path(tempfile.mkdtemp())
+        f = d / 'key.txt'
+        f.write_text(text, encoding='utf-8')
+        return str(f)
+
+    def _clear_env(self):
+        os.environ.pop('ANTHROPIC_API_KEY', None)
+        self.addCleanup(os.environ.pop, 'MTS_API_KEY_FILE', None)
+
+    def test_key_from_file_when_env_unset(self):
+        self._clear_env()
+        os.environ['MTS_API_KEY_FILE'] = self._keyfile('  file-key-1' + chr(13) + chr(10))
+        keys = []
+
+        def opener(req, timeout=0):
+            keys.append(req.get_header('X-api-key'))
+            return FakeResp(json.dumps({'processing_status': 'in_progress', 'request_counts': {}}).encode())
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(api_batch.main(['status', 'b1'], opener=opener), 0)
+        self.assertEqual(keys, ['file-key-1'])
+
+    def test_env_wins_over_file(self):
+        os.environ['MTS_API_KEY_FILE'] = self._keyfile('file-key')
+        self.addCleanup(os.environ.pop, 'MTS_API_KEY_FILE', None)
+        self.assertEqual(api_batch.get_key(), 'test-key')
+
+    def test_missing_file_clear_error_no_key_leak(self):
+        self._clear_env()
+        os.environ['MTS_API_KEY_FILE'] = str(Path(tempfile.mkdtemp()) / 'nope.txt')
+        with self.assertRaises(SystemExit) as cm:
+            api_batch.get_key()
+        self.assertIn('key file', str(cm.exception))
+
+    def test_empty_file_refused(self):
+        self._clear_env()
+        os.environ['MTS_API_KEY_FILE'] = self._keyfile('  ' + chr(10))
+        with self.assertRaises(SystemExit):
+            api_batch.get_key()
+
+    def test_wait_polls_then_fetches(self):
+        out = Path(tempfile.mkdtemp()) / 'r.jsonl'
+        state = {'n': 0}
+        row = json.dumps({'custom_id': 'a', 'result': {'type': 'succeeded', 'message': {
+            'content': [{'type': 'text', 'text': 'ok'}], 'usage': {}}}})
+
+        def opener(req, timeout=0):
+            if req.full_url.endswith('/results'):
+                return FakeResp(row.encode())
+            state['n'] += 1
+            st = 'ended' if state['n'] >= 3 else 'in_progress'
+            return FakeResp(json.dumps({'processing_status': st, 'results_url': api_batch.API + '/b1/results'}).encode())
+        sleeps = []
+        with contextlib.redirect_stdout(io.StringIO()):
+            rc = api_batch.main(['wait', 'b1', '--out', str(out)], opener=opener, sleep=sleeps.append)
+        self.assertEqual(rc, 0)
+        self.assertEqual(sleeps, [60, 60])
+        self.assertIn('"text": "ok"', out.read_text(encoding='utf-8'))
+
+    def test_wait_timeout_exits_3(self):
+        opener = lambda req, timeout=0: FakeResp(json.dumps({'processing_status': 'in_progress'}).encode())
+        sleeps = []
+        with contextlib.redirect_stdout(io.StringIO()):
+            rc = api_batch.main(['wait', 'b1', '--out', 'x', '--timeout-min', '3'], opener=opener, sleep=sleeps.append)
+        self.assertEqual(rc, 3)
+        self.assertEqual(sum(sleeps), 180)
+
 
 if __name__ == '__main__':
     unittest.main()

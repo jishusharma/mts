@@ -1,7 +1,7 @@
 // loop.js - pure helpers for the auto-loop. No DOM, no chrome.* so node can test them.
 (function (root) {
   var L = {};
-  L.VERSION = '0.7.19';
+  L.VERSION = '0.7.21';
 
   L.fnv = function (s) {
     var h = 2166136261;
@@ -196,8 +196,11 @@
   // unpacked extension is read from disk, so a newer disk copy means Chrome still runs old code), agent = GET /ping.
   // -> {level: ok|ext_stale|agent_mismatch, text}. ext_stale outranks agent_mismatch (reload fixes it first). null = unknown, never an alarm.
   L.cmpVer = function (a, b) { var x = String(a).split('.').map(Number), y = String(b).split('.').map(Number); for (var i = 0; i < 3; i++) { var d = (x[i] || 0) - (y[i] || 0); if (d) return d < 0 ? -1 : 1; } return 0; };
-  L.versionState = function (loaded, disk, agent) {
-    if (disk && loaded && disk !== loaded) return { level: 'ext_stale', text: 'VERSION MISMATCH: extension running ' + loaded + ' but ' + disk + ' is installed on disk; reload pending' };
+  // 0.7.20+: page = the content script this chat page is running (loop.js VERSION). loaded = manifest version of the running extension.
+  // The operator sees the manifest version on chrome://extensions and the page's label next to the checkbox: they differ until F5.
+  L.versionState = function (loaded, disk, agent, page) {
+    if (disk && loaded && disk !== loaded) return { level: 'ext_stale', text: 'VERSION MISMATCH: extension running ' + loaded + ' but ' + disk + ' is installed on disk; it reloads itself within a minute (or reload it on chrome://extensions)' };
+    if (page && loaded && page !== loaded) return { level: 'page_stale', text: 'VERSION MISMATCH: this chat page runs ' + page + ' but the extension is ' + loaded + ': press F5 on this chat' };
     if (agent && loaded && agent !== loaded) return { level: 'agent_mismatch', text: 'VERSION MISMATCH: extension ' + loaded + ' but the agent runs ' + agent + (L.cmpVer(agent, loaded) < 0 ? ' (agent not restarted: python scripts/dev/aibridge_install.py --restart-agent)' : ' (extension not reloaded)') };
     return { level: 'ok', text: '' };
   };

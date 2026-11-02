@@ -45,7 +45,7 @@
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md",
     "MyTradingSys/research/levels_confluence_2026-10-14/levels_hold.py"
   ],
-  "result": "",
+  "result": "T05_placebo_nulls.md on trunk c7f5eefb8, recount fixes 4f32dd966 (S1 LC1 card filed)",
   "scope_in": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T05_placebo_nulls.md and MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T05/ (new files only)",
     "read-only: repo code, result files, data under F:/MTS/data and Dumps (windows per brief section 5)"
@@ -60,7 +60,7 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "refined",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/dsa_backtest_audit_2026-10-16/AUDIT_BRIEF.md sections 1-7, then section 8 'T05' (full method).",
     "For each arm of the gross screen, mal_bb, opr_bb_mtf_center, opr_weekly_low_round_sweep, opr_preopen_tops and candle_close: 1,000 seeded placebo sets matched on 15-min slot, weekday and cooldown, scored by the study's own return function.",
