@@ -124,3 +124,28 @@ t('stopNotice: states why and how to re-arm', () => {
 }
 
 console.log(n + ' tests passed');
+
+// 0.7.11 idle signal: small wobbles (live timer, operator typing) keep the anchor, real streaming moves it
+t('sigStep: timer wobble of 1-3 chars never resets the quiet clock', () => {
+  let st = { len: 1000, at: 0 };
+  [1001, 1003, 1000, 1002, 1001].forEach((n, i) => { st = L.sigStep(st, n, 500 * (i + 1)); });
+  assert.strictEqual(st.at, 0);
+});
+t('sigStep: real streaming (tens of chars) resets it; first sample anchors', () => {
+  assert.strictEqual(L.sigStep({ len: 1000, at: 0 }, 1040, 900).at, 900);
+  assert.strictEqual(L.sigStep({ len: -1, at: 0 }, 5, 70).at, 70);
+});
+t('sigStep: slow stream drifting past the band resets even in small steps', () => {
+  let st = { len: 1000, at: 0 };
+  [1002, 1004, 1006].forEach((n, i) => { st = L.sigStep(st, n, 400 * (i + 1)); });
+  assert.strictEqual(st.at, 1200);
+});
+t('sigStep: sparse samples (hidden tab, one per minute) still compare against the anchor', () => {
+  let st = L.sigStep({ len: -1, at: 0 }, 900, 0);
+  st = L.sigStep(st, 902, 60000);
+  assert.strictEqual(st.at, 0);   // quiet for 60 s: idle
+});
+t('pageLen: the operator draft in a contenteditable input is not page text', () => {
+  assert.strictEqual(L.pageLen(1000, 100, 25), 875);
+  assert.strictEqual(L.pageLen(1000, 100), 900);
+});

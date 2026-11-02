@@ -1,7 +1,7 @@
 // loop.js - pure helpers for the auto-loop. No DOM, no chrome.* so node can test them.
 (function (root) {
   var L = {};
-  L.VERSION = '0.7.10';
+  L.VERSION = '0.7.11';
 
   L.fnv = function (s) {
     var h = 2166136261;
@@ -281,6 +281,18 @@
     var s = Math.round(elapsedMs / 1000);
     return elapsedMs > waitMs ? 'page text still changing after ' + s + ' s; DSA may be stuck. Untick the box to stop, or wait.' : 'waiting for the reply to settle (' + s + ' s)';
   };
+
+  // 0.7.11: idle signal. Page text length must stay within SIG_TOL chars of its anchor for aibridge_quiet_ms. A live timer
+  // ("Thought for 9 s" -> "10 s"), a token counter or the operator's own typing wobbles the length by a few chars and used to
+  // reset the quiet clock forever, so the result was never posted and hands-free switched OFF. The anchor only moves when
+  // the length leaves the band, so a slow real stream (many chars over 2 s) still resets it. Step is clock-driven (no timers).
+  L.SIG_TOL = 4;
+  L.sigStep = function (st, n, now) {
+    if (!st || st.len < 0 || Math.abs(n - st.len) > L.SIG_TOL) return { len: n, at: now };
+    return st;
+  };
+  // page length without our UI and without the chat input's own text (a contenteditable draft is part of body.textContent)
+  L.pageLen = function (bodyLen, oursLen, inputInBodyLen) { return bodyLen - oursLen - (inputInBodyLen || 0); };
 
   root.AIBridgeLoop = L;
   if (typeof module !== 'undefined') module.exports = L;
