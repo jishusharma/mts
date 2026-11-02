@@ -23,7 +23,7 @@ def test_list_spawns_few_git_processes(monkeypatch):
 
     monkeypatch.setattr(subprocess, "run", counting)
     ready = [c for c in tasks.load_all(ROOT) if c["state"] in ("ready", "active")]
-    assert len(ready) >= 20, "needs a repo with 20+ open cards"
+    assert len(ready) >= 10, "needs a repo with 10+ open cards"   # old code spawned ~3 git per card, so 10 cards already break the <= 10 cap below
     with redirect_stdout(io.StringIO()):
-        tasks.cmd_list(argparse.Namespace(all=False, state=None, lane=None))
+        tasks.cmd_list(argparse.Namespace(all=False, state=None, lane=None, prefix=None))
     assert n["git"] <= 10, n   # DECISION (OURS): 7 fixed spawns (claims, shallow, one log), card-count independent; old code ~190
