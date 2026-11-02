@@ -209,11 +209,40 @@ function show(i){i=Math.max(0,Math.min(n-1,+i));sl.value=i;const t=tr[i];$("dot"
 const ys=t.l2==null?[0]:[0,t.l2,t.t1,t.t2],lo=Math.min(...ys),hi=Math.max(...ys),sp=(hi-lo)||1,y=v=>170-(v-lo)/sp*150;
 const row=(v,l,c)=>'<line x1="150" x2="560" y1="'+y(v)+'" y2="'+y(v)+'" stroke="'+c+'" stroke-dasharray="4 3"/><text x="146" y="'+(y(v)+4)+'" text-anchor="end" font-size="11" fill="var(--ink)">'+l+'</text><text x="564" y="'+(y(v)+4)+'" font-size="11" fill="var(--mute)">'+(v>=0?"+":"")+v.toFixed(2)+"%</text>";
 $("ladder").innerHTML=t.l2==null?"":row(t.t2,LB.t2||"Target 2","var(--good)")+row(t.t1,LB.t1||"Target 1","var(--good)")+row(0,LB.zero||"Touched level","var(--acc)")+row(t.l2,LB.l2||"Deeper entry (filled here)","var(--warn)")+'<text x="150" y="186" font-size="11" fill="var(--mute)">Distance from the touched level; up is in favour of the trade</text>';
-$("tinfo").innerHTML="Trade "+(i+1)+" of "+n+": "+esc(t.d)+", "+(t.s>0?"long":"short")+" at "+esc(t.f)+'. Result <b class="'+(t.r<0?"bad":"good")+'">'+f2(t.r)+" "+U+"</b> after fees.";}
+if(window.cvShow&&$("cvs")&&$("cvs").options.length===n)cvShow(i);$("tinfo").innerHTML="Trade "+(i+1)+" of "+n+": "+esc(t.d)+", "+(t.s>0?"long":"short")+" at "+esc(t.f)+'. Result <b class="'+(t.r<0?"bad":"good")+'">'+f2(t.r)+" "+U+"</b> after fees.";}
 sl.oninput=()=>show(sl.value);$("prev").onclick=()=>show(+sl.value-1);$("next").onclick=()=>show(+sl.value+1);
 $("pick").onchange=e=>{if(e.target.value!=="")show(e.target.value)};
 $("play").onclick=()=>{if(tm){clearInterval(tm);tm=null;$("play").textContent="Play";return}$("play").textContent="Pause";tm=setInterval(()=>{if(+sl.value>=n-1){$("play").onclick();return}show(+sl.value+1)},120)};
 show(0);}};}
+function tradeChart(x){const tr=x.trades,n=tr.length,M=(x.tf_min||30)*60000;
+const h='<p class="note"><b>How to read it.</b> The rule is checked on every candle; a trade happens only where it fires. Each picture below is one trade on the '+esc(x.tf||"30m")+' chart: '+
+'<span class="good">&#9650; entry</span> (open of the candle after the signal), <span class="bad">&#9660; exit</span>, the shaded box is the time in the trade (green = won, red = lost after fees), the dashed line is the entry price (0 %). '+
+'Prices are shown as % from the entry. Lower panes: WaveTrend (blue dot = the buy dot at or under -53), RSI (orange line = the divergence: price made a lower low, RSI a higher low). '+esc(x.stop_note||"")+'</p>'+
+'<div class="ctl"><button id="cvp" aria-label="Previous trade">&lt; Prev</button><button id="cvn" aria-label="Next trade">Next &gt;</button><select id="cvs" aria-label="Pick a trade">'+
+tr.map((t,i)=>'<option value="'+i+'">#'+(i+1)+" "+esc(t.d)+" UTC: "+f2(t.net)+" %</option>").join("")+'</select></div><svg id="cvg" viewBox="0 0 700 430" style="max-width:min(100%,calc((100vh - 140px)*1.49))" role="img" aria-label="Candles of the selected trade"></svg><div id="cvi" class="note"></div>';
+const init=()=>{const go=i=>{i=Math.max(0,Math.min(n-1,+i));const sl=$("slider");if(sl&&+sl.max===n-1){sl.value=i;sl.oninput()}else cvShow(i)};
+$("cvp").onclick=()=>go(+$("cvs").value-1);$("cvn").onclick=()=>go(+$("cvs").value+1);$("cvs").onchange=e=>go(e.target.value);
+window.cvShow=i=>{const t=tr[i],c=t.c,m=c.length,L=46,R=600,W=(R-L)/m,X=k=>L+k*W+W/2,win=t.net>=0;$("cvs").value=i;
+const lo=Math.min(...c.map(q=>q[2])),hi=Math.max(...c.map(q=>q[1])),sp=(hi-lo)||1,Y=v=>14+(hi-v)/sp*196;
+const wv=t.w1.concat(t.w2).filter(v=>v!=null),wl=Math.min(-60,...wv),wh=Math.max(10,...wv),WY=v=>236+(wh-v)/(wh-wl)*84;
+const RY=v=>346+(100-v)/100*70;let s="";
+s+='<rect x="'+(X(t.ent)-W/2)+'" y="14" width="'+((t.ext-t.ent)*W)+'" height="196" fill="'+(win?"var(--good)":"var(--bad)")+'" opacity=".12"/>';
+s+='<rect x="'+(X(t.sig)-W/2)+'" y="14" width="'+W+'" height="406" fill="var(--acc)" opacity=".10"/>';
+s+='<line x1="'+L+'" x2="'+R+'" y1="'+Y(0)+'" y2="'+Y(0)+'" stroke="var(--mute)" stroke-dasharray="4 3"/><text x="'+(L+2)+'" y="'+(Y(0)-4)+'" font-size="10" fill="var(--mute)">0 % = where we bought</text>';
+for(let g=Math.ceil(lo);g<=Math.floor(hi);g++)s+='<text x="'+(R+4)+'" y="'+(Y(g)+4)+'" font-size="10" fill="var(--mute)">'+(g>0?"+":"")+g+"%</text>";
+c.forEach((q,k)=>{const up=q[3]>=q[0],col=up?"var(--good)":"var(--bad)",x0=X(k);s+='<line x1="'+x0+'" x2="'+x0+'" y1="'+Y(q[1])+'" y2="'+Y(q[2])+'" stroke="'+col+'"/><rect x="'+(x0-W*0.35)+'" y="'+Y(Math.max(q[0],q[3]))+'" width="'+(W*0.7)+'" height="'+Math.max(1,Math.abs(Y(q[0])-Y(q[3])))+'" fill="'+col+'"/>';});
+const [p,qd]=t.div;s+='<line x1="'+X(p)+'" x2="'+X(qd)+'" y1="'+(Y(c[p][2])+6)+'" y2="'+(Y(c[qd][2])+6)+'" stroke="#e8912d" stroke-width="2"/>';
+const ey=Y(c[t.ent][0]),xy=Y(c[t.ext][0]);
+s+='<path d="M'+X(t.ent)+","+(ey+4)+" l-7,12 h14 z\" fill=\"var(--good)\"/><text x=\""+X(t.ent)+'" y="'+(ey+30)+'" font-size="11" text-anchor="middle" fill="var(--good)">entry</text>';
+s+='<path d="M'+X(t.ext)+","+(xy-4)+" l-7,-12 h14 z\" fill=\"var(--bad)\"/><text x=\""+X(t.ext)+'" y="'+(xy-20)+'" font-size="11" text-anchor="middle" fill="var(--bad)">exit '+f2(t.net)+"%</text>";
+const line=(v,Yf,col)=>'<polyline fill="none" stroke="'+col+'" stroke-width="1.3" points="'+v.map((y,k)=>y==null?"":X(k).toFixed(1)+","+Yf(y).toFixed(1)).join(" ")+'"/>';
+[[0,"0 = exit line"],[-53,"-53 = buy trigger"]].forEach(([v,l])=>{s+='<line x1="'+L+'" x2="'+R+'" y1="'+WY(v)+'" y2="'+WY(v)+'" stroke="var(--line)" stroke-dasharray="3 3"/><text x="'+(R+4)+'" y="'+(WY(v)+4)+'" font-size="10" fill="var(--mute)">'+l+"</text>"});
+s+=line(t.w1,WY,"var(--acc)")+line(t.w2,WY,"var(--mute)")+'<circle cx="'+X(t.sig)+'" cy="'+WY(t.w1[t.sig])+'" r="5" fill="var(--acc)"/><text x="'+L+'" y="248" font-size="11" fill="var(--mute)">WaveTrend</text>';
+[[40,"40"],[50,"50"]].forEach(([v,l])=>{s+='<line x1="'+L+'" x2="'+R+'" y1="'+RY(v)+'" y2="'+RY(v)+'" stroke="var(--line)" stroke-dasharray="3 3"/><text x="'+(R+4)+'" y="'+(RY(v)+4)+'" font-size="10" fill="var(--mute)">'+l+"</text>"});
+s+=line(t.rsi,RY,"var(--ink)")+'<line x1="'+X(p)+'" x2="'+X(qd)+'" y1="'+RY(t.rsi[p])+'" y2="'+RY(t.rsi[qd])+'" stroke="#e8912d" stroke-width="2"/><text x="'+L+'" y="358" font-size="11" fill="var(--mute)">RSI 14</text>';
+const tl=k=>new Date(t.t0+k*M).toISOString().slice(5,16).replace("T"," ");[0,t.sig,t.ext,m-1].forEach(k=>{s+='<text x="'+X(k)+'" y="428" font-size="10" text-anchor="middle" fill="var(--mute)">'+tl(k)+"</text>"});
+$("cvg").innerHTML=s;$("cvi").innerHTML="Trade "+(i+1)+" of "+n+": entry "+esc(t.d)+' UTC, held '+t.bars+" candles, exit: "+esc(t.why)+'. Result <b class="'+(win?"good":"bad")+'">'+f2(t.net)+" %</b> after fees.";};
+cvShow(0);};return {html:h,init};}
 function curveEx(x){const r=x.r,n=r.length,W=600,H=160,mn=Math.min(0,...r),mx=Math.max(0,...r),sp=(mx-mn)||1;
 const X=i=>8+i*(W-16)/(n-1||1),Y=v=>H-8-(v-mn)/sp*(H-16);
 return '<svg viewBox="0 0 600 160" role="img" aria-label="Running total of net R"><line x1="8" x2="592" y1="'+Y(0)+'" y2="'+Y(0)+'" stroke="var(--line)"/><polyline fill="none" stroke="var(--acc)" stroke-width="1.5" points="'+r.map((v,i)=>X(i).toFixed(1)+","+Y(v).toFixed(1)).join(" ")+'"/></svg><p class="note">'+n+" points; ends at "+r[n-1].toFixed(2)+" R = $"+x.usd[n-1].toFixed(0)+" from $"+x.start_usd+" ("+x.risk_pct+" % risked per trade, simple sum).</p>";}
@@ -222,9 +251,10 @@ if(x.kind==="table")h+=table(x);else if(x.kind==="stack")h+=stack(x);else if(x.k
 else if(x.kind==="curve"&&x.r&&x.r.length)h+=curveEx(x);
 else if(x.kind==="charts"&&x.items&&x.items.length)h+='<div class="cg">'+x.items.map(c=>"<figure>"+c.svg+"<figcaption>"+esc((c.label||(c.kind==="winner"?"typical winner":"typical loser"))+(c.note?": "+c.note:""))+"</figcaption></figure>").join("")+"</div>";
 else if(x.kind==="replay"){const r=replay(x);h+=r.html;inits.push(r.init);}
+else if(x.kind==="trade_chart"&&x.trades&&x.trades.length){const r=tradeChart(x);h+=r.html;inits.push(r.init);}
 else h+='<p class="note">no example trades exported</p>';
 if(x.caption)h+='<p class="note">'+esc(x.caption)+"</p>";return {html:h+"</div>",inits};}
-function render(id){if(tm){clearInterval(tm);tm=null}const t=TESTS.find(x=>x.id===id);
+function render(id){if(tm){clearInterval(tm);tm=null}window.cvShow=null;const t=TESTS.find(x=>x.id===id);
 if(!t){const r=CAT.find(x=>x.id===id);if(r){document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-current",b.dataset.id===id));$("view").innerHTML=stub(r);return}}
 if(!t){render(TESTS[0].id);return}
 document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-current",b.dataset.id===t.id));

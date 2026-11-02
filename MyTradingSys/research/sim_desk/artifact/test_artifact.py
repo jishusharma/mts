@@ -111,6 +111,17 @@ class Page(unittest.TestCase):
         ba.main(["--results", d, "--out", out])
         return open(out, encoding="utf-8").read()
 
+    def test_trade_chart_example_renders(self):
+        # Operator item 2: a trade_chart example must reach a renderer, not "no example trades exported".
+        self.assertIn('x.kind==="trade_chart"', ba.TEMPLATE)
+        self.assertIn("function tradeChart(x)", ba.TEMPLATE)
+        c30 = os.path.join(os.path.dirname(HERE), "results", "eagle-c30-wt-rsi-div.json")
+        ex = json.load(open(c30, encoding="utf-8"))["examples"][0]
+        self.assertEqual(ex["kind"], "trade_chart")
+        for t in ex["trades"]:
+            self.assertTrue(0 <= t["sig"] < t["ent"] < t["ext"] < len(t["c"]))
+            self.assertEqual(t["c"][t["ent"]][0], 0.0)  # entry open is the 0 % line: percent only, no prices
+
     def test_search_keeps_caret_at_end(self):
         # The list rebuild re-creates the search box; without the caret reset "C30" typed as "03C".
         line = next(x for x in ba.TEMPLATE.splitlines() if x.startswith("function refilter()"))
