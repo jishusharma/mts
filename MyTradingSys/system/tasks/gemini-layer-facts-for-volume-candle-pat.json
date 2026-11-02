@@ -1,9 +1,17 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T14:13:31Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/volume_candles_ma.md"
   ],
+  "context": {
+    "calls_to_edit": 14,
+    "folded": "2026-11-02T13:07:59Z",
+    "misses": 47,
+    "reads": [],
+    "session": "agent-ac095d276565ae174"
+  },
   "created": "2026-11-02T11:12:39Z",
   "depends_on": [],
   "done_when": "Every flagged fact in layer_facts/volume_candles_ma.md uses DEV 2020-01-01..2024-06-30 and 14bp fee or is deleted; verify_extract_quotes.py reports 0 problems on it",
@@ -16,6 +24,12 @@
   "kind": "audit",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "46ee60ea: 33 kept, 12 fixed, 14 deleted; verifier 0 problems",
+      "ref": "9996d7416",
+      "utc": "2026-11-02T14:13:31Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,7 +54,12 @@
   "refined_by": "",
   "refreshed": "2026-11-02T11:45:26Z",
   "refs": [],
-  "result": "",
+  "result": "46ee60ea: 33 kept, 12 fixed, 14 deleted; verifier 0 problems",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/volume_candles_ma.md"
   ],
@@ -52,12 +71,13 @@
   "sources": [
     "MyTradingSys/research/layer_lab/reports/layer_review_positioning_volume_callers.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Run verify_extract_quotes, list flagged facts",
     "Re-derive each from trunk file:line (FORMULAS.md for fee/window) or delete it",
     "Rerun verifier to 0 problems; note OURS/SOURCED labels"
   ],
+  "taken": "2026-11-02T14:13:31Z",
   "tests": "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/volume_candles_ma.md exits 0 (fails before)",
   "title": "Gemini layer_facts for volume, candle_patterns, ma_daily carry invented quotes and wrong DEV window (2022-2025 vs 2020-01-01..2024-06-30) and fee (10bp vs 14bp) (found in layer review 4e29dc2e); done-when: each fact re-derived from trunk or deleted, verify_extract_quotes 0 problems",
   "weight": "",

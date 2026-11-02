@@ -35,7 +35,16 @@ chrome.runtime.onConnect.addListener(port => {
   }
 });
 
+// 0.7.12 version drift: loaded = this worker's manifest, disk = manifest.json read from disk now (unpacked extension);
+// 'reload' re-reads the extension from disk (the page then re-attaches itself, see content.js orphan reload).
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+  if (msg && msg.type === 'version') {
+    const loaded = chrome.runtime.getManifest().version;
+    fetch(chrome.runtime.getURL('manifest.json'), { cache: 'no-store' }).then(r => r.json())
+      .then(m => sendResponse({ loaded: loaded, disk: m.version }), () => sendResponse({ loaded: loaded, disk: null }));
+    return true;
+  }
+  if (msg && msg.type === 'reload') { sendResponse({ ok: true }); setTimeout(() => chrome.runtime.reload(), 200); return; }
   if (!msg || (msg.type !== 'airun' && msg.type !== 'ping')) return;
   const keepAlive = setInterval(chrome.runtime.getPlatformInfo, 25000);
   pickMachine(msg.host).then(mc => {

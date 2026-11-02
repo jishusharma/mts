@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T14:13:34Z",
   "commands": [],
   "created": "2026-11-02T09:35:24Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "yt-guard-tests-not-hermetic-test-fetch-c",
   "lane": "HAIKU",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "27cebdf07/172a4b79: 14 yt tests hermetic",
+      "ref": "9996d7416",
+      "utc": "2026-11-02T14:13:34Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -30,7 +37,12 @@
   "refined_by": "",
   "refreshed": "2026-11-02T11:07:51Z",
   "refs": [],
-  "result": "",
+  "result": "27cebdf07/172a4b79: 14 yt tests hermetic",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/test_fetch_captions_guard.py",
     "scripts/dev/test_fetch_captions_channel.py",
@@ -42,12 +54,13 @@
   "scope_sha": "20ca321e81aa",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "in each setUp add mock.patch.object(f, 'fleet_rows', return_value=[]) and mock.patch.object(f, 'fleet_send') with addCleanup(stop), next to the existing public_ip patch (fetch_captions_timed.py:275 and :290)",
     "run both files before the patch with a real ytblock row present (or on JIS-DESKTOP) to see them fail, then after to see 11 pass; keep one test that feeds a fleet ytblock row on purpose and asserts the guard sees it",
     "python scripts/dev/test_fetch_captions_guard.py and test_fetch_captions_channel.py green; sync.py ship"
   ],
+  "taken": "2026-11-02T14:13:34Z",
   "tests": "test_fetch_captions_guard (3) and test_fetch_captions_channel (8) fail with a live fleet ytblock row on the current code and pass with fleet_rows mocked",
   "title": "YT guard tests not hermetic: test_fetch_captions_guard (3) and test_fetch_captions_channel (8) fail on JIS-DESKTOP on unmodified trunk because they read the real mts-signals fleet ytblock rows; mock fleet_rows/fleet_send in setUp",
   "weight": "ROUTINE",

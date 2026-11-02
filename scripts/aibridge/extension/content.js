@@ -107,7 +107,7 @@
       for (var i = 0; i < sleepers.length; i++) { if (sleepers[i].due <= now) sleepers[i].fin(); else keep.push(sleepers[i]); }
       sleepers = keep;
     }
-    sampleText(); growCheck(); pump(); watchdog(); labelTick(); replyTick();
+    sampleText(); growCheck(); pump(); watchdog(); labelTick(); replyTick(); versionTick();
   }
   // a page holding a Web Lock is not frozen by Chrome's tab lifecycle while it sits in the background
   try { if (navigator.locks && navigator.locks.request) navigator.locks.request('aibridge-keepalive-' + tabId, function () { return new Promise(function () {}); }); } catch (e) {}
@@ -179,7 +179,7 @@
     var list = allBlocks();
     var keys = L.batchKeys(list.map(blockCmd));
     var at = list.indexOf(block);
-    return at >= 0 ? keys[at] : L.fnv(blockCmd(block)) + '@x';
+    return at >= 0 ? keys[at] : L.fnv(L.normKey(blockCmd(block))) + '@x';
   }
   function dbgDump() {
     if (!alive()) { orphan(); return; }
@@ -218,6 +218,34 @@
       if (r2) r = r2;
     }
     return r;
+  }
+  // 0.7.12 version drift: a mismatch is shown in the panel, put in every receipt (DSA sees it), and a stale extension reloads
+  // itself when nothing is running; a page whose extension was reloaded under it re-attaches by reloading itself (idle, once per 10 min).
+  var vstate = { level: 'ok', text: '' }, lastVer = 0;
+  function idleNow() { return !inRun && !working && !(pending && pending.length); }
+  function versionTick() {
+    var now = Date.now();
+    if (now - lastVer < 60000) return;
+    lastVer = now;
+    if (!alive()) {
+      try {
+        var last = parseInt(sessionStorage.getItem('aibridge_orphan_reload') || '0', 10);
+        if (idleNow() && now - last > 600000) { sessionStorage.setItem('aibridge_orphan_reload', String(now)); location.reload(); }
+      } catch (e) {}
+      return;
+    }
+    try {
+      chrome.runtime.sendMessage({ type: 'version' }, function (v) {
+        if (chrome.runtime.lastError || !v) return;
+        ping().then(function (p) {
+          var agent = p && p.ok && p.status === 200 && p.body ? p.body.agent : null;
+          vstate = L.versionState(v.loaded || VER, v.disk, agent);
+          if (ui.box) ui.box.dataset.ver = vstate.level;
+          if (vstate.level !== 'ok' && ui.info) ui.info.textContent = vstate.text;
+          if (vstate.level === 'ext_stale' && idleNow()) { try { chrome.runtime.sendMessage({ type: 'reload' }); } catch (e) {} }
+        });
+      });
+    } catch (e) {}
   }
   function ping(host) {
     return new Promise(function (resolve) {
@@ -489,7 +517,7 @@
     var texts = items.map(function (it) {
       return L.formatResult(it.n, it.shown || it.cmd, it.resp, '', { blocks_seen: seenN, blocks_run: ran, index: it.index, rid: it.rid });
     });
-    var text = (seenN > 1 ? '[AIRUN BATCH] blocks_seen=' + seenN + ' blocks_run=' + ran + ' not_run=' + (seenN - ran) + '\n' : '') + texts.join('\n\n');
+    var text = (vstate.level !== 'ok' ? '[AIRUN WARNING] ' + vstate.text + '\n' : '') + (seenN > 1 ? '[AIRUN BATCH] blocks_seen=' + seenN + ' blocks_run=' + ran + ' not_run=' + (seenN - ran) + '\n' : '') + texts.join('\n\n');
     var lastN = items[items.length - 1].n;
     var ok = await postParts(text, lastN, myToken, '#' + lastN);
     if (!ok) { if (myToken === token) stopAuto('auto OFF: the result was not posted (' + lastPostErr + '). Tick the box again to re-arm.'); return; }
@@ -592,6 +620,7 @@
   setInterval(replyTick, 1000);
   setInterval(watchdog, 2000);
   setInterval(linkCheck, 1000);
+  setInterval(versionTick, 5000);   // gated to once a minute inside; onTick also calls it
   setInterval(function () { if (location.href !== lastHref) { lastHref = location.href; if (!lastSend || Date.now() - lastSend > 15000) histUntil = Date.now() + 6000; } }, 500);
   document.addEventListener('click', function (e) { var t = e.target; if (!t || !t.closest || isOurs(t) || !t.closest('button, [role="button"]')) return; var inp = findInput(); if (!inp) return; var box = inp; for (var u = 0; u < 4 && box.parentElement; u++) box = box.parentElement; if (box.contains(t)) lastSend = Date.now(); }, true);
 

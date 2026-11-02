@@ -1,0 +1,90 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/layer_lab/reports/layer_review_rsi_cc_pitchfork_engine.md"
+  ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-02T16:02:01Z",
+    "misses": 13,
+    "reads": [],
+    "session": "agent-ac5b4956167284784"
+  },
+  "created": "2026-11-02T13:42:35Z",
+  "depends_on": [],
+  "done_when": "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/layer_lab/reports/layer_review_rsi_cc_pitchfork_engine.md prints PASS: 0 problem(s) and exits 0; git diff touches only that sheet.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "The verifier flags 13 problems in the rsi/cryptocred/pitchfork layer sheet: 6 quotes not found in their cited file (lines 121, 464, 465, 493, 495-497), 1 cite line past EOF (197), and 5 cite paths that do not resolve (290, cc_setups.py). Each fix re-points the cite to the real file:line or trims the quote to the exact cited text; a claim that cannot be confirmed is removed.",
+  "hosts": [
+    "JIS-LAPTOP"
+  ],
+  "id": "layer-review-rsi-cc-pitchfork-engine-md-",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "verify_extract_quotes: resolve file:line cites and repo-doc quotes; restore 73 valid cites",
+      "ref": "9996d74165fe",
+      "utc": "2026-11-02T13:40:46Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "9996d74165fe verify_extract_quotes: resolve file:line cites and repo-doc quotes; restore 7",
+      "ref": "MyTradingSys/research/layer_lab/reports/layer_review_rsi_cc_pitchfork_engine.md",
+      "utc": "2026-11-02T13:40:46Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "resolve-the-71-unverified-quote-cite-fla",
+    "layer-review-sheets-37931df7b-haiku-remo"
+  ],
+  "note": "DECISION (OURS): the 6 quote-only misses are fixed by trimming to exact text, not by rewording claims; a claim with no verifiable cite is removed. Refined by planner-a3-1102 2026-11-02. class=C0. Not a twin: the done card 37931df7b cleared UNVERIFIED flags, this card clears verifier NO-QUOTE/NO-FILE/NO-LINE problems.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "planner-a3-1102",
+  "refreshed": "2026-11-02T16:00:16Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/reports/layer_review_rsi_cc_pitchfork_engine.md"
+  ],
+  "scope_out": [
+    "other layer sheets (e.g. layer_review_positioning_volume_callers.md)",
+    "product code and tests",
+    "MyTradingSys/research/BUGS.md and all other registry or item files (read-only)",
+    "any change to status, verdicts or numbers in the sheet"
+  ],
+  "scope_sha": "9996d74165fe",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/BUGS.md",
+    "MyTradingSys/backtest/layers/BACKTEST_L1_REPORT.md",
+    "MyTradingSys/backtest/layers/cryptocred/cc_setups.py",
+    "MyTradingSys/items/B143_cryptocred_stop_buffer_and_target_unsourced.md",
+    "MyTradingSys/research/layer_review_2026-10-26/LAYER_SHEETS.md",
+    "MyTradingSys/research/rsi_divergence_mtf_2026-10-09/RESULT.md",
+    "MyTradingSys/backtest/layers/rsi/rsi_divergence.py"
+  ],
+  "state": "ready",
+  "steps": [
+    "Run the verifier on the sheet before editing; record the 13 problems (exit 1). This is the fail-first observation.",
+    "Line 121 (B154): the quoted tail 'B154 regime split not available in code yet' is not in BUGS.md:266. Trim the quote to the exact row text or drop the tail.",
+    "Line 197: BACKTEST_L1_REPORT.md:92-95 is past EOF (file has 86 lines). Grep the file for the fee-net wording and re-point to the real lines.",
+    "Lines 290 (5 cites): cc_setups.py is at MyTradingSys/backtest/layers/cryptocred/cc_setups.py. Re-point the path and confirm the cited line numbers by grep before keeping them.",
+    "Lines 464-467, 493-497: each quote must match the cited row exactly. B116 (BUGS.md:227), B117 (:228) and B118 (:229) have different wording from the quotes (B118 says size 100, not 20). B075 (:160) tail differs. Replace each quote with the exact text, or drop the claim if no cite verifies.",
+    "Re-run the verifier on the sheet: it must print PASS: 0 problem(s) and exit 0. Touch no other file."
+  ],
+  "tests": "Fail-first: the verifier on the unmodified sheet exits 1 with FAIL: 13 problem(s). Docs lane: the same verifier run is the test.",
+  "title": "Clear 13 quote/cite flags in layer_review_rsi_cc_pitchfork_engine.md (verifier exit 1)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

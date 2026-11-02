@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-02T16:20:03Z",
+  "depends_on": [],
+  "done_when": "test_date_of_uses_unix_timestamp in MyTradingSys/research/sim_desk/test_build2.py passes (stubbed git output 1730000000 -> 2024-10-27) and failed on the old code; no literal %cs left in build_catalogue.py.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "date_of() runs git log --format=%cs; git older than 2.21 prints the literal %cs, which lands in the catalogue as a date. Use %ct and format the UTC date in Python so every git version gives a real YYYY-MM-DD.",
+  "id": "build-catalogue-date-of-no-cs-format",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Simulator: Malkan divergence test on tf_break trades",
+      "ref": "f897395aee70",
+      "utc": "2026-10-31T17:10:01Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "PLANNER 2026-11-02 planner-b-1102: split from nuc-git-too-old-for-cs-build-catalogue-w. REVIEWED:2026-11-02 T0-ONLY Final report ends with a Noticed: line.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-02T16:20:04Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/build_catalogue.py",
+    "MyTradingSys/research/sim_desk/test_build2.py"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no catalogue rebuild or backfill run on a NUC (git 2.24)",
+    "rebuilding or backfilling the catalogue (run from a machine with a current git, by the desktop)"
+  ],
+  "scope_sha": "f897395aee70",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/sim_desk/build_catalogue.py:53"
+  ],
+  "state": "ready",
+  "steps": [
+    "in date_of replace --format=%cs with --format=%ct; parse int and return datetime.fromtimestamp(t, UTC).date().isoformat(); keep None on empty or error",
+    "add test_date_of_uses_unix_timestamp (monkeypatch subprocess.run to return stdout 1730000000); 1730000000 UTC is 2024-10-27 (computed by hand: 20023 days x 86400 = 1729987200 is 2024-10-27 00:00; remainder 12800 s is the same day)",
+    "run it against the old code first to see it fail"
+  ],
+  "tests": "python -m pytest MyTradingSys/research/sim_desk/test_build2.py -q --basetemp=F:/MTS/_pt_b (fail-first: test_date_of_uses_unix_timestamp)",
+  "title": "build_catalogue.date_of: use %ct (unix) instead of %cs so old git (NUC 2.24) writes real dates",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

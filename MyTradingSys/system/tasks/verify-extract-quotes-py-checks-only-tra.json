@@ -1,0 +1,95 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-02T14:13:35Z",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/volume_candles_ma.md",
+    "python scripts/dev/test_verify_extract_quotes.py"
+  ],
+  "context": {
+    "calls_to_edit": 12,
+    "folded": "2026-11-02T13:40:44Z",
+    "misses": 41,
+    "reads": [
+      "scripts/dev/test_verify_extract_quotes.py"
+    ],
+    "session": "agent-aa009cf36363ad336"
+  },
+  "created": "2026-11-02T13:08:46Z",
+  "depends_on": [],
+  "done_when": "git show b7ad6ad1c:MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/volume_candles_ma.md saved to a temp file exits 1 with a problem line (today it prints PASS 0 problem(s)); the current volume_candles_ma.md at 46ee60ea8 still exits 0",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Make verify_extract_quotes.py check layer_facts sheets too: resolve file:line cites and quoted repo-doc text, so a sheet with invented quotes, a wrong DEV window or missing cites fails instead of passing 0 problems.",
+  "hosts": [
+    "JIS-LAPTOP"
+  ],
+  "id": "verify-extract-quotes-py-checks-only-tra",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "9996d7416: old sheet 37 problems, current 0",
+      "ref": "9996d7416",
+      "utc": "2026-11-02T14:13:35Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "docs: re-derive volume_candles_ma layer facts from trunk (DEV 2022-01-01..2024-06-30, 14 b",
+      "ref": "46ee60ea8954",
+      "utc": "2026-11-02T13:08:02Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "46ee60ea8954 docs: re-derive volume_candles_ma layer facts from trunk (DEV 2022-01-01..202",
+      "ref": "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/volume_candles_ma.md",
+      "utc": "2026-11-02T13:08:02Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "gemini-layer-facts-for-volume-candle-pat"
+  ],
+  "note": "DECISION (OURS): checker-only card. The sheet was already re-derived in 46ee60ea8, so the fail-first copy is b7ad6ad1c. Twin of gemini-layer-facts-for-volume-candle-pat (done, sheet fix; this one is the checker).",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-02T13:31:04Z",
+  "refs": [],
+  "result": "9996d7416: old sheet 37 problems, current 0",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/verify_extract_quotes.py",
+    "scripts/dev/test_verify_extract_quotes.py",
+    "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/volume_candles_ma.md"
+  ],
+  "scope_out": [
+    "other layer_facts files; product code; backtests; raw transcripts"
+  ],
+  "scope_sha": "46ee60ea8954",
+  "size": "M",
+  "sources": [
+    "scripts/dev/verify_extract_quotes.py:1-13"
+  ],
+  "state": "done",
+  "steps": [
+    "Add the fail-first test in test_verify_extract_quotes.py (b7ad6ad1c copy must fail on the current verifier)",
+    "Extend verify_extract_quotes.py: each file:line cite must exist in the repo; each quoted repo-doc span must occur in the cited file",
+    "Rerun on the current sheet: 0 problems; if it flags a real fact, fix that fact in the sheet, not the checker"
+  ],
+  "taken": "2026-11-02T14:13:35Z",
+  "tests": "scripts/dev/test_verify_extract_quotes.py: new test runs the verifier on the b7ad6ad1c copy of volume_candles_ma.md and asserts a nonzero problem count; it fails on the current verifier (0 problems)",
+  "title": "verify_extract_quotes.py checks only transcript quotes: a layer_facts sheet with invented quotes, wrong DEV window and missing cites passed 0 problems (46ee60ea); done-when: verifier also resolves file:line cites and repo-doc quotes, fails on the pre-fix volume_candles_ma.md",
+  "weight": "",
+  "worker": "session"
+}

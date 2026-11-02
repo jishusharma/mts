@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T14:13:32Z",
   "commands": [
     "grep -c UNVERIFIED MyTradingSys/research/layer_lab/reports/layer_review_positioning_volume_callers.md"
   ],
@@ -15,6 +16,12 @@
   "id": "resolve-the-71-unverified-quote-cite-fla",
   "lane": "HAIKU",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "37931df7b: 0 UNVERIFIED",
+      "ref": "9996d7416",
+      "utc": "2026-11-02T14:13:32Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +46,12 @@
   "refined_by": "",
   "refreshed": "2026-11-02T11:45:27Z",
   "refs": [],
-  "result": "",
+  "result": "37931df7b: 0 UNVERIFIED",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/reports/layer_review_positioning_volume_callers.md",
     "MyTradingSys/research/layer_lab/reports/layer_review_rsi_cc_pitchfork_engine.md"
@@ -52,12 +64,13 @@
   "sources": [
     "MyTradingSys/research/layer_lab/reports/layer_review_rsi_cc_pitchfork_engine.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "For each UNVERIFIED flag grep the cited file for the quote",
     "Replace with file:line if found, else delete the claim",
     "Recount flags to 0"
   ],
+  "taken": "2026-11-02T14:13:32Z",
   "tests": "grep -c UNVERIFIED on both files prints 0 (35 and 36 before)",
   "title": "Resolve the 71 UNVERIFIED quote/cite flags in layer_review_positioning_volume_callers.md and layer_review_rsi_cc_pitchfork_engine.md (4e29dc2e); done-when: each flag confirmed with file:line or the claim removed, 0 UNVERIFIED left",
   "weight": "",

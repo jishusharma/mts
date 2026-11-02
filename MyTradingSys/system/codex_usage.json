@@ -1,12 +1,12 @@
 {
  "allowance": {
   "plan": "plus",
-  "week_resets": 1793780113,
-  "week_used": 95.0,
-  "window_resets": 1793571563,
-  "window_used": 12.0
+  "week_resets": 1794204690,
+  "week_used": 8.0,
+  "window_resets": 1793637558,
+  "window_used": 2.0
  },
- "at": "2026-11-01T18:03:33Z",
+ "at": "2026-11-02T16:23:40Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -16,19 +16,76 @@
   "window_reserve": 10
  },
  "exhausted": {
-  "at": "2026-11-01T18:03:33Z",
-  "flag": true,
-  "until": "2026-11-04T08:15:13Z",
-  "why": "Codex weekly allowance 95% used, resets 2026-11-04 08:15Z"
+  "flag": false
  },
  "host": "JIS-NUC",
  "lab": {
   "astra_runs": 0,
-  "week_pts": 28.0,
-  "window_pts": 0.0,
-  "window_runs": 0
+  "week_pts": 0.0,
+  "window_pts": 2.0,
+  "window_runs": 3
  },
  "runs": [
+  {
+   "at": "2026-11-02T16:21:52Z",
+   "card": "gpt-spec-tests-role-line",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 100,
+   "tokens_out": 6318,
+   "tokens_total": 564790,
+   "tokens_uncached": 36232,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
+  {
+   "at": "2026-11-02T15:22:33Z",
+   "card": "gpt-spec-tests-aibridge-health",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 115,
+   "tokens_out": 8527,
+   "tokens_total": 683527,
+   "tokens_uncached": 43320,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
+  {
+   "at": "2026-11-02T13:14:21Z",
+   "card": "gpt-spec-tests-role-hook-launcher",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 108,
+   "tokens_out": 5535,
+   "tokens_total": 405423,
+   "tokens_uncached": 35856,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
+  {
+   "at": "2026-11-02T11:39:04Z",
+   "card": "gpt-spec-tests-operator-questions",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "(d1f69636). Nothing deploys while red. Fix CI first (CLAUDE.md boot step 2): `python scripts/dev/health_audit.py` names the failing steps.\nFix-first: a code shi",
+   "outcome": "SHIP_FAILED",
+   "seconds": 68,
+   "tokens_out": 4138,
+   "tokens_total": 336879,
+   "tokens_uncached": 48837,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-11-01T11:42:34Z",
    "card": "gpt-recheck-aibridge-07x-tests-1031",
@@ -118,66 +175,6 @@
    "tokens_uncached": 41636,
    "week_pts": 0.0,
    "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-31T12:53:30Z",
-   "card": "gpt-audit-testnet-counting-rule-vs-bar",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 85,
-   "tokens_out": 5387,
-   "tokens_total": 699675,
-   "tokens_uncached": 60560,
-   "week_pts": 1.0,
-   "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-31T09:56:52Z",
-   "card": "gpt-mutation-tests-sim-desk-conditions",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "2 uncommitted file(s) left in F:\\MTS\\mts-codex-lab: MyTradingSys/research/sim_desk/test_conditions_spec.py",
-   "outcome": "OUT_OF_SCOPE",
-   "seconds": 85,
-   "tokens_out": 6675,
-   "tokens_total": 507949,
-   "tokens_uncached": 40218,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-10-31T09:25:58Z",
-   "card": "gpt-mutation-tests-sim-desk-conditions",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "3 uncommitted file(s) left in F:\\MTS\\mts-codex-lab: MyTradingSys/research/sim_desk/test_conditions_spec.py",
-   "outcome": "OUT_OF_SCOPE",
-   "seconds": 105,
-   "tokens_out": 9197,
-   "tokens_total": 755735,
-   "tokens_uncached": 43050,
-   "week_pts": 0.0,
-   "window_pts": 1.0
-  },
-  {
-   "at": "2026-10-31T09:02:42Z",
-   "card": "gpt-audit-analyst-levels-asof-rule",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 48,
-   "tokens_out": 3603,
-   "tokens_total": 317782,
-   "tokens_uncached": 28867,
-   "week_pts": 0.0,
-   "window_pts": 0.0
   }
  ]
 }

@@ -1107,9 +1107,9 @@ def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_ke
 def _local_bridge(host: str) -> str | None:
     if CN(host) not in (NB, NUC):
         return None
-    import socket as _s
-    try:
-        _s.create_connection(("127.0.0.1", 7181), timeout=2).close()
+    import urllib.request as _u
+    try:   # GET /ping, not a bare connect: a bare connect made the agent log not_found + an aborted write (651 pairs)
+        _u.urlopen("http://127.0.0.1:7181/ping", timeout=3).close()
         return "up"
     except OSError:
         return "down"

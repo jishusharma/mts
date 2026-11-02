@@ -9,6 +9,9 @@ punctuation). The position tag must match where the quote sits (thirds).
 
 Usage (repo root):
     python scripts/dev/verify_extract_quotes.py extracts/processed/malkan/extract_X.md[.new] [...]
+A repo-doc sheet (layer_facts, layer reviews) is checked too: every `path:line[-line]` cite must name an
+existing repo file with that line, and every "double-quoted" span on a line with cites must occur in a cited
+file (normalised) within 3 lines of the cited range; "..." joins fragments as for transcripts.
 Exit code 1 if any quote is missing or mis-positioned. Prints one line per quote.
 """
 import re
@@ -111,6 +114,65 @@ def check_cbp_evidence(path: Path, lines, i, m, cache) -> int:
     return 0
 
 
+DOC_CITE = re.compile(r"`([A-Za-z0-9_./-]+\.(?:md|py|json|java|txt|csv|ya?ml|sh|ts|js)):((?:\d+(?:-\d+)?)(?:,\d+(?:-\d+)?)*)`")
+DOC_QUOTE = re.compile(r'"([^"\n]{12,}?)"')
+SLACK = 3
+_doc_cache = {}
+
+
+def _doc_lines(rel: str):
+    if rel not in _doc_cache:
+        p = ROOT / rel
+        _doc_cache[rel] = p.read_text(encoding="utf-8", errors="replace").split("\n") if p.is_file() else None
+    return _doc_cache[rel]
+
+
+def check_doc_line(name: str, n: int, line: str) -> int:
+    """Repo-doc cites on one line: file:line must exist; quoted spans must occur in a cited file near its lines."""
+    cites = []
+    for m in DOC_CITE.finditer(line):  # `file:7,75,144` or `file:3-9` -> one (file, a, b) per span
+        for span in m.group(2).split(","):
+            a, _, b = span.partition("-")
+            cites.append((m.group(1), int(a), int(b or a)))
+    if not cites:
+        return 0
+    bad = 0
+    live = []
+    for rel, a, b in cites:
+        src = _doc_lines(rel)
+        if src is None:
+            print(f"NO-FILE  {name}:{n} {rel}")
+            bad += 1
+        elif a < 1 or a > len(src) or b < a:
+            print(f"NO-LINE  {name}:{n} {rel}:{a}-{b} (file has {len(src)} lines)")
+            bad += 1
+        else:
+            live.append((rel, a, b))
+    if not live:
+        return bad
+    stripped = DOC_CITE.sub(" ", line)
+    for qm in DOC_QUOTE.finditer(stripped):
+        quote = qm.group(1)
+        if len(norm(quote).split()) < 3:
+            continue
+        in_file = in_range = False
+        for rel, a, b in live:
+            src = _doc_lines(rel)
+            if first_missing(quote, norm("\n".join(src))) is None:
+                in_file = True
+                if first_missing(quote, norm("\n".join(src[max(0, a - 1 - SLACK):b + SLACK]))) is None:
+                    in_range = True
+        if not in_file:
+            print(f"NO-QUOTE {name}:{n} {quote[:60]!r} not in cited file")
+            bad += 1
+        elif not in_range:
+            print(f"WRONG-LINE {name}:{n} {quote[:60]!r} in file but not within {SLACK} lines of the cited range")
+            bad += 1
+    if not bad:
+        print(f"OK       {name}:{n} ({len(live)} cite(s))")
+    return bad
+
+
 def check(path: Path) -> int:
     lines = path.read_text(encoding="utf-8").splitlines()
     bad = 0
@@ -122,6 +184,7 @@ def check(path: Path) -> int:
             continue
         m = QUOTE.match(line.strip())
         if not m:
+            bad += check_doc_line(path.name, i + 1, line)
             continue
         gps = next((GPS.search(l) for l in lines[i + 1:i + 3] if GPS.search(l)), None)
         if not gps:

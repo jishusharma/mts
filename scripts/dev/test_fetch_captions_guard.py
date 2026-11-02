@@ -4,6 +4,7 @@ import pathlib
 import sys
 import tempfile
 import unittest
+from datetime import datetime, timedelta, timezone
 from unittest import mock
 
 HERE = pathlib.Path(__file__).resolve().parent
@@ -24,6 +25,13 @@ class T(unittest.TestCase):
         ip = mock.patch.object(f, "public_ip", return_value="203.0.113.7")   # no real ipify request
         ip.start()
         self.addCleanup(ip.stop)
+        # no real mts-signals fleet: a live ytblock row from another box would block this IP (fleet_rows/fleet_send mocked)
+        fr = mock.patch.object(f, "fleet_rows", return_value=[])
+        fr.start()
+        self.addCleanup(fr.stop)
+        fs = mock.patch.object(f, "fleet_send", return_value=True)
+        fs.start()
+        self.addCleanup(fs.stop)
         s = mock.patch.object(f.time, "sleep")
         self.sleep = s.start()
         self.addCleanup(s.stop)
@@ -61,6 +69,14 @@ class T(unittest.TestCase):
             self.assertEqual(f.main(["--analyst", "K", "--status"]), 0)
             self.assertEqual(f.main(["--analyst", "K", "--status", "--channel", "@x"]), 0)
         self.assertEqual((m.call_count, lc.call_count, len(y.mock_calls)), (0, 0, 0))
+
+    def test_fleet_ytblock_row_for_this_ip_blocks(self):   # the one deliberate fleet row: the guard must see it
+        until = (datetime.now(timezone.utc) + timedelta(hours=5)).isoformat(timespec="seconds")
+        row = {"kind": "ytblock", "ih": f.ip_hash("203.0.113.7"), "until": until}
+        with mock.patch.object(f, "fleet_rows", return_value=[row]):
+            got = f.blocked_until()
+        self.assertIsNotNone(got)
+        self.assertEqual(got.isoformat(timespec="seconds"), until)
 
     def test_channel_mode_shares_guard(self):
         rows = [(i, "t") for i in IDS[:3]]

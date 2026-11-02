@@ -1,0 +1,41 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-02T13:14:06Z",
+  "depends_on": [],
+  "done_when": "Sandbox copy of F:/AIBridge: a chat-run write to src/policy.json and a read of .secrets/ are both refused, shown in a transcript file; no change to the live install",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Stop AIBridge chat-run commands from editing bridge src/policy.json or reaching secret paths, enforced at OS level (restricted account or ACLs); prove on a sandbox copy first.",
+  "id": "aibridge-chat-run-commands-must-not-be-a",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Out of repo: AIBridge lives at F:/AIBridge (AIBRIDGE_LANE.md:34, B176). Live install change waits for the operator; not ready from the MTS repo. | PLANNER 2026-11-02 planner-b-1102: superseded by ready CODEX card aibridge-sandbox-chat-run-acl-proof (sandbox-first; live apply stays the operator's call).",
+  "prio": 3,
+  "refine_tries": 1,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "F:/AIBridge/src/policy.json (sandbox copy only)"
+  ],
+  "scope_out": [
+    "live AIBridge install (operator confirms first, B176 rule)"
+  ],
+  "size": "M",
+  "sources": [],
+  "state": "dropped",
+  "steps": [
+    "copy F:/AIBridge to a sandbox dir; reproduce the write and read from a chat-run",
+    "apply ACL or restricted-account rule in the sandbox; re-run both probes"
+  ],
+  "tests": "",
+  "title": "AIBridge: chat-run commands must not be able to edit bridge src/policy.json or reach secret paths: enforce at OS level (restricted account or ACLs), prove in sandbox copy first, show operator before touching a live install",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

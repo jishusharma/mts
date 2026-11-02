@@ -88,4 +88,12 @@ t('4-block reply (block 3 after a fenced block, block 4 multi-line): 4 selected,
   assert.deepStrictEqual(L.dupOf(texts), [0, 0, 0, 0]);
   assert.strictEqual(new Set(L.batchKeys(cmds)).size, 4);
 });
+t('whitespace jitter (innerText vs textContent) gives one key, per-occurrence still holds', () => {
+  const a = ['ls -la', '  cd /tmp'].join(String.fromCharCode(10));
+  const b = ['  ls  -la ', '', ' cd   /tmp', ''].join(String.fromCharCode(13, 10));
+  assert.deepStrictEqual(L.batchKeys([a]), L.batchKeys([b]));
+  assert.strictEqual(L.batchKeys([a, b]).length, 2);
+  assert.notStrictEqual(L.batchKeys([a, b])[0], L.batchKeys([a, b])[1]);
+  assert.notStrictEqual(L.batchKeys(['ls -la'])[0], L.batchKeys(['ls -lb'])[0]);
+});
 console.log(n + ' passed');

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T14:13:30Z",
   "commands": [
     "python scripts/dev/lab_query.py layers fabio",
     "python -c \"import json;d=json.load(open('MyTradingSys/system/layer_index.json'));n=sum(len(f.get('layers') or [1]) for f in d['families'] if f['id'] in ('fabio','session_timing',));h=sum(x.startswith('## ') for x in open('MyTradingSys/research/layer_lab/reports/layer_review_fabio_session.md',encoding='utf8'));assert h==n==8,(h,n);print('sections',n)\"",
@@ -17,6 +18,12 @@
   "id": "layer-review-fabio-session",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "sheet shipped d769e784",
+      "ref": "9996d7416",
+      "utc": "2026-11-02T14:13:30Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -49,7 +56,12 @@
   "refs": [
     "MyTradingSys/research/mts_doctor/MAINNET_PATH_2026-10-25.md"
   ],
-  "result": "",
+  "result": "sheet shipped d769e784",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/reports/layer_review_fabio_session.md",
     "MyTradingSys/system/layer_index.json",
@@ -77,7 +89,7 @@
     "MyTradingSys/research/mts_doctor/LAYER_REALITY_2026-10-25.md",
     "MyTradingSys/research/mts_doctor/MAINNET_PATH_2026-10-25.md:34 (operator NO 2026-10-25)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Run python scripts/dev/lab_query.py layers <family> and read layer_index.json for each of: fabio session_timing. If MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/<family>.md exists (Antigravity input) start from it and re-verify every file:line; else build from the scope_in files.",
     "Per layer write '## <layer id>' (the family id where a family lists no layers) with exactly five '### ' headings in this order: '### Idea and source' (verbatim quote + file:line), '### Parameters' (each SOURCED with quote, or OURS), '### Backtests' (report path, fee-net yes/no, in-sample or OOS, n trades; lab_query.py backtests <family>, TRIAL_LEDGER.csv).",
@@ -86,6 +98,7 @@
     "Add one plain line per layer (not a heading): wired in the simulator (MyTradingSys/research/sim_desk/PLUGIN.md) yes or no.",
     "Run the two python -c commands in `commands` (section count; headings and wording). Both must print their OK line; then sync.py ship."
   ],
+  "taken": "2026-11-02T14:13:30Z",
   "tests": "Fail-first: both python -c commands in `commands` (section count == 8; five headings each, no verdict phrase) fail while the sheet is absent and pass once it is complete.",
   "title": "Layer review sheet: Fabio and session timing (idea, source, backtests, bugs, confluence)",
   "weight": "IMPORTANT",

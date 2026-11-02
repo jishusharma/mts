@@ -30,6 +30,16 @@ def test_single_failure_cancelled_and_green_stay_silent():
     assert W.message([], NOW) == ""
 
 
+def test_rerun_of_old_red_commit_does_not_hide_green_head():
+    def r(sha, c, at, ct):
+        d = run(sha, c, at)
+        d["head_commit"] = {"timestamp": ct}
+        return d
+    runs = [r("a", "failure", "2026-10-17T22:00:00Z", "2026-10-17T10:00:00Z"), r("b", "failure", "2026-10-17T21:00:00Z", "2026-10-17T09:00:00Z"),
+            r("c", "success", "2026-10-17T20:00:00Z", "2026-10-17T12:00:00Z")]
+    assert W.streak(runs)[0] == 0 and W.message(runs, NOW) == ""
+
+
 def test_no_green_in_window_is_said():
     assert "no green run in the last 30" in W.message([run("a", "failure"), run("b", "failure")], NOW)
 

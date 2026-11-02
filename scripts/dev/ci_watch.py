@@ -32,6 +32,10 @@ def parse(ts):
 def streak(runs):
     """(failed_in_a_row, newest_failed_run, last_success_run) from runs newest first; cancelled and unfinished runs are skipped."""
     finished = [r for r in runs if r.get("conclusion") in ("success", "failure", "timed_out", "startup_failure")]
+    # A re-run of an old red commit gets a new created_at and lands first in the list; order by the commit's own time instead.
+    stamps = [((r.get("head_commit") or {}).get("timestamp") or "") for r in finished]
+    if finished and all(stamps):
+        finished = [r for _, r in sorted(zip(stamps, finished), key=lambda t: t[0], reverse=True)]  # stable: ties keep API order
     n = 0
     for r in finished:
         if r["conclusion"] == "success":

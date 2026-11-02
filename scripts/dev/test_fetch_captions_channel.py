@@ -51,6 +51,13 @@ class T(unittest.TestCase):
         ip = mock.patch.object(f, "public_ip", return_value="203.0.113.7")   # no real ipify request
         ip.start()
         self.addCleanup(ip.stop)
+        # no real mts-signals fleet: a live ytblock row from another box would block this IP (fleet_rows/fleet_send mocked)
+        fr = mock.patch.object(f, "fleet_rows", return_value=[])
+        fr.start()
+        self.addCleanup(fr.stop)
+        fs = mock.patch.object(f, "fleet_send", return_value=True)
+        fs.start()
+        self.addCleanup(fs.stop)
 
     def test_partial_rate_limit_fails_even_with_cached_video(self):
         with mock.patch.object(f, "list_channel", return_value=LISTING[:2]), \

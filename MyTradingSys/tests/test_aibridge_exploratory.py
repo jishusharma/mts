@@ -297,3 +297,24 @@ setTimeout(window.finish, 45000);
     r = run_page(js, 60000)
     assert any("ran:" in p["text"] or "idle1" in p["text"] for p in r["posted"]), (r["posted"], r["status"], r["banner"])
     assert not r["banner"], r["banner"]
+
+
+@needs_browser
+def test_V1_stale_extension_reloads_itself_when_idle():
+    """0.7.13: manifest.json on disk is newer than the loaded extension: with nothing running the page asks the worker to reload it."""
+    js = "window.diskVersion='9.9.9';\nsetTimeout(window.finish, 75000);\n"
+    r = run_page(js, 80000)
+    assert any(c["type"] == "reload" for c in r["calls"]), [c["type"] for c in r["calls"]]
+    assert r["dbg"] is not None
+
+
+@needs_browser
+def test_V2_agent_version_mismatch_is_put_in_the_receipt():
+    """0.7.13: an agent on another version than the extension adds an [AIRUN WARNING] line to the posted receipt (DSA and the operator see it)."""
+    js = ARM + r"""
+window.loadedVersion='0.7.99'; window.diskVersion='0.7.99';
+setTimeout(function(){ window.dsaReply('go', ['# AIRUN cwd=C:\\x\nWrite-Output ONE']); }, 8000);
+setTimeout(window.finish, 60000);
+"""
+    r = run_page(js, 70000)
+    assert any("[AIRUN WARNING] VERSION MISMATCH: extension 0.7.99 but the agent runs 0.7.3" in p["text"] for p in r["posted"]), r["posted"]

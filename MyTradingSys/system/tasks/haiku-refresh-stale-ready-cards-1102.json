@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/tasks.py list --state ready",
+    "python scripts/dev/tasks.py stale",
+    "python scripts/dev/tasks.py tag <id> --refresh"
+  ],
+  "created": "2026-11-02T16:18:55Z",
+  "depends_on": [],
+  "done_when": "tasks.py list --state ready shows 0 STALE tags, or each remaining card is named with the check error; count before and after reported.",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Bring ready cards flagged STALE back to a fresh tag: per card read the scope change, then refresh or park it; report the count before and after.",
+  "id": "haiku-refresh-stale-ready-cards-1102",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "B143 item: fix 9 stale cc_setups.py cites (setup 3 def 178->181 etc)",
+      "ref": "a7d6c8a11bcc",
+      "utc": "2026-11-02T16:07:44Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "PLANNER 2026-11-02 planner-b-1102, D11 s6 feeder. REVIEWED:2026-11-02 T0-ONLY Final report ends with a Noticed: line.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-02T16:18:59Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/tasks/ (card JSON files only)"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no product-code edit; do not edit goal or scope of a card"
+  ],
+  "scope_sha": "a7d6c8a11bcc",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "python scripts/dev/tasks.py list --state ready, count the STALE tags",
+    "per card: git log over its scope_in since its refreshed time, confirm the change does not invalidate the card, then tasks.py tag <id> --refresh and tasks.py check <id>",
+    "a card the change does invalidate: tasks.py tried <id> and name it in the report",
+    "re-run the list, report before/after, ship"
+  ],
+  "tests": "count-based: STALE count before vs after, reported",
+  "title": "Refresh the ready cards flagged STALE (tasks.py list), re-read each change first",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

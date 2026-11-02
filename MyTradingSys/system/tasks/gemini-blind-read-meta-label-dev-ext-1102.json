@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-02T16:18:55Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-02/meta_label_dev_ext_blind_read.md has one row per number: FOUND / NOT_IN_DATA / DIFF, first line holds the three counts.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Open MyTradingSys/research/meta_label_dev_ext_2026-10-31/RESULT.md and check every number against numbers.json, output.md and PRE_REG_EXT.md; facts only, no verdicts.",
+  "id": "gemini-blind-read-meta-label-dev-ext-1102",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "meta-label Fabio C dev_ext rerun 2020-01..2022-03: marginal PASS by the frozen rule, flagg",
+      "ref": "c658d6fe52f5",
+      "utc": "2026-11-02T11:20:25Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "c658d6fe52f5 meta-label Fabio C dev_ext rerun 2020-01..2022-03: marginal PASS by the froze",
+      "ref": "MyTradingSys/research/meta_label_dev_ext_2026-10-31/RESULT.md",
+      "utc": "2026-11-02T11:20:25Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "D11_PROGRAMME s6 seed. Gemini effort low: load as <id>:low (gemini_queue.py run <id>:low). Final report ends with a Noticed: line. Facts only, no verdicts. PLANNER 2026-11-02 planner-b-1102, D11 s6 feeder. REVIEWED:2026-11-02 T0-ONLY",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-02T16:18:58Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/meta_label_dev_ext_2026-10-31/RESULT.md (read)",
+    "MyTradingSys/research/meta_label_dev_ext_2026-10-31/numbers.json (read)",
+    "MyTradingSys/research/meta_label_dev_ext_2026-10-31/output.md (read)",
+    "MyTradingSys/research/gemini_audits_2026-11-02/meta_label_dev_ext_blind_read.md (new)"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change outside the output file"
+  ],
+  "scope_sha": "c658d6fe52f5",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "list every number in RESULT.md with its source",
+    "open numbers.json / output.md and check it",
+    "write FOUND / NOT_IN_DATA / DIFF per number, counts on line 1"
+  ],
+  "tests": "see done_when (audit card, output file is the test)",
+  "title": "[GEMINI] blind re-read of meta_label_dev_ext RESULT.md: every quoted number vs numbers.json",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
