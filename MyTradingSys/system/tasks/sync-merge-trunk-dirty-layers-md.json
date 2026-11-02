@@ -2,6 +2,15 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 7,
+    "folded": "2026-11-02T16:56:25Z",
+    "misses": 1,
+    "reads": [
+      "scripts/dev/test_sync.py"
+    ],
+    "session": "agent-af41fe724f0625072"
+  },
   "created": "2026-11-02T16:20:03Z",
   "depends_on": [],
   "done_when": "test_merge_trunk_restores_dirty_layers_md in scripts/dev/test_sync.py passes (temp repos: origin changes LAYERS.md, local copy dirty -> merge succeeds, count returned) and failed on the old code; a dirty non-generated file still stops the merge.",
