@@ -16,7 +16,15 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 PAYLOAD = os.path.normpath(os.path.join(HERE, '..', 'aibridge'))
 VERSION = json.load(open(os.path.join(PAYLOAD, 'RELEASES.json'), encoding='utf-8'))['current']  # one source: the release record
 
-args = [a for a in sys.argv[1:] if not a.startswith('--')]
+import argparse
+_ap = argparse.ArgumentParser(description='Install / update AIBridge from scripts/aibridge to a root (default F:/AIBridge).')
+_ap.add_argument('root', nargs='?', default='F:/AIBridge')
+_ap.add_argument('--dry', action='store_true', help='print what would be written')
+_ap.add_argument('--restart-agent', action='store_true', help='restart the agent after installing')
+_ap.add_argument('--fresh', action='store_true', help='machine has no AIBridge yet')
+_ap.add_argument('--origin', default=None, help='with --fresh: chrome-extension://<id>')
+_ns = _ap.parse_args()
+args = [_ns.root] if _ns.root != 'F:/AIBridge' else []
 dry = '--dry' in sys.argv
 restart = '--restart-agent' in sys.argv
 fresh = '--fresh' in sys.argv

@@ -67,7 +67,13 @@ function Test-Allowed {
             if ([string]$pol.auto_mode -eq 'fluent') {
                 if ($pol.auto_confirm_regex) {
                     $cm = [regex]::Match($cmdT, [string]$pol.auto_confirm_regex)
-                    if ($cm.Success) {
+                    # 0.7.12: `git checkout -- <path>` discards edits only in the worktree it runs in. Inside DSA's own per-chat worktree
+                    # (IdeaProjects\mts-dsa-<chat>) with no cd leaving it, that is DSA's own scratch, so it runs without a click.
+                    # Evidence: 2 refusals 2026-11-01. Everything else on the list (deletes, reset, clean, push -f, kills) stays a click.
+                    $ownWt = '(?i)\\IdeaProjects\\mts-dsa-[^\\]+(\\|$)'
+                    $leaves = @([regex]::Matches($cmdT, '(?im)^\s*(?:Set-Location|cd|chdir|Push-Location)\s+(?:-(?:Literal)?Path\s+)?[''"]?([^''"\r\n]+)') | Where-Object { $_.Groups[1].Value -notmatch $ownWt }).Count
+                    $coOwn = ($cm.Value -match '(?i)^git\s+checkout\s+--') -and ($cwdF -match $ownWt) -and ($leaves -eq 0) -and ($cmdT -notmatch '\.\.[\\/]')
+                    if ($cm.Success -and -not $coOwn) {
                         return (New-Refusal 'manual_click_required' "irreversible form '$($cm.Value.Trim())' is never auto-run; click the Run button under the block (it is labelled 'Run (click needed)')")
                     }
                 }

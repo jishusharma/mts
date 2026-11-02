@@ -149,3 +149,19 @@ t('pageLen: the operator draft in a contenteditable input is not page text', () 
   assert.strictEqual(L.pageLen(1000, 100, 25), 875);
   assert.strictEqual(L.pageLen(1000, 100), 900);
 });
+// 0.7.12 version drift
+t('versionState: equal versions are ok; unknown values never alarm', () => {
+  assert.strictEqual(L.versionState('0.7.12', '0.7.12', '0.7.12').level, 'ok');
+  assert.strictEqual(L.versionState('0.7.12', null, null).level, 'ok');
+});
+t('versionState: newer disk copy = ext_stale (outranks the agent check)', () => {
+  const v = L.versionState('0.7.11', '0.7.12', '0.7.11');
+  assert.strictEqual(v.level, 'ext_stale'); assert.ok(/0\.7\.11/.test(v.text) && /0\.7\.12/.test(v.text));
+});
+t('versionState: agent on another version = agent_mismatch, old agent says how to restart', () => {
+  const v = L.versionState('0.7.12', '0.7.12', '0.7.11');
+  assert.strictEqual(v.level, 'agent_mismatch'); assert.ok(/--restart-agent/.test(v.text));
+});
+t('versionState: 0.7.9 is older than 0.7.12 (numeric, not text, compare)', () => {
+  assert.ok(/--restart-agent/.test(L.versionState('0.7.12', '0.7.12', '0.7.9').text));
+});
