@@ -1013,6 +1013,16 @@ def dsa_targets_state(rows, now: datetime) -> dict:
     return out
 
 
+def usage_gate_refusal(plan: dict) -> str:
+    """Pure: the usage_reminder.py pre rule (5 h use above elapsed% + MARGIN) read off the plan; '' when a spawn is allowed."""
+    import usage_reminder
+    five, h_left = float(plan["five"]), float(plan["h_left"])
+    elapsed = max(0.0, min(100.0, (5.0 - h_left) / 5.0 * 100.0))
+    if five > elapsed + usage_reminder.MARGIN:
+        return f"5 h use {five:g}% is above elapsed {elapsed:.0f}% + {usage_reminder.MARGIN:g}"
+    return ""
+
+
 def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_key: bool) -> list:
     """Pure: the text a supervisor reads each wake. PLAN/PEER/BOARD lines are state; RUN lines are commands to run now in one Bash call;
     SPAWN is who to start; NOTE needs nothing from you; OPERATOR is the only thing the operator must do."""
@@ -1046,7 +1056,14 @@ def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_ke
     if ci.get("error"):
         L.append(f"NOTE CI unknown ({ci['error'][:80]}): treat as red for live-path cards")
     if ci.get("red"):
-        L.append(f"SPAWN CI RED: one worker on the pinned ci-* card only; nothing else ships ({ci.get('message', '')[:80]})")
+        # DECISION (OURS) 2026-11-02 bug-conflict-05db6e7b6b: the usage gate (Gate) outranks the CI RED spawn order, so the plan
+        # never emits a SPAWN the spawn hook will refuse; the CI fix waits and is not handed to login A.
+        refuse = usage_gate_refusal(plan)
+        if refuse:
+            L.append(f"NOTE CI RED: usage gate refuses a spawn ({refuse}); no worker is spawned this wake, revert by hand "
+                     f"or wait for the gate ({ci.get('message', '')[:80]})")
+        else:
+            L.append(f"SPAWN CI RED: one worker on the pinned ci-* card only; nothing else ships ({ci.get('message', '')[:80]})")
     picks = ctx.get("picks", [])
     if plan["new"] and picks and not ci.get("red"):
         # WORKERS.md rule 2 / roles/supervisor.md:35: Claude Builder cards run as background Agents; only interactive roles are sessions
