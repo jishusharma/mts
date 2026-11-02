@@ -8,9 +8,9 @@ import pandas as pd
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..'))
 sys.path.insert(0, ROOT)
-from MyTradingSys.backtest import splits  # noqa: E402
+from MyTradingSys.backtest import fees, splits  # noqa: E402
 
-FEE_RT_LOG = 0.0014  # 14 bp round trip, log units
+RT_COST_LOG = 2 * fees.BINANCE_TAKER * 1.4  # 14 bp round trip (PRE_REG), derived from fees.py taker
 
 
 def pinball(y, q, levels):
