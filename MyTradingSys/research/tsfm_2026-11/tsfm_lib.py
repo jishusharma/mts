@@ -10,7 +10,7 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), 
 sys.path.insert(0, ROOT)
 from MyTradingSys.backtest import splits  # noqa: E402
 
-COST = 0.0014  # 14 bp round trip, log units
+FEE_RT_LOG = 0.0014  # 14 bp round trip, log units
 
 
 def pinball(y, q, levels):
