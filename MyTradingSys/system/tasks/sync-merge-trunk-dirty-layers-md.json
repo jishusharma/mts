@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T17:02:47Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -28,6 +29,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "merge_trunk restores a dirty LAYERS.md (only blocker) and retries; 2 tests, restore test f",
+      "ref": "3ccb11d28",
+      "utc": "2026-11-02T17:02:47Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "sync: new_worktree reuses unfinished same-slug worktree instead of -2",
@@ -44,7 +51,12 @@
   "refined_by": "",
   "refreshed": "2026-11-02T16:20:04Z",
   "refs": [],
-  "result": "",
+  "result": "merge_trunk restores a dirty LAYERS.md (only blocker) and retries; 2 tests, restore test failed on old code",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/sync.py",
     "scripts/dev/test_sync.py"
@@ -60,12 +72,13 @@
     "scripts/dev/sync.py:173",
     "scripts/dev/sync.py:1153"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "in merge_trunk after the first failed merge: if stderr names only LAYERS_REL as overwritten, git checkout -- LAYERS_REL and retry once, like the runtime_data/_mirror branch above it",
     "add test_merge_trunk_restores_dirty_layers_md and test_merge_trunk_keeps_other_dirty_file_blocking beside the stage_layers tests (test_sync.py:1906)",
     "run the new test on the old code first to see it fail"
   ],
+  "taken": "2026-11-02T17:02:47Z",
   "tests": "python -m pytest scripts/dev/test_sync.py -q -k merge_trunk --basetemp=F:/MTS/_pt_b (fail-first: test_merge_trunk_restores_dirty_layers_md)",
   "title": "sync.py merge_trunk: a dirty generated LAYERS.md must not abort the merge of origin/fast-track",
   "weight": "ROUTINE",

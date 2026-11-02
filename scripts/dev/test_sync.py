@@ -1082,6 +1082,33 @@ class SyncTest(unittest.TestCase):
         tracked = subprocess.run(["git", "-C", str(self.b), "ls-files", "runtime_data/_mirror"], capture_output=True, text=True).stdout
         self.assertEqual(tracked.strip(), "")
 
+    def layers_changed_upstream(self):
+        (self.a / "MyTradingSys" / "system").mkdir(parents=True)
+        commit(self.a, sync.LAYERS_REL, "L0\n")
+        sync.ship(self.a, gate=self.gate)
+        sh(self.b, "pull", "-q", "origin", "fast-track")
+        commit(self.a, sync.LAYERS_REL, "L1\n")
+        sync.ship(self.a, gate=self.gate)
+
+    def test_merge_trunk_restores_dirty_layers_md(self):
+        """A stale/CRLF local LAYERS.md (generated) that origin also changed must not abort the merge."""
+        self.layers_changed_upstream()
+        (self.b / sync.LAYERS_REL).write_bytes(b"L0\r\nlocal\r\n")
+        self.assertEqual(sync.merge_trunk(self.b), 1)
+        self.assertEqual((self.b / sync.LAYERS_REL).read_text(), "L1\n")
+
+    def test_merge_trunk_keeps_other_dirty_file_blocking(self):
+        commit(self.a, "other.txt", "o0\n")
+        sync.ship(self.a, gate=self.gate)
+        self.layers_changed_upstream()
+        commit(self.a, "other.txt", "o1\n")
+        sync.ship(self.a, gate=self.gate)
+        (self.b / "other.txt").write_text("mine\n", newline="\n")
+        (self.b / sync.LAYERS_REL).write_bytes(b"L0\r\nlocal\r\n")
+        with self.assertRaises(sync.SyncError):
+            sync.merge_trunk(self.b)
+        self.assertEqual((self.b / "other.txt").read_text(), "mine\n")
+
     def test_start_keeps_a_tree_whose_only_dirt_is_the_pulled_mirror(self):
         self.track_mirror()
         sh(self.b, "pull", "-q", "origin", "fast-track")

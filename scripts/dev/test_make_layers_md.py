@@ -54,6 +54,11 @@ class RenderTest(unittest.TestCase):
     def tearDown(self):
         self.d.cleanup()
 
+    def test_write_emits_lf_only_bytes(self):
+        """LAYERS.md is committed LF and compared by bytes: a CRLF write (Windows text mode) leaves every tree dirty."""
+        M.write(self.root)
+        self.assertEqual((self.root / M.SYS / "LAYERS.md").read_bytes().count(b"\r"), 0)
+
     def section(self, text, fid):
         return text.split(f"(`{fid}`)")[1].split("\n## ")[0]
 

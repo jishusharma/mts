@@ -184,6 +184,11 @@ def merge_trunk(repo):
             git(repo, "checkout", "--", "runtime_data/_mirror", check=False)
             git(repo, "clean", "-fdq", "--", "runtime_data/_mirror", check=False)
             r = git(repo, "merge", "--no-edit", f"origin/{TRUNK}", check=False)
+        if r.returncode != 0 and not git(repo, "diff", "--name-only", "--diff-filter=U").stdout.split() and LAYERS_REL in r.stdout + r.stderr                 and git(repo, "status", "--porcelain", "--untracked-files=no").stdout.split()[1::2] == [LAYERS_REL]:
+            # LAYERS.md is generated (make_layers_md): a stale or CRLF local copy that origin also changed blocks git 2.24's merge. When it is
+            # the only dirty tracked file, drop the copy and retry; stage_layers regenerates it at ship. Any other dirty file still stops.
+            git(repo, "checkout", "--", LAYERS_REL, check=False)
+            r = git(repo, "merge", "--no-edit", f"origin/{TRUNK}", check=False)
         if r.returncode != 0:
             bad = git(repo, "diff", "--name-only", "--diff-filter=U").stdout.split()
             if not bad or any(f not in TAKE_ORIGIN for f in bad):
