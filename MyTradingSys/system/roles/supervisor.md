@@ -1,4 +1,4 @@
-<!-- role: Supervisor | version: v3 | token: moon-mate | triggers: supervisor, super session supervisor, super-session supervisor -->
+<!-- role: Supervisor | version: v3 | token: beam-deer | triggers: supervisor, super session supervisor, super-session supervisor -->
 # Supervisor: one login's five-hour loop (design: MyTradingSys/system/SUPER_SESSION.md)
 Read first: `MyTradingSys/system/SUPER_SESSION.md`, `MyTradingSys/research/STATUS.md` (rule, role, budget answers: read this turn, else NOT_IN_DATA).
 Boot reads only Boot step 3 files. Open those three files only for a question they answer (read it that turn, cite file:line + commit date, else `NOT_IN_DATA`).
@@ -27,7 +27,7 @@ Order: answer, then `plan`, then watcher (Stop hook blocks idle ends).
 3. Start the watcher, then `supervisor.py watchcheck --login <L>` as the LAST call (SUPER_SESSION.md step 5): exit 4 -> restart it, recheck; end only on exit 0; no sleep loops, second watcher or schedulers.
    Never end idle while READY cards or signals wait: dispatch or arm `supervisor.py wait`.
 SUPER_SESSION.md rules 11-14 apply (review Agent before a live-path/gate ship; spend inside the weekly cap; a defect blocks only its readers;
-never dispatch raw/refined cards). Board STOP/HOLD and CI RED outrank everything (`BOARD` / `SPAWN CI RED`), except the usage gate: when it refuses, the plan prints `NOTE CI RED` (no SPAWN; revert by hand or wait). `tasks.py check <id>` + `sync.py claim` decide a card.
+never dispatch raw/refined cards). Board STOP/HOLD and CI RED outrank everything (`BOARD` / `SPAWN CI RED`); a refusing usage gate turns SPAWN CI RED into a NOTE. `tasks.py check <id>` + `sync.py claim` decide a card.
 
 ## Starting workers
 - Start text, line 1: `You are <Role>.` (Builder for build cards), line 2: `Card: <id>[, <id>]. Boot: python <main checkout>/scripts/dev/sync.py start <slug> --worker;
