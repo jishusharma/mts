@@ -183,4 +183,5 @@ MyTradingSys/research/tsfm_2026-11/test_tsfm.py
 scripts/dev/test_role_hook_launcher.py
 scripts/dev/test_aibridge_health.py
 scripts/dev/test_role_line.py
+scripts/dev/test_fetch_captions_timed.py
 MyTradingSys/research/sim_desk/test_desk.py
