@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Out of repo: AIBridge lives at F:/AIBridge (AIBRIDGE_LANE.md:34, B176). Live install change waits for the operator; not ready from the MTS repo.",
+  "note": "Out of repo: AIBridge lives at F:/AIBridge (AIBRIDGE_LANE.md:34, B176). Live install change waits for the operator; not ready from the MTS repo. | PLANNER 2026-11-02 planner-b-1102: superseded by ready CODEX card aibridge-sandbox-chat-run-acl-proof (sandbox-first; live apply stays the operator's call).",
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "",
@@ -29,7 +29,7 @@
   ],
   "size": "M",
   "sources": [],
-  "state": "raw",
+  "state": "dropped",
   "steps": [
     "copy F:/AIBridge to a sandbox dir; reproduce the write and read from a chat-run",
     "apply ACL or restricted-account rule in the sandbox; re-run both probes"

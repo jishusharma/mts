@@ -1,0 +1,59 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-02T16:20:03Z",
+  "depends_on": [],
+  "done_when": "test_merge_trunk_restores_dirty_layers_md in scripts/dev/test_sync.py passes (temp repos: origin changes LAYERS.md, local copy dirty -> merge succeeds, count returned) and failed on the old code; a dirty non-generated file still stops the merge.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "On git 2.24 (NUC) a local regenerated LAYERS.md (CRLF or stale) makes merge_trunk fail with 'local changes would be overwritten'. LAYERS.md is generated: when it is the only blocking file, restore it from HEAD, retry the merge, and let stage_layers regenerate it at ship.",
+  "id": "sync-merge-trunk-dirty-layers-md",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sync: new_worktree reuses unfinished same-slug worktree instead of -2",
+      "ref": "c9fdb22a3e18",
+      "utc": "2026-11-01T22:27:32Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "PLANNER 2026-11-02 planner-b-1102: split from nuc-git-too-old-for-cs-build-catalogue-w. REVIEWED:2026-11-02 T0-ONLY Final report ends with a Noticed: line.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-02T16:20:04Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/sync.py",
+    "scripts/dev/test_sync.py"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no catalogue rebuild or backfill run on a NUC (git 2.24)",
+    "any other file than LAYERS_REL being auto-restored",
+    "scripts/aibridge"
+  ],
+  "scope_sha": "c9fdb22a3e18",
+  "size": "S",
+  "sources": [
+    "scripts/dev/sync.py:173",
+    "scripts/dev/sync.py:1153"
+  ],
+  "state": "ready",
+  "steps": [
+    "in merge_trunk after the first failed merge: if stderr names only LAYERS_REL as overwritten, git checkout -- LAYERS_REL and retry once, like the runtime_data/_mirror branch above it",
+    "add test_merge_trunk_restores_dirty_layers_md and test_merge_trunk_keeps_other_dirty_file_blocking beside the stage_layers tests (test_sync.py:1906)",
+    "run the new test on the old code first to see it fail"
+  ],
+  "tests": "python -m pytest scripts/dev/test_sync.py -q -k merge_trunk --basetemp=F:/MTS/_pt_b (fail-first: test_merge_trunk_restores_dirty_layers_md)",
+  "title": "sync.py merge_trunk: a dirty generated LAYERS.md must not abort the merge of origin/fast-track",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
