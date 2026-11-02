@@ -16,3 +16,14 @@ Audit is agent-side only: extension-side failures (focus, dropped reply, stale e
 Also: `aibridge_install.py` has no argparse, `--help` ran an install (fix in ship 1).
 
 Not opened (and why): live self-edit of the running agent, `.secrets`/`.env`/keys, HALT, live tree, Stop-Process/taskkill outside DSA's own children, mainnet, paths outside roots, nested/hidden shells. The page is third-party; anything on it reaches this machine.
+
+## Added after reproduction (0.7.12 to 0.7.16)
+| # | Cause | Status | Fix / evidence |
+|---|---|---|---|
+| 8 | **A short final answer ended the chain.** `ANSWER_MIN_CHARS` was 10: DSA answering "Done." or "ok" (the notice itself says "reply ok") read as a dropped generation: notice, then stop banner, hands-free OFF. Hits the end of any chain with a terse last line. | **R** (fake-chat run) | Threshold 2; `test_short_final_answer_is_an_answer_not_a_dropped_generation` fails with 10, passes with 2. |
+| 9 | **`git branch -d` was click-gated by a case-insensitive regex meant for `-D`** (4 of the 7 recent clicks). `git checkout --` in DSA's own `mts-dsa-<chat>` worktree is its own scratch (2 of 7). | **R** | `(?-i:branch -D)`; own-worktree exemption (no cd out, no `..`). 5 other clicks (recursive deletes of other sessions' worktrees) stay clicks. |
+| 1b | Version drift now detected: extension compares disk manifest and agent `/ping` every 60 s; panel outline red; `[AIRUN WARNING]` line in every receipt; stale extension reloads itself when idle; an orphaned page reloads itself (idle, max once per 10 min). | fake-chat tests V1/V2 | 0.7.14+; the real-page click-free update is unproven until it runs on the NUC. |
+| 3b | Long chain on the fake chat, tab simulated hidden: 54 blocks in 10 replies, b17 exit 1, b33 timeout, one dropped reply: 54 of 54 ran exactly once, notice posted at 46 s, no stop banner. E5 (stop on non-zero) did not break the chain: unrun blocks were reported (`blocks_run=4 not_run=2`) and re-sent. | **R** (fake page only) | `test_aibridge_chain.py`. The real chat.deepseek.com run is still to do. |
+
+Opened: `git branch -d`; `git checkout --` in own worktree; DSA may edit and test a copy of `scripts/aibridge` in its own worktree (prompt change), never `F:\AIBridge`.
+Not opened: recursive deletes (all 5 recent were other sessions' worktrees, with variable paths), `F:\AIBridge` as cwd, live self-edit, kills, secrets, live tree.

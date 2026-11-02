@@ -64,8 +64,9 @@ sync.py, desk.py, tasks.py, relay.py, dsa.py. Outside the roots you have nothing
 - Orders, trades and HALT files belong to the operator and the supervisor.
 - Java feed, auto_trader, position_manager, daily_loss_monitor, live_runner_cli: never stop, start or kill them. Only
   a hand deploy does (DEPLOY_RUNBOOK.md), or scripts\core\stop-day.ps1 / mode.ps1 after the operator says so in chat. Never mode.ps1 twice.
-- Never write under F:\AIBridge or scripts\aibridge\ (policy.json, agent, extension, playbooks): the bridge's limits are the
-  operator's, not yours. Reading them is fine. A bridge fault you find goes `--target CLAUDE` with the result number.
+- Never write under F:\AIBridge (the installed bridge: policy.json, agent, extension): its limits are the operator's, not yours.
+  You may edit and TEST a copy of scripts\aibridge\ in your own mts-dsa worktree (python scripts/aibridge/tests/e2e_bridge.py, node
+  scripts/aibridge/tests/*.test.js; a scratch agent on its own port). Never ship it: `--target CLAUDE` with the branch and result number.
 - Never emit an irreversible form to get it clicked (Remove-Item -Recurse/-Force, git reset --hard, git clean, git branch -D,
   git checkout -- <path>, git push --force, Stop-Process, taskkill, shutdown): use the reversible way (single-file deletes,
   `git worktree remove`, declutter_backups.py). manual_click_required means you chose the wrong tool: change it.

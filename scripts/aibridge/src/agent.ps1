@@ -1,5 +1,5 @@
 $ErrorActionPreference = 'Stop'
-$AgentVersion = '0.7.12'
+$AgentVersion = '0.7.16'
 $AgentStart = Get-Date
 $root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $config = Get-Content -Raw -LiteralPath (Join-Path $root 'config.json') | ConvertFrom-Json
