@@ -4,6 +4,13 @@
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/layer_lab/reports/layer_review_rsi_cc_pitchfork_engine.md"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-02T16:02:01Z",
+    "misses": 13,
+    "reads": [],
+    "session": "agent-ac5b4956167284784"
+  },
   "created": "2026-11-02T13:42:35Z",
   "depends_on": [],
   "done_when": "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/layer_lab/reports/layer_review_rsi_cc_pitchfork_engine.md prints PASS: 0 problem(s) and exits 0; git diff touches only that sheet.",
