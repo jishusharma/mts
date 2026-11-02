@@ -1,4 +1,4 @@
-# SOURCED: 11, OURS: 51
+# SOURCED: 1, FACT: 10, OURS: 51 (reviewed; many rows are unit constants, not parameters)
 
 # Parameter Labels Audit: eagle_eyes_picture preus_pullback.py and c30_validation.py
 
@@ -12,7 +12,8 @@ Every parameter is verified against cited trader literature / statutory specific
 
 - **Total Scripts Audited**: 2
 - **Total Parameters Audited**: 62
-- **SOURCED Parameters**: 11
+- **SOURCED Parameters**: 1 (WT_OS_THR, which PRE_REG_C30.md:25 itself calls a "SOURCED band")
+- **FACT Parameters** (textbook or exchange facts, not the trader): 10
 - **OURS Parameters**: 51
 
 ---
@@ -46,10 +47,10 @@ Every parameter is verified against cited trader literature / statutory specific
 | :--- | :--- | :--- | :--- | :--- |
 | `MS_PER_SEC` | `c30_validation.py:9,102` | `1000` | `OURS` | Milliseconds per second conversion divisor/multiplier; engineering time scale |
 | `WARM` | `c30_validation.py:10` | `MS(2024, 4, 1)` | `OURS` | Indicator warm-up window start date (3 months prior to VALIDATION); `PRE_REG_C30.md:36` ("with warm-up bars taken from before 2024-07-01"), `c30_validation.py:3` |
-| `START` | `c30_validation.py:10` | `MS(2024, 7, 1)` | `SOURCED` | Pre-registered VALIDATION split start date; `backtest/splits.py:35` (`VALIDATION_START = DEV_END = 2024-07-01`), `OPERATOR_DECISIONS.md:899`, `PRE_REG_C30.md:35` |
-| `END` | `c30_validation.py:10` | `MS(2025, 7, 1)` | `SOURCED` | Pre-registered VALIDATION split exclusive end date / HOLDOUT start boundary; `backtest/splits.py:36-37` (`VALIDATION_END = HOLDOUT_START = 2025-07-01`), `OPERATOR_DECISIONS.md:899`, `PRE_REG_C30.md:35` |
+| `START` | `c30_validation.py:10` | `MS(2024, 7, 1)` | `FACT` | Pre-registered VALIDATION split start date; `backtest/splits.py:35` (`VALIDATION_START = DEV_END = 2024-07-01`), `OPERATOR_DECISIONS.md:899`, `PRE_REG_C30.md:35` |
+| `END` | `c30_validation.py:10` | `MS(2025, 7, 1)` | `FACT` | Pre-registered VALIDATION split exclusive end date / HOLDOUT start boundary; `backtest/splits.py:36-37` (`VALIDATION_END = HOLDOUT_START = 2025-07-01`), `OPERATOR_DECISIONS.md:899`, `PRE_REG_C30.md:35` |
 | `MID` | `c30_validation.py:10` | `MS(2025, 1, 1)` | `OURS` | Sub-period midpoint dividing VALIDATION window into two equal 6-month halves; `PRE_REG_C30.md:38` |
-| `PAGE_LIMIT` | `c30_validation.py:19` | `1000` | `SOURCED` | Binance Public Spot REST API klines endpoint maximum limit per call; Binance Spot API Documentation (`https://binance-docs.github.io/apidocs/spot/en/#kline-candlestick-data`: "Default 500; max 1000.") |
+| `PAGE_LIMIT` | `c30_validation.py:19` | `1000` | `FACT` | Binance Public Spot REST API klines endpoint maximum limit per call; Binance Spot API Documentation (`https://binance-docs.github.io/apidocs/spot/en/#kline-candlestick-data`: "Default 500; max 1000.") |
 | `PAGE_STEP_MS` | `c30_validation.py:19,25` | `1` | `OURS` | Millisecond timestamp pagination adjustment (+1 ms step); internal data fetch pagination logic |
 | `HTTP_TIMEOUT` | `c30_validation.py:20` | `30` | `OURS` | HTTP socket request timeout in seconds; network engineering parameter |
 | `STUB_OHLC` | `c30_validation.py:33` | `1.0` | `OURS` | Synthetic 1-bar price stub placeholder to satisfy module import cache checks; test fixture parameter |
@@ -62,11 +63,11 @@ Every parameter is verified against cited trader literature / statutory specific
 | `EXIT_RULE_IDX` | `c30_validation.py:49,94` | `0` | `OURS` | Exit rule index 0 selecting Exit X1 (centre cross wt1 > 0); `PRE_REG_C30.md:15,30` ("Exit X1 centre cross: first bar k > i with wt1[k] > 0, filled at open of k+1; cap 60 bars") |
 | `MIN_SAMPLE_STAT` | `c30_validation.py:54,115` | `2` | `OURS` | Minimum sample size required for sample standard deviation degrees of freedom (df = n - 1 >= 1); statistical implementation floor |
 | `SE_SQRT_POW` | `c30_validation.py:57` | `0.5` | `OURS` | Square root exponent (n^0.5) for standard error of sample mean SE = SD / sqrt(n); numerical implementation parameter |
-| `HILL_DIV_4` | `c30_validation.py:59` | `4` | `SOURCED` | Cornish-Fisher expansion first-order correction divisor (4 * df); G. W. Hill (1970), "Algorithm 395: Student's t-distribution", CACM 13(10):617-619 |
-| `HILL_DIV_2` | `c30_validation.py:59` | `2` | `SOURCED` | Cornish-Fisher expansion second-order correction divisor (2 * df); G. W. Hill (1970), "Algorithm 395: Student's t-distribution", CACM 13(10):617-619 |
+| `HILL_DIV_4` | `c30_validation.py:59` | `4` | `FACT` | Cornish-Fisher expansion first-order correction divisor (4 * df); G. W. Hill (1970), "Algorithm 395: Student's t-distribution", CACM 13(10):617-619 |
+| `HILL_DIV_2` | `c30_validation.py:59` | `2` | `FACT` | Cornish-Fisher expansion second-order correction divisor (2 * df); G. W. Hill (1970), "Algorithm 395: Student's t-distribution", CACM 13(10):617-619 |
 | `ERFC_SCALE` | `c30_validation.py:59` | `0.5` | `OURS` | Scale factor converting complementary error function to standard normal tail probability P(Z > z) = 0.5 * erfc(z / sqrt(2)); numerical implementation factor |
 | `ERFC_SQRT2` | `c30_validation.py:59` | `2` | `OURS` | Square root argument sqrt(2) scaling complementary error function; numerical implementation constant |
-| `CI_Z_95` | `c30_validation.py:61` | `1.96` | `SOURCED` | Two-sided 95% standard normal critical value z_0.025 = 1.95996; `PRE_REG_C30.md:38` ("95 % CI (normal, mean +/- 1.96 SE)") |
+| `CI_Z_95` | `c30_validation.py:61` | `1.96` | `FACT` | Two-sided 95% standard normal critical value z_0.025 = 1.95996; `PRE_REG_C30.md:38` ("95 % CI (normal, mean +/- 1.96 SE)") |
 | `STAT_PCT_SCALE` | `c30_validation.py:61,82` | `100` | `OURS` | Percentage conversion multiplier (100%); numerical display factor |
 | `BAR_5M_MS` | `c30_validation.py:68` | `300000` | `OURS` | 5-minute bar duration in milliseconds (5 * 60 * 1000 ms); base bar sampling duration |
 | `SPAN_FENCEPOST` | `c30_validation.py:68` | `1` | `OURS` | Fencepost adjustment (+1) for discrete interval bar count; numerical counting offset |
@@ -77,7 +78,7 @@ Every parameter is verified against cited trader literature / statutory specific
 | `BAR_1M_MS` | `c30_validation.py:73` | `60000` | `OURS` | 1-minute bar duration in milliseconds (60 * 1000 ms); time unit conversion factor |
 | `TOL_PREFIX_RSI` | `c30_validation.py:75` | `1e-9` | `OURS` | Floating-point parity tolerance for prefix RSI equivalence; `FORMULAS.md` s20.4 |
 | `BULL_DIV_SIDE` | `c30_validation.py:75,94` | `1` | `OURS` | Directional side indicator for bullish divergence / long trades (+1); `wt_rsi_div.py:31` |
-| `FEE_ROUNDTRIP` | `c30_validation.py:82` | `WD.FEE (0.10%)` | `SOURCED` | Binance VIP0 spot taker fee schedule: 0.05% per leg, 2 x 0.05% = 0.10% round trip; `fees.py:36`, `PRE_REG_C30.md:32`, `wt_rsi_div.py:15` |
+| `FEE_ROUNDTRIP` | `c30_validation.py:82` | `WD.FEE (0.10%)` | `FACT` | Binance VIP0 spot taker fee schedule: 0.05% per leg, 2 x 0.05% = 0.10% round trip; `fees.py:36`, `PRE_REG_C30.md:32`, `wt_rsi_div.py:15` |
 | `TOL_FEE_IDENTITY` | `c30_validation.py:83` | `1e-6` | `OURS` | Numerical precision tolerance for P6 fee identity verification; `bt_preflight.py:10` |
 | `P7_MAX_OVERLAP` | `c30_validation.py:85` | `0` | `OURS` | Maximum allowed concurrent overlapping trades for P7 preflight check; `PRE_REG_C30.md:31` ("One trade at a time: a new signal is ignored while a trade is open") |
 | `P8_DRAWS` | `c30_validation.py:89` | `30` | `OURS` | Number of random entry draws for P8 baseline significance test; `PRE_REG_C30.md:37`, `C30_VALIDATION.md:12` |
@@ -85,8 +86,15 @@ Every parameter is verified against cited trader literature / statutory specific
 | `P8_WARMUP_SKIP` | `c30_validation.py:91` | `100` | `OURS` | Warmup bars skipped before sampling random entry candidates in P8 test |
 | `P8_SEED` | `c30_validation.py:92` | `11` | `OURS` | Deterministic pseudo-random seed for P8 Monte Carlo draws; `c30_validation.py:92` |
 | `P8_MIN_SAMPLE` | `c30_validation.py:103` | `5` | `OURS` | Minimum trade sample count required to execute P8 random entry baseline test; `bt_preflight.py:7` |
-| `HOLM_FAMILY_M` | `c30_validation.py:112` | `2` | `SOURCED` | Multiple hypothesis testing family size (m = 2 for H1 and H2); Sture Holm (1979), Scandinavian Journal of Statistics, 6(2):65-70; `PRE_REG_C30.md:39` ("Holm-adjusted (m = 2)") |
-| `PROB_CAP` | `c30_validation.py:112` | `1.0` | `SOURCED` | Probability axiom upper bound P(E) <= 1.0 for Holm p-value adjustment |
+| `HOLM_FAMILY_M` | `c30_validation.py:112` | `2` | `FACT` | Multiple hypothesis testing family size (m = 2 for H1 and H2); Sture Holm (1979), Scandinavian Journal of Statistics, 6(2):65-70; `PRE_REG_C30.md:39` ("Holm-adjusted (m = 2)") |
+| `PROB_CAP` | `c30_validation.py:112` | `1.0` | `FACT` | Probability axiom upper bound P(E) <= 1.0 for Holm p-value adjustment |
 | `VERDICT_FAIL_MEAN` | `c30_validation.py:115` | `0` | `OURS` | Fee-net return threshold for automatic FAIL verdict (mean <= 0); `PRE_REG_C30.md:40` ("FAIL: mean <= 0") |
 | `VERDICT_PASS_N` | `c30_validation.py:115` | `15` | `OURS` | Minimum sample size required for PASS verdict gate (n >= 15); `PRE_REG_C30.md:39` ("PASS (per hypothesis): n >= 15") |
-| `VERDICT_PASS_ALPHA` | `c30_validation.py:115` | `0.05` | `SOURCED` | Statistical significance threshold (alpha = 0.05) after Holm adjustment; Neyman-Pearson hypothesis testing standard; `PRE_REG_C30.md:39` ("Holm-adjusted (m = 2) one-sided p < 0.05") |
+| `VERDICT_PASS_ALPHA` | `c30_validation.py:115` | `0.05` | `FACT` | Statistical significance threshold (alpha = 0.05) after Holm adjustment; Neyman-Pearson hypothesis testing standard; `PRE_REG_C30.md:39` ("Holm-adjusted (m = 2) one-sided p < 0.05") |
+
+
+## Claude review note (Lead, 2026-11-02)
+
+- Spot-checked values and line cites in preus_pullback.py:1-3,14-16,23-25,31 and c30_validation.py:10,19,47-49,59,71-72,92,103,112 against the files: they match.
+- 10 rows labelled SOURCED were relabelled FACT: Hill 1970, Holm 1979, z=1.96, alpha 0.05, API page limit, exchange fee and the split dates are literature, exchange or repo facts, not the trader's words (MOVED_RULES.md).
+- Not checked: citations into bt_preflight.py, fees.py, splits.py and OPERATOR_DECISIONS.md:899. The count of 62 includes unit constants (1000, 86400, 100), so it is not a count of tunable parameters.
