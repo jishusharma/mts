@@ -1,0 +1,81 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/backtest/layers/fabio/run_backtest.py"
+  ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-02T11:45:39Z",
+    "misses": 24,
+    "reads": [
+      "scripts/dev/test_ci_watch.py",
+      "scripts/dev/ci_watch.py",
+      "MyTradingSys/research/layer_lab/reports/layer_review_positioning_volume_callers.md",
+      "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/volume_candles_ma.md",
+      "MyTradingSys/system/layer_index.json",
+      "MyTradingSys/system/LAYERS.md",
+      "scripts/dev/verify_extract_quotes.py",
+      "MyTradingSys/backtest/layers/fabio/FABIO_L1_REPORT.md"
+    ],
+    "session": "agent-aeb46f206e684d902"
+  },
+  "created": "2026-11-02T11:09:15Z",
+  "depends_on": [],
+  "done_when": "Rerun result cited in FABIO_L1_REPORT.md with the file path; exports sim_desk/results/fabio-l1-strict-rerun.json",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Rerun the FABIO_L1 tables on the strict detectors of commit 2afc18be6 (1h escalation events 652 -> 8) so the report reflects current code",
+  "id": "fabio-l1-has-no-run-on-the-strict-detect",
+  "kind": "run",
+  "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "fabio detectors: cvd_absorption same-level band, escalation requires a close beyond the le",
+      "ref": "2afc18be6ef9",
+      "utc": "2026-11-01T17:25:04Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "efa186306296 Fabio L1 backtest: run_backtest.py + FABIO_L1_REPORT.md",
+      "ref": "MyTradingSys/backtest/layers/fabio/FABIO_L1_REPORT.md",
+      "utc": "2026-09-28T23:08:17Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "DECISION (OURS): data on F: so lane JIS-NB; entry command to be confirmed against run_backtest.py --help by the runner.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-02T11:45:29Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/fabio/FABIO_L1_REPORT.md",
+    "MyTradingSys/backtest/layers/fabio/run_backtest.py"
+  ],
+  "scope_out": [
+    "detector code, live tree"
+  ],
+  "scope_sha": "2afc18be6ef9",
+  "size": "M",
+  "sources": [
+    "commit 2afc18be6"
+  ],
+  "state": "ready",
+  "steps": [
+    "Post a desk task (desk.py post --target DSA-NB) to rerun L1 tables on current trunk",
+    "Cite the result file in FABIO_L1_REPORT.md"
+  ],
+  "tests": "",
+  "title": "FABIO_L1 has no run on the strict detectors of 2afc18be6 (1h escalation events 652 -> 8); done-when: L1 tables rerun on current detectors, result file cited",
+  "weight": "",
+  "worker": ""
+}
