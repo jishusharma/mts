@@ -34,6 +34,7 @@ setTimeout(window.finish, 60000);
     r = run_page(js, 70000)
     assert "Write-Output late-body" in _runs(r), (_runs(r), [p["text"][:80] for p in r["posted"]])
     assert not any("no command after" in p["text"] for p in r["posted"]), [p["text"][:120] for p in r["posted"]]
+    assert any("block body not rendered yet" in c["event"] for c in r["calls"] if c.get("event")), "bodyless wait must reach the audit log"
 
 
 @needs_browser
@@ -67,6 +68,7 @@ setTimeout(window.finish, 480000);
     assert any("[AIRUN RESULT #1]" in p["text"] for p in r["posted"]), (r["banner"], r["status"], [p["text"][:60] for p in r["posted"]])
     events = [c for c in r["calls"] if c.get("event")]
     assert any("not posted" in c["event"] for c in events), events
+    assert any("retry 1/4" in c["event"] and "#1" in c["event"] for c in events), events
 
 
 @needs_browser
@@ -79,3 +81,23 @@ setTimeout(window.finish, 150000);
     assert r["banner"], "scenario must end in the dropped-generation stop"
     events = [c for c in r["calls"] if c.get("event")]
     assert any("auto OFF" in c["event"] and "never answered" in c["event"] for c in events), events
+
+
+@pytest.mark.skipif(not __import__("shutil").which("powershell.exe"), reason="needs Windows PowerShell")
+def test_e_agent_writes_an_ext_event_row_and_runs_nothing():
+    """The agent side of d): an `event` request is one audit row tagged EXT-EVENT (result event), never a command run."""
+    import json
+    import os
+    from aibridge_scratch import Scratch
+    s = Scratch()
+    try:
+        audit = os.path.join(s.sdir, "audit.jsonl")
+        marker = os.path.join(s.work, "must_not_exist.txt")
+        st, b = s.http("POST", "/run", {"token": s.token, "event": "auto OFF: test reason\nsecond line", "cmd": "New-Item -ItemType File '%s'" % marker})
+        assert st == 200 and b.get("event") is True, (st, b)
+        rows = [json.loads(l.split("\t", 1)[1]) for l in open(audit, encoding="utf-8") if "\t" in l]
+        ev = [r for r in rows if r.get("result") == "event"]
+        assert ev and ev[-1]["cmd"].startswith("EXT-EVENT auto OFF: test reason") and "\n" not in ev[-1]["cmd"], rows[-3:]
+        assert not os.path.exists(marker)
+    finally:
+        s.close()
