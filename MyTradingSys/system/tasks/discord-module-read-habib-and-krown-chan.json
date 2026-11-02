@@ -2,6 +2,17 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-02T16:53:44Z",
+    "misses": 8,
+    "reads": [
+      "scripts/dev/usage_log.py",
+      "scripts/dev/supervisor.py",
+      "MyTradingSys/system/roles/builder.md"
+    ],
+    "session": "agent-ac3dbe038bc822e4e"
+  },
   "created": "2026-10-28T12:29:37Z",
   "depends_on": [],
   "done_when": "discord_rows.py plus tests/test_discord_rows.py exist; the research/qriptal_2026-10-10/discord_rows.json fixture loads to valid CBP rows (validate_row ok), IST->UTC correct on 3 samples, query(channel=) returns them; test_cbp_query.py still green; shipped with a Result: line.",
