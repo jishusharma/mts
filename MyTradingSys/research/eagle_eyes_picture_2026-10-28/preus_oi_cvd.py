@@ -28,19 +28,21 @@ ts=sorted(b5); idx={t:i for i,t in enumerate(ts)}
 ev=[]
 for i in range(12,len(ts)-12):
     t=ts[i]
-    if ts[i-12]!=t-3600 or ts[i+12]!=t+3600 or t not in oi or t-900 not in oi: continue
+    if ts[i-12]!=t-3600 or t not in oi or t-900 not in oi: continue
+    fwd=[t+300*j for j in range(1,13)]  # outcome window, by time, evaluated only after the condition is fixed
+    if any(x not in b5 for x in fwd): continue
     c=b5[t]['c']; imp=c/b5[ts[i-9]]['c']-1; flat=c/b5[ts[i-3]]['c']-1
     if imp<0.0025 or not(-0.0015<=flat<=0.0005): continue
     doi=oi[t]-oi[t-900]; cvd=sum(b5[ts[j]]['cvd'] for j in range(i-2,i+1))
     H=max(b5[ts[j]]['h'] for j in range(i-11,i+1)); L=min(b5[ts[j]]['l'] for j in range(i-11,i+1))
     first=None;mx=mn=0
-    for j in range(i+1,i+13):
-        x=b5[ts[j]]; mx=max(mx,x['h']/c-1); mn=min(mn,x['l']/c-1)
+    for tf_ in fwd:
+        x=b5[tf_]; mx=max(mx,x['h']/c-1); mn=min(mn,x['l']/c-1)
         if first is None:
             if x['h']>H: first='H'
             elif x['l']<L: first='L'
     hr=(t%86400)/3600
-    ev.append(dict(t=t,hr=hr,oi_up=doi>0,cvd_dn=cvd<0,first=first,ret=b5[ts[i+12]]['c']/c-1,mx=mx,mn=mn))
+    ev.append(dict(t=t,hr=hr,oi_up=doi>0,cvd_dn=cvd<0,first=first,ret=b5[fwd[-1]]['c']/c-1,mx=mx,mn=mn))
 def rep(name,xs):
     n=len(xs)
     if n<5: print('%-40s n=%d'%(name,n));return
