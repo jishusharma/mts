@@ -84,6 +84,7 @@ SERIAL_STEPS = ("3ly", "3af", "3x", "3ms", "3mg", "5")
 PYTEST_SHARD_NUMS = ("4", "4b", "4c", "4g", "4h")
 TEST_FILE_DEFAULT_S = 2
 TEST_FILE_SECONDS = {
+    "test_aibridge_chain.py": 140,                   # measured alone 137 s (headless Chrome, 54 blocks): isolates it on a shard
     "test_aibridge_payload.py": 45,                  # 95 split 2026-10-24 (quiet: 19 s + 23 s): one selftest here,
     "test_aibridge_selftest_concurrent.py": 50,      # the concurrent pair there, so two shards share it
     "test_b091_build_check_tiers.py": 60,
