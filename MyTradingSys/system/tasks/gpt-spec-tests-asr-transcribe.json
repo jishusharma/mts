@@ -17,9 +17,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "merge fast-track into codex lab: keep both new test lines",
-      "ref": "91be37ef06db",
-      "utc": "2026-11-02T16:25:02Z"
+      "line": "test CBP scorecard recount contract",
+      "ref": "6267cc8d21b2",
+      "utc": "2026-11-02T16:44:15Z"
     }
   ],
   "layers": [],
@@ -28,7 +28,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T16:47:10Z",
+  "refreshed": "2026-11-02T16:51:57Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -40,7 +40,7 @@
     "any live path",
     "editing the audited source file"
   ],
-  "scope_sha": "91be37ef06db",
+  "scope_sha": "6267cc8d21b2",
   "size": "S",
   "sources": [
     "scripts/dev/asr_transcribe.py"
