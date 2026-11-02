@@ -48,7 +48,7 @@ setTimeout(function () { window.extra = { allDone: !!window.allDone, replies: re
 
 @needs_browser
 def test_long_unattended_chain_hidden_tab_with_failure_timeout_and_dropped_reply():
-    r = run_page(JS, 950000, timeout=240)
+    r = run_page(JS, 950000, timeout=480)   # OURS: 3.5x the 137 s quiet run
     runs = [c["cmd"] for c in r["calls"] if c["type"] == "airun" and not c.get("dry")]
     counts = {}
     for c in runs:

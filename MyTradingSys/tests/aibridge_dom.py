@@ -127,6 +127,13 @@ def run_page(scenario_js, budget_ms=60000, timeout=120):
     br = find_browser()
     if not br:
         raise RuntimeError("no Edge/Chrome")
+    try:   # DECISION (OURS): a loaded gate machine scales every headless-Chrome cap; bad value -> 1.0
+        scale = float(os.environ.get("MTS_BROWSER_TIMEOUT_SCALE", "1.0"))
+        if not scale > 0:
+            scale = 1.0
+    except ValueError:
+        scale = 1.0
+    timeout = int(timeout * scale)
     d = tempfile.mkdtemp(prefix="aib_dom_")
     prof = tempfile.mkdtemp(prefix="aib_prof_")
     try:
