@@ -1,37 +1,72 @@
 {
   "approved_by": "",
-  "asks": "Which holds: plan SPAWN CI RED worker or usage gate refuses spawn at 5h 47% vs elapsed 18%+10; CI fix handed to login A?",
-  "commands": [],
+  "asks": "",
+  "commands": [
+    "python -m pytest scripts/dev/test_supervisor.py -q"
+  ],
   "created": "2026-11-02T11:43:28Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "New test in scripts/dev/test_supervisor.py: CI red plus usage refusing gives no SPAWN CI RED worker line; it fails on the pre-change supervisor.py (line 1036 emits it unconditionally) and passes after; python -m pytest scripts/dev/test_supervisor.py -q exits 0",
+  "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Two instructions contradict: A = plan SPAWN CI RED worker | B = usage gate refuses spawn at 5h 47% vs elapsed 18%+10; CI fix handed to login A. The operator decides which holds; then fix the loser's text.",
+  "goal": "Resolve the conflict: the usage gate holds (a Gate outranks the CI-RED spawn order, CLAUDE.md precedence). The plan emits SPAWN CI RED worker only when the usage gate allows a spawn; otherwise CI fix waits and is NOT handed to login A. Default logged DECISION (OURS) 2026-11-02, no operator wait.",
   "id": "bug-conflict-05db6e7b6b",
   "lane": "SONNET",
   "last_seen": "2026-11-02T11:43:28Z",
   "last_session": "67a31d0d-8a6d-4153-843d-5438e66228f3",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "AIBridge 0.7.12: probe noise (empty connect no longer audited), installer argparse, ROOT_C",
+      "ref": "690ea1d83938",
+      "utc": "2026-11-02T11:43:37Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "8a53fa71f6cd supervisor.md: retoken after STALLED-BG rule",
+      "ref": "MyTradingSys/system/roles/supervisor.md",
+      "utc": "2026-10-31T19:39:50Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "DECISION (OURS) planner-a4-1102 2026-11-02: usage gate wins over CI-RED spawn; class=C0 weight routine; planner T0-ONLY, Lab_Guy may raise class.  Question closed by default: was Which holds (plan SPAWN CI RED vs usage gate 5h 47%); gate holds. Operator may overrule later via Inbox.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-02T16:05:23Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
+  "scope_in": [
+    "scripts/dev/supervisor.py (plan SPAWN CI RED line near 1036; usage numbers near 853-900)",
+    "scripts/dev/test_supervisor.py",
+    "MyTradingSys/system/roles/supervisor.md (line 30 wording)"
+  ],
+  "scope_out": [
+    "usage gate thresholds (scripts/dev/usage_reminder.py, OURS)",
+    "handing the CI fix to login A (no spawn while gate refuses)"
+  ],
+  "scope_sha": "690ea1d83938",
   "seen": 1,
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "size": "S",
+  "sources": [
+    "scripts/dev/supervisor.py:1036",
+    "MyTradingSys/system/roles/supervisor.md:30"
+  ],
+  "state": "ready",
+  "steps": [
+    "read supervisor.py plan around 1000-1040 and the 5h/week refusal path",
+    "write the failing test first and run it against the pre-change code",
+    "gate the SPAWN CI RED line on the usage gate; update roles/supervisor.md line 30 to match",
+    "run python -m pytest scripts/dev/test_supervisor.py -q; ship"
+  ],
+  "tests": "scripts/dev/test_supervisor.py: new test, must fail before the change",
   "title": "Instruction conflict: plan SPAWN CI RED worker vs usage gate refuses spawn at 5h 47% vs elapsed 18%+",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }
