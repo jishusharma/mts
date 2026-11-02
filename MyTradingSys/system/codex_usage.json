@@ -6,7 +6,7 @@
   "window_resets": 1793655558,
   "window_used": 4.0
  },
- "at": "2026-11-02T18:37:41Z",
+ "at": "2026-11-02T19:15:39Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -23,9 +23,24 @@
   "astra_runs": 0,
   "week_pts": 0.0,
   "window_pts": 0.0,
-  "window_runs": 2
+  "window_runs": 3
  },
  "runs": [
+  {
+   "at": "2026-11-02T19:15:05Z",
+   "card": "aibridge-sandbox-chat-run-acl-proof",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 27,
+   "tokens_out": 1685,
+   "tokens_total": 127360,
+   "tokens_uncached": 20715,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-11-02T18:36:54Z",
    "card": "aibridge-sandbox-chat-run-acl-proof",
@@ -160,21 +175,6 @@
    "tokens_uncached": 57634,
    "week_pts": 6.0,
    "window_pts": 39.0
-  },
-  {
-   "at": "2026-10-31T18:29:07Z",
-   "card": "gpt-mutation-trendline-core-1031",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "4 uncommitted file(s) left in F:\\MTS\\mts-codex-lab: MyTradingSys/backtest/layers/trendlines/test_trendline_core_spec.py",
-   "outcome": "OUT_OF_SCOPE",
-   "seconds": 59,
-   "tokens_out": 3691,
-   "tokens_total": 441243,
-   "tokens_uncached": 50352,
-   "week_pts": 0.0,
-   "window_pts": 0.0
   }
  ]
 }
