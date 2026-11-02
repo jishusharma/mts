@@ -200,6 +200,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Codex lab reports (newest 2 of 2): `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-live_engine-gpt-rederive.md`; `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-live_engine-gemini-facts.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `live-mirror-follow-live-host-move` blocked p1 DSA: live_mirror.py hard-codes JIS-NB (LIVE_HOST, share \JIS-NB\MTS-Mirror); live loop is on desktop-f7iu69n (Lenov
+  - `live-trading-aid-page-multi-tf-wavetrend` raw p2 SONNET: Live trading aid page: multi-TF WaveTrend/RSI/BB/OI/CVD state + measured base rate per state, good visuals, le
   - `state-code-accumulator-backfill` refined p2 JIS-NB: StateCodeEmitter: backfill session CVD/cum_pv/cum_vol after restart and WS reconnect, fail closed on backfill 
   - `layer-review-rsi-cc-pitchfork-engine` ready p3 SONNET: Layer review sheet: RSI, CryptoCred, pitchfork, live engine (idea, source, backtests, bugs, confluence)
   - `live-loop-timeouts-b191` refined p3 SONNET: Network: re-check live-loop timeouts after B191 plus wrapper priority and snapshot.cp (read-only report first)
