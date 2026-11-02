@@ -1,4 +1,4 @@
-﻿# BLOCKED — AIBridge sandbox chat-run ACL proof
+# BLOCKED — AIBridge sandbox chat-run ACL proof
 
 ## Result
 BLOCKED: Windows denied creation of `F:\MTS\_sandbox\aibridge_acl` to the session identity `CodexSandboxOffline`; therefore the sandbox copy and both ACL probes could not be run. No ACLs were applied, and no claim is made that the probes were refused.
@@ -24,6 +24,6 @@ icacls "F:\MTS\_sandbox\aibridge_acl\.secrets" /deny "CodexSandboxOffline:(RX)"
 These are proposed command lines only; effectiveness and inheritance have not been demonstrated here.
 
 ## Next step
-An operator with write access to `F:\MTS\_sandbox` (or an approved sandbox path inside the writable workspace) must run the copy and probes. Do not mark this card done until the before/after transcripts and matching live hashes are captured.
+Operator next step: provision the specified sandbox path (or explicitly revise the task to an approved sandbox path inside the writable workspace) and run the copy/probe/ACL sequence with the intended chat-run identity and ACL authority. This session did not substitute a different location because the requested deliverable requires evidence for the named sandbox copy. Do not mark this card done until the before/after transcripts and matching live hashes are captured.
 
 Noticed: sandbox boundary blocks the task's required out-of-workspace copy path.
