@@ -178,4 +178,5 @@ MyTradingSys/research/michael_lines_2026-11/test_stated_lines.py
 scripts/dev/test_traffic_report.py
 scripts/dev/test_git_net_deadline.py
 scripts/dev/test_yt_proxy.py
+scripts/dev/test_operator_questions.py
 MyTradingSys/research/tsfm_2026-11/test_tsfm.py

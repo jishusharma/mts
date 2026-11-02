@@ -27,3 +27,27 @@ Not opened (and why): live self-edit of the running agent, `.secrets`/`.env`/key
 
 Opened: `git branch -d`; `git checkout --` in own worktree; DSA may edit and test a copy of `scripts/aibridge` in its own worktree (prompt change), never `F:\AIBridge`.
 Not opened: recursive deletes (all 5 recent were other sessions' worktrees, with variable paths), `F:\AIBridge` as cwd, live self-edit, kills, secrets, live tree.
+
+
+## OPEN: policy self-edit hole and regex bypass (reported by Login B from the 11-02 DeepSeek screenshot, JIS-NB 0.7.11; not reproduced here yet)
+- DeepSeek's own reasoning planned to write `F:\AIBridge\policy.json` with `{"auto_write_regex": null, "auto_confirm_regex": null}` through `[System.IO.File]::WriteAllText` "to bypass the regex". That path is not the live `src\policy.json`; whether it ran is unknown (C checking audit rows: 0 WriteAllText rows on 11-02).
+- Holes read in the code: `auto_write_regex` matches `[IO.File]::Write` but not `[System.IO.File]::Write`; in `mode=open` + `auto_mode=fluent` (checks.ps1) a hands-free block can probably rewrite `src\policy.json`, which is re-read per request, and empty `deny_path_regex`. Text regexes also miss built strings such as `'.sec'+'rets'`. STATUS: OPEN. The hard rules must not depend on regex text the chat can edit or dodge: the fix is OS level (bridge `src\` and secret paths unreachable from chat-run commands: restricted account or ACLs, one elevated click allowed). Planned for the GPT lane, sandbox first; nothing on a live install without showing the operator.
+- Prompt rule added (00): a refusal is reported, never worked around.
+
+## Is unattended proven? NO.
+Proven on a fake chat page (headless browser, tab simulated hidden): 54-block chain, failure, timeout, dropped reply. NOT proven on the real chat.deepseek.com page with the tab unfocused or covered. Until that run is counted from the audit log, "hands-free unattended" is a claim, not a result.
+
+## Claude Builder vs DeepSeek (via the bridge): access table (operator may overrule any "stays")
+| Capability | Claude Builder | DeepSeek via bridge | Why DeepSeek differs |
+|---|---|---|---|
+| Read any repo folder or worktree | yes | yes (roots: IdeaProjects, Temp, F:\MTS) | same |
+| Write in own worktree, tests, sync.py start/claim/ship, tasks.py, desk.py, mts_signal.py | yes | yes | same |
+| git branch -d, checkout -- own worktree | yes | yes since 0.7.15 | was a regex bug / chat-only restriction, removed |
+| Recursive delete, git reset --hard, clean, branch -D, push -f | yes | click needed | page is third-party; an injected block could wipe work. Overrule: narrow by path allow-list |
+| Read/write `.secrets`, `.env`, keys | no | no | CLAUDE.md Hard rule, same |
+| HALT, live tree, process stop/restart, mainnet | no (builders) | no | CLAUDE.md Hard rule, same |
+| Stop-Process, taskkill, services | own children only | click needed | no way to tell own children from the text |
+| Invoke-Expression, Add-Type, nested/hidden shells, schtasks, reg | allowed in Claude's shell | refused | static text screen cannot judge them; page is third-party |
+| cwd `F:\AIBridge` / editing the installed bridge | n/a | refused; edit and test a copy in own worktree | bridge limits are the operator's |
+| Review Claude ships, file blocking findings | yes | yes (prompt 00); Claude must answer before closing: by prompt rule only, not enforced in code | none |
+| Stop/override/HALT a Claude session | n/a | no | findings are the only lever |
