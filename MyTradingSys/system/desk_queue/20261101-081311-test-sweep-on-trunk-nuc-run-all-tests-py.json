@@ -1,10 +1,15 @@
 {
   "done_when": "desk.py done with exit code and the list of failing tests (or none)",
+  "finished": "2026-11-02T11:13:04Z",
   "from": "JIS-NB",
+  "host": "JIS-NUC",
   "id": "20261101-081311-test-sweep-on-trunk-nuc-run-all-tests-py",
   "need": "cd to your mts-dsa worktree; python scripts/dev/dsa.py begin 'test sweep NUC'; python scripts/dev/run_all_tests.py --quick > sweep_NUC.txt 2>&1; print the last 40 lines; if a command fails twice close --failed with the error text",
   "posted": "2026-11-01T08:13:11Z",
-  "status": "pending",
+  "result": "run_all_tests.py --quick on JIS-NUC worktree (commit a8c878a8e): exit 0, ALL TESTS PASSED, 74 steps; Maven and backtest steps SKIP per script; 0 failing tests. Output kept in scratchpad, not committed. dsa.py begin not run.",
+  "status": "done",
+  "taken": "2026-11-02T11:03:25Z",
+  "taken_by": "JIS-NUC",
   "target": "DSA-NUC",
   "title": "Test sweep on trunk (NUC): run_all_tests.py --quick, report failures verbatim"
 }

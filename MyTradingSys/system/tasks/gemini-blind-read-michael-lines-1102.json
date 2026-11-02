@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T11:11:14Z",
   "commands": [],
   "created": "2026-11-02T05:48:29Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_audits_2026-11-02/michael_lines_blind_read.md (FOUND: 50, NOT",
+      "ref": "3dbbb40bc",
+      "utc": "2026-11-02T11:11:14Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -46,7 +53,12 @@
     "to": "DSA",
     "why": "window"
   },
-  "result": "",
+  "result": "MyTradingSys/research/gemini_audits_2026-11-02/michael_lines_blind_read.md (FOUND: 50, NOT_IN_DATA: 1, DIFF: 1)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/michael_lines_2026-11/RESULT.md (read)",
     "MyTradingSys/research/michael_lines_2026-11/STATED_LINES.md (read)",
@@ -58,12 +70,13 @@
   "scope_sha": "8d9df87e525c",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "list every number in RESULT.md with its cited source",
     "open the source and check it",
     "write FOUND / NOT_IN_DATA / DIFF per number, counts on line 1"
   ],
+  "taken": "2026-11-02T11:11:14Z",
   "tests": "see done_when (audit card, output file is the test)",
   "title": "[GEMINI] blind re-read of michael_lines_2026-11 RESULT.md: numbers vs CELLS.csv and STATED_LINES.md",
   "weight": "ROUTINE",

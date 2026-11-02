@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T11:04:16Z",
   "commands": [],
   "created": "2026-10-31T10:04:24Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "dsabr-c2-dropped-gen",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "6b2e089fc (AIBridge 0.7.4)",
+      "ref": "a8c878a8e",
+      "utc": "2026-11-02T11:04:16Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,7 +40,12 @@
   "refs": [
     "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
   ],
-  "result": "",
+  "result": "6b2e089fc (AIBridge 0.7.4)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "review_receipt": {
     "card_hash": "30c6426bcc26",
     "date": "2026-10-31",
@@ -51,13 +63,14 @@
   "sources": [
     "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Wait for dsabr-c1-block-select to ship; read FIX_PLAN.md (MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31) row D4",
     "Write the replyWatch timeline cases in handsfree.test.js first; see them fail",
     "Add pure replyWatch to loop.js; wire content.js post-result wait and pump quiet loop to it (notice once, then stop banner) (post at most one notice per chain, never while a run is in flight, never into an operator draft)",
     "Bump the version; node tests pass; sync.py ship"
   ],
+  "taken": "2026-11-02T11:04:16Z",
   "tests": "new cases in scripts/aibridge/tests/handsfree.test.js fail on 0.7.3 (no replyWatch)",
   "title": "AIBridge: notice DSA when its generation drops, no silent 'waiting for DSA' (D4)",
   "weight": "IMPORTANT",

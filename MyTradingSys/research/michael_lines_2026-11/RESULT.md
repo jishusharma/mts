@@ -4,7 +4,7 @@ Verdict: **descriptive only. Go (conditional) for the alert card: detector event
 
 Source of counts: committed DEV run `trendlines_2026-10-17/counts/CELLS.csv` (config wick_log_age500, tercile ALL). A re-run was NOT possible on this machine (no F:/MTS klines); the committed run reads DEV only (splits guard in count_only.py). VALIDATION/HOLDOUT untouched.
 
-Stated lines: 11 statements in 8 of 10 videos (STATED_LINES.md). 8 of 11 reference oil/gold/Nasdaq (OURS keyword guess), not BTC; so BTC replay is a base-rate only, not a comparison.
+Stated lines: 11 statements in 8 of 10 videos (STATED_LINES.md). 9 of 11 reference oil/gold/Nasdaq (5 oil, 3 gold, 1 nasdaq; 2 asset NOT_IN_DATA; OURS keyword guess), none BTC; so BTC replay is a base-rate only, not a comparison.
 
 | tf | eligibility arm | eligible lines n | first_touch n | all_touches n | break n | retested n | reclaimed n |
 |---|---|---|---|---|---|---|---|

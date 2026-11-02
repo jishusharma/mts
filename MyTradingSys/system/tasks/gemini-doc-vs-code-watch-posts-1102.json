@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-02T11:09:06Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-02/watch_posts_doc_vs_code.md has one row per claim: MATCH / MISMATCH / NOT_IN_CODE with file:line, first line holds the three counts.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Check every behaviour claim (interval, limit, file written, exit code) in MyTradingSys/research/analysts/watch/ROUTINE.md against watch_posts.py; list each as MATCH / MISMATCH with file:line on both sides; facts only.",
+  "id": "gemini-doc-vs-code-watch-posts-1102",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: analyst posts watch routine for Habib and Krown",
+      "ref": "43ed8cd7a15c",
+      "utc": "2026-11-01T19:43:06Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "43ed8cd7a15c Result: analyst posts watch routine for Habib and Krown",
+      "ref": "MyTradingSys/research/analysts/watch/ROUTINE.md",
+      "utc": "2026-11-01T19:43:06Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini effort low: load as <id>:low (gemini_queue.py run <id>:low). Final report ends with a Noticed: line. Facts only, no verdicts. D11_PROGRAMME s6 seed. PLANNER 2026-11-02 planner-board-refresh-1102. REVIEWED:2026-11-02 T0-ONLY",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-02T11:09:07Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/analysts/watch/ROUTINE.md (read)",
+    "MyTradingSys/research/analysts/watch/watch_posts.py (read)",
+    "MyTradingSys/research/gemini_audits_2026-11-02/watch_posts_doc_vs_code.md (new)"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change outside the output file"
+  ],
+  "scope_sha": "43ed8cd7a15c",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "list every behaviour claim in ROUTINE.md",
+    "find the code line that implements or contradicts it",
+    "write MATCH / MISMATCH / NOT_IN_CODE per claim, counts on line 1"
+  ],
+  "tests": "see done_when (audit card, output file is the test)",
+  "title": "[GEMINI] doc-vs-code scan: analysts/watch ROUTINE.md claims vs watch_posts.py behaviour",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

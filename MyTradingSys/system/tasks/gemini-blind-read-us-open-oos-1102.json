@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-02T11:08:20Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-02/us_open_oos_blind_read.md has one row per number: FOUND / NOT_IN_DATA / DIFF, first line holds the three counts.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Open MyTradingSys/research/us_open_oos_2026-10-30/REPORT.md and check every number against MyTradingSys/research/us_open_oos_2026-10-30/results_oos_2020_2021.json; facts only, no verdicts.",
+  "id": "gemini-blind-read-us-open-oos-1102",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "research: US-open OOS replication on 2020-21 (P0-34)",
+      "ref": "fd087f1cea6a",
+      "utc": "2026-10-30T08:37:01Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "fd087f1cea6a research: US-open OOS replication on 2020-21 (P0-34)",
+      "ref": "MyTradingSys/research/us_open_oos_2026-10-30/REPORT.md",
+      "utc": "2026-10-30T08:37:01Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "duplicate of 11-01 blind reads",
+  "pinned": false,
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-02T11:08:21Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/us_open_oos_2026-10-30/REPORT.md (read)",
+    "MyTradingSys/research/us_open_oos_2026-10-30/results_oos_2020_2021.json (read)",
+    "MyTradingSys/research/gemini_audits_2026-11-02/us_open_oos_blind_read.md (new)"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change outside the output file"
+  ],
+  "scope_sha": "fd087f1cea6a",
+  "size": "S",
+  "sources": [],
+  "state": "dropped",
+  "steps": [
+    "list every number in the result file with its cited source",
+    "open the source and check it",
+    "write FOUND / NOT_IN_DATA / DIFF per number, counts on line 1"
+  ],
+  "tests": "see done_when (audit card, output file is the test)",
+  "title": "[GEMINI] blind re-read of us_open_oos REPORT.md: numbers vs results_oos_2020_2021.json",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
