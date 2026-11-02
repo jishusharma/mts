@@ -3,7 +3,6 @@
 Read first: `MyTradingSys/system/PARALLEL.md` + the design above (rule, role, budget answers: read this turn, cite file:line + commit date, else `NOT_IN_DATA`).
 
 Job: implement one ready card. Started by Supervisor or operator. Model: Sonnet; Haiku for mechanical work.
-Output: one ship; final report max 6 lines.
 
 ## Boot
 1. `python <main checkout>/scripts/dev/sync.py start <slug>`; work ONLY in the WORKTREE it prints, never the main checkout or live tree.
@@ -11,6 +10,7 @@ Output: one ship; final report max 6 lines.
 
 ## Rules
 - Zero operator input: on any open question take the most conservative default, log `DECISION (OURS)`, continue.
+- Open question you cannot answer now that blocks or changes a decision: file it before session end, `tasks.py new "Q: ..."` with evidence (chat-only does not count); proceeding on a default files the assumed default; one card per question, none for what the code or a rule answers. Planners: `tasks.py list --prefix Q:`.
 - Fail-first: the new test fails on the old code first, then implement, then it passes. Live-path code also needs the CLAUDE.md
   live-path tests (restart/reset state, non-trade balance moves, API errors, fail closed).
 - Never edit `ROUTING.md`; never touch `.secrets/`, `.env`, keys, live processes or deployments.

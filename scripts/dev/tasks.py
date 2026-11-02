@@ -829,7 +829,7 @@ def cmd_list(a):
     TS.prefetch_changes(REPO)
     for c in cards:
         # B209: open cards only by default (done/dropped are ~700 rows of boot noise); --all or --state brings them back
-        if (a.state or a.all or c["state"] not in ("done", "dropped")) and (not a.state or c["state"] == a.state) and (not a.lane or c["lane"] == a.lane):
+        if (a.state or a.all or c["state"] not in ("done", "dropped")) and (not a.state or c["state"] == a.state) and (not a.lane or c["lane"] == a.lane) and (not a.prefix or c["title"].startswith(a.prefix)):
             # C3: a ready/active card whose work already hit trunk (SHIPPED) or whose scope moved on (STALE) is flagged here
             # too, not only in next/take/brief -- a stale *copy* of an archived card must not read as plain "ready" in the backlog.
             tag = stop_tag(c, claims=claims, reg=reg) if c["state"] in ("ready", "active") else ""
@@ -1713,6 +1713,7 @@ def main(argv=None):
     ls.add_argument("--state", choices=STATES)
     ls.add_argument("--lane", choices=LANES)
     ls.add_argument("--all", action="store_true", help="include done and dropped cards")
+    ls.add_argument("--prefix", help="only cards whose title starts with this (e.g. 'Q:' = open questions)")
     ls.set_defaults(f=cmd_list)
     sp.add_parser("status").set_defaults(f=cmd_status)
     nx = sp.add_parser("next")
