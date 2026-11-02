@@ -40,8 +40,8 @@
  "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
  "window": "Binance BTCUSDT 4H & 1m klines (as written in layer_map)",
  "verdict": {
-  "label": "PASS (VA confluence PF 1.63, +0.61% net/trade; sim_desk plugin verified)",
-  "tone": "good"
+  "label": "NOT REAL: PASS withdrawn 2026-11-03. Exact causal rerun 2020-2024: -0.011 % net, PF 0.99, n 272, inside placebo (mts_audit_2026-11-03/AUDIT.md s2)",
+  "tone": "bad"
  },
  "why": [
   "In the Phase 1 Daily (1D) event study, classical pitchfork geometry exhibited high Median Line reach (86.15% to 90.03%), but naive market entries suffered small negative fee drag (-0.95% to -1.12% per trade).",

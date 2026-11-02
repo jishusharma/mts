@@ -29,7 +29,7 @@
   "not_twin_of": [
     "pitchfork-review-fixes-2026-10-28"
   ],
-  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "AUDIT 2026-11-03 (operator: loosen blockers that make no sense): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
@@ -52,7 +52,7 @@
   "sources": [
     "MyTradingSys/research/pitchfork_2026-10-19/OPUS_E2E_REVIEW_2026-10-28.md"
   ],
-  "state": "blocked",
+  "state": "refined",
   "steps": [
     "F1: DECISION (OURS) take RESEARCH_PITCHFORK_LAYER.md:42 as written, target = entry +/- |UML-ML|; label 'OURS reading' and note the :54-55 alternative; fix detector :528 and the desk EXIT['ML'] label",
     "F5: bin width from data up to bar i only, add a planted-leak test with vp_filter set to VA and POC; F6: pick the tine from p2_is_lower; F10: one zigzag function, detector :334-383 and :412-447 call it",
