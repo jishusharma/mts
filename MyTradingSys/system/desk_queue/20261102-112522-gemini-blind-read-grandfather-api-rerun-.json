@@ -1,12 +1,15 @@
 {
   "card": "gemini-blind-read-grandfather-api-rerun-1102",
   "done_when": "MyTradingSys/research/gemini_audits_2026-11-02/grandfather_api_rerun_blind_read.md has one row per quoted number or citation: FOUND / NOT_IN_DATA / DIFF, first line holds the three counts.",
+  "finished": "2026-11-02T11:32:31Z",
   "from": "lane_health",
+  "host": "JIS-NUC",
   "id": "20261102-112522-gemini-blind-read-grandfather-api-rerun-",
   "need": "Rerouted from the GPT lane (credits/limit/outage) to DSA. Card gemini-blind-read-grandfather-api-rerun-1102: [GEMINI] blind re-read of GRANDFATHER_DECISION_API_RERUN.md: quoted numbers vs the files it\nWorktree: mts-dsa (python scripts/dev/sync.py start first). Data on F:\\MTS\\data is read-only.\nFull brief: python scripts/dev/tasks.py brief gemini-blind-read-grandfather-api-rerun-1102\nGoal: Open MyTradingSys/research/fable_audit_2026-10-20/GRANDFATHER_DECISION_API_RERUN.md and check each number and file:line it quotes against the cited file; facts only, no verdicts.\nRead: MyTradingSys/research/fable_audit_2026-10-20/GRANDFATHER_DECISION_API_RERUN.md (read); files it cites (read); MyTradingSys/research/gemini_audits_2026-11-02/grandfather_api_rerun_blind_read.md (\nStep 1: list every number and file:line citation in the document\nStep 2: open each cited file and check it\nStep 3: write FOUND / NOT_IN_DATA / DIFF per item, counts on line 1\nWrite the report to MyTradingSys/research/layer_lab/reports/2026-11-02_gemini-blind-read-grandfather-api-rerun-1102.md: findings or numbers, each with file:line or the command you ran.\nNumbers come only from output you printed in the chat. Change no code or spec. Never read a holdout.\nIf a command fails twice, close the desk row with --failed and the error text.\nClose: python scripts/dev/desk.py done <row id> --result \"<verdict or number + MyTradingSys/research/layer_lab/reports/2026-11-02_gemini-blind-read-grandfather-api-rerun-1102.md>\".",
   "posted": "2026-11-02T11:25:22Z",
   "rerouted_from": "CODEX",
-  "status": "pending",
+  "result": "declined: duplicate, running on Gemini via Lead",
+  "status": "failed",
   "target": "DSA",
   "title": "[GEMINI] blind re-read of GRANDFATHER_DECISION_API_RERUN.md: quoted numbers vs the files it cites"
 }
