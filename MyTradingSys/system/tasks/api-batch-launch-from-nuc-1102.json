@@ -2,6 +2,17 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-02T18:29:14Z",
+    "misses": 32,
+    "reads": [
+      "scripts/dev/api_batch.py",
+      "scripts/dev/test_api_batch.py",
+      "MyTradingSys/system/QUICK_ANSWERS.md"
+    ],
+    "session": "agent-a45bb9f815dfaded2"
+  },
   "created": "2026-11-02T18:27:11Z",
   "depends_on": [],
   "done_when": "With env unset and a fake key file, submit/status/fetch send the file's key in x-api-key; missing file gives a clear error; no output path prints the key; new tests in scripts/dev/test_api_batch.py failed on the old code.",
