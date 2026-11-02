@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T16:49:25Z",
   "commands": [
     "python scripts/dev/tasks.py list --state ready",
     "python scripts/dev/tasks.py stale",
@@ -18,6 +19,12 @@
   "lane": "HAIKU",
   "latest": [
     {
+      "kind": "ship",
+      "line": "STALE ready cards 20 -> 1 by tasks.py stale (list: 2): 6 shipped and done (layer-review a6",
+      "ref": "4b6f57b35",
+      "utc": "2026-11-02T16:49:25Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "B143 item: fix 9 stale cc_setups.py cites (setup 3 def 178->181 etc)",
@@ -34,7 +41,12 @@
   "refined_by": "",
   "refreshed": "2026-11-02T16:18:59Z",
   "refs": [],
-  "result": "",
+  "result": "STALE ready cards 20 -> 1 by tasks.py stale (list: 2): 6 shipped and done (layer-review a650f794, tsfm 9df4cfe0, gemini c30 c931ba38a, gemini grandfather 2beebeb65, gemini param labels 6ea2307a9, opus-o3 9c246ccf9); 13 refreshed and kept ready (6 gpt-spec, aibridge, fable, quick-parts, republish, setup-review, sim-desk, wall-ledger)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/tasks/ (card JSON files only)"
   ],
@@ -44,13 +56,14 @@
   "scope_sha": "a7d6c8a11bcc",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "python scripts/dev/tasks.py list --state ready, count the STALE tags",
     "per card: git log over its scope_in since its refreshed time, confirm the change does not invalidate the card, then tasks.py tag <id> --refresh and tasks.py check <id>",
     "a card the change does invalidate: tasks.py tried <id> and name it in the report",
     "re-run the list, report before/after, ship"
   ],
+  "taken": "2026-11-02T16:49:25Z",
   "tests": "count-based: STALE count before vs after, reported",
   "title": "Refresh the ready cards flagged STALE (tasks.py list), re-read each change first",
   "weight": "ROUTINE",

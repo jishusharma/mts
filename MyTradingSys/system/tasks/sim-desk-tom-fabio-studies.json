@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Merge remote-tracking branch 'origin/fast-track' into JIS-NB/rumers-lab-harness-3",
-      "ref": "22ca49c5865c",
-      "utc": "2026-11-01T17:43:06Z"
+      "line": "sim desk: link the 6 new catalogue rows to their result cards (CI red fix)",
+      "ref": "d4ad357afb34",
+      "utc": "2026-11-02T12:27:53Z"
     }
   ],
   "layers": [
@@ -31,7 +31,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T11:05:02Z",
+  "refreshed": "2026-11-02T16:47:53Z",
   "refs": [
     "MyTradingSys/research/tom_fabio_review_2026-10-31/SETUP_REVIEW.md"
   ],
@@ -47,7 +47,7 @@
   "scope_out": [
     "VALIDATION or HOLDOUT, live tree, publishing the artifact"
   ],
-  "scope_sha": "22ca49c5865c",
+  "scope_sha": "d4ad357afb34",
   "size": "M",
   "sources": [],
   "state": "ready",

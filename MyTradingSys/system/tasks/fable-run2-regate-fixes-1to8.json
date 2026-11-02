@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "class": "C2",
   "commands": [
     "python scripts/dev/test_prereg_gate.py",
     "python scripts/dev/verdicts.py check"
@@ -12,13 +13,13 @@
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Execute the 8-item fix list from Fable run 2 (MyTradingSys/research/fable_audit_2026-10-18/REGATE_AUDIT.md:73-83): (1) prereg_gate.py --m auto uses count_with_ledger; (2) VERDICTS.csv wavetrend W04-W08 -> INCONCLUSIVE, cost 0.14, one_run yes; (3) re-backfill BLOCKED rows bb_top :25, pit_levels :50, kurisko split DEV; (4) kill-scope sentences for pit_levels, bb_top, eur_low; (5) context_factors rows :29-30 kill_scope from PRE_REG.md:98-100; (6) drop duplicate filter rows :37-38; (7) append missing count-only rows to TRIAL_LEDGER.csv; (8) write context_factors V2 BLOCKED.md (demote context-composite-v2-dev-read) and amend pit V3 PRE_REG_V3.md with m=89.",
+  "goal": "Execute REGATE_AUDIT.md fix list 1-8 (MyTradingSys/research/fable_audit_2026-10-18/REGATE_AUDIT.md:73-83): prereg_gate --m auto uses count_with_ledger; VERDICTS.csv, BLOCKED.md and TRIAL_LEDGER.csv repairs; ctx V2 BLOCKED, pit V3 amendment.",
   "id": "fable-run2-regate-fixes-1to8",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-19 T0-ONLY LAB:results CLASS:C2 REVIEWER:none WEIGHT:CRUCIAL. Created by Pipeliner from wrong-channel desk row 20261018-194127 (Fable run 2 done: REGATE_AUDIT.md). T0 mechanical checks passed, awaiting non-Gemini Lab_Guy ACCEPT stamp for C2/CRUCIAL promotion.",
+  "note": "REVIEWED:2026-10-19 T0-ONLY LAB:results CLASS:C2 REVIEWER:none WEIGHT:CRUCIAL. Created by Pipeliner from wrong-channel desk row 20261018-194127 (Fable run 2 done: REGATE_AUDIT.md). T0 mechanical checks passed, awaiting non-Gemini Lab_Guy ACCEPT stamp for C2/CRUCIAL promotion. PLANNER 2026-11-02: item 1 verified NOT on trunk (prereg_gate.py:45 still count_variants); goal shortened to pass the length gate; only the real Lab_Guy ACCEPT stamp (C2/CRUCIAL) is missing; context_factors BLOCKED.md exists, re-check item 8 at build.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "gemini-yt-pipeliner",
@@ -56,6 +57,5 @@
   "tests": "scripts/dev/test_prereg_gate.py fixture with TRIAL_LEDGER > VERDICTS fails before the fix and passes after; verdicts.py check passes.",
   "title": "Fable run 2 REGATE_AUDIT fixes 1-8: prereg_gate --m auto uses ledger, VERDICTS/BLOCKED/TRIAL_LEDGER repairs, ctx V2 BLOCKED",
   "weight": "CRUCIAL",
-  "worker": "session",
-  "class": "C2"
+  "worker": "session"
 }
