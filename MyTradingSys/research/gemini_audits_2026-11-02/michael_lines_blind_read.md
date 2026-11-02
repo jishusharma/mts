@@ -1,4 +1,4 @@
-# FOUND: 50, NOT_IN_DATA: 1, DIFF: 1
+# FOUND: 50, NOT_IN_DATA: 1, DIFF: 1 (fixed in RESULT.md:7 by review: now 9 of 11)
 
 # Blind Re-read of Michael Trend Lines RESULT.md Numbers vs CELLS.csv and STATED_LINES.md
 
@@ -33,7 +33,7 @@ Cross-checked against:
 | L3 | Verdict | 4h timeframe | `trendlines_2026-10-17/counts/CELLS.csv:66` | `tf = 4h` | **FOUND** | `OURS` | Evaluation timeframe |
 | L3 | Verdict | 1d timeframe | `trendlines_2026-10-17/counts/CELLS.csv:5` | `tf = 1d` | **FOUND** | `OURS` | Evaluation timeframe |
 | L5 | Source of counts | 2026-10-17 run date | `trendlines_2026-10-17/counts/CELLS.csv` | Directory path `trendlines_2026-10-17` | **FOUND** | `OURS` | Committed DEV run date slug |
-| L5 | Source of counts | 500 age cap | `trendlines_2026-10-17/counts/CELLS.csv:2` | `config = wick_log_age500` | **FOUND** | `OURS` | Age cap parameter (`TRENDLINE_CONTRACT.md:27`) |
+| L5 | Source of counts | 500 age cap | `trendlines_2026-10-17/counts/CELLS.csv:2` | `config = wick_log_age500` | **FOUND** | `OURS` | Age cap parameter (`TRENDLINE_CONTRACT.md:46`) |
 | L7 | Stated lines | 11 statements | `michael_lines_2026-11/STATED_LINES.md:19` | 11 statements | **FOUND** | `SOURCED` | SOURCED (`"11 statements"` `STATED_LINES.md:19`); 11 rows in table L7-17 |
 | L7 | Stated lines | 8 videos with statements | `michael_lines_2026-11/STATED_LINES.md:19` | in 8 of 10 videos | **FOUND** | `SOURCED` | SOURCED (`"in 8 of 10 videos"` `STATED_LINES.md:19`); 8 unique video IDs |
 | L7 | Stated lines | 10 total videos sampled | `michael_lines_2026-11/STATED_LINES.md:1,19` | 10 transcripts / 8 of 10 videos | **FOUND** | `SOURCED` | SOURCED (`"10 transcripts"` `STATED_LINES.md:1`); video sample size |
@@ -76,6 +76,6 @@ Cross-checked against:
 | L16 | Count table | 4h arm V retested: 90 | `trendlines_2026-10-17/counts/CELLS.csv:76` | `retested = 90` | **FOUND** | `OURS` | Exact cell match `4h\|V\|ALL` |
 | L16 | Count table | 4h arm V reclaimed: 58 | `trendlines_2026-10-17/counts/CELLS.csv:76` | `reclaimed = 58` | **FOUND** | `OURS` | Exact cell match `4h\|V\|ALL` |
 | L20 | Cannot compare | Line anchors/dates on chart frames: NOT_IN_DATA | `michael_lines_2026-11/STATED_LINES.md:3,7-17` | `chart geometry = NOT_IN_DATA` | **NOT_IN_DATA** | `OURS` | Chart frames not stored in repository |
-| L22 | Parameters | age cap 500 | `trendlines_2026-10-17/TRENDLINE_CONTRACT.md:27` | `max_age_bars: 500` | **FOUND** | `OURS` | Fixed max lookback window |
+| L22 | Parameters | age cap 500 | `trendlines_2026-10-17/TRENDLINE_CONTRACT.md:46` | L5 "line retired when t - ib > 500 bars" | **FOUND** | `OURS` | Fixed max lookback window |
 | L22 | Parameters | SOURCED numerical parameters: 0 | `michael_lines_2026-11/STATED_LINES.md:7-17` | Michael transcript quotes | **FOUND** | `SOURCED` | SOURCED (`"trend line", "50% level", "$104"` `STATED_LINES.md:7-17`); zero numerical detector parameters |
 | L24 | Go/no-go | 4h alert-only card candidate | `trendlines_2026-10-17/counts/CELLS.csv:66-76` | `tf = 4h` counts | **FOUND** | `OURS` | 4h timeframe recommended for alert card |

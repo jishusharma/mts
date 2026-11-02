@@ -48,7 +48,7 @@
 
 ### 3. Dates, Parameters, and Missing Data
 - Date range: BTC DEV `2022-01-01..2024-06-30` matches `count_only.py:6,32,34`.
-- Parameters: `age cap 500` matches `CELLS.csv:2` and `TRENDLINE_CONTRACT.md:27`.
+- Parameters: `age cap 500` matches `CELLS.csv:2` and `TRENDLINE_CONTRACT.md:46`.
 - Zero numerical parameters sourced from Michael matches quotes in `STATED_LINES.md:7-17`.
 - Chart geometry / line anchors: acknowledged as `NOT_IN_DATA` in `RESULT.md:20` and `STATED_LINES.md:3,7-17`.
 
