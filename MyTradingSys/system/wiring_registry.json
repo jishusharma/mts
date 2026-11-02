@@ -412,6 +412,11 @@
       "ref": "lc-levels-hold",
       "why": "Fair touched-only control run for levels_hold.md; run by hand, writes lc1_fair_dev.csv, no live import. Tested by test_levels_hold_fair.py."
     },
+    "MyTradingSys/cbp/discord_rows.py": {
+      "disp": "TOOL",
+      "ref": "discord-module-read-habib-and-krown-chan",
+      "why": "Discord posts to CBP rows loader/parser (no network, no token); run by hand on the operator machine with the command in its docstring, no live import. Tested by test_discord_rows.py."
+    },
     "MyTradingSys/research/levels_sizing_2026-10-14/probe.py": {
       "disp": "REPRO",
       "ref": "LC-SIZING-QUICK-20261014",
