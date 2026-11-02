@@ -4,6 +4,17 @@
   "commands": [
     "python scripts/dev/test_ci_watch.py"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-02T13:06:19Z",
+    "misses": 11,
+    "reads": [
+      "MyTradingSys/research/layer_lab/reports/layer_review_krown_wavetrend.md",
+      "scripts/dev/make_layers_md.py",
+      "MyTradingSys/research/krown_audit_2026-10-22/REPORT.md"
+    ],
+    "session": "agent-a1aab6dbeae7c8da7"
+  },
   "created": "2026-11-01T10:00:16Z",
   "depends_on": [],
   "done_when": "scripts/dev/test_ci_watch.py has a fake-run-list case (re-runs of old red shas created after a green head run) that streak()/sync ci state returns green; test passes, full test_ci_watch passes",
