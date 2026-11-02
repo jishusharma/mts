@@ -4,7 +4,9 @@
   "id": "20261102-163350-aibridge-real-page-chain-test-2nd-try-br",
   "need": "Previous try 20261102-131341 was closed 'failed 0 of 54' wrongly: the bridge DID run chain-b1..b6 and the desk.py blocks; receipts reached you late and some blocks were read empty (bridge defects, fixed in 0.7.19). Retry: in your own worktree send replies of 6 blocks (9 replies, 54 blocks): block N is Write-Output chain-b<N>. Block 17 is cmd /c exit 1; block 33 has timeout=5 and Start-Sleep 20. Wait for each receipt before sending the next reply; never repeat a block that has a result; if a receipt looks missing wait 60 s and say which block numbers you have results for. End with one line: CHAIN DONE. If the bridge refuses anything quote it and stop.",
   "posted": "2026-11-02T16:33:50Z",
-  "status": "pending",
+  "status": "taken",
+  "taken": "2026-11-02T20:03:28Z",
+  "taken_by": "JIS-NUC",
   "target": "DSA-NUC",
   "title": "AIBridge real-page chain test (2nd try, bridge 0.7.19): run 54 trivial blocks"
 }
