@@ -120,3 +120,6 @@ Task Scheduler `AIBridge-Agent` (registered by `scripts\sched\register_aibridge.
 to 3x on failure, appends to F:\AIBridge\src\run\agent.log (rotates at 5 MB). Health: `python scripts\dev\aibridge_health.py`
 (exit 0 = answering on 127.0.0.1:7181). Before 2026-10-12 it was logon-only and visible; a logoff left it down (0xC000013A).
 Only a real reboot proves the logon trigger; the 5-min watchdog was proven by killing the agent.
+## Token hygiene (operator-Supervisor 2026-11-02)
+The installed `F:\AIBridge\extension\background.js` and `src\config.json` hold the bridge token. Never diff, cat or print them (a test worker once did and the token entered a transcript). Read the repo copy `scripts/aibridge/extension/background.js` (it carries `__TOKEN__`). Rotation is done at the next planned reinstall (`aibridge_install.py --fresh`), not ad hoc.
+Version check (0.7.21): the chat label reads `extension X | this page Y | disk Z | agent W - all match`; anything else is a MISMATCH with the action in the panel. `python scripts/dev/aibridge_health.py` shows installed, running, checkout and trunk versions.
