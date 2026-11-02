@@ -18,4 +18,4 @@ Login C is at about 84% weekly and must stay under 90% until its reset (Wed 2026
 gpt-audit-formulas-vs-cowen-band-phase-tag, gpt-audit-formulas-vs-stochastic-rsi-chart-verify, fabio-v3-model-b-managed-is-rerun, ask-p0-13-positioning-flags (JIS-NB lane: take it if JIS-NB has no free slot).
 
 ## Console API credit (all logins)
-Pre-approved, see OPERATOR_DECISIONS 2026-11-02. Bulk read-only work (quote checks, recounts, labels, blind reads) goes through `scripts/dev/api_batch.py` on Haiku; one hard question at a time on Opus or Fable with `--max-tokens` 32000+. The key file is on JIS-NB only (F:/ClaudePlaform/key.txt); ask login C's coordinator to run a job, never copy the key.
+Pre-approved, see OPERATOR_DECISIONS 2026-11-02. Bulk read-only work (quote checks, recounts, labels, blind reads) goes through `scripts/dev/api_batch.py` on Haiku; one hard question at a time on Opus or Fable with `--max-tokens` 32000+. The key file is F:/ClaudePlaform/key.txt on JIS-NB and JIS-NUC (operator 2026-11-02, OPERATOR_DECISIONS.md); never in git, signals or chat.

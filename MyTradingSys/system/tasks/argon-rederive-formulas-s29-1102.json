@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-02T18:25:32Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/argon_audits_2026-11-02/formulas_s29.md exists and its first line holds the counts or the ranked finding total; every row carries file:line.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Work FORMULAS.md section 29 by hand from the spec text alone, then compare with the code.",
+  "id": "argon-rederive-formulas-s29-1102",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tom-v2-gross-first-dev-ext: PRE_REG, near_band_primary + fail-first test, runner (before a",
+      "ref": "5fd35b41ff92",
+      "utc": "2026-11-01T08:39:49Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "b69d699f3164 fabio v3: resolve the three FORMULAS.md s28.6 code-vs-spec differences",
+      "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
+      "utc": "2026-11-01T01:15:41Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Argon: load as argon-rederive-formulas-s29-1102:medium:argon (gemini_queue.py run). Account: gemini-nuc. Final report ends with a Noticed: line. Operator order 2026-11-02. REVIEWED:2026-11-02 T0-ONLY",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-02T18:25:33Z",
+  "refs": [
+    "MyTradingSys/system/GEMINI_START.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/argon_audits_2026-11-02/formulas_s29.md (new)",
+    "MyTradingSys/backtest/layers/FORMULAS.md (read)",
+    "MyTradingSys/backtest/vp_return_to_value.py (read)"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env or key read; no change outside the output file"
+  ],
+  "scope_sha": "5fd35b41ff92",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "read FORMULAS.md section 29 before the code and compute each worked example independently",
+    "read the code and compare each formula, boundary and rounding",
+    "write one row per formula: SAME / DIFF / NOT_IN_DATA with file:line; first line holds the three counts"
+  ],
+  "tests": "see done_when (audit card, output file is the test)",
+  "title": "[GEMINI] Argon re-derives FORMULAS.md s29 Tom VP return-to-value against the code",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
