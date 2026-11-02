@@ -63,6 +63,7 @@ Why this section exists: the 10-28 session was compacted 6 times; each summary k
 - RSI confluence 10-31: "did you use RSI Confluence for selling at the top with divergence and buying at the bottom with divergence and those kind of things? ... when you were testing the wavefront [WaveTrend]."
 - Summary of asks 10-31: "Can you summarize all the questions that I asked so far?" (answered from the asks table).
 - Edge? pipeline 10-31: "So you're telling me that we just found an edge? I hope that these things are being recorded, and what is next in the pipeline is understood ... what happens to the proven data, how it is processed further, everything gets to the correct pipeline."
+- Pre-US pullback 11-02: "What do you think about the last three candles? ... it is going to be US Open soon ... Is there any long that you see? Or is it too risky to take a long right now? Do we expect this local high to be a token at US start?"
 - Coil and force (10-30): "what kind of force makes that happen? Try to measure it ... how far it will go ... support and resistances are the target ... I cannot understand in which direction the coil will fire." First answers: `research/pre_us_squeeze_2026-10-29/`, `research/bb_pierce_force_2026-10-29/`.
 
 ## The asks in one table (consolidated 10-30; update here, not in chat)
@@ -92,6 +93,7 @@ Why this section exists: the 10-28 session was compacted 6 times; each summary k
 | Red-band sells on 30m/15m/10m | C29 `wt_lower_tf.py`, sim card eagle-c29-wt-lower-tf | done 10-31: frequent with 2h context, lose on 10m/15m, 30m flat |
 | RSI divergence confluence with WaveTrend | C30 `wt_rsi_div.py`, sim card eagle-c30-wt-rsi-div | done 10-31: tops NO; 30m bottom buys with bull div = lead, needs pre-reg |
 | Is C30 an edge, and is the pipeline set | `PRE_REG_C30.md`, TRIAL_LEDGER + EXPOSURE_LEDGER rows, card c30-validation-read | done 10-31: lead not edge (H1 CI low -0.14% on DEV); frozen for one VALIDATION read, then PROMOTION_PIPELINE |
+| Overnight high given back before US open: retaken at US start? | `preus_pullback.py` (1m 2022-01..2026-09, 1730 days) | done 11-02: giveback >=0.8 of the 00-13Z range: n=84, high retaken first 6%, overnight low taken first 85%; all days 42/41%. C30 VALIDATION: H1 FAIL, H2 INCONCLUSIVE (`c30_validation_verdict.json`) |
 | Heatmap in Eagle_Eyes' own browser tab | Legend tab: layer missing | his shots until the layer loads there |
 | US open, squeeze, pierce force, levels as targets | `research/pre_us_squeeze_2026-10-29/`, `research/bb_pierce_force_2026-10-29/` | ran 10-30; next: OI and RSI/WT coils |
 | Habib whole-plan scoring; Kurisko quad (4 stochastics) on 15m | `research/habib_plan_imbalance_2026-10-20/`; card `kurisko-dev-event-study` | plans never scored; 1m/5m blocked by fees, 15m untested |
