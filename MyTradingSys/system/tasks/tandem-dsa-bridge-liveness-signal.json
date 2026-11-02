@@ -18,9 +18,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Machine rename: repo works under old and new host names (hosts.py)",
-      "ref": "fc950331b605",
-      "utc": "2026-10-25T15:36:18Z"
+      "line": "merge origin/fast-track",
+      "ref": "970ff9eac88b",
+      "utc": "2026-11-02T17:05:30Z"
     }
   ],
   "layers": [],
@@ -30,7 +30,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-10-25T22:18:29Z",
+  "refreshed": "2026-11-02T19:59:25Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -43,10 +43,10 @@
     "live path, orders, deploy, restarts",
     "new hooks, gate steps or rules beyond the card"
   ],
-  "scope_sha": "fc950331b605",
+  "scope_sha": "970ff9eac88b",
   "size": "S",
   "sources": [],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Read aibridge_health.py and supervisor.tick lanes output (tick --json).",
     "Write the fixture-signal test (BRIDGE host=NUC last_call_age_min=30 up=1; one 30 h old).",

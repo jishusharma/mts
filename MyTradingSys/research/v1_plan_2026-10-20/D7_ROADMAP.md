@@ -7,6 +7,7 @@ marked (sign).
 ## Frozen for the whole v1 (until the operator unfreezes)
 New layers or analyst sources; new vendors, logins or lanes; new pages; new rule documents (edits to existing ones only to
 shorten); any mainnet step; live gating by confluence; the options folder beyond its own plan.
+Changed 2026-11-03 (operator): S0 parking ended; parked cards are back in refinement and the cap of 15 ready cards no longer applies.
 Changed 2026-11-03 (operator order, research/mts_audit_2026-11-03/AUDIT.md): confluence and layer-state research on DEV is allowed; a context layer is judged by distribution shift, a trade still by fee-net OOS. No PASS without a VERDICTS.csv row, a causal replay test and one re-run from the trade loop by another model.
 
 ## Stages

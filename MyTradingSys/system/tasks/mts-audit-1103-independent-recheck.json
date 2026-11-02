@@ -1,37 +1,55 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python MyTradingSys/research/layer_lab/mts_audit_recheck_1103/recheck.py"
+  ],
   "created": "2026-11-02T19:38:35Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/layer_lab/mts_audit_recheck_1103/RECHECK.md exists; first line holds AGREE, DISAGREE and NOT_IN_DATA counts; the rerun table has n, mean, CI, PF per arm; every row has proof.",
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Attack MyTradingSys/research/mts_audit_2026-11-03/AUDIT.md. Rewrite the Pitchfork EXACT arm from its section 2 description, without importing or copying pitchfork_recheck.py, and compare numbers. Check each other section claim against its named file.",
   "id": "mts-audit-1103-independent-recheck",
   "kind": "audit",
   "lane": "CODEX",
+  "latest": [],
   "layers": [
     "pitchfork"
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
-  "prio": 2,
+  "note": "Refined by Supervisor B 2026-11-03: Codex queue was empty (operator).",
+  "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-02T19:59:23Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/mts_audit_recheck_1103/ (new)",
+    "MyTradingSys/research/mts_audit_2026-11-03/ (read)",
+    "F:/MTS/data/tom_raw/klines (read)",
+    "F:/MTS/data/dev_ext_2019_2021/klines (read)"
+  ],
+  "scope_out": [
+    "no live tree, deploy, process or HALT touch; no .secrets, .env or keys; no bar after 2024-06-30",
+    "no edit outside the new folder"
+  ],
+  "scope_sha": "",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Write your own trade loop from AUDIT.md section 2 text: causal pivots, next-bar order, 1m walk, stop first",
+    "Run it 2020-01..2024-06; compare n, mean, CI, PF, placebo",
+    "For sections 1 and 3-7: one row per claim, AGREE or DISAGREE with file:line or the number you got",
+    "Name anything the audit missed or overstated"
+  ],
+  "tests": "see done_when (audit card, RECHECK.md is the test)",
   "title": "Independent recheck of research/mts_audit_2026-11-03/AUDIT.md: rerun pitchfork_recheck.py logic from your own trade loop and attack each claim; done when each section has AGREE or DISAGREE with proof",
-  "weight": "",
+  "weight": "ROUTINE",
   "worker": ""
 }

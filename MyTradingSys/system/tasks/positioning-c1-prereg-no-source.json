@@ -35,7 +35,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
   "pinned": false,
   "prio": 4,
   "refine_tries": 0,
@@ -63,7 +63,7 @@
   "sources": [
     "MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_POSITIONING.md"
   ],
-  "state": "blocked",
+  "state": "refined",
   "steps": [
     "Write MyTradingSys/research/positioning_c1_2026-10/PRE_REG_POSITIONING_C1.md with all 12 items and gates 0a-0f answered; label every number SOURCED or OURS (all of C1's are OURS) and state in item 1 that the layer is not a FlowHorse or whale layer.",
     "Use COUNT_POWER.md for items 3, 9, 10; copy the null spec; state which result ends the source (kill rule) and the redesign budget.",

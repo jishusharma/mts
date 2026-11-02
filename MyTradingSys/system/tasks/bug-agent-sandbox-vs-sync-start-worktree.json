@@ -24,7 +24,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
   "pinned": false,
   "prio": 3,
   "refine_tries": 0,
@@ -45,7 +45,7 @@
     "MyTradingSys/research/nuc_restart_2026-10-28/ISSUES_REGISTER.md:12",
     "scripts/dev/sync.py:529-548"
   ],
-  "state": "blocked",
+  "state": "refined",
   "steps": [
     "Reproduce: in a tmp repo, run start <slug> --worker with cwd = <repo>/.claude/worktrees/agent-x; confirm a second WORKTREE: line is made",
     "In start(): when --worker and the tree is a clean .claude/worktrees/agent-* checkout (own branch, not the Supervisor tree), skip new_worktree and work there",

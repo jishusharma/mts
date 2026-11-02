@@ -31,7 +31,7 @@
   "not_twin_of": [
     "krown-dev-event-study"
   ],
-  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
@@ -56,7 +56,7 @@
     "MyTradingSys/research/kurisko_2026-10-18/PRE_REG.md (written by the previous card)",
     "MyTradingSys/backtest/layers/FORMULAS.md section 13 (cost model and net formula, read only)"
   ],
-  "state": "blocked",
+  "state": "refined",
   "steps": [
     "read PRE_REG.md; the run script refuses to start if the PRE_REG commit does not precede this run, a cell differs from the frozen list, a data file sha differs from the PRE_REG, or a run receipt (PRE_REG sha, module sha, seed) already exists: one run only.",
     "run each cell once: fee-net R with the cost model and funding rule exactly as frozen in the PRE_REG (no new choice here), MFE/MAE, 200 random-clock placebos with the PRE_REG seed, Holm over the frozen cells; DEV only (the loader refuses bars >= 2024-07-01).",

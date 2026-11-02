@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "sim desk: link the 6 new catalogue rows to their result cards (CI red fix)",
-      "ref": "d4ad357afb34",
-      "utc": "2026-11-02T12:27:53Z"
+      "line": "MTS alignment audit: Pitchfork PASS withdrawn, blockers loosened, DAX archived",
+      "ref": "00959e91385b",
+      "utc": "2026-11-02T19:40:18Z"
     }
   ],
   "layers": [
@@ -31,7 +31,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T16:47:53Z",
+  "refreshed": "2026-11-02T20:01:01Z",
   "refs": [
     "MyTradingSys/research/tom_fabio_review_2026-10-31/SETUP_REVIEW.md"
   ],
@@ -47,7 +47,7 @@
   "scope_out": [
     "VALIDATION or HOLDOUT, live tree, publishing the artifact"
   ],
-  "scope_sha": "d4ad357afb34",
+  "scope_sha": "00959e91385b",
   "size": "M",
   "sources": [],
   "state": "ready",

@@ -4,31 +4,50 @@
   "commands": [],
   "created": "2026-11-02T16:25:10Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "test_extra_tests_union.py passes; a merge of two appended rows has both rows.",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Two ships adding one test each conflict on extra_tests.tsv and stop the GPT lane (SHIP_FAILED). Make the file merge as a union.",
   "id": "extra-tests-tsv-union-merge",
-  "lane": "",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into DESKTOP-F7IU69N/gemini-yt-batch-1102",
+      "ref": "c5d033a9eae3",
+      "utc": "2026-11-02T17:09:58Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
-  "mutation_check": "",
-  "note": "",
-  "prio": 3,
+  "note": "Refined by Supervisor B 2026-11-03: Codex queue was empty (operator).",
+  "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-02T20:01:20Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    ".gitattributes",
+    "scripts/dev/test_extra_tests_union.py",
+    "scripts/dev/extra_tests.tsv"
+  ],
+  "scope_out": [
+    "no live tree, deploy, process or HALT touch; no .secrets, .env or keys; no bar after 2024-06-30"
+  ],
+  "scope_sha": "c5d033a9eae3",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Add a merge=union line for the tsv path to .gitattributes",
+    "Test: in a temp repo, two branches each append a row, merge gives both rows and no conflict"
+  ],
+  "tests": "scripts/dev/test_extra_tests_union.py fails before the .gitattributes line and passes after",
   "title": "extra_tests.tsv conflicts stop the GPT lane: two ships adding a test each left a merge conflict in the lab tree and the tick exited 1. Done when .gitattributes sets merge=union for it and two parallel additions merge clean.",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

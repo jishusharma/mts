@@ -23,9 +23,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "feat(cbp): add channel to CBP row schema and query filter",
-      "ref": "358a0e50a07c",
-      "utc": "2026-10-29T22:10:27Z"
+      "line": "feat(cbp): discord_rows loader (IST->UTC, hand JSON, message JSON, DOM HTML parser, ingest",
+      "ref": "e4290e2b60b3",
+      "utc": "2026-11-02T17:12:28Z"
     }
   ],
   "layers": [],
@@ -35,7 +35,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T16:47:02Z",
+  "refreshed": "2026-11-02T20:00:59Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -46,7 +46,7 @@
   "scope_out": [
     "no Discord token or export tool, no posting, no live tree, no scorecard change, no cbp_run.py change"
   ],
-  "scope_sha": "358a0e50a07c",
+  "scope_sha": "e4290e2b60b3",
   "size": "M",
   "sources": [
     "operator voice quote 2026-10-28 in note; research/imbalance_qriptal_2026-10-16/discord/README.md"

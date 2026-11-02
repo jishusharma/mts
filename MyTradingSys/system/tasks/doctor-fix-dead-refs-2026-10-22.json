@@ -31,7 +31,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
   "pinned": false,
   "prio": 4,
   "refine_tries": 0,
@@ -55,7 +55,7 @@
   "sources": [
     "scripts/dev/mts_doctor.py DEAD-REF check"
   ],
-  "state": "blocked",
+  "state": "refined",
   "steps": [
     "Run mts_doctor.py --no-process; list the DEAD-REF lines per file (then git checkout the report).",
     "For each, git log --all --diff-filter=D to find where the file went; replace with the new tracked path or delete the line.",

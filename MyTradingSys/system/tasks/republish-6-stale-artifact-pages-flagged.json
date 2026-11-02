@@ -30,9 +30,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "sim-demo: C30 trade replay, pre-US pullback row, requirements file",
-      "ref": "7b77c28969fd",
-      "utc": "2026-11-02T11:57:03Z"
+      "line": "sim-demo: search box typed backwards (C30 looked missing), fixed; operator item 1 logged",
+      "ref": "a2a631c826a4",
+      "utc": "2026-11-02T19:40:04Z"
     }
   ],
   "layers": [],
@@ -45,7 +45,7 @@
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "planner-20261030-d",
-  "refreshed": "2026-11-02T16:47:41Z",
+  "refreshed": "2026-11-02T20:00:59Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -56,7 +56,7 @@
   "scope_out": [
     "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no product-code edit; never publish a second copy (a new url); no page without edit access ('writer' in Artifact read)"
   ],
-  "scope_sha": "7b77c28969fd",
+  "scope_sha": "a2a631c826a4",
   "size": "S",
   "sources": [],
   "state": "ready",

@@ -33,7 +33,7 @@
     "pitchfork-review-fixes-2026-10-28",
     "pitchfork-engine-implement-hagopian-fail"
   ],
-  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
   "pinned": false,
   "prio": 2,
   "refine_tries": 2,
@@ -55,7 +55,7 @@
   "sources": [
     "MyTradingSys/research/pitchfork_2026-10-19/OPUS_E2E_REVIEW_2026-10-28.md:23-29,41"
   ],
-  "state": "blocked",
+  "state": "refined",
   "steps": [
     "F3 in PitchforkSignalLayer.java (~L442-511): PF-REV bounce branch returns no candidate when hasReachedMl is true or (n4h-1 - p2.index) > 60 bars (OURS: p2.index stands in for Python's p2_confirm_bar; label it OURS).",
     "F6: PF-REV tine/entry chosen by pf.p2IsLower (UML vs LML through P2), not by name; keep isLong = !p2.isHigh; match Python desk scanner :494,498.",

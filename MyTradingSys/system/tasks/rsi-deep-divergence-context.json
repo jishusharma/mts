@@ -33,7 +33,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
@@ -62,7 +62,7 @@
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/APPLIED.md",
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/SHOT_REVIEW.md"
   ],
-  "state": "blocked",
+  "state": "refined",
   "steps": [
     "Read SPEC Steps I-J and SHOT_REVIEW (c)/(d); check rsi_divergence.py stamp is not earlier than the confirming bar (OPUS_FRAMING s2.2 item 5) before reuse.",
     "Implement the detector (pairing rules, close vs wick, eps, min RSI diff, FAILURE_SWING, firing numbers) and pass K1-K10 first.",

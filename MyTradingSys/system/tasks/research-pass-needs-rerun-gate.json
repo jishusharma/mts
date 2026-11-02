@@ -4,33 +4,55 @@
   "commands": [],
   "created": "2026-11-02T19:38:37Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "test_pass_needs_verdict.py passes on trunk; the planted case fails; offenders are named in the report.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "A PASS can sit in layer_map.json with no register row, as Pitchfork did for 15 days. Make that fail the test suite.",
   "id": "research-pass-needs-rerun-gate",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "MTS alignment audit: Pitchfork PASS withdrawn, blockers loosened, DAX archived",
+      "ref": "00959e91385b",
+      "utc": "2026-11-02T19:40:18Z"
+    }
+  ],
   "layers": [
     "live_engine"
   ],
   "live_path": false,
-  "mutation_check": "",
-  "note": "",
+  "note": "Refined by Supervisor B 2026-11-03: Codex queue was empty (operator).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-02T20:01:20Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/test_pass_needs_verdict.py (new)",
+    "MyTradingSys/system/layer_map.json (read)",
+    "MyTradingSys/research/VERDICTS.csv (read)",
+    "scripts/dev/extra_tests.tsv"
+  ],
+  "scope_out": [
+    "no live tree, deploy, process or HALT touch; no .secrets, .env or keys; no bar after 2024-06-30",
+    "no change to any verdict or layer row"
+  ],
+  "scope_sha": "00959e91385b",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Test: each layer_map value starting PASS needs a VERDICTS.csv row with verdict PASS for that study",
+    "List any current offender in the report rather than editing it; add known offenders to an explicit allowlist in the test",
+    "Register the test in extra_tests.tsv"
+  ],
+  "tests": "scripts/dev/test_pass_needs_verdict.py: a planted PASS with no row fails; the same PASS with a row passes",
   "title": "CI: a PASS in layer_map.json or a result card needs a VERDICTS.csv row; done when a PASS without a row fails CI, test failing first",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
