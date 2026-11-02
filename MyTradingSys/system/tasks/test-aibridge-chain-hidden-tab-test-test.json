@@ -4,13 +4,15 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-02T18:54:23Z",
-    "misses": 17,
+    "folded": "2026-11-02T18:54:47Z",
+    "misses": 23,
     "reads": [
+      "scripts/dev/test_tasks.py",
       "scripts/dev/run_all_tests.py",
+      "scripts/dev/task_state.py",
+      "scripts/dev/test_desk.py",
       "scripts/dev/test_run_all_tests.py",
       "MyTradingSys/tests/test_gate_discovery_b150.py",
-      "scripts/dev/task_state.py",
       "MyTradingSys/tests/aibridge_dom.py"
     ],
     "session": "agent-a7b69ae82e08564ff"
@@ -25,6 +27,15 @@
   "goal": "The AIBridge 54-block hidden-tab test stops failing sync.py ship step 4b under load: its headless-Chrome call has a 240 s cap against a 137 s quiet run, and the gate budgets it at 2 s.",
   "id": "test-aibridge-chain-hidden-tab-test-test",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "AIBridge 0.7.21: one version source, chat label shows extension/page/disk/agent versions a",
+      "ref": "ac7a2ec4465a",
+      "utc": "2026-11-02T18:32:49Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -32,6 +43,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-02T18:54:25Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -44,16 +56,18 @@
     "MyTradingSys/aibridge extension code (content.js, loop.js)",
     "deleting or skipping the test"
   ],
+  "scope_sha": "ac7a2ec4465a",
   "size": "S",
   "sources": [],
-  "state": "raw",
+  "state": "ready",
   "steps": [
-    "Cause (read, do not re-derive): tests/aibridge_dom.py run_page() runs headless Chrome with --virtual-time-budget and subprocess.run(timeout=<arg>); test_aibridge_chain.py:51 passes timeout=240 and budget 950000 ms. Alone it takes ~137 s, so under a loaded gate (4 pool steps) 240 s wall is exceeded -> subprocess.TimeoutExpired. Also run_all_tests.py TEST_FILE_SECONDS has no entry for test_aibridge_chain.py, so the shard balancer counts 2 s and parks it in 4b beside other files; FAST_STEP_TIMEOUT_S=240 caps the whole shard in smoke mode.",
-    "In tests/aibridge_dom.py run_page: read float env MTS_BROWSER_TIMEOUT_SCALE (default 1.0; bad value -> 1.0) and pass timeout=int(timeout*scale) to subprocess.run; keep the signature. Label DECISION (OURS).",
-    "In test_aibridge_chain.py:51 raise the call to timeout=480 (OURS: 3.5x the 137 s quiet run). Assertions unchanged.",
-    "In run_all_tests.py TEST_FILE_SECONDS add test_aibridge_chain.py: 140 (measured alone 137 s) so the greedy balancer gives it a shard of its own, and the SLOW_FILE_S>=30 rule keeps it out of the targeted precheck.",
-    "If step 4b's shard timeout (FAST_STEP_TIMEOUT_S 240) still cuts the shard in --full mode, check step_timeout_for(mode): only smoke gets 240; if full/ship step 4b is capped, add a per-step override for the shard holding this file (e.g. 600 s). Verify by reading run_all_tests.py:226-250 and 745-747 before editing.",
-    "Add MyTradingSys/tests/test_aibridge_chain_budget.py with the two failing-first tests (see tests field); confirm they fail on the pre-change code via git stash of the three edits.",
+    "Cause: tests/aibridge_dom.py run_page() calls subprocess.run(timeout=N); test_aibridge_chain.py:51 passes 240 s vs a 137 s quiet run, so a loaded gate trips TimeoutExpired.",
+    "Also run_all_tests.py TEST_FILE_SECONDS has no entry for this file (balancer counts 2 s), and FAST_STEP_TIMEOUT_S=240 caps a whole shard in smoke mode.",
+    "In run_page read float env MTS_BROWSER_TIMEOUT_SCALE (default 1.0, bad value -> 1.0); pass timeout=int(timeout*scale). Keep signature. DECISION (OURS).",
+    "test_aibridge_chain.py:51: timeout=480 (OURS: 3.5x the quiet run). Assertions unchanged.",
+    "run_all_tests.py TEST_FILE_SECONDS: add test_aibridge_chain.py: 140 (measured alone 137 s) so it gets a shard to itself.",
+    "Read run_all_tests.py:226-250 and 745-747: if ship --full still caps step 4b at 240 s, add a 600 s override for the shard holding this file.",
+    "Add MyTradingSys/tests/test_aibridge_chain_budget.py with the two tests from the tests field; confirm both fail with the three edits stashed.",
     "Run the chain test alone (pytest -k hidden_tab), then sync.py ship --full once; report step 4b time."
   ],
   "tests": "New test in MyTradingSys/tests/test_aibridge_chain_budget.py: (a) TEST_FILE_SECONDS in run_all_tests has test_aibridge_chain.py >= 120 (fails on old code: absent); (b) run_page's subprocess timeout equals timeout*scale (monkeypatch subprocess.run, env scale=2 -> timeout 480; fails on old code: fixed). Then run the chain test alone and one ship --full.",
