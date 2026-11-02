@@ -9,6 +9,7 @@ Usage: python build_catalogue.py [--out FILE]
 """
 import argparse
 import csv
+import datetime
 import json
 import os
 import re
@@ -50,9 +51,10 @@ def date_of(source):
     if m:
         return m.group(1)
     try:
-        out = subprocess.run(["git", "-C", ROOT, "log", "-1", "--format=%cs", "--", source.split("#")[0]],
+        out = subprocess.run(["git", "-C", ROOT, "log", "-1", "--format=%ct", "--", source.split("#")[0]],
                              capture_output=True, text=True, timeout=30).stdout.strip()
-        return out or None
+        # the short-date format needs git 2.21 and older git prints it literally, so format the unix time here
+        return datetime.datetime.fromtimestamp(int(out), datetime.timezone.utc).date().isoformat() if out else None
     except Exception:
         return None
 
