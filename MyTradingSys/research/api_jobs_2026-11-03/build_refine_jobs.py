@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 HERE = Path(__file__).parent
+BLOCKED = ('.secrets', '.env', '.pem', '.key', 'api_key', 'apikey')   # same list as scripts/dev/api_batch.py
 ASK = """You triage one work card on a trading research board. Reply with one JSON object and nothing else.
 Keys: action (KEEP or DROP), reason (one line), and for KEEP any of: goal, done_when, tests, steps (list), scope_in (list), scope_out (list), commands (list), lane, kind, size, est_turns, worker.
 DROP only if the card is already done, duplicates another open title, or only serves a direction archived below, inside that direction's scope. If unsure, KEEP.
@@ -24,6 +25,7 @@ def main():
     audit = (HERE.parent / 'mts_audit_2026-11-03/AUDIT.md').read_text(encoding='utf-8')
     archive = audit.split('## 5.')[1].split('## 6.')[0]
     n = 0
+    held = []
     with open(HERE / 'refine_backlog_sonnet.jsonl', 'w', encoding='utf-8', newline='\n') as out:
         for path in sorted(glob.glob('MyTradingSys/system/tasks/*.json')):
             d = json.load(open(path, encoding='utf-8-sig'))
@@ -32,9 +34,12 @@ def main():
             scope = [str(s).split(' (')[0] for s in d.get('scope_in') or []]
             paths = {s: Path(s).exists() for s in scope}
             prompt = ASK.format(archive=archive, card=json.dumps(d, ensure_ascii=False), paths=json.dumps(paths))
+            if any(b in prompt.lower() for b in BLOCKED):
+                held.append(d['id'])   # api_batch refuses these: they stay for a Claude refiner
+                continue
             out.write(json.dumps({'id': d['id'], 'prompt': prompt}, ensure_ascii=False) + '\n')
             n += 1
-    print('jobs', n)
+    print('jobs', n, 'held for a Claude refiner', len(held))
 
 
 if __name__ == '__main__':
