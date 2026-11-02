@@ -7,8 +7,8 @@
 | Login | GitHub identity | Machines (relay_runs.jsonl, artifacts/registry.json) | Claude GitHub App | Role |
 |---|---|---|---|---|
 | A: jishu.sharma@gmail.com | jishusharma (repo owner) | Lenovo DESKTOP-F7IU69N (roll call `mts_signal.py who`, 2026-10-25; was JIS-NUC on 2026-10-15) | installed, cloud sessions only | Control Room Inbox and decisions owner (q21); all artifacts belong here |
-| B: jishu.awgp | jishu-awgp (write collaborator, checked 2026-10-14) | JIS-NB (inferred 2026-10-15, not checked) | not installed yet | second login; its pages are read-only copies |
-| C: jishusharma1985@gmail.com (Claude Max, 2026-10-14) | jishusharma1985 (write invite sent 2026-10-14, accept pending) | JIS-NB and JIS-NUC | not installed yet | third login, same queue and ritual |
+| B: jishu.awgp | jishu-awgp (write collaborator, checked 2026-10-14) | JIS-NUC (operator 2026-11-02) | not installed yet | second login; its pages are read-only copies |
+| C: jishusharma1985@gmail.com (Claude Max, 2026-10-14) | jishusharma1985 (write invite sent 2026-10-14, accept pending) | JIS-NB = JIS-DESKTOP (operator 2026-11-02) | not installed yet | third login, same queue and ritual |
 
 Repo owned by: jishusharma/mts (GitHub user jishusharma). One repo. Never duplicate the repo. Never fork for a second login.
 All logins take the same queue (NEXT_SESSION.md); whichever has budget runs it. Claims are labelled by the machine's `MTS_ACCOUNT`
@@ -45,7 +45,7 @@ Operator does these once; sessions cannot (they need the GitHub owner login):
 Ritual and per-device rules: PARALLEL.md "Devices and accounts".
 
 ## Login C: jishusharma1985@gmail.com (Claude Max, added 2026-10-14)
-Used from JIS-NB and JIS-NUC (Claude Code Win App), same queue and ritual as A and B.
+Used from the desktop JIS-NB (Claude Code Win App), same queue and ritual as A and B.
 - Local work needs no GitHub step: a session pushes with the machine's own git login (JIS-NB: `jishusharma` via gh), whatever Claude login is signed in.
 - Same wiring as B for cloud sessions and per-login audit (operator, once):
   1. Create a GitHub user for jishusharma1985@gmail.com (suggested login `jishusharma1985`). A session may not create accounts.
@@ -59,8 +59,16 @@ Used from JIS-NB and JIS-NUC (Claude Code Win App), same queue and ritual as A a
   budget, the coordinator starts sessions signed in as C; never recreate mts-dispatcher.
 - How a session knows it is on C: `Artifact read` of a jishu.sharma or jishu.awgp page url says "not found".
 
-## Which login is on which machine (checked 2026-10-15, decision q21)
-Until 2026-10-15 the repo put A on JIS-NB and B on JIS-NUC. A session on JIS-NUC whose Claude login is jishu.sharma@gmail.com
+## Which login is on which machine (operator 2026-11-02, replaces everything older)
+| Machine | Claude login | Gemini account (Antigravity) |
+|---|---|---|
+| Lenovo laptop (DESKTOP-F7IU69N, JIS-LAPTOP) | A | `gemini-laptop`: Antigravity app |
+| JIS-NUC | B | `gemini-nuc`: Antigravity plugin in VS Code |
+| Desktop (JIS-NB, JIS-DESKTOP) | C (Max) | none |
+
+Two Gemini accounts, one per machine above. Login letters name Claude logins only. The API credit key lives at F:/ClaudePlaform/key.txt on the desktop and on the NUC, never in the repo.
+
+History (2026-10-15, decision q21): until 2026-10-15 the repo put A on JIS-NB and B on JIS-NUC. A session on JIS-NUC whose Claude login is jishu.sharma@gmail.com
 owns the Control Room Ep6gA5 and the other pages then filed under jishu.awgp, and cannot read EoHi2q (then filed under jishu.sharma).
 So the NUC app runs login A and the JIS-NB pages belong to another login (B by elimination; a session on JIS-NB confirms with `Artifact list`).
 Check before trusting a label: the session's own account email and `Artifact list` decide, not this table.
