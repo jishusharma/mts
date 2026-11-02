@@ -25,6 +25,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from MyTradingSys.backtest.fees import BINANCE_MAKER, BINANCE_TAKER
+from MyTradingSys.backtest.research_kit import TAKER_RT_PCT
 from MyTradingSys.backtest.layers.pitchfork.pitchfork_detector import (
     PitchforkChannel,
     PitchforkPivot,
@@ -44,9 +45,8 @@ MIN_CHANGE = 0.03  # study value, OURS
 HORIZON_BARS = 60  # study value, OURS
 STOP_PCT = 0.015  # study value, OURS
 BAR_MS = 14_400_000
-SLIP = 0.0002  # study's 2 bp, OURS
-COST_STUDY = BINANCE_MAKER + BINANCE_TAKER + SLIP
-COST_STRESS = 2 * BINANCE_TAKER + 2 * SLIP
+COST_STUDY = BINANCE_MAKER + BINANCE_TAKER + BINANCE_MAKER  # the study's own expression: its 2 bp slip is the maker figure
+STRESS_RT = TAKER_RT_PCT / 100
 
 
 @dataclass
@@ -290,7 +290,7 @@ def main():
     causal = causal_setups(highs, lows)
     print("setups final", len(final), "causal", len(causal), flush=True)
     variants = [("Standard_Andrews", PitchforkVariant.STANDARD), ("Modified_Schiff", PitchforkVariant.MODIFIED_SCHIFF)]
-    out = {"cost_study": COST_STUDY, "cost_stress": COST_STRESS, "setups_final": len(final), "setups_causal": len(causal), "cells": []}
+    out = {"cost_study": COST_STUDY, "cost_stress": STRESS_RT, "setups_final": len(final), "setups_causal": len(causal), "cells": []}
     for vname, var in variants:
         for flt in ("UNFILTERED", "VA_CONFLUENT"):
             cell = {"variant": vname, "filter": flt, "arms": {}}
@@ -312,7 +312,7 @@ def main():
             arms["EXACT"] = [(t, g) for t, g, _s, _g in exact]
             for tag, tr in arms.items():
                 cell["arms"][tag] = {k: stats(v, COST_STUDY) for k, v in split(tr).items()}
-            cell["arms"]["EXACT_stress_both"] = stats(arms["EXACT"], COST_STRESS)
+            cell["arms"]["EXACT_stress_both"] = stats(arms["EXACT"], STRESS_RT)
             cell["placebo_both"] = placebo_mean(exact, bars, m, COST_STUDY, args.placebo_runs)
             out["cells"].append(cell)
             print(json.dumps(cell), flush=True)
