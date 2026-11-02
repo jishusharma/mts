@@ -180,7 +180,7 @@ $("nav").innerHTML='<input id="q" type="search" placeholder="Search '+CAT.length
 '<label class="note"><input id="onlyx" type="checkbox"'+(only?" checked":"")+'> hand-made charts only ('+CAT.filter(r=>r.exported&&r.provenance!=="source-extracted").length+')</label><div class="note">'+rows.length+' of '+CAT.length+' shown, newest first</div><div id="lst">'+list+"</div>";
 ["q","kf","vf","ff"].forEach(i=>$(i).oninput=refilter);$("onlyx").onchange=refilter;
 $("nav").onclick=e=>{const b=e.target.closest("button");if(b){location.hash=b.dataset.id}};}
-function refilter(){const id=document.activeElement&&document.activeElement.id;buildNav();if(id&&$(id))$(id).focus();}
+function refilter(){const id=document.activeElement&&document.activeElement.id;buildNav();const el=id&&$(id);if(el){el.focus();if(el.id==="q")el.setSelectionRange(el.value.length,el.value.length);}}
 function stub(r){return '<h1 style="font-size:20px;margin:0 0 6px">'+esc(r.title)+'</h1><span class="pill '+(r.status==="FAILED"?"bad":"")+'">'+esc(KIND[r.kind]||r.kind)+"</span> <span class=\"pill\">charts not exported yet</span>"+
 '<h2 class="s">Verdict as written</h2><p>'+esc(r.verdict)+'</p><h2 class="s">Where it lives</h2><p class="src">'+esc(r.source)+'</p><p class="note">Family: '+esc(r.family)+". The kind ("+esc(r.kind_source||"")+") and the verdict line were read from the file automatically, so check them against the source. No numbers or examples are shown until this test is exported to sim_desk/results/.</p>";}
 function table(x){return '<div class="tw"><table><tr>'+x.cols.map(c=>"<th>"+esc(c)+"</th>").join("")+"</tr>"+x.rows.map(r=>"<tr>"+r.map(c=>"<td>"+esc(c)+"</td>").join("")+"</tr>").join("")+"</table></div>";}

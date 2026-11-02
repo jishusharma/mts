@@ -14,7 +14,6 @@
   };
   var autoRun = false;
   var stopHold = false;          // a stop reason stays on the status line until the operator re-arms (watchdog must not overwrite it)
-  var anyPosted = false;         // a part of the current result already landed (a retry would duplicate it)
   var lastPostErr = '';          // why the last post failed, for the stop reason
   var runs = 0;
   var resultN = 0;
@@ -173,6 +172,10 @@
     lastIgnored = sel.ignored.length;
     return sel.selected.map(function (i) { return out[i]; });
   }
+  var ranEls = typeof WeakSet !== 'undefined' ? new WeakSet() : { add: function () {}, has: function () { return false; } };
+  // 0.7.22 (Argon #1): the key is a hash of the text, so a block that ran half-written and then grew got a new key and ran again.
+  // A block ELEMENT that already ran never runs a second time.
+  function isUnrun(b) { return !ranKeys[blockKey(b)] && !ranEls.has(b); }
   function blockCmd(block) { return stripMarker(btext(block)).trim(); }
   function blockKey(block) {
     // fnv(cmd) + occurrence number among blocks with the same command: stable when other blocks shift the index
@@ -223,6 +226,9 @@
   // itself when nothing is running; a page whose extension was reloaded under it re-attaches by reloading itself (idle, once per 10 min).
   var vstate = { level: 'ok', text: '' }, lastVer = 0;
   function idleNow() { return !inRun && !working && !(pending && pending.length); }
+  // 0.7.22 (Argon #3): a reload or F5 drops the armed state and a chain in flight. Self-update only when hands-free is OFF; while armed the
+  // red label says what to do and the update waits for the chain to end.
+  function canSelfUpdate() { return idleNow() && !autoRun && !watch; }
   function versionTick() {
     var now = Date.now();
     if (now - lastVer < 60000) return;
@@ -243,10 +249,10 @@
           if (ui.verEl) ui.verEl.textContent = 'AIBridge: extension ' + (v.loaded || '?') + ' | this page ' + VER + ' | disk ' + (v.disk || '?') + ' | agent ' + (agent || '?') + (vstate.level === 'ok' ? ' - all match' : ' - MISMATCH, see below');
           if (ui.box) ui.box.dataset.ver = vstate.level;
           if (vstate.level !== 'ok' && ui.info) ui.info.textContent = vstate.text;
-          if (vstate.level === 'page_stale' && idleNow()) {   // the extension is newer than this page's script: an F5 fixes it, so do it (idle, once per 10 min)
+          if (vstate.level === 'page_stale' && canSelfUpdate()) {   // the extension is newer than this page's script: an F5 fixes it, so do it (idle, once per 10 min)
             try { var lp = parseInt(sessionStorage.getItem('aibridge_page_reload') || '0', 10); if (Date.now() - lp > 600000) { auditEvent('page ' + VER + ' older than extension ' + (v.loaded || '?') + ': reloading the page'); sessionStorage.setItem('aibridge_page_reload', String(Date.now())); location.reload(); } } catch (e) {}
           }
-          if (vstate.level === 'ext_stale' && idleNow()) { try { chrome.runtime.sendMessage({ type: 'reload' }); } catch (e) {} }
+          if (vstate.level === 'ext_stale' && canSelfUpdate()) { try { chrome.runtime.sendMessage({ type: 'reload' }); } catch (e) {} }
         });
       });
     } catch (e) {}
@@ -394,13 +400,11 @@
   function clickSend(el) {
     var cur = el.parentElement;
     for (var up = 0; cur && up < 6; up++, cur = cur.parentElement) {
-      var bs = cur.querySelectorAll('button, [role="button"]');
-      for (var i = bs.length - 1; i >= 0; i--) {
-        var b = bs[i];
-        if (isOurs(b) || b.getAttribute('aria-disabled') === 'true' || b.disabled) continue;
-        b.click();
-        return true;
-      }
+      var bs = Array.prototype.filter.call(cur.querySelectorAll('button, [role="button"]'), function (x) { return !isOurs(x); });
+      var pick = L.pickSendButton(bs.map(function (x) {
+        return { label: (x.getAttribute('aria-label') || '') + ' ' + (x.getAttribute('title') || '') + ' ' + (x.textContent || '').slice(0, 30), disabled: x.disabled || x.getAttribute('aria-disabled') === 'true' };
+      }));
+      if (pick >= 0) { bs[pick].click(); return true; }
     }
     return false;
   }
@@ -436,7 +440,12 @@
       clickSend(el2);
       for (var j = 0; j < 12 && !landed; j++) { await sleep(250); landed = L.postLanded(liveInput(el2), nowInput()); }
     }
-    if (!landed) { lastPostErr = 'the chat input did not clear after sending'; return false; }
+    if (!landed) {
+      lastPostErr = 'the chat input did not clear after sending';
+      var elx = findInput();   // 0.7.22 (Argon #2): our text left in the box would read as busy and as an operator draft; put the operator's draft back
+      if (elx) setInput(elx, draft);
+      return false;
+    }
     if (draft.trim() !== '') {
       var el3 = findInput();
       if (el3) setInput(el3, draft);
@@ -460,6 +469,7 @@
   var emptyFirst = 0;
   function stopAuto(why) {
     auditEvent('auto OFF: ' + (why || 'stopped'));
+    emptyFirst = 0;
     autoRun = false; stopHold = true; token++; pending = []; watch = null;
     setStatus(why || 'stopped');
     showStopBanner(L.stopNotice(why));
@@ -494,8 +504,8 @@
   // Run every unrun block of the finished reply, in order; post ONE message with a receipt for each block.
   async function runBatch(trigger) {
     var myToken = token;
-    var blocks = allBlocks().filter(function (b) { return !ranKeys[blockKey(b)]; });
-    if (!blocks.length && trigger && !ranKeys[blockKey(trigger)]) blocks = [trigger];
+    var blocks = allBlocks().filter(function (b) { return isUnrun(b); });
+    if (!blocks.length && trigger && isUnrun(trigger)) blocks = [trigger];
     if (!blocks.length) return;
     // 0.7.18: read a block only when complete. (a) a block with a marker but no body yet is still rendering: wait up to 30 s
     // instead of reporting 'no command' and marking it done; (b) the text must be identical across a second read 1.2 s later,
@@ -508,13 +518,13 @@
     var snap = blocks.map(btext).join('\u0001');
     await sleep(1200);
     if (myToken !== token) return;
-    var again = allBlocks().filter(function (b) { return !ranKeys[blockKey(b)]; });
+    var again = allBlocks().filter(function (b) { return isUnrun(b); });
     if (again.map(btext).join('\u0001') !== snap) { setStatus('the reply was still changing; reading it again'); return; }
     emptyFirst = 0;
     if (runs >= CFG.aibridge_cap) { stopAuto('auto OFF at the cap: ' + CFG.aibridge_cap + ' blocks ran in this chain. Tick the box again to continue (the counter restarts).'); return; }
     // mark first: a block is never run twice, and anything that appears while we run belongs to the next reply
     var items = blocks.map(function (b) { var o = L.parseMarker(btext(b)); return { block: b, cmd: blockCmd(b), opts: o, shown: o.task ? 'TASK ' + o.task + ' ' + JSON.stringify(o.params || {}) + (o.task === 'inline' ? ' plan=' + L.cmdPreview(blockCmd(b), 300) : '') : null }; });
-    items.forEach(function (it) { ranKeys[blockKey(it.block)] = true; });
+    items.forEach(function (it) { ranKeys[blockKey(it.block)] = true; ranEls.add(it.block); });
     pending = [];
     var dups = L.dupOf(items.map(function (it) { return btext(it.block); }));
     inRun = true;
@@ -600,7 +610,7 @@
   // one notice per chain when DSA's generation drops after our result, then a stop banner (D4); never during a run
   async function replyTick() {
     if (!watch || watch.phase !== 'waiting' || !autoRun || replyBusy) return;
-    var answered = pending.length > 0 || allBlocks().some(function (b) { return !ranKeys[blockKey(b)]; }) ||
+    var answered = pending.length > 0 || allBlocks().some(function (b) { return isUnrun(b); }) ||
       (Date.now() - sigX.at >= CFG.aibridge_quiet_ms && answerLen() - postedAnsLen >= L.ANSWER_MIN_CHARS);
     if (answered) { watch = L.replyWatch(watch, { type: 'reply' }, Date.now()).state; return; }
     var r = L.replyWatch(watch, { type: 'tick', busy: inRun || !!inputText(findInput() || {}) }, Date.now());
@@ -634,7 +644,7 @@
     if (!alive() || baseline || working || textQuiet() < CFG.aibridge_quiet_ms) return;
     var seen = allBlocks();
     if (!seen.length && lastIgnored > 0 && !stopHold) setStatus('ignored ' + lastIgnored + ' block(s) inside the thinking panel (only the final answer runs)');
-    var unrun = seen.filter(function (b) { return !ranKeys[blockKey(b)]; });
+    var unrun = seen.filter(function (b) { return isUnrun(b); });
     if (!unrun.length) return;
     if (autoRun && pending.length === 0) {
       var u = unrun[unrun.length - 1];

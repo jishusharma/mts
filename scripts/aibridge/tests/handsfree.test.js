@@ -170,3 +170,10 @@ t('versionState: a chat page older than the extension says F5 (page_stale)', () 
   assert.strictEqual(v.level, 'page_stale'); assert.ok(/F5/.test(v.text));
   assert.strictEqual(L.versionState('0.7.20', '0.7.20', '0.7.20', '0.7.20').level, 'ok');
 });
+t('pickSendButton: a labelled Send wins; Stop, attach, search and think are never picked', () => {
+  assert.strictEqual(L.pickSendButton([{ label: 'Attach file' }, { label: 'Send message' }, { label: 'Stop generating' }]), 1);
+  assert.strictEqual(L.pickSendButton([{ label: 'DeepThink' }, { label: 'Search' }, { label: '' }]), 2);
+  assert.strictEqual(L.pickSendButton([{ label: 'Stop' }, { label: 'Attach' }]), -1);
+  assert.strictEqual(L.pickSendButton([{ label: 'Send', disabled: true }, { label: '' }]), 1);
+  assert.strictEqual(L.pickSendButton([]), -1);
+});
