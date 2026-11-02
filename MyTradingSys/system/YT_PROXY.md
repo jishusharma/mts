@@ -19,5 +19,6 @@ All files live in `~/.mts/ytproxy/`, outside the repo (the account file holds a 
 call plus the ipify check through `socks5://127.0.0.1:40000`. It starts wireproxy for the run if the port is closed and
 stops it afterwards. If the proxy is set but down, the run exits 2 and makes no request: it never falls back to the home IP.
 - Env `YT_PROXY=<url>` overrides the proxy; `YT_PROXY=off` goes direct.
-- The guard is unchanged and keyed by the exit IP: 5 videos per run, 40 requests per 24 h, lockout 6/24/72 h on a 429.
+- The guard is keyed by the exit IP: 5 videos per run, lockout 6/24/72 h on a 429; 150 requests per 24 h on the proxy
+  (OURS: one CBP run uses ~35, 2 runs a day), 40 on a direct IP; env YT_DAILY_BUDGET overrides.
 - If WARP's IP gets a 429 as well, run `wgcf register` again for a new account, or wait for the lockout to end.

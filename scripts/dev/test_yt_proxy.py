@@ -40,6 +40,13 @@ class T(unittest.TestCase):
         self.assertEqual(f.proxy_url(), "socks5://127.0.0.1:40000")
         self.assertEqual(f.ydl_opts({"quiet": True})["proxy"], "socks5://127.0.0.1:40000")
 
+    def test_proxy_exit_gets_larger_daily_budget(self):
+        self.assertEqual(f.daily_budget(), f.DAILY_BUDGET)
+        (self.dir / "wireproxy.conf").write_text("x", encoding="utf-8")
+        self.assertEqual(f.daily_budget(), 150)
+        with mock.patch.dict(os.environ, {"YT_DAILY_BUDGET": "7"}):
+            self.assertEqual(f.daily_budget(), 7)
+
     def test_env_off_beats_config(self):
         (self.dir / "wireproxy.conf").write_text("x", encoding="utf-8")
         with mock.patch.dict(os.environ, {"YT_PROXY": "off"}):

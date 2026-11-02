@@ -69,6 +69,7 @@ BLOCK_HOURS = 6
 BLOCK_LEVELS_H = (6, 24, 72)   # OURS: lockout hours on the 1st, 2nd, 3rd+ consecutive block
 BUDGET_WINDOW_H = 24
 DAILY_BUDGET = 40              # OURS: YouTube requests per public IP per rolling 24 h (env YT_DAILY_BUDGET)
+DAILY_BUDGET_PROXY = 150       # OURS: same, on the shared WARP exit (one CBP run ~35 requests, 2 runs a day)
 ALLOW_FALLBACK = False         # transcript-api fallback after a 429 is a second network path: off by default
 BLOCK_MARKS = ("429", "Too Many Requests", "Sign in to confirm")
 EXIT_BLOCKED = 3
@@ -87,7 +88,7 @@ class BudgetExceeded(Exception):
 
 def daily_budget():
     try:
-        return int(os.environ.get("YT_DAILY_BUDGET") or DAILY_BUDGET)
+        return int(os.environ.get("YT_DAILY_BUDGET") or (DAILY_BUDGET_PROXY if proxy_url() else DAILY_BUDGET))
     except ValueError:
         return DAILY_BUDGET
 
