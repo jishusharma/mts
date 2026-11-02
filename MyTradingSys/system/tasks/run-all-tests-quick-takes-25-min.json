@@ -5,6 +5,16 @@
     "python scripts/dev/run_all_tests.py --quick --shard 1/3",
     "python scripts/dev/test_run_all_tests.py"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-02T06:41:42Z",
+    "misses": 2,
+    "reads": [
+      "scripts/dev/run_all_tests.py",
+      "scripts/dev/test_run_all_tests.py"
+    ],
+    "session": "agent-a7647cab07bacc44a"
+  },
   "created": "2026-10-31T21:38:41Z",
   "depends_on": [],
   "done_when": "run_all_tests.py --quick --shard K/N prints per-part est and the largest part is <= 600 s on Windows estimates for the smallest N that does so; a test asserts that bound; measured times per part are written in the Result; Result gives content sha.",
