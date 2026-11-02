@@ -40,6 +40,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
+  "reroute": {
+    "at": "2026-11-02T11:00:21Z",
+    "desk": "20261102-110021-gemini-blind-read-michael-lines-1102",
+    "to": "DSA",
+    "why": "window"
+  },
   "result": "",
   "scope_in": [
     "MyTradingSys/research/michael_lines_2026-11/RESULT.md (read)",

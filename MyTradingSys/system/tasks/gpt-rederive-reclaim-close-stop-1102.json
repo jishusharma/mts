@@ -23,6 +23,12 @@
   "refined_by": "",
   "refreshed": "2026-11-02T05:49:25Z",
   "refs": [],
+  "reroute": {
+    "at": "2026-11-02T11:00:21Z",
+    "desk": "20261102-110021-gpt-rederive-reclaim-close-stop-1102",
+    "to": "DSA",
+    "why": "window"
+  },
   "result": "",
   "scope_in": [
     "MyTradingSys/research/layer_lab/reports/2026-11-02_gpt-rederive-reclaim-close-stop-1102.md"
