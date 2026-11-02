@@ -4,6 +4,17 @@
   "commands": [
     "python -m pytest scripts/dev/test_supervisor.py -q"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-02T16:58:38Z",
+    "misses": 18,
+    "reads": [
+      "scripts/dev/test_supervisor.py",
+      "MyTradingSys/system/roles/supervisor.md",
+      "scripts/dev/usage_reminder.py"
+    ],
+    "session": "agent-a504ae34e1b5deba8"
+  },
   "created": "2026-11-02T11:43:28Z",
   "depends_on": [],
   "done_when": "New test in scripts/dev/test_supervisor.py: CI red plus usage refusing gives no SPAWN CI RED worker line; it fails on the pre-change supervisor.py (line 1036 emits it unconditionally) and passes after; python -m pytest scripts/dev/test_supervisor.py -q exits 0",
