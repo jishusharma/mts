@@ -40,6 +40,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
+  "reroute": {
+    "at": "2026-11-02T11:25:22Z",
+    "desk": "20261102-112522-gemini-doc-vs-code-watch-posts-1102",
+    "to": "DSA",
+    "why": "window"
+  },
   "result": "",
   "scope_in": [
     "MyTradingSys/research/analysts/watch/ROUTINE.md (read)",
