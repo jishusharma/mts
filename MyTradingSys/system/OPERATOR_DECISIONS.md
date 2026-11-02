@@ -1642,3 +1642,6 @@ Operator (chat, sim demo session): "why do not u demo by taking control now?" De
 
 ## 2026-11-03 - Everything in the pipeline, pointless blockers lifted
 Operator: "get all discussed and planned items into pipeline - remove clutter/confusion - lift rules that makes no sense now and are unnecessary blockers", and use the Claude Platform to save session budget if it works. Applied: S0 parking and the cap of 15 ready cards ended; 76 parked cards back to refined; Codex queue filled; API triage job in research/api_jobs_2026-11-03/. DECISION (OURS): testnet, fee-net, frozen pre-reg, one VALIDATION read, sealed HOLDOUT and review stamps on CRUCIAL stay.
+
+## 2026-11-03 - Simulator: reviews on the API credit, visuals from standard tools
+Operator (chat, sim demo): use the Console API credit for simulator reviews and work it can do (saves login C weekly), and base the page's visuals on what established backtest tools show (TradingView Strategy Tester, MT5 visual mode), starting from the basic idea of a simulation. First job: Opus design review via scripts/dev/api_batch.py, files in MyTradingSys/research/sim_desk/api_review/. DECISION (OURS): code changes stay in Claude Code sessions, because the API has no file access; the API gets reviews and drafts.
