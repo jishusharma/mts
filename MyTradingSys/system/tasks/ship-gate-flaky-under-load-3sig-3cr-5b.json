@@ -1,13 +1,18 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T11:01:55Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-31T09:24:22Z",
-    "misses": 24,
-    "reads": [],
-    "session": "agent-a819403b27fc12d12"
+    "folded": "2026-11-02T11:02:00Z",
+    "misses": 4,
+    "reads": [
+      "scripts/dev/run_all_tests.py",
+      "scripts/dev/mts_signal.py",
+      "scripts/dev/test_codex_run.py"
+    ],
+    "session": "agent-aba7895ef22fd43c8"
   },
   "created": "2026-10-30T09:47:27Z",
   "depends_on": [],
@@ -20,6 +25,12 @@
   "id": "ship-gate-flaky-under-load-3sig-3cr-5b",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "DECISION (OURS): closed, no further code. Shared state NOT found (8 CPU burners + concurre",
+      "ref": "be2ce0ee9",
+      "utc": "2026-11-02T11:01:55Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -37,7 +48,12 @@
   "refined_by": "",
   "refreshed": "2026-10-31T08:47:52Z",
   "refs": [],
-  "result": "",
+  "result": "DECISION (OURS): closed, no further code. Shared state NOT found (8 CPU burners + concurrent copies: all steps pass, every test isolates via mkdtemp+MTS_* env). The load-coupled cause (mts_signal.git 20s TimeoutExpired -> lone E in 3sig) is already fixed on trunk in 91f02a537 (clear RuntimeError + per-run gate_fail_logs keep last 200 lines of a failing step). 5b nan not reproducible (deterministic fixed bars). Any future flake now leaves a log in runtime_data/gate_fail_logs; reopen from that log.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/sync.py",
     "scripts/dev/run_all_tests.py",
@@ -54,12 +70,13 @@
   "sources": [
     "raw card 7e3286249"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "run the gate 3 times in parallel with a CPU burner; log which step fails and its stderr (pizzino-layer-dashboard-2 on the Lenovo failed 4 tries)",
     "diff shared state across the failing steps (tempfile names, fixed ports, files in cwd, timeouts); isolate per shard",
     "add the fail-first test for that cause (look in the failing tests: 3cx soak, 3sig, 3cr, 5b wlow_bounce, and extra_tests.tsv), re-run 3x, ship. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
   ],
+  "taken": "2026-11-02T11:01:55Z",
   "tests": "Written around the cause found in step 2 (not before): a test in test_run_all_tests.py that reproduces the shared-state collision and is red on pre-fix code.",
   "title": "sync.py ship gate fails a different step each run (3cx soak, 3sig ....E, 3cr, 5b wlow_bounce nan) with every test passing alone; pizzino-layer-dashboard-2 stuck 4 tries on Lenovo; find the shared-state/timeout cause",
   "weight": "CRITICAL",
