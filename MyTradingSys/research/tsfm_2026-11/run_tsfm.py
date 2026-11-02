@@ -19,7 +19,7 @@ def forecast(pipe, logc, torch):
     idx = np.arange(CTX, len(logc))
     out = np.empty((len(idx), 9))
     for s in range(0, len(idx), 128):
-        ii = idx[s:s + 128]
+        ii = idx[s:][:128]
         ctx = torch.tensor(np.stack([logc[i - CTX:i] for i in ii]), dtype=torch.float32)
         q, _ = pipe.predict_quantiles(ctx, prediction_length=1, quantile_levels=LEVELS)
         out[s:s + len(ii)] = q[:, 0, :].numpy()
