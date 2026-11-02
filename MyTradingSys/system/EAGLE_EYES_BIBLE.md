@@ -69,6 +69,7 @@ Why this section exists: the 10-28 session was compacted 6 times; each summary k
 - Break and retest 11-02: "when price breaks a range, then what is its behavior around the boundaries ... it goes and goes back to that range high, exactly touches it and comes down, and now it is confirming that it wants to stay down the lower white line"
 - OI spike absorbed 11-02: "what was this green candle 12:59 - price afterwards did not react so far - lengds?" (longs?)
 - WaveTrend 11-02: "So what wavetrend has to say??" (15m WT green cross near -53 while short)
+- Trailing legend 11-02: "keep trailing 1 min 5 min legend" -> FORMAT RULE: every live reply ends with one line `1m: <state> | 5m: <state>` (last bar colour, delta sign, OI direction, level in play). Standing rule while he is in a trade.
 - Coil and force (10-30): "what kind of force makes that happen? Try to measure it ... how far it will go ... support and resistances are the target ... I cannot understand in which direction the coil will fire." First answers: `research/pre_us_squeeze_2026-10-29/`, `research/bb_pierce_force_2026-10-29/`.
 
 ## The asks in one table (consolidated 10-30; update here, not in chat)
