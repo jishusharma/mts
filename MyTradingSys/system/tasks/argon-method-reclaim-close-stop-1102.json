@@ -3,6 +3,13 @@
   "asks": "",
   "closed": "2026-11-02T18:37:16Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-02T19:04:36Z",
+    "misses": 25,
+    "reads": [],
+    "session": "agent-aea9aa8cb804f6cab"
+  },
   "created": "2026-11-02T18:25:35Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/argon_audits_2026-11-02/method_reclaim-close-stop.md exists and its first line holds the counts or the ranked finding total; every row carries file:line.",
