@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-02T18:25:38Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/argon_audits_2026-11-02/method_jala-trigger.md exists and its first line holds the counts or the ranked finding total; every row carries file:line.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independently review the method behind MyTradingSys/research/jala_layer_2026-10-31/TRIGGER_RESULT.md; facts with file:line, no new backtest.",
+  "id": "argon-method-jala-trigger-1102",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "jala 400D trigger study: TRIGGER_RESULT, runner, VERDICTS rows",
+      "ref": "59755f5de4be",
+      "utc": "2026-10-31T19:35:13Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "59755f5de4be jala 400D trigger study: TRIGGER_RESULT, runner, VERDICTS rows",
+      "ref": "MyTradingSys/research/jala_layer_2026-10-31/TRIGGER_RESULT.md",
+      "utc": "2026-10-31T19:35:13Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Argon: load as argon-method-jala-trigger-1102:medium:argon (gemini_queue.py run). Account: gemini-laptop. Final report ends with a Noticed: line. Operator order 2026-11-02. REVIEWED:2026-11-02 T0-ONLY",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-02T18:25:38Z",
+  "refs": [
+    "MyTradingSys/system/GEMINI_START.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/argon_audits_2026-11-02/method_jala-trigger.md (new)",
+    "MyTradingSys/research/jala_layer_2026-10-31/TRIGGER_RESULT.md (read)",
+    "MyTradingSys/research/jala_layer_2026-10-31/PRE_REG.md (read)"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env or key read; no change outside the output file"
+  ],
+  "scope_sha": "59755f5de4be",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "read the frozen pre-registration first, then the runner code, then the result",
+    "check lookahead, window leakage, fee and slippage handling, trial count and whether the verdict follows the frozen rule",
+    "write one row per check: OK / PROBLEM / NOT_IN_DATA with file:line and the exact sequence; first line holds the three counts"
+  ],
+  "tests": "see done_when (audit card, output file is the test)",
+  "title": "[GEMINI] Argon method review: jala 400D trigger study",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

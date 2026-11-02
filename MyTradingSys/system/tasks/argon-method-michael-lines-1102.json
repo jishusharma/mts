@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-02T18:25:36Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/argon_audits_2026-11-02/method_michael-lines.md exists and its first line holds the counts or the ranked finding total; every row carries file:line.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independently review the method behind MyTradingSys/research/michael_lines_2026-11/RESULT.md; facts with file:line, no new backtest.",
+  "id": "argon-method-michael-lines-1102",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "review: michael_lines RESULT.md 8 of 11 -> 9 of 11 oil/gold/Nasdaq; fix contract cite 27 -",
+      "ref": "c124d6df1573",
+      "utc": "2026-11-02T11:13:55Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "c124d6df1573 review: michael_lines RESULT.md 8 of 11 -> 9 of 11 oil/gold/Nasdaq; fix contr",
+      "ref": "MyTradingSys/research/michael_lines_2026-11/RESULT.md",
+      "utc": "2026-11-02T11:13:55Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Argon: load as argon-method-michael-lines-1102:medium:argon (gemini_queue.py run). Account: gemini-laptop. Final report ends with a Noticed: line. Operator order 2026-11-02. REVIEWED:2026-11-02 T0-ONLY",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-02T18:25:37Z",
+  "refs": [
+    "MyTradingSys/system/GEMINI_START.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/argon_audits_2026-11-02/method_michael-lines.md (new)",
+    "MyTradingSys/research/michael_lines_2026-11/RESULT.md (read)",
+    "MyTradingSys/research/michael_lines_2026-11/STATED_LINES.md (read)",
+    "MyTradingSys/research/michael_lines_2026-11/extract_stated_lines.py (read)"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env or key read; no change outside the output file"
+  ],
+  "scope_sha": "c124d6df1573",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "read the frozen pre-registration first, then the runner code, then the result",
+    "check lookahead, window leakage, fee and slippage handling, trial count and whether the verdict follows the frozen rule",
+    "write one row per check: OK / PROBLEM / NOT_IN_DATA with file:line and the exact sequence; first line holds the three counts"
+  ],
+  "tests": "see done_when (audit card, output file is the test)",
+  "title": "[GEMINI] Argon method review: michael_lines stated-line event counts",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
