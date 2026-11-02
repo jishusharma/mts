@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T16:58:40Z",
   "commands": [
     "python -m pytest scripts/dev/test_supervisor.py -q"
   ],
@@ -29,6 +30,12 @@
   "last_session": "67a31d0d-8a6d-4153-843d-5438e66228f3",
   "latest": [
     {
+      "kind": "ship",
+      "line": "plan_lines now reads the usage gate rule (5h > elapsed+10): CI RED + gate refusing prints ",
+      "ref": "dd9f48c3b",
+      "utc": "2026-11-02T16:58:40Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "AIBridge 0.7.12: probe noise (empty connect no longer audited), installer argparse, ROOT_C",
@@ -52,7 +59,12 @@
   "refined_by": "",
   "refreshed": "2026-11-02T16:05:23Z",
   "refs": [],
-  "result": "",
+  "result": "plan_lines now reads the usage gate rule (5h > elapsed+10): CI RED + gate refusing prints NOTE, no SPAWN; DECISION (OURS) gate outranks CI-RED spawn; new test fails pre-change; idle_rules test fails on trunk too (unrelated)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/supervisor.py (plan SPAWN CI RED line near 1036; usage numbers near 853-900)",
     "scripts/dev/test_supervisor.py",
@@ -69,13 +81,14 @@
     "scripts/dev/supervisor.py:1036",
     "MyTradingSys/system/roles/supervisor.md:30"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read supervisor.py plan around 1000-1040 and the 5h/week refusal path",
     "write the failing test first and run it against the pre-change code",
     "gate the SPAWN CI RED line on the usage gate; update roles/supervisor.md line 30 to match",
     "run python -m pytest scripts/dev/test_supervisor.py -q; ship"
   ],
+  "taken": "2026-11-02T16:58:40Z",
   "tests": "scripts/dev/test_supervisor.py: new test, must fail before the change",
   "title": "Instruction conflict: plan SPAWN CI RED worker vs usage gate refuses spawn at 5h 47% vs elapsed 18%+",
   "weight": "ROUTINE",

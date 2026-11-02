@@ -1293,3 +1293,15 @@ def test_idle_rules_code_and_docs_agree():
     assert S.IDLE_RULE in role and S.REARM_RULE in role
     d5 = next(x for x in ss.splitlines() if x.startswith("| D5 |"))
     assert S.REARM_RULE in d5 and S.IDLE_RULE in d5
+
+
+def test_ci_red_with_usage_gate_refusing_emits_no_spawn_line():
+    # 5 h use 47% with 18% of the window elapsed: usage_reminder.py pre refuses, so the plan must not say SPAWN CI RED
+    now = datetime(2026, 10, 19, 9, 6, tzinfo=timezone.utc)
+    p = S.pace_plan(now, _rd(47, 20, five_reset="2026-10-19T14:00Z"), 95)
+    live = {"A": {"host": "JIS-NUC", "mode": "NORMAL", "run": 0, "free": 2, "at": "x", "dsa": "up"}}
+    ctx = {"picks": [], "ci": {"red": True, "message": "2 failed"}}
+    out = "\n".join(S.plan_lines("A", "JIS-NUC", p, live, ctx, gate_key=False))
+    assert "SPAWN CI RED" not in out and "CI RED" in out and "usage gate refuses" in out
+    ok = S.pace_plan(now, _rd(5, 20, five_reset="2026-10-19T14:00Z"), 95)
+    assert "SPAWN CI RED" in "\n".join(S.plan_lines("A", "JIS-NUC", ok, live, ctx, gate_key=False))
