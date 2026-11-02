@@ -1,0 +1,36 @@
+{
+ "id": "st-michael_lines_2026-11-result",
+ "kind": "thought_experiment",
+ "family": "Michael Lines",
+ "title": "RESULT: Michael's stated trend lines vs trendline_core events (BTC DEV 2022-01-01..2024-06-30)",
+ "provenance": "source-extracted",
+ "date": "2026-11-02",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2022-01-01 to 2024-06-30 (as written in the source)",
+ "verdict": {
+  "label": "descriptive only. Go (conditional) for the alert card: detector events exist at all 5 kinds on 4h/1d; stated lines cannot be matched to detector lines because chart frames are not in the repo.",
+  "tone": "info"
+ },
+ "why": [
+  "Go/no-go: GO for an alert-only card on first_touch/break/retested (event n large enough on 4h); no edge claim, no orders."
+ ],
+ "kpis": [],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [],
+ "missing": {
+  "n_trades": "the source does not state a trade count",
+  "net_r": "the source states no net-R figure (it reports another unit, e.g. percent per year, or no return)",
+  "parameters": "no rule or parameter section found in the source"
+ },
+ "source_files": [
+  "MyTradingSys/research/michael_lines_2026-11/RESULT.md"
+ ],
+ "commit": "c124d6df1"
+}
