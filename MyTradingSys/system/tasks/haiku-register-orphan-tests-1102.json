@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "git ls-files scripts/dev",
+    "python -m pytest <file> -q --basetemp=F:/MTS/_pt_b"
+  ],
+  "created": "2026-11-02T16:18:55Z",
+  "depends_on": [],
+  "done_when": "Orphan count before N -> after 0 (each registered or carrying a skip reason), every newly registered test run once and its result listed in the report.",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Compare tracked test_*.py (scripts/dev and MyTradingSys/research) with what run_all_tests.py and scripts/dev/extra_tests.tsv run; register each orphan or add a skip reason line; run each once.",
+  "id": "haiku-register-orphan-tests-1102",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "lab gpt-spec-tests-aibridge-health: DONE (build)",
+      "ref": "fbae4b1d6d2f",
+      "utc": "2026-11-02T15:24:36Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "PLANNER 2026-11-02 planner-b-1102, D11 s6 feeder. REVIEWED:2026-11-02 T0-ONLY Final report ends with a Noticed: line.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-02T16:19:00Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/extra_tests.tsv",
+    "scripts/dev/run_all_tests.py (read)"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no edit of test bodies or product code"
+  ],
+  "scope_sha": "fbae4b1d6d2f",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "git ls-files the test_*.py under scripts/dev and MyTradingSys/research, diff against run_all_tests.py discovery plus extra_tests.tsv",
+    "register each orphan (one path per line) or add a skip reason line",
+    "run each newly registered test once with python -m pytest <file> -q --basetemp=F:/MTS/_pt_b; report counts, ship"
+  ],
+  "tests": "count-based: orphan count before vs after, reported; the newly registered tests pass once",
+  "title": "Second orphan-test sweep: tracked test_*.py that no gate runs get registered in extra_tests.tsv",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
