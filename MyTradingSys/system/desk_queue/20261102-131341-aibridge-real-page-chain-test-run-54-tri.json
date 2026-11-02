@@ -1,0 +1,10 @@
+{
+  "done_when": "audit.jsonl shows each chain-bN once; a final CHAIN DONE reply exists",
+  "from": "JIS-NUC",
+  "id": "20261102-131341-aibridge-real-page-chain-test-run-54-tri",
+  "need": "Prove the bridge on the real chat page. In your own worktree, send replies of 6 blocks each (9 replies, 54 blocks): block N is: Write-Output chain-b<N> (cwd = your worktree). Include on purpose: block 17 exits 1 (cmd: cmd /c exit 1), block 33 sleeps past its timeout (timeout=5, Start-Sleep 20). After each result send the not-yet-run blocks; do not repeat a block that has a result. Finish with one line: CHAIN DONE. Do not touch any other file. If the bridge refuses anything, quote it and stop (do not work around).",
+  "posted": "2026-11-02T13:13:41Z",
+  "status": "pending",
+  "target": "DSA-NUC",
+  "title": "AIBridge real-page chain test: run 54 trivial blocks"
+}
