@@ -1,0 +1,56 @@
+{
+ "id": "st-gemini_audits_2026-11-01-fractal_results_blind_read",
+ "kind": "audit",
+ "family": "Gemini Audits",
+ "title": "Blind Read Audit: Fractal Results RESULT.md (f1, f2, f3, f4, p1_split, p1b_rsi_feenet)",
+ "provenance": "source-extracted",
+ "date": "2026-11-01",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": null,
+ "verdict": {
+  "label": "s. Every number is labeled SOURCED or OURS.",
+  "tone": "info"
+ },
+ "why": [],
+ "kpis": [
+  {
+   "label": "sample size n (first in the source, may not be trades)",
+   "value": "2556"
+  },
+  {
+   "label": "net R after fees (first value in the source)",
+   "value": "-0.305",
+   "tone": "bad"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 2556,
+   "quote": "f1 Power calculation n needed per cell (0.10 % at 80 % power) 551 OURS Line 19 MyTradingSys/research/fractals_2026-10-31/f1/output.md:12 551 (CONF_ANY n = 2556) FOUND Exact match in output.md."
+  },
+  {
+   "field": "net_r",
+   "value": -0.305,
+   "quote": "f2 F2-1 kept net R [CI] -0.305 [-0.524, -0.101] OURS Line 8 (Table) MyTradingSys/research/fractals_2026-10-31/f2/output.md:5 -0.3045 [-0.5244, -0.1012] FOUND Exact match in output.md (rounded to 3 de…"
+  }
+ ],
+ "missing": {
+  "window": "the source states no test window",
+  "parameters": "no rule or parameter section found in the source",
+  "why": "no sentence in the source states why it passed or failed",
+  "n_trades": "not a trade test (audit)"
+ },
+ "source_files": [
+  "MyTradingSys/research/gemini_audits_2026-11-01/fractal_results_blind_read.md"
+ ],
+ "commit": "21a1d05f8"
+}
