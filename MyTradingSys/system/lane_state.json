@@ -1,9 +1,9 @@
 {
-  "detail": "operator 11-02: GPT refreshed; allowance reads 5h 0%, week 8%, resets 11-09",
+  "detail": "Codex run finished",
   "fails": 0,
   "heartbeat": "2026-11-02T11:00:21Z",
   "last_error": "2026-11-01T18:03:33Z",
-  "last_ok": "2026-11-02T11:38:18Z",
+  "last_ok": "2026-11-02T13:14:21Z",
   "last_probe": "2026-10-26T17:04:19Z",
   "override": "2026-11-02T14:38:18Z",
   "reason": "",
