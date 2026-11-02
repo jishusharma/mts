@@ -184,12 +184,6 @@ def merge_trunk(repo):
             git(repo, "checkout", "--", "runtime_data/_mirror", check=False)
             git(repo, "clean", "-fdq", "--", "runtime_data/_mirror", check=False)
             r = git(repo, "merge", "--no-edit", f"origin/{TRUNK}", check=False)
-        if r.returncode != 0 and not git(repo, "diff", "--name-only", "--diff-filter=U").stdout.split() \
-                and "would be overwritten" in r.stdout + r.stderr \
-                and [ln.strip() for ln in (r.stdout + r.stderr).splitlines() if ln.startswith("\t")] == [LAYERS_REL]:
-            # LAYERS.md is generated: a dirty local copy (CRLF, stale) is the only thing blocking the merge. Restore it; ship regenerates it.
-            git(repo, "checkout", "--", LAYERS_REL, check=False)
-            r = git(repo, "merge", "--no-edit", f"origin/{TRUNK}", check=False)
         if r.returncode != 0:
             bad = git(repo, "diff", "--name-only", "--diff-filter=U").stdout.split()
             if not bad or any(f not in TAKE_ORIGIN for f in bad):
