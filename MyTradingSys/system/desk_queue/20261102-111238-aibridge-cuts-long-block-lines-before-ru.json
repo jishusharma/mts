@@ -1,0 +1,10 @@
+{
+  "done_when": "A long block line runs whole or is refused with a line-length reason",
+  "from": "JIS-NB",
+  "id": "20261102-111238-aibridge-cuts-long-block-lines-before-ru",
+  "need": "Results 51 and 5, JIS-NB, agent 0.7.10: a line over about 200 chars is cut mid-string. Receipt cmd stops part way. Two retries lost.",
+  "posted": "2026-11-02T11:12:38Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "AIBridge cuts long block lines before running them"
+}
