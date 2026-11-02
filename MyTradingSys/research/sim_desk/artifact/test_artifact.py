@@ -122,6 +122,11 @@ class Page(unittest.TestCase):
             self.assertTrue(0 <= t["sig"] < t["ent"] < t["ext"] < len(t["c"]))
             self.assertEqual(t["c"][t["ent"]][0], 0.0)  # entry open is the 0 % line: percent only, no prices
 
+    def test_trade_chart_has_candle_replay(self):
+        # Operator item 5: watch one trade candle by candle with a phase line (waiting, signal, in trade, exited).
+        for k in ('id="cvr"', 'id="cvst"', 'id="cvph"', "WAITING", "SIGNAL", "IN TRADE", "EXIT SIGNAL", "EXITED", "if(k>u)return;"):
+            self.assertIn(k, ba.TEMPLATE)
+
     def test_search_keeps_caret_at_end(self):
         # The list rebuild re-creates the search box; without the caret reset "C30" typed as "03C".
         line = next(x for x in ba.TEMPLATE.splitlines() if x.startswith("function refilter()"))
