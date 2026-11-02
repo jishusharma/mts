@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T18:37:16Z",
   "commands": [],
   "created": "2026-11-02T18:25:35Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/argon_audits_2026-11-02/method_reclaim-close-stop.md (OK: 4, PROBLEM",
+      "ref": "6663f48f6",
+      "utc": "2026-11-02T18:37:16Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,7 +47,12 @@
   "refs": [
     "MyTradingSys/system/GEMINI_START.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/argon_audits_2026-11-02/method_reclaim-close-stop.md (OK: 4, PROBLEM: 1, NOT_IN_DATA: 0)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/argon_audits_2026-11-02/method_reclaim-close-stop.md (new)",
     "MyTradingSys/research/reclaim_close_stop_2026-11/RESULT.md (read)",
@@ -55,12 +67,13 @@
   "scope_sha": "274ecd1deaec",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read the frozen pre-registration first, then the runner code, then the result",
     "check lookahead, window leakage, fee and slippage handling, trial count and whether the verdict follows the frozen rule",
     "write one row per check: OK / PROBLEM / NOT_IN_DATA with file:line and the exact sequence; first line holds the three counts"
   ],
+  "taken": "2026-11-02T18:37:16Z",
   "tests": "see done_when (audit card, output file is the test)",
   "title": "[GEMINI] Argon method review: reclaim_close_stop INCONCLUSIVE",
   "weight": "ROUTINE",
