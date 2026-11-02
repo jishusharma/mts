@@ -4,7 +4,7 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-02T18:54:14Z",
+    "folded": "2026-11-02T18:54:23Z",
     "misses": 17,
     "reads": [
       "scripts/dev/run_all_tests.py",
@@ -17,31 +17,47 @@
   },
   "created": "2026-11-02T18:15:52Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "test_long_unattended_chain_hidden_tab_with_failure_timeout_and_dropped_reply is still collected and asserts the same things, run_page timeout is scaled by MTS_BROWSER_TIMEOUT_SCALE (default 3x for this test), run_all_tests.py TEST_FILE_SECONDS lists test_aibridge_chain.py at 140 s so the shard balancer isolates it, and 3 consecutive ship --full runs on JIS-LAPTOP pass step 4b.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "The AIBridge 54-block hidden-tab test stops failing sync.py ship step 4b under load: its headless-Chrome call has a 240 s cap against a 137 s quiet run, and the gate budgets it at 2 s.",
   "id": "test-aibridge-chain-hidden-tab-test-test",
-  "lane": "",
+  "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "Never skip or delete the test. CI is green; only the loaded JIS-LAPTOP gate trips.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/tests/aibridge_dom.py",
+    "MyTradingSys/tests/test_aibridge_chain.py",
+    "scripts/dev/run_all_tests.py",
+    "MyTradingSys/tests/test_aibridge_chain_budget.py"
+  ],
+  "scope_out": [
+    "MyTradingSys/aibridge extension code (content.js, loop.js)",
+    "deleting or skipping the test"
+  ],
+  "size": "S",
   "sources": [],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Cause (read, do not re-derive): tests/aibridge_dom.py run_page() runs headless Chrome with --virtual-time-budget and subprocess.run(timeout=<arg>); test_aibridge_chain.py:51 passes timeout=240 and budget 950000 ms. Alone it takes ~137 s, so under a loaded gate (4 pool steps) 240 s wall is exceeded -> subprocess.TimeoutExpired. Also run_all_tests.py TEST_FILE_SECONDS has no entry for test_aibridge_chain.py, so the shard balancer counts 2 s and parks it in 4b beside other files; FAST_STEP_TIMEOUT_S=240 caps the whole shard in smoke mode.",
+    "In tests/aibridge_dom.py run_page: read float env MTS_BROWSER_TIMEOUT_SCALE (default 1.0; bad value -> 1.0) and pass timeout=int(timeout*scale) to subprocess.run; keep the signature. Label DECISION (OURS).",
+    "In test_aibridge_chain.py:51 raise the call to timeout=480 (OURS: 3.5x the 137 s quiet run). Assertions unchanged.",
+    "In run_all_tests.py TEST_FILE_SECONDS add test_aibridge_chain.py: 140 (measured alone 137 s) so the greedy balancer gives it a shard of its own, and the SLOW_FILE_S>=30 rule keeps it out of the targeted precheck.",
+    "If step 4b's shard timeout (FAST_STEP_TIMEOUT_S 240) still cuts the shard in --full mode, check step_timeout_for(mode): only smoke gets 240; if full/ship step 4b is capped, add a per-step override for the shard holding this file (e.g. 600 s). Verify by reading run_all_tests.py:226-250 and 745-747 before editing.",
+    "Add MyTradingSys/tests/test_aibridge_chain_budget.py with the two failing-first tests (see tests field); confirm they fail on the pre-change code via git stash of the three edits.",
+    "Run the chain test alone (pytest -k hidden_tab), then sync.py ship --full once; report step 4b time."
+  ],
+  "tests": "New test in MyTradingSys/tests/test_aibridge_chain_budget.py: (a) TEST_FILE_SECONDS in run_all_tests has test_aibridge_chain.py >= 120 (fails on old code: absent); (b) run_page's subprocess timeout equals timeout*scale (monkeypatch subprocess.run, env scale=2 -> timeout 480; fails on old code: fixed). Then run the chain test alone and one ship --full.",
   "title": "test_aibridge_chain hidden-tab test (test_long_unattended_chain_hidden_tab_with_failure_timeout_and_dropped_reply) times out under load on headless Chrome and blocks sync.py ship step 4b; passes alone. Done when: it passes 3 full ship runs in a row on JIS-LAPTOP or is marked load-sensitive with a longer timeout.",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }
