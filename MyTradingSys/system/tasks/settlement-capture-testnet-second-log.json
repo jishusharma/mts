@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "settlement-capture-testnet-second-log",
+  "closed": "2026-11-02T20:07:05Z",
   "commands": [
     "python MyTradingSys/execution/capture_txlog_settlement.py --hours 36 --out MyTradingSys/research/txlog_capture_2026-10-31_before.json",
     "python MyTradingSys/execution/capture_txlog_settlement.py --hours 36 --out MyTradingSys/research/txlog_capture_2026-10-31_after.json",
@@ -17,6 +19,12 @@
   "id": "settlement-capture-testnet-second-log",
   "lane": "DSA-NUC",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Closed after verification, no new capture: JIS-NUC holds no testnet credential (deribit_or",
+      "ref": "fe86374a0",
+      "utc": "2026-11-02T20:07:05Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -44,7 +52,12 @@
   "refined_by": "",
   "refreshed": "2026-11-02T11:04:59Z",
   "refs": [],
-  "result": "",
+  "result": "Closed after verification, no new capture: JIS-NUC holds no testnet credential (deribit_orders._load_secret raises MISSING), so both captures are kind=documented_absence, entries 0, account_summary null, committed in 510eee42 (cherry empty). ITEMS_1_2_5.md Item 2 holds the numbers: identity -5.51e-06 vs daily_pnl_btc -5.50e-06 (diff 1e-8) after the window fix; earlier 4h-slice gap -4.82e-06 was a test window error, not a formula error. Residual: a capture pair across a settlement with a position open is still owed by a host holding the testnet credential.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/txlog_capture_2026-10-31_before.json",
     "MyTradingSys/research/txlog_capture_2026-10-31_after.json",
@@ -57,12 +70,13 @@
   "scope_sha": "6293cd1011f0",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Check the daily_loss_monitor log for a testnet position spanning an 08:00Z settlement within 36 h; none: note it and re-run next day (do not open a trade).",
     "Run the capture twice, once shortly before 08:00Z (_before.json) and once after the settlement (_after.json): the account summary is taken at capture time, so equity at both ends needs two files.",
     "Edit item2_settlement_identity.py: point it at the _after file and change its hard-coded window 'ts_utc >= 2026-10-10T08:00:00Z' to the new date; run it and paste expected/code/diff into ITEMS_1_2_5.md Item 2."
   ],
+  "taken": "2026-11-02T20:06:51Z",
   "tests": "none (run lane): item2_settlement_identity.py prints the identity numbers on the new capture",
   "title": "Capture a second Deribit testnet transaction log spanning one 08:00Z settlement with equity at both ends (feeds wave1-settlement-pnl-identity-gap)",
   "weight": "IMPORTANT",
