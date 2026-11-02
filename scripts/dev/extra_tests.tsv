@@ -187,4 +187,5 @@ scripts/dev/test_fetch_captions_timed.py
 scripts/dev/test_asr_transcribe.py
 scripts/dev/test_cbp_scorecard.py
 scripts/dev/test_declutter_backups.py
+scripts/dev/test_run_argon_pipeline.py
 MyTradingSys/research/sim_desk/test_desk.py
