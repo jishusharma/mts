@@ -40,12 +40,7 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "reroute": {
-    "at": "2026-11-02T11:25:22Z",
-    "desk": "20261102-112522-gemini-blind-read-c30-validation-1102",
-    "to": "DSA",
-    "why": "window"
-  },
+  "reroute_failed": "20261102-112522-gemini-blind-read-c30-validation-1102",
   "result": "",
   "scope_in": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/C30_VALIDATION.md (read)",

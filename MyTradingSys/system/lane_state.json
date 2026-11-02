@@ -1,14 +1,14 @@
 {
-  "detail": "Codex weekly allowance 95% used, resets 2026-11-04 08:15Z",
+  "detail": "operator 11-02: GPT refreshed; allowance reads 5h 0%, week 8%, resets 11-09",
   "fails": 0,
   "heartbeat": "2026-11-02T11:00:21Z",
   "last_error": "2026-11-01T18:03:33Z",
-  "last_ok": "2026-11-01T11:42:34Z",
+  "last_ok": "2026-11-02T11:38:18Z",
   "last_probe": "2026-10-26T17:04:19Z",
-  "override": "",
-  "reason": "window",
-  "resumed": "2026-10-30T03:00:47Z",
-  "since": "2026-11-01T18:03:33Z",
-  "status": "down",
-  "until": "2026-11-04T08:15:13Z"
+  "override": "2026-11-02T14:38:18Z",
+  "reason": "",
+  "resumed": "2026-11-02T11:38:18Z",
+  "since": "",
+  "status": "up",
+  "until": ""
 }
