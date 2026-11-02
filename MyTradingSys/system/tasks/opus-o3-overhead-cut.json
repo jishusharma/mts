@@ -1,6 +1,7 @@
 {
   "approved_by": "operator 2026-10-28 (asked this session directly: design the next Opus runs / the next Fable run); the operator starting the run by hand is the approval",
   "asks": "",
+  "closed": "2026-11-02T16:46:51Z",
   "commands": [],
   "context": {
     "calls_to_edit": 15,
@@ -29,6 +30,12 @@
   "lane": "OPUS",
   "latest": [
     {
+      "kind": "ship",
+      "line": "9c246ccf9: O3 overhead cut, 3 cheapest cuts applied, CUTS.md on trunk; non-research share ",
+      "ref": "4b6f57b35",
+      "utc": "2026-11-02T16:46:51Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nuc/planner-board-refresh-1102",
@@ -47,7 +54,12 @@
   "refs": [
     "MyTradingSys/system/handover/OPUS_RUNS.md"
   ],
-  "result": "",
+  "result": "9c246ccf9: O3 overhead cut, 3 cheapest cuts applied, CUTS.md on trunk; non-research share 69 -> projected 64",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/overhead_cut_2026-10-28/",
     "scripts/dev/",
@@ -61,13 +73,14 @@
   "sources": [
     "MyTradingSys/research/opus_run_design_2026-10-28/DESIGN.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Script counts 7 days of trunk commits by kind",
     "CUTS.md ranked by commits/day saved",
     "Apply 3 cheapest cuts, none removing a safety gate",
     "Recompute research share; ship"
   ],
+  "taken": "2026-11-02T16:46:51Z",
   "tests": "commit-kind counter has a fixture test with known counts that fails before the script exists",
   "title": "Opus O3: overhead cut, non-research commits 72 % -> under the 30 % cap (measured list, 3 cuts applied)",
   "weight": "IMPORTANT",

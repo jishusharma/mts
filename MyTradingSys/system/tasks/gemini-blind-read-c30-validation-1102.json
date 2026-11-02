@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T16:46:49Z",
   "commands": [],
   "created": "2026-11-02T11:09:02Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "c931ba38a: gemini blind re-read of C30_VALIDATION.md (71 FOUND, 0 NOT_IN_DATA, 0 DIFF; mer",
+      "ref": "4b6f57b35",
+      "utc": "2026-11-02T16:46:49Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -41,7 +48,12 @@
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
   "reroute_failed": "20261102-112522-gemini-blind-read-c30-validation-1102",
-  "result": "",
+  "result": "c931ba38a: gemini blind re-read of C30_VALIDATION.md (71 FOUND, 0 NOT_IN_DATA, 0 DIFF; merged 924ca7d0a)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/C30_VALIDATION.md (read)",
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/c30_validation.py (read)",
@@ -53,12 +65,13 @@
   "scope_sha": "7cc7d76d9af8",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "list every number in C30_VALIDATION.md with its cited source",
     "open the source and check it",
     "write FOUND / NOT_IN_DATA / DIFF per number, counts on line 1"
   ],
+  "taken": "2026-11-02T16:46:49Z",
   "tests": "see done_when (audit card, output file is the test)",
   "title": "[GEMINI] blind re-read of eagle_eyes_picture C30_VALIDATION.md: numbers vs c30_validation.py",
   "weight": "ROUTINE",

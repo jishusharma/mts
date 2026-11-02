@@ -17,9 +17,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "yt: register test_yt_proxy.py in extra_tests.tsv",
-      "ref": "372a268e2711",
-      "utc": "2026-11-02T09:42:04Z"
+      "line": "test CBP scorecard recount contract",
+      "ref": "6267cc8d21b2",
+      "utc": "2026-11-02T16:44:15Z"
     }
   ],
   "layers": [],
@@ -28,7 +28,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T11:04:40Z",
+  "refreshed": "2026-11-02T16:52:01Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -40,7 +40,7 @@
     "any live path",
     "editing the audited source file"
   ],
-  "scope_sha": "372a268e2711",
+  "scope_sha": "6267cc8d21b2",
   "size": "S",
   "sources": [
     "scripts/dev/fetch_captions_timed.py"
