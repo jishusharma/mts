@@ -33,7 +33,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
   "pinned": false,
   "prio": 1,
   "refine_tries": 0,
@@ -61,7 +61,7 @@
     "scripts/aibridge/RELEASES.json: current=0.7.2",
     "scripts/dev/aibridge_verify.py:1-13 (row meanings: installed/file/fix/agent_ping/roundtrip)"
   ],
-  "state": "blocked",
+  "state": "refined",
   "steps": [
     "On the desktop host (F7IU69N), fetch + merge origin/fast-track in mts-dsa-bridge-version-miss",
     "Run aibridge_install.py F:/AIBridge --restart-agent (copies the 0.7.2 payload, backs up old files to *.pre_v07, restarts the agent)",

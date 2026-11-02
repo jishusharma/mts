@@ -24,7 +24,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
   "pinned": false,
   "prio": 3,
   "refine_tries": 0,
@@ -48,7 +48,7 @@
     "card title (shots 2026-10-19 14:16, price 135 under VWAP 82,402)",
     "src/main/java/datafeed/MarketDataSnapshot.java:688-726"
   ],
-  "state": "blocked",
+  "state": "refined",
   "steps": [
     "grep -ril vwap extracts/processed MyTradingSys/research to list candidate sources; keep only those with a trader's words.",
     "Per source copy the verbatim quote and file:line; mark NOT STATED where the trader is silent on anchor, bands or retest rule.",

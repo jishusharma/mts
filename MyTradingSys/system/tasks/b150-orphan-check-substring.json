@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "run_all_tests: platform-independent QUICK_PARTS test (partition + cap)",
-      "ref": "26ff2273ea84",
-      "utc": "2026-11-01T19:40:37Z"
+      "line": "aibridge chain hidden-tab test: scale headless Chrome timeout, budget file at 140 s",
+      "ref": "c0162ab17100",
+      "utc": "2026-11-02T18:59:02Z"
     }
   ],
   "layers": [],
@@ -28,7 +28,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T18:54:42Z",
+  "refreshed": "2026-11-02T20:00:58Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -39,7 +39,7 @@
   "scope_out": [
     "gate step layout and timings"
   ],
-  "scope_sha": "26ff2273ea84",
+  "scope_sha": "c0162ab17100",
   "size": "S",
   "sources": [],
   "state": "ready",

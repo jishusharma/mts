@@ -35,7 +35,7 @@
   "not_twin_of": [
     "hook-lag-gate"
   ],
-  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
   "pinned": false,
   "prio": 1,
   "refine_tries": 1,
@@ -55,7 +55,7 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "blocked",
+  "state": "refined",
   "steps": [
     "Re-measure: git -C <main> fetch origin; rev-list --count HEAD..origin/fast-track; git -C <main> status --short. If 0 behind and clean, record the numbers in the note and finish",
     "Save, never discard: copy each locally edited or deleted file to F:/MTS_backup/main_checkout_2026-10-25/ (git -C diff to a .patch plus the files); staged cbp_run.py is a duplicate of trunk f9fcf77b4 (verify by git diff origin/fast-track -- path), SUPERVISOR_LOG.md local lines get appended to the trunk copy after the update",

@@ -1483,7 +1483,7 @@
    "interaction": "4 geometric variants evaluated across 226 confirmed 3-pivot swings",
    "effects": "Modified Schiff 72.12% ML reach, 65.49% net WR, +1.50% mean net return/trade; Hagopian 59.57% target hit rate",
    "n": "226 confirmed forks per variant",
-   "verdict": "PASS (Modified Schiff +1.50% mean net/trade, 72.12% ML reach)",
+   "verdict": "UNPROVEN: PASS withdrawn 2026-11-03, whole-window study with the same final-pivot method; not re-run (mts_audit_2026-11-03/AUDIT.md s2)",
    "report": "MyTradingSys/research/pitchfork_2026-10-19/PHASE1_EVENT_STUDY.md",
    "read": "summary"
   },
@@ -1501,7 +1501,7 @@
    "interaction": "Pitchfork tine retest x Anchored Volume Profile (UNFILTERED, VA_CONFLUENT, POC_1.5PCT, POC_0.75PCT)",
    "effects": "Tine limit retest + VA confluence: n=734 filled, 64.85% WR, +0.61% mean net return, PF 1.63; tight POC 0.75%: n=148, 70.95% WR, +0.88% net, PF 1.98",
    "n": "1273 unfiltered setups, 734 VA-confluent, 148 tight-POC",
-   "verdict": "PASS (VA confluence PF 1.63, +0.61% net/trade; sim_desk plugin verified)",
+   "verdict": "NOT REAL: PASS withdrawn 2026-11-03. Exact causal rerun 2020-2024: -0.011 % net, PF 0.99, n 272, inside placebo (mts_audit_2026-11-03/AUDIT.md s2)",
    "report": "MyTradingSys/research/pitchfork_2026-10-19/PHASE2_4H_POC_STUDY.md",
    "read": "summary"
   }

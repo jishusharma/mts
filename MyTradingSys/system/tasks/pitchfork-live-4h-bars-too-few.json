@@ -30,7 +30,7 @@
   ],
   "live_path": true,
   "mutation_check": "",
-  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
@@ -45,7 +45,7 @@
   "scope_sha": "e4bcc09fd3a3",
   "size": "S",
   "sources": [],
-  "state": "blocked",
+  "state": "refined",
   "steps": [
     "Raise 4h limit to 20 in both maps",
     "Test restart/as-of path and API error (fails closed)",

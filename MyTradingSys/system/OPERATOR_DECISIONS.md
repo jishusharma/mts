@@ -1635,5 +1635,10 @@ Operator (voice): login A = Lenovo laptop with the Gemini Antigravity app; login
 Console API jobs must launch from the NUC as well as the desktop. Copying F:/ClaudePlaform/key.txt to the NUC is authorized by the operator; this replaces "never copy the key" in PLAN_NIGHT_2026-11-02.md. Never in git, signals or chat, never printed.
 Login B: work freely up to 45% weekly (cap for this week). Design Gemini Argon tasks for both Gemini accounts; run cheap Haiku and Sonnet jobs on the API credit.
 
+## 2026-11-03 - Alignment audit, blockers loosened, login B weekly cap 55
+Operator (voice): review everything against goals; find mistakes early; unify and simplify the layers around the probability distribution; archive what is proven wrong (DAX named); blockers that do not make sense are removed or loosened. Login B may reach about 55 % weekly this week (replaces 45). Applied: research/mts_audit_2026-11-03/AUDIT.md section 7. DECISION (OURS): testnet only, fee-net, frozen pre-reg, one VALIDATION read, sealed HOLDOUT and look-ahead checks stay. DAX is recorded as abandoned, not disproven, and its data stays on disk. The S3-alone rule at PROJECT_VISION.md:262 now applies to live gating only; research may combine layers on DEV.
 ## 2026-11-03 - Simulator demo: Claude drives the browser
 Operator (chat, sim demo session): "why do not u demo by taking control now?" Demos of the simulator page are driven by Claude in his Chrome (Claude in Chrome tools), with screenshots, instead of telling him what to click. Requirements file: MyTradingSys/research/sim_desk/REQUIREMENTS_2026-11-02.md.
+
+## 2026-11-03 - Everything in the pipeline, pointless blockers lifted
+Operator: "get all discussed and planned items into pipeline - remove clutter/confusion - lift rules that makes no sense now and are unnecessary blockers", and use the Claude Platform to save session budget if it works. Applied: S0 parking and the cap of 15 ready cards ended; 76 parked cards back to refined; Codex queue filled; API triage job in research/api_jobs_2026-11-03/. DECISION (OURS): testnet, fee-net, frozen pre-reg, one VALIDATION read, sealed HOLDOUT and review stamps on CRUCIAL stay.

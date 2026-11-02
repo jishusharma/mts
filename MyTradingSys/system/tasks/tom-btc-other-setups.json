@@ -41,7 +41,7 @@
     "tom"
   ],
   "live_path": false,
-  "note": "BLOCKED: requested 2022-04-01..2024-06-30 bars exceed permitted pre-2024-07-01 data cutoff.",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): false block: 2022-04..2024-06 is inside DEV. | BLOCKED: requested 2022-04-01..2024-06-30 bars exceed permitted pre-2024-07-01 data cutoff.",
   "pinned": false,
   "prio": 3,
   "refine_tries": 0,
@@ -73,7 +73,7 @@
     "MyTradingSys/research/tom_btc_2026-10-13/TOM_ON_BTC.md section 4",
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md sections 2, 11"
   ],
-  "state": "blocked",
+  "state": "refined",
   "steps": [
     "pre-flight (stop and report BLOCKED within 5 turns if any fails): F:/MTS/data/orderflow_1m has the DEV date files 2022-04-01..2024-06-30 (count them first), chart_lab.py runs unchanged and reproduces candidates=105",
     "read setup_type_rules.md s5 (pullback to VWAP/value in a volume-backed trend) and s6 (balance resolves with proof); add detect_tc and detect_bo beside detect_candidates and a --setup {fade,tc,bo} switch defaulting to fade so old output is byte-identical; numeric thresholds labelled OURS on the chart",

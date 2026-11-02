@@ -27,16 +27,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "WHERE_IS: re-apply topic index and where_is.py without role-file lines",
-      "ref": "c409e3f6b3f6",
-      "utc": "2026-10-30T10:37:23Z"
+      "line": "api_batch: key file fallback (MTS_API_KEY_FILE, F:/ClaudePlaform/key.txt) and wait subcomm",
+      "ref": "58980d9ba0a7",
+      "utc": "2026-11-02T18:29:34Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "c409e3f6b3f6 WHERE_IS: re-apply topic index and where_is.py without role-file lines",
+      "line": "58980d9ba0a7 api_batch: key file fallback (MTS_API_KEY_FILE, F:/ClaudePlaform/key.txt) and",
       "ref": "MyTradingSys/system/QUICK_ANSWERS.md",
-      "utc": "2026-10-30T10:37:23Z"
+      "utc": "2026-11-02T18:29:34Z"
     }
   ],
   "layers": [],
@@ -46,7 +46,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T18:27:33Z",
+  "refreshed": "2026-11-02T20:00:57Z",
   "refs": [
     "MyTradingSys/system/OPERATOR_DECISIONS.md"
   ],
@@ -59,7 +59,7 @@
   "scope_out": [
     "no real API call, no read of the real key file, no key text anywhere in the repo, no live-tree edit"
   ],
-  "scope_sha": "c409e3f6b3f6",
+  "scope_sha": "58980d9ba0a7",
   "size": "S",
   "sources": [],
   "state": "ready",

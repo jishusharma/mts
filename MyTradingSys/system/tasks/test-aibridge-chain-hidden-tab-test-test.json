@@ -27,9 +27,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "AIBridge 0.7.21: one version source, chat label shows extension/page/disk/agent versions a",
-      "ref": "ac7a2ec4465a",
-      "utc": "2026-11-02T18:32:49Z"
+      "line": "aibridge chain hidden-tab test: scale headless Chrome timeout, budget file at 140 s",
+      "ref": "c0162ab17100",
+      "utc": "2026-11-02T18:59:02Z"
     }
   ],
   "layers": [],
@@ -39,7 +39,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T18:54:25Z",
+  "refreshed": "2026-11-02T20:01:02Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -52,7 +52,7 @@
     "MyTradingSys/aibridge extension code (content.js, loop.js)",
     "deleting or skipping the test"
   ],
-  "scope_sha": "ac7a2ec4465a",
+  "scope_sha": "c0162ab17100",
   "size": "S",
   "sources": [],
   "state": "ready",

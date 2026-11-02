@@ -31,7 +31,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
   "pinned": false,
   "prio": 1,
   "refine_tries": 0,
@@ -52,7 +52,7 @@
   "scope_sha": "3dc87fa0af93",
   "size": "M",
   "sources": [],
-  "state": "blocked",
+  "state": "refined",
   "steps": [
     "List reading pairs (price x OI x delta) and their base rates from 1m/5m history",
     "Add live_aid panel rows with n and source tag",

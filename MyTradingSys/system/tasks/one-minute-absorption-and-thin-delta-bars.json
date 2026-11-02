@@ -33,7 +33,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
   "pinned": false,
   "prio": 3,
   "refine_tries": 0,
@@ -60,7 +60,7 @@
     "card title (shots 10-19 13:34 and 13:37)",
     "MyTradingSys/research/oi_pivot_2026-10-26/candidates.py (card oi-pivot)"
   ],
-  "state": "blocked",
+  "state": "refined",
   "steps": [
     "Run verdicts.py check 'absorption thin delta 1m' and paste it; define (a) and (b) with numeric thresholds labelled OURS from DEV percentiles (decile of volume, delta/volume ratio, range/ATR).",
     "Run python scripts/dev/prereg_gate.py with n, sd (sd-source cited) and cost; paste the line; exit 1 means do not freeze. Write PRE_REG.md and freeze it, then bars.py with look-ahead tests.",

@@ -9,26 +9,26 @@
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Before any backtest (operator 10-30), map what happens next per context: BB state x prior candle x regime (moving / not moving, OURS, fixed first) x timeframe close (15m, 1h, 4h, 12h). Descriptive, fee-free, DEV 2022-2025 only. Map: MyTradingSys/research/eagle_eyes_picture_2026-10-28/SESSION_MAP_2026-10-30.md",
+  "goal": "Before any backtest (operator 10-30), map what happens next per context: BB state x prior candle x regime (moving / not moving, OURS, fixed first) x timeframe close (15m, 1h, 4h, 12h). Descriptive, fee-free, DEV 2022-01..2024-06 only. Map: MyTradingSys/research/eagle_eyes_picture_2026-10-28/SESSION_MAP_2026-10-30.md",
   "id": "bb-state-regime-tf-map",
   "lane": "SONNET",
   "latest": [
     {
       "auto": true,
       "kind": "ship",
-      "line": "prev-close break: operator's rule as walked (BB-mid setup, band take-profit), spec for nex",
-      "ref": "6eecd0e89249",
-      "utc": "2026-10-29T22:16:30Z"
+      "line": "Revert \"Revert splits guard + DEV-only BB map (46cb4255e): CI red at Step 3w wiring gate (",
+      "ref": "ee93a23e1598",
+      "utc": "2026-10-30T17:45:47Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "blocked-on-data: F:/MTS/data/tom_raw absent on DESKTOP-F7IU69N; run MyTradingSys/research/bb_state_map_2026-10/bb_state_study.py on the machine holding it. Definitions + script + test shipped.",
+  "note": "Supervisor B 2026-11-03: the goal said DEV 2022-2025, which crosses VALIDATION and HOLDOUT; corrected. Check MAP.md of 10-30 for bars after 2024-06. | AUDIT 2026-11-03 (operator: loosen blockers that make no sense): data block was false: MAP.md ran 2026-10-30, tom_raw is also on JIS-NUC; only the 3 shots remain. | blocked-on-data: F:/MTS/data/tom_raw absent on DESKTOP-F7IU69N; run MyTradingSys/research/bb_state_map_2026-10/bb_state_study.py on the machine holding it. Definitions + script + test shipped.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-29T22:30:27Z",
+  "refreshed": "2026-11-02T19:59:25Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -38,13 +38,13 @@
     "MyTradingSys/research/drop_bounce_2026-10-29/"
   ],
   "scope_out": [],
-  "scope_sha": "6eecd0e89249",
+  "scope_sha": "ee93a23e1598",
   "size": "M",
   "sources": [
     "MyTradingSys/research/prev_close_break_2026-10-29/RESULT.md",
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/SESSION_MAP_2026-10-30.md"
   ],
-  "state": "blocked",
+  "state": "ready",
   "steps": [
     "Write the state, candle and regime definitions (OURS) in MAP.md before counting",
     "Build TF bars from F:/MTS/data/tom_raw 1m, DEV only; count every cell",
