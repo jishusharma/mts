@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-02T05:48:30Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-02/cotrade_blind_read.md has one row per number: FOUND / NOT_IN_DATA / DIFF, first line holds the three counts.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Check every number in research/testnet_cotrade_2026-10-31/DESIGN.md and P5_BRIEF.md (US-window ranges, shares, ladder amounts) against stats_run.json and ladder_math.py docstrings; facts only.",
+  "id": "gemini-blind-read-cotrade-stats-1102",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "cotrade P5: hedge leg on a second slot, net view, two-slot kill, rebuild from exchange",
+      "ref": "3681623be7b3",
+      "utc": "2026-11-01T03:00:45Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "3681623be7b3 cotrade P5: hedge leg on a second slot, net view, two-slot kill, rebuild from",
+      "ref": "MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md",
+      "utc": "2026-11-01T03:00:45Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini effort low: load as <id>:low (gemini_queue.py run <id>:low). Final report ends with a Noticed: line. Facts only, no verdicts. D11_PROGRAMME s6 seed. PLANNER 2026-11-02 planner-b-1102. REVIEWED:2026-11-02 T0-ONLY",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-02T05:48:31Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md (read)",
+    "MyTradingSys/research/testnet_cotrade_2026-10-31/P5_BRIEF.md (read)",
+    "MyTradingSys/research/testnet_cotrade_2026-10-31/stats_run.json (read)",
+    "MyTradingSys/research/gemini_audits_2026-11-02/cotrade_blind_read.md (new)"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change outside the output file"
+  ],
+  "scope_sha": "3681623be7b3",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "list every number in DESIGN.md and P5_BRIEF.md with its cited source",
+    "open stats_run.json / ladder_math.py and check",
+    "write FOUND / NOT_IN_DATA / DIFF per number, counts on line 1"
+  ],
+  "tests": "see done_when (audit card, output file is the test)",
+  "title": "[GEMINI] blind re-read of testnet_cotrade DESIGN.md and P5_BRIEF.md numbers vs stats_run.json",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

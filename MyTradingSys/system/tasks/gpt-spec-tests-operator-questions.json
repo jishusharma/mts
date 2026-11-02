@@ -13,15 +13,23 @@
   "id": "gpt-spec-tests-operator-questions",
   "kind": "build",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: spec-derived tests for scripts/dev/traffic_report.py (9 tests, 3/3 mutations kille",
+      "ref": "498e9ba968ad",
+      "utc": "2026-11-01T20:42:25Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
-  "note": "S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "UNPARK 2026-11-02 planner-b-1102 DECISION (OURS): S0 park lifted, D11 s3 feeder rule + operator memory keep-GPT-lane-busy (8+ ready); small, no live path. REVIEWED:2026-11-02 T0-ONLY",
   "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-29T22:51:47Z",
+  "refreshed": "2026-11-02T05:49:04Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -33,12 +41,12 @@
     "any live path",
     "editing the audited source files"
   ],
-  "scope_sha": "",
+  "scope_sha": "498e9ba968ad",
   "size": "S",
   "sources": [
     "scripts/dev/operator_questions.py"
   ],
-  "state": "blocked",
+  "state": "ready",
   "steps": [
     "read operator_questions.py and list every branch",
     "compute expected values by hand",
