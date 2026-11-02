@@ -5,7 +5,9 @@ import json
 import os
 import sys
 import tempfile
+import time
 import unittest
+from unittest import mock
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -169,6 +171,121 @@ class WatcherWakeTest(unittest.TestCase):
         r = S._detect_transition(base, {"stalled": ["nuc bA 30m > cap 5m", "ship bB 21m > cap 20m"]})
         self.assertEqual(r, "TRANSITION STALLED-BG ship bB 21m > cap 20m: run plan, TaskStop it if it is yours")
         self.assertIsNone(S._detect_transition({"stalled": None}, {"stalled": None}))
+
+
+LOOP = 'F="x/sweep_NUC.txt"; until grep -q "^EXIT=" "$F"; do sleep 15; done; tail -40 "$F"'
+
+
+class IdleSubagentTest(BgWatchTest):
+    """bg-loop-block-1102: an agent that ends its turn waiting on its own shell writes nothing more, so its transcript looked
+    dead after 3 h and a 4.8 h bare poll loop dropped out of the report at hour 3."""
+
+    def sub(self, rows, idle_h):
+        d = self.root / "proj" / "sess" / "subagents"
+        d.mkdir(parents=True)
+        p = d / "agent-a5d0.jsonl"
+        p.write_text("\n".join(json.dumps(r) for r in rows) + "\n", encoding="utf-8", newline="\n")
+        t = NOW.timestamp() - idle_h * 3600
+        os.utime(p, (t, t))
+        parent = self.root / "proj" / "sess.jsonl"      # the supervisor session that spawned the agent keeps running
+        parent.write_text("{}" + chr(10), encoding="utf-8", newline=chr(10))
+
+    def test_loop_in_idle_subagent_transcript_is_still_reported(self):
+        self.sub(start("t9", "Bash", {"command": LOOP, "run_in_background": True},
+                       "Command running in background with ID: b1w6m0s2s. Output is being written to: x.output", 290), 4.8)
+        got = [x for x in self.lines() if "b1w6m0s2s" in x]
+        self.assertEqual(len(got), 1, got)
+        self.assertIn("bare poll loop", got[0])
+        self.assertIn("transcript idle 5h", got[0])
+
+    def test_idle_subagent_of_a_dead_session_is_not_scanned(self):
+        self.sub(start("t9", "Bash", {"command": LOOP, "run_in_background": True},
+                       "Command running in background with ID: bdead0001. Output is being written to: x.output", 290), 4.8)
+        old = NOW.timestamp() - 5 * 3600
+        os.utime(self.root / "proj" / "sess.jsonl", (old, old))
+        self.assertEqual([x for x in self.lines() if "bdead0001" in x], [])
+
+    def test_idle_transcript_does_not_hold_a_task_forever(self):
+        self.sub(start("t9", "Bash", {"command": LOOP, "run_in_background": True},
+                       "Command running in background with ID: bold00001. Output is being written to: x.output", 30 * 60), 29)
+        self.assertEqual([x for x in self.lines() if "bold00001" in x], [])
+
+    def test_idle_transcript_with_a_notice_is_quiet(self):
+        self.sub(start("t9", "Bash", {"command": LOOP, "run_in_background": True},
+                       "Command running in background with ID: bdone0001. Output is being written to: x.output", 290)
+                 + [notice("bdone0001", 280)], 4.6)
+        self.assertEqual([x for x in self.lines() if "bdone0001" in x], [])
+
+
+class BareLoopGuardTest(unittest.TestCase):
+    CASES = [
+        (LOOP, True),
+        ("while true; do sleep 5; done", True),
+        ("ls && while ! test -f f; do sleep 2; done", True),
+        ("bash -c 'until grep -q x f; do sleep 5; done'", True),
+        ('git commit -m "fix: until grep x; do sleep 5; done is bare"', False),
+        ('grep -n "until .*sleep" notes.md', False),
+        ("git commit -m \"$(cat <<'EOF'"+chr(10)+"until x; do sleep 1; done"+chr(10)+"EOF"+chr(10)+")\"", False),
+        ("python - <<'E'"+chr(10)+"while True:"+chr(10)+"    time.sleep(1)"+chr(10)+"E", False),
+        ("for i in $(seq 1 120); do grep -q x f && break; sleep 10; done", False),
+        ("until grep -q x f; do sleep 5; done  # timeout none", False),
+        ("python scripts/dev/bg_watch.py until --file f --pattern x --timeout 60", False),
+        ("echo it" + chr(92) + "'s; until false; do sleep 1; done", True),
+        ("echo until; sleep 5", False),
+        ("", False),
+    ]
+
+    def test_bare_poll_command(self):
+        for cmd, want in self.CASES:
+            self.assertEqual(bg_watch.bare_poll_command(cmd), want, cmd)
+
+    def hook(self, tool, cmd):
+        import preship
+        out = preship.hook("hook-commit", json.dumps({"tool_name": tool, "tool_input": {"command": cmd}, "cwd": os.getcwd()}))
+        return json.loads(out)["hookSpecificOutput"] if out else None
+
+    def test_hook_denies_bash_loops_and_names_the_fix(self):
+        for tool in ("Bash",):
+            h = self.hook(tool, LOOP)
+            self.assertEqual(h["permissionDecision"], "deny")
+            self.assertIn("bg_watch.py until --file F --pattern RE --timeout S", h["permissionDecisionReason"])
+
+    def test_hook_allows_text_and_bounded_loops(self):
+        self.assertIsNone(self.hook("Bash", 'git status # until x; do sleep 1; done'))
+        self.assertIsNone(self.hook("Bash", "python scripts/dev/bg_watch.py until --file f --pattern x --timeout 60"))
+        self.assertIsNone(self.hook("Monitor", "for i in $(seq 1 30); do tail -1 f; sleep 2; done"))
+
+    def test_hook_fails_open_when_the_check_breaks(self):
+        import preship
+        with mock.patch.object(bg_watch, "bare_poll_command", side_effect=RuntimeError("boom")):
+            self.assertIsNone(self.hook("Bash", LOOP))
+        self.assertEqual(preship.hook_bg_loop("sleep 1" * 3), "")
+
+    def test_hook_leaves_monitor_alone_it_expires_by_itself(self):
+        self.assertIsNone(self.hook("Monitor", LOOP))
+
+    def test_hook_entry_is_registered_for_bash(self):
+        cfg = json.loads((Path(__file__).resolve().parents[2] / ".claude" / "settings.json").read_text(encoding="utf-8"))
+        ent = [e for e in cfg["hooks"]["PreToolUse"] if any("preship.py" in h["command"] for h in e["hooks"])]
+        self.assertTrue(ent and "Bash" in ent[0]["matcher"].split("|"))
+
+
+class OrphanLoopTest(unittest.TestCase):
+    def test_live_bare_loop_older_than_cap_is_reported_without_a_transcript(self):
+        now = time.time()
+        shell = {"pid": 4242, "start": now - 4 * 3600, "cmd": "bash -c -l \"eval '" + LOOP.replace('"', '\\"') + "'\""}
+        young = {**shell, "pid": 7, "start": now - 120}
+        text = {"pid": 8, "start": now - 4 * 3600, "cmd": "bash -c 'git commit -m \"until x; do sleep 1; done\"'"}
+        with tempfile.TemporaryDirectory() as d:
+            got = bg_watch.report_lines(Path(d), root=Path(d) / "none", now=now, lister=lambda: [shell, young, text])
+        orphans = [x for x in got if x.startswith("ORPHAN-LOOP")]
+        self.assertEqual(len(orphans), 1, got)
+        self.assertIn("pid 4242", orphans[0])
+
+    def test_lister_failure_is_silent(self):
+        def boom():
+            raise OSError("no powershell")
+        self.assertEqual(bg_watch.live_loops(lister=boom), [])
 
 
 if __name__ == "__main__":

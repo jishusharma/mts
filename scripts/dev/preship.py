@@ -260,8 +260,25 @@ def hook_ship(data, cmd):
     return f"{status}: {what}"
 
 
+def hook_bg_loop(cmd):
+    """PreToolUse (Bash; not Monitor, which expires on its own timeout_ms, max 30 min - DECISION OURS): deny a poll loop with no deadline (bg-loop-block-1102; bg_watch.bare_poll_command). Any error: allow."""
+    if "sleep" not in cmd:
+        return ""
+    try:
+        import bg_watch
+        if not bg_watch.bare_poll_command(cmd):
+            return ""
+        return json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny",
+                                                  "permissionDecisionReason": bg_watch.GUARD_MSG}})
+    except Exception:
+        return ""
+
+
 def hook_commit(data):
     cmd = str((data.get("tool_input") or {}).get("command") or "")
+    loop = hook_bg_loop(cmd) if data.get("tool_name", "Bash") == "Bash" else ""
+    if loop:
+        return loop
     if SHIP.search(cmd):
         try:
             note = hook_ship(data, cmd)
