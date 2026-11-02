@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/test_ci_watch.py"
+  ],
+  "created": "2026-11-01T10:00:16Z",
+  "depends_on": [],
+  "done_when": "scripts/dev/test_ci_watch.py has a fake-run-list case (re-runs of old red shas created after a green head run) that streak()/sync ci state returns green; test passes, full test_ci_watch passes",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "ci_watch.streak must not let re-runs of old red commits hide a green run on a later head commit, so ship stops being refused on a green trunk",
+  "id": "sync-ci-red-check-fooled-by-rerun-of-old-commit",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "GitHub API calls log in with git's saved login (5000/h, not 60/h per IP)",
+      "ref": "8814c0b77d1b",
+      "utc": "2026-10-22T18:33:32Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-02T11:45:24Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/ci_watch.py",
+    "scripts/dev/test_ci_watch.py"
+  ],
+  "scope_out": [
+    "sync.py ship flow, CI workflow files, live tree"
+  ],
+  "scope_sha": "8814c0b77d1b",
+  "size": "S",
+  "sources": [
+    "scripts/dev/ci_watch.py:32 streak; scripts/dev/sync.py:787"
+  ],
+  "state": "ready",
+  "steps": [
+    "Add failing test with fake run lists (head_sha order given as ancestry list)",
+    "In ci_watch.streak order runs by branch commit order (or drop runs whose head_sha is an ancestor of a newer-run sha with a finished result), keep API injectable",
+    "Run test_ci_watch.py and sync CI-state tests"
+  ],
+  "tests": "scripts/dev/test_ci_watch.py new case: runs newest by createdAt = red old-sha reruns, then green head sha; fails on current streak()",
+  "title": "sync.py CI-red check takes the newest 2 runs by createdAt; a re-run of old red commits (2b61ed46, 6294071d at 09:56-09:59Z) hides the green run on the later commit e58a3296, so every code ship is refused though trunk is green. Done when: the check orders runs by commit order on the branch (or ignores re-runs of non-head ancestors), with a test using fake run lists",
+  "weight": "",
+  "worker": "agent"
+}

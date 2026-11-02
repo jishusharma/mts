@@ -1,0 +1,54 @@
+{
+ "id": "st-gemini_audits_2026-11-01-recent_results_blind_read",
+ "kind": "audit",
+ "family": "Gemini Audits",
+ "title": "FOUND: 201, NOT_IN_DATA: 20, DIFF: 0",
+ "provenance": "source-extracted",
+ "date": "2026-11-01",
+ "what": [],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2020-01-02 to 2021-12-31 (as written in the source)",
+ "verdict": {
+  "label": "threshold 0) results.json ci[0]: -0.00268 (-0.27 pp) FOUND OURS results.json:primary_near.diff.ci[0]",
+  "tone": "info"
+ },
+ "why": [],
+ "kpis": [
+  {
+   "label": "trades (first count in the source)",
+   "value": "4114"
+  },
+  {
+   "label": "net R after fees (first value in the source)",
+   "value": "0.10"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "n_trades",
+   "value": 4114,
+   "quote": "L19 15m trades: 4114 output.md trades: 4114 FOUND OURS output.md:6"
+  },
+  {
+   "field": "net_r",
+   "value": 0.1,
+   "quote": "L3 Fee-net round trip: 0.10 % fees.py 0.0010 (10 bp) FOUND SOURCED fees.py:BINANCE_TAKER (5 bp 2 legs)"
+  }
+ ],
+ "missing": {
+  "parameters": "no rule or parameter section found in the source",
+  "why": "no sentence in the source states why it passed or failed",
+  "n_trades": "not a trade test (audit)"
+ },
+ "source_files": [
+  "MyTradingSys/research/gemini_audits_2026-11-01/recent_results_blind_read.md"
+ ],
+ "commit": "2eb1bccd1"
+}

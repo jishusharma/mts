@@ -1,0 +1,103 @@
+{
+ "id": "eagle-preus-pullback",
+ "kind": "backtest",
+ "family": "Eagle_Eyes chart ideas (operator, 10-30/31)",
+ "title": "Pre-US pullback: overnight high given back before the US open, is it retaken at US start? (BTCUSDT 1m)",
+ "provenance": "run",
+ "date": "2026-11-02",
+ "what": [
+  {
+   "name": "Overnight range",
+   "value_plain": "high and low of 00:00-13:00 UTC",
+   "label": "OURS"
+  },
+  {
+   "name": "Giveback",
+   "value_plain": "(overnight high - price at 13:00 UTC) / overnight range; event = high made after 03:00 UTC and giveback >= 0.5; strong = >= 0.8",
+   "label": "OURS"
+  },
+  {
+   "name": "US window",
+   "value_plain": "13:00-20:00 UTC; which is hit first, the overnight high or the overnight low",
+   "label": "OURS"
+  },
+  {
+   "name": "Costs",
+   "value_plain": "none: a base rate (what happens next), not a trade",
+   "label": "OURS"
+  }
+ ],
+ "how": "preus_pullback.py reads every BTCUSDT 1m day 2022-01..2026-09 (1730 days) and counts which overnight extreme the US session takes first. Base rate only, no entries, no fees.",
+ "window": "2022-01-01 to 2026-09-30 (whole history read: a base rate, not a sealed test)",
+ "verdict": {
+  "label": "Strong giveback (>= 0.8): overnight low taken first 85 %, high retaken first 6 % (n 84). All days: 41 % / 42 %.",
+  "tone": "info"
+ },
+ "why": [
+  "On the 84 days where price gave back 80 % or more of the overnight range by 13:00 UTC, the US session took the overnight low first on 85 % and retook the high first on only 6 %.",
+  "On all 1730 days the split is near even (high first 42 %, low first 41 %), so the giveback, not the clock, carries the information.",
+  "Not a trade test: no entry, stop or fee. Turning it into a short needs its own pre-registered backtest with fees."
+ ],
+ "kpis": [
+  {
+   "label": "Strong giveback days",
+   "value": "n 84"
+  },
+  {
+   "label": "Low taken first",
+   "value": "85 %",
+   "tone": "good"
+  },
+  {
+   "label": "High retaken first",
+   "value": "6 %",
+   "tone": "bad"
+  },
+  {
+   "label": "All days (high / low first)",
+   "value": "42 % / 41 %"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "table",
+   "title": "Which overnight extreme the US session takes first",
+   "caption": "From the commit message of 8f8e92f10 (script output).",
+   "cols": [
+    "Days",
+    "n",
+    "High first",
+    "Low first"
+   ],
+   "rows": [
+    [
+     "All days",
+     1730,
+     "42%",
+     "41%"
+    ],
+    [
+     "Giveback >= 0.8, high after 03:00 UTC",
+     84,
+     "6%",
+     "85%"
+    ]
+   ]
+  },
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example days exported yet"
+  }
+ ],
+ "evidence": [
+  "MyTradingSys/system/EAGLE_EYES_BIBLE.md"
+ ],
+ "missing": [
+  "per-day rows not saved; event (giveback >= 0.5) and Monday rows printed by the script but not recorded"
+ ],
+ "source_files": [
+  "MyTradingSys/research/eagle_eyes_picture_2026-10-28/preus_pullback.py"
+ ],
+ "commit": "8f8e92f10"
+}
