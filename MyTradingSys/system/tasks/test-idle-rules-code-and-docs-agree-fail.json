@@ -1,0 +1,73 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-02T17:27:52Z",
+  "commands": [],
+  "created": "2026-11-02T17:25:28Z",
+  "depends_on": [],
+  "done_when": "test_idle_rules_code_and_docs_agree passes locally and on CI",
+  "est_turns": 4,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Restore the exact IDLE_RULE text in roles/supervisor.md that a byte-budget trim shortened",
+  "id": "test-idle-rules-code-and-docs-agree-fail",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "supervisor.md carries IDLE_RULE verbatim again; test_supervisor 97 passed, role budget/ros",
+      "ref": "87bd7e7c3",
+      "utc": "2026-11-02T17:27:52Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "supervisor.md: fit role budget, retoken",
+      "ref": "cddffcf5132c",
+      "utc": "2026-11-02T17:03:14Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "cddffcf5132c supervisor.md: fit role budget, retoken",
+      "ref": "MyTradingSys/system/roles/supervisor.md",
+      "utc": "2026-11-02T17:03:14Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-02T17:27:44Z",
+  "refs": [],
+  "result": "supervisor.md carries IDLE_RULE verbatim again; test_supervisor 97 passed, role budget/roster/builder tests pass. DECISION (OURS): doc restored, code unchanged",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/system/roles/supervisor.md"
+  ],
+  "scope_out": [
+    "scripts/dev/supervisor.py"
+  ],
+  "scope_sha": "cddffcf5132c",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "restore verbatim rule in supervisor.md",
+    "role_loader.py retoken",
+    "run test_supervisor, test_role_budget"
+  ],
+  "taken": "2026-11-02T17:27:52Z",
+  "tests": "scripts/dev/test_supervisor.py::test_idle_rules_code_and_docs_agree (failed before the doc fix)",
+  "title": "test_idle_rules_code_and_docs_agree fails on trunk (IDLE_RULE vs roles/supervisor.md); done-when: test passes locally and on CI",
+  "weight": "",
+  "worker": "agent"
+}
