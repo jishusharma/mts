@@ -184,3 +184,4 @@ scripts/dev/test_role_hook_launcher.py
 scripts/dev/test_aibridge_health.py
 scripts/dev/test_role_line.py
 MyTradingSys/research/sim_desk/test_desk.py
+scripts/dev/test_cbp_scorecard.py
