@@ -123,6 +123,10 @@ def open_replay(browser, fixture=True, wrap=False):
         page.clock.set_fixed_time(datetime.datetime.fromtimestamp(NOW_MS / 1000, tz=datetime.timezone.utc))  # a bare number is read as seconds
         page.goto(PAGE.resolve().as_uri() + "?replay=fixture", wait_until="load", timeout=30000)
         page.check("#more-tog")     # the SMA, BBw, ATR, vs VWAP columns are hidden until "More detail"
+        try:
+            page.wait_for_selector("#strip td.x", state="visible", timeout=5000)
+        except Exception:
+            pass
         page.wait_for_timeout(1300)  # one 1 s render tick on top of the first render
         assert page.evaluate("Date.now()") == NOW_MS, "clock is not fixed at last bar open + 60 s"
         rows = page.eval_on_selector_all("#strip tr", "rs => rs.map(r => Array.from(r.children).map(c => c.innerText))")
@@ -431,6 +435,83 @@ def test_position_bar_comparison_catches_a_changed_formula(browser, mutation):
     got, errs = _posbar(browser, mutate=mutation)
     assert not errs, errs
     assert got != PB_WANT, (mutation, got)
+
+
+# ---------- Liquidation tape & summary (card live-aid-liquidation-tape-replay-fixture) ----------
+# Replay known liquidation cluster across Bybit, Binance, Deribit (fixture_liq_cluster.json)
+# Hand-summed expected values:
+# 1 min (last 60s): 125k (Bybit long) + 85k (Binance long) + 15k (Deribit short) -> long 210.0k, short 15.0k, count 3, >=100k: 1
+# 5 min (last 300s): +250k (Bybit long) + 140k (Binance long) + 25k (Deribit short) -> long 600.0k, short 40.0k, count 6, >=100k: 3
+# 15 min (last 900s): +500k (Bybit long) + 350k (Binance long) + 60k (Deribit short) -> long 1.45M, short 100.0k, count 9, >=100k: 5
+# Event > 15m ago: 300k long at 18:54:40Z is excluded from 15m window.
+# Tape displays last 8 events (A.LQ.tapeN = 8) newest first.
+LIQ_FX = json.loads((HERE / "fixture_liq_cluster.json").read_text(encoding="utf-8"))
+LIQ_NOW = datetime.datetime(2026, 10, 30, 19, 10, 30, tzinfo=datetime.timezone.utc)
+LIQ_SUM_EXPECTED = [
+    ["1 min", "210.0k", "15.0k", "longs flushed", "3", "1"],
+    ["5 min", "600.0k", "40.0k", "longs flushed", "6", "3"],
+    ["15 min", "1.45M", "100.0k", "longs flushed", "9", "5"],
+]
+LIQ_TAPE_EXPECTED = [
+    ["19:10:15", "Bybit", "long", "125.0kbig", "76,240.5"],
+    ["19:09:55", "Binance", "long", "85.0k", "76,245.0"],
+    ["19:09:40", "Deribit", "short", "15.0k", "76,250.0"],
+    ["19:08:30", "Bybit", "long", "250.0kbig", "76,310.0"],
+    ["19:07:30", "Binance", "long", "140.0kbig", "76,350.5"],
+    ["19:06:30", "Deribit", "short", "25.0k", "76,390.0"],
+    ["19:03:00", "Bybit", "long", "500.0kbig", "76,480.0"],
+    ["19:00:30", "Binance", "long", "350.0kbig", "76,520.0"],
+]
+LIQ_GRID_EXPECTED = {
+    "g-liq": "longs flushed",
+    "g-liq-sub": "longs 600.0k, shorts 40.0k USD, 3 print(s) of 100k+",
+}
+
+
+def _liq_page(browser, mutate=False):
+    src = PAGE.read_text(encoding="utf-8")
+    assert src.count(PB_HOOK) == 1, "replay branch moved: update PB_HOOK"
+    injection = ("if (window.LIVEAID_LIQ) { S.liq = window.LIVEAID_LIQ; S.lq.BYBIT.t = S.lq.BINANCE.t = S.dbtT = S.oiT = Date.now();"
+                 " S.dbt = S.dbtMark = S.dbtIdx = 76240.0; S.dbtF8 = 0.0001; S.oi = 1e8; }\n    ")
+    if mutate:
+        injection += "var origLiqSum = A.liqSum; A.liqSum = function(ev, now, ms) { var r = origLiqSum(ev, now, ms); r.long *= 2; return r; };\n    "
+    src = src.replace(PB_HOOK, injection + PB_HOOK)
+    uri = PAGE.resolve().as_uri()
+    ctx = browser.new_context(offline=True, viewport={"width": 1400, "height": 900})
+    page = ctx.new_page()
+    errs = []
+    page.on("pageerror", lambda e: errs.append(str(e).splitlines()[0][:200]))
+    try:
+        page.route(uri + "*", lambda route: route.fulfill(status=200, content_type="text/html", body=src)
+                   if route.request.url.split("?")[0] == uri else route.continue_())
+        page.add_init_script("window.LIVEAID_REPLAY = " + json.dumps(KLINES) + "; window.LIVEAID_LIQ = " + json.dumps(LIQ_FX["events"]) + ";")
+        page.clock.set_fixed_time(LIQ_NOW)
+        page.goto(uri + "?replay=fixture", wait_until="load", timeout=30000)
+        page.wait_for_timeout(1300)
+        sum_rows = page.eval_on_selector_all("#liq-sum tr", "rs => rs.map(r => Array.from(r.children).map(c => c.innerText.trim()))")
+        tape_rows = page.eval_on_selector_all("#liq-tape tr", "rs => rs.map(r => Array.from(r.children).map(c => c.innerText.trim()))")
+        g_liq = page.inner_text("#g-liq").strip()
+        g_liq_sub = page.inner_text("#g-liq-sub").strip()
+        return sum_rows, tape_rows, g_liq, g_liq_sub, errs
+    finally:
+        ctx.close()
+
+
+def test_liq_tape_replays_known_cluster(browser):
+    sum_rows, tape_rows, g_liq, g_liq_sub, errs = _liq_page(browser)
+    assert not errs, errs
+    assert sum_rows == LIQ_SUM_EXPECTED, f"liq-sum mismatch: got {sum_rows}, want {LIQ_SUM_EXPECTED}"
+    assert tape_rows == LIQ_TAPE_EXPECTED, f"liq-tape mismatch: got {tape_rows}, want {LIQ_TAPE_EXPECTED}"
+    assert g_liq == LIQ_GRID_EXPECTED["g-liq"], f"g-liq mismatch: got {g_liq}, want {LIQ_GRID_EXPECTED['g-liq']}"
+    assert g_liq_sub == LIQ_GRID_EXPECTED["g-liq-sub"], f"g-liq-sub mismatch: got {g_liq_sub}, want {LIQ_GRID_EXPECTED['g-liq-sub']}"
+
+
+def test_liq_tape_catches_broken_liqsum(browser):
+    """Fail-first proof: mutating liqSum causes rendered #liq-sum and header to differ from hand-worked expected values."""
+    sum_rows, _, _, g_liq_sub, errs = _liq_page(browser, mutate=True)
+    assert not errs, errs
+    assert sum_rows != LIQ_SUM_EXPECTED, f"mutated liqSum went unnoticed in #liq-sum: {sum_rows}"
+    assert g_liq_sub != LIQ_GRID_EXPECTED["g-liq-sub"], f"mutated liqSum went unnoticed in #g-liq-sub: {g_liq_sub}"
 
 
 if __name__ == "__main__":

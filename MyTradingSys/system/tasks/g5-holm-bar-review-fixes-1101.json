@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T21:15:42Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -25,11 +27,24 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "two-sided Holm bar, refuse m<2, docstring line refs updated (commit fc06a2f18)",
+      "ref": "3ca54ee15",
+      "utc": "2026-11-01T21:15:42Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "Revert G5 Holm bar 6db6e0433: CI red, test_research_kit docstring line number (screen.py c",
-      "ref": "afdea5e0dc2e",
-      "utc": "2026-10-31T19:53:53Z"
+      "line": "Result: mutation-kill audit of backtest/research_kit.py",
+      "ref": "52ab3e0ca3b4",
+      "utc": "2026-11-01T19:09:02Z"
+    },
+    {
+      "auto": true,
+      "kind": "audit",
+      "line": "fc06a2f1892b G5 Holm bar review fixes: two-sided bar, refuse m<2, tests above __main__, do",
+      "ref": "MyTradingSys/research/dsa_backtest_audit_2026-10-16/LABEL_MOVES.md",
+      "utc": "2026-10-31T20:36:26Z"
     }
   ],
   "layers": [],
@@ -39,9 +54,14 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T20:31:28Z",
+  "refreshed": "2026-11-01T21:15:13Z",
   "refs": [],
-  "result": "",
+  "result": "two-sided Holm bar, refuse m<2, docstring line refs updated (commit fc06a2f18)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py",
     "MyTradingSys/research/gross_effect_screen_2026-10-15/test_screen.py",
@@ -54,12 +74,12 @@
   "scope_out": [
     "any ledger row, RESULT.md or published verdict; PASS terms other than the t bar; VALIDATION/HOLDOUT data"
   ],
-  "scope_sha": "afdea5e0dc2e",
+  "scope_sha": "52ab3e0ca3b4",
   "size": "M",
   "sources": [
     "6db6e0433 review (screen.py:232 one-sided; two-sided 2.898/3.274/3.509); revert afdea5e0d; DECISION (OURS) two-sided: gate reads signed t but conservative default"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "git revert afdea5e0d (re-lands 6db6e0433 as its own commit). Do not hand-copy.",
     "screen.py t_bar: z=NormalDist().inv_cdf(1-alpha/(2*m)); raise ValueError when int(m)<2 (m=1 silently gave 2.0). Update the LABEL_MOVES.md rule text: sided choice, new bars 2.898/3.274/3.509 at m=12/40/90 (hand: z + (z^3+z)/796).",
@@ -67,6 +87,7 @@
     "Recompute every screen.py:N / common.py:N ref in the test_research_kit.py docstring (lines 8-12, 21) with grep -n after the edits; git grep 'screen.py:[0-9]' for other pins read by tests (T06 costs.csv).",
     "Run pytest MyTradingSys/tests/test_research_kit.py, screen/common tests, T06 test_cost_inventory.py, then ship. Verify: content commit sha; git cherry origin/fast-track <sha> empty; git ls-tree -r origin/fast-track --name-only lists the delivered files."
   ],
+  "taken": "2026-11-01T21:15:38Z",
   "tests": "test_screen.py: test_t_bar_two_sided_values (2.898/3.274/3.509 +-2e-3), test_t_bar_refuses_m_below_2; both fail on 6db6e0433 code. test_research_kit.py passes.",
   "title": "G5 Holm bar: re-land 6db6e0433 with review fixes (two-sided, m<2 refused, tests above __main__, docstring line refs)",
   "weight": "CRUCIAL",

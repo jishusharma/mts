@@ -1,0 +1,74 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-02T06:46:39Z",
+  "commands": [],
+  "created": "2026-11-02T05:48:33Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-02/param_labels_reclaim_cotrade_meta.md has one row per constant: file:line, value, SOURCED(quote, file:line) / OURS, first line holds the two counts.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "List every numeric constant and default parameter in research/reclaim_close_stop_2026-11/reclaim.py, testnet_cotrade_2026-10-31/ladder_math.py and us_window_stats.py, meta_label_tom_fabio_2026-10-31/analyze.py and features.py; label each SOURCED (quote + file:line) or OURS; never call OURS the trader's.",
+  "id": "gemini-param-labels-reclaim-cotrade-meta-1102",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "SOURCED 21 / OURS 47; MyTradingSys/research/gemini_audits_2026-11-02/param_labels_reclaim_",
+      "ref": "9f138d432",
+      "utc": "2026-11-02T06:46:39Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "reclaim study: no module-level fee constant (cost-inventory gate)",
+      "ref": "274ecd1deaec",
+      "utc": "2026-10-31T20:12:25Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini effort low: load as <id>:low (gemini_queue.py run <id>:low). Final report ends with a Noticed: line. Facts only, no verdicts. D11_PROGRAMME s6 seed. PLANNER 2026-11-02 planner-b-1102. REVIEWED:2026-11-02 T0-ONLY",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-02T05:48:34Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "SOURCED 21 / OURS 47; MyTradingSys/research/gemini_audits_2026-11-02/param_labels_reclaim_cotrade_meta.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/reclaim_close_stop_2026-11/reclaim.py (read)",
+    "MyTradingSys/research/testnet_cotrade_2026-10-31/ladder_math.py (read)",
+    "MyTradingSys/research/testnet_cotrade_2026-10-31/us_window_stats.py (read)",
+    "MyTradingSys/research/meta_label_tom_fabio_2026-10-31/analyze.py (read)",
+    "MyTradingSys/research/meta_label_tom_fabio_2026-10-31/features.py (read)",
+    "MyTradingSys/research/gemini_audits_2026-11-02/param_labels_reclaim_cotrade_meta.md (new)"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change outside the output file"
+  ],
+  "scope_sha": "274ecd1deaec",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "list constants per file with line numbers",
+    "search PRE_REG.md and cited sources for each value",
+    "write the label table, counts on line 1"
+  ],
+  "taken": "2026-11-02T06:46:39Z",
+  "tests": "see done_when (audit card, output file is the test)",
+  "title": "[GEMINI] SOURCED/OURS labels for constants in reclaim.py, ladder_math.py, us_window_stats.py and meta_label_tom_fabio analyze.py/features.py",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

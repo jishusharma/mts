@@ -115,3 +115,30 @@ Entered in auto_trades.jsonl with no later trade_closed (whole log). Not an exch
 - The JIS-NB checkout is marked by .mts_live but its auto_trades.jsonl was last written 2026-10-20 and trade_ledger.jsonl 2026-10-15: it is not running the loop.
 - system/live_host.txt still says JIS-NB (stale). DECISION (OURS): left unchanged here because two tests in scripts/dev/test_live_mirror.py (test_hostname_case_does_not_matter, test_worktree_on_jis_nb_reads_local_folder) read the real file and fail when it names DESKTOP-F7IU69N; the file is to be corrected together with those tests. The owner marker already overrides the file (LIVE_MIRROR.md).
 - NOT_RUN: the owner host own files are not readable from this host; a live readout needs this script run on DESKTOP-F7IU69N.
+
+## Recount (haiku-recount-testnet-readout)
+
+Method: day-file table re-summed from its own rows (19 rows total: 19 calibration, 0 promoted; all 19 rows show Alerts 0, Entered 0, Closed 0, Wins 0, Net +0.0000). Cross-check against `funnel_report.py --day 2026-10-31`: total alerts 0, rejected 0, skipped 0, attempts 0, filled 0, nofill 0, closed 0, wins 0, net +0.0000.
+- cryptocred / jishu_16 (calibration): SAME. Day file alerts 0, entered 0, closed 0, wins 0, net +0.0000; funnel 0.
+- cryptocred / jishu_17 (calibration): SAME. Day file alerts 0, entered 0, closed 0, wins 0, net +0.0000; funnel 0.
+- cryptocred / jishu_18 (calibration): SAME. Day file alerts 0, entered 0, closed 0, wins 0, net +0.0000; funnel 0.
+- cryptocred / jishu_19 (calibration): SAME. Day file alerts 0, entered 0, closed 0, wins 0, net +0.0000; funnel 0.
+- cryptocred / jishu_20 (calibration): SAME. Day file alerts 0, entered 0, closed 0, wins 0, net +0.0000; funnel 0.
+- fabio / jishu_11 (calibration): SAME. Day file alerts 0, entered 0, closed 0, wins 0, net +0.0000; funnel 0.
+- fabio / jishu_12 (calibration): SAME. Day file alerts 0, entered 0, closed 0, wins 0, net +0.0000; funnel 0.
+- fabio / jishu_13 (calibration): SAME. Day file alerts 0, entered 0, closed 0, wins 0, net +0.0000; funnel 0.
+- fabio / jishu_14 (calibration): SAME. Day file alerts 0, entered 0, closed 0, wins 0, net +0.0000; funnel 0.
+- fabio / jishu_15 (calibration): SAME. Day file alerts 0, entered 0, closed 0, wins 0, net +0.0000; funnel 0.
+- positioning / jishu_10 (calibration): SAME. Day file alerts 0, entered 0, closed 0, wins 0, net +0.0000; funnel 0.
+- rsi / jishu_2 (calibration): SAME. Day file alerts 0, entered 0, closed 0, wins 0, net +0.0000; funnel 0.
+- rsi / jishu_3 (calibration): SAME. Day file alerts 0, entered 0, closed 0, wins 0, net +0.0000; funnel 0.
+- rsi / jishu_4 (calibration): SAME. Day file alerts 0, entered 0, closed 0, wins 0, net +0.0000; funnel 0.
+- rsi / jishu_7 (calibration): SAME. Day file alerts 0, entered 0, closed 0, wins 0, net +0.0000; funnel 0.
+- rsi / jishu_8 (calibration): SAME. Day file alerts 0, entered 0, closed 0, wins 0, net +0.0000; funnel 0.
+- session / jishu_9 (calibration): SAME. Day file alerts 0, entered 0, closed 0, wins 0, net +0.0000; funnel 0.
+- tom / main (calibration): SAME. Day file alerts 0, entered 0, closed 0, wins 0, net +0.0000; funnel 0.
+- turn_of_candle / jishu_1 (calibration): SAME. Day file alerts 0, entered 0, closed 0, wins 0, net +0.0000; funnel 0.
+
+Overall: SAME across all 19 sources (0 promoted, 19 calibration). The stale JIS-NB engine log files predated the window by 251.8 h, producing identical zero readings across both testnet_status.py and funnel_report.py.
+
+Noticed: the daily testnet readout correctly flags stale engine log state (age > 6h) to prevent zero-activity logging artifacts from being misconstrued as active zero-fill periods.

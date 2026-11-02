@@ -260,7 +260,7 @@ def layer_families(repo=REPO):
 
 
 def refresh_layers(repo=REPO):
-    """Regenerate LAYERS.md after a card change, so its open-card lists never go stale. Never fails the card command."""
+    """Regenerate LAYERS.md via make_layers_md. Kept for manual or test use; mutating commands no longer call this automatically."""
     if not (Path(repo) / LAYER_INDEX).is_file():
         return
     f = Path(repo) / "MyTradingSys" / "system" / "LAYERS.md"
@@ -728,7 +728,8 @@ def cmd_fill(a):
     return cmd_check(argparse.Namespace(id=c["id"], demote=False))
 
 
-_LIKELY_FN_RE = re.compile(r"\b(test_[A-Za-z0-9_]+|cmd_[A-Za-z0-9_]+)\b")
+_LIKELY_FN_RE = re.compile(r"\b(?:test_[A-Za-z0-9_]+|cmd_[A-Za-z0-9_]+|[a-z][a-z0-9]*(?:_[a-z0-9]+)+)\b")
+_LIKELY_STOPWORDS = {"done_when", "scope_in", "scope_out"}
 
 
 def likely_done_reason(card: dict, repo: Path = REPO) -> str:
@@ -737,7 +738,7 @@ def likely_done_reason(card: dict, repo: Path = REPO) -> str:
     if card.get("state") not in ("raw", "refined", "ready", "active"):
         return ""
     blob = f"{card.get('tests', '')}\n{card.get('done_when', '')}"
-    symbols = sorted(set(_LIKELY_FN_RE.findall(blob)))
+    symbols = sorted(set(s for s in _LIKELY_FN_RE.findall(blob) if s not in _LIKELY_STOPWORDS))
     if not symbols:
         return ""
     scope_files: list[Path] = []
@@ -747,7 +748,7 @@ def likely_done_reason(card: dict, repo: Path = REPO) -> str:
         if not tok:
             continue
         p = (Path(repo) / tok) if not Path(tok).is_absolute() else Path(tok)
-        if p.is_file() and p.suffix == ".py":
+        if p.is_file() and p.suffix in (".py", ".md"):
             scope_files.append(p)
     if not scope_files:
         return ""
@@ -757,9 +758,9 @@ def likely_done_reason(card: dict, repo: Path = REPO) -> str:
             texts[p] = p.read_text(encoding="utf-8", errors="replace")
         except OSError:
             pass
-    matched = [sym for sym in symbols if any(f"def {sym}" in txt for txt in texts.values())]
+    matched = [sym for sym in symbols if any(sym in txt or sym == p.stem for p, txt in texts.items())]
     if matched and len(matched) == len(symbols):
-        return f"likely already in tree ({', '.join(matched)} defined in scope_in)"
+        return f"likely already in tree ({', '.join(matched)} in scope_in)"
     return ""
 
 
@@ -1502,6 +1503,9 @@ def exclusion(card, cards, reg, holds, claims, lane_st, as_of, host=None, repo=R
     tag = stop_tag(card, repo, claims)   # C3: the Lead pick path never dispatches a card whose work is already on trunk or scope is stale
     if tag:
         return ("shipped" if tag.startswith("SHIPPED") else "stale", tag)
+    likely = likely_done_reason(card, repo)
+    if likely:
+        return ("likely_done", likely)
     held = hold_problems(card, holds)
     if held:
         return ("hold", held[0].split(":")[0])
@@ -1767,8 +1771,6 @@ def main(argv=None):
     s.set_defaults(f=cmd_sweep)
     a = ap.parse_args(argv)
     rc = a.f(a) or 0
-    if a.cmd in MUTATING:
-        refresh_layers(REPO)
     return rc
 
 

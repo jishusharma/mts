@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-02T05:48:26Z",
+  "depends_on": [],
+  "done_when": "scripts/dev/test_ff_calendar_snapshot.py has >=8 passing tests, 3/3 scratch mutations fail them, ff_calendar_snapshot.py unchanged, report written.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "ff_calendar_snapshot.py has no test. Test render(events, fetched_ms) only; fetch() is network, stub it. Derive expected outputs by hand from its docstring for 6 boundary cases (at limit, one below, one above, empty, malformed, error path), write scripts/dev/test_ff_calendar_snapshot.py with temp dirs only, then 3 scratch mutations must each fail a test.",
+  "id": "gpt-spec-tests-ff-calendar-snapshot",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: spec-derived tests for scripts/dev/traffic_report.py (9 tests, 3/3 mutations kille",
+      "ref": "498e9ba968ad",
+      "utc": "2026-11-01T20:42:25Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "PLANNER 2026-11-02 planner-b-1102, feeder rule (D11 s3): new/untested .py -> spec tests from the docstring, never from the code. REVIEWED:2026-11-02 T0-ONLY",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-02T05:49:03Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/test_ff_calendar_snapshot.py",
+    "MyTradingSys/research/layer_lab/reports/2026-11-02_gpt-spec-tests-ff-calendar-snapshot.md",
+    "scripts/dev/extra_tests.tsv"
+  ],
+  "scope_out": [
+    "any live path",
+    "editing the audited source file"
+  ],
+  "scope_sha": "498e9ba968ad",
+  "size": "S",
+  "sources": [
+    "scripts/dev/ff_calendar_snapshot.py"
+  ],
+  "state": "ready",
+  "steps": [
+    "read ff_calendar_snapshot.py and list every branch",
+    "compute expected values by hand (no running the code first)",
+    "write tests, register in extra_tests.tsv, run 3 mutations, write report; verify: content sha, git cherry origin/fast-track empty, git ls-tree shows the files"
+  ],
+  "tests": "python -m pytest scripts/dev/test_ff_calendar_snapshot.py -q (fail-first: each of the 3 mutations makes it fail)",
+  "title": "Spec-derived tests for scripts/dev/ff_calendar_snapshot.py (no test file today)",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

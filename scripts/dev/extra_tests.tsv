@@ -175,3 +175,6 @@ scripts/dev/test_yt_vpn_fetch.py
 scripts/dev/test_dsa_watch.py
 scripts/dev/test_yt_guard_fleet.py
 MyTradingSys/research/michael_lines_2026-11/test_stated_lines.py
+scripts/dev/test_traffic_report.py
+scripts/dev/test_git_net_deadline.py
+scripts/dev/test_yt_proxy.py

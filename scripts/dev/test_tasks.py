@@ -640,6 +640,31 @@ class StateTagTest(NextSkipsClaimedTest):
         self.assertEqual(code, "stale")
         self.assertIn("scope changed", why)
 
+    def test_dispatch_excludes_card_whose_done_when_identifiers_are_in_scope(self):
+        self.commit("src/token_audit.py", "thinking_chars = 40" + NL)
+        c = self.card(scope_in=["src/token_audit.py"], tests="pytest",
+                      done_when="token_audit.py writes per-session table with column thinking_chars")
+        self.run_cli("tag", "TS1", "--refresh")
+        now = datetime(2026, 10, 1, tzinfo=timezone.utc)
+        code, why = T.exclusion(c, [c], {}, {}, {}, {"status": "up"}, now, None, self.repo)
+        self.assertEqual(code, "likely_done")
+        self.assertIn("thinking_chars", why)
+        snap = T.dispatch([c], {}, {}, {}, {"status": "up"}, now, repo=self.repo)
+        self.assertEqual(snap["dispatch"], [])
+        self.assertEqual(snap["excluded"][0]["id"], "TS1")
+        self.assertEqual(snap["excluded"][0]["reason_code"], "likely_done")
+
+    def test_dispatch_keeps_card_with_absent_identifier(self):
+        self.commit("src/token_audit.py", "x = 1" + NL)
+        c = self.card(scope_in=["src/token_audit.py"], tests="pytest",
+                      done_when="token_audit.py writes per-session table with column thinking_chars")
+        self.run_cli("tag", "TS1", "--refresh")
+        now = datetime(2026, 10, 1, tzinfo=timezone.utc)
+        code = T.exclusion(c, [c], {}, {}, {}, {"status": "up"}, now, None, self.repo)
+        self.assertIsNone(code)
+        snap = T.dispatch([c], {}, {}, {}, {"status": "up"}, now, repo=self.repo)
+        self.assertEqual([d["id"] for d in snap["dispatch"]], ["TS1"])
+
 
 class RepoDataTest(unittest.TestCase):
     def test_every_committed_card_is_consistent(self):
@@ -681,6 +706,31 @@ class RefreshLayersAnnounceTest(unittest.TestCase):
                     fake.write = lambda r: None      # unchanged content: silent
                     T.refresh_layers(repo)
                 self.assertNotIn("regenerated", buf2.getvalue())
+
+    def test_check_and_tag_leave_layers_md_unchanged(self):
+        with tempfile.TemporaryDirectory() as d:
+            repo, old_repo = Path(d), T.REPO
+            T.REPO = repo
+            try:
+                (repo / T.LAYER_INDEX).parent.mkdir(parents=True)
+                (repo / T.LAYER_INDEX).write_text("{}", encoding="utf-8")
+                layers_md = repo / "MyTradingSys" / "system" / "LAYERS.md"
+                layers_md.write_text("original content", encoding="utf-8")
+                c = T.blank("test-card-1", "Test Card", state="ready")
+                c["goal"] = "test goal"
+                c["worker"] = "SONNET"
+                c["size"] = "S"
+                c["est_turns"] = 5
+                T.save(repo, c)
+                fake = mock.Mock()
+                fake.write = lambda r: layers_md.write_text("OVERWRITTEN", encoding="utf-8")
+                with mock.patch.dict(sys.modules, {"make_layers_md": fake}):
+                    T.main(["check", "test-card-1"])
+                    self.assertEqual(layers_md.read_text(encoding="utf-8"), "original content")
+                    T.main(["tag", "test-card-1", "--refresh"])
+                    self.assertEqual(layers_md.read_text(encoding="utf-8"), "original content")
+            finally:
+                T.REPO = old_repo
 
 
 class LabMachineChecksTest(unittest.TestCase):
@@ -1259,6 +1309,24 @@ class LikelyDoneAndDependsBriefTest(unittest.TestCase):
                 T.save(repo, c)
                 self.assertIn("test_already_shipped_probe", T.likely_done_reason(c, repo))
                 rc, out = run_cli("check", "SHIP1")
+                self.assertEqual(rc, 0)
+                self.assertIn("WARN likely already in tree", out)
+            finally:
+                T.REPO = old
+
+    def test_check_warns_on_snake_case_column_names(self):
+        with tempfile.TemporaryDirectory() as d:
+            repo, old = Path(d), T.REPO
+            T.REPO = repo
+            try:
+                mod = repo / "src" / "token_audit.py"
+                mod.parent.mkdir(parents=True, exist_ok=True)
+                mod.write_text("thinking_chars = 40\n", encoding="utf-8")
+                c = good("ASK1", state="refined", scope_in=["src/token_audit.py"], tests="pytest",
+                         done_when="outputs thinking_chars")
+                T.save(repo, c)
+                self.assertIn("thinking_chars", T.likely_done_reason(c, repo))
+                rc, out = run_cli("check", "ASK1")
                 self.assertEqual(rc, 0)
                 self.assertIn("WARN likely already in tree", out)
             finally:

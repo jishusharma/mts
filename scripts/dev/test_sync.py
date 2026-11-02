@@ -836,21 +836,41 @@ class SyncTest(unittest.TestCase):
         self.assertEqual(second.resolve(), first.resolve())
         self.assertFalse(second.with_name(second.name + "-2").exists())
 
-    def test_start_makes_dash_2_when_the_same_slug_tree_is_dirty_unshipped_or_busy(self):
+    def test_start_twice_same_slug_reuses_unfinished_tree(self):
+        with contextlib.redirect_stdout(io.StringIO()) as out:
+            first = sync.new_worktree(self.a, "unfinished")
+            (first / "wip.txt").write_text("in-progress\n", newline="\n")
+            second = sync.new_worktree(self.a, "unfinished")
+        self.assertEqual(second.resolve(), first.resolve())
+        self.assertFalse(first.with_name(first.name + "-2").exists())
+        self.assertTrue((first / "wip.txt").exists())
+        self.assertEqual((first / "wip.txt").read_text(encoding="utf-8"), "in-progress\n")
+        self.assertIn(f"reusing existing tree {first} (1 uncommitted)", out.getvalue())
+
+        # Unshipped commit also reuses same unfinished tree
+        commit(first, "done.py", "d\n")
         with contextlib.redirect_stdout(io.StringIO()):
-            busy = sync.new_worktree(self.a, "busy")
-            dirty = sync.new_worktree(self.a, "dirt")
-            ahead = sync.new_worktree(self.a, "ahd")
-            (dirty / "x.txt").write_text("wip\n", newline="\n")
-            commit(ahead, "u.py", "u\n")
-            self.assertNotEqual(sync.new_worktree(self.a, "busy").resolve(), busy.resolve())   # just started: a session may be in it
-            real_idle = sync.idle_hours
-            sync.idle_hours = lambda *a, **k: 5.0
-            try:
-                self.assertNotEqual(sync.new_worktree(self.a, "dirt").resolve(), dirty.resolve())
-                self.assertNotEqual(sync.new_worktree(self.a, "ahd").resolve(), ahead.resolve())
-            finally:
-                sync.idle_hours = real_idle
+            third = sync.new_worktree(self.a, "unfinished")
+        self.assertEqual(third.resolve(), first.resolve())
+
+        # start(--worker) gets a fresh tree for a different slug
+        with contextlib.redirect_stdout(io.StringIO()):
+            worker_tree = sync.start(first, slug="diff-worker-slug", worker=True)
+        self.assertNotEqual(worker_tree.resolve(), first.resolve())
+        self.assertIn("diff-worker-slug", worker_tree.name)
+
+    def test_start_makes_dash_2_when_the_same_slug_tree_is_live_or_gateway(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            live = sync.new_worktree(self.a, "live")
+            gw = sync.new_worktree(self.a, "gw")
+            (live / sync.LIVE_MARKER).write_text("", newline="\n")
+            (gw / sync.GATEWAY_MARKER).write_text("", newline="\n")
+            live2 = sync.new_worktree(self.a, "live")
+            gw2 = sync.new_worktree(self.a, "gw")
+        self.assertNotEqual(live2.resolve(), live.resolve())
+        self.assertTrue(live2.name.endswith("-2"))
+        self.assertNotEqual(gw2.resolve(), gw.resolve())
+        self.assertTrue(gw2.name.endswith("-2"))
 
     def test_tidy_and_reuse_work_under_any_hostname(self):
         real = sync.socket.gethostname
@@ -1898,6 +1918,41 @@ class ShipResultFlagTest(unittest.TestCase):
             self.assertIn("Result:", g("log", "-1", "--format=%B"))
             self.assertEqual(g("status", "--short", "--", sync.LAYERS_REL).strip(), "")
             self.assertIn("other.txt", g("status", "--short"))   # unrelated file untouched
+
+    def test_stage_layers_regenerates_stale_layers_md(self):
+        with tempfile.TemporaryDirectory() as td:
+            g = self.make_repo(td)
+            idx = Path(td) / "MyTradingSys" / "system" / "layer_index.json"
+            idx.parent.mkdir(parents=True)
+            idx.write_text("{}", encoding="utf-8")
+            f = Path(td) / sync.LAYERS_REL
+            f.parent.mkdir(parents=True, exist_ok=True)
+            f.write_text("old content", encoding="utf-8")
+            g("add", "-A")
+            g("commit", "-q", "-m", "init layers")
+
+            fake = mock.Mock()
+            fake.write = lambda r: f.write_text("regenerated content", encoding="utf-8")
+            with mock.patch.dict(sys.modules, {"make_layers_md": fake}):
+                self.assertTrue(sync.stage_layers(td))
+                self.assertEqual(f.read_text(encoding="utf-8"), "regenerated content")
+                self.assertIn("Result:", g("log", "-1", "--format=%B"))
+                self.assertEqual(g("status", "--short").strip(), "")
+
+    def test_ship_refuses_staged_uncommitted_files(self):
+        with tempfile.TemporaryDirectory() as td:
+            g = self.make_repo(td)
+            staged_file = Path(td) / "staged.txt"
+            staged_file.write_text("staged content", encoding="utf-8")
+            g("add", "staged.txt")
+            with mock.patch.object(sync, "toplevel", return_value=Path(td)), \
+                 mock.patch.object(sync, "run_host_health"), \
+                 mock.patch.object(sync, "ship"), \
+                 contextlib.redirect_stderr(io.StringIO()) as err:
+                rc = sync.main(["ship"])
+                self.assertEqual(rc, 1)
+                self.assertIn("staged but not committed", err.getvalue())
+                self.assertIn("staged.txt", err.getvalue())
 
     def test_cli_result_commits_before_ship_and_m_without_result_is_refused(self):
         with mock.patch.object(sync, "toplevel", return_value=Path(".")), mock.patch.object(sync, "run_host_health"),                 mock.patch.object(sync, "ship", return_value=None) as mock_ship,                 mock.patch.object(sync, "commit_pending", return_value=1) as mock_commit:

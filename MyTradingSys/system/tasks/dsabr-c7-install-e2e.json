@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T05:46:39Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -21,7 +22,14 @@
   "goal": "Runs after c5 and c6 ship: aibridge_install.py F:/AIBridge, aibridge_verify.py, e2e_bridge.py --json on JIS-NUC; jis-nb through mts_signal.py broadcast --cmd; report both JSON outputs and the extension reload + F5 step",
   "id": "dsabr-c7-install-e2e",
   "lane": "HAIKU",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "JIS-NUC: AIBridge 0.7.10 installed, aibridge_verify PASS (0 FAIL of 29), e2e_bridge.py --j",
+      "ref": "c9fdb22a3",
+      "utc": "2026-11-02T05:46:39Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -34,7 +42,12 @@
   "refs": [
     "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
   ],
-  "result": "",
+  "result": "JIS-NUC: AIBridge 0.7.10 installed, aibridge_verify PASS (0 FAIL of 29), e2e_bridge.py --json exit 0 (E0-E4 PASS, E5 NOT_CHECKED live chat). jis-nb: broadcast b-51fcf3 sent (install+verify+e2e cmd), not yet confirmed. Operator step: reload extension at chrome://extensions + F5 chat tab.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "review_receipt": {
     "card_hash": "e9c367e0704e",
     "date": "2026-10-31",
@@ -52,13 +65,14 @@
   "sources": [
     "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Wait for c5 and c6 to ship; fetch",
     "python scripts/dev/aibridge_install.py F:/AIBridge; python scripts/dev/aibridge_verify.py F:/AIBridge",
     "python scripts/aibridge/tests/e2e_bridge.py F:/AIBridge --json on JIS-NUC",
     "mts_signal.py broadcast --cmd for jis-nb (install, verify, e2e); quote both JSON outputs; sync.py ship"
   ],
+  "taken": "2026-11-02T05:46:39Z",
   "tests": "n/a (run card)",
   "title": "Install bridge 0.7.4 on JIS-NUC and jis-nb and run e2e_bridge.py",
   "weight": "IMPORTANT",

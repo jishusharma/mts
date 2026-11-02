@@ -973,6 +973,10 @@ CI_FILE_S = {
     "MyTradingSys.backtest.layers.cryptocred.test_cc_htf_count": 3,
 }
 CI_FILE_DEFAULT_S = 1.5
+# --quick on a worker host (Windows, 15 min shell cap): run it as QUICK_PARTS named parts `--quick --shard K/QUICK_PARTS`. 4 keeps the largest part under
+# QUICK_PART_MAX_S by shard_est (Windows: N=4 558 s, N=3 735 s; Linux est is lower); test_run_all_tests checks the partition and the cap. OURS.
+QUICK_PARTS = 4
+QUICK_PART_MAX_S = 600
 CI_MODULE_DEFAULT_S = 0.3   # a layer module not in CI_FILE_S (78 modules took 61 s, two of them 38 s)
 
 
@@ -1338,6 +1342,8 @@ def main(argv=None):
     quick = "--quick" in args
 
     plan = build_plan(quick)
+    if quick and not any(a in args for a in ("--shard", "--smoke", "--precheck", "--changed-file")) and not os.environ.get("CI"):
+        print(f"run in {QUICK_PARTS} parts (each under {QUICK_PART_MAX_S} s est): --quick --shard K/{QUICK_PARTS} for K = 1..{QUICK_PARTS}", flush=True)
     plan, mode = apply_selection(plan, args)
     apply_local_skip(plan, args)
     if "--shard" in args:

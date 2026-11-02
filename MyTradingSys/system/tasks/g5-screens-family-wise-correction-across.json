@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T21:17:00Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -29,11 +31,24 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "Holm family-wise correction bar across arms, horizons, and variants (commits 6db6e0433, fc",
+      "ref": "7c5a2f5fd",
+      "utc": "2026-11-01T21:17:00Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "Revert \"Revert real-funding screens: CI red (T06 costs.csv pins screen.py line numbers)\"",
-      "ref": "8cae5e9e285e",
-      "utc": "2026-10-27T22:20:16Z"
+      "line": "G5 Holm bar review fixes: two-sided bar, refuse m<2, tests above __main__, docstring line ",
+      "ref": "fc06a2f1892b",
+      "utc": "2026-10-31T20:36:26Z"
+    },
+    {
+      "auto": true,
+      "kind": "audit",
+      "line": "fc06a2f1892b G5 Holm bar review fixes: two-sided bar, refuse m<2, tests above __main__, do",
+      "ref": "MyTradingSys/research/dsa_backtest_audit_2026-10-16/LABEL_MOVES.md",
+      "utc": "2026-10-31T20:36:26Z"
     }
   ],
   "layers": [],
@@ -43,11 +58,16 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-10-31T18:54:40Z",
+  "refreshed": "2026-11-01T21:16:40Z",
   "refs": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T10_missing_aspects.md"
   ],
-  "result": "",
+  "result": "Holm family-wise correction bar across arms, horizons, and variants (commits 6db6e0433, fc06a2f18)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py",
     "MyTradingSys/research/gross_effect_screen_2026-10-15/test_screen.py",
@@ -61,19 +81,20 @@
     "restating any published verdict, ledger row or pre-registered bar",
     "live path"
   ],
-  "scope_sha": "8cae5e9e285e",
+  "scope_sha": "fc06a2f1892b",
   "size": "M",
   "sources": [
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T10_missing_aspects.md (T10-F1, handover)",
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T10/t10_demos.py"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read T10-F1 and the handover; run t10_demos.py D3 to reproduce 23.8% / 60.5%.",
     "Write the correction rule (Holm over arms x horizons x variants; m = verdicts.py count --split DEV plus new cells, OURS) at the top of LABEL_MOVES.md before any rerun, and the placebo test.",
     "Apply it in screen.py and common.py; keep the uncorrected label in an extra column.",
     "Rerun the screens on DEV only, list label moves in LABEL_MOVES.md; change no label by hand."
   ],
+  "taken": "2026-11-01T21:16:55Z",
   "tests": "screen test_placebo_family: K=12 and K=40 placebo arms pass the screen at no more than 5% of seeds; fails on the pre-change rule (23.8% / 60.5%).",
   "title": "G5 screens: family-wise correction across arms/horizons/variants before a PASS (T10-F1, D3: 12 placebo arms pass the gross screen 23.8%)",
   "weight": "CRUCIAL",

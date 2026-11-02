@@ -350,3 +350,41 @@ def test_of_stale_ok_fresh_or_absent(tmp_path):
     now = datetime(2026, 11, 1, 12, 0, tzinfo=timezone.utc)
     assert D.of_stale(None, now=now, mtime=datetime(2026, 11, 1, 11, 30, tzinfo=timezone.utc))[0] == "OK"
     assert D.of_stale(tmp_path, now=now)[0] == "OK"  # no log under tmp_path
+
+
+def test_cost_checkup_section_in_doctor_report(tmp_path):
+    mem = make_repo(tmp_path)
+    report_path, _ = D.run(tmp_path, tmp_path / "out", mem, process=False, now=DAY)
+    text = report_path.read_text(encoding="utf-8")
+    assert "Part 3: Cost checkup (COST, separate from AI health)" in text
+    for item_id in ("a", "b", "c", "d", "e", "f", "g", "h", "i"):
+        assert f"| {item_id} |" in text, f"Missing item {item_id} in COST section"
+    assert "2026-10-30 02:17" in text
+    assert "2026-10-30 08:37" in text
+    assert "Remote Control" in text
+    assert "Next cut:" in text
+
+
+def test_git_hung_detects_old_git_processes_and_reports_pid_age_parent():
+    """fake process list with a 40 min git fetch -> WARN, 10 min -> OK, no git -> OK."""
+    assert "GIT-HUNG" in D.CHECK_NAMES
+    now_epoch = 1793500000
+
+    # 40 min git fetch (2400s old): WARN naming pid, age and parent
+    p40 = [{"pid": 101, "ppid": 50, "name": "git.exe", "cmd": "git fetch origin fast-track", "created": now_epoch - 2400}]
+    st, msg = D.git_hung(procs_fn=lambda: p40, now=now_epoch)
+    assert st == "WARN"
+    assert "101" in msg
+    assert "50" in msg
+    assert "40" in msg or "2400" in msg or "min" in msg
+
+    # 10 min git fetch (600s old): OK
+    p10 = [{"pid": 102, "ppid": 50, "name": "git.exe", "cmd": "git fetch origin fast-track", "created": now_epoch - 600}]
+    st, msg = D.git_hung(procs_fn=lambda: p10, now=now_epoch)
+    assert st == "OK"
+
+    # No git process: OK
+    st, msg = D.git_hung(procs_fn=lambda: [], now=now_epoch)
+    assert st == "OK"
+
+

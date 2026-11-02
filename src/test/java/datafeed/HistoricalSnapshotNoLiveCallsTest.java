@@ -25,7 +25,7 @@ public class HistoricalSnapshotNoLiveCallsTest {
     void noLiveCalls() throws Exception {
         String body = historicalMethodBody();
         for (String f : new String[]{"spotPrice", "premiumIndex", "longShortRatio", "topLongShortPositionRatio",
-                "buildSpotPerpBasis", "buildOiBreakdown"}) {
+                "buildSpotPerpBasis", "buildOiBreakdown", "openInterestHist"}) {
             assertFalse(body.contains(f), "historical path still references " + f);
         }
     }

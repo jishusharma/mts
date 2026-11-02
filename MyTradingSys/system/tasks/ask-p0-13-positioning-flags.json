@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-01T20:18:11Z",
   "commands": [
     "mvn -q -Dtest=MarketDataSnapshotTest,HistoricalSnapshotNoLiveCallsTest test",
     "mvn -q test"
@@ -18,6 +19,12 @@
   "id": "ask-p0-13-positioning-flags",
   "lane": "JIS-NB",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "src/main/java/datafeed/MarketDataSnapshot.java",
+      "ref": "773164055",
+      "utc": "2026-11-01T20:18:11Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -44,7 +51,12 @@
   "refs": [
     "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md"
   ],
-  "result": "",
+  "result": "src/main/java/datafeed/MarketDataSnapshot.java",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "src/main/java/datafeed/MarketDataSnapshot.java",
     "src/test/java/datafeed/MarketDataSnapshotTest.java",
@@ -61,13 +73,14 @@
     "research/asks_audit_2026-10-30/LEDGER.md P0-13",
     "items/T034_positioning_states.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read T034 item and classifyOiDeltaState; OI is fetched only at 1h (limit 2): add an openInterestHist(...,15m,...) call and cover it in HistoricalSnapshotNoLiveCallsTest; cross = OI 15m change sign x CVD 15m delta sign; new = flag flipped on in the last 15m bar",
     "Emit under positioning {net_longs, net_longs_new, net_shorts, net_shorts_new, confidence}",
     "Tests: quadrants, missing OI (all false, LOW), UTC 00:00 CVD reset must not fake a flip, API error path",
     "Commit in worktree only; deploy is manual. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
   ],
+  "taken": "2026-11-01T20:18:11Z",
   "tests": "src/test/java/datafeed/MarketDataSnapshotTest.java: the 4 OI x CVD quadrants and an unavailable-OI case each give the expected flag set; fails before the fields exist.",
   "title": "Add net_longs/net_shorts (+new) flags from OI x CVD cross (ledger P0-13, T034)",
   "weight": "CRITICAL",

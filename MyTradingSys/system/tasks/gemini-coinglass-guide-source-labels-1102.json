@@ -1,0 +1,78 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-02T06:35:11Z",
+  "commands": [],
+  "created": "2026-11-02T05:48:32Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-02/coinglass_guide_labels.md has one row per parameter: SOURCED(file:line) / OURS / DIFF, first line holds the three counts.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "For each numeric threshold or parameter in coinglass_field_guide_2026-11-01/FIELD_GUIDE.md and ANALYST_COMMENTARY.md (1.5M USD wall, 10 USD grid, depth span, ratios) label SOURCED (quote + file:line) or OURS; a quote that is not in the cited file is DIFF.",
+  "id": "gemini-coinglass-guide-source-labels-1102",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_audits_2026-11-02/coinglass_guide_labels.md (57 SOURCED, 19 O",
+      "ref": "c4b93f65e",
+      "utc": "2026-11-02T06:35:11Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "coinglass field guide: walls, bubbles, book and footprint vs our engines; simulator card; ",
+      "ref": "79ec6e5fb322",
+      "utc": "2026-11-01T17:42:57Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "79ec6e5fb322 coinglass field guide: walls, bubbles, book and footprint vs our engines; sim",
+      "ref": "MyTradingSys/research/coinglass_field_guide_2026-11-01/FIELD_GUIDE.md",
+      "utc": "2026-11-01T17:42:57Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini effort low: load as <id>:low (gemini_queue.py run <id>:low). Final report ends with a Noticed: line. Facts only, no verdicts. D11_PROGRAMME s6 seed. PLANNER 2026-11-02 planner-b-1102. REVIEWED:2026-11-02 T0-ONLY",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-02T05:48:32Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "MyTradingSys/research/gemini_audits_2026-11-02/coinglass_guide_labels.md (57 SOURCED, 19 OURS, 0 DIFF)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/coinglass_field_guide_2026-11-01/FIELD_GUIDE.md (read)",
+    "MyTradingSys/research/coinglass_field_guide_2026-11-01/ANALYST_COMMENTARY.md (read)",
+    "MyTradingSys/research/gemini_audits_2026-11-02/coinglass_guide_labels.md (new)"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change outside the output file"
+  ],
+  "scope_sha": "79ec6e5fb322",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "list every numeric threshold with its sentence",
+    "grep the quoted source for the same number",
+    "write label per row, counts on line 1"
+  ],
+  "taken": "2026-11-02T06:35:11Z",
+  "tests": "see done_when (audit card, output file is the test)",
+  "title": "[GEMINI] label every threshold in coinglass_field_guide FIELD_GUIDE.md and ANALYST_COMMENTARY.md SOURCED or OURS",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

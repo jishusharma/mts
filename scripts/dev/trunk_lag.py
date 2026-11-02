@@ -21,6 +21,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import nowin  # noqa: E402
+from sync import GIT_NOPROMPT
 
 nowin.install()
 
@@ -43,7 +44,8 @@ def git_timeout():
 
 def git(repo, *args, timeout=None):
     timeout = git_timeout() if timeout is None else timeout
-    return subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, timeout=timeout)
+    return subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, timeout=timeout,
+                          env={**os.environ, **GIT_NOPROMPT})
 
 
 def message(behind, oldest_age_s):

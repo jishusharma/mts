@@ -1,0 +1,72 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/backtest/layers/positioning/test_trade_costs.py -q"
+  ],
+  "context": {
+    "calls_to_edit": 6,
+    "folded": "2026-11-01T19:25:49Z",
+    "misses": 1,
+    "reads": [
+      "MyTradingSys/backtest/layers/positioning/test_trade_costs.py"
+    ],
+    "session": "agent-a5c6d1d8d71e75bde"
+  },
+  "created": "2026-11-01T19:15:43Z",
+  "depends_on": [],
+  "done_when": "trade_costs.net_return default slip_rt is 0.0004; test_trade_costs.py asserts a default call costs 0.0014 and passes; git diff touches only trade_costs.py and test_trade_costs.py.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Update trade_costs.py net_return default slip_rt from 0.0002 to 0.0004 so that total default round-trip cost (fee_rt 0.0010 + slip_rt 0.0004 = 0.0014 = 0.14 %) exactly matches research_kit.TAKER_RT_PCT (0.14 %), eliminating the 0.12 % vs 0.14 % discrepancy identified in COST_FIGURES.md.",
+  "id": "update-trade-costs-default-slip-rt-0004",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "B102 DST-aware session anchors in offline models; B103 funding_paid fails closed outside l",
+      "ref": "38f75d8e68a0",
+      "utc": "2026-10-04T12:35:56Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": "fee-figure-unify",
+  "note": "PLANNER 2026-11-02: lane HAIKU (one default, two files). Callers that pass slip_rt explicitly are unaffected; fires_kline.cost_params and run_t055 read the default or hardcode 0.0002, left out of scope (a later card if wanted). Reviewer ACCEPT stamp needed before ready if class rises.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-01T19:21:52Z",
+  "refs": [
+    "MyTradingSys/research/COST_FIGURES.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/positioning/trade_costs.py",
+    "MyTradingSys/backtest/layers/positioning/test_trade_costs.py"
+  ],
+  "scope_out": [
+    "live tree",
+    ".secrets and .env"
+  ],
+  "scope_sha": "38f75d8e68a0",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/COST_FIGURES.md",
+    "MyTradingSys/backtest/research_kit.py:21 TAKER_RT_PCT=0.14 (SOURCED)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Update slip_rt: float = 0.0004 in net_return in trade_costs.py",
+    "Update assertions in test_trade_costs.py",
+    "Run tests and verify callers"
+  ],
+  "tests": "test_trade_costs.py: new test net_return('long',100,101,0,10,[]) == 0.01-0.0014 (places=12); fails on the old 0.0012 default; fix the 0.0012-based assertions in test_long/test_short",
+  "title": "Update trade_costs.py slip_rt default to 0.0004 to unify with research_kit TAKER_RT_PCT (0.14 %)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

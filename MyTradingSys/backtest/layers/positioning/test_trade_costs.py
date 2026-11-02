@@ -38,13 +38,18 @@ class TestFundingPaid(unittest.TestCase):
 
 
 class TestNetReturn(unittest.TestCase):
+    def test_default_round_trip_cost_is_14_bps(self):
+        # Default fee_rt 0.0010 + slip_rt 0.0004 = 0.0014 = TAKER_RT_PCT 0.14 % (research_kit.py:21, SOURCED).
+        # 1 % gross move, no funding: 0.01 - 0.0014 = 0.0086
+        self.assertAlmostEqual(net_return("long", 100, 101, 0, 10, []), 0.0086, places=12)
+
     def test_long(self):
-        # 0.01 - 0.0010 - 0.0002 - 0.0004
-        self.assertAlmostEqual(net_return("long", 100, 101, 0, 57600000, FUNDING), 0.0084, places=12)
+        # 0.01 - 0.0010 - 0.0004 - 0.0004
+        self.assertAlmostEqual(net_return("long", 100, 101, 0, 57600000, FUNDING), 0.0082, places=12)
 
     def test_short(self):
-        # 0.01 - 0.0012 + 0.0004
-        self.assertAlmostEqual(net_return("short", 100, 99, 0, 57600000, FUNDING), 0.0092, places=12)
+        # 0.01 - 0.0014 + 0.0004
+        self.assertAlmostEqual(net_return("short", 100, 99, 0, 57600000, FUNDING), 0.0090, places=12)
 
     def test_no_funding_custom_fees(self):
         # long 200 -> 202: gross 0.01; fee 0.0004 + slip 0 -> 0.0096

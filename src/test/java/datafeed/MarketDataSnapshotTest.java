@@ -63,6 +63,7 @@ public class MarketDataSnapshotTest {
         final Map<String, JsonNode> klines = new HashMap<>();
         JsonNode depth;
         JsonNode oiHist;
+        JsonNode oiHist15m;
         JsonNode funding;
         JsonNode spot;
         JsonNode premium;
@@ -88,7 +89,10 @@ public class MarketDataSnapshotTest {
             return k == null ? MAPPER.createArrayNode() : k.deepCopy();
         }
         @Override public JsonNode orderBookDepth(String s, int limit) throws IOException { return need(depth, "depth"); }
-        @Override public JsonNode openInterestHist(String s, String p, int limit) throws IOException { return need(oiHist, "oiHist"); }
+        @Override public JsonNode openInterestHist(String s, String p, int limit) throws IOException {
+            if ("15m".equals(p) && oiHist15m != null) return need(oiHist15m, "oiHist15m");
+            return need(oiHist, "oiHist");
+        }
         @Override public JsonNode currentFundingRate(String s) throws IOException { return need(funding, "funding"); }
         @Override public JsonNode aggTrades(String s, int limit) throws IOException { return need(null, "aggTrades"); }
         @Override public JsonNode aggTradesRange(String s, long a, long b, int limit) throws IOException { return need(null, "aggTradesRange"); }
@@ -177,7 +181,7 @@ public class MarketDataSnapshotTest {
         Set<String> expected = new HashSet<>(List.of(
                 "timestamp_utc", "asset", "current_price", "alignment_pass", "weekly_vp", "daily_vp", "post_funding_vp",
                 "intraday_4h_vp", "vwap", "cvd", "trade_flow", "structure", "order_book_depth", "conditions", "prior_day",
-                "funding", "open_interest", "session", "session_timing", "spot_perp_basis", "liquidation_clusters",
+                "funding", "open_interest", "positioning", "session", "session_timing", "spot_perp_basis", "liquidation_clusters",
                 "oi_breakdown", "order_flow", "setup_candidates", "module_candidates"));
         Set<String> actual = new HashSet<>();
         root.fieldNames().forEachRemaining(actual::add);
@@ -190,6 +194,9 @@ public class MarketDataSnapshotTest {
         Set<String> oi = new HashSet<>();
         root.get("open_interest").fieldNames().forEachRemaining(oi::add);
         assertEquals(new HashSet<>(List.of("direction", "change_1h_pct", "delta_state", "delta_state_price", "confidence", "peak_24h")), oi);
+        Set<String> pos = new HashSet<>();
+        root.get("positioning").fieldNames().forEachRemaining(pos::add);
+        assertEquals(new HashSet<>(List.of("net_longs", "net_longs_new", "net_shorts", "net_shorts_new", "confidence")), pos);
     }
 
     @Test
@@ -386,11 +393,17 @@ public class MarketDataSnapshotTest {
         assertTrue(root.get("oi_breakdown").get("retail").isNull());
         assertTrue(root.has("session"));
         assertFalse(root.has("order_flow"));
+        assertTrue(root.has("positioning"));
+        assertFalse(root.get("positioning").get("net_longs").asBoolean());
+        assertFalse(root.get("positioning").get("net_longs_new").asBoolean());
+        assertFalse(root.get("positioning").get("net_shorts").asBoolean());
+        assertFalse(root.get("positioning").get("net_shorts_new").asBoolean());
+        assertEquals("LOW", root.get("positioning").get("confidence").asText());
 
         Set<String> unavailable = new HashSet<>();
         root.get("data_quality").get("unavailable_fields").forEach(n -> unavailable.add(n.asText()));
         assertTrue(unavailable.containsAll(List.of("spot_perp_basis", "oi_breakdown", "trade_flow.net_delta_1h",
-                "conditions.book_imbalance", "order_book_depth.bid_ask_ratio", "funding.current_rate")));
+                "conditions.book_imbalance", "order_book_depth.bid_ask_ratio", "funding.current_rate", "positioning")));
     }
 
     // ===================================================================================================
@@ -716,5 +729,98 @@ public class MarketDataSnapshotTest {
         assertEquals(0, s.liveCalls);
         assertNullPeak(snap.get("open_interest").get("peak_24h"));
         assertEquals(8640.0, snap.get("cvd").get("peak_24h").get("value").asDouble(), 1e-9); // 1440 * 6
+    }
+
+    @Test
+    void positioning_fourQuadrantsAndNewVariantsAndMissingOi() throws Exception {
+        long ref = nowMs();
+        // CVD up: takerBuy = 8.0, vol = 10.0 -> delta +6.0 per bar
+        // CVD down: takerBuy = 2.0, vol = 10.0 -> delta -6.0 per bar
+        // CVD neutral: takerBuy = 5.0, vol = 10.0 -> delta 0.0 per bar
+
+        // 1. Quadrant 1 (OI up, CVD up) with flip: prior bar OI flat, current bar OI up
+        StubClient s1 = stubWith(cvdBars(ref, 60, i -> (i >= 45) ? 8.0 : 5.0)); // last 15m positive (+90), prior 15m flat (0)
+        s1.oiHist = json("[{\"sumOpenInterest\":\"1000\"},{\"sumOpenInterest\":\"1000\"},{\"sumOpenInterest\":\"1050\"}]");
+        ObjectNode p1 = (ObjectNode) live(s1).get("positioning");
+        assertTrue(p1.get("net_longs").asBoolean());
+        assertTrue(p1.get("net_longs_new").asBoolean());
+        assertFalse(p1.get("net_shorts").asBoolean());
+        assertFalse(p1.get("net_shorts_new").asBoolean());
+        assertEquals("HIGH", p1.get("confidence").asText());
+
+        // 2. Quadrant 1 (OI up, CVD up) standing (no flip): prior bar also OI up and CVD up
+        StubClient s2 = stubWith(cvdBars(ref, 60, i -> (i >= 30) ? 8.0 : 5.0)); // last 30m positive (+90 each 15m)
+        s2.oiHist = json("[{\"sumOpenInterest\":\"950\"},{\"sumOpenInterest\":\"1000\"},{\"sumOpenInterest\":\"1050\"}]");
+        ObjectNode p2 = (ObjectNode) live(s2).get("positioning");
+        assertTrue(p2.get("net_longs").asBoolean());
+        assertFalse(p2.get("net_longs_new").asBoolean());
+        assertFalse(p2.get("net_shorts").asBoolean());
+        assertFalse(p2.get("net_shorts_new").asBoolean());
+        assertEquals("HIGH", p2.get("confidence").asText());
+
+        // 3. Quadrant 2 (OI up, CVD down) with flip: prior bar flat, current bar OI up, CVD down
+        StubClient s3 = stubWith(cvdBars(ref, 60, i -> (i >= 45) ? 2.0 : 5.0)); // last 15m negative (-90), prior 15m flat (0)
+        s3.oiHist = json("[{\"sumOpenInterest\":\"1000\"},{\"sumOpenInterest\":\"1000\"},{\"sumOpenInterest\":\"1050\"}]");
+        ObjectNode p3 = (ObjectNode) live(s3).get("positioning");
+        assertFalse(p3.get("net_longs").asBoolean());
+        assertFalse(p3.get("net_longs_new").asBoolean());
+        assertTrue(p3.get("net_shorts").asBoolean());
+        assertTrue(p3.get("net_shorts_new").asBoolean());
+        assertEquals("HIGH", p3.get("confidence").asText());
+
+        // 4. Quadrant 2 (OI up, CVD down) standing (no flip): prior bar also OI up and CVD down
+        StubClient s4 = stubWith(cvdBars(ref, 60, i -> (i >= 30) ? 2.0 : 5.0)); // last 30m negative (-90 each 15m)
+        s4.oiHist = json("[{\"sumOpenInterest\":\"950\"},{\"sumOpenInterest\":\"1000\"},{\"sumOpenInterest\":\"1050\"}]");
+        ObjectNode p4 = (ObjectNode) live(s4).get("positioning");
+        assertFalse(p4.get("net_longs").asBoolean());
+        assertFalse(p4.get("net_longs_new").asBoolean());
+        assertTrue(p4.get("net_shorts").asBoolean());
+        assertFalse(p4.get("net_shorts_new").asBoolean());
+        assertEquals("HIGH", p4.get("confidence").asText());
+
+        // 5. Quadrant 3 (OI down, CVD up): shorts covering
+        StubClient s5 = stubWith(cvdBars(ref, 60, i -> (i >= 45) ? 8.0 : 5.0));
+        s5.oiHist = json("[{\"sumOpenInterest\":\"1050\"},{\"sumOpenInterest\":\"1050\"},{\"sumOpenInterest\":\"1000\"}]");
+        ObjectNode p5 = (ObjectNode) live(s5).get("positioning");
+        assertFalse(p5.get("net_longs").asBoolean());
+        assertFalse(p5.get("net_longs_new").asBoolean());
+        assertFalse(p5.get("net_shorts").asBoolean());
+        assertFalse(p5.get("net_shorts_new").asBoolean());
+        assertEquals("HIGH", p5.get("confidence").asText());
+
+        // 6. Quadrant 4 (OI down, CVD down): long liquidation
+        StubClient s6 = stubWith(cvdBars(ref, 60, i -> (i >= 45) ? 2.0 : 5.0));
+        s6.oiHist = json("[{\"sumOpenInterest\":\"1050\"},{\"sumOpenInterest\":\"1050\"},{\"sumOpenInterest\":\"1000\"}]");
+        ObjectNode p6 = (ObjectNode) live(s6).get("positioning");
+        assertFalse(p6.get("net_longs").asBoolean());
+        assertFalse(p6.get("net_longs_new").asBoolean());
+        assertFalse(p6.get("net_shorts").asBoolean());
+        assertFalse(p6.get("net_shorts_new").asBoolean());
+        assertEquals("HIGH", p6.get("confidence").asText());
+
+        // 7. Missing OI (throws IOException): fail closed, confidence LOW
+        StubClient s7 = stubWith(cvdBars(ref, 60, i -> 8.0));
+        s7.oiHist = null; // triggers IOException
+        ObjectNode p7 = (ObjectNode) live(s7).get("positioning");
+        assertFalse(p7.get("net_longs").asBoolean());
+        assertFalse(p7.get("net_longs_new").asBoolean());
+        assertFalse(p7.get("net_shorts").asBoolean());
+        assertFalse(p7.get("net_shorts_new").asBoolean());
+        assertEquals("LOW", p7.get("confidence").asText());
+
+        // 8. UTC 00:00 boundary must not fake a flip
+        long midnight15m = java.time.LocalDate.of(2026, 11, 2)
+                .atStartOfDay(java.time.ZoneOffset.UTC)
+                .plusMinutes(15)
+                .toInstant()
+                .toEpochMilli();
+        StubClient s8 = stubWith(cvdBars(midnight15m, 60, i -> (i >= 30) ? 8.0 : 5.0));
+        s8.oiHist = json("[{\"sumOpenInterest\":\"950\"},{\"sumOpenInterest\":\"1000\"},{\"sumOpenInterest\":\"1050\"}]");
+        ObjectNode p8 = (ObjectNode) live(s8).get("positioning");
+        assertTrue(p8.get("net_longs").asBoolean());
+        assertFalse(p8.get("net_longs_new").asBoolean());
+        assertFalse(p8.get("net_shorts").asBoolean());
+        assertFalse(p8.get("net_shorts_new").asBoolean());
+        assertEquals("HIGH", p8.get("confidence").asText());
     }
 }

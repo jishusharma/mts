@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T19:17:47Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -25,6 +27,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "Already shipped in commit 0b1bf4e204a1: 401 run log -> IDLE host-auth, releases claim, no ",
+      "ref": "ddb98c4c3",
+      "utc": "2026-11-01T19:17:47Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "codex_run: a 401 on this host is IDLE host-auth, writes and ships no lane_state/codex_usag",
@@ -41,7 +49,12 @@
   "refined_by": "",
   "refreshed": "2026-10-31T08:46:52Z",
   "refs": [],
-  "result": "",
+  "result": "Already shipped in commit 0b1bf4e204a1: 401 run log -> IDLE host-auth, releases claim, no lane_state/codex_usage write, no ship. HostAuthTest in scripts/dev/test_codex_run.py verified passing (1 passed).",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/codex_run.py",
     "scripts/dev/lane_health.py"
@@ -50,12 +63,13 @@
   "scope_sha": "0b1bf4e204a1",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "add a failing test: a Codex log with 401 Unauthorized classifies as host-auth, not lane-down",
     "codex_run.py / lane_health.py: on host-auth print IDLE locally, no lane_state or codex_usage write, no ship",
     "run codex_run and lane_health tests, ship"
   ],
+  "taken": "2026-11-01T19:17:47Z",
   "tests": "test in the codex_run test file feeding a 401 log to the classify path: no ship, no state change; red on trunk today",
   "title": "codex_run.py on a host with no OpenAI login (401) overwrote trunk lane_state.json and codex_usage.json with GPT down",
   "weight": "",

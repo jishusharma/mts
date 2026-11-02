@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T20:56:13Z",
   "commands": [
     "python -m pytest scripts/dev/test_dsa.py -q"
   ],
@@ -17,11 +19,17 @@
   "lane": "DSA",
   "latest": [
     {
+      "kind": "ship",
+      "line": "dsa.py end prints fallback remove command on Windows file lock (commit fffa732ce)",
+      "ref": "4758b66b5",
+      "utc": "2026-11-01T20:56:13Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "dsa.py: ignore the .gateway_owner marker in the unshipped check",
-      "ref": "26edaadab251",
-      "utc": "2026-10-27T22:03:15Z"
+      "line": "dsa.py end: print the remove command when Windows holds the worktree lock",
+      "ref": "fffa732cec66",
+      "utc": "2026-10-31T17:50:58Z"
     }
   ],
   "layers": [],
@@ -31,9 +39,14 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T09:28:43Z",
+  "refreshed": "2026-11-01T20:55:55Z",
   "refs": [],
-  "result": "",
+  "result": "dsa.py end prints fallback remove command on Windows file lock (commit fffa732ce)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/dsa.py",
     "scripts/dev/test_dsa.py"
@@ -41,15 +54,16 @@
   "scope_out": [
     "MyTradingSys/*"
   ],
-  "scope_sha": "26edaadab251",
+  "scope_sha": "fffa732cec66",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "write the test: stub git remove to fail Permission denied, expect rc 0 retry or a printed fallback command; confirm it fails now",
     "cmd_end (dsa.py ~l.682): chdir out to main, retry the remove once after a short wait, on repeat failure print 'git -C <main> worktree remove --force <root>' as NEXT and return 0 if only the dir removal failed",
     "python scripts/dev/run_all_tests.py --quick, then ship"
   ],
+  "taken": "2026-11-01T20:56:09Z",
   "tests": "scripts/dev/test_dsa.py::test_end_permission_denied_prints_fallback (fail-first, stubbed git worktree remove returning Permission denied)",
   "title": "dsa.py end cannot remove its own worktree: cmd_end requires cwd inside the tree, then git worktree remove fails Permission denied",
   "weight": "",

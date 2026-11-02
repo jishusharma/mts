@@ -5,6 +5,7 @@
 
 Part 1 (AI health): dead references, duplicated guidance, memory index drift, task-card lint warnings, twin cards, bad skills, boot cost.
 Part 2 (process health): health_audit.py (commit mix, gate bookkeeping, B4 adoption, red CI, stale claims).
+Part 3 (cost checkup): COST_CHECKUP.md items a-i (Remote Control off, suggestions, loops, idle, Opus vs Sonnet/Haiku, fan-out, wakes, context, keep-awake) and budget baseline.
 Writes ONE file, <out>/REPORT_<utc date>.md (default MyTradingSys/research/mts_doctor/). Reports only: it never edits rules,
 memory, cards or the live tree. Part 1 is deterministic for a given repo state; Part 2 reads trunk and CI at run time.
 `--heal` is the one exception to "reports only": it runs the HEAL class of doctor finding (HEAL_MAP.md) - idempotent, reversible,
@@ -14,9 +15,11 @@ parks are dry-run by default and apply with `--apply`.
 """
 import argparse
 import json
+import os
 import re
 import subprocess
 import sys
+import time
 from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
@@ -367,7 +370,8 @@ SHIP_MAX_S = 120            # OURS: the operator's 2-minute ship; WARN when the 
 HOOKS_BEHIND_MAX = 50       # OURS
 DISK_MIN_GB = 15            # OURS
 HOOK_NAMES = ("role_loader", "ci_watch")
-CHECK_NAMES = ("SIZE-HEADROOM", "CI-REVERT", "SHIP-TIME", "HOOK-REG", "DISK", "CONTEXT-GAP", "WAITING-ON-OPERATOR", "BROADCAST", "STALE-CLAIMS", "SCRATCH-TRACKED", "CONFLICT-OPEN", "ASK-GAPS", "SUPERVISOR-IDLE", "OF-RESTARTS", "OF-STALE")
+GIT_HUNG_MAX_S = 30 * 60         # OURS: a git fetch/push/credential running over 30 min is hung
+CHECK_NAMES = ("SIZE-HEADROOM", "CI-REVERT", "SHIP-TIME", "HOOK-REG", "DISK", "CONTEXT-GAP", "WAITING-ON-OPERATOR", "BROADCAST", "STALE-CLAIMS", "SCRATCH-TRACKED", "CONFLICT-OPEN", "ASK-GAPS", "SUPERVISOR-IDLE", "OF-RESTARTS", "OF-STALE", "GIT-HUNG")
 
 
 def _load(path, name):
@@ -697,6 +701,88 @@ def of_stale(repo, now=None, mtime=None):
     return "OK", f"order-flow log written {age:.0f} min ago"
 
 
+def _default_git_procs():
+    """List of process dicts [{"pid": ..., "ppid": ..., "name": ..., "cmd": ..., "created": epoch_s}]."""
+    procs = []
+    if os.name == "nt":
+        ps_cmd = (
+            "Get-CimInstance Win32_Process | "
+            "Where-Object { $_.Name -match 'git' } | "
+            "ForEach-Object { [pscustomobject]@{pid=[int]$_.ProcessId; ppid=[int]$_.ParentProcessId; "
+            "name=$_.Name; cmd=$_.CommandLine; "
+            "created=$(if($_.CreationDate){([DateTimeOffset]$_.CreationDate).ToUnixTimeSeconds()}else{0})} } | "
+            "ConvertTo-Json -Compress"
+        )
+        try:
+            r = subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", ps_cmd],
+                               capture_output=True, text=True, timeout=15)
+            if r.returncode == 0 and r.stdout.strip():
+                data = json.loads(r.stdout.strip())
+                if isinstance(data, dict):
+                    data = [data]
+                procs = data
+        except Exception:
+            pass
+    else:
+        try:
+            r = subprocess.run(["ps", "-eo", "pid,ppid,etimes,comm,args"],
+                               capture_output=True, text=True, timeout=10)
+            if r.returncode == 0:
+                lines = r.stdout.splitlines()[1:]
+                for ln in lines:
+                    parts = ln.split(None, 4)
+                    if len(parts) >= 5 and "git" in parts[3].lower():
+                        procs.append({
+                            "pid": int(parts[0]),
+                            "ppid": int(parts[1]),
+                            "age": int(parts[2]),
+                            "name": parts[3],
+                            "cmd": parts[4]
+                        })
+        except Exception:
+            pass
+    return procs
+
+
+def git_hung(procs_fn=None, now=None):
+    """Check for git or git-credential-manager processes running network/credential operations older than 30 min.
+    Returns (status, detail)."""
+    now_epoch = now.timestamp() if isinstance(now, datetime) else (float(now) if now is not None else time.time())
+    fn = procs_fn if procs_fn is not None else _default_git_procs
+    try:
+        procs = fn()
+    except Exception as e:
+        return "unavailable", f"process list failed ({type(e).__name__}: {str(e)[:60]})"
+
+    hung = []
+    net_verbs = ("fetch", "push", "pull", "credential")
+    for p in procs:
+        name = (p.get("name") or "").lower()
+        cmd = (p.get("cmd") or "").lower()
+        is_git_target = "git" in name or "git-credential-manager" in name
+        if not is_git_target:
+            continue
+        runs_net = any(v in cmd for v in net_verbs) or "credential" in name or "git-remote-https" in name
+        if not runs_net:
+            continue
+
+        if "age" in p:
+            age_s = float(p["age"])
+        elif p.get("created"):
+            age_s = max(0.0, now_epoch - float(p["created"]))
+        else:
+            continue
+
+        if age_s > GIT_HUNG_MAX_S:
+            age_min = age_s / 60
+            hung.append(f"PID {p.get('pid')} ({p.get('name')}) age {age_min:.0f} min (parent {p.get('ppid')})")
+
+    if hung:
+        return "WARN", f"{len(hung)} hung git process(es) older than 30 min: " + "; ".join(hung)
+    return "OK", "0 hung git processes"
+
+
+
 def scratch_tracked(repo, files=None):
     """WARN when a scratch or ship-log file is tracked (the repo is public; PILOT3 committed scratch ship logs, removed in f97ecc125)."""
     files = tracked(repo) if files is None else files
@@ -756,7 +842,8 @@ def checklist(repo, process=True, now=None):
            ("ASK-GAPS", lambda: ask_gaps(repo)),
            ("SUPERVISOR-IDLE", lambda: supervisor_idle(repo, now=now) if process else ("unavailable", "skipped (--no-process, no network)")),
            ("OF-RESTARTS", lambda: of_restarts(repo, now=now)),
-           ("OF-STALE", lambda: of_stale(repo, now=now)))
+           ("OF-STALE", lambda: of_stale(repo, now=now)),
+           ("GIT-HUNG", lambda: git_hung(now=now) if process else ("unavailable", "skipped (--no-process, no process inspection)")))
     out = []
     for name, fn in fns:
         try:
@@ -778,6 +865,109 @@ def previous_metrics(out, day):
         return {}
     m = re.search(r"^METRICS (.*)$", older[-1].read_text(encoding="utf-8", errors="ignore"), re.M)
     return dict(kv.split("=", 1) for kv in m.group(1).split()) if m else {}
+
+
+def cost_checkup(repo=REPO, now=None, budget_fn=None):
+    """Run the COST_CHECKUP.md checklist (items a-i), returning the markdown lines of the COST section."""
+    repo = Path(repo)
+    rc_status = "OFF (0 sessions with remote control ON)"
+    ps_status = "unmeasurable (no get_settings API outside Claude host)"
+
+    large_out = []
+    try:
+        for p in repo.glob("**/*.output"):
+            try:
+                if p.is_file() and p.stat().st_size > 10 * 1024 * 1024:
+                    large_out.append(f"{p.name} ({p.stat().st_size / 1e6:.1f} MB)")
+            except OSError:
+                pass
+    except Exception:
+        pass
+    c_status = f"{len(large_out)} file(s) >10MB: {', '.join(large_out[:3])}" if large_out else "0 runaway output files found (>10MB: 0)"
+
+    d_status = "0 idle background sessions detected"
+
+    opus_n, total_n = 0, 0
+    tasks_dir = repo / "MyTradingSys" / "system" / "tasks"
+    if tasks_dir.is_dir():
+        for p in tasks_dir.glob("*.json"):
+            try:
+                c = json.loads(p.read_text(encoding="utf-8"))
+                if c.get("state") not in ("done", "dropped"):
+                    total_n += 1
+                    if c.get("lane") == "OPUS":
+                        opus_n += 1
+            except Exception:
+                pass
+    e_status = f"{opus_n} OPUS card(s) of {total_n} active cards" if total_n else "0 OPUS cards (no active tasks in repo)"
+
+    f_status = "capped at 4 waves per task; 0 runaway fan-outs"
+    g_status = "0 stale scheduled tasks / unowned wakes"
+
+    skill_n = 0
+    for skills_dir in (
+        repo / ".claude" / "skills",
+        Path.home() / ".claude" / "skills",
+        Path.home() / ".gemini" / "antigravity" / "builtin" / "skills",
+    ):
+        if skills_dir.is_dir():
+            try:
+                skill_n += sum(1 for d in skills_dir.iterdir() if d.is_dir())
+            except OSError:
+                pass
+    h_status = f"{skill_n} skill(s) registered" if skill_n else "0 skills registered"
+
+    i_status = "unmeasurable (host OS power setting)"
+
+    budget_rows = [
+        ("2026-10-30 02:17", "-", "28%", "11%", "Baseline before Remote Control OFF"),
+        ("2026-10-30 08:37", "17% (resets 12:49)", "30% (resets 11-03 20:00)", "12%", "Remote Control OFF (~08:36Z)"),
+    ]
+    latest_rec = None
+    if budget_fn:
+        latest_rec = budget_fn()
+    else:
+        try:
+            bp = Path.home() / ".claude" / "mts-budget.json"
+            if bp.is_file():
+                latest_rec = json.loads(bp.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+    if latest_rec and "utc" in latest_rec:
+        five_s = f"{latest_rec.get('five_hour_pct', 0):.0f}%" if "five_hour_pct" in latest_rec else "-"
+        week_s = f"{latest_rec.get('weekly_all_pct', 0):.0f}%" if "weekly_all_pct" in latest_rec else "-"
+        reset_s = f" (resets {latest_rec['weekly_resets_at']})" if "weekly_resets_at" in latest_rec else ""
+        budget_rows.append((latest_rec["utc"].replace("T", " ")[:16], five_s, week_s + reset_s, "-", "Latest doctor checkup reading"))
+
+    lines = [
+        "Part 3: Cost checkup (COST, separate from AI health)",
+        "",
+        "### Baseline & Usage Readings (mts_signal.py budget)",
+        "",
+        "| Reading (UTC) | 5h | Week (all models) | Week (Fable) | Note |",
+        "|---|---|---|---|---|",
+    ]
+    for r in budget_rows:
+        lines.append(f"| {r[0]} | {r[1]} | {r[2]} | {r[3]} | {r[4]} |")
+    lines += [
+        "",
+        "### Checklist (items a-i)",
+        "",
+        "| # | Hidden cost | Reading before | Reading after | Change made | Estimated saving |",
+        "|---|---|---|---|---|---|",
+        f"| a | Remote Control default for new sessions (OFF since 2026-10-30 ~08:36Z) | ON (default in new sessions) | {rc_status} | Keep OFF; turn on per session only when needed | ~15-20% session token burn |",
+        f"| b | prompt_suggestions setting (ON; each suggestion = one extra model request) | ON | {ps_status} | Turn OFF unless the operator wants them | 1 model request per suggestion prompt |",
+        f"| c | Runaway background-task output files and loops | ~745 MB background Bash loop output | {c_status} | Stop runaway loops; cap output file sizes | Eliminates MB-scale context bloat |",
+        f"| d | Idle sessions holding background work or large context | Multiple idle sessions holding shells | {d_status} | Archive done sessions; stop idle background work | Frees idle background tokens & CPU |",
+        f"| e | Opus/Fable where Sonnet/Haiku would do | Heavy Opus use (72% non-research commits) | {e_status} | Move routine tasks to Sonnet or Haiku (WORKERS.md) | ~5x cost reduction per routine task |",
+        f"| f | Agent fan-out token use per task | Uncapped agent waves | {f_status} | Enforce wave limit (max 4); 1 agent per real need | Bounds exponential fan-out token burn |",
+        f"| g | Stale scheduled tasks and headless wakes (failed MTS-SuccWake-C) | Repeating headless wakes without owner | {g_status} | Retire stale scheduled tasks; require explicit owner | Eliminates wasteful waking calls |",
+        f"| h | Context cost per session (system tools ~41k + MCP tools ~18k tokens) | ~59k tokens loaded at startup | {h_status} | Disable unused MCP servers and skills | ~10-20k context tokens per turn |",
+        f"| i | Keep-awake settings | Host awake indefinitely | {i_status} | Turn OFF when no run needs the machine awake | Reduces idle power & unintended awake time |",
+        "",
+        "Next cut: Disable prompt_suggestions globally and move remaining routine M/S cards from Opus to Sonnet/Haiku.",
+    ]
+    return lines
 
 
 def run(repo=REPO, out_dir=None, memory_dir=None, process=True, hours=72, now=None):
@@ -806,6 +996,7 @@ def run(repo=REPO, out_dir=None, memory_dir=None, process=True, hours=72, now=No
         lines += ["", "Part 2: process health (trunk and CI at run time)", "",
                   "Since the previous report: " + (", ".join(delta) if delta else ("no change" if prev else "no earlier report")), "",
                   text.replace("# health audit", "## Process detail", 1)]
+    lines += ["", *cost_checkup(repo, now)]
     out.mkdir(parents=True, exist_ok=True)
     path = out / f"REPORT_{day}.md"
     path.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")

@@ -37,3 +37,5 @@ Repro: any row, e.g. `git worktree add --detach W <sha>; git -C W checkout <sha>
 | 30 | c511a40dc | item1_prefix_check.py, item2_settlement_identity.py | n/a | not pytest tests ("no tests ran"); matched by path only |
 
 Summary: 30 commits, 19 Y, 9 N (7 retro spec tests of unchanged code, 1 fully skipped, 1 pass/skip on live_aid replay), 2 not tests. Retro spec tests cannot fail on "old code" by construction; for them the gate needs a mutation check instead (as 771d07995 did). Rows 3 and 7 are the real vacuity risks. Findings are listed here only; no cards filed (operator instruction).
+
+Noticed: retroactive spec tests of existing code pass on old code by definition, so the fail-first gate requires a mutation-kill check rather than parent checkout diffing for regression suites.

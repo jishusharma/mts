@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T20:52:59Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -25,11 +27,17 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "cbp_run preserves extractor stderr and saves partial results (commit 9df4dc765)",
+      "ref": "ebb803b0c",
+      "utc": "2026-11-01T20:52:59Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "cbp_run keeps extractor stderr in the error; hot_wallet_watch (N4)",
-      "ref": "9df4dc765627",
-      "utc": "2026-10-30T23:23:21Z"
+      "line": "cbp: windows match the 05:00/20:00 schedule, trigger start in the past",
+      "ref": "2bb01c50064a",
+      "utc": "2026-11-01T17:10:54Z"
     }
   ],
   "layers": [],
@@ -39,9 +47,14 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T08:46:49Z",
+  "refreshed": "2026-11-01T20:52:41Z",
   "refs": [],
-  "result": "",
+  "result": "cbp_run preserves extractor stderr and saves partial results (commit 9df4dc765)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/cbp_run.py",
     "scripts/dev/test_cbp_run.py"
@@ -49,15 +62,16 @@
   "scope_out": [
     "analysts.json, cbp_store contents, CBP schedule, claude auth itself"
   ],
-  "scope_sha": "9df4dc765627",
+  "scope_sha": "2bb01c50064a",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read llm_extract and run_once failure path: check_returncode() raises CalledProcessError, stderr is lost, error says only 'extraction incomplete for N'",
     "In llm_extract on non-zero exit raise ValueError carrying the first 120 chars of stderr; keep failures list with reasons",
     "Include the first reason in the final RuntimeError; partial results are already saved before the raise, keep it"
   ],
+  "taken": "2026-11-01T20:52:55Z",
   "tests": "Two new tests in test_cbp_run.py using the run= stub: auth-failure stderr appears in the RuntimeError; the other video is still saved. The message assert fails on current code.",
   "title": "cbp_run: extractor 'claude -p' fails on JIS-NB (OAuth expired) so the whole run raises; and it fetches only the 6 actionable analysts, so Jala/Benjamin/Bob/CCU thesis votes and alt calls never reach the dashboard. Fold the 30 Oct one-off (all-enabled fetch + bottom_call/alts into cbp_store/verdicts.json, CBP a4a6a32) into cbp_run",
   "weight": "ROUTINE",

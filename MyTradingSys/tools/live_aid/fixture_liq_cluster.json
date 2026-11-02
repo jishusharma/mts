@@ -1,0 +1,15 @@
+{
+  "source": "Sample public liquidation cluster across Bybit, Binance, Deribit 2026-10-30 18:54-19:10Z",
+  "events": [
+    {"t": 1793386480000, "venue": "BYBIT", "side": "long", "usd": 300000, "px": 76700.0},
+    {"t": 1793386680000, "venue": "DERIBIT", "side": "short", "usd": 60000, "px": 76600.0},
+    {"t": 1793386830000, "venue": "BINANCE", "side": "long", "usd": 350000, "px": 76520.0},
+    {"t": 1793386980000, "venue": "BYBIT", "side": "long", "usd": 500000, "px": 76480.0},
+    {"t": 1793387190000, "venue": "DERIBIT", "side": "short", "usd": 25000, "px": 76390.0},
+    {"t": 1793387250000, "venue": "BINANCE", "side": "long", "usd": 140000, "px": 76350.5},
+    {"t": 1793387310000, "venue": "BYBIT", "side": "long", "usd": 250000, "px": 76310.0},
+    {"t": 1793387380000, "venue": "DERIBIT", "side": "short", "usd": 15000, "px": 76250.0},
+    {"t": 1793387395000, "venue": "BINANCE", "side": "long", "usd": 85000, "px": 76245.0},
+    {"t": 1793387415000, "venue": "BYBIT", "side": "long", "usd": 125000, "px": 76240.5}
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-02T05:49:25Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-02_gpt-rederive-reclaim-close-stop-1102.md has one row per figure with your value, the file value and SAME/DIFFERENT/NOT_IN_DATA, first line holds the three counts.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "From research/reclaim_close_stop_2026-11/results_DEV.csv recompute n, gross %, mean fee-net % (0.10 % round trip) and the week-block 95 % CI for the 4h all and 1D all rows, plus the 4h long (62) and short (52) split; use RESULT.md only for the stated figures. Report SAME within rounding, DIFFERENT or NOT_IN_DATA.",
+  "id": "gpt-rederive-reclaim-close-stop-1102",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-02 T0-ONLY Producer GPT (codex_run.py), reviewer is another vendor. Expected values derived from the spec, never from the code under test. ROUTINE, no live path. D11 s3/s6 feeder seed. planner-b-1102.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-02T05:49:25Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/reports/2026-11-02_gpt-rederive-reclaim-close-stop-1102.md"
+  ],
+  "scope_out": [
+    "editing RESULT.md or any source file"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/reclaim_close_stop_2026-11/RESULT.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "read RESULT.md stated numbers and results_DEV.csv columns",
+    "recompute n, means, fee-net and block-bootstrap CI by hand or in a scratch script (seed stated in PRE_REG.md)",
+    "write the table; no verdict on the strategy; verify: content sha, git cherry origin/fast-track empty, git ls-tree shows the file"
+  ],
+  "tests": "see done_when (audit card, the output file is the test)",
+  "title": "[GPT] re-derive reclaim_close_stop RESULT.md headline rows from results_DEV.csv",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T21:21:02Z",
   "commands": [
     "python scripts/dev/test_auto_deploy.py"
   ],
@@ -17,11 +19,17 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "_wait_dead helper makes unreadable proc state grandchild check deterministic (commit 55808",
+      "ref": "8637ad8c3",
+      "utc": "2026-11-01T21:21:02Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "CI flakes: three timing/environment-dependent tests made deterministic",
-      "ref": "d6cc31796b82",
-      "utc": "2026-10-31T08:41:49Z"
+      "line": "test_auto_deploy: _wait_dead helper makes unreadable-proc-state grandchild check determini",
+      "ref": "55808ea7fa53",
+      "utc": "2026-11-01T07:27:22Z"
     }
   ],
   "layers": [],
@@ -31,26 +39,32 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-01T04:10:41Z",
+  "refreshed": "2026-11-01T21:20:42Z",
   "refs": [],
-  "result": "",
+  "result": "_wait_dead helper makes unreadable proc state grandchild check deterministic (commit 55808ea7f)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/test_auto_deploy.py"
   ],
   "scope_out": [
     "scripts/dev/auto_deploy.py behaviour, other tests"
   ],
-  "scope_sha": "d6cc31796b82",
+  "scope_sha": "55808ea7fa53",
   "size": "S",
   "sources": [
     "scripts/dev/test_auto_deploy.py:566-572"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read test_auto_deploy.py:538-572 and CI run logs for 0e3c1fe9 (gh run list --commit 0e3c1fe91)",
     "Extract the poll into a helper _wait_dead(pid, state_fn, alive_fn, deadline) that, when state is unreadable and the pid is still alive at the deadline, force-kills once and re-checks; write its unit test first",
     "Run the file 20 times; ship"
   ],
+  "taken": "2026-11-01T21:20:58Z",
   "tests": "scripts/dev/test_auto_deploy.py: new test feeds a stub state()==''/_pid_alive True then False and asserts the helper returns dead; fails against the current inline poll at lines 566-572",
   "title": "Flaky CI test_auto_deploy sh-timeout tree kill: 'grandchild still alive 30s (proc state empty)' on trunk 0e3c1fe9; make the unreadable-state branch deterministic",
   "weight": "ROUTINE",

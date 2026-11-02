@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T21:30:22Z",
   "commands": [],
   "created": "2026-10-31T02:48:08Z",
   "depends_on": [],
@@ -14,11 +16,17 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "test_live_aid_replay.py: 19 passed, test_liq_tape_replays_known_cluster pins rendered #liq",
+      "ref": "7c00767a5",
+      "utc": "2026-11-01T21:30:22Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "live_aid replay: position bar pos-dist, pos-atr, uncovered pinned",
-      "ref": "e6376a8d400b",
-      "utc": "2026-10-31T05:45:46Z"
+      "line": "live_aid: macro strip reads a same-origin calendar snapshot (feed has no CORS header)",
+      "ref": "87fadd77ec53",
+      "utc": "2026-10-31T12:35:51Z"
     }
   ],
   "layers": [],
@@ -28,26 +36,32 @@
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T08:47:34Z",
+  "refreshed": "2026-11-01T21:25:07Z",
   "refs": [
     "MyTradingSys/research/gemini_burn_2026-10-31/LIVE_AID_TEST_PLAN.md"
   ],
-  "result": "",
+  "result": "test_live_aid_replay.py: 19 passed, test_liq_tape_replays_known_cluster pins rendered #liq-sum and #liq-tape against fixture_liq_cluster.json",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tools/live_aid/test_live_aid_replay.py, MyTradingSys/tools/live_aid/fixture_liq_cluster.json"
   ],
   "scope_out": [
     "no edits to live_aid.html or indicators"
   ],
-  "scope_sha": "e6376a8d400b",
+  "scope_sha": "87fadd77ec53",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Message dash-designer; build fixture_liq_cluster.json from a public liquidation feed sample (no account data)",
     "Write the replay test with hand-summed expected totals",
     "Prove fail-first by mutation in a scratch copy; run the live_aid tests"
   ],
+  "taken": "2026-11-01T21:25:17Z",
   "tests": "MyTradingSys/tools/live_aid/test_live_aid_replay.py::test_liq_tape_replays_known_cluster (fail-first via mutating liqSum in a scratch copy)",
   "title": "live_aid liquidation tape replay fixture liq-tape liq-sum",
   "weight": "",

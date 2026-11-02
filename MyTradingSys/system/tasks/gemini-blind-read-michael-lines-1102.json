@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-02T05:48:29Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-02/michael_lines_blind_read.md has one row per number: FOUND / NOT_IN_DATA / DIFF, first line holds the three counts.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Open MyTradingSys/research/michael_lines_2026-11/RESULT.md and check every number (the 12-row count table, 11 statements, 8 of 10 videos, 8 of 11 non-BTC) against trendlines_2026-10-17/counts/CELLS.csv and STATED_LINES.md; facts only.",
+  "id": "gemini-blind-read-michael-lines-1102",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Michael trend lines: STATED_LINES + DEV event counts RESULT",
+      "ref": "8d9df87e525c",
+      "utc": "2026-11-01T18:44:35Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "8d9df87e525c Michael trend lines: STATED_LINES + DEV event counts RESULT",
+      "ref": "MyTradingSys/research/michael_lines_2026-11/RESULT.md",
+      "utc": "2026-11-01T18:44:35Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini effort low: load as <id>:low (gemini_queue.py run <id>:low). Final report ends with a Noticed: line. Facts only, no verdicts. D11_PROGRAMME s6 seed. PLANNER 2026-11-02 planner-b-1102. REVIEWED:2026-11-02 T0-ONLY",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-02T05:48:30Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/michael_lines_2026-11/RESULT.md (read)",
+    "MyTradingSys/research/michael_lines_2026-11/STATED_LINES.md (read)",
+    "MyTradingSys/research/gemini_audits_2026-11-02/michael_lines_blind_read.md (new)"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change outside the output file"
+  ],
+  "scope_sha": "8d9df87e525c",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "list every number in RESULT.md with its cited source",
+    "open the source and check it",
+    "write FOUND / NOT_IN_DATA / DIFF per number, counts on line 1"
+  ],
+  "tests": "see done_when (audit card, output file is the test)",
+  "title": "[GEMINI] blind re-read of michael_lines_2026-11 RESULT.md: numbers vs CELLS.csv and STATED_LINES.md",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

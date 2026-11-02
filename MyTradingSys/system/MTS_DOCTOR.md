@@ -39,6 +39,9 @@ DUPLICATE and MEMORY text itself; every other finding is a card for its owner (R
 | OVERHEAD > 50% | merges (one ship per task, B3), claim/release plumbing (B2, B4), status commits on trunk (B17) | a buster counts only when `health_audit.py 24` moves after a day. |
 | STALE CLAIM | owner gone | `sync.py release <slug>` or escalate in NEXT_SESSION. |
 
+## Part 3: Cost checkup (COST, separate from AI health)
+Runs the `COST_CHECKUP.md` checklist (items a-i): measures hidden costs or marks them unmeasurable, records usage readings before/after Remote Control off from `mts_signal.py budget`, and identifies the next cut.
+
 ## Verify every change with another model
 After a change from the table, give a second worker on a different model (Haiku, plus Sonnet with a fresh context; Opus only if the
 operator names it) a self-contained brief: the report text, the diff, three numbers to recompute

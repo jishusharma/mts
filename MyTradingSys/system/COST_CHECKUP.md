@@ -2,7 +2,7 @@
 
 Purpose: a regular checkup for hidden costs we still pay and how to cut them. This is NOT the AI health checkup (mts_doctor, MTS_DOCTOR.md). Operator ask 2026-10-30 (verbatim): "Yeah, I need you to compare the readings. I need to know hidden costs that I'm still paying and how we can still economize it. So there should be a regular checkup for this. Maybe something could be told to doctor MTS doctor about this. Or in AI health checkups, we can keep these things in mind. But these are separate from AI health. Because this is about cost saving."
 
-Who runs it: MTS doctor, as a separate section `COST` of its report (proposed, not wired), or Supervisor on request.
+Who runs it: MTS doctor, as a separate section `COST` of its report, or Supervisor on request.
 
 Method: take `mts_signal.py budget --login <A|B|C> --five <%> --week <%> --reset <UTC>` before and after each change; compare burn per hour at the same activity level. Record the readings in the COST section.
 

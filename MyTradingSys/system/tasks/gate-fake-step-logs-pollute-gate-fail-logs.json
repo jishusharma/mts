@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-01T20:54:26Z",
   "commands": [],
   "created": "2026-10-31T19:42:24Z",
   "depends_on": [],
@@ -15,11 +17,17 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "module-wide FAIL_LOG_DIR patch in test_run_all_tests keeps real log dir clean (commit a3a0",
+      "ref": "60abc79a0",
+      "utc": "2026-11-01T20:54:26Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "test_run_all_tests: overlap test uses a Barrier, no wall-clock assert",
-      "ref": "f1e0be09697b",
-      "utc": "2026-10-31T19:36:44Z"
+      "line": "run_all_tests: platform-independent QUICK_PARTS test (partition + cap)",
+      "ref": "26ff2273ea84",
+      "utc": "2026-11-01T19:40:37Z"
     }
   ],
   "layers": [],
@@ -29,24 +37,30 @@
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T20:28:39Z",
+  "refreshed": "2026-11-01T20:53:39Z",
   "refs": [],
-  "result": "",
+  "result": "module-wide FAIL_LOG_DIR patch in test_run_all_tests keeps real log dir clean (commit a3a07493f)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/test_run_all_tests.py"
   ],
   "scope_out": [
     "run_all_tests.py itself; the 3 TestFailedStepRunLog tests that already patch the dir"
   ],
-  "scope_sha": "f1e0be09697b",
+  "scope_sha": "26ff2273ea84",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add setUpModule/tearDownModule: patch rat.FAIL_LOG_DIR to a tempfile.TemporaryDirectory (mock.patch.object(...).start()/stop(), dir cleaned).",
     "Add a test: count *.log in the real FAIL_LOG_DIR (path captured at import) before/after a failing fake step through run_plan; equal. Drop the module patch temporarily to confirm it fails on old code.",
     "Do not delete existing real logs (runtime_data is gitignored). Verify: content commit sha; git cherry origin/fast-track <sha> empty; git ls-tree -r origin/fast-track --name-only lists the delivered files."
   ],
+  "taken": "2026-11-01T20:53:53Z",
   "tests": "scripts/dev/test_run_all_tests.py::test_failing_fake_step_leaves_real_fail_log_dir_untouched (fails without the module patch)",
   "title": "test_run_all_tests: fake failing steps must not write to the real runtime_data/gate_fail_logs",
   "weight": "ROUTINE",
