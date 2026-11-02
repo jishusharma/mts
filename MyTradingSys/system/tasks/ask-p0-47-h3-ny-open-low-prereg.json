@@ -4,8 +4,8 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-02T12:11:55Z",
-    "misses": 149,
+    "folded": "2026-11-02T12:17:22Z",
+    "misses": 155,
     "reads": [
       "scripts/dev/verdicts.py",
       "scripts/dev/prereg_gate.py",
@@ -14,7 +14,7 @@
       "scripts/dev/run_all_tests.py",
       "MyTradingSys/research/session_sweeps/session_open_study.py",
       "scripts/dev/extra_tests.tsv",
-      "MyTradingSys/items/T058_broken_extremes_sweep_vs_continuation.md"
+      "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/test_cost_inventory.py"
     ],
     "session": "agent-ae3b5f10b05b3e062"
   },
