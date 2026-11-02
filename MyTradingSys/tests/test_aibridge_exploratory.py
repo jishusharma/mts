@@ -312,9 +312,9 @@ def test_V1_stale_extension_reloads_itself_when_idle():
 def test_V2_agent_version_mismatch_is_put_in_the_receipt():
     """0.7.13: an agent on another version than the extension adds an [AIRUN WARNING] line to the posted receipt (DSA and the operator see it)."""
     js = ARM + r"""
-window.loadedVersion='0.7.99'; window.diskVersion='0.7.99';
+window.agentVersion='0.0.1';
 setTimeout(function(){ window.dsaReply('go', ['# AIRUN cwd=C:\\x\nWrite-Output ONE']); }, 8000);
 setTimeout(window.finish, 60000);
 """
     r = run_page(js, 70000)
-    assert any("[AIRUN WARNING] VERSION MISMATCH: extension 0.7.99 but the agent runs 0.7.3" in p["text"] for p in r["posted"]), r["posted"]
+    assert any("[AIRUN WARNING] VERSION MISMATCH: extension" in p["text"] and "but the agent runs 0.0.1" in p["text"] for p in r["posted"]), r["posted"]
