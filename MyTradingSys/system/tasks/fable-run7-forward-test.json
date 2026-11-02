@@ -17,9 +17,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nuc/supervisor-b-20261101",
-      "ref": "c160b016705d",
-      "utc": "2026-11-02T16:39:32Z"
+      "line": "Merge remote-tracking branch 'origin/fast-track' into DESKTOP-F7IU69N/haiku-stale-ready-11",
+      "ref": "f8c596944388",
+      "utc": "2026-11-02T16:51:07Z"
     },
     {
       "auto": true,
@@ -36,7 +36,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T16:48:47Z",
+  "refreshed": "2026-11-02T16:51:54Z",
   "refs": [
     "MyTradingSys/system/handover/FABLE_RUN_R7.md"
   ],
@@ -49,7 +49,7 @@
   "scope_out": [
     "live tree, deploy, mainnet, .secrets, .env, outcome columns and bars >= 2024-07-01"
   ],
-  "scope_sha": "c160b016705d",
+  "scope_sha": "f8c596944388",
   "size": "M",
   "sources": [
     "MyTradingSys/research/fable_run_design_2026-10-28/DESIGN_R7.md"
