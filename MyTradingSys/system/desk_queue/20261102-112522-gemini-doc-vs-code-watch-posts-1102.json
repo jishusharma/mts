@@ -1,12 +1,15 @@
 {
   "card": "gemini-doc-vs-code-watch-posts-1102",
   "done_when": "MyTradingSys/research/gemini_audits_2026-11-02/watch_posts_doc_vs_code.md has one row per claim: MATCH / MISMATCH / NOT_IN_CODE with file:line, first line holds the three counts.",
+  "finished": "2026-11-02T11:32:44Z",
   "from": "lane_health",
+  "host": "JIS-NUC",
   "id": "20261102-112522-gemini-doc-vs-code-watch-posts-1102",
   "need": "Rerouted from the GPT lane (credits/limit/outage) to DSA. Card gemini-doc-vs-code-watch-posts-1102: [GEMINI] doc-vs-code scan: analysts/watch ROUTINE.md claims vs watch_posts.py behaviour\nWorktree: mts-dsa (python scripts/dev/sync.py start first). Data on F:\\MTS\\data is read-only.\nFull brief: python scripts/dev/tasks.py brief gemini-doc-vs-code-watch-posts-1102\nGoal: Check every behaviour claim (interval, limit, file written, exit code) in MyTradingSys/research/analysts/watch/ROUTINE.md against watch_posts.py; list each as MATCH / MISMATCH with file:line on \nRead: MyTradingSys/research/analysts/watch/ROUTINE.md (read); MyTradingSys/research/analysts/watch/watch_posts.py (read); MyTradingSys/research/gemini_audits_2026-11-02/watch_posts_doc_vs_code.md (new\nStep 1: list every behaviour claim in ROUTINE.md\nStep 2: find the code line that implements or contradicts it\nStep 3: write MATCH / MISMATCH / NOT_IN_CODE per claim, counts on line 1\nWrite the report to MyTradingSys/research/layer_lab/reports/2026-11-02_gemini-doc-vs-code-watch-posts-1102.md: findings or numbers, each with file:line or the command you ran.\nNumbers come only from output you printed in the chat. Change no code or spec. Never read a holdout.\nIf a command fails twice, close the desk row with --failed and the error text.\nClose: python scripts/dev/desk.py done <row id> --result \"<verdict or number + MyTradingSys/research/layer_lab/reports/2026-11-02_gemini-doc-vs-code-watch-posts-1102.md>\".",
   "posted": "2026-11-02T11:25:22Z",
   "rerouted_from": "CODEX",
-  "status": "pending",
+  "result": "declined: duplicate, running on Gemini via Lead",
+  "status": "failed",
   "target": "DSA",
   "title": "[GEMINI] doc-vs-code scan: analysts/watch ROUTINE.md claims vs watch_posts.py behaviour"
 }
