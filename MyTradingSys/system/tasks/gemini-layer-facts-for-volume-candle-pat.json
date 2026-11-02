@@ -4,6 +4,13 @@
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/volume_candles_ma.md"
   ],
+  "context": {
+    "calls_to_edit": 14,
+    "folded": "2026-11-02T13:07:59Z",
+    "misses": 47,
+    "reads": [],
+    "session": "agent-ac095d276565ae174"
+  },
   "created": "2026-11-02T11:12:39Z",
   "depends_on": [],
   "done_when": "Every flagged fact in layer_facts/volume_candles_ma.md uses DEV 2020-01-01..2024-06-30 and 14bp fee or is deleted; verify_extract_quotes.py reports 0 problems on it",
