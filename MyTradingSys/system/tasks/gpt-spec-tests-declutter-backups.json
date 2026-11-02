@@ -36,7 +36,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T16:56:46Z",
+  "refreshed": "2026-11-02T16:51:59Z",
   "refs": [],
   "result": "9 tests; 3/3 mutations detected; report MyTradingSys/research/layer_lab/reports/2026-11-02_gpt-spec-tests-declutter-backups.md",
   "result_receipt": {

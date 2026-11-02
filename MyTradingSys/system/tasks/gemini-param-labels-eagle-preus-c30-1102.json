@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T16:46:51Z",
   "commands": [],
   "created": "2026-11-02T11:09:00Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "6ea2307a9: SOURCED/OURS labels for preus_pullback.py and c30_validation.py (param_labels_e",
+      "ref": "4b6f57b35",
+      "utc": "2026-11-02T16:46:51Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -34,7 +41,12 @@
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
   "reroute_failed": "20261102-112522-gemini-param-labels-eagle-preus-c30-1102",
-  "result": "",
+  "result": "6ea2307a9: SOURCED/OURS labels for preus_pullback.py and c30_validation.py (param_labels_eagle_preus_c30.md)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/preus_pullback.py (read)",
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/c30_validation.py (read)",
@@ -46,12 +58,13 @@
   "scope_sha": "8f8e92f10b36",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "list constants per file with line numbers",
     "search the cited sources and C30_VALIDATION.md for each value",
     "write the label table, counts on line 1"
   ],
+  "taken": "2026-11-02T16:46:51Z",
   "tests": "see done_when (audit card, output file is the test)",
   "title": "[GEMINI] SOURCED/OURS labels for eagle_eyes_picture preus_pullback.py and c30_validation.py constants",
   "weight": "ROUTINE",

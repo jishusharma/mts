@@ -36,7 +36,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T16:50:00Z",
+  "refreshed": "2026-11-02T16:51:57Z",
   "refs": [],
   "result": "10 tests; 3/3 mutations detected; report MyTradingSys/research/layer_lab/reports/2026-11-02_gpt-spec-tests-asr-transcribe.md",
   "result_receipt": {

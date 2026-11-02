@@ -1,8 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "claim": "",
-  "closed": "2026-11-02T16:55:36Z",
+  "closed": "2026-11-02T16:42:50Z",
   "commands": [],
   "created": "2026-11-02T16:18:53Z",
   "depends_on": [],
@@ -18,16 +17,16 @@
   "latest": [
     {
       "kind": "ship",
-      "line": "8 tests; 3/3 mutations detected; report MyTradingSys/research/layer_lab/reports/2026-11-02",
-      "ref": "feeaf14bf",
-      "utc": "2026-11-02T16:55:36Z"
+      "line": "13 passing spec tests; 3/3 scratch mutations detected; report 2026-11-02_gpt-spec-tests-cb",
+      "ref": "3e5ea7aac",
+      "utc": "2026-11-02T16:42:50Z"
     },
     {
       "auto": true,
       "kind": "ship",
-      "line": "lab gpt-spec-tests-asr-transcribe: DONE (tests)",
-      "ref": "feeaf14bf9f8",
-      "utc": "2026-11-02T16:52:09Z"
+      "line": "merge fast-track into codex lab: keep both new test lines",
+      "ref": "91be37ef06db",
+      "utc": "2026-11-02T16:25:02Z"
     }
   ],
   "layers": [],
@@ -36,9 +35,9 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T16:52:55Z",
+  "refreshed": "2026-11-02T16:40:11Z",
   "refs": [],
-  "result": "8 tests; 3/3 mutations detected; report MyTradingSys/research/layer_lab/reports/2026-11-02_gpt-spec-tests-cbp-scorecard.md",
+  "result": "13 passing spec tests; 3/3 scratch mutations detected; report 2026-11-02_gpt-spec-tests-cbp-scorecard.md",
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"
@@ -53,7 +52,7 @@
     "any live path",
     "editing the audited source file"
   ],
-  "scope_sha": "feeaf14bf9f8",
+  "scope_sha": "91be37ef06db",
   "size": "S",
   "sources": [
     "scripts/dev/cbp_scorecard.py"
@@ -64,7 +63,7 @@
     "compute expected values by hand (no running the code first)",
     "write tests, register in extra_tests.tsv, run 3 mutations, write report; verify: content sha, git cherry origin/fast-track empty, git ls-tree shows the files"
   ],
-  "taken": "2026-11-02T16:53:36Z",
+  "taken": "2026-11-02T16:42:50Z",
   "tests": "python -m pytest scripts/dev/test_cbp_scorecard.py -q --basetemp=F:/MTS/_pt_b (fail-first: each of the 3 mutations makes it fail)",
   "title": "Spec-derived tests for scripts/dev/cbp_scorecard.py (no test file today)",
   "weight": "ROUTINE",

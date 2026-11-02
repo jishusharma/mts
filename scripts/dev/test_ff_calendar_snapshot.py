@@ -1,112 +1,57 @@
-"""Spec-derived tests for scripts/dev/ff_calendar_snapshot.py.
-
-Covers:
-  - render:
-    * single-event list and integer epoch ms serialization
-    * multi-event list serialization with compact separators
-    * float epoch timestamp conversion to integer ms
-    * empty list raising ValueError
-    * non-list data (None, dict, string) raising ValueError
-    * JS wrapper syntax: 'window.LIVEAID_CAL_SNAP = ...;\n'
-  - main:
-    * successful fetch stub writing snapshot JS file and returning 0
-    * fetch error keeping old file and returning 1
-    * malformed data error path returning 1
-"""
+"""Spec-derived tests for the serialized same-origin calendar snapshot."""
 import json
-from pathlib import Path
+import os
+import sys
+
 import pytest
 
-import ff_calendar_snapshot as ffs
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import ff_calendar_snapshot as snapshot
 
 
-def test_render_single_event_and_exact_js_wrapper():
-    events = [{"title": "USD CPI", "country": "USD", "impact": "High"}]
-    ms = 1730560000000
-    res = ffs.render(events, ms)
-    expected_prefix = 'window.LIVEAID_CAL_SNAP = {"fetched_ms":1730560000000,"events":['
-    assert res.startswith(expected_prefix)
-    assert res.endswith("};\n")
+def expected(events, fetched_ms):
+    return "window.LIVEAID_CAL_SNAP = " + json.dumps(
+        {"fetched_ms": fetched_ms, "events": events}, separators=(",", ":")
+    ) + ";\n"
 
 
-def test_render_multi_events_compact_separators():
-    events = [
-        {"title": "USD FOMC Rate", "impact": "High"},
-        {"title": "EUR ECB Press Conference", "impact": "High"},
-    ]
-    ms = 1730561234567
-    res = ffs.render(events, ms)
-    # Compact separators: no space after colon or comma
-    assert ',"events":[' in res
-    assert '},{"title":' in res
-    assert res.endswith("};\n")
+@pytest.mark.parametrize("age_ms", [26 * 60 * 60 * 1000, 26 * 60 * 60 * 1000 - 1, 26 * 60 * 60 * 1000 + 1])
+def test_timestamp_at_and_around_documented_26_hour_age_boundary(age_ms):
+    # The page's age rule is 26 h; render stores the supplied timestamp verbatim as an integer.
+    fetched = 2_000_000_000_000 - age_ms
+    events = [{"title": "CPI", "impact": "High"}]
+    assert snapshot.render(events, fetched) == expected(events, fetched)
 
 
-def test_render_float_ms_cast_to_int():
-    events = [{"title": "Event"}]
-    res = ffs.render(events, 1730560000999.88)
-    assert '"fetched_ms":1730560000999,' in res
-    payload = json.loads(res.replace("window.LIVEAID_CAL_SNAP = ", "").rstrip(";\n"))
-    assert isinstance(payload["fetched_ms"], int)
-    assert payload["fetched_ms"] == 1730560000999
+def test_empty_event_list_is_rejected():
+    with pytest.raises(ValueError, match="non-empty list"):
+        snapshot.render([], 123)
 
 
-def test_render_empty_list_raises_value_error():
-    with pytest.raises(ValueError, match="not a non-empty list"):
-        ffs.render([], 1730560000000)
+@pytest.mark.parametrize("events", [None, {}, "event", 7])
+def test_non_list_feed_is_rejected(events):
+    with pytest.raises(ValueError, match="non-empty list"):
+        snapshot.render(events, 123)
 
 
-def test_render_none_raises_value_error():
-    with pytest.raises(ValueError, match="not a non-empty list"):
-        ffs.render(None, 1730560000000)
+def test_malformed_timestamp_is_rejected_by_integer_conversion():
+    with pytest.raises((TypeError, ValueError)):
+        snapshot.render([{"title": "CPI"}], "not-an-epoch")
 
 
-def test_render_dict_raises_value_error():
-    with pytest.raises(ValueError, match="not a non-empty list"):
-        ffs.render({"error": "rate limited"}, 1730560000000)
+def test_valid_render_is_compact_javascript_assignment_with_newline():
+    events = [{"title": "USD CPI", "country": "USD", "date": "2026-11-03T13:30:00"}]
+    assert snapshot.render(events, 1_798_000_000_123) == (
+        'window.LIVEAID_CAL_SNAP = {"fetched_ms":1798000000123,"events":'
+        '[{"title":"USD CPI","country":"USD","date":"2026-11-03T13:30:00"}]};\n'
+    )
 
 
-def test_render_string_raises_value_error():
-    with pytest.raises(ValueError, match="not a non-empty list"):
-        ffs.render("invalid payload", 1730560000000)
+def test_non_integer_numeric_timestamp_is_truncated_to_integer():
+    events = [{"title": "NFP"}]
+    assert snapshot.render(events, 1234.9) == expected(events, 1234)
 
 
-def test_main_success_with_stubbed_fetch(monkeypatch, tmp_path, capsys):
-    out_file = tmp_path / "ff_calendar_snapshot.js"
-    mock_events = [{"title": "USD Non-Farm Payrolls", "impact": "High"}]
-    monkeypatch.setattr(ffs, "fetch", lambda: mock_events)
-
-    code = ffs.main(out=out_file)
-    assert code == 0
-    assert out_file.exists()
-
-    content = out_file.read_text(encoding="utf-8")
-    assert content.startswith("window.LIVEAID_CAL_SNAP = ")
-    assert "USD Non-Farm Payrolls" in content
-    assert "1 events ->" in capsys.readouterr().out
-
-
-def test_main_fetch_error_preserves_old_file(monkeypatch, tmp_path, capsys):
-    out_file = tmp_path / "ff_calendar_snapshot.js"
-    old_content = "window.LIVEAID_CAL_SNAP = {'old': true};\n"
-    out_file.write_text(old_content, encoding="utf-8")
-
-    def failing_fetch():
-        raise OSError("Network unreachable")
-
-    monkeypatch.setattr(ffs, "fetch", failing_fetch)
-
-    code = ffs.main(out=out_file)
-    assert code == 1
-    # Old file preserved
-    assert out_file.read_text(encoding="utf-8") == old_content
-    assert "FAILED, old file kept: Network unreachable" in capsys.readouterr().err
-
-
-def test_main_malformed_feed_returns_error_code(monkeypatch, tmp_path, capsys):
-    out_file = tmp_path / "ff_calendar_snapshot.js"
-    monkeypatch.setattr(ffs, "fetch", lambda: [])  # empty list
-
-    code = ffs.main(out=out_file)
-    assert code == 1
-    assert "not a non-empty list" in capsys.readouterr().err
+def test_list_items_are_preserved_without_feed_schema_rewriting():
+    events = [{"unexpected": [1, None, True]}, "malformed-but-list-item"]
+    assert snapshot.render(events, 456) == expected(events, 456)

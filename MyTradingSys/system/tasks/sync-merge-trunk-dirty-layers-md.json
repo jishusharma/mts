@@ -1,7 +1,22 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T16:56:26Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-02T17:03:31Z",
+    "misses": 42,
+    "reads": [
+      "scripts/dev/test_sync.py",
+      "scripts/dev/test_trial_ledger.py",
+      "scripts/dev/trial_ledger.py",
+      "scripts/dev/test_make_layers_md.py",
+      "scripts/dev/run_all_tests.py",
+      "scripts/dev/make_layers_md.py"
+    ],
+    "session": "agent-a4eff2be8395060b7"
+  },
   "created": "2026-11-02T16:20:03Z",
   "depends_on": [],
   "done_when": "test_merge_trunk_restores_dirty_layers_md in scripts/dev/test_sync.py passes (temp repos: origin changes LAYERS.md, local copy dirty -> merge succeeds, count returned) and failed on the old code; a dirty non-generated file still stops the merge.",
@@ -13,6 +28,12 @@
   "id": "sync-merge-trunk-dirty-layers-md",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "sync.py merge_trunk restores a dirty LAYERS.md and retries; 2 tests in test_sync.py",
+      "ref": "3961c25ef",
+      "utc": "2026-11-02T16:56:26Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -30,7 +51,12 @@
   "refined_by": "",
   "refreshed": "2026-11-02T16:20:04Z",
   "refs": [],
-  "result": "",
+  "result": "sync.py merge_trunk restores a dirty LAYERS.md and retries; 2 tests in test_sync.py",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/sync.py",
     "scripts/dev/test_sync.py"
@@ -46,12 +72,13 @@
     "scripts/dev/sync.py:173",
     "scripts/dev/sync.py:1153"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "in merge_trunk after the first failed merge: if stderr names only LAYERS_REL as overwritten, git checkout -- LAYERS_REL and retry once, like the runtime_data/_mirror branch above it",
     "add test_merge_trunk_restores_dirty_layers_md and test_merge_trunk_keeps_other_dirty_file_blocking beside the stage_layers tests (test_sync.py:1906)",
     "run the new test on the old code first to see it fail"
   ],
+  "taken": "2026-11-02T16:56:26Z",
   "tests": "python -m pytest scripts/dev/test_sync.py -q -k merge_trunk --basetemp=F:/MTS/_pt_b (fail-first: test_merge_trunk_restores_dirty_layers_md)",
   "title": "sync.py merge_trunk: a dirty generated LAYERS.md must not abort the merge of origin/fast-track",
   "weight": "ROUTINE",

@@ -1381,6 +1381,18 @@ class TestCorruptCard(unittest.TestCase):
         self.assertIn("B901", out)
         self.assertIn("EMPTY2.json", out)
 
+    def test_list_title_prefix(self):
+        T.save(self.repo, good("B904", title="Q: which default?"))
+        old = T.REPO
+        T.REPO = self.repo
+        try:
+            rc, out = run_cli("list", "--prefix", "Q:")
+        finally:
+            T.REPO = old
+        self.assertEqual(rc, 0)
+        self.assertIn("B904", out)
+        self.assertNotIn("B901", out)
+
     def test_save_writes_via_temp_file_and_replace(self):
         calls = []
         real = T.os.replace

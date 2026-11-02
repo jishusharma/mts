@@ -25,9 +25,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "merge fast-track into codex lab: keep both new test lines",
-      "ref": "91be37ef06db",
-      "utc": "2026-11-02T16:25:02Z"
+      "line": "test CBP scorecard recount contract",
+      "ref": "6267cc8d21b2",
+      "utc": "2026-11-02T16:44:15Z"
     }
   ],
   "layers": [],
@@ -36,7 +36,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T16:45:47Z",
+  "refreshed": "2026-11-02T16:52:01Z",
   "refs": [],
   "result": "10 tests; 3/3 mutations detected; report MyTradingSys/research/layer_lab/reports/2026-11-02_gpt-spec-tests-fetch-captions-timed.md",
   "result_receipt": {
@@ -53,7 +53,7 @@
     "any live path",
     "editing the audited source file"
   ],
-  "scope_sha": "91be37ef06db",
+  "scope_sha": "6267cc8d21b2",
   "size": "S",
   "sources": [
     "scripts/dev/fetch_captions_timed.py"

@@ -80,6 +80,27 @@ def idle_lanes(last_rows, ready_lanes, claimed_lanes, now, reset):
     return out
 
 
+def measured_k(rows):
+    """Weekly points per 5 h point from ledger rows: rows split into windows where 5h drops (a reset); windows with >= 3 points of 5 h use count; None if none."""
+    wins, cur, prev = [], [0.0, 0.0], None
+    for r in rows:
+        try:
+            b5, a5 = float(r["pct5h_before"]), float(r["pct5h_after"])
+            bw, aw = float(r["pctweek_before"]), float(r["pctweek_after"])
+        except (KeyError, ValueError, TypeError):
+            continue
+        if prev is not None and b5 < prev - 5:
+            wins.append(cur)
+            cur = [0.0, 0.0]
+        if a5 >= b5 and aw >= bw:
+            cur[0] += a5 - b5
+            cur[1] += aw - bw
+        prev = a5
+    wins.append(cur)
+    good = [w for w in wins if w[0] >= 3]
+    return round(sum(w[1] for w in good) / sum(w[0] for w in good), 3) if good else None
+
+
 def summarize(rows, card_kind):
     """{kind: (rows_with_tokens, mean tokens_in+out+cache)}."""
     acc = {}

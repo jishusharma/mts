@@ -1293,3 +1293,20 @@ def test_idle_rules_code_and_docs_agree():
     assert S.IDLE_RULE in role and S.REARM_RULE in role
     d5 = next(x for x in ss.splitlines() if x.startswith("| D5 |"))
     assert S.REARM_RULE in d5 and S.IDLE_RULE in d5
+
+
+def test_plan_prints_idle_line():
+    p = S.pace_plan(T0, _rd(3, 20, week_reset="2026-10-23T16:00Z"), 95)
+    out = "\n".join(S.plan_lines("A", "JIS-NUC", p, {}, {"ci": {"red": False}, "idle": ["sonnet"]}, gate_key=False))
+    assert "IDLE sonnet" in out
+    assert "IDLE" not in "\n".join(S.plan_lines("A", "JIS-NUC", p, {}, {"ci": {"red": False}}, gate_key=False))
+
+
+def test_measured_k_from_usage_rows():
+    import usage_log
+    row = lambda b5, a5, bw, aw: {"pct5h_before": b5, "pct5h_after": a5, "pctweek_before": bw, "pctweek_after": aw}
+    rows = [row(10, 20, 10, 11), row(20, 30, 11, 12)]          # 20 pts of 5 h, 2 of week -> 0.1
+    assert usage_log.measured_k(rows) == 0.1
+    assert usage_log.measured_k([row(10, 11, 10, 10)]) is None  # under 3 points
+    p = S.pace_plan(T0, _rd(10, 20, week_reset="2026-10-23T16:00Z"), 95, usage_rows=rows)
+    assert p["k_measured"] and p["k"] == 0.1

@@ -170,6 +170,20 @@ def fetch_trunk(repo, tries=FETCH_TRIES, sleep=time.sleep):
     raise SyncError(f"git fetch --quiet origin {TRUNK} failed {tries}x:\n{r.stdout}{r.stderr}".rstrip())
 
 
+def _only_layers_blocks(text):
+    """True when git's 'local changes ... would be overwritten by merge' list names LAYERS_REL and nothing else."""
+    lines = text.splitlines()
+    for i, ln in enumerate(lines):
+        if "local changes to the following files would be overwritten by merge" in ln:
+            files = []
+            for nxt in lines[i + 1:]:
+                if not nxt.startswith(("\t", " ")) or not nxt.strip():
+                    break
+                files.append(nxt.strip())
+            return files == [LAYERS_REL]
+    return False
+
+
 def merge_trunk(repo):
     """Fetch and merge origin/fast-track into HEAD (never rebase). Returns the commits pulled in.
     A conflict confined to TAKE_ORIGIN files is resolved to origin's text and reported; any other stops."""
@@ -183,6 +197,11 @@ def merge_trunk(repo):
             # nobody's work. Drop the copy so the merge can delete the tracked files; the next pull rewrites it.
             git(repo, "checkout", "--", "runtime_data/_mirror", check=False)
             git(repo, "clean", "-fdq", "--", "runtime_data/_mirror", check=False)
+            r = git(repo, "merge", "--no-edit", f"origin/{TRUNK}", check=False)
+        if r.returncode != 0 and not git(repo, "diff", "--name-only", "--diff-filter=U").stdout.split() \
+                and _only_layers_blocks(r.stdout + r.stderr):
+            # LAYERS.md is generated (stage_layers rewrites it at ship); a dirty copy (CRLF/stale) is not work. Restore it, retry once.
+            git(repo, "checkout", "--", LAYERS_REL, check=False)
             r = git(repo, "merge", "--no-edit", f"origin/{TRUNK}", check=False)
         if r.returncode != 0:
             bad = git(repo, "diff", "--name-only", "--diff-filter=U").stdout.split()

@@ -1,11 +1,11 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T17:02:06Z",
   "commands": [],
   "created": "2026-10-25T21:00:59Z",
   "depends_on": [
-    "red-trunk-revert-within-10-min-rule-miss",
-    "tandem-dispatch-host-lanes"
+    "red-trunk-revert-within-10-min-rule-miss"
   ],
   "done_when": "roles/builder.md carries the rule (net lines not higher, the removed line named); tasks.py list --prefix 'Q:' lists open Q: cards; test_tasks.py covers it; AGENTS.md points at the rule without copying; CLAUDE.md untouched.",
   "est_turns": 20,
@@ -17,30 +17,41 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "builder.md Q: rule (removed the duplicate 'Output: one ship' line, net lines 20 to 20); ta",
+      "ref": "6fcc36d30",
+      "utc": "2026-11-02T17:02:06Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "lead.md: retoken after pages-follow-builds clause",
-      "ref": "4647498a1e88",
-      "utc": "2026-10-25T19:24:54Z"
+      "line": "Result: tasks.py dispatch excludes cards whose done_when tokens are in scope_in",
+      "ref": "973ccc1ccfde",
+      "utc": "2026-11-01T22:10:54Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "4647498a1e88 lead.md: retoken after pages-follow-builds clause",
-      "ref": "MyTradingSys/system/roles/lead.md",
-      "utc": "2026-10-25T19:24:54Z"
+      "line": "9166234009f2 ship: 6 file(s)",
+      "ref": "AGENTS.md",
+      "utc": "2026-10-29T21:18:55Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): DECISION (OURS): steps (1),(3),(5) ship; (4) stop_guard flag only if a measured gap shows; (2) default-leaves-no-trail folded into (1); CLAUDE.md is at its cap so the rule goes to SUPER_SESSION/role files, not CLAUDE.md. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only l",
+  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): DECISION (OURS): steps (1),(3),(5) ship; (4) stop_guard flag only if a measured gap shows; (2) default-leaves-no-trail folded into (1); CLAUDE.md is at its cap so the rule goes to SUPER_SESSION/role files, not CLAUDE.md. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only l\nDECISION (OURS) 2026-11-02 planner-refined2: tandem-dispatch-host-lanes is parked (S0) and only shared tasks.py; dep removed, rebase onto trunk tasks.py.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-10-25T22:30:03Z",
+  "refreshed": "2026-11-02T16:53:30Z",
   "refs": [],
-  "result": "",
+  "result": "builder.md Q: rule (removed the duplicate 'Output: one ship' line, net lines 20 to 20); tasks.py list --prefix; AGENTS.md pointer; test_list_title_prefix fails before/passes after",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/roles/builder.md",
     "MyTradingSys/system/roles/lead.md",
@@ -53,19 +64,20 @@
     "live path, orders, deploy, restarts",
     "new hooks, gate steps or rules beyond the card"
   ],
-  "scope_sha": "4647498a1e88",
+  "scope_sha": "973ccc1ccfde",
   "size": "M",
   "sources": [
     "card goal text (Q-rule proposal)",
     "CLAUDE.md: defaults-for-open-questions line"
   ],
-  "state": "refined",
+  "state": "done",
   "steps": [
     "Read card text points 1-5 and roles/builder.md existing question lines; choose roles/builder.md as the one rule file (workers file the card at end of task).",
     "Write the failing test for a 'Q:' title-prefix filter in tasks.py list; add the filter.",
     "Write the rule line in builder.md and remove the least useful existing line (name it in the Result line) so net lines do not rise; add the AGENTS.md pointer.",
     "Skip point 4 unless stop_guard.py already sees [ask] text cheaply."
   ],
+  "taken": "2026-11-02T17:02:06Z",
   "tests": "python -m pytest scripts/dev/test_tasks.py::test_list_title_prefix MyTradingSys/tests/docs/test_integrity.py -q: the first fails now (no filter) and passes after.",
   "title": "Q-rule: blocking questions are filed as cards (Q: prefix), not only in reports",
   "weight": "IMPORTANT",

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T16:46:47Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/layer_lab/reports/layer_review_rsi_cc_pitchfork_engine.md"
   ],
@@ -25,6 +26,12 @@
   "id": "layer-review-rsi-cc-pitchfork-engine-md-",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "a650f794: layer_review rsi/cc/pitchfork fixed 13 verifier cite flags",
+      "ref": "4b6f57b35",
+      "utc": "2026-11-02T16:46:47Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -53,7 +60,12 @@
   "refined_by": "planner-a3-1102",
   "refreshed": "2026-11-02T16:00:16Z",
   "refs": [],
-  "result": "",
+  "result": "a650f794: layer_review rsi/cc/pitchfork fixed 13 verifier cite flags",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/reports/layer_review_rsi_cc_pitchfork_engine.md"
   ],
@@ -74,7 +86,7 @@
     "MyTradingSys/research/rsi_divergence_mtf_2026-10-09/RESULT.md",
     "MyTradingSys/backtest/layers/rsi/rsi_divergence.py"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Run the verifier on the sheet before editing; record the 13 problems (exit 1). This is the fail-first observation.",
     "Line 121 (B154): the quoted tail 'B154 regime split not available in code yet' is not in BUGS.md:266. Trim the quote to the exact row text or drop the tail.",
@@ -83,6 +95,7 @@
     "Lines 464-467, 493-497: each quote must match the cited row exactly. B116 (BUGS.md:227), B117 (:228) and B118 (:229) have different wording from the quotes (B118 says size 100, not 20). B075 (:160) tail differs. Replace each quote with the exact text, or drop the claim if no cite verifies.",
     "Re-run the verifier on the sheet: it must print PASS: 0 problem(s) and exit 0. Touch no other file."
   ],
+  "taken": "2026-11-02T16:46:47Z",
   "tests": "Fail-first: the verifier on the unmodified sheet exits 1 with FAIL: 13 problem(s). Docs lane: the same verifier run is the test.",
   "title": "Clear 13 quote/cite flags in layer_review_rsi_cc_pitchfork_engine.md (verifier exit 1)",
   "weight": "ROUTINE",
