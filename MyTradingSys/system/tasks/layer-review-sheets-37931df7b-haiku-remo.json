@@ -1,0 +1,71 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "grep -c UNVERIFIED MyTradingSys/research/layer_lab/reports/layer_review_positioning_volume_callers.md MyTradingSys/research/layer_lab/reports/layer_review_rsi_cc_pitchfork_engine.md"
+  ],
+  "created": "2026-11-02T13:12:51Z",
+  "depends_on": [],
+  "done_when": "grep -c UNVERIFIED is 0 in both report files; the 6 known-valid cites (FORMULAS.md:376, layer_map.json:403, INTEGRATION_MAP.md:8, PLUGIN.md:46, OI_DIVERGENCE_V2:8, RESULT.md:43-46) are back with file:line checked against the file; each other removed claim is confirmed by hand against the 4e29dc2e text or stays removed",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Recheck the 103 cites that commit 37931df7b removed from the two layer review sheets; restore every valid one with file:line, so the sheets keep verifiable evidence and carry no UNVERIFIED flags.",
+  "hosts": [
+    "JIS-LAPTOP"
+  ],
+  "id": "layer-review-sheets-37931df7b-haiku-remo",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "docs: resolve UNVERIFIED cite flags in layer review sheets (positioning/volume/callers, rs",
+      "ref": "37931df7b394",
+      "utc": "2026-11-02T13:12:10Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "37931df7b394 docs: resolve UNVERIFIED cite flags in layer review sheets (positioning/volum",
+      "ref": "MyTradingSys/research/layer_lab/reports/layer_review_positioning_volume_callers.md",
+      "utc": "2026-11-02T13:12:10Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "resolve-the-71-unverified-quote-cite-fla"
+  ],
+  "note": "DECISION (OURS): docs-only recheck; base text is 4e29dc2e (35+36 UNVERIFIED). Twin of resolve-the-71-unverified-quote-cite-fla (done; that card made the 0 flags, this one rechecks what was removed).",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-02T13:31:18Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/reports/layer_review_positioning_volume_callers.md",
+    "MyTradingSys/research/layer_lab/reports/layer_review_rsi_cc_pitchfork_engine.md"
+  ],
+  "scope_out": [
+    "other reports; product code; backtests; any cite not re-read by hand"
+  ],
+  "scope_sha": "37931df7b394",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/layer_review_rsi_cc_pitchfork_engine.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Diff 4e29dc2e against 37931df7b for the two reports; list the 103 removed cites",
+    "For each removed cite, read the cited file at the line and compare the quote; restore with file:line when it matches",
+    "Leave the rest removed; log the count of restored vs removed in the commit Result line"
+  ],
+  "tests": "grep -c UNVERIFIED on both report files prints 0 (35 and 36 at 4e29dc2e); a grep for each restored file:line finds the quoted text in that file at that line",
+  "title": "Layer review sheets (37931df7b): Haiku removed 103 of 117 UNVERIFIED cites with a strict matcher; several are valid (FORMULAS.md:376, layer_map.json:403, INTEGRATION_MAP.md:8, PLUGIN.md:46, OI_DIVERGENCE_V2:8, RESULT.md:43-46); done-when: each removed cite rechecked by hand vs 4e29dc2e text, valid ones restored with file:line",
+  "weight": "",
+  "worker": "session"
+}
