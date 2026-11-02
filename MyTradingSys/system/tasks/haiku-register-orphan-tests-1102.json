@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T16:23:36Z",
   "commands": [
     "git ls-files scripts/dev",
     "python -m pytest <file> -q --basetemp=F:/MTS/_pt_b"
@@ -16,6 +17,12 @@
   "id": "haiku-register-orphan-tests-1102",
   "lane": "HAIKU",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "orphans before 1 (MyTradingSys/research/sim_desk/test_desk.py) -> after 0; registered in s",
+      "ref": "38a7d6c6c",
+      "utc": "2026-11-02T16:23:36Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,7 +40,12 @@
   "refined_by": "",
   "refreshed": "2026-11-02T16:19:00Z",
   "refs": [],
-  "result": "",
+  "result": "orphans before 1 (MyTradingSys/research/sim_desk/test_desk.py) -> after 0; registered in scripts/dev/extra_tests.tsv, run once: 20 passed, 2 skipped",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/extra_tests.tsv",
     "scripts/dev/run_all_tests.py (read)"
@@ -44,12 +56,13 @@
   "scope_sha": "fbae4b1d6d2f",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "git ls-files the test_*.py under scripts/dev and MyTradingSys/research, diff against run_all_tests.py discovery plus extra_tests.tsv",
     "register each orphan (one path per line) or add a skip reason line",
     "run each newly registered test once with python -m pytest <file> -q --basetemp=F:/MTS/_pt_b; report counts, ship"
   ],
+  "taken": "2026-11-02T16:23:36Z",
   "tests": "count-based: orphan count before vs after, reported; the newly registered tests pass once",
   "title": "Second orphan-test sweep: tracked test_*.py that no gate runs get registered in extra_tests.tsv",
   "weight": "ROUTINE",
