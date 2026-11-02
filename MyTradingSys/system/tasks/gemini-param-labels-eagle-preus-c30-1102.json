@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-02T11:09:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-02/param_labels_eagle_preus_c30.md has one row per constant: file:line, value, SOURCED(quote, file:line) / OURS, first line holds the two counts.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "List every numeric constant and default parameter in MyTradingSys/research/eagle_eyes_picture_2026-10-28/preus_pullback.py and c30_validation.py; label each SOURCED (quote + file:line) or OURS; never call OURS the trader's.",
+  "id": "gemini-param-labels-eagle-preus-c30-1102",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "eagle: pre-US pullback base rate (overnight high given back before 13Z)",
+      "ref": "8f8e92f10b36",
+      "utc": "2026-11-02T10:56:14Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini effort low: load as <id>:low (gemini_queue.py run <id>:low). Final report ends with a Noticed: line. Facts only, no verdicts. D11_PROGRAMME s6 seed. PLANNER 2026-11-02 planner-board-refresh-1102. REVIEWED:2026-11-02 T0-ONLY",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-02T11:09:01Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/preus_pullback.py (read)",
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/c30_validation.py (read)",
+    "MyTradingSys/research/gemini_audits_2026-11-02/param_labels_eagle_preus_c30.md (new)"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change outside the output file"
+  ],
+  "scope_sha": "8f8e92f10b36",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "list constants per file with line numbers",
+    "search the cited sources and C30_VALIDATION.md for each value",
+    "write the label table, counts on line 1"
+  ],
+  "tests": "see done_when (audit card, output file is the test)",
+  "title": "[GEMINI] SOURCED/OURS labels for eagle_eyes_picture preus_pullback.py and c30_validation.py constants",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

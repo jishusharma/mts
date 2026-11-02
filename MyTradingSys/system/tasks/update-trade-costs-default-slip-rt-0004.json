@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T11:04:14Z",
   "commands": [
     "python -m pytest MyTradingSys/backtest/layers/positioning/test_trade_costs.py -q"
   ],
@@ -25,6 +26,12 @@
   "lane": "HAIKU",
   "latest": [
     {
+      "kind": "ship",
+      "line": "1f01b94c2",
+      "ref": "a8c878a8e",
+      "utc": "2026-11-02T11:04:14Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "B102 DST-aware session anchors in offline models; B103 funding_paid fails closed outside l",
@@ -44,7 +51,12 @@
   "refs": [
     "MyTradingSys/research/COST_FIGURES.md"
   ],
-  "result": "",
+  "result": "1f01b94c2",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/positioning/trade_costs.py",
     "MyTradingSys/backtest/layers/positioning/test_trade_costs.py"
@@ -59,12 +71,13 @@
     "MyTradingSys/research/COST_FIGURES.md",
     "MyTradingSys/backtest/research_kit.py:21 TAKER_RT_PCT=0.14 (SOURCED)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Update slip_rt: float = 0.0004 in net_return in trade_costs.py",
     "Update assertions in test_trade_costs.py",
     "Run tests and verify callers"
   ],
+  "taken": "2026-11-02T11:04:14Z",
   "tests": "test_trade_costs.py: new test net_return('long',100,101,0,10,[]) == 0.01-0.0014 (places=12); fails on the old 0.0012 default; fix the 0.0012-based assertions in test_long/test_short",
   "title": "Update trade_costs.py slip_rt default to 0.0004 to unify with research_kit TAKER_RT_PCT (0.14 %)",
   "weight": "ROUTINE",

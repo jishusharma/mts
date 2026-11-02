@@ -30,9 +30,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Record Home + Layers republish (Layers recorded before Home build, so Home's behind badge ",
-      "ref": "dd972da535c7",
-      "utc": "2026-10-30T21:54:04Z"
+      "line": "sim_desk page republished (version 14, field guide card)",
+      "ref": "156e3e22330c",
+      "utc": "2026-11-01T17:44:12Z"
     }
   ],
   "layers": [],
@@ -45,7 +45,7 @@
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "planner-20261030-d",
-  "refreshed": "2026-10-31T08:47:45Z",
+  "refreshed": "2026-11-02T11:04:58Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -56,7 +56,7 @@
   "scope_out": [
     "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no product-code edit; never publish a second copy (a new url); no page without edit access ('writer' in Artifact read)"
   ],
-  "scope_sha": "dd972da535c7",
+  "scope_sha": "156e3e22330c",
   "size": "S",
   "sources": [],
   "state": "ready",

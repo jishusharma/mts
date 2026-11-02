@@ -17,19 +17,19 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "AIBridge 0.7.6: version bump for the E2E script (version guard counts scripts/aibridge/tes",
-      "ref": "4e4e702400e3",
-      "utc": "2026-10-31T13:16:53Z"
+      "line": "AIBridge 0.7.11: idle signal tolerates timer wobble and operator typing; one retry before ",
+      "ref": "6913c301f3bd",
+      "utc": "2026-11-02T06:40:35Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-31 ACCEPT (Sonnet reviewer Agent, FIX applied once, not re-read, planner DECISION OURS).  Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "note": "REVIEWED:2026-10-31 ACCEPT (Sonnet reviewer Agent, FIX applied once, not re-read, planner DECISION OURS).  Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files. PLANNER 2026-11-02: re-checked on 0.7.11, blockCmd still only trims (content.js:176), card still open.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T14:49:45Z",
+  "refreshed": "2026-11-02T11:04:28Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -40,7 +40,7 @@
   "scope_out": [
     "live tree, extension release/version bump, any other AIBridge file"
   ],
-  "scope_sha": "4e4e702400e3",
+  "scope_sha": "6913c301f3bd",
   "size": "S",
   "sources": [],
   "state": "ready",

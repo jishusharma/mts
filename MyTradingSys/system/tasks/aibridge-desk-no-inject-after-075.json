@@ -21,19 +21,19 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "AIBridge 0.7.9 (re-land of reverted 0.7.8): thinking lead rule nearest 2 ancestors; status",
-      "ref": "9714413b8697",
-      "utc": "2026-10-31T18:23:15Z"
+      "line": "AIBridge 0.7.11: idle signal tolerates timer wobble and operator typing; one retry before ",
+      "ref": "6913c301f3bd",
+      "utc": "2026-11-02T06:40:35Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "PLANNER 2026-11-01: run-and-report on the Desk host (JIS-NB lane, precedent aibridge-072-desktop-install); DECISION (OURS): retest on current 0.7.9 before touching code, report is 4 releases old. One operator click (Chrome reload) cannot be automated. REVIEWED:2026-11-01 T0-ONLY",
+  "note": "PLANNER 2026-11-01: run-and-report on the Desk host (JIS-NB lane, precedent aibridge-072-desktop-install); DECISION (OURS): retest on current 0.7.9 before touching code, report is 4 releases old. One operator click (Chrome reload) cannot be automated. REVIEWED:2026-11-01 T0-ONLY PLANNER 2026-11-02: current AIBridge is 0.7.11 (6913c301f idle-signal fix); retest on 0.7.11, not 0.7.9.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T19:01:01Z",
+  "refreshed": "2026-11-02T11:04:30Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -47,7 +47,7 @@
     "any other host",
     "live tree"
   ],
-  "scope_sha": "9714413b8697",
+  "scope_sha": "6913c301f3bd",
   "size": "S",
   "sources": [
     "scripts/aibridge/RELEASES.json (0.7.9 current)",

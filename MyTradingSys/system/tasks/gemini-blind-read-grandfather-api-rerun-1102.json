@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-02T11:09:04Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-02/grandfather_api_rerun_blind_read.md has one row per quoted number or citation: FOUND / NOT_IN_DATA / DIFF, first line holds the three counts.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Open MyTradingSys/research/fable_audit_2026-10-20/GRANDFATHER_DECISION_API_RERUN.md and check each number and file:line it quotes against the cited file; facts only, no verdicts.",
+  "id": "gemini-blind-read-grandfather-api-rerun-1102",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Fable run 5 API rerun: second opinion on the 27 grandfathered sources",
+      "ref": "f024d2af66a6",
+      "utc": "2026-11-01T18:49:16Z"
+    },
+    {
+      "auto": true,
+      "kind": "audit",
+      "line": "f024d2af66a6 Fable run 5 API rerun: second opinion on the 27 grandfathered sources",
+      "ref": "MyTradingSys/research/fable_audit_2026-10-20/GRANDFATHER_DECISION_API_RERUN.md",
+      "utc": "2026-11-01T18:49:16Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini effort low: load as <id>:low (gemini_queue.py run <id>:low). Final report ends with a Noticed: line. Facts only, no verdicts. D11_PROGRAMME s6 seed. PLANNER 2026-11-02 planner-board-refresh-1102. REVIEWED:2026-11-02 T0-ONLY",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-02T11:09:05Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/fable_audit_2026-10-20/GRANDFATHER_DECISION_API_RERUN.md (read)",
+    "files it cites (read)",
+    "MyTradingSys/research/gemini_audits_2026-11-02/grandfather_api_rerun_blind_read.md (new)"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change outside the output file"
+  ],
+  "scope_sha": "f024d2af66a6",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "list every number and file:line citation in the document",
+    "open each cited file and check it",
+    "write FOUND / NOT_IN_DATA / DIFF per item, counts on line 1"
+  ],
+  "tests": "see done_when (audit card, output file is the test)",
+  "title": "[GEMINI] blind re-read of GRANDFATHER_DECISION_API_RERUN.md: quoted numbers vs the files it cites",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

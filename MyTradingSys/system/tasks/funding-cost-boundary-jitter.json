@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T11:03:10Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -28,18 +29,24 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "snap in load_funding; test fails before, passes after",
+      "ref": "c2abdce23",
+      "utc": "2026-11-02T11:03:10Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "Revert \"Revert real-funding screens: CI red (T06 costs.csv pins screen.py line numbers)\"",
-      "ref": "8cae5e9e285e",
-      "utc": "2026-10-27T22:20:16Z"
+      "line": "docs(funding): label primary vs secondary moves and n_T<200 reason",
+      "ref": "82734786d798",
+      "utc": "2026-11-01T12:00:21Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "8cae5e9e285e Revert \"Revert real-funding screens: CI red (T06 costs.csv pins screen.py lin",
+      "line": "82734786d798 docs(funding): label primary vs secondary moves and n_T<200 reason",
       "ref": "MyTradingSys/research/gross_effect_screen_2026-10-15/FUNDING_RERUN.md",
-      "utc": "2026-10-27T22:20:16Z"
+      "utc": "2026-11-01T12:00:21Z"
     }
   ],
   "layers": [],
@@ -49,26 +56,32 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T05:11:04Z",
+  "refreshed": "2026-11-02T11:04:37Z",
   "refs": [
     "gemini-method-review-funding-screen-fix-1031"
   ],
-  "result": "",
+  "result": "snap in load_funding; test fails before, passes after",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/bt/bt_data.py",
     "MyTradingSys/backtest/bt/test_bt_data.py",
     "MyTradingSys/research/gross_effect_screen_2026-10-15/FUNDING_RERUN.md"
   ],
   "scope_out": [],
-  "scope_sha": "8cae5e9e285e",
+  "scope_sha": "82734786d798",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add a test with a settlement stamped 5 ms after the boundary, entry at the boundary, then at the boundary as exit, pinning the chosen rule",
     "Apply the rule (snap or documented) in load_funding or funding_cost_pct",
     "Rerun the screen primary cell and record the move in FUNDING_RERUN.md"
   ],
+  "taken": "2026-11-02T11:03:10Z",
   "tests": "MyTradingSys/backtest/bt/test_bt_data.py::test_funding_boundary_jitter (fails on current code: entry at 28800000 with settlement 28800005 is charged)",
   "title": "funding_cost_pct: a settlement stamped a few ms after 08:00 is charged to a trade entered at 08:00:00 and missed by one exited at 08:00:00",
   "weight": "",

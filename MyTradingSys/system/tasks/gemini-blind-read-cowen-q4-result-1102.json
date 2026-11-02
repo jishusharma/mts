@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-02T11:08:13Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-02/cowen_q4_blind_read.md has one row per number: FOUND / NOT_IN_DATA / DIFF, first line holds the three counts.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Open MyTradingSys/research/cowen_q4_2026-10-31/event_study/RESULT.md and check every number against MyTradingSys/research/cowen_q4_2026-10-31/event_study/EVENTS.csv; facts only, no verdicts.",
+  "id": "gemini-blind-read-cowen-q4-result-1102",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "cowen event study: daily bars 2017-08..2024-06, four band ideas, placebo, day-block bootst",
+      "ref": "bdf5e584bf53",
+      "utc": "2026-10-31T14:21:43Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "bdf5e584bf53 cowen event study: daily bars 2017-08..2024-06, four band ideas, placebo, day",
+      "ref": "MyTradingSys/research/cowen_q4_2026-10-31/event_study/RESULT.md",
+      "utc": "2026-10-31T14:21:43Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "duplicate: covered by gemini_audits_2026-11-01/recent_results_blind_read.md",
+  "pinned": false,
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-02T11:08:15Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/cowen_q4_2026-10-31/event_study/RESULT.md (read)",
+    "MyTradingSys/research/cowen_q4_2026-10-31/event_study/EVENTS.csv (read)",
+    "MyTradingSys/research/gemini_audits_2026-11-02/cowen_q4_blind_read.md (new)"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change outside the output file"
+  ],
+  "scope_sha": "bdf5e584bf53",
+  "size": "S",
+  "sources": [],
+  "state": "dropped",
+  "steps": [
+    "list every number in the result file with its cited source",
+    "open the source and check it",
+    "write FOUND / NOT_IN_DATA / DIFF per number, counts on line 1"
+  ],
+  "tests": "see done_when (audit card, output file is the test)",
+  "title": "[GEMINI] blind re-read of cowen_q4 event_study RESULT.md: numbers vs EVENTS.csv",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
