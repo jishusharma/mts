@@ -4,7 +4,7 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-02T12:19:24Z",
+    "folded": "2026-11-02T12:22:15Z",
     "misses": 155,
     "reads": [
       "scripts/dev/verdicts.py",
@@ -12,9 +12,9 @@
       "MyTradingSys/research/VERDICTS.csv",
       "MyTradingSys/backtest/fetch_binance_archive.py",
       "scripts/dev/run_all_tests.py",
+      "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/costs.csv",
       "MyTradingSys/research/session_sweeps/session_open_study.py",
-      "scripts/dev/extra_tests.tsv",
-      "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/test_cost_inventory.py"
+      "scripts/dev/extra_tests.tsv"
     ],
     "session": "agent-ae3b5f10b05b3e062"
   },
