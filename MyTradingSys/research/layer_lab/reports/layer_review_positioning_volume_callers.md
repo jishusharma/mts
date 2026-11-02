@@ -8,8 +8,8 @@ Wired in the simulator: no. `MyTradingSys/research/sim_desk/PLUGIN.md` lists "fu
 
 ### Idea and source
 - **Literature Source**: "Memon 2026 (funding-extreme reversion, tier T2, relayed by four AI replies) plus a CVD/price divergence (T055a H2), not from any trader: backtest/layers/FORMULAS.md:356-370 and funding_cvd_fade.py:1-9" (`MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_POSITIONING.md:10`).
-- **Specification Quote**: "candidate C1. Funding-extreme mean reversion (T2, Memon 2026, 7y Binance, via research/whale_positioning_evidence_2026-09-12.md; that source does NOT give the percentile threshold, so `hi`/`lo`/`lookback` are UNDEFINED in source and are grid parameters) merged with a CVD/price divergence fade (T055a H2). It is an independent layer, never a filter on the Tom core. Signals fade the crowded side: extreme high funding -> short, extreme low funding -> long." (`MyTradingSys/backtest/layers/positioning/funding_cvd_fade.py:1-8`).
-- **Formula Specification Quote**: "Sources: funding-extreme reversion T2, Memon 2026 (7y Binance) via `research/whale_positioning_evidence_2026-09-12.md` (the percentile threshold is NOT given there: UNDEFINED in source, so it is a grid parameter); mechanism He/Manela/Ross/von Wachter arXiv 2212.06888 (T2); CVD/price divergence = same CVD as `bt_data.cvd_delta` (section above, `delta = 2*tbv - v`, running sum). Merge decision: supervisor 2026-09-29 (T055a H2 + T055b funding-extreme)." (`MyTradingSys/backtest/layers/FORMULAS.md:365`).
+- **Specification Quote**: "candidate C1. Funding-extreme mean reversion (T2, Memon 2026, 7y Binance, via research/_archive/loose_2026-10/whale_positioning_evidence_2026-09-12.md; that source does NOT give the percentile threshold, so `hi`/`lo`/`lookback` are UNDEFINED in source and are grid parameters) merged with a CVD/price divergence fade (T055a H2). It is an independent layer, never a filter on the Tom core. Signals fade the crowded side: extreme high funding -> short, extreme low funding -> long." (`MyTradingSys/backtest/layers/positioning/funding_cvd_fade.py:1-8`).
+- **Formula Specification Quote**: "Sources: funding-extreme reversion T2, Memon 2026 (7y Binance) via `research/_archive/loose_2026-10/whale_positioning_evidence_2026-09-12.md` (the percentile threshold is NOT given there: UNDEFINED in source, so it is a grid parameter); mechanism He/Manela/Ross/von Wachter arXiv 2212.06888 (T2); CVD/price divergence = same CVD as `bt_data.cvd_delta` (section above, `delta = 2*tbv - v`, running sum). Merge decision: supervisor 2026-09-29 (T055a H2 + T055b funding-extreme)." (`MyTradingSys/backtest/layers/FORMULAS.md:365-368`).
 - **Trader Association Finding**: "Finding that frames everything: the tested layer is not a FlowHorse layer" (`MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_POSITIONING.md:7`).
 - **FlowHorse Grep Evidence**: "The three processed FlowHorse extracts contain zero mentions of funding, open interest or liquidation (grep of extracts/processed/flowhorse/*.md: 0/0/0). The rulebook counts FlowHorse rows built as layers: 0 of 32 (research/fast_track_2026-09-27/CROSS_TRADER_RULEBOOK.md:121)." (`MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_POSITIONING.md:11`).
 - **Whale Evidence Evaluation**: "Whale signals are coincident or lagged, not leading" (`MyTradingSys/research/_archive/loose_2026-10/whale_positioning_evidence_2026-09-12.md:19`); "DO NOT add whale-tracking DSA field (Rule 33: no T1/T2 evidence)." (`MyTradingSys/research/_archive/loose_2026-10/whale_positioning_evidence_2026-09-12.md:46`).
@@ -20,23 +20,23 @@ Wired in the simulator: no. `MyTradingSys/research/sim_desk/PLUGIN.md` lists "fu
 - **Execution / Taker Fee**: 10 bps round trip (0.0010) (`SOURCED`, quote: "taker fee 10 bps round trip (0.0010)" in `MyTradingSys/backtest/layers/FORMULAS.md:352`).
 - **Slippage**: 2 bps round trip (0.0002) (`OURS`, quote: "realistic slippage added as `slip_rt` (default 0.0002 = 2 bps RT; source: internal fee floor in T055b 'SCALPING FEE FLOOR', internal arithmetic)" in `MyTradingSys/backtest/layers/FORMULAS.md:353`).
 - **Funding Cashflow Accounting**: Binance perpetual funding convention (`SOURCED`, quote: "Funding: a position pays `side_sign * rate` (as a fraction of notional, entry notional used) for every funding record with `t_in < calc_time <= t_out`; `side_sign` = +1 long, -1 short, so longs pay positive rates and shorts receive them (Binance perpetual funding convention)" in `MyTradingSys/backtest/layers/FORMULAS.md:354`).
-- **Funding Lookback Window**: claim removed (no cite verifiable on trunk).
+- **Funding Lookback Window**: 90 records default, 60/90/180 grid (`OURS`, quote: "Defaults (all UNDEFINED in source, grid-searched IS only): lookback 90 records, n 20, hi 0.95, lo 0.05" in `MyTradingSys/backtest/layers/FORMULAS.md:376`; grid `for lb in (60, 90, 180)` in `MyTradingSys/backtest/layers/run_t055.py:67`). STALE: the 09-29 run IS-chose "lookback 180, n 50, hi .99, lo .01, use_divergence true, horizon 48" (`MyTradingSys/system/layer_map.json:854`) and is marked "invalid, replaced" (`MyTradingSys/system/layer_map.json:858`); the valid rerun IS-chose lookback 90, n 50, hi 0.95, lo 0.05, horizon 48 (`MyTradingSys/research/fast_track_2026-09-27/T055_BT_RERUN_FULLFUNDING_2026-10-07.md:29`).
 - **CVD Divergence Lookback (n)**: 20 default, 20/50 grid (`OURS`, quote: "lookback 90 records, n 20, hi 0.95, lo 0.05" in `MyTradingSys/backtest/layers/FORMULAS.md:376`; "n 50" in `MyTradingSys/system/layer_map.json:836`).
-- **Funding Percentile Thresholds (hi / lo)**: claim removed (no cite verifiable on trunk).
-- **Use Divergence Switch**: claim removed (no cite verifiable on trunk).
-- **Holding Horizon**: claim removed (no cite verifiable on trunk).
+- **Funding Percentile Thresholds (hi / lo)**: 0.95 / 0.05 default; 0.90 / 0.10 and 0.99 / 0.01 grid (`OURS`, quote: "lookback 90 records, n 20, hi 0.95, lo 0.05" in `MyTradingSys/backtest/layers/FORMULAS.md:376`; grid `for hi, lo in ((0.90, 0.10), (0.95, 0.05), (0.99, 0.01))` in `MyTradingSys/backtest/layers/run_t055.py:68`).
+- **Use Divergence Switch**: true / false (`OURS`, quote: "use_divergence: bool = True" in `MyTradingSys/backtest/layers/positioning/funding_cvd_fade.py:71`; grid `for ud in (True, False)` in `MyTradingSys/backtest/layers/run_t055.py:68`).
+- **Holding Horizon**: 48 bars (12h on 15m) (`OURS`, quote: "C1 is a pure time-exit strategy holding 48 15m bars (12.0 hours)" in `MyTradingSys/research/positioning_c1_2026-10/PRE_REG_POSITIONING_C1.md:13`; grid horizons (4, 16, 48) in `MyTradingSys/backtest/layers/run_t055.py:87`; layer_map horizon (bars) value 48 in `MyTradingSys/system/layer_map.json:419-422`).
 
 ### Backtests
-1. **Initial T055-C1 Run (2026-09-29)**: claim removed (no cite verifiable on trunk).
+1. **Initial T055-C1 Run (2026-09-29)** [SUPERSEDED: "09-29 run had 12 months of funding only; invalid, replaced" in `MyTradingSys/system/layer_map.json:858`; "Data: funding exists 2025-09 on only." in `MyTradingSys/backtest/layers/FORMULAS.md:377`]:
    - **Path**: `MyTradingSys/research/fast_track_2026-09-27/T055_BT_c1.md:1-54`
    - **Fee-Net**: Fee-net evaluated (fee 10 bps RT + slip 2 bps RT + funding included; `MyTradingSys/research/fast_track_2026-09-27/T055_BT_c1.md:5`).
-   - **IS / OOS Partition**: claim removed (no cite verifiable on trunk).
+   - **IS / OOS Partition**: Single 70/30 split; 37536 15m bars (IS 26275 / OOS 11261; `MyTradingSys/research/fast_track_2026-09-27/T055_BT_c1.md:5`; "70/30 single split; 2 OOS years" in `MyTradingSys/system/layer_map.json:855`).
    - **Sample Size (n)**: IS n = 36 events, gross mean +0.7677%, net mean +0.6573%, net Sharpe 0.5433 (`MyTradingSys/research/fast_track_2026-09-27/T055_BT_c1.md:11`); OOS n = 151 events, gross mean -0.2834%, net mean -0.3992%, net Sharpe -0.2035 (`MyTradingSys/research/fast_track_2026-09-27/T055_BT_c1.md:12`).
    - **Alt 1h Run**: IS n = 21, net mean +2.0550%; OOS n = 43, gross mean +0.6085%, net mean +0.5031%, net Sharpe 0.1665 (< 0.3 FAIL mark) (`MyTradingSys/research/fast_track_2026-09-27/T055_BT_c1.md:50-51`).
 2. **Corrected T055-C1 Rerun with Full Funding (2026-10-07)**:
    - **Path**: `MyTradingSys/research/fast_track_2026-09-27/T055_BT_RERUN_FULLFUNDING_2026-10-07.md:1-66`
-   - **Fee-Net**: claim removed (no cite verifiable on trunk).
-   - **IS / OOS Partition**: claim removed (no cite verifiable on trunk).
+   - **Fee-Net**: Fee-net evaluated (fee 10 bps RT + slip 2 bps RT + funding included, `MyTradingSys/research/fast_track_2026-09-27/T055_BT_RERUN_FULLFUNDING_2026-10-07.md:27`; funding from all 7305 records, 2020-01..2026-08, `MyTradingSys/research/fast_track_2026-09-27/T055_BT_RERUN_FULLFUNDING_2026-10-07.md:6`).
+   - **IS / OOS Partition**: Single 70/30 split; 35008 15m bars clipped to funding coverage (IS 24505 / OOS 10503; `MyTradingSys/research/fast_track_2026-09-27/T055_BT_RERUN_FULLFUNDING_2026-10-07.md:27`; `MyTradingSys/research/fast_track_2026-09-27/T055_BT_RERUN_FULLFUNDING_2026-10-07.md:8`).
    - **Sample Size (n)**: IS n = 129 events, gross mean +0.5244%, net mean +0.4113%, net Sharpe 0.2736 (`MyTradingSys/research/fast_track_2026-09-27/T055_BT_RERUN_FULLFUNDING_2026-10-07.md:33`); OOS n = 76 events, gross mean +0.0650%, net mean -0.0453%, net Sharpe -0.0346 (`MyTradingSys/research/fast_track_2026-09-27/T055_BT_RERUN_FULLFUNDING_2026-10-07.md:34`).
 
 ### Bugs and assumptions
@@ -49,21 +49,21 @@ Wired in the simulator: no. `MyTradingSys/research/sim_desk/PLUGIN.md` lists "fu
 - **Design Intention**: Independent standalone layer; never designed as a core filter (`MyTradingSys/backtest/layers/positioning/funding_cvd_fade.py:5`).
 - **Merge Decision**: "Merge decision: supervisor 2026-09-29 (T055a H2 + T055b funding-extreme)" (`MyTradingSys/backtest/layers/FORMULAS.md:368`).
 - **Live Wiring Role**: Listed (Lead draft, OURS) among families that could fill the CONTEXT slot; none passed S3 (`MyTradingSys/research/layer_review_2026-10-26/LAYER_SHEETS.md:13,30`).
-- **Actual Live Trades Combined**: claim removed (no cite verifiable on trunk).
+- **Actual Live Trades Combined**: Zero real trades combined: "Nothing combines on a live trade." and "So no confluence rule has ever decided a real trade." (`MyTradingSys/research/layer_review_2026-10-26/INTEGRATION_MAP.md:8`).
 
 ## oi_delta
 
 Wired in the simulator: no. No `studies/` file; `MyTradingSys/research/sim_desk/PLUGIN.md` does not name oi_delta (NOT_IN_DATA).
 
 ### Idea and source
-- **Origin Specification**: claim removed (no cite verifiable on trunk).
+- **Origin Specification**: Four-state open-interest classifier; no named trader or paper (NOT_IN_DATA). The repo handoff lists "Source: BackQuant, TradingView scripts (OI Delta 4-state classification)" (`MyTradingSys/research/_archive/loose_2026-10/INDICATOR_IMPLEMENTATION_HANDOFF.md:58`) and calls the definitions "documented practitioner conventions, not exchange-defined ground truth", tier T3 (`MyTradingSys/research/fast_track_2026-09-27/T055a_POSITIONING_FLOW.md:45-46`).
 - **Two Competing Schools**:
   - Volume-delta school: "delta_state (volume-delta school): sign of trade_flow.net_delta_1h" (`MyTradingSys/research/_archive/loose_2026-10/OI_DELTA_4STATE_BACKTEST_2026-09-21.md:5`).
   - Price school: "delta_state_price (price school): current_price[now] minus current_price[nearest snapshot at or before T-60m]" (`MyTradingSys/research/_archive/loose_2026-10/OI_DELTA_4STATE_BACKTEST_2026-09-21.md:6`).
 - **Trader Ground Truth / Ledger**: NOT_IN_DATA (descriptive classifier; no dated trader call ledger exists; `MyTradingSys/research/_archive/loose_2026-10/OI_DELTA_4STATE_BACKTEST_2026-09-21.md:60`).
 
 ### Parameters
-- **Classifier Input School**: claim removed (no cite verifiable on trunk).
+- **Classifier Input School**: choice between `volume-delta (net_delta_1h sign)` and `price (T-60m)` (`OURS`, quote: "volume-delta (net_delta_1h sign)" in `MyTradingSys/system/layer_map.json:623-627`; definitions "sign of trade_flow.net_delta_1h" and "current_price[nearest snapshot at or before T-60m]" in `MyTradingSys/research/_archive/loose_2026-10/OI_DELTA_4STATE_BACKTEST_2026-09-21.md:5-6`).
 - **Forward Measurement Horizons**: 30m, 60m, 120m (`OURS`, quote: "Horizons: 30m, 60m, 120m" in `MyTradingSys/research/_archive/loose_2026-10/OI_DELTA_4STATE_BACKTEST_2026-09-21.md:9`).
 - **Observation Window**: 60-minute delta window (`OURS`, quote: "delta_state_price (price school): current_price[now] minus current_price[nearest snapshot at or before T-60m]" in `MyTradingSys/research/_archive/loose_2026-10/OI_DELTA_4STATE_BACKTEST_2026-09-21.md:6`).
 - **Four Categorical States**: aggressive_long, aggressive_short, rekt_long, rekt_short, plus neutral (origin NOT_IN_DATA; states as defined in `MyTradingSys/research/_archive/loose_2026-10/OI_DELTA_4STATE_BACKTEST_2026-09-21.md:11-12`).
@@ -73,7 +73,7 @@ Wired in the simulator: no. No `studies/` file; `MyTradingSys/research/sim_desk/
    - **Path**: `MyTradingSys/research/_archive/loose_2026-10/OI_DELTA_4STATE_BACKTEST_2026-09-21.md:1-62`
    - **Fee-Net**: Not fee-net; gross forward return % with day-clustered standard errors (`MyTradingSys/research/_archive/loose_2026-10/OI_DELTA_4STATE_BACKTEST_2026-09-21.md:14,56-62; MyTradingSys/system/layer_map.json:1042`).
    - **IS / OOS Partition**: None (descriptive study over single snapshot window 2026-09-13 to 2026-09-22; `MyTradingSys/research/_archive/loose_2026-10/OI_DELTA_4STATE_BACKTEST_2026-09-21.md:58`).
-   - **Sample Size (n)**: claim removed (no cite verifiable on trunk).
+   - **Sample Size (n)**: 6362 joined snapshot rows (`MyTradingSys/research/_archive/loose_2026-10/OI_DELTA_4STATE_BACKTEST_2026-09-21.md:8`); each state row spans 8 days, day-clustered SE (`MyTradingSys/research/_archive/loose_2026-10/OI_DELTA_4STATE_BACKTEST_2026-09-21.md:20`).
 2. **OI Divergence Event Study (2026-10-10)**:
    - **Path**: `MyTradingSys/research/_archive/loose_2026-10/OI_EVENT_STUDY_2026-10-10.md:1-35`
    - **Fee-Net**: Not fee-net; raw and abnormal forward returns minus unconditional mean (`MyTradingSys/research/_archive/loose_2026-10/OI_EVENT_STUDY_2026-10-10.md:6-10`).
@@ -83,12 +83,12 @@ Wired in the simulator: no. No `studies/` file; `MyTradingSys/research/sim_desk/
    - **Path**: `MyTradingSys/research/_archive/loose_2026-10/OI_DIVERGENCE_V2_2026-10-10.md:1-54`
    - **Fee-Net**: Fee-net evaluated (fees 10 bps RT, slippage 2 bps RT, funding from records; `MyTradingSys/research/_archive/loose_2026-10/OI_DIVERGENCE_V2_2026-10-10.md:4`).
    - **IS / OOS Partition**: 3 walk-forward folds (train / test) with 96-bar embargo (`MyTradingSys/research/_archive/loose_2026-10/OI_DIVERGENCE_V2_2026-10-10.md:5,44-54`).
-   - **Sample Size (n)**: claim removed (no cite verifiable on trunk).
+   - **Sample Size (n)**: 2350 total events; pooled long n = 1071, pooled short n = 1279 at horizons 4, 8, 16 bars (`MyTradingSys/research/_archive/loose_2026-10/OI_DIVERGENCE_V2_2026-10-10.md:8`; `MyTradingSys/research/_archive/loose_2026-10/OI_DIVERGENCE_V2_2026-10-10.md:14-19`).
 4. **Price vs CVD Divergence with OI Split (2026-10-14, Rerun 2026-10-17)**:
    - **Path**: `MyTradingSys/research/orderflow_views_2026-10-14/RESULT.md:1-61`
    - **Fee-Net**: Fee-net evaluated (taker fee 0.05% per side = 0.10% RT; funding unmodeled; `MyTradingSys/research/orderflow_views_2026-10-14/RESULT.md:10,39-46`).
    - **IS / OOS Partition**: DEV 2022-2024 / VAL 2025 / HOLDOUT 2026 (OI split available only 2025-09+; `MyTradingSys/research/orderflow_views_2026-10-14/RESULT.md:49`).
-   - **Sample Size (n)**: claim removed (no cite verifiable on trunk).
+   - **Sample Size (n)**: S1 (1m) 4933 long / 5434 short DIV events (CONTROL: 10921 long / 11143 short); S5 (5m) 1411 long / 1858 short DIV events (CONTROL: 5147 long / 5447 short) (`MyTradingSys/research/orderflow_views_2026-10-14/RESULT.md:43-46`).
 
 ### Bugs and assumptions
 - **Ruling B103**: Funding cost silently 0 outside locally loaded range (`python scripts/dev/lab_query.py rulings positioning`; `MyTradingSys/research/BUGS.md:213`).
@@ -97,14 +97,14 @@ Wired in the simulator: no. No `studies/` file; `MyTradingSys/research/sim_desk/
 - **Data Contamination in 2026-10-14 DEV Split**: "study.py split_of() is year-based (DEV = year <= 2024), so DEV includes 2024-07..12 (own copy, not fires_kline)" (`MyTradingSys/research/orderflow_views_2026-10-14/RESULT.md:3`). Corrected in 2026-10-17 DEV rerun (`MyTradingSys/research/orderflow_views_2026-10-14/RESULT.md:1`).
 
 ### Confluence
-- **Design Intention**: claim removed (no cite verifiable on trunk).
+- **Design Intention**: Not stated. `htf_context_live.py` returns `oi_delta_1h_pct` as one field of its context dict (`MyTradingSys/backtest/layers/fabio/htf_context_live.py:2`; `MyTradingSys/backtest/layers/fabio/htf_context_live.py:104`); layer status: "T055 C1 FAIL; OI/long-short unused as filters." (`MyTradingSys/system/layer_index.json:358`).
 - **Intended Interaction**: NOT_IN_DATA (no declared confluence role for the 4-state oi_delta layer).
 - **Confirmed By / Tested With**: Evaluated as an interaction split with price/CVD divergence (`MyTradingSys/research/orderflow_views_2026-10-14/RESULT.md:5-10,49`).
 - **Live Status**: Unused as an active filter on live trades (`MyTradingSys/system/LAYERS.md:122`).
 
 ## volume
 
-**Wired in the simulator: no. `MyTradingSys/research/sim_desk/**: claim removed (no cite verifiable on trunk).
+Wired in the simulator: no. `MyTradingSys/research/sim_desk/PLUGIN.md:46` lists "Detectors and studies (volume, candle patterns, guidance matrix, callers)" as **Does not fit**: "They flag events but are not trading rules, so there are no trades to simulate."
 
 ### Idea and source
 
@@ -150,7 +150,7 @@ All rows are fee-net (14 bp plus funding); DEV 2020-01-01 to 2024-06-30, VALIDAT
 
 ## candle_patterns
 
-**Wired in the simulator: no. `MyTradingSys/research/sim_desk/**: claim removed (no cite verifiable on trunk).
+Wired in the simulator: no. `MyTradingSys/research/sim_desk/PLUGIN.md:46` lists "Detectors and studies (volume, candle patterns, guidance matrix, callers)" as **Does not fit**: "They flag events but are not trading rules, so there are no trades to simulate."
 
 ### Idea and source
 - **Classical Literature / Source**: Standard Bulkowski / Morris / Nison candlestick patterns (18 classical patterns across reversal and continuation) (`MyTradingSys/research/candle_patterns_2026-10-04/CANDLE_PATTERNS_RESEARCH_2026-10-04.md:1-18`).
@@ -159,11 +159,11 @@ All rows are fee-net (14 bp plus funding); DEV 2020-01-01 to 2024-06-30, VALIDAT
 - **Trader Association / Ledger**: NOT_IN_DATA (classical chartist technical analysis taxonomy; no named individual trader and no dated call ledger exists).
 
 ### Parameters
-- **Market**: claim removed (no cite verifiable on trunk).
-- **Pattern Definitions**: claim removed (no cite verifiable on trunk).
-- **Timeframes**: claim removed (no cite verifiable on trunk).
-- **Holding Horizons**: claim removed (no cite verifiable on trunk).
-- **Fee Floor**: claim removed (no cite verifiable on trunk).
+- **Market**: Binance USDT-M BTCUSDT perp archive, UTC bars (`SOURCED`, quote: "Binance USDT-M BTCUSDT perp archive, UTC bars" in `MyTradingSys/research/candle_patterns_2026-10-04/CANDLE_PATTERNS_RESEARCH_2026-10-04.md:15`).
+- **Pattern Definitions**: 18 classical directional candle patterns plus three volatility-state candles (`SOURCED`, quote: "18 classical directional candle patterns, or three volatility-state candles" in `MyTradingSys/research/candle_patterns_2026-10-04/CANDLE_PATTERNS_RESEARCH_2026-10-04.md:7`; "18 patterns x 3 horizons = 54 tests per timeframe" in `MyTradingSys/research/candle_patterns_2026-10-04/PRE_REG_CANDLE_PILOT.md:55`). The pattern-name list is not restated here.
+- **Timeframes**: 1d and 1h in P0/P1 ("two timeframes (1d, 1h)", `MyTradingSys/research/candle_patterns_2026-10-04/PRE_REG_CANDLE_PILOT.md:55`); 4h in D19 (`MyTradingSys/research/candle_patterns_2026-10-04/D19_4H_RESULTS.md:1`); 1m close sequences in `MyTradingSys/research/layer_lab/candle_close_2026-10-14/REPORT.md:7` (`OURS`).
+- **Holding Horizons**: h = 1, 3, 5 bars (`OURS`, quote: "Horizons h in {1,3,5} bars." in `MyTradingSys/research/candle_patterns_2026-10-04/PRE_REG_CANDLE_PILOT.md:55`).
+- **Fee Floor**: 14 bps round trip plus realised funding on 1d and 1h; the 10 bps figure of the removed claim was wrong (`OURS`, quote: "Costs: 14 bps round trip (5 bps fee + 2 bps slippage per side) plus realised funding." in `MyTradingSys/research/candle_patterns_2026-10-04/CANDLE_PATTERNS_RESEARCH_2026-10-04.md:19`; "Net = sign*fwd - 14 bps - sign*realised funding" in `MyTradingSys/research/candle_patterns_2026-10-04/P1_RESULTS.md:3`); candle-close sequences: "fixed 14bp round-trip cost screen" in `MyTradingSys/research/layer_lab/candle_close_2026-10-14/REPORT.md:11`.
 
 ### Backtests
 1. **P0 Operator Engulfing Pilot (2026-10-04)** [`MyTradingSys/research/candle_patterns_2026-10-04/P0_RESULTS.md:1-35`]:
@@ -179,7 +179,7 @@ All rows are fee-net (14 bp plus funding); DEV 2020-01-01 to 2024-06-30, VALIDAT
 3. **D19 4h Engulfing Study (2026-10-04)** [`MyTradingSys/research/candle_patterns_2026-10-04/D19_4H_RESULTS.md:1-40`]:
    - **Path**: `MyTradingSys/research/candle_patterns_2026-10-04/D19_4H_RESULTS.md:1-40`
    - **Fee-Net**: Fee-net evaluated (`MyTradingSys/research/candle_patterns_2026-10-04/D19_4H_RESULTS.md:8`).
-   - **Sample Size (n)**: claim removed (no cite verifiable on trunk).
+   - **Sample Size (n)**: n = 192 events, win 0.380 / 0.375, net R 0.2255 / 0.1295 vs buy-and-hold 1.6072 (`MyTradingSys/research/candle_patterns_2026-10-04/D19_4H_RESULTS.md:8-9`). Verdict: "NO-SOURCE; below buy-and-hold" (`MyTradingSys/system/LAYERS.md:182`).
 4. **Candle Close Sequence Study (2026-10-14)** [`MyTradingSys/research/layer_lab/candle_close_2026-10-14/REPORT.md:1-45`]:
    - **Path**: `MyTradingSys/research/layer_lab/candle_close_2026-10-14/REPORT.md:1-45`
    - **Fee-Net**: Fee-net evaluated against 14 bps round-trip hurdle (`MyTradingSys/research/layer_lab/candle_close_2026-10-14/REPORT.md:22`).
@@ -200,32 +200,32 @@ All rows are fee-net (14 bp plus funding); DEV 2020-01-01 to 2024-06-30, VALIDAT
 Wired in the simulator: no. No `studies/` file; `MyTradingSys/research/sim_desk/PLUGIN.md` does not name ma_daily (NOT_IN_DATA).
 
 ### Idea and source
-- **Origin / Prompt Source**: claim removed (no cite verifiable on trunk).
-- **Ruling B163 Quote**: "operator pasted a 'Setup Alpha / Setup Beta' BTC perp handoff (daily SMA200 trend engine, EMA/RSI/ADX confirmation; CVD liquidity sweep short); file under BUGS as NO-SOURCE chatbot output until verified" (`MyTradingSys/research/BUGS.md:276`).
-- **Implementation Specification**: claim removed (no cite verifiable on trunk).
+- **Origin / Prompt Source**: Chatbot handoff pasted by operator: "operator pasted a 'Setup Alpha / Setup Beta' BTC perp handoff (daily SMA200 trend engine + 15m/1h liquidity sweep with CVD absorption and 5m MSS entry)" (`MyTradingSys/research/BUGS.md:276` [Ruling B163]); "NO-SOURCE: the setup numbers come from a chatbot handoff, not a trader transcript." (`MyTradingSys/research/setup_alpha_beta_2026-10-10/ALPHA_RESULTS.md:4`).
+- **Ruling B163 Quote**: "operator pasted a 'Setup Alpha / Setup Beta' BTC perp handoff (daily SMA200 trend engine + 15m/1h liquidity sweep with CVD absorption and 5m MSS entry)" (`MyTradingSys/research/BUGS.md:276`).
+- **Implementation Specification**: Setup Alpha long entry: "Daily Close > SMA(200) AND Daily Close > EMA(7) AND RSI(2) > ADX(2)" (`MyTradingSys/research/BUGS.md:276`); coded as close > s200 and close > e7 and r2 > d2 (`MyTradingSys/research/setup_alpha_beta_2026-10-10/alpha_backtest.py:163`). Setup Beta: "Liquidity sweep + CVD absorption event study, Binance BTCUSDT perp, 15m levels / 5m entry." (`MyTradingSys/research/setup_alpha_beta_2026-10-10/BETA_RESULTS.md:3`; code `MyTradingSys/research/setup_alpha_beta_2026-10-10/beta_sweep.py:76-99`; the removed `beta_backtest.py` cite named a file that is not on trunk).
 - **Trader Association / Ledger**: NOT_IN_DATA ("NO-SOURCE (chatbot handoff numbers)" in `MyTradingSys/system/LAYERS.md:167`; no named human trader and no verified trade ledger exists).
 
 ### Parameters
-- **Market**: claim removed (no cite verifiable on trunk).
-- **Trend MA**: claim removed (no cite verifiable on trunk).
-- **Fast MA**: claim removed (no cite verifiable on trunk).
-- **Oscillator Filter**: claim removed (no cite verifiable on trunk).
-- **Long-Flat Rule**: claim removed (no cite verifiable on trunk).
-- **Beta CVD Threshold**: claim removed (no cite verifiable on trunk).
+- **Market**: Binance BTCUSDT 1d, fee 0.05% per side plus funding (`OURS` / `NO-SOURCE`, quote: "Daily long-flat SMA200 variants, Binance BTCUSDT 1d, fee 0.05% per side + funding." in `MyTradingSys/research/setup_alpha_beta_2026-10-10/ALPHA_RESULTS.md:3`).
+- **Trend MA**: SMA 200-period (`OURS` / `NO-SOURCE`, variant name "A: SMA200+EMA7+RSI2>ADX2" in `MyTradingSys/research/setup_alpha_beta_2026-10-10/ALPHA_RESULTS.md:8`; `s200 = sma(c, 200)` in `MyTradingSys/research/setup_alpha_beta_2026-10-10/alpha_backtest.py:154`).
+- **Fast MA**: EMA 7-period (`OURS` / `NO-SOURCE`, variant name "A: SMA200+EMA7+RSI2>ADX2" in `MyTradingSys/research/setup_alpha_beta_2026-10-10/ALPHA_RESULTS.md:8`; `e7 = ema(c, 7)` in `MyTradingSys/research/setup_alpha_beta_2026-10-10/alpha_backtest.py:154`).
+- **Oscillator Filter**: RSI 2-period > ADX 2-period (`OURS` / `NO-SOURCE`; `r2 = rsi(c, 2); d2 = adx(bars, 2)` in `MyTradingSys/research/setup_alpha_beta_2026-10-10/alpha_backtest.py:155`; condition `r2[i] > d2[i]` in `MyTradingSys/research/setup_alpha_beta_2026-10-10/alpha_backtest.py:163`).
+- **Long-Flat Rule**: Variant A is long when close > SMA200 and close > EMA7 and RSI2 > ADX2 (`OURS` / `NO-SOURCE`, `MyTradingSys/research/setup_alpha_beta_2026-10-10/alpha_backtest.py:163`; "Daily long-flat SMA200 variants" in `MyTradingSys/research/setup_alpha_beta_2026-10-10/ALPHA_RESULTS.md:3`). The removed claim "EMA7 > SMA200" was not in the code.
+- **Beta CVD Threshold**: CVD is a kline taker-buy proxy: "CVD = kline taker-buy volume proxy (T5_CVD_DEFINITION_2026-10-01.md)" (`OURS` / `NO-SOURCE`, `MyTradingSys/research/setup_alpha_beta_2026-10-10/BETA_RESULTS.md:4`; `cvd += (b["tb"]*2 - b["v"])` in `MyTradingSys/research/setup_alpha_beta_2026-10-10/beta_sweep.py:20`). No numeric threshold is stated in the cited files.
 
 ### Backtests
 1. **Setup Alpha Backtest (2026-10-10)** [`MyTradingSys/research/setup_alpha_beta_2026-10-10/ALPHA_RESULTS.md:1-55`]:
    - **Path**: `MyTradingSys/research/setup_alpha_beta_2026-10-10/ALPHA_RESULTS.md:1-55`
-   - **Fee-Net**: claim removed (no cite verifiable on trunk).
+   - **Fee-Net**: Fee-net evaluated (fee 0.05% per side plus funding; `MyTradingSys/research/setup_alpha_beta_2026-10-10/ALPHA_RESULTS.md:3`).
    - **IS / OOS Partition**: claim removed (no cite verifiable on trunk).
-   - **Sample Size (n)**: claim removed (no cite verifiable on trunk).
+   - **Sample Size (n)**: n = 42 trades, CAGR 20.53%, max drawdown 49.41% vs buy-and-hold CAGR 43.83% and maxDD 76.67% (`MyTradingSys/research/setup_alpha_beta_2026-10-10/ALPHA_RESULTS.md:8`; `MyTradingSys/research/setup_alpha_beta_2026-10-10/ALPHA_RESULTS.md:11`). Verdict NO-SOURCE (`MyTradingSys/research/setup_alpha_beta_2026-10-10/ALPHA_RESULTS.md:1`; `MyTradingSys/system/LAYERS.md:170`).
 2. **Setup Beta CVD Liquidity Sweep Backtest (2026-10-10)** [`MyTradingSys/research/setup_alpha_beta_2026-10-10/BETA_RESULTS.md:1-48`]:
    - **Path**: `MyTradingSys/research/setup_alpha_beta_2026-10-10/BETA_RESULTS.md:1-48`
    - **Fee-Net**: Evaluated fee-net (`MyTradingSys/research/setup_alpha_beta_2026-10-10/BETA_RESULTS.md:10`).
    - **Sample Size (n)**: All sessions no CVD n = 708,240, avg R -0.030; all sessions CVD n = 628,978, avg R -0.024; uniformly negative across London, NY, and all sessions (`MyTradingSys/research/setup_alpha_beta_2026-10-10/BETA_RESULTS.md:10`). Verdict: uniformly negative net returns (`MyTradingSys/research/setup_alpha_beta_2026-10-10/BETA_RESULTS.md:10`).
 
 ### Bugs and assumptions
-- **Ruling B163**: "operator pasted a 'Setup Alpha / Setup Beta' BTC perp handoff (daily SMA200 trend engine + EMA/RSI/ADX filters; liquidity sweep short); chatbot output ungrounded in trader literature" (`MyTradingSys/research/BUGS.md:276`).
+- **Ruling B163**: "operator pasted a 'Setup Alpha / Setup Beta' BTC perp handoff (daily SMA200 trend engine + 15m/1h liquidity sweep with CVD absorption and 5m MSS entry)"; "the text is a chatbot summary, not a trader we follow" (`MyTradingSys/research/BUGS.md:276`).
 - **Cherry-Picked Parameters**: claim removed (no cite verifiable on trunk).
 
 ### Confluence
@@ -238,14 +238,14 @@ Wired in the simulator: no. No `studies/` file; `MyTradingSys/research/sim_desk/
 Wired in the simulator: no. `MyTradingSys/research/sim_desk/PLUGIN.md` lists big-trade fires as "Small adapter, low value".
 
 ### Idea and source
-- **Engine Observation Layer Spec**: claim removed (no cite verifiable on trunk).
-- **ATR Zigzag Ground Truth**: claim removed (no cite verifiable on trunk).
-- **Exit Policy Evaluation Framework**: claim removed (no cite verifiable on trunk).
+- **Engine Observation Layer Spec**: "fire history of the kline-only live layers" (`MyTradingSys/research/bigtrade_2026-10-09/FIRES_B1_REPORT.md:5`); 19 live kline keys replayed over 2022-01-01 .. 2026-10-07, 244,543 fires (`MyTradingSys/research/bigtrade_2026-10-09/FIRES_B1_REPORT.md:14`).
+- **ATR Zigzag Ground Truth**: title "BIGMOVES REPORT (big-move ground truth, backtest A)" (`MyTradingSys/research/bigtrade_2026-10-09/BIGMOVES_REPORT.md:1`); "Legs: ATR zigzag, r in [1.5, 2.0]" with leg size threshold k in [3, 5, 8] (`MyTradingSys/research/bigtrade_2026-10-09/BIGMOVES_REPORT.md:29`).
+- **Exit Policy Evaluation Framework**: "EXIT POLICIES REPORT (backtest C)" (`MyTradingSys/research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md:5`); six policies, "under all six policies in both splits" (`MyTradingSys/research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md:144`).
 - **Trader Association / Ledger**: NOT_IN_DATA (internal benchmarking and execution simulation framework; no external trader exists).
 
 ### Parameters
-- **Market**: claim removed (no cite verifiable on trunk).
-- **Execution Cost Model**: claim removed (no cite verifiable on trunk).
+- **Market**: Binance BTCUSDT 1m merged klines, 2022-01-01 to 2026-10-07 UTC (`SOURCED`, quote: "2507040 bars (= 1741 days x 1440), 0 gaps" in `MyTradingSys/research/bigtrade_2026-10-09/BIGMOVES_REPORT.md:7`).
+- **Execution Cost Model**: 10.0 bp RT taker + 2.0 bp slippage = 12 bp round trip (`OURS`, quote: "Costs 10.0 bp RT taker + 2.0 bp slippage (assumed)" in `MyTradingSys/research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md:7`; "The assumed round-trip cost is 12 bp" in `MyTradingSys/research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md:144`).
 - **Exit Policy 1 (Live-like)**: 1% stop / 2% target / 8 bars time exit (`OURS`, quote: "live_like_1pct_2pct_8bars" in `MyTradingSys/research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md:28`).
 - **Exit Policy 2 (Bracket 1x/2x ATR)**: 1 ATR stop / 2 ATR target / 24 bars (`OURS`, quote: "bracket_1atr_2atr_24" in `MyTradingSys/research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md:30`).
 - **Exit Policy 3 (Bracket 1.5x/3x ATR)**: 1.5 ATR stop / 3 ATR target / 24 bars (`OURS`, quote: "bracket_1.5atr_3atr_24" in `MyTradingSys/research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md:32`).
@@ -257,11 +257,11 @@ Wired in the simulator: no. `MyTradingSys/research/sim_desk/PLUGIN.md` lists big
 1. **BIGMOVES-A Ground Truth Study (2026-10-09)** [`MyTradingSys/research/bigtrade_2026-10-09/BIGMOVES_REPORT.md:1-50`]:
    - **Path**: `MyTradingSys/research/bigtrade_2026-10-09/BIGMOVES_REPORT.md:1-50`
    - **Fee-Net**: Descriptive structural benchmark (no fee model; `MyTradingSys/research/bigtrade_2026-10-09/BIGMOVES_REPORT.md:10`).
-   - **Sample Size (n)**: claim removed (no cite verifiable on trunk).
+   - **Sample Size (n)**: ATR zigzag legs counted: 4h n = 1930; 1h n = 8173; 15m n = 33790; 5m n = 105235 (`MyTradingSys/research/bigtrade_2026-10-09/BIGMOVES_REPORT.md:160`; `MyTradingSys/research/bigtrade_2026-10-09/BIGMOVES_REPORT.md:165`; `MyTradingSys/research/bigtrade_2026-10-09/BIGMOVES_REPORT.md:170`; `MyTradingSys/research/bigtrade_2026-10-09/BIGMOVES_REPORT.md:175`). Verdict: "ground truth, no verdict" (`MyTradingSys/system/LAYERS.md:173`).
 2. **FIRES-B1 Parity Replay (2026-10-09)** [`MyTradingSys/research/bigtrade_2026-10-09/FIRES_B1_REPORT.md:1-85`]:
    - **Path**: `MyTradingSys/research/bigtrade_2026-10-09/FIRES_B1_REPORT.md:1-85`
    - **Fee-Net**: Replay parity audit (`MyTradingSys/research/bigtrade_2026-10-09/FIRES_B1_REPORT.md:12`).
-   - **Sample Size (n)**: claim removed (no cite verifiable on trunk).
+   - **Sample Size (n)**: 244,543 total fires across 19 kline live layers (`MyTradingSys/research/bigtrade_2026-10-09/FIRES_B1_REPORT.md:14`). "parity PASS on spot rerun" (`MyTradingSys/system/LAYERS.md:174`).
 3. **BIGTRADE-EXIT Backtest C (2026-10-09)** [`MyTradingSys/research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md:1-147`]:
    - **Path**: `MyTradingSys/research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md:1-147`
    - **Fee-Net**: Fee-net evaluated under 6 exit policies against 12 bps cost (`MyTradingSys/research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md:120-145`).
@@ -282,7 +282,7 @@ Wired in the simulator: no. `MyTradingSys/research/sim_desk/PLUGIN.md` lists big
 
 ## callers
 
-**Wired in the simulator: no. `MyTradingSys/research/sim_desk/**: claim removed (no cite verifiable on trunk).
+Wired in the simulator: no. `MyTradingSys/research/sim_desk/PLUGIN.md:46` lists "Detectors and studies (volume, candle patterns, guidance matrix, callers)" as **Does not fit**: "They flag events but are not trading rules, so there are no trades to simulate."
 
 ### Idea and source
 
@@ -318,7 +318,7 @@ Wired in the simulator: no. `MyTradingSys/research/sim_desk/PLUGIN.md` lists big
 - **Slippage**: `2 bps` (OURS: `MyTradingSys/research/_archive/loose_2026-10/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md:359`)
 - **Fill Window**: `24 hours` (`1440` minutes) from `published_utc`; unreached limits expire as `NOT_FILLED` (OURS: `MyTradingSys/research/analysts/score_analysts.py:28`; `MyTradingSys/research/qriptal_2026-10-10/score_calls.py:30`)
 - **Max Holding Period / Timeout Window**: `7 days` (`10080` minutes); unresolved positions close at market (OURS: `MyTradingSys/research/analysts/score_analysts.py:29`; `MyTradingSys/research/qriptal_2026-10-10/score_calls.py:31`)
-- **Bar Collision Resolution**: claim removed (no cite verifiable on trunk).
+- **Bar Collision Resolution**: Stop is checked first inside every candle (OURS: `MyTradingSys/research/qriptal_2026-10-10/RULES.md:3` "All numbers OURS"; "Stop is checked first inside every candle" in `MyTradingSys/research/qriptal_2026-10-10/score_calls.py:81-82`; same rule in `MyTradingSys/research/analysts/score_analysts.py:7`).
 - **Target Exit Policy**: Primary metric exits 100% position at Target 1 (`target_1`) (OURS: `MyTradingSys/research/analysts/score_analysts.py:129-130`; `MyTradingSys/research/qriptal_2026-10-10/SCORECARD.md:59`)
 - **Statistical Power Thresholds**:
   - Alpha: `0.05` one-sided exact binomial (OURS: `MyTradingSys/research/qriptal_2026-10-10/score_calls.py:37`). Two orientations exist: `MyTradingSys/research/analysts/SCORECARD.md:11` uses H0 = 50% (power to detect a 67.1% claim); `MyTradingSys/research/qriptal_2026-10-10/SCORECARD.md:38` uses H0 = his 67.1% claim, H1 = 50%.
@@ -358,7 +358,7 @@ Wired in the simulator: no. `MyTradingSys/research/sim_desk/PLUGIN.md` lists big
 - **Staged Ledger Sample Purge**:
   - 4 illustrative mock rows were initially included in `MyTradingSys/research/analysts/SAMPLE_CALL_LEDGER.csv` and subsequently removed in commit `e544506d` to prevent fabricated trades from polluting the scorecard (`NO ASSUMPTIONS, NO FABRICATIONS`) (SOURCED: `MyTradingSys/research/analysts/ROADMAP.md:14`)
 - **Undisclosed Proprietary Indicators**:
-  - **- Qriptal's commercial imbalance indicator is sold and close**: claim removed (no cite verifiable on trunk).
+  - Qriptal's imbalance indicator is "sold and undisclosed" (SOURCED: `MyTradingSys/items/B162_qriptal_signal_layer.md:18`); "exact indicator not reproducible from public material, mechanical fade NO EDGE after fees" (SOURCED: `MyTradingSys/items/B162_qriptal_signal_layer.md:41`)
 - **Social Media Call Survivorship / Deletion Bias**:
   - Spoken livestreams and Twitter posts carry potential survivorship or unpriced stop risks; 7 Qriptal statements had entries and targets but omitted priced stops, requiring classification as `NO-SOURCE` / unscored (SOURCED: `MyTradingSys/research/qriptal_2026-10-10/SCORECARD.md:55`; `MyTradingSys/research/analysts/REVIEW_AND_INGESTION_EVALUATION_2026-10-18.md:30`)
 

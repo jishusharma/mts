@@ -8,7 +8,7 @@ Wired in the simulator: yes. `MyTradingSys/research/sim_desk/studies/rsi.py` wra
 
 ### Idea and source
 - **Practitioner Source**: Vishal B Malkan (MalkanView) (`MyTradingSys/research/malkan_rsi_2026-09-28/WEB_RESEARCH.md:12-16`).
-- **Core Concept & 40/60 Range-Shift Quote**: claim removed (no cite verifiable on trunk).
+- **Core Concept & 40/60 Range-Shift Quote**: "When the market is bearish, it won't be able to cross 60, and whenever in a bullish trend, it won't be able to cross 40." (`MyTradingSys/research/malkan_rsi_2026-09-28/WEB_RESEARCH.md:45`; `MyTradingSys/research/LAYER_PROVENANCE_AUDIT.md:57-58`).
 - **Bullish Level Signal Quote**: "Bullish candlestick forms at 40 RSI level on daily chart = buy signal" (`MyTradingSys/research/malkan_rsi_2026-09-28/WEB_RESEARCH.md:120`; `MyTradingSys/backtest/layers/rsi/malkan_40_60.py:7`; `MyTradingSys/research/LAYER_PROVENANCE_AUDIT.md:61`).
 - **Bearish Level Signal Quote**: "Bearish candlestick forms at 60 RSI level on daily chart = short signal" (`MyTradingSys/research/malkan_rsi_2026-09-28/WEB_RESEARCH.md:144`; `MyTradingSys/backtest/layers/rsi/malkan_40_60.py:9`; `MyTradingSys/research/LAYER_PROVENANCE_AUDIT.md:64`).
 - **Indicator Foundation**: J. Welles Wilder Jr. (1978), *New Concepts in Technical Trading Systems* (`MyTradingSys/backtest/layers/FORMULAS.md:27-30`).
@@ -17,16 +17,16 @@ Wired in the simulator: yes. `MyTradingSys/research/sim_desk/studies/rsi.py` wra
 ### Parameters
 - **RSI Calculation Formula**: Wilder recursive smoothing seeded by simple average of first `length` gains/losses (`SOURCED`, quote: "Wilder's own recursive average (equivalent to an EMA with alpha = 1/period... TradingView Pine Script Reference Manual, ta.rsi/ta.rma" in `MyTradingSys/backtest/layers/FORMULAS.md:28-33`).
 - **RSI Period**: 14 (`CONCEPT-ONLY` per provenance audit R01: researcher bullet, no Malkan quote, not SOURCED; quote: "Period: 14 (RSI 14)" in `MyTradingSys/research/malkan_rsi_2026-09-28/WEB_RESEARCH.md:35`; `MyTradingSys/research/LAYER_PROVENANCE_AUDIT.md:50`).
-- **Bull Support Level**: claim removed (no cite verifiable on trunk).
-- **Bear Rejection Level**: claim removed (no cite verifiable on trunk).
-- **Regime Lookback Window**: claim removed (no cite verifiable on trunk).
-- **Event Tolerance Band**: claim removed (no cite verifiable on trunk).
-- **Candle Color Confirmation Requirement**: claim removed (no cite verifiable on trunk).
-- **Generic Levels (70/50/30)**: claim removed (no cite verifiable on trunk).
-- **Generic RSI Smoothing Line**: claim removed (no cite verifiable on trunk).
-- **Backtest Exit Stop**: claim removed (no cite verifiable on trunk).
-- **Backtest Exit Target**: claim removed (no cite verifiable on trunk).
-- **Backtest Time Exit**: claim removed (no cite verifiable on trunk).
+- **Bull Support Level**: 40 (`SOURCED`, quote: "whenever in a bullish trend, it won't be able to cross 40" in `MyTradingSys/research/malkan_rsi_2026-09-28/WEB_RESEARCH.md:45`; `"lo": 40` in `MyTradingSys/backtest/layers/rsi/params/malkan_40_60_default.json:10`; `MyTradingSys/research/LAYER_PROVENANCE_AUDIT.md:57`).
+- **Bear Rejection Level**: 60 (`SOURCED`, quote: "Whenever the market is bearish, it won't be able to cross 60" in `MyTradingSys/research/malkan_rsi_2026-09-28/WEB_RESEARCH.md:85`; `"hi": 60` in `MyTradingSys/backtest/layers/rsi/params/malkan_40_60_default.json:11`; `MyTradingSys/research/LAYER_PROVENANCE_AUDIT.md:58`).
+- **Regime Lookback Window**: 20 bars (`OURS` / `CONCEPT-ONLY`; `"regime_lookback": 20` in `MyTradingSys/backtest/layers/rsi/params/malkan_40_60_default.json:12`; audit R11 "no window in WR" in `MyTradingSys/research/LAYER_PROVENANCE_AUDIT.md:60`).
+- **Event Tolerance Band**: 2.0 RSI points default (`OURS` / `CONCEPT-ONLY`; `"event_tolerance": 2` in `MyTradingSys/backtest/layers/rsi/params/malkan_40_60_default.json:13`; audit R12 quotes "at or near Daily RSI 40" and "Bullish candlestick forms at 40 RSI level" in `MyTradingSys/research/LAYER_PROVENANCE_AUDIT.md:61`). The removed sweep claim (0.5 to 5.0 step 0.5) was not re-found.
+- **Candle Color Confirmation Requirement**: true (green candle for bull setup, red for bear) (`SOURCED`, quotes: "Daily RSI supporting near 40 with entry on Green Candle" in `MyTradingSys/research/malkan_rsi_2026-09-28/WEB_RESEARCH.md:77` and "Bearish candlestick forms at 60 RSI level on daily chart = short signal" in `MyTradingSys/research/malkan_rsi_2026-09-28/WEB_RESEARCH.md:144`; `require_bullish_candle_for_bull_setup`, `require_bearish_candle_for_bear_setup` true in `MyTradingSys/backtest/layers/rsi/params/malkan_40_60_default.json:14-15`; `MyTradingSys/research/LAYER_PROVENANCE_AUDIT.md:63`).
+- **Generic Levels (70/50/30)**: [70, 50, 30] in `default.json` (`OURS` / `NO-SOURCE`; the levels list [70, 50, 30] in `MyTradingSys/backtest/layers/rsi/params/default.json:14`; "Standard RSI reading levels only (70/50/30)" in `MyTradingSys/backtest/layers/rsi/params/default.json:5`; `MyTradingSys/research/LAYER_PROVENANCE_AUDIT.md:52`).
+- **Generic RSI Smoothing Line**: SMA 14 (`OURS` / `NO-SOURCE`; "no Malkan text mentions an RSI MA" in `MyTradingSys/research/LAYER_PROVENANCE_AUDIT.md:51`; `"source": "operator"` in `MyTradingSys/backtest/layers/rsi/params/default.json:3`).
+- **Backtest Exit Stop**: 1% from entry (`OURS` / `NO-SOURCE`; audit R21 "Place below the low of the bullish entry candle" in `MyTradingSys/research/LAYER_PROVENANCE_AUDIT.md:70`).
+- **Backtest Exit Target**: 2% from entry (`OURS` / `NO-SOURCE`; audit R22 "Target is 60 RSI level on daily chart" and "Malkan's target is an RSI level, not a price %." in `MyTradingSys/research/LAYER_PROVENANCE_AUDIT.md:71`).
+- **Backtest Time Exit**: 100 bars (`OURS` / `NO-SOURCE`; audit R23 in `MyTradingSys/research/LAYER_PROVENANCE_AUDIT.md:72`).
 
 ### Backtests
 1. **D3 RSI Tolerance Study (L1-D3, 2026-09-27)**:
@@ -34,8 +34,8 @@ Wired in the simulator: yes. `MyTradingSys/research/sim_desk/studies/rsi.py` wra
    - **Fee-Net**: Not fee-net; gross forward return % at horizon h=5 bars (`MyTradingSys/backtest/layers/BACKTEST_L1_REPORT.md:27; system/layer_map.json:633`).
    - **IS / OOS Partition**: Chronological 70% in-sample (IS) / 30% out-of-sample (OOS) over BTCUSDT 1m (2022-01-01..2026-09-26, 2,491,200 bars) resampled to 15m, 1h, 4h, 1d (`MyTradingSys/backtest/layers/BACKTEST_L1_REPORT.md:5-7`).
    - **Sample Size (n)**:
-     - **- 15m 40 support: IS n = 1,552, OOS n = 698**: claim removed (no cite verifiable on trunk).
-     - **- 15m 60 rejection: IS n = 1,617, OOS n = 767**: claim removed (no cite verifiable on trunk).
+     - 15m 40 support: IS n = 1552, OOS n = 698 (`MyTradingSys/backtest/layers/BACKTEST_L1_REPORT.md:18`).
+     - 15m 60 rejection: IS n = 1617, OOS n = 767 (`MyTradingSys/backtest/layers/BACKTEST_L1_REPORT.md:19`).
      - 1h 40 support: IS n = 193, OOS n = 89 (`MyTradingSys/backtest/layers/BACKTEST_L1_REPORT.md:20`).
      - 1h 60 rejection: IS n = 564, OOS n = 219 (`MyTradingSys/backtest/layers/BACKTEST_L1_REPORT.md:21`).
      - 4h 40 support: IS n = 93, OOS n = 32 (`MyTradingSys/backtest/layers/BACKTEST_L1_REPORT.md:22`).
@@ -84,8 +84,8 @@ Wired in the simulator: no. `MyTradingSys/research/sim_desk/PLUGIN.md` row "RSI 
 - **Practitioner Source**: Vishal B Malkan (MalkanView), video extracts `extract_Wvq1TZh8aF0.md` ("RSI Divergence Explained Simply", 2026-04-15) and `extract_cQ-y1oULkBw.md` (`MyTradingSys/backtest/layers/rsi/params/malkan_divergence_default.json:3`; `extracts/processed/malkan/extract_Wvq1TZh8aF0.md:1`).
 - **Comparison Basis Quote**: "What do we have to compare? Close to close. Because RSI is based on closing price." (`extracts/processed/malkan/extract_Wvq1TZh8aF0.md:6; MyTradingSys/backtest/layers/rsi/rsi_divergence.py:3`).
 - **Minimum Bars Quote**: "How many candles are needed? Three." (`extracts/processed/malkan/extract_Wvq1TZh8aF0.md:10; MyTradingSys/backtest/layers/rsi/params/malkan_divergence_default.json:6`).
-- **Maximum Bars Quote**: claim removed (no cite verifiable on trunk).
-- **Dilution of Long-Range Divergence Quote**: claim removed (no cite verifiable on trunk).
+- **Maximum Bars Quote**: "I will say that less than 10 bars is the most powerful divergence. It should be between three and 10." (`extracts/processed/malkan/extract_Wvq1TZh8aF0.md:16`).
+- **Dilution of Long-Range Divergence Quote**: "at the most 10 times divergence. If you have 30 times divergence, 50 times divergence, that is diluted." (`extracts/processed/malkan/extract_Wvq1TZh8aF0.md:13`).
 - **Decimal Differences Acceptable Quote**: "Sometimes there is divergence in decimals and that will also be acceptable." (`extracts/processed/malkan/extract_Wvq1TZh8aF0.md:27; MyTradingSys/backtest/layers/rsi/params/malkan_divergence_default.json:9`).
 - **Optimal Level Location Quote**: "the most powerful divergence come near 60 bearish divergence and the most powerful bullish divergence comes near 40." (`extracts/processed/malkan/extract_Wvq1TZh8aF0.md:20`).
 - **Trade Ledger / Ground Truth**: NOT_IN_DATA (no dated trade ledger in repo; `MyTradingSys/research/tom_transfer_2026-10-11/HOME_FIT_AUDIT_MALKAN.md:33-35`).
@@ -93,11 +93,11 @@ Wired in the simulator: no. `MyTradingSys/research/sim_desk/PLUGIN.md` row "RSI 
 ### Parameters
 - **Minimum Lookback Bars**: 3 bars (`SOURCED`, quote: "How many candles are needed? Three." in `extracts/processed/malkan/extract_Wvq1TZh8aF0.md:10`; `MyTradingSys/backtest/layers/rsi/params/malkan_divergence_default.json:4,6`).
 - **Maximum Lookback Bars**: 10 bars (`SOURCED`, quote: "It should be between three and 10." in `extracts/processed/malkan/extract_Wvq1TZh8aF0.md:16`; `MyTradingSys/backtest/layers/rsi/params/malkan_divergence_default.json:5,7`).
-- **Price and RSI Comparison Basis**: claim removed (no cite verifiable on trunk).
+- **Price and RSI Comparison Basis**: close_to_close (`SOURCED`, quote: "What do we have to compare? Close to close. Because RSI is based on closing price." in `extracts/processed/malkan/extract_Wvq1TZh8aF0.md:6`).
 - **Minimum RSI Difference (min_rsi_diff)**: 0.0 (`SOURCED`, quote: "Sometimes there is divergence in decimals and that will also be acceptable." in `extracts/processed/malkan/extract_Wvq1TZh8aF0.md:27`; `MyTradingSys/backtest/layers/rsi/params/malkan_divergence_default.json:8-9`).
 - **Operator Long-Range Window Variant**: claim removed (no cite verifiable on trunk).
 - **Timeframes Evaluated**: 1m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 1d, 2d (`OURS` grid, `MyTradingSys/system/layer_map.json:473-477`; `MyTradingSys/backtest/layers/rsi/run_divergence_mtf.py:4`).
-- **Evaluation Horizons**: claim removed (no cite verifiable on trunk).
+- **Evaluation Horizons**: 10 bars and the 00/12 UTC halves are "engineering choices fixed before the run (NO-SOURCE)" (`OURS` / `NO-SOURCE`, `MyTradingSys/research/rsi_divergence_mtf_2026-10-09/RESULT.md:18-19`). The removed "1, 5, 10, 20" list was not re-found.
 - **Causal Event Timestamp**: Bar after swing point B closes (`ts[i+1]`) (`OURS`, quote: Swing point = strict local extreme of the CLOSE... It is only known one bar later, so the event time is ts[i+1] (causal) in `MyTradingSys/backtest/layers/rsi/rsi_divergence.py:10`).
 
 ### Backtests
@@ -203,7 +203,7 @@ Wired in the simulator: no. `MyTradingSys/research/sim_desk/PLUGIN.md` lists Cry
 
 **Run 2: CC Setups Touch-Fill Model Rerun (2026-10-07)**
 - **Report path**: `MyTradingSys/research/fast_track_2026-09-27/CC_SETUPS_RERUN_LIMITFILL_2026-10-07.md:1-125`
-- **Fee-net or not**: claim removed (no cite verifiable on trunk).
+- **Fee-net or not**: Net of fees with funding included (7305 records) (`MyTradingSys/research/fast_track_2026-09-27/CC_SETUPS_RERUN_LIMITFILL_2026-10-07.md:23`). Fee variants: `all_taker` and `maker_entry` (`MyTradingSys/research/fast_track_2026-09-27/CC_SETUPS_RERUN_LIMITFILL_2026-10-07.md:24`).
 - **In-sample or out-of-sample**: 70/30 chronological split (IS: 29,063 bars, OOS: 12,457 bars; 41,520 total 1h bars) (`MyTradingSys/research/fast_track_2026-09-27/CC_SETUPS_RERUN_LIMITFILL_2026-10-07.md:323`).
 - **n trades & results** (`MyTradingSys/research/fast_track_2026-09-27/CC_SETUPS_RERUN_LIMITFILL_2026-10-07.md:33-140`):
   - `setup1_sr_flip`: 1,527 signals, 1,477 trades (50 unfilled limits); IS n=1,056, OOS n=421 (`MyTradingSys/research/fast_track_2026-09-27/CC_SETUPS_RERUN_LIMITFILL_2026-10-07.md:29,52`).
@@ -219,7 +219,7 @@ Wired in the simulator: no. `MyTradingSys/research/sim_desk/PLUGIN.md` lists Cry
 **Run 3: CC Setups Trade-Through by 1 Tick Rerun (2026-10-09)**
 - **Report path**: `MyTradingSys/research/fast_track_2026-09-27/CC_SETUPS_RERUN_LIMITFILL_2026-10-07.md:144-245`
 - **Fee-net or not**: Net of fees, funding included (7,305 records); both `maker_entry` and `all_taker` (`MyTradingSys/research/fast_track_2026-09-27/CC_SETUPS_RERUN_LIMITFILL_2026-10-07.md:185,168`).
-- **In-sample or out-of-sample**: claim removed (no cite verifiable on trunk).
+- **In-sample or out-of-sample**: 1h bars 41520 (IS 29063 / OOS 12457) (`MyTradingSys/research/fast_track_2026-09-27/CC_SETUPS_RERUN_LIMITFILL_2026-10-07.md:23`). The removed 70/30 and 41,784 figures did not match the file.
 - **n trades & results** (`MyTradingSys/research/fast_track_2026-09-27/CC_SETUPS_RERUN_LIMITFILL_2026-10-07.md:154-245`):
   - `setup1_sr_flip`: 1,536 signals, 1,486 trades (50 unfilled limits); IS n=1,063, OOS n=423 (`MyTradingSys/research/fast_track_2026-09-27/CC_SETUPS_RERUN_LIMITFILL_2026-10-07.md:134,172,190`).
     - `maker_entry`: OOS net -0.0380%, Sharpe -0.262, 0 of 2 positive OOS years (`MyTradingSys/research/fast_track_2026-09-27/CC_SETUPS_RERUN_LIMITFILL_2026-10-07.md:167,195`).
@@ -239,9 +239,9 @@ Wired in the simulator: no. `MyTradingSys/research/sim_desk/PLUGIN.md` lists Cry
 - **n trades & results** (`MyTradingSys/research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md:21-56`):
   - `layer:cryptocred:failed_msb:15m`: TRAIN n=396, VALIDATE n=57 across 6 exit policies; mean returns negative in both splits across all policies (e.g. `live_like_1pct_2pct_8bars`: -8.0 bp TRAIN, -11.2 bp VALIDATE) (`MyTradingSys/research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md:21-26`).
   - `layer:cryptocred:failed_msb:1h`: TRAIN n=109, VALIDATE n=17 across 6 exit policies (`MyTradingSys/research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md:27-32`).
-  - **- `layer:cryptocred:fib_pullback:15m`: TRAIN n=1,149, VALIDA**: claim removed (no cite verifiable on trunk).
+  - `layer:cryptocred:fib_pullback:15m`: TRAIN n = 1149, VALIDATE n = 147 across the policy rows (`MyTradingSys/research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md:33-38`).
   - `layer:cryptocred:fib_pullback:1h`: TRAIN n=278, VALIDATE n=47 across 6 exit policies (`MyTradingSys/research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md:39-44`).
-  - **- `layer:cryptocred:sr_flip:15m`: TRAIN n=4,035, VALIDATE n=**: claim removed (no cite verifiable on trunk).
+  - `layer:cryptocred:sr_flip:15m`: TRAIN n = 4035, VALIDATE n = 583 across the policy rows (`MyTradingSys/research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md:45-50`).
   - `layer:cryptocred:sr_flip:1h`: TRAIN n=1,024, VALIDATE n=163 across 6 exit policies; `time_96_wide_stop_2atr` policy recorded +9.8 bp TRAIN / +0.1 bp VALIDATE, while remaining 5 policies were net negative (`MyTradingSys/research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md:51-56,143`).
 
 **Run 5: BigTrade Fires Parity Check (2026-10-09)**
@@ -255,14 +255,14 @@ Wired in the simulator: no. `MyTradingSys/research/sim_desk/PLUGIN.md` lists Cry
 - **Fee-net or not**: Net R after costs on 1h bars (`MyTradingSys/research/cryptocred_stop_2026-10-10/STOP_SOURCES.md:47-49`).
 - **In-sample or out-of-sample**: DEV / full archive dataset (`raw_1m_2022` 1h bars) (`MyTradingSys/research/cryptocred_stop_2026-10-10/STOP_SOURCES.md:47`).
 - **n trades & sweep results** (`MyTradingSys/research/cryptocred_stop_2026-10-10/STOP_SOURCES.md:51-65`):
-  - **- `setup1_sr_flip`**: claim removed (no cite verifiable on trunk).
+  - `setup1_sr_flip` (n = 1487) stop variants (`MyTradingSys/research/cryptocred_stop_2026-10-10/STOP_SOURCES.md:58-61`):
     - `pct_0.1` (NO-SOURCE): net R -1.069, hit rate 0.373 (`MyTradingSys/research/cryptocred_stop_2026-10-10/STOP_SOURCES.md:58`).
     - `pct_0.25` (NO-SOURCE): net R -0.386, hit rate 0.406 (`MyTradingSys/research/cryptocred_stop_2026-10-10/STOP_SOURCES.md:59`).
     - `pct_0.5` (NO-SOURCE): net R -0.174, hit rate 0.411 (`MyTradingSys/research/cryptocred_stop_2026-10-10/STOP_SOURCES.md:60`).
     - `atr_1.0` (CC-invalidation): net R -0.162, hit rate 0.411 (`MyTradingSys/research/cryptocred_stop_2026-10-10/STOP_SOURCES.md:55`).
     - `atr_1.5` (CC-invalidation): net R -0.095, hit rate 0.421 (`MyTradingSys/research/cryptocred_stop_2026-10-10/STOP_SOURCES.md:62`).
     - `atr_2.0` (CC-invalidation): net R -0.101, hit rate 0.420 (`MyTradingSys/research/cryptocred_stop_2026-10-10/STOP_SOURCES.md:63`).
-  - **- `setup2_fib_pullback`**: claim removed (no cite verifiable on trunk).
+  - `setup2_fib_pullback` (n = 1392) stop variants (`MyTradingSys/research/cryptocred_stop_2026-10-10/STOP_SOURCES.md:64`):
     - `pct_0.1` (NO-SOURCE): net R -1.307, hit rate 0.306 (`MyTradingSys/research/cryptocred_stop_2026-10-10/STOP_SOURCES.md:58`).
     - `pct_0.5` (NO-SOURCE): net R -0.209, hit rate 0.367 (`MyTradingSys/research/cryptocred_stop_2026-10-10/STOP_SOURCES.md:59`).
     - `atr_1.0` (CC-invalidation): net R -0.184, hit rate 0.361 (`MyTradingSys/research/cryptocred_stop_2026-10-10/STOP_SOURCES.md:60`).
@@ -448,9 +448,9 @@ Wired in the simulator: no. `MyTradingSys/research/sim_desk/PLUGIN.md` lists the
 ### Idea and source
 - **Primary Infrastructure Specification**: "The live engine, execution and live-market reads that feed every layer (infrastructure, not a strategy)." (`MyTradingSys/system/layer_index.json:554`).
 - **Family Classification**: claim removed (no cite verifiable on trunk).
-- **Live Session Reading Protocol**: claim removed (no cite verifiable on trunk).
+- **Live Session Reading Protocol**: operational discipline for live market reading: check 1 "Quote the number" (`MyTradingSys/methodology/live_session_protocol.md:10`), check 2 "Delta check before verdict" (`MyTradingSys/methodology/live_session_protocol.md:15`).
 - **Screenshot Intake Specification**: claim removed (no cite verifiable on trunk).
-- **Deployment Runbook Specification**: claim removed (no cite verifiable on trunk).
+- **Deployment Runbook Specification**: live tree is "the folder holding `.mts_live`" (`MyTradingSys/system/DEPLOY_RUNBOOK.md:1`); background deploy tasks (`MTS-AutoDeploy`, `MTS-Supervisor`, `MTS-DailyHygiene`) retired per SCHEDULING_POLICY.md (`MyTradingSys/system/DEPLOY_RUNBOOK.md:5`).
 - **Execution Architecture Overview**: claim removed (no cite verifiable on trunk).
 - **Trader Association / Ledger**: claim removed (no cite verifiable on trunk).
 
@@ -458,13 +458,13 @@ Wired in the simulator: no. `MyTradingSys/research/sim_desk/PLUGIN.md` lists the
 - **Venue & Contract Market**: claim removed (no cite verifiable on trunk).
 - **Position Sizing Calibration**: claim removed (no cite verifiable on trunk).
 - **Subaccount Routing Tiers**: claim removed (no cite verifiable on trunk).
-- **Position Netting Isolation**: claim removed (no cite verifiable on trunk).
-- **Execution Fee Floor**: claim removed (no cite verifiable on trunk).
+- **Position Netting Isolation**: 1 concurrent trade per subaccount (`SOURCED`, quote: "Deribit nets one BTC-PERPETUAL position per account, so each account = one concurrent trade." in `MyTradingSys/execution/TESTNET_SUBACCOUNTS.md:3`).
+- **Execution Fee Floor**: Deribit taker 0.05% per side, 10 bp round trip before slippage (`SOURCED`, quote: "DERIBIT_TAKER = BINANCE_TAKER = 0.0005 per side" in `MyTradingSys/backtest/layers/FORMULAS.md:410`; "10 bp round trip (2 x DERIBIT_TAKER), before slippage" in `MyTradingSys/backtest/fees.py:20`).
 - **Safety State Propagation**: claim removed (no cite verifiable on trunk).
 - **Unsourced Bracket Parameters**: Stop percentage 1.0%, target 2.0%, horizon 8 bars (1h) (`OURS` / `NO-SOURCE`, quote: "Layer bracket in auto_trader.py is a fixed unsourced stop_pct 1.0, targets 2, size 20" in `MyTradingSys/research/BUGS.md:229` [B118]).
 - **Unsourced Stop Floors**: Minimum stop floor 0.1% and fallback stop 0.2% (`OURS` / `NO-SOURCE`, quote: "Unsourced 0.1 percent minimum stop floor and 0.2 percent fallback stop are still live in code" in `MyTradingSys/research/BUGS.md:227` [B116]).
 - **Unsourced Proof Gating Bands**: Proof bands 3 and 5 gating entry (`OURS` / `NO-SOURCE`, quote: "Unsourced proof bands 3 and 5 gate WAIT_PROOF, WATCH and SETUP_FORMING" in `MyTradingSys/research/BUGS.md:228` [B117]).
-- **Unsourced Net R:R Hurdle**: claim removed (no cite verifiable on trunk).
+- **Unsourced Net R:R Hurdle**: Net R:R floor 1.25 (`OURS` / `NO-SOURCE`, quote: "proof bands 3 and 5, net_rr floor 1.25, min stop floors are NO-SOURCE" in `MyTradingSys/research/layer_review_2026-10-26/LAYER_SHEETS.md:20`).
 - **Mainnet Confirmation Guard**: claim removed (no cite verifiable on trunk).
 
 ### Backtests
@@ -496,10 +496,10 @@ Wired in the simulator: no. `MyTradingSys/research/sim_desk/PLUGIN.md` lists the
 - **Ruling B117**: "Unsourced proof bands 3 and 5 gate WAIT_PROOF, WATCH and SETUP_FORMING in start-trading logic" (`MyTradingSys/research/BUGS.md:228`). Open.
 - **Ruling B118**: "Layer bracket in auto_trader.py is a fixed unsourced stop_pct 1.0, targets 2, size 20" (`MyTradingSys/research/BUGS.md:229`). Closed 2026-10-04.
 - **Ruling B136**: claim removed (no cite verifiable on trunk).
-- **Task T085**: claim removed (no cite verifiable on trunk).
+- **Task T085**: "97 % of testnet trades end on the time exit: find why targets/stops are almost never reached" (`MyTradingSys/research/BUGS.md:187`).
 - **Operational State HALT**: "Testnet HALT since 2026-10-12 09:46Z (executor fail_closed); supervisor clears it" (`MyTradingSys/system/LAYERS.md:195`; `MyTradingSys/system/layer_index.json:532`).
 
 ### Confluence
 - **Infrastructure Backbone Role**: Ingestion, execution, and dispatch pipeline that feeds every layer (`MyTradingSys/system/layer_index.json:20`; `MyTradingSys/research/layer_review_2026-10-26/LAYER_SHEETS.md:20`).
 - **Promoted Setups Status**: `promoted_setups.json` holds 0 entries (`entries: []`), confirming no strategy layer has been promoted to automated mainnet execution (`MyTradingSys/execution/promoted_setups.json:2-3`).
-- **Actual Live Confluence**: claim removed (no cite verifiable on trunk).
+- **Actual Live Confluence**: "Nothing combines on a live trade." and "So no confluence rule has ever decided a real trade." (`MyTradingSys/research/layer_review_2026-10-26/INTEGRATION_MAP.md:8`).

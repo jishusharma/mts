@@ -148,5 +148,76 @@ class VerifyQuotesTest(unittest.TestCase):
         self.assertIn("MISSING", out)
 
 
+class VerifyRepoDocCitesTest(unittest.TestCase):
+    """layer_facts / layer review sheets: file:line cites and quoted repo-doc spans are resolved."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self.tmp.name)
+        (self.root / "docs").mkdir()
+        body = [str(n) for n in range(1, 10)] + ["Volume gives intensity, not direction.", "end"]
+        (self.root / "docs" / "a.md").write_text(chr(10).join(body) + chr(10), encoding="utf-8")
+        self._old_root = v.ROOT
+        v.ROOT = self.root
+        v._doc_cache.clear()
+
+    def tearDown(self):
+        v.ROOT = self._old_root
+        v._doc_cache.clear()
+        self.tmp.cleanup()
+
+    def _sheet(self, text):
+        f = self.root / "sheet.md"
+        f.write_text(text + chr(10), encoding="utf-8")
+        with redirect_stdout(io.StringIO()) as out:
+            bad = v.check(f)
+        return bad, out.getvalue()
+
+    def test_good_cite_and_quote_pass(self):
+        bad, out = self._sheet('- Finding: "Volume gives intensity, not direction" (`docs/a.md:10`)')
+        self.assertEqual(bad, 0, out)
+
+    def test_missing_file_fails(self):
+        bad, out = self._sheet("- x (`docs/nope.md:3`)")
+        self.assertEqual(bad, 1, out)
+        self.assertIn("NO-FILE", out)
+
+    def test_line_past_end_fails(self):
+        bad, out = self._sheet("- x (`docs/a.md:99`)")
+        self.assertEqual(bad, 1, out)
+        self.assertIn("NO-LINE", out)
+
+    def test_invented_quote_fails(self):
+        bad, out = self._sheet('- "ratio thresholds 1.5, 2.0, 2.5" (`docs/a.md:2`)')
+        self.assertEqual(bad, 1, out)
+        self.assertIn("NO-QUOTE", out)
+
+    def test_quote_on_wrong_line_fails(self):
+        bad, out = self._sheet('- "Volume gives intensity, not direction" (`docs/a.md:1`)')
+        self.assertEqual(bad, 1, out)
+        self.assertIn("WRONG-LINE", out)
+
+    def test_comma_list_of_lines(self):
+        bad, out = self._sheet('- "Volume gives intensity, not direction" (`docs/a.md:1,10`)')
+        self.assertEqual(bad, 0, out)
+
+    def test_pre_fix_volume_candles_ma_fails_current_passes(self):
+        """b7ad6ad1c copy (invented quotes, wrong DEV window, absent files) must fail; 46ee60ea8 version passes."""
+        import subprocess
+        v.ROOT = self._old_root
+        rel = "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/volume_candles_ma.md"
+        r = subprocess.run(["git", "-C", str(self._old_root), "show", f"b7ad6ad1c:{rel}"], capture_output=True)
+        if r.returncode != 0:
+            self.skipTest("commit b7ad6ad1c not in this clone")
+        old = self.root / "old_volume_candles_ma.md"
+        old.write_bytes(r.stdout)
+        with redirect_stdout(io.StringIO()):
+            self.assertGreater(v.check(old), 0)
+        cur = self._old_root / rel
+        if cur.is_file():
+            with redirect_stdout(io.StringIO()) as out:
+                self.assertEqual(v.check(cur), 0, out.getvalue())
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)
