@@ -1,0 +1,10 @@
+{
+  "done_when": "a 6-block reply whose bodies are one command line each runs all 6 and blocks_seen equals blocks sent",
+  "from": "JIS-NUC",
+  "id": "20261102-151558-aibridge-drops-command-lines-11-blocks-a",
+  "need": "Agent 0.7.17, host JIS-NUC, chat page. Results #10,#11 and #14-#18: block body was '# AIRUN cwd=... timeout=60' then one line 'Set-Location ...; Write-Output chain-bN; exit 0'; bridge answered NOT RUN: the block has no command after the # AIRUN line. A 6-block reply was reported blocks_seen=5. Blocks #12,#13 (2-block reply, same shape) ran fine. Desk row 20261102-131341-aibridge-real-page-chain-test-run-54-tri blocked at 0 of 54 blocks.",
+  "posted": "2026-11-02T15:15:58Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "AIBridge drops command lines: 11 blocks arrived empty on JIS-NUC"
+}
