@@ -1,0 +1,15 @@
+{
+  "card": "gemini-blind-read-c30-validation-1102",
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-02/c30_validation_blind_read.md has one row per number: FOUND / NOT_IN_DATA / DIFF, first line holds the three counts.",
+  "finished": "2026-11-02T11:32:18Z",
+  "from": "lane_health",
+  "host": "JIS-NUC",
+  "id": "20261102-112522-gemini-blind-read-c30-validation-1102",
+  "need": "Rerouted from the GPT lane (credits/limit/outage) to DSA. Card gemini-blind-read-c30-validation-1102: [GEMINI] blind re-read of eagle_eyes_picture C30_VALIDATION.md: numbers vs c30_validation.py\nWorktree: mts-dsa (python scripts/dev/sync.py start first). Data on F:\\MTS\\data is read-only.\nFull brief: python scripts/dev/tasks.py brief gemini-blind-read-c30-validation-1102\nGoal: Open MyTradingSys/research/eagle_eyes_picture_2026-10-28/C30_VALIDATION.md and check every number against c30_validation.py and the data it names; facts only, no verdicts.\nRead: MyTradingSys/research/eagle_eyes_picture_2026-10-28/C30_VALIDATION.md (read); MyTradingSys/research/eagle_eyes_picture_2026-10-28/c30_validation.py (read); MyTradingSys/research/gemini_audits_20\nStep 1: list every number in C30_VALIDATION.md with its cited source\nStep 2: open the source and check it\nStep 3: write FOUND / NOT_IN_DATA / DIFF per number, counts on line 1\nWrite the report to MyTradingSys/research/layer_lab/reports/2026-11-02_gemini-blind-read-c30-validation-1102.md: findings or numbers, each with file:line or the command you ran.\nNumbers come only from output you printed in the chat. Change no code or spec. Never read a holdout.\nIf a command fails twice, close the desk row with --failed and the error text.\nClose: python scripts/dev/desk.py done <row id> --result \"<verdict or number + MyTradingSys/research/layer_lab/reports/2026-11-02_gemini-blind-read-c30-validation-1102.md>\".",
+  "posted": "2026-11-02T11:25:22Z",
+  "rerouted_from": "CODEX",
+  "result": "declined: duplicate, already shipped on Gemini via Lead as 924ca7d0a",
+  "status": "failed",
+  "target": "DSA",
+  "title": "[GEMINI] blind re-read of eagle_eyes_picture C30_VALIDATION.md: numbers vs c30_validation.py"
+}

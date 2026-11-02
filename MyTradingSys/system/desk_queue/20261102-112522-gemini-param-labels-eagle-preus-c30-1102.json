@@ -1,0 +1,12 @@
+{
+  "card": "gemini-param-labels-eagle-preus-c30-1102",
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-02/param_labels_eagle_preus_c30.md has one row per constant: file:line, value, SOURCED(quote, file:line) / OURS, first line holds the two counts.",
+  "from": "lane_health",
+  "id": "20261102-112522-gemini-param-labels-eagle-preus-c30-1102",
+  "need": "Rerouted from the GPT lane (credits/limit/outage) to DSA. Card gemini-param-labels-eagle-preus-c30-1102: [GEMINI] SOURCED/OURS labels for eagle_eyes_picture preus_pullback.py and c30_validation.py con\nWorktree: mts-dsa (python scripts/dev/sync.py start first). Data on F:\\MTS\\data is read-only.\nFull brief: python scripts/dev/tasks.py brief gemini-param-labels-eagle-preus-c30-1102\nGoal: List every numeric constant and default parameter in MyTradingSys/research/eagle_eyes_picture_2026-10-28/preus_pullback.py and c30_validation.py; label each SOURCED (quote + file:line) or OURS; \nRead: MyTradingSys/research/eagle_eyes_picture_2026-10-28/preus_pullback.py (read); MyTradingSys/research/eagle_eyes_picture_2026-10-28/c30_validation.py (read); MyTradingSys/research/gemini_audits_20\nStep 1: list constants per file with line numbers\nStep 2: search the cited sources and C30_VALIDATION.md for each value\nStep 3: write the label table, counts on line 1\nWrite the report to MyTradingSys/research/layer_lab/reports/2026-11-02_gemini-param-labels-eagle-preus-c30-1102.md: findings or numbers, each with file:line or the command you ran.\nNumbers come only from output you printed in the chat. Change no code or spec. Never read a holdout.\nIf a command fails twice, close the desk row with --failed and the error text.\nClose: python scripts/dev/desk.py done <row id> --result \"<verdict or number + MyTradingSys/research/layer_lab/reports/2026-11-02_gemini-param-labels-eagle-preus-c30-1102.md>\".",
+  "posted": "2026-11-02T11:25:22Z",
+  "rerouted_from": "CODEX",
+  "status": "pending",
+  "target": "DSA",
+  "title": "[GEMINI] SOURCED/OURS labels for eagle_eyes_picture preus_pullback.py and c30_validation.py constants"
+}
