@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T19:03:47Z",
   "commands": [],
   "created": "2026-11-02T18:25:31Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "SAME: 28 | DIFF: 0 | NOT_IN_DATA: 4 (MyTradingSys/research/argon_audits_2026-11-02/formula",
+      "ref": "aadcb7b73",
+      "utc": "2026-11-02T19:03:47Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,7 +47,12 @@
   "refs": [
     "MyTradingSys/system/GEMINI_START.md"
   ],
-  "result": "",
+  "result": "SAME: 28 | DIFF: 0 | NOT_IN_DATA: 4 (MyTradingSys/research/argon_audits_2026-11-02/formulas_s28.md)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/argon_audits_2026-11-02/formulas_s28.md (new)",
     "MyTradingSys/backtest/layers/FORMULAS.md (read)",
@@ -54,12 +66,13 @@
   "scope_sha": "d3aba8921b5d",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read FORMULAS.md section 28 before the code and compute each worked example independently",
     "read the code and compare each formula, boundary and rounding",
     "write one row per formula: SAME / DIFF / NOT_IN_DATA with file:line; first line holds the three counts"
   ],
+  "taken": "2026-11-02T19:03:47Z",
   "tests": "see done_when (audit card, output file is the test)",
   "title": "[GEMINI] Argon re-derives FORMULAS.md s28 Fabio v3 signals and models against the code",
   "weight": "ROUTINE",
