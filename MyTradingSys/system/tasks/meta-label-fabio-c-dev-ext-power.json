@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T11:20:25Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -23,6 +24,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "PASSED marginal: top third +0.430 R CI +0.028..+0.869 n 139, placebo p 0.023, AUC 0.527; R",
+      "ref": "d24cc43f1",
+      "utc": "2026-11-02T11:20:25Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Merge remote-tracking branch 'origin/fast-track' into JIS-NB/rumers-lab-harness-3",
@@ -43,7 +50,12 @@
   "refs": [
     "MyTradingSys/research/meta_label_roadmap_2026-10-31/ROADMAP.md"
   ],
-  "result": "",
+  "result": "PASSED marginal: top third +0.430 R CI +0.028..+0.869 n 139, placebo p 0.023, AUC 0.527; RESULT.md in research/meta_label_dev_ext_2026-10-31",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/meta_label_tom_fabio_2026-10-31/gen_trades.py",
     "MyTradingSys/research/meta_label_tom_fabio_2026-10-31/analyze.py",
@@ -57,13 +69,14 @@
   "scope_sha": "22ca49c5865c",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read PRE_REG.md and ROADMAP 2.2 NOT ENOUGH DATA row; find the 1m kline source of dev_ext (research/context_factors_2026-10-16/dev_ext.py)",
     "write PRE_REG_EXT.md (same family m, same placebo, 6 block CV) before any outcome read",
     "run gen_trades and analyze on 2019-09..2022-03 only",
     "write RESULT.md with n per tercile, CI, placebo p, power line; NOT ENOUGH DATA again parks meta-labelling for Tom VP and Fabio C"
   ],
+  "taken": "2026-11-02T11:20:25Z",
   "tests": "MyTradingSys/research/meta_label_dev_ext_2026-10-31/test_dev_ext_window.py: asserts no bar at or after 2022-04-01 is read (fails on a window one bar too wide)",
   "title": "Meta-label NOT ENOUGH DATA branch: rerun Fabio Model C stand-in test on pre-DEV dev_ext 2019-2021 (ROADMAP 2.2)",
   "weight": "CRUCIAL",

@@ -1,0 +1,504 @@
+{
+ "study": "fabio_c_dev_ext",
+ "n_filled": 509,
+ "n_model": 418,
+ "n_dropped_incomplete": 91,
+ "sd_all_filled": 2.108639440920011,
+ "mean_all_filled": -0.08427786653054341,
+ "mean_model_sample": -0.046718790794600326,
+ "win_pct_model_sample": 30.14354066985646,
+ "n_top": 139,
+ "terciles": {
+  "top": {
+   "n": 139,
+   "mean": 0.4296087377127243,
+   "win_pct": 38.84892086330935,
+   "sd": 2.466266839995307
+  },
+  "middle": {
+   "n": 137,
+   "mean": -0.3554174084914283,
+   "win_pct": 24.817518248175183,
+   "sd": 1.585793549386834
+  },
+  "bottom": {
+   "n": 142,
+   "mean": -0.21515411359778847,
+   "win_pct": 26.76056338028169,
+   "sd": 2.204795279011803
+  }
+ },
+ "top_ci95": [
+  0.028402001017956174,
+  0.8690648043906535
+ ],
+ "top_ci975": [
+  -0.023873377173401447,
+  0.9373159399292992
+ ],
+ "spread": 0.6447628513105128,
+ "spread_ci95": [
+  0.11416981736854508,
+  1.1936057871566197
+ ],
+ "placebo_n": 300,
+ "placebo_p95": 0.5214348375382599,
+ "placebo_mean": 0.01805356910192882,
+ "placebo_p": 0.023255813953488372,
+ "placebo_percentile_of_real": 98.0,
+ "oof_auc": 0.5265818656229615,
+ "power_delta_min_top": 0.509289099934907,
+ "luck_best_of_16_top": 0.4280701459614788,
+ "passed": true,
+ "verdict": "PASSED",
+ "random_third_mean": -0.046718790794600326,
+ "table": [
+  [
+   "BBWP (1h): not available",
+   "2",
+   "100.0",
+   "+2.573"
+  ],
+  [
+   "BBWP (1h): compression, 30 or below",
+   "117",
+   "27.4",
+   "-0.070"
+  ],
+  [
+   "BBWP (1h): normal, 30 to 85",
+   "300",
+   "30.7",
+   "-0.072"
+  ],
+  [
+   "BBWP (1h): expansion, 85 or above",
+   "90",
+   "24.4",
+   "-0.203"
+  ],
+  [
+   "D1 trend: not available",
+   "34",
+   "29.4",
+   "+0.196"
+  ],
+  [
+   "D1 trend: up (close above 50-day average)",
+   "284",
+   "29.6",
+   "-0.116"
+  ],
+  [
+   "D1 trend: down (close below 50-day average)",
+   "191",
+   "28.3",
+   "-0.087"
+  ],
+  [
+   "Cowen band (daily close): not available",
+   "91",
+   "24.2",
+   "-0.257"
+  ],
+  [
+   "Cowen band (daily close): above the band",
+   "299",
+   "30.4",
+   "-0.109"
+  ],
+  [
+   "Cowen band (daily close): inside the band",
+   "14",
+   "28.6",
+   "+0.110"
+  ],
+  [
+   "Cowen band (daily close): below the band",
+   "105",
+   "29.5",
+   "+0.109"
+  ],
+  [
+   "Funding sign: positive",
+   "455",
+   "27.5",
+   "-0.122"
+  ],
+  [
+   "Funding sign: negative",
+   "54",
+   "42.6",
+   "+0.236"
+  ],
+  [
+   "Session (UTC): US, 13-21",
+   "509",
+   "29.1",
+   "-0.084"
+  ],
+  [
+   "RSI 14 (1h): middle, 40 to 60",
+   "287",
+   "31.4",
+   "-0.001"
+  ],
+  [
+   "RSI 14 (1h): high, 60 or above",
+   "142",
+   "21.1",
+   "-0.359"
+  ],
+  [
+   "RSI 14 (1h): low, 40 or below",
+   "80",
+   "35.0",
+   "+0.104"
+  ],
+  [
+   "WaveTrend (1h): not available",
+   "5",
+   "40.0",
+   "+0.328"
+  ],
+  [
+   "WaveTrend (1h): middle",
+   "397",
+   "29.2",
+   "-0.070"
+  ],
+  [
+   "WaveTrend (1h): overbought",
+   "74",
+   "24.3",
+   "-0.161"
+  ],
+  [
+   "WaveTrend (1h): oversold",
+   "33",
+   "36.4",
+   "-0.145"
+  ],
+  [
+   "Relative volume (1h): middle third",
+   "169",
+   "32.0",
+   "+0.173"
+  ],
+  [
+   "Relative volume (1h): high third",
+   "170",
+   "30.6",
+   "+0.022"
+  ],
+  [
+   "Relative volume (1h): low third",
+   "170",
+   "24.7",
+   "-0.447"
+  ]
+ ],
+ "n_needed_for_0p30R_lift": 401,
+ "bucket_money": {
+  "top": {
+   "n": 139,
+   "gross": 0.6678107072156455,
+   "fee": 0.23820196950292125,
+   "net": 0.4296087377127243,
+   "too_few": false
+  },
+  "middle": {
+   "n": 137,
+   "gross": -0.10462760616675601,
+   "fee": 0.2507898023246723,
+   "net": -0.3554174084914283,
+   "too_few": false
+  },
+  "bottom": {
+   "n": 142,
+   "gross": 0.02975062972027854,
+   "fee": 0.24490474331806697,
+   "net": -0.21515411359778847,
+   "too_few": false
+  }
+ },
+ "week_kfold": {
+  "top_mean": 0.056250296018749237,
+  "top_ci95": [
+   -0.29582049130618576,
+   0.44467723219233785
+  ],
+  "bottom_mean": -0.18261974091688746,
+  "spread": 0.2388700369356367,
+  "n_top": 132
+ },
+ "periods": {
+  "2020": {
+   "n_top": 46,
+   "top_mean": 0.33594428467043863,
+   "n_bottom": 57,
+   "bottom_mean": -0.00422218759226115,
+   "spread": 0.3401664722626998
+  },
+  "2021-01..2022-03": {
+   "n_top": 93,
+   "top_mean": 0.4759373919056829,
+   "n_bottom": 85,
+   "bottom_mean": -0.3566025816250244,
+   "spread": 0.8325399735307073
+  }
+ },
+ "same_sign_top": true,
+ "same_sign_spread": true,
+ "splits": [
+  {
+   "feature": "BBWP (1h)",
+   "reading": "not available",
+   "n": 2,
+   "win_pct": 100.0,
+   "mean": 2.573321239438944,
+   "lo": NaN,
+   "hi": NaN,
+   "distinguishable_from_zero": false
+  },
+  {
+   "feature": "BBWP (1h)",
+   "reading": "compression, 30 or below",
+   "n": 117,
+   "win_pct": 27.350427350427353,
+   "mean": -0.06997474831419646,
+   "lo": -0.5429856229393842,
+   "hi": 0.5204935988193502,
+   "distinguishable_from_zero": false
+  },
+  {
+   "feature": "BBWP (1h)",
+   "reading": "normal, 30 to 85",
+   "n": 300,
+   "win_pct": 30.666666666666664,
+   "mean": -0.07191603287961634,
+   "lo": -0.35404349442333444,
+   "hi": 0.2623811962080796,
+   "distinguishable_from_zero": false
+  },
+  {
+   "feature": "BBWP (1h)",
+   "reading": "expansion, 85 or above",
+   "n": 90,
+   "win_pct": 24.444444444444443,
+   "mean": -0.20313579029198436,
+   "lo": -0.7375419440677379,
+   "hi": 0.43357115500278787,
+   "distinguishable_from_zero": false
+  },
+  {
+   "feature": "D1 trend",
+   "reading": "not available",
+   "n": 34,
+   "win_pct": 29.411764705882355,
+   "mean": 0.19587547462537191,
+   "lo": -0.7765765174157695,
+   "hi": 1.5887395927489174,
+   "distinguishable_from_zero": false
+  },
+  {
+   "feature": "D1 trend",
+   "reading": "up (close above 50-day average)",
+   "n": 284,
+   "win_pct": 29.577464788732392,
+   "mean": -0.11619269277942142,
+   "lo": -0.4179901574219416,
+   "hi": 0.2268730990983128,
+   "distinguishable_from_zero": false
+  },
+  {
+   "feature": "D1 trend",
+   "reading": "down (close below 50-day average)",
+   "n": 191,
+   "win_pct": 28.272251308900525,
+   "mean": -0.08669358875368359,
+   "lo": -0.47242812599133216,
+   "hi": 0.3537016487826273,
+   "distinguishable_from_zero": false
+  },
+  {
+   "feature": "Cowen band (daily close)",
+   "reading": "not available",
+   "n": 91,
+   "win_pct": 24.175824175824175,
+   "mean": -0.2568019726582819,
+   "lo": -0.7329305709736991,
+   "hi": 0.33265067125776493,
+   "distinguishable_from_zero": false
+  },
+  {
+   "feature": "Cowen band (daily close)",
+   "reading": "above the band",
+   "n": 299,
+   "win_pct": 30.434782608695656,
+   "mean": -0.10865981754315973,
+   "lo": -0.3833053095863696,
+   "hi": 0.22509864139544158,
+   "distinguishable_from_zero": false
+  },
+  {
+   "feature": "Cowen band (daily close)",
+   "reading": "inside the band",
+   "n": 14,
+   "win_pct": 28.57142857142857,
+   "mean": 0.1102290302720267,
+   "lo": NaN,
+   "hi": NaN,
+   "distinguishable_from_zero": false
+  },
+  {
+   "feature": "Cowen band (daily close)",
+   "reading": "below the band",
+   "n": 105,
+   "win_pct": 29.523809523809526,
+   "mean": 0.1087392806614614,
+   "lo": -0.48571703436963337,
+   "hi": 0.7846967025718125,
+   "distinguishable_from_zero": false
+  },
+  {
+   "feature": "Funding sign",
+   "reading": "positive",
+   "n": 455,
+   "win_pct": 27.472527472527474,
+   "mean": -0.12233500164180665,
+   "lo": -0.3884384769796404,
+   "hi": 0.14838860988212965,
+   "distinguishable_from_zero": false
+  },
+  {
+   "feature": "Funding sign",
+   "reading": "negative",
+   "n": 54,
+   "win_pct": 42.592592592592595,
+   "mean": 0.23638873486991538,
+   "lo": -0.48914780223239435,
+   "hi": 1.0944024402309298,
+   "distinguishable_from_zero": false
+  },
+  {
+   "feature": "Session (UTC)",
+   "reading": "US, 13-21",
+   "n": 509,
+   "win_pct": 29.076620825147348,
+   "mean": -0.08427786653054341,
+   "lo": -0.33337423714379294,
+   "hi": 0.16056785384809621,
+   "distinguishable_from_zero": false
+  },
+  {
+   "feature": "RSI 14 (1h)",
+   "reading": "middle, 40 to 60",
+   "n": 287,
+   "win_pct": 31.3588850174216,
+   "mean": -0.0007319852543068014,
+   "lo": -0.31485880255863297,
+   "hi": 0.35530878447289393,
+   "distinguishable_from_zero": false
+  },
+  {
+   "feature": "RSI 14 (1h)",
+   "reading": "high, 60 or above",
+   "n": 142,
+   "win_pct": 21.12676056338028,
+   "mean": -0.3594532649079388,
+   "lo": -0.7855436384493604,
+   "hi": 0.1269600123847817,
+   "distinguishable_from_zero": false
+  },
+  {
+   "feature": "RSI 14 (1h)",
+   "reading": "low, 40 or below",
+   "n": 80,
+   "win_pct": 35.0,
+   "mean": 0.10443761651083423,
+   "lo": -0.5671709071601091,
+   "hi": 0.9276055678156738,
+   "distinguishable_from_zero": false
+  },
+  {
+   "feature": "WaveTrend (1h)",
+   "reading": "not available",
+   "n": 5,
+   "win_pct": 40.0,
+   "mean": 0.3275455619885076,
+   "lo": NaN,
+   "hi": NaN,
+   "distinguishable_from_zero": false
+  },
+  {
+   "feature": "WaveTrend (1h)",
+   "reading": "middle",
+   "n": 397,
+   "win_pct": 29.219143576826195,
+   "mean": -0.07006029502910074,
+   "lo": -0.3482088398304652,
+   "hi": 0.23414674844286257,
+   "distinguishable_from_zero": false
+  },
+  {
+   "feature": "WaveTrend (1h)",
+   "reading": "overbought",
+   "n": 74,
+   "win_pct": 24.324324324324326,
+   "mean": -0.1612328507160309,
+   "lo": -0.7682031118378979,
+   "hi": 0.6735960360255032,
+   "distinguishable_from_zero": false
+  },
+  {
+   "feature": "WaveTrend (1h)",
+   "reading": "oversold",
+   "n": 33,
+   "win_pct": 36.36363636363637,
+   "mean": -0.14515132710454098,
+   "lo": -0.7860653108200742,
+   "hi": 0.6025979681283897,
+   "distinguishable_from_zero": false
+  },
+  {
+   "feature": "Relative volume (1h)",
+   "reading": "middle third",
+   "n": 169,
+   "win_pct": 31.952662721893493,
+   "mean": 0.17284549904788693,
+   "lo": -0.30506124407727603,
+   "hi": 0.7003806794998463,
+   "distinguishable_from_zero": false
+  },
+  {
+   "feature": "Relative volume (1h)",
+   "reading": "high third",
+   "n": 170,
+   "win_pct": 30.58823529411765,
+   "mean": 0.02239798914374357,
+   "lo": -0.3835944947948839,
+   "hi": 0.49803630809332394,
+   "distinguishable_from_zero": false
+  },
+  {
+   "feature": "Relative volume (1h)",
+   "reading": "low third",
+   "n": 170,
+   "win_pct": 24.705882352941178,
+   "mean": -0.44656459739750526,
+   "lo": -0.7521396589331071,
+   "hi": -0.10822684039799298,
+   "distinguishable_from_zero": true
+  }
+ ],
+ "fill_check": {
+  "filled_checked": 509,
+  "fill_time_differs_from_touch_t": 0,
+  "fill_later_than_touch_t": 0
+ },
+ "holm_p": 0.046511627906976744,
+ "bh_q": 0.023255813953488372,
+ "family_m": 2,
+ "pooled_with_P0_n_top_arithmetic": 301
+}

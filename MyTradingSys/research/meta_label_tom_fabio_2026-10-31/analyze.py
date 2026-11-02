@@ -195,7 +195,7 @@ def splits(read, net, db, q):
 
 
 # ---------- one study ----------
-def analyse(name, t, raw, placebo_n, log=print):
+def analyse(name, t, raw, placebo_n, log=print, split=(19358, ('2022', '2023-01..2024-06'))):
     net, side, tt = t['net'], t['side'], t['touch_t']
     day = tt // DAY
     week = (tt // DAY + 3) // 7
@@ -233,7 +233,7 @@ def analyse(name, t, raw, placebo_n, log=print):
     top2, bot2 = tc2 == 2, tc2 == 0
     t2_lo, t2_hi = db.ci(nt, top2)
     per = {}
-    for lab, m in (('2022', dy < 19358), ('2023-01..2024-06', dy >= 19358)):          # 19358 = 2023-01-01
+    for lab, m in ((split[1][0], dy < split[0]), (split[1][1], dy >= split[0])):          # default 19358 = 2023-01-01
         tp, bt = top & m, bot & m
         per[lab] = {'n_top': int(tp.sum()), 'top_mean': float(nt[tp].mean()) if tp.any() else None, 'n_bottom': int(bt.sum()),
                     'bottom_mean': float(nt[bt].mean()) if bt.any() else None,

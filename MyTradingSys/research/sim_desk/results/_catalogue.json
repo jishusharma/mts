@@ -1,7 +1,7 @@
 {
 "_doc": "Catalogue of known tests on trunk. kind is inferred (kind_source). Built by sim_desk/build_catalogue.py.",
-"count": 329,
-"exported": 329,
+"count": 330,
+"exported": 330,
 "rows": [
 {
 "id": "st-_archive-loose_2026-10-cbp_profile6_result",
@@ -3141,6 +3141,20 @@
 "date": "2026-10-31",
 "status": "FAILED",
 "verdict_class": "failed"
+},
+{
+"id": "desk-meta_label_fabio_c_dev_ext",
+"family": "Meta-label (layer filter)",
+"title": "Meta-label rerun on the pre-DEV window, Fabio Model C price-only stand-in (ours): can other layers' state at entry pick the winners?",
+"kind": "backtest",
+"kind_source": "result file",
+"verdict": "PASSED",
+"source": "MyTradingSys/research/sim_desk/results/desk-meta_label_fabio_c_dev_ext.json",
+"exported": true,
+"result_id": "desk-meta_label_fabio_c_dev_ext",
+"date": "2026-11-02",
+"status": "SEE_VERDICT",
+"verdict_class": "passed"
 },
 {
 "id": "desk-meta_label_fabio_c",
