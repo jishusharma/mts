@@ -2,6 +2,18 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 15,
+    "folded": "2026-11-02T13:24:25Z",
+    "misses": 5,
+    "reads": [
+      "scripts/dev/c_drive_guard.py",
+      "scripts/dev/test_c_drive_buckets.py",
+      "scripts/dev/wt_maint.py",
+      "scripts/dev/host_health.py"
+    ],
+    "session": "agent-a11cd2f4a8673867f"
+  },
   "created": "2026-11-02T09:59:50Z",
   "depends_on": [],
   "done_when": "test_c_drive_buckets.py passes locally with an empty LOCALAPPDATA and the windows-latest CI job for the shipping sha is green; only the test file (and c_drive_guard.py if a real read bug) changed",
