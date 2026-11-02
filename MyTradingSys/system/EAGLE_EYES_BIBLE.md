@@ -74,6 +74,7 @@ Why this section exists: the 10-28 session was compacted 6 times; each summary k
 - New 4h after a dump 11-02: "new 4 hr started! and this dump was just before that" (four_h_close.py: 4h bar closing in bottom 20%, range>=0.8%, new 24h low, n=265: next 4h breaks the low 85% (median ext -0.47%, p25 -1.23%) yet closes higher 59%, median +0.19%; low in last 15 min n=133: 89% / 61%, no difference)
 - 1h WT zero cross 11-02: 1h Bitstamp screenshot, no text (wt1h_zero.py: WT 1h crosses below 0 from >=50 within 12 bars with RSI<40, n=45: low first 62% vs base 54%, yet 6h close higher 67% median +0.27%, 12h up 58%; 12h max drop median -0.93% = base)
 - Live aid requirements 11-02: "This kind of wavetrend and other indicator reading when they are flipping through time frames is needed during live trading aid/dashboard - mark my requirements - good visuals - less text - actionable content" -> LIVE_AID_REQUIREMENTS.md + card
+- WT 1m extremes 11-02: "i hope u notice the behavior and You try to understand how to positively use this information and apply it in the future. Or in the past, while backtesting." (1m WT cross up from -60 = bounce, cross down from +40 = top; lesson 8, card)
 - Trailing legend 11-02: "keep trailing 1 min 5 min legend" -> FORMAT RULE: every live reply ends with one line `1m: <state> | 5m: <state>` (last bar colour, delta sign, OI direction, level in play). Standing rule while he is in a trade.
 - Coil and force (10-30): "what kind of force makes that happen? Try to measure it ... how far it will go ... support and resistances are the target ... I cannot understand in which direction the coil will fire." First answers: `research/pre_us_squeeze_2026-10-29/`, `research/bb_pierce_force_2026-10-29/`.
 
@@ -137,6 +138,7 @@ Why this section exists: the 10-28 session was compacted 6 times; each summary k
 5. Format rules that stuck: first line = open MTS ACTION, bold result, table of levels with role, clock line, trailing 1m | 5m legend. Numbers in tables, never in prose.
 6. Live data path: Binance API blocked from JIS-NB, Bybit v5 works; coinglass screenshots give OI/CVD the API does not.
 7. Operator asks logged: ask line + table row the same turn (this file). Missed once (rows added 16:35Z for the 14:45-16:30Z asks), fixed here.
+8. Operator teaching 16:33Z (1m Bitstamp, WT_CROSS_LB + RSI): every 1m WaveTrend cross up from the -60 zone today (14:30, 14:55, 16:00, 16:15, 16:28) produced a bounce of 100-250 points within 5-10 bars; the cross-downs from +40 (14:35, 15:12, 15:45) marked the push tops. His words: "I hope you notice the behavior and try to understand how to positively use this information and apply it in the future, or in the past, while backtesting." Read: the oscillator extremes time the swings inside a range day even though the 15m atlas (W04) found zero mean edge. Hypothesis: edge is in the bounce SIZE relative to the bar range and in the CONTEXT (range day, HTF trend down), not in direction alone. Card wt-1m-extreme-cross-bounce filed 11-02.
 
 ## Per-shot frame (OURS, from the teachings above)
 
