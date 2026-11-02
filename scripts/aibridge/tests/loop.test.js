@@ -112,7 +112,7 @@ t('0.7.7 blockFailed: any non-zero exit stops the batch, a read included (E5)', 
 });
 t('0.7.7 notice text tells DSA not to repeat blocks that have a result', () => {
   assert.ok(L.REPLY_NOTICE_TEXT.includes('do not repeat blocks that already have a result'));
-  assert.ok(L.ANSWER_MIN_CHARS <= 15);
+  assert.ok(L.ANSWER_MIN_CHARS <= 2);   // 'ok', the reply the notice asks for, must count as an answer
 });
 (async () => {
   const never = new Promise(() => {});

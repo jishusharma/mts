@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "grep -c UNVERIFIED MyTradingSys/research/layer_lab/reports/layer_review_positioning_volume_callers.md"
+  ],
+  "created": "2026-11-02T11:12:40Z",
+  "depends_on": [],
+  "done_when": "grep -c UNVERIFIED returns 0 in layer_review_positioning_volume_callers.md and layer_review_rsi_cc_pitchfork_engine.md; each flag confirmed with file:line or the claim removed",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Clear the 71 UNVERIFIED quote/cite flags (35 + 36) in two layer review reports",
+  "id": "resolve-the-71-unverified-quote-cite-fla",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "layer review sheets: positioning/volume/callers (7 layers) and rsi/cryptocred/pitchfork/li",
+      "ref": "b88038f97616",
+      "utc": "2026-11-02T11:12:02Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "b88038f97616 layer review sheets: positioning/volume/callers (7 layers) and rsi/cryptocred",
+      "ref": "MyTradingSys/research/layer_lab/reports/layer_review_positioning_volume_callers.md",
+      "utc": "2026-11-02T11:12:02Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "DECISION (OURS): shares facts with gemini-layer-facts card; run after it, flags may drop.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-02T11:45:27Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/reports/layer_review_positioning_volume_callers.md",
+    "MyTradingSys/research/layer_lab/reports/layer_review_rsi_cc_pitchfork_engine.md"
+  ],
+  "scope_out": [
+    "other reports, product code"
+  ],
+  "scope_sha": "b88038f97616",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/layer_review_rsi_cc_pitchfork_engine.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "For each UNVERIFIED flag grep the cited file for the quote",
+    "Replace with file:line if found, else delete the claim",
+    "Recount flags to 0"
+  ],
+  "tests": "grep -c UNVERIFIED on both files prints 0 (35 and 36 before)",
+  "title": "Resolve the 71 UNVERIFIED quote/cite flags in layer_review_positioning_volume_callers.md and layer_review_rsi_cc_pitchfork_engine.md (4e29dc2e); done-when: each flag confirmed with file:line or the claim removed, 0 UNVERIFIED left",
+  "weight": "",
+  "worker": "session"
+}

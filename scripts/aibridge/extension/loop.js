@@ -1,7 +1,7 @@
 // loop.js - pure helpers for the auto-loop. No DOM, no chrome.* so node can test them.
 (function (root) {
   var L = {};
-  L.VERSION = '0.7.11';
+  L.VERSION = '0.7.17';
 
   L.fnv = function (s) {
     var h = 2166136261;
@@ -192,6 +192,15 @@
     if (b.exit !== 0) return 'exit ' + b.exit + (b.kind === 'read' ? ' (read)' : '');
     return null;
   };
+  // 0.7.12: version drift. loaded = the running extension (chrome.runtime.getManifest), disk = manifest.json on disk now (an
+  // unpacked extension is read from disk, so a newer disk copy means Chrome still runs old code), agent = GET /ping.
+  // -> {level: ok|ext_stale|agent_mismatch, text}. ext_stale outranks agent_mismatch (reload fixes it first). null = unknown, never an alarm.
+  L.cmpVer = function (a, b) { var x = String(a).split('.').map(Number), y = String(b).split('.').map(Number); for (var i = 0; i < 3; i++) { var d = (x[i] || 0) - (y[i] || 0); if (d) return d < 0 ? -1 : 1; } return 0; };
+  L.versionState = function (loaded, disk, agent) {
+    if (disk && loaded && disk !== loaded) return { level: 'ext_stale', text: 'VERSION MISMATCH: extension running ' + loaded + ' but ' + disk + ' is installed on disk; reload pending' };
+    if (agent && loaded && agent !== loaded) return { level: 'agent_mismatch', text: 'VERSION MISMATCH: extension ' + loaded + ' but the agent runs ' + agent + (L.cmpVer(agent, loaded) < 0 ? ' (agent not restarted: python scripts/dev/aibridge_install.py --restart-agent)' : ' (extension not reloaded)') };
+    return { level: 'ok', text: '' };
+  };
   L.expireText = function (waitedMs, agentRunning) {
     var s = Math.round(waitedMs / 1000);
     return 'run lock released after ' + s + ' s: no completion arrived' +
@@ -262,7 +271,7 @@
   // state = replyWatch() ; event = {type:'posted'|'reply'|'tick'|'reset', busy: in-flight run or draft being typed}
   // -> {state, action: 'none'|'notice'|'stop'}. One notice per chain, then stop. noticeMs 45 s (OURS) keeps it under 60 s.
   L.REPLY_NOTICE_MS = 45000;
-  L.ANSWER_MIN_CHARS = 10;   // OURS: any visible growth after the quiet counts as DSA's answer ('Done, all PASS.' = 15)
+  L.ANSWER_MIN_CHARS = 2;   // OURS: any visible growth after the quiet counts as DSA's answer; 'ok' (what the notice asks for) = 2. Was 10: 'Done.' read as a dropped generation
   L.replyWatch = function (state, ev, now, noticeMs) {
     var s = state ? { phase: state.phase, since: state.since, notices: state.notices } : { phase: 'idle', since: 0, notices: 0 };
     ev = ev || {};

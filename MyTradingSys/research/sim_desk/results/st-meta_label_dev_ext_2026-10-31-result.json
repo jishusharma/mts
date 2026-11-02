@@ -1,0 +1,79 @@
+{
+ "id": "st-meta_label_dev_ext_2026-10-31-result",
+ "kind": "backtest",
+ "family": "Meta Label Dev Ext",
+ "title": "RESULT: meta-label rerun, Fabio Model C price-only stand-in (ours), pre-DEV window 2020-01-02..2022-03-31",
+ "provenance": "source-extracted",
+ "date": "2026-10-31",
+ "what": [
+  {
+   "name": "Rule or setup, line 1 from the source",
+   "value_plain": "Best third by filter: +0.430 R (95 % range +0.028..+0.869) vs random third (all model trades) -0.047 R.",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 2 from the source",
+   "value_plain": "filled trades / complete-case (model) / dropped 509 / 418 / 91 (Cowen 21-week warm-up, WaveTrend, BBWP warm-up)",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 3 from the source",
+   "value_plain": "n per tercile (top / middle / bottom) 139 / 137 / 142",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 4 from the source",
+   "value_plain": "top tercile mean net R, 95 % day-block CI +0.430, +0.028..+0.869 (97.5 % level: -0.024..+0.937)",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 5 from the source",
+   "value_plain": "middle / bottom tercile mean net R -0.355 / -0.215",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule or setup, line 6 from the source",
+   "value_plain": "top-minus-bottom spread, CI +0.645, +0.114..+1.194",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not re-run. Numbers and sentences below were copied from the committed source note; the verdict is the line as written there.",
+ "window": "2020-01-02 to 2022-03-31 (as written in the source)",
+ "verdict": {
+  "label": "by the pre-registered rule: PASSED (marginal, read the flags)",
+  "tone": "good"
+ },
+ "why": [
+  "It does not replicate the DEV window (P0 top -0.003 R, NOT ENOUGH DATA). One descriptive reading is distinguishable from zero after Bonferroni: relative volume low third -0.447 R (n 170, a loser bucket, not a winner).",
+  "Expected vs realised: pre-reg expected NOT ENOUGH DATA from ~140 per third; n_top came in at 139 as predicted, but the CI lower bound and placebo cleared, so the rule says PASSED rather than NOT ENOUGH DATA (the NOT ENOUGH DATA clause needs a CI that spans 0…",
+  "Per PRE_REG_EXT section 3 this is a hypothesis for the card owner, not a gate. No VALIDATION read was made and none is made here (the one-shot read is spent on a decision, not on a marginal pass; ROADMAP 2.2 PASS branch: P1 stresses first: trade-through fills…"
+ ],
+ "kpis": [
+  {
+   "label": "net R after fees (first value in the source)",
+   "value": "-0.355",
+   "tone": "bad"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: source-extracted, the source holds no trade list"
+  }
+ ],
+ "evidence": [
+  {
+   "field": "net_r",
+   "value": -0.355,
+   "quote": "middle / bottom tercile mean net R -0.355 / -0.215"
+  }
+ ],
+ "missing": {
+  "n_trades": "the source does not state a trade count"
+ },
+ "source_files": [
+  "MyTradingSys/research/meta_label_dev_ext_2026-10-31/RESULT.md"
+ ],
+ "commit": "c658d6fe5"
+}
