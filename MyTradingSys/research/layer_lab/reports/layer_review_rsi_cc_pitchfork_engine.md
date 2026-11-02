@@ -118,7 +118,7 @@ Wired in the simulator: no. `MyTradingSys/research/sim_desk/PLUGIN.md` row "RSI 
    - **Sample Size (n)**: 7h@00 n=46 (+1.09%, t 2.11); 7h@18 n=47 (+0.15%, t 0.25); 7h@22 n=45 (+0.65%, t 1.18); 7h@23 n=43 (+0.46%, t 1.23); only the 18:00 NY (22/23 UTC) anchor is sourced (`MyTradingSys/research/t090_7h_2026-10-09/RESULT.md:17,17-20`).
 
 ### Bugs and assumptions
-- **Ruling B154**: "No regime-stratified and no session-stratified backtest verdict exists; every reported edge is one aggregate number... B154 regime split not available in code yet" (`MyTradingSys/research/BUGS.md:266`; `MyTradingSys/research/rsi_divergence_mtf_2026-10-09/RESULT.md:20`).
+- **Ruling B154**: "No regime-stratified and no session-stratified backtest verdict exists; every reported edge is one aggregate number" (`MyTradingSys/research/BUGS.md:266`); the RSI result notes "B154 regime split not available in code yet" (`MyTradingSys/research/rsi_divergence_mtf_2026-10-09/RESULT.md:20`).
 - **Consecutive Swings Constraint in v1**: "A and B are CONSECUTIVE swing points of the same kind (v1 limit: a divergence against an older, non-adjacent swing is not detected)." (`MyTradingSys/backtest/layers/rsi/rsi_divergence.py:12-14`).
 - **Absence of Sourced Exits**: No stop/target bracket or candle confirmation was tested in the raw signal backtest (`MyTradingSys/research/rsi_divergence_mtf_2026-10-09/RESULT.md:16`; `MyTradingSys/research/LAYER_PROVENANCE_AUDIT.md:40-42`).
 - **Unverified Operator Arm Provenance**: Operator 11-60 bar range was explicitly flagged as NO-SOURCE and contrary to Malkan's stated warning on dilution (`MyTradingSys/backtest/layers/rsi/run_divergence_mtf.py:10-14`).
@@ -194,7 +194,7 @@ Wired in the simulator: no. `MyTradingSys/research/sim_desk/PLUGIN.md` lists Cry
 
 **Run 1: L1-D3 075 CryptoCred Adapter Baseline (2026-09-27)**
 - **Report path**: `MyTradingSys/backtest/layers/BACKTEST_L1_REPORT.md:37-64`
-- **Fee-net or not**: Gross 5-bar forward return stats, plus simulated trades with default taker/maker fees without funding (`MyTradingSys/backtest/layers/BACKTEST_L1_REPORT.md:37-43,92-95`).
+- **Fee-net or not**: Gross 5-bar forward return stats, plus simulated trades with default taker/maker fees without funding (`MyTradingSys/backtest/layers/BACKTEST_L1_REPORT.md:37-43,85-86`).
 - **In-sample or out-of-sample**: NOT_IN_DATA for the CC adapter (the 70/30 split is stated only for the D3 RSI study, `MyTradingSys/backtest/layers/BACKTEST_L1_REPORT.md:7`); CC adapter on 1h bars (`MyTradingSys/backtest/layers/BACKTEST_L1_REPORT.md:37`).
 - **n trades & results** (`MyTradingSys/backtest/layers/BACKTEST_L1_REPORT.md:39-42`):
   - `setup1_sr_flip`: 2,517 signals, 500 sim trades (capped), h5 mean return +0.021%, hit rate 46.3%, sim win rate 51.2% (`MyTradingSys/backtest/layers/BACKTEST_L1_REPORT.md:39-42`).
@@ -287,7 +287,7 @@ Wired in the simulator: no. `MyTradingSys/research/sim_desk/PLUGIN.md` lists Cry
 
 - Ruling B143 (BLOCKED / MED) (`MyTradingSys/items/B143_cryptocred_stop_buffer_and_target_unsourced.md:1-8`):
   - Title: CryptoCred 0.1 percent stop buffer and 1.5R target are NO-SOURCE (`MyTradingSys/items/B143_cryptocred_stop_buffer_and_target_unsourced.md:1-8`).
-  - Findings: Setup 1, 2, and 3 stops utilize a hardcoded 0.1% buffer (`cc_setups.py:53,89,178`), and setups 1 and 2 utilize a fixed 1.5R target (`cc_setups.py:53,89`), which are repo-invented numbers (NO-SOURCE) (`MyTradingSys/items/B143_cryptocred_stop_buffer_and_target_unsourced.md:12-14,40`).
+  - Findings: Setup 1, 2, and 3 stops utilize a hardcoded 0.1% buffer (`MyTradingSys/backtest/layers/cryptocred/cc_setups.py:53,89,181`), and setups 1 and 2 utilize a fixed 1.5R target (`MyTradingSys/backtest/layers/cryptocred/cc_setups.py:53,89`), which are repo-invented numbers (NO-SOURCE) (`MyTradingSys/items/B143_cryptocred_stop_buffer_and_target_unsourced.md:12-14,40`).
 - Ruling B145 (CLOSED / LOW) (`MyTradingSys/items/B145_cc_range_noise_live_neutrality.md:1-8`):
   - Title: `classify_msb` `filter_range_noise` is off in the live CryptoCred layer; no evidence it is neutral or better (`MyTradingSys/items/B145_cc_range_noise_live_neutrality.md:1-8`).
   - Receipt: Tested on archive replay; turning the flag on made net R worse for `setup1_sr_flip` and `setup3_failed_msb_reversal`; flag kept disabled (`MyTradingSys/items/B145_cc_range_noise_live_neutrality.md:29-34`).
@@ -461,8 +461,8 @@ Wired in the simulator: no. `MyTradingSys/research/sim_desk/PLUGIN.md` lists the
 - **Position Netting Isolation**: 1 concurrent trade per subaccount (`SOURCED`, quote: "Deribit nets one BTC-PERPETUAL position per account, so each account = one concurrent trade." in `MyTradingSys/execution/TESTNET_SUBACCOUNTS.md:3`).
 - **Execution Fee Floor**: Deribit taker 0.05% per side, 10 bp round trip before slippage (`SOURCED`, quote: "DERIBIT_TAKER = BINANCE_TAKER = 0.0005 per side" in `MyTradingSys/backtest/layers/FORMULAS.md:410`; "10 bp round trip (2 x DERIBIT_TAKER), before slippage" in `MyTradingSys/backtest/fees.py:20`).
 - **Safety State Propagation**: claim removed (no cite verifiable on trunk).
-- **Unsourced Bracket Parameters**: Stop percentage 1.0%, target 2.0%, horizon 8 bars (1h) (`OURS` / `NO-SOURCE`, quote: "Layer bracket in auto_trader.py is a fixed unsourced stop_pct 1.0, targets 2, size 20" in `MyTradingSys/research/BUGS.md:229` [B118]).
-- **Unsourced Stop Floors**: Minimum stop floor 0.1% and fallback stop 0.2% (`OURS` / `NO-SOURCE`, quote: "Unsourced 0.1 percent minimum stop floor and 0.2 percent fallback stop are still live in code" in `MyTradingSys/research/BUGS.md:227` [B116]).
+- **Unsourced Bracket Parameters**: Stop percentage 1.0%, target 2.0%, horizon 8 bars (1h) (`OURS` / `NO-SOURCE`, quote: "Layer bracket in auto_trader.py is a fixed unsourced stop_pct 1.0, targets 2, size 100 for every layer alert" in `MyTradingSys/research/BUGS.md:229` [B118]).
+- **Unsourced Stop Floors**: Minimum stop floor 0.1% and fallback stop 0.2% (`OURS` / `NO-SOURCE`, quote: "Unsourced 0.1 percent minimum stop floor and 0.2 percent fallback stop are still live in SetupCandidatesBuilder" in `MyTradingSys/research/BUGS.md:227` [B116]).
 - **Unsourced Proof Gating Bands**: Proof bands 3 and 5 gating entry (`OURS` / `NO-SOURCE`, quote: "Unsourced proof bands 3 and 5 gate WAIT_PROOF, WATCH and SETUP_FORMING" in `MyTradingSys/research/BUGS.md:228` [B117]).
 - **Unsourced Net R:R Hurdle**: Net R:R floor 1.25 (`OURS` / `NO-SOURCE`, quote: "proof bands 3 and 5, net_rr floor 1.25, min stop floors are NO-SOURCE" in `MyTradingSys/research/layer_review_2026-10-26/LAYER_SHEETS.md:20`).
 - **Mainnet Confirmation Guard**: claim removed (no cite verifiable on trunk).
@@ -490,11 +490,11 @@ Wired in the simulator: no. `MyTradingSys/research/sim_desk/PLUGIN.md` lists the
    - **Sample Size (n)**: 27 documented markdown evaluations + 2 subdirectories = 29 items (`MyTradingSys/research/gpt_rederive_2026-10-26/layer_rederive/live_engine.md:24,53`).
 
 ### Bugs and assumptions
-- **Ruling B075**: "Historical mode unfit for backtesting; zeroes trade_flow/book_imbalance/funding/OI, produces hollow snapshots" (`MyTradingSys/research/BUGS.md:160`). Closed 2026-09-27.
+- **Ruling B075**: "Historical mode unfit for backtesting; zeroes trade_flow/book_imbalance/funding/OI, omits session/order_flow" (`MyTradingSys/research/BUGS.md:160`). Closed 2026-09-27.
 - **Ruling B081**: claim removed (no cite verifiable on trunk).
-- **Ruling B116**: "Unsourced 0.1 percent minimum stop floor and 0.2 percent fallback stop are still live in code" (`MyTradingSys/research/BUGS.md:227`). Closed 2026-10-04.
-- **Ruling B117**: "Unsourced proof bands 3 and 5 gate WAIT_PROOF, WATCH and SETUP_FORMING in start-trading logic" (`MyTradingSys/research/BUGS.md:228`). Open.
-- **Ruling B118**: "Layer bracket in auto_trader.py is a fixed unsourced stop_pct 1.0, targets 2, size 20" (`MyTradingSys/research/BUGS.md:229`). Closed 2026-10-04.
+- **Ruling B116**: "Unsourced 0.1 percent minimum stop floor and 0.2 percent fallback stop are still live in SetupCandidatesBuilder" (`MyTradingSys/research/BUGS.md:227`). Closed 2026-10-04.
+- **Ruling B117**: "Unsourced proof bands 3 and 5 gate WAIT_PROOF, WATCH and SETUP_FORMING in start-trading-day.ps1" (`MyTradingSys/research/BUGS.md:228`). Open.
+- **Ruling B118**: "Layer bracket in auto_trader.py is a fixed unsourced stop_pct 1.0, targets 2, size 100 for every layer alert" (`MyTradingSys/research/BUGS.md:229`). Closed 2026-10-04.
 - **Ruling B136**: claim removed (no cite verifiable on trunk).
 - **Task T085**: "97 % of testnet trades end on the time exit: find why targets/stops are almost never reached" (`MyTradingSys/research/BUGS.md:187`).
 - **Operational State HALT**: "Testnet HALT since 2026-10-12 09:46Z (executor fail_closed); supervisor clears it" (`MyTradingSys/system/LAYERS.md:195`; `MyTradingSys/system/layer_index.json:532`).
