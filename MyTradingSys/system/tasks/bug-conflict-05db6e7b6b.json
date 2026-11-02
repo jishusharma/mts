@@ -7,11 +7,11 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-02T17:03:11Z",
+    "folded": "2026-11-02T17:05:08Z",
     "misses": 25,
     "reads": [
-      "MyTradingSys/system/roles/supervisor.md",
       "scripts/dev/test_supervisor.py",
+      "MyTradingSys/system/roles/supervisor.md",
       "scripts/dev/role_loader.py",
       "scripts/dev/usage_reminder.py"
     ],
