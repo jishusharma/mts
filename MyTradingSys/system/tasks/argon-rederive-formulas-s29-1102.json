@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T19:13:58Z",
   "commands": [],
   "created": "2026-11-02T18:25:32Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/argon_audits_2026-11-02/formulas_s29.md (SAME=14 DIFF=0 NOT_IN_DATA=",
+      "ref": "44806b48d",
+      "utc": "2026-11-02T19:13:58Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,7 +47,12 @@
   "refs": [
     "MyTradingSys/system/GEMINI_START.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/argon_audits_2026-11-02/formulas_s29.md (SAME=14 DIFF=0 NOT_IN_DATA=0)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/argon_audits_2026-11-02/formulas_s29.md (new)",
     "MyTradingSys/backtest/layers/FORMULAS.md (read)",
@@ -52,12 +64,13 @@
   "scope_sha": "5fd35b41ff92",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read FORMULAS.md section 29 before the code and compute each worked example independently",
     "read the code and compare each formula, boundary and rounding",
     "write one row per formula: SAME / DIFF / NOT_IN_DATA with file:line; first line holds the three counts"
   ],
+  "taken": "2026-11-02T19:13:58Z",
   "tests": "see done_when (audit card, output file is the test)",
   "title": "[GEMINI] Argon re-derives FORMULAS.md s29 Tom VP return-to-value against the code",
   "weight": "ROUTINE",

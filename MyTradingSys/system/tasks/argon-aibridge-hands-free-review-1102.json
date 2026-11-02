@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T18:48:47Z",
   "commands": [],
   "created": "2026-11-02T18:25:28Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/argon_audits_2026-11-02/aibridge_hands_free_review.md (11 ranked fin",
+      "ref": "8dada1b16",
+      "utc": "2026-11-02T18:48:47Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,7 +47,12 @@
   "refs": [
     "MyTradingSys/system/GEMINI_START.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/argon_audits_2026-11-02/aibridge_hands_free_review.md (11 ranked findings: 3 High, 5 Medium, 3 Low-Medium)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/argon_audits_2026-11-02/aibridge_hands_free_review.md (new)",
     "MyTradingSys/research/aibridge_rootcause_2026-11/ROOT_CAUSES.md (read)",
@@ -55,12 +67,13 @@
   "scope_sha": "193540ce772f",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read the root causes, then the extension code and the local agent under scripts/aibridge/src",
     "trace timer throttling, MV3 worker sleep, extension reload, failed post and stream pause",
     "rank findings by likelihood in an unattended run with file:line, sequence of events and smallest fix; state what the code cannot show; never suggest weakening a safety check"
   ],
+  "taken": "2026-11-02T18:48:47Z",
   "tests": "see done_when (audit card, output file is the test)",
   "title": "[GEMINI] Argon independent review: AIBridge hands-free failure paths after 0.7.19",
   "weight": "ROUTINE",
