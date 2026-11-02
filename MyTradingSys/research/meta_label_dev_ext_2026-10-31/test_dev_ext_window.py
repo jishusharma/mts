@@ -10,12 +10,14 @@ sys.path.insert(0, str(HERE))
 import ext_window as W  # noqa: E402
 
 APR1 = 1_648_771_200_000      # 2022-04-01 00:00 UTC, computed independently (days since epoch 19083 x 86400000)
+needs_data = unittest.skipUnless(Path('F:/MTS/data/dev_ext_2019_2021/klines').is_dir(), 'dev_ext klines are outside the repo (absent on CI)')
 
 
 class Window(unittest.TestCase):
     def test_cut_constant(self):
         self.assertEqual(W.CUT_MS, APR1)
 
+    @needs_data
     def test_no_bar_at_or_after_cut(self):
         a6, a5 = W.load_window()
         self.assertLess(a6[:, 0].max(), APR1)
@@ -23,6 +25,7 @@ class Window(unittest.TestCase):
         self.assertGreaterEqual(a6[:, 0].min(), W.EXT_START_MS)
         self.assertEqual(a6[:, 0].max(), APR1 - 60000)          # the last minute of 2022-03-31 is present
 
+    @needs_data
     def test_window_one_bar_too_wide_is_caught(self):
         a6, _ = W.load_window()
         wide = np.r_[a6[:, 0], APR1]                            # one bar too wide: the 2022-04-01 00:00 bar
@@ -30,10 +33,12 @@ class Window(unittest.TestCase):
             W.guard(wide, 'wide')
         W.guard(a6[:, 0], 'ok')
 
+    @needs_data
     def test_funding_inside_window(self):
         t, _ = W.load_funding()
         self.assertLess(t.max(), APR1)
 
+    @needs_data
     def test_installed_studies_see_only_window(self):
         a6, a5 = W.load_window()
         W.install(a6, a5)
