@@ -7,13 +7,14 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-02T17:06:38Z",
-    "misses": 26,
+    "folded": "2026-11-02T17:07:30Z",
+    "misses": 28,
     "reads": [
       "scripts/dev/test_supervisor.py",
       "MyTradingSys/system/roles/supervisor.md",
       "scripts/dev/role_loader.py",
-      "scripts/dev/usage_reminder.py"
+      "scripts/dev/usage_reminder.py",
+      "MyTradingSys/tests/test_role_budget.py"
     ],
     "session": "agent-a504ae34e1b5deba8"
   },
