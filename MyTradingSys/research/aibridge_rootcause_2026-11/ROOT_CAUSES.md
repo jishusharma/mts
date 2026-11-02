@@ -51,3 +51,12 @@ Proven on a fake chat page (headless browser, tab simulated hidden): 54-block ch
 | cwd `F:\AIBridge` / editing the installed bridge | n/a | refused; edit and test a copy in own worktree | bridge limits are the operator's |
 | Review Claude ships, file blocking findings | yes | yes (prompt 00); Claude must answer before closing: by prompt rule only, not enforced in code | none |
 | Stop/override/HALT a Claude session | n/a | no | findings are the only lever |
+
+## Real-page chain on NUC (0.7.17, 11-02 15:11-15:16Z): hands-free went OFF; causes reproduced on the fake page, fixed in 0.7.19
+| # | Cause | Status | Fix |
+|---|---|---|---|
+| 10 | Blocks "arrived empty": a code block whose body renders after its `# AIRUN` marker was read at once, reported "no command", and marked done (11 of the chain's receipts). | R (test a fails on 0.7.17) | A bodyless block waits up to 30 s; then NOT_RUN. |
+| 11 | A stream pause longer than the 2 s quiet window ran a half-written command ("long lines cut before running"). | R (test b) | A second read 1.2 s later must be identical, else read again. |
+| 12 | Result post waited 180 s for an idle chat, then ended hands-free ("the result was not posted"); DeepSeek meanwhile moved on and the receipts arrived a reply late. | R (test c) | A result that could not be posted because the chat stayed busy is queued and retried 4 times (about 15 min) before stopping. |
+| 13 | Stop reasons were invisible in the audit log. | R (test d) | Every auto-OFF, retry and bodyless wait writes an `EXT-EVENT` audit row (agent 0.7.19 `event` request; no execution). |
+Still not proven: the full 54-block run on the real page. Row 20261102-131341 was closed failed; reposted after the 0.7.19 install.

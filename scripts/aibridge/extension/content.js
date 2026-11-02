@@ -449,7 +449,13 @@
     ui.count.textContent = runs + '/' + CFG.aibridge_cap;
     ui.box.className = 'aibridge-ctl' + (autoRun ? ' on' : '');
   }
+  // 0.7.18: every stop and retry reason goes to the agent's audit log (the banner is invisible there)
+  function auditEvent(text) {
+    try { if (alive()) chrome.runtime.sendMessage({ type: 'airun', event: String(text).slice(0, 400), auto: true, rid: newRid() }, function () { void chrome.runtime.lastError; }); } catch (e) {}
+  }
+  var emptyFirst = 0;
   function stopAuto(why) {
+    auditEvent('auto OFF: ' + (why || 'stopped'));
     autoRun = false; stopHold = true; token++; pending = []; watch = null;
     setStatus(why || 'stopped');
     showStopBanner(L.stopNotice(why));
@@ -487,6 +493,20 @@
     var blocks = allBlocks().filter(function (b) { return !ranKeys[blockKey(b)]; });
     if (!blocks.length && trigger && !ranKeys[blockKey(trigger)]) blocks = [trigger];
     if (!blocks.length) return;
+    // 0.7.18: read a block only when complete. (a) a block with a marker but no body yet is still rendering: wait up to 30 s
+    // instead of reporting 'no command' and marking it done; (b) the text must be identical across a second read 1.2 s later,
+    // so a pause in the stream never runs a half-written command.
+    var bodyless = blocks.filter(function (b) { return !blockCmd(b) && !L.parseMarker(btext(b)).task; });
+    if (bodyless.length) {
+      if (!emptyFirst) { emptyFirst = Date.now(); auditEvent('block body not rendered yet, waiting (' + bodyless.length + ' of ' + blocks.length + ')'); }
+      if (Date.now() - emptyFirst < 30000) { setStatus('a block has no body yet; waiting for the page to finish rendering it'); return; }
+    } else emptyFirst = 0;
+    var snap = blocks.map(btext).join('\u0001');
+    await sleep(1200);
+    if (myToken !== token) return;
+    var again = allBlocks().filter(function (b) { return !ranKeys[blockKey(b)]; });
+    if (again.map(btext).join('\u0001') !== snap) { setStatus('the reply was still changing; reading it again'); return; }
+    emptyFirst = 0;
     if (runs >= CFG.aibridge_cap) { stopAuto('auto OFF at the cap: ' + CFG.aibridge_cap + ' blocks ran in this chain. Tick the box again to continue (the counter restarts).'); return; }
     // mark first: a block is never run twice, and anything that appears while we run belongs to the next reply
     var items = blocks.map(function (b) { var o = L.parseMarker(btext(b)); return { block: b, cmd: blockCmd(b), opts: o, shown: o.task ? 'TASK ' + o.task + ' ' + JSON.stringify(o.params || {}) + (o.task === 'inline' ? ' plan=' + L.cmdPreview(blockCmd(b), 300) : '') : null }; });
@@ -520,6 +540,13 @@
     var text = (vstate.level !== 'ok' ? '[AIRUN WARNING] ' + vstate.text + '\n' : '') + (seenN > 1 ? '[AIRUN BATCH] blocks_seen=' + seenN + ' blocks_run=' + ran + ' not_run=' + (seenN - ran) + '\n' : '') + texts.join('\n\n');
     var lastN = items[items.length - 1].n;
     var ok = await postParts(text, lastN, myToken, '#' + lastN);
+    // 0.7.18: a result that could not be posted because the chat stayed busy is queued and retried, never dropped
+    for (var rt = 0; !ok && myToken === token && rt < 4 && /never became idle/.test(lastPostErr); rt++) {
+      auditEvent('result #' + lastN + ' not posted (' + lastPostErr + '); retry ' + (rt + 1) + '/4');
+      setStatus('result #' + lastN + ' is queued: the chat is busy; retrying');
+      await sleep(5000);
+      ok = await postParts(text, lastN, myToken, '#' + lastN + ' (retry ' + (rt + 1) + ')');
+    }
     if (!ok) { if (myToken === token) stopAuto('auto OFF: the result was not posted (' + lastPostErr + '). Tick the box again to re-arm.'); return; }
     setStatus('waiting for DSA after #' + lastN);
     watch = L.replyWatch(watch, { type: 'posted' }, Date.now()).state; postedAnsLen = answerLen();

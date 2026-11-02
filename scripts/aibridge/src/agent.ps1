@@ -1,5 +1,5 @@
 $ErrorActionPreference = 'Stop'
-$AgentVersion = '0.7.18'
+$AgentVersion = '0.7.19'
 $AgentStart = Get-Date
 $root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $config = Get-Content -Raw -LiteralPath (Join-Path $root 'config.json') | ConvertFrom-Json
@@ -328,6 +328,16 @@ function Handle-Client {
         $audit.cwd = $cwd
         if ($req.auto) { $audit.auto = $true }
         if ($req.rid) { $audit.rid = [string]$req.rid }
+        # 0.7.18: the extension reports why it stopped or retried (banner text is invisible to the audit log). Token and origin are
+        # already checked; this only writes one audit row and never runs anything.
+        if ($req.event) {
+            $ev = ([string]$req.event) -replace '[\r\n]+', ' '
+            if ($ev.Length -gt 400) { $ev = $ev.Substring(0, 400) }
+            $audit.cmd = 'EXT-EVENT ' + $ev; $audit.result = 'event'; $audit.reason = 'ext_event'
+            Write-Audit $audit
+            Send-Resp $stream 200 'OK' '{"ok":true,"event":true}' $corsOrigin
+            $client.Close(); return
+        }
         $pol = Get-Content -Raw -LiteralPath (Join-Path $root 'policy.json') | ConvertFrom-Json
         $softS = [int]$pol.timeout_soft_s; $hardS = [int]$pol.timeout_hard_s
         # task mode: one call runs a whole playbook (tasks\<name>.json) or an inline plan through scripts\run-task.ps1

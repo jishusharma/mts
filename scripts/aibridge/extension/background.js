@@ -56,7 +56,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       method: 'POST',
       cache: 'no-store',
       headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({ cmd: msg.cmd, cwd: msg.cwd || mc.cwd, timeout_s: msg.timeout_s || undefined, auto: msg.auto ? true : undefined, write: msg.write ? true : undefined, rid: msg.rid || undefined, dry: msg.dry ? true : undefined, shell: msg.shell || undefined, task: msg.task || undefined, task_params: msg.task_params || undefined, task_spec: msg.task_spec || undefined, token: mc.token })
+      body: JSON.stringify({ cmd: msg.cmd, cwd: msg.cwd || mc.cwd, timeout_s: msg.timeout_s || undefined, auto: msg.auto ? true : undefined, write: msg.write ? true : undefined, rid: msg.rid || undefined, event: msg.event || undefined, dry: msg.dry ? true : undefined, shell: msg.shell || undefined, task: msg.task || undefined, task_params: msg.task_params || undefined, task_spec: msg.task_spec || undefined, token: mc.token })
     }).then(r => r.text().then(t => ({ status: r.status, text: t })));
   })
   .then(x => {

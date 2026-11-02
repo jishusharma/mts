@@ -68,7 +68,8 @@ window.chrome = {
     connect: function () { return { onMessage: { addListener: function () {} }, onDisconnect: { addListener: function () {} }, disconnect: function () {} }; },
     getPlatformInfo: function () {},
     sendMessage: function (msg, cb) {
-      window.calls.push({ t: Date.now() - window.T0, type: msg.type, cmd: msg.cmd, task: msg.task, timeout_s: msg.timeout_s, rid: msg.rid, dry: msg.dry });
+      window.calls.push({ t: Date.now() - window.T0, type: msg.type, cmd: msg.cmd, task: msg.task, timeout_s: msg.timeout_s, rid: msg.rid, dry: msg.dry, event: msg.event });
+      if (msg.event) { cb({ ok: true, status: 200, body: { ok: true, event: true } }); return; }
       if (msg.type === 'version') { cb({ loaded: window.loadedVersion || '0.7.3', disk: window.diskVersion || '0.7.3' }); return; }
       if (msg.type === 'reload') { window.reloaded = (window.reloaded || 0) + 1; cb({ ok: true }); return; }
       if (msg.type === 'ping') { cb({ ok: true, status: 200, body: { ok: true, agent: '0.7.3', host: 'H', shell_version: '5.1', pwsh: true, running: window.agentRunning == null ? 0 : window.agentRunning } }); return; }
