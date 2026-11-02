@@ -81,9 +81,9 @@ def main(argv=None):
     m = np.asarray(res['filled'], bool)
     order = np.argsort(np.asarray(res['touch_t'])[m], kind='stable')
     t = {k: np.asarray(res[k])[m][order] for k in ('touch_t', 'side', 'net', 'gross', 'fees', 'exit')}
+    W.guard(t['touch_t'], 'trades')
     OUT.mkdir(parents=True, exist_ok=True)
     np.savez(OUT / 'trades_fabio_c_dev_ext.npz', **t)
-    W.guard(t['touch_t'], 'trades')
     print('filled n', len(t['net']), 'first/last', int(t['touch_t'][0]), int(t['touch_t'][-1]), 'sd(unconditional)', round(float(t['net'].std(ddof=1)), 4))
     if a.trades_only:
         return
