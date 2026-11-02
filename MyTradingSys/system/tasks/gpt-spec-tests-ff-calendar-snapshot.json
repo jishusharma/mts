@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T16:53:38Z",
   "commands": [],
   "created": "2026-11-02T05:48:26Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "build",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "12 tests; 3/3 mutations detected; MyTradingSys/research/layer_lab/reports/2026-11-02_gpt-s",
+      "ref": "b055d2f4c",
+      "utc": "2026-11-02T16:53:38Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -30,7 +37,12 @@
   "refined_by": "",
   "refreshed": "2026-11-02T16:47:25Z",
   "refs": [],
-  "result": "",
+  "result": "12 tests; 3/3 mutations detected; MyTradingSys/research/layer_lab/reports/2026-11-02_gpt-spec-tests-ff-calendar-snapshot.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/test_ff_calendar_snapshot.py",
     "MyTradingSys/research/layer_lab/reports/2026-11-02_gpt-spec-tests-ff-calendar-snapshot.md",
@@ -45,12 +57,13 @@
   "sources": [
     "scripts/dev/ff_calendar_snapshot.py"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read ff_calendar_snapshot.py and list every branch",
     "compute expected values by hand (no running the code first)",
     "write tests, register in extra_tests.tsv, run 3 mutations, write report; verify: content sha, git cherry origin/fast-track empty, git ls-tree shows the files"
   ],
+  "taken": "2026-11-02T16:53:38Z",
   "tests": "python -m pytest scripts/dev/test_ff_calendar_snapshot.py -q (fail-first: each of the 3 mutations makes it fail)",
   "title": "Spec-derived tests for scripts/dev/ff_calendar_snapshot.py (no test file today)",
   "weight": "ROUTINE",
