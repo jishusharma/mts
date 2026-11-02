@@ -4,17 +4,17 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-02T11:58:49Z",
-    "misses": 147,
+    "folded": "2026-11-02T12:11:55Z",
+    "misses": 149,
     "reads": [
       "scripts/dev/verdicts.py",
       "scripts/dev/prereg_gate.py",
       "MyTradingSys/research/VERDICTS.csv",
       "MyTradingSys/backtest/fetch_binance_archive.py",
+      "scripts/dev/run_all_tests.py",
       "MyTradingSys/research/session_sweeps/session_open_study.py",
       "scripts/dev/extra_tests.tsv",
-      "MyTradingSys/items/T058_broken_extremes_sweep_vs_continuation.md",
-      "MyTradingSys/backtest/fees.py"
+      "MyTradingSys/items/T058_broken_extremes_sweep_vs_continuation.md"
     ],
     "session": "agent-ae3b5f10b05b3e062"
   },
