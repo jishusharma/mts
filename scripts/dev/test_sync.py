@@ -1082,6 +1082,34 @@ class SyncTest(unittest.TestCase):
         tracked = subprocess.run(["git", "-C", str(self.b), "ls-files", "runtime_data/_mirror"], capture_output=True, text=True).stdout
         self.assertEqual(tracked.strip(), "")
 
+    def _layers_collision(self):
+        """origin changes LAYERS.md after b branched; b holds its own regenerated (dirty, uncommitted) copy of it."""
+        (self.a / "MyTradingSys" / "system").mkdir(parents=True, exist_ok=True)
+        commit(self.a, sync.LAYERS_REL, "layers v0\n")
+        sync.ship(self.a, gate=self.gate)
+        sh(self.b, "pull", "-q", "origin", "fast-track")
+        commit(self.a, sync.LAYERS_REL, "layers v1\n")
+        sync.ship(self.a, gate=self.gate)
+        (self.b / sync.LAYERS_REL).write_text("layers local regenerated\n", newline="\n")
+
+    def test_merge_trunk_restores_dirty_layers_md(self):
+        """LAYERS.md is generated (stage_layers rewrites it at ship): when it is the only file blocking the merge, restore it and merge."""
+        self._layers_collision()
+        self.assertEqual(sync.merge_trunk(self.b), 1)
+        self.assertEqual((self.b / sync.LAYERS_REL).read_text(), "layers v1\n")
+
+    def test_merge_trunk_keeps_other_dirty_file_blocking(self):
+        """Only the generated LAYERS.md is auto-restored: a dirty hand-edited file the merge would overwrite still stops it."""
+        commit(self.a, "notes.txt", "n0\n")
+        sync.ship(self.a, gate=self.gate)
+        self._layers_collision()
+        commit(self.a, "notes.txt", "n1\n")
+        sync.ship(self.a, gate=self.gate)
+        (self.b / "notes.txt").write_text("n0 local\n", newline="\n")
+        with self.assertRaises(sync.SyncError):
+            sync.merge_trunk(self.b)
+        self.assertEqual((self.b / "notes.txt").read_text(), "n0 local\n")
+
     def test_start_keeps_a_tree_whose_only_dirt_is_the_pulled_mirror(self):
         self.track_mirror()
         sh(self.b, "pull", "-q", "origin", "fast-track")
