@@ -60,3 +60,12 @@ Proven on a fake chat page (headless browser, tab simulated hidden): 54-block ch
 | 12 | Result post waited 180 s for an idle chat, then ended hands-free ("the result was not posted"); DeepSeek meanwhile moved on and the receipts arrived a reply late. | R (test c) | A result that could not be posted because the chat stayed busy is queued and retried 4 times (about 15 min) before stopping. |
 | 13 | Stop reasons were invisible in the audit log. | R (test d) | Every auto-OFF, retry and bodyless wait writes an `EXT-EVENT` audit row (agent 0.7.19 `event` request; no execution). |
 Still not proven: the full 54-block run on the real page. Row 20261102-131341 was closed failed; reposted after the 0.7.19 install.
+
+## Argon review (8473fd34): High findings, 0.7.22
+| # | Finding | Re-checked | Fix / status |
+|---|---|---|---|
+| A1 | Block that ran half-written and then grew ran again (key = hash of text) | R (test 1 fails on 0.7.21) | a block element that ran never runs again. The half-written first run itself is still possible after a stream pause over about 3.4 s (quiet 2 s + 1.2 s recheck): OPEN, needs a real "generation finished" signal from the page. |
+| A2 | clickSend clicked the last enabled button (could be Stop / attach); failed post left our text in the box | R (test 2; pure picker tested in node) | `pickSendButton`; a failed post restores the operator's draft. |
+| A3 | My own 0.7.14 self-update (extension reload, stale-page F5) fired during an armed chain | R (test 3 fails on 0.7.21) | self-update only when hands-free is OFF and no reply is awaited; while armed the red label says what to do. DECISION (OURS). |
+| minor | dead `anyPosted` removed; `emptyFirst` reset in stopAuto | done | |
+| not changed | `postLanded` true when before/after are both empty: cannot tell "Enter cleared the box" from "nothing was typed" without a second signal; finding 11(a) (socket reset retried as agent_unreachable) not traced | OPEN | |

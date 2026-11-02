@@ -1,7 +1,7 @@
 // loop.js - pure helpers for the auto-loop. No DOM, no chrome.* so node can test them.
 (function (root) {
   var L = {};
-  L.VERSION = '0.7.21';
+  L.VERSION = '0.7.22';
 
   L.fnv = function (s) {
     var h = 2166136261;
@@ -157,6 +157,17 @@
   // after Enter, did the message leave the chat input? before: {node, attached, text} of the input the message was typed
   // into; now: {node, text} of the chat's current input, or null. DeepSeek can replace the input node after a send, so a
   // detached node that still holds our text says nothing: a different, empty input means the send went through.
+  // 0.7.22 (Argon #2): which button sends? descs = [{label, disabled}] in DOM order inside the input's container. A labelled Send wins;
+  // otherwise the last enabled button that is not Stop / attach / search / think / copy / regenerate / new chat. -1 = none.
+  var NOT_SEND = /stop|cancel|attach|upload|clip|search|think|regenerate|copy|new chat|voice|mic|\u505c\u6b62|\u9644\u4ef6|\u8054\u7f51|\u6df1\u5ea6/i;
+  var IS_SEND = /send|submit|\u53d1\u9001/i;
+  L.pickSendButton = function (descs) {
+    descs = descs || [];
+    var i;
+    for (i = descs.length - 1; i >= 0; i--) { if (!descs[i].disabled && IS_SEND.test(descs[i].label || '') && !NOT_SEND.test(descs[i].label || '')) return i; }
+    for (i = descs.length - 1; i >= 0; i--) { if (!descs[i].disabled && !NOT_SEND.test(descs[i].label || '')) return i; }
+    return -1;
+  };
   L.postLanded = function (before, now) {
     if (!now || now.text !== '') return false;
     return !before || !before.attached || before.node !== now.node || before.text === '';
