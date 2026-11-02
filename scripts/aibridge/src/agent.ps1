@@ -1,5 +1,5 @@
 $ErrorActionPreference = 'Stop'
-$AgentVersion = '0.7.11'
+$AgentVersion = '0.7.12'
 $AgentStart = Get-Date
 $root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $config = Get-Content -Raw -LiteralPath (Join-Path $root 'config.json') | ConvertFrom-Json
@@ -241,6 +241,8 @@ function Handle-Client {
     }
     try {
         $reqLine = Read-Line $stream
+        # a connect with no request line (a TCP liveness probe) is not a request: no audit row, no reply (root cause 5, 0.7.12)
+        if ([string]::IsNullOrEmpty($reqLine)) { $client.Close(); return }
         $headers = @{}
         while ($true) {
             $line = Read-Line $stream
