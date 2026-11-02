@@ -6,6 +6,7 @@ Size: S = under an hour, M = a session, L = more than one session.
 
 | # | His words (verbatim) | What it means | Size | Card id |
 |---|---|---|---|---|
+| 1 | "C30 - not present - why do not u demo by taking control now?" | (a) He searched C30 and got nothing: the search box rebuilt itself on every key and typed text came out backwards ("C30" became "03c"). Fixed on page v16, C30 now found 1 of 337. (b) Demos are driven by Claude in his Chrome (Claude in Chrome), not click instructions. | S | sim-search-caret (fixed, card raw) |
 
 ## Found before the demo (Opus, not his words)
 | # | Gap | Size | Card id |
