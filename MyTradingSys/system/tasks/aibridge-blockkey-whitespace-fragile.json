@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T11:26:51Z",
   "commands": [],
   "created": "2026-10-31T13:05:02Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "blockKey hashes whitespace-normalised text (L.normKey in loop.js batchKeys + content.js fa",
+      "ref": "b57389fa5",
+      "utc": "2026-11-02T11:26:51Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -31,7 +38,12 @@
   "refined_by": "",
   "refreshed": "2026-11-02T11:04:28Z",
   "refs": [],
-  "result": "",
+  "result": "blockKey hashes whitespace-normalised text (L.normKey in loop.js batchKeys + content.js fallback); jitter test fails on old loop.js, passes; block_select.test.js wired into test_aibridge_payload.py",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/aibridge/extension/content.js",
     "scripts/aibridge/extension/loop.js",
@@ -43,13 +55,14 @@
   "scope_sha": "6913c301f3bd",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read blockKey in content.js and loop.js and the existing block_select.test.js",
     "add a jitter test: same block read with extra or collapsed whitespace must give one key",
     "normalise whitespace (trim, collapse runs) before hashing in both files",
     "confirm block_select.test.js is run by the AIBridge test runner (add it if not)"
   ],
+  "taken": "2026-11-02T11:26:51Z",
   "tests": "scripts/aibridge/tests/block_select.test.js: DOM whitespace-jitter case fails on old code, passes after",
   "title": "AIBridge blockKey hashes raw text: whitespace difference between innerText/textContent reads makes block 1 run twice (content.js, loop.js); done-when: whitespace-normalised key, DOM jitter test fails on old code, passes after; block_select.test.js wired to a runner",
   "weight": "IMPORTANT",

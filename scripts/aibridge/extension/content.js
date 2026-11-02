@@ -179,7 +179,7 @@
     var list = allBlocks();
     var keys = L.batchKeys(list.map(blockCmd));
     var at = list.indexOf(block);
-    return at >= 0 ? keys[at] : L.fnv(blockCmd(block)) + '@x';
+    return at >= 0 ? keys[at] : L.fnv(L.normKey(blockCmd(block))) + '@x';
   }
   function dbgDump() {
     if (!alive()) { orphan(); return; }

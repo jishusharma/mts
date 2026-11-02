@@ -55,6 +55,12 @@ def test_extension_helpers_node():
     assert r.returncode == 0, r.stdout + r.stderr
 
 
+@pytest.mark.skipif(shutil.which("node") is None, reason="node not installed")
+def test_block_select_node():
+    r = subprocess.run(["node", "tests/block_select.test.js"], cwd=PAYLOAD, capture_output=True, text=True, timeout=60)
+    assert r.returncode == 0, r.stdout + r.stderr
+
+
 # 159 s quiet for two concurrent runs; 280 s timed out with six ship gates on one machine (2026-10-15). OURS: room for that load.
 SELFTEST_TIMEOUT_S = 900
 

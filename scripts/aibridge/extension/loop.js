@@ -257,9 +257,11 @@
     return { selected: sel, ignored: ign, status: ign.length ? 'ignored ' + ign.length + ' block(s) inside the thinking panel (only the final answer runs) [' + why + ']' : '' };
   };
   // key = fnv(text)@occurrence among the SELECTED blocks with the same text: a thinking draft or a collapsing panel never shifts it
+  // key text: trim + collapse whitespace runs, so innerText vs textContent reads of one block hash alike (key only; the command itself is untouched)
+  L.normKey = function (t) { return String(t).replace(/\s+/g, ' ').trim(); };
   L.batchKeys = function (texts) {
     var seen = {};
-    return (texts || []).map(function (t) { var h = L.fnv(String(t)); var o = seen[h] || 0; seen[h] = o + 1; return h + '@' + o; });
+    return (texts || []).map(function (t) { var h = L.fnv(L.normKey(t)); var o = seen[h] || 0; seen[h] = o + 1; return h + '@' + o; });
   };
   // per-batch duplicate guard: -> for each block, the 1-based number of an earlier identical block, or 0
   L.dupOf = function (texts) {
