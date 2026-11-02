@@ -20,16 +20,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Result: live_aid liquidation cluster replay test pins #liq-sum and #liq-tape",
-      "ref": "e294f987c7d6",
-      "utc": "2026-11-01T21:30:35Z"
+      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nuc/planner-board-refresh-1102",
+      "ref": "bd3a06ab01a0",
+      "utc": "2026-11-02T11:09:55Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "e294f987c7d6 Result: live_aid liquidation cluster replay test pins #liq-sum and #liq-tape",
+      "line": "9492956d3cba ship: regenerated LAYERS.md",
       "ref": "MyTradingSys/system/LAYERS.md",
-      "utc": "2026-11-01T21:30:35Z"
+      "utc": "2026-11-02T11:09:44Z"
     }
   ],
   "layers": [
@@ -45,7 +45,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T11:04:47Z",
+  "refreshed": "2026-11-02T11:10:27Z",
   "refs": [
     "MyTradingSys/research/mts_doctor/MAINNET_PATH_2026-10-25.md"
   ],
@@ -70,7 +70,7 @@
     "VALIDATION and HOLDOUT reads",
     "layer_map.json, layer_index.json or code edits"
   ],
-  "scope_sha": "e294f987c7d6",
+  "scope_sha": "bd3a06ab01a0",
   "size": "M",
   "sources": [
     "MyTradingSys/system/ANTIGRAVITY_LAPTOP.md section C (fact-sheet format)",

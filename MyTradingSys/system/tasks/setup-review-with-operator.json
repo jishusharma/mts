@@ -23,9 +23,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "yt: YouTube-only WARP proxy in the guarded caption fetch (home IP 429-blocked)",
-      "ref": "f3eacd11cc86",
-      "utc": "2026-11-02T09:35:32Z"
+      "line": "setup review: measured counts section, verdicts pending operator",
+      "ref": "c51c3c1f814c",
+      "utc": "2026-11-02T11:08:39Z"
     },
     {
       "auto": true,
@@ -42,7 +42,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T11:05:00Z",
+  "refreshed": "2026-11-02T11:10:48Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -52,7 +52,7 @@
     "MyTradingSys/system/OPERATOR_DECISIONS.md"
   ],
   "scope_out": [],
-  "scope_sha": "f3eacd11cc86",
+  "scope_sha": "c51c3c1f814c",
   "size": "M",
   "sources": [
     "MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md",
