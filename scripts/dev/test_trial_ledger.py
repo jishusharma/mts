@@ -83,16 +83,35 @@ def test_temp_registries_and_stable_sort(tmp_path):
     assert hash1 == hash2
 
 
-def test_hand_kept_trial_ledger_untouched():
+def test_built_ledger_bytes_have_no_cr(tmp_path):
+    """The built ledger is committed LF; a CRLF write (csv default terminator) leaves the tree dirty after every gate run."""
+    reg = tmp_path / "s" / "TRIAL_REGISTRY.csv"
+    reg.parent.mkdir(parents=True)
+    reg.write_text("run_id,date,variant,n_trades,mean_R_net\nr1,2026-10-01,v,5,0.1\n", encoding="utf-8", newline="\n")
+    built, hold = tmp_path / "b.csv", tmp_path / "h.csv"
+    trial_ledger.build_ledger(registry_files=[reg], out_built_path=built, out_holdout_path=hold, repo_root=tmp_path)
+    assert built.read_bytes().count(b"\r") == 0 and hold.read_bytes().count(b"\r") == 0
+
+
+def test_hand_kept_trial_ledger_untouched(tmp_path):
     hand_kept = REPO / "MyTradingSys" / "research" / "TRIAL_LEDGER.csv"
     assert hand_kept.exists()
     orig_hash = hash_file(hand_kept)
 
-    # Run the main runner
-    trial_ledger.main()
+    # Run the main runner against a scratch repo root: the real one would rewrite the tracked TRIAL_LEDGER_BUILT.csv / holdout_reads.csv
+    # whenever a registry landed since the last build, leaving every tree dirty after a gate run (merge_trunk then aborts).
+    trial_ledger.main(["--repo-root", str(tmp_path)])
 
     new_hash = hash_file(hand_kept)
     assert orig_hash == new_hash, "TRIAL_LEDGER.csv was modified!"
+
+
+def test_main_run_by_the_suite_never_writes_the_tracked_ledger(tmp_path, monkeypatch):
+    seen = []
+    real = trial_ledger.build_ledger
+    monkeypatch.setattr(trial_ledger, "build_ledger", lambda **kw: (seen.append(kw["repo_root"]), real(**kw))[1])
+    test_hand_kept_trial_ledger_untouched(tmp_path)
+    assert seen and all(Path(r).resolve() != REPO.resolve() for r in seen)
 
 
 def test_live_repo_trial_ledger_built():

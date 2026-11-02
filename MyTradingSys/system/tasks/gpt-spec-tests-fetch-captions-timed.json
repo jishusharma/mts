@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-02T16:49:26Z",
   "commands": [],
   "created": "2026-11-02T05:48:27Z",
   "depends_on": [],
@@ -14,6 +16,12 @@
   "kind": "build",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "10 tests; 3/3 mutations detected; report MyTradingSys/research/layer_lab/reports/2026-11-0",
+      "ref": "4b6f57b35",
+      "utc": "2026-11-02T16:49:26Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -30,7 +38,12 @@
   "refined_by": "",
   "refreshed": "2026-11-02T16:52:01Z",
   "refs": [],
-  "result": "",
+  "result": "10 tests; 3/3 mutations detected; report MyTradingSys/research/layer_lab/reports/2026-11-02_gpt-spec-tests-fetch-captions-timed.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/test_fetch_captions_timed.py",
     "MyTradingSys/research/layer_lab/reports/2026-11-02_gpt-spec-tests-fetch-captions-timed.md",
@@ -45,12 +58,13 @@
   "sources": [
     "scripts/dev/fetch_captions_timed.py"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read fetch_captions_timed.py and list every branch",
     "compute expected values by hand (no running the code first)",
     "write tests, register in extra_tests.tsv, run 3 mutations, write report; verify: content sha, git cherry origin/fast-track empty, git ls-tree shows the files"
   ],
+  "taken": "2026-11-02T16:46:33Z",
   "tests": "python -m pytest scripts/dev/test_fetch_captions_timed.py -q (fail-first: each of the 3 mutations makes it fail)",
   "title": "Spec-derived tests for scripts/dev/fetch_captions_timed.py (no test file today)",
   "weight": "ROUTINE",

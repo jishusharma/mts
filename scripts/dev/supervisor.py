@@ -834,6 +834,14 @@ def _same_window(a: dict, b: dict) -> bool:
     return bool(ra and rb and abs((ra - rb).total_seconds()) <= 600)
 
 
+def _usage_rows() -> list:
+    try:
+        import usage_log
+        return usage_log._read_rows(usage_log.DEFAULT_CSV)
+    except Exception:
+        return []
+
+
 def estimate_k(hist) -> float | None:
     """Weekly points per 5 h point, from consecutive readings inside one 5 h window (>= 5 points of 5 h use seen); None = not measured yet."""
     dp = dw = 0.0
@@ -849,7 +857,7 @@ def estimate_k(hist) -> float | None:
 RAMP = 1    # operator 2026-10-22 ("starts with minimum workers ... the operator can build on it"): at most one new worker per wake
 
 
-def pace_plan(now: datetime, rd: dict, cap: float, hist=(), running: int = 0) -> dict:
+def pace_plan(now: datetime, rd: dict, cap: float, hist=(), running: int = 0, usage_rows=()) -> dict:
     """Pure: the 5 h plan from one get_usage reading. Spread the weekly room (cap - week%) evenly over the 5 h windows left before the
     weekly reset, convert it to 5 h points (k), never past SPAWN_CEIL; then a feedback check: the burn since this window's first reading,
     projected to the window end, shrinks or grows the worker count. Start light: at most RAMP new workers per wake, so a fresh
@@ -866,6 +874,9 @@ def pace_plan(now: datetime, rd: dict, cap: float, hist=(), running: int = 0) ->
     windows = max(1, math.ceil(wk_h / 5))
     share = max(0.0, cap - week) / windows
     k_meas = estimate_k(list(hist))
+    if not k_meas and usage_rows:
+        import usage_log
+        k_meas = usage_log.measured_k(usage_rows)     # USAGE_PILOT.csv rows measure k when readings do not
     k = k_meas or K_DEFAULT
     ceil = traffic.five_ceiling(wk_h)
     room = max(0.0, min(share / k, ceil - five))
@@ -1002,6 +1013,16 @@ def dsa_targets_state(rows, now: datetime) -> dict:
     return out
 
 
+def usage_gate_refusal(plan: dict) -> str:
+    """Pure: the usage_reminder.py pre rule (5 h use above elapsed% + MARGIN) read off the plan; '' when a spawn is allowed."""
+    import usage_reminder
+    five, h_left = float(plan["five"]), float(plan["h_left"])
+    elapsed = max(0.0, min(100.0, (5.0 - h_left) / 5.0 * 100.0))
+    if five > elapsed + usage_reminder.MARGIN:
+        return f"5 h use {five:g}% is above elapsed {elapsed:.0f}% + {usage_reminder.MARGIN:g}"
+    return ""
+
+
 def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_key: bool) -> list:
     """Pure: the text a supervisor reads each wake. PLAN/PEER/BOARD lines are state; RUN lines are commands to run now in one Bash call;
     SPAWN is who to start; NOTE needs nothing from you; OPERATOR is the only thing the operator must do."""
@@ -1025,6 +1046,8 @@ def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_ke
         L.append("PEERS UNKNOWN (signals not read): shared-lane actions below are NOTE only this wake; do not touch NEXT_SESSION.md")
     elif len(live) <= 1:
         L.append(f"PEER none live (no heartbeat < {HEARTBEAT_MIN} min): you are alone; NEXT_SESSION.md is yours to update at transit")
+    for ln in ctx.get("idle", []):
+        L.append(f"IDLE {ln}: lane has budget and no work running; spawn or claim a card for it now")
     for hid, kind, title in ctx.get("holds", []):
         L.append(f"BOARD {kind} {hid}: {title} (no card of that kind)")
     if ctx.get("handover"):
@@ -1033,7 +1056,14 @@ def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_ke
     if ci.get("error"):
         L.append(f"NOTE CI unknown ({ci['error'][:80]}): treat as red for live-path cards")
     if ci.get("red"):
-        L.append(f"SPAWN CI RED: one worker on the pinned ci-* card only; nothing else ships ({ci.get('message', '')[:80]})")
+        # DECISION (OURS) 2026-11-02 bug-conflict-05db6e7b6b: the usage gate (Gate) outranks the CI RED spawn order, so the plan
+        # never emits a SPAWN the spawn hook will refuse; the CI fix waits and is not handed to login A.
+        refuse = usage_gate_refusal(plan)
+        if refuse:
+            L.append(f"NOTE CI RED: usage gate refuses a spawn ({refuse}); no worker is spawned this wake, revert by hand "
+                     f"or wait for the gate ({ci.get('message', '')[:80]})")
+        else:
+            L.append(f"SPAWN CI RED: one worker on the pinned ci-* card only; nothing else ships ({ci.get('message', '')[:80]})")
     picks = ctx.get("picks", [])
     if plan["new"] and picks and not ci.get("red"):
         # WORKERS.md rule 2 / roles/supervisor.md:35: Claude Builder cards run as background Agents; only interactive roles are sessions
@@ -1232,7 +1262,8 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
     hist = record_reading(login, rd, home)
     rw = _utc(rd.get("week_reset"))
     gs = read_gate_slots(repo)
-    pl = pace_plan(now, rd, weekly_cap(login, host, (rw - now).total_seconds() / 3600 if rw else None, now.date()), hist[:-1], running)
+    pl = pace_plan(now, rd, weekly_cap(login, host, (rw - now).total_seconds() / 3600 if rw else None, now.date()), hist[:-1], running,
+                   _usage_rows())
     prev = _last_plan(login, home)
     notes, ctx = [], {}
     wp = work_period(login, now, rd["sid"], work_hours, work_until, home, write=send)
@@ -1292,6 +1323,15 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
         ctx["codex_ready"], ctx["gemini_ready"] = lc["codex"], lc["gemini"]
         ctx["sonnet_ready"], ctx["haiku_ready"] = lc["sonnet"], lc["haiku"]
         ctx["refine_raw"] = len(tasks.refine_due(cards))
+        try:
+            import usage_log
+            last = {}
+            for r in _usage_rows():
+                last[str(r.get("lane", "")).lower()] = r
+            lanes_ready = {str(c.get("lane", "")).lower() for c in ready}
+            ctx["idle"] = usage_log.idle_lanes(last, lanes_ready, set(), now, rw) if rw else []
+        except Exception:
+            ctx["idle"] = []     # a failing idle check prints nothing, never breaks plan
         import desk
         rows = desk.trunk_rows(repo, TRUNK_REF)
         have = {r.get("card") for r in rows}
