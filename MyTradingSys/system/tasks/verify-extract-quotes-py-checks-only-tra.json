@@ -5,6 +5,15 @@
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/volume_candles_ma.md",
     "python scripts/dev/test_verify_extract_quotes.py"
   ],
+  "context": {
+    "calls_to_edit": 12,
+    "folded": "2026-11-02T13:40:44Z",
+    "misses": 41,
+    "reads": [
+      "scripts/dev/test_verify_extract_quotes.py"
+    ],
+    "session": "agent-aa009cf36363ad336"
+  },
   "created": "2026-11-02T13:08:46Z",
   "depends_on": [],
   "done_when": "git show b7ad6ad1c:MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/volume_candles_ma.md saved to a temp file exits 1 with a problem line (today it prints PASS 0 problem(s)); the current volume_candles_ma.md at 46ee60ea8 still exits 0",
