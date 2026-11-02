@@ -46,6 +46,27 @@ Source: `EXTRACTION_CRITICAL_GAPS_2026-10-18.md`, checked against catalogue sect
 | G-FAB-1 (5 recovered Fabio transcripts) | Merged | Section 4.2 (FAB-9, FAB-10, two filters, U2 split, LVN rationale), plus the FAB-6 and FAB-8 merge notes and section 6.3. FAB-9 and FAB-10 are "candidate rows" only: not in the section 0 table, so not on this sheet. |
 | G-FAB-2 (Fabio V2 delta never merged) | Merged | Section 4.2 "Other items merged": retest entry FAB-7b, 1% daily loss stop, FAB-6 definition (StaphlRH8NQ). The false "minimum 1:3" rule FR-13 is recorded as NOT CONFIRMED (section 5). FAB-7b stays inside the heat-map tool family (section 4.1), not a setup. |
 
+## Measured counts on trunk (added 2026-11-02, session setup-review-1102)
+
+Only results already committed on trunk; nothing was run for this sheet. The match to a catalogue row is OURS (closest row, not the trader's rule). Every other setup: no MTS count exists, "No MTS backtest measured" stays. No chart data on this laptop (no F: drive), so no new shots were made.
+
+| setup | what was measured (OURS stand-in) | counts | result file on trunk |
+|---|---|---|---|
+| TOM-1a (closest: value-area fade) | Tom VP daily value-area fade, prior_day FADE, stop 1 ATR, target POC, BTCUSDT DEV 2022-04..2024-06 | 1812 filled trades, 37-39% win in most layer buckets, about -0.25 R after fees; 10 of 12 variants FAILED | `meta_label_tom_fabio_2026-10-31/output.md`, `meta_label_tom_fabio_2026-10-31/PRE_REG.md` |
+| TOM-1a / TOM-2 (his 70/30 "price returns to value" claim) | real vs near-band placebo, fresh 2020-2021 data | 352 real vs 353 placebo events; return share 63.4% vs 58.9%; gap +4.4 pp, CI -0.3..8.9: FAIL (not "no effect") | `tom_v2_gross_first_2026-11/RESULT.md` |
+| FAB-6 (closest: Model C, first 30 minutes) | Fabio Model C price-only stand-in, hold to window end, DEV | 518 filled trades, 31-33% win, mean about +0.03 R after fees, range across layer buckets spans 0: NOT ENOUGH DATA (n short of the 461 per third needed) | `meta_label_tom_fabio_2026-10-31/output.md`, `meta_label_roadmap_2026-10-31/ROADMAP.md` (section 2.3) |
+| FAB-4 (failed breakout) | scored 0 R in a proxy; roadmap says scoring needs a fix | no usable count | `meta_label_roadmap_2026-10-31/ROADMAP.md` (section 2.3, row 5) |
+
+Not a catalogue setup, listed so it is not mistaken for one: PDH/PDL sweep ("Beta"): every one of 8 cells negative after fees, primary arm n 50 DEV / 23 VAL (INCONCLUSIVE) in `setup_alpha_beta_v2_2026-10/RESULT.md`.
+
+Setups with a count: 3 rows above carry a count (TOM-1a, FAB-6, plus the 70/30 claim attached to TOM-1a/TOM-2); 19 of 22 have none.
+
+## Status for the operator (2026-11-02)
+
+- All 22 verdicts and the 2-3 picks: pending operator. Nothing here is a pick. OPERATOR_DECISIONS.md was not touched.
+- BTC example shots: `examples/<id>.png` exist on trunk for 20 of 22 setups (no PNG for TOM-10 and TOM-11, which BTC cannot show; see overview table "NO"). Anything else: no shot yet. Not regenerated (no F: data on this laptop).
+- Still open from the gaps table: 15 Tom videos with no usable extract (catalogue 6.4.4); catalogue section 6.2 still shows 10 videos as "gate FAILS".
+
 ---
 
 ## Tom setups
@@ -63,7 +84,7 @@ Source: `EXTRACTION_CRITICAL_GAPS_2026-10-18.md`, checked against catalogue sect
   - "Many proofs" needed, no count stated; "healthy vs unhealthy trend" is tested by volume under the move, not by position against value.
   - Reward-to-risk he quotes differs by video (1.5 at 40-45% hits vs over 3 at 30-40%).
 - Example chart: `examples/TOM-1a.png`
-- Operator verdict: ____ (keep / rewrite / reject)   Pick to test: ____
+- Operator verdict: pending operator (keep / rewrite / reject)   Pick to test: pending operator
 
 ### TOM-1b Fade a swing top / rejected gap (Tom)
 - What you see on the chart: On daily bars a big run (earnings jump, short squeeze) ends in a B profile [a profile bulging at the bottom, a sign of weakness] at the top. Or the day opens far above yesterday and is rejected at the high. Price then goes back toward the volume below.
@@ -77,7 +98,7 @@ Source: `EXTRACTION_CRITICAL_GAPS_2026-10-18.md`, checked against catalogue sect
   - B-profile definition, stop distance, and entry trigger beyond "after the rejection": NOT STATED.
   - R4 sits on the gap-close idea (TOM-8) and R5 on the range idea (TOM-2); the split is unsettled.
 - Example chart: `examples/TOM-1b.png`
-- Operator verdict: ____ (keep / rewrite / reject)   Pick to test: ____
+- Operator verdict: pending operator (keep / rewrite / reject)   Pick to test: pending operator
 
 ### TOM-2 Sell top, buy bottom of a sideways range (Tom)
 - What you see on the chart: A sideways market where buyers and sellers are about equal. Price reaches the top of the range (or its bottom). A weak-looking profile at the top, or a lower range after a rejection, is "the setup itself".
@@ -92,7 +113,7 @@ Source: `EXTRACTION_CRITICAL_GAPS_2026-10-18.md`, checked against catalogue sect
   - No definition of B profile; when a balance turns into a breakout is NOT STATED.
   - A level alone is not an entry: he called his first sell zone "just a target area, not a real entry area" (viT_VzF5Fsw).
 - Example chart: `examples/TOM-2.png`
-- Operator verdict: ____ (keep / rewrite / reject)   Pick to test: ____
+- Operator verdict: pending operator (keep / rewrite / reject)   Pick to test: pending operator
 
 ### TOM-3 Resting sell order just under the last volume step (Tom)
 - What you see on the chart: A trend flattening into a range, with an inside day [a whole day inside yesterday's range] near the high. The volume profile has a sharp edge (a "step"); below it price can fall fast.
@@ -107,7 +128,7 @@ Source: `EXTRACTION_CRITICAL_GAPS_2026-10-18.md`, checked against catalogue sect
   - Overlaps with TOM-2 (sell the top of a range) and with TOM-1a's pullback path; kept apart only because the entry is a resting order at a profile edge.
   - Source video is V1-only (never re-extracted).
 - Example chart: `examples/TOM-3.png`
-- Operator verdict: ____ (keep / rewrite / reject)   Pick to test: ____
+- Operator verdict: pending operator (keep / rewrite / reject)   Pick to test: pending operator
 
 ### TOM-4 Buy the pullback in a healthy uptrend (Tom)
 - What you see on the chart: A rising market with real volume behind it, not quick spikes. Price pulls back to VWAP, to the value it just accepted, or to yesterday's point of control after a buying tail [a long lower shadow on the day's profile]. Buyers show aggressive buying there.
@@ -122,7 +143,7 @@ Source: `EXTRACTION_CRITICAL_GAPS_2026-10-18.md`, checked against catalogue sect
   - One video (4MoNjEQ2Dd8) is filed as a breakout by one source and as a pullback long by another; the catalogue picks "pullback" and says whether he files it that way is NOT STATED.
   - Two stop wordings in one video ("below the last low", "below the business zone").
 - Example chart: `examples/TOM-4.png`
-- Operator verdict: ____ (keep / rewrite / reject)   Pick to test: ____
+- Operator verdict: pending operator (keep / rewrite / reject)   Pick to test: pending operator
 
 ### TOM-6 Breakout / break-in (Tom)
 - What you see on the chart: A sideways zone is about to resolve. Price pushes through old highs (a "ledge"), speed picks up, buying shows. He also wants clear empty space to the left of the breakout.
@@ -137,7 +158,7 @@ Source: `EXTRACTION_CRITICAL_GAPS_2026-10-18.md`, checked against catalogue sect
   - He says breakouts pay only 1:1 to 1.5:1 in one video, but holds "for the explosion" in another (4MoNjEQ2Dd8); not resolved.
   - TOM-6 and TOM-12 are one family (he calls the break-in "variant one for a breakout"); read them together.
 - Example chart: `examples/TOM-6.png`
-- Operator verdict: ____ (keep / rewrite / reject)   Pick to test: ____
+- Operator verdict: pending operator (keep / rewrite / reject)   Pick to test: pending operator
 
 ### TOM-7 Range scalp around the day's average price (Tom)
 - What you see on the chart: VWAP [volume-weighted average price of the day] is flat, so no trend day. Price swings in a range around it: short near the top, long near the bottom.
@@ -152,7 +173,7 @@ Source: `EXTRACTION_CRITICAL_GAPS_2026-10-18.md`, checked against catalogue sect
   - A 1-minute scalp video (zAwEX_tRUfE) gives a target at the upper edge of yesterday's balance and says a last-1-minute-low stop gives a poor reward, but no numeric stop.
   - A 5-minute scalp video (vk0mkNPuhDc) is still unextracted (backlog).
 - Example chart: `examples/TOM-7.png`
-- Operator verdict: ____ (keep / rewrite / reject)   Pick to test: ____
+- Operator verdict: pending operator (keep / rewrite / reject)   Pick to test: pending operator
 
 ### TOM-8 Gap close (Tom)
 - What you see on the chart: A stock or index opens far from yesterday's close. After the open the push fails, price settles into a range, then leaves it with volume rising again. Price then trades back into the gap, toward yesterday's value.
@@ -167,7 +188,7 @@ Source: `EXTRACTION_CRITICAL_GAPS_2026-10-18.md`, checked against catalogue sect
   - He says intraday gaps in the footprint were closed in over 95% of cases but "stop using the strategy" now (lO-Iptd29t4).
   - Political gaps close, big-news gaps and breakaway gaps often do not.
 - Example chart: `examples/TOM-8.png`
-- Operator verdict: ____ (keep / rewrite / reject)   Pick to test: ____
+- Operator verdict: pending operator (keep / rewrite / reject)   Pick to test: pending operator
 
 ### TOM-9 Gap stays open: trade with the trend (Tom)
 - What you see on the chart: A gap above the whole previous day, with volume building at the new, higher prices (a P shape [profile bulging at the top]). People betting on a gap close were wrong. The market holds the new range.
@@ -181,7 +202,7 @@ Source: `EXTRACTION_CRITICAL_GAPS_2026-10-18.md`, checked against catalogue sect
   - Everything after "trade in the direction of the trend" is NOT STATED; it hands over to TOM-4 / TOM-6.
   - A true breakaway gap is not expected to close for a long time.
 - Example chart: `examples/TOM-9.png`
-- Operator verdict: ____ (keep / rewrite / reject)   Pick to test: ____
+- Operator verdict: pending operator (keep / rewrite / reject)   Pick to test: pending operator
 
 ### TOM-10 Closing-auction gap reversal (Tom)
 - What you see on the chart: A stock or index closes very strong, with a big share of the day's volume printed in the closing auction [the single closing price match]. Next day it opens down and starts to reverse.
@@ -194,7 +215,7 @@ Source: `EXTRACTION_CRITICAL_GAPS_2026-10-18.md`, checked against catalogue sect
   - All execution fields (entry, stop, management) NOT STATED.
   - One video only.
 - Example chart: `examples/TOM-10.png`
-- Operator verdict: ____ (keep / rewrite / reject)   Pick to test: ____
+- Operator verdict: pending operator (keep / rewrite / reject)   Pick to test: pending operator
 
 ### TOM-11 Crude oil leads, index future follows (Tom)
 - What you see on the chart: Two charts side by side: crude oil and the S&P future. A level is hit in crude oil and crude reacts for some seconds. The index future follows a little later, so you enter it early.
@@ -208,7 +229,7 @@ Source: `EXTRACTION_CRITICAL_GAPS_2026-10-18.md`, checked against catalogue sect
   - Stop, target type, how big the crude reaction must be: NOT STATED.
   - One video, one market regime (war and oil); whether it works elsewhere is NOT STATED.
 - Example chart: `examples/TOM-11.png`
-- Operator verdict: ____ (keep / rewrite / reject)   Pick to test: ____
+- Operator verdict: pending operator (keep / rewrite / reject)   Pick to test: pending operator
 
 ### TOM-12 Break-in: price falls back into the old range (Tom)
 - What you see on the chart: Price went outside the old balance with a P above or a B below [profile shapes bulging at top or bottom], but with no volume base under those prices. Then it drops back inside the old value area fast. People who entered outside are now underwater.
@@ -222,7 +243,7 @@ Source: `EXTRACTION_CRITICAL_GAPS_2026-10-18.md`, checked against catalogue sect
   - Stop, entry trigger, and how far inside price must close (his closing-price counting rule is "taught elsewhere") NOT STATED.
   - Same family as TOM-1a path 3, TOM-2 "lower balance" and TOM-6; listed apart because he names it a break-in.
 - Example chart: `examples/TOM-12.png`
-- Operator verdict: ____ (keep / rewrite / reject)   Pick to test: ____
+- Operator verdict: pending operator (keep / rewrite / reject)   Pick to test: pending operator
 
 ### TOM-14 After a news shock, trade back to where it started (Tom)
 - What you see on the chart: A sudden news move with no base under it. Then a small pause (an inside bar [a candle within the previous candle]). Then price reacts the other way, often back to the origin of the shock. He calls these V reversals.
@@ -236,7 +257,7 @@ Source: `EXTRACTION_CRITICAL_GAPS_2026-10-18.md`, checked against catalogue sect
   - Entry trigger, stop, how large a move counts as an overreaction, time frame: NOT STATED.
   - Close to TOM-1a (fade a push) and TOM-11 (news regime).
 - Example chart: `examples/TOM-14.png`
-- Operator verdict: ____ (keep / rewrite / reject)   Pick to test: ____
+- Operator verdict: pending operator (keep / rewrite / reject)   Pick to test: pending operator
 
 ### TOM-15 Candle patterns at a range edge (Tom)
 - What you see on the chart: Near a support or resistance area after a squeeze, one of three candle shapes: three same-colour candles in a row; an inside bar after a big move [a candle within the previous one]; or an outside bar [a candle covering both sides of the previous one].
@@ -250,7 +271,7 @@ Source: `EXTRACTION_CRITICAL_GAPS_2026-10-18.md`, checked against catalogue sect
   - Time frame, trigger candle, stop, target distance, volume threshold: NOT STATED.
   - Overlaps TOM-6 in location; separate because the signal is the candle pattern.
 - Example chart: `examples/TOM-15.png`
-- Operator verdict: ____ (keep / rewrite / reject)   Pick to test: ____
+- Operator verdict: pending operator (keep / rewrite / reject)   Pick to test: pending operator
 
 ### TOM-16 Short a top built by forced hedger buying (Tom)
 - What you see on the chart: Price far above its average, with volume far above average and traded at much higher prices. He says that volume comes from hedgers (industrial buyers forced to buy), not trader conviction. Then one aggressive seller appears and the hedgers who bought near the high are underwater.
@@ -264,7 +285,7 @@ Source: `EXTRACTION_CRITICAL_GAPS_2026-10-18.md`, checked against catalogue sect
   - Stop, target, how far above average counts, how large the volume must be: NOT STATED.
   - The hedging story fits commodity futures; fit to BTC is not shown.
 - Example chart: `examples/TOM-16.png`
-- Operator verdict: ____ (keep / rewrite / reject)   Pick to test: ____
+- Operator verdict: pending operator (keep / rewrite / reject)   Pick to test: pending operator
 
 ### TOM-17 Low-volume-zone scalp decided by trading speed (Tom)
 - What you see on the chart: Price ticks into a price zone where little has traded. If it goes through, stalls and turns, it runs back to the high-volume area ("lethargic back and forth"). If it arrives at constant high speed with big players active, it keeps running.
@@ -278,7 +299,7 @@ Source: `EXTRACTION_CRITICAL_GAPS_2026-10-18.md`, checked against catalogue sect
   - Stop, target distance, the speed threshold, what counts as "low volume", entry order type: NOT STATED.
   - Not the same as TOM-7: here the trigger is tape speed. Closest cousin of the Fabio setups.
 - Example chart: `examples/TOM-17.png`
-- Operator verdict: ____ (keep / rewrite / reject)   Pick to test: ____
+- Operator verdict: pending operator (keep / rewrite / reject)   Pick to test: pending operator
 
 ---
 
@@ -296,7 +317,7 @@ Source: `EXTRACTION_CRITICAL_GAPS_2026-10-18.md`, checked against catalogue sect
   - Initial stop and balance length NOT STATED. His NQ "big trade" size is 30 contracts (SOURCED, DyS79Eb92Ug); the BTC equivalent is OURS.
   - In a live Q&A he calls a momentum entry exactly at a resting-order wall "the worst case that you can have for a momentum trade" (Is1HvdfQm5c).
 - Example chart: `examples/FAB-1.png`
-- Operator verdict: ____ (keep / rewrite / reject)   Pick to test: ____
+- Operator verdict: pending operator (keep / rewrite / reject)   Pick to test: pending operator
 
 ### FAB-2 Big effort absorbed ("punch to the wall"), trade the other side (Fabio)
 - What you see on the chart: One side pushes hard (big delta [buyer minus seller volume]) but price barely moves: "punching a wall". The other side then pushes and price does move. Variant: after a consolidation where one side was absorbed, the other side attacks that same level and breaks it.
@@ -311,7 +332,7 @@ Source: `EXTRACTION_CRITICAL_GAPS_2026-10-18.md`, checked against catalogue sect
   - The older rule extraction lost which side was absorbed and turned a scratch plan into a break-even rule that contradicts another video.
   - In a live Q&A (Is1HvdfQm5c) he quotes a stop "above the area" and a 1 to 4.5 target; the number is an auto-caption number, to check on video frames.
 - Example chart: `examples/FAB-2.png`
-- Operator verdict: ____ (keep / rewrite / reject)   Pick to test: ____
+- Operator verdict: pending operator (keep / rewrite / reject)   Pick to test: pending operator
 
 ### FAB-4 Failed breakout back into yesterday's range (Fabio)
 - What you see on the chart: Yesterday's value area [price band with 70% of volume] is his "area of comfort". Price pokes out, volume rises on the way out and again on the way back, delta [buyer minus seller volume] disagrees with the price move, and a 5-minute candle closes back inside. Price then runs to the other side of the range.
@@ -326,7 +347,7 @@ Source: `EXTRACTION_CRITICAL_GAPS_2026-10-18.md`, checked against catalogue sect
   - Which ledger row is which trade is not re-checked.
   - In a live Q&A (Is1HvdfQm5c) he says "these are counter trend trade and I don't like to take them", so a reversal against the day's trend may be excluded.
 - Example chart: `examples/FAB-4.png`
-- Operator verdict: ____ (keep / rewrite / reject)   Pick to test: ____
+- Operator verdict: pending operator (keep / rewrite / reject)   Pick to test: pending operator
 
 ### FAB-5 Buyers defend a level: long (Fabio)
 - What you see on the chart: Price drops to a level (value-area low [bottom of the 70% price band], a gap, or a big resting order wall). Sellers hit it several times and are absorbed each time. Buyers defend it, trapped sellers get squeezed, price rises. His names: "AAA setup", "value area low fade".
@@ -341,7 +362,7 @@ Source: `EXTRACTION_CRITICAL_GAPS_2026-10-18.md`, checked against catalogue sect
   - Management contradicts itself: one video says adding low in the curve is not best, yet F7-F9 re-enter the same level three times in five minutes.
   - His live wall reading uses a heat map we do not hold.
 - Example chart: `examples/FAB-5.png`
-- Operator verdict: ____ (keep / rewrite / reject)   Pick to test: ____
+- Operator verdict: pending operator (keep / rewrite / reject)   Pick to test: pending operator
 
 ### FAB-6 First 30 minutes of the US open (Fabio)
 - What you see on the chart: The range of the first 30 minutes of the US stock market open (the "initial balance"). Its bottom or top says which way the day leans; the trade is the break of that range.
@@ -356,7 +377,7 @@ Source: `EXTRACTION_CRITICAL_GAPS_2026-10-18.md`, checked against catalogue sect
   - The catalogue's own FAB-6 fields 3 and 7 still say "all NOT STATED", older than the merge note under them.
   - The 13.5% and "positive skew" figures come from a rulebook line, only partly verified.
 - Example chart: `examples/FAB-6.png`
-- Operator verdict: ____ (keep / rewrite / reject)   Pick to test: ____
+- Operator verdict: pending operator (keep / rewrite / reject)   Pick to test: pending operator
 
 ### FAB-8 Rejection at the thinnest-volume price of a swing (Fabio)
 - What you see on the chart: Not the usual three-candle gap. Take a swing from A to B and draw its volume profile. Inside the value area [the 70% price band] find the price with the least volume. Price tends to reject there.
@@ -370,7 +391,7 @@ Source: `EXTRACTION_CRITICAL_GAPS_2026-10-18.md`, checked against catalogue sect
   - Entry order, stop, target and context all NOT STATED; the setup is mostly our structure around his one definition.
   - A different quote from a live Q&A (Is1HvdfQm5c) uses a plain candle gap ("micro gap"); catalogue says keep it as colour only.
 - Example chart: `examples/FAB-8.png`
-- Operator verdict: ____ (keep / rewrite / reject)   Pick to test: ____
+- Operator verdict: pending operator (keep / rewrite / reject)   Pick to test: pending operator
 
 ---
 
