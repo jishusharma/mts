@@ -1,12 +1,17 @@
 {
   "card": "gpt-audit-formulas-vs-dfa-hurst",
   "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-audit-formulas-vs-dfa-hurst.md lists each formula, FORMULAS.md line, code file:line, hand value vs code value, SAME/DIFFERENT/NOT_IN_DATA.",
+  "finished": "2026-11-02T11:07:26Z",
   "from": "lane_health",
+  "host": "JIS-NUC",
   "id": "20261101-185525-gpt-audit-formulas-vs-dfa-hurst",
   "need": "Rerouted from the GPT lane (credits/limit/outage) to DSA. Card gpt-audit-formulas-vs-dfa-hurst: [GPT] audit FORMULAS.md s27 rolling DFA Hurst against fractals f2/dfa.py: 3 outputs re-derived by hand\nWorktree: mts-dsa (python scripts/dev/sync.py start first). Data on F:\\MTS\\data is read-only.\nFull brief: python scripts/dev/tasks.py brief gpt-audit-formulas-vs-dfa-hurst\nGoal: For research/fractals_2026-10-31/f2/dfa.py re-derive by hand 3 outputs from FORMULAS.md s27 (the s=4 worked example F^2 = 0.2, one s=8 box fit on a 16-point toy series, the log-log slope over tw\nRead: MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-audit-formulas-vs-dfa-hurst.md\nStep 1: list the formulas the code uses (profile, boxes, line fit, slope)\nStep 2: hand-compute 3 values on a toy series\nStep 3: run dfa.py on the same series and compare\nWrite the report to MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-audit-formulas-vs-dfa-hurst.md: findings or numbers, each with file:line or the command you ran.\nNumbers come only from output you printed in the chat. Change no code or spec. Never read a holdout.\nIf a command fails twice, close the desk row with --failed and the error text.\nClose: python scripts/dev/desk.py done <row id> --result \"<verdict or number + MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-audit-formulas-vs-dfa-hurst.md>\".",
   "posted": "2026-11-01T18:55:25Z",
   "rerouted_from": "CODEX",
-  "status": "pending",
+  "result": "STALE ROW, report already on trunk and not overwritten: MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-audit-formulas-vs-dfa-hurst.md. Recount 2026-11-02 SAME with dfa.py: F2(8)=0.15373512, F2(16)=0.16308640, F2(4) toy=0.09562500, two-scale slope 0.04259484; pencil check of the s27 worked example F2(4)=0.2 SAME. DIFFERENT 0.",
+  "status": "done",
+  "taken": "2026-11-02T11:03:29Z",
+  "taken_by": "JIS-NUC",
   "target": "DSA",
   "title": "[GPT] audit FORMULAS.md s27 rolling DFA Hurst against fractals f2/dfa.py: 3 outputs re-derived by hand"
 }

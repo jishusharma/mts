@@ -1,12 +1,17 @@
 {
   "card": "gemini-blind-read-michael-lines-1102",
   "done_when": "MyTradingSys/research/gemini_audits_2026-11-02/michael_lines_blind_read.md has one row per number: FOUND / NOT_IN_DATA / DIFF, first line holds the three counts.",
+  "finished": "2026-11-02T11:07:31Z",
   "from": "lane_health",
+  "host": "JIS-NUC",
   "id": "20261102-110021-gemini-blind-read-michael-lines-1102",
   "need": "Rerouted from the GPT lane (credits/limit/outage) to DSA. Card gemini-blind-read-michael-lines-1102: [GEMINI] blind re-read of michael_lines_2026-11 RESULT.md: numbers vs CELLS.csv and STATED_LINES.md\nWorktree: mts-dsa (python scripts/dev/sync.py start first). Data on F:\\MTS\\data is read-only.\nFull brief: python scripts/dev/tasks.py brief gemini-blind-read-michael-lines-1102\nGoal: Open MyTradingSys/research/michael_lines_2026-11/RESULT.md and check every number (the 12-row count table, 11 statements, 8 of 10 videos, 8 of 11 non-BTC) against trendlines_2026-10-17/counts/CE\nRead: MyTradingSys/research/michael_lines_2026-11/RESULT.md (read); MyTradingSys/research/michael_lines_2026-11/STATED_LINES.md (read); MyTradingSys/research/gemini_audits_2026-11-02/michael_lines_bli\nStep 1: list every number in RESULT.md with its cited source\nStep 2: open the source and check it\nStep 3: write FOUND / NOT_IN_DATA / DIFF per number, counts on line 1\nWrite the report to MyTradingSys/research/layer_lab/reports/2026-11-02_gemini-blind-read-michael-lines-1102.md: findings or numbers, each with file:line or the command you ran.\nNumbers come only from output you printed in the chat. Change no code or spec. Never read a holdout.\nIf a command fails twice, close the desk row with --failed and the error text.\nClose: python scripts/dev/desk.py done <row id> --result \"<verdict or number + MyTradingSys/research/layer_lab/reports/2026-11-02_gemini-blind-read-michael-lines-1102.md>\".",
   "posted": "2026-11-02T11:00:21Z",
   "rerouted_from": "CODEX",
-  "status": "pending",
+  "result": "FOUND 8 / NOT_IN_DATA 1 / DIFF 2: MyTradingSys/research/layer_lab/reports/2026-11-02_gemini-blind-read-michael-lines-1102.md. Six table rows match CELLS.csv ALL rows (wick_log_age500); 11 statements and 8 videos FOUND; DIFF: 9 of 11 named non-BTC rows (not 8), table has 6 rows (not 12); transcript count NOT_IN_DATA.",
+  "status": "done",
+  "taken": "2026-11-02T11:03:31Z",
+  "taken_by": "JIS-NUC",
   "target": "DSA",
   "title": "[GEMINI] blind re-read of michael_lines_2026-11 RESULT.md: numbers vs CELLS.csv and STATED_LINES.md"
 }
