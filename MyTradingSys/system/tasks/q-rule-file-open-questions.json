@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T17:02:06Z",
   "commands": [],
   "created": "2026-10-25T21:00:59Z",
   "depends_on": [
@@ -15,6 +16,12 @@
   "id": "q-rule-file-open-questions",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "builder.md Q: rule (removed the duplicate 'Output: one ship' line, net lines 20 to 20); ta",
+      "ref": "6fcc36d30",
+      "utc": "2026-11-02T17:02:06Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +46,12 @@
   "refined_by": "Session_Planner",
   "refreshed": "2026-11-02T16:53:30Z",
   "refs": [],
-  "result": "",
+  "result": "builder.md Q: rule (removed the duplicate 'Output: one ship' line, net lines 20 to 20); tasks.py list --prefix; AGENTS.md pointer; test_list_title_prefix fails before/passes after",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/roles/builder.md",
     "MyTradingSys/system/roles/lead.md",
@@ -58,13 +70,14 @@
     "card goal text (Q-rule proposal)",
     "CLAUDE.md: defaults-for-open-questions line"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read card text points 1-5 and roles/builder.md existing question lines; choose roles/builder.md as the one rule file (workers file the card at end of task).",
     "Write the failing test for a 'Q:' title-prefix filter in tasks.py list; add the filter.",
     "Write the rule line in builder.md and remove the least useful existing line (name it in the Result line) so net lines do not rise; add the AGENTS.md pointer.",
     "Skip point 4 unless stop_guard.py already sees [ask] text cheaply."
   ],
+  "taken": "2026-11-02T17:02:06Z",
   "tests": "python -m pytest scripts/dev/test_tasks.py::test_list_title_prefix MyTradingSys/tests/docs/test_integrity.py -q: the first fails now (no filter) and passes after.",
   "title": "Q-rule: blocking questions are filed as cards (Q: prefix), not only in reports",
   "weight": "IMPORTANT",
