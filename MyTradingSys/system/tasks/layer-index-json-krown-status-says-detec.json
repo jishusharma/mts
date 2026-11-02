@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T14:13:32Z",
   "commands": [
     "python scripts/dev/make_layers_md.py"
   ],
@@ -15,6 +16,12 @@
   "id": "layer-index-json-krown-status-says-detec",
   "lane": "HAIKU",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "e97827bd3: krown status S1-S9, LAYERS.md regenerated",
+      "ref": "9996d7416",
+      "utc": "2026-11-02T14:13:32Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +46,12 @@
   "refined_by": "",
   "refreshed": "2026-11-02T11:45:25Z",
   "refs": [],
-  "result": "",
+  "result": "e97827bd3: krown status S1-S9, LAYERS.md regenerated",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/layer_index.json",
     "MyTradingSys/system/LAYERS.md"
@@ -52,12 +64,13 @@
   "sources": [
     "MyTradingSys/research/layer_review_2026-10-26/LAYER_SHEETS.md:23"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read LAYER_SHEETS.md krown row (L17, L23) and LAYER_REALITY:13",
     "Edit krown status in layer_index.json; keep spec/gate facts",
     "Run make_layers_md.py to regenerate LAYERS.md"
   ],
+  "taken": "2026-11-02T14:13:32Z",
   "tests": "MyTradingSys/tests/docs/test_integrity.py plus tasks.py lint pass; grep 'not built, not backtested' in LAYERS.md returns 0",
   "title": "layer_index.json krown status says 'Detectors not built, not backtested' but detectors and backtests exist (layer-review krown sheet d769e784); done-when: status text matches the sheet",
   "weight": "",

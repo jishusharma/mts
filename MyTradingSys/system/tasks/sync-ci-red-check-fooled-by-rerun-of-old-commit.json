@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T14:13:35Z",
   "commands": [
     "python scripts/dev/test_ci_watch.py"
   ],
@@ -27,6 +28,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "e97827bd3: streak orders by commit time, test fails on old",
+      "ref": "9996d7416",
+      "utc": "2026-11-02T14:13:35Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "GitHub API calls log in with git's saved login (5000/h, not 60/h per IP)",
@@ -43,7 +50,12 @@
   "refined_by": "",
   "refreshed": "2026-11-02T11:45:24Z",
   "refs": [],
-  "result": "",
+  "result": "e97827bd3: streak orders by commit time, test fails on old",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/ci_watch.py",
     "scripts/dev/test_ci_watch.py"
@@ -56,12 +68,13 @@
   "sources": [
     "scripts/dev/ci_watch.py:32 streak; scripts/dev/sync.py:787"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add failing test with fake run lists (head_sha order given as ancestry list)",
     "In ci_watch.streak order runs by branch commit order (or drop runs whose head_sha is an ancestor of a newer-run sha with a finished result), keep API injectable",
     "Run test_ci_watch.py and sync CI-state tests"
   ],
+  "taken": "2026-11-02T14:13:35Z",
   "tests": "scripts/dev/test_ci_watch.py new case: runs newest by createdAt = red old-sha reruns, then green head sha; fails on current streak()",
   "title": "sync.py CI-red check takes the newest 2 runs by createdAt; a re-run of old red commits (2b61ed46, 6294071d at 09:56-09:59Z) hides the green run on the later commit e58a3296, so every code ship is refused though trunk is green. Done when: the check orders runs by commit order on the branch (or ignores re-runs of non-head ancestors), with a test using fake run lists",
   "weight": "",

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T14:13:33Z",
   "commands": [
     "grep -c UNVERIFIED MyTradingSys/research/layer_lab/reports/layer_review_positioning_volume_callers.md MyTradingSys/research/layer_lab/reports/layer_review_rsi_cc_pitchfork_engine.md"
   ],
@@ -18,6 +19,12 @@
   "id": "layer-review-sheets-37931df7b-haiku-remo",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "9996d7416: 73 restored, 30 left removed",
+      "ref": "9996d7416",
+      "utc": "2026-11-02T14:13:33Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -45,7 +52,12 @@
   "refined_by": "",
   "refreshed": "2026-11-02T13:31:18Z",
   "refs": [],
-  "result": "",
+  "result": "9996d7416: 73 restored, 30 left removed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/reports/layer_review_positioning_volume_callers.md",
     "MyTradingSys/research/layer_lab/reports/layer_review_rsi_cc_pitchfork_engine.md"
@@ -58,12 +70,13 @@
   "sources": [
     "MyTradingSys/research/layer_lab/reports/layer_review_rsi_cc_pitchfork_engine.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Diff 4e29dc2e against 37931df7b for the two reports; list the 103 removed cites",
     "For each removed cite, read the cited file at the line and compare the quote; restore with file:line when it matches",
     "Leave the rest removed; log the count of restored vs removed in the commit Result line"
   ],
+  "taken": "2026-11-02T14:13:33Z",
   "tests": "grep -c UNVERIFIED on both report files prints 0 (35 and 36 at 4e29dc2e); a grep for each restored file:line finds the quoted text in that file at that line",
   "title": "Layer review sheets (37931df7b): Haiku removed 103 of 117 UNVERIFIED cites with a strict matcher; several are valid (FORMULAS.md:376, layer_map.json:403, INTEGRATION_MAP.md:8, PLUGIN.md:46, OI_DIVERGENCE_V2:8, RESULT.md:43-46); done-when: each removed cite rechecked by hand vs 4e29dc2e text, valid ones restored with file:line",
   "weight": "",
