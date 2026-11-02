@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T11:03:07Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -27,6 +28,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "already on trunk: test_auto_trader_failclosed.py covers restart/non-trade balance/API erro",
+      "ref": "5c29ed556",
+      "utc": "2026-11-02T11:03:07Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "test: position_manager margin/equity drain (expectedFailure, gap confirmed)",
@@ -45,7 +52,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "already on trunk: test_auto_trader_failclosed.py covers restart/non-trade balance/API error, mutation_check 29/29 proven at 4ced92fd4; no new work",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/execution/ tests only (no production code change)"
   ],
@@ -55,13 +67,14 @@
   "scope_sha": "a0eb3128fa37",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read auto_trader.py and existing tests",
     "write tests",
     "mutate a temp copy per test to prove it fails",
     "ship"
   ],
+  "taken": "2026-11-02T11:03:07Z",
   "tests": "report only; every finding cites file:line and a reproducing input",
   "title": "Live path: add restart/reset-state, non-trade balance move and API-error tests for auto_trader (each must fail on a deliberately broken copy)",
   "weight": "ROUTINE",
