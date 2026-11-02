@@ -1,0 +1,761 @@
+# Video ID: kozesVBKkg4
+# Title: 2 Stupid Simple VWAP Trading Strategies
+# Published: 2025-04-09
+# Source: yt_dlp captions (auto); uploader: The Rumers
+# Analyst: rumers
+# Duration_s:1641
+# Word count: 5590
+# ---
+[00:00:00] Today I'm going to show you the one
+[00:00:02] simple indicator that every trader needs
+[00:00:04] to become a master scalping machine.
+[00:00:06] It's called the VWAP, volume weighted
+[00:00:08] average price. This is the most widely
+[00:00:10] used indicator for the pro traders,
+[00:00:12] banks, and institutions. And there's a
+[00:00:14] good reason for that. Because when used
+[00:00:16] correctly, it's hard to beat the power
+[00:00:18] and accuracy of the VWAP. There's
+[00:00:20] nothing like it. But here's the thing.
+[00:00:22] In order for you to unlock the true
+[00:00:23] power of the VWAP, you have got to be
+[00:00:26] able to use it like the professional
+[00:00:27] traders do. Otherwise, it's just another
+[00:00:29] noisy indicator on your charts, and that
+[00:00:32] is the last thing that you need. What
+[00:00:34] you need is something that's clear,
+[00:00:36] concise, and powerful that can help you
+[00:00:39] break through the barriers that may be
+[00:00:40] in front of you right now. And the VWAP
+[00:00:43] can do that for you. By the way, my name
+[00:00:44] is Doug, and I've been day trading since
+[00:00:46] 1999. And today, I'm going to show you
+[00:00:48] how to use the VWAP in a way that most
+[00:00:50] people don't know how to. like the pros
+[00:00:52] use it, like the banks use it, and like
+[00:00:55] I've been using it over the last several
+[00:00:57] years to consistently make monthly
+[00:00:58] profits in the market like this. And as
+[00:01:01] always, everything I show and say today,
+[00:01:03] I'm going to back it up with a series of
+[00:01:05] live trades. That way, you'll know how
+[00:01:07] to trade the VWAP like a pro. So, let's
+[00:01:10] go. All right. So, the time has come for
+[00:01:12] you and I to get down to business here
+[00:01:14] with this VWAP. But before we get
+[00:01:15] involved in all the juicy details, we
+[00:01:17] have got to make sure that we are all on
+[00:01:19] the same page by having this VWAP set up
+[00:01:22] correctly on our charts. If we want to
+[00:01:24] trade it like the pros, the banks, and
+[00:01:26] the institutions, that's where we have
+[00:01:28] to start. So, the first thing that we
+[00:01:30] need to do is take whatever chart we are
+[00:01:33] trading and pull it up on the screen
+[00:01:35] right now. Now, no matter what asset is
+[00:01:37] on that chart, no matter what time frame
+[00:01:40] is on that chart, I don't care about
+[00:01:42] that right now. We're going to get into
+[00:01:44] that here in just a second, but for now,
+[00:01:46] let's get this thing set up correctly.
+[00:01:48] And what we need to do is make sure that
+[00:01:51] chart has 24-hour or pre and postmarket
+[00:01:56] data enabled on it. Now, for all of you
+[00:01:59] out there that may be trading things
+[00:02:00] like 24-hour markets, foreign
+[00:02:02] currencies, cryptos, commodities, you
+[00:02:04] don't have to worry about this part.
+[00:02:05] It's going to have that in it. But for
+[00:02:07] those that are trading stocks and for
+[00:02:09] some brokerage accounts, futures, you
+[00:02:11] must make sure that is enabled because
+[00:02:15] we need a collection of all 24 hours of
+[00:02:17] data to get the indicator to work
+[00:02:20] properly for us. Now, I'm using this
+[00:02:21] Trading View platform right here. And if
+[00:02:23] you're using that, you can go down into
+[00:02:25] the lower right corner and you will see
+[00:02:27] this thing that says ETH. Make sure that
+[00:02:29] is selected. You'll have regular trading
+[00:02:31] hours and electronic trading hours for
+[00:02:33] them. Click electronic trading hours,
+[00:02:36] but just make sure that's set. If you're
+[00:02:38] using another platform, usually you'll
+[00:02:40] go up and towards the top of the chart.
+[00:02:42] There'll be some sort of search function
+[00:02:43] or there be some sort of settings and
+[00:02:45] either your general or time tabs inside
+[00:02:48] of that brokerage software. Let's make
+[00:02:49] sure we have that. Pretty easy stuff.
+[00:02:52] Now, once that's done, let's move to the
+[00:02:54] part now where we're setting this VWAP
+[00:02:56] up correctly after we've enabled this
+[00:02:58] 24hour data. So, I have a five-minute
+[00:03:01] chart here, for example, and I'm going
+[00:03:03] to just go up here into the indicator
+[00:03:06] list, and I am going to manually search
+[00:03:08] for VWAP. Again, just about every
+[00:03:10] brokerage software or platform you're
+[00:03:13] using is going to give you some sort of
+[00:03:14] drop-down menu or feature. And we're
+[00:03:16] just going to click on volume, weighted,
+[00:03:19] average, price, and that's going to
+[00:03:21] leave us in most cases with a series of
+[00:03:24] three different lines on the charts.
+[00:03:27] Now, we do not need all three of these
+[00:03:30] lines. We just need the center line, and
+[00:03:32] that's the one we want to focus on. Now,
+[00:03:35] if you're really excited about looking
+[00:03:36] at a lot of lines on your chart, and
+[00:03:38] they're cute and you like them, well,
+[00:03:40] you can leave them there, but they bear
+[00:03:41] no relevance to what we're doing. So, in
+[00:03:43] this platform, all you have to do is
+[00:03:45] just click on that to select it. You can
+[00:03:48] come up into the settings menu, and you
+[00:03:50] will see the VWAP is selected, and we
+[00:03:52] want to take away the upper band and the
+[00:03:55] lower band that is given to us. and just
+[00:03:57] hit okay. And there is your VWAP. It's
+[00:03:59] that simple. So once you've had that
+[00:04:01] 24-hour data enabled and you've got the
+[00:04:04] center line selected only, that should
+[00:04:07] give you the accurate reading that you
+[00:04:09] need for the VWAP. So now that we've got
+[00:04:11] this VWAP set correctly here on our
+[00:04:13] charts, let's get into the juicy stuff,
+[00:04:15] which is what does that line mean? It
+[00:04:18] means based off of a collection of the
+[00:04:20] entire day's volume. That line
+[00:04:24] represents what the price of that
+[00:04:27] instrument should be trading at. Now, I
+[00:04:30] want you to take that word should. I
+[00:04:32] want you to put it right there in the
+[00:04:34] back of your brain because we're going
+[00:04:35] to come back and visit that thing here
+[00:04:37] in just a second. But that's what the
+[00:04:39] price should be. But this is why earlier
+[00:04:42] I mentioned that your time frame is
+[00:04:44] irrelevant. And this is the beauty of
+[00:04:46] the VWAP because it's collected on
+[00:04:50] volume and not price. The translation is
+[00:04:54] universal no matter what time frame.
+[00:04:56] Again, that's why so many use it and why
+[00:04:58] it's so popular. So, for example, I have
+[00:05:01] the ES futures, which on a five-minute
+[00:05:03] chart, if you look up here towards the
+[00:05:05] top, but if I kind of cursor over top of
+[00:05:08] the VWAP, it's telling me it's 550. And
+[00:05:11] if I move to a one minute chart, I may
+[00:05:14] get a different chart perspective from
+[00:05:16] this, but the VWAP is still 5505 bearing
+[00:05:20] the same relevance, which I'll show you
+[00:05:21] here. And if I go to a 1 hour, for
+[00:05:23] example, different perspective maybe,
+[00:05:25] but it's still 5505. So again, it's
+[00:05:28] universal. That's what makes it so
+[00:05:30] widely used and makes it so powerful.
+[00:05:32] But let let's kind of back up here a
+[00:05:34] little bit because there's something
+[00:05:35] else I want to talk about. A lot of
+[00:05:37] that's known, but let's let's get into
+[00:05:38] the more deeper details here. There's an
+[00:05:41] easier way for the trader to look at
+[00:05:44] this to get the data they need. An
+[00:05:46] easier way that I have found is look at
+[00:05:49] VWAP as fair market value. Meaning that
+[00:05:54] no matter what is going on in this
+[00:05:56] world, good news, bad news, tariffs,
+[00:05:59] disagreements, agreements, happy times,
+[00:06:01] bad times, all known relevant
+[00:06:03] information surrounding this entire
+[00:06:05] globe is baked into this chart right now
+[00:06:09] at this moment in the now. And that's
+[00:06:11] what it's telling me based off of the
+[00:06:13] market participants. That's what the
+[00:06:16] price should be. Now, what do we do with
+[00:06:18] information like this? Well, if
+[00:06:20] something is trading above the VWAP, it
+[00:06:24] could be an indication of a couple of
+[00:06:26] things. Maybe at that moment in time,
+[00:06:28] the demand for that asset is very, very
+[00:06:31] high. That could be a bullish signal to
+[00:06:33] some traders. It could be an emotional
+[00:06:35] event where maybe the market's gotten a
+[00:06:38] little frothy. It's gotten a little
+[00:06:39] emotional and kind of overbought there
+[00:06:41] in the short pocket of time. Now, does
+[00:06:42] these things matter to the overall
+[00:06:44] trend? Not necessarily. But for scalpers
+[00:06:46] and day traders, this is vital
+[00:06:48] information to just figure out trends to
+[00:06:50] get on the right side and determine
+[00:06:51] whether or not your trades are going to
+[00:06:53] work. The inverse relationship would be
+[00:06:55] the same down towards the bottom. That
+[00:06:58] would mean at that moment in time, the
+[00:07:00] demand isn't very high. Like now, it's
+[00:07:02] not very high. The market does not want
+[00:07:04] to own it. And why they don't want to
+[00:07:06] own that asset could be for numerous
+[00:07:09] reasons. Maybe it is bearish and it's a
+[00:07:11] riskoff market. Nobody wants to own it.
+[00:07:13] It could also be an emotional event
+[00:07:15] where there's been panic or a news thing
+[00:07:17] released and it's caused the market or
+[00:07:19] whatever asset you're trading to to
+[00:07:21] trade below it. And of course, if it's
+[00:07:23] trading right there at the VWAP, then it
+[00:07:26] is fair market price. And that could be
+[00:07:29] translated in many different ways. It's
+[00:07:31] also a good tool to use in determining
+[00:07:33] the strength of a trend and
+[00:07:35] manufacturing quality trades. So if we
+[00:07:37] take a look here for example, the S&P
+[00:07:40] 500, this ES is currently trading below
+[00:07:43] its VWAP. So the demand isn't there at
+[00:07:47] this current moment to own this asset.
+[00:07:50] Again, set personal feelings and future
+[00:07:52] projections aside. We don't have any
+[00:07:54] room for that as scalpers and day
+[00:07:56] traders. But that's what that
+[00:07:57] translation would be. Now, other
+[00:07:59] traders, more experienced traders may
+[00:08:01] look back at this and say, "You've also
+[00:08:03] had a very difficult time, if you've
+[00:08:05] noticed, staying above that VWAP,
+[00:08:08] creating the demand for that asset." So,
+[00:08:10] it can be a great trend dictator telling
+[00:08:13] us what we should do and how we should
+[00:08:14] position ourselves in the future for the
+[00:08:17] trades that we make. And again, like I
+[00:08:19] said, it's universal across all time
+[00:08:21] frames and assets. So for my friends out
+[00:08:23] there who may trade foreign markets or
+[00:08:25] other types of markets like gold for
+[00:08:28] example, what is the translation you get
+[00:08:30] from gold? It's trading very close to
+[00:08:32] the fair market value. For those who
+[00:08:34] trade something like Bitcoin, here's a
+[00:08:37] current chart of Bitcoin. Where are you?
+[00:08:39] You got the same kind of viewpoint as
+[00:08:41] you do with the S&P or ES. You have a
+[00:08:44] asset that's trading below that VWAP.
+[00:08:47] the demand is not there and it's
+[00:08:49] continually stayed under the VWAP for
+[00:08:52] quite some time. But you know what? All
+[00:08:54] of that stuff is pretty elementary when
+[00:08:56] it comes to learning about the VWAP. And
+[00:08:58] for you guys who've traded it and
+[00:09:00] studied it, you already know this. And
+[00:09:02] in the introduction, I promised you I
+[00:09:04] was going to show you a way to trade
+[00:09:05] this thing like no one else. So, here it
+[00:09:08] goes. I'm going to back this chart out
+[00:09:10] here for just a second. Let's say this
+[00:09:12] is going to be your first challenge or
+[00:09:14] your first quiz. And I just want you to
+[00:09:16] take a look at this chart along with the
+[00:09:18] VWAP, along with the price of the
+[00:09:19] instrument. And I want you to tell me,
+[00:09:21] do you see anything that's unique, that
+[00:09:23] is interesting, that's repetitive,
+[00:09:25] that's a nuance? Is there anything that
+[00:09:27] your eyes can register with here right
+[00:09:29] now? Don't worry if you don't know.
+[00:09:31] We're going to get into that here in
+[00:09:33] just a second. And here it is. You
+[00:09:35] remember the part where I told you the
+[00:09:38] VWAP is where it should be? The way I
+[00:09:42] like to look at VWAP and the way I've
+[00:09:44] gotten the most out of it is I look at
+[00:09:46] it like two long lost lovers who are
+[00:09:50] suffering from a severe case of
+[00:09:51] separation anxiety. If you look at this
+[00:09:54] chart, they never stay apart for any
+[00:09:58] length of real time. At certain pockets,
+[00:10:01] yes, they do, but somehow they always
+[00:10:04] get reconnected. So, take a look at what
+[00:10:06] you have here in the chart. It's going
+[00:10:07] to be this way for anything you're
+[00:10:09] trading. You'll have prices that will go
+[00:10:11] below the VWAP, but they'll reconnect.
+[00:10:13] They'll go above the VWAP, but
+[00:10:15] reconnect. And it keeps doing that.
+[00:10:17] Above, reconnect, below, reconnect,
+[00:10:19] above, reconnect, over and over and over
+[00:10:21] again. And it's so accurate that even
+[00:10:24] now, today, when you're under an extreme
+[00:10:28] market duress with fresh tariffs in the
+[00:10:30] mind of all these traders and investors,
+[00:10:32] markets been trading under the 50-day
+[00:10:34] moving average for what seems like an
+[00:10:36] eternity now. It still does the same
+[00:10:39] thing. You got below that VWAP and you
+[00:10:42] revisited. You went below that VWAP, you
+[00:10:44] revisited it. And now that you're below
+[00:10:46] that VWAP, there's a good chance you
+[00:10:49] will come back and revisit it. Now,
+[00:10:52] there's two ways, only two ways, guys,
+[00:10:54] that this happens. It's going to happen.
+[00:10:57] So, there are very few guarantees in the
+[00:10:59] market, and this is why I love the VWAP,
+[00:11:00] because that is a guarantee. They will
+[00:11:02] in fact reconvene with one another here
+[00:11:04] in the future. And it's going to be by
+[00:11:07] two means and two means only. And that's
+[00:11:09] when we're going to just crush this
+[00:11:11] market with the edge that I'm going to
+[00:11:12] show you. Number one, either this price
+[00:11:15] stops moving lower right now and allows
+[00:11:19] that VWAP to catch up to the price.
+[00:11:21] That's one. The other is it just bounces
+[00:11:24] right back into the price. That is going
+[00:11:27] to happen one or the other. And that's
+[00:11:31] going to be a segue into the trading
+[00:11:33] strategies that I am going to show you
+[00:11:35] right now. The first is going to be
+[00:11:37] something we call the separator. The
+[00:11:39] second is going to be the kiss pivot. So
+[00:11:42] let's get into those strategies right
+[00:11:44] now. So the first strategy we're going
+[00:11:45] to talk about here is called the
+[00:11:47] separator. And this is self-explanatory.
+[00:11:49] What we are going to do is we're going
+[00:11:51] to take advantage of the separation
+[00:11:53] between that assets price and the VWAP.
+[00:11:56] moment in time where they get extended
+[00:11:58] and separated from one another. That is
+[00:12:01] going to become our trade entry. And our
+[00:12:04] exit is going to be the nuance of them
+[00:12:08] reconvening with one another here in the
+[00:12:10] future. Now, I'm going to show you this
+[00:12:11] here in a second on the live chart.
+[00:12:12] Don't worry if you didn't get it all.
+[00:12:13] We're going to move over here in just a
+[00:12:14] second. But before we do that, a few
+[00:12:16] tidbits. 90% of these trades, the very
+[00:12:18] best ones, happen at the first 15 to 20
+[00:12:20] minutes of market open. When I say
+[00:12:22] market open, I mean your market open.
+[00:12:25] When you hear the official bell ring of
+[00:12:27] the market you're trading, whether it's
+[00:12:28] the Asian session, London session, New
+[00:12:30] York session, that is the official
+[00:12:32] market open, that's where we want to
+[00:12:33] focus to get this trade right. And we
+[00:12:36] are going to use range and level to
+[00:12:38] execute that trade. So on the screen, we
+[00:12:41] have our chart and you'll see that the
+[00:12:43] trading price is all the way towards the
+[00:12:45] top of this candle and our VWAP is
+[00:12:48] slightly below. So there's a little bit
+[00:12:49] of a premium baked into that right now.
+[00:12:51] It's not too much, but we're going to go
+[00:12:53] ahead and kind of move forward as soon
+[00:12:55] as the market opens. You're going to see
+[00:12:57] you get a very brisk, strong up move.
+[00:13:00] Now, at this point, it should be pretty
+[00:13:02] evident with your eyes. Even if you have
+[00:13:04] terrible eyes and they're foggy and
+[00:13:06] hazy, there should be no question at
+[00:13:08] this point that is definite separation
+[00:13:11] between the current price of that asset
+[00:13:14] and where the VWAP sits. So the next
+[00:13:18] thing that would have to take place in
+[00:13:19] your mind, we definitely don't want to
+[00:13:21] buy anything that's this extended
+[00:13:23] without some sort of a pullback or
+[00:13:25] retracement towards that VWAP. So what I
+[00:13:27] would do in this case is short sell
+[00:13:29] this. Now the question would become, how
+[00:13:31] do you know that's the top? How do you
+[00:13:33] know that's where you should short? How
+[00:13:35] do I know I'm not going to get smoked or
+[00:13:36] steamrololled and it's just going to go
+[00:13:38] and blow me up? Well, I'm going to show
+[00:13:39] you that here. What I always do soon as
+[00:13:43] I get up, the very first thing is I mark
+[00:13:46] out my levels to trade from. Now, I've
+[00:13:49] done a recent video about the box
+[00:13:50] theory. I use that. I've done videos
+[00:13:52] about the levels. I don't want to spend
+[00:13:54] too much time on that because there's
+[00:13:55] videos about the VWAP. So, I'm going to
+[00:13:57] put those videos up here on the screen
+[00:13:59] right now. That way, you can reference
+[00:14:01] them after you watch this one. I highly
+[00:14:03] suggest you watch those if you haven't
+[00:14:04] seen them. It really dials in these
+[00:14:06] entry techniques. But if you can kind of
+[00:14:08] take a look here, we're going to grab
+[00:14:10] ourselves a horizontal line. You can see
+[00:14:12] it where this asset's currently trading.
+[00:14:14] Right over here is the nearest pivot I
+[00:14:18] can see from the previous day. And I'm
+[00:14:20] just going to lay that line right there.
+[00:14:22] And if you go above that, you're going
+[00:14:24] to see the next pivot is just right
+[00:14:26] above that, just in this area. And I'm
+[00:14:29] just going to move that all the way over
+[00:14:31] here to the right of the screen. So the
+[00:14:34] way I would trade this, I would be
+[00:14:36] looking for some sort of fatigue or
+[00:14:41] candle or something to appear between
+[00:14:43] these two lines as a definitive signal
+[00:14:46] to get me in short. And I would do this
+[00:14:49] based off of a couple of main factors
+[00:14:52] here. Let me open this up just a little
+[00:14:53] bit more. Number one, we are far
+[00:14:56] separated from the VWAP and we are
+[00:14:59] overextended. A few minutes ago, this
+[00:15:01] asset was trading at 5680 and now we're
+[00:15:05] up here towards
+[00:15:07] 5715. So, we've had a significant
+[00:15:09] increase here of about 40 points in a
+[00:15:12] very short period of time and we're
+[00:15:14] kissing into that very first level of
+[00:15:17] resistance. So, what I'm going to look
+[00:15:18] for here in this area is some type of
+[00:15:21] fatigue. So, if I move this forward here
+[00:15:23] real quick, I'm going to highlight this
+[00:15:25] area. For those of you who've watched
+[00:15:26] this channel before, I'm going to put
+[00:15:28] this video up on the screen right now.
+[00:15:30] This is definitely an entry candle for
+[00:15:33] me. Again, this is not an entry video,
+[00:15:34] but that is a power of tower. I've got
+[00:15:37] an impulsive green followed by a 50%
+[00:15:40] retracement of the previous bar. I would
+[00:15:43] enter right there at that 50% half of
+[00:15:46] this big green bar. My stop would be
+[00:15:49] somewhere slightly up here and I would
+[00:15:51] target that VWAP for a profit. So, if I
+[00:15:55] kind of move that forward here a little
+[00:15:57] bit, you'll see what happens. That's
+[00:15:59] exactly what I would look for is to
+[00:16:00] reconnect somewhere with that VWAP.
+[00:16:03] That's the separator trade. So, the next
+[00:16:05] strategy we're going to talk about here
+[00:16:07] is called the KISS pivot. And this
+[00:16:09] usually comes after the separator. Once
+[00:16:11] we've had that retracement that moves us
+[00:16:14] back into VWAP, what we're going to be
+[00:16:15] looking to do is have that thing right
+[00:16:18] off the VWAP. just kind of bounce off
+[00:16:20] it, just kind of kiss that and either
+[00:16:21] move back up or go back down depending
+[00:16:24] on what direction that we want to trade.
+[00:16:26] And we'll continue to use the range and
+[00:16:28] levels to execute the trade. So, let's
+[00:16:30] kind of go back to that chart and I'll
+[00:16:32] show you what I'm talking about. So, as
+[00:16:34] we get closer to this VWAP and we've
+[00:16:36] moved down into that area, we want to
+[00:16:39] look for any kind of reversal candle.
+[00:16:41] The same types of reversal candles we
+[00:16:43] would have looked at the very top. the
+[00:16:44] same reversal candle engulfing down
+[00:16:46] here. We could have got in on on the
+[00:16:48] VWAP bounce here. We're going to look
+[00:16:50] for the same exact candlestick setup.
+[00:16:53] And again, I'll put the video up there
+[00:16:55] that talks about candlestick signals.
+[00:16:57] So, if I kind of just move this forward
+[00:16:58] here for a real quick second, you're
+[00:17:00] going to see we have a pretty decent
+[00:17:02] bounce, a nice break of that. So, my
+[00:17:05] entry would be about right there with a
+[00:17:08] stop slightly under the VWAP. And my
+[00:17:10] target would be to go back up in to that
+[00:17:14] range where we created the short trade
+[00:17:17] in the first place. So all we're kind of
+[00:17:19] doing is taking one trade and reversing
+[00:17:21] that trade and then taking the trade
+[00:17:23] again. So let's kind of move for if that
+[00:17:25] made sense. Let's kind of move forward
+[00:17:26] here a little bit. See what happens. And
+[00:17:28] you'll see you kind of grind up there.
+[00:17:30] Now here's what I want to talk to you
+[00:17:33] about here at this point. So you'll see
+[00:17:35] here real quick. Let me go back. You got
+[00:17:37] into that VWAP. There's actually a
+[00:17:39] secondary entry there. And now you have
+[00:17:42] moved up. And where you've moved is back
+[00:17:44] into that area. So again, another quiz.
+[00:17:47] It's been a while since we had one of
+[00:17:48] those. Based off of the knowledge you've
+[00:17:50] collected in this video before we move
+[00:17:52] to the live trades, you see this. Do you
+[00:17:54] buy it? Yes. No. What do you think? Or
+[00:17:58] what do you do here? So to me again, we
+[00:18:00] have adequate separation between the
+[00:18:03] assets price and the current VWAP. the
+[00:18:07] same distance of separation we had here
+[00:18:09] previously. We are up here towards this
+[00:18:12] resistance. This would be my short and
+[00:18:17] then my stop would be up here. We
+[00:18:19] reconvene one more time to connect with
+[00:18:21] that VWAP. And let's take a look at what
+[00:18:24] happens. You'll eventually find your way
+[00:18:27] down there and guess what happens? You
+[00:18:29] that VWAP. Okay, that's what we're
+[00:18:32] looking for over and over again. And
+[00:18:34] this could be one asset. you could trade
+[00:18:35] the whole thing all day long. So that's
+[00:18:36] what we're looking to do here with the
+[00:18:38] separator. We're looking to take
+[00:18:39] advantage of the separation in price,
+[00:18:41] trade it back to that VWAP. We're
+[00:18:43] looking to pick it back up at the VWAP
+[00:18:45] and trade it back up to the initial
+[00:18:46] separation point. So let's move on to
+[00:18:48] some live trades so you can see how all
+[00:18:50] of this stuff works in a real market.
+[00:18:52] All right, guys. The first separator
+[00:18:54] trade has been made today. We are short
+[00:18:56] Nvidia.
+[00:18:59] $11429. So the question is why? Why did
+[00:19:02] we short this? That's the question,
+[00:19:05] right? Well, take a look based off the
+[00:19:07] knowledge you collected. What is it that
+[00:19:09] you see here? We are without a doubt, we
+[00:19:12] are way way above here, right? Look at
+[00:19:15] that. That's a huge move. That's
+[00:19:16] definitely separation. In fact, this
+[00:19:19] thing was all the way down here at 110
+[00:19:20] not too long ago. So, that's that's a
+[00:19:22] really really big move. And I've been
+[00:19:24] waiting a long time to get the proper
+[00:19:26] signal. But right there, I'm going to
+[00:19:27] kind of highlight that for everybody.
+[00:19:29] That's a good oldfashioned John Wick.
+[00:19:31] That's one of my favorite. That is my
+[00:19:32] favorite candle, by the way. I'm going
+[00:19:34] to put that video right up here on the
+[00:19:36] screen. Now, this is a straightforward
+[00:19:38] trade based of off of what we said.
+[00:19:40] Stop's going to be up there at the high
+[00:19:41] of day and we're looking to target back
+[00:19:44] into that VWAP. That's what we're
+[00:19:46] looking for profits and we're doing it
+[00:19:48] based off of the separation. Now, also,
+[00:19:50] if I kind of back that out, you're going
+[00:19:51] to see that wasn't my own. It wasn't
+[00:19:53] just the separation. Wasn't just the
+[00:19:55] John Wick. There's also a third form of
+[00:19:57] data that comes back in there with the
+[00:20:00] level. So, if I could take the level, I
+[00:20:02] stretched that out. You're going to see
+[00:20:03] we got a good old pivot there from
+[00:20:05] yesterday towards the close. And that
+[00:20:07] all three of those is enough for me to
+[00:20:10] to to go short. That's why I went short.
+[00:20:12] And I feel very confident about a short
+[00:20:14] like that. So, we're going to come back
+[00:20:15] and visit this here later, but just real
+[00:20:17] quick, you probably noticed for those
+[00:20:19] who are really paying attention here
+[00:20:21] with this video, you could have actually
+[00:20:24] had a separator here. I wasn't fast
+[00:20:26] enough to catch that, but you'll see you
+[00:20:27] got a little push down there early. Come
+[00:20:30] back and kiss that. Also, a kiss pivot
+[00:20:33] right there. I missed this one as well.
+[00:20:34] I have a couple of other trades going,
+[00:20:36] but you can see how it works. You got
+[00:20:39] multiple trades. So, even if you miss a
+[00:20:40] few trades here and there, you have
+[00:20:42] opportunities to to get back in. So,
+[00:20:45] there was a separator there, a kiss
+[00:20:47] pivot right there, and now we're headed
+[00:20:49] for another separator. So, let's kind of
+[00:20:51] just come back here a little bit later.
+[00:20:52] All right, guys. For the sake of time, I
+[00:20:54] went ahead and and fast forwarded it.
+[00:20:56] We're going to go ahead and cover this
+[00:20:57] position up. It was a good trade. It
+[00:20:59] worked the way that we wanted to. It
+[00:21:01] wasn't very stressful whatsoever. Take a
+[00:21:04] look at what you have here. Very, very
+[00:21:06] simple, straightforward trade. There
+[00:21:07] shouldn't be much confusion here. We had
+[00:21:09] the adequate separation. We moved back
+[00:21:11] down into the VWAP. That's the trade.
+[00:21:14] And again, like I mentioned just a
+[00:21:15] minute ago, you had a couple of those
+[00:21:17] here depending on which direction you
+[00:21:19] wanted to take it today. There was there
+[00:21:20] was a lot of trades on the same asset.
+[00:21:22] you never even had to get off of this
+[00:21:24] same chart. So maybe, just maybe,
+[00:21:26] there's going to be another trade for a
+[00:21:28] kiss pivot here, right? Maybe off of
+[00:21:30] that level and moving back up. Now, the
+[00:21:33] question will always be, hey, hey, what
+[00:21:35] about those ones that don't work, right?
+[00:21:36] Because there are trades. I'm not 100%.
+[00:21:39] You know, but this is the beauty of it,
+[00:21:41] as with all the strategies I teach,
+[00:21:43] primarily being a reversal trader, is
+[00:21:45] all of these pivots and all of these
+[00:21:47] areas I enter, I don't have very much
+[00:21:50] invested into the trade. So, for
+[00:21:52] example, when we entered the John Wick
+[00:21:54] up here, you know, if you get stopped
+[00:21:55] out of that, what are you losing versus
+[00:21:57] what are you gaining? See, the risk
+[00:21:59] versus reward is so much higher doing it
+[00:22:01] this way than it is buying up here with
+[00:22:04] like no man's land or no trader land all
+[00:22:06] the way down here. So, these risks are
+[00:22:09] very low. And even if you choose to buy
+[00:22:11] this off the pivot right here, for
+[00:22:12] example, that's a fair setup. I would
+[00:22:15] want to see a little bit more,
+[00:22:16] especially after a rough drop like that.
+[00:22:18] But for example, let's say that you did
+[00:22:20] buy that the stop is I mean what what
+[00:22:23] are you losing here? You're not and you
+[00:22:25] don't need very many trades for you to
+[00:22:28] work. Okay, so let's do a kiss pivot
+[00:22:30] trade. We are short 300 which is just a
+[00:22:33] tiny amount here of AMD. I'm going to
+[00:22:35] tell you why I only use 300 in a second
+[00:22:37] at
+[00:22:38] 10682. So let's first talk about the
+[00:22:40] trade. It should be pretty apparent at
+[00:22:43] this time. We are going to use this VWAP
+[00:22:45] as a resistance level. So, we're
+[00:22:47] bouncing off the lows. We're going to
+[00:22:50] use the kissing of this VWAP as a
+[00:22:52] rejection. You see, we do have some
+[00:22:54] rejection there. And we're going to look
+[00:22:56] for this to retrace back down to the
+[00:22:59] low. Now, by this time also, you should
+[00:23:01] have seen, hey, there was a there was a
+[00:23:03] separator right here, right? Followed by
+[00:23:05] another separator. So, there was some
+[00:23:06] pretty good trades, both of the long and
+[00:23:08] the short, if you would have caught
+[00:23:10] that. Now, back to the 300. It's getting
+[00:23:12] a little bit late in the day. I normally
+[00:23:14] don't trade after lunch because there's
+[00:23:17] just such good activity. And I'll be
+[00:23:19] honest, I've been very hesitant to buy
+[00:23:22] KISS pivots to the upside or to long
+[00:23:24] those pivots because the market
+[00:23:26] continues to be aggressively downside
+[00:23:29] trending. So, kind of wanting to stay to
+[00:23:32] the short side and and look, that has
+[00:23:34] been a little bit of a mistake because
+[00:23:35] you can look back at a few of these
+[00:23:37] charts today. They have ripped like hell
+[00:23:39] on those KISS pivots. So, you know,
+[00:23:41] there there was value there, but you
+[00:23:43] know, that's what I preferred to do. And
+[00:23:44] because it's late and because it's
+[00:23:46] already down, that's the way I've
+[00:23:48] decided. So, let's kind of go through
+[00:23:49] this real quick here with the arrow.
+[00:23:51] I've got the the rejection here. You've
+[00:23:54] got in this case, you're not really at a
+[00:23:56] sweet spot level in terms of a
+[00:23:59] definitive rejection level, but you do
+[00:24:01] have a bunch of lower highs. So, you're
+[00:24:03] downtrending. And I'm just kind of
+[00:24:05] expecting a sort of pattern to fatigue
+[00:24:08] somewhere out of this move up and then
+[00:24:11] perhaps back down into the low. So,
+[00:24:14] we'll kind of come back and see what
+[00:24:16] happens. As far as stop losses, I'm kind
+[00:24:19] of looking at just somewhere up here in
+[00:24:21] in in this area for a potential stop,
+[00:24:23] but we'll see. Just let it play out. All
+[00:24:25] right, for the sake of time moving
+[00:24:27] forward here, we got exactly what it is
+[00:24:29] we were looking for. And to be honest
+[00:24:30] with you, I'm going to take this money
+[00:24:32] and get out of here. I cannot wait to
+[00:24:34] get out of this trade. It has been
+[00:24:36] somewhat boring and definitely not my
+[00:24:39] style. But hey, a promise is a promise.
+[00:24:40] But let's go over this here real quick.
+[00:24:42] Small gains on this one, but hey,
+[00:24:44] everything matters, right? It all
+[00:24:45] counts. Nice rejection off of there. And
+[00:24:48] the reason I said it was a bit of
+[00:24:49] torture is it took a while to break down
+[00:24:51] and it was just kind of haggling. And a
+[00:24:53] lot of that has to do with the time
+[00:24:54] frame. As I said, there's a reason I
+[00:24:55] don't really like trading so late in the
+[00:24:57] day and but I did it anyway. and we got
+[00:25:00] a nice push down and we got a little bit
+[00:25:02] lower. I wouldn't be surprised to see it
+[00:25:04] break, but I made it clear I think at
+[00:25:07] this point that, you know, I'm much more
+[00:25:09] preferable of being a reversal trader
+[00:25:11] and shorting up here than shorting after
+[00:25:13] a move. This is something I I generally
+[00:25:15] do not like to do, but I really wanted
+[00:25:17] to show you guys how that VWAP works and
+[00:25:20] why it's so powerful and that, you know,
+[00:25:22] you can always kind of manufacture a
+[00:25:24] trade from that, whether it's to the
+[00:25:26] upside or downside. So, there you go.
+[00:25:28] Two nice trades. one, the separator,
+[00:25:29] showing you how it works. And then, of
+[00:25:31] course, the kiss pivot here, moving off
+[00:25:34] of that VWAP this time to the downside
+[00:25:36] instead of the upside. All right, guys.
+[00:25:38] It has been an absolute pleasure to do
+[00:25:40] this video today. I hope you got some
+[00:25:42] value out of it, and I hope you can see
+[00:25:44] the true power of the VWAP, and it has
+[00:25:46] the same effect on you as it did me and
+[00:25:48] can really get you to that next level as
+[00:25:50] a trader. So, in a quick review, the one
+[00:25:52] trade I like the most obviously is the
+[00:25:55] reversal trade, is that separator. I
+[00:25:57] really like those parabolics or those
+[00:25:59] flushes and to reverse those off of
+[00:26:01] supports and resistance. Again, I got
+[00:26:03] tons of videos about that here on the
+[00:26:05] channel. But the separator takes
+[00:26:06] advantage of that separation between the
+[00:26:09] price and the VWAP and the reconnection.
+[00:26:12] Now, if you don't like that trade, you
+[00:26:14] miss that trade or whatever happens in
+[00:26:16] your world, you can always do that kiss
+[00:26:18] pivot. Wait for that retracement to
+[00:26:20] confirm the VWAP. See buyers or sellers
+[00:26:23] stepping in and confirming your bias on
+[00:26:25] that VWAP. and then look for the
+[00:26:27] retracement back to the nearest point of
+[00:26:29] support or the nearest point of
+[00:26:31] resistance. Now, as always, if you have
+[00:26:33] any questions, we sometimes move very
+[00:26:34] quickly through these videos and a lot
+[00:26:36] of you are brand new, some of you are
+[00:26:38] advanced and more experienced, but if
+[00:26:40] you have any questions, put those down
+[00:26:41] in the description box. I do want to
+[00:26:43] take this time, as with every video, to
+[00:26:45] remind you that every single week, my
+[00:26:47] wife and I put out a free gains guide.
+[00:26:50] We list the greatest stocks to trade for
+[00:26:53] that week. We list everything about the
+[00:26:55] market and all of its premium and potent
+[00:26:57] levels for you to trade. And we always
+[00:26:59] include a bunch of tips in there as
+[00:27:00] well. So, if you're looking to just kind
+[00:27:02] of get further advanced with your
+[00:27:04] trading or just get on the same page or
+[00:27:06] have some sort of plan coming into each
+[00:27:08] week, make sure you fill out that. It's
+[00:27:10] right down there. It's completely free.
+[00:27:11] It's in the description box, the gains
+[00:27:13] guide. On that note, man, it's been a
+[00:27:15] total pleasure today. Take care. Trade
+[00:27:18] well. Talk to you soon. Cheers.
