@@ -2,6 +2,15 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-02T11:04:54Z",
+    "misses": 7,
+    "reads": [
+      "MyTradingSys/research/sim_desk/studies/fabio_v3.py"
+    ],
+    "session": "agent-aa8dca8168cce0cab"
+  },
   "created": "2026-10-31T13:48:52Z",
   "depends_on": [],
   "done_when": "RESULT.md exists with n per tercile, CI, placebo p; sim_desk/results export exists; window test passes; PRE_REG_EXT.md committed before RESULT.md",

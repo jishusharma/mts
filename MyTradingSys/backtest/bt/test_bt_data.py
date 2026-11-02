@@ -77,4 +77,14 @@ class Hard(unittest.TestCase):
         long_ = d.funding_cost_pct(fr, [999, 1000, 999], [3000, 3000, 1000], [1, 1, 1])
         self.assertTrue(all(abs(a - b) < 1e-12 for a, b in zip(long_, [0.02, 0.01, 0.01])))   # (entry, exit]: entry==settlement excluded
         self.assertAlmostEqual(float(d.funding_cost_pct(fr, 999, 3000, -1)), -0.02)         # short receives
+    def test_funding_boundary_jitter(self):
+        # archive calc_time is 1-31 ms after the 8h boundary; rule: stamps snap down to the second, so a bar-aligned
+        # entry at the boundary does not pay that settlement and a bar-aligned exit at the boundary does
+        with tempfile.TemporaryDirectory() as td:
+            fd = Path(td, "fundingRate"); fd.mkdir()
+            (fd / "a.csv").write_text("calc_time,funding_interval_hours,last_funding_rate\n28800005,8,0.0001\n57600031,8,0.0002\n")
+            fr = d.load_funding(td)
+            self.assertEqual([t for t, _ in fr], [28800000, 57600000])
+            self.assertAlmostEqual(float(d.funding_cost_pct(fr, 28800000, 57600000, 1)), 0.02)    # entry on boundary skips it, exit on boundary pays
+            self.assertAlmostEqual(float(d.funding_cost_pct(fr, 0, 28800000, 1)), 0.01)           # exit exactly on boundary pays
 if __name__ == "__main__": unittest.main()
