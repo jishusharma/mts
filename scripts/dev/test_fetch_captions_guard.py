@@ -18,7 +18,7 @@ class T(unittest.TestCase):
         self.td = tempfile.TemporaryDirectory()
         self.addCleanup(self.td.cleanup)
         self.rec = pathlib.Path(self.td.name) / "yt_block.json"
-        p = mock.patch.dict(os.environ, {"YT_BLOCK_FILE": str(self.rec)})
+        p = mock.patch.dict(os.environ, {"YT_BLOCK_FILE": str(self.rec), "YT_PROXY": "off"})
         p.start()
         self.addCleanup(p.stop)
         ip = mock.patch.object(f, "public_ip", return_value="203.0.113.7")   # no real ipify request

@@ -34,12 +34,18 @@ Fleet guard (2026-11-01; one public IP is shared by several machines, so a per-m
  - escalating lockout on consecutive blocks 6 h, 24 h, 72 h (OURS); a clean fetch resets the count (`ytclean` signal).
  - a yt-dlp 429 ends the video there: the transcript-api fallback (plus its metadata call) is OFF unless --fallback, and then
    each of its calls is counted against the budget.
+YouTube-only proxy (operator 2026-11-02, home IP blocked): when env YT_PROXY is set (a socks5:// or http:// URL; "off" =
+none) or ~/.mts/ytproxy/wireproxy.conf exists (free Cloudflare WARP via the open-source wgcf + wireproxy, setup in
+MyTradingSys/system/YT_PROXY.md), EVERY YouTube call and the ipify check go through socks5://127.0.0.1:40000; nothing
+else on the machine changes. wireproxy is started for the run when the port is closed and stopped after. Proxy set but not
+reachable = exit 2 with no request (fail closed: never falls back to the home IP). The guard above applies per exit IP.
 """
 import argparse
 import hashlib
 import json
 import os
 import socket
+import subprocess
 import re
 import sys
 import tempfile
@@ -63,9 +69,13 @@ BLOCK_HOURS = 6
 BLOCK_LEVELS_H = (6, 24, 72)   # OURS: lockout hours on the 1st, 2nd, 3rd+ consecutive block
 BUDGET_WINDOW_H = 24
 DAILY_BUDGET = 40              # OURS: YouTube requests per public IP per rolling 24 h (env YT_DAILY_BUDGET)
+DAILY_BUDGET_PROXY = 150       # OURS: same, on the shared WARP exit (one CBP run ~35 requests, 2 runs a day)
 ALLOW_FALLBACK = False         # transcript-api fallback after a 429 is a second network path: off by default
 BLOCK_MARKS = ("429", "Too Many Requests", "Sign in to confirm")
 EXIT_BLOCKED = 3
+EXIT_PROXY_DOWN = 2
+PROXY_ADDR = ("127.0.0.1", 40000)   # OURS: wireproxy BindAddress in ~/.mts/ytproxy/wireproxy.conf
+_proxy_proc = []
 
 
 class YTBlocked(Exception):
@@ -78,7 +88,7 @@ class BudgetExceeded(Exception):
 
 def daily_budget():
     try:
-        return int(os.environ.get("YT_DAILY_BUDGET") or DAILY_BUDGET)
+        return int(os.environ.get("YT_DAILY_BUDGET") or (DAILY_BUDGET_PROXY if proxy_url() else DAILY_BUDGET))
     except ValueError:
         return DAILY_BUDGET
 
@@ -111,11 +121,87 @@ def write_block(**upd):
     p.write_text(json.dumps(rec, indent=1), encoding="utf-8", newline="\n")
 
 
-def public_ip():
-    """Current public IP via one tiny api.ipify.org request, or None when it cannot be read (tests patch this)."""
+def proxy_dir():
+    return Path(os.environ.get("YT_PROXY_DIR") or Path.home() / ".mts" / "ytproxy")
+
+
+def proxy_url():
+    """The URL all YouTube traffic goes through, or None (direct). Env YT_PROXY wins ("off" = direct); else a
+    wireproxy.conf in proxy_dir() means the local WARP SOCKS port."""
+    env = (os.environ.get("YT_PROXY") or "").strip()
+    if env:
+        return None if env.lower() == "off" else env
+    if (proxy_dir() / "wireproxy.conf").exists():
+        return "socks5://%s:%d" % PROXY_ADDR
+    return None
+
+
+def _port_open(addr, timeout=1.0):
     try:
-        with urllib.request.urlopen("https://api.ipify.org", timeout=8) as r:
-            return str(ipaddress.ip_address(r.read().decode("ascii").strip()))
+        with socket.create_connection(addr, timeout=timeout):
+            return True
+    except OSError:
+        return False
+
+
+def ensure_proxy(wait=20):
+    """True when no proxy is configured or its port answers; starts wireproxy from proxy_dir() for this run if needed."""
+    url = proxy_url()
+    if not url:
+        return True
+    hostport = url.split("://", 1)[-1].rsplit("@", 1)[-1].rstrip("/")
+    host, _, port = hostport.rpartition(":")
+    addr = (host or "127.0.0.1", int(port or 1080))
+    if _port_open(addr):
+        return True
+    d = proxy_dir()
+    exe = d / ("wireproxy.exe" if os.name == "nt" else "wireproxy")
+    if addr != PROXY_ADDR or not exe.exists() or not (d / "wireproxy.conf").exists():
+        return False
+    flags = 0x08000000 if os.name == "nt" else 0   # CREATE_NO_WINDOW
+    with open(d / "wireproxy.log", "ab") as log:   # the child keeps its own handle
+        _proxy_proc.append(subprocess.Popen([str(exe), "-c", str(d / "wireproxy.conf")], cwd=str(d), stdout=log,
+                                            stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, creationflags=flags))
+    end = time.monotonic() + wait
+    while time.monotonic() < end:
+        if _port_open(addr):
+            return True
+        if _proxy_proc[-1].poll() is not None:
+            break
+        time.sleep(0.5)
+    return False
+
+
+def stop_proxy():
+    while _proxy_proc:
+        pr = _proxy_proc.pop()
+        if pr.poll() is None:
+            pr.terminate()
+            try:
+                pr.wait(timeout=10)
+            except subprocess.TimeoutExpired:
+                pr.kill()
+
+
+def ydl_opts(opts):
+    """yt-dlp options with the YouTube proxy added when one is configured."""
+    url = proxy_url()
+    if url:
+        opts["proxy"] = url
+    return opts
+
+
+def public_ip():
+    """Current public IP via one tiny api.ipify.org request (through the YouTube proxy when set, so the guard keys on
+    the exit IP), or None when it cannot be read (tests patch this)."""
+    try:
+        if proxy_url():
+            with yt_dlp.YoutubeDL(ydl_opts({"quiet": True})) as y:
+                raw = y.urlopen("https://api.ipify.org").read()
+        else:
+            with urllib.request.urlopen("https://api.ipify.org", timeout=8) as r:
+                raw = r.read()
+        return str(ipaddress.ip_address(raw.decode("ascii").strip()))
     except Exception:
         return None
 
@@ -425,7 +511,7 @@ def list_channel(handle, scan, cookies=None):
     opts = {"quiet": True, "no_warnings": True, "extract_flat": True, "playlistend": scan}
     if cookies:
         opts["cookiefile"] = cookies
-    with yt_dlp.YoutubeDL(opts) as y:
+    with yt_dlp.YoutubeDL(ydl_opts(opts)) as y:
         info = y.extract_info(f"https://www.youtube.com/{handle}/videos", download=False)
     return [(e["id"], e.get("title") or "") for e in (info.get("entries") or []) if e and e.get("id")][:scan]
 
@@ -437,7 +523,7 @@ def video_date(vid, cookies=None):
     if cookies:
         opts["cookiefile"] = cookies
     try:
-        with yt_dlp.YoutubeDL(opts) as y:
+        with yt_dlp.YoutubeDL(ydl_opts(opts)) as y:
             d = y.extract_info(f"https://www.youtube.com/watch?v={vid}", download=False).get("upload_date") or ""
     except yt_dlp.utils.DownloadError:
         return ""
@@ -449,7 +535,11 @@ def transcript_api_cues(vid, langs):
     spend("transcript-api")
     try:
         from youtube_transcript_api import YouTubeTranscriptApi
-        t = YouTubeTranscriptApi().fetch(vid, languages=list(langs))
+        api = YouTubeTranscriptApi()
+        if proxy_url():   # never the home IP while a proxy is configured
+            from youtube_transcript_api.proxies import GenericProxyConfig
+            api = YouTubeTranscriptApi(proxy_config=GenericProxyConfig(http_url=proxy_url(), https_url=proxy_url()))
+        t = api.fetch(vid, languages=list(langs))
         cues = [(int(s.start), " ".join(s.text.split())) for s in t.snippets if s.text.strip()]
     except Exception:   # library errors are many classes; any failure means "no fallback"
         return None
@@ -463,7 +553,7 @@ def meta(vid, cookies=None):
     if cookies:
         opts["cookiefile"] = cookies
     try:
-        with yt_dlp.YoutubeDL(opts) as y:
+        with yt_dlp.YoutubeDL(ydl_opts(opts)) as y:
             return y.extract_info(f"https://www.youtube.com/watch?v={vid}", download=False) or {}
     except yt_dlp.utils.DownloadError:
         return {}
@@ -507,7 +597,7 @@ def fetch(vid, analyst, langs, outdir, channel="", cookies=None):
                     "outtmpl": str(Path(td) / "%(id)s")}
             if cookies:
                 opts["cookiefile"] = cookies
-            with yt_dlp.YoutubeDL(opts) as y:
+            with yt_dlp.YoutubeDL(ydl_opts(opts)) as y:
                 info = y.extract_info(url, download=True)
             vtts = list(Path(td).glob("*.vtt"))
             if not vtts:
@@ -599,7 +689,10 @@ def main(argv):
     try:
         return _main(argv)
     finally:
-        flush_fleet()
+        try:
+            flush_fleet()
+        finally:
+            stop_proxy()
 
 
 def _main(argv):
@@ -621,6 +714,10 @@ def _main(argv):
     ap.add_argument("--fallback", action="store_true", help="after a yt-dlp 429 also try transcript-api (counted; off by default)")
     ap.add_argument("videos", nargs="*")
     a = ap.parse_args(argv)
+    if not a.status and not ensure_proxy():
+        print(f"YT_PROXY DOWN: {proxy_url()} not reachable; no request made (never falls back to the home IP). "
+              f"See MyTradingSys/system/YT_PROXY.md")
+        return EXIT_PROXY_DOWN
     gate = guard_gate(a)
     if gate is not None:
         return gate

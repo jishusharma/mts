@@ -12,7 +12,7 @@
   "goal": "fetch_captions_timed.py has no direct test. Pure parts only: parse_vtt, daily_budget, ip_hash, budget_used, current_level, blocked_until (temp block file; no network). Derive expected values by hand from docstrings, write the test, 3 scratch mutations must fail it.",
   "id": "gpt-spec-tests-fetch-captions-timed",
   "kind": "build",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
@@ -30,6 +30,12 @@
   "refined_by": "",
   "refreshed": "2026-11-02T05:49:03Z",
   "refs": [],
+  "reroute": {
+    "at": "2026-11-02T11:00:21Z",
+    "from": "CODEX",
+    "to": "SONNET",
+    "why": "window"
+  },
   "result": "",
   "scope_in": [
     "scripts/dev/test_fetch_captions_timed.py",

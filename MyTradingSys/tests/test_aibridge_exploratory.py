@@ -277,3 +277,23 @@ def test_077_stop_resets_the_reply_watch_and_draft_counts_as_busy():
 def test_077_agent_task_default_follows_the_playbook_budget():
     a = _src("scripts/aibridge/src/agent.ps1")
     assert "$sumS + 60" in a and "[Math]::Min($hardS, [Math]::Max(600, $sumS + 60))" in a
+
+
+# ---------------------------------------------------------------- 0.7.11 idle signal (operator screenshot 2026-11-02, JIS-NUC)
+
+@needs_browser
+def test_idle_signal_survives_a_live_timer_in_a_hidden_tab():
+    """A chat that shows a live timer ('Thought for N s', length wobbles 0-3 chars every 700 ms) must still count as idle.
+    Before 0.7.11 the page-text quiet clock reset on every wobble: the block never ran / the result was never posted and
+    hands-free switched itself OFF ('the chat never became idle'). The tab is simulated hidden (visibilityState=hidden)."""
+    js = ARM + r"""
+Object.defineProperty(document, 'hidden', {get: function(){ return true; }});
+Object.defineProperty(document, 'visibilityState', {get: function(){ return 'hidden'; }});
+var tk = document.createElement('div'); tk.id = 'timer'; document.body.appendChild(tk);
+var k = 0; setInterval(function(){ k++; tk.textContent = 'Thought for ' + '1234567890'.slice(0, 1 + (k % 4)) + ' s'; }, 700);
+setTimeout(function(){ window.dsaReply('go', ['# AIRUN cwd=C:\\x\nWrite-Output idle1']); }, 8000);
+setTimeout(window.finish, 45000);
+"""
+    r = run_page(js, 60000)
+    assert any("ran:" in p["text"] or "idle1" in p["text"] for p in r["posted"]), (r["posted"], r["status"], r["banner"])
+    assert not r["banner"], r["banner"]

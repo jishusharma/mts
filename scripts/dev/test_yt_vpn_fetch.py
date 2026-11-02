@@ -43,7 +43,7 @@ class T(unittest.TestCase):
         self.tmp = pathlib.Path(self.td.name)
         self.profile = self.tmp / "p.ovpn"
         self.profile.write_text(SECRET, encoding="utf-8")
-        env = mock.patch.dict(os.environ, {"YT_BLOCK_FILE": str(self.tmp / "yt_block.json")})
+        env = mock.patch.dict(os.environ, {"YT_BLOCK_FILE": str(self.tmp / "yt_block.json"), "YT_PROXY": "off"})
         env.start()
         self.addCleanup(env.stop)
         self.ips = []

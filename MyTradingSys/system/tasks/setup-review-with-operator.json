@@ -2,6 +2,13 @@
   "approved_by": "operator 2026-10-30 via Eagle_Eyes (d-map-before-backtest, d-setup-review-before-backtest, d-storybook-v2)",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-02T11:08:33Z",
+    "misses": 25,
+    "reads": [],
+    "session": "agent-a68f41d820d09f88d"
+  },
   "created": "2026-10-29T22:28:45Z",
   "depends_on": [],
   "done_when": "SETUP_REVIEW.md: per setup a plain rule (SOURCED vs OURS), one BTC example shot, our measured counts if any, open gaps from EXTRACTION_CRITICAL_GAPS; operator verdict column filled from his chat replies; his 2-3 picks recorded in OPERATOR_DECISIONS.md.",

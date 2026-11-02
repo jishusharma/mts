@@ -25,7 +25,7 @@ class Base(unittest.TestCase):
     def setUp(self):
         self.td = tempfile.TemporaryDirectory()
         self.addCleanup(self.td.cleanup)
-        self.env = mock.patch.dict(os.environ, {"YT_BLOCK_FILE": str(pathlib.Path(self.td.name) / "b.json")})
+        self.env = mock.patch.dict(os.environ, {"YT_BLOCK_FILE": str(pathlib.Path(self.td.name) / "b.json"), "YT_PROXY": "off"})
         self.env.start()
         self.addCleanup(self.env.stop)
         self.rows = []   # what the "fleet" currently holds

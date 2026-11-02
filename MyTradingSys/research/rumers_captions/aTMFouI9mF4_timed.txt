@@ -1,0 +1,544 @@
+# Video ID: aTMFouI9mF4
+# Title: The " ONE CANDLE "  Scalping Strategy I Will Use For Life
+# Published: 2025-06-30
+# Source: yt_dlp captions (auto); uploader: The Rumers
+# Analyst: rumers
+# Duration_s:1263
+# Word count: 3848
+# ---
+[00:00:01] Today I'm going to show you this amazing
+[00:00:03] scalping strategy that's designed to
+[00:00:05] take advantage of the first one hour of
+[00:00:07] each trading session. It's called the
+[00:00:09] pattern scalp. It's repeatable. It's
+[00:00:12] newbie friendly. And best of all, it is
+[00:00:14] simple. Now, my name is Doug and I've
+[00:00:15] been day trading now for over 25 years.
+[00:00:18] One of the biggest things I've learned
+[00:00:19] throughout that time is that 90% of all
+[00:00:22] the money a trader will make during
+[00:00:24] their lifetime will take place within
+[00:00:26] the first hour of each trading session.
+[00:00:29] And every professional knows that
+[00:00:30] everything we ever work for, train for,
+[00:00:32] and prepare for all comes down to that
+[00:00:35] moment in our ability to execute. It's
+[00:00:37] like our Super Bowl. And if you want to
+[00:00:39] increase your chances on becoming a
+[00:00:40] successful trader, you've got to master
+[00:00:43] the open. And if you want to master the
+[00:00:45] open, you've got to have the right
+[00:00:46] trading strategy. Otherwise, it is game
+[00:00:48] over. So, in today's video, I'm going to
+[00:00:50] show you how to use the pattern scalp
+[00:00:52] strategy in just three simple steps. I'm
+[00:00:54] going to show it to you the exact same
+[00:00:56] way that it was shown to me in 2003. And
+[00:00:59] the exact same way that I've shown this
+[00:01:01] strategy to hundreds upon hundreds of
+[00:01:04] other traders who are in our live
+[00:01:06] trading community who are using the
+[00:01:08] pattern scalp strategy day in and day
+[00:01:10] out to make solid trades. Then after I
+[00:01:13] show you this three-step strategy, I'm
+[00:01:15] going to take that process and trade the
+[00:01:17] pattern scalp in a live market. That way
+[00:01:20] you know exactly how to use it. Let's
+[00:01:22] get started. So, let's talk about this
+[00:01:24] pattern scalp strategy. And I tell you
+[00:01:25] what, I love this thing. I mean, I've
+[00:01:27] built a 20 plus year trading career off
+[00:01:30] of this strategy. And most people I show
+[00:01:32] it to, they like it as well because it
+[00:01:34] really is simple. It doesn't require any
+[00:01:36] structure. It's just straightforward.
+[00:01:38] And what we're going to do is focus on
+[00:01:39] three steps to getting the patter
+[00:01:41] strategy right. Starting with step
+[00:01:43] number one, which is the opening range
+[00:01:45] candle. So, the first thing that we need
+[00:01:47] to do is take whatever we are trading
+[00:01:49] and we're going to open up a 15-minute
+[00:01:51] chart. So, for reference, you'll see up
+[00:01:53] here in the corner, I'm using Palunteer,
+[00:01:55] the stock for today, which is PLTR, the
+[00:01:57] ticker symbol. But the most important
+[00:01:59] part of that equation is the 15-minute
+[00:02:01] chart. It will work with any asset, but
+[00:02:03] just make sure you have the 15minute
+[00:02:06] chart selected. Now, from there, what we
+[00:02:08] want to do is allow that candle to
+[00:02:11] completely close for that time period.
+[00:02:13] Let that first 15 minutes of each market
+[00:02:15] open to pass. Once that candle has
+[00:02:18] closed, we're going to grab any kind of
+[00:02:20] drawing tool like a line or a box. I
+[00:02:22] prefer to use boxes. And we're going to
+[00:02:24] connect the very highest price point we
+[00:02:26] see. So, if you see at the very top of
+[00:02:28] that wick says $13,410.
+[00:02:31] We're going to connect that with a very
+[00:02:33] low price point we see, which is $13049.
+[00:02:38] And we are going to box that price in.
+[00:02:40] And that's step number one. I told you
+[00:02:43] it was going to be pretty simple. That's
+[00:02:45] all you need to do is just box that high
+[00:02:47] and low range. So, let's move on to step
+[00:02:49] number two, which is far more important,
+[00:02:51] and that is we need to make sure that
+[00:02:52] this 15minute candle that we have boxed
+[00:02:54] in is a manipulation candle. Now, most
+[00:02:57] likely it's going to be, and I'll tell
+[00:02:59] you here in a minute why, but we need to
+[00:03:01] make sure because if it is, we're on to
+[00:03:03] something super special. Now, a lot of
+[00:03:05] you might be asking just what exactly is
+[00:03:07] a manipulation candle or what am I
+[00:03:09] talking about? A manipulation candle is
+[00:03:11] any fast, aggressive moving candle going
+[00:03:13] up or down. The direction is irrelevant.
+[00:03:16] It's fast. It's aggressive. And it's
+[00:03:18] moving in one direction. But it's more
+[00:03:20] than just a candle. It's an emotional
+[00:03:23] event. And that's where the edge is.
+[00:03:24] Because when traders from around the
+[00:03:26] world see these candlesticks appearing
+[00:03:28] on their chart, their very first
+[00:03:29] instinct is to chase into that strength
+[00:03:31] or weakness in fear they're going to
+[00:03:33] miss out on the next great trading
+[00:03:35] opportunity. And that's exactly what
+[00:03:38] those candlesticks are designed to do,
+[00:03:41] is to pull the inexperienced retail
+[00:03:43] traders in to create the liquidity
+[00:03:46] necessary for the larger institutions to
+[00:03:49] get in and out of their positions. That
+[00:03:52] move needs to happen in order for those
+[00:03:55] institutions to get in and out. That's
+[00:03:57] why you're going to see them day in and
+[00:03:59] day out. Now, the very best explanation
+[00:04:01] of this comes from an old school trader
+[00:04:03] called Dr. David Paul. Watch this video
+[00:04:06] for a quick second. The best trades
+[00:04:08] occur after the masses have been stopped
+[00:04:11] out and markets tend to move. And that's
+[00:04:13] because the big fellas up there, they
+[00:04:15] can't press the we button and get in
+[00:04:17] because there's just not enough
+[00:04:19] liquidity there for them to get in in
+[00:04:21] size. So they have to in fact engineer a
+[00:04:25] 100,000 guys like you, sir, pull you one
+[00:04:28] way, your stop loss gets hit. That in
+[00:04:31] fact sets off a sea of liquidity for
+[00:04:33] them to get in. So again, these have to
+[00:04:35] happen in order for the bigger
+[00:04:36] institutions to get in and out of their
+[00:04:38] trades. So the most important thing to
+[00:04:40] understand how the pattern scalp takes
+[00:04:42] advantage of this very phenomenon is
+[00:04:45] that when you see those candles, most of
+[00:04:48] the time they will be reversed. And
+[00:04:51] right there, that's our strategy. That's
+[00:04:54] our edge. Now, just in case there's any
+[00:04:56] doubt in your mind as to whether or not
+[00:04:57] what you're looking at is or is not a
+[00:04:59] manipulation candle, let me show you a
+[00:05:01] quick and easy way to figure that out.
+[00:05:03] So, what we want to do is go back to the
+[00:05:04] asset we're trading and we want to pull
+[00:05:06] up a daily chart. And you'll see now I
+[00:05:08] have the daily chart selected of
+[00:05:10] Palunteer. And from there, what we want
+[00:05:12] to do is add the indicator called
+[00:05:14] average true range. You'll see it's
+[00:05:16] right here, average true range. Now,
+[00:05:18] some brokerage firms will have this
+[00:05:20] listed as just ATR. All you have to do
+[00:05:22] is click on it. You don't have to make
+[00:05:23] any sort of inputs or adjustment to it.
+[00:05:25] Just go with the default settings and it
+[00:05:27] will give us a numerical value. In this
+[00:05:29] case, it's $6.90.
+[00:05:32] So, let's go back up to our 15minute
+[00:05:34] chart and let's just go ahead and make
+[00:05:36] the math easier and write $7. What does
+[00:05:40] this $7 represent? Well, that is the
+[00:05:43] average daily range of Palunteer,
+[00:05:47] meaning it can either go up $7 a day or
+[00:05:50] down $7 a day in any given typical day.
+[00:05:53] Now, non-typical days such as Fed
+[00:05:55] meetings, earnings, hit pieces, news
+[00:05:57] pieces, that's different. But in most
+[00:05:59] cases, you can expect a $7 up move or a
+[00:06:03] $7 down move. Now, range is one of the
+[00:06:05] biggest important factors for us being
+[00:06:08] successful as traders, whether you trade
+[00:06:10] the pattern scalp or not. But here's
+[00:06:12] what we want to determine. If the size
+[00:06:15] of this candle that we boxed in is 20%
+[00:06:19] or more of that daily range, we have a
+[00:06:23] manipulation candle. So, here's the
+[00:06:25] basic math to figure that out. You take
+[00:06:27] your $7, right? You multiply that by 20%
+[00:06:31] and you'll have $1.40,
+[00:06:34] right? So, if the very top of that
+[00:06:37] candle to the bottom of that candle
+[00:06:39] exceeds $140 in price, it is in fact a
+[00:06:44] manipulation candle. So, you'll see the
+[00:06:45] very base of that candle is $13046.
+[00:06:49] The upper region is $134.7.
+[00:06:53] that is well outside of the $1.40
+[00:06:57] range. It is definitely a manipulation
+[00:06:59] candle. Now, one thing just to note on
+[00:07:01] that, if it's at a $140, $138, it's 18%
+[00:07:07] 17%. Don't sweat the details. But 20 20%
+[00:07:11] or more is a dead giveaway that this is
+[00:07:14] being manipulated. So, that will
+[00:07:15] conclude step number two, which was
+[00:07:17] pretty simple. Right now, we can move on
+[00:07:19] to the third and final step, which is
+[00:07:21] dialing down the perfect entry for this
+[00:07:24] trade. And that's going to be pretty
+[00:07:25] simple, too. Here's what we're going to
+[00:07:26] do. We're going to go back to that
+[00:07:28] 15minute chart, and we're going to move
+[00:07:30] it to a smaller time frame. And that can
+[00:07:32] be anything sub 15 minutes. Could be the
+[00:07:35] 10-minute, 5 minute, 3 minute, 2 minute,
+[00:07:36] 1 minute. You pick. Don't over
+[00:07:38] complicate it. It's all the same thing.
+[00:07:40] Now, I preferably like to use the
+[00:07:42] five-minute chart because that's what I
+[00:07:44] started. That's what I'm used to and
+[00:07:45] that's what I'm going to continue to use
+[00:07:46] in these demonstrations. You use
+[00:07:48] whatever you feel comfortable with. Now,
+[00:07:50] from here, what we need, which is the
+[00:07:52] most important part of this video, we
+[00:07:54] need one of two types of candles to
+[00:07:57] appear. And I I say it's the most
+[00:08:00] important thing because if these two
+[00:08:02] candles do not appear, it's not ready to
+[00:08:05] be reversed. Because that 15 minutes is
+[00:08:07] just a guy. It could keep going 20
+[00:08:08] minutes, 30 minutes, 40 minutes, 1 hour
+[00:08:11] for the rest of the the freaking day,
+[00:08:13] right? it can just keep on going. Now,
+[00:08:15] if you've watched this channel for any
+[00:08:16] length of time, you already know what
+[00:08:18] they are. And the two candles that I'm
+[00:08:20] going to be looking for, one of these
+[00:08:21] two candles to appear is going to be
+[00:08:24] either the John Wick or the power of
+[00:08:26] Tower candles. Now, for most of you,
+[00:08:28] you're going to know the John Wick
+[00:08:29] candle, which is on the left side of
+[00:08:31] your chart as the hammer or inverted
+[00:08:33] hammer candles. And on the right, you
+[00:08:36] have the power tower. Now, and here's
+[00:08:38] why these two candles are important and
+[00:08:40] must be used in this equation. Let's
+[00:08:43] start with the John Wick reversal to the
+[00:08:45] long side. This would come after a bold
+[00:08:47] red 15minute candle. The confirmation
+[00:08:50] comes within the wick itself right here.
+[00:08:53] The wick represents that the largest
+[00:08:55] buyer took advantage of that liquidity
+[00:08:58] and the algos and the institutions
+[00:09:00] bought into that weakness. And I said in
+[00:09:02] past videos, you have to think of it
+[00:09:04] this way. If somebody with that large of
+[00:09:07] a bankroll is going to step in there and
+[00:09:09] buy that dip, it's not going to go lower
+[00:09:12] in most cases. That's where the edge is.
+[00:09:14] They're too big, they're too strong, and
+[00:09:16] they've announced their intentions, and
+[00:09:17] most likely that asset will go higher.
+[00:09:19] Now, not all the time, but most time it
+[00:09:21] will. Now, for me, the entry is very
+[00:09:23] simple. You can wait right for the break
+[00:09:25] of the next five minute candle here that
+[00:09:27] I'm using, and the entry would be right
+[00:09:29] there. The stop would be at the low.
+[00:09:31] Right now, the inverted John wick would
+[00:09:34] be something after a bold green candle.
+[00:09:37] So, for example, this is what it would
+[00:09:39] look like right here.
+[00:09:41] You would have the wick coming from the
+[00:09:43] top that would come after a series of
+[00:09:46] greens or the bold green 15minute. The
+[00:09:48] entry would be on the following
+[00:09:50] fiveminut break and the stop would be at
+[00:09:53] the high. Now, the power of towers have
+[00:09:55] the exact same significance.
+[00:09:58] They just look a little bit different.
+[00:09:59] No, by the way, what I'll do here for
+[00:10:01] everyone is I've done a ton of videos
+[00:10:03] about this. So, I'll post a couple of
+[00:10:04] them right up here on the screen. You
+[00:10:06] can watch them after this video. It'll
+[00:10:07] give you a much deeper dive and
+[00:10:09] understanding of how powerful these two
+[00:10:10] candles. I have done singular videos
+[00:10:12] about them, but the same significance
+[00:10:14] here. Now, when it comes to the power of
+[00:10:16] tower, I actually do not let the candle
+[00:10:18] completely finish red like this. I will
+[00:10:21] give it about 50% right here, and that's
+[00:10:24] where I will make my entry. And then the
+[00:10:26] stop would be above the high of those
+[00:10:28] candles. And then of course on the other
+[00:10:30] one moving in the other direction here
+[00:10:34] coming after a red I would enter about
+[00:10:37] 50% right here. This would be my long
+[00:10:39] entry stop between the low. Now if you
+[00:10:42] didn't comprehend all of that right now
+[00:10:43] that's okay because we're going to go
+[00:10:44] through this step by step and you'll see
+[00:10:46] them. So let's go and open up this
+[00:10:49] palunteer here again. So most of you
+[00:10:52] should see exactly what you need to see
+[00:10:54] here. What is this candle happening at
+[00:10:58] the 15minute point? Right? It is a John
+[00:11:03] Wick candle. So the entry would be very
+[00:11:06] very straightforward and simple or I
+[00:11:08] should say the trade would be very
+[00:11:09] simple. What we would do is look for a
+[00:11:13] sell order but the entry would be right
+[00:11:15] here. The stop loss would be at the high
+[00:11:17] of the day if the very next candle would
+[00:11:20] be red. So, I'm just going to move this
+[00:11:22] forward real quick and you will see that
+[00:11:24] the very next candle is in fact red.
+[00:11:27] This would be a qualifiable entry for
+[00:11:30] me. So, here I would sell. The stop loss
+[00:11:33] would be placed above the high, right?
+[00:11:35] Because this is now the bearish Johnwick
+[00:11:38] formation. And usually when it comes to
+[00:11:39] target, this is not an exiting video,
+[00:11:42] but let's just go with the standard 2:1
+[00:11:45] or in a lot of cases, I like to just get
+[00:11:47] 50% of that range. So, let's just make
+[00:11:50] it a standard 2:1 right here. And that's
+[00:11:52] the trade. You just let it play out from
+[00:11:55] there. And you'll see that it eventually
+[00:11:57] finds its way much lower. Now, I know at
+[00:11:59] this point a lot of people are going to
+[00:12:00] say, "Look, that's cute." But you
+[00:12:02] cherrypicked that chart. Let me show you
+[00:12:04] something here real quick. I'm going to
+[00:12:06] go back and select that 15minute time
+[00:12:08] frame. I want to show you something
+[00:12:10] here. Here's what we had drawn in the
+[00:12:13] example we used for today. But let's go
+[00:12:15] back to the previous day at Palunteer. I
+[00:12:17] want you to tell me what you see. Is
+[00:12:19] this a manipulation candle? Yes,
+[00:12:23] absolutely. That exceeds the 20% of the
+[00:12:27] daily range. Now, what direction did
+[00:12:30] that candle start? Red, right? Red
+[00:12:34] opening manipulation candle the day
+[00:12:36] before. What was the end result?
+[00:12:39] Palunteer finished higher. You see that?
+[00:12:42] If we go back to the day before that,
+[00:12:45] what do you have here? Right? opening
+[00:12:48] move was red on the first 15 minutes.
+[00:12:52] Now, it closed green, but it actually
+[00:12:54] went all the way down to the base of the
+[00:12:56] range and clawed its way back and closed
+[00:12:59] green, but its opening move was red.
+[00:13:03] What happened? It went back higher. What
+[00:13:06] if we went back to the previous day
+[00:13:09] before that? What was the opening
+[00:13:12] 15minute candle? That should be pretty
+[00:13:15] easy, right? Is that a green candle or a
+[00:13:18] red candle? Right, that is a green
+[00:13:22] opening bull candle. What was the end
+[00:13:26] result?
+[00:13:27] Red. Almost every time that gets
+[00:13:31] reversed now, in this case, it tried to
+[00:13:33] come back again, but think about what
+[00:13:34] you're seeing. Three, four, five days in
+[00:13:37] a row, Palunteer gives you an opening
+[00:13:40] candle and then reverses it. Now, what I
+[00:13:43] want to do at this point before we move
+[00:13:45] into the live trading session is try to
+[00:13:47] answer a question I think you've had in
+[00:13:49] the back of your mind this whole video.
+[00:13:51] What do you do in the case that that
+[00:13:53] 15minute candle is not a manipulation
+[00:13:56] candle? Well, for the pattern scalp to
+[00:13:58] work the very best that it can and any
+[00:13:59] trade for that matter, the more
+[00:14:01] manipulation you get, the better. But on
+[00:14:04] that note, I would say this. If you are
+[00:14:06] trading any high volumed interest like
+[00:14:09] foreign currency, cryptocurrency, oil,
+[00:14:11] gold, stocks, futures every day, you
+[00:14:16] will get a manipulation candle because
+[00:14:18] remember you have to have the
+[00:14:21] manipulation to allow the bigger
+[00:14:22] institutions to get in. If there is no
+[00:14:25] manipulation, they don't get in. The
+[00:14:28] trades really aren't that good. But
+[00:14:29] because they need to get in every day,
+[00:14:31] you're always going to have it every
+[00:14:32] day. And over 255 years of trading,
+[00:14:36] every single day, there are tons and
+[00:14:38] tons of manipulation candles. I see them
+[00:14:40] every single day when I trade. And I'll
+[00:14:42] show you more of them before the video
+[00:14:44] is over. So, just kind of keep that in
+[00:14:45] mind. You can still trade the pattern
+[00:14:46] scalp if the manipulation isn't there.
+[00:14:48] But if you really, really want it to
+[00:14:50] work and you really want to make money,
+[00:14:51] it should be. And 99% of the time, it in
+[00:14:54] fact will be. Now, what we're going to
+[00:14:56] do from here is move on to the live
+[00:14:57] trading portion. And what I chose to do
+[00:15:00] was just actually show you from our live
+[00:15:03] community a real trade announced far
+[00:15:06] ahead of time using the very same
+[00:15:08] three-step procedure I showed you. That
+[00:15:10] way you know in fact that not just me
+[00:15:12] but hundreds upon hundreds of people
+[00:15:14] like I said in the intro, they saw it,
+[00:15:15] they witnessed it, and not just one day,
+[00:15:17] every single day after day after day
+[00:15:19] after day, as you saw here on Palunteer,
+[00:15:21] it's repeatable. So let's give it a
+[00:15:22] watch and then I'll explain it and show
+[00:15:23] you a couple of more things when it's
+[00:15:25] done. Obviously, you would have loved to
+[00:15:27] have bought that and caught it, but
+[00:15:28] there's no setup there. So, look at
+[00:15:30] yesterday and carbon copy that, right?
+[00:15:34] Your your range. So, when you go range
+[00:15:37] always wins, right? So, if we go to the
+[00:15:39] daily chart, you click the indicator
+[00:15:41] tab, you put the average true range on
+[00:15:43] there, right? You have
+[00:15:46] $6.
+[00:15:48] $6,
+[00:15:50] right? So, think about it. This has
+[00:15:52] always been the message. $6 is your
+[00:15:55] average daily range and you're up three.
+[00:15:58] You're 50% of the range in less than two
+[00:16:02] minutes. That's too much, too fast. I've
+[00:16:05] referred to these as, you know, like
+[00:16:06] there sucker candles, manipulation
+[00:16:08] candles, but the real truth is like an
+[00:16:11] institution has to take advantage of the
+[00:16:14] liquidity to sell because they won't get
+[00:16:16] it. So when they see this big candle,
+[00:16:18] there's so much liquidity there. whether
+[00:16:20] they want to or not, they have to sell
+[00:16:22] it because they won't get another shot
+[00:16:24] the rest of the day to sell it. That's
+[00:16:25] why all the activity happens in the
+[00:16:27] morning. Let's let let's keep an eye on
+[00:16:30] that level. I think this is just going
+[00:16:31] to give it. They're going to chase this
+[00:16:33] candle still strong.
+[00:16:35] Um I'm doing that one. Two two.
+[00:16:40] My entry was 22521.
+[00:16:43] I'm gonna post it here. They already
+[00:16:46] popped that marvel. Yeah, that marvel.
+[00:16:48] You've already got the signal.
+[00:16:53] Yeah, you power a tower there real
+[00:16:55] quick. You got two 7983
+[00:16:59] would have been the entry. I wouldn't I
+[00:17:01] wouldn't go on that candle there right
+[00:17:03] here. The very highest tick,
+[00:17:06] right? Yeah, it's a good uh good area.
+[00:17:10] So far, they haven't had the selling in
+[00:17:12] that candle yet. You see it? Still still
+[00:17:14] tough, but let's see.
+[00:17:17] There you go. You see that? See that
+[00:17:19] guys? Little bit of hesitation pulling
+[00:17:22] in there. Not quite enough, but let's
+[00:17:23] see if we can make it to the next bar.
+[00:17:25] I'm going to do that one. I'm looking at
+[00:17:27] this too. Same same thing. I will I
+[00:17:29] think I'm passing on AMD. It's too
+[00:17:31] extended for me to long PLTR shorts.
+[00:17:34] Sounds good. Looks good. I'm going in
+[00:17:37] Palunteer by the way guys. Here
+[00:17:40] I'm going to have to do it too. Have to
+[00:17:42] go to Palunteer. Let me just hit this.
+[00:17:48] Palunteer short. I can type your PLTR if
+[00:17:52] you want. I think you guys already Yeah,
+[00:17:54] go ahead and type the Palunteer cuz I'm
+[00:17:56] in at 58. What was your entry? 140
+[00:18:00] 14759.
+[00:18:02] Yours is 59, right? So, this one is
+[00:18:07] three three pieces. Three pieces of
+[00:18:09] material, right?
+[00:18:11] The first being resistance,
+[00:18:15] second being extended range,
+[00:18:19] third power tower candle at 30. Now if
+[00:18:23] you are newer,
+[00:18:26] not quite sure,
+[00:18:29] you can always wait for the candle
+[00:18:31] closure. You can wait for the full
+[00:18:33] candle to close because I don't think
+[00:18:35] it'll just blow blow out. But
+[00:18:38] in time, you'll pick the way you want to
+[00:18:40] enter, whether it's aggressive or not so
+[00:18:42] aggressive. Right? That's the deal.
+[00:18:46] Target would be probably somewhere here
+[00:18:53] about half of that range. Just like lay
+[00:18:54] it right there
+[00:18:57] and who knows,
+[00:19:00] but there it is. You got your your wick
+[00:19:02] right in the cell zone. Now, you just
+[00:19:04] need to shake that tree a little bit.
+[00:19:06] and my ENQ. I don't know if you guys
+[00:19:08] took this ENQ short on the one hour
+[00:19:10] chart, but that is going move the stop
+[00:19:13] loss to break even or so. Hopefully, we
+[00:19:15] get a little more push here on that.
+[00:19:17] Just one last talk. There you go. Your
+[00:19:20] your three combines, resistance,
+[00:19:24] range, candle. Yeah, good point.
+[00:19:28] Resistance, range, candle. The more
+[00:19:30] context that you can put into that, the
+[00:19:34] better the trade. Right.
+[00:19:38] I agree. It's good.
+[00:19:41] And these stocks are sometimes sometimes
+[00:19:43] easier, guys, to day trade because, you
+[00:19:45] know, they're giving you cleaner setups,
+[00:19:48] a little slower than the the futures
+[00:19:53] indices. I'm going to try for 14650%.
+[00:19:58] Let me see if I can tag a 146 fill.
+[00:20:03] You're also starting to see a pattern
+[00:20:04] here,
+[00:20:06] right? AMD, Palunteer, the same.
+[00:20:12] They're not eating those dips up right
+[00:20:13] now. Something to keep in the back of
+[00:20:16] your your mind, right? All right, guys.
+[00:20:19] That's going to conclude today's video.
+[00:20:21] And I do hope you found some value there
+[00:20:22] in the patter scalp strategy. Just
+[00:20:24] remember, take it slow. Day by day,
+[00:20:26] you'll start to see some new things in
+[00:20:28] the market that can give you an edge
+[00:20:30] into making some quality trades. Now,
+[00:20:32] one thing I want to remind you before I
+[00:20:33] officially sign off is that if you're
+[00:20:35] looking for quality ideas, levels, and
+[00:20:37] everything in between, every week my
+[00:20:38] wife and I put together a comprehensive
+[00:20:41] watch list of all the major indexes, as
+[00:20:43] well as the best stocks to trade for the
+[00:20:44] week, it's called the gains guide. Best
+[00:20:46] part, it is free. It's a great starting
+[00:20:48] point for those that may have trouble
+[00:20:50] coming up with names to trade or to
+[00:20:52] understand markets or just have a hard
+[00:20:53] time with levels in general. Again, it's
+[00:20:55] free. You can just follow the link down
+[00:20:57] in the description. So, as always, take
+[00:20:59] care, trade well. Thanks for watching
+[00:21:01] the video and cheers.

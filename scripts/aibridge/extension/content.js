@@ -14,6 +14,7 @@
   };
   var autoRun = false;
   var stopHold = false;          // a stop reason stays on the status line until the operator re-arms (watchdog must not overwrite it)
+  var anyPosted = false;         // a part of the current result already landed (a retry would duplicate it)
   var lastPostErr = '';          // why the last post failed, for the stop reason
   var runs = 0;
   var resultN = 0;
@@ -112,10 +113,13 @@
   try { if (navigator.locks && navigator.locks.request) navigator.locks.request('aibridge-keepalive-' + tabId, function () { return new Promise(function () {}); }); } catch (e) {}
 
   // text-based quiet: DeepSeek keeps animating, so DOM mutations never settle; visible text length does
-  var sigLen = -1, sigAt = Date.now();
+  var sig = { len: -1, at: Date.now() };
+  var sigX = { len: -1, at: Date.now() };   // exact (tolerance 0) clock: 'is DSA's answer text still changing', used only by replyTick
   function oursLen() { var n = 0, l = document.querySelectorAll('.aibridge-wrap, .aibridge-ctl'); for (var i = 0; i < l.length; i++) n += (l[i].textContent || '').length; return n; }
-  function textQuiet() { return Date.now() - sigAt; }
-  function sampleText() { var n = ((document.body && document.body.textContent) || '').length - oursLen(); if (n !== sigLen) { sigLen = n; sigAt = Date.now(); } }
+  function textQuiet() { return Date.now() - sig.at; }
+  function inputBodyLen() { var e = findInput(); return (e && e.value === undefined) ? (e.textContent || '').length : 0; }
+  function sampleText() { var n = L.pageLen(((document.body && document.body.textContent) || '').length, oursLen(), inputBodyLen()); sig = L.sigStep(sig, n, Date.now());
+    if (n !== sigX.len) sigX = { len: n, at: Date.now() }; }
   function isOurs(n) {
     var e = n && n.nodeType === 1 ? n : (n && n.parentElement);
     return !!(e && e.closest && e.closest('.aibridge-wrap, .aibridge-ctl'));
@@ -538,7 +542,7 @@
   async function replyTick() {
     if (!watch || watch.phase !== 'waiting' || !autoRun || replyBusy) return;
     var answered = pending.length > 0 || allBlocks().some(function (b) { return !ranKeys[blockKey(b)]; }) ||
-      (textQuiet() >= CFG.aibridge_quiet_ms && answerLen() - postedAnsLen >= L.ANSWER_MIN_CHARS);
+      (Date.now() - sigX.at >= CFG.aibridge_quiet_ms && answerLen() - postedAnsLen >= L.ANSWER_MIN_CHARS);
     if (answered) { watch = L.replyWatch(watch, { type: 'reply' }, Date.now()).state; return; }
     var r = L.replyWatch(watch, { type: 'tick', busy: inRun || !!inputText(findInput() || {}) }, Date.now());
     watch = r.state;
