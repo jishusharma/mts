@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T11:25:22Z",
   "commands": [],
   "created": "2026-11-02T05:49:25Z",
   "depends_on": [],
@@ -29,7 +30,7 @@
     "to": "DSA",
     "why": "window"
   },
-  "result": "",
+  "result": "via DSA (20261102-110021-gpt-rederive-reclaim-close-stop-1102): SAME 8 / DIFFERENT 0 / NOT_IN_DATA 3: MyTradingSys/research/layer_lab/reports/2026-11-02_gpt-rederive-reclaim-close-stop-1102.md. n, gross and fee-net (gross minus 0.10) match for 4h all, 1D all and 4h low; week-block CIs NOT_IN_DATA (results_DEV.csv has aggregates only). INCONCLUSIVE verdicts consistent with the r",
   "scope_in": [
     "MyTradingSys/research/layer_lab/reports/2026-11-02_gpt-rederive-reclaim-close-stop-1102.md"
   ],
@@ -41,7 +42,7 @@
   "sources": [
     "MyTradingSys/research/reclaim_close_stop_2026-11/RESULT.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read RESULT.md stated numbers and results_DEV.csv columns",
     "recompute n, means, fee-net and block-bootstrap CI by hand or in a scratch script (seed stated in PRE_REG.md)",
