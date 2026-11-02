@@ -185,4 +185,5 @@ scripts/dev/test_aibridge_health.py
 scripts/dev/test_role_line.py
 scripts/dev/test_fetch_captions_timed.py
 scripts/dev/test_asr_transcribe.py
+scripts/dev/test_cbp_scorecard.py
 MyTradingSys/research/sim_desk/test_desk.py
