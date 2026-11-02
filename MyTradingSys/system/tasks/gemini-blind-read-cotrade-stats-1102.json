@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-02T06:28:10Z",
   "commands": [],
   "created": "2026-11-02T05:48:30Z",
   "depends_on": [],
@@ -14,6 +16,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_audits_2026-11-02/cotrade_blind_read.md",
+      "ref": "4e4521b52",
+      "utc": "2026-11-02T06:28:10Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,7 +48,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/gemini_audits_2026-11-02/cotrade_blind_read.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md (read)",
     "MyTradingSys/research/testnet_cotrade_2026-10-31/P5_BRIEF.md (read)",
@@ -53,12 +66,13 @@
   "scope_sha": "3681623be7b3",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "list every number in DESIGN.md and P5_BRIEF.md with its cited source",
     "open stats_run.json / ladder_math.py and check",
     "write FOUND / NOT_IN_DATA / DIFF per number, counts on line 1"
   ],
+  "taken": "2026-11-02T06:21:25Z",
   "tests": "see done_when (audit card, output file is the test)",
   "title": "[GEMINI] blind re-read of testnet_cotrade DESIGN.md and P5_BRIEF.md numbers vs stats_run.json",
   "weight": "ROUTINE",
