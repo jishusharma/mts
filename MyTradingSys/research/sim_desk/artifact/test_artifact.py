@@ -111,6 +111,11 @@ class Page(unittest.TestCase):
         ba.main(["--results", d, "--out", out])
         return open(out, encoding="utf-8").read()
 
+    def test_search_keeps_caret_at_end(self):
+        # The list rebuild re-creates the search box; without the caret reset "C30" typed as "03C".
+        line = next(x for x in ba.TEMPLATE.splitlines() if x.startswith("function refilter()"))
+        self.assertIn("setSelectionRange(el.value.length,el.value.length)", line)
+
     def test_every_result_file_becomes_a_test(self):
         h = self._build(_result("aa"), _result("bb"), _result("cc"))
         tests = json.loads(re.search(r"const TESTS=(\[.*?\]);\n", h, re.S).group(1))

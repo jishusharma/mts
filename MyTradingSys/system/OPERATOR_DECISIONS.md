@@ -1634,3 +1634,6 @@ Operator (voice, 16:30Z, in a BTC short): the Eagle_Eyes multi-timeframe indicat
 Operator (voice): login A = Lenovo laptop with the Gemini Antigravity app; login B = JIS-NUC with the Gemini Antigravity plugin in VS Code; login C = desktop, Claude Max, no Gemini. Table: CLOUD_ACCOUNTS.md.
 Console API jobs must launch from the NUC as well as the desktop. Copying F:/ClaudePlaform/key.txt to the NUC is authorized by the operator; this replaces "never copy the key" in PLAN_NIGHT_2026-11-02.md. Never in git, signals or chat, never printed.
 Login B: work freely up to 45% weekly (cap for this week). Design Gemini Argon tasks for both Gemini accounts; run cheap Haiku and Sonnet jobs on the API credit.
+
+## 2026-11-03 - Simulator demo: Claude drives the browser
+Operator (chat, sim demo session): "why do not u demo by taking control now?" Demos of the simulator page are driven by Claude in his Chrome (Claude in Chrome tools), with screenshots, instead of telling him what to click. Requirements file: MyTradingSys/research/sim_desk/REQUIREMENTS_2026-11-02.md.
