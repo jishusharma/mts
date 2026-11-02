@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T11:04:17Z",
   "commands": [],
   "context": {
     "calls_to_edit": 23,
@@ -30,6 +31,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "a9300f5bd (AIBridge 0.7.7)",
+      "ref": "a8c878a8e",
+      "utc": "2026-11-02T11:04:17Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "AIBridge 0.7.6: version bump for the E2E script (version guard counts scripts/aibridge/tes",
@@ -55,7 +62,12 @@
   "refs": [
     "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/AUDIT.md"
   ],
-  "result": "",
+  "result": "a9300f5bd (AIBridge 0.7.7)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/aibridge/extension/content.js",
     "scripts/aibridge/extension/loop.js",
@@ -73,7 +85,7 @@
   "scope_sha": "4e4e702400e3",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read AUDIT.md and the cited lines",
     "Write each fail-first test (remove the two xfail marks for E5/E6)",
@@ -81,6 +93,7 @@
     "Update DSA_SESSION_PROMPT.md rules",
     "Bump RELEASES.json to 0.7.7 and ship with sync.py ship --release dsabr-c9"
   ],
+  "taken": "2026-11-02T11:04:17Z",
   "tests": "MyTradingSys/tests/test_aibridge_exploratory.py E5/E6 xfails turned into passing tests (fail on 0.7.6); node tests for status line, stopAuto and short-final-answer; pytest needs --basetemp on this host",
   "title": "DSA bridge 0.7.7: fixes from AUDIT.md (c1/c2/c4/c7 FIX, E5, E6)",
   "weight": "",

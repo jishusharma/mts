@@ -17,9 +17,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Result: spec-derived tests for scripts/dev/traffic_report.py (9 tests, 3/3 mutations kille",
-      "ref": "498e9ba968ad",
-      "utc": "2026-11-01T20:42:25Z"
+      "line": "yt: register test_yt_proxy.py in extra_tests.tsv",
+      "ref": "372a268e2711",
+      "utc": "2026-11-02T09:42:04Z"
     }
   ],
   "layers": [],
@@ -28,7 +28,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T05:49:03Z",
+  "refreshed": "2026-11-02T11:04:40Z",
   "refs": [],
   "reroute": {
     "at": "2026-11-02T11:00:21Z",
@@ -46,7 +46,7 @@
     "any live path",
     "editing the audited source file"
   ],
-  "scope_sha": "498e9ba968ad",
+  "scope_sha": "372a268e2711",
   "size": "S",
   "sources": [
     "scripts/dev/fetch_captions_timed.py"

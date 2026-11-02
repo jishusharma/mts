@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T11:04:15Z",
   "commands": [],
   "context": {
     "calls_to_edit": 26,
@@ -28,6 +29,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "6b2e089fc (AIBridge 0.7.4)",
+      "ref": "a8c878a8e",
+      "utc": "2026-11-02T11:04:15Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "AIBridge 0.7.3: run-lock expiry (B210), task gate FAILED=FAIL, kind from command, open-onl",
@@ -47,7 +54,12 @@
   "refs": [
     "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
   ],
-  "result": "",
+  "result": "6b2e089fc (AIBridge 0.7.4)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "review_receipt": {
     "card_hash": "148bfdafd2c3",
     "date": "2026-10-31",
@@ -65,7 +77,7 @@
   "sources": [
     "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/FIX_PLAN.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read FIX_PLAN.md (MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31) rows D1 D2 D7 and content.js:142-163, 441-451",
     "Save a DeepSeek reply DOM (class names only, no chat text) with a thinking panel as scripts/aibridge/tests/fixtures/deepseek_reply.html; if no live snapshot is reachable, hand-build it and mark it HAND-BUILT in the file; selectBlocks must FAIL CLOSED (select none, status says why) when the thinking container cannot be identified",
@@ -73,6 +85,7 @@
     "Add pure selectBlocks/batchKeys to loop.js, call them from content.js; per-batch duplicate -> NOT_RUN; cap 200",
     "Bump scripts/aibridge/RELEASES.json, extension/manifest.json and extension/loop.js:4 VERSION to 0.7.4; node tests + MyTradingSys/tests/test_aibridge_version_bump.py pass; sync.py ship"
   ],
+  "taken": "2026-11-02T11:04:15Z",
   "tests": "new scripts/aibridge/tests/block_select.test.js fails on 0.7.3 (8 blocks selected instead of 6); run: node scripts/aibridge/tests/block_select.test.js",
   "title": "AIBridge: skip DeepSeek thinking-panel blocks, no duplicate run in one reply, cap 200 (D1 D2 D7)",
   "weight": "IMPORTANT",

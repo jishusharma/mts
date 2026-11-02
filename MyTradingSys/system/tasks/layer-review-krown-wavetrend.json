@@ -6,6 +6,22 @@
     "python -c \"import json;d=json.load(open('MyTradingSys/system/layer_index.json'));n=sum(len(f.get('layers') or [1]) for f in d['families'] if f['id'] in ('krown','wavetrend',));h=sum(x.startswith('## ') for x in open('MyTradingSys/research/layer_lab/reports/layer_review_krown_wavetrend.md',encoding='utf8'));assert h==n==2,(h,n);print('sections',n)\"",
     "python -c \"L=open('MyTradingSys/research/layer_lab/reports/layer_review_krown_wavetrend.md',encoding='utf8').read().splitlines();W=('Idea','Parameters','Backtests','Bugs','Confluence');assert all(sum(x.startswith('### '+w) for x in L)==2 for w in W) and not any(v in x.lower() for x in L for v in ('should be dropped','should be demoted','should be parked'));print('headings OK')\""
   ],
+  "context": {
+    "calls_to_edit": 15,
+    "folded": "2026-11-02T11:08:12Z",
+    "misses": 43,
+    "reads": [
+      "scripts/dev/lab_query.py",
+      "MyTradingSys/research/TRIAL_LEDGER.csv",
+      "MyTradingSys/research/layer_lab/TRIALS.md",
+      "MyTradingSys/research/VERDICTS.csv",
+      "MyTradingSys/system/layer_index.json",
+      "MyTradingSys/system/ANTIGRAVITY_LAPTOP.md",
+      "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/krown.md",
+      "MyTradingSys/research/sim_desk/studies/krown.py"
+    ],
+    "session": "agent-a61a3dcc5dc5d621a"
+  },
   "created": "2026-10-25T19:24:43Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/layer_lab/reports/layer_review_krown_wavetrend.md exists with 2 '## ' sections (layer ids of krown, wavetrend from layer_index.json, the family id where a family lists none), exactly five '### ' headings in each, file:line facts and NOT_IN_DATA where silent; both check commands in `commands` pass.",
@@ -20,16 +36,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "wiring registry: drop vp_pivot_probe.py REPRO entry (now LIVE via gate_select MUST_EXTRAS ",
-      "ref": "b31679764b1e",
-      "utc": "2026-10-31T08:30:01Z"
+      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nuc/planner-board-refresh-1102",
+      "ref": "bd3a06ab01a0",
+      "utc": "2026-11-02T11:09:55Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "997ddf61e993 cowen: extract bekghgecip8 (Q4 dump, 2026-10-30), concept check, band study o",
-      "ref": "MyTradingSys/research/sim_desk/PLUGIN.md",
-      "utc": "2026-10-31T06:43:23Z"
+      "line": "9492956d3cba ship: regenerated LAYERS.md",
+      "ref": "MyTradingSys/system/LAYERS.md",
+      "utc": "2026-11-02T11:09:44Z"
     }
   ],
   "layers": [
@@ -45,7 +61,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T08:47:22Z",
+  "refreshed": "2026-11-02T11:10:31Z",
   "refs": [
     "MyTradingSys/research/mts_doctor/MAINNET_PATH_2026-10-25.md"
   ],
@@ -70,7 +86,7 @@
     "VALIDATION and HOLDOUT reads",
     "layer_map.json, layer_index.json or code edits"
   ],
-  "scope_sha": "b31679764b1e",
+  "scope_sha": "bd3a06ab01a0",
   "size": "M",
   "sources": [
     "MyTradingSys/system/ANTIGRAVITY_LAPTOP.md section C (fact-sheet format)",
