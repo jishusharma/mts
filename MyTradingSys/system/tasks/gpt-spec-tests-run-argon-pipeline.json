@@ -12,7 +12,7 @@
   "goal": "run_argon_pipeline.py has no test. Pure helpers only: flash_counts, trials_headline, generate_report on a fixture dict (no model calls). Derive expected values by hand from docstrings, write the test, 3 scratch mutations must fail it.",
   "id": "gpt-spec-tests-run-argon-pipeline",
   "kind": "build",
-  "lane": "SONNET",
+  "lane": "CODEX",
   "latest": [
     {
       "auto": true,
@@ -30,12 +30,6 @@
   "refined_by": "",
   "refreshed": "2026-11-02T11:04:46Z",
   "refs": [],
-  "reroute": {
-    "at": "2026-11-02T11:00:21Z",
-    "from": "CODEX",
-    "to": "SONNET",
-    "why": "window"
-  },
   "result": "",
   "scope_in": [
     "scripts/dev/test_run_argon_pipeline.py",

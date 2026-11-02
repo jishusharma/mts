@@ -40,12 +40,7 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
-  "reroute": {
-    "at": "2026-11-02T11:25:22Z",
-    "desk": "20261102-112522-gemini-blind-read-grandfather-api-rerun-",
-    "to": "DSA",
-    "why": "window"
-  },
+  "reroute_failed": "20261102-112522-gemini-blind-read-grandfather-api-rerun-",
   "result": "",
   "scope_in": [
     "MyTradingSys/research/fable_audit_2026-10-20/GRANDFATHER_DECISION_API_RERUN.md (read)",

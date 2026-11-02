@@ -12,7 +12,7 @@
   "goal": "role_line.py has no test. It parses a session first line into a role (is_event, clean, first_line, role_line with known/events/strict flags). Derive expected outputs by hand from its docstring for 6 boundary cases (at limit, one below, one above, empty, malformed, error path), write scripts/dev/test_role_line.py with temp dirs only, then 3 scratch mutations must each fail a test.",
   "id": "gpt-spec-tests-role-line",
   "kind": "build",
-  "lane": "SONNET",
+  "lane": "CODEX",
   "latest": [
     {
       "auto": true,
@@ -30,12 +30,6 @@
   "refined_by": "",
   "refreshed": "2026-11-02T11:04:45Z",
   "refs": [],
-  "reroute": {
-    "at": "2026-11-02T11:00:21Z",
-    "from": "CODEX",
-    "to": "SONNET",
-    "why": "window"
-  },
   "result": "",
   "scope_in": [
     "scripts/dev/test_role_line.py",
