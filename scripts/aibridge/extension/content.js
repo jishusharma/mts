@@ -239,9 +239,13 @@
         if (chrome.runtime.lastError || !v) return;
         ping().then(function (p) {
           var agent = p && p.ok && p.status === 200 && p.body ? p.body.agent : null;
-          vstate = L.versionState(v.loaded || VER, v.disk, agent);
+          vstate = L.versionState(v.loaded || VER, v.disk, agent, VER);
+          if (ui.verEl) ui.verEl.textContent = 'AIBridge: extension ' + (v.loaded || '?') + ' | this page ' + VER + ' | disk ' + (v.disk || '?') + ' | agent ' + (agent || '?') + (vstate.level === 'ok' ? ' - all match' : ' - MISMATCH, see below');
           if (ui.box) ui.box.dataset.ver = vstate.level;
           if (vstate.level !== 'ok' && ui.info) ui.info.textContent = vstate.text;
+          if (vstate.level === 'page_stale' && idleNow()) {   // the extension is newer than this page's script: an F5 fixes it, so do it (idle, once per 10 min)
+            try { var lp = parseInt(sessionStorage.getItem('aibridge_page_reload') || '0', 10); if (Date.now() - lp > 600000) { auditEvent('page ' + VER + ' older than extension ' + (v.loaded || '?') + ': reloading the page'); sessionStorage.setItem('aibridge_page_reload', String(Date.now())); location.reload(); } } catch (e) {}
+          }
           if (vstate.level === 'ext_stale' && idleNow()) { try { chrome.runtime.sendMessage({ type: 'reload' }); } catch (e) {} }
         });
       });
@@ -696,10 +700,11 @@
     var count = document.createElement('span');
     var status = document.createElement('div'); status.className = 'st'; status.textContent = 'off: click Run on each block';
     var info = document.createElement('div'); info.className = 'in'; info.textContent = 'AIBridge ' + VER + ' (this chat only)';
+    var verEl = document.createElement('div'); verEl.className = 'aibridge-ver'; verEl.textContent = 'AIBridge page ' + VER + ' (checking extension and agent...)';
     var link = document.createElement('span'); link.textContent = '\u25CB'; link.title = 'link: starting'; link.style.marginLeft = '6px'; link.style.cursor = 'help';
-    box.appendChild(lab); box.appendChild(count); box.appendChild(link); box.appendChild(status); box.appendChild(info);
+    box.appendChild(lab); box.appendChild(count); box.appendChild(link); box.appendChild(status); box.appendChild(verEl); box.appendChild(info);
     document.body.appendChild(box);
-    ui = { box: box, cb: cb, count: count, status: status, info: info, link: link };
+    ui = { box: box, cb: cb, count: count, status: status, info: info, link: link, verEl: verEl };
     cb.addEventListener('change', function () {
       autoRun = cb.checked;
       if (autoRun) { runs = 0; stopHold = false; preflight('on:'); } else stopAuto('off: click Run on each block');

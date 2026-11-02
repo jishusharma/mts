@@ -70,21 +70,22 @@ window.chrome = {
     sendMessage: function (msg, cb) {
       window.calls.push({ t: Date.now() - window.T0, type: msg.type, cmd: msg.cmd, task: msg.task, timeout_s: msg.timeout_s, rid: msg.rid, dry: msg.dry, event: msg.event });
       if (msg.event) { cb({ ok: true, status: 200, body: { ok: true, event: true } }); return; }
-      if (msg.type === 'version') { cb({ loaded: window.loadedVersion || '0.7.3', disk: window.diskVersion || '0.7.3' }); return; }
+      if (msg.type === 'version') { cb({ loaded: window.loadedVersion || window.AV(), disk: window.diskVersion || window.AV() }); return; }
       if (msg.type === 'reload') { window.reloaded = (window.reloaded || 0) + 1; cb({ ok: true }); return; }
-      if (msg.type === 'ping') { cb({ ok: true, status: 200, body: { ok: true, agent: '0.7.3', host: 'H', shell_version: '5.1', pwsh: true, running: window.agentRunning == null ? 0 : window.agentRunning } }); return; }
+      if (msg.type === 'ping') { cb({ ok: true, status: 200, body: { ok: true, agent: window.agentVersion || window.AV(), host: 'H', shell_version: '5.1', pwsh: true, running: window.agentRunning == null ? 0 : window.agentRunning } }); return; }
       if (msg.dry) { cb({ ok: true, status: 200, body: { dry: true, ok: true, reason: 'auto_fluent', kind: 'read' } }); return; }
       var r = window.agent(msg);   // {delay_ms, body} or {never:true}
       if (r.never) return;
       setTimeout(function () {
         var b = Object.assign({ exit: 0, out: '', err: '', ms: 1, timed_out: false, out_truncated: false, out_bytes: 0, timeout_s: msg.timeout_s || 60,
-          host: 'H', agent: '0.7.3', kind: 'read', rid: msg.rid, cmd_lines: String(msg.cmd || '').split('\n').length, cmd_sha: 'abc', at: 'T' }, r.body || {});
+          host: 'H', agent: window.agentVersion || window.AV(), kind: 'read', rid: msg.rid, cmd_lines: String(msg.cmd || '').split('\n').length, cmd_sha: 'abc', at: 'T' }, r.body || {});
         cb({ ok: true, status: 200, body: b });
       }, r.delay_ms || 0);
     }
   },
   storage: { local: { get: function (k, cb) { cb({}); }, set: function () {} }, onChanged: { addListener: function () {} } }
 };
+window.AV = function () { return (window.AIBridgeLoop && window.AIBridgeLoop.VERSION) || '0.0.0'; };
 window.T0 = Date.now();
 window.agent = function (msg) { return { body: { out: 'ran:' + String(msg.cmd).split('\n')[0] } }; };
 var ta = document.getElementById('chat-input');

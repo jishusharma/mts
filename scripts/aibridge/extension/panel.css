@@ -10,4 +10,4 @@
   max-height: 300px;
   margin-top: 6px;
 }
-.aibridge-ctl[data-ver="ext_stale"], .aibridge-ctl[data-ver="agent_mismatch"] { outline: 3px solid #d00; background: #fdd; }
+.aibridge-ctl[data-ver="ext_stale"], .aibridge-ctl[data-ver="page_stale"], .aibridge-ctl[data-ver="agent_mismatch"] { outline: 3px solid #d00; background: #fdd; }

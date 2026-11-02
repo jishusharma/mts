@@ -165,3 +165,8 @@ t('versionState: agent on another version = agent_mismatch, old agent says how t
 t('versionState: 0.7.9 is older than 0.7.12 (numeric, not text, compare)', () => {
   assert.ok(/--restart-agent/.test(L.versionState('0.7.12', '0.7.12', '0.7.9').text));
 });
+t('versionState: a chat page older than the extension says F5 (page_stale)', () => {
+  const v = L.versionState('0.7.20', '0.7.20', '0.7.20', '0.7.19');
+  assert.strictEqual(v.level, 'page_stale'); assert.ok(/F5/.test(v.text));
+  assert.strictEqual(L.versionState('0.7.20', '0.7.20', '0.7.20', '0.7.20').level, 'ok');
+});
