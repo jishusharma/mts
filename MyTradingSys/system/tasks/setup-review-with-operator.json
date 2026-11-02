@@ -16,16 +16,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "fractals review wave: R2 BTC phases, R3 Jala fractal style, R4 multi-LLM plan; Jala fracta",
-      "ref": "6f91ca6d4e93",
-      "utc": "2026-10-31T06:58:06Z"
+      "line": "yt: YouTube-only WARP proxy in the guarded caption fetch (home IP 429-blocked)",
+      "ref": "f3eacd11cc86",
+      "utc": "2026-11-02T09:35:32Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "6f91ca6d4e93 fractals review wave: R2 BTC phases, R3 Jala fractal style, R4 multi-LLM plan",
+      "line": "f3eacd11cc86 yt: YouTube-only WARP proxy in the guarded caption fetch (home IP 429-blocked",
       "ref": "MyTradingSys/system/OPERATOR_DECISIONS.md",
-      "utc": "2026-10-31T06:58:06Z"
+      "utc": "2026-11-02T09:35:32Z"
     }
   ],
   "layers": [],
@@ -35,7 +35,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T08:47:48Z",
+  "refreshed": "2026-11-02T11:05:00Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -45,7 +45,7 @@
     "MyTradingSys/system/OPERATOR_DECISIONS.md"
   ],
   "scope_out": [],
-  "scope_sha": "6f91ca6d4e93",
+  "scope_sha": "f3eacd11cc86",
   "size": "M",
   "sources": [
     "MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md",

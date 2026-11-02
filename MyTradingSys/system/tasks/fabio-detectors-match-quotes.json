@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T11:04:18Z",
   "commands": [
     "python -m pytest MyTradingSys/backtest/layers/fabio MyTradingSys/backtest/layers/alerts/test_live_runner_layers.py MyTradingSys/research/layer_lab/fabio_escalation_event_table/test_event_table.py -q"
   ],
@@ -32,6 +33,12 @@
   "lane": "JIS-NB",
   "latest": [
     {
+      "kind": "ship",
+      "line": "2afc18be6",
+      "ref": "a8c878a8e",
+      "utc": "2026-11-02T11:04:18Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "T09-F3: live RSI trades only support@40 long; cross, failure, rejection are alert-only",
@@ -48,7 +55,12 @@
   "refined_by": "",
   "refreshed": "2026-10-31T20:38:38Z",
   "refs": [],
-  "result": "",
+  "result": "2afc18be6",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/fabio/fabio_cvd_absorption.py",
     "MyTradingSys/backtest/layers/fabio/fabio_escalation.py",
@@ -75,7 +87,7 @@
     "live_runner_cli.py:20,438,482",
     "FORMULAS.md fabio section"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Review step: CRITICAL, review session reads card and plan before code (REVIEW <id> PLAN), then the diff",
     "Tests first, red on old code: (a) cvd: a low 3x tolerance above the prior low must NOT fire, one within +-tol fires; mirror for highs; (b) escalation: record bar at a level whose close stays inside the level must NOT fire, close beyond level fires",
@@ -83,6 +95,7 @@
     "Legacy callers (run_backtest.py, fires_kline.py, event_table.py, run_bracket_grid.py:219-225, tom_bt_run.py:65-67) pass require_break=False / the old band so published numbers reproduce; live_layers.py relies on the strict default and is tested via test_live_runner_layers.py. Pin the 652 DEV 1h repro as a test",
     "Report DEV 1h event counts old vs new in the commit body (descriptive, no edge claim); run_all_tests --quick; ship; coordinator deploys"
   ],
+  "taken": "2026-11-02T11:04:18Z",
   "tests": "New cases in test_fabio_cvd_absorption.py and test_fabio_escalation.py, each failing on the pre-change code (quote the failure); plus live-path cases: restart (fresh detector, same bars, same events), empty or short bars fail closed (no event, no raise in live_layers)",
   "title": "fabio_cvd_absorption.py:88-89 accepts any higher low (quote: same level); fabio_escalation.py fires with no break test (:45-48,:117-123) vs docstring breakout; both run live via live_runner_cli.py:20,482 -> live-path rules, tests first",
   "weight": "CRITICAL",

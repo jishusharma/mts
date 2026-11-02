@@ -32,9 +32,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "T058 per-TF break event study re-land (ledger P0-45): W/1D/4h/1h/15m, DEV/VAL, fee-net fro",
-      "ref": "e31013dfb104",
-      "utc": "2026-10-30T19:30:37Z"
+      "line": "verdicts.py: backfill keeps row slots + fixed 8-char commit abbrev; check honours kill_sco",
+      "ref": "2f7231dff4c4",
+      "utc": "2026-10-31T23:38:39Z"
     },
     {
       "auto": true,
@@ -51,7 +51,7 @@
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T08:46:35Z",
+  "refreshed": "2026-11-02T11:04:31Z",
   "refs": [
     "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md"
   ],
@@ -69,7 +69,7 @@
     "VALIDATION/HOLDOUT reads",
     "live code"
   ],
-  "scope_sha": "e31013dfb104",
+  "scope_sha": "2f7231dff4c4",
   "size": "M",
   "sources": [
     "T058 item H3 (2026-10-04), ledger P0-47"

@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-02T11:09:02Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-02/c30_validation_blind_read.md has one row per number: FOUND / NOT_IN_DATA / DIFF, first line holds the three counts.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Open MyTradingSys/research/eagle_eyes_picture_2026-10-28/C30_VALIDATION.md and check every number against c30_validation.py and the data it names; facts only, no verdicts.",
+  "id": "gemini-blind-read-c30-validation-1102",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "C30 VALIDATION read, C24 close, NUC workaround review",
+      "ref": "7cc7d76d9af8",
+      "utc": "2026-11-01T17:05:01Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "7cc7d76d9af8 C30 VALIDATION read, C24 close, NUC workaround review",
+      "ref": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/C30_VALIDATION.md",
+      "utc": "2026-11-01T17:05:01Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini effort low: load as <id>:low (gemini_queue.py run <id>:low). Final report ends with a Noticed: line. Facts only, no verdicts. D11_PROGRAMME s6 seed. PLANNER 2026-11-02 planner-board-refresh-1102. REVIEWED:2026-11-02 T0-ONLY",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-02T11:09:03Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/C30_VALIDATION.md (read)",
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/c30_validation.py (read)",
+    "MyTradingSys/research/gemini_audits_2026-11-02/c30_validation_blind_read.md (new)"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change outside the output file"
+  ],
+  "scope_sha": "7cc7d76d9af8",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "list every number in C30_VALIDATION.md with its cited source",
+    "open the source and check it",
+    "write FOUND / NOT_IN_DATA / DIFF per number, counts on line 1"
+  ],
+  "tests": "see done_when (audit card, output file is the test)",
+  "title": "[GEMINI] blind re-read of eagle_eyes_picture C30_VALIDATION.md: numbers vs c30_validation.py",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

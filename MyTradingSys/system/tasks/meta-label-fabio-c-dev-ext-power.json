@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "meta-label Tom VP / Fabio C: DEV run, both fail the pre-registered rule; sim-desk exports",
-      "ref": "68eac1e27905",
-      "utc": "2026-10-31T14:14:34Z"
+      "line": "Merge remote-tracking branch 'origin/fast-track' into JIS-NB/rumers-lab-harness-3",
+      "ref": "22ca49c5865c",
+      "utc": "2026-11-01T17:43:06Z"
     }
   ],
   "layers": [
@@ -30,7 +30,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T14:49:55Z",
+  "refreshed": "2026-11-02T11:04:56Z",
   "refs": [
     "MyTradingSys/research/meta_label_roadmap_2026-10-31/ROADMAP.md"
   ],
@@ -45,7 +45,7 @@
   "scope_out": [
     "VALIDATION and HOLDOUT, new features, changing frozen PRE_REG.md, live tree"
   ],
-  "scope_sha": "68eac1e27905",
+  "scope_sha": "22ca49c5865c",
   "size": "M",
   "sources": [],
   "state": "ready",

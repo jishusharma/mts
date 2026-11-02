@@ -4,31 +4,52 @@
   "commands": [],
   "created": "2026-11-02T09:35:24Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "all 11 tests pass with no network or git fetch of mts-signals during the run, on an unmodified trunk checkout; only the two test files changed",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Make scripts/dev/test_fetch_captions_guard.py (3 tests) and test_fetch_captions_channel.py (8 tests) pass on any host: they read the real mts-signals fleet ytblock rows through fetch_captions_timed.fleet_rows/fleet_send instead of a mock.",
   "id": "yt-guard-tests-not-hermetic-test-fetch-c",
-  "lane": "",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "yt: 150/24h request budget on the WARP proxy exit (40 stays for a direct IP)",
+      "ref": "20ca321e81aa",
+      "utc": "2026-11-02T09:58:18Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "From the 11-02 yt WARP ship (f3eacd11c, 20ca321e8). REVIEWED:2026-11-02 T0-ONLY.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-02T11:07:51Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/test_fetch_captions_guard.py",
+    "scripts/dev/test_fetch_captions_channel.py",
+    "scripts/dev/fetch_captions_timed.py"
+  ],
+  "scope_out": [
+    "guard logic and budget numbers in fetch_captions_timed.py; live tree; real network"
+  ],
+  "scope_sha": "20ca321e81aa",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "in each setUp add mock.patch.object(f, 'fleet_rows', return_value=[]) and mock.patch.object(f, 'fleet_send') with addCleanup(stop), next to the existing public_ip patch (fetch_captions_timed.py:275 and :290)",
+    "run both files before the patch with a real ytblock row present (or on JIS-DESKTOP) to see them fail, then after to see 11 pass; keep one test that feeds a fleet ytblock row on purpose and asserts the guard sees it",
+    "python scripts/dev/test_fetch_captions_guard.py and test_fetch_captions_channel.py green; sync.py ship"
+  ],
+  "tests": "test_fetch_captions_guard (3) and test_fetch_captions_channel (8) fail with a live fleet ytblock row on the current code and pass with fleet_rows mocked",
   "title": "YT guard tests not hermetic: test_fetch_captions_guard (3) and test_fetch_captions_channel (8) fail on JIS-DESKTOP on unmodified trunk because they read the real mts-signals fleet ytblock rows; mock fleet_rows/fleet_send in setUp",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

@@ -7,8 +7,8 @@
     "folded": "2026-10-30T20:41:15Z",
     "misses": 4,
     "reads": [
-      "src/main/java/datafeed/StateCodeEmitter.java",
-      "src/test/java/datafeed/StateCodeEmitterTest.java"
+      "MyTradingSys/execution/auto_trader.py",
+      "MyTradingSys/execution/test_auto_trader.py"
     ],
     "session": "agent-a89c1365ba6060227"
   },
@@ -27,9 +27,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "test: position_manager margin/equity drain (expectedFailure, gap confirmed)",
-      "ref": "a0eb3128fa37",
-      "utc": "2026-10-31T06:53:51Z"
+      "line": "test_auto_trader: direct place() test carries margin_btc",
+      "ref": "4ced92fd43d2",
+      "utc": "2026-11-01T08:41:57Z"
     }
   ],
   "layers": [],
@@ -39,7 +39,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-31T08:47:54Z",
+  "refreshed": "2026-11-02T11:05:04Z",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
   ],
@@ -50,7 +50,7 @@
   "scope_out": [
     "live tree; engine and layer code edits; any backtest verdict; .secrets and .env"
   ],
-  "scope_sha": "a0eb3128fa37",
+  "scope_sha": "4ced92fd43d2",
   "size": "S",
   "sources": [],
   "state": "ready",

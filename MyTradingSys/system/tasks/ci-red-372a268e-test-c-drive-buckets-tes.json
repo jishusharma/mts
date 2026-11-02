@@ -4,31 +4,51 @@
   "commands": [],
   "created": "2026-11-02T09:59:50Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "test_c_drive_buckets.py passes locally with an empty LOCALAPPDATA and the windows-latest CI job for the shipping sha is green; only the test file (and c_drive_guard.py if a real read bug) changed",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Make scripts/dev/test_c_drive_buckets.py::test_dry_run_prints_gb_per_bucket_and_deletes_nothing hermetic: on the windows-latest CI runner the browser-cache bucket comes back empty because a code path reads the real LOCALAPPDATA instead of the test root.",
   "id": "ci-red-372a268e-test-c-drive-buckets-tes",
-  "lane": "",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "c_drive_guard: prune regenerable caches outside %TEMP%; wt_maint stops rescuing the sim_de",
+      "ref": "47320ef04f10",
+      "utc": "2026-11-01T10:26:03Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "CI red 372a268e. REVIEWED:2026-11-02 T0-ONLY. Bug fix with a failing-first test, S0 allows it.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-02T11:07:49Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/test_c_drive_buckets.py",
+    "scripts/dev/c_drive_guard.py"
+  ],
+  "scope_out": [
+    "any change to what the guard deletes; live tree; other tests"
+  ],
+  "scope_sha": "47320ef04f10",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "reproduce: run the test with the env var LOCALAPPDATA set to an empty temp dir and MTS_GUARD_LOCALAPPDATA unset; find which call (g.main, browser_rows, running, dir_not_reparse) still looks at the real path",
+    "patch that root in the test setUp (mock.patch.dict os.environ for LOCALAPPDATA and MTS_GUARD_LOCALAPPDATA to self.root/local), keep production code unchanged unless the read is a real bug",
+    "run python scripts/dev/test_c_drive_buckets.py with LOCALAPPDATA pointing at an empty dir; ship, then confirm CI green on the sha (sync.py ci)"
+  ],
+  "tests": "scripts/dev/test_c_drive_buckets.py::test_dry_run_prints_gb_per_bucket_and_deletes_nothing passes with LOCALAPPDATA pointed at an empty temp dir; it fails on the current test in that same setup",
   "title": "CI red 372a268e: test_c_drive_buckets test_dry_run_prints_gb_per_bucket passes locally, fails on windows-latest runner (browser-cache bucket empty: real LOCALAPPDATA not patched); ran because extra_tests.tsv changed; patch LOCALAPPDATA root in the test",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
