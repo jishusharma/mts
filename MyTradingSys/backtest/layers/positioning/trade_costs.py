@@ -48,7 +48,7 @@ def funding_paid(side: str, t_in: int, t_out: int, funding: list) -> float:
 
 
 def net_return(side: str, p_in: float, p_out: float, t_in: int, t_out: int, funding: list,
-               fee_rt: float = 0.0010, slip_rt: float = 0.0002) -> float:
+               fee_rt: float = 0.0010, slip_rt: float = 0.0004) -> float:
     """Calculate net return of a trade after fees, slippage and funding."""
     if p_in <= 0:
         raise ValueError("p_in must be positive")

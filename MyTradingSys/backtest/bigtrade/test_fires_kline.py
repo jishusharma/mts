@@ -194,7 +194,7 @@ class TestDataLayer(unittest.TestCase):
 
 class TestCosts(unittest.TestCase):
     def test_fee_and_slip_defaults_from_trade_costs(self):
-        self.assertEqual(fk.cost_params(), (0.0010, 0.0002))  # FORMULAS.md section 13: 10 bps RT + 2 bps slip
+        self.assertEqual(fk.cost_params(), (0.0010, 0.0004))  # 10 bps RT fee + 4 bps RT slip = 14 bps (research_kit TAKER_RT_PCT 0.14 %)
 
     def test_cost_fields_hand_computed(self):
         # long, entry 100, stop 99.5 -> distance 0.5 = 0.5 %; ATR 0.5; fee_rt 0.1 %, slip 0.02 %
