@@ -6,8 +6,7 @@
   ],
   "created": "2026-10-23T07:12:27Z",
   "depends_on": [
-    "usage-log-py-per-step-usage-ledger-trans",
-    "supervisor-handover-fixed-form"
+    "usage-log-py-per-step-usage-ledger-trans"
   ],
   "done_when": "supervisor.py plan prints an IDLE line for a fixture with 5h 3% and a ready SONNET card; pace_plan uses the measured k from rows and says (GUESS) only on fallback; tests pass.",
   "est_turns": 20,
@@ -18,13 +17,23 @@
   "id": "idle-lane-check-in-supervisor-plan-repla",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "AIBridge 0.7.12: probe noise (empty connect no longer audited), installer argparse, ROOT_C",
+      "ref": "690ea1d83938",
+      "utc": "2026-11-02T11:43:37Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): drafted 2026-10-23, unchanged; queued behind supervisor-handover-fixed-form (one editor of supervisor.py) and usage-log-py-per-step-usage-ledger-trans. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): drafted 2026-10-23, unchanged; queued behind supervisor-handover-fixed-form (one editor of supervisor.py) and usage-log-py-per-step-usage-ledger-trans. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.\nDECISION (OURS) 2026-11-02 planner-refined2: supervisor-handover-fixed-form was dropped (S0), so the serialization dep is removed; builder edits supervisor.py on current trunk.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
+  "refreshed": "2026-11-02T16:53:29Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -37,12 +46,13 @@
     "live path",
     "traffic.py"
   ],
+  "scope_sha": "690ea1d83938",
   "size": "M",
   "sources": [
     "scripts/dev/supervisor.py:576 (K_DEFAULT GUESS)",
     "MyTradingSys/research/thinker/2026-10-23_usage_metering.md (Check)"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Add usage_log.measured_k(rows): weekly delta / 5h delta over rows in one window with 5h delta >= 3 points; else None.",
     "estimate_k (supervisor.py:~660) also consults those rows; k_meas or K_DEFAULT stays the fallback.",

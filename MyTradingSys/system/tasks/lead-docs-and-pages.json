@@ -3,9 +3,7 @@
   "asks": "",
   "commands": [],
   "created": "2026-10-24T23:10:34Z",
-  "depends_on": [
-    "lead-role-core-and-modes"
-  ],
+  "depends_on": [],
   "done_when": "test_artifacts start-lines test green after failing first; mts_home.html regenerated and in the commit; test count flat; role/doc test files stay about 15 s; nothing new in run_extra_tests.py; docs lint green.",
   "est_turns": 8,
   "formula_id": "",
