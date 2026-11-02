@@ -92,6 +92,12 @@ else:
             fail('%s not found under %s (is this an AIBridge root? first install: add --fresh)' % (need, root))
     bg_old = read(os.path.join(root, 'extension/background.js'))
 tm = re.search(r"const TOKEN = '([0-9a-f]{16,})';", bg_old)
+if not tm and os.path.exists(os.path.join(root, 'src/config.json')):
+    # 11-03 JIS-NB: a 0.7.11 install left '__TOKEN__' unfilled in background.js; the agent's own config.json is the source of truth
+    ctok = json.load(open(os.path.join(root, 'src/config.json'))).get('token', '')
+    if re.fullmatch(r'[0-9a-f]{16,}', ctok or ''):
+        tm = re.search(r"'([0-9a-f]{16,})'", "'" + ctok + "'")
+        print('  token taken from src/config.json (background.js had no TOKEN)')
 cm = re.search(r"const AGENT_CWD = ('(?:[^'\\]|\\.)*');", bg_old)
 um = re.search(r"const AGENT_URL = ('[^']+');", bg_old)
 if not tm or not cm or not um:
