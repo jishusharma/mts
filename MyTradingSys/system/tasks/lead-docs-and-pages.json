@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-02T16:54:22Z",
   "commands": [],
   "created": "2026-10-24T23:10:34Z",
   "depends_on": [],
@@ -12,6 +13,28 @@
   "goal": "Docs and operator pages say Lead: make_home recipes and mts_home.html, test_artifacts start lines, SUPER_SESSION D2, ROLES.md, TRAFFIC_CONTROLLER.md, WORKERS.md:32, ARCHITECTURE.md:82. Old prompts already work after the core card, so this may lag.",
   "id": "lead-docs-and-pages",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "shipped 0f7867aab (on trunk): docs and pages say Lead, 132 tests pass",
+      "ref": "226594666",
+      "utc": "2026-11-02T16:54:22Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Artifacts: record the operator's deletes, retire the BTC Live Aid preview",
+      "ref": "be70f58af4ff",
+      "utc": "2026-10-31T09:55:12Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "7b66a91a7a68 Supervisor idle fix: fit role budget, retoken, isolate successor_wake handove",
+      "ref": "MyTradingSys/system/SUPER_SESSION.md",
+      "utc": "2026-10-30T18:03:01Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,8 +42,14 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-02T16:54:20Z",
   "refs": [],
-  "result": "",
+  "result": "shipped 0f7867aab (on trunk): docs and pages say Lead, 132 tests pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/make_home.py:220-255 and MyTradingSys/system/artifacts/mts_home.html (regenerate)",
     "scripts/dev/test_artifacts.py:181-182",
@@ -32,18 +61,20 @@
     "test_super_session_doc.py (asserts no role name in D2/D4)",
     "run_extra_tests.py"
   ],
+  "scope_sha": "be70f58af4ff",
   "size": "M",
   "sources": [
     "research/mts_doctor/LEAD_ROLE_SOLUTION.md s2-s4 (section 4 card table)",
     "research/mts_doctor/LEAD_ROLE_IMPACT_MAP.md"
   ],
-  "state": "refined",
+  "state": "done",
   "steps": [
     "make_home.py recipes -> 'You are Lead.' (+ say think / pipeline / doctor / a decision); run make_home.py to regenerate mts_home.html.",
     "test_artifacts.py start lines -> the 4 remaining operator starts + Lead (fails first on old html/recipes).",
     "SUPER_SESSION D2: the Lead is the separate session with the operator and starts this session as its wave worker; D4 unchanged. WORKERS.md:32 drop the turn_meter Thinker sentence. Update ROLES.md who-does-what, TRAFFIC_CONTROLLER.md, ARCHITECTURE.md:82.",
     "Run role/doc test files and tests/docs; time them."
   ],
+  "taken": "2026-11-02T16:54:22Z",
   "tests": "scripts/dev/test_artifacts.py: start-lines test updated to the 4 operator starts + Lead; fails first on the old recipes/html. tests/docs (test_integrity, test_super_session_doc) stay green unchanged.",
   "title": "Lead docs and pages: make_home, SUPER_SESSION D2, ROLES, WORKERS",
   "weight": "ROUTINE",
