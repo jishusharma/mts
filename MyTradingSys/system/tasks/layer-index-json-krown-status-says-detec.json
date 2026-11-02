@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/make_layers_md.py"
+  ],
+  "created": "2026-11-02T11:09:14Z",
+  "depends_on": [],
+  "done_when": "layer_index.json krown status says detectors S1-S9 exist with 49 tests, recall check 3 of 12 failed, no DEV event study; LAYERS.md regenerated and its Krown line matches LAYER_SHEETS.md krown row",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Fix the krown status text in layer_index.json (source of generated LAYERS.md) so it no longer says detectors not built / not backtested",
+  "id": "layer-index-json-krown-status-says-detec",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: regenerated LAYERS.md",
+      "ref": "9f0b9567c841",
+      "utc": "2026-11-02T11:21:51Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "9f0b9567c841 ship: regenerated LAYERS.md",
+      "ref": "MyTradingSys/system/LAYERS.md",
+      "utc": "2026-11-02T11:21:51Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-02T11:45:25Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/layer_index.json",
+    "MyTradingSys/system/LAYERS.md"
+  ],
+  "scope_out": [
+    "krown detector code, KROWN_LAYER_SPEC.md"
+  ],
+  "scope_sha": "9f0b9567c841",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/layer_review_2026-10-26/LAYER_SHEETS.md:23"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read LAYER_SHEETS.md krown row (L17, L23) and LAYER_REALITY:13",
+    "Edit krown status in layer_index.json; keep spec/gate facts",
+    "Run make_layers_md.py to regenerate LAYERS.md"
+  ],
+  "tests": "MyTradingSys/tests/docs/test_integrity.py plus tasks.py lint pass; grep 'not built, not backtested' in LAYERS.md returns 0",
+  "title": "layer_index.json krown status says 'Detectors not built, not backtested' but detectors and backtests exist (layer-review krown sheet d769e784); done-when: status text matches the sheet",
+  "weight": "",
+  "worker": "agent"
+}
