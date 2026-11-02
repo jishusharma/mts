@@ -17,6 +17,15 @@
   "goal": "Operator says 'short 100 doubling from 110500 to 111500, 5 steps'; cotrade shows every rung price and size (adds 1,2,3,6,12 X: each add after the second equals the current total), the total, the loss at the stop and margin, then places all rungs as resting limits on testnet; one stop covers the filled size; stop hit cancels the unfilled rungs.",
   "id": "cotrade-p2-doubling-ladder",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "cotrade P5 review minors: parent stop by --of, env guard on kill/net/ensure_stop, hedge ne",
+      "ref": "9368d7725a5c",
+      "utc": "2026-11-01T05:08:07Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -24,6 +33,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-02T16:52:35Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -32,6 +42,7 @@
   "scope_out": [
     "No per-fill take-profit (P3); no live-aid panel (P4); no auto_trader routing change; no mainnet"
   ],
+  "scope_sha": "9368d7725a5c",
   "size": "M",
   "sources": [
     "MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md",
@@ -39,7 +50,7 @@
     "MyTradingSys/execution/plan_compiler.py",
     "MyTradingSys/research/eur_low_us_sweep_2026-10-14/RESULT.md"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Read MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md sections 2 and 5",
     "Tests first, red on old tree",
