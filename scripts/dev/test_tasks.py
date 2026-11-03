@@ -549,6 +549,35 @@ class StateTagTest(NextSkipsClaimedTest):
         self.assertEqual(rc, 0)
         self.assertEqual(self.run_cli("stale")[0], 0)
 
+    def test_card_only_commit_does_not_restale_a_directory_scope(self):
+        """scope_in MyTradingSys/system/tasks: a commit touching only tasks/x.json leaves the card not stale; a non-card file does; list == stale."""
+        d = "MyTradingSys/system/tasks"
+        self.commit(d + "/README.md", "r" + NL)
+        self.card(scope_in=[d])
+        self.run_cli("tag", "TS1", "--refresh")
+        self.commit(d + "/X1.json", __import__("json").dumps(good("X1", state="dropped")) + NL, "2026-10-02T00:00:00+00:00")
+        c = T.get(self.repo, "TS1")
+        for prefetch in (False, True):
+            T.TS._LC_LOG.clear()
+            if prefetch:
+                T.TS.prefetch_changes(self.repo)
+            self.assertEqual(T.TS.stale_reason(c, self.repo), "")
+        rc, out = self.run_cli("stale")
+        self.assertEqual(rc, 0, out)
+        self.assertNotIn("STALE", self.run_cli("list")[1])
+        self.commit(d + "/README.md", "r2" + NL, "2026-10-03T00:00:00+00:00")
+        rc, out = self.run_cli("stale")
+        self.assertEqual(rc, 1)
+        self.assertIn("STALE", self.run_cli("list")[1])
+
+    def test_card_file_named_in_scope_still_counts(self):
+        f = "MyTradingSys/system/tasks/BASE.json"
+        self.commit(f, "{}" + NL)
+        self.card(scope_in=[f])
+        self.run_cli("tag", "TS1", "--refresh")
+        self.commit(f, '{"a":1}' + NL, "2026-10-02T00:00:00+00:00")
+        self.assertIn("scope changed", T.TS.stale_reason(T.get(self.repo, "TS1"), self.repo))
+
     def test_lint_only_warns_about_stale_ready_cards(self):
         """A stale pointer is reported, never fatal: lint feeds the ship gate and trunk CI, which every session shares."""
         self.commit("src/a.py", "x=1" + NL)

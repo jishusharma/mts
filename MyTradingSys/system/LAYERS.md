@@ -94,11 +94,11 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Spec / sources: `MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md`; `MyTradingSys/backtest/layers/FORMULAS.md`
 - Code: `MyTradingSys/backtest/layers/rsi/malkan_40_60.py`; `MyTradingSys/backtest/layers/rsi/malkan_mtf.py`; `MyTradingSys/backtest/layers/kurisko/quad_rotation.py`; `MyTradingSys/backtest/layers/kurisko/stoch_core.py`
 - Other results: `MyTradingSys/research/rsi_divergence_mtf_2026-10-09`
+- Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-11-03_kurisko-quad-15m-1h-maker-prereg.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `prob-layer-common-table` ready p1 CODEX: Probability table as the common layer (AUDIT.md s6): state_at per layer, forward distribution vs matched basel
   - `krown-hidden-divergence-confluence-feed` refined p2 SONNET: Krown hidden divergence as a shared confluence feed any layer (RSI 40-60 included) can consume; Malkan layer s
   - `kurisko-dev-event-study` refined p2 SONNET: Kurisko Quad Rotation: DEV event study, fee-net, same-window placebo
-  - `kurisko-quad-15m-1h-maker-prereg` ready p2 CODEX: Quad Rotation (4 stochastics; RSI variant as operator hypothesis): count-only PRE_REG on 15m, 1h and a maker-e
   - `rsi-cross-unmapped-and-pivot-stack` refined p3 SONNET: RSI cross events are rejected as unmapped in the auto-trader (no layer_rules entry); and no layer stacks level
   - `malkan-prereg-dwm-equities` refined p4 SONNET: Malkan: pre-registration for the D/W/M equity home test (items 6/7/8/9/11/12, gates 0a/0f)
 
@@ -255,7 +255,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `pitchfork-fixes-live-java` refined p2 JIS-NB: Pitchfork live Java review fixes: F3 stale-bounce gate parity, F6 inverted-fork tine, F7/F9 labels
   - `pitchfork-live-4h-bars-too-few` refined p2 JIS-NB: pitchfork live: snapshot fetches 3 x 4h bars, PitchforkSignalLayer needs 15, so mts.pitchfork=true never fires
   - `pitchfork-operator-charts-prep` refined p2 SONNET: pitchfork: classify operator's pitchfork charts, measure copy-paste (parallel) forks vs random parallels (spec
-  - `pitchfork-operator-forks-causal` raw p2 SONNET: Test copy-paste forks from the operator charts with causal pivots and the 1m walk of pitchfork_recheck.py; don
   - `sim-desk-plug-in-pitchfork-4h-tine-bounc` refined p2 OPUS: Sim desk: plug in Pitchfork 4H tine-bounce study adapter (Modified Schiff + Volume Profile)
 
 ## Pizzino (Jason bar count + Michael nested swing states) (`pizzino`)

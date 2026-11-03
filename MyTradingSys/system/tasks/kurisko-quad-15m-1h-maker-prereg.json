@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T16:10:23Z",
   "commands": [
     "python scripts/dev/prereg_gate.py --help"
   ],
@@ -15,7 +16,14 @@
   "id": "kurisko-quad-15m-1h-maker-prereg",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "1194 signals, 1141 maker-touch fills; 16 BLOCK, 8 zero-n invalid; MyTradingSys/research/la",
+      "ref": "0f02a11e4",
+      "utc": "2026-11-03T16:10:23Z"
+    }
+  ],
   "layers": [
     "rsi"
   ],
@@ -27,7 +35,12 @@
   "refined_by": "",
   "refreshed": "2026-11-02T19:59:24Z",
   "refs": [],
-  "result": "",
+  "result": "1194 signals, 1141 maker-touch fills; 16 BLOCK, 8 zero-n invalid; MyTradingSys/research/layer_lab/kurisko_quad_1103/PRE_REG.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/kurisko_quad_1103/ (new)",
     "MyTradingSys/research/kurisko_2026-10-18/ (read, including BLOCKED.md)",
@@ -40,12 +53,13 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read BLOCKED.md and the sources; freeze the rules and fill model, labelling each parameter SOURCED or OURS",
     "Count signals per cell on DEV",
     "Run prereg_gate.py per cell and record the verdict"
   ],
+  "taken": "2026-11-03T16:10:23Z",
   "tests": "see done_when (run card, PRE_REG.md and the gate output are the test)",
   "title": "Quad Rotation (4 stochastics; RSI variant as operator hypothesis): count-only PRE_REG on 15m, 1h and a maker-entry fill model, by context phase; done when prereg_gate.py verdict per cell is written",
   "weight": "ROUTINE",
