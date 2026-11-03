@@ -193,3 +193,4 @@ scripts/dev/test_cbp_scorecard.py
 scripts/dev/test_ff_calendar_snapshot.py
 scripts/dev/test_extra_tests_union.py
 scripts/dev/test_pass_needs_verdict.py
+MyTradingSys/tools/live_aid/test_spec_us_open.py
