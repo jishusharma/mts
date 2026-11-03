@@ -234,10 +234,10 @@ def _rsi_wilder(c, n=14):
     up, dn = np.maximum(d, 0), np.maximum(-d, 0)
     au, ad = up[:n].mean(), dn[:n].mean()
     r[n] = 100.0 if ad == 0 else 100 - 100 / (1 + au / ad)
-    for i in range(n, len(d)):
-        au = (au * (n - 1) + up[i]) / n
-        ad = (ad * (n - 1) + dn[i]) / n
-        r[i + 1] = 100.0 if ad == 0 else 100 - 100 / (1 + au / ad)
+    for k in range(n + 1, len(c)):             # bar k uses its own close-to-close change d[k - 1]
+        au = (au * (n - 1) + up[k - 1]) / n
+        ad = (ad * (n - 1) + dn[k - 1]) / n
+        r[k] = 100.0 if ad == 0 else 100 - 100 / (1 + au / ad)
     return r
 
 
@@ -293,14 +293,14 @@ def rule_r5(V):
     h1, m15 = V["h1"], V["m15"]
     n1 = len(h1["t"])
     ph, pl = [], []
-    for p in range(2, n1 - 2):
-        if not (np.diff(h1["t"][p - 2:p + 3]) == HOUR_MS).all():
+    for q in range(4, n1):                                       # q = last closed 1h bar; the fractal centre is bar q-2
+        if not (np.diff(h1["t"][q - 4:q + 1]) == HOUR_MS).all():
             continue
-        win_h, win_l = h1["h"][p - 2:p + 3], h1["l"][p - 2:p + 3]
-        if h1["h"][p] == win_h.max() and (win_h == win_h.max()).sum() == 1:
-            ph.append((h1["t"][p + 2] + HOUR_MS, h1["h"][p]))       # known at the close of bar p+2
-        if h1["l"][p] == win_l.min() and (win_l == win_l.min()).sum() == 1:
-            pl.append((h1["t"][p + 2] + HOUR_MS, h1["l"][p]))
+        win_h, win_l = h1["h"][q - 4:q + 1], h1["l"][q - 4:q + 1]
+        if win_h[2] == win_h.max() and (win_h == win_h.max()).sum() == 1:
+            ph.append((h1["t"][q] + HOUR_MS, win_h[2]))          # known at the close of bar q
+        if win_l[2] == win_l.min() and (win_l == win_l.min()).sum() == 1:
+            pl.append((h1["t"][q] + HOUR_MS, win_l[2]))
     if not ph or not pl:
         return []
     cth, vh = np.array([x[0] for x in ph]), np.array([x[1] for x in ph])
@@ -311,25 +311,23 @@ def rule_r5(V):
     il = np.searchsorted(ctl, t, side="right") - 1
     sh = np.where(ih >= 0, vh[np.clip(ih, 0, None)], np.nan)
     sl = np.where(il >= 0, vl[np.clip(il, 0, None)], np.nan)
-    out, i = [], 2
-    while i < n - 3:
-        rng_ = sh[i] - sl[i]
-        if not (np.isfinite(rng_) and rng_ > 0) or t[i + 1] - t[i - 1] != 30 * MIN_MS:
-            i += 1
+    out, cf = [], 2                                          # cf = current (confirmation) candle; s1 = last sucker candle
+    while cf < n - 2:
+        s1, s2 = cf - 1, cf - 2
+        rng_ = sh[s1] - sl[s1]
+        if not (np.isfinite(rng_) and rng_ > 0) or t[cf] - t[s2] != 30 * MIN_MS:
+            cf += 1
             continue
         side = 0
-        if c[i] < o[i] and c[i - 1] < o[i - 1] and l[i] <= sl[i] + 0.25 * rng_:
+        if c[s1] < o[s1] and c[s2] < o[s2] and l[s1] <= sl[s1] + 0.25 * rng_:
             side = 1
-        elif c[i] > o[i] and c[i - 1] > o[i - 1] and h[i] >= sh[i] - 0.25 * rng_:
+        elif c[s1] > o[s1] and c[s2] > o[s2] and h[s1] >= sh[s1] - 0.25 * rng_:
             side = -1
-        if side == 0:
-            i += 1
+        # confirmation candle: first reversal candle (opposite colour) right after the sucker run
+        if side == 0 or not ((c[cf] > o[cf]) if side == 1 else (c[cf] < o[cf])):
+            cf += 1
             continue
-        cf = i + 1                                           # confirmation candle: first reversal candle
-        if not ((c[cf] > o[cf]) if side == 1 else (c[cf] < o[cf])) or t[cf] - t[i] != 15 * MIN_MS:
-            i += 1
-            continue
-        a = i
+        a = s1
         while a - 1 >= 0 and ((c[a - 1] < o[a - 1]) if side == 1 else (c[a - 1] > o[a - 1])):
             a -= 1
         trig = None
@@ -340,12 +338,12 @@ def rule_r5(V):
                 trig = j
                 break
         if trig is None:
-            i += 1
+            cf += 1
             continue
         stop = l[a:cf + 1].min() - 2 * TICK if side == 1 else h[a:cf + 1].max() + 2 * TICK
-        target = sh[i] if side == 1 else sl[i]
+        target = sh[s1] if side == 1 else sl[s1]
         out.append(sig(t[trig] + 15 * MIN_MS, side, stop, target, partial=True, note="R5"))
-        i = trig + 1
+        cf = trig + 2
     return out
 
 
