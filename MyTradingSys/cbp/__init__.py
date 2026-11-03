@@ -3,7 +3,7 @@
     import cbp
     rows = cbp.query(analyst="Krown", symbol="BTC", since_days=5)
 
-One JSON file (schema.json is owned by MTS, rows carry the fields listed in ROW_FIELDS), no queue, no acks.
+One JSON file (queue/signal_v1.schema.json is owned by MTS, rows carry the fields listed in ROW_FIELDS), no queue, no acks.
 Written only by scripts/dev/cbp_run.py. Data lives outside the public repo (CBP_STORE, default
 CBP_HOME/cbp_store/rows.json; CBP_HOME falls back to this checkout's runtime_data/cbp when the legacy
 F:/CryptoScrapper directory is absent); transcripts and runtime data never enter this repo.
@@ -26,6 +26,8 @@ ROW_FIELDS = ("analyst", "video_id", "published", "bias", "quotes", "trades", "p
 BIASES = ("BULLISH", "BEARISH", "NEUTRAL", "NO_VIEW")
 TRADE_FIELDS = ("asset", "direction", "entry", "target", "invalidation", "quote")
 DIRECTIONS = ("LONG", "SHORT")
+SCHEMA_PATH = ROOT / "MyTradingSys" / "queue" / "signal_v1.schema.json"
+INSTRUMENT_KINDS = ("perp",)  # D6 seam: option is not enabled
 
 
 def default_cbp_home(exists=None):
@@ -83,6 +85,12 @@ def validate_row(r):
             errs.append("trade needs %s" % (TRADE_FIELDS,))
         elif t["direction"] not in DIRECTIONS:
             errs.append("trade direction must be one of %s" % (DIRECTIONS,))
+    if "instrument" in r:
+        ins = r["instrument"]
+        if not isinstance(ins, dict):
+            errs.append("instrument must be an object")
+        elif ins.get("kind") not in INSTRUMENT_KINDS:
+            errs.append("kind not enabled")
     if "expires_at" in r and parse_expiry(r["expires_at"]) is None:
         errs.append("expires_at must be UTC YYYY-MM-DDTHH:MM:SSZ")
     return errs
