@@ -63,6 +63,16 @@ def _hit(f, p):
     return f == p or f.startswith(p.rstrip("/") + "/")
 
 
+CARD_RE = re.compile(r"^MyTradingSys/system/tasks/[^/]+\.json$")
+CARD_EXCLUDE = ":(exclude)MyTradingSys/system/tasks/*.json"
+
+
+def _counts(f, p):
+    """_hit, except a task card JSON seen through a directory scope path (f != p) is not a scope change: every card commit would re-stale
+    each card whose scope_in names MyTradingSys/system/tasks. A scope path naming the card file itself still counts."""
+    return _hit(f, p) and not (f != p and CARD_RE.match(f))
+
+
 def last_change(repo, paths, hint=None):
     """(short sha, utc, subject) of the newest commit touching any of paths, or None.
     hint = (scope_sha, refreshed_utc): when the prefetch window has no hit and the refresh is newer than the window's oldest
@@ -72,11 +82,14 @@ def last_change(repo, paths, hint=None):
     rows = _LC_LOG.get(str(repo))
     if rows:
         for sha, iso, subj, files in rows:
-            if any(_hit(f, p) for f in files for p in paths):
+            if any(_counts(f, p) for f in files for p in paths):
                 return sha[:12], utc_of(iso), subj
         if hint and hint[0] and hint[1] and hint[1] > utc_of(rows[-1][1]):
             return hint[0], "", ""
-    row = git(repo, "log", "-1", "--format=%H%x09%cI%x09%s", "--", *paths)
+    spec = list(paths)
+    if any((Path(repo) / p).is_dir() for p in paths):
+        spec.append(CARD_EXCLUDE)    # excluded only when a directory path is in play; an exact card-file path stays counted (its own pathspec)
+    row = git(repo, "log", "-1", "--format=%H%x09%cI%x09%s", "--", *spec)
     if not row:
         return None
     sha, iso, subj = row.split(chr(9), 2)
