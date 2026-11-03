@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T14:37:43Z",
   "commands": [],
   "created": "2026-11-02T19:19:17Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "PASS STANDS under literal frozen rule; BH conservative q=0.046512; n_top=139, n_need=401; ",
+      "ref": "b2616a14b",
+      "utc": "2026-11-03T14:37:43Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +45,12 @@
   "refined_by": "",
   "refreshed": "2026-11-02T19:59:24Z",
   "refs": [],
-  "result": "",
+  "result": "PASS STANDS under literal frozen rule; BH conservative q=0.046512; n_top=139, n_need=401; pre-DEV remains parked; RECHECK.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/meta_label_recheck_1103/RECHECK.md (new)",
     "MyTradingSys/research/argon_audits_2026-11-02/method_meta-label-dev-ext.md (read)"
@@ -50,12 +62,13 @@
   "scope_sha": "fb0480b98e43",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the Argon file, then the pre-registration and result it names",
     "Recompute bh_q and the n floor by hand from saved numbers",
     "State PASS STANDS or PASS WITHDRAWN under the frozen rule, with file:line"
   ],
+  "taken": "2026-11-03T14:37:43Z",
   "tests": "see done_when (audit card, RECHECK.md is the test)",
   "title": "Meta-label ext PASS: recheck verdict after Argon PROBLEM rows (bh_q on m=2 at run_ext.py:94; PASSED beats MIN_TOP at analyze.py:228-231, n 139 < 401). Done when RESULT.md states whether PASS stands under the frozen rule.",
   "weight": "ROUTINE",
