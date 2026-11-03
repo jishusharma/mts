@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T16:00:54Z",
   "commands": [],
   "created": "2026-10-22T22:48:47Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "doctor-fix-dead-refs-2026-10-22",
   "lane": "HAIKU",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "481470f64 DEAD-REF 0",
+      "ref": "481470f64",
+      "utc": "2026-11-03T16:00:54Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +45,12 @@
   "refined_by": "Session_Planner",
   "refreshed": "2026-11-03T13:05:42Z",
   "refs": [],
-  "result": "",
+  "result": "481470f64 DEAD-REF 0",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/MULTI_DEVICE_PLAN_BRIEF_2026-10-22.md",
     "MyTradingSys/system/NEXT_SESSION.md",
@@ -55,12 +67,13 @@
   "sources": [
     "scripts/dev/mts_doctor.py DEAD-REF check"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Run mts_doctor.py --no-process; list the DEAD-REF lines per file (then git checkout the report).",
     "For each, git log --all --diff-filter=D to find where the file went; replace with the new tracked path or delete the line.",
     "Rerun the doctor."
   ],
+  "taken": "2026-11-03T16:00:54Z",
   "tests": "python scripts/dev/mts_doctor.py --no-process shows no DEAD-REF in the four files (before: 13); python -m pytest MyTradingSys/tests/docs -q passes.",
   "title": "Fix 11 dead refs from MTS doctor 2026-10-22 (PLAN_5H, PROJECT_MAP, RUN_MODEL, MULTI_DEVICE_PLAN_BRIEF); real paths in REPORT_2026-10-22.md Verification",
   "weight": "ROUTINE",
