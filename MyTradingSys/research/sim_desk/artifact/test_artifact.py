@@ -330,6 +330,37 @@ class EquityStability(unittest.TestCase):
         for k in ("function yearStrip(", 'class="dd"', 'class="mcb"', "x.mc", "stability"):
             self.assertIn(k, ba.TEMPLATE)
 
+    def test_lone_peak_labelled(self):
+        mk = lambda n, m: {"n": n, "mean": m}
+        one = [mk(100, -0.2), mk(120, 0.08), mk(90, -0.1), mk(60, -0.3)]
+        self.assertIs(ba.lone_peak(one), one[1])
+        self.assertIsNone(ba.lone_peak([mk(100, -0.2), mk(90, -0.1), mk(60, -0.3)]))          # no positive cell
+        self.assertIsNone(ba.lone_peak([mk(100, 0.2), mk(90, 0.1), mk(60, -0.3)]))             # two positives: a plateau
+        self.assertIsNone(ba.lone_peak([mk(100, -0.2), mk(10, 0.9), mk(90, -0.1), mk(60, -0.3)]))   # positive cell under 30 trades is not a peak
+        self.assertIsNone(ba.lone_peak([mk(100, -0.2), mk(90, 0.1)]))                          # too few cells to call it lone
+
+    def test_committed_heatmaps(self):
+        tests = ba.collect(ba.RESULTS_DIR)
+        studies = {}
+        for t in tests:
+            if t["id"].startswith(("desk-tom_vp-", "desk-fabio_v3-")):
+                self.assertTrue(t.get("heatmaps"), t["id"])
+                studies[t["id"].split("-")[1]] = t["heatmaps"]
+                by = {x["id"]: x for x in tests}
+                for h in t["heatmaps"]:
+                    for c in h["cells"]:   # every cell is a real run: n and mean equal that run's banner
+                        self.assertEqual((c["n"], c["mean"]), (by[c["id"]]["banner"]["n"], by[c["id"]]["banner"]["net_r"]))
+        self.assertEqual(sorted(studies), ["fabio_v3", "tom_vp"])
+        anchor = [h for h in studies["tom_vp"] if h["x"] == "anchor"][0]
+        self.assertEqual(len(anchor["cells"]), 4)
+        self.assertEqual((anchor["peak"]["x"], anchor["peak"]["y"]), ("prior_week", "ACCEPT"))   # the one +0.081 cell
+        for h in studies["fabio_v3"]:
+            self.assertIsNone(h["peak"])   # Model C cells are all positive (a plateau); Model B all negative
+
+    def test_page_draws_heatmap(self):
+        for k in ("function heatmap(", "lone peak", "under 30 trades"):
+            self.assertIn(k, ba.TEMPLATE)
+
 
 if __name__ == "__main__":
     unittest.main()

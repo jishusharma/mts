@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T14:21:18Z",
   "commands": [
     "python -m pytest MyTradingSys/research/sim_desk -q",
     "python MyTradingSys/research/sim_desk/artifact/test_artifact.py"
@@ -16,6 +17,12 @@
   "id": "sim-build-heatmap-replay",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "neighbour heatmap on hosted page: 4 panels (tom_vp x2, fabio_v3 x2), lone peak = tom_vp pr",
+      "ref": "9e31182d4",
+      "utc": "2026-11-03T14:21:18Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -35,7 +42,12 @@
   "refs": [
     "MyTradingSys/research/sim_desk/INDUSTRY_SURVEY_2026-11-03.md"
   ],
-  "result": "",
+  "result": "neighbour heatmap on hosted page: 4 panels (tom_vp x2, fabio_v3 x2), lone peak = tom_vp prior_week ACCEPT n6 +0.081 (n=365); cells<30 greyed; 3 new tests fail-first, sim_desk 242 passed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/sim_desk/export_grid.py",
     "MyTradingSys/research/sim_desk/export_results.py",
@@ -54,7 +66,7 @@
   "sources": [
     "MyTradingSys/research/sim_desk/INDUSTRY_SURVEY_2026-11-03.md section C item 5 and Noticed (export_grid names only tom_vp, fabio_v3)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read export_grid.py GRIDS and the 12 tom_vp desk-* results to pick the two parameters per study",
     "write failing test in artifact/test_artifact.py: a grid with one positive cell among negatives is labelled lone peak",
@@ -62,6 +74,7 @@
     "render it on the hosted page with n on hover; cells under 30 trades greyed",
     "run commands, ship"
   ],
+  "taken": "2026-11-03T14:21:18Z",
   "tests": "Fail first: new tests in MyTradingSys/research/sim_desk/artifact/test_artifact.py (already in extra_tests.tsv:100); record the pre-change failure",
   "title": "Sim: neighbour heatmap from the export_grid runs (survey C5; replay moved to sim-trade-step-replay)",
   "weight": "IMPORTANT",
