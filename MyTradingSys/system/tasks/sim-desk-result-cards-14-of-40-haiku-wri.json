@@ -1,34 +1,78 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest MyTradingSys/research/api_jobs_2026-11-03/test_sim_cards_from_json.py -q",
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-03T17:17:50Z",
+    "misses": 61,
+    "reads": [],
+    "session": "agent-a458f53f861f95238"
+  },
   "created": "2026-11-03T16:58:31Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "test_sim_cards_from_json.py passes on all 337 files and its failure count on the pre-change md is recorded; build_sim_cards_jobs.py ntr line fixed (banner.n/kpis).",
+  "est_turns": 18,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Gemini spot check of 40 of the 337 Haiku sim result cards: Verdict word DIFF 14, Keep line DIFF 15 (gemini_audits_2026-11-03/sim_result_cards_spotcheck.md). Cause: build_sim_cards_jobs.py:22-23 tells Haiku 'Trade rows in file: 0' (no top-level trades key; counts are in kpis/banner.n) and :17-18 hashes an empty params into false duplicates. Make Verdict and Keep deterministic from the JSON.",
   "id": "sim-desk-result-cards-14-of-40-haiku-wri",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into gemini-q/gemini-blind-read-sim-resul",
+      "ref": "b23cc68ab1fb",
+      "utc": "2026-11-03T16:57:30Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "8a31fe13626c sim results cards: 337/337 complete (Haiku redo with thinking off)",
+      "ref": "MyTradingSys/research/sim_desk/api_review/RESULTS_CARDS_2026-11-03.md",
+      "utc": "2026-11-03T13:17:21Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-03 T0-ONLY (ROUTINE, research table only, planner DECISION OURS). Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-03T17:16:22Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/api_jobs_2026-11-03/build_sim_cards_jobs.py",
+    "MyTradingSys/research/api_jobs_2026-11-03/render_sim_cards.py",
+    "MyTradingSys/research/sim_desk/api_review/RESULTS_CARDS_2026-11-03.md",
+    "MyTradingSys/research/gemini_audits_2026-11-03/blind_read_sim_cards.py",
+    "scripts/dev/extra_tests.tsv"
+  ],
+  "scope_out": [
+    "No model call; no edits to sim_desk/results/*.json, desk.py or the sim page; no VALIDATION or HOLDOUT reads"
+  ],
+  "scope_sha": "b23cc68ab1fb",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/gemini_audits_2026-11-03/sim_result_cards_spotcheck.md:1",
+    "MyTradingSys/research/api_jobs_2026-11-03/build_sim_cards_jobs.py:17-23"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read spotcheck.md section 2 and results/desk-cowen_bmsb-a0c48d6a.json (verdict.label, banner.n, kpis)",
+    "Write the test first; run on the current md; record failure count",
+    "Write sim_cards_from_json.py; regenerate Verdict, Keep, Totals; keep 337 rows",
+    "Fix ntr in build_sim_cards_jobs.py; rerun test and the 40-card check; ship"
+  ],
+  "tests": "api_jobs_2026-11-03/test_sim_cards_from_json.py: parametrised over results/*.json, expected values read from verdict.label, banner.n, kpis (not from the new script). Fail-first: run on the current md, record the failure count, then 0 after regeneration. Add to scripts/dev/extra_tests.tsv if not discovered.",
   "title": "Sim desk result cards: 14 of 40 Haiku-written cards state a Verdict word that differs from results/*.json, 15 Keep lines differ (gemini_audits_2026-11-03/sim_result_cards_spotcheck.md). Regenerate card verdict/keep lines from the json, add a test that card text matches json",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }
