@@ -13,13 +13,23 @@
   "id": "gemini-blind-read-eagle-1103-counts",
   "kind": "audit",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Eagle_Eyes 11-03: US-open round-trip count (C37), ETHBTC WT vs Krown count (C38), lessons ",
+      "ref": "3f73289b65ef",
+      "utc": "2026-11-03T14:37:14Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Argon on JIS-LAPTOP via gemini_queue (operator 11-03: use Argon's remaining 35% weekly); producer was Claude Fable, so a Gemini reviewer is cross-vendor",
+  "note": "Argon on JIS-LAPTOP via gemini_queue (operator 11-03); producer Claude Fable so Gemini is cross-vendor. Gemini effort low: <id>:low. REVIEWED:2026-11-03 T0-ONLY. PLANNER planner-a-1103. REVIEWED:2026-11-03 T0-ONLY",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-03T16:01:24Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -30,11 +40,12 @@
   "scope_out": [
     "do not edit the two producer scripts; no downloaded data committed (repo is public): keep zips under a gitignored scratch dir outside the repo"
   ],
+  "scope_sha": "3f73289b65ef",
   "size": "M",
   "sources": [
     "commit 3f73289b6 Result line"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Read both docstrings; restate each setup in one line; write own counter script under research/gemini_audits_2026-11-03/ (never import the producer code)",
     "Data: F:/MTS/data/tom_raw/klines if present, else download BTCUSDT and ETHUSDT 1m monthly zips from https://data.binance.vision/data/spot/monthly/klines/ (public data) to a scratch dir outside the repo; state the exact months used",
@@ -43,6 +54,6 @@
   ],
   "tests": "",
   "title": "[GEMINI] Blind read of Eagle_Eyes 11-03 counts: us_open_roundtrip.py (n=125, low-first 63%) and ethbtc_wt_top.py (WT top n=37 10d -2.19%, Krown flip n=43 5d +0.71%)",
-  "weight": "IMPORTANT",
+  "weight": "ROUTINE",
   "worker": "session"
 }

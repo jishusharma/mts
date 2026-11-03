@@ -22,12 +22,12 @@
   "refs": [
     "MyTradingSys/research/sim_desk/REQUIREMENTS_2026-11-02.md"
   ],
-  "result": "",
+  "result": "already on trunk: commit 06624e11d (planner-a-1103)",
   "scope_in": [],
   "scope_out": [],
   "size": "",
   "sources": [],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "Sim page: per-trade candle chart (signal chart TF, e.g. 30m) with entry, exit and stop marked plus WaveTrend and RSI panes under it, stepped trade by trade; the running-total line alone does not show the trade",
