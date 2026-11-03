@@ -16,7 +16,6 @@ from MyTradingSys.backtest.fees import DERIBIT_TAKER
 FIT_DIR = Path(r"F:\MTS\data\tom_raw\klines")
 EVAL_DIR = Path(r"F:\MTS\data\dev_ext_2019_2021\klines")
 CUTOFF = pd.Timestamp("2024-07-01T00:00:00Z")
-TAKER_RT = 2 * DERIBIT_TAKER
 MIN_CELL_N = 30
 BOOTSTRAPS = 1000
 SEED = 1103
@@ -105,18 +104,22 @@ def aggregate(minutes, tf):
 def make_rows(bars, horizon):
     st = states(bars)
     rows = []
-    n = len(bars)
-    for i in range(n - horizon):  # zip paired current/forward rows, no forward-index selection
-        if st.iloc[i].isna().any():
+    bar_rows = list(bars.itertuples())
+    state_rows = list(st.itertuples())
+    # Rolling endpoints are paired with current rows using zip, never i+h indexing.
+    future_high = bars.high.rolling(horizon).max().to_numpy()[horizon:]
+    future_low = bars.low.rolling(horizon).min().to_numpy()[horizon:]
+    for state, current, future, max_high, min_low in zip(
+            state_rows[:-horizon], bar_rows[:-horizon], bar_rows[horizon:], future_high, future_low):
+        if any(pd.isna(v) for v in state[1:]):
             continue
-        entry, future = float(bars.close.iloc[i]), float(bars.close.iloc[i + horizon])
-        path = bars.iloc[i + 1:i + horizon + 1]
-        if len(path) != horizon or entry <= 0:
+        entry = float(current.close)
+        if entry <= 0:
             continue
-        gross = future / entry - 1
-        rows.append({"ts": bars.index[i], "regime": st.regime.iloc[i], "bb": st.bb.iloc[i], "rsi": st.rsi.iloc[i],
-                     "up": int(gross > 0), "ret": gross, "mfe": float(path.high.max() / entry - 1),
-                     "mae": float(path.low.min() / entry - 1)})
+        gross = float(future.close) / entry - 1
+        rows.append({"ts": current.Index, "regime": state.regime, "bb": state.bb, "rsi": state.rsi,
+                     "up": int(gross > 0), "ret": gross, "mfe": float(max_high / entry - 1),
+                     "mae": float(min_low / entry - 1)})
     return pd.DataFrame(rows)
 
 
@@ -134,12 +137,12 @@ def fit_predict(train, test):
         use_cell = cell["n"] >= MIN_CELL_N
         model = cell if use_cell else parent
         # OURS: direction with positive fitted arithmetic EV after Deribit all-taker fee; else flat.
-        direction = 1 if model["mean"] > TAKER_RT else (-1 if model["mean"] < -TAKER_RT else 0)
-        base_dir = 1 if parent["mean"] > TAKER_RT else (-1 if parent["mean"] < -TAKER_RT else 0)
+        direction = 1 if model["mean"] > 2 * DERIBIT_TAKER else (-1 if model["mean"] < -2 * DERIBIT_TAKER else 0)
+        base_dir = 1 if parent["mean"] > 2 * DERIBIT_TAKER else (-1 if parent["mean"] < -2 * DERIBIT_TAKER else 0)
         pred.append({"p_up": model["p_up"], "base_p_up": parent["p_up"], "n_fit": cell["n"],
                      "cell_used": int(use_cell), "signal": direction, "base_signal": base_dir,
-                     "net": direction * r.ret - (TAKER_RT if direction else 0),
-                     "base_net": base_dir * r.ret - (TAKER_RT if base_dir else 0)})
+                     "net": direction * r.ret - (2 * DERIBIT_TAKER if direction else 0),
+                     "base_net": base_dir * r.ret - (2 * DERIBIT_TAKER if base_dir else 0)})
     return pd.DataFrame(pred, index=test.index), cells
 
 
