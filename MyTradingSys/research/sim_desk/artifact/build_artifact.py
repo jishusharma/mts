@@ -534,8 +534,9 @@ return {html:h,init:()=>{const sel=i=>{document.querySelectorAll("#tlist tr[data
 const tb=$("tlist");tb.onclick=e=>{const r=e.target.closest("tr[data-i]");if(r)sel(+r.dataset.i)};tb.onkeydown=e=>{const r=e.target.closest("tr[data-i]");if(r&&(e.key==="Enter"||e.key===" ")){e.preventDefault();sel(+r.dataset.i)}};sel(0)}};}
 const CKEY="simdesk.comments.v1";
 function readComments(){try{const a=JSON.parse(localStorage.getItem(CKEY)||"[]");return Array.isArray(a)?a:[]}catch(e){return[]}}
-// The Lead adjusts the db call below to the published capability; a db or storage error never blocks the page.
-function saveComment(c){try{if(window.claude&&window.claude.db){const p=window.claude.db.set("comments",c.ts+"-"+c.test_id+"-"+c.chart_id,c);if(p&&p.catch)p.catch(()=>{})}}catch(e){}
+// Comments go to the artifact db (capability `db`, runtime contract 0.2.96: claude.use("db") -> collection/doc/set); null namespace = write skipped; a db or storage error never blocks the page.
+let DBP=null;function dbNs(){if(!DBP){try{DBP=(window.claude&&typeof window.claude.use==="function")?Promise.resolve(window.claude.use("db")).catch(()=>null):Promise.resolve(null)}catch(e){DBP=Promise.resolve(null)}}return DBP}
+function saveComment(c){try{dbNs().then(db=>{if(!db)return;const id=String(c.ts+"-"+c.test_id+"-"+c.chart_id).replace(/[^A-Za-z0-9_.~:@+-]/g,"_").slice(0,180);return db.collection("comments").doc(id).set(c)}).catch(()=>{})}catch(e){}
 try{const a=readComments();a.push(c);localStorage.setItem(CKEY,JSON.stringify(a))}catch(e){}}
 /*end-comments-adapter*/
 const stamp=ts=>{try{return new Date(ts).toISOString().slice(5,16).replace("T"," ")}catch(e){return""}};

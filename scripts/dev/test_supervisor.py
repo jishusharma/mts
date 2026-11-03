@@ -341,9 +341,9 @@ def test_pace_over_weekly_cap_is_stop():
 
 def test_last_day_before_the_weekly_reset_spends_the_last_points_slowly():
     """Operator 2026-10-22: A at 97% with 15 h to its reset. Cap 95 -> STOP (points lost); last-day cap 99 over 3 windows ->
-    2/3 wk pt here / 0.12 = 5.6 pts of 5 h -> 1 Claude worker, NORMAL. NB B/C keep their 75."""
+    2/3 wk pt here / 0.12 = 5.6 pts of 5 h -> 1 Claude worker, NORMAL. NB B/C lift to 99 too (2026-10-28)."""
     assert S.weekly_cap("A", "DESKTOP-F7IU69N", 15) == 99 and S.weekly_cap("A", "DESKTOP-F7IU69N", 30) == 95
-    assert S.weekly_cap("A", "DESKTOP-F7IU69N") == 95 and S.weekly_cap("C", "JIS-NB", 15) == 85
+    assert S.weekly_cap("A", "DESKTOP-F7IU69N") == 95 and S.weekly_cap("C", "JIS-NB", 15) == 99   # 10-28: desktop caps lift in the last day too
     assert S.pace_plan(T0, _rd(2, 97, week_reset="2026-10-20T03:00Z"), 95)["mode"] == "STOP"
     p = S.pace_plan(T0, _rd(2, 97, week_reset="2026-10-20T03:00Z"), S.weekly_cap("A", "DESKTOP-F7IU69N", 15))
     assert p["room"] == 5.6 and p["slots"] == 1 and p["mode"] == "NORMAL"
@@ -462,9 +462,9 @@ def test_pick_cards_jis_nb_lane_follows_the_live_host_file(monkeypatch, tmp_path
     f = tmp_path / "live_host.txt"
     monkeypatch.setattr(S, "LIVE_HOST_FILE", f)
     ids = lambda h: [r["id"] for r in S.pick_cards(rows, h, 9)]
-    assert S.live_host() == "JIS-NB" and ids("JIS-NB") == ["n1", "s1"]
+    assert S.live_host() == S.CN("JIS-NB") and ids("JIS-NB") == ["n1", "s1"]
     f.write_text("desktop-f7iu69n", encoding="utf-8")
-    assert S.live_host() == "DESKTOP-F7IU69N"
+    assert S.live_host() == S.CN("DESKTOP-F7IU69N")
     assert ids("DESKTOP-F7IU69N") == ["n1", "s1"] and ids("JIS-NB") == ["s1"] and ids("JIS-NUC") == ["s1"]
 
 
@@ -490,6 +490,14 @@ def test_plan_lines_only_the_owner_runs_shared_lanes():
     assert "OPERATOR DeepSeek DSA-NB" in b and "nuc_wake" not in b                      # NUC has a supervisor: no headless wake
     red = "\n".join(S.plan_lines("A", "JIS-NUC", p, live, dict(ctx, ci={"red": True, "message": "2 failed"}), gate_key=False))
     assert "SPAWN 1: s1" not in red and "CI RED" in red
+
+
+def test_plan_spawn_line_names_agents_not_sessions():
+    p = S.pace_plan(T0, _rd(10, 20), 95)
+    live = {"A": {"host": "JIS-NUC", "mode": "NORMAL", "run": 0, "free": 2, "at": "x", "dsa": "up"}}
+    ctx = {"picks": [{"id": "s1", "role": "Builder", "worker": "session"}], "ci": {"red": False}}
+    spawn = [l for l in S.plan_lines("A", "JIS-NUC", p, live, ctx, gate_key=False) if l.startswith("SPAWN")][0]
+    assert "agent" in spawn and "session" not in spawn and "sessions, 2 chained" not in spawn
 
 
 def test_plan_lines_run_session_planner_when_raw_cards_are_old():
@@ -962,9 +970,9 @@ def test_verify_cli_writes_stale(tmp_path, capsys, monkeypatch):
 
 def test_transit_at_150k_context_or_3h():
     start = T0 - timedelta(hours=3, minutes=1)
-    assert S.transit_reason(150_000, None, T0).startswith("context 150K") and S.transit_reason(149_999, None, T0) == ""
-    assert "3.0 h" in S.transit_reason(None, start, T0) and S.transit_reason(10, T0 - timedelta(hours=2), T0) == ""
     pl = S.pace_plan(T0, _rd(10, 20), 95)
+    assert S.transit_reason(pl, T0, 150_000).startswith("context 150K") and S.transit_reason(pl, T0, 149_999) == ""
+    assert "3.0 h" in S.transit_reason(pl, T0, None, start) and S.transit_reason(pl, T0, 10, T0 - timedelta(hours=2)) == ""
     hot = "\n".join(S.plan_lines("C", "JIS-NB", pl, {}, {"ci": {}, "picks": [], "transit_now": "context 160K >= 150K"}, False))
     cold = "\n".join(S.plan_lines("C", "JIS-NB", pl, {}, {"ci": {}, "picks": []}, False))
     assert "TRANSIT NOW (context 160K" in hot and "TRANSIT NOW" not in cold
@@ -982,6 +990,81 @@ def test_lead_role_same_form_other_file(tmp_path):
     assert S.verify_text(t, tmp_path, "lead")[1]["problems"] == []
 
 
+# ---------- SUPER_SESSION.md Session log cap (handover log overflow broke test_session_log_keeps_last_five 2026-10-28) ----------
+def _session_doc(entries):
+    body = "\n".join(f"- {i}" for i in entries)
+    return f"# Super session\n\n## Pacing\nstate row\n\n## Session log (newest first; one line each, last 5)\n{body}\n\n## Prompt: start a super session\n```\nYou are Supervisor.\n```\n"
+
+
+def test_append_session_line_prepends_newest_first_and_keeps_cap():
+    """5 entries already: the new line goes to the top and the oldest (last) entry is dropped, so the section still holds 5."""
+    doc = _session_doc(["1", "2", "3", "4", "5"])
+    out = S.append_session_line(doc, "- NEW")
+    log = [l for l in out.splitlines() if l.startswith("- ")]
+    assert log == ["- NEW", "- 1", "- 2", "- 3", "- 4"]
+    assert "- 5" not in out                      # oldest dropped
+
+
+def test_append_session_line_under_cap_does_not_drop():
+    """Fewer than 5 entries: the new line is prepended, nothing dropped, total grows by one."""
+    out = S.append_session_line(_session_doc(["1", "2"]), "- NEW")
+    log = [l for l in out.splitlines() if l.startswith("- ")]
+    assert log == ["- NEW", "- 1", "- 2"]
+
+
+def test_append_session_line_leaves_other_sections_untouched():
+    """Only the entry block under '## Session log' changes; the Pacing/Prompt sections and their '- ' lines elsewhere are intact."""
+    doc = _session_doc(["1", "2", "3", "4", "5"])
+    out = S.append_session_line(doc, "- NEW")
+    assert "## Pacing" in out and "state row" in out and "You are Supervisor." in out
+    assert "## Prompt: start a super session" in out
+
+
+def test_append_session_line_missing_section_is_noop():
+    """A file without the Session log section is returned unchanged (fail closed: no new section invented)."""
+    doc = "# Super session\n\n## Pacing\nstate row\n"
+    assert S.append_session_line(doc, "- NEW") == doc
+
+
+def test_append_session_line_blank_input_is_noop():
+    assert S.append_session_line(_session_doc(["1"]), "") == _session_doc(["1"])
+    assert S.append_session_line(_session_doc(["1"]), "   ") == _session_doc(["1"])
+
+
+def test_append_session_line_respects_custom_keep():
+    out = S.append_session_line(_session_doc(["1", "2", "3"]), "- NEW", keep=2)
+    assert [l for l in out.splitlines() if l.startswith("- ")] == ["- NEW", "- 1"]
+
+
+def test_record_session_line_writes_capped_file(tmp_path, monkeypatch):
+    """End-to-end: 5 entries on disk + a new line -> 5 kept, oldest gone; returns the new count."""
+    import sync
+    monkeypatch.setattr(sync, "read_claims", lambda repo, ref: [])
+    p = tmp_path / "MyTradingSys" / "system"
+    p.mkdir(parents=True)
+    doc_path = p / "SUPER_SESSION.md"
+    doc_path.write_text(_session_doc(["1", "2", "3", "4", "5"]), encoding="utf-8")
+    assert S.record_session_line(tmp_path, "- NEW") == 5
+    on_disk = [l for l in doc_path.read_text(encoding="utf-8").splitlines() if l.startswith("- ")]
+    assert on_disk == ["- NEW", "- 1", "- 2", "- 3", "- 4"]
+
+
+def test_record_session_line_autobulleted_text_stays_well_formed(tmp_path):
+    """A raw line without '- ' gets one prepended; the next capped call still slices the block correctly (no stray entry)."""
+    p = tmp_path / "MyTradingSys" / "system"
+    p.mkdir(parents=True)
+    doc_path = p / "SUPER_SESSION.md"
+    doc_path.write_text(_session_doc(["1", "2", "3", "4", "5"]), encoding="utf-8")
+    assert S.record_session_line(tmp_path, "NEW") == 5            # raw text, no bullet
+    assert S.record_session_line(tmp_path, "SECOND") == 5          # still 5: block re-sliced, oldest dropped again
+    on_disk = [l for l in doc_path.read_text(encoding="utf-8").splitlines() if l.startswith("- ")]
+    assert on_disk == ["- SECOND", "- NEW", "- 1", "- 2", "- 3"]
+
+
+def test_record_session_line_missing_file_is_noop(tmp_path):
+    assert S.record_session_line(tmp_path, "- NEW") == -1      # SUPER_SESSION.md absent: nothing written
+
+
 def test_fold_target_card_else_handover(tmp_path):
     cards = tmp_path / "MyTradingSys" / "system" / "tasks"
     cards.mkdir(parents=True)
@@ -991,3 +1074,268 @@ def test_fold_target_card_else_handover(tmp_path):
     assert S.fold_target(tmp_path, None, None, "lead", T0).name == "LEAD_RESUME_2026-10-19.md"
     t = S.set_missed(_form(), ["a.md", "b.md"])
     assert "a.md" in t and "(none)" not in t and S.validate_form(t) == []
+
+
+def test_peer_none_live_line_names_the_heartbeat_constant():
+    p = S.pace_plan(T0, _rd(10, 20), 95)
+    live = {"B": {"host": "JIS-NB", "mode": "NORMAL", "run": 0, "free": 3, "at": "x", "dsa": None}}
+    ctx = {"codex_ready": 3, "spare": "card-x", "ci": {}, "picks": []}
+    out = chr(10).join(S.plan_lines("B", "JIS-NB", p, live, dict(ctx, nuc_ok=False), gate_key=False))
+    assert f"no heartbeat < {S.HEARTBEAT_MIN} min" in out
+
+
+# ---------- bug-supervisor-handoff-duplicates (ISSUES_REGISTER 2026-10-28 B1, B2) ----------
+def _readings(home, login, rows):
+    home.mkdir(parents=True, exist_ok=True)
+    (home / f"{login}.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")
+
+
+def test_handover_guard_refuses_while_another_supervisor_of_the_login_planned(tmp_path, monkeypatch):
+    """B1: two Supervisor B sessions each wrote the hand-over and woke a successor. A second live planner of the same login
+    within HANDOVER_GUARD_MIN refuses the hand-over and names it; --force (force=True) overrides; own or old readings do not block."""
+    import sync
+    monkeypatch.setattr(sync, "read_claims", lambda repo, ref: [])
+    home = tmp_path / "home"
+    other = dict(_rd(40, 20, at="2026-10-19T11:55:00Z"), sid="sess-other-1234", tree="C:/x/mts-supervisor-b", host="JIS-NUC")
+    _readings(home, "B", [other])
+    with pytest.raises(ValueError) as e:
+        S.handover(tmp_path, "b", host="JIS-NUC", home=home, now=T0, sid="sess-me")
+    assert "sess-oth" in str(e.value) and "mts-supervisor-b" in str(e.value) and "--force" in str(e.value)
+    assert not S.handover_path(tmp_path, "B").exists()                                     # nothing written
+    assert S.handover(tmp_path, "b", host="JIS-NUC", home=home, now=T0, sid="sess-me", force=True).is_file()
+    _readings(home, "B", [dict(other, sid="sess-me")])                                    # my own reading
+    assert S.handover(tmp_path, "b", host="JIS-NUC", home=home, now=T0, sid="sess-me").is_file()
+    _readings(home, "B", [dict(other, at="2026-10-19T11:45:00Z")])                        # 15 min ago: gone
+    assert S.handover(tmp_path, "b", host="JIS-NUC", home=home, now=T0, sid="sess-me").is_file()
+
+
+def test_handover_cli_refuses_and_force_overrides(tmp_path, monkeypatch, capsys):
+    import sync
+    import mts_signal
+    monkeypatch.setattr(sync, "read_claims", lambda repo, ref: [])
+    monkeypatch.setattr(mts_signal, "resolve_login", lambda x: ("B", ""))
+    monkeypatch.setenv("MTS_RELAY_HOME", str(tmp_path / "relay"))
+    monkeypatch.setenv("CLAUDE_CODE_SESSION_ID", "sess-me")
+    now = S._now_utc() - timedelta(minutes=2)
+    _readings(S.loop_home(), "B", [{"at": now.strftime("%Y-%m-%dT%H:%M:%SZ"), "sid": "sess-other", "tree": "t2"}])
+    (tmp_path / "MyTradingSys").mkdir()
+    monkeypatch.chdir(tmp_path)
+    assert S.main(["handover", "--login", "B", "--no-send", "--no-wake"]) == 2
+    assert "REFUSED" in capsys.readouterr().out
+    assert S.main(["handover", "--login", "B", "--no-send", "--no-wake", "--force"]) == 0
+
+
+def test_plan_records_its_session_in_the_reading(tmp_path, monkeypatch):
+    monkeypatch.setenv("CLAUDE_CODE_SESSION_ID", "sess-plan-42")
+    _plan_run(tmp_path, 0, 0, send=False)
+    rows = [json.loads(x) for x in (tmp_path / "C.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]
+    assert rows[-1]["sid"] == "sess-plan-42"
+
+
+def test_one_transit_rule_code_and_docs_agree():
+    """B2: plan printed TRANSIT NOW on a 3 h wave while the role file said `TRANSIT at` or 5 h >= 80%. One rule: TRANSIT_RULE,
+    quoted verbatim in roles/supervisor.md and SUPER_SESSION.md, and transit_reason fires on each of its triggers."""
+    repo = Path(__file__).resolve().parents[2]
+    for rel in ("MyTradingSys/system/roles/supervisor.md", "MyTradingSys/system/SUPER_SESSION.md"):
+        assert S.TRANSIT_RULE in (repo / rel).read_text(encoding="utf-8"), rel
+    pl = S.pace_plan(T0, _rd(10, 20), 95)                                                  # reset 14:00Z -> TRANSIT at 13:40Z
+    assert S.transit_reason(pl, T0) == ""
+    assert "TRANSIT at" in S.transit_reason(pl, datetime(2026, 10, 19, 13, 41, tzinfo=timezone.utc))
+    assert "5 h 80%" in S.transit_reason(S.pace_plan(T0, _rd(80, 20), 95), T0)
+    assert "wave 3.0 h" in S.transit_reason(pl, T0, wave_start=T0 - timedelta(hours=3, minutes=1))
+    assert S.transit_reason(pl, T0, context_tokens=150_000).startswith("context 150K")
+
+
+def test_successor_wave_starts_at_its_own_first_reading():
+    """B2: readings are shared per login; the successor's wave must not inherit its predecessor's start (instant TRANSIT NOW)."""
+    hist = [{"at": "2026-10-19T08:30:00Z", "sid": "old"}, {"at": "2026-10-19T10:00:00Z", "sid": "old"},
+            {"at": "2026-10-19T11:30:00Z", "sid": "new"}, {"at": "2026-10-19T12:00:00Z", "sid": "new"}]
+    assert S.wave_start_from(hist, T0) == datetime(2026, 10, 19, 8, 30, tzinfo=timezone.utc)
+    assert S.wave_start_from(hist, T0, sid="new") == datetime(2026, 10, 19, 11, 30, tzinfo=timezone.utc)
+
+
+def test_probe_wait_state_wiring_and_fail_closed(monkeypatch, tmp_path):
+    monkeypatch.setattr(S, "read_shas", lambda repo, shas: {"abc": {"on_trunk": True}, "def": {"on_green": True}})
+    monkeypatch.setattr(S, "read_ci", lambda use_cache=False: {"red": True})
+    monkeypatch.setattr(S, "read_gate_slots", lambda repo: {"busy": 2, "total": 5})
+
+    import sys
+    import types
+    fake_bg = types.ModuleType("bg_watch")
+    fake_bg.stalled = lambda: [{"kind": "task", "id": "t1", "age": 75.2, "cap": 60}]
+    monkeypatch.setitem(sys.modules, "bg_watch", fake_bg)
+
+    res = S._probe_wait_state(tmp_path, ["abc", "def"])
+    assert res["shas"] == {"abc": True, "def": False}
+    assert res["shas_green"] == {"abc": False, "def": True}
+    assert res["ci_red"] is True
+    assert res["busy_slots"] == 2
+    assert res["total_slots"] == 5
+    assert res["stalled"] == ["task t1 75m > cap 60m"]
+
+    # Fails closed on bg_watch error
+    fake_bg_broken = types.ModuleType("bg_watch")
+    def _err(): raise RuntimeError("stalled query boom")
+    fake_bg_broken.stalled = _err
+    monkeypatch.setitem(sys.modules, "bg_watch", fake_bg_broken)
+
+    res_err = S._probe_wait_state(tmp_path, ["abc"])
+    assert res_err["stalled"] is None
+
+
+def test_probe_stalled_task_transition(monkeypatch, tmp_path):
+    baseline = {"shas": {}, "shas_green": {}, "ci_red": False, "busy_slots": 0, "total_slots": 5, "stalled": []}
+
+    import sys, types
+    fake_bg = types.ModuleType("bg_watch")
+    fake_bg.stalled = lambda: [{"kind": "job", "id": "job-42", "age": 90.0, "cap": 45}]
+    monkeypatch.setitem(sys.modules, "bg_watch", fake_bg)
+    monkeypatch.setattr(S, "read_shas", lambda r, s: {})
+    monkeypatch.setattr(S, "read_ci", lambda use_cache=False: {"red": False})
+    monkeypatch.setattr(S, "read_gate_slots", lambda r: {"busy": 0, "total": 5})
+
+    current = S._probe_wait_state(tmp_path, [])
+    tr = S._detect_transition(baseline, current)
+    assert tr is not None
+    assert "TRANSITION STALLED-BG job job-42 90m > cap 45m" in tr
+
+
+def test_pid_alive_platform_helper():
+    import os
+    # Live process: current python process is alive
+    cur_pid = os.getpid()
+    assert S._pid_alive(cur_pid) is True
+
+    # Dead/nonexistent process: huge non-existent PID
+    assert S._pid_alive(2147483647) is False
+    assert S._pid_alive(0) is False
+    assert S._pid_alive(-1) is False
+
+
+def test_plan_lines_lane_floors_every_lane_not_only_codex():
+    """D11 programme (2026-10-30): a lane under its floor prints LANE LOW so the Planner feeds it; the Gemini count reads the
+    [GEMINI] title prefix (ROUTING.md row), since no card carries a vendor field."""
+    p = S.pace_plan(T0, _rd(10, 20), 95)
+    live = {"A": {"host": "JIS-NUC", "mode": "NORMAL", "run": 0, "free": 3, "at": "x", "dsa": "up"}}
+    ctx = {"ci": {"red": False}, "picks": [], "codex_ready": 9, "sonnet_ready": 2, "haiku_ready": 0, "gemini_ready": 1}
+    out = "\n".join(S.plan_lines("A", "JIS-NUC", p, live, ctx, gate_key=False))
+    assert "LANE LOW SONNET 2 (< 6)" in out and "LANE LOW HAIKU 0 (< 3)" in out and "LANE LOW GEMINI 1 (< 4)" in out
+    assert "LANE LOW CODEX" not in out
+    full = "\n".join(S.plan_lines("A", "JIS-NUC", p, live, dict(ctx, sonnet_ready=6, haiku_ready=3, gemini_ready=4), gate_key=False))
+    assert "LANE LOW" not in full
+    cards = [{"state": "ready", "lane": "CODEX", "title": "[GEMINI] label x"}, {"state": "ready", "lane": "CODEX", "title": "GPT audit y"},
+             {"state": "ready", "lane": "SONNET", "title": "s"}, {"state": "ready", "lane": "HAIKU", "title": "h"}]
+    assert S.lane_counts(cards) == {"codex": 1, "gemini": 1, "sonnet": 1, "haiku": 1}
+
+
+def test_work_period_keeps_the_supervisor_going(tmp_path):
+    """bug-supervisor-idles-after-wake-retired (2026-10-30): every Supervisor handed over within 3 h and nothing started the next.
+    Inside the work period only the week cap ends it; a successor inherits an active period; the 5 h stop is a PAUSE line."""
+    now = datetime(2026, 10, 30, 18, 0, tzinfo=timezone.utc)
+    pl = {"five": 85, "ceil": 80, "transit": "2026-10-30T17:00Z", "week": 40, "cap": 85}
+    end = now + timedelta(hours=2)
+    assert S.transit_reason(pl, now, 200_000, now - timedelta(hours=5), end) == ""
+    assert "week 90% >= cap 85%" in S.transit_reason({**pl, "week": 90}, now, work_end=end)
+    assert "work period ended" in S.transit_reason(pl, end, work_end=end)
+    wp = S.work_period("C", now, "s1", home=tmp_path)
+    assert wp["source"] == "default" and S._utc(wp["until"]) == now + timedelta(hours=S.WORK_DEFAULT_H)
+    assert S.work_period("C", now + timedelta(hours=1), "s2", home=tmp_path)["sid"] == "s1"          # successor inherits
+    assert S.work_period("C", now, "s1", hours=12, home=tmp_path)["source"] == "operator"
+    late = now + timedelta(hours=13)
+    assert S.work_period("C", late, "s1", home=tmp_path)["sid"] == "s1"                                # own ended period stays ended
+    assert S.work_period("C", late, "s3", home=tmp_path)["sid"] == "s3"                                # a new session gets a new one
+    full = {**S.pace_plan(now, _rd(85, 40), 85), "five": 85, "ceil": 80}
+    L = S.plan_lines("C", "JIS-DESKTOP", full, {}, {"work": wp}, False)
+    assert any(x.startswith("WORK until") for x in L) and any(x.startswith("PAUSE 5 h") for x in L)
+    assert not any(x.startswith("TRANSIT at") for x in L)
+
+
+def test_work_rule_code_and_docs_agree():
+    repo = Path(S.__file__).resolve().parents[2]
+    assert S.WORK_RULE in (repo / "MyTradingSys/system/SUPER_SESSION.md").read_text(encoding="utf-8")
+    assert "SUPER_SESSION.md WORK PERIOD" in (repo / "MyTradingSys/system/roles/supervisor.md").read_text(encoding="utf-8")
+
+
+def test_handover_refuses_inside_the_work_period_so_mode_never_reads_ended_while_alive(tmp_path, monkeypatch):
+    """bug-supervisor-idles-after-wake-retired (4): ENDED was written only by handover(), which checked only another planner, so a
+    Supervisor could call it mid-period and its heartbeat read mode=ENDED while the session was alive. Inside the work period it
+    refuses (even with --force, and nothing is sent) unless the period is over or the week cap is reached."""
+    import sync
+    import mts_signal
+    monkeypatch.setattr(sync, "read_claims", lambda repo, ref: [])
+    sent = []
+    monkeypatch.setattr(mts_signal, "send", lambda text, **kw: sent.append(text) or True)
+    home = tmp_path / "home"
+    home.mkdir()
+    now = datetime(2026, 10, 30, 20, 0, tzinfo=timezone.utc)
+    S.work_period("C", now - timedelta(hours=1), "s1", hours=12, home=home)
+    pl = S.pace_plan(now, _rd(30, 40, five_reset="2026-10-30T22:00Z", week_reset="2026-11-03T20:00Z"), 85)
+    (home / "C-last-plan.json").write_text(json.dumps({"plan": pl}), encoding="utf-8")
+    with pytest.raises(ValueError) as e:
+        S.handover(tmp_path, "c", host="JIS-NB", home=home, now=now, sid="s1", send=True, force=True)
+    assert "work period" in str(e.value) and "supervisor.py wait" in str(e.value)
+    assert not S.handover_path(tmp_path, "C").exists() and not any("mode=ENDED" in x for x in sent)
+    (home / "C-last-plan.json").write_text("{", encoding="utf-8")                      # cap unknown: fail closed
+    with pytest.raises(ValueError):
+        S.handover(tmp_path, "c", host="JIS-NB", home=home, now=now, sid="s1")
+    (home / "C-last-plan.json").write_text(json.dumps({"plan": {**pl, "week": 90}}), encoding="utf-8")
+    assert S.handover(tmp_path, "c", host="JIS-NB", home=home, now=now, sid="s1", send=True).is_file()   # week cap reached
+    assert any("mode=ENDED" in x for x in sent)
+    (home / "C-last-plan.json").write_text(json.dumps({"plan": pl}), encoding="utf-8")
+    assert S.handover(tmp_path, "c", host="JIS-NB", home=home, now=now + timedelta(hours=12), sid="s1").is_file()   # period over
+
+
+def test_idle_rules_code_and_docs_agree():
+    """bug-supervisor-idles-after-wake-retired (1, 2): the never-idle rule and the post-compaction re-arm are quoted verbatim."""
+    repo = Path(S.__file__).resolve().parents[2]
+    role = (repo / "MyTradingSys/system/roles/supervisor.md").read_text(encoding="utf-8")
+    ss = (repo / "MyTradingSys/system/SUPER_SESSION.md").read_text(encoding="utf-8")
+    assert S.IDLE_RULE in role and S.REARM_RULE in role
+    d5 = next(x for x in ss.splitlines() if x.startswith("| D5 |"))
+    assert S.REARM_RULE in d5 and S.IDLE_RULE in d5
+
+
+def test_ci_red_with_usage_gate_refusing_emits_no_spawn_line():
+    # 5 h use 47% with 18% of the window elapsed: usage_reminder.py pre refuses, so the plan must not say SPAWN CI RED
+    now = datetime(2026, 10, 19, 9, 6, tzinfo=timezone.utc)
+    p = S.pace_plan(now, _rd(47, 20, five_reset="2026-10-19T14:00Z"), 95)
+    live = {"A": {"host": "JIS-NUC", "mode": "NORMAL", "run": 0, "free": 2, "at": "x", "dsa": "up"}}
+    ctx = {"picks": [], "ci": {"red": True, "message": "2 failed"}}
+    out = "\n".join(S.plan_lines("A", "JIS-NUC", p, live, ctx, gate_key=False))
+    assert "SPAWN CI RED" not in out and "CI RED" in out and "usage gate refuses" in out
+    ok = S.pace_plan(now, _rd(5, 20, five_reset="2026-10-19T14:00Z"), 95)
+    assert "SPAWN CI RED" in "\n".join(S.plan_lines("A", "JIS-NUC", ok, live, ctx, gate_key=False))
+
+def test_plan_prints_idle_line():
+    p = S.pace_plan(T0, _rd(3, 20, week_reset="2026-10-23T16:00Z"), 95)
+    out = "\n".join(S.plan_lines("A", "JIS-NUC", p, {}, {"ci": {"red": False}, "idle": ["sonnet"]}, gate_key=False))
+    assert "IDLE sonnet" in out
+    assert "IDLE" not in "\n".join(S.plan_lines("A", "JIS-NUC", p, {}, {"ci": {"red": False}}, gate_key=False))
+
+
+def test_measured_k_from_usage_rows():
+    import usage_log
+    row = lambda b5, a5, bw, aw: {"pct5h_before": b5, "pct5h_after": a5, "pctweek_before": bw, "pctweek_after": aw}
+    rows = [row(10, 20, 10, 11), row(20, 30, 11, 12)]          # 20 pts of 5 h, 2 of week -> 0.1
+    assert usage_log.measured_k(rows) == 0.1
+    assert usage_log.measured_k([row(10, 11, 10, 10)]) is None  # under 3 points
+    p = S.pace_plan(T0, _rd(10, 20, week_reset="2026-10-23T16:00Z"), 95, usage_rows=rows)
+    assert p["k_measured"] and p["k"] == 0.1
+
+
+def test_dsa_bridges_from_bridge_signals_and_tick_lanes_dsa(monkeypatch, tmp_path):
+    """BRIDGE signal lines -> lanes.dsa per host; the newest line wins; > 24 h (or up=0 / unknown) sets dsa_down."""
+    import traffic
+    import aibridge_health as AH
+    t = lambda m: NOW - timedelta(minutes=m)
+    sigs = [(t(200), "jis-nuc/sharma", "note", "BRIDGE host=JIS-NUC last_call_age_min=900 up=1"),
+            (t(0), "jis-nuc/sharma", "note", AH.bridge_line("JIS-NUC", 0.5)),
+            (t(0), "jis-nb/awgp", "note", AH.bridge_line("JIS-NB", 30.0)),
+            (t(0), "jis-nb/awgp", "note", "unrelated note")]
+    d = S.dsa_bridges(sigs, NOW)
+    assert d == {"JIS-NUC": {"last_call_age_min": 30, "up": 1, "dsa_down": False},
+                 S.CN("JIS-NB"): {"last_call_age_min": 1800, "up": 0, "dsa_down": True}}
+    assert AH.bridge_line("X", None) == "BRIDGE host=X last_call_age_min=-1 up=0"
+    monkeypatch.setattr(traffic, "read_signals", lambda since, until, d=None: (sigs, None))
+    out = S.tick(repo=tmp_path, no_fetch=True, as_of=NOW, home=tmp_path)
+    assert out["lanes"]["dsa"] == d
