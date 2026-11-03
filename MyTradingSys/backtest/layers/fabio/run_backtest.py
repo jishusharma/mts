@@ -1,7 +1,7 @@
 """
 MyTradingSys/backtest/layers/fabio/run_backtest.py
 
-W4 Fabio L1 backtest driver. Loads BTCUSDT 1m klines (2022-01 .. now), resamples to
+W4 Fabio L1 backtest driver. Loads BTCUSDT 1m klines (2022-01 .. --dev-end, default 2026-06-25; holdout from 2026-06-26 is never loaded into the split), resamples to
 5m/15m/1h (reusing layers.timeframe.tf_resample), runs the three Fabio rule detectors
 (cvd_absorption, escalation, volume_fvg) over a grid of their UNDEFINED-in-source
 parameters, does a 70/30 chronological IS/OOS split per timeframe, scores forward
@@ -215,6 +215,18 @@ def run_fvg(bars, n_is, n_bins=20, seed=42, max_wait=200):
     return out
 
 
+# DEV end date, inclusive. OURS: the day before the 2026-06-26 holdout start (LAYERS.md:43);
+# bars on/after the holdout start never enter the 70/30 split.
+DEFAULT_DEV_END = "2026-06-25"
+
+
+def clip_dev(bars_1m, dev_end=DEFAULT_DEV_END):
+    """Keep 1m bars with t < the day after dev_end (UTC midnight); drops the holdout."""
+    end = datetime.strptime(dev_end, "%Y-%m-%d").replace(tzinfo=timezone.utc)
+    cutoff_ms = int(end.timestamp() * 1000) + 24 * 3600 * 1000
+    return [b for b in bars_1m if b["t"] < cutoff_ms]
+
+
 def run_tf(tf, bars_1m, registry, out_dir=None, cvd_grid=None, esc_grid=None):
     bars = resample_with_tbv(bars_1m, tf, registry)
     bars_is, bars_oos, n_is = chronological_split(bars)
@@ -235,6 +247,8 @@ def main():
     ap.add_argument("--data-root", default=str(REPO / "Dumps" / "backtest" / "raw_1m_2022"))
     ap.add_argument("--data-root2", default=str(REPO / "Dumps" / "backtest" / "raw"))
     ap.add_argument("--out", default=str(REPO / "Dumps" / "backtest" / "runs" / "fabio_l1"))
+    ap.add_argument("--dev-end", default=DEFAULT_DEV_END,
+                    help="last DEV day (UTC, inclusive); default is before the 2026-06-26 holdout")
     ap.add_argument("--tfs", default="5m,15m,1h")
     args = ap.parse_args()
 
@@ -246,6 +260,7 @@ def main():
     last_t = bars_1m[-1]["t"] if bars_1m else 0
     bars_1m += [b for b in load_klines(args.data_root2) if b["t"] > last_t]
     bars_1m.sort(key=lambda b: b["t"])
+    bars_1m = clip_dev(bars_1m, args.dev_end)
     print(f"Loaded {len(bars_1m)} 1m bars", file=sys.stderr, flush=True)
 
     summary = {}
