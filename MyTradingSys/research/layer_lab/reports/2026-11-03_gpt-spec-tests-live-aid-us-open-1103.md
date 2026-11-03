@@ -10,7 +10,7 @@ Hand expectations before implementation bodies: price 100 with level 100.2499 =>
 
 Command: `python -m pytest MyTradingSys/tools/live_aid/test_spec_us_open.py -q`
 
-Result: **19 passed, 1 xfailed** (strict expected failure documents the out-of-scope zero-mark defect). The the one strict expected failure is a real scope-blocking defect; the test asserts the spec expectation and has not been weakened to match the implementation:
+Result: **20 passed, 1 xfailed** (strict expected failure documents the out-of-scope zero-mark defect). The the one strict expected failure is a real scope-blocking defect; the test asserts the spec expectation and has not been weakened to match the implementation:
 
 ```text
 _______________ test_malformed_and_zero_mark_levels_are_omitted _______________
@@ -20,7 +20,7 @@ E   AssertionError: ... Left contains one more item: {'k': 'pdh', 'name': 'prev 
 1 xfailed, 19 passed
 ```
 
-`usOpen` currently admits `px === 0`, computes an infinite distance, and returns a row whose JSON `dist` is `null` and whose bucket is null. This report records it as BLOCKED for production remediation: both production JS files are outside this card's permitted scope and remain byte-identical. The 19 passing assertions include all bucket boundaries, negative-side distances, malformed level, empty case, and every rate-table cell invariant.
+`usOpen` currently admits `px === 0`, computes an infinite distance, and returns a row whose JSON `dist` is `null` and whose bucket is null. This report records it as BLOCKED for production remediation: both production JS files are outside this card's permitted scope and remain byte-identical. The 20 passing tests include all bucket boundaries, negative-side distances, a separately passing malformed-level case, the empty case, and every rate-table cell invariant. The strict xfail isolates only the known zero-mark defect.
 
 ## Scratch mutation checks
 

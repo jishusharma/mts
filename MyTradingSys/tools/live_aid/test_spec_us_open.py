@@ -65,10 +65,13 @@ def test_empty_inputs_have_no_box_or_ladder():
     assert r["up"] == [] and r["down"] == [] and r["priorDays"] == 0
 
 
-@pytest.mark.xfail(strict=True, reason="scope-blocked defect: zero mark emits a non-finite ladder distance; see report")
-def test_malformed_and_zero_mark_levels_are_omitted():
+def test_malformed_level_is_omitted():
     r = _us_open("bad", 100)
     assert r["up"] == [] and r["down"] == []
+
+
+@pytest.mark.xfail(strict=True, reason="scope-blocked defect: zero mark emits a non-finite ladder distance; see report")
+def test_zero_mark_level_is_omitted():
     r = _us_open(101, 0)
     assert r["up"] == [] and r["down"] == []
 

@@ -37,7 +37,7 @@
   "refined_by": "",
   "refreshed": "2026-11-03T16:01:04Z",
   "refs": [],
-  "result": "19 passing spec checks; zero-mark defect preserved as failing assertion and scope-blocked in report",
+  "result": "20 passing spec checks; zero-mark defect isolated as a strict xfail and scope-blocked in report",
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"
