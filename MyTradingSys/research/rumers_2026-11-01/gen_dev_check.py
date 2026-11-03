@@ -102,11 +102,14 @@ L.append("5. Gross R before fees vs mean net R (fee drag = gross - net): " + "; 
 # VERDICTS.csv rows (columns of research/VERDICTS.csv)
 sha = subprocess.run(["git", "-C", str(REPO), "rev-parse", "--short=8", "HEAD"], capture_output=True, text=True).stdout.strip()
 rows = []
+sys.path.insert(0, str(REPO))
+from MyTradingSys.backtest.fees import BINANCE_TAKER  # noqa: E402
+FEE_RT_PCT = round(BINANCE_TAKER * 2 * 100, 2)
 for r in R:
     x = J[0]["rules"][r]
     rows.append({"study_dir": "rumers_2026-11-01", "family": "Rumers frozen rules (PRE_REG m=5), BTCUSDT 1m DEV",
                  "arm": f"{r} {x['name']}", "split_read": "DEV", "n": x["n"], "gross_mean_pct": "n/a",
-                 "se_pct": "n/a", "cost": 0.10, "verdict": x["verdict"],
+                 "se_pct": "n/a", "fee_rt_pct": FEE_RT_PCT, "verdict": x["verdict"],
                  "kill_scope": f"this frozen encoding only (PRE_REG.md, OURS fills in DEV_CHECK.md): mean net R {f(x['mean_net_r'])}, "
                                f"Holm p {f(x['holm_p'], 4)}; says nothing about the analyst's discretionary reads, other markets or 2024-07+.",
                  "one_run": "yes", "commit": sha, "date": "2026-11-04"})
@@ -115,7 +118,7 @@ txt = p.read_bytes().decode("utf-8")
 nl = "\r\n" if "\r\n" in txt else "\n"
 import io
 buf = io.StringIO()
-w = csv.DictWriter(buf, fieldnames=["study_dir", "family", "arm", "split_read", "n", "gross_mean_pct", "se_pct", "cost", "verdict",
+w = csv.DictWriter(buf, fieldnames=["study_dir", "family", "arm", "split_read", "n", "gross_mean_pct", "se_pct", "fee_rt_pct", "verdict",
                                     "kill_scope", "one_run", "commit", "date"], lineterminator=nl)
 for row in rows:
     w.writerow(row)
