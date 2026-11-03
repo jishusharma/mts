@@ -59,5 +59,15 @@
  "source_files": [
   "MyTradingSys/research/session_flow_context_2026-10-18/REPORT.md"
  ],
- "commit": "80c9df1a7"
+ "commit": "80c9df1a7",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": ".",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: . · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

@@ -31,5 +31,15 @@
  "source_files": [
   "MyTradingSys/research/bigtrade_2026-10-09/CAPTURE_MATRIX_SPOT.md"
  ],
- "commit": "e31bc2909"
+ "commit": "e31bc2909",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "see report; SYNTHETIC variant is a tool fixture, not layer output",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: see report; SYNTHETIC variant is a tool fixture, not layer output · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

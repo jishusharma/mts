@@ -44,5 +44,15 @@
  "source_files": [
   "MyTradingSys/research/krown_free_2026-10-31/KROWN_FREE_SETUPS.md"
  ],
- "commit": "e8420fbb5"
+ "commit": "e8420fbb5",
+ "banner": {
+  "state": "TOO_FEW",
+  "tone": "warn",
+  "verdict": "All transcripts fetched from YouTube channel @ECKrown (Eric Krown) via fetch_captions_timed.py on 2026-10-31.",
+  "n": 25,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "TOO FEW TRADES · verdict as written: All transcripts fetched from YouTube channel @ECKrown (Eric Krown) via fetch_captions_timed.py on 2026-10-31. · n=25 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

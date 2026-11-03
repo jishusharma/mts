@@ -31,5 +31,15 @@
  "source_files": [
   "MyTradingSys/research/g3_marks_2026-10-16/README.md"
  ],
- "commit": "bbe64cea6"
+ "commit": "bbe64cea6",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Status: READY TO MARK (blindness fixes audited, 213 charts rebuilt 2026-10-17 from the fixed g3_pack.py). 213 blind windows over 11 mark units (13 catalogue rows). Definitions: ../layer_rebuild_2026-10-15/READER_PROTOCOL.md (read it first)…",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Status: READY TO MARK (blindness fixes audited, 213 charts rebuilt 2026-10-17 from the fixed g3_pack.py). 213 blind windows over 11 mark units (13 catalogue rows). Definitions: ../layer_rebuild_2026-10-15/READER_PROTOCOL.md (read it first)… · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

@@ -35,5 +35,15 @@
  "source_files": [
   "MyTradingSys/research/cryptocred_s3_2026-11/BLOCKED.md"
  ],
- "commit": "7501e2816"
+ "commit": "7501e2816",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "word: BLOCKED. No outcome computed: no bar was loaded, no trade simulated, no VALIDATION/HOLDOUT bar read. cc_s3_run.py is built and tested but was never run on data.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: word: BLOCKED. No outcome computed: no bar was loaded, no trade simulated, no VALIDATION/HOLDOUT bar read. cc_s3_run.py is built and tested but was never run on data. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

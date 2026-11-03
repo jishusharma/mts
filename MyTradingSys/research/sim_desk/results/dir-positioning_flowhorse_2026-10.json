@@ -33,5 +33,15 @@
  "source_files": [
   "MyTradingSys/research/positioning_flowhorse_2026-10/LEDGER_FEASIBILITY.md"
  ],
- "commit": "f8d0799de"
+ "commit": "f8d0799de",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "HYPOTHESIS [OURS: FlowHorse positioning fails Gate 0c and Gate 0d, remains a hypothesis].",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: HYPOTHESIS [OURS: FlowHorse positioning fails Gate 0c and Gate 0d, remains a hypothesis]. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

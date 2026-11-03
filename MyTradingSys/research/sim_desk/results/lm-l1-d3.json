@@ -64,5 +64,15 @@
  "source_files": [
   "MyTradingSys/backtest/layers/BACKTEST_L1_REPORT.md"
  ],
- "commit": "c509f3c54"
+ "commit": "c509f3c54",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "mixed: 1h support PBO 0.030, everything else PBO 0.39-0.91",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: mixed: 1h support PBO 0.030, everything else PBO 0.39-0.91 · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

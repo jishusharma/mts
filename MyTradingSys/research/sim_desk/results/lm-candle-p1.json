@@ -42,5 +42,15 @@
  "source_files": [
   "MyTradingSys/research/candle_patterns_2026-10-04/P1_RESULTS.md"
  ],
- "commit": "f8e201dbc"
+ "commit": "f8e201dbc",
+ "banner": {
+  "state": "FAIL",
+  "tone": "bad",
+  "verdict": "1d engulfing rows read all FAIL; remaining rows and 1h table not read for this map",
+  "n": 1643,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "FAIL · verdict as written: 1d engulfing rows read all FAIL; remaining rows and 1h table not read for this map · n=1643 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

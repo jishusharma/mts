@@ -189,5 +189,76 @@ class Page(unittest.TestCase):
         self.assertIn("Title aa", h)  # exported test still added
 
 
+class Banner(unittest.TestCase):
+    """Survey C1+C2: one fixed verdict banner on every result; trade list with exit reason for every result that carries charts."""
+
+    def _r(self, tone, n, net="-0.1 R", label="PASSED"):
+        k = [{"label": "filled trades", "value": str(n)}, {"label": "average per trade, after fees", "value": net},
+             {"label": "try number", "value": "7"}]
+        return _result("b", verdict={"label": label, "tone": tone}, kpis=k)
+
+    def test_small_n_never_reads_pass(self):
+        for n in (0, 1, 12, 29):
+            b = ba.banner_of(self._r("good", n, "+0.8 R"))
+            self.assertEqual(b["state"], "TOO_FEW", n)
+            self.assertNotIn("PASS", b["text"].split("verdict as written")[0])
+        self.assertEqual(ba.banner_of(self._r("good", 30, "+0.8 R"))["state"], "PASS")
+        self.assertNotEqual(ba.banner_of(self._r("good", 80, "-0.2 R"))["state"], "PASS")  # net R after fees not above zero
+
+    def test_banner_fields(self):
+        b = ba.banner_of(self._r("bad", 64, "-0.445 R", "FAILED"))
+        self.assertEqual((b["state"], b["n"], b["net_r"], b["try_no"]), ("FAIL", 64, -0.445, 7))
+        self.assertIn("n=64", b["text"])
+        self.assertIn("try #7", b["text"])
+        self.assertIn("break-even", b["text"])
+        self.assertEqual(ba.banner_of(_result("z"))["state"], "UNCLEAR")  # no trade count anywhere: never a pass
+
+    def test_every_committed_result_has_banner(self):
+        n = 0
+        for fn in os.listdir(ba.RESULTS_DIR):
+            if not fn.endswith(".json") or fn.startswith("_"):
+                continue
+            r = json.load(open(os.path.join(ba.RESULTS_DIR, fn), encoding="utf-8"))
+            n += 1
+            b = r.get("banner")
+            self.assertIsInstance(b, dict, fn)
+            for k in ("state", "tone", "verdict", "n", "net_r", "try_no", "breakeven_x", "text"):
+                self.assertIn(k, b, fn)
+            if b["n"] is None or b["n"] < ba.MIN_N:
+                self.assertNotEqual(b["state"], "PASS", fn)
+            self.assertEqual(b, ba.banner_of(r), fn)  # file is current with the rule
+        self.assertGreaterEqual(n, 337)
+
+    def test_trade_row_from_caption(self):
+        svg = '<svg><text x="4">2023-10-17 17:02 UTC  +0.71 R short, hit target (5m)</text></svg>'
+        self.assertEqual(ba.trade_row({"kind": "winner", "net_r": 0.7109, "svg": svg}),
+                         {"when": "2023-10-17 17:02", "side": "short", "net_r": 0.7109, "exit_reason": "hit target", "span": "5m"})
+        self.assertIsNone(ba.trade_row({"kind": "event", "svg": "<svg><text>2026-10-01 18:30 DOWN high: taken 0h</text></svg>"}))
+
+    def test_committed_charts_have_trade_rows(self):
+        have = 0
+        for t in ba.collect(ba.RESULTS_DIR):
+            for e in t["examples"]:
+                if e["kind"] != "charts":
+                    continue
+                trades = [i for i in e["items"] if i.get("kind") in ("winner", "loser")]
+                for i in trades:
+                    for k in ("when", "side", "exit_reason"):
+                        self.assertTrue(i.get(k), (t["id"], k))
+                have += bool(trades)
+        self.assertGreaterEqual(have, 25)
+
+    def test_page_renders_banner_and_trade_list(self):
+        for k in ("function banner(", 'class="banner', "function chartList(", 'id="tlist"', "exit_reason"):
+            self.assertIn(k, ba.TEMPLATE)
+        r = _result("bn", examples=[{"kind": "charts", "title": "t", "items": [
+            {"kind": "winner", "net_r": 1.0, "when": "2023-01-01 00:00", "side": "long", "exit_reason": "hit target", "svg": "<svg></svg>"}]}])
+        d = _results_dir(r)
+        out = os.path.join(d, "index.html")
+        ba.main(["--results", d, "--out", out])
+        h = open(out, encoding="utf-8").read()
+        self.assertIn('"banner":{', h)  # build fills a missing banner (desk runs written after the last enrich)
+
+
 if __name__ == "__main__":
     unittest.main()

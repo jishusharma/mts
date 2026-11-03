@@ -66,5 +66,15 @@
  "source_files": [
   "MyTradingSys/research/gemini_burn_2026-10-25/monte_carlo_presentation.md"
  ],
- "commit": "8e56554c1"
+ "commit": "8e56554c1",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Sentence [OURS]: A single generated sentence that translates the mathematics into immediate operational guidance.",
+  "n": 500,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: Sentence [OURS]: A single generated sentence that translates the mathematics into immediate operational guidance. · n=500 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

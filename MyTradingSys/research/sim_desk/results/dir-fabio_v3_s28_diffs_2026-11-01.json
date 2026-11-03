@@ -73,5 +73,15 @@
  "source_files": [
   "MyTradingSys/research/fabio_v3_s28_diffs_2026-11-01/BRIEF.md"
  ],
- "commit": "d87af8706"
+ "commit": "d87af8706",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Card: fabio-v3-code-vs-formulas-s28-diffs. Code: MyTradingSys/backtest/layers/fabio/v3/. Spec: layers/FORMULAS.md s28.",
+  "n": null,
+  "net_r": -0.500667,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Card: fabio-v3-code-vs-formulas-s28-diffs. Code: MyTradingSys/backtest/layers/fabio/v3/. Spec: layers/FORMULAS.md s28. · n=? · net R after fees -0.501 · try n/a · fee break-even n/a"
+ }
 }

@@ -32,5 +32,15 @@
  "source_files": [
   "MyTradingSys/research/michael_lines_2026-11/RESULT.md"
  ],
- "commit": "c124d6df1"
+ "commit": "c124d6df1",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "descriptive only. Go (conditional) for the alert card: detector events exist at all 5 kinds on 4h/1d; stated lines cannot be matched to detector lines because chart frames are not in the repo.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: descriptive only. Go (conditional) for the alert card: detector events exist at all 5 kinds on 4h/1d; stated lines cannot be matched to detector lines because chart frames are not in the repo. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

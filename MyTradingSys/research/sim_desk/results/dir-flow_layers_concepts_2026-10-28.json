@@ -35,5 +35,15 @@
  "source_files": [
   "MyTradingSys/research/flow_layers_concepts_2026-10-28/README.md"
  ],
- "commit": "9370d5ff9"
+ "commit": "9370d5ff9",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Author: Eagle_Eyes (observer; no trade advice, no edge claim, no VALIDATION or HOLDOUT).",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Author: Eagle_Eyes (observer; no trade advice, no edge claim, no VALIDATION or HOLDOUT). · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

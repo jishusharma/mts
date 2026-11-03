@@ -50,5 +50,15 @@
  "source_files": [
   "MyTradingSys/research/reviews_2026-10-26/brief_verification.md"
  ],
- "commit": "dbf40dd7d"
+ "commit": "dbf40dd7d",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": ", 6 example charts) MATCH",
+  "n": 772,
+  "net_r": 0.039,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: , 6 example charts) MATCH · n=772 · net R after fees +0.039 · try n/a · fee break-even n/a"
+ }
 }

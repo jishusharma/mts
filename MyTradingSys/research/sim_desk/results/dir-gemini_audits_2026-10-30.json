@@ -51,5 +51,15 @@
  "source_files": [
   "MyTradingSys/research/gemini_audits_2026-10-30/layer_sheets_blind_read.md"
  ],
- "commit": "0a7950d9e"
+ "commit": "0a7950d9e",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Notes",
+  "n": 254,
+  "net_r": -0.3,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: Notes · n=254 · net R after fees -0.300 · try n/a · fee break-even n/a"
+ }
 }

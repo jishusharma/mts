@@ -39,5 +39,15 @@
  "source_files": [
   "MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md"
  ],
- "commit": "562db2b8d"
+ "commit": "562db2b8d",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": ". Gaps are marked NOT_IN_DATA and become OURS in SPEC.md.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: . Gaps are marked NOT_IN_DATA and become OURS in SPEC.md. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

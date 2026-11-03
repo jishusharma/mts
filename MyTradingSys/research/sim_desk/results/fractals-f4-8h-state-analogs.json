@@ -427,5 +427,15 @@
   "MyTradingSys/research/fractals_2026-10-31/f4/output.md",
   "MyTradingSys/research/fractals_2026-10-31/f4/events.csv"
  ],
- "commit": "669a9b9d4"
+ "commit": "669a9b9d4",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "No edge: continuation inconclusive, fade fails, analog negative; too few events to decide",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: No edge: continuation inconclusive, fade fails, analog negative; too few events to decide · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

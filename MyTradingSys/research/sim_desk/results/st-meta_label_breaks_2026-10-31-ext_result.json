@@ -34,5 +34,15 @@
  "source_files": [
   "MyTradingSys/research/meta_label_breaks_2026-10-31/EXT_RESULT.md"
  ],
- "commit": "951a37209"
+ "commit": "951a37209",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "FAIL. Even the",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: FAIL. Even the · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

@@ -77,5 +77,15 @@
  "source_files": [
   "MyTradingSys/research/setup_review_2026-10/SETUP_REVIEW.md"
  ],
- "commit": "96fcb57cd"
+ "commit": "96fcb57cd",
+ "banner": {
+  "state": "TOO_FEW",
+  "tone": "warn",
+  "verdict": "\" line of each. Say it in chat; the coordinator fills the Verdict log at the bottom.",
+  "n": 0,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "TOO FEW TRADES · verdict as written: \" line of each. Say it in chat; the coordinator fills the Verdict log at the bottom. · n=0 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

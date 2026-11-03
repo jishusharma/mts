@@ -2714,5 +2714,15 @@
   "MyTradingSys/research/fractals_2026-10-31/f3/output.md",
   "MyTradingSys/research/fractals_2026-10-31/f3/trades_pct.csv"
  ],
- "commit": "df207b879"
+ "commit": "df207b879",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "No edge: both variants inconclusive and below both controls (honest negative, underpowered to prove a loss)",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: No edge: both variants inconclusive and below both controls (honest negative, underpowered to prove a loss) · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

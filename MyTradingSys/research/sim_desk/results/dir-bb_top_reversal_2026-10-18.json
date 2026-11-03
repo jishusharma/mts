@@ -47,5 +47,15 @@
  "source_files": [
   "MyTradingSys/research/bb_top_reversal_2026-10-18/PRE_REG.md"
  ],
- "commit": "3f78a5d27"
+ "commit": "3f78a5d27",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "s.py check \"bollinger top reversal\"",
+  "n": 759,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: s.py check \"bollinger top reversal\" · n=759 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

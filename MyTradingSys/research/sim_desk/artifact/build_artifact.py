@@ -12,6 +12,7 @@ import csv
 import datetime as dt
 import json
 import os
+import re
 import statistics
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -85,6 +86,76 @@ def build_data(rule, rows):
     }
 
 
+MIN_N = 30   # under this many filled trades a result is never a pass (desk.MIN_BUCKET uses the same line)
+N_LABELS = ("filled trades", "trades filled", "Trades", "trades (first count in the source)", "sample size n (first in the source, may not be trades)")
+NET_LABELS = ("average per trade, after fees", "mean net R per trade", "net R after fees (first value in the source)")
+_NUM = re.compile(r"[+\-]?\d+(?:\.\d+)?")
+CAPTION_RE = re.compile(r"(\d{4}-\d\d-\d\d \d\d:\d\d) UTC\s+[+\-]\d+\.\d+ R (long|short), (.+) \((\d+m)\)\s*$")
+
+
+def _kpi_num(r, labels):
+    for lab in labels:
+        for k in r.get("kpis", []):
+            if k.get("label") == lab:
+                m = _NUM.search(str(k.get("value", "")).replace(",", ""))
+                if m:
+                    return float(m.group(0))
+    return None
+
+
+def banner_of(r):
+    """The one fixed verdict banner (survey C2): state, filled n, net R after fees, try number, fee break-even if exported.
+    Only PASS needs n >= MIN_N, a verdict written as good and a net R above zero; n < MIN_N is TOO_FEW whatever the verdict says."""
+    v = r.get("verdict")
+    label = v.get("label", "") if isinstance(v, dict) else str(v or "")
+    tone = v.get("tone") if isinstance(v, dict) else None
+    n = _kpi_num(r, N_LABELS)
+    n = int(n) if n is not None else None
+    net = _kpi_num(r, NET_LABELS)
+    try_no = _kpi_num(r, ("try number",))
+    try_no = int(try_no) if try_no is not None else None
+    be = r.get("fee_breakeven_x")
+    if be is None:
+        be = _kpi_num(r, ("fee break-even (x the fee)",))
+    if n is None:
+        state, head = "UNCLEAR", "NO TRADE COUNT"
+    elif n < MIN_N:
+        state, head = "TOO_FEW", "TOO FEW TRADES"
+    elif tone == "bad" or label.upper().startswith("FAIL"):
+        state, head = "FAIL", "FAIL"
+    elif tone == "good" and net is not None and net > 0:
+        state, head = "PASS", "PASS"
+    else:
+        state, head = "UNCLEAR", "UNCLEAR"
+    bt = {"PASS": "good", "FAIL": "bad", "TOO_FEW": "warn", "UNCLEAR": ""}[state]
+    text = "%s · verdict as written: %s · n=%s · net R after fees %s · try %s · fee break-even %s" % (
+        head, label or "none", "?" if n is None else n, "n/a" if net is None else "%+.3f" % net,
+        "n/a" if try_no is None else "#%d" % try_no, "n/a" if be is None else "x%s" % be)
+    return {"state": state, "tone": bt, "verdict": label, "n": n, "net_r": net, "try_no": try_no, "breakeven_x": be, "text": text}
+
+
+def trade_row(item):
+    """Trade fields of one desk chart item, read from its own caption (date, side, exit reason); None for event charts."""
+    txt = re.findall(r"<text[^>]*>([^<]*)</text>", item.get("svg", ""))
+    m = CAPTION_RE.search(txt[-1].strip()) if txt else None
+    if not m:
+        return None
+    return {"when": m.group(1), "side": m.group(2), "net_r": item.get("net_r"), "exit_reason": m.group(3), "span": m.group(4)}
+
+
+def add_trade_rows(r):
+    """Add when / side / exit_reason to every winner/loser chart item (fields only added). Returns the number of rows added."""
+    k = 0
+    for e in r.get("examples", []):
+        if e.get("kind") == "charts":
+            for it in e.get("items", []):
+                row = trade_row(it)
+                if row:
+                    it.update({x: row[x] for x in ("when", "side", "exit_reason", "span")})
+                    k += 1
+    return k
+
+
 RESULTS_DIR = os.path.normpath(os.path.join(HERE, "..", "results"))
 REQUIRED = ("id", "family", "title", "what", "how", "window", "verdict", "why", "kpis", "examples", "source_files", "commit")
 
@@ -103,6 +174,8 @@ def collect(results_dir):
         for w in r["what"]:
             if w.get("label") not in ("SOURCED", "OURS"):
                 raise ValueError("%s: parameter %r needs label SOURCED or OURS" % (fn, w.get("name")))
+        add_trade_rows(r)
+        r.setdefault("banner", banner_of(r))
         out.append(r)
     return out
 
@@ -153,6 +226,9 @@ select{background:var(--card);color:var(--ink);border:1px solid var(--line);bord
 .ex{border-top:1px solid var(--line);padding-top:4px}
 ul{margin:4px 0;padding-left:20px}li{margin:3px 0}
 .src{font-size:12px;color:var(--mute);word-break:break-all}
+.banner{margin:10px 0;padding:8px 12px;border:2px solid var(--mute);border-radius:8px;font-weight:600;font-size:14px}.banner.good{border-color:var(--good);color:var(--good)}.banner.bad{border-color:var(--bad);color:var(--bad)}.banner.warn{border-color:var(--warn);color:var(--warn)}
+.tl{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin:8px 0}@media(min-width:900px){.tl{grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);align-items:start}}
+#tlist tr[data-i]{cursor:pointer}#tlist tr.sel{background:var(--bg);outline:2px solid var(--acc)}#tpane svg{background:#fff;border:1px solid var(--line);border-radius:6px}
 </style></head><body>
 <header><h1>Test simulator</h1><div class="sub">Every test, what it did, what it found and why. Past results on DEV data only; sealed windows unread. Percent distances and timestamps only, no prices.</div></header>
 <main><nav id="nav" aria-label="Tests"></nav><article id="view" aria-live="polite"></article></main>
@@ -246,9 +322,16 @@ cvShow(0);};return {html:h,init};}
 function curveEx(x){const r=x.r,n=r.length,W=600,H=160,mn=Math.min(0,...r),mx=Math.max(0,...r),sp=(mx-mn)||1;
 const X=i=>8+i*(W-16)/(n-1||1),Y=v=>H-8-(v-mn)/sp*(H-16);
 return '<svg viewBox="0 0 600 160" role="img" aria-label="Running total of net R"><line x1="8" x2="592" y1="'+Y(0)+'" y2="'+Y(0)+'" stroke="var(--line)"/><polyline fill="none" stroke="var(--acc)" stroke-width="1.5" points="'+r.map((v,i)=>X(i).toFixed(1)+","+Y(v).toFixed(1)).join(" ")+'"/></svg><p class="note">'+n+" points; ends at "+r[n-1].toFixed(2)+" R = $"+x.usd[n-1].toFixed(0)+" from $"+x.start_usd+" ("+x.risk_pct+" % risked per trade, simple sum).</p>";}
+function banner(b){if(!b)return"";return '<div class="banner b-'+esc(b.state)+" "+tone(b.tone)+'" role="status">'+esc(b.text)+"</div>";}
+function chartList(x){const it=x.items,fn=v=>v==null?"-":f2(v)+" R";
+const rows=it.map((c,i)=>'<tr data-i="'+i+'" tabindex="0"><td>'+(i+1)+"</td><td>"+esc(c.when)+" UTC</td><td>"+esc(c.side)+"</td><td>"+esc(c.exit_reason)+'</td><td class="'+(c.net_r<0?"bad":"good")+'">'+fn(c.net_r)+"</td></tr>").join("");
+const h='<div class="tl"><div class="tw"><table id="tlist"><tr><th>#</th><th>Entry (UTC)</th><th>Side</th><th>Exit reason</th><th>Net R</th></tr>'+rows+'</table></div><div id="tpane"></div></div><p class="note">'+it.length+" example trades (typical winners and losers), not every trade. Click a row to see its chart.</p>";
+return {html:h,init:()=>{const sel=i=>{document.querySelectorAll("#tlist tr[data-i]").forEach(r=>r.classList.toggle("sel",+r.dataset.i===i));const c=it[i];$("tpane").innerHTML=c.svg+'<p class="note">'+esc((c.kind==="winner"?"typical winner":"typical loser")+(c.note?": "+c.note:""))+"</p>"};
+const tb=$("tlist");tb.onclick=e=>{const r=e.target.closest("tr[data-i]");if(r)sel(+r.dataset.i)};tb.onkeydown=e=>{const r=e.target.closest("tr[data-i]");if(r&&(e.key==="Enter"||e.key===" ")){e.preventDefault();sel(+r.dataset.i)}};sel(0)}};}
 function example(x){const inits=[];let h='<div class="ex"><h3>'+esc(x.title||"Example")+"</h3>";
 if(x.kind==="table")h+=table(x);else if(x.kind==="stack")h+=stack(x);else if(x.kind==="sides")h+=sides(x);
 else if(x.kind==="curve"&&x.r&&x.r.length)h+=curveEx(x);
+else if(x.kind==="charts"&&x.items&&x.items.length&&x.items.every(c=>c.when&&c.exit_reason)){const r=chartList(x);h+=r.html;inits.push(r.init);}
 else if(x.kind==="charts"&&x.items&&x.items.length)h+='<div class="cg">'+x.items.map(c=>"<figure>"+c.svg+"<figcaption>"+esc((c.label||(c.kind==="winner"?"typical winner":"typical loser"))+(c.note?": "+c.note:""))+"</figcaption></figure>").join("")+"</div>";
 else if(x.kind==="replay"){const r=replay(x);h+=r.html;inits.push(r.init);}
 else if(x.kind==="trade_chart"&&x.trades&&x.trades.length){const r=tradeChart(x);h+=r.html;inits.push(r.init);}
@@ -258,7 +341,7 @@ function render(id){if(tm){clearInterval(tm);tm=null}window.cvShow=null;if(windo
 if(!t){const r=CAT.find(x=>x.id===id);if(r){document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-current",b.dataset.id===id));$("view").innerHTML=stub(r);return}}
 if(!t){render(TESTS[0].id);return}
 document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-current",b.dataset.id===t.id));
-let h='<h1 style="font-size:20px;margin:0 0 6px">'+esc(t.title)+'</h1><span class="pill '+tone(t.verdict.tone)+'">'+esc(t.verdict.label)+"</span>";
+let h='<h1 style="font-size:20px;margin:0 0 6px">'+esc(t.title)+'</h1><span class="pill '+tone(t.verdict.tone)+'">'+esc(t.verdict.label)+"</span>"+banner(t.banner);
 h+='<div class="kpis">'+t.kpis.map(k=>'<div class="kpi"><b class="'+tone(k.tone)+'">'+esc(k.value)+"</b><span>"+esc(k.label)+"</span></div>").join("")+"</div>";
 h+='<h2 class="s">What was tested</h2><dl>'+t.what.map(w=>"<dt>"+esc(w.name)+' <span class="tag '+esc(w.label)+'">'+esc(w.label)+"</span></dt><dd>"+esc(w.value_plain)+"</dd>").join("")+"</dl>";
 h+='<p class="note"><b>Window:</b> '+esc(t.window||"not stated in the source")+"</p><p class=\"note\">SOURCED = taken from a named source (the trader's words or a fee table). OURS = our own judgement or tuned on DEV data.</p>";

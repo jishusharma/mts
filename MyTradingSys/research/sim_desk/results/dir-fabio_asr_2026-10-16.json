@@ -63,5 +63,15 @@
  "source_files": [
   "MyTradingSys/research/fabio_asr_2026-10-16/ASR_RUN.md"
  ],
- "commit": "1946d455e"
+ "commit": "1946d455e",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Operator approval, 2026-10-16 (verbatim): \"Yes: install a local open-source transcriber on JIS-NB, run it at low priority on Fabio's two long sessions (Is1HvdfQm5c, xUyqIjCfZzg), and extract them.\" This flips Fable's D2 (CATALOGUE_AUDIT.md…",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Operator approval, 2026-10-16 (verbatim): \"Yes: install a local open-source transcriber on JIS-NB, run it at low priority on Fabio's two long sessions (Is1HvdfQm5c, xUyqIjCfZzg), and extract them.\" This flips Fable's D2 (CATALOGUE_AUDIT.md… · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

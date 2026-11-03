@@ -32,5 +32,15 @@
  "source_files": [
   "MyTradingSys/research/dsa_bridge_2026-10-27/STATUS.md"
  ],
- "commit": "4271cb142"
+ "commit": "4271cb142",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Operator order 2026-10-27. Check: python scripts/dev/aibridge_verify.py F:/AIBridge (28 rows: payload files byte-equal, each fix marker, agent ping, HTTP round trip, autostart, Chrome extension loaded). Raw output per machine: verify_<host…",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Operator order 2026-10-27. Check: python scripts/dev/aibridge_verify.py F:/AIBridge (28 rows: payload files byte-equal, each fix marker, agent ping, HTTP round trip, autostart, Chrome extension loaded). Raw output per machine: verify_<host… · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

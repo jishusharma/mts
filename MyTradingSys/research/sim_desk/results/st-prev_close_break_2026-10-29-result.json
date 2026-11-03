@@ -62,5 +62,15 @@
  "source_files": [
   "MyTradingSys/research/prev_close_break_2026-10-29/RESULT.md"
  ],
- "commit": "6eecd0e89"
+ "commit": "6eecd0e89",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Setup:",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Setup: · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

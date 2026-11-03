@@ -578,5 +578,15 @@
   "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T09/out/parity_result.json",
   "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T09/out/exit_result.json"
  ],
- "commit": "446f6c503"
+ "commit": "446f6c503",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Backtests do not describe live for 5 layer families",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Backtests do not describe live for 5 layer families · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

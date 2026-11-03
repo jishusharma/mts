@@ -54,5 +54,15 @@
  "source_files": [
   "MyTradingSys/research/eagle_eyes_picture_2026-10-28/PICTURE_AND_PLAN.md"
  ],
- "commit": "3399af49d"
+ "commit": "3399af49d",
+ "banner": {
+  "state": "TOO_FEW",
+  "tone": "warn",
+  "verdict": "across all families Tom, Fabio, Krown: UNTESTABLE-AS-BUILT; Malkan intraday, Levels: DEAD. Every 1m-2h family is dead on cost: best gross effect ever measured on DEV 3.8 bp/trade vs a 14 bp round trip (SOURCED R1 s.1, s.3; breakeven.csv:2-…",
+  "n": 0,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "TOO FEW TRADES · verdict as written: across all families Tom, Fabio, Krown: UNTESTABLE-AS-BUILT; Malkan intraday, Levels: DEAD. Every 1m-2h family is dead on cost: best gross effect ever measured on DEV 3.8 bp/trade vs a 14 bp round trip (SOURCED R1 s.1, s.3; breakeven.csv:2-… · n=0 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

@@ -43,5 +43,15 @@
  "source_files": [
   "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md"
  ],
- "commit": "22073ef1e"
+ "commit": "22073ef1e",
+ "banner": {
+  "state": "TOO_FEW",
+  "tone": "warn",
+  "verdict": ", decide after ~21000 outcome labels OPEN INDEX says CLOSED \"spec delivered W3\" but code change was deferred to label count; no card tracks the re-check no (verdict-path, Tom gate rules removed by q14)",
+  "n": 6,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "TOO FEW TRADES · verdict as written: , decide after ~21000 outcome labels OPEN INDEX says CLOSED \"spec delivered W3\" but code change was deferred to label count; no card tracks the re-check no (verdict-path, Tom gate rules removed by q14) · n=6 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

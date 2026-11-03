@@ -74,5 +74,15 @@
  "source_files": [
   "MyTradingSys/research/btc_ma_2026-10-03/Q_ALL_ma_findings.md"
  ],
- "commit": "f8e201dbc"
+ "commit": "f8e201dbc",
+ "banner": {
+  "state": "TOO_FEW",
+  "tone": "warn",
+  "verdict": "Worker: Sonnet research pass covering briefs sonnet-01 (Q1), sonnet-02 (Q2 definitions + cycle MAs), sonnet-03 (Q3/Q4, partial).",
+  "n": 20,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "TOO FEW TRADES · verdict as written: Worker: Sonnet research pass covering briefs sonnet-01 (Q1), sonnet-02 (Q2 definitions + cycle MAs), sonnet-03 (Q3/Q4, partial). · n=20 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }
