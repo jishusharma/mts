@@ -125,3 +125,11 @@ User stories that actually fixed a NUC10-class box ("What users did" section + I
 - Side effect seen: Windows Night light greyed out, its CloudStore keys missing (driver and HDMI monitor OK; still grey after sign-out). Likely lost in a hard reset (OURS, unproven). Operator uses the monitor's own warm mode.
 
 - 2026-11-01 (operator): JIS-NUC FIXED. The restart/hang problem is gone (consistent with the loose DC plug replaced 2026-10-24). Card `nuc-unexpected-shutdown` is closed on the operator word. NUC-specific workarounds are reviewed in card `nuc-fixed-review-workarounds-1101`; generic guards (no credential prompt, git-setup lock, runaway guard) stay.
+
+## Update 2026-11-03 - BIOS verdict: 83 h clean (JIS-NUC, login B)
+- Result: the 10-30 BIOS change ran 83.1 h (10-30 14:51 to 11-03 01:57) with 0 event 142, 0 event 41, 0 event 6008 and 0 WHEA records. The run ended in a normal user power-off (event 1074, 13), not a crash. Old longest gap between crashes: about 28 h. Rebooted clean 11-03 13:55.
+- Correction to the 11-01 line above: the fix is the BIOS change, not the plug. The plug was replaced 10-24, and 13 crashes followed from 10-27 to 10-30. None has followed the BIOS change. One variable was changed, so the attribution is OURS, from timing; no direct measurement of the C-state hang exists.
+- Keep: Dynamic Power Technology = Custom, OSACPI C2 Report = Disabled, including after any BIOS update or F9 defaults, which may reset them. Do not order the adapter unless resets return.
+- Crash count correction: 13 event-41 crashes 10-27 to 10-30. The logger covers 3 of them: 2 idle (10-27 19:41, 10-30 06:52), 1 busy (10-27 00:49). The 10-30 14:13 gap was the clean BIOS restart, not a freeze.
+- Logger over the 83 h: 49,407 rows, 74.6 % under 10 % CPU, longest unbroken idle run 38 min. Idle temperature median 67 C against 47-51 C before the logged idle crashes; cause of that rise not verified. 11.9 % of rows at 100 C with no reset, so heat did not trigger a reset in this run, but it is a lot of time at the limit.
+- Open: this file's own done rule is 7 days clean, due 2026-11-06 14:51. Logger restarted by hand 11-03 18:32; it has no autostart. Any reset before then: read the last logger row, then follow the 10-30 fallback order.

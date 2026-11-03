@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/research/sim_desk -q"
+  ],
+  "created": "2026-11-03T13:00:57Z",
+  "depends_on": [],
+  "done_when": "both visible for every result with trades; test failed first; pytest sim_desk green",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Hosted sim page: equity curve with drawdown shading and Monte Carlo band; year-by-year stability flag per result",
+  "id": "sim-build-equity-drawdown-stability",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/sim_desk/INDUSTRY_SURVEY_2026-11-03.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "sim_desk exporter + page"
+  ],
+  "scope_out": [
+    "no rolling Sharpe, no histograms"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/sim_desk/INDUSTRY_SURVEY_2026-11-03.md"
+  ],
+  "state": "raw",
+  "steps": [
+    "failing test",
+    "exporter",
+    "page",
+    "ship"
+  ],
+  "tests": "MyTradingSys/research/sim_desk tests",
+  "title": "Sim hosted page: equity curve with drawdown shading + Monte Carlo band; year-by-year stability flag (survey C3+C4; test fails first)",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

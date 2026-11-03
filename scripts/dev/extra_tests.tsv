@@ -190,3 +190,4 @@ scripts/dev/test_run_argon_pipeline.py
 MyTradingSys/research/sim_desk/test_desk.py
 scripts/dev/test_cbp_scorecard.py
 scripts/dev/test_ff_calendar_snapshot.py
+scripts/dev/test_extra_tests_union.py

@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/make_layers_board.py && python scripts/dev/make_layers_md.py && python scripts/dev/make_home.py && python scripts/dev/test_artifacts.py"
+  ],
+  "created": "2026-11-03T13:00:55Z",
+  "depends_on": [],
+  "done_when": "MTS_HOME_AUDIT_2026-11-03.md tables A-D re-run empty; test_artifacts.py green; mts_home.html republished",
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "MTS Home shows every layer family, the layer reviews, Eagle_Eyes findings since 10-29 and the sim results; no duplicate card, no stale date",
+  "id": "mts-home-rebuild-1103",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/system/artifacts/MTS_HOME_AUDIT_2026-11-03.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/make_home.py, make_layers_board.py, make_layers_md.py, MyTradingSys/research/v1_plan_2026-10-20/D7_ROADMAP.md dates, mts_home.html"
+  ],
+  "scope_out": [
+    "no new pages, no live tree"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/system/artifacts/MTS_HOME_AUDIT_2026-11-03.md"
+  ],
+  "state": "raw",
+  "steps": [
+    "read the audit",
+    "fix generator per tables A-D",
+    "rebuild in order: make_layers_board, make_layers_md, make_home, test_artifacts",
+    "ship"
+  ],
+  "tests": "scripts/dev/test_artifacts.py",
+  "title": "MTS Home rebuild per audit: 14 layer families + reviews + Eagle_Eyes since 10-29 + sim results on Home; cut 3 duplicates, 4 useless, fix 5 stale (make_layers_board, make_layers_md, make_home, test_artifacts)",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

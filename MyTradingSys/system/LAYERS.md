@@ -226,7 +226,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `confluence-s4-dev-trials` refined p2 SONNET: Confluence S4: DEV and DEV_EXT trial runs (T2, sizing arm, pooled read, T4) per PRE_REG_CONFLUENCE
   - `confluence-s5-fable-verdict` refined p2 SONNET: Confluence S5: Fable verdict on DEV results, what goes to the one VALIDATION read (then ship, S6)
-  - `krown-data-cme-btc-volume` ready p2 JIS-NB: Krown CME BTC futures daily volume (public data only) as third volume arm
   - `krown-dev-event-study` refined p2 SONNET: Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: 
   - `krown-dev-event-study-candles` refined p2 SONNET: Krown DEV event study 3/3: candle hypotheses H-C1, H-C2 (H-T1 not run); DONE when: DEV_RESULTS.md has N, power
   - `krown-dev-event-study-levels` refined p2 SONNET: Krown DEV event study 2/3: level and moving-average hypotheses H-M1, H-M3, H-Z1 (H-M2 not run); DONE when: DEV
