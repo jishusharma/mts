@@ -496,7 +496,7 @@ def _probe_wait_state(repo: Path, shas: list[str]) -> dict:
     total_slots = int(gs_info["total"]) if isinstance(gs_info, dict) and "total" in gs_info else None
     try:    # bg-process-audit 2026-10-28: a hung background task never ends, so it never woke the coordinator; its cap does
         import bg_watch
-        stalled = [f"{r['kind']} {r['id']} {r['age']:.0f}m > cap {r['cap']}m" for r in bg_watch.stalled()]
+        stalled = [f"{r['kind']} {r['id']} {r['age']:.0f}m > cap {r['cap']}m" for r in bg_watch.stalled() if not r.get("ghost")]
     except Exception:
         stalled = None
     return {"shas": sha_on_trunk, "shas_green": sha_on_green, "ci_red": ci_red, "busy_slots": busy_slots, "total_slots": total_slots,
