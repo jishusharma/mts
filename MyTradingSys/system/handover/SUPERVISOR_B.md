@@ -19,7 +19,7 @@ Login B on JIS-NUC, super session on Opus (operator named it 2026-11-03). Operat
 3. Fill free slots from `tasks.py dispatch`; get_usage + plan every wake, pass --hours 6.
 
 ## Traps
-- `git diff A..B` on gq branches looks like hundreds of files once trunk moves; use `A...B`.
+- A two-dot diff A..B on gq branches looks like hundreds of files once trunk moves; use the three-dot form A...B.
 - The Bash tool can fail on its cwd file after a tree is removed; use PowerShell.
 
 ## Open
