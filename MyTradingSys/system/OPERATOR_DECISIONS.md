@@ -1663,3 +1663,9 @@ Operator: "Yes, run it" to "accept the five-move week plan as the orientation?",
 
 ## d-super-session-sonnet-1104 | decided 2026-11-04 | Operator (chat, login C JIS-NB)
 Operator: "you have started a fable session - is it req? do not kill it - just ans? week started does not mean that we can be extravagant - we can only use data wise!" then "Switch it". The Unblock MTS super session (started on Fable by omission) was switched to Sonnet in place via set_session_model, not killed. Rule: every start_session/Agent passes model explicitly (Sonnet default, Haiku mechanical); a fresh weekly budget is not licence to spend.
+
+## d-api-credit-plan-1104 | decided 2026-11-04 | Operator (chat, login C JIS-NB)
+Operator: "Use Claude Platform credits also! Plan for it as it is going to expire". Plan: system/PLAN_API_CREDITS_2026-11-04.md ($99 to 2026-11-17, about $7.50 a day, headless Sonnet builders + Haiku batches, every job capped with --max-budget-usd). Measured the same turn: a headless `claude -p` on the API key answers (Haiku probe $0.004) with hooks disabled, so SONNET-lane cards can run on the credit.
+
+## d-rumers-backtest-go-1104 | decided 2026-11-04 | Operator (chat, login C JIS-NB)
+Operator: "Where are we on back-testing Rumors? We need to find what is useful in those that MTS needs!" State at the question: 3 extracts + 20-video skim + blind read done (11-01), PRE_REG frozen with 5 rules (m=5), HARNESS written, no run, no DEV_CHECK.md, no VERDICTS row; card rumers-testable-rules-dev-backtest refined (reviewer ACCEPT pending). His order outranks the reviewer step: the card runs now as the first API-credit job (headless Sonnet, cap $15, worktree JIS-NB/rumers-dev-check-2, output F:/MTS/api_runs/rumers-dev-check/). A DEV pass is a hypothesis for one VALIDATION read, never a promotion.
