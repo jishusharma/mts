@@ -6,7 +6,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
 PRE_REG_ARMS = ROOT / "MyTradingSys" / "research" / "tom_transfer_2026-10-11" / "PRE_REG_ARMS.md"
-RUNNER_CARD = ROOT / "MyTradingSys" / "system" / "tasks" / "tom-probe-runner.json"
+RUNNER_CARD = ROOT / "MyTradingSys" / "system" / "tasks" / "archive" / "tom-probe-runner.json"
 
 
 class TestTomProbePrereg(unittest.TestCase):
