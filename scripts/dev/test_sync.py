@@ -1208,6 +1208,101 @@ class SyncTest(unittest.TestCase):
             self.assertEqual(sync.tidy(self.a, apply=True, now=time.time() + 48 * 3600), [])
         self.assertTrue((wt / "Dumps" / "result.csv").exists())
 
+    def _push_ignore(self, text, *files):
+        """Commit .gitignore (and `files`, name -> text) on the primary tree and push, so new trees carry them."""
+        (self.a / ".gitignore").write_text(text, newline="\n")
+        sh(self.a, "add", ".gitignore")
+        for name, body in files:
+            (self.a / name).parent.mkdir(parents=True, exist_ok=True)
+            (self.a / name).write_text(body, newline="\n")
+            sh(self.a, "add", name)
+        sh(self.a, "commit", "-q", "-m", "fixture")
+        sh(self.a, "push", "-q", "origin", "HEAD:fast-track")
+
+    def test_tidy_retires_a_tree_whose_only_change_is_the_regenerated_layers_md(self):
+        rel = "MyTradingSys/system/LAYERS.md"
+        self._push_ignore("", (rel, "# LAYERS\n"))
+        with contextlib.redirect_stdout(io.StringIO()):
+            gen = sync.new_worktree(self.a, "gen")
+            mixed = sync.new_worktree(self.a, "mixed")
+            gone = sync.new_worktree(self.a, "gone")
+        (gen / rel).write_text("# LAYERS regenerated\n", newline="\n")
+        (mixed / rel).write_text("# LAYERS regenerated\n", newline="\n")
+        (mixed / "notes.txt").write_text("a person's file\n", newline="\n")
+        (gone / rel).unlink()                                   # a deleted LAYERS.md is not a regeneration
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(sync.tidy(self.a, apply=True, now=time.time() + 48 * 3600), [str(gen.resolve())])
+        self.assertTrue(mixed.exists() and gone.exists())
+        # is_noise itself is unchanged: ship / start / stop_guard still see a modified LAYERS.md as work
+        self.assertFalse(sync.is_noise(" M " + rel))
+
+    def test_tidy_retires_a_tree_holding_rebuildable_ignored_outputs_but_keeps_sim_desk_answers(self):
+        ign = ("MyTradingSys/research/sim_desk/cache/\nMyTradingSys/tools/live_aid/analyst_data.js\nMyTradingSys/runtime/BUILD_REPORT.md\n"
+               "Dumps/*\nruntime_data/gate_fail_logs/\n")
+        self._push_ignore(ign, ("MyTradingSys/keep.txt", "k\n"))
+        with contextlib.redirect_stdout(io.StringIO()):
+            wt = sync.new_worktree(self.a, "outputs")
+            ans = sync.new_worktree(self.a, "answers")
+        for t in (wt, ans):
+            for rel in ("MyTradingSys/research/sim_desk/cache/bars/BTC.json", "MyTradingSys/tools/live_aid/analyst_data.js",
+                        "MyTradingSys/runtime/BUILD_REPORT.md", "Dumps/SESSION_PASTE.txt", "runtime_data/gate_fail_logs/1_step-3.log"):
+                (t / rel).parent.mkdir(parents=True, exist_ok=True)
+                (t / rel).write_text("x\n", newline="\n")
+        (ans / "MyTradingSys/research/sim_desk/cache/answers.jsonl").write_text("{}\n", newline="\n")
+        self.assertEqual(sync.ignored_data(wt), [])
+        self.assertTrue(sync.ignored_data(ans))
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(sync.tidy(self.a, apply=True, now=time.time() + 48 * 3600), [str(wt.resolve())])
+        self.assertTrue(ans.exists())
+
+    def test_tidy_retires_gemini_job_and_dsa_trees_without_all(self):
+        base = self.tmp.resolve()
+        gq = self.make_tree(base / "gq" / "card-1", "gemini-q/card-1")
+        dsa = self.make_tree(base / "mts-dsa-jis-nuc-1102-0608", "dsa/jis-nuc-1102-0608")
+        lane = self.make_tree(base / "mts-gemini", "gemini/lane")                  # named lane stays
+        elsewhere = self.make_tree(base / "other" / "card-2", "gemini-q/card-2")   # not under a gq folder
+        real = sync.socket.gethostname
+        sync.socket.gethostname = lambda: "JIS-NUC"
+        try:
+            with contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(sorted(sync.tidy(self.a, apply=True, now=time.time() + 48 * 3600)), sorted([str(gq), str(dsa)]))
+        finally:
+            sync.socket.gethostname = real
+        self.assertTrue(lane.exists() and elsewhere.exists())
+        branches = subprocess.run(["git", "-C", str(self.a), "branch", "--list", "gemini-q/*"], capture_output=True, text=True).stdout
+        self.assertNotIn("card-1", branches)       # branch gone too, so the same card id can get a fresh tree
+
+    def test_tidy_after_ship_retires_others_never_its_own_tree_and_never_raises(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            mine = sync.new_worktree(self.a, "mine")
+            other = sync.new_worktree(self.a, "other")
+            busy = sync.new_worktree(self.a, "busy")
+        (busy / "wip.txt").write_text("wip\n", newline="\n")
+        calls = []
+        real_tidy = sync.tidy
+
+        def spy(*a, **k):
+            calls.append(k)
+            return real_tidy(*a, now=time.time() + 48 * 3600, **k)
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            gone = sync.tidy_after_ship(mine, tidy_fn=spy)
+        self.assertEqual(gone, [str(other.resolve())])
+        self.assertTrue(mine.exists() and busy.exists() and not other.exists())
+        self.assertTrue(calls[0]["apply"] and calls[0]["fetch"] is False and calls[0]["deadline"])
+        self.assertIn("retired 1", buf.getvalue())
+
+        def boom(*a, **k):
+            raise RuntimeError("git exploded")
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(sync.tidy_after_ship(mine, tidy_fn=boom), [])
+
+    def test_tidy_deadline_stops_the_walk(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            wt = sync.new_worktree(self.a, "late")
+            self.assertEqual(sync.tidy(self.a, apply=True, now=time.time() + 48 * 3600, fetch=False, deadline=time.time() - 1), [])
+        self.assertTrue(wt.exists())
+
     def test_where_always_prints_the_row_of_the_tree_it_runs_in(self):
         """Own tree sorts last in `git worktree list` and holds real work: it is still printed, ahead of the cap."""
         with contextlib.redirect_stdout(io.StringIO()):
