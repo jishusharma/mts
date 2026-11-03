@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T19:09:03Z",
   "commands": [],
   "created": "2026-11-03T17:17:45Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "FOUND: 8, DIFF: 0, NOT_IN_DATA: 0; pass: 30",
+      "ref": "60f859172",
+      "utc": "2026-11-03T19:09:03Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +45,12 @@
   "refined_by": "",
   "refreshed": "2026-11-03T17:17:46Z",
   "refs": [],
-  "result": "",
+  "result": "FOUND: 8, DIFF: 0, NOT_IN_DATA: 0; pass: 30",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-mutation-research-kit.md (read)",
     "MyTradingSys/backtest/research_kit.py (read, copy to scratch)",
@@ -53,12 +65,13 @@
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-mutation-research-kit.md:1-20"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Run test_research_kit.py unmutated, record pass count",
     "For each of the 8 mutations edit the scratch copy, run the tests, record the failing test",
     "Write the table, counts on line 1"
   ],
+  "taken": "2026-11-03T19:09:03Z",
   "tests": "audit card, output file is the test; mutants are made in a scratch copy outside the repo, the repo file stays byte-identical (git diff empty)",
   "title": "[GEMINI] Re-run the 8 mutations of the GPT research_kit mutation audit (52ab3e0ca)",
   "weight": "ROUTINE",
