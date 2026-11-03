@@ -82,5 +82,13 @@
   "try_no": null,
   "breakeven_x": null,
   "text": "FAIL · verdict as written: no edge / insufficient n (stands under correct fees; numbers not reusable) · n=90 · net R after fees +0.130 · try n/a · fee break-even n/a"
- }
+ },
+ "years": [
+  {
+   "k": "2026",
+   "n": 90,
+   "mean": 0.13,
+   "few": false
+  }
+ ]
 }

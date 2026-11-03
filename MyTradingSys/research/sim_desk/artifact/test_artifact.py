@@ -260,5 +260,76 @@ class Banner(unittest.TestCase):
         self.assertIn('"banner":{', h)  # build fills a missing banner (desk runs written after the last enrich)
 
 
+class EquityStability(unittest.TestCase):
+    """Survey C3+C4: drawdown shading + Monte Carlo band on curve results; year strip with a stable / not stable flag."""
+
+    def _curve(self, **kw):
+        c = {"kind": "curve", "title": "c", "r": [0.5, -0.5, 1.0], "usd": [1, 2, 3], "start_usd": 1000.0, "risk_pct": 1.0}
+        c.update(kw)
+        return _result("cv", examples=[c])
+
+    def test_curve_without_band_fails_the_build(self):
+        d = _results_dir(self._curve())
+        with self.assertRaises(ValueError):
+            ba.collect(d)
+        ok = self._curve()
+        ok["examples"][0]["mc"] = {"lo": [0.0, -1.0, 1.0], "hi": [1.0, 0.0, 1.0], "dd_lo": 0.0, "dd_hi": 1.0, "shuffles": 1000}
+        self.assertEqual(len(ba.collect(_results_dir(ok))), 1)
+        none_ok = self._curve()
+        none_ok["examples"][0]["mc"] = None  # a one-trade run has no band, but the field must be there
+        self.assertEqual(len(ba.collect(_results_dir(none_ok))), 1)
+
+    def test_one_good_year_among_bad_is_not_stable(self):
+        y = [{"k": "2022", "n": 40, "mean": 0.2, "few": False}, {"k": "2023", "n": 55, "mean": -0.1, "few": False},
+             {"k": "2024", "n": 35, "mean": -0.3, "few": False}]
+        s = ba.stability_of(y)
+        self.assertEqual(s["state"], "NOT_STABLE")
+        self.assertIn("not stable", s["text"].lower())
+
+    def test_all_positive_years_stable_and_few_years_labelled(self):
+        y = [{"k": "2022", "n": 40, "mean": 0.2, "few": False}, {"k": "2023", "n": 55, "mean": 0.1, "few": False},
+             {"k": "2024", "n": 5, "mean": -0.9, "few": True}]
+        s = ba.stability_of(y)
+        self.assertEqual(s["state"], "STABLE")  # the 5-trade year is labelled, not judged
+        self.assertIn("too few", s["text"].lower())
+        self.assertEqual(ba.stability_of([{"k": "2023", "n": 90, "mean": 0.3, "few": False}])["state"], "TOO_FEW")  # one judged year
+        self.assertEqual(ba.stability_of(None)["state"], "UNKNOWN")
+
+    def test_derived_band_matches_desk_monte_carlo(self):
+        import numpy as np
+        import desk
+        net = [0.5, -1.0, 1.5, -0.2, 0.7, -1.0, 2.0, -0.4]
+        cum = np.cumsum(net).tolist()
+        got = ex.derive_mc(cum, len(net))
+        res = {"net": net, "filled": [True] * len(net)}
+        want = desk.monte_carlo(res, list(range(1, len(net) + 1)))
+        self.assertEqual(got["lo"], want["lo"])
+        self.assertEqual(got["dd_hi"], want["dd_hi"])
+
+    def test_year_split_of_single_year_window(self):
+        y = ex.derive_years("DEV only, 2023-03-01 to 2023-05-31 (VALIDATION and HOLDOUT never offered)", 7, -0.516)
+        self.assertEqual(y, [{"k": "2023", "n": 7, "mean": -0.516, "few": True}])
+        self.assertIsNone(ex.derive_years("DEV only, 2022-04-01 to 2024-06-30", 90, 0.1))
+
+    def test_committed_curves_have_band_and_stability(self):
+        curves = trades = 0
+        for t in ba.collect(ba.RESULTS_DIR):
+            for e in t["examples"]:
+                if e["kind"] == "curve":
+                    curves += 1
+                    self.assertIn("mc", e, t["id"])
+                    if e["mc"]:
+                        self.assertEqual(len(e["mc"]["lo"]), len(e["r"]), t["id"])
+            if t["banner"]["n"]:
+                trades += 1
+                self.assertIn(t["stability"]["state"], ("STABLE", "NOT_STABLE", "TOO_FEW", "UNKNOWN"), t["id"])
+        self.assertGreaterEqual(curves, 50)
+        self.assertGreaterEqual(trades, 50)
+
+    def test_page_draws_shading_band_and_year_strip(self):
+        for k in ("function yearStrip(", 'class="dd"', 'class="mcb"', "x.mc", "stability"):
+            self.assertIn(k, ba.TEMPLATE)
+
+
 if __name__ == "__main__":
     unittest.main()

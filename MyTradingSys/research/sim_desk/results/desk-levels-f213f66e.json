@@ -81,7 +81,32 @@
     908.58
    ],
    "start_usd": 1000.0,
-   "risk_pct": 1.0
+   "risk_pct": 1.0,
+   "mc": {
+    "lo": [
+     -1.901,
+     -3.8,
+     -5.206,
+     -6.866,
+     -8.197,
+     -9.522,
+     -10.771,
+     -9.143
+    ],
+    "hi": [
+     1.628,
+     0.38,
+     -0.946,
+     -2.686,
+     -3.935,
+     -5.343,
+     -7.242,
+     -9.142
+    ],
+    "dd_lo": 9.14,
+    "dd_hi": 10.77,
+    "shuffles": 1000
+   }
   }
  ],
  "source_files": [
@@ -97,5 +122,13 @@
   "try_no": 12,
   "breakeven_x": null,
   "text": "TOO FEW TRADES · verdict as written: NOT ENOUGH DATA · n=8 · net R after fees -1.143 · try #12 · fee break-even n/a"
- }
+ },
+ "years": [
+  {
+   "k": "2023",
+   "n": 8,
+   "mean": -1.143,
+   "few": true
+  }
+ ]
 }
