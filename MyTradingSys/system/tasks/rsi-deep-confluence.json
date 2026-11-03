@@ -33,7 +33,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks\nREVIEWED: super 2026-11-04 (coordinator stamp per Super Session order; Lab_Guy wait waived; prerequisite outputs exist on disk in research/rsi_deep_buy_2026-10-19/: DEPTH_MAP.md, ECON_FLOOR.md, PROB_REPORT.md, prob_tables_dev.csv, prob_tables_val.csv)",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
@@ -62,7 +62,7 @@
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/APPLIED.md",
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/SHOT_REVIEW.md"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Read SPEC s2 Step H and SHOT_REVIEW C5; list candidate voters and check each for bar-by-bar history in MyTradingSys/backtest/layers (LAYERS.md).",
     "Commit the vote table (layer, TF, rule, +1/-1 condition) to CONFLUENCE.md before running anything; no tuning on outcomes.",

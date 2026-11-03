@@ -1,52 +1,84 @@
 {
- "approved_by": "",
- "asks": "",
- "commands": [
-  "python scripts/dev/sync.py start rumers-dev-check"
- ],
- "created": "2026-10-31T19:16:36Z",
- "depends_on": [],
- "done_when": "MyTradingSys/research/rumers_2026-11-01/DEV_CHECK.md has per-rule n, hit-rate, fee-net mean R vs claim; PRE_REG frozen before the run; one-bar shift look-ahead check passes; shipped with a Result: line",
- "est_turns": 20,
- "formula_id": "",
- "formula_ids": [],
- "from_inbox": "",
- "goal": "Backtest the 8 TESTABLE shortlist rules (RUMERS_EXTRACT_1 s3 T1-T4, _2 s3 T1-T4) on BTCUSDT 1m DEV 2022-04-01..2024-06-30, fee-net. Merge duplicates (ORB reversal, PDH/PDL fade, VWAP/9EMA separation) into 6 rules, mirror long/short. Follow research/rumers_2026-11-01/HARNESS.md.",
- "id": "rumers-testable-rules-dev-backtest",
- "kind": "build",
- "lane": "SONNET",
- "layers": [],
- "live_path": false,
- "mutation_check": "",
- "note": "Gemini rules: captions first (fetch_captions_timed.py), quote only from the caption file, one fetch try per video, no retry loop, 429 -> UNVERIFIED with no quotes; verify_extract_quotes.py exit 0; facts and quotes only, no verdict, no code change. Operator 2026-11-01: channel @the.rumers, he finds these videos interesting; backtests follow. Final report ends with a Noticed: line. PLANNER 2026-11-01: depends_on added (extract cards still ready, no RUMERS_EXTRACT files on trunk); stays raw until both are done, then refine against the testable shortlists (PRE_REG frozen before first run). PLANNER 2026-11-01 (session-planner-refine): re-checked; both extract cards still not done, no RUMERS_EXTRACT files; refine the rule list once they ship. PLANNER 2026-11-01 (session-planner-refine-2): both extracts done on trunk; refined against the s3 shortlists. IMPORTANT: needs reviewer ACCEPT before ready (decision numbers, pre-reg). Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
- "prio": 1,
- "refine_tries": 1,
- "refined_by": "",
- "refs": [
-  "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
- ],
- "result": "",
- "scope_in": [
-  "MyTradingSys/research/rumers_2026-11-01/ (new: PRE_REG.md, rumers_dev.py, test_rumers_dev.py, DEV_CHECK.md, TRIAL_REGISTRY_rumers.csv)",
-  "MyTradingSys/research/rumers_2026-11-01/HARNESS.md (read only)"
- ],
- "scope_out": [
-  "live tree; engine and layer code; any trading verdict; VALIDATION and HOLDOUT; .secrets and .env"
- ],
- "size": "M",
- "sources": [
-  "MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_1.md:135-169",
-  "MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_2.md:135-184",
-  "MyTradingSys/research/rumers_2026-11-01/HARNESS.md:1-30"
- ],
- "state": "refined",
- "steps": [
-  "Read HARNESS.md s1-2 and both s3 shortlists; PRE_REG.md: 6 merged rules, equity-session terms (open, VWAP, daily ATR) mapped to BTC UTC day/session as OURS, m fixed, one ledger row per rule; run verdicts.py check and prereg_gate.py; commit before any run",
-  "Write test_rumers_dev.py first (one-bar shift, fee = fees.py BINANCE_TAKER*2); then rumers_dev.py; run DEV only",
-  "DEV_CHECK.md: per rule n, hit-rate, mean net R, Holm p vs claimed hit-rate (NOT_IN_DATA is stated, not guessed); ship"
- ],
- "tests": "test_rumers_dev.py: a deliberately leaked signal fails the one-bar shift check; fee per leg equals fees.py; fails on the pre-change code (module missing)",
- "title": "Backtest the testable Rumers rules from RUMERS_EXTRACT_1/2 on DEV fee-net: frozen PRE_REG, n, hit-rate, mean R vs claim",
- "weight": "IMPORTANT",
- "worker": "session"
+  "approved_by": "",
+  "asks": "",
+  "claim": "JIS-NB headless credit job",
+  "closed": "2026-11-03T20:56:09Z",
+  "commands": [
+    "python scripts/dev/sync.py start rumers-dev-check"
+  ],
+  "created": "2026-10-31T19:16:36Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/rumers_2026-11-01/DEV_CHECK.md has per-rule n, hit-rate, fee-net mean R vs claim; PRE_REG frozen before the run; one-bar shift look-ahead check passes; shipped with a Result: line",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Backtest the 8 TESTABLE shortlist rules (RUMERS_EXTRACT_1 s3 T1-T4, _2 s3 T1-T4) on BTCUSDT 1m DEV 2022-04-01..2024-06-30, fee-net. Merge duplicates (ORB reversal, PDH/PDL fade, VWAP/9EMA separation) into 6 rules, mirror long/short. Follow research/rumers_2026-11-01/HARNESS.md.",
+  "id": "rumers-testable-rules-dev-backtest",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "DEV_CHECK.md shipped 561df2f0: 0 of 5 Rumers rules pass DEV (3 FAIL, R1 INCONCLUSIVE n=32,",
+      "ref": "561df2f09",
+      "utc": "2026-11-03T20:56:09Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "rumers: gen_dev_check takes the fee from fees.py (cost inventory test)",
+      "ref": "3bec8994563a",
+      "utc": "2026-11-03T20:51:30Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "647a2be0c2fa research: Rumers backtest harness before captions (pre-reg skeleton, power ga",
+      "ref": "MyTradingSys/research/rumers_2026-11-01/HARNESS.md",
+      "utc": "2026-11-01T07:53:13Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini rules: captions first (fetch_captions_timed.py), quote only from the caption file, one fetch try per video, no retry loop, 429 -> UNVERIFIED with no quotes; verify_extract_quotes.py exit 0; facts and quotes only, no verdict, no code change. Operator 2026-11-01: channel @the.rumers, he finds these videos interesting; backtests follow. Final report ends with a Noticed: line. PLANNER 2026-11-01: depends_on added (extract cards still ready, no RUMERS_EXTRACT files on trunk); stays raw until both are done, then refine against the testable shortlists (PRE_REG frozen before first run). PLANNER 2026-11-01 (session-planner-refine): re-checked; both extract cards still not done, no RUMERS_EXTRACT files; refine the rule list once they ship. PLANNER 2026-11-01 (session-planner-refine-2): both extracts done on trunk; refined against the s3 shortlists. IMPORTANT: needs reviewer ACCEPT before ready (decision numbers, pre-reg). Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.\nREVIEWED: Lead 2026-11-04 (operator order outranked the ACCEPT wait, d-rumers-backtest-go-1104; run shipped 561df2f0 on the API credit, cost 1.26 USD)",
+  "prio": 1,
+  "refine_tries": 1,
+  "refined_by": "",
+  "refreshed": "2026-11-03T20:56:03Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+  ],
+  "result": "DEV_CHECK.md shipped 561df2f0: 0 of 5 Rumers rules pass DEV (3 FAIL, R1 INCONCLUSIVE n=32, R4 NOT ENOUGH DATA n=26); look-ahead gates pass; 5 VERDICTS rows; 1.26 USD on the API credit",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/rumers_2026-11-01/ (new: PRE_REG.md, rumers_dev.py, test_rumers_dev.py, DEV_CHECK.md, TRIAL_REGISTRY_rumers.csv)",
+    "MyTradingSys/research/rumers_2026-11-01/HARNESS.md (read only)"
+  ],
+  "scope_out": [
+    "live tree; engine and layer code; any trading verdict; VALIDATION and HOLDOUT; .secrets and .env"
+  ],
+  "scope_sha": "3bec8994563a",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_1.md:135-169",
+    "MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_2.md:135-184",
+    "MyTradingSys/research/rumers_2026-11-01/HARNESS.md:1-30"
+  ],
+  "state": "done",
+  "steps": [
+    "Read HARNESS.md s1-2 and both s3 shortlists; PRE_REG.md: 6 merged rules, equity-session terms (open, VWAP, daily ATR) mapped to BTC UTC day/session as OURS, m fixed, one ledger row per rule; run verdicts.py check and prereg_gate.py; commit before any run",
+    "Write test_rumers_dev.py first (one-bar shift, fee = fees.py BINANCE_TAKER*2); then rumers_dev.py; run DEV only",
+    "DEV_CHECK.md: per rule n, hit-rate, mean net R, Holm p vs claimed hit-rate (NOT_IN_DATA is stated, not guessed); ship"
+  ],
+  "taken": "2026-11-03T20:56:08Z",
+  "tests": "test_rumers_dev.py: a deliberately leaked signal fails the one-bar shift check; fee per leg equals fees.py; fails on the pre-change code (module missing)",
+  "title": "Backtest the testable Rumers rules from RUMERS_EXTRACT_1/2 on DEV fee-net: frozen PRE_REG, n, hit-rate, mean R vs claim",
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

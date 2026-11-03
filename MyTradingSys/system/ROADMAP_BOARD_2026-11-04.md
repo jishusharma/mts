@@ -8,9 +8,9 @@ Rewrite this file at each week start; never let it grow.
 | Stage | Goal | Exit | State today | Blocked on |
 |---|---|---|---|---|
 | S0 Freeze and clean | small, clean repo | ready<=15, claims<=4, trees<=8, bookkeeping<30% | WAIVED 11-03 (claims 43, bookkeeping 67% of 186 commits/24h) | cleanup keeps running beside S1 |
-| S1 Spec signed | one signal schema, bar revision, seam test | D2 signed, GO_LIVE_BAR revision, seam test green | OPEN since 10-27: q-v1-bar, q-v1-layers, q-v1-spec unanswered; card s1-signal-v1-schema-seam-test ready | OPERATOR (three yes/no answers) |
+| S1 Spec signed | one signal schema, bar revision, seam test | D2 signed, GO_LIVE_BAR revision, seam test green | SIGNED 11-04 (d-s1-defaults-1104, 11c2703d); D7 Now: S2, S3, S4 in parallel | - |
 | S2 Platform hardening | live loop that survives restart, gaps, API errors | 4 cards done test-first, 14 d heartbeat>=95%, HALT+restart drill | NOT STARTED: state-code-accumulator-backfill refined, s2-uptime-heartbeat refined, L6/B149 settlement open, gap-g7 no card | S1 exit; builder on JIS-NB |
-| S3 Two-layer funnel | one config passes fee-net VALIDATION | promoted_setups.json gets one entry | 0 promoted. Run list 7: 5 done (meta-label FAIL, Fabio-C parked, CryptoCred BLOCKED power, Tom v2 FAIL, reclaim INCONCLUSIVE); lc-validation refined (HOLD A-20261018-5), rsi-deep-run-dev refined | prerequisites on 2 cards; nobody runs them |
+| S3 Two-layer funnel | one config passes fee-net VALIDATION | promoted_setups.json gets one entry | 0 promoted. Rumers 5 rules DEV 11-04: 0 pass (3 FAIL, 2 thin), 561df2f0. Run list 7: 5 done (meta-label FAIL, Fabio-C parked, CryptoCred BLOCKED power, Tom v2 FAIL, reclaim INCONCLUSIVE); lc-validation refined (HOLD A-20261018-5), rsi-deep-run-dev refined | prerequisites on 2 cards; nobody runs them |
 | S4 CBP module | analyst rows flow producer->consumer | one real row end to end, harness green | NOT STARTED: s4-cbp-golden-set-harness ready, s4-cbp-module-e2e ready; 5 cbp-* blocked | S1 exit; a SONNET builder |
 | S5 Testnet to the bar | promoted config trades on testnet 30-60 d | bar holds (sign) | cannot start | S2 exit AND one promoted config |
 | S6 Mainnet decision | tiny size, repo private | signed | - | S5 |

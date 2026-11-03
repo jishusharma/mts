@@ -1669,3 +1669,6 @@ Operator: "Use Claude Platform credits also! Plan for it as it is going to expir
 
 ## d-rumers-backtest-go-1104 | decided 2026-11-04 | Operator (chat, login C JIS-NB)
 Operator: "Where are we on back-testing Rumors? We need to find what is useful in those that MTS needs!" State at the question: 3 extracts + 20-video skim + blind read done (11-01), PRE_REG frozen with 5 rules (m=5), HARNESS written, no run, no DEV_CHECK.md, no VERDICTS row; card rumers-testable-rules-dev-backtest refined (reviewer ACCEPT pending). His order outranks the reviewer step: the card runs now as the first API-credit job (headless Sonnet, cap $15, worktree JIS-NB/rumers-dev-check-2, output F:/MTS/api_runs/rumers-dev-check/). A DEV pass is a hypothesis for one VALIDATION read, never a promotion.
+
+## d-key-copy-nuc-1104 | decided 2026-11-04 | Operator (chat)
+Operator: "u copy it" (copy F:/ClaudePlaform/key.txt to JIS-NUC same path, broadcast b-8eaae5). Tried from JIS-NB: blocked by WinError 1265 on //JIS-NUC/F$ (share auth). Not copied.
