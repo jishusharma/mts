@@ -4,7 +4,7 @@
   "commands": [],
   "created": "2026-11-03T15:53:26Z",
   "depends_on": [],
-  "done_when": "MyTradingSys/research/gemini_audits_2026-11-03/eagle_1103_blind_read.md: first line holds FOUND / DIFF / NOT_IN_DATA counts; one row per number in the commit Result line with your number and the source line; a DST row; a lookahead row per script.",
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-03/eagle_1103_blind_read.md: first line holds three counts FOUND=<n> DIFF=<n> NOT_IN_DATA=<n>; one row per value in the commit Result line (n=125, low-first 63%, high-first 16%, WT n=37 10d -2.19%, Krown n=43 5d +0.71%) with your value, the months used and the source line; a DST row; a lookahead row per script.",
   "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
@@ -13,13 +13,23 @@
   "id": "gemini-blind-read-eagle-1103-counts",
   "kind": "audit",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Eagle_Eyes 11-03: US-open round-trip count (C37), ETHBTC WT vs Krown count (C38), lessons ",
+      "ref": "3f73289b65ef",
+      "utc": "2026-11-03T14:37:14Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Argon on JIS-LAPTOP via gemini_queue (operator 11-03: use Argon's remaining 35% weekly); producer was Claude Fable, so a Gemini reviewer is cross-vendor",
+  "note": "Argon on JIS-LAPTOP via gemini_queue (operator 11-03: use Argon's remaining 35% weekly); producer was Claude Fable, so a Gemini reviewer is cross-vendor (producer Claude Fable, runner Gemini Argon: vendors differ)\nclass=C1\nREVIEWED: Lab_Guy 2026-11-03\nDECISION (OURS): Argon kept per the operator note although lab_guy routes Argon to C2/C3 only; logged as an exception, not a precedent.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-03T15:56:43Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -28,17 +38,18 @@
     "MyTradingSys/research/gemini_audits_2026-11-03/"
   ],
   "scope_out": [
-    "do not edit the two producer scripts; no downloaded data committed (repo is public): keep zips under a gitignored scratch dir outside the repo"
+    "do not edit the two producer scripts; no downloaded data committed (repo is public): keep zips in a scratch dir outside the repo worktree (not gitignored inside it)"
   ],
+  "scope_sha": "3f73289b65ef",
   "size": "M",
   "sources": [
     "commit 3f73289b6 Result line"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
-    "Read both docstrings; restate each setup in one line; write own counter script under research/gemini_audits_2026-11-03/ (never import the producer code)",
+    "Read both docstrings only; restate each setup in one line; derive the counts from the docstring setup before opening the script body; write own counter script under research/gemini_audits_2026-11-03/ (never import the producer code)",
     "Data: F:/MTS/data/tom_raw/klines if present, else download BTCUSDT and ETHUSDT 1m monthly zips from https://data.binance.vision/data/spot/monthly/klines/ (public data) to a scratch dir outside the repo; state the exact months used",
-    "Run own counter; compare every number in the commit Result line; where the full range is unavailable mark the row NOT_IN_DATA and give your number on the months you have",
+    "Run own counter; compare every value in the commit Result line; where the full range is unavailable mark the row NOT_IN_DATA and give your value on the months you have",
     "Code review rows: lookahead, DST (13:30Z is 09:30 NY only in winter), bar off-by-one, fee/R not applicable rows marked n/a"
   ],
   "tests": "",

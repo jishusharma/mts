@@ -22,12 +22,12 @@
   "refs": [
     "MyTradingSys/research/sim_desk/api_review/SIM_VISUALS_REVIEW.md"
   ],
-  "result": "",
+  "result": "already on trunk: commit 5f6c86009 (planner-a-1103)",
   "scope_in": [],
   "scope_out": [],
   "size": "",
   "sources": [],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "Sim page: step-through replay of one trade candle by candle with a phase status line (waiting/signal/in trade/exited)",

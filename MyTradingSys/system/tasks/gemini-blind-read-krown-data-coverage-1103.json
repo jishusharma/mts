@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-03T15:59:35Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-03/krown_data_coverage_blind_read.md: line 1 holds FOUND / DIFF / NOT_IN_DATA counts; one row per series row and per weekly-from-daily row with your count and the source line.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Open MyTradingSys/research/krown_ta101_2026-10-13/DATA_COVERAGE.md and check the bars, first bar, last bar and gap count of each series against DATA_MANIFEST.csv and, where F:/MTS/data/krown_daily/ exists, the CSV files themselves. Timestamps and counts only; no returns computed.",
+  "id": "gemini-blind-read-krown-data-coverage-1103",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Krown data: CME BTC futures front-month daily volume (Yahoo BTC=F proxy), 2233 rows",
+      "ref": "8904279b6f00",
+      "utc": "2026-11-03T12:07:27Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "8904279b6f00 Krown data: CME BTC futures front-month daily volume (Yahoo BTC=F proxy), 223",
+      "ref": "MyTradingSys/research/krown_ta101_2026-10-13/DATA_COVERAGE.md",
+      "utc": "2026-11-03T12:07:27Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini effort low: load as <id>:low (gemini_queue.py run <id>:low). Final report ends with a Noticed: line. Facts only, no verdicts. D11_PROGRAMME s6 seed (blind read of new research results). PLANNER 2026-11-03 planner-b-1103-2. REVIEWED:2026-11-03 T0-ONLY",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T15:59:36Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/krown_ta101_2026-10-13/DATA_COVERAGE.md (read)",
+    "MyTradingSys/research/krown_ta101_2026-10-13/DATA_MANIFEST.csv (read)",
+    "MyTradingSys/research/gemini_audits_2026-11-03/krown_data_coverage_blind_read.md (new)"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change outside the output file; no VALIDATION or HOLDOUT read; no value or return read from any bar from 2024-07-01 on (count rows by timestamp only)"
+  ],
+  "scope_sha": "8904279b6f00",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/krown_ta101_2026-10-13/DATA_COVERAGE.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "list every number in DATA_COVERAGE.md with its table line",
+    "recount from the manifest and, if present, the CSVs by timestamp only",
+    "write FOUND / NOT_IN_DATA / DIFF per number, counts on line 1"
+  ],
+  "tests": "see done_when (audit card, output file is the test)",
+  "title": "[GEMINI] blind read of krown_ta101 DATA_COVERAGE.md: bars, first/last bar and gaps per series vs the files on disk",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

@@ -1,27 +1,29 @@
-# Supervisor B handover | written 2026-11-01T05:34Z by JIS-NUC | verify: python scripts/dev/supervisor.py handover --verify   (STALE 0 at last boot)
+# Supervisor B handover | written 2026-11-03T16:00Z by JIS-NUC | verify: python scripts/dev/supervisor.py handover --verify
 
 ## Goal
-Login B on JIS-NUC: mode NORMAL, 5 h 4.0% (reset 2026-11-01T10:29Z), week 96.0% of cap 99.
-Stop at 5 h >= 80%, week >= cap, CI red, no ready cards, the TRANSIT at time, or a 3 h wave.
+Login B on JIS-NUC, super session on Opus (operator named it 2026-11-03). Operator cap for this run: stop new work at week 57%, hard stop 60% (read 48% at 15:53Z). Keep rolling, never end idle: he asked for a few hours of work.
 
 ## Truth
-- Peers live at write: A@JIS-LAPTOP, C@JIS-DESKTOP | `python scripts/dev/sync.py where --all` | read at 2026-11-01T05:34Z
-- Last picks: tom-v2-gross-first-dev-ext | `python scripts/dev/tasks.py dispatch` | read at 2026-11-01T05:34Z
-- Open claims from JIS-NUC: none | `python scripts/dev/sync.py where --all` | read at 2026-11-01T05:34Z
+- D3 extra-worker line: get_usage 5h 4%, week 48%, plan mode NORMAL; each worker has its own card and files; smoke gates 0/2 busy.
+- Workers started 15:55Z: Planner (planner-b-1103-2), Builder tandem + tasks-py stale (builder-b-1103-a, holds tasks.py), Builder PASS guard (builder-b-1103-pass), Haiku 3 cards (haiku-b-1103-a), Haiku Fabio reruns from C (haiku-b-1103-fabio).
+- Codex: kurisko-quad started by explicit run. Do NOT `codex_run.py tick` until prob-layer-common-table is dropped by Sol: tick picks that card and it duplicates Sol's finished run in F:/MTS/mts-jis-nuc-codex-prob-table-1103 (205876397, unshipped).
+- mts-audit-1103-independent-recheck: a Luna chat holds it; do not split or rerun.
+- Doctor: not run this session (due on next wake).
 
 ## Ruled out
-- none recorded by the tool; add what was tried and closed (`handover --from <file>`).
+- runs.jsonl row or CODEX_HOME change to close the prob card: false receipt. Route sent to Sol: ship tree, keep TRIALS row, drop card with reason and sha.
 
 ## Next 3 steps
-1. `python scripts/dev/sync.py start supervisor-B-<utc date>`; `get_usage`; `python scripts/dev/supervisor.py plan --login B --five <%> --five-reset <utc> --week <%> --week-reset <utc> --running 0`.
-2. Weekly 96% cap reached 2026-11-01; no Claude spawns until reset 17:00Z. Gemini Rumers cards running (gemini_rumers.log), codex tick running. Next: confirm trunk CI green after d6b0814f, re-ship Lab_Guy gemini-burn-c (jis-nuc/gemini-burn-c-2), NUC user must reload AIBridge 0.7.9 and F5.
-3. `python scripts/dev/tasks.py dispatch`; start the next picks.
+1. On each worker note: verify per roles/supervisor.md (ancestor of origin/fast-track, Result: line, one spot check).
+2. Planner done: queue new GEMINI cards with `gemini_queue.py run <id>:low:argon`, review branches with three-dot diff, ship.
+3. Fill free slots from `tasks.py dispatch`; get_usage + plan every wake, pass --hours 6.
 
 ## Traps
-- One ship at a time; EXTRA registration forces the ~20 min gate.
+- A two-dot compare of a gq branch shows hundreds of files once trunk moves; use three dots.
+- The Bash tool can fail on its cwd file after a tree is removed; use PowerShell.
 
 ## Open
-- Claims above: finish, hand over in the card, or release.
+- Operator: arm DeepSeek hands-free on DSA-NB (oldest row 56 h).
 
 ## Missed last time
 (machine-written by `context_gap.py fold` at the next ship)
