@@ -16,27 +16,27 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Hand-over: rolling super-session chain progress (links 2-5), window-exhaustion stop",
-      "ref": "97227df5df57",
-      "utc": "2026-10-27T11:38:22Z"
+      "line": "Handoff: C30 data fact and last boot for the next chat",
+      "ref": "4bd181ca6cd3",
+      "utc": "2026-11-01T06:00:59Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "97227df5df57 Hand-over: rolling super-session chain progress (links 2-5), window-exhaustio",
+      "line": "4bd181ca6cd3 Handoff: C30 data fact and last boot for the next chat",
       "ref": "MyTradingSys/system/NEXT_SESSION.md",
-      "utc": "2026-10-27T11:38:22Z"
+      "utc": "2026-11-01T06:00:59Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks | PLANNER 2026-11-03 planner-b-1103. REVIEWED:2026-11-03 T0-ONLY",
   "pinned": false,
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-10-27T19:29:49Z",
+  "refreshed": "2026-11-03T13:05:42Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -50,12 +50,12 @@
     "live path, orders, deploy, restarts",
     "new hooks, gate steps or rules beyond the card"
   ],
-  "scope_sha": "97227df5df57",
+  "scope_sha": "4bd181ca6cd3",
   "size": "S",
   "sources": [
     "scripts/dev/mts_doctor.py DEAD-REF check"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Run mts_doctor.py --no-process; list the DEAD-REF lines per file (then git checkout the report).",
     "For each, git log --all --diff-filter=D to find where the file went; replace with the new tracked path or delete the line.",

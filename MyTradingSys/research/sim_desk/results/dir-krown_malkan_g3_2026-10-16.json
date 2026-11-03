@@ -43,5 +43,15 @@
  "source_files": [
   "MyTradingSys/research/krown_malkan_g3_2026-10-16/EVENT_COUNTS.md"
  ],
- "commit": "c98a9925c"
+ "commit": "c98a9925c",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "(OURS): ENOUGH if MDE <= 0.30R, MARGINAL up to 0.60R, THIN above.",
+  "n": null,
+  "net_r": 0.1,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: (OURS): ENOUGH if MDE <= 0.30R, MARGINAL up to 0.60R, THIN above. · n=? · net R after fees +0.100 · try n/a · fee break-even n/a"
+ }
 }

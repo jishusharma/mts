@@ -35,5 +35,15 @@
  "source_files": [
   "MyTradingSys/research/orderflow_views_2026-10-14/RESULT.md"
  ],
- "commit": "26c6f3a83"
+ "commit": "26c6f3a83",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "NEGATIVE: CVD divergence adds nothing over price alone on 1m/5m",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: NEGATIVE: CVD divergence adds nothing over price alone on 1m/5m · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

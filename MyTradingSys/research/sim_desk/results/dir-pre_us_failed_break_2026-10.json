@@ -70,5 +70,15 @@
  "source_files": [
   "MyTradingSys/research/pre_us_failed_break_2026-10/PRE_REG.md"
  ],
- "commit": "04112bfe2"
+ "commit": "04112bfe2",
+ "banner": {
+  "state": "FAIL",
+  "tone": "bad",
+  "verdict": "word first: PASS INCONCLUSIVE FAIL), DATA_MANIFEST.csv. The result commit comes after this file's commit. Forward-index hits (x[i + 1]) in the script need reviewed rows in scripts/dev/lookahead_allowlist.tsv in the same commit.",
+  "n": 300,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "FAIL · verdict as written: word first: PASS INCONCLUSIVE FAIL), DATA_MANIFEST.csv. The result commit comes after this file's commit. Forward-index hits (x[i + 1]) in the script need reviewed rows in scripts/dev/lookahead_allowlist.tsv in the same commit. · n=300 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

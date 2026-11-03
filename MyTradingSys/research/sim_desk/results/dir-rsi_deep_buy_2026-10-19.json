@@ -42,5 +42,15 @@
  "source_files": [
   "MyTradingSys/research/rsi_deep_buy_2026-10-19/PROB_REPORT.md"
  ],
- "commit": "9d61cb293"
+ "commit": "9d61cb293",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": ". Hourly RSI timeframes have few events.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: . Hourly RSI timeframes have few events. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

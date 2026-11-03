@@ -157,5 +157,15 @@
   "MyTradingSys/research/c26_roadmap_2026-11-01/phase1_cvd_div.py",
   "MyTradingSys/research/c26_roadmap_2026-11-01/PHASE1_RANGE.md"
  ],
- "commit": "see git log"
+ "commit": "see git log",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Design look: on every bar size the hit rate sits at the 12-bar base rate; a 15m bear divergence stood within 4 bars of 2 of 30 take-outs",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Design look: on every bar size the hit rate sits at the 12-bar base rate; a 15m bear divergence stood within 4 bars of 2 of 30 take-outs · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

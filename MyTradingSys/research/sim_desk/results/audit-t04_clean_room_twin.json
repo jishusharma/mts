@@ -36,5 +36,15 @@
  "source_files": [
   "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T04_clean_room_twin.md"
  ],
- "commit": "9af470c66"
+ "commit": "9af470c66",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "; the one residual is a float tie-break on one control event (S3). The recurring ambiguity is the cooldown boundary, which moved 21 of 1,179 A1 events until the PRE_REG's own printed counts settled it. All four verdicts are FAIL in every e…",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: ; the one residual is a float tie-break on one control event (S3). The recurring ambiguity is the cooldown boundary, which moved 21 of 1,179 A1 events until the PRE_REG's own printed counts settled it. All four verdicts are FAIL in every e… · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

@@ -36,5 +36,15 @@
  "source_files": [
   "MyTradingSys/research/self_heal_2026-10-28/before/REPORT_2026-10-28.md"
  ],
- "commit": "c3b48e508"
+ "commit": "c3b48e508",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "s-and-ledger-rows + fable-run2-regate-fixes-1to8: likely the same job (title 0.47; same files MyTradingSys/research/fable_audit_2026-10-18/REGATE_AUDIT.md, verdicts.py) fix: drop one, or add the other id to not_twin_of",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: s-and-ledger-rows + fable-run2-regate-fixes-1to8: likely the same job (title 0.47; same files MyTradingSys/research/fable_audit_2026-10-18/REGATE_AUDIT.md, verdicts.py) fix: drop one, or add the other id to not_twin_of · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

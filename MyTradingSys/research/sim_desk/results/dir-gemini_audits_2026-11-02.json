@@ -51,5 +51,15 @@
  "source_files": [
   "MyTradingSys/research/gemini_audits_2026-11-02/grandfather_api_rerun_blind_read.md"
  ],
- "commit": "de0b90fb7"
+ "commit": "de0b90fb7",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "S.csv",
+  "n": 79,
+  "net_r": -0.1038,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: S.csv · n=79 · net R after fees -0.104 · try n/a · fee break-even n/a"
+ }
 }

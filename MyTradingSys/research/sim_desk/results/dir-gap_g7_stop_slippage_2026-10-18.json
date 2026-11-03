@@ -61,5 +61,15 @@
  "source_files": [
   "MyTradingSys/research/gap_g7_stop_slippage_2026-10-18/SLIPPAGE.md"
  ],
- "commit": "2877e1fed"
+ "commit": "2877e1fed",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Trust tag: UNCHECKED. Binance USD-M BTCUSDT aggTrades trade-through / latency proxy: no own order size, not Deribit (REPORT G8). DEV days only (all before 2024-07-01); VALIDATION and HOLDOUT not read.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Trust tag: UNCHECKED. Binance USD-M BTCUSDT aggTrades trade-through / latency proxy: no own order size, not Deribit (REPORT G8). DEV days only (all before 2024-07-01); VALIDATION and HOLDOUT not read. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

@@ -47,5 +47,15 @@
  "source_files": [
   "MyTradingSys/research/netdelta_panel_2026-10-18/RESULT.md"
  ],
- "commit": "966d2607d"
+ "commit": "966d2607d",
+ "banner": {
+  "state": "TOO_FEW",
+  "tone": "warn",
+  "verdict": "1. Executive Summary and Verdict",
+  "n": 7,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "TOO FEW TRADES · verdict as written: 1. Executive Summary and Verdict · n=7 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

@@ -7861,5 +7861,15 @@
   "MyTradingSys/research/c26_roadmap_2026-11-01/phase3_dev.py",
   "MyTradingSys/research/c26_roadmap_2026-11-01/PHASE1_RANGE.md"
  ],
- "commit": "this card"
+ "commit": "this card",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "NO on DEV: 0 of 12 arms net above zero after fees, none beats random entries after Holm; underpowered arms (MDE above +0.20 %): c26 6/6, krown 0/6",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: NO on DEV: 0 of 12 arms net above zero after fees, none beats random entries after Holm; underpowered arms (MDE above +0.20 %): c26 6/6, krown 0/6 · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

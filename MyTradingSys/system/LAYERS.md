@@ -226,7 +226,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `confluence-s4-dev-trials` refined p2 SONNET: Confluence S4: DEV and DEV_EXT trial runs (T2, sizing arm, pooled read, T4) per PRE_REG_CONFLUENCE
   - `confluence-s5-fable-verdict` refined p2 SONNET: Confluence S5: Fable verdict on DEV results, what goes to the one VALIDATION read (then ship, S6)
-  - `krown-data-cme-btc-volume` ready p2 JIS-NB: Krown CME BTC futures daily volume (public data only) as third volume arm
   - `krown-dev-event-study` refined p2 SONNET: Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: 
   - `krown-dev-event-study-candles` refined p2 SONNET: Krown DEV event study 3/3: candle hypotheses H-C1, H-C2 (H-T1 not run); DONE when: DEV_RESULTS.md has N, power
   - `krown-dev-event-study-levels` refined p2 SONNET: Krown DEV event study 2/3: level and moving-average hypotheses H-M1, H-M3, H-Z1 (H-M2 not run); DONE when: DEV
@@ -256,7 +255,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Spec / sources: `papers/01_MASTERS_PITCHFORK_FOUNDATIONS.md`; `papers/02_PITCHFORK_APPLICATION_ON_BTC.md`; `MyTradingSys/research/pitchfork_2026-10-19/RESEARCH_PITCHFORK_LAYER.md`; `papers/03_YOUTUBE_PITCHFORK_MASTERS_BTC_STUDY.md`
 - Code: `MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py`; `MyTradingSys/research/sim_desk/studies/pitchfork.py`; `src/main/java/datafeed/PitchforkSignalLayer.java`
 - Ledger: `MyTradingSys/research/pitchfork_2026-10-19/TRIALS_PITCHFORK.csv`; `MyTradingSys/research/pitchfork_2026-10-19/TRIALS_PITCHFORK_4H.csv`
-- Codex lab reports (newest 2 of 2): `MyTradingSys/research/layer_lab/reports/2026-11-02_mts-audit-1103-independent-recheck.md`; `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-pitchfork-gpt-rederive.md`
+- Codex lab reports (newest 3 of 3): `MyTradingSys/research/layer_lab/reports/2026-11-03_mts-audit-1103-independent-recheck.md`; `MyTradingSys/research/layer_lab/reports/2026-11-02_mts-audit-1103-independent-recheck.md`; `MyTradingSys/research/layer_lab/reports/2026-10-28_lf-pitchfork-gpt-rederive.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `mts-audit-1103-independent-recheck` ready p1 CODEX: Independent recheck of research/mts_audit_2026-11-03/AUDIT.md: rerun pitchfork_recheck.py logic from your own 
   - `pitchfork-engine-implement-hagopian-fail` refined p2 OPUS: Pitchfork engine: implement Hagopian failure breakout candidates (PF-HAG-L / PF-HAG-S) in Java

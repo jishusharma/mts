@@ -84,5 +84,15 @@
  "source_files": [
   "MyTradingSys/research/pit_levels_2026-10-16/REPORT.md"
  ],
- "commit": "373fb4458"
+ "commit": "373fb4458",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "1. Verdict",
+  "n": 1835,
+  "net_r": 0.75,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: 1. Verdict · n=1835 · net R after fees +0.750 · try n/a · fee break-even n/a"
+ }
 }

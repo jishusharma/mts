@@ -36,5 +36,15 @@
  "source_files": [
   "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/c7_nuc_results.md"
  ],
- "commit": "da76b6df9"
+ "commit": "da76b6df9",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "\": \"PASS\", \"evidence\": \"aibridge_verify: 29 rows, no FAIL\"},",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: \": \"PASS\", \"evidence\": \"aibridge_verify: 29 rows, no FAIL\"}, · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

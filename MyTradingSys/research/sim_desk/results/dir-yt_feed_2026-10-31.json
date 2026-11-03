@@ -37,5 +37,15 @@
  "source_files": [
   "MyTradingSys/research/yt_feed_2026-10-31/CCU_RULES_2026-10-31.md"
  ],
- "commit": "e8420fbb5"
+ "commit": "e8420fbb5",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Videos read: 8 (8 English transcripts captioned, 0 UNVERIFIED).",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Videos read: 8 (8 English transcripts captioned, 0 UNVERIFIED). · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

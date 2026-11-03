@@ -51,5 +51,15 @@
  "source_files": [
   "MyTradingSys/research/fable_run6_powered_prereg/RESULT.md"
  ],
- "commit": "2b80d7ecf"
+ "commit": "2b80d7ecf",
+ "banner": {
+  "state": "FAIL",
+  "tone": "bad",
+  "verdict": "INCONCLUSIVE. C0 n 420 trades on 332 entry days (need >= 439), mean net R +0.1312, SE 0.0760, t +1.73 (need >= 3.364), mean gross R +0.1527 vs 4 x mean fee R 0.0861.",
+  "n": 420,
+  "net_r": 0.1312,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "FAIL · verdict as written: INCONCLUSIVE. C0 n 420 trades on 332 entry days (need >= 439), mean net R +0.1312, SE 0.0760, t +1.73 (need >= 3.364), mean gross R +0.1527 vs 4 x mean fee R 0.0861. · n=420 · net R after fees +0.131 · try n/a · fee break-even n/a"
+ }
 }

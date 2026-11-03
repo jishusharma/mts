@@ -33,5 +33,15 @@
  "source_files": [
   "MyTradingSys/research/indicator_audit_2026-10-14/AUDIT.md"
  ],
- "commit": "ac0f4e6e6"
+ "commit": "ac0f4e6e6",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Trust tag: MACHINE-OK (not VERIFIED: no non-Claude column is filled yet).",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Trust tag: MACHINE-OK (not VERIFIED: no non-Claude column is filled yet). · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

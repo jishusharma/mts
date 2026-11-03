@@ -12,6 +12,7 @@ import csv
 import datetime as dt
 import json
 import os
+import re
 import statistics
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -85,7 +86,115 @@ def build_data(rule, rows):
     }
 
 
+MIN_N = 30   # under this many filled trades a result is never a pass (desk.MIN_BUCKET uses the same line)
+N_LABELS = ("filled trades", "trades filled", "Trades", "trades (first count in the source)", "sample size n (first in the source, may not be trades)")
+NET_LABELS = ("average per trade, after fees", "mean net R per trade", "net R after fees (first value in the source)")
+_NUM = re.compile(r"[+\-]?\d+(?:\.\d+)?")
+CAPTION_RE = re.compile(r"(\d{4}-\d\d-\d\d \d\d:\d\d) UTC\s+[+\-]\d+\.\d+ R (long|short), (.+) \((\d+m)\)\s*$")
+
+
+def _kpi_num(r, labels):
+    for lab in labels:
+        for k in r.get("kpis", []):
+            if k.get("label") == lab:
+                m = _NUM.search(str(k.get("value", "")).replace(",", ""))
+                if m:
+                    return float(m.group(0))
+    return None
+
+
+def banner_of(r):
+    """The one fixed verdict banner (survey C2): state, filled n, net R after fees, try number, fee break-even if exported.
+    Only PASS needs n >= MIN_N, a verdict written as good and a net R above zero; n < MIN_N is TOO_FEW whatever the verdict says."""
+    v = r.get("verdict")
+    label = v.get("label", "") if isinstance(v, dict) else str(v or "")
+    tone = v.get("tone") if isinstance(v, dict) else None
+    n = _kpi_num(r, N_LABELS)
+    n = int(n) if n is not None else None
+    net = _kpi_num(r, NET_LABELS)
+    try_no = _kpi_num(r, ("try number",))
+    try_no = int(try_no) if try_no is not None else None
+    be = r.get("fee_breakeven_x")
+    if be is None:
+        be = _kpi_num(r, ("fee break-even (x the fee)",))
+    if n is None:
+        state, head = "UNCLEAR", "NO TRADE COUNT"
+    elif n < MIN_N:
+        state, head = "TOO_FEW", "TOO FEW TRADES"
+    elif tone == "bad" or label.upper().startswith("FAIL"):
+        state, head = "FAIL", "FAIL"
+    elif tone == "good" and net is not None and net > 0:
+        state, head = "PASS", "PASS"
+    else:
+        state, head = "UNCLEAR", "UNCLEAR"
+    bt = {"PASS": "good", "FAIL": "bad", "TOO_FEW": "warn", "UNCLEAR": ""}[state]
+    text = "%s · verdict as written: %s · n=%s · net R after fees %s · try %s · fee break-even %s" % (
+        head, label or "none", "?" if n is None else n, "n/a" if net is None else "%+.3f" % net,
+        "n/a" if try_no is None else "#%d" % try_no, "n/a" if be is None else "x%s" % be)
+    return {"state": state, "tone": bt, "verdict": label, "n": n, "net_r": net, "try_no": try_no, "breakeven_x": be, "text": text}
+
+
+def trade_row(item):
+    """Trade fields of one desk chart item, read from its own caption (date, side, exit reason); None for event charts."""
+    txt = re.findall(r"<text[^>]*>([^<]*)</text>", item.get("svg", ""))
+    m = CAPTION_RE.search(txt[-1].strip()) if txt else None
+    if not m:
+        return None
+    return {"when": m.group(1), "side": m.group(2), "net_r": item.get("net_r"), "exit_reason": m.group(3), "span": m.group(4)}
+
+
+def add_trade_rows(r):
+    """Add when / side / exit_reason to every winner/loser chart item (fields only added). Returns the number of rows added."""
+    k = 0
+    for e in r.get("examples", []):
+        if e.get("kind") == "charts":
+            for it in e.get("items", []):
+                row = trade_row(it)
+                if row:
+                    it.update({x: row[x] for x in ("when", "side", "exit_reason", "span")})
+                    k += 1
+    return k
+
+
 RESULTS_DIR = os.path.normpath(os.path.join(HERE, "..", "results"))
+
+STABLE_YEARS = 2   # judged years (>= MIN_N trades each) needed before a run can be called stable
+
+
+def stability_of(years):
+    """Year-by-year flag (survey C4) from desk.breakdown()['year'] rows [{k, n, mean, few}]. A year under MIN_N trades is labelled
+    too few and never judged. STABLE = at least 2 judged years and every judged year has a mean net R above zero;
+    a judged year at or below zero makes it NOT_STABLE (one good year among bad ones included); fewer than 2 judged years = TOO_FEW;
+    no split exported = UNKNOWN."""
+    if not years:
+        return {"state": "UNKNOWN", "tone": "", "judged": 0, "text": "YEAR SPLIT NOT EXPORTED for this run (re-run it on the desk to add it); not judged"}
+    judged = [y for y in years if y["n"] >= MIN_N and not y.get("few")]
+    few = [y["k"] for y in years if y not in judged]
+    tail = (" (too few trades, not judged: %s)" % ", ".join(few)) if few else ""
+    if len(judged) < STABLE_YEARS:
+        return {"state": "TOO_FEW", "tone": "warn", "judged": len(judged),
+                "text": "TOO FEW TRADES PER YEAR: %d year(s) with %d+ trades, need %d%s" % (len(judged), MIN_N, STABLE_YEARS, tail)}
+    bad = [y["k"] for y in judged if y["mean"] <= 0]
+    if bad:
+        return {"state": "NOT_STABLE", "tone": "bad", "judged": len(judged),
+                "text": "NOT STABLE: net R after fees is not above zero in %s of %d judged years%s" % (", ".join(bad), len(judged), tail)}
+    return {"state": "STABLE", "tone": "good", "judged": len(judged),
+            "text": "STABLE: net R after fees above zero in all %d judged years%s" % (len(judged), tail)}
+
+
+def check_curve_bands(r, fn="result"):
+    """Every curve example must carry the `mc` field (a band dict, or null for a run too short to reshuffle)."""
+    for e in r.get("examples", []):
+        if e.get("kind") == "curve":
+            if "mc" not in e:
+                raise ValueError("%s: curve example has no Monte Carlo band field (mc); run export_results.py" % fn)
+            if e["mc"] is not None:
+                for k in ("lo", "hi", "dd_lo", "dd_hi", "shuffles"):
+                    if k not in e["mc"]:
+                        raise ValueError("%s: mc band is missing %s" % (fn, k))
+                if len(e["mc"]["lo"]) != len(e["r"]) or len(e["mc"]["hi"]) != len(e["r"]):
+                    raise ValueError("%s: mc band length differs from the curve" % fn)
+
 REQUIRED = ("id", "family", "title", "what", "how", "window", "verdict", "why", "kpis", "examples", "source_files", "commit")
 
 
@@ -103,7 +212,86 @@ def collect(results_dir):
         for w in r["what"]:
             if w.get("label") not in ("SOURCED", "OURS"):
                 raise ValueError("%s: parameter %r needs label SOURCED or OURS" % (fn, w.get("name")))
+        check_curve_bands(r, fn)
+        add_trade_rows(r)
+        r.setdefault("banner", banner_of(r))
+        r["stability"] = (stability_of(r.get("years")))
         out.append(r)
+    hm = heatmaps_of(out)
+    for r in out:
+        for study, panels in hm.items():
+            if panels and r["id"].startswith("desk-%s-" % study):
+                r["heatmaps"] = panels
+    return out
+
+
+def parse_settings(study, text):
+    """The desk's Settings line -> dict of its parameters (the line is written by desk.py; a line this cannot read gives {})."""
+    t = text.split()
+    try:
+        if study == "tom_vp":   # prior_day RETURN n6 shift OFF stop 1ATR target POC ...
+            return {"anchor": t[0], "setup": t[1], "n": t[2][1:], "shift": t[4], "target": t[8]}
+        if study == "fabio_v3":   # C m15 push OFF f0.5% rule exit ...   |   B N120 f0.5% target 2R ...
+            if t[0] == "C":
+                return {"model": "C", "m": t[1][1:], "push": t[3], "f": t[4][1:-1], "exit": " ".join(t[5:7]) if t[5] != "target" else "target " + t[6]}
+            return {"model": "B", "N": t[1][1:], "f": t[2][1:-1], "exit": " ".join(t[3:5]) if t[3] != "target" else "target " + t[4]}
+    except IndexError:
+        pass
+    return {}
+
+
+# Two-parameter grids per study: x and y vary, `fix` holds the rest at the first grid run's value (survey C5). OURS, not the trader's.
+HEATMAPS = {
+    "tom_vp": [
+        {"title": "Anchor x setup (6 closes outside, shift OFF, target POC)", "x": "anchor", "y": "setup",
+         "fix": {"n": "6", "shift": "OFF", "target": "POC"}},
+        {"title": "Closes outside x setup (prior_day, shift OFF, target POC)", "x": "n", "y": "setup",
+         "fix": {"anchor": "prior_day", "shift": "OFF", "target": "POC"}}],
+    "fabio_v3": [
+        {"title": "Model C: first-window minutes x push (floor 0.5 %, rule exit)", "x": "m", "y": "push",
+         "fix": {"model": "C", "f": "0.5", "exit": "rule exit"}},
+        {"title": "Model B: balance window x floor % (rule exit)", "x": "N", "y": "f",
+         "fix": {"model": "B", "exit": "rule exit"}}],
+}
+
+
+def lone_peak(cells):
+    """The one cell worth flagging: of the cells with at least MIN_N trades (3 or more of them), exactly one has a mean net R above zero.
+    A positive cell under MIN_N trades is never a peak; two or more positive cells are a plateau, not a lone peak."""
+    ok = [c for c in cells if c["n"] >= MIN_N]
+    pos = [c for c in ok if c["mean"] is not None and c["mean"] > 0]
+    return pos[0] if len(ok) >= 3 and len(pos) == 1 else None
+
+
+def _sort_key(v):
+    try:
+        return (0, float(v))
+    except ValueError:
+        return (1, v)
+
+
+def heatmaps_of(tests):
+    """study id -> list of panels {title, x, y, xs, ys, cells[{id, x, y, n, mean, thin}], peak}; built from the exported desk runs
+    (no re-run): n and mean are each run's own banner numbers. thin = under MIN_N trades (greyed on the page)."""
+    out = {}
+    for study, panels in HEATMAPS.items():
+        runs = []
+        for t in tests:
+            if t["id"].startswith("desk-%s-" % study) and t.get("banner", {}).get("n"):
+                st = next((w["value_plain"] for w in t["what"] if w["name"] == "Settings"), "")
+                runs.append((t, parse_settings(study, st)))
+        res = []
+        for pn in panels:
+            cells = []
+            for t, p in runs:
+                if p and all(p.get(k) == v for k, v in pn["fix"].items()) and pn["x"] in p and pn["y"] in p:
+                    b = t["banner"]
+                    cells.append({"id": t["id"], "x": p[pn["x"]], "y": p[pn["y"]], "n": b["n"], "mean": b["net_r"], "thin": b["n"] < MIN_N})
+            if cells:
+                xs = sorted({c["x"] for c in cells}, key=_sort_key)
+                ys = sorted({c["y"] for c in cells}, key=_sort_key)
+                res.append({"title": pn["title"], "x": pn["x"], "y": pn["y"], "xs": xs, "ys": ys, "cells": cells, "peak": lone_peak(cells)})
+        out[study] = res
     return out
 
 
@@ -153,6 +341,9 @@ select{background:var(--card);color:var(--ink);border:1px solid var(--line);bord
 .ex{border-top:1px solid var(--line);padding-top:4px}
 ul{margin:4px 0;padding-left:20px}li{margin:3px 0}
 .src{font-size:12px;color:var(--mute);word-break:break-all}
+.banner{margin:10px 0;padding:8px 12px;border:2px solid var(--mute);border-radius:8px;font-weight:600;font-size:14px}.banner.good{border-color:var(--good);color:var(--good)}.banner.bad{border-color:var(--bad);color:var(--bad)}.banner.warn{border-color:var(--warn);color:var(--warn)}
+.tl{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin:8px 0}@media(min-width:900px){.tl{grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);align-items:start}}
+#tlist tr[data-i]{cursor:pointer}#tlist tr.sel{background:var(--bg);outline:2px solid var(--acc)}#tpane svg{background:#fff;border:1px solid var(--line);border-radius:6px}
 </style></head><body>
 <header><h1>Test simulator</h1><div class="sub">Every test, what it did, what it found and why. Past results on DEV data only; sealed windows unread. Percent distances and timestamps only, no prices.</div></header>
 <main><nav id="nav" aria-label="Tests"></nav><article id="view" aria-live="polite"></article></main>
@@ -209,27 +400,80 @@ function show(i){i=Math.max(0,Math.min(n-1,+i));sl.value=i;const t=tr[i];$("dot"
 const ys=t.l2==null?[0]:[0,t.l2,t.t1,t.t2],lo=Math.min(...ys),hi=Math.max(...ys),sp=(hi-lo)||1,y=v=>170-(v-lo)/sp*150;
 const row=(v,l,c)=>'<line x1="150" x2="560" y1="'+y(v)+'" y2="'+y(v)+'" stroke="'+c+'" stroke-dasharray="4 3"/><text x="146" y="'+(y(v)+4)+'" text-anchor="end" font-size="11" fill="var(--ink)">'+l+'</text><text x="564" y="'+(y(v)+4)+'" font-size="11" fill="var(--mute)">'+(v>=0?"+":"")+v.toFixed(2)+"%</text>";
 $("ladder").innerHTML=t.l2==null?"":row(t.t2,LB.t2||"Target 2","var(--good)")+row(t.t1,LB.t1||"Target 1","var(--good)")+row(0,LB.zero||"Touched level","var(--acc)")+row(t.l2,LB.l2||"Deeper entry (filled here)","var(--warn)")+'<text x="150" y="186" font-size="11" fill="var(--mute)">Distance from the touched level; up is in favour of the trade</text>';
-$("tinfo").innerHTML="Trade "+(i+1)+" of "+n+": "+esc(t.d)+", "+(t.s>0?"long":"short")+" at "+esc(t.f)+'. Result <b class="'+(t.r<0?"bad":"good")+'">'+f2(t.r)+" "+U+"</b> after fees.";}
+if(window.cvShow&&$("cvs")&&$("cvs").options.length===n)cvShow(i);$("tinfo").innerHTML="Trade "+(i+1)+" of "+n+": "+esc(t.d)+", "+(t.s>0?"long":"short")+" at "+esc(t.f)+'. Result <b class="'+(t.r<0?"bad":"good")+'">'+f2(t.r)+" "+U+"</b> after fees.";}
 sl.oninput=()=>show(sl.value);$("prev").onclick=()=>show(+sl.value-1);$("next").onclick=()=>show(+sl.value+1);
 $("pick").onchange=e=>{if(e.target.value!=="")show(e.target.value)};
 $("play").onclick=()=>{if(tm){clearInterval(tm);tm=null;$("play").textContent="Play";return}$("play").textContent="Pause";tm=setInterval(()=>{if(+sl.value>=n-1){$("play").onclick();return}show(+sl.value+1)},120)};
 show(0);}};}
-function curveEx(x){const r=x.r,n=r.length,W=600,H=160,mn=Math.min(0,...r),mx=Math.max(0,...r),sp=(mx-mn)||1;
-const X=i=>8+i*(W-16)/(n-1||1),Y=v=>H-8-(v-mn)/sp*(H-16);
-return '<svg viewBox="0 0 600 160" role="img" aria-label="Running total of net R"><line x1="8" x2="592" y1="'+Y(0)+'" y2="'+Y(0)+'" stroke="var(--line)"/><polyline fill="none" stroke="var(--acc)" stroke-width="1.5" points="'+r.map((v,i)=>X(i).toFixed(1)+","+Y(v).toFixed(1)).join(" ")+'"/></svg><p class="note">'+n+" points; ends at "+r[n-1].toFixed(2)+" R = $"+x.usd[n-1].toFixed(0)+" from $"+x.start_usd+" ("+x.risk_pct+" % risked per trade, simple sum).</p>";}
+function tradeChart(x){const tr=x.trades,n=tr.length,M=(x.tf_min||30)*60000;
+const h='<p class="note"><b>How to read it.</b> The rule is checked on every candle; a trade happens only where it fires. Each picture below is one trade on the '+esc(x.tf||"30m")+' chart: '+
+'<span class="good">&#9650; entry</span> (open of the candle after the signal), <span class="bad">&#9660; exit</span>, the shaded box is the time in the trade (green = won, red = lost after fees), the dashed line is the entry price (0 %). '+
+'Prices are shown as % from the entry. Lower panes: WaveTrend (blue dot = the buy dot at or under -53), RSI (orange line = the divergence: price made a lower low, RSI a higher low). '+esc(x.stop_note||"")+'</p>'+
+'<div class="ctl"><button id="cvp" aria-label="Previous trade">&lt; Prev</button><button id="cvn" aria-label="Next trade">Next &gt;</button><select id="cvs" aria-label="Pick a trade">'+
+tr.map((t,i)=>'<option value="'+i+'">#'+(i+1)+" "+esc(t.d)+" UTC: "+f2(t.net)+" %</option>").join("")+'</select><button id="cvr" aria-label="Replay this trade candle by candle">&#9654; Replay this trade</button><button id="cvst" aria-label="One candle forward">Step 1 candle &#9656;</button></div><div id="cvph" style="font-size:15px;min-height:2.6em;margin:4px 0"></div><svg id="cvg" viewBox="0 0 700 430" style="max-width:min(100%,calc((100vh - 140px)*1.49))" role="img" aria-label="Candles of the selected trade"></svg><div id="cvi" class="note"></div>';
+const init=()=>{let cur=0,up=null;const stop=()=>{if(window.cvT){clearInterval(window.cvT);window.cvT=null}$("cvr").innerHTML="&#9654; Replay this trade"};const go=i=>{stop();i=Math.max(0,Math.min(n-1,+i));const sl=$("slider");if(sl&&+sl.max===n-1){sl.value=i;sl.oninput()}else cvShow(i)};
+$("cvp").onclick=()=>go(+$("cvs").value-1);$("cvn").onclick=()=>go(+$("cvs").value+1);$("cvs").onchange=e=>go(e.target.value);const first=()=>Math.max(0,tr[cur].sig-12),step=()=>{const m=tr[cur].c.length;up=(up==null||up>=m-1)?first():up+1;cvShow(cur,up);if(up>=m-1)stop()};$("cvst").onclick=()=>{stop();step()};$("cvr").onclick=()=>{if(window.cvT){stop();return}up=null;step();$("cvr").innerHTML="&#10074;&#10074; Pause";window.cvT=setInterval(step,450)};
+window.cvShow=(i,u)=>{cur=+i;const t=tr[i],c=t.c,m=c.length;if(u==null){u=m-1;up=null}const live=u<m-1||up!=null,L=46,R=600,W=(R-L)/m,X=k=>L+k*W+W/2,win=t.net>=0;$("cvs").value=i;
+const lo=Math.min(...c.map(q=>q[2])),hi=Math.max(...c.map(q=>q[1])),sp=(hi-lo)||1,Y=v=>14+(hi-v)/sp*196;
+const wv=t.w1.concat(t.w2).filter(v=>v!=null),wl=Math.min(-60,...wv),wh=Math.max(10,...wv),WY=v=>236+(wh-v)/(wh-wl)*84;
+const RY=v=>346+(100-v)/100*70;let s="";
+const ue=Math.min(u+1,t.ext),pn=u>=t.ext?t.net:c[Math.min(u,m-1)][3];if(u>=t.ent)s+='<rect x="'+(X(t.ent)-W/2)+'" y="14" width="'+((ue-t.ent)*W)+'" height="196" fill="'+(pn>=0?"var(--good)":"var(--bad)")+'" opacity=".12"/>';
+if(u>=t.sig)s+='<rect x="'+(X(t.sig)-W/2)+'" y="14" width="'+W+'" height="406" fill="var(--acc)" opacity=".10"/>';if(live)s+='<line x1="'+(X(u)+W/2)+'" x2="'+(X(u)+W/2)+'" y1="14" y2="420" stroke="var(--warn)" stroke-dasharray="2 2"/>';
+s+='<line x1="'+L+'" x2="'+R+'" y1="'+Y(0)+'" y2="'+Y(0)+'" stroke="var(--mute)" stroke-dasharray="4 3"/><text x="'+(L+2)+'" y="'+(Y(0)-4)+'" font-size="10" fill="var(--mute)">0 % = where we bought</text>';
+for(let g=Math.ceil(lo);g<=Math.floor(hi);g++)s+='<text x="'+(R+4)+'" y="'+(Y(g)+4)+'" font-size="10" fill="var(--mute)">'+(g>0?"+":"")+g+"%</text>";
+c.forEach((q,k)=>{if(k>u)return;const up=q[3]>=q[0],col=up?"var(--good)":"var(--bad)",x0=X(k);s+='<line x1="'+x0+'" x2="'+x0+'" y1="'+Y(q[1])+'" y2="'+Y(q[2])+'" stroke="'+col+'"/><rect x="'+(x0-W*0.35)+'" y="'+Y(Math.max(q[0],q[3]))+'" width="'+(W*0.7)+'" height="'+Math.max(1,Math.abs(Y(q[0])-Y(q[3])))+'" fill="'+col+'"/>';});
+const [p,qd]=t.div;if(u>=t.sig)s+='<line x1="'+X(p)+'" x2="'+X(qd)+'" y1="'+(Y(c[p][2])+6)+'" y2="'+(Y(c[qd][2])+6)+'" stroke="#e8912d" stroke-width="2"/>';
+const ey=Y(c[t.ent][0]),xy=Y(c[t.ext][0]);
+if(u>=t.ent)s+='<path d="M'+X(t.ent)+","+(ey+4)+" l-7,12 h14 z\" fill=\"var(--good)\"/><text x=\""+X(t.ent)+'" y="'+(ey+30)+'" font-size="11" text-anchor="middle" fill="var(--good)">entry</text>';
+if(u>=t.ext)s+='<path d="M'+X(t.ext)+","+(xy-4)+" l-7,-12 h14 z\" fill=\"var(--bad)\"/><text x=\""+X(t.ext)+'" y="'+(xy-20)+'" font-size="11" text-anchor="middle" fill="var(--bad)">exit '+f2(t.net)+"%</text>";
+const line=(v,Yf,col)=>'<polyline fill="none" stroke="'+col+'" stroke-width="1.3" points="'+v.map((y,k)=>y==null||k>u?"":X(k).toFixed(1)+","+Yf(y).toFixed(1)).join(" ")+'"/>';
+[[0,"0 = exit line"],[-53,"-53 = buy trigger"]].forEach(([v,l])=>{s+='<line x1="'+L+'" x2="'+R+'" y1="'+WY(v)+'" y2="'+WY(v)+'" stroke="var(--line)" stroke-dasharray="3 3"/><text x="'+(R+4)+'" y="'+(WY(v)+4)+'" font-size="10" fill="var(--mute)">'+l+"</text>"});
+s+=line(t.w1,WY,"var(--acc)")+line(t.w2,WY,"var(--mute)")+(u>=t.sig?'<circle cx="'+X(t.sig)+'" cy="'+WY(t.w1[t.sig])+'" r="5" fill="var(--acc)"/>':"")+'<text x="'+L+'" y="248" font-size="11" fill="var(--mute)">WaveTrend</text>';
+[[40,"40"],[50,"50"]].forEach(([v,l])=>{s+='<line x1="'+L+'" x2="'+R+'" y1="'+RY(v)+'" y2="'+RY(v)+'" stroke="var(--line)" stroke-dasharray="3 3"/><text x="'+(R+4)+'" y="'+(RY(v)+4)+'" font-size="10" fill="var(--mute)">'+l+"</text>"});
+s+=line(t.rsi,RY,"var(--ink)")+(u<t.sig?"":'<line x1="'+X(p)+'" x2="'+X(qd)+'" y1="'+RY(t.rsi[p])+'" y2="'+RY(t.rsi[qd])+'" stroke="#e8912d" stroke-width="2"/>')+'<text x="'+L+'" y="358" font-size="11" fill="var(--mute)">RSI 14</text>';
+const tl=k=>new Date(t.t0+k*M).toISOString().slice(5,16).replace("T"," ");[0,t.sig,t.ext,m-1].forEach(k=>{s+='<text x="'+X(k)+'" y="428" font-size="10" text-anchor="middle" fill="var(--mute)">'+tl(k)+"</text>"});
+const wv1=v=>v==null?"-":v.toFixed(0),T=k=>tl(k)+" UTC";let ph;if(!live)ph='Whole trade shown. Press <b>&#9654; Replay this trade</b> to watch it candle by candle.';else if(u<t.sig)ph='<b>WAITING</b> &middot; '+T(u)+': the rule is checked on this candle and is not true. WaveTrend '+wv1(t.w1[u])+' (needs a buy dot at -53 or lower) and RSI divergence.';else if(u===t.sig)ph='<b style="color:var(--acc)">SIGNAL</b> &middot; '+T(u)+' close: WaveTrend buy dot at '+wv1(t.w1[u])+' with RSI divergence (orange). We buy at the open of the next candle.';else if(u<t.ext-1)ph='<b>IN TRADE</b> &middot; candle '+(u-t.ent+1)+' of max 60 &middot; now <b class="'+(c[u][3]>=0?"good":"bad")+'">'+f2(c[u][3])+' %</b> from entry &middot; WaveTrend '+wv1(t.w1[u])+' (we sell once it closes above 0). No stop loss.';else if(u===t.ext-1)ph='<b style="color:var(--warn)">EXIT SIGNAL</b> &middot; '+T(u)+' close: '+esc(t.why)+'. We sell at the open of the next candle.';else if(u===t.ext)ph='<b class="'+(win?"good":"bad")+'">EXITED</b> &middot; sold at the open of '+T(u)+' &middot; result '+f2(t.net)+' % after fees, held '+t.bars+' candles.';else ph='<b>DONE</b> &middot; trade closed '+f2(t.net)+' % after fees. Prev / Next for another trade.';$("cvph").innerHTML=ph;$("cvg").innerHTML=s;$("cvi").innerHTML="Trade "+(i+1)+" of "+n+": entry "+esc(t.d)+' UTC, held '+t.bars+" candles, exit: "+esc(t.why)+'. Result <b class="'+(win?"good":"bad")+'">'+f2(t.net)+" %</b> after fees.";};
+cvShow(0);};return {html:h,init};}
+function curveEx(x){const r=x.r,n=r.length,W=600,H=170,mc=x.mc,lo=mc?mc.lo:r,hi=mc?mc.hi:r,pk=[];let m=0,dd=0;r.forEach(v=>{m=Math.max(m,v);pk.push(m);dd=Math.max(dd,m-v)});
+const mn=Math.min(0,...r,...lo),mx=Math.max(0,...r,...hi),sp=(mx-mn)||1,X=i=>8+i*(W-16)/(n-1||1),Y=v=>H-8-(v-mn)/sp*(H-16),pt=(a,f)=>a.map((v,i)=>X(i).toFixed(1)+","+Y(f?f(v):v).toFixed(1));
+const band=mc?'<polygon class="mcb" fill="var(--acc)" opacity=".15" points="'+pt(hi).concat(pt(lo).reverse()).join(" ")+'"><title>Reshuffled 5-95 % band</title></polygon>':"";
+const shade='<polygon class="dd" fill="var(--bad)" opacity=".25" points="'+pt(pk).concat(pt(r).reverse()).join(" ")+'"><title>Drawdown: below the earlier peak</title></polygon>';
+const mct=mc?" Blue band: the same trades reshuffled "+mc.shuffles+" times (5th to 95th percent of the running total); worst drawdown of the reshuffles "+mc.dd_lo.toFixed(1)+" to "+mc.dd_hi.toFixed(1)+" R"+(mc.approx?" (approximate: estimated from the sampled curve)":"")+". If the real line sits near the lower edge, luck of the order helped.":" No band: too few trades to reshuffle.";
+return '<svg viewBox="0 0 600 '+H+'" role="img" aria-label="Running total of net R with drawdown shading and Monte Carlo band"><line x1="8" x2="592" y1="'+Y(0)+'" y2="'+Y(0)+'" stroke="var(--line)"/>'+band+shade+'<polyline fill="none" stroke="var(--acc)" stroke-width="1.5" points="'+pt(r).join(" ")+'"/></svg><p class="note">'+n+" points; ends at "+r[n-1].toFixed(2)+" R = $"+x.usd[n-1].toFixed(0)+" from $"+x.start_usd+" ("+x.risk_pct+" % risked per trade, simple sum). Red shading: drawdown from the earlier peak; deepest "+dd.toFixed(2)+" R."+mct+"</p>";}
+function yearStrip(t){const s=t.stability;if(!s)return"";const ys=t.years;
+const tb=ys&&ys.length?'<div class="tw"><table><tr><th>Year</th><th>Trades</th><th>Average net R</th><th></th></tr>'+ys.map(y=>"<tr><td>"+esc(y.k)+"</td><td>"+y.n+'</td><td class="'+(y.few?"":(y.mean>0?"good":"bad"))+'">'+f2(y.mean)+"</td><td>"+(y.few?'<span class="tag">too few trades</span>':"")+"</td></tr>").join("")+"</table></div>":"";
+return '<h2 class="s">Year by year</h2><div class="banner ys-'+esc(s.state)+" "+tone(s.tone)+'" role="status">'+esc(s.text)+"</div>"+tb+'<p class="note">A split of the same DEV trades by calendar year, not a walk-forward test. A year under 30 trades is shown but not judged.</p>';}
+function heatmap(t){const hs=t.heatmaps;if(!hs||!hs.length)return"";let h='<h2 class="s">Neighbour heatmap</h2>';
+hs.forEach(m=>{const cw=84,ch=34,L=96,T=24,W=L+m.xs.length*cw+8,H=T+m.ys.length*ch+8;let g="";
+m.xs.forEach((x,i)=>{g+='<text x="'+(L+i*cw+cw/2)+'" y="16" text-anchor="middle" font-size="11" fill="var(--mute)">'+esc(x)+"</text>"});
+m.ys.forEach((y,j)=>{g+='<text x="'+(L-6)+'" y="'+(T+j*ch+ch/2+4)+'" text-anchor="end" font-size="11" fill="var(--mute)">'+esc(y)+"</text>"});
+m.cells.forEach(c=>{const i=m.xs.indexOf(c.x),j=m.ys.indexOf(c.y),a=Math.min(1,Math.abs(c.mean)/0.3),col=c.thin?"var(--mute)":(c.mean>0?"var(--good)":"var(--bad)"),op=c.thin?0.15:0.15+0.7*a,pk=m.peak&&m.peak.id===c.id,cur=c.id===t.id;
+g+='<g><title>'+esc(m.x+" "+c.x+", "+m.y+" "+c.y+": n="+c.n+", mean net R "+f2(c.mean)+(c.thin?" (under 30 trades, greyed)":"")+(pk?" (lone peak)":""))+'</title><rect x="'+(L+i*cw+2)+'" y="'+(T+j*ch+2)+'" width="'+(cw-4)+'" height="'+(ch-4)+'" rx="4" fill="'+col+'" fill-opacity="'+op+'" stroke="'+(cur?"var(--acc)":"var(--line)")+'" stroke-width="'+(cur?2.5:1)+'"/><text x="'+(L+i*cw+cw/2)+'" y="'+(T+j*ch+ch/2+4)+'" text-anchor="middle" font-size="11" fill="var(--ink)">'+f2(c.mean)+(pk?" ★":"")+"</text></g>"});
+h+="<h3>"+esc(m.title)+'</h3><svg viewBox="0 0 '+W+" "+H+'" style="max-width:'+W+'px;width:100%" role="img" aria-label="'+esc(m.title)+'">'+g+"</svg>"+(m.peak?'<div class="banner warn" role="status">LONE PEAK: only '+esc(m.x+" "+m.peak.x+", "+m.y+" "+m.peak.y)+" is above zero ("+f2(m.peak.mean)+" R, n="+m.peak.n+"); its neighbours are not. A lone peak is more likely luck than an edge.</div>":"")});
+return h+'<p class="note">Colour = average net R per trade after fees (green above zero, red below); hover a cell for n. Grey = under 30 trades, not judged. Blue outline = this run. The other settings are held as the title says; only settings already run are shown, empty cells were not run.</p>';}
+function banner(b){if(!b)return"";return '<div class="banner b-'+esc(b.state)+" "+tone(b.tone)+'" role="status">'+esc(b.text)+"</div>";}
+function chartList(x){const it=x.items,fn=v=>v==null?"-":f2(v)+" R";
+const rows=it.map((c,i)=>'<tr data-i="'+i+'" tabindex="0"><td>'+(i+1)+"</td><td>"+esc(c.when)+" UTC</td><td>"+esc(c.side)+"</td><td>"+esc(c.exit_reason)+'</td><td class="'+(c.net_r<0?"bad":"good")+'">'+fn(c.net_r)+"</td></tr>").join("");
+const h='<div class="tl"><div class="tw"><table id="tlist"><tr><th>#</th><th>Entry (UTC)</th><th>Side</th><th>Exit reason</th><th>Net R</th></tr>'+rows+'</table></div><div id="tpane"></div></div><p class="note">'+it.length+" example trades (typical winners and losers), not every trade. Click a row to see its chart.</p>";
+return {html:h,init:()=>{const sel=i=>{document.querySelectorAll("#tlist tr[data-i]").forEach(r=>r.classList.toggle("sel",+r.dataset.i===i));const c=it[i];$("tpane").innerHTML=c.svg+'<p class="note">'+esc((c.kind==="winner"?"typical winner":"typical loser")+(c.note?": "+c.note:""))+"</p>"};
+const tb=$("tlist");tb.onclick=e=>{const r=e.target.closest("tr[data-i]");if(r)sel(+r.dataset.i)};tb.onkeydown=e=>{const r=e.target.closest("tr[data-i]");if(r&&(e.key==="Enter"||e.key===" ")){e.preventDefault();sel(+r.dataset.i)}};sel(0)}};}
 function example(x){const inits=[];let h='<div class="ex"><h3>'+esc(x.title||"Example")+"</h3>";
 if(x.kind==="table")h+=table(x);else if(x.kind==="stack")h+=stack(x);else if(x.kind==="sides")h+=sides(x);
 else if(x.kind==="curve"&&x.r&&x.r.length)h+=curveEx(x);
+else if(x.kind==="charts"&&x.items&&x.items.length&&x.items.every(c=>c.when&&c.exit_reason)){const r=chartList(x);h+=r.html;inits.push(r.init);}
 else if(x.kind==="charts"&&x.items&&x.items.length)h+='<div class="cg">'+x.items.map(c=>"<figure>"+c.svg+"<figcaption>"+esc((c.label||(c.kind==="winner"?"typical winner":"typical loser"))+(c.note?": "+c.note:""))+"</figcaption></figure>").join("")+"</div>";
 else if(x.kind==="replay"){const r=replay(x);h+=r.html;inits.push(r.init);}
+else if(x.kind==="trade_chart"&&x.trades&&x.trades.length){const r=tradeChart(x);h+=r.html;inits.push(r.init);}
 else h+='<p class="note">no example trades exported</p>';
 if(x.caption)h+='<p class="note">'+esc(x.caption)+"</p>";return {html:h+"</div>",inits};}
-function render(id){if(tm){clearInterval(tm);tm=null}const t=TESTS.find(x=>x.id===id);
+function render(id){if(tm){clearInterval(tm);tm=null}window.cvShow=null;if(window.cvT){clearInterval(window.cvT);window.cvT=null}const t=TESTS.find(x=>x.id===id);
 if(!t){const r=CAT.find(x=>x.id===id);if(r){document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-current",b.dataset.id===id));$("view").innerHTML=stub(r);return}}
 if(!t){render(TESTS[0].id);return}
 document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-current",b.dataset.id===t.id));
-let h='<h1 style="font-size:20px;margin:0 0 6px">'+esc(t.title)+'</h1><span class="pill '+tone(t.verdict.tone)+'">'+esc(t.verdict.label)+"</span>";
+let h='<h1 style="font-size:20px;margin:0 0 6px">'+esc(t.title)+'</h1><span class="pill '+tone(t.verdict.tone)+'">'+esc(t.verdict.label)+"</span>"+banner(t.banner);
 h+='<div class="kpis">'+t.kpis.map(k=>'<div class="kpi"><b class="'+tone(k.tone)+'">'+esc(k.value)+"</b><span>"+esc(k.label)+"</span></div>").join("")+"</div>";
+h+=yearStrip(t);
+h+=heatmap(t);
 h+='<h2 class="s">What was tested</h2><dl>'+t.what.map(w=>"<dt>"+esc(w.name)+' <span class="tag '+esc(w.label)+'">'+esc(w.label)+"</span></dt><dd>"+esc(w.value_plain)+"</dd>").join("")+"</dl>";
 h+='<p class="note"><b>Window:</b> '+esc(t.window||"not stated in the source")+"</p><p class=\"note\">SOURCED = taken from a named source (the trader's words or a fee table). OURS = our own judgement or tuned on DEV data.</p>";
 h+='<h2 class="s">How</h2><p>'+esc(t.how)+"</p>";

@@ -2,10 +2,21 @@
   "approved_by": "",
   "asks": "",
   "class": "C1",
+  "closed": "2026-11-03T12:07:26Z",
   "commands": [
     "python MyTradingSys/research/krown_ta101_2026-10-13/tools/fetch_daily_majors.py --out F:/MTS/data/krown_daily",
     "python MyTradingSys/research/krown_ta101_2026-10-13/tools/build_data_coverage.py --data F:/MTS/data/krown_daily"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-03T12:07:25Z",
+    "misses": 26,
+    "reads": [
+      "MyTradingSys/research/krown_ta101_2026-10-13/tools/fetch_daily_majors.py",
+      "MyTradingSys/research/krown_ta101_2026-10-13/DATA_COVERAGE.md"
+    ],
+    "session": "agent-ac30183bcfed485c6"
+  },
   "created": "2026-10-17T04:34:46Z",
   "depends_on": [],
   "done_when": "A CSV of CME BTC daily volume (date, volume, source url) is on F: with a gap count, or the card result says NOT AVAILABLE with the sources tried; no account or paid data used.",
@@ -16,6 +27,12 @@
   "kind": "run",
   "lane": "JIS-NB",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "CME BTC=F front-month daily (Yahoo, proxy): 2233 rows 2017-12-18..2026-11-03, 84 weekday g",
+      "ref": "307c6bbcd",
+      "utc": "2026-11-03T12:07:26Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -41,7 +58,12 @@
   "refs": [
     "q-krown-volume-venue"
   ],
-  "result": "",
+  "result": "CME BTC=F front-month daily (Yahoo, proxy): 2233 rows 2017-12-18..2026-11-03, 84 weekday gaps, 8 zero-vol days; F:/MTS/data/krown_daily/CME_BTC_F_1d.csv",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/krown_ta101_2026-10-13/DATA_COVERAGE.md",
     "MyTradingSys/research/krown_ta101_2026-10-13/DATA_MANIFEST.csv",
@@ -55,12 +77,13 @@
   "scope_sha": "d8a77746809b",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Search for a free public CME BTC futures daily volume source (CME settlement pages, public data mirrors).",
     "Fetch it to F:/MTS/data/krown_daily/ with the same file layout as the Coinbase series.",
     "Report rows, date range and gaps."
   ],
+  "taken": "2026-11-03T12:07:26Z",
   "tests": "Run lane: no code. Fail-first = the CSV does not exist before the run; pass = CSV or NOT AVAILABLE in result.",
   "title": "Krown CME BTC futures daily volume (public data only) as third volume arm",
   "updated": "2026-10-18T10:00:00Z",

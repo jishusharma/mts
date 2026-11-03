@@ -45,5 +45,15 @@
  "source_files": [
   "MyTradingSys/research/bounce_shift_2026-10-30/RESULT.md"
  ],
- "commit": "a4730f362"
+ "commit": "a4730f362",
+ "banner": {
+  "state": "FAIL",
+  "tone": "bad",
+  "verdict": "Descriptive counts only: no fees, no edge claim. Definitions in the header of study.py (all OURS). Data: Binance USD-M BTCUSDT 1m archive rolled to 5m, OI from the metrics archive, DEV 2022-2025. 2026 untouched.",
+  "n": 755,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "FAIL · verdict as written: Descriptive counts only: no fees, no edge claim. Definitions in the header of study.py (all OURS). Data: Binance USD-M BTCUSDT 1m archive rolled to 5m, OI from the metrics archive, DEV 2022-2025. 2026 untouched. · n=755 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

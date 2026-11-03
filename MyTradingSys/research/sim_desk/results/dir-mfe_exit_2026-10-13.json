@@ -76,5 +76,15 @@
  "source_files": [
   "MyTradingSys/research/mfe_exit_2026-10-13/REPORT.md"
  ],
- "commit": "ad4e461d6"
+ "commit": "ad4e461d6",
+ "banner": {
+  "state": "FAIL",
+  "tone": "bad",
+  "verdict": "unchanged (nothing survives). The VALIDATE check was not redone: the clean VALIDATION 2024-07..12 was seen through the old rule choice, so a VALIDATE pass would need a new pre-registration.",
+  "n": 3577,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "FAIL · verdict as written: unchanged (nothing survives). The VALIDATE check was not redone: the clean VALIDATION 2024-07..12 was seen through the old rule choice, so a VALIDATE pass would need a new pre-registration. · n=3577 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

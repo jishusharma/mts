@@ -1,0 +1,94 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/make_layers_board.py && python scripts/dev/make_layers_md.py && python scripts/dev/make_home.py && python scripts/dev/test_artifacts.py"
+  ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-03T13:07:15Z",
+    "misses": 35,
+    "reads": [
+      "scripts/dev/extra_tests.tsv",
+      "MyTradingSys/research/sim_desk/page.html",
+      "MyTradingSys/research/sim_desk/export_results.py",
+      "MyTradingSys/research/sim_desk/artifact/test_artifact.py",
+      "MyTradingSys/research/STATUS.md"
+    ],
+    "session": "agent-abecfdab354fcd0a0"
+  },
+  "created": "2026-11-03T13:00:55Z",
+  "depends_on": [],
+  "done_when": "test_artifacts.py green incl. new assertions (14 families, no duplicate tile, no stale date); audit tables A-D re-checked empty; mts_home.html and layers_board.html rebuilt and republished",
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "MTS Home shows every layer family, layer reviews, Eagle_Eyes findings since 10-29 and sim results; no duplicate card, no stale date",
+  "id": "mts-home-rebuild-1103",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: regenerated LAYERS.md",
+      "ref": "025487925200",
+      "utc": "2026-11-03T12:07:48Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "025487925200 ship: regenerated LAYERS.md",
+      "ref": "MyTradingSys/system/LAYERS.md",
+      "utc": "2026-11-03T12:07:48Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-03 ACCEPT (reviewer Agent a41afa0c, FIX applied once; no depends_on by design). DECISION (OURS): A2 (27 grandfathered sources review_by) takes the audit default, extend 14 days, record in OPERATOR_DECISIONS.md. Verify line: content sha, git cherry origin/fast-track <sha> empty, files in ls-tree.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T13:05:52Z",
+  "refs": [
+    "MyTradingSys/system/artifacts/MTS_HOME_AUDIT_2026-11-03.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/make_home.py",
+    "scripts/dev/make_layers_board.py",
+    "scripts/dev/make_layers_md.py",
+    "scripts/dev/test_artifacts.py",
+    "MyTradingSys/research/v1_plan_2026-10-20/D7_ROADMAP.md",
+    "MyTradingSys/system/artifacts/mts_home.html",
+    "MyTradingSys/system/OPERATOR_DECISIONS.md",
+    "MyTradingSys/system/artifacts/registry.json",
+    "MyTradingSys/system/artifacts/layers_board.html",
+    "MyTradingSys/system/LAYERS.md",
+    "MyTradingSys/research/STATUS.md"
+  ],
+  "scope_out": [
+    "no new pages",
+    "no live tree",
+    "no change to registry tile urls"
+  ],
+  "scope_sha": "025487925200",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/system/artifacts/MTS_HOME_AUDIT_2026-11-03.md",
+    "MyTradingSys/system/PLAN_DAY_2026-11-03.md section 2"
+  ],
+  "state": "ready",
+  "steps": [
+    "read audit sections A-E and make_home.py build()/waiting()",
+    "write failing assertions in scripts/dev/test_artifacts.py: Home has a card per layer family (14); Waiting excludes standing decisions (A3); no Old-copies URL table, no duplicate Tom/Fabio tile; D7_ROADMAP Now line dated 2026-11-03 or later",
+    "edit make_home.py per audit E steps 1-2 and D7_ROADMAP.md:14; add Eagle_Eyes since 10-29 and a sim results link",
+    "rerun the STATUS generator (research/STATUS.md is 4 days old), then rebuild in order: make_layers_board, make_layers_md, make_home, test_artifacts",
+    "sync.py ship; Artifact-publish Home and MTS Layers over their registry urls, update last_published"
+  ],
+  "tests": "Fail first: new assertions in scripts/dev/test_artifacts.py, run on the pre-change generator once",
+  "title": "MTS Home rebuild per audit: 14 layer families + reviews + Eagle_Eyes since 10-29 + sim results on Home; cut 3 duplicates, 4 useless, fix 5 stale (make_layers_board, make_layers_md, make_home, test_artifacts)",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

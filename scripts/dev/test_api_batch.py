@@ -75,6 +75,8 @@ class ApiBatchTest(unittest.TestCase):
 
     def test_missing_key_fails_closed(self):
         del os.environ['ANTHROPIC_API_KEY']
+        os.environ['MTS_API_KEY_FILE'] = str(Path(tempfile.mkdtemp()) / 'absent.txt')
+        self.addCleanup(os.environ.pop, 'MTS_API_KEY_FILE', None)
         with self.assertRaises(SystemExit):
             api_batch.call('GET', api_batch.API + '/x')
 
@@ -145,6 +147,10 @@ class ApiBatchTest(unittest.TestCase):
         self.assertEqual(rc, 3)
         self.assertEqual(sum(sleeps), 180)
 
+
+    def test_thinking_disabled_by_default(self):
+        reqs = api_batch.build_requests([{'id': 'a', 'prompt': 'hi'}], 'claude-haiku-5-5', 400)
+        self.assertEqual(reqs[0]['params'].get('thinking'), {'type': 'disabled'})
 
 if __name__ == '__main__':
     unittest.main()

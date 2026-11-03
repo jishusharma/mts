@@ -6,11 +6,31 @@
  "title": "CoinGlass field guide: walls, bubbles, book and footprint vs our engines (2026-11-01)",
  "date": "2026-11-01",
  "what": [
-  {"name": "Page", "value_plain": "CoinGlass Liquidity Heatmap, Binance BTCUSDT perp, 1m and 15m, read 2026-11-01 17:32-17:35Z", "label": "SOURCED"},
-  {"name": "Wall threshold", "value_plain": "BTC 1.5M USD per 10 USD row, must persist across updates (CoinGlass FAQ)", "label": "SOURCED"},
-  {"name": "Filled vs pulled", "value_plain": "filled if best bid/ask or a trade reached the cell before it went; pulled if it vanished first (CoinGlass FAQ)", "label": "SOURCED"},
-  {"name": "Depth band", "value_plain": "USD within +/-1 % of price, both on the page and in MarketDataSnapshot.bidAskRatioFromDepth", "label": "SOURCED"},
-  {"name": "Snapshot depth limit", "value_plain": "limit=100 price levels per side (BinanceClient.orderBookDepth); band coverage unmeasured, likely about 0.01 % not 1 %", "label": "OURS"}
+  {
+   "name": "Page",
+   "value_plain": "CoinGlass Liquidity Heatmap, Binance BTCUSDT perp, 1m and 15m, read 2026-11-01 17:32-17:35Z",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Wall threshold",
+   "value_plain": "BTC 1.5M USD per 10 USD row, must persist across updates (CoinGlass FAQ)",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Filled vs pulled",
+   "value_plain": "filled if best bid/ask or a trade reached the cell before it went; pulled if it vanished first (CoinGlass FAQ)",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Depth band",
+   "value_plain": "USD within +/-1 % of price, both on the page and in MarketDataSnapshot.bidAskRatioFromDepth",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Snapshot depth limit",
+   "value_plain": "limit=100 price levels per side (BinanceClient.orderBookDepth); band coverage unmeasured, likely about 0.01 % not 1 %",
+   "label": "OURS"
+  }
  ],
  "how": "Study, not a backtest. The heatmap page FAQ, Walls and Wall events tabs, and the footprint, CVD, large-order and learn pages were read in Claude in Chrome; a Sonnet reader collected 25 analyst and vendor sources (ANALYST_COMMENTARY.md). Each panel was mapped to our engine and a validation recipe written (FIELD_GUIDE.md section 5). Nothing here is evidence of an edge.",
  "window": "one evening, 2026-11-01, Binance BTCUSDT perp; wall events cover the loaded 1-minute history (about 2 days)",
@@ -26,71 +46,376 @@
   "Our bid/ask ratio asks Binance for 100 levels at tick 0.1, which at 78k spans about 10 USD; the page's 1 % band spans about 780 USD and holds 30-90 BTC per 10 USD row, so the snapshot likely sums one or two rows and calls it 1 % (OURS inference; fapi.binance.com unreachable from JIS-NB, check filed for the feed host)."
  ],
  "kpis": [
-  {"label": "walls placed (loaded 1m history)", "value": "191"},
-  {"label": "walls filled", "value": "1"},
-  {"label": "walls pulled", "value": "176"},
-  {"label": "imbalance +/-1 %", "value": "-20.4 % asks heavier"},
-  {"label": "largest ask wall distance / age", "value": "+0.32 % / about 1 day"},
-  {"label": "largest bid wall distance / age", "value": "-2.05 % / about 1 day"},
-  {"label": "walls within +/-3 %", "value": "10 (2 bid, 8 ask)"},
-  {"label": "analyst sources read", "value": "25 (6 vendor docs, 2 papers snippet-only, rest journalists)"}
+  {
+   "label": "walls placed (loaded 1m history)",
+   "value": "191"
+  },
+  {
+   "label": "walls filled",
+   "value": "1"
+  },
+  {
+   "label": "walls pulled",
+   "value": "176"
+  },
+  {
+   "label": "imbalance +/-1 %",
+   "value": "-20.4 % asks heavier"
+  },
+  {
+   "label": "largest ask wall distance / age",
+   "value": "+0.32 % / about 1 day"
+  },
+  {
+   "label": "largest bid wall distance / age",
+   "value": "-2.05 % / about 1 day"
+  },
+  {
+   "label": "walls within +/-3 %",
+   "value": "10 (2 bid, 8 ask)"
+  },
+  {
+   "label": "analyst sources read",
+   "value": "25 (6 vendor docs, 2 papers snippet-only, rest journalists)"
+  }
  ],
  "examples": [
   {
    "kind": "table",
    "title": "Wall events 11-01 21:19-23:02 IST, Binance BTCUSDT perp (CoinGlass Wall events tab, SEEN)",
    "caption": "Distance is percent from the last price at read time; one level on each side was placed and pulled repeatedly. Sizes are the wall value at the event.",
-   "cols": ["time IST", "event", "side", "distance", "size USD", "rested"],
+   "cols": [
+    "time IST",
+    "event",
+    "side",
+    "distance",
+    "size USD",
+    "rested"
+   ],
    "rows": [
-    ["23:02", "placed", "ask", "+1.0 %", "15.00M", ""],
-    ["23:01", "pulled", "ask", "+1.3 %", "15.27M", "4m"],
-    ["22:57", "placed", "ask", "+1.3 %", "13.67M", ""],
-    ["22:55", "pulled", "ask", "+1.0 %", "15.69M", "21m"],
-    ["22:55", "pulled", "ask", "+1.2 %", "15.43M", "7m"],
-    ["22:49", "pulled", "bid", "-1.4 %", "15.22M", "8m"],
-    ["22:48", "pulled", "ask", "+1.3 %", "14.75M", "3m"],
-    ["22:48", "placed", "ask", "+1.2 %", "15.41M", ""],
-    ["22:45", "placed", "ask", "+1.3 %", "13.44M", ""],
-    ["22:41", "placed", "bid", "-1.4 %", "13.53M", ""],
-    ["22:38", "pulled", "bid", "-1.2 %", "14.47M", "8m"],
-    ["22:37", "pulled", "bid", "-1.4 %", "13.62M", "11m"],
-    ["22:34", "placed", "ask", "+1.0 %", "14.13M", ""],
-    ["22:30", "pulled", "ask", "+1.0 %", "13.73M", "4m"],
-    ["22:30", "placed", "bid", "-1.2 %", "14.47M", ""],
-    ["22:26", "placed", "bid", "-1.4 %", "12.65M", ""],
-    ["22:26", "placed", "ask", "+1.0 %", "13.61M", ""],
-    ["22:01", "pulled", "ask", "+1.3 %", "15.59M", "6m"],
-    ["21:57", "pulled", "bid", "-1.4 %", "15.78M", "7m"],
-    ["21:55", "placed", "ask", "+1.3 %", "15.59M", ""],
-    ["21:50", "placed", "bid", "-1.4 %", "14.90M", ""],
-    ["21:41", "pulled", "bid", "-1.4 %", "15.67M", "5m"],
-    ["21:36", "pulled", "ask", "+1.1 %", "15.14M", "5m"],
-    ["21:36", "placed", "bid", "-1.4 %", "14.96M", ""],
-    ["21:33", "pulled", "bid", "-1.1 %", "12.36M", "3m"],
-    ["21:31", "placed", "ask", "+1.1 %", "8.57M", ""],
-    ["21:30", "pulled", "ask", "+1.2 %", "16.44M", "8m"],
-    ["21:30", "placed", "bid", "-1.1 %", "12.13M", ""],
-    ["21:23", "pulled", "ask", "+1.2 %", "16.26M", "9m"],
-    ["21:23", "pulled", "bid", "-1.3 %", "11.23M", "4m"],
-    ["21:22", "placed", "ask", "+1.2 %", "9.75M", ""],
-    ["21:19", "placed", "bid", "-1.3 %", "8.72M", ""]
+    [
+     "23:02",
+     "placed",
+     "ask",
+     "+1.0 %",
+     "15.00M",
+     ""
+    ],
+    [
+     "23:01",
+     "pulled",
+     "ask",
+     "+1.3 %",
+     "15.27M",
+     "4m"
+    ],
+    [
+     "22:57",
+     "placed",
+     "ask",
+     "+1.3 %",
+     "13.67M",
+     ""
+    ],
+    [
+     "22:55",
+     "pulled",
+     "ask",
+     "+1.0 %",
+     "15.69M",
+     "21m"
+    ],
+    [
+     "22:55",
+     "pulled",
+     "ask",
+     "+1.2 %",
+     "15.43M",
+     "7m"
+    ],
+    [
+     "22:49",
+     "pulled",
+     "bid",
+     "-1.4 %",
+     "15.22M",
+     "8m"
+    ],
+    [
+     "22:48",
+     "pulled",
+     "ask",
+     "+1.3 %",
+     "14.75M",
+     "3m"
+    ],
+    [
+     "22:48",
+     "placed",
+     "ask",
+     "+1.2 %",
+     "15.41M",
+     ""
+    ],
+    [
+     "22:45",
+     "placed",
+     "ask",
+     "+1.3 %",
+     "13.44M",
+     ""
+    ],
+    [
+     "22:41",
+     "placed",
+     "bid",
+     "-1.4 %",
+     "13.53M",
+     ""
+    ],
+    [
+     "22:38",
+     "pulled",
+     "bid",
+     "-1.2 %",
+     "14.47M",
+     "8m"
+    ],
+    [
+     "22:37",
+     "pulled",
+     "bid",
+     "-1.4 %",
+     "13.62M",
+     "11m"
+    ],
+    [
+     "22:34",
+     "placed",
+     "ask",
+     "+1.0 %",
+     "14.13M",
+     ""
+    ],
+    [
+     "22:30",
+     "pulled",
+     "ask",
+     "+1.0 %",
+     "13.73M",
+     "4m"
+    ],
+    [
+     "22:30",
+     "placed",
+     "bid",
+     "-1.2 %",
+     "14.47M",
+     ""
+    ],
+    [
+     "22:26",
+     "placed",
+     "bid",
+     "-1.4 %",
+     "12.65M",
+     ""
+    ],
+    [
+     "22:26",
+     "placed",
+     "ask",
+     "+1.0 %",
+     "13.61M",
+     ""
+    ],
+    [
+     "22:01",
+     "pulled",
+     "ask",
+     "+1.3 %",
+     "15.59M",
+     "6m"
+    ],
+    [
+     "21:57",
+     "pulled",
+     "bid",
+     "-1.4 %",
+     "15.78M",
+     "7m"
+    ],
+    [
+     "21:55",
+     "placed",
+     "ask",
+     "+1.3 %",
+     "15.59M",
+     ""
+    ],
+    [
+     "21:50",
+     "placed",
+     "bid",
+     "-1.4 %",
+     "14.90M",
+     ""
+    ],
+    [
+     "21:41",
+     "pulled",
+     "bid",
+     "-1.4 %",
+     "15.67M",
+     "5m"
+    ],
+    [
+     "21:36",
+     "pulled",
+     "ask",
+     "+1.1 %",
+     "15.14M",
+     "5m"
+    ],
+    [
+     "21:36",
+     "placed",
+     "bid",
+     "-1.4 %",
+     "14.96M",
+     ""
+    ],
+    [
+     "21:33",
+     "pulled",
+     "bid",
+     "-1.1 %",
+     "12.36M",
+     "3m"
+    ],
+    [
+     "21:31",
+     "placed",
+     "ask",
+     "+1.1 %",
+     "8.57M",
+     ""
+    ],
+    [
+     "21:30",
+     "pulled",
+     "ask",
+     "+1.2 %",
+     "16.44M",
+     "8m"
+    ],
+    [
+     "21:30",
+     "placed",
+     "bid",
+     "-1.1 %",
+     "12.13M",
+     ""
+    ],
+    [
+     "21:23",
+     "pulled",
+     "ask",
+     "+1.2 %",
+     "16.26M",
+     "9m"
+    ],
+    [
+     "21:23",
+     "pulled",
+     "bid",
+     "-1.3 %",
+     "11.23M",
+     "4m"
+    ],
+    [
+     "21:22",
+     "placed",
+     "ask",
+     "+1.2 %",
+     "9.75M",
+     ""
+    ],
+    [
+     "21:19",
+     "placed",
+     "bid",
+     "-1.3 %",
+     "8.72M",
+     ""
+    ]
    ]
   },
   {
    "kind": "table",
    "title": "CoinGlass panel -> our engine -> check (FIELD_GUIDE.md section 5)",
    "caption": "Same data = the check is like for like; sign only = different venue.",
-   "cols": ["CoinGlass", "ours", "same data?", "check"],
+   "cols": [
+    "CoinGlass",
+    "ours",
+    "same data?",
+    "check"
+   ],
    "rows": [
-    ["depth +/-1 %, imbalance", "MarketDataSnapshot.bidAskRatioFromDepth", "yes (Binance)", "imbalance = (r-1)/(r+1); band coverage of limit=100 unmeasured (card)"],
-    ["depth, live_aid", "live_aid dom(), Deribit +/-0.25 %", "no (Deribit)", "sign only"],
-    ["walls placed / pulled / filled", "none", "", "wall ledger card"],
-    ["trade bubbles", "live_aid flow() Deribit; research footprint Binance", "research yes", "bar delta sign on 3 bars"],
-    ["footprint 300 % rule", "phase1_fp_look.py IMB", "yes", "cell by cell on 3 bars"],
-    ["CVD divergence (5 bars late)", "Q8 phase1_cvd_div.py: hit rate = base rate", "select Binance first", "sign per 15m bar"],
-    ["OI 4-way", "live_aid squeeze()", "yes", "label per 5m bar"],
-    ["liquidation totals", "liq_events, live_aid liqSum()", "yes, both floors", "1h Binance total"],
-    ["liquidation heatmap", "Q7 band proxy; snapshot stub", "model vs proxy", "distance in percent on operator shots"]
+    [
+     "depth +/-1 %, imbalance",
+     "MarketDataSnapshot.bidAskRatioFromDepth",
+     "yes (Binance)",
+     "imbalance = (r-1)/(r+1); band coverage of limit=100 unmeasured (card)"
+    ],
+    [
+     "depth, live_aid",
+     "live_aid dom(), Deribit +/-0.25 %",
+     "no (Deribit)",
+     "sign only"
+    ],
+    [
+     "walls placed / pulled / filled",
+     "none",
+     "",
+     "wall ledger card"
+    ],
+    [
+     "trade bubbles",
+     "live_aid flow() Deribit; research footprint Binance",
+     "research yes",
+     "bar delta sign on 3 bars"
+    ],
+    [
+     "footprint 300 % rule",
+     "phase1_fp_look.py IMB",
+     "yes",
+     "cell by cell on 3 bars"
+    ],
+    [
+     "CVD divergence (5 bars late)",
+     "Q8 phase1_cvd_div.py: hit rate = base rate",
+     "select Binance first",
+     "sign per 15m bar"
+    ],
+    [
+     "OI 4-way",
+     "live_aid squeeze()",
+     "yes",
+     "label per 5m bar"
+    ],
+    [
+     "liquidation totals",
+     "liq_events, live_aid liqSum()",
+     "yes, both floors",
+     "1h Binance total"
+    ],
+    [
+     "liquidation heatmap",
+     "Q7 band proxy; snapshot stub",
+     "model vs proxy",
+     "distance in percent on operator shots"
+    ]
    ]
   }
  ],
@@ -104,5 +429,15 @@
   "MyTradingSys/research/coinglass_field_guide_2026-11-01/ANALYST_COMMENTARY.md",
   "MyTradingSys/research/coinglass_field_guide_2026-11-01/depth_band_check.py"
  ],
- "commit": "see git log"
+ "commit": "see git log",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Walls are events, not levels: in the loaded two days 191 walls were placed, 1 filled, 176 pulled (CoinGlass counter, SEEN). The page is for validation and context; the one new measurable is a wall pulled before touch, which no public source quantifies. Depth-band check on our snapshot filed as a card.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Walls are events, not levels: in the loaded two days 191 walls were placed, 1 filled, 176 pulled (CoinGlass counter, SEEN). The page is for validation and context; the one new measurable is a wall pulled before touch, which no public source quantifies. Depth-band check on our snapshot filed as a card. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

@@ -1,7 +1,18 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T09:45:44Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-03T09:45:43Z",
+    "misses": 26,
+    "reads": [
+      "scripts/dev/extra_tests.tsv",
+      "scripts/dev/test_run_extra_tests.py"
+    ],
+    "session": "agent-a1fba6300e6c70d7a"
+  },
   "created": "2026-11-02T16:25:10Z",
   "depends_on": [],
   "done_when": "test_extra_tests_union.py passes; a merge of two appended rows has both rows.",
@@ -13,6 +24,12 @@
   "id": "extra-tests-tsv-union-merge",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "gitattributes merge=union for extra_tests.tsv; test_extra_tests_union.py (2 tests, failed ",
+      "ref": "7f0c83af1",
+      "utc": "2026-11-03T09:45:44Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -29,7 +46,12 @@
   "refined_by": "",
   "refreshed": "2026-11-02T20:01:20Z",
   "refs": [],
-  "result": "",
+  "result": "gitattributes merge=union for extra_tests.tsv; test_extra_tests_union.py (2 tests, failed before, pass after)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     ".gitattributes",
     "scripts/dev/test_extra_tests_union.py",
@@ -41,11 +63,12 @@
   "scope_sha": "c5d033a9eae3",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add a merge=union line for the tsv path to .gitattributes",
     "Test: in a temp repo, two branches each append a row, merge gives both rows and no conflict"
   ],
+  "taken": "2026-11-03T09:45:44Z",
   "tests": "scripts/dev/test_extra_tests_union.py fails before the .gitattributes line and passes after",
   "title": "extra_tests.tsv conflicts stop the GPT lane: two ships adding a test each left a merge conflict in the lab tree and the tick exited 1. Done when .gitattributes sets merge=union for it and two parallel additions merge clean.",
   "weight": "ROUTINE",

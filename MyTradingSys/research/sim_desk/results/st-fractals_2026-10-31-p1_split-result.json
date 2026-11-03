@@ -63,5 +63,15 @@
  "source_files": [
   "MyTradingSys/research/fractals_2026-10-31/p1_split/RESULT.md"
  ],
- "commit": "d1fd7dca4"
+ "commit": "d1fd7dca4",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "no cell was run. Neither RSI-DIV-MTF nor Krown has a frozen DEV per-event fee-net R list on disk, so there is nothing to split without inventing an exit rule (= a new study). No edge claimed, none refuted.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: no cell was run. Neither RSI-DIV-MTF nor Krown has a frozen DEV per-event fee-net R list on disk, so there is nothing to split without inventing an exit rule (= a new study). No edge claimed, none refuted. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

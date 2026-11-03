@@ -5,6 +5,16 @@
     "python -m pytest MyTradingSys/execution/test_cotrade.py -q",
     "python scripts/dev/run_all_tests.py --quick"
   ],
+  "context": {
+    "calls_to_edit": 11,
+    "folded": "2026-11-03T10:50:58Z",
+    "misses": 24,
+    "reads": [
+      "MyTradingSys/execution/test_cotrade.py",
+      "MyTradingSys/execution/cotrade.py"
+    ],
+    "session": "agent-a93d3ab08b9c6f949"
+  },
   "created": "2026-10-31T15:13:25Z",
   "depends_on": [
     "cotrade-p1-say-and-place"
