@@ -750,7 +750,8 @@ def run(which, klines, out):
                 rows.append(row)
                 tests.append(row)
             # hindsight descriptive: ex-post short-scale bottom extreme within 4h after the stamp (never a condition)
-            sw = np.array([e for e, _, k in ctx["swings_s"] if k == -1], dtype="int64")
+            want = -1 if side == "long" else 1             # ex-post bottom for the long side, ex-post top for the short mirror
+            sw = np.array([e for e, _, k in ctx["swings_s"] if k == want], dtype="int64")
             if len(sw):
                 def share(xs):
                     ts_ = np.array([x["t"] for x in xs], dtype="int64")
@@ -918,32 +919,45 @@ def write_report(out):
         P(f"DEV candidates (model beats level-only on DEV log-loss with Holm p < 0.05): **{len(keep)}**. Keep rule: candidate on DEV and, on VALIDATION, model log-loss better than level-only AND fee-net EV of the events above 0 and above the raw touch. "
           + ("Nothing is kept: F0 / the level-only table stays the answer." if not keep else "Kept rows are listed in the VALIDATION tables."))
         P("")
+        pos = [r for r in val if r["kind"] == "model" and r["feature"] == "model_vs_level" and r["side"] == "long" and _f(r, "delta_ll") > 0]
+        pn16 = {(r["tf_min"], r["level"]): r for r in prim(val, "long", "16")}
+        for r in pos:
+            q = pn16.get((r["tf_min"], r["level"]))
+            P(f"VALIDATION cell with the model ahead of level-only: {_cell(r)}, delta log-loss {_n(_f(r, 'delta_ll'), 4)} (t {_n(_f(r, 't'), 2)}, p {_n(_f(r, 'p'), 3, False)} unadjusted) on {r['n_events']} events / {r['n_days']} days"
+              + (f"; the same cell's fee-net EV is {_ci(q, 'net_pct', 'net_lo', 'net_hi')} % at N=16 and it was not a DEV candidate (DEV delta below), so by the keep rule it is NOT kept. "
+                 "Below 30 days it is `too_few_days`, and one cell in six clearing p < 0.05 is within chance." if q else "."))
+        P("")
         table_primary(val, "Primary row, VALIDATION, long")
     P("## Primary row (P-anchor, close, eps 0, min diff 0, end 50), DEV")
     P("")
     table_primary(dev, "Long, DEV")
     table_primary(dev, "Short mirror, DEV (exploratory, SHOT_REVIEW C8)", "short")
-    P("## Pairing / basis / tolerance variants at N=16, DEV (exploratory rows; none is ranked or tuned)")
-    P("")
-    P("| variant | cells with >= 30 days | cells net CI > 0 | cells event-control CI > 0 | events (sum) | median net % over cells | median event-control % |")
-    P("|---|---|---|---|---|---|---|")
-    for var in VARIANTS + (("FAILURE_SWING",),):
-        nm = var[0]
-        rs = [r for r in dev if r["kind"] == "variant" and r["variant"] == nm and r["N"] == "16" and int(r["n_days"] or 0) >= MIN_DAYS]
-        if not rs:
+    for tag, rows_ in (("DEV", dev), ("VALIDATION", val)):
+        if not rows_:
             continue
-        P(f"| {nm} | {len(rs)} | {sum(1 for r in rs if _f(r, 'net_lo') > 0)} | {sum(1 for r in rs if _f(r, 'diff_lo') > 0)} | {sum(int(r['n_events']) for r in rs)} | "
-          f"{_n(float(np.median([_f(r, 'net_pct') for r in rs])), 2)} | {_n(float(np.nanmedian([_f(r, 'diff_pct') for r in rs])), 2)} |")
-    P("")
-    P("## Walk-forward log-loss (N=16 price bounce above fee), DEV, long")
-    P("")
-    P("| cell | events | level-only | divergence-only | ridge model | delta (model vs level) | t | p |")
-    P("|---|---|---|---|---|---|---|---|")
-    for r in dev:
-        if r["kind"] == "model" and r["feature"] == "model_vs_level" and r["side"] == "long":
-            P(f"| {_cell(r)} | {r['n_events']} | {_n(_f(r, 'll_level'), 4, False)} | {_n(_f(r, 'll_div'), 4, False)} | {_n(_f(r, 'll_model'), 4, False)} | {_n(_f(r, 'delta_ll'), 4)} | {_n(_f(r, 't'), 2)} | {_n(_f(r, 'p'), 3, False)} |")
-    P("")
-    P("## Sequence features and Step J state, DEV long, pooled over cells (N=16; event-weighted means, descriptive, no CI)")
+        P(f"## Pairing / basis / tolerance variants at N=16, {tag} (exploratory rows; none is ranked or tuned)")
+        P("")
+        P("| variant | cells with >= 30 days | cells net CI > 0 | cells event-control CI > 0 | events (sum) | median net % over cells | median event-control % |")
+        P("|---|---|---|---|---|---|---|")
+        for var in VARIANTS + (("FAILURE_SWING",),):
+            nm = var[0]
+            rs = [r for r in rows_ if r["kind"] == "variant" and r["variant"] == nm and r["N"] == "16" and int(r["n_days"] or 0) >= MIN_DAYS]
+            if not rs:
+                continue
+            dfs = [_f(r, "diff_pct") for r in rs]
+            dmed = _n(float(np.nanmedian(dfs)), 2) if any(x == x for x in dfs) else "-"
+            P(f"| {nm} | {len(rs)} | {sum(1 for r in rs if _f(r, 'net_lo') > 0)} | {sum(1 for r in rs if _f(r, 'diff_lo') > 0)} | {sum(int(r['n_events']) for r in rs)} | "
+              f"{_n(float(np.median([_f(r, 'net_pct') for r in rs])), 2)} | {dmed} |")
+        P("")
+        P(f"## Walk-forward log-loss (N=16 price bounce above fee), {tag}, long")
+        P("")
+        P("| cell | events | level-only | divergence-only | ridge model | delta (model vs level) | t | p |")
+        P("|---|---|---|---|---|---|---|---|")
+        for r in rows_:
+            if r["kind"] == "model" and r["feature"] == "model_vs_level" and r["side"] == "long":
+                P(f"| {_cell(r)} | {r['n_events']} | {_n(_f(r, 'll_level'), 4, False)} | {_n(_f(r, 'll_div'), 4, False)} | {_n(_f(r, 'll_model'), 4, False)} | {_n(_f(r, 'delta_ll'), 4)} | {_n(_f(r, 't'), 2)} | {_n(_f(r, 'p'), 3, False)} |")
+        P("")
+    P("## Sequence features and Step J state, DEV long, pooled over cells (N=16; event-weighted means, descriptive, no CI; n_anchor and mult bucket 4 = 4 or more)")
     P("")
     P("| feature | bucket | events | mean net % | P(win) | P(lower) |")
     P("|---|---|---|---|---|---|")
@@ -951,7 +965,7 @@ def write_report(out):
         for bk, (n, m, pw, pl) in sorted(_pooled_split(dev, feat).items()):
             P(f"| {feat} | {bk} | {n} | {_n(m, 3)} | {_n(pw, 2, False)} | {_n(pl, 2, False)} |")
     P("")
-    P("## Context cross-tabs, DEV long (terciles of the pooled DEV events per TF), rows whose day-clustered net CI excludes 0")
+    P("## Context cross-tabs, DEV long (terciles of the pooled DEV events per TF); the 14 rows closest to zero among those whose day-clustered net CI excludes 0")
     P("")
     cts = [r for r in dev if r["kind"] == "crosstab" and r["side"] == "long" and int(r["n_days"] or 0) >= MIN_DAYS and r["bucket"] != "NA"]
     odd = [r for r in cts if _f(r, "net_hi") < 0 or _f(r, "net_lo") > 0]
@@ -972,6 +986,9 @@ def write_report(out):
         if r["kind"] == "hindsight":
             P(f"| {_cell(r)} | {r['side']} | {r['n_events']} | {_n(_f(r, 'p_win'), 2, False)} | {_n(_f(r, 'ctrl_p_lower'), 2, False)} |")
     P("")
+    P("Note: `divergence_val.csv` was written before the short-side hindsight rows were fixed (they looked for ex-post bottoms instead of tops); "
+      "those short hindsight rows in the VALIDATION file are void and are not used. DEV was regenerated after the fix (all other DEV rows byte-identical).")
+    P("")
     P("## Parameters (SOURCED vs OURS)")
     P("")
     P("SOURCED: RSI14 Wilder on close, UTC (econ_floor.py, FORMULAS s1); fee 0.10% round trip (backtest/fees.py); ATR = plain SMA of true range (FORMULAS s12); z-score vs the prior L bars, population sd (FORMULAS s28.1); "
@@ -982,6 +999,8 @@ def write_report(out):
     P("## Caveats")
     P("")
     P("- Events cluster (one slow decline produces many firings against one anchor); CIs are day-clustered, but several days of one selloff are still correlated. Cells with < 30 days are marked too_few_days and not ranked.")
+    P("- `regime_break` (the pivot's RSI below the trailing 30d RSI floor) is 0 for every divergence event by construction: the 30d window contains the anchor, whose RSI is lower than the divergence pivot's. The row is void; "
+      "the version that matters (anchor RSI vs the 30d floor before the episode) was not built, and `divergence_val.csv` cannot be regenerated after its one read. The HTF 3-week floor break flags (`htf_break_a/b`) are the working Step J regime-break features.")
     P("- P-anchor-split is permissive by construction (price may be lower than any swing since the anchor); its counts are an upper bound on 'the operator's two panels'.")
     P("- The matched control is a retrospective match (a control pivot may lie after the event); each control pivot is itself causal at its own stamp, so no look-ahead enters the outcome comparison.")
     P("- Step H confluence is not in the comparison (parallel card). OI is NOT_IN_DATA before 2025-09. WaveTrend agreement is NOT_IN_DATA until its inputs are pinned.")

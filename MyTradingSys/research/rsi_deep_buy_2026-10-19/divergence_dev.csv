@@ -354,7 +354,7 @@ model,dev,short,60,abs20,MIRROR_short,16,div_vs_level,,284,77,,-0.493305,,,,,,,,
 model,dev,short,60,abs20,MIRROR_short,16,model_vs_level,,284,77,,-0.493305,,,,,,,,,,,,,,,,,,,0.718608,0.722268,0.741405,-0.0227969,-0.89072,0.81346,1,scored_with_model=238
 model,dev,short,60,abs20,MIRROR_short,16,model_vs_div,,284,77,,-0.493305,,,,,,,,,,,,,,,,,,,0.718608,0.722268,0.741405,-0.0191371,-1.25871,0.895932,,scored_with_model=238
 ctrl_test,dev,short,60,abs20,MIRROR_short,16,,,49,30,,,,,,0.898187,,,,,,,,,,,,,,,,,,,1.2902,0.0984911,1,
-hindsight,dev,short,60,abs20,MIRROR_short,,,,284,,,,,,,,,,,,,,0.0176056,,0.0204082,,,,,,,,,,,,,DESCRIPTIVE hindsight: share with an ex-post 1h-scale bottom extreme within 4h after the stamp
+hindsight,dev,short,60,abs20,MIRROR_short,,,,284,,,,,,,,,,,,,,0.0633803,,0.163265,,,,,,,,,,,,,DESCRIPTIVE hindsight: share with an ex-post 1h-scale bottom extreme within 4h after the stamp
 split,dev,short,60,abs20,MIRROR_short,16,session,asia,77,43,,-0.429718,-1.14309,0.283658,,,,,,,,,0.428571,0.415584,,,,,,,,,,,,,,
 split,dev,short,60,abs20,MIRROR_short,16,session,eu_rest,71,47,,-0.70501,-1.35301,-0.0570085,,,,,,,,,0.464789,0.507042,,,,,,,,,,,,,,
 split,dev,short,60,abs20,MIRROR_short,16,session,london_open,12,12,,-0.539402,-1.77014,0.69134,,,,,,,,,0.416667,0.5,,,,,,,,,,,,,,
@@ -389,7 +389,7 @@ model,dev,short,60,abs30,MIRROR_short,16,div_vs_level,,443,148,,-0.229159,,,,,,,
 model,dev,short,60,abs30,MIRROR_short,16,model_vs_level,,443,148,,-0.229159,,,,,,,,,,,,,,,,,,,0.701434,0.711849,0.737276,-0.0358419,-2.2526,0.987858,1,scored_with_model=403
 model,dev,short,60,abs30,MIRROR_short,16,model_vs_div,,443,148,,-0.229159,,,,,,,,,,,,,,,,,,,0.701434,0.711849,0.737276,-0.0254268,-1.97516,0.975875,,scored_with_model=403
 ctrl_test,dev,short,60,abs30,MIRROR_short,16,,,157,83,,,,,,0.408037,,,,,,,,,,,,,,,,,,,0.957321,0.169203,1,
-hindsight,dev,short,60,abs30,MIRROR_short,,,,444,,,,,,,,,,,,,,0.0202703,,0.00625,,,,,,,,,,,,,DESCRIPTIVE hindsight: share with an ex-post 1h-scale bottom extreme within 4h after the stamp
+hindsight,dev,short,60,abs30,MIRROR_short,,,,444,,,,,,,,,,,,,,0.0788288,,0.06875,,,,,,,,,,,,,DESCRIPTIVE hindsight: share with an ex-post 1h-scale bottom extreme within 4h after the stamp
 split,dev,short,60,abs30,MIRROR_short,16,session,asia,126,75,,-0.135232,-0.651546,0.381082,,,,,,,,,0.507937,0.468254,,,,,,,,,,,,,,
 split,dev,short,60,abs30,MIRROR_short,16,session,eu_rest,106,76,,-0.386756,-0.891816,0.118304,,,,,,,,,0.5,0.518868,,,,,,,,,,,,,,
 split,dev,short,60,abs30,MIRROR_short,16,session,london_open,22,22,,0.134799,-0.826782,1.09638,,,,,,,,,0.590909,0.454545,,,,,,,,,,,,,,
@@ -425,7 +425,7 @@ model,dev,short,60,rel_p2_90d,MIRROR_short,16,div_vs_level,,289,85,,-0.492346,,,
 model,dev,short,60,rel_p2_90d,MIRROR_short,16,model_vs_level,,289,85,,-0.492346,,,,,,,,,,,,,,,,,,,0.732552,0.720353,0.750748,-0.0181957,-0.387481,0.6508,1,scored_with_model=243
 model,dev,short,60,rel_p2_90d,MIRROR_short,16,model_vs_div,,289,85,,-0.492346,,,,,,,,,,,,,,,,,,,0.732552,0.720353,0.750748,-0.0303945,-1.05164,0.853517,,scored_with_model=243
 ctrl_test,dev,short,60,rel_p2_90d,MIRROR_short,16,,,64,34,,,,,,0.113942,,,,,,,,,,,,,,,,,,,0.176477,0.42996,1,
-hindsight,dev,short,60,rel_p2_90d,MIRROR_short,,,,289,,,,,,,,,,,,,,0.0207612,,0.0153846,,,,,,,,,,,,,DESCRIPTIVE hindsight: share with an ex-post 1h-scale bottom extreme within 4h after the stamp
+hindsight,dev,short,60,rel_p2_90d,MIRROR_short,,,,289,,,,,,,,,,,,,,0.0622837,,0.138462,,,,,,,,,,,,,DESCRIPTIVE hindsight: share with an ex-post 1h-scale bottom extreme within 4h after the stamp
 split,dev,short,60,rel_p2_90d,MIRROR_short,16,session,asia,83,47,,-0.260417,-0.960831,0.439997,,,,,,,,,0.493976,0.421687,,,,,,,,,,,,,,
 split,dev,short,60,rel_p2_90d,MIRROR_short,16,session,eu_rest,71,48,,-0.689185,-1.37516,-0.00320719,,,,,,,,,0.450704,0.535211,,,,,,,,,,,,,,
 split,dev,short,60,rel_p2_90d,MIRROR_short,16,session,london_open,16,16,,-0.475053,-1.52981,0.579704,,,,,,,,,0.5,0.5,,,,,,,,,,,,,,
@@ -459,7 +459,7 @@ model,dev,short,15,abs30,MIRROR_short,16,div_vs_level,,1293,324,,-0.180061,,,,,,
 model,dev,short,15,abs30,MIRROR_short,16,model_vs_level,,1293,324,,-0.180061,,,,,,,,,,,,,,,,,,,0.699252,0.694426,0.712308,-0.0130554,-1.23018,0.890685,1,scored_with_model=1253
 model,dev,short,15,abs30,MIRROR_short,16,model_vs_div,,1293,324,,-0.180061,,,,,,,,,,,,,,,,,,,0.699252,0.694426,0.712308,-0.0178823,-1.90648,0.971706,,scored_with_model=1253
 ctrl_test,dev,short,15,abs30,MIRROR_short,16,,,497,216,,,,,,-0.123694,,,,,,,,,,,,,,,,,,,-1.17692,0.880386,1,
-hindsight,dev,short,15,abs30,MIRROR_short,,,,1294,,,,,,,,,,,,,,0.00231839,,0.0120724,,,,,,,,,,,,,DESCRIPTIVE hindsight: share with an ex-post 1h-scale bottom extreme within 4h after the stamp
+hindsight,dev,short,15,abs30,MIRROR_short,,,,1294,,,,,,,,,,,,,,0.113601,,0.169014,,,,,,,,,,,,,DESCRIPTIVE hindsight: share with an ex-post 1h-scale bottom extreme within 4h after the stamp
 split,dev,short,15,abs30,MIRROR_short,16,session,asia,356,120,,-0.0262422,-0.177549,0.125065,,,,,,,,,0.463483,0.342697,,,,,,,,,,,,,,
 split,dev,short,15,abs30,MIRROR_short,16,session,eu_rest,271,104,,-0.114296,-0.317219,0.0886269,,,,,,,,,0.457565,0.616236,,,,,,,,,,,,,,
 split,dev,short,15,abs30,MIRROR_short,16,session,london_open,51,40,,-0.374574,-0.670886,-0.0782618,,,,,,,,,0.411765,0.529412,,,,,,,,,,,,,,
@@ -496,7 +496,7 @@ model,dev,short,15,abs20,MIRROR_short,16,div_vs_level,,668,131,,-0.291054,,,,,,,
 model,dev,short,15,abs20,MIRROR_short,16,model_vs_level,,668,131,,-0.291054,,,,,,,,,,,,,,,,,,,0.680816,0.696211,0.722651,-0.041835,-2.38709,0.991509,1,scored_with_model=622
 model,dev,short,15,abs20,MIRROR_short,16,model_vs_div,,668,131,,-0.291054,,,,,,,,,,,,,,,,,,,0.680816,0.696211,0.722651,-0.0264405,-1.55964,0.940577,,scored_with_model=622
 ctrl_test,dev,short,15,abs20,MIRROR_short,16,,,137,79,,,,,,0.0785626,,,,,,,,,,,,,,,,,,,0.431,0.333234,1,
-hindsight,dev,short,15,abs20,MIRROR_short,,,,668,,,,,,,,,,,,,,0,,0,,,,,,,,,,,,,DESCRIPTIVE hindsight: share with an ex-post 1h-scale bottom extreme within 4h after the stamp
+hindsight,dev,short,15,abs20,MIRROR_short,,,,668,,,,,,,,,,,,,,0.0943114,,0.160584,,,,,,,,,,,,,DESCRIPTIVE hindsight: share with an ex-post 1h-scale bottom extreme within 4h after the stamp
 split,dev,short,15,abs20,MIRROR_short,16,session,asia,209,55,,-0.0994086,-0.306385,0.107568,,,,,,,,,0.406699,0.311005,,,,,,,,,,,,,,
 split,dev,short,15,abs20,MIRROR_short,16,session,eu_rest,129,40,,-0.185053,-0.519227,0.149122,,,,,,,,,0.449612,0.581395,,,,,,,,,,,,,,
 split,dev,short,15,abs20,MIRROR_short,16,session,london_open,31,24,,-0.668248,-1.07354,-0.26295,,,,,,,,,0.387097,0.645161,,,,,,,,,,,,,,
@@ -530,7 +530,7 @@ model,dev,short,1,abs10,MIRROR_short,16,div_vs_level,,578,95,,-0.0882121,,,,,,,,
 model,dev,short,1,abs10,MIRROR_short,16,model_vs_level,,578,95,,-0.0882121,,,,,,,,,,,,,,,,,,,0.680045,0.694251,0.752102,-0.072057,-1.3655,0.913952,1,scored_with_model=534
 model,dev,short,1,abs10,MIRROR_short,16,model_vs_div,,578,95,,-0.0882121,,,,,,,,,,,,,,,,,,,0.680045,0.694251,0.752102,-0.0578513,-1.4593,0.927759,,scored_with_model=534
 ctrl_test,dev,short,1,abs10,MIRROR_short,16,,,40,26,,,,,,0.0757716,,,,,,,,,,,,,,,,,,,0.52734,0.298979,1,
-hindsight,dev,short,1,abs10,MIRROR_short,,,,578,,,,,,,,,,,,,,0.00519031,,0,,,,,,,,,,,,,DESCRIPTIVE hindsight: share with an ex-post 1h-scale bottom extreme within 4h after the stamp
+hindsight,dev,short,1,abs10,MIRROR_short,,,,578,,,,,,,,,,,,,,0.117647,,0.125,,,,,,,,,,,,,DESCRIPTIVE hindsight: share with an ex-post 1h-scale bottom extreme within 4h after the stamp
 split,dev,short,1,abs10,MIRROR_short,16,session,asia,161,35,,-0.0659021,-0.308017,0.176213,,,,,,,,,0.434783,0.372671,,,,,,,,,,,,,,
 split,dev,short,1,abs10,MIRROR_short,16,session,eu_rest,88,19,,-0.116988,-0.267315,0.0333395,,,,,,,,,0.352273,0.306818,,,,,,,,,,,,,,
 split,dev,short,1,abs10,MIRROR_short,16,session,london_open,20,3,,0.0406844,-0.118727,0.200096,,,,,,,,,0.4,0.35,,,,,,,,,,,,,,
