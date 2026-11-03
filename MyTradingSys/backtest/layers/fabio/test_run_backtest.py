@@ -1,5 +1,9 @@
 """Plumbing tests for run_backtest.py (synthetic bars; expected numbers hand-derived)."""
+import sys
 import unittest
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[4]))
 
 from MyTradingSys.backtest.layers.fabio import run_backtest as rb
 
@@ -91,6 +95,17 @@ class TestPlumbing(unittest.TestCase):
             return [{"i": i, "side": "long"} for i in range(0, len(bars), 3)]
         r = rb.grid_search_and_oos(fn, [{"k": 0}, {"k": 1}], hourly_bars(300), hourly_bars(120, start=300 * HOUR))
         self.assertEqual(r["chosen"], {"k": 1})
+
+    def test_clip_dev_drops_holdout_day_by_default(self):
+        from datetime import datetime, timezone
+        ms = lambda y, m, d, h=0: int(datetime(y, m, d, h, tzinfo=timezone.utc).timestamp() * 1000)
+        bars = [{"t": t} for t in (ms(2026, 6, 25, 23), ms(2026, 6, 26, 0), ms(2026, 6, 26, 5), ms(2026, 7, 1))]
+        self.assertEqual(rb.DEFAULT_DEV_END, "2026-06-25")
+        got = rb.clip_dev(bars, rb.DEFAULT_DEV_END)
+        self.assertEqual([b["t"] for b in got], [ms(2026, 6, 25, 23)])  # 06-26 00:00 dropped
+        got2 = rb.clip_dev(bars, "2026-06-26")  # explicit later end keeps that day inclusive
+        self.assertEqual(len(got2), 3)
+        self.assertEqual(rb.clip_dev([], "2026-06-25"), [])
 
     def test_run_tf_smoke_and_short_input(self):
         reg = rb.load_registry()

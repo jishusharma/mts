@@ -1,0 +1,69 @@
+"""Card Verdict/Keep must match results/*.json (banner.state, banner.n, kpis). Expected values are
+derived here from the json directly, not from sim_cards_from_json.py."""
+import glob, json, os, subprocess, sys, tempfile
+import pytest
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+RES = os.path.join(HERE, '..', 'sim_desk', 'results')
+MD = os.path.join(HERE, '..', 'sim_desk', 'api_review', 'RESULTS_CARDS_2026-11-03.md')
+FILES = sorted(f for f in glob.glob(os.path.join(RES, '*.json')) if not os.path.basename(f).startswith('_'))
+
+
+def cards():
+    out = {}
+    for ln in open(MD, encoding='utf-8').read().split('\n'):
+        c = [x.strip() for x in ln.strip().strip('|').split(' | ')]
+        if ln.startswith('| ') and len(c) >= 5:
+            out[c[0]] = c
+    return out
+
+
+CARDS = cards()
+
+
+def test_all_337_rows_present():
+    assert len(FILES) == 337
+    assert set(CARDS) >= {os.path.basename(f)[:-5] for f in FILES}
+
+
+@pytest.mark.parametrize('f', FILES, ids=lambda f: os.path.basename(f)[:-5])
+def test_card_matches_json(f):
+    sid = os.path.basename(f)[:-5]
+    d = json.load(open(f, encoding='utf-8'))
+    b = d['banner']
+    n = b['n']
+    if b['state'] == 'FAIL':
+        want = 'FAILED'
+    elif b['state'] == 'TOO_FEW' or (isinstance(n, int) and n > 0):
+        want = 'NOT ENOUGH DATA'
+    else:
+        want = 'EMPTY'
+    c = CARDS[sid]
+    assert c[1] == want, 'Verdict %s != json %s (state=%s n=%s)' % (c[1], want, b['state'], n)
+    # a card must never say "no trades" when the file states n > 0
+    if isinstance(n, int) and n > 0:
+        assert 'n=%d' % n in c[2], 'Keep omits banner.n=%d: %s' % (n, c[2])
+        assert 'no trade' not in c[2].lower() and '0 trade' not in c[2].lower()
+    assert c[2].startswith('NO') or want == 'PASSED'
+
+
+def test_totals_match():
+    txt = open(MD, encoding='utf-8').read()
+    for w in ('EMPTY', 'NOT ENOUGH DATA', 'FAILED'):
+        k = sum(1 for c in CARDS.values() if c[1] == w)
+        assert '| %s | %d |' % (w, k) in txt
+
+
+def test_job_builder_uses_banner_n():
+    src = json.load(open(os.path.join(RES, 'desk-cowen_bmsb-a0c48d6a.json'), encoding='utf-8'))
+    assert src['banner']['n'] == 10
+    with tempfile.TemporaryDirectory() as t:
+        os.makedirs(os.path.join(t, 'r'))
+        for name in ('a-1', 'a-2'):
+            json.dump(src, open(os.path.join(t, 'r', name + '.json'), 'w', encoding='utf-8'))
+        out = os.path.join(t, 'o.jsonl')
+        subprocess.run([sys.executable, os.path.join(HERE, 'build_sim_cards_jobs.py'), os.path.join(t, 'r'), out],
+                       check=True, capture_output=True)
+        rows = [json.loads(l) for l in open(out, encoding='utf-8')]
+    assert '(banner.n): 10.' in rows[0]['prompt'] and 'Trade rows in file: 0' not in rows[0]['prompt']
+    assert 'duplicate of a-1' in rows[1]['prompt'] and 'duplicate' not in rows[0]['prompt']

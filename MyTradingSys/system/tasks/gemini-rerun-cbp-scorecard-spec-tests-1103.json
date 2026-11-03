@@ -1,0 +1,79 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-03T19:18:02Z",
+  "commands": [],
+  "created": "2026-11-03T17:17:45Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-03/cbp_scorecard_rerun.md has 4 rows (unmutated pass count, then 3 mutations): FOUND (same result as GPT) / DIFF / NOT_IN_DATA; line 1 holds the three counts and the unmutated pass count (13 expected).",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Cross-vendor check of the GPT report 2026-11-02_gpt-spec-tests-cbp-scorecard.md: run test_cbp_scorecard.py (13 passed claimed), apply its 3 named mutations to a scratch copy of cbp_scorecard.py (folded analyst names, counting qualifying trades not rows, accepting SIDEWAYS) and see whether the suite fails each time.",
+  "id": "gemini-rerun-cbp-scorecard-spec-tests-1103",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_audits_2026-11-03/cbp_scorecard_rerun.md (PASS: 13 | FOUND: 4",
+      "ref": "033e54cc1",
+      "utc": "2026-11-03T19:18:02Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "test CBP scorecard recount contract",
+      "ref": "6267cc8d21b2",
+      "utc": "2026-11-02T16:44:15Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "6267cc8d21b2 test CBP scorecard recount contract",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-11-02_gpt-spec-tests-cbp-scorecard.md",
+      "utc": "2026-11-02T16:44:15Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-03 T0-ONLY (planner-a-1103c; twin check vs gemini-* cards: no overlap)",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T18:25:07Z",
+  "refs": [],
+  "result": "MyTradingSys/research/gemini_audits_2026-11-03/cbp_scorecard_rerun.md (PASS: 13 | FOUND: 4 | DIFF: 0 | NOT_IN_DATA: 0)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/reports/2026-11-02_gpt-spec-tests-cbp-scorecard.md (read)",
+    "scripts/dev/cbp_scorecard.py (read, copy to scratch)",
+    "scripts/dev/test_cbp_scorecard.py (read, run)",
+    "MyTradingSys/research/gemini_audits_2026-11-03/cbp_scorecard_rerun.md (new)"
+  ],
+  "scope_out": [
+    "no edit to research_kit.py or its tests; no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "6267cc8d21b2",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-mutation-research-kit.md:1-20"
+  ],
+  "state": "done",
+  "steps": [
+    "Run test_cbp_scorecard.py unmutated, record pass count",
+    "Apply each of the 3 mutations to the scratch copy, run, record failing tests",
+    "Write the table, counts on line 1"
+  ],
+  "taken": "2026-11-03T19:18:02Z",
+  "tests": "audit card, output file is the test; mutants live in a scratch copy outside the repo, git diff of the repo is empty",
+  "title": "[GEMINI] Re-run the 13 CBP scorecard spec tests and 3 mutations (GPT 6267cc8d2)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

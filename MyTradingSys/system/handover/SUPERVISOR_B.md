@@ -1,32 +1,31 @@
-# Supervisor B handover | written 2026-11-03T16:58Z by JIS-NUC | verify: python scripts/dev/supervisor.py handover --verify
+# Supervisor B handover | written 2026-11-03T20:30Z by JIS-NUC | verify: python scripts/dev/supervisor.py handover --verify
 
 ## Goal
-Login B on JIS-NUC, super session on Opus (operator named it 2026-11-03). Operator cap for this run: stop new work at week 57%, hard stop 60% (read 55% at 16:54Z). Keep rolling, never end idle; work until 20:24Z or the cap.
+Login B on JIS-NUC, super session. Operator cap for this run: 65% weekly (read 63% at 20:08Z); C came up 20:08Z, so this run ends. Operator order: move roadmap stages now.
 
 ## Truth
-- CI green at 0f92c7fcc after 17 red runs (causes: bridge bump, tom-probe card path, test_fetch_captions whole-file skip, then ci_deps_lint on an unguarded yt_dlp import).
-- Bridge 0.7.24 installed and running on JIS-NUC at 16:53Z; JIS-NB also 0.7.24.
-- Released at 16:54Z to ship: Builder dsa-prompt-flow-1103 (aa7a5ec9a7270c3ab; prompt, paste, ci_fail.py, bridge 0.7.25), PASS guard (a983e04d58c59d1b9), Haiku (ae602911954025ea5).
-- Codex: do NOT `codex_run.py tick` until prob-layer-common-table is dropped by Sol: see research/PROB_TABLE_RECEIPT_CLOSURE_2026-11-03.md.
-- mts-audit-1103-independent-recheck: a Luna chat holds it; do not split or rerun.
+- Operator answered q-v1-bar, q-v1-layers and q-v1-spec with YES; C recorded it and moved the D7 Now line (C note 20:23Z). | read OPERATOR_DECISIONS.md and D7 | verify on disk before acting
+- Shipped this run: schema 3f39b0f7, cbp.candidates 6f33ad72, golden-set harness b10ffd37, all CI green. | CI verdicts read | green
+- Gemini: volume-candles, mutation-rerun, cbp-scorecard audits shipped docs-only; eagle-c36 and roadmap-review STALE. | gemini_queue.py status | as stated
+- Login C is up (week 0% at 20:08Z); told by signal which S2/S3 cards are free. | mts_signal.py who | seen 0m ago
+- DSA-NB and DSA-NUC both showed pending 0, taken 2 and 1 at 20:25Z; the DSA-NB backlog cleared. Chrome tools cannot see the DSA tabs. | dsa_watch.py | OK
 
 ## Ruled out
-- runs.jsonl row or CODEX_HOME change to close the prob card: false receipt.
-- `sync.py ci <sha>` as a CI verdict: it wrongly says no run exists (card sync-py-ci-falsely-says-no-ci-run-path-f).
+- Applying the q-v1-bar revision before the operator answers.
+- Running s4 cards in parallel with the S1 schema card.
 
 ## Next 3 steps
-1. On each worker note: verify per roles/supervisor.md (ancestor of origin/fast-track, Result: line, one spot check).
-2. DSA ship done: check the paste has the HOW YOU WORK section and a Prompt source line, install 0.7.25 when the bridge is idle, tell the operator to start a new DSA chat.
-3. Ship Gemini sim-results-cards and krown branches from F:/MTS/gq; requeue STALE indian-fees and roadmap-review; then Fabio fix cards (fabio-v3-is-only-loads-oos-bars, fabio-l1-driver-reads-holdout).
+1. Nothing queued by B; C owns the S2/S3 cards now.
+2. Fix the D7 S4 exit text that still says queue ack.
+3. If budget stays under 65%: cards salvage-unshipped-branches-nuc-1103, git-identity-gemini-queue-leak, tidy-respect-open-claims. At 65%: supervisor.py handover --note, stop.
 
 ## Traps
-- A two-dot compare of a gq branch shows hundreds of files once trunk moves; use three dots.
-- The Bash tool can fail on its cwd file after a tree is removed; use PowerShell.
-- `tasks.py stale --refresh` touches all 13 stale cards: read first.
-- A bridge agent restart kills the command DSA is running: wait for /ping running 0.
+- Three-dot compare for gq branches. Bash cwd can break after a tree is removed; use PowerShell.
+- tidy can retire an idle clean DSA tree (card tidy-respect-open-claims).
+- S4 exit text in D7 still says queue ack; D5 removed the queue. Fix when S4 cards ship.
 
 ## Open
-- Operator: arm DeepSeek hands-free on DSA-NB (oldest row 57 h).
+- Operator: q-v1-bar, q-v1-layers, q-v1-spec; arm DeepSeek on DSA-NB; fable-run7-forward-test.
 
 ## Missed last time
 (machine-written by `context_gap.py fold` at the next ship)

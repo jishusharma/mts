@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T17:40:01Z",
   "commands": [],
   "created": "2026-11-03T16:00:36Z",
   "depends_on": [],
@@ -15,11 +16,17 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "test_spec_analyst_verdict.py (12 tests, 3/3 scratch mutations fail)",
+      "ref": "c9b05d676",
+      "utc": "2026-11-03T17:40:01Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "extra_tests.tsv merges as a union: parallel test registrations no longer conflict",
-      "ref": "f652e21c83fd",
-      "utc": "2026-11-03T09:46:34Z"
+      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nuc/dsa-prompt-flow-1103",
+      "ref": "039a6c7b9cf0",
+      "utc": "2026-11-03T17:03:26Z"
     }
   ],
   "layers": [],
@@ -28,9 +35,14 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-03T16:01:08Z",
+  "refreshed": "2026-11-03T17:22:20Z",
   "refs": [],
-  "result": "",
+  "result": "test_spec_analyst_verdict.py (12 tests, 3/3 scratch mutations fail)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tools/live_aid/test_spec_analyst_verdict.py (new)",
     "scripts/dev/extra_tests.tsv",
@@ -39,17 +51,18 @@
   "scope_out": [
     "any live path; editing live_aid_indicators.js or us_open_rates.js; no VALIDATION or HOLDOUT read; fixtures are the repo ones"
   ],
-  "scope_sha": "f652e21c83fd",
+  "scope_sha": "039a6c7b9cf0",
   "size": "S",
   "sources": [
     "MyTradingSys/tools/live_aid/REQUIREMENTS.md R13 and R14"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read tools/live_aid/REQUIREMENTS.md R13, R14 and the docstrings of the named functions; list expected outputs by hand for boundary cases (empty input, one below, at, one above, malformed)",
     "write the tests, reusing the node runner pattern of test_live_aid.py; run them",
     "make 3 scratch mutations on a temp copy of the .js, confirm each fails a test, write the report, register in extra_tests.tsv"
   ],
+  "taken": "2026-11-03T17:40:01Z",
   "tests": "python -m pytest MyTradingSys/tools/live_aid/test_spec_analyst_verdict.py -q",
   "title": "Spec tests for live_aid analyst and verdict chain (rosterRead, analystVote, levelWatch, zones, lean, actions)",
   "weight": "ROUTINE",

@@ -2,7 +2,16 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
-  "created": "2026-11-03T16:58:31Z",
+  "context": {
+    "calls_to_edit": 8,
+    "folded": "2026-11-03T20:20:12Z",
+    "misses": 1,
+    "reads": [
+      "MyTradingSys/system/ANNOUNCEMENTS.md"
+    ],
+    "session": "agent-a662844f4d812a6bc"
+  },
+  "created": "2026-11-03T20:14:57Z",
   "depends_on": [],
   "done_when": "",
   "est_turns": null,
@@ -10,8 +19,8 @@
   "formula_ids": [],
   "from_inbox": "",
   "goal": "",
-  "id": "sim-desk-result-cards-14-of-40-haiku-wri",
-  "lane": "SONNET",
+  "id": "bg-watch-ghost-task-1104",
+  "lane": "HAIKU",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -28,7 +37,7 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "Sim desk result cards: 14 of 40 Haiku-written cards state a Verdict word that differs from results/*.json, 15 Keep lines differ (gemini_audits_2026-11-03/sim_result_cards_spotcheck.md). Regenerate card verdict/keep lines from the json, add a test that card text matches json",
+  "title": "bg_watch: a background task whose agent no longer exists (TaskStop: not found, transcript idle > 6 h) is reported once as GHOST, not as STALLED-BG every wake",
   "weight": "",
   "worker": ""
 }

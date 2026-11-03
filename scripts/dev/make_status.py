@@ -20,6 +20,7 @@ import re
 TRUNK = "origin/fast-track"
 TRUNK_COMMITS = 3
 GATE_BOARD = "MyTradingSys/system/gate_board.json"
+LAYER_MAP = "MyTradingSys/system/layer_map.json"
 RESEARCH_PATHS = ("MyTradingSys/research/", "MyTradingSys/methodology/", "MyTradingSys/extracts/", "MyTradingSys/backtest/")
 INFRA_CAP_PCT = 30
 RECENT_REPORTS = 5
@@ -440,6 +441,24 @@ def get_gate_board(cwd=None, now=None, board=GATE_BOARD):
     return out
 
 
+def get_layer_pass_line(cwd=None, map_path=LAYER_MAP):
+    """One alignment number (operator 2026-11-03): fee-net backtest rows that still carry a PASS, over fee-net rows tried.
+    A withdrawn PASS is not a PASS: LAYERS.md is generated from this file, and a stale copy of it read a false PASS twice."""
+    p = Path(cwd or ".") / map_path
+    if not p.exists():
+        return f"(no {map_path})"
+    rows = json.loads(p.read_text(encoding="utf-8")).get("backtests", [])
+    fee_net = passed = 0
+    for r in rows:
+        fees = (r.get("fees") or "").strip().lower()
+        if not fees or fees == "none" or "gross" in fees:
+            continue
+        fee_net += 1
+        v = (r.get("verdict") or "").strip()
+        if v.upper().startswith("PASS") and "withdrawn" not in v.lower():
+            passed += 1
+    return f"Layer pass: {passed} of {fee_net} fee-net row(s) carry a surviving PASS"
+
 def main():
     os.chdir(os.path.dirname(os.path.abspath(__file__)) + "/../..")
 
@@ -453,6 +472,7 @@ def main():
     output.append("## Git Status")
     ci_line = get_ci_line()
     output.append(ci_line)
+    output.append(get_layer_pass_line())
     output.append(get_go_private_line())
     card_line = get_ci_card_line(ci_line)
     if card_line:

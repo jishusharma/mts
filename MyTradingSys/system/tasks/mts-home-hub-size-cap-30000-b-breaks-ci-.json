@@ -4,31 +4,55 @@
   "commands": [],
   "created": "2026-11-03T16:00:41Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "scripts/dev/test_artifacts.py passes (len(html) < 30000) AND a new test feeding 60 undecided decisions yields a page under 30000 B; python scripts/dev/test_artifacts.py exit 0",
+  "est_turns": 14,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "make_home.build/render caps the Waiting-for-you list (waiting(), from OPERATOR_DECISIONS.md) at 8 newest rows plus an 'and N more' line, so page size stays under the 30000 B assert in test_artifacts.py:216 however long the log grows",
   "id": "mts-home-hub-size-cap-30000-b-breaks-ci-",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Artifacts: record the operator's deletes, retire the BTC Live Aid preview",
+      "ref": "be70f58af4ff",
+      "utc": "2026-10-31T09:55:12Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "refined by Session_Planner 2026-11-03; verify: content sha, cherry empty, ls-tree both files",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refs": [],
+  "refreshed": "2026-11-03T18:23:12Z",
+  "refs": [
+    "scripts/dev/test_artifacts.py:216"
+  ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/make_home.py",
+    "scripts/dev/test_artifacts.py"
+  ],
+  "scope_out": [
+    "MyTradingSys/system/OPERATOR_DECISIONS.md",
+    "MyTradingSys/tests/docs/test_integrity.py"
+  ],
+  "scope_sha": "be70f58af4ff",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "read make_home.py waiting() lines 80-110, build() 126-155 and test_artifacts.py:200-220",
+    "write the 60-decision failing test first",
+    "cap rendered waiting rows at 8 (OURS), append 'and N more in OPERATOR_DECISIONS.md'; do not raise the 30000 cap",
+    "run test_artifacts.py"
+  ],
+  "tests": "scripts/dev/test_artifacts.py: add a case writing 60 open decision sections to a tmp repo and rendering; fails on current make_home (page grows with the log)",
   "title": "MTS Home hub size cap (30000 B) breaks CI on every new OPERATOR_DECISIONS entry: make_home must cap the decisions excerpt so the page size does not grow with the log (CI red 11-03 from 915c162c4)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

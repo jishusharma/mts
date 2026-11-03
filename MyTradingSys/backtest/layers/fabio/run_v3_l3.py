@@ -198,9 +198,10 @@ def main(argv=None):
     out.mkdir(parents=True, exist_ok=True)
     _OUT = out
     (out / "FAILED").unlink(missing_ok=True)
-    wins, skipped = build_windows(IS_RANGE[0], OOS_RANGE[1])
+    # --is-only reads the IS window only: no OOS bar is loaded (card fabio-v3-is-only-loads-oos-bars).
+    wins, skipped = build_windows(IS_RANGE[0], IS_RANGE[1] if a.is_only else OOS_RANGE[1])
     is_w = [w for w in wins if IS_RANGE[0] <= w["date"] <= IS_RANGE[1]]
-    oos_w = [w for w in wins if OOS_RANGE[0] <= w["date"] <= OOS_RANGE[1]]
+    oos_w = [] if a.is_only else [w for w in wins if OOS_RANGE[0] <= w["date"] <= OOS_RANGE[1]]
     if a.days_limit:
         is_w, oos_w = is_w[:a.days_limit], oos_w[:a.days_limit]
     log("IS windows %d, OOS windows %d, skipped %s" % (len(is_w), len(oos_w), skipped))

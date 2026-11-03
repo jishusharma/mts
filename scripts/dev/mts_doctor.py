@@ -410,9 +410,20 @@ def size_headroom(repo):
     return "OK", f"{len(rows)} files, tightest {tight[0]} {tight[1]}/{tight[2]} B"
 
 
-def ci_revert(runs, now=None, hours=72):
-    """runs: GitHub workflow runs of fast-track (any order). Minutes from each first red to the next green; WARN when > CI_FIX_MIN or red now."""
+def ci_gated(sha, repo=None):
+    """True when commit sha changed a path CI runs on (make_status.CI_PATHS, the list the trunk-lag line uses); False for a
+    docs-only commit. A sha git cannot diff (unknown, or a root commit) counts as gated, so the alarm stays."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import make_status as MS
+    out = _git(repo or REPO, "diff", "--name-only", f"{sha}^", sha, "--", *MS.CI_PATHS)
+    return out.returncode != 0 or bool(out.stdout.strip())
+
+
+def ci_revert(runs, now=None, hours=72, gated=None):
+    """runs: GitHub workflow runs of fast-track (any order). Minutes from each first red to the next green; WARN when > CI_FIX_MIN or red now.
+    A red run whose commit the CI path filter ignores (docs-only) is no red trunk: gated(head_sha) False skips it."""
     now = now or datetime.now(timezone.utc)
+    gated = gated or ci_gated
 
     def ts(s):
         return datetime.fromisoformat(s.replace("Z", "+00:00"))
@@ -422,6 +433,8 @@ def ci_revert(runs, now=None, hours=72):
     gaps, red_since, warns = [], None, []
     for r in done:
         t = ts(r["created_at"])
+        if r["conclusion"] == "failure" and not gated(r["head_sha"]):
+            continue
         if r["conclusion"] == "failure":
             red_since = red_since or (t, r["head_sha"][:8])
         elif red_since:

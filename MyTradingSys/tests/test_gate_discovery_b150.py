@@ -27,16 +27,30 @@ def tracked_tests():
             and not p.startswith(("Dumps/", "_archive/"))]
 
 
+def is_gated(rel, gate_text, extra, tracked, skip=()):
+    """Gated when rel is skipped/extra, under a collected dir, named by full path in the gate text,
+    or its bare stem is named AND no other tracked test shares that stem."""
+    if rel in skip or rel in extra or rel.startswith(COLLECTED_DIRS) or rel in gate_text:
+        return True
+    stem = Path(rel).stem
+    if f'"{stem}"' in gate_text or f"{stem}.py" in gate_text:
+        return sum(1 for t in tracked if Path(t).stem == stem) == 1
+    return False
+
+
 class GateDiscoveryTest(unittest.TestCase):
+    def test_same_stem_in_other_dir_is_not_gated(self):
+        gate = 'run("scripts/dev/test_desk.py")  # test_desk.py'
+        tracked = ["scripts/dev/test_desk.py", "sim_desk/test_desk.py"]
+        self.assertTrue(is_gated("scripts/dev/test_desk.py", gate, set(), tracked))
+        self.assertFalse(is_gated("sim_desk/test_desk.py", gate, set(), tracked))
+        self.assertTrue(is_gated("a/test_only.py", "x test_only.py", set(), ["a/test_only.py"]))
+
     def test_every_tracked_test_file_is_gated_or_skipped_with_a_reason(self):
         gate = (ROOT / "scripts" / "dev" / "run_all_tests.py").read_text(encoding="utf-8")
         extra = set(run_extra_tests.all_tests())          # EXTRA plus every study-folder test (discovered, no entry to keep)
-        missing = []
-        for rel in tracked_tests():
-            stem = Path(rel).stem
-            if rel in SKIP or rel in extra or rel.startswith(COLLECTED_DIRS) or f'"{stem}"' in gate or f"{stem}.py" in gate:
-                continue
-            missing.append(rel)
+        tracked = tracked_tests()
+        missing = [rel for rel in tracked if not is_gated(rel, gate, extra, tracked, SKIP)]
         self.assertEqual(missing, [], "add to run_all_tests.py, to run_extra_tests.EXTRA, or to SKIP with a reason")
         self.assertTrue(all(isinstance(v, str) and v for v in SKIP.values()))
 

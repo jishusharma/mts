@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T17:05:43Z",
   "commands": [],
   "created": "2026-11-03T15:59:57Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "FOUND: 19 | DIFF: 0 | NOT_IN_DATA: 1 | DRIFT: 9 in MyTradingSys/research/gemini_audits_202",
+      "ref": "24d3f951e",
+      "utc": "2026-11-03T17:05:43Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +45,12 @@
   "refined_by": "",
   "refreshed": "2026-11-03T16:58:42Z",
   "refs": [],
-  "result": "",
+  "result": "FOUND: 19 | DIFF: 0 | NOT_IN_DATA: 1 | DRIFT: 9 in MyTradingSys/research/gemini_audits_2026-11-03/roadmap_review_blind_read.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/roadmap_critical_review_1103/REVIEW.md (read)",
     "MyTradingSys/research/VERDICTS.csv (read)",
@@ -53,12 +65,13 @@
   "sources": [
     "MyTradingSys/research/layer_lab/roadmap_critical_review_1103/REVIEW.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "list every number in the Where-we-are table",
     "recount each with your own command; note the commit you are on (counts drift, mark DRIFT not DIFF when the gap is later commits)",
     "write FOUND / NOT_IN_DATA / DIFF per number, counts on line 1"
   ],
+  "taken": "2026-11-03T17:05:43Z",
   "tests": "see done_when (audit card, output file is the test)",
   "title": "[GEMINI] blind read of layer_lab/roadmap_critical_review_1103/REVIEW.md: the snapshot count table vs the repo (task states, VERDICTS rows, worktrees)",
   "weight": "ROUTINE",
