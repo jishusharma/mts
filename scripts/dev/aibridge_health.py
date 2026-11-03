@@ -3,7 +3,9 @@
 Exit 0 = port accepts a TCP connection and the agent replies to an OPTIONS request (any HTTP status);
 exit 1 = down. The version lines are report-only and never change the exit code. Sends no token and runs no command:
 GET /ping is the agent's token-free identity probe.
-Usage: python scripts/dev/aibridge_health.py [F:/AIBridge]
+Usage: python scripts/dev/aibridge_health.py [F:/AIBridge] [--signal]
+--signal also sends one model-free line "BRIDGE host=<h> last_call_age_min=<n> up=<0|1>" (age of the newest audit.jsonl call) so
+supervisors on other devices see this host's bridge (supervisor.py tick -> lanes.dsa).
 """
 import json
 import os
@@ -84,10 +86,34 @@ def version_report(root) -> None:
         print(f"WARN running agent {running} is not the installed {manifest}: restart the agent (aibridge_install.py --restart-agent)")
 
 
+BRIDGE_UP_MAX_MIN = 24 * 60   # a bridge whose newest call is older than this counts as down (same 24 h as supervisor DSA_DOWN_H)
+
+
+def bridge_line(host, age_h, up_max_min=BRIDGE_UP_MAX_MIN) -> str:
+    """BRIDGE host=<h> last_call_age_min=<n> up=<0|1>; age_h None (no readable audit) -> age -1, up=0."""
+    if age_h is None:
+        return f"BRIDGE host={host} last_call_age_min=-1 up=0"
+    n = max(0, round(age_h * 60))
+    return f"BRIDGE host={host} last_call_age_min={n} up={1 if n <= up_max_min else 0}"
+
+
+def send_bridge_signal(root, host=None, now=None) -> str:
+    from datetime import datetime, timezone
+    import dsa_watch
+    import mts_signal
+    host = (host or socket.gethostname()).upper()
+    age = dsa_watch.audit_age(os.path.join(root, "src", "audit.jsonl"), now or datetime.now(timezone.utc))
+    line = bridge_line(host, age)
+    mts_signal.send(line, to="all", kind="note")
+    return line
+
+
 def main(argv) -> int:
     root = next((a for a in argv if not a.startswith("--")), "F:/AIBridge").rstrip("/\\")
     rc = liveness()
     version_report(root)
+    if "--signal" in argv:
+        print(send_bridge_signal(root))
     return rc
 
 

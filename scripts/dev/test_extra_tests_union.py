@@ -23,7 +23,8 @@ def test_gitattributes_sets_union_merge_for_tsv():
 def test_two_parallel_appended_rows_merge_clean_with_repo_attributes():
     d = tempfile.mkdtemp()
     try:
-        _git(d, "init", "-q", "-b", "base")
+        _git(d, "init", "-q")   # no `init -b`: needs git 2.28, JIS-NUC runs 2.24
+        _git(d, "symbolic-ref", "HEAD", "refs/heads/base")
         os.makedirs(os.path.join(d, "scripts", "dev"))
         shutil.copy(os.path.join(ROOT, ".gitattributes"), os.path.join(d, ".gitattributes"))
         p = os.path.join(d, TSV)

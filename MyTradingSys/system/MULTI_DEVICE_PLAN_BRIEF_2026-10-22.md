@@ -32,7 +32,7 @@ Written by the MTS Doctor side session from the operator's words. This is a brie
 1. Validate and correct this brief against the repo (STATUS.md, tasks.py, ROUTING.md, CLOUD_ACCOUNTS.md, SUPER_SESSION.md, ROSTER.json). Say what is UNVERIFIED (quotas especially).
 2. A plan per device and login: who runs what, in what order, which model, expected hours, stop conditions. No scheduler (SCHEDULING_POLICY.md). Zero operator input once started; defaults logged `DECISION (OURS)`.
 3. Revalidate the plan once (read it again against the files, fix errors).
-4. Three prompt files, short and self-contained: `MyTradingSys/system/SUPER_START_JIS-NB.md`, `SUPER_START_JIS-NUC.md`, `SUPER_START_DESKTOP-F7IU69N.md`. Each starts "You are Supervisor." style line plus the device's task list.
+4. Three per-device prompt files, short and self-contained (none is tracked any more; the device's task list stands in for it). Each starts "You are Supervisor." style line plus the device's task list.
 5. Ship with `sync.py ship`. Then the operator's whole pickup per device is ONE pasted line:
    `git pull, then follow MyTradingSys/system/SUPER_START_<HOSTNAME>.md` (put the exact line in `MyTradingSys/system/START_HERE.txt` too). Also hand the three files to the operator with SendUserFile so they reach his phone.
 6. Final reply to the operator: at most 8 lines, the three one-line pickups, what needs his decision.

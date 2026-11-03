@@ -143,7 +143,9 @@ def find_exe(env=os.environ, which=shutil.which, globber=glob.glob):
     hit = which("codex")
     if hit:
         return hit
-    found = globber(os.path.join(env.get("LOCALAPPDATA", ""), "OpenAI", "Codex", "bin", "*", "codex.exe"))
+    # an ssh-started gate job may have no LOCALAPPDATA: fall back to USERPROFILE\AppData\Local
+    local = env.get("LOCALAPPDATA") or os.path.join(env.get("USERPROFILE", ""), "AppData", "Local")
+    found = globber(os.path.join(local, "OpenAI", "Codex", "bin", "*", "codex.exe"))
     if not found:
         raise SystemExit("codex_run: no Codex CLI (set MTS_CODEX_EXE)")
     return max(found, key=lambda p: os.path.getmtime(p) if os.path.exists(p) else 0)
