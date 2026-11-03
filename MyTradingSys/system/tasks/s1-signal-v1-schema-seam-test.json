@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T23:01:48Z",
   "commands": [
     "python -m pytest MyTradingSys/tests/test_signal_v1_schema.py MyTradingSys/tests/test_cbp_query.py -q",
     "python scripts/dev/run_all_tests.py --quick"
@@ -16,6 +17,12 @@
   "id": "s1-signal-v1-schema-seam-test",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "already on trunk 29d7c85a4 (queue/signal_v1.schema.json, D6 seam rejects option); closed b",
+      "ref": "b7ffc496a",
+      "utc": "2026-11-03T23:01:48Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -35,7 +42,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D7_ROADMAP.md"
   ],
-  "result": "",
+  "result": "already on trunk 29d7c85a4 (queue/signal_v1.schema.json, D6 seam rejects option); closed by coordinator 2026-11-04",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/queue/signal_v1.schema.json (new; git mv of MyTradingSys/cbp/schema.json, plus the optional instrument property)",
     "MyTradingSys/cbp/__init__.py (SCHEMA_PATH constant, instrument check in validate_row, docstring line 6 path)",
@@ -56,13 +68,14 @@
     "MyTradingSys/cbp/__init__.py:ROW_FIELDS, validate_row",
     "MyTradingSys/queue/ is absent today (listed 2026-11-04)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write test_signal_v1_schema.py first and run it: it fails on old code (schema file absent, option instrument accepted).",
     "git mv MyTradingSys/cbp/schema.json MyTradingSys/queue/signal_v1.schema.json; add optional instrument {venue, symbol, kind enum [perp]}; keep the title honest (row v1, owned by MTS).",
     "cbp/__init__.py: SCHEMA_PATH, and in validate_row: instrument not an object -> 'instrument must be an object'; kind != perp -> 'kind not enabled'; update the docstring path.",
     "python -m pytest MyTradingSys/tests/test_signal_v1_schema.py MyTradingSys/tests/test_cbp_query.py -q, then run_all_tests --quick, ship."
   ],
+  "taken": "2026-11-03T23:01:48Z",
   "tests": "test_signal_v1_schema.py: (1) queue/signal_v1.schema.json exists and cbp/schema.json does not; (2) its required list, bias enum and trade direction enum equal cbp.ROW_FIELDS, BIASES, DIRECTIONS; (3) a valid row with instrument kind perp passes; (4) kind option returns 'kind not enabled', a string instrument returns an error, neither raises. All fail on old code.",
   "title": "S1: Signal v1 as the one schema (cbp_contract_v1 promoted) plus the D6 seam test green on CI",
   "weight": "ROUTINE",
