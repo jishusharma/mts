@@ -1,0 +1,135 @@
+{
+ "id": "rsi-deep-confirmations-2026-11-04",
+ "kind": "backtest",
+ "family": "Rsi Deep Buy",
+ "title": "RSI deep-buy: causal confirmations at the RSI low vs the raw touch (card rsi-deep-confirmations, 2869f863)",
+ "provenance": "builder-export",
+ "date": "2026-11-04",
+ "what": [
+  {
+   "name": "Unit",
+   "value_plain": "Stage-0 episode (RSI <= level after >= level+3) on the six TF x level cells H1 did not kill: 60m abs20/abs30/rel, 15m abs30/abs20, 1m abs10",
+   "label": "OURS"
+  },
+  {
+   "name": "Confirmation",
+   "value_plain": "fires on the first bar within 16 bars of the signal using bars up to that bar only (e.g. new 7d low, higher-TF RSI state); entry = next open, exit = open N bars later (N = 4, 16)",
+   "label": "OURS"
+  },
+  {
+   "name": "Costs",
+   "value_plain": "0.10% round trip, fee-net; CI = day-clustered",
+   "label": "OURS"
+  },
+  {
+   "name": "Question",
+   "value_plain": "does waiting for a confirmation beat buying the raw touch?",
+   "label": "OURS"
+  }
+ ],
+ "how": "228 confirmation rows (singles and one frozen pair) x cell x N; a row counts only with 30+ independent days (150 on DEV, 80 on VALIDATION).",
+ "window": "DEV = bar open < 2024-07-01 (frozen first); VALIDATION 2024-07-01..2025-06-30 read once; HOLDOUT never read",
+ "verdict": {
+  "label": "NULL: 0 of 150 DEV rows and 0 of 80 VALIDATION rows have a fee-net CI above 0",
+  "tone": "bad"
+ },
+ "why": [
+  "Chance alone would give about 3.8 DEV rows and 2.0 VALIDATION rows above zero; the run found none.",
+  "Best DEV row: C8_newlow7d on 60m abs20 N=16, +0.829% [-0.77, +2.43] on 32 days; same row on VALIDATION +0.207% on 13 days (too few days).",
+  "Confirmations cut the odds of a new lower low but give up part of the bounce; per event the net stays inside fee noise."
+ ],
+ "kpis": [
+  {
+   "label": "DEV rows CI>0",
+   "value": "0 of 150",
+   "tone": "bad"
+  },
+  {
+   "label": "VAL rows CI>0",
+   "value": "0 of 80",
+   "tone": "bad"
+  },
+  {
+   "label": "best DEV net",
+   "value": "+0.83% [-0.77, +2.43]",
+   "tone": "warn"
+  },
+  {
+   "label": "raw touch 60m abs20 N=16 DEV",
+   "value": "+0.57% [-0.71, +1.84]"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "table",
+   "title": "Raw touch per cell (baseline), DEV, N=16",
+   "caption": "net % after 0.10% round trip, day-clustered CI; P(lower) = a new lower low came after the fill",
+   "cols": [
+    "cell",
+    "n / days",
+    "P(lower)",
+    "net % [CI]",
+    "EV/day %"
+   ],
+   "rows": [
+    [
+     "1m abs10",
+     "158 / 127d",
+     "0.69",
+     "-0.072 [-0.28, +0.13]",
+     "-0.0125"
+    ],
+    [
+     "15m abs30",
+     "849 / 491d",
+     "0.81",
+     "-0.061 [-0.16, +0.04]",
+     "-0.0571"
+    ],
+    [
+     "15m abs20",
+     "170 / 133d",
+     "0.83",
+     "-0.113 [-0.38, +0.15]",
+     "-0.0211"
+    ],
+    [
+     "60m abs20",
+     "51 / 41d",
+     "0.84",
+     "+0.565 [-0.71, +1.84]",
+     "+0.0319"
+    ],
+    [
+     "60m abs30",
+     "253 / 196d",
+     "0.84",
+     "-0.156 [-0.54, +0.23]",
+     "-0.0436"
+    ]
+   ]
+  },
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: the report holds tables, not a trade list"
+  }
+ ],
+ "parity": null,
+ "source_files": [
+  "MyTradingSys/research/rsi_deep_buy_2026-10-19/CONFIRMATIONS.md",
+  "MyTradingSys/research/rsi_deep_buy_2026-10-19/confirmations.py",
+  "MyTradingSys/research/rsi_deep_buy_2026-10-19/test_confirmations.py"
+ ],
+ "commit": "2869f863",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "NULL: 0 of 150 DEV rows and 0 of 80 VALIDATION rows have a fee-net CI above 0",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: NULL: 0 of 150 DEV rows and 0 of 80 VALIDATION rows have a fee-net CI above 0 · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
+}
