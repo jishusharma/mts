@@ -204,4 +204,3 @@ MyTradingSys/tools/live_aid/test_spec_analyst_verdict.py
 MyTradingSys/research/rsi_deep_buy_2026-10-19/test_context_tables.py
 MyTradingSys/research/rsi_deep_buy_2026-10-19/test_divergence_context.py
 MyTradingSys/research/rsi_deep_buy_2026-10-19/test_confluence.py
-MyTradingSys/backtest/layers/alerts/test_live_confluence_feed.py

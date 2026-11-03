@@ -39,13 +39,8 @@ class FeedTests(unittest.TestCase):
         crosses = [e for e in ev if e["event"].startswith("cf_rsi_cross_")]
         self.assertTrue(any(e["event"].endswith("_40") for e in crosses))
         self.assertTrue(any(e["event"].endswith("_60") for e in crosses))
-        from MyTradingSys.execution import auto_trader as at
-        cfg = {"layer_rules": {"rsi:support": "long"}}
-        for e in ev:
-            self.assertIsNone(at.layer_side({"layer": "confluence_feed", **e}, cfg))
-        # the raw RSI cross stays unmapped on purpose: no source gives it a side (RSI_CROSS_UNMAPPED.md)
-        self.assertIsNone(at.layer_side({"layer": "rsi", "sub": "rsi_events", "event": "cross", "level_value": 50.0,
-                                         "direction": "up"}, cfg))
+        # layer_side pinning lives in MyTradingSys/execution/test_auto_trader.py (layers must not import execution)
+        self.assertFalse([e for e in ev if "side" in e])
 
     def test_all_four_malkan_codes_and_krown_labelled(self):
         codes = set()
@@ -90,6 +85,59 @@ class FeedTests(unittest.TestCase):
             self.assertNotIn("krown_hidden", src)
         from MyTradingSys.backtest.layers.alerts import live_rsi_divergence as lrd
         self.assertFalse([e for s in range(1, 15) for e in lrd.adapter(walk(300, seed=s)) if "hidden" in e["event"]])
+
+
+class WindowSpecTests(unittest.TestCase):
+    """Operator spec d-malkan-divergence-window-1104: close-based, window 12 STRONG / 18 OK / >18 WEAK."""
+
+    def test_window_class_boundaries(self):
+        self.assertEqual([m.window_class(n) for n in (3, 12, 13, 18, 19, 40)],
+                         ["STRONG", "STRONG", "OK", "OK", "WEAK", "WEAK"])
+        self.assertEqual((m.WINDOW_STRONG, m.WINDOW_MAX), (12, 18))
+
+    def test_primary_events_carry_class_and_never_exceed_18(self):
+        prim = [e for s in range(1, 25) for e in m.confluence_feed_layer(walk(500, seed=s))
+                if e["source"] == "MALKAN" and e.get("column") == "primary"]
+        self.assertTrue(prim)
+        for e in prim:
+            self.assertEqual(e["basis"], "close")
+            self.assertLessEqual(e["bars"], 18)
+            self.assertEqual(e["window_class"], m.window_class(e["bars"]))
+            self.assertNotEqual(e["window_class"], "WEAK")
+        self.assertIn("OK", {e["window_class"] for e in prim})        # 13..18 bars now fire (old cap was 10)
+        self.assertIn("STRONG", {e["window_class"] for e in prim})
+
+    def test_legacy_column_is_comparison_only_with_old_windows(self):
+        ev = [e for s in range(1, 25) for e in m.confluence_feed_layer(walk(500, seed=s)) if e.get("column") == "legacy"]
+        self.assertTrue(ev)
+        for e in ev:
+            self.assertTrue(e["code"].endswith("_OLD"))
+            self.assertEqual(e["label"][:4], "OURS")
+            self.assertLessEqual(e["bars"], 14 if e["code"].startswith(("PRD", "NRD")) else 10)
+        feed = [e for e in ev]
+        out = m.annotate_levels_events([{"t": e["t"] + HOUR, "event": "x"} for e in feed[:3]], feed[:3], HOUR)
+        self.assertTrue(all(o["confluence"] and o["confluence"][0].endswith("_OLD") for o in out))
+
+    def test_wick_only_divergence_does_not_fire(self):
+        # Price CLOSES keep making a higher low pattern-free zigzag; only the wicks (low / high) are rewritten to
+        # fabricate a lower-low-with-higher-RSI picture. Output must equal the output on the untouched wicks.
+        import copy
+        rng = random.Random(11)
+        for seed in range(1, 12):
+            bars = walk(300, seed=seed)
+            wild = copy.deepcopy(bars)
+            for b in wild:
+                b["l"] = b["l"] - rng.uniform(0, 3000)
+                b["h"] = b["h"] + rng.uniform(0, 3000)
+            self.assertEqual(m.confluence_feed_layer(bars), m.confluence_feed_layer(wild))
+
+    def test_wick_only_synthetic_case(self):
+        # closes: steady rise (no swing low pair at all); wicks dip to a lower low at bar 40 vs bar 30 => wick-only
+        bars = [{"t": i * HOUR, "o": 100 + i, "h": 101 + i, "l": 99 + i, "c": 100.5 + i, "v": 1.0} for i in range(80)]
+        bars[30]["l"], bars[40]["l"] = 60.0, 55.0
+        bars[31]["l"], bars[41]["l"] = 62.0, 58.0
+        ev = [e for e in m.confluence_feed_layer(bars) if e["source"] == "MALKAN" and e["code"] in ("R-BULL", "PRD")]
+        self.assertEqual(ev, [])
 
 
 class AnnotateTests(unittest.TestCase):

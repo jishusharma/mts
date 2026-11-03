@@ -11,8 +11,14 @@ rsi:cross stays unmapped on purpose (no source gives a cross a side; see RSI_CRO
 Parameter labels:
 - RSI period 14: SOURCED (Malkan / Wilder default, same as rsi_core callers). Levels 40 and 60: SOURCED (Malkan 40-60).
   Tolerance 0.5: OURS (RSI_TOL of live_layers.rsi_level_layer).
-- Malkan regular bullish/bearish: bars 3..10, min_rsi_diff 0: SOURCED (params/malkan_divergence_default.json).
-- Malkan PRD / NRD: RSI regime 60 / 40 SOURCED; bars window 5..14 OURS + UNVERIFIED (glossary conflict C1).
+- Malkan windows (operator spec d-malkan-divergence-window-1104, relay of Malkan; transcript line still to be found by
+  the Hindi reads): swing-to-swing 12 bars primary (STRONG), 18 secondary (OK), past 18 = WEAK, NOT a signal (not emitted).
+  12 / 18 SOURCED (operator relay). Divergence is read on CLOSES (line chart), never wicks: pivots are strict local
+  extremes of the close and the RSI at those closes; h / l of a bar are never read (every event carries basis "close").
+- Min bars 3 (SOURCED "minimum three candles"), PRD / NRD min 5 (SOURCED words, GbXnw_tNMtw_raw.txt:460), min_rsi_diff 0.
+- Malkan PRD / NRD: RSI regime 60 / 40 SOURCED.
+- Comparison column "legacy" (code suffix _OLD, label OURS, NOT the default, not for consumers): the old windows
+  3..10 (regular) and 5..14 (PRD / NRD) from params/malkan_divergence_default.json.
 - Krown hidden bullish/bearish (K-HBULL / K-HBEAR): third-party definition, window 3..10 OURS; source KROWN-CONFLUENCE.
   Never credited to Malkan: MALKAN_KINDS holds regular + reverse kinds only.
 Codes match research/malkan_div_flags_2026-10-28/BTCUSDT_divergences.csv (R-BULL, R-BEAR, PRD, NRD, K-HBULL, K-HBEAR).
@@ -39,6 +45,10 @@ MIN_BARS_NEEDED = RSI_PERIOD + 2
 MALKAN_KINDS = ("bullish", "bearish", "prd", "nrd")
 MALKAN_CODE = {"bullish": "R-BULL", "bearish": "R-BEAR", "prd": "PRD", "nrd": "NRD"}
 KROWN_CODE = {"hidden_bullish": "K-HBULL", "hidden_bearish": "K-HBEAR"}
+WINDOW_STRONG = 12   # SOURCED (operator relay of Malkan, d-malkan-divergence-window-1104)
+WINDOW_MAX = 18      # SOURCED (same); past this the window is WEAK and no event is emitted
+REVERSE_MIN_BARS = 5
+REGULAR_MIN_BARS = 3
 TF_MS = {"1h": 3_600_000, "4h": 14_400_000, "1d": 86_400_000, "1w": 604_800_000}
 _PARAMS = Path(__file__).resolve().parents[1] / "rsi" / "params" / "malkan_divergence_default.json"
 
@@ -50,6 +60,11 @@ def _params():
     return {"regular": (p["min_bars"], p["max_bars"], p.get("min_rsi_diff", 0.0)),
             "reverse": (rev["min_bars"], rev["max_bars"], p.get("min_rsi_diff", 0.0)),
             "krown": (kb["min_bars"], kb["max_bars"], 0.0)}
+
+
+def window_class(bars_between):
+    """Swing-to-swing window class (A and B counted): <=12 STRONG, 13..18 OK, >18 WEAK (WEAK is not a signal)."""
+    return "STRONG" if bars_between <= WINDOW_STRONG else ("OK" if bars_between <= WINDOW_MAX else "WEAK")
 
 
 def _clean(bars):
@@ -80,18 +95,26 @@ def confluence_feed_layer(bars):
                 out.append({"t": int(e["t"]), "event": "cf_rsi_%s_%d" % (name, int(lv)), "code": "RSI_%s_%d" % (
                     name.upper(), int(lv)), "source": "MALKAN", "label": "levels SOURCED, tolerance OURS",
                     "penetration": e.get("penetration")})
-        for kind in MALKAN_KINDS:
-            mn, mx, diff = par["reverse" if kind in ("prd", "nrd") else "regular"]
-            for e in rsi_divergence(closes, rsi, ts, mn, mx, kind, diff):
-                out.append({"t": int(e["t"]), "event": "cf_malkan_%s" % MALKAN_CODE[kind].lower().replace("-", "_"),
-                            "code": MALKAN_CODE[kind], "source": "MALKAN",
-                            "label": "OURS+UNVERIFIED window" if kind in ("prd", "nrd") else "SOURCED",
-                            "bars": e["bars"], "chain": e["chain"], "rsi_a": e["rsi_a"], "rsi_b": e["rsi_b"]})
+        for column, windows in (("primary", {"regular": (REGULAR_MIN_BARS, WINDOW_MAX, par["regular"][2]),
+                                             "reverse": (REVERSE_MIN_BARS, WINDOW_MAX, par["reverse"][2])}),
+                                ("legacy", par)):
+            for kind in MALKAN_KINDS:
+                mn, mx, diff = windows["reverse" if kind in ("prd", "nrd") else "regular"]
+                legacy = column == "legacy"
+                for e in rsi_divergence(closes, rsi, ts, mn, mx, kind, diff):
+                    ev = {"t": int(e["t"]), "event": "cf_malkan_%s%s" % (MALKAN_CODE[kind].lower().replace("-", "_"),
+                                                                       "_old" if legacy else ""),
+                          "code": MALKAN_CODE[kind] + ("_OLD" if legacy else ""), "source": "MALKAN", "column": column,
+                          "basis": "close", "window_class": window_class(e["bars"]),
+                          "label": "OURS (old window, comparison only)" if legacy else
+                                   ("SOURCED window 12/18; PRD/NRD levels SOURCED" if kind in ("prd", "nrd") else "SOURCED"),
+                          "bars": e["bars"], "chain": e["chain"], "rsi_a": e["rsi_a"], "rsi_b": e["rsi_b"]}
+                    out.append(ev)
         mn, mx, diff = par["krown"]
         for kind in KROWN_KINDS:
             for e in krown_hidden_divergence(closes, rsi, ts, mn, mx, kind, diff):
                 out.append({"t": int(e["t"]), "event": "cf_krown_%s" % KROWN_CODE[kind].lower().replace("-", "_"),
-                            "code": KROWN_CODE[kind], "source": "KROWN-CONFLUENCE", "label": "OURS",
+                            "code": KROWN_CODE[kind], "source": "KROWN-CONFLUENCE", "label": "OURS", "basis": "close",
                             "bars": e["bars"], "chain": e["chain"], "rsi_a": e["rsi_a"], "rsi_b": e["rsi_b"]})
         for e in out:
             e["collection_only"] = True          # no "side" key on purpose
