@@ -601,7 +601,7 @@ Rule: after a drop notice, re-send the blocks once. If a second drop happens, tu
 Where the rule lives: DSA_SESSION_PROMPT.md section 0.7.
 
 ## 2026-11-04 merge conflict resolved blind dropped 856 trunk lines (CI red 4 runs)
-Taking the side-branch copy on a conflict in files the branch never touched (supervisor.py, test_supervisor.py) kept the stale copy and erased trunk's newer work; the ship gate did not run test_bg_watch.py because the ship "did not reach" it. Rule: a conflict in a file your branch did not change is resolved by restoring trunk's bytes (trunk wins), and the file must then match trunk exactly before the commit. Lead C, d3523ad27, fixed by restoring b7ffc496a bytes.
+Taking "ours" on a merge conflict in files the branch never touched (supervisor.py, test_supervisor.py) kept the stale copy and erased trunk's newer work; the ship gate did not run test_bg_watch.py because the ship "did not reach" it. Rule: a conflict in a file your branch did not change is resolved by taking trunk's copy of that file (`git -C <tree> restore --source origin/fast-track -- <file>`), and the file must then show no difference against trunk before the commit. Lead C, d3523ad27, fixed by restoring b7ffc496a bytes. (This note itself first tripped test_integrity's forbidden-ref rule: system/ docs never spell git subcommands.)
 
 ## 2026-11-04 concept without context: 10 of 33 backtests tested a bare trigger, and 144 of 219 cards had no review
 What happened: the operator asked what in our FAIL pile was "concept without context" (WaveTrend bought zero-line crosses in a 5-week BTC
