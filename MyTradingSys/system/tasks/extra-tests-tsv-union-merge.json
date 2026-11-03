@@ -2,6 +2,16 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-03T09:45:43Z",
+    "misses": 26,
+    "reads": [
+      "scripts/dev/extra_tests.tsv",
+      "scripts/dev/test_run_extra_tests.py"
+    ],
+    "session": "agent-a1fba6300e6c70d7a"
+  },
   "created": "2026-11-02T16:25:10Z",
   "depends_on": [],
   "done_when": "test_extra_tests_union.py passes; a merge of two appended rows has both rows.",
