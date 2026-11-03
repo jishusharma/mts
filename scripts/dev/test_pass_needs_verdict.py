@@ -40,10 +40,6 @@ KNOWN_OFFENDERS = {
     "register:carry_basis_2026-10-18/CARRY_switch_unlevered":
         "NOT certified: same as CARRY_always_unlevered; RESULT.md calls it strictly worse than always-on. "
         "Clears when evidence is added.",
-    "card:meta-label-ext-pass-verdict-recheck":
-        "NOT certified: card result says PASS STANDS under the literal frozen rule, but VERDICTS.csv has no "
-        "PASS row for meta_label_dev_ext_2026-10-31 and no replay or re-run; the setup stays parked "
-        "pre-DEV (REVIEW.md item 4). Clears when a row and evidence exist or the card result is reworded.",
 }
 
 
