@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "fabio-v3-is-only-loads-oos-bars",
+  "closed": "2026-11-03T19:29:54Z",
   "commands": [],
   "created": "2026-11-03T15:59:29Z",
   "depends_on": [],
@@ -13,6 +15,12 @@
   "id": "fabio-v3-is-only-loads-oos-bars",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "run_v3_l3.py --is-only now loads bars only through IS_RANGE[1]; test_run_v3_l3.py 13 passe",
+      "ref": "45972ae3b",
+      "utc": "2026-11-03T19:29:54Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -34,7 +42,12 @@
   "refs": [
     "MyTradingSys/backtest/layers/fabio/run_v3_l3.py:201"
   ],
-  "result": "",
+  "result": "run_v3_l3.py --is-only now loads bars only through IS_RANGE[1]; test_run_v3_l3.py 13 passed (new case failed on old line 201 with OOS_RANGE[1]=2026-06-25); unblocks fabio-v3-model-b-managed-is-rerun",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/fabio/run_v3_l3.py",
     "MyTradingSys/backtest/layers/fabio/test_run_v3_l3.py"
@@ -46,12 +59,13 @@
   "scope_sha": "d92a7373ae18",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read run_v3_l3.py lines 194-241 (--is-only, build_windows at 201)",
     "write failing test first",
     "on a.is_only call build_windows(IS_RANGE[0], IS_RANGE[1]) and skip oos_w construction; run the test file"
   ],
+  "taken": "2026-11-03T19:27:28Z",
   "tests": "MyTradingSys/backtest/layers/fabio/test_run_v3_l3.py: new case stubs build_windows and records args under --is-only; fails on current line 201 (passes OOS_RANGE[1])",
   "title": "run_v3_l3 --is-only loads bars through OOS end (line 201 build_windows(IS_RANGE[0], OOS_RANGE[1])): load only to IS_RANGE[1] in is-only mode; test fails on old code; unblocks fabio-v3-model-b-managed-is-rerun",
   "weight": "ROUTINE",
