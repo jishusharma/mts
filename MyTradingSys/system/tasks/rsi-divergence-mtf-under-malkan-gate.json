@@ -5,13 +5,14 @@
   "created": "2026-11-03T22:51:58Z",
   "depends_on": [],
   "done_when": "research/rsi_divergence_mtf_gated_<date>/PRE_REG.md (frozen, trial-ledger rows in TRIALS.md first), DEV fee-net table by regime and TF with day-clustered CI, VALIDATION read once for any DEV survivor, RESULT.md whose first lines print the window regime-mix line (research_kit.regime_mix_line) and a VERDICTS.csv row; HOLDOUT never read",
-  "est_turns": 45,
+  "est_turns": 40,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "The 2026-10-09 rsi_divergence_mtf FAIL ran the raw divergence with no monthly/weekly RSI gate, so it says nothing about Malkan's rule. Re-run it gated by research_kit.regime_tag (monthly and weekly RSI >=60 bull / <=40 bear, then the daily setup; MALKAN_RULES_2026-10-31.md:11-16, SOURCED), with a retest entry via research_kit.retest_entry as a second arm, fee-net, new PRE_REG frozen before any outcome.",
+  "goal": "Re-run the 2026-10-09 rsi_divergence_mtf FAIL gated by Malkan's monthly/weekly RSI >=60/<=40 (SOURCED, MALKAN_RULES_2026-10-31.md:11-16) via research_kit.regime_tag, plus a retest-entry arm, fee-net, new frozen PRE_REG. See note and CONTEXT_FILTER_REVIEW_2026-11-04.md.",
   "id": "rsi-divergence-mtf-under-malkan-gate",
   "lane": "SONNET",
+  "latest": [],
   "layers": [
     "rsi"
   ],
@@ -21,6 +22,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-03T22:52:49Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -29,6 +31,7 @@
   "scope_out": [
     "no live path, no parameter beyond PRE_REG, no new trend tag (use research_kit), HOLDOUT never read"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [
     "MyTradingSys/research/CONTEXT_FILTER_REVIEW_2026-11-04.md",
