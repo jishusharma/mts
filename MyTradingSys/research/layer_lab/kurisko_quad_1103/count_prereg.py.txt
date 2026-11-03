@@ -1,0 +1,177 @@
+"""Count-only Quad Rotation signals and passive maker fills on DEV bars.
+
+This script deliberately never calculates a post-entry return or P&L. The only
+post-signal OHLC read is the following bar's low/high to classify a limit touch.
+"""
+import csv
+import datetime as dt
+import json
+import math
+import statistics
+import sys
+from pathlib import Path
+
+import numpy as np
+from numpy.lib.stride_tricks import sliding_window_view
+
+ROOT = Path(__file__).resolve().parents[4]
+sys.path.insert(0, str(ROOT / "MyTradingSys" / "backtest" / "layers" / "kurisko"))
+import quad_rotation as qr  # noqa: E402
+
+DATA = Path("F:/MTS/data/bigtrade/cache/perp")
+OUT = Path(__file__).resolve().parent
+CUTOFF = int(dt.datetime(2024, 7, 1, tzinfo=dt.timezone.utc).timestamp() * 1000)
+MS = 60_000
+TFMS = {"15m": 15 * MS, "1h": 60 * MS}
+PHASE_M = 50
+PHASE_LOOKBACK = 10
+MAKER_OFFSET_BP = 1.0
+COST_BP = 11.0  # Binance maker entry 2 + taker exit 5 + OURS 4 slippage.
+SD_R = 1.4  # conservative lower end of prior audited 1.4-4.5 R range.
+M = 24
+
+
+def load_dev(tf):
+    z = np.load(DATA / f"klines_{tf}.npz", allow_pickle=False)
+    t_all = z["t"]
+    mask = t_all < CUTOFF
+    # Slice eligible rows before exposing OHLC fields to the count logic.
+    t_dev = t_all[mask]
+    h_dev, l_dev, c_dev = z["h"][mask], z["l"][mask], z["c"][mask]
+    bars = list(zip(map(int, t_dev), map(float, h_dev), map(float, l_dev), map(float, c_dev)))
+    if any(bars[i][0] >= CUTOFF for i in range(len(bars))):
+        raise ValueError("DEV cutoff violated")
+    return bars
+
+
+def build_4h(bars1h):
+    """Complete UTC 00/04/08/12/16/20 buckets only, from four consecutive 1h bars."""
+    by_t = {b[0]: b for b in bars1h}
+    out = []
+    four = 4 * 60 * MS
+    for start in sorted(by_t):
+        if start % four:
+            continue
+        group = [by_t.get(start + j * 60 * MS) for j in range(4)]
+        if all(x is not None for x in group):
+            out.append((start, max(x[1] for x in group), min(x[2] for x in group), group[-1][3]))
+    return out
+
+
+def phase_series(bars4h):
+    """OURS: above/below SMA50 AND its 10-bar direction; else mixed."""
+    closes = [x[3] for x in bars4h]
+    phases = []
+    for i, b in enumerate(bars4h):
+        if i < PHASE_M - 1 + PHASE_LOOKBACK:
+            phases.append(None)
+            continue
+        sma = statistics.fmean(closes[i - PHASE_M + 1:i + 1])
+        prior = statistics.fmean(closes[i - PHASE_M + 1 - PHASE_LOOKBACK:i + 1 - PHASE_LOOKBACK])
+        if b[3] > sma and sma > prior:
+            phases.append("up")
+        elif b[3] < sma and sma < prior:
+            phases.append("down")
+        else:
+            phases.append("mixed")
+    return phases
+
+
+def fast_stoch_lines(bars):
+    """Vectorized FORMULAS 24.1 D-line calculation, respecting missing-time segments."""
+    n = len(bars)
+    t = np.asarray([x[0] for x in bars], dtype=np.int64)
+    h = np.asarray([x[1] for x in bars], dtype=float)
+    l = np.asarray([x[2] for x in bars], dtype=float)
+    c = np.asarray([x[3] for x in bars], dtype=float)
+    # Fixed timeframe is passed through; only consecutive bars belong to a segment.
+    step = TFMS["15m"] if len(bars) > 1 and t[1] - t[0] == TFMS["15m"] else TFMS["1h"]
+    cuts = [0] + (np.flatnonzero(np.diff(t) != step) + 1).tolist() + [n]
+    outputs = [np.full(n, np.nan) for _ in qr.BANDS]
+    for a, b in zip(cuts[:-1], cuts[1:]):
+        hs, ls, cs = h[a:b], l[a:b], c[a:b]
+        for j, (k, d) in enumerate(qr.BANDS):
+            if len(cs) < k + d - 1:
+                continue
+            hh = sliding_window_view(hs, k).max(axis=1)
+            ll = sliding_window_view(ls, k).min(axis=1)
+            raw = np.full(len(cs) - k + 1, np.nan)
+            width = hh - ll
+            good = width != 0
+            raw[good] = 100.0 * (cs[k - 1:] [good] - ll[good]) / width[good]
+            finite = np.isfinite(raw)
+            sums = np.concatenate(([0.0], np.cumsum(np.where(finite, raw, 0.0))))
+            nums = np.concatenate(([0], np.cumsum(finite.astype(np.int64))))
+            vals = np.full(len(raw), np.nan)
+            if len(raw) >= d:
+                win_sum = sums[d:] - sums[:-d]
+                win_num = nums[d:] - nums[:-d]
+                valid = win_num == d
+                vals[d - 1:] [valid] = win_sum[valid] / d
+            start = a + k + d - 2
+            outputs[j][start:b] = vals[d - 1:]
+    return outputs
+
+
+def count_cell(tf, bars, arm, phase_by_4h, fourh):
+    tfms = TFMS[tf]
+    lines = fast_stoch_lines(bars) if arm == "stoch" else qr.lines(bars, tfms, arm)
+    events = qr.detect(lines)
+    # At event close, attach the most recent already completed 4h candle.
+    four_close = [x[0] + 4 * 60 * MS for x in fourh]
+    rows = []
+    for e in events:
+        t, _, _, close = bars[e.t]
+        # No context label until 4h SMA50 + slope are available.
+        k = np.searchsorted(four_close, t + tfms, side="right") - 1
+        if k < 0 or phase_by_4h[k] is None:
+            continue
+        phase = phase_by_4h[k]
+        # Passive limit one bp better than the signal close. Only next-bar OHLC
+        # low/high is consulted for a touch; never read the next close.
+        limit = close * (1 - MAKER_OFFSET_BP / 10_000) if e.side == "long" else close * (1 + MAKER_OFFSET_BP / 10_000)
+        next_i = e.t + 1
+        filled = False
+        if next_i < len(bars) and bars[next_i][0] - t == tfms:
+            filled = bars[next_i][2] <= limit if e.side == "long" else bars[next_i][1] >= limit
+        seg = bars[e.episode_start:e.t + 1]
+        stop = min(x[2] for x in seg) if e.side == "long" else max(x[1] for x in seg)
+        stop_bp = abs(limit - stop) / limit * 10_000
+        rows.append({"phase": phase, "side": e.side, "t_close": t + tfms, "filled": filled,
+                     "stop_bp": stop_bp})
+    result = []
+    for side in ("long", "short"):
+        for phase in ("up", "down", "mixed"):
+            r = [x for x in rows if x["phase"] == phase and x["side"] == side]
+            f = [x for x in r if x["filled"]]
+            signal_days = len({x["t_close"] // 86_400_000 for x in r})
+            fill_days = len({x["t_close"] // 86_400_000 for x in f})
+            med_stop = statistics.median(x["stop_bp"] for x in f) if f else None
+            result.append({"tf": tf, "arm": arm, "side": side, "phase": phase, "signals": len(r),
+                           "signal_days": signal_days, "fills": len(f), "fill_days": fill_days,
+                           "median_stop_bp": med_stop,
+                           "mean_cost_R": statistics.fmean(COST_BP / x["stop_bp"] for x in f) if f else None})
+    return result
+
+
+def main():
+    bars1h = load_dev("1h")
+    fourh = build_4h(bars1h)
+    phases = phase_series(fourh)
+    all_rows = []
+    for tf in ("15m", "1h"):
+        bars = load_dev(tf)
+        for arm in ("stoch", "rsi"):
+            print(f"counting {tf} {arm}", flush=True)
+            all_rows.extend(count_cell(tf, bars, arm, phases, fourh))
+    with (OUT / "counts.csv").open("w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=list(all_rows[0]), lineterminator="\n")
+        w.writeheader()
+        w.writerows(all_rows)
+    print(json.dumps({"cells": all_rows, "bars_15m": len(load_dev("15m")),
+                      "bars_1h": len(bars1h), "bars_4h_complete": len(fourh),
+                      "cutoff_open_exclusive_utc": "2024-07-01"}, indent=2))
+
+
+if __name__ == "__main__":
+    main()

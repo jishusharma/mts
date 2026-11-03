@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-03T16:19:38Z",
   "commands": [],
   "created": "2026-11-03T15:59:55Z",
   "depends_on": [],
@@ -14,6 +16,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_audits_2026-11-03/meta_label_recheck_rederive.md: 21/21 numbe",
+      "ref": "acd807020",
+      "utc": "2026-11-03T16:19:38Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +46,12 @@
   "refined_by": "",
   "refreshed": "2026-11-03T16:01:22Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/gemini_audits_2026-11-03/meta_label_recheck_rederive.md: 21/21 numbers verified (FOUND: 21, DIFF: 0, NOT_IN_DATA: 0); frozen rule PASS STANDS confirmed from PRE_REG_EXT.md:18",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/meta_label_recheck_1103/RECHECK.md",
     "MyTradingSys/research/meta_label_dev_ext_2026-10-31/numbers.json",
@@ -51,12 +64,13 @@
   "scope_sha": "dc8e33291916",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "list every number in RECHECK.md with its line",
     "recompute each with your own arithmetic from the cited numbers.json and PRE_REG_EXT.md lines (do not import producer code)",
     "write the table file with FOUND/DIFF/NOT_IN_DATA per row and the first-line counts"
   ],
+  "taken": "2026-11-03T16:18:08Z",
   "tests": "n/a doc audit: the output file exists and each row cites file:line; no producer file edited",
   "title": "[GEMINI] Re-derive the meta-label recheck numbers (BH q 0.046512, n_need 401, PASS STANDS) from the frozen pre-reg and numbers.json",
   "weight": "ROUTINE",

@@ -96,7 +96,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `prob-layer-common-table` ready p1 CODEX: Probability table as the common layer (AUDIT.md s6): state_at per layer, forward distribution vs matched basel
   - `krown-hidden-divergence-confluence-feed` refined p2 SONNET: Krown hidden divergence as a shared confluence feed any layer (RSI 40-60 included) can consume; Malkan layer s
   - `kurisko-dev-event-study` refined p2 SONNET: Kurisko Quad Rotation: DEV event study, fee-net, same-window placebo
-  - `kurisko-quad-15m-1h-maker-prereg` ready p2 CODEX: Quad Rotation (4 stochastics; RSI variant as operator hypothesis): count-only PRE_REG on 15m, 1h and a maker-e
   - `rsi-cross-unmapped-and-pivot-stack` refined p3 SONNET: RSI cross events are rejected as unmapped in the auto-trader (no layer_rules entry); and no layer stacks level
   - `malkan-prereg-dwm-equities` refined p4 SONNET: Malkan: pre-registration for the D/W/M equity home test (items 6/7/8/9/11/12, gates 0a/0f)
 

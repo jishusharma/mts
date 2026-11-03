@@ -1,0 +1,24 @@
+import csv
+import subprocess
+import sys
+from pathlib import Path
+
+root = Path(__file__).resolve().parents[4]
+folder = Path(__file__).resolve().parent
+counts = list(csv.DictReader((folder / "counts.csv").open(encoding="utf-8", newline="")))
+gate = root / "scripts" / "dev" / "prereg_gate.py"
+rows = []
+for c in counts:
+    n = int(c["fill_days"])
+    cost = float(c["mean_cost_R"]) if c["mean_cost_R"] else 0.0
+    cmd = [sys.executable, str(gate), "--n", str(n), "--sd", "1.4", "--cost", f"{cost:.12g}", "--m", "24"]
+    p = subprocess.run(cmd, cwd=root, capture_output=True, text=True)
+    verdict = "PASS" if p.returncode == 0 else ("BLOCK" if p.returncode == 1 else "INVALID_N_ZERO" if n == 0 and p.returncode == 2 else "ERROR")
+    rows.append({**c, "gate_exit": p.returncode, "gate_verdict": verdict,
+                 "gate_command": " ".join(cmd), "gate_output": (p.stdout + p.stderr).strip().replace("\n", " | ")})
+with (folder / "gate.csv").open("w", encoding="utf-8", newline="") as f:
+    w = csv.DictWriter(f, fieldnames=list(rows[0]), lineterminator="\n")
+    w.writeheader()
+    w.writerows(rows)
+for r in rows:
+    print(f'{r["tf"]},{r["arm"]},{r["phase"]},n={r["fill_days"]},{r["gate_verdict"]},exit={r["gate_exit"]}: {r["gate_output"]}')
