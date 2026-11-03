@@ -39,7 +39,7 @@ def test_loader_refuses_any_window_after_frozen_cutoff():
 
 
 def test_month_files_outside_half_open_window_are_never_opened(monkeypatch):
-    with tempfile.TemporaryDirectory(prefix="cutoff-fixture-", dir=Path(__file__).parent) as temp:
+    with tempfile.TemporaryDirectory(prefix=".cutoff-fixture-", dir=Path(__file__).parent) as temp:
         folder = Path(temp)
         june = folder / "BTCUSDT-1m-2024-06.csv"
         july = folder / "BTCUSDT-1m-2024-07.csv"
