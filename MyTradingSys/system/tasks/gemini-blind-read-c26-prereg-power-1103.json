@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T17:28:26Z",
   "commands": [],
   "created": "2026-11-03T17:17:41Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "FOUND: 11 | DIFF: 0 | NOT_IN_DATA: 0 in MyTradingSys/research/gemini_audits_2026-11-03/c26",
+      "ref": "dc1e5058e",
+      "utc": "2026-11-03T17:28:26Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +45,12 @@
   "refined_by": "",
   "refreshed": "2026-11-03T17:17:42Z",
   "refs": [],
-  "result": "",
+  "result": "FOUND: 11 | DIFF: 0 | NOT_IN_DATA: 0 in MyTradingSys/research/gemini_audits_2026-11-03/c26_prereg_blind_read.md (3 power rows: MDE 0.165/0.165/0.418 R, total 0.265/0.305/0.518 R, n_needed 471/735/471; 8/8 P2_* registry rows FOUND)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/c26_roadmap_2026-11-01/PRE_REG_C26_REGIME.md (read)",
     "MyTradingSys/research/c26_roadmap_2026-11-01/TRIAL_REGISTRY_c26_roadmap.csv (read)",
@@ -53,12 +65,13 @@
   "sources": [
     "MyTradingSys/research/c26_roadmap_2026-11-01/PRE_REG_C26_REGIME.md:82-93"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Restate the gate from the formula, before opening the PRE_REG numbers",
     "Compute MDE and n needed for the 3 rows; compare with lines 87-89",
     "Check the 8 registry rows against the PRE_REG text; write FOUND/DIFF/NOT_IN_DATA, counts on line 1"
   ],
+  "taken": "2026-11-03T17:28:26Z",
   "tests": "audit card, output file is the test; expected numbers come from FORMULAS.md and a hand calculation, not from prereg_gate.py output alone (run it only as a second column)",
   "title": "[GEMINI] Blind read of PRE_REG_C26_REGIME.md power gate and registry (Claude result 9d9e1bdb4)",
   "weight": "ROUTINE",
