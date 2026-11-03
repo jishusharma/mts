@@ -45,5 +45,5 @@
   "tests": "MyTradingSys/research/sim_desk tests",
   "title": "Sim: neighbour heatmap from grid export + candle-by-candle replay for desk runs (survey C5+C6, M each)",
   "weight": "IMPORTANT",
-  "worker": "agent"
+  "worker": "session"
 }

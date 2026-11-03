@@ -45,5 +45,5 @@
   "tests": "MyTradingSys/research/sim_desk tests",
   "title": "Sim hosted page: equity curve with drawdown shading + Monte Carlo band; year-by-year stability flag (survey C3+C4; test fails first)",
   "weight": "IMPORTANT",
-  "worker": "agent"
+  "worker": "session"
 }

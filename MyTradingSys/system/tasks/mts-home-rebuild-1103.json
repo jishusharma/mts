@@ -45,5 +45,5 @@
   "tests": "scripts/dev/test_artifacts.py",
   "title": "MTS Home rebuild per audit: 14 layer families + reviews + Eagle_Eyes since 10-29 + sim results on Home; cut 3 duplicates, 4 useless, fix 5 stale (make_layers_board, make_layers_md, make_home, test_artifacts)",
   "weight": "CRUCIAL",
-  "worker": "agent"
+  "worker": "session"
 }
