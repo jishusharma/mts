@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T17:40:01Z",
   "commands": [],
   "created": "2026-11-03T16:00:34Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "build",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "test_spec_flow_feeds.py (12 tests, 3/3 scratch mutations fail)",
+      "ref": "c9b05d676",
+      "utc": "2026-11-03T17:40:01Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -30,7 +37,12 @@
   "refined_by": "",
   "refreshed": "2026-11-03T17:22:21Z",
   "refs": [],
-  "result": "",
+  "result": "test_spec_flow_feeds.py (12 tests, 3/3 scratch mutations fail)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tools/live_aid/test_spec_flow_feeds.py (new)",
     "scripts/dev/extra_tests.tsv",
@@ -44,12 +56,13 @@
   "sources": [
     "MyTradingSys/tools/live_aid/REQUIREMENTS.md R08 and R17"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read tools/live_aid/REQUIREMENTS.md R08, R17 and the docstrings of the named functions; list expected outputs by hand for boundary cases (empty input, one below, at, one above, malformed)",
     "write the tests, reusing the node runner pattern of test_live_aid.py; run them",
     "make 3 scratch mutations on a temp copy of the .js, confirm each fails a test, write the report, register in extra_tests.tsv"
   ],
+  "taken": "2026-11-03T17:40:01Z",
   "tests": "python -m pytest MyTradingSys/tools/live_aid/test_spec_flow_feeds.py -q",
   "title": "Spec tests for live_aid liquidation, funding and bar-fold functions (liqDeribit, liqBybit, liqBinance, liqSum, fundRead, premium, bybitTick, foldBars)",
   "weight": "ROUTINE",
