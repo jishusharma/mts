@@ -34,5 +34,15 @@
  "source_files": [
   "MyTradingSys/research/shipping_speed_2026-10-19/PROOF.md"
  ],
- "commit": "06b9b3115"
+ "commit": "06b9b3115",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "functional checks PASS; a 50% reduction against the preceding smoke gate is NOT demonstrated.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: functional checks PASS; a 50% reduction against the preceding smoke gate is NOT demonstrated. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

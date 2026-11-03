@@ -43,5 +43,15 @@
  "source_files": [
   "MyTradingSys/research/volume_2026-10-09/V4_RESULTS.md"
  ],
- "commit": "d7ff23f99"
+ "commit": "d7ff23f99",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "NOT SUPPORTED",
+  "n": 1275,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: NOT SUPPORTED · n=1275 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

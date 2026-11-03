@@ -48,5 +48,15 @@
  "source_files": [
   "MyTradingSys/research/cryptocred_ledger_2026-10/LEDGER_FEASIBILITY.md"
  ],
- "commit": "cd016f34d"
+ "commit": "cd016f34d",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "is not SCORABLE).",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: is not SCORABLE). · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

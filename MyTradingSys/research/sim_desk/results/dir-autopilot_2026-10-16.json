@@ -55,5 +55,15 @@
  "source_files": [
   "MyTradingSys/research/autopilot_2026-10-16/MORNING_REPORT.md"
  ],
- "commit": "4e2190070"
+ "commit": "4e2190070",
+ "banner": {
+  "state": "FAIL",
+  "tone": "bad",
+  "verdict": "unchanged: INCONCLUSIVE, n=241, net R=-0.137",
+  "n": 241,
+  "net_r": -0.37,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "FAIL · verdict as written: unchanged: INCONCLUSIVE, n=241, net R=-0.137 · n=241 · net R after fees -0.370 · try n/a · fee break-even n/a"
+ }
 }

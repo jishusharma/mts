@@ -65,5 +65,15 @@
  "source_files": [
   "MyTradingSys/research/published_strats_2026-10-13/RESULTS.md"
  ],
- "commit": "6ca61b5ec"
+ "commit": "6ca61b5ec",
+ "banner": {
+  "state": "TOO_FEW",
+  "tone": "warn",
+  "verdict": "",
+  "n": 20,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "TOO FEW TRADES · verdict as written: none · n=20 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

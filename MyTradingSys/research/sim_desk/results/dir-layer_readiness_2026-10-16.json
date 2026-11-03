@@ -46,5 +46,15 @@
  "source_files": [
   "MyTradingSys/research/layer_readiness_2026-10-16/LAYER_READINESS.md"
  ],
- "commit": "5fc9144e1"
+ "commit": "5fc9144e1",
+ "banner": {
+  "state": "TOO_FEW",
+  "tone": "warn",
+  "verdict": "is FAIL, NO EDGE, INCONCLUSIVE or unrun - see column \"Best verdict\").",
+  "n": 9,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "TOO FEW TRADES · verdict as written: is FAIL, NO EDGE, INCONCLUSIVE or unrun - see column \"Best verdict\"). · n=9 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

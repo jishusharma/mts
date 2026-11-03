@@ -62,5 +62,15 @@
  "source_files": [
   "MyTradingSys/research/tom_direction_health_audit_2026-10-17/AUDIT.md"
  ],
- "commit": "509216625"
+ "commit": "509216625",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Consequence for 2026-10-12 13:13Z (price [price omitted]; prior_day.val [price omitted]; daily VAL [price omitted]; setup_candidates [] at 13:08 and 13:13)",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Consequence for 2026-10-12 13:13Z (price [price omitted]; prior_day.val [price omitted]; daily VAL [price omitted]; setup_candidates [] at 13:08 and 13:13) · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

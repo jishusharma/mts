@@ -45,5 +45,15 @@
  "source_files": [
   "MyTradingSys/research/fast_track_2026-09-27/T055_BT_c3.md"
  ],
- "commit": "530a8b1b5"
+ "commit": "530a8b1b5",
+ "banner": {
+  "state": "FAIL",
+  "tone": "bad",
+  "verdict": "NO EDGE (gross OOS about 0 at every horizon)",
+  "n": 116255,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "FAIL · verdict as written: NO EDGE (gross OOS about 0 at every horizon) · n=116255 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

@@ -32,5 +32,15 @@
  "source_files": [
   "MyTradingSys/research/malkan_div_flags_2026-10-28/BTCUSDT_divergences.md"
  ],
- "commit": "51b4b9a6f"
+ "commit": "51b4b9a6f",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Numbers match the labels on the charts. Malkan flags: R-BULL / R-BEAR regular divergence (window 3-10 bars A..B inclusive, SOURCED); PRD = price higher low + RSI lower low in an uptrend (RSI >= 60 at both points), NRD = price lower high +…",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Numbers match the labels on the charts. Malkan flags: R-BULL / R-BEAR regular divergence (window 3-10 bars A..B inclusive, SOURCED); PRD = price higher low + RSI lower low in an uptrend (RSI >= 60 at both points), NRD = price lower high +… · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

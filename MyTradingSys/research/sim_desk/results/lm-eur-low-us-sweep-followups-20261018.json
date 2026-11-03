@@ -34,5 +34,15 @@
  "source_files": [
   "MyTradingSys/research/eur_low_us_sweep_followups_2026-10-18/RESULT.md"
  ],
- "commit": "ecefc522c"
+ "commit": "ecefc522c",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "BLOCKED by power gate (A, B, C); legs stay open",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: BLOCKED by power gate (A, B, C); legs stay open · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

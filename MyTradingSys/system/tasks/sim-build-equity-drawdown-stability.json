@@ -1,0 +1,69 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/research/sim_desk -q",
+    "python MyTradingSys/research/sim_desk/artifact/test_artifact.py"
+  ],
+  "created": "2026-11-03T13:00:57Z",
+  "depends_on": [],
+  "done_when": "Drawdown shading + MC band visible on all 50 curve results, year strip with stability flag on every result with trades; new tests failed on pre-change code once; pytest sim_desk green",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Hosted sim page: equity curve with drawdown shading and Monte Carlo band, plus a year-by-year stability flag per result",
+  "id": "sim-build-equity-drawdown-stability",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sim page: candle-by-candle replay of one trade with a phase line (waiting, signal, in trad",
+      "ref": "5f6c86009a78",
+      "utc": "2026-11-02T20:22:33Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-03 ACCEPT (reviewer Agent a41afa0c, FIX applied once; no depends_on by design). DECISION (OURS): size M (was S) because the exporter may lack monte_carlo/breakdown. Same file set as sim-build-hosted-trade-charts: run after it or by the same worker (one writer per file set). Verify line: content sha, git cherry empty, files in ls-tree. DECISION (OURS): no depends_on (a ready card needs done deps); the coordinator serves the three sim-build cards one at a time, order hosted-trade-charts, equity-drawdown-stability, heatmap-replay.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T13:05:54Z",
+  "refs": [
+    "MyTradingSys/research/sim_desk/INDUSTRY_SURVEY_2026-11-03.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/export_results.py",
+    "MyTradingSys/research/sim_desk/artifact/build_artifact.py",
+    "MyTradingSys/research/sim_desk/artifact/test_artifact.py",
+    "MyTradingSys/research/sim_desk/artifact/index.html",
+    "MyTradingSys/research/sim_desk/results"
+  ],
+  "scope_out": [
+    "no rolling Sharpe, no histograms",
+    "no walk-forward or PBO",
+    "desk page.html untouched (it already shades drawdown and shows the band)"
+  ],
+  "scope_sha": "5f6c86009a78",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/sim_desk/INDUSTRY_SURVEY_2026-11-03.md section C items 3-4",
+    "MyTradingSys/research/sim_desk/desk.py lines 96, 108, 140"
+  ],
+  "state": "ready",
+  "steps": [
+    "read survey C3, C4 and curveEx() in artifact/build_artifact.py; check whether export_results.py carries monte_carlo and by-year breakdown (survey Noticed: unchecked)",
+    "write failing tests in artifact/test_artifact.py: a curve result without a band field fails the build; a run positive in one year and negative in others shows not stable",
+    "export monte_carlo band and by-year breakdown (desk.py logic) into results where missing (fields added only)",
+    "render drawdown shading + band on curve results and the year strip with stable/not stable flag (years under 30 trades labelled too few)",
+    "run commands, ship"
+  ],
+  "tests": "Fail first: new tests in MyTradingSys/research/sim_desk/artifact/test_artifact.py (already in extra_tests.tsv:100); record the pre-change failure",
+  "title": "Sim hosted page: equity curve with drawdown shading + Monte Carlo band; year-by-year stability flag (survey C3+C4; test fails first)",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

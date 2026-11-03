@@ -31,5 +31,15 @@
  "source_files": [
   "MyTradingSys/research/fast_track_2026-09-27/bt_runs/TRIAL_REGISTRY.csv"
  ],
- "commit": "9226c5fa4"
+ "commit": "9226c5fa4",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "not recorded in map",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: not recorded in map · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

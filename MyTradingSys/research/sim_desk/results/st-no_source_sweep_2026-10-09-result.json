@@ -47,5 +47,15 @@
  "source_files": [
   "MyTradingSys/research/no_source_sweep_2026-10-09/RESULT.md"
  ],
- "commit": "f66d83751"
+ "commit": "f66d83751",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "NO-SOURCE confirmed.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: NO-SOURCE confirmed. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

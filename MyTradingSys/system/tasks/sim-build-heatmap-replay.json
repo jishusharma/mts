@@ -1,0 +1,69 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/research/sim_desk -q",
+    "python MyTradingSys/research/sim_desk/artifact/test_artifact.py"
+  ],
+  "created": "2026-11-03T13:00:58Z",
+  "depends_on": [],
+  "done_when": "Heatmap rendered for tom_vp and fabio_v3 (every study with a grid export); lone-peak test failed on pre-change code once; pytest sim_desk green",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Hosted sim page shows a two-parameter neighbour heatmap (colour = mean net R, n on hover) for each study with grid runs, labelling a lone peak",
+  "id": "sim-build-heatmap-replay",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sim page: candle-by-candle replay of one trade with a phase line (waiting, signal, in trad",
+      "ref": "5f6c86009a78",
+      "utc": "2026-11-02T20:22:33Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-03 ACCEPT (reviewer Agent a41afa0c, FIX applied once; no depends_on by design). DECISION (OURS): replay half dropped as duplicate of raw card sim-trade-step-replay (test_trade_chart_has_candle_replay exists; the phase status line is that card). Same file set as the other two sim-build cards: one writer at a time. Verify line: content sha, git cherry empty, files in ls-tree. DECISION (OURS): no depends_on (a ready card needs done deps); the coordinator serves the three sim-build cards one at a time, order hosted-trade-charts, equity-drawdown-stability, heatmap-replay.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T13:05:55Z",
+  "refs": [
+    "MyTradingSys/research/sim_desk/INDUSTRY_SURVEY_2026-11-03.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/export_grid.py",
+    "MyTradingSys/research/sim_desk/export_results.py",
+    "MyTradingSys/research/sim_desk/artifact/build_artifact.py",
+    "MyTradingSys/research/sim_desk/artifact/test_artifact.py",
+    "MyTradingSys/research/sim_desk/artifact/index.html",
+    "MyTradingSys/research/sim_desk/results"
+  ],
+  "scope_out": [
+    "no animation",
+    "replay is NOT here: card sim-trade-step-replay owns it (hosted page already has candle replay)",
+    "no new grid studies beyond tom_vp and fabio_v3"
+  ],
+  "scope_sha": "5f6c86009a78",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/sim_desk/INDUSTRY_SURVEY_2026-11-03.md section C item 5 and Noticed (export_grid names only tom_vp, fabio_v3)"
+  ],
+  "state": "ready",
+  "steps": [
+    "read export_grid.py GRIDS and the 12 tom_vp desk-* results to pick the two parameters per study",
+    "write failing test in artifact/test_artifact.py: a grid with one positive cell among negatives is labelled lone peak",
+    "export a heatmap block (cells: x, y, n, mean net R) from export_grid runs into the study result",
+    "render it on the hosted page with n on hover; cells under 30 trades greyed",
+    "run commands, ship"
+  ],
+  "tests": "Fail first: new tests in MyTradingSys/research/sim_desk/artifact/test_artifact.py (already in extra_tests.tsv:100); record the pre-change failure",
+  "title": "Sim: neighbour heatmap from the export_grid runs (survey C5; replay moved to sim-trade-step-replay)",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

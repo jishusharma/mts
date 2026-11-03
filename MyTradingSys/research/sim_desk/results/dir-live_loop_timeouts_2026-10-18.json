@@ -63,5 +63,15 @@
  "source_files": [
   "MyTradingSys/research/live_loop_timeouts_2026-10-18/REPORT.md"
  ],
- "commit": "966d2607d"
+ "commit": "966d2607d",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Date: 2026-10-18",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Date: 2026-10-18 · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

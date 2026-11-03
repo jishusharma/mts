@@ -47,5 +47,15 @@
  "source_files": [
   "MyTradingSys/research/krown_audit_2026-10-22/REPORT.md"
  ],
- "commit": "460c15e0b"
+ "commit": "460c15e0b",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "pipeline, PROJECT_VISION item 5) yes: one dated call per day with target, window, invalidation YOUTUBE_SAMPLE.md ledger accrues slowly; never compare inside sealed windows",
+  "n": null,
+  "net_r": -0.137,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: pipeline, PROJECT_VISION item 5) yes: one dated call per day with target, window, invalidation YOUTUBE_SAMPLE.md ledger accrues slowly; never compare inside sealed windows · n=? · net R after fees -0.137 · try n/a · fee break-even n/a"
+ }
 }

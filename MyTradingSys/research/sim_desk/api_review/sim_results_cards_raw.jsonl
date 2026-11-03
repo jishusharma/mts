@@ -1,0 +1,337 @@
+{"id": "ledger-imbalance_qriptal_2026-10-16-filter-trials-csv", "status": "succeeded", "text": "Claim: Trial ledger for the imbalance qriptal filter (2026-10-16) recording the variants tried.\nMethod: Not re-run; numbers and wording copied from the committed source note (commit f34607d01).\nFinding: 30 trial r", "in_tokens": 674, "out_tokens": 400}
+{"id": "st-fast_track_2026-09-27-pbo_019_result", "status": "succeeded", "text": "", "in_tokens": 697, "out_tokens": 400}
+{"id": "dir-gemini_burn_2026-10-24", "status": "succeeded", "text": "Claim: Every parameter, threshold, and formula in the backtesting literature and repo is cataloged and labeled as sourced or as an internal convention. | Method: Not re-run; the numbers and sentences were copied from the committed source note (backtest_standards_gaps.md, commit f8d0799de). | Finding: The file reports no trade count and no net-R figure. It states the current tuning relies on a naive boot", "in_tokens": 1037, "out_tokens": 400}
+{"id": "t06_cost_fill", "status": "succeeded", "text": "", "in_tokens": 2092, "out_tokens": 400}
+{"id": "lm-candle-p0", "status": "succeeded", "text": "", "in_tokens": 873, "out_tokens": 400}
+{"id": "st-no_source_sweep_2026-10-09-result", "status": "succeeded", "text": "Claim: A stop at the previous 1-minute bar high or low (the \"No Source Sweep\" rule) is in the source files. | Method: Source-extracted and not re-run; the committed source note was searched. | Finding: No source found in 154 files, and the file holds 0 trade rows. | Verdict: EMPTY (no trades) | Keep: NO, because there are no trades and the rule has no source to evaluate.", "in_tokens": 842, "out_tokens": 391}
+{"id": "dir-c26_roadmap_2026-11-01", "status": "succeeded", "text": "", "in_tokens": 4604, "out_tokens": 400}
+{"id": "dir-jala_layer_2026-10-31", "status": "succeeded", "text": "", "in_tokens": 741, "out_tokens": 400}
+{"id": "dir-gap_audit_2026-10-19", "status": "succeeded", "text": "Claim: The MTS critical-gap audit (2026-10-19) found a fail-open defect in StateCodeEmitter after tick gaps.\nMethod: Not re-run; figures and wording were copied from the committed", "in_tokens": 908, "out_tokens": 400}
+{"id": "c26-range-ladder", "status": "succeeded", "text": "Claim: A martingale short ladder on 1m-5m RSI", "in_tokens": 4623, "out_tokens": 400}
+{"id": "desk-krown-b092f221", "status": "succeeded", "text": "", "in_tokens": 1366, "out_tokens": 400}
+{"id": "desk-krown-304c64f8", "status": "succeeded", "text": "", "in_tokens": 1346, "out_tokens": 400}
+{"id": "lm-dax-smoke", "status": "succeeded", "text": "", "in_tokens": 1092, "out_tokens": 400}
+{"id": "lm-tom-diag-btc", "status": "succeeded", "text": "Claim: Tom probe diagnostics on a BTC backtest", "in_tokens": 982, "out_tokens": 400}
+{"id": "desk-cowen_bmsb-808a38e7", "status": "succeeded", "text": "", "in_tokens": 1390, "out_tokens": 400}
+{"id": "dir-pre_us_failed_break_2026-10", "status": "succeeded", "text": "Claim: Pre-registered pre-US failed-break short on BTC 1m, exploratory; docs only, no rule adopted. | Method: Source-extracted from the committed pre-registration note, not re-run; window 2022-01-01 to 2024-06-30 as written. |", "in_tokens": 1518, "out_tokens": 400}
+{"id": "dir-dsa_bridge_fix_plan_2026-10-31", "status": "succeeded", "text": "Claim: DSA bridge fix plan (AIBridge 0.7.3), 2026-10-31, a plan for fixing the b", "in_tokens": 1479, "out_tokens": 400}
+{"id": "dir-audits", "status": "succeeded", "text": "Claim: Session Start Ritual Audit vs AI-Health Token Goals (B183) | Method: Not re-run; text copied from the committed source note (source-extracted, no trade list) | Finding: 0 trade rows; no trade count, net-R, or test window stated; source verdict line reads only \"Date: 2026-", "in_tokens": 645, "out_tokens": 400}
+{"id": "c26-q9-footprint", "status": "succeeded", "text": "", "in_tokens": 3106, "out_tokens": 400}
+{"id": "st-transcript_inventory_2026-10-09-result", "status": "succeeded", "text": "", "in_tokens": 660, "out_tokens": 400}
+{"id": "dir-yt_feed_2026-10-31", "status": "succeeded", "text": "Claim: Crypto Crew University (@CryptoCrewUniversity) stated BTC and alt entry rules, levels, and indicator setups, extracted from its videos on 2026-10-31. | Method: Source-extracted from the committed note CCU_RULES_2026-10-31.md; not re-run, and the source holds no trade list. | Finding: 8 videos read, 8 English transcripts captioned, 0 UNVERIFIED, 0 trade rows in file. |", "in_tokens": 775, "out_tokens": 400}
+{"id": "lm-vol-v2", "status": "succeeded", "text": "", "in_tokens": 890, "out_tokens": 400}
+{"id": "st-tom_correlation_trick_2026-10-26-result", "status": "succeeded", "text": "", "in_tokens": 900, "out_tokens": 400}
+{"id": "st-opr_bb_mtf_center_2026-10-16-result", "status": "succeeded", "text": "", "in_tokens": 977, "out_tokens": 400}
+{"id": "dir-fable_run_design_2026-10-28", "status": "succeeded", "text": "Claim: Freeze one pre-registered, fee-net test that confirms or kills the BTC trading-edge program, using event counts only. | Method: Design document", "in_tokens": 1026, "out_tokens": 400}
+{"id": "dir-bollinger_2026-10-14", "status": "succeeded", "text": "", "in_tokens": 1243, "out_tokens": 400}
+{"id": "dir-screenshot_context_2026-10-10", "status": "succeeded", "text": "", "in_tokens": 797, "out_tokens": 400}
+{"id": "dir-positioning_c1_2026-10", "status": "succeeded", "text": "", "in_tokens": 1921, "out_tokens": 400}
+{"id": "audit-t10_missing_aspects", "status": "succeeded", "text": "", "in_tokens": 1259, "out_tokens": 400}
+{"id": "dir-coinglass_usage_2026-10-28", "status": "succeeded", "text": "Claim: The source note proposes an order-flow idea: negative-delta new highs and the first retest of stacked-imbalance zones on 5-minute footprint charts.\nMethod: Not re-run. The numbers and sentences were copied from the committed source note, and the file states no test window and no rule or parameter section.\nFinding: 0 trade rows in the file; the source states no trade count and no net-R figure.\nVerdict: EM", "in_tokens": 760, "out_tokens": 400}
+{"id": "lm-t087", "status": "succeeded", "text": "", "in_tokens": 958, "out_tokens": 400}
+{"id": "desk-fabio_v3-dd786e4e", "status": "succeeded", "text": "", "in_tokens": 4202, "out_tokens": 400}
+{"id": "dir-btc_ma_2026-10-03", "status": "succeeded", "text": "Claim: Whether BTC moving-average rules show out-of-sample predictability, per the consolidated Q_ALL pass | Method: Source-extracted", "in_tokens": 1449, "out_tokens": 400}
+{"id": "lm-pitchfork-4h-vp-20261028", "status": "succeeded", "text": "", "in_tokens": 1570, "out_tokens": 400}
+{"id": "dir-liquidation_layer_2026-10-28", "status": "succeeded", "text": "Claim: The liquidation layer (CoinGlass BTCUSDT leverage heatmap and Hyperliquid liquidation map) is a modelled estimate of where leveraged positions would liquidate, not executed liquidations, and the file does not show whether it is worth trusting. | Method: Not re-run; figures and wording were copied from the committed source note (commit 8804c7ff6). | Finding: 0 trade rows; no tr", "in_tokens": 786, "out_tokens": 400}
+{"id": "dir-pizzino_layer_2026-10-27", "status": "succeeded", "text": "", "in_tokens": 860, "out_tokens": 400}
+{"id": "dir-tom_correlation_trick_2026-10-26", "status": "succeeded", "text": "", "in_tokens": 896, "out_tokens": 400}
+{"id": "desk-cowen_bmsb-113933da", "status": "succeeded", "text": "", "in_tokens": 1337, "out_tokens": 400}
+{"id": "dir-rumers_2026-11-01", "status": "succeeded", "text": "Claim: Rumers rules can be tested with a fee and power gate before any rule runs.\nMethod: Each stop and win-rate shape is costed with fees.py (0.10 % round trip), then power_mde (two-sided, alpha 0.05) gives the fills needed and the smallest net edge each sample size can detect.\nFinding: 6 of 12 stop/shape cells are dead on fees (net <= 0 R), including every 0.3", "in_tokens": 2331, "out_tokens": 400}
+{"id": "st-published_strats_2026-10-13-results", "status": "succeeded", "text": "", "in_tokens": 1240, "out_tokens": 400}
+{"id": "dir-tom_btc_2026-10-13", "status": "succeeded", "text": "Claim: Tom's BTC trades were reviewed for what to apply, and the plan is to apply them ourselves (2026-10-13). | Method: Source-extracted from the committed note TOM_ON_BTC.md, not re-run; window 2024-12-01 to 2025-03-31 as written in the source. | Finding: 0 trade rows in file; the source states no trade count and no net-R figure. | Verdict: EMPTY (no trades) | Keep:", "in_tokens": 773, "out_tokens": 400}
+{"id": "lm-l1-d3", "status": "succeeded", "text": "", "in_tokens": 1132, "out_tokens": 400}
+{"id": "dir-krown_capture_2026-10-16", "status": "succeeded", "text": "Claim: Krown's draft rules from a pilot of 6 transcripts outside the TA 101 corpus, including a daily-video event-study method. | Method: Source-extracted and not re-run; numbers and quotes were copied from the committed note, and quotes were machine-checked against auto-captions. | Finding: 6 transcripts, 0 trade rows in the file, no trade count, no net-R figure, and no test window stated", "in_tokens": 1576, "out_tokens": 400}
+{"id": "st-mal_bb_mid_engulf_2026-10-16-result", "status": "succeeded", "text": "Claim: Midline bounce plus bearish", "in_tokens": 1094, "out_tokens": 400}
+{"id": "fractals-f3-phase-analogs", "status": "succeeded", "text": "", "in_tokens": 3753, "out_tokens": 400}
+{"id": "dir-krown_malkan_g3_2026-10-16", "status": "succeeded", "text": "", "in_tokens": 861, "out_tokens": 400}
+{"id": "meta-label-breaks", "status": "succeeded", "text": "", "in_tokens": 3050, "out_tokens": 400}
+{"id": "eagle-c27-wavetrend", "status": "succeeded", "text": "", "in_tokens": 1756, "out_tokens": 400}
+{"id": "dir-video_priority_2026-10-15", "status": "succeeded", "text": "", "in_tokens": 1218, "out_tokens": 400}
+{"id": "lm-tom-core-1007", "status": "succeeded", "text": "", "in_tokens": 1490, "out_tokens": 400}
+{"id": "dir-screenshots", "status": "succeeded", "text": "Claim: BTCUSDT screenshot set from 2026-10-07 (set 29ff", "in_tokens": 758, "out_tokens": 400}
+{"id": "dir-gemini_audits_2026-11-02", "status": "succeeded", "text": "Claim: The source note's audit of the Gemini grandfather API re-run (blind read) is reported as written, not independently tested. | Method: Not re-run; figures and sentences were copied from the committed source note (de0b90fb7", "in_tokens": 967, "out_tokens": 400}
+{"id": "desk-meta_label_fabio_c_dev_ext", "status": "succeeded", "text": "", "in_tokens": 4222, "out_tokens": 400}
+{"id": "dir-station_c_rolling_audit_20261026", "status": "succeeded", "text": "Claim: Repair ownership, current-state dispatch, and truthful completion before increasing the wake rate, then test a bounded rolling chain. | Method: Not re-run;", "in_tokens": 1137, "out_tokens": 400}
+{"id": "dir-asks_audit_2026-10-30", "status": "succeeded", "text": "Claim: Operator asks ledger for 2026-09-28 to 2026-10-30 records the asks made and their status, as copied from the committed source note. | Method: Not re-run; figures copied from LEDGER.md. Sonnet agents classified prompts, some prompts carried two asks, and chat prompts", "in_tokens": 931, "out_tokens": 400}
+{"id": "desk-rsi-a6a97db2", "status": "succeeded", "text": "", "in_tokens": 1287, "out_tokens": 400}
+{"id": "dir-multi_tf_bias_2026-10-18", "status": "succeeded", "text": "", "in_tokens": 1003, "out_tokens": 400}
+{"id": "st-us_open_levels_2026-10-30-result", "status": "succeeded", "text": "", "in_tokens": 797, "out_tokens": 400}
+{"id": "eagle-c24-oi-after-flush", "status": "succeeded", "text": "", "in_tokens": 1018, "out_tokens": 400}
+{"id": "desk-meta_label_fabio_c", "status": "succeeded", "text": "", "in_tokens": 4261, "out_tokens": 400}
+{"id": "desk-cowen_bmsb-d5315728", "status": "succeeded", "text": "", "in_tokens": 1327, "out_tokens": 400}
+{"id": "desk-cowen_bmsb-74b965eb", "status": "succeeded", "text": "", "in_tokens": 1352, "out_tokens": 400}
+{"id": "c26-q7-liquidation-bands", "status": "succeeded", "text": "", "in_tokens": 3431, "out_tokens": 400}
+{"id": "lm-candle-p1", "status": "succeeded", "text": "", "in_tokens": 913, "out_tokens": 400}
+{"id": "ask-p0-45-tf-break-event-study", "status": "succeeded", "text": "Claim", "in_tokens": 2372, "out_tokens": 400}
+{"id": "fractals-phase-tag", "status": "succeeded", "text": "", "in_tokens": 1828, "out_tokens": 400}
+{"id": "desk-tom_vp-d21ae701", "status": "succeeded", "text": "", "in_tokens": 4018, "out_tokens": 400}
+{"id": "dir-fable_audit_2026-10-16", "status": "succeeded", "text": "", "in_tokens": 1292, "out_tokens": 400}
+{"id": "wavetrend_atlas", "status": "succeeded", "text": "", "in_tokens": 1620, "out_tokens": 400}
+{"id": "ask-p0-65-setup-alpha-beta-backtest", "status": "succeeded", "text": "", "in_tokens": 2131, "out_tokens": 400}
+{"id": "dir-two_workers_collision_2026-10-30", "status": "succeeded", "text": "Claim:", "in_tokens": 692, "out_tokens": 400}
+{"id": "dir-shipping_speed_2026-10-19", "status": "succeeded", "text": "Claim: Shipping verification (19 Oct 2026) passed its functional checks", "in_tokens": 798, "out_tokens": 400}
+{"id": "lm-fabio-of", "status": "succeeded", "text": "", "in_tokens": 1257, "out_tokens": 400}
+{"id": "eagle-c25-stochrsi", "status": "succeeded", "text": "", "in_tokens": 1472, "out_tokens": 400}
+{"id": "st-carry_basis_2026-10-18-result", "status": "succeeded", "text": "", "in_tokens": 1452, "out_tokens": 400}
+{"id": "st-cowen_q4_2026-10-31-event_study-result", "status": "succeeded", "text": "", "in_tokens": 1011, "out_tokens": 400}
+{"id": "dir-live_loop_timeouts_2026-10-18", "status": "succeeded", "text": "Claim: Live-loop network timeouts are handled by a 30-minute classpath retry backoff and a 180 s snapshot fallback, as audited after the B191 commit. | Method: Not re-run; figures and wording", "in_tokens": 1263, "out_tokens": 400}
+{"id": "desk-tom_vp-55a87543", "status": "succeeded", "text": "", "in_tokens": 4054, "out_tokens": 400}
+{"id": "dir-malkan_rsi_2026-09-28", "status": "succeeded", "text": "Claim: The source describes RSI divergence rules, where a negative divergence signals a bearish reversal and a daily RSI sustained below 40 or above 60 without reversal counts as signal failure. | Method: Not re-", "in_tokens": 733, "out_tokens": 400}
+{"id": "desk-fabio_v3-820e427d", "status": "succeeded", "text": "", "in_tokens": 4353, "out_tokens": 400}
+{"id": "lm-q33", "status": "succeeded", "text": "", "in_tokens": 804, "out_tokens": 400}
+{"id": "dir-fable_audit_2026-10-18", "status": "succeeded", "text": "", "in_tokens": 1410, "out_tokens": 400}
+{"id": "lm-fires-b1", "status": "succeeded", "text": "", "in_tokens": 2017, "out_tokens": 400}
+{"id": "dir-cryptocred_stop_2026-10-10", "status": "succeeded", "text": "Claim: Every stop rule tested on the CryptoCred setups is net-negative, so stop placement alone does not make the entry profitable. | Method: Not re-run; figures and sentences were copied from the committed source note (STOP_SOURCES.md, commit f29af65d8). | Finding: Trade rows in file: 0; the source states no trade count, net-R figure, or test window. | Verdict: EMPTY (no trades) | Keep: NO, because the file has zero trade rows and no decision value can be drawn from it", "in_tokens": 712, "out_tokens": 400}
+{"id": "dir-confluence_read_2026-10-17", "status": "succeeded", "text": "Claim: Market context around the operator's 2026-10-16 reads, taken from the committed source note rather than a trade test. | Method: Source-extracted note, not re-run; window 2022-01-01 to 2024-06-30 as written in the source. | Finding: 0 trades in file (n=0); the prior-day value-area failed-auction pattern was blocked by the power gate with n=0, so no output exists for these days. | Verd", "in_tokens": 1147, "out_tokens": 400}
+{"id": "dir-gpt_rederive_2026-10-26", "status": "succeeded", "text": "", "in_tokens": 871, "out_tokens": 400}
+{"id": "eagle-c23-daily-shorts", "status": "succeeded", "text": "", "in_tokens": 1354, "out_tokens": 400}
+{"id": "desk-cowen_bmsb-235436d9", "status": "succeeded", "text": "", "in_tokens": 1391, "out_tokens": 400}
+{"id": "lm-eur-low-us-sweep-followups-20261018", "status": "succeeded", "text": "", "in_tokens": 932, "out_tokens": 400}
+{"id": "dir-fable_runs_2026-10-28", "status": "succeeded", "text": "Claim: R1 \"Edge or Stop\" (Fable 5.1", "in_tokens": 1127, "out_tokens": 400}
+{"id": "desk-tom_vp-d249f15a", "status": "succeeded", "text": "", "in_tokens": 4063, "out_tokens": 400}
+{"id": "st-setup_alpha_beta_2026-10-10-beta_results", "status": "succeeded", "text": "Claim: Liquidity sweep plus CVD absorption event study on Binance BTCUSDT perp, 15m levels and 5m entry | Method: Source-extracted and not re-run; numbers copied from the committed source note, with no trade list exported | Finding: 0 trade rows; no trade count, net-R, or test window stated (window null) | Verdict: EMPTY (no trades) | Keep: NO, the file has no trades and no decision value.", "in_tokens": 677, "out_tokens": 390}
+{"id": "dir-fabio_v3_s28_diffs_2026-11-01", "status": "succeeded", "text": "Claim: This brief compares the Fabio v3 code against the s28.6 worked examples in the spec, not a strategy's trading performance | Method: Not re-run; numbers and wording were copied from the committed source note, which states no test", "in_tokens": 1506, "out_tokens": 400}
+{"id": "lm-tom-vp-phase2", "status": "succeeded", "text": "", "in_tokens": 918, "out_tokens": 400}
+{"id": "dir-krown_ta101_2026-10-13", "status": "succeeded", "text": "", "in_tokens": 1480, "out_tokens": 400}
+{"id": "dir-review_chart_cards_2026-10-17", "status": "succeeded", "text": "Claim: The chart checklist and two chart cards were audited for accuracy, not tested as a trading rule. | Method: Not re-run; numbers and sentences were copied from the committed source note (43c603", "in_tokens": 830, "out_tokens": 400}
+{"id": "desk-rsi-2a5162fe", "status": "succeeded", "text": "", "in_tokens": 1241, "out_tokens": 400}
+{"id": "lm-volume", "status": "succeeded", "text": "", "in_tokens": 1768, "out_tokens": 400}
+{"id": "dir-level_ledger_2026-10-16", "status": "succeeded", "text": "Claim: The source note reports building the level ledger (PIT_CONTRACT section 1) and verifying the Java zones, dated 2026-10-16.\nMethod: Not re-run; figures and wording were cop", "in_tokens": 744, "out_tokens": 400}
+{"id": "fractals-p1b-rsi-by-phase", "status": "succeeded", "text": "", "in_tokens": 3974, "out_tokens": 400}
+{"id": "audit-t01_data_forensics", "status": "succeeded", "text": "Claim: The bars the DSA studies read match the bars that actually happened in the 2022-01-01 to 2026-09-26 window. | Method: Source-extracted audit note, not re-run; the numbers and verdict are copied from the committed source. | Finding: 905 open and 847 volume day-level mismatches between the 1m resample and raw_1d; max volume rel-diff 12%; five studies point to a missing fundingRate path; Krown daily check BLOCKED; footprint volume check NOT COMPLETED; 0", "in_tokens": 1138, "out_tokens": 400}
+{"id": "dir-non_core_layer_audit_2026-10-12", "status": "succeeded", "text": "Claim:", "in_tokens": 1541, "out_tokens": 400}
+{"id": "dir-health_checks_run_2026-10-28", "status": "succeeded", "text": "Claim: The health-check triage report lists two script issues: an unguarded stdin read that can hang, and a batch hygiene runner that is too heavy for quick checks. | Method: Not re-run; text copied from the committed source note at commit 4a6864ec2. | Finding: 0 trades in file; the only figures are a 5-second per-check subprocess timeout and a 1500-second", "in_tokens": 1158, "out_tokens": 400}
+{"id": "dir-meta_label_tom_fabio_2026-10-31", "status": "succeeded", "text": "", "in_tokens": 1849, "out_tokens": 400}
+{"id": "ledger-opr_preopen_tops_2026-10-16-trials-csv", "status": "succeeded", "text": "", "in_tokens": 794, "out_tokens": 400}
+{"id": "dir-fable_setups_2026-10-19", "status": "succeeded", "text": "", "in_tokens": 694, "out_tokens": 400}
+{"id": "dir-oi_pivot_2026-10-26", "status": "succeeded", "text": "", "in_tokens": 998, "out_tokens": 400}
+{"id": "st-imbalance_qriptal_2026-10-16-filter-result", "status": "succeeded", "text": "", "in_tokens": 1581, "out_tokens": 400}
+{"id": "st-wt30_sequence_2026-10-30-result", "status": "succeeded", "text": "Claim: Describes how ", "in_tokens": 972, "out_tokens": 400}
+{"id": "dir-cloud_2026-10-06", "status": "succeeded", "text": "", "in_tokens": 698, "out_tokens": 400}
+{"id": "st-context_factors_2026-10-16-result", "status": "succeeded", "text": "", "in_tokens": 1314, "out_tokens": 400}
+{"id": "eagle-c26-ride", "status": "succeeded", "text": "", "in_tokens": 4120, "out_tokens": 400}
+{"id": "c26-q10-path-distribution", "status": "succeeded", "text": "Claim: The take-out's price path (overshoot, wait, MAE, MFE, L1) can set a stop and target grid for a short after the reclaim. | Method: Design look on the RECENT SEEN window, 15m BTCUSDT, 30 take-outs, fee 0.10% per round trip; stops and targets are read off the same 30 events they", "in_tokens": 2608, "out_tokens": 400}
+{"id": "dir-malkan_rsi_2026-10-31", "status": "succeeded", "text": "Claim: The source document compiles RS", "in_tokens": 816, "out_tokens": 400}
+{"id": "desk-krown-8f1747e4", "status": "succeeded", "text": "", "in_tokens": 1364, "out_tokens": 400}
+{"id": "dir-fix_verification_2026-10-28", "status": "succeeded", "text": "", "in_tokens": 755, "out_tokens": 400}
+{"id": "dir-malkan_extract_2026-10-15", "status": "succeeded", "text": "Claim: This is a setup summary of every Malkan setup taught in 6 extracted videos, not a tested trading edge. | Method: Not re-run; text was copied from the committed source note SETUP_SUMMARY.md by script, and quotes are marked as tier T3 (what he teaches, not proof of edge). | Finding: 0 trades in the ledger; no net-R figure or test window is stated in the source. | Verdict: EMPTY (no trades) | Keep: NO (EMPTY, the file has no trade list to evaluate).", "in_tokens": 1311, "out_tokens": 378}
+{"id": "dir-wiring_audit_2026-10", "status": "succeeded", "text": "Claim: This is a wiring audit that checks quotes copied into a CSV, so it does not test a trading strategy.\nMethod: Not re-run. The numbers and sentences were copied from a committed source note, and the listed check", "in_tokens": 712, "out_tokens": 400}
+{"id": "st-volume_2026-10-09-v0_results", "status": "succeeded", "text": "Claim: V0 is a BTC volume data-QA, magnitude, and time-map check over 2020-01-01 to 2024-06-30, with no event forward return comput", "in_tokens": 804, "out_tokens": 400}
+{"id": "dir-rsi_kurisko_2026-10-09", "status": "succeeded", "text": "", "in_tokens": 984, "out_tokens": 400}
+{"id": "audit-t02_lookahead_time", "status": "succeeded", "text": "Claim: T02 checks the DSA backtest for look-ahead and time-alignment bias, and the source says the audit shows one earlier result is wrong. | Method: Not re-run; numbers and wording copied from the committed source note (commit 79ce4a2cb). | Finding: 27 layers tested; 5 N", "in_tokens": 1162, "out_tokens": 400}
+{"id": "st-gemini_audits_2026-11-01-recent_results_blind_read", "status": "succeeded", "text": "", "in_tokens": 955, "out_tokens": 400}
+{"id": "st-lh_break_2026-10-30-result", "status": "succeeded", "text": "", "in_tokens": 1354, "out_tokens": 400}
+{"id": "dir-tom_direction_health_audit_2026-10-17", "status": "succeeded", "text": "", "in_tokens": 1453, "out_tokens": 400}
+{"id": "c26-q5-touch-factors", "status": "succeeded", "text": "", "in_tokens": 4030, "out_tokens": 400}
+{"id": "dir-overnight_2026-10-16", "status": "succeeded", "text": "", "in_tokens": 839, "out_tokens": 400}
+{"id": "desk-tom_vp-23158b32", "status": "succeeded", "text": "", "in_tokens": 4180, "out_tokens": 400}
+{"id": "desk-cowen_bmsb-a0c48d6a", "status": "succeeded", "text": "", "in_tokens": 1421, "out_tokens": 400}
+{"id": "desk-cowen_bmsb-f53ed8d7", "status": "succeeded", "text": "", "in_tokens": 1345, "out_tokens": 400}
+{"id": "audit-t02_f1_unsafe", "status": "succeeded", "text": "", "in_tokens": 699, "out_tokens": 400}
+{"id": "st-pre_us_squeeze_2026-10-29-result", "status": "succeeded", "text": "Claim: Just before the US session, price is contracting. The question is what the price does next, with the 15m BTCUSDT Bollinger contraction tested from 2022-01 to 2026-09. | Method: Not re-run. Numbers were copied from the committed source note (RESULT.md), and the source has no trade list and no stated test window. | Finding: Phase (F6) does not change direction beyond noise. Squ", "in_tokens": 873, "out_tokens": 400}
+{"id": "dir-dsa_bridge_keepalive_2026-10-17", "status": "succeeded", "text": "Claim: The DSA bridge keep-alive decision, dated 2026-10-17, was to not add an audio emitter. | Method: Not re-run; the note was copied from the committed source, and the source file is MyTradingSys/research/dsa_bridge_keepalive_2026-10-17/DECISION.md. | Finding:", "in_tokens": 768, "out_tokens": 400}
+{"id": "dir-session_flow_context_2026-10-18", "status": "succeeded", "text": "", "in_tokens": 1297, "out_tokens": 400}
+{"id": "lm-market-guide", "status": "succeeded", "text": "Claim: This is a read-only market guide digest that summarises indicator and candle state as observation only, with no trading side. | Method: Not re-run; the numbers and sentences were copied from the", "in_tokens": 1175, "out_tokens": 400}
+{"id": "audit-t03_planted_edges", "status": "succeeded", "text": "", "in_tokens": 1209, "out_tokens": 400}
+{"id": "desk-cowen_bmsb-d3a470df", "status": "succeeded", "text": "", "in_tokens": 1393, "out_tokens": 400}
+{"id": "lm-alpha", "status": "succeeded", "text": "", "in_tokens": 663, "out_tokens": 400}
+{"id": "st-meta_label_breaks_2026-10-31-ext_result", "status": "succeeded", "text": "", "in_tokens": 768, "out_tokens": 400}
+{"id": "st-_archive-loose_2026-10-cbp_profile6_result", "status": "succeeded", "text": "Claim: The CBP actionable-6 extraction profile was tested as a backtest. | Method: Not re-run; the numbers and sentences were copied from the committed source note. | Finding: Trade rows in file: 0. The source states no trade count, no net-R figure, and no test window. | Verdict: EMPTY (no trades) | Keep: NO, because the file has no tr", "in_tokens": 755, "out_tokens": 400}
+{"id": "levels_ladder", "status": "succeeded", "text": "", "in_tokens": 3828, "out_tokens": 400}
+{"id": "lm-t055-c1", "status": "succeeded", "text": "", "in_tokens": 1059, "out_tokens": 400}
+{"id": "dir-malkan_universe_2026-10", "status": "succeeded", "text": "Claim: Single-stock Indian-equity tests are underpowered; the source says a single stock gives too few events (below N = 100) to judge an edge. | Method: Not re-run; numbers and wording were copied from the committed source note (UNIVERSE_POWER.md) over 2000-01-01 to 2021-04-30. | Finding: Daily setups give about 6 to 42 events in 10 years on one stock and weekly", "in_tokens": 1042, "out_tokens": 400}
+{"id": "desk-fabio_v3-3441877d", "status": "succeeded", "text": "", "in_tokens": 4400, "out_tokens": 400}
+{"id": "fractals-f1-swing-confluence", "status": "succeeded", "text": "", "in_tokens": 3921, "out_tokens": 400}
+{"id": "dir-binance_backtesting_2026-10-18", "status": "succeeded", "text": "Claim: Reliable backtesting for Binance BTC and the general research standard; the file does not show a strategy result. | Method: Not re-run; figures and sentences copied from the committed source note, window 2019-09-08 to 2021-12-31. | Finding: Trade rows in file: 0; the source states no trade count, net-R, or parame", "in_tokens": 1024, "out_tokens": 400}
+{"id": "dir-coinglass_survey_2026-10-29", "status": "succeeded", "text": "Claim: CoinGlass public-page survey of 2026-10-29 (free pages, read-only, no login), not a strategy backtest.\nMethod: Not re-run; figures copied from the", "in_tokens": 732, "out_tokens": 400}
+{"id": "dir-autopilot_2026-10-16", "status": "succeeded", "text": "", "in_tokens": 1235, "out_tokens": 400}
+{"id": "dir-ci_audit_2026-10-31", "status": "succeeded", "text": "Claim: ci_watch MIN_STREAK: should it block after the first red or the second? | Method: Source-extracted from the committed note (MyT", "in_tokens": 685, "out_tokens": 400}
+{"id": "dir-audit_inventory", "status": "succeeded", "text": "Claim: This is a read-only inventory of which trading-system audits exist and what they cover, not a strategy test. | Method: Not re-run; the numbers and sentences were copied from the committed source note AUDIT_INVENTORY.md, dated 2026-10-30. | Finding: The 2026-09-27 core readiness audit cites a SetupCandidatesBuilder proof count of D", "in_tokens": 1151, "out_tokens": 400}
+{"id": "lm-fabio-v3", "status": "succeeded", "text": "", "in_tokens": 662, "out_tokens": 400}
+{"id": "dir-malkan_div_flags_2026-10-28", "status": "succeeded", "text": "", "in_tokens": 738, "out_tokens": 400}
+{"id": "dir-audits_2026-10-26", "status": "succeeded", "text": "", "in_tokens": 728, "out_tokens": 400}
+{"id": "st-live_not_fired_2026-10-29-result", "status": "succeeded", "text": "", "in_tokens": 867, "out_tokens": 400}
+{"id": "ledger-layer_lab-trials-md", "status": "succeeded", "text": "", "in_tokens": 758, "out_tokens": 400}
+{"id": "st-meta_label_dev_ext_2026-10-31-result", "status": "succeeded", "text": "", "in_tokens": 1481, "out_tokens": 400}
+{"id": "dir-pit_levels_2026-10-16", "status": "succeeded", "text": "", "in_tokens": 1672, "out_tokens": 400}
+{"id": "desk-levels-fb213d4c", "status": "succeeded", "text": "", "in_tokens": 1388, "out_tokens": 400}
+{"id": "audit-t08_split_trials", "status": "succeeded", "text": "", "in_tokens": 1011, "out_tokens": 400}
+{"id": "desk-wavetrend-bddd48ea", "status": "succeeded", "text": "", "in_tokens": 1268, "out_tokens": 400}
+{"id": "desk-krown-634f1a37", "status": "succeeded", "text": "", "in_tokens": 1767, "out_tokens": 400}
+{"id": "dir-v1_plan_2026-10-20", "status": "succeeded", "text": "Claim: MTS v1 plan (Thinker, 2026-10-20) is a thought experiment; the source states no claim beyond its title. | Method: Not re-", "in_tokens": 667, "out_tokens": 400}
+{"id": "desk-wavetrend-a6e775a2", "status": "succeeded", "text": "", "in_tokens": 1312, "out_tokens": 400}
+{"id": "lm-tom-vp-return", "status": "succeeded", "text": "", "in_tokens": 1129, "out_tokens": 400}
+{"id": "lm-vol-v1", "status": "succeeded", "text": "", "in_tokens": 1156, "out_tokens": 400}
+{"id": "lm-lc-sizing-quick-20261014", "status": "succeeded", "text": "", "in_tokens": 1324, "out_tokens": 400}
+{"id": "dir-layer_rebuild_2026-10-15", "status": "succeeded", "text": "Claim: The source is a prompt pack for a Fable audit session asking whether the setup catalogue is faithful and complete and wh", "in_tokens": 1604, "out_tokens": 400}
+{"id": "lm-t055-c3", "status": "succeeded", "text": "", "in_tokens": 1335, "out_tokens": 400}
+{"id": "dir-habib_plan_imbalance_2026-10-20", "status": "succeeded", "text": "", "in_tokens": 1221, "out_tokens": 400}
+{"id": "st-gemini_audits_2026-11-01-older_results_blind_read", "status": "succeeded", "text": "", "in_tokens": 1431, "out_tokens": 400}
+{"id": "st-prev_close_break_2026-10-29-result", "status": "succeeded", "text": "", "in_tokens": 970, "out_tokens": 400}
+{"id": "lm-rsi-div-mtf", "status": "succeeded", "text": "", "in_tokens": 834, "out_tokens": 400}
+{"id": "dir-setup_review_2026-10", "status": "succeeded", "text": "Claim: Review sheet of 22 chart setups from Tom and Fabio (2026-10-30); nothing here is tested and no results are claimed. | Method: Audit, not re-run; sentences and numbers were copied from the committed source note (96fcb57cd). | Finding: 0 trades in the file; the source states no net-R figure and no test window. | Verdict: EMPTY (no trades) | Keep: NO, because the file holds 0 trades and no decision value is measured.", "in_tokens": 1628, "out_tokens": 390}
+{"id": "dir-observer_2026-10-15", "status": "succeeded", "text": "Claim: Observer report (2026-10-15) says cross-session align", "in_tokens": 1121, "out_tokens": 400}
+{"id": "dir-design_cards_2026-10-26", "status": "succeeded", "text": "", "in_tokens": 826, "out_tokens": 400}
+{"id": "dir-critical_test_wave1_2026-10-30", "status": "succeeded", "text": "", "in_tokens": 1623, "out_tokens": 400}
+{"id": "st-oi_side_2026-10-30-result", "status": "succeeded", "text": "Claim: Which side open interest is picking, using descriptive counts only (no fees, no edge claim) | Method: Copied from a committed source note, not re-run; DEV 2022-2025, 30-minute windows with OI moving at least 0.25% | Finding: n = 35963 windows; every row's direction sits between 48% and", "in_tokens": 893, "out_tokens": 400}
+{"id": "desk-cowen_bmsb-245ae944", "status": "succeeded", "text": "", "in_tokens": 1309, "out_tokens": 400}
+{"id": "dir-rsi_2a_2026-10-09", "status": "succeeded", "text": "Claim: RSI 2a/2a' ideas were written up against Malkan's sources, and the earlier RSI backtests may not test Malkan's own exit.\nMethod: Not re-run. Numbers and text were copied from the committed source note (RSI_2A_SPEC.md, commit bd545451", "in_tokens": 813, "out_tokens": 400}
+{"id": "lm-l1-fabio", "status": "succeeded", "text": "", "in_tokens": 1660, "out_tokens": 400}
+{"id": "desk-cowen_bmsb-24c47838", "status": "succeeded", "text": "", "in_tokens": 1413, "out_tokens": 400}
+{"id": "eagle-c28-wt-structure", "status": "succeeded", "text": "", "in_tokens": 4156, "out_tokens": 400}
+{"id": "dir-fabio_date_match_2026-10-18", "status": "succeeded", "text": "", "in_tokens": 912, "out_tokens": 400}
+{"id": "eagle-c29-wt-lower-tf", "status": "succeeded", "text": "", "in_tokens": 1636, "out_tokens": 400}
+{"id": "desk-rsi-593e9c2d", "status": "succeeded", "text": "", "in_tokens": 1290, "out_tokens": 400}
+{"id": "dir-kurisko_2026-10-18", "status": "succeeded", "text": "Claim: Pre-registered", "in_tokens": 1601, "out_tokens": 400}
+{"id": "dir-flow_layers_concepts_2026-10-28", "status": "succeeded", "text": "", "in_tokens": 870, "out_tokens": 400}
+{"id": "ledger-mal_bb_mid_engulf_2026-10-16-trials-csv", "status": "succeeded", "text": "", "in_tokens": 782, "out_tokens": 400}
+{"id": "t07_stale_verdicts", "status": "succeeded", "text": "", "in_tokens": 1461, "out_tokens": 400}
+{"id": "dir-krown_free_2026-10-31", "status": "succeeded", "text": "", "in_tokens": 951, "out_tokens": 400}
+{"id": "dir-tom_fabio_concepts_2026-10-29", "status": "succeeded", "text": "", "in_tokens": 944, "out_tokens": 400}
+{"id": "dir-fabio_video_search_2026-10-17", "status": "succeeded", "text": "", "in_tokens": 857, "out_tokens": 400}
+{"id": "c26-q8-cvd-divergence", "status": "succeeded", "text": "", "in_tokens": 2217, "out_tokens": 400}
+{"id": "st-drop_bounce_2026-10-29-result", "status": "succeeded", "text": "Claim: Fast 1m BTCUSDT drops followed by a bounce to the BB mid, with the next 4 hours tracked, as descriptive counts only | Method: Source-extracted from the committed R", "in_tokens": 945, "out_tokens": 400}
+{"id": "st-opr_preopen_tops_2026-10-16-result", "status": "succeeded", "text": "", "in_tokens": 984, "out_tokens": 400}
+{"id": "desk-tom_vp-8639b801", "status": "succeeded", "text": "", "in_tokens": 4484, "out_tokens": 400}
+{"id": "dir-news_feeds_2026-10-30", "status": "succeeded", "text": "Claim: The source note sets out what news to watch for MTS, where it comes from, and how fast it arrives (2026-10-30). | Method: Not re-run; the numbers and text were copied from the committed source note REPORT.md. | Finding: 0 trade rows in the file; the source states no trade count, no net-R figure, no test window, and no parameters. | Verdict: EMPTY (no trades) | Keep: NO, because the file has no trade rows and no decision value.", "in_tokens": 707, "out_tokens": 396}
+{"id": "fractals-f4-8h-state-analogs", "status": "succeeded", "text": "", "in_tokens": 3707, "out_tokens": 400}
+{"id": "dir-cryptocred_s3_2026-11", "status": "succeeded", "text": "Claim: The 4h CryptoCred S3 redesign cells on BTCUSDT DEV are blocked before any outcome is computed. | Method: Count-only power gate on the committed source note; no bars loaded, no trades simulated, and the run script was never executed on data. | Finding: Trade rows 0; N about 207 / 200 against a required 540 fills per setup; 6 registered cells; no net-R figure. | Verdict: EMPTY (no trades) | Keep: NO, because the result has no trades and no outcome was computed.", "in_tokens": 1032, "out_tokens": 393}
+{"id": "dir-dedupe_audit_2026-10", "status": "succeeded", "text": "Claim: Infra dedupe audit of hooks, startup and cleanup, device tasks, broadcast", "in_tokens": 736, "out_tokens": 400}
+{"id": "dir-us_open_oos_2026-10-30", "status": "succeeded", "text": "Claim: The original US-open session pattern on BTCUSDT was re-tested on 2020-01 to 2021-12 out-of-sample data | Method: The original script was re-run unchanged on that window; the source notes say this was copied from a committed note and not re-run here | Finding: The move is smaller than originally reported (1.36-", "in_tokens": 1114, "out_tokens": 400}
+{"id": "dir-indicator_audit_2026-10-14", "status": "succeeded", "text": "Claim: Indicator values match across multiple models, per the committed audit note (card indicator-values-multi-model-audit). | Method: Not re-run; figures and wording copied from MyTradingSys/research/indicator_audit_2026-10-14/AUDIT.md. | Finding: 0 trade rows; no KPIs or net-R figure reported; trust tag MACHINE-OK, not VERIFIED (no non-Claude column filled yet). | Verdict: EMPTY (no trades) | Keep: NO, no trades and no decision", "in_tokens": 759, "out_tokens": 400}
+{"id": "dir-nuc_restart_2026-10-28", "status": "succeeded", "text": "Claim: The audit register flags Tom rule-set wiring gaps and quote mismatches, with no trade result behind it. | Method: Th", "in_tokens": 1476, "out_tokens": 400}
+{"id": "st-bb_pierce_force_2026-10-29-result", "status": "succeeded", "text": "Claim: A 15m Bollinger pierce near the US open, with its \"force\" and whether it reaches the prior-day level, is t", "in_tokens": 899, "out_tokens": 400}
+{"id": "dir-rsi_deep_buy_2026-10-19", "status": "succeeded", "text": "", "in_tokens": 956, "out_tokens": 400}
+{"id": "lm-pitchfork-1d-20261019", "status": "succeeded", "text": "", "in_tokens": 1008, "out_tokens": 400}
+{"id": "desk-fabio_v3-b6b13619", "status": "succeeded", "text": "", "in_tokens": 4356, "out_tokens": 400}
+{"id": "lm-bigmoves-a", "status": "succeeded", "text": "", "in_tokens": 1236, "out_tokens": 400}
+{"id": "st-wlow_bounce_bbrsi60_2026-10-16-result", "status": "succeeded", "text": "", "in_tokens": 1220, "out_tokens": 400}
+{"id": "dir-gpt_burn_2026-10-24", "status": "succeeded", "text": "", "in_tokens": 1597, "out_tokens": 400}
+{"id": "dir-qriptal_2026-10-10", "status": "succeeded", "text": "", "in_tokens": 879, "out_tokens": 400}
+{"id": "ledger-opr_weekly_low_round_sweep_2026-10-16-trials-csv", "status": "succeeded", "text": "Claim: The OPR weekly low round sweep ran 12 trial variants, as logged in the committ", "in_tokens": 806, "out_tokens": 400}
+{"id": "dir-self_heal_2026-10-28", "status": "succeeded", "text": "Claim: The 2026-10-28 MTS doctor report for the Self Heal family, copied from its source note, with a note that it may duplicate another result. | Method: Not re-run; numbers and sentences were copied from the committed source note, and the verdict is the line as written there. | Finding: 30 runs: success 25, failure 5; newest finished run: success; two RED runs at 10-28T13:01 and 10-28T12:37 failed offline gates.", "in_tokens": 961, "out_tokens": 400}
+{"id": "dir-reviews_2026-10-26", "status": "succeeded", "text": "", "in_tokens": 883, "out_tokens": 400}
+{"id": "t09_live_parity", "status": "succeeded", "text": "", "in_tokens": 3599, "out_tokens": 400}
+{"id": "lm-bigtrade-exit", "status": "succeeded", "text": "Claim: The live", "in_tokens": 735, "out_tokens": 400}
+{"id": "desk-tom_vp-bcb15fd4", "status": "succeeded", "text": "", "in_tokens": 4019, "out_tokens": 400}
+{"id": "st-gemini_audits_2026-11-01-fractal_results_blind_read", "status": "succeeded", "text": "Claim: Blind read audit of the fractal results RESULT.md for six runs (f1 through f4, p1_split, p1b_rsi_feenet). | Method: Not re-run; numbers and verdict were copied from the committed source note. | Finding: sample size n 2556 (first value in source, may not be trades); net R after fees -0.305. | Verdict: EMPTY (no trades) | Keep: NO, because the file exports no trade rows and the source holds no trade list.", "in_tokens": 981, "out_tokens": 386}
+{"id": "desk-krown-f70f0e73", "status": "succeeded", "text": "Claim: Exploratory desk try of the S5 4h MA cross (2R target, fees and slippage) on BTCUSDT or ETHUSDT, long only, UTC 8-16, not the pre-registered study.\nMethod: Local simulator desk run on development data only, 2023-03-01 to 2023-05-31, fees included; no VALIDATION or HOL", "in_tokens": 1280, "out_tokens": 400}
+{"id": "dir-cryptocred_htf_2026-10", "status": "succeeded", "text": "", "in_tokens": 1565, "out_tokens": 400}
+{"id": "st-gross_effect_screen_2026-10-15-result", "status": "succeeded", "text": "", "in_tokens": 872, "out_tokens": 400}
+{"id": "lm-tom-core-bt", "status": "succeeded", "text": "", "in_tokens": 1541, "out_tokens": 400}
+{"id": "dir-worktree_triage_2026-10-20", "status": "succeeded", "text": "Claim: JIS-NB worktree triage on 2026-10-20 cleaned up stale git worktrees; this is maintenance, not a trading result.\nMethod: Not re-run. Figures were copied from the committed source note TRIAGE.md (commit 122e62073).\nFinding: 18 of", "in_tokens": 755, "out_tokens": 400}
+{"id": "dir-layer_readiness_2026-10-16", "status": "succeeded", "text": "Claim: Layer readiness census (2026-10-16) lists 9 layers as TRADES, but no trade rows are in this file. | Method: Source-extracted from the committed LAYER_READINESS.md note (commit 5fc9144e1); not re-run. | Finding: 0 trade rows in file; source states 9 TRADES layers, all passing only through pre_pipeline_sources. | Verdict: EMPTY (no trades) | Keep: NO, because the result has no trade rows to evaluate.", "in_tokens": 976, "out_tokens": 398}
+{"id": "dir-tom_dax_what_is_proven_2026-10-13", "status": "succeeded", "text": "", "in_tokens": 1297, "out_tokens": 400}
+{"id": "lm-vol-v3", "status": "succeeded", "text": "", "in_tokens": 721, "out_tokens": 400}
+{"id": "dir-layer_combo_verdict_2026-10-13", "status": "succeeded", "text": "", "in_tokens": 811, "out_tokens": 400}
+{"id": "dir-context_null_2026-10-16", "status": "succeeded", "text": "", "in_tokens": 772, "out_tokens": 400}
+{"id": "desk-cowen_bmsb-0bae3f5d", "status": "succeeded", "text": "", "in_tokens": 1362, "out_tokens": 400}
+{"id": "dir-mfe_exit_2026-10-13", "status": "succeeded", "text": "", "in_tokens": 1686, "out_tokens": 400}
+{"id": "st-netdelta_panel_2026-10-18-result", "status": "succeeded", "text": "", "in_tokens": 1070, "out_tokens": 400}
+{"id": "st-t090_7h_2026-10-09-result", "status": "succeeded", "text": "Claim: T090 7h research and T088 lead robustness check; the source's verdict is NOT robust. | Method: Not re-run; numbers and verdict copied from the committed source note (RESULT.md, commit", "in_tokens": 854, "out_tokens": 400}
+{"id": "dir-extraction_ledger_2026-10", "status": "succeeded", "text": "", "in_tokens": 833, "out_tokens": 400}
+{"id": "dir-trendlines_2026-10-17", "status": "succeeded", "text": "Claim: Trend-line study on BTC context and daily charts; the source sets out a rule framework but reports no tested result. | Method: Not re-run; text copied from the committed source note, with no trade list exported. | Finding: 0 trade rows; no KPIs; no test window or trade count stated; the source reports no net-R figure. | Verdict: EMPTY (no trades) | Keep: NO, there are no trades and no decision value to act on.", "in_tokens": 1453, "out_tokens": 360}
+{"id": "desk-tom_vp-5568b609", "status": "succeeded", "text": "", "in_tokens": 3975, "out_tokens": 400}
+{"id": "dir-cowen_q4_2026-10-31", "status": "succeeded", "text": "", "in_tokens": 793, "out_tokens": 400}
+{"id": "lm-capture-matrix", "status": "succeeded", "text": "Claim: The big-move capture matr", "in_tokens": 683, "out_tokens": 400}
+{"id": "fractals-f2-hurst-gate", "status": "succeeded", "text": "", "in_tokens": 3795, "out_tokens": 400}
+{"id": "desk-cowen_bmsb-79fca995", "status": "succeeded", "text": "", "in_tokens": 1368, "out_tokens": 400}
+{"id": "dir-pitchfork_2026-10-19", "status": "succeeded", "text": "Claim: Pitchfork and Volume Profile 4-h", "in_tokens": 1764, "out_tokens": 400}
+{"id": "dir-meta_label_roadmap_2026-10-31", "status": "succeeded", "text": "", "in_tokens": 1103, "out_tokens": 400}
+{"id": "dir-eagle_eyes_picture_2026-10-28", "status": "succeeded", "text": "Claim: This file is a plan for redesigning MTS alerts, not a trade test of a BTC strategy. | Method: Not re-run; figures were copied from the committed source note (PICTURE_AND_PLAN.md, commit 3399af49d). | Finding: 0 trades in the file; the source gives no trade", "in_tokens": 1306, "out_tokens": 400}
+{"id": "desk-fabio_v3-cc240f2b", "status": "succeeded", "text": "", "in_tokens": 4247, "out_tokens": 400}
+{"id": "dir-gap_g3_shadow_fills_2026-10-18", "status": "succeeded", "text": "Claim: G3 GO_LIVE_BAR on shadow fills from the real tape (2026-10-18) | Method: Not re-run; figures copied from the committed source note, with no trade list exported | Finding: 0 trades in file | Verdict: EMPTY (no trades) | Keep: NO, the file holds zero tr", "in_tokens": 899, "out_tokens": 400}
+{"id": "dir-role_flow_2026-10-23", "status": "succeeded", "text": "Claim: The Option A end-to-", "in_tokens": 890, "out_tokens": 400}
+{"id": "lm-candle-close-dev-20261014", "status": "succeeded", "text": "Claim: Close sequences at prior 4h, day, and week highs and lows may predict next-hour BTC direction. | Method: Numbers and wording were copied from the committed source note (REPORT.md), not re-run; the source is a price-return screen with a 14bp round-trip cost, not fee/funding-adjusted P&L. | Fin", "in_tokens": 1347, "out_tokens": 400}
+{"id": "dir-dsa_bridge_2026-10-27", "status": "succeeded", "text": "Claim: DSA bridge (AIBridge) status on every MTS machine, dated 2026-10-27, is an operator order to run a verification check, not a tested result. | Method: Not re-run; figures and wording were copied from the committed source note (STATUS.md, commit 4271cb142) and the check is aibridge_verify.py over 28 rows. | Finding: No trades exported and no net-R figure, test window, or pass/fail reason is stated; the only number is the 28-row check list. |", "in_tokens": 732, "out_tokens": 400}
+{"id": "lm-price-cvd-div-1m5m-20261014", "status": "succeeded", "text": "", "in_tokens": 974, "out_tokens": 400}
+{"id": "ledger-context_factors_2026-10-16-trials-csv", "status": "succeeded", "text": "", "in_tokens": 647, "out_tokens": 400}
+{"id": "dir-krown_audit_2026-10-22", "status": "succeeded", "text": "", "in_tokens": 1066, "out_tokens": 400}
+{"id": "st-opr_weekly_low_round_sweep_2026-10-16-result", "status": "succeeded", "text": "", "in_tokens": 1137, "out_tokens": 400}
+{"id": "dir-prob_dist_layer_brief_2026-10-16", "status": "succeeded", "text": "Claim: The source brief sets out a design for a probability-distribution layer for an operator talk, with no test run and no new gate numbers. | Method: Not re-run; numbers and sentences were copied from the committ", "in_tokens": 1256, "out_tokens": 400}
+{"id": "desk-tom_vp-f0e6a008", "status": "succeeded", "text": "", "in_tokens": 3972, "out_tokens": 400}
+{"id": "dir-coinglass_field_guide_2026-11-01", "status": "succeeded", "text": "Claim: CoinGlass wall and depth panels can be mapped to our engines and checked, but this is not evidence of an edge. | Method: Read-only study of CoinGlass pages and 25 sources, not a backtest; 0 trade rows in the file. | Finding: In the loaded two days, 191 walls were placed, 1 filled, and 176 pulled; depth within ±1% was -20.4% (asks heavier). | Verdict: EMPTY (no trades) | Keep: NO, because the file has no trades", "in_tokens": 3599, "out_tokens": 400}
+{"id": "dir-test_hunt_2026-10-31", "status": "succeeded", "text": "", "in_tokens": 906, "out_tokens": 400}
+{"id": "dir-tom_check_set_2026-10-18", "status": "succeeded", "text": "Claim: The Tom CHECK set is frozen at 2 trades (S7/T11 and S8/T12), with the trade recaps checked from", "in_tokens": 1540, "out_tokens": 400}
+{"id": "eagle-c26-fade", "status": "succeeded", "text": "", "in_tokens": 4170, "out_tokens": 400}
+{"id": "lm-vol-v4", "status": "succeeded", "text": "", "in_tokens": 849, "out_tokens": 400}
+{"id": "ledger-eur_low_us_sweep_followups_2026-10-18-trials-csv", "status": "succeeded", "text": "Claim: The trial ledger for EUR low US sweep follow-ups logs the variants", "in_tokens": 679, "out_tokens": 400}
+{"id": "dir-coordination_audit_20261026", "status": "succeeded", "text": "", "in_tokens": 981, "out_tokens": 400}
+{"id": "dir-bg_process_audit_2026-10-28", "status": "succeeded", "text": "", "in_tokens": 709, "out_tokens": 400}
+{"id": "dir-fabio_cvd_2026-10-30", "status": "succeeded", "text": "Claim: Fabio and his channel mates' CVD and delta concepts can be used for BTC and other markets. | Method: Not re-run; numbers and sentences were copied from the committed source note (CVD_CONCEPTS.md). | Finding: 0 trade rows in file; the", "in_tokens": 816, "out_tokens": 400}
+{"id": "dir-cloud_ai_health_2026-10-26", "status": "succeeded", "text": "Claim: The source note attributes the Claude/cloud AI health problems to budget press", "in_tokens": 1024, "out_tokens": 400}
+{"id": "ledger-opr_bb_mtf_center_2026-10-16-trials-csv", "status": "succeeded", "text": "", "in_tokens": 801, "out_tokens": 400}
+{"id": "st-michael_lines_2026-11-result", "status": "succeeded", "text": "Claim: Michael's stated trend lines match trendline_core detector events on BTC, 2022-01-01 to 2024-06-30. | Method: Not re-run; figures copied from the committed source note (RESULT.md, commit c124d6df1). | Finding: 0 trade rows in file; the source states no trade count and no net-R figure; detector events exist at 5 kinds on 4h/1d. | Verdict: EMPTY (no trades) | Keep: NO, because the file has no trades", "in_tokens": 742, "out_tokens": 400}
+{"id": "st-dsa_bridge_fix_plan_2026-10-31-c7_nuc_results", "status": "succeeded", "text": "Cla", "in_tokens": 834, "out_tokens": 400}
+{"id": "desk-tom_vp-c8d2f341", "status": "succeeded", "text": "", "in_tokens": 3931, "out_tokens": 400}
+{"id": "desk-fabio_v3-7da588cc", "status": "succeeded", "text": "", "in_tokens": 4095, "out_tokens": 400}
+{"id": "st-b154_stratified_2026-10-09-result", "status": "succeeded", "text": "Claim: B154 stratified verdicts, split by UTC session and by regime, from source note st-b154_stratified_2026-10-09-result |", "in_tokens": 633, "out_tokens": 400}
+{"id": "dir-vp_pivots_2026-10-09", "status": "succeeded", "text": "Claim: Tom says volume profiles should not be drawn from pivot points, only from meaningful highs and lows, but he gives no mechanical rule for what counts as \"major\" or \"significant.\"\nMethod: Source-extracted from a committed note; not re-run.\nFinding: 0 trade rows; the source states no trade count, no net-R figure, and no test window.\nVerdict: EMPTY (no trades)\n", "in_tokens": 701, "out_tokens": 400}
+{"id": "dir-gemini_audits_2026-10-30", "status": "succeeded", "text": "", "in_tokens": 950, "out_tokens": 400}
+{"id": "lm-eur-low-us-sweep-20261014", "status": "succeeded", "text": "Claim: A retested 24h low gets broken in the US window, so a short and a 1-", "in_tokens": 935, "out_tokens": 400}
+{"id": "dir-mts_flow_audit_2026-10-13", "status": "succeeded", "text": "", "in_tokens": 1031, "out_tokens": 400}
+{"id": "ledger-context_factors_pit_2026-10-16-trials-csv", "status": "succeeded", "text": "", "in_tokens": 658, "out_tokens": 400}
+{"id": "eagle-c21-bb-pierce", "status": "succeeded", "text": "", "in_tokens": 1286, "out_tokens": 400}
+{"id": "desk-wavetrend-d879ce95", "status": "succeeded", "text": "", "in_tokens": 1735, "out_tokens": 400}
+{"id": "desk-tom_vp-20c09090", "status": "succeeded", "text": "", "in_tokens": 3958, "out_tokens": 400}
+{"id": "desk-rsi-db26327f", "status": "succeeded", "text": "", "in_tokens": 1230, "out_tokens": 400}
+{"id": "st-layer_relations_2026-10-results_tables", "status": "succeeded", "text": "", "in_tokens": 822, "out_tokens": 400}
+{"id": "dir-fable_audit_2026-10-20", "status": "succeeded", "text": "", "in_tokens": 1624, "out_tokens": 400}
+{"id": "st-bounce_shift_2026-10-30-result", "status": "succeeded", "text": "Claim: Does an oversold 5m BTCUSDT casc", "in_tokens": 924, "out_tokens": 400}
+{"id": "dir-g3_marks_2026-10-16", "status": "succeeded", "text": "Claim: The G3 marking pack, first batch, is ready to mark; it is a thought experiment with no trade list.\nMethod: Not re-run; numbers and status were copied from the committed source note (commit bbe64cea6), window 2024-", "in_tokens": 740, "out_tokens": 400}
+{"id": "st-large_trade_absorption_2026-10-30-result", "status": "succeeded", "text": "Claim: Large trades on 5m bars were counted to see whether absorption reversed price, as textbook absorption predicts. | Method: Not re-run; numbers and text were copied from the committed source note (commit 5f24edeb5), with definitions in study.py's header. | Finding: 0 tr", "in_tokens": 785, "out_tokens": 400}
+{"id": "dir-overhead_cut_2026-10-28", "status": "succeeded", "text": "", "in_tokens": 690, "out_tokens": 400}
+{"id": "lm-oi-delta", "status": "succeeded", "text": "", "in_tokens": 640, "out_tokens": 400}
+{"id": "dir-testnet_cotrade_2026-10-31", "status": "succeeded", "text": "", "in_tokens": 1304, "out_tokens": 400}
+{"id": "c26-h1-structural-lower-high", "status": "succeeded", "text": "", "in_tokens": 3831, "out_tokens": 400}
+{"id": "dir-bb_state_map_2026-10", "status": "succeeded", "text": "", "in_tokens": 660, "out_tokens": 400}
+{"id": "desk-wavetrend-9f0363ce", "status": "succeeded", "text": "", "in_tokens": 1393, "out_tokens": 400}
+{"id": "audit-t04_clean_room_twin", "status": "succeeded", "text": "", "in_tokens": 1184, "out_tokens": 400}
+{"id": "dir-layer_review_2026-10-26", "status": "succeeded", "text": "", "in_tokens": 1006, "out_tokens": 400}
+{"id": "dir-fabio_asr_2026-10-16", "status": "succeeded", "text": "", "in_tokens": 1605, "out_tokens": 400}
+{"id": "st-fable_run6_powered_prereg-result", "status": "succeeded", "text": "", "in_tokens": 1213, "out_tokens": 400}
+{"id": "st-bb_dance_2026-10-30-result", "status": "succeeded", "text": "Claim: Bollinger \"dance\" exits: does leaving early on a take-profit give up the big leg? | Method: Source-extracted from the committed RESULT.md, not re-run. Descriptive counts only, no fees, BTCUSDT 5m, DEV 2022-2025 ", "in_tokens": 1190, "out_tokens": 400}
+{"id": "desk-fabio_v3-b3972cec", "status": "succeeded", "text": "", "in_tokens": 4356, "out_tokens": 400}
+{"id": "audit-t05_placebo_nulls", "status": "succeeded", "text": "Claim: What does chance alone produce in this audit", "in_tokens": 999, "out_tokens": 400}
+{"id": "dir-rolling_session_cost_2026-10", "status": "succeeded", "text": "Claim: Rolling", "in_tokens": 728, "out_tokens": 400}
+{"id": "eagle-preus-pullback", "status": "succeeded", "text": "", "in_tokens": 1333, "out_tokens": 400}
+{"id": "eagle-c26-magnet", "status": "succeeded", "text": "", "in_tokens": 1350, "out_tokens": 400}
+{"id": "st-fractals_2026-10-31-p1_split-result", "status": "succeeded", "text": "Claim: Fractals P1 split test on RSI-DIV-MTF and Krown; no edge is claimed or refuted. | Method: Not re-run; figures copied from the committed note (commit d1fd7dca4, dated 2026-10-31). No frozen per-event fee-net list exists for either layer, so no cell was run. | Finding: No numbers: n, fee-net mean R, and CI are all blocked. The RSI event table holds 643 gross events with no exit and no fees. | Verdict: EMPTY (no trades) | Keep: NO,", "in_tokens": 1349, "out_tokens": 400}
+{"id": "malkan-div-breaks", "status": "succeeded", "text": "", "in_tokens": 3445, "out_tokens": 400}
+{"id": "st-reclaim_close_stop_2026-11-result", "status": "succeeded", "text": "", "in_tokens": 816, "out_tokens": 400}
+{"id": "dir-gemini_audits_2026-10-31", "status": "succeeded", "text": "", "in_tokens": 987, "out_tokens": 400}
+{"id": "st-jala_layer_2026-10-31-trigger_result", "status": "succeeded", "text": "", "in_tokens": 1205, "out_tokens": 400}
+{"id": "dir-gemini_burn_2026-10-25", "status": "succeeded", "text": "", "in_tokens": 1443, "out_tokens": 400}
+{"id": "dir-golas_2026-10", "status": "succeeded", "text": "Claim: Internet consensus on indicator settings for BTC (GOLAS-C, ledger P0-04) | Method: Not re", "in_tokens": 881, "out_tokens": 400}
+{"id": "lm-candle-d19", "status": "succeeded", "text": "Claim: D19 4h long-only bullish engulfing/kicker entries at", "in_tokens": 643, "out_tokens": 400}
+{"id": "desk-krown-a2e514ff", "status": "succeeded", "text": "Claim: Exploratory desk try (not the pre-registered study) of the S5 21/55 EMA cross on 4h BTCUSDT or ETHUSDT, 2R target, fees included. | Method: Local simulator desk replay on development data", "in_tokens": 1322, "out_tokens": 400}
+{"id": "desk-tom_vp-4c1bc9c3", "status": "succeeded", "text": "", "in_tokens": 4008, "out_tokens": 400}
+{"id": "eagle-c30-wt-rsi-div", "status": "succeeded", "text": "", "in_tokens": 4256, "out_tokens": 400}
+{"id": "lm-vp-pivot-p2", "status": "succeeded", "text": "Claim", "in_tokens": 643, "out_tokens": 400}
+{"id": "dir-gpt_lane_review_2026-10-15", "status": "succeeded", "text": "Claim: This read-only plan reviews which GPT model the NUC uses and sets a cap on automatic runs, and it does not report a trading result. | Method: Not re-run; figures and wording were copied from the committed source note NUC_GPT_PLAN.md. |", "in_tokens": 1578, "out_tokens": 400}
+{"id": "desk-fabio_v3-305051dc", "status": "succeeded", "text": "", "in_tokens": 4152, "out_tokens": 400}
+{"id": "krown-s8-e2-desk-crosscheck", "status": "succeeded", "text": "", "in_tokens": 1732, "out_tokens": 400}
+{"id": "dir-backtest_gap_review_2026-10-13", "status": "succeeded", "text": "Claim: The backtest review asks whether our backtests are sound: enough power, out-of-sample testing, realistic costs, and a counted number of looks. | Method: Audit of the committed source note, not re-run; numbers and sentences were copied from REPORT.md. | Finding: The frozen DAX bar has 7-35 % power at 100-150 trades, and \"FAIL on dev = stop\" makes that miss final; the source gives 150 as the first trade count; the window is 2024-11-04 to 2026-04-10;", "in_tokens": 1358, "out_tokens": 400}
+{"id": "desk-tom_vp-0fd1a3c0", "status": "succeeded", "text": "", "in_tokens": 3926, "out_tokens": 400}
+{"id": "dir-gemini_burn_2026-10-31", "status": "succeeded", "text": "", "in_tokens": 1003, "out_tokens": 400}
+{"id": "desk-meta_label_tom_vp", "status": "succeeded", "text": "", "in_tokens": 4123, "out_tokens": 400}
+{"id": "dir-pivot_pattern_audit_2026-10-14", "status": "succeeded", "text": "", "in_tokens": 1557, "out_tokens": 400}
+{"id": "dir-context_loading_wiring_2026-10", "status": "succeeded", "text": "", "in_tokens": 1073, "out_tokens": 400}
+{"id": "dir-malkan_ledger_2026-10", "status": "succeeded", "text": "Claim: Malkan's dated-call ledger can be built from his lecture, with RSI-based parity points (Gate 0c audit). | Method: Source-extracted audit of the committed note; not re-run. | Finding: 0 dated trades; trades count 0; the source gives no net-R figure and no test window. | Verdict: EMPTY (no trades) | Keep: NO, the source holds no trade list and no decision value.", "in_tokens": 1385, "out_tokens": 398}
+{"id": "dir-positioning_flowhorse_2026-10", "status": "succeeded", "text": "Claim: FlowHorse positioning (liquidation cascade, OI pickup, news second move) is a hypothesis that fails Gate 0c and Gate 0d. | Method: Not re-run; numbers and wording copied from the committed source note, window 2025-09-01 to 2026-09-26 as written there. | Finding: 0 trade rows", "in_tokens": 849, "out_tokens": 400}
+{"id": "dir-bb_top_reversal_2026-10-18", "status": "succeeded", "text": "", "in_tokens": 925, "out_tokens": 400}
+{"id": "dir-tom_fabio_review_2026-10-31", "status": "succeeded", "text": "", "in_tokens": 1689, "out_tokens": 400}
+{"id": "desk-levels-2b122b99", "status": "succeeded", "text": "", "in_tokens": 1263, "out_tokens": 400}
+{"id": "lm-tom-core-0929", "status": "succeeded", "text": "", "in_tokens": 1199, "out_tokens": 400}
+{"id": "dir-opus_run_design_2026-10-28", "status": "succeeded", "text": "", "in_tokens": 1296, "out_tokens": 400}
+{"id": "dir-setup_catalog_2026-10-15", "status": "succeeded", "text": "Claim: This file is a catalog of the trade setups Tom and Fabio describe, copied from a committed source note, not a test of whether any", "in_tokens": 1463, "out_tokens": 400}
+{"id": "desk-levels-50dbba30", "status": "succeeded", "text": "", "in_tokens": 1210, "out_tokens": 400}
+{"id": "tom-corr-divergence-backtest", "status": "succeeded", "text": "", "in_tokens": 944, "out_tokens": 400}
+{"id": "st-tom_v2_gross_first_2026-11-result", "status": "succeeded", "text": "", "in_tokens": 1316, "out_tokens": 400}
+{"id": "desk-fabio_v3-0694292f", "status": "succeeded", "text": "", "in_tokens": 4148, "out_tokens": 400}
+{"id": "desk-fabio_v3-a955213e", "status": "succeeded", "text": "", "in_tokens": 4345, "out_tokens": 400}
+{"id": "dir-cryptocred_ledger_2026-10", "status": "succeeded", "text": "", "in_tokens": 1111, "out_tokens": 400}
+{"id": "dir-imbalance_2026-10-10", "status": "succeeded", "text": "", "in_tokens": 840, "out_tokens": 400}
+{"id": "desk-levels-f213f66e", "status": "succeeded", "text": "", "in_tokens": 1254, "out_tokens": 400}
+{"id": "dir-gap_g7_stop_slippage_2026-10-18", "status": "succeeded", "text": "Claim: Gap G7 stop-slippage proxy on BTCUSDT (Binance aggT", "in_tokens": 1442, "out_tokens": 400}
+{"id": "dir-core_readiness_2026-09-27", "status": "succeeded", "text": "", "in_tokens": 1123, "out_tokens": 400}

@@ -34,5 +34,15 @@
  "source_files": [
   "MyTradingSys/research/test_hunt_2026-10-31/VACUOUS_TESTS.md"
  ],
- "commit": "de7a5018e"
+ "commit": "de7a5018e",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Method: newest 30 non-merge, non-revert commits (base 239f17a1f) that ADD a test_.py file. For each: detached worktree at the commit, every non-test file the commit touched restored to its parent state (added non-test files deleted), then…",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Method: newest 30 non-merge, non-revert commits (base 239f17a1f) that ADD a test_.py file. For each: detached worktree at the commit, every non-test file the commit touched restored to its parent state (added non-test files deleted), then… · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

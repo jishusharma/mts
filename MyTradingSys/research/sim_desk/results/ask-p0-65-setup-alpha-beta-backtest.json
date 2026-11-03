@@ -215,5 +215,15 @@
   "MyTradingSys/research/setup_alpha_beta_v2_2026-10/PRE_REG.md",
   "MyTradingSys/research/setup_alpha_beta_v2_2026-10/setup_v2.py"
  ],
- "commit": "this card"
+ "commit": "this card",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Alpha FAIL; Beta INCONCLUSIVE (every cell negative)",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Alpha FAIL; Beta INCONCLUSIVE (every cell negative) · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

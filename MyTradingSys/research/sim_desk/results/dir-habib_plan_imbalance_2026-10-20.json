@@ -50,5 +50,15 @@
  "source_files": [
   "MyTradingSys/research/habib_plan_imbalance_2026-10-20/README.md"
  ],
- "commit": "95fcdb20f"
+ "commit": "95fcdb20f",
+ "banner": {
+  "state": "TOO_FEW",
+  "tone": "warn",
+  "verdict": "for this one plan: the sweep-then-higher part is a clean MATCH; the box/bull-trap/drop part cannot be scored yet. One plan proves nothing about hit rate (n = 1).",
+  "n": 1,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "TOO FEW TRADES · verdict as written: for this one plan: the sweep-then-higher part is a clean MATCH; the box/bull-trap/drop part cannot be scored yet. One plan proves nothing about hit rate (n = 1). · n=1 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

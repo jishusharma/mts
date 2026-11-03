@@ -321,7 +321,51 @@ def wavetrend_result():
     }
 
 
+def _ba():
+    import sys
+    if os.path.join(HERE, "artifact") not in sys.path:
+        sys.path.insert(0, os.path.join(HERE, "artifact"))
+    import build_artifact
+    return build_artifact
+
+
+def enrich(res):
+    """Fields only added (schema kept): `banner` (the fixed verdict line, survey C2) and when / side / exit_reason on every
+    winner/loser chart item (survey C1: trade list with exit reason). Returns the same dict."""
+    ba = _ba()
+    ba.add_trade_rows(res)
+    res["banner"] = ba.banner_of(res)
+    return res
+
+
+def _dump(obj, raw):
+    """JSON text in the same style as the file it replaces (indent 1, or compact), so only the added fields show in a diff."""
+    esc = (chr(92) + "u") in raw
+    if raw.startswith("{" + chr(10)):
+        return json.dumps(obj, indent=1, ensure_ascii=esc) + chr(10)
+    return json.dumps(obj, separators=(",", ":"), ensure_ascii=esc) + (chr(10) if raw.endswith(chr(10)) else "")
+
+
+def enrich_results(results_dir=DEFAULT_OUT):
+    """Add the banner and trade rows to every results/<id>.json in place; returns the number of files changed."""
+    changed = 0
+    for fn in sorted(os.listdir(results_dir)):
+        if not fn.endswith(".json") or fn.startswith("_"):
+            continue
+        p = os.path.join(results_dir, fn)
+        with open(p, encoding="utf-8", newline="") as f:
+            raw = f.read()
+        old = json.loads(raw)
+        new = enrich(json.loads(raw))
+        if new != old:
+            with open(p, "w", encoding="utf-8", newline=chr(10)) as f:
+                f.write(_dump(new, raw))
+            changed += 1
+    return changed
+
+
 def write(out_dir, res):
+    enrich(res)
     os.makedirs(out_dir, exist_ok=True)
     p = os.path.join(out_dir, res["id"] + ".json")
     with open(p, "w", encoding="utf-8", newline="\n") as f:
@@ -336,7 +380,10 @@ def main(argv=None):
     import build_artifact as ba
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default=DEFAULT_OUT)
+    ap.add_argument("--enrich", action="store_true", help="only add banner + trade rows to the existing result files")
     a = ap.parse_args(argv)
+    if a.enrich:
+        return ["enriched %d result files" % enrich_results(a.out)]
     rule, rows = ba.load(ba.DEFAULT_SRC)
     outs = [levels_result(ba.build_data(rule, rows)), t09_result(), t06_result(), t07_result(), wavetrend_result()]
     import fractals_export   # fractals_2026-10-31 studies (P1b, F1, F2, F3, phase tag); needs their committed trade lists

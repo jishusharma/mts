@@ -85,5 +85,15 @@
  "source_files": [
   "MyTradingSys/research/tom_fabio_review_2026-10-31/SETUP_REVIEW.md"
  ],
- "commit": "de1783d7a"
+ "commit": "de1783d7a",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "s pending). That sheet says what each setup is; this one says what our code does with it, what was measured,",
+  "n": 1812,
+  "net_r": -0.1038,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: s pending). That sheet says what each setup is; this one says what our code does with it, what was measured, · n=1812 · net R after fees -0.104 · try n/a · fee break-even n/a"
+ }
 }

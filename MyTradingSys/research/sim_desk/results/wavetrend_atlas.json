@@ -139,5 +139,15 @@
  "source_files": [
   "MyTradingSys/research/wavetrend_2026-10-17/RESULT.md"
  ],
- "commit": "249f01fd0"
+ "commit": "249f01fd0",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "INCONCLUSIVE: 0 of 9 cells pass the gross screen",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: INCONCLUSIVE: 0 of 9 cells pass the gross screen · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

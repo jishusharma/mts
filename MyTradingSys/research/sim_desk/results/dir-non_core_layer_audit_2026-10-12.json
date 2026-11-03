@@ -77,5 +77,15 @@
  "source_files": [
   "MyTradingSys/research/non_core_layer_audit_2026-10-12/REPORT.md"
  ],
- "commit": "0f0b1cc78"
+ "commit": "0f0b1cc78",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": ", not a claim that every possible version of these systems cannot work.",
+  "n": 89,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: , not a claim that every possible version of these systems cannot work. · n=89 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

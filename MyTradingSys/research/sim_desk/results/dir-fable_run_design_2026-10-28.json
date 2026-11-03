@@ -46,5 +46,15 @@
  "source_files": [
   "MyTradingSys/research/fable_run_design_2026-10-28/DESIGN.md"
  ],
- "commit": "d6020f043"
+ "commit": "d6020f043",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: none · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

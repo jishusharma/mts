@@ -56,5 +56,15 @@
  "source_files": [
   "MyTradingSys/research/mts_flow_audit_2026-10-13/REPORT.md"
  ],
- "commit": "f8d0799de"
+ "commit": "f8d0799de",
+ "banner": {
+  "state": "TOO_FEW",
+  "tone": "warn",
+  "verdict": "_2026-10-13/REPORT.md, tom_transfer_2026-10-11/BACKTEST_FAILURES_RESEARCH.md (C1-C8), and",
+  "n": 7,
+  "net_r": -1.27,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "TOO FEW TRADES · verdict as written: _2026-10-13/REPORT.md, tom_transfer_2026-10-11/BACKTEST_FAILURES_RESEARCH.md (C1-C8), and · n=7 · net R after fees -1.270 · try n/a · fee break-even n/a"
+ }
 }

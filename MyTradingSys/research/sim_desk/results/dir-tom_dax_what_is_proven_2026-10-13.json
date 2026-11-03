@@ -55,5 +55,15 @@
  "source_files": [
   "MyTradingSys/research/tom_dax_what_is_proven_2026-10-13/REPORT.md"
  ],
- "commit": "03c9811cd"
+ "commit": "03c9811cd",
+ "banner": {
+  "state": "TOO_FEW",
+  "tone": "warn",
+  "verdict": ". Power here means the chance of detecting an edge that is really there. The frozen pass bar has 7-35% across most of his range, and a FAIL is final (REPORT.md:92-99; spec :49).",
+  "n": 0,
+  "net_r": -1.27,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "TOO FEW TRADES · verdict as written: . Power here means the chance of detecting an edge that is really there. The frozen pass bar has 7-35% across most of his range, and a FAIL is final (REPORT.md:92-99; spec :49). · n=0 · net R after fees -1.270 · try n/a · fee break-even n/a"
+ }
 }

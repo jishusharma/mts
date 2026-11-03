@@ -36,5 +36,15 @@
  "source_files": [
   "MyTradingSys/research/sim_desk/results/dir-pitchfork_2026-10-19.json"
  ],
- "commit": "7fb60b44f"
+ "commit": "7fb60b44f",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Study Window: 2020-01-01 00:00:00 to 2026-09-26 20:00:00 (14,766 4-Hour Bars)",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Study Window: 2020-01-01 00:00:00 to 2026-09-26 20:00:00 (14,766 4-Hour Bars) · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

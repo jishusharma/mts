@@ -58,5 +58,15 @@
  "source_files": [
   "MyTradingSys/research/meta_label_roadmap_2026-10-31/ROADMAP.md"
  ],
- "commit": "5de130ba4"
+ "commit": "5de130ba4",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "in one paragraph",
+  "n": 1812,
+  "net_r": -0.26,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: in one paragraph · n=1812 · net R after fees -0.260 · try n/a · fee break-even n/a"
+ }
 }

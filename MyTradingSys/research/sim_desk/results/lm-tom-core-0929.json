@@ -65,5 +65,15 @@
  "source_files": [
   "MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT.md"
  ],
- "commit": "f8d0799de"
+ "commit": "f8d0799de",
+ "banner": {
+  "state": "TOO_FEW",
+  "tone": "warn",
+  "verdict": "no edge: gross -0.07 R, net -0.30 R, holdout net -0.32 R (n=254)",
+  "n": 17,
+  "net_r": -0.3,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "TOO FEW TRADES · verdict as written: no edge: gross -0.07 R, net -0.30 R, holdout net -0.32 R (n=254) · n=17 · net R after fees -0.300 · try n/a · fee break-even n/a"
+ }
 }

@@ -72,5 +72,15 @@
  "source_files": [
   "MyTradingSys/research/gemini_audits_2026-11-01/older_results_blind_read.md"
  ],
- "commit": "2eb1bccd1"
+ "commit": "2eb1bccd1",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Audit of numbers across five older studies:",
+  "n": 50,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: Audit of numbers across five older studies: · n=50 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

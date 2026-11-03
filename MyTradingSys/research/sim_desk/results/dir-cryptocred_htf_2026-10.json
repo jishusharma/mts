@@ -65,5 +65,15 @@
  "source_files": [
   "MyTradingSys/research/cryptocred_htf_2026-10/PRE_REG_CRYPTOCRED_HTF.md"
  ],
- "commit": "dc7452725"
+ "commit": "dc7452725",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "line).",
+  "n": null,
+  "net_r": 0.243,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: line). · n=? · net R after fees +0.243 · try n/a · fee break-even n/a"
+ }
 }

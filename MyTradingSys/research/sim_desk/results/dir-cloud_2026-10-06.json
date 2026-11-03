@@ -33,5 +33,15 @@
  "source_files": [
   "MyTradingSys/research/cloud_2026-10-06/PR_LANDING_STATE_2026-10-06.md"
  ],
- "commit": "41d755bdb"
+ "commit": "41d755bdb",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Replaces the pipeline doc (old PR 1) and Wave 1 readiness report (old PR 3), which were cut from main",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Replaces the pipeline doc (old PR 1) and Wave 1 readiness report (old PR 3), which were cut from main · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

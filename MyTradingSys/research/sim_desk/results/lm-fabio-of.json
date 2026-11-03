@@ -72,5 +72,15 @@
  "source_files": [
   "MyTradingSys/backtest/layers/fabio/FABIO_OF_REPORT.md"
  ],
- "commit": "5212cdba2"
+ "commit": "5212cdba2",
+ "banner": {
+  "state": "FAIL",
+  "tone": "bad",
+  "verdict": "no edge / insufficient n (stands under correct fees; numbers not reusable)",
+  "n": 90,
+  "net_r": 0.13,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "FAIL · verdict as written: no edge / insufficient n (stands under correct fees; numbers not reusable) · n=90 · net R after fees +0.130 · try n/a · fee break-even n/a"
+ }
 }

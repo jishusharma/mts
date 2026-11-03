@@ -36,5 +36,15 @@
  "source_files": [
   "MyTradingSys/research/malkan_rsi_2026-09-28/WEB_RESEARCH.md"
  ],
- "commit": "5c4b4ba54"
+ "commit": "5c4b4ba54",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Date: 2026-09-28",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Date: 2026-09-28 · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }
