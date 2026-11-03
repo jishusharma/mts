@@ -2,6 +2,15 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-03T20:31:02Z",
+    "misses": 45,
+    "reads": [
+      "scripts/dev/make_layers_md.py"
+    ],
+    "session": "agent-a883b1345e28c7930"
+  },
   "created": "2026-11-03T20:14:56Z",
   "depends_on": [],
   "done_when": "",
