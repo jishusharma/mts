@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T09:39:53Z",
   "commands": [],
   "context": {
     "calls_to_edit": 7,
@@ -21,6 +22,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "Already shipped 11-02: discord_rows.py + test_discord_rows.py (e4290e2b6); 35 tests pass (",
+      "ref": "9d9e1bdb4",
+      "utc": "2026-11-03T09:39:53Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "feat(cbp): discord_rows loader (IST->UTC, hand JSON, message JSON, DOM HTML parser, ingest",
@@ -37,7 +44,12 @@
   "refined_by": "",
   "refreshed": "2026-11-02T20:00:59Z",
   "refs": [],
-  "result": "",
+  "result": "Already shipped 11-02: discord_rows.py + test_discord_rows.py (e4290e2b6); 35 tests pass (verified 11-03)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/cbp/discord_rows.py",
     "MyTradingSys/tests/test_discord_rows.py",
@@ -51,12 +63,13 @@
   "sources": [
     "operator voice quote 2026-10-28 in note; research/imbalance_qriptal_2026-10-16/discord/README.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/cbp/__init__.py (validate_row, store, query channel=) and research/qriptal_2026-10-10/discord_rows.json; write the fail-first test.",
     "Write discord_rows.py: load_rows(json_path) -> CBP rows (channel, UTC from IST, kind/dir/q), save beside cbp_store via cbp.save; rows are claims not signals.",
     "Run test_discord_rows.py and test_cbp_query.py; ship."
   ],
+  "taken": "2026-11-03T09:39:53Z",
   "tests": "MyTradingSys/tests/test_discord_rows.py: IST 2026-10-13 16:30 -> 11:00Z, row has channel and src, bad row rejected; fails before the module exists.",
   "title": "Discord module: read Habib and Krown channels, report with CBP into MTS",
   "weight": "ROUTINE",
