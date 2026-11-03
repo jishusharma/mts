@@ -75,6 +75,8 @@ class ApiBatchTest(unittest.TestCase):
 
     def test_missing_key_fails_closed(self):
         del os.environ['ANTHROPIC_API_KEY']
+        os.environ['MTS_API_KEY_FILE'] = str(Path(tempfile.mkdtemp()) / 'absent.txt')
+        self.addCleanup(os.environ.pop, 'MTS_API_KEY_FILE', None)
         with self.assertRaises(SystemExit):
             api_batch.call('GET', api_batch.API + '/x')
 
