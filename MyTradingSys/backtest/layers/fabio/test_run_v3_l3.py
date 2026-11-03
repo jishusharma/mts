@@ -138,3 +138,19 @@ def test_is_only_never_touches_oos_windows(monkeypatch, tmp_path):
     assert io["n_is"] == 2 and set(io["chosen"]) == set("ABCD")
     assert all(v == 0.75 for v in io["is_mean_net_r"].values()) and all(v == [1.0, 0.5] for v in io["is_window_r"].values())
     assert seen and all(not n.startswith(("oos", "stress")) and d_oos not in ds for n, ds in seen)
+
+
+def test_is_only_loads_bars_only_to_is_end(monkeypatch, tmp_path):
+    # Card fabio-v3-is-only-loads-oos-bars: --is-only must load bars only through IS_RANGE[1].
+    from unittest.mock import MagicMock
+    calls = []
+
+    def fake_bw(first, last):
+        calls.append((first, last))
+        return [], {}
+
+    monkeypatch.setattr(r, "build_windows", fake_bw)
+    monkeypatch.setattr(r, "ProcessPoolExecutor", lambda **k: MagicMock())
+    monkeypatch.setattr(r, "run_cells", lambda pool, w, cells, slip, name: {k: {"r": [0.0], "tag": {}} for k in cells})
+    r.main(["--is-only", "--out", str(tmp_path)])
+    assert calls == [(r.IS_RANGE[0], r.IS_RANGE[1])], calls
