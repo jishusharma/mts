@@ -913,6 +913,7 @@
     },
     "MyTradingSys/backtest/layers/trendlines/trendline_core.py": {
       "disp": "WIRE",
+      "ref": "s2-uptime-heartbeat-jis-nb",
       "ref": "trendline-count-only",
       "why": "Causal trend-line detector built and tested (test_trendline_core.py, TRENDLINE_CONTRACT.md v1); nothing runs it yet: the count-only card (DEV counts, no backtest) is the first caller."
     },
@@ -986,6 +987,7 @@
     },
     "MyTradingSys/tools/us_open_alert.py": {
       "disp": "WIRE",
+      "ref": "s2-uptime-heartbeat-jis-nb",
       "ref": "ask-p0-37-us-open-alert-line",
       "why": "Pure US-open countdown line (T054 step 5, context only); a later live_aid card imports us_open_line. Not wired here because another session owns live_aid."
     },
@@ -996,6 +998,11 @@
     "MyTradingSys/research/krown_free_2026-10-31/silver_cross_dev.py": {
       "disp": "TOOL",
       "why": "One-off DEV check of Krown's silver cross (daily EMA21/55 up-cross, 30-day hold, fee-net via fees.py) for PRE_REG.md in the same folder; run by hand (python silver_cross_dev.py), covered by test_silver_cross_dev.py, no live imports."
+    },
+    "MyTradingSys/observation/uptime_heartbeat.py": {
+      "disp": "WIRE",
+      "ref": "s2-uptime-heartbeat-jis-nb",
+      "why": "M4 uptime heartbeat (card s2-uptime-heartbeat-jis-nb): `python MyTradingSys/observation/uptime_heartbeat.py beat` is to be wired into the live host's loop by the coordinator after deploy; covered by observation/tests/test_uptime_heartbeat.py. Remove this entry once wired."
     }
   }
 }
