@@ -4,12 +4,12 @@
   "commands": [],
   "created": "2026-11-02T19:38:37Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/gate_gap_2026-11-03.md lists the last 20 revert commits with the CI step that tripped and whether sync.py ship ran it; for every gap a fail-first test in scripts/dev/test_gate_select.py or test_sync.py passes after the fix.",
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Research-script reverts persist although gate_select.py already maps research .py to lookahead step 3la and test_cost_inventory (3xm). Find which CI steps tripped in the recent revert commits and why the smoke or precheck gate in sync.py ship missed them; close those gaps.",
   "id": "research-lint-warn-not-revert",
   "lane": "SONNET",
   "layers": [
@@ -17,20 +17,33 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-03 ACCEPT-AFTER-FIX (reviewer Sonnet agent a2905516c, rescoped by planner planner-a-1103; title count '98 reverts' unverified)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/gate_select.py",
+    "scripts/dev/test_gate_select.py",
+    "scripts/dev/sync.py",
+    "scripts/dev/test_sync.py",
+    "MyTradingSys/research/gate_gap_2026-11-03.md"
+  ],
+  "scope_out": [
+    "no change to lint rules themselves; no live-path change; no CI workflow change"
+  ],
+  "size": "S",
   "sources": [],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "git log origin/fast-track --grep=Revert --since=7.days: for each, find the CI step that failed (sync.py ci or GitHub run log) and classify: step in smoke gate or not",
+    "write the gap table file",
+    "for each gap write the failing test, then fix gate_select.py or sync.py",
+    "run test_gate_select.py and test_sync.py"
+  ],
+  "tests": "scripts/dev/test_gate_select.py or scripts/dev/test_sync.py: one new test per gap, each fails on pre-change code (the existing test_any_backtest_or_research_py_runs_the_lookahead_step does not count)",
   "title": "Research-script lint and cost-inventory trips cost a revert per study (98 reverts in 7 days): catch them in sync.py ship before push; done when a planted trip stops the ship, not trunk",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
