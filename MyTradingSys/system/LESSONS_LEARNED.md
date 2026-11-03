@@ -600,6 +600,9 @@ What happened: sent 4 AIRUN blocks. Blocks 1-2 ran, block 3 was skipped, block 4
 Rule: after a drop notice, re-send the blocks once. If a second drop happens, turn hands-free off.
 Where the rule lives: DSA_SESSION_PROMPT.md section 0.7.
 
+## 2026-11-04 merge conflict resolved blind dropped 856 trunk lines (CI red 4 runs)
+A `git checkout --theirs` on a conflict in files the branch never touched (supervisor.py, test_supervisor.py) kept the stale copy and erased trunk's newer work; the ship gate did not run test_bg_watch.py because the ship "did not reach" it. Rule: a conflict in a file your branch did not change is resolved as `git checkout origin/fast-track -- <file>` (trunk wins), then `git diff origin/fast-track -- <file>` must be empty before the commit. Lead C, d3523ad27, fixed by restoring b7ffc496a bytes.
+
 ## 2026-11-04 concept without context: 10 of 33 backtests tested a bare trigger, and 144 of 219 cards had no review
 What happened: the operator asked what in our FAIL pile was "concept without context" (WaveTrend bought zero-line crosses in a 5-week BTC
 downtrend; Malkan's monthly/weekly 60/40 gate sat in our own extract while rsi_divergence_mtf ran the raw signal). A Sonnet read of
