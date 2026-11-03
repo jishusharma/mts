@@ -30,8 +30,14 @@ While working: run only the test file for your change (`python -m pytest <file> 
 To finish: ship once, with this inline block verbatim (<WORKTREE> and <slug> are yours; the slug is what claim printed):
 ```powershell
 # AIRUN task=inline timeout=1200
-{"steps":[{"name":"ship","cmd":"python scripts/dev/sync.py ship --release <slug>","cwd":"<WORKTREE>","timeout_s":1100,"show":12},{"name":"where","cmd":"python scripts/dev/sync.py where","cwd":"<WORKTREE>","timeout_s":120,"show":4}]}
+{"steps":[
+{"name":"ship","cmd":"python scripts/dev/sync.py ship --release <slug>","cwd":"<WORKTREE>","timeout_s":1100,"show":12},
+{"name":"where","cmd":"python scripts/dev/sync.py where","cwd":"<WORKTREE>","timeout_s":120,"show":4}
+]}
 ```
+In the JSON every backslash in <WORKTREE> is doubled (C:\\Users\\E-ngineers\\IdeaProjects\\mts-dsa-...).
+The body is JSON only, no Set-Location line (the Set-Location rule of 9a is for plain blocks).
+bad_task_spec means the plan arrived cut or malformed: it ran nothing; fix it and resend it once.
 `sync.py ship` runs its own smoke gate, chosen from your changed files, and CI runs the rest.
 NEVER run run_all_tests.py, task=mts-gate or task=mts-ship yourself.
 If the ship's gate fails: read the failing step, fix it, run that one test, ship again. Do not re-run the gate to see it again.
@@ -116,8 +122,9 @@ The report is one message: per step PASS/FAIL/SKIP with seconds and tail lines, 
 Use task mode for anything slow or multi-step (the ship, backtest chunks); plain blocks for reads and edits.
 A step passes on its own exit code. End every step `cmd` on the program call, or with `; exit $LASTEXITCODE`. Never add
 `Write-Output "EXIT_CODE=$LASTEXITCODE"` as the last line: it hides the real exit (from 0.7.4 a line
-`EXIT_CODE=<non-zero>` also fails the step). Never run the gate yourself: the ship runs it (FIRST, D). The ship's gate counts only
-with its summary line `ALL TESTS PASSED` or `FAILED: N step(s)`; no summary = FAIL, report the log path, do not re-run blind.
+`EXIT_CODE=<non-zero>` also fails the step). Never run the gate yourself: the ship runs it (FIRST, D). The ship's result is
+`TASK RESULT: PASS|FAIL` plus the ship step's own output; a docs-only ship runs no gate, and that is normal. A FAIL: report the
+failing step, do not re-run blind.
 
 0.1b Timeouts. Plain block cap 300 s; task cap 1800 s. A timed-out step may have half-run: check state (git status,
 `desk.py list --all`, `sync.py where`), then do only the missing step. Never resend a block unchanged. A job over
@@ -275,9 +282,11 @@ A claim older than 24 h is stale: release it and say so in the Result line. Neve
    dsa.py exit codes: 0 ok, 1 could not, 2 refused and changed nothing. Long logic: a .py file run once, then deleted.
 6. Test: run only the test file for your change (`python -m pytest <file> -q`) -> PASS. No gate here; the ship runs it.
 7. `python scripts/dev/dsa.py commit "<subject>" --result "<what works now / the number>" --files <exact paths>`.
-8. The inline ship block of FIRST, D (`--release <slug>` takes the claim out in the same push) -> TASK RESULT: PASS.
-9. Close the source: `desk.py done <id> --result "<numbers + file>"` (it ships; its own block, timeout=300), or
-   `tasks.py done <id> --result "..."` then the ship (FIRST, D), or rewrite the Qn line `Qn. DONE ...` in the handoff.
+8. Close the source BEFORE the ship, so it goes in the same push: `tasks.py done <id> --result "..."`, or rewrite the Qn line
+   `Qn. DONE ...`. A desk row: `desk.py done <id> --result "<numbers + file>"` ships itself (own block, timeout=300); then no
+   second ship unless other work is left.
+9. The inline ship block of FIRST, D (`--release <slug>` takes the claim out in the same push) -> TASK RESULT: PASS.
+   A second ship within 10 minutes is allowed (sync.py prints a note only).
 10. One line: TASK / DONE / VERIFIED / MISSED. Next task, no pause.
 
 ### 5b. PROVE
@@ -399,7 +408,7 @@ MyTradingSys/conditions/; 4. this prompt, for behavior; 5. PROJECT_VISION.md.
 ## 9a. AIBRIDGE BLOCK FORMAT
 
 - Line 1 `# AIRUN cwd=<dir> timeout=<s>` (or `# AIRUN task=<name> key=value ...`); line 2 `Set-Location '<the cwd>'` so a
-  block run by hand behaves the same.
+  block run by hand behaves the same. (Plain blocks only: a task=inline body is JSON only, FIRST D.)
 - No other source line may begin with a hash (build one from [char]35). Keep lines under about 200 characters.
 - Here-strings: single-quoted @' ... '@, the closing '@ at column 0, no line inside starting with a hash.
 - Up to 6 blocks per reply, in dependency order; read the batch receipts before the next reply.

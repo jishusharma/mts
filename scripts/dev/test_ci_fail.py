@@ -59,3 +59,15 @@ def test_redirect_target_gets_no_authorization(monkeypatch):
     assert C.fetch_log("https://api.example/logs") == "FAILED t1"
     assert "Bearer SECRET" in seen[0][1].values()
     assert not any(k.lower() == "authorization" for k in seen[1][1])
+
+def test_exit_code_is_zero_when_it_could_report_red_ci_and_one_only_without_github(monkeypatch, capsys):
+    # a read that exits non-zero makes the bridge skip the rest of the reply's blocks
+    run = {"id": 1, "head_sha": "a" * 40, "status": "completed", "conclusion": "failure", "created_at": "t", "jobs_url": "u"}
+    monkeypatch.setattr(C.ci_watch, "fetch", lambda: [run])
+    monkeypatch.setattr(C.ci_watch, "get_json", lambda url, timeout=0: {"jobs": [{"id": 2, "name": "shard 1", "conclusion": "failure", "url": "j"}]})
+    monkeypatch.setattr(C, "fetch_log", lambda url: "FAILED t1 - boom")
+    assert C.run() == 0
+    assert "shard 1" in capsys.readouterr().out
+    monkeypatch.setattr(C.ci_watch, "fetch", lambda: (_ for _ in ()).throw(OSError("offline")))
+    assert C.run() == 1
+    assert "could not reach GitHub" in capsys.readouterr().out

@@ -207,7 +207,7 @@ def test_prompt_carries_the_bridge_0_7_4_rules():
         "`; exit $LASTEXITCODE`",
         'Never add `Write-Output "EXIT_CODE=$LASTEXITCODE"` as the last line',
         "Never run the gate yourself: the ship runs it",
-        "`ALL TESTS PASSED` or `FAILED: N step(s)`; no summary = FAIL",
+        "`TASK RESULT: PASS|FAIL` plus the ship step's own output; a docs-only ship runs no gate, and that is normal",
         "PowerShell keeps going after a non-terminating error",
         "`$ErrorActionPreference='Stop'` as line 2",
         "[AIRUN NOTICE] your last reply ended without a final answer",
@@ -219,8 +219,11 @@ def test_prompt_carries_the_bridge_0_7_4_rules():
 
 
 # ------------------------------------------------------------------ how DSA works (operator 2026-11-03): FIRST section, one test flow
-SHIP_BLOCK = ('{"steps":[{"name":"ship","cmd":"python scripts/dev/sync.py ship --release <slug>","cwd":"<WORKTREE>",'
-              '"timeout_s":1100,"show":12},{"name":"where","cmd":"python scripts/dev/sync.py where","cwd":"<WORKTREE>","timeout_s":120,"show":4}]}')
+SHIP_LINES = ['{"steps":[',
+              '{"name":"ship","cmd":"python scripts/dev/sync.py ship --release <slug>","cwd":"<WORKTREE>","timeout_s":1100,"show":12},',
+              '{"name":"where","cmd":"python scripts/dev/sync.py where","cwd":"<WORKTREE>","timeout_s":120,"show":4}',
+              ']}']
+SHIP_BLOCK = "\n".join(SHIP_LINES)
 
 
 def test_prompt_top_holds_sections_a_to_f_and_the_ship_block():
@@ -262,7 +265,7 @@ def test_start_session_paste_header_carries_a_to_f_and_the_ship_block():
     s = text(START)
     for tag in ("- A. Act through blocks", "- B. Up to 6 blocks", "- C. No repeats", "- D. One test flow", "- E. Trunk CI red", "- F. Operator asks mid-task"):
         assert tag in s, tag
-    assert SHIP_BLOCK in s
+    assert all(ln in s for ln in SHIP_LINES[1:3]), "plan lines"
     assert "ci_fail.py" in s and "Prompt source:" in s
 
 
@@ -291,3 +294,30 @@ def test_paste_takes_the_prompt_from_origin_fast_track_not_the_stale_tree(tmp_pa
     r = subprocess.run(["powershell", "-NoProfile", "-Command", ps], capture_output=True, text=True)
     got = json.loads(outp.read_text(encoding="utf-8"))
     assert got["Text"] is None and got["Source"].startswith("WORKING FILE"), got
+
+
+def test_inline_plan_in_prompt_is_multiline_short_valid_json_with_doubled_backslashes():
+    # operator audit 2026-11-03: bad_task_spec (plans cut mid-string, Set-Location in the body, single backslashes in cwd)
+    first = text(PROMPT)
+    block = first[first.index("# AIRUN task=inline timeout=1200\n") + len("# AIRUN task=inline timeout=1200\n"):]
+    plan = block[:block.index("\n```")]
+    lines = plan.split("\n")
+    assert len(lines) >= 4 and all(len(ln) < 200 for ln in lines), [len(ln) for ln in lines]
+    assert not any("Set-Location" in ln for ln in lines)
+    wt = "C:\\Users\\E-ngineers\\IdeaProjects\\mts-dsa-host-1103-1200"          # the path as the model must write it in JSON: doubled
+    doc = json.loads(plan.replace("<WORKTREE>", wt.replace("\\", "\\\\")).replace("<slug>", "my-slug"))
+    assert [st["name"] for st in doc["steps"]] == ["ship", "where"]
+    assert doc["steps"][0]["cwd"] == wt and doc["steps"][0]["cmd"].endswith("--release my-slug")
+    with pytest.raises(ValueError):                                            # single backslashes are invalid JSON
+        json.loads(plan.replace("<WORKTREE>", wt).replace("<slug>", "s"))
+    flat = " ".join(first.split())
+    for needle in ("every backslash in <WORKTREE> is doubled", "The body is JSON only, no Set-Location line",
+                   "bad_task_spec means the plan arrived cut or malformed: it ran nothing"):
+        assert needle in flat, needle
+    assert "a task=inline body is JSON only" in flat                              # 9a says its Set-Location rule is for plain blocks
+
+
+def test_5a_closes_the_source_before_the_one_ship():
+    s = " ".join(text(PROMPT).split())
+    a, b = s.index("8. Close the source BEFORE the ship"), s.index("9. The inline ship block")
+    assert a < b and "A second ship within 10 minutes is allowed" in s and "ships itself" in s

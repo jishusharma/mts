@@ -1,6 +1,7 @@
 """ci_fail.py: why is fast-track CI red? (no gh on JIS-NUC; uses ci_watch's saved GitHub login, never prints it)
 
   python scripts/dev/ci_fail.py        newest run states, then for the newest failed run: failing job names and FAILED test ids
+Exit 0 whenever it could report (red CI included); 1 only when GitHub could not be reached.
 
 The log request goes to GitHub with the login; GitHub answers with a redirect to a storage host, which is fetched WITHOUT
 the Authorization header. parse_failures() is pure (log text in, lines out) and tested offline.
@@ -71,8 +72,16 @@ def main():
         print("  %d failure line(s)" % len(hits))
         for h in hits:
             print("  " + h)
-    return 1
+    return 0     # a read: the bridge skips the rest of a reply after any non-zero exit, so only 'could not reach GitHub' is non-zero
+
+
+def run():
+    try:
+        return main()
+    except Exception as e:      # no network, refused login, rate limit: nothing to report
+        print("ci_fail: could not reach GitHub (%s: %s)" % (type(e).__name__, e))
+        return 1
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(run())

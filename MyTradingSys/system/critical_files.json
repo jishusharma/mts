@@ -13,8 +13,8 @@
   },
   {
    "path": "DSA_SESSION_PROMPT.md",
-   "blob": "c2e32ac52dbc169bafb0b94c3c11ef6a7e0b6dcb",
-   "sha256_8": "d77d616c",
+   "blob": "be1528882b98aa82e0826d0554e3e8628b2b78de",
+   "sha256_8": "58f186b4",
    "eol": "LF",
    "approved_by": "operator order 2026-11-03: fix DSA prompt - AI Bridge use, test flow, task context (dsa-prompt-flow-1103)",
    "approved_commit": "pending"
