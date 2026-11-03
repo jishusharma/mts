@@ -31,9 +31,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "cotrade P5 review minors: parent stop by --of, env guard on kill/net/ensure_stop, hedge ne",
-      "ref": "9368d7725a5c",
-      "utc": "2026-11-01T05:08:07Z"
+      "line": "cotrade P2 review fixes: ladder_pending journal, tick-aligned stop, terminal states, docs",
+      "ref": "770324fd801b",
+      "utc": "2026-11-03T10:50:59Z"
     }
   ],
   "layers": [],
@@ -43,7 +43,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T16:52:35Z",
+  "refreshed": "2026-11-03T22:33:05Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -52,7 +52,7 @@
   "scope_out": [
     "No per-fill take-profit (P3); no live-aid panel (P4); no auto_trader routing change; no mainnet"
   ],
-  "scope_sha": "9368d7725a5c",
+  "scope_sha": "770324fd801b",
   "size": "M",
   "sources": [
     "MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md",

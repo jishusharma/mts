@@ -19,9 +19,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "verify_extract_quotes: resolve file:line cites and repo-doc quotes; restore 73 valid cites",
-      "ref": "9996d74165fe",
-      "utc": "2026-11-02T13:40:46Z"
+      "line": "CBP golden-set harness: 12 planted cases through run_once, mutation test for the quote gat",
+      "ref": "5ea4d7457e19",
+      "utc": "2026-11-03T19:58:36Z"
     }
   ],
   "layers": [],
@@ -34,7 +34,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-03T18:56:06Z",
+  "refreshed": "2026-11-03T22:33:50Z",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D5_CBP_MODULE.md"
   ],
@@ -51,7 +51,7 @@
     "Gate 4 scorecard weights",
     "the ingestion task (card cbp-daily-firing-gap)"
   ],
-  "scope_sha": "9996d74165fe",
+  "scope_sha": "5ea4d7457e19",
   "size": "M",
   "sources": [
     "MyTradingSys/research/v1_plan_2026-10-20/D5_CBP_MODULE.md (Evaluation harness; status table: golden-set PARTIAL, CI blocked by billing)",

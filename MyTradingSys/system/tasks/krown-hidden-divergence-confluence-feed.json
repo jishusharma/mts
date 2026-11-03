@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Reapply \"malkan RSI divergence: hidden kinds + chart flags for 1d/1w\"",
-      "ref": "441faf0090d2",
-      "utc": "2026-10-27T20:23:03Z"
+      "line": "merge origin/fast-track (TRIALS.md: keep both rows)",
+      "ref": "7df5f6ee6598",
+      "utc": "2026-11-03T22:15:46Z"
     },
     {
       "auto": true,
@@ -39,7 +39,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-27T20:53:39Z",
+  "refreshed": "2026-11-03T22:33:36Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -57,7 +57,7 @@
     "thresholds tuned on VALIDATION/HOLDOUT",
     "Malkan params"
   ],
-  "scope_sha": "441faf0090d2",
+  "scope_sha": "7df5f6ee6598",
   "size": "M",
   "sources": [
     "operator 2026-10-28 priority: stop MTS drifting; account for everything extracted; make it findable",
