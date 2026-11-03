@@ -94,14 +94,6 @@
       "disp": "REPRO",
       "why": "Regenerates kurisko/golden_stoch_k5d3.csv, the 20-bar example of FORMULAS s24.2, independently of stoch_core.py; run by hand (python make_golden.py)."
     },
-    "MyTradingSys/backtest/layers/kurisko/quad_rotation.py": {
-      "disp": "TOOL",
-      "why": "Kurisko quad rotation event detector (episode rule, long/short, stochastic or RSI arm) as pure functions of closed bars; covered by test_quad_rotation.py, no live imports; alert-only, enabled false (FORMULAS s24); the DEV event-study card imports it."
-    },
-    "MyTradingSys/backtest/layers/kurisko/stoch_core.py": {
-      "disp": "TOOL",
-      "why": "Stochastic line (raw %K, SMA_d, slowing) for the Kurisko module; covered by test_quad_rotation.py, no live imports (FORMULAS s24)."
-    },
     "MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py": {
       "disp": "TOOL",
       "why": "Geometric Pitchfork channel and median line detection engine for Andrews, Schiff, and Modified Schiff variants; covered by test_pitchfork_detector.py; registered in layer_index.json and layer_map.json."
@@ -178,10 +170,6 @@
       "disp": "PARKED",
       "ref": "RSI_TF_LAYER_DESIGN.md:95",
       "why": "UNSURE: Dirichlet-smoothed outcome table (Qwen 033) with tests; only mentions are MyTradingSys/research/fast_track_2026-09-27/RSI_TF_LAYER_DESIGN.md:95 and layers/FORMULA_AUDIT_SPEC.md:413, no item wires it."
-    },
-    "MyTradingSys/backtest/splits.py": {
-      "disp": "TOOL",
-      "why": "Backtest library: the one DEV/VALIDATION/HOLDOUT definition plus assert_dev_only guard and holdout_reads.csv logger; imported by research scripts (bb_state_study.py), tested by backtest/test_splits.py."
     },
     "MyTradingSys/backtest/stop_buffer_wf.py": {
       "disp": "REPRO",
