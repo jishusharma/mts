@@ -46,3 +46,4 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | Date | Job | Model | Cost USD | Turns | Outcome |
 |---|---|---|---|---|---|
 | 2026-11-04 | rumers-testable-rules-dev-backtest | Sonnet 5.5 | 1.26 | 49 | shipped 561df2f0; 0 of 5 rules pass DEV; cap was 15 |
+| 2026-11-04 | haiku-refresh-stale-ready-cards-1104 (pulled forward from 11-05) | Haiku 5.5 | 0.04 | 24 | shipped 6c92942e; stale 22 -> 4 (the 4 left are tasks-dir churn); card not closed (done_when needs 0); cap was 3 |

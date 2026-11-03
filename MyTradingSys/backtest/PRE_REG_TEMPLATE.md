@@ -76,3 +76,19 @@ Evidence (file:line): TODO
 
 Answer: TODO
 Evidence (file:line): TODO
+
+## 13. Context (d-context-retest-1104; gate step 3pc, `scripts/dev/prereg_context_lint.py`): the trader's rule is tested with its context or not at all.
+
+Copy this block into the PRE_REG as a `## Context` section, one gate per line, or `none, because ...` (deciding "none" is allowed; forgetting is not):
+
+- Regime: <higher-TF trend / regime gate, e.g. daily close vs SMA200 side; weekly and monthly RSI band (SOURCED Malkan)>
+- Phase: <range / break / retest / trend, e.g. tf_break class R (reclaim) only>
+- Session: <time-of-day gate, e.g. US cash session, or none, because the rule is daily>
+- Entry: <signal bar, or retest: first pullback to the signal level within N bars>
+
+The RESULT.md carries one `Regime mix:` line (bull / bear / range share of the window's weeks, or NOT_IN_DATA with the reason).
+Reuse `backtest/research_kit.py` context tags (card context-harness-research-kit) rather than writing a new trend tag; CONTEXT_FILTER_REVIEW_2026-11-04.md lists the existing ones.
+
+Answer: TODO
+Evidence (file:line): TODO
+

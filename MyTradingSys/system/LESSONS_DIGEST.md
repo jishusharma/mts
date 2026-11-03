@@ -30,6 +30,8 @@ Hard rules and gates live only in CLAUDE.md and are not repeated here; prompt-co
 - No layer backtest starts until the 12-item readiness template `MyTradingSys/backtest/PRE_REG_TEMPLATE.md` is answered with file:line evidence (encoding recall AND fire rate on a held-back check set, ledger with minute timestamps, home-market fit and cost per instrument). [10-12 backtests before encoding]
 - Plan edge research as option arms plus branch rules before any run (PROBE_PLAN.md pattern); CME BTC trades 24/7, so gap rules are DAX-only. [operator 2026-10-11]
 - Research briefs follow `methodology/playbook.md` Part I: tier every source T1-T3/REJECT and verify each citation. [operator]
+- A trader's rule is tested WITH its context or not at all: every PRE_REG carries `## Context` (Regime / Phase / Session / Entry, each a gate or `none, because ...`) and every result a `Regime mix:` line; a bare trigger run in every regime proves nothing about the claim (gate step 3pc, `prereg_context_lint.py`). Confluence that cannot vote (no bar-by-bar causal history) is listed as NOT_IN_DATA, never zero-filled. [11-04 concept without context]
+- A coordinator stamp is T0-ONLY, not a review: it unblocks a card, it does not vouch for it. Reviews run as cheap Haiku reads on the API credit, a Sonnet read only where done_when needs code. [11-04 concept without context]
 
 ## 3. Live path (execution/, layers/alerts/, anything a running process imports)
 - Any P/L/risk metric gets a test with deposits/transfers/funding; use trade-type transaction logs. [F]
