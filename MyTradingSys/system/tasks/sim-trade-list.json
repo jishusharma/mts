@@ -22,12 +22,12 @@
   "refs": [
     "MyTradingSys/research/sim_desk/api_review/SIM_VISUALS_REVIEW.md"
   ],
-  "result": "",
+  "result": "already on trunk: commit 7e0fe8c54 (planner-a-1103)",
   "scope_in": [],
   "scope_out": [],
   "size": "",
   "sources": [],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "Sim page: clickable trade list per test (entry/exit time, candles held, exit reason, net %, worst/best % in trade), click jumps the trade chart",
