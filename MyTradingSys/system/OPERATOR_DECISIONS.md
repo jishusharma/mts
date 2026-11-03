@@ -1657,3 +1657,6 @@ Operator: "Yes, move on" to "Should we stop waiting on the other cleanup targets
 
 ## 2026-11-03 - Login B cap raised to 65% | decided 2026-11-03 | Operator (chat)
 Operator: "cap raised to 65% - keep working until C is up after reset - in 70 mins aprox.."
+
+## d-s1-defaults-1104 | decided 2026-11-04 | Operator (chat), relayed by Super Session
+Operator: "Yes, run it" to "accept the five-move week plan as the orientation?", asked right after the three S1 yes/no lines. Reading (relayed, not verbatim per line): plan accepted; q-v1-bar YES, q-v1-layers YES (LC4 validation + RSI deep-buy), q-v1-spec YES (D2 signed as written). S1 exit: D7 Now moves to S2, S3, S4 in parallel. Open follow-up: GO_LIVE_BAR.md revision block (D3 M1-M7) and signal_v1 seam are S2/S1 cards, not done here.
