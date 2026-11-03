@@ -3,6 +3,7 @@
 All design choices labelled OURS are experimental choices, not sourced trader rules.
 
 Closed UTC bars only. Fit 2022-01-01 through 2024-06-30; evaluation 2020-01-01 through 2021-12-31. No bars after 2024-06-30 were loaded. VALIDATION and HOLDOUT were not read.
+The monthly loader skips files outside the half-open window before opening them. It rejects missing/duplicate source minutes and incomplete aggregates; both data windows contain continuous 1m timestamps and complete 1h/4h bars.
 Fees: canonical Deribit all-taker 10 bp round trip before slippage (fees.py). Parameters: BB20/2 population SD, Wilder RSI14, SMA200 regime, Laplace binary smoothing, n<30 fallback to regime parent, EV is mean signed close-to-close return net of fee, weekly block bootstrap 1,000 replicates; all OURS.
 
 Log-loss difference is model minus regime baseline (negative is better). EV difference is model minus baseline net return per eligible bar; 95% weekly block-bootstrap CIs.

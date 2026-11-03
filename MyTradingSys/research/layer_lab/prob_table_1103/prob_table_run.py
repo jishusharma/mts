@@ -73,11 +73,16 @@ def shrunk_probability(cell, parent):
 def load_minutes(folder, start, end):
     if pd.Timestamp(end, tz="UTC") > CUTOFF:
         raise ValueError(f"load end {end} exceeds frozen cutoff {CUTOFF}")
+    start_ts, end_ts = pd.Timestamp(start, tz="UTC"), pd.Timestamp(end, tz="UTC")
+    if end_ts <= start_ts:
+        raise ValueError(f"empty or reversed data window [{start_ts}, {end_ts})")
     frames = []
     for p in sorted(folder.glob("BTCUSDT-1m-*.csv")):
         # Files are monthly; filter names before reading. End is exclusive.
         month = p.name[11:18]
-        if month < start[:7] or month > end[:7]:
+        month_start = pd.Timestamp(f"{month}-01", tz="UTC")
+        month_end = month_start + pd.offsets.MonthBegin(1)
+        if month_end <= start_ts or month_start >= end_ts:
             continue
         df = pd.read_csv(p, header=None, names=COLS)
         if str(df.iloc[0, 0]).lower() == "open_time":
@@ -86,7 +91,7 @@ def load_minutes(folder, start, end):
             df[col] = pd.to_numeric(df[col], errors="coerce")
         df = df.dropna(subset=["open_time", "open", "high", "low", "close"])
         t = pd.to_datetime(df["open_time"], unit="ms", utc=True)
-        keep = (t >= pd.Timestamp(start, tz="UTC")) & (t < pd.Timestamp(end, tz="UTC"))
+        keep = (t >= start_ts) & (t < end_ts)
         frames.append(pd.DataFrame({k: df[k].to_numpy() for k in ("open", "high", "low", "close")}, index=t)[keep.to_numpy()])
     if not frames:
         raise FileNotFoundError(f"No BTCUSDT 1m files in {folder} for {start}..{end}")
@@ -95,7 +100,23 @@ def load_minutes(folder, start, end):
 
 def aggregate(minutes, tf):
     rule = f"{tf}h"
-    bars = minutes.resample(rule, label="left", closed="left", origin="start_day").agg({"open": "first", "high": "max", "low": "min", "close": "last"}).dropna()
+    if minutes.empty:
+        raise ValueError("no source minute bars to aggregate")
+    if not minutes.index.is_unique:
+        raise ValueError("duplicate source minute timestamps")
+    expected_index = pd.date_range(minutes.index[0], minutes.index[-1], freq="min")
+    missing_minutes = expected_index.difference(minutes.index)
+    if len(missing_minutes):
+        raise ValueError(f"missing source minute at {missing_minutes[0]}")
+    bars = minutes.resample(rule, label="left", closed="left", origin="start_day").agg(
+        open=("open", "first"), high=("high", "max"), low=("low", "min"),
+        close=("close", "last"), minute_count=("close", "count")).dropna()
+    expected_minutes = tf * 60
+    incomplete = bars.minute_count != expected_minutes
+    if incomplete.any():
+        first = bars.index[incomplete][0]
+        raise ValueError(f"incomplete {tf}h candle at {first}: {int(bars.loc[first, 'minute_count'])}/{expected_minutes} minute bars")
+    bars = bars.drop(columns="minute_count")
     # Timestamp is bar open; shift to the known close for all downstream cuts.
     bars.index = bars.index + pd.Timedelta(hours=tf)
     return bars
