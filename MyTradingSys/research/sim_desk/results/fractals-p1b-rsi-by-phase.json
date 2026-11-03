@@ -6678,5 +6678,15 @@
   "MyTradingSys/research/fractals_2026-10-31/p1b_rsi_feenet/events_feenet.csv",
   "MyTradingSys/research/fractals_2026-10-31/p1b_rsi_feenet/split_cells.csv"
  ],
- "commit": "f715dd01c"
+ "commit": "f715dd01c",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Negative: every phase cell loses after fees, no PASS",
+  "n": null,
+  "net_r": -0.229,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Negative: every phase cell loses after fees, no PASS · n=? · net R after fees -0.229 · try n/a · fee break-even n/a"
+ }
 }

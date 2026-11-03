@@ -34,5 +34,15 @@
  "source_files": [
   "MyTradingSys/research/sim_desk/results/dir-jala_layer_2026-10-31.json"
  ],
- "commit": "1d4d59085"
+ "commit": "1d4d59085",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Videos read: 50; Captioned: 12; UNVERIFIED: 38; Videos with 'fractal': 11.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Videos read: 50; Captioned: 12; UNVERIFIED: 38; Videos with 'fractal': 11. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

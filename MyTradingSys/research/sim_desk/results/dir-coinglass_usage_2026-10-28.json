@@ -33,5 +33,15 @@
  "source_files": [
   "MyTradingSys/research/coinglass_usage_2026-10-28/C_order_flow.md"
  ],
- "commit": "6a58df366"
+ "commit": "6a58df366",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Reader: Sonnet agent for Eagle_Eyes. Plan: PLAN.md. All links opened 2026-10-28. Tiers: T1 paper, T2 exchange/vendor docs, T3 practitioner. A T3 usage idea is a hypothesis to try, not evidence. No backtests, no numbers from memory. \"Seen v…",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Reader: Sonnet agent for Eagle_Eyes. Plan: PLAN.md. All links opened 2026-10-28. Tiers: T1 paper, T2 exchange/vendor docs, T3 practitioner. A T3 usage idea is a hypothesis to try, not evidence. No backtests, no numbers from memory. \"Seen v… · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

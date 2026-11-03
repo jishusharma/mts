@@ -42,5 +42,15 @@
  "source_files": [
   "MyTradingSys/research/layer_relations_2026-10/results_tables.md"
  ],
- "commit": "62606b5c5"
+ "commit": "62606b5c5",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "- kline 5m bars loaded: 262656 (expected 262656); metrics 5m rows loaded: 262528.",
+  "n": 262655,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: - kline 5m bars loaded: 262656 (expected 262656); metrics 5m rows loaded: 262528. · n=262655 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

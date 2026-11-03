@@ -53,5 +53,15 @@
  "source_files": [
   "MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/RESULT.md"
  ],
- "commit": "8bc4b9fae"
+ "commit": "8bc4b9fae",
+ "banner": {
+  "state": "TOO_FEW",
+  "tone": "warn",
+  "verdict": "INCONCLUSIVE",
+  "n": 8,
+  "net_r": 0.15,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "TOO FEW TRADES · verdict as written: INCONCLUSIVE · n=8 · net R after fees +0.150 · try n/a · fee break-even n/a"
+ }
 }

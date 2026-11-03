@@ -156,5 +156,15 @@
   "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T07_stale_verdicts.md",
   "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T07/out/rerun_diff.csv"
  ],
- "commit": "eb293abb5"
+ "commit": "eb293abb5",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "No verdict flips; mfe_exit does not reproduce, published_strats could not be rerun",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: No verdict flips; mfe_exit does not reproduce, published_strats could not be rerun · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

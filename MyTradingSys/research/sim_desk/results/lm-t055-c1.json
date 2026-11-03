@@ -45,5 +45,15 @@
  "source_files": [
   "MyTradingSys/research/fast_track_2026-09-27/T055_BT_RERUN_FULLFUNDING_2026-10-07.md"
  ],
- "commit": "36a114939"
+ "commit": "36a114939",
+ "banner": {
+  "state": "FAIL",
+  "tone": "bad",
+  "verdict": "FAIL (rerun OOS net -0.0453%, Sharpe -0.035); closed",
+  "n": 519,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "FAIL · verdict as written: FAIL (rerun OOS net -0.0453%, Sharpe -0.035); closed · n=519 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

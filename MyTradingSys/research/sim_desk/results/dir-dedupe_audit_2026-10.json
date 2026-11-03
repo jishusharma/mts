@@ -32,5 +32,15 @@
  "source_files": [
   "MyTradingSys/research/dedupe_audit_2026-10/INFRA.md"
  ],
- "commit": "2f786caab"
+ "commit": "2f786caab",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Card infra-architecture-duplication-audit, decision d-dedupe-lean-no-contradiction (OPERATOR_DECISIONS.md:1338). Audit only: nothing deleted or changed, no process, HALT file or scheduled task touched; only this file is written. Base: trun…",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Card infra-architecture-duplication-audit, decision d-dedupe-lean-no-contradiction (OPERATOR_DECISIONS.md:1338). Audit only: nothing deleted or changed, no process, HALT file or scheduled task touched; only this file is written. Base: trun… · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

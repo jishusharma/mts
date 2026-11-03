@@ -31,5 +31,15 @@
  "source_files": [
   "MyTradingSys/research/screenshots/2026-10-07_BTCUSDT_29ff2b488f13.md"
  ],
- "commit": "866b48587"
+ "commit": "866b48587",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Shots: 29ff2b488f13, be1fd3316ddc, deb4ad19b10f, d65a9de33995, 4d3ce438bf5d, e18cdb7e2c57, fa30957f9921",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Shots: 29ff2b488f13, be1fd3316ddc, deb4ad19b10f, d65a9de33995, 4d3ce438bf5d, e18cdb7e2c57, fa30957f9921 · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

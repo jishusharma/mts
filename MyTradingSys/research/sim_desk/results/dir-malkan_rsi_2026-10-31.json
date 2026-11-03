@@ -38,5 +38,15 @@
  "source_files": [
   "MyTradingSys/research/malkan_rsi_2026-10-31/MALKAN_RULES_2026-10-31.md"
  ],
- "commit": "4c42466fd"
+ "commit": "4c42466fd",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Videos read: 12 (6 English transcripts with extracted rules, 6 Hindi transcripts with NOT_IN_DATA per non-English transcript policy).",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Videos read: 12 (6 English transcripts with extracted rules, 6 Hindi transcripts with NOT_IN_DATA per non-English transcript policy). · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

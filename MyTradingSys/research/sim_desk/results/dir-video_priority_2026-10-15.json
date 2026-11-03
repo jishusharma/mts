@@ -64,5 +64,15 @@
  "source_files": [
   "MyTradingSys/research/video_priority_2026-10-15/METHOD.md"
  ],
- "commit": "1555498da"
+ "commit": "1555498da",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Why: YouTube rate-limits anonymous caption fetches (HTTP 429), so every fetch has a cost. Download only the videos most likely to",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Why: YouTube rate-limits anonymous caption fetches (HTTP 429), so every fetch has a cost. Download only the videos most likely to · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

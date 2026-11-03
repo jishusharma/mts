@@ -44,5 +44,15 @@
  "source_files": [
   "MyTradingSys/research/pre_us_squeeze_2026-10-29/RESULT.md"
  ],
- "commit": "74376bf7b"
+ "commit": "74376bf7b",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Ask (operator, 2026-10-30, shot 0241bf1e7e8d): \"just before the US session, price is contracting ... what happens when the price",
+  "n": 79,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: Ask (operator, 2026-10-30, shot 0241bf1e7e8d): \"just before the US session, price is contracting ... what happens when the price · n=79 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

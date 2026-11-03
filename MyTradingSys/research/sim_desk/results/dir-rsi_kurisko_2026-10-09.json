@@ -48,5 +48,15 @@
  "source_files": [
   "MyTradingSys/research/rsi_kurisko_2026-10-09/RSI_VIDEO_SEARCH.md"
  ],
- "commit": "225f45701"
+ "commit": "225f45701",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Card: kurisko-rsi-video-search (Lane: SONNET, Prio: 2)",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Card: kurisko-rsi-video-search (Lane: SONNET, Prio: 2) · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

@@ -32,5 +32,15 @@
  "source_files": [
   "MyTradingSys/research/bg_process_audit_2026-10-28/TASKS.md"
  ],
- "commit": "e1ac77891"
+ "commit": "e1ac77891",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Source: Claude Code transcripts (~/.claude/projects, 7 days), mined by the method in AUDIT.md. Start = local time. Session = transcript id prefix (agent- = a subagent). Cap = bg_watch.py cap for the kind.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Source: Claude Code transcripts (~/.claude/projects, 7 days), mined by the method in AUDIT.md. Start = local time. Session = transcript id prefix (agent- = a subagent). Cap = bg_watch.py cap for the kind. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

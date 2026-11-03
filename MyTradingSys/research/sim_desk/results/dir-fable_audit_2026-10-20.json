@@ -55,5 +55,15 @@
  "source_files": [
   "MyTradingSys/research/fable_audit_2026-10-20/GRANDFATHER_DECISION.md"
  ],
- "commit": "363ef65e5"
+ "commit": "363ef65e5",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "S.csv has 2 PASS rows, both carry_basis (L26-27), which is not a live source), while every layer-sourced testnet trade exits on a NO-SOURCE bracket of 1 % stop / 2 % target / 8-bar time exit (QUOTED auto_trader.py:75-78) or Tom's 120-minut…",
+  "n": 181,
+  "net_r": -0.1038,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: S.csv has 2 PASS rows, both carry_basis (L26-27), which is not a live source), while every layer-sourced testnet trade exits on a NO-SOURCE bracket of 1 % stop / 2 % target / 8-bar time exit (QUOTED auto_trader.py:75-78) or Tom's 120-minut… · n=181 · net R after fees -0.104 · try n/a · fee break-even n/a"
+ }
 }

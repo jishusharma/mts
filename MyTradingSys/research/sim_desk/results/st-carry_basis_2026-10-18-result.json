@@ -65,5 +65,15 @@
  "source_files": [
   "MyTradingSys/research/carry_basis_2026-10-18/RESULT.md"
  ],
- "commit": "65bf6cf82"
+ "commit": "65bf6cf82",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "(reviewer-corrected): PASS for unlevered always-on carry (net ann 15.35 / 12.06 / 6.26 % after basis and fees); switched carry PASS on the pre-registered gate but strictly worse than always-on; 3x margin carry FAIL (liquidated 2021-05-19).",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: (reviewer-corrected): PASS for unlevered always-on carry (net ann 15.35 / 12.06 / 6.26 % after basis and fees); switched carry PASS on the pre-registered gate but strictly worse than always-on; 3x margin carry FAIL (liquidated 2021-05-19). · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

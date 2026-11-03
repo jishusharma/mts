@@ -36,5 +36,15 @@
  "source_files": [
   "MyTradingSys/research/cloud_ai_health_2026-10-26/REPORT.md"
  ],
- "commit": "3ed1c8b9a"
+ "commit": "3ed1c8b9a",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": ", window usage/reset, weekly usage/reset, context pressure, classified error, retry_at and breaker owner. Unknown values stay null. Keep request IDs, raw errors, account identifiers and detailed usage local; public report contains only scr…",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: , window usage/reset, weekly usage/reset, context pressure, classified error, retry_at and breaker owner. Unknown values stay null. Keep request IDs, raw errors, account identifiers and detailed usage local; public report contains only scr… · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

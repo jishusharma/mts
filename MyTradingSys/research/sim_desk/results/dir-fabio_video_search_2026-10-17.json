@@ -43,5 +43,15 @@
  "source_files": [
   "MyTradingSys/research/fabio_video_search_2026-10-17/README.md"
  ],
- "commit": "252f4858f"
+ "commit": "252f4858f",
+ "banner": {
+  "state": "TOO_FEW",
+  "tone": "warn",
+  "verdict": "Method: search.py = six yt_dlp --flat-playlist ytsearch15: queries, metadata only (id, title, channel, duration). No downloads, 0 caption fetches",
+  "n": 2,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "TOO FEW TRADES · verdict as written: Method: search.py = six yt_dlp --flat-playlist ytsearch15: queries, metadata only (id, title, channel, duration). No downloads, 0 caption fetches · n=2 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

@@ -35,5 +35,15 @@
  "source_files": [
   "MyTradingSys/research/multi_tf_bias_2026-10-18/REPORT.md"
  ],
- "commit": "9c43ee797"
+ "commit": "9c43ee797",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Result: NO EDGE SHOWN. The written stack (RULE.md) gives a bias on 1,348 of 5,469 four-hourly decisions (524 days); 8h-forward net of 12 bps it is",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Result: NO EDGE SHOWN. The written stack (RULE.md) gives a bias on 1,348 of 5,469 four-hourly decisions (524 days); 8h-forward net of 12 bps it is · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

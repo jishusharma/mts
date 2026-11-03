@@ -44,5 +44,15 @@
  "source_files": [
   "MyTradingSys/research/malkan_universe_2026-10/UNIVERSE_POWER.md"
  ],
- "commit": "171580236"
+ "commit": "171580236",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Executive Summary & Core Verdict",
+  "n": null,
+  "net_r": 0.1,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Executive Summary & Core Verdict · n=? · net R after fees +0.100 · try n/a · fee break-even n/a"
+ }
 }

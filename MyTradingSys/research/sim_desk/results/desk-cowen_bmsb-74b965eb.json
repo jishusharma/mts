@@ -85,5 +85,15 @@
  "source_files": [
   "MyTradingSys/research/sim_desk/desk.py"
  ],
- "commit": "local desk run"
+ "commit": "local desk run",
+ "banner": {
+  "state": "TOO_FEW",
+  "tone": "warn",
+  "verdict": "NOT ENOUGH DATA",
+  "n": 7,
+  "net_r": -0.234,
+  "try_no": 5,
+  "breakeven_x": null,
+  "text": "TOO FEW TRADES · verdict as written: NOT ENOUGH DATA · n=7 · net R after fees -0.234 · try #5 · fee break-even n/a"
+ }
 }

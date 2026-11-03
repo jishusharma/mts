@@ -148,5 +148,9 @@ class ApiBatchTest(unittest.TestCase):
         self.assertEqual(sum(sleeps), 180)
 
 
+    def test_thinking_disabled_by_default(self):
+        reqs = api_batch.build_requests([{'id': 'a', 'prompt': 'hi'}], 'claude-haiku-5-5', 400)
+        self.assertEqual(reqs[0]['params'].get('thinking'), {'type': 'disabled'})
+
 if __name__ == '__main__':
     unittest.main()

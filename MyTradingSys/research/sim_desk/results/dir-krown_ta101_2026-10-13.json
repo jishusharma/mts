@@ -75,5 +75,15 @@
  "source_files": [
   "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_SETUP_CATALOG.md"
  ],
- "commit": "285c4f078"
+ "commit": "285c4f078",
+ "banner": {
+  "state": "TOO_FEW",
+  "tone": "warn",
+  "verdict": "(section 4).",
+  "n": 0,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "TOO FEW TRADES · verdict as written: (section 4). · n=0 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

@@ -56,5 +56,15 @@
  "source_files": [
   "MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md"
  ],
- "commit": "3681623be"
+ "commit": "3681623be",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": ", US-open board levels, OI tile sentence), shots (shot ids), result (order ids, fills, P&L) <main checkout>/runtime_data/cotrade/<YYYY-MM-DD>.jsonl, append-only, gitignored (.gitignore:235 runtime_data/) NO (has order ids, sizes, P&L)",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: , US-open board levels, OI tile sentence), shots (shot ids), result (order ids, fills, P&L) <main checkout>/runtime_data/cotrade/<YYYY-MM-DD>.jsonl, append-only, gitignored (.gitignore:235 runtime_data/) NO (has order ids, sizes, P&L) · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

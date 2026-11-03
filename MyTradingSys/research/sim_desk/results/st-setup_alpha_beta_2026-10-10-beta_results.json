@@ -32,5 +32,15 @@
  "source_files": [
   "MyTradingSys/research/setup_alpha_beta_2026-10-10/BETA_RESULTS.md"
  ],
- "commit": "19a4d1725"
+ "commit": "19a4d1725",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Liquidity sweep + CVD absorption event study, Binance BTCUSDT perp, 15m levels / 5m entry.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Liquidity sweep + CVD absorption event study, Binance BTCUSDT perp, 15m levels / 5m entry. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

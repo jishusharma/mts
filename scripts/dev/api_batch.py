@@ -66,7 +66,8 @@ def worst_case_usd(jobs: list[dict], model: str, max_tokens: int) -> float:
 def build_requests(jobs: list[dict], model: str, max_tokens: int) -> list[dict]:
     reqs = []
     for j in jobs:
-        params = {'model': model, 'max_tokens': max_tokens, 'messages': [{'role': 'user', 'content': j['prompt']}]}
+        params = {'model': model, 'max_tokens': max_tokens, 'messages': [{'role': 'user', 'content': j['prompt']}],
+                  'thinking': {'type': 'disabled'}}   # Claude 5.5 thinks by default and can spend the whole max_tokens on it (337-job Haiku run 2026-11-03: 225 empty replies)
         if j.get('system'):
             params['system'] = j['system']
         reqs.append({'custom_id': j['id'], 'params': params})

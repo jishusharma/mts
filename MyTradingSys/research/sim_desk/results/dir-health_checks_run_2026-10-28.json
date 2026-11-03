@@ -64,5 +64,15 @@
  "source_files": [
   "MyTradingSys/research/health_checks_run_2026-10-28/REPORT.md"
  ],
- "commit": "4a6864ec2"
+ "commit": "4a6864ec2",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Task: all-health-checks-run-and-triage",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Task: all-health-checks-run-and-triage · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

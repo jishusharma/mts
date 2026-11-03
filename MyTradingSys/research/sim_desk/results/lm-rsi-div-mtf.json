@@ -35,5 +35,15 @@
  "source_files": [
   "MyTradingSys/research/rsi_divergence_mtf_2026-10-09/RESULT.md"
  ],
- "commit": "0aa8f5644"
+ "commit": "0aa8f5644",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "no edge on any timeframe that reached 300 events; 31 of 32 net negative; 6h and 2d leads have n 6-54",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: no edge on any timeframe that reached 300 events; 31 of 32 net negative; 6h and 2d leads have n 6-54 · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

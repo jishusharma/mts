@@ -32,5 +32,15 @@
  "source_files": [
   "MyTradingSys/research/overhead_cut_2026-10-28/CUTS.md"
  ],
- "commit": "9c246ccf9"
+ "commit": "9c246ccf9",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Card opus-o3-overhead-cut. Measured from 7 days of origin/fast-track with",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Card opus-o3-overhead-cut. Measured from 7 days of origin/fast-track with · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

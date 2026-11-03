@@ -55,5 +55,15 @@
  "source_files": [
   "MyTradingSys/research/context_factors_2026-10-16/RESULT.md"
  ],
- "commit": "84caa2072"
+ "commit": "84caa2072",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "above is per PRE_REG.md s.4, applied verbatim. Run 2026-10-16T05:11Z. PRE_REG.md sha256 bd56a752d327a5cd6d2074d2f8e7364e0a015041f012532d9a381ae8ee9f1c34 (frozen at commit 3e961c2f, unchanged); context_asof.py sha256 efa3513f738337ebd48d098…",
+  "n": 5598,
+  "net_r": -0.0233,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: above is per PRE_REG.md s.4, applied verbatim. Run 2026-10-16T05:11Z. PRE_REG.md sha256 bd56a752d327a5cd6d2074d2f8e7364e0a015041f012532d9a381ae8ee9f1c34 (frozen at commit 3e961c2f, unchanged); context_asof.py sha256 efa3513f738337ebd48d098… · n=5598 · net R after fees -0.023 · try n/a · fee break-even n/a"
+ }
 }
