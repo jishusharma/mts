@@ -1,6 +1,6 @@
 """Operator 11-03 14:28Z (ETHBTC 4h TradingView shot a1595851438f): "what WaveTrend and Krown analysis says about ETHBTC".
 Picture: WT 10/21/4 at the +53/60 band with a cross-down dot, RSI14 above 60 (Krown KR-S03: >60 = uptrend emerging).
-Count on synthetic ETHBTC 4h = ETHUSDT/BTCUSDT 1m closes folded to 4h, 2022-01..2025-06. Events: (a) WT cross down with wt1 > 53,
+Count on synthetic ETHBTC 4h = ETHUSDT/BTCUSDT 1m closes folded to 4h, 2022-01..2024-06 (the F:/MTS/data/tom_raw ETHUSDT archive ends 2024-06, so the 2025-06 END below clips to it; the quoted n=37 / -2.19 % / n=43 / +0.71 % are for that window; on 2022-01..2025-06 the counts differ, see gemini_audits_2026-11-03/eagle_1103_blind_read.md). Events: (a) WT cross down with wt1 > 53,
 (b) same with RSI > 60 at the cross (today), (c) RSI closes over 60 after >= 30 bars under it (Krown regime flip). Outcomes: close 12 / 30 / 60 bars later
 (2 / 5 / 10 days), max up / max down within 30 bars. Descriptive, no fees."""
 import glob, csv, datetime as dt, statistics as st

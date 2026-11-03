@@ -14,16 +14,22 @@ for f in sorted(glob.glob(os.path.join(root, '*.json'))):
         d = json.load(open(f, encoding='utf-8'))
     except Exception as e:
         rows.append({"id": sid, "prompt": "File unreadable (%s). Output: Claim: unreadable | Method: - | Finding: - | Verdict: EMPTY | Keep: NO, unreadable" % e, "system": SYSTEM}); continue
-    params = d.get('params') or d.get('settings') or d.get('config') or {}
+    # result files have no params key: identical study = identical what[].value_plain (Study, Settings, Condition)
+    params = [w.get('value_plain') for w in d.get('what') or [] if isinstance(w, dict)]
     key = hashlib.md5((sid.rsplit('-', 1)[0] + json.dumps(params, sort_keys=True)).encode()).hexdigest()[:8]
-    dup = seen.get(key)
+    dup = seen.get(key) if params else None  # empty what = nothing to compare
     seen.setdefault(key, sid)
     slim = {k: d[k] for k in d if k not in ('trades', 'days', 'rows', 'candles', 'equity', 'series')}
-    ntr = len(d.get('trades') or [])
+    # no top-level trades key: the count is banner.n (else the 'filled trades' kpi), else not stated
+    ntr = (d.get('banner') or {}).get('n')
+    if ntr is None:
+        for k in d.get('kpis') or []:
+            if k.get('label') == 'filled trades':
+                ntr = k.get('value')
     slim['_trade_rows_in_file'] = ntr
     txt = json.dumps(slim, ensure_ascii=False)[:7000]
-    p = "Result id: %s. Trade rows in file: %d.%s\nJSON:\n%s" % (
-        sid, ntr, (" Same study and identical params as %s: say 'duplicate of %s' in Keep." % (dup, dup)) if dup else "", txt)
+    p = "Result id: %s. Trades (banner.n): %s.%s\nJSON:\n%s" % (
+        sid, 'not stated' if ntr is None else ntr, (" Same study and identical params as %s: say 'duplicate of %s' in Keep." % (dup, dup)) if dup else "", txt)
     rows.append({"id": sid, "prompt": p, "system": SYSTEM})
 with open(out, 'w', encoding='utf-8', newline='\n') as fh:
     for r in rows:
