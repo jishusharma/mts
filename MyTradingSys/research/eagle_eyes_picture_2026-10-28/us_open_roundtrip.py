@@ -1,5 +1,5 @@
 """Operator 11-03 14:24Z: "what u expect at US open - apply MTS". Setup today: 13:30Z spike up (+0.7 %), full round trip down
-below the 13:30 open by 14:00Z, retest of the broken level from below at 14:25Z. Count: weekdays 2022-01..2025-06, 1m klines.
+below the 13:30 open by 14:00Z, retest of the broken level from below at 14:25Z. Count: weekdays 2022-01..2025-06, 1m klines (BTCUSDT archive covers the whole window; n=125 verified on it; the 11-03 blind read found: outcome loop starts 14:30Z so 14:25-14:29Z are skipped, and fixed UTC minutes straddle US DST, so summer days measure 09:30 NY, not the pre-open).
 Setup = high(13:30-14:25) >= open(13:30)*1.004 AND close(14:24) < open(13:30). Outcomes from close(14:24) to 15:30Z/16:30Z:
 which first (14:25 low broken vs 13:30-14:25 high retaken), returns, first-hour range vs all days. Descriptive only."""
 import glob, csv, datetime as dt, statistics as st
