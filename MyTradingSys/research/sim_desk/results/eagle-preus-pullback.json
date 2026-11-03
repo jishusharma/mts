@@ -99,5 +99,15 @@
  "source_files": [
   "MyTradingSys/research/eagle_eyes_picture_2026-10-28/preus_pullback.py"
  ],
- "commit": "8f8e92f10"
+ "commit": "8f8e92f10",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Strong giveback (>= 0.8): overnight low taken first 85 %, high retaken first 6 % (n 84). All days: 41 % / 42 %.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Strong giveback (>= 0.8): overnight low taken first 85 %, high retaken first 6 % (n 84). All days: 41 % / 42 %. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

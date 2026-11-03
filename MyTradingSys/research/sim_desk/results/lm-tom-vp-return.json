@@ -47,5 +47,15 @@
  "source_files": [
   "MyTradingSys/research/tom_transfer_2026-10-11/vp_return/RESULT.md"
  ],
- "commit": "58b4f8f6a"
+ "commit": "58b4f8f6a",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "return share 57.2% (CI 53.9..60.7) vs his 70%: not reproduced; +10.4 pp over pooled placebo (CI 6.4..14.4) but placebo within 1 ATR equals real (-0.8 pp); accepted away N=3/6/12 lowers it to 51/48/46%",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: return share 57.2% (CI 53.9..60.7) vs his 70%: not reproduced; +10.4 pp over pooled placebo (CI 6.4..14.4) but placebo within 1 ATR equals real (-0.8 pp); accepted away N=3/6/12 lowers it to 51/48/46% · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

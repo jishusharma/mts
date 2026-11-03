@@ -25749,5 +25749,15 @@
   "MyTradingSys/research/fractals_2026-10-31/f1/output.md",
   "MyTradingSys/research/fractals_2026-10-31/f1/trades_pct.csv"
  ],
- "commit": "6c21cfd62"
+ "commit": "6c21cfd62",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "FAIL: confluence levels lose more than random levels, fee-net",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: FAIL: confluence levels lose more than random levels, fee-net · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

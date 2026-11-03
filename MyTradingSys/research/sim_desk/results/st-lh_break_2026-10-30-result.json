@@ -75,5 +75,15 @@
  "source_files": [
   "MyTradingSys/research/lh_break_2026-10-30/RESULT.md"
  ],
- "commit": "f1aafb501"
+ "commit": "f1aafb501",
+ "banner": {
+  "state": "TOO_FEW",
+  "tone": "warn",
+  "verdict": "Descriptive counts only: no fees, no edge claim. Definitions in the header of study.py (all OURS). Data: Binance BTCUSDT perp 1m rolled to 4h, DEV 2022-01 to 2025-12.",
+  "n": 22,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "TOO FEW TRADES · verdict as written: Descriptive counts only: no fees, no edge claim. Definitions in the header of study.py (all OURS). Data: Binance BTCUSDT perp 1m rolled to 4h, DEV 2022-01 to 2025-12. · n=22 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

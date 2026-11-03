@@ -171,5 +171,15 @@
  "source_files": [
   "MyTradingSys/research/sim_desk/desk.py"
  ],
- "commit": "local desk run"
+ "commit": "local desk run",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "NOT ENOUGH DATA",
+  "n": 50,
+  "net_r": -0.074,
+  "try_no": 2,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: NOT ENOUGH DATA · n=50 · net R after fees -0.074 · try #2 · fee break-even n/a"
+ }
 }

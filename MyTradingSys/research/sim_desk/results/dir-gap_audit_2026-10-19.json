@@ -36,5 +36,15 @@
  "source_files": [
   "MyTradingSys/research/gap_audit_2026-10-19/REPORT.md"
  ],
- "commit": "78e427781"
+ "commit": "78e427781",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "- Producer: Antigravity Builder Session (surface=GEM, host=JIS-NUC), branch jis-nuc/gemini-mts-gap-audit",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: - Producer: Antigravity Builder Session (surface=GEM, host=JIS-NUC), branch jis-nuc/gemini-mts-gap-audit · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

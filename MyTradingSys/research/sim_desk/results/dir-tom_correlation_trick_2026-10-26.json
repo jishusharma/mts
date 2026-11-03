@@ -36,5 +36,15 @@
  "source_files": [
   "MyTradingSys/research/sim_desk/results/dir-tom_correlation_trick_2026-10-26.json"
  ],
- "commit": "7fb60b44f"
+ "commit": "7fb60b44f",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "a rule gap on top of A-C4. Proposed Tom-layer change (propose only; layer is G2, rules change only after fee-net OOS):",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: a rule gap on top of A-C4. Proposed Tom-layer change (propose only; layer is G2, rules change only after fee-net OOS): · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

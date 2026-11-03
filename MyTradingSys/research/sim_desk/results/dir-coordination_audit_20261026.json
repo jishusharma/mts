@@ -36,5 +36,15 @@
  "source_files": [
   "MyTradingSys/research/coordination_audit_20261026/REPORT.md"
  ],
- "commit": "3dc47d91d"
+ "commit": "3dc47d91d",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "repair the existing pipeline before adding messaging infrastructure. The earlier recommendation to improve the watcher alone was incomplete. Dispatch reads stale state, misses most claims, and the claim writer can grant the same task twice…",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: repair the existing pipeline before adding messaging infrastructure. The earlier recommendation to improve the watcher alone was incomplete. Dispatch reads stale state, misses most claims, and the claim writer can grant the same task twice… · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

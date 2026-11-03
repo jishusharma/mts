@@ -45,5 +45,15 @@
  "source_files": [
   "MyTradingSys/research/bb_pierce_force_2026-10-29/RESULT.md"
  ],
- "commit": "58d334dce"
+ "commit": "58d334dce",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Ask (operator, 2026-10-30, shot d73c8ab44f72): \"what kind of force makes that happen? Try to measure it ... how far it will go ...",
+  "n": 58,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: Ask (operator, 2026-10-30, shot d73c8ab44f72): \"what kind of force makes that happen? Try to measure it ... how far it will go ... · n=58 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

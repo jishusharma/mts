@@ -44,5 +44,15 @@
  "source_files": [
   "MyTradingSys/research/opr_preopen_tops_2026-10-16/RESULT.md"
  ],
- "commit": "ce92961d9"
+ "commit": "ce92961d9",
+ "banner": {
+  "state": "FAIL",
+  "tone": "bad",
+  "verdict": "arm passes; FAIL only if every arm is FAIL; otherwise INCONCLUSIVE). Verdict arms: H1 INCONCLUSIVE; H2 INCONCLUSIVE.",
+  "n": 308,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "FAIL · verdict as written: arm passes; FAIL only if every arm is FAIL; otherwise INCONCLUSIVE). Verdict arms: H1 INCONCLUSIVE; H2 INCONCLUSIVE. · n=308 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

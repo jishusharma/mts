@@ -31,5 +31,15 @@
  "source_files": [
   "MyTradingSys/research/candle_patterns_2026-10-04/D19_4H_RESULTS.md"
  ],
- "commit": "20317b7e0"
+ "commit": "20317b7e0",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "NO-SOURCE; below buy-and-hold",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: NO-SOURCE; below buy-and-hold · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

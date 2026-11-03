@@ -62,5 +62,15 @@
  "source_files": [
   "MyTradingSys/research/context_loading_wiring_2026-10/REPORT.md"
  ],
- "commit": "6f3495b13"
+ "commit": "6f3495b13",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "in plain words: a Supervisor session starts with about 6.4k tokens (about 25.8 KB) loaded for it before it does anything: CLAUDE.md and MEMORY.md (the app loads both), plus one big text the role-loader hook injects on the first prompt (rol…",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: in plain words: a Supervisor session starts with about 6.4k tokens (about 25.8 KB) loaded for it before it does anything: CLAUDE.md and MEMORY.md (the app loads both), plus one big text the role-loader hook injects on the first prompt (rol… · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

@@ -34,5 +34,15 @@
  "source_files": [
   "MyTradingSys/research/golas_2026-10/C_TUNING_CONSENSUS.md"
  ],
- "commit": "da6f49c25"
+ "commit": "da6f49c25",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Date 2026-10-31. Builder, card ask-p0-04-golas-tuning-consensus. Start point: the archived GOLAS-C note (2026-09-21) had NO URLs, so none of its values could be re-verified at a URL; they are carried below as UNVERIFIED. All rows here come…",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Date 2026-10-31. Builder, card ask-p0-04-golas-tuning-consensus. Start point: the archived GOLAS-C note (2026-09-21) had NO URLs, so none of its values could be re-verified at a URL; they are carried below as UNVERIFIED. All rows here come… · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

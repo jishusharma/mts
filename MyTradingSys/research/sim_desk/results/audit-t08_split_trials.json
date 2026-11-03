@@ -35,5 +35,15 @@
  "source_files": [
   "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T08_split_trials.md"
  ],
- "commit": "e96f3dbd2"
+ "commit": "e96f3dbd2",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "BLOCKED for full historical coverage; FIX-FIRST for the confirmed default-run risk. UNCHECKED C2 result pending cross-vendor review.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: BLOCKED for full historical coverage; FIX-FIRST for the confirmed default-run risk. UNCHECKED C2 result pending cross-vendor review. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

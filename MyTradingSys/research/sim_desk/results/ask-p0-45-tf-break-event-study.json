@@ -241,5 +241,15 @@
   "MyTradingSys/research/tf_break_event_study_2026-10-30/PRE_REG.md",
   "MyTradingSys/research/tf_break_event_study_2026-10-30/study.py"
  ],
- "commit": "this card"
+ "commit": "this card",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "No fee-net edge at any timeframe (15m FAIL, 1h and 4h INCONCLUSIVE, W and 1D too few events)",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: No fee-net edge at any timeframe (15m FAIL, 1h and 4h INCONCLUSIVE, W and 1D too few events) · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

@@ -32,5 +32,15 @@
  "source_files": [
   "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T02_F1_unsafe.md"
  ],
- "commit": "c68e93ced"
+ "commit": "c68e93ced",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "study: opr_weekly_low_round_sweep_2026-10-16; line 180, CVD flip split, descriptive only)",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: study: opr_weekly_low_round_sweep_2026-10-16; line 180, CVD flip split, descriptive only) · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

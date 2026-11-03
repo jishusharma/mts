@@ -48,5 +48,15 @@
  "source_files": [
   "MyTradingSys/research/audit_inventory/AUDIT_INVENTORY.md"
  ],
- "commit": "1863b9e42"
+ "commit": "1863b9e42",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "and findings sections of each file (skimmed, not read in full). \"n/s\" = not stated in what I read. \"Open\" is what the document itself says; I did NOT re-verify whether a later commit fixed it, except where noted.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: and findings sections of each file (skimmed, not read in full). \"n/s\" = not stated in what I read. \"Open\" is what the document itself says; I did NOT re-verify whether a later commit fixed it, except where noted. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

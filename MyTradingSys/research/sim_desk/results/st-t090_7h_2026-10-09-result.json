@@ -33,5 +33,15 @@
  "source_files": [
   "MyTradingSys/research/t090_7h_2026-10-09/RESULT.md"
  ],
- "commit": "84fc808a6"
+ "commit": "84fc808a6",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "NOT robust. Of 18 anchor cells, 3 reach t>2 (7h@03 t3.45, 6h@00 t2.99, 7h@00 t2.11); 17 of 18 are positive (mean ~+0.7%), so the bullish operator signal on 6-8h carries a common positive drift, and the \"best\" cell moves with the anchor. Pi…",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: NOT robust. Of 18 anchor cells, 3 reach t>2 (7h@03 t3.45, 6h@00 t2.99, 7h@00 t2.11); 17 of 18 are positive (mean ~+0.7%), so the bullish operator signal on 6-8h carries a common positive drift, and the \"best\" cell moves with the anchor. Pi… · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

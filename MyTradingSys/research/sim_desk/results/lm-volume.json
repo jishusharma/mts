@@ -75,5 +75,15 @@
  "source_files": [
   "MyTradingSys/research/volume_2026-10-09/VOLUME_RESEARCH_REPORT_2026-10-09.md"
  ],
- "commit": "3cb5b521c"
+ "commit": "3cb5b521c",
+ "banner": {
+  "state": "FAIL",
+  "tone": "bad",
+  "verdict": "no validated directional edge; volume gives intensity, not direction; 1 marginal DEV pass failed VALIDATION",
+  "n": 50,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "FAIL · verdict as written: no validated directional edge; volume gives intensity, not direction; 1 marginal DEV pass failed VALIDATION · n=50 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

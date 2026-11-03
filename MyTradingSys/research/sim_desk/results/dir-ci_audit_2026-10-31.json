@@ -32,5 +32,15 @@
  "source_files": [
   "MyTradingSys/research/ci_audit_2026-10-31/REPORT_FIRST_RED.md"
  ],
- "commit": "a0f76cd42"
+ "commit": "a0f76cd42",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "keep 2. Going to 1 gains 18 early blocks and costs 19 false blocks (12 single-red episodes cleared by the next green): no net gain.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: keep 2. Going to 1 gains 18 early blocks and costs 19 false blocks (12 single-red episodes cleared by the next green): no net gain. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

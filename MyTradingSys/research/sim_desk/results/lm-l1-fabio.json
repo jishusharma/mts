@@ -75,5 +75,15 @@
  "source_files": [
   "MyTradingSys/backtest/layers/fabio/FABIO_L1_REPORT.md"
  ],
- "commit": "efa186306"
+ "commit": "efa186306",
+ "banner": {
+  "state": "FAIL",
+  "tone": "bad",
+  "verdict": "no edge / insufficient n (rule: OOS n>=30, net>0, PBO<0.5)",
+  "n": 182,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "FAIL · verdict as written: no edge / insufficient n (rule: OOS n>=30, net>0, PBO<0.5) · n=182 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

@@ -55,5 +55,15 @@
  "source_files": [
   "MyTradingSys/research/layer_lab/candle_close_2026-10-14/REPORT.md"
  ],
- "commit": "f12f53ab5"
+ "commit": "f12f53ab5",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "EXPLORATORY NEGATIVE; cycle outcomes untested",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: EXPLORATORY NEGATIVE; cycle outcomes untested · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

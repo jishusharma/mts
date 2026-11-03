@@ -45,5 +45,15 @@
  "source_files": [
   "MyTradingSys/research/jala_layer_2026-10-31/TRIGGER_RESULT.md"
  ],
- "commit": "59755f5de"
+ "commit": "59755f5de",
+ "banner": {
+  "state": "TOO_FEW",
+  "tone": "warn",
+  "verdict": "no cell passes. Nothing in Jala's 400D trigger (close under/over, 200/400 cross) shows a fee-net edge over random days on DEV; 0 of 12 alt cells reach Holm p < 0.05 (smallest Holm p = 1.000 at m=24). HOLDOUT and VALIDATION unread. Run exac…",
+  "n": 2,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "TOO FEW TRADES · verdict as written: no cell passes. Nothing in Jala's 400D trigger (close under/over, 200/400 cross) shows a fee-net edge over random days on DEV; 0 of 12 alt cells reach Holm p < 0.05 (smallest Holm p = 1.000 at m=24). HOLDOUT and VALIDATION unread. Run exac… · n=2 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

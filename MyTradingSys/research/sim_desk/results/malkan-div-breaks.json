@@ -433,5 +433,15 @@
   "MyTradingSys/research/meta_label_breaks_2026-10-31/confirm_div.py",
   "MyTradingSys/research/meta_label_breaks_2026-10-31/RESULT.md"
  ],
- "commit": "2203ad50"
+ "commit": "2203ad50",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "FAIL",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: FAIL · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

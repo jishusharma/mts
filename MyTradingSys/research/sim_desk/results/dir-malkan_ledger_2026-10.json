@@ -66,5 +66,15 @@
  "source_files": [
   "MyTradingSys/research/malkan_ledger_2026-10/LEDGER_PARITY.md"
  ],
- "commit": "966d2607d"
+ "commit": "966d2607d",
+ "banner": {
+  "state": "TOO_FEW",
+  "tone": "warn",
+  "verdict": "0. Summary and Gate 0c Verdict",
+  "n": 0,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "TOO FEW TRADES · verdict as written: 0. Summary and Gate 0c Verdict · n=0 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

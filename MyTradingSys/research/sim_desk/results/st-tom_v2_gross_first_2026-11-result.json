@@ -70,5 +70,15 @@
   "MyTradingSys/research/tom_v2_gross_first_2026-11/PRE_REG.md",
   "MyTradingSys/backtest/vp_return_to_value.py"
  ],
- "commit": "pending"
+ "commit": "pending",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "FAIL: real minus near-band placebo +4.4 pp, CI -0.3..8.9 includes 0",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: FAIL: real minus near-band placebo +4.4 pp, CI -0.3..8.9 includes 0 · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

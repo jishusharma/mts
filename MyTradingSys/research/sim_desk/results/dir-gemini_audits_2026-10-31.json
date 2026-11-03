@@ -51,5 +51,15 @@
  "source_files": [
   "MyTradingSys/research/gemini_audits_2026-10-31/fractals_synthesis_blind_read.md"
  ],
- "commit": "ad16ee4f7"
+ "commit": "ad16ee4f7",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "s.",
+  "n": 640,
+  "net_r": -0.2,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: s. · n=640 · net R after fees -0.200 · try n/a · fee break-even n/a"
+ }
 }

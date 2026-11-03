@@ -45,5 +45,15 @@
  "source_files": [
   "MyTradingSys/research/mal_bb_mid_engulf_2026-10-16/RESULT.md"
  ],
- "commit": "3c097b2ba"
+ "commit": "3c097b2ba",
+ "banner": {
+  "state": "FAIL",
+  "tone": "bad",
+  "verdict": "arm passes; FAIL only if every arm is FAIL; otherwise INCONCLUSIVE). Verdict arms: A1 FAIL; A2 FAIL.",
+  "n": 2335,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "FAIL · verdict as written: arm passes; FAIL only if every arm is FAIL; otherwise INCONCLUSIVE). Verdict arms: A1 FAIL; A2 FAIL. · n=2335 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

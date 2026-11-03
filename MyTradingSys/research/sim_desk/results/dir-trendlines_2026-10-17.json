@@ -56,5 +56,15 @@
  "source_files": [
   "MyTradingSys/research/trendlines_2026-10-17/REPORT.md"
  ],
- "commit": "55c66f967"
+ "commit": "55c66f967",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "S.csv for overlap and run current prereg/MDE gates before a freeze. Then validate once; retain holdout access policy. Do not silently treat already-exposed data as fresh. Repository verdict query trendline diagonal channel returned no matc…",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: S.csv for overlap and run current prereg/MDE gates before a freeze. Then validate once; retain holdout access policy. Do not silently treat already-exposed data as fresh. Repository verdict query trendline diagonal channel returned no matc… · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

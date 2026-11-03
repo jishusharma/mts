@@ -33,5 +33,15 @@
  "source_files": [
   "MyTradingSys/research/news_feeds_2026-10-30/REPORT.md"
  ],
- "commit": "12a473da6"
+ "commit": "12a473da6",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Operator ask (2026-10-30, voice): \"what is missing from the dashboard is also news ... yesterday we saw the market",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Operator ask (2026-10-30, voice): \"what is missing from the dashboard is also news ... yesterday we saw the market · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

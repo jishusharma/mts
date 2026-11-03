@@ -55,5 +55,15 @@
   "MyTradingSys/research/tom_correlation_trick_2026-10-26/run_div.py",
   "MyTradingSys/research/tom_correlation_trick_2026-10-26/PRE_REG.md"
  ],
- "commit": "see git log"
+ "commit": "see git log",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "NOT-ADD TOM-CTX-DIV: primary variants have negative fee-net expectancy on DEV and VALIDATION; holdout not read.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: NOT-ADD TOM-CTX-DIV: primary variants have negative fee-net expectancy on DEV and VALIDATION; holdout not read. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

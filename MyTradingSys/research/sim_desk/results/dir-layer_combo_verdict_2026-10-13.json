@@ -36,5 +36,15 @@
  "source_files": [
   "MyTradingSys/research/layer_combo_verdict_2026-10-13/REPORT.md"
  ],
- "commit": "df96f6d85"
+ "commit": "df96f6d85",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "can any combination of layers trade profitably? (2026-10-13, cloud, read-only)",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: can any combination of layers trade profitably? (2026-10-13, cloud, read-only) · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

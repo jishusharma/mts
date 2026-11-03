@@ -35,5 +35,15 @@
  "source_files": [
   "MyTradingSys/research/binance_backtesting_2026-10-18/REPORT.md"
  ],
- "commit": "553b7d319"
+ "commit": "553b7d319",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": ".py Computes snapshot setup status/proof/net-RR, not a statistical strategy-promotion verdict. Its filename must not be treated as evidence that holdout/PBO/power checks are enforced.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: .py Computes snapshot setup status/proof/net-RR, not a statistical strategy-promotion verdict. Its filename must not be treated as evidence that holdout/PBO/power checks are enforced. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

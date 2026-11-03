@@ -32,5 +32,15 @@
  "source_files": [
   "MyTradingSys/research/coinglass_survey_2026-10-29/SURVEY.md"
  ],
- "commit": "3e7ee8121"
+ "commit": "3e7ee8121",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Method: Claude in Chrome, new tab only, no login, no clicks beyond navigation, sidebar expand, indicator-list open. About 40 page visits. Pages rendered for an anonymous viewer on 2026-10-29 around 02:30 UTC (browser clock UTC+5:30, 08:08…",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Method: Claude in Chrome, new tab only, no login, no clicks beyond navigation, sidebar expand, indicator-list open. About 40 page visits. Pages rendered for an anonymous viewer on 2026-10-29 around 02:30 UTC (browser clock UTC+5:30, 08:08… · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

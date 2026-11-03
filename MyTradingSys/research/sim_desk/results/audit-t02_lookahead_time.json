@@ -46,5 +46,15 @@
  "source_files": [
   "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T02_lookahead_time.md"
  ],
- "commit": "79ce4a2cb"
+ "commit": "79ce4a2cb",
+ "banner": {
+  "state": "TOO_FEW",
+  "tone": "warn",
+  "verdict": "is shown to be wrong by this audit; the study detectors that read F:/MTS/data are BLOCKED-DATA (this machine has no DEV data), and a Lenovo-with-data rerun is posted to the desk.",
+  "n": 0,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "TOO FEW TRADES · verdict as written: is shown to be wrong by this audit; the study detectors that read F:/MTS/data are BLOCKED-DATA (this machine has no DEV data), and a Lenovo-with-data rerun is posted to the desk. · n=0 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

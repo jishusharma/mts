@@ -223,5 +223,15 @@
   "MyTradingSys/research/rumers_2026-11-01/HARNESS.md",
   "MyTradingSys/research/rumers_2026-11-01/power_table.py"
  ],
- "commit": "this card"
+ "commit": "this card",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Not run yet: harness ready, waiting for the caption extracts",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Not run yet: harness ready, waiting for the caption extracts · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

@@ -65,5 +65,15 @@
  "source_files": [
   "MyTradingSys/research/layer_rebuild_2026-10-15/FABLE_PROMPT_PACK.md"
  ],
- "commit": "8f5b3f1ed"
+ "commit": "8f5b3f1ed",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "paragraph and the weakest rung.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: paragraph and the weakest rung. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

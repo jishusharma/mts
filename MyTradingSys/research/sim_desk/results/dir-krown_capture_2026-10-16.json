@@ -66,5 +66,15 @@
  "source_files": [
   "MyTradingSys/research/krown_capture_2026-10-16/RULES_DRAFT.md"
  ],
- "commit": "1b3f14a1f"
+ "commit": "1b3f14a1f",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Scope: pilot of 6 transcripts that are NOT in the TA 101 corpus (that corpus is already ledgered: ../krown_ta101_2026-10-13/KROWN_RULES.csv, 120 rules).",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Scope: pilot of 6 transcripts that are NOT in the TA 101 corpus (that corpus is already ledgered: ../krown_ta101_2026-10-13/KROWN_RULES.csv, 120 rules). · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

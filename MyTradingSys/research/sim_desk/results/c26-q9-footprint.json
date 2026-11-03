@@ -390,5 +390,15 @@
   "MyTradingSys/research/c26_roadmap_2026-11-01/phase1_fp_look.py",
   "MyTradingSys/research/c26_roadmap_2026-11-01/PHASE1_RANGE.md"
  ],
- "commit": "see git log"
+ "commit": "see git log",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Design look on SEEN, n=30: buyers won the top quarter in 29 of 30 (taker delta positive); 0 take-outs had a sell-imbalance row at the top",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Design look on SEEN, n=30: buyers won the top quarter in 29 of 30 (taker delta positive); 0 take-outs had a sell-imbalance row at the top · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

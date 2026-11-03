@@ -34,5 +34,15 @@
  "source_files": [
   "MyTradingSys/research/tom_fabio_guidance_2026-10-12/MATRIX_REPORT.md"
  ],
- "commit": "8d6de7b2c"
+ "commit": "8d6de7b2c",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "no cell survives (smallest q 0.62); do not wire cross-guidance",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: no cell survives (smallest q 0.62); do not wire cross-guidance · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

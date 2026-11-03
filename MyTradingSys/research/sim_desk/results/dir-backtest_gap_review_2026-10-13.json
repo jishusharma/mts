@@ -71,5 +71,15 @@
  "source_files": [
   "MyTradingSys/research/backtest_gap_review_2026-10-13/REPORT.md"
  ],
- "commit": "5a839bfb4"
+ "commit": "5a839bfb4",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "wrong, and four of them sit in front of the next big run (the Tom v2 DAX dev run):",
+  "n": 150,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: wrong, and four of them sit in front of the next big run (the Tom v2 DAX dev run): · n=150 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

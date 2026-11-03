@@ -32,5 +32,15 @@
  "source_files": [
   "MyTradingSys/research/wiring_audit_2026-10/QUOTES_USED_TOM_FABIO.md"
  ],
- "commit": "bcfd46cfc"
+ "commit": "bcfd46cfc",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Check: python scripts/dev/verify_extract_quotes.py MyTradingSys/research/wiring_audit_2026-10/QUOTES_USED_TOM_FABIO.md (exit 0).",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Check: python scripts/dev/verify_extract_quotes.py MyTradingSys/research/wiring_audit_2026-10/QUOTES_USED_TOM_FABIO.md (exit 0). · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }
