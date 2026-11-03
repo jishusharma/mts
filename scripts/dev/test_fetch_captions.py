@@ -13,11 +13,15 @@ from pathlib import Path
 from unittest.mock import MagicMock, patch
 import pytest
 
-pytest.importorskip("yt_dlp")
+try:
+    import yt_dlp
+except ImportError:   # CI has no yt_dlp: stub what the module touches (a whole-file skip is pytest exit 5, a FAIL in run_extra_tests)
+    import types
+    yt_dlp = types.SimpleNamespace(YoutubeDL=None, utils=types.SimpleNamespace(DownloadError=Exception))
+    sys.modules["yt_dlp"] = yt_dlp
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import fetch_captions as fc
-import yt_dlp
 
 
 def test_vid_of_standard_and_variations():
