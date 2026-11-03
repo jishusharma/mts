@@ -194,12 +194,12 @@
         "jishusharma1985": "https://claude.ai/artifact/KaPy7f5BKFsvmqin84DpyF"
       },
       "last_published": {
-        "jishusharma1985": "2026-11-04"
+        "jishusharma1985": "2026-11-03"
       },
       "purpose": "Simulator desk: what each study tested, verdicts and example trades. The runnable desk itself is the local app (research/sim_desk/desk.py).",
       "notes_go_to": "Read only.",
       "note": "Added to the registry 2026-10-25 (operator: new development must show on MTS Home). No repo html path: the sim-desk sessions publish it; staleness is not tracked here.",
-      "published_sha": "21827ced04bf36ae0e6639f0ecdaf7868e8a2b8f99608d5a6a0ce788120183f8"
+      "published_sha": "d45adec245a61eae86d4a5a5586e4564148ba9ca660fdca17ec34dd4982cf6d2"
     },
     {
       "slug": "cbp_analyst_desk",
