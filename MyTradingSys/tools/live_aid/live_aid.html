@@ -432,8 +432,12 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
   }
 
   var TFS = [{ k: '1m', ms: 60000, n: 1500, dr: '1' }, { k: '5m', ms: 300000, n: 300, dr: '5' }, { k: '15m', ms: 900000, n: 1500, dr: '15' }, { k: '1h', ms: 3600000, n: 1500, dr: '60' }];
-  // 4h rows are folded from 1h on UTC boundaries (Deribit has no 4h candles); shown in the momentum strip only.
-  var STRIP = TFS.concat([{ k: '4h', ms: 14400000 }]);
+  // 2m/7m/10m are folded from the 1m rows from the UTC day start (no venue serves them; R17); 4h from 1h on 00/04/08Z ...
+  // (Deribit has no 4h candles). Folded rows are read everywhere a timeframe is listed: strip, divergences, forming bar.
+  var FOLD = [{ k: '2m', ms: 120000 }, { k: '7m', ms: 420000 }, { k: '10m', ms: 600000 }];
+  var ALL = TFS.concat(FOLD);
+  var STRIP = [TFS[0]].concat([FOLD[0], TFS[1], FOLD[1], FOLD[2]], TFS.slice(2), [{ k: '4h', ms: 14400000 }]);
+  function foldMinutes() { var m1 = S.tf['1m']; if (m1) FOLD.forEach(function (f) { S.tf[f.k] = A.foldBars(m1, f.ms, true); }); }
 
   // Binance fapi first; if blocked, Deribit BTC-PERPETUAL candles (venue tag changes to DERIBIT).
   function fetchBars(tf, n, ms, dr) {
@@ -466,7 +470,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
         S.tf[tf.k] = mergeRows(full || !S.tf[tf.k] ? null : S.tf[tf.k], res.rows);
         if (!full && S.tf[tf.k].length < 50) return loadAll(true);
       });
-    })).then(function () { if (S.tf['1h']) S.tf['4h'] = A.foldBars(S.tf['1h'], 14400000); S.klT = Date.now(); if (S.venue === 'BINANCE') S.klErr = ''; },
+    })).then(function () { foldMinutes(); if (S.tf['1h']) S.tf['4h'] = A.foldBars(S.tf['1h'], 14400000); S.klT = Date.now(); if (S.venue === 'BINANCE') S.klErr = ''; },
       function (e) { S.klErr = 'candles failed on both venues: ' + e.message; });
   }
 
@@ -482,7 +486,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
   }
 
   function patchForming(px) {
-    TFS.forEach(function (tf) {
+    ALL.forEach(function (tf) {
       var rows = S.tf[tf.k]; if (!rows || !rows.length) return;
       var last = rows[rows.length - 1];
       if (Date.now() >= +last[0] + tf.ms) return; // bar closed; the next poll appends the new one
@@ -1077,7 +1081,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     vwTest = vt ? (vt.result === 'no test' ? 'no test in last 5 x 1m' : 'test ' + vt.result) : ''; // shown on the VWAP glance tile
     // 4 divergences
     var dtxt = [], dflags = [], dfull = [];
-    TFS.forEach(function (tf) {
+    ALL.forEach(function (tf) {
       var rows = S.tf[tf.k]; if (!rows || rows.length < 60) { dtxt.push(tf.k + ': NOT_IN_DATA'); return; }
       var c = A.columns(rows), r = A.rsi(c.c, 14), w = A.wavetrend(c.t, c.h, c.l, c.c, tf.ms, 200);
       var res = [['RSI', A.divergence(c.c, r)], ['WT', A.divergence(c.c, w.wt1)]];
@@ -1088,7 +1092,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     });
     flags.push(dflags.length ? dflags[0] : null);
     out.push(bullet('Divergence (RSI, WaveTrend)', 'OURS: last 15 bars vs the 15 before, price vs RSI14 and wt1; the 1m RSI one feeds the flags. ' + dfull.join('; '),
-      dtxt.length ? dtxt.map(esc).join('<br>') : 'none on 1m, 5m, 15m'));
+      dtxt.length ? dtxt.map(esc).join('<br>') : 'none on ' + ALL.map(function (t) { return t.k; }).join(', ')));
     // 5 squeeze: price vs OI over the last 10 min of Deribit samples
     var h = S.oiHist, sq = null, dp = NaN, doi = NaN;
     if (fresh(S.oiT) && h.length > 1 && h[h.length - 1].t - h[0].t >= 120000) { dp = h[h.length - 1].px / h[0].px - 1; doi = h[h.length - 1].oi / h[0].oi - 1; sq = A.squeeze(dp, doi); }
@@ -1145,6 +1149,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     if (Array.isArray(m1r) && m1r.length) {
       S.venue = 'FIXTURE'; S.tf['1m'] = m1r.map(function (r) { return r.slice(); });
       S.tf['5m'] = A.foldBars(m1r, 300000); S.tf['15m'] = A.foldBars(m1r, 900000); S.tf['1h'] = A.foldBars(m1r, 3600000); S.tf['4h'] = A.foldBars(m1r, 14400000);
+      foldMinutes();
       S.klT = Date.now();
     } else S.klErr = 'replay fixture not loaded';
     // Calendar in replay: the test injects window.LIVEAID_CAL (ForexFactory rows); without it the strip reads NO CALENDAR. No fetch.

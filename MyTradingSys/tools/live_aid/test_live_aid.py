@@ -294,6 +294,9 @@ if (brk === 'itbybit') bt = {b: '3'};
 const H = 3600000, b0 = 4 * H * 100;
 let fo = A.foldBars([[b0 - H, '9', '9', '9', '9', '1'], [b0, '10', '12', '9', '11', '2'], [b0 + H, '11', '15', '10', '14', '3'], [b0 + 3 * H, '14', '14', '8', '13', '4'], [b0 + 4 * H, '13', '13', '12', '12.5', '5']], 4 * H);
 if (brk === 'itfold') fo[1][3] = 9;
+const D0 = 86400000 * 20000, M1 = 60000, M7 = 7 * M1;
+let fo7 = A.foldBars([[D0 - M1, '1', '1', '1', '1', '1'], [D0, '2', '4', '1', '3', '1'], [D0 + 6 * M1, '3', '5', '2', '4', '1'], [D0 + 7 * M1, '4', '4', '4', '4', '1']], M7, true);
+if (brk === 'itfold7') fo7 = A.foldBars([[D0, '2', '4', '1', '3', '1']], M7);
 const M = 60000;
 let nt = ['Tree News: POTENTIAL BINANCE HACK ONGOING - ONCHAIN', 'Binance suspends all deposits and withdrawals', 'SEC approves spot ETF options', 'FOMC holds rates; Powell speaks at 18:30', 'Bitcoin tops $80,000', 'Moonbirds pairs are now live', 'Hackathon winners announced'].map(A.newsTags);
 if (brk === 'itnews') nt[0] = [];
@@ -325,7 +328,7 @@ let ac = A.actions({call: 'BEARISH LEAN'}, A.zones(A.levelWatch(lvs, 80000), 800
 if (brk === 'avact') ac[2][3] = false;
 let ac2 = A.actions({call: 'MIXED'}, A.zones(A.levelWatch(lvs, 80000), 80000), {level: 'BUSY', n: 1}).map(a => [a.when, !!a.withLean]);
 let ac3 = A.actions({call: 'BULLISH LEAN'}, A.zones(A.levelWatch(zl, 80200), 80200), null).map(a => [a.when, a.kind, !!a.withLean]);
-process.stdout.write(JSON.stringify({dv, fl, sq, dm, sup, vw, fg, cf, lv2, lqv, lqs, fd, bt: [bt, bt2], fo, nt, np, an, avt, lw, zn, ln, ac, ac2, ac3}));
+process.stdout.write(JSON.stringify({dv, fl, sq, dm, sup, vw, fg, cf, lv2, lqv, lqs, fd, bt: [bt, bt2], fo, fo7, nt, np, an, avt, lw, zn, ln, ac, ac2, ac3}));
 """
 
 
@@ -466,6 +469,16 @@ def test_fold_1h_into_4h(it):
     H = 3600000
     b0 = 4 * H * 100
     assert it["fo"] == [[b0 - 4 * H, 9, 9, 9, 9, 1], [b0, 10, 15, 8, 13, 9], [b0 + 4 * H, 13, 13, 12, 12.5, 5]]
+
+
+def test_fold_1m_into_7m_day_aligned(it):
+    # 7 min does not divide a day from 1970 (86400000 / 420000 is not whole), so minute folds anchor at the UTC day start
+    # (as TradingView draws 7m): D0 - 1 min falls in the previous day's last bucket; D0..D0+6m is one bar (open 2, high 5,
+    # low 1, close 4, volume 2); D0 + 7m starts the next. OURS (R17)
+    D0 = 86400000 * 20000
+    M = 60000
+    # the previous day holds 205 full 7m buckets plus a 5 min tail, so its last bucket opens at D0 - 5 min
+    assert it["fo7"] == [[D0 - 5 * M, 1, 1, 1, 1, 1], [D0, 2, 5, 1, 4, 2], [D0 + 7 * M, 4, 4, 4, 4, 1]]
 
 
 def test_news_word_tags(it):
