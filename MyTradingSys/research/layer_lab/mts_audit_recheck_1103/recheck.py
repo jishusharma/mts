@@ -91,7 +91,8 @@ def pivot_sets(bars, causal=True):
         else:
             if pl and lo[j]<p[-1][1]:p[-1]=(j,lo[j],False)
             elif ph and (hi[j]-p[-1][1])/max(1e-9,p[-1][1])>=SWING:p.append((j,hi[j],True));last=True
-    return [(tuple(p[k:k+3]),p[k+2][0]+LB) for k in range(len(p)-2)]
+    # Retrospective control only: adjacent final pivots, not the causal trading arm.
+    return [(triple, triple[2][0]+LB) for triple in zip(p, p[1:], p[2:])]
 
 def profile_va(bars, ps):
     a,b=sorted((ps[0][0],ps[2][0])); sub=bars[a:b+1]
