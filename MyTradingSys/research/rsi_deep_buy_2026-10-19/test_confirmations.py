@@ -150,8 +150,9 @@ def test_htf_rsi_uses_last_completed_bar_only():
     for k in ("open", "high", "low", "close"):
         d2[k][g0:] *= 1.5                                       # change the CURRENT (incomplete) HTF bar and everything after
     alt = cf.htf_rsi_lastcompleted(d2["open_time"], d2, 60)
+    j = g0 + 59
     assert np.isfinite(base[i]) and alt[i] == base[i]
-    assert alt[g0 + 59] == base[g0 + 59]                        # every 1m bar of the incomplete hour sees the same value
+    assert alt[j] == base[j]                        # every 1m bar of the incomplete hour sees the same value
     d3 = {k: v.copy() for k, v in d1.items()}
     for k in ("open", "high", "low", "close"):
         d3[k][g0 - 60:g0] *= 0.5                                # change the last COMPLETED bar: the value must move
@@ -166,8 +167,8 @@ def test_entry_is_next_bar_open_and_lower_low_is_vs_episode_low():
     assert (entry, exit_) == (13.0, 16.0) and gross == pytest.approx(16 / 13 - 1)
     assert cf.entry_exit(o, 6, 3) is None                       # exit bar beyond the data: dropped, not clipped
     # episode low so far at bar 2 is min(low[0..2]) = 8.5; lows of bars 3..5 reach 8.0 < 8.5 -> new lower low
-    assert cf.new_lower_low(low, 0, 2, 3) is True
-    assert cf.new_lower_low(low, 0, 2, 1) is False               # only bar 3 (low 9.0)
+    assert cf.outcome_lower_low(low, 0, 2, 3) is True
+    assert cf.outcome_lower_low(low, 0, 2, 1) is False               # only bar 3 (low 9.0)
 
 
 def test_pair_confirms_at_the_later_of_the_two_bars():

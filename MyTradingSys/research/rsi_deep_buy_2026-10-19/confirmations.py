@@ -85,11 +85,8 @@ def atr_sma(high, low, close, n=14):
     pc = np.r_[np.nan, close[:-1]]
     tr = np.maximum.reduce([high - low, np.abs(high - pc), np.abs(low - pc)])
     tr[0] = np.nan
-    c = np.r_[0.0, np.cumsum(np.nan_to_num(tr))]
-    out = np.full(len(close), np.nan)
-    i = np.arange(n, len(close))
-    out[i] = (c[i + 1] - c[i + 1 - n]) / n
-    return out
+    import pandas as pd
+    return pd.Series(tr).rolling(n).mean().to_numpy()      # tr[0] is NaN, so the first value is at i = n
 
 
 def zscore_prior(x, L):
@@ -211,7 +208,7 @@ def entry_exit(open_, c, N):
     return e, x, x / e - 1.0
 
 
-def new_lower_low(low, s, c, N):
+def outcome_lower_low(low, s, c, N):
     return bool(low[c + 1:c + 1 + N].min() < low[s:c + 1].min())
 
 
@@ -304,7 +301,7 @@ def cell_rows(ctx, tf, level, names, start_ms, which):
                 if xc is None or xr is None:
                     continue
                 g_c.append(xc[2]); g_r.append(xr[2])
-                ll_c.append(new_lower_low(lo, s, c, N)); ll_r.append(new_lower_low(lo, s, s, N))
+                ll_c.append(outcome_lower_low(lo, s, c, N)); ll_r.append(outcome_lower_low(lo, s, s, N))
                 days.append(int(ctx["day"][s])); delay.append(c - s)
             base = {"pass": which, "tf_min": tf, "level": level, "conf": name, "N": N, "n_episodes": len(eps), "cal_days": cal_days}
             n = len(g_c)
