@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-03T20:21:46Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-04/prob_table_blind_read.md has one row per quoted number (at least 20: 4 rows x fit n, test n, model LL, baseline LL, EV diff): FOUND / DIFF / NOT_IN_DATA; line 1 holds the three counts; NOT_IN_DATA when 1m klines are absent on the host.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Cross-vendor check of the 4-row probability table in layer_lab/prob_table_1103/RESULT.md: reproduce fit n, test n, log-loss, EV, CI and trade counts from table.csv or by re-running prob_table_run.py.",
+  "id": "gemini-blind-read-prob-table-1103",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "fix(prob-table): skip excluded months and incomplete bars",
+      "ref": "205876397cfd",
+      "utc": "2026-11-03T10:41:13Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "205876397cfd fix(prob-table): skip excluded months and incomplete bars",
+      "ref": "MyTradingSys/research/layer_lab/prob_table_1103/RESULT.md",
+      "utc": "2026-11-03T10:41:13Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-04 T0-ONLY (planner-refine-1104; twin check vs gemini-* cards and gemini_audits dirs: this file not yet blind-read). Never use Gemini output as the source.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T20:23:02Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/prob_table_1103/RESULT.md (read)",
+    "MyTradingSys/research/layer_lab/prob_table_1103/table.csv (read)",
+    "MyTradingSys/research/gemini_audits_2026-11-04/prob_table_blind_read.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source report or scripts; no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "205876397cfd",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/layer_lab/prob_table_1103/RESULT.md:10-16"
+  ],
+  "state": "ready",
+  "steps": [
+    "List every number quoted in the report",
+    "Re-run the saved script from a scratch copy or read its saved output; copy the number found",
+    "Write FOUND/DIFF/NOT_IN_DATA per row, counts on line 1"
+  ],
+  "tests": "audit card, output file is the test; each row quotes the source line it was matched to; repo files stay byte-identical (git diff empty)",
+  "title": "[GEMINI] blind re-read of prob_table_1103 RESULT.md: every table number against table.csv and prob_table_run.py",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-03T20:21:49Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-04/us_open_oos_blind_read.md has one row per number (at least 15): FOUND / DIFF / NOT_IN_DATA; line 1 holds the three counts; the 00:00 UTC top-bucket claim has its own row.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Check every number in sections 1 and 2 of us_open_oos REPORT.md (P values, Wilson CIs, bucket multiples, 505 days, 1,052,640 bars) against results_oos_2020_2021.json.",
+  "id": "gemini-blind-read-us-open-oos-1104",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "research: US-open OOS replication on 2020-21 (P0-34)",
+      "ref": "fd087f1cea6a",
+      "utc": "2026-10-30T08:37:01Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "fd087f1cea6a research: US-open OOS replication on 2020-21 (P0-34)",
+      "ref": "MyTradingSys/research/us_open_oos_2026-10-30/REPORT.md",
+      "utc": "2026-10-30T08:37:01Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-04 T0-ONLY (planner-refine-1104; twin check vs gemini-* cards and gemini_audits dirs: this file not yet blind-read). Never use Gemini output as the source.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T20:23:05Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/us_open_oos_2026-10-30/REPORT.md (read)",
+    "MyTradingSys/research/us_open_oos_2026-10-30/results_oos_2020_2021.json (read)",
+    "MyTradingSys/research/gemini_audits_2026-11-04/us_open_oos_blind_read.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source report or scripts; no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "fd087f1cea6a",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/us_open_oos_2026-10-30/REPORT.md:9-25"
+  ],
+  "state": "ready",
+  "steps": [
+    "List every number quoted in the report",
+    "Re-run the saved script from a scratch copy or read its saved output; copy the number found",
+    "Write FOUND/DIFF/NOT_IN_DATA per row, counts on line 1"
+  ],
+  "tests": "audit card, output file is the test; each row quotes the source line it was matched to; repo files stay byte-identical (git diff empty)",
+  "title": "[GEMINI] blind re-read of us_open_oos_2026-10-30 REPORT.md: Wilson CIs and bucket multiples against results_oos_2020_2021.json",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
