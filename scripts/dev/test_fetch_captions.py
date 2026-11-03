@@ -13,6 +13,8 @@ from pathlib import Path
 from unittest.mock import MagicMock, patch
 import pytest
 
+pytest.importorskip("yt_dlp")
+
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import fetch_captions as fc
 import yt_dlp
