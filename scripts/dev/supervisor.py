@@ -364,6 +364,34 @@ def read_budget(as_of: datetime | None = None, home: Path | None = None) -> dict
         return {"error": f"{type(e).__name__}: {e}"}
 
 
+BRIDGE_RE = re.compile(r"BRIDGE host=(\S+) last_call_age_min=(-?\d+) up=([01])")
+BRIDGE_WINDOW_H = 72
+
+
+def dsa_bridges(sigs, now: datetime) -> dict:
+    """{host: {last_call_age_min, up, dsa_down}} from the newest BRIDGE signal per host (sigs = traffic.read_signals rows).
+    The age is the reported one plus the minutes since the signal was sent; dsa_down = that age over DSA_DOWN_H, or the sender said up=0."""
+    out = {}
+    for t, _s, _k, x in sorted(sigs, key=lambda r: r[0]):
+        m = BRIDGE_RE.search(x)
+        if not m:
+            continue
+        rep = int(m.group(2))
+        age = None if rep < 0 else rep + max(0, round((now - t).total_seconds() / 60))
+        out[CN(m.group(1))] = {"last_call_age_min": age, "up": int(m.group(3)),
+                               "dsa_down": age is None or m.group(3) == "0" or age > DSA_DOWN_H * 60}
+    return out
+
+
+def read_dsa_bridges(as_of: datetime) -> dict:
+    try:
+        import traffic
+        sigs, _e = traffic.read_signals(as_of - timedelta(hours=BRIDGE_WINDOW_H), as_of + timedelta(minutes=5))
+        return dsa_bridges(sigs, as_of)
+    except (Exception, SystemExit) as e:
+        return {"error": f"{type(e).__name__}: {e}"}
+
+
 def read_peers(login: str | None, as_of: datetime, do_fetch: bool = True) -> dict:
     """The other logins' supervisors, seen only through their BUDGET signal lines (the app cannot message across logins).
     `active` = logins whose supervisor heartbeat (BUDGET line with sup=, newer than HEARTBEAT_MIN) has free slots, plus this one: the list dispatch shards over.
@@ -414,6 +442,8 @@ def tick(
     except Exception as e:
         shas_res = {"error": f"{type(e).__name__}: {e}"}
 
+    lanes = read_lanes(repo)
+    lanes["dsa"] = read_dsa_bridges(as_of)
     out = {
         "as_of": as_of.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "fetch": fetch_status,
@@ -424,7 +454,7 @@ def tick(
         "ci": read_ci(now=as_of),
         "gate_slots": read_gate_slots(repo),
         "shas": shas_res,
-        "lanes": read_lanes(repo),
+        "lanes": lanes,
         "budget": read_budget(as_of=as_of, home=home),
     }
     return out

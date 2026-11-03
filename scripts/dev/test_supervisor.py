@@ -1321,3 +1321,21 @@ def test_measured_k_from_usage_rows():
     assert usage_log.measured_k([row(10, 11, 10, 10)]) is None  # under 3 points
     p = S.pace_plan(T0, _rd(10, 20, week_reset="2026-10-23T16:00Z"), 95, usage_rows=rows)
     assert p["k_measured"] and p["k"] == 0.1
+
+
+def test_dsa_bridges_from_bridge_signals_and_tick_lanes_dsa(monkeypatch, tmp_path):
+    """BRIDGE signal lines -> lanes.dsa per host; the newest line wins; > 24 h (or up=0 / unknown) sets dsa_down."""
+    import traffic
+    import aibridge_health as AH
+    t = lambda m: NOW - timedelta(minutes=m)
+    sigs = [(t(200), "jis-nuc/sharma", "note", "BRIDGE host=JIS-NUC last_call_age_min=900 up=1"),
+            (t(0), "jis-nuc/sharma", "note", AH.bridge_line("JIS-NUC", 0.5)),
+            (t(0), "jis-nb/awgp", "note", AH.bridge_line("JIS-NB", 30.0)),
+            (t(0), "jis-nb/awgp", "note", "unrelated note")]
+    d = S.dsa_bridges(sigs, NOW)
+    assert d == {"JIS-NUC": {"last_call_age_min": 30, "up": 1, "dsa_down": False},
+                 S.CN("JIS-NB"): {"last_call_age_min": 1800, "up": 0, "dsa_down": True}}
+    assert AH.bridge_line("X", None) == "BRIDGE host=X last_call_age_min=-1 up=0"
+    monkeypatch.setattr(traffic, "read_signals", lambda since, until, d=None: (sigs, None))
+    out = S.tick(repo=tmp_path, no_fetch=True, as_of=NOW, home=tmp_path)
+    assert out["lanes"]["dsa"] == d

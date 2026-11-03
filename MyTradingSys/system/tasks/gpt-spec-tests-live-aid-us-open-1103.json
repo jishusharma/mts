@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-03T16:00:31Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/tools/live_aid/test_spec_us_open.py has >=8 passing tests (skip only if node is absent), 3 of 3 scratch mutations of a copy of the .js each fail a test, the .js files are unchanged, report written, the file is listed in scripts/dev/extra_tests.tsv.",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Write spec tests for us_open_rates.js (2-line US_OPEN_RATES table) and the functions uoBucket and usOpen in live_aid_indicators.js, from the study docstring and RESULT.md (buckets 0-0.25, 0.25-0.5, 0.5-1, 1-2, 2+; touch, nt, held counts), no test touches uoBucket or the table today. Cases: each bucket edge, below 0, table rows touch<=n, held<=nt.",
+  "id": "gpt-spec-tests-live-aid-us-open-1103",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "extra_tests.tsv merges as a union: parallel test registrations no longer conflict",
+      "ref": "f652e21c83fd",
+      "utc": "2026-11-03T09:46:34Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "Spec-derived (tests written from REQUIREMENTS.md rows and docstrings, not from reading the function bodies first). D11_PROGRAMME s6 seed: spec tests for every live_aid .js maths file; test_live_aid.py exists, this adds spec cases for what it leaves out. Node is on the lab host; tests skip without node like test_live_aid.py. PLANNER 2026-11-03 planner-b-1103-2. REVIEWED:2026-11-03 T0-ONLY",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T16:01:04Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/test_spec_us_open.py (new)",
+    "scripts/dev/extra_tests.tsv",
+    "MyTradingSys/research/layer_lab/reports/2026-11-03_gpt-spec-tests-live-aid-us-open-1103.md"
+  ],
+  "scope_out": [
+    "any live path; editing live_aid_indicators.js or us_open_rates.js; no VALIDATION or HOLDOUT read; fixtures are the repo ones"
+  ],
+  "scope_sha": "f652e21c83fd",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/us_open_levels_2026-10-30/study.py and RESULT.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "read us_open_levels_2026-10-30/RESULT.md and study.py and the docstrings of the named functions; list expected outputs by hand for boundary cases (empty input, one below, at, one above, malformed)",
+    "write the tests, reusing the node runner pattern of test_live_aid.py; run them",
+    "make 3 scratch mutations on a temp copy of the .js, confirm each fails a test, write the report, register in extra_tests.tsv"
+  ],
+  "tests": "python -m pytest MyTradingSys/tools/live_aid/test_spec_us_open.py -q",
+  "title": "Spec tests for live_aid us_open_rates.js and uoBucket/usOpen in live_aid_indicators.js",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

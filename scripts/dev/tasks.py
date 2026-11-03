@@ -899,6 +899,7 @@ def cmd_tag(a):
 def cmd_stale(a):
     """Ready/active cards whose scope changed after their pointers were refreshed (exit 1 when any are listed and not refreshed)."""
     hit = 0
+    TS.prefetch_changes(REPO)   # the same one-log path cmd_list uses, so both commands give one verdict
     for c in load_all(REPO):
         why = TS.stale_reason(c, REPO)
         if why:

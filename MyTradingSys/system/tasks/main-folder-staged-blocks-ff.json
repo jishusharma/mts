@@ -4,31 +4,52 @@
   "commands": [],
   "created": "2026-11-03T13:04:40Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "scripts/dev/trunk_lag.py fast_forward succeeds in a test repo whose index holds trunk-equal staged files and a CRLF-only LAYERS.md edit; new test in scripts/dev/test_trunk_lag.py asserts it.",
+  "est_turns": 15,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "trunk_lag.fast_forward leaves a main checkout un-fast-forwarded when staged/index copies equal to trunk's content (47 scripts/dev files) or CRLF-only edits to LAYERS.md and TRIAL_LEDGER_BUILT.csv block it; treat content already on trunk as no conflict.",
   "id": "main-folder-staged-blocks-ff",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "mts_doctor: add GIT-HUNG check and guard scope_in network git calls with timeout and no-pr",
+      "ref": "d6d63cf459d6",
+      "utc": "2026-11-02T06:42:18Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-03 T0-ONLY. PLANNER planner-a-1103. Twin main-checkout-stale-hooks-2026-10-24 checked: different symptom (hooks stale), kept. REVIEWED:2026-11-03 T0-ONLY",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-03T16:01:28Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/trunk_lag.py",
+    "scripts/dev/test_trunk_lag.py"
+  ],
+  "scope_out": [
+    "no touch of the JIS-NUC main folder itself (a per-machine step goes out as mts_signal broadcast); no sync.py change; no live tree"
+  ],
+  "scope_sha": "d6d63cf459d6",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "read fast_forward and sync_hook_files in trunk_lag.py",
+    "write the failing temp-repo test (staged trunk-equal blobs, CRLF-only edit)",
+    "in fast_forward compare staged and dirty blobs to the target tree (git diff --ignore-cr-at-eol / blob equality) and reset them if equal, else leave the checkout alone",
+    "run test_trunk_lag.py and test_sync.py"
+  ],
+  "tests": "scripts/dev/test_trunk_lag.py: new test builds a temp repo with staged trunk-equal files plus a CRLF-only change; fails on the pre-change fast_forward, passes after",
   "title": "Main folder on JIS-NUC is 500+ commits behind: staged copies of trunk's scripts/dev files (47 equal current trunk, 3 slightly older) plus line-ending-only edits to LAYERS.md and TRIAL_LEDGER_BUILT.csv stop the fast-forward. Find what stages them; let trunk_lag.py treat content already on trunk as no conflict",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
