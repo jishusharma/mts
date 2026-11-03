@@ -96,7 +96,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/rsi_divergence_mtf_2026-10-09`
 - Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-11-03_prob-layer-common-table.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `prob-layer-common-table` ready p1 CODEX: Probability table as the common layer (AUDIT.md s6): state_at per layer, forward distribution vs matched basel
   - `krown-hidden-divergence-confluence-feed` refined p2 SONNET: Krown hidden divergence as a shared confluence feed any layer (RSI 40-60 included) can consume; Malkan layer s
   - `kurisko-dev-event-study` refined p2 SONNET: Kurisko Quad Rotation: DEV event study, fee-net, same-window placebo
   - `rsi-cross-unmapped-and-pivot-stack` refined p3 SONNET: RSI cross events are rejected as unmapped in the auto-trader (no layer_rules entry); and no layer stacks level
