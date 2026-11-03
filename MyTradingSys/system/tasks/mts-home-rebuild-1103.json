@@ -4,6 +4,18 @@
   "commands": [
     "python scripts/dev/make_layers_board.py && python scripts/dev/make_layers_md.py && python scripts/dev/make_home.py && python scripts/dev/test_artifacts.py"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-03T13:04:34Z",
+    "misses": 26,
+    "reads": [
+      "scripts/dev/extra_tests.tsv",
+      "MyTradingSys/research/sim_desk/page.html",
+      "MyTradingSys/research/sim_desk/export_results.py",
+      "MyTradingSys/research/sim_desk/artifact/test_artifact.py"
+    ],
+    "session": "agent-abecfdab354fcd0a0"
+  },
   "created": "2026-11-03T13:00:55Z",
   "depends_on": [],
   "done_when": "MTS_HOME_AUDIT_2026-11-03.md tables A-D re-run empty; test_artifacts.py green; mts_home.html republished",
