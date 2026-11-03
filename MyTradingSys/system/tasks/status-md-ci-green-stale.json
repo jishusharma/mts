@@ -2,6 +2,16 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-03T18:35:09Z",
+    "misses": 2,
+    "reads": [
+      "MyTradingSys/research/STATUS.md",
+      "scripts/dev/make_status.py"
+    ],
+    "session": "agent-ad3c2506a734ed3bc"
+  },
   "created": "2026-11-03T16:00:43Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/STATUS.md line 6 starts with CI green: and quotes the sha printed by git rev-parse origin/green/fast-track",
