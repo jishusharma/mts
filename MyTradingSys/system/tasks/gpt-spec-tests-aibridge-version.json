@@ -13,15 +13,30 @@
   "id": "gpt-spec-tests-aibridge-version",
   "kind": "build",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "extra_tests.tsv merges as a union: parallel test registrations no longer conflict",
+      "ref": "f652e21c83fd",
+      "utc": "2026-11-03T09:46:34Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "771d07995f4b tests: spec tests for aibridge_version.py (13 tests, 3/3 mutations caught)",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-spec-tests-aibridge-version.md",
+      "utc": "2026-10-30T00:29:32Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
-  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "duplicate: test file exists 771d07995",
   "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-29T22:51:57Z",
+  "refreshed": "2026-11-03T13:05:41Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -33,12 +48,12 @@
     "any live path",
     "editing the audited source files"
   ],
-  "scope_sha": "",
+  "scope_sha": "f652e21c83fd",
   "size": "S",
   "sources": [
     "scripts/dev/aibridge_version.py"
   ],
-  "state": "refined",
+  "state": "dropped",
   "steps": [
     "read aibridge_version.py and list every branch",
     "compute expected values by hand",
