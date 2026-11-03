@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-03T20:21:52Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-04/trendlines_report_blind_read.md has one row per quoted number (at least 12): FOUND / DIFF / NOT_IN_DATA; line 1 holds the three counts.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Check each count and rate quoted in trendlines_2026-10-17/REPORT.md against counts/CELLS.csv and effective_n_by_day.csv (or count_only.py output).",
+  "id": "gemini-blind-read-trendlines-report-1104",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "trendline-count-only-v2: first_touch/all_touches, retest/reclaim, causal terciles, kline d",
+      "ref": "569e31dd6604",
+      "utc": "2026-10-28T12:14:49Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "55c66f967dd5 Research BTC trend-line drawing and prospective chart watch",
+      "ref": "MyTradingSys/research/trendlines_2026-10-17/REPORT.md",
+      "utc": "2026-10-16T21:45:41Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-04 T0-ONLY (planner-refine-1104; twin check vs gemini-* cards and gemini_audits dirs: this file not yet blind-read). Never use Gemini output as the source.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T20:22:56Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/trendlines_2026-10-17/REPORT.md (read)",
+    "MyTradingSys/research/trendlines_2026-10-17/counts (read)",
+    "MyTradingSys/research/gemini_audits_2026-11-04/trendlines_report_blind_read.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source report or scripts; no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "569e31dd6604",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/trendlines_2026-10-17/REPORT.md:1-30"
+  ],
+  "state": "ready",
+  "steps": [
+    "List every number quoted in the report",
+    "Re-run the saved script from a scratch copy or read its saved output; copy the number found",
+    "Write FOUND/DIFF/NOT_IN_DATA per row, counts on line 1"
+  ],
+  "tests": "audit card, output file is the test; each row quotes the source line it was matched to; repo files stay byte-identical (git diff empty)",
+  "title": "[GEMINI] blind re-read of trendlines_2026-10-17 REPORT.md: every count against counts/*.csv",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

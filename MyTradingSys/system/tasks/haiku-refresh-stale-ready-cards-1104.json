@@ -1,0 +1,47 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/tasks.py stale"
+  ],
+  "created": "2026-11-03T20:23:15Z",
+  "depends_on": [],
+  "done_when": "python scripts/dev/tasks.py stale exits 0 and lists no cards (or only cards parked with tried and a note); the count before and after is in the commit body.",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "STALE flags block dispatch of ready cards. For each card that tasks.py stale lists, read the card and the commit that changed its scope paths; if the card still holds, refresh it; if the change breaks it, park it with tasks.py tried.",
+  "id": "haiku-refresh-stale-ready-cards-1104",
+  "lane": "HAIKU",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-04 T0-ONLY (planner-refine-1104; twin of haiku-refresh-stale-ready-cards-1102 only by name: that one is done). DECISION (OURS): park, never edit, a card the change contradicts.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T20:23:17Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/tasks (card JSON, via tasks.py tag --refresh only)"
+  ],
+  "scope_out": [
+    "no card goal, scope or done_when edit; no product code; never refresh a card whose scope change contradicts it"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Run python scripts/dev/tasks.py stale and save the list",
+    "Per card: git log the scope paths since its refreshed date, read the card, then tasks.py tag <id> --refresh or tasks.py tried <id>",
+    "Re-run stale and lint, put before/after counts in the commit body"
+  ],
+  "tests": "tasks.py stale exits 1 before and 0 after; python scripts/dev/tasks.py lint exits 0",
+  "title": "Haiku: refresh the stale ready cards (re-read each card against its scope change, then tag --refresh)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

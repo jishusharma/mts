@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-03T20:21:56Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-04/wavetrend_result_blind_read.md has one row per quoted number (at least 12): FOUND / DIFF / NOT_IN_DATA; line 1 holds the three counts.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Check each number in wavetrend_2026-10-17/RESULT.md against counts/ and atlas_out/ or by reading make_result.py output; report NOT_IN_DATA when raw klines are absent.",
+  "id": "gemini-blind-read-wavetrend-result-1104",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "wavetrend-dev-atlas: single DEV atlas per PRE_REG, 9 frozen cells, 0 pass gross",
+      "ref": "249f01fd0af9",
+      "utc": "2026-10-17T09:04:47Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "249f01fd0af9 wavetrend-dev-atlas: single DEV atlas per PRE_REG, 9 frozen cells, 0 pass gro",
+      "ref": "MyTradingSys/research/wavetrend_2026-10-17/RESULT.md",
+      "utc": "2026-10-17T09:04:47Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-04 T0-ONLY (planner-refine-1104; twin check vs gemini-* cards and gemini_audits dirs: this file not yet blind-read). Never use Gemini output as the source.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T20:22:47Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/wavetrend_2026-10-17/RESULT.md (read)",
+    "MyTradingSys/research/wavetrend_2026-10-17/counts (read)",
+    "MyTradingSys/research/gemini_audits_2026-11-04/wavetrend_result_blind_read.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source report or scripts; no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "249f01fd0af9",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/wavetrend_2026-10-17/RESULT.md:1-30"
+  ],
+  "state": "ready",
+  "steps": [
+    "List every number quoted in the report",
+    "Re-run the saved script from a scratch copy or read its saved output; copy the number found",
+    "Write FOUND/DIFF/NOT_IN_DATA per row, counts on line 1"
+  ],
+  "tests": "audit card, output file is the test; each row quotes the source line it was matched to; repo files stay byte-identical (git diff empty)",
+  "title": "[GEMINI] blind re-read of wavetrend_2026-10-17 RESULT.md: every number against counts/ and make_result.py",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

@@ -1,0 +1,515 @@
+{
+ "now": "2026-10-24T10:00:00Z",
+ "cases": [
+  {
+   "id": "valid_row",
+   "note": "clean extraction is stored and tradable",
+   "video_id": "GGGGGGGGGGG",
+   "published": "2026-10-23",
+   "analyst": "Krown",
+   "transcript": "[00:00:01] so bitcoin needs to hold 80K\n[00:00:09] and then we target 87K with stop under 79K\n",
+   "extract": {
+    "bias": "BULLISH",
+    "symbols": [
+     "btc"
+    ],
+    "quotes": [
+     "bitcoin needs to hold 80K"
+    ],
+    "trades": [
+     {
+      "asset": "BTC",
+      "direction": "LONG",
+      "entry": "80K hold",
+      "target": "87K",
+      "invalidation": "79K",
+      "quote": "we target 87K with stop under 79K"
+     }
+    ],
+    "pointers": [
+     "80K"
+    ]
+   },
+   "expect": {
+    "counts": [
+     1,
+     1,
+     0
+    ],
+    "stored": [
+     "GGGGGGGGGGG"
+    ],
+    "query": [
+     "GGGGGGGGGGG"
+    ],
+    "extract_calls": 1
+   }
+  },
+  {
+   "id": "fabricated_quote",
+   "note": "invented top-level quote rejects the whole row",
+   "video_id": "GGGGGGGGGGG",
+   "published": "2026-10-23",
+   "analyst": "Krown",
+   "transcript": "[00:00:01] so bitcoin needs to hold 80K\n[00:00:09] and then we target 87K with stop under 79K\n",
+   "extract": {
+    "bias": "BULLISH",
+    "symbols": [
+     "btc"
+    ],
+    "quotes": [
+     "bitcoin will moon to 500K tomorrow"
+    ],
+    "trades": [
+     {
+      "asset": "BTC",
+      "direction": "LONG",
+      "entry": "80K hold",
+      "target": "87K",
+      "invalidation": "79K",
+      "quote": "we target 87K with stop under 79K"
+     }
+    ],
+    "pointers": [
+     "80K"
+    ]
+   },
+   "expect": {
+    "counts": [
+     0,
+     0,
+     1
+    ],
+    "reason": "quote not in transcript",
+    "query": []
+   }
+  },
+  {
+   "id": "altered_word_quote",
+   "note": "one altered word is not verbatim",
+   "video_id": "GGGGGGGGGGG",
+   "published": "2026-10-23",
+   "analyst": "Krown",
+   "transcript": "[00:00:01] so bitcoin needs to hold 80K\n[00:00:09] and then we target 87K with stop under 79K\n",
+   "extract": {
+    "bias": "BULLISH",
+    "symbols": [
+     "btc"
+    ],
+    "quotes": [
+     "bitcoin needs to break 80K"
+    ],
+    "trades": [
+     {
+      "asset": "BTC",
+      "direction": "LONG",
+      "entry": "80K hold",
+      "target": "87K",
+      "invalidation": "79K",
+      "quote": "we target 87K with stop under 79K"
+     }
+    ],
+    "pointers": [
+     "80K"
+    ]
+   },
+   "expect": {
+    "counts": [
+     0,
+     0,
+     1
+    ],
+    "reason": "quote not in transcript",
+    "query": []
+   }
+  },
+  {
+   "id": "trade_quote_not_in_transcript",
+   "note": "trade.quote absent from transcript",
+   "video_id": "GGGGGGGGGGG",
+   "published": "2026-10-23",
+   "analyst": "Krown",
+   "transcript": "[00:00:01] so bitcoin needs to hold 80K\n[00:00:09] and then we target 87K with stop under 79K\n",
+   "extract": {
+    "bias": "BULLISH",
+    "symbols": [
+     "btc"
+    ],
+    "quotes": [
+     "bitcoin needs to hold 80K"
+    ],
+    "trades": [
+     {
+      "asset": "BTC",
+      "direction": "LONG",
+      "entry": "80K hold",
+      "target": "87K",
+      "invalidation": "79K",
+      "quote": "short it at 12K"
+     }
+    ],
+    "pointers": [
+     "80K"
+    ]
+   },
+   "expect": {
+    "counts": [
+     0,
+     0,
+     1
+    ],
+    "reason": "quote not in transcript",
+    "query": []
+   }
+  },
+  {
+   "id": "wrong_direction",
+   "note": "direction outside LONG/SHORT",
+   "video_id": "GGGGGGGGGGG",
+   "published": "2026-10-23",
+   "analyst": "Krown",
+   "transcript": "[00:00:01] so bitcoin needs to hold 80K\n[00:00:09] and then we target 87K with stop under 79K\n",
+   "extract": {
+    "bias": "BULLISH",
+    "symbols": [
+     "btc"
+    ],
+    "quotes": [
+     "bitcoin needs to hold 80K"
+    ],
+    "trades": [
+     {
+      "asset": "BTC",
+      "direction": "SIDEWAYS",
+      "entry": "80K hold",
+      "target": "87K",
+      "invalidation": "79K",
+      "quote": "we target 87K with stop under 79K"
+     }
+    ],
+    "pointers": [
+     "80K"
+    ]
+   },
+   "expect": {
+    "counts": [
+     0,
+     0,
+     1
+    ],
+    "reason": "direction",
+    "query": []
+   }
+  },
+  {
+   "id": "trade_empty_quote",
+   "note": "trade with an empty quote has no evidence",
+   "video_id": "GGGGGGGGGGG",
+   "published": "2026-10-23",
+   "analyst": "Krown",
+   "transcript": "[00:00:01] so bitcoin needs to hold 80K\n[00:00:09] and then we target 87K with stop under 79K\n",
+   "extract": {
+    "bias": "BULLISH",
+    "symbols": [
+     "btc"
+    ],
+    "quotes": [
+     "bitcoin needs to hold 80K"
+    ],
+    "trades": [
+     {
+      "asset": "BTC",
+      "direction": "LONG",
+      "entry": "80K hold",
+      "target": "87K",
+      "invalidation": "79K",
+      "quote": ""
+     }
+    ],
+    "pointers": [
+     "80K"
+    ]
+   },
+   "expect": {
+    "counts": [
+     0,
+     0,
+     1
+    ],
+    "reason": "empty quote",
+    "query": []
+   }
+  },
+  {
+   "id": "blank_fragment_quote_dropped",
+   "note": "blank quote entries are dropped, real ones kept",
+   "video_id": "GGGGGGGGGGG",
+   "published": "2026-10-23",
+   "analyst": "Krown",
+   "transcript": "[00:00:01] so bitcoin needs to hold 80K\n[00:00:09] and then we target 87K with stop under 79K\n",
+   "extract": {
+    "bias": "BULLISH",
+    "symbols": [
+     "btc"
+    ],
+    "quotes": [
+     "bitcoin needs to hold 80K",
+     "   ",
+     ""
+    ],
+    "trades": [
+     {
+      "asset": "BTC",
+      "direction": "LONG",
+      "entry": "80K hold",
+      "target": "87K",
+      "invalidation": "79K",
+      "quote": "we target 87K with stop under 79K"
+     }
+    ],
+    "pointers": [
+     "80K"
+    ]
+   },
+   "expect": {
+    "counts": [
+     1,
+     1,
+     0
+    ],
+    "stored": [
+     "GGGGGGGGGGG"
+    ],
+    "stored_quotes": 1
+   }
+  },
+  {
+   "id": "quote_spanning_timestamp",
+   "note": "verbatim quote across a timestamp line still verifies",
+   "video_id": "GGGGGGGGGGG",
+   "published": "2026-10-23",
+   "analyst": "Krown",
+   "transcript": "[00:00:01] so bitcoin needs to hold 80K\n[00:00:09] and then we target 87K with stop under 79K\n",
+   "extract": {
+    "bias": "BULLISH",
+    "symbols": [
+     "btc"
+    ],
+    "quotes": [
+     "hold 80K and then we target 87K"
+    ],
+    "trades": [
+     {
+      "asset": "BTC",
+      "direction": "LONG",
+      "entry": "80K hold",
+      "target": "87K",
+      "invalidation": "79K",
+      "quote": "we target 87K with stop under 79K"
+     }
+    ],
+    "pointers": [
+     "80K"
+    ]
+   },
+   "expect": {
+    "counts": [
+     1,
+     1,
+     0
+    ],
+    "stored": [
+     "GGGGGGGGGGG"
+    ]
+   }
+  },
+  {
+   "id": "no_view_video",
+   "note": "NO_VIEW video is stored but never tradable",
+   "video_id": "GGGGGGGGGGG",
+   "published": "2026-10-23",
+   "analyst": "Krown",
+   "transcript": "[00:00:01] so bitcoin needs to hold 80K\n[00:00:09] and then we target 87K with stop under 79K\n",
+   "extract": {
+    "bias": "NO_VIEW",
+    "symbols": [],
+    "quotes": [],
+    "trades": [],
+    "pointers": []
+   },
+   "expect": {
+    "counts": [
+     1,
+     1,
+     0
+    ],
+    "stored": [
+     "GGGGGGGGGGG"
+    ],
+    "tradable": false
+   }
+  },
+  {
+   "id": "missing_expires_at",
+   "note": "stored row without expires_at is never served",
+   "video_id": "MMMMMMMMMMM",
+   "published": "2026-10-23",
+   "analyst": "Krown",
+   "transcript": null,
+   "extract": null,
+   "expect": {
+    "counts": [
+     0,
+     1,
+     0
+    ],
+    "query": []
+   },
+   "seed_rows": [
+    {
+     "analyst": "Krown",
+     "video_id": "MMMMMMMMMMM",
+     "published": "2026-10-23",
+     "bias": "BULLISH",
+     "quotes": [
+      "bitcoin needs to hold 80K"
+     ],
+     "trades": [
+      {
+       "asset": "BTC",
+       "direction": "LONG",
+       "entry": "80K hold",
+       "target": "87K",
+       "invalidation": "79K",
+       "quote": "we target 87K with stop under 79K"
+      }
+     ],
+     "pointers": [
+      "80K"
+     ],
+     "symbols": [
+      "BTC"
+     ],
+     "quote_verified": true
+    }
+   ]
+  },
+  {
+   "id": "expired_row",
+   "note": "stored row past its expires_at is never served",
+   "video_id": "XXXXXXXXXXX",
+   "published": "2026-10-23",
+   "analyst": "Krown",
+   "transcript": null,
+   "extract": null,
+   "expect": {
+    "counts": [
+     0,
+     1,
+     0
+    ],
+    "query": []
+   },
+   "seed_rows": [
+    {
+     "analyst": "Krown",
+     "video_id": "XXXXXXXXXXX",
+     "published": "2026-10-23",
+     "bias": "BULLISH",
+     "quotes": [
+      "bitcoin needs to hold 80K"
+     ],
+     "trades": [
+      {
+       "asset": "BTC",
+       "direction": "LONG",
+       "entry": "80K hold",
+       "target": "87K",
+       "invalidation": "79K",
+       "quote": "we target 87K with stop under 79K"
+      }
+     ],
+     "pointers": [
+      "80K"
+     ],
+     "symbols": [
+      "BTC"
+     ],
+     "quote_verified": true,
+     "expires_at": "2026-10-24T09:00:00Z"
+    }
+   ]
+  },
+  {
+   "id": "duplicate_video_id",
+   "note": "video already in store with a verdict is not extracted again",
+   "video_id": "DDDDDDDDDDD",
+   "published": "2026-10-23",
+   "analyst": "Krown",
+   "transcript": "[00:00:01] so bitcoin needs to hold 80K\n[00:00:09] and then we target 87K with stop under 79K\n",
+   "extract": {
+    "bias": "BULLISH",
+    "symbols": [
+     "btc"
+    ],
+    "quotes": [
+     "bitcoin needs to hold 80K"
+    ],
+    "trades": [
+     {
+      "asset": "BTC",
+      "direction": "LONG",
+      "entry": "80K hold",
+      "target": "87K",
+      "invalidation": "79K",
+      "quote": "we target 87K with stop under 79K"
+     }
+    ],
+    "pointers": [
+     "80K"
+    ]
+   },
+   "expect": {
+    "counts": [
+     0,
+     1,
+     0
+    ],
+    "stored": [
+     "DDDDDDDDDDD"
+    ],
+    "extract_calls": 0
+   },
+   "seed_rows": [
+    {
+     "analyst": "Krown",
+     "video_id": "DDDDDDDDDDD",
+     "published": "2026-10-23",
+     "bias": "BULLISH",
+     "quotes": [
+      "bitcoin needs to hold 80K"
+     ],
+     "trades": [
+      {
+       "asset": "BTC",
+       "direction": "LONG",
+       "entry": "80K hold",
+       "target": "87K",
+       "invalidation": "79K",
+       "quote": "we target 87K with stop under 79K"
+      }
+     ],
+     "pointers": [
+      "80K"
+     ],
+     "symbols": [
+      "BTC"
+     ],
+     "quote_verified": true,
+     "expires_at": "2026-10-28T00:00:00Z"
+    }
+   ],
+   "seed_verdict": true
+  }
+ ]
+}
