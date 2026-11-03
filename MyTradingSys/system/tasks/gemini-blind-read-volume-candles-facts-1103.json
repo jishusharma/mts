@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T19:01:45Z",
   "commands": [],
   "created": "2026-11-03T17:17:43Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "FOUND: 58 | DIFF: 0 | NOT_IN_DATA: 0 in MyTradingSys/research/gemini_audits_2026-11-03/vol",
+      "ref": "80042df7c",
+      "utc": "2026-11-03T19:01:45Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +45,12 @@
   "refined_by": "",
   "refreshed": "2026-11-03T17:17:43Z",
   "refs": [],
-  "result": "",
+  "result": "FOUND: 58 | DIFF: 0 | NOT_IN_DATA: 0 in MyTradingSys/research/gemini_audits_2026-11-03/volume_candles_facts_blind_read.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/volume_candles_ma.md (read)",
     "MyTradingSys/research/volume_2026-10-09 (read)",
@@ -53,12 +65,13 @@
   "sources": [
     "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/volume_candles_ma.md:1-30"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "List every number with its cited file:line (sections 0 and 1)",
     "Open each cite blind, copy the number found",
     "Write FOUND/DIFF/NOT_IN_DATA per row, counts on line 1"
   ],
+  "taken": "2026-11-03T19:01:45Z",
   "tests": "audit card, output file is the test; each row quotes the line it opened",
   "title": "[GEMINI] Blind read of volume_candles_ma layer facts (Claude re-derive 46ee60ea8)",
   "weight": "ROUTINE",
