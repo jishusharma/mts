@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-03T17:17:41Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-03/c26_prereg_blind_read.md has one row per number in PRE_REG_C26_REGIME.md lines 82-93 plus one row per TRIAL_REGISTRY_c26_roadmap.csv row: FOUND / DIFF / NOT_IN_DATA; line 1 holds the three counts (expect 3 power rows + 8 registry rows = 11 checked minimum).",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Cross-vendor check of Claude's C26 Phase 2 pre-registration: recompute the power-gate rows (n 695/108, sd 1.3, m 4, cost 0.10 and 0.14: MDE, total, n needed 471/735) and the 8 TRIAL_REGISTRY rows. Facts only.",
+  "id": "gemini-blind-read-c26-prereg-power-1103",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "c26 phase 2: re-ship frozen regime-ladder pre-reg with rebuilt trial ledger",
+      "ref": "9b2cd4a2542c",
+      "utc": "2026-11-03T10:28:31Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "9b2cd4a2542c c26 phase 2: re-ship frozen regime-ladder pre-reg with rebuilt trial ledger",
+      "ref": "MyTradingSys/research/c26_roadmap_2026-11-01/PRE_REG_C26_REGIME.md",
+      "utc": "2026-11-03T10:28:31Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini effort low: load as <id>:low (gemini_queue.py run <id>:low), Argon JIS-LAPTOP. Final report ends with a Noticed: line. Facts only, no verdicts. Producer is Claude (never a Gemini result). Public Binance data OK if F: not mounted; no VALIDATION or HOLDOUT reads. PLANNER 2026-11-03 planner-a-1103b. REVIEWED:2026-11-03 T0-ONLY",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T17:17:42Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/c26_roadmap_2026-11-01/PRE_REG_C26_REGIME.md (read)",
+    "MyTradingSys/research/c26_roadmap_2026-11-01/TRIAL_REGISTRY_c26_roadmap.csv (read)",
+    "MyTradingSys/backtest/layers/FORMULAS.md (read)",
+    "MyTradingSys/research/gemini_audits_2026-11-03/c26_prereg_blind_read.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the PRE_REG or registry; no live-tree edit, no deploy, no .secrets or .env read; no P&L rerun"
+  ],
+  "scope_sha": "9b2cd4a2542c",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/c26_roadmap_2026-11-01/PRE_REG_C26_REGIME.md:82-93"
+  ],
+  "state": "ready",
+  "steps": [
+    "Restate the gate from the formula, before opening the PRE_REG numbers",
+    "Compute MDE and n needed for the 3 rows; compare with lines 87-89",
+    "Check the 8 registry rows against the PRE_REG text; write FOUND/DIFF/NOT_IN_DATA, counts on line 1"
+  ],
+  "tests": "audit card, output file is the test; expected numbers come from FORMULAS.md and a hand calculation, not from prereg_gate.py output alone (run it only as a second column)",
+  "title": "[GEMINI] Blind read of PRE_REG_C26_REGIME.md power gate and registry (Claude result 9d9e1bdb4)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-03T17:17:45Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-03/research_kit_mutation_rerun.md has 8 rows (one per mutation in the GPT table): FOUND (same killer test) / DIFF (different or no killer) / NOT_IN_DATA (mutation not reproducible from the text); line 1 holds the three counts and the pass count of test_research_kit.py (30 expected).",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Cross-vendor check of the GPT report 2026-11-01_gpt-mutation-research-kit.md: apply each of its 8 mutations to a scratch copy of backtest/research_kit.py and see which test kills it, then compare with the table.",
+  "id": "gemini-mutation-rerun-research-kit-1103",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: mutation-kill audit of backtest/research_kit.py",
+      "ref": "52ab3e0ca3b4",
+      "utc": "2026-11-01T19:09:02Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "52ab3e0ca3b4 Result: mutation-kill audit of backtest/research_kit.py",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-mutation-research-kit.md",
+      "utc": "2026-11-01T19:09:02Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini effort low: load as <id>:low (gemini_queue.py run <id>:low), Argon JIS-LAPTOP. Final report ends with a Noticed: line. Facts only, no verdicts. Producer is Claude (never a Gemini result). Public Binance data OK if F: not mounted; no VALIDATION or HOLDOUT reads. PLANNER 2026-11-03 planner-a-1103b. REVIEWED:2026-11-03 T0-ONLY",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T17:17:46Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-mutation-research-kit.md (read)",
+    "MyTradingSys/backtest/research_kit.py (read, copy to scratch)",
+    "MyTradingSys/tests/test_research_kit.py (read)",
+    "MyTradingSys/research/gemini_audits_2026-11-03/research_kit_mutation_rerun.md (new)"
+  ],
+  "scope_out": [
+    "no edit to research_kit.py or its tests; no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "52ab3e0ca3b4",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-mutation-research-kit.md:1-20"
+  ],
+  "state": "ready",
+  "steps": [
+    "Run test_research_kit.py unmutated, record pass count",
+    "For each of the 8 mutations edit the scratch copy, run the tests, record the failing test",
+    "Write the table, counts on line 1"
+  ],
+  "tests": "audit card, output file is the test; mutants are made in a scratch copy outside the repo, the repo file stays byte-identical (git diff empty)",
+  "title": "[GEMINI] Re-run the 8 mutations of the GPT research_kit mutation audit (52ab3e0ca)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

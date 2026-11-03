@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-03T17:17:43Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-03/volume_candles_facts_blind_read.md has one row per cited number in sections 0 and 1 (volume) of layer_facts/volume_candles_ma.md: FOUND / DIFF / NOT_IN_DATA; line 1 holds the three counts and the number of rows checked (at least 20).",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Cross-vendor check of the re-derived fact sheet volume_candles_ma.md (Claude: 33 facts kept, 12 fixed, 14 deleted): open each cited file:line and test whether the number or quote is there. Facts only.",
+  "id": "gemini-blind-read-volume-candles-facts-1103",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "docs: re-derive volume_candles_ma layer facts from trunk (DEV 2022-01-01..2024-06-30, 14 b",
+      "ref": "46ee60ea8954",
+      "utc": "2026-11-02T13:08:02Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "46ee60ea8954 docs: re-derive volume_candles_ma layer facts from trunk (DEV 2022-01-01..202",
+      "ref": "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/volume_candles_ma.md",
+      "utc": "2026-11-02T13:08:02Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini effort low: load as <id>:low (gemini_queue.py run <id>:low), Argon JIS-LAPTOP. Final report ends with a Noticed: line. Facts only, no verdicts. Producer is Claude (never a Gemini result). Public Binance data OK if F: not mounted; no VALIDATION or HOLDOUT reads. PLANNER 2026-11-03 planner-a-1103b. REVIEWED:2026-11-03 T0-ONLY",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T17:17:43Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/volume_candles_ma.md (read)",
+    "MyTradingSys/research/volume_2026-10-09 (read)",
+    "MyTradingSys/backtest/splits.py (read)",
+    "MyTradingSys/research/gemini_audits_2026-11-03/volume_candles_facts_blind_read.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the fact sheet; no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "46ee60ea8954",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/gemini_burn_2026-10-25/layer_facts/volume_candles_ma.md:1-30"
+  ],
+  "state": "ready",
+  "steps": [
+    "List every number with its cited file:line (sections 0 and 1)",
+    "Open each cite blind, copy the number found",
+    "Write FOUND/DIFF/NOT_IN_DATA per row, counts on line 1"
+  ],
+  "tests": "audit card, output file is the test; each row quotes the line it opened",
+  "title": "[GEMINI] Blind read of volume_candles_ma layer facts (Claude re-derive 46ee60ea8)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

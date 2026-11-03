@@ -1,34 +1,82 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "closed": "2026-11-03T17:26:06Z",
+  "commands": [
+    "python -m pytest MyTradingSys/research/eagle_eyes_picture_2026-10-28/test_docstring_windows.py -q",
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
   "created": "2026-11-03T16:58:30Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Test test_docstring_windows.py asserts ethbtc_wt_top.py contains no '2025-06' in its docstring and the C38 row says 2024-06; it fails on the pre-change file; Result line states FOUND 7 / DIFF 0 on the on-disk window and DIFF 5 on the old stated window.",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Gemini blind read (gemini_audits_2026-11-03/eagle_1103_blind_read.md): the commit 3f73289b6 numbers reproduce (FOUND 7, DIFF 0, NOT_IN_DATA 0) only on the archive on disk, where ETHUSDT ends 2024-06; ethbtc_wt_top.py docstring (:3) says 2022-01..2025-06, and on that stated window 5 of 7 numbers DIFF. Make the docstring state the real window; do not rerun (F: data not mounted here).",
   "id": "eagle-11-03-counts-us-open-roundtrip-py-",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "f8bd2724: ethbtc_wt_top docstring states 2022-01..2024-06; us_open_roundtrip docstring not",
+      "ref": "f8bd27247",
+      "utc": "2026-11-03T17:26:06Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nuc/builder-b-1103-pass",
+      "ref": "5b711fc1b032",
+      "utc": "2026-11-03T16:55:01Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "3f73289b65ef Eagle_Eyes 11-03: US-open round-trip count (C37), ETHBTC WT vs Krown count (C",
+      "ref": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md",
+      "utc": "2026-11-03T14:37:14Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-03 T0-ONLY (ROUTINE, docstrings only, planner DECISION OURS). Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-03T17:16:37Z",
   "refs": [],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "result": "f8bd2724: ethbtc_wt_top docstring states 2022-01..2024-06; us_open_roundtrip docstring notes skip + DST; C37 verification note",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/ethbtc_wt_top.py",
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/us_open_roundtrip.py",
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md",
+    "scripts/dev/extra_tests.tsv"
+  ],
+  "scope_out": [
+    "No rerun, no ETH data top-up (own card), no logic change (HLC3, dead-zone and r60 clamp findings stay as notes), no VALIDATION or HOLDOUT reads"
+  ],
+  "scope_sha": "5b711fc1b032",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/gemini_audits_2026-11-03/eagle_1103_blind_read.md:1-8",
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/ethbtc_wt_top.py:3"
+  ],
+  "state": "done",
+  "steps": [
+    "Read eagle_1103_blind_read.md sections 3 and 4 and the three scope_in files",
+    "Write the docstring test first; run it; confirm it fails",
+    "Edit the two docstrings, the END comment and the C37/C38 rows; rerun test; ship"
+  ],
+  "taken": "2026-11-03T17:26:06Z",
+  "tests": "research/eagle_eyes_picture_2026-10-28/test_docstring_windows.py: reads the docstrings and the C37/C38 rows as text; fail-first on the current ethbtc_wt_top.py (docstring says 2025-06); passes after the edit. Expected values come from the audit md lines, not from the scripts.",
   "title": "Eagle 11-03 counts: us_open_roundtrip.py / ethbtc_wt_top.py docstrings claim 2022-01..2025-06 but numbers come from an archive ending 2024-06 (ETH); 5 of 7 numbers DIFF on the stated window (gemini_audits_2026-11-03/eagle_1103_blind_read.md). Fix docstrings or rerun on full window; update BACKTEST_CANDIDATES C37/C38",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
