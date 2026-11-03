@@ -7,10 +7,12 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-03T17:17:50Z",
-    "misses": 61,
-    "reads": [],
-    "session": "agent-a458f53f861f95238"
+    "folded": "2026-11-03T17:22:12Z",
+    "misses": 59,
+    "reads": [
+      "scripts/dev/extra_tests.tsv"
+    ],
+    "session": "agent-ab07dd8f7b3422996"
   },
   "created": "2026-11-03T16:58:31Z",
   "depends_on": [],
