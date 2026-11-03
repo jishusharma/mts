@@ -30,7 +30,7 @@ appears in a prompt, argument, log, signal or commit (`export ANTHROPIC_API_KEY=
 
 Rules: one headless job at a time per machine; every job gets `--max-budget-usd`; a job that fails twice is a card note, not a third
 run; results ship through `sync.py ship` like any Builder; the launcher records the job's cost from the result JSON in
-`research/COST_FIGURES.md` the same day. Cards that need the operator (fable-run7, c26-phase2) or the live tree never go here.
+the Spent ledger below the same day (COST_FIGURES.md is the fee-figure note, not a ledger). Cards that need the operator (fable-run7, c26-phase2) or the live tree never go here.
 
 ## Launch recipe (this machine or JIS-NUC, both hold the key file)
 ```
@@ -41,3 +41,8 @@ env -u CLAUDE_CODE_OAUTH_TOKEN -u CLAUDECODE claude -p "$(cat prompt.txt)" --mod
   --output-format stream-json --verbose < /dev/null > F:/MTS/api_runs/<card>/out.jsonl 2> F:/MTS/api_runs/<card>/err.txt
 ```
 Run it from the worktree, in the background; the last line of out.jsonl is the result record (cost, turns, final text).
+
+## Spent (from the result record of each run)
+| Date | Job | Model | Cost USD | Turns | Outcome |
+|---|---|---|---|---|---|
+| 2026-11-04 | rumers-testable-rules-dev-backtest | Sonnet 5.5 | 1.26 | 49 | shipped 561df2f0; 0 of 5 rules pass DEV; cap was 15 |
