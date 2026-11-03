@@ -118,5 +118,31 @@ class TestPlumbing(unittest.TestCase):
         self.assertIn("volume_fvg", res2)
 
 
+class TestDetectorMode(unittest.TestCase):
+    """Strict (2afc18be6 defaults) vs legacy reading: the old fixture bar closes inside the level."""
+    KW = dict(left=1, right=1, level_tolerance=0.001, aggression_k=2.0, record_lookback=3)
+
+    def setUp(self):
+        from MyTradingSys.backtest.layers.fabio.test_fabio_escalation import _escalation_fixture
+        self.bars = _escalation_fixture()
+        self.prev = rb.DETECTOR_MODE
+
+    def tearDown(self):
+        rb.DETECTOR_MODE = self.prev
+
+    def test_default_mode_is_strict(self):
+        self.assertEqual(self.prev, "strict")
+        self.assertEqual(rb.legacy_flags("strict"), ({"same_level_only": True}, {"require_break": True}))
+        self.assertEqual(rb.legacy_flags("legacy"), ({"same_level_only": False}, {"require_break": False}))
+        with self.assertRaises(ValueError):
+            rb.legacy_flags("bogus")
+
+    def test_escalation_fn_strict_drops_inside_level_event(self):
+        rb.DETECTOR_MODE = "strict"
+        self.assertEqual(rb.escalation_fn(self.bars, **self.KW), [])
+        rb.DETECTOR_MODE = "legacy"
+        self.assertEqual([e["i"] for e in rb.escalation_fn(self.bars, **self.KW)], [6])
+
+
 if __name__ == "__main__":
     unittest.main()
