@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-03T15:59:57Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-03/roadmap_review_blind_read.md: line 1 holds FOUND / DIFF / NOT_IN_DATA counts; one row per number in the table with your number, the command and the commit sha you counted at.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Open MyTradingSys/research/layer_lab/roadmap_critical_review_1103/REVIEW.md (written by GPT/Sol; Gemini is cross-vendor). Recount its Where-we-are table from the repo: task states and ready lanes (system/tasks/*.json), VERDICTS.csv rows by verdict, promoted_setups entries. Counts move, so report your number at your commit next to the doc's.",
+  "id": "gemini-blind-read-roadmap-review-1103",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "card: close ask-p0-47-h3 as BLOCKED (power gate, f736dd332)",
+      "ref": "48d735bcce28",
+      "utc": "2026-11-03T15:55:49Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "3382f8c77aa6 MTS critical-path review: prioritize independent evidence and safe closure",
+      "ref": "MyTradingSys/research/layer_lab/roadmap_critical_review_1103/REVIEW.md",
+      "utc": "2026-11-03T15:49:03Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini effort low: load as <id>:low (gemini_queue.py run <id>:low). Final report ends with a Noticed: line. Facts only, no verdicts. D11_PROGRAMME s6 seed (blind read of new research results). PLANNER 2026-11-03 planner-b-1103-2. REVIEWED:2026-11-03 T0-ONLY",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T15:59:58Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/roadmap_critical_review_1103/REVIEW.md (read)",
+    "MyTradingSys/research/VERDICTS.csv (read)",
+    "MyTradingSys/system/tasks/ (read)",
+    "MyTradingSys/research/gemini_audits_2026-11-03/roadmap_review_blind_read.md (new)"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change outside the output file; no VALIDATION or HOLDOUT read; counts only, no opinion on the roadmap order"
+  ],
+  "scope_sha": "48d735bcce28",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/layer_lab/roadmap_critical_review_1103/REVIEW.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "list every number in the Where-we-are table",
+    "recount each with your own command; note the commit you are on (counts drift, mark DRIFT not DIFF when the gap is later commits)",
+    "write FOUND / NOT_IN_DATA / DIFF per number, counts on line 1"
+  ],
+  "tests": "see done_when (audit card, output file is the test)",
+  "title": "[GEMINI] blind read of layer_lab/roadmap_critical_review_1103/REVIEW.md: the snapshot count table vs the repo (task states, VERDICTS rows, worktrees)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
