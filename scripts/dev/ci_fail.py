@@ -13,7 +13,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import ci_watch  # noqa: E402
 
-HIT = re.compile(r"(^|\s)(FAILED|ERROR) |Step \S+: FAIL|\d+ failed")
+HIT = re.compile(r"(^|\s)(FAILED|ERROR) |(^|\s)FAIL \S+\.py|Step \S+: FAIL|\d+ failed")
 STAMP = re.compile(r"^\d{4}-\d\d-\d\dT[\d:.]+Z ")
 
 

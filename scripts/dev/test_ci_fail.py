@@ -71,3 +71,10 @@ def test_exit_code_is_zero_when_it_could_report_red_ci_and_one_only_without_gith
     monkeypatch.setattr(C.ci_watch, "fetch", lambda: (_ for _ in ()).throw(OSError("offline")))
     assert C.run() == 1
     assert "could not reach GitHub" in capsys.readouterr().out
+
+
+def test_extra_test_fail_lines_name_the_file():
+    # run 41675390817 showed only "Step 3xt.1: FAIL" because the extra-test line "FAIL scripts/dev/x.py" did not match
+    log = ("2026-11-03T17:00:01.1Z Step 3xt.1: FAIL\n2026-11-03T17:00:02.2Z FAIL scripts/dev/test_x.py\n"
+           "FAIL MyTradingSys/research/a/test_y.py\n2026-11-03T17:00:03.3Z PASS scripts/dev/test_ok.py\nFAILURE rate fine\n")
+    assert C.parse_failures(log) == ["Step 3xt.1: FAIL", "FAIL scripts/dev/test_x.py", "FAIL MyTradingSys/research/a/test_y.py"]
