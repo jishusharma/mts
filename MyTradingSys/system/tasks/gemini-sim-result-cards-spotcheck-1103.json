@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T16:48:54Z",
   "commands": [],
   "created": "2026-11-03T15:59:57Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_audits_2026-11-03/sim_result_cards_spotcheck.md (FOUND: 1 | D",
+      "ref": "a239b5ce3",
+      "utc": "2026-11-03T16:48:54Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +45,12 @@
   "refined_by": "",
   "refreshed": "2026-11-03T16:00:01Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/gemini_audits_2026-11-03/sim_result_cards_spotcheck.md (FOUND: 1 | DIFF: 18 | NOT_IN_DATA: 21 strict; quoted numbers FOUND: 35 | DIFF: 1 | NOT_IN_DATA: 4)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/sim_desk/api_review/RESULTS_CARDS_2026-11-03.md",
     "MyTradingSys/research/sim_desk/results/",
@@ -50,12 +62,13 @@
   "scope_sha": "9e31182d4d34",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "pick every 8th row of the Cards table (40 rows)",
     "open each results/<id>.json and compare quoted numbers, verdict word and Keep line",
     "write the row table with first-line counts"
   ],
+  "taken": "2026-11-03T16:48:54Z",
   "tests": "n/a doc audit: output file has 40 rows, each cites a JSON key",
   "title": "[GEMINI] Spot-check 40 sim result cards (Haiku-written) against their own results/*.json: numbers, verdict word, Keep line",
   "weight": "ROUTINE",
