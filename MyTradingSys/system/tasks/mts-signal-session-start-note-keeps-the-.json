@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T16:00:52Z",
   "commands": [],
   "created": "2026-10-22T18:21:41Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "mts-signal-session-start-note-keeps-the-",
   "lane": "HAIKU",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "1f069de76 test_mts_signal 55/55",
+      "ref": "481470f64",
+      "utc": "2026-11-03T16:00:52Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -31,7 +38,12 @@
   "refined_by": "Session_Planner",
   "refreshed": "2026-11-03T13:07:12Z",
   "refs": [],
-  "result": "",
+  "result": "1f069de76 test_mts_signal 55/55",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/mts_signal.py",
     "scripts/dev/test_mts_signal.py"
@@ -46,12 +58,13 @@
   "sources": [
     "scripts/dev/mts_signal.py:175-181,400"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read test_mts_signal.py test_hook_auto_sends_claim_and_ship for the SessionStart fixture.",
     "Write the failing test with a 60 char folder name.",
     "Shorten the name at line 400; leave clean() alone."
   ],
+  "taken": "2026-11-03T16:00:52Z",
   "tests": "scripts/dev/test_mts_signal.py::test_session_start_keeps_long_folder_name fails now (text contains [cut]) and passes after.",
   "title": "mts_signal: session-start note keeps the folder name (32+ char names are cut as secrets)",
   "weight": "ROUTINE",

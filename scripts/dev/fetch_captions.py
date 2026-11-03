@@ -17,9 +17,12 @@ from pathlib import Path
 
 import fetch_captions_timed as guard   # shared YouTube guard: budget, blocked-until record, --status
 
-import yt_dlp
+try:
+    import yt_dlp
+except ImportError:   # CI pip line lacks it; the fetcher is a desktop tool, tests inject a stub
+    yt_dlp = None
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT =Path(__file__).resolve().parents[2]
 OUT = ROOT / "raw_transcripts_canonical"
 ID_RE = re.compile(r"(?:v=|youtu\.be/|^)([A-Za-z0-9_-]{11})(?:[&?#]|$)")
 
@@ -109,6 +112,9 @@ def main(argv):
     gate = guard.guard_gate(a)
     if gate is not None:
         return gate
+    if yt_dlp is None:
+        print("yt_dlp not installed: pip install yt-dlp")
+        return 2
     if not a.videos:
         ap.error("give video ids/URLs")
     time.sleep(a.wait)
