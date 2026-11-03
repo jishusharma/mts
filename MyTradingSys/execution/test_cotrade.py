@@ -821,11 +821,11 @@ class TestLadderMath(unittest.TestCase):
     def test_worst_case_design_table_example(self):
         # DESIGN.md s2: P0 100000, +0.4 % rungs, stop 0.4 % over the last rung, 5 rungs filled -> $18.38
         last = 100000 * (1 + 0.004 * 4)
-        stop = last * 1.004
+        stop = round(last * 1.004 * 2) / 2   # tick-aligned stop
         pl = cotrade.ladder_plan("sell", 100000, 5, 100, stop, spacing_pct=0.4)
         self.assertTrue(pl["ok"], pl)
         self.assertAlmostEqual(pl["worst_loss_usd"], 18.38, places=2)
-        pl3 = cotrade.ladder_plan("sell", 100000, 3, 100, 100800 * 1.004, spacing_pct=0.4)
+        pl3 = cotrade.ladder_plan("sell", 100000, 3, 100, round(100800 * 1.004 * 2) / 2, spacing_pct=0.4)
         self.assertAlmostEqual(pl3["worst_loss_usd"], 4.00, places=2)
         self.assertEqual(pl3["total"], 600)
 
@@ -848,6 +848,12 @@ class TestLadderMath(unittest.TestCase):
         self.assertFalse(cotrade.ladder_plan("sell", 110500, 5, 100, 111500, to=111500)["ok"])
         self.assertFalse(cotrade.ladder_plan("buy", 111500, 5, 100, 110500, to=110500)["ok"])
         self.assertFalse(cotrade.ladder_plan("sell", 110500, 5, 100, None, to=111500)["ok"])
+
+    def test_non_tick_stop_refused(self):
+        pl = cotrade.ladder_plan("sell", 110500, 5, 100, 112000.3, to=111500)
+        self.assertFalse(pl["ok"])
+        self.assertTrue(any("tick" in r for r in pl["reasons"]))
+        self.assertTrue(cotrade.ladder_plan("sell", 110500, 5, 100, 112000.5, to=111500)["ok"])
 
     def test_bad_x_refused(self):
         self.assertFalse(cotrade.ladder_plan("sell", 110500, 5, 105, 112000, to=111500)["ok"])
@@ -950,6 +956,66 @@ class TestLadderPlace(Base):
         self.assertIn("close_position", c.names())
 
 
+class TestLadderPending(Base):
+    def run_ladder(self, client, **kw):
+        args = dict(said=LSAID, side="sell", frm=110500.0, steps=5, x=100, stop=112000.0, to=111500.0,
+                    client=client, account=None, journal_dir=self.jdir, halt_path=self.halt,
+                    halt_daily_loss_path=self.halt_dl, env="test")
+        args.update(kw)
+        return cotrade.place_ladder(**args)
+
+    def test_pending_record_written_before_first_rung(self):
+        seen = {}
+
+        class C(LadderClient):
+            def place(s, *a, **k):
+                seen.setdefault("lines", [x["result"]["state"] for x in self.lines()])
+                return super().place(*a, **k)
+        self.assertTrue(self.run_ladder(C())["ok"])
+        self.assertEqual(seen["lines"], ["ladder_pending"])
+
+    def _crash_after_two(self):
+        class Crash(BaseException):
+            pass
+        c = LadderClient(fail_on=3, fail_exc=Crash())
+        with self.assertRaises(Crash):
+            self.run_ladder(c)
+        c.fail_on = None
+        return c
+
+    def test_crash_mid_ladder_blocks_next_ladder_and_sync_cancels_orphans(self):
+        c = self._crash_after_two()
+        self.assertEqual(len(c.orders), 2)
+        r = self.run_ladder(c)
+        self.assertFalse(r["ok"])
+        self.assertEqual(len([x for x in c.calls if x[0] == "place"]), 3)   # no new rung
+        s = cotrade.ladder_sync(client=c, account=None, journal_dir=self.jdir, halt_path=self.halt, env="test")
+        self.assertFalse(s["ok"])
+        self.assertTrue(s.get("orphan"))
+        self.assertIn(("cancel_by_label", "cotrade"), c.calls)
+        self.assertEqual(self.lines()[-1]["result"]["state"], "ladder_failed")
+        c.orders = []
+        self.assertTrue(self.run_ladder(c)["ok"])   # reconciled: a new ladder may go
+
+    def test_orphan_with_fill_gets_a_stop(self):
+        c = self._crash_after_two()
+        c.fill_rung(1)
+        s = cotrade.ladder_sync(client=c, account=None, journal_dir=self.jdir, halt_path=self.halt, env="test")
+        self.assertFalse(s["ok"])
+        self.assertIn("stop_market", c.names())
+
+    def test_placed_ladder_blocks_journal_even_after_stop_and_empty_book(self):
+        c = LadderClient()
+        self.assertTrue(self.run_ladder(c)["ok"])
+        c.fill_rung(1)
+        cotrade.ladder_sync(client=c, account=None, journal_dir=self.jdir, halt_path=self.halt, env="test")
+        c.orders = []
+        c.position = 0     # exchange looks clean, journal still says the ladder is live
+        r = self.run_ladder(c)
+        self.assertFalse(r["ok"])
+        self.assertTrue(any("journal" in x for x in r["reasons"]))
+
+
 class TestLadderSync(Base):
     def setUp(self):
         super().setUp()
@@ -1024,6 +1090,22 @@ class TestLadderSync(Base):
         self.assertFalse(r["ok"])
         self.assertTrue(self.halt.exists())
         self.assertIn("close_position", self.c.names())
+
+    def test_dead_ladder_terminal_after_unreadable(self):
+        self.c.pos_exc = RuntimeError("api down")
+        self.sync()
+        self.c.pos_exc = None
+        r = self.sync()
+        self.assertTrue(r.get("done"))
+        self.assertEqual(self.lines()[-1]["result"]["state"], "ladder_failed")
+
+    def test_dead_ladder_terminal_after_stop_failure(self):
+        self.c.fill_rung(1)
+        self.c.stop_exc = RuntimeError("stop rejected")
+        self.sync()
+        self.c.stop_exc = None
+        self.assertTrue(self.sync().get("done"))
+        self.assertIn("ladder_failed", [x["result"].get("state") for x in self.lines()])
 
     def test_mainnet_refused(self):
         r = cotrade.ladder_sync(client=self.c, account=None, journal_dir=self.jdir, halt_path=self.halt, env="live")

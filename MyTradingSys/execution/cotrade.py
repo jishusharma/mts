@@ -104,19 +104,30 @@ def _acct(name):
     return None if name in (None, "main") else name
 
 
-UNRECONCILED = ("unknown", "hedge_pending", "hedge_placed")   # hedge_pending/placed = half-placed hedge = unknown
+UNRECONCILED = ("unknown", "hedge_pending", "hedge_placed", "ladder_pending", "ladder_placed")   # hedge_pending/placed = half-placed hedge = unknown
 RECONCILED = ("stop_placed", "stop_failed_flattened", "killed", "hedge_failed", "ladder_failed", "ladder_stopped")
 
 
 def _unknown_state(recs: list):
     """Newest non-dry-run state decides: an unreconciled one refuses new orders (fail closed)."""
+    after_stop = False
     for r in reversed(recs):
         st = (r.get("result") or {}).get("state")
         if st == "dry_run":
             continue
+        if after_stop:   # a stop placed over a live ladder does not end the ladder (only ladder_stopped/failed/kill)
+            if st in ("ladder_pending", "ladder_placed"):
+                return "journal: a ladder is still live - run ladder-sync until it is stopped, or kill"
+            if st in ("unknown", "hedge_pending", "hedge_placed") or st in RECONCILED:
+                return None
+            continue
+        if st == "stop_placed":
+            after_stop = True
+            continue
         if st in UNRECONCILED:
             return ("journal: an order state is unknown - reconcile on the exchange, then run kill or stop"
-                    + (" (half-placed hedge)" if st != "unknown" else ""))
+                    + (" (half-placed hedge)" if st.startswith("hedge") else "")
+                    + (" (ladder not stopped yet: ladder-sync)" if st.startswith("ladder") else ""))
         if st in RECONCILED:
             return None   # reconciled by a later stop/flatten/kill; error and kill_errors do NOT reconcile
     return None
@@ -703,7 +714,7 @@ def kill(client=None, account=None, journal_dir=None, halt_path=None, secret_exi
 MAX_RUNGS = 7                  # OURS: 7 rungs at X=100 is $9,600 total, the most the $10,000 account cap allows
 TICK = 0.5                     # BTC-PERPETUAL price tick
 MARGIN_LEVERAGES = (10, 20)
-_LADDER_DONE = ("ladder_stopped", "ladder_failed", "killed")
+_LADDER_DONE = ("ladder_stopped", "ladder_failed", "killed", "stop_failed_flattened")
 
 
 def double_total_sizes(x, n) -> list:
@@ -770,6 +781,8 @@ def ladder_plan(side, frm, steps, x, stop, to=None, spacing_pct=None, spacing_pt
         prices = rung_prices(side, frm, to=to, steps=steps, spacing_pct=spacing_pct, spacing_pts=spacing_pts)
     except ValueError as e:
         return {"ok": False, "reasons": [str(e)]}
+    if abs(stop - _tick(stop)) > 1e-9:
+        return {"ok": False, "reasons": [f"stop {stop} is not on the {TICK} price tick (nearest {_tick(stop)})"]}
     sizes = double_total_sizes(int(x), steps)
     last = prices[-1]
     if side == "sell" and stop <= last:
@@ -797,7 +810,9 @@ def place_ladder(said, side, frm, steps, x, stop, to=None, spacing_pct=None, spa
                  env=None, secret_exists=None) -> dict:
     """Show every rung, then place ALL rungs as resting limits (label cotrade). Every cap is checked before the
     first order; a refusal places nothing. The stop is placed by ladder_sync over the filled size, never earlier
-    (reduce-only on a flat account). A failure part-way cancels the rungs already resting (flatten + HALT if that fails)."""
+    (reduce-only on a flat account). The stop covers only the size filled as of the last ladder_sync poll (an
+    unprotected window of up to one poll; use ladder-sync --watch). Rungs are assumed to rest: post_only is not used,
+    so a rung priced through the market would fill at once. A failure part-way cancels the rungs already resting (flatten + HALT if that fails)."""
     client = client or do
     jdir = Path(journal_dir) if journal_dir else globals()["journal_dir"]()
     halt_path = halt_path or executor.HALT_PATH
@@ -854,6 +869,8 @@ def place_ladder(said, side, frm, steps, x, stop, to=None, spacing_pct=None, spa
         _append(jdir, {**base, "result": {"state": "dry_run", "note": "offline checks only; exchange state not read"}})
         return {"ok": True, "dry_run": True, "reading": reading, **table}
 
+    # written BEFORE the first rung (like hedge_pending): a crash mid-ladder leaves an unreconciled record
+    _append(jdir, {**base, "result": {"state": "ladder_pending"}})
     ids = []
     for r in plan["rungs"]:
         try:
@@ -897,7 +914,7 @@ def ladder_sync(client=None, account=None, journal_dir=None, halt_path=None, env
     halt_path = halt_path or executor.HALT_PATH
     recs = _records(jdir)
     idx = max((i for i, r in enumerate(recs) if (r.get("action") or {}).get("kind") == "ladder"
-               and (r.get("result") or {}).get("state") == "ladder_placed"), default=None)
+               and (r.get("result") or {}).get("state") in ("ladder_pending", "ladder_placed")), default=None)
     if idx is None:
         return {"ok": False, "reasons": ["no placed ladder in the journal"]}
     after = recs[idx + 1:]
@@ -906,6 +923,8 @@ def ladder_sync(client=None, account=None, journal_dir=None, halt_path=None, env
     stop_seen = any((r.get("action") or {}).get("kind") == "stop"
                     and (r.get("result") or {}).get("state") == "stop_placed" for r in after)
     ladder = recs[idx]
+    if (ladder.get("result") or {}).get("state") == "ladder_pending":
+        return _ladder_orphan(client, account, jdir, halt_path, ladder)
     try:
         token = client.authenticate(account)
         size = float(client.get_position(token, INSTRUMENT).get("size", 0))
@@ -920,10 +939,14 @@ def ladder_sync(client=None, account=None, journal_dir=None, halt_path=None, env
             errs.append({"op": "cancel_rungs", "error": repr(e2)})
         _append(jdir, {"said": ladder.get("said"), "heard": "ladder_sync", "env": do.active_env(),
                        "account": _nm(account), "action": {"kind": "ladder_sync"}, "market": {},
-                       "result": {"state": "error", "error": repr(e), "errors": errs}})
+                       "result": {"state": "ladder_failed", "error": repr(e), "errors": errs}})
         return {"ok": False, "reasons": [f"exchange state unreadable, rungs cancelled, HALT written: {e!r}"]}
     if size != 0:
         st = ensure_stop(client=client, account=account, journal_dir=jdir, halt_path=halt_path, token=token)
+        if not st.get("ok"):   # stop failed: flattened + HALT already; make the ladder terminal
+            _append(jdir, {"said": ladder.get("said"), "heard": "ladder_sync", "env": do.active_env(),
+                           "account": _nm(account), "action": {"kind": "ladder_sync"}, "market": {},
+                           "result": {"state": "ladder_failed", "reasons": st.get("reasons")}})
         return {**st, "position": size}
     if not stop_seen:
         return {"ok": True, "waiting": True, "position": 0}
@@ -939,6 +962,30 @@ def ladder_sync(client=None, account=None, journal_dir=None, halt_path=None, env
                    "account": _nm(account), "action": {"kind": "ladder_sync"}, "market": {},
                    "result": {"state": "ladder_stopped", "errors": errs}})
     return {"ok": not errs, "stopped": True, "errors": errs}
+
+
+def _ladder_orphan(client, account, jdir, halt_path, ladder) -> dict:
+    """ladder_pending with no ladder_placed after it: a crash mid-placement. Cancel the orphan rungs, protect any
+    fill, journal ladder_failed (terminal) and report; never continue silently."""
+    errs = []
+    try:
+        token = client.authenticate(account)
+        client.cancel_by_label(token, LABEL)
+        if float(client.get_position(token, INSTRUMENT).get("size", 0)) != 0:
+            st = ensure_stop(client=client, account=account, journal_dir=jdir, halt_path=halt_path, token=token)
+            if not st.get("ok"):
+                errs.append({"op": "ensure_stop", "error": st.get("reasons")})
+    except Exception as e:  # noqa: BLE001
+        try:
+            executor.write_manual_halt(f"cotrade ladder: orphan cleanup failed: {e!r}", halt_path)
+        except Exception:  # noqa: BLE001
+            pass
+        errs.append({"op": "orphan_cleanup", "error": repr(e)})
+    _append(jdir, {"said": ladder.get("said"), "heard": "ladder_sync", "env": do.active_env(),
+                   "account": _nm(account), "action": {"kind": "ladder_sync"}, "market": {},
+                   "result": {"state": "ladder_failed", "orphan": True, "errors": errs}})
+    return {"ok": False, "orphan": True, "errors": errs,
+            "reasons": ["crash mid-placement: orphan rungs cancelled, ladder closed; check the position"]}
 
 
 def ladder_watch(secs, max_polls=1000, account=None, sleep=None, **kw) -> dict:
