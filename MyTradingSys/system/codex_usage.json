@@ -2,11 +2,11 @@
  "allowance": {
   "plan": "plus",
   "week_resets": 1794204690,
-  "week_used": 11.0,
-  "window_resets": 1793655558,
-  "window_used": 14.0
+  "week_used": 15.0,
+  "window_resets": 1793712867,
+  "window_used": 21.0
  },
- "at": "2026-11-02T20:04:05Z",
+ "at": "2026-11-03T13:06:22Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -23,9 +23,24 @@
   "astra_runs": 0,
   "week_pts": 0.0,
   "window_pts": 1.0,
-  "window_runs": 4
+  "window_runs": 1
  },
  "runs": [
+  {
+   "at": "2026-11-03T13:05:12Z",
+   "card": "mts-audit-1103-independent-recheck",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 63,
+   "tokens_out": 4233,
+   "tokens_total": 376072,
+   "tokens_uncached": 46463,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
   {
    "at": "2026-11-02T20:02:18Z",
    "card": "mts-audit-1103-independent-recheck",
@@ -160,21 +175,6 @@
    "tokens_uncached": 93269,
    "week_pts": 4.0,
    "window_pts": 29.0
-  },
-  {
-   "at": "2026-11-01T05:32:58Z",
-   "card": "gpt-mutation-wavetrend-1031",
-   "effort": "low",
-   "kind": "audit",
-   "model": "gpt-6-astra",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 110,
-   "tokens_out": 6621,
-   "tokens_total": 947698,
-   "tokens_uncached": 88341,
-   "week_pts": 8.0,
-   "window_pts": 49.0
   }
  ]
 }
