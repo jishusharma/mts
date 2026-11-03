@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T15:55:35Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -30,6 +31,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "BLOCKED by prereg power gate (f736dd332): DEV n=35, MDE 1.10 R at sd 1.5; rechecked 11-03 ",
+      "ref": "0f02a11e4",
+      "utc": "2026-11-03T15:55:35Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "verdicts.py: backfill keeps row slots + fixed 8-char commit abbrev; check honours kill_sco",
@@ -55,7 +62,12 @@
   "refs": [
     "MyTradingSys/research/asks_audit_2026-10-30/LEDGER.md"
   ],
-  "result": "",
+  "result": "BLOCKED by prereg power gate (f736dd332): DEV n=35, MDE 1.10 R at sd 1.5; rechecked 11-03 n<=70 still MDE ~0.92 R vs 0.30 R plausible gross; not run",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/items/T058_broken_extremes_sweep_vs_continuation.md",
     "MyTradingSys/research/session_sweeps/session_open_study.py",
@@ -74,12 +86,13 @@
   "sources": [
     "T058 item H3 (2026-10-04), ledger P0-47"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "verdicts.py check 'ny open low hold' and paste the output; prereg_gate.py --m auto for the MDE; stop if exit 1",
     "freeze PRE_REG.md (definition of NY open, holds = no lower low in 60 min, stop/target OURS), commit it",
     "write h3.py + test first, run once on DEV, write RESULT.md and json, verdicts.py backfill; ship. Verify: content commit sha, git cherry origin/fast-track <sha> empty, delivered files in git ls-tree -r origin/fast-track."
   ],
+  "taken": "2026-11-03T15:55:35Z",
   "tests": "research/h3_ny_open_low_2026-10/test_h3.py: planted day-low-that-holds series is flagged, a made-up low that breaks is not; fails before h3.py exists.",
   "title": "H3 NY-open+180 new day low that holds: pre-register, test 2019-09..2021-12 (ledger P0-47)",
   "weight": "CRUCIAL",
