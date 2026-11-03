@@ -421,7 +421,7 @@ def export_result(out, study, results_dir=RESULTS):
             {'name': 'Settings', 'value_plain': out['label'], 'label': 'OURS'},
             {'name': 'Condition', 'value_plain': out.get('cond_label') or 'none', 'label': 'OURS'}]
     ex = [{'kind': 'curve', 'title': 'Running total of net R, filled trades in time order', 'r': c['r'], 'usd': c['usd'],
-           'start_usd': c['start_usd'], 'risk_pct': c['risk_pct']}] if c.get('n') else [{'kind': 'none', 'title': 'no filled trades'}]
+           'start_usd': c['start_usd'], 'risk_pct': c['risk_pct'], 'mc': c.get('mc')}] if c.get('n') else [{'kind': 'none', 'title': 'no filled trades'}]
     doc = {'id': rid, 'kind': 'backtest', 'parity': None, 'family': 'Desk runs', 'title': f"{study.TITLE}: {out['label']}" + (f" ~ {out['cond_label']}" if out.get('cond_label') else ''),
            'what': what, 'how': 'Run on the local simulator desk: the study re-simulates every idea on development data; the optional condition then keeps only matching trades (post-filter on the cached run). Fees are included; a never-filled idea is not a trade.',
            'window': f"DEV only, {out['settings'].get('start')} to {out['settings'].get('end')} (VALIDATION and HOLDOUT never offered)",
@@ -432,6 +432,8 @@ def export_result(out, study, results_dir=RESULTS):
                     {'label': 'if you put in $1,000', 'value': f"${c['usd'][-1]:.0f}" if c.get('n') else '-'},
                     {'label': 'try number', 'value': str(out['try_no'])}],
            'examples': ex + _chart_examples(out), 'source_files': ['MyTradingSys/research/sim_desk/desk.py'], 'commit': 'local desk run'}
+    if (out.get('breakdown') or {}).get('year'):
+        doc['years'] = out['breakdown']['year']
     for k in doc['kpis']:
         if k.get('tone') is None:
             k.pop('tone', None)

@@ -67,7 +67,8 @@
     1010.72
    ],
    "start_usd": 1000.0,
-   "risk_pct": 1.0
+   "risk_pct": 1.0,
+   "mc": null
   }
  ],
  "source_files": [
@@ -83,5 +84,13 @@
   "try_no": 6,
   "breakeven_x": null,
   "text": "TOO FEW TRADES · verdict as written: NOT ENOUGH DATA · n=1 · net R after fees +1.072 · try #6 · fee break-even n/a"
- }
+ },
+ "years": [
+  {
+   "k": "2023",
+   "n": 1,
+   "mean": 1.072,
+   "few": true
+  }
+ ]
 }

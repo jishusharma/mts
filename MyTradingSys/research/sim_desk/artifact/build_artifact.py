@@ -157,6 +157,44 @@ def add_trade_rows(r):
 
 
 RESULTS_DIR = os.path.normpath(os.path.join(HERE, "..", "results"))
+
+STABLE_YEARS = 2   # judged years (>= MIN_N trades each) needed before a run can be called stable
+
+
+def stability_of(years):
+    """Year-by-year flag (survey C4) from desk.breakdown()['year'] rows [{k, n, mean, few}]. A year under MIN_N trades is labelled
+    too few and never judged. STABLE = at least 2 judged years and every judged year has a mean net R above zero;
+    a judged year at or below zero makes it NOT_STABLE (one good year among bad ones included); fewer than 2 judged years = TOO_FEW;
+    no split exported = UNKNOWN."""
+    if not years:
+        return {"state": "UNKNOWN", "tone": "", "judged": 0, "text": "YEAR SPLIT NOT EXPORTED for this run (re-run it on the desk to add it); not judged"}
+    judged = [y for y in years if y["n"] >= MIN_N and not y.get("few")]
+    few = [y["k"] for y in years if y not in judged]
+    tail = (" (too few trades, not judged: %s)" % ", ".join(few)) if few else ""
+    if len(judged) < STABLE_YEARS:
+        return {"state": "TOO_FEW", "tone": "warn", "judged": len(judged),
+                "text": "TOO FEW TRADES PER YEAR: %d year(s) with %d+ trades, need %d%s" % (len(judged), MIN_N, STABLE_YEARS, tail)}
+    bad = [y["k"] for y in judged if y["mean"] <= 0]
+    if bad:
+        return {"state": "NOT_STABLE", "tone": "bad", "judged": len(judged),
+                "text": "NOT STABLE: net R after fees is not above zero in %s of %d judged years%s" % (", ".join(bad), len(judged), tail)}
+    return {"state": "STABLE", "tone": "good", "judged": len(judged),
+            "text": "STABLE: net R after fees above zero in all %d judged years%s" % (len(judged), tail)}
+
+
+def check_curve_bands(r, fn="result"):
+    """Every curve example must carry the `mc` field (a band dict, or null for a run too short to reshuffle)."""
+    for e in r.get("examples", []):
+        if e.get("kind") == "curve":
+            if "mc" not in e:
+                raise ValueError("%s: curve example has no Monte Carlo band field (mc); run export_results.py" % fn)
+            if e["mc"] is not None:
+                for k in ("lo", "hi", "dd_lo", "dd_hi", "shuffles"):
+                    if k not in e["mc"]:
+                        raise ValueError("%s: mc band is missing %s" % (fn, k))
+                if len(e["mc"]["lo"]) != len(e["r"]) or len(e["mc"]["hi"]) != len(e["r"]):
+                    raise ValueError("%s: mc band length differs from the curve" % fn)
+
 REQUIRED = ("id", "family", "title", "what", "how", "window", "verdict", "why", "kpis", "examples", "source_files", "commit")
 
 
@@ -174,8 +212,10 @@ def collect(results_dir):
         for w in r["what"]:
             if w.get("label") not in ("SOURCED", "OURS"):
                 raise ValueError("%s: parameter %r needs label SOURCED or OURS" % (fn, w.get("name")))
+        check_curve_bands(r, fn)
         add_trade_rows(r)
         r.setdefault("banner", banner_of(r))
+        r["stability"] = (stability_of(r.get("years")))
         out.append(r)
     return out
 
@@ -319,9 +359,15 @@ s+=line(t.rsi,RY,"var(--ink)")+(u<t.sig?"":'<line x1="'+X(p)+'" x2="'+X(qd)+'" y
 const tl=k=>new Date(t.t0+k*M).toISOString().slice(5,16).replace("T"," ");[0,t.sig,t.ext,m-1].forEach(k=>{s+='<text x="'+X(k)+'" y="428" font-size="10" text-anchor="middle" fill="var(--mute)">'+tl(k)+"</text>"});
 const wv1=v=>v==null?"-":v.toFixed(0),T=k=>tl(k)+" UTC";let ph;if(!live)ph='Whole trade shown. Press <b>&#9654; Replay this trade</b> to watch it candle by candle.';else if(u<t.sig)ph='<b>WAITING</b> &middot; '+T(u)+': the rule is checked on this candle and is not true. WaveTrend '+wv1(t.w1[u])+' (needs a buy dot at -53 or lower) and RSI divergence.';else if(u===t.sig)ph='<b style="color:var(--acc)">SIGNAL</b> &middot; '+T(u)+' close: WaveTrend buy dot at '+wv1(t.w1[u])+' with RSI divergence (orange). We buy at the open of the next candle.';else if(u<t.ext-1)ph='<b>IN TRADE</b> &middot; candle '+(u-t.ent+1)+' of max 60 &middot; now <b class="'+(c[u][3]>=0?"good":"bad")+'">'+f2(c[u][3])+' %</b> from entry &middot; WaveTrend '+wv1(t.w1[u])+' (we sell once it closes above 0). No stop loss.';else if(u===t.ext-1)ph='<b style="color:var(--warn)">EXIT SIGNAL</b> &middot; '+T(u)+' close: '+esc(t.why)+'. We sell at the open of the next candle.';else if(u===t.ext)ph='<b class="'+(win?"good":"bad")+'">EXITED</b> &middot; sold at the open of '+T(u)+' &middot; result '+f2(t.net)+' % after fees, held '+t.bars+' candles.';else ph='<b>DONE</b> &middot; trade closed '+f2(t.net)+' % after fees. Prev / Next for another trade.';$("cvph").innerHTML=ph;$("cvg").innerHTML=s;$("cvi").innerHTML="Trade "+(i+1)+" of "+n+": entry "+esc(t.d)+' UTC, held '+t.bars+" candles, exit: "+esc(t.why)+'. Result <b class="'+(win?"good":"bad")+'">'+f2(t.net)+" %</b> after fees.";};
 cvShow(0);};return {html:h,init};}
-function curveEx(x){const r=x.r,n=r.length,W=600,H=160,mn=Math.min(0,...r),mx=Math.max(0,...r),sp=(mx-mn)||1;
-const X=i=>8+i*(W-16)/(n-1||1),Y=v=>H-8-(v-mn)/sp*(H-16);
-return '<svg viewBox="0 0 600 160" role="img" aria-label="Running total of net R"><line x1="8" x2="592" y1="'+Y(0)+'" y2="'+Y(0)+'" stroke="var(--line)"/><polyline fill="none" stroke="var(--acc)" stroke-width="1.5" points="'+r.map((v,i)=>X(i).toFixed(1)+","+Y(v).toFixed(1)).join(" ")+'"/></svg><p class="note">'+n+" points; ends at "+r[n-1].toFixed(2)+" R = $"+x.usd[n-1].toFixed(0)+" from $"+x.start_usd+" ("+x.risk_pct+" % risked per trade, simple sum).</p>";}
+function curveEx(x){const r=x.r,n=r.length,W=600,H=170,mc=x.mc,lo=mc?mc.lo:r,hi=mc?mc.hi:r,pk=[];let m=0,dd=0;r.forEach(v=>{m=Math.max(m,v);pk.push(m);dd=Math.max(dd,m-v)});
+const mn=Math.min(0,...r,...lo),mx=Math.max(0,...r,...hi),sp=(mx-mn)||1,X=i=>8+i*(W-16)/(n-1||1),Y=v=>H-8-(v-mn)/sp*(H-16),pt=(a,f)=>a.map((v,i)=>X(i).toFixed(1)+","+Y(f?f(v):v).toFixed(1));
+const band=mc?'<polygon class="mcb" fill="var(--acc)" opacity=".15" points="'+pt(hi).concat(pt(lo).reverse()).join(" ")+'"><title>Reshuffled 5-95 % band</title></polygon>':"";
+const shade='<polygon class="dd" fill="var(--bad)" opacity=".25" points="'+pt(pk).concat(pt(r).reverse()).join(" ")+'"><title>Drawdown: below the earlier peak</title></polygon>';
+const mct=mc?" Blue band: the same trades reshuffled "+mc.shuffles+" times (5th to 95th percent of the running total); worst drawdown of the reshuffles "+mc.dd_lo.toFixed(1)+" to "+mc.dd_hi.toFixed(1)+" R"+(mc.approx?" (approximate: estimated from the sampled curve)":"")+". If the real line sits near the lower edge, luck of the order helped.":" No band: too few trades to reshuffle.";
+return '<svg viewBox="0 0 600 '+H+'" role="img" aria-label="Running total of net R with drawdown shading and Monte Carlo band"><line x1="8" x2="592" y1="'+Y(0)+'" y2="'+Y(0)+'" stroke="var(--line)"/>'+band+shade+'<polyline fill="none" stroke="var(--acc)" stroke-width="1.5" points="'+pt(r).join(" ")+'"/></svg><p class="note">'+n+" points; ends at "+r[n-1].toFixed(2)+" R = $"+x.usd[n-1].toFixed(0)+" from $"+x.start_usd+" ("+x.risk_pct+" % risked per trade, simple sum). Red shading: drawdown from the earlier peak; deepest "+dd.toFixed(2)+" R."+mct+"</p>";}
+function yearStrip(t){const s=t.stability;if(!s)return"";const ys=t.years;
+const tb=ys&&ys.length?'<div class="tw"><table><tr><th>Year</th><th>Trades</th><th>Average net R</th><th></th></tr>'+ys.map(y=>"<tr><td>"+esc(y.k)+"</td><td>"+y.n+'</td><td class="'+(y.few?"":(y.mean>0?"good":"bad"))+'">'+f2(y.mean)+"</td><td>"+(y.few?'<span class="tag">too few trades</span>':"")+"</td></tr>").join("")+"</table></div>":"";
+return '<h2 class="s">Year by year</h2><div class="banner ys-'+esc(s.state)+" "+tone(s.tone)+'" role="status">'+esc(s.text)+"</div>"+tb+'<p class="note">A split of the same DEV trades by calendar year, not a walk-forward test. A year under 30 trades is shown but not judged.</p>';}
 function banner(b){if(!b)return"";return '<div class="banner b-'+esc(b.state)+" "+tone(b.tone)+'" role="status">'+esc(b.text)+"</div>";}
 function chartList(x){const it=x.items,fn=v=>v==null?"-":f2(v)+" R";
 const rows=it.map((c,i)=>'<tr data-i="'+i+'" tabindex="0"><td>'+(i+1)+"</td><td>"+esc(c.when)+" UTC</td><td>"+esc(c.side)+"</td><td>"+esc(c.exit_reason)+'</td><td class="'+(c.net_r<0?"bad":"good")+'">'+fn(c.net_r)+"</td></tr>").join("");
@@ -343,6 +389,7 @@ if(!t){render(TESTS[0].id);return}
 document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-current",b.dataset.id===t.id));
 let h='<h1 style="font-size:20px;margin:0 0 6px">'+esc(t.title)+'</h1><span class="pill '+tone(t.verdict.tone)+'">'+esc(t.verdict.label)+"</span>"+banner(t.banner);
 h+='<div class="kpis">'+t.kpis.map(k=>'<div class="kpi"><b class="'+tone(k.tone)+'">'+esc(k.value)+"</b><span>"+esc(k.label)+"</span></div>").join("")+"</div>";
+h+=yearStrip(t);
 h+='<h2 class="s">What was tested</h2><dl>'+t.what.map(w=>"<dt>"+esc(w.name)+' <span class="tag '+esc(w.label)+'">'+esc(w.label)+"</span></dt><dd>"+esc(w.value_plain)+"</dd>").join("")+"</dl>";
 h+='<p class="note"><b>Window:</b> '+esc(t.window||"not stated in the source")+"</p><p class=\"note\">SOURCED = taken from a named source (the trader's words or a fee table). OURS = our own judgement or tuned on DEV data.</p>";
 h+='<h2 class="s">How</h2><p>'+esc(t.how)+"</p>";

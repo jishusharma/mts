@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T14:02:13Z",
   "commands": [
     "python -m pytest MyTradingSys/research/sim_desk -q",
     "python MyTradingSys/research/sim_desk/artifact/test_artifact.py"
@@ -17,11 +18,17 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "drawdown shading + MC band on all 50 curve results (35 exact, 15 approx sampled, 2 too sho",
+      "ref": "a9ab500d7",
+      "utc": "2026-11-03T14:02:13Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "sim page: candle-by-candle replay of one trade with a phase line (waiting, signal, in trad",
-      "ref": "5f6c86009a78",
-      "utc": "2026-11-02T20:22:33Z"
+      "line": "sim hosted page: verdict banner on every result, trade list with exit reason and click-to-",
+      "ref": "7e0fe8c5483c",
+      "utc": "2026-11-03T13:13:54Z"
     }
   ],
   "layers": [],
@@ -31,11 +38,16 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-03T13:05:54Z",
+  "refreshed": "2026-11-03T13:57:24Z",
   "refs": [
     "MyTradingSys/research/sim_desk/INDUSTRY_SURVEY_2026-11-03.md"
   ],
-  "result": "",
+  "result": "drawdown shading + MC band on all 50 curve results (35 exact, 15 approx sampled, 2 too short); stability flag on 140 results with trades (16 TOO_FEW, 124 UNKNOWN: year split needs desk re-run); 7 new tests failed first, pytest sim_desk 239 passed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/sim_desk/export_results.py",
     "MyTradingSys/research/sim_desk/artifact/build_artifact.py",
@@ -48,13 +60,13 @@
     "no walk-forward or PBO",
     "desk page.html untouched (it already shades drawdown and shows the band)"
   ],
-  "scope_sha": "5f6c86009a78",
+  "scope_sha": "7e0fe8c5483c",
   "size": "M",
   "sources": [
     "MyTradingSys/research/sim_desk/INDUSTRY_SURVEY_2026-11-03.md section C items 3-4",
     "MyTradingSys/research/sim_desk/desk.py lines 96, 108, 140"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read survey C3, C4 and curveEx() in artifact/build_artifact.py; check whether export_results.py carries monte_carlo and by-year breakdown (survey Noticed: unchecked)",
     "write failing tests in artifact/test_artifact.py: a curve result without a band field fails the build; a run positive in one year and negative in others shows not stable",
@@ -62,6 +74,7 @@
     "render drawdown shading + band on curve results and the year strip with stable/not stable flag (years under 30 trades labelled too few)",
     "run commands, ship"
   ],
+  "taken": "2026-11-03T14:02:13Z",
   "tests": "Fail first: new tests in MyTradingSys/research/sim_desk/artifact/test_artifact.py (already in extra_tests.tsv:100); record the pre-change failure",
   "title": "Sim hosted page: equity curve with drawdown shading + Monte Carlo band; year-by-year stability flag (survey C3+C4; test fails first)",
   "weight": "IMPORTANT",
