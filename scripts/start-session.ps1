@@ -79,8 +79,47 @@ $m = Get-Content $manifestPath -Raw | ConvertFrom-Json
 # Session name for the chat UI. Format: MTS YYYY-MM-DD HH:MM
 $sessionName = 'MTS-' + [DateTime]::UtcNow.ToString('yyyy-MM-dd-HHmm') + 'Z'
 
+# The behaviour prompt comes from trunk, not from whatever tree this script runs in (the live tree lags origin by hundreds of commits).
+# Best-effort fetch, then the file as of origin/fast-track; the working file only when git cannot give it, and the paste says so.
+function Get-PromptFromTrunk {
+    param([string]$Path)
+    $res = @{ Text = $null; Source = '' }
+    $prev = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    try {
+        $fetched = $true
+        & git -C $root fetch --quiet origin fast-track 2>$null | Out-Null
+        if ($LASTEXITCODE -ne 0) { $fetched = $false }
+        $sha = (& git -C $root rev-parse --short origin/fast-track 2>$null)
+        if ($LASTEXITCODE -eq 0 -and $sha) {
+            $psi = New-Object System.Diagnostics.ProcessStartInfo
+            $psi.FileName = 'git'
+            $psi.Arguments = "-C `"$root`" show origin/fast-track:$Path"
+            $psi.RedirectStandardOutput = $true
+            $psi.RedirectStandardError = $true
+            $psi.UseShellExecute = $false
+            $psi.StandardOutputEncoding = [System.Text.Encoding]::UTF8
+            $proc = [System.Diagnostics.Process]::Start($psi)
+            $out = $proc.StandardOutput.ReadToEnd()
+            [void]$proc.StandardError.ReadToEnd()
+            $proc.WaitForExit()
+            if ($proc.ExitCode -eq 0 -and $out) {
+                $res.Text = $out.TrimEnd("`r", "`n")
+                $res.Source = "origin/fast-track @ $sha" + $(if ($fetched) { ' (fetched now)' } else { ' (fetch failed: last known trunk)' })
+            }
+        }
+    } catch { }
+    $ErrorActionPreference = $prev
+    if (-not $res.Text) { $res.Source = 'WORKING FILE of this tree (git gave no origin/fast-track copy): may be stale' }
+    return $res
+}
+$script:PromptPath = 'DSA_SESSION_PROMPT.md'
+$script:Prompt = Get-PromptFromTrunk -Path $script:PromptPath
+Write-Host "prompt source: $($script:Prompt.Source)" -ForegroundColor Cyan
+
 function Get-ReadBody {
     param($f)
+    if ($f.path -eq $script:PromptPath -and $script:Prompt.Text) { return $script:Prompt.Text }
     if (-not (Test-Path $f.path)) { return "MISSING: $($f.path)" }
     switch ($f.read) {
         'full'        { return (Get-Content $f.path -Raw) }
@@ -148,12 +187,21 @@ $sb = [System.Text.StringBuilder]::new()
 [void]$sb.AppendLine("")
 [void]$sb.AppendLine("More context: read any file yourself with an AIRUN block (dump files are listed at the end). Never ask the operator to paste.")
 [void]$sb.AppendLine("")
-[void]$sb.AppendLine("HOW YOU ARE USED (AIBridge v0.7; DSA_SESSION_PROMPT.md section 0 is the rule, and where older text in this paste disagrees, section 0 wins):")
-[void]$sb.AppendLine("- You run commands yourself through # AIRUN blocks; they run by themselves and the result comes back as [AIRUN RESULT]. Never ask the operator to run, paste or read back.")
-[void]$sb.AppendLine("- Up to 6 blocks per reply, run in order. Task mode (task=mts-boot, mts-gate, mts-ship) runs boot, the test gate and ship in one call.")
+[void]$sb.AppendLine("Prompt source: $($script:Prompt.Source)")
+[void]$sb.AppendLine("")
+[void]$sb.AppendLine("HOW YOU ARE USED (AIBridge; FIRST: HOW YOU WORK at the top of DSA_SESSION_PROMPT.md and its section 0 are the rule, and where older text in this paste disagrees, section 0 wins):")
+[void]$sb.AppendLine("- A. Act through blocks. Only a fenced block whose first line is # AIRUN does anything, in your final answer; it runs by itself and the result comes back as [AIRUN RESULT]. Saying 'let me look' does nothing. Task not finished = every reply ends with the next block. Never claim a command ran without its receipt. No gh, no browser, no API. Never ask the operator to run, paste or read back.")
+[void]$sb.AppendLine("- B. Up to 6 blocks per reply, run in order: group reads and small edits. One slow program per reply, then wait: the result is your next input. No status check while something runs.")
+[void]$sb.AppendLine("- C. No repeats: never re-run or re-read what is already in this chat. mts_doctor only when the operator or a card asks, once.")
+[void]$sb.AppendLine("- D. One test flow. While working run only your change's test file (python -m pytest <file> -q). To finish ship once with this block (<WORKTREE> and <slug> are yours):")
+[void]$sb.AppendLine('# AIRUN task=inline timeout=1200')
+[void]$sb.AppendLine('{"steps":[{"name":"ship","cmd":"python scripts/dev/sync.py ship --release <slug>","cwd":"<WORKTREE>","timeout_s":1100,"show":12},{"name":"where","cmd":"python scripts/dev/sync.py where","cwd":"<WORKTREE>","timeout_s":120,"show":4}]}')
+[void]$sb.AppendLine("  sync.py ship runs its own smoke gate and CI runs the rest. Never run run_all_tests.py or the gate yourself. Ship gate fails: read the failing step, fix, run that one test, ship again.")
+[void]$sb.AppendLine("- E. Trunk CI red is not your tree: python scripts/dev/ci_fail.py names the failing tests, mts_signal.py read shows if someone fixes it, else run only that test and ship with --fix-ci (prompt FIRST, E).")
+[void]$sb.AppendLine("- F. Operator asks mid-task: start every reply with TASK: <id> | STEP: <n> | NEXT: <action>; answer him briefly, then carry on with the task's next block in the same reply. A question never ends a task.")
 [void]$sb.AppendLine("- Reach: IdeaProjects, F:\MTS and Temp (F:\AIBridge read only). Refused: .secrets, .env, key files, HALT files. Irreversible forms (forced deletes, hard resets) wait for a click: use the safe form instead.")
-[void]$sb.AppendLine("- You finish your own tasks: claim, test first, change (dsa.py put / edit), gate, dsa.py commit, task=mts-ship, release (prompt section 5a). Live-path code and the section 5d list stay with Claude.")
-[void]$sb.AppendLine("- Never claim a command ran until its [AIRUN RESULT] exists. Builders never stop or restart processes, touch HALT files or open trades.")
+[void]$sb.AppendLine("- You finish your own tasks: claim, test first, change (dsa.py put / edit), dsa.py commit, the ship block above, release (prompt section 5a). Live-path code and the section 5d list stay with Claude.")
+[void]$sb.AppendLine("- Builders never stop or restart processes, touch HALT files or open trades.")
 [void]$sb.AppendLine("- A WORKER chat has no bridge: no shell, no disk, interprets pasted evidence only (prompt section 1).")
 [void]$sb.AppendLine("")
 [void]$sb.AppendLine("=" * 72)

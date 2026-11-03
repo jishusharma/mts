@@ -13,10 +13,10 @@
   },
   {
    "path": "DSA_SESSION_PROMPT.md",
-   "blob": "3ada1c22f336d0d6ad0ca2734ce073ce5ffc8082",
-   "sha256_8": "bda1c03a",
+   "blob": "c2e32ac52dbc169bafb0b94c3c11ef6a7e0b6dcb",
+   "sha256_8": "d77d616c",
    "eol": "LF",
-   "approved_by": "operator chat 2026-10-15 (JIS-NB): stale pointers after token-opt (MTS-AutoDeploy, STATUS.md/LESSONS_DIGEST.md)",
+   "approved_by": "operator order 2026-11-03: fix DSA prompt - AI Bridge use, test flow, task context (dsa-prompt-flow-1103)",
    "approved_commit": "pending"
   },
   {
@@ -24,7 +24,7 @@
    "blob": "030aa9954f886190bbacdf3dcd6b8fb8bd57b65d",
    "sha256_8": "7a37085c",
    "eol": "LF",
-   "approved_by": "operator chat 2026-10-15 (JIS-NB): stale pointers after token-opt (MTS-AutoDeploy, STATUS.md/LESSONS_DIGEST.md)",
+   "approved_by": "operator order 2026-11-03: fix DSA prompt - AI Bridge use, test flow, task context (dsa-prompt-flow-1103)",
    "approved_commit": "pending"
   },
   {

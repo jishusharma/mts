@@ -126,14 +126,15 @@ def test_E3_mts_gate_crash_without_FAILED_line_is_FAIL(tmp_path):
 
 
 @needs_ps
-def test_E3_mts_ship_does_not_ship_after_crashed_gate(tmp_path):
-    """mts-ship = status, gate, ship, where. A crashed gate (exit 1) must stop the playbook before the ship step runs."""
-    ship = tmp_path / "ship_ran.txt"
-    files = {"repo/scripts/dev/run_all_tests.py": "import sys\nprint('Traceback boom')\nsys.exit(1)\n",
-             "repo/scripts/dev/sync.py": "open(r'%s', 'w').write('shipped')\n" % ship}
+def test_E3_mts_ship_runs_sync_ship_with_release_and_never_the_gate(tmp_path):
+    """mts-ship = status, ship --release <slug>, where: sync.py ship runs its own smoke gate, so the playbook never runs run_all_tests."""
+    log = tmp_path / "calls.txt"
+    files = {"repo/scripts/dev/run_all_tests.py": "open(r'%s.gate', 'w').write('gate ran')\n" % log,
+             "repo/scripts/dev/sync.py": "import sys\nopen(r'%s', 'a').write(' '.join(sys.argv[1:]) + chr(10))\n" % log}
     subprocess.run(["git", "init", "-q", str(tmp_path / "repo")], check=False)
-    _run_task(tmp_path, "mts-ship", params={"repo": str(tmp_path / "repo")}, files=files)
-    assert not ship.exists(), "ship step ran after the gate crashed"
+    _run_task(tmp_path, "mts-ship", params={"repo": str(tmp_path / "repo"), "release": "my-slug"}, files=files)
+    assert log.read_text().splitlines() == ["ship --release my-slug", "where"]
+    assert not (tmp_path / "calls.txt.gate").exists(), "mts-ship ran the gate"
 
 
 # ---------------------------------------------------------------- extension side (real content.js in headless Edge)

@@ -192,7 +192,7 @@ def test_prompt_matches_the_bridge_call_format_and_refusals():
 def test_prompt_carries_the_bridge_0_7_4_rules():
     # dsabr-c5 (FIX_PLAN section 2): async queue, final-answer-only fences, exit codes, wake-up notice
     raw = text(PROMPT)
-    assert raw.splitlines()[0].startswith("# SESSION PROMPT - DSA (DeepSeek + AIBridge v0.7.4)")
+    assert raw.splitlines()[0].startswith("# SESSION PROMPT - DSA (DeepSeek + AIBridge)")
     s = " ".join(raw.split())   # line wraps do not matter
     for sentence in (
         "Write AIRUN fences only in your final answer, never while thinking.",
@@ -206,7 +206,7 @@ def test_prompt_carries_the_bridge_0_7_4_rules():
         "A step passes on its own exit code.",
         "`; exit $LASTEXITCODE`",
         'Never add `Write-Output "EXIT_CODE=$LASTEXITCODE"` as the last line',
-        "For the gate use `task=mts-gate`, not an inline copy.",
+        "Never run the gate yourself: the ship runs it",
         "`ALL TESTS PASSED` or `FAILED: N step(s)`; no summary = FAIL",
         "PowerShell keeps going after a non-terminating error",
         "`$ErrorActionPreference='Stop'` as line 2",
@@ -216,3 +216,78 @@ def test_prompt_carries_the_bridge_0_7_4_rules():
         "A search that may find nothing (rg, findstr) ends with `; exit 0`",
     ):
         assert sentence in s, sentence
+
+
+# ------------------------------------------------------------------ how DSA works (operator 2026-11-03): FIRST section, one test flow
+SHIP_BLOCK = ('{"steps":[{"name":"ship","cmd":"python scripts/dev/sync.py ship --release <slug>","cwd":"<WORKTREE>",'
+              '"timeout_s":1100,"show":12},{"name":"where","cmd":"python scripts/dev/sync.py where","cwd":"<WORKTREE>","timeout_s":120,"show":4}]}')
+
+
+def test_prompt_top_holds_sections_a_to_f_and_the_ship_block():
+    s = text(PROMPT)
+    head = "## FIRST: HOW YOU WORK (read this before anything else)"
+    assert head in s and s.index(head) < s.index("## 00. SAME LEVEL"), "FIRST must sit before section 00"
+    assert s.startswith("# SESSION PROMPT")
+    assert s.index(head) < 400, "FIRST must be directly under the title line"
+    first = s[s.index(head):s.index("## 00. SAME LEVEL")]
+    for letter, title in (("A", "ACT THROUGH BLOCKS"), ("B", "MAX WORK PER REPLY"), ("C", "NO REPEATS"), ("D", "THE TEST FLOW, ONE WAY ONLY"),
+                          ("E", "TRUNK CI RED IS NOT YOUR TREE"), ("F", "THE OPERATOR ASKS MID-TASK")):
+        assert "\n%s. %s" % (letter, title) in first, letter
+    assert "# AIRUN task=inline timeout=1200\n" + SHIP_BLOCK in first
+    for needle in ("python scripts/dev/ci_fail.py", "mts_signal.py read", "--fix-ci", "TASK: <id> | STEP: <n> | NEXT: <next action>",
+                   "NEVER run run_all_tests.py, task=mts-gate or task=mts-ship yourself", "Up to 6 blocks per reply"):
+        assert needle in first, needle
+
+
+def test_prompt_and_paste_never_tell_dsa_to_run_the_gate_as_a_step():
+    for name, body in (("prompt", text(PROMPT)), ("paste header", text(START))):
+        for ln in body.splitlines():
+            if "task=mts-gate" in ln or "task=mts-ship" in ln:
+                assert re.search(r"NEVER|Never", ln), "%s instructs a gate task: %s" % (name, ln)
+    s = text(PROMPT)
+    assert "One gate per task, always before a ship" not in s
+    assert "(mts-ship runs it)" not in s
+
+
+def test_mts_ship_playbook_is_one_ship_step_without_the_gate():
+    spec = json.loads(text(ROOT / "scripts" / "aibridge" / "tasks" / "mts-ship.json"))
+    cmds = [st["cmd"] for st in spec["steps"]]
+    assert sum(c.startswith("python scripts/dev/sync.py ship") for c in cmds) == 1
+    assert "python scripts/dev/sync.py ship --release {release}" in cmds
+    assert not any("run_all_tests" in c for c in cmds) and "gate" not in [st["name"] for st in spec["steps"]]
+    assert spec["params"]["release"] is None            # required: no release slug, no ship
+
+
+def test_start_session_paste_header_carries_a_to_f_and_the_ship_block():
+    s = text(START)
+    for tag in ("- A. Act through blocks", "- B. Up to 6 blocks", "- C. No repeats", "- D. One test flow", "- E. Trunk CI red", "- F. Operator asks mid-task"):
+        assert tag in s, tag
+    assert SHIP_BLOCK in s
+    assert "ci_fail.py" in s and "Prompt source:" in s
+
+
+@pytest.mark.skipif(not shutil.which("powershell"), reason="needs Windows PowerShell")
+def test_paste_takes_the_prompt_from_origin_fast_track_not_the_stale_tree(tmp_path):
+    m = re.search(r"^function Get-PromptFromTrunk \{.*?^\}\n", text(START), re.S | re.M)
+    assert m, "Get-PromptFromTrunk missing"
+    origin, tree = tmp_path / "origin.git", tmp_path / "tree"
+    sh(tmp_path, "init", "-q", "--bare", str(origin))
+    sh(tmp_path, "init", "-q", str(tree)); sh(tree, "checkout", "-q", "-b", "fast-track")
+    for k, v in (("user.email", "t@t"), ("user.name", "t")):
+        sh(tree, "config", k, v)
+    (tree / "DSA_SESSION_PROMPT.md").write_text("TRUNK PROMPT v2\n", encoding="utf-8", newline="\n")
+    sh(tree, "add", "."); sh(tree, "commit", "-q", "-m", "x")
+    sh(tree, "remote", "add", "origin", str(origin)); sh(tree, "push", "-q", "origin", "fast-track")
+    (tree / "DSA_SESSION_PROMPT.md").write_text("STALE PROMPT v1\n", encoding="utf-8", newline="\n")   # the lagging working file
+    outp = tmp_path / "out.json"
+    ps = ("$root='%s'; %s; $r = Get-PromptFromTrunk -Path 'DSA_SESSION_PROMPT.md'; "
+          "[IO.File]::WriteAllText('%s', (ConvertTo-Json $r), (New-Object Text.UTF8Encoding($false)))") % (tree, m.group(0), outp)
+    r = subprocess.run(["powershell", "-NoProfile", "-Command", ps], capture_output=True, text=True)
+    assert r.returncode == 0, r.stdout + r.stderr
+    got = json.loads(outp.read_text(encoding="utf-8"))
+    assert got["Text"] == "TRUNK PROMPT v2" and got["Source"].startswith("origin/fast-track @ "), got
+    # no remote ref at all: the working file is used and the line says so
+    sh(tree, "remote", "remove", "origin"); sh(tree, "update-ref", "-d", "refs/remotes/origin/fast-track")
+    r = subprocess.run(["powershell", "-NoProfile", "-Command", ps], capture_output=True, text=True)
+    got = json.loads(outp.read_text(encoding="utf-8"))
+    assert got["Text"] is None and got["Source"].startswith("WORKING FILE"), got
