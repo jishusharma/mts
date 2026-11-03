@@ -17,9 +17,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Eagle_Eyes 11-03: Indian exchange fee check for alts (2 verified, 4 unverified) + raw card",
-      "ref": "5fb3ce500d04",
-      "utc": "2026-11-03T15:39:50Z"
+      "line": "Eagle_Eyes 11-03: plain-language alt DCA note for the operator's sister (analyst levels on",
+      "ref": "7cfda63e69a9",
+      "utc": "2026-11-03T16:05:27Z"
     },
     {
       "auto": true,
@@ -36,7 +36,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-03T15:59:38Z",
+  "refreshed": "2026-11-03T16:58:44Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -47,7 +47,7 @@
   "scope_out": [
     "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change outside the output file; no VALIDATION or HOLDOUT read; no web fetch"
   ],
-  "scope_sha": "5fb3ce500d04",
+  "scope_sha": "7cfda63e69a9",
   "size": "S",
   "sources": [
     "MyTradingSys/research/cbp/INDIAN_EXCHANGE_FEES_2026-11-03.md"

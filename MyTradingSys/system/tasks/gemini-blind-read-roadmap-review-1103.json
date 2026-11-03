@@ -17,9 +17,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "card: close ask-p0-47-h3 as BLOCKED (power gate, f736dd332)",
-      "ref": "48d735bcce28",
-      "utc": "2026-11-03T15:55:49Z"
+      "line": "MTS critical-path review: prioritize independent evidence and safe closure",
+      "ref": "3382f8c77aa6",
+      "utc": "2026-11-03T15:49:03Z"
     },
     {
       "auto": true,
@@ -36,7 +36,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-03T15:59:58Z",
+  "refreshed": "2026-11-03T16:58:42Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -48,7 +48,7 @@
   "scope_out": [
     "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change outside the output file; no VALIDATION or HOLDOUT read; counts only, no opinion on the roadmap order"
   ],
-  "scope_sha": "48d735bcce28",
+  "scope_sha": "3382f8c77aa6",
   "size": "S",
   "sources": [
     "MyTradingSys/research/layer_lab/roadmap_critical_review_1103/REVIEW.md"
