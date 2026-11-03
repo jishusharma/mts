@@ -4,6 +4,15 @@
   "commands": [
     "python scripts/dev/prereg_gate.py MyTradingSys/research/c26_roadmap_2026-11-01/PRE_REG_C26_REGIME.md"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-03T10:28:30Z",
+    "misses": 1,
+    "reads": [
+      "scripts/dev/trial_ledger.py"
+    ],
+    "session": "agent-ae0a8c743fa16b524"
+  },
   "created": "2026-11-01T08:46:17Z",
   "depends_on": [],
   "done_when": "research/c26_roadmap_2026-11-01/PRE_REG_C26_REGIME.md committed with the regime rule, the three candidates' legs, X, sizes, exits, fee lines and pass rule; TRIAL_REGISTRY row per candidate; 3 operator-chart encodings written in; no P&L number anywhere in it; c26-phase3-dev-book depends_on it.",
