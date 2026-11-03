@@ -21,9 +21,10 @@
    "layer": "malkan",
    "gate": "G2",
    "proof": [
-    "MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md"
+    "MyTradingSys/research/malkan_div_flags_2026-10-28/BTCUSDT_divergences.md",
+    "MyTradingSys/research/malkan_rsi_2026-10-31/MALKAN_RULES_2026-10-31.md"
    ],
-   "next": "Live validation + 1d/1w RSI divergence flags (d-live-validation; G3 blind marks dropped)"
+   "next": "Live validation (d-live-validation; G3 blind marks dropped); 1d/1w RSI divergence flags done (malkan_div_flags_2026-10-28)"
   },
   {
    "layer": "krown",
