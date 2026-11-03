@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-03T20:35:38Z",
+  "depends_on": [],
+  "done_when": "A fake red ref is ejected, its host/slug gets the signal, the green refs land on shadow",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "On a red batch run each ref alone in parallel, eject failing refs, re-run the rest, send mts_signal to host/slug with test id and link; sync.py ship --train pushes queue/<host>/<slug> and waits on a status file on mts-signals (flag off by default)",
+  "id": "ship-train-bisect-eject-signal",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tidy: finished worktrees retire right after ship",
+      "ref": "59815236e099",
+      "utc": "2026-11-03T18:38:14Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "after ship-train-runner",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T20:35:40Z",
+  "refs": [
+    "MyTradingSys/system/SHIP_TRAIN.md"
+  ],
+  "result": "",
+  "scope_in": [
+    ".github/workflows/train.yml",
+    "scripts/dev/sync.py",
+    "scripts/dev/mts_signal.py"
+  ],
+  "scope_out": [
+    "live tree; auto_deploy"
+  ],
+  "scope_sha": "59815236e099",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "per-ref parallel rerun and eject",
+    "signal to author from ref name",
+    "ship --train flag and status wait"
+  ],
+  "tests": "new tests must fail on pre-change code once",
+  "title": "Ship train 3/5: bisect, eject, signal author; sync.py ship --train",
+  "weight": "",
+  "worker": "session"
+}
