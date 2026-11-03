@@ -11510,5 +11510,15 @@
   "MyTradingSys/research/fractals_2026-10-31/f2/output.md",
   "MyTradingSys/research/fractals_2026-10-31/f2/gate_events.csv"
  ],
- "commit": "2abcd700a"
+ "commit": "2abcd700a",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Negative: no gate test passes; the low-H gate points the wrong way on the fade",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Negative: no gate test passes; the low-H gate points the wrong way on the fade · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

@@ -64,5 +64,15 @@
  "source_files": [
   "MyTradingSys/research/bb_dance_2026-10-30/RESULT.md"
  ],
- "commit": "48e51ff6e"
+ "commit": "48e51ff6e",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "These are descriptive counts only: no fees and no edge claim. Definitions are in the header of study.py (all OURS). The data is the Binance USD-M BTCUSDT 1m archive, built into 5m bars, DEV 2022-2025 only. The trigger was the operator's sh…",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: These are descriptive counts only: no fees and no edge claim. Definitions are in the header of study.py (all OURS). The data is the Binance USD-M BTCUSDT 1m archive, built into 5m bars, DEV 2022-2025 only. The trigger was the operator's sh… · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

@@ -51,5 +51,15 @@
  "source_files": [
   "MyTradingSys/research/tom_transfer_2026-10-11/DIAG_BTC.md"
  ],
- "commit": "d6409fe66"
+ "commit": "d6409fe66",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "descriptive only; no rule change",
+  "n": 2699,
+  "net_r": -0.57,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: descriptive only; no rule change · n=2699 · net R after fees -0.570 · try n/a · fee break-even n/a"
+ }
 }

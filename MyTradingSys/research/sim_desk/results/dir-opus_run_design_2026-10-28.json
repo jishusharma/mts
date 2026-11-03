@@ -51,5 +51,15 @@
  "source_files": [
   "MyTradingSys/research/opus_run_design_2026-10-28/DESIGN.md"
  ],
- "commit": "989d2f03c"
+ "commit": "989d2f03c",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: none · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

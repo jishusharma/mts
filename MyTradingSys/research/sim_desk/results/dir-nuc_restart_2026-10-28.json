@@ -67,5 +67,15 @@
  "source_files": [
   "MyTradingSys/research/nuc_restart_2026-10-28/ISSUES_REGISTER.md"
  ],
- "commit": "21b560745"
+ "commit": "21b560745",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Recorded by Supervisor B from one session. Status: VERIFIED = seen in this session's output; SUSPECTED = inferred, not reproduced.",
+  "n": 300,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: Recorded by Supervisor B from one session. Status: VERIFIED = seen in this session's output; SUSPECTED = inferred, not reproduced. · n=300 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

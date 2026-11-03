@@ -216,6 +216,30 @@ class IdleSubagentTest(BgWatchTest):
                  + [notice("bdone0001", 280)], 4.6)
         self.assertEqual([x for x in self.lines() if "bdone0001" in x], [])
 
+    def test_task_whose_agent_is_gone_is_a_ghost_not_a_stalled_task(self):
+        """bg-watch-ghost-task-1104: the agent ended long ago (TaskStop: not found), its own transcript idle 7 h; the report
+        repeated STALLED-BG every wake and the owner could never clear it. One GHOST-BG line, no TaskStop request."""
+        tid = "a41afa0c7c66723ce"
+        self.sub(start("t7", "Agent", {"description": "Builder ghost"},
+                       f"Async agent launched. agentId: {tid} (ghost)", 428), 7)
+        got = [x for x in self.lines() if tid in x]
+        self.assertEqual(len(got), 1, got)
+        self.assertTrue(got[0].startswith(f"GHOST-BG {tid} 428m > cap "), got[0])
+        self.assertIn("transcript idle 7h", got[0])
+        self.assertTrue(got[0].endswith("(agent gone; nothing to stop)"), got[0])
+        self.assertFalse(any(x.startswith("STALLED-BG") for x in self.lines()), self.lines())
+        self.assertNotIn(f"TaskStop {tid}", " ".join(self.lines()))
+        rows = [r for r in bg_watch.stalled(self.root, NOW.timestamp()) if r["id"] == tid]
+        self.assertEqual(len(rows), 1, rows)
+        self.assertTrue(rows[0]["ghost"])
+
+    def test_task_idle_under_six_hours_is_still_stalled(self):
+        self.sub(start("t9", "Bash", {"command": LOOP, "run_in_background": True},
+                       "Command running in background with ID: bslow001. Output is being written to: x.output", 290), 5.5)
+        got = [x for x in self.lines() if "bslow001" in x]
+        self.assertEqual(len(got), 1, got)
+        self.assertTrue(got[0].startswith("STALLED-BG"), got[0])
+
 
 class BareLoopGuardTest(unittest.TestCase):
     CASES = [

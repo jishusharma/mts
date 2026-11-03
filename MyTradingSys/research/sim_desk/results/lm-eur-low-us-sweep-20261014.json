@@ -45,5 +45,15 @@
  "source_files": [
   "MyTradingSys/research/eur_low_us_sweep_2026-10-14/RESULT.md"
  ],
- "commit": "045bb84b5"
+ "commit": "045bb84b5",
+ "banner": {
+  "state": "FAIL",
+  "tone": "bad",
+  "verdict": "EXPLORATORY NEGATIVE (short leg); long-after-reclaim untested",
+  "n": 99,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "FAIL · verdict as written: EXPLORATORY NEGATIVE (short leg); long-after-reclaim untested · n=99 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

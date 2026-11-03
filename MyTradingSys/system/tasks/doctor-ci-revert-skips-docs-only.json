@@ -1,0 +1,81 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-03T18:39:51Z",
+  "commands": [],
+  "context": {
+    "calls_to_edit": 8,
+    "folded": "2026-11-03T18:39:58Z",
+    "misses": 4,
+    "reads": [
+      "scripts/dev/mts_doctor.py",
+      "scripts/dev/make_status.py",
+      "scripts/dev/test_mts_doctor.py"
+    ],
+    "session": "agent-a33bee31ff7cdeebd"
+  },
+  "created": "2026-11-03T16:00:42Z",
+  "depends_on": [],
+  "done_when": "new test in scripts/dev/test_mts_doctor.py passes: red run whose head_sha is docs-only returns OK; python scripts/dev/test_mts_doctor.py exit 0",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "mts_doctor ci_revert must not report 'trunk is red since <sha>' for a commit whose paths the CI workflow filter ignores (docs-only), so no false CI RED alarm",
+  "id": "doctor-ci-revert-skips-docs-only",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "mts_doctor ci_revert skips red runs on docs-only commits (ci_gated uses make_status.CI_PAT",
+      "ref": "4f085baba",
+      "utc": "2026-11-03T18:39:51Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "mts_doctor: add GIT-HUNG check and guard scope_in network git calls with timeout and no-pr",
+      "ref": "d6d63cf459d6",
+      "utc": "2026-11-02T06:42:18Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "refined by Session_Planner 2026-11-03; verify: content sha, git cherry origin/fast-track <sha> empty, ls-tree shows both files",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T18:21:41Z",
+  "refs": [
+    "origin/fast-track 5fb3ce500"
+  ],
+  "result": "mts_doctor ci_revert skips red runs on docs-only commits (ci_gated uses make_status.CI_PATHS); no false CI RED for 5fb3ce500-style commits",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/mts_doctor.py",
+    "scripts/dev/test_mts_doctor.py"
+  ],
+  "scope_out": [
+    ".github/workflows",
+    "scripts/dev/sync.py"
+  ],
+  "scope_sha": "d6d63cf459d6",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "read ci_revert (mts_doctor.py:413) and ci_fetch; read .github/workflows path filter (line 8 paths:) and how sync.py ci decides 'no CI run'",
+    "write failing test first with a runs list whose last failure head_sha is docs-only",
+    "make ci_revert drop runs whose head_sha changed no CI-gated path (reuse sync.py/make_status.py docs-only helper, no new filter copy), run the test file"
+  ],
+  "taken": "2026-11-03T18:39:51Z",
+  "tests": "scripts/dev/test_mts_doctor.py: add a case with a failure run for a docs-only sha; must fail on current ci_revert (returns WARN trunk is red)",
+  "title": "mts_doctor CI-REVERT row says trunk red since a docs-only commit (5fb3ce500; sync.py ci says no CI run for it); skip commits the CI path filter ignores",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

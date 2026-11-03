@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-03T16:38:35Z",
+  "depends_on": [],
+  "done_when": "new tests in scripts/dev/test_sync.py pass: sha with files that ci_starts() says skip but with a fetched run reports the run state (CI RED / in progress), not none; python scripts/dev/test_sync.py exit 0",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "sync.py wait_own_ci / ci command reports the real run state for a sha that has a CI run (in progress 14b12f2c run 41675390817, failed 4d7c96522 run 41671221672) instead of 'no CI run: the ci.yml path filter skips these files'",
+  "id": "sync-py-ci-falsely-says-no-ci-run-path-f",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sync: merge_trunk restores dirty generated LAYERS.md and retries",
+      "ref": "59e5f12b0539",
+      "utc": "2026-11-02T16:56:28Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "refined by Session_Planner 2026-11-03; live-path no; verify: content sha, cherry empty, ls-tree both files",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T18:23:16Z",
+  "refs": [
+    "scripts/dev/sync.py:950"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/sync.py",
+    "scripts/dev/test_sync.py"
+  ],
+  "scope_out": [
+    ".github/workflows"
+  ],
+  "scope_sha": "59e5f12b0539",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "read sync.py ci_starts (~920) and wait_own_ci (940-990); find why ci_starts false for 14b12f2c/4d7c96522 (merge commit file list vs filter)",
+    "write the two failing tests first",
+    "check the fetched run before trusting the filter: query ci_runs_for(sha) once, only print 'no CI run' when it returns nothing",
+    "run test_sync.py and test_sync_push_race.py"
+  ],
+  "tests": "scripts/dev/test_sync.py: two cases (in_progress run, failure run) with stub fetch and files that match the filter's skip list; must fail on current line 950 early return",
+  "title": "sync.py ci falsely says 'no CI run ... path filter skips these files' for shas that have a run: 14b12f2c (run 41675390817 in progress) and 4d7c96522 (run 41671221672 failed), so a red run reads as skipped. Done when sync.py ci <sha> reports the real run state for both cases, with a test.",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

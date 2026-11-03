@@ -39,5 +39,15 @@
  "source_files": [
   "MyTradingSys/research/opr_bb_mtf_center_2026-10-16/trials.csv"
  ],
- "commit": "1318ef9e2"
+ "commit": "1318ef9e2",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "6 trial rows logged (every variant tried)",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: 6 trial rows logged (every variant tried) · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-03T18:19:41Z",
+  "depends_on": [],
+  "done_when": "tidy treats LAYERS.md, rebuildable ignored outputs, gq and dsa trees as retirable; ship calls tidy for other trees",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Finished worktrees retire by themselves right after a ship",
+  "id": "worktree-gone-after-ship",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sync: merge_trunk restores dirty generated LAYERS.md and retries",
+      "ref": "59e5f12b0539",
+      "utc": "2026-11-02T16:56:28Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T18:37:53Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/sync.py, scripts/dev/test_sync.py"
+  ],
+  "scope_out": [],
+  "scope_sha": "59e5f12b0539",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "tidy_noise, REGENERABLE, auto rule, tidy_after_ship"
+  ],
+  "tests": "scripts/dev/test_sync.py tidy tests (5 new, fail on old code)",
+  "title": "Finished worktrees retire by themselves after ship",
+  "weight": "",
+  "worker": "session"
+}

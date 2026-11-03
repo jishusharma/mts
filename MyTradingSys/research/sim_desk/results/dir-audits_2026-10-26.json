@@ -42,5 +42,15 @@
  "source_files": [
   "MyTradingSys/research/audits_2026-10-26/FABLE_FULL_AUDIT.md"
  ],
- "commit": "ccc3d661e"
+ "commit": "ccc3d661e",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "is marked \"as of write time\".",
+  "n": null,
+  "net_r": 0.278,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: is marked \"as of write time\". · n=? · net R after fees +0.278 · try n/a · fee break-even n/a"
+ }
 }

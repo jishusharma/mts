@@ -103,11 +103,11 @@ from the newest `BUDGET` signal line (older than 6 h counts NORMAL). The meter i
 | THROTTLE | U > 100 f + 5 (not in the last 24 h), U >= 99, or the 5-hour window above its stop (80 %, 95 % in the last 2 h) | only model-free work: Codex lab, DSA desk, CI |
 
 ## Session log (newest first; one line each, last 5)
+- A 2026-11-03 ~15:40-20:16Z: sim cards+eagle+C26 audits shipped (Argon blind reads x5), ask-p0-47-h3 BLOCKED (power), fabio holdout leak fixed (12480021), doctor docs-only CI-revert fix (26d06865a), STATUS CI line; paused by operator at week 80% (reset 11-06), 4 Argon cards wait for ~22:20Z quota
+- C 2026-11-03 ~09:00-16:56Z: 3 sim-build cards shipped+verified (7e0fe8c54 trade charts, 9e31182d4 equity/drawdown, e3123921 heatmap); CI red (MTS Home hub 30339 > 30000 from an undecided OPERATOR_DECISIONS entry) fixed by re-landing it marked decided (41dcd7ad, green); AIBridge 0.7.24 on JIS-NB (verify 29/29); handed over at weekly 98% (stop 97%).
 - B 2026-10-30 20:00-21:42Z: names rule Desktop/Lenovo/NUC + B22/B23 filed, CI red reverted (ca25ae86f), GPT lane brought up (lane_state c9cf84d4a) and 2 GPT runs shipped (811f9870), liquidation deploy sent to the Lenovo (b-d564be, unacked); roman ingest parked.
 - A 2026-10-29 16:58-17:30Z: operator-directed drain before weekly reset; wiring audit shipped+Haiku-verified, gemini race test was a no-op (already shipped), pitchfork arm-check (verdict NO, deduped against another session's shipped doc), CI RED (TOM-CTX-DIV) saw B's revert in flight and stood down rather than duplicate, 9 raw Noticed cards filed; handed over at TRANSIT (context 255K).
 - B 2026-10-28 13:00-18:15Z: restart chain proven once (logon wake), 6 Opus fixes verified, ship wait removed, 3 CI REDs reverted, 11 cards shipped; successor registered fire-now
-- B 2026-10-28 12:00-13:05Z: logon_wake 4d (MTSLogonWake + launch_app) shipped; wiring audit Tom/Fabio/Habib bcfd46cfc 446 rows verified; planner refined 5 cards; CI red 4d cleared; builder cbp-query-symbol in flight at transit
-- 2026-10-28 Builder (bg-process-audit, Opus agent): 142 background tasks over 30 min in 7 days (173 h), 43 dead ends/hung/idle (72 h); fixes: git network deadline + no-retry on non-race push (sync.py), NUC verb deadlines, `bg_watch.py` STALLED-BG/RAW-AGED lines in `plan`; AUDIT: research/bg_process_audit_2026-10-28/AUDIT.md.
 
 ## Prompt: start a super session (new session, model Sonnet, permission mode bypass or auto; zero operator input)
 ```

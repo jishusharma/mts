@@ -75,5 +75,15 @@
  "source_files": [
   "MyTradingSys/research/meta_label_dev_ext_2026-10-31/RESULT.md"
  ],
- "commit": "c658d6fe5"
+ "commit": "c658d6fe5",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "by the pre-registered rule: PASSED (marginal, read the flags)",
+  "n": null,
+  "net_r": -0.355,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: by the pre-registered rule: PASSED (marginal, read the flags) · n=? · net R after fees -0.355 · try n/a · fee break-even n/a"
+ }
 }

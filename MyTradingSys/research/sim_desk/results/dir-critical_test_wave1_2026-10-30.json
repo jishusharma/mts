@@ -64,5 +64,15 @@
  "source_files": [
   "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md"
  ],
- "commit": "ebc7a556b"
+ "commit": "ebc7a556b",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: none · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

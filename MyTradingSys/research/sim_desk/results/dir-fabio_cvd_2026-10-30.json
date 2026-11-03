@@ -34,5 +34,15 @@
  "source_files": [
   "MyTradingSys/research/fabio_cvd_2026-10-30/CVD_CONCEPTS.md"
  ],
- "commit": "54734e7d4"
+ "commit": "54734e7d4",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Operator ask, 10-30: find everything Fabio and his channel mates say about using CVD, for BTC and other markets, as concepts.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Operator ask, 10-30: find everything Fabio and his channel mates say about using CVD, for BTC and other markets, as concepts. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

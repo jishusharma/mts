@@ -44,5 +44,15 @@
  "source_files": [
   "MyTradingSys/research/wt30_sequence_2026-10-30/RESULT.md"
  ],
- "commit": "f33b66d7a"
+ "commit": "f33b66d7a",
+ "banner": {
+  "state": "FAIL",
+  "tone": "bad",
+  "verdict": "Descriptive counts only: no fees, no edge claim. Definitions in the header of study.py. WT 10/21/4 and ±53 are SOURCED (LazyBear); event rules and outcomes are OURS. Data: Binance BTCUSDT perp 1m rolled to 30m, DEV 2022-01 to 2024-06. The…",
+  "n": 465,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "FAIL · verdict as written: Descriptive counts only: no fees, no edge claim. Definitions in the header of study.py. WT 10/21/4 and ±53 are SOURCED (LazyBear); event rules and outcomes are OURS. Data: Binance BTCUSDT perp 1m rolled to 30m, DEV 2022-01 to 2024-06. The… · n=465 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

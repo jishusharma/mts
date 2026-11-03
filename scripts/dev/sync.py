@@ -20,6 +20,8 @@ Rules live in MyTradingSys/system/PARALLEL.md. The live tree (a checkout holding
 file .mts_live) is never synced or shipped from: the running system imports it, so it changes only by
 the supervisor deploy (stop, ff-merge, gate, restart).
 """
+import contextlib
+import io
 import json
 import os
 import random
@@ -1738,6 +1740,7 @@ TIDY_IDLE_HOURS = 1
 REUSE_IDLE_HOURS = 0.5   # DECISION (OURS): `start` reuses a finished same-slug tree only when idle this long, so two live sessions never share one
 TIDY_KEEP_LINES = 10  # keep-reasons listed one per line; the rest only counted in the last line
 QUIET_KEEPS = ("lane", "hand-named")  # decided by the name alone: counted, never listed
+SIM_DESK_CACHE = "research/sim_desk/cache"
 # Ignored paths that are rebuilt for free; anything else ignored (Dumps/, runtime_data/, fetched klines) is data.
 # target/ = Maven build output; settings.local.json is an identical copy in every tree; control_room/ is generated HTML;
 # ACCOUNT_DAILY_LOSS.jsonl is what the daily-loss tests write into a work tree's journal. _mirror (and its .lock/.tmp
@@ -1745,7 +1748,14 @@ QUIET_KEEPS = ("lane", "hand-named")  # decided by the name alone: counted, neve
 # are test-runner and tool droppings. All three are in .gitignore, so `status --ignored` lists them in every tree.
 REGENERABLE = ("__pycache__/", ".pytest_cache/", ".pyc", " target/", ".claude/settings.local.json", "runtime_data/control_room/",
                "journal/ACCOUNT_DAILY_LOSS.jsonl", "runtime_data/_mirror", ".pytest_tmp/", ".codex/",
-               "runtime_data/gate_timing.jsonl")
+               "runtime_data/gate_timing.jsonl", SIM_DESK_CACHE + "/",
+               # 2026-11-03 (worktree-gone-after-ship), each checked in the code that writes it:
+               "tools/live_aid/analyst_data.js",       # build_analyst_data.py rewrites it on every run (and shot.py on every chart paste)
+               "runtime/BUILD_REPORT.md",              # scripts/Build-Check.ps1 writes it on every full run
+               "Dumps/SESSION_PASTE.txt",              # scripts/start-session.ps1 regenerates it at every session start
+               "runtime_data/gate_fail_logs/")         # run_all_tests.write_fail_log: diagnostics of a failed gate step, gitignored
+# research/sim_desk/cache/ is rebuilt too (bars: `desk.py --build`; results/ and levels ideas: recomputed by key) EXCEPT answers.jsonl,
+# the operator's answers to the page's questions (desk.ANSWERS): "answers stay local", nothing rebuilds them.
 
 
 def holds_files(root, rel):
@@ -1758,7 +1768,17 @@ def holds_files(root, rel):
 def ignored_data(p):
     """Ignored paths in worktree `p` that are not trivially regenerable (`git worktree remove` deletes them)."""
     out = git(p, "status", "--porcelain", "--ignored=matching", check=False).stdout.splitlines()
-    return [l[3:] for l in out if l.startswith("!! ") and not any(m in l for m in REGENERABLE) and holds_files(p, l[3:])]
+    return [l[3:] for l in out if l.startswith("!! ") and not (any(m in l for m in REGENERABLE) and not holds_answers(p, l[3:]))
+            and holds_files(p, l[3:])]
+
+
+def holds_answers(root, rel):
+    """True when ignored path `rel` is (inside or above) sim_desk's cache and holds answers.jsonl, the one file there nothing rebuilds."""
+    rel = rel.strip('"').replace("\\", "/")
+    if SIM_DESK_CACHE not in rel:
+        return False
+    path = Path(root) / rel
+    return path.name == "answers.jsonl" or any("answers.jsonl" in files for _, _, files in os.walk(path))
 
 
 def last_reflog_stamp(f):
@@ -1865,16 +1885,31 @@ def discard(repo, targets):
     return out
 
 
-def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS, now=None):
+def tidy_noise(row):
+    """is_noise plus, for tidy only: a modified LAYERS.md. It is generated ("do not hand-edit"; make_layers_md.write from
+    layer_index.json, cards and layer_map.json) and `ship` regenerates it from those sources before it commits, so a copy that
+    differs from HEAD (a stale or CRLF rewrite after a card change) holds nothing that is not rebuilt. Only a modified tracked
+    file counts: a deleted or untracked LAYERS.md, and every other path, still keeps the tree."""
+    return is_noise(row) or (row[3:].strip('"') == LAYERS_REL and row[:2] in (" M", "M ", "MM"))
+
+
+def tidy_cutoff(deadline):
+    return deadline is not None and time.time() > deadline
+
+
+def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS, now=None, fetch=True, deadline=None):
     """Retire finished worktrees: `../mts-<host>-<slug>` made by `start`, the App's `.claude/worktrees/*` and `../mts-relay-*`.
     Dry run unless apply. Removed only when: not the primary tree, not the one we are in, no live marker, clean (the pulled
     mirror and a stray AGENTS.md/.codex do not count), no ignored data files (those are deleted with the tree), branch fully
     on origin/fast-track, and idle for `min_idle_hours` (a just-started tree is clean and "on origin" too, so cleanliness
     alone cannot tell it from a finished one). Lanes (mts-push, mts-relay ...) and anything else are never touched unless
     include_named. Prints the removals, at most TIDY_KEEP_LINES keep reasons, and a last line with a count per reason.
+    Also auto: Gemini job trees (<gq root>/<id>, branch gemini-q/*) and DSA trees (mts-dsa-<host>-*). fetch=False skips the fetch
+    (ship has just pushed, so origin/TRUNK is current); `deadline` (epoch) stops the walk early, the rest waits for the next run.
     Returns the paths removed (or that would be)."""
     now = time.time() if now is None else now
-    git(repo, "fetch", "--quiet", "origin", TRUNK)
+    if fetch:
+        git(repo, "fetch", "--quiet", "origin", TRUNK)
     if apply:
         repair_heads(repo)   # a case-broken HEAD would hide the tree from every check below
     here = Path(repo).resolve()
@@ -1889,14 +1924,17 @@ def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS,
             print(f"keep  {p.name}: {why}")
 
     for path, branch in rows[1:]:
+        if tidy_cutoff(deadline):
+            break
         p = Path(path).resolve()
         if p == here or not p.exists() or (p / LIVE_MARKER).exists():
             continue
         if (p / GATEWAY_MARKER).exists():
             keep(p, "gateway", "gateway session's own tree (GATEWAY_NUC.md rule 7)")
             continue
-        auto = (re.match(r"mts-.+-s\d{4}-\d{6}(-\d+)?$", p.name) or p.name.startswith(tuple(f"mts-{n.lower()}-" for n in hosts.aliases(socket.gethostname())) + ("mts-relay-",))
-                or is_app_tree(p))
+        auto = (re.match(r"mts-.+-s\d{4}-\d{6}(-\d+)?$", p.name) or p.name.startswith(tuple(f"mts-{n.lower()}-" for n in hosts.aliases(socket.gethostname())) + ("mts-relay-",)
+                                       + tuple(f"mts-dsa-{n.lower()}-" for n in hosts.aliases(socket.gethostname())))
+                or is_app_tree(p) or (p.parent.name == "gq" and branch.startswith("gemini-q/")))
         if p.name in LANE_WORKTREES:
             keep(p, "lane", "named lane")
             continue
@@ -1907,7 +1945,7 @@ def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS,
             keep(p, "branch", f"branch {branch}")
             continue
         rows_dirty = [l for l in git(p, "status", "--short", check=False).stdout.splitlines() if l]
-        if any(not is_noise(l) for l in rows_dirty):
+        if any(not tidy_noise(l) for l in rows_dirty):
             keep(p, "uncommitted", "uncommitted files")
             continue
         anc = git(repo, "merge-base", "--is-ancestor", branch, f"origin/{TRUNK}", check=False).returncode
@@ -1932,7 +1970,10 @@ def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS,
             if r.returncode != 0:
                 keep(p, "remove-failed", f"remove failed ({r.stderr.strip()[:80]})")
                 continue
-            git(repo, "branch", "-d", branch, check=False)
+            if git(repo, "branch", "-d", branch, check=False).returncode != 0:
+                # -d judges against this tree's HEAD, which may lag; the branch is already known to be on origin/TRUNK (anc == 0),
+                # and a left-over gemini-q/<id> would make the next run of that card fail at `worktree add -b`
+                git(repo, "branch", "-D", branch, check=False)
         print(f"{'removed' if apply else 'would remove'}  {p.name} [{branch}]: clean, no ignored data, on origin/{TRUNK}, "
               f"idle {idle:.1f} h")
         out.append(str(p))
@@ -1942,6 +1983,26 @@ def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS,
     print(f"{'removed' if apply else 'would remove'} {len(out)}; kept {sum(kept.values())}" + (f" ({counts})" if kept else "")
           + ("" if apply else "; `python scripts/dev/sync.py tidy --apply` removes, `--all` also tries hand-named trees"))
     return out
+
+
+TIDY_AFTER_SHIP_BUDGET_S = 20   # a ship never waits longer than this for the clean-up
+
+
+def tidy_after_ship(repo, budget_s=TIDY_AFTER_SHIP_BUDGET_S, tidy_fn=None):
+    """Operator 2026-11-03: a finished worktree goes away right after use. Called once a ship has pushed: retires OTHER finished
+    trees with the normal tidy rules (clean, nothing off trunk, no ignored data, idle TIDY_IDLE_HOURS; `repo` itself is never
+    removed). No fetch (the push just refreshed origin/TRUNK) and a time budget; every error is swallowed, a ship never fails
+    here. Prints one line, and only when something was removed. Returns the paths removed."""
+    try:
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            gone = (tidy_fn or tidy)(repo, apply=True, fetch=False, deadline=time.time() + budget_s)
+        if gone:
+            print(f"tidy: retired {len(gone)} finished worktree(s): " + ", ".join(Path(g).name for g in gone))
+        return gone
+    except Exception as e:   # noqa: BLE001 - best effort by design
+        print(f"tidy: skipped after ship ({type(e).__name__}: {str(e)[:80]})")
+        return []
 
 
 def ship_is_cards_docs_only(repo, argv):
@@ -2128,6 +2189,7 @@ def main(argv):
             pushed = ship(repo, release_slug=release_slug, after_slug=after_slug)
             if isinstance(pushed, Pushed):
                 write_last_pushed(repo, pushed)
+                tidy_after_ship(repo)
             if isinstance(pushed, Pushed) and not wait_ci:
                 print(f"shipped {pushed.sha[:8]}; CI not awaited: `python scripts/dev/sync.py ci` waits for its verdict (red exits {CI_RED_EXIT}); `ship --wait-ci` waits here")
             if isinstance(pushed, Pushed) and wait_ci:

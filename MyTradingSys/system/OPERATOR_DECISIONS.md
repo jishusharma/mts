@@ -1645,3 +1645,30 @@ Operator: "get all discussed and planned items into pipeline - remove clutter/co
 
 ## 2026-11-03 - Simulator: reviews on the API credit, visuals from standard tools
 Operator (chat, sim demo): use the Console API credit for simulator reviews and work it can do (saves login C weekly), and base the page's visuals on what established backtest tools show (TradingView Strategy Tester, MT5 visual mode), starting from the basic idea of a simulation. First job: Opus design review via scripts/dev/api_batch.py, files in MyTradingSys/research/sim_desk/api_review/. DECISION (OURS): code changes stay in Claude Code sessions, because the API has no file access; the API gets reviews and drafts.
+
+## 2026-11-03 - Simulator build order: trade charts + banner first
+Operator (chat, 13:35Z, from the INDUSTRY_SURVEY build list): "Trade charts + banner". Card `sim-build-hosted-trade-charts` (trade list + candle chart on the hosted page for the 27 desk results that carry charts; fixed verdict banner on every result) builds first, on login C today while A is absent; `sim-build-equity-drawdown-stability` and `sim-build-heatmap-replay` follow. MTS Home rebuild (`mts-home-rebuild-1103`) runs in parallel on B.
+
+## 2026-11-03 14:45Z - Hold login C's last 4% for B's MTS Home ship | decided 2026-11-03 | Operator (chat)
+Operator: "Hold for B". C does not take mts-home-rebuild-1103; B ships H2/H3 (broadcast b-cf5520, by 19:00Z). Pilot ultra waves 17:30Z do not fit under the 97% stop; Supervisor C rechecks at 17:30Z.
+
+## d-s0-exit-waived-1103 | decided 2026-11-03 | Supervisor B (chat, JIS-NUC login B)
+Operator: "Yes, move on" to "Should we stop waiting on the other cleanup targets and move to the next step?" S0 closes with its exit unmet, S1 starts. Measured at the decision: worktrees on JIS-NUC 12 (from 52; 5 more due out once idle), claims last read 43 (target 4); bookkeeping share, traffic jam and scheduled tasks not measured. Cleanup continues alongside S1. Also this session: "Why you want to just keep them? ... once you have used them, why not immediately just remove them?" (finished worktrees retire after each ship, 5c939ec6). Not decided here: q-v1-bar, q-v1-layers, q-v1-spec; those stay the operator's.
+
+## 2026-11-03 - Login B cap raised to 65% | decided 2026-11-03 | Operator (chat)
+Operator: "cap raised to 65% - keep working until C is up after reset - in 70 mins aprox.."
+
+## d-s1-defaults-1104 | decided 2026-11-04 | Operator (chat), relayed by Super Session
+Operator: "Yes, run it" to "accept the five-move week plan as the orientation?", asked right after the three S1 yes/no lines. Reading (relayed, not verbatim per line): plan accepted; q-v1-bar YES, q-v1-layers YES (LC4 validation + RSI deep-buy), q-v1-spec YES (D2 signed as written). S1 exit: D7 Now moves to S2, S3, S4 in parallel. Open follow-up: GO_LIVE_BAR.md revision block (D3 M1-M7) and signal_v1 seam are S2/S1 cards, not done here.
+
+## d-super-session-sonnet-1104 | decided 2026-11-04 | Operator (chat, login C JIS-NB)
+Operator: "you have started a fable session - is it req? do not kill it - just ans? week started does not mean that we can be extravagant - we can only use data wise!" then "Switch it". The Unblock MTS super session (started on Fable by omission) was switched to Sonnet in place via set_session_model, not killed. Rule: every start_session/Agent passes model explicitly (Sonnet default, Haiku mechanical); a fresh weekly budget is not licence to spend.
+
+## d-api-credit-plan-1104 | decided 2026-11-04 | Operator (chat, login C JIS-NB)
+Operator: "Use Claude Platform credits also! Plan for it as it is going to expire". Plan: system/PLAN_API_CREDITS_2026-11-04.md ($99 to 2026-11-17, about $7.50 a day, headless Sonnet builders + Haiku batches, every job capped with --max-budget-usd). Measured the same turn: a headless `claude -p` on the API key answers (Haiku probe $0.004) with hooks disabled, so SONNET-lane cards can run on the credit.
+
+## d-rumers-backtest-go-1104 | decided 2026-11-04 | Operator (chat, login C JIS-NB)
+Operator: "Where are we on back-testing Rumors? We need to find what is useful in those that MTS needs!" State at the question: 3 extracts + 20-video skim + blind read done (11-01), PRE_REG frozen with 5 rules (m=5), HARNESS written, no run, no DEV_CHECK.md, no VERDICTS row; card rumers-testable-rules-dev-backtest refined (reviewer ACCEPT pending). His order outranks the reviewer step: the card runs now as the first API-credit job (headless Sonnet, cap $15, worktree JIS-NB/rumers-dev-check-2, output F:/MTS/api_runs/rumers-dev-check/). A DEV pass is a hypothesis for one VALIDATION read, never a promotion.
+
+## d-key-copy-nuc-1104 | decided 2026-11-04 | Operator (chat)
+Operator: "u copy it" (copy F:/ClaudePlaform/key.txt to JIS-NUC same path, broadcast b-8eaae5). Tried from JIS-NB: blocked by WinError 1265 on //JIS-NUC/F$ (share auth). Not copied.

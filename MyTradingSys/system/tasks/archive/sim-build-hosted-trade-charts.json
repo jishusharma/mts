@@ -1,0 +1,82 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-03T13:13:47Z",
+  "commands": [
+    "python -m pytest MyTradingSys/research/sim_desk -q",
+    "python MyTradingSys/research/sim_desk/artifact/test_artifact.py"
+  ],
+  "created": "2026-11-03T13:00:56Z",
+  "depends_on": [],
+  "done_when": "Built hosted page: trade list + chart for all 27 desk-* results, banner on all 337 result files; n<30 never reads pass; new tests failed on pre-change code once; pytest sim_desk green",
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Hosted sim page (artifact/) shows a trade list and candle chart for the 27 desk results that carry charts, and one fixed verdict banner on every result",
+  "id": "sim-build-hosted-trade-charts",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Hosted page: banner on 337/337 result files (233 UNCLEAR, 59 TOO_FEW, 45 FAIL, 0 PASS; n<3",
+      "ref": "a985c53c6",
+      "utc": "2026-11-03T13:13:47Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sim page: candle-by-candle replay of one trade with a phase line (waiting, signal, in trad",
+      "ref": "5f6c86009a78",
+      "utc": "2026-11-02T20:22:33Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-03 ACCEPT (reviewer Agent a41afa0c, FIX applied once; no depends_on by design). DECISION (OURS): banner fields = verdict, filled n, net R after fees, try number, fee break-even when exported; n<30 reads too few trades. Exporter has no exit reason per trade yet (survey Noticed): add it first. Verify line: content sha, git cherry origin/fast-track <sha> empty, files in ls-tree. DECISION (OURS): no depends_on (a ready card needs done deps); the coordinator serves the three sim-build cards one at a time, order hosted-trade-charts, equity-drawdown-stability, heatmap-replay.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T13:05:53Z",
+  "refs": [
+    "MyTradingSys/research/sim_desk/INDUSTRY_SURVEY_2026-11-03.md"
+  ],
+  "result": "Hosted page: banner on 337/337 result files (233 UNCLEAR, 59 TOO_FEW, 45 FAIL, 0 PASS; n<30 never pass), trade list with exit reason + click-to-chart for 25 of 27 chart results (other 2 are event charts); 6 new tests failed pre-change; sim_desk pytest 232 passed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/export_results.py",
+    "MyTradingSys/research/sim_desk/artifact/build_artifact.py",
+    "MyTradingSys/research/sim_desk/artifact/test_artifact.py",
+    "MyTradingSys/research/sim_desk/artifact/index.html",
+    "MyTradingSys/research/sim_desk/results"
+  ],
+  "scope_out": [
+    "no new tabs, no quiz, no walk-forward",
+    "results/<id>.json schema kept (fields only added)",
+    "no change to desk.py or page.html"
+  ],
+  "scope_sha": "5f6c86009a78",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/sim_desk/INDUSTRY_SURVEY_2026-11-03.md section C items 1-2",
+    "MyTradingSys/research/sim_desk/REQUIREMENTS_2026-11-02.md rows 4 and 6"
+  ],
+  "state": "done",
+  "steps": [
+    "read survey C1, C2 and the trade_chart/charts renderers in artifact/build_artifact.py (hosted page = artifact/, not page.html)",
+    "write failing tests in artifact/test_artifact.py: a result with filled trades has trade rows incl. exit reason; a run with n<30 never shows PASS in the banner",
+    "extend export_results.py: trade rows (entry, exit, exit reason, R) plus chart data for the 27 desk-* results",
+    "render trade list click-to-chart and the one-line verdict banner (verdict, filled n, net R after fees, try number, fee break-even if present) on every result",
+    "run commands, ship; Result line = counts of pages with list+chart and with banner"
+  ],
+  "taken": "2026-11-03T13:13:47Z",
+  "tests": "Fail first: new tests in MyTradingSys/research/sim_desk/artifact/test_artifact.py (already in extra_tests.tsv:100); record the pre-change failure",
+  "title": "Sim hosted page: trade list + candle chart for the 27 desk results that carry charts; fixed verdict banner on every result (survey C1+C2; test fails first)",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

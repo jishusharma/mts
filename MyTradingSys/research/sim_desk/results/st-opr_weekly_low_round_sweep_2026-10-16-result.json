@@ -53,5 +53,15 @@
  "source_files": [
   "MyTradingSys/research/opr_weekly_low_round_sweep_2026-10-16/RESULT.md"
  ],
- "commit": "0584b0353"
+ "commit": "0584b0353",
+ "banner": {
+  "state": "FAIL",
+  "tone": "bad",
+  "verdict": "arm passes; FAIL only if every arm is FAIL; otherwise INCONCLUSIVE). Verdict arms: RL FAIL; AS FAIL.",
+  "n": 322,
+  "net_r": 0.196,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "FAIL · verdict as written: arm passes; FAIL only if every arm is FAIL; otherwise INCONCLUSIVE). Verdict arms: RL FAIL; AS FAIL. · n=322 · net R after fees +0.196 · try n/a · fee break-even n/a"
+ }
 }

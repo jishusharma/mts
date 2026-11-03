@@ -48,5 +48,15 @@
  "source_files": [
   "MyTradingSys/research/tom_transfer_2026-10-11/DAX_BT_REPORT.md"
  ],
- "commit": "1e67b85a3"
+ "commit": "1e67b85a3",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "SMOKE: pipeline test, not a result; full dev + holdout run is Q7",
+  "n": 100,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: SMOKE: pipeline test, not a result; full dev + holdout run is Q7 · n=100 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

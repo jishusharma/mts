@@ -245,5 +245,15 @@
   "MyTradingSys/research/c26_roadmap_2026-11-01/phase1_dist_look.py",
   "MyTradingSys/research/c26_roadmap_2026-11-01/PHASE1_RANGE.md"
  ],
- "commit": "see git log"
+ "commit": "see git log",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Design look on SEEN, n=30: the stop x target grid is flat, mean net +0.10 to +0.39 %: the drift after the reclaim makes the trade, not the exit shape",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Design look on SEEN, n=30: the stop x target grid is flat, mean net +0.10 to +0.39 %: the drift after the reclaim makes the trade, not the exit shape · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

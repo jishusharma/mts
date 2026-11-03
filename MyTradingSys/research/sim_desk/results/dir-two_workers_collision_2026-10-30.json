@@ -32,5 +32,15 @@
  "source_files": [
   "MyTradingSys/research/two_workers_collision_2026-10-30/FINDING.md"
  ],
- "commit": "dd38c0609"
+ "commit": "dd38c0609",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "1. Session built it: e74038d3d (2026-10-30 13:51 IST), card closed state=done: 2db125d50 (14:31). Both on branch claude/live-aid-design-c4174e, not on trunk yet.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: 1. Session built it: e74038d3d (2026-10-30 13:51 IST), card closed state=done: 2db125d50 (14:31). Both on branch claude/live-aid-design-c4174e, not on trunk yet. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

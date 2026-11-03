@@ -47,5 +47,15 @@
  "source_files": [
   "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T03_planted_edges.md"
  ],
- "commit": "2b702f501"
+ "commit": "2b702f501",
+ "banner": {
+  "state": "FAIL",
+  "tone": "bad",
+  "verdict": "functions were fed markets with known answers (no edge, a planted +0.30%, a move inside the signal bar, a move after the exit, funding, a gap through the stop, a same-bar stop and target, a timeout). The price accounting is right everywher…",
+  "n": 200,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "FAIL · verdict as written: functions were fed markets with known answers (no edge, a planted +0.30%, a move inside the signal bar, a move after the exit, funding, a gap through the stop, a same-bar stop and target, a timeout). The price accounting is right everywher… · n=200 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

@@ -1,0 +1,79 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-03T19:53:24Z",
+  "commands": [],
+  "created": "2026-11-03T17:17:45Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-03/eagle_c36_blind_read.md has one row per number quoted in C36 (at least 9): FOUND / DIFF / NOT_IN_DATA; line 1 holds the three counts; NOT_IN_DATA when F:/MTS/data/tom_raw/klines is absent on the host.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Cross-vendor check of the Claude row C36 in BACKTEST_CANDIDATES.md and lesson 12 in EAGLE_EYES_BIBLE.md: re-run wt_turn_rsi_confluence_1m.py (or read its output) and test whether each quoted count and percentage (n=13,466; 906; 1,131; 69; 33.8/36.1; 40.5/35.8; 37.4/34.6; 26/46; median +0.055 %) is reproduced. Never use Gemini output as the source.",
+  "id": "gemini-blind-read-eagle-c36-wt-confluence-1103",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_audits_2026-11-03/eagle_c36_blind_read.md FOUND=0 DIFF=0 NOT_",
+      "ref": "473673972",
+      "utc": "2026-11-03T19:53:24Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: mutation-kill audit of backtest/research_kit.py",
+      "ref": "52ab3e0ca3b4",
+      "utc": "2026-11-01T19:09:02Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "52ab3e0ca3b4 Result: mutation-kill audit of backtest/research_kit.py",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-mutation-research-kit.md",
+      "utc": "2026-11-01T19:09:02Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-03 T0-ONLY (planner-a-1103c; twin check vs gemini-* cards: no overlap)",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T17:17:46Z",
+  "refs": [],
+  "result": "MyTradingSys/research/gemini_audits_2026-11-03/eagle_c36_blind_read.md FOUND=0 DIFF=0 NOT_IN_DATA=13",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md (read, row C36)",
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/wt_turn_rsi_confluence_1m.py (read, run in scratch)",
+    "MyTradingSys/system/EAGLE_EYES_BIBLE.md (read, lesson 12)",
+    "MyTradingSys/research/gemini_audits_2026-11-03/eagle_c36_blind_read.md (new)"
+  ],
+  "scope_out": [
+    "no edit to research_kit.py or its tests; no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "52ab3e0ca3b4",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/layer_lab/reports/2026-11-01_gpt-mutation-research-kit.md:1-20"
+  ],
+  "state": "done",
+  "steps": [
+    "List every number in C36 and lesson 12",
+    "Run the script from a scratch copy (or read saved output) and copy the number found",
+    "Write FOUND/DIFF/NOT_IN_DATA per row, counts on line 1"
+  ],
+  "taken": "2026-11-03T19:53:24Z",
+  "tests": "audit card, output file is the test; each row quotes the script output line; the repo scripts stay byte-identical (git diff empty)",
+  "title": "[GEMINI] Blind read of Eagle C36 WT turn + RSI confluence numbers (Claude 2c2acf4e6)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

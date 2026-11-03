@@ -1,0 +1,73 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "claim": "fabio-v3-is-only-loads-oos-bars",
+  "closed": "2026-11-03T19:29:54Z",
+  "commands": [],
+  "created": "2026-11-03T15:59:29Z",
+  "depends_on": [],
+  "done_when": "test_run_v3_l3.py asserts build_windows is called with last=IS_RANGE[1] when --is-only; python MyTradingSys/backtest/layers/fabio/test_run_v3_l3.py exits 0",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "run_v3_l3.py --is-only must load bars only through IS_RANGE end, so a phase-1 run reads no OOS-period bar (spec: no OOS work in --is-only)",
+  "id": "fabio-v3-is-only-loads-oos-bars",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "run_v3_l3.py --is-only now loads bars only through IS_RANGE[1]; test_run_v3_l3.py 13 passe",
+      "ref": "45972ae3b",
+      "utc": "2026-11-03T19:29:54Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "run_v3_l3: add --is-only (IS grid, freeze selection, write is_only.json, never run OOS)",
+      "ref": "d92a7373ae18",
+      "utc": "2026-10-31T23:36:50Z"
+    }
+  ],
+  "layers": [
+    "fabio"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "refined by Session_Planner 2026-11-03 (OURS: only --is-only path changes, full run unchanged); verify: content sha, cherry empty, ls-tree both files",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T18:22:28Z",
+  "refs": [
+    "MyTradingSys/backtest/layers/fabio/run_v3_l3.py:201"
+  ],
+  "result": "run_v3_l3.py --is-only now loads bars only through IS_RANGE[1]; test_run_v3_l3.py 13 passed (new case failed on old line 201 with OOS_RANGE[1]=2026-06-25); unblocks fabio-v3-model-b-managed-is-rerun",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/backtest/layers/fabio/run_v3_l3.py",
+    "MyTradingSys/backtest/layers/fabio/test_run_v3_l3.py"
+  ],
+  "scope_out": [
+    "MyTradingSys/backtest/layers/fabio/run_backtest.py",
+    "MyTradingSys/system/LAYERS.md"
+  ],
+  "scope_sha": "d92a7373ae18",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "read run_v3_l3.py lines 194-241 (--is-only, build_windows at 201)",
+    "write failing test first",
+    "on a.is_only call build_windows(IS_RANGE[0], IS_RANGE[1]) and skip oos_w construction; run the test file"
+  ],
+  "taken": "2026-11-03T19:27:28Z",
+  "tests": "MyTradingSys/backtest/layers/fabio/test_run_v3_l3.py: new case stubs build_windows and records args under --is-only; fails on current line 201 (passes OOS_RANGE[1])",
+  "title": "run_v3_l3 --is-only loads bars through OOS end (line 201 build_windows(IS_RANGE[0], OOS_RANGE[1])): load only to IS_RANGE[1] in is-only mode; test fails on old code; unblocks fabio-v3-model-b-managed-is-rerun",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

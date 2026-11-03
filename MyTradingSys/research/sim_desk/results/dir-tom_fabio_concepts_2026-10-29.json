@@ -35,5 +35,15 @@
  "source_files": [
   "MyTradingSys/research/tom_fabio_concepts_2026-10-29/CONCEPTS.md"
  ],
- "commit": "90b6d08d1"
+ "commit": "90b6d08d1",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "(FABIO_L1_REPORT.md:62) used volume spread uniformly over each bar (fabio_volume_fvg.py:11-15), which cannot produce Fabio's per-price lowest-volume level; FAB-006 (price rejects at that level: \"this is exactly where the price will reject.…",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: (FABIO_L1_REPORT.md:62) used volume spread uniformly over each bar (fabio_volume_fvg.py:11-15), which cannot produce Fabio's per-price lowest-volume level; FAB-006 (price rejects at that level: \"this is exactly where the price will reject.… · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

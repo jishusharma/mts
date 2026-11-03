@@ -43,5 +43,15 @@
  "source_files": [
   "MyTradingSys/research/pitchfork_2026-10-19/PHASE1_EVENT_STUDY.md"
  ],
- "commit": "1339d6af9"
+ "commit": "1339d6af9",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "UNPROVEN: PASS withdrawn 2026-11-03, whole-window study with the same final-pivot method; not re-run (mts_audit_2026-11-03/AUDIT.md s2)",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: UNPROVEN: PASS withdrawn 2026-11-03, whole-window study with the same final-pivot method; not re-run (mts_audit_2026-11-03/AUDIT.md s2) · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

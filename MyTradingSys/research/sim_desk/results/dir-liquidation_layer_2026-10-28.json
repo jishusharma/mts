@@ -33,5 +33,15 @@
  "source_files": [
   "MyTradingSys/research/liquidation_layer_2026-10-28/README.md"
  ],
- "commit": "8804c7ff6"
+ "commit": "8804c7ff6",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Layer = CoinGlass Legend \"Liquidation Heatmap (BTCUSDT, Leverage)\" and the Hyperliquid liquidation map. It is a MODELLED estimate of where leveraged positions would liquidate, not executed liquidations. Colour scale and units are not shown…",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Layer = CoinGlass Legend \"Liquidation Heatmap (BTCUSDT, Leverage)\" and the Hyperliquid liquidation map. It is a MODELLED estimate of where leveraged positions would liquidate, not executed liquidations. Colour scale and units are not shown… · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

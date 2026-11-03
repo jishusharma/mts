@@ -1,0 +1,72 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/tests/test_cbp_e2e_candidate.py MyTradingSys/tests/test_cbp_query.py -q",
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "created": "2026-11-03T17:22:31Z",
+  "depends_on": [],
+  "done_when": "test_cbp_e2e_candidate.py green with the 4 assertions, test_cbp_query.py still green, run_all_tests --quick exits 0, and cbp.candidates writes no file (asserted).",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Close the S4 consumer piece as D5 was amended: add cbp.candidates(rows) turning tradable stored rows into records {source cbp:<analyst>, status CANDIDATE_UNTESTED, order_eligible false, evidence video_id, expires_at}, and prove one fixture row flows run_once, store, query, candidates and never reaches promoted_setups.json.",
+  "id": "s4-cbp-module-e2e",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "fix(cbp): non-object JSON returns the safe default, not AttributeError",
+      "ref": "66c3f4e049fd",
+      "utc": "2026-10-31T08:00:50Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "cbp-daily-firing-gap"
+  ],
+  "note": "Piece 2 of 2 from s4-cbp-module-e2e (the old 'ack' exit left with the queue). ASSUMPTION (OURS): a pure candidates() helper in cbp/ is the consumer; layers still read via cbp.query. Other S4 items are not builder work: task install (cbp-daily-firing-gap), Gate 4 data, CBP CI billing. DECISION (OURS, default taken): D7 S4 exit wording 'queue ... ack' is read as the D5-as-built flow (query, no ack); S4 is met when both S4 cards ship.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T18:56:14Z",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D7_ROADMAP.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/cbp/__init__.py (add candidates())",
+    "MyTradingSys/tests/test_cbp_e2e_candidate.py (new)",
+    "MyTradingSys/execution/promoted_setups.json (read only, assert unchanged)"
+  ],
+  "scope_out": [
+    "any order path or auto_trader_config.json",
+    "writing promoted_setups.json (core only, Gate 5)",
+    "queue/consumer.py and acks (deleted by D5)",
+    "the golden-set harness (card s4-cbp-golden-set-harness)",
+    "ingestion scheduling (card cbp-daily-firing-gap)"
+  ],
+  "scope_sha": "66c3f4e049fd",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D5_CBP_MODULE.md (amended 2026-10-24 query not queue; status table Gate 5: 0 layers call cbp.query)",
+    "MyTradingSys/research/v1_plan_2026-10-20/D7_ROADMAP.md (S4 exit)",
+    "MyTradingSys/items/B139_cbp_adapter.md (SUPERSEDED, queue deleted f9fcf77b4)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read cbp.query, is_tradable and test_run_adds_dedupes_and_skips_known in test_cbp_query.py.",
+    "Write test_cbp_e2e_candidate.py: stub fetch and extract, run_once, query, candidates; assert status, order_eligible False, source, evidence, expiry; untradable and expired rows give no record; promoted_setups.json bytes unchanged.",
+    "Run it on old code (candidates missing), then add candidates() as a pure function with no file writes.",
+    "Run test_cbp_query.py and run_all_tests --quick; ship."
+  ],
+  "tests": "test_cbp_e2e_candidate.py: a fixture row via run_once, query, candidates gives exactly one record with CANDIDATE_UNTESTED and order_eligible False; a row without entry/target/invalidation gives none; an expired row gives none; promoted_setups.json unchanged. Old code: cbp has no candidates, the test errors.",
+  "title": "S4: one analyst row from cbp_run.run_once through cbp.query to a CANDIDATE_UNTESTED record (D5 as built: no queue, no ack)",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

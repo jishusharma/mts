@@ -74,5 +74,15 @@
  "source_files": [
   "MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md"
  ],
- "commit": "285c4f078"
+ "commit": "285c4f078",
+ "banner": {
+  "state": "TOO_FEW",
+  "tone": "warn",
+  "verdict": "Status: consolidation of what the repo already holds, extended 2026-10-15 by a line-by-line pass over the 26 never-extracted Tom",
+  "n": 3,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "TOO FEW TRADES · verdict as written: Status: consolidation of what the repo already holds, extended 2026-10-15 by a line-by-line pass over the 26 never-extracted Tom · n=3 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

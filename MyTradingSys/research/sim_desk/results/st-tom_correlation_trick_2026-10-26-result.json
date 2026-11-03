@@ -34,5 +34,15 @@
  "source_files": [
   "MyTradingSys/research/tom_correlation_trick_2026-10-26/RESULT.md"
  ],
- "commit": "9b637d2c4"
+ "commit": "9b637d2c4",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "NOT-ADD. Neither primary variant has positive fee-net expectancy on DEV, and neither passes VALIDATION. Holdout not read (rule: only if VALIDATION passes). All parameters OURS; PRE_REG.md frozen before any outcome.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: NOT-ADD. Neither primary variant has positive fee-net expectancy on DEV, and neither passes VALIDATION. Holdout not read (rule: only if VALIDATION passes). All parameters OURS; PRE_REG.md frozen before any outcome. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

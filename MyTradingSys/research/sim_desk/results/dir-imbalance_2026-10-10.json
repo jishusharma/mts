@@ -45,5 +45,15 @@
  "source_files": [
   "MyTradingSys/research/imbalance_2026-10-10/RESEARCH.md"
  ],
- "commit": "53f1fbccb"
+ "commit": "53f1fbccb",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": ".py + PBO, OOS splits, funding included.",
+  "n": 695,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: .py + PBO, OOS splits, funding included. · n=695 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

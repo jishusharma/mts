@@ -46,5 +46,15 @@
  "source_files": [
   "MyTradingSys/research/tom_core_bt_2026-10-09/PHASE2_RESULT.md"
  ],
- "commit": "16122e7e3"
+ "commit": "16122e7e3",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "no anchor has an edge; 46/48 real-minus-placebo CIs straddle 0; every year negative",
+  "n": null,
+  "net_r": -0.185,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: no anchor has an edge; 46/48 real-minus-placebo CIs straddle 0; every year negative · n=? · net R after fees -0.185 · try n/a · fee break-even n/a"
+ }
 }

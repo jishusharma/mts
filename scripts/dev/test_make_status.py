@@ -298,6 +298,23 @@ class GateBoard(Base):
                          "commits 24h: 2 = research 50% | claim/release 0% | other 50%  OVER 30% CAP")
 
 
+class LayerPassLine(Base):
+    """Expected values by hand: 1 fee-net PASS, 1 fee-net withdrawn PASS, 1 fee-net no edge, 1 gross PASS -> 1 of 3."""
+
+    def test_counts_fee_net_rows_with_surviving_pass(self):
+        rows = [
+            {"id": "A", "fees": "2 bps", "verdict": "PASS (PF 1.63, +0.61% net/trade)"},
+            {"id": "B", "fees": "2 bps", "verdict": "UNPROVEN: PASS withdrawn 2026-11-03"},
+            {"id": "C", "fees": "2 bps", "verdict": "no edge: net -2.91 R"},
+            {"id": "D", "fees": "none (forward-return study, gross)", "verdict": "PASS gross"},
+        ]
+        commit_file(self.repo, ms.LAYER_MAP, self.now, json.dumps({"backtests": rows}))
+        self.assertEqual(ms.get_layer_pass_line(cwd=self.repo),
+                         "Layer pass: 1 of 3 fee-net row(s) carry a surviving PASS")
+
+    def test_missing_map_says_so(self):
+        self.assertEqual(ms.get_layer_pass_line(cwd=self.repo), "(no MyTradingSys/system/layer_map.json)")
+
 class GoPrivateLine(Base):
     """GO-PRIVATE: A = promoted_setups.json entries, B = VERDICTS.csv PASS rows read on VALIDATION/HOLDOUT, by study_dir
     (operator quote 2026-10-22: notify the moment a layer first clears its fee-net out-of-sample gate)."""

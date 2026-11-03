@@ -274,5 +274,15 @@
   "MyTradingSys/research/c26_roadmap_2026-11-01/phase1_ladder_look.py",
   "MyTradingSys/research/c26_roadmap_2026-11-01/phase1_range.py"
  ],
- "commit": "this card"
+ "commit": "this card",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Measure only: DOWN highs that came back to L1 went 0.37 % (median) / 0.64 % (80th) beyond H1 first; 12 of 30 did not come back in 24h",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Measure only: DOWN highs that came back to L1 went 0.37 % (median) / 0.64 % (80th) beyond H1 first; 12 of 30 did not come back in 24h · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

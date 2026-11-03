@@ -36,5 +36,15 @@
  "source_files": [
   "MyTradingSys/research/station_c_rolling_audit_20261026/REPORT.md"
  ],
- "commit": "05b22b756"
+ "commit": "05b22b756",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "26 October 2026. Audited tree: ce8194ba2ccaa4e3e058954df95d019a5c2c8ded. Scope: repository code, committed pilot receipts and policies. No timers installed, live processes changed, remote login probed, other chats messaged, private session…",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: 26 October 2026. Audited tree: ce8194ba2ccaa4e3e058954df95d019a5c2c8ded. Scope: repository code, committed pilot receipts and policies. No timers installed, live processes changed, remote login probed, other chats messaged, private session… · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

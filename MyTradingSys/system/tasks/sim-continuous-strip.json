@@ -4,33 +4,53 @@
   "commands": [],
   "created": "2026-11-02T20:17:54Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/sim_desk/artifact/index.html rebuilt: for eagle-c30-wt-rsi-div the page has elements #trade-strip (one candle strip, every trade carrying a .trade-marker, win green / loss red) and #rule-card (entry, exit, stop, timeframe, costs); test_artifact.py asserts both and fails on the pre-change build.",
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Sim page: show one continuous 30m candle strip per test with every trade shaded (green win, red loss) and entry/exit markers, with a plain rule card (entry, exit, stop or none, timeframe, costs) above it, per SIM_VISUALS_REVIEW.md rows 1 and 6.",
   "id": "sim-continuous-strip",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sim: neighbour heatmap on the hosted page (survey C5), lone peak labelled",
+      "ref": "e3123921a986",
+      "utc": "2026-11-03T14:21:25Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-03 ACCEPT (Sonnet agent a2905516c ACCEPT-AFTER-FIX; fix applied by planner-a-1103, confirmed planner-refine-1104). Cost source: result json value_plain 0.10% per round trip (SOURCED backtest/fees.py); slippage and funding n/a. DECISION (OURS): strip is 30m.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-03T20:23:11Z",
   "refs": [
     "MyTradingSys/research/sim_desk/api_review/SIM_VISUALS_REVIEW.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/artifact/build_artifact.py",
+    "MyTradingSys/research/sim_desk/artifact/test_artifact.py",
+    "MyTradingSys/research/sim_desk/artifact/index.html"
+  ],
+  "scope_out": [
+    "no desk.py or backtest change; no new data fetch; other results keep their current chart; no deploy of the hosted page (republish is a separate Haiku step)"
+  ],
+  "scope_sha": "e3123921a986",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "decide the data source first: build_artifact.py reads trades and candles from results/eagle-c30-wt-rsi-div.json (chart items written by c30_trade_charts.py); if candles for between-trade bars are missing, extend c30_trade_charts.py to emit them and log DECISION (OURS)",
+    "rule card cost fields: read costs from the result json trade_costs/fee fields; label each SOURCED or OURS; show n/a when absent (no invented numbers)"
+  ],
+  "tests": "MyTradingSys/research/sim_desk/artifact/test_artifact.py: new test asserts strip element with N trade markers and rule card fields present; run and confirm it fails before the change",
   "title": "Sim page: one continuous candle strip per test with all trades marked, plus a plain rule card (entry, exit, stop or none, timeframe, costs)",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

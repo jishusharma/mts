@@ -41,5 +41,15 @@
  "source_files": [
   "MyTradingSys/research/us_open_levels_2026-10-30/RESULT.md"
  ],
- "commit": "122323253"
+ "commit": "122323253",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "BTCUSDT 1m 2022-01-01..2026-09-26, 1230 weekdays. Window = 120 min from the 09:30 New York open; held = close 60 min after the first touch is still beyond the level. Definitions in study.py (OURS), fixed before the run. Descriptive, no fee…",
+  "n": 92,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: BTCUSDT 1m 2022-01-01..2026-09-26, 1230 weekdays. Window = 120 min from the 09:30 New York open; held = close 60 min after the first touch is still beyond the level. Definitions in study.py (OURS), fixed before the run. Descriptive, no fee… · n=92 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

@@ -55,5 +55,15 @@
  "source_files": [
   "MyTradingSys/research/fable_audit_2026-10-18/GATE_AUDIT.md"
  ],
- "commit": "b63e85893"
+ "commit": "b63e85893",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "table",
+  "n": 3893,
+  "net_r": 0.31,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: table · n=3893 · net R after fees +0.310 · try n/a · fee break-even n/a"
+ }
 }

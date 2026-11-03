@@ -72,5 +72,15 @@
  "source_files": [
   "MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md"
  ],
- "commit": "dd5aa09fb"
+ "commit": "dd5aa09fb",
+ "banner": {
+  "state": "TOO_FEW",
+  "tone": "warn",
+  "verdict": "Field format follows setup_catalog_2026-10-15/SETUP_CATALOG.md (that file is not edited here). Every field text below is copied from the",
+  "n": 0,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "TOO FEW TRADES · verdict as written: Field format follows setup_catalog_2026-10-15/SETUP_CATALOG.md (that file is not edited here). Every field text below is copied from the · n=0 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

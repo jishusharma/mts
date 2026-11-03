@@ -34,5 +34,15 @@
  "source_files": [
   "MyTradingSys/research/rsi_2a_2026-10-09/RSI_2A_SPEC.md"
  ],
- "commit": "bd545451c"
+ "commit": "bd545451c",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "does not test Malkan's own exit.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: does not test Malkan's own exit. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

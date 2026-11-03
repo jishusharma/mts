@@ -73,5 +73,15 @@
  "source_files": [
   "MyTradingSys/research/tom_check_set_2026-10-18/CHECK_SET.md"
  ],
- "commit": "3585430cb"
+ "commit": "3585430cb",
+ "banner": {
+  "state": "TOO_FEW",
+  "tone": "warn",
+  "verdict": "Protocol: TOM_LAYER_V2_SPEC.md section 7.",
+  "n": 2,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "TOO FEW TRADES · verdict as written: Protocol: TOM_LAYER_V2_SPEC.md section 7. · n=2 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

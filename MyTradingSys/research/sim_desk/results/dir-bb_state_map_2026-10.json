@@ -32,5 +32,15 @@
  "source_files": [
   "MyTradingSys/research/bb_state_map_2026-10/MAP.md"
  ],
- "commit": "46cb4255e"
+ "commit": "46cb4255e",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Status: RUN 2026-10-30 on JIS-NB (tom_raw present). map.csv written.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Status: RUN 2026-10-30 on JIS-NB (tom_raw present). map.csv written. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

@@ -72,5 +72,15 @@
  "source_files": [
   "MyTradingSys/research/gpt_burn_2026-10-24/gx2-review-tom-extracts/report.md"
  ],
- "commit": "01ace2d25"
+ "commit": "01ace2d25",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "2 APPROVE, 7 FIX. All nine verifier runs pass: 107/107 quote blocks OK, zero reported problems. 45/45 randomly sampled detailed claims match the supplied transcript wording and immediate context. The independent caption-body check finds 10…",
+  "n": 100,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: 2 APPROVE, 7 FIX. All nine verifier runs pass: 107/107 quote blocks OK, zero reported problems. 45/45 randomly sampled detailed claims match the supplied transcript wording and immediate context. The independent caption-body check finds 10… · n=100 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

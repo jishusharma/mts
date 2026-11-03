@@ -1,0 +1,64 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest scripts/dev/test_drill_check.py -q",
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "created": "2026-11-03T17:22:31Z",
+  "depends_on": [
+    "state-code-accumulator-backfill"
+  ],
+  "done_when": "The two EXPECT files are committed (written before any drill); test_drill_check.py green; run_all_tests --quick exits 0. The drills and the RESULT files are the operator or coordinator step and the S2 exit sign, not this card.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "D3 M6: the EXPECT-before, RESULT-after drill for one HALT and one restart. The OPERATOR or coordinator runs both drills on the live host; the builder only writes the two EXPECT files and the checker that compares a saved RESULT to them. The builder never touches HALT, restarts anything or deploys.",
+  "id": "s2-halt-restart-drills",
+  "lane": "JIS-NB",
+  "layers": [],
+  "live_path": true,
+  "mutation_check": "",
+  "note": "Live-path checklist: restart/reset = restart_EXPECT; non-trade balance moves = EXPECT says deposits or transfers neither cause nor clear a halt (BLIND_HALT rule 4); API errors = RESULT unreadable fails; fail closed = every miss exits 1. Drills wait for state-code-accumulator-backfill to be done (restart EXPECT uses INVALID then valid). Builder rules: never deploy, restart a process, touch HALT or open a trade; the operator or coordinator deploys by hand (DEPLOY_RUNBOOK.md). Class C3 and weight IMPORTANT proposed by the planner (live_path counts C3): needs the Lab_Guy stamp before take.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D7_ROADMAP.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/drills/halt_EXPECT.json and restart_EXPECT.json (new)",
+    "scripts/dev/drill_check.py (new, read only)",
+    "scripts/dev/test_drill_check.py (new)",
+    "MyTradingSys/execution/executor.py preflight lines 205-236 (read only, source of the HALT refusal text)"
+  ],
+  "scope_out": [
+    "creating, editing or deleting execution/HALT or HALT_DAILY_LOSS",
+    "running either drill, restarting the stack, any deploy",
+    "kill_switch.py runs, orders, testnet trades",
+    "the live tree",
+    "signing the drill (operator)"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D3_GO_LIVE_BAR_REVIEW.md (M6: one deliberate HALT, one restart, EXPECT before, RESULT after)",
+    "MyTradingSys/research/v1_plan_2026-10-20/D7_ROADMAP.md (S2 exit)",
+    "MyTradingSys/execution/executor.py:205-236 (preflight HALT refusal)",
+    "MyTradingSys/system/BLIND_HALT_POLICY.md (rule 5: restart starts the 30 min window again)",
+    "MyTradingSys/research/v1_plan_2026-10-20/D2_V1_SPEC.md (a halt blocks risk-adding orders, never the protective stop)"
+  ],
+  "state": "refined",
+  "steps": [
+    "Read executor.py preflight and BLIND_HALT_POLICY.md rule 5, and the state-code card spec for INVALID semantics.",
+    "Write test_drill_check.py first with fixture EXPECT and RESULT files in tmp dirs; run on old code: the checker is absent.",
+    "Write halt_EXPECT.json (written_utc, preflight reason contains 'HALT: manual halt file present', no new risk-adding order after t0, protective stops still on the exchange, only removal of HALT resumes) and restart_EXPECT.json (accumulators INVALID then valid after backfill, a present HALT still present, blind-halt clean window restarts at 30 min, no duplicate orders).",
+    "Implement drill_check.py <expect> <result>: exit 0 only if every EXPECT key matches, exit 1 on a mismatch, a missing key, an unreadable file or captured_utc not later than written_utc; print one line per key.",
+    "Run the tests and run_all_tests --quick; ship. Result names the exact RESULT keys the operator must capture."
+  ],
+  "tests": "test_drill_check.py: matching pair exits 0; one wrong value, one missing key, unreadable RESULT, and RESULT captured before EXPECT each exit 1; a RESULT showing HALT gone after the restart drill exits 1; the checker and tests create no HALT file (asserted). All fail on old code (script absent).",
+  "title": "S2 exit: one HALT drill and one restart drill, EXPECT written before, RESULT after, operator signs",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

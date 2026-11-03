@@ -34,5 +34,15 @@
  "source_files": [
   "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T05_placebo_nulls.md"
  ],
- "commit": "4f32dd966"
+ "commit": "4f32dd966",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "s stand; the LC1 KEEP list must be re-stated on the fair control before any layer uses it.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: s stand; the LC1 KEEP list must be re-stated on the fair control before any layer uses it. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

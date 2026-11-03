@@ -1,0 +1,74 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-03T18:36:22Z",
+  "commands": [],
+  "created": "2026-11-03T15:59:29Z",
+  "depends_on": [],
+  "done_when": "test_run_backtest.py passes with a case that a 1m bar dated 2026-06-26 is dropped by default; python MyTradingSys/backtest/layers/fabio/test_run_backtest.py exits 0",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "run_backtest.py gets a --dev-end date (default 2026-06-25, before the 2026-06-26 holdout) applied to the 1m bars before the 70/30 split, so its OOS stats never touch the holdout",
+  "id": "fabio-l1-driver-reads-holdout",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "run_backtest.py drops bars >= 2026-06-26 by default (--dev-end); 11 tests pass (98d821708)",
+      "ref": "5259e8184",
+      "utc": "2026-11-03T18:36:22Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "fabio detectors: cvd_absorption same-level band, escalation requires a close beyond the le",
+      "ref": "2afc18be6ef9",
+      "utc": "2026-11-01T17:25:04Z"
+    }
+  ],
+  "layers": [
+    "fabio"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "refined by Session_Planner 2026-11-03; DECISION (OURS) weight ROUTINE (T0-ONLY): narrow flag, tests; verify: content sha, cherry empty, ls-tree both files",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T18:22:30Z",
+  "refs": [
+    "MyTradingSys/backtest/layers/fabio/run_backtest.py:220",
+    "MyTradingSys/system/LAYERS.md:43"
+  ],
+  "result": "run_backtest.py drops bars >= 2026-06-26 by default (--dev-end); 11 tests pass (98d821708)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/backtest/layers/fabio/run_backtest.py",
+    "MyTradingSys/backtest/layers/fabio/test_run_backtest.py"
+  ],
+  "scope_out": [
+    "MyTradingSys/backtest/layers/fabio/run_v3_l3.py",
+    "MyTradingSys/system/LAYERS.md"
+  ],
+  "scope_sha": "2afc18be6ef9",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "read run_backtest.py main() lines 233-262 and docstring lines 4-8",
+    "write failing test for clip_dev first",
+    "add clip_dev + --dev-end arg (default 2026-06-25 inclusive, OURS label: split date from LAYERS.md:43 holdout 2026-06-26), call after sort before run_tf; data roots stay args",
+    "run the test file"
+  ],
+  "taken": "2026-11-03T18:36:22Z",
+  "tests": "MyTradingSys/backtest/layers/fabio/test_run_backtest.py: new case on a helper clip_dev(bars_1m, end_date); fails on current code (no helper, main loads to now)",
+  "title": "run_backtest.py loads 1m to now and splits 70/30 over the full series, so its OOS stats touch the holdout from 2026-06-26 (lines 4, 220); add a DEV end date before any load, default before holdout; roots via args; unblocks fabio-l1-has-no-run-on-the-strict-detect",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

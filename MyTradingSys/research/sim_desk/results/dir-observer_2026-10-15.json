@@ -35,5 +35,15 @@
  "source_files": [
   "MyTradingSys/research/observer_2026-10-15/OBSERVER_REPORT.md"
  ],
- "commit": "2fbfec28d"
+ "commit": "2fbfec28d",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "rests on FORMULAS.md 7/12/13/17; an independent re-derivation before G5",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: rests on FORMULAS.md 7/12/13/17; an independent re-derivation before G5 · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

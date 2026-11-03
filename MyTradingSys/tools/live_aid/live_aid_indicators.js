@@ -310,10 +310,11 @@
   }
 
   // Fold bars into a longer timeframe on UTC boundaries (4h from 1h: Deribit has no 4h resolution). Rows [t, o, h, l, c, v].
-  function foldBars(rows, ms) {
-    var out = [], cur = null;
+  // dayAlign: buckets count from the UTC day start (2m/7m/10m folds, R17); else from 1970 (4h from 1h: 00/04/08Z ...).
+  function foldBars(rows, ms, dayAlign) {
+    var out = [], cur = null, DAY = 86400000;
     rows.forEach(function (r) {
-      var b = Math.floor(+r[0] / ms) * ms;
+      var t = +r[0], a = dayAlign ? Math.floor(t / DAY) * DAY : 0, b = a + Math.floor((t - a) / ms) * ms;
       if (!cur || cur[0] !== b) { cur = [b, +r[1], +r[2], +r[3], +r[4], +r[5]]; out.push(cur); }
       else { cur[2] = Math.max(cur[2], +r[2]); cur[3] = Math.min(cur[3], +r[3]); cur[4] = +r[4]; cur[5] += +r[5]; }
     });

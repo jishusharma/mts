@@ -52,5 +52,15 @@
  "source_files": [
   "MyTradingSys/research/gemini_audits_2026-11-01/fractal_results_blind_read.md"
  ],
- "commit": "21a1d05f8"
+ "commit": "21a1d05f8",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "s. Every number is labeled SOURCED or OURS.",
+  "n": 2556,
+  "net_r": -0.305,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: s. Every number is labeled SOURCED or OURS. · n=2556 · net R after fees -0.305 · try n/a · fee break-even n/a"
+ }
 }

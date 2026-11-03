@@ -183,6 +183,36 @@ def test_ci_revert_fast_slow_and_red_now():
     assert D.ci_revert([], now)[0] == "unavailable"
 
 
+def test_ci_revert_skips_a_red_run_on_a_docs_only_commit():
+    now = datetime(2026, 10, 25, 12, 0, tzinfo=timezone.utc)
+    docs_only = lambda sha: False   # stub: the sha changed no CI_PATHS file
+    assert D.ci_revert([_run("b", "failure", 5)], now, gated=docs_only)[0] == "OK"
+    assert D.ci_revert([_run("a", "success", 0), _run("b", "failure", 5)], now, gated=docs_only)[0] == "OK"
+    st, msg = D.ci_revert([_run("a", "success", 0), _run("b", "failure", 5)], now, gated=lambda sha: True)
+    assert st == "WARN" and "red now" in msg
+
+
+def test_ci_gated_is_false_only_for_docs_only_commits(tmp_path):
+    def git(*args):
+        return subprocess.run(["git", "-C", str(tmp_path), "-c", "user.name=t", "-c", "user.email=t@t", *args],
+                              check=True, capture_output=True, text=True)
+
+    def head():
+        return git("rev-parse", "HEAD").stdout.strip()
+    git("init", "-q")
+    for rel, text in (("scripts/base.py", "x = 1" + NL), ("docs/NOTE.md", "note" + NL), ("scripts/code.py", "y = 2" + NL)):
+        (tmp_path / rel).parent.mkdir(parents=True, exist_ok=True)
+        (tmp_path / rel).write_text(text, encoding="utf-8")
+        git("add", rel)
+        git("commit", "-q", "-m", rel)
+        if rel == "docs/NOTE.md":
+            docs_sha = head()
+    code_sha = head()
+    assert D.ci_gated(docs_sha, repo=tmp_path) is False
+    assert D.ci_gated(code_sha, repo=tmp_path) is True
+    assert D.ci_gated("0" * 40, repo=tmp_path) is True   # unknown sha: keep the alarm
+
+
 def test_ship_time_median_max_missing_log(tmp_path):
     now = datetime(2026, 10, 25, 12, 0, tzinfo=timezone.utc)
     assert D.ship_time(tmp_path / "none.jsonl", now)[0] == "unavailable"

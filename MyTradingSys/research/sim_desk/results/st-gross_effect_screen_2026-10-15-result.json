@@ -35,5 +35,15 @@
  "source_files": [
   "MyTradingSys/research/gross_effect_screen_2026-10-15/RESULT.md"
  ],
- "commit": "b42cef1b8"
+ "commit": "b42cef1b8",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "above is per PRE_REG.md section 4, one run.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: above is per PRE_REG.md section 4, one run. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

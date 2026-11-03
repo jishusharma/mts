@@ -59,5 +59,15 @@
  "source_files": [
   "MyTradingSys/research/levels_sizing_2026-10-14/REPORT.md"
  ],
- "commit": "73b1273f2"
+ "commit": "73b1273f2",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "EXPLORATORY NEGATIVE; full LC hypothesis untested",
+  "n": null,
+  "net_r": 0.021,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: EXPLORATORY NEGATIVE; full LC hypothesis untested · n=? · net R after fees +0.021 · try n/a · fee break-even n/a"
+ }
 }

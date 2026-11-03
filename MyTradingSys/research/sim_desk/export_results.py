@@ -321,7 +321,108 @@ def wavetrend_result():
     }
 
 
+def _ba():
+    import sys
+    if os.path.join(HERE, "artifact") not in sys.path:
+        sys.path.insert(0, os.path.join(HERE, "artifact"))
+    import build_artifact
+    return build_artifact
+
+
+POINTS = 400   # desk.curve() keeps at most this many points
+
+
+def derive_mc(cum, n, shuffles=1000, seed=7):
+    """Monte Carlo band (survey C3) for a stored curve `cum` (running R at the curve's points) of a run with n filled trades.
+    Same fields as desk.monte_carlo. Complete curve (len == n): the trades are recovered by differencing and reshuffled exactly as the
+    desk does (same seed). Sampled curve (n > 400): the per-trade spread is estimated from the block sums and the band is a
+    simulation of n normal trades with that mean and spread, marked approx. Anything else: None (field present, no band)."""
+    import numpy as np
+    cum = np.asarray(cum, float)
+    if n is None or n < 2 or not len(cum):
+        return None
+    rng = np.random.default_rng(seed)
+    if len(cum) == n:
+        net = np.diff(np.r_[0.0, cum])
+        paths = np.cumsum(rng.permuted(np.tile(net, (shuffles, 1)), axis=1), axis=1)
+        cols = np.arange(n)
+        approx = False
+    else:
+        idx = np.unique(np.r_[np.linspace(0, n - 1, POINTS).astype(int), n - 1]) + 1
+        if len(idx) != len(cum):
+            return None
+        blocks = np.diff(np.r_[0.0, cum])
+        k = np.diff(np.r_[0, idx]).astype(float)
+        mu = float(cum[-1]) / n
+        sd = float(np.sqrt(np.mean((blocks - k * mu) ** 2 / k)))
+        paths = np.cumsum(rng.normal(mu, sd, (shuffles, n)), axis=1)
+        cols = idx - 1
+        approx = True
+    peak = np.maximum.accumulate(np.concatenate([np.zeros((shuffles, 1)), paths], axis=1), axis=1)[:, 1:]
+    dd = (peak - paths).max(axis=1)
+    lo, hi = np.percentile(paths[:, cols], [5, 95], axis=0)
+    out = {"lo": [round(float(x), 3) for x in lo], "hi": [round(float(x), 3) for x in hi],
+           "dd_lo": round(float(np.percentile(dd, 5)), 2), "dd_hi": round(float(np.percentile(dd, 95)), 2), "shuffles": shuffles}
+    if approx:
+        out["approx"] = True
+    return out
+
+
+def derive_years(window, n, mean):
+    """Year strip rows [{k, n, mean, few}] when the run's window sits inside one calendar year (then every trade is in that year, so
+    the row is exact); None when the window spans years (the per-trade dates are not in the result file)."""
+    import re
+    ys = {m[:4] for m in re.findall(r"\d{4}-\d{2}-\d{2}", window or "")}
+    if len(ys) != 1 or not n or mean is None:
+        return None
+    return [{"k": ys.pop(), "n": int(n), "mean": round(float(mean), 3), "few": n < _ba().MIN_N}]
+
+
+def enrich(res):
+    """Fields only added (schema kept): `banner` (the fixed verdict line, survey C2), when / side / exit_reason on every
+    winner/loser chart item (survey C1), `mc` on every curve example (survey C3) and `years` (survey C4) where the result
+    does not carry them yet. Returns the same dict."""
+    ba = _ba()
+    ba.add_trade_rows(res)
+    res["banner"] = ba.banner_of(res)
+    for e in res.get("examples", []):
+        if e.get("kind") == "curve" and "mc" not in e:
+            e["mc"] = derive_mc(e["r"], res["banner"]["n"])
+    if "years" not in res:
+        y = derive_years(res.get("window"), res["banner"]["n"], res["banner"]["net_r"])
+        if y:
+            res["years"] = y
+    return res
+
+
+def _dump(obj, raw):
+    """JSON text in the same style as the file it replaces (indent 1, or compact), so only the added fields show in a diff."""
+    esc = (chr(92) + "u") in raw
+    if raw.startswith("{" + chr(10)):
+        return json.dumps(obj, indent=1, ensure_ascii=esc) + chr(10)
+    return json.dumps(obj, separators=(",", ":"), ensure_ascii=esc) + (chr(10) if raw.endswith(chr(10)) else "")
+
+
+def enrich_results(results_dir=DEFAULT_OUT):
+    """Add the banner and trade rows to every results/<id>.json in place; returns the number of files changed."""
+    changed = 0
+    for fn in sorted(os.listdir(results_dir)):
+        if not fn.endswith(".json") or fn.startswith("_"):
+            continue
+        p = os.path.join(results_dir, fn)
+        with open(p, encoding="utf-8", newline="") as f:
+            raw = f.read()
+        old = json.loads(raw)
+        new = enrich(json.loads(raw))
+        if new != old:
+            with open(p, "w", encoding="utf-8", newline=chr(10)) as f:
+                f.write(_dump(new, raw))
+            changed += 1
+    return changed
+
+
 def write(out_dir, res):
+    enrich(res)
     os.makedirs(out_dir, exist_ok=True)
     p = os.path.join(out_dir, res["id"] + ".json")
     with open(p, "w", encoding="utf-8", newline="\n") as f:
@@ -336,7 +437,10 @@ def main(argv=None):
     import build_artifact as ba
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default=DEFAULT_OUT)
+    ap.add_argument("--enrich", action="store_true", help="only add banner + trade rows to the existing result files")
     a = ap.parse_args(argv)
+    if a.enrich:
+        return ["enriched %d result files" % enrich_results(a.out)]
     rule, rows = ba.load(ba.DEFAULT_SRC)
     outs = [levels_result(ba.build_data(rule, rows)), t09_result(), t06_result(), t07_result(), wavetrend_result()]
     import fractals_export   # fractals_2026-10-31 studies (P1b, F1, F2, F3, phase tag); needs their committed trade lists

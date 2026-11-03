@@ -50,5 +50,15 @@
  "source_files": [
   "MyTradingSys/research/gemini_burn_2026-10-31/SHIPS_120_200_REVIEW.md"
  ],
- "commit": "0e6efa1c6"
+ "commit": "0e6efa1c6",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "File:Line / Citation Analysis & Evidence",
+  "n": 420,
+  "net_r": 0.005,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: File:Line / Citation Analysis & Evidence · n=420 · net R after fees +0.005 · try n/a · fee break-even n/a"
+ }
 }

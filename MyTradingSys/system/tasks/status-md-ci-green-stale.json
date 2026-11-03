@@ -1,0 +1,85 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-03T18:36:07Z",
+  "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-03T18:35:09Z",
+    "misses": 2,
+    "reads": [
+      "MyTradingSys/research/STATUS.md",
+      "scripts/dev/make_status.py"
+    ],
+    "session": "agent-ad3c2506a734ed3bc"
+  },
+  "created": "2026-11-03T16:00:43Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/STATUS.md line 6 starts with CI green: and quotes the sha printed by git rev-parse origin/green/fast-track",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "research/STATUS.md line 6 shows the current origin/green/fast-track sha, not the 10-30 one; no code change, regeneration only (nothing in sync.py or CI regenerates it)",
+  "id": "status-md-ci-green-stale",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "STATUS.md line 6 CI green 2c2bcd80a = origin/green/fast-track (f0248057)",
+      "ref": "5259e8184",
+      "utc": "2026-11-03T18:36:07Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "STATUS.md refresh from this session's make_status run",
+      "ref": "396a32baf2b2",
+      "utc": "2026-10-30T13:24:02Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "396a32baf2b2 STATUS.md refresh from this session's make_status run",
+      "ref": "MyTradingSys/research/STATUS.md",
+      "utc": "2026-10-30T13:24:02Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "refined by Session_Planner 2026-11-03; verify: content sha, cherry empty, ls-tree shows STATUS.md",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T18:21:56Z",
+  "refs": [
+    "scripts/dev/make_status.py:235 get_ci_line"
+  ],
+  "result": "STATUS.md line 6 CI green 2c2bcd80a = origin/green/fast-track (f0248057)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/STATUS.md"
+  ],
+  "scope_out": [
+    "scripts/dev/make_status.py"
+  ],
+  "scope_sha": "396a32baf2b2",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "git fetch origin green/fast-track fast-track",
+    "python scripts/dev/make_status.py (writes STATUS.md)",
+    "check line 6 sha matches origin/green/fast-track; sync.py ship"
+  ],
+  "taken": "2026-11-03T18:36:07Z",
+  "tests": "grep -n '^CI green:' MyTradingSys/research/STATUS.md compared to git rev-parse --short origin/green/fast-track; docs-only, no fail-first test applies",
+  "title": "research/STATUS.md line 6 quotes CI green 52ec65dd8 from 10-30 while origin/green/fast-track moved today; regenerate or read green from git",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

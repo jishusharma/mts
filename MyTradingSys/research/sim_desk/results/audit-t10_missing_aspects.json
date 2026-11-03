@@ -50,5 +50,15 @@
  "source_files": [
   "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T10_missing_aspects.md"
  ],
- "commit": "c1c2df8a5"
+ "commit": "c1c2df8a5",
+ "banner": {
+  "state": "FAIL",
+  "tone": "bad",
+  "verdict": ", ledger or bar was changed.",
+  "n": 14672,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "FAIL · verdict as written: , ledger or bar was changed. · n=14672 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }
