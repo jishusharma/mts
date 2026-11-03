@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T13:15:38Z",
   "commands": [],
   "created": "2026-11-03T13:06:54Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_audits_2026-11-03/bb_dance_blind_read.md: FOUND 85, NOT_IN_DA",
+      "ref": "a985c53c6",
+      "utc": "2026-11-03T13:15:38Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +45,12 @@
   "refined_by": "",
   "refreshed": "2026-11-03T13:06:54Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/gemini_audits_2026-11-03/bb_dance_blind_read.md: FOUND 85, NOT_IN_DATA 2, DIFF 0 (vs output.txt only: FOUND 46, NOT_IN_DATA 41, DIFF 0)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/bb_dance_2026-10-30/RESULT.md (read)",
     "MyTradingSys/research/bb_dance_2026-10-30/output.txt (read)",
@@ -50,12 +62,13 @@
   "scope_sha": "48e51ff6e6d0",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "list every number in RESULT.md with its table or line",
     "find it in output.txt and compare",
     "write FOUND / NOT_IN_DATA / DIFF per number, counts on line 1"
   ],
+  "taken": "2026-11-03T13:15:38Z",
   "tests": "see done_when (audit card, output file is the test)",
   "title": "[GEMINI] blind re-read of bb_dance_2026-10-30 RESULT.md: every quoted number vs output.txt",
   "weight": "ROUTINE",
