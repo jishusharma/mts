@@ -15,7 +15,22 @@
   "id": "mts-audit-1103-independent-recheck",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "lab mts-audit-1103-independent-recheck: BLOCKED (audit)",
+      "ref": "dab23a90cc98",
+      "utc": "2026-11-03T13:06:23Z"
+    },
+    {
+      "auto": true,
+      "kind": "audit",
+      "line": "dab23a90cc98 lab mts-audit-1103-independent-recheck: BLOCKED (audit)",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-11-03_mts-audit-1103-independent-recheck.md",
+      "utc": "2026-11-03T13:06:23Z"
+    }
+  ],
   "layers": [
     "pitchfork"
   ],
@@ -25,7 +40,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T20:05:19Z",
+  "refreshed": "2026-11-03T15:50:33Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -38,7 +53,7 @@
     "no live tree, deploy, process or HALT touch; no .secrets, .env or keys; no bar after 2024-06-30",
     "no edit outside the new folder"
   ],
-  "scope_sha": "",
+  "scope_sha": "dab23a90cc98",
   "size": "M",
   "sources": [],
   "state": "ready",
