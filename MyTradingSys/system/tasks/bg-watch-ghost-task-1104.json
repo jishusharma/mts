@@ -2,6 +2,15 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 8,
+    "folded": "2026-11-03T20:20:12Z",
+    "misses": 1,
+    "reads": [
+      "MyTradingSys/system/ANNOUNCEMENTS.md"
+    ],
+    "session": "agent-a662844f4d812a6bc"
+  },
   "created": "2026-11-03T20:14:57Z",
   "depends_on": [],
   "done_when": "",

@@ -145,6 +145,7 @@ def open_tasks(path: Path) -> list[dict]:
 
 
 IDLE_KEEP_H = 24     # a quiet subagent transcript still holds its open tasks this long (bg-loop-block-1102)
+GHOST_IDLE_H = 6     # DECISION (OURS): a task whose own transcript is idle this long is a ghost (its agent is gone), not a stall
 
 
 def _live_owner(f: Path) -> Path:
@@ -192,7 +193,8 @@ def stalled(root: Path | None = None, now: float | None = None, active_min: int 
                 except OSError:
                     pass
             rows.append({**v, "kind": kind, "cap": cap, "age": age, "silent": silent, "session": f.stem[:8],
-                         "idle_h": (now - mt) / 3600 if idle else 0})
+                         "idle_h": (now - mt) / 3600 if idle else 0,
+                         "ghost": bool(idle and (now - mt) / 3600 > GHOST_IDLE_H)})
     return sorted(rows, key=lambda r: -r["age"])
 
 
@@ -353,6 +355,10 @@ def report_lines(repo: Path, root: Path | None = None, now: float | None = None,
     for r in stalled(root, now):
         quiet = f", no output {r['silent']:.0f}m" if r["silent"] is not None and r["silent"] >= 5 else ""
         quiet += f", transcript idle {r['idle_h']:.0f}h" if r.get("idle_h", 0) >= 1 else ""
+        if r.get("ghost"):   # bg-watch-ghost-task-1104: the agent is gone, so there is nothing for TaskStop to stop
+            lines.append(f"GHOST-BG {r['id']} {r['age']:.0f}m > cap {r['cap']}m{quiet} (session {r['session']}): "
+                         f"{r['what'][:70]} (agent gone; nothing to stop)")
+            continue
         bare = r["kind"] == "poll-loop" and unbounded_loop(r["what"])
         lines.append(f"STALLED-BG {r['kind']} {r['id']} {r['age']:.0f}m > cap {r['cap']}m{quiet} (session {r['session']}): "
                      f"{r['what'][:70]} -> owner: TaskStop {r['id']}, say why in one line"
