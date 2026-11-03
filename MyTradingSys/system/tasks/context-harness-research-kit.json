@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T22:40:28Z",
   "commands": [],
   "created": "2026-11-03T22:31:59Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "context-harness-research-kit",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "research_kit context harness: regime/phase/session tags, retest-entry, regime-mix line; 14",
+      "ref": "57b0b511c",
+      "utc": "2026-11-03T22:40:28Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,12 @@
   "refined_by": "",
   "refreshed": "2026-11-03T22:32:34Z",
   "refs": [],
-  "result": "",
+  "result": "research_kit context harness: regime/phase/session tags, retest-entry, regime-mix line; 14 tests",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/research_kit.py; MyTradingSys/backtest/test_research_kit.py; scripts/dev/extra_tests.tsv"
   ],
@@ -45,11 +57,12 @@
     "MyTradingSys/research/CONTEXT_FILTER_REVIEW_2026-11-04.md",
     "OPERATOR_DECISIONS d-context-retest-1104"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read CONTEXT_FILTER_REVIEW_2026-11-04.md and MALKAN_RULES_2026-10-31.md:11-16",
     "write failing tests then research_kit.py reusing existing helpers"
   ],
+  "taken": "2026-11-03T22:40:28Z",
   "tests": "backtest/test_research_kit.py: tag values at hand-built bars, as-of causality (planted future bar changes nothing), retest-entry within N bars and no-retest skip, regime-mix counts sum to weeks",
   "title": "Shared context harness in backtest/research_kit.py: regime, phase, session tags and retest-entry mode",
   "weight": "ROUTINE",
