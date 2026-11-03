@@ -1,31 +1,32 @@
-# Supervisor B handover | written 2026-11-03T18:45Z by JIS-NUC | verify: python scripts/dev/supervisor.py handover --verify
+# Supervisor B handover | written 2026-11-03T19:20Z by JIS-NUC | verify: python scripts/dev/supervisor.py handover --verify
 
 ## Goal
-Login B on JIS-NUC, super session on Opus. Operator cap for this run: no new work from week 57%, hard stop 60% (read 59% at 18:40Z). Only small finishing work is left in this run. Operator order: move roadmap stages now.
+Login B on JIS-NUC, super session. Operator cap for this run: 65% weekly (read 61% at 19:15Z); keep working until login C is up after its 20:00Z reset. Operator order: move roadmap stages now.
 
 ## Truth
-- Roadmap line still says S0; S1 unsigned; 0 promoted. Operator asked what S0 and worktree limits mean; explained. They have not signed S0 or S1.
-- Operator order 2026-11-03: a worktree goes away right after use unless there is a real reason to keep it. JIS-NUC cut from 52 to 19 by tidy and discard; branches kept, leftovers in BinanceDataFeed/Dumps/wt_rescue.
-- 5c939ec6 ships automatic retirement after each ship (tidy_after_ship, LAYERS.md noise, Gemini and DSA trees). 20 tidy tests passed on my rerun. Not yet seen removing a real tree. Its CI verdict was not read; c2509e15 before it is green.
-- Worker on 5c939ec6 stashed and index-reset inside its own tree; no stash left behind, work intact.
-- Asks q-444388 (A) and q-f5c013 (C after 20:00Z) escalated, unanswered.
+- Roadmap Now line is S1 (operator waived the unmet S0 exit, d-s0-exit-waived-1103). S1 needs three operator decisions: q-v1-bar (posed, unanswered), q-v1-layers (default: LC + RSI deep-buy), q-v1-spec (operator reads D2). 0 promoted. | read 2026-11-03T19:20Z | as stated
+- S1 schema Builder (agent a47c049985da00d08, card s1-signal-v1-schema-seam-test) was still running at 19:15Z. When it ends: ancestor of origin/fast-track, Result: line, one spot check. Then start s4-cbp-module-e2e and s4-cbp-golden-set-harness (same cbp files, so not in parallel with S1). | read 2026-11-03T19:20Z | as stated
+- S2 cards wait: heartbeat on a Lab_Guy stamp, drills on the state-code card. state-code-accumulator-backfill is built; needs re-stamp, review, tasks.py done, manual deploy. | read 2026-11-03T19:20Z | as stated
+- Worktrees on JIS-NUC cut from 52 to about 12; auto-retire after ship shipped (5c939ec6), not yet seen removing a real tree. | read 2026-11-03T19:20Z | as stated
+- Gemini: volume-candles-facts (ca38a5b3) and mutation-rerun-research-kit (4da8963c) shipped docs-only. cbp-scorecard-spec-tests still running. eagle-c36 and roadmap-review are STALE. | read 2026-11-03T19:20Z | as stated
+- DSA: DSA-NUC OK; DSA-NB oldest pending 59 h (operator must arm hands-free there). Haiku monitor agent a525a365411f8f9a4 running. | read 2026-11-03T19:20Z | as stated
 
 ## Ruled out
-- Discarding trees with real uncommitted files without the operator's yes: project rule; question is open with them.
+- Applying the q-v1-bar revision before the operator answers.
+- Running s4 cards in parallel with the S1 schema card.
 
 ## Next 3 steps
-1. On the operator's answer about the 7 trees with unsaved edits (agent-a3cefaa, agent-a884fb, dsa 1101-0853, dsa 1102-0608, dsa 1102-1920, session-planner-b-1102, gq argon-s28): on yes, sync.py discard saves copies and removes them.
-2. On sign-off of S0: record it in OPERATOR_DECISIONS, move the D7 Now line, then bring S1 decisions one at a time in plain words.
-3. Next budget: cards salvage-unshipped-branches-nuc-1103 (7 branches), git-identity-gemini-queue-leak, tidy-respect-open-claims; after 19:35Z `codex_run.py tick` only if under cap.
+1. Verify the S1 Builder when it ends, then start the two S4 cards.
+2. Check cbp-scorecard-spec-tests Gemini result; ship from F:/MTS/gq/<id> with sync.py ship --release <id>.
+3. If budget stays under 65%: cards salvage-unshipped-branches-nuc-1103, git-identity-gemini-queue-leak, tidy-respect-open-claims. At 65%: supervisor.py handover --note, stop.
 
 ## Traps
-- A two-dot compare of a gq branch shows hundreds of files once trunk moves; use three dots.
-- The Bash tool can fail on its cwd file after a tree is removed; use PowerShell.
-- tidy can retire a clean DSA tree idle 1 h while a person is between steps (card tidy-respect-open-claims); `dsa begin` re-adds it.
-- Empty locked folder mts-jis-nuc-builder-b-1103-a remains on disk; harmless.
+- Three-dot compare for gq branches. Bash cwd can break after a tree is removed; use PowerShell.
+- tidy can retire an idle clean DSA tree (card tidy-respect-open-claims).
+- S4 exit text in D7 still says queue ack; D5 removed the queue. Fix when S4 cards ship.
 
 ## Open
-- Operator: arm DeepSeek hands-free on DSA-NB.
+- Operator: q-v1-bar, q-v1-layers, q-v1-spec; arm DeepSeek on DSA-NB; fable-run7-forward-test.
 
 ## Missed last time
 (machine-written by `context_gap.py fold` at the next ship)
