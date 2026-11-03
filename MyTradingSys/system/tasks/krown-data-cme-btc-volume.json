@@ -6,6 +6,16 @@
     "python MyTradingSys/research/krown_ta101_2026-10-13/tools/fetch_daily_majors.py --out F:/MTS/data/krown_daily",
     "python MyTradingSys/research/krown_ta101_2026-10-13/tools/build_data_coverage.py --data F:/MTS/data/krown_daily"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-03T12:07:25Z",
+    "misses": 26,
+    "reads": [
+      "MyTradingSys/research/krown_ta101_2026-10-13/tools/fetch_daily_majors.py",
+      "MyTradingSys/research/krown_ta101_2026-10-13/DATA_COVERAGE.md"
+    ],
+    "session": "agent-ac30183bcfed485c6"
+  },
   "created": "2026-10-17T04:34:46Z",
   "depends_on": [],
   "done_when": "A CSV of CME BTC daily volume (date, volume, source url) is on F: with a gap count, or the card result says NOT AVAILABLE with the sources tried; no account or paid data used.",
