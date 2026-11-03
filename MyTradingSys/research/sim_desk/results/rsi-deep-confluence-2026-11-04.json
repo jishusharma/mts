@@ -1,0 +1,90 @@
+{
+ "id": "rsi-deep-confluence-2026-11-04",
+ "kind": "backtest",
+ "family": "Rsi Deep Buy",
+ "title": "RSI deep-buy: layer confluence vote at the RSI low (card rsi-deep-confluence, af9dbfeeb)",
+ "provenance": "builder-export",
+ "date": "2026-11-04",
+ "what": [
+  {
+   "name": "Event",
+   "value_plain": "same Step F event (RSI14 at or below L after 3+ above), fill = next bar open",
+   "label": "OURS"
+  },
+  {
+   "name": "Voters (6, pre-registered)",
+   "value_plain": "higher-TF RSI band, Bollinger position, Kurisko quad-rotation turn, taker-buy share z, prior-day level sweep and reclaim, causal pivot divergence on the next TF up; same TF plus two TFs above",
+   "label": "OURS"
+  },
+  {
+   "name": "Schemes",
+   "value_plain": "15: same-TF score, higher-TF score, total, add-one and drop-one per voter; equal weights, no learned weights",
+   "label": "OURS"
+  },
+  {
+   "name": "Not voting (no causal bar history)",
+   "value_plain": "WaveTrend, trendline / pitchfork, Krown, CryptoCred, Tom / Fabio order flow, funding / OI",
+   "label": "OURS"
+  },
+  {
+   "name": "Keep rule",
+   "value_plain": "DEV delta log-loss > 0 and Holm p < 0.05 over 120 tests, then VALIDATION delta > 0",
+   "label": "OURS"
+  }
+ ],
+ "how": "15 schemes x 4 RSI TFs x 2 outcomes = 120 tests; score cells shrunk to the level-only table F0; fee-net EV per day per bucket against the level-only row.",
+ "window": "DEV = bar open < 2024-07-01 (frozen first); VALIDATION 2024-07-01..2025-06-30 read once; HOLDOUT never read",
+ "verdict": {
+  "label": "WEAK NULL: 10 of 120 kept by the rule, all on the 1m price outcome, VALIDATION t under 1; nothing on 5m, 15m or 1h",
+  "tone": "bad"
+ },
+ "why": [
+  "DEV t near 7.9 on the kept 1m tests, VALIDATION t 0.81 and 0.75: a strong in-sample pattern that does not carry.",
+  "Gains are about 1e-4 nats per event; the level-only table F0 stays the working answer.",
+  "Half the layers the operator means by confluence (WaveTrend, trendlines, Tom / Fabio flow) could not vote: no stamped bar-by-bar causal history exists for them yet."
+ ],
+ "kpis": [
+  {
+   "label": "tests",
+   "value": "120"
+  },
+  {
+   "label": "kept",
+   "value": "10 (all 1m price)",
+   "tone": "warn"
+  },
+  {
+   "label": "VAL t of kept",
+   "value": "0.81, 0.75",
+   "tone": "bad"
+  },
+  {
+   "label": "voters able to vote",
+   "value": "6 of 12 layers"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: the report holds tables, not a trade list"
+  }
+ ],
+ "parity": null,
+ "source_files": [
+  "MyTradingSys/research/rsi_deep_buy_2026-10-19/CONFLUENCE.md",
+  "MyTradingSys/research/rsi_deep_buy_2026-10-19/confluence.py",
+  "MyTradingSys/research/rsi_deep_buy_2026-10-19/test_confluence.py"
+ ],
+ "commit": "af9dbfeeb",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "WEAK NULL: 10 of 120 kept by the rule, all on the 1m price outcome, VALIDATION t under 1; nothing on 5m, 15m or 1h",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: WEAK NULL: 10 of 120 kept by the rule, all on the 1m price outcome, VALIDATION t under 1; nothing on 5m, 15m or 1h · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
+}

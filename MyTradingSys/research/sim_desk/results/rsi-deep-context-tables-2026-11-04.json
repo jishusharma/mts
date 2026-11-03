@@ -1,0 +1,136 @@
+{
+ "id": "rsi-deep-context-tables-2026-11-04",
+ "kind": "backtest",
+ "family": "Rsi Deep Buy",
+ "title": "RSI deep-buy: context-conditioned bounce tables (card rsi-deep-context-tables, f4d14f093)",
+ "provenance": "builder-export",
+ "date": "2026-11-04",
+ "what": [
+  {
+   "name": "Event",
+   "value_plain": "RSI14 of the TF (1m, 5m, 15m, 60m) closes at or below level L (10..40 step 5) after being 3+ above; fill = next bar open",
+   "label": "OURS"
+  },
+  {
+   "name": "Outcome",
+   "value_plain": "price: open 60 min after the fill beats the fill by more than the 0.10% round-trip fee; rsi: RSI rises 5 off its running minimum before it falls 3 below entry, within 60 bars",
+   "label": "OURS"
+  },
+  {
+   "name": "Question",
+   "value_plain": "does any of 21 context schemes (macro trend / vol / range terciles, trailing floors over 4h..1w) predict the bounce better than the level-only table F0?",
+   "label": "OURS"
+  },
+  {
+   "name": "Keep rule",
+   "value_plain": "DEV delta log-loss > 0 with Holm p < 0.05 over all 168 tests, then VALIDATION delta > 0 (read once)",
+   "label": "OURS"
+  }
+ ],
+ "how": "Walk-forward (k+1)/(n+2) per cell, shrunk to F0 by empirical Bayes (m from DEV, clamp 2..5000); t over distinct days.",
+ "window": "DEV = bar open < 2024-07-01 (frozen first); VALIDATION 2024-07-01..2025-06-30 read once; HOLDOUT never read",
+ "verdict": {
+  "label": "NULL: 4 of 168 kept by the letter of the rule, none material; the level-only table stays",
+  "tone": "bad"
+ },
+ "why": [
+  "DEV candidates: 5 of 168. VALIDATION delta above 0 for 4 of them, but VALIDATION t over days is 0.60, 0.08, 0.60, 1.26 (none reaches 2).",
+  "The gains are a few 1e-4 nats of log-loss per event: a context that passes by the rule but changes nothing a trader could use.",
+  "Shrinkage prior m hit the 5000 clamp in 6 of 8 TF x outcome cells: the context cells are not more spread than chance around their parent."
+ ],
+ "kpis": [
+  {
+   "label": "tests",
+   "value": "168"
+  },
+  {
+   "label": "DEV candidates",
+   "value": "5"
+  },
+  {
+   "label": "kept on VAL",
+   "value": "4",
+   "tone": "warn"
+  },
+  {
+   "label": "best VAL t",
+   "value": "1.26",
+   "tone": "bad"
+  },
+  {
+   "label": "1m price events DEV / VAL",
+   "value": "54800 / 36334"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "table",
+   "title": "DEV candidates and their VALIDATION result (price outcome)",
+   "caption": "delta = log-loss of F0 minus the context prediction, positive = context better; t over days",
+   "cols": [
+    "RSI TF",
+    "scheme",
+    "DEV delta",
+    "DEV t",
+    "DEV p_holm",
+    "VAL delta",
+    "VAL t",
+    "verdict"
+   ],
+   "rows": [
+    [
+     "1m",
+     "M_vol",
+     "+0.00227",
+     "4.76",
+     "0.0002",
+     "+0.00005",
+     "0.08",
+     "keep"
+    ],
+    [
+     "1m",
+     "M_range",
+     "+0.00185",
+     "3.75",
+     "0.0144",
+     "+0.00033",
+     "0.60",
+     "keep"
+    ],
+    [
+     "5m",
+     "M_vol",
+     "+0.00144",
+     "3.68",
+     "0.0191",
+     "+0.00063",
+     "1.26",
+     "keep"
+    ]
+   ]
+  },
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: the report holds tables, not a trade list"
+  }
+ ],
+ "parity": null,
+ "source_files": [
+  "MyTradingSys/research/rsi_deep_buy_2026-10-19/CONTEXT_REPORT.md",
+  "MyTradingSys/research/rsi_deep_buy_2026-10-19/context_tables.py",
+  "MyTradingSys/research/rsi_deep_buy_2026-10-19/test_context_tables.py"
+ ],
+ "commit": "f4d14f093",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "NULL: 4 of 168 kept by the letter of the rule, none material; the level-only table stays",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: NULL: 4 of 168 kept by the letter of the rule, none material; the level-only table stays · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
+}

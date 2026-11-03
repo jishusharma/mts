@@ -19,9 +19,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "fix(cbp): non-object JSON returns the safe default, not AttributeError",
-      "ref": "66c3f4e049fd",
-      "utc": "2026-10-31T08:00:50Z"
+      "line": "feat(cbp): candidates() turns tradable stored rows into CANDIDATE_UNTESTED records (S4 e2e",
+      "ref": "d286be4a1447",
+      "utc": "2026-11-03T19:35:44Z"
     }
   ],
   "layers": [],
@@ -34,7 +34,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-03T18:56:14Z",
+  "refreshed": "2026-11-03T22:33:52Z",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D7_ROADMAP.md"
   ],
@@ -51,7 +51,7 @@
     "the golden-set harness (card s4-cbp-golden-set-harness)",
     "ingestion scheduling (card cbp-daily-firing-gap)"
   ],
-  "scope_sha": "66c3f4e049fd",
+  "scope_sha": "d286be4a1447",
   "size": "M",
   "sources": [
     "MyTradingSys/research/v1_plan_2026-10-20/D5_CBP_MODULE.md (amended 2026-10-24 query not queue; status table Gate 5: 0 layers call cbp.query)",
