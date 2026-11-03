@@ -83,5 +83,15 @@
  "source_files": [
   "MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT_RERUN_2026-10-06_full.md"
  ],
- "commit": "36a114939"
+ "commit": "36a114939",
+ "banner": {
+  "state": "TOO_FEW",
+  "tone": "warn",
+  "verdict": "no edge shown; fees make it clearly negative",
+  "n": 0,
+  "net_r": -2.91,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "TOO FEW TRADES · verdict as written: no edge shown; fees make it clearly negative · n=0 · net R after fees -2.910 · try n/a · fee break-even n/a"
+ }
 }

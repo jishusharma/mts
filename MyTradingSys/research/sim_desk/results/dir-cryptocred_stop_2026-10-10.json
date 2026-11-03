@@ -34,5 +34,15 @@
  "source_files": [
   "MyTradingSys/research/cryptocred_stop_2026-10-10/STOP_SOURCES.md"
  ],
- "commit": "f29af65d8"
+ "commit": "f29af65d8",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Date: 2026-10-10 UTC. Session: MTS-2026-10-10-1405Z-DSA-COO.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Date: 2026-10-10 UTC. Session: MTS-2026-10-10-1405Z-DSA-COO. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

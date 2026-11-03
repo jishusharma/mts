@@ -70,5 +70,15 @@
  "source_files": [
   "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/RESULT.md"
  ],
- "commit": "4d80f744a"
+ "commit": "4d80f744a",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "unchanged; no rerun (empty KEEP = no base).",
+  "n": null,
+  "net_r": 0.14,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: unchanged; no rerun (empty KEEP = no base). · n=? · net R after fees +0.140 · try n/a · fee break-even n/a"
+ }
 }

@@ -24894,5 +24894,15 @@
   "MyTradingSys/research/eagle_eyes_picture_2026-10-28/c30_validation_verdict.json",
   "MyTradingSys/research/eagle_eyes_picture_2026-10-28/c30_trade_charts.py"
  ],
- "commit": "see git log"
+ "commit": "see git log",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "VALIDATION: H1 FAIL, H2 INCONCLUSIVE (mean +0.22 %, CI includes 0, Holm p 0.218). Not promoted; HOLDOUT unread.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: VALIDATION: H1 FAIL, H2 INCONCLUSIVE (mean +0.22 %, CI includes 0, Holm p 0.218). Not promoted; HOLDOUT unread. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

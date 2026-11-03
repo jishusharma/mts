@@ -57,5 +57,15 @@
  "source_files": [
   "MyTradingSys/research/confluence_read_2026-10-17/CONTEXT_FIRST.md"
  ],
- "commit": "a945276a3"
+ "commit": "a945276a3",
+ "banner": {
+  "state": "TOO_FEW",
+  "tone": "warn",
+  "verdict": "S row pit_levels_2026-10-16) prior-day value-area failed auction BLOCKED by the power gate, n=0; no output for these days",
+  "n": 0,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "TOO FEW TRADES · verdict as written: S row pit_levels_2026-10-16) prior-day value-area failed auction BLOCKED by the power gate, n=0; no output for these days · n=0 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

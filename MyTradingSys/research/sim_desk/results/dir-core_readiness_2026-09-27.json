@@ -74,5 +74,15 @@
  "source_files": [
   "MyTradingSys/research/core_readiness_2026-09-27/C2_C3_BUILD_REPORT.md"
  ],
- "commit": "5e387a14b"
+ "commit": "5e387a14b",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": ".py.new C2/D3 guard: top = first candidate with rank <= 3, built on top of the current working-tree file (which already carries the uncommitted C1 edits - suspend_rr removal)",
+  "n": null,
+  "net_r": 0.75,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: .py.new C2/D3 guard: top = first candidate with rank <= 3, built on top of the current working-tree file (which already carries the uncommitted C1 edits - suspend_rr removal) · n=? · net R after fees +0.750 · try n/a · fee break-even n/a"
+ }
 }

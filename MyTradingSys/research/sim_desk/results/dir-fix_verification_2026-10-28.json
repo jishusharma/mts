@@ -34,5 +34,15 @@
  "source_files": [
   "MyTradingSys/research/fix_verification_2026-10-28/REPORT.md"
  ],
- "commit": "2a1ee9ddb"
+ "commit": "2a1ee9ddb",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Trunk tested: e50d547a9. CI: last 5 runs green.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Trunk tested: e50d547a9. CI: last 5 runs green. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

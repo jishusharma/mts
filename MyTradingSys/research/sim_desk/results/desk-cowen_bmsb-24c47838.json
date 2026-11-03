@@ -85,11 +85,50 @@
     963.49
    ],
    "start_usd": 1000.0,
-   "risk_pct": 1.0
+   "risk_pct": 1.0,
+   "mc": {
+    "lo": [
+     -1.024,
+     -2.04,
+     -2.381,
+     -2.827,
+     -3.417,
+     -3.833,
+     -4.205,
+     -4.536,
+     -4.681,
+     -3.651
+    ],
+    "hi": [
+     1.03,
+     0.817,
+     0.551,
+     0.186,
+     -0.234,
+     -0.827,
+     -1.271,
+     -1.611,
+     -2.628,
+     -3.651
+    ],
+    "dd_lo": 3.65,
+    "dd_hi": 4.68,
+    "shuffles": 1000
+   }
   }
  ],
  "source_files": [
   "MyTradingSys/research/sim_desk/desk.py"
  ],
- "commit": "local desk run"
+ "commit": "local desk run",
+ "banner": {
+  "state": "TOO_FEW",
+  "tone": "warn",
+  "verdict": "NOT ENOUGH DATA",
+  "n": 10,
+  "net_r": -0.365,
+  "try_no": 10,
+  "breakeven_x": null,
+  "text": "TOO FEW TRADES · verdict as written: NOT ENOUGH DATA · n=10 · net R after fees -0.365 · try #10 · fee break-even n/a"
+ }
 }

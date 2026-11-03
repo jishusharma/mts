@@ -35,5 +35,15 @@
  "source_files": [
   "MyTradingSys/research/large_trade_absorption_2026-10-30/RESULT.md"
  ],
- "commit": "5f24edeb5"
+ "commit": "5f24edeb5",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "These are descriptive counts only: no fees and no edge claim. Definitions are in the header of study.py (all OURS).",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: These are descriptive counts only: no fees and no edge claim. Definitions are in the header of study.py (all OURS). · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

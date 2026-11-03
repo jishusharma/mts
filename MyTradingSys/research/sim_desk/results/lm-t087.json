@@ -46,5 +46,15 @@
  "source_files": [
   "MyTradingSys/research/t087_session_levels_2026-10-09/RESULT.md"
  ],
- "commit": "71df3aad8"
+ "commit": "71df3aad8",
+ "banner": {
+  "state": "FAIL",
+  "tone": "bad",
+  "verdict": "no edge (net -0.036%, t -1.72); EU-touch cells insufficient n",
+  "n": 345,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "FAIL · verdict as written: no edge (net -0.036%, t -1.72); EU-touch cells insufficient n · n=345 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

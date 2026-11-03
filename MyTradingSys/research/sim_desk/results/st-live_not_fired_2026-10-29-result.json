@@ -33,5 +33,15 @@
  "source_files": [
   "MyTradingSys/research/live_not_fired_2026-10-29/RESULT.md"
  ],
- "commit": "a89e3288c"
+ "commit": "a89e3288c",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "WATCH; 531/532 WAIT_PROOF; 534/540/544 WAIT_TRIGGER Fires from the Java state machine; every alert was rejected by the trader (1 net_rr, 7 verdict not in allowed list). The other alert nos in 528..544 do not appear in E2 (not explained her…",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: WATCH; 531/532 WAIT_PROOF; 534/540/544 WAIT_TRIGGER Fires from the Java state machine; every alert was rejected by the trader (1 net_rr, 7 verdict not in allowed list). The other alert nos in 528..544 do not appear in E2 (not explained her… · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

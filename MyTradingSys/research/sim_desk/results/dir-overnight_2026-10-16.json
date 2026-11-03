@@ -46,5 +46,15 @@
  "source_files": [
   "MyTradingSys/research/overnight_2026-10-16/MORNING_REPORT.md"
  ],
- "commit": "c47149a47"
+ "commit": "c47149a47",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "s",
+  "n": 78,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: s · n=78 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

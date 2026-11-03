@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T16:00:03Z",
   "commands": [],
   "created": "2026-11-02T19:38:37Z",
   "depends_on": [],
@@ -14,11 +15,17 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "scripts/dev/test_pass_needs_verdict.py: PASS gate checks register row (verified) + causal ",
+      "ref": "48d735bcc",
+      "utc": "2026-11-03T16:00:03Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "MTS alignment audit: Pitchfork PASS withdrawn, blockers loosened, DAX archived",
-      "ref": "00959e91385b",
-      "utc": "2026-11-02T19:40:18Z"
+      "line": "extra_tests.tsv merges as a union: parallel test registrations no longer conflict",
+      "ref": "f652e21c83fd",
+      "utc": "2026-11-03T09:46:34Z"
     }
   ],
   "layers": [
@@ -29,9 +36,14 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T20:01:20Z",
+  "refreshed": "2026-11-03T15:57:59Z",
   "refs": [],
-  "result": "",
+  "result": "scripts/dev/test_pass_needs_verdict.py: PASS gate checks register row (verified) + causal replay file + independent trade-loop rerun cited (existence/link/model-differs verified; causality and independence NOT provable from repo, fail-closed on missing). 3 named uncertified offenders: carry_basis x2 arms, card meta-label-ext-pass-verdict-recheck",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/test_pass_needs_verdict.py (new)",
     "MyTradingSys/system/layer_map.json (read)",
@@ -42,15 +54,16 @@
     "no live tree, deploy, process or HALT touch; no .secrets, .env or keys; no bar after 2024-06-30",
     "no change to any verdict or layer row"
   ],
-  "scope_sha": "00959e91385b",
+  "scope_sha": "f652e21c83fd",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Test: each layer_map value starting PASS needs a VERDICTS.csv row with verdict PASS for that study",
     "List any current offender in the report rather than editing it; add known offenders to an explicit allowlist in the test",
     "Register the test in extra_tests.tsv"
   ],
+  "taken": "2026-11-03T16:00:03Z",
   "tests": "scripts/dev/test_pass_needs_verdict.py: a planted PASS with no row fails; the same PASS with a row passes",
   "title": "CI: a PASS in layer_map.json or a result card needs a VERDICTS.csv row; done when a PASS without a row fails CI, test failing first",
   "weight": "ROUTINE",

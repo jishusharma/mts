@@ -44,5 +44,15 @@
  "source_files": [
   "MyTradingSys/research/qriptal_2026-10-10/LEDGER_NOTES.md"
  ],
- "commit": "95fcdb20f"
+ "commit": "95fcdb20f",
+ "banner": {
+  "state": "TOO_FEW",
+  "tone": "warn",
+  "verdict": "/ reason Rows",
+  "n": 0,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "TOO FEW TRADES · verdict as written: / reason Rows · n=0 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

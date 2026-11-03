@@ -364,5 +364,15 @@
   "MyTradingSys/research/c26_roadmap_2026-11-01/PHASE1_EVENTS.md",
   "MyTradingSys/research/c26_roadmap_2026-11-01/phase1_recent.py"
  ],
- "commit": "this card"
+ "commit": "this card",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Design look only: no trade rule tested yet. The phase decides what happens after the take-out",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Design look only: no trade rule tested yet. The phase decides what happens after the take-out · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

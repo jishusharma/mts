@@ -46,5 +46,15 @@
  "source_files": [
   "MyTradingSys/research/candle_patterns_2026-10-04/P0_RESULTS.md"
  ],
- "commit": "f8e201dbc"
+ "commit": "f8e201dbc",
+ "banner": {
+  "state": "FAIL",
+  "tone": "bad",
+  "verdict": "exploratory; no edge vs random null",
+  "n": 571,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "FAIL · verdict as written: exploratory; no edge vs random null · n=571 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

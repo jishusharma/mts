@@ -33,5 +33,15 @@
  "source_files": [
   "MyTradingSys/research/vp_pivots_2026-10-09/SOURCES.md"
  ],
- "commit": "caf65c0d2"
+ "commit": "caf65c0d2",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Operator ask: \"we do not draw volume profiles from pivot points ... From Highs and lows that are meaningful!\"",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Operator ask: \"we do not draw volume profiles from pivot points ... From Highs and lows that are meaningful!\" · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

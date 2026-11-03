@@ -43,5 +43,15 @@
  "source_files": [
   "MyTradingSys/research/sim_desk/results/dir-cowen_q4_2026-10-31.json"
  ],
- "commit": "7fb60b44f"
+ "commit": "7fb60b44f",
+ "banner": {
+  "state": "TOO_FEW",
+  "tone": "warn",
+  "verdict": "",
+  "n": 10,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "TOO FEW TRADES · verdict as written: none · n=10 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

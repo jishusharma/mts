@@ -252,6 +252,7 @@ def test_no_calendar_on_429_then_numbers_on_200(browser):
         ctx, page, errs = _cal_page(browser, "2026-10-29T12:00:00Z", offline=False)
         try:
             page.route("**/*", lambda r: r.continue_() if r.request.url.startswith("file:") else r.abort())      # local files load, every other feed is down
+            page.route("**/ff_calendar_snapshot.js*", lambda r: r.abort())      # a dev machine may hold a real snapshot beside the page: this test is about the feed path
             body = json.dumps(FF) if status == 200 else "slow down"
 
             def answer(route, _request=None, st=status, b=body):

@@ -47,5 +47,15 @@
  "source_files": [
   "MyTradingSys/research/volume_2026-10-09/V2_DEV_RESULTS.md"
  ],
- "commit": "e0e3a2e0a"
+ "commit": "e0e3a2e0a",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "0 pass triage",
+  "n": 400,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: 0 pass triage · n=400 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

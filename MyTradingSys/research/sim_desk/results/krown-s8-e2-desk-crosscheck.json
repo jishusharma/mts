@@ -140,5 +140,15 @@
   "MyTradingSys/research/fable_run6_powered_prereg/crosscheck_desk.py",
   "MyTradingSys/research/fable_run6_powered_prereg/CROSSCHECK_BRIEF.md"
  ],
- "commit": "ships with this file (git log -- MyTradingSys/research/fable_run6_powered_prereg/crosscheck_desk.py)"
+ "commit": "ships with this file (git log -- MyTradingSys/research/fable_run6_powered_prereg/crosscheck_desk.py)",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "MECHANICS AGREE",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: MECHANICS AGREE · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

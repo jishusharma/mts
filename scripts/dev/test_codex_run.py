@@ -197,6 +197,18 @@ class JudgeTest(unittest.TestCase):
         with self.assertRaises(SystemExit):
             R.find_exe({}, lambda n: None, lambda g: [])
 
+    def test_find_exe_userprofile_fallback(self):
+        # a gate job started over ssh has no LOCALAPPDATA: the desktop app's binary sits under USERPROFILE\AppData\Local
+        seen = []
+        def globber(pattern):
+            seen.append(pattern)
+            return ["G"] if pattern.startswith(os.path.join("U", "AppData", "Local")) else []
+        self.assertEqual(R.find_exe({"USERPROFILE": "U"}, lambda n: None, globber), "G")
+        self.assertTrue(seen and seen[0].startswith(os.path.join("U", "AppData", "Local")), seen)
+        self.assertEqual(R.find_exe({"MTS_CODEX_EXE": "X", "USERPROFILE": "U"}, lambda n: "P", globber), "X")
+        with self.assertRaises(SystemExit):
+            R.find_exe({}, lambda n: None, globber)
+
 
 class BudgetTest(unittest.TestCase):
     LINE = ('{"type":"event_msg","payload":{"type":"token_count","rate_limits":{"limit_id":"codex","primary":{"used_percent":%s,'

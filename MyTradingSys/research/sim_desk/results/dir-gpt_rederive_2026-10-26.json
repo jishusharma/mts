@@ -34,5 +34,15 @@
  "source_files": [
   "MyTradingSys/research/gpt_rederive_2026-10-26/BUDGET_BATCH_2026-10-28.md"
  ],
- "commit": "6e61b27a1"
+ "commit": "6e61b27a1",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "User requested sequential useful work with commits and shipping until the current session allowance runs out. No new chats, subagents, model calls, schedulers, deploys or live changes were started in this batch. Do not restart the five ind…",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: User requested sequential useful work with commits and shipping until the current session allowance runs out. No new chats, subagents, model calls, schedulers, deploys or live changes were started in this batch. Do not restart the five ind… · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

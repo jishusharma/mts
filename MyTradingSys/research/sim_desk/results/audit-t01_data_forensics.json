@@ -35,5 +35,15 @@
  "source_files": [
   "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T01_data_forensics.md"
  ],
- "commit": "f8d0799de"
+ "commit": "f8d0799de",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Card: dsa-audit-01-data-forensics. Host: JIS-NUC (bridge host; brief assumed JIS-NB). Worktree: mts-dsa-jis-nuc-1019-0713. Start sha: 755ce518. Ran: 2026-10-19 07:16..07:20Z.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Card: dsa-audit-01-data-forensics. Host: JIS-NUC (bridge host; brief assumed JIS-NB). Worktree: mts-dsa-jis-nuc-1019-0713. Start sha: 755ce518. Ran: 2026-10-19 07:16..07:20Z. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

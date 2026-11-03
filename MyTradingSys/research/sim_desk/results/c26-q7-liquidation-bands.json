@@ -381,5 +381,15 @@
   "MyTradingSys/research/c26_roadmap_2026-11-01/PHASE1_RANGE.md",
   "MyTradingSys/research/c26_roadmap_2026-11-01/BANDS_LEDGER.csv"
  ],
- "commit": "see git log"
+ "commit": "see git log",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Design look on SEEN, n=30: excursions that reached the short band above H1: 14: 7 L1, +0.24, overshoot 1.16; that stopped short of it: 11: 7 L1, +0.52, overshoot 0.48; base rate of a strong band within 0.5 % above price 10 %",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Design look on SEEN, n=30: excursions that reached the short band above H1: 14: 7 L1, +0.24, overshoot 1.16; that stopped short of it: 11: 7 L1, +0.52, overshoot 0.48; base rate of a strong band within 0.5 % above price 10 % · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

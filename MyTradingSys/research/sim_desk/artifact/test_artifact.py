@@ -189,5 +189,178 @@ class Page(unittest.TestCase):
         self.assertIn("Title aa", h)  # exported test still added
 
 
+class Banner(unittest.TestCase):
+    """Survey C1+C2: one fixed verdict banner on every result; trade list with exit reason for every result that carries charts."""
+
+    def _r(self, tone, n, net="-0.1 R", label="PASSED"):
+        k = [{"label": "filled trades", "value": str(n)}, {"label": "average per trade, after fees", "value": net},
+             {"label": "try number", "value": "7"}]
+        return _result("b", verdict={"label": label, "tone": tone}, kpis=k)
+
+    def test_small_n_never_reads_pass(self):
+        for n in (0, 1, 12, 29):
+            b = ba.banner_of(self._r("good", n, "+0.8 R"))
+            self.assertEqual(b["state"], "TOO_FEW", n)
+            self.assertNotIn("PASS", b["text"].split("verdict as written")[0])
+        self.assertEqual(ba.banner_of(self._r("good", 30, "+0.8 R"))["state"], "PASS")
+        self.assertNotEqual(ba.banner_of(self._r("good", 80, "-0.2 R"))["state"], "PASS")  # net R after fees not above zero
+
+    def test_banner_fields(self):
+        b = ba.banner_of(self._r("bad", 64, "-0.445 R", "FAILED"))
+        self.assertEqual((b["state"], b["n"], b["net_r"], b["try_no"]), ("FAIL", 64, -0.445, 7))
+        self.assertIn("n=64", b["text"])
+        self.assertIn("try #7", b["text"])
+        self.assertIn("break-even", b["text"])
+        self.assertEqual(ba.banner_of(_result("z"))["state"], "UNCLEAR")  # no trade count anywhere: never a pass
+
+    def test_every_committed_result_has_banner(self):
+        n = 0
+        for fn in os.listdir(ba.RESULTS_DIR):
+            if not fn.endswith(".json") or fn.startswith("_"):
+                continue
+            r = json.load(open(os.path.join(ba.RESULTS_DIR, fn), encoding="utf-8"))
+            n += 1
+            b = r.get("banner")
+            self.assertIsInstance(b, dict, fn)
+            for k in ("state", "tone", "verdict", "n", "net_r", "try_no", "breakeven_x", "text"):
+                self.assertIn(k, b, fn)
+            if b["n"] is None or b["n"] < ba.MIN_N:
+                self.assertNotEqual(b["state"], "PASS", fn)
+            self.assertEqual(b, ba.banner_of(r), fn)  # file is current with the rule
+        self.assertGreaterEqual(n, 337)
+
+    def test_trade_row_from_caption(self):
+        svg = '<svg><text x="4">2023-10-17 17:02 UTC  +0.71 R short, hit target (5m)</text></svg>'
+        self.assertEqual(ba.trade_row({"kind": "winner", "net_r": 0.7109, "svg": svg}),
+                         {"when": "2023-10-17 17:02", "side": "short", "net_r": 0.7109, "exit_reason": "hit target", "span": "5m"})
+        self.assertIsNone(ba.trade_row({"kind": "event", "svg": "<svg><text>2026-10-01 18:30 DOWN high: taken 0h</text></svg>"}))
+
+    def test_committed_charts_have_trade_rows(self):
+        have = 0
+        for t in ba.collect(ba.RESULTS_DIR):
+            for e in t["examples"]:
+                if e["kind"] != "charts":
+                    continue
+                trades = [i for i in e["items"] if i.get("kind") in ("winner", "loser")]
+                for i in trades:
+                    for k in ("when", "side", "exit_reason"):
+                        self.assertTrue(i.get(k), (t["id"], k))
+                have += bool(trades)
+        self.assertGreaterEqual(have, 25)
+
+    def test_page_renders_banner_and_trade_list(self):
+        for k in ("function banner(", 'class="banner', "function chartList(", 'id="tlist"', "exit_reason"):
+            self.assertIn(k, ba.TEMPLATE)
+        r = _result("bn", examples=[{"kind": "charts", "title": "t", "items": [
+            {"kind": "winner", "net_r": 1.0, "when": "2023-01-01 00:00", "side": "long", "exit_reason": "hit target", "svg": "<svg></svg>"}]}])
+        d = _results_dir(r)
+        out = os.path.join(d, "index.html")
+        ba.main(["--results", d, "--out", out])
+        h = open(out, encoding="utf-8").read()
+        self.assertIn('"banner":{', h)  # build fills a missing banner (desk runs written after the last enrich)
+
+
+class EquityStability(unittest.TestCase):
+    """Survey C3+C4: drawdown shading + Monte Carlo band on curve results; year strip with a stable / not stable flag."""
+
+    def _curve(self, **kw):
+        c = {"kind": "curve", "title": "c", "r": [0.5, -0.5, 1.0], "usd": [1, 2, 3], "start_usd": 1000.0, "risk_pct": 1.0}
+        c.update(kw)
+        return _result("cv", examples=[c])
+
+    def test_curve_without_band_fails_the_build(self):
+        d = _results_dir(self._curve())
+        with self.assertRaises(ValueError):
+            ba.collect(d)
+        ok = self._curve()
+        ok["examples"][0]["mc"] = {"lo": [0.0, -1.0, 1.0], "hi": [1.0, 0.0, 1.0], "dd_lo": 0.0, "dd_hi": 1.0, "shuffles": 1000}
+        self.assertEqual(len(ba.collect(_results_dir(ok))), 1)
+        none_ok = self._curve()
+        none_ok["examples"][0]["mc"] = None  # a one-trade run has no band, but the field must be there
+        self.assertEqual(len(ba.collect(_results_dir(none_ok))), 1)
+
+    def test_one_good_year_among_bad_is_not_stable(self):
+        y = [{"k": "2022", "n": 40, "mean": 0.2, "few": False}, {"k": "2023", "n": 55, "mean": -0.1, "few": False},
+             {"k": "2024", "n": 35, "mean": -0.3, "few": False}]
+        s = ba.stability_of(y)
+        self.assertEqual(s["state"], "NOT_STABLE")
+        self.assertIn("not stable", s["text"].lower())
+
+    def test_all_positive_years_stable_and_few_years_labelled(self):
+        y = [{"k": "2022", "n": 40, "mean": 0.2, "few": False}, {"k": "2023", "n": 55, "mean": 0.1, "few": False},
+             {"k": "2024", "n": 5, "mean": -0.9, "few": True}]
+        s = ba.stability_of(y)
+        self.assertEqual(s["state"], "STABLE")  # the 5-trade year is labelled, not judged
+        self.assertIn("too few", s["text"].lower())
+        self.assertEqual(ba.stability_of([{"k": "2023", "n": 90, "mean": 0.3, "few": False}])["state"], "TOO_FEW")  # one judged year
+        self.assertEqual(ba.stability_of(None)["state"], "UNKNOWN")
+
+    def test_derived_band_matches_desk_monte_carlo(self):
+        import numpy as np
+        import desk
+        net = [0.5, -1.0, 1.5, -0.2, 0.7, -1.0, 2.0, -0.4]
+        cum = np.cumsum(net).tolist()
+        got = ex.derive_mc(cum, len(net))
+        res = {"net": net, "filled": [True] * len(net)}
+        want = desk.monte_carlo(res, list(range(1, len(net) + 1)))
+        self.assertEqual(got["lo"], want["lo"])
+        self.assertEqual(got["dd_hi"], want["dd_hi"])
+
+    def test_year_split_of_single_year_window(self):
+        y = ex.derive_years("DEV only, 2023-03-01 to 2023-05-31 (VALIDATION and HOLDOUT never offered)", 7, -0.516)
+        self.assertEqual(y, [{"k": "2023", "n": 7, "mean": -0.516, "few": True}])
+        self.assertIsNone(ex.derive_years("DEV only, 2022-04-01 to 2024-06-30", 90, 0.1))
+
+    def test_committed_curves_have_band_and_stability(self):
+        curves = trades = 0
+        for t in ba.collect(ba.RESULTS_DIR):
+            for e in t["examples"]:
+                if e["kind"] == "curve":
+                    curves += 1
+                    self.assertIn("mc", e, t["id"])
+                    if e["mc"]:
+                        self.assertEqual(len(e["mc"]["lo"]), len(e["r"]), t["id"])
+            if t["banner"]["n"]:
+                trades += 1
+                self.assertIn(t["stability"]["state"], ("STABLE", "NOT_STABLE", "TOO_FEW", "UNKNOWN"), t["id"])
+        self.assertGreaterEqual(curves, 50)
+        self.assertGreaterEqual(trades, 50)
+
+    def test_page_draws_shading_band_and_year_strip(self):
+        for k in ("function yearStrip(", 'class="dd"', 'class="mcb"', "x.mc", "stability"):
+            self.assertIn(k, ba.TEMPLATE)
+
+    def test_lone_peak_labelled(self):
+        mk = lambda n, m: {"n": n, "mean": m}
+        one = [mk(100, -0.2), mk(120, 0.08), mk(90, -0.1), mk(60, -0.3)]
+        self.assertIs(ba.lone_peak(one), one[1])
+        self.assertIsNone(ba.lone_peak([mk(100, -0.2), mk(90, -0.1), mk(60, -0.3)]))          # no positive cell
+        self.assertIsNone(ba.lone_peak([mk(100, 0.2), mk(90, 0.1), mk(60, -0.3)]))             # two positives: a plateau
+        self.assertIsNone(ba.lone_peak([mk(100, -0.2), mk(10, 0.9), mk(90, -0.1), mk(60, -0.3)]))   # positive cell under 30 trades is not a peak
+        self.assertIsNone(ba.lone_peak([mk(100, -0.2), mk(90, 0.1)]))                          # too few cells to call it lone
+
+    def test_committed_heatmaps(self):
+        tests = ba.collect(ba.RESULTS_DIR)
+        studies = {}
+        for t in tests:
+            if t["id"].startswith(("desk-tom_vp-", "desk-fabio_v3-")):
+                self.assertTrue(t.get("heatmaps"), t["id"])
+                studies[t["id"].split("-")[1]] = t["heatmaps"]
+                by = {x["id"]: x for x in tests}
+                for h in t["heatmaps"]:
+                    for c in h["cells"]:   # every cell is a real run: n and mean equal that run's banner
+                        self.assertEqual((c["n"], c["mean"]), (by[c["id"]]["banner"]["n"], by[c["id"]]["banner"]["net_r"]))
+        self.assertEqual(sorted(studies), ["fabio_v3", "tom_vp"])
+        anchor = [h for h in studies["tom_vp"] if h["x"] == "anchor"][0]
+        self.assertEqual(len(anchor["cells"]), 4)
+        self.assertEqual((anchor["peak"]["x"], anchor["peak"]["y"]), ("prior_week", "ACCEPT"))   # the one +0.081 cell
+        for h in studies["fabio_v3"]:
+            self.assertIsNone(h["peak"])   # Model C cells are all positive (a plateau); Model B all negative
+
+    def test_page_draws_heatmap(self):
+        for k in ("function heatmap(", "lone peak", "under 30 trades"):
+            self.assertIn(k, ba.TEMPLATE)
+
+
 if __name__ == "__main__":
     unittest.main()

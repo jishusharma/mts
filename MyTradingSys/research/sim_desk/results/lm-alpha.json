@@ -31,5 +31,15 @@
  "source_files": [
   "MyTradingSys/research/setup_alpha_beta_2026-10-10/ALPHA_RESULTS.md"
  ],
- "commit": "457d13043"
+ "commit": "457d13043",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "NO-SOURCE; A CAGR 20.5% maxDD 49% vs buy-and-hold 43.8% / 76.7%; not a result",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: NO-SOURCE; A CAGR 20.5% maxDD 49% vs buy-and-hold 43.8% / 76.7%; not a result · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

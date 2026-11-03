@@ -14,6 +14,7 @@ stored for the one-time VALIDATION and HOLDOUT reads and are not studied here.
 | Binance spot BNBUSDT 1d | 2017-11-06 | 2026-09-30 | 3251 | 0 | `21639f94e5ca53abf0ab2f033bfae54983b4bef4b09d94c988776300c56ebf47` |
 | Binance spot SOLUSDT 1d | 2020-08-11 | 2026-09-30 | 2242 | 0 | `6390fae4abefe7a9e4b29632663c434f9f8ebbdfbb66ebe7044cee9666af805d` |
 | Coinbase BTC-USD 1d | 2015-07-20 | 2026-10-15 | 4106 | 0 | `036379a475389d801ba54c315f127daf59c0f1efcde123849e8562850a74ae9e` |
+| CME BTC futures front-month 1d (Yahoo BTC=F proxy) | 2017-12-18 | 2026-11-03 | 2233 | 84 weekday gaps | `36918faffd34bfa933ab8f5d63c1b50baea71ec966af75291f99f6fb724c8f6d` |
 
 ## Gaps
 
@@ -34,3 +35,5 @@ Cross-check, BTCUSDT weeks dated before 2024-07-01 present in both: 352; open/hi
 
 Coinbase BTC-USD volume is in BTC on that venue only; Binance spot volume is in the base asset on Binance. The venue question (conflict C6) is answered by the study, not here.
 
+
+CME BTC volume (`CME_BTC_F_1d.csv`): contracts (5 BTC each) of the continuous front-month only, not total all-expiry volume; weekends absent by design (84 missing weekdays are holidays or feed gaps; 8 zero-volume days; last bar may be partial). CME own pages block scripted access, so not used. Fetch: `tools/fetch_cme_btc_daily.py`.

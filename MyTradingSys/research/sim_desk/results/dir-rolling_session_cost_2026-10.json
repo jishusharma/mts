@@ -32,5 +32,15 @@
  "source_files": [
   "MyTradingSys/research/rolling_session_cost_2026-10/REPORT.md"
  ],
- "commit": "96e60447d"
+ "commit": "96e60447d",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Decision d-measure-rolling-cost (OPERATOR_DECISIONS.md): how long do rolling Supervisor sessions run before data use hurts, and what did past issues look like. Method: committed logs, pilot reports and audits only (grep, no transcripts rea…",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Decision d-measure-rolling-cost (OPERATOR_DECISIONS.md): how long do rolling Supervisor sessions run before data use hurts, and what did past issues look like. Method: committed logs, pilot reports and audits only (grep, no transcripts rea… · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

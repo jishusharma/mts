@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T16:00:53Z",
   "commands": [],
   "created": "2026-10-24T14:56:56Z",
   "depends_on": [],
@@ -14,24 +15,35 @@
   "lane": "HAIKU",
   "latest": [
     {
+      "kind": "ship",
+      "line": "ff59e0ace test_codex_run 70/70",
+      "ref": "481470f64",
+      "utc": "2026-11-03T16:00:53Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "sync.py ship: wait for the CI run of its own sha and print CI RED at once",
-      "ref": "a702fafd1ac9",
-      "utc": "2026-10-25T19:45:58Z"
+      "line": "codex_run: a 401 on this host is IDLE host-auth, writes and ships no lane_state/codex_usag",
+      "ref": "0b1bf4e204a1",
+      "utc": "2026-10-30T23:58:35Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks | PLANNER 2026-11-03 planner-b-1103. REVIEWED:2026-11-03 T0-ONLY",
   "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-10-25T22:17:33Z",
+  "refreshed": "2026-11-03T13:07:11Z",
   "refs": [],
-  "result": "",
+  "result": "ff59e0ace test_codex_run 70/70",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/codex_run.py",
     "scripts/dev/test_codex_run.py"
@@ -41,17 +53,18 @@
     "live path, orders, deploy, restarts",
     "new hooks, gate steps or rules beyond the card"
   ],
-  "scope_sha": "a702fafd1ac9",
+  "scope_sha": "0b1bf4e204a1",
   "size": "S",
   "sources": [
     "scripts/dev/codex_run.py:139"
   ],
-  "state": "refined",
+  "state": "done",
   "steps": [
     "Read find_exe and its existing tests in test_codex_run.py.",
     "Write the failing test with env={'USERPROFILE': ...} and a fake globber.",
     "Add the USERPROFILE fallback path, keep MTS_CODEX_EXE and PATH first."
   ],
+  "taken": "2026-11-03T16:00:53Z",
   "tests": "scripts/dev/test_codex_run.py::test_find_exe_userprofile_fallback fails on the current code (SystemExit) and passes after.",
   "title": "codex_run.find_exe fails in NUC gate jobs: LOCALAPPDATA unset, no codex on PATH",
   "weight": "ROUTINE",

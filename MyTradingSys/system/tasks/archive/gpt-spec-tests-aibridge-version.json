@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-10-29T22:51:55Z",
+  "depends_on": [],
+  "done_when": "scripts/dev/test_aibridge_version.py has >=8 passing tests, 3/3 scratch mutations fail them, aibridge_version.py unchanged.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "aibridge_version.py has no test. Read its docstring, derive expected outputs by hand for 6 boundary cases (at limit, one below, one above, empty input, malformed input, error path), write scripts/dev/test_aibridge_version.py using temp dirs only, then 3 scratch mutations must each fail a test.",
+  "id": "gpt-spec-tests-aibridge-version",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "extra_tests.tsv merges as a union: parallel test registrations no longer conflict",
+      "ref": "f652e21c83fd",
+      "utc": "2026-11-03T09:46:34Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "771d07995f4b tests: spec tests for aibridge_version.py (13 tests, 3/3 mutations caught)",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-spec-tests-aibridge-version.md",
+      "utc": "2026-10-30T00:29:32Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "note": "duplicate: test file exists 771d07995",
+  "pinned": false,
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T13:05:41Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/test_aibridge_version.py",
+    "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-spec-tests-aibridge-version.md",
+    "scripts/dev/extra_tests.tsv"
+  ],
+  "scope_out": [
+    "any live path",
+    "editing the audited source files"
+  ],
+  "scope_sha": "f652e21c83fd",
+  "size": "S",
+  "sources": [
+    "scripts/dev/aibridge_version.py"
+  ],
+  "state": "dropped",
+  "steps": [
+    "read aibridge_version.py and list every branch",
+    "compute expected values by hand",
+    "write tests, run 3 mutations, write report"
+  ],
+  "tests": "python -m pytest scripts/dev/test_aibridge_version.py -q",
+  "title": "Spec-derived tests for scripts/dev/aibridge_version.py (no test file today)",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

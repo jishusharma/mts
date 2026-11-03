@@ -1,0 +1,76 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-03T13:15:38Z",
+  "commands": [],
+  "created": "2026-11-03T13:06:54Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-03/bb_dance_blind_read.md has one row per quoted number: FOUND / NOT_IN_DATA / DIFF, first line holds the three counts.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Open MyTradingSys/research/bb_dance_2026-10-30/RESULT.md and check every number it quotes (counts, percentages, n) against MyTradingSys/research/bb_dance_2026-10-30/output.txt; facts only, no verdicts, no edge claim.",
+  "id": "gemini-blind-read-bb-dance-1103",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_audits_2026-11-03/bb_dance_blind_read.md: FOUND 85, NOT_IN_DA",
+      "ref": "a985c53c6",
+      "utc": "2026-11-03T13:15:38Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "research: Bollinger dance on 5m shorts from a mid break (operator shot 32fd5d2253ee)",
+      "ref": "48e51ff6e6d0",
+      "utc": "2026-10-29T22:44:34Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "48e51ff6e6d0 research: Bollinger dance on 5m shorts from a mid break (operator shot 32fd5d",
+      "ref": "MyTradingSys/research/bb_dance_2026-10-30/RESULT.md",
+      "utc": "2026-10-29T22:44:34Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini effort low: load as <id>:low (gemini_queue.py run <id>:low). Final report ends with a Noticed: line. Facts only, no verdicts. D11_PROGRAMME s6 seed (blind read of research results). PLANNER 2026-11-03 planner-b-1103. REVIEWED:2026-11-03 T0-ONLY",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T13:06:54Z",
+  "refs": [],
+  "result": "MyTradingSys/research/gemini_audits_2026-11-03/bb_dance_blind_read.md: FOUND 85, NOT_IN_DATA 2, DIFF 0 (vs output.txt only: FOUND 46, NOT_IN_DATA 41, DIFF 0)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/bb_dance_2026-10-30/RESULT.md (read)",
+    "MyTradingSys/research/bb_dance_2026-10-30/output.txt (read)",
+    "MyTradingSys/research/gemini_audits_2026-11-03/bb_dance_blind_read.md (new)"
+  ],
+  "scope_out": [
+    "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no change outside the output file; no VALIDATION or HOLDOUT read"
+  ],
+  "scope_sha": "48e51ff6e6d0",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "list every number in RESULT.md with its table or line",
+    "find it in output.txt and compare",
+    "write FOUND / NOT_IN_DATA / DIFF per number, counts on line 1"
+  ],
+  "taken": "2026-11-03T13:15:38Z",
+  "tests": "see done_when (audit card, output file is the test)",
+  "title": "[GEMINI] blind re-read of bb_dance_2026-10-30 RESULT.md: every quoted number vs output.txt",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

@@ -32,5 +32,15 @@
  "source_files": [
   "MyTradingSys/research/b154_stratified_2026-10-09/RESULT.md"
  ],
- "commit": "7252ef979"
+ "commit": "7252ef979",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "S - by UTC session and by regime",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: S - by UTC session and by regime · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

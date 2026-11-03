@@ -51,5 +51,15 @@
  "source_files": [
   "MyTradingSys/research/bollinger_2026-10-14/SOURCES.md"
  ],
- "commit": "c1af99fe2"
+ "commit": "c1af99fe2",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Tiers: T1 = peer-reviewed or primary author; T2 = practitioner with reproducible backtest (data, period, fees stated); T3 = blog/opinion/no data; REJECT = unverifiable, blocked with no readable abstract, or marketing. Numbers carry their s…",
+  "n": 58,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: Tiers: T1 = peer-reviewed or primary author; T2 = practitioner with reproducible backtest (data, period, fees stated); T3 = blog/opinion/no data; REJECT = unverifiable, blocked with no readable abstract, or marketing. Numbers carry their s… · n=58 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

@@ -35,5 +35,15 @@
  "source_files": [
   "MyTradingSys/research/dsa_bridge_keepalive_2026-10-17/DECISION.md"
  ],
- "commit": "2c73ba9fe"
+ "commit": "2c73ba9fe",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "v0.7.0 had NO audio emitter in the repo or in F:\\AIBridge\\extension (identical to the repo apart from the token). The",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: v0.7.0 had NO audio emitter in the repo or in F:\\AIBridge\\extension (identical to the repo apart from the token). The · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

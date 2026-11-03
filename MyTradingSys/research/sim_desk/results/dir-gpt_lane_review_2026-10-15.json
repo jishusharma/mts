@@ -66,5 +66,15 @@
  "source_files": [
   "MyTradingSys/research/gpt_lane_review_2026-10-15/NUC_GPT_PLAN.md"
  ],
- "commit": "1c61408cc"
+ "commit": "1c61408cc",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "(confirmed / false NOT STATED with file:line quote / quote does not support / mis-assigned trade). Changes nothing in the catalogue.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: (confirmed / false NOT STATED with file:line quote / quote does not support / mis-assigned trade). Changes nothing in the catalogue. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

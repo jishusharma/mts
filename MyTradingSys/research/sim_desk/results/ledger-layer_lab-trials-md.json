@@ -45,5 +45,15 @@
  "source_files": [
   "MyTradingSys/research/layer_lab/TRIALS.md"
  ],
- "commit": "5a03b84f5"
+ "commit": "5a03b84f5",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "427 trial rows logged (every variant tried)",
+  "n": null,
+  "net_r": 3.18,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: 427 trial rows logged (every variant tried) · n=? · net R after fees +3.180 · try n/a · fee break-even n/a"
+ }
 }

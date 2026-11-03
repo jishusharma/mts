@@ -32,5 +32,15 @@
  "source_files": [
   "MyTradingSys/research/volume_2026-10-09/V3_VALIDATION_RESULTS.md"
  ],
- "commit": "f69f01cb3"
+ "commit": "f69f01cb3",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "INSUFFICIENT-N; candidate stays unvalidated",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: INSUFFICIENT-N; candidate stays unvalidated · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

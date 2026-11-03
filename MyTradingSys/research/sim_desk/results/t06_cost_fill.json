@@ -187,5 +187,15 @@
   "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T06_cost_fill_realism.md",
   "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/breakeven.csv"
  ],
- "commit": "0d738711f"
+ "commit": "0d738711f",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "No arm earns even the cheapest realistic fee",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: No arm earns even the cheapest realistic fee · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

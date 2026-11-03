@@ -44,5 +44,15 @@
  "source_files": [
   "MyTradingSys/research/us_open_oos_2026-10-30/REPORT.md"
  ],
- "commit": "fd087f1ce"
+ "commit": "fd087f1ce",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Method: session_sweeps/session_open_study.py re-run unchanged via run_oos.py (text-substitutes only data dir, date range, holiday list, output path). Data: Binance USD-M BTCUSDT 1m, F:/MTS/Dumps/backtest/raw_1m_2019/klines (24 monthly file…",
+  "n": 75,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "UNCLEAR · verdict as written: Method: session_sweeps/session_open_study.py re-run unchanged via run_oos.py (text-substitutes only data dir, date range, holiday list, output path). Data: Binance USD-M BTCUSDT 1m, F:/MTS/Dumps/backtest/raw_1m_2019/klines (24 monthly file… · n=75 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

@@ -70,5 +70,15 @@
  "source_files": [
   "MyTradingSys/research/fast_track_2026-09-27/TOM_CORE_BT_RERUN_2026-10-06.md"
  ],
- "commit": "36a114939"
+ "commit": "36a114939",
+ "banner": {
+  "state": "FAIL",
+  "tone": "bad",
+  "verdict": "no edge: gross -0.15 R, net -2.91 R; holdout -2.80 R (mechanical: R tiny after floor removal)",
+  "n": 254,
+  "net_r": -0.3,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "FAIL · verdict as written: no edge: gross -0.15 R, net -2.91 R; holdout -2.80 R (mechanical: R tiny after floor removal) · n=254 · net R after fees -0.300 · try n/a · fee break-even n/a"
+ }
 }

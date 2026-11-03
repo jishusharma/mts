@@ -524,3 +524,4 @@ BTC-USD,1d,2023-09-26,https://api.exchange.coinbase.com/products/BTC-USD/candles
 BTC-USD,1d,2024-07-21,https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity=86400&start=2024-07-21T00:00:00Z&end=2025-05-16T00:00:00Z,,4e4ae25609b0da92b02d7f4da4edd9bba6b4a96777c41aa4b2f622b2585d32ac,API_PAGE_300
 BTC-USD,1d,2025-05-16,https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity=86400&start=2025-05-16T00:00:00Z&end=2026-03-11T00:00:00Z,,05834299d7c8d819551b30886b2bca89930395e3da4a5bdc4d25dfa0f79d5dde,API_PAGE_300
 BTC-USD,1d,2026-03-11,https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity=86400&start=2026-03-11T00:00:00Z&end=2026-10-15T00:00:00Z,,2e592a39681b4b38871ab048322ed89f64fec090adfd18525e125ff40cbb742c,API_PAGE_219
+CME_BTC_F,1d,all,https://query1.finance.yahoo.com/v8/finance/chart/BTC=F?period1=1500000000&period2=NOW&interval=1d,,36918faffd34bfa933ab8f5d63c1b50baea71ec966af75291f99f6fb724c8f6d,API_YAHOO_FRONT_MONTH

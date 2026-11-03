@@ -36,5 +36,15 @@
  "source_files": [
   "MyTradingSys/research/screenshot_context_2026-10-10/REPORT.md"
  ],
- "commit": "4a21f269c"
+ "commit": "4a21f269c",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "are never one record: shot.py stores only claim counts, not the claims.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: are never one record: shot.py stores only claim counts, not the claims. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
 }

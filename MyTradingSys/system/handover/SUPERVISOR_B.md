@@ -1,27 +1,32 @@
-# Supervisor B handover | written 2026-11-01T05:34Z by JIS-NUC | verify: python scripts/dev/supervisor.py handover --verify   (STALE 0 at last boot)
+# Supervisor B handover | written 2026-11-03T16:58Z by JIS-NUC | verify: python scripts/dev/supervisor.py handover --verify
 
 ## Goal
-Login B on JIS-NUC: mode NORMAL, 5 h 4.0% (reset 2026-11-01T10:29Z), week 96.0% of cap 99.
-Stop at 5 h >= 80%, week >= cap, CI red, no ready cards, the TRANSIT at time, or a 3 h wave.
+Login B on JIS-NUC, super session on Opus (operator named it 2026-11-03). Operator cap for this run: stop new work at week 57%, hard stop 60% (read 55% at 16:54Z). Keep rolling, never end idle; work until 20:24Z or the cap.
 
 ## Truth
-- Peers live at write: A@JIS-LAPTOP, C@JIS-DESKTOP | `python scripts/dev/sync.py where --all` | read at 2026-11-01T05:34Z
-- Last picks: tom-v2-gross-first-dev-ext | `python scripts/dev/tasks.py dispatch` | read at 2026-11-01T05:34Z
-- Open claims from JIS-NUC: none | `python scripts/dev/sync.py where --all` | read at 2026-11-01T05:34Z
+- CI green at 0f92c7fcc after 17 red runs (causes: bridge bump, tom-probe card path, test_fetch_captions whole-file skip, then ci_deps_lint on an unguarded yt_dlp import).
+- Bridge 0.7.24 installed and running on JIS-NUC at 16:53Z; JIS-NB also 0.7.24.
+- Released at 16:54Z to ship: Builder dsa-prompt-flow-1103 (aa7a5ec9a7270c3ab; prompt, paste, ci_fail.py, bridge 0.7.25), PASS guard (a983e04d58c59d1b9), Haiku (ae602911954025ea5).
+- Codex: do NOT `codex_run.py tick` until prob-layer-common-table is dropped by Sol: see research/PROB_TABLE_RECEIPT_CLOSURE_2026-11-03.md.
+- mts-audit-1103-independent-recheck: a Luna chat holds it; do not split or rerun.
 
 ## Ruled out
-- none recorded by the tool; add what was tried and closed (`handover --from <file>`).
+- runs.jsonl row or CODEX_HOME change to close the prob card: false receipt.
+- `sync.py ci <sha>` as a CI verdict: it wrongly says no run exists (card sync-py-ci-falsely-says-no-ci-run-path-f).
 
 ## Next 3 steps
-1. `python scripts/dev/sync.py start supervisor-B-<utc date>`; `get_usage`; `python scripts/dev/supervisor.py plan --login B --five <%> --five-reset <utc> --week <%> --week-reset <utc> --running 0`.
-2. Weekly 96% cap reached 2026-11-01; no Claude spawns until reset 17:00Z. Gemini Rumers cards running (gemini_rumers.log), codex tick running. Next: confirm trunk CI green after d6b0814f, re-ship Lab_Guy gemini-burn-c (jis-nuc/gemini-burn-c-2), NUC user must reload AIBridge 0.7.9 and F5.
-3. `python scripts/dev/tasks.py dispatch`; start the next picks.
+1. On each worker note: verify per roles/supervisor.md (ancestor of origin/fast-track, Result: line, one spot check).
+2. DSA ship done: check the paste has the HOW YOU WORK section and a Prompt source line, install 0.7.25 when the bridge is idle, tell the operator to start a new DSA chat.
+3. Ship Gemini sim-results-cards and krown branches from F:/MTS/gq; requeue STALE indian-fees and roadmap-review; then Fabio fix cards (fabio-v3-is-only-loads-oos-bars, fabio-l1-driver-reads-holdout).
 
 ## Traps
-- One ship at a time; EXTRA registration forces the ~20 min gate.
+- A two-dot compare of a gq branch shows hundreds of files once trunk moves; use three dots.
+- The Bash tool can fail on its cwd file after a tree is removed; use PowerShell.
+- `tasks.py stale --refresh` touches all 13 stale cards: read first.
+- A bridge agent restart kills the command DSA is running: wait for /ping running 0.
 
 ## Open
-- Claims above: finish, hand over in the card, or release.
+- Operator: arm DeepSeek hands-free on DSA-NB (oldest row 57 h).
 
 ## Missed last time
 (machine-written by `context_gap.py fold` at the next ship)
