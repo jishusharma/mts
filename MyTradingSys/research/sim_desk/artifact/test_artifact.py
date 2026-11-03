@@ -423,18 +423,25 @@ class UxOneScreen(unittest.TestCase):
         j = src.index("/*end-comments-adapter*/")
         js = src[src.index("const CKEY"):j] if "const CKEY" in src else ""
         self.assertTrue(js, "CKEY / adapter block missing")
+        # Runtime contract 0.2.96: `await claude.use("db")` -> {collection(path).doc(id).set(body)}; null when unavailable.
         prog = js + r'''
 const store={};global.localStorage={getItem:k=>store[k]??null,setItem:(k,v)=>{store[k]=v}};
-const calls=[];global.window={claude:{db:{set:(...a)=>{calls.push(a);return Promise.resolve()}}}};
+const calls=[];const fakeDb={collection:p=>({doc:id=>({set:b=>{calls.push([p,id,b]);return Promise.resolve()}})})};
+global.window={claude:{use:n=>Promise.resolve(n==="db"?fakeDb:null)}};
 saveComment({test_id:"t",chart_id:"ex0",text:"hi",ts:1});
-global.window={claude:{db:{set:()=>{throw new Error("boom")}}}};saveComment({test_id:"t",chart_id:"ex1",text:"two",ts:2});
-global.localStorage={getItem:()=>{throw new Error("x")},setItem:()=>{throw new Error("x")}};global.window={};saveComment({test_id:"t",chart_id:"c",text:"three",ts:3});
-console.log(JSON.stringify({calls:calls.length,first:calls[0],local:JSON.parse(store[CKEY]).length}));'''
+(async()=>{await new Promise(r=>setTimeout(r,20));
+DBP=null;global.window={claude:{use:()=>Promise.reject(new Error("boom"))}};saveComment({test_id:"t",chart_id:"ex1",text:"two",ts:2});
+await new Promise(r=>setTimeout(r,20));
+DBP=null;global.localStorage={getItem:()=>{throw new Error("x")},setItem:()=>{throw new Error("x")}};global.window={};saveComment({test_id:"t",chart_id:"c",text:"three",ts:3});
+await new Promise(r=>setTimeout(r,20));
+console.log(JSON.stringify({calls:calls.length,first:calls[0],local:JSON.parse(store[CKEY]).length}));})();'''
         out = subprocess.run([node, "-e", prog], capture_output=True, text=True, timeout=30)
         self.assertEqual(out.returncode, 0, out.stderr)
         res = json.loads(out.stdout.strip().splitlines()[-1])
         self.assertEqual(res["calls"], 1)
-        self.assertEqual(res["local"], 2)  # db throw and storage throw never block
+        self.assertEqual(res["local"], 2)  # db rejection and storage throw never block
+        self.assertEqual(res["first"][0], "comments")
+        self.assertEqual(res["first"][1], "1-t-ex0")
         self.assertIn("hi", json.dumps(res["first"]))
 
     def test_one_screen_layout(self):
