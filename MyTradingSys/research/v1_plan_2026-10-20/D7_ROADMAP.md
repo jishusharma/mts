@@ -13,7 +13,7 @@ Changed 2026-11-03 (operator order, research/mts_audit_2026-11-03/AUDIT.md): con
 ## Stages
 Changed 2026-11-03 (operator, d-s0-exit-waived-1103): S0 closed without meeting its measured exit; cleanup goes on alongside S1.
 
-Now: S1 (operator 2026-11-03, d-s0-exit-waived-1103; MTS Home reads this line, move it when an exit is signed)
+Now: S2, S3, S4 in parallel (operator 2026-11-04, d-s1-defaults-1104; S1 signed; MTS Home reads this line)
 
 | Stage | Entry | Work | Exit (measured) | EXPECT |
 |---|---|---|---|---|
