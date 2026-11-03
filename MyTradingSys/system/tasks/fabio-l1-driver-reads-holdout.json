@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T18:36:22Z",
   "commands": [],
   "created": "2026-11-03T15:59:29Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "fabio-l1-driver-reads-holdout",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "run_backtest.py drops bars >= 2026-06-26 by default (--dev-end); 11 tests pass (98d821708)",
+      "ref": "5259e8184",
+      "utc": "2026-11-03T18:36:22Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -35,7 +42,12 @@
     "MyTradingSys/backtest/layers/fabio/run_backtest.py:220",
     "MyTradingSys/system/LAYERS.md:43"
   ],
-  "result": "",
+  "result": "run_backtest.py drops bars >= 2026-06-26 by default (--dev-end); 11 tests pass (98d821708)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/fabio/run_backtest.py",
     "MyTradingSys/backtest/layers/fabio/test_run_backtest.py"
@@ -47,13 +59,14 @@
   "scope_sha": "2afc18be6ef9",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read run_backtest.py main() lines 233-262 and docstring lines 4-8",
     "write failing test for clip_dev first",
     "add clip_dev + --dev-end arg (default 2026-06-25 inclusive, OURS label: split date from LAYERS.md:43 holdout 2026-06-26), call after sort before run_tf; data roots stay args",
     "run the test file"
   ],
+  "taken": "2026-11-03T18:36:22Z",
   "tests": "MyTradingSys/backtest/layers/fabio/test_run_backtest.py: new case on a helper clip_dev(bars_1m, end_date); fails on current code (no helper, main loads to now)",
   "title": "run_backtest.py loads 1m to now and splits 70/30 over the full series, so its OOS stats touch the holdout from 2026-06-26 (lines 4, 220); add a DEV end date before any load, default before holdout; roots via args; unblocks fabio-l1-has-no-run-on-the-strict-detect",
   "weight": "ROUTINE",

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T18:36:07Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -23,6 +24,12 @@
   "id": "status-md-ci-green-stale",
   "lane": "HAIKU",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "STATUS.md line 6 CI green 2c2bcd80a = origin/green/fast-track (f0248057)",
+      "ref": "5259e8184",
+      "utc": "2026-11-03T18:36:07Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -49,7 +56,12 @@
   "refs": [
     "scripts/dev/make_status.py:235 get_ci_line"
   ],
-  "result": "",
+  "result": "STATUS.md line 6 CI green 2c2bcd80a = origin/green/fast-track (f0248057)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/STATUS.md"
   ],
@@ -59,12 +71,13 @@
   "scope_sha": "396a32baf2b2",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "git fetch origin green/fast-track fast-track",
     "python scripts/dev/make_status.py (writes STATUS.md)",
     "check line 6 sha matches origin/green/fast-track; sync.py ship"
   ],
+  "taken": "2026-11-03T18:36:07Z",
   "tests": "grep -n '^CI green:' MyTradingSys/research/STATUS.md compared to git rev-parse --short origin/green/fast-track; docs-only, no fail-first test applies",
   "title": "research/STATUS.md line 6 quotes CI green 52ec65dd8 from 10-30 while origin/green/fast-track moved today; regenerate or read green from git",
   "weight": "ROUTINE",
