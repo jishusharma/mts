@@ -17,9 +17,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "extra_tests.tsv merges as a union: parallel test registrations no longer conflict",
-      "ref": "f652e21c83fd",
-      "utc": "2026-11-03T09:46:34Z"
+      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nuc/dsa-prompt-flow-1103",
+      "ref": "039a6c7b9cf0",
+      "utc": "2026-11-03T17:03:26Z"
     }
   ],
   "layers": [],
@@ -28,7 +28,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-03T16:01:08Z",
+  "refreshed": "2026-11-03T17:22:20Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -39,7 +39,7 @@
   "scope_out": [
     "any live path; editing live_aid_indicators.js or us_open_rates.js; no VALIDATION or HOLDOUT read; fixtures are the repo ones"
   ],
-  "scope_sha": "f652e21c83fd",
+  "scope_sha": "039a6c7b9cf0",
   "size": "S",
   "sources": [
     "MyTradingSys/tools/live_aid/REQUIREMENTS.md R13 and R14"
