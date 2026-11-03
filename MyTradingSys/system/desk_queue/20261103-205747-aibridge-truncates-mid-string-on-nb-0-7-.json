@@ -1,0 +1,10 @@
+{
+  "done_when": "a 200-char block with a full Windows path runs whole on JIS-NB 0.7.24",
+  "from": "JIS-NB",
+  "id": "20261103-205747-aibridge-truncates-mid-string-on-nb-0-7-",
+  "need": "Results 20,21,41,50,53 lost commands mid-line. 50 sent gc sweep_NB.txt -TotalCount 25, received gc. 41 received Set-Location C. 53 ran desk.py post with no args. 5 sends, JIS-NB 0.7.24.",
+  "posted": "2026-11-03T20:57:47Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "AIBridge truncates mid-string on NB 0.7.24"
+}
