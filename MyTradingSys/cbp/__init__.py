@@ -153,3 +153,17 @@ def query(analyst=None, symbol=None, channel=None, since_days=WINDOW_DAYS, now=N
             continue
         out.append(r)
     return sorted(out, key=lambda r: r["published"], reverse=True)
+
+
+def candidates(rows, now=None):
+    """Pure: one CANDIDATE_UNTESTED record per tradable, unexpired stored row. No file is written and nothing
+    here can place an order (order_eligible is always False; only the backtest gate promotes, B139)."""
+    now = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
+    out = []
+    for r in rows or []:
+        if validate_row(r) or not is_tradable(r) or parse_expiry(r["expires_at"]) <= now:
+            continue
+        out.append({"source": "cbp:" + r["analyst"], "status": "CANDIDATE_UNTESTED", "order_eligible": False,
+                    "evidence": r["video_id"], "expires_at": r["expires_at"], "symbols": list(r["symbols"]),
+                    "bias": r["bias"]})
+    return out
