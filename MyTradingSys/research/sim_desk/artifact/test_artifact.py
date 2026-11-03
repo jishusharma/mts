@@ -364,3 +364,89 @@ class EquityStability(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class UxOneScreen(unittest.TestCase):
+    """Operator verdicts 2026-11-04 (d-sim-ux-1104): timeframe pills + tabs, inline comments, one screen."""
+
+    def test_tf_parsing_and_inference(self):
+        self.assertEqual(ba.tfs_in("RSI deep 1m/5m/15m/60m, 0.10% fee, EMA 10"), ["1m", "5m", "15m", "1h"])
+        self.assertEqual(ba.tfs_in("W01 5m A1_L53"), ["5m"])
+        self.assertEqual(ba.tfs_in("BTCUSDT 15min 2024"), [])
+        r = _result(examples=[{"kind": "table", "title": "H2 (15m bottom buy)", "cols": ["Arm"], "rows": [["x"]]},
+                              {"kind": "trade_chart", "tf": "30m", "title": "t"}])
+        ba.add_tf(r)
+        a, b = r["examples"]
+        self.assertEqual((a["tf"], a["tf_source"]), ("15m", "inferred"))
+        self.assertEqual((b["tf"], b["tf_source"]), ("30m", "json"))
+        self.assertEqual(r["tfs"], ["30m", "15m"])
+        self.assertEqual(r["tf_tabs"], ["30m", "15m"])
+
+    def test_table_rows_carry_their_tf(self):
+        r = _result(examples=[{"kind": "table", "title": "cells", "cols": ["Arm", "n"],
+                               "rows": [["W01 5m A", "1"], ["W04 15m A", "2"], ["W07 1h A", "3"]]}])
+        ba.add_tf(r)
+        self.assertEqual(r["examples"][0]["row_tf"], ["5m", "15m", "1h"])
+        self.assertEqual(r["tf_tabs"], ["5m", "15m", "1h"])
+
+    def test_committed_results_have_tfs_field(self):
+        tests = ba.collect(ba.RESULTS_DIR)
+        self.assertTrue(all("tfs" in t and "tf_tabs" in t for t in tests))
+        atlas = next(t for t in tests if t["id"] == "wavetrend_atlas")
+        self.assertGreaterEqual(len(atlas["tf_tabs"]), 2)
+
+    def test_page_renders_tf_pill_and_tabs(self):
+        for k in ('class="pill tf', "function tfTabs", 'role="tablist"', 'role="tab"', "data-tf", "function applyTf", "tf_source"):
+            self.assertIn(k, ba.TEMPLATE)
+        self.assertNotIn("<option", ba.TEMPLATE.split("function tfTabs")[1].split("function ")[0])  # tabs, never a dropdown
+
+    def test_top_tabs(self):
+        for k in ("Families", "Verdict grid", "Charts", "Comments", "function showTab", "function gridTab", "function chartsTab", "function commentsTab"):
+            self.assertIn(k, ba.TEMPLATE)
+
+    def test_verdict_grid_cell_is_tone_plus_glyph_with_tooltip(self):
+        for k in ('class="gc', "function glyphOf", "title=", "&#10006;", "&#10004;"):
+            self.assertIn(k, ba.TEMPLATE)
+
+    def test_comment_box_under_charts_and_cards(self):
+        for k in ("function commentBox", 'data-copy', "copy all", 'chart_id', "commentBox(t.id,\"card\")"):
+            self.assertIn(k, ba.TEMPLATE)
+        self.assertIn('commentBox(t.id,"ex"+i)', ba.TEMPLATE)
+
+    def test_save_comment_adapter_runs(self):
+        import shutil
+        import subprocess
+        node = shutil.which("node")
+        if not node:
+            self.skipTest("node not installed")
+        src = ba.TEMPLATE
+        j = src.index("/*end-comments-adapter*/")
+        js = src[src.index("const CKEY"):j] if "const CKEY" in src else ""
+        self.assertTrue(js, "CKEY / adapter block missing")
+        # Runtime contract 0.2.96: `await claude.use("db")` -> {collection(path).doc(id).set(body)}; null when unavailable.
+        prog = js + r'''
+const store={};global.localStorage={getItem:k=>store[k]??null,setItem:(k,v)=>{store[k]=v}};
+const calls=[];const fakeDb={collection:p=>({doc:id=>({set:b=>{calls.push([p,id,b]);return Promise.resolve()}})})};
+global.window={claude:{use:n=>Promise.resolve(n==="db"?fakeDb:null)}};
+saveComment({test_id:"t",chart_id:"ex0",text:"hi",ts:1});
+(async()=>{await new Promise(r=>setTimeout(r,20));
+DBP=null;global.window={claude:{use:()=>Promise.reject(new Error("boom"))}};saveComment({test_id:"t",chart_id:"ex1",text:"two",ts:2});
+await new Promise(r=>setTimeout(r,20));
+DBP=null;global.localStorage={getItem:()=>{throw new Error("x")},setItem:()=>{throw new Error("x")}};global.window={};saveComment({test_id:"t",chart_id:"c",text:"three",ts:3});
+await new Promise(r=>setTimeout(r,20));
+console.log(JSON.stringify({calls:calls.length,first:calls[0],local:JSON.parse(store[CKEY]).length}));})();'''
+        out = subprocess.run([node, "-e", prog], capture_output=True, text=True, timeout=30)
+        self.assertEqual(out.returncode, 0, out.stderr)
+        res = json.loads(out.stdout.strip().splitlines()[-1])
+        self.assertEqual(res["calls"], 1)
+        self.assertEqual(res["local"], 2)  # db rejection and storage throw never block
+        self.assertEqual(res["first"][0], "comments")
+        self.assertEqual(res["first"][1], "1-t-ex0")
+        self.assertIn("hi", json.dumps(res["first"]))
+
+    def test_one_screen_layout(self):
+        css = ba.TEMPLATE.split("</style>")[0]
+        for k in ("height:100vh", "overflow:hidden", ".pane{", "min-height:0"):
+            self.assertIn(k, css)
+        self.assertIn('id="app"', ba.TEMPLATE)
+        self.assertIn("@media(max-width:700px)", css)  # phone width

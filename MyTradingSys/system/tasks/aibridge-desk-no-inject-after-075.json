@@ -21,9 +21,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "AIBridge 0.7.19: blocks read only when complete, busy-chat results queued and retried, sto",
-      "ref": "8464ce557b64",
-      "utc": "2026-11-02T16:25:04Z"
+      "line": "AIBridge 0.7.22: Argon High findings (ran block never re-runs, send-button picker and draf",
+      "ref": "85ade19f4d5b",
+      "utc": "2026-11-02T19:24:29Z"
     }
   ],
   "layers": [],
@@ -33,7 +33,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T16:47:04Z",
+  "refreshed": "2026-11-03T22:32:56Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -47,7 +47,7 @@
     "any other host",
     "live tree"
   ],
-  "scope_sha": "8464ce557b64",
+  "scope_sha": "85ade19f4d5b",
   "size": "S",
   "sources": [
     "scripts/aibridge/RELEASES.json (0.7.9 current)",

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T21:23:57Z",
   "commands": [],
   "created": "2026-10-19T20:49:50Z",
   "depends_on": [
@@ -16,6 +17,12 @@
   "id": "rsi-deep-confirmations",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "0 of 150 DEV and 0 of 80 VAL confirmation rows have a fee-net or vs-raw CI above 0; confir",
+      "ref": "1177fa711",
+      "utc": "2026-11-03T21:23:57Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -44,7 +51,12 @@
   "refined_by": "Session_Planner",
   "refreshed": "2026-10-27T22:51:52Z",
   "refs": [],
-  "result": "",
+  "result": "0 of 150 DEV and 0 of 80 VAL confirmation rows have a fee-net or vs-raw CI above 0; confirmations cut P(lower low) but not net EV",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/confirmations.py",
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/test_confirmations.py",
@@ -66,13 +78,14 @@
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/APPLIED.md",
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/SHOT_REVIEW.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read OPUS_FRAMING s3/s4/s5 Stage 3 and SHOT_REVIEW C11; take the Stage-0 survivor TFs from ECON_FLOOR.md (60m abs20 is a lead, 1m and 15m rel are dead).",
     "Implement each confirmation as a function of bars up to the confirmation bar only; higher-TF features use the last completed bar.",
     "Measure each alone, then the best pair, against the raw touch on DEV; fee 0.10% round trip, fill at the next open, day-clustered CI.",
     "Freeze, read VALIDATION once, write CONFIRMATIONS.md; trial rows before outcomes."
   ],
+  "taken": "2026-11-03T21:23:57Z",
   "tests": "test_confirmations.py fail-first: changing the current higher-TF bar leaves the signal unchanged; each confirmation fires on a planted series and not on a flat one; the entry price is the next bar open; bars from 2024-07-01 are refused in the DEV pass.",
   "title": "RSI deep-buy Stage 3: causal confirmations at an RSI low (hook, structure shift, fall speed, HTF RSI, volume/delta) vs raw touch",
   "weight": "IMPORTANT",
