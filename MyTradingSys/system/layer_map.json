@@ -769,6 +769,25 @@
  ],
  "backtests": [
   {
+    "id": "RSI-DEEP-PRESTUDIES",
+    "title": "RSI deep-buy prerequisite studies: context tables, confirmations, confluence, divergence context",
+    "date": "2026-11-04",
+    "market": "BTCUSDT DEV, VALIDATION read once, HOLDOUT never read",
+    "layers": [
+      "rsi_levels",
+      "rsi_divergence"
+    ],
+    "params": "see research/rsi_deep_buy_2026-10-19/",
+    "split": "DEV / VALIDATION per backtest/splits.py",
+    "fees": "fee-net",
+    "interaction": "context, confirmation and confluence overlays on the RSI deep-buy touch",
+    "effects": "none material",
+    "n": "168 + 230 + 120 + 144 tests",
+    "verdict": "no surviving cell: 0/150 DEV and 0/80 VAL confirmation rows fee-net CI>0; confluence 10/120 kept, VAL t<1; divergence 0/144; grid empty, rsi-deep-prereg/engine/run-dev parked",
+    "report": "MyTradingSys/research/rsi_deep_buy_2026-10-19/CONFIRMATIONS.md",
+    "read": "summary"
+  },
+  {
    "id": "L1-D3",
    "title": "D3 RSI tolerance study + CryptoCred adapter (L1)",
    "date": "2026-09-27",
