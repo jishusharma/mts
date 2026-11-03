@@ -1648,7 +1648,3 @@ Operator (chat, sim demo): use the Console API credit for simulator reviews and 
 
 ## 2026-11-03 - Simulator build order: trade charts + banner first
 Operator (chat, 13:35Z, from the INDUSTRY_SURVEY build list): "Trade charts + banner". Card `sim-build-hosted-trade-charts` (trade list + candle chart on the hosted page for the 27 desk results that carry charts; fixed verdict banner on every result) builds first, on login C today while A is absent; `sim-build-equity-drawdown-stability` and `sim-build-heatmap-replay` follow. MTS Home rebuild (`mts-home-rebuild-1103`) runs in parallel on B.
-
-## 2026-11-03 14:45Z - Hold login C's last 4% for B's MTS Home ship
-Operator: "Hold for B". C does not take mts-home-rebuild-1103; B ships H2/H3 (broadcast b-cf5520, by 19:00Z). Pilot ultra waves 17:30Z do not fit under the 97% stop; Supervisor C rechecks at 17:30Z.
-Answer: Hold for B (operator, in chat). Recorded as decided; nothing waits on Jis.
