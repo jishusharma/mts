@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T22:15:01Z",
   "commands": [],
   "created": "2026-10-19T14:44:46Z",
   "depends_on": [
@@ -15,6 +16,12 @@
   "id": "rsi-deep-divergence-context",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Detector + K1-K10 tests (33 pass); DEV 0 of 144 variant rows fee-net CI>0, 0 of 36 tests H",
+      "ref": "6fa9da152",
+      "utc": "2026-11-03T22:15:01Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,14 +40,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks\nREVIEWED: super 2026-11-04 (coordinator stamp per Super Session order; Lab_Guy wait waived; prerequisite outputs exist on disk in research/rsi_deep_buy_2026-10-19/: DEPTH_MAP.md, ECON_FLOOR.md, PROB_REPORT.md, prob_tables_dev.csv, prob_tables_val.csv)",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
   "refreshed": "2026-10-27T22:51:54Z",
   "refs": [],
-  "result": "",
+  "result": "Detector + K1-K10 tests (33 pass); DEV 0 of 144 variant rows fee-net CI>0, 0 of 36 tests Holm<0.05, model beats level-only in 0 of 6 cells; VALIDATION read once, nothing kept",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/divergence_context.py",
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/test_divergence_context.py",
@@ -62,13 +74,14 @@
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/APPLIED.md",
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/SHOT_REVIEW.md"
   ],
-  "state": "refined",
+  "state": "done",
   "steps": [
     "Read SPEC Steps I-J and SHOT_REVIEW (c)/(d); check rsi_divergence.py stamp is not earlier than the confirming bar (OPUS_FRAMING s2.2 item 5) before reuse.",
     "Implement the detector (pairing rules, close vs wick, eps, min RSI diff, FAILURE_SWING, firing numbers) and pass K1-K10 first.",
     "Build events, matched control and the 8-feature vector on DEV; fit the walk-forward model; compare with Step G level-only and Step H score.",
     "Freeze, read VALIDATION once, keep only what beats level-only on log-loss and fee-net EV; trial rows C1-C8 first."
   ],
+  "taken": "2026-11-03T22:15:01Z",
   "tests": "MyTradingSys/research/rsi_deep_buy_2026-10-19/test_divergence_context.py: fixture cases K1-K10 of SHOT_REVIEW.md (d), values from its independent public-data computation (tolerance +-0.5 RSI), assert detector outputs only; planted RSI lows 20-30-25 under P-adj, P-anchor, P-any; fails on a detector that stamps at the low.",
   "title": "RSI deep-buy Step I: causal bullish divergence at RSI lows + speed/volatility context, matched vs no-divergence",
   "weight": "IMPORTANT",

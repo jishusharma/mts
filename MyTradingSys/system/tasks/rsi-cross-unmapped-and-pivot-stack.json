@@ -25,9 +25,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "T09-F3: live RSI trades only support@40 long; cross, failure, rejection are alert-only",
-      "ref": "f04a3cbad6ee",
-      "utc": "2026-10-26T20:59:34Z"
+      "line": "auto_trader.margin_ok: unset/None/zero/negative margin_btc refuses (fail closed)",
+      "ref": "7c98efd08d2e",
+      "utc": "2026-11-01T08:41:31Z"
     }
   ],
   "layers": [
@@ -35,12 +35,12 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks\nREVIEWED: super 2026-11-04 (coordinator stamp per Super Session order d-move-lagging-layers-1104; Lab_Guy wait waived; build together with its sibling card, same area live_levels_confluence.py + layer_rules)",
   "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-10-27T19:30:17Z",
+  "refreshed": "2026-11-03T22:33:45Z",
   "refs": [
     "MyTradingSys/execution/auto_trader.py:416"
   ],
@@ -53,14 +53,14 @@
     "any new layer or detector code",
     "live tree .mts_live, deploys, HALT files"
   ],
-  "scope_sha": "f04a3cbad6ee",
+  "scope_sha": "7c98efd08d2e",
   "size": "S",
   "sources": [
     "MyTradingSys/execution/auto_trader.py:77,413,416",
     "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/SHOT_4ae992130268.md",
     "runtime_data/auto_trades.jsonl (host file; only counts are committed, the repo is public)"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Read auto_trader.py:77,413-420 (layer_rules, CROSS_SIDE_BY_LEVEL) and how signal_rejected unmapped is logged.",
     "Run python scripts/dev/live_mirror.py brief (quote mirror@<utc>) and count unmapped rsi:cross rejections by TF and week from auto_trades.jsonl on the mirror; commit counts only.",
