@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T17:26:04Z",
   "commands": [
     "python -m pytest MyTradingSys/research/api_jobs_2026-11-03/test_sim_cards_from_json.py -q",
     "python scripts/dev/run_all_tests.py --quick"
@@ -26,6 +27,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "f8bd2724: sim cards regenerated from results json (Verdict/Keep/Totals from banner); test_",
+      "ref": "f8bd27247",
+      "utc": "2026-11-03T17:26:04Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Merge remote-tracking branch 'origin/fast-track' into gemini-q/gemini-blind-read-sim-resul",
@@ -49,7 +56,12 @@
   "refined_by": "",
   "refreshed": "2026-11-03T17:16:22Z",
   "refs": [],
-  "result": "",
+  "result": "f8bd2724: sim cards regenerated from results json (Verdict/Keep/Totals from banner); test_sim_cards_from_json 340/340, failed 170/340 on old md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/api_jobs_2026-11-03/build_sim_cards_jobs.py",
     "MyTradingSys/research/api_jobs_2026-11-03/render_sim_cards.py",
@@ -66,13 +78,14 @@
     "MyTradingSys/research/gemini_audits_2026-11-03/sim_result_cards_spotcheck.md:1",
     "MyTradingSys/research/api_jobs_2026-11-03/build_sim_cards_jobs.py:17-23"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read spotcheck.md section 2 and results/desk-cowen_bmsb-a0c48d6a.json (verdict.label, banner.n, kpis)",
     "Write the test first; run on the current md; record failure count",
     "Write sim_cards_from_json.py; regenerate Verdict, Keep, Totals; keep 337 rows",
     "Fix ntr in build_sim_cards_jobs.py; rerun test and the 40-card check; ship"
   ],
+  "taken": "2026-11-03T17:26:04Z",
   "tests": "api_jobs_2026-11-03/test_sim_cards_from_json.py: parametrised over results/*.json, expected values read from verdict.label, banner.n, kpis (not from the new script). Fail-first: run on the current md, record the failure count, then 0 after regeneration. Add to scripts/dev/extra_tests.tsv if not discovered.",
   "title": "Sim desk result cards: 14 of 40 Haiku-written cards state a Verdict word that differs from results/*.json, 15 Keep lines differ (gemini_audits_2026-11-03/sim_result_cards_spotcheck.md). Regenerate card verdict/keep lines from the json, add a test that card text matches json",
   "weight": "ROUTINE",

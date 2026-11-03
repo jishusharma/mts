@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T17:26:06Z",
   "commands": [
     "python -m pytest MyTradingSys/research/eagle_eyes_picture_2026-10-28/test_docstring_windows.py -q",
     "python scripts/dev/run_all_tests.py --quick"
@@ -16,6 +17,12 @@
   "id": "eagle-11-03-counts-us-open-roundtrip-py-",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "f8bd2724: ethbtc_wt_top docstring states 2022-01..2024-06; us_open_roundtrip docstring not",
+      "ref": "f8bd27247",
+      "utc": "2026-11-03T17:26:06Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,7 +47,12 @@
   "refined_by": "",
   "refreshed": "2026-11-03T17:16:37Z",
   "refs": [],
-  "result": "",
+  "result": "f8bd2724: ethbtc_wt_top docstring states 2022-01..2024-06; us_open_roundtrip docstring notes skip + DST; C37 verification note",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/ethbtc_wt_top.py",
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/us_open_roundtrip.py",
@@ -56,12 +68,13 @@
     "MyTradingSys/research/gemini_audits_2026-11-03/eagle_1103_blind_read.md:1-8",
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/ethbtc_wt_top.py:3"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read eagle_1103_blind_read.md sections 3 and 4 and the three scope_in files",
     "Write the docstring test first; run it; confirm it fails",
     "Edit the two docstrings, the END comment and the C37/C38 rows; rerun test; ship"
   ],
+  "taken": "2026-11-03T17:26:06Z",
   "tests": "research/eagle_eyes_picture_2026-10-28/test_docstring_windows.py: reads the docstrings and the C37/C38 rows as text; fail-first on the current ethbtc_wt_top.py (docstring says 2025-06); passes after the edit. Expected values come from the audit md lines, not from the scripts.",
   "title": "Eagle 11-03 counts: us_open_roundtrip.py / ethbtc_wt_top.py docstrings claim 2022-01..2025-06 but numbers come from an archive ending 2024-06 (ETH); 5 of 7 numbers DIFF on the stated window (gemini_audits_2026-11-03/eagle_1103_blind_read.md). Fix docstrings or rerun on full window; update BACKTEST_CANDIDATES C37/C38",
   "weight": "ROUTINE",
