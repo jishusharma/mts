@@ -2,6 +2,19 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 14,
+    "folded": "2026-11-03T23:12:13Z",
+    "misses": 22,
+    "reads": [
+      "MyTradingSys/backtest/layers/rsi/run_divergence_mtf.py",
+      "MyTradingSys/backtest/bt/bt_data.py",
+      "MyTradingSys/backtest/layers/timeframe/registry.json",
+      "MyTradingSys/backtest/layers/timeframe/tf_resample.py",
+      "scripts/dev/run_all_tests.py"
+    ],
+    "session": "agent-a44554c4a1fc080b1"
+  },
   "created": "2026-11-03T22:51:58Z",
   "depends_on": [],
   "done_when": "research/rsi_divergence_mtf_gated_<date>/PRE_REG.md (frozen, trial-ledger rows in TRIALS.md first), DEV fee-net table by regime and TF with day-clustered CI, VALIDATION read once for any DEV survivor, RESULT.md whose first lines print the window regime-mix line (research_kit.regime_mix_line) and a VERDICTS.csv row; HOLDOUT never read",
