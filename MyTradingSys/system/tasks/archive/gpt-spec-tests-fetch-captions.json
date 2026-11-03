@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-03T16:11:49Z",
   "commands": [],
   "created": "2026-10-29T22:51:53Z",
   "depends_on": [],
@@ -14,6 +16,12 @@
   "kind": "build",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "13 tests in scripts/dev/test_fetch_captions.py pass; 3/3 scratch mutations fail; report wr",
+      "ref": "9fcbc0633",
+      "utc": "2026-11-03T16:11:49Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +46,12 @@
   "refined_by": "",
   "refreshed": "2026-11-03T13:05:41Z",
   "refs": [],
-  "result": "",
+  "result": "13 tests in scripts/dev/test_fetch_captions.py pass; 3/3 scratch mutations fail; report written; registered in extra_tests.tsv",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/test_fetch_captions.py",
     "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-spec-tests-fetch-captions.md",
@@ -53,12 +66,13 @@
   "sources": [
     "scripts/dev/fetch_captions.py"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read fetch_captions.py and list every branch",
     "compute expected values by hand",
     "write tests, run 3 mutations, write report"
   ],
+  "taken": "2026-11-03T16:06:55Z",
   "tests": "python -m pytest scripts/dev/test_fetch_captions.py -q",
   "title": "Spec-derived tests for scripts/dev/fetch_captions.py (no test file today)",
   "weight": "ROUTINE",
