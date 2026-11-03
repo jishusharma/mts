@@ -72,7 +72,7 @@ def primary(repo):
     return Path(sync.worktrees(repo)[0][0])
 
 
-def protected_reason(p, branch, primary_tree, here, now, mtime_of=None):
+def protected_reason(p, branch, primary_tree, here, now, mtime_of=None, released=None):
     """Why tree `p` must never be touched, or None. Independent of tidy's own rules: these are the hard filters."""
     p = Path(p).resolve()
     low = p.name.lower()
@@ -82,7 +82,9 @@ def protected_reason(p, branch, primary_tree, here, now, mtime_of=None):
         return "this tree"
     if (p / sync.LIVE_MARKER).exists():
         return "live tree"
-    if (p / sync.GATEWAY_MARKER).exists():
+    # `released`: slugs `ship --release` closed (sync.released_slugs); such a tree's gateway hold is spent, so the 12 h wait does not apply
+    # (the other filters below, and classify's clean / on-trunk / idle checks, still do). DECISION (OURS, 2026-11-04).
+    if (p / sync.GATEWAY_MARKER).exists() and not sync.branch_released(branch, released):
         g_idle = sync.idle_hours(p, branch, now) if mtime_of is None else mtime_of(p)
         if g_idle < GATEWAY_IDLE_HOURS:
             return "gateway tree"   # GATEWAY_NUC.md rule 7, while in use
@@ -188,11 +190,12 @@ def classify(repo, now=None):
     prim, here = primary(repo), Path(repo).resolve()
     trees = None
     out = []
+    released = sync.released_slugs(repo)
     for path, branch in sync.worktrees(repo):
         p = Path(path)
         row = dict(path=str(p), name=p.name, branch=branch, action="keep", why="", data=[])
         out.append(row)
-        why = protected_reason(p, branch, prim, here, now)
+        why = protected_reason(p, branch, prim, here, now, released=released)
         if why:
             row["why"] = why
             continue

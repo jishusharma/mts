@@ -716,6 +716,62 @@ class SyncTest(unittest.TestCase):
         self.assertTrue(marked.exists())
         self.assertFalse(plain.exists())
 
+    def _marked_tree(self, slug, claimed=True, released=True):
+        with contextlib.redirect_stdout(io.StringIO()):
+            t = sync.new_worktree(self.a, slug)
+            if claimed:
+                sync.claim(self.a, slug, area="-", gate=self.gate)
+            if claimed and released:
+                sync.release(self.a, slug, gate=self.gate)
+        (self.a / ".git" / "info" / "exclude").open("a", encoding="utf-8", newline=chr(10)).write(sync.GATEWAY_MARKER + chr(10))   # the repo's .gitignore does this
+        (t / sync.GATEWAY_MARKER).write_text("x", newline=chr(10))
+        return t
+
+    def test_retire_released_removes_only_finished_released_trees(self):
+        # 2026-11-04: finished trees lived 12-35 h behind the gateway hold; `start` now retires them (never the caller, never open work)
+        done = self._marked_tree("done-one")
+        open_claim = self._marked_tree("still-open", released=False)
+        dirty = self._marked_tree("dirty-one")
+        (dirty / "wip.txt").write_text("work", newline=chr(10))
+        ahead = self._marked_tree("ahead-one")
+        commit(ahead, "x.txt", "x")
+        caller = self._marked_tree("caller-one")
+        with mock.patch.object(sync, "idle_hours", return_value=5.0), contextlib.redirect_stdout(io.StringIO()):
+            gone = sync.retire_released(caller)
+        self.assertEqual(gone, [str(done.resolve())])
+        for t in (open_claim, dirty, ahead, caller):
+            self.assertTrue(t.exists(), t.name)
+        self.assertFalse(done.exists())
+        self.assertTrue(self.a.exists())
+
+    def test_unreleased_idle_gateway_tree_is_not_reused_before_12h(self):
+        t = self._marked_tree("busy-src", claimed=False)
+        with mock.patch.object(sync, "idle_hours", return_value=5.0), contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(sync.new_worktree(self.a, "busy-src").name, t.name + "-2")
+
+    def test_released_slug_match_is_exact_for_digit_slugs(self):
+        h = sync.socket.gethostname()
+        self.assertTrue(sync.branch_released(f"{h}/x-1104", {"x-1104"}))
+        self.assertTrue(sync.branch_released(f"{h}/foo-2", {"foo"}))
+        self.assertFalse(sync.branch_released(f"{h}/foo-2", {"bar"}))
+        self.assertFalse(sync.branch_released("other-host/foo", {"foo"}))
+
+    def test_retire_released_keeps_gateway_tree_of_unreleased_slug_and_fails_closed(self):
+        t = self._marked_tree("never-claimed", claimed=False)
+        other = self._marked_tree("caller-two")
+        with mock.patch.object(sync, "idle_hours", return_value=5.0), contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(sync.retire_released(other), [])           # no release commit on origin/claims: nothing is released
+            with mock.patch.object(sync, "released_slugs", side_effect=RuntimeError("boom")):
+                self.assertEqual(sync.retire_released(other), [])
+        self.assertTrue(t.exists())
+
+    def test_reuse_finished_tree_ignores_the_gateway_marker(self):
+        # every JIS-NB tree carries the marker, so reuse never ran and each second `start <slug>` made a -2 twin
+        t = self._marked_tree("twin-src")             # released: its hold is spent
+        with mock.patch.object(sync, "idle_hours", return_value=5.0), contextlib.redirect_stdout(io.StringIO()):
+            again = sync.new_worktree(self.a, "twin-src")
+        self.assertEqual(again.resolve(), t.resolve())
+
     def test_start_writes_gateway_marker_only_on_gateway_profile(self):
         with mock.patch.dict(os.environ, {"MTS_GATEWAY": "1"}):
             self.assertTrue(sync.mark_gateway(self.a))
@@ -2010,9 +2066,44 @@ class ShipResultFlagTest(unittest.TestCase):
             f.write_text("b", encoding="utf-8")
             (Path(td) / "other.txt").write_text("x", encoding="utf-8")
             self.assertTrue(sync.stage_layers(td))
-            self.assertIn("Result:", g("log", "-1", "--format=%B"))
             self.assertEqual(g("status", "--short", "--", sync.LAYERS_REL).strip(), "")
+            self.assertEqual(g("show", "HEAD:" + sync.LAYERS_REL).strip(), "b")
             self.assertIn("other.txt", g("status", "--short"))   # unrelated file untouched
+
+    def test_stage_layers_folds_into_the_unpushed_work_commit_adding_no_commit(self):
+        # 2026-11-04: 24 of 291 trunk commits in 24 h were "ship: regenerated LAYERS.md"; before: 2 commits ahead, after: 1
+        with tempfile.TemporaryDirectory() as td:
+            g = self.make_repo(td)
+            f = Path(td) / sync.LAYERS_REL
+            f.parent.mkdir(parents=True)
+            f.write_text("a", encoding="utf-8")
+            g("add", "-A")
+            g("commit", "-q", "-m", "layers base")
+            g("update-ref", f"refs/remotes/origin/{sync.TRUNK}", "HEAD")      # base is pushed
+            (Path(td) / "work.txt").write_text("w", encoding="utf-8")
+            g("add", "-A")
+            g("commit", "-q", "-m", "work" + chr(10) * 2 + "Result: did it")
+            f.write_text("b", encoding="utf-8")                               # a card change made LAYERS.md stale
+            before = int(g("rev-list", "--count", f"origin/{sync.TRUNK}..HEAD"))
+            self.assertTrue(sync.stage_layers(td))
+            self.assertEqual(int(g("rev-list", "--count", f"origin/{sync.TRUNK}..HEAD")), before)
+            self.assertIn("Result: did it", g("log", "-1", "--format=%B"))
+            self.assertEqual(g("show", "HEAD:" + sync.LAYERS_REL).strip(), "b")
+            self.assertEqual(g("status", "--short").strip(), "")
+
+    def test_stage_layers_never_amends_a_pushed_commit(self):
+        with tempfile.TemporaryDirectory() as td:
+            g = self.make_repo(td)
+            f = Path(td) / sync.LAYERS_REL
+            f.parent.mkdir(parents=True)
+            f.write_text("a", encoding="utf-8")
+            g("add", "-A")
+            g("commit", "-q", "-m", "work on a remote branch")
+            g("update-ref", "refs/remotes/origin/other", "HEAD")             # pushed to some remote ref, not yet on the trunk
+            head = g("rev-parse", "HEAD").strip()
+            f.write_text("b", encoding="utf-8")
+            self.assertTrue(sync.stage_layers(td))
+            self.assertEqual(g("rev-parse", "HEAD~1").strip(), head)         # a new commit on top, the pushed one untouched
 
     def _trunk_changes(self, td, extra=None):
         """Repo whose origin/fast-track is one commit ahead (LAYERS.md changed, plus a.txt when extra); HEAD stays behind."""
@@ -2067,7 +2158,7 @@ class ShipResultFlagTest(unittest.TestCase):
             with mock.patch.dict(sys.modules, {"make_layers_md": fake}):
                 self.assertTrue(sync.stage_layers(td))
                 self.assertEqual(f.read_text(encoding="utf-8"), "regenerated content")
-                self.assertIn("Result:", g("log", "-1", "--format=%B"))
+                self.assertEqual(g("show", "HEAD:" + sync.LAYERS_REL), "regenerated content")
                 self.assertEqual(g("status", "--short").strip(), "")
 
     def test_ship_refuses_staged_uncommitted_files(self):

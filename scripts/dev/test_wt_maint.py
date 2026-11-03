@@ -307,6 +307,16 @@ class GatewayMarker(Env):
         self.assertEqual(s["removed"], [])
         self.assertTrue(p.exists())
 
+    def test_released_slug_gateway_tree_is_not_held_by_the_12h_wait(self):
+        p = self.tree("mts-gw-rel")
+        (p / sync.GATEWAY_MARKER).write_text("x")
+        why = wt_maint.protected_reason(p, sync.socket.gethostname() + "/slug-x", self.prim, Path("/none"), time.time(),
+                                        mtime_of=lambda _p: 1.0, released={"slug-x"})
+        self.assertIsNone(why)
+        held = wt_maint.protected_reason(p, sync.socket.gethostname() + "/slug-x", self.prim, Path("/none"), time.time(),
+                                         mtime_of=lambda _p: 1.0, released=set())
+        self.assertEqual(held, "gateway tree")
+
     def test_idle_gateway_tree_with_unshipped_commit_is_kept(self):
         p = self.tree("mts-gw-work", commit=True)
         (p / sync.GATEWAY_MARKER).write_text("x")
