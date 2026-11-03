@@ -46,3 +46,5 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | Date | Job | Model | Cost USD | Turns | Outcome |
 |---|---|---|---|---|---|
 | 2026-11-04 | rumers-testable-rules-dev-backtest | Sonnet 5.5 | 1.26 | 49 | shipped 561df2f0; 0 of 5 rules pass DEV; cap was 15 |
+| 2026-11-04 | haiku-refresh-stale-ready-cards-1104 (pulled forward from 11-05) | Haiku 5.5 | 0.04 | 24 | shipped 6c92942e; stale 22 -> 4 (the 4 left are tasks-dir churn); card not closed (done_when needs 0); cap was 3 |
+| 2026-11-04 | haiku-review-1 (8 coordinator-stamped cards, tasks.py check + scope read) | Haiku 5.5 | 0.03 | 23 | 6 ACCEPT, 2 HOLD (krown-hidden-divergence-confluence-feed scope file missing; s1-signal-v1-schema-seam-test already on trunk 29d7c85a4); job could not write stamps (prompt named `tag --line`, which only annotates `--add`), Lead wrote them from the verdict table; cap was 2 |

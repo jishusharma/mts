@@ -34,7 +34,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks\nREVIEWED: super 2026-11-04 (coordinator stamp per Super Session order d-move-lagging-layers-1104; Lab_Guy wait waived; build together with its sibling card, same area live_levels_confluence.py + layer_rules)",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks\nREVIEWED: super 2026-11-04 (coordinator stamp per Super Session order d-move-lagging-layers-1104; Lab_Guy wait waived; build together with its sibling card, same area live_levels_confluence.py + layer_rules)\nREVIEW-HOLD 2026-11-04 Haiku: scope names krown_hidden_div_feed.py but rsi_divergence.py:36-37 names krown_hidden_divergence.py; neither exists (STATE STALE after refresh)",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,

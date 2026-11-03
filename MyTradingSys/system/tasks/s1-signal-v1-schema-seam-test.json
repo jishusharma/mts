@@ -27,7 +27,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS, default from asks): the core that rejects option is cbp.validate_row; promote cbp/schema.json as is. ASSUMPTION (OURS): the file is the CBP row schema, not D2's Signal (source, side, stop, order_eligible); those fields wait for the first layer module, not this card. Only cbp/__init__.py names schema.json in code.",
+  "note": "DECISION (OURS, default from asks): the core that rejects option is cbp.validate_row; promote cbp/schema.json as is. ASSUMPTION (OURS): the file is the CBP row schema, not D2's Signal (source, side, stop, order_eligible); those fields wait for the first layer module, not this card. Only cbp/__init__.py names schema.json in code.\nREVIEW-HOLD 2026-11-04 Haiku: already on origin/fast-track as 29d7c85a4 and cbp/schema.json no longer exists; close the card",
   "prio": 1,
   "refine_tries": 1,
   "refined_by": "",
