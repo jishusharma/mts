@@ -217,6 +217,81 @@ def collect(results_dir):
         r.setdefault("banner", banner_of(r))
         r["stability"] = (stability_of(r.get("years")))
         out.append(r)
+    hm = heatmaps_of(out)
+    for r in out:
+        for study, panels in hm.items():
+            if panels and r["id"].startswith("desk-%s-" % study):
+                r["heatmaps"] = panels
+    return out
+
+
+def parse_settings(study, text):
+    """The desk's Settings line -> dict of its parameters (the line is written by desk.py; a line this cannot read gives {})."""
+    t = text.split()
+    try:
+        if study == "tom_vp":   # prior_day RETURN n6 shift OFF stop 1ATR target POC ...
+            return {"anchor": t[0], "setup": t[1], "n": t[2][1:], "shift": t[4], "target": t[8]}
+        if study == "fabio_v3":   # C m15 push OFF f0.5% rule exit ...   |   B N120 f0.5% target 2R ...
+            if t[0] == "C":
+                return {"model": "C", "m": t[1][1:], "push": t[3], "f": t[4][1:-1], "exit": " ".join(t[5:7]) if t[5] != "target" else "target " + t[6]}
+            return {"model": "B", "N": t[1][1:], "f": t[2][1:-1], "exit": " ".join(t[3:5]) if t[3] != "target" else "target " + t[4]}
+    except IndexError:
+        pass
+    return {}
+
+
+# Two-parameter grids per study: x and y vary, `fix` holds the rest at the first grid run's value (survey C5). OURS, not the trader's.
+HEATMAPS = {
+    "tom_vp": [
+        {"title": "Anchor x setup (6 closes outside, shift OFF, target POC)", "x": "anchor", "y": "setup",
+         "fix": {"n": "6", "shift": "OFF", "target": "POC"}},
+        {"title": "Closes outside x setup (prior_day, shift OFF, target POC)", "x": "n", "y": "setup",
+         "fix": {"anchor": "prior_day", "shift": "OFF", "target": "POC"}}],
+    "fabio_v3": [
+        {"title": "Model C: first-window minutes x push (floor 0.5 %, rule exit)", "x": "m", "y": "push",
+         "fix": {"model": "C", "f": "0.5", "exit": "rule exit"}},
+        {"title": "Model B: balance window x floor % (rule exit)", "x": "N", "y": "f",
+         "fix": {"model": "B", "exit": "rule exit"}}],
+}
+
+
+def lone_peak(cells):
+    """The one cell worth flagging: of the cells with at least MIN_N trades (3 or more of them), exactly one has a mean net R above zero.
+    A positive cell under MIN_N trades is never a peak; two or more positive cells are a plateau, not a lone peak."""
+    ok = [c for c in cells if c["n"] >= MIN_N]
+    pos = [c for c in ok if c["mean"] is not None and c["mean"] > 0]
+    return pos[0] if len(ok) >= 3 and len(pos) == 1 else None
+
+
+def _sort_key(v):
+    try:
+        return (0, float(v))
+    except ValueError:
+        return (1, v)
+
+
+def heatmaps_of(tests):
+    """study id -> list of panels {title, x, y, xs, ys, cells[{id, x, y, n, mean, thin}], peak}; built from the exported desk runs
+    (no re-run): n and mean are each run's own banner numbers. thin = under MIN_N trades (greyed on the page)."""
+    out = {}
+    for study, panels in HEATMAPS.items():
+        runs = []
+        for t in tests:
+            if t["id"].startswith("desk-%s-" % study) and t.get("banner", {}).get("n"):
+                st = next((w["value_plain"] for w in t["what"] if w["name"] == "Settings"), "")
+                runs.append((t, parse_settings(study, st)))
+        res = []
+        for pn in panels:
+            cells = []
+            for t, p in runs:
+                if p and all(p.get(k) == v for k, v in pn["fix"].items()) and pn["x"] in p and pn["y"] in p:
+                    b = t["banner"]
+                    cells.append({"id": t["id"], "x": p[pn["x"]], "y": p[pn["y"]], "n": b["n"], "mean": b["net_r"], "thin": b["n"] < MIN_N})
+            if cells:
+                xs = sorted({c["x"] for c in cells}, key=_sort_key)
+                ys = sorted({c["y"] for c in cells}, key=_sort_key)
+                res.append({"title": pn["title"], "x": pn["x"], "y": pn["y"], "xs": xs, "ys": ys, "cells": cells, "peak": lone_peak(cells)})
+        out[study] = res
     return out
 
 
@@ -368,6 +443,14 @@ return '<svg viewBox="0 0 600 '+H+'" role="img" aria-label="Running total of net
 function yearStrip(t){const s=t.stability;if(!s)return"";const ys=t.years;
 const tb=ys&&ys.length?'<div class="tw"><table><tr><th>Year</th><th>Trades</th><th>Average net R</th><th></th></tr>'+ys.map(y=>"<tr><td>"+esc(y.k)+"</td><td>"+y.n+'</td><td class="'+(y.few?"":(y.mean>0?"good":"bad"))+'">'+f2(y.mean)+"</td><td>"+(y.few?'<span class="tag">too few trades</span>':"")+"</td></tr>").join("")+"</table></div>":"";
 return '<h2 class="s">Year by year</h2><div class="banner ys-'+esc(s.state)+" "+tone(s.tone)+'" role="status">'+esc(s.text)+"</div>"+tb+'<p class="note">A split of the same DEV trades by calendar year, not a walk-forward test. A year under 30 trades is shown but not judged.</p>';}
+function heatmap(t){const hs=t.heatmaps;if(!hs||!hs.length)return"";let h='<h2 class="s">Neighbour heatmap</h2>';
+hs.forEach(m=>{const cw=84,ch=34,L=96,T=24,W=L+m.xs.length*cw+8,H=T+m.ys.length*ch+8;let g="";
+m.xs.forEach((x,i)=>{g+='<text x="'+(L+i*cw+cw/2)+'" y="16" text-anchor="middle" font-size="11" fill="var(--mute)">'+esc(x)+"</text>"});
+m.ys.forEach((y,j)=>{g+='<text x="'+(L-6)+'" y="'+(T+j*ch+ch/2+4)+'" text-anchor="end" font-size="11" fill="var(--mute)">'+esc(y)+"</text>"});
+m.cells.forEach(c=>{const i=m.xs.indexOf(c.x),j=m.ys.indexOf(c.y),a=Math.min(1,Math.abs(c.mean)/0.3),col=c.thin?"var(--mute)":(c.mean>0?"var(--good)":"var(--bad)"),op=c.thin?0.15:0.15+0.7*a,pk=m.peak&&m.peak.id===c.id,cur=c.id===t.id;
+g+='<g><title>'+esc(m.x+" "+c.x+", "+m.y+" "+c.y+": n="+c.n+", mean net R "+f2(c.mean)+(c.thin?" (under 30 trades, greyed)":"")+(pk?" (lone peak)":""))+'</title><rect x="'+(L+i*cw+2)+'" y="'+(T+j*ch+2)+'" width="'+(cw-4)+'" height="'+(ch-4)+'" rx="4" fill="'+col+'" fill-opacity="'+op+'" stroke="'+(cur?"var(--acc)":"var(--line)")+'" stroke-width="'+(cur?2.5:1)+'"/><text x="'+(L+i*cw+cw/2)+'" y="'+(T+j*ch+ch/2+4)+'" text-anchor="middle" font-size="11" fill="var(--ink)">'+f2(c.mean)+(pk?" ★":"")+"</text></g>"});
+h+="<h3>"+esc(m.title)+'</h3><svg viewBox="0 0 '+W+" "+H+'" style="max-width:'+W+'px;width:100%" role="img" aria-label="'+esc(m.title)+'">'+g+"</svg>"+(m.peak?'<div class="banner warn" role="status">LONE PEAK: only '+esc(m.x+" "+m.peak.x+", "+m.y+" "+m.peak.y)+" is above zero ("+f2(m.peak.mean)+" R, n="+m.peak.n+"); its neighbours are not. A lone peak is more likely luck than an edge.</div>":"")});
+return h+'<p class="note">Colour = average net R per trade after fees (green above zero, red below); hover a cell for n. Grey = under 30 trades, not judged. Blue outline = this run. The other settings are held as the title says; only settings already run are shown, empty cells were not run.</p>';}
 function banner(b){if(!b)return"";return '<div class="banner b-'+esc(b.state)+" "+tone(b.tone)+'" role="status">'+esc(b.text)+"</div>";}
 function chartList(x){const it=x.items,fn=v=>v==null?"-":f2(v)+" R";
 const rows=it.map((c,i)=>'<tr data-i="'+i+'" tabindex="0"><td>'+(i+1)+"</td><td>"+esc(c.when)+" UTC</td><td>"+esc(c.side)+"</td><td>"+esc(c.exit_reason)+'</td><td class="'+(c.net_r<0?"bad":"good")+'">'+fn(c.net_r)+"</td></tr>").join("");
@@ -390,6 +473,7 @@ document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-current"
 let h='<h1 style="font-size:20px;margin:0 0 6px">'+esc(t.title)+'</h1><span class="pill '+tone(t.verdict.tone)+'">'+esc(t.verdict.label)+"</span>"+banner(t.banner);
 h+='<div class="kpis">'+t.kpis.map(k=>'<div class="kpi"><b class="'+tone(k.tone)+'">'+esc(k.value)+"</b><span>"+esc(k.label)+"</span></div>").join("")+"</div>";
 h+=yearStrip(t);
+h+=heatmap(t);
 h+='<h2 class="s">What was tested</h2><dl>'+t.what.map(w=>"<dt>"+esc(w.name)+' <span class="tag '+esc(w.label)+'">'+esc(w.label)+"</span></dt><dd>"+esc(w.value_plain)+"</dd>").join("")+"</dl>";
 h+='<p class="note"><b>Window:</b> '+esc(t.window||"not stated in the source")+"</p><p class=\"note\">SOURCED = taken from a named source (the trader's words or a fee table). OURS = our own judgement or tuned on DEV data.</p>";
 h+='<h2 class="s">How</h2><p>'+esc(t.how)+"</p>";
