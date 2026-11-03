@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "2026-11-03T23:16:43Z",
+  "closed": "2026-11-03T23:20:51Z",
   "commands": [],
   "context": {
     "calls_to_edit": 9,
@@ -25,9 +25,9 @@
   "latest": [
     {
       "kind": "ship",
-      "line": "Decision: leave rsi:cross unmapped; DEV fee-net mean R negative in all 4 cells (15m/1h x 4",
-      "ref": "8ec81970d",
-      "utc": "2026-11-03T23:16:43Z"
+      "line": "Decision: leave rsi:cross unmapped; DEV fee-net mean R negative in all 4 cells (-0.065..-0",
+      "ref": "3603b8ba3",
+      "utc": "2026-11-03T23:20:51Z"
     },
     {
       "auto": true,
@@ -42,16 +42,16 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks\nREVIEWED: super 2026-11-04 (coordinator stamp per Super Session order d-move-lagging-layers-1104; Lab_Guy wait waived; build together with its sibling card, same area live_levels_confluence.py + layer_rules)",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks\nREVIEWED: super 2026-11-04 (coordinator stamp per Super Session order d-move-lagging-layers-1104; Lab_Guy wait waived; build together with its sibling card, same area live_levels_confluence.py + layer_rules)\nREVIEWED:2026-11-04 ACCEPT (Haiku read on API credit, job haiku-review-1: done_when testable, scope exists, no newer decision contradicts); decision rule labelled OURS",
   "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-11-03T23:16:27Z",
+  "refreshed": "2026-11-03T22:33:45Z",
   "refs": [
     "MyTradingSys/execution/auto_trader.py:416"
   ],
-  "result": "Decision: leave rsi:cross unmapped; DEV fee-net mean R negative in all 4 cells (15m/1h x 40/60, 538-1082 days, -0.065..-0.249 R/day); cross/RSI/Malkan flags fed as alert-only confluence",
+  "result": "Decision: leave rsi:cross unmapped; DEV fee-net mean R negative in all 4 cells (-0.065..-0.249 R/day, 538-1082 days); flags fed as alert-only confluence",
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"
@@ -79,7 +79,7 @@
     "DEV number: fee-net mean R per day of the same rsi:cross events under the generic live 8-bar bracket on DEV 15m/1h (existing run_rsi_backtest.py events). Rule (OURS): map only if mean > 0 with at least 100 independent days; else leave unmapped.",
     "Write the decision paragraph with that number and the Part B note; file the CRITICAL JIS-NB follow-up card if map."
   ],
-  "taken": "2026-11-03T23:16:43Z",
+  "taken": "2026-11-03T23:20:51Z",
   "tests": "No code. Check: the counts file lists mirror@<utc> and week boundaries; python scripts/dev/tasks.py lint passes; auto_trader.py is unchanged (git diff).",
   "title": "RSI cross events are rejected as unmapped in the auto-trader (no layer_rules entry); and no layer stacks level touch + RSI/WT divergence + delta/OI exhaustion for pivots (evidence: SHOT_4ae992130268.md)",
   "weight": "IMPORTANT",
