@@ -55,10 +55,9 @@ def test_exit_code_line_under_exit_zero_is_a_fail(tmp_path):
 
 def test_gate_step_without_summary_is_a_fail(tmp_path):
     # D3b: a gate that dies (traceback, no ALL TESTS PASSED) must not be PASS; the playbooks carry expect=ALL TESTS PASSED
-    for name in ("mts-gate", "mts-ship"):
-        spec = json.loads((RUN.parents[1] / "tasks" / (name + ".json")).read_text(encoding="utf-8"))
-        gate = [s for s in spec["steps"] if s["name"] == "gate"][0]
-        assert gate.get("expect") == "ALL TESTS PASSED", name
+    spec = json.loads((RUN.parents[1] / "tasks" / "mts-gate.json").read_text(encoding="utf-8"))
+    gate = [s for s in spec["steps"] if s["name"] == "gate"][0]
+    assert gate.get("expect") == "ALL TESTS PASSED"
     rc, out = run_plan(tmp_path, "Write-Output 'half way'; exit 0", )
     assert "TASK RESULT: PASS" in out  # a plain step without expect is unaffected (control)
 

@@ -1,0 +1,72 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-03T16:00:52Z",
+  "commands": [],
+  "created": "2026-10-22T18:21:41Z",
+  "depends_on": [],
+  "done_when": "auto_send_text for SessionStart in a folder named mts-desktop-f7iu69n-every-station-save-unshipped-worktree-wo-2 yields 'session started in mts-desktop-f7iu69n-every-st~'; clean() itself is unchanged for real secrets; test_mts_signal.py passes.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "The session-start note (mts_signal.py:431) keeps the worktree folder name: cut the name to its first 28 characters plus '~' before clean() instead of letting clean() replace a 32+ char folder name by [cut].",
+  "id": "mts-signal-session-start-note-keeps-the-",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "1f069de76 test_mts_signal 55/55",
+      "ref": "481470f64",
+      "utc": "2026-11-03T16:00:52Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "yt guard: fleet-wide lockout, 24 h budget per IP, escalating lockout",
+      "ref": "afb7dee67ade",
+      "utc": "2026-11-01T17:24:55Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks | PLANNER 2026-11-03 planner-b-1103. REVIEWED:2026-11-03 T0-ONLY",
+  "pinned": false,
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-11-03T13:07:12Z",
+  "refs": [],
+  "result": "1f069de76 test_mts_signal 55/55",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/mts_signal.py",
+    "scripts/dev/test_mts_signal.py"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "live path, orders, deploy, restarts",
+    "new hooks, gate steps or rules beyond the card"
+  ],
+  "scope_sha": "afb7dee67ade",
+  "size": "S",
+  "sources": [
+    "scripts/dev/mts_signal.py:175-181,400"
+  ],
+  "state": "done",
+  "steps": [
+    "Read test_mts_signal.py test_hook_auto_sends_claim_and_ship for the SessionStart fixture.",
+    "Write the failing test with a 60 char folder name.",
+    "Shorten the name at line 400; leave clean() alone."
+  ],
+  "taken": "2026-11-03T16:00:52Z",
+  "tests": "scripts/dev/test_mts_signal.py::test_session_start_keeps_long_folder_name fails now (text contains [cut]) and passes after.",
+  "title": "mts_signal: session-start note keeps the folder name (32+ char names are cut as secrets)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

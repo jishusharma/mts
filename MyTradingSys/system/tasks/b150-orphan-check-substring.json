@@ -1,7 +1,17 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T17:36:01Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-03T17:34:42Z",
+    "misses": 1,
+    "reads": [
+      "MyTradingSys/tests/test_gate_discovery_b150.py"
+    ],
+    "session": "agent-abf20e18587056dcf"
+  },
   "created": "2026-11-02T16:25:09Z",
   "depends_on": [],
   "done_when": "test_gate_discovery_b150 resolves a gate reference to a file by full repo-relative path (or by a bare stem only when exactly one tracked test has that stem), and fails when sim_desk/test_desk.py is not gated while scripts/dev/test_desk.py is; any real orphans it then finds are gated or SKIPped with a reason.",
@@ -13,6 +23,12 @@
   "id": "b150-orphan-check-substring",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "fa332e39: is_gated full-path match; new test fails on old logic; Supervisor A reran 3 pass",
+      "ref": "fa332e394",
+      "utc": "2026-11-03T17:36:01Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -30,7 +46,12 @@
   "refined_by": "",
   "refreshed": "2026-11-02T20:00:58Z",
   "refs": [],
-  "result": "",
+  "result": "fa332e39: is_gated full-path match; new test fails on old logic; Supervisor A reran 3 passed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tests/test_gate_discovery_b150.py",
     "scripts/dev/run_all_tests.py",
@@ -42,7 +63,7 @@
   "scope_sha": "c0162ab17100",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Cause: test_gate_discovery_b150.py line ~40 accepts a file when f'\"{stem}\"' or f'{stem}.py' occurs anywhere in run_all_tests.py text; a same-stem file in another dir matches.",
     "Extract is_gated(rel, gate_text, extra, tracked, skip) as a module function: true when rel in skip/extra, under COLLECTED_DIRS, rel (posix) appears in gate_text, or the bare stem token appears AND no other tracked test shares that stem.",
@@ -50,6 +71,7 @@
     "Run the test on the real tree; for each new orphan (sim_desk/test_desk.py likely) add its full path to run_all_tests.py or SKIP with a reason, never a blind skip.",
     "Run python -m pytest MyTradingSys/tests/test_gate_discovery_b150.py; ship."
   ],
+  "taken": "2026-11-03T17:36:01Z",
   "tests": "New case in MyTradingSys/tests/test_gate_discovery_b150.py: pure function is_gated(rel, gate_text, extra, tracked) with synthetic data (two files stem test_desk, one in the gate) returns False for the other; fails on old code (substring match).",
   "title": "B150 orphan check uses a substring match: sim_desk/test_desk.py passed as gated because scripts/dev/test_desk.py is in run_all_tests.py. Done when the check compares full paths and fails on this case.",
   "weight": "",

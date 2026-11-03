@@ -1,0 +1,80 @@
+"""ci_fail.py: the log parser is pure and tested offline; the log fetch never forwards the login to the redirect target."""
+import sys
+import urllib.error
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import ci_fail as C
+
+LOG = """2026-11-03T16:00:01.1Z collecting ...
+2026-11-03T16:00:02.2Z FAILED MyTradingSys/tests/test_a.py::test_x - assert 1 == 2
+2026-11-03T16:00:03.3Z ERROR MyTradingSys/tests/test_b.py::test_y
+2026-11-03T16:00:04.4Z FAILED MyTradingSys/tests/test_a.py::test_x - assert 1 == 2
+2026-11-03T16:00:05.5Z Step 3b: FAIL
+2026-11-03T16:00:06.6Z ===== 2 failed, 40 passed in 3s =====
+2026-11-03T16:00:07.7Z all good here
+"""
+
+
+def test_parse_failures_keeps_failing_ids_dedups_and_strips_timestamps():
+    got = C.parse_failures(LOG)
+    assert got == ["FAILED MyTradingSys/tests/test_a.py::test_x - assert 1 == 2",
+                   "ERROR MyTradingSys/tests/test_b.py::test_y", "Step 3b: FAIL", "===== 2 failed, 40 passed in 3s ====="]
+
+
+def test_parse_failures_empty_and_limit():
+    assert C.parse_failures("") == [] and C.parse_failures("all passed\n") == []
+    many = "\n".join("FAILED t%d" % i for i in range(50))
+    assert len(C.parse_failures(many, limit=5)) == 5
+
+
+def test_redirect_target_gets_no_authorization(monkeypatch):
+    seen = []
+
+    class Hdrs(dict):
+        pass
+
+    class Opener:
+        def open(self, req, timeout=0):
+            seen.append(("api", dict(req.header_items())))
+            raise urllib.error.HTTPError(req.full_url, 302, "found", Hdrs(Location="https://store.example/log"), None)
+
+    class Resp:
+        def read(self):
+            return b"FAILED t1"
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+    def urlopen(req, timeout=0):
+        seen.append(("store", dict(req.header_items())))
+        return Resp()
+
+    monkeypatch.setattr(C.ci_watch, "token", lambda: "SECRET")
+    monkeypatch.setattr("urllib.request.build_opener", lambda *a: Opener())
+    monkeypatch.setattr("urllib.request.urlopen", urlopen)
+    assert C.fetch_log("https://api.example/logs") == "FAILED t1"
+    assert "Bearer SECRET" in seen[0][1].values()
+    assert not any(k.lower() == "authorization" for k in seen[1][1])
+
+def test_exit_code_is_zero_when_it_could_report_red_ci_and_one_only_without_github(monkeypatch, capsys):
+    # a read that exits non-zero makes the bridge skip the rest of the reply's blocks
+    run = {"id": 1, "head_sha": "a" * 40, "status": "completed", "conclusion": "failure", "created_at": "t", "jobs_url": "u"}
+    monkeypatch.setattr(C.ci_watch, "fetch", lambda: [run])
+    monkeypatch.setattr(C.ci_watch, "get_json", lambda url, timeout=0: {"jobs": [{"id": 2, "name": "shard 1", "conclusion": "failure", "url": "j"}]})
+    monkeypatch.setattr(C, "fetch_log", lambda url: "FAILED t1 - boom")
+    assert C.run() == 0
+    assert "shard 1" in capsys.readouterr().out
+    monkeypatch.setattr(C.ci_watch, "fetch", lambda: (_ for _ in ()).throw(OSError("offline")))
+    assert C.run() == 1
+    assert "could not reach GitHub" in capsys.readouterr().out
+
+
+def test_extra_test_fail_lines_name_the_file():
+    # run 41675390817 showed only "Step 3xt.1: FAIL" because the extra-test line "FAIL scripts/dev/x.py" did not match
+    log = ("2026-11-03T17:00:01.1Z Step 3xt.1: FAIL\n2026-11-03T17:00:02.2Z FAIL scripts/dev/test_x.py\n"
+           "FAIL MyTradingSys/research/a/test_y.py\n2026-11-03T17:00:03.3Z PASS scripts/dev/test_ok.py\nFAILURE rate fine\n")
+    assert C.parse_failures(log) == ["Step 3xt.1: FAIL", "FAIL scripts/dev/test_x.py", "FAIL MyTradingSys/research/a/test_y.py"]

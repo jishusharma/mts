@@ -1,0 +1,81 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-03T16:00:54Z",
+  "commands": [],
+  "created": "2026-10-22T22:48:47Z",
+  "depends_on": [],
+  "done_when": "python scripts/dev/mts_doctor.py --no-process reports DEAD-REF 0 for these 4 files; no path is invented (each replaced path is tracked: git ls-files); the report file mts_doctor writes is not committed.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Fix or drop the 13 DEAD-REF lines in MULTI_DEVICE_PLAN_BRIEF_2026-10-22.md:35, NEXT_SESSION.md:22, PLAN_5H_2026-10-19.md (lines 28,36,63,85,91,93,106) and PROJECT_MAP.md:191, using real paths or deleting the line.",
+  "id": "doctor-fix-dead-refs-2026-10-22",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "481470f64 DEAD-REF 0",
+      "ref": "481470f64",
+      "utc": "2026-11-03T16:00:54Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Handoff: C30 data fact and last boot for the next chat",
+      "ref": "4bd181ca6cd3",
+      "utc": "2026-11-01T06:00:59Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "4bd181ca6cd3 Handoff: C30 data fact and last boot for the next chat",
+      "ref": "MyTradingSys/system/NEXT_SESSION.md",
+      "utc": "2026-11-01T06:00:59Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks | PLANNER 2026-11-03 planner-b-1103. REVIEWED:2026-11-03 T0-ONLY",
+  "pinned": false,
+  "prio": 4,
+  "refine_tries": 0,
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-11-03T13:05:42Z",
+  "refs": [],
+  "result": "481470f64 DEAD-REF 0",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/system/MULTI_DEVICE_PLAN_BRIEF_2026-10-22.md",
+    "MyTradingSys/system/NEXT_SESSION.md",
+    "MyTradingSys/system/PLAN_5H_2026-10-19.md",
+    "MyTradingSys/system/PROJECT_MAP.md"
+  ],
+  "scope_out": [
+    "VALIDATION or HOLDOUT bars",
+    "live path, orders, deploy, restarts",
+    "new hooks, gate steps or rules beyond the card"
+  ],
+  "scope_sha": "4bd181ca6cd3",
+  "size": "S",
+  "sources": [
+    "scripts/dev/mts_doctor.py DEAD-REF check"
+  ],
+  "state": "done",
+  "steps": [
+    "Run mts_doctor.py --no-process; list the DEAD-REF lines per file (then git checkout the report).",
+    "For each, git log --all --diff-filter=D to find where the file went; replace with the new tracked path or delete the line.",
+    "Rerun the doctor."
+  ],
+  "taken": "2026-11-03T16:00:54Z",
+  "tests": "python scripts/dev/mts_doctor.py --no-process shows no DEAD-REF in the four files (before: 13); python -m pytest MyTradingSys/tests/docs -q passes.",
+  "title": "Fix 11 dead refs from MTS doctor 2026-10-22 (PLAN_5H, PROJECT_MAP, RUN_MODEL, MULTI_DEVICE_PLAN_BRIEF); real paths in REPORT_2026-10-22.md Verification",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
