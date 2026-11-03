@@ -1660,3 +1660,6 @@ Operator: "cap raised to 65% - keep working until C is up after reset - in 70 mi
 
 ## d-s1-defaults-1104 | decided 2026-11-04 | Operator (chat), relayed by Super Session
 Operator: "Yes, run it" to "accept the five-move week plan as the orientation?", asked right after the three S1 yes/no lines. Reading (relayed, not verbatim per line): plan accepted; q-v1-bar YES, q-v1-layers YES (LC4 validation + RSI deep-buy), q-v1-spec YES (D2 signed as written). S1 exit: D7 Now moves to S2, S3, S4 in parallel. Open follow-up: GO_LIVE_BAR.md revision block (D3 M1-M7) and signal_v1 seam are S2/S1 cards, not done here.
+
+## d-super-session-sonnet-1104 | decided 2026-11-04 | Operator (chat, login C JIS-NB)
+Operator: "you have started a fable session - is it req? do not kill it - just ans? week started does not mean that we can be extravagant - we can only use data wise!" then "Switch it". The Unblock MTS super session (started on Fable by omission) was switched to Sonnet in place via set_session_model, not killed. Rule: every start_session/Agent passes model explicitly (Sonnet default, Haiku mechanical); a fresh weekly budget is not licence to spend.
