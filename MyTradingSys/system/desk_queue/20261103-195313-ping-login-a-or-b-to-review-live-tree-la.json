@@ -1,10 +1,13 @@
 {
   "done_when": "placeholder",
+  "finished": "2026-11-03T19:53:39Z",
   "from": "JIS-NUC",
+  "host": "JIS-NUC",
   "id": "20261103-195313-ping-login-a-or-b-to-review-live-tree-la",
   "need": "placeholder",
   "posted": "2026-11-03T19:53:13Z",
-  "status": "pending",
+  "result": "superseded: row was posted with placeholder text by DSA in error; replaced by two real asks to logins A and B",
+  "status": "done",
   "target": "CLAUDE",
   "title": "ping login A or B to review live-tree LAYERS.md staleness"
 }
