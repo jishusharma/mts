@@ -19,7 +19,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): scoped from SPEC/OPUS_FRAMING/SHOT_REVIEW; needs the batched review stamp, then tasks.py check. Lane CODEX stalled (ROUTING C2): re-laned to SONNET build, Gemini/GPT re-derive the top cell later. Waits on rsi-deep-prereg. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): scoped from SPEC/OPUS_FRAMING/SHOT_REVIEW; needs the batched review stamp, then tasks.py check. Lane CODEX stalled (ROUTING C2): re-laned to SONNET build, Gemini/GPT re-derive the top cell later. Waits on rsi-deep-prereg. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.\nPARKED 2026-11-04 (Super Session): 4 prerequisite studies found no surviving cell (f4d14f093, 2869f863, af9dbfeeb, 7df5f6ee6); grid empty; reopen only with a new sourced hypothesis",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
@@ -42,7 +42,7 @@
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/OPUS_FRAMING.md",
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/APPLIED.md"
   ],
-  "state": "refined",
+  "state": "blocked",
   "steps": [
     "Read SPEC s3-s4, OPUS_FRAMING s2.4, PRE_REG.md (card rsi-deep-prereg); import the divergence detector from the divergence-context card, do not copy it.",
     "Implement entry arms, exit arms X1-X6, ladders S0-S3 with average-cost stacks, fees on every fill, open episodes marked at last price.",
@@ -52,5 +52,6 @@
   "tests": "test_episode_sim.py fail-first: a falling series that never recovers shows open-episode loss not a win; ladder average-cost arithmetic equals a hand example; no look-ahead (lookahead_lint.py clean); divergence stamp not before the confirming bar; K1-K10 detector fixture.",
   "title": "RSI deep-buy: episode simulator (entry arms, RSI/divergence exits, scale-in ladders, no stop, ruin test)",
   "weight": "IMPORTANT",
-  "worker": "session"
+  "worker": "session",
+  "pinned": false
 }

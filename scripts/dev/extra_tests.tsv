@@ -202,5 +202,6 @@ MyTradingSys/research/api_jobs_2026-11-03/test_sim_cards_from_json.py
 MyTradingSys/tools/live_aid/test_spec_flow_feeds.py
 MyTradingSys/tools/live_aid/test_spec_analyst_verdict.py
 MyTradingSys/research/rsi_deep_buy_2026-10-19/test_context_tables.py
+MyTradingSys/research/rsi_deep_buy_2026-10-19/test_divergence_context.py
 MyTradingSys/research/rsi_deep_buy_2026-10-19/test_confluence.py
 MyTradingSys/backtest/layers/alerts/test_live_confluence_feed.py

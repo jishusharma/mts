@@ -1672,3 +1672,6 @@ Operator: "Where are we on back-testing Rumors? We need to find what is useful i
 
 ## d-key-copy-nuc-1104 | decided 2026-11-04 | Operator (chat)
 Operator: "u copy it" (copy F:/ClaudePlaform/key.txt to JIS-NUC same path, broadcast b-8eaae5). Tried from JIS-NB: blocked by WinError 1265 on //JIS-NUC/F$ (share auth). Not copied.
+
+## d-move-lagging-layers-1104 | decided 2026-11-04 | Operator (chat, login C JIS-NB)
+Operator: "How are we on Malkan layer? All RSI concepts extracted? wired on confluence?" then "Move lagging layers". State: malkan proof 212h old, tom/fabio 88h (STATUS). Malkan: 20 setups + 20 rules extracted from 6 English videos, 6 Hindi videos NOT_IN_DATA; divergence flags on disk (malkan_div_flags_2026-10-28) but STATUS next-step never moved; live confluence runner has no RSI/Malkan input, RSI cross events unmapped in the auto-trader. Order to the super session: after the rsi-deep wave, Builders on krown-hidden-divergence-confluence-feed + rsi-cross-unmapped-and-pivot-stack (one worktree), malkan proof pointer update, fabio-l1-has-no-run-on-the-strict-detect; Hindi videos to B/NUC gemini_queue at low effort. Live validation stays the operator loop (d-live-validation). Coordinator stamps replace the Lab_Guy wait.
