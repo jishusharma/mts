@@ -255,7 +255,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `pitchfork-fixes-live-java` refined p2 JIS-NB: Pitchfork live Java review fixes: F3 stale-bounce gate parity, F6 inverted-fork tine, F7/F9 labels
   - `pitchfork-live-4h-bars-too-few` refined p2 JIS-NB: pitchfork live: snapshot fetches 3 x 4h bars, PitchforkSignalLayer needs 15, so mts.pitchfork=true never fires
   - `pitchfork-operator-charts-prep` refined p2 SONNET: pitchfork: classify operator's pitchfork charts, measure copy-paste (parallel) forks vs random parallels (spec
-  - `pitchfork-operator-forks-causal` raw p2 SONNET: Test copy-paste forks from the operator charts with causal pivots and the 1m walk of pitchfork_recheck.py; don
   - `sim-desk-plug-in-pitchfork-4h-tine-bounc` refined p2 OPUS: Sim desk: plug in Pitchfork 4H tine-bounce study adapter (Modified Schiff + Volume Profile)
 
 ## Pizzino (Jason bar count + Michael nested swing states) (`pizzino`)

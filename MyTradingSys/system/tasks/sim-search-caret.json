@@ -22,12 +22,12 @@
   "refs": [
     "MyTradingSys/research/sim_desk/REQUIREMENTS_2026-11-02.md"
   ],
-  "result": "",
+  "result": "already on trunk: commit a2a631c82 (planner-a-1103)",
   "scope_in": [],
   "scope_out": [],
   "size": "",
   "sources": [],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "Sim page search box typed text backwards (C30 -> 03c), so C30 looked missing",

@@ -1,0 +1,63 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-03T15:59:57Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-03/sim_result_cards_spotcheck.md: first line holds FOUND / DIFF / NOT_IN_DATA counts over the 40 cards; one row per card id with the number or verdict checked and the JSON key it came from.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Cross-vendor check (Gemini vs Claude Haiku producer, commit 8a31fe136): take 40 cards from RESULTS_CARDS_2026-11-03.md (every 8th row of the Cards table), open each card's results/<id>.json and check the numbers quoted in Claim/Finding, the Verdict word (EMPTY / NOT ENOUGH DATA / FAILED / PASSED) against the file's own trades and fee-net fields, and the Keep line. Facts only.",
+  "id": "gemini-sim-result-cards-spotcheck-1103",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sim hosted page: drawdown shading, Monte Carlo band, year-by-year stability flag",
+      "ref": "9e31182d4d34",
+      "utc": "2026-11-03T14:02:21Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "8a31fe13626c sim results cards: 337/337 complete (Haiku redo with thinking off)",
+      "ref": "MyTradingSys/research/sim_desk/api_review/RESULTS_CARDS_2026-11-03.md",
+      "utc": "2026-11-03T13:17:21Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-03 T0-ONLY. PLANNER planner-a-1103. Gemini effort low: gemini_queue.py run <id>:low. Final report ends with Noticed: line. Facts only. D11_PROGRAMME s6 seed.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T16:00:01Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/api_review/RESULTS_CARDS_2026-11-03.md",
+    "MyTradingSys/research/sim_desk/results/",
+    "MyTradingSys/research/gemini_audits_2026-11-03/sim_result_cards_spotcheck.md"
+  ],
+  "scope_out": [
+    "do not edit the cards file or any results json; no live-tree, .secrets or .env"
+  ],
+  "scope_sha": "9e31182d4d34",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "pick every 8th row of the Cards table (40 rows)",
+    "open each results/<id>.json and compare quoted numbers, verdict word and Keep line",
+    "write the row table with first-line counts"
+  ],
+  "tests": "n/a doc audit: output file has 40 rows, each cites a JSON key",
+  "title": "[GEMINI] Spot-check 40 sim result cards (Haiku-written) against their own results/*.json: numbers, verdict word, Keep line",
+  "weight": "ROUTINE",
+  "worker": "session"
+}
