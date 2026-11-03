@@ -1645,3 +1645,6 @@ Operator: "get all discussed and planned items into pipeline - remove clutter/co
 
 ## 2026-11-03 - Simulator: reviews on the API credit, visuals from standard tools
 Operator (chat, sim demo): use the Console API credit for simulator reviews and work it can do (saves login C weekly), and base the page's visuals on what established backtest tools show (TradingView Strategy Tester, MT5 visual mode), starting from the basic idea of a simulation. First job: Opus design review via scripts/dev/api_batch.py, files in MyTradingSys/research/sim_desk/api_review/. DECISION (OURS): code changes stay in Claude Code sessions, because the API has no file access; the API gets reviews and drafts.
+
+## 2026-11-03 - Simulator build order: trade charts + banner first
+Operator (chat, 13:35Z, from the INDUSTRY_SURVEY build list): "Trade charts + banner". Card `sim-build-hosted-trade-charts` (trade list + candle chart on the hosted page for the 27 desk results that carry charts; fixed verdict banner on every result) builds first, on login C today while A is absent; `sim-build-equity-drawdown-stability` and `sim-build-heatmap-replay` follow. MTS Home rebuild (`mts-home-rebuild-1103`) runs in parallel on B.
