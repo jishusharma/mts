@@ -36,7 +36,8 @@ import numpy as np
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import confirmations as cf  # noqa: E402
-import econ_floor as ef  # noqa: E402
+import econ_floor as ef  # noqa: E402  (puts MyTradingSys/backtest on sys.path)
+import research_kit  # noqa: E402
 
 FEE = ef.FEE
 HYST = ef.HYST
@@ -51,6 +52,7 @@ CTRL_RSI_TOL = 3.0          # OURS: control pivot RSI within 3 points of the eve
 MODEL_N = 16                # OURS: the model/log-loss horizon (bars of the TF)
 MIN_TRAIN = 40              # OURS: prior resolved events before the model is used
 LAMBDA = 1.0                # OURS: ridge strength, fixed (not tuned)
+ZCLIP = 4.0                 # OURS: standardised features clipped at +-4 sd (added after the first DEV run, whose fat tails sank the logistic)
 MODEL_FEATURES = ("ret24", "dd", "speed", "dspeed", "rangez", "volpct")   # at most 6 (SPEC Step I)
 CROSS_FEATURES = ("ret24", "dd", "sweep", "speed", "dspeed", "rangez", "volpct", "volz", "takerz")
 
@@ -163,16 +165,6 @@ def t_p(x, groups):
         return float("nan"), 1.0
     t = m / se
     return t, 0.5 * math.erfc(t / math.sqrt(2))
-
-
-def holm(ps):
-    ps = np.asarray(ps, dtype="float64")
-    order = np.argsort(ps)
-    adj, run = np.empty(len(ps)), 0.0
-    for rank, j in enumerate(order):
-        run = max(run, (len(ps) - rank) * ps[j])
-        adj[j] = min(1.0, run)
-    return adj.tolist()
 
 
 def fit_logit(X, y, lam=LAMBDA, iters=30):
@@ -420,14 +412,14 @@ def prev_status(ctx, prior, c, n_h=16):
     reached = 0
     last = "unresolved"
     for j, (cj, low_j) in enumerate(prior):
-        fill = ctx["open"][cj + 1]
+        fwd_fill = ctx["open"][cj + 1]
         st = "unresolved"
         end = min(cj + n_h, c, ctx["n"] - 1)
         for m in range(cj + 1, end + 1):
             if ctx["wick"][m] < low_j:
                 st = "lower_low"
                 break
-            if ctx["sgn"] * (ctx["close"][m] / fill - 1.0) >= FEE:
+            if ctx["sgn"] * (ctx["close"][m] / fwd_fill - 1.0) >= FEE:
                 st = "reached_fee"
                 break
         if st == "reached_fee":
@@ -502,8 +494,9 @@ def build_variant(ctx, tf, level, var, start_ms, with_features=False):
         for k, p in enumerate(piv):
             if k not in fired:
                 b = p["i"]
-                pool.append({"b": b, "c": b + 1, "s": s, "rsi_b": p["rsi"], "atr_pct": ctx["atr"][b] / ctx["close"][b],
-                             "t": int(ctx["t"][b + 1]), "day": int(ctx["day"][b + 1])})
+                stamp = b + 1
+                pool.append({"b": b, "c": stamp, "s": s, "rsi_b": p["rsi"], "atr_pct": ctx["atr"][b] / ctx["close"][b],
+                             "t": int(ctx["t"][stamp]), "day": int(ctx["day"][stamp])})
     return events, pool
 
 
@@ -539,7 +532,8 @@ def level_only_table(ctx, tf, level, N=MODEL_N):
         o = outcome(ctx, s, s, N)
         if o is None:
             continue
-        rt.append(int(ctx["t"][s + 1 + N]))
+        exit_bar = s + 1 + N
+        rt.append(int(ctx["t"][exit_bar]))
         win.append(float(o["gross"] > FEE))
     order = np.argsort(rt)
     return np.asarray(rt)[order], np.asarray(win)[order]
@@ -641,13 +635,15 @@ def walk_forward(ev, ctx_rt_win, N, start_ms, end_ms):
         day = e["t"] // DAY_MS
         if day != cache_day and len(tr) >= MIN_TRAIN:
             xt = X[tr]
-            mu = np.nanmean(xt, axis=0)
-            sd = np.nanstd(xt, axis=0)
+            with np.errstate(all="ignore"):
+                mu = np.nanmean(xt, axis=0)
+                sd = np.nanstd(xt, axis=0)
+            mu[~np.isfinite(mu)] = 0.0                 # a feature that is missing for the whole training set contributes 0
             sd[~(sd > 1e-12)] = 1.0
-            z = np.where(np.isfinite(xt), (xt - mu) / sd, 0.0)
+            z = np.clip(np.where(np.isfinite(xt), (xt - mu) / sd, 0.0), -ZCLIP, ZCLIP)
             w, cache_day = fit_logit(z, y[tr]), day
         if len(tr) >= MIN_TRAIN and w is not None:
-            zi = np.where(np.isfinite(X[i]), (X[i] - mu) / sd, 0.0)[None, :]
+            zi = np.clip(np.where(np.isfinite(X[i]), (X[i] - mu) / sd, 0.0), -ZCLIP, ZCLIP)[None, :]
             pm = float(predict_logit(w, zi)[0])
         else:
             pm = pdv
@@ -801,10 +797,198 @@ def run(which, klines, out):
                                  n_events=len(lst), n_days=len({d for _, d in lst}), net_pct=100 * m_, net_lo=100 * lo_, net_hi=100 * hi_,
                                  p_win=float(np.mean([o["gross"] > FEE for o, _ in lst])), p_lower=float(np.mean([o["lower"] for o, _ in lst]))))
     ps = [r["p"] if isinstance(r.get("p"), float) and np.isfinite(r["p"]) else 1.0 for r in tests]
-    for r, ph in zip(tests, holm(ps)):
+    for r, ph in zip(tests, research_kit.holm(ps).tolist()):
         r["p_holm"] = ph
     write_csv(rows, dest)
     print("rows", len(rows), "tests", len(tests), "->", dest)
+
+
+def _f(r, k):
+    v = r.get(k)
+    return float(v) if v not in (None, "") else float("nan")
+
+
+def _n(x, d=3, sign=True):
+    if x != x:
+        return "-"
+    return f"{x:+.{d}f}" if sign else f"{x:.{d}f}"
+
+
+def _ci(r, a, lo, hi, d=2):
+    return f"{_n(_f(r, a), d)} [{_n(_f(r, lo), d)}, {_n(_f(r, hi), d)}]"
+
+
+def _cell(r):
+    return f"{r['tf_min']}m {r['level']}"
+
+
+def _pooled_split(rows, feat, variant="PRIMARY", side="long"):
+    """Event-weighted pooling of per-cell split rows: n, mean net, P(win), P(lower). Descriptive, no CI."""
+    acc = {}
+    for r in rows:
+        if r["kind"] == "split" and r["feature"] == feat and r["variant"] == variant and r["side"] == side:
+            a = acc.setdefault(r["bucket"], [0, 0.0, 0.0, 0.0])
+            n = int(r["n_events"])
+            a[0] += n
+            a[1] += n * _f(r, "net_pct")
+            a[2] += n * _f(r, "p_win")
+            a[3] += n * _f(r, "p_lower")
+    return {k: (v[0], v[1] / v[0], v[2] / v[0], v[3] / v[0]) for k, v in acc.items() if v[0]}
+
+
+def write_report(out):
+    out = Path(out)
+    dev = read_csv(out / "divergence_dev.csv")
+    valp = out / "divergence_val.csv"
+    val = read_csv(valp) if valp.exists() else []
+    L = []
+    P = L.append
+    P("# RSI deep-buy Step I/J: causal divergence at RSI lows, speed/volatility context, matched vs no-divergence (card rsi-deep-divergence-context)")
+    P("")
+    P(f"BTCUSDT 1m, six Stage-0 cells that survived H1 (`ECON_FLOOR.md`: 60m abs20/abs30/rel_p2_90d, 15m abs30/abs20, 1m abs10). DEV = bar open < 2024-07-01 "
+      f"(`divergence_dev.csv`, written and frozen first, sha256 `{sha256(out / 'divergence_dev.csv')[:16]}`). VALIDATION `divergence_val.csv` "
+      + (f"read once (2024-07-01..2025-06-30, frozen DEV terciles, sha256 `{sha256(valp)[:16]}`)." if val else "NOT READ YET.")
+      + " HOLDOUT (2025-07 onward) is refused by the loader and was never read. Generated by `divergence_context.py`; tests `test_divergence_context.py` "
+        "(33; K1-K10 of SHOT_REVIEW (d) within +-0.5 RSI, the planted RSI 20-30-25 case, causality of every context array). The trial rows C1-C8 were written to "
+        "`layer_lab/TRIALS.md` before any outcome. No fee-net edge is claimed unless the keep rule below says so.")
+    P("")
+    P("## What was built")
+    P("")
+    P("- **Detector** (SPEC Step J as patched by SHOT_REVIEW C1-C10): close pivots (strict local minimum of the close, `rsi_divergence.py:10`); a pivot at b is known at b+1, so the event is "
+      "stamped at c = b+1 and filled at the open of c+1. Checked against `rsi_divergence.py` on 60m abs30, 2022-01..2023-06: all 95 P-adj events of this detector are events of the old module with the same "
+      "stamp bar (the old module stamps `ts[b+1]`, not earlier than the confirming bar; OPUS_FRAMING s2.2 item 5). Episode: Stage-0 entry (RSI <= L after >= L+3) until RSI closes above 50; an "
+      "entry inside a running episode belongs to it. Anchor = lowest-RSI pivot (<= L) so far, replaced by a lower one. Primary row = P-anchor, close, eps 0, min RSI diff 0, end 50. "
+      "Every firing is an event, none is dropped as 'the remembered one'.")
+    P("- **Control**: non-firing pivots of the same cell, RSI at the pivot within 3 points, nearest trailing ATR%, one-to-one (so the comparison is divergence vs no divergence at the same RSI level, TF and volatility). "
+      "`n_matched` is smaller than `n_events` where no unused control sits inside the tolerance (1m abs10 most of all).")
+    P("- **Outcome**: fill next open, exit open N bars later (N = 4 and 16 bars of the TF), fee 0.10% round trip; P(price above fill + fee), P(new lower low) (bar low below the lowest low of the episode so far), "
+      "median MFE/MAE, move in ATR units normalised by the session-of-day seasonal factor (20-day causal slot mean), EV per calendar day.")
+    P("- **Context vector (8, completed bars only)**: returns 1h/4h/12h/24h/7d in 1h-ATR; drawdown from the 24h high, hours since it, and the 24h sweep depth; decline speed; speed change (last 1h vs the prior 4h); 5m range z-score and slope; "
+      "realised-vol percentile (30d); volume and taker-buy z; session. Walk-forward ridge logistic on 6 of them (24h return, drawdown, speed, speed change, range z, vol percentile), refit once per UTC day on events whose "
+      "N=16 outcome was known, compared with the Step G level-only table ((k+1)/(n+2) on earlier resolved Stage-0 entries of the cell) and the divergence-only rate.")
+    P("- **Step J extras**: pairing variants, close vs wick, eps, min RSI difference, FAILURE_SWING rows, RSI regime band (30d floor/ceiling, share under 30, dips under 40, regime break), HTF 3-week floor break, "
+      "causal zigzag state on 1h/1d/1w, session clock in exchange-local time, short mirror. The five-week sanity weeks of SHOT_REVIEW (b)12 lie in HOLDOUT and were not read.")
+    P("- **Step H** (confluence score) belongs to card `rsi-deep-confluence`, running in parallel; the comparison here is against level-only and divergence-only only.")
+    P("")
+
+    def prim(rows, side="long", N="16"):
+        return [r for r in rows if r["kind"] == "variant" and r["variant"] == ("PRIMARY" if side == "long" else "MIRROR_short") and r["N"] == N]
+
+    def table_primary(rows, title, side="long"):
+        P(f"### {title}")
+        P("")
+        P("| cell | N | events / days | matched | net % [CI] | control net % | event - control % [CI] | vs raw touch % [CI] | P(win) | P(lower) ctrl | EV/day % |")
+        P("|---|---|---|---|---|---|---|---|---|---|---|")
+        for N in ("4", "16"):
+            for r in prim(rows, side, N):
+                flag = "" if int(r["n_days"] or 0) >= MIN_DAYS else " (too_few_days)"
+                P(f"| {_cell(r)} | {N} | {r['n_events']} / {r['n_days']}{flag} | {r['n_matched']} | {_ci(r, 'net_pct', 'net_lo', 'net_hi')} | {_n(_f(r, 'ctrl_net_pct'), 2)} | "
+                  f"{_ci(r, 'diff_pct', 'diff_lo', 'diff_hi')} | {_ci(r, 'vs_raw_pct', 'vs_raw_lo', 'vs_raw_hi')} | {_n(_f(r, 'p_win'), 2, False)} | "
+                  f"{_n(_f(r, 'p_lower'), 2, False)} ({_n(_f(r, 'ctrl_p_lower'), 2, False)}) | {_n(_f(r, 'ev_day_pct'), 4)} |")
+        P("")
+
+    dv = [r for r in dev if r["kind"] == "variant" and int(r["n_days"] or 0) >= MIN_DAYS and r["variant"] != "FAILURE_SWING"]
+    dv_net = sum(1 for r in dv if _f(r, "net_lo") > 0)
+    dv_diff = sum(1 for r in dv if _f(r, "diff_lo") > 0)
+    dv_raw = sum(1 for r in dv if _f(r, "vs_raw_lo") > 0)
+    P("## Result")
+    P("")
+    tests_dev = [r for r in dev if r["kind"] in ("model", "ctrl_test") and r.get("p_holm") not in (None, "")]
+    sig = [r for r in tests_dev if _f(r, "p_holm") < 0.05]
+    P(f"- DEV: {len(dv)} variant rows (cells x variants x N, incl. mirror) with >= 30 independent days. Fee-net CI lower bound > 0: **{dv_net}**; event-minus-control CI lower bound > 0: **{dv_diff}**; "
+      f"above the raw touch with CI lower bound > 0: **{dv_raw}**. Chance alone gives about 2.5% one-sided = {0.025 * len(dv):.1f} rows each (rows overlap, so it is a rough scale).")
+    P(f"- Pre-registered test family ({len(tests_dev)} tests: per cell and side, divergence minus matched control at N=16, and model minus level-only log-loss; Holm over all): "
+      f"**{len(sig)} with Holm p < 0.05** on DEV.")
+    prim_long = [r for r in prim(dev, "long", "16") if int(r["n_days"] or 0) >= MIN_DAYS]
+    worst = min(prim_long, key=lambda r: _f(r, "diff_pct"))
+    P(f"- Primary long rows at N=16: net is negative in {sum(1 for r in prim_long if _f(r, 'net_pct') < 0)} of {len(prim_long)} cells; the divergence event is below its matched control in "
+      f"{sum(1 for r in prim_long if _f(r, 'diff_pct') < 0)} of {len(prim_long)} (worst {_cell(worst)}: {_ci(worst, 'diff_pct', 'diff_lo', 'diff_hi')} %).")
+    mods = [r for r in dev if r["kind"] == "model" and r["feature"] == "model_vs_level" and r["side"] == "long"]
+    P(f"- Model vs level-only (long): delta log-loss > 0 in {sum(1 for r in mods if _f(r, 'delta_ll') > 0)} of {len(mods)} cells (positive = model better). "
+      "Divergence-only rate vs level-only is in the table below; a run before the +-4 sd feature clip gave a negative delta in 11 of 12 cells (one NaN from a missing-feature bug, fixed), so the clip did not create the verdict.")
+    P("")
+    if val:
+        P("### VALIDATION (read once, frozen DEV cut points; a walk-forward continuation of the DEV pipeline)")
+        P("")
+        vtests = [r for r in val if r["kind"] in ("model", "ctrl_test")]
+        keep = []
+        for r in dev:
+            if r["kind"] == "model" and r["feature"] == "model_vs_level" and r.get("p_holm") not in (None, "") and _f(r, "p_holm") < 0.05 and _f(r, "delta_ll") > 0:
+                keep.append(r)
+        P(f"DEV candidates (model beats level-only on DEV log-loss with Holm p < 0.05): **{len(keep)}**. Keep rule: candidate on DEV and, on VALIDATION, model log-loss better than level-only AND fee-net EV of the events above 0 and above the raw touch. "
+          + ("Nothing is kept: F0 / the level-only table stays the answer." if not keep else "Kept rows are listed in the VALIDATION tables."))
+        P("")
+        table_primary(val, "Primary row, VALIDATION, long")
+    P("## Primary row (P-anchor, close, eps 0, min diff 0, end 50), DEV")
+    P("")
+    table_primary(dev, "Long, DEV")
+    table_primary(dev, "Short mirror, DEV (exploratory, SHOT_REVIEW C8)", "short")
+    P("## Pairing / basis / tolerance variants at N=16, DEV (exploratory rows; none is ranked or tuned)")
+    P("")
+    P("| variant | cells with >= 30 days | cells net CI > 0 | cells event-control CI > 0 | events (sum) | median net % over cells | median event-control % |")
+    P("|---|---|---|---|---|---|---|")
+    for var in VARIANTS + (("FAILURE_SWING",),):
+        nm = var[0]
+        rs = [r for r in dev if r["kind"] == "variant" and r["variant"] == nm and r["N"] == "16" and int(r["n_days"] or 0) >= MIN_DAYS]
+        if not rs:
+            continue
+        P(f"| {nm} | {len(rs)} | {sum(1 for r in rs if _f(r, 'net_lo') > 0)} | {sum(1 for r in rs if _f(r, 'diff_lo') > 0)} | {sum(int(r['n_events']) for r in rs)} | "
+          f"{_n(float(np.median([_f(r, 'net_pct') for r in rs])), 2)} | {_n(float(np.nanmedian([_f(r, 'diff_pct') for r in rs])), 2)} |")
+    P("")
+    P("## Walk-forward log-loss (N=16 price bounce above fee), DEV, long")
+    P("")
+    P("| cell | events | level-only | divergence-only | ridge model | delta (model vs level) | t | p |")
+    P("|---|---|---|---|---|---|---|---|")
+    for r in dev:
+        if r["kind"] == "model" and r["feature"] == "model_vs_level" and r["side"] == "long":
+            P(f"| {_cell(r)} | {r['n_events']} | {_n(_f(r, 'll_level'), 4, False)} | {_n(_f(r, 'll_div'), 4, False)} | {_n(_f(r, 'll_model'), 4, False)} | {_n(_f(r, 'delta_ll'), 4)} | {_n(_f(r, 't'), 2)} | {_n(_f(r, 'p'), 3, False)} |")
+    P("")
+    P("## Sequence features and Step J state, DEV long, pooled over cells (N=16; event-weighted means, descriptive, no CI)")
+    P("")
+    P("| feature | bucket | events | mean net % | P(win) | P(lower) |")
+    P("|---|---|---|---|---|---|")
+    for feat in ("n_anchor", "mult", "prev_status", "session", "regime_break", "htf_break_a", "htf_break_b", "zz_s_dir", "zz_s_brk"):
+        for bk, (n, m, pw, pl) in sorted(_pooled_split(dev, feat).items()):
+            P(f"| {feat} | {bk} | {n} | {_n(m, 3)} | {_n(pw, 2, False)} | {_n(pl, 2, False)} |")
+    P("")
+    P("## Context cross-tabs, DEV long (terciles of the pooled DEV events per TF), rows whose day-clustered net CI excludes 0")
+    P("")
+    cts = [r for r in dev if r["kind"] == "crosstab" and r["side"] == "long" and int(r["n_days"] or 0) >= MIN_DAYS and r["bucket"] != "NA"]
+    odd = [r for r in cts if _f(r, "net_hi") < 0 or _f(r, "net_lo") > 0]
+    P(f"{len(cts)} cross-tab rows with >= 30 days; {len(odd)} have a net CI excluding 0 (about {0.05 * len(cts):.0f} expected by chance; all net CIs above 0: {sum(1 for r in cts if _f(r, 'net_lo') > 0)}). Full table in the CSV (`kind=crosstab`).")
+    P("")
+    P("| TF | feature | bucket | events / days | net % [CI] | P(win) | P(lower) |")
+    P("|---|---|---|---|---|---|---|")
+    for r in sorted(odd, key=lambda r: _f(r, "net_pct"), reverse=True)[:14]:
+        P(f"| {r['tf_min']}m | {r['feature']} | {r['bucket']} | {r['n_events']} / {r['n_days']} | {_ci(r, 'net_pct', 'net_lo', 'net_hi')} | {_n(_f(r, 'p_win'), 2, False)} | {_n(_f(r, 'p_lower'), 2, False)} |")
+    P("")
+    P("## Hindsight, DESCRIPTIVE only (never a condition, never in a tradeable table)")
+    P("")
+    P("Share of primary events (control in brackets) followed within 4h by an ex-post confirmed 1h-scale zigzag bottom extreme (3 ATR(1h)): ")
+    P("")
+    P("| cell | side | events | share events | share controls |")
+    P("|---|---|---|---|---|")
+    for r in dev:
+        if r["kind"] == "hindsight":
+            P(f"| {_cell(r)} | {r['side']} | {r['n_events']} | {_n(_f(r, 'p_win'), 2, False)} | {_n(_f(r, 'ctrl_p_lower'), 2, False)} |")
+    P("")
+    P("## Parameters (SOURCED vs OURS)")
+    P("")
+    P("SOURCED: RSI14 Wilder on close, UTC (econ_floor.py, FORMULAS s1); fee 0.10% round trip (backtest/fees.py); ATR = plain SMA of true range (FORMULAS s12); z-score vs the prior L bars, population sd (FORMULAS s28.1); "
+      "close-to-close price basis and min RSI difference 0 (Malkan, `rsi_divergence.py:3,7`); DEV/VALIDATION/HOLDOUT dates (backtest/splits.py); >= 30 independent days, Holm, VALIDATION read once, walk-forward (SPEC guards).")
+    P("OURS (every one a trial-ledger row, none tuned on VALIDATION): h = 3; episode end 50 (40, 60 trials); the four pairing rules; eps 0.05% and 0.1 ATR; min diff 2 and 5; wick basis; 24h sweep window; control match (3 RSI points, ATR%); "
+      "N = 4 and 16; ridge lambda 1, +-4 sd clip, 40 prior events, daily refit; terciles; 30d RSI band; 3-week HTF floor; zigzag 3 ATR on 1h/1d/1w closes; 20-day seasonal factor; session clock (America/New_York 09:30-10:30, Europe/London 08:00-09:00).")
+    P("")
+    P("## Caveats")
+    P("")
+    P("- Events cluster (one slow decline produces many firings against one anchor); CIs are day-clustered, but several days of one selloff are still correlated. Cells with < 30 days are marked too_few_days and not ranked.")
+    P("- P-anchor-split is permissive by construction (price may be lower than any swing since the anchor); its counts are an upper bound on 'the operator's two panels'.")
+    P("- The matched control is a retrospective match (a control pivot may lie after the event); each control pivot is itself causal at its own stamp, so no look-ahead enters the outcome comparison.")
+    P("- Step H confluence is not in the comparison (parallel card). OI is NOT_IN_DATA before 2025-09. WaveTrend agreement is NOT_IN_DATA until its inputs are pinned.")
+    P("- ATR-unit columns use the 1h ATR for returns and the TF ATR times the seasonal factor for outcomes; they are scaled descriptions, not edge claims.")
+    with open(out / "DIVERGENCE_REPORT.md", "w", newline="\n") as fh:
+        fh.write("\n".join(L) + "\n")
+    print("wrote", out / "DIVERGENCE_REPORT.md")
 
 
 def main(argv=None):
