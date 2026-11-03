@@ -174,6 +174,14 @@ class SignalTest(unittest.TestCase):
         texts = [(r["kind"], r["text"]) for r in S.load(S.ensure())]
         self.assertEqual(texts, [("claim", "claim Q73 move files"), ("done", "ship")])
 
+    def test_session_start_keeps_long_folder_name(self):
+        # a 32+ char worktree folder name was cut to [cut] by clean() (read as a token): the note keeps its first 28 chars
+        long_name = "mts-desktop-f7iu69n-every-station-save-unshipped-worktree-wo-2"
+        text, kind = S.auto_send_text(self.payload("SessionStart", source="startup", cwd=str(self.tmp / long_name)))
+        self.assertEqual(kind, "note")
+        self.assertTrue(text.startswith("session started in mts-desktop-f7iu69n-every-st~"), text)
+        self.assertNotIn("[cut]", text)
+
     def test_two_signals_in_one_second_load_in_send_order(self):
         # 2026-10-16: names were second-stamp + random tail, so same-second signals sorted by chance (ubuntu CI red)
         from datetime import datetime, timezone

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T16:04:06Z",
   "commands": [
     "python MyTradingSys/research/layer_lab/mts_audit_recheck_1103/recheck.py"
   ],
@@ -16,6 +17,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Independent replay matches STUDY205 +0.748%, CAUSAL276 +0.336%, EXACT272 -0.011% CI[-0.336",
+      "ref": "85d934e71",
+      "utc": "2026-11-03T16:04:06Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -42,7 +49,12 @@
   "refined_by": "",
   "refreshed": "2026-11-03T15:50:33Z",
   "refs": [],
-  "result": "",
+  "result": "Independent replay matches STUDY205 +0.748%, CAUSAL276 +0.336%, EXACT272 -0.011% CI[-0.336,+0.416] PF0.99; corrected placebo -0.104% p95+0.124; RECHECK.md 14 AGREE/2 DISAGREE/33 NOT_IN_DATA",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/mts_audit_recheck_1103/ (new)",
     "MyTradingSys/research/mts_audit_2026-11-03/ (read)",
@@ -56,13 +68,14 @@
   "scope_sha": "dab23a90cc98",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write your own trade loop from AUDIT.md section 2 text: causal pivots, next-bar order, 1m walk, stop first",
     "Run it 2020-01..2024-06; compare n, mean, CI, PF, placebo",
     "For sections 1 and 3-7: one row per claim, AGREE or DISAGREE with file:line or the number you got",
     "Name anything the audit missed or overstated"
   ],
+  "taken": "2026-11-03T16:04:06Z",
   "tests": "see done_when (audit card, RECHECK.md is the test)",
   "title": "Independent recheck of research/mts_audit_2026-11-03/AUDIT.md: rerun pitchfork_recheck.py logic from your own trade loop and attack each claim; done when each section has AGREE or DISAGREE with proof",
   "weight": "ROUTINE",

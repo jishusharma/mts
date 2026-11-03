@@ -428,7 +428,10 @@ def auto_send_text(payload):
         if text:
             return text, "broadcast"
     if ev == "SessionStart" and payload.get("source") in (None, "startup"):
-        return "session started in %s%s" % (Path(cwd).name or "?", " login=" + login() if login() else ""), "note"
+        name = Path(cwd).name or "?"
+        if len(name) > 28:   # a 32+ char folder name is cut to [cut] by clean(); keep 28 chars and mark the cut
+            name = name[:28] + "~"
+        return "session started in %s%s" % (name, " login=" + login() if login() else ""), "note"
     if ev == "PostToolUse" and payload.get("tool_name") == "Bash":
         resp = payload.get("tool_response")
         if isinstance(resp, dict):

@@ -94,8 +94,8 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Spec / sources: `MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md`; `MyTradingSys/backtest/layers/FORMULAS.md`
 - Code: `MyTradingSys/backtest/layers/rsi/malkan_40_60.py`; `MyTradingSys/backtest/layers/rsi/malkan_mtf.py`; `MyTradingSys/backtest/layers/kurisko/quad_rotation.py`; `MyTradingSys/backtest/layers/kurisko/stoch_core.py`
 - Other results: `MyTradingSys/research/rsi_divergence_mtf_2026-10-09`
+- Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-11-03_prob-layer-common-table.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `prob-layer-common-table` ready p1 CODEX: Probability table as the common layer (AUDIT.md s6): state_at per layer, forward distribution vs matched basel
   - `krown-hidden-divergence-confluence-feed` refined p2 SONNET: Krown hidden divergence as a shared confluence feed any layer (RSI 40-60 included) can consume; Malkan layer s
   - `kurisko-dev-event-study` refined p2 SONNET: Kurisko Quad Rotation: DEV event study, fee-net, same-window placebo
   - `rsi-cross-unmapped-and-pivot-stack` refined p3 SONNET: RSI cross events are rejected as unmapped in the auto-trader (no layer_rules entry); and no layer stacks level
@@ -190,7 +190,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `live-mirror-follow-live-host-move` refined p1 DSA: live_mirror.py hard-codes JIS-NB (LIVE_HOST, share \JIS-NB\MTS-Mirror); live loop is on desktop-f7iu69n (Lenov
   - `live-trading-aid-page-multi-tf-wavetrend` raw p2 SONNET: Live trading aid page: multi-TF WaveTrend/RSI/BB/OI/CVD state + measured base rate per state, good visuals, le
   - `research-lint-warn-not-revert` raw p2 SONNET: Research-script lint and cost-inventory trips cost a revert per study (98 reverts in 7 days): catch them in sy
-  - `research-pass-needs-rerun-gate` ready p2 SONNET: CI: a PASS in layer_map.json or a result card needs a VERDICTS.csv row; done when a PASS without a row fails C
   - `state-code-accumulator-backfill` refined p2 JIS-NB: StateCodeEmitter: backfill session CVD/cum_pv/cum_vol after restart and WS reconnect, fail closed on backfill 
   - `live-loop-timeouts-b191` refined p3 SONNET: Network: re-check live-loop timeouts after B191 plus wrapper priority and snapshot.cp (read-only report first)
   - `live-orderflow-state-line-1m-5m-15m-pric` refined p3 SONNET: Live read: one order-flow state line per TF (1m/5m/15m price swing vs Binance CVD swing vs OI change), descrip
@@ -248,7 +247,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Ledger: `MyTradingSys/research/pitchfork_2026-10-19/TRIALS_PITCHFORK.csv`; `MyTradingSys/research/pitchfork_2026-10-19/TRIALS_PITCHFORK_4H.csv`
 - Codex lab reports (newest 2 of 2): `MyTradingSys/research/layer_lab/reports/2026-11-03_mts-audit-1103-independent-recheck.md`; `MyTradingSys/research/layer_lab/reports/2026-11-02_mts-audit-1103-independent-recheck.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `mts-audit-1103-independent-recheck` ready p1 CODEX: Independent recheck of research/mts_audit_2026-11-03/AUDIT.md: rerun pitchfork_recheck.py logic from your own 
   - `pitchfork-engine-implement-hagopian-fail` refined p2 OPUS: Pitchfork engine: implement Hagopian failure breakout candidates (PF-HAG-L / PF-HAG-S) in Java
   - `pitchfork-fixes-desk-python` refined p2 SONNET: Pitchfork desk/Python review fixes: F1 target reading, F4 profile parity, F5 lookahead + VA leak test, F6 pyth
   - `pitchfork-fixes-live-java` refined p2 JIS-NB: Pitchfork live Java review fixes: F3 stale-bounce gate parity, F6 inverted-fork tine, F7/F9 labels
