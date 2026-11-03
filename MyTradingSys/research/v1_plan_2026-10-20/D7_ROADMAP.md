@@ -11,7 +11,9 @@ Changed 2026-11-03 (operator): S0 parking ended; parked cards are back in refine
 Changed 2026-11-03 (operator order, research/mts_audit_2026-11-03/AUDIT.md): confluence and layer-state research on DEV is allowed; a context layer is judged by distribution shift, a trade still by fee-net OOS. No PASS without a VERDICTS.csv row, a causal replay test and one re-run from the trade loop by another model.
 
 ## Stages
-Now: S0 (operator 2026-10-30, d-simplify-align-s0; MTS Home reads this line, move it when an exit is signed)
+Changed 2026-11-03 (operator, d-s0-exit-waived-1103): S0 closed without meeting its measured exit; cleanup goes on alongside S1.
+
+Now: S1 (operator 2026-11-03, d-s0-exit-waived-1103; MTS Home reads this line, move it when an exit is signed)
 
 | Stage | Entry | Work | Exit (measured) | EXPECT |
 |---|---|---|---|---|

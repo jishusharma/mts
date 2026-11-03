@@ -1651,3 +1651,9 @@ Operator (chat, 13:35Z, from the INDUSTRY_SURVEY build list): "Trade charts + ba
 
 ## 2026-11-03 14:45Z - Hold login C's last 4% for B's MTS Home ship | decided 2026-11-03 | Operator (chat)
 Operator: "Hold for B". C does not take mts-home-rebuild-1103; B ships H2/H3 (broadcast b-cf5520, by 19:00Z). Pilot ultra waves 17:30Z do not fit under the 97% stop; Supervisor C rechecks at 17:30Z.
+
+## d-s0-exit-waived-1103 | decided 2026-11-03 | Supervisor B (chat, JIS-NUC login B)
+Operator: "Yes, move on" to "Should we stop waiting on the other cleanup targets and move to the next step?" S0 closes with its exit unmet, S1 starts. Measured at the decision: worktrees on JIS-NUC 12 (from 52; 5 more due out once idle), claims last read 43 (target 4); bookkeeping share, traffic jam and scheduled tasks not measured. Cleanup continues alongside S1. Also this session: "Why you want to just keep them? ... once you have used them, why not immediately just remove them?" (finished worktrees retire after each ship, 5c939ec6). Not decided here: q-v1-bar, q-v1-layers, q-v1-spec; those stay the operator's.
+
+## 2026-11-03 - Login B cap raised to 65% | decided 2026-11-03 | Operator (chat)
+Operator: "cap raised to 65% - keep working until C is up after reset - in 70 mins aprox.."
