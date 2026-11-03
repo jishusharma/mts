@@ -114,6 +114,9 @@ BREAKOUT/CONTINUATION: candle_close (close-through), fabio escalation, rsi_event
   context of a downtrend ... volatility goes up ... price continues in the same direction of the trend").
 - CONTEXT trend_1d (and 1w) defined; REGIME BBWP_1d (or 4h) <= 30 in the last 10 bars; TRIGGER hidden divergence in the trend's direction
   on 4h/1d (KR-S14, MAL-7..9); RISK stop beyond the divergence swing; exit at BBWP >= 90 (his "price action stalls there").
+- Feed (built 2026-11-04, OURS window 3..10): rsi/krown_hidden_divergence.py is consumed by alerts/live_confluence_feed.py as flags
+  K-HBULL / K-HBEAR (source KROWN-CONFLUENCE) next to RSI 40/60 events and Malkan R-BULL/R-BEAR/PRD/NRD. Any layer (RSI 40-60 included)
+  reads them via annotate_levels_events; alert-only, no side, default off for trading. Malkan stays regular + PRD/NRD only (pinned by test).
 - This is a daily-book trade (days to weeks). It is the one design where the fee wall is irrelevant and the sample is smallest.
 
 ## 7. Order of work (cheapest first)
