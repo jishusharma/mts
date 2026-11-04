@@ -133,7 +133,7 @@ def build(reg, now=None, repo=None):
         if pg["status"] == "retire":
             for a, u in pg["urls"].items():
                 if u and a not in (pg.get("deleted") or {}):   # `deleted`: {login: date} the operator removed it there
-                    retire.append({"login": a, "title": pg["title"], "url": u, "why": "retired: " + pg.get("note", "")[:90]})
+                    retire.append({"login": a, "title": pg["title"], "url": u})   # no "why": the page never renders it (30 KB cap, 2026-11-04)
         if pg["status"] != "canonical" or not url or pg["slug"] == reg["home_slug"]:
             continue
         pages.append({"slug": pg["slug"], "title": pg["title"], "url": url, "owner": own, "purpose": pg.get("purpose", ""),
@@ -143,11 +143,10 @@ def build(reg, now=None, repo=None):
         if pg.get("single_owner"):
             for a, u in pg["urls"].items():
                 if u and a != own and a not in (pg.get("deleted") or {}):
-                    retire.append({"login": a, "title": pg["title"], "url": u,
-                                   "why": f"old copy or 'moved' page; the live one is on {own}"})
+                    retire.append({"login": a, "title": pg["title"], "url": u})
     for a, rows in reg.get("unpinned_old", {}).items():
         for r in rows if isinstance(rows, list) else []:
-            retire.append({"login": a, "title": r["title"], "url": r["url"], "why": "old, unpinned, not updated since 5-6 Oct (Control Room q7)"})
+            retire.append({"login": a, "title": r["title"], "url": r["url"]})
     pages.sort(key=lambda p: (not p["write"], WRITE_FIRST.index(p["slug"]) if p["write"] else 0))
     owners = sorted({p["owner"] for p in pages} | {home})
     share = [{"owner": o, "titles": [p["title"] for p in pages if p["owner"] == o] + (["MTS Home"] if o == home else []),

@@ -23,7 +23,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-04 ACCEPT (scope present; no fix for shared resource found)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",

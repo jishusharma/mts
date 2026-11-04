@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-audit-context-filter-review.md'); assert p.exists() and len(p.read_text())>400\""
+  ],
+  "created": "2026-11-04T07:15:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-audit-context-filter-review.md verifies the 33 study rows in MyTradingSys/research/CONTEXT_FILTER_REVIEW_2026-11-04.md against their harness scripts and reports any misclassified CONCEPT-ONLY vs CONTEXTED rows.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "D11 feeder check (A-20261104-1): Independently verify the 33-study classification table in MyTradingSys/research/CONTEXT_FILTER_REVIEW_2026-11-04.md (shipped in 9335c36db).",
+  "id": "gpt-audit-context-filter-review-1104",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-04 T0-ONLY; D11 feeder card for 9335c36db",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "gemini-pro-argon",
+  "refreshed": "2026-11-04T07:15:00Z",
+  "refs": [
+    "MyTradingSys/research/CONTEXT_FILTER_REVIEW_2026-11-04.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-audit-context-filter-review.md",
+    "MyTradingSys/research/CONTEXT_FILTER_REVIEW_2026-11-04.md"
+  ],
+  "scope_out": [],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/CONTEXT_FILTER_REVIEW_2026-11-04.md",
+    "Spot-check each of the 33 study rows against its actual Python backtest script in MyTradingSys/research/ or MyTradingSys/backtest/",
+    "Write MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-audit-context-filter-review.md listing verified rows and any discrepancies"
+  ],
+  "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-audit-context-filter-review.md'); assert p.exists() and len(p.read_text())>400\"",
+  "title": "GPT audit of CONTEXT_FILTER_REVIEW_2026-11-04.md classifications against backtest scripts",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

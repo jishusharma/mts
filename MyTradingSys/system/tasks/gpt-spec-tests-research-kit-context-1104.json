@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/tests/test_research_kit_context.py -q"
+  ],
+  "created": "2026-11-04T07:15:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/tests/test_research_kit_context.py tests regime, phase, session tags, and retest-entry mode in MyTradingSys/backtest/research_kit.py (including edge cases and lookahead invariants) and passes pytest.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "D11 feeder check (A-20261104-1): Write independent GPT spec and lookahead-guard tests for the new context harness in MyTradingSys/backtest/research_kit.py (shipped in d91081762).",
+  "id": "gpt-spec-tests-research-kit-context-1104",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "Flip a boundary comparison or session window check in research_kit.py and verify MyTradingSys/tests/test_research_kit_context.py fails.",
+  "note": "REVIEWED:2026-11-04 T0-ONLY; D11 feeder card for d91081762",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "gemini-pro-argon",
+  "refreshed": "2026-11-04T07:15:00Z",
+  "refs": [
+    "MyTradingSys/backtest/research_kit.py"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tests/test_research_kit_context.py",
+    "MyTradingSys/backtest/research_kit.py"
+  ],
+  "scope_out": [],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/backtest/research_kit.py and existing MyTradingSys/tests/test_research_kit_context.py",
+    "Add independent spec and boundary tests for regime_mix, session tagging, and retest-entry timing (no same-bar lookahead)",
+    "Run pytest MyTradingSys/tests/test_research_kit_context.py -q and verify 0 failures"
+  ],
+  "tests": "python -m pytest MyTradingSys/tests/test_research_kit_context.py -q",
+  "title": "GPT spec and mutation tests for research_kit.py context harness and retest-entry mode",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
