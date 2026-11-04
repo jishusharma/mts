@@ -28,7 +28,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "Flip a boundary comparison or session window check in research_kit.py and verify MyTradingSys/tests/test_research_kit_context.py fails.",
-  "note": "REVIEWED:2026-11-04 T0-ONLY; D11 feeder card for d91081762 | REVIEWED:2026-11-04 ACCEPT; lab_guy C1 (B-shared harness; mutation_check present). After the run: Haiku re-derives 1-3 tag counts from raw bars",
+  "note": "REVIEWED:2026-11-04 ACCEPT by lab_guy | D11 feeder card for d91081762 | lab_guy C1 ACCEPT (B-shared harness; mutation_check present). After the run: Haiku re-derives 1-3 tag counts from raw bars",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "gemini-pro-argon",

@@ -20,7 +20,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": " | REVIEWED:2026-11-04 ACCEPT; lab_guy C1 (credit spend path; mutation shown in done_when; no live money, testnet-irrelevant)",
+  "note": "REVIEWED:2026-11-04 ACCEPT by lab_guy | lab_guy C1 ACCEPT (credit spend path; mutation shown in done_when; no live money, testnet-irrelevant)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
