@@ -4,6 +4,15 @@
   "commands": [
     "python -m pytest -q scripts/dev/test_sync.py -k tidy"
   ],
+  "context": {
+    "calls_to_edit": 7,
+    "folded": "2026-11-04T13:36:36Z",
+    "misses": 1,
+    "reads": [
+      "scripts/dev/test_sync.py"
+    ],
+    "session": "agent-a62364fd991b408e8"
+  },
   "created": "2026-11-03T18:40:36Z",
   "depends_on": [],
   "done_when": "A clean on-trunk tree idle 1 h with an open claim is kept by tidy and tidy_after_ship; without a claim it is still retired.",
