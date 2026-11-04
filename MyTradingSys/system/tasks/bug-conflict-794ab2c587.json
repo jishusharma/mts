@@ -1,6 +1,6 @@
 {
   "approved_by": "",
-  "asks": "Which holds: card note lab_guy 11-04: C2 needs non-Claude spec review (Gemini flash high) before ACCEPT or malkan-window-12-18-vs-hindi: operator asks Haiku 5.5 api job stamp?",
+  "asks": "Which holds: non-Claude spec review (Gemini flash high) or Haiku 5.5 api-job stamp for C2 cards? Default: Lab_Guy rule A stands",
   "commands": [],
   "created": "2026-11-04T19:26:45Z",
   "depends_on": [],
@@ -19,7 +19,7 @@
   "mutation_check": "",
   "note": "",
   "prio": 1,
-  "refine_tries": 0,
+  "refine_tries": 1,
   "refined_by": "",
   "refs": [],
   "result": "",
