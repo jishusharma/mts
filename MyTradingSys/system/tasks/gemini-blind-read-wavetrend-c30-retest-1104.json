@@ -27,7 +27,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-04 T0-ONLY; D11 feeder card for 83a512a2e, f934791b5",
+  "note": "REVIEWED:2026-11-04 T0-ONLY | D11 feeder card for 83a512a2e, f934791b5",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "gemini-pro-argon",

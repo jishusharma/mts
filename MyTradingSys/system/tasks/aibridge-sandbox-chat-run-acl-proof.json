@@ -16,7 +16,7 @@
   "latest": [],
   "layers": [],
   "live_path": false,
-  "note": "Supervisor B 2026-11-03: failed twice on Codex: it needs a copy outside the lab tree, which the sandbox refuses (report 2026-11-02). Back to a Claude worker on the machine with F:/AIBridge. | PLANNER 2026-11-02 planner-b-1102: rescoped from the raw card to sandbox-first so no live install is touched; live apply is the operator's call. Final report ends with a Noticed: line. REVIEWED:2026-11-02 T0-ONLY",
+  "note": "REVIEWED:2026-11-02 T0-ONLY | Supervisor B 2026-11-03: failed twice on Codex: it needs a copy outside the lab tree, which the sandbox refuses (report 2026-11-02). Back to a Claude worker on the machine with F:/AIBridge. | PLANNER 2026-11-02 planner-b-1102: rescoped from the raw card to sandbox-first so no live install is touched; live apply is the operator's call. Final report ends with a Noticed: line.",
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "",

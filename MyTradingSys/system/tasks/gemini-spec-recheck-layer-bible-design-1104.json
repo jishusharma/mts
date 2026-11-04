@@ -34,7 +34,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-04 T0-ONLY; lab_guy C0 re-check card (same lens re-checks a FIX, lab_guy role)",
+  "note": "REVIEWED:2026-11-04 T0-ONLY | lab_guy C0 re-check card (same lens re-checks a FIX, lab_guy role)",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",

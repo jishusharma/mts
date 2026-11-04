@@ -27,7 +27,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "PATHS FIXED 2026-11-04 (Supervisor B): the card named files that do not exist; run_backtest.py -> study.py. | REVIEWED:2026-11-04 T0-ONLY; D11 feeder card for 8ce5461b0",
+  "note": "REVIEWED:2026-11-04 T0-ONLY | PATHS FIXED 2026-11-04 (Supervisor B): the card named files that do not exist; run_backtest.py -> study.py. | D11 feeder card for 8ce5461b0",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "gemini-pro-argon",
