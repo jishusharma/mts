@@ -93,3 +93,6 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-04 | eth-data-gap-1104 | Sonnet 5.5 | 0.36 | 22 | ETHUSDT 1m 2022-01..2026-09: 57 months, 0 missing bars; cap was 3.0 |
 | 2026-11-04 | run-v3-l3-test-1104 | Sonnet 5.5 | 0.23 | 9 | added full-path test test_days_limit_full_path_produces_oos; 14 tests pass; cap was 3.0 |
 | 2026-11-04 | testnet-fast-lane-1104 | Sonnet 5.5 | 0.32 | 15 | shipped design note eeec191e (testnet signal fast lane); cap was 3.0 |
+| 2026-11-04 | haiku-review-ships-1104 | Haiku 5.5 | 0.03 | 17 | recount of 4 result files: 2 MATCH, 1 DIFF (sim_desk 341 vs 337 known), 1 NOT CHECKABLE; ac5b28b2; cap was 2.0 |
+| 2026-11-04 | route-wiring-1104 | Opus 5.5 | 0.51 | 14 | filed 43 raw wire cards (32 Krown, 11 Malkan) from the wiring audit; cap was 6.0 |
+| 2026-11-04 | haiku-review-4-1104 | Haiku 5.5 | 0.03 | 11 | stamped 5 cards (see table); cap was 2.0 |
