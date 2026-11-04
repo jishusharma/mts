@@ -4,33 +4,54 @@
   "commands": [],
   "created": "2026-11-04T21:09:59Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "krown_events.py has setup_s10(line_events) and setup_s11(line_events) returning events like setup_s5; test_krown_events.py passes with the new tests; fire count reported by run_fire_counts for BTC DEV is written into FIRE_COUNTS_BTC_DEV.md.",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Krown setups S10 and S11 from the trend-line detector events: S10 = touched event on a volume-anchored line (KR-L04), S11 = break event (KR-L06). Event emitters only, no entry or exit.",
   "id": "wire-kr-l04-reaction-at-a-volume-anchore",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Trend-line contract v1.1: close-arm penetration, no pre-availability replay, narrowed E11 ",
+      "ref": "ecaacb117866",
+      "utc": "2026-10-25T21:17:27Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "planner-wire43-1104h: verified on trunk 2026-11-05, no code for this rule; params OURS unless the card says SOURCED. Folds: wire-kr-l06 (S11 break). KR-L02, L03, L05 already wired by trendline_core.py (3 touches, E4 volume anchor, L6 penetration test); closed as wired.\nREVIEWED:2026-11-04 T0-ONLY",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T22:23:40Z",
   "refs": [
     "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_14bxwxC8gBQ.md:109"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/krown/krown_events.py",
+    "MyTradingSys/backtest/layers/krown/test_krown_events.py",
+    "MyTradingSys/backtest/layers/trendlines/trendline_core.py"
+  ],
+  "scope_out": [
+    "MyTradingSys/backtest/layers/trendlines/trendline_core.py: read only, do not edit"
+  ],
+  "scope_sha": "ecaacb117866",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read trendline_core.py event names (touched, broken) and krown_events.setup_s5 shape.",
+    "Add setup_s10 and setup_s11 mapping line events to _ev(i, side, setup, tags), volume flag from the line's anchor volume check.",
+    "Write the fail-first test with a hand-built event list; run it."
+  ],
+  "tests": "MyTradingSys/backtest/layers/krown/test_krown_events.py::test_setup_s10_s11_from_line_events (new; fails on trunk, no setup_s10)",
   "title": "wire KR-L04: Reaction at a volume-anchored line (quote MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_14bxwxC8gBQ.md:109)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

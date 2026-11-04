@@ -219,3 +219,4 @@ MyTradingSys/research/rsi_40_60_line_behaviour_2026-11-04/test_wiring.py
 MyTradingSys/research/wall_ledger_2026-11/test_wall_ledger.py
 scripts/dev/test_kline_gap_check.py
 MyTradingSys/research/wt_extreme_cross_volmatch_2026-11/test_volmatch.py
+MyTradingSys/research/level_approach_eth_2026-11/test_replicate.py

@@ -15,9 +15,9 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "Parked: NO_QUOTE row (no verbatim line) and needs a liquidation feed that is not on disk; check data availability first.",
   "prio": 4,
-  "refine_tries": 0,
+  "refine_tries": 2,
   "refined_by": "",
   "refs": [
     ""

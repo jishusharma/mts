@@ -4,33 +4,54 @@
   "commands": [],
   "created": "2026-11-04T21:09:44Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "krown_core.py has range_tell(c, v, t, p) and range_grade(h, l, t, p) returning labelled values; test_krown_core.py new tests pass; every threshold in the params file is labelled OURS.",
+  "est_turns": 9,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Krown range descriptors in krown_core.py: range tell = flat tangled averages plus shrinking volume (KR-T07), duration/tightness grade (KR-R04, thresholds undefined, OURS), structure bias inside the range (KR-R05).",
   "id": "wire-kr-t07-range-tell-flat-tangled-aver",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "b-item-krown-core-rsi-returns-100-on-a-f: fix flat window RSI 100 to 50 and update docstri",
+      "ref": "150840644fd0",
+      "utc": "2026-10-20T22:39:21Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "planner-wire43-1104h: verified on trunk 2026-11-05, no code for this rule; params OURS unless the card says SOURCED. Folds: wire-kr-r04, wire-kr-r05.\nREVIEWED:2026-11-04 T0-ONLY",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T22:23:43Z",
   "refs": [
     "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_6aA-P4Gvhrc.md:36"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/krown/krown_core.py",
+    "MyTradingSys/backtest/layers/krown/test_krown_core.py",
+    "MyTradingSys/backtest/layers/krown/params"
+  ],
+  "scope_out": [
+    "entries, exits, range_state (keep its output unchanged)"
+  ],
+  "scope_sha": "150840644fd0",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read range_state and coil_score in krown_core.py.",
+    "Add range_tell (average spread flat and volume ratio falling) and range_grade (bars in range, width over mid).",
+    "Write the fail-first test with synthetic bars; run it."
+  ],
+  "tests": "MyTradingSys/backtest/layers/krown/test_krown_core.py::test_range_tell_and_grade (new; fails on trunk, no range_tell)",
   "title": "wire KR-T07: Range tell: flat tangled averages plus shrinking volume (quote MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_6aA-P4Gvhrc.md:36)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

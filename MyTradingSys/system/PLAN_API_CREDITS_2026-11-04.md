@@ -97,3 +97,6 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-04 | route-wiring-1104 | Opus 5.5 | 0.51 | 14 | filed 43 raw wire cards (32 Krown, 11 Malkan) from the wiring audit; cap was 6.0 |
 | 2026-11-04 | haiku-review-4-1104 | Haiku 5.5 | 0.03 | 11 | stamped 5 cards (see table); cap was 2.0 |
 | 2026-11-04 | malkan-window-land-1104 | Sonnet 5.5 | 0.34 | 16 | shipped 856f44e3; 12/18 window has no Malkan source, 4 of 4 thresholds confirmed; cap was 2.0 |
+| 2026-11-04 | ms-bb-eth-1104 | Opus 5.5 | 3.51 | 84 | BB range retest pooled BTC+ETH: still INCONCLUSIVE; cap was 7.0 |
+| 2026-11-04 | ms-wt-volmatch-1104 | Opus 5.5 | 2.41 | 52 | WT extreme cross vs ATR-matched baseline on BTC+ETH: VOLATILITY-ONLY; cap was 7.0 |
+| 2026-11-04 | ms-level-eth-1104 | Opus 5.5 | 2.49 | 56 | C15 level approach replicated on ETH: narrow agreement; cap was 7.0 |

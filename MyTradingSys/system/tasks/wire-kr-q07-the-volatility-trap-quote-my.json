@@ -4,33 +4,54 @@
   "commands": [],
   "created": "2026-11-04T21:10:11Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "krown_core.py has vol_trap(bbwp_line, t, p) and vol_exhaust(bbwp_line, t, p); test_krown_core.py new tests pass; threshold labelled OURS in the params file.",
+  "est_turns": 6,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Krown volatility trap (KR-Q07: entering after volatility already expanded) and volatility-based profit-take flag (KR-Q06, BBWP >= 85-93 are examples only, OURS) as labels on bbwp output in krown_core.py. Flags only, no exit logic.",
   "id": "wire-kr-q07-the-volatility-trap-quote-my",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "b-item-krown-core-rsi-returns-100-on-a-f: fix flat window RSI 100 to 50 and update docstri",
+      "ref": "150840644fd0",
+      "utc": "2026-10-20T22:39:21Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "planner-wire43-1104h: verified on trunk 2026-11-05, no code for this rule; params OURS unless the card says SOURCED. Folds: wire-kr-q06. KR-Q08 parked separately: per-indicator switching has no defined behaviour.\nREVIEWED:2026-11-04 T0-ONLY",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T22:23:45Z",
   "refs": [
     "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_kcMnnQr1VFg.md:372"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/krown/krown_core.py",
+    "MyTradingSys/backtest/layers/krown/test_krown_core.py",
+    "MyTradingSys/backtest/layers/krown/params"
+  ],
+  "scope_out": [
+    "exits, setups"
+  ],
+  "scope_sha": "150840644fd0",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read bbwp and bbwp_regime in krown_core.py.",
+    "Add vol_trap (bbwp already above the high threshold at the decision bar) and vol_exhaust (first bar back below after expansion).",
+    "Write the fail-first test with a synthetic bbwp line; run it."
+  ],
+  "tests": "MyTradingSys/backtest/layers/krown/test_krown_core.py::test_vol_trap_and_exhaust (new; fails on trunk, no vol_trap)",
   "title": "wire KR-Q07: The volatility trap (quote MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_kcMnnQr1VFg.md:372)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
