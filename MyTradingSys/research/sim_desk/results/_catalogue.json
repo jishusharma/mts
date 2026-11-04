@@ -1,7 +1,7 @@
 {
 "_doc": "Catalogue of known tests on trunk. kind is inferred (kind_source). Built by sim_desk/build_catalogue.py.",
-"count": 353,
-"exported": 353,
+"count": 354,
+"exported": 354,
 "rows": [
 {
 "id": "st-_archive-loose_2026-10-cbp_profile6_result",
@@ -5118,6 +5118,20 @@
 "exported": true,
 "result_id": "bb-range-retest-eth-pool-2026-11-04",
 "date": "2026-11-04",
+"status": "FAILED",
+"verdict_class": "failed"
+},
+{
+"id": "wt-extreme-cross-volmatch-2026-11-05",
+"family": "WaveTrend extreme cross",
+"title": "Rerun matched: WaveTrend extreme-cross bounce vs an ATR-decile-matched baseline, BTCUSDT + ETHUSDT USD-M futures 1m / 5m / 15m",
+"kind": "backtest",
+"kind_source": "result file",
+"verdict": "VOLATILITY-ONLY: the HTF-against / prior-trend bounce excess (+0.04 to +0.25 % unmatched) falls to -0.046 to +0.013 % against a same-ATR-decile baseline; 0 of 4 focal cells pass Holm, all with 269+ days. Fee-net below zero in 161 of 162 cells at 0.10 %.",
+"source": "MyTradingSys/research/wt_extreme_cross_volmatch_2026-11/RESULT.md",
+"exported": true,
+"result_id": "wt-extreme-cross-volmatch-2026-11-05",
+"date": "2026-11-05",
 "status": "FAILED",
 "verdict_class": "failed"
 }

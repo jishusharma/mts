@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T22:04:35Z",
   "commands": [
     "python MyTradingSys/research/wt_extreme_cross_volmatch_2026-11/study.py --symbols BTCUSDT,ETHUSDT",
     "python -m pytest -q MyTradingSys/research/wt_extreme_cross_volmatch_2026-11/test_volmatch.py"
@@ -15,10 +16,18 @@
   "goal": "wt_extreme_cross result Next step: the HTF-against and prior-trend bounce excess (+0.03 % 1m, +0.21 % 15m) may be volatility, not a WaveTrend effect. Re-test on BTC+ETH DEV with a baseline matched on ATR decile of the event bar; descriptive, fee-net shown but no survivor claim.",
   "id": "ms-wt-extreme-cross-volmatch-eth",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "VOLATILITY-ONLY: 0/4 focal POOL buy cells survive an ATR(14)-decile-matched baseline (matc",
+      "ref": "d19bc2731",
+      "utc": "2026-11-04T22:04:35Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: WT extreme-cross bounce is volatility only on BTC+ETH DEV",
   "note": "Context rule d-context-retest-1104: PRE_REG ## Context needs Regime:/Phase:/Session:/Entry: lines (none, because ... allowed); RESULT needs a Regime mix: line (prereg_context_lint). ETH: F:/MTS/data/tom_raw/klines/ETHUSDT-1m-YYYY-MM.csv (env SIM_DESK_KLINES; USD-M futures, 0 missing bars, kline_gap_check.py); load BTC from the same folder so the pool is one venue. Verdict claim: needs a real review stamp; none yet. Twin-checked: no open card for the volatility-matched baseline.\nREVIEWED:2026-11-04 ACCEPT (Haiku on API credit, job haiku-review-4-1104: source study on trunk, Context lines and Regime mix planned, fees.py only, fail-first test)",
   "prio": 2,
   "refine_tries": 0,
@@ -27,7 +36,12 @@
   "refs": [
     "MyTradingSys/research/wt_extreme_cross_2026-11/study.py"
   ],
-  "result": "",
+  "result": "VOLATILITY-ONLY: 0/4 focal POOL buy cells survive an ATR(14)-decile-matched baseline (matched excess -0.046..+0.013 %, unmatched +0.04..+0.25 %); net<0 in 161/162 cells at 0.10 %; research/wt_extreme_cross_volmatch_2026-11/RESULT.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/wt_extreme_cross_volmatch_2026-11/ (PRE_REG.md, study.py, test_volmatch.py, RESULT.md, dev_cells.csv); reuse wt_extreme_cross_2026-11/study.py event definitions"
   ],
@@ -39,12 +53,13 @@
   "sources": [
     "MyTradingSys/research/wt_extreme_cross_2026-11/RESULT.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write PRE_REG.md: events as the source study (buy wt1<=-50 cross up, sell wt1>=40 cross down, K=10, HTF with/against daily MA), baseline = same-side 10-bar MFE from bars in the same ATR(14) decile (OURS), ## Context lines, verdicts.py check output",
     "Fail-first test, then study.py over BTCUSDT,ETHUSDT 1m UM futures resampled 1m/5m/15m",
     "Run per symbol and pooled, write dev_cells.csv and RESULT.md with Regime mix: and the unmatched-baseline row from the source result for comparison"
   ],
+  "taken": "2026-11-04T22:04:35Z",
   "tests": "MyTradingSys/research/wt_extreme_cross_volmatch_2026-11/test_volmatch.py::test_baseline_matches_atr_decile (fails first on the stub): a synthetic series whose event bars sit in one ATR decile gets a baseline drawn only from that decile",
   "title": "Re-run wt_extreme_cross with a volatility-matched baseline on BTC+ETH (UM futures 1m), DEV only, to test if the HTF-against bounce excess is volatility",
   "weight": "IMPORTANT",
