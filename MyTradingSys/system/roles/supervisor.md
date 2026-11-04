@@ -25,7 +25,7 @@ Order: answer, then `plan`, then watcher (Stop hook blocks idle ends).
 2. Do what the lines say in ONE message: `RUN` lines (one Bash call; background where marked), `SPAWN` lines (background Agents, model sonnet,
    2 chained cards each; never start_session: the app asks the operator to approve each one), verify notes (below), mark_completed/archive.
    `PLAN mode=STOP|SUPERVISOR-ONLY`: no Claude worker; RUN lines still run. Copy `OPERATOR` lines into your one-line reply.
-3. Start the watcher, then `supervisor.py watchcheck --login <L>` as the LAST call (SUPER_SESSION.md step 5): exit 4 -> restart it, recheck; end only on exit 0; no sleep loops, second watcher or schedulers.
+3. Watcher via run_in_background (no `&`), then `supervisor.py watchcheck --login <L>` as the LAST call (SUPER_SESSION.md step 5): exit 4 -> restart it, recheck; end only on exit 0; no sleep loops, second watcher or schedulers.
    Never end a turn idle while READY cards or unread signals wait: dispatch a worker or arm `supervisor.py wait`.
 SUPER_SESSION.md rules 11-14 apply (review Agent before a live-path/gate ship; spend inside the weekly cap; a defect blocks only its readers;
 never dispatch raw/refined cards). Board STOP/HOLD and CI RED outrank everything (`BOARD` / `SPAWN CI RED`); usage gate refusing: NOTE, no spawn. `tasks.py check <id>` + `sync.py claim` decide a card.
