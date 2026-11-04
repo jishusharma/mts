@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-04T19:18:02Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/C31_FEEDER.md has per-symbol and pooled n, fee-net R per half, Context and Regime mix lines, and verdict POWERED-PASS|POWERED-FAIL|UNDERPOWERED",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Run the C31 daily BB-edge short (50d trend down, entry = first close back inside the band, fee-net via fees.py) on ETH, SOL, BNB, XRP daily 2022-25 and pool with BTC to see if n reaches the 230 that 0.30R needs",
+  "id": "c31-feeder-more-symbols-daily-bb-edge-short",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "feeder to C31 UNDERPOWERED verdict",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/c31_halves.py"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/c31_halves.py; MyTradingSys/research/eagle_eyes_picture_2026-10-28/C31_HALVES.md"
+  ],
+  "scope_out": [
+    "no parameter tuning, no mainnet, holdout sealed, costs only from MyTradingSys/backtest/fees.py"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/C31_HALVES.md"
+  ],
+  "state": "raw",
+  "steps": [
+    "generalise c31_halves.py to a symbol list",
+    "run per symbol and pooled",
+    "write C31_FEEDER.md"
+  ],
+  "tests": "pooled BTC row reproduces n=15 +1.02R fee-net from c31_halves.py before other symbols are trusted",
+  "title": "C31 feeder: daily BB-edge short in 50d downtrend on more symbols (ETH, SOL, BNB, XRP...) 2022-25, fee-net, to reach n>=230 at 0.30R; BTC alone gives n=15 UNDERPOWERED (ref C31_HALVES.md)",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}
