@@ -27,7 +27,7 @@ Rewrite this file at each week start; never let it grow.
 | Pages stale | 3 (mts_home, sim_desk, mts_layer_map) | MTS Home rebuild card still ready, not shipped |
 
 ## What blocks movement (plain)
-1. S1 is the operator's own step and has waited 8 days: q-v1-bar, q-v1-layers, q-v1-spec. Every later stage "builds to a moving target" without it.
+1. S1 is no longer blocking: the operator answered yes to q-v1-bar, q-v1-layers and q-v1-spec (d-s1-defaults-1104, 2026-11-04, chat yes relayed by Super Session, not verbatim per line). D7 "Now:" is S2, S3, S4 in parallel.
 2. Two thirds of trunk commits are bookkeeping (claims, releases, merges, card folds). Research is one third.
 3. The S3 funnel has 2 untried studies and 5 finished ones that mostly failed; the 2 untried sit in "refined" behind prerequisites nobody owns.
 4. The PASS rule (VERDICTS row + causal replay + independent re-run) is right-sized; the guard card research-pass-needs-rerun-gate is ready, not built. Testing is not the shortage; runs are.
@@ -35,7 +35,7 @@ Rewrite this file at each week start; never let it grow.
 ## Week plan 2026-11-04 to 11-10 (coordinator: Unblock MTS super session, login C)
 | # | Move | Owner | Done when |
 |---|---|---|---|
-| 1 | S1 signed in one sitting: coordinator drafts defaults for q-v1-bar, q-v1-layers, q-v1-spec; operator answers yes/no per line | C drafts, operator signs | OPERATOR_DECISIONS.md entry, D7 "Now:" line moves to S2/S3/S4 |
+| 1 | DONE 11-04: S1 signed (d-s1-defaults-1104, 11c2703d); q-v1-bar, q-v1-layers, q-v1-spec all yes | C drafted (S1_SIGN_DRAFT_2026-11-04.md), operator answered | OPERATOR_DECISIONS.md entry and D7 "Now:" line moved to S2/S3/S4 (both met) |
 | 2 | S3: run lc-validation and rsi-deep-run-dev under the PASS guard (build research-pass-needs-rerun-gate first) | B (NUC) + guard card SONNET | VERDICTS rows + sim_desk/results json, PASS or FAIL written |
 | 3 | S2 M1+M4 on JIS-NB: state-code-accumulator-backfill, s2-uptime-heartbeat-jis-nb, test-first | C lane JIS-NB | tests failed on old code once, CI green |
 | 4 | Declutter: release stale claims (q-8df7bd), archive 1131 open questions except S1's three, republish MTS Home | C | claims<=8, STATUS pages stale 0 |
