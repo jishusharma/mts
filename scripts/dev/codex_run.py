@@ -634,6 +634,27 @@ def judge(card_now, reports, kind, files, card=None):
     return "BLOCKED" if reports else "INCOMPLETE"
 
 
+PASS_RE = re.compile(r"\s*PASS\b")   # same test as test_pass_needs_verdict.py: a card result starting PASS is read as a strategy PASS needing D7 evidence
+
+
+def soften_pass(wt, now, kind):
+    """An audit or run card that checks code or runs a command is not a strategy PASS: its card result starts SOUND, not PASS (2026-11-04,
+    gpt-rederive-bb-range-to-range-1104 turned trunk CI red). Rewrites only the leading word of the card result and of the ship entry that
+    copies it; the report, judge() outcome, build cards and flow cards (their result closes through lab_flow.finish) are left alone."""
+    old = now.get("result")
+    if kind not in ("audit", "run") or now.get("flow") or not isinstance(old, str) or not PASS_RE.match(old):
+        return now
+    word = PASS_RE.match(old)
+    new = old[:word.end() - 4] + "SOUND" + old[word.end():]
+    now["result"] = new
+    for e in now.get("latest", []):
+        if e.get("kind") == "ship" and isinstance(e.get("line"), str) and old.startswith(e["line"]) and PASS_RE.match(e["line"]):
+            e["line"] = "SOUND" + e["line"][PASS_RE.match(e["line"]).end():]
+    tasks.save(wt, now)
+    print(f"{now['id']}: {kind} card result started PASS, rewritten to SOUND (not a strategy PASS)")
+    return now
+
+
 def commit_message(card, outcome, result, when):
     model, effort = tasks.codex_setting(card)
     return "\n".join([f"lab {card['id']}: {outcome} ({card['kind']})", "",
@@ -807,6 +828,8 @@ def run_card(card, dry=False, env=os.environ, probing=False):
                                       lane_health.error_line(logtext) if err else "")
         lane_health.save(wt, lane)   # DONE/BLOCKED: rides in the commit below; otherwise shipped on its own
         if outcome in ("DONE", "BLOCKED"):
+            if outcome == "DONE":
+                now = soften_pass(wt, now, card["kind"])
             sh(wt, "scripts/dev/codex_run.py", "index")
             git(wt, "add", "-A")
             result = now.get("result") if outcome == "DONE" else f"BLOCKED, card stays ready: see {reports[-1]}"
