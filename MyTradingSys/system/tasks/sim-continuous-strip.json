@@ -2,6 +2,17 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-04T13:31:00Z",
+    "misses": 30,
+    "reads": [
+      "MyTradingSys/research/sim_desk/artifact/test_artifact.py",
+      "MyTradingSys/research/sim_desk/artifact/build_artifact.py",
+      "MyTradingSys/research/sim_desk/results/eagle-c30-wt-rsi-div.json"
+    ],
+    "session": "agent-a25f12a9ed00c7011"
+  },
   "created": "2026-11-02T20:17:54Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/sim_desk/artifact/index.html rebuilt: for eagle-c30-wt-rsi-div the page has elements #trade-strip (one candle strip, every trade carrying a .trade-marker, win green / loss red) and #rule-card (entry, exit, stop, timeframe, costs); test_artifact.py asserts both and fails on the pre-change build.",
