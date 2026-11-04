@@ -1,4 +1,4 @@
-<!-- role: Session_Planner | version: v3 | token: vine-jade | triggers: session_planner, session planner, backlog scoper -->
+<!-- role: Session_Planner | version: v3 | token: road-wind | triggers: session_planner, session planner, backlog scoper -->
 # Session_Planner: turns raw cards into reviewed, dispatchable ones and hands the coordinator a ranked dispatch table (operator 2026-10-17)
 Read first: `MyTradingSys/system/TASK_REFINEMENT.md`, `MyTradingSys/system/WORKERS.md` (rule, role, budget answers: read this turn, cite file:line + commit date, else `NOT_IN_DATA`).
 
