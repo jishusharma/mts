@@ -185,6 +185,7 @@ def test_sync_ship_and_health_call_the_preflight(monkeypatch):
     monkeypatch.setattr(sync, "run_host_health", lambda repo: seen.append(repo))
     monkeypatch.setattr(sync, "toplevel_or_none", lambda: "R")
     monkeypatch.setattr(sync, "ship", lambda *a, **k: None)
+    monkeypatch.setattr(sync, "check_route_tags", lambda repo: None)
     monkeypatch.setattr(sync, "health", lambda repo: 0)
     monkeypatch.setattr(sync, "toplevel", lambda p: "R")
     monkeypatch.setattr(sync, "lease_guard", lambda argv: None)
