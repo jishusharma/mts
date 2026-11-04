@@ -27,3 +27,5 @@ Not a PASS and no replay was needed (no survivor). Survivor rule (n >= 30, >= 20
 
 Files: PRE_REG.md, BLOCKED.md, counts.csv (pre-return counts), dev_cells.csv (all cells: gate x side x width x TF x session x entry), dev_survivors.json, regime_mix_count.txt, regime_mix_dev.txt, study.py, test_range_wiring.py (7 tests; all 7 failed on the pre-change stub with NotImplementedError, then 7 passed; one test fixture was corrected once after the first implementation run because its post-signal price sat inside the band, not because of a code bug).
 Data: BTCUSDT 1m from F:/MTS/Dumps/backtest (raw_1m_2019, raw_1m_2022, raw), loaded only to 2024-07-01.
+
+Label note (Haiku review 2026-11-04): the session / larger-range rule is OURS. No transcript line from Tom was found; this study tests the rule as encoded here, never as the trader said it.
