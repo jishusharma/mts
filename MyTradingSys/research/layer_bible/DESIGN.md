@@ -22,6 +22,15 @@ Any answer about a layer's current state or definition quotes the `layer_state.p
 ## 4. Build and safety order
 1. This design -> non-Claude review (Gemini) -> operator-facing summary. 2. WaveTrend pilot: Bible + runtime; expected numbers from FORMULAS s20 computed independently; tests red on a stub first, incl. the 11-04 case (3m swing 03:12-11:39 = completed cycle; 12:21 at -49 is NOT a valid bottom dot); Haiku blind re-derivation of 1-3 numbers; no new files in CI's red steps. 3. Archive plan: list superseded files, move to `research/_archive/<family>/` with a pointer line, delete nothing. 4. Roll out per LAYERS.md, one family per ship.
 
-## Open questions (defaults taken)
-- The exact "valid cycle dot" rule (+-53 only, or cross required, how a cycle completes): not yet sourced in one place; the pilot extracts it from the operator's wt30_sequence/OPERATOR_DIRECTION words and marks OURS where he did not say it. Default: ask him only to confirm the reading.
-- Multi-venue data (Deribit vs Binance): Binance public klines by default, as the studies used.
+## v2 changes after the Gemini review (REVIEW_GEMINI_1104.md, FIX-FIRST; each item REAL, REJECTED or DEFERRED)
+| # | finding | disposition |
+|---|---|---|
+| 1 | no fetch depth vs 200-bar warm-up (E2) | REAL: Parameters carry `bars` (1000 per TF, 800 above warm-up 200); fewer closed bars than warm-up prints NOT_IN_DATA; `--at` fetches the 1000 bars ending at `at` |
+| 2 | cycle/dot rule deferred (E2) | REAL, now sourced: operator quote 11-04 ~13:30Z (Bible, Operator rules): a cycle starts at an up-cross from the lower zone and ends at the opposite cross. OURS: the turning dot needs prior-bar wt1 at or beyond +-53 (as the wt30 study); intermediate crosses inside a cycle do not end it; COMPLETED when a valid top dot prints, every valid top since the bottom is listed. Gemini's "or crosses zero/mid" REJECTED: the operator did not say it |
+| 3 | Parameters block format unspecified (E3) | REAL: exactly one fenced ```json layer_state block read by `json.loads`; zero or several blocks fail closed (tested) |
+| 4 | closed-bar filter, venue (E1) | REAL: keep only bars with open + tf <= at (tested); source = Binance spot klines via data-api.binance.vision; `symbol` and `source` are Parameters; the studies used the perp (labelled in the Bible), the live panel uses spot |
+| 5 | contract has no mechanical gate (E4) | DEFERRED: card later for a lint flagging layer-state claims without a STAMP; no new CI gate while CI is red |
+| 6 | 11-04 fixture not pinned (E1) | REAL: `fixture_btcusdt_3m_2026-11-04.csv` sha256 `abb8d293499981aaf799f71566b66d82e70e14165225caf579cfa5e12e883350` asserted by a test |
+
+## Open question (default taken, operator can overrule)
+Which valid top ends the cycle (11-04 3m: bottom 03:12 has valid tops 05:03, 05:54, 07:33, 11:39; he drew 11:39): the runtime reports all and the last; the operator confirms the reading.
