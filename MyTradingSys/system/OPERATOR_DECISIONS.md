@@ -1743,6 +1743,11 @@ Operator: "clear notes for every layer ... one Bible, which is the one source of
 Operator: "now use Claude Platform PLZZZZZZ" then "Ask all running sessions to use it as much as it makes sense - wisely!".
 Applied: every running MTS session (L1, sim Opus, Lab Guy x2, CBP, Eagle_Eyes) told to nominate real ready cards (tasks.py check first) to L1, which owns the one-job-per-machine desktop queue and launches back to back; login B on the NUC told the same plus codex_run.py tick and gemini_queue.py runs each wake. Earlier same turn: DSA bridges checked at 0.7.25 on desktop and NUC (= trunk); DSA rows posted to DSA-NB (flake hunt) and DSA-NUC (alt data inventory).
 
+## d-route-tag-every-session-1104 (2026-11-04, operator in chat)
+Operator: "every session has this mandatory obligation of finishing the work and putting it with a note for the right pipeline, you know, where it should go next, so that it is moved properly, so that there is a tag. And I think that we have discussed this before. So perhaps we need some kind of admin guy support for this. Look into this, fire the right sessions to get this resolved, because this is a long-standing requirement and confusion, and work has been done on this."
+Applied: audit `research/route_tag_2026-11-04/AUDIT.md` (7 d: 265 of 1253 non-bookkeeping Result commits named a next step, 70 outputs orphaned); `sync.py ship` refuses commits without `Next: <card-id | stage | END: reason>`, `tasks.py done --next` required, `route_audit.py check` at Supervisor/coordinator boot; 10 backfill cards `route-*`.
+Answer: given in chat above (an order, not a question); applied, nothing waits on the operator.
+
 ## d-all-llms-move-faster-1104 (2026-11-04 ~14:15Z, operator in chat, login C Lead)
 Operator: "Use all LLMs - move faster".
 Applied: NUC runs 10 ready [GEMINI] review cards in 3 parallel gemini_queue streams (Flash 4, Argon 3, GPT-oss 3) plus a codex_run.py tick, launched from the desktop Lead over the NUC gate; desktop credit chain (L1) stays back to back with Lab Guy's cards added as filed; DSA rows (flake hunt, NUC data inventory) wait for DSA to open. CI red handled the same hour: C31 (e1194e2b) and stall-fix (2f055df7) reverts, both re-land through their authors.

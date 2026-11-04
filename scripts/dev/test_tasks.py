@@ -251,7 +251,7 @@ class QueueTest(unittest.TestCase):
 
     def test_ready_card_closes_without_take_when_every_gate_passes(self):
         T.save(self.repo, good("B1"))
-        rc, out = self.run_cli("done", "B1", "--result", "28 rows")
+        rc, out = self.run_cli("done", "B1", "--result", "28 rows", "--next", "END: test")
         self.assertEqual(rc, 0, out)
         c = T.get(self.repo, "B1")
         self.assertEqual(c["state"], "done")
@@ -259,11 +259,11 @@ class QueueTest(unittest.TestCase):
 
     def test_ready_card_that_fails_a_gate_does_not_close(self):
         T.save(self.repo, good("B1", goal=""))
-        rc, out = self.run_cli("done", "B1", "--result", "x")
+        rc, out = self.run_cli("done", "B1", "--result", "x", "--next", "END: test")
         self.assertNotEqual(rc, 0)
         self.assertEqual(T.get(self.repo, "B1")["state"], "ready")
         T.save(self.repo, good("B2", state="refined"))
-        rc, _ = self.run_cli("done", "B2", "--result", "x")
+        rc, _ = self.run_cli("done", "B2", "--result", "x", "--next", "END: test")
         self.assertNotEqual(rc, 0)
 
     def test_check_all_demotes_a_ready_card_that_regressed(self):
@@ -345,7 +345,7 @@ class QueueTest(unittest.TestCase):
         self.assertEqual(self.run_cli("take", "B1", "--claim", "slug")[0], 0)
         self.assertEqual(T.get(self.repo, "B1")["state"], "active")
         self.assertNotEqual(self.run_cli("take", "B1")[0], 0)          # already active
-        self.run_cli("done", "B1", "--result", "28 rows in results.csv")
+        self.run_cli("done", "B1", "--result", "28 rows in results.csv", "--next", "END: test")
         c = T.get(self.repo, "B1")
         self.assertEqual((c["state"], c["result"]), ("done", "28 rows in results.csv"))
 
@@ -642,7 +642,7 @@ class StateTagTest(NextSkipsClaimedTest):
         self.assertTrue(c["refreshed"])
         c["state"] = "active"
         T.save(self.repo, c)
-        self.run_cli("done", "TS1", "--result", "9 rows")
+        self.run_cli("done", "TS1", "--result", "9 rows", "--next", "END: test")
         c = T.get(self.repo, "TS1")
         self.assertEqual(c["latest"][0]["kind"], "ship")
         self.assertIn("9 rows", c["latest"][0]["line"])
@@ -931,7 +931,7 @@ class ReviewGateTest(unittest.TestCase):
         T.REPO = repo
         try:
             T.save(repo, good("STATE1", state="refined"))
-            rc, out = run_cli("done", "STATE1", "--result", "receipt")
+            rc, out = run_cli("done", "STATE1", "--result", "receipt", "--next", "END: test")
             self.assertNotEqual(rc, 0, out)
             self.assertIn("only a ready or active", out)
             self.assertEqual(T.get(repo, "STATE1")["state"], "refined")
@@ -1012,7 +1012,7 @@ class ReviewGateTest(unittest.TestCase):
             active = T.get(repo, "GATE1")
             active["state"] = "active"
             T.save(repo, active)
-            rc, out = run_cli("done", "GATE1", "--result", "receipt")
+            rc, out = run_cli("done", "GATE1", "--result", "receipt", "--next", "END: test")
             self.assertNotEqual(rc, 0, out)
             self.assertIn("REVIEWED", out)
             self.assertEqual(T.get(repo, "GATE1")["state"], "active")
@@ -1027,7 +1027,7 @@ class ReviewGateTest(unittest.TestCase):
         T.REPO = repo
         try:
             T.save(repo, good("GATE2", state="active", weight="ROUTINE", note="class=C2 REVIEWED: reviewer 2026-10-18"))
-            rc, out = run_cli("done", "GATE2", "--result", "")
+            rc, out = run_cli("done", "GATE2", "--result", "", "--next", "END: test")
             self.assertNotEqual(rc, 0, out)
             self.assertIn("receipt", out)
             self.assertEqual(T.get(repo, "GATE2")["state"], "active")
@@ -1106,7 +1106,7 @@ class ResultTrustTest(unittest.TestCase):
             self.assertNotEqual(rc, 0, out)
             self.consumer['state'] = 'active'
             T.save(self.repo, self.consumer)
-            rc, out = run_cli('done', 'USE', '--result', 'evidence')
+            rc, out = run_cli('done', 'USE', '--result', 'evidence', "--next", "END: test")
             self.assertNotEqual(rc, 0, out)
             self.assertEqual(T.get(self.repo, 'USE')['state'], 'active')
         finally:
