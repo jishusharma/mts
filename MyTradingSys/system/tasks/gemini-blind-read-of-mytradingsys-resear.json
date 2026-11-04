@@ -1,35 +1,64 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_SHIP_TRAIN_DESIGN_1104.md'); assert p.exists() and 'VERDICT' in p.read_text()\""
+  ],
   "created": "2026-11-04T08:57:07Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_SHIP_TRAIN_DESIGN_1104.md exists, lists each finding with a quoted DESIGN.md line, ends with VERDICT: CLEAR or FINDINGS",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Gemini blind read of ship_train_2026-11-04/DESIGN.md: list claims that are untestable, contradictory, or lack a number, without author intent",
   "id": "gemini-blind-read-of-mytradingsys-resear",
   "kind": "audit",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship-train DESIGN.md: 56 CI reds by cause/author/host + 8-rule ship-queue design",
+      "ref": "a7804978fdf9",
+      "utc": "2026-11-04T09:21:18Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "a7804978fdf9 ship-train DESIGN.md: 56 CI reds by cause/author/host + 8-rule ship-queue des",
+      "ref": "MyTradingSys/research/ship_train_2026-11-04/DESIGN.md",
+      "utc": "2026-11-04T09:21:18Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-04 T0-ONLY; Gemini low effort feeder card. Refined by planner-refine-1104.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T12:59:51Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/ship_train_2026-11-04/DESIGN.md",
+    "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_SHIP_TRAIN_DESIGN_1104.md"
+  ],
+  "scope_out": [
+    "any edit to DESIGN.md"
+  ],
+  "scope_sha": "a7804978fdf9",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read DESIGN.md only (no commit log, no author notes)",
+    "Write each ambiguity, missing number or contradiction with the quoted line",
+    "End with a VERDICT line"
+  ],
+  "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_SHIP_TRAIN_DESIGN_1104.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] blind read of MyTradingSys/research/ship_train_2026-11-04/DESIGN.md",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }

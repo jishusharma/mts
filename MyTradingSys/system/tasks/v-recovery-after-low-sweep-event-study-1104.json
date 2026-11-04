@@ -1,35 +1,59 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/verdicts.py check \"sweep low win-back\""
+  ],
   "created": "2026-11-04T07:01:03Z",
   "depends_on": [],
-  "done_when": "RESULT.md with n, fee-net forward returns 4h/24h/72h per timeframe, DEV/VAL split, CI; Market tab line names it",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/v_recovery_low_sweep_2026-11-04/RESULT.md has n, fee-net forward returns 4h/24h/72h per timeframe, DEV/VAL split, CI; exports sim_desk/results/v-recovery-low-sweep-1104.json; the Market tab line is a separate card",
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Measure what BTC did after a 5-day-low sweep followed by a >=50% win-back within 3h",
+  "goal": "Measure what BTC did after a 5-day-low sweep followed by a >=50% win-back of the fall within 3h",
   "id": "v-recovery-after-low-sweep-event-study-1104",
   "kind": "build",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "research_kit: context harness (regime, phase, session tags, retest-entry, regime-mix line)",
+      "ref": "57b0b511c3e6",
+      "utc": "2026-11-03T22:40:27Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
-  "mutation_check": "",
-  "note": "OPERATOR QUOTE: there was such a fall, and in 3 hours the market recovered ... it took out all the lows ... what these kind of events are telling from the past, look at the V-shaped recovery and on different time frames what it means. The context that we have from Tom",
+  "mutation_check": "MyTradingSys/research/pit_levels_2026-10-16/test_pit_leakage.py::test_f1_prior_day_levels",
+  "note": "OPERATOR QUOTE: there was such a fall, and in 3 hours the market recovered ... it took out all the lows. Thresholds 5d/50%/3h are OURS. Refined by planner-refine-1104.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T13:01:43Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/v_recovery_low_sweep_2026-11-04",
+    "MyTradingSys/backtest/research_kit.py"
+  ],
+  "scope_out": [
+    "live feed code; live tree; Habib or Tom rules (context only)"
+  ],
+  "scope_sha": "57b0b511c3e6",
+  "size": "M",
+  "sources": [
+    "OPERATOR QUOTE in note (OURS thresholds: 5 days, 50%, 3h)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Write PRE_REG.md (run verdicts.py check and prereg_gate.py first; include ## Context and Regime mix:)",
+    "Detect events on BTC 1h klines: price below the prior 5-day low, then >=50% win-back within 3h, no look-ahead",
+    "DEV pass, VAL on survivors; RESULT.md and the sim_desk export"
+  ],
+  "tests": "MyTradingSys/research/v_recovery_low_sweep_2026-11-04/test_study.py: new case fails if the win-back window or the 5-day low uses a future bar",
   "title": "Event study: BTC sweeps the 5-day low then wins back >=50% of the fall within 3h; forward 4h/24h/72h returns by timeframe, fee-net, DEV/VAL split; done when the live feed Market tab can show 'what this usually led to' with n and CI",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }

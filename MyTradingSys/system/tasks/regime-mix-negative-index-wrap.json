@@ -1,36 +1,60 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04 MyTradingSys/research/bb_long_window_2026-11-04 -q"
+  ],
   "created": "2026-11-04T07:47:11Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "rsi_divergence_mtf_gated study.py, study_long.py and bb_long_window study_long.py return None for a week before the first data day; a new test fails on the old code and passes on the new; regime_mix_*.txt regenerated if its line changes",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "regime_mix_line inputs never wrap to the array end: weeks before the first data day give None, using the state_at guard from bear_proxy_context_tuning",
   "id": "regime-mix-negative-index-wrap",
   "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "bear-proxy context tuning: no default earns its place (0 of 11 cells), 15m fake-out filter",
+      "ref": "dbedba44981f",
+      "utc": "2026-11-04T07:35:12Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "DECISION (OURS): size S; if a regenerated number changes a RESULT.md verdict, stop and report. Refined by planner-refine-1104.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T13:01:41Z",
   "refs": [
     "research/bear_proxy_context_tuning_2026-11-04"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/study.py",
+    "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/study_long.py",
+    "MyTradingSys/research/bb_long_window_2026-11-04/study_long.py",
+    "MyTradingSys/research/bear_proxy_context_tuning_2026-11-04/study.py"
+  ],
+  "scope_out": [
+    "research_kit.py; changing any RESULT.md verdict (stop and report if numbers move)"
+  ],
+  "scope_sha": "dbedba44981f",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read state_at (bear_proxy_context_tuning study.py:128) and test_state_at_never_wraps_negative_index",
+    "Port the 0 <= x < len guard to the week-start regime lookup in the 3 files",
+    "Add a before-first-day case to test_gate_wiring.py and test_long_wiring.py; run them"
+  ],
+  "tests": "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/test_gate_wiring.py: new week-before-first-day case returns None, fails on pre-change code",
   "title": "regime_mix_line in rsi_divergence_mtf_gated + bb_long_window study_long.py: weeks before first data day index -1 and wrap to array end; port state_at guard from bear_proxy_context_tuning",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }

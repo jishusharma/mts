@@ -1,35 +1,59 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/artifacts.py stale",
+    "python scripts/dev/artifacts.py publish-record --slug mts_home",
+    "python scripts/dev/artifacts.py publish-record --slug mts_layer_map"
+  ],
   "created": "2026-11-04T07:33:20Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "artifacts.py stale prints no STALE line for mts_home or mts_layer_map, and registry.json pub date for both slugs is today",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Republish the MTS Home and MTS Layers artifact pages stale after 7d5cc930 and record each publish",
   "id": "republish-mts-home-and-mts-layers-stale-",
   "kind": "run",
   "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "artifacts: old CBP copy and Haiku demo deleted by operator; Home v27, Layers v17",
+      "ref": "89c59d6d867e",
+      "utc": "2026-11-04T08:53:35Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "DECISION (OURS): distinct from republish-6-stale-artifact-pages-flagged (login C pages); these two slugs only. Needs the login that owns them, else park with the reason. Refined by planner-refine-1104.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T13:01:41Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/artifacts.py",
+    "MyTradingSys/system/artifacts/registry.json"
+  ],
+  "scope_out": [
+    "page design changes; pages owned by another login (skip and list the reason)"
+  ],
+  "scope_sha": "89c59d6d867e",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "python scripts/dev/artifacts.py stale; confirm both slugs listed",
+    "Rebuild each page (artifacts.py build) and publish with the Artifact tool",
+    "artifacts.py publish-record --slug mts_home, then --slug mts_layer_map"
+  ],
+  "tests": "scripts/dev/test_artifacts.py (existing) stays green after the registry change",
   "title": "Republish MTS Home and MTS Layers (stale after 7d5cc930: retire rows lost the why field), then artifacts.py publish-record --slug mts_home / mts_layer_map",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }
