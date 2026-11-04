@@ -24,7 +24,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "refined by Session_Planner 2026-11-03; live-path no; verify: content sha, cherry empty, ls-tree both files",
+  "note": "refined by Session_Planner 2026-11-03; live-path no; verify: content sha, cherry empty, ls-tree both files\nREVIEWED:2026-11-04 ACCEPT (Haiku on API credit, job haiku-review-ready-sonnet-1104: ci_starts present in sync.py; scope testable; no twin found.)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",

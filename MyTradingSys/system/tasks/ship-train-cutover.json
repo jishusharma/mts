@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-03T20:35:44Z",
+  "depends_on": [],
+  "done_when": "ship lands only through the train, trunk red-state minutes over 3 days near 0, list in SHIP_TRAIN.md section 4 all done",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Flip ship to the train by default, add ship --direct break-glass, remove X6, first-viewer revert rule, CI-REVERT doctor check, ship --fix-ci, mark-green alias after one cycle, local full gate to smoke; update CLAUDE.md, GATE_SPEED, DEPLOY_RUNBOOK",
+  "id": "ship-train-cutover",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "handover: supervisor B 20:10Z, C is up",
+      "ref": "396c83c62742",
+      "utc": "2026-11-03T20:08:32Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "after ship-train-shadow-week go",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T20:35:45Z",
+  "refs": [
+    "MyTradingSys/system/SHIP_TRAIN.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/sync.py",
+    ".github/workflows",
+    "MyTradingSys/system"
+  ],
+  "scope_out": [
+    "live tree; auto_deploy"
+  ],
+  "scope_sha": "396c83c62742",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "flip default and add --direct",
+    "remove redundant checks one by one",
+    "update docs"
+  ],
+  "tests": "new tests must fail on pre-change code once",
+  "title": "Ship train 5/5: cutover and removal of redundant checks",
+  "weight": "",
+  "worker": "session"
+}

@@ -1,0 +1,56 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-03T20:34:58Z",
+  "depends_on": [],
+  "done_when": "Over 3 days of fast-track runs no class-A flaky red (SHIP_TRAIN.md section 1) and a docs-only sha gets its own run",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Make red CI attributable: fix or quarantine the chronic c_drive_buckets Windows flake, rerun failed shards once in ci.yml, run the docs-integrity test subset on docs-only pushes",
+  "id": "ship-train-flake-floor",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ci.yml: run CI on task-card pushes (MyTradingSys/system/tasks/**)",
+      "ref": "33490efb55a0",
+      "utc": "2026-10-25T11:22:03Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T20:35:10Z",
+  "refs": [
+    "MyTradingSys/system/SHIP_TRAIN.md"
+  ],
+  "result": "",
+  "scope_in": [
+    ".github/workflows/ci.yml",
+    "scripts/dev/gate_quarantine.tsv"
+  ],
+  "scope_out": [
+    "live tree"
+  ],
+  "scope_sha": "33490efb55a0",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "reproduce c_drive_buckets BucketTest dry_run failure on a Windows runner",
+    "fix or quarantine it",
+    "add one-shot failed-shard rerun and docs-only integrity lane"
+  ],
+  "tests": "new test or CI check must fail on pre-change code once",
+  "title": "Ship train 1/5: flake floor (c_drive_buckets, shard rerun, docs-integrity lane) per SHIP_TRAIN.md",
+  "weight": "",
+  "worker": "session"
+}

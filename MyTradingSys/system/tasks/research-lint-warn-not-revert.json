@@ -39,7 +39,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-03 ACCEPT (Sonnet agent a2905516c ACCEPT-AFTER-FIX; fix applied by planner-a-1103, confirmed planner-refine-1104). 98 reverts in title unverified: 76 Revert commits on origin/fast-track in last 7d (planner-refine-1104). DECISION (OURS): count only those; gap table lists last 20.",
+  "note": "REVIEWED:2026-11-03 ACCEPT (Sonnet agent a2905516c ACCEPT-AFTER-FIX; fix applied by planner-a-1103, confirmed planner-refine-1104). 98 reverts in title unverified: 76 Revert commits on origin/fast-track in last 7d (planner-refine-1104). DECISION (OURS): count only those; gap table lists last 20.\nREVIEWED:2026-11-04 ACCEPT (Haiku on API credit, job haiku-review-ready-sonnet-1104: Gap file absent; scope scripts present; per-gap tests possible; no twin found.)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",

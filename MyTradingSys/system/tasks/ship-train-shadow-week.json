@@ -1,0 +1,47 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-03T20:35:41Z",
+  "depends_on": [],
+  "done_when": "One table in SHIP_TRAIN.md with the four numbers and a go/no-go line for the operator",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Run the train on shadow beside direct push for 3-7 days and report red-state minutes shadow vs trunk, land time p50/p90, false ejects, repeat-red runs, branch-green-but-trunk-red evidence",
+  "id": "ship-train-shadow-week",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "after ship-train-bisect-eject-signal",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T20:35:42Z",
+  "refs": [
+    "MyTradingSys/system/SHIP_TRAIN.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/SHIP_TRAIN.md"
+  ],
+  "scope_out": [
+    "live tree; auto_deploy"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "collect shadow and trunk runs",
+    "compute the table",
+    "write go/no-go"
+  ],
+  "tests": "new tests must fail on pre-change code once",
+  "title": "Ship train 4/5: shadow week measurement",
+  "weight": "",
+  "worker": "session"
+}

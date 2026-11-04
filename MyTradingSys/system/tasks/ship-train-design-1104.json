@@ -1,7 +1,21 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T09:21:24Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": 28,
+    "folded": "2026-11-03T20:35:33Z",
+    "misses": 27,
+    "reads": [
+      "MyTradingSys/tests/docs/test_integrity.py",
+      ".github/workflows/ci.yml",
+      "scripts/dev/mts_signal.py",
+      "MyTradingSys/system/DEPLOY_RUNBOOK.md",
+      "MyTradingSys/system/SUPER_SESSION.md"
+    ],
+    "session": "agent-ab6e65959f0fb7e6c"
+  },
   "created": "2026-11-03T20:14:54Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/ship_train_2026-11-04/DESIGN.md holds a table of the 56 red runs by cause (gh run list/view counts, parsed not eyeballed), and a one-page queue design: lands ships from all machines, ejects a breaking ship, names its author; each design rule cites a counted cause",
@@ -12,17 +26,29 @@
   "goal": "Closes a gate: measure why CI is red 28% of runs (56/200, 11-01..11-03) by cause and author-class, then write one ship-queue design (design only, no code)",
   "id": "ship-train-design-1104",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/ship_train_2026-11-04/DESIGN.md: 56 reds = 38 content + 18 flaky; 8 ",
+      "ref": "a7804978f",
+      "utc": "2026-11-04T09:21:24Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED: planner-c-1104 2026-11-04 T0-ONLY",
+  "note": "REVIEWED: planner-c-1104 2026-11-04 T0-ONLY\nREVIEWED:2026-11-04 ACCEPT (Haiku on API credit, job haiku-review-ready-sonnet-1104: Design-only doc, no code; needs gh run data; no twin found.)",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-04T07:19:04Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/ship_train_2026-11-04/DESIGN.md: 56 reds = 38 content + 18 flaky; 8 queue rules",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/ship_train_2026-11-04/DESIGN.md"
   ],
@@ -34,12 +60,13 @@
   "sources": [
     "MyTradingSys/system/DEBUGGING.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "gh run list --workflow ci.yml --limit 200 --json; classify red runs by failing job/step",
     "join with commit author via git log",
     "write DESIGN.md with counts then rules"
   ],
+  "taken": "2026-11-04T09:21:24Z",
   "tests": "audit card: row counts in the table sum to 56; no code changed",
   "title": "Ship train: measure why CI is red 28% of runs (56/200, 11-01..11-03) and design one queue that lands ships from all machines, ejects a breaking ship, names its author",
   "weight": "IMPORTANT",

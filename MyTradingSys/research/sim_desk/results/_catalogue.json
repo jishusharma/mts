@@ -1,7 +1,7 @@
 {
 "_doc": "Catalogue of known tests on trunk. kind is inferred (kind_source). Built by sim_desk/build_catalogue.py.",
-"count": 345,
-"exported": 345,
+"count": 347,
+"exported": 347,
 "rows": [
 {
 "id": "st-_archive-loose_2026-10-cbp_profile6_result",
@@ -5008,6 +5008,34 @@
 "date": "2026-10-31",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
+},
+{
+"id": "bear-proxy-context-tuning-2026-11-04",
+"family": "Bear proxy per context",
+"title": "Best OURS bear-proxy setting per regime/phase and best fake-out filter per timeframe, BTCUSDT+ETHUSDT SPOT 2017-08..2025-06",
+"kind": "backtest",
+"kind_source": "result file",
+"verdict": "NO DEFAULT CHANGES. Part A (OURS bear proxy per regime/phase cell): INCONCLUSIVE (underpowered), not FAIL: the power gate (m = 11) BLOCKs every picked cell and 3 cells have no setting with n >= 30, so d-bear-proxy-1104 stays. Part B (fake-out filter per timeframe): 15m is the only powered TF and its picked filter (volume) FAILS on VALIDATION (fee-net -0.183 % [-0.312, -0.053]); 1h, 4h, 1d INCONCLUSIVE (underpowered). 0 of 11 cells earn a default; HOLDOUT never loaded.",
+"source": "MyTradingSys/research/bear_proxy_context_tuning_2026-11-04/RESULT.md",
+"exported": true,
+"result_id": "bear-proxy-context-tuning-2026-11-04",
+"date": "2026-11-04",
+"status": "FAILED",
+"verdict_class": "failed"
+},
+{
+"id": "rsi-40-60-line-behaviour-2026-11-04",
+"family": "RSI 40/60 line behaviour",
+"title": "How RSI14 behaves around the 40 and 60 lines (hold / break / range) on 1h/4h/12h/1d, cushion, context, bounce vs wait plays, BTCUSDT+ETHUSDT SPOT 2017-08..2025-06",
+"kind": "backtest",
+"kind_source": "result file",
+"verdict": "NO DEFAULT PLAY. RSI14 at the 40 and 60 lines behaves close to a random-walk benchmark (hold +1.5 points, break -1.7 points over chance, averaged over 16 timeframe x line x side cells; range 21-33 %); the cushion that best separates hold from break is mostly geometry (c=5 on the side RSI came from, c=1 on the other). Another timeframe at the same line raises the hold rate (+7 to +18 points); an aligned higher-timeframe bias lowers it (-10 to -14 points on 1h-12h). Both plays (take the bounce, wait for the break) are INCONCLUSIVE (underpowered, not FAIL): the power gate (m = 6) blocks all 64 event cells, the 6 DEV picks keep 2-9 events each on VALIDATION. HOLDOUT never loaded.",
+"source": "MyTradingSys/research/rsi_40_60_line_behaviour_2026-11-04/RESULT.md",
+"exported": true,
+"result_id": "rsi-40-60-line-behaviour-2026-11-04",
+"date": "2026-11-04",
+"status": "FAILED",
+"verdict_class": "failed"
 }
 ]
 }
