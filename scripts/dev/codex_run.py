@@ -688,8 +688,9 @@ def soften_pass(wt, now, kind):
 
 def commit_message(card, outcome, result, when):
     model, effort = tasks.codex_setting(card)
+    nxt = str(card.get("next") or "").strip().removeprefix("Next:").strip() or f"END: lab run {outcome}"   # sync.py ship refuses a commit with no `Next:` line
     return "\n".join([f"lab {card['id']}: {outcome} ({card['kind']})", "",
-                      f"Result: {result}", f"Codex: {model} / {effort}, sandbox run, committed by codex_run.py", "",
+                      f"Result: {result}", f"Next: {nxt}", f"Codex: {model} / {effort}, sandbox run, committed by codex_run.py", "",
                       f"MTS-Session: MTS-{when.strftime('%Y-%m-%d-%H%M')}Z-COD-LAB-{card['id']}"])
 
 
