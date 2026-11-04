@@ -29,18 +29,24 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "report",
+      "line": "DECISION (OURS) 2026-11-04 Builder: not built; Home rebuilt by others since 11-03 audit (d",
+      "ref": "b92b86135",
+      "utc": "2026-11-04T14:04:56Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "context-filter review of every backtest + two operator decisions (context re-test, reviews",
-      "ref": "f818131fe2fe",
-      "utc": "2026-11-03T22:29:13Z"
+      "line": "ship: regenerated LAYERS.md",
+      "ref": "917a715abb03",
+      "utc": "2026-11-04T13:59:29Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "f818131fe2fe context-filter review of every backtest + two operator decisions (context re-",
-      "ref": "MyTradingSys/system/OPERATOR_DECISIONS.md",
-      "utc": "2026-11-03T22:29:13Z"
+      "line": "917a715abb03 ship: regenerated LAYERS.md",
+      "ref": "MyTradingSys/system/LAYERS.md",
+      "utc": "2026-11-04T13:59:29Z"
     }
   ],
   "layers": [],
@@ -50,7 +56,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-03T22:33:40Z",
+  "refreshed": "2026-11-04T14:05:00Z",
   "refs": [
     "MyTradingSys/system/artifacts/MTS_HOME_AUDIT_2026-11-03.md"
   ],
@@ -73,7 +79,7 @@
     "no live tree",
     "no change to registry tile urls"
   ],
-  "scope_sha": "f818131fe2fe",
+  "scope_sha": "917a715abb03",
   "size": "M",
   "sources": [
     "MyTradingSys/system/artifacts/MTS_HOME_AUDIT_2026-11-03.md",
