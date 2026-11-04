@@ -23,7 +23,22 @@
   "goal": "Measure on Binance BTC history which layer sequences after an approach to the last lower high or prior-day high separated failures from breaks, with probability and n; descriptive, fee-free. Full text: MyTradingSys/research/eagle_eyes_picture_2026-10-28/CARD_SPECS.md",
   "id": "level-approach-study-daily-last-lower-hi",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Eagle_Eyes: Pitchfork keep-and-prepare decision, level-approach-prep + pitchfork cards, 6 ",
+      "ref": "0dfeb558f5b5",
+      "utc": "2026-10-29T21:19:58Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "0dfeb558f5b5 Eagle_Eyes: Pitchfork keep-and-prepare decision, level-approach-prep + pitchf",
+      "ref": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/CARD_SPECS.md",
+      "utc": "2026-10-29T21:19:58Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -32,7 +47,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-29T21:19:03Z",
+  "refreshed": "2026-11-04T19:15:42Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -40,10 +55,10 @@
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/CARD_SPECS.md"
   ],
   "scope_out": [],
-  "scope_sha": "",
+  "scope_sha": "0dfeb558f5b5",
   "size": "M",
   "sources": [],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Pre-reg with gate 0g on 3 operator shots",
     "Build approach classifier on 1m archive F:/MTS/data/tom_raw",
