@@ -56,6 +56,20 @@ and D5/D6's existing rotation and stop-and-hand-over mechanics; nothing here inv
    was); it stopped dispatching new links and finalized hand-over rather than risk a 6th link landing half-shipped right at
    reset (`NEXT_SESSION.md`, "Rolling super-session chain hand-over 2026-10-27").
 
+## Sonnet checklist (operator 2026-11-04, d-24h-plan-cycle-1104: a Fable/Opus Lead plans 24 h, Sonnet super sessions run it)
+The plan of the day is `PLAN_24H_<date>.md` (the newest one): links, API-credit job queue, targets, learnings. Sonnet works
+best fully planned, so a Sonnet super session does not re-plan; it runs its link and records what it learned. In order, every link:
+1. Boot: `get_usage`; `sync.py start supervisor-C-<date>-L<n>`; read the newest PLAN_24H file (your link row, section 3 queue, section 4 rules), ANNOUNCEMENTS ACTIVE, Boot facts; `plan --until <window end>`.
+2. API-credit jobs first (they cost no login quota): `api_job.py status`; nothing running -> launch the next queued job (`api_job.py launch <slug> --card <id> --model <m> --max-usd <cap>`), run its printed `bg_watch.py until` line in the background. One job per machine.
+3. Then login work: `plan` lines (RUN, SPAWN, LANE LOW) exactly as printed; never dispatch raw/refined; one Sonnet worker only while the 5 h window is under 45 %; Haiku Agents for every wide read.
+4. On every worker or job end: verify (`git cherry` empty, `Result:` in the body, CI moved), ledger the job the same wake, `mark_completed`, archive; a failed job gets one retry with the failure quoted, never a third.
+5. Feeder rule on every ship: companion `[GEMINI]`/CODEX card ready the same wake (A-20261104-1 floors CODEX 8, GEMINI 4).
+6. Never ask the operator; take the default and write `DECISION (OURS)` in the notes file; chat words from him go to OPERATOR_DECISIONS.md that turn.
+7. Rewrite the notes file every wake; the last call of every turn is `supervisor.py watchcheck` (exit 0). After compaction rebuild from notes, board, `git cherry`, `list_sessions`, never memory.
+8. Never switch model or fast mode mid-session (cache rewrite). Never start a Fable session or message one.
+9. End of link: append 1-3 `Learnings` lines to the PLAN_24H file section 5 (numbers, keep/drop), Session log line here, `supervisor.py handover`, one docs-only ship. The last link of the day drafts the next `PLAN_24H_<date>.md` (same sections) from section 5 and ROADMAP_BOARD.
+Model learnings behind this list: Haiku returns empty on raw cards (10-17) -> only `tasks.py check`-passing cards go to any model; Sonnet drifts without a done-when -> every brief and job carries one; Opus/Fable context is the cost (10-25 Doctor 87 % of 24 h) -> Fable/Opus only plan and review, thin; state kept in context was lost at 39 of 68 compactions (10-15) -> notes file + ledger on disk; a model switch mid-session forces a full cache rewrite (D5).
+
 ## Mechanics (merged 2026-10-26 from SUPERVISOR.md and SUPER_LOOP.md; their full old text: `handoff_history/SUPERVISOR_full_2026-10-26.md`, `handoff_history/SUPER_LOOP_full_2026-10-26.md`)
 Supervisor and super session are ONE role. Code: `scripts/dev/supervisor.py plan|tick|wait|watchcheck|handover`; role file `roles/supervisor.md`.
 - **Turn caps.** The 40 tool-turn / 10 operator-turn cap (CLAUDE.md step 5) applies to workers and to a plain Supervisor, NOT to the super session: it runs up to 24 h and ends only on a D6 stop or context rotation (D5). A worker's "stop at 40 turns" (size S: 20) is the worker's cap.
@@ -80,6 +94,7 @@ Supervisor and super session are ONE role. Code: `scripts/dev/supervisor.py plan
 - Research Map: `Artifact read` first, edit the one `const DATA = ` line by script in `system/artifacts/research_map.html`, republish to claude.ai/artifact/9nqpZeMeEehadoBoYopZU3 from the jishusharma1985 login. Backtest = fee check at the stated stop first (fee R = 0.14% / stop%), then PRE_REG on DEV only.
 - A worker that merges late hits VERDICTS.csv and wiring_registry.json conflicts: union both sides.
 - Login letters: A jishu.sharma, B jishu.awgp, C jishusharma1985.
+- API credit: `scripts/dev/api_job.py launch|status|ledger|total` is the one launcher (key read into the child env only; `F:/MTS/api_runs/<slug>/`); ledger = `PLAN_API_CREDITS_2026-11-04.md` Spent table; the day's queue is in the newest `PLAN_24H_<date>.md`.
 - Spawn gate: after `get_usage` run `python scripts/dev/usage_reminder.py record --five <5h%> --elapsed <% of 5 h elapsed>` or the Agent hook refuses (reading older than 10 min). Start Builder/Planner Agents with `isolation: "worktree"`; without it they edit the Supervisor's own tree. `supervisor.py wait` takes no `--running`.
 
 ## End (any D6 stop)
