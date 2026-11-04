@@ -67,3 +67,4 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-04 | gem-review-three-b-1104 | Haiku 5.5 | 0.37 | 59 | shipped abcce966e; 15 of 15 numbers agree across BB retest, BB range-to-range, sim C30 banner; cap was 2.0 |
 | 2026-11-04 | route-tag-reland-1104 | Sonnet 5.5 | 0.49 | 32 | shipped 6e07fe14; trunk CI red after it (wiring steps 3w/3x), Super notified; cap was 6.0 |
 | 2026-11-04 | labguy-context-filter-two-class-labels-1104 | Haiku 5.5 | 0.02 | 13 | done; ship status unverified; cap was 1.0 |
+| 2026-11-04 | gem-review-spec-1104 | Haiku 5.5 | 0.06 | 22 | shipped f908b25e6; 10 of 10 findings confirmed, 6 raw cards; cap was 1.5 |
