@@ -803,6 +803,15 @@ def cmd_check(a):
     return 1 if bad else 0
 
 
+STAMP_ANY_RE = re.compile(r"REVIEWED:[ \t]*\d{4}-\d{2}-\d{2}[ \t]+(?:ACCEPT|T0-ONLY)\S*", re.I)
+
+
+def void_stamps(note):
+    """REVIEWED stamps in a note that stamp_kind cannot read: mid-line, or glued to punctuation (T0-ONLY;)."""
+    valid = {m.start() for m in STAMP_PLAN_RE.finditer(note)}
+    return [m.group(0) for m in STAMP_ANY_RE.finditer(note) if m.start() not in valid]
+
+
 def cmd_lint(a):
     cards = load_all(REPO)
     reg = registry(REPO)
@@ -819,6 +828,7 @@ def cmd_lint(a):
                     warns.append(f"WARN {c['id']} (ready): STALE {late}; run `tasks.py tag {c['id']} --refresh` after re-reading the card")
         if c["id"] + ".json" != path_of(REPO, c["id"]).name:
             errs.append(f"{c['id']}: file name differs from id")
+        errs += [f"{c['id']}: void review stamp {v!r} (a stamp must start a line and the kind must be followed by a space or line end)" for v in void_stamps(str(c.get("note") or ""))]
     print("\n".join(errs + warns) if errs else "\n".join(warns + [f"tasks lint: {len(cards)} cards OK | {status_line(cards)}"]))
     return 1 if errs else 0
 
