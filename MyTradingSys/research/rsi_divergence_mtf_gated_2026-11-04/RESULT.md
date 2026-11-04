@@ -15,3 +15,5 @@ Not a PASS: no VERDICTS row can be PASS without a causal replay test and an inde
 
 Files: PRE_REG.md, BLOCKED.md, counts.csv (pre-return counts), dev_cells.csv (256 cells: gate x TF x arm x kind x entry), dev_survivors.json, regime_mix_dev.txt, study.py, test_gate_wiring.py (4 tests; gate test failed on the pre-change stub: `assert [10, 11, 12, 13, 14] == [10, 14]`, 2 failed 2 passed, then 4 passed).
 Data: BTCUSDT 1m from F:/MTS/Dumps/backtest (raw_1m_2019, raw_1m_2022, raw), loaded only to 2024-07-01.
+
+Regime mix: 130 weeks DEV: bull 25 (19%) | bear 0 (0%) | range 105 (81%) | n/a 0 (0%)

@@ -56,3 +56,9 @@ VERDICTS row, a causal replay test and an independent trade-loop re-run.
 1. RESULT.md line 1 = the window regime-mix line; line 2 = verdict.
 2. Table by regime (aligned / counter / range / ungated) x TF x arm x entry: n, days, gross, net, day-clustered CI, excess over drift.
 3. The gate effect = aligned vs ungated W12 rows; comparison windows beside them.
+
+## Context
+Regime: the Malkan gate itself (daily SMA200 side plus weekly/monthly RSI 60/40 band, SOURCED Malkan); divergence is taken only when aligned.
+Phase: none, because this study tests the regime gate only; phase tags (OURS) are left to the next re-run.
+Session: none, because session tags (OURS) are left to the next re-run.
+Entry: signal-bar entry only; retest entry not tested here (OURS, next re-run).
