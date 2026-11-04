@@ -7,8 +7,8 @@ Cost: 508210 in + 78963 out tokens, about 0.45 USD at batch price.
 ## Totals
 | Verdict | Files |
 |---|---|
-| EMPTY | 188 |
-| NOT ENOUGH DATA | 108 |
+| EMPTY | 187 |
+| NOT ENOUGH DATA | 109 |
 | FAILED | 45 |
 | Keep: NO | 341 |
 | flagged duplicate settings | 0 |
@@ -133,7 +133,7 @@ Cost: 508210 in + 78963 out tokens, about 0.45 USD at batch price.
 | eagle-c27-wavetrend | EMPTY | NO (no trade count in file; verdict EMPTY) | WaveTrend dots (LazyBear WT_CROSS_LB) work as entry triggers on 15m, 1h, 2h and 4h charts, after fees. | 0 trade rows in the file; the summary table shows 2h buy dot at or below -53 net -0.19% (n 108), 2h sell dot at or above 53 net -0.41% (n 119), best cell 4h any |
 | eagle-c28-wt-structure | EMPTY | NO (no trade count in file; verdict EMPTY) | The 2h uptrend buy-dot lead (buy at WaveTrend <= 0, exit at first sell dot after the far band) earns a positive net retu | Trade rows in file: 0. The JSON's summary cites +0.45% net over n 69 for this lead, but no trade rows are present in the file to verify it. |
 | eagle-c29-wt-lower-tf | EMPTY | NO (no trade count in file; verdict EMPTY) | Red-band WaveTrend sells in a downtrend on 10m, 15m and 30m charts are profitable after fees. | The file records 0 trade rows; its summary cites 10m n 321 at -0.09% to -0.17%, 15m n 187 at -0.04% to -0.21%, and 30m n 61 at +0.18% with exit X3; 30m is descr |
-| eagle-c30-wt-rsi-div | EMPTY | NO (no trade count in file; verdict EMPTY) | Buying 30m WaveTrend oversold dots with bullish RSI divergence and exiting at the centre line makes money after fees on | Validation H1 (30m) n 35, mean -0.07% fee-net, FAIL; H2 (15m, 2h trend up) n 22, mean +0.22% fee-net, 95% CI -0.12 to +0.56, Holm p 0.218, INCONCLUSIVE; 0 trade |
+| eagle-c30-wt-rsi-div | NOT ENOUGH DATA | NO (n=35; verdict NOT ENOUGH DATA) | Buying 30m WaveTrend oversold dots with bullish RSI divergence and exiting at the centre line makes money after fees on | Validation H1 (30m) n 35, mean -0.07% fee-net, FAIL; H2 (15m, 2h trend up) n 22, mean +0.22% fee-net, 95% CI -0.12 to +0.56, Holm p 0.218, INCONCLUSIVE; 0 trade |
 | eagle-preus-pullback | EMPTY | NO (no trade count in file; verdict EMPTY) | After price gives back 80% or more of the overnight range by 13:00 UTC, the US session takes the overnight low first, no | Strong giveback days n 84: low taken first 85%, high retaken first 6%; all days: high first 42%, low first 41%. |
 | fractals-f1-swing-confluence | EMPTY | NO (no trade count in file; verdict EMPTY) | A 1h BTC swing level that lines up with a 4h or daily swing is a stronger level, so fading it should beat a plain 1h swi | 0 trade rows in the file; the JSON summary reports 2556 confluence trades at -0.267 R net, random levels -0.160 R, difference -0.106 R (CI -0.143 to -0.070), no |
 | fractals-f2-hurst-gate | EMPTY | NO (no trade count in file; verdict EMPTY) | Gating the RSI divergence and swing-fade trades by a rolling 1h Hurst value (low H = mean-reverting) should improve thei | 0 of 4 gate tests passed; best lift +0.123 R [-0.109, +0.358] (RSI, gate B); fade gate A lift -0.062 R; every kept side stays negative after fees (best -0.20 R) |
