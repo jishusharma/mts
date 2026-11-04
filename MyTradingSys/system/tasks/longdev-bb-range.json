@@ -2,6 +2,19 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 18,
+    "folded": "2026-11-04T03:37:19Z",
+    "misses": 17,
+    "reads": [
+      "MyTradingSys/backtest/research_kit.py",
+      "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/study.py",
+      "scripts/dev/extra_tests.tsv",
+      "MyTradingSys/research/bb_range_retest_2026-11-04/BLOCKED.md",
+      "scripts/dev/lookahead_lint.py"
+    ],
+    "session": "agent-ad771bae2cf3f1b5d"
+  },
   "created": "2026-11-04T03:29:20Z",
   "depends_on": [],
   "done_when": "research/bb_long_window_2026-11-04/PRE_REG_LONG.md frozen first (with ## Context), TRIALS.md rows before outcomes, prereg_gate on the long window, RESULT_LONG.md first line Regime mix with both bear counts, VERDICTS.csv new row; VALIDATION survivors only, HOLDOUT never loaded",
