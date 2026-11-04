@@ -6,12 +6,17 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-03T10:28:30Z",
-    "misses": 1,
+    "folded": "2026-11-04T07:32:37Z",
+    "misses": 10,
     "reads": [
-      "scripts/dev/trial_ledger.py"
+      "scripts/dev/test_artifacts.py",
+      "MyTradingSys/system/ANNOUNCEMENTS.md",
+      "MyTradingSys/system/artifacts/README.md",
+      "MyTradingSys/system/artifacts/layers_board.html",
+      "MyTradingSys/system/artifacts/mts_home.html",
+      "MyTradingSys/system/artifacts/registry.json"
     ],
-    "session": "agent-ae0a8c743fa16b524"
+    "session": "75cc009d-d55b-47f1-b7c2-64ac27cd885d"
   },
   "created": "2026-11-01T08:46:17Z",
   "depends_on": [],
