@@ -129,3 +129,31 @@ def test_two_windows_stamp_in_one_day(tmp_path, monkeypatch):
         assert w
         cbp_run.write_stamp(now, w)
     assert cbp_run.read_stamp()["done"] == ["2026-11-03:EU", "2026-11-03:PRE_US"]
+
+
+def test_rebuild_dashboard_calls_build_board(tmp_path, monkeypatch):
+    tools = tmp_path / "cbp_v2" / "tools"
+    tools.mkdir(parents=True)
+    for n in ("fetch_board_data.py", "build_board.py", "build_dashboard.py"):
+        (tools / n).write_text("", encoding="utf-8")
+    monkeypatch.setattr(cbp_run, "CBP_HOME", tmp_path)
+    calls = []
+    cbp_run.rebuild_dashboard(run=lambda cmd, **kw: calls.append(Path(cmd[1]).name))
+    assert calls == ["fetch_board_data.py", "build_board.py"]  # data first, then the v5 board; legacy dashboard not run
+
+
+def test_rebuild_dashboard_survives_failed_fetch(tmp_path, monkeypatch):
+    tools = tmp_path / "cbp_v2" / "tools"
+    tools.mkdir(parents=True)
+    for n in ("fetch_board_data.py", "build_board.py"):
+        (tools / n).write_text("", encoding="utf-8")
+    monkeypatch.setattr(cbp_run, "CBP_HOME", tmp_path)
+    calls = []
+
+    def run(cmd, **kw):
+        calls.append(Path(cmd[1]).name)
+        if "fetch" in cmd[1]:
+            raise OSError("offline")
+
+    cbp_run.rebuild_dashboard(run=run)  # never fails the run
+    assert calls == ["fetch_board_data.py", "build_board.py"]  # build still runs on the last data

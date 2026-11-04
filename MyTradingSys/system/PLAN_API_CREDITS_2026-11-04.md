@@ -57,3 +57,4 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-04 | setup-review-with-operator | Opus 5.5 | 0.57 | 7 | nothing to build; card refreshed READY, 0/22 setups have operator verdict (needs Eagle_Eyes sitting); cap was 8.0 |
 | 2026-11-04 | longdev-bb-range | Sonnet 5.5 | 0.41 | 15 | see result record; cap was 6.0 |
 | 2026-11-04 | gem-review-wavetrend-1104 | Haiku 5.5 | 0.04 | 17 | shipped 3515fd34a; 5 of 5 numbers agree with Gemini's MATCH; cap was 1.0 |
+| 2026-11-04 | c31-daily-short-upper-bb | Sonnet 5.5 | 0.51 | 27 | see result record; cap was 4.0 |

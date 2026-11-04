@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T13:54:36Z",
   "commands": [
     "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_WAVETREND_C30_1104.md'); assert p.exists() and len(p.read_text())>400\""
   ],
@@ -16,6 +17,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_WAVETREND_C30_1104.md",
+      "ref": "16443f818",
+      "utc": "2026-11-04T13:54:36Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -35,7 +42,12 @@
   "refs": [
     "MyTradingSys/research/wavetrend_c30_retest_2026-11-04/RESULT.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_WAVETREND_C30_1104.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_WAVETREND_C30_1104.md",
     "MyTradingSys/research/wavetrend_c30_retest_2026-11-04"
@@ -44,12 +56,13 @@
   "scope_sha": "36e6bf1bbf6d",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Load all CSVs in MyTradingSys/research/wavetrend_c30_retest_2026-11-04 and compute counts, win rates, expectancy, and regime splits",
     "Compare every figure in RESULT.md against the CSV-derived values and check that OURS vs SOURCED labels match d-bear-proxy-1104",
     "Write MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_WAVETREND_C30_1104.md with a complete reconciliation table and VERDICT"
   ],
+  "taken": "2026-11-04T13:54:36Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_WAVETREND_C30_1104.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] Blind read of WaveTrend C30 retest and long-window RESULT.md vs CSVs",
   "weight": "ROUTINE",

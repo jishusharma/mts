@@ -1,7 +1,6 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "2026-11-04T13:05:03Z",
   "commands": [],
   "created": "2026-11-02T19:48:11Z",
   "depends_on": [],
@@ -14,12 +13,6 @@
   "id": "c31-daily-short-from-the-upper-bb-with-t",
   "lane": "SONNET",
   "latest": [
-    {
-      "kind": "ship",
-      "line": "C31_HALVES.md: UNDERPOWERED, lead n=15 (14 in 2022-23, 1 in 2024-25), fee-net +1.02R, n ne",
-      "ref": "c3462ca30",
-      "utc": "2026-11-04T13:05:03Z"
-    },
     {
       "auto": true,
       "kind": "ship",
@@ -46,12 +39,7 @@
   "refs": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/bb_edge_candle_rule.py"
   ],
-  "result": "C31_HALVES.md: UNDERPOWERED, lead n=15 (14 in 2022-23, 1 in 2024-25), fee-net +1.02R, n needed 230 for 0.3R",
-  "result_receipt": {
-    "trust": {
-      "tag": "UNCHECKED"
-    }
-  },
+  "result": "",
   "scope_in": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/bb_edge_candle_rule.py",
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md"
@@ -64,13 +52,12 @@
   "sources": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md:40"
   ],
-  "state": "done",
+  "state": "ready",
   "steps": [
     "run bb_edge_candle_rule.py, confirm the two reference numbers",
     "split into the two halves, apply fee-net per FORMULAS.md",
     "compute power, write C31_HALVES.md"
   ],
-  "taken": "2026-11-04T13:05:03Z",
   "tests": "script reproduces LEAD 73% +1.10R n=15 and unfiltered 21% -0.07R n=165 before any new row is trusted",
   "title": "C31: daily short from the upper BB with the 50-day trend down: halves 2022-23 vs 2024-25, entry = first close back inside the band, fee-net; LEAD 73% +1.10R n=15, unfiltered 21% -0.07R",
   "weight": "CRUCIAL",

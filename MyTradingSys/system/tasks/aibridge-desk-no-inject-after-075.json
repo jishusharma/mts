@@ -29,7 +29,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "PLANNER 2026-11-01: run-and-report on the Desk host (JIS-NB lane, precedent aibridge-072-desktop-install); DECISION (OURS): retest on current 0.7.9 before touching code, report is 4 releases old. One operator click (Chrome reload) cannot be automated. REVIEWED:2026-11-01 T0-ONLY PLANNER 2026-11-02: current AIBridge is 0.7.11 (6913c301f idle-signal fix); retest on 0.7.11, not 0.7.9.",
+  "note": "REVIEWED:2026-11-01 T0-ONLY | PLANNER 2026-11-01: run-and-report on the Desk host (JIS-NB lane, precedent aibridge-072-desktop-install); DECISION (OURS): retest on current 0.7.9 before touching code, report is 4 releases old. One operator click (Chrome reload) cannot be automated. PLANNER 2026-11-02: current AIBridge is 0.7.11 (6913c301f idle-signal fix); retest on 0.7.11, not 0.7.9.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
