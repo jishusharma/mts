@@ -1,17 +1,16 @@
-﻿BLOCKED
+﻿BLOCKED — The BTC 1h cache exists, but preregistration cannot pass validly for the requested outcome: `prereg_gate.py` requires per-event SD in R, while this task defines fixed-horizon percentage returns and no stop/risk unit. A placeholder gate run returned PASS but is explicitly invalid and cannot authorize outcome access. No klines/outcomes were read; no study results or export were produced. See `MyTradingSys/research/v_recovery_low_sweep_2026-11-04/PRE_REG.md` and `scripts/dev/prereg_gate.py`.
 
 ## What was checked
-- Read `AGENTS.md` (which points to `CLAUDE.md`), `MyTradingSys/system/LAYER_LAB.md`, the read-only context pack, and the claimed task card `MyTradingSys/system/tasks/v-recovery-after-low-sweep-event-study-1104.json`.
-- Ran `python scripts/dev/verdicts.py check "sweep low win-back"`: no prior row matched; preregistration is clear to proceed.
-- Ran `python scripts/dev/prereg_gate.py -h` to confirm the gate requires frozen numeric inputs `--n`, `--sd`, `--cost`, and `--m`; no gate was run because no pre-registration or study exists from which to derive them without first computing outcomes.
-- Checked `MyTradingSys/research/v_recovery_low_sweep_2026-11-04`: the directory does not exist. Thus PRE_REG.md, the test, study code, RESULT.md, and export are all absent. I did not read the market-data arrays because the study is blocked before a valid preregistration can be frozen.
+- `python scripts/dev/verdicts.py check "sweep low win-back"` — no prior matching variant.
+- `python scripts/dev/prereg_gate.py --n 912 --sd 1.4 --cost 0.0 --m auto --new-cells 1 --sd-source "MyTradingSys/system/LAYER_LAB.md:58"` — PASS, MDE 0.203 R, but inputs are invalid for this study; `sd` is not measured and this task has no R definition.
+- Confirmed the specified `F:/MTS/data/bigtrade/cache/perp/klines_1h.npz` exists; did not load or inspect arrays.
+- The earlier 2026-11-04 report incorrectly treated the absent study directory as a data block. This report replaces that rationale: the data is present; the exact blocker is the incompatible preregistration gate input.
 
 ## Findings
 
-| Severity | Location | Finding | Evidence | Proposed fix |
+| Severity | Location | Finding | Evidence | Resolution |
 |---|---|---|---|---|
-| HIGH | `MyTradingSys/research/v_recovery_low_sweep_2026-11-04` (absent) | No preregistration, causal event detector, test, or result exists, so a DEV/VAL run and export cannot be reported. | `Get-ChildItem MyTradingSys/research/v_recovery_low_sweep_2026-11-04` returned path-not-found. The task's gate requires numeric frozen inputs (`python scripts/dev/prereg_gate.py -h`). | Resume in the claimed build run by creating and freezing PRE_REG.md (including `## Context` and `Regime mix:`), run the gate from pre-outcome inputs, then implement and test the study before any return calculation. |
-| MED | `MyTradingSys/system/LAYER_LAB.md:105-108` | The sandbox gate limits a build card to its own test file; this card's required study, result, and sim_desk export are outside that test-only execution allowance. | Guard text: “A `build` card runs only its own test file”; required outputs are listed in `MyTradingSys/system/tasks/v-recovery-after-low-sweep-event-study-1104.json:37-55`. | Runner/coordinator must execute the study stage after the sandbox build restriction is resolved; do not claim DONE from this run. |
+| HIGH | `scripts/dev/prereg_gate.py:3-8, 25-26` | Gate requires a measured per-event SD in R; requested fixed-horizon returns do not define R. | CLI docs specify SD in R, and the `sd <= 1` guard requires a measured source. | Define risk unit and source a pre-outcome SD, or adapt the prereg gate to return units before outcomes are opened. |
+| MED | `MyTradingSys/research/v_recovery_low_sweep_2026-11-04/PRE_REG.md` | Regime mix cannot be supplied from a frozen context definition; no regime split was requested and no as-of regime inputs were preregistered. | PRE_REG records regime mix as NOT_IN_DATA for this design. | Freeze context/regime inputs if required for the study. |
 
-## Follow-up
-No follow-up card created. Card not marked done because the required study and outputs were not produced.
+No test was run and no DEV/VAL outcome or sim_desk export was produced. No follow-up card created. Card remains not done because the specified pre-outcome gate is unresolved.
