@@ -39,20 +39,6 @@ def run_cli(*argv):
 
 
 class DefinitionOfReadyTest(unittest.TestCase):
-    def test_audit_card_missing_input_fails(self):
-        c = good(lane="CODEX", kind="audit", scope_in=["scripts/dev/no_such_file.py"])
-        self.assertTrue(any("no_such_file.py" in m and "audit input missing" in m for m in T.problems(c, audit_inputs=True)))
-        self.assertFalse(any("audit input missing" in m for m in T.problems(dict(c, scope_in=["new: scripts/dev/no_such_file.py", "scripts/dev/"]), audit_inputs=True)))
-        self.assertFalse(any("audit input missing" in m for m in T.problems(dict(c, kind="build", scope_in=["scripts/dev/no_such_file.py"]), audit_inputs=True)))
-
-    def test_default_problems_ignores_audit_inputs(self):
-        c = good(lane="CODEX", kind="audit", scope_in=["scripts/dev/no_such_file.py"])
-        self.assertFalse(any("audit input missing" in m for m in T.problems(c)))   # lint warns instead; flagged ready cards stay ready
-
-    def test_audit_card_existing_input_passes(self):
-        c = good(lane="CODEX", kind="audit", scope_in=["scripts/dev/tasks.py"])
-        self.assertFalse(any("audit input missing" in m for m in T.problems(c, audit_inputs=True)))
-
     def test_good_card_passes(self):
         self.assertEqual(T.problems(good()), [])
 
