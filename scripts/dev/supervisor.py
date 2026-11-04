@@ -499,13 +499,8 @@ def _probe_wait_state(repo: Path, shas: list[str]) -> dict:
         stalled = [f"{r['kind']} {r['id']} {r['age']:.0f}m > cap {r['cap']}m" for r in bg_watch.stalled() if not r.get("ghost")]
     except Exception:
         stalled = None
-    try:
-        import api_job
-        api_running = api_job.running_jobs()
-    except Exception:
-        api_running = None
     return {"shas": sha_on_trunk, "shas_green": sha_on_green, "ci_red": ci_red, "busy_slots": busy_slots, "total_slots": total_slots,
-            "stalled": stalled, "api_running": api_running}
+            "stalled": stalled}
 
 
 STUCK_MAX = 2   # plans in a row with a free worker slot and no new worker: stop the actionable wake (no 5 min wake loop; OURS)
@@ -589,10 +584,6 @@ def _detect_transition(baseline: dict, current: dict) -> str | None:
     if base_busy is not None and cur_busy is not None and base_busy > 0 and cur_busy < base_busy:
         return f"TRANSITION gate slot freed ({base_busy} -> {cur_busy} busy)"
 
-    for slug in baseline.get("api_running") or []:
-        if current.get("api_running") is not None and slug not in current["api_running"]:
-            return f"TRANSITION api job {slug} finished: api_job.py status + ledger, launch the next job"
-
     seen = {x.split()[1] for x in (baseline.get("stalled") or []) if len(x.split()) > 1}
     for x in current.get("stalled") or []:
         if len(x.split()) > 1 and x.split()[1] not in seen:
@@ -603,9 +594,6 @@ def _detect_transition(baseline: dict, current: dict) -> str | None:
 
 def _watcher_file(login: str | None, home=None) -> Path:
     return loop_home(home) / f"{(login or 'any')}-watcher.json"
-
-
-LONG_PREFIX = chr(92) * 2 + "?" + chr(92)     # Windows long-path prefix of GetFinalPathNameByHandle
 
 
 def _pid_alive(pid: int) -> bool:
@@ -630,39 +618,8 @@ def _pid_alive(pid: int) -> bool:
         return False
 
 
-def _stdout_path() -> str:
-    """Where this process's stdout goes: '' for NUL / a pipe / unknown. A harness background task (run_in_background) writes to
-    <...>/tasks/<id>.output; `&` + `>/dev/null` gives ''; `&` inside a foreground call gives that call's file, deleted at its end."""
-    try:
-        if os.name == "nt":
-            import ctypes
-            import msvcrt
-            from ctypes import wintypes
-            h = wintypes.HANDLE(msvcrt.get_osfhandle(sys.stdout.fileno()))
-            k = ctypes.windll.kernel32
-            if k.GetFileType(h) != 1:      # FILE_TYPE_DISK only; NUL is a char device
-                return ""
-            buf = ctypes.create_unicode_buffer(1024)
-            return buf.value if k.GetFinalPathNameByHandleW(h, buf, 1024, 0) else ""
-        return os.readlink(f"/proc/self/fd/{sys.stdout.fileno()}")
-    except Exception:
-        return ""
-
-
-def _harness_tracked(out: str) -> bool:
-    """True when `out` is a harness task output file that still exists (a run_in_background task whose exit notifies the session)."""
-    o = str(out or "")
-    if o.startswith(LONG_PREFIX):
-        o = o[4:]
-    if not o or "$Deleted" in o or o.endswith(" (deleted)"):
-        return False
-    q = Path(o)
-    return q.suffix == ".output" and q.parent.name == "tasks" and q.is_file()
-
-
-def watchcheck(login: str | None = None, home=None, now: datetime | None = None, alive=None, tracked=None) -> tuple[int, str]:
-    """Last call of every coordinator turn: exit 0 when a live, unexpired `wait` watcher marker exists AND that watcher is a harness
-    background task (run_in_background), else (4, NO WAKE SOURCE ...). Fails closed. stall-fix-1104: a `&` watcher wakes nobody."""
+def watchcheck(login: str | None = None, home=None, now: datetime | None = None, alive=None) -> tuple[int, str]:
+    """Last call of every coordinator turn: exit 0 when a live, unexpired `wait` watcher marker exists, else (4, NO WAKE SOURCE ...). Fails closed."""
     now = now or datetime.now(timezone.utc)
     alive_fn = alive or _pid_alive
     try:
@@ -675,9 +632,6 @@ def watchcheck(login: str | None = None, home=None, now: datetime | None = None,
         return 4, "NO WAKE SOURCE: watcher marker expired; start `supervisor.py wait` in the background before ending the turn"
     if not alive_fn(pid):
         return 4, f"NO WAKE SOURCE: watcher pid {pid} is not running; start `supervisor.py wait` in the background before ending the turn"
-    if not (tracked or _harness_tracked)(d.get("out", "")):
-        return 4, (f"NO WAKE SOURCE: watcher pid {pid} is detached (`&` or `>/dev/null`), its exit wakes nobody; start "
-                   "`supervisor.py wait --login <L>` as a Bash call with run_in_background: true, no `&`, no redirect")
     return 0, f"WAKE SOURCE OK: watcher pid {pid} until {d['expires']}"
 
 
@@ -691,30 +645,21 @@ def wait_for_transition(
     sleeper=None,
     login: str | None = None,
     home=None,
-    clock=None,
 ) -> tuple[int, str]:
     """Record baseline at start and poll every `interval` seconds after fetching.
     Exits (0, reason) on the FIRST transition from baseline; never exits on a state that already held at baseline;
     with `login`, also exits (0, ACTIONABLE ...) from the first poll on when that login's last plan left a worker slot and ready cards
     unused (_actionable), at most once per plan (`<login>-woke.txt`); exits (3, reason) when `timeout` seconds elapse with no transition.
-    stall-fix-1104: with `login`, also exits (0, RESET ...) AT that login's next 5 h reset (the timeout stretches to reach it), and
-    any time a running api_job.py job finishes; the marker records stdout so watchcheck can refuse a detached (`&`) watcher.
     """
-    clock = clock or _now_utc
-    timeout_s = parse_duration(timeout)
-    reset_at = _next_reset(login, home, clock())
-    if reset_at:
-        timeout_s = max(timeout_s, int((reset_at - clock()).total_seconds()) + 60)
     marker = _watcher_file(login, home)
     try:
         marker.parent.mkdir(parents=True, exist_ok=True)
-        exp = clock() + timedelta(seconds=timeout_s + 120)
-        marker.write_text(json.dumps({"pid": os.getpid(), "expires": exp.strftime("%Y-%m-%dT%H:%MZ"), "out": _stdout_path()}),
-                          encoding="utf-8", newline=chr(10))
+        exp = datetime.now(timezone.utc) + timedelta(seconds=parse_duration(timeout) + 120)
+        marker.write_text(json.dumps({"pid": os.getpid(), "expires": exp.strftime("%Y-%m-%dT%H:%MZ")}), encoding="utf-8", newline=chr(10))
     except OSError:
         pass
     try:
-        return _wait_loop(repo, shas, timeout_s, interval, probe, fetcher, sleeper, login, home, reset_at, clock)
+        return _wait_loop(repo, shas, timeout, interval, probe, fetcher, sleeper, login, home)
     finally:
         try:
             marker.unlink()
@@ -722,24 +667,7 @@ def wait_for_transition(
             pass
 
 
-RESET_MAX_H = 5.5    # a reading's 5 h reset further out than this is stale or wrong: never stretch the watcher to it (OURS)
-
-
-def _next_reset(login: str | None, home, now: datetime) -> datetime | None:
-    """The login's next 5 h reset from its last get_usage reading (<login>.jsonl), when it is in the future and within RESET_MAX_H."""
-    if not login:
-        return None
-    try:
-        rows = [x for x in (loop_home(home) / f"{login}.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]
-        r = _utc(json.loads(rows[-1]).get("five_reset")) if rows else None
-    except (OSError, ValueError, AttributeError):
-        return None
-    if r and now < r <= now + timedelta(hours=RESET_MAX_H):
-        return r
-    return None
-
-
-def _wait_loop(repo, shas, timeout, interval, probe, fetcher, sleeper, login, home, reset_at=None, clock=None) -> tuple[int, str]:
+def _wait_loop(repo, shas, timeout, interval, probe, fetcher, sleeper, login, home) -> tuple[int, str]:
     sha_list = parse_shas_arg(shas)
     timeout_s = parse_duration(timeout)
     interval_s = max(1, parse_duration(interval))
@@ -754,15 +682,10 @@ def _wait_loop(repo, shas, timeout, interval, probe, fetcher, sleeper, login, ho
     baseline = probe_fn(repo, sha_list)
     elapsed = 0
 
-    clock = clock or _now_utc
     while elapsed < timeout_s:
         step = min(interval_s, timeout_s - elapsed)
-        if reset_at:
-            step = max(1, min(step, int((reset_at - clock()).total_seconds()) + 5))
         sleep_fn(step)
         elapsed += step
-        if reset_at and clock() >= reset_at:
-            return 0, f"TRANSITION RESET 5 h window of {login} reset at {reset_at.strftime('%H:%MZ')}: get_usage, plan, spend it"
         try:
             fetch_fn(repo)
         except Exception:

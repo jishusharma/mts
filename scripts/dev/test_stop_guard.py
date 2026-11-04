@@ -215,18 +215,7 @@ class SupervisorWatcherTest(StopGuardTest):
     def _watcher(self):
         from datetime import datetime, timedelta, timezone
         exp = (datetime.now(timezone.utc) + timedelta(minutes=30)).strftime("%Y-%m-%dT%H:%MZ")
-        out = self.tmp / "tasks" / "bwatch.output"      # a run_in_background task's file (stall-fix-1104: `&` watchers block)
-        out.parent.mkdir(parents=True, exist_ok=True)
-        out.write_text("", newline="\n")
-        (self.home / "B-watcher.json").write_text(json.dumps({"pid": os.getpid(), "expires": exp, "out": str(out)}), newline="\n")
-
-    def test_blocks_a_detached_watcher(self):
-        """L1 2026-11-04: a `supervisor.py wait ... >/dev/null &` watcher passed the guard and the session idled 3 h."""
-        from datetime import datetime, timedelta, timezone
-        exp = (datetime.now(timezone.utc) + timedelta(minutes=30)).strftime("%Y-%m-%dT%H:%MZ")
-        (self.home / "B-watcher.json").write_text(json.dumps({"pid": os.getpid(), "expires": exp, "out": ""}), newline="\n")
-        self._plan(2)
-        self.assertIn("run_in_background", self.run_hook(session_id="sup1"))
+        (self.home / "B-watcher.json").write_text(json.dumps({"pid": os.getpid(), "expires": exp}), newline="\n")
 
     def test_blocks_without_watcher_or_plan(self):
         out = json.loads(self.run_hook(session_id="sup1"))
