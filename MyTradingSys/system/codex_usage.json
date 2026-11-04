@@ -3,10 +3,10 @@
   "plan": "plus",
   "week_resets": 1794204690,
   "week_used": 37.0,
-  "window_resets": 1793832142,
-  "window_used": 4.0
+  "window_resets": 1793850253,
+  "window_used": 0
  },
- "at": "2026-11-04T22:22:10Z",
+ "at": "2026-11-04T22:45:16Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -22,18 +22,33 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 7.0,
-  "window_pts": 4.0,
-  "window_runs": 8
+  "window_pts": 0.0,
+  "window_runs": 0
  },
  "runs": [
   {
-   "at": "2026-11-04T22:21:10Z",
+   "at": "2026-11-04T22:44:01Z",
    "card": "habib-plan-scoring-not-trades-1104",
    "effort": "medium",
    "kind": "build",
    "model": "gpt-6-luna",
    "note": "",
    "outcome": "BLOCKED",
+   "seconds": 67,
+   "tokens_out": 4362,
+   "tokens_total": 314303,
+   "tokens_uncached": 35893,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
+  {
+   "at": "2026-11-04T22:21:10Z",
+   "card": "habib-plan-scoring-not-trades-1104",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "5: Maven tests: SKIP\nStep 5b: Layer tests: SKIP\nStep 5c: Options tests: SKIP\nStep 6: Backtest tests: SKIP\n======================================================",
+   "outcome": "SHIP_FAILED",
    "seconds": 53,
    "tokens_out": 2171,
    "tokens_total": 150320,
@@ -158,21 +173,6 @@
    "tokens_out": 1877,
    "tokens_total": 222792,
    "tokens_uncached": 37107,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-11-04T17:19:41Z",
-   "card": "gpt-spec-tests-fetch-binance-archive-1104",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "4 uncommitted file(s) left in F:\\MTS\\mts-codex-lab: scripts/dev/extra_tests.tsv",
-   "outcome": "OUT_OF_SCOPE",
-   "seconds": 109,
-   "tokens_out": 5614,
-   "tokens_total": 752756,
-   "tokens_uncached": 42246,
    "week_pts": 0.0,
    "window_pts": 0.0
   }
