@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T20:59:31Z",
   "commands": [
     "python -m pytest -q MyTradingSys/backtest/layers/fabio/test_run_v3_l3.py"
   ],
@@ -16,6 +17,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "test_days_limit_full_path_produces_oos passes; fails with OOS skipped; 14/14 pass",
+      "ref": "72dc13b5b",
+      "utc": "2026-11-04T20:59:31Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "fabio run_v3_l3: --is-only loads bars only through IS_RANGE[1]",
@@ -28,13 +35,19 @@
   ],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: test-only card done",
   "note": "\nREVIEWED:2026-11-04 ACCEPT (Haiku on API credit, job haiku-review-ready-sonnet-1104: days-limit OOS test absent on trunk; scope file present; testable.)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-04T05:13:39Z",
   "refs": [],
-  "result": "",
+  "result": "test_days_limit_full_path_produces_oos passes; fails with OOS skipped; 14/14 pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/fabio/test_run_v3_l3.py"
   ],
@@ -44,12 +57,13 @@
   "scope_sha": "45972ae3b5f0",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read how existing tests stub build_windows.",
     "Add the test: --days-limit 2, no --is-only, assert oos windows and oos_grid in output json.",
     "Run the file and ship."
   ],
+  "taken": "2026-11-04T20:59:31Z",
   "tests": "MyTradingSys/backtest/layers/fabio/test_run_v3_l3.py::test_days_limit_full_path_produces_oos",
   "title": "run_v3_l3: no test runs the full non --is-only path; add a --days-limit smoke case that asserts OOS windows and oos_grid results are produced",
   "weight": "",
