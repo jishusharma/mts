@@ -34,6 +34,9 @@ Z_NEAR_ATR = 0.5                    # OURS default (design s3 D3); the frozen va
 EDGE_FRAC = 0.2                     # OURS = params range_edge
 MID_LO, MID_HI = 1.0 / 3, 2.0 / 3   # "middle third of a daily range" (design s3 D3)
 
+EMA_WEEKLY = 55                     # SOURCED KR-M10 weekly 55 EMA
+SMA_WEEKLY = 200                    # SOURCED KR-M04 weekly 200 SMA
+
 OURS_FIELDS = ("trend_1d_ours", "trend_1w_ours", "bbwp_1d_ours", "rsi_1d_ours", "rsi_zone_1d_ours", "zones_ours",
                "range_top_ours", "range_bottom_ours", "bbwp_4h_ours", "bbwp_4h_min6_ours", "exp_dir_4h_ours",
                "atr14_1d")
@@ -223,6 +226,22 @@ def check_point_in_time(pairs):
 
 
 # ---- the three dimensions -----------------------------------------------------------------------------------------
+
+def weekly_ma_bias(rows, t):
+    """KR-M10 / KR-M04: weekly close vs the EMA 55 (hypothesis H-M4) and the SMA 200, from CLOSED weeks only.
+    rows = [{"open_ms": week open, "c": close}] ascending. A week is closed at decision ts t iff
+    open_ms + WEEK_MS + LATENCY_MS < t (strict, same rule as join_row). Fewer than 200 closed weeks -> None."""
+    closes = [r["c"] for r in rows if r["open_ms"] + WEEK_MS + LATENCY_MS < t]
+    if len(closes) < SMA_WEEKLY:
+        return None
+    e = kc.ema(closes, EMA_WEEKLY)[-1]
+    s = sum(closes[-SMA_WEEKLY:]) / SMA_WEEKLY
+    last = closes[-1]
+
+    def side(m):
+        return "above" if last > m else ("below" if last < m else "on")
+    return {"ema55": side(e), "sma200": side(s), "weeks": len(closes)}
+
 
 def d1_direction(side, trend_1d, trend_1w):
     """+1 both agree with the event side (side = +1 long / -1 short); 0 one agrees and the other is range, or both range;

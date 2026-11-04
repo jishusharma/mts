@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T22:32:13Z",
   "commands": [],
   "created": "2026-11-04T21:10:09Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "weekly_ma_bias in krown_context.py; point-in-time test passes, <200 weeks returns None",
+      "ref": "979705d45",
+      "utc": "2026-11-04T22:32:13Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "confluence-s1-f6-direction: exp_dir_4h_ours to F6 (sign since BBWP_4h last <= 50), recount",
@@ -24,6 +31,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: wired offline, tested",
   "note": "planner-wire43-1104h: verified on trunk 2026-11-05, no code for this rule; params OURS unless the card says SOURCED. Folds: wire-kr-m04 (200-week SMA same function).\nREVIEWED:2026-11-04 T0-ONLY",
   "prio": 4,
   "refine_tries": 0,
@@ -32,7 +40,12 @@
   "refs": [
     "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_vjzy_KxJ_y8.md:118"
   ],
-  "result": "",
+  "result": "weekly_ma_bias in krown_context.py; point-in-time test passes, <200 weeks returns None",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/krown/krown_context.py",
     "MyTradingSys/backtest/layers/krown/test_krown_context.py"
@@ -43,12 +56,13 @@
   "scope_sha": "612fc633878c",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read weekly_from_daily and check_point_in_time in krown_context.py.",
     "Add weekly_ma_bias returning above/below the weekly EMA 55 and the 200 SMA state from the last closed week.",
     "Write the fail-first test; run it."
   ],
+  "taken": "2026-11-04T22:32:13Z",
   "tests": "MyTradingSys/backtest/layers/krown/test_krown_context.py::test_weekly_ma_bias_point_in_time (new; fails on trunk, no weekly_ma_bias)",
   "title": "wire KR-M10: Weekly 55 EMA bias (quote MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_vjzy_KxJ_y8.md:118)",
   "weight": "ROUTINE",

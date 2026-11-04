@@ -260,5 +260,30 @@ class TestJoinNoLookahead(unittest.TestCase):
             self.assertIn("available_at", body)
 
 
+def test_weekly_ma_bias_point_in_time():
+    n = 205
+    rows = [{"open_ms": MON + i * kx.WEEK_MS, "c": 100.0 + i} for i in range(n)]
+    last_open = rows[-1]["open_ms"]
+    # decision after the close of week n-1 plus latency: every week is closed
+    t_all = last_open + kx.WEEK_MS + kx.LATENCY_MS + 1
+    b = kx.weekly_ma_bias(rows, t_all)
+    assert b == {"ema55": "above", "sma200": "above", "weeks": n}
+    # decision inside the last week: that week is not closed, the result must equal the one built from n-1 rows
+    t_in = last_open + 3 * kx.DAY_MS
+    assert kx.weekly_ma_bias(rows, t_in) == kx.weekly_ma_bias(rows[:-1], t_all)
+    assert kx.weekly_ma_bias(rows, t_in)["weeks"] == n - 1
+    # the exact availability tick is not yet available (strict), one ms later it is
+    assert kx.weekly_ma_bias(rows, t_all - 1)["weeks"] == n - 1
+    # a collapse in the unclosed last week cannot leak into the bias
+    leak = rows[:-1] + [{"open_ms": last_open, "c": 1.0}]
+    assert kx.weekly_ma_bias(leak, t_in)["ema55"] == "above"
+    # falling series: below both
+    down = [{"open_ms": MON + i * kx.WEEK_MS, "c": 500.0 - i} for i in range(n)]
+    assert kx.weekly_ma_bias(down, t_all) == {"ema55": "below", "sma200": "below", "weeks": n}
+    # fewer than 200 closed weeks: None, never a guess
+    assert kx.weekly_ma_bias(rows[:199], MON + 400 * kx.WEEK_MS) is None
+    assert kx.weekly_ma_bias(rows, MON + 150 * kx.WEEK_MS) is None
+
+
 if __name__ == "__main__":
     unittest.main()
