@@ -16,6 +16,7 @@ d-six-slots-poll: `wait --login <L>` wakes you 5 min after a plan that left slot
 2. `python scripts/dev/sync.py start supervisor-<L>-<utc date>`; work only in the WORKTREE it prints.
 3. Read the ACTIVE entries of ANNOUNCEMENTS.md and SUPER_SESSION.md "Boot facts" from origin/fast-track; `plan` reads the rest.
    `PLAN_24H_<date>.md` exists: run your link per SUPER_SESSION.md "Sonnet checklist".
+   `python scripts/dev/route_audit.py check --days 2`: each finding (no `Next:`, missing or stale Next card) gets a card or a message to its author.
 
 ## Every wake (boot, operator turn, worker note, watcher exit)
 Order: answer, then `plan`, then watcher (Stop hook blocks idle ends).

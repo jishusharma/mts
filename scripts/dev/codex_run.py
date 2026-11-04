@@ -524,7 +524,7 @@ def prompt(card, wt, pack, when):
         "1. Do the task below. It is the whole task.",
         f"2. Write the report {LAB}/reports/{d}_{cid}.md (LAYER_LAB.md, Report format).",
         (f"3. Close with lab_flow.py finish as the brief specifies; its criterion receipt is required." if card.get("flow") else
-         f"3. python scripts/dev/tasks.py done {cid} --result \"<verdict or number + report file>\""),
+         f"3. python scripts/dev/tasks.py done {cid} --result \"<verdict or number + report file>\" --next \"<card-id | END: why>\""),
         DATA_HINT,
         "Blocked (data missing, rule conflict, test cannot pass): write the report with verdict BLOCKED and the exact reason,",
         "and do NOT mark the card done.",
