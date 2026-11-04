@@ -828,7 +828,7 @@ def cmd_lint(a):
                     warns.append(f"WARN {c['id']} (ready): STALE {late}; run `tasks.py tag {c['id']} --refresh` after re-reading the card")
         if c["id"] + ".json" != path_of(REPO, c["id"]).name:
             errs.append(f"{c['id']}: file name differs from id")
-        errs += [f"{c['id']}: void review stamp {v!r} (a stamp must start a line and the kind must be followed by a space or line end)" for v in void_stamps(str(c.get("note") or ""))]
+        errs += [f"{c['id']}: void review stamp {v!r} (a stamp must start a line and the kind must be followed by a space or line end)" for v in void_stamps(str(c.get("note") or "")) if c["state"] not in ("done", "dropped")]
     print("\n".join(errs + warns) if errs else "\n".join(warns + [f"tasks lint: {len(cards)} cards OK | {status_line(cards)}"]))
     return 1 if errs else 0
 

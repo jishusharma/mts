@@ -31,7 +31,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:data CLASS:C1 REVIEWER:GPT medium+Haiku re-derive HOLD A-20261018-5: reads levels_confluence event_table.csv, an untagged lab table. Also its rows start 2024-11 (VALIDATION, after the 2024-07-01 DEV cut), so as written zero DEV rows exist. DECISION (OURS): state refined; to unblock, restrict the stop-bar check to DEV rows (touch_t < 2024-07-01) from a tagged DEV table, or drop that half and keep the basis table only (Deribit vs Binance 1m, DEV 2022-01-01..2024-06-30). LANE moved CODEX->SONNET 2026-10-18: Needs network (Deribit public candles); GPT lab sandbox blocks sockets (WinError 10013). REVIEWED:2026-10-18 ACCEPT WEIGHT:IMPORTANT venue verdict. 2026-10-15 q-gap-c answered Yes: public market data only, no account, no orders. DISPATCH lane CODEX (JIS-NUC lab): Binance 1m on NUC (tom_raw), Deribit candles fetched public at run time. Verify: sha + empty git cherry + ls-tree lists files.\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C2 weight=CRUCIAL); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:data CLASS:C1 REVIEWER:GPT medium+Haiku re-derive HOLD A-20261018-5: reads levels_confluence event_table.csv, an untagged lab table. Also its rows start 2024-11 (VALIDATION, after the 2024-07-01 DEV cut), so as written zero DEV rows exist. DECISION (OURS): state refined; to unblock, restrict the stop-bar check to DEV rows (touch_t < 2024-07-01) from a tagged DEV table, or drop that half and keep the basis table only (Deribit vs Binance 1m, DEV 2022-01-01..2024-06-30). LANE moved CODEX->SONNET 2026-10-18: Needs network (Deribit public candles); GPT lab sandbox blocks sockets (WinError 10013).\nREVIEWED:2026-10-18 ACCEPT WEIGHT:IMPORTANT venue verdict. 2026-10-15 q-gap-c answered Yes: public market data only, no account, no orders. DISPATCH lane CODEX (JIS-NUC lab): Binance 1m on NUC (tom_raw), Deribit candles fetched public at run time. Verify: sha + empty git cherry + ls-tree lists files.\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C2 weight=CRUCIAL); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.",
   "prio": 5,
   "refine_tries": 0,
   "refined_by": "gemini-nuc",
@@ -67,7 +67,7 @@
   ],
   "tests": "test_parity.py (new, in MyTradingSys/research/gap_g8_deribit_parity_2026-10-18/) fails before parity.py exists and verifies bars >= 2024-07-01 are refused: python -m pytest MyTradingSys/research/gap_g8_deribit_parity_2026-10-18/test_parity.py -q",
   "title": "G8 Deribit vs Binance venue parity (public mainnet candles allowed, q-gap-c 2026-10-15)",
+  "updated": "2026-10-18T10:00:00Z",
   "weight": "CRUCIAL",
-  "worker": "session",
-  "updated": "2026-10-18T10:00:00Z"
+  "worker": "session"
 }
