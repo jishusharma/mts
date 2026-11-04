@@ -4,31 +4,44 @@
   "commands": [],
   "created": "2026-11-03T20:14:54Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/ship_train_2026-11-04/DESIGN.md holds a table of the 56 red runs by cause (gh run list/view counts, parsed not eyeballed), and a one-page queue design: lands ships from all machines, ejects a breaking ship, names its author; each design rule cites a counted cause",
+  "est_turns": 15,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Closes a gate: measure why CI is red 28% of runs (56/200, 11-01..11-03) by cause and author-class, then write one ship-queue design (design only, no code)",
   "id": "ship-train-design-1104",
   "lane": "SONNET",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED: planner-c-1104 2026-11-04 T0-ONLY",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T07:19:04Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/ship_train_2026-11-04/DESIGN.md"
+  ],
+  "scope_out": [
+    "no edits to sync.py or ci.yml; no twin work of ship-commit-noise-and-tree-retire-1104 or worktree-gone-after-ship (those fix tree retire/noise; this one measures CI red)"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/system/DEBUGGING.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "gh run list --workflow ci.yml --limit 200 --json; classify red runs by failing job/step",
+    "join with commit author via git log",
+    "write DESIGN.md with counts then rules"
+  ],
+  "tests": "audit card: row counts in the table sum to 56; no code changed",
   "title": "Ship train: measure why CI is red 28% of runs (56/200, 11-01..11-03) and design one queue that lands ships from all machines, ejects a breaking ship, names its author",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "agent"
 }

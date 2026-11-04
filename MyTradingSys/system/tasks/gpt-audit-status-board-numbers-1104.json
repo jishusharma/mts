@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-04T07:22:17Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-audit-status-board.md has one row per number status_board.py prints (at least 6): MATCH / DIFF (both values) / NOT_CHECKABLE; line 1 holds the three counts.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "d-ai-health-review-1104 needs trustworthy health numbers: recompute what status_board.py prints from git log / tasks.py with an independent one-off command and compare.",
+  "id": "gpt-audit-status-board-numbers-1104",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Supervisor never idle with ready work: role rule, re-arm after compaction, status RED, doc",
+      "ref": "2037b9246c15",
+      "utc": "2026-10-30T17:58:26Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED: planner-c-1104 2026-11-04 T0-ONLY (template of done gemini-blind-read/gpt-audit cards; twin check: no blind read or audit of this folder in tasks/ or archive/). Never use model output as the source.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-04T07:22:18Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/status_board.py (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-audit-status-board.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source report or scripts; no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "2037b9246c15",
+  "size": "S",
+  "sources": [
+    "scripts/dev/status_board.py:1-40"
+  ],
+  "state": "ready",
+  "steps": [
+    "Run status_board.py read-only and list each printed number",
+    "Recompute each with git log / tasks.py list by a separate command",
+    "Write the table"
+  ],
+  "tests": "audit card, output file is the test; each row quotes the source line it was matched to; repo files stay byte-identical (git diff empty)",
+  "title": "GPT audit: status_board.py numbers (reverts, test-vs-code commits, cards) against a fresh git count",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
