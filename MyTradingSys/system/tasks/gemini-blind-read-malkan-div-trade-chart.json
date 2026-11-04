@@ -4,15 +4,16 @@
   "commands": [],
   "created": "2026-11-04T17:46:16Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "REVIEW.md in MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/ lists each defect with file:line, or says none found",
+  "est_turns": 6,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Blind read of malkan_div_trade_charts.py: do the trade charts mark the same 12/18/>18-bar close-only divergences and entries that study.py trades, with no lookahead in the drawn bars",
   "id": "gemini-blind-read-malkan-div-trade-chart",
   "kind": "audit",
   "lane": "CODEX",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -20,16 +21,28 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T20:11:32Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/REVIEW.md"
+  ],
+  "scope_out": [
+    "no edits to malkan_div_trade_charts.py or study.py; no live-path files"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/malkan_div_trade_charts.py"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read malkan_div_trade_charts.py and study.py in rsi_divergence_mtf_gated_2026-11-04",
+    "Compare chart marks vs study entries; check for future bars",
+    "Write REVIEW.md: defects with file:line or none found"
+  ],
+  "tests": "python -m pytest -q MyTradingSys/tests/docs/test_integrity.py",
   "title": "[GEMINI] blind read: malkan_div_trade_charts.py (rsi_divergence_mtf_gated_2026-11-04)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }
