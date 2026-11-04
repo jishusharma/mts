@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "class": "C2",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/malkan_hindi_2026-11-04/WINDOW_RECONCILE_1104.md"
   ],
@@ -34,7 +35,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS): [GEMINI] caption work per operator 10-25; lane CODEX kind audit; changing the numbers is a follow-up after this verdict. Refined by planner-refine-1104.",
+  "note": "DECISION (OURS): [GEMINI] caption work per operator 10-25; lane CODEX kind audit; changing the numbers is a follow-up after this verdict. Refined by planner-refine-1104. | lab_guy 11-04: C2 (E2 definition feeding div_flags_chart, live_confluence_feed and every Malkan divergence layer). NOT stamped: needs a non-Claude spec review before take (Gemini flash high), then ACCEPT. Test hardened: old test passed on any file containing the word SOURCED (E4).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -61,8 +62,8 @@
     "Tabulate each quote with video id; run scripts/dev/verify_extract_quotes.py on the file",
     "State per threshold SOURCED (quote) or OURS; propose the window with the quote"
   ],
-  "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/malkan_hindi_2026-11-04/WINDOW_RECONCILE_1104.md'); assert p.exists() and 'SOURCED' in p.read_text()\"",
+  "tests": "python -c \"import pathlib,re; t=pathlib.Path('MyTradingSys/research/malkan_hindi_2026-11-04/WINDOW_RECONCILE_1104.md').read_text(); assert t.count('|')>=20 and re.search(r'SOURCED|OURS',t) and '18' in t\"",
   "title": "Malkan divergence window: d-malkan-divergence-window-1104 uses 12 STRONG / 13-18 OK / >18 WEAK, but the 6 Hindi videos say under 15 bars is powerful, list 12 among diluting counts, and never give 18. Check the English videos and reconcile.",
-  "weight": "",
+  "weight": "IMPORTANT",
   "worker": "agent"
 }

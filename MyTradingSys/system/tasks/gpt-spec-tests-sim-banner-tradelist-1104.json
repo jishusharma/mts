@@ -1,0 +1,45 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-04T13:21:33Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/sim_desk/artifact/test_banner_spec_gpt.py exists with at least 4 tests (n count, mean %, never PASS, n<30 TOO_FEW, net_r stays None) and passes against MyTradingSys/research/sim_desk/artifact/build_artifact.py.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "D11 feeder (A-20261104-1): write tests from the spec, not the code: when a result has no trade count in its KPIs but a trade_chart example with trades, the banner shows n = number of trades, net = mean of trade net % (labelled %/trade, never R), and never reads PASS; n < 30 reads TOO FEW.",
+  "id": "gpt-spec-tests-sim-banner-tradelist-1104",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-04 T0-ONLY; D11 feeder card for sim-demo-opus-1104 ship.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-04T13:22:20Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/artifact/test_banner_spec_gpt.py"
+  ],
+  "scope_out": [
+    "no change to build_artifact.py; a failing spec test is reported as a finding card, not fixed"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "write the expected numbers by hand from a small synthetic trade list",
+    "import build_artifact and call banner_of only"
+  ],
+  "tests": "python -m pytest -q MyTradingSys/research/sim_desk/artifact/test_banner_spec_gpt.py",
+  "title": "gpt-spec-tests: independent tests for the sim banner trade-list fallback (banner_of)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

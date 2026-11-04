@@ -1,12 +1,13 @@
 {
   "approved_by": "",
   "asks": "",
+  "class": "C1",
   "commands": [
     "python -m pytest MyTradingSys/tests/test_div_flags_chart.py -q"
   ],
   "created": "2026-11-04T07:15:00Z",
   "depends_on": [],
-  "done_when": "MyTradingSys/tests/test_div_flags_chart.py verifies close-only pivot selection, 12-bar, 18-bar, and >18-bar WEAK classification in MyTradingSys/backtest/layers/rsi/div_flags_chart.py and exits 0.",
+  "done_when": "MyTradingSys/tests/test_div_flags_chart.py verifies close-only pivot selection, 12-bar, 18-bar, and >18-bar WEAK classification in MyTradingSys/backtest/layers/rsi/div_flags_chart.py and exits 0. Window values are labelled OURS (HINDI_CONCEPTS.md: 18 NOT_IN_DATA).",
   "est_turns": 15,
   "formula_id": "",
   "formula_ids": [],
@@ -18,8 +19,8 @@
   "latest": [],
   "layers": [],
   "live_path": false,
-  "mutation_check": "",
-  "note": "REVIEWED:2026-11-04 T0-ONLY; D11 feeder card for cbfc521d4",
+  "mutation_check": "Mutation check (lab_guy, E4: a test must fail first): flip one comparison in the code under test (window bound, pivot rule) and show the new tests fail; revert.",
+  "note": "REVIEWED:2026-11-04 T0-ONLY; D11 feeder card for cbfc521d4 | REVIEWED:2026-11-04 ACCEPT; lab_guy C1 (E2 label clause + mutation_check added; if live_runner_cli sends orders from this feed it is C3: stop and re-class) | E2 (lab_guy): the 12/18/>18 bar window is OURS, not SOURCED (HINDI_CONCEPTS.md: fewer than 15 bars SOURCED, 12 only in a dilution list, 18 NOT_IN_DATA). Tests encode the CURRENT default as OURS, never call 18 sourced; if malkan-window-12-18-vs-hindi changes the window, expected values follow the card result.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "gemini-pro-argon",

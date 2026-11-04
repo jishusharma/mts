@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-04T13:21:27Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/sim_desk/artifact/index.html rebuilt: the top tab bar has a News tab (lists the news-feed results, e.g. dir-news_feeds_2026-10-30, newest first) and one tab per concept family that filters the result list to that concept; test_artifact.py asserts the tab buttons and the filter, and fails on the pre-change build.",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "d-sim-ux-1104 asks for clickable tabs for the news feed and each concept on the one-page simulator; the 11-04 Opus demo found only Families, Verdict grid, Charts, Comments.",
+  "id": "sim-news-concept-tabs-1104",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sim desk: C30 banner reads its trade list; trade chart names its divergence rule (sim demo",
+      "ref": "686c6f9b57a4",
+      "utc": "2026-11-04T13:25:20Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-04 ACCEPT (Haiku reviewer, sim-demo-opus-1104)",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-04T13:26:19Z",
+  "refs": [
+    "MyTradingSys/research/sim_desk/DESIGN.md",
+    "MyTradingSys/system/OPERATOR_DECISIONS.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/artifact/build_artifact.py",
+    "MyTradingSys/research/sim_desk/artifact/test_artifact.py",
+    "MyTradingSys/research/sim_desk/artifact/index.html"
+  ],
+  "scope_out": [
+    "no desk.py or results/*.json change; no new data fetch; republish is a separate step via the Artifact tool + artifacts.py publish-record"
+  ],
+  "scope_sha": "686c6f9b57a4",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "map concept -> family names from results/*.json family field (list them in a DECISION (OURS) comment)",
+    "keep one screen: tabs wrap, only the pane scrolls (DESIGN.md line 48)"
+  ],
+  "tests": "MyTradingSys/research/sim_desk/artifact/test_artifact.py: new test asserts role=tab buttons News and each concept, and that a concept tab hides other families; run it red first",
+  "title": "Sim page: a News tab and one tab per concept (Tom, Fabio, Malkan, Krown, Bollinger, RSI, WaveTrend) beside Families / Verdict grid / Charts / Comments",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}
