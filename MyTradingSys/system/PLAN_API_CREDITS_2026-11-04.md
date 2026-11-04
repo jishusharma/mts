@@ -56,9 +56,11 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-04 | research-lint-warn-not-revert | Opus 5.5 | 1.79 | 43 | lint warn-not-revert analysis shipped; 9 of 20 reverts docs/data-only; cap was 6.0 |
 | 2026-11-04 | setup-review-with-operator | Opus 5.5 | 0.57 | 7 | nothing to build; card refreshed READY, 0/22 setups have operator verdict (needs Eagle_Eyes sitting); cap was 8.0 |
 | 2026-11-04 | longdev-bb-range | Sonnet 5.5 | 0.41 | 15 | see result record; cap was 6.0 |
+| 2026-11-04 | gem-review-wavetrend-1104 | Haiku 5.5 | 0.04 | 17 | shipped 3515fd34a; 5 of 5 numbers agree with Gemini's MATCH; cap was 1.0 |
 | 2026-11-04 | c31-daily-short-upper-bb | Sonnet 5.5 | 0.51 | 27 | see result record; cap was 4.0 |
 | 2026-11-04 | cbp-alt-coverage | Sonnet 5.5 | 0.38 | 19 | done, ship blocked by red CI; needs re-ship after trunk green; cap was 4.0 |
 | 2026-11-04 | mts-home-rebuild-1103 | Opus 5.5 | 0.65 | 9 | wasted: card STOP valid, already superseded; no build; cap was 8.0 |
 | 2026-11-04 | wt30-div-blind-recount-haiku-1104 | Haiku 5.5 | 0.01 | 4 | not built: card stale (scope changed 9a7a43033); cap was 2.0 |
+| 2026-11-04 | gem-review-three-1104 | Haiku 5.5 | 0.42 | 37 | shipped 5bf57ce75; RSI and BB reads MATCH with 4 of 5 (1 slip at the 4th decimal each, cards open), Fabio MATCH 5 of 5; cap was 2.0 |
 | 2026-11-04 | sim-news-concept-tabs-1104 | Sonnet 5.5 | 0.42 | 16 | built, ship refused (CI red); needs re-ship when trunk green; cap was 4.0 |
 | 2026-11-04 | route-tag-closeout-1104 | Opus 5.5 | 5.50 | 18 | shipped ee29e31e, reverted for red CI; reland job running; cap was 10.0 |

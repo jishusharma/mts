@@ -1,7 +1,7 @@
 // loop.js - pure helpers for the auto-loop. No DOM, no chrome.* so node can test them.
 (function (root) {
   var L = {};
-  L.VERSION = '0.7.25';
+  L.VERSION = '0.7.26';
 
   L.fnv = function (s) {
     var h = 2166136261;
@@ -180,6 +180,8 @@
     if (o.idle) return 'send_keep_draft';
     return o.waitedMs > o.maxMs ? 'stop_busy' : 'wait';
   };
+  // 0.7.26: a send that did not land is retried like a busy chat; hands-free turned off on the first miss (2026-11-04).
+  L.postRetryable = function (err) { return /never became idle|did not clear/.test(err || ''); };
   // visible banner text for every auto-off (shown in the page next to the chat, not sent as a message)
   L.stopNotice = function (why) {
     return 'AIBridge hands-free is OFF: ' + (why || 'stopped') + ' Tick the box to re-arm.';

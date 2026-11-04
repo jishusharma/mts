@@ -1,34 +1,65 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "grep -n CONTEXTED MyTradingSys/research/CONTEXT_FILTER_REVIEW_2026-11-04.md"
+  ],
   "created": "2026-11-04T13:18:06Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "CONTEXT_FILTER_REVIEW_2026-11-04.md has both rows labelled PARTIAL-CONTEXT and Counts rows CONTEXTED 7 studies, PARTIAL-CONTEXT 16 studies",
+  "est_turns": 6,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Lab_Guy: fix 2 class labels in CONTEXT_FILTER_REVIEW_2026-11-04.md (context_factors_2026-10-16 and context_factors_pit rows are PARTIAL-CONTEXT, 2 YES not 3); contexted 9 -> 7, partial 14 -> 16 Evidence: layer_lab/reports/2026-11-04_gpt-audit-context-filter-review-1104.md FIX-FIRST: CONTEXT_FILTER_REVIEW_2026-11-04.md:61 (context_factors_2026-10-16: TREND P, PHASE N, CONFL Y, SESSION Y) and :62 (context_factors_pit: TREND Y, PHASE P, CONFL Y, SESSION P) are exactly 2 YES, rule is 3+. Change both to PARTIAL-CONTEXT and update the totals (contexted 9->7, partial 14->16, 33 total), or justify changing the rule. Result unverified by a second lens (report status UNCHECKED): recount the 33 rows first.",
+  "goal": "Fix the two class labels in CONTEXT_FILTER_REVIEW_2026-11-04.md: rows context_factors_2026-10-16 and context_factors_pit_2026-10-16 become PARTIAL-CONTEXT (2 YES each, not 3), and the Counts table follows.",
   "id": "labguy-context-filter-two-class-labels-1104",
-  "lane": "SONNET",
+  "kind": "build",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "context-filter review of every backtest + two operator decisions (context re-test, reviews",
+      "ref": "f818131fe2fe",
+      "utc": "2026-11-03T22:29:13Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "f818131fe2fe context-filter review of every backtest + two operator decisions (context re-",
+      "ref": "MyTradingSys/research/CONTEXT_FILTER_REVIEW_2026-11-04.md",
+      "utc": "2026-11-03T22:29:13Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "refined 2026-11-04 planner-refine-1104c.\nREVIEWED:2026-11-04 T0-ONLY",
   "prio": 3,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-11-04T15:18:10Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/CONTEXT_FILTER_REVIEW_2026-11-04.md"
+  ],
+  "scope_out": [
+    "live-path files",
+    "re-running any study",
+    "other rows"
+  ],
+  "scope_sha": "f818131fe2fe",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "change the CLASS cell of lines 61 and 62 from CONTEXTED to PARTIAL-CONTEXT",
+    "in the Counts table set CONTEXTED studies 9 to 7 and PARTIAL-CONTEXT 14 to 16; adjust the VERDICTS and FAIL row counts only from VERDICTS.csv rows of the two studies",
+    "grep the file for any other text repeating 9 or 14"
+  ],
+  "tests": "grep check: the two context_factors rows end in PARTIAL-CONTEXT and the Counts table shows 7 and 16 (the old file shows 9 and 14)",
   "title": "Lab_Guy: fix 2 class labels in CONTEXT_FILTER_REVIEW_2026-11-04.md (context_factors_2026-10-16 and context_factors_pit rows are PARTIAL-CONTEXT, 2 YES not 3); contexted 9 -> 7, partial 14 -> 16",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }
