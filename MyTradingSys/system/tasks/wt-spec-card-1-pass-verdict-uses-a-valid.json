@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T20:40:41Z",
   "commands": [
     "python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md').read_text(); assert 'not a clean confirmation' in t\""
   ],
@@ -15,6 +16,12 @@
   "id": "wt-spec-card-1-pass-verdict-uses-a-valid",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "SPEC.md edited: exact divergence rule k=3 OURS, bin edges + m=14 frozen, BTC-only VALIDATI",
+      "ref": "16129f9bc",
+      "utc": "2026-11-04T20:40:41Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,6 +40,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: spec fix shipped",
   "note": "",
   "prio": 3,
   "refine_tries": 0,
@@ -41,7 +49,12 @@
   "refs": [
     "MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md"
   ],
-  "result": "",
+  "result": "SPEC.md edited: exact divergence rule k=3 OURS, bin edges + m=14 frozen, BTC-only VALIDATION exploratory, Card 2 read defined",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md",
     "MyTradingSys/research/holdout_reads.csv"
@@ -56,12 +69,13 @@
   "sources": [
     "MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md (Gemini finding, Claude spot-checked CONFIRMED in f908b25e6)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read SPEC.md lines 5,14-15, splits.py:101-110 and MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md Defect 1",
     "Rewrite the Card 1 verdict rule; no new numbers",
     "Run the test, ship"
   ],
+  "taken": "2026-11-04T20:40:41Z",
   "tests": "Fail-first: python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md').read_text(); assert 'not a clean confirmation' in t\"",
   "title": "WT SPEC Card 1 PASS verdict uses a VALIDATION read on BTCUSDT that the coordinator already looked at; no clean confirm target frozen (SPEC.md:5,14,15)",
   "weight": "",
