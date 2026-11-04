@@ -94,10 +94,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Code: `MyTradingSys/backtest/layers/rsi/malkan_40_60.py`; `MyTradingSys/backtest/layers/rsi/malkan_mtf.py`; `MyTradingSys/backtest/layers/kurisko/quad_rotation.py`; `MyTradingSys/backtest/layers/kurisko/stoch_core.py`
 - Other results: `MyTradingSys/research/rsi_divergence_mtf_2026-10-09`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `krown-hidden-divergence-confluence-feed` ready p2 SONNET: Krown hidden divergence as a shared confluence feed any layer (RSI 40-60 included) can consume; Malkan layer s
   - `kurisko-dev-event-study` refined p2 SONNET: Kurisko Quad Rotation: DEV event study, fee-net, same-window placebo
-  - `rsi-divergence-mtf-under-malkan-gate` ready p2 SONNET: Re-run rsi_divergence_mtf under Malkan's monthly/weekly RSI gate (SOURCED), own PRE_REG, DEV fee-net, VALIDATI
-  - `rsi-cross-unmapped-and-pivot-stack` ready p3 SONNET: RSI cross events are rejected as unmapped in the auto-trader (no layer_rules entry); and no layer stacks level
   - `rsi-divergence-chart-draws-used-pivots` raw p3 SONNET: Chart renderer draws the RSI divergence line between the two close pivots the detector actually used (operator
   - `malkan-prereg-dwm-equities` refined p4 SONNET: Malkan: pre-registration for the D/W/M equity home test (items 6/7/8/9/11/12, gates 0a/0f)
 
@@ -219,7 +216,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `krown-dev-event-study` refined p2 SONNET: Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: 
   - `krown-dev-event-study-candles` refined p2 SONNET: Krown DEV event study 3/3: candle hypotheses H-C1, H-C2 (H-T1 not run); DONE when: DEV_RESULTS.md has N, power
   - `krown-dev-event-study-levels` refined p2 SONNET: Krown DEV event study 2/3: level and moving-average hypotheses H-M1, H-M3, H-Z1 (H-M2 not run); DONE when: DEV
-  - `krown-hidden-divergence-confluence-feed` ready p2 SONNET: Krown hidden divergence as a shared confluence feed any layer (RSI 40-60 included) can consume; Malkan layer s
   - `layer-state-snapshot-causal` refined p3 SONNET: S0 park. Meta-label phase 2 (ROADMAP P2 + 2.0): causal layer_state_at(ts) snapshot in sim_desk/studies/_bars.p
   - `trendline-ledger-registry-hygiene` refined p3 SONNET: Trend-line daily ledger schema v2 enforcement + register the module in layer_index and wiring_registry (audit 
 
