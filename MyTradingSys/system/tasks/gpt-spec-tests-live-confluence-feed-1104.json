@@ -15,7 +15,7 @@
   "goal": "D11 feeder check (A-20261104-1): Write independent spec tests for MyTradingSys/backtest/layers/alerts/live_confluence_feed.py shipped in cbfc521d4 and 20165a523.",
   "id": "gpt-spec-tests-live-confluence-feed-1104",
   "kind": "audit",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
@@ -28,7 +28,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "Mutation check (lab_guy, E4: a test must fail first): flip one comparison in the code under test (window bound, pivot rule) and show the new tests fail; revert.",
-  "note": "REVIEWED:2026-11-04 ACCEPT by lab_guy | D11 feeder card for cbfc521d4, 20165a523 | lab_guy C1 ACCEPT (E2 label clause + mutation_check added; if live_runner_cli sends orders from this feed it is C3: stop and re-class) | E2 (lab_guy): the 12/18/>18 bar window is OURS, not SOURCED (HINDI_CONCEPTS.md: fewer than 15 bars SOURCED, 12 only in a dilution list, 18 NOT_IN_DATA). Tests encode the CURRENT default as OURS, never call 18 sourced; if malkan-window-12-18-vs-hindi changes the window, expected values follow the card result.",
+  "note": "REVIEWED:2026-11-04 ACCEPT by lab_guy | D11 feeder card for cbfc521d4, 20165a523 | lab_guy C1 ACCEPT (E2 label clause + mutation_check added; if live_runner_cli sends orders from this feed it is C3: stop and re-class) | E2 (lab_guy): the 12/18/>18 bar window is OURS, not SOURCED (HINDI_CONCEPTS.md: fewer than 15 bars SOURCED, 12 only in a dilution list, 18 NOT_IN_DATA). Tests encode the CURRENT default as OURS, never call 18 sourced; if malkan-window-12-18-vs-hindi changes the window, expected values follow the card result. | 2026-11-04 moved out of the Codex lane: the feeder sits in layers/alerts/ (live path), which LAYER_LAB.md excludes; Codex refused it correctly (cf5697d86).",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "gemini-pro-argon",
