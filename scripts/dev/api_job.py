@@ -10,7 +10,7 @@ Rules (PLAN_API_CREDITS_2026-11-04.md): one job at a time per machine; every job
 F:/ClaudePlaform/key.txt (env MTS_API_KEY_FILE overrides) into the child's environment only, never printed, logged or put in a
 prompt; a prompt that names a secret-like path is refused; hooks are off under a nested headless run (disableAllHooks), so the
 Builder preamble below carries the CLAUDE.md rules. Output: F:/MTS/api_runs/<slug>/{out.jsonl,err.txt,meta.json,prompt.txt}.
-Wake on completion without a loop: python scripts/dev/bg_watch.py until --file F:/MTS/api_runs/<slug>/out.jsonl --pattern "\"type\": ?\"result\"" --timeout 5400
+Wake on completion: `supervisor.py wait --login <L>` with run_in_background (wakes on a job end and AT the 5 h reset; never `&`).
 """
 from __future__ import annotations
 import argparse
@@ -125,6 +125,12 @@ def running_jobs() -> list[str]:
     return out
 
 
+def wait_line() -> str:
+    """stall-fix-1104: the one wake source after a launch. A bg_watch/`&` watcher wakes nobody once the turn ends (L1 idled 3 h)."""
+    return ("WAIT start `python scripts/dev/supervisor.py wait --login <L>` as a Bash call with run_in_background: true (no `&`, no "
+            "redirect); it wakes you when this job ends and AT the 5 h reset; then end the turn with `supervisor.py watchcheck`")
+
+
 def launch(a) -> None:
     if a.card:
         brief = card_brief(a.card)
@@ -162,7 +168,7 @@ def launch(a) -> None:
     p.stdin.write(prompt.encode("utf-8"))
     p.stdin.close()
     print(f"LAUNCHED {a.slug} pid {p.pid} model {a.model} cap ${a.max_usd} -> {d / 'out.jsonl'}")
-    print(f"WAIT python scripts/dev/bg_watch.py until --file {d / 'out.jsonl'} --pattern \"\\\"type\\\": ?\\\"result\\\"\" --timeout 5400")
+    print(wait_line())
 
 
 def status(a) -> None:

@@ -199,14 +199,14 @@
       "purpose": "Simulator desk: what each study tested, verdicts and example trades. The runnable desk itself is the local app (research/sim_desk/desk.py).",
       "notes_go_to": "Read only.",
       "note": "Added to the registry 2026-10-25 (operator: new development must show on MTS Home). No repo html path: the sim-desk sessions publish it; staleness is not tracked here. Live page title is 'Test Simulator' (v22, 2026-11-04).",
-      "published_sha": "17bdc16a26137e3622097b47a5a36599d381f90e58943d05f33a31951eebf554"
+      "published_sha": "cf702b395bf596fe217c058c080da907b972a7abe465e108cd008c18cfcd2220"
     },
     {
       "slug": "cbp_analyst_desk",
       "title": "CBP Analyst Desk",
       "status": "canonical",
       "pinned": true,
-      "generator": "F:/CryptoScrapper/cbp_v2/tools/build_board.py (v5 tabbed board; recovered 2026-11-04 from the publishing session; not yet wired into cbp_run.py)",
+      "generator": "F:/CryptoScrapper/cbp_v2/tools/build_board.py (v5 tabbed board; run by cbp_run.rebuild_dashboard after every CBP run, wired 2026-11-04)",
       "html": null,
       "single_owner": "jishusharma1985",
       "owner_app": "CBP",
@@ -222,7 +222,7 @@
       },
       "purpose": "Who says what on BTC bottom and alts, from every CBP analyst video. The one CBP page.",
       "notes_go_to": "Read only.",
-      "note": "The only CBP page. 2026-11-04: live url is BpADz (v5, one screen, 5 tabs: Now, Trail, Analysts, BTC levels, Alts INR); the 2026-10-30 page https://claude.ai/artifact/EsvscEYpcnzjQ231AzcDZC was deleted 2026-11-04 (operator click). Legacy generator build_dashboard.py (cbp_run.py) still writes cbp_dashboard.html; card to wire build_board.py in.",
+      "note": "The only CBP page (context source, not signals). Live url BpADz (v5, 5 tabs). 2026-11-04: every CBP run now fetches prices and rebuilds cbp_v2/cbp_board.html; a session still republishes it to this url (artifact tool cannot run from a script).",
       "published_sha": null
     },
     {

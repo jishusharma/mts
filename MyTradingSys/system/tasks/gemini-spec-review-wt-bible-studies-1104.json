@@ -1,0 +1,56 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -c \"import pathlib; assert 'VERDICT:' in pathlib.Path('MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md').read_text()\""
+  ],
+  "created": "2026-11-04T13:57:43Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md lists defects (max 12) with line evidence and ends with VERDICT: ACCEPT or FIX-FIRST.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Gemini blind spec review of the frozen designs in SPEC.md: defects only, tagged E1-E7, severity, fix. Focus: sealed windows, trial counts (E5), tests that cannot fail (E4), definitions not from sources (E2).",
+  "id": "gemini-spec-review-wt-bible-studies-1104",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "splits: PRE_DEV_START + assert_pre_dev_only (card splits-pre-dev-window)",
+      "ref": "b1dfbc7852a5",
+      "utc": "2026-11-04T13:29:25Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-04 T0-ONLY; lab_guy C0 review card (producer Claude -> Gemini lens)",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-04T13:58:53Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md",
+    "MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md",
+    "MyTradingSys/backtest/splits.py"
+  ],
+  "scope_out": [],
+  "scope_sha": "b1dfbc7852a5",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md, backtest/splits.py, wavetrend.py",
+    "List defects",
+    "Write the review ending with VERDICT"
+  ],
+  "tests": "python -c \"import pathlib; assert 'VERDICT:' in pathlib.Path('MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md').read_text()\"",
+  "title": "[GEMINI] Non-Claude spec review of the 3 WaveTrend Bible study designs (SPEC.md, C2)",
+  "weight": "ROUTINE",
+  "worker": ""
+}

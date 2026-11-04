@@ -1,0 +1,63 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/layer_bible/RECHECK_GEMINI_1104.md').read_text(); assert 'VERDICT:' in t\""
+  ],
+  "created": "2026-11-04T13:54:12Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_bible/RECHECK_GEMINI_1104.md has one line per review item (1-6) RESOLVED / NOT_RESOLVED with DESIGN.md line evidence, new defects if any, and ends with VERDICT: ACCEPT or FIX-FIRST.",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Same Gemini lens re-checks DESIGN.md v2 against its own review REVIEW_GEMINI_1104.md: is each REAL item resolved, is each REJECTED/DEFERRED one justified; defects only.",
+  "id": "gemini-spec-recheck-layer-bible-design-1104",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Layer Bible design v2 after Gemini FIX-FIRST review; re-check card",
+      "ref": "deff345f2714",
+      "utc": "2026-11-04T13:54:28Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "deff345f2714 Layer Bible design v2 after Gemini FIX-FIRST review; re-check card",
+      "ref": "MyTradingSys/research/layer_bible/DESIGN.md",
+      "utc": "2026-11-04T13:54:28Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-04 T0-ONLY; lab_guy C0 re-check card (same lens re-checks a FIX, lab_guy role)",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-04T13:58:56Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_bible/DESIGN.md",
+    "MyTradingSys/research/layer_bible/REVIEW_GEMINI_1104.md",
+    "MyTradingSys/research/layer_bible/RECHECK_GEMINI_1104.md"
+  ],
+  "scope_out": [],
+  "scope_sha": "deff345f2714",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read REVIEW_GEMINI_1104.md and DESIGN.md (v2 table)",
+    "Judge each of items 1-6 and look for new defects in the v2 text",
+    "Write RECHECK_GEMINI_1104.md ending with VERDICT"
+  ],
+  "tests": "python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/layer_bible/RECHECK_GEMINI_1104.md').read_text(); assert 'VERDICT:' in t\"",
+  "title": "[GEMINI] Re-check DESIGN.md v2 against your own FIX-FIRST review (layer bible)",
+  "weight": "ROUTINE",
+  "worker": ""
+}

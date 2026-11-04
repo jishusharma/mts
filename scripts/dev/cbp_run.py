@@ -270,10 +270,16 @@ def run_once(now, fetch=fetch_new, extract=llm_extract, store=None):
 
 
 def rebuild_dashboard(run=subprocess.run):
-    """Regenerate cbp_v2/cbp_dashboard.html in the CBP home; a failure here never fails the run."""
-    tool = CBP_HOME / "cbp_v2" / "tools" / "build_dashboard.py"
-    if tool.is_file():
-        run([sys.executable, str(tool)], check=False)
+    """Refresh market data, then rebuild the v5 CBP Analyst Desk board (cbp_v2/cbp_board.html).
+    Each step is best effort: a failure here never fails the run, and the build runs on the last data."""
+    tools = CBP_HOME / "cbp_v2" / "tools"
+    for name in ("fetch_board_data.py", "build_board.py"):
+        tool = tools / name
+        if tool.is_file():
+            try:
+                run([sys.executable, str(tool)], check=False)
+            except Exception as e:  # noqa: BLE001
+                print("cbp: " + name + " failed: " + str(e))
 
 
 def main(argv=None, now=None):
