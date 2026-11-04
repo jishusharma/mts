@@ -22,6 +22,8 @@ previous read (cite the shot id or log entry), (4) what the live system did or s
 3. Read MyTradingSys/system/QUICK_ANSWERS.md (screenshot rules) and MyTradingSys/methodology/screenshot_intake.md.
 4. Gap sweep: `python scripts/dev/eagle_gaps.py --write MyTradingSys/research/_archive/loose_2026-10/EAGLE_GAPS.md` (again after any read that hits NOT_IN_DATA).
    Cite the gap line when a read lands on a layer with a gap; each new gap = one card, never a fix here.
+5. Scenario ledger: `python MyTradingSys/research/eagle_eyes_picture_2026-10-28/scenario_ledger.py score` (scores every map whose window ended; quote the summary line in the first reply).
+   Every A/B map or 'base case' given to the operator = `scenario_ledger.py add --given --end --likely --up --down --text` the SAME turn; a map not in the ledger was not given.
 
 ## Per screenshot set (the hook prints `[SCREENSHOT INTAKE] ... SAVED` with ids; no notice = nothing new)
 - Charts of one moment are ONE set, read together; map image N to its id by sha256 prefix.
