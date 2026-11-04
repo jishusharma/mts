@@ -143,7 +143,8 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Spec / sources: `MyTradingSys/research/_archive/loose_2026-10/TURN_OF_CANDLE_ORIGIN_2026-10-09.md`
 - Code: `MyTradingSys/backtest/layers/session`; `MyTradingSys/backtest/layers/session_levels`; `MyTradingSys/backtest/layers/turn_of_candle`
 - Other results: `MyTradingSys/research/t087_session_levels_2026-10-09`; `MyTradingSys/research/eur_low_us_sweep_2026-10-14`
-- Open cards: none
+- Open cards (`python scripts/dev/tasks.py brief <id>`):
+  - `bb-range-to-range-by-session` ready p2 SONNET: Bollinger range-to-range: in a range the band-to-band move repeats, by session (context re-run 3)
 
 ## Volume, candle patterns, daily MA setups, bigtrade (`volume_candles_ma`)
 - Status: No validated edge; volume HOLDOUT sealed; MA numbers NO-SOURCE.
@@ -228,6 +229,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Roadmap: `MyTradingSys/research/wavetrend_2026-10-17/STATUS_2026-10-19.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `wavetrend-c1-v2` refined p1 SONNET: WaveTrend C1 detector correction and new count-only prereg
+  - `wavetrend-c30-retest-rsi-session` ready p2 SONNET: WaveTrend c30 re-run: retest after the dot plus RSI confluence, by session (context re-run 2)
 
 ## Pitchfork (Andrews / Schiff / Morge median line) (`pitchfork`)
 - Status: Pivot amplitude gate is OURS (2 pct reversal, no ATR); doc Rule P-01 2.5 x ATR14 not implemented. Detector, simulator desk plugin (studies/pitchfork.py), and live Java engine (PitchforkSignalLayer.java with Tine Bounce + Hagopian Failure + Volume Profile confluence) built and wired; no edge: the 4H PASS was withdrawn 2026-11-03 after an exact causal rerun (research/mts_audit_2026-11-03/AUDIT.md).
