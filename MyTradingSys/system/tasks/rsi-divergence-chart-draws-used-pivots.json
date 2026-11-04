@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T02:37:50Z",
   "commands": [],
   "created": "2026-11-03T22:54:24Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "rsi-divergence-chart-draws-used-pivots",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Chart draws close pivots of the 12/18 detector, label shows STRONG/OK; test_chart_uses_det",
+      "ref": "eea73da9e",
+      "utc": "2026-11-04T02:37:50Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,7 +39,12 @@
   "refined_by": "",
   "refreshed": "2026-11-04T02:33:11Z",
   "refs": [],
-  "result": "",
+  "result": "Chart draws close pivots of the 12/18 detector, label shows STRONG/OK; test_chart_uses_detector_pivots failed on old code (event list empty), passes now; chart MyTradingSys/research/malkan_div_flags_2026-11-04/charts/BTCUSDT_1d.png",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/rsi/div_flags_chart.py",
     "MyTradingSys/backtest/layers/rsi/test_div_flags_chart.py"
@@ -45,11 +57,12 @@
   "sources": [
     "OPERATOR_DECISIONS d-malkan-divergence-window-1104"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read backtest/layers/rsi/div_flags_chart.py, backtest/layers/alerts/live_confluence_feed.py and its window_class fields",
     "add a failing test (test_chart_uses_detector_pivots) with a planted wick extreme that differs from the close pivot, then change detect_all/render to take the pivots from the detector"
   ],
+  "taken": "2026-11-04T02:37:50Z",
   "tests": "test_chart_uses_detector_pivots fails on the current drawing (wick extreme planted) and passes after the change",
   "title": "Chart renderer draws the RSI divergence line between the two close pivots the detector actually used (operator: screenshots mark it wrongly on some charts)",
   "weight": "ROUTINE",
