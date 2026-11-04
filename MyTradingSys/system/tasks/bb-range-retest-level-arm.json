@@ -4,7 +4,7 @@
   "commands": [],
   "created": "2026-11-04T02:00:34Z",
   "depends_on": [],
-  "done_when": "research/bb_range_retest_2026-11-04/PRE_REG.md frozen (## Context block + TRIALS.md rows first), DEV fee-net by session with day-clustered CI and prereg_gate power check, VALIDATION once for DEV survivors, RESULT.md first lines: Regime mix: line plus a concept-only comparison row = the e2d5f8bd1 run (research/bb_range_to_range_2026-11-04); fill-rate of the retest arm reported (must be well below 99.9%); VERDICTS.csv row; HOLDOUT never read",
+  "done_when": "research/bb_range_retest_2026-11-04/ has frozen PRE_REG (## Context + TRIALS rows first), DEV fee-net by session with day-clustered CI, VALIDATION once for survivors, RESULT.md with Regime mix line, retest fill-rate and the e2d5f8bd1 run as concept-only row, VERDICTS row; HOLDOUT never read",
   "est_turns": 40,
   "formula_id": "",
   "formula_ids": [],
@@ -12,6 +12,22 @@
   "goal": "Fix the encoding of bb-range-to-range (e2d5f8bd1: retest entry filled 99.9% = next-open, so the context rule was not applied). Entry = price returns to the band it just left (touch within k ATR, OURS) after a session-range tag (Tom, SOURCED); exit at the opposite band; same fee, same 3 sessions (asia/london/ny, 15m).",
   "id": "bb-range-retest-level-arm",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "bb-range-to-range-by-session: DEV result FAIL, VERDICTS row, tests registered",
+      "ref": "9952d929ae73",
+      "utc": "2026-11-04T01:56:37Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "79364ea2cd79 bb-range-to-range: freeze PRE_REG, tests, study, TRIALS rows before DEV run",
+      "ref": "MyTradingSys/research/layer_lab/TRIALS.md",
+      "utc": "2026-11-04T01:53:44Z"
+    }
+  ],
   "layers": [
     "session_timing"
   ],
@@ -21,6 +37,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T02:01:20Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -31,12 +48,13 @@
   "scope_out": [
     "no live path, no parameter beyond PRE_REG, no new trend tag (use backtest/research_kit.py), HOLDOUT never read"
   ],
+  "scope_sha": "9952d929ae73",
   "size": "M",
   "sources": [
     "MyTradingSys/research/CONTEXT_FILTER_REVIEW_2026-11-04.md",
     "OPERATOR_DECISIONS d-context-retest-1104"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "read bb_range_to_range_2026-11-04 PRE_REG/RESULT/study.py, research_kit.py, CONTEXT_FILTER_REVIEW_2026-11-04.md",
     "write PRE_REG and TRIALS rows first, then retest-level entry, DEV run, VALIDATION once for survivors"
