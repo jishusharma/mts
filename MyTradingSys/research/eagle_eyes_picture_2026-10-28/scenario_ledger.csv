@@ -1,0 +1,3 @@
+id,given_utc,end_utc,likely,up,down,text,outcome,touched_utc,score
+S001,2026-11-04T09:00Z,2026-11-05T09:00Z,DOWN,78850.0,77615.0,"Bounce read 11-04: OI falling = short covering, rotation inside 76.4-78.8k back to BB mid 77,615 more likely; breakout above 78.8k with OI+CVD the alternative (4h lower-to-upper BB n=31: 24h up 45%). Logged 13:58Z, scored from 09:00Z as given",,,
+S002,2026-11-04T13:10Z,2026-11-04T21:00Z,UP,78719.0,77400.0,"Tonight 11-04: V-day (low by 06Z, 13Z >=2% above it) -> pre-US spot high 78,718 taken in US session 90% vs 52% (n=93); kill = 77.4k (4h VWAP) first. Decider at 78.8-79.6k: OI+CVD rising = buyers (80-80.3k), OI falling = covering, fade to 77.7k",,,
