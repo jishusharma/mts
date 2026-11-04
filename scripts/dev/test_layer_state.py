@@ -13,7 +13,7 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import layer_state as L
 
-FIX = L.ROOT / "MyTradingSys" / "backtest" / "layers" / "wavetrend" / "fixture_btcusdt_3m_2026-11-04.csv"
+FIX = L.ROOT / "MyTradingSys" / "research" / "layer_bible" / "fixtures" / "fixture_btcusdt_3m_2026-11-04.csv"
 P = {"family": "wavetrend", "symbol": "BTCUSDT", "source": "t", "tfs": ["3m"], "bars": 1000, "dot_band": 53,
      "dot_basis": "prev_bar"}
 TF = 180000
