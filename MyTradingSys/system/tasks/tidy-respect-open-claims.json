@@ -1,17 +1,28 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest -q scripts/dev/test_sync.py -k tidy"
+  ],
   "created": "2026-11-03T18:40:36Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "A clean on-trunk tree idle 1 h with an open claim is kept by tidy and tidy_after_ship; without a claim it is still retired.",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "sync.py tidy never retires a worktree whose branch/slug holds an open live claim.",
   "id": "tidy-respect-open-claims",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tidy: finished worktrees retire right after ship",
+      "ref": "59815236e099",
+      "utc": "2026-11-03T18:38:14Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,16 +30,29 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refs": [],
+  "refreshed": "2026-11-04T05:13:38Z",
+  "refs": [
+    "MyTradingSys/system/PARALLEL.md"
+  ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/sync.py",
+    "scripts/dev/test_sync.py"
+  ],
+  "scope_out": [
+    "claim lease rules; lane trees"
+  ],
+  "scope_sha": "59815236e099",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Write the failing test beside test_tidy_retires_a_shipped_clean_tree_after_one_hour_not_24.",
+    "In tidy(), skip a tree whose branch slug matches open_claims(repo) rows.",
+    "Run test_sync.py and ship."
+  ],
+  "tests": "scripts/dev/test_sync.py::test_tidy_keeps_a_tree_with_an_open_claim",
   "title": "sync.py tidy retires a clean, on-trunk tree idle 1 h even if a person is between steps in it (DSA tree after 5c939ec6, tidy_after_ship). Keep any tree with an open claim. Measured: operator's live DSA tree mts-dsa-jis-nuc-1103-1825 is in scope.",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }

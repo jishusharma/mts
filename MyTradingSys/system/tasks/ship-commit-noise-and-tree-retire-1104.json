@@ -1,17 +1,28 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest -q scripts/dev/test_sync.py"
+  ],
   "created": "2026-11-03T20:14:56Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "A ship that changes LAYERS.md adds zero extra commits; start --apply-style retire removes a clean released tree fully on trunk regardless of the 12 h gateway hold.",
+  "est_turns": 14,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "ship folds the LAYERS.md regen into the ship's own commit (no separate commit), and sync.py start retires a released, fully-shipped tree.",
   "id": "ship-commit-noise-and-tree-retire-1104",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tidy: finished worktrees retire right after ship",
+      "ref": "59815236e099",
+      "utc": "2026-11-03T18:38:14Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,16 +30,30 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refs": [],
+  "refreshed": "2026-11-04T05:14:04Z",
+  "refs": [
+    "MyTradingSys/system/PARALLEL.md"
+  ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/sync.py",
+    "scripts/dev/test_sync.py"
+  ],
+  "scope_out": [
+    "the gateway rule itself; live tree"
+  ],
+  "scope_sha": "59815236e099",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Write the failing test: count commits after a ship that dirties LAYERS.md (stage_layers path, sync.py near LAYERS_REL).",
+    "Amend/fold regen into the last own commit before push.",
+    "Write the failing test for retire of a released shipped tree at start, then implement.",
+    "Run test_sync.py and ship."
+  ],
+  "tests": "scripts/dev/test_sync.py::test_ship_folds_layers_regen_into_own_commit",
   "title": "Ship: fold the LAYERS.md regen into the ship's own commit (24 extra commits/day) and retire a released, fully-shipped tree at the next sync.py start (59 trees on JIS-NB, most held 12-35 h by the gateway rule)",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }

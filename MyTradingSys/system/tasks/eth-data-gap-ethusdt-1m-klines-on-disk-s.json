@@ -1,18 +1,21 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest -q scripts/dev/test_kline_gap_check.py"
+  ],
   "created": "2026-11-03T14:37:13Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "A gap check reports zero missing 1m bars from 2022-01 to 2026-09 for ETHUSDT and the fetch is logged; C38 can be rerun.",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "ETHUSDT 1m klines are topped up from 2024-06 through 2026-09 on disk with a gap report; holdout stays sealed.",
   "id": "eth-data-gap-ethusdt-1m-klines-on-disk-s",
   "kind": "run",
   "lane": "SONNET",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -20,16 +23,27 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T05:13:56Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/kline_gap_check.py",
+    "scripts/dev/test_kline_gap_check.py"
+  ],
+  "scope_out": [
+    "reading the sealed holdout window; ETHBTC; the live tree"
+  ],
+  "scope_sha": "",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Fail-first test for a gap checker on a fixture with one missing minute.",
+    "Implement the checker.",
+    "Fetch the public klines to the primary Dumps/klines (not the session worktree), run the checker, record the result."
+  ],
+  "tests": "scripts/dev/test_kline_gap_check.py::test_gap_check_flags_missing_minutes",
   "title": "ETH data gap: ETHUSDT 1m klines on disk stop at 2024-06 and no ETHBTC pair exists; top up to 2026-09 (holdout sealed) so C38 can be rerun",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }

@@ -1,17 +1,28 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest -q scripts/dev/test_gemini_queue.py"
+  ],
   "created": "2026-11-03T18:20:35Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "After run_job, git config --local user.name in the main repo is unchanged; the queue worktree commit is authored gemini-queue.",
+  "est_turns": 6,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "gemini_queue run_job sets its git identity without writing the shared repo .git/config, so commits by other sessions keep their own author.",
   "id": "git-identity-gemini-queue-leak",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "gemini_queue: run <card>[:effort][:model] accepts flash|argon|opus|sonnet|gpt",
+      "ref": "feb8b31b912a",
+      "utc": "2026-10-31T17:28:10Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,16 +30,29 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refs": [],
+  "refreshed": "2026-11-04T05:13:37Z",
+  "refs": [
+    "scripts/dev/gemini_queue.py"
+  ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/gemini_queue.py",
+    "scripts/dev/test_gemini_queue.py"
+  ],
+  "scope_out": [
+    "restoring the existing .git/config value on each machine (operator hand step; report the command)"
+  ],
+  "scope_sha": "feb8b31b912a",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Extend test_identity_set_and_failure_logged to assert the shared config is untouched (fail first).",
+    "Replace git config in run_job with extensions.worktreeConfig + git config --worktree, or per-process GIT_AUTHOR_*/GIT_COMMITTER_* env.",
+    "Run test_gemini_queue.py and ship."
+  ],
+  "tests": "scripts/dev/test_gemini_queue.py::GeminiQueueTests::test_identity_set_and_failure_logged",
   "title": "Every commit on JIS-NUC is authored gemini-queue: the shared repo .git/config holds user.name gemini-queue, set for one queue tree and inherited by all worktrees. Set identity per process or per worktree and restore the normal name.",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }

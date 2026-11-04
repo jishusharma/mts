@@ -1,17 +1,28 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest -q MyTradingSys/backtest/layers/fabio/test_run_v3_l3.py"
+  ],
   "created": "2026-11-03T19:36:01Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "New test passes and fails if the OOS branch is skipped (oos_w empty).",
+  "est_turns": 6,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "A test runs run_v3_l3 main without --is-only using --days-limit and proves OOS windows are run and oos_grid results are written.",
   "id": "run-v3-l3-no-test-runs-the-full-non-is-o",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "fabio run_v3_l3: --is-only loads bars only through IS_RANGE[1]",
+      "ref": "45972ae3b5f0",
+      "utc": "2026-11-03T19:29:53Z"
+    }
+  ],
   "layers": [
     "fabio"
   ],
@@ -21,16 +32,26 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T05:13:39Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/fabio/test_run_v3_l3.py"
+  ],
+  "scope_out": [
+    "changing run_v3_l3.py behaviour; real data runs"
+  ],
+  "scope_sha": "45972ae3b5f0",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read how existing tests stub build_windows.",
+    "Add the test: --days-limit 2, no --is-only, assert oos windows and oos_grid in output json.",
+    "Run the file and ship."
+  ],
+  "tests": "MyTradingSys/backtest/layers/fabio/test_run_v3_l3.py::test_days_limit_full_path_produces_oos",
   "title": "run_v3_l3: no test runs the full non --is-only path; add a --days-limit smoke case that asserts OOS windows and oos_grid results are produced",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }
