@@ -46,6 +46,7 @@ EXPORTED_BY_SOURCE = {
     "MyTradingSys/research/bb_range_to_range_2026-11-04/RESULT.md": "bb-range-to-range-2026-11-04",
     "MyTradingSys/research/bb_range_retest_2026-11-04/RESULT.md": "bb-range-retest-2026-11-04",
     "MyTradingSys/research/bb_long_window_2026-11-04/RESULT_LONG.md": "bb-long-window-2026-11-04",
+    "MyTradingSys/research/bear_proxy_context_tuning_2026-11-04/RESULT.md": "bear-proxy-context-tuning-2026-11-04",
 }
 
 

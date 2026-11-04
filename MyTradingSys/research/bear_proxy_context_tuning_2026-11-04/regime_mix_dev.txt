@@ -1,0 +1,1 @@
+360 weeks: bull 73 (20%) | bear 0 (0%) | range 222 (62%) | n/a 65 (18%) | baseline proxy (1w, RSI14<=40, below SMA200, OURS) on in 57 of 360 weeks, BTCUSDT

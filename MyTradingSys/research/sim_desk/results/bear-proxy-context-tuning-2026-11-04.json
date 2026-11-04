@@ -1,0 +1,101 @@
+{
+ "id": "bear-proxy-context-tuning-2026-11-04",
+ "kind": "backtest",
+ "family": "Bear proxy per context",
+ "title": "Best OURS bear-proxy setting per regime/phase and best fake-out filter per timeframe, BTCUSDT+ETHUSDT SPOT 2017-08..2025-06",
+ "provenance": "builder-export",
+ "date": "2026-11-04",
+ "what": [
+  {
+   "name": "Part A grid",
+   "value_plain": "RSI length 14/21 x threshold 35/40/45 x proxy TF 1d/1w x SMA200 on/off = 24 settings, tested as a gate on 15m bearish close-pivot Malkan divergence shorts (W12), 7 regime/phase cells",
+   "label": "OURS"
+  },
+  {
+   "name": "Part B filters",
+   "value_plain": "none, wait one bar close, higher-TF RSI agreement, volume above prior-20 mean, retest N=10; fake-out = 1 ATR adverse before 1 ATR favourable within 10 bars; TFs 15m/1h/4h/1d",
+   "label": "OURS"
+  },
+  {
+   "name": "Regime source",
+   "value_plain": "research_kit.regime_tag (Malkan weekly+monthly 60/40 with daily SMA200 side); phase = SMA200 side age, fresh <= 60 daily closes",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Cost",
+   "value_plain": "fee-net 0.14 % round trip (research_kit)",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Regime mix",
+   "value_plain": "360 weeks DEV (2017-08-07..2024-06-24, BTCUSDT): bull 73 (20%) | bear 0 (0%) | range 222 (62%) | n/a 65 (18%); baseline OURS proxy on in 57 weeks",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Power gate",
+   "value_plain": "prereg_gate m = 11: Part B 15m PASS all filters; 1h/4h/1d BLOCK; Part A only threshold-45 settings pass, every picked cell BLOCK",
+   "label": "OURS"
+  },
+  {
+   "name": "Spot vs futures caveat",
+   "value_plain": "spot not futures; 2022-24 half of DEV overlaps the sibling long-window studies; maintenance gaps not filled",
+   "label": "OURS"
+  }
+ ],
+ "how": "PRE_REG.md frozen first (commit 00157e43c); best per cell on DEV only; VALIDATION 2024-07..2025-06 read once on picks; Holm m = 11; day-clustered 95 % CI; DEFAULT needs power PASS and fee-net CI above 0.",
+ "window": "DEV 2017-08..2024-06, VALIDATION 2024-07..2025-06 (picks only), HOLDOUT never loaded; BTCUSDT+ETHUSDT SPOT klines, no futures splice",
+ "verdict": {
+  "label": "NO DEFAULT CHANGES. Part A (OURS bear proxy per regime/phase cell): INCONCLUSIVE (underpowered), not FAIL: the power gate (m = 11) BLOCKs every picked cell and 3 cells have no setting with n >= 30, so d-bear-proxy-1104 stays. Part B (fake-out filter per timeframe): 15m is the only powered TF and its picked filter (volume) FAILS on VALIDATION (fee-net -0.183 % [-0.312, -0.053]); 1h, 4h, 1d INCONCLUSIVE (underpowered). 0 of 11 cells earn a default; HOLDOUT never loaded.",
+  "tone": "bad"
+ },
+ "why": [
+  "Part A: 69 of 168 setting-cell rows reached n >= 30 and 20 days on DEV; none has a fee-net CI above 0. Best DEV points (range/mature +0.250 %, n 122 / 47 days; ALL +0.003 %) are the best of 24 and collapsed on VALIDATION (n 5 and n 46).",
+  "The baseline gate (weekly RSI14 <= 40, below SMA200) does nothing measurable: shorts inside -0.166 % vs outside -0.194 % (difference +0.028, t 0.48). Its 4-week lower-close hit rate is 0.376 over 109 gated weeks vs 0.423 for all weeks: low weekly RSI is followed by a bounce slightly more often than average.",
+  "Part B 15m (powered): every filter loses after cost (none -0.139, confirm1 -0.198, htf_rsi -0.207, volume -0.110, retest -0.172 %); fake-out rate stays 44-54 % in every cell, with or without a filter.",
+  "Only lead: 4h higher-TF RSI agreement (+0.203 DEV, +0.747 VALIDATION) but n 170 / 27, CIs span zero, power BLOCK. Next step is more symbols and bear years, each a new PRE_REG."
+ ],
+ "kpis": [
+  {
+   "label": "DEV evaluations",
+   "value": "188"
+  },
+  {
+   "label": "cells with a default",
+   "value": "0 of 11",
+   "tone": "warn"
+  },
+  {
+   "label": "15m best filter VAL net",
+   "value": "-0.183 %",
+   "tone": "bad"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: the study reports cell tables (A_dev.csv, B_dev.csv, A_val.csv, B_val.csv in the study folder), not a trade list"
+  }
+ ],
+ "parity": null,
+ "source_files": [
+  "MyTradingSys/research/bear_proxy_context_tuning_2026-11-04/RESULT.md",
+  "MyTradingSys/research/bear_proxy_context_tuning_2026-11-04/PRE_REG.md",
+  "MyTradingSys/research/bear_proxy_context_tuning_2026-11-04/A_dev.csv",
+  "MyTradingSys/research/bear_proxy_context_tuning_2026-11-04/B_dev.csv",
+  "MyTradingSys/research/bear_proxy_context_tuning_2026-11-04/A_val.csv",
+  "MyTradingSys/research/bear_proxy_context_tuning_2026-11-04/B_val.csv",
+  "MyTradingSys/research/bear_proxy_context_tuning_2026-11-04/defaults.json"
+ ],
+ "commit": "00157e43c",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "NO DEFAULT CHANGES. Part A (OURS bear proxy per regime/phase cell): INCONCLUSIVE (underpowered), not FAIL: the power gate (m = 11) BLOCKs every picked cell and 3 cells have no setting with n >= 30, so d-bear-proxy-1104 stays. Part B (fake-out filter per timeframe): 15m is the only powered TF and its picked filter (volume) FAILS on VALIDATION (fee-net -0.183 % [-0.312, -0.053]); 1h, 4h, 1d INCONCLUSIVE (underpowered). 0 of 11 cells earn a default; HOLDOUT never loaded.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: NO DEFAULT CHANGES. Part A (OURS bear proxy per regime/phase cell): INCONCLUSIVE (underpowered), not FAIL: the power gate (m = 11) BLOCKs every picked cell and 3 cells have no setting with n >= 30, so d-bear-proxy-1104 stays. Part B (fake-out filter per timeframe): 15m is the only powered TF and its picked filter (volume) FAILS on VALIDATION (fee-net -0.183 % [-0.312, -0.053]); 1h, 4h, 1d INCONCLUSIVE (underpowered). 0 of 11 cells earn a default; HOLDOUT never loaded. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
+}

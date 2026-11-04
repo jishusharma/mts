@@ -125,6 +125,14 @@ def day_state(d1, registry, hi_ms):
     return {"day0": day0, "days": days, "regime": regime, "phase": phase, "proxy": proxy, "kk": kk, "closes": closes, "tcl": tcl_d}
 
 
+def state_at(st, key, t):
+    """Day state at instant t; None/False before the first data day (never a negative-index wrap)."""
+    x = int(t // DAY) - st["day0"]
+    if key == "proxy":
+        return st["proxy"][A_BASELINE][x] if 0 <= x < len(st["days"]) else False
+    return st[key][x] if 0 <= x < len(st["days"]) else None
+
+
 def week_hits(st, setting, lo_ms, hi_ms):
     """Per Monday week start D in the window with a known regime/phase: (cell flags, gated, lower close 4 weeks later)."""
     out = []
@@ -388,8 +396,8 @@ def main():
         (HERE / "picks_dev.json").write_text(json.dumps({"A": pa, "B": pb}, indent=1), encoding="utf-8", newline="\n")
         st = states["BTCUSDT"]
         starts = S.week_starts(lo_ms, hi_ms)
-        regs = [st["regime"][int(t // DAY) - st["day0"]] for t in starts]
-        px = [bool(st["proxy"][A_BASELINE][int(t // DAY) - st["day0"]]) for t in starts]
+        regs = [state_at(st, "regime", t) for t in starts]
+        px = [bool(state_at(st, "proxy", t)) for t in starts]
         line = (rk.regime_mix_line(regs) + " | baseline proxy (1w, RSI14<=40, below SMA200, OURS) on in %d of %d weeks, BTCUSDT" % (sum(px), len(px)))
         (HERE / "regime_mix_dev.txt").write_text(line + "\n", encoding="utf-8", newline="\n")
         print(line)

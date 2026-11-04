@@ -1,0 +1,57 @@
+{
+ "A:ALL": {
+  "verdict": "no default: underpowered",
+  "why": "power gate BLOCK on the picked cell (capped INCONCLUSIVE)",
+  "holm": 1.0
+ },
+ "A:bull|fresh": {
+  "verdict": "no default: underpowered",
+  "why": "no setting reached n>=30 and >=20 days on DEV",
+  "holm": null
+ },
+ "A:bull|mature": {
+  "verdict": "no default: underpowered",
+  "why": "power gate BLOCK on the picked cell (capped INCONCLUSIVE)",
+  "holm": 1.0
+ },
+ "A:range|fresh": {
+  "verdict": "no default: underpowered",
+  "why": "power gate BLOCK on the picked cell (capped INCONCLUSIVE)",
+  "holm": 1.0
+ },
+ "A:range|mature": {
+  "verdict": "no default: underpowered",
+  "why": "power gate BLOCK on the picked cell (capped INCONCLUSIVE)",
+  "holm": 0.5457417303823686
+ },
+ "A:bear|fresh": {
+  "verdict": "no default: underpowered",
+  "why": "no setting reached n>=30 and >=20 days on DEV",
+  "holm": null
+ },
+ "A:bear|mature": {
+  "verdict": "no default: underpowered",
+  "why": "no setting reached n>=30 and >=20 days on DEV",
+  "holm": null
+ },
+ "B:15m": {
+  "verdict": "FAIL",
+  "why": "powered but VALIDATION fee-net CI not above 0 (n 642, CI lo -0.3123142070560422, Holm 0.06253327940498898)",
+  "holm": 0.06253327940498898
+ },
+ "B:1h": {
+  "verdict": "no default: underpowered",
+  "why": "power gate BLOCK on the picked cell (capped INCONCLUSIVE)",
+  "holm": 0.8252775073129941
+ },
+ "B:4h": {
+  "verdict": "no default: underpowered",
+  "why": "power gate BLOCK on the picked cell (capped INCONCLUSIVE)",
+  "holm": 1.0
+ },
+ "B:1d": {
+  "verdict": "no default: underpowered",
+  "why": "power gate BLOCK on the picked cell (capped INCONCLUSIVE)",
+  "holm": 0.9140641448366456
+ }
+}
