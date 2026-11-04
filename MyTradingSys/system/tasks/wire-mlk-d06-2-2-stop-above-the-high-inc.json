@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T22:49:44Z",
   "commands": [],
   "created": "2026-11-04T21:10:16Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "wired offline, fail-first tests in rsi layer",
+      "ref": "e1b869c08",
+      "utc": "2026-11-04T22:49:44Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "malkan RSI: PRD/NRD as Malkan defines them; generic hidden moved to KROWN-CONFLUENCE",
@@ -24,6 +31,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: wire-malkan-1104 batch",
   "note": "planner-wire43-1104h: verified on trunk 2026-11-05, no code for this rule; params OURS unless the card says SOURCED. Folds: wire-mlk-d05, wire-mlk-d07, wire-mlk-d08 (trendline-break confirm waits for this; one video). MLK-D11 closed as wired: malkan_mtf.py require_bullish_candle default True.\nREVIEWED:2026-11-04 T0-ONLY",
   "prio": 3,
   "refine_tries": 0,
@@ -32,7 +40,12 @@
   "refs": [
     "MyTradingSys/research/setup_catalog_2026-10-15/malkan/MALKAN_DIVERGENCE_GLOSSARY.md:110"
   ],
-  "result": "",
+  "result": "wired offline, fail-first tests in rsi layer",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py",
     "MyTradingSys/backtest/layers/rsi/test_run_rsi_backtest.py",
@@ -44,12 +57,13 @@
   "scope_sha": "51b4b9a6fbf1",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read trades_from_events in run_rsi_backtest.py and the event fields of rsi_divergence.",
     "Add stop_mode swing (high/low of the A..B bars incl. shadow) and target_mode c_point (midpoint of A and B price) plus a next-bar color confirm gate.",
     "Write the fail-first test with a hand-built event and bars; run it."
   ],
+  "taken": "2026-11-04T22:49:44Z",
   "tests": "MyTradingSys/backtest/layers/rsi/test_run_rsi_backtest.py::test_swing_stop_and_c_target (new; fails on trunk, no stop_mode)",
   "title": "wire MLK-D06: 2.2 Stop above the high including the shadow (quote MyTradingSys/research/setup_catalog_2026-10-15/malkan/MALKAN_DIVERGENCE_GLOSSARY.md:110)",
   "weight": "ROUTINE",

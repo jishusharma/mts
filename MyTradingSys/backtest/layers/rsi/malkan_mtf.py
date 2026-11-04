@@ -101,3 +101,25 @@ def malkan_mtf_bear(bars: list, rsi: list, daily_regime: list, weekly_times: lis
             
     return signals
 
+
+
+def seven_star(daily_times: list, monthly_times: list, monthly_rsi: list, daily_rsi: list,
+               divergence_flags: list, level: float = 60.0, tolerance: float = 2.0,
+               daily_low: float = 40.0) -> list:
+    """
+    Seven-star LABEL (no entries). One video, UNVERIFIED; level/tolerance/daily_low are OURS around his words.
+    MLK-G02 (glossary :421): monthly RSI at 60 (within `tolerance`) plus a divergence on the daily.
+    MLK-G03: monthly RSI above 60, daily RSI below `daily_low`, divergence visible on the daily.
+    `monthly_times` must be the CLOSE times of the monthly bars (as in run_rsi_backtest), so state_asof only
+    sees closed months. `divergence_flags[i]` is True when a daily divergence is visible at daily bar i.
+    Returns [{"t", "mlk_g02", "mlk_g03"}] per daily bar; a missing monthly value gives False.
+    """
+    if not (len(daily_times) == len(daily_rsi) == len(divergence_flags)):
+        raise ValueError("daily_times, daily_rsi and divergence_flags must have the same length")
+    out = []
+    for t, d, flag in zip(daily_times, daily_rsi, divergence_flags):
+        m = state_asof(monthly_times, monthly_rsi, t)
+        g02 = bool(flag) and m is not None and abs(m - level) <= tolerance
+        g03 = bool(flag) and m is not None and d is not None and m > level and d < daily_low
+        out.append({"t": t, "mlk_g02": g02, "mlk_g03": g03})
+    return out

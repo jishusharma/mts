@@ -1,6 +1,6 @@
 import unittest
 
-from MyTradingSys.backtest.layers.rsi.malkan_mtf import state_asof, malkan_mtf_bull, malkan_mtf_bear
+from MyTradingSys.backtest.layers.rsi.malkan_mtf import state_asof, malkan_mtf_bull, malkan_mtf_bear, seven_star
 
 
 def _filler_bars(n):
@@ -100,6 +100,25 @@ class TestMalkanMtfBear(unittest.TestCase):
             level=60, tolerance=2,
         )
         self.assertEqual(got, [])
+
+
+class TestSevenStar(unittest.TestCase):
+    """MLK-G02 / MLK-G03 (UNVERIFIED, one video): label only. Monthly 59 -> 70 from t=3."""
+
+    def test_seven_star_flags(self):
+        dt = [0, 1, 2, 3, 4]
+        got = seven_star(dt, [0, 3], [59.0, 70.0], [50, 50, 35, 35, 35], [False, True, True, False, True])
+        self.assertEqual([g["t"] for g in got], dt)
+        self.assertEqual([g["mlk_g02"] for g in got], [False, True, True, False, False])
+        self.assertEqual([g["mlk_g03"] for g in got], [False, False, False, False, True])
+
+    def test_no_monthly_state_yet_is_false(self):
+        got = seven_star([0, 1], [5], [60.0], [30, 30], [True, True])
+        self.assertEqual([(g["mlk_g02"], g["mlk_g03"]) for g in got], [(False, False)] * 2)
+
+    def test_mismatched_lengths_raise(self):
+        with self.assertRaises(ValueError):
+            seven_star([0, 1], [0], [60.0], [30], [True, True])
 
 
 if __name__ == "__main__":

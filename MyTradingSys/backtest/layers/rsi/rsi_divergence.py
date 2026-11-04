@@ -73,6 +73,14 @@ def rsi_divergence(close: list, rsi: list, ts: list, min_bars: int, max_bars: in
     piv = _pivots(close, rsi, "low" if base == "bullish" else "high")
     if reverse and rsi_level is None:
         rsi_level = PRD_MIN_RSI if kind == "prd" else NRD_MAX_RSI
+    band = None
+    if not reverse and isinstance(rsi_level, (tuple, list)):
+        # MLK-D15/D16 (UNVERIFIED, one video): optional (lo, hi) RSI band for PLAIN kinds, both swing points must sit in it.
+        band = (float(rsi_level[0]), float(rsi_level[1]))
+        if band[0] > band[1]:
+            raise ValueError("rsi_level band must be (lo, hi) with lo <= hi")
+    cross_i = [j for j in range(1, len(rsi)) if rsi[j] is not None and rsi[j - 1] is not None
+               and rsi[j - 1] < PRD_MIN_RSI <= rsi[j]] if kind == "prd" else []
     events = []
     chain = 0
     for k in range(1, len(piv)):
@@ -88,6 +96,8 @@ def rsi_divergence(close: list, rsi: list, ts: list, min_bars: int, max_bars: in
         else:
             price_ok = sign * close[b] < sign * close[a]
             rsi_ok = sign * rsi[b] - sign * rsi[a] > min_rsi_diff
+            if band is not None:
+                rsi_ok = rsi_ok and band[0] <= rsi[a] <= band[1] and band[0] <= rsi[b] <= band[1]
         if price_ok and rsi_ok and min_bars <= bars <= max_bars:
             chain += 1
             events.append({
@@ -96,6 +106,11 @@ def rsi_divergence(close: list, rsi: list, ts: list, min_bars: int, max_bars: in
                 "close_a": close[a], "close_b": close[b],
                 "rsi_a": rsi[a], "rsi_b": rsi[b], "chain": chain,
             })
+            if kind == "prd":
+                # MLK-P09 (UNVERIFIED): first PRD after RSI crossed up through 60; False when no cross is in view.
+                crossed = [j for j in cross_i if j <= b]
+                events[-1]["first_after_cross60"] = bool(crossed) and not any(
+                    e["b_i"] >= crossed[-1] for e in events[:-1])
         else:
             chain = 0
     return events

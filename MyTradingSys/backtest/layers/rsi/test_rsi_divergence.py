@@ -102,5 +102,46 @@ class TestDivergence(unittest.TestCase):
         self.assertIn("three", p["min_bars_quote"].lower())
 
 
+class TestRsiBandAndTag(unittest.TestCase):
+    def test_plain_divergence_rsi_band(self):
+        # MLK-D15 (UNVERIFIED, one video): bearish strongest near RSI 60. Highs at idx 1 (10) and 4 (12), RSI 62 -> 58.
+        close = [8, 10, 9, 8, 12, 9, 8, 7]
+        rsi = [50, 62, 55, 50, 58, 50, 45, 40]
+        base = rsi_divergence(close, rsi, _ts(close), 3, 10, kind="bearish")
+        self.assertEqual(len(base), 1)
+        inside = rsi_divergence(close, rsi, _ts(close), 3, 10, kind="bearish", rsi_level=(55.0, 65.0))
+        self.assertEqual(len(inside), 1)
+        outside = rsi_divergence(close, rsi, _ts(close), 3, 10, kind="bearish", rsi_level=(70.0, 80.0))
+        self.assertEqual(outside, [])
+        # one point outside the band is enough to drop it (both swing points must sit in the band)
+        self.assertEqual(rsi_divergence(close, rsi, _ts(close), 3, 10, kind="bearish", rsi_level=(59.0, 65.0)), [])
+
+    def test_plain_band_none_and_float_keep_today(self):
+        close = [8, 10, 9, 8, 12, 9, 8, 7]
+        rsi = [50, 62, 55, 50, 58, 50, 45, 40]
+        a = rsi_divergence(close, rsi, _ts(close), 3, 10, kind="bearish")
+        self.assertEqual(rsi_divergence(close, rsi, _ts(close), 3, 10, kind="bearish", rsi_level=None), a)
+        self.assertEqual(rsi_divergence(close, rsi, _ts(close), 3, 10, kind="bearish", rsi_level=99.0), a)
+
+    def test_prd_first_after_cross60_tag(self):
+        # MLK-P09 (UNVERIFIED): first PRD after RSI crosses 60. Lows idx 1, 4, 7; price higher lows, RSI lower lows, all >= 60.
+        close = [12, 10, 11, 12, 11, 12, 13, 12, 13, 14]
+        rsi = [55, 70, 68, 66, 65, 64, 63, 62, 61, 60]
+        ev = rsi_divergence(close, rsi, _ts(close), 3, 10, kind="prd")
+        self.assertEqual([e["b_i"] for e in ev], [4, 7])
+        self.assertEqual([e["first_after_cross60"] for e in ev], [True, False])
+
+    def test_prd_tag_false_without_a_cross_in_view(self):
+        close = [12, 10, 11, 12, 11, 12, 13, 12, 13, 14]
+        rsi = [70, 70, 68, 66, 65, 64, 63, 62, 61, 60]   # starts above 60: no observed cross
+        ev = rsi_divergence(close, rsi, _ts(close), 3, 10, kind="prd")
+        self.assertEqual([e["first_after_cross60"] for e in ev], [False, False])
+
+    def test_other_kinds_have_no_tag(self):
+        close = [12, 10, 11, 12, 9, 10, 11, 13]
+        rsi = [40, 30, 35, 38, 33, 36, 38, 45]
+        self.assertNotIn("first_after_cross60", rsi_divergence(close, rsi, _ts(close), 3, 10)[0])
+
+
 if __name__ == "__main__":
     unittest.main()
