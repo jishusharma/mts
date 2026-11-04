@@ -1,0 +1,1 @@
+{"t": "20261104T132737Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "Supervisor C (JIS-DESKTOP): start credit job J9 from the NUC (one job per machine; desktop is running J8).", "login": "C", "id": "b-fc3654", "prio": "high", "cmd": "python scripts/dev/api_job.py launch cbp-alt-coverage --card [cut] --model claude-sonnet-5-5 --max-usd 4 --max-turns 200"}
