@@ -1,17 +1,35 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md').read_text(); assert 'system/layer_bible/wavetrend.md' not in t\""
+  ],
   "created": "2026-11-04T16:05:04Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "SPEC.md line 2 cites only a file that exists in git (verified by ls) or says 'pending Phase 2 Bible'.",
+  "est_turns": 6,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "SPEC.md line 2 cites system/layer_bible/wavetrend.md, which does not exist. Re-point to where the operator voice 2026-11-04 is recorded (grep OPERATOR_DECISIONS.md and research/layer_bible/DESIGN.md), or state it is pending the Phase 2 Bible.",
   "id": "wt-spec-cites-system-layer-bible-wavetre",
-  "lane": "",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Revert \"route tag: every ship names where the work goes next (Next: gate, tasks done --nex",
+      "ref": "d8a4d4603ee3",
+      "utc": "2026-11-04T14:41:09Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "d8a4d4603ee3 Revert \"route tag: every ship names where the work goes next (Next: gate, tas",
+      "ref": "MyTradingSys/system/OPERATOR_DECISIONS.md",
+      "utc": "2026-11-04T14:41:09Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,18 +37,33 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T16:35:42Z",
   "refs": [
     "MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md",
+    "MyTradingSys/system/OPERATOR_DECISIONS.md"
+  ],
+  "scope_out": [
+    "any study run",
+    "HOLDOUT bars",
+    "other SPEC cards"
+  ],
+  "scope_sha": "d8a4d4603ee3",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md (Gemini finding, Claude spot-checked CONFIRMED in f908b25e6)"
+  ],
+  "state": "ready",
+  "steps": [
+    "grep OPERATOR_DECISIONS.md for the 11-04 WaveTrend voice ask; read MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md Defect 2",
+    "Edit SPEC.md line 2",
+    "Run the test, ship"
+  ],
+  "tests": "Fail-first: python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md').read_text(); assert 'system/layer_bible/wavetrend.md' not in t\"",
   "title": "WT SPEC cites system/layer_bible/wavetrend.md for operator rules; that file does not exist (SPEC.md:2)",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }

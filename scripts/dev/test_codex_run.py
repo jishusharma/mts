@@ -183,6 +183,31 @@ class JudgeTest(unittest.TestCase):
             self.assertEqual(R.judge({"state": "done"}, [self.REP], kind, [self.REP, self.CARD, layers]), "DONE")
         self.assertEqual(R.out_of_scope("audit", [layers, "MyTradingSys/system/NEXT_SESSION.md"]), ["MyTradingSys/system/NEXT_SESSION.md"])
 
+    def test_spec_test_card_may_write_the_test_file_it_names(self):
+        # gpt-spec-tests-div-flags-chart-1104 (x2) and -fetch-binance-archive-1104 lost finished tests to OUT_OF_SCOPE (2026-11-04)
+        test = "MyTradingSys/tests/test_div_flags_chart.py"
+        code = "MyTradingSys/backtest/layers/rsi/div_flags_chart.py"
+        for scope in ([test, code], f"{code} (read only), {test} (new), scripts/dev/run_all_tests.py (one list line)"):
+            c = {"id": "gpt-spec-tests-x-1104", "kind": "audit", "scope_in": scope}
+            self.assertEqual(R.judge({"state": "done"}, [self.REP], "audit", [self.REP, self.CARD, test], c), "DONE")
+            self.assertEqual(R.out_of_scope("audit", [test, code, "scripts/dev/run_all_tests.py"], c), [code, "scripts/dev/run_all_tests.py"])
+
+    def test_spec_test_card_test_file_not_in_scope_in_stays_out(self):
+        c = {"id": "gpt-spec-tests-x-1104", "kind": "audit", "scope_in": ["MyTradingSys/tests/test_other.py"]}
+        test = "MyTradingSys/tests/test_div_flags_chart.py"
+        self.assertEqual(R.judge({"state": "done"}, [self.REP], "audit", [self.REP, test], c), "OUT_OF_SCOPE")
+
+    def test_spec_test_card_code_under_test_in_scope_in_stays_out(self):
+        code = "MyTradingSys/backtest/layers/rsi/div_flags_chart.py"
+        c = {"id": "gpt-spec-tests-x-1104", "kind": "audit", "scope_in": [code, "MyTradingSys/tests/helper.py"]}
+        self.assertEqual(R.judge({"state": "done"}, [self.REP], "audit", [self.REP, code, "MyTradingSys/tests/helper.py"], c), "OUT_OF_SCOPE")
+
+    def test_other_cards_with_the_same_test_file_stay_out(self):
+        test = "MyTradingSys/tests/test_div_flags_chart.py"
+        c = {"id": "lab-a", "kind": "audit", "scope_in": [test]}
+        self.assertEqual(R.judge({"state": "done"}, [self.REP], "audit", [self.REP, test], c), "OUT_OF_SCOPE")
+        self.assertEqual(R.judge({"state": "done"}, [self.REP], "audit", [self.REP, test]), "OUT_OF_SCOPE")
+
     def test_out_of_scope_and_ship_failures_count_as_tries(self):
         with tempfile.TemporaryDirectory() as d:
             p = Path(d) / "lab_runs"
