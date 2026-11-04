@@ -1732,3 +1732,6 @@ Operator: "we have to use the cloud platform ... at least 60% of its usage shoul
 
 ## d-lc-validation-dropped-1104 | decided 2026-11-04 | Supervisor B (operator delegated, chat)
 Operator: "u decide - no useless work is needed". Card lc-validation dropped, not run, and the VALIDATION window stays unread for it: the levels it trades were voided 2026-10-28 (0 of 12) and DEV showed no edge. DECISION (OURS): before spending a one-shot VALIDATION read, check that the premise still stands, not only that the prerequisites are met.
+
+## d-stall-investigation-1104 | decided 2026-11-04 | Operator (chat, login C JIS-NB)
+Operator: super sessions keep stalling although Fable wrote the 24 h plan; asks whether Sonnet is the problem or Sonnet AI health is poor; wants a very quick Opus investigation (Opus may spawn many agents), quick answers and proper TESTED fixes; rolling super sessions must not idle. Decision: Opus Agent started 2026-11-04 ~13:40Z (a session start was refused on an automated turn); it classifies each stall (model vs harness vs budget rules vs plan), checks for any AI-health record, ships a tested keep-alive fix.
