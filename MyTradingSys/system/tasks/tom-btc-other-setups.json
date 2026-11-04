@@ -41,7 +41,7 @@
     "tom"
   ],
   "live_path": false,
-  "note": "BLOCKED: the existing tracked output is demonstrably for a different, post-cutoff window: candidates_tc_bo.csv has 504 rows with day 2024-12-02..2025-03-31 (anchor_t/decision_t/extreme_t timestamps also outside DEV), matching the conflict described in MyTradingSys/research/layer_lab/reports/2026-10-22_tom-btc-other-setups.md. Card scope remains 2022-04-01..2024-06-30, within DEV; the old BLOCKED report does not invalidate that scope but its output cannot satisfy it. Do not reuse or overwrite these artifacts during refinement; a future authorized builder must determine whether the correctly scoped result already exists elsewhere before doing work.",
+  "note": "BLOCKED: tracked MyTradingSys/research/tom_btc_2026-10-13/charts_tc_bo/candidates_tc_bo.csv has 504 rows, day 2024-12-02..2025-03-31; anchor_t 1733097600000..1743427800000, decision_t/extreme_t 1733099580000..1743432600000 (UTC ms). These bounds are outside this card’s 2022-04-01..2024-06-30 DEV scope. The 2026-10-22 report also describes the wrong window; the CSV bounds independently establish the mismatch. Do not reuse these outputs.",
   "pinned": false,
   "prio": 3,
   "refine_tries": 0,
