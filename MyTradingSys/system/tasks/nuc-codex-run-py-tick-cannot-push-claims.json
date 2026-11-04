@@ -1,17 +1,33 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T12:45:38Z",
   "commands": [],
   "created": "2026-11-04T07:44:44Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "nuc_lab.py tick and the supervisor plan start MTS-Wake-codextick; a tick started that way claims and pushes.",
+  "est_turns": 5,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Gate ticks fail their claim push because an ssh logon cannot read the saved GitHub login; start them in the logged-on session.",
   "id": "nuc-codex-run-py-tick-cannot-push-claims",
-  "lane": "",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Gate ticks start via schtasks in the logged-on session; a local start claimed and ran gpt-",
+      "ref": "5da4c7517",
+      "utc": "2026-11-04T12:45:38Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "nuc_lab: start gate ticks in the logged-on session so claim pushes can authenticate",
+      "ref": "ec436e89d58e",
+      "utc": "2026-11-04T12:43:27Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,16 +35,30 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T12:45:38Z",
   "refs": [],
-  "result": "",
-  "scope_in": [],
+  "result": "Gate ticks start via schtasks in the logged-on session; a local start claimed and ran gpt-audit-context-filter-review-1104 (DONE, 5df7315ab). Not exercised from another device.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/nuc_lab.py",
+    "scripts/dev/supervisor.py"
+  ],
   "scope_out": [],
-  "size": "",
+  "scope_sha": "ec436e89d58e",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "NUC codex_run.py tick cannot push claims: git on JIS-NUC F:/MTS/mts-codex-lab has no GitHub credential (fatal: could not read Username, terminal prompts disabled); IDLE claim refused for gpt-audit-context-filter-review-1104. Done-when: a tick from the desktop over nuc_gate ssh claims and pushes without a prompt (store the gh credential helper or a PAT via gh auth for the e-ngineers user on NUC, never in the repo).",
+  "state": "done",
+  "steps": [
+    "Route the gate tick through schtasks",
+    "Prove a claim push from the task"
+  ],
+  "taken": "2026-11-04T12:45:38Z",
+  "tests": "scripts/dev/test_nuc_lab.py::NucLabTest::test_tick_starts_in_the_logged_on_session_not_inside_ssh",
+  "title": "NUC codex_run.py tick cannot push claims over the ssh gate",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }

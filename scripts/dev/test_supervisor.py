@@ -515,7 +515,7 @@ def test_plan_lines_ssh_gate_and_nuc_wake_only_when_allowed():
     ctx = {"codex_ready": 3, "spare": "card-x", "ci": {}, "picks": []}
     no = "\n".join(S.plan_lines("B", "JIS-NB", p, live, dict(ctx, nuc_ok=False), gate_key=True))
     yes = "\n".join(S.plan_lines("B", "JIS-NB", p, live, dict(ctx, nuc_ok=True), gate_key=True))
-    assert "ssh -i ~/.ssh/nuc_gate" in no and "nuc_wake" not in no and "nuc_wake.py --card card-x" in yes
+    assert "RUN python scripts/dev/nuc_lab.py tick" in no and "nuc_wake" not in no and "nuc_wake.py --card card-x" in yes
     nokey = "\n".join(S.plan_lines("B", "JIS-NB", p, live, dict(ctx, nuc_ok=True), gate_key=False))
     assert "ssh" not in nokey and "lab idle" in nokey and "PEER none live" in nokey
 
@@ -1339,3 +1339,19 @@ def test_dsa_bridges_from_bridge_signals_and_tick_lanes_dsa(monkeypatch, tmp_pat
     monkeypatch.setattr(traffic, "read_signals", lambda since, until, d=None: (sigs, None))
     out = S.tick(repo=tmp_path, no_fetch=True, as_of=NOW, home=tmp_path)
     assert out["lanes"]["dsa"] == d
+
+
+def test_plan_lines_codex_gemini_zero_runs_planner_without_nuc_heartbeat():
+    """A-20261104-1 CODE RED: CODEX=0 and GEMINI=0 with SONNET=28 and refine_raw=0 must emit an actionable RUN Session_Planner
+    even when no supervisor lives on JIS-NUC (the old NOTE needed the NUC owner)."""
+    p = S.pace_plan(T0, _rd(10, 20), 95)
+    live = {"A": {"host": "JIS-NB", "mode": "NORMAL", "run": 0, "free": 3, "at": "x", "dsa": "up"}}
+    ctx = {"ci": {"red": False}, "picks": [], "codex_ready": 0, "gemini_ready": 0, "sonnet_ready": 28, "haiku_ready": 3, "refine_raw": 0}
+    out = S.plan_lines("A", "JIS-NB", p, live, ctx, gate_key=False)
+    run = [l for l in out if l.startswith("RUN Session_Planner") and "CODEX 0" in l and "GEMINI 0" in l]
+    assert run, out
+    assert any("LANE LOW CODEX 0 (< 8)" in l for l in out)
+    ok = S.plan_lines("A", "JIS-NB", p, live, dict(ctx, codex_ready=8, gemini_ready=4), gate_key=False)
+    assert not any(l.startswith("RUN Session_Planner") for l in ok)
+    only = S.plan_lines("A", "JIS-NB", p, live, dict(ctx, codex_ready=7, gemini_ready=4), gate_key=False)
+    assert any("CODEX 7" in l and l.startswith("RUN Session_Planner") for l in only)

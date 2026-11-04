@@ -19,8 +19,8 @@ FAKE_SSH_PY = """import sys
 script = sys.stdin.read()
 if "codex_run.py status" in script:
     print("Codex allowance (plus): 5-hour window 6% used; week 27% used")
-elif "codex_run.py tick" in script:
-    print("tick: ran lf-rsi-facts")
+elif "schtasks /run /tn MTS-Wake-codextick" in script:
+    print("tick: started in the logged-on session")
 elif "gemini_queue.py run" in script:
     print("gemini: " + script.strip().splitlines()[-1])
 else:
@@ -82,11 +82,13 @@ class NucLabTest(unittest.TestCase):
         self.assertEqual(rc, 0)
         self.assertIn("Codex allowance", out)
 
-    def test_tick_runs_codex_run_tick_over_the_gate(self):
+    def test_tick_starts_in_the_logged_on_session_not_inside_ssh(self):
+        # 2026-11-04: a tick inside the ssh session could not read the saved GitHub login, so every claim push failed.
         self._with_key()
         rc, out = self._run(["tick"])
         self.assertEqual(rc, 0)
-        self.assertIn("ran lf-rsi-facts", out)
+        self.assertIn("started in the logged-on session", out)
+        self.assertNotIn("codex_run.py tick", nuc_lab.build_script("tick"))
 
     def test_gemini_runs_gemini_queue_run_with_the_specs(self):
         self._with_key()

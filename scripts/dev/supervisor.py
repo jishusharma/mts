@@ -280,7 +280,7 @@ def read_gate_slots(repo: Path = REPO) -> dict:
 
 
 GEMINI_TAG = "[GEMINI]"          # ROUTING.md "Gemini-designated card": a CODEX-lane card whose title starts with this tag
-LANE_FLOORS = {"SONNET": 6, "HAIKU": 3, "GEMINI": 4}   # OURS (D11_PROGRAMME.md): under the floor the Planner feeds the lane; CODEX keeps 8
+LANE_FLOORS = {"SONNET": 6, "HAIKU": 3, "GEMINI": 4, "CODEX": 8}   # OURS (D11_PROGRAMME.md, A-20261104-1): under the floor the Planner feeds the lane
 
 
 def is_gemini_card(c: dict) -> bool:
@@ -1116,13 +1116,16 @@ def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_ke
         if h == NUC:
             L.append("RUN python scripts/dev/codex_run.py tick")
         elif gate_key:
-            L.append(f"RUN printf 'Set-Location F:/MTS/mts-codex-lab; python scripts/dev/codex_run.py tick\\n' | {NUC_GATE}")
+            L.append("RUN python scripts/dev/nuc_lab.py tick")
         else:
             L.append(f"NOTE GPT lab: {cx} CODEX card(s) ready, no NUC supervisor and no gate key here: lab idle until one boots on JIS-NUC")
     if me_codex and claude_ok and ctx.get("gemini_ready") and h == NUC:
         L.append(f"SPAWN Lab_Guy for {ctx['gemini_ready']} Gemini card(s) (gemini_queue.py run <card>:medium, reviews the branch)")
-    if me_codex and 0 <= cx < 8:
-        L.append(f"NOTE CODEX lane {cx} ready (< 8): Session_Planner refines CODEX cards this wake")
+    starved = [f"{ln} {ctx.get(ln.lower() + '_ready')}" for ln in ("CODEX", "GEMINI")
+               if ctx.get(ln.lower() + "_ready") is not None and ctx[ln.lower() + "_ready"] < LANE_FLOORS[ln]]
+    if starved and claude_ok:   # A-20261104-1: independent of the NUC heartbeat; seeds CODEX/[GEMINI] cards before any SONNET work
+        L.append(f"RUN Session_Planner (Agent, sonnet): seed and promote {', '.join(starved)} cards to the floors CODEX>=8 GEMINI>=4 "
+                 "FIRST (D11_PROGRAMME.md section 6 and recent ships), before refining or dispatching SONNET cards")
     for ln, floor in LANE_FLOORS.items():          # every lane has a floor (D11_PROGRAMME.md "never short of work")
         n = ctx.get(ln.lower() + "_ready")
         if n is not None and n < floor:
