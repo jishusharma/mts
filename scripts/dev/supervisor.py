@@ -2107,7 +2107,7 @@ def main(argv: list[str] | None = None) -> int:
             det, mism = "", ""
         if mism:
             print(mism, file=sys.stderr if getattr(args, "json", False) else sys.stdout)
-        args.login = det or args.login
+        args.login = "" if mism else (det or args.login)   # mismatch fails closed: no letter, never the typed one
     lead_ho = args.cmd == "handover" and args.role == "lead"
     if args.cmd in ("plan", "handover") and not lead_ho and (not args.login or args.login.strip().upper()[:1] not in ("A", "B", "C")):
         print("login unknown: the app account is not in CLOUD_ACCOUNTS.md LOGINS; pass --login A|B|C or set env MTS_LOGIN")

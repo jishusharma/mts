@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T19:18:48Z",
   "commands": [],
   "created": "2026-11-02T19:48:11Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "c31-daily-short-from-the-upper-bb-with-t",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "UNDERPOWERED: lead n=15 +1.02R fee-net (14 in 2022-23, 1 in 2024-25); 0.30R needs n=230; C",
+      "ref": "f7a995d87",
+      "utc": "2026-11-04T19:18:48Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -31,6 +38,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "c31-feeder-more-symbols-daily-bb-edge-short",
   "note": "REVIEWED: planner-c-1104 2026-11-04 (CRUCIAL: needs review Agent before ship)\nREVIEWED:2026-11-04 ACCEPT (Haiku on API credit, job haiku-review-ready-sonnet-1104: Scope files on trunk, C31_HALVES.md absent, power check not done; testable.)",
   "prio": 2,
   "refine_tries": 0,
@@ -39,7 +47,12 @@
   "refs": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/bb_edge_candle_rule.py"
   ],
-  "result": "",
+  "result": "UNDERPOWERED: lead n=15 +1.02R fee-net (14 in 2022-23, 1 in 2024-25); 0.30R needs n=230; C31_HALVES.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/bb_edge_candle_rule.py",
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md"
@@ -52,12 +65,13 @@
   "sources": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md:40"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "run bb_edge_candle_rule.py, confirm the two reference numbers",
     "split into the two halves, apply fee-net per FORMULAS.md",
     "compute power, write C31_HALVES.md"
   ],
+  "taken": "2026-11-04T19:18:48Z",
   "tests": "script reproduces LEAD 73% +1.10R n=15 and unfiltered 21% -0.07R n=165 before any new row is trusted",
   "title": "C31: daily short from the upper BB with the 50-day trend down: halves 2022-23 vs 2024-25, entry = first close back inside the band, fee-net; LEAD 73% +1.10R n=15, unfiltered 21% -0.07R",
   "weight": "CRUCIAL",
