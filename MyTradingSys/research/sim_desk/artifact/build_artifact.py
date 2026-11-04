@@ -399,6 +399,10 @@ def heatmaps_of(tests):
     return out
 
 
+# DECISION (OURS): concept tabs match whole words in family + title + id (results/*.json family is free text, ~250 values, no concept field):
+#   Tom <- "Tom Core", "Tom Vp Pivot", "Tom Btc" ...; Fabio <- "Fabio Cvd", "Fabio V3" ...; Malkan <- "Malkan Rsi", "Malkan Ledger" ...;
+#   Krown <- "Krown Audit", "Krown Ta101" ...; Bollinger <- "Bollinger *", "Bb State Map", "Bb Dance" (word "bb"); RSI <- "Rsi Levels", "RSI divergence ...";
+#   WaveTrend <- "WaveTrend", "WaveTrend C30 retest", "Wt30 Sequence"; News <- "News Feeds" (word "news"). A result can sit under several tabs (Malkan RSI = Malkan + RSI).
 TEMPLATE = r'''<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -491,8 +495,13 @@ let tm=null;
 const KIND={backtest:"backtest",audit:"audit",thought_experiment:"thought experiment"};
 const VC={failed:"failed",unclear:"unclear",passed:"passed",other:"other"};
 function opts(v,all,cur){return '<option value="">'+all+"</option>"+v.map(x=>'<option value="'+esc(x[0])+'"'+(x[0]===cur?" selected":"")+">"+esc(x[1])+"</option>").join("");}
+/*concepts*/
+const CONCEPTS=[["Tom",[" tom "]],["Fabio",[" fabio "]],["Malkan",[" malkan "]],["Krown",[" krown "]],["Bollinger",[" bollinger "," bb "]],["RSI",[" rsi "]],["WaveTrend",[" wavetrend "," wt30 "," wt "]]];
+let CONC=null;
+function inConcept(r,c){const s=" "+((r.family||"")+" "+(r.title||"")+" "+(r.id||"")).toLowerCase().replace(/[^a-z0-9]+/g," ")+" ";if(c==="News")return s.includes(" news ");const e=CONCEPTS.find(x=>x[0]===c);return !!e&&e[1].some(k=>s.includes(k));}
+/*end-concepts*/
 function buildNav(){const g=id=>$(id)?$(id).value:"",q=g("q").toLowerCase(),kf=g("kf"),ff=g("ff"),vf=g("vf"),only=$("onlyx")&&$("onlyx").checked;
-const rows=CAT.filter(r=>(!only||r.exported)&&(!kf||r.kind===kf)&&(!ff||r.family===ff)&&(!vf||(r.verdict_class||"other")===vf)&&(!q||(r.title+" "+r.family+" "+r.verdict+" "+r.kind).toLowerCase().includes(q)))
+const rows=CAT.filter(r=>(!CONC||inConcept(r,CONC))&&(!only||r.exported)&&(!kf||r.kind===kf)&&(!ff||r.family===ff)&&(!vf||(r.verdict_class||"other")===vf)&&(!q||(r.title+" "+r.family+" "+r.verdict+" "+r.kind).toLowerCase().includes(q)))
 .sort((a,b)=>String(b.date||"").localeCompare(String(a.date||""))||a.title.localeCompare(b.title));
 const fams=[...new Set(CAT.map(r=>r.family))].sort((a,b)=>a.localeCompare(b));
 const list=rows.map(r=>'<button data-id="'+esc(r.exported?r.result_id:r.id)+'">'+(r.status==="FAILED"?'<span class="bad">&#9679;</span> ':"")+esc(r.title)+"<small>"+esc(r.date||"no date")+" · "+esc(KIND[r.kind]||r.kind)+" · "+esc(r.family)+(r.exported?"":" · no result card")+"</small></button>").join("");
@@ -566,7 +575,7 @@ if(u>=t.sig)s+='<rect x="'+(X(t.sig)-W/2)+'" y="14" width="'+W+'" height="406" f
 s+='<line x1="'+L+'" x2="'+R+'" y1="'+Y(0)+'" y2="'+Y(0)+'" stroke="var(--mute)" stroke-dasharray="4 3"/><text x="'+(L+2)+'" y="'+(Y(0)-4)+'" font-size="10" fill="var(--mute)">0 % = where we bought</text>';
 for(let g=Math.ceil(lo);g<=Math.floor(hi);g++)s+='<text x="'+(R+4)+'" y="'+(Y(g)+4)+'" font-size="10" fill="var(--mute)">'+(g>0?"+":"")+g+"%</text>";
 c.forEach((q,k)=>{if(k>u)return;const up=q[3]>=q[0],col=up?"var(--good)":"var(--bad)",x0=X(k);s+='<line x1="'+x0+'" x2="'+x0+'" y1="'+Y(q[1])+'" y2="'+Y(q[2])+'" stroke="'+col+'"/><rect x="'+(x0-W*0.35)+'" y="'+Y(Math.max(q[0],q[3]))+'" width="'+(W*0.7)+'" height="'+Math.max(1,Math.abs(Y(q[0])-Y(q[3])))+'" fill="'+col+'"/>';});
-const [p,qd]=t.div;if(u>=t.sig)s+='<line x1="'+X(p)+'" x2="'+X(qd)+'" y1="'+(Y(c[p][2])+6)+'" y2="'+(Y(c[qd][2])+6)+'" stroke="#e8912d" stroke-width="2"/>';
+const [p,qd]=t.div,dk=x.div_on==="close"?3:2,dy=dk===2?6:0;if(u>=t.sig)s+='<line x1="'+X(p)+'" x2="'+X(qd)+'" y1="'+(Y(c[p][dk])+dy)+'" y2="'+(Y(c[qd][dk])+dy)+'" stroke="#e8912d" stroke-width="2"/>';
 const ey=Y(c[t.ent][0]),xy=Y(c[t.ext][0]);
 if(u>=t.ent)s+='<path d="M'+X(t.ent)+","+(ey+4)+" l-7,12 h14 z\" fill=\"var(--good)\"/><text x=\""+X(t.ent)+'" y="'+(ey+30)+'" font-size="11" text-anchor="middle" fill="var(--good)">entry</text>';
 if(u>=t.ext)s+='<path d="M'+X(t.ext)+","+(xy-4)+" l-7,-12 h14 z\" fill=\"var(--bad)\"/><text x=\""+X(t.ext)+'" y="'+(xy-20)+'" font-size="11" text-anchor="middle" fill="var(--bad)">exit '+f2(t.net)+"%</text>";
@@ -667,13 +676,14 @@ $("cnav").onclick=e=>{const b=e.target.closest("button");if(b){halt();chartsTab(
 function commentsTab(){const n=readComments().length;const rows=readComments().slice().reverse().map(c=>{const t=TESTS.find(x=>x.id===c.test_id);return '<div class="cmi"><span>'+esc(stamp(c.ts))+" &middot; "+esc(t?t.title:c.test_id)+" &middot; "+esc(c.chart_id)+"</span> "+esc(c.text)+"</div>"}).join("");
 $("pane").innerHTML='<div class="gridw"><div class="leg"><span>&#9998; '+n+'</span><button type="button" data-copy="1">copy all</button></div>'+rows+"</div>";}
 let TAB="fam";
-const TABS=[["fam","Families","&#9776;"],["grid","Verdict grid","&#9638;"],["charts","Charts","&#9650;"],["cm","Comments","&#9998;"]];
+const TABS=[["fam","Families","&#9776;"],["news","News","&#9993;"]].concat(CONCEPTS.map(c=>["c:"+c[0],c[0],"&#9679;"]),[["grid","Verdict grid","&#9638;"],["charts","Charts","&#9650;"],["cm","Comments","&#9998;"]]);
+const isList=t=>t==="fam"||t==="news"||t.startsWith("c:");
 function showTab(t,id){halt();TAB=t;document.querySelectorAll("#tabs [role=tab]").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===t));$("pane").onclick=null;
-if(t==="fam"){$("pane").innerHTML='<main><nav id="nav" aria-label="Tests"></nav><article id="view" aria-live="polite"></article></main>';buildNav();render(id||location.hash.slice(1));}
+if(isList(t)){CONC=t==="fam"?null:t==="news"?"News":t.slice(2);$("pane").innerHTML='<main><nav id="nav" aria-label="Tests"></nav><article id="view" aria-live="polite"></article></main>';buildNav();render(id||location.hash.slice(1));}
 else if(t==="grid")gridTab();else if(t==="charts")chartsTab(id);else commentsTab();}
 $("tabs").innerHTML=TABS.map(([k,l,g])=>'<button role="tab" data-tab="'+k+'" aria-selected="false">'+g+" "+l+"</button>").join("");
 $("tabs").onclick=e=>{const b=e.target.closest("[role=tab]");if(b)showTab(b.dataset.tab)};
-window.onhashchange=()=>{const id=location.hash.slice(1);if(TAB==="charts")chartsTab(id);else showTab("fam",id)};showTab("fam");
+window.onhashchange=()=>{const id=location.hash.slice(1);if(TAB==="charts")chartsTab(id);else showTab(isList(TAB)?TAB:"fam",id)};showTab("fam");
 </script></body></html>
 '''
 

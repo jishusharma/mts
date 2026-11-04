@@ -827,8 +827,8 @@ def test_plan_login_mismatch_uses_detected_letter(monkeypatch, tmp_path, capsys)
     monkeypatch.setattr(S, "plan", lambda repo, login, *a, **k: (seen.setdefault("login", login), (["PLAN"], {}))[1])
     rc = S.main(["plan", "--login", "C", "--five", "1", "--five-reset", "2026-10-23T09:00Z", "--week", "2",
                  "--week-reset", "2026-10-27T09:00Z", "--no-send", "--no-fetch"])
-    assert rc == 0 and seen["login"] == "A"
-    assert "LOGIN MISMATCH: you passed C, this app is logged in as A; using A" in capsys.readouterr().out
+    assert rc == 2 and "login" not in seen
+    assert "LOGIN MISMATCH: you passed C, detected A" in capsys.readouterr().out
     mts_signal._LOGIN_CACHE.clear()
 
 
@@ -935,16 +935,27 @@ def _clock_and_sleeper(start):
     return (lambda: t["now"]), (lambda s: t.__setitem__("now", t["now"] + timedelta(seconds=s)))
 
 
-def test_wait_fires_at_the_5h_reset_even_past_its_timeout(tmp_path):
+def test_wait_fires_at_the_5h_reset_inside_its_timeout(tmp_path):
     start = datetime(2026, 11, 4, 9, 35, tzinfo=timezone.utc)
     (tmp_path / "C.jsonl").write_text(json.dumps({"at": "2026-11-04T09:30:00Z", "five_reset": "2026-11-04T09:50:00Z"}) + "\n",
                                       encoding="utf-8")
     clock, sleeper = _clock_and_sleeper(start)
     steady = {"shas": {}, "ci_red": False, "busy_slots": 0}
-    rc, reason = S.wait_for_transition(repo=tmp_path, timeout=600, interval=300, probe=lambda r, s: steady,
+    rc, reason = S.wait_for_transition(repo=tmp_path, timeout=3000, interval=300, probe=lambda r, s: steady,
                                        fetcher=lambda r: None, sleeper=sleeper, login="C", home=tmp_path, clock=clock)
     assert rc == 0 and "RESET" in reason
     assert clock() <= datetime(2026, 11, 4, 9, 51, tzinfo=timezone.utc)     # AT the reset, not a 5 min poll late
+
+
+def test_wait_never_runs_past_its_timeout_for_a_later_reset(tmp_path):
+    """Soak invariant (test_soak_six_slots): a watcher never runs past its timeout; a reset after it is the next watcher's."""
+    start = datetime(2026, 11, 4, 9, 0, tzinfo=timezone.utc)
+    (tmp_path / "C.jsonl").write_text(json.dumps({"five_reset": "2026-11-04T10:30:00Z"}) + "\n", encoding="utf-8")
+    clock, sleeper = _clock_and_sleeper(start)
+    steady = {"shas": {}, "ci_red": False, "busy_slots": 0}
+    rc, _r = S.wait_for_transition(repo=tmp_path, timeout=3000, interval=300, probe=lambda r, s: steady,
+                                   fetcher=lambda r: None, sleeper=sleeper, login="C", home=tmp_path, clock=clock)
+    assert rc == 3 and clock() <= start + timedelta(seconds=3000)
 
 
 def test_wait_without_a_future_reset_still_times_out(tmp_path):

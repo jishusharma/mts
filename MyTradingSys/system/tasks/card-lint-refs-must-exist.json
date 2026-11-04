@@ -1,35 +1,61 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest scripts/dev/test_tasks.py -q",
+    "python scripts/dev/tasks.py lint"
+  ],
   "created": "2026-11-04T13:19:04Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "python -m pytest scripts/dev/test_tasks.py exits 0 with the 2 new tests, and tasks.py lint names every ready audit card with a missing input (count printed in the ship note)",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "tasks.py check/lint fails a CODEX audit card whose scope_in names a repo file (scripts/ or MyTradingSys/ path with an extension) that does not exist, so no Codex run is spent on a missing input. Absorbs labguy-feeder-cards-name-missing-files-1104.",
   "id": "card-lint-refs-must-exist",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "route tag re-land: every ship names where the work goes next (Next: gate, tasks done --nex",
+      "ref": "08d51e5b7fc8",
+      "utc": "2026-11-04T15:22:55Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "refined 2026-11-04 planner-refine-1104c; duplicate labguy-feeder-cards-name-missing-files-1104 dropped into this card.\nREVIEWED:2026-11-04 T0-ONLY",
   "prio": 3,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-11-04T15:46:02Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/tasks.py",
+    "scripts/dev/test_tasks.py"
+  ],
+  "scope_out": [
+    "live-path files",
+    "card JSONs",
+    "no change for cards whose kind is not audit"
+  ],
+  "scope_sha": "08d51e5b7fc8",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "add a scope_in input-exists check inside problems() in tasks.py for kind audit cards (skip entries marked new: or ending in /)",
+    "message names the card and the missing path",
+    "add 2 tests to test_tasks.py: audit card with missing path fails, same card with an existing path passes",
+    "run tasks.py lint on trunk and list any ready card it newly flags in the ship note"
+  ],
+  "tests": "scripts/dev/test_tasks.py: audit card naming scripts/dev/no_such_file.py fails problems(); fails on old code (no check exists)",
   "title": "tasks lint: flag ready cards whose refs or audit-target files do not exist (5 of 29 ready CODEX cards named missing files on 11-04; one spent a Codex run to BLOCKED)",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }

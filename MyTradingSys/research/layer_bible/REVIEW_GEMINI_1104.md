@@ -115,3 +115,19 @@ However, the design contains significant specification gaps:
 Therefore, the specification should incorporate these concrete fixes prior to proceeding with Phase 2 implementation.
 
 VERDICT: FIX-FIRST
+
+---
+
+## Claude spot-check
+
+The review cites DESIGN.md at commit 1712eb6b75aa; line numbers below are checked against that commit (`git show`). The working DESIGN.md is now v2, whose table already answers findings 1-4 and 6 and defers 5. Findings 1-5 checked (the review's cap).
+
+| # | Finding | Result | Evidence | Card |
+|---|---|---|---|---|
+| 1 | No fetch depth vs 200-bar warm-up (E2/E1) | CONFIRMED | 1712eb6b DESIGN.md:13-16 state no depth; wavetrend.py:18 `WARMUP = 200` matches. Fixed in DESIGN v2 row 1 | none (fixed in v2) |
+| 2 | "Valid cycle dot" rule left open (E2) | CONFIRMED | 1712eb6b DESIGN.md:26 "not yet sourced in one place" matches; wavetrend.py:46-59 has `cross_events` and no cycle concept. Fixed in v2 row 2 | none (fixed in v2) |
+| 3 | Parameters block format unspecified (E3) | CONFIRMED | 1712eb6b DESIGN.md:8 and :13 quotes match; no syntax is given there. Fixed in v2 row 3 | none (fixed in v2) |
+| 4 | Closed-bar filter and venue (E1/E3) | CONFIRMED | 1712eb6b DESIGN.md:14 quote matches; :27 Binance-by-default matches. Fixed in v2 row 4. EXEC_PROVENANCE_AUDIT.md:14 exists; its content not read | none (fixed in v2) |
+| 5 | Answer contract has no mechanical gate (E4) | CONFIRMED | 1712eb6b DESIGN.md:19-20 quote matches. v2 row 5 defers it to a card, and no card existed | layer-bible-design-answer-contract-has-n |
+
+No finding was NOT CONFIRMED. Card 5 is raw; nothing is fixed here.

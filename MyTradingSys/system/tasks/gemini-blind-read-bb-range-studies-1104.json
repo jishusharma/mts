@@ -19,25 +19,32 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "bb long-window DEV pass: A (range-to-range) FAIL again, B (retest level) INCONCLUSIVE, 0 o",
-      "ref": "4422152e1417",
-      "utc": "2026-11-04T03:37:20Z"
+      "line": "gemini blind reads: Claude spot-check of RSI-div, BB studies, Fabio L1 strict",
+      "ref": "9032134f924a",
+      "utc": "2026-11-04T14:41:48Z"
+    },
+    {
+      "auto": true,
+      "kind": "audit",
+      "line": "9032134f924a gemini blind reads: Claude spot-check of RSI-div, BB studies, Fabio L1 strict",
+      "ref": "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_BB_STUDIES_1104.md",
+      "utc": "2026-11-04T14:41:48Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "PATHS FIXED 2026-11-04 (Supervisor B): the card named files that do not exist; MyTradingSys/research/bb_long_window_2026-11-04/RESULT.md -> MyTradingSys/research/bb_long_window_2026-11-04/RESULT_LONG.md. | REVIEWED:2026-11-04 T0-ONLY; D11 feeder card for 8ce5461b0, f38aa80a3, 07f4d20f0",
+  "note": "REVIEWED:2026-11-04 T0-ONLY | PATHS FIXED 2026-11-04 (Supervisor B): the card named files that do not exist; MyTradingSys/research/bb_long_window_2026-11-04/RESULT.md -> MyTradingSys/research/bb_long_window_2026-11-04/RESULT_LONG.md. | D11 feeder card for 8ce5461b0, f38aa80a3, 07f4d20f0",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "gemini-pro-argon",
-  "refreshed": "2026-11-04T13:43:21Z",
+  "refreshed": "2026-11-04T15:46:07Z",
   "refs": [
     "MyTradingSys/research/bb_range_to_range_2026-11-04/RESULT.md",
     "MyTradingSys/research/bb_range_retest_2026-11-04/RESULT.md",
     "MyTradingSys/research/bb_long_window_2026-11-04/RESULT_LONG.md"
   ],
-  "result": "",
+  "result": "VERDICT: MATCH (read); Claude spot-check 4 of 5 AGREE, 1 DISAGREE at 4th decimal (#4). Card left open.",
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_BB_STUDIES_1104.md",
     "MyTradingSys/research/bb_range_to_range_2026-11-04",
@@ -45,7 +52,7 @@
     "MyTradingSys/research/bb_long_window_2026-11-04"
   ],
   "scope_out": [],
-  "scope_sha": "4422152e1417",
+  "scope_sha": "9032134f924a",
   "size": "S",
   "sources": [],
   "state": "ready",

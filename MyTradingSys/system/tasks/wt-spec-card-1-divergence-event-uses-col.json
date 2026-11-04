@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md').read_text(); assert 'high around the earlier cross' not in t and 'since that dip' not in t\""
+  ],
+  "created": "2026-11-04T16:05:05Z",
+  "depends_on": [],
+  "done_when": "SPEC.md Card 1 Event and His-context lines no longer contain the phrases 'high around the earlier cross' or 'since that dip' and state each rule with its k labelled OURS.",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Replace the colloquial Card 1 divergence phrases in SPEC.md (lines 11-12) with exact programmatic rules: high around the earlier cross = max high over +-k bars (k OURS, labelled), since that dip = from the bar of min wt1 between the two crosses, down-cross wave above 0 = cross with min(wt1,wt2) > 0.",
+  "id": "wt-spec-card-1-divergence-event-uses-col",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Repair 25 void T0-ONLY stamps (format only), SPEC holdout-seen disclosure, defect card",
+      "ref": "9a7a43033f33",
+      "utc": "2026-11-04T14:02:15Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "9a7a43033f33 Repair 25 void T0-ONLY stamps (format only), SPEC holdout-seen disclosure, de",
+      "ref": "MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md",
+      "utc": "2026-11-04T14:02:15Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-04T16:35:30Z",
+  "refs": [
+    "MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md"
+  ],
+  "scope_out": [
+    "any study run",
+    "HOLDOUT bars",
+    "other SPEC cards"
+  ],
+  "scope_sha": "9a7a43033f33",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md (Gemini finding, Claude spot-checked CONFIRMED in f908b25e6)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read SPEC.md lines 11-12 and MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md Defect 4",
+    "Edit SPEC.md Card 1 Event and His-context with the exact rules, k labelled OURS",
+    "Run the test, ship"
+  ],
+  "tests": "Fail-first: python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md').read_text(); assert 'high around the earlier cross' not in t and 'since that dip' not in t\"",
+  "title": "WT SPEC Card 1 divergence event uses colloquial phrases (high around cross, since that dip, wave above 0) with no exact rule (SPEC.md:11,12)",
+  "weight": "",
+  "worker": "agent"
+}

@@ -31,7 +31,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "Spec-derived (tests written from REQUIREMENTS.md rows and docstrings, not from reading the function bodies first). D11_PROGRAMME s6 seed: spec tests for every live_aid .js maths file; test_live_aid.py exists, this adds spec cases for what it leaves out. Node is on the lab host; tests skip without node like test_live_aid.py. PLANNER 2026-11-03 planner-b-1103-2. REVIEWED:2026-11-03 T0-ONLY",
+  "note": "REVIEWED:2026-11-03 T0-ONLY | Spec-derived (tests written from REQUIREMENTS.md rows and docstrings, not from reading the function bodies first). D11_PROGRAMME s6 seed: spec tests for every live_aid .js maths file; test_live_aid.py exists, this adds spec cases for what it leaves out. Node is on the lab host; tests skip without node like test_live_aid.py. PLANNER 2026-11-03 planner-b-1103-2.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",

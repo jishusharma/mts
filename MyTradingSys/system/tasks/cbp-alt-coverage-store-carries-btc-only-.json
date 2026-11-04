@@ -32,7 +32,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-04 T0-ONLY. ETH band is OURS. Store ingest half of title not in scope: needs extraction run.",
+  "note": "REVIEWED:2026-11-04 T0-ONLY | ETH band is OURS. Store ingest half of title not in scope: needs extraction run.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "gemini-3.8-flash",

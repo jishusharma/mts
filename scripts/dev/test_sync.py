@@ -1750,7 +1750,8 @@ class FastShipTest(unittest.TestCase):
 
     def test_fix_ci_flag_keeps_the_fast_gate(self):
         with mock.patch.object(sync, "ship"), mock.patch.object(sync, "toplevel", return_value=Path(".")), \
-                mock.patch.object(sync, "run_host_health"), mock.patch.dict(os.environ, {}, clear=False):   # the real host scan took 38-70 s here
+                mock.patch.object(sync, "run_host_health"), mock.patch.object(sync, "check_route_tags"), \
+                mock.patch.dict(os.environ, {}, clear=False):   # the real host scan took 38-70 s here
             os.environ.pop("SYNC_FULL_GATE", None)
             os.environ.pop("SYNC_FIX_CI", None)
             self.assertEqual(sync.main(["ship", "--fix-ci"]), 0)
@@ -1938,7 +1939,7 @@ class OwnCiWaitTest(unittest.TestCase):
 
     def test_ship_returns_without_the_ci_wait_by_default_and_ci_verb_waits_later(self):
         """B8 (2026-10-28): the 10-minute CI poll is opt-in on ship; `sync.py ci` does it for the last pushed sha."""
-        with tempfile.TemporaryDirectory() as td, mock.patch.object(sync, "toplevel", return_value=Path(td)),                 mock.patch.object(sync, "run_host_health"), mock.patch.object(sync, "ship", return_value=self.pushed),                 mock.patch.object(sync, "write_last_pushed") as mock_save,                 mock.patch.object(sync, "ci_path_filter", return_value=None),                 mock.patch.object(sync, "wait_own_ci", return_value="red") as mock_wait:
+        with tempfile.TemporaryDirectory() as td, mock.patch.object(sync, "toplevel", return_value=Path(td)),                 mock.patch.object(sync, "run_host_health"), mock.patch.object(sync, "ship", return_value=self.pushed),                 mock.patch.object(sync, "check_route_tags"),                 mock.patch.object(sync, "write_last_pushed") as mock_save,                 mock.patch.object(sync, "ci_path_filter", return_value=None),                 mock.patch.object(sync, "wait_own_ci", return_value="red") as mock_wait:
             self.assertEqual(sync.main(["ship"]), 0)
             mock_wait.assert_not_called()
             mock_save.assert_called_once()
@@ -1974,6 +1975,44 @@ class OwnCiWaitTest(unittest.TestCase):
                 mock.patch.object(sync, "wait_own_ci", return_value="red") as mock_wait:
             self.assertEqual(sync.main(["ship"]), 0)       # nothing shipped: nobody's sha to wait for
             mock_wait.assert_not_called()
+
+    def test_fix_ci_docs_only_ship_dispatches_ci_once_and_other_ships_do_not(self):
+        docs = sync.Pushed("abcdef1234", ["MyTradingSys/research/STATUS.md"])
+        code = sync.Pushed("abcdef1234", ["scripts/dev/sync.py"])
+        cases = ((docs, "--fix-ci", 1), (docs, None, 0), (code, "--fix-ci", 0))
+        for pushed, flag, calls in cases:
+            with mock.patch.dict(os.environ, {}, clear=False), mock.patch.object(sync, "toplevel", return_value=Path(".")), \
+                    mock.patch.object(sync, "run_host_health"), mock.patch.object(sync, "ship", return_value=pushed), \
+                    mock.patch.object(sync, "write_last_pushed"), mock.patch.object(sync, "tidy_after_ship"), \
+                    mock.patch.object(sync, "ci_path_filter", return_value=["scripts/**"]), \
+                    mock.patch.object(sync, "dispatch_ci") as mock_dispatch:
+                os.environ.pop("SYNC_FIX_CI", None)
+                self.assertEqual(sync.main(["ship"] + ([flag] if flag else [])), 0)
+                self.assertEqual(mock_dispatch.call_count, calls, (pushed.files, flag))
+
+    def test_dispatch_ci_posts_ref_fast_track_or_prints_the_manual_command_and_never_raises(self):
+        posted = []
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            self.assertTrue(sync.dispatch_ci(post=lambda u, b, t: posted.append((u, b, t)), token="tok"))
+        self.assertEqual(len(posted), 1)
+        self.assertTrue(posted[0][0].endswith("/workflows/ci.yml/dispatches"))
+        self.assertEqual(posted[0][1], {"ref": "fast-track"})
+        def boom(u, b, t):
+            raise OSError("down")
+        for kw in ({"post": boom, "token": "tok"}, {"token": "x", "post": None}):
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                if kw["post"] is None:
+                    with mock.patch.object(sync, "post_dispatch", side_effect=OSError("down")):
+                        self.assertFalse(sync.dispatch_ci(**kw))
+                else:
+                    self.assertFalse(sync.dispatch_ci(**kw))
+            self.assertIn("gh workflow run ci.yml --ref fast-track", buf.getvalue())
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            self.assertFalse(sync.dispatch_ci(token=""))     # no login: manual command, no call
+        self.assertIn("gh workflow run ci.yml --ref fast-track", buf.getvalue())
 
     def test_unattended_callers_of_ship_opt_out_of_the_wait(self):
         root = Path(__file__).resolve().parent

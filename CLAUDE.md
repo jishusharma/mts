@@ -30,7 +30,7 @@ CLAUDE.md is in context; never Read it. Code mode only (DSA chat: `DSA_SESSION_P
 
 ## Hard rules
 - Share work only through `sync.py ship`; cloud containers open a PR into fast-track. Never commit to master, never rebase/reset/force-push. No chained `cd x && git ...`: use `git -C <dir> <cmd>`.
-- Commit body carries `Result: <what works now / the number>`. Others' uncommitted files: leave them alone.
+- Commits: `Result: <what works/number>`, `Next: <card|stage|END: why>`. Never touch others' uncommitted files.
 - Testnet only (Deribit test); no mainnet orders/accounts (public market data OK: q-gap-c); never read `.secrets/`, `.env`, keys.
 - Repo is PUBLIC: never commit runtime/order/account data; backups go only to local F:/MTS_backup.git; go private at mainnet or the first fee-net OOS pass, whichever first (q-go-private-on-edge).
 - Live tree (`.mts_live`) changes only by a manual/coordinator deploy (DEPLOY_RUNBOOK.md). Builders never deploy, stop/restart processes, touch HALT or open trades, bar operator-called testnet (cotrade.py).

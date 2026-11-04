@@ -1,6 +1,7 @@
 {
   "approved_by": "operator",
   "asks": "",
+  "closed": "2026-11-04T14:43:34Z",
   "commands": [
     "python -m pytest scripts/dev/test_supervisor.py scripts/dev/test_tasks.py -q"
   ],
@@ -24,7 +25,14 @@
   "id": "code-red-codex-gemini-lane-feeder-1104",
   "kind": "code",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "already shipped: feeder floors CODEX>=8 GEMINI>=4 in supervisor.py + test (5cb4c5bbe)",
+      "ref": "991e134c3",
+      "utc": "2026-11-04T14:43:34Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "In scripts/dev/supervisor.py break the GEMINI < 4 or CODEX < 8 planner trigger condition and verify the new unit test in scripts/dev/test_supervisor.py fails.",
@@ -38,7 +46,12 @@
     "MyTradingSys/research/gemini_audits_2026-11-04/CODE_RED_CODEX_GEMINI_LANE_STARVATION_AUDIT.md",
     "MyTradingSys/system/ANNOUNCEMENTS.md"
   ],
-  "result": "",
+  "result": "already shipped: feeder floors CODEX>=8 GEMINI>=4 in supervisor.py + test (5cb4c5bbe)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/supervisor.py",
     "scripts/dev/tasks.py",
@@ -51,12 +64,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/gemini_audits_2026-11-04/CODE_RED_CODEX_GEMINI_LANE_STARVATION_AUDIT.md Root Cause 2 (supervisor.py:283, 1106-1129 and tasks.py:593-599)",
     "Update scripts/dev/supervisor.py and/or scripts/dev/tasks.py so that when GEMINI ready < 4 or CODEX ready < 8, plan_lines always emits an actionable RUN Session_Planner step to seed from D11_PROGRAMME.md section 6 and recent ships",
     "Add unit tests in scripts/dev/test_supervisor.py covering GEMINI=0 and CODEX=0 when SONNET=28 and refine_raw=0, keeping all existing test_supervisor.py assertions green"
   ],
+  "taken": "2026-11-04T14:43:34Z",
   "tests": "python -m pytest scripts/dev/test_supervisor.py scripts/dev/test_tasks.py -q",
   "title": "CODE RED: Wire supervisor.py and tasks.py to enforce CODEX>=8 and GEMINI>=4 lane floors",
   "weight": "IMPORTANT",

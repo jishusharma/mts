@@ -17,9 +17,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "bg_watch: a task whose agent is gone is a GHOST, not a STALLED-BG",
-      "ref": "908a03d6600c",
-      "utc": "2026-11-03T20:20:08Z"
+      "line": "Re-land stall fix: watchcheck refuses detached watchers; wait wakes at reset and api job e",
+      "ref": "c08712907f07",
+      "utc": "2026-11-04T14:25:35Z"
     },
     {
       "auto": true,
@@ -36,7 +36,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-04T07:22:16Z",
+  "refreshed": "2026-11-04T15:46:12Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -48,7 +48,7 @@
   "scope_out": [
     "no edit to the source report or scripts; no live-tree edit, no deploy, no .secrets or .env read"
   ],
-  "scope_sha": "908a03d6600c",
+  "scope_sha": "c08712907f07",
   "size": "S",
   "sources": [
     "MyTradingSys/system/EXHAUST_PHASE.md:1-40"

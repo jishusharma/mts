@@ -5,7 +5,7 @@
 Context: BTCUSDT daily from 1m, 2022-01..2025-06 (HOLDOUT sealed). Rule = a close above the upper BB(20,2) within the last 3 candles, then short; trend = prior close under the 50-day SMA. Stop = prior high, target = BB middle, 20-candle hold (all OURS, operator teaching 11-03).
 Regime mix: 2022 bear 9 trades, 2023 range 5, 2024 bull 0, 2025 H1 1; the filter fires almost only in a downtrend, so the lead is a bear-market trade. Unfiltered (trend up) trades are 2023-25, mostly bull.
 
-Script: `c31_halves.py` (asserts the reference numbers first, exit 1 if not reproduced). Fee-net per FORMULAS.md 18.5: taker 0.0005 each side + 0.0002 slip round trip (slip = OURS), divided by the stop distance.
+Script: `c31_halves.py` (asserts the reference numbers first, exit 1 if not reproduced). Fee-net per FORMULAS.md 18.5: taker per side from fees.py + 2 bps slip round trip (FORMULAS section 13, slip = OURS), divided by the stop distance.
 
 ## Reference (reproduced)
 LEAD trend down: 73% to middle, +1.10 R fee-free, n=15. Unfiltered edge short: 21%, -0.07 R, n=165.

@@ -6,6 +6,20 @@
     "python scripts/dev/aibridge_health.py",
     "node scripts/aibridge/tests/block_select.test.js"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-04T14:42:27Z",
+    "misses": 14,
+    "reads": [
+      "scripts/aibridge/tests/fixtures/deepseek_reply.html",
+      "scripts/dev/aibridge_health.py",
+      "scripts/aibridge/extension/manifest.json",
+      "scripts/aibridge/RELEASES.json",
+      "scripts/aibridge/tests/block_select.test.js",
+      "scripts/dev/aibridge_install.py"
+    ],
+    "session": "agent-ad791b8c1d67daa7b"
+  },
   "created": "2026-10-31T14:29:28Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/desk_inject_check.md exists with the three versions equal and the post-F5 panel count; plus either 'blocks run on 0.7.9' or a merged fix with its failing-first test",
@@ -21,19 +35,26 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "AIBridge 0.7.22: Argon High findings (ran block never re-runs, send-button picker and draf",
-      "ref": "85ade19f4d5b",
-      "utc": "2026-11-02T19:24:29Z"
+      "line": "desk_inject_check.md: 0.7.25 versions equal, DeepSeek fixture tests 11/11 pass, Desk count",
+      "ref": "6a14a0486c6b",
+      "utc": "2026-11-04T14:43:19Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "6a14a0486c6b desk_inject_check.md: 0.7.25 versions equal, DeepSeek fixture tests 11/11 pas",
+      "ref": "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/desk_inject_check.md",
+      "utc": "2026-11-04T14:43:19Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "PLANNER 2026-11-01: run-and-report on the Desk host (JIS-NB lane, precedent aibridge-072-desktop-install); DECISION (OURS): retest on current 0.7.9 before touching code, report is 4 releases old. One operator click (Chrome reload) cannot be automated. REVIEWED:2026-11-01 T0-ONLY PLANNER 2026-11-02: current AIBridge is 0.7.11 (6913c301f idle-signal fix); retest on 0.7.11, not 0.7.9.",
+  "note": "REVIEWED:2026-11-01 T0-ONLY | PLANNER 2026-11-01: run-and-report on the Desk host (JIS-NB lane, precedent aibridge-072-desktop-install); DECISION (OURS): retest on current 0.7.9 before touching code, report is 4 releases old. One operator click (Chrome reload) cannot be automated. PLANNER 2026-11-02: current AIBridge is 0.7.11 (6913c301f idle-signal fix); retest on 0.7.11, not 0.7.9.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-03T22:32:56Z",
+  "refreshed": "2026-11-04T15:47:49Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -47,7 +68,7 @@
     "any other host",
     "live tree"
   ],
-  "scope_sha": "85ade19f4d5b",
+  "scope_sha": "6a14a0486c6b",
   "size": "S",
   "sources": [
     "scripts/aibridge/RELEASES.json (0.7.9 current)",

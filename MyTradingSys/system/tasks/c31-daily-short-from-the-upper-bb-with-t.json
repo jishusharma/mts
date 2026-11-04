@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "2026-11-04T13:05:03Z",
+  "closed": "2026-11-04T19:18:48Z",
   "commands": [],
   "created": "2026-11-02T19:48:11Z",
   "depends_on": [],
@@ -16,9 +16,9 @@
   "latest": [
     {
       "kind": "ship",
-      "line": "C31_HALVES.md: UNDERPOWERED, lead n=15 (14 in 2022-23, 1 in 2024-25), fee-net +1.02R, n ne",
-      "ref": "c3462ca30",
-      "utc": "2026-11-04T13:05:03Z"
+      "line": "UNDERPOWERED: lead n=15 +1.02R fee-net (14 in 2022-23, 1 in 2024-25); 0.30R needs n=230; C",
+      "ref": "f7a995d87",
+      "utc": "2026-11-04T19:18:48Z"
     },
     {
       "auto": true,
@@ -38,6 +38,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "c31-feeder-more-symbols-daily-bb-edge-short",
   "note": "REVIEWED: planner-c-1104 2026-11-04 (CRUCIAL: needs review Agent before ship)\nREVIEWED:2026-11-04 ACCEPT (Haiku on API credit, job haiku-review-ready-sonnet-1104: Scope files on trunk, C31_HALVES.md absent, power check not done; testable.)",
   "prio": 2,
   "refine_tries": 0,
@@ -46,7 +47,7 @@
   "refs": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/bb_edge_candle_rule.py"
   ],
-  "result": "C31_HALVES.md: UNDERPOWERED, lead n=15 (14 in 2022-23, 1 in 2024-25), fee-net +1.02R, n needed 230 for 0.3R",
+  "result": "UNDERPOWERED: lead n=15 +1.02R fee-net (14 in 2022-23, 1 in 2024-25); 0.30R needs n=230; C31_HALVES.md",
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"
@@ -70,7 +71,7 @@
     "split into the two halves, apply fee-net per FORMULAS.md",
     "compute power, write C31_HALVES.md"
   ],
-  "taken": "2026-11-04T13:05:03Z",
+  "taken": "2026-11-04T19:18:48Z",
   "tests": "script reproduces LEAD 73% +1.10R n=15 and unfiltered 21% -0.07R n=165 before any new row is trusted",
   "title": "C31: daily short from the upper BB with the 50-day trend down: halves 2022-23 vs 2024-25, entry = first close back inside the band, fee-net; LEAD 73% +1.10R n=15, unfiltered 21% -0.07R",
   "weight": "CRUCIAL",

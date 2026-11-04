@@ -94,6 +94,7 @@ Supervisor and super session are ONE role. Code: `scripts/dev/supervisor.py plan
 - Research Map: `Artifact read` first, edit the one `const DATA = ` line by script in `system/artifacts/research_map.html`, republish to claude.ai/artifact/9nqpZeMeEehadoBoYopZU3 from the jishusharma1985 login. Backtest = fee check at the stated stop first (fee R = 0.14% / stop%), then PRE_REG on DEV only.
 - A worker that merges late hits VERDICTS.csv and wiring_registry.json conflicts: union both sides.
 - Login letters: A jishu.sharma, B jishu.awgp, C jishusharma1985.
+- Route tags (d-route-tag-every-session-1104): ship refuses commits without `Next: <card-id | stage | END: why>`; at load run `route_audit.py check --days 2` and card each finding.
 - API credit: `scripts/dev/api_job.py launch|status|ledger|total` is the one launcher (key read into the child env only; `F:/MTS/api_runs/<slug>/`); ledger = `PLAN_API_CREDITS_2026-11-04.md` Spent table; the day's queue is in the newest `PLAN_24H_<date>.md`.
 - Spawn gate: after `get_usage` run `python scripts/dev/usage_reminder.py record --five <5h%> --elapsed <% of 5 h elapsed>` or the Agent hook refuses (reading older than 10 min). Start Builder/Planner Agents with `isolation: "worktree"`; without it they edit the Supervisor's own tree. `supervisor.py wait` takes no `--running`.
 
@@ -118,11 +119,11 @@ from the newest `BUDGET` signal line (older than 6 h counts NORMAL). The meter i
 | THROTTLE | U > 100 f + 5 (not in the last 24 h), U >= 99, or the 5-hour window above its stop (80 %, 95 % in the last 2 h) | only model-free work: Codex lab, DSA desk, CI |
 
 ## Session log (newest first; one line each, last 5)
+- 2026-11-04 C/JIS-DESKTOP Supervisor L1+L2 (09:50-19:50Z): credit ledger 22.7 USD over 21 jobs (7.4 wasted on stale or reverted cards), CI red 5 episodes (C31 costs, my learnings text, route-tag, lint stamps), fixes shipped: sync dispatch on docs-only --fix-ci (4bd201dd9), void-stamp lint (ff74b57d), resolve_login fail-closed (f854cd802); watchers: one run_in_background wait only.
 - 2026-11-04 C/JIS-DESKTOP Fable eco Wave 1: f1049fa5 digest, 9485204c9 9 stamps (4 ACCEPT 5 HOLD), d7932f49 planner GEMINI 4 CODEX 8, 14 dead claims released, credit $0.03; retired 08:2xZ to PLAN_24H L1 Sonnet (operator)
 - A 2026-11-03 ~15:40-20:16Z: sim cards+eagle+C26 audits shipped (Argon blind reads x5), ask-p0-47-h3 BLOCKED (power), fabio holdout leak fixed (12480021), doctor docs-only CI-revert fix (26d06865a), STATUS CI line; paused by operator at week 80% (reset 11-06), 4 Argon cards wait for ~22:20Z quota
 - C 2026-11-03 ~09:00-16:56Z: 3 sim-build cards shipped+verified (7e0fe8c54 trade charts, 9e31182d4 equity/drawdown, e3123921 heatmap); CI red (MTS Home hub 30339 > 30000 from an undecided OPERATOR_DECISIONS entry) fixed by re-landing it marked decided (41dcd7ad, green); AIBridge 0.7.24 on JIS-NB (verify 29/29); handed over at weekly 98% (stop 97%).
 - B 2026-10-30 20:00-21:42Z: names rule Desktop/Lenovo/NUC + B22/B23 filed, CI red reverted (ca25ae86f), GPT lane brought up (lane_state c9cf84d4a) and 2 GPT runs shipped (811f9870), liquidation deploy sent to the Lenovo (b-d564be, unacked); roman ingest parked.
-- A 2026-10-29 16:58-17:30Z: operator-directed drain before weekly reset; wiring audit shipped+Haiku-verified, gemini race test was a no-op (already shipped), pitchfork arm-check (verdict NO, deduped against another session's shipped doc), CI RED (TOM-CTX-DIV) saw B's revert in flight and stood down rather than duplicate, 9 raw Noticed cards filed; handed over at TRANSIT (context 255K).
 
 ## Prompt: start a super session (new session, model Sonnet, permission mode bypass or auto; zero operator input)
 ```

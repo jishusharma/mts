@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest -q MyTradingSys/tests/docs/test_integrity.py"
+  ],
+  "created": "2026-11-04T17:29:32Z",
+  "depends_on": [],
+  "done_when": "DESIGN.md R1 states 5 host classes 26/16/10/3/1 summing to 56; R2/R3 say which landing form carries the stamp; R5 gives the ejection steps for n>2; R7 names the transport (mts-signals branch status file, polled by ship --wait); the check command exits 0.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Fix the four defects the Gemini blind read found in ship_train_2026-11-04/DESIGN.md: R1 says 4 host classes (26/16/10/3) but the cause table has 5 (26/16/10/3/1 = 56); R2/R3 stamped landing merge vs fast-forward-only conflict; R5 batch ejection undefined for n>2; R7 signal transport from GitHub Actions undefined.",
+  "id": "ship-train-design-md-gemini-blind-read-1",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship-train DESIGN.md: 56 CI reds by cause/author/host + 8-rule ship-queue design",
+      "ref": "a7804978fdf9",
+      "utc": "2026-11-04T09:21:18Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "a7804978fdf9 ship-train DESIGN.md: 56 CI reds by cause/author/host + 8-rule ship-queue des",
+      "ref": "MyTradingSys/research/ship_train_2026-11-04/DESIGN.md",
+      "utc": "2026-11-04T09:21:18Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "planner-refine-1104e: design doc only, no code.\nREVIEWED:2026-11-04 T0-ONLY",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-04T18:11:08Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/ship_train_2026-11-04/DESIGN.md"
+  ],
+  "scope_out": [
+    "any code; SHIP_TRAIN.md; sync.py; the other blind-read findings U3,U4,M1-M6 (note them under Open items only)"
+  ],
+  "scope_sha": "a7804978fdf9",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_SHIP_TRAIN_DESIGN_1104.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read research/gemini_audits_2026-11-04/BLIND_READ_SHIP_TRAIN_DESIGN_1104.md findings C1, C2, U1, U2 with their file:line quotes",
+    "Edit DESIGN.md R1 count, R2/R3 landing wording, R5 n>2 rule, R7 transport; mark every new number OURS or SOURCED with file:line",
+    "Append an Open items line listing U3,U4,M1-M6 as not addressed",
+    "Run the check command and python -m pytest -q MyTradingSys/tests/docs/test_integrity.py"
+  ],
+  "tests": "python -c \"t=open('MyTradingSys/research/ship_train_2026-11-04/DESIGN.md',encoding='utf-8').read(); assert '5 host classes' in t and '26/16/10/3/1' in t\" fails on the current file (it says 4 host classes)",
+  "title": "ship train DESIGN.md (gemini blind read 1104): R1 says 4 host classes but table has 5; R2/R3 land-stamp vs ff-only conflict; R5 batch ejection undefined for n>2; R7 signal transport from GitHub Actions undefined",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

@@ -27,7 +27,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-04 T0-ONLY; Gemini low effort feeder card. Refined by planner-refine-1104.",
+  "note": "REVIEWED:2026-11-04 T0-ONLY | Gemini low effort feeder card. Refined by planner-refine-1104.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -44,7 +44,7 @@
   "scope_sha": "1dfa10977bd1",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read gate_select.py lines 50-80 and its test file only",
     "For each DOC_MUST pattern give a matching and a non-matching path",

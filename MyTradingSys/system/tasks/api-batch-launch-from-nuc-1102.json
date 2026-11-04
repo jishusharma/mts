@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T17:07:07Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -25,6 +26,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "already on trunk: key-file fallback, wait subcommand, tests (58980d9ba0a7, faf01e226a2d); ",
+      "ref": "38303c5e6",
+      "utc": "2026-11-04T17:07:07Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "api_batch: disable thinking by default (Claude 5.5 spent the whole max_tokens thinking) + ",
@@ -42,7 +49,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 2026-11-02: launch Console API jobs from the NUC too. REVIEWED:2026-11-02 T0-ONLY\nREVIEWED:2026-11-04 HOLD (Haiku on API credit, job haiku-review-ready-sonnet-1104: Key-file fallback already on trunk (58980d9ba0a7); narrow card to what remains.)",
+  "note": "REVIEWED:2026-11-02 T0-ONLY | Operator 2026-11-02: launch Console API jobs from the NUC too. \nREVIEWED:2026-11-04 HOLD (Haiku on API credit, job haiku-review-ready-sonnet-1104: Key-file fallback already on trunk (58980d9ba0a7); narrow card to what remains.)",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
@@ -50,7 +57,12 @@
   "refs": [
     "MyTradingSys/system/OPERATOR_DECISIONS.md"
   ],
-  "result": "",
+  "result": "already on trunk: key-file fallback, wait subcommand, tests (58980d9ba0a7, faf01e226a2d); verified tests pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/api_batch.py",
     "scripts/dev/test_api_batch.py",
@@ -62,12 +74,13 @@
   "scope_sha": "faf01e226a2d",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "env ANTHROPIC_API_KEY first, else key file: env MTS_API_KEY_FILE, default F:/ClaudePlaform/key.txt; strip whitespace",
     "add a wait subcommand: poll status every 60 s with a timeout, then fetch to --out",
     "add a --max-usd total guard unchanged; update docstring and the QUICK_ANSWERS line"
   ],
+  "taken": "2026-11-04T17:07:07Z",
   "tests": "python scripts/dev/test_api_batch.py",
   "title": "api_batch launches from any machine holding the key file (NUC and desktop)",
   "weight": "ROUTINE",

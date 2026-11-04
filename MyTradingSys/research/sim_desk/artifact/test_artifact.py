@@ -234,6 +234,23 @@ class Banner(unittest.TestCase):
         self.assertIn("OURS", x["div_rule"])
         self.assertIn("not Malkan", x["div_rule"])
 
+    def test_div_on_close_draws_at_closes(self):
+        # Operator: Malkan divergence = closes only; a div_on="close" chart draws the line at c[p][3], not the low c[p][2].
+        self.assertIn('x.div_on==="close"?3:2', ba.TEMPLATE)
+        self.assertIn("c[p][dk]", ba.TEMPLATE)
+        self.assertIn("c[qd][dk]", ba.TEMPLATE)
+
+    def test_malkan_close_div_chart_matches_study_ledger(self):
+        r = json.load(open(os.path.join(ba.RESULTS_DIR, "rsi-divergence-mtf-gated-run1-2026-11-04.json"), encoding="utf-8"))
+        x = next(e for e in r["examples"] if e["kind"] == "trade_chart" and e.get("div_on") == "close")
+        cells = os.path.join(ba.RESULTS_DIR, "..", "..", "rsi_divergence_mtf_gated_2026-11-04", "dev_cells.csv")
+        row = next(c for c in csv.DictReader(open(cells, encoding="utf-8"))
+                   if (c["tf"], c["arm"], c["kind"], c["gate"], c["entry"]) == ("4h", "W18", "bullish", "aligned", "signal"))
+        self.assertEqual(len(x["trades"]), int(row["n"]))
+        self.assertEqual(x["ledger_n"], int(row["n"]))
+        self.assertAlmostEqual(sum(t["net"] for t in x["trades"]) / len(x["trades"]), float(row["net"]), places=2)
+        self.assertIn("CLOSES", x["div_rule"])
+
     def test_every_committed_result_has_banner(self):
         n = 0
         for fn in os.listdir(ba.RESULTS_DIR):
@@ -424,6 +441,44 @@ class UxOneScreen(unittest.TestCase):
     def test_top_tabs(self):
         for k in ("Families", "Verdict grid", "Charts", "Comments", "function showTab", "function gridTab", "function chartsTab", "function commentsTab"):
             self.assertIn(k, ba.TEMPLATE)
+
+    def test_news_and_concept_tabs(self):
+        for k in ('["news","News"', "function inConcept", "/*concepts*/", "/*end-concepts*/", 'startsWith("c:")', "CONC"):
+            self.assertIn(k, ba.TEMPLATE)
+        for c in ("Tom", "Fabio", "Malkan", "Krown", "Bollinger", "RSI", "WaveTrend"):
+            self.assertIn('["' + c + '",[', ba.TEMPLATE)
+            self.assertIn('"c:"+', ba.TEMPLATE)
+
+    def test_concept_tab_hides_other_families(self):
+        import shutil
+        import subprocess
+        node = shutil.which("node")
+        if not node:
+            self.skipTest("node not installed")
+        src = ba.TEMPLATE
+        self.assertIn("/*concepts*/", src)
+        js = src[src.index("/*concepts*/"):src.index("/*end-concepts*/")]
+        rows = [{"family": "Tom Core", "title": "Tom VP pivot", "id": "a"},
+                {"family": "Krown Audit", "title": "Krown capture", "id": "b"},
+                {"family": "News Feeds", "title": "News feeds 2026-10-30", "id": "dir-news_feeds_2026-10-30"},
+                {"family": "Bb State Map", "title": "BB state map", "id": "c"},
+                {"family": "Rsi Levels", "title": "RSI levels", "id": "d"},
+                {"family": "WaveTrend", "title": "WaveTrend atlas", "id": "e"},
+                {"family": "Fabio Cvd", "title": "Fabio CVD", "id": "f"},
+                {"family": "Malkan Rsi", "title": "Malkan RSI", "id": "g"},
+                {"family": "Desk runs", "title": "other", "id": "h"}]
+        prog = js + "const R=" + json.dumps(rows) + ";const o={};['News','Tom','Fabio','Malkan','Krown','Bollinger','RSI','WaveTrend'].forEach(c=>{o[c]=R.filter(r=>inConcept(r,c)).map(r=>r.id)});console.log(JSON.stringify(o))"
+        out = subprocess.run([node, "-e", prog], capture_output=True, text=True, timeout=30)
+        self.assertEqual(out.returncode, 0, out.stderr)
+        o = json.loads(out.stdout)
+        self.assertEqual(o["Tom"], ["a"])
+        self.assertEqual(o["Krown"], ["b"])
+        self.assertEqual(o["News"], ["dir-news_feeds_2026-10-30"])
+        self.assertEqual(o["Bollinger"], ["c"])
+        self.assertEqual(o["RSI"], ["d", "g"])
+        self.assertEqual(o["WaveTrend"], ["e"])
+        self.assertEqual(o["Fabio"], ["f"])
+        self.assertEqual(o["Malkan"], ["g"])
 
     def test_verdict_grid_cell_is_tone_plus_glyph_with_tooltip(self):
         for k in ('class="gc', "function glyphOf", "title=", "&#10006;", "&#10004;"):

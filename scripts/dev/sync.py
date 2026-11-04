@@ -3,7 +3,7 @@
   python scripts/dev/sync.py start [slug] [--quiet]  # up to date with origin/fast-track; in a shared/dirty tree makes your own worktree;
                                            # in a lane tree (mts-app, mts-relay, mts-dsa) `start <slug>` switches to branch <host>/<slug>
   python scripts/dev/sync.py health  # stale/overlapping claims, shared or orphan worktrees, branches never shipped
-  python scripts/dev/sync.py ship [--full] [--fix-ci] [--again] [--wait-ci] [--result <text> [-m <subject>]] [--release <slug>] [--after <slug>]  # a second ship within 10 min only prints a note (--again still accepted); docs-only ships run no gate; merge origin/fast-track, SMOKE gate (steps for the changed paths; live path = all; --full = all), push; CI runs the full suite behind
+  python scripts/dev/sync.py ship [--full] [--fix-ci] [--again] [--wait-ci] [--result <text> [-m <subject>]] [--next <card-id | stage | END: reason>] [--release <slug>] [--after <slug>]  # a second ship within 10 min only prints a note (--again still accepted); docs-only ships run no gate; merge origin/fast-track, SMOKE gate (steps for the changed paths; live path = all; --full = all), push; CI runs the full suite behind
                                            # ordinary code ships run the FAST gate (GATE_SPEED.md: ~60 s, tests chosen by import graph); a red CI blocks code ships until
                                            # fixed: --fix-ci ships the fix through it with the full gate; --after waits for predecessor order ticket
                                            # after the push it returns at once; `sync.py ci [sha]` (or `ship --wait-ci` / SYNC_WAIT_CI=1) waits up to 10 min for the CI run of the sha and prints CI RED at once (exit 3)
@@ -777,21 +777,52 @@ def read_last_pushed(repo):
         return None
 
 
-def commit_pending(repo, result, subject=None):
-    """`ship --result "<what works now>" [-m "<subject>"]` (planner finding: a ship of uncommitted card/doc edits had no way to carry the
-    `Result:` line CLAUDE.md requires). Commits this tree's real uncommitted files (tree_state's `work`, not mirror noise) as one commit whose
-    body ends `Result: <text>`. Clean tree: nothing to commit (commits already made keep their own messages). Returns the file count."""
+def commit_pending(repo, result, subject=None, nxt=None):
+    """`ship --result "<what works now>" [-m "<subject>"] [--next "<tag>"]` (planner finding: a ship of uncommitted card/doc edits had no way
+    to carry the `Result:` line CLAUDE.md requires). Commits this tree's real uncommitted files (tree_state's `work`, not mirror noise) as one
+    commit whose body ends `Result: <text>` (and `Next: <tag>`). Clean tree: nothing to commit (commits already made keep their own
+    messages), except that --next alone adds an empty `route tag` commit carrying it. Returns the file count."""
+    tail = (chr(10) + "Next: " + nxt.strip().removeprefix("Next:").strip()) if nxt else ""
+    if result is None:
+        if nxt:
+            git(repo, "commit", "--quiet", "--allow-empty", "-m", "route tag" + chr(10) * 2 + "Result: routes the commits of this ship" + tail)
+        return 0
     if not result.strip():
         raise SyncError("ship --result needs the text of the Result line")
     _, work, _ = tree_state(repo)
     paths = [r[3:].split(" -> ")[-1].strip().strip(chr(34)) for r in work]
     if not paths:
         print("--result: no uncommitted files; existing commits keep their own messages")
-        return 0
+        return commit_pending(repo, None, nxt=nxt)
     git(repo, "add", "-A", "--", *paths)
     subj = (subject or f"ship: {len(paths)} file(s)").strip()
-    git(repo, "commit", "--quiet", "-m", subj + chr(10) * 2 + "Result: " + result.strip().removeprefix("Result:").strip())
+    git(repo, "commit", "--quiet", "-m", subj + chr(10) * 2 + "Result: " + result.strip().removeprefix("Result:").strip() + tail)
     return len(paths)
+
+
+NEXT_FIX = 'rerun with --next "<card-id | stage | END: reason>"'
+
+
+def check_route_tags(repo):
+    """d-route-tag-every-session-1104: the commits a ship carries name where the work goes next, `Next: <card-id | stage | END: reason>`
+    (route_audit.py grammar; tool bookkeeping and reverts are exempt). A card id must exist in the shipped tree. Fails closed."""
+    import route_audit as RA
+    try:
+        cs = [c for c in RA.commits(repo, f"origin/{TRUNK}..HEAD") if not RA.exempt(c["subject"], c["files"])]
+    except SystemExit as e:
+        raise SyncError(f"ship refused: route tag check could not read the commits ({e}); {NEXT_FIX}")
+    if not cs:
+        return
+    tags = [t for c in cs for t in RA.next_tags(c["body"])]
+    if not tags:
+        raise SyncError(f"ship refused: none of your {len(cs)} commit(s) carries a `Next:` line; {NEXT_FIX}")
+    ids = RA.card_ids(repo, "HEAD")
+    for t in tags:
+        kind, val = RA.parse_next(t)
+        if kind is None:
+            raise SyncError(f"ship refused: {val}; {NEXT_FIX}")
+        if kind == "card" and val not in ids:
+            raise SyncError(f'ship refused: Next card {val} does not exist; file it (tasks.py new "<title>" --id {val}) or {NEXT_FIX}')
 
 
 def ci_verb(repo, argv):
@@ -932,6 +963,35 @@ def ci_runs_for(sha):
     import ci_watch
     d = ci_watch.get_json(f"{ci_watch.API.split('?')[0]}?head_sha={sha}&event=push&per_page=10") or {}
     return [{k: r.get(k) for k in ("id", "status", "conclusion", "html_url")} for r in d.get("workflow_runs", [])]
+
+
+def post_dispatch(url, body, token):
+    """POST one JSON body to the GitHub API with the login the pusher uses; raises on any failure."""
+    import urllib.request
+    req = urllib.request.Request(url, data=json.dumps(body).encode(), method="POST", headers={
+        "User-Agent": "mts-sync", "Accept": "application/vnd.github+json", "Authorization": f"Bearer {token}"})
+    with urllib.request.urlopen(req, timeout=8) as r:
+        return r.status
+
+
+def dispatch_ci(post=None, token=None):
+    """After a --fix-ci ship whose files ci.yml's path filter skips (docs-only), no push CI runs and the last red push run stays the
+    trunk verdict: dispatch ci.yml on fast-track (workflow_dispatch). No token or any API failure prints the manual command; never raises."""
+    manual = "gh workflow run ci.yml --ref fast-track"
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import ci_watch
+        tok = ci_watch.token() if token is None else token
+        if not tok:
+            print(f"CI: docs-only fix runs no push CI; no GitHub login here, run: {manual}")
+            return False
+        url = ci_watch.API.split("/runs?")[0] + "/dispatches"
+        (post or post_dispatch)(url, {"ref": "fast-track"}, tok)
+        print("CI: docs-only fix runs no push CI; dispatched ci.yml on fast-track so the trunk verdict can turn green")
+        return True
+    except Exception as e:
+        print(f"CI: dispatch failed ({type(e).__name__}: {e}); run: {manual}")
+        return False
 
 
 def ci_failed_jobs(run_id):
@@ -2180,14 +2240,16 @@ def main(argv):
                     raise SyncError("usage: sync.py ship [--full] [--fix-ci] [--no-ci-wait] [--release <slug>] [--after <slug>]")
                 after_slug = argv[i + 1]
                 argv = argv[:i] + argv[i + 2:]
-            result_text = commit_subject = None
-            for flag in ("--result", "-m"):
+            result_text = commit_subject = next_text = None
+            for flag in ("--result", "-m", "--next"):
                 if flag in argv:
                     i = argv.index(flag)
                     if i + 1 >= len(argv) or argv[i + 1].startswith("--"):
-                        raise SyncError(f"usage: sync.py ship [--result <text>] [-m <subject>] ...: {flag} needs a value")
+                        raise SyncError(f"usage: sync.py ship [--result <text>] [-m <subject>] [--next <tag>] ...: {flag} needs a value")
                     if flag == "--result":
                         result_text = argv[i + 1]
+                    elif flag == "--next":
+                        next_text = argv[i + 1]
                     else:
                         commit_subject = argv[i + 1]
                     argv = argv[:i] + argv[i + 2:]
@@ -2196,17 +2258,22 @@ def main(argv):
             if len(argv) != 1:
                 raise SyncError(f"unknown arguments to ship: {' '.join(argv[1:])}")
             repo = toplevel(Path.cwd())
-            if result_text is not None:
+            if next_text:
+                commit_pending(repo, result_text, commit_subject, next_text)
+            elif result_text is not None:
                 commit_pending(repo, result_text, commit_subject)
             staged = git(repo, "diff", "--cached", "--name-only", check=False).stdout.strip()
             if staged:
                 files = ", ".join(staged.splitlines())
                 raise SyncError(f"staged but not committed: {files}; git commit them or use --result")
+            check_route_tags(repo)
             stage_layers(repo)
             pushed = ship(repo, release_slug=release_slug, after_slug=after_slug)
             if isinstance(pushed, Pushed):
                 write_last_pushed(repo, pushed)
                 tidy_after_ship(repo)
+            if isinstance(pushed, Pushed) and os.environ.get("SYNC_FIX_CI") and not ci_starts(pushed.files, ci_path_filter(repo)):
+                dispatch_ci()
             if isinstance(pushed, Pushed) and not wait_ci:
                 print(f"shipped {pushed.sha[:8]}; CI not awaited: `python scripts/dev/sync.py ci` waits for its verdict (red exits {CI_RED_EXIT}); `ship --wait-ci` waits here")
             if isinstance(pushed, Pushed) and wait_ci:
