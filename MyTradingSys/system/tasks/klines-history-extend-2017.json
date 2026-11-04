@@ -1,0 +1,60 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-04T02:42:22Z",
+  "depends_on": [],
+  "done_when": "klines on disk (gitignored, F: disk checked first) for BTCUSDT+ETHUSDT 15m/30m/1h/4h/1d from 2017-08 with a per-month checksum manifest; a 2-day slice test passes first; a script prints the Regime mix line (research_kit.regime_mix_line) for the long window; README note of the path; one ship",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "The 3 context re-runs are underpowered (146-186 days per session cell vs 478-1783 needed; 0 bear weeks since 2022). Extend public Binance klines back to 2017-08 for BTCUSDT and ETHUSDT at 15m/30m/1h/4h/1d, stored where research_kit reads them, resumable, checksum per month.",
+  "id": "klines-history-extend-2017",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "bb-range-retest-level-arm: freeze PRE_REG, tests, study, TRIALS rows before DEV run",
+      "ref": "53bdf1f2a76f",
+      "utc": "2026-11-04T02:35:07Z"
+    }
+  ],
+  "layers": [
+    "session_timing"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Super Session order 2026-11-04; public market data pre-approved.\nREVIEWED: super 2026-11-04 (coordinator stamp per Super Session order d-context-retest-1104; T0-ONLY)",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-04T02:42:23Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/fetch_binance_archive.py",
+    "MyTradingSys/backtest/test_fetch_binance_archive.py",
+    "MyTradingSys/backtest/research_kit.py",
+    "scripts/dev/extra_tests.tsv"
+  ],
+  "scope_out": [
+    "no strategy code, no re-run of any study, no committed data files (Dumps is gitignored), public market data only"
+  ],
+  "scope_sha": "53bdf1f2a76f",
+  "size": "M",
+  "sources": [
+    "OPERATOR_DECISIONS d-context-retest-1104",
+    "Super Session order 2026-11-04 (history length is the binding constraint)"
+  ],
+  "state": "ready",
+  "steps": [
+    "read MyTradingSys/backtest/fetch_binance_archive.py and how research_kit/bt_data read klines (Dumps/backtest/raw_1d layout, find_data_root)",
+    "write the failing 2-day-slice test first, extend the fetcher (resumable, paginated or monthly archive, sha256 checksum per month, skip existing), run on BTCUSDT then ETHUSDT, print the long-window regime mix"
+  ],
+  "tests": "a 2-day slice download test (offline fixture for the parser, checksum mismatch rejected, resume skips existing months) fails first on the unextended fetcher",
+  "title": "Extend public Binance klines to 2017-08 (BTCUSDT, ETHUSDT; 15m-1d) for the underpowered context re-runs",
+  "weight": "ROUTINE",
+  "worker": "session"
+}
