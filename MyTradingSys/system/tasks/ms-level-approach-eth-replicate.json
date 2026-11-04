@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T22:26:15Z",
   "commands": [
     "python MyTradingSys/research/level_approach_eth_2026-11/study.py --symbols BTCUSDT,ETHUSDT",
     "python -m pytest -q MyTradingSys/research/level_approach_eth_2026-11/test_replicate.py"
@@ -15,10 +16,18 @@
   "goal": "level_approach (C15) is descriptive on BTC: best confirm sequences flip between dev halves and only the invalidation row (near_miss, RSI<50, CVD12<=0, below daily BB mid, p 0.21 vs 0.29) looked steady. Replicate on ETH and pooled to see which sequence rows agree across symbols and both halves.",
   "id": "ms-level-approach-eth-replicate",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "REPLICATES: 4 of 64 near_miss/wick_back rows agree in BTC+ETH both halves (C15 invalidatio",
+      "ref": "0a356783c",
+      "utc": "2026-11-04T22:26:15Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "gemini-blind-read-of-level-approach-eth-",
   "note": "Context rule d-context-retest-1104: PRE_REG ## Context needs Regime:/Phase:/Session:/Entry: lines (none, because ... allowed); RESULT needs a Regime mix: line (prereg_context_lint). ETH: F:/MTS/data/tom_raw/klines/ETHUSDT-1m-YYYY-MM.csv (env SIM_DESK_KLINES; USD-M futures, 0 missing bars, kline_gap_check.py); load BTC from the same folder so the pool is one venue. Descriptive study, no edge claim; T0-ONLY stamp would be honest for routine checks only. Twin-checked: level-approach-prep and level-approach-study are done, none on ETH.\nREVIEWED:2026-11-04 ACCEPT (Haiku on API credit, job haiku-review-4-1104: source on trunk, Context lines and Regime mix planned, fee-free descriptive, fail-first test)",
   "prio": 2,
   "refine_tries": 0,
@@ -27,7 +36,12 @@
   "refs": [
     "MyTradingSys/research/level_approach_2026-10-30/level_approach.py"
   ],
-  "result": "",
+  "result": "REPLICATES: 4 of 64 near_miss/wick_back rows agree in BTC+ETH both halves (C15 invalidation row pooled p 0.244 vs base 0.278); BTC futures reproduce C15 10822 events, 0 n mismatches; RESULT.md + sequences.csv",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/level_approach_eth_2026-11/ (PRE_REG.md, study.py, test_replicate.py, RESULT.md, sequences.csv); reuse level_approach_2026-10-30/level_approach.py by path"
   ],
@@ -40,12 +54,13 @@
     "MyTradingSys/research/level_approach_2026-10-30/RESULT.md",
     "MyTradingSys/research/level_approach_2026-10-30/PRE_REG.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write PRE_REG.md: events and classes as C15 (lh, pdh x accepted/close_then_fail/near_miss/wick_back), agreement rule (both symbols, both halves A<2023-07-01, n>=30 each, differs from class base rate) frozen, ## Context lines, verdicts.py check output",
     "Fail-first test, then study.py: symbol list over BTCUSDT,ETHUSDT UM futures 1m DEV",
     "Write sequences.csv and RESULT.md with Regime mix:, the BTC row beside the shipped C15 table as reproduction check"
   ],
+  "taken": "2026-11-04T22:26:15Z",
   "tests": "MyTradingSys/research/level_approach_eth_2026-11/test_replicate.py::test_agreement_rule (fails first on the stub): a fixture where symbols disagree in sign is not marked as agreeing",
   "title": "Replicate level_approach (C15) on ETHUSDT and BTC+ETH pooled, DEV only: do the near_miss and wick_back sequences agree across symbols and both halves",
   "weight": "IMPORTANT",

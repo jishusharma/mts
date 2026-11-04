@@ -1,7 +1,7 @@
 {
 "_doc": "Catalogue of known tests on trunk. kind is inferred (kind_source). Built by sim_desk/build_catalogue.py.",
-"count": 354,
-"exported": 354,
+"count": 355,
+"exported": 355,
 "rows": [
 {
 "id": "st-_archive-loose_2026-10-cbp_profile6_result",
@@ -5134,6 +5134,20 @@
 "date": "2026-11-05",
 "status": "FAILED",
 "verdict_class": "failed"
+},
+{
+"id": "level-approach-eth-replicate-2026-11-05",
+"family": "Level approach",
+"title": "Replication: level approach (C15) on BTCUSDT + ETHUSDT USD-M futures, near_miss / wick_back sequences",
+"kind": "backtest",
+"kind_source": "result file",
+"verdict": "REPLICATES: 4 of 64 judged rows agree across BTC, ETH and both halves; 20 disagree, 40 underpowered",
+"source": "MyTradingSys/research/level_approach_eth_2026-11/RESULT.md",
+"exported": true,
+"result_id": "level-approach-eth-replicate-2026-11-05",
+"date": "2026-11-05",
+"status": "SEE_VERDICT",
+"verdict_class": "other"
 }
 ]
 }

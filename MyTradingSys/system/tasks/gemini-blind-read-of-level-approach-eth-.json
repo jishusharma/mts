@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_LEVEL_APPROACH_ETH.md'); assert p.exists() and len(p.read_text())>400\""
+  ],
+  "created": "2026-11-04T22:25:22Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_LEVEL_APPROACH_ETH.md recomputes from sequences.csv the count of AGREES / DISAGREES / UNDERPOWERED rows (near_miss and wick_back only) under the PRE_REG agreement rule, checks the 4 agreeing rows and the C15 invalidation row against RESULT.md, and ends with VERDICT: MATCH or MISMATCH.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "D11 feeder check: independent blind read of the level approach (C15) ETH / pooled replication by recomputing the agreement counts from sequences.csv before reading RESULT.md prose.",
+  "id": "gemini-blind-read-of-level-approach-eth-",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "D11 feeder card for card ms-level-approach-eth-replicate (level_approach_eth_2026-11)",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "ms-level-eth-1104",
+  "refreshed": "2026-11-04T22:25:47Z",
+  "refs": [
+    "MyTradingSys/research/level_approach_eth_2026-11/RESULT.md",
+    "MyTradingSys/research/level_approach_eth_2026-11/PRE_REG.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_LEVEL_APPROACH_ETH.md",
+    "MyTradingSys/research/level_approach_eth_2026-11"
+  ],
+  "scope_out": [
+    "VALIDATION and HOLDOUT data never loaded",
+    "no edits to the study files"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read PRE_REG.md agreement rule and sequences.csv before RESULT.md prose",
+    "Recompute per near_miss / wick_back row: n >= 30 in the BTC/ETH x half A/B cells, sign vs each symbol's base, pooled CI vs pooled base; count AGREES / DISAGREES / UNDERPOWERED",
+    "Compare against RESULT.md (4 / 20 / 40, invalidation row) and write MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_LEVEL_APPROACH_ETH.md with a table and VERDICT"
+  ],
+  "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_LEVEL_APPROACH_ETH.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
+  "title": "[GEMINI] blind read of level_approach_eth_2026-11 RESULT.md",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

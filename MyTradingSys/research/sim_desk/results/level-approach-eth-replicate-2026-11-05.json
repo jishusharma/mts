@@ -1,0 +1,83 @@
+{
+ "id": "level-approach-eth-replicate-2026-11-05",
+ "kind": "backtest",
+ "family": "Level approach",
+ "title": "Replication: level approach (C15) on BTCUSDT + ETHUSDT USD-M futures, near_miss / wick_back sequences",
+ "provenance": "builder-export",
+ "date": "2026-11-05",
+ "what": [
+  {
+   "name": "Levels",
+   "value_plain": "prior-day high and last lower high (10-day lower-low lookback)",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Classes",
+   "value_plain": "near_miss / wick_back judged; arm 0.1 %, 3 confirm closes, 12-bar forward (C15)",
+   "label": "OURS"
+  },
+  {
+   "name": "Agreement",
+   "value_plain": "n >= 30 in BTC-A, BTC-B, ETH-A, ETH-B, same sign vs class base, pooled CI excludes base",
+   "label": "OURS"
+  },
+  {
+   "name": "Regime mix",
+   "value_plain": "POOL 260 weeks: bull 36 (14%) | bear 0 (0%) | range 224 (86%) | n/a 0 (0%)",
+   "label": "SOURCED"
+  }
+ ],
+ "how": "C15 code reused unchanged per symbol; sequences pooled over level kinds; fee-free descriptive.",
+ "window": "DEV 2022-01-01..2024-06-30 BTCUSDT + ETHUSDT futures 1m; VALIDATION and HOLDOUT not read",
+ "verdict": {
+  "label": "REPLICATES: 4 of 64 judged rows agree across BTC, ETH and both halves; 20 disagree, 40 underpowered",
+  "tone": "good"
+ },
+ "why": [
+  "BTC futures reproduce C15: 10822 events, 0 n mismatches over 32 cells.",
+  "C15 invalidation row (near_miss 1m all false): BTC p 0.210, ETH p 0.281, pooled 0.244 vs base 0.278, AGREES.",
+  "Agrees: near_miss 1m rsi0 cvd0 bb0 pooled n 889 p 0.244 vs base 0.278.",
+  "Agrees: near_miss 1m rsi0 cvd0 bb1 pooled n 1394 p 0.306 vs base 0.278.",
+  "Agrees: near_miss 5m rsi0 cvd0 bb1 pooled n 401 p 0.389 vs base 0.325.",
+  "Agrees: wick_back 5m rsi1 cvd1 bb0 pooled n 363 p 0.295 vs base 0.369."
+ ],
+ "kpis": [
+  {
+   "label": "rows judged",
+   "value": "64"
+  },
+  {
+   "label": "agree",
+   "value": "4"
+  },
+  {
+   "label": "BTC events",
+   "value": "10822"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no trades: descriptive event tables (sequences.csv)"
+  }
+ ],
+ "parity": null,
+ "source_files": [
+  "MyTradingSys/research/level_approach_eth_2026-11/RESULT.md",
+  "MyTradingSys/research/level_approach_eth_2026-11/sequences.csv",
+  "MyTradingSys/research/level_approach_eth_2026-11/classes.csv",
+  "MyTradingSys/research/level_approach_eth_2026-11/PRE_REG.md"
+ ],
+ "commit": "0a356783c",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "REPLICATES: 4 of 64 judged rows agree across BTC, ETH and both halves; 20 disagree, 40 underpowered",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT \u00b7 verdict as written: REPLICATES: 4 of 64 judged rows agree across BTC, ETH and both halves; 20 disagree, 40 underpowered \u00b7 n=? \u00b7 net R after fees n/a \u00b7 try n/a \u00b7 fee break-even n/a"
+ }
+}
