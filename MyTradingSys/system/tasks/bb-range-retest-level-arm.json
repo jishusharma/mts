@@ -33,7 +33,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "Super Session order 2026-11-04 (BB FAIL was a fail of the encoding, not of the claim).\nREVIEWED: super 2026-11-04 (coordinator stamp per Super Session order d-context-retest-1104; Lab_Guy wait waived)",
+  "note": "Super Session order 2026-11-04 (BB FAIL was a fail of the encoding, not of the claim).\nREVIEWED: super 2026-11-04 (coordinator stamp per Super Session order d-context-retest-1104; Lab_Guy wait waived)\nREVIEW-HOLD 2026-11-04 Haiku: scope path MyTradingSys/research/bb_range_retest_2026-11-04/ missing, no PRE_REG (card.json:43)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",

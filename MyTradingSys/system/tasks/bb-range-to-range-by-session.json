@@ -40,7 +40,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "Super Session order 2026-11-04.\nREVIEWED: super 2026-11-04 (coordinator stamp per Super Session order d-context-retest-1104; Lab_Guy wait waived)",
+  "note": "Super Session order 2026-11-04.\nREVIEWED: super 2026-11-04 (coordinator stamp per Super Session order d-context-retest-1104; Lab_Guy wait waived)\nREVIEWED:2026-11-04 ACCEPT (Haiku read on API credit, job haiku-review-2: paths, Context, Regime mix present)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
