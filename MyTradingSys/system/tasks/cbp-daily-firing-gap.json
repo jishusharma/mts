@@ -34,9 +34,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "cbp: windows match the 05:00/20:00 schedule, trigger start in the past",
-      "ref": "2bb01c50064a",
-      "utc": "2026-11-01T17:10:54Z"
+      "line": "cbp_run: every run refreshes prices and rebuilds the v5 CBP Analyst Desk board",
+      "ref": "891a04e9a6af",
+      "utc": "2026-11-04T13:52:10Z"
     },
     {
       "auto": true,
@@ -53,7 +53,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T11:04:33Z",
+  "refreshed": "2026-11-04T15:46:03Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -66,7 +66,7 @@
     "the CBP gates and quote rules",
     "any order or account access"
   ],
-  "scope_sha": "2bb01c50064a",
+  "scope_sha": "891a04e9a6af",
   "size": "S",
   "sources": [
     "CBP_AUDIT_2026-10-28.md:18-23"

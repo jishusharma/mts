@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T15:48:05Z",
   "commands": [
     "python -m pytest -q scripts/dev/test_gemini_queue.py"
   ],
@@ -26,25 +27,37 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "shipped a443cf05d: gemini_queue identity via per-process GIT_AUTHOR/COMMITTER env, no shar",
+      "ref": "abcce966e",
+      "utc": "2026-11-04T15:48:05Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "gemini_queue: run <card>[:effort][:model] accepts flash|argon|opus|sonnet|gpt",
-      "ref": "feb8b31b912a",
-      "utc": "2026-10-31T17:28:10Z"
+      "line": "route tag re-land: every ship names where the work goes next (Next: gate, tasks done --nex",
+      "ref": "08d51e5b7fc8",
+      "utc": "2026-11-04T15:22:55Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: shipped in a443cf05d",
   "note": "\nREVIEWED:2026-11-04 ACCEPT (Haiku on API credit, job haiku-review-ready-sonnet-1104: Shared-config write still present; no worktreeConfig fix on trunk; testable.)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-04T05:13:37Z",
+  "refreshed": "2026-11-04T15:47:49Z",
   "refs": [
     "scripts/dev/gemini_queue.py"
   ],
-  "result": "",
+  "result": "shipped a443cf05d: gemini_queue identity via per-process GIT_AUTHOR/COMMITTER env, no shared config write",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/gemini_queue.py",
     "scripts/dev/test_gemini_queue.py"
@@ -52,15 +65,16 @@
   "scope_out": [
     "restoring the existing .git/config value on each machine (operator hand step; report the command)"
   ],
-  "scope_sha": "feb8b31b912a",
+  "scope_sha": "08d51e5b7fc8",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Extend test_identity_set_and_failure_logged to assert the shared config is untouched (fail first).",
     "Replace git config in run_job with extensions.worktreeConfig + git config --worktree, or per-process GIT_AUTHOR_*/GIT_COMMITTER_* env.",
     "Run test_gemini_queue.py and ship."
   ],
+  "taken": "2026-11-04T15:48:05Z",
   "tests": "scripts/dev/test_gemini_queue.py::GeminiQueueTests::test_identity_set_and_failure_logged",
   "title": "Every commit on JIS-NUC is authored gemini-queue: the shared repo .git/config holds user.name gemini-queue, set for one queue tree and inherited by all worktrees. Set identity per process or per worktree and restore the normal name.",
   "weight": "",
