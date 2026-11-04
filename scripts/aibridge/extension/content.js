@@ -555,9 +555,9 @@
     var lastN = items[items.length - 1].n;
     var ok = await postParts(text, lastN, myToken, '#' + lastN);
     // 0.7.18: a result that could not be posted because the chat stayed busy is queued and retried, never dropped
-    for (var rt = 0; !ok && myToken === token && rt < 4 && /never became idle/.test(lastPostErr); rt++) {
+    for (var rt = 0; !ok && myToken === token && rt < 4 && L.postRetryable(lastPostErr); rt++) {
       auditEvent('result #' + lastN + ' not posted (' + lastPostErr + '); retry ' + (rt + 1) + '/4');
-      setStatus('result #' + lastN + ' is queued: the chat is busy; retrying');
+      setStatus('result #' + lastN + ' is queued: it could not be posted yet; retrying');
       await sleep(5000);
       ok = await postParts(text, lastN, myToken, '#' + lastN + ' (retry ' + (rt + 1) + ')');
     }
