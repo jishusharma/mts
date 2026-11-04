@@ -10,7 +10,7 @@ Rules (PLAN_API_CREDITS_2026-11-04.md): one job at a time per machine; every job
 F:/ClaudePlaform/key.txt (env MTS_API_KEY_FILE overrides) into the child's environment only, never printed, logged or put in a
 prompt; a prompt that names a secret-like path is refused; hooks are off under a nested headless run (disableAllHooks), so the
 Builder preamble below carries the CLAUDE.md rules. Output: F:/MTS/api_runs/<slug>/{out.jsonl,err.txt,meta.json,prompt.txt}.
-Wake on completion without a loop: python scripts/dev/bg_watch.py until --file F:/MTS/api_runs/<slug>/out.jsonl --pattern "\"type\": ?\"result\"" --timeout 5400
+Wake on completion: `supervisor.py wait --login <L>` with run_in_background (wakes on a job end and AT the 5 h reset; never `&`).
 """
 from __future__ import annotations
 import argparse
@@ -40,8 +40,8 @@ Run with zero operator input: never ask; take the conservative default, log DECI
 Hard rules: testnet only; never read .secrets/, .env, keys; never deploy, restart processes, touch HALT, open trades; never commit
 runtime/order/account data (public repo); never commit to master; never rebase/reset/force-push. Windows: write files with newline='\\n'.
 Gate: new tests must fail on the pre-change code once; python scripts/dev/run_all_tests.py --quick before the ship.
-Ship once: python scripts/dev/sync.py ship --release {slug} (commit body carries a `Result: <what works now / the number>` line,
-ends with `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`); then python scripts/dev/tasks.py done {card} --result "<number/file>".
+Ship once: python scripts/dev/sync.py ship --release {slug} (commit body carries a `Result: <what works now / the number>` line and a `Next: <card-id | stage | END: why>` line,
+ends with `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`); then python scripts/dev/tasks.py done {card} --result "<number/file>" --next "<same tag>".
 Feeder rule (ANNOUNCEMENTS A-20261104-1): if you ship a study or a .py file, file its companion card the same run:
 python scripts/dev/tasks.py new --lane CODEX --prio 3 --kind audit "[GEMINI] blind read of <file>" (or a gpt-spec-tests-<name> CODEX card).
 Stop at the turn cap and report. Final reply, at most 6 lines: `Result:` line first, then the content sha, then `Noticed:` (or `Noticed: none`).
@@ -125,6 +125,12 @@ def running_jobs() -> list[str]:
     return out
 
 
+def wait_line() -> str:
+    """stall-fix-1104: the one wake source after a launch. A bg_watch/`&` watcher wakes nobody once the turn ends (L1 idled 3 h)."""
+    return ("WAIT start `python scripts/dev/supervisor.py wait --login <L>` as a Bash call with run_in_background: true (no `&`, no "
+            "redirect); it wakes you when this job ends and AT the 5 h reset; then end the turn with `supervisor.py watchcheck`")
+
+
 def launch(a) -> None:
     if a.card:
         brief = card_brief(a.card)
@@ -162,7 +168,7 @@ def launch(a) -> None:
     p.stdin.write(prompt.encode("utf-8"))
     p.stdin.close()
     print(f"LAUNCHED {a.slug} pid {p.pid} model {a.model} cap ${a.max_usd} -> {d / 'out.jsonl'}")
-    print(f"WAIT python scripts/dev/bg_watch.py until --file {d / 'out.jsonl'} --pattern \"\\\"type\\\": ?\\\"result\\\"\" --timeout 5400")
+    print(wait_line())
 
 
 def status(a) -> None:
