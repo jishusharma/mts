@@ -96,3 +96,4 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-04 | haiku-review-ships-1104 | Haiku 5.5 | 0.03 | 17 | recount of 4 result files: 2 MATCH, 1 DIFF (sim_desk 341 vs 337 known), 1 NOT CHECKABLE; ac5b28b2; cap was 2.0 |
 | 2026-11-04 | route-wiring-1104 | Opus 5.5 | 0.51 | 14 | filed 43 raw wire cards (32 Krown, 11 Malkan) from the wiring audit; cap was 6.0 |
 | 2026-11-04 | haiku-review-4-1104 | Haiku 5.5 | 0.03 | 11 | stamped 5 cards (see table); cap was 2.0 |
+| 2026-11-04 | malkan-window-land-1104 | Sonnet 5.5 | 0.34 | 16 | shipped 856f44e3; 12/18 window has no Malkan source, 4 of 4 thresholds confirmed; cap was 2.0 |
