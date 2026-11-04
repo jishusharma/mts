@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "class": "C1",
   "commands": [
     "python -m pytest MyTradingSys/tests/test_regime_mix_long_1104.py -q"
   ],
@@ -18,8 +19,8 @@
   "latest": [],
   "layers": [],
   "live_path": false,
-  "mutation_check": "",
-  "note": "REVIEWED:2026-11-04 T0-ONLY; D11 feeder card for aa8d1b819",
+  "mutation_check": "Mutation check (lab_guy, E4: a test must fail first): flip one comparison in the code under test (window bound, pivot rule) and show the new tests fail; revert. Target: kline column parse and weekly/monthly RSI14 bin edges. Expected RSI values computed independently per FORMULAS.md, never from the code.",
+  "note": "REVIEWED:2026-11-04 T0-ONLY; D11 feeder card for aa8d1b819 | REVIEWED:2026-11-04 ACCEPT; lab_guy C1 (E1 data fetch, B-shared; added mutation_check). After the run: Haiku re-derives 1-3 regime counts",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "gemini-pro-argon",
