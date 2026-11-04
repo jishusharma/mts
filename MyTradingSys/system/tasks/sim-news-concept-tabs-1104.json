@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T15:28:09Z",
   "commands": [],
   "created": "2026-11-04T13:21:27Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "sim-news-concept-tabs-1104",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "shipped: 12-tab sim page, test_artifact 45/45 (merge c2f79242b)",
+      "ref": "045e0fe62",
+      "utc": "2026-11-04T15:28:09Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,7 +40,12 @@
     "MyTradingSys/research/sim_desk/DESIGN.md",
     "MyTradingSys/system/OPERATOR_DECISIONS.md"
   ],
-  "result": "",
+  "result": "shipped: 12-tab sim page, test_artifact 45/45 (merge c2f79242b)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/sim_desk/artifact/build_artifact.py",
     "MyTradingSys/research/sim_desk/artifact/test_artifact.py",
@@ -45,11 +57,12 @@
   "scope_sha": "686c6f9b57a4",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "map concept -> family names from results/*.json family field (list them in a DECISION (OURS) comment)",
     "keep one screen: tabs wrap, only the pane scrolls (DESIGN.md line 48)"
   ],
+  "taken": "2026-11-04T15:28:09Z",
   "tests": "MyTradingSys/research/sim_desk/artifact/test_artifact.py: new test asserts role=tab buttons News and each concept, and that a concept tab hides other families; run it red first",
   "title": "Sim page: a News tab and one tab per concept (Tom, Fabio, Malkan, Krown, Bollinger, RSI, WaveTrend) beside Families / Verdict grid / Charts / Comments",
   "weight": "IMPORTANT",
