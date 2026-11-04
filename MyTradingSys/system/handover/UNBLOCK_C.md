@@ -2,8 +2,10 @@
 
 | Move | State | sha | Blocked on |
 |---|---|---|---|
-| 1 S1 sign | signed 11-04 (d-s1-defaults-1104), D7 Now moved, GO_LIVE_BAR revision block written | 11c2703d + this ship | Items 1-6 of the bar still read old text; block says it wins |
-| 2 S3 runs | PASS guard already built (test_pass_needs_verdict.py, 12 green; board line stale). lc-validation ready; rsi-deep chain noted; broadcast b-934a3f to login B | cc7a93e0 | B ack with VERDICTS row; rsi-deep-prereg then rsi-deep-engine must ship before rsi-deep-run-dev |
-| 3 S2 cards | M1 state-code backfill was already on trunk (41 tests green), card closed. M4 s2-uptime-heartbeat-jis-nb built, 7 tests, on trunk (git cherry empty) | b9cc5d3b8 | card still refined (needs Lab_Guy stamp before tasks.py done); wire `uptime_heartbeat.py beat` + check first beat after deploy |
-| 4 Declutter | 20 stale claims released (4 left, all new); 1157 operator-question rows archived to ~/.claude/operator_questions_archive_2026-11-04.jsonl, 0 pending; Home rebuild not yet taken | cc7a93e0 | mts-home-rebuild-1103: take after 12:00Z 11-05 if B has not shipped, then republish mts_home |
+| 1 S1 sign | signed 11-04 (d-s1-defaults-1104); D7 Now and ROADMAP_BOARD reconciled; GO_LIVE_BAR revision block written | f738544a, 83b0b6c5 | Items 1-6 of the bar still read old text; the block says it wins |
+| 2 S3 runs | PASS guard already built. rsi-deep chain PARKED (4 prerequisite studies, no surviving cell). Context re-runs (d-context-retest-1104) all done, none shows an edge: rsi-divergence-mtf-under-malkan-gate INCONCLUSIVE, wavetrend-c30 INCONCLUSIVE, bb-range-to-range FAIL as encoded, bb-range-retest-level-arm INCONCLUSIVE; Fabio L1 strict rerun: no cell meets the edge rule | c8de5c8c, 09215469e, e2d5f8bd1, cceca58a9, 084c0719 | Power: every DEV window has 0 bear weeks; a bear test needs pre-2022 history or other symbols |
+| 3 S2 cards | M1 on trunk; M4 s2-uptime-heartbeat built (7 tests) | b9cc5d3b8 | wire `uptime_heartbeat.py beat` and check the first beat after the next deploy |
+| 4 Declutter | stale claims released; operator questions archived; Malkan wiring + chart shipped (d-malkan-divergence-window-1104: close-based, 12 STRONG / 13-18 OK / >18 WEAK) | 4bcee9b2, 639466ca5 | 12/18 are SOURCED only as an operator relay; Hindi gap: 6 videos on gemini_queue (b-1aa316, NUC). Home rebuild mts-home-rebuild-1103: after 12:00Z 11-05 if B has not shipped; republish mts_home, mts_layer_map |
 | 5 Freeze | held; no new pages, docs or tools | - | - |
+
+Open follow-ups: card for the `!px` guard at live_aid_indicators.js:459; legacy-detector pins in tom_bt_run.py, run_bracket_grid.py, event_table.py (published numbers not on strict detectors); old malkan_div_flags_2026-10-28 charts show 3-10 windows (stale); Haiku review of the new coordinator-stamped cards (wavetrend, bb, bb-retest, chart) when the batch reaches 5.
