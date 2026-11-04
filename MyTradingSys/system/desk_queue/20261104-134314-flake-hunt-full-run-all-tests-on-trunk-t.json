@@ -1,0 +1,10 @@
+{
+  "done_when": "Desk row answer has: trunk sha, run_all_tests exit code + failing names, c_drive_buckets 5-run pass count + one traceback, sim_cards result. No code changes.",
+  "from": "JIS-NB",
+  "id": "20261104-134314-flake-hunt-full-run-all-tests-on-trunk-t",
+  "need": "On JIS-NB in a clean trunk checkout (git -C <tree> pull origin fast-track): 1) python scripts/dev/run_all_tests.py ; record exit code and every FAILED test name. 2) run 5 times: python -m pytest scripts/dev/test_c_drive_buckets.py -q ; record pass/fail count per run and the first traceback. 3) python -m pytest scripts/dev/test_sim_cards_from_json.py -q ; record result.",
+  "posted": "2026-11-04T13:43:14Z",
+  "status": "pending",
+  "target": "DSA-NB",
+  "title": "Flake hunt: full run_all_tests on trunk + test_c_drive_buckets x5 (CI red 11-04)"
+}
