@@ -1,0 +1,42 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "class": "C2",
+  "commands": [],
+  "created": "2026-11-04T13:39:50Z",
+  "depends_on": [],
+  "done_when": "Phase 2: layer_state.py wavetrend prints zone, last valid cycle dot, cycle completed, 1m-4h stack from public klines; tests written red first pass incl. 11-04 (3m 03:12-11:39 completed cycle; 12:21 at -49 not a valid bottom dot); expected numbers from FORMULAS s20 independently; Haiku re-derivation matches.",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Operator d-layer-bible-runtime-1104: one Bible per layer family (system/layer_bible/<family>.md) and one runtime scripts/dev/layer_state.py that applies only the Bible's definitions to public klines; AI answers quote its output, never memory. Design: MyTradingSys/research/layer_bible/DESIGN.md. Phases: 1 design + non-Claude review; 2 WaveTrend Bible + layer_state.py wavetrend with fail-first tests (11-04 case) + Haiku blind re-derivation; 3 archive plan (move + pointer, never delete); 4 roll out per LAYERS.md order.",
+  "id": "layer-bible-runtime-1104",
+  "lane": "SONNET",
+  "layers": [
+    "wavetrend"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "class=C2 (a definition base). NOT stamped: DESIGN.md needs a non-Claude review before build. Do not add to red CI (health_audit.py). Testnet/public data only.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_bible/DESIGN.md",
+    "MyTradingSys/system/layer_bible",
+    "scripts/dev/layer_state.py",
+    "MyTradingSys/backtest/layers/wavetrend/wavetrend.py"
+  ],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Layer Bible per family + layer_state.py runtime (d-layer-bible-runtime-1104), WaveTrend pilot; design review C2, then build, archive, roll out",
+  "weight": "",
+  "worker": ""
+}
