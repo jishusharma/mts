@@ -1,12 +1,12 @@
 {
  "allowance": {
   "plan": "plus",
-  "week_resets": 1794204691,
+  "week_resets": 1794204690,
   "week_used": 37.0,
   "window_resets": 1793832142,
   "window_used": 1.0
  },
- "at": "2026-11-04T19:27:46Z",
+ "at": "2026-11-04T19:52:18Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -23,17 +23,32 @@
   "astra_runs": 0,
   "week_pts": 7.0,
   "window_pts": 1.0,
-  "window_runs": 2
+  "window_runs": 3
  },
  "runs": [
+  {
+   "at": "2026-11-04T19:51:22Z",
+   "card": "v-recovery-after-low-sweep-event-study-1104",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 49,
+   "tokens_out": 2447,
+   "tokens_total": 295619,
+   "tokens_uncached": 36660,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-11-04T19:26:00Z",
    "card": "gpt-spec-tests-research-kit-context-1104",
    "effort": "medium",
    "kind": "audit",
    "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
+   "note": "host health: ok\nsync: ship refused: none of your 1 commit(s) carries a `Next:` line; rerun with --next \"<card-id | stage | END: reason>\"",
+   "outcome": "SHIP_FAILED",
    "seconds": 98,
    "tokens_out": 5762,
    "tokens_total": 617084,
@@ -160,21 +175,6 @@
    "tokens_uncached": 42613,
    "week_pts": 0.0,
    "window_pts": 0.0
-  },
-  {
-   "at": "2026-11-04T14:12:25Z",
-   "card": "gpt-rederive-wavetrend-c30-retest-1104",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 79,
-   "tokens_out": 4087,
-   "tokens_total": 443261,
-   "tokens_uncached": 54790,
-   "week_pts": 0.0,
-   "window_pts": 1.0
   }
  ]
 }
