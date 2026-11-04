@@ -7,7 +7,7 @@ F:/MTS/mts-codex-lab; python scripts/dev/codex_run.py status\\n' | ssh ..."). Th
 
 Usage:
   python scripts/dev/nuc_lab.py status                       codex_run.py status
-  python scripts/dev/nuc_lab.py tick                          codex_run.py tick
+  python scripts/dev/nuc_lab.py tick                          starts codex_run.py tick in the logged-on session (log: F:/MTS/nuc_wake/tick.log)
   python scripts/dev/nuc_lab.py gemini <card>:<low|medium|high> [...]   gemini_queue.py run <card>:<effort> ...
 
 On a device with no ~/.ssh/nuc_gate key this exits 0 and prints "no gate key": calling code does not need to
@@ -24,6 +24,10 @@ from pathlib import Path
 
 HOST = "e-ngineers@192.168.29.110"
 LAB_CD = "Set-Location F:/MTS/mts-codex-lab"
+# An ssh logon cannot read the saved GitHub login, so a tick run inside the ssh session fails its claim push with
+# "could not read Username" (card nuc-codex-run-py-tick-cannot-push-claims, 2026-11-04). The interactive task runs in
+# the logged-on user's own session, where the login works. It has no trigger: it runs only when started here.
+TICK_SCRIPT = "schtasks /run /tn MTS-Wake-codextick"
 
 
 def ssh_exe():
@@ -49,7 +53,7 @@ def build_script(verb, specs=None):
     if verb == "status":
         cmd = "python scripts/dev/codex_run.py status"
     elif verb == "tick":
-        cmd = "python scripts/dev/codex_run.py tick"
+        return TICK_SCRIPT + "\n"
     elif verb == "gemini":
         if not specs:
             raise SystemExit("nuc_lab gemini: needs at least one <card>:<effort>")

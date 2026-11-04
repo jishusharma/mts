@@ -1116,7 +1116,7 @@ def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_ke
         if h == NUC:
             L.append("RUN python scripts/dev/codex_run.py tick")
         elif gate_key:
-            L.append(f"RUN printf 'Set-Location F:/MTS/mts-codex-lab; python scripts/dev/codex_run.py tick\\n' | {NUC_GATE}")
+            L.append("RUN python scripts/dev/nuc_lab.py tick")
         else:
             L.append(f"NOTE GPT lab: {cx} CODEX card(s) ready, no NUC supervisor and no gate key here: lab idle until one boots on JIS-NUC")
     if me_codex and claude_ok and ctx.get("gemini_ready") and h == NUC:
