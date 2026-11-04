@@ -4,6 +4,16 @@
   "commands": [
     "python -m pytest -q scripts/dev/test_gemini_queue.py"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-04T13:53:01Z",
+    "misses": 16,
+    "reads": [
+      "scripts/dev/gemini_queue.py",
+      "scripts/dev/test_gemini_queue.py"
+    ],
+    "session": "agent-a6c59cfd62f2fd4dd"
+  },
   "created": "2026-11-03T18:20:35Z",
   "depends_on": [],
   "done_when": "After run_job, git config --local user.name in the main repo is unchanged; the queue worktree commit is authored gemini-queue.",
