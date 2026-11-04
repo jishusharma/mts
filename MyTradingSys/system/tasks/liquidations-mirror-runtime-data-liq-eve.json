@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T20:36:52Z",
   "commands": [
     "python -m pytest -q MyTradingSys/research/liq_mirror_2026-11"
   ],
@@ -15,10 +16,18 @@
   "id": "liquidations-mirror-runtime-data-liq-eve",
   "kind": "build",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "shipped liq_mirror.py mirror",
+      "ref": "70462c7c7",
+      "utc": "2026-11-04T20:36:52Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: shipped",
   "note": "\nREVIEWED:2026-11-04 ACCEPT (Haiku on API credit, job haiku-review-ready-sonnet-1104: New scope folder; source phase1_liq_look.py present; no twin found.)",
   "prio": 3,
   "refine_tries": 0,
@@ -27,7 +36,12 @@
   "refs": [
     "MyTradingSys/research/c26_roadmap_2026-11-01/phase1_liq_look.py"
   ],
-  "result": "",
+  "result": "shipped liq_mirror.py mirror",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/liq_mirror_2026-11"
   ],
@@ -37,12 +51,13 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read phase1_liq_look.py for the event format.",
     "Write the failing test on a fixture of 3 events.",
     "Implement mirror plus base-rate count, run on the NUC copy."
   ],
+  "taken": "2026-11-04T20:36:52Z",
   "tests": "MyTradingSys/research/liq_mirror_2026-11/test_liq_mirror.py::test_mirror_is_idempotent_and_counts_flushes",
   "title": "liquidations: mirror runtime_data/liq_events to F:/MTS, count flush-before-reversal base rate vs the ledger, then a descriptive liquidation input to the live-aid lean; MarketDataSnapshot liquidation fields hardcoded empty",
   "weight": "",
