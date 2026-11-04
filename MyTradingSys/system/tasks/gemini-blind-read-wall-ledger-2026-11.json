@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-04T20:30:55Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_WALL_LEDGER.md re-derives by hand the expected ledger rows (outcome, age_s, distance_pct, touched) for at least 5 fixtures in test_wall_ledger.py from the rule in RESULT.md alone, a per-fixture match table against the test asserts, and ends with VERDICT: MATCH or MISMATCH.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "D11 feeder check: independent Gemini blind read of the wall_ledger_2026-11 rule: derive the expected placed/pulled/filled rows from the rule text first, then diff against the hand-derived test fixtures.",
+  "id": "gemini-blind-read-wall-ledger-2026-11",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "gemini-blind-read-rsi-40-60-1104",
+    "gemini-blind-read-rsi-div-mtf-gated-1104"
+  ],
+  "note": "REVIEWED:2026-11-05 T0-ONLY | D11 feeder card for wall-ledger-for-the-live-dashboard-place",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "wall-ledger-1104",
+  "refreshed": "2026-11-04T20:31:11Z",
+  "refs": [
+    "MyTradingSys/research/wall_ledger_2026-11/RESULT.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_WALL_LEDGER.md",
+    "MyTradingSys/research/wall_ledger_2026-11"
+  ],
+  "scope_out": [],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read the Rule and Parameters sections of wall_ledger_2026-11/RESULT.md before wall_ledger.py",
+    "For 5 or more fixtures in test_wall_ledger.py derive the expected rows by hand from the rule",
+    "Write MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_WALL_LEDGER.md with a per-fixture table and VERDICT"
+  ],
+  "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_WALL_LEDGER.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
+  "title": "[GEMINI] blind read of MyTradingSys/research/wall_ledger_2026-11/RESULT.md",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

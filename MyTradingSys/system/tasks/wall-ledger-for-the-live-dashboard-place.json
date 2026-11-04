@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T20:31:18Z",
   "commands": [],
   "created": "2026-11-01T17:41:59Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "wall_ledger.py: 15/15 hand-derived tests pass, 4/4 scratch mutations killed; RESULT.md rul",
+      "ref": "09acaddbd",
+      "utc": "2026-11-04T20:31:18Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "rsi 40/60 line behaviour: PRE_REG + TRIALS frozen before any outcome",
@@ -24,6 +31,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "gemini-blind-read-wall-ledger-2026-11",
   "note": "REVIEWED:2026-11-02 T0-ONLY | PLANNER 2026-11-02 planner-b-1102 DECISION (OURS): offline module only; measuring the pulled-before-touch rate needs recorded depth, file as a follow-up run card once the module ships. Threshold 1.5M USD is SOURCED (CoinGlass field guide), the 10 USD grid and persistence are OURS. REVIEWED:2026-11-04 HOLD (scope folder wall_ledger_2026-11 missing; not started)",
   "prio": 4,
   "refine_tries": 0,
@@ -32,7 +40,12 @@
   "refs": [
     "MyTradingSys/research/coinglass_field_guide_2026-11-01/FIELD_GUIDE.md"
   ],
-  "result": "",
+  "result": "wall_ledger.py: 15/15 hand-derived tests pass, 4/4 scratch mutations killed; RESULT.md rule+schema; real-data rate needs recorded depth",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/wall_ledger_2026-11/wall_ledger.py",
     "MyTradingSys/research/wall_ledger_2026-11/test_wall_ledger.py",
@@ -47,12 +60,13 @@
   "sources": [
     "MyTradingSys/research/coinglass_field_guide_2026-11-01/FIELD_GUIDE.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "write the tests from the rule: placed = new level over threshold; pulled = gone without trade volume through it; filled = traded through; touched = price within the grid",
     "implement the ledger as pure functions over snapshots, register the test in extra_tests.tsv",
     "run, write RESULT.md; verify: content sha, git cherry origin/fast-track empty, git ls-tree shows the files"
   ],
+  "taken": "2026-11-04T20:31:18Z",
   "tests": "python -m pytest MyTradingSys/research/wall_ledger_2026-11/test_wall_ledger.py -q (fail-first: written from the rule before the module; 3 scratch mutations fail it)",
   "title": "Wall ledger for the live dashboard: placed / pulled / filled resting walls from the Binance depth stream (threshold 1.5M USD SOURCED CoinGlass, 10 USD grid, persistence), distance pct and age; pulled-before-touch rate measured",
   "weight": "ROUTINE",
