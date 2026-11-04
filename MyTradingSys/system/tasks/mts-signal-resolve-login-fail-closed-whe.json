@@ -1,0 +1,62 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest -q scripts/dev/test_mts_signal.py"
+  ],
+  "created": "2026-11-04T17:21:02Z",
+  "depends_on": [],
+  "done_when": "resolve_login('B') with a fake MTS_CLAUDE_JSON detecting A returns an empty letter and a message naming typed B, detected A and the source; callers exit nonzero on it; the new test in test_mts_signal.py passes and the existing tests stay green.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "resolve_login (scripts/dev/mts_signal.py) lets the detected login beat the typed one and prints LOGIN MISMATCH; the detected letter comes from ~/.claude.json, which can differ from the running app, so every signal carries a wrong letter. Fail closed: on a mismatch return no letter plus a message naming both letters and their sources.",
+  "id": "mts-signal-resolve-login-fail-closed-whe",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "mts_signal: session-start note keeps the folder name",
+      "ref": "1f069de76d24",
+      "utc": "2026-11-03T16:00:45Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "planner-refine-1104e: conservative default = fail closed on mismatch; env MTS_LOGIN stays the explicit override. T0-ONLY stamp\nREVIEWED:2026-11-04 T0-ONLY",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-04T18:10:57Z",
+  "refs": [
+    "MyTradingSys/research/login_detection_audit_1104.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/mts_signal.py",
+    "scripts/dev/test_mts_signal.py"
+  ],
+  "scope_out": [
+    "any other script; CLOUD_ACCOUNTS.md rows; MTS_LOGIN env precedence stays first"
+  ],
+  "scope_sha": "1f069de76d24",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/login_detection_audit_1104.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read research/login_detection_audit_1104.md, sources 1-4 and ROOT CAUSE",
+    "Write the red test first (typed B, detected A via MTS_CLAUDE_JSON fixture)",
+    "Change resolve_login to return ('', message) on a mismatch; message names typed letter, detected letter, source (env or home config); grep every caller of resolve_login and make each exit nonzero on an empty letter",
+    "Run python -m pytest -q scripts/dev/test_mts_signal.py"
+  ],
+  "tests": "scripts/dev/test_mts_signal.py: new test with fixture MTS_CLAUDE_JSON (detected A) and typed B asserts empty letter + message; fails on the old code, which returns A",
+  "title": "mts_signal resolve_login: fail closed when the typed login letter and the detected one differ; name the source; fail-first test with fixture MTS_CLAUDE_JSON (audit login_detection_audit_1104.md)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

@@ -234,6 +234,23 @@ class Banner(unittest.TestCase):
         self.assertIn("OURS", x["div_rule"])
         self.assertIn("not Malkan", x["div_rule"])
 
+    def test_div_on_close_draws_at_closes(self):
+        # Operator: Malkan divergence = closes only; a div_on="close" chart draws the line at c[p][3], not the low c[p][2].
+        self.assertIn('x.div_on==="close"?3:2', ba.TEMPLATE)
+        self.assertIn("c[p][dk]", ba.TEMPLATE)
+        self.assertIn("c[qd][dk]", ba.TEMPLATE)
+
+    def test_malkan_close_div_chart_matches_study_ledger(self):
+        r = json.load(open(os.path.join(ba.RESULTS_DIR, "rsi-divergence-mtf-gated-run1-2026-11-04.json"), encoding="utf-8"))
+        x = next(e for e in r["examples"] if e["kind"] == "trade_chart" and e.get("div_on") == "close")
+        cells = os.path.join(ba.RESULTS_DIR, "..", "..", "rsi_divergence_mtf_gated_2026-11-04", "dev_cells.csv")
+        row = next(c for c in csv.DictReader(open(cells, encoding="utf-8"))
+                   if (c["tf"], c["arm"], c["kind"], c["gate"], c["entry"]) == ("4h", "W18", "bullish", "aligned", "signal"))
+        self.assertEqual(len(x["trades"]), int(row["n"]))
+        self.assertEqual(x["ledger_n"], int(row["n"]))
+        self.assertAlmostEqual(sum(t["net"] for t in x["trades"]) / len(x["trades"]), float(row["net"]), places=2)
+        self.assertIn("CLOSES", x["div_rule"])
+
     def test_every_committed_result_has_banner(self):
         n = 0
         for fn in os.listdir(ba.RESULTS_DIR):

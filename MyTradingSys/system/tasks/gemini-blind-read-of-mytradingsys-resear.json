@@ -51,7 +51,7 @@
   "scope_sha": "a7804978fdf9",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read DESIGN.md only (no commit log, no author notes)",
     "Write each ambiguity, missing number or contradiction with the quoted line",

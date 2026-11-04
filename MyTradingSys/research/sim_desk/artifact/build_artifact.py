@@ -575,7 +575,7 @@ if(u>=t.sig)s+='<rect x="'+(X(t.sig)-W/2)+'" y="14" width="'+W+'" height="406" f
 s+='<line x1="'+L+'" x2="'+R+'" y1="'+Y(0)+'" y2="'+Y(0)+'" stroke="var(--mute)" stroke-dasharray="4 3"/><text x="'+(L+2)+'" y="'+(Y(0)-4)+'" font-size="10" fill="var(--mute)">0 % = where we bought</text>';
 for(let g=Math.ceil(lo);g<=Math.floor(hi);g++)s+='<text x="'+(R+4)+'" y="'+(Y(g)+4)+'" font-size="10" fill="var(--mute)">'+(g>0?"+":"")+g+"%</text>";
 c.forEach((q,k)=>{if(k>u)return;const up=q[3]>=q[0],col=up?"var(--good)":"var(--bad)",x0=X(k);s+='<line x1="'+x0+'" x2="'+x0+'" y1="'+Y(q[1])+'" y2="'+Y(q[2])+'" stroke="'+col+'"/><rect x="'+(x0-W*0.35)+'" y="'+Y(Math.max(q[0],q[3]))+'" width="'+(W*0.7)+'" height="'+Math.max(1,Math.abs(Y(q[0])-Y(q[3])))+'" fill="'+col+'"/>';});
-const [p,qd]=t.div;if(u>=t.sig)s+='<line x1="'+X(p)+'" x2="'+X(qd)+'" y1="'+(Y(c[p][2])+6)+'" y2="'+(Y(c[qd][2])+6)+'" stroke="#e8912d" stroke-width="2"/>';
+const [p,qd]=t.div,dk=x.div_on==="close"?3:2,dy=dk===2?6:0;if(u>=t.sig)s+='<line x1="'+X(p)+'" x2="'+X(qd)+'" y1="'+(Y(c[p][dk])+dy)+'" y2="'+(Y(c[qd][dk])+dy)+'" stroke="#e8912d" stroke-width="2"/>';
 const ey=Y(c[t.ent][0]),xy=Y(c[t.ext][0]);
 if(u>=t.ent)s+='<path d="M'+X(t.ent)+","+(ey+4)+" l-7,12 h14 z\" fill=\"var(--good)\"/><text x=\""+X(t.ent)+'" y="'+(ey+30)+'" font-size="11" text-anchor="middle" fill="var(--good)">entry</text>';
 if(u>=t.ext)s+='<path d="M'+X(t.ext)+","+(xy-4)+" l-7,-12 h14 z\" fill=\"var(--bad)\"/><text x=\""+X(t.ext)+'" y="'+(xy-20)+'" font-size="11" text-anchor="middle" fill="var(--bad)">exit '+f2(t.net)+"%</text>";

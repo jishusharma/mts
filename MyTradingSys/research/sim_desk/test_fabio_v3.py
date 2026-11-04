@@ -215,3 +215,85 @@ def test_dev_run_model_c_filled_only_inside_dev():
     assert f.sum() > 30 and len(f) == f.sum()                       # no unfilled ideas exist for market entries
     assert (r['touch_t'] >= 1672531200000).all() and (r['touch_t'] < 1680307200000).all()
     assert not set(r['exit'].tolist()) - {'STOP', 'HOLD', 'T1'}
+
+
+# ---- per-trade replay export (card sim-desk-tom-fabio-studies): hand numbers, worked from the fixtures above ----
+def test_model_c_trade_row_hand_case(monkeypatch):
+    """Model C fixture: long at 1012, stop 1004.9, no target, out at the stop on bar 32. stop % = (1004.9 - 1012) / 1012 = -0.701581 %,
+    exit the same; bars = fill bar 31 and exit bar 32 = 2; net -1.198847 R (test above)."""
+    s = study()
+    arr = _window(_c_rows())
+    _patch(monkeypatch, s, arr)
+    q = s.normalize({'start': '2022-04-04', 'end': '2022-04-04'})
+    rows = _bars.trade_rows(arr[:, :5], s.run(q, lambda m: None), q)
+    assert len(rows) == 1
+    r = rows[0]
+    assert r['s'] == 1 and r['entry'] == 0.0 and r['target'] is None and r['why'] == 'STOP' and r['bars'] == 2
+    assert r['stop'] == pytest.approx(-0.701581, abs=1e-4) and r['exit'] == pytest.approx(-0.701581, abs=1e-4)
+    assert r['r'] == pytest.approx(-1.198847, abs=1e-4) and r['d'] == '2022-04-04 14:01'
+
+
+def test_model_b_trade_row_hand_case(monkeypatch):
+    """Model B fixture: short at 1025.5, stop 1030.6275 (0.5 % floor), target 1024 hit on bar 13. stop % = -0.5 %, target % =
+    (1025.5 - 1024) / 1025.5 = +0.146270 %, exit the same; bars 12..13 = 2; net +0.112598 R."""
+    s = study()
+    arr = _b_window()
+    _patch(monkeypatch, s, arr)
+    q = s.normalize({'model': 'B', 'n_bal': 60, 'start': '2022-04-04', 'end': '2022-04-04'})
+    r, = _bars.trade_rows(arr[:, :5], s.run(q, lambda m: None), q)
+    assert r['s'] == -1 and r['why'] == 'T1' and r['bars'] == 2
+    assert r['stop'] == pytest.approx(-0.5, abs=1e-4) and r['target'] == pytest.approx(0.14627, abs=1e-4) and r['exit'] == r['target']
+    assert r['r'] == pytest.approx(0.112598, abs=1e-4)
+
+
+DAY0 = int(dt.datetime(2022, 4, 4, tzinfo=dt.timezone.utc).timestamp() * 1000)
+
+
+def _spike_bars():
+    """5m bars of one UTC day, each expanded to 5 1m bars (minute 0 carries o/h/l/c, minutes 1-4 sit at the close)."""
+    five = [(1000, 1001, 999, 1000)] * 20
+    five += [(1000, 1002, 999.5, 1002), (1002, 1004, 1001.5, 1004), (1004, 1006, 1003.5, 1006), (1006, 1008, 1005.5, 1008),
+             (1008, 1010, 1007.5, 1010),
+             (1010, 1020, 1009, 1018),         # bar 25: spike to a new day high 1020
+             (1018, 1018.5, 1006, 1007),       # bar 26: close 1007 below the spike bar low 1009 -> short signal
+             (1007, 1008, 1003, 1004),         # bar 27: entry at its open 1007
+             (1004, 1004.5, 999, 1000)]        # bar 28: low 999 <= target 999.5 (the push window low)
+    five += [(1000, 1001, 999, 1000)] * (288 + 12 - len(five))
+    out = []
+    for k, (o, h, l, c) in enumerate(five):
+        t = DAY0 + k * 5 * MIN
+        out.append((t, o, h, l, c, 1.0))
+        out += [(t + m * MIN, c, c, c, c, 1.0) for m in range(1, 5)]
+    return np.array(out, float)
+
+
+def test_tom_spike_fade_hand_case(monkeypatch):
+    """ATR14 at bar 24 = (9 x 2 + 5 x 2.5) / 14 = 2.1786; push 1020 - 999.5 = 20.5 >= 4 x 2.1786. Bars 23 and 24 also qualify but a new high
+    prints before their confirmation. Short at 1007, stop at the spike high 1020 (wider than 0.4 % = 1011.03), target 999.5, hit at bar 28.
+    gross = 7.5 / 13 = 0.576923 R; fees = (0.0007 x 1007 + 0.0002 x 999.5) / 13 = 0.069600 R; net = +0.507323 R.
+    stop % = -13 / 1007 = -1.290963 %, target % = 7.5 / 1007 = +0.744786 %; bars: 1m 27x5 .. 28x5 = 6."""
+    s = desk.load_studies()['tom_spike_level']
+    arr = _spike_bars()
+    monkeypatch.setattr(s._bars, 'load_1m', lambda *a, **k: arr[:, :5])
+    q = s.normalize({'start': '2022-04-04', 'end': '2022-04-04'})
+    res = s.run(q, lambda m: None)
+    assert res['filled'].tolist() == [True] and res['exit'].tolist() == ['T1'] and res['side'].tolist() == [-1]
+    assert res['gross'][0] == pytest.approx(0.576923, abs=1e-5) and res['net'][0] == pytest.approx(0.507323, abs=1e-5)
+    r, = _bars.trade_rows(arr[:, :5], res, q)
+    assert r['stop'] == pytest.approx(-1.290963, abs=1e-4) and r['target'] == pytest.approx(0.744786, abs=1e-4) and r['bars'] == 6
+    later = arr.copy()
+    later[(27 * 5 + 1) * 1:, 1:5] = 5e5                  # garbage after the entry bar opens: the signal must not move
+    assert s.signals(s._bars.resample(later[:, :5], 5), 6, 4.0, 'BOTH')[0]['j'] == 26
+
+
+@pytest.mark.parametrize('name', ['fabio_v3-c', 'fabio_v3-b', 'tom_vp-fade', 'tom_spike_level'])
+def test_trade_exports_list_trades_inside_dev(name):
+    doc = json.loads((HERE / 'results' / f'desk-trades-{name}-2026-11-04.json').read_text(encoding='utf-8'))
+    ex, = [e for e in doc['examples'] if e['kind'] == 'replay']
+    assert len(ex['trades']) >= 1 and doc['trades_exported'] == len(ex['trades']) == int(doc['kpis'][0]['value'])
+    for t in ex['trades']:
+        assert '2022-04-01' <= t['d'][:10] <= '2024-06-30'
+        assert t['stop'] < 0 and t['exit'] is not None and t['bars'] >= 1 and (t['target'] is None or t['target'] > 0)
+    cat = json.loads((HERE / 'results' / '_catalogue.json').read_text(encoding='utf-8'))
+    row, = [r for r in cat['rows'] if r.get('result_id') == doc['id']]
+    assert row['exported']
