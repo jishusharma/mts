@@ -5,6 +5,7 @@ Eagle_Eyes nor the dashboard showed them. This is the one place that turns CBP r
 
   python scripts/dev/analyst_levels.py                 # last 10 days, live price + hit/open per level (public spot klines)
   python scripts/dev/analyst_levels.py --offline       # no network (hooks): levels only
+  python scripts/dev/analyst_levels.py --symbol ETH    # another symbol (band in SYMBOL_BANDS)
   python scripts/dev/analyst_levels.py --json          # for the dashboard
 
 Levels are parsed from each row's `pointers` (prices 40k..200k); hit = traded through since 00:00 UTC of the day AFTER
@@ -22,11 +23,16 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 sys.path.insert(0, os.path.join(ROOT, "MyTradingSys"))
 import cbp  # noqa: E402
 
-LO, HI = 40_000, 200_000
-_NUM = r"\$?(\d{1,3}(?:,\d{3})+|\d{2,3}(?:\.\d+)?\s*[kK]\b|\d{2,3}(?:\.\d+)?\s*thousand|\d{5,6})"
+# Per-symbol price band a pointer number must fall in to count as a level. BTC 40k..200k as before; the rest are OURS
+# (not sourced from any analyst): wide enough for the 2026 range of the name, tight enough to drop counts and dates.
+SYMBOL_BANDS = {"BTC": (40_000, 200_000), "ETH": (1_000, 10_000)}
+LO, HI = SYMBOL_BANDS["BTC"]
+_NUM = (r"\$?(\d{1,3}(?:,\d{3})+|\d{1,3}(?:\.\d+)?\s*[kK]\b|\d{2,3}(?:\.\d+)?\s*thousand|\d{4,6})")
 _RANGE_K = re.compile(r"\b(\d{2,3}(?:\.\d+)?)\s*[kK]?\s*-\s*(\d{2,3}(?:\.\d+)?)\s*[kK]\b")
 _NOT_PRICE = re.compile(r"(?i)\b\d{2,3}(?:\.\d+)?\s*[kK]?\s*(?:in\s+)?(?:liquidations?|liquidated|contracts?|coins?|"
                         r"subscribers?|followers?|views?|votes?|people|wallets?|addresses|transactions?|traders?|BTC|ETH)\b")
+
+_YEAR = re.compile(r"(?<![\d,.])20[2-3]\d(?![\d,])")
 
 
 def _val(tok):
@@ -38,29 +44,34 @@ def _val(tok):
     return float(t)
 
 
-def parse_levels(text):
-    """Prices named in one pointer, in order, de-duplicated. '90-92k' gives 90,000 and 92,000."""
+def parse_levels(text, symbol="BTC"):
+    """Prices named in one pointer, in order, de-duplicated. '90-92k' gives 90,000 and 92,000.
+    Only values inside SYMBOL_BANDS[symbol] count (unknown symbol: none)."""
+    lo, hi = SYMBOL_BANDS.get(symbol, (None, None))
+    if lo is None:
+        return []
     out = []
-    text = _NOT_PRICE.sub(" ", text)  # "100k liquidations" is a count, not a price
+    text = _NOT_PRICE.sub(" ", text)
+    text = _YEAR.sub(" ", text)  # a bare 2026 is a year, not an ETH price  # "100k liquidations" is a count, not a price
     for a, b in _RANGE_K.findall(text):
         out += [float(a) * 1000, float(b) * 1000]
     for tok in re.findall(_NUM, text):
         out.append(_val(tok))
     seen, res = set(), []
     for v in out:
-        if LO <= v <= HI and v not in seen:
+        if lo <= v <= hi and v not in seen:
             seen.add(v)
             res.append(v)
     return res
 
 
-def ladder(rows):
+def ladder(rows, symbol="BTC"):
     lv, seen = [], set()
     for r in rows:
-        if "BTC" not in [cbp._norm_symbol(s) for s in r.get("symbols") or []]:
+        if symbol not in [cbp._norm_symbol(s) for s in r.get("symbols") or []]:
             continue
         for p in r.get("pointers") or []:
-            for v in parse_levels(p):
+            for v in parse_levels(p, symbol):
                 if (v, r.get("video_id")) in seen:
                     continue  # one level per video: the first pointer that names it
                 seen.add((v, r.get("video_id")))
@@ -74,9 +85,9 @@ def recent_rows(days, now, store=None):
     return [r for r in cbp.load(store)["rows"] if not cbp.validate_row(r) and (r.get("published") or "") >= cutoff]
 
 
-def spot_1h(since, timeout=15):
+def spot_1h(since, timeout=15, symbol="BTC"):
     """Public Binance spot 1h klines (data-api.binance.vision) from `since` (UTC datetime)."""
-    url = ("https://data-api.binance.vision/api/v3/klines?symbol=BTCUSDT&interval=1h&limit=1000"
+    url = (f"https://data-api.binance.vision/api/v3/klines?symbol={symbol}USDT&interval=1h&limit=1000"
            f"&startTime={int(since.timestamp() * 1000)}")
     with urllib.request.urlopen(url, timeout=timeout) as f:
         return [(k[0] // 1000, float(k[2]), float(k[3]), float(k[4])) for k in json.load(f)]
@@ -98,10 +109,10 @@ def mark(lv, bars, now):
     return price
 
 
-def render(lv, price=None, width=90):
+def render(lv, price=None, width=90, symbol="BTC"):
     lines = []
-    head = f"ANALYST LEVELS (CBP, {len({(x['analyst'], x['video_id']) for x in lv})} BTC rows)"
-    lines.append(head + (f" | BTC spot {price:,.0f}" if price else " | offline: no price"))
+    head = f"ANALYST LEVELS (CBP, {len({(x['analyst'], x['video_id']) for x in lv})} {symbol} rows)"
+    lines.append(head + (f" | {symbol} spot {price:,.0f}" if price else " | offline: no price"))
     placed = price is None
     for x in lv:
         if not placed and x["level"] < price:
@@ -144,18 +155,19 @@ def main(argv=None):
     ap.add_argument("--offline", action="store_true")
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--store")
+    ap.add_argument("--symbol", default="BTC", type=lambda v: cbp._norm_symbol(v))
     a = ap.parse_args(argv)
     now = datetime.now(timezone.utc)
     rows = recent_rows(a.days, now, a.store)
-    lv = ladder(rows)
+    lv = ladder(rows, a.symbol)
     price = None
     if not a.offline and lv:
         since = min(datetime.fromisoformat(x["published"]) for x in lv).replace(tzinfo=timezone.utc)
-        price = mark(lv, spot_1h(since), now)
+        price = mark(lv, spot_1h(since, symbol=a.symbol), now)
     if a.json:
         print(json.dumps(dict(asof=now.isoformat(timespec="seconds"), price=price, levels=lv), indent=1))
     else:
-        print(render(lv, price))
+        print(render(lv, price, symbol=a.symbol))
 
 
 if __name__ == "__main__":
