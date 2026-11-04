@@ -1746,3 +1746,7 @@ Applied: every running MTS session (L1, sim Opus, Lab Guy x2, CBP, Eagle_Eyes) t
 ## d-route-tag-every-session-1104 (2026-11-04, operator in chat)
 Operator: "every session has this mandatory obligation of finishing the work and putting it with a note for the right pipeline, you know, where it should go next, so that it is moved properly, so that there is a tag. And I think that we have discussed this before. So perhaps we need some kind of admin guy support for this. Look into this, fire the right sessions to get this resolved, because this is a long-standing requirement and confusion, and work has been done on this."
 Applied: audit `research/route_tag_2026-11-04/AUDIT.md` (7 d: 265 of 1253 non-bookkeeping Result commits named a next step, 70 outputs orphaned); `sync.py ship` refuses commits without `Next: <card-id | stage | END: reason>`, `tasks.py done --next` required, `route_audit.py check` at Supervisor/coordinator boot; 10 backfill cards `route-*`.
+
+## d-all-llms-move-faster-1104 (2026-11-04 ~14:15Z, operator in chat, login C Lead)
+Operator: "Use all LLMs - move faster".
+Applied: NUC runs 10 ready [GEMINI] review cards in 3 parallel gemini_queue streams (Flash 4, Argon 3, GPT-oss 3) plus a codex_run.py tick, launched from the desktop Lead over the NUC gate; desktop credit chain (L1) stays back to back with Lab Guy's cards added as filed; DSA rows (flake hunt, NUC data inventory) wait for DSA to open. CI red handled the same hour: C31 (e1194e2b) and stall-fix (2f055df7) reverts, both re-land through their authors.

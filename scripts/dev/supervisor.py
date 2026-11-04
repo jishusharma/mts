@@ -697,14 +697,14 @@ def wait_for_transition(
     Exits (0, reason) on the FIRST transition from baseline; never exits on a state that already held at baseline;
     with `login`, also exits (0, ACTIONABLE ...) from the first poll on when that login's last plan left a worker slot and ready cards
     unused (_actionable), at most once per plan (`<login>-woke.txt`); exits (3, reason) when `timeout` seconds elapse with no transition.
-    stall-fix-1104: with `login`, also exits (0, RESET ...) AT that login's next 5 h reset (the timeout stretches to reach it), and
+    stall-fix-1104: with `login`, also exits (0, RESET ...) AT that login's next 5 h reset when it falls inside the timeout (never past it: soak 50 min cap), and
     any time a running api_job.py job finishes; the marker records stdout so watchcheck can refuse a detached (`&`) watcher.
     """
     clock = clock or _now_utc
     timeout_s = parse_duration(timeout)
     reset_at = _next_reset(login, home, clock())
-    if reset_at:
-        timeout_s = max(timeout_s, int((reset_at - clock()).total_seconds()) + 60)
+    if reset_at and reset_at > clock() + timedelta(seconds=timeout_s):
+        reset_at = None     # the timeout wakes the session first; its next watcher catches the reset
     marker = _watcher_file(login, home)
     try:
         marker.parent.mkdir(parents=True, exist_ok=True)
