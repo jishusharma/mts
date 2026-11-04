@@ -360,5 +360,84 @@ class TestReport(unittest.TestCase):
         self.assertIn("0.250", md)
 
 
+def _div_bars():
+    b = [flat(i * HOUR, 100.0) for i in range(12)]
+    b[2] = bar(2 * HOUR, 100, 101, 99, 100)
+    b[3] = bar(3 * HOUR, 100, 104, 99, 103)
+    b[4] = bar(4 * HOUR, 103, 109, 102, 108)
+    b[5] = bar(5 * HOUR, 111, 115, 110, 112)
+    b[6] = bar(6 * HOUR, 110, 111, 107, 108)     # red confirm candle, entry close 108
+    b[7] = bar(7 * HOUR, 108, 108.5, 105.5, 106)
+    for i in range(8, 12):
+        b[i] = bar(i * HOUR, 106, 106.5, 105.6, 106)
+    return b
+
+
+SHORT_EV = {"i": 6, "side": "short", "a_i": 2, "b_i": 5, "close_a": 100.0, "close_b": 112.0}
+
+
+class TestSwingStopCTarget(unittest.TestCase):
+    def test_swing_stop_and_c_target(self):
+        # MLK-D06/D07: stop above the A..B high incl. shadow = 115; target = midpoint of close A and B = 106.
+        tr = rr.trades_from_events([SHORT_EV], _div_bars(), stop_mode="swing", target_mode="c_point")
+        self.assertEqual(len(tr), 1)
+        self.assertEqual(tr[0]["exit_reason"], "targets")
+        self.assertAlmostEqual(tr[0]["net"], (108 - 106) / 108 - 0.0005, places=9)
+
+    def test_swing_stop_loss_uses_shadow_high(self):
+        b = _div_bars()
+        b[7] = bar(7 * HOUR, 108, 116, 107, 108)
+        tr = rr.trades_from_events([SHORT_EV], b, stop_mode="swing")
+        self.assertEqual(tr[0]["exit_reason"], "stop")
+        self.assertAlmostEqual(tr[0]["net"], -7 / 108 - 0.0005 * (1 + 115 / 108), places=9)
+
+    def test_default_bracket_unchanged(self):
+        tr = rr.trades_from_events([SHORT_EV], _div_bars())
+        self.assertAlmostEqual(tr[0]["net"], 0.02 - 0.0005, places=9)
+
+    def test_color_confirm_gate(self):
+        b = _div_bars()
+        self.assertEqual(len(rr.trades_from_events([SHORT_EV], b, confirm="color")), 1)
+        b[6] = bar(6 * HOUR, 108, 111, 107, 109)   # green candle against a short
+        self.assertEqual(rr.trades_from_events([SHORT_EV], b, confirm="color"), [])
+
+    def test_bad_modes_raise(self):
+        with self.assertRaises(ValueError):
+            rr.trades_from_events([SHORT_EV], _div_bars(), stop_mode="x")
+
+
+def _prd_bars():
+    b = [flat(i * HOUR, 106.0) for i in range(12)]
+    b[5] = bar(5 * HOUR, 105, 106, 103, 104)     # swing low B: close 104, low 103
+    b[6] = bar(6 * HOUR, 104, 109, 104, 108)
+    b[7] = bar(7 * HOUR, 107, 107, 104, 105)     # retrace touches support 104
+    b[8] = bar(8 * HOUR, 105, 107, 104.5, 106)
+    return b
+
+
+LONG_EV = {"i": 6, "side": "long", "a_i": 2, "b_i": 5, "close_a": 100.0, "close_b": 104.0}
+
+
+class TestPrdRetraceEntry(unittest.TestCase):
+    def test_prd_retrace_entry(self):
+        # MLK-P07: limit at support (close of B) after the signal bar, stop below the swing low (103); +2% target.
+        tr = rr.trades_from_events([LONG_EV], _prd_bars(), entry_mode="retrace")
+        self.assertEqual(len(tr), 1)
+        self.assertEqual(tr[0]["i"], 7)
+        self.assertEqual(tr[0]["exit_reason"], "targets")
+        self.assertAlmostEqual(tr[0]["net"], 0.02 - 0.0005, places=9)
+
+    def test_retrace_never_touched_no_trade(self):
+        b = _prd_bars()
+        b[7] = bar(7 * HOUR, 107, 107, 105, 106)
+        b[8] = bar(8 * HOUR, 106, 107, 105, 106)
+        self.assertEqual(rr.trades_from_events([LONG_EV], b, entry_mode="retrace", retrace_bars=2), [])
+
+    def test_default_entry_unchanged(self):
+        tr = rr.trades_from_events([LONG_EV], _prd_bars())
+        self.assertEqual(tr[0]["i"], 6)
+        self.assertEqual(tr[0]["exit_reason"], "stop")
+
+
 if __name__ == "__main__":
     unittest.main()

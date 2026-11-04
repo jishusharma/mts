@@ -92,23 +92,61 @@ def verdict(n_oos, mean_net_oos, pbo):
 
 # ---------------------------------------------------------------- scoring
 
+STOP_MODES = ("pct", "swing")
+TARGET_MODES = ("pct", "c_point")
+ENTRY_MODES = ("close", "retrace")
+
+
 def trades_from_events(events, bars, stop_pct=STOP_PCT, target_pct=TARGET_PCT, max_bars=MAX_BARS,
-                       taker=None, maker=None, funding=None):
+                       taker=None, maker=None, funding=None, stop_mode="pct", target_mode="pct",
+                       confirm=None, entry_mode="close", retrace_bars=5):
     """Bracket-simulate events {"i","side"} (entry = close of bar i). One position at a time: an event
     at or before the previous trade's exit bar is skipped. Trades still open at the end of `bars` are
-    dropped. Returns [{"i","t","side","net","exit_reason","bars_held"}], net = fraction of entry price."""
+    dropped. Malkan divergence options (defaults off; events then need a_i, b_i, close_a, close_b):
+    stop_mode="swing" stops beyond the A..B extreme incl. the shadow (MLK-D06); target_mode="c_point" targets the
+    midpoint of close A and close B (MLK-D07; skipped if on the wrong side of entry); confirm="color" needs the
+    signal bar to be a candle in the trade direction (MLK-D05); entry_mode="retrace" (long PRD, MLK-P07) enters at
+    close B (support) on the first bar within retrace_bars after the signal that trades down to it, stop below the
+    swing low of bar B. All OURS, UNVERIFIED.
+    Returns [{"i","t","side","net","exit_reason","bars_held"}], net = fraction of entry price."""
     taker = TAKER_FEE if taker is None else taker
     maker = MAKER_FEE if maker is None else maker
     funding = [] if funding is None else funding  # [] = explicit no-funding model; records = real funding (B103)
+    for name, val, ok in (("stop_mode", stop_mode, STOP_MODES), ("target_mode", target_mode, TARGET_MODES),
+                          ("entry_mode", entry_mode, ENTRY_MODES), ("confirm", confirm, (None, "color"))):
+        if val not in ok:
+            raise ValueError("%s must be one of %s" % (name, ok))
     trades, free_from = [], 0
     for e in sorted(events, key=lambda x: x["i"]):
         i, side = e["i"], e["side"]
         if i < free_from or i >= len(bars) - 1:
             continue
-        px = bars[i]["c"]
         sgn = 1.0 if side == "long" else -1.0
-        fwd_bars = bars[i + 1:i + 1 + max_bars]  # hold-span bars strictly after the entry bar i (entry at close of i)
-        r = simulate_trade(side, px, bars[i]["t"], px * (1.0 - sgn * stop_pct), [(px * (1.0 + sgn * target_pct), 1.0)],
+        if confirm == "color" and sgn * (bars[i]["c"] - bars[i]["o"]) <= 0:
+            continue
+        stop_px = None
+        if entry_mode == "retrace":
+            if side != "long" or "b_i" not in e:
+                continue
+            support = e["close_b"]
+            j = next((k for k in range(i + 1, min(i + 1 + retrace_bars, len(bars) - 1))
+                      if bars[k]["l"] <= support), None)
+            if j is None:
+                continue
+            i, px = j, support
+            stop_px = bars[e["b_i"]]["l"]
+        else:
+            px = bars[i]["c"]
+        if stop_mode == "swing":
+            seg = bars[e["a_i"]:e["b_i"] + 1]
+            stop_px = min(b["l"] for b in seg) if sgn > 0 else max(b["h"] for b in seg)
+        if stop_px is None:
+            stop_px = px * (1.0 - sgn * stop_pct)
+        tgt_px = (e["close_a"] + e["close_b"]) / 2.0 if target_mode == "c_point" else px * (1.0 + sgn * target_pct)
+        if sgn * (stop_px - px) >= 0 or sgn * (tgt_px - px) <= 0:
+            continue   # stop or target on the wrong side of entry: no valid bracket
+        fwd_bars = bars[i + 1:i + 1 + max_bars]  # hold-span bars strictly after the entry bar i
+        r = simulate_trade(side, px, bars[i]["t"], stop_px, [(tgt_px, 1.0)],
                            fwd_bars, taker_fee=taker, maker_fee=maker, max_bars=max_bars, funding=funding)
         if r["net_r"] is None:
             continue

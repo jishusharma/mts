@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T22:49:49Z",
   "commands": [],
   "created": "2026-11-04T21:10:21Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "wired offline, fail-first tests in rsi layer",
+      "ref": "e1b869c08",
+      "utc": "2026-11-04T22:49:49Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "malkan RSI: PRD/NRD as Malkan defines them; generic hidden moved to KROWN-CONFLUENCE",
@@ -24,6 +31,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: wire-malkan-1104 batch",
   "note": "planner-wire43-1104h: verified on trunk 2026-11-05, no code for this rule; params OURS unless the card says SOURCED. Folds: wire-mlk-p09.\nREVIEWED:2026-11-04 T0-ONLY",
   "prio": 3,
   "refine_tries": 0,
@@ -32,7 +40,12 @@
   "refs": [
     "MyTradingSys/research/setup_catalog_2026-10-15/malkan/MALKAN_DIVERGENCE_GLOSSARY.md:282"
   ],
-  "result": "",
+  "result": "wired offline, fail-first tests in rsi layer",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/rsi/rsi_divergence.py",
     "MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py",
@@ -45,12 +58,13 @@
   "scope_sha": "51b4b9a6fbf1",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the PRD branch of rsi_divergence() and trades_from_events.",
     "Add the first_after_cross60 tag and an entry_mode retrace with the stop below the swing low.",
     "Write the fail-first tests with hand-built series; run them."
   ],
+  "taken": "2026-11-04T22:49:49Z",
   "tests": "MyTradingSys/backtest/layers/rsi/test_rsi_divergence.py::test_prd_first_after_cross60_tag (new; fails on trunk, no tag)",
   "title": "wire MLK-P07: 2.5 PRD entry: buy at support on the retracement, stop below the swing low (G only) (quote MyTradingSys/research/setup_catalog_2026-10-15/malkan/MALKAN_DIVERGENCE_GLOSSARY.md:282)",
   "weight": "ROUTINE",
