@@ -14,8 +14,8 @@ CONTEXTED (3+ YES). Y / P / N = yes / partial / no. Paths are under `MyTradingSy
 | class | studies | VERDICTS rows | FAIL rows |
 |---|---|---|---|
 | CONCEPT-ONLY | 10 | 42 | 30 (20 of them one study, imbalance_qriptal) |
-| PARTIAL-CONTEXT | 14 | 52 | 16 |
-| CONTEXTED | 9 | 22 | 11 |
+| PARTIAL-CONTEXT | 16 | 54 | 16 |
+| CONTEXTED | 7 | 20 | 11 |
 | not a backtest / carry | 5 | 7 | 1 |
 
 Only 4 of 33 backtests say what regime their window was (jala, published_strats, rumers, t087). The rest: NOT_IN_DATA.
@@ -58,8 +58,8 @@ Only 4 of 33 backtests say what regime their window was (jala, published_strats,
 | h3_ny_open_low_2026-10 | NY open+180 min new low holds | BLOCKED (1) | N | Y | N | Y: NY open | NOT_IN_DATA (no PRE_REG) | DEV, n=35 | PARTIAL-CONTEXT |
 | imbalance_qriptal_2026-10-16/filter | imbalance candle as a filter at levels | FAIL (2) | N | P: first touch | Y: 8 level families | N | SIGNAL | 2022-04..2024-06 | PARTIAL-CONTEXT |
 | pit_levels_2026-10-16 | failed auction at prior-day value-area edge | BLOCKED (1) | N | Y | Y: VAH/VAL | N | SIGNAL (close) | DEV; blocked on power | PARTIAL-CONTEXT |
-| context_factors_2026-10-16 | operator context composite | INC (1) | P: trend tag in the control key | N | Y: f2, f3, f5, f7 | Y: f7_session | SIGNAL (T+60 s) | DEV, 821 decision days | CONTEXTED |
-| context_factors_pit_2026-10-16 | context factors on a level trade | UNPARSED (1) | Y: weekly htf_align | P | Y: F4, F5 | P: descriptive | SIGNAL | DEV | CONTEXTED |
+| context_factors_2026-10-16 | operator context composite | INC (1) | P: trend tag in the control key | N | Y: f2, f3, f5, f7 | Y: f7_session | SIGNAL (T+60 s) | DEV, 821 decision days | PARTIAL-CONTEXT |
+| context_factors_pit_2026-10-16 | context factors on a level trade | UNPARSED (1) | Y: weekly htf_align | P | Y: F4, F5 | P: descriptive | SIGNAL | DEV | PARTIAL-CONTEXT |
 | eur_low_us_sweep_2026-10-14 | retested low, then US-window break | FAIL (1) | N | Y: RETESTED vs SINGLE | Y: level L | Y: EU low, US window | SIGNAL (T0) | 2022-01..2026-10 | CONTEXTED |
 | eur_low_us_sweep_followups_2026-10-18 | follow-ups A, B, C | BLOCKED (3) | N | Y: sweep then reclaim | Y: RSI divergence | Y: pre-US | SIGNAL | DEV; blocked on power | CONTEXTED |
 | mal_bb_mid_engulf_2026-10-16 | BB-mid bounce, engulf, second break | FAIL (2) | Y: 1h and 4h RSI below 50 (PRE_REG s.2) | Y | Y | N | BOTH | DEV | CONTEXTED |

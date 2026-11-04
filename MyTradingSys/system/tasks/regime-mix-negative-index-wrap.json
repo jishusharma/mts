@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T17:05:17Z",
   "commands": [
     "python -m pytest MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04 MyTradingSys/research/bb_long_window_2026-11-04 -q"
   ],
@@ -15,6 +16,12 @@
   "id": "regime-mix-negative-index-wrap",
   "lane": "HAIKU",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "invalid: no wrap in the 3 scoped files; regime_at returns None before the first bar (Build",
+      "ref": "a38534d85",
+      "utc": "2026-11-04T17:05:17Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -34,7 +41,12 @@
   "refs": [
     "research/bear_proxy_context_tuning_2026-11-04"
   ],
-  "result": "",
+  "result": "invalid: no wrap in the 3 scoped files; regime_at returns None before the first bar (Builder verified); state_at guard exists in bear_proxy_context_tuning only",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/study.py",
     "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/study_long.py",
@@ -47,12 +59,13 @@
   "scope_sha": "dbedba44981f",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read state_at (bear_proxy_context_tuning study.py:128) and test_state_at_never_wraps_negative_index",
     "Port the 0 <= x < len guard to the week-start regime lookup in the 3 files",
     "Add a before-first-day case to test_gate_wiring.py and test_long_wiring.py; run them"
   ],
+  "taken": "2026-11-04T17:05:17Z",
   "tests": "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/test_gate_wiring.py: new week-before-first-day case returns None, fails on pre-change code",
   "title": "regime_mix_line in rsi_divergence_mtf_gated + bb_long_window study_long.py: weeks before first data day index -1 and wrap to array end; port state_at guard from bear_proxy_context_tuning",
   "weight": "",

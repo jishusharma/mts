@@ -1,17 +1,35 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md').read_text(); assert 'paired net-bp difference' not in t\""
+  ],
   "created": "2026-11-04T16:05:05Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "SPEC.md Card 2 no longer contains 'paired net-bp difference' and defines the primary read: both arms, the bootstrap block unit, and zero-trade days.",
+  "est_turns": 6,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Card 2 primary read 'paired net-bp difference nested minus baseline' (SPEC.md:19) is undefined: nested trades are a subset of baseline with identical returns. Replace with a defined metric: mean net bp of nested vs of the dots nested rejects, day-block bootstrap CI on the difference of means, with counts stated.",
   "id": "wt-spec-card-2-paired-net-bp-difference-",
-  "lane": "",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Repair 25 void T0-ONLY stamps (format only), SPEC holdout-seen disclosure, defect card",
+      "ref": "9a7a43033f33",
+      "utc": "2026-11-04T14:02:15Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "9a7a43033f33 Repair 25 void T0-ONLY stamps (format only), SPEC holdout-seen disclosure, de",
+      "ref": "MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md",
+      "utc": "2026-11-04T14:02:15Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,18 +37,32 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T16:35:38Z",
   "refs": [
     "MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md"
+  ],
+  "scope_out": [
+    "any study run",
+    "HOLDOUT bars",
+    "other SPEC cards"
+  ],
+  "scope_sha": "9a7a43033f33",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md (Gemini finding, Claude spot-checked CONFIRMED in f908b25e6)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read SPEC.md line 19 and MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md Defect 5 concrete fix",
+    "Edit the Card 2 primary read, labelled OURS",
+    "Run the test, ship"
+  ],
+  "tests": "Fail-first: python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md').read_text(); assert 'paired net-bp difference' not in t\"",
   "title": "WT SPEC Card 2 paired net-bp difference nested minus baseline is undefined: nested is a subset of baseline trades (SPEC.md:19)",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }

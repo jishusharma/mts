@@ -17,7 +17,7 @@
   "mutation_check": "",
   "note": "planner 11-04: needs a design choice (where a report carries producer model: card field vs report header) before a fail-first test can be named; held at try 1/2.",
   "prio": 2,
-  "refine_tries": 1,
+  "refine_tries": 2,
   "refined_by": "",
   "refs": [],
   "result": "",

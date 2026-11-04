@@ -1,10 +1,20 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T16:55:01Z",
   "commands": [
     "python -m pytest scripts/dev/test_tasks.py -q",
     "python scripts/dev/tasks.py lint"
   ],
+  "context": {
+    "calls_to_edit": 9,
+    "folded": "2026-11-04T16:54:43Z",
+    "misses": 2,
+    "reads": [
+      "scripts/dev/test_tasks.py"
+    ],
+    "session": "agent-aafc8aa3470e0b249"
+  },
   "created": "2026-11-04T14:01:23Z",
   "depends_on": [],
   "done_when": "python -m pytest scripts/dev/test_tasks.py exits 0 with the 3 new tests and python scripts/dev/tasks.py lint exits 0 on trunk cards",
@@ -17,6 +27,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "lint flags void REVIEWED stamps; 3 tests in scripts/dev/test_tasks.py",
+      "ref": "765360b63",
+      "utc": "2026-11-04T16:55:01Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -34,7 +50,12 @@
   "refined_by": "Session_Planner",
   "refreshed": "2026-11-04T15:46:18Z",
   "refs": [],
-  "result": "",
+  "result": "lint flags void REVIEWED stamps; 3 tests in scripts/dev/test_tasks.py",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/tasks.py",
     "scripts/dev/test_tasks.py"
@@ -47,12 +68,13 @@
   "scope_sha": "08d51e5b7fc8",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "in cmd_lint flag a note containing REVIEWED: where stamp_kind returns empty and the stamp is not at a line start or has trailing punctuation",
     "name the card id and the offending text",
     "add tests: 'REVIEWED:2026-11-04 T0-ONLY;' and a mid-line stamp are flagged, a line-start valid stamp is not"
   ],
+  "taken": "2026-11-04T16:55:01Z",
   "tests": "scripts/dev/test_tasks.py: void-format note is flagged by lint; fails on old code (lint passes it)",
   "title": "Lab_Guy defect: 17+ cards carry stamps tasks.py cannot read (REVIEWED:<date> T0-ONLY; with a semicolon, or not at note start); format repaired, add a lint so a writer cannot save one",
   "weight": "",

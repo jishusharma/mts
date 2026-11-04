@@ -589,17 +589,41 @@ def changed_files(wt):
     return [line[3:].strip().strip('"').split(" -> ")[-1] for line in out.splitlines() if line.strip()]
 
 
-def out_of_scope(kind, files):
+SPEC_TEST_PREFIX = "gpt-spec-tests-"
+
+
+def spec_test_paths(card):
+    """Test files a gpt-spec-tests-* audit card names in scope_in. scope_in is a list or one comma-separated string, entries may carry
+    a note such as "(new)" or "(one list line)"; an entry that is not one plain path after the note is cut is ignored (fail closed).
+    Only test_*.py names count: the code under test and run_all_tests.py stay out of scope. The card is the one picked before the run,
+    not the copy re-read afterwards, which Codex can edit."""
+    if not card or not str(card.get("id", "")).startswith(SPEC_TEST_PREFIX):
+        return set()
+    raw = card.get("scope_in") or []
+    parts = raw.split(",") if isinstance(raw, str) else [x for x in raw if isinstance(x, str)]
+    out = set()
+    for part in parts:
+        path = re.sub(r"\s*\([^()]*\)\s*$", "", part.strip()).replace("\\", "/")
+        name = path.rsplit("/", 1)[-1]
+        if path and not re.search(r"\s", path) and ".." not in path.split("/") and name.startswith("test_") and name.endswith(".py"):
+            out.add(path)
+    return out
+
+
+def out_of_scope(kind, files, card=None):
     """Files an audit or run card may not have written: those two kinds only report, log trials and capture follow-up cards.
-    The generated LAYERS.md is allowed: without it every audit of a layer-family card ended OUT_OF_SCOPE (JIS-NUC 2026-10-15 16:00Z)."""
+    The generated LAYERS.md is allowed: without it every audit of a layer-family card ended OUT_OF_SCOPE (JIS-NUC 2026-10-15 16:00Z).
+    A gpt-spec-tests-* card may also write the test_*.py files its scope_in names: its audit kind exists only because the test does not
+    exist yet (tasks.py mutation_check rule), and three runs on 2026-11-04 lost finished tests to OUT_OF_SCOPE."""
     if kind == "build":
         return []
-    return [f for f in files if not (f.startswith(LAB + "/") or f.startswith(tasks.DIR + "/") or f in GENERATED)]
+    ok = spec_test_paths(card)
+    return [f for f in files if not (f.startswith(LAB + "/") or f.startswith(tasks.DIR + "/") or f in GENERATED or f in ok)]
 
 
-def judge(card_now, reports, kind, files):
+def judge(card_now, reports, kind, files, card=None):
     """Outcome of a run from what is in the work tree afterwards. Fail closed: only DONE and BLOCKED are shipped."""
-    if out_of_scope(kind, files):
+    if out_of_scope(kind, files, card):
         return "OUT_OF_SCOPE"
     if card_now.get("flow") and card_now.get("state") == "done":
         import lab_flow
@@ -608,6 +632,27 @@ def judge(card_now, reports, kind, files):
     if card_now.get("state") == "done" and reports:
         return "DONE"
     return "BLOCKED" if reports else "INCOMPLETE"
+
+
+PASS_RE = re.compile(r"\s*PASS\b")   # same test as test_pass_needs_verdict.py: a card result starting PASS is read as a strategy PASS needing D7 evidence
+
+
+def soften_pass(wt, now, kind):
+    """An audit or run card that checks code or runs a command is not a strategy PASS: its card result starts SOUND, not PASS (2026-11-04,
+    gpt-rederive-bb-range-to-range-1104 turned trunk CI red). Rewrites only the leading word of the card result and of the ship entry that
+    copies it; the report, judge() outcome, build cards and flow cards (their result closes through lab_flow.finish) are left alone."""
+    old = now.get("result")
+    if kind not in ("audit", "run") or now.get("flow") or not isinstance(old, str) or not PASS_RE.match(old):
+        return now
+    word = PASS_RE.match(old)
+    new = old[:word.end() - 4] + "SOUND" + old[word.end():]
+    now["result"] = new
+    for e in now.get("latest", []):
+        if e.get("kind") == "ship" and isinstance(e.get("line"), str) and old.startswith(e["line"]) and PASS_RE.match(e["line"]):
+            e["line"] = "SOUND" + e["line"][PASS_RE.match(e["line"]).end():]
+    tasks.save(wt, now)
+    print(f"{now['id']}: {kind} card result started PASS, rewritten to SOUND (not a strategy PASS)")
+    return now
 
 
 def commit_message(card, outcome, result, when):
@@ -745,7 +790,7 @@ def run_card(card, dry=False, env=os.environ, probing=False):
         files = changed_files(wt)
         now = json.loads((wt / tasks.DIR / f"{cid}.json").read_text(encoding="utf-8"))
         reports = sorted(f for f in files if f.startswith(f"{LAB}/reports/") and f.endswith(f"_{cid}.md"))
-        outcome, note = judge(now, reports, card["kind"], files), ""
+        outcome, note = judge(now, reports, card["kind"], files, card), ""
         logtext = log.read_text(encoding="utf-8", errors="replace")
         err = lane_health.classify(logtext) if outcome == "INCOMPLETE" else ""   # also when files were written: the 2026-10-12 astra run did 777 s of work, then hit the limit
         if limit_hit(outcome, files, logtext):
@@ -783,6 +828,8 @@ def run_card(card, dry=False, env=os.environ, probing=False):
                                       lane_health.error_line(logtext) if err else "")
         lane_health.save(wt, lane)   # DONE/BLOCKED: rides in the commit below; otherwise shipped on its own
         if outcome in ("DONE", "BLOCKED"):
+            if outcome == "DONE":
+                now = soften_pass(wt, now, card["kind"])
             sh(wt, "scripts/dev/codex_run.py", "index")
             git(wt, "add", "-A")
             result = now.get("result") if outcome == "DONE" else f"BLOCKED, card stays ready: see {reports[-1]}"
@@ -800,7 +847,7 @@ def run_card(card, dry=False, env=os.environ, probing=False):
             lane_health.commit_ship(wt, [lane_health.STATE, USAGE], f"lane health: GPT {lane['status']}" + (f" ({lane['reason']})" if lane["reason"] else "") +
                                     f"\n\nResult: {lane_health.why_down(lane) if lane['status'] == 'down' else 'GPT lane up'}\n")
         else:
-            note = f"{len(files)} uncommitted file(s) left in {wt}: " + ", ".join((out_of_scope(card['kind'], files) or files)[:5])
+            note = f"{len(files)} uncommitted file(s) left in {wt}: " + ", ".join((out_of_scope(card['kind'], files, card) or files)[:5])
         r = sh(wt, "scripts/dev/sync.py", "release", sync.slugify(cid))
         if r.returncode:
             note += " | release failed: " + (r.stdout + r.stderr).strip()[-200:]
