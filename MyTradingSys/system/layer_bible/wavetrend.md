@@ -45,7 +45,7 @@ No validated edge, no live integration, never a core gate (PROJECT_VISION s2/s4)
 - 2026-11-04: an answer gave "new cycle at 12:21" on 3m. 12:21 is an up-cross at wt1 -49.3 (prior bar -50.9): not a valid dot (OURS, band rule; the cross-bar basis gives the same answer), so no new cycle. Cause: no runtime applied the rule; answered from memory.
 
 ## Open (OURS defaults, the operator can overrule)
-- Which top dot ends the cycle: on 3m, BTCUSDT 2026-11-04, bottom 03:12 (-74.0) has valid tops at 05:03, 05:54, 07:33 and 11:39; he drew the end at 11:39. The runtime reports the full list and the LAST valid top before the next bottom; it does not pick "first". Needs his confirmation.
+- Which top dot ends the cycle (OURS, measured on DEV, coordinator scratch 2026-11-04, splits.py window 2022-01..2024-06, 30m Binance, wavetrend.py; Haiku blind recount queued: card wt-cycle-end-blind-recount-haiku-1104): the cycle ends at the LAST valid top dot before the next valid bottom dot. Span = one bottom dot to the next: 43 spans had 1 top dot, 81 had 2 or more (median 4); in the multi-top spans the price high was nearest the last top 77 % (first 11 %, middle 12 %) and came after the first top 94 %; 1h agrees (76 % last, 93 % after the first, n=41). "Last" is known only once the next bottom dot prints: live, the first top is NOT the end, the cycle stays open until then. The operator was asked on 11-04; he drew the end at 11:39 (the last top that day). Pending his confirmation.
 - Dot basis: prior-bar wt1 (as the studies) versus the cross-bar wt1 (what the chart dot sits on); same result on the 11-04 case, may differ elsewhere; param `dot_basis`.
 - Intermediate crosses inside a cycle (e.g. 04:21 down at 44) do not end it.
 
