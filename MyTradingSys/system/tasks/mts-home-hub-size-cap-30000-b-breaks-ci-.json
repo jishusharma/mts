@@ -31,7 +31,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "refined by Session_Planner 2026-11-03; verify: content sha, cherry empty, ls-tree both files",
+  "note": "refined by Session_Planner 2026-11-03; verify: content sha, cherry empty, ls-tree both files\nREVIEWED:2026-11-04 DROP (Haiku on API credit, job haiku-review-ready-sonnet-1104: Already fixed: MTS Home under 30 KB shipped in 7d5cc9304a6c.)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
