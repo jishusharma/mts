@@ -1,0 +1,64 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/layer_bible/REVIEW_GEMINI_1104.md').read_text(); assert 'VERDICT:' in t\""
+  ],
+  "created": "2026-11-04T13:40:50Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_bible/REVIEW_GEMINI_1104.md lists defects (max 12) with file:line evidence and ends with one line VERDICT: ACCEPT or FIX-FIRST.",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Gemini (flash high) blind spec review of research/layer_bible/DESIGN.md: defects only, tagged E1-E7, severity, concrete fix; can the runtime stop memory answers, is the Bible enforceable, can the tests fail.",
+  "id": "gemini-spec-review-layer-bible-design-1104",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "fabio v3: resolve the three FORMULAS.md s28.6 code-vs-spec differences",
+      "ref": "b69d699f3164",
+      "utc": "2026-11-01T01:15:41Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "b69d699f3164 fabio v3: resolve the three FORMULAS.md s28.6 code-vs-spec differences",
+      "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
+      "utc": "2026-11-01T01:15:41Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-04 T0-ONLY; lab_guy C0 review card for layer-bible-runtime-1104 (producer Claude -> Gemini lens)",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-04T13:41:16Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_bible/DESIGN.md",
+    "MyTradingSys/research/layer_bible/REVIEW_GEMINI_1104.md",
+    "MyTradingSys/backtest/layers/FORMULAS.md",
+    "MyTradingSys/backtest/layers/wavetrend/wavetrend.py"
+  ],
+  "scope_out": [],
+  "scope_sha": "b69d699f3164",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/layer_bible/DESIGN.md, MyTradingSys/backtest/layers/FORMULAS.md s20, MyTradingSys/backtest/layers/wavetrend/wavetrend.py",
+    "List defects with E-class, severity, fix",
+    "Write MyTradingSys/research/layer_bible/REVIEW_GEMINI_1104.md ending with VERDICT"
+  ],
+  "tests": "python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/layer_bible/REVIEW_GEMINI_1104.md').read_text(); assert 'VERDICT:' in t\"",
+  "title": "[GEMINI] Non-Claude spec review of the Layer Bible + layer_state.py design (C2)",
+  "weight": "ROUTINE",
+  "worker": ""
+}
