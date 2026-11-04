@@ -1,0 +1,1 @@
+{"t": "20261104T124012Z", "from": "jis-nb/C", "to": "JIS-NUC", "kind": "ask", "text": "Login B / JIS-NUC: git on the NUC cannot log in to GitHub, so the Codex tick cannot claim cards ([cut] refused). Check whether a credential helper or stored login exists (git config --show-origin cred", "login": "C", "id": "q-216e62", "type": "ask", "wait": 15, "due": 60}
