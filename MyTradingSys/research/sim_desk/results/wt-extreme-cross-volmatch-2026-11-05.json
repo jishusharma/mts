@@ -1,0 +1,87 @@
+{
+ "id": "wt-extreme-cross-volmatch-2026-11-05",
+ "kind": "backtest",
+ "family": "WaveTrend extreme cross",
+ "title": "Rerun matched: WaveTrend extreme-cross bounce vs an ATR-decile-matched baseline, BTCUSDT + ETHUSDT USD-M futures 1m / 5m / 15m",
+ "provenance": "builder-export",
+ "date": "2026-11-05",
+ "what": [
+  {
+   "name": "Entry",
+   "value_plain": "same events as wt-extreme-cross: buy wt1 crosses up with wt1 <= -50, sell crosses down with wt1 >= +40; event-bar close, 10-bar window",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Baseline",
+   "value_plain": "mean same-side 10-bar MFE of every DEV bar in the event bar's Wilder ATR(14) % decile (per symbol and TF)",
+   "label": "OURS"
+  },
+  {
+   "name": "Cost",
+   "value_plain": "0.10 % round trip (2 x fees.BINANCE_TAKER); 0.14 % (research_kit, the source's cost) shown",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Regime mix",
+   "value_plain": "BTCUSDT 130 weeks DEV: bull 19% | bear 0% | range 81%; ETHUSDT: bull 8% | bear 0% | range 92%",
+   "label": "SOURCED"
+  }
+ ],
+ "how": "Focal cells: POOL buy, 1m and 15m x HTF against and prior_trend = 4 cells, matched excess one-sided, Holm m = 4; BTC futures reproduce the shipped spot event counts within 1 per cell.",
+ "window": "DEV 2022-01-01..2024-06-30 BTCUSDT + ETHUSDT futures 1m; VALIDATION and HOLDOUT not read",
+ "verdict": {
+  "label": "VOLATILITY-ONLY: the HTF-against / prior-trend bounce excess (+0.04 to +0.25 % unmatched) falls to -0.046 to +0.013 % against a same-ATR-decile baseline; 0 of 4 focal cells pass Holm, all with 269+ days. Fee-net below zero in 161 of 162 cells at 0.10 %.",
+  "tone": "bad"
+ },
+ "why": [
+  "POOL 1m buy HTF against: unmatched +0.045 % (t 8.6) -> matched -0.010 % (t -3.2), n 15208, 875 days.",
+  "POOL 15m buy HTF against: unmatched +0.251 % (t 5.6) -> matched +0.013 % (t 0.3), n 964, 506 days.",
+  "ETH reads like BTC: 15m buy HTF against unmatched +0.290 % -> matched +0.007 %."
+ ],
+ "kpis": [
+  {
+   "label": "focal cells",
+   "value": "4"
+  },
+  {
+   "label": "survive matching",
+   "value": "0 of 4",
+   "tone": "bad"
+  },
+  {
+   "label": "matched excess",
+   "value": "-0.046 to +0.013 %",
+   "tone": "bad"
+  },
+  {
+   "label": "net at 0.10 %",
+   "value": "161 of 162 cells < 0",
+   "tone": "bad"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: the study reports cell tables (dev_cells.csv), not a trade list"
+  }
+ ],
+ "parity": null,
+ "source_files": [
+  "MyTradingSys/research/wt_extreme_cross_volmatch_2026-11/RESULT.md",
+  "MyTradingSys/research/wt_extreme_cross_volmatch_2026-11/dev_cells.csv",
+  "MyTradingSys/research/wt_extreme_cross_volmatch_2026-11/summary.json",
+  "MyTradingSys/research/wt_extreme_cross_volmatch_2026-11/PRE_REG.md"
+ ],
+ "commit": "unknown",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "VOLATILITY-ONLY: the HTF-against / prior-trend bounce excess (+0.04 to +0.25 % unmatched) falls to -0.046 to +0.013 % against a same-ATR-decile baseline; 0 of 4 focal cells pass Holm, all with 269+ days. Fee-net below zero in 161 of 162 cells at 0.10 %.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: VOLATILITY-ONLY: the HTF-against / prior-trend bounce excess (+0.04 to +0.25 % unmatched) falls to -0.046 to +0.013 % against a same-ATR-decile baseline; 0 of 4 focal cells pass Holm, all with 269+ days. Fee-net below zero in 161 of 162 cells at 0.10 %. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
+}
