@@ -193,6 +193,24 @@ class QueueTest(unittest.TestCase):
         self.assertEqual(rc, 1)
         self.assertIn("NO_READY_CARD", out)
 
+    def test_lint_flags_void_t0_stamp_semicolon(self):
+        T.save(self.repo, good("V1", note="REVIEWED:2026-11-04 T0-ONLY; machine checks only"))
+        rc, out = self.run_cli("lint")
+        self.assertEqual(rc, 1)
+        self.assertIn("V1", out)
+        self.assertIn("REVIEWED:2026-11-04 T0-ONLY;", out)
+
+    def test_lint_flags_void_stamp_mid_line(self):
+        T.save(self.repo, good("V2", note="checked. REVIEWED:2026-11-04 T0-ONLY"))
+        rc, out = self.run_cli("lint")
+        self.assertEqual(rc, 1)
+        self.assertIn("V2", out)
+
+    def test_lint_passes_line_start_valid_stamp(self):
+        T.save(self.repo, good("V3", note="first line\nREVIEWED:2026-11-04 T0-ONLY machine checks only"))
+        rc, out = self.run_cli("lint")
+        self.assertEqual(rc, 0, out)
+
     def test_check_cli_rejects_a_bogus_weight(self):
         T.save(self.repo, good("B2", state="refined", weight="BOGUS"))
         rc, out = self.run_cli("check", "B2")

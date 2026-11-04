@@ -74,3 +74,4 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-04 | gem-review-spec-1104 | Haiku 5.5 | 0.06 | 22 | shipped f908b25e6; 10 of 10 findings confirmed, 6 raw cards; cap was 1.5 |
 | 2026-11-04 | codex-spec-tests-scope-1104 | Sonnet 5.5 | 0.36 | 13 | shipped c72495e3b; spec-test audit cards may write the test files they name; 4 new tests; cap was 4.0 |
 >>>>>>> origin/fast-track
+| 2026-11-04 | codex-audit-no-pass-1104 | Sonnet 5.5 | 0.35 | 16 | shipped 9d10d1a7b; audit and run results starting PASS close as SOUND; cap was 3.0 |
