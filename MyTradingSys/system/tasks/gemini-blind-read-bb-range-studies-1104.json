@@ -15,7 +15,15 @@
   "id": "gemini-blind-read-bb-range-studies-1104",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "bb long-window DEV pass: A (range-to-range) FAIL again, B (retest level) INCONCLUSIVE, 0 o",
+      "ref": "4422152e1417",
+      "utc": "2026-11-04T03:37:20Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -23,7 +31,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "gemini-pro-argon",
-  "refreshed": "2026-11-04T07:15:00Z",
+  "refreshed": "2026-11-04T13:43:21Z",
   "refs": [
     "MyTradingSys/research/bb_range_to_range_2026-11-04/RESULT.md",
     "MyTradingSys/research/bb_range_retest_2026-11-04/RESULT.md",
@@ -37,7 +45,7 @@
     "MyTradingSys/research/bb_long_window_2026-11-04"
   ],
   "scope_out": [],
-  "scope_sha": "",
+  "scope_sha": "4422152e1417",
   "size": "S",
   "sources": [],
   "state": "ready",

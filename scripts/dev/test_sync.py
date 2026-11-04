@@ -809,6 +809,19 @@ class SyncTest(unittest.TestCase):
             self.assertEqual(sync.tidy(self.a, apply=True, now=time.time() + 2 * 3600), [str(done.resolve())])
         self.assertFalse(done.exists())
 
+    def test_tidy_keeps_a_tree_with_an_open_claim(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            held = sync.new_worktree(self.a, "held-task")
+            free = sync.new_worktree(self.a, "free-task")
+            sync.claim(self.a, "held task", area="scripts/dev", gate=self.gate)
+            self.assertEqual(sync.tidy(self.a, apply=True, now=time.time() + 2 * 3600), [str(free.resolve())])
+            self.assertTrue(held.exists())
+            self.assertFalse(free.exists())
+            # tidy_after_ship runs the same tidy: still kept
+            later = lambda repo, **k: sync.tidy(repo, now=time.time() + 2 * 3600, **k)
+            self.assertEqual(sync.tidy_after_ship(self.a, tidy_fn=later), [])
+            self.assertTrue(held.exists())
+
     def test_tidy_two_hours_still_keeps_dirty_unshipped_live_and_stranger_trees(self):
         with contextlib.redirect_stdout(io.StringIO()):
             dirty = sync.new_worktree(self.a, "d2")
