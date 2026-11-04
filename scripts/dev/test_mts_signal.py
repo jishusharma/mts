@@ -601,10 +601,20 @@ class SignalTest(unittest.TestCase):
         os.environ.pop("MTS_ACCOUNT")
         os.environ["MTS_RELAY_HOME"] = str(self.tmp / "claudehome")
         self.as_login("alice.fake@example.test")
-        self.assertEqual(S.resolve_login("C"), ("A", "LOGIN MISMATCH: you passed C, this app is logged in as A; using A"))
+        letter, msg = S.resolve_login("C")
+        self.assertEqual(letter, "")
+        self.assertIn("passed C", msg)
+        self.assertIn("detected A", msg)
+        self.assertIn("home config", msg)
         self.assertEqual(S.resolve_login("a"), ("A", ""))
         self.assertEqual(S.resolve_login(""), ("A", ""))
-        self.assertEqual(S.main(["budget", "--login", "C", "--five", "1", "--week", "2", "--reset", "2026-10-23T09:00Z"]), 0)
+        self.assertEqual(S.main(["budget", "--login", "C", "--five", "1", "--week", "2", "--reset", "2026-10-23T09:00Z"]), 2)
+        os.environ["MTS_LOGIN"] = "A"
+        letter, msg = S.resolve_login("B")
+        self.assertEqual(letter, "")
+        self.assertIn("env MTS_LOGIN", msg)
+        del os.environ["MTS_LOGIN"]
+        self.assertEqual(S.main(["budget", "--login", "A", "--five", "1", "--week", "2", "--reset", "2026-10-23T09:00Z"]), 0)
         rec = S.load(S.ensure())[-1]
         self.assertEqual(rec["text"], "BUDGET login=A 5h=1% week=2% reset=2026-10-23T09:00Z")
         self.assertEqual((rec["login"], rec["from"]), ("A", "lenovo/A"))
