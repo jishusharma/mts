@@ -84,3 +84,7 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-04 | codex-next-line-b-1104 | Sonnet 5.5 | 0.17 | 9 | not shipped; fixture fixed, next gate failure reported; cap was 2.0 |
 | 2026-11-04 | codex-next-line-1104 | Sonnet 5.5 | 0.40 | 18 | not shipped; commit line written, gate failed on the route audit fixture; cap was 3.0 |
 | 2026-11-04 | codex-next-line-c-1104 | Sonnet 5.5 | 0.11 | 5 | shipped 89482fbfe; Codex commits carry a Next line; cap was 2.0 |
+| 2026-11-04 | level-approach-study-daily-last-lower-hi | Sonnet 5.5 | 0.80 | 1 | shipped C15 level approach study + lookahead allowlist rows (33470c3ec, 6e04f85d8); cap was 5.0 |
+| 2026-11-04 | wt-extreme-cross-1104 | Opus 5.5 | 2.25 | 2 | shipped WT extreme-cross bounce study f72763f16 + Gemini feeder card; cap was 8.0 |
+| 2026-11-04 | wall-ledger-1104 | Opus 5.5 | 1.11 | 22 | shipped offline wall ledger (15 tests, 4 mutants killed); cap was 6.0 |
+| 2026-11-04 | worktree-gone-1104 | Opus 5.5 | 0.34 | 8 | done; see trunk for the ship; cap was 6.0 |

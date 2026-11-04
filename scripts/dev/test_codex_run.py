@@ -157,6 +157,18 @@ class CommandTest(unittest.TestCase):
         self.assertIn("MTS-Session: MTS-2026-10-12-0905Z-COD-LAB-lab-a", m)
         self.assertIn("gpt-6-luna / medium", m)
 
+    def test_commit_message_carries_a_next_line_the_ship_gate_parses(self):
+        import route_audit as RA
+        m = R.commit_message(card(), "DONE", "x", datetime(2026, 10, 12, 9, 5, tzinfo=timezone.utc))
+        tags = RA.next_tags(m)
+        self.assertEqual(tags, ["END: lab run DONE"])
+        self.assertIsNotNone(RA.parse_next(tags[0])[0])
+
+    def test_commit_message_uses_the_cards_own_next_value(self):
+        import route_audit as RA
+        m = R.commit_message(card(next="END: spec audited"), "BLOCKED", "x", datetime(2026, 10, 12, 9, 5, tzinfo=timezone.utc))
+        self.assertEqual(RA.next_tags(m), ["END: spec audited"])
+
 
 class JudgeTest(unittest.TestCase):
     REP = "MyTradingSys/research/layer_lab/reports/2026-10-12_lab-a.md"
@@ -835,7 +847,7 @@ class AskMutationFlagTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             out = io.StringIO()
             with unittest.mock.patch.object(R, "REPO", Path(td)), contextlib.redirect_stdout(out):
-                R.main(["ask", "Audit it", "--kind", "audit", "--scope", "MyTradingSys/x.py", "--id", "lab-aud"])
+                R.main(["ask", "Audit it", "--kind", "audit", "--scope", "new:MyTradingSys/x.py", "--id", "lab-aud"])
             self.assertIn("wrote", out.getvalue())
 
 

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T20:14:24Z",
   "commands": [
     "python -m pytest scripts/dev/test_tasks.py -q",
     "python scripts/dev/tasks.py lint"
@@ -18,6 +19,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "tasks lint WARNs ready audit cards naming missing scope_in files (19 flagged 11-04); codex",
+      "ref": "0e3c9c61f",
+      "utc": "2026-11-04T20:14:24Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "route tag re-land: every ship names where the work goes next (Next: gate, tasks done --nex",
@@ -28,13 +35,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: card complete",
   "note": "refined 2026-11-04 planner-refine-1104c; duplicate labguy-feeder-cards-name-missing-files-1104 dropped into this card.\nREVIEWED:2026-11-04 T0-ONLY",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
   "refreshed": "2026-11-04T15:46:02Z",
   "refs": [],
-  "result": "",
+  "result": "tasks lint WARNs ready audit cards naming missing scope_in files (19 flagged 11-04); codex_run refuses them; +3 tests",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/tasks.py",
     "scripts/dev/test_tasks.py"
@@ -47,13 +60,14 @@
   "scope_sha": "08d51e5b7fc8",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "add a scope_in input-exists check inside problems() in tasks.py for kind audit cards (skip entries marked new: or ending in /)",
     "message names the card and the missing path",
     "add 2 tests to test_tasks.py: audit card with missing path fails, same card with an existing path passes",
     "run tasks.py lint on trunk and list any ready card it newly flags in the ship note"
   ],
+  "taken": "2026-11-04T20:14:24Z",
   "tests": "scripts/dev/test_tasks.py: audit card naming scripts/dev/no_such_file.py fails problems(); fails on old code (no check exists)",
   "title": "tasks lint: flag ready cards whose refs or audit-target files do not exist (5 of 29 ready CODEX cards named missing files on 11-04; one spent a Codex run to BLOCKED)",
   "weight": "",

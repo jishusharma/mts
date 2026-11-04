@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T20:40:42Z",
   "commands": [
     "python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md').read_text(); assert 'paired net-bp difference' not in t\""
   ],
@@ -15,6 +16,12 @@
   "id": "wt-spec-card-2-paired-net-bp-difference-",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "SPEC.md edited: exact divergence rule k=3 OURS, bin edges + m=14 frozen, BTC-only VALIDATI",
+      "ref": "16129f9bc",
+      "utc": "2026-11-04T20:40:42Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,6 +40,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: spec fix shipped",
   "note": "",
   "prio": 3,
   "refine_tries": 0,
@@ -41,7 +49,12 @@
   "refs": [
     "MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md"
   ],
-  "result": "",
+  "result": "SPEC.md edited: exact divergence rule k=3 OURS, bin edges + m=14 frozen, BTC-only VALIDATION exploratory, Card 2 read defined",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md"
   ],
@@ -55,12 +68,13 @@
   "sources": [
     "MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md (Gemini finding, Claude spot-checked CONFIRMED in f908b25e6)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read SPEC.md line 19 and MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md Defect 5 concrete fix",
     "Edit the Card 2 primary read, labelled OURS",
     "Run the test, ship"
   ],
+  "taken": "2026-11-04T20:40:42Z",
   "tests": "Fail-first: python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md').read_text(); assert 'paired net-bp difference' not in t\"",
   "title": "WT SPEC Card 2 paired net-bp difference nested minus baseline is undefined: nested is a subset of baseline trades (SPEC.md:19)",
   "weight": "",

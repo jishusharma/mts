@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-04T20:17:21Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_WT_EXTREME_CROSS.md lists every headline number of the wt_extreme_cross_2026-11 study (n, MFE mean/median, base MFE, excess, net per tf/side/level) recomputed from dev_cells.csv in wt_extreme_cross_2026-11, a per-number match table, and ends with VERDICT: MATCH or MISMATCH.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Feeder check: independent Gemini blind read of the wt_extreme_cross_2026-11 study: read dev_cells.csv first, recompute the headline table, then diff against the stated RESULT.md numbers and claims.",
+  "id": "gemini-blind-read-wt-extreme-cross-2026-11",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "gemini-blind-read-rsi-40-60-1104"
+  ],
+  "note": "REVIEWED:2026-11-05 T0-ONLY | feeder card of wt-1m-extreme-cross-bounce-size-after-cr",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "wt-extreme-cross-1104",
+  "refreshed": "2026-11-04T20:17:42Z",
+  "refs": [
+    "MyTradingSys/research/wt_extreme_cross_2026-11/RESULT.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_WT_EXTREME_CROSS.md",
+    "MyTradingSys/research/wt_extreme_cross_2026-11"
+  ],
+  "scope_out": [],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read dev_cells.csv in wt_extreme_cross_2026-11 before RESULT.md",
+    "Recompute the headline table (daytag all, htf all) and the day-type / HTF split rows independently of study.py",
+    "Write MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_WT_EXTREME_CROSS.md with a per-number table and VERDICT"
+  ],
+  "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_WT_EXTREME_CROSS.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
+  "title": "[GEMINI] blind read of MyTradingSys/research/wt_extreme_cross_2026-11/RESULT.md",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
