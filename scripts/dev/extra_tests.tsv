@@ -215,3 +215,4 @@ MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/test_long_wiring.py
 MyTradingSys/research/bb_long_window_2026-11-04/test_long_wiring.py
 MyTradingSys/research/bear_proxy_context_tuning_2026-11-04/test_wiring.py
 MyTradingSys/research/rsi_40_60_line_behaviour_2026-11-04/test_wiring.py
+scripts/dev/test_layer_state.py
