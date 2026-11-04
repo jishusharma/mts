@@ -1,7 +1,7 @@
 # Supervisor B handover | written 2026-11-04T05:08Z by JIS-NUC | verify: python scripts/dev/supervisor.py handover --verify   (STALE 0 at last boot)
 
 ## Goal
-Login B on JIS-NUC: mode NORMAL, 5 h 13.0% (reset 2026-11-03T23:30Z), week 61.0% of cap 95.
+Login B on JIS-NUC: mode NORMAL, 5 h 13% (reset 2026-11-04T17:20Z), week 68%; the operator set this login's weekly stop at 75%.
 Stop at 5 h >= 80%, week >= cap, CI red, no ready cards, the TRANSIT at time, or a 3 h wave.
 
 ## Truth
@@ -14,7 +14,7 @@ Stop at 5 h >= 80%, week >= cap, CI red, no ready cards, the TRANSIT at time, or
 
 ## Next 3 steps
 1. `python scripts/dev/sync.py start supervisor-B-<utc date>`; `get_usage`; `python scripts/dev/supervisor.py plan --login B --five <%> --five-reset <utc> --week <%> --week-reset <utc> --running 0`.
-2. Weekly hit 65% cap at 2026-11-04. DSA chat (own Chrome tab) runs Tom ledger card rv-dsa-ledger-mechanical, hands-free at #33 26/200, CI green. C Malkan Hindi ask still open (6 video ids). Left for C.
+2. Still working at 13:45Z 11-04. DSA chat rebooted 13:40Z in its Chrome tab, hands-free on, no click needed, working the Tom ledger row; each wake read its panel and the bridge age, send the boot text again if it is quiet. Codex lane works from the NUC with no sign-in step; start ticks with the MTS-Wake-codextick task (20 min gap). lc-validation dropped, levels void.
 3. `python scripts/dev/tasks.py dispatch`; start the next picks.
 
 ## Traps
