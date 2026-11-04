@@ -81,3 +81,6 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-04 | liquidations-mirror | Sonnet 5.5 | 0.54 | 22 | shipped liq_mirror.py (runtime liq_events mirror to F:/MTS); cap was 4.0 |
 | 2026-11-04 | c31-reland-1104 | Sonnet 5.5 | 0.61 | 23 | J8 re-land shipped 07e1e7a17: costs from fees.py, allowlist rows for 3 fwd-index hits; C31 UNDERPOWERED n=15; cap was 4.0 |
 | 2026-11-04 | level-approach-study-daily-last-lower-hi | Sonnet 5.5 | 0.80 | 1 | shipped C15 level approach study + lookahead allowlist rows (33470c3ec, 6e04f85d8); cap was 5.0 |
+| 2026-11-04 | wt-extreme-cross-1104 | Opus 5.5 | 2.25 | 2 | shipped WT extreme-cross bounce study f72763f16 + Gemini feeder card; cap was 8.0 |
+| 2026-11-04 | wall-ledger-1104 | Opus 5.5 | 1.11 | 22 | shipped offline wall ledger (15 tests, 4 mutants killed); cap was 6.0 |
+| 2026-11-04 | worktree-gone-1104 | Opus 5.5 | 0.34 | 8 | done; see trunk for the ship; cap was 6.0 |

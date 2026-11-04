@@ -1,6 +1,7 @@
 {
   "approved_by": "operator 2026-10-30 via Eagle_Eyes (d-eagle-eyes-missed-boxes-defaults)",
   "asks": "",
+  "closed": "2026-11-04T20:36:52Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -25,6 +26,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "shipped C15 level approach study (33470c3ec)",
+      "ref": "70462c7c7",
+      "utc": "2026-11-04T20:36:52Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Eagle_Eyes: Pitchfork keep-and-prepare decision, level-approach-prep + pitchfork cards, 6 ",
@@ -42,6 +49,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: shipped",
   "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
   "pinned": false,
   "prio": 1,
@@ -49,7 +57,12 @@
   "refined_by": "",
   "refreshed": "2026-11-04T19:15:42Z",
   "refs": [],
-  "result": "",
+  "result": "shipped C15 level approach study (33470c3ec)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/level_approach_2026-10-30/",
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/CARD_SPECS.md"
@@ -58,13 +71,14 @@
   "scope_sha": "0dfeb558f5b5",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Pre-reg with gate 0g on 3 operator shots",
     "Build approach classifier on 1m archive F:/MTS/data/tom_raw",
     "Count per class x TF on dev only",
     "RESULT.md + C-row in BACKTEST_CANDIDATES.md"
   ],
+  "taken": "2026-11-04T20:36:52Z",
   "tests": "test_level_approach.py: hand-built 1m series for each of the 4 classes; must fail before the classifier exists",
   "title": "level-approach study: daily last-lower-high line and prior-day highs; classify each approach (near-miss / wick-back / close-then-fail / accepted) per 1m-1h with OI, CVD, delta, RSI, forward move (spec CARD_SPECS.md)",
   "weight": "",
