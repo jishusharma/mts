@@ -213,6 +213,27 @@ class Banner(unittest.TestCase):
         self.assertIn("break-even", b["text"])
         self.assertEqual(ba.banner_of(_result("z"))["state"], "UNCLEAR")  # no trade count anywhere: never a pass
 
+    def test_trade_list_gives_count_when_kpis_do_not(self):
+        # Demo 11-04: C30 showed "n=? net n/a" although its trade chart holds all 35 VALIDATION trades.
+        t = [{"net": 0.5}] * 20 + [{"net": -0.4}] * 15
+        r = _result("tc", verdict={"label": "VALIDATION: H1 FAIL", "tone": ""},
+                    examples=[{"kind": "trade_chart", "tf": "30m", "title": "t", "trades": t}])
+        b = ba.banner_of(r)
+        self.assertEqual(b["n"], 35)
+        self.assertAlmostEqual(b["net_pct"], round(4.0 / 35, 3))
+        self.assertIsNone(b["net_r"])  # a % mean is never shown as R
+        self.assertIn("n=35 (trade list)", b["text"])
+        self.assertIn("%/trade after fees", b["text"])
+        self.assertNotEqual(b["state"], "PASS")
+
+    def test_c30_chart_names_its_divergence_rule(self):
+        # Operator: Malkan divergence = closes only, 12 and 18 bars; C30 draws an OURS wick rule and must say so.
+        self.assertIn("x.div_rule", ba.TEMPLATE)
+        r = json.load(open(os.path.join(ba.RESULTS_DIR, "eagle-c30-wt-rsi-div.json"), encoding="utf-8"))
+        x = next(e for e in r["examples"] if e["kind"] == "trade_chart")
+        self.assertIn("OURS", x["div_rule"])
+        self.assertIn("not Malkan", x["div_rule"])
+
     def test_every_committed_result_has_banner(self):
         n = 0
         for fn in os.listdir(ba.RESULTS_DIR):
