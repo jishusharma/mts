@@ -1,0 +1,50 @@
+{
+ "id": "desk-trades-fabio_v3-ad-2026-11-04",
+ "kind": "backtest",
+ "parity": null,
+ "family": "Desk runs",
+ "title": "Fabio v3 Models A and D: per-trade replay",
+ "what": [
+  {
+   "name": "Study",
+   "value_plain": "Models A (balance + CVD pressure, LVN pullback) and D (absorbed push, failed auction) need delta and big-trade fields; the order-flow bars start 2024-12-02, after the DEV window ends 2024-06-30, so no DEV trade exists to replay (studies/fabio_v3.py docstring; SETUP_REVIEW.md 3.1-3.2: CODED-UNSCORED).",
+   "label": "OURS"
+  }
+ ],
+ "how": "Not run: no data in the window.",
+ "window": "DEV only, 2022-04-01 to 2024-06-30 (VALIDATION and HOLDOUT never offered)",
+ "verdict": {
+  "label": "NOT MEASURED",
+  "tone": "warn"
+ },
+ "why": [
+  "Models A (balance + CVD pressure, LVN pullback) and D (absorbed push, failed auction) need delta and big-trade fields; the order-flow bars start 2024-12-02, after the DEV window ends 2024-06-30, so no DEV trade exists to replay (studies/fabio_v3.py docstring; SETUP_REVIEW.md 3.1-3.2: CODED-UNSCORED)."
+ ],
+ "kpis": [
+  {
+   "label": "filled trades",
+   "value": "0"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "no trades: the data these models need starts after DEV"
+  }
+ ],
+ "source_files": [
+  "MyTradingSys/research/sim_desk/export_trades.py"
+ ],
+ "commit": "local desk run",
+ "trades_exported": 0,
+ "banner": {
+  "state": "TOO_FEW",
+  "tone": "warn",
+  "verdict": "NOT MEASURED",
+  "n": 0,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "TOO FEW TRADES · verdict as written: NOT MEASURED · n=0 · net R after fees n/a · try n/a · fee break-even n/a"
+ }
+}

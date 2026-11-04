@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T17:23:37Z",
   "commands": [],
   "created": "2026-10-31T11:20:54Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "sim-desk-tom-fabio-studies",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "results/desk-trades-*-2026-11-04.json: per-trade replay (entry/stop/target/exit %, bars, n",
+      "ref": "f908b25e6",
+      "utc": "2026-11-04T17:23:37Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -35,7 +42,12 @@
   "refs": [
     "MyTradingSys/research/tom_fabio_review_2026-10-31/SETUP_REVIEW.md"
   ],
-  "result": "",
+  "result": "results/desk-trades-*-2026-11-04.json: per-trade replay (entry/stop/target/exit %, bars, net R) fabio_v3 C 518, B 64, tom_vp fade 2052, tom_spike_level 1399; A/D NOT MEASURED (order flow starts 2024-12, after DEV). DECISION OURS: level touch = tom_vp FADE; spike rule push 6x5m >= 4 ATR14, stop spike extreme min 0.4 %, target push start",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/sim_desk/studies/fabio_v3.py",
     "MyTradingSys/research/sim_desk/studies/tom_vp.py",
@@ -50,13 +62,14 @@
   "scope_sha": "b4683988c949",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read DESIGN.md and studies/fabio_v3.py; list which models already export trades",
     "add per-trade export (entry, stop, target, exit, bars) for Models A-D and the Tom spike/level-touch cases",
     "hand-compute one trade per study as the test number",
     "rebuild the catalogue; check the DEV window clamp"
   ],
+  "taken": "2026-11-04T17:23:37Z",
   "tests": "MyTradingSys/research/sim_desk/test_fabio_v3.py: per-trade hand case fails on old code (no trades exported), passes after",
   "title": "Sim desk: add per-trade replay studies for Fabio v3 A-D and Tom spike fade / level touch (DEV only, fee-net)",
   "weight": "IMPORTANT",

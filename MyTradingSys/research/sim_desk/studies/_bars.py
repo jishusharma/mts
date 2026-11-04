@@ -224,3 +224,24 @@ def collect(signals, a, q, make):
 
 def replay(a, ref, q):
     return run_trade(a, *ref[:8], (q['taker_pct'] + q['slip_pct']) / 100, q['maker_pct'] / 100)
+
+
+def trade_rows(a, res, q):
+    """Every filled trade of a run, replayed from its ref, as percent distances from the fill (public repo: no prices).
+    Distances are signed in the trade's favour (stop negative); target None = no target; bars = 1m bars from the fill bar
+    to the exit bar, both counted. Shaped for the page's 'replay' example (d, s, f, r, l2/t1/t2 ladder)."""
+    rows = []
+    for ref, ok in zip(res['refs'], res['filled']):
+        if not ok:
+            continue
+        tr = replay(a, ref, q)
+        s, (t0, px), (tx, xp, why) = tr['side'], tr['entry'], tr['exit']
+
+        def pct(v):
+            return None if v is None else round(s * (v - px) / px * 100, 4)
+        stop, target, ex = pct(tr['stop']), pct(tr['target']), pct(xp)
+        rows.append({'d': dt.datetime.fromtimestamp(t0 / 1000, dt.timezone.utc).strftime('%Y-%m-%d %H:%M'), 't0': int(t0), 's': int(s),
+                     'f': 'the next 1m open (market)', 'entry': 0.0, 'stop': stop, 'target': target, 'exit': ex, 'why': why,
+                     'bars': int((tx - t0) // MIN) + 1, 'gross_r': round(tr['gross_r'], 4), 'r': round(tr['net_r'], 4),
+                     'l2': stop, 't1': target if target is not None else ex, 't2': ex})
+    return rows
