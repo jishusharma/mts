@@ -4,33 +4,53 @@
   "commands": [],
   "created": "2026-11-04T21:10:09Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "krown_core.py has ma_pair_state(c, fast, slow) and ma_slope(x, n); test_krown_core.py new tests pass with hand-computed values from FORMULAS.md style definitions; slope threshold absent, only the signed slope is returned.",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Krown moving-average state in krown_core.py: pair rule (lower period above higher, pairs 5/21, 21/55, 200/377 SOURCED), 21/55 EMA band as dynamic support (KR-M05), 50/200 golden/death cross with slope of the 200 (KR-M07), slope as trend strength (KR-M11, no threshold given, OURS).",
   "id": "wire-kr-m09-pair-rule-lower-period-above",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "b-item-krown-core-rsi-returns-100-on-a-f: fix flat window RSI 100 to 50 and update docstri",
+      "ref": "150840644fd0",
+      "utc": "2026-10-20T22:39:21Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "planner-wire43-1104h: verified on trunk 2026-11-05, no code for this rule; params OURS unless the card says SOURCED. Folds: wire-kr-m03 (first contact with the 200), wire-kr-m05, wire-kr-m07, wire-kr-m11, wire-kr-z16.\nREVIEWED:2026-11-04 T0-ONLY",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T22:23:41Z",
   "refs": [
     "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_vjzy_KxJ_y8.md:286"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/krown/krown_core.py",
+    "MyTradingSys/backtest/layers/krown/test_krown_core.py"
+  ],
+  "scope_out": [
+    "setups, entries, exits, weekly series (see the weekly card)"
+  ],
+  "scope_sha": "150840644fd0",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Reuse sma and ema in krown_core.py.",
+    "Add ma_pair_state returning above/below per bar and cross index; add ma_slope as the n-bar difference.",
+    "Write the fail-first test with a short synthetic series and hand-computed expected values; run it."
+  ],
+  "tests": "MyTradingSys/backtest/layers/krown/test_krown_core.py::test_ma_pair_state_and_slope (new; fails on trunk, no ma_pair_state)",
   "title": "wire KR-M09: Pair rule: lower period above higher period (quote MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_vjzy_KxJ_y8.md:286)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

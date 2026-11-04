@@ -4,33 +4,53 @@
   "commands": [],
   "created": "2026-11-04T21:10:07Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "krown_core.py has range_target(rs, side) and prior_trend_bias(h, l, c, t, k, tol); test_krown_core.py new tests pass; the target is the range height only, no other multiplier.",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Krown range projections in krown_core.py: first-leg target = range height from the breakout (KR-R07 SOURCED; range_state already returns height), range break confirmed by a close beyond the edge with averages turning (KR-M13), previous trend favoured inside a sideways range (KR-L12).",
   "id": "wire-kr-r07-range-height-projects-the-fi",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "b-item-krown-core-rsi-returns-100-on-a-f: fix flat window RSI 100 to 50 and update docstri",
+      "ref": "150840644fd0",
+      "utc": "2026-10-20T22:39:21Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "planner-wire43-1104h: verified on trunk 2026-11-05, no code for this rule; params OURS unless the card says SOURCED. Folds: wire-kr-m13, wire-kr-l12.\nREVIEWED:2026-11-04 T0-ONLY",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T22:23:44Z",
   "refs": [
     "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_6aA-P4Gvhrc.md:213"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/krown/krown_core.py",
+    "MyTradingSys/backtest/layers/krown/test_krown_core.py"
+  ],
+  "scope_out": [
+    "entries and stops, exit simulation"
+  ],
+  "scope_sha": "150840644fd0",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read range_state and trend_state in krown_core.py.",
+    "Add range_target (breakout close plus or minus height) and prior_trend_bias (trend_state before the range began).",
+    "Write the fail-first test with a synthetic range and breakout; run it."
+  ],
+  "tests": "MyTradingSys/backtest/layers/krown/test_krown_core.py::test_range_target_and_prior_trend (new; fails on trunk, no range_target)",
   "title": "wire KR-R07: Range height projects the first leg (quote MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_6aA-P4Gvhrc.md:213)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

@@ -4,33 +4,53 @@
   "commands": [],
   "created": "2026-11-04T21:10:24Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "malkan_mtf.py has seven_star(monthly_rsi, daily_rsi, divergence_flags, ...) returning bar flags; test_malkan_mtf.py new test passes with hand-built series.",
+  "est_turns": 6,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Malkan seven star composer in malkan_mtf.py (MLK-G02: monthly RSI at 60 plus divergence on the daily; MLK-G03: monthly above 60, daily below 40, divergence visible). One video, UNVERIFIED. Label function only, no entries.",
   "id": "wire-mlk-g02-2-9-seven-star-monthly-at-6",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Layers: malkan_mtf.py + tests (079, MLK-GAP1 multi-timeframe composer)",
+      "ref": "ae30eda31ad4",
+      "utc": "2026-09-28T13:52:48Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "planner-wire43-1104h: verified on trunk 2026-11-05, no code for this rule; params OURS unless the card says SOURCED. Folds: wire-mlk-g03.\nREVIEWED:2026-11-04 T0-ONLY",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T22:23:48Z",
   "refs": [
     "MyTradingSys/research/setup_catalog_2026-10-15/malkan/MALKAN_DIVERGENCE_GLOSSARY.md:421"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/rsi/malkan_mtf.py",
+    "MyTradingSys/backtest/layers/rsi/test_malkan_mtf.py"
+  ],
+  "scope_out": [
+    "backtests and live tree"
+  ],
+  "scope_sha": "ae30eda31ad4",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read state_asof and malkan_mtf_bull in malkan_mtf.py.",
+    "Add seven_star using state_asof for the monthly value and the daily divergence flag input.",
+    "Write the fail-first test with short hand-built series; run it."
+  ],
+  "tests": "MyTradingSys/backtest/layers/rsi/test_malkan_mtf.py::test_seven_star_flags (new; fails on trunk, no seven_star)",
   "title": "wire MLK-G02: 2.9 Seven star: monthly at 60 plus divergence on the daily (W) (quote MyTradingSys/research/setup_catalog_2026-10-15/malkan/MALKAN_DIVERGENCE_GLOSSARY.md:421)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

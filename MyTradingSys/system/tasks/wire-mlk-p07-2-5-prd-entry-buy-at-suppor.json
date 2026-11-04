@@ -4,33 +4,55 @@
   "commands": [],
   "created": "2026-11-04T21:10:21Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "rsi_divergence.py tags a PRD event first_after_cross60 True/False; run_rsi_backtest.py has an entry_mode='retrace' for prd; test_rsi_divergence.py and test_run_rsi_backtest.py new tests pass; default unchanged.",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Malkan PRD entry (MLK-P07: buy at support on the retracement, stop below the swing low) and best-case tag (MLK-P09: first PRD after RSI crosses 60) in run_rsi_backtest.py / rsi_divergence.py. One video, UNVERIFIED.",
   "id": "wire-mlk-p07-2-5-prd-entry-buy-at-suppor",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "malkan RSI: PRD/NRD as Malkan defines them; generic hidden moved to KROWN-CONFLUENCE",
+      "ref": "51b4b9a6fbf1",
+      "utc": "2026-10-27T20:37:06Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "planner-wire43-1104h: verified on trunk 2026-11-05, no code for this rule; params OURS unless the card says SOURCED. Folds: wire-mlk-p09.\nREVIEWED:2026-11-04 T0-ONLY",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T22:23:49Z",
   "refs": [
     "MyTradingSys/research/setup_catalog_2026-10-15/malkan/MALKAN_DIVERGENCE_GLOSSARY.md:282"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/rsi/rsi_divergence.py",
+    "MyTradingSys/backtest/layers/rsi/run_rsi_backtest.py",
+    "MyTradingSys/backtest/layers/rsi/test_rsi_divergence.py",
+    "MyTradingSys/backtest/layers/rsi/test_run_rsi_backtest.py"
+  ],
+  "scope_out": [
+    "live tree, plain divergence"
+  ],
+  "scope_sha": "51b4b9a6fbf1",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read the PRD branch of rsi_divergence() and trades_from_events.",
+    "Add the first_after_cross60 tag and an entry_mode retrace with the stop below the swing low.",
+    "Write the fail-first tests with hand-built series; run them."
+  ],
+  "tests": "MyTradingSys/backtest/layers/rsi/test_rsi_divergence.py::test_prd_first_after_cross60_tag (new; fails on trunk, no tag)",
   "title": "wire MLK-P07: 2.5 PRD entry: buy at support on the retracement, stop below the swing low (G only) (quote MyTradingSys/research/setup_catalog_2026-10-15/malkan/MALKAN_DIVERGENCE_GLOSSARY.md:282)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
