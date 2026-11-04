@@ -3,7 +3,7 @@
 Source: `MyTradingSys/system/LESSONS_LEARNED.md` (38 KB, append-only history). This file is the RULE line of every entry,
 grouped by who needs it; `[A]`..`[G]` = lettered section there, `[10-03 title]` = dated entry. Read the full entry when a
 rule touches your task. Adding a lesson: append the story to LESSONS_LEARNED.md AND one rule line here, same commit.
-Synced with LESSONS_LEARNED.md at blob: c5767610 (STATUS.md flags this file STALE when that blob changes).
+Synced with LESSONS_LEARNED.md at blob: 450b8990 (STATUS.md flags this file STALE when that blob changes).
 Hard rules and gates live only in CLAUDE.md and are not repeated here; prompt-composition rules for the chat surface live in DSA_SESSION_PROMPT.md and RELAY.md.
 
 ## 1. Accuracy (every session)
@@ -54,6 +54,7 @@ Hard rules and gates live only in CLAUDE.md and are not repeated here; prompt-co
 - Stage exact file paths, never a directory or stage-all; list the staged set right before every commit and unstage what you did not write. [10-03 gitsnap; 10-03 directory-scoped; 10-09 commit swept]
 - Read trailers with `--format=full` + grep, not the `trailers:key` format. [10-04 git trailers]
 - A stale 0-byte `.git/index.lock` with no git process running is safe to remove. [D]
+- A merge conflict in a file your branch did not change takes trunk's copy of that file, never ours; it must match trunk before the commit. [11-04 merge conflict]
 
 ## 5. Workers, cost, tokens
 - Spot-check one concrete claim per worker report; never merge a worker's change without reading its diff. [B]
@@ -70,6 +71,7 @@ Hard rules and gates live only in CLAUDE.md and are not repeated here; prompt-co
 - Never write a budget-refusal clause; save-work clause only. [10-02 budget gate]
 - Cloud-readable files go under MyTradingSys/research/ or system/, never gitignored Dumps/. [10-02 DSA list]
 - Cloud sessions that produce analysis name a DELIVERABLE file and commit it; read-only never means no file output. [10-01 cloud $11]
+- After a bridge drop notice ('no final answer'), re-send the blocks once; a second drop turns hands-free off. [11-01 bridge drop]
 
 ## 6. Windows / tooling
 - A background watcher must heartbeat every tick (one log line); no heartbeat within 2 intervals = watcher dead, restart it - watcher death is a ship-flow stall, and it is silent otherwise. [10-26 watcher]

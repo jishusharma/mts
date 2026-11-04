@@ -1,0 +1,10 @@
+{
+  "done_when": "CBP YouTube transcript fetch succeeds without HTTP 429 on NUC and pending retry task is unblocked.",
+  "from": "DESKTOP-F7IU69N",
+  "id": "20261104-070944-fix-cbp-youtube-block-on-nuc-http-429-ip",
+  "need": "Fix YouTube fetch failures / 429 block on NUC as analyzed in CBP_NOTE_YOUTUBE_BLOCK_2026-11-01.md: configure residential proxy/bgutil PO token provider for yt-dlp, and resolve pending caption retries (e.g. cbp-quote-row-84-jason-bo88aebojf8-retry).",
+  "posted": "2026-11-04T07:09:44Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "Fix CBP YouTube block on NUC (HTTP 429 & IP Reputation / PO Token)"
+}
