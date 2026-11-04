@@ -168,6 +168,8 @@ def launch(a) -> None:
 def status(a) -> None:
     dirs = [RUNS / a.slug] if a.slug else (sorted(RUNS.glob("*/")) if RUNS.exists() else [])
     for d in dirs:
+        if not (d / "meta.json").exists() and not (d / "out.jsonl").exists():
+            continue  # helper folders such as _prompts are not runs
         r = parse_result(d / "out.jsonl")
         meta = {}
         if (d / "meta.json").exists():
