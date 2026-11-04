@@ -19,7 +19,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "PLANNER 2026-11-02 planner-b-1102 DECISION (OURS): report-only (no edit of Java), so ROUTINE; the Java fix is live-path, a separate card. Run-and-report goes to the feed host (JIS-NB lane). REVIEWED:2026-11-02 T0-ONLY",
+  "note": "REVIEWED:2026-11-02 T0-ONLY | PLANNER 2026-11-02 planner-b-1102 DECISION (OURS): report-only (no edit of Java), so ROUTINE; the Java fix is live-path, a separate card. Run-and-report goes to the feed host (JIS-NB lane).",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",

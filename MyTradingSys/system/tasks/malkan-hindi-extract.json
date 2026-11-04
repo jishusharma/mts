@@ -27,7 +27,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "not_twin_of rsi-deep-engine-exits: that card builds engine exits, this one reads Hindi captions; REVIEWED:2026-11-04 T0-ONLY",
+  "note": "REVIEWED:2026-11-04 T0-ONLY | not_twin_of rsi-deep-engine-exits: that card builds engine exits, this one reads Hindi captions",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",

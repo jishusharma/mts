@@ -21,7 +21,7 @@
     "gemini-blind-read-wavetrend-c30-retest-1104",
     "confluence-s5-fable-verdict"
   ],
-  "note": "REVIEWED:2026-11-04 T0-ONLY; D11 feeder card for sim-demo-opus-1104 ship.",
+  "note": "REVIEWED:2026-11-04 T0-ONLY | D11 feeder card for sim-demo-opus-1104 ship.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
