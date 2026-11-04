@@ -88,3 +88,8 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-04 | wt-extreme-cross-1104 | Opus 5.5 | 2.25 | 2 | shipped WT extreme-cross bounce study f72763f16 + Gemini feeder card; cap was 8.0 |
 | 2026-11-04 | wall-ledger-1104 | Opus 5.5 | 1.11 | 22 | shipped offline wall ledger (15 tests, 4 mutants killed); cap was 6.0 |
 | 2026-11-04 | worktree-gone-1104 | Opus 5.5 | 0.34 | 8 | done; see trunk for the ship; cap was 6.0 |
+| 2026-11-04 | bisect-eject-1104 | Opus 5.5 | 0.42 | 10 | no code: depends on train.yml (ship-train card 3 not buildable yet); cap was 6.0 |
+| 2026-11-04 | wt-spec-fixes-1104 | Sonnet 5.5 | 0.34 | 14 | 4 WT SPEC cards fixed in SPEC.md (m=14, k=3 OURS), shipped; cap was 5.0 |
+| 2026-11-04 | eth-data-gap-1104 | Sonnet 5.5 | 0.36 | 22 | ETHUSDT 1m 2022-01..2026-09: 57 months, 0 missing bars; cap was 3.0 |
+| 2026-11-04 | run-v3-l3-test-1104 | Sonnet 5.5 | 0.23 | 9 | added full-path test test_days_limit_full_path_produces_oos; 14 tests pass; cap was 3.0 |
+| 2026-11-04 | testnet-fast-lane-1104 | Sonnet 5.5 | 0.32 | 15 | shipped design note eeec191e (testnet signal fast lane); cap was 3.0 |
