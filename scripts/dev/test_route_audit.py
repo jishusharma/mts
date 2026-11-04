@@ -43,7 +43,8 @@ class RepoCase(unittest.TestCase):
         self.tmp = Path(tempfile.mkdtemp())
         self.r = self.tmp / "r"
         self.r.mkdir()
-        sh(self.r, "init", "-q", "-b", "fast-track")
+        sh(self.r, "init", "-q")
+        sh(self.r, "symbolic-ref", "HEAD", "refs/heads/fast-track")  # git < 2.28 has no init -b
         sh(self.r, "config", "user.name", "t")
         sh(self.r, "config", "user.email", "t@t")
         commit(self.r, "init", {"README.md": "x\n"})
