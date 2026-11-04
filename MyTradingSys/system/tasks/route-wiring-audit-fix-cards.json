@@ -1,37 +1,62 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/tasks.py list --state raw"
+  ],
   "created": "2026-11-04T14:28:28Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "43 raw cards exist whose title starts with 'wire KR-' (32) or 'wire MLK-' rule ids (11) from WIRING_MALKAN_KROWN.csv verdict unwired-worth-wiring; a count command prints 43; no card for any other verdict; a rerun creates no duplicate.",
+  "est_turns": 14,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Wiring audit Malkan+Krown (167 rules, WIRING_MALKAN_KROWN.csv) found 43 rules marked unwired-worth-wiring (Krown 32, Malkan 11). File exactly one raw card per such rule through tasks.py new, titled wire <rule_id>: <rule>, each citing its quote_file_line; wired and not-worth-wiring rows get no card.",
   "id": "route-wiring-audit-fix-cards",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "wiring audit: Malkan + Krown, 167 rules vs layer code, params, tests",
+      "ref": "ef9d1009561c",
+      "utc": "2026-10-28T21:45:12Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "planner-refine-1104e: capture-only card, files raw cards, no product code. REVIEWED:2026-11-04 T0-ONLY",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T18:11:48Z",
   "refs": [
     "MyTradingSys/research/wiring_audit_2026-10",
     "MyTradingSys/research/route_tag_2026-11-04/AUDIT.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/wiring_audit_2026-10/WIRING_MALKAN_KROWN.csv",
+    "MyTradingSys/system/tasks"
+  ],
+  "scope_out": [
+    "wiring any rule; editing the CSV; Tom/Fabio/Habib rows"
+  ],
+  "scope_sha": "ef9d1009561c",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/wiring_audit_2026-10/WIRING_MALKAN_KROWN.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read the CSV header and confirm the 43 rows by trader and verdict",
+    "Write a script in the scratchpad that skips ids already having a card and calls tasks.py new per row with the quote_file_line in the title note",
+    "Run it once, then count the new cards and print the count",
+    "Run python scripts/dev/tasks.py lint"
+  ],
+  "tests": "python -c \"import csv; r=list(csv.DictReader(open('MyTradingSys/research/wiring_audit_2026-10/WIRING_MALKAN_KROWN.csv',encoding='utf-8'))); assert sum(x['verdict']=='unwired-worth-wiring' for x in r)==43\" guards the source count; the card-count check fails (0 cards) before the script runs",
   "title": "Wiring audit Malkan+Krown (ef9d10095, 167 rules): one fix card per unwired/mismatched rule",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }

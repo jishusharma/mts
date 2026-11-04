@@ -4,34 +4,57 @@
   "commands": [],
   "created": "2026-11-04T14:28:23Z",
   "depends_on": [],
-  "done_when": "",
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_MULTI_TF_BIAS_1104.md lists every REPORT.md table number recomputed from RESULTS.csv, a per-number match table, and ends with VERDICT: MATCH or MISMATCH.",
   "est_turns": null,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "D11 feeder check (A-20261104-1): independent Gemini blind read of the multi-TF bias stack DEV study: recompute the headline numbers from RESULTS.csv and the code first, then diff against REPORT.md (STACK n 1348, mean net -6.58 bps, t -1.17; 1h-only -9.75; 1D-only -8.25; all-long -9.73), then confirm no edge and END.",
   "id": "route-multi-tf-bias-blind-read",
+  "kind": "audit",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "multi-TF bias stack: written rule + DEV event study (no net edge)",
+      "ref": "9c43ee797686",
+      "utc": "2026-10-28T16:48:38Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "planner-refine-1104e: routine C0 blind read, no edge claimed. REVIEWED:2026-11-04 T0-ONLY",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T18:11:36Z",
   "refs": [
     "MyTradingSys/research/multi_tf_bias_2026-10-18",
     "MyTradingSys/research/route_tag_2026-11-04/AUDIT.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_MULTI_TF_BIAS_1104.md",
+    "MyTradingSys/research/multi_tf_bias_2026-10-18"
+  ],
+  "scope_out": [
+    "any change to the study; VALIDATION or HOLDOUT data"
+  ],
+  "scope_sha": "9c43ee797686",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/multi_tf_bias_2026-10-18/REPORT.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read RESULTS.csv and study.py before REPORT.md",
+    "Recompute n, mean net bps, SE and t per arm independently of study.py",
+    "Write BLIND_READ_MULTI_TF_BIAS_1104.md with a per-number table and VERDICT"
+  ],
+  "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_MULTI_TF_BIAS_1104.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] blind read of multi-TF bias stack (7fcf21aa0, no net edge): confirm, then END",
-  "weight": "",
+  "weight": "ROUTINE",
   "worker": ""
 }
