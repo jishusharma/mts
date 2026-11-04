@@ -2,7 +2,7 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
-  "created": "2026-11-04T14:28:28Z",
+  "created": "2026-11-04T16:05:05Z",
   "depends_on": [],
   "done_when": "",
   "est_turns": null,
@@ -10,8 +10,8 @@
   "formula_ids": [],
   "from_inbox": "",
   "goal": "",
-  "id": "route-wiring-audit-fix-cards",
-  "lane": "SONNET",
+  "id": "wt-spec-card-1-divergence-event-uses-col",
+  "lane": "",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -20,8 +20,7 @@
   "refine_tries": 0,
   "refined_by": "",
   "refs": [
-    "MyTradingSys/research/wiring_audit_2026-10",
-    "MyTradingSys/research/route_tag_2026-11-04/AUDIT.md"
+    "MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md"
   ],
   "result": "",
   "scope_in": [],
@@ -31,7 +30,7 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "Wiring audit Malkan+Krown (ef9d10095, 167 rules): one fix card per unwired/mismatched rule",
+  "title": "WT SPEC Card 1 divergence event uses colloquial phrases (high around cross, since that dip, wave above 0) with no exact rule (SPEC.md:11,12)",
   "weight": "",
   "worker": ""
 }

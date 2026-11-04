@@ -2,7 +2,7 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
-  "created": "2026-11-04T14:28:30Z",
+  "created": "2026-11-04T16:05:05Z",
   "depends_on": [],
   "done_when": "",
   "est_turns": null,
@@ -10,8 +10,8 @@
   "formula_ids": [],
   "from_inbox": "",
   "goal": "",
-  "id": "route-cbp-candidates-to-backtest",
-  "lane": "SONNET",
+  "id": "wt-spec-card-1-m-holm-unfrozen-5-feature",
+  "lane": "",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -20,8 +20,7 @@
   "refine_tries": 0,
   "refined_by": "",
   "refs": [
-    "MyTradingSys/cbp/__init__.py",
-    "MyTradingSys/research/route_tag_2026-11-04/AUDIT.md"
+    "MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md"
   ],
   "result": "",
   "scope_in": [],
@@ -31,7 +30,7 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "CBP candidates() (d286be4a1): send CANDIDATE_UNTESTED records to BACKTEST_CANDIDATES rows",
+  "title": "WT SPEC Card 1 m (Holm) unfrozen: 5 features have no bin edges, and marginal vs full-grid count not stated (SPEC.md:6,13)",
   "weight": "",
   "worker": ""
 }

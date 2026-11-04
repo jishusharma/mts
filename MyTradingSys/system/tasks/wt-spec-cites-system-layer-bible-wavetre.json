@@ -2,7 +2,7 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
-  "created": "2026-11-04T14:28:20Z",
+  "created": "2026-11-04T16:05:04Z",
   "depends_on": [],
   "done_when": "",
   "est_turns": null,
@@ -10,8 +10,8 @@
   "formula_ids": [],
   "from_inbox": "",
   "goal": "",
-  "id": "route-cryptocred-s3-power-unblock",
-  "lane": "SONNET",
+  "id": "wt-spec-cites-system-layer-bible-wavetre",
+  "lane": "",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -20,8 +20,7 @@
   "refine_tries": 0,
   "refined_by": "",
   "refs": [
-    "MyTradingSys/research/cryptocred_s3_2026-11",
-    "MyTradingSys/research/route_tag_2026-11-04/AUDIT.md"
+    "MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md"
   ],
   "result": "",
   "scope_in": [],
@@ -31,7 +30,7 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "cryptocred S3 (7501e2816): power gate blocked DEV; widen symbols/window to pass the gate or record END",
+  "title": "WT SPEC cites system/layer_bible/wavetrend.md for operator rules; that file does not exist (SPEC.md:2)",
   "weight": "",
   "worker": ""
 }

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T15:48:27Z",
   "commands": [
     "python scripts/dev/tasks.py stale"
   ],
@@ -14,32 +15,53 @@
   "goal": "STALE flags block dispatch of ready cards. For each card that tasks.py stale lists, read the card and the commit that changed its scope paths; if the card still holds, refresh it; if the change breaks it, park it with tasks.py tried.",
   "id": "haiku-refresh-stale-ready-cards-1104",
   "lane": "HAIKU",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "stale cards 38 -> 0, parked 0, closed 3",
+      "ref": "abcce966e",
+      "utc": "2026-11-04T15:48:27Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "gpt-spec-tests-live-aid: spec tests for flow-feeds and analyst-verdict",
+      "ref": "e5846046ca67",
+      "utc": "2026-11-03T17:40:39Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: stale refresh batch done",
   "note": "REVIEWED:2026-11-04 T0-ONLY (planner-refine-1104; twin of haiku-refresh-stale-ready-cards-1102 only by name: that one is done). DECISION (OURS): park, never edit, a card the change contradicts.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-04T13:43:27Z",
+  "refreshed": "2026-11-04T15:47:50Z",
   "refs": [],
-  "result": "",
+  "result": "stale cards 38 -> 0, parked 0, closed 3",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/tasks (card JSON, via tasks.py tag --refresh only)"
   ],
   "scope_out": [
     "no card goal, scope or done_when edit; no product code; never refresh a card whose scope change contradicts it"
   ],
-  "scope_sha": "",
+  "scope_sha": "e5846046ca67",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Run python scripts/dev/tasks.py stale and save the list",
     "Per card: git log the scope paths since its refreshed date, read the card, then tasks.py tag <id> --refresh or tasks.py tried <id>",
     "Re-run stale and lint, put before/after counts in the commit body"
   ],
+  "taken": "2026-11-04T15:48:27Z",
   "tests": "tasks.py stale exits 1 before and 0 after; python scripts/dev/tasks.py lint exits 0",
   "title": "Haiku: refresh the stale ready cards (re-read each card against its scope change, then tag --refresh)",
   "weight": "ROUTINE",

@@ -2,7 +2,7 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
-  "created": "2026-11-04T14:28:27Z",
+  "created": "2026-11-04T16:05:05Z",
   "depends_on": [],
   "done_when": "",
   "est_turns": null,
@@ -10,8 +10,8 @@
   "formula_ids": [],
   "from_inbox": "",
   "goal": "",
-  "id": "route-t053-hedge-blind-read",
-  "lane": "CODEX",
+  "id": "wt-spec-card-2-paired-net-bp-difference-",
+  "lane": "",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -20,8 +20,7 @@
   "refine_tries": 0,
   "refined_by": "",
   "refs": [
-    "MyTradingSys/research/t053_hedge_variants_2026-10-30",
-    "MyTradingSys/research/route_tag_2026-11-04/AUDIT.md"
+    "MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md"
   ],
   "result": "",
   "scope_in": [],
@@ -31,7 +30,7 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "[GEMINI] blind read of T053 hedge variants (4a36c8a38, all worse than unhedged): confirm, then END",
+  "title": "WT SPEC Card 2 paired net-bp difference nested minus baseline is undefined: nested is a subset of baseline trades (SPEC.md:19)",
   "weight": "",
   "worker": ""
 }

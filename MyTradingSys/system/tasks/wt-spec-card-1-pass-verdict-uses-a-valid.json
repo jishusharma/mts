@@ -2,7 +2,7 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
-  "created": "2026-11-04T14:28:23Z",
+  "created": "2026-11-04T16:05:04Z",
   "depends_on": [],
   "done_when": "",
   "est_turns": null,
@@ -10,8 +10,8 @@
   "formula_ids": [],
   "from_inbox": "",
   "goal": "",
-  "id": "route-multi-tf-bias-blind-read",
-  "lane": "CODEX",
+  "id": "wt-spec-card-1-pass-verdict-uses-a-valid",
+  "lane": "",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -20,8 +20,7 @@
   "refine_tries": 0,
   "refined_by": "",
   "refs": [
-    "MyTradingSys/research/multi_tf_bias_2026-10-18",
-    "MyTradingSys/research/route_tag_2026-11-04/AUDIT.md"
+    "MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md"
   ],
   "result": "",
   "scope_in": [],
@@ -31,7 +30,7 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "[GEMINI] blind read of multi-TF bias stack (7fcf21aa0, no net edge): confirm, then END",
+  "title": "WT SPEC Card 1 PASS verdict uses a VALIDATION read on BTCUSDT that the coordinator already looked at; no clean confirm target frozen (SPEC.md:5,14,15)",
   "weight": "",
   "worker": ""
 }

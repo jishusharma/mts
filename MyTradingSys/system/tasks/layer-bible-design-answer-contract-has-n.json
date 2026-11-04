@@ -2,7 +2,7 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
-  "created": "2026-11-04T14:28:19Z",
+  "created": "2026-11-04T16:05:06Z",
   "depends_on": [],
   "done_when": "",
   "est_turns": null,
@@ -10,8 +10,8 @@
   "formula_ids": [],
   "from_inbox": "",
   "goal": "",
-  "id": "route-rumers-dev-blind-read",
-  "lane": "CODEX",
+  "id": "layer-bible-design-answer-contract-has-n",
+  "lane": "",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -20,8 +20,7 @@
   "refine_tries": 0,
   "refined_by": "",
   "refs": [
-    "MyTradingSys/research/rumers_2026-11-01",
-    "MyTradingSys/research/route_tag_2026-11-04/AUDIT.md"
+    "MyTradingSys/research/layer_bible/REVIEW_GEMINI_1104.md"
   ],
   "result": "",
   "scope_in": [],
@@ -31,7 +30,7 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "[GEMINI] blind read of rumers DEV check (4fb3c2fb5): confirm 0 PASS-DEV, then END",
+  "title": "Layer Bible DESIGN answer contract has no mechanical gate; v2 defers it with no card (DESIGN.md:19-21)",
   "weight": "",
   "worker": ""
 }

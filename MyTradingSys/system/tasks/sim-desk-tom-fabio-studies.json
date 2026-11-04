@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "sim desk: catalogue row and artifact list for rsi-40-60-line-behaviour",
-      "ref": "abe04dc3ee54",
-      "utc": "2026-11-04T08:34:53Z"
+      "line": "sim desk: re-land C30 banner trade-list fallback with its results-cards row (forward of b4",
+      "ref": "b4683988c949",
+      "utc": "2026-11-04T13:39:36Z"
     }
   ],
   "layers": [
@@ -31,7 +31,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-04T13:21:37Z",
+  "refreshed": "2026-11-04T15:47:51Z",
   "refs": [
     "MyTradingSys/research/tom_fabio_review_2026-10-31/SETUP_REVIEW.md"
   ],
@@ -47,7 +47,7 @@
   "scope_out": [
     "VALIDATION or HOLDOUT, live tree, publishing the artifact"
   ],
-  "scope_sha": "abe04dc3ee54",
+  "scope_sha": "b4683988c949",
   "size": "M",
   "sources": [],
   "state": "ready",

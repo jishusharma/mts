@@ -19,9 +19,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "rsi_divergence_mtf_gated long-window DEV pass: INCONCLUSIVE (power gate still blocks, 0 of",
-      "ref": "d27877bfd7b2",
-      "utc": "2026-11-04T03:25:39Z"
+      "line": "gemini blind reads: Claude spot-check of RSI-div, BB studies, Fabio L1 strict",
+      "ref": "9032134f924a",
+      "utc": "2026-11-04T14:41:48Z"
+    },
+    {
+      "auto": true,
+      "kind": "audit",
+      "line": "9032134f924a gemini blind reads: Claude spot-check of RSI-div, BB studies, Fabio L1 strict",
+      "ref": "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_RSI_DIV_MTF_1104.md",
+      "utc": "2026-11-04T14:41:48Z"
     }
   ],
   "layers": [],
@@ -31,7 +38,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "gemini-pro-argon",
-  "refreshed": "2026-11-04T13:43:22Z",
+  "refreshed": "2026-11-04T15:46:08Z",
   "refs": [
     "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/RESULT.md"
   ],
@@ -41,7 +48,7 @@
     "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04"
   ],
   "scope_out": [],
-  "scope_sha": "d27877bfd7b2",
+  "scope_sha": "9032134f924a",
   "size": "S",
   "sources": [],
   "state": "ready",
