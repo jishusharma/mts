@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T16:46:49Z",
   "commands": [
     "python scripts/dev/artifacts.py build",
     "python scripts/dev/artifacts.py stale",
@@ -28,6 +29,12 @@
   "lane": "HAIKU",
   "latest": [
     {
+      "kind": "ship",
+      "line": "3 stale pages republished (mts_layer_map, mts_home, sim_desk), stale 3 -> 0 (caa4387d5)",
+      "ref": "7ec36d106",
+      "utc": "2026-11-04T16:46:49Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "cbp_run: every run refreshes prices and rebuilds the v5 CBP Analyst Desk board",
@@ -47,7 +54,12 @@
   "refined_by": "planner-20261030-d",
   "refreshed": "2026-11-04T15:46:21Z",
   "refs": [],
-  "result": "",
+  "result": "3 stale pages republished (mts_layer_map, mts_home, sim_desk), stale 3 -> 0 (caa4387d5)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/artifacts/registry.json",
     "MyTradingSys/system/artifacts/mts_control_room.html",
@@ -59,13 +71,14 @@
   "scope_sha": "891a04e9a6af",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "run python scripts/dev/artifacts.py build, then python scripts/dev/artifacts.py stale; keep the STALE lines (2026-10-31: mts_control_room, mts_layer_map)",
     "per STALE slug: take the url in registry.json under urls.jishusharma1985; Artifact action read that url; only if the header says writer, Artifact publish the repo html over that same url",
     "after each publish: python scripts/dev/artifacts.py publish-record --slug <slug>",
     "re-run artifacts.py stale and report the count before and after; list any page skipped (not owned by C, no edit access) with the reason"
   ],
+  "taken": "2026-11-04T16:46:49Z",
   "tests": "count-based: artifacts.py stale STALE-line count before vs after, reported",
   "title": "Republish the stale artifact pages that login C (jishusharma1985) owns (artifacts.py stale; 2 stale on 2026-10-31, was 6)",
   "weight": "ROUTINE",
