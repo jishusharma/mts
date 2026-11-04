@@ -934,6 +934,35 @@ def ci_runs_for(sha):
     return [{k: r.get(k) for k in ("id", "status", "conclusion", "html_url")} for r in d.get("workflow_runs", [])]
 
 
+def post_dispatch(url, body, token):
+    """POST one JSON body to the GitHub API with the login the pusher uses; raises on any failure."""
+    import urllib.request
+    req = urllib.request.Request(url, data=json.dumps(body).encode(), method="POST", headers={
+        "User-Agent": "mts-sync", "Accept": "application/vnd.github+json", "Authorization": f"Bearer {token}"})
+    with urllib.request.urlopen(req, timeout=8) as r:
+        return r.status
+
+
+def dispatch_ci(post=None, token=None):
+    """After a --fix-ci ship whose files ci.yml's path filter skips (docs-only), no push CI runs and the last red push run stays the
+    trunk verdict: dispatch ci.yml on fast-track (workflow_dispatch). No token or any API failure prints the manual command; never raises."""
+    manual = "gh workflow run ci.yml --ref fast-track"
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import ci_watch
+        tok = ci_watch.token() if token is None else token
+        if not tok:
+            print(f"CI: docs-only fix runs no push CI; no GitHub login here, run: {manual}")
+            return False
+        url = ci_watch.API.split("/runs?")[0] + "/dispatches"
+        (post or post_dispatch)(url, {"ref": "fast-track"}, tok)
+        print("CI: docs-only fix runs no push CI; dispatched ci.yml on fast-track so the trunk verdict can turn green")
+        return True
+    except Exception as e:
+        print(f"CI: dispatch failed ({type(e).__name__}: {e}); run: {manual}")
+        return False
+
+
 def ci_failed_jobs(run_id):
     """Names of the failed jobs of one run (a red line names the failing shard); raises on API failure."""
     sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -2207,6 +2236,8 @@ def main(argv):
             if isinstance(pushed, Pushed):
                 write_last_pushed(repo, pushed)
                 tidy_after_ship(repo)
+            if isinstance(pushed, Pushed) and os.environ.get("SYNC_FIX_CI") and not ci_starts(pushed.files, ci_path_filter(repo)):
+                dispatch_ci()
             if isinstance(pushed, Pushed) and not wait_ci:
                 print(f"shipped {pushed.sha[:8]}; CI not awaited: `python scripts/dev/sync.py ci` waits for its verdict (red exits {CI_RED_EXIT}); `ship --wait-ci` waits here")
             if isinstance(pushed, Pushed) and wait_ci:

@@ -1,9 +1,20 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T15:40:08Z",
   "commands": [
     "python -m pytest scripts/dev/test_sync.py scripts/dev/test_ci_watch.py -q"
   ],
+  "context": {
+    "calls_to_edit": 9,
+    "folded": "2026-11-04T15:40:07Z",
+    "misses": 19,
+    "reads": [
+      "scripts/dev/ci_watch.py",
+      "scripts/dev/test_sync.py"
+    ],
+    "session": "agent-a9e1d56e976d2bbdd"
+  },
   "created": "2026-11-04T15:08:28Z",
   "depends_on": [],
   "done_when": "python -m pytest scripts/dev/test_sync.py scripts/dev/test_ci_watch.py exits 0 with the new dispatch tests (hook called once for none+fix_ci, never otherwise, API error prints the manual command)",
@@ -17,11 +28,17 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "scripts/dev/sync.py dispatch_ci + 2 tests in test_sync.py; 174 passed",
+      "ref": "19ff4609d",
+      "utc": "2026-11-04T15:40:08Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "sync tidy: keep a tree whose slug holds an open claim",
-      "ref": "9848f33f624a",
-      "utc": "2026-11-04T13:36:39Z"
+      "line": "Revert \"route tag: every ship names where the work goes next (Next: gate, tasks done --nex",
+      "ref": "d8a4d4603ee3",
+      "utc": "2026-11-04T14:41:09Z"
     }
   ],
   "layers": [],
@@ -31,9 +48,14 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-11-04T15:18:08Z",
+  "refreshed": "2026-11-04T15:30:32Z",
   "refs": [],
-  "result": "",
+  "result": "scripts/dev/sync.py dispatch_ci + 2 tests in test_sync.py; 174 passed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/sync.py",
     "scripts/dev/ci_watch.py",
@@ -44,15 +66,16 @@
     ".github/workflows/ci.yml unchanged (workflow_dispatch already declared)",
     "mts_doctor ci_gated (shipped f1f0c0ef4)"
   ],
-  "scope_sha": "9848f33f624a",
+  "scope_sha": "d8a4d4603ee3",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "in the ship path where wait_own_ci returns 'none' and --fix-ci is set, POST a dispatch of ci.yml with ref fast-track using ci_watch.token()",
     "on any API failure print the manual gh workflow run command and continue (never fail the ship)",
     "add a test with a fake poster: none+fix_ci dispatches once; none without fix_ci does not"
   ],
+  "taken": "2026-11-04T15:40:08Z",
   "tests": "scripts/dev/test_sync.py: fix_ci docs-only ship calls the dispatch hook once; fails on old code (no hook)",
   "title": "CI red stays red after a docs-only fix: ci.yml paths filter skips docs pushes, so the last push run (red) is the trunk verdict; ci_watch/sync ship should read workflow_dispatch runs too, or the revert path should dispatch CI",
   "weight": "",

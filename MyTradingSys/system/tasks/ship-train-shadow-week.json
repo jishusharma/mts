@@ -12,7 +12,22 @@
   "goal": "Run the train on shadow beside direct push for 3-7 days and report red-state minutes shadow vs trunk, land time p50/p90, false ejects, repeat-red runs, branch-green-but-trunk-red evidence",
   "id": "ship-train-shadow-week",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship-train: SHIP_TRAIN.md (56 reds classed, options, 5-card plan) + 5 cards",
+      "ref": "180f6aeaa6f3",
+      "utc": "2026-11-03T20:36:31Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "180f6aeaa6f3 ship-train: SHIP_TRAIN.md (56 reds classed, options, 5-card plan) + 5 cards",
+      "ref": "MyTradingSys/system/SHIP_TRAIN.md",
+      "utc": "2026-11-03T20:36:31Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -20,7 +35,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-03T20:35:42Z",
+  "refreshed": "2026-11-04T15:46:31Z",
   "refs": [
     "MyTradingSys/system/SHIP_TRAIN.md"
   ],
@@ -31,7 +46,7 @@
   "scope_out": [
     "live tree; auto_deploy"
   ],
-  "scope_sha": "",
+  "scope_sha": "180f6aeaa6f3",
   "size": "M",
   "sources": [],
   "state": "ready",

@@ -27,9 +27,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "aibridge chain hidden-tab test: scale headless Chrome timeout, budget file at 140 s",
-      "ref": "c0162ab17100",
-      "utc": "2026-11-02T18:59:02Z"
+      "line": "Merge remote-tracking branch 'origin/fast-track' into JIS-NB/route-tag-closeout-1104-2",
+      "ref": "6e07fe14d990",
+      "utc": "2026-11-04T15:36:30Z"
     }
   ],
   "layers": [],
@@ -39,7 +39,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T20:01:02Z",
+  "refreshed": "2026-11-04T15:46:41Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -52,7 +52,7 @@
     "MyTradingSys/aibridge extension code (content.js, loop.js)",
     "deleting or skipping the test"
   ],
-  "scope_sha": "c0162ab17100",
+  "scope_sha": "6e07fe14d990",
   "size": "S",
   "sources": [],
   "state": "ready",

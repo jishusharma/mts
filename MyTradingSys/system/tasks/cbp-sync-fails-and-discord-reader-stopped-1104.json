@@ -20,9 +20,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Result: analyst posts watch routine for Habib and Krown",
-      "ref": "43ed8cd7a15c",
-      "utc": "2026-11-01T19:43:06Z"
+      "line": "cbp_run: every run refreshes prices and rebuilds the v5 CBP Analyst Desk board",
+      "ref": "891a04e9a6af",
+      "utc": "2026-11-04T13:52:10Z"
     }
   ],
   "layers": [],
@@ -32,7 +32,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-04T12:59:51Z",
+  "refreshed": "2026-11-04T15:46:04Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -43,7 +43,7 @@
   "scope_out": [
     "live tree .mts_live; mainnet; .secrets"
   ],
-  "scope_sha": "43ed8cd7a15c",
+  "scope_sha": "891a04e9a6af",
   "size": "M",
   "sources": [],
   "state": "ready",

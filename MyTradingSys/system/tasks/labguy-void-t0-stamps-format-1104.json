@@ -20,9 +20,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "DSA bridge liveness signal (lanes.dsa) + tasks stale ignores card-only commits",
-      "ref": "01dd8c0556bf",
-      "utc": "2026-11-03T16:04:20Z"
+      "line": "route tag re-land: every ship names where the work goes next (Next: gate, tasks done --nex",
+      "ref": "08d51e5b7fc8",
+      "utc": "2026-11-04T15:22:55Z"
     }
   ],
   "layers": [],
@@ -32,7 +32,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-11-04T15:18:06Z",
+  "refreshed": "2026-11-04T15:46:18Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -44,7 +44,7 @@
     "card JSONs (25 void stamps were repaired in 9a7a43033)",
     "stamp grammar itself unchanged"
   ],
-  "scope_sha": "01dd8c0556bf",
+  "scope_sha": "08d51e5b7fc8",
   "size": "S",
   "sources": [],
   "state": "ready",

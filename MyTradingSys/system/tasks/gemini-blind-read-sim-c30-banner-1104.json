@@ -27,7 +27,7 @@
   "refined_by": "",
   "refreshed": "2026-11-04T13:22:19Z",
   "refs": [],
-  "result": "",
+  "result": "VERDICT: MATCH (n=35, mean -0.066 %/trade); Claude spot-check 5/5 AGREE (MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_SIM_C30_BANNER_1104.md)",
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_SIM_C30_BANNER_1104.md"
   ],
@@ -37,7 +37,7 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read c30_validation_verdict.json H1 trades first; count them and average net",
     "then read the banner in the result json and compare"
