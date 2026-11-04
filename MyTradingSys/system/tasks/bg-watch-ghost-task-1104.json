@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T08:46:22Z",
   "commands": [
     "python -m pytest -q scripts/dev/test_bg_watch.py"
   ],
@@ -25,6 +26,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "DROP by Haiku review 2026-11-04: already shipped as 908a03d6600c",
+      "ref": "87638e0c3",
+      "utc": "2026-11-04T08:46:22Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "bg_watch: a task whose agent is gone is a GHOST, not a STALLED-BG",
@@ -41,7 +48,12 @@
   "refined_by": "",
   "refreshed": "2026-11-04T05:13:40Z",
   "refs": [],
-  "result": "",
+  "result": "DROP by Haiku review 2026-11-04: already shipped as 908a03d6600c",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/bg_watch.py",
     "scripts/dev/test_bg_watch.py"
@@ -52,12 +64,13 @@
   "scope_sha": "908a03d6600c",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write the failing test with a fixture transcript idle 7 h and a not-found TaskStop result.",
     "Add GHOST classification and a seen-ghost marker in bg_watch state.",
     "Run test_bg_watch.py and ship."
   ],
+  "taken": "2026-11-04T08:46:22Z",
   "tests": "scripts/dev/test_bg_watch.py::test_ghost_task_is_reported_once",
   "title": "bg_watch: a background task whose agent no longer exists (TaskStop: not found, transcript idle > 6 h) is reported once as GHOST, not as STALLED-BG every wake",
   "weight": "",

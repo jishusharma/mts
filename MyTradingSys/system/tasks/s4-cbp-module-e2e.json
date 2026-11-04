@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T08:46:24Z",
   "commands": [
     "python -m pytest MyTradingSys/tests/test_cbp_e2e_candidate.py MyTradingSys/tests/test_cbp_query.py -q",
     "python scripts/dev/run_all_tests.py --quick"
@@ -16,6 +17,12 @@
   "id": "s4-cbp-module-e2e",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "DROP by Haiku review 2026-11-04: already shipped as d286be4a1447",
+      "ref": "87638e0c3",
+      "utc": "2026-11-04T08:46:24Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,7 +45,12 @@
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D7_ROADMAP.md"
   ],
-  "result": "",
+  "result": "DROP by Haiku review 2026-11-04: already shipped as d286be4a1447",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/cbp/__init__.py (add candidates())",
     "MyTradingSys/tests/test_cbp_e2e_candidate.py (new)",
@@ -58,13 +70,14 @@
     "MyTradingSys/research/v1_plan_2026-10-20/D7_ROADMAP.md (S4 exit)",
     "MyTradingSys/items/B139_cbp_adapter.md (SUPERSEDED, queue deleted f9fcf77b4)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read cbp.query, is_tradable and test_run_adds_dedupes_and_skips_known in test_cbp_query.py.",
     "Write test_cbp_e2e_candidate.py: stub fetch and extract, run_once, query, candidates; assert status, order_eligible False, source, evidence, expiry; untradable and expired rows give no record; promoted_setups.json bytes unchanged.",
     "Run it on old code (candidates missing), then add candidates() as a pure function with no file writes.",
     "Run test_cbp_query.py and run_all_tests --quick; ship."
   ],
+  "taken": "2026-11-04T08:46:24Z",
   "tests": "test_cbp_e2e_candidate.py: a fixture row via run_once, query, candidates gives exactly one record with CANDIDATE_UNTESTED and order_eligible False; a row without entry/target/invalidation gives none; an expired row gives none; promoted_setups.json unchanged. Old code: cbp has no candidates, the test errors.",
   "title": "S4: one analyst row from cbp_run.run_once through cbp.query to a CANDIDATE_UNTESTED record (D5 as built: no queue, no ack)",
   "weight": "ROUTINE",
