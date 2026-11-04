@@ -1,7 +1,7 @@
 {
 "_doc": "Catalogue of known tests on trunk. kind is inferred (kind_source). Built by sim_desk/build_catalogue.py.",
-"count": 352,
-"exported": 352,
+"count": 353,
+"exported": 353,
 "rows": [
 {
 "id": "st-_archive-loose_2026-10-cbp_profile6_result",
@@ -5106,6 +5106,20 @@
 "date": "2026-10-31",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
+},
+{
+"id": "bb-range-retest-eth-pool-2026-11-04",
+"family": "Bollinger range retest",
+"title": "Rerun pooled: Bollinger return-to-the-band level arm on BTCUSDT + ETHUSDT USD-M futures 15m, by session",
+"kind": "backtest",
+"kind_source": "result file",
+"verdict": "INCONCLUSIVE (underpowered), not FAIL: pooling doubles days (300-385) but prereg_gate still BLOCKs all 9 cells (600-1944 needed). 0 of 9 survive; pooled net -0.044 to -0.156 % per trade at 0.14 %, lowest Holm p 0.19.",
+"source": "MyTradingSys/research/bb_range_retest_eth_pool_2026-11/RESULT.md",
+"exported": true,
+"result_id": "bb-range-retest-eth-pool-2026-11-04",
+"date": "2026-11-04",
+"status": "FAILED",
+"verdict_class": "failed"
 }
 ]
 }
