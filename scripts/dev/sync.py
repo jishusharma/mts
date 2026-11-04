@@ -1915,6 +1915,20 @@ def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS,
     here = Path(repo).resolve()
     rows = worktrees(repo)
     out, kept, listed = [], {}, 0
+    claimed = None   # slugs of open claims, read once and only when a tree is otherwise ready to go
+
+    def has_open_claim(p, branch):
+        """A person between steps in a tree holds a claim for its slug: keep it. Claim slugs are slugify(task) cut to 40 chars,
+        so a prefix either way counts. Fails closed: an unreadable claim list keeps the tree."""
+        nonlocal claimed
+        if claimed is None:
+            try:
+                claimed = [s for s, _ in open_claims(repo, fetch=fetch)]
+            except Exception:   # noqa: BLE001
+                claimed = [""]
+        names = {branch.rsplit("/", 1)[-1].lower(), p.name.lower()}
+        return any(c == "" or any(n == c or n.endswith("-" + c) or (len(c) >= 8 and (n.startswith(c) or c.startswith(n)))
+                                  for n in names) for c in claimed)
 
     def keep(p, key, why):
         nonlocal listed
@@ -1963,6 +1977,9 @@ def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS,
         idle = idle_hours(p, branch, now)
         if idle < min_idle_hours:
             keep(p, "active", f"active {idle:.1f} h ago (tidy waits {min_idle_hours} h)")
+            continue
+        if has_open_claim(p, branch):
+            keep(p, "claimed", "open claim on its slug (someone is between steps)")
             continue
         if apply:
             # --force only for the noise rows above (pulled mirror, stray AGENTS.md/.codex): git counts untracked files as dirt
