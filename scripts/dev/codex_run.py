@@ -940,7 +940,7 @@ def cmd_next(a):
 
 def cmd_run(a):
     card = tasks.get(REPO, a.card)
-    miss = tasks.problems(card, tasks.load_all(REPO), tasks.registry(REPO), repo=REPO, audit_inputs=True)
+    miss = tasks.problems(card, tasks.load_all(REPO), tasks.registry(REPO), repo=REPO)
     if card.get("lane") != "CODEX" or card["state"] != "ready" or miss:
         raise SystemExit(f"codex_run: {a.card} must be a ready CODEX card: " + ("; ".join(miss) or f"lane {card.get('lane')}, state {card['state']}"))
     if not (a.dry or a.force):
@@ -989,7 +989,7 @@ def cmd_ask(a):
                      getattr(a, "mutation_check", None) or "")
     if tasks.path_of(REPO, card["id"]).exists():
         raise SystemExit(f"codex_run: card {card['id']} exists")
-    miss = tasks.problems(card, tasks.load_all(REPO), tasks.registry(REPO), repo=REPO, audit_inputs=True)
+    miss = tasks.problems(card, tasks.load_all(REPO), tasks.registry(REPO), repo=REPO)
     if miss:
         hint = ""
         if card["kind"] == "build" and not card.get("mutation_check"):
