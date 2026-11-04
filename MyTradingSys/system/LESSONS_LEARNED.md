@@ -599,3 +599,21 @@ Where the rule lives: LESSONS_DIGEST.md section 6; USER.md AUTHORITY card rule.
 What happened: sent 4 AIRUN blocks. Blocks 1-2 ran, block 3 was skipped, block 4 was empty_command. The generation dropped with 'no final answer'. The files were not written.
 Rule: after a drop notice, re-send the blocks once. If a second drop happens, turn hands-free off.
 Where the rule lives: DSA_SESSION_PROMPT.md section 0.7.
+
+## 2026-11-04 merge conflict resolved blind dropped 856 trunk lines (CI red 4 runs)
+Taking "ours" on a merge conflict in files the branch never touched (supervisor.py, test_supervisor.py) kept the stale copy and erased trunk's newer work; the ship gate did not run test_bg_watch.py because the ship "did not reach" it. Rule: a conflict in a file your branch did not change is resolved by taking trunk's copy of that file (`git -C <tree> restore --source origin/fast-track -- <file>`), and the file must then show no difference against trunk before the commit. Lead C, d3523ad27, fixed by restoring b7ffc496a bytes. (This note itself first tripped test_integrity's forbidden-ref rule: system/ docs never spell git subcommands.)
+
+## 2026-11-04 concept without context: 10 of 33 backtests tested a bare trigger, and 144 of 219 cards had no review
+What happened: the operator asked what in our FAIL pile was "concept without context" (WaveTrend bought zero-line crosses in a 5-week BTC
+downtrend; Malkan's monthly/weekly 60/40 gate sat in our own extract while rsi_divergence_mtf ran the raw signal). A Sonnet read of
+VERDICTS.csv (CONTEXT_FILTER_REVIEW_2026-11-04.md): 10 of 33 studies had no regime, phase, confluence, session or retest gate and carry 30
+of 58 FAIL rows; only 4 of 33 reports say what regime their window was. The same day 7 cards were unblocked with coordinator stamps instead
+of a reviewer read, and 144 of 219 cards carried no review stamp at all while cheap Haiku on the API credit sat unused (the first Haiku
+hygiene job then cost 0.04 USD for 22 -> 4 stale cards).
+Rule that prevents it: (1) every new PRE_REG carries `## Context` with Regime / Phase / Session / Entry lines (a gate, or `none, because ...`),
+every result a `Regime mix:` line; gate step 3pc (`scripts/dev/prereg_context_lint.py`, allowlist = the 67 PRE_REGs frozen before the rule)
+fails the ship otherwise. (2) A coordinator stamp is T0-ONLY: it may unblock a card, it never counts as the review. Reviews are Haiku reads on
+the API credit, batched; a Sonnet read only where done_when needs code reading. (3) A layer that cannot vote in a confluence test (no stamped
+bar-by-bar causal history) is listed NOT_IN_DATA in the report, so the operator sees which confluence was never tested.
+Where the rule lives: LESSONS_DIGEST.md section 2; TASK_REFINEMENT.md promotion gate; PRE_REG_TEMPLATE.md item 13; run_all_tests.py step 3pc.
+
