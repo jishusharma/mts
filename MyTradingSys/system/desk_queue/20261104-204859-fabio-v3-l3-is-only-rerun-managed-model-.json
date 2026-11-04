@@ -1,0 +1,10 @@
+{
+  "done_when": "NOT_MEASURED.md has measured IS net R, no OOS number",
+  "from": "JIS-NB",
+  "id": "20261104-204859-fabio-v3-l3-is-only-rerun-managed-model-",
+  "need": "python -m MyTradingSys.backtest.layers.fabio.run_v3_l3 --is-only --out F:/MTS/data/fabio_v3_bt_isonly; copy is_only.json IS net R per model A-D + Model B fill count into FABIO_V3_L3_NOT_MEASURED.md",
+  "posted": "2026-11-04T20:48:59Z",
+  "status": "pending",
+  "target": "JIS-NB",
+  "title": "fabio v3 L3 IS-only rerun, managed Model B"
+}

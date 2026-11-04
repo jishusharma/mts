@@ -80,6 +80,10 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-04 | haiku-review-3b-1104 | Haiku 5.5 | 0.02 | 11 | stamped 3 cards: pz-4 ACCEPT, wavetrend-c1-v2 DROP (twin shipped), level-approach ACCEPT; cap was 2.0 |
 | 2026-11-04 | liquidations-mirror | Sonnet 5.5 | 0.54 | 22 | shipped liq_mirror.py (runtime liq_events mirror to F:/MTS); cap was 4.0 |
 | 2026-11-04 | c31-reland-1104 | Sonnet 5.5 | 0.61 | 23 | J8 re-land shipped 07e1e7a17: costs from fees.py, allowlist rows for 3 fwd-index hits; C31 UNDERPOWERED n=15; cap was 4.0 |
+| 2026-11-04 | malkan-card-fix-1104 | Sonnet 5.5 | 0.59 | 20 | shipped 240a2e618; 8 of 8 findings confirmed, card fixed and stamped; cap was 2.0 |
+| 2026-11-04 | codex-next-line-b-1104 | Sonnet 5.5 | 0.17 | 9 | not shipped; fixture fixed, next gate failure reported; cap was 2.0 |
+| 2026-11-04 | codex-next-line-1104 | Sonnet 5.5 | 0.40 | 18 | not shipped; commit line written, gate failed on the route audit fixture; cap was 3.0 |
+| 2026-11-04 | codex-next-line-c-1104 | Sonnet 5.5 | 0.11 | 5 | shipped 89482fbfe; Codex commits carry a Next line; cap was 2.0 |
 | 2026-11-04 | level-approach-study-daily-last-lower-hi | Sonnet 5.5 | 0.80 | 1 | shipped C15 level approach study + lookahead allowlist rows (33470c3ec, 6e04f85d8); cap was 5.0 |
 | 2026-11-04 | wt-extreme-cross-1104 | Opus 5.5 | 2.25 | 2 | shipped WT extreme-cross bounce study f72763f16 + Gemini feeder card; cap was 8.0 |
 | 2026-11-04 | wall-ledger-1104 | Opus 5.5 | 1.11 | 22 | shipped offline wall ledger (15 tests, 4 mutants killed); cap was 6.0 |
