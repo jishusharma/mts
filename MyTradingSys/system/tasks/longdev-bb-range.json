@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T12:55:54Z",
   "commands": [],
   "context": {
     "calls_to_edit": 18,
@@ -27,18 +28,24 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MyTradingSys/research/bb_long_window_2026-11-04/RESULT_LONG.md: A FAIL (0/6, 9008 trades),",
+      "ref": "c90b4515a",
+      "utc": "2026-11-04T12:55:54Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "rsi_divergence_mtf_gated long-window DEV pass: INCONCLUSIVE (power gate still blocks, 0 of",
-      "ref": "d27877bfd7b2",
-      "utc": "2026-11-04T03:25:39Z"
+      "line": "rsi 40/60 line behaviour: RSI sits near a random-walk benchmark at both lines, no default ",
+      "ref": "1dab5e297af0",
+      "utc": "2026-11-04T08:32:18Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "d27877bfd7b2 rsi_divergence_mtf_gated long-window DEV pass: INCONCLUSIVE (power gate still",
+      "line": "022511723b35 rsi 40/60 line behaviour: PRE_REG + TRIALS frozen before any outcome",
       "ref": "MyTradingSys/research/layer_lab/TRIALS.md",
-      "utc": "2026-11-04T03:25:39Z"
+      "utc": "2026-11-04T08:27:40Z"
     }
   ],
   "layers": [],
@@ -48,9 +55,14 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "agent-longdev-bb",
-  "refreshed": "2026-11-04T03:29:36Z",
+  "refreshed": "2026-11-04T12:55:17Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/bb_long_window_2026-11-04/RESULT_LONG.md: A FAIL (0/6, 9008 trades), B INCONCLUSIVE, 0/30 survive; already on fast-track 4422152e1",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/bb_long_window_2026-11-04/",
     "MyTradingSys/research/VERDICTS.csv",
@@ -62,16 +74,17 @@
     "deploys",
     "other studies"
   ],
-  "scope_sha": "d27877bfd7b2",
+  "scope_sha": "1dab5e297af0",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "write PRE_REG_LONG.md and TRIALS rows",
     "counts + prereg_gate",
     "dev pass",
     "report"
   ],
+  "taken": "2026-11-04T12:55:54Z",
   "tests": "MyTradingSys/research/bb_long_window_2026-11-04/test_long_wiring.py fails on pre-change code first",
   "title": "Long-window (spot 2017-2024) DEV pass for both Bollinger studies (bb_range_to_range, bb_range_retest) with one OURS bear proxy",
   "weight": "",
