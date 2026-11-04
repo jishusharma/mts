@@ -8,7 +8,7 @@
   python scripts/dev/tasks.py tried <id> [--asks "<question>"]   # refiner: a try that did not reach ready; --asks parks it for the operator
   python scripts/dev/tasks.py next [--n 3] [--lane SONNET] [--all]   # the first ready cards no session holds, best first (--all: claimed too, marked)
   python scripts/dev/tasks.py brief <id>            # the <= 30 line session prompt for one card
-  python scripts/dev/tasks.py take <id> [--claim <slug>] | done <id> --result "<what>" --next "<card-id | stage | END: why | new:title>" | apply-op <id> bump|hold|drop|approve [--note ..]
+  python scripts/dev/tasks.py take <id> [--claim <slug>] | done <id> --result "<what>" | apply-op <id> bump|hold|drop|approve [--note ..]
   python scripts/dev/tasks.py tag <id> [--refresh] [--add kind:ref --line "<one line>"]   # state tag + LATEST pointers (TASK_REFINEMENT.md)
   python scripts/dev/tasks.py stale [--refresh]     # ready/active cards whose scope paths changed after their pointers were refreshed
   python scripts/dev/tasks.py sweep [--apply]       # cards whose registry rows are all CLOSED/WONTFIX -> done
@@ -1352,26 +1352,6 @@ def cmd_tried(a):
     print(f"{a.id}: try {c['refine_tries']}/{MAX_TRIES}" + (" parked: asks the operator" if c.get("asks") else " parked: no tries left" if not refinable(c) else ""))
 
 
-def route_next(card, value):
-    """--next of `done` (d-route-tag-every-session-1104): where the work goes next, route_audit.py grammar. A card id must exist;
-    new:"<title>" files that card raw (refs back to this one) and returns its id. None when value is None (callers in code)."""
-    if value is None:
-        return None
-    import route_audit as RA
-    kind, val = RA.parse_next(value, allow_new=True)
-    if kind is None:
-        raise SystemExit(f'tasks: --next: {val}; use --next "<card-id | stage | END: reason | new:<title>>"')
-    if kind == "card" and not path_of(REPO, val).exists():
-        raise SystemExit(f'tasks: --next card {val} does not exist; use --next new:"<title>" to file it')
-    if kind == "new":
-        cid = re.sub(r"[^a-z0-9]+", "-", val.lower()).strip("-")[:40]
-        if not path_of(REPO, cid).exists():
-            save(REPO, blank(cid, val, prio=card.get("prio", 3), refs=[path_of(REPO, card["id"]).as_posix()]))
-            print(f"filed raw card {cid} (next of {card['id']})")
-        return cid
-    return value.strip() if kind != "end" else f"END: {val}"
-
-
 def cmd_done(a):
     c = get(REPO, a.id)
     if c.get("flow"):
@@ -1384,10 +1364,7 @@ def cmd_done(a):
         gate += promotion_problems(c, repo=REPO) + problems(c, load_all(REPO), registry(REPO), repo=REPO)
     if gate:
         raise SystemExit(f"tasks: {a.id} cannot be marked done: " + "; ".join(gate))
-    nxt = route_next(c, getattr(a, "next", None))
     c.update(state="done", result=a.result, closed=now())
-    if nxt:
-        c["next"] = nxt
     c.setdefault("result_receipt", {}).setdefault("trust", {"tag": "UNCHECKED"})
     c.setdefault("taken", c["closed"])
     head = TS.git(REPO, "rev-parse", "--short", "HEAD")
@@ -1759,7 +1736,6 @@ def main(argv=None):
     d = sp.add_parser("done")
     d.add_argument("id")
     d.add_argument("--result", required=True)
-    d.add_argument("--next", required=True, help='where the work goes next: <card-id> | <stage> | "END: <reason>" | new:"<title>" (files it raw)')
     d.set_defaults(f=cmd_done)
     cf = sp.add_parser("conflict", help="log two contradicting instructions as one deduplicated bug-conflict-<hash> card (seen count)")
     cf.add_argument("text", nargs="+", help="'A | B' or two args")
