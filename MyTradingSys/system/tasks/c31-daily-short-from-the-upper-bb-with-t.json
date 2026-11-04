@@ -4,33 +4,62 @@
   "commands": [],
   "created": "2026-11-02T19:48:11Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/C31_HALVES.md has: Context and Regime mix lines, n and fee-net R per half and in total from the script, the n needed for the stated effect (power), and verdict POWERED-PASS|POWERED-FAIL|UNDERPOWERED (UNDERPOWERED parks the lead, nothing trades)",
+  "est_turns": 15,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "C31 daily BB short with 50-day trend down: report halves 2022-23 vs 2024-25, entry = first close back inside the band, fee-net, with a power check first (n=15 LEAD vs 165 unfiltered)",
   "id": "c31-daily-short-from-the-upper-bb-with-t",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Sim result cards: Verdict/Keep/Totals regenerated from results json; eagle 11-03 docstring",
+      "ref": "9111a1c05590",
+      "utc": "2026-11-03T17:22:16Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "9111a1c05590 Sim result cards: Verdict/Keep/Totals regenerated from results json; eagle 11",
+      "ref": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md",
+      "utc": "2026-11-03T17:22:16Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED: planner-c-1104 2026-11-04 (CRUCIAL: needs review Agent before ship)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T07:19:25Z",
   "refs": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/bb_edge_candle_rule.py"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/bb_edge_candle_rule.py",
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md"
+  ],
+  "scope_out": [
+    "no parameter tuning, no other stops, no mainnet; BTC alone cannot power 1h+ (project-context-retest outcome) so an UNDERPOWERED verdict is an acceptable result"
+  ],
+  "scope_sha": "9111a1c05590",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md:40"
+  ],
+  "state": "ready",
+  "steps": [
+    "run bb_edge_candle_rule.py, confirm the two reference numbers",
+    "split into the two halves, apply fee-net per FORMULAS.md",
+    "compute power, write C31_HALVES.md"
+  ],
+  "tests": "script reproduces LEAD 73% +1.10R n=15 and unfiltered 21% -0.07R n=165 before any new row is trusted",
   "title": "C31: daily short from the upper BB with the 50-day trend down: halves 2022-23 vs 2024-25, entry = first close back inside the band, fee-net; LEAD 73% +1.10R n=15, unfiltered 21% -0.07R",
-  "weight": "",
-  "worker": ""
+  "weight": "CRUCIAL",
+  "worker": "agent"
 }

@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_BB_STUDIES_1104.md'); assert p.exists() and len(p.read_text())>400\""
+  ],
+  "created": "2026-11-04T07:15:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_BB_STUDIES_1104.md independently recomputes trade count, win rate, net R/bps, and regime mix from the CSVs in bb_range_to_range_2026-11-04, bb_range_retest_2026-11-04, and bb_long_window_2026-11-04, compares every number against each RESULT.md, and ends with VERDICT: MATCH or MISMATCH.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "D11 feeder check (A-20261104-1): Perform an independent Gemini blind read of the three 2026-11-04 Bollinger Band studies (bb_range_to_range_2026-11-04, bb_range_retest_2026-11-04, bb_long_window_2026-11-04) by computing summary numbers directly from the CSV files first and then diffing against each RESULT.md.",
+  "id": "gemini-blind-read-bb-range-studies-1104",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-04 T0-ONLY; D11 feeder card for 8ce5461b0, f38aa80a3, 07f4d20f0",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "gemini-pro-argon",
+  "refreshed": "2026-11-04T07:15:00Z",
+  "refs": [
+    "MyTradingSys/research/bb_range_to_range_2026-11-04/RESULT.md",
+    "MyTradingSys/research/bb_range_retest_2026-11-04/RESULT.md",
+    "MyTradingSys/research/bb_long_window_2026-11-04/RESULT.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_BB_STUDIES_1104.md",
+    "MyTradingSys/research/bb_range_to_range_2026-11-04",
+    "MyTradingSys/research/bb_range_retest_2026-11-04",
+    "MyTradingSys/research/bb_long_window_2026-11-04"
+  ],
+  "scope_out": [],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read trades.csv, summary.csv, and long_window_2017_2026.csv in bb_range_to_range_2026-11-04, bb_range_retest_2026-11-04, and bb_long_window_2026-11-04 before reading RESULT.md prose",
+    "Recompute trade counts, win rates, mean/total returns, and regime-split rows from the raw CSVs",
+    "Compare against each RESULT.md and write MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_BB_STUDIES_1104.md with a per-study table and VERDICT"
+  ],
+  "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_BB_STUDIES_1104.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
+  "title": "[GEMINI] Blind read of Bollinger range-to-range, retest, and long-window RESULT.md vs CSVs",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
