@@ -1,0 +1,63 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-04T20:09:30Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/malkan_hindi_2026-11-04/REVIEW_MALKAN_WINDOW_GEMINI_1104.md lists each defect with file and line evidence, or none, and ends with VERDICT: ACCEPT or FIX-FIRST.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Non-Claude spec review of card malkan-window-12-18-vs-hindi, as its note requires before anyone stamps it: is the question right, are the sources enough, can its test be passed by a wrong answer? Defects only; do not answer the card.",
+  "id": "gemini-spec-review-malkan-window-1104",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "research: extract Malkan RSI divergence concepts from 6 Hindi videos",
+      "ref": "9aab0dd1db8f",
+      "utc": "2026-11-04T12:39:50Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "9aab0dd1db8f research: extract Malkan RSI divergence concepts from 6 Hindi videos",
+      "ref": "MyTradingSys/research/malkan_hindi_2026-11-04/HINDI_CONCEPTS.md",
+      "utc": "2026-11-04T12:39:50Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Filed by Supervisor B for the C2 second take the malkan-window card note asks for (bug-conflict-794ab2c587). Review only: it does not answer the card.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-04T20:09:31Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/tasks/malkan-window-12-18-vs-hindi.json",
+    "MyTradingSys/research/malkan_hindi_2026-11-04/HINDI_CONCEPTS.md",
+    "MyTradingSys/backtest/layers/rsi/params/malkan_divergence_default.json",
+    "MyTradingSys/research/malkan_extract_2026-10-15/extracts",
+    "MyTradingSys/research/malkan_hindi_2026-11-04/REVIEW_MALKAN_WINDOW_GEMINI_1104.md"
+  ],
+  "scope_out": [],
+  "scope_sha": "9aab0dd1db8f",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read the card and the files it names",
+    "List each defect with file and line, or say none",
+    "Write the review ending with VERDICT: ACCEPT or FIX-FIRST"
+  ],
+  "tests": "python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/malkan_hindi_2026-11-04/REVIEW_MALKAN_WINDOW_GEMINI_1104.md').read_text(encoding='utf-8'); assert 'VERDICT:' in t\"",
+  "title": "[GEMINI] Spec review of the Malkan divergence window card before it runs",
+  "weight": "ROUTINE",
+  "worker": ""
+}
