@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T13:39:10Z",
   "commands": [
     "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-rsi-div-mtf-gated.md'); assert p.exists() and len(p.read_text())>400\""
   ],
@@ -15,7 +16,14 @@
   "id": "gpt-rederive-rsi-div-mtf-gated-1104",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "FAIL: code audit report MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-rs",
+      "ref": "b42eed42a",
+      "utc": "2026-11-04T13:39:10Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -28,7 +36,12 @@
     "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/study.py",
     "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/study_long.py"
   ],
-  "result": "",
+  "result": "FAIL: code audit report MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-rsi-div-mtf-gated-1104.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-rsi-div-mtf-gated.md",
     "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04"
@@ -37,12 +50,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read study.py and study_long.py in MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04",
     "Check that weekly and monthly RSI14 gates use only completed HTF candles at each entry timestamp and verify pivot confirmation lag",
     "Write MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-rsi-div-mtf-gated.md"
   ],
+  "taken": "2026-11-04T13:39:10Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-rsi-div-mtf-gated.md'); assert p.exists() and len(p.read_text())>400\"",
   "title": "GPT independent re-derivation of rsi_divergence_mtf_gated_2026-11-04 strict vs bear-proxy metrics",
   "weight": "ROUTINE",
