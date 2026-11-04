@@ -4,35 +4,56 @@
   "commands": [],
   "created": "2026-11-04T16:49:43Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_TOM_SPIKE_1104.md lists every headline number of sim_desk studies/tom_spike_level.py and desk-trades-tom_spike_level-2026-11-04.json recomputed from tom_spike_level.py and results/desk-trades-tom_spike_level-2026-11-04.json, a per-number match table, and ends with VERDICT: MATCH or MISMATCH.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "D11 feeder check (A-20261104-1): independent Gemini blind read of sim_desk studies/tom_spike_level.py and desk-trades-tom_spike_level-2026-11-04.json: recompute the headline numbers from the raw files first, then diff against the stated result.",
   "id": "gemini-blind-read-tom-spike-level-py-sim",
   "kind": "audit",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sim desk: per-trade replay exports for Fabio v3 B/C, Tom value-edge fade and a new Tom spi",
+      "ref": "ed0f702ce56b",
+      "utc": "2026-11-04T17:23:53Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "not_twin_of": [
+    "gemini-blind-read-bb-range-studies-1104",
+    "gemini-blind-read-rsi-div-mtf-gated-1104",
+    "gpt-rederive-meta-label-dev-ext-1104"
+  ],
+  "note": "REVIEWED:2026-11-04 T0-ONLY | D11 feeder card (A-20261104-1)",
   "prio": 3,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "session-planner",
+  "refreshed": "2026-11-04T17:35:51Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
+  "scope_in": [
+    "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_TOM_SPIKE_1104.md",
+    "MyTradingSys/research/sim_desk/studies/tom_spike_level.py",
+    "MyTradingSys/research/sim_desk/results/desk-trades-tom_spike_level-2026-11-04.json"
+  ],
   "scope_out": [],
-  "size": "",
+  "scope_sha": "ed0f702ce56b",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read tom_spike_level.py and results/desk-trades-tom_spike_level-2026-11-04.json before any prose result file",
+    "Recompute counts, win rates and mean or total returns independently of the study code",
+    "Write MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_TOM_SPIKE_1104.md with a per-number table and VERDICT"
+  ],
+  "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_TOM_SPIKE_1104.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] blind read tom_spike_level.py (sim_desk/studies)",
-  "weight": "",
-  "worker": "",
-  "not_twin_of": [
-    "sim-desk-tom-fabio-studies"
-  ]
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
