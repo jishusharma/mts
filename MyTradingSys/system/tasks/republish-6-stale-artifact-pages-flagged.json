@@ -41,7 +41,7 @@
   "not_twin_of": [
     "q17-p5-three-pages"
   ],
-  "note": "REVIEWED:2026-10-31 T0-ONLY Final report ends with a Noticed: line. Blocked? List 2-3 non-destructive fixes, try the safest, verify, then report. | PLANNER 2026-10-31 refined to HAIKU: the 2026-10-30 SKIPPED note is superseded (both remaining stale pages have a jishusharma1985 url; per-login Artifact publish is the step, run from login C). Pages a later q17-p5-three-pages retires are dropped from the list.",
+  "note": "REVIEWED:2026-10-31 T0-ONLY Final report ends with a Noticed: line. Blocked? List 2-3 non-destructive fixes, try the safest, verify, then report. | PLANNER 2026-10-31 refined to HAIKU: the 2026-10-30 SKIPPED note is superseded (both remaining stale pages have a jishusharma1985 url; per-login Artifact publish is the step, run from login C). Pages a later q17-p5-three-pages retires are dropped from the list. REVIEWED:2026-11-04 HOLD (mts_control_room.html missing; page retired 10-31 per test_artifacts)",
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "planner-20261030-d",

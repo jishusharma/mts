@@ -24,7 +24,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "PLANNER 2026-11-02 planner-b-1102 DECISION (OURS): offline module only; measuring the pulled-before-touch rate needs recorded depth, file as a follow-up run card once the module ships. Threshold 1.5M USD is SOURCED (CoinGlass field guide), the 10 USD grid and persistence are OURS. REVIEWED:2026-11-02 T0-ONLY",
+  "note": "PLANNER 2026-11-02 planner-b-1102 DECISION (OURS): offline module only; measuring the pulled-before-touch rate needs recorded depth, file as a follow-up run card once the module ships. Threshold 1.5M USD is SOURCED (CoinGlass field guide), the 10 USD grid and persistence are OURS. REVIEWED:2026-11-02 T0-ONLY REVIEWED:2026-11-04 HOLD (scope folder wall_ledger_2026-11 missing; not started)",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",

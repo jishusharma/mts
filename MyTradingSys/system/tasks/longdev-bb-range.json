@@ -44,7 +44,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-04 HOLD (PRE_REG_LONG and RESULT_LONG already exist; pass appears done)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "agent-longdev-bb",
