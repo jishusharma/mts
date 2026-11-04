@@ -66,7 +66,7 @@ def test_trailing_1m_5m_legend_and_data_age():
     h = _html()
     foot = re.search(r'<footer>(.*?)</footer>', h, re.S).group(1)
     assert '<b>1m</b>' in foot and '<b>5m</b>' in foot
-    assert re.search(r'class="age"[^>]*>data \d{4}-\d\d-\d\d \d\d:\d\dZ · \d+ d old<', h)
+    assert re.search(r'class="age(?: old)?"[^>]*>data \d{4}-\d\d-\d\d \d\d:\d\dZ · \d+ d old<', h)
 
 
 def test_tabs_use_symbols_not_emoji():
@@ -80,4 +80,4 @@ def test_numbers_come_from_repo_files():
     last = list(csv.DictReader(open(days[-1])))[-1]
     assert f'<span class="val ">{float(last["c"]):,.0f}</span>' in h
     c30 = json.load(open(MTS / 'research' / 'eagle_eyes_picture_2026-10-28' / 'c30_validation_verdict.json'))
-    assert f'<span class="lab">H1 trades</span><span class="val ">{c30["H1"]["n"]}</span>' in h
+    assert f'<span class="lab">30m rule trades</span><span class="val ">{c30["H1"]["n"]}</span>' in h

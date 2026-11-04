@@ -135,7 +135,7 @@ def delta_box(title, lines):
 
 def ladder(title, levels):
     """levels: (label, price, cls); a 'now' row is inserted at LAST_PX."""
-    allrows = sorted(levels + [('now', LAST_PX, 'now')], key=lambda x: -x[1])
+    allrows = sorted(levels + [(f'last bar {LAST_TS:%m-%d %H:%M}Z', LAST_PX, 'now')], key=lambda x: -x[1])
     tr = ''.join(f'<tr class="{c}"><td>{E(n)}</td><td>{fnum(p)}</td><td>{"" if c == "now" else sgn((p / LAST_PX - 1) * 100, 2) + "%"}</td></tr>'
                  for n, p, c in allrows)
     return f'<div class="box"><h3>{E(title)}</h3><table class="ladder"><tbody>{tr}</tbody></table></div>'
@@ -170,7 +170,7 @@ def panel(pid, badge, body, active=False):
     return (f'<section id="panel-{pid}" class="panel{" on" if active else ""}" role="tabpanel" aria-labelledby="tab-{pid}">{b}'
             f'<div class="pbody">{body}</div>'
             f'<div class="note"><input id="c-{pid}" maxlength="140" placeholder="one-line comment on this tab" aria-label="comment">'
-            f'<button data-save="{pid}">Save</button><button data-copy>Copy all</button><span id="s-{pid}" class="saved"></span></div></section>')
+            f'<button data-save="{pid}">Save</button><button data-copy title="copies the note of every tab, to paste into chat">Copy notes</button><span id="s-{pid}" class="saved"></span></div></section>')
 
 
 def price_line(title, pts):
@@ -193,40 +193,50 @@ HOURLY = [float(b['c']) for d in DAYS for i, b in enumerate(BARS[d]) if i % 60 =
 # ---------- Market ----------
 chg = (LAST_PX / DAY_OPEN[LAST_DAY] - 1) * 100
 hours = list(range(24))
-mx = max(abs(v) for d in DAYS for v in HD[d].values())
-mcells = []
-for i, d in enumerate(DAYS):
-    row = []
-    for h in hours:
-        if h not in HD[d]:
-            row.append((None, '', f'{d[5:]} {h:02d}Z no bars', False))
-            continue
-        v = HD[d][h]
-        top = h == max(HD[d], key=lambda k: abs(HD[d][k]))
-        row.append((shade(v, mx), '', f'{d[5:]} {h:02d}Z delta {sgn(v)} BTC' + (' · biggest hour of the day' if top else ''), top))
-    mcells.append(row)
+PARTIAL = len(rows) < 1440  # the newest file can stop mid-day
+FIRST_TS = dt.datetime.fromtimestamp(int(rows[0]['t']) / 1000, dt.timezone.utc)
+SPAN = f'{FIRST_TS:%H:%M}→{LAST_TS:%H:%M}Z' if PARTIAL else 'full day'
+
+
+def day_read(pm, cvd):
+    """Plain read of one day: did price and net buying agree? (context only: price/CVD divergence tested NEGATIVE 2026-10-14)."""
+    if pm >= 0 and cvd >= 0:
+        return '▲', 'up', 'buyers pushed it up'
+    if pm < 0 and cvd < 0:
+        return '▼', 'down', 'sellers pushed it down'
+    if pm >= 0:
+        return '◇', 'warn', 'rose on net selling'
+    return '◇', 'warn', 'fell despite net buying'
+
+
+trs = ''
+for d in DAYS:
+    pm = (DAY_CLOSE[d] / DAY_OPEN[d] - 1) * 100
+    sym, cls, txt = day_read(pm, DAY_CVD[d])
+    part = ' *' if len(BARS[d]) < 1440 else ''
+    trs += (f'<tr><td>{d[5:]}{part}</td><td class="{"up" if pm >= 0 else "down"}">{"▲" if pm >= 0 else "▼"} {sgn(pm, 2)}%</td>'
+            f'<td class="{"up" if DAY_CVD[d] >= 0 else "down"}">{sgn(DAY_CVD[d])}</td><td class="{cls}"><span class="sym">{sym}</span> {txt}</td></tr>')
+days_tbl = ('<div class="box"><h3>Who won each day</h3><table class="dtab"><thead><tr><th>day</th><th>price</th><th>net BTC bought</th><th>read</th></tr></thead>'
+            f'<tbody>{trs}</tbody></table><p class="how">◇ = price and buying disagree: watch, not a trade on its own (tested 10-14, no edge).'
+            + (f' * {LAST_DAY[5:]} is partial: {SPAN}.' if PARTIAL else '') + '</p></div>')
 prev_day = DAYS[-2]
 big_h = max(HD[LAST_DAY], key=lambda h: abs(HD[LAST_DAY][h]))
 m_delta = [
     (LAST_DAY[5:], '▲' if DAY_CLOSE[LAST_DAY] >= DAY_CLOSE[prev_day] else '▼', 'up' if DAY_CLOSE[LAST_DAY] >= DAY_CLOSE[prev_day] else 'down',
-     f'close {fnum(DAY_CLOSE[LAST_DAY])} vs {fnum(DAY_CLOSE[prev_day])}'),
+     f'last {fnum(DAY_CLOSE[LAST_DAY])} vs {fnum(DAY_CLOSE[prev_day])} close'),
     (LAST_DAY[5:], '▲' if DAY_CVD[LAST_DAY] >= 0 else '▼', 'up' if DAY_CVD[LAST_DAY] >= 0 else 'down',
-     f'CVD {sgn(DAY_CVD[LAST_DAY])} vs {sgn(DAY_CVD[prev_day])}'),
+     f'net bought {sgn(DAY_CVD[LAST_DAY])} vs {sgn(DAY_CVD[prev_day])} BTC'),
     (f'{big_h:02d}Z', '◆', 'warn', f'biggest hour {sgn(HD[LAST_DAY][big_h])} BTC'),
-    (prev_day[5:], '▼' if DAY_CLOSE[prev_day] < DAY_CLOSE[DAYS[-3]] else '▲', 'down' if DAY_CLOSE[prev_day] < DAY_CLOSE[DAYS[-3]] else 'up',
-     f'close {fnum(DAY_CLOSE[prev_day])}, CVD {sgn(DAY_CVD[prev_day])}'),
 ]
-market = (kpis(kpi('BTC last', fnum(LAST_PX), f'{LAST_TS:%m-%d %H:%M}Z perp'),
-               kpi('Day move', f'{"▲" if chg >= 0 else "▼"} {sgn(chg, 2)}%', f'open {fnum(DAY_OPEN[LAST_DAY])}', 'up' if chg >= 0 else 'down'),
-               kpi('CVD day', f'{"▲" if DAY_CVD[LAST_DAY] >= 0 else "▼"} {sgn(DAY_CVD[LAST_DAY])}', 'BTC bought minus sold', 'up' if DAY_CVD[LAST_DAY] >= 0 else 'down'),
-               kpi('Day range', fnum(DAY_HI[LAST_DAY] - DAY_LO[LAST_DAY]), f'{fnum(DAY_LO[LAST_DAY])} → {fnum(DAY_HI[LAST_DAY])}'))
-          + '<div class="cols"><div class="stack">'
-          + heat('Delta by hour (UTC), day by day', [d[5:] for d in DAYS], [f'{h:02d}' if h % 6 == 0 else '' for h in hours], mcells,
-                 'green = buyers, red = sellers · ring = biggest hour of the day · tap a cell')
+market = (kpis(kpi('BTC last bar', fnum(LAST_PX), f'Binance futures · {LAST_TS:%m-%d %H:%M}Z'),
+               kpi('Move ' + ('so far' if PARTIAL else 'day'), f'{"▲" if chg >= 0 else "▼"} {sgn(chg, 2)}%', SPAN, 'up' if chg >= 0 else 'down'),
+               kpi('Net BTC bought', f'{"▲" if DAY_CVD[LAST_DAY] >= 0 else "▼"} {sgn(DAY_CVD[LAST_DAY])}', 'buys minus sells, ' + SPAN, 'up' if DAY_CVD[LAST_DAY] >= 0 else 'down'),
+               kpi('Range', fnum(DAY_HI[LAST_DAY] - DAY_LO[LAST_DAY]), f'{fnum(DAY_LO[LAST_DAY])} → {fnum(DAY_HI[LAST_DAY])}'))
+          + '<div class="cols"><div class="stack">' + days_tbl
           + price_line(f'Price, {DAYS[0][5:]} → {LAST_DAY[5:]} (1h closes)', HOURLY) + '</div>'
           + '<div class="stack">' + delta_box(f'since {prev_day[5:]}', m_delta)
-          + ladder('Levels', [(f'{LAST_DAY[5:]} high', DAY_HI[LAST_DAY], ''), (f'{LAST_DAY[5:]} low', DAY_LO[LAST_DAY], ''),
-                              ('POC (most traded)', POC, 'poc'), ('5-day high', max(DAY_HI.values()), ''), ('5-day low', min(DAY_LO.values()), '')])
+          + ladder('Levels vs last bar', [(f'{LAST_DAY[5:]} high', DAY_HI[LAST_DAY], ''), (f'{LAST_DAY[5:]} low', DAY_LO[LAST_DAY], ''),
+                                         ('most traded price', POC, 'poc'), ('5-day high', max(DAY_HI.values()), ''), ('5-day low', min(DAY_LO.values()), '')])
           + '</div></div>')
 
 # ---------- Signals (backtest, real) ----------
@@ -237,6 +247,7 @@ for _ in range(12):
     m += 1
     if m == 13:
         y, m = y + 1, 1
+NAMES = {'H1': '30m rule', 'H2': '15m + 2h up'}  # PRE_REG_C30.md section 0: H1 = 30m chart, H2 = 15m chart with 2h trend up
 scells, srows = [], []
 for hk in ('H1', 'H2'):
     tr = C30[hk]['trades']
@@ -248,15 +259,15 @@ for hk in ('H1', 'H2'):
     for mo in months:
         v = by.get(mo)
         if not v:
-            row.append((None, '·', f'{hk} {mo}: no trade', False))
+            row.append((None, '·', f'{NAMES[hk]} {mo}: no trade', False))
             continue
         s = sum(v)
         sym = '✓' if s > 0 else '✗'
-        row.append((shade(s, 6), sym, f'{hk} {mo}: {len(v)} trades, net {sgn(s, 2)}%', mo == worst_m))
+        row.append((shade(s, 6), sym, f'{NAMES[hk]} {mo}: {len(v)} trades, {sgn(s, 2)}% after fees', mo == worst_m))
     scells.append(row)
-    srows.append(hk)
+    srows.append(NAMES[hk])
 h1, h2 = C30['H1'], C30['H2']
-s_delta = [(t[0][2:10], '✓' if t[1] > 0 else '✗', 'up' if t[1] > 0 else 'down', f'{sgn(t[1], 2)}% in {t[2]} bars')
+s_delta = [(t[0][2:10], '✓' if t[1] > 0 else '✗', 'up' if t[1] > 0 else 'down', f'{sgn(t[1], 2)}%, held {t[2] / 2:g} h')
            for t in reversed(h1['trades'][-5:])]
 
 
@@ -264,15 +275,20 @@ def vcls(v):
     return 'down' if v == 'FAIL' else 'warn'
 
 
-signals = (kpis(kpi('H1 trades', f'{h1["n"]}', f'win {h1["win"]:.0f}%'),
-                kpi('H1 net mean', f'{sgn(h1["mean"], 2)}%', f'worst {h1["worst"]:.1f}%', 'down' if h1['mean'] < 0 else 'up'),
-                kpi('H1 verdict', f'✗ {h1["verdict"]}', f'p {h1["p_one_sided"]:.2f}', vcls(h1['verdict'])),
-                kpi('H2 verdict', '? unclear', f'{h2["verdict"].lower()}, n {h2["n"]}', vcls(h2['verdict'])))
+signals = (kpis(kpi('30m rule trades', f'{h1["n"]}', f'{h1["win"]:.0f}% of them won'),
+                kpi('Avg per trade', f'{sgn(h1["mean"], 2)}%', f'after fees · worst {h1["worst"]:.1f}%', 'down' if h1['mean'] < 0 else 'up'),
+                kpi('30m rule', '✗ loses', 'do not trade it alone', vcls(h1['verdict'])),
+                kpi('15m + 2h up', '? unproven', f'{sgn(h2["mean"], 2)}%/trade, {h2["n"]} trades', vcls(h2['verdict'])))
            + '<div class="cols">'
-           + heat(f'30m bottom-buy, {C30["split"]} {C30["window"]}', srows, [mo[5:] for mo in months], scells,
-                  '✓ month net up · ✗ net down · ring = worst month · backtest, not live flags')
-           + '<div class="stack">' + delta_box('last 5 H1 trades', s_delta)
-           + '<div class="box"><h3>Live flags</h3><p class="big mute">none on this machine</p><p class="sub">live feed runs on the desktop</p></div>'
+           + '<div class="stack">'
+           + heat('Buy the dip: WaveTrend low + RSI divergence, test year 2024-07 → 2025-06', srows, [mo[5:] for mo in months], scells,
+                  '✓ month made money after fees · ✗ lost · ring = worst month · past test, not a live signal')
+           + '<div class="box"><h3>What it means for you</h3><ul class="means">'
+           + f'<li><span class="sym down">✗</span>30m rule: {h1["win"]:.0f}% wins but big losers eat them ({h1["worst"]:.1f}% worst). Not a trade on its own.</li>'
+           + '<li><span class="sym warn">?</span>15m buy only when 2h trend is up: small gain, could be luck. Watch only.</li>'
+           + '<li><span class="sym mute">●</span>Why 30m: your swing chart; Eagle_Eyes study C30 (10-31).</li></ul></div></div>'
+           + '<div class="stack">' + delta_box('last 5 trades, 30m rule', s_delta)
+           + '<div class="box"><h3>Timeframe flips now</h3><p class="big mute">not on this page yet</p><p class="sub">needs live candles; proposed next</p></div>'
            + '</div></div>')
 
 # ---------- Positions (SAMPLE) ----------
@@ -387,7 +403,13 @@ padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(
 header{flex:none;display:flex;flex-direction:column;gap:6px;padding-block:8px 6px}
 .top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .top h1{font-size:1.05rem;margin:0;font-weight:700;letter-spacing:.01em}
-.age{font:600 .8rem var(--f-num);padding:2px 8px;border-radius:999px;background:var(--warn-bg);color:var(--warn)}
+.age{font:700 .8rem var(--f-num);padding:2px 8px;border-radius:999px;background:var(--warn-bg);color:var(--warn)}.age.old{background:var(--down);color:var(--card)}
+.dtab{width:100%;border-collapse:collapse;font:.9rem var(--f-num);font-variant-numeric:tabular-nums}
+.dtab th{font:600 .72rem var(--f-ui);text-transform:uppercase;letter-spacing:.05em;color:var(--mute);text-align:left;padding:2px 4px}
+.dtab td{padding:3px 4px;border-bottom:1px solid var(--line);white-space:nowrap}.dtab td:nth-child(2),.dtab td:nth-child(3){text-align:right}
+.how{margin:6px 0 0;font-size:.82rem;color:var(--mute)}
+.means{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:.92rem}
+.means li{display:grid;grid-template-columns:1.6rem 1fr;align-items:baseline}
 .tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
 .tabs button{flex:none;display:flex;align-items:center;gap:6px;background:var(--card);color:var(--ink);border:1px solid var(--line);
 border-radius:8px;padding:7px 11px;font:600 .95rem var(--f-ui);cursor:pointer;white-space:nowrap}
@@ -464,7 +486,8 @@ document.querySelectorAll('[data-copy]').forEach(function(b){b.onclick=function(
 """
 FONTS = '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap">'
 TITLE = 'Live feed one page'
-age_chip = f'<span class="age" title="newest bar in the repo">data {LAST_TS:%Y-%m-%d %H:%M}Z · {AGE_D} d old</span>'
+age_chip = (f'<span class="age{" old" if AGE_D >= 1 else ""}" title="newest bar in the repo; not live">'
+            f'data {LAST_TS:%Y-%m-%d %H:%M}Z · {AGE_D} d old</span>')
 inner = (f'<header><div class="top"><h1>MTS live</h1>{age_chip}<span class="sub">built {NOW:%m-%d %H:%M}Z</span></div>'
          f'<nav class="tabs" role="tablist">{bar}</nav></header><main>{panels}</main><footer>{legend}</footer>'
          f'<script>{JS}</script>')
