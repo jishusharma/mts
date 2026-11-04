@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-04T21:02:31Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-04/testnet_signal_fast_lane_blind_read.md has one row per quoted fact (at least 10): FOUND / DIFF / NOT_IN_DATA; line 1 holds the three counts.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Cross-vendor check: every repo fact quoted in DESIGN.md (file names, decision ids, cotrade limits, runner behaviour) matches the cited source.",
+  "id": "gemini-blind-read-of-testnet-signal-fast",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Never use model output as the source.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-04T21:02:49Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/testnet_signal_fast_lane_2026-11-04/DESIGN.md (read)",
+    "MyTradingSys/research/gemini_audits_2026-11-04/testnet_signal_fast_lane_blind_read.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source report; no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/testnet_signal_fast_lane_2026-11-04/DESIGN.md:1-20"
+  ],
+  "state": "ready",
+  "steps": [
+    "List every repo fact quoted in DESIGN.md",
+    "Open the cited file and copy the matching line",
+    "Write FOUND/DIFF/NOT_IN_DATA per row, counts on line 1"
+  ],
+  "tests": "audit card, output file is the test; each row quotes the source line it was matched to; repo files stay byte-identical",
+  "title": "[GEMINI] blind read of testnet_signal_fast_lane_2026-11-04/DESIGN.md",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

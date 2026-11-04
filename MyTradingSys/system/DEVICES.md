@@ -28,9 +28,9 @@ Inside a Remote Desktop window the hostname is the REMOTE machine: a session sta
 
 | Device | Role | Runs |
 |---|---|---|
-| JIS-NB (192.168.29.188) | Operator workstation + live testnet system (until the cutover in LIVE_HOST_MOVE.md, then cold standby) + repo source of truth | auto_trader, position_manager, daily_loss_monitor, live_runner_cli, orderflow_live, htf_context_live, 2 Maven feeds, scheduled checks, alert popups, Claude sessions |
+| JIS-NB (192.168.29.188) | Operator workstation + cold standby (live loop cut over to the laptop 2026-10-22, commit 26806b7aa; exact time NOT CAPTURED; java=0 on the 2026-10-30 roll call) + repo source of truth | Claude sessions, scheduled checks, operator screen; old live tree `.mts_live` (rollback copy) |
 | JIS-NUC (192.168.29.110) | 24/7 backtest and data host on the APC BX600C-IN UPS (2026-10-21) + Claude relay sessions + Codex lab + DSA bridge; never the live loop (Qwen lane ended 2026-10-01) | Python 3.14.6; work tree `C:\Users\E-ngineers\IdeaProjects\mts-dsa`; data `F:\MTS\data`; jobs as one-shot scheduled tasks |
-| DESKTOP-F7IU69N (192.168.29.157, DHCP) | Next live testnet host (operator 2026-10-21, staged, NOT cut over: LIVE_HOST_MOVE.md); full working machine when travelling | Remote Desktop into JIS-NB and JIS-NUC; Claude app; own repo clone for reading and cloud work |
+| DESKTOP-F7IU69N (192.168.29.157, DHCP) | Live testnet host: cut over 2026-10-22 (commit 26806b7aa; exact time NOT CAPTURED; LIVE_HOST_MOVE.md); full working machine when travelling | auto_trader, position_manager, daily_loss_monitor, live_runner_cli, orderflow_live, htf_context_live, 2 Maven feeds (java=1 on the 2026-10-30 roll call); Remote Desktop into JIS-NB and JIS-NUC; Claude app; own repo clone for reading and cloud work |
 
 Datasets: the 1m klines (Dumps/backtest/raw_1m_2022, ~2.5M BTCUSDT bars, needed by run_cc_setups and the fabio/rsi runners) exist on JIS-NB and, since 2026-10-12, on JIS-NUC
 (fetched from data.binance.vision by backtest/fetch_binance_archive.py, 2022-01..2026-10-11, 2,512,800 bars, 0 gaps; the first copy was deleted with its worktree by `tidy` 2026-10-12
@@ -48,10 +48,10 @@ exception: they appear and stay on screen until dismissed.
 - `mts.ps1` `Open-Window` (mts.ps1:69-71) still starts guard, runner, orderflow, auto-trader and position managers each in a visible pwsh window; making them hidden is owned by the thread "Fix desktop Claude app and flashing shells".
 - Alert popups stay in the operator's own sign-in session (the only session that can draw on his screen). Operator 2026-10-06: a second Windows account is fine if it helps, but he is never asked to switch profiles.
 
-## 3. Where the live loop runs - TARGET DESKTOP-F7IU69N (operator 2026-10-21), STAGED, still on JIS-NB
+## 3. Where the live loop runs - CUT OVER to DESKTOP-F7IU69N (2026-10-22, commit 26806b7aa; exact time NOT CAPTURED)
 
 Operator 2026-10-21 replaces the 2026-10-06 NUC plan: the live loop moves to DESKTOP-F7IU69N (laptop, two batteries = its own UPS, lid close on AC = do nothing);
-JIS-NUC becomes the 24/7 backtest/data host and never runs the loop. Until the cutover runs, the loop stays on JIS-NB, hidden (section 2). Plan, readiness checklist,
+JIS-NUC becomes the 24/7 backtest/data host and never runs the loop. The cutover ran 2026-10-22: the loop runs on the laptop and JIS-NB holds no engine. Plan, readiness checklist,
 one-owner cutover checklist, data plan and code prerequisites: LIVE_HOST_MOVE.md. The move is a restart window the operator chooses (B137 Q5); nothing moves from this document.
 Not yet proven on the laptop: latency vs JIS-NB (same-hour probe, LIVE_HOST_MOVE s3 item 9; laptop Wi-Fi baseline 2026-10-20 21:34Z: Binance ~200 ms, Deribit testnet ~320 ms median per new HTTPS call);
 Ethernet; unattended start after a reboot (not allowed by SCHEDULING_POLICY; default manual `mts start`, decision q-live-autostart). Feeds, auto_trader, position managers, loss monitor and runners talk through local files, so they move as one set.
@@ -125,9 +125,9 @@ Backtest data (F:\MTS\data on the NUC) is not in git; it is copied after new rec
   Checked 2026-10-24 against origin/fast-track: no commits outside trunk in any of them. `mts-codex` has one untracked folder, `tmp/` (11 PDFs, 2.8 MB, dated 2026-10-12), left in place. `scripts/dev/wt_maint.py` (`protected_reason`) refuses to remove all four. To retire one: archive it with a verified bundle first, as the 26 were.
 - Antigravity daemon at login (changed 2026-10-24): the HKCU Run value `AntigravityCliDaemon` now launches `C:\WINDOWS\System32\conhost.exe --headless C:\Users\E-ngineers\.gemini\bin\agy.exe remote-control serve`, so it runs with no console window. The previous value was a direct launch; it is saved in the session scratchpad. Verified by a restart: no window, log shows "Connection status: Connected". Verified by a real sign-out and sign-in (2026-10-24): the Run value fired at logon, the daemon ran under conhost with no window, its log showed "Connection status: Connected", and the VS Code Antigravity hub started under Code.exe.
 
-## 8. DESKTOP-F7IU69N (laptop) - next live testnet host (staged), travel
+## 8. DESKTOP-F7IU69N (laptop) - live testnet host (cut over 2026-10-22), travel
 
-- Role (operator 2026-10-21): the live testnet loop moves here (LIVE_HOST_MOVE.md); STAGED, NOT CUT OVER. Until the cutover it must not run the loop; after it, it is the only host that does (section 3).
+- Role: the live testnet loop runs here since the cutover of 2026-10-22 (commit 26806b7aa; exact time NOT CAPTURED; operator decision 2026-10-21, LIVE_HOST_MOVE.md). It is the only host that runs the loop (section 3).
   When travelling the laptop leaves home with the operator, and the loop with it: a trip needs a cutover back to JIS-NB first or the loop running on the road (decide per trip; default: cut back to JIS-NB).
 - 24/7 readiness (LIVE_HOST_MOVE s3; tick with date). Captured 2026-10-20 21:34Z: 2 batteries; power plan Balanced; Wi-Fi only (Intel AC 8265), built-in Ethernet I219-V not connected, LTE modem without SIM; Windows Update active hours 22:00-16:00; lid close AC = do nothing, battery = SLEEP; Energy saver at 50 %; sleep on battery 30 min.
   `scripts/dev/laptop_live_ready.ps1` (dry run by default; elevated `-Apply`) sets the scriptable items.

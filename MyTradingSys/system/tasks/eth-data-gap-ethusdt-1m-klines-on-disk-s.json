@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T20:45:40Z",
   "commands": [
     "python -m pytest -q scripts/dev/test_kline_gap_check.py"
   ],
@@ -15,17 +16,30 @@
   "id": "eth-data-gap-ethusdt-1m-klines-on-disk-s",
   "kind": "run",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "ETHUSDT 1m 2022-01..2026-09 on disk (57 months), 0 missing bars; kline_gap_check.py",
+      "ref": "bbaa2d3f1",
+      "utc": "2026-11-04T20:45:40Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: data gap closed, C38 can rerun",
   "note": "\nREVIEWED:2026-11-04 ACCEPT (Haiku on API credit, job haiku-review-ready-sonnet-1104: New checker file, testable fixture, no twin; data-gap claim unverified.)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-04T05:13:56Z",
   "refs": [],
-  "result": "",
+  "result": "ETHUSDT 1m 2022-01..2026-09 on disk (57 months), 0 missing bars; kline_gap_check.py",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/kline_gap_check.py",
     "scripts/dev/test_kline_gap_check.py"
@@ -36,12 +50,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Fail-first test for a gap checker on a fixture with one missing minute.",
     "Implement the checker.",
     "Fetch the public klines to the primary Dumps/klines (not the session worktree), run the checker, record the result."
   ],
+  "taken": "2026-11-04T20:45:40Z",
   "tests": "scripts/dev/test_kline_gap_check.py::test_gap_check_flags_missing_minutes",
   "title": "ETH data gap: ETHUSDT 1m klines on disk stop at 2024-06 and no ETHBTC pair exists; top up to 2026-09 (holdout sealed) so C38 can be rerun",
   "weight": "",

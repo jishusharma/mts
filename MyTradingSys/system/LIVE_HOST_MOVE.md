@@ -1,8 +1,8 @@
-# LIVE HOST MOVE: live testnet loop JIS-NB -> DESKTOP-F7IU69N (staged 2026-10-21, NOT CUT OVER)
+# LIVE HOST MOVE: live testnet loop JIS-NB -> DESKTOP-F7IU69N (staged 2026-10-21; CUT OVER 2026-10-22, commit 26806b7aa; exact time NOT CAPTURED)
 
 Operator 2026-10-21: the live testnet loop moves from JIS-NB (desktop) to DESKTOP-F7IU69N (Lenovo laptop, two batteries, lid close on AC = do nothing, already set).
 JIS-NUC (new APC BX600C-IN UPS) becomes the 24/7 backtest and data host. JIS-NB stays the operator's screen and stops hosting the loop.
-This file is the plan; nothing in it has run. Builders never deploy, start or stop live processes, touch HALT files or open trades: the cutover (section 4) is ONE owner's
+This file is the plan; the cutover (section 4) ran 2026-10-22 per commit 26806b7aa, whose hand-over lists steps 10-12 as open (rename of JIS-NB `.mts_live`, state sha256 compare, these docs). Builders never deploy, start or stop live processes, touch HALT files or open trades: the cutover (section 4) is ONE owner's
 manual restart window, run by the operator or a coordinator the operator names for it. DEVICES.md sections 3/6/7/8 and DEPLOY_RUNBOOK.md point here.
 
 Why the laptop and not the NUC (the 2026-10-06 candidate): the laptop has its own two-battery UPS, no thermal history (the NUC hit 98 C under backtest load, DEVICES s3),
