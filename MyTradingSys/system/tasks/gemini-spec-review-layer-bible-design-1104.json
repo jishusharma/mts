@@ -19,16 +19,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "fabio v3: resolve the three FORMULAS.md s28.6 code-vs-spec differences",
-      "ref": "b69d699f3164",
-      "utc": "2026-11-01T01:15:41Z"
+      "line": "Layer Bible phase 0-1: decision d-layer-bible-runtime-1104, card, DESIGN.md, Gemini review",
+      "ref": "1712eb6b75aa",
+      "utc": "2026-11-04T13:41:32Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "b69d699f3164 fabio v3: resolve the three FORMULAS.md s28.6 code-vs-spec differences",
-      "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
-      "utc": "2026-11-01T01:15:41Z"
+      "line": "1712eb6b75aa Layer Bible phase 0-1: decision d-layer-bible-runtime-1104, card, DESIGN.md, ",
+      "ref": "MyTradingSys/research/layer_bible/DESIGN.md",
+      "utc": "2026-11-04T13:41:32Z"
     }
   ],
   "layers": [],
@@ -38,7 +38,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-04T13:41:16Z",
+  "refreshed": "2026-11-04T13:47:30Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -48,7 +48,7 @@
     "MyTradingSys/backtest/layers/wavetrend/wavetrend.py"
   ],
   "scope_out": [],
-  "scope_sha": "b69d699f3164",
+  "scope_sha": "1712eb6b75aa",
   "size": "S",
   "sources": [],
   "state": "ready",
