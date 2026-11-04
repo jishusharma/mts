@@ -8,9 +8,9 @@ Seen by `python scripts/dev/mts_signal.py who --hours 72` on 2026-10-24. Answers
 
 | Station | Last seen | C: free (roll call) | MTS scheduled tasks / HKCU Run | Restart cleanup (section 4) |
 |---|---|---|---|---|
-| JIS-NB / C | 2026-10-24 (this checkout) | 12.8 GB on 2026-10-24 (guard dry run) | no MTS task (`Get-ScheduledTask`, 2026-10-24); no MTS Run value | not registered: primary checkout blocked by local changes (section 6) |
-| JIS-NUC / B | 12 min before the roll call | NOT CAPTURED | NOT CAPTURED | NOT CAPTURED |
-| DESKTOP-F7IU69N / A | 75 min | NOT CAPTURED | NOT CAPTURED | NOT CAPTURED |
+| JIS-NB / C | 2026-10-30 00:33Z (STATION line) | 28 GB on 2026-10-30 (STATION answer; 12.8 GB on 2026-10-24) | no MTS task (`Get-ScheduledTask`, 2026-10-24); no MTS Run value | not registered: primary checkout blocked by local changes (section 6) |
+| JIS-NUC / B | 2026-10-30 00:57Z (STATION line) | 76 GB on 2026-10-30 (STATION answer) | c_drive_guard logon run installed, pointing at the main checkout (B, 2026-10-29) | NOT CAPTURED (wt_maint last run not read) |
+| DESKTOP-F7IU69N / A | 2026-10-30 00:31Z (STATION line) | 406 GB on 2026-10-30 (STATION answer) | NOT CAPTURED | NOT CAPTURED |
 | DESKTOP-F7IU69N / C | 31 h | NOT CAPTURED | NOT CAPTURED | NOT CAPTURED |
 | vm / B | 21 h | NOT CAPTURED (which device runs the `vm` host: NOT CAPTURED) | NOT CAPTURED | NOT CAPTURED |
 | JIS-NB / B, JIS-NUC / A | not seen in 72 h (HOW_MTS_RUNS.md, 2026-10-15 snapshot) | NOT CAPTURED | NOT CAPTURED | NOT CAPTURED |

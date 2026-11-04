@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T21:10:51Z",
   "commands": [
     "python scripts/dev/tasks.py list --state raw"
   ],
@@ -16,6 +17,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "43 raw wire cards filed (KR 32, MLK 11) from WIRING_MALKAN_KROWN.csv unwired-worth-wiring;",
+      "ref": "ac5b28b2f",
+      "utc": "2026-11-04T21:10:51Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "wiring audit: Malkan + Krown, 167 rules vs layer code, params, tests",
@@ -26,6 +33,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: cards filed, each wire card is its own next",
   "note": "planner-refine-1104e: capture-only card, files raw cards, no product code.\nREVIEWED:2026-11-04 T0-ONLY",
   "prio": 3,
   "refine_tries": 0,
@@ -35,7 +43,12 @@
     "MyTradingSys/research/wiring_audit_2026-10",
     "MyTradingSys/research/route_tag_2026-11-04/AUDIT.md"
   ],
-  "result": "",
+  "result": "43 raw wire cards filed (KR 32, MLK 11) from WIRING_MALKAN_KROWN.csv unwired-worth-wiring; rerun adds 0",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/wiring_audit_2026-10/WIRING_MALKAN_KROWN.csv",
     "MyTradingSys/system/tasks"
@@ -48,13 +61,14 @@
   "sources": [
     "MyTradingSys/research/wiring_audit_2026-10/WIRING_MALKAN_KROWN.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the CSV header and confirm the 43 rows by trader and verdict",
     "Write a script in the scratchpad that skips ids already having a card and calls tasks.py new per row with the quote_file_line in the title note",
     "Run it once, then count the new cards and print the count",
     "Run python scripts/dev/tasks.py lint"
   ],
+  "taken": "2026-11-04T21:10:51Z",
   "tests": "python -c \"import csv; r=list(csv.DictReader(open('MyTradingSys/research/wiring_audit_2026-10/WIRING_MALKAN_KROWN.csv',encoding='utf-8'))); assert sum(x['verdict']=='unwired-worth-wiring' for x in r)==43\" guards the source count; the card-count check fails (0 cards) before the script runs",
   "title": "Wiring audit Malkan+Krown (ef9d10095, 167 rules): one fix card per unwired/mismatched rule",
   "weight": "ROUTINE",

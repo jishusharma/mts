@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T21:02:57Z",
   "commands": [],
   "created": "2026-11-03T22:32:00Z",
   "depends_on": [],
@@ -12,17 +13,30 @@
   "goal": "Design note only: how a named concept goes to a live SIGNAL runner (chart + drawn flags) the same day; orders only via operator-called cotrade.py on Deribit testnet",
   "id": "testnet-signal-fast-lane",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "DESIGN.md with 4 sections (host runner, drawn, same-day 6 steps, gated 6 rows); test fails",
+      "ref": "da39d315e",
+      "utc": "2026-11-04T21:02:57Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: design shipped, implementation cards later",
   "note": "REVIEWED: planner-c-1104 2026-11-04 T0-ONLY (design note, no code)\nREVIEWED:2026-11-04 ACCEPT (Haiku on API credit, job haiku-review-ready-sonnet-1104: Design-note only; DESIGN.md absent; no twin found.)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-04T07:18:44Z",
   "refs": [],
-  "result": "",
+  "result": "DESIGN.md with 4 sections (host runner, drawn, same-day 6 steps, gated 6 rows); test fails->passes 1/1",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/testnet_signal_fast_lane_2026-11-04/DESIGN.md"
   ],
@@ -34,11 +48,12 @@
   "sources": [
     "MyTradingSys/system/OPERATOR_DECISIONS.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read d-live-validation and cotrade.py usage in OPERATOR_DECISIONS.md and the live_aid docs",
     "write the 4-section note"
   ],
+  "taken": "2026-11-04T21:02:57Z",
   "tests": "design card: file exists and has the 4 named sections",
   "title": "A named concept goes to a live SIGNAL runner (chart + drawn flags) the same day; orders only via operator-called cotrade.py on Deribit testnet",
   "weight": "IMPORTANT",
