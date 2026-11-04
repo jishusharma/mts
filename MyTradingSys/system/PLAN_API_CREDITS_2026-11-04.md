@@ -77,3 +77,4 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-04 | codex-audit-no-pass-1104 | Sonnet 5.5 | 0.35 | 16 | shipped 9d10d1a7b; audit and run results starting PASS close as SOUND; cap was 3.0 |
 | 2026-11-04 | sim-desk-tom-fabio-studies | Opus 5.5 | 4.20 | 75 | shipped per-trade replay files (DEV window); cap was 6.0 |
 | 2026-11-04 | salvage-unshipped-branches-nuc-1103 | Sonnet 5.5 | 0.39 | 12 | shipped DECISIONS.md: 1 SHIP, 6 DROP; cap was 3.0 |
+| 2026-11-04 | sim-malkan-close-div-trade-chart-1104 | Opus 5.5 | 1.70 | 45 | shipped per-trade Malkan close-divergence chart on sim page; cap was 3.0 |
