@@ -7,4 +7,4 @@ Live one-page mock v4 (operator review 2026-11-04: "84,000 everywhere" was a 31-
 - Health: feed freshness (price, CBP stamp.json + ingestion.log, Discord log, orderflow file, STATUS.md age).
 - To go live: run this builder on a schedule-free trigger (the CBP run or a session), or fold it into the mts_home generator.
 - SAMPLE badges: none (v3 SAMPLE-POS removed; Positions shows nothing rather than guess).
-- Build: python MyTradingSys/system/artifacts/_gen_live_onepage_mock.py [--fragment <artifact copy>] [--offline]; private unregistered review page "Live feed one page".
+- Build: python MyTradingSys/system/artifacts/_gen_live_onepage_mock.py [--fragment <artifact copy>] [--offline]; registered on MTS Home as "Live feed one page" (registry.json, 11-04 declutter).
