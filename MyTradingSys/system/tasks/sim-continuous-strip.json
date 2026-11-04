@@ -2,6 +2,18 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-04T13:31:56Z",
+    "misses": 31,
+    "reads": [
+      "MyTradingSys/research/sim_desk/artifact/test_artifact.py",
+      "MyTradingSys/research/sim_desk/artifact/build_artifact.py",
+      "MyTradingSys/research/sim_desk/artifact/index.html",
+      "MyTradingSys/research/sim_desk/results/eagle-c30-wt-rsi-div.json"
+    ],
+    "session": "agent-a25f12a9ed00c7011"
+  },
   "created": "2026-11-02T20:17:54Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/sim_desk/artifact/index.html rebuilt: for eagle-c30-wt-rsi-div the page has elements #trade-strip (one candle strip, every trade carrying a .trade-marker, win green / loss red) and #rule-card (entry, exit, stop, timeframe, costs); test_artifact.py asserts both and fails on the pre-change build.",
@@ -16,9 +28,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "sim desk: the four rsi-deep wave results (11-04) on the simulator page",
-      "ref": "4580ff68ded2",
-      "utc": "2026-11-03T22:26:13Z"
+      "line": "sim desk: catalogue row and artifact list for rsi-40-60-line-behaviour",
+      "ref": "abe04dc3ee54",
+      "utc": "2026-11-04T08:34:53Z"
     }
   ],
   "layers": [],
@@ -28,7 +40,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-03T22:34:02Z",
+  "refreshed": "2026-11-04T13:21:35Z",
   "refs": [
     "MyTradingSys/research/sim_desk/api_review/SIM_VISUALS_REVIEW.md"
   ],
@@ -41,7 +53,7 @@
   "scope_out": [
     "no desk.py or backtest change; no new data fetch; other results keep their current chart; no deploy of the hosted page (republish is a separate Haiku step)"
   ],
-  "scope_sha": "4580ff68ded2",
+  "scope_sha": "abe04dc3ee54",
   "size": "M",
   "sources": [],
   "state": "ready",

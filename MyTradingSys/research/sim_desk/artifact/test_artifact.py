@@ -213,6 +213,27 @@ class Banner(unittest.TestCase):
         self.assertIn("break-even", b["text"])
         self.assertEqual(ba.banner_of(_result("z"))["state"], "UNCLEAR")  # no trade count anywhere: never a pass
 
+    def test_trade_list_gives_count_when_kpis_do_not(self):
+        # Demo 11-04: C30 showed "n=? net n/a" although its trade chart holds all 35 VALIDATION trades.
+        t = [{"net": 0.5}] * 20 + [{"net": -0.4}] * 15
+        r = _result("tc", verdict={"label": "VALIDATION: H1 FAIL", "tone": ""},
+                    examples=[{"kind": "trade_chart", "tf": "30m", "title": "t", "trades": t}])
+        b = ba.banner_of(r)
+        self.assertEqual(b["n"], 35)
+        self.assertAlmostEqual(b["net_pct"], round(4.0 / 35, 3))
+        self.assertIsNone(b["net_r"])  # a % mean is never shown as R
+        self.assertIn("n=35 (trade list)", b["text"])
+        self.assertIn("%/trade after fees", b["text"])
+        self.assertNotEqual(b["state"], "PASS")
+
+    def test_c30_chart_names_its_divergence_rule(self):
+        # Operator: Malkan divergence = closes only, 12 and 18 bars; C30 draws an OURS wick rule and must say so.
+        self.assertIn("x.div_rule", ba.TEMPLATE)
+        r = json.load(open(os.path.join(ba.RESULTS_DIR, "eagle-c30-wt-rsi-div.json"), encoding="utf-8"))
+        x = next(e for e in r["examples"] if e["kind"] == "trade_chart")
+        self.assertIn("OURS", x["div_rule"])
+        self.assertIn("not Malkan", x["div_rule"])
+
     def test_every_committed_result_has_banner(self):
         n = 0
         for fn in os.listdir(ba.RESULTS_DIR):
@@ -450,3 +471,61 @@ console.log(JSON.stringify({calls:calls.length,first:calls[0],local:JSON.parse(s
             self.assertIn(k, css)
         self.assertIn('id="app"', ba.TEMPLATE)
         self.assertIn("@media(max-width:700px)", css)  # phone width
+
+
+class TradeStrip(unittest.TestCase):
+    """sim-continuous-strip: one candle strip with every trade marked + a plain rule card (SIM_VISUALS_REVIEW rows 1, 6)."""
+
+    def test_rule_card_fields_from_what(self):
+        r = _result(what=[{"name": "Signal", "value_plain": "buy dot", "label": "SOURCED"},
+                          {"name": "Exits", "value_plain": "centre line, cap 60", "label": "OURS"},
+                          {"name": "Costs", "value_plain": "0.10% per round trip", "label": "SOURCED"}],
+                    examples=[{"kind": "trade_chart", "tf": "30m", "title": "t", "stop_note": "No stop loss.", "trades": []}])
+        ba.add_tf(r)
+        ba.add_rule_card(r)
+        rc = r["examples"][0]["rule_card"]
+        self.assertEqual(list(rc), ["entry", "exit", "stop", "timeframe", "costs"])
+        self.assertEqual(rc["exit"]["text"], "centre line, cap 60")
+        self.assertEqual(rc["exit"]["label"], "OURS")
+        self.assertEqual(rc["costs"]["label"], "SOURCED")
+        self.assertEqual(rc["stop"]["text"], "No stop loss.")
+        self.assertEqual(rc["timeframe"]["text"], "30m")
+
+    def test_rule_card_absent_costs_is_na(self):
+        r = _result(examples=[{"kind": "trade_chart", "tf": "30m", "title": "t", "trades": []}])
+        ba.add_rule_card(r)
+        rc = r["examples"][0]["rule_card"]
+        self.assertEqual(rc["costs"]["text"], "n/a")
+        self.assertEqual(rc["stop"]["text"], "n/a")
+
+    def test_page_has_strip_and_card_for_c30(self):
+        self.assertIn('id="trade-strip"', ba.TEMPLATE)
+        self.assertIn('id="rule-card"', ba.TEMPLATE)
+        self.assertIn("trade-marker", ba.TEMPLATE)
+        tests = ba.collect(ba.RESULTS_DIR)
+        c30 = next(t for t in tests if t["id"] == "eagle-c30-wt-rsi-div")
+        ex = next(e for e in c30["examples"] if e["kind"] == "trade_chart")
+        self.assertTrue(ex["trades"])
+        for k in ("entry", "exit", "stop", "timeframe", "costs"):
+            self.assertIn(k, ex["rule_card"])
+        self.assertIn("0.10%", ex["rule_card"]["costs"]["text"])
+        self.assertEqual(ex["rule_card"]["costs"]["label"], "SOURCED")
+
+    def test_strip_marks_every_trade_in_node(self):
+        import shutil
+        import subprocess
+        node = shutil.which("node")
+        if not node:
+            self.skipTest("node not installed")
+        js = ba.TEMPLATE.split("function tradeStrip(x)")[1].split("\nfunction ")[0]
+        prog = ("const esc=s=>String(s);const f2=v=>v.toFixed(2);function tradeStrip(x)" + js +
+                ";const tr=[1,2,3].map(i=>({d:'d'+i,t0:i*1e7,net:i==2?-1:1,sig:3,ent:4,ext:8,c:Array.from({length:12},()=>[0,1,-1,0.5])}));"
+                "const r=tradeStrip({trades:tr,tf_min:30});const h=r.html;"
+                "console.log(JSON.stringify({m:(h.match(/class=\"trade-marker/g)||[]).length,"
+                "w:(h.match(/trade-marker trade-win/g)||[]).length,l:(h.match(/trade-marker trade-loss/g)||[]).length,id:h.includes('id=\"trade-strip\"')}))")
+        out = subprocess.run([node, "-e", prog], capture_output=True, text=True, timeout=30)
+        self.assertEqual(out.returncode, 0, out.stderr)
+        res = json.loads(out.stdout.strip().splitlines()[-1])
+        self.assertEqual(res["m"], 3)
+        self.assertEqual((res["w"], res["l"]), (2, 1))
+        self.assertTrue(res["id"])

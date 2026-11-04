@@ -131,7 +131,23 @@ def banner_of(r):
     text = "%s · verdict as written: %s · n=%s · net R after fees %s · try %s · fee break-even %s" % (
         head, label or "none", "?" if n is None else n, "n/a" if net is None else "%+.3f" % net,
         "n/a" if try_no is None else "#%d" % try_no, "n/a" if be is None else "x%s" % be)
-    return {"state": state, "tone": bt, "verdict": label, "n": n, "net_r": net, "try_no": try_no, "breakeven_x": be, "text": text}
+    out = {"state": state, "tone": bt, "verdict": label, "n": n, "net_r": net, "try_no": try_no, "breakeven_x": be, "text": text}
+    if n is None:
+        # No count in the KPIs: a trade_chart example holds every trade of the verdict (net % after fees per trade).
+        tr = next((e.get("trades") for e in r.get("examples", []) if e.get("kind") == "trade_chart" and e.get("trades")), None)
+        if tr:
+            n = len(tr)
+            pct = round(sum(t["net"] for t in tr) / n, 3)
+            if n < MIN_N:
+                state, head = "TOO_FEW", "TOO FEW TRADES"
+            elif tone == "bad" or label.upper().startswith("FAIL"):
+                state, head = "FAIL", "FAIL"
+            else:
+                state, head = "UNCLEAR", "UNCLEAR"  # a % mean is not R: never a PASS from this path
+            out.update(state=state, tone={"FAIL": "bad", "TOO_FEW": "warn", "UNCLEAR": ""}[state], n=n, net_pct=pct,
+                       text="%s · verdict as written: %s · n=%d (trade list) · net %+.3f %%/trade after fees · try %s · fee break-even %s" % (
+                           head, label or "none", n, pct, "n/a" if try_no is None else "#%d" % try_no, "n/a" if be is None else "x%s" % be))
+    return out
 
 
 def trade_row(item):
@@ -206,6 +222,42 @@ def add_tf(r):
     r["tf_tabs"] = tabs if len(tabs) >= 2 else []
 
 
+RC_EXIT = ("exit", "exits")
+RC_COST = ("cost", "costs", "fee", "fees", "trade_costs")
+RC_STOP = ("stop", "stops", "stop loss")
+
+
+def add_rule_card(r):
+    """Plain rule card on every trade_chart example (fields only added): entry, exit, stop, timeframe, costs.
+    Text is copied from the result's own `what` rows (label SOURCED or OURS kept) and the example's stop_note;
+    a field the file does not state is the text "n/a" (never invented). Returns the number of cards added."""
+    n = 0
+    rows = r.get("what") or []
+    low = lambda w: str(w.get("name", "")).strip().lower()
+
+    def pick(names):
+        hit = [w for w in rows if low(w) in names]
+        if not hit:
+            return None
+        lab = "OURS" if any(w.get("label") == "OURS" for w in hit) else "SOURCED"
+        return {"text": "; ".join(str(w.get("value_plain", "")) for w in hit), "label": lab}
+
+    for e in r.get("examples", []):
+        if e.get("kind") != "trade_chart":
+            continue
+        used = RC_EXIT + RC_COST + RC_STOP
+        ent = [w for w in rows if low(w) not in used]
+        entry = ({"text": " | ".join("%s: %s" % (w.get("name"), w.get("value_plain")) for w in ent),
+                  "label": "OURS" if any(w.get("label") == "OURS" for w in ent) else "SOURCED"}
+                 if ent else {"text": "n/a", "label": "n/a"})
+        stop = pick(RC_STOP) or ({"text": e["stop_note"], "label": "OURS"} if e.get("stop_note") else {"text": "n/a", "label": "n/a"})
+        tf = {"text": e.get("tf") or "n/a", "label": "SOURCED" if e.get("tf_source", "json") == "json" and e.get("tf") else "OURS"}
+        e["rule_card"] = {"entry": entry, "exit": pick(RC_EXIT) or {"text": "n/a", "label": "n/a"}, "stop": stop,
+                          "timeframe": tf, "costs": pick(RC_COST) or {"text": "n/a", "label": "n/a"}}
+        n += 1
+    return n
+
+
 RESULTS_DIR = os.path.normpath(os.path.join(HERE, "..", "results"))
 
 STABLE_YEARS = 2   # judged years (>= MIN_N trades each) needed before a run can be called stable
@@ -265,6 +317,7 @@ def collect(results_dir):
         check_curve_bands(r, fn)
         add_trade_rows(r)
         add_tf(r)
+        add_rule_card(r)
         r.setdefault("banner", banner_of(r))
         r["stability"] = (stability_of(r.get("years")))
         out.append(r)
@@ -410,6 +463,10 @@ nav,article{min-height:0;overflow:auto}
 @media(max-width:899px){main{grid-template-rows:minmax(0,34%) minmax(0,1fr)}}
 @media(max-width:700px){.top h1{display:none}.gf>b{width:100%!important}.kpis{grid-template-columns:repeat(auto-fill,minmax(100px,1fr))}}
 #lst{max-height:none;overflow:visible}
+.rc{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:6px;margin:6px 0}.rc>div{border:1px solid var(--line);border-radius:8px;padding:4px 8px;background:var(--card);font-size:12px;min-width:0}
+.rc b{display:block;font-size:11px;color:var(--mute);font-weight:500}.rc span{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+#trade-strip{border:1px solid var(--line);border-radius:8px;background:var(--card);margin:6px 0;padding:2px}#trade-strip svg{width:100%;height:auto;display:block}
+.trade-marker{cursor:pointer}.trade-win{fill:var(--good)}.trade-loss{fill:var(--bad)}
 .pill.tf{border-color:var(--acc);color:var(--acc);font-weight:600;margin-left:4px}
 .tft{margin:6px 0}
 .gridw{padding:8px 12px}.leg{display:flex;gap:12px;margin-bottom:8px;font-size:13px}
@@ -480,10 +537,22 @@ sl.oninput=()=>show(sl.value);$("prev").onclick=()=>show(+sl.value-1);$("next").
 $("pick").onchange=e=>{if(e.target.value!=="")show(e.target.value)};
 $("play").onclick=()=>{if(tm){clearInterval(tm);tm=null;$("play").textContent="Play";return}$("play").textContent="Pause";tm=setInterval(()=>{if(+sl.value>=n-1){$("play").onclick();return}show(+sl.value+1)},120)};
 show(0);}};}
+function ruleCard(rc){if(!rc)return"";const K=[["entry","Entry"],["exit","Exit"],["stop","Stop"],["timeframe","Chart"],["costs","Costs"]];
+return '<div id="rule-card" class="rc">'+K.map(([k,n])=>{const v=rc[k]||{text:"n/a",label:"n/a"};return '<div title="'+esc(v.text)+'"><b>'+n+(v.label&&v.label!=="n/a"?' <span class="tag '+esc(v.label)+'">'+esc(v.label)+"</span>":"")+"</b><span>"+esc(v.text)+"</span></div>"}).join("")+"</div>";}
+function tradeStrip(x){const tr=x.trades,M=(x.tf_min||30)*60000;let W0=1000,H=150,GAP=4,tot=0;const seg=tr.map((t,i)=>{const a=Math.max(0,t.sig-12),b=Math.min(t.c.length-1,t.ext+6),o={i,a,b,x0:tot};tot+=b-a+1+GAP;return o});
+const bw=(W0-30)/tot;let lo=1e9,hi=-1e9;tr.forEach((t,i)=>{for(let k=seg[i].a;k<=seg[i].b;k++){lo=Math.min(lo,t.c[k][2]);hi=Math.max(hi,t.c[k][1])}});lo=Math.max(lo,-12);hi=Math.min(hi,12);const sp=(hi-lo)||1,Y=v=>8+(hi-Math.max(lo,Math.min(hi,v)))/sp*(H-30);
+let up="",dn="",bx="",mk="",lb="";tr.forEach((t,i)=>{const g=seg[i],X=k=>10+(g.x0+k-g.a)*bw+bw/2,win=t.net>=0;
+for(let k=g.a;k<=g.b;k++){const q=t.c[k],p="M"+X(k).toFixed(1)+" "+Y(q[1]).toFixed(1)+"V"+Y(q[2]).toFixed(1);if(q[3]>=q[0])up+=p;else dn+=p}
+bx+='<rect class="'+(win?"trade-win":"trade-loss")+'" x="'+X(t.ent).toFixed(1)+'" y="8" width="'+Math.max(1.5,(t.ext-t.ent)*bw).toFixed(1)+'" height="'+(H-30)+'" opacity=".16"/>';
+mk+='<g class="trade-marker '+(win?"trade-win":"trade-loss")+'" data-i="'+i+'"><title>#'+(i+1)+" "+esc(t.d)+" UTC: "+f2(t.net)+' %</title><path d="M'+X(t.ent).toFixed(1)+" "+(H-16)+"l-3.5 8h7z\"/><path d=\"M"+X(t.ext).toFixed(1)+" "+(H-6)+"l-3.5 -8h7z\"/><rect x=\""+X(t.ent).toFixed(1)+'" y="8" width="'+Math.max(2,(t.ext-t.ent)*bw).toFixed(1)+'" height="'+(H-30)+'" fill="transparent"/></g>';
+if(i%3===0)lb+='<text x="'+X(g.a).toFixed(1)+'" y="'+(H-1)+'" font-size="8" fill="var(--mute)">'+esc(String(t.d).slice(5,10))+"</text>"});
+const html='<div id="trade-strip" data-n="'+tr.length+'"><svg viewBox="0 0 '+W0+" "+H+'" role="img" aria-label="Every trade on one candle strip">'+bx+'<path d="'+up+'" stroke="var(--good)" stroke-width="'+Math.max(.5,bw*.6).toFixed(2)+'" fill="none"/><path d="'+dn+'" stroke="var(--bad)" stroke-width="'+Math.max(.5,bw*.6).toFixed(2)+'" fill="none"/>'+mk+lb+"</svg></div>"+
+'<p class="note">All '+tr.length+" trades on one strip ("+esc(x.tf||"30m")+" candles, % from each entry; the quiet stretches between trades are cut). Green = won, red = lost after fees; up triangle = entry, down = exit. Click a trade to open it below.</p>";
+return {html,init:()=>{const el=document.getElementById("trade-strip");if(el)el.onclick=e=>{const g=e.target.closest(".trade-marker");if(g&&window.cvShow)window.cvShow(+g.dataset.i)}}};}
 function tradeChart(x){const tr=x.trades,n=tr.length,M=(x.tf_min||30)*60000;
 const h='<details class="note"><summary>?</summary><b>How to read it.</b> The rule is checked on every candle; a trade happens only where it fires. Each picture below is one trade on the '+esc(x.tf||"30m")+' chart: '+
 '<span class="good">&#9650; entry</span> (open of the candle after the signal), <span class="bad">&#9660; exit</span>, the shaded box is the time in the trade (green = won, red = lost after fees), the dashed line is the entry price (0 %). '+
-'Prices are shown as % from the entry. Lower panes: WaveTrend (blue dot = the buy dot at or under -53), RSI (orange line = the divergence: price made a lower low, RSI a higher low). '+esc(x.stop_note||"")+'</details>'+
+'Prices are shown as % from the entry. Lower panes: WaveTrend (blue dot = the buy dot at or under -53), RSI (orange line = the divergence: price made a lower low, RSI a higher low). '+esc(x.stop_note||"")+'</details>'+(x.div_rule?'<div class="note" style="color:var(--warn)">&#9888; '+esc(x.div_rule)+'</div>':'')+
 '<div class="ctl"><button id="cvp" aria-label="Previous trade">&lt; Prev</button><button id="cvn" aria-label="Next trade">Next &gt;</button><select id="cvs" aria-label="Pick a trade">'+
 tr.map((t,i)=>'<option value="'+i+'">#'+(i+1)+" "+esc(t.d)+" UTC: "+f2(t.net)+" %</option>").join("")+'</select><button id="cvr" aria-label="Replay this trade candle by candle">&#9654; Replay this trade</button><button id="cvst" aria-label="One candle forward">Step 1 candle &#9656;</button></div><div id="cvph" style="font-size:15px;min-height:2.6em;margin:4px 0"></div><svg id="cvg" viewBox="0 0 700 430" style="max-width:min(100%,calc((100vh - 140px)*1.49))" role="img" aria-label="Candles of the selected trade"></svg><div id="cvi" class="note"></div>';
 const init=()=>{let cur=0,up=null;const stop=()=>{if(window.cvT){clearInterval(window.cvT);window.cvT=null}$("cvr").innerHTML="&#9654; Replay this trade"};const go=i=>{stop();i=Math.max(0,Math.min(n-1,+i));const sl=$("slider");if(sl&&+sl.max===n-1){sl.value=i;sl.oninput()}else cvShow(i)};
@@ -559,7 +628,7 @@ else if(x.kind==="curve"&&x.r&&x.r.length)h+=curveEx(x);
 else if(x.kind==="charts"&&x.items&&x.items.length&&x.items.every(c=>c.when&&c.exit_reason)){const r=chartList(x);h+=r.html;inits.push(r.init);}
 else if(x.kind==="charts"&&x.items&&x.items.length)h+='<div class="cg">'+x.items.map(c=>"<figure>"+c.svg+"<figcaption>"+esc((c.label||(c.kind==="winner"?"typical winner":"typical loser"))+(c.note?": "+c.note:""))+"</figcaption></figure>").join("")+"</div>";
 else if(x.kind==="replay"){const r=replay(x);h+=r.html;inits.push(r.init);}
-else if(x.kind==="trade_chart"&&x.trades&&x.trades.length){const r=tradeChart(x);h+=r.html;inits.push(r.init);}
+else if(x.kind==="trade_chart"&&x.trades&&x.trades.length){const st=tradeStrip(x),r=tradeChart(x);h+=ruleCard(x.rule_card)+st.html+r.html;inits.push(st.init);inits.push(r.init);}
 else{real=false;h+='<p class="note">no example trades exported</p>';}
 if(x.caption)h+='<p class="note">'+esc(x.caption)+"</p>";if(real)h+=commentBox(t.id,"ex"+i);return {html:h+"</div>",inits};}
 function halt(){if(tm){clearInterval(tm);tm=null}window.cvShow=null;if(window.cvT){clearInterval(window.cvT);window.cvT=null}}
