@@ -49,6 +49,40 @@ class Parse(unittest.TestCase):
         self.assertEqual({x["analyst"] for x in lv}, {"Michael"})
 
 
+class Symbols(unittest.TestCase):
+    def test_ladder_eth_levels(self):
+        rows = [row("Habib", ["ETH support at 2,350, then 2,250 below"], symbols=("ETH",), vid="e1"),
+                row("Michael", ["BTC support 75k"], vid="b1")]
+        lv = al.ladder(rows, symbol="ETH")
+        self.assertEqual([x["level"] for x in lv], [2350, 2250])
+        self.assertEqual({x["analyst"] for x in lv}, {"Habib"})
+
+    def test_btc_unchanged_and_ignores_alt_rows(self):
+        rows = [row("Habib", ["ETH support at 2,350"], symbols=("ETH",), vid="e1"),
+                row("Michael", ["BTC support 75k"], vid="b1")]
+        self.assertEqual([x["level"] for x in al.ladder(rows)], [75000])
+        self.assertEqual(al.ladder(rows), al.ladder(rows, symbol="BTC"))
+
+    def test_eth_formats_and_band(self):
+        self.assertEqual(al.parse_levels("ETH 2350 and 2.5k, not 75k", "ETH"), [2350, 2500])
+        self.assertEqual(al.parse_levels("in 2026 ETH holds 2,250", "ETH"), [2250])
+        self.assertEqual(al.parse_levels("2,350", "BTC"), [])
+        self.assertEqual(al.parse_levels("2,350", "DOGE"), [])
+
+    def test_cli_symbol_flag(self):
+        with tempfile.TemporaryDirectory() as d:
+            store = os.path.join(d, "s.json")
+            with open(store, "w", encoding="utf-8", newline="\n") as f:
+                json.dump({"rows": [row("Habib", ["ETH support at 2,350 and 2,250"], symbols=("ETH",))]}, f)
+            import io
+            from contextlib import redirect_stdout
+            buf = io.StringIO()
+            with redirect_stdout(buf):
+                al.main(["--offline", "--symbol", "ETH", "--store", store])
+            self.assertIn("2,350", buf.getvalue())
+            self.assertIn("ETH rows", buf.getvalue())
+
+
 class Hit(unittest.TestCase):
     def test_publish_day_bars_never_count(self):
         """Only the date is stored: a touch on the publish day may predate the video, so hit starts the next UTC day."""

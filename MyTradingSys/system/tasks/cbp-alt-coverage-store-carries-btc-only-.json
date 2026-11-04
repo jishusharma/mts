@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T14:01:03Z",
   "commands": [],
   "created": "2026-11-03T15:39:49Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "analyst_levels.py --symbol ETH; 4 tests",
+      "ref": "b8805425d",
+      "utc": "2026-11-04T14:01:03Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -31,7 +38,12 @@
   "refined_by": "gemini-3.8-flash",
   "refreshed": "2026-11-04T07:09:16Z",
   "refs": [],
-  "result": "",
+  "result": "analyst_levels.py --symbol ETH; 4 tests",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/analyst_levels.py",
     "scripts/dev/test_analyst_levels.py"
@@ -43,13 +55,14 @@
   "scope_sha": "9261aa56e79d",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read analyst_levels.py ladder/parse_levels/recent_rows and cbp._norm_symbol",
     "Add SYMBOL_BANDS dict (BTC 40k-200k kept; ETH band OURS, label as OURS) and symbol arg to parse_levels/ladder",
     "Add --symbol CLI flag, default BTC",
     "Add fixture-row tests for ETH and unchanged BTC; ingest of alt rows into the store is a separate card (needs CBP extraction run, post DSA desk task)"
   ],
+  "taken": "2026-11-04T14:01:03Z",
   "tests": "test_analyst_levels.py: new test_ladder_eth_levels fails on current code (BTC-only filter) and passes after; existing BTC tests unchanged",
   "title": "CBP alt coverage: store carries BTC-only symbols (13 rows, 0 alt trades) while ALT_BUY_PLAN found 11 vdPoppe/Jala alt rules; ingest alt symbols and levels (ETH 2,350/2,250 Habib, vdPoppe names) so analyst_levels.py can show alts",
   "weight": "",
