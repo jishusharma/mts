@@ -1,0 +1,57 @@
+{
+ "A": {
+  "ALL": {
+   "setting": "rsi21<=35|1d|smaon",
+   "dev_net": 0.0029383775450333625,
+   "dev_n": 238,
+   "gate": "BLOCK"
+  },
+  "bull|fresh": null,
+  "bull|mature": {
+   "setting": "rsi14<=40|1d|smaoff",
+   "dev_net": -0.12677713960978548,
+   "dev_n": 60,
+   "gate": "BLOCK"
+  },
+  "range|fresh": {
+   "setting": "rsi21<=45|1w|smaoff",
+   "dev_net": -0.14049275269511033,
+   "dev_n": 200,
+   "gate": "BLOCK"
+  },
+  "range|mature": {
+   "setting": "rsi21<=35|1d|smaon",
+   "dev_net": 0.250225249304404,
+   "dev_n": 122,
+   "gate": "BLOCK"
+  },
+  "bear|fresh": null,
+  "bear|mature": null
+ },
+ "B": {
+  "15m": {
+   "filter": "volume",
+   "dev_net": -0.10976539376436445,
+   "dev_n": 3943,
+   "gate": "PASS"
+  },
+  "1h": {
+   "filter": "volume",
+   "dev_net": -0.2227252566381404,
+   "dev_n": 1097,
+   "gate": "BLOCK"
+  },
+  "4h": {
+   "filter": "htf_rsi",
+   "dev_net": 0.20347737049197956,
+   "dev_n": 170,
+   "gate": "BLOCK"
+  },
+  "1d": {
+   "filter": "retest",
+   "dev_net": -0.9209499604151534,
+   "dev_n": 137,
+   "gate": "BLOCK"
+  }
+ }
+}
