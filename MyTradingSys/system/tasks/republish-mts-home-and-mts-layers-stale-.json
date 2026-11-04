@@ -21,9 +21,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "artifacts: old CBP copy and Haiku demo deleted by operator; Home v27, Layers v17",
-      "ref": "89c59d6d867e",
-      "utc": "2026-11-04T08:53:35Z"
+      "line": "cbp_run: every run refreshes prices and rebuilds the v5 CBP Analyst Desk board",
+      "ref": "891a04e9a6af",
+      "utc": "2026-11-04T13:52:10Z"
     }
   ],
   "layers": [],
@@ -33,7 +33,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-04T13:01:41Z",
+  "refreshed": "2026-11-04T15:46:22Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -43,7 +43,7 @@
   "scope_out": [
     "page design changes; pages owned by another login (skip and list the reason)"
   ],
-  "scope_sha": "89c59d6d867e",
+  "scope_sha": "891a04e9a6af",
   "size": "S",
   "sources": [],
   "state": "ready",

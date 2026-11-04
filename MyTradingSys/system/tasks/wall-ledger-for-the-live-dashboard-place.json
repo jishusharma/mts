@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "merge origin/fast-track (TRIALS.md: keep both rows)",
-      "ref": "7df5f6ee6598",
-      "utc": "2026-11-03T22:15:46Z"
+      "line": "rsi 40/60 line behaviour: PRE_REG + TRIALS frozen before any outcome",
+      "ref": "022511723b35",
+      "utc": "2026-11-04T08:27:40Z"
     }
   ],
   "layers": [],
@@ -28,7 +28,7 @@
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-03T22:34:09Z",
+  "refreshed": "2026-11-04T15:46:45Z",
   "refs": [
     "MyTradingSys/research/coinglass_field_guide_2026-11-01/FIELD_GUIDE.md"
   ],
@@ -42,7 +42,7 @@
   "scope_out": [
     "live tree, dashboard wiring, any order path; measuring the rate on real data (needs recorded depth, a separate run card)"
   ],
-  "scope_sha": "7df5f6ee6598",
+  "scope_sha": "022511723b35",
   "size": "M",
   "sources": [
     "MyTradingSys/research/coinglass_field_guide_2026-11-01/FIELD_GUIDE.md"

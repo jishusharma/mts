@@ -19,9 +19,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "splits: PRE_DEV_START + assert_pre_dev_only (card splits-pre-dev-window)",
-      "ref": "b1dfbc7852a5",
-      "utc": "2026-11-04T13:29:25Z"
+      "line": "Repair 25 void T0-ONLY stamps (format only), SPEC holdout-seen disclosure, defect card",
+      "ref": "9a7a43033f33",
+      "utc": "2026-11-04T14:02:15Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "9a7a43033f33 Repair 25 void T0-ONLY stamps (format only), SPEC holdout-seen disclosure, de",
+      "ref": "MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md",
+      "utc": "2026-11-04T14:02:15Z"
     }
   ],
   "layers": [],
@@ -31,7 +38,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-04T13:58:53Z",
+  "refreshed": "2026-11-04T15:46:11Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -40,7 +47,7 @@
     "MyTradingSys/backtest/splits.py"
   ],
   "scope_out": [],
-  "scope_sha": "b1dfbc7852a5",
+  "scope_sha": "9a7a43033f33",
   "size": "S",
   "sources": [],
   "state": "ready",
