@@ -1,0 +1,54 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-04T21:23:52Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_BB_ETH_POOL_1104.md lists every headline number of the bb_range_retest_eth_pool_2026-11 study (pooled and per-symbol family n, days, gross, net, CI, Holm p, BTC reproduction n) recomputed from dev_cells.csv and counts.csv in bb_range_retest_eth_pool_2026-11, a per-number match table, and ends with VERDICT: MATCH or MISMATCH.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "D11 feeder check: independent Gemini blind read of the bb_range_retest_eth_pool_2026-11 study: recompute the headline numbers from the raw CSVs first, then diff against the stated RESULT.md.",
+  "id": "gemini-blind-read-of-bb-range-retest-eth",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "gemini-blind-read-wt-extreme-cross-2026-11",
+    "gemini-blind-read-wall-ledger-2026-11",
+    "gemini-blind-read-rsi-40-60-1104",
+    "gemini-blind-read-rsi-div-mtf-gated-1104",
+    "gemini-blind-read-bb-range-studies-1104"
+  ],
+  "note": "D11 feeder card for ms-bb-range-retest-eth-pool\nREVIEWED:2026-11-04 T0-ONLY",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "ms-bb-eth-1104",
+  "refreshed": "2026-11-04T21:24:23Z",
+  "refs": [
+    "MyTradingSys/research/bb_range_retest_eth_pool_2026-11/RESULT.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_BB_ETH_POOL_1104.md",
+    "MyTradingSys/research/bb_range_retest_eth_pool_2026-11"
+  ],
+  "scope_out": [],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read dev_cells.csv and counts.csv in bb_range_retest_eth_pool_2026-11 and the shipped bb_range_retest_2026-11-04/dev_cells.csv before any prose result file",
+    "Recompute the family rows (gate range, tag tagged, side both, sessions asia/london/ny) per symbol and POOL, and the BTC reproduction n, independently of the study code",
+    "Write MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_BB_ETH_POOL_1104.md with a per-number table and VERDICT"
+  ],
+  "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_BB_ETH_POOL_1104.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
+  "title": "[GEMINI] blind read of bb_range_retest_eth_pool_2026-11 RESULT.md",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

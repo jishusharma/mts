@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T21:24:29Z",
   "commands": [
     "python MyTradingSys/research/bb_range_retest_eth_pool_2026-11/study.py --symbols BTCUSDT,ETHUSDT",
     "python -m pytest -q MyTradingSys/research/bb_range_retest_eth_pool_2026-11/test_pool.py"
@@ -16,10 +17,18 @@
   "id": "ms-bb-range-retest-eth-pool",
   "kind": "run",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "INCONCLUSIVE: BTC+ETH pooled 300-385 days/cell, prereg_gate BLOCK all 9 (600-1944 needed);",
+      "ref": "c62835582",
+      "utc": "2026-11-04T21:24:29Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: pooling does not clear the power gate; more symbols needed",
   "note": "Context rule d-context-retest-1104: PRE_REG ## Context needs Regime:/Phase:/Session:/Entry: lines (none, because ... allowed); RESULT needs a Regime mix: line (prereg_context_lint). ETH: F:/MTS/data/tom_raw/klines/ETHUSDT-1m-YYYY-MM.csv (env SIM_DESK_KLINES; USD-M futures, 0 missing bars, kline_gap_check.py); load BTC from the same folder so the pool is one venue. Verdict claim: needs a real review stamp (Haiku API-credit review); none yet. Twin-checked: tasks.py twins, no open card re-runs this study on ETH.\nREVIEWED:2026-11-04 ACCEPT (Haiku on API credit, job haiku-review-4-1104: Context and Regime mix planned, fees.py only, ETH 1m on disk, BTC reproduction test)",
   "prio": 2,
   "refine_tries": 0,
@@ -28,7 +37,12 @@
   "refs": [
     "MyTradingSys/research/bb_range_retest_2026-11-04/PRE_REG.md"
   ],
-  "result": "",
+  "result": "INCONCLUSIVE: BTC+ETH pooled 300-385 days/cell, prereg_gate BLOCK all 9 (600-1944 needed); 0/9 survive, pooled net -0.044 to -0.156 % at 0.14; BTC futures n within 3 % of spot; RESULT.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/bb_range_retest_eth_pool_2026-11/ (PRE_REG.md, study.py, test_pool.py, RESULT.md, dev_cells.csv); reuse bb_range_retest_2026-11-04/study.py by path"
   ],
@@ -41,12 +55,13 @@
     "MyTradingSys/research/bb_range_retest_2026-11-04/RESULT.md",
     "MyTradingSys/research/bb_range_retest_2026-11-04/BLOCKED.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write PRE_REG.md first: copy the retest PRE_REG parameters as OURS/SOURCED labels, add ## Context (Regime: range gate research_kit; Phase: none, because as the source study; Session: asia/london/ny; Entry: return-to-band limit k x ATR), run verdicts.py check and prereg_gate.py --m auto with pooled days, paste outputs",
     "Write the fail-first test, then study.py: symbol list loader (BTCUSDT,ETHUSDT UM futures DEV 2022-01..2024-06), day-cluster over symbol+day",
     "Run per symbol and pooled, write dev_cells.csv and RESULT.md with Regime mix: line and the BTC reproduction row"
   ],
+  "taken": "2026-11-04T21:24:29Z",
   "tests": "MyTradingSys/research/bb_range_retest_eth_pool_2026-11/test_pool.py::test_btc_row_reproduces_shipped_n (fails first on the stub): BTC-only run reproduces n and sign of bb_range_retest dev_cells.csv within the spot-vs-futures tolerance stated in PRE_REG",
   "title": "Re-run bb_range_retest level arm on BTC+ETH pooled (UM futures 1m), DEV only, to lift the INCONCLUSIVE underpowered verdict",
   "weight": "IMPORTANT",
