@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T02:37:52Z",
   "commands": [],
   "created": "2026-11-04T02:00:34Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "bb-range-retest-level-arm",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "INCONCLUSIVE (underpowered, power gate BLOCK 9/9): 0 of 9 cells survive, all net<0; level-",
+      "ref": "53bdf1f2a",
+      "utc": "2026-11-04T02:37:52Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +46,12 @@
   "refined_by": "",
   "refreshed": "2026-11-04T02:01:20Z",
   "refs": [],
-  "result": "",
+  "result": "INCONCLUSIVE (underpowered, power gate BLOCK 9/9): 0 of 9 cells survive, all net<0; level-arm fill rate 59-74% vs 99.9% for the old retest; session-range tag OURS",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/bb_range_retest_2026-11-04/",
     "MyTradingSys/research/VERDICTS.csv",
@@ -54,11 +66,12 @@
     "MyTradingSys/research/CONTEXT_FILTER_REVIEW_2026-11-04.md",
     "OPERATOR_DECISIONS d-context-retest-1104"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read bb_range_to_range_2026-11-04 PRE_REG/RESULT/study.py, research_kit.py, CONTEXT_FILTER_REVIEW_2026-11-04.md",
     "write PRE_REG and TRIALS rows first, then retest-level entry, DEV run, VALIDATION once for survivors"
   ],
+  "taken": "2026-11-04T02:37:52Z",
   "tests": "gate/entry wiring tests: as-of causality (planted future bar changes nothing), session tag and retest entry behave as specified; new tests fail on pre-change code once",
   "title": "Bollinger range retest-level arm: entry on return to the band just left, exit at opposite band, by session (context re-run 3b)",
   "weight": "ROUTINE",
