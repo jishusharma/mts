@@ -1,0 +1,113 @@
+{
+ "id": "rsi-40-60-line-behaviour-2026-11-04",
+ "kind": "backtest",
+ "family": "RSI 40/60 line behaviour",
+ "title": "How RSI14 behaves around the 40 and 60 lines (hold / break / range) on 1h/4h/12h/1d, cushion, context, bounce vs wait plays, BTCUSDT+ETHUSDT SPOT 2017-08..2025-06",
+ "provenance": "builder-export",
+ "date": "2026-11-04",
+ "what": [
+  {
+   "name": "Event",
+   "value_plain": "RSI14 enters the band [L-c, L+c] around line 40 or 60 from above or from below, on 1h/4h/12h/1d; cushion c in {1,2,3,5} RSI points; outcome window N = 24/18/14/10 bars",
+   "label": "OURS"
+  },
+  {
+   "name": "Outcome",
+   "value_plain": "HOLD = leaves the band on the side it came from; BREAK = closes beyond the line by more than c on the far side; RANGE = crossed the line twice or more before leaving, or stayed inside N bars",
+   "label": "OURS"
+  },
+  {
+   "name": "Lines",
+   "value_plain": "40 and 60 (Malkan RSI levels)",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Plays",
+   "value_plain": "take the bounce (enter at the HOLD confirmation, direction RSI left the band) vs wait for the break (enter at the BREAK confirmation); entry next bar open, exit N bars later",
+   "label": "OURS"
+  },
+  {
+   "name": "Context",
+   "value_plain": "higher-TF RSI vs 50, number of other TFs at the same line (0-3), regime (Malkan weekly+monthly 60/40 with SMA200 side) and SMA200-side-age phase (fresh <= 60 daily closes)",
+   "label": "OURS"
+  },
+  {
+   "name": "Cost",
+   "value_plain": "fee-net 0.14 % round trip (research_kit)",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Regime mix",
+   "value_plain": "360 weeks DEV (2017-08-07..2024-06-24, BTCUSDT): bull 73 (20%) | bear 0 (0%) | range 222 (62%) | n/a 65 (18%)",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Power gate",
+   "value_plain": "prereg_gate m = 6: all 64 event cells BLOCK (event days 65-2015), so every play cell is capped INCONCLUSIVE",
+   "label": "OURS"
+  },
+  {
+   "name": "Spot vs futures caveat",
+   "value_plain": "spot not futures; 2 symbols; 2022-24 half of DEV overlaps the sibling long-window studies; archive gaps not filled",
+   "label": "OURS"
+  }
+ ],
+ "how": "PRE_REG.md frozen first (commit 022511723); cushion and plays picked on DEV only; VALIDATION 2024-07..2025-06 read once on the 6 picked play cells; Holm m = 6; day-clustered 95 % CI; DEFAULT needs power PASS and fee-net CI above 0. A random-walk benchmark (same rules, 200 000 synthetic bars per timeframe) sits beside every base rate.",
+ "window": "DEV 2017-08..2024-06, VALIDATION 2024-07..2025-06 (picks only), HOLDOUT never loaded; BTCUSDT+ETHUSDT SPOT klines, 12h built from 1h, no futures splice",
+ "verdict": {
+  "label": "NO DEFAULT PLAY. RSI14 at the 40 and 60 lines behaves close to a random-walk benchmark (hold +1.5 points, break -1.7 points over chance, averaged over 16 timeframe x line x side cells; range 21-33 %); the cushion that best separates hold from break is mostly geometry (c=5 on the side RSI came from, c=1 on the other). Another timeframe at the same line raises the hold rate (+7 to +18 points); an aligned higher-timeframe bias lowers it (-10 to -14 points on 1h-12h). Both plays (take the bounce, wait for the break) are INCONCLUSIVE (underpowered, not FAIL): the power gate (m = 6) blocks all 64 event cells, the 6 DEV picks keep 2-9 events each on VALIDATION. HOLDOUT never loaded.",
+  "tone": "warn"
+ },
+ "why": [
+  "Base rates: at the picked cushion hold is 25-58 %, break 15-51 %, range 21-33 % depending on timeframe and side; the random-walk benchmark gives nearly the same split (hold +1.5, break -1.7 points on average); 1h/4h cells show the largest real excess (+4.4 to +6.7 points of hold).",
+  "What changes the odds: another timeframe's RSI inside the same band raises hold (+7.0 [5.3, 8.7] on 1h, +12.4 on 4h, +18.4 on 12h, +17.0 on 1d); a higher-TF bias that agrees with the bounce lowers it (-10.0 on 1h, -12.3 on 4h, -14.2 on 12h; 1d -2.0 spans 0). Regime (bull vs range) and phase (fresh vs mature) move hold by at most 1.3 points on 1h-12h; the bear regime never occurs.",
+  "Plays: 15 of 214 eligible DEV play cells have a fee-net CI above 0 (7 %, chance about 5 %); the 6 picks keep 2-9 events on VALIDATION with CIs spanning 0; unfiltered mean fee-net per cell bounce +0.005 %, wait +0.028 %. All INCONCLUSIVE (underpowered).",
+  "Next step: a larger-universe study of 'another timeframe at the same line' (confluence), the one factor with a consistent hold-rate effect; each a new PRE_REG."
+ ],
+ "kpis": [
+  {
+   "label": "DEV evaluations",
+   "value": "544"
+  },
+  {
+   "label": "play cells with a default",
+   "value": "0 of 6",
+   "tone": "warn"
+  },
+  {
+   "label": "eligible DEV cells with CI above 0",
+   "value": "15 of 214",
+   "tone": "warn"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: the study reports rate and cell tables (behaviour_dev.csv, context_dev.csv, plays_dev.csv, contrast_dev.csv, plays_val.csv in the study folder), not a trade list"
+  }
+ ],
+ "parity": null,
+ "source_files": [
+  "MyTradingSys/research/rsi_40_60_line_behaviour_2026-11-04/RESULT.md",
+  "MyTradingSys/research/rsi_40_60_line_behaviour_2026-11-04/PRE_REG.md",
+  "MyTradingSys/research/rsi_40_60_line_behaviour_2026-11-04/behaviour_dev.csv",
+  "MyTradingSys/research/rsi_40_60_line_behaviour_2026-11-04/context_dev.csv",
+  "MyTradingSys/research/rsi_40_60_line_behaviour_2026-11-04/contrast_dev.csv",
+  "MyTradingSys/research/rsi_40_60_line_behaviour_2026-11-04/plays_dev.csv",
+  "MyTradingSys/research/rsi_40_60_line_behaviour_2026-11-04/plays_val.csv",
+  "MyTradingSys/research/rsi_40_60_line_behaviour_2026-11-04/behaviour_val.csv",
+  "MyTradingSys/research/rsi_40_60_line_behaviour_2026-11-04/rules.json"
+ ],
+ "commit": "022511723",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "NO DEFAULT PLAY. RSI14 at the 40 and 60 lines behaves close to a random-walk benchmark (hold +1.5 points, break -1.7 points over chance, averaged over 16 timeframe x line x side cells; range 21-33 %); the cushion that best separates hold from break is mostly geometry (c=5 on the side RSI came from, c=1 on the other). Another timeframe at the same line raises the hold rate (+7 to +18 points); an aligned higher-timeframe bias lowers it (-10 to -14 points on 1h-12h). Both plays (take the bounce, wait for the break) are INCONCLUSIVE (underpowered, not FAIL): the power gate (m = 6) blocks all 64 event cells, the 6 DEV picks keep 2-9 events each on VALIDATION. HOLDOUT never loaded.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: NO DEFAULT PLAY. RSI14 at the 40 and 60 lines behaves close to a random-walk benchmark (hold +1.5 points, break -1.7 points over chance, averaged over 16 timeframe x line x side cells; range 21-33 %); the cushion that best separates hold from break is mostly geometry (c=5 on the side RSI came from, c=1 on the other). Another timeframe at the same line raises the hold rate (+7 to +18 points); an aligned higher-timeframe bias lowers it (-10 to -14 points on 1h-12h). Both plays (take the bounce, wait for the break) are INCONCLUSIVE (underpowered, not FAIL): the power gate (m = 6) blocks all 64 event cells, the 6 DEV picks keep 2-9 events each on VALIDATION. HOLDOUT never loaded. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
+}

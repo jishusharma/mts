@@ -1,0 +1,38 @@
+{
+ "1d|60|below|ph_mature|wait": {
+  "verdict": "INCONCLUSIVE",
+  "why": "power gate BLOCK on the picked cell (capped; MDE too large for its DEV days)",
+  "holm": 1.0,
+  "dev_gate": "BLOCK"
+ },
+ "1d|60|above|confl_1plus|bounce": {
+  "verdict": "INCONCLUSIVE",
+  "why": "power gate BLOCK on the picked cell (capped; MDE too large for its DEV days)",
+  "holm": 0.3810084927733972,
+  "dev_gate": "BLOCK"
+ },
+ "12h|60|below|ph_mature|wait": {
+  "verdict": "INCONCLUSIVE",
+  "why": "power gate BLOCK on the picked cell (capped; MDE too large for its DEV days)",
+  "holm": 1.0,
+  "dev_gate": "BLOCK"
+ },
+ "4h|40|below|confl_1plus|bounce": {
+  "verdict": "INCONCLUSIVE",
+  "why": "power gate BLOCK on the picked cell (capped; MDE too large for its DEV days)",
+  "holm": 1.0,
+  "dev_gate": "BLOCK"
+ },
+ "12h|60|above|ALL|bounce": {
+  "verdict": "INCONCLUSIVE",
+  "why": "power gate BLOCK on the picked cell (capped; MDE too large for its DEV days)",
+  "holm": 1.0,
+  "dev_gate": "BLOCK"
+ },
+ "12h|40|above|htf_up|bounce": {
+  "verdict": "INCONCLUSIVE",
+  "why": "power gate BLOCK on the picked cell (capped; MDE too large for its DEV days)",
+  "holm": 1.0,
+  "dev_gate": "BLOCK"
+ }
+}
