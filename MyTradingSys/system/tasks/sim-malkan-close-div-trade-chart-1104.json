@@ -1,0 +1,60 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-04T13:21:29Z",
+  "depends_on": [],
+  "done_when": "A Malkan RSI-divergence result (rsi-div gated by Malkan regime) in MyTradingSys/research/sim_desk/results/ has a trade_chart with div_on='close' matching the study ledger; tradeChart() draws the divergence at closes when div_on is close; test_artifact.py asserts both, red first.",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Operator rule: Malkan divergence = closes only, 12 and 18 bars. The only trade chart on the page (C30) draws an OURS wick rule; no Malkan study has a trade chart with its divergence marked.",
+  "id": "sim-malkan-close-div-trade-chart-1104",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sim desk: C30 banner reads its trade list; trade chart names its divergence rule (sim demo",
+      "ref": "686c6f9b57a4",
+      "utc": "2026-11-04T13:25:20Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-04 ACCEPT (tests line fixed by reviewer) (Haiku reviewer, sim-demo-opus-1104)",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-04T13:26:42Z",
+  "refs": [
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/c30_trade_charts.py",
+    "MyTradingSys/research/sim_desk/results/dir-malkan_div_flags_2026-10-28.json"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/artifact/build_artifact.py",
+    "MyTradingSys/research/sim_desk/artifact/test_artifact.py",
+    "MyTradingSys/research/sim_desk/artifact/index.html",
+    "MyTradingSys/research/sim_desk/results",
+    "MyTradingSys/research"
+  ],
+  "scope_out": [
+    "no detector or rule change; DEV/VALIDATION windows only as the study already read them; HOLDOUT never loaded"
+  ],
+  "scope_sha": "686c6f9b57a4",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "candidate results: dir-malkan_div_flags_2026-10-28, dir-malkan_rsi_2026-10-31 (pick the one whose detector uses closes, 12 and 18 bar; log the pick as DECISION (OURS))",
+    "find the study's own trade ledger and detector (closes, 12 and 18 bar); write a small exporter next to the study, like c30_trade_charts.py",
+    "assert every exported trade net equals the study's ledger, as c30_trade_charts.py does"
+  ],
+  "tests": "MyTradingSys/research/sim_desk/artifact/test_artifact.py: test div_on close draws at c[p][3]; test the result's trade count equals the study's ledger count Both must fail on the pre-change build first (red), then pass.",
+  "title": "Sim page: per-trade candle chart for a Malkan RSI divergence study with the divergence drawn on CLOSES (12 and 18 bar), not wicks",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

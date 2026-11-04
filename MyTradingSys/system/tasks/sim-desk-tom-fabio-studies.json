@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "sim desk: the four rsi-deep wave results (11-04) on the simulator page",
-      "ref": "4580ff68ded2",
-      "utc": "2026-11-03T22:26:13Z"
+      "line": "sim desk: catalogue row and artifact list for rsi-40-60-line-behaviour",
+      "ref": "abe04dc3ee54",
+      "utc": "2026-11-04T08:34:53Z"
     }
   ],
   "layers": [
@@ -31,7 +31,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-03T22:34:05Z",
+  "refreshed": "2026-11-04T13:21:37Z",
   "refs": [
     "MyTradingSys/research/tom_fabio_review_2026-10-31/SETUP_REVIEW.md"
   ],
@@ -47,7 +47,7 @@
   "scope_out": [
     "VALIDATION or HOLDOUT, live tree, publishing the artifact"
   ],
-  "scope_sha": "4580ff68ded2",
+  "scope_sha": "abe04dc3ee54",
   "size": "M",
   "sources": [],
   "state": "ready",

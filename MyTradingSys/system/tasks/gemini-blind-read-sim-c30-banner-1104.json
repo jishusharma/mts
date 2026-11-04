@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-04T13:21:30Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_SIM_C30_BANNER_1104.md checks the banner n and net % in MyTradingSys/research/sim_desk/results/eagle-c30-wt-rsi-div.json against MyTradingSys/research/eagle_eyes_picture_2026-10-28/c30_validation_verdict.json (H1), ending with VERDICT: MATCH or MISMATCH.",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "D11 feeder check (A-20261104-1) for the sim-demo-opus-1104 ship: the C30 banner now takes n and mean net % from the trade_chart trade list when its KPIs carry no count.",
+  "id": "gemini-blind-read-sim-c30-banner-1104",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "gemini-blind-read-wavetrend-c30-retest-1104",
+    "confluence-s5-fable-verdict"
+  ],
+  "note": "REVIEWED:2026-11-04 T0-ONLY; D11 feeder card for sim-demo-opus-1104 ship.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-04T13:22:19Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_SIM_C30_BANNER_1104.md"
+  ],
+  "scope_out": [
+    "read only outside the report file"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "read c30_validation_verdict.json H1 trades first; count them and average net",
+    "then read the banner in the result json and compare"
+  ],
+  "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_SIM_C30_BANNER_1104.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
+  "title": "[GEMINI] Blind read: C30 sim banner n=35 and -0.066 %/trade vs c30_validation_verdict.json",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
