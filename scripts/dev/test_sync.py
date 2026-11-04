@@ -1750,8 +1750,7 @@ class FastShipTest(unittest.TestCase):
 
     def test_fix_ci_flag_keeps_the_fast_gate(self):
         with mock.patch.object(sync, "ship"), mock.patch.object(sync, "toplevel", return_value=Path(".")), \
-                mock.patch.object(sync, "run_host_health"), mock.patch.object(sync, "check_route_tags"), \
-                mock.patch.dict(os.environ, {}, clear=False):   # the real host scan took 38-70 s here
+                mock.patch.object(sync, "run_host_health"), mock.patch.dict(os.environ, {}, clear=False):   # the real host scan took 38-70 s here
             os.environ.pop("SYNC_FULL_GATE", None)
             os.environ.pop("SYNC_FIX_CI", None)
             self.assertEqual(sync.main(["ship", "--fix-ci"]), 0)
@@ -1939,7 +1938,7 @@ class OwnCiWaitTest(unittest.TestCase):
 
     def test_ship_returns_without_the_ci_wait_by_default_and_ci_verb_waits_later(self):
         """B8 (2026-10-28): the 10-minute CI poll is opt-in on ship; `sync.py ci` does it for the last pushed sha."""
-        with tempfile.TemporaryDirectory() as td, mock.patch.object(sync, "toplevel", return_value=Path(td)),                 mock.patch.object(sync, "run_host_health"), mock.patch.object(sync, "ship", return_value=self.pushed),                 mock.patch.object(sync, "check_route_tags"),                 mock.patch.object(sync, "write_last_pushed") as mock_save,                 mock.patch.object(sync, "ci_path_filter", return_value=None),                 mock.patch.object(sync, "wait_own_ci", return_value="red") as mock_wait:
+        with tempfile.TemporaryDirectory() as td, mock.patch.object(sync, "toplevel", return_value=Path(td)),                 mock.patch.object(sync, "run_host_health"), mock.patch.object(sync, "ship", return_value=self.pushed),                 mock.patch.object(sync, "write_last_pushed") as mock_save,                 mock.patch.object(sync, "ci_path_filter", return_value=None),                 mock.patch.object(sync, "wait_own_ci", return_value="red") as mock_wait:
             self.assertEqual(sync.main(["ship"]), 0)
             mock_wait.assert_not_called()
             mock_save.assert_called_once()

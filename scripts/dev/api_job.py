@@ -40,8 +40,8 @@ Run with zero operator input: never ask; take the conservative default, log DECI
 Hard rules: testnet only; never read .secrets/, .env, keys; never deploy, restart processes, touch HALT, open trades; never commit
 runtime/order/account data (public repo); never commit to master; never rebase/reset/force-push. Windows: write files with newline='\\n'.
 Gate: new tests must fail on the pre-change code once; python scripts/dev/run_all_tests.py --quick before the ship.
-Ship once: python scripts/dev/sync.py ship --release {slug} (commit body carries a `Result: <what works now / the number>` line and a `Next: <card-id | stage | END: why>` line,
-ends with `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`); then python scripts/dev/tasks.py done {card} --result "<number/file>" --next "<same tag>".
+Ship once: python scripts/dev/sync.py ship --release {slug} (commit body carries a `Result: <what works now / the number>` line,
+ends with `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`); then python scripts/dev/tasks.py done {card} --result "<number/file>".
 Feeder rule (ANNOUNCEMENTS A-20261104-1): if you ship a study or a .py file, file its companion card the same run:
 python scripts/dev/tasks.py new --lane CODEX --prio 3 --kind audit "[GEMINI] blind read of <file>" (or a gpt-spec-tests-<name> CODEX card).
 Stop at the turn cap and report. Final reply, at most 6 lines: `Result:` line first, then the content sha, then `Noticed:` (or `Noticed: none`).

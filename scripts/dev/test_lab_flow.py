@@ -327,7 +327,7 @@ def test_unsafe_or_missing_scope_is_rejected(repo, scope):
 def test_legacy_done_cannot_bypass_flow_receipt(repo):
     a, _ = F.launch(repo, spec())
     with pytest.raises(SystemExit, match="lab_flow.py finish"):
-        tasks.main(["done", a["id"], "--result", "done", "--next", "END: test"])
+        tasks.main(["done", a["id"], "--result", "done"])
     assert tasks.get(repo, a["id"])["state"] == "ready"
 
 
