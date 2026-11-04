@@ -835,7 +835,7 @@ class AskMutationFlagTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             out = io.StringIO()
             with unittest.mock.patch.object(R, "REPO", Path(td)), contextlib.redirect_stdout(out):
-                R.main(["ask", "Audit it", "--kind", "audit", "--scope", "MyTradingSys/x.py", "--id", "lab-aud"])
+                R.main(["ask", "Audit it", "--kind", "audit", "--scope", "new:MyTradingSys/x.py", "--id", "lab-aud"])
             self.assertIn("wrote", out.getvalue())
 
 
