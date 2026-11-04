@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T17:17:23Z",
   "commands": [
     "python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/login_detection_audit_1104.md').read_text(); assert 'ROOT CAUSE' in t and 'PROPOSED FIX' in t\""
   ],
@@ -27,6 +28,12 @@
   "lane": "HAIKU",
   "latest": [
     {
+      "kind": "ship",
+      "line": "root cause: resolve_login (mts_signal.py L157-164) lets the home ~/.claude.json letter bea",
+      "ref": "45e144bd9",
+      "utc": "2026-11-04T17:17:23Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "mts_signal: session-start note keeps the folder name",
@@ -43,7 +50,12 @@
   "refined_by": "",
   "refreshed": "2026-11-04T16:35:47Z",
   "refs": [],
-  "result": "",
+  "result": "root cause: resolve_login (mts_signal.py L157-164) lets the home ~/.claude.json letter beat the typed letter; audit at MyTradingSys/research/login_detection_audit_1104.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/mts_signal.py",
     "MyTradingSys/research/login_detection_audit_1104.md"
@@ -55,12 +67,13 @@
   "scope_sha": "1f069de76d24",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read mts_signal.py login(), _letter_for and OAUTH_EMAIL_RE",
     "Reason from the code which sources the letter can come from; never print the email",
     "Write the audit file and ship"
   ],
+  "taken": "2026-11-04T17:17:23Z",
   "tests": "Fail-first: python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/login_detection_audit_1104.md').read_text(); assert 'ROOT CAUSE' in t and 'PROPOSED FIX' in t\"",
   "title": "login detection reads the wrong account on JIS-NUC: supervisor wait said this app is login A while the app session is B (usage reset 2026-11-08 matches B). mts_signal.login() reads the home .claude.json; a stale or other sign-in there overrides the typed letter, so budget and wait signals can post under the wrong login. Workaround: env MTS_LOGIN=B.",
   "weight": "",
