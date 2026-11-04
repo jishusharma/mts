@@ -1,10 +1,13 @@
-"""Builds LIVE_ONEPAGE_MOCK_2026-11-04.html from repo data. Mock only; not a live generator.
+"""Builds LIVE_ONEPAGE_MOCK_2026-11-04.html: the one-screen live feed mock, for operator review.
 
-v2 (operator style, memory mts-artifact-design-dense-symbols): one screen, tabs, base font 16px,
-3-4 KPI tiles, a delta box per tab, date x symbol heatmaps, mono price ladder with a "now" row,
-trailing 1m | 5m legend. Every number is read from a repo file at build time; rows that are
-hand-copied or invented are marked in the md (SAMPLE badges).
-Run: python MyTradingSys/system/artifacts/_gen_live_onepage_mock.py [--fragment OUT]
+v4 (operator review 2026-11-04): numbers come from where they are fresh at build time.
+- Price, timeframe readings: public Binance spot BTCUSDT klines (data-api.binance.vision, no key).
+- Analyst views and levels: the CBP store (cbp.py; rows + verdicts.json beside it), Habib Discord reader log
+  (research/analysts/watch/POSTS_LOG.csv).
+- Layers: system/LAYERS.md + research/STATUS.md; plain wording from PLAIN below (OURS, one line per layer).
+- Backtest box: research/eagle_eyes_picture_2026-10-28/c30_validation_verdict.json.
+Readings are context: none of RSI / WaveTrend / trend / price-vs-buying passed a fee-net test alone (STATUS layer pass).
+Run: python MyTradingSys/system/artifacts/_gen_live_onepage_mock.py [--fragment OUT] [--offline]
 """
 import collections
 import csv
@@ -14,22 +17,14 @@ import json
 import pathlib
 import re
 import sys
+import urllib.request
 
 R = pathlib.Path(__file__).resolve().parents[2]
+sys.path[:0] = [str(R.parent), str(R)]  # repo root (MyTradingSys.* imports), MyTradingSys (cbp)
 OUT = R / 'system/artifacts/LIVE_ONEPAGE_MOCK_2026-11-04.html'
 NOW = dt.datetime.now(dt.timezone.utc)
 E = html.escape
-
-# ---------- data ----------
-OF = R / 'runtime/orderflow_live'
-DAYS = sorted(p.stem for p in OF.glob('20*.csv'))
-BARS = {d: list(csv.DictReader(open(OF / f'{d}.csv'))) for d in DAYS}
-LAST_DAY = DAYS[-1]
-rows = BARS[LAST_DAY]
-last = rows[-1]
-LAST_PX = float(last['c'])
-LAST_TS = dt.datetime.fromtimestamp(int(last['t']) / 1000, dt.timezone.utc)
-AGE_D = (NOW - LAST_TS).days
+OFFLINE = '--offline' in sys.argv
 
 
 def fnum(x, d=0):
@@ -40,33 +35,127 @@ def sgn(x, d=0):
     return f'{x:+,.{d}f}'
 
 
-def hour_delta(bars):
-    h = collections.defaultdict(float)
-    for b in bars:
-        h[(int(b['t']) // 3600000) % 24] += float(b['delta'])
-    return h
+def ago(t):
+    s = (NOW - t).total_seconds()
+    return f'{s / 60:.0f} min' if s < 3600 else f'{s / 3600:.0f} h' if s < 172800 else f'{s / 86400:.0f} d'
 
 
-HD = {d: hour_delta(BARS[d]) for d in DAYS}
-DAY_CLOSE = {d: float(BARS[d][-1]['c']) for d in DAYS}
-DAY_OPEN = {d: float(BARS[d][0]['o']) for d in DAYS}
-DAY_CVD = {d: float(BARS[d][-1]['cvd_day']) for d in DAYS}
-DAY_HI = {d: max(float(b['h']) for b in BARS[d]) for d in DAYS}
-DAY_LO = {d: min(float(b['l']) for b in BARS[d]) for d in DAYS}
-poc = collections.Counter()
-for b in rows:
-    poc[float(b['poc_price'])] += float(b['poc_vol'])
-POC = poc.most_common(1)[0][0]
-last5 = rows[-5:]
-D1 = float(last['delta'])
-D5 = sum(float(b['delta']) for b in last5)
-C5 = (float(last5[-1]['c']) / float(last5[0]['o']) - 1) * 100
+def iso(s):
+    return dt.datetime.fromisoformat(s.replace('Z', '+00:00'))
 
-C30 = json.load(open(R / 'research/eagle_eyes_picture_2026-10-28/c30_validation_verdict.json'))
-LEDGER = list(csv.DictReader(open(R / 'research/habib_plan_imbalance_2026-10-20/PLAN_LEDGER.csv')))
-VERD = json.load(open(R.parent / 'scripts/dev/market_guide_verdicts.json'))
+
+# ---------- live price (public klines) ----------
+TFS = [('15m', 200), ('30m', 200), ('1h', 200), ('2h', 200), ('4h', 200), ('1d', 200)]
+
+
+def klines(interval, limit):
+    url = f'https://data-api.binance.vision/api/v3/klines?symbol=BTCUSDT&interval={interval}&limit={limit}'
+    with urllib.request.urlopen(url, timeout=15) as f:
+        raw = json.load(f)
+    out = []
+    for k in raw:
+        close_t = dt.datetime.fromtimestamp(k[6] / 1000, dt.timezone.utc)
+        v, tb = float(k[5]), float(k[9])
+        out.append({'t': dt.datetime.fromtimestamp(k[0] / 1000, dt.timezone.utc), 'o': float(k[1]), 'h': float(k[2]),
+                    'l': float(k[3]), 'c': float(k[4]), 'net': 2 * tb - v, 'closed': close_t <= NOW})
+    return out
+
+
+K = {}
+if not OFFLINE:
+    try:
+        for tf, n in TFS + [('1m', 10), ('5m', 3)]:
+            K[tf] = klines(tf, n)
+    except Exception as ex:  # no network: the page says so instead of showing old numbers
+        K, OFFLINE = {}, True
+        print('offline:', ex)
+LIVE = bool(K)
+if LIVE:
+    PX = K['1m'][-1]['c']
+    PX_T = min(K['1m'][-1]['t'] + dt.timedelta(minutes=1), NOW)
+
+
+# ---------- indicators (context only) ----------
+from MyTradingSys.backtest.layers.rsi.rsi_core import rsi_core  # noqa: E402  (FORMULAS s1, Wilder)
+
+
+def ema(xs, n):
+    a, out = 2 / (n + 1), []
+    for x in xs:
+        out.append(x if not out else out[-1] + a * (x - out[-1]))
+    return out
+
+
+def wavetrend(bars):
+    """PRE_REG_C30.md s1 (LazyBear): hlc3, esa EMA10, d EMA10 |ap-esa|, ci, wt1 EMA21, wt2 SMA4."""
+    ap = [(b['h'] + b['l'] + b['c']) / 3 for b in bars]
+    esa = ema(ap, 10)
+    d = ema([abs(a - e) for a, e in zip(ap, esa)], 10)
+    ci = [(a - e) / (0.015 * dd) if dd else 0 for a, e, dd in zip(ap, esa, d)]
+    wt1 = ema(ci, 21)
+    wt2 = [sum(wt1[max(0, i - 3):i + 1]) / len(wt1[max(0, i - 3):i + 1]) for i in range(len(wt1))]
+    return wt1, wt2
+
+
+def zone(r):
+    return 'bull' if r >= 60 else 'bear' if r <= 40 else 'mid'
+
+
+def tf_read(tf):
+    bars = [b for b in K[tf] if b['closed']]
+    closes = [b['c'] for b in bars]
+    rsi = rsi_core(closes, 14)
+    wt1, wt2 = wavetrend(bars)
+    e21 = ema(closes, 21)
+    z = zone(rsi[-1])
+    flip = next((i for i in range(len(rsi) - 2, 14, -1) if rsi[i] is not None and zone(rsi[i]) != z), None)
+    side = closes[-1] > e21[-1]
+    tflip = next((i for i in range(len(closes) - 2, 21, -1) if (closes[i] > e21[i]) != side), None)
+    dot = next((i for i in range(len(wt1) - 1, len(wt1) - 9, -1)
+                if wt1[i] > wt2[i] and wt1[i - 1] <= wt2[i - 1] and wt1[i] <= -53), None)
+    end = bars[-1]['t']
+    return {'tf': tf, 'rsi': rsi[-1], 'zone': z, 'zone_since': bars[flip + 1]['t'] if flip is not None else None,
+            'wt': wt1[-1], 'trend_up': side, 'trend_since': bars[tflip + 1]['t'] if tflip is not None else None,
+            'dot': bars[dot]['t'] if dot is not None else None, 'bar_end': end}
+
+
+TF = [tf_read(tf) for tf, _ in TFS] if LIVE else []
+
+# ---------- CBP analysts ----------
+import importlib  # noqa: E402
+sys.path.insert(0, str(R))
+cbp = importlib.import_module('cbp')
+try:
+    STORE = pathlib.Path(cbp.store_path())
+    CBP_ROWS = json.loads(STORE.read_text(encoding='utf-8')).get('rows', [])
+    VERDICTS = json.loads((STORE.parent / 'verdicts.json').read_text(encoding='utf-8'))
+    STAMP = json.loads((STORE.parent / 'stamp.json').read_text(encoding='utf-8'))
+    LOG = (STORE.parent / 'ingestion.log').read_text(encoding='utf-8', errors='replace')
+except Exception:
+    CBP_ROWS, VERDICTS, STAMP, LOG = [], {}, {}, ''
+RUNS = re.findall(r'^cbp: (FAILED|\+\d+ rows)', LOG, re.M)[-8:]
+RUN_FAIL = sum(1 for r in RUNS if r == 'FAILED')
+CBP_LAST = iso(STAMP['last_run']) if STAMP.get('last_run') else None
+VIEWS = {}
+for vid, v in VERDICTS.items():
+    VIEWS[vid] = {'analyst': v.get('analyst'), 'date': v.get('published'), 'bias': v.get('bias'), 'note': v.get('bottom_summary') or v.get('title', '')}
+for r in CBP_ROWS:
+    VIEWS[r['video_id']] = {'analyst': r['analyst'], 'date': r['published'], 'bias': r['bias'],
+                            'note': (r.get('pointers') or [''])[0]}
+POSTS = list(csv.DictReader(open(R / 'research/analysts/watch/POSTS_LOG.csv', encoding='utf-8')))
+HABIB_DC = [p for p in POSTS if p['analyst'] == 'Habib' and p['source'] == 'discord']
+HABIB_READ = max((iso(p['seen_utc']) for p in HABIB_DC), default=None)
+
+
+def bias_sym(b):
+    b = (b or '').upper()
+    return ('▲', 'up') if b.startswith('BULL') else ('▼', 'down') if b.startswith('BEAR') else ('●', 'mute')
+
+
+# ---------- layers ----------
 STATUS = (R / 'research/STATUS.md').read_text(encoding='utf-8')
 LAYERS_MD = (R / 'system/LAYERS.md').read_text(encoding='utf-8')
+C30 = json.load(open(R / 'research/eagle_eyes_picture_2026-10-28/c30_validation_verdict.json'))
 
 
 def st(pattern, default='n/a'):
@@ -74,107 +163,100 @@ def st(pattern, default='n/a'):
     return m.group(1) if m else default
 
 
-CI_SHA = st(r'^CI green: (\w+)')
-CI_STATE = 'green' if CI_SHA != 'n/a' else 'red'
 LAYER_PASS = st(r'^Layer pass: (\d+ of \d+)')
-PAGES_STALE = st(r'^Pages stale: (\d+)')
-LESSONS = 'STALE' if re.search(r'^LESSONS: digest STALE', STATUS, re.M) else 'ok'
-GO_PRIV = st(r'^GO-PRIVATE: (A=\d+ B=\d+)')
-COMMITS = st(r'^commits 24h: (\d+)')
-RESEARCH_PCT = st(r'research (\d+)%')
-NEW_FILES = len(re.findall(r'^- MyTradingSys/.*\.new \(', STATUS, re.M))
+CI_LINE = st(r'^CI green: (.+)$', '')
+CI_SHA = CI_LINE.split()[0] if CI_LINE else 'n/a'
 STATUS_AT = st(r'^Generated: (.+)$')
-STATUS_AGE_H = int((NOW.replace(tzinfo=None) - dt.datetime.fromisoformat(STATUS_AT) + dt.timedelta(hours=5, minutes=30)).total_seconds() // 3600) if STATUS_AT != 'n/a' else -1  # STATUS.md stamps IST
-STALE_H = STATUS_AGE_H < 0 or STATUS_AGE_H > 6  # readings older than 6 h are called stale
-GATES = re.findall(r'^(tom|fabio|malkan|krown)\s+G(\d)\s+proof (?:changed (\d+)h ago|(not on trunk))', STATUS, re.M)
-
-# layer verdict lines from LAYERS.md
-LAYER_ROWS = collections.OrderedDict()
+STATUS_T = (dt.datetime.fromisoformat(STATUS_AT) - dt.timedelta(hours=5, minutes=30)).replace(tzinfo=dt.timezone.utc) if STATUS_AT != 'n/a' else None  # IST stamp
+PAGES_STALE = st(r'^Pages stale: (\d+)')
+GATES = re.findall(r'^(tom|fabio|malkan|krown)\s+G(\d)\s+proof [^|]*\| next: ([^(|]+)', STATUS, re.M)
+NO_GATE = 'NO GATE MOVED IN 24h' in STATUS
+LAYER = collections.OrderedDict()
 cur = None
 for line in LAYERS_MD.splitlines():
     m = re.match(r'- Layer `([^`]+)`: ([^|]*)', line)
     if m:
         cur = m.group(1)
-        LAYER_ROWS[cur] = {'head': m.group(2).strip(), 'dated': []}
+        LAYER[cur] = {'head': m.group(2).strip(), 'dated': []}
         continue
-    m = re.match(r'\s+- (20\d\d-\d\d-\d\d) `([^`]+)`: ([^|]*)', line)
+    m = re.match(r'\s+- (20\d\d-\d\d-\d\d)[^`]*`([^`]+)`: ([^|]*)', line)
     if m and cur:
-        LAYER_ROWS[cur]['dated'].append((m.group(1), m.group(2), m.group(3).strip()))
-N_LAYERS = len(LAYER_ROWS)
-N_VERD = sum(len(v['dated']) for v in LAYER_ROWS.values())
+        LAYER[cur]['dated'].append((m.group(1), m.group(2), m.group(3).strip()))
 
 
 def vsym(text):
     t = text.lower()
     if 'withdrawn' in t or 'not real' in t or 'unproven' in t:
-        return '↩', 'warn', 'PASS withdrawn'
-    if 'blocked' in t:
-        return '⏸', 'warn', 'blocked'
+        return '↩', 'warn'
+    if any(k in t for k in ('no edge', 'negative', 'fail', 'no anchor', 'no level', 'not reproduced', 'no validated',
+                            'no surviving', 'no cell', '0 pass', 'not supported', 'below buy', 'stop:', 'closed')):
+        return '✗', 'down'
+    if 'blocked' in t or 'insufficient' in t:
+        return '⏸', 'warn'
     if re.search(r'\bpass\b', t) and 'parity' not in t:
-        return '✓', 'up', 'pass'
-    if any(k in t for k in ('no edge', 'negative', 'fail', 'no anchor', 'no level', 'not reproduced',
-                            'no surviving', 'no cell', '0 pass', 'not supported', 'below buy')):
-        return '✗', 'down', 'no edge'
-    return '●', 'mute', 'descriptive'
+        return '✓', 'up'
+    return '●', 'mute'
 
+
+# plain wording, OURS: (whose idea, what it asks in his words-ish, <= 8 words each)
+PLAIN = {  # OURS plain wording: layer -> (whose, the idea, why we tested it); results come from LAYERS.md at build
+    'tom_core': ('Tom', 'Order-flow setups on BTC 1m', "Tom's main method"),
+    'tom_vp_pivot': ('Tom', 'Price returns to volume levels', 'Tom: price comes back to value'),
+    'fabio_of': ('Fabio', 'Absorption and CVD entries', 'Fabio trades absorption at levels'),
+    'fabio_v3': ('Fabio', 'His full model, version 3', 'test his whole playbook at once'),
+    'bb_lvn_triggers': ('Tom+Fabio', 'Bollinger edge + thin-volume level', 'combine both of their triggers'),
+    'rsi_levels': ('Malkan', 'RSI 40/60 zones', 'RSI flips mark trend changes'),
+    'rsi_divergence': ('Malkan', 'RSI divergence at lows', 'divergence marks bottoms'),
+    'cryptocred': ('CryptoCred', 'Range and level rules', 'his range-trading course'),
+    'funding_cvd_fade': ('MTS', 'Fade extreme funding', 'crowded funding often reverses'),
+    'oi_delta': ('MTS', 'Open interest vs price', 'new positions show who pushes'),
+    'session_momentum': ('MTS', 'Follow the session open', 'sessions often trend from open'),
+    'session_levels': ('MTS', 'Europe low swept in US', 'common intraday pattern'),
+    'volume': ('MTS', 'Volume spikes and direction', 'does big volume pick a side?'),
+    'bigtrade_fires': ('MTS', 'Follow very large trades', 'do whales lead price?'),
+    'candle_patterns': ('MTS', 'Classic candle patterns', 'textbook signals, checked once'),
+    'pitchfork_swing': ('Pizzino', 'Pitchfork swing levels', 'his 4h/1d pitchforks'),
+}
+RESULT = {'✗': 'no edge', '↩': 'pass taken back', '⏸': 'too little data', '✓': 'passed', '●': 'not profit-tested'}
+GATE_NEXT = {}
 
 # ---------- html helpers ----------
+
+
 def kpi(label, value, sub='', cls=''):
     return (f'<div class="kpi"><span class="lab">{E(label)}</span><span class="val {cls}">{value}</span>'
-            f'<span class="sub">{E(sub)}</span></div>')
+            f'<span class="sub">{sub}</span></div>')
 
 
 def kpis(*items):
     return '<div class="kpis">' + ''.join(items) + '</div>'
 
 
+def act(text, cls='warn'):
+    return f'<p class="act {cls}">{text}</p>'
+
+
 def delta_box(title, lines):
-    li = ''.join(f'<li><span class="when">{E(a)}</span><span class="sym {c}">{s}</span>{E(b)}</li>' for a, s, c, b in lines)
+    li = ''.join(f'<li><span class="when">{E(a)}</span><span class="sym {c}">{s}</span><span>{E(b)}</span></li>' for a, s, c, b in lines)
     return f'<div class="box delta"><h3>Δ {E(title)}</h3><ul>{li}</ul></div>'
 
 
-def ladder(title, levels):
-    """levels: (label, price, cls); a 'now' row is inserted at LAST_PX."""
-    allrows = sorted(levels + [(f'last bar {LAST_TS:%m-%d %H:%M}Z', LAST_PX, 'now')], key=lambda x: -x[1])
-    tr = ''.join(f'<tr class="{c}"><td>{E(n)}</td><td>{fnum(p)}</td><td>{"" if c == "now" else sgn((p / LAST_PX - 1) * 100, 2) + "%"}</td></tr>'
-                 for n, p, c in allrows)
+def ladder(title, levels, ref, ref_label):
+    rows_ = sorted(levels + [(ref_label, ref, 'now', '')], key=lambda x: -x[1])
+    tr = ''.join(f'<tr class="{c}"><td>{n}</td><td>{fnum(p)}</td><td>{"" if c == "now" else sgn((p / ref - 1) * 100, 2) + "%"}</td></tr>'
+                 for n, p, c, _ in rows_)
     return f'<div class="box"><h3>{E(title)}</h3><table class="ladder"><tbody>{tr}</tbody></table></div>'
 
 
-def shade(v, mx):
-    side = 'up' if v >= 0 else 'down'
-    pct = 12 + 78 * min(1, abs(v) / (mx or 1))
-    return f'color-mix(in srgb,var(--{side}) {pct:.0f}%,var(--cell))'
-
-
-def heat(title, row_labels, col_labels, cells, legend):
-    """cells[r][c] = (value or None, text, title, ring)."""
-    k = max(1, -(-sum(1 for c in col_labels if c) // 6))
-    seen = [i for i, c in enumerate(col_labels) if c]
-    show = {i for n, i in enumerate(seen) if n % k == 0}
-    head = '<span></span>' + ''.join(f'<span class="ch">{E(c) if i in show else ""}</span>' for i, c in enumerate(col_labels))
-    body = ''
-    for r, lab in enumerate(row_labels):
-        body += f'<span class="rh">{E(lab)}</span>'
-        for c in range(len(col_labels)):
-            v, txt, tip, ring = cells[r][c]
-            st_ = '' if v is None else f' style="background:{v}"'
-            body += f'<button class="hc{" ring" if ring else ""}"{st_} data-tip="{E(tip)}">{txt}</button>'
-    cols = len(col_labels)
-    return (f'<div class="box heat"><h3>{E(title)}</h3><div class="hg" style="grid-template-columns:minmax(3.2rem,auto) repeat({cols},minmax(0,1fr))">'
-            f'{head}{body}</div><div class="tip" aria-live="polite">{E(legend)}</div></div>')
-
-
-def panel(pid, badge, body, active=False):
-    b = f'<div class="badge" data-sample="{badge}">{badge} · invented numbers, layout only</div>' if badge else ''
-    return (f'<section id="panel-{pid}" class="panel{" on" if active else ""}" role="tabpanel" aria-labelledby="tab-{pid}">{b}'
-            f'<div class="pbody">{body}</div>'
-            f'<div class="note"><input id="c-{pid}" maxlength="140" placeholder="one-line comment on this tab" aria-label="comment">'
-            f'<button data-save="{pid}">Save</button><button data-copy title="copies the note of every tab, to paste into chat">Copy notes</button><span id="s-{pid}" class="saved"></span></div></section>')
+def table(title, head, rows_, note='', wrap=False):
+    th = ''.join(f'<th>{E(h)}</th>' for h in head)
+    tr = ''.join('<tr>' + ''.join(f'<td class="{c}">{v}</td>' for v, c in r) + '</tr>' for r in rows_)
+    return (f'<div class="box"><h3>{E(title)}</h3><div class="tw"><table class="dtab{" wrap" if wrap else ""}"><thead><tr>{th}</tr></thead><tbody>{tr}</tbody></table></div>'
+            + (f'<p class="how">{note}</p>' if note else '') + '</div>')
 
 
 def price_line(title, pts):
-    w, h, pad = 600, 120, 6
+    w, h, pad = 600, 110, 6
     lo, hi = min(pts), max(pts)
     xy = [(i * (w - 2 * pad) / (len(pts) - 1) + pad, h - pad - (v - lo) / ((hi - lo) or 1) * (h - 2 * pad)) for i, v in enumerate(pts)]
     line = ' '.join(f'{x:.1f},{y:.1f}' for x, y in xy)
@@ -188,207 +270,253 @@ def price_line(title, pts):
             f'<div class="plx"><span>{fnum(lo)} low</span><span>{fnum(hi)} high</span></div></div>')
 
 
-HOURLY = [float(b['c']) for d in DAYS for i, b in enumerate(BARS[d]) if i % 60 == 59 or i == len(BARS[d]) - 1]
-
-# ---------- Market ----------
-chg = (LAST_PX / DAY_OPEN[LAST_DAY] - 1) * 100
-hours = list(range(24))
-PARTIAL = len(rows) < 1440  # the newest file can stop mid-day
-FIRST_TS = dt.datetime.fromtimestamp(int(rows[0]['t']) / 1000, dt.timezone.utc)
-SPAN = f'{FIRST_TS:%H:%M}→{LAST_TS:%H:%M}Z' if PARTIAL else 'full day'
+def panel(pid, src, body, active=False):
+    return (f'<section id="panel-{pid}" class="panel{" on" if active else ""}" role="tabpanel" aria-labelledby="tab-{pid}" data-src="{E(src)}">'
+            f'<div class="pbody">{body}</div>'
+            f'<div class="note"><input id="c-{pid}" maxlength="140" placeholder="one-line note on this tab" aria-label="note">'
+            f'<button data-save="{pid}">Save</button><button data-copy title="copies the note of every tab, to paste into chat">Copy notes</button>'
+            f'<span id="s-{pid}" class="saved"></span></div></section>')
 
 
-def day_read(pm, cvd):
-    """Plain read of one day: did price and net buying agree? (context only: price/CVD divergence tested NEGATIVE 2026-10-14)."""
-    if pm >= 0 and cvd >= 0:
-        return '▲', 'up', 'buyers pushed it up'
-    if pm < 0 and cvd < 0:
-        return '▼', 'down', 'sellers pushed it down'
-    if pm >= 0:
-        return '◇', 'warn', 'rose on net selling'
-    return '◇', 'warn', 'fell despite net buying'
+def offline_box(what):
+    return f'<div class="box"><h3>{E(what)}</h3><p class="big down">No live price at build time</p><p class="sub">re-run the builder online</p></div>'
 
 
-trs = ''
-for d in DAYS:
-    pm = (DAY_CLOSE[d] / DAY_OPEN[d] - 1) * 100
-    sym, cls, txt = day_read(pm, DAY_CVD[d])
-    part = ' *' if len(BARS[d]) < 1440 else ''
-    trs += (f'<tr><td>{d[5:]}{part}</td><td class="{"up" if pm >= 0 else "down"}">{"▲" if pm >= 0 else "▼"} {sgn(pm, 2)}%</td>'
-            f'<td class="{"up" if DAY_CVD[d] >= 0 else "down"}">{sgn(DAY_CVD[d])}</td><td class="{cls}"><span class="sym">{sym}</span> {txt}</td></tr>')
-days_tbl = ('<div class="box"><h3>Who won each day</h3><table class="dtab"><thead><tr><th>day</th><th>price</th><th>net BTC bought</th><th>read</th></tr></thead>'
-            f'<tbody>{trs}</tbody></table><p class="how">◇ = price and buying disagree: watch, not a trade on its own (tested 10-14, no edge).'
-            + (f' * {LAST_DAY[5:]} is partial: {SPAN}.' if PARTIAL else '') + '</p></div>')
-prev_day = DAYS[-2]
-big_h = max(HD[LAST_DAY], key=lambda h: abs(HD[LAST_DAY][h]))
-m_delta = [
-    (LAST_DAY[5:], '▲' if DAY_CLOSE[LAST_DAY] >= DAY_CLOSE[prev_day] else '▼', 'up' if DAY_CLOSE[LAST_DAY] >= DAY_CLOSE[prev_day] else 'down',
-     f'last {fnum(DAY_CLOSE[LAST_DAY])} vs {fnum(DAY_CLOSE[prev_day])} close'),
-    (LAST_DAY[5:], '▲' if DAY_CVD[LAST_DAY] >= 0 else '▼', 'up' if DAY_CVD[LAST_DAY] >= 0 else 'down',
-     f'net bought {sgn(DAY_CVD[LAST_DAY])} vs {sgn(DAY_CVD[prev_day])} BTC'),
-    (f'{big_h:02d}Z', '◆', 'warn', f'biggest hour {sgn(HD[LAST_DAY][big_h])} BTC'),
-]
-market = (kpis(kpi('BTC last bar', fnum(LAST_PX), f'Binance futures · {LAST_TS:%m-%d %H:%M}Z'),
-               kpi('Move ' + ('so far' if PARTIAL else 'day'), f'{"▲" if chg >= 0 else "▼"} {sgn(chg, 2)}%', SPAN, 'up' if chg >= 0 else 'down'),
-               kpi('Net BTC bought', f'{"▲" if DAY_CVD[LAST_DAY] >= 0 else "▼"} {sgn(DAY_CVD[LAST_DAY])}', 'buys minus sells, ' + SPAN, 'up' if DAY_CVD[LAST_DAY] >= 0 else 'down'),
-               kpi('Range', fnum(DAY_HI[LAST_DAY] - DAY_LO[LAST_DAY]), f'{fnum(DAY_LO[LAST_DAY])} → {fnum(DAY_HI[LAST_DAY])}'))
-          + '<div class="cols"><div class="stack">' + days_tbl
-          + price_line(f'Price, {DAYS[0][5:]} → {LAST_DAY[5:]} (1h closes)', HOURLY) + '</div>'
-          + '<div class="stack">' + delta_box(f'since {prev_day[5:]}', m_delta)
-          + ladder('Levels vs last bar', [(f'{LAST_DAY[5:]} high', DAY_HI[LAST_DAY], ''), (f'{LAST_DAY[5:]} low', DAY_LO[LAST_DAY], ''),
-                                         ('most traded price', POC, 'poc'), ('5-day high', max(DAY_HI.values()), ''), ('5-day low', min(DAY_LO.values()), '')])
-          + '</div></div>')
+# ---------- Market now ----------
+if LIVE:
+    h1 = [b for b in K['1h'] if b['closed']]
+    last24 = h1[-24:]
+    move24 = (PX / last24[0]['o'] - 1) * 100
+    net24 = sum(b['net'] for b in last24)
+    lo24 = min(min(b['l'] for b in last24), K['1m'][-1]['l'])
+    hi24 = max(max(b['h'] for b in last24), K['1m'][-1]['h'])
+    low_bar = min(last24, key=lambda b: b['l'])
+    high_before = max((b for b in last24 if b['t'] <= low_bar['t']), key=lambda b: b['h'])
+    prior5 = h1[-24 * 6:-24]
+    prior5_lo = min(b['l'] for b in prior5)
+    drop = (low_bar['l'] / high_before['h'] - 1) * 100
+    back = (PX - low_bar['l']) / ((high_before['h'] - low_bar['l']) or 1) * 100
+    swept = low_bar['l'] < prior5_lo
+    happened = [
+        (f'{high_before["t"]:%H}Z', '▼', 'down', f'fell {abs(drop):.1f}% from {fnum(high_before["h"])} to {fnum(low_bar["l"])}'),
+        (f'{low_bar["t"]:%H}Z', '⚡' if swept else '●', 'warn' if swept else 'mute',
+         f'took out the 5-day low {fnum(prior5_lo)}' if swept else f'held above 5-day low {fnum(prior5_lo)}'),
+        ('now', '▲' if back >= 50 else '●', 'up' if back >= 50 else 'mute', f'won back {back:.0f}% of the fall'),
+        ('24h', '▲' if net24 >= 0 else '▼', 'up' if net24 >= 0 else 'down', f'net {"bought" if net24 >= 0 else "sold"} {abs(net24):,.0f} BTC'),
+    ]
+    days = [b for b in K['1d']][-5:]
+    drows = []
+    for b in days:
+        pm = (b['c'] / b['o'] - 1) * 100
+        agree = (pm >= 0) == (b['net'] >= 0)
+        read = (('▲ buyers pushed it up', 'up') if pm >= 0 else ('▼ sellers pushed it down', 'down')) if agree else \
+               (('◇ rose on net selling', 'warn') if pm >= 0 else ('◇ fell despite buying', 'warn'))
+        drows.append([(f'{b["t"]:%m-%d}' + (' *' if not b['closed'] else ''), ''),
+                      (f'{"▲" if pm >= 0 else "▼"} {sgn(pm, 2)}%', 'up' if pm >= 0 else 'down'),
+                      (sgn(b['net']), 'up' if b['net'] >= 0 else 'down'), read])
+    d1 = [b for b in K['1d'] if b['closed']]
+    monday = (NOW - dt.timedelta(days=NOW.weekday())).replace(hour=0, minute=0, second=0, microsecond=0)
+    wopen = next((b['o'] for b in h1 if b['t'] == monday), None)
+    lv = [(f'today high', max(b['h'] for b in h1 if b['t'].date() == NOW.date()), '', ''),
+          ('today low', min(b['l'] for b in h1 if b['t'].date() == NOW.date()), '', ''),
+          (f'yesterday high {d1[-1]["t"]:%m-%d}', d1[-1]['h'], '', ''), (f'yesterday low', d1[-1]['l'], '', ''),
+          ('5-day low (before 24h)', prior5_lo, 'down', '')] + ([('week open (Mon 00:00Z)', wopen, 'poc', '')] if wopen else [])
+    market = (kpis(kpi('BTC now', fnum(PX), f'Binance spot · <span data-ts="{PX_T.isoformat()}">{PX_T:%H:%M}Z</span>'),
+                   kpi('24h move', f'{"▲" if move24 >= 0 else "▼"} {sgn(move24, 2)}%', f'from {fnum(last24[0]["o"])}', 'up' if move24 >= 0 else 'down'),
+                   kpi('24h net bought', f'{"▲" if net24 >= 0 else "▼"} {sgn(net24)}', 'BTC, buys minus sells', 'up' if net24 >= 0 else 'down'),
+                   kpi('24h range', fnum(hi24 - lo24), f'{fnum(lo24)} → {fnum(hi24)}'))
+              + act(f'{"⚡ Lows swept, then " if swept else ""}{"V-recovery: " if swept and back >= 50 else ""}price won back {back:.0f}% of a {abs(drop):.1f}% fall. '
+                    'Open Timeframes to see which charts flipped. Context only, not a trade.')
+              + '<div class="cols"><div class="stack">' + delta_box('what just happened (UTC)', happened)
+              + price_line('Price, last 5 days (1h closes)', [b['c'] for b in h1[-120:]] + [PX]) + '</div>'
+              + '<div class="stack">'
+              + table('Who won each day', ['day', 'price', 'net BTC bought', 'read'], drows,
+                      '◇ = price and buying disagree: a warning, not a trade (tested alone: no edge). * = today so far.')
+              + ladder('Levels vs now', lv, PX, 'now') + '</div></div>')
+else:
+    market = kpis(kpi('BTC now', '—', 'offline'), kpi('24h move', '—'), kpi('24h net bought', '—'), kpi('24h range', '—')) + delta_box('what just happened', [('—', '○', 'mute', 'no live price at build time')]) + offline_box('Market')
 
-# ---------- Signals (backtest, real) ----------
-months = []
-y, m = 2024, 7
-for _ in range(12):
-    months.append(f'{y}-{m:02d}')
-    m += 1
-    if m == 13:
-        y, m = y + 1, 1
-NAMES = {'H1': '30m rule', 'H2': '15m + 2h up'}  # PRE_REG_C30.md section 0: H1 = 30m chart, H2 = 15m chart with 2h trend up
-scells, srows = [], []
-for hk in ('H1', 'H2'):
-    tr = C30[hk]['trades']
-    by = collections.defaultdict(list)
-    for t in tr:
-        by[t[0][:7]].append(t[1])
-    worst_m = min(by, key=lambda k: sum(by[k])) if by else None
-    row = []
-    for mo in months:
-        v = by.get(mo)
-        if not v:
-            row.append((None, '·', f'{NAMES[hk]} {mo}: no trade', False))
-            continue
-        s = sum(v)
-        sym = '✓' if s > 0 else '✗'
-        row.append((shade(s, 6), sym, f'{NAMES[hk]} {mo}: {len(v)} trades, {sgn(s, 2)}% after fees', mo == worst_m))
-    scells.append(row)
-    srows.append(NAMES[hk])
-h1, h2 = C30['H1'], C30['H2']
-s_delta = [(t[0][2:10], '✓' if t[1] > 0 else '✗', 'up' if t[1] > 0 else 'down', f'{sgn(t[1], 2)}%, held {t[2] / 2:g} h')
-           for t in reversed(h1['trades'][-5:])]
+# ---------- Signals: timeframe flips ----------
+if LIVE:
+    trows = []
+    for r in TF:
+        zs, zc = {'bull': ('▲ above 60', 'up'), 'bear': ('▼ below 40', 'down'), 'mid': ('● 40-60', 'mute')}[r['zone']]
+        wt = r['wt']
+        wts, wtc = ('▼ deep low', 'warn') if wt <= -53 else ('▲ stretched high', 'down') if wt >= 53 else ('● middle', 'mute')
+        trows.append([(f'<b>{r["tf"]}</b>', ''), (f'{r["rsi"]:.0f} {zs}', zc),
+                      (ago(r['zone_since']) if r['zone_since'] else '—', 'mute'),
+                      (f'{wt:.0f} {wts}' + (' · buy dot' if r['dot'] else ''), wtc),
+                      ('▲ above' if r['trend_up'] else '▼ below', 'up' if r['trend_up'] else 'down'),
+                      (ago(r['trend_since']) if r['trend_since'] else '—', 'mute')])
+    n_up = sum(r['trend_up'] for r in TF)
+    flips = sorted([(r['trend_since'], r['tf'], 'trend', r['trend_up']) for r in TF if r['trend_since']] +
+                   [(r['zone_since'], r['tf'], 'RSI ' + r['zone'], r['zone'] == 'bull') for r in TF if r['zone_since']], reverse=True)[:5]
+    flip_lines = [(f'{t:%m-%d %H}Z', '▲' if up else '▼', 'up' if up else 'down',
+                   f'{tf} {"price crossed above trend line" if kind == "trend" and up else "price crossed below trend line" if kind == "trend" else kind.replace("RSI bull", "RSI went above 60").replace("RSI bear", "RSI went below 40").replace("RSI mid", "RSI back to 40-60")}')
+                  for t, tf, kind, up in flips]
+    dots = [r['tf'] for r in TF if r['dot']]
+    h1c = C30['H1']
+    signals = (kpis(kpi('Above trend line', f'{n_up}/{len(TF)}', 'timeframes, 21-bar average', 'up' if n_up * 2 > len(TF) else 'down'),
+                    kpi('RSI above 60', f'{sum(r["zone"] == "bull" for r in TF)}/{len(TF)}', 'bull zone (Malkan)', 'up'),
+                    kpi('RSI below 40', f'{sum(r["zone"] == "bear" for r in TF)}/{len(TF)}', 'bear zone (Malkan)', 'down'),
+                    kpi('Dip-buy dots', ', '.join(dots) if dots else 'none', 'WaveTrend low cross, last 8 bars', 'warn' if dots else 'mute'))
+               + act(f'{n_up} of {len(TF)} timeframes are above their trend line. '
+                     + ('Short charts turned up first: lower timeframes lead, higher ones confirm later.' if TF[0]['trend_up'] and not TF[-1]['trend_up'] else
+                        'All aligned up.' if n_up == len(TF) else 'All aligned down.' if n_up == 0 else 'Mixed: wait for the 2h/4h to agree.')
+                     + ' None of these passed a profit test alone.')
+               + '<div class="cols"><div class="stack">'
+               + table('Timeframes now (closed candles)', ['chart', 'RSI 14', 'zone since', 'WaveTrend', 'vs trend', 'since'], trows,
+                       'Trend line = 21-candle average. WaveTrend ≤ -53 = deep low, where the dip-buy rule looks.')
+               + '</div><div class="stack">' + delta_box('latest flips', flip_lines)
+               + '<div class="box"><h3>Dip-buy rule, past test</h3><ul class="means">'
+               + f'<li><span class="sym down">✗</span>30m dip-buy (WaveTrend low + RSI divergence): {h1c["n"]} trades in 2024-07→2025-06, {h1c["win"]:.0f}% won, avg {sgn(h1c["mean"], 2)}% after fees. Loses alone.</li>'
+               + f'<li><span class="sym warn">?</span>Same on 15m when 2h trend is up: avg {sgn(C30["H2"]["mean"], 2)}%, {C30["H2"]["n"]} trades. Not proven.</li>'
+               + '</ul></div></div></div>')
+else:
+    signals = kpis(kpi('Above trend line', '—'), kpi('RSI above 60', '—'), kpi('RSI below 40', '—')) + delta_box('latest flips', [('—', '○', 'mute', 'offline')]) + offline_box('Timeframes')
 
-
-def vcls(v):
-    return 'down' if v == 'FAIL' else 'warn'
-
-
-signals = (kpis(kpi('30m rule trades', f'{h1["n"]}', f'{h1["win"]:.0f}% of them won'),
-                kpi('Avg per trade', f'{sgn(h1["mean"], 2)}%', f'after fees · worst {h1["worst"]:.1f}%', 'down' if h1['mean'] < 0 else 'up'),
-                kpi('30m rule', '✗ loses', 'do not trade it alone', vcls(h1['verdict'])),
-                kpi('15m + 2h up', '? unproven', f'{sgn(h2["mean"], 2)}%/trade, {h2["n"]} trades', vcls(h2['verdict'])))
-           + '<div class="cols">'
-           + '<div class="stack">'
-           + heat('Buy the dip: WaveTrend low + RSI divergence, test year 2024-07 → 2025-06', srows, [mo[5:] for mo in months], scells,
-                  '✓ month made money after fees · ✗ lost · ring = worst month · past test, not a live signal')
-           + '<div class="box"><h3>What it means for you</h3><ul class="means">'
-           + f'<li><span class="sym down">✗</span>30m rule: {h1["win"]:.0f}% wins but big losers eat them ({h1["worst"]:.1f}% worst). Not a trade on its own.</li>'
-           + '<li><span class="sym warn">?</span>15m buy only when 2h trend is up: small gain, could be luck. Watch only.</li>'
-           + '<li><span class="sym mute">●</span>Why 30m: your swing chart; Eagle_Eyes study C30 (10-31).</li></ul></div></div>'
-           + '<div class="stack">' + delta_box('last 5 trades, 30m rule', s_delta)
-           + '<div class="box"><h3>Timeframe flips now</h3><p class="big mute">not on this page yet</p><p class="sub">needs live candles; proposed next</p></div>'
-           + '</div></div>')
-
-# ---------- Positions (SAMPLE) ----------
-positions = (kpis(kpi('Open trades', '2', 'long 1 · short 1'), kpi('Testnet P&L', '▲ +0.4%', 'since reset', 'up'),
-                  kpi('Stops set', '✓ 2/2', 'all protected', 'up'), kpi('HALT', '○ off', 'no halt file'))
-             + '<div class="cols">'
-             + ladder('Trade A (long) levels', [('target', LAST_PX * 1.012, 'up'), ('entry', LAST_PX * 0.997, ''), ('stop', LAST_PX * 0.991, 'down')])
-             + '<div class="stack">' + delta_box('today', [('09:12', '▲', 'up', 'A opened long'), ('11:40', '▼', 'down', 'B opened short'),
-                                                           ('12:05', '◆', 'warn', 'A stop moved to entry')])
-             + '</div></div>')
+# ---------- Positions (testnet) ----------
+positions = (kpis(kpi('Open trades', '—', 'not visible here'), kpi('Testnet P&L', '—', 'not visible here'), kpi('Stops set', '—', 'not visible here'))
+             + act('Testnet trades run on the Lenovo laptop (desktop-f7iu69n). This page has no copy of them yet, so it shows nothing rather than guess.', 'mute')
+             + '<div class="cols"><div class="stack">' + delta_box('what will show here once wired', [
+                 ('entry', '▲', 'up', 'each new trade, side, size, price'),
+                 ('stop', '◆', 'warn', 'every stop move, distance from price'),
+                 ('exit', '✓', 'mute', 'result after fees, why it closed')])
+             + '</div><div class="stack"><div class="box"><h3>To wire it</h3><p class="sub">live_mirror.py brief on the laptop, copied here read-only (LIVE_MIRROR.md). No order data enters the public repo.</p></div></div></div>')
 
 # ---------- News & calls ----------
-calls = sorted(LEDGER, key=lambda c: c['posted_utc'])
-call_dates = [c['posted_utc'][5:10] for c in calls]
-ccells = [[(f'var(--{"down" if c["direction"] == "short" else "up"}-bg)', '▼' if c['direction'] == 'short' else '▲',
-            f'{c["posted_utc"][:10]} {c["direction"]} entry {c["entry"]} → {c["target1"]} · {c["status"].lower().replace("_", " ")}',
-            i > 0 and c['direction'] != calls[i - 1]['direction']) for i, c in enumerate(calls)]]
-last_call = dt.datetime.fromisoformat(calls[-1]['posted_utc'].replace('Z', '+00:00'))
-NEWS = [  # hand-copied from research/news_feeds_2026-10-30/REPORT.md section 2 (2026-10-29, UTC)
-    ('20:24', '⛓', 'warn', 'on-chain: 167k ETH leave Binance'),
-    ('20:39', '⚡', 'down', 'Tree News: potential Binance hack'),
-    ('20:40', '▼', 'down', 'main leg low 78,199, 10x volume'),
-    ('21:12', '✉', 'mute', 'CoinDesk RSS, after the low'),
-    ('21:15', '◎', 'mute', 'CZ: looks like a hack'),
-]
-news = (kpis(kpi('Habib calls', f'{len(calls)}', 'in the plan ledger'),
-             kpi('Scored', f'{sum(1 for c in calls if c["status"].startswith("SCORED"))}/{len(calls)}', 'all in holdout window', 'warn'),
-             kpi('Habib spoke last', f'{(NOW - last_call).days} d', f'{last_call:%m-%d} {calls[-1]["direction"]}'),
-             kpi('News lead', '15 min', 'headline before main leg', 'up'))
-        + '<div class="cols">'
-        + '<div class="stack">'
-        + heat('Habib calls by date', ['Habib'], call_dates, ccells, '▲ long · ▼ short · ring = direction flipped · tap a cell')
-        + ladder('Habib levels vs last price', [(f'{c["posted_utc"][5:10]} {c["direction"][0].upper()} entry', float(c['entry']), '') for c in calls[-4:]]
-                 + [('target 73,000', 73000.0, 'down')])
-        + '</div>'
-        + delta_box('2026-10-29 Binance hack, UTC', NEWS)
-        + '</div>')
+by_an = collections.defaultdict(list)
+for v in VIEWS.values():
+    if v['analyst'] and v['date']:
+        by_an['Habib' if v['analyst'] == 'Qriptal' else v['analyst']].append(v)
+dates = sorted({v['date'] for v in VIEWS.values() if v['date']})[-8:]
+grid_rows = []
+for an in sorted(by_an, key=lambda a: max(v['date'] for v in by_an[a]), reverse=True):
+    cells = []
+    for d in dates:
+        vs = [v for v in by_an[an] if v['date'] == d]
+        if vs:
+            s, c = bias_sym(vs[-1]['bias'])
+            cells.append((f'<span title="{E(vs[-1]["note"][:120])}">{s}</span>', c))
+        else:
+            cells.append(('·', 'mute'))
+    last_d = max(v['date'] for v in by_an[an])
+    grid_rows.append([(f'<b>{E(an)}</b>', '')] + cells + [(f'{(NOW.date() - dt.date.fromisoformat(last_d)).days} d', 'mute')])
+n_bear = sum(1 for a in by_an if bias_sym(sorted(by_an[a], key=lambda v: v['date'])[-1]['bias'])[1] == 'down')
+n_bull = sum(1 for a in by_an if bias_sym(sorted(by_an[a], key=lambda v: v['date'])[-1]['bias'])[1] == 'up')
+newest = sorted(VIEWS.values(), key=lambda v: v['date'] or '', reverse=True)[:4]
+an_lines = [(v['date'][5:], *bias_sym(v['bias']), f'{v["analyst"]}: {" ".join((v["note"] or "").split()[:9])}') for v in newest]
+LV = []
+if LIVE:
+    for r in CBP_ROWS:
+        exp = r.get('expires_at')
+        if exp and iso(exp) < NOW:
+            continue
+        for p in r.get('pointers') or []:
+            for m in re.finditer(r'\$?(\d{2,3}(?:,\d{3})|\d{2,3}(?:\.\d)?\s?[kK]\b)', p):
+                raw = m.group(1).replace(',', '').replace(' ', '')
+                val = float(raw[:-1]) * 1000 if raw[-1] in 'kK' else float(raw)
+                if 40000 < val < 200000 and abs(val / PX - 1) < 0.12:
+                    s, c = bias_sym(r['bias'])
+                    LV.append((f'{s} {E(r["analyst"])} {r["published"][5:]}', val, c, ''))
+    LV = sorted({(n, v): (n, v, c, x) for n, v, c, x in LV}.values(), key=lambda x: abs(x[1] - PX))[:8]
+news = (kpis(kpi('Analysts heard', f'{len(by_an)}', f'CBP, last {len(dates)} video days'),
+             kpi('Leaning down', f'▼ {n_bear}', f'▲ {n_bull} up · rest neutral', 'down' if n_bear > n_bull else 'up'),
+             kpi('CBP last sync', ago(CBP_LAST) if CBP_LAST else '—', f'{RUN_FAIL} of {len(RUNS)} runs failed', 'down' if RUN_FAIL else 'up'),
+             kpi('Habib Discord', ago(HABIB_READ) + ' ago' if HABIB_READ else '—', f'last read · {len(HABIB_DC)} posts logged', 'down' if HABIB_READ and (NOW - HABIB_READ).days >= 1 else 'up'))
+        + act(f'Most analysts lean {"down" if n_bear > n_bull else "up"}. Their levels near price are in the ladder. '
+              + ('Habib posts are not being read: the Discord reader last ran ' + ago(HABIB_READ) + ' ago.' if HABIB_READ and (NOW - HABIB_READ).days >= 1 else ''))
+        + '<div class="cols"><div class="stack">'
+        + table('Analyst bias by video day', ['analyst'] + [d[5:] for d in dates] + ['last'], grid_rows,
+                '▲ bullish · ▼ bearish · ● neutral or no view · hover a symbol for what he said')
+        + '<div class="box"><h3>How we judge Habib</h3><ul class="means">'
+        + '<li><span class="sym up">✓</span>10-18 plan: sweep the low, then push up. It happened (checked on Binance 15m).</li>'
+        + '<li><span class="sym warn">?</span>9 older plan calls (07-14 → 09-22) are kept sealed for a fair test; opening them needs your OK.</li>'
+        + '<li><span class="sym mute">●</span>We score his plans, not his trades: your view is good ideas, weak execution.</li>'
+        + '</ul></div></div><div class="stack">' + delta_box('newest views', an_lines)
+        + (ladder('Analyst levels near price', LV, PX, 'now') if LV else '')
+        + '</div></div>')
 
 # ---------- Layers ----------
-start = dt.date(2026, 9, 21)
-weeks = [start + dt.timedelta(days=7 * i) for i in range(((NOW.date() - start).days // 7) + 1)]
-lnames = [n for n, v in LAYER_ROWS.items() if v['dated']]
-lcells = []
-for n in lnames:
-    row = []
-    for w in weeks:
-        hits = [x for x in LAYER_ROWS[n]['dated'] if w <= dt.date.fromisoformat(x[0]) < w + dt.timedelta(days=7)]
-        if not hits:
-            row.append((None, '', f'{n} week {w:%m-%d}: nothing', False))
-            continue
-        syms = [vsym(x[2]) for x in hits]
-        pick = next((s for s in syms if s[0] in '↩✓⏸'), next((s for s in syms if s[0] == '✗'), syms[0]))
-        tip = f'{n} · ' + ' | '.join(f'{x[0][5:]} {x[1]}: {" ".join(x[2].split()[:8])}' for x in hits)
-        row.append((f'var(--{pick[1]}-bg)', pick[0], tip, pick[0] == '↩'))
-    lcells.append(row)
-recent = sorted({(x[0], n, x[2]) for n, v in LAYER_ROWS.items() for x in v['dated']}, reverse=True)[:5]
-l_delta = [(d[5:], vsym(t)[0], vsym(t)[1], f'{n}: {" ".join(t.split()[:5])}') for d, n, t in recent]
-tags = ''.join(f'<span class="chip {"down" if v["tag"] == "NO-EDGE" else "warn"}">{"✗" if v["tag"] == "NO-EDGE" else "?"} {E(k)}</span>' for k, v in VERD.items())
-layers = (kpis(kpi('Fee-net PASS', LAYER_PASS.replace(' of ', '/'), 'surviving rows', 'down'),
-               kpi('Layers', f'{N_LAYERS}', f'{len(lnames)} with dated verdicts'),
-               kpi('Verdicts', f'{N_VERD}', 'dated lines in LAYERS.md'),
-               kpi('Newest', recent[0][0][5:], recent[0][1][:16]))
-          + '<div class="cols">'
-          + heat('Layer verdicts by week', [n[:16] for n in lnames], [f'{w:%m-%d}' for w in weeks], lcells,
-                 '✗ no edge · ● descriptive · ↩ PASS withdrawn (ringed) · ⏸ blocked · tap a cell')
-          + '<div class="stack">' + delta_box('newest verdicts', l_delta)
-          + f'<div class="box"><h3>Market guide tags</h3><div class="chips">{tags}</div></div>'
-          + '</div></div>')
+lrows = []
+for n_, g_, nx_ in GATES:
+    GATE_NEXT[n_] = 'live check (G3)' if 'live validation' in nx_.lower() else ' '.join(nx_.split()[:4])
+FAM = {'Tom': 'tom', 'Fabio': 'fabio', 'Malkan': 'malkan', 'Tom+Fabio': 'tom'}
+for name, (who, what, why) in PLAIN.items():
+    if name not in LAYER:
+        continue
+    L = LAYER[name]
+    newest_ = max(L['dated'], default=None)
+    s_, c_ = vsym(L['head'] + ' ' + (newest_[2] if newest_ else ''))
+    raw = re.sub(r'[`*"]', '', L['head'] + (' | ' + newest_[0] + ' ' + newest_[2] if newest_ else ''))
+    nxt = GATE_NEXT.get(FAM.get(who), 'parked') if s_ != '↩' else 'retest needed'
+    lrows.append([(E(who), 'mute'), (E(what), ''), (E(why), 'mute'),
+                  (f'<span title="{E(raw[:200])}">{s_} {RESULT[s_]}</span>', c_), ((newest_[0][5:] if newest_ else '—'), 'mute'), (E(nxt), 'mute')])
+gate_lines = [(f'{n} G{g}/3', '●', 'warn', 'next: ' + ' '.join(nx.split()[:6])) for n, g, nx in GATES]
+recent = sorted({(x[0], n, x[2]) for n, v in LAYER.items() for x in v['dated']}, reverse=True)[:4]
+rl = [(d[5:], *vsym(t), f'{PLAIN.get(n, (n, n, n))[1]}: {RESULT[vsym(t)[0]]}') for d, n, t in recent]
+layers = (kpis(kpi('Ideas tested', f'{len(LAYER)}', 'one per layer'),
+               kpi('Profitable after fees', LAYER_PASS.replace(' of ', ' / '), 'rows standing', 'down'),
+               kpi('Analysts at proof level', f'G{min(int(g) for _, g, _ in GATES)}' if GATES else '—', 'of 3 (G3 = live check)', 'warn'))
+          + act('No idea has made money after fees on its own yet. Next step is the same for all four analysts: '
+                'check their setups live, drawn on the chart (G3).')
+          + '<div class="cols"><div class="stack">'
+          + table('What we tested, why, and what happened', ['whose', 'the idea', 'why we tested it', 'result', 'last', 'next'], lrows,
+                  'No edge = lost money or no gain after fees. Hover a result for the full verdict. Parked = nothing planned.', wrap=True)
+          + '</div><div class="stack">' + delta_box('analyst proof level and next step', gate_lines)
+          + delta_box('newest results', rl) + '</div></div>')
 
 # ---------- Health ----------
-V1 = {'CI': 'green', 'Pages stale': '3', 'Lessons': 'STALE', '.new files': '2', 'Commits 24h': '186'}  # what mock v1 showed
-NOWH = {'CI': CI_STATE, 'Pages stale': PAGES_STALE, 'Lessons': LESSONS, '.new files': str(NEW_FILES), 'Commits 24h': COMMITS}
-h_delta = [(k, '=' if V1[k] == NOWH[k] else '→', 'mute' if V1[k] == NOWH[k] else 'warn', f'{V1[k]} → {NOWH[k]}' if V1[k] != NOWH[k] else f'{NOWH[k]} (same)')
-           for k in V1]
-gcells = [[(f'var(--{"up" if int(g) > lvl else "cell"})', '●' if int(g) > lvl else '○',
-            f'{n} G{g}' + (f', proof changed {hrs}h ago' if hrs else ', proof not on trunk'), False) for lvl in range(3)]
-          for n, g, hrs, _ in GATES]
-health = (kpis(kpi('CI trunk', f'{"✓" if CI_STATE == "green" else "✗"} {CI_STATE}' + ('?' if STALE_H else ''), f'{CI_SHA[:9]} · read {STATUS_AGE_H} h ago' + (' · STALE' if STALE_H else ''),
-                   'warn' if STALE_H else 'up' if CI_STATE == 'green' else 'down'),
-               kpi('Pages stale', PAGES_STALE, 'need republish', 'warn' if PAGES_STALE != '0' else 'up'),
-               kpi('Lesson digest', LESSONS, 'rules file', 'warn' if LESSONS != 'ok' else 'up'),
-               kpi('Commits 24h', COMMITS, f'research {RESEARCH_PCT}%'))
-          + '<div class="cols">'
-          + heat('Analyst gates G1 → G3', [g[0] for g in GATES], ['G1', 'G2', 'G3'], gcells, '● reached · ○ not yet · tap a cell')
-          + '<div class="stack">' + delta_box('since mock v1', h_delta)
-          + f'<div class="box"><h3>Other</h3><p class="sub">GO-PRIVATE {E(GO_PRIV)} · .new files {NEW_FILES} · STATUS.md {E(STATUS_AT)}</p></div>'
+feeds = []
+if LIVE:
+    feeds.append(('Binance price', PX_T, 1))
+feeds += [('CBP YouTube sync', CBP_LAST, 13), ('Habib Discord reader', HABIB_READ, 13)]
+try:
+    of_last = max((R / 'runtime/orderflow_live').glob('20*.csv'))
+    feeds.append(('Order-flow file (this PC)', dt.datetime.fromisoformat(of_last.stem).replace(tzinfo=dt.timezone.utc) + dt.timedelta(days=1), 24))
+except ValueError:
+    pass
+if STATUS_T:
+    feeds.append(('Dev status report', STATUS_T, 6))
+frows = [[(E(n), ''), (('✓ fresh' if t and (NOW - t).total_seconds() < h * 3600 else '✗ stale'), 'up' if t and (NOW - t).total_seconds() < h * 3600 else 'down'),
+          (ago(t) if t else '—', 'mute'), (f'≤ {h} h', 'mute')] for n, t, h in feeds]
+stale_n = sum(1 for r in frows if r[1][1] == 'down')
+health = (kpis(kpi('Data feeds stale', f'{stale_n}/{len(frows)}', 'see table', 'down' if stale_n else 'up'),
+               kpi('CBP runs failed', f'{RUN_FAIL}/{len(RUNS)}', 'last 8 sync runs', 'down' if RUN_FAIL else 'up'),
+               kpi('Code tests (CI)', 'green?' if CI_SHA != 'n/a' else 'red', f'{CI_SHA[:9]} · report {ago(STATUS_T) if STATUS_T else "?"} old', 'warn'),
+               kpi('Pages out of date', PAGES_STALE, 'need republish', 'warn' if PAGES_STALE != '0' else 'up'))
+          + act(f'{stale_n} feed(s) stale. CBP sync fails often and the Habib Discord reader has not run since '
+                f'{HABIB_READ:%m-%d}.' if HABIB_READ else f'{stale_n} feed(s) stale.', 'down' if stale_n else 'up')
+          + '<div class="cols"><div class="stack">' + table('Is each feed running?', ['feed', 'state', 'last', 'expected'], frows) + '</div>'
+          + '<div class="stack">' + delta_box('work state', [('24h', '✗' if NO_GATE else '✓', 'down' if NO_GATE else 'up',
+                                                                'no analyst moved a proof level' if NO_GATE else 'an analyst proof level moved'),
+                                                               ('CI', '●', 'warn', (CI_LINE.split(':')[-1].strip() or 'see STATUS')[:48])])
           + '</div></div>')
 
 # ---------- page ----------
-TABS = [('market', 'Market now', '◉', 'warn', None, market), ('signals', 'Signals', '⚑', 'down', None, signals),
-        ('positions', 'Positions/testnet', '◧', 'mute', 'SAMPLE-POS', positions), ('news', 'News & calls', '✉', 'warn', None, news),
-        ('layers', 'Layers', '▤', 'down', None, layers), ('health', 'Health', '✚', 'warn' if STALE_H else 'up' if CI_STATE == 'green' else 'down', None, health)]
+TABS = [('market', 'Market now', '◉', 'up' if LIVE else 'down', 'Binance public klines', market),
+        ('signals', 'Timeframes', '⚑', 'warn', 'Binance klines + c30 json', signals),
+        ('positions', 'Positions/testnet', '◧', 'mute', 'none on this PC', positions),
+        ('news', 'Analysts & calls', '✉', 'down' if RUN_FAIL else 'up', 'CBP store + POSTS_LOG.csv', news),
+        ('layers', 'Layers', '▤', 'down', 'LAYERS.md + STATUS.md', layers),
+        ('health', 'Health', '✚', 'down' if stale_n else 'up', 'feeds + STATUS.md', health)]
 bar = ''.join(f'<button role="tab" id="tab-{t[0]}" data-tab="{t[0]}" aria-controls="panel-{t[0]}" class="{"on" if i == 0 else ""}">'
               f'<span class="ti">{t[2]}</span>{E(t[1])}<i class="dot {t[3]}"></i></button>' for i, t in enumerate(TABS))
 panels = ''.join(panel(t[0], t[4], t[5], i == 0) for i, t in enumerate(TABS))
-legend = (f'<b>1m</b> {fnum(LAST_PX)} Δ{sgn(D1)} · <b>5m</b> {sgn(C5, 2)}% Δ{sgn(D5)} · '
-          f'<b>POC</b> {fnum(POC)} ({sgn((POC / LAST_PX - 1) * 100, 2)}%)')
+if LIVE:
+    m1 = K['1m'][-2]
+    m5 = K['5m'][-2]
+    near = min((lv for lv in (LV or [])), key=lambda x: abs(x[1] - PX), default=None)
+    legend = (f'<b>1m</b> {fnum(m1["c"])} {sgn((m1["c"] / m1["o"] - 1) * 100, 2)}% net {sgn(m1["net"], 1)} · '
+              f'<b>5m</b> {sgn((m5["c"] / m5["o"] - 1) * 100, 2)}% net {sgn(m5["net"])} BTC'
+              + (f' · <b>level</b> {fnum(near[1])} ({sgn((near[1] / PX - 1) * 100, 2)}%)' if near else ''))
+    age = f'<span class="age" data-ts="{PX_T.isoformat()}">price {PX_T:%m-%d %H:%M}Z</span>'
+else:
+    legend = '<b>1m</b> — · <b>5m</b> — (offline at build)'
+    age = '<span class="age old">offline: no live price</span>'
 
 CSS = """
-/* layout: header (name, data-age chip, tabs) / one panel = KPI row, then heatmap | delta box + ladder / comment row / 1m|5m legend */
+/* layout: header (name, data-age chip, tabs) / one panel = KPI row, action line, then two columns / note row / 1m|5m legend */
 :root{--bg:#eef1f4;--card:#ffffff;--cell:#e3e8ee;--ink:#121820;--mute:#5b6675;--line:#d3dae3;--accent:#1f5fbf;
 --up:#13804a;--down:#c42b2b;--warn:#b26a00;--up-bg:#cfeedd;--down-bg:#f6d3d3;--warn-bg:#f5e3c4;--mute-bg:#e3e8ee;
 --f-ui:"Archivo",system-ui,sans-serif;--f-num:"JetBrains Mono",ui-monospace,Consolas,monospace}
@@ -402,30 +530,27 @@ body{background:var(--bg);color:var(--ink);font:16px/1.35 var(--f-ui);display:fl
 padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))}
 header{flex:none;display:flex;flex-direction:column;gap:6px;padding-block:8px 6px}
 .top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.top h1{font-size:1.05rem;margin:0;font-weight:700;letter-spacing:.01em}
-.age{font:700 .8rem var(--f-num);padding:2px 8px;border-radius:999px;background:var(--warn-bg);color:var(--warn)}.age.old{background:var(--down);color:var(--card)}
-.dtab{width:100%;border-collapse:collapse;font:.9rem var(--f-num);font-variant-numeric:tabular-nums}
-.dtab th{font:600 .72rem var(--f-ui);text-transform:uppercase;letter-spacing:.05em;color:var(--mute);text-align:left;padding:2px 4px}
-.dtab td{padding:3px 4px;border-bottom:1px solid var(--line);white-space:nowrap}.dtab td:nth-child(2),.dtab td:nth-child(3){text-align:right}
-.how{margin:6px 0 0;font-size:.82rem;color:var(--mute)}
-.means{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:.92rem}
-.means li{display:grid;grid-template-columns:1.6rem 1fr;align-items:baseline}
+.top h1{font-size:1.05rem;margin:0;font-weight:700}
+.age{font:700 .8rem var(--f-num);padding:2px 8px;border-radius:999px;background:var(--up-bg);color:var(--up)}
+.age.old{background:var(--down);color:var(--card)}
 .tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
 .tabs button{flex:none;display:flex;align-items:center;gap:6px;background:var(--card);color:var(--ink);border:1px solid var(--line);
 border-radius:8px;padding:7px 11px;font:600 .95rem var(--f-ui);cursor:pointer;white-space:nowrap}
 .tabs button.on{background:var(--accent);border-color:var(--accent);color:var(--card)}
-.tabs button:focus-visible,.hc:focus-visible,.note button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tabs button:focus-visible,.note button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .ti{font-size:1.1rem;line-height:1}
 .dot{width:8px;height:8px;border-radius:50%;display:inline-block;background:var(--mute)}
 .dot.up{background:var(--up)}.dot.down{background:var(--down)}.dot.warn{background:var(--warn)}
 main{flex:1;min-height:0;position:relative}
-.panel{display:none;height:100%;flex-direction:column;gap:8px;position:relative}.panel.on{display:flex}
+.panel{display:none;height:100%;flex-direction:column;gap:8px}.panel.on{display:flex}
 .pbody{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:8px}
-.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(10rem,1fr));gap:8px}
 .kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;min-width:0}
 .lab{font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--mute);font-weight:600}
 .val{font:700 1.6rem/1.15 var(--f-num);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sub{font-size:.85rem;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.act{margin:0;padding:8px 12px;border-radius:10px;font-weight:600;font-size:.98rem;background:var(--warn-bg)}
+.act.up{background:var(--up-bg);color:var(--ink)}.act.down{background:var(--down-bg);color:var(--ink)}.act.warn{color:var(--ink)}.act.mute{background:var(--cell);color:var(--ink)}
 .cols{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:8px;align-items:start}
 .stack{display:flex;flex-direction:column;gap:8px;min-width:0}
 .box{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 10px;min-width:0}
@@ -434,23 +559,22 @@ main{flex:1;min-height:0;position:relative}
 .delta li{display:grid;grid-template-columns:minmax(3.4rem,max-content) 1.5rem 1fr;column-gap:4px;align-items:baseline;border-bottom:1px dashed var(--line)}
 .delta li:last-child{border-bottom:0}
 .when{color:var(--mute)}.sym{font-size:1.15rem;text-align:center}
-.hg{display:grid;gap:2px;align-items:center}
-.ch{font:.72rem var(--f-num);color:var(--mute);text-align:center;overflow:visible;white-space:nowrap}
-.rh{font:.8rem var(--f-num);color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:4px}
-.hc{min-height:1.7rem;border:0;border-radius:3px;background:var(--cell);color:var(--ink);font:1.05rem/1 var(--f-ui);padding:0;cursor:pointer;min-width:0}
-.hc.ring{box-shadow:inset 0 0 0 2px var(--ink)}
-.tip{margin-top:6px;font:.82rem var(--f-num);color:var(--mute);min-height:1.2em}
+.tw{overflow-x:auto}
+.dtab{width:100%;border-collapse:collapse;font:.9rem var(--f-num);font-variant-numeric:tabular-nums}
+.dtab th{font:600 .72rem var(--f-ui);text-transform:uppercase;letter-spacing:.05em;color:var(--mute);text-align:left;padding:2px 4px;white-space:nowrap}
+.dtab td{padding:3px 4px;border-bottom:1px solid var(--line);white-space:nowrap}
+.dtab.wrap td:nth-child(2),.dtab.wrap td:nth-child(3){white-space:normal}.dtab.wrap td{padding-block:2px}
+.how{margin:6px 0 0;font-size:.82rem;color:var(--mute)}
+.means{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:.92rem}
+.means li{display:grid;grid-template-columns:1.6rem 1fr;align-items:baseline}
 .ladder{width:100%;border-collapse:collapse;font:.9rem var(--f-num);font-variant-numeric:tabular-nums}
 .ladder td{padding:2px 4px;border-bottom:1px solid var(--line)}
 .ladder td:nth-child(2),.ladder td:nth-child(3){text-align:right}
 .ladder tr.now td{background:var(--accent);color:var(--card);font-weight:700}
 .ladder tr.poc td:first-child,.ladder tr.up td:first-child{color:var(--up)}.ladder tr.down td:first-child{color:var(--down)}
 .pl{width:100%;height:auto;display:block}.plx{display:flex;justify-content:space-between;font:.78rem var(--f-num);color:var(--mute)}
-.chips{display:flex;flex-wrap:wrap;gap:4px}
-.chip{font:.82rem var(--f-num);padding:2px 7px;border-radius:999px;background:var(--cell)}
 .up{color:var(--up)}.down{color:var(--down)}.warn{color:var(--warn)}.mute{color:var(--mute)}
 .big{font-size:1.1rem;margin:0}
-.badge{flex:none;background:var(--warn-bg);color:var(--warn);font:700 .8rem var(--f-num);padding:3px 8px;border-radius:6px}
 .note{display:flex;gap:6px;flex:none;align-items:center}
 .note input{flex:1;min-width:0;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:6px 8px;font:inherit;font-size:.9rem}
 .note button{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:6px 10px;cursor:pointer;font:600 .85rem var(--f-ui)}
@@ -458,7 +582,6 @@ main{flex:1;min-height:0;position:relative}
 footer{flex:none;font:.85rem var(--f-num);color:var(--mute);padding-block:6px 8px;border-top:1px solid var(--line);margin-top:6px;white-space:nowrap;overflow-x:auto}
 footer b{color:var(--ink)}
 @media (max-width:760px){.cols{grid-template-columns:minmax(0,1fr)}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.val{font-size:1.35rem}}
-@media (prefers-reduced-motion:no-preference){.hc{transition:transform .08s}.hc:hover{transform:scale(1.15)}}
 """
 JS = """
 var K='mts_onepage_mock_comments',T='mts_onepage_mock_tab';
@@ -475,7 +598,10 @@ tabs.forEach(function(b,i){b.onclick=function(){show(b.dataset.tab)};
  b.onkeydown=function(e){var d=e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0;if(d){var n=tabs[(i+d+tabs.length)%tabs.length];n.focus();show(n.dataset.tab)}}});
 var start=(location.hash||'').slice(1);if(!document.getElementById('tab-'+start)){try{start=localStorage.getItem(T)||''}catch(e){start=''}}
 if(start)show(start);
-document.querySelectorAll('.hc').forEach(function(c){c.onclick=function(){c.closest('.heat').querySelector('.tip').textContent=c.dataset.tip}});
+function age(){document.querySelectorAll('.age[data-ts]').forEach(function(a){var mins=Math.round((Date.now()-Date.parse(a.dataset.ts))/60000);
+ var txt=mins<90?mins+' min old':mins<2880?Math.round(mins/60)+' h old':Math.round(mins/1440)+' d old';
+ a.textContent='price '+a.dataset.ts.slice(5,16).replace('T',' ')+'Z · '+txt;a.classList.toggle('old',mins>60)})}
+age();setInterval(age,60000);
 document.querySelectorAll('[data-save]').forEach(function(b){b.onclick=function(){
  var p=b.dataset.save,o=ld();o[p]=document.getElementById('c-'+p).value;sv(o);document.getElementById('s-'+p).textContent='saved'}});
 document.querySelectorAll('[data-copy]').forEach(function(b){b.onclick=function(){
@@ -486,9 +612,7 @@ document.querySelectorAll('[data-copy]').forEach(function(b){b.onclick=function(
 """
 FONTS = '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap">'
 TITLE = 'Live feed one page'
-age_chip = (f'<span class="age{" old" if AGE_D >= 1 else ""}" title="newest bar in the repo; not live">'
-            f'data {LAST_TS:%Y-%m-%d %H:%M}Z · {AGE_D} d old</span>')
-inner = (f'<header><div class="top"><h1>MTS live</h1>{age_chip}<span class="sub">built {NOW:%m-%d %H:%M}Z</span></div>'
+inner = (f'<header><div class="top"><h1>MTS live</h1>{age}<span class="sub">built {NOW:%m-%d %H:%M}Z · snapshot, re-run to refresh</span></div>'
          f'<nav class="tabs" role="tablist">{bar}</nav></header><main>{panels}</main><footer>{legend}</footer>'
          f'<script>{JS}</script>')
 head = f'<title>{TITLE}</title>{FONTS}<style>{CSS}</style>'
@@ -498,4 +622,4 @@ OUT.write_text(page, encoding='utf-8', newline='\n')
 if '--fragment' in sys.argv:  # artifact publish copy: the host adds the doctype/head/body skeleton
     frag = f'<meta name="claude:viewport-fit-sides" content="cover">{head}{inner}'
     pathlib.Path(sys.argv[sys.argv.index('--fragment') + 1]).write_text(frag, encoding='utf-8', newline='\n')
-print(len(page))
+print(len(page), 'live' if LIVE else 'offline')
