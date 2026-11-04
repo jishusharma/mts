@@ -4,14 +4,14 @@
   "commands": [],
   "created": "2026-11-04T07:44:44Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "nuc_lab.py tick and the supervisor plan start MTS-Wake-codextick; a tick started that way claims and pushes.",
+  "est_turns": 5,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Gate ticks fail their claim push because an ssh logon cannot read the saved GitHub login; start them in the logged-on session.",
   "id": "nuc-codex-run-py-tick-cannot-push-claims",
-  "lane": "",
+  "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -21,14 +21,20 @@
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
+  "scope_in": [
+    "scripts/dev/nuc_lab.py",
+    "scripts/dev/supervisor.py"
+  ],
   "scope_out": [],
-  "size": "",
+  "size": "S",
   "sources": [],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Route the gate tick through schtasks",
+    "Prove a claim push from the task"
+  ],
+  "tests": "scripts/dev/test_nuc_lab.py::NucLabTest::test_tick_starts_in_the_logged_on_session_not_inside_ssh",
   "title": "NUC codex_run.py tick cannot push claims: git on JIS-NUC F:/MTS/mts-codex-lab has no GitHub credential (fatal: could not read Username, terminal prompts disabled); IDLE claim refused for gpt-audit-context-filter-review-1104. Done-when: a tick from the desktop over nuc_gate ssh claims and pushes without a prompt (store the gh credential helper or a PAT via gh auth for the e-ngineers user on NUC, never in the repo).",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }
