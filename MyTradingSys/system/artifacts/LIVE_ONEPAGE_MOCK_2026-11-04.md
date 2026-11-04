@@ -7,4 +7,4 @@ Live one-page mock v2 (operator style: 16px, KPI tiles, Δ box, date x symbol gr
 - Health: research/STATUS.md parsed at build (CI, pages stale, digest, commits, gate board); its age is shown, it can lag trunk CI.
 - Generators to change for live: mts_home generator (registry slug mts_home), live_mirror.py brief, STATUS generator.
 - SAMPLE badges: SAMPLE-POS.
-- Build: python MyTradingSys/system/artifacts/_gen_live_onepage_mock.py [--fragment <artifact copy>]; artifact https://claude.ai/artifact/DBQFxH79QsFSCVxmGqvSU9
+- Build: python MyTradingSys/system/artifacts/_gen_live_onepage_mock.py [--fragment <artifact copy>]; published as a private unregistered review page "Live feed one page" (link in the ship commit)
