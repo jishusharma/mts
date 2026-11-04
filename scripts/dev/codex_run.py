@@ -610,18 +610,49 @@ def spec_test_paths(card):
     return out
 
 
-def out_of_scope(kind, files, card=None):
+EXTRA_TESTS_TSV = "scripts/dev/extra_tests.tsv"
+
+
+def tsv_registers_only(wt, ok):
+    """True when the work-tree diff of extra_tests.tsv only adds lines, each naming a test in ok. Fail closed: no tree or a git
+    error is False, and so is a diff with no added line or any removed line."""
+    if wt is None or not ok:
+        return False
+    try:
+        r = git(wt, "diff", "HEAD", "--unified=0", "--no-color", "--", EXTRA_TESTS_TSV, check=False)
+    except OSError:
+        return False
+    if r.returncode:
+        return False
+    added = 0
+    for line in r.stdout.splitlines():
+        if line.startswith(("+++", "---")):
+            continue
+        if line.startswith("-"):
+            return False
+        if line.startswith("+"):
+            text = line[1:].strip().replace("\\", "/")
+            if text:
+                if text not in ok:
+                    return False
+                added += 1
+    return added > 0
+
+
+def out_of_scope(kind, files, card=None, wt=None):
     """Files an audit or run card may not have written: those two kinds only report, log trials and capture follow-up cards.
     The generated LAYERS.md is allowed: without it every audit of a layer-family card ended OUT_OF_SCOPE (JIS-NUC 2026-10-15 16:00Z).
     A gpt-spec-tests-* card may also write the test_*.py files its scope_in names: its audit kind exists only because the test does not
-    exist yet (tasks.py mutation_check rule), and three runs on 2026-11-04 lost finished tests to OUT_OF_SCOPE."""
+    exist yet (tasks.py mutation_check rule), and three runs on 2026-11-04 lost finished tests to OUT_OF_SCOPE. It may also register
+    them: extra_tests.tsv, when its diff in wt only adds lines naming those tests (fetch-binance-archive-1104, 2026-11-04 17:2xZ)."""
     if kind == "build":
         return []
     ok = spec_test_paths(card)
-    return [f for f in files if not (f.startswith(LAB + "/") or f.startswith(tasks.DIR + "/") or f in GENERATED or f in ok)]
+    reg = EXTRA_TESTS_TSV in files and tsv_registers_only(wt, ok)
+    return [f for f in files if not (f.startswith(LAB + "/") or f.startswith(tasks.DIR + "/") or f in GENERATED or f in ok or (reg and f == EXTRA_TESTS_TSV))]
 
 
-def judge(card_now, reports, kind, files, card=None):
+def judge(card_now, reports, kind, files, card=None, wt=None):
     """Outcome of a run from what is in the work tree afterwards. Fail closed: only DONE and BLOCKED are shipped."""
     if out_of_scope(kind, files, card):
         return "OUT_OF_SCOPE"
@@ -790,7 +821,7 @@ def run_card(card, dry=False, env=os.environ, probing=False):
         files = changed_files(wt)
         now = json.loads((wt / tasks.DIR / f"{cid}.json").read_text(encoding="utf-8"))
         reports = sorted(f for f in files if f.startswith(f"{LAB}/reports/") and f.endswith(f"_{cid}.md"))
-        outcome, note = judge(now, reports, card["kind"], files, card), ""
+        outcome, note = judge(now, reports, card["kind"], files, card, wt), ""
         logtext = log.read_text(encoding="utf-8", errors="replace")
         err = lane_health.classify(logtext) if outcome == "INCOMPLETE" else ""   # also when files were written: the 2026-10-12 astra run did 777 s of work, then hit the limit
         if limit_hit(outcome, files, logtext):
@@ -847,7 +878,7 @@ def run_card(card, dry=False, env=os.environ, probing=False):
             lane_health.commit_ship(wt, [lane_health.STATE, USAGE], f"lane health: GPT {lane['status']}" + (f" ({lane['reason']})" if lane["reason"] else "") +
                                     f"\n\nResult: {lane_health.why_down(lane) if lane['status'] == 'down' else 'GPT lane up'}\n")
         else:
-            note = f"{len(files)} uncommitted file(s) left in {wt}: " + ", ".join((out_of_scope(card['kind'], files, card) or files)[:5])
+            note = f"{len(files)} uncommitted file(s) left in {wt}: " + ", ".join((out_of_scope(card['kind'], files, card, wt) or files)[:5])
         r = sh(wt, "scripts/dev/sync.py", "release", sync.slugify(cid))
         if r.returncode:
             note += " | release failed: " + (r.stdout + r.stderr).strip()[-200:]

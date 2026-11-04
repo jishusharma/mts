@@ -208,6 +208,44 @@ class JudgeTest(unittest.TestCase):
         self.assertEqual(R.judge({"state": "done"}, [self.REP], "audit", [self.REP, test], c), "OUT_OF_SCOPE")
         self.assertEqual(R.judge({"state": "done"}, [self.REP], "audit", [self.REP, test]), "OUT_OF_SCOPE")
 
+    TSV = "scripts/dev/extra_tests.tsv"
+    TSV_TEST = "scripts/dev/test_new_thing.py"
+
+    def _tsv_tree(self, d, new_text):
+        import subprocess
+        wt = Path(d)
+        run = lambda *a: subprocess.run(["git", "-C", str(wt), "-c", "user.name=t", "-c", "user.email=t@t", *a], check=True, capture_output=True)
+        run("init", "-q")
+        (wt / "scripts" / "dev").mkdir(parents=True)
+        (wt / self.TSV).write_text("# c\nscripts/dev/test_a.py\nscripts/dev/test_b.py\n", encoding="utf-8", newline="\n")
+        run("add", "-A")
+        run("commit", "-q", "-m", "base")
+        (wt / self.TSV).write_text(new_text, encoding="utf-8", newline="\n")
+        return wt
+
+    def _tsv_scope(self, new_text, cid="gpt-spec-tests-x-1104"):
+        c = {"id": cid, "kind": "audit", "scope_in": [self.TSV_TEST]}
+        with tempfile.TemporaryDirectory() as d:
+            wt = self._tsv_tree(d, new_text)
+            return R.out_of_scope("audit", [self.TSV_TEST, self.TSV], c, wt)
+
+    def test_spec_test_card_may_register_its_test_in_extra_tests_tsv(self):
+        base = "# c\nscripts/dev/test_a.py\nscripts/dev/test_b.py\n"
+        self.assertEqual(self._tsv_scope(base + self.TSV_TEST + "\n"), [])
+
+    def test_extra_tests_tsv_line_naming_another_file_stays_out(self):
+        base = "# c\nscripts/dev/test_a.py\nscripts/dev/test_b.py\n"
+        self.assertEqual(self._tsv_scope(base + self.TSV_TEST + "\nscripts/dev/test_other.py\n"), [self.TSV])
+
+    def test_extra_tests_tsv_removed_line_stays_out(self):
+        self.assertEqual(self._tsv_scope("# c\nscripts/dev/test_a.py\n" + self.TSV_TEST + "\n"), [self.TSV])
+
+    def test_extra_tests_tsv_for_other_cards_or_without_a_tree_stays_out(self):
+        text = "# c\nscripts/dev/test_a.py\nscripts/dev/test_b.py\n" + self.TSV_TEST + "\n"
+        self.assertEqual(self._tsv_scope(text, cid="lab-a"), [self.TSV_TEST, self.TSV])
+        c = {"id": "gpt-spec-tests-x-1104", "kind": "audit", "scope_in": [self.TSV_TEST]}
+        self.assertEqual(R.out_of_scope("audit", [self.TSV_TEST, self.TSV], c), [self.TSV])   # no tree: fail closed
+
     def test_out_of_scope_and_ship_failures_count_as_tries(self):
         with tempfile.TemporaryDirectory() as d:
             p = Path(d) / "lab_runs"
