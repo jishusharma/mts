@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "sim desk: C30 banner reads its trade list; trade chart names its divergence rule (sim demo",
-      "ref": "686c6f9b57a4",
-      "utc": "2026-11-04T13:25:20Z"
+      "line": "Gemini blind reads: spot-checked and filed, 15 of 15 sampled numbers agree",
+      "ref": "83b84fb55acc",
+      "utc": "2026-11-04T15:39:47Z"
     }
   ],
   "layers": [],
@@ -28,7 +28,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-04T13:26:42Z",
+  "refreshed": "2026-11-04T15:47:51Z",
   "refs": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/c30_trade_charts.py",
     "MyTradingSys/research/sim_desk/results/dir-malkan_div_flags_2026-10-28.json"
@@ -44,7 +44,7 @@
   "scope_out": [
     "no detector or rule change; DEV/VALIDATION windows only as the study already read them; HOLDOUT never loaded"
   ],
-  "scope_sha": "686c6f9b57a4",
+  "scope_sha": "83b84fb55acc",
   "size": "M",
   "sources": [],
   "state": "ready",

@@ -16,7 +16,15 @@
   "id": "gpt-spec-tests-api-job-1104",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "route tag re-land: every ship names where the work goes next (Next: gate, tasks done --nex",
+      "ref": "08d51e5b7fc8",
+      "utc": "2026-11-04T15:22:55Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -24,7 +32,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-04T08:33:52Z",
+  "refreshed": "2026-11-04T15:46:13Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -33,7 +41,7 @@
   "scope_out": [
     "any launch of a real job; the key file; PLAN_API_CREDITS ledger edits"
   ],
-  "scope_sha": "",
+  "scope_sha": "08d51e5b7fc8",
   "size": "S",
   "sources": [
     "MyTradingSys/system/PLAN_24H_2026-11-04.md (section 3 job queue)"

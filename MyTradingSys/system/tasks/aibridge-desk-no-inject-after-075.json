@@ -35,9 +35,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "AIBridge 0.7.22: Argon High findings (ran block never re-runs, send-button picker and draf",
-      "ref": "85ade19f4d5b",
-      "utc": "2026-11-02T19:24:29Z"
+      "line": "desk_inject_check.md: 0.7.25 versions equal, DeepSeek fixture tests 11/11 pass, Desk count",
+      "ref": "6a14a0486c6b",
+      "utc": "2026-11-04T14:43:19Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "6a14a0486c6b desk_inject_check.md: 0.7.25 versions equal, DeepSeek fixture tests 11/11 pas",
+      "ref": "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/desk_inject_check.md",
+      "utc": "2026-11-04T14:43:19Z"
     }
   ],
   "layers": [],
@@ -47,7 +54,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-03T22:32:56Z",
+  "refreshed": "2026-11-04T15:47:49Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -61,7 +68,7 @@
     "any other host",
     "live tree"
   ],
-  "scope_sha": "85ade19f4d5b",
+  "scope_sha": "6a14a0486c6b",
   "size": "S",
   "sources": [
     "scripts/aibridge/RELEASES.json (0.7.9 current)",

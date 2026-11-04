@@ -27,9 +27,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "tidy: finished worktrees retire right after ship",
-      "ref": "59815236e099",
-      "utc": "2026-11-03T18:38:14Z"
+      "line": "Merge remote-tracking branch 'origin/fast-track' into worktree-agent-a9e1d56e976d2bbdd",
+      "ref": "d8d73a2bc7dd",
+      "utc": "2026-11-04T15:40:14Z"
     }
   ],
   "layers": [],
@@ -39,7 +39,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-04T05:13:38Z",
+  "refreshed": "2026-11-04T15:46:43Z",
   "refs": [
     "MyTradingSys/system/PARALLEL.md"
   ],
@@ -51,7 +51,7 @@
   "scope_out": [
     "claim lease rules; lane trees"
   ],
-  "scope_sha": "59815236e099",
+  "scope_sha": "d8d73a2bc7dd",
   "size": "S",
   "sources": [],
   "state": "ready",

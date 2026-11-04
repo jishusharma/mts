@@ -19,16 +19,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "habib: DRAFT pre-registration for plan hit-rate vs placebo (holdout release awaits operato",
-      "ref": "e65a368db143",
-      "utc": "2026-10-24T14:51:09Z"
+      "line": "wiring audit builder: restore full tree after an index slip; lint-clean quote parsing",
+      "ref": "89619dbe5f66",
+      "utc": "2026-10-28T22:03:30Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "e65a368db143 habib: DRAFT pre-registration for plan hit-rate vs placebo (holdout release a",
+      "line": "89619dbe5f66 wiring audit builder: restore full tree after an index slip; lint-clean quote",
       "ref": "MyTradingSys/research/habib_plan_imbalance_2026-10-20/PRE_REG_HABIB_PLANS.md",
-      "utc": "2026-10-24T14:51:09Z"
+      "utc": "2026-10-28T22:03:30Z"
     }
   ],
   "layers": [],
@@ -38,7 +38,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-04T13:00:34Z",
+  "refreshed": "2026-11-04T15:47:50Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -49,7 +49,7 @@
   "scope_out": [
     "holdout rows (sealed); Habib's trade fills; live tree"
   ],
-  "scope_sha": "e65a368db143",
+  "scope_sha": "89619dbe5f66",
   "size": "M",
   "sources": [
     "MyTradingSys/research/habib_plan_imbalance_2026-10-20/PRE_REG_HABIB_PLANS.md"

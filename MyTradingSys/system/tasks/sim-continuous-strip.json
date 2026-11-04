@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T15:48:07Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -26,25 +27,37 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "shipped b6f7f6cca: artifact index.html has #trade-strip and #rule-card",
+      "ref": "abcce966e",
+      "utc": "2026-11-04T15:48:07Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "sim desk: catalogue row and artifact list for rsi-40-60-line-behaviour",
-      "ref": "abe04dc3ee54",
-      "utc": "2026-11-04T08:34:53Z"
+      "line": "Sim page: News tab and one tab per concept (Tom, Fabio, Malkan, Krown, Bollinger, RSI, Wav",
+      "ref": "e4b6d2847a24",
+      "utc": "2026-11-04T14:58:32Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: shipped in b6f7f6cca",
   "note": "REVIEWED:2026-11-03 ACCEPT (Sonnet agent a2905516c ACCEPT-AFTER-FIX; fix applied by planner-a-1103, confirmed planner-refine-1104). Cost source: result json value_plain 0.10% per round trip (SOURCED backtest/fees.py); slippage and funding n/a. DECISION (OURS): strip is 30m. REVIEWED:2026-11-04 ACCEPT (scope present; no trade-strip or rule-card in artifact yet)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-04T13:21:35Z",
+  "refreshed": "2026-11-04T15:47:51Z",
   "refs": [
     "MyTradingSys/research/sim_desk/api_review/SIM_VISUALS_REVIEW.md"
   ],
-  "result": "",
+  "result": "shipped b6f7f6cca: artifact index.html has #trade-strip and #rule-card",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/sim_desk/artifact/build_artifact.py",
     "MyTradingSys/research/sim_desk/artifact/test_artifact.py",
@@ -53,14 +66,15 @@
   "scope_out": [
     "no desk.py or backtest change; no new data fetch; other results keep their current chart; no deploy of the hosted page (republish is a separate Haiku step)"
   ],
-  "scope_sha": "abe04dc3ee54",
+  "scope_sha": "e4b6d2847a24",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "decide the data source first: build_artifact.py reads trades and candles from results/eagle-c30-wt-rsi-div.json (chart items written by c30_trade_charts.py); if candles for between-trade bars are missing, extend c30_trade_charts.py to emit them and log DECISION (OURS)",
     "rule card cost fields: read costs from the result json trade_costs/fee fields; label each SOURCED or OURS; show n/a when absent (no invented numbers)"
   ],
+  "taken": "2026-11-04T15:48:07Z",
   "tests": "MyTradingSys/research/sim_desk/artifact/test_artifact.py: new test asserts strip element with N trade markers and rule card fields present; run and confirm it fails before the change",
   "title": "Sim page: one continuous candle strip per test with all trades marked, plus a plain rule card (entry, exit, stop or none, timeframe, costs)",
   "weight": "IMPORTANT",
