@@ -25,7 +25,8 @@ EXPECTED_SIGS = {
     "bt_engine.simulate_trade": ["side", "entry_price", "entry_t", "stop", "targets", "bars", "mark_bars", "funding",
                                  "taker_fee", "maker_fee", "max_bars", "stop_first", "target_through"],
     "run_rsi_backtest.trades_from_events": ["events", "bars", "stop_pct", "target_pct", "max_bars", "taker", "maker",
-                                            "funding"],
+                                            "funding", "stop_mode", "target_mode", "confirm", "entry_mode",
+                                            "retrace_bars"],  # 2026-11-04: Malkan wire adds opt-in modes, defaults keep the flat bracket
     "sim.run": ["rows", "rule", "stops", "taker", "maker"],
     "fabio_v3.walk_trade": ["bars", "fill_idx", "s", "entry", "D", "stop", "ctrl", "absorbed", "mgmt", "be_k", "tick",
                             "end_idx", "target", "s8_kw", "stop_first", "force_close"],
