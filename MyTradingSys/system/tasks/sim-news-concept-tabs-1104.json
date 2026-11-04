@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "sim desk: C30 banner reads its trade list; trade chart names its divergence rule (sim demo",
-      "ref": "686c6f9b57a4",
-      "utc": "2026-11-04T13:25:20Z"
+      "line": "Merge origin/fast-track into sim-strip-1104 (index.html rebuilt from merged sources)",
+      "ref": "1cb196217c03",
+      "utc": "2026-11-04T13:31:59Z"
     }
   ],
   "layers": [],
@@ -28,7 +28,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-04T13:26:19Z",
+  "refreshed": "2026-11-04T14:35:35Z",
   "refs": [
     "MyTradingSys/research/sim_desk/DESIGN.md",
     "MyTradingSys/system/OPERATOR_DECISIONS.md"
@@ -42,7 +42,7 @@
   "scope_out": [
     "no desk.py or results/*.json change; no new data fetch; republish is a separate step via the Artifact tool + artifacts.py publish-record"
   ],
-  "scope_sha": "686c6f9b57a4",
+  "scope_sha": "1cb196217c03",
   "size": "M",
   "sources": [],
   "state": "ready",
