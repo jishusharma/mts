@@ -1,35 +1,57 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_GATE_SELECT_DOC_MUST_1104.md'); assert p.exists() and 'VERDICT' in p.read_text()\""
+  ],
   "created": "2026-11-04T09:48:18Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_GATE_SELECT_DOC_MUST_1104.md lists each DOC_MUST key with one matching and one non-matching sample path, ends with VERDICT: SOUND or GAPS",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Gemini blind read of scripts/dev/gate_select.py DOC_MUST (line 58): does each regex route a docs/data path to the step its trip needs, any path escaping to no gate",
   "id": "gemini-blind-read-of-scripts-dev-gate-se",
   "kind": "audit",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "gate: docs/data ships run the step their trip needs (cards 3tl, OPERATOR_DECISIONS 3af, ha",
+      "ref": "1dfa10977bd1",
+      "utc": "2026-11-04T09:38:13Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-04 T0-ONLY; Gemini low effort feeder card. Refined by planner-refine-1104.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T12:59:52Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/gate_select.py",
+    "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_GATE_SELECT_DOC_MUST_1104.md"
+  ],
+  "scope_out": [
+    "any edit to gate_select.py"
+  ],
+  "scope_sha": "1dfa10977bd1",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read gate_select.py lines 50-80 and its test file only",
+    "For each DOC_MUST pattern give a matching and a non-matching path",
+    "End with a VERDICT line"
+  ],
+  "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_GATE_SELECT_DOC_MUST_1104.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] blind read of scripts/dev/gate_select.py DOC_MUST",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }

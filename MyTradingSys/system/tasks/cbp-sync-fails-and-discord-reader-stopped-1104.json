@@ -1,35 +1,59 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/cbp_schedule.py status",
+    "python scripts/dev/cbp_run.py --due"
+  ],
   "created": "2026-11-04T07:01:02Z",
   "depends_on": [],
-  "done_when": "ingestion.log shows the next 2 windows complete and POSTS_LOG.csv has rows seen within 13 h",
-  "est_turns": null,
+  "done_when": "cbp_run.py --due completes 2 consecutive windows with no CalledProcessError in ingestion.log; POSTS_LOG.csv has youtube and discord rows seen <= 13 h old",
+  "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "CBP YouTube sync and Habib Discord reader run every window without failure",
+  "goal": "CBP YouTube sync and the Habib Discord reader complete every scheduled window; both show fresh on the live feed Health tab",
   "id": "cbp-sync-fails-and-discord-reader-stopped-1104",
   "kind": "run",
   "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: analyst posts watch routine for Habib and Krown",
+      "ref": "43ed8cd7a15c",
+      "utc": "2026-11-01T19:43:06Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "OPERATOR QUOTE: all these things must be wired to happen regularly, twice a day, both Discord and YouTube, and there should be a proper broadcast by any running MTS that CBP has synced",
+  "note": "DECISION (OURS): lane stays JIS-NB (CBP host data, desk task), not live_path. Operator quote: twice a day, Discord and YouTube, broadcast when CBP synced. Refined by planner-refine-1104.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T12:59:51Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/cbp_run.py",
+    "scripts/dev/cbp_schedule.py",
+    "MyTradingSys/research/analysts/watch/POSTS_LOG.csv"
+  ],
+  "scope_out": [
+    "live tree .mts_live; mainnet; .secrets"
+  ],
+  "scope_sha": "43ed8cd7a15c",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "On the CBP host read ingestion.log, list the CalledProcessError lines and the YT block cause",
+    "cbp_schedule.py status; repair the twice-daily task (05:00, 20:00 UTC) and the Discord reader start",
+    "Add a Health tab line with the last CBP sync age and last Discord post age"
+  ],
+  "tests": "scripts/dev/test_cbp_schedule.py: new case fails when cbp_run exits non-zero and no sync stamp may be written",
   "title": "CBP sync failed 4 of last 8 runs (CalledProcessError, YT block) and the Habib Discord reader last ran 11-01 19:31Z; done when both run on their windows and the live feed Health tab shows both fresh",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }
