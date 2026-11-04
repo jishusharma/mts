@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T12:40:04Z",
   "commands": [
     "python scripts/dev/gemini_queue.py run malkan-hindi-extract:low"
   ],
@@ -15,7 +16,14 @@
   "id": "malkan-hindi-extract",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/malkan_hindi_2026-11-04/HINDI_CONCEPTS.md: 6 Hindi videos, 24 quotes",
+      "ref": "9aab0dd1d",
+      "utc": "2026-11-04T12:40:04Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -25,7 +33,12 @@
   "refined_by": "",
   "refreshed": "2026-11-04T07:15:00Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/malkan_hindi_2026-11-04/HINDI_CONCEPTS.md: 6 Hindi videos, 24 quotes, verify_extract_quotes PASS. Bar window: fewer than 15 bars is SOURCED; 12 appears only inside a dilution list; 18 is NOT_IN_DATA",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/malkan_hindi_2026-11-04",
     "raw_transcripts_canonical"
@@ -34,12 +47,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Fetch captions for the 6 video ids into raw_transcripts_canonical/<id>_raw.txt (Hindi; keep original text)",
     "Write HINDI_CONCEPTS.md: per concept a verbatim quote [id] and plain meaning marked OURS",
     "Run verify_extract_quotes.py until exit 0"
   ],
+  "taken": "2026-11-04T12:40:04Z",
   "tests": "python verify_extract_quotes.py",
   "title": "[GEMINI] Extract Malkan RSI divergence concepts from the 6 Hindi videos",
   "weight": "ROUTINE",

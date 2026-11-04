@@ -28,10 +28,32 @@ class Select(unittest.TestCase):
         self.assertEqual(self.sel(), ("none", []))
 
     def test_docs_only_selects_no_steps(self):
-        # gate-tiers-by-path: docs/research/cards/pages push with no local gate; CI gates behind
-        mode, steps = self.sel("MyTradingSys/system/RELAY.md", "MyTradingSys/system/tasks/x.json")
+        # gate-tiers-by-path: docs/research/pages push with no local gate; CI gates behind (cards: DOC_MUST below)
+        mode, steps = self.sel("MyTradingSys/system/RELAY.md", "MyTradingSys/research/x/notes.json")
         self.assertEqual(mode, "docs")
         self.assertEqual(steps, [])
+
+    # gate_gap_2026-11-03: docs/data-only ships that ran no local step and went red on trunk, each a revert
+    def test_gap_card_only_ship_runs_the_task_card_lint(self):
+        # 4a26cac5f dsabr-c1..c8 promoted to ready: CI red at Step 3tl, reverted twice (b0e6553af, 850f7187c)
+        self.assertEqual(self.sel("MyTradingSys/system/tasks/x.json"), ("docs", ["3tl"]))
+
+    def test_gap_operator_decisions_ship_runs_the_artifact_hub_tests(self):
+        # 915c162c4: one OPERATOR_DECISIONS.md line pushed the MTS Home hub to 30339 B > 30000 (Step 3af), revert 133fae87a
+        steps = STEPS + [("3af", "python scripts/dev/test_artifacts.py")]
+        self.assertEqual(gs.select(["MyTradingSys/system/OPERATOR_DECISIONS.md"], steps, mentioned=mentioned), ("docs", ["3af"]))
+
+    def test_gap_handover_ship_runs_the_doc_integrity_shard(self):
+        # 396c83c62 / b5c4ed522: SUPERVISOR_B.md forbidden ref, test_integrity red in CI (step 4d), reverts b0349341c, bd5c5afb9
+        self.assertEqual(self.sel("MyTradingSys/system/handover/SUPERVISOR_B.md"), ("docs", ["4d"]))
+
+    def test_gap_trial_registry_rows_run_the_trial_ledger_test(self):
+        # 9d9e1bdb4 / rumers rows: TRIAL_REGISTRY rows without the rebuilt ledger, test_trial_ledger red (3xt), reverts e3e1ac4ac, 603686f9d
+        led = "scripts/dev/test_trial_ledger.py"
+        for f in ("MyTradingSys/research/c26_roadmap_2026-11-01/TRIAL_REGISTRY_c26_roadmap.csv",
+                  "MyTradingSys/research/TRIAL_LEDGER_BUILT.csv"):
+            self.assertEqual(gs.must_extras([f], [led, "scripts/dev/test_other.py"]), [led], f)
+            self.assertEqual(self.sel(f)[0], "smoke", f)
 
     def test_smoke_runs_the_task_card_lint_only_when_a_card_is_in_the_diff(self):
         self.assertNotIn("3tl", self.sel("scripts/dev/dsa.py")[1])

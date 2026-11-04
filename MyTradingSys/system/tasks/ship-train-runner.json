@@ -1,0 +1,56 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-03T20:35:17Z",
+  "depends_on": [],
+  "done_when": "A test with 3 fake queue refs (one conflicting, one red) lands the green one on fast-track-shadow and leaves fast-track untouched",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Add .github/workflows/train.yml: on push to queue/**, one run at a time, scan all queue refs, order docs lane then code lane (batch cap 4), merge onto the fast-track tip, run the existing CI matrix via workflow_call, fast-forward fast-track-shadow only on green. Real fast-track untouched.",
+  "id": "ship-train-runner",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ci.yml: run CI on task-card pushes (MyTradingSys/system/tasks/**)",
+      "ref": "33490efb55a0",
+      "utc": "2026-10-25T11:22:03Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "after ship-train-flake-floor",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T20:35:37Z",
+  "refs": [
+    "MyTradingSys/system/SHIP_TRAIN.md"
+  ],
+  "result": "",
+  "scope_in": [
+    ".github/workflows/train.yml",
+    ".github/workflows/ci.yml"
+  ],
+  "scope_out": [
+    "live tree; auto_deploy"
+  ],
+  "scope_sha": "33490efb55a0",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "workflow_call split of ci.yml",
+    "train.yml batch, merge, land on shadow",
+    "3-ref fake test"
+  ],
+  "tests": "new tests must fail on pre-change code once",
+  "title": "Ship train 2/5: train.yml batches queue refs and lands on fast-track-shadow",
+  "weight": "",
+  "worker": "session"
+}

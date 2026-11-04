@@ -247,6 +247,13 @@ class FastPlan(unittest.TestCase):
         ci_run_nums = [s.num for s in new_plan if not s.skip]
         self.assertIn("3dl", ci_run_nums)
 
+    def test_fast_gate_keeps_the_card_lint_when_a_card_rides_along(self):
+        # gate_gap_2026-11-03: 3tl is FAST_COSTLY_ALWAYS; a card in a code ship must keep it (dsabr cards red at 3tl, 2 reverts)
+        plan, mode, _ = self.select(["scripts/dev/nowin.py", "MyTradingSys/system/tasks/zz-gap-probe.json"])
+        self.assertEqual(mode, "smoke")
+        self.assertTrue(rat.fast_applied)
+        self.assertIn("3tl", [s.num for s in plan if not s.skip])
+
     def test_save_record_stores_deferred_tests_list(self):
         d = make_repo({"a.py": "x = 1\n"})
         self.addCleanup(lambda: __import__("shutil").rmtree(d, ignore_errors=True))
