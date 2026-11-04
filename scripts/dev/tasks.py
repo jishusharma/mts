@@ -303,7 +303,23 @@ def default_worker(card):
     return (12, "agent") if card.get("size") == "S" else (30, "session")
 
 
-def problems(card, cards=None, reg=None, repo=None):
+def missing_audit_inputs(card, repo):
+    """scope_in repo files (scripts/ or MyTradingSys/ path with an extension) an audit card names that do not exist.
+    Skipped: `new:` entries, dirs (trailing /), globs, and anything not starting with scripts/ or MyTradingSys/."""
+    out = []
+    for item in card.get("scope_in") or []:
+        t = str(item).strip().replace("\\", "/")
+        if not t or t.lower().startswith("new:") or t.endswith("/") or re.search(r"[*?\[]", t):
+            continue
+        t = t.split()[0]
+        if not re.match(r"(?:scripts|MyTradingSys)/", t) or not re.search(r"\.[A-Za-z0-9]+$", t):
+            continue
+        if not (Path(repo) / t).exists():
+            out.append(t)
+    return out
+
+
+def problems(card, cards=None, reg=None, repo=None, audit_inputs=False):
     """Definition of Ready: [] when a session can run the card with no question to anyone. Every miss is named."""
     p = []
     repo = Path(repo or REPO)
@@ -397,6 +413,9 @@ def problems(card, cards=None, reg=None, repo=None):
         kind = card.get("kind", "")
         if kind not in CODEX_KINDS:
             p.append(f"kind {kind!r} not one of {', '.join(CODEX_KINDS)} (lane CODEX)")
+        if kind == "audit" and audit_inputs:   # opt-in: lint warns (19 ready cards name outputs not yet written, 11-04), codex_run refuses
+            p.extend(f"{card.get('id')}: audit input missing in scope_in: {m} (mark new: or fix the path; no Codex run on a missing file)"
+                     for m in missing_audit_inputs(card, repo))
         if kind == "build" and not str(card.get("tests", "")).strip():
             p.append("tests is empty (CODEX build: name the fail-first test)")
         if kind == "run" and not card.get("commands"):
@@ -822,6 +841,7 @@ def cmd_lint(a):
             errs.append(f"{c['id']}: unknown state {c['state']!r}")
         elif c["state"] in LIVE:
             errs += [f"{c['id']} ({c['state']}): {m}" for m in problems(c, cards, reg)]
+            warns += [f"WARN {c['id']} ({c['state']}): {m}" for m in problems(c, cards, reg, audit_inputs=True) if "audit input missing" in m]
             if c["state"] == "ready":
                 late = TS.overdue(c, REPO)
                 if late:          # a warning, never a failure: lint feeds every ship gate and trunk CI (red 2026-10-17 07:36)
