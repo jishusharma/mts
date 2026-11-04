@@ -57,3 +57,6 @@ Do each REPUBLISH / PUBLISH NEW / RECORD URL line (read the Artifacts list for a
 
 ## 2026-10-31 declutter (operator)
 Live set: MTS Home (hub), Research Map, MTS Layers, Sim Desk, CBP Analyst Desk (the one CBP page, rebuilt every CBP run), Tom and Fabio deck + Setup Review, BTC Live Aid. Retired (registry `retire`, operator deletes in the app): MTS Control Room, CBP Monday Desk, CBP Consensus Desk, CBP Desk. Retired pages are skipped by `build`, listed on Home under old copies to delete.
+
+## 2026-11-04 declutter (Lead, operator ask)
+Live set on jishusharma1985 (7 rows): MTS Home, Research Map, MTS Layers, Test Simulator (sim_desk), CBP Analyst Desk = https://claude.ai/artifact/BpADzQGp8cQkrkQydRxESM (v5 board, generator F:/CryptoScrapper/cbp_v2/tools/build_board.py), Tom and Fabio deck + Setup Review. Listed but not a keeper: Live feed one page (MOCK, operator verdict pending). Old copies to delete (his click): CBP Analyst Desk 2026-10-30 Esvsc, Simulator Demo by Haiku Cjdy, plus the 12 older rows Home lists. Rule kept: a page published without `url` is a duplicate; register first, publish over the url.
