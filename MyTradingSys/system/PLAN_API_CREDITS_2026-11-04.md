@@ -57,3 +57,7 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-04 | setup-review-with-operator | Opus 5.5 | 0.57 | 7 | nothing to build; card refreshed READY, 0/22 setups have operator verdict (needs Eagle_Eyes sitting); cap was 8.0 |
 | 2026-11-04 | longdev-bb-range | Sonnet 5.5 | 0.41 | 15 | see result record; cap was 6.0 |
 | 2026-11-04 | c31-daily-short-upper-bb | Sonnet 5.5 | 0.51 | 27 | see result record; cap was 4.0 |
+| 2026-11-04 | cbp-alt-coverage | Sonnet 5.5 | 0.38 | 19 | done, ship blocked by red CI; needs re-ship after trunk green; cap was 4.0 |
+| 2026-11-04 | mts-home-rebuild-1103 | Opus 5.5 | 0.65 | 9 | wasted: card STOP valid, already superseded; no build; cap was 8.0 |
+| 2026-11-04 | route-tag-closeout-1104 | Opus 5.5 | 4.63 | 3 | shipped ee29e31e (CI verdict pending); cap was 10.0 |
+| 2026-11-04 | wt30-div-blind-recount-haiku-1104 | Haiku 5.5 | 0.01 | 4 | not built: card stale (scope changed 9a7a43033); cap was 2.0 |
