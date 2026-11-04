@@ -21,18 +21,24 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "report",
+      "line": "DECISION (OURS): stale = unrelated OPERATOR_DECISIONS.md touch (ece1f9bd); sheet built (22",
+      "ref": "MyTradingSys/research/setup_review_2026-10/SETUP_REVIEW.md",
+      "utc": "2026-11-04T12:41:10Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "context-filter review of every backtest + two operator decisions (context re-test, reviews",
-      "ref": "f818131fe2fe",
-      "utc": "2026-11-03T22:29:13Z"
+      "line": "merge origin/fast-track into rsi-40-60 line behaviour branch",
+      "ref": "ece1f9bd261f",
+      "utc": "2026-11-04T08:37:00Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "f818131fe2fe context-filter review of every backtest + two operator decisions (context re-",
+      "line": "ece1f9bd261f merge origin/fast-track into rsi-40-60 line behaviour branch",
       "ref": "MyTradingSys/system/OPERATOR_DECISIONS.md",
-      "utc": "2026-11-03T22:29:13Z"
+      "utc": "2026-11-04T08:37:00Z"
     }
   ],
   "layers": [],
@@ -42,7 +48,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-03T22:33:55Z",
+  "refreshed": "2026-11-04T12:41:12Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -52,7 +58,7 @@
     "MyTradingSys/system/OPERATOR_DECISIONS.md"
   ],
   "scope_out": [],
-  "scope_sha": "f818131fe2fe",
+  "scope_sha": "ece1f9bd261f",
   "size": "M",
   "sources": [
     "MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md",

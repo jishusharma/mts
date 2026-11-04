@@ -52,3 +52,5 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-04 | haiku-stale-review-1104 (9 unstamped STALE ready cards, tasks.py check + scope read, stamps written by the job) | Haiku 5.5 | 0.03 | 18 | 4 ACCEPT (mts-home-rebuild-1103, sim-continuous-strip, sim-desk-tom-fabio-studies, test-sync-py-step-3k-4); 5 HOLD; 9 cards stamped in note; cap was 3 |
 | 2026-11-04 | probe-launcher-1104 | Haiku 5.5 | 0.01 | 1 | launcher end-to-end probe: PROBE OK (detached run, stdin prompt, result record parsed); cap was 0.05 |
 | 2026-11-04 | haiku-review-ready-sonnet-1104 | Haiku 5.5 | 0.25 | 35 | 24 cards stamped 15 ACCEPT/4 HOLD/5 DROP, shipped df2f8e5a; J3,J4 skipped (cards shipped 5ea4d7457e19, d286be4a1447); cap was 2.0 |
+| 2026-11-04 | ship-train-design-1104 | Opus 5.5 | 1.29 | 25 | DESIGN.md shipped cf765e87; 56 red runs: 38 real 18 flaky; cap was 6.0 |
+| 2026-11-04 | research-lint-warn-not-revert | Opus 5.5 | 1.79 | 43 | lint warn-not-revert analysis shipped; 9 of 20 reverts docs/data-only; cap was 6.0 |
