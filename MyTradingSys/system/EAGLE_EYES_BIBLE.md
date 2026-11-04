@@ -88,7 +88,6 @@ Why this section exists: the 10-28 session was compacted 6 times; each summary k
 
 - Bounce + Fabio 11-04 ~09:00Z: "Updates - what is the bounce looking like? What are your expected moves? Tom Fabio concepts points at what?" (4 shots 80dee22e86d3 c8715f4b2ce8 d071b7fbe4ec 134f3f57199c; "Tom Fabio" = Fabio Valentini) -> measured same turn: 4h lower-to-upper BB within 6 bars, band width under median, 2023-2026 n=31: 24h close higher 45%, median max +1.15% / -1.35%; reading = OI falling into the bounce (short covering), rotation inside the 76.4-78.8k balance
 - Big picture + tonight bias 11-04 13:10Z: "read the market - tell me the updates - the big picture and the trade bias tonight - refer all charts on chrome chlaude - load bible in memoty" -> measured same turn: weekday V-day (day low by 06Z, 13Z >=2% above it and within 0.6% of the pre-US high), 1h 2023-03..2026-11, n=93: pre-US high taken in US session 90% (all weekdays 52%), 21Z close above 13Z 59% (49%), median max up +1.42%, max down -0.89%
-- Channelised? 11-04 ~14:00Z: "All these discussions that you are having with me, are these properly channelized? ... you just mentioned the base case and what decides. So how are we gonna track it? How the next thing flows into the pipeline? This is where the CLAUDE AI fails most of the time, because whatever it is learning, perhaps it is not doing enough to put those things into proper pipelines so that they get wired for the right tasks. Check the Bible ... This improvement I require in the way the AI thinks." -> found: rule existed (frame item 9) but SCENARIO_LEDGER.md last row 10-30, maps of 10-31..11-04 never scored (rule without a mechanism). Fix: `scenario_ledger.py` (add/score/summary, CSV, test) + role BOOT step 5; S001-S002 logged; summary says when the count earns a BACKTEST_CANDIDATES row + PRE_REG
 
 ## The asks in one table (consolidated 10-30; update here, not in chat)
 
@@ -175,7 +174,7 @@ Why this section exists: the 10-28 session was compacted 6 times; each summary k
 6. In a trade: supports, VWAP distance, divergence flags, confidence count. Never an exit or size call.
 7. Backtest log: anything that repeats goes to `research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md`.
 8. Liquidation map: name the nearest bright band above and below, and after a move say which band was hit.
-9. Every A/B map: `scenario_ledger.py add` the same turn; `scenario_ledger.py score` at every load (machine-scored first touch, 1m Binance; 20 scored maps before any verdict).
+9. Score every A/B map in `SCENARIO_LEDGER.md`.
 10. Same readings, several stories: for each key reading give 2-4 explanations (e.g. OI up + price up = new longs / shorts opening into it / other exchanges), each with a probability labelled MEASURED (base rate, n) or OURS guess, the layer that tells them apart next, and what to be ready for under each.
 Bullets only, max about 8 lines plus the grid.
 

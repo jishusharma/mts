@@ -1,7 +1,5 @@
 # Scenario ledger (Eagle_Eyes, BTCUSDT perp, Binance)
 
-FROM 2026-11-04: rows live in `scenario_ledger.csv`, added and machine-scored by `scenario_ledger.py` (add / score / summary). The table below is the hand-scored history (10-29..10-30); maps of 10-31..11-03 were never logged.
-
 Every A/B map Eagle_Eyes gives the operator, scored after the fact. Purpose: measure whether the "if up / if down" maps anticipate anything, before any of it goes into MTS. Levels and rules are OURS; outcomes read from the operator's CoinGlass shots (pixel reads).
 
 | Given (UTC) | Map | Confirm / kill as written | What happened | Score |
