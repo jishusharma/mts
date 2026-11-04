@@ -24,7 +24,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "feeder to C31 UNDERPOWERED verdict",
+  "note": "feeder to C31 UNDERPOWERED verdict\nREVIEWED:2026-11-04 HOLD (Haiku on API credit, job haiku-review-4-1104: no PRE_REG with ## Context; Context and Regime mix only in done_when)",
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "",
