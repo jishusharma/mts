@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-wavetrend-c30-retest.md'); assert p.exists() and len(p.read_text())>400\""
+  ],
+  "created": "2026-11-04T07:15:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-wavetrend-c30-retest.md audits MyTradingSys/research/wavetrend_c30_retest_2026-11-04/run_retest.py and run_long_window.py for lookahead, retest window logic, and fee math, and reports PASS or FAIL.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "D11 feeder check (A-20261104-1): Audit MyTradingSys/research/wavetrend_c30_retest_2026-11-04/run_retest.py and run_long_window.py (shipped in 83a512a2e, f934791b5).",
+  "id": "gpt-rederive-wavetrend-c30-retest-1104",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-04 T0-ONLY; D11 feeder card for 83a512a2e",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "gemini-pro-argon",
+  "refreshed": "2026-11-04T07:15:00Z",
+  "refs": [
+    "MyTradingSys/research/wavetrend_c30_retest_2026-11-04/run_retest.py",
+    "MyTradingSys/research/wavetrend_c30_retest_2026-11-04/run_long_window.py"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-wavetrend-c30-retest.md",
+    "MyTradingSys/research/wavetrend_c30_retest_2026-11-04"
+  ],
+  "scope_out": [],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Inspect run_retest.py and run_long_window.py in MyTradingSys/research/wavetrend_c30_retest_2026-11-04",
+    "Verify that dot trigger, retest bar entry, RSI confluence, and HTF regime gates use closed bars only without future leakage",
+    "Write MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-wavetrend-c30-retest.md"
+  ],
+  "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-wavetrend-c30-retest.md'); assert p.exists() and len(p.read_text())>400\"",
+  "title": "GPT independent re-derivation of wavetrend_c30_retest_2026-11-04 retest+RSI+session metrics",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

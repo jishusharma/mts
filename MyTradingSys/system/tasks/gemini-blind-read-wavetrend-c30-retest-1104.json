@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_WAVETREND_C30_1104.md'); assert p.exists() and len(p.read_text())>400\""
+  ],
+  "created": "2026-11-04T07:15:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_WAVETREND_C30_1104.md independently recomputes all metrics from MyTradingSys/research/wavetrend_c30_retest_2026-11-04/*.csv, checks every number in RESULT.md (including strict vs OURS bear proxy rows), and states VERDICT: MATCH or MISMATCH.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "D11 feeder check (A-20261104-1): Independently verify all numbers in MyTradingSys/research/wavetrend_c30_retest_2026-11-04/RESULT.md against its CSV outputs (83a512a2e, f934791b5).",
+  "id": "gemini-blind-read-wavetrend-c30-retest-1104",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-04 T0-ONLY; D11 feeder card for 83a512a2e, f934791b5",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "gemini-pro-argon",
+  "refreshed": "2026-11-04T07:15:00Z",
+  "refs": [
+    "MyTradingSys/research/wavetrend_c30_retest_2026-11-04/RESULT.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_WAVETREND_C30_1104.md",
+    "MyTradingSys/research/wavetrend_c30_retest_2026-11-04"
+  ],
+  "scope_out": [],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Load all CSVs in MyTradingSys/research/wavetrend_c30_retest_2026-11-04 and compute counts, win rates, expectancy, and regime splits",
+    "Compare every figure in RESULT.md against the CSV-derived values and check that OURS vs SOURCED labels match d-bear-proxy-1104",
+    "Write MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_WAVETREND_C30_1104.md with a complete reconciliation table and VERDICT"
+  ],
+  "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_WAVETREND_C30_1104.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
+  "title": "[GEMINI] Blind read of WaveTrend C30 retest and long-window RESULT.md vs CSVs",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

@@ -17,6 +17,12 @@ Pinned alone (operator opens it): `You are Session_Planner.`
 Then `python scripts/dev/tasks.py dispatch [--json] [--host X]`: the ranked dispatch table (Duty 2) with holds, claims, dependencies, lane health and reviewer slots already resolved; use it instead of assembling the table by hand.
 Worktree: `sync.py start planner-<utc date>`; card edits ship with `sync.py ship`. Never the live tree.
 
+## Duty 0 (CODE RED MANDATORY FIRST STEP): Enforce `CODEX >= 8` and `GEMINI >= 4` Lane Floors (`A-20261104-1`, `D11_PROGRAMME.md`)
+Before refining any `SONNET` card, check ready counts in `CODEX` (GPT) and `GEMINI` (`[GEMINI]` on `lane: CODEX`):
+1. **Hard Floors**: `CODEX` (GPT) MUST have `>= 8` `ready` cards; `GEMINI` (`[GEMINI]` prefix in title, `lane: CODEX`) MUST have `>= 4` `ready` cards (`d-code-red-codex-gemini-starvation-1104`).
+2. **Feeder Rule Enforcement**: Check recent commits on `origin/fast-track`. Every shipped study (`RESULT.md`, `REPORT.md`, `DEV_CHECK.md`) without a companion `[GEMINI]` blind-read card gets one created and promoted to `ready` immediately (`[GEMINI] Blind read of ...`, `lane: CODEX`, `kind: audit`, `weight: ROUTINE`). Every shipped `.py` file without spec/mutation tests or independent re-derivation gets a `CODEX` card (`gpt-spec-tests-<name>` or `gpt-rederive-<name>`, `lane: CODEX`, `kind: audit`, `weight: ROUTINE`) created and promoted to `ready` immediately.
+3. **Seed from `D11_PROGRAMME.md` Section 6**: If `CODEX` `< 8` or `GEMINI` `< 4` after checking recent ships, seed and promote additional ready cards from `MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md` section 6 until both floors (`CODEX >= 8`, `GEMINI >= 4`) are met. Never leave `CODEX` or `GEMINI` below floor while refining `SONNET` cards.
+
 ## Duty 1: refine (raw -> ready, scoped for the right worker)
 Take cards by priority (p1 first), at most 5 per run. Per card follow TASK_REFINEMENT.md "Refiner run" steps: read the registry row and
 its evidence, grep the files and the source quote, fill goal / scope_in / scope_out / steps / tests / done_when, `tasks.py check <id>`.

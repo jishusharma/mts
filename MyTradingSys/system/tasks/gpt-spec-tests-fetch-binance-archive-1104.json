@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/tests/test_regime_mix_long_1104.py -q"
+  ],
+  "created": "2026-11-04T07:15:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/tests/test_regime_mix_long_1104.py tests archive kline parsing in fetch_binance_archive.py and weekly/monthly RSI14 regime classification in MyTradingSys/research/klines_history_2017/regime_mix_long.py and passes pytest.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "D11 feeder check (A-20261104-1): Write GPT spec tests for MyTradingSys/backtest/fetch_binance_archive.py and MyTradingSys/research/klines_history_2017/regime_mix_long.py (shipped in aa8d1b819 without unit tests).",
+  "id": "gpt-spec-tests-fetch-binance-archive-1104",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-04 T0-ONLY; D11 feeder card for aa8d1b819",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "gemini-pro-argon",
+  "refreshed": "2026-11-04T07:15:00Z",
+  "refs": [
+    "MyTradingSys/backtest/fetch_binance_archive.py",
+    "MyTradingSys/research/klines_history_2017/regime_mix_long.py"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tests/test_regime_mix_long_1104.py",
+    "MyTradingSys/backtest/fetch_binance_archive.py",
+    "MyTradingSys/research/klines_history_2017/regime_mix_long.py"
+  ],
+  "scope_out": [],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/backtest/fetch_binance_archive.py and MyTradingSys/research/klines_history_2017/regime_mix_long.py",
+    "Create MyTradingSys/tests/test_regime_mix_long_1104.py testing timestamp deduplication, microsecond vs millisecond normalization, and Malkan 60/40 weekly+monthly RSI regime classification",
+    "Run pytest MyTradingSys/tests/test_regime_mix_long_1104.py -q"
+  ],
+  "tests": "python -m pytest MyTradingSys/tests/test_regime_mix_long_1104.py -q",
+  "title": "GPT spec tests for fetch_binance_archive.py and klines_history_2017/regime_mix_long.py",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
