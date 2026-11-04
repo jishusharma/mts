@@ -1,0 +1,69 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md').read_text(); assert 'not a clean confirmation' in t\""
+  ],
+  "created": "2026-11-04T16:05:04Z",
+  "depends_on": [],
+  "done_when": "SPEC.md Card 1 verdict rule contains 'not a clean confirmation' and names the unpeeked confirmation target; the burned read is noted for research/holdout_reads.csv (splits.py:101-110) or why it is not needed.",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Card 1 verdict rule must not treat BTCUSDT VALIDATION 2024-07..2025-06 as a clean confirmation (SPEC.md:5 says it was already read): rewrite SPEC.md:15 so a BTCUSDT-only result is exploratory and PASS needs a cross-asset or fresh-window confirmation named in PRE_REG.",
+  "id": "wt-spec-card-1-pass-verdict-uses-a-valid",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Repair 25 void T0-ONLY stamps (format only), SPEC holdout-seen disclosure, defect card",
+      "ref": "9a7a43033f33",
+      "utc": "2026-11-04T14:02:15Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "9a7a43033f33 Repair 25 void T0-ONLY stamps (format only), SPEC holdout-seen disclosure, de",
+      "ref": "MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md",
+      "utc": "2026-11-04T14:02:15Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-04T16:35:35Z",
+  "refs": [
+    "MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md",
+    "MyTradingSys/research/holdout_reads.csv"
+  ],
+  "scope_out": [
+    "any study run",
+    "HOLDOUT bars",
+    "other SPEC cards"
+  ],
+  "scope_sha": "9a7a43033f33",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md (Gemini finding, Claude spot-checked CONFIRMED in f908b25e6)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read SPEC.md lines 5,14-15, splits.py:101-110 and MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md Defect 1",
+    "Rewrite the Card 1 verdict rule; no new numbers",
+    "Run the test, ship"
+  ],
+  "tests": "Fail-first: python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md').read_text(); assert 'not a clean confirmation' in t\"",
+  "title": "WT SPEC Card 1 PASS verdict uses a VALIDATION read on BTCUSDT that the coordinator already looked at; no clean confirm target frozen (SPEC.md:5,14,15)",
+  "weight": "",
+  "worker": "agent"
+}

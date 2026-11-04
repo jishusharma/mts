@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md').read_text(); assert 'Bin edges (OURS)' in t and 'm = ' in t\""
+  ],
+  "created": "2026-11-04T16:05:05Z",
+  "depends_on": [],
+  "done_when": "SPEC.md Card 1 has a 'Bin edges (OURS)' line for all 5 features and a line 'm = <integer> (marginal cells|full grid)' feeding prereg_gate --m.",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Freeze Card 1 feature bin edges (drop size, hours since last top dot, session, RSI14 lower/higher, 4h slope sign) in SPEC.md, each labelled OURS, and state m as an integer, naming marginal cells or full grid.",
+  "id": "wt-spec-card-1-m-holm-unfrozen-5-feature",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Repair 25 void T0-ONLY stamps (format only), SPEC holdout-seen disclosure, defect card",
+      "ref": "9a7a43033f33",
+      "utc": "2026-11-04T14:02:15Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "9a7a43033f33 Repair 25 void T0-ONLY stamps (format only), SPEC holdout-seen disclosure, de",
+      "ref": "MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md",
+      "utc": "2026-11-04T14:02:15Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-04T16:35:33Z",
+  "refs": [
+    "MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md"
+  ],
+  "scope_out": [
+    "any study run",
+    "HOLDOUT bars",
+    "other SPEC cards"
+  ],
+  "scope_sha": "9a7a43033f33",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md (Gemini finding, Claude spot-checked CONFIRMED in f908b25e6)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read SPEC.md lines 6,13 and MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md Defect 3",
+    "Add the Bin edges (OURS) line and the m line to Card 1",
+    "Run the test, ship"
+  ],
+  "tests": "Fail-first: python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md').read_text(); assert 'Bin edges (OURS)' in t and 'm = ' in t\"",
+  "title": "WT SPEC Card 1 m (Holm) unfrozen: 5 features have no bin edges, and marginal vs full-grid count not stated (SPEC.md:6,13)",
+  "weight": "",
+  "worker": "agent"
+}
