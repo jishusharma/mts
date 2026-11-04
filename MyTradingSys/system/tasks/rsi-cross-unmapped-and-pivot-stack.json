@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T23:20:51Z",
   "commands": [],
   "context": {
     "calls_to_edit": 9,
@@ -23,6 +24,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "Decision: leave rsi:cross unmapped; DEV fee-net mean R negative in all 4 cells (-0.065..-0",
+      "ref": "3603b8ba3",
+      "utc": "2026-11-03T23:20:51Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "auto_trader.margin_ok: unset/None/zero/negative margin_btc refuses (fail closed)",
@@ -44,7 +51,12 @@
   "refs": [
     "MyTradingSys/execution/auto_trader.py:416"
   ],
-  "result": "",
+  "result": "Decision: leave rsi:cross unmapped; DEV fee-net mean R negative in all 4 cells (-0.065..-0.249 R/day, 538-1082 days); flags fed as alert-only confluence",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/RSI_CROSS_UNMAPPED.md",
     "MyTradingSys/execution/auto_trader.py (read only)"
@@ -60,13 +72,14 @@
     "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/SHOT_4ae992130268.md",
     "runtime_data/auto_trades.jsonl (host file; only counts are committed, the repo is public)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read auto_trader.py:77,413-420 (layer_rules, CROSS_SIDE_BY_LEVEL) and how signal_rejected unmapped is logged.",
     "Run python scripts/dev/live_mirror.py brief (quote mirror@<utc>) and count unmapped rsi:cross rejections by TF and week from auto_trades.jsonl on the mirror; commit counts only.",
     "DEV number: fee-net mean R per day of the same rsi:cross events under the generic live 8-bar bracket on DEV 15m/1h (existing run_rsi_backtest.py events). Rule (OURS): map only if mean > 0 with at least 100 independent days; else leave unmapped.",
     "Write the decision paragraph with that number and the Part B note; file the CRITICAL JIS-NB follow-up card if map."
   ],
+  "taken": "2026-11-03T23:20:51Z",
   "tests": "No code. Check: the counts file lists mirror@<utc> and week boundaries; python scripts/dev/tasks.py lint passes; auto_trader.py is unchanged (git diff).",
   "title": "RSI cross events are rejected as unmapped in the auto-trader (no layer_rules entry); and no layer stacks level touch + RSI/WT divergence + delta/OI exhaustion for pivots (evidence: SHOT_4ae992130268.md)",
   "weight": "IMPORTANT",

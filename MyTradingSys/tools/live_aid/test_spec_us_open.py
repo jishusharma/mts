@@ -46,13 +46,16 @@ def test_us_open_below_mark_uses_absolute_distance_and_down_side(level):
     assert result["down"][0]["bucket"] == expected
 
 
-def _us_open(level, px, include_daily=True):
+def _us_open(level, px, include_daily=True, rates=None):
     node = shutil.which("node")
     if not node:
         pytest.skip("node not installed")
     day = 1_800_000_000_000 - (1_800_000_000_000 % 86_400_000)
     payload = json.dumps({"day": day, "level": level, "px": px, "daily": ([[day-86400000,100,level,level,100,1]] if include_daily else [])})
-    runner = "const A=require(process.argv[1]);let j='';process.stdin.on('data',d=>j+=d).on('end',()=>{j=JSON.parse(j);const r=A.usOpen([],j.daily,j.day,j.day,j.px,{});console.log(JSON.stringify(r))})"
+    runner = "const A=require(process.argv[1]);let j='';process.stdin.on('data',d=>j+=d).on('end',()=>{j=JSON.parse(j);const r=A.usOpen([],j.daily,j.day,j.day,j.px,j.rates);console.log(JSON.stringify(r))})"
+    payload = json.loads(payload)
+    payload["rates"] = rates or {}
+    payload = json.dumps(payload)
     out = subprocess.run([node, "-e", runner, str(JS)], input=payload, capture_output=True,
                          text=True, timeout=30, env=os.environ.copy())
     assert out.returncode == 0, out.stderr
@@ -86,6 +89,10 @@ def test_rates_table_counts_never_exceed_denominators():
     assert out.returncode == 0, out.stderr
     rates = json.loads(out.stdout)["rates"]
     assert len(rates) == 8
+    expected_kind_sample_totals = {
+        "dayH": 1230, "dayL": 1230, "pdh": 1015, "pdl": 1050,
+        "d3h": 1085, "d3l": 1115, "d7h": 1141, "d7l": 1167,
+    }
     for kind, buckets in rates.items():
         assert set(buckets) == {"0-0.25", "0.25-0.5", "0.5-1", "1-2", "2+"}, kind
         for bucket, row in buckets.items():
@@ -93,3 +100,20 @@ def test_rates_table_counts_never_exceed_denominators():
             assert 0 <= row["touch"] <= 100 and 0 <= row["held"] <= 100, (kind, bucket, row)
             assert (row["n"] == 0) == (row["touch"] is None), (kind, bucket, row)
             assert (row["nt"] == 0) == (row["held"] is None), (kind, bucket, row)
+            if row["n"]:
+                assert abs(row["touch"] - 100 * row["nt"] / row["n"]) <= 0.5, (kind, bucket, row)
+        assert sum(row["n"] for row in buckets.values()) == expected_kind_sample_totals[kind], kind
+
+
+def test_us_open_hides_rates_until_each_denominator_reaches_30():
+    row = {"n": 29, "touch": 84, "nt": 30, "held": 53}
+    rates = {kind: {"1-2": dict(row)} for kind in ("pdh", "pdl")}
+    r = _us_open(101, 100, rates=rates)
+    pdh = next(row for row in r["up"] if row["k"] == "pdh")
+    assert (pdh["n"], pdh["touch"], pdh["nt"], pdh["held"]) == (29, None, 30, 53)
+
+    row = {"n": 30, "touch": 84, "nt": 29, "held": 53}
+    rates = {kind: {"1-2": dict(row)} for kind in ("pdh", "pdl")}
+    r = _us_open(101, 100, rates=rates)
+    pdh = next(row for row in r["up"] if row["k"] == "pdh")
+    assert (pdh["n"], pdh["touch"], pdh["nt"], pdh["held"]) == (30, 84, 29, None)

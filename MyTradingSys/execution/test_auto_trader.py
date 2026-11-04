@@ -1084,5 +1084,18 @@ class MarginWireCycleTest(unittest.TestCase):
         self.assertAlmostEqual(self.placed[1]["margin_btc"], first * 2, places=12)
 
 
+class ConfluenceFeedUnmappedTest(unittest.TestCase):
+    """Cards krown-hidden-divergence-confluence-feed / rsi-cross-unmapped-and-pivot-stack: the confluence feed is
+    alert-only and the raw RSI cross stays unmapped (decision: DEV fee-net mean R negative in every cell)."""
+
+    def test_feed_events_and_rsi_cross_have_no_side(self):
+        cfg_ = {"layer_rules": {"rsi:support": "long"}}
+        for ev in ("cf_rsi_cross_up_60", "cf_malkan_prd", "cf_malkan_r_bull", "cf_krown_k_hbull", "cf_malkan_nrd_old"):
+            self.assertIsNone(at.layer_side({"layer": "confluence_feed", "sub": "rsi_malkan", "event": ev,
+                                             "collection_only": True}, cfg_))
+        self.assertIsNone(at.layer_side({"layer": "rsi", "sub": "rsi_events", "event": "cross", "level_value": 60.0,
+                                         "direction": "up"}, cfg_))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)
