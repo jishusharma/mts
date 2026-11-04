@@ -853,7 +853,7 @@ def test_watchcheck_no_marker_exits_4(tmp_path):
 
 def test_watchcheck_live_watcher_exits_0(tmp_path):
     _marker(tmp_path, 4242, "2026-10-26T13:00Z")
-    rc, msg = S.watchcheck("C", home=tmp_path, now=_NOW, alive=lambda pid: pid == 4242)
+    rc, msg = S.watchcheck("C", home=tmp_path, now=_NOW, alive=lambda pid: pid == 4242, tracked=lambda out: True)
     assert rc == 0 and "NO WAKE SOURCE" not in msg
 
 
@@ -881,6 +881,100 @@ def test_wait_records_marker_and_removes_it_after(tmp_path):
     assert rc == 3 and seen and all(seen)
     assert not (tmp_path / "C-watcher.json").exists()
     assert S.watchcheck("C", home=tmp_path)[0] == 4
+
+
+# ---------- stall-fix-1104: a watcher the harness cannot see wakes nobody ----------
+# L1 2026-11-04: `supervisor.py wait ... >/dev/null 2>&1 &` passed watchcheck ("WAKE SOURCE OK pid 20124 until 10:26Z"),
+# yet the session sat idle 09:35Z-12:40Z across the 09:50Z reset: only a run_in_background task's exit notifies the session.
+
+def _marker_out(home, pid, expires, out):
+    home.mkdir(parents=True, exist_ok=True)
+    (home / "C-watcher.json").write_text(json.dumps({"pid": pid, "expires": expires, "out": out}), encoding="utf-8")
+
+
+def test_watchcheck_refuses_a_detached_watcher(tmp_path):
+    _marker(tmp_path, 4242, "2026-10-26T13:00Z")          # old marker form: no stdout record = `&`/`>/dev/null` unknown
+    rc, msg = S.watchcheck("C", home=tmp_path, now=_NOW, alive=lambda pid: True)
+    assert rc == 4 and "run_in_background" in msg
+    _marker_out(tmp_path, 4242, "2026-10-26T13:00Z", "")   # stdout was NUL (>/dev/null)
+    assert S.watchcheck("C", home=tmp_path, now=_NOW, alive=lambda pid: True)[0] == 4
+
+
+def test_watchcheck_refuses_a_task_file_the_harness_already_deleted(tmp_path):
+    gone = tmp_path / "tasks" / "b9406un8r.output"        # `&` inside a foreground call: the call's output file is deleted
+    _marker_out(tmp_path, 4242, "2026-10-26T13:00Z", str(gone))
+    assert S.watchcheck("C", home=tmp_path, now=_NOW, alive=lambda pid: True)[0] == 4
+    _marker_out(tmp_path, 4242, "2026-10-26T13:00Z", "C:/x/$Extend/$Deleted/001D")
+    assert S.watchcheck("C", home=tmp_path, now=_NOW, alive=lambda pid: True)[0] == 4
+
+
+def test_watchcheck_accepts_a_live_background_task(tmp_path):
+    out = tmp_path / "tasks" / "b8p628pbh.output"
+    out.parent.mkdir(parents=True)
+    out.write_text("", encoding="utf-8")
+    _marker_out(tmp_path, 4242, "2026-10-26T13:00Z", "\\\\?\\" + str(out))
+    rc, msg = S.watchcheck("C", home=tmp_path, now=_NOW, alive=lambda pid: True)
+    assert rc == 0 and "WAKE SOURCE OK" in msg
+
+
+def test_wait_records_its_stdout_in_the_marker(tmp_path, monkeypatch):
+    monkeypatch.setattr(S, "_stdout_path", lambda: "T:/tasks/bx.output")
+    seen = []
+
+    def probe(repo, shas):
+        seen.append(json.loads((tmp_path / "C-watcher.json").read_text(encoding="utf-8")).get("out"))
+        return {"shas": {}, "ci_red": False, "busy_slots": 0}
+
+    S.wait_for_transition(repo=tmp_path, timeout=10, interval=5, probe=probe, fetcher=lambda r: None,
+                          sleeper=lambda s: None, login="C", home=tmp_path)
+    assert seen and all(x == "T:/tasks/bx.output" for x in seen)
+
+
+def _clock_and_sleeper(start):
+    t = {"now": start}
+    return (lambda: t["now"]), (lambda s: t.__setitem__("now", t["now"] + timedelta(seconds=s)))
+
+
+def test_wait_fires_at_the_5h_reset_inside_its_timeout(tmp_path):
+    start = datetime(2026, 11, 4, 9, 35, tzinfo=timezone.utc)
+    (tmp_path / "C.jsonl").write_text(json.dumps({"at": "2026-11-04T09:30:00Z", "five_reset": "2026-11-04T09:50:00Z"}) + "\n",
+                                      encoding="utf-8")
+    clock, sleeper = _clock_and_sleeper(start)
+    steady = {"shas": {}, "ci_red": False, "busy_slots": 0}
+    rc, reason = S.wait_for_transition(repo=tmp_path, timeout=3000, interval=300, probe=lambda r, s: steady,
+                                       fetcher=lambda r: None, sleeper=sleeper, login="C", home=tmp_path, clock=clock)
+    assert rc == 0 and "RESET" in reason
+    assert clock() <= datetime(2026, 11, 4, 9, 51, tzinfo=timezone.utc)     # AT the reset, not a 5 min poll late
+
+
+def test_wait_never_runs_past_its_timeout_for_a_later_reset(tmp_path):
+    """Soak invariant (test_soak_six_slots): a watcher never runs past its timeout; a reset after it is the next watcher's."""
+    start = datetime(2026, 11, 4, 9, 0, tzinfo=timezone.utc)
+    (tmp_path / "C.jsonl").write_text(json.dumps({"five_reset": "2026-11-04T10:30:00Z"}) + "\n", encoding="utf-8")
+    clock, sleeper = _clock_and_sleeper(start)
+    steady = {"shas": {}, "ci_red": False, "busy_slots": 0}
+    rc, _r = S.wait_for_transition(repo=tmp_path, timeout=3000, interval=300, probe=lambda r, s: steady,
+                                   fetcher=lambda r: None, sleeper=sleeper, login="C", home=tmp_path, clock=clock)
+    assert rc == 3 and clock() <= start + timedelta(seconds=3000)
+
+
+def test_wait_without_a_future_reset_still_times_out(tmp_path):
+    start = datetime(2026, 11, 4, 10, 0, tzinfo=timezone.utc)
+    (tmp_path / "C.jsonl").write_text(json.dumps({"five_reset": "2026-11-04T09:50:00Z"}) + "\n", encoding="utf-8")
+    clock, sleeper = _clock_and_sleeper(start)
+    steady = {"shas": {}, "ci_red": False, "busy_slots": 0}
+    rc, _r = S.wait_for_transition(repo=tmp_path, timeout=600, interval=300, probe=lambda r, s: steady,
+                                   fetcher=lambda r: None, sleeper=sleeper, login="C", home=tmp_path, clock=clock)
+    assert rc == 3
+
+
+def test_wait_wakes_when_an_api_job_finishes(tmp_path):
+    seq = iter([{"shas": {}, "ci_red": False, "busy_slots": 0, "api_running": ["j8-c31"]},
+                {"shas": {}, "ci_red": False, "busy_slots": 0, "api_running": ["j8-c31"]},
+                {"shas": {}, "ci_red": False, "busy_slots": 0, "api_running": []}])
+    rc, reason = S.wait_for_transition(repo=tmp_path, timeout=3000, interval=300, probe=lambda r, s: next(seq),
+                                       fetcher=lambda r: None, sleeper=lambda s: None)
+    assert rc == 0 and "api job j8-c31" in reason
 
 
 # ---------- C4 supervisor-handover-fixed-form ----------
