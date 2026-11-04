@@ -515,7 +515,7 @@ def test_plan_lines_ssh_gate_and_nuc_wake_only_when_allowed():
     ctx = {"codex_ready": 3, "spare": "card-x", "ci": {}, "picks": []}
     no = "\n".join(S.plan_lines("B", "JIS-NB", p, live, dict(ctx, nuc_ok=False), gate_key=True))
     yes = "\n".join(S.plan_lines("B", "JIS-NB", p, live, dict(ctx, nuc_ok=True), gate_key=True))
-    assert "ssh -i ~/.ssh/nuc_gate" in no and "nuc_wake" not in no and "nuc_wake.py --card card-x" in yes
+    assert "RUN python scripts/dev/nuc_lab.py tick" in no and "nuc_wake" not in no and "nuc_wake.py --card card-x" in yes
     nokey = "\n".join(S.plan_lines("B", "JIS-NB", p, live, dict(ctx, nuc_ok=True), gate_key=False))
     assert "ssh" not in nokey and "lab idle" in nokey and "PEER none live" in nokey
 
