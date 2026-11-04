@@ -5,6 +5,15 @@
     "python -m pytest scripts/dev/test_tasks.py -q",
     "python scripts/dev/tasks.py lint"
   ],
+  "context": {
+    "calls_to_edit": 9,
+    "folded": "2026-11-04T16:54:43Z",
+    "misses": 2,
+    "reads": [
+      "scripts/dev/test_tasks.py"
+    ],
+    "session": "agent-aafc8aa3470e0b249"
+  },
   "created": "2026-11-04T14:01:23Z",
   "depends_on": [],
   "done_when": "python -m pytest scripts/dev/test_tasks.py exits 0 with the 3 new tests and python scripts/dev/tasks.py lint exits 0 on trunk cards",
