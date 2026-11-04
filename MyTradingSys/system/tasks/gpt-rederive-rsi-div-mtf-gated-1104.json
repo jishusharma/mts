@@ -19,7 +19,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-04 T0-ONLY; D11 feeder card for c509665ff | lab_guy 11-04: input fixed to study.py/study_long.py (E1); C0",
+  "note": "PATHS FIXED 2026-11-04 (Supervisor B): the card named files that do not exist; run_gated.py -> study.py; run_long_window.py -> study_long.py. | REVIEWED:2026-11-04 T0-ONLY; D11 feeder card for c509665ff",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "gemini-pro-argon",

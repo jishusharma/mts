@@ -19,7 +19,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-04 T0-ONLY; D11 feeder card for 8ce5461b0, f38aa80a3, 07f4d20f0 | lab_guy 11-04: ref fixed to RESULT_LONG.md (E1); C0",
+  "note": "PATHS FIXED 2026-11-04 (Supervisor B): the card named files that do not exist; MyTradingSys/research/bb_long_window_2026-11-04/RESULT.md -> MyTradingSys/research/bb_long_window_2026-11-04/RESULT_LONG.md. | REVIEWED:2026-11-04 T0-ONLY; D11 feeder card for 8ce5461b0, f38aa80a3, 07f4d20f0",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "gemini-pro-argon",

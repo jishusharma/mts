@@ -19,7 +19,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-04 T0-ONLY; D11 feeder card for 83a512a2e | lab_guy 11-04: input fixed to study.py/study_long.py after the 11-04 BLOCKED run (E1); C0",
+  "note": "PATHS FIXED 2026-11-04 (Supervisor B): the card named files that do not exist; run_retest.py -> study.py; run_long_window.py -> study_long.py. | REVIEWED:2026-11-04 T0-ONLY; D11 feeder card for 83a512a2e",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "gemini-pro-argon",
@@ -46,5 +46,6 @@
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-wavetrend-c30-retest.md'); assert p.exists() and len(p.read_text())>400\"",
   "title": "GPT independent re-derivation of wavetrend_c30_retest_2026-11-04 retest+RSI+session metrics",
   "weight": "ROUTINE",
-  "worker": "agent"
+  "worker": "agent",
+  "reopened": "2026-11-04T13:19:04Z"
 }
