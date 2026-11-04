@@ -2,11 +2,11 @@
  "allowance": {
   "plan": "plus",
   "week_resets": 1794204690,
-  "week_used": 36.0,
+  "week_used": 37.0,
   "window_resets": 1793814138,
-  "window_used": 2.0
+  "window_used": 4.0
  },
- "at": "2026-11-04T14:13:53Z",
+ "at": "2026-11-04T16:35:23Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -21,11 +21,71 @@
  "host": "JIS-NUC",
  "lab": {
   "astra_runs": 0,
-  "week_pts": 6.0,
-  "window_pts": 1.0,
-  "window_runs": 3
+  "week_pts": 7.0,
+  "window_pts": 3.0,
+  "window_runs": 7
  },
  "runs": [
+  {
+   "at": "2026-11-04T16:33:56Z",
+   "card": "gpt-rederive-bb-range-to-range-1104",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 79,
+   "tokens_out": 4053,
+   "tokens_total": 338716,
+   "tokens_uncached": 60743,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
+  {
+   "at": "2026-11-04T15:51:06Z",
+   "card": "gpt-spec-tests-fetch-binance-archive-1104",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "3 uncommitted file(s) left in F:\\MTS\\mts-codex-lab: MyTradingSys/tests/test_regime_mix_long_1104.py",
+   "outcome": "OUT_OF_SCOPE",
+   "seconds": 79,
+   "tokens_out": 3830,
+   "tokens_total": 496058,
+   "tokens_uncached": 44740,
+   "week_pts": 1.0,
+   "window_pts": 0.0
+  },
+  {
+   "at": "2026-11-04T15:28:01Z",
+   "card": "gpt-spec-tests-div-flags-chart-1104",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "3 uncommitted file(s) left in F:\\MTS\\mts-codex-lab: MyTradingSys/tests/test_div_flags_chart.py",
+   "outcome": "OUT_OF_SCOPE",
+   "seconds": 121,
+   "tokens_out": 6168,
+   "tokens_total": 545157,
+   "tokens_uncached": 34413,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
+  {
+   "at": "2026-11-04T14:38:25Z",
+   "card": "gpt-spec-tests-div-flags-chart-1104",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "3 uncommitted file(s) left in F:\\MTS\\mts-codex-lab: MyTradingSys/tests/test_div_flags_chart.py",
+   "outcome": "OUT_OF_SCOPE",
+   "seconds": 88,
+   "tokens_out": 4515,
+   "tokens_total": 414616,
+   "tokens_uncached": 42613,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-11-04T14:12:25Z",
    "card": "gpt-rederive-wavetrend-c30-retest-1104",
@@ -115,66 +175,6 @@
    "tokens_uncached": 46463,
    "week_pts": 0.0,
    "window_pts": 1.0
-  },
-  {
-   "at": "2026-11-02T20:02:18Z",
-   "card": "mts-audit-1103-independent-recheck",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "BLOCKED",
-   "seconds": 99,
-   "tokens_out": 8316,
-   "tokens_total": 1162981,
-   "tokens_uncached": 80873,
-   "week_pts": 0.0,
-   "window_pts": 1.0
-  },
-  {
-   "at": "2026-11-02T19:15:05Z",
-   "card": "aibridge-sandbox-chat-run-acl-proof",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "BLOCKED",
-   "seconds": 27,
-   "tokens_out": 1685,
-   "tokens_total": 127360,
-   "tokens_uncached": 20715,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-11-02T18:36:54Z",
-   "card": "aibridge-sandbox-chat-run-acl-proof",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "BLOCKED",
-   "seconds": 38,
-   "tokens_out": 1959,
-   "tokens_total": 139384,
-   "tokens_uncached": 20049,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-11-02T16:52:31Z",
-   "card": "gpt-spec-tests-ff-calendar-snapshot",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "someone shipped first), retry 1/5\nsync: merge of origin/fast-track conflicts; resolve, `git commit`, then run ship again.\nerror: Your local changes to the follo",
-   "outcome": "SHIP_FAILED",
-   "seconds": 66,
-   "tokens_out": 4117,
-   "tokens_total": 261105,
-   "tokens_uncached": 26460,
-   "week_pts": 0.0,
-   "window_pts": 0.0
   }
  ]
 }

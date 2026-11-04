@@ -17,7 +17,7 @@
   "mutation_check": "",
   "note": "planner 11-04: code side decided in 0b1bf4e20 (401 = IDLE host-auth, no lane_state write); fix needs the NUC Codex re-login (machine step, broadcast) and a stall line in status; scope not fixed, held at try 1/2.",
   "prio": 1,
-  "refine_tries": 1,
+  "refine_tries": 2,
   "refined_by": "",
   "refs": [],
   "result": "",

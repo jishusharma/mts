@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T16:35:17Z",
   "commands": [
     "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-bb-range-to-range.md'); assert p.exists() and len(p.read_text())>400\""
   ],
@@ -16,6 +17,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "PASS MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-bb-range-to-range-110",
+      "ref": "c72495e3b",
+      "utc": "2026-11-04T16:35:17Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -36,7 +43,12 @@
     "MyTradingSys/research/bb_range_to_range_2026-11-04/study.py",
     "MyTradingSys/research/bb_range_to_range_2026-11-04/PRE_REG.md"
   ],
-  "result": "",
+  "result": "PASS MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-bb-range-to-range-1104.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-bb-range-to-range.md",
     "MyTradingSys/research/bb_range_to_range_2026-11-04"
@@ -45,12 +57,13 @@
   "scope_sha": "e8b2dfe9bc1a",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read PRE_REG.md and study.py in MyTradingSys/research/bb_range_to_range_2026-11-04",
     "Check entry/exit bar indexing, fee deduction, and range/session filter implementation against PRE_REG.md",
     "Write MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-bb-range-to-range.md with findings and verdict"
   ],
+  "taken": "2026-11-04T16:35:17Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-bb-range-to-range.md'); assert p.exists() and len(p.read_text())>400\"",
   "title": "GPT independent re-derivation of bb_range_to_range_2026-11-04 session range metrics",
   "weight": "ROUTINE",
