@@ -1,20 +1,21 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T16:46:49Z",
   "commands": [
     "python scripts/dev/artifacts.py build",
     "python scripts/dev/artifacts.py stale",
     "python scripts/dev/artifacts.py publish-record --slug <slug>"
   ],
   "context": {
-    "calls_to_edit": 18,
-    "folded": "2026-10-30T21:15:02Z",
-    "misses": 6,
+    "calls_to_edit": null,
+    "folded": "2026-11-04T16:44:15Z",
+    "misses": 4,
     "reads": [
-      "MyTradingSys/research/layer_lab/reports/2026-10-30_gpt-audit-formulas-vs-rsi-layer.md",
-      "MyTradingSys/system/role_details/session_planner_details.md"
+      "scripts/dev/make_layers_board.py",
+      "MyTradingSys/system/artifacts/layers_board.html"
     ],
-    "session": "agent-a93f5dad7228cf4de"
+    "session": "agent-aa317a8f1642230f8"
   },
   "created": "2026-10-29T17:02:10Z",
   "depends_on": [],
@@ -27,6 +28,12 @@
   "id": "republish-6-stale-artifact-pages-flagged",
   "lane": "HAIKU",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "3 stale pages republished (mts_layer_map, mts_home, sim_desk), stale 3 -> 0 (caa4387d5)",
+      "ref": "7ec36d106",
+      "utc": "2026-11-04T16:46:49Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -47,7 +54,12 @@
   "refined_by": "planner-20261030-d",
   "refreshed": "2026-11-04T15:46:21Z",
   "refs": [],
-  "result": "",
+  "result": "3 stale pages republished (mts_layer_map, mts_home, sim_desk), stale 3 -> 0 (caa4387d5)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/artifacts/registry.json",
     "MyTradingSys/system/artifacts/mts_control_room.html",
@@ -59,13 +71,14 @@
   "scope_sha": "891a04e9a6af",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "run python scripts/dev/artifacts.py build, then python scripts/dev/artifacts.py stale; keep the STALE lines (2026-10-31: mts_control_room, mts_layer_map)",
     "per STALE slug: take the url in registry.json under urls.jishusharma1985; Artifact action read that url; only if the header says writer, Artifact publish the repo html over that same url",
     "after each publish: python scripts/dev/artifacts.py publish-record --slug <slug>",
     "re-run artifacts.py stale and report the count before and after; list any page skipped (not owned by C, no edit access) with the reason"
   ],
+  "taken": "2026-11-04T16:46:49Z",
   "tests": "count-based: artifacts.py stale STALE-line count before vs after, reported",
   "title": "Republish the stale artifact pages that login C (jishusharma1985) owns (artifacts.py stale; 2 stale on 2026-10-31, was 6)",
   "weight": "ROUTINE",

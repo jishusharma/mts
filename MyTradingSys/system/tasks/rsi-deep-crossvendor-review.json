@@ -26,7 +26,7 @@
     "rsi-deep-engine-exits",
     "rsi-deep-run-dev"
   ],
-  "note": "PLANNER 2026-11-01 DECISION (OURS) planner-B-1101: not promoted; depends_on three engine cards still refined (not done). Content complete; promote when they are done. REVIEWED:2026-10-26 ACCEPT",
+  "note": "PLANNER 2026-11-01 DECISION (OURS) planner-B-1101: not promoted; depends_on three engine cards still refined (not done). Content complete; promote when they are done.\nREVIEWED:2026-10-26 ACCEPT",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "codex_run.py ask",

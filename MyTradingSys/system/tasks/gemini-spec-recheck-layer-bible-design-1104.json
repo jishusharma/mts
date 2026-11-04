@@ -50,7 +50,7 @@
   "scope_sha": "deff345f2714",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read REVIEW_GEMINI_1104.md and DESIGN.md (v2 table)",
     "Judge each of items 1-6 and look for new defects in the v2 text",

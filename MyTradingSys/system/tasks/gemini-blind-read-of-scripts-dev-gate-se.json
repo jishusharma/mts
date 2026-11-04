@@ -44,7 +44,7 @@
   "scope_sha": "1dfa10977bd1",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read gate_select.py lines 50-80 and its test file only",
     "For each DOC_MUST pattern give a matching and a non-matching path",

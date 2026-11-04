@@ -1,18 +1,46 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "closed": "2026-11-04T17:17:23Z",
+  "commands": [
+    "python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/login_detection_audit_1104.md').read_text(); assert 'ROOT CAUSE' in t and 'PROPOSED FIX' in t\""
+  ],
+  "context": {
+    "calls_to_edit": 12,
+    "folded": "2026-11-04T17:17:20Z",
+    "misses": 5,
+    "reads": [
+      "scripts/dev/mts_signal.py",
+      "MyTradingSys/system/CLOUD_ACCOUNTS.md"
+    ],
+    "session": "agent-a3a6f0ec223b22bbd"
+  },
   "created": "2026-11-04T14:45:49Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/login_detection_audit_1104.md exists with a 'ROOT CAUSE' line and a 'PROPOSED FIX' line citing mts_signal.py line numbers.",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "On JIS-NUC mts_signal.login() (scripts/dev/mts_signal.py:130) returned A while the app session was B. Audit why (home .claude.json oauthAccount vs the running app account), write root cause and proposed fix; no code change.",
   "id": "login-detection-reads-the-wrong-account-",
   "kind": "audit",
   "lane": "HAIKU",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "root cause: resolve_login (mts_signal.py L157-164) lets the home ~/.claude.json letter bea",
+      "ref": "45e144bd9",
+      "utc": "2026-11-04T17:17:23Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "mts_signal: session-start note keeps the folder name",
+      "ref": "1f069de76d24",
+      "utc": "2026-11-03T16:00:45Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -20,16 +48,34 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T16:35:47Z",
   "refs": [],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "result": "root cause: resolve_login (mts_signal.py L157-164) lets the home ~/.claude.json letter beat the typed letter; audit at MyTradingSys/research/login_detection_audit_1104.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/mts_signal.py",
+    "MyTradingSys/research/login_detection_audit_1104.md"
+  ],
+  "scope_out": [
+    "any code edit",
+    ".claude.json contents (never print the address)"
+  ],
+  "scope_sha": "1f069de76d24",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "done",
+  "steps": [
+    "Read mts_signal.py login(), _letter_for and OAUTH_EMAIL_RE",
+    "Reason from the code which sources the letter can come from; never print the email",
+    "Write the audit file and ship"
+  ],
+  "taken": "2026-11-04T17:17:23Z",
+  "tests": "Fail-first: python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/login_detection_audit_1104.md').read_text(); assert 'ROOT CAUSE' in t and 'PROPOSED FIX' in t\"",
   "title": "login detection reads the wrong account on JIS-NUC: supervisor wait said this app is login A while the app session is B (usage reset 2026-11-08 matches B). mts_signal.login() reads the home .claude.json; a stale or other sign-in there overrides the typed letter, so budget and wait signals can post under the wrong login. Workaround: env MTS_LOGIN=B.",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }

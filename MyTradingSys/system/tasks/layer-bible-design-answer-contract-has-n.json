@@ -1,17 +1,35 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -c \"import pathlib; assert 'Answer-contract gate' in pathlib.Path('MyTradingSys/research/layer_bible/DESIGN.md').read_text()\""
+  ],
   "created": "2026-11-04T16:05:06Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "DESIGN.md contains a heading 'Answer-contract gate' naming the lint, where it runs (tasks.py check or a hook) and its fail-first test.",
+  "est_turns": 6,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "DESIGN.md section 3 (answer contract) defers enforcement with no card. Add a section naming the mechanical gate (a lint that rejects layer-state answers lacking a layer_state.py stamp) and file the build as a Phase 2 item with a named test.",
   "id": "layer-bible-design-answer-contract-has-n",
-  "lane": "",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Layer Bible design v2 after Gemini FIX-FIRST review; re-check card",
+      "ref": "deff345f2714",
+      "utc": "2026-11-04T13:54:28Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "deff345f2714 Layer Bible design v2 after Gemini FIX-FIRST review; re-check card",
+      "ref": "MyTradingSys/research/layer_bible/DESIGN.md",
+      "utc": "2026-11-04T13:54:28Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,18 +37,31 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T16:35:44Z",
   "refs": [
     "MyTradingSys/research/layer_bible/REVIEW_GEMINI_1104.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_bible/DESIGN.md"
+  ],
+  "scope_out": [
+    "layer_state.py code",
+    "CLAUDE.md"
+  ],
+  "scope_sha": "deff345f2714",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/layer_bible/REVIEW_GEMINI_1104.md (Gemini finding, Claude spot-checked CONFIRMED)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read DESIGN.md section 3 and the REVIEW_GEMINI_1104.md answer-contract finding",
+    "Add the Answer-contract gate section (design only, no code)",
+    "Run the test, ship"
+  ],
+  "tests": "Fail-first: python -c \"import pathlib; assert 'Answer-contract gate' in pathlib.Path('MyTradingSys/research/layer_bible/DESIGN.md').read_text()\"",
   "title": "Layer Bible DESIGN answer contract has no mechanical gate; v2 defers it with no card (DESIGN.md:19-21)",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }
