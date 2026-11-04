@@ -15,7 +15,15 @@
   "id": "gemini-blind-read-wavetrend-c30-retest-1104",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "wavetrend-c30 long window: INCONCLUSIVE, 0 survivors, both run 1 leads fail on 2018-2021",
+      "ref": "36e6bf1bbf6d",
+      "utc": "2026-11-04T03:28:40Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -23,7 +31,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "gemini-pro-argon",
-  "refreshed": "2026-11-04T07:15:00Z",
+  "refreshed": "2026-11-04T13:43:22Z",
   "refs": [
     "MyTradingSys/research/wavetrend_c30_retest_2026-11-04/RESULT.md"
   ],
@@ -33,7 +41,7 @@
     "MyTradingSys/research/wavetrend_c30_retest_2026-11-04"
   ],
   "scope_out": [],
-  "scope_sha": "",
+  "scope_sha": "36e6bf1bbf6d",
   "size": "S",
   "sources": [],
   "state": "ready",

@@ -16,7 +16,15 @@
   "id": "gpt-spec-tests-research-kit-context-1104",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "research_kit: context harness (regime, phase, session tags, retest-entry, regime-mix line)",
+      "ref": "57b0b511c3e6",
+      "utc": "2026-11-03T22:40:27Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "Flip a boundary comparison or session window check in research_kit.py and verify MyTradingSys/tests/test_research_kit_context.py fails.",
@@ -24,7 +32,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "gemini-pro-argon",
-  "refreshed": "2026-11-04T07:15:00Z",
+  "refreshed": "2026-11-04T13:43:26Z",
   "refs": [
     "MyTradingSys/backtest/research_kit.py"
   ],
@@ -34,7 +42,7 @@
     "MyTradingSys/backtest/research_kit.py"
   ],
   "scope_out": [],
-  "scope_sha": "",
+  "scope_sha": "57b0b511c3e6",
   "size": "S",
   "sources": [],
   "state": "ready",

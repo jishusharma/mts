@@ -16,7 +16,15 @@
   "id": "gpt-spec-tests-div-flags-chart-1104",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "RSI divergence chart draws the close pivots the detector used (12/18, window_class in labe",
+      "ref": "cb12858236c1",
+      "utc": "2026-11-04T02:37:56Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "Mutation check (lab_guy, E4: a test must fail first): flip one comparison in the code under test (window bound, pivot rule) and show the new tests fail; revert.",
@@ -24,7 +32,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "gemini-pro-argon",
-  "refreshed": "2026-11-04T07:15:00Z",
+  "refreshed": "2026-11-04T13:43:24Z",
   "refs": [
     "MyTradingSys/backtest/layers/rsi/div_flags_chart.py"
   ],
@@ -34,7 +42,7 @@
     "MyTradingSys/backtest/layers/rsi/div_flags_chart.py"
   ],
   "scope_out": [],
-  "scope_sha": "",
+  "scope_sha": "cb12858236c1",
   "size": "S",
   "sources": [],
   "state": "ready",
