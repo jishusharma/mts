@@ -16,26 +16,26 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "sync: merge_trunk restores dirty generated LAYERS.md and retries",
-      "ref": "59e5f12b0539",
-      "utc": "2026-11-02T16:56:28Z"
+      "line": "tidy: finished worktrees retire right after ship",
+      "ref": "59815236e099",
+      "utc": "2026-11-03T18:38:14Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-04 ACCEPT (Haiku read on API credit, job haiku-review-1: done_when testable, scope exists, no newer decision contradicts)",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-03T18:37:53Z",
+  "refreshed": "2026-11-03T22:34:11Z",
   "refs": [],
   "result": "",
   "scope_in": [
     "scripts/dev/sync.py, scripts/dev/test_sync.py"
   ],
   "scope_out": [],
-  "scope_sha": "59e5f12b0539",
+  "scope_sha": "59815236e099",
   "size": "M",
   "sources": [],
   "state": "ready",

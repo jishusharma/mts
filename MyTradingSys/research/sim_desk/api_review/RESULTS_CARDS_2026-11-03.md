@@ -7,10 +7,10 @@ Cost: 508210 in + 78963 out tokens, about 0.45 USD at batch price.
 ## Totals
 | Verdict | Files |
 |---|---|
-| EMPTY | 184 |
+| EMPTY | 188 |
 | NOT ENOUGH DATA | 108 |
 | FAILED | 45 |
-| Keep: NO | 337 |
+| Keep: NO | 341 |
 | flagged duplicate settings | 0 |
 
 ## Cards
@@ -173,6 +173,10 @@ Cost: 508210 in + 78963 out tokens, about 0.45 USD at batch price.
 | lm-vp-pivot-p2 | EMPTY | NO (no trade count in file; verdict EMPTY) | VP pivot levels (POC/VAH/VAL), tested by family in phase 2, were examined for a trading edge. | Trade rows in file: 0; no trade count, no net-R figure, and no reason stated in the source. The source verdict is "negative net R; no level beats placebo." |
 | malkan-div-breaks | EMPTY | NO (no trade count in file; verdict EMPTY) | Malkan divergence signals on timeframe-break trades (BTCUSDT 15m/1h/4h) add edge as entry filters or exits. | 2020-21 flagged net per trade: 15m -0.110 % (n 274), 1h -0.180 % (n 131), 4h -0.384 % (n 52); all Holm p 1.00. |
 | meta-label-breaks | EMPTY | NO (no trade count in file; verdict EMPTY) | Other layers can pick the winners among timeframe-break trades on BTCUSDT 15m, 1h and 4h, and getting out early after on | Best third net per trade: 15m -0.080 %, 1h +0.063 % (placebo p 0.020, Holm p 0.060), 4h +0.097 % (Holm p 0.129); early exit differences all have CIs including z |
+| rsi-deep-confirmations-2026-11-04 | EMPTY | NO (no trade count in file; verdict EMPTY) | Waiting for a causal confirmation bar at an RSI low beats buying the raw touch, fee-net | 0 of 150 DEV rows and 0 of 80 VALIDATION rows have a fee-net CI above 0 (chance alone would give about 4 and 2); best DEV row +0.83% with CI spanning zero. |
+| rsi-deep-confluence-2026-11-04 | EMPTY | NO (no trade count in file; verdict EMPTY) | A 6-layer confluence vote (higher-TF RSI, Bollinger, Kurisko, taker share, prior-day sweep, divergence) at an RSI low improves the bounce odds | 10 of 120 kept on DEV, all 1m price outcome, VALIDATION t 0.81 and 0.75; nothing on 5m, 15m, 1h; WaveTrend, trendlines and Tom/Fabio flow could not vote (no causal bar history). |
+| rsi-deep-context-tables-2026-11-04 | EMPTY | NO (no trade count in file; verdict EMPTY) | Market context (macro trend, volatility, range terciles, trailing floors) predicts the bounce at an RSI low better than the level-only table | 168 pre-registered tests; 5 DEV candidates, 4 kept by the letter of the rule on VALIDATION, best VALIDATION t 1.26; gains a few 1e-4 nats; level-only table stays. |
+| rsi-deep-divergence-context-2026-11-04 | EMPTY | NO (no trade count in file; verdict EMPTY) | Causal bullish divergence at an RSI low, matched against no-divergence pivots at the same RSI and volatility, is tradeable after fees | 0 of 144 rows fee-net above 0, 0 of 36 tests at Holm p < 0.05, ridge context model beats level-only in 0 of 6 cells; net negative in 6 of 6 primary cells. |
 | st-_archive-loose_2026-10-cbp_profile6_result | EMPTY | NO (no trade count in file; verdict EMPTY) | The CBP actionable-6 profile (card cbp-actionable-6-extraction-profile-rekt) was committed as a source-extracted record, | 0 trade rows in file; the source states no trade count, no net-R figure, no test window, and no parameter section. |
 | st-b154_stratified_2026-10-09-result | EMPTY | NO (no trade count in file; verdict EMPTY) | B154 Stratified verdicts by UTC session and by regime, copied from the committed source note. | No trade count, net-R figure, or test window is stated in the source; the file holds 0 trade rows. |
 | st-bb_dance_2026-10-30-result | EMPTY | NO (no trade count in file; verdict EMPTY) | Bollinger dance study asks when the band-touch "dance" is over and whether an early take-profit loses the big leg of the | Exit rules show mean/median/share of +0.178%/+0.094%/76% (first close back inside), +0.168%/+0.005%/51% (close above mid); the note says holding to the mid did |

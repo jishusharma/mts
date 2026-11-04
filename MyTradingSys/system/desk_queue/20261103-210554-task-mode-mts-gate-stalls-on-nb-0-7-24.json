@@ -1,0 +1,10 @@
+{
+  "done_when": "task-mode returns a result or a clear error",
+  "from": "JIS-NB",
+  "id": "20261103-210554-task-mode-mts-gate-stalls-on-nb-0-7-24",
+  "need": "task=mts-gate held at waiting for reply to settle for 64 min. No receipt, no error, hands-free 4/200 running 0. Plain blocks in the same window ran.",
+  "posted": "2026-11-03T21:05:54Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "task-mode mts-gate stalls on NB 0.7.24"
+}

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T08:46:24Z",
   "commands": [
     "python -m pytest MyTradingSys/tests/test_cbp_e2e_candidate.py MyTradingSys/tests/test_cbp_query.py -q",
     "python scripts/dev/run_all_tests.py --quick"
@@ -17,11 +18,17 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "DROP by Haiku review 2026-11-04: already shipped as d286be4a1447",
+      "ref": "87638e0c3",
+      "utc": "2026-11-04T08:46:24Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "fix(cbp): non-object JSON returns the safe default, not AttributeError",
-      "ref": "66c3f4e049fd",
-      "utc": "2026-10-31T08:00:50Z"
+      "line": "feat(cbp): candidates() turns tradable stored rows into CANDIDATE_UNTESTED records (S4 e2e",
+      "ref": "d286be4a1447",
+      "utc": "2026-11-03T19:35:44Z"
     }
   ],
   "layers": [],
@@ -30,15 +37,20 @@
   "not_twin_of": [
     "cbp-daily-firing-gap"
   ],
-  "note": "Piece 2 of 2 from s4-cbp-module-e2e (the old 'ack' exit left with the queue). ASSUMPTION (OURS): a pure candidates() helper in cbp/ is the consumer; layers still read via cbp.query. Other S4 items are not builder work: task install (cbp-daily-firing-gap), Gate 4 data, CBP CI billing. DECISION (OURS, default taken): D7 S4 exit wording 'queue ... ack' is read as the D5-as-built flow (query, no ack); S4 is met when both S4 cards ship.",
+  "note": "Piece 2 of 2 from s4-cbp-module-e2e (the old 'ack' exit left with the queue). ASSUMPTION (OURS): a pure candidates() helper in cbp/ is the consumer; layers still read via cbp.query. Other S4 items are not builder work: task install (cbp-daily-firing-gap), Gate 4 data, CBP CI billing. DECISION (OURS, default taken): D7 S4 exit wording 'queue ... ack' is read as the D5-as-built flow (query, no ack); S4 is met when both S4 cards ship.\nREVIEWED:2026-11-04 DROP (Haiku on API credit, job haiku-review-ready-sonnet-1104: Already shipped: cbp candidates() on trunk (d286be4a1447).)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-03T18:56:14Z",
+  "refreshed": "2026-11-03T22:33:52Z",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D7_ROADMAP.md"
   ],
-  "result": "",
+  "result": "DROP by Haiku review 2026-11-04: already shipped as d286be4a1447",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/cbp/__init__.py (add candidates())",
     "MyTradingSys/tests/test_cbp_e2e_candidate.py (new)",
@@ -51,20 +63,21 @@
     "the golden-set harness (card s4-cbp-golden-set-harness)",
     "ingestion scheduling (card cbp-daily-firing-gap)"
   ],
-  "scope_sha": "66c3f4e049fd",
+  "scope_sha": "d286be4a1447",
   "size": "M",
   "sources": [
     "MyTradingSys/research/v1_plan_2026-10-20/D5_CBP_MODULE.md (amended 2026-10-24 query not queue; status table Gate 5: 0 layers call cbp.query)",
     "MyTradingSys/research/v1_plan_2026-10-20/D7_ROADMAP.md (S4 exit)",
     "MyTradingSys/items/B139_cbp_adapter.md (SUPERSEDED, queue deleted f9fcf77b4)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read cbp.query, is_tradable and test_run_adds_dedupes_and_skips_known in test_cbp_query.py.",
     "Write test_cbp_e2e_candidate.py: stub fetch and extract, run_once, query, candidates; assert status, order_eligible False, source, evidence, expiry; untradable and expired rows give no record; promoted_setups.json bytes unchanged.",
     "Run it on old code (candidates missing), then add candidates() as a pure function with no file writes.",
     "Run test_cbp_query.py and run_all_tests --quick; ship."
   ],
+  "taken": "2026-11-04T08:46:24Z",
   "tests": "test_cbp_e2e_candidate.py: a fixture row via run_once, query, candidates gives exactly one record with CANDIDATE_UNTESTED and order_eligible False; a row without entry/target/invalidation gives none; an expired row gives none; promoted_setups.json unchanged. Old code: cbp has no candidates, the test errors.",
   "title": "S4: one analyst row from cbp_run.run_once through cbp.query to a CANDIDATE_UNTESTED record (D5 as built: no queue, no ack)",
   "weight": "ROUTINE",

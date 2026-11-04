@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T21:23:57Z",
   "commands": [],
   "created": "2026-10-19T20:49:50Z",
   "depends_on": [
@@ -16,6 +17,12 @@
   "id": "rsi-deep-confirmations",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "0 of 150 DEV and 0 of 80 VAL confirmation rows have a fee-net or vs-raw CI above 0; confir",
+      "ref": "1177fa711",
+      "utc": "2026-11-03T21:23:57Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -37,14 +44,19 @@
   "not_twin_of": [
     "rsi-deep-divergence-context"
   ],
-  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks\nREVIEWED: super 2026-11-04 (coordinator stamp per Super Session order; Lab_Guy wait waived; prerequisite outputs exist on disk in research/rsi_deep_buy_2026-10-19/: DEPTH_MAP.md, ECON_FLOOR.md, PROB_REPORT.md, prob_tables_dev.csv, prob_tables_val.csv)",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
   "refreshed": "2026-10-27T22:51:52Z",
   "refs": [],
-  "result": "",
+  "result": "0 of 150 DEV and 0 of 80 VAL confirmation rows have a fee-net or vs-raw CI above 0; confirmations cut P(lower low) but not net EV",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/confirmations.py",
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/test_confirmations.py",
@@ -66,13 +78,14 @@
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/APPLIED.md",
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/SHOT_REVIEW.md"
   ],
-  "state": "refined",
+  "state": "done",
   "steps": [
     "Read OPUS_FRAMING s3/s4/s5 Stage 3 and SHOT_REVIEW C11; take the Stage-0 survivor TFs from ECON_FLOOR.md (60m abs20 is a lead, 1m and 15m rel are dead).",
     "Implement each confirmation as a function of bars up to the confirmation bar only; higher-TF features use the last completed bar.",
     "Measure each alone, then the best pair, against the raw touch on DEV; fee 0.10% round trip, fill at the next open, day-clustered CI.",
     "Freeze, read VALIDATION once, write CONFIRMATIONS.md; trial rows before outcomes."
   ],
+  "taken": "2026-11-03T21:23:57Z",
   "tests": "test_confirmations.py fail-first: changing the current higher-TF bar leaves the signal unchanged; each confirmation fires on a planted series and not on a flat one; the entry price is the next bar open; bars from 2024-07-01 are refused in the DEV pass.",
   "title": "RSI deep-buy Stage 3: causal confirmations at an RSI low (hook, structure shift, fall speed, HTF RSI, volume/delta) vs raw touch",
   "weight": "IMPORTANT",

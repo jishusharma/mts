@@ -156,6 +156,56 @@ def add_trade_rows(r):
     return k
 
 
+TF_RE = re.compile(r"(?<![A-Za-z0-9.])(?:(?:1|3|5|10|15|30|45)m|60m|(?:1|2|4|6|8|12)h|1d)(?![A-Za-z0-9])", re.I)
+
+
+def tfs_in(text):
+    """Timeframes named in a text, in order, 60m folded into 1h (`15min` is not matched: the result files write 15m)."""
+    out = []
+    for m in TF_RE.finditer(text or ""):
+        t = {"60m": "1h"}.get(m.group(0).lower(), m.group(0).lower())
+        if t not in out:
+            out.append(t)
+    return out
+
+
+def _uniq(seq):
+    out = []
+    for x in seq:
+        if x and x not in out:
+            out.append(x)
+    return out
+
+
+def add_tf(r):
+    """Timeframe fields (fields only added). Per example: `tf` from the json (tf_source json) else parsed from its title or caption
+    (tf_source inferred); table examples whose rows name two or more timeframes get `row_tf`. Per test: `tfs` (pills: json first,
+    then parsed from the examples, the settings text and the title; `tf_source` json when the test file wrote `tf`) and `tf_tabs`
+    (the timeframes a tab can switch to: example tfs and row tfs; empty under two)."""
+    ex_tfs, row_tfs, inferred = [], [], []
+    for e in r.get("examples", []):
+        if e.get("kind") == "none":
+            continue
+        if e.get("tf"):
+            e.setdefault("tf_source", "json")
+            ex_tfs.append(e["tf"])
+        else:
+            f = tfs_in(e.get("title", "")) or tfs_in(e.get("caption", ""))
+            if f:
+                e["tf"], e["tf_source"] = f[0], "inferred"
+                inferred.append(f[0])
+        if e.get("kind") == "table":
+            rt = [(tfs_in(" ".join(str(c) for c in row)) or [""])[0] for row in e.get("rows", [])]
+            if len({x for x in rt if x}) >= 2:
+                e["row_tf"] = rt
+                row_tfs.extend(rt)
+    text = " ".join([r.get("title", "")] + ["%s %s" % (w.get("name", ""), w.get("value_plain", "")) for w in r.get("what", [])])
+    r["tf_source"] = "json" if r.get("tf") else "inferred"
+    r["tfs"] = _uniq(([r["tf"]] if r.get("tf") else []) + ex_tfs + inferred + row_tfs + tfs_in(text))
+    tabs = _uniq(ex_tfs + inferred + row_tfs)
+    r["tf_tabs"] = tabs if len(tabs) >= 2 else []
+
+
 RESULTS_DIR = os.path.normpath(os.path.join(HERE, "..", "results"))
 
 STABLE_YEARS = 2   # judged years (>= MIN_N trades each) needed before a run can be called stable
@@ -214,6 +264,7 @@ def collect(results_dir):
                 raise ValueError("%s: parameter %r needs label SOURCED or OURS" % (fn, w.get("name")))
         check_curve_bands(r, fn)
         add_trade_rows(r)
+        add_tf(r)
         r.setdefault("banner", banner_of(r))
         r["stability"] = (stability_of(r.get("years")))
         out.append(r)
@@ -344,9 +395,33 @@ ul{margin:4px 0;padding-left:20px}li{margin:3px 0}
 .banner{margin:10px 0;padding:8px 12px;border:2px solid var(--mute);border-radius:8px;font-weight:600;font-size:14px}.banner.good{border-color:var(--good);color:var(--good)}.banner.bad{border-color:var(--bad);color:var(--bad)}.banner.warn{border-color:var(--warn);color:var(--warn)}
 .tl{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin:8px 0}@media(min-width:900px){.tl{grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);align-items:start}}
 #tlist tr[data-i]{cursor:pointer}#tlist tr.sel{background:var(--bg);outline:2px solid var(--acc)}#tpane svg{background:#fff;border:1px solid var(--line);border-radius:6px}
+[hidden]{display:none!important}
+html,body{height:100%;overflow:hidden}
+#app{height:100vh;display:flex;flex-direction:column}
+.top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:6px 12px;flex:none}
+.top h1{font-size:15px}
+.tabs{display:flex;gap:4px;flex-wrap:wrap}
+.tabs button{padding:3px 12px;border-radius:99px;font-size:13px}
+.tabs [aria-selected=true]{border-color:var(--acc);background:var(--acc);color:#fff}
+.pane{flex:1;min-height:0;overflow:auto}
+main{height:100%;padding:8px 12px;gap:10px}
+nav,article{min-height:0;overflow:auto}
+@media(min-width:900px){main{align-items:stretch}nav{position:static;max-height:none}}
+@media(max-width:899px){main{grid-template-rows:minmax(0,34%) minmax(0,1fr)}}
+@media(max-width:700px){.top h1{display:none}.gf>b{width:100%!important}.kpis{grid-template-columns:repeat(auto-fill,minmax(100px,1fr))}}
+#lst{max-height:none;overflow:visible}
+.pill.tf{border-color:var(--acc);color:var(--acc);font-weight:600;margin-left:4px}
+.tft{margin:6px 0}
+.gridw{padding:8px 12px}.leg{display:flex;gap:12px;margin-bottom:8px;font-size:13px}
+.gf{display:flex;align-items:center;gap:8px;margin:2px 0;flex-wrap:wrap}.gf>b{width:170px;font-size:11px;color:var(--mute);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gcs{display:flex;gap:3px;flex-wrap:wrap}
+.gc{width:22px;height:22px;padding:0;border-radius:4px;font-size:12px;line-height:20px;text-align:center;border:1px solid var(--line);color:var(--mute)}
+.gc.good{background:var(--good);border-color:var(--good);color:#fff}.gc.bad{background:var(--bad);border-color:var(--bad);color:#fff}.gc.warn{background:var(--warn);border-color:var(--warn);color:#fff}
+.cm{display:flex;gap:6px;margin:6px 0 2px}.cm input{flex:1;min-width:0;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:inherit}
+.cmi{font-size:12px;color:var(--mute);margin:1px 0}.cmi span{color:var(--ink)}
+details.dt{margin:8px 0}details>summary{cursor:pointer;color:var(--mute);font-size:12px}
 </style></head><body>
-<header><h1>Test simulator</h1><div class="sub">Every test, what it did, what it found and why. Past results on DEV data only; sealed windows unread. Percent distances and timestamps only, no prices.</div></header>
-<main><nav id="nav" aria-label="Tests"></nav><article id="view" aria-live="polite"></article></main>
+<div id="app"><header class="top"><h1>Test simulator</h1><div id="tabs" class="tabs" role="tablist" aria-label="Views"></div><span class="sub" title="Past results on DEV data only; sealed windows unread. Percent distances and timestamps only, no prices.">DEV only &middot; % only</span></header><div id="pane" class="pane"></div></div>
 <script>
 const TESTS=/*__DATA__*/null;
 const CAT=/*__CAT__*/[];
@@ -374,7 +449,7 @@ $("nav").onclick=e=>{const b=e.target.closest("button");if(b){location.hash=b.da
 function refilter(){const id=document.activeElement&&document.activeElement.id;buildNav();const el=id&&$(id);if(el){el.focus();if(el.id==="q")el.setSelectionRange(el.value.length,el.value.length);}}
 function stub(r){return '<h1 style="font-size:20px;margin:0 0 6px">'+esc(r.title)+'</h1><span class="pill '+(r.status==="FAILED"?"bad":"")+'">'+esc(KIND[r.kind]||r.kind)+"</span> <span class=\"pill\">charts not exported yet</span>"+
 '<h2 class="s">Verdict as written</h2><p>'+esc(r.verdict)+'</p><h2 class="s">Where it lives</h2><p class="src">'+esc(r.source)+'</p><p class="note">Family: '+esc(r.family)+". The kind ("+esc(r.kind_source||"")+") and the verdict line were read from the file automatically, so check them against the source. No numbers or examples are shown until this test is exported to sim_desk/results/.</p>";}
-function table(x){return '<div class="tw"><table><tr>'+x.cols.map(c=>"<th>"+esc(c)+"</th>").join("")+"</tr>"+x.rows.map(r=>"<tr>"+r.map(c=>"<td>"+esc(c)+"</td>").join("")+"</tr>").join("")+"</table></div>";}
+function table(x){return '<div class="tw"><table><tr>'+x.cols.map(c=>"<th>"+esc(c)+"</th>").join("")+"</tr>"+x.rows.map((r,k)=>"<tr"+(x.row_tf&&x.row_tf[k]?' data-tf="'+esc(x.row_tf[k])+'"':"")+">"+r.map(c=>"<td>"+esc(c)+"</td>").join("")+"</tr>").join("")+"</table></div>";}
 function stack(x){const W=600,rh=30;let s='<svg viewBox="0 0 '+W+" "+(x.rows.length*rh+34)+'" role="img" aria-label="'+esc(x.title)+'">';
 x.rows.forEach((r,i)=>{const y=i*rh+4;s+='<text x="0" y="'+(y+14)+'" font-size="11" fill="var(--ink)">'+esc(r.label)+"</text>";let cx=190;const sc=(W-196)/100;
 r.parts.forEach(p=>{const w=p.value*sc;s+='<rect x="'+cx+'" y="'+y+'" width="'+w.toFixed(1)+'" height="20" fill="'+(COL[p.tone]||"var(--acc)")+'" opacity=".8"/>';if(p.value>=6)s+='<text x="'+(cx+w/2)+'" y="'+(y+14)+'" font-size="10" text-anchor="middle" fill="var(--ink)">'+p.value+"%</text>";cx+=w;});});
@@ -406,9 +481,9 @@ $("pick").onchange=e=>{if(e.target.value!=="")show(e.target.value)};
 $("play").onclick=()=>{if(tm){clearInterval(tm);tm=null;$("play").textContent="Play";return}$("play").textContent="Pause";tm=setInterval(()=>{if(+sl.value>=n-1){$("play").onclick();return}show(+sl.value+1)},120)};
 show(0);}};}
 function tradeChart(x){const tr=x.trades,n=tr.length,M=(x.tf_min||30)*60000;
-const h='<p class="note"><b>How to read it.</b> The rule is checked on every candle; a trade happens only where it fires. Each picture below is one trade on the '+esc(x.tf||"30m")+' chart: '+
+const h='<details class="note"><summary>?</summary><b>How to read it.</b> The rule is checked on every candle; a trade happens only where it fires. Each picture below is one trade on the '+esc(x.tf||"30m")+' chart: '+
 '<span class="good">&#9650; entry</span> (open of the candle after the signal), <span class="bad">&#9660; exit</span>, the shaded box is the time in the trade (green = won, red = lost after fees), the dashed line is the entry price (0 %). '+
-'Prices are shown as % from the entry. Lower panes: WaveTrend (blue dot = the buy dot at or under -53), RSI (orange line = the divergence: price made a lower low, RSI a higher low). '+esc(x.stop_note||"")+'</p>'+
+'Prices are shown as % from the entry. Lower panes: WaveTrend (blue dot = the buy dot at or under -53), RSI (orange line = the divergence: price made a lower low, RSI a higher low). '+esc(x.stop_note||"")+'</details>'+
 '<div class="ctl"><button id="cvp" aria-label="Previous trade">&lt; Prev</button><button id="cvn" aria-label="Next trade">Next &gt;</button><select id="cvs" aria-label="Pick a trade">'+
 tr.map((t,i)=>'<option value="'+i+'">#'+(i+1)+" "+esc(t.d)+" UTC: "+f2(t.net)+" %</option>").join("")+'</select><button id="cvr" aria-label="Replay this trade candle by candle">&#9654; Replay this trade</button><button id="cvst" aria-label="One candle forward">Step 1 candle &#9656;</button></div><div id="cvph" style="font-size:15px;min-height:2.6em;margin:4px 0"></div><svg id="cvg" viewBox="0 0 700 430" style="max-width:min(100%,calc((100vh - 140px)*1.49))" role="img" aria-label="Candles of the selected trade"></svg><div id="cvi" class="note"></div>';
 const init=()=>{let cur=0,up=null;const stop=()=>{if(window.cvT){clearInterval(window.cvT);window.cvT=null}$("cvr").innerHTML="&#9654; Replay this trade"};const go=i=>{stop();i=Math.max(0,Math.min(n-1,+i));const sl=$("slider");if(sl&&+sl.max===n-1){sl.value=i;sl.oninput()}else cvShow(i)};
@@ -457,34 +532,79 @@ const rows=it.map((c,i)=>'<tr data-i="'+i+'" tabindex="0"><td>'+(i+1)+"</td><td>
 const h='<div class="tl"><div class="tw"><table id="tlist"><tr><th>#</th><th>Entry (UTC)</th><th>Side</th><th>Exit reason</th><th>Net R</th></tr>'+rows+'</table></div><div id="tpane"></div></div><p class="note">'+it.length+" example trades (typical winners and losers), not every trade. Click a row to see its chart.</p>";
 return {html:h,init:()=>{const sel=i=>{document.querySelectorAll("#tlist tr[data-i]").forEach(r=>r.classList.toggle("sel",+r.dataset.i===i));const c=it[i];$("tpane").innerHTML=c.svg+'<p class="note">'+esc((c.kind==="winner"?"typical winner":"typical loser")+(c.note?": "+c.note:""))+"</p>"};
 const tb=$("tlist");tb.onclick=e=>{const r=e.target.closest("tr[data-i]");if(r)sel(+r.dataset.i)};tb.onkeydown=e=>{const r=e.target.closest("tr[data-i]");if(r&&(e.key==="Enter"||e.key===" ")){e.preventDefault();sel(+r.dataset.i)}};sel(0)}};}
-function example(x){const inits=[];let h='<div class="ex"><h3>'+esc(x.title||"Example")+"</h3>";
+const CKEY="simdesk.comments.v1";
+function readComments(){try{const a=JSON.parse(localStorage.getItem(CKEY)||"[]");return Array.isArray(a)?a:[]}catch(e){return[]}}
+// Comments go to the artifact db (capability `db`, runtime contract 0.2.96: claude.use("db") -> collection/doc/set); null namespace = write skipped; a db or storage error never blocks the page.
+let DBP=null;function dbNs(){if(!DBP){try{DBP=(window.claude&&typeof window.claude.use==="function")?Promise.resolve(window.claude.use("db")).catch(()=>null):Promise.resolve(null)}catch(e){DBP=Promise.resolve(null)}}return DBP}
+function saveComment(c){try{dbNs().then(db=>{if(!db)return;const id=String(c.ts+"-"+c.test_id+"-"+c.chart_id).replace(/[^A-Za-z0-9_.~:@+-]/g,"_").slice(0,180);return db.collection("comments").doc(id).set(c)}).catch(()=>{})}catch(e){}
+try{const a=readComments();a.push(c);localStorage.setItem(CKEY,JSON.stringify(a))}catch(e){}}
+/*end-comments-adapter*/
+const stamp=ts=>{try{return new Date(ts).toISOString().slice(5,16).replace("T"," ")}catch(e){return""}};
+function commentList(tid,cid){return readComments().filter(c=>c.test_id===tid&&c.chart_id===cid).slice(-5).map(c=>'<div class="cmi"><span>'+esc(stamp(c.ts))+"</span> "+esc(c.text)+"</div>").join("")}
+function commentBox(tid,cid){return '<form class="cm" data-t="'+esc(tid)+'" data-c="'+esc(cid)+'"><input type="text" maxlength="400" placeholder="&#9998;" aria-label="Comment"><button type="submit">Save</button><button type="button" data-copy="1">copy all</button></form><div class="cml">'+commentList(tid,cid)+"</div>";}
+function allCommentsText(){return readComments().map(c=>{const t=TESTS.find(x=>x.id===c.test_id);return stamp(c.ts)+" | "+(t?t.title:c.test_id)+" | "+c.chart_id+" | "+c.text}).join("\n")}
+function copyAll(b){const tx=allCommentsText();const done=()=>{const o=b.textContent;b.textContent="✓";setTimeout(()=>{b.textContent=o},900)};
+try{navigator.clipboard.writeText(tx).then(done,()=>{});return}catch(e){}
+try{const a=document.createElement("textarea");a.value=tx;document.body.appendChild(a);a.select();document.execCommand("copy");a.remove();done()}catch(e){}}
+document.addEventListener("submit",e=>{const f=e.target.closest&&e.target.closest("form.cm");if(!f)return;e.preventDefault();const i=f.querySelector("input"),tx=i.value.trim();if(!tx)return;
+saveComment({test_id:f.dataset.t,chart_id:f.dataset.c,text:tx,ts:Date.now()});i.value="";if(f.nextElementSibling)f.nextElementSibling.innerHTML=commentList(f.dataset.t,f.dataset.c);});
+function tfPill(f,src){return '<span class="pill tf" title="'+(src==="inferred"?"timeframe read from the text":"timeframe from the result file")+'">'+esc(f)+(src==="inferred"?"~":"")+"</span>"}
+function tfTabs(t){const a=t.tf_tabs||[];if(a.length<2)return"";return '<div class="tabs tft" role="tablist" aria-label="Timeframe">'+a.map((f,i)=>'<button role="tab" data-tf="'+esc(f)+'" aria-selected="'+(i===0)+'">'+esc(f)+"</button>").join("")+'<button role="tab" data-tf="*" aria-selected="false">&#8734;</button></div>';}
+function applyTf(tf){document.querySelectorAll(".tft [role=tab]").forEach(b=>b.setAttribute("aria-selected",b.dataset.tf===tf));
+document.querySelectorAll("#view .ex[data-tf],#view tr[data-tf]").forEach(el=>{el.hidden=!(tf==="*"||el.dataset.tf===tf)})}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-copy]");if(b){copyAll(b);return}const t=e.target.closest(".tft [role=tab]");if(t)applyTf(t.dataset.tf)});
+function example(x,i,t){const inits=[];let real=true;let h='<div class="ex"'+(x.tf&&!x.row_tf?' data-tf="'+esc(x.tf)+'"':"")+"><h3>"+esc(x.title||"Example")+(x.tf?" "+tfPill(x.tf,x.tf_source):"")+"</h3>";
 if(x.kind==="table")h+=table(x);else if(x.kind==="stack")h+=stack(x);else if(x.kind==="sides")h+=sides(x);
 else if(x.kind==="curve"&&x.r&&x.r.length)h+=curveEx(x);
 else if(x.kind==="charts"&&x.items&&x.items.length&&x.items.every(c=>c.when&&c.exit_reason)){const r=chartList(x);h+=r.html;inits.push(r.init);}
 else if(x.kind==="charts"&&x.items&&x.items.length)h+='<div class="cg">'+x.items.map(c=>"<figure>"+c.svg+"<figcaption>"+esc((c.label||(c.kind==="winner"?"typical winner":"typical loser"))+(c.note?": "+c.note:""))+"</figcaption></figure>").join("")+"</div>";
 else if(x.kind==="replay"){const r=replay(x);h+=r.html;inits.push(r.init);}
 else if(x.kind==="trade_chart"&&x.trades&&x.trades.length){const r=tradeChart(x);h+=r.html;inits.push(r.init);}
-else h+='<p class="note">no example trades exported</p>';
-if(x.caption)h+='<p class="note">'+esc(x.caption)+"</p>";return {html:h+"</div>",inits};}
-function render(id){if(tm){clearInterval(tm);tm=null}window.cvShow=null;if(window.cvT){clearInterval(window.cvT);window.cvT=null}const t=TESTS.find(x=>x.id===id);
-if(!t){const r=CAT.find(x=>x.id===id);if(r){document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-current",b.dataset.id===id));$("view").innerHTML=stub(r);return}}
-if(!t){render(TESTS[0].id);return}
-document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-current",b.dataset.id===t.id));
-let h='<h1 style="font-size:20px;margin:0 0 6px">'+esc(t.title)+'</h1><span class="pill '+tone(t.verdict.tone)+'">'+esc(t.verdict.label)+"</span>"+banner(t.banner);
+else{real=false;h+='<p class="note">no example trades exported</p>';}
+if(x.caption)h+='<p class="note">'+esc(x.caption)+"</p>";if(real)h+=commentBox(t.id,"ex"+i);return {html:h+"</div>",inits};}
+function halt(){if(tm){clearInterval(tm);tm=null}window.cvShow=null;if(window.cvT){clearInterval(window.cvT);window.cvT=null}}
+const CHARTK=["trade_chart","charts","replay","curve","stack","sides"];
+function testHtml(t,only){const inits=[];const pills=(t.tfs||[]).map(f=>tfPill(f,t.tf_source)).join("");
+let h='<h1 style="font-size:18px;margin:0 0 6px">'+esc(t.title)+'</h1><span class="pill '+tone(t.verdict.tone)+'">'+esc(t.verdict.label)+"</span>"+pills+banner(t.banner);
 h+='<div class="kpis">'+t.kpis.map(k=>'<div class="kpi"><b class="'+tone(k.tone)+'">'+esc(k.value)+"</b><span>"+esc(k.label)+"</span></div>").join("")+"</div>";
-h+=yearStrip(t);
-h+=heatmap(t);
-h+='<h2 class="s">What was tested</h2><dl>'+t.what.map(w=>"<dt>"+esc(w.name)+' <span class="tag '+esc(w.label)+'">'+esc(w.label)+"</span></dt><dd>"+esc(w.value_plain)+"</dd>").join("")+"</dl>";
-h+='<p class="note"><b>Window:</b> '+esc(t.window||"not stated in the source")+"</p><p class=\"note\">SOURCED = taken from a named source (the trader's words or a fee table). OURS = our own judgement or tuned on DEV data.</p>";
-h+='<h2 class="s">How</h2><p>'+esc(t.how)+"</p>";
-const inits=[];h+='<h2 class="s">Examples</h2>';t.examples.forEach(x=>{const e=example(x);h+=e.html;inits.push(...e.inits)});
-h+='<h2 class="s">Verdict and why</h2><span class="pill '+tone(t.verdict.tone)+'">'+esc(t.verdict.label)+"</span><ul>"+(t.why.length?t.why.map(w=>"<li>"+esc(w)+"</li>").join(""):"<li>The source does not say why.</li>")+"</ul>";
+h+=commentBox(t.id,"card")+tfTabs(t);
+if(!only){h+=yearStrip(t)+heatmap(t);}
+const exs=t.examples.map((x,i)=>[x,i]).filter(([x])=>!only||CHARTK.includes(x.kind));
+h+='<h2 class="s">&#9638;</h2>';exs.forEach(([x,i])=>{const e=example(x,i,t);h+=e.html;inits.push(...e.inits)});
+if(only)return {h,inits};
+h+='<h2 class="s">&#10004;&#10006;</h2><span class="pill '+tone(t.verdict.tone)+'">'+esc(t.verdict.label)+"</span><ul>"+(t.why.length?t.why.map(w=>"<li>"+esc(w)+"</li>").join(""):"<li>The source does not say why.</li>")+"</ul>";
+h+='<details class="dt"><summary>&#9432; What was tested</summary><dl>'+t.what.map(w=>"<dt>"+esc(w.name)+' <span class="tag '+esc(w.label)+'" title="'+(w.label==="SOURCED"?"taken from a named source":"our own judgement or tuned on DEV data")+'">'+esc(w.label)+"</span></dt><dd>"+esc(w.value_plain)+"</dd>").join("")+"</dl>"+
+'<p class="note"><b>Window:</b> '+esc(t.window||"not stated in the source")+'</p><h2 class="s">How</h2><p>'+esc(t.how)+"</p></details>";
 if(t.provenance==="source-extracted"){const ms=Object.entries(t.missing||{});h+='<h2 class="s">Source-extracted</h2><p class="note">Copied from the written note, not re-run. Check each line against the source.</p>'+
 (t.evidence&&t.evidence.length?"<ul>"+t.evidence.map(e=>"<li>"+esc(e.field)+": "+esc(e.value)+' <span class="src">from: '+esc(e.quote)+"</span></li>").join("")+"</ul>":"")+
 (ms.length?'<p class="note">Not in the source (shown as empty, not guessed): '+ms.map(m=>esc(m[0]+" ("+m[1]+")")).join("; ")+"</p>":"");}
-h+='<h2 class="s">Where the numbers come from</h2><p class="src">'+t.source_files.map(esc).join("<br>")+"<br>commit "+esc(t.commit)+"</p>";
-$("view").innerHTML=h;inits.forEach(f=>f());}
-buildNav();window.onhashchange=()=>render(location.hash.slice(1));render(location.hash.slice(1));
+h+='<details class="dt"><summary>&#9432; source</summary><p class="src">'+t.source_files.map(esc).join("<br>")+"<br>commit "+esc(t.commit)+"</p></details>";
+return {h,inits};}
+function mountTest(t,only){const r=testHtml(t,only);$("view").innerHTML=r.h;r.inits.forEach(f=>f());if((t.tf_tabs||[]).length>1)applyTf(t.tf_tabs[0]);}
+function render(id){halt();const t=TESTS.find(x=>x.id===id);
+if(!t){const r=CAT.find(x=>x.id===id);if(r){document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-current",b.dataset.id===id));$("view").innerHTML=stub(r);return}}
+if(!t){render(TESTS[0].id);return}
+document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-current",b.dataset.id===t.id));mountTest(t,false);}
+function glyphOf(r){const t=TESTS.find(x=>x.id===r.result_id);const s=t&&t.banner?t.banner.state:(r.verdict_class==="failed"?"FAIL":r.verdict_class==="passed"?"PASS":r.verdict_class==="unclear"?"UNCLEAR":"OTHER");
+return {PASS:["good","&#10004;"],FAIL:["bad","&#10006;"],TOO_FEW:["warn","&#9684;"],UNCLEAR:["","?"],OTHER:["","&middot;"]}[s]||["","&middot;"];}
+function gridTab(){const by={},cnt={};CAT.forEach(r=>{const g=glyphOf(r);(by[r.family]=by[r.family]||[]).push([r,g]);const k=g[0]+"|"+g[1];cnt[k]=(cnt[k]||0)+1});
+const leg=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).map(([k,n])=>{const [c,g]=k.split("|");return '<span class="'+c+'">'+g+" "+n+"</span>"}).join("");
+$("pane").innerHTML='<div class="gridw"><div class="leg">'+leg+"</div>"+Object.keys(by).sort((a,b)=>a.localeCompare(b)).map(f=>'<div class="gf"><b title="'+esc(f)+'">'+esc(f)+'</b><span class="gcs">'+by[f].map(([r,g])=>'<button class="gc '+g[0]+'" data-id="'+esc(r.exported?r.result_id:r.id)+'" title="'+esc(r.title+" | "+r.verdict)+'">'+g[1]+"</button>").join("")+"</span></div>").join("")+"</div>";
+$("pane").onclick=e=>{const b=e.target.closest(".gc");if(b)showTab("fam",b.dataset.id)};}
+function chartsTab(id){const L=TESTS.filter(t=>t.examples.some(x=>CHARTK.includes(x.kind)&&(x.kind!=="curve"||(x.r&&x.r.length))));
+const cur=L.find(t=>t.id===id)||L[0];
+$("pane").innerHTML='<main><nav id="cnav" aria-label="Charts">'+L.map(t=>'<button data-id="'+esc(t.id)+'" aria-current="'+(cur&&t.id===cur.id)+'">'+esc(t.title)+"<small>"+(t.tfs||[]).map(esc).join(" ")+"</small></button>").join("")+'</nav><article id="view"></article></main>';
+$("cnav").onclick=e=>{const b=e.target.closest("button");if(b){halt();chartsTab(b.dataset.id)}};if(cur){halt();mountTest(cur,true)}}
+function commentsTab(){const n=readComments().length;const rows=readComments().slice().reverse().map(c=>{const t=TESTS.find(x=>x.id===c.test_id);return '<div class="cmi"><span>'+esc(stamp(c.ts))+" &middot; "+esc(t?t.title:c.test_id)+" &middot; "+esc(c.chart_id)+"</span> "+esc(c.text)+"</div>"}).join("");
+$("pane").innerHTML='<div class="gridw"><div class="leg"><span>&#9998; '+n+'</span><button type="button" data-copy="1">copy all</button></div>'+rows+"</div>";}
+let TAB="fam";
+const TABS=[["fam","Families","&#9776;"],["grid","Verdict grid","&#9638;"],["charts","Charts","&#9650;"],["cm","Comments","&#9998;"]];
+function showTab(t,id){halt();TAB=t;document.querySelectorAll("#tabs [role=tab]").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===t));$("pane").onclick=null;
+if(t==="fam"){$("pane").innerHTML='<main><nav id="nav" aria-label="Tests"></nav><article id="view" aria-live="polite"></article></main>';buildNav();render(id||location.hash.slice(1));}
+else if(t==="grid")gridTab();else if(t==="charts")chartsTab(id);else commentsTab();}
+$("tabs").innerHTML=TABS.map(([k,l,g])=>'<button role="tab" data-tab="'+k+'" aria-selected="false">'+g+" "+l+"</button>").join("");
+$("tabs").onclick=e=>{const b=e.target.closest("[role=tab]");if(b)showTab(b.dataset.tab)};
+window.onhashchange=()=>{const id=location.hash.slice(1);if(TAB==="charts")chartsTab(id);else showTab("fam",id)};showTab("fam");
 </script></body></html>
 '''
 

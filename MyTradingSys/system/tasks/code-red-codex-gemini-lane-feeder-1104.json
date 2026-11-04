@@ -1,0 +1,55 @@
+{
+  "approved_by": "operator",
+  "asks": "",
+  "commands": [
+    "python -m pytest scripts/dev/test_supervisor.py scripts/dev/test_tasks.py -q"
+  ],
+  "created": "2026-11-04T07:15:00Z",
+  "depends_on": [],
+  "done_when": "scripts/dev/tasks.py refine_due() returns non-zero (or supervisor.py plan_lines emits RUN Session_Planner) whenever lane_counts() shows GEMINI < 4 or CODEX < 8; supervisor.py plan_lines surfaces CODEX < 8 even when NUC has no live heartbeat; pytest scripts/dev/test_supervisor.py scripts/dev/test_tasks.py passes 100%.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Operator CODE RED (A-20261104-1, d-code-red-codex-gemini-starvation-1104): Fix the two structural bugs in scripts/dev/supervisor.py and scripts/dev/tasks.py identified in MyTradingSys/research/gemini_audits_2026-11-04/CODE_RED_CODEX_GEMINI_LANE_STARVATION_AUDIT.md so CODEX (GPT) and GEMINI lanes can never silently hit 0 ready cards while SONNET has >=6 ready cards.",
+  "id": "code-red-codex-gemini-lane-feeder-1104",
+  "kind": "code",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "In scripts/dev/supervisor.py break the GEMINI < 4 or CODEX < 8 planner trigger condition and verify the new unit test in scripts/dev/test_supervisor.py fails.",
+  "note": "REVIEWED: operator 2026-11-04 ACCEPT; CODE RED P1 pinned per operator directive d-code-red-codex-gemini-starvation-1104\nREVIEWED:2026-11-04 HOLD (Haiku on API credit, job haiku-review-ready-sonnet-1104: STALE: scope changed 908a03d6600c after refresh; re-tag before work.)",
+  "pinned": true,
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "gemini-pro-argon",
+  "refreshed": "2026-11-04T07:15:00Z",
+  "refs": [
+    "MyTradingSys/research/gemini_audits_2026-11-04/CODE_RED_CODEX_GEMINI_LANE_STARVATION_AUDIT.md",
+    "MyTradingSys/system/ANNOUNCEMENTS.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/supervisor.py",
+    "scripts/dev/tasks.py",
+    "scripts/dev/test_supervisor.py",
+    "scripts/dev/test_tasks.py"
+  ],
+  "scope_out": [
+    "MyTradingSys/backtest"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/gemini_audits_2026-11-04/CODE_RED_CODEX_GEMINI_LANE_STARVATION_AUDIT.md Root Cause 2 (supervisor.py:283, 1106-1129 and tasks.py:593-599)",
+    "Update scripts/dev/supervisor.py and/or scripts/dev/tasks.py so that when GEMINI ready < 4 or CODEX ready < 8, plan_lines always emits an actionable RUN Session_Planner step to seed from D11_PROGRAMME.md section 6 and recent ships",
+    "Add unit tests in scripts/dev/test_supervisor.py covering GEMINI=0 and CODEX=0 when SONNET=28 and refine_raw=0, keeping all existing test_supervisor.py assertions green"
+  ],
+  "tests": "python -m pytest scripts/dev/test_supervisor.py scripts/dev/test_tasks.py -q",
+  "title": "CODE RED: Wire supervisor.py and tasks.py to enforce CODEX>=8 and GEMINI>=4 lane floors",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

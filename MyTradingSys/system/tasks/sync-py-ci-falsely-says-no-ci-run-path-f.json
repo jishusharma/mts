@@ -16,19 +16,19 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "sync: merge_trunk restores dirty generated LAYERS.md and retries",
-      "ref": "59e5f12b0539",
-      "utc": "2026-11-02T16:56:28Z"
+      "line": "tidy: finished worktrees retire right after ship",
+      "ref": "59815236e099",
+      "utc": "2026-11-03T18:38:14Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "refined by Session_Planner 2026-11-03; live-path no; verify: content sha, cherry empty, ls-tree both files",
+  "note": "refined by Session_Planner 2026-11-03; live-path no; verify: content sha, cherry empty, ls-tree both files\nREVIEWED:2026-11-04 ACCEPT (Haiku on API credit, job haiku-review-ready-sonnet-1104: ci_starts present in sync.py; scope testable; no twin found.)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-03T18:23:16Z",
+  "refreshed": "2026-11-03T22:34:07Z",
   "refs": [
     "scripts/dev/sync.py:950"
   ],
@@ -40,7 +40,7 @@
   "scope_out": [
     ".github/workflows"
   ],
-  "scope_sha": "59e5f12b0539",
+  "scope_sha": "59815236e099",
   "size": "S",
   "sources": [],
   "state": "ready",

@@ -1,0 +1,76 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-03T23:12:24Z",
+  "commands": [],
+  "context": {
+    "calls_to_edit": 14,
+    "folded": "2026-11-03T23:12:13Z",
+    "misses": 22,
+    "reads": [
+      "MyTradingSys/backtest/layers/rsi/run_divergence_mtf.py",
+      "MyTradingSys/backtest/bt/bt_data.py",
+      "MyTradingSys/backtest/layers/timeframe/registry.json",
+      "MyTradingSys/backtest/layers/timeframe/tf_resample.py",
+      "scripts/dev/run_all_tests.py"
+    ],
+    "session": "agent-a44554c4a1fc080b1"
+  },
+  "created": "2026-11-03T22:51:58Z",
+  "depends_on": [],
+  "done_when": "research/rsi_divergence_mtf_gated_<date>/PRE_REG.md (frozen, trial-ledger rows in TRIALS.md first), DEV fee-net table by regime and TF with day-clustered CI, VALIDATION read once for any DEV survivor, RESULT.md whose first lines print the window regime-mix line (research_kit.regime_mix_line) and a VERDICTS.csv row; HOLDOUT never read",
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Re-run the 2026-10-09 rsi_divergence_mtf FAIL gated by Malkan's monthly/weekly RSI >=60/<=40 (SOURCED, MALKAN_RULES_2026-10-31.md:11-16) via research_kit.regime_tag, plus a retest-entry arm, fee-net, new frozen PRE_REG. See note and CONTEXT_FILTER_REVIEW_2026-11-04.md.",
+  "id": "rsi-divergence-mtf-under-malkan-gate",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "INCONCLUSIVE (underpowered): DEV gate on 25 bull / 0 bear of 130 weeks; 15m aligned W12 n1",
+      "ref": "bb0755baa",
+      "utc": "2026-11-03T23:12:24Z"
+    }
+  ],
+  "layers": [
+    "rsi"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Super Session order 2026-11-04. Gate thresholds SOURCED (Malkan); retest window N, divergence pivot parameters keep the original run's values (label SOURCED/OURS in PRE_REG). A fail here is a verdict on Malkan's rule as written, not on the raw signal.\nREVIEWED: super 2026-11-04 (coordinator stamp per Super Session order d-context-retest-1104; Lab_Guy wait waived)\nREVIEWED:2026-11-04 ACCEPT (Haiku read on API credit, job haiku-review-1: done_when testable, scope exists, no newer decision contradicts)",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T22:52:49Z",
+  "refs": [],
+  "result": "INCONCLUSIVE (underpowered): DEV gate on 25 bull / 0 bear of 130 weeks; 15m aligned W12 n164 net -0.176% CI [-0.307,-0.045]; 0/32 survivors, VALIDATION unread",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/; MyTradingSys/research/VERDICTS.csv; MyTradingSys/research/layer_lab/TRIALS.md; scripts/dev/extra_tests.tsv"
+  ],
+  "scope_out": [
+    "no live path, no parameter beyond PRE_REG, no new trend tag (use research_kit), HOLDOUT never read"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/CONTEXT_FILTER_REVIEW_2026-11-04.md",
+    "OPERATOR_DECISIONS d-context-retest-1104"
+  ],
+  "state": "done",
+  "steps": [
+    "read research/rsi_divergence_mtf_2026-10-09 RESULT.md and runner, MALKAN_RULES_2026-10-31.md:11-16, CONTEXT_FILTER_REVIEW_2026-11-04.md",
+    "write PRE_REG and TRIALS.md rows first, then gated runner on research_kit, DEV run, VALIDATION once for survivors"
+  ],
+  "taken": "2026-11-03T23:12:24Z",
+  "tests": "test for the gate wiring: events outside the gated regime are dropped, as-of causality (planted future bar changes nothing); new tests fail on pre-change code once",
+  "title": "Re-run rsi_divergence_mtf under Malkan's monthly/weekly RSI gate (SOURCED), own PRE_REG, DEV fee-net, VALIDATION once",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

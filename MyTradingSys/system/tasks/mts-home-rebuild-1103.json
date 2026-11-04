@@ -31,26 +31,26 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "decision: hold C's last 4% for B's MTS Home ship",
-      "ref": "915c162c4512",
-      "utc": "2026-11-03T14:53:12Z"
+      "line": "context-filter review of every backtest + two operator decisions (context re-test, reviews",
+      "ref": "f818131fe2fe",
+      "utc": "2026-11-03T22:29:13Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "915c162c4512 decision: hold C's last 4% for B's MTS Home ship",
+      "line": "f818131fe2fe context-filter review of every backtest + two operator decisions (context re-",
       "ref": "MyTradingSys/system/OPERATOR_DECISIONS.md",
-      "utc": "2026-11-03T14:53:12Z"
+      "utc": "2026-11-03T22:29:13Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-03 ACCEPT (reviewer Agent a41afa0c, FIX applied once; no depends_on by design). DECISION (OURS): A2 (27 grandfathered sources review_by) takes the audit default, extend 14 days, record in OPERATOR_DECISIONS.md. Verify line: content sha, git cherry origin/fast-track <sha> empty, files in ls-tree. | PLANNER 2026-11-03 planner-b-1103-2: re-read 915c162c4 (appends the 'Hold for B' decision to OPERATOR_DECISIONS.md, an append-only file in scope): card unchanged. Product, not machinery: S0 freeze does not park it. Deadline: B ships H2/H3 before 19:00Z; C does not take it. Append A2's 14-day default below that entry, never edit it. Reruns of the STATUS generator and the Home rebuild are file-only, no live tree.",
+  "note": "REVIEWED:2026-11-03 ACCEPT (reviewer Agent a41afa0c, FIX applied once; no depends_on by design). DECISION (OURS): A2 (27 grandfathered sources review_by) takes the audit default, extend 14 days, record in OPERATOR_DECISIONS.md. Verify line: content sha, git cherry origin/fast-track <sha> empty, files in ls-tree. | PLANNER 2026-11-03 planner-b-1103-2: re-read 915c162c4 (appends the 'Hold for B' decision to OPERATOR_DECISIONS.md, an append-only file in scope): card unchanged. Product, not machinery: S0 freeze does not park it. Deadline: B ships H2/H3 before 19:00Z; C does not take it. Append A2's 14-day default below that entry, never edit it. Reruns of the STATUS generator and the Home rebuild are file-only, no live tree. REVIEWED:2026-11-04 ACCEPT (scope present; 14-family Home work not yet in make_home.py)",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-03T16:01:25Z",
+  "refreshed": "2026-11-03T22:33:40Z",
   "refs": [
     "MyTradingSys/system/artifacts/MTS_HOME_AUDIT_2026-11-03.md"
   ],
@@ -73,7 +73,7 @@
     "no live tree",
     "no change to registry tile urls"
   ],
-  "scope_sha": "915c162c4512",
+  "scope_sha": "f818131fe2fe",
   "size": "M",
   "sources": [
     "MyTradingSys/system/artifacts/MTS_HOME_AUDIT_2026-11-03.md",

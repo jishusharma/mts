@@ -16,19 +16,19 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "sim: neighbour heatmap on the hosted page (survey C5), lone peak labelled",
-      "ref": "e3123921a986",
-      "utc": "2026-11-03T14:21:25Z"
+      "line": "sim desk: the four rsi-deep wave results (11-04) on the simulator page",
+      "ref": "4580ff68ded2",
+      "utc": "2026-11-03T22:26:13Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-03 ACCEPT (Sonnet agent a2905516c ACCEPT-AFTER-FIX; fix applied by planner-a-1103, confirmed planner-refine-1104). Cost source: result json value_plain 0.10% per round trip (SOURCED backtest/fees.py); slippage and funding n/a. DECISION (OURS): strip is 30m.",
+  "note": "REVIEWED:2026-11-03 ACCEPT (Sonnet agent a2905516c ACCEPT-AFTER-FIX; fix applied by planner-a-1103, confirmed planner-refine-1104). Cost source: result json value_plain 0.10% per round trip (SOURCED backtest/fees.py); slippage and funding n/a. DECISION (OURS): strip is 30m. REVIEWED:2026-11-04 ACCEPT (scope present; no trade-strip or rule-card in artifact yet)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-03T20:23:11Z",
+  "refreshed": "2026-11-03T22:34:02Z",
   "refs": [
     "MyTradingSys/research/sim_desk/api_review/SIM_VISUALS_REVIEW.md"
   ],
@@ -41,7 +41,7 @@
   "scope_out": [
     "no desk.py or backtest change; no new data fetch; other results keep their current chart; no deploy of the hosted page (republish is a separate Haiku step)"
   ],
-  "scope_sha": "e3123921a986",
+  "scope_sha": "4580ff68ded2",
   "size": "M",
   "sources": [],
   "state": "ready",

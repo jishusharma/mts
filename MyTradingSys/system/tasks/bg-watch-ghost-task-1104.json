@@ -1,7 +1,10 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "closed": "2026-11-04T08:46:22Z",
+  "commands": [
+    "python -m pytest -q scripts/dev/test_bg_watch.py"
+  ],
   "context": {
     "calls_to_edit": 8,
     "folded": "2026-11-03T20:20:12Z",
@@ -13,31 +16,63 @@
   },
   "created": "2026-11-03T20:14:57Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "report prints one GHOST line per task, then nothing on the next run; live stalled tasks still print STALLED-BG.",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "bg_watch reports a background task as GHOST once when its agent is gone (TaskStop not found, transcript idle over 6 h), not as STALLED-BG on every wake.",
   "id": "bg-watch-ghost-task-1104",
-  "lane": "HAIKU",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "DROP by Haiku review 2026-11-04: already shipped as 908a03d6600c",
+      "ref": "87638e0c3",
+      "utc": "2026-11-04T08:46:22Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "bg_watch: a task whose agent is gone is a GHOST, not a STALLED-BG",
+      "ref": "908a03d6600c",
+      "utc": "2026-11-03T20:20:08Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "\nREVIEWED:2026-11-04 DROP (Haiku on API credit, job haiku-review-ready-sonnet-1104: Already shipped: GHOST classification on trunk (908a03d6600c).)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T05:13:40Z",
   "refs": [],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "result": "DROP by Haiku review 2026-11-04: already shipped as 908a03d6600c",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/bg_watch.py",
+    "scripts/dev/test_bg_watch.py"
+  ],
+  "scope_out": [
+    "supervisor wait wake logic (card bug-wait-wakes-on-foreign-stalls)"
+  ],
+  "scope_sha": "908a03d6600c",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "done",
+  "steps": [
+    "Write the failing test with a fixture transcript idle 7 h and a not-found TaskStop result.",
+    "Add GHOST classification and a seen-ghost marker in bg_watch state.",
+    "Run test_bg_watch.py and ship."
+  ],
+  "taken": "2026-11-04T08:46:22Z",
+  "tests": "scripts/dev/test_bg_watch.py::test_ghost_task_is_reported_once",
   "title": "bg_watch: a background task whose agent no longer exists (TaskStop: not found, transcript idle > 6 h) is reported once as GHOST, not as STALLED-BG every wake",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }

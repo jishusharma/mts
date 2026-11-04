@@ -3,7 +3,7 @@
 Source: `MyTradingSys/system/LESSONS_LEARNED.md` (38 KB, append-only history). This file is the RULE line of every entry,
 grouped by who needs it; `[A]`..`[G]` = lettered section there, `[10-03 title]` = dated entry. Read the full entry when a
 rule touches your task. Adding a lesson: append the story to LESSONS_LEARNED.md AND one rule line here, same commit.
-Synced with LESSONS_LEARNED.md at blob: c5767610 (STATUS.md flags this file STALE when that blob changes).
+Synced with LESSONS_LEARNED.md at blob: 450b8990 (STATUS.md flags this file STALE when that blob changes).
 Hard rules and gates live only in CLAUDE.md and are not repeated here; prompt-composition rules for the chat surface live in DSA_SESSION_PROMPT.md and RELAY.md.
 
 ## 1. Accuracy (every session)
@@ -30,6 +30,8 @@ Hard rules and gates live only in CLAUDE.md and are not repeated here; prompt-co
 - No layer backtest starts until the 12-item readiness template `MyTradingSys/backtest/PRE_REG_TEMPLATE.md` is answered with file:line evidence (encoding recall AND fire rate on a held-back check set, ledger with minute timestamps, home-market fit and cost per instrument). [10-12 backtests before encoding]
 - Plan edge research as option arms plus branch rules before any run (PROBE_PLAN.md pattern); CME BTC trades 24/7, so gap rules are DAX-only. [operator 2026-10-11]
 - Research briefs follow `methodology/playbook.md` Part I: tier every source T1-T3/REJECT and verify each citation. [operator]
+- A trader's rule is tested WITH its context or not at all: every PRE_REG carries `## Context` (Regime / Phase / Session / Entry, each a gate or `none, because ...`) and every result a `Regime mix:` line; a bare trigger run in every regime proves nothing about the claim (gate step 3pc, `prereg_context_lint.py`). Confluence that cannot vote (no bar-by-bar causal history) is listed as NOT_IN_DATA, never zero-filled. [11-04 concept without context]
+- A coordinator stamp is T0-ONLY, not a review: it unblocks a card, it does not vouch for it. Reviews run as cheap Haiku reads on the API credit, a Sonnet read only where done_when needs code. [11-04 concept without context]
 
 ## 3. Live path (execution/, layers/alerts/, anything a running process imports)
 - Any P/L/risk metric gets a test with deposits/transfers/funding; use trade-type transaction logs. [F]
@@ -52,6 +54,7 @@ Hard rules and gates live only in CLAUDE.md and are not repeated here; prompt-co
 - Stage exact file paths, never a directory or stage-all; list the staged set right before every commit and unstage what you did not write. [10-03 gitsnap; 10-03 directory-scoped; 10-09 commit swept]
 - Read trailers with `--format=full` + grep, not the `trailers:key` format. [10-04 git trailers]
 - A stale 0-byte `.git/index.lock` with no git process running is safe to remove. [D]
+- A merge conflict in a file your branch did not change takes trunk's copy of that file, never ours; it must match trunk before the commit. [11-04 merge conflict]
 
 ## 5. Workers, cost, tokens
 - Spot-check one concrete claim per worker report; never merge a worker's change without reading its diff. [B]
@@ -68,6 +71,7 @@ Hard rules and gates live only in CLAUDE.md and are not repeated here; prompt-co
 - Never write a budget-refusal clause; save-work clause only. [10-02 budget gate]
 - Cloud-readable files go under MyTradingSys/research/ or system/, never gitignored Dumps/. [10-02 DSA list]
 - Cloud sessions that produce analysis name a DELIVERABLE file and commit it; read-only never means no file output. [10-01 cloud $11]
+- After a bridge drop notice ('no final answer'), re-send the blocks once; a second drop turns hands-free off. [11-01 bridge drop]
 
 ## 6. Windows / tooling
 - A background watcher must heartbeat every tick (one log line); no heartbeat within 2 intervals = watcher dead, restart it - watcher death is a ship-flow stall, and it is silent otherwise. [10-26 watcher]

@@ -165,13 +165,27 @@ ESCALATION_GRID = [
 ]
 
 
+# Detector reading: "strict" = the detector defaults since 2afc18be6 (cvd same-level band, escalation needs a
+# close beyond the level); "legacy" = the pre-2afc18be6 reading (published FABIO_L1 numbers of 2026-09-28).
+DETECTOR_MODE = "strict"
+
+
+def legacy_flags(mode=None):
+    """Return (cvd kwargs, escalation kwargs) for the detector mode."""
+    mode = mode or DETECTOR_MODE
+    if mode not in ("strict", "legacy"):
+        raise ValueError(f"unknown detector mode {mode!r}")
+    if mode == "legacy":
+        return {"same_level_only": False}, {"require_break": False}
+    return {"same_level_only": True}, {"require_break": True}
+
+
 def escalation_fn(bars, **p):
-    # legacy reading (no break test) so published grid numbers reproduce
-    return chunked_events(escalation_events, bars, **{"require_break": False, **p})
+    return chunked_events(escalation_events, bars, **{**legacy_flags()[1], **p})
 
 
 def cvd_fn(bars, **p):
-    return cvd_absorption_events(bars, **{"same_level_only": False, **p})
+    return cvd_absorption_events(bars, **{**legacy_flags()[0], **p})
 
 
 def run_fvg(bars, n_is, n_bins=20, seed=42, max_wait=200):
@@ -250,7 +264,11 @@ def main():
     ap.add_argument("--dev-end", default=DEFAULT_DEV_END,
                     help="last DEV day (UTC, inclusive); default is before the 2026-06-26 holdout")
     ap.add_argument("--tfs", default="5m,15m,1h")
+    ap.add_argument("--detectors", choices=("strict", "legacy"), default="strict",
+                    help="strict = detector defaults of 2afc18be6; legacy = pre-2afc18be6 reading")
     args = ap.parse_args()
+    global DETECTOR_MODE
+    DETECTOR_MODE = args.detectors
 
     out_dir = Path(args.out)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -263,7 +281,7 @@ def main():
     bars_1m = clip_dev(bars_1m, args.dev_end)
     print(f"Loaded {len(bars_1m)} 1m bars", file=sys.stderr, flush=True)
 
-    summary = {}
+    summary = {"_meta": {"detectors": DETECTOR_MODE, "dev_end": args.dev_end}}
     for tf in args.tfs.split(","):
         print(f"Running {tf} ...", file=sys.stderr, flush=True)
         summary[tf] = run_tf(tf, bars_1m, registry, out_dir)

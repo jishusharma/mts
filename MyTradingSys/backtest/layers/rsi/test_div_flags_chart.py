@@ -169,5 +169,51 @@ class TestCausalAndRender(unittest.TestCase):
             self.assertEqual(md.count("| 1d |"), len(rows))
 
 
+class TestChartUsesDetectorPivots(unittest.TestCase):
+    """d-malkan-divergence-window-1104: the chart draws the exact close pivots of the 12/18 detector, with window_class."""
+    CLOSES = [100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 105, 95, 85,
+              90, 94, 98, 100, 102, 103, 104, 103, 102, 101, 100, 99, 98.5, 84.5, 90, 95, 99]
+
+    def _bars(self):
+        bars = [{"t": i * DAY, "o": c, "h": c + 0.5, "l": c - 0.5, "c": c, "v": 1.0} for i, c in enumerate(self.CLOSES)]
+        bars[16]["l"] = 60.0   # wick extreme at pivot A, far below its close 85
+        bars[23]["l"] = 50.0   # deepest wick between A and B: a re-found extreme would land here
+        bars[23]["h"] = 140.0
+        return bars
+
+    @unittest.skipUnless(HAVE_MPL, "matplotlib not installed")
+    def test_chart_uses_detector_pivots(self):
+        bars = self._bars()
+        evs, rsi = D.detect_all(bars)
+        self.assertEqual([(e["kind"], e["a_i"], e["b_i"], e["bars"], e["window_class"]) for e in evs],
+                         [("bullish", 16, 30, 15, "OK")])   # 15 bars A..B: 13..18 = OK (secondary window)
+        with tempfile.TemporaryDirectory() as d:
+            res = D.render(bars, evs, rsi, "1d", "TEST", 60, Path(d) / "x.png")
+        self.assertEqual(len(res["drawn"]), 1)
+        ln = res["drawn"][0]
+        self.assertEqual((ln["x"], ln["y"]), ([16, 30], [85, 84.5]))   # closes of the detector's pivots, not wicks
+        for wick in (60.0, 50.0, 140.0):
+            self.assertNotIn(wick, ln["y"])
+        self.assertEqual(ln["label"], "R-BULL #1 OK")
+
+    def test_window_strong_vs_ok_and_weak_dropped(self):
+        for e in D.detect_all(_series())[0]:
+            if e["kind"] in D.KINDS:
+                self.assertIn(e["window_class"], ("STRONG", "OK"))
+                self.assertLessEqual(e["bars"], 18)
+                self.assertEqual(e["window_class"], "STRONG" if e["bars"] <= 12 else "OK")
+
+    def test_malkan_events_match_live_feed(self):
+        from MyTradingSys.backtest.layers.alerts import live_confluence_feed as F
+        bars = _series()
+        evs, _ = D.detect_all(bars)
+        mine = sorted((D.CODE[e["kind"]], bars[e["i"]]["t"], e["bars"], e["window_class"])
+                      for e in evs if e["kind"] in D.KINDS)
+        feed = sorted((e["code"], e["t"], e["bars"], e["window_class"]) for e in F.confluence_feed_layer(bars)
+                      if e.get("column") == "primary")
+        self.assertGreater(len(mine), 3)
+        self.assertEqual(mine, feed)
+
+
 if __name__ == "__main__":
     unittest.main()

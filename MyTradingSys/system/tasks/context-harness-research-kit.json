@@ -1,0 +1,70 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-03T22:40:28Z",
+  "commands": [],
+  "created": "2026-11-03T22:31:59Z",
+  "depends_on": [],
+  "done_when": "backtest/research_kit.py with tests (each fails on pre-change code once, hand-computed expectations); reuses context_asof.py, meta.py features_at, count_events.py EMA200 bin; fixes or wraps malkan_mtf.py 20-bar window vs Malkan level test; regime_mix_line(window) returns one line bull/bear/range weeks; look-ahead lint clean",
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "One shared context harness so no re-run writes a fourth trend tag: regime tag (daily SMA200 side + weekly/monthly RSI band per MALKAN_RULES_2026-10-31.md:11-16, SOURCED), phase tag (range/break/retest from tf_break classes), session tag, retest-entry mode (enter on the first pullback to the signal level within N bars, not the signal bar), plus a one-line window regime-mix printer for RESULT.md.",
+  "id": "context-harness-research-kit",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "research_kit context harness: regime/phase/session tags, retest-entry, regime-mix line; 14",
+      "ref": "57b0b511c",
+      "utc": "2026-11-03T22:40:28Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "research kit + look-ahead lint",
+      "ref": "e0c9e12dab0d",
+      "utc": "2026-10-15T23:40:33Z"
+    }
+  ],
+  "layers": [
+    "rsi"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Parameters: regime SMA200 side and weekly/monthly RSI >=60/<=40 are SOURCED (Malkan); phase/retest window N and session cutoffs are OURS until sourced. Super Session order 2026-11-04.\nREVIEWED: super 2026-11-04 (coordinator stamp per Super Session order d-context-retest-1104; Lab_Guy wait waived)",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-03T22:32:34Z",
+  "refs": [],
+  "result": "research_kit context harness: regime/phase/session tags, retest-entry, regime-mix line; 14 tests",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/backtest/research_kit.py; MyTradingSys/backtest/test_research_kit.py; scripts/dev/extra_tests.tsv"
+  ],
+  "scope_out": [
+    "no strategy re-run, no PRE_REG, no live path, no new trend tag beyond reuse, HOLDOUT never read"
+  ],
+  "scope_sha": "e0c9e12dab0d",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/CONTEXT_FILTER_REVIEW_2026-11-04.md",
+    "OPERATOR_DECISIONS d-context-retest-1104"
+  ],
+  "state": "done",
+  "steps": [
+    "read CONTEXT_FILTER_REVIEW_2026-11-04.md and MALKAN_RULES_2026-10-31.md:11-16",
+    "write failing tests then research_kit.py reusing existing helpers"
+  ],
+  "taken": "2026-11-03T22:40:28Z",
+  "tests": "backtest/test_research_kit.py: tag values at hand-built bars, as-of causality (planted future bar changes nothing), retest-entry within N bars and no-retest skip, regime-mix counts sum to weeks",
+  "title": "Shared context harness in backtest/research_kit.py: regime, phase, session tags and retest-entry mode",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

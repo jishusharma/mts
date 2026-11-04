@@ -22,7 +22,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): scoped from SPEC/OPUS_FRAMING/SHOT_REVIEW; needs the batched review stamp, then tasks.py check. CRUCIAL: review Agent on the diff before ship. Waits on prob-tables, context-tables, confirmations. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "note": "REVIEWED:2026-10-26 ACCEPT | DRAFT 2026-10-26 Session_Planner (OURS): scoped from SPEC/OPUS_FRAMING/SHOT_REVIEW; needs the batched review stamp, then tasks.py check. CRUCIAL: review Agent on the diff before ship. Waits on prob-tables, context-tables, confirmations. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.\nPARKED 2026-11-04 (Super Session): 4 prerequisite studies found no surviving cell (f4d14f093, 2869f863, af9dbfeeb, 7df5f6ee6); grid empty; reopen only with a new sourced hypothesis",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
@@ -44,7 +44,7 @@
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/APPLIED.md",
     "MyTradingSys/research/rsi_deep_buy_2026-10-19/SHOT_REVIEW.md"
   ],
-  "state": "refined",
+  "state": "blocked",
   "steps": [
     "Run python scripts/dev/verdicts.py check 'rsi deep buy' and paste the output; read SPEC s5 trial table and OPUS_FRAMING s2.3, s5.",
     "Cut the grid to the Stage 0-3 survivors (ECON_FLOOR.md, DEPTH_MAP.md, prob/context/confirmation reports); define E1/E2/E3; X5 only as X3 + divergence.",
@@ -54,5 +54,6 @@
   "tests": "No code. Check: python scripts/dev/prereg_gate.py exits 0 with the pasted arguments; python scripts/dev/tasks.py lint passes; PRE_REG.md contains every C1-C8 row of SPEC s5.",
   "title": "RSI deep-buy: freeze grid, verdict rules and trial rows in PRE_REG.md before any outcome",
   "weight": "CRUCIAL",
-  "worker": "agent"
+  "worker": "agent",
+  "pinned": false
 }

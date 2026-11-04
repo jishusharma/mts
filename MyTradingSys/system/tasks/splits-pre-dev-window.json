@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest -q MyTradingSys/backtest/test_splits.py"
+  ],
+  "created": "2026-11-04T03:41:54Z",
+  "depends_on": [],
+  "done_when": "assert_pre_dev_only exists, accepts a range ending before DEV_START, raises SplitViolation otherwise; existing test_splits.py still passes unchanged.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "splits.py defines a documented PRE_DEV window (before DEV_START 2022-01-01) with a guard, so long-history studies stop bypassing assert_dev_only; DEV/VALIDATION/HOLDOUT dates unchanged.",
+  "id": "splits-pre-dev-window",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "splits: DESK_DEV_START 2022-04-01 + assert_desk_dev_only (card splits-dev-start-date-unify",
+      "ref": "7cff68200111",
+      "utc": "2026-11-01T17:09:56Z"
+    }
+  ],
+  "layers": [
+    "session_timing"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "\nREVIEWED:2026-11-04 ACCEPT (Haiku on API credit, job haiku-review-ready-sonnet-1104: assert_pre_dev_only absent on trunk; test file present; testable.)",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-04T05:13:39Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/splits.py",
+    "MyTradingSys/backtest/test_splits.py"
+  ],
+  "scope_out": [
+    "any change to DEV_START, DEV_END, VALIDATION or HOLDOUT; migrating studies"
+  ],
+  "scope_sha": "7cff68200111",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Write test_pre_dev_window_guard (fail first).",
+    "Add PRE_DEV_START constant, docstring section and assert_pre_dev_only next to window_of (already returns PRE_DEV).",
+    "Run test_splits.py and ship."
+  ],
+  "tests": "MyTradingSys/backtest/test_splits.py::test_pre_dev_window_guard",
+  "title": "splits.py: a documented pre-2022 DEV window so long-history studies stop bypassing assert_dev_only (no change to the 2024-26 splits)",
+  "weight": "",
+  "worker": "agent"
+}

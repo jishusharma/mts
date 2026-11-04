@@ -1,0 +1,55 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-04T07:06:37Z",
+  "depends_on": [],
+  "done_when": "cbp_run.rebuild_dashboard calls cbp_v2/tools/fetch_board_data.py then build_board.py (F:/CryptoScrapper); cbp_board.html written on a run; test in CryptoScrapper tree fails on old code; build_dashboard.py retired; registry note updated",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Every CBP run rebuilds the v5 board (one screen, 5 tabs) so the published CBP Analyst Desk is refreshed without a hand session",
+  "id": "cbp-run-py-rebuild-the-cbp-analyst-desk-",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "cbp: windows match the 05:00/20:00 schedule, trigger start in the past",
+      "ref": "2bb01c50064a",
+      "utc": "2026-11-01T17:10:54Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "OPERATOR QUOTE 2026-11-04: 'make sure that we are updated on the artifact side ... after things have been integrated ... things kept at minimum'. Generator recovered by the Lead 2026-11-04 (CryptoScrapper commit), old scratchpad copy was lost.\nREVIEWED:2026-11-04 HOLD (Haiku on API credit, job haiku-review-ready-sonnet-1104: Scope path malformed (F;C:\\...); trunk still calls build_dashboard.py; second repo.)",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-04T07:08:03Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts\\dev\\cbp_run.py rebuild_dashboard; F;C:\\Users\\E-ngineers\\Git\\CryptoScrapper\\cbp_v2\\tools\\build_board.py HAND dict (hand levels per analyst; move to a json next to it)"
+  ],
+  "scope_out": [
+    "board design; publishing to claude.ai (a session does that over url BpADzQGp8cQkrkQydRxESM)"
+  ],
+  "scope_sha": "2bb01c50064a",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "read cbp_run.py rebuild_dashboard + F:/CryptoScrapper/cbp_v2/tools/build_board.py",
+    "failing test: rebuild_dashboard runs fetch_board_data.py then build_board.py (subprocess injected), survives a fetch failure",
+    "implement; move HAND levels dict to cbp_v2/board_hand_levels.json",
+    "dry run on the CBP home: cbp_board.html rewritten; registry note; ship"
+  ],
+  "tests": "scripts/dev/test_cbp_run.py::test_rebuild_dashboard_calls_build_board (fails on old code: it calls build_dashboard.py)",
+  "title": "cbp_run.py: rebuild the CBP Analyst Desk board with cbp_v2/tools/build_board.py (replace build_dashboard.py), publish to BpADz",
+  "weight": "",
+  "worker": "agent"
+}

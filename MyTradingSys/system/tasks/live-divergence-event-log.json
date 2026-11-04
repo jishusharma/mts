@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T20:49:42Z",
   "commands": [
     "python scripts/dev/live_cross_read.py --help"
   ],
@@ -28,7 +29,14 @@
   "goal": "Forward log of intraday BTC vs ES/NQ/VIX divergence events from live reads (time, since-open moves, 1h r, footprint delta, +30/60/120 min outcome) as descriptive forward evidence for the Tom correlation-divergence test; the 2026-10-26 US open is event 1",
   "id": "live-divergence-event-log",
   "lane": "DSA",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "research/live_reads/divergence_events.csv: event 1 (2026-10-26 14:36Z, BTC -0.10 es +0.32 ",
+      "ref": "170efbf4c",
+      "utc": "2026-11-03T20:49:42Z"
+    }
+  ],
   "layers": [
     "tom"
   ],
@@ -39,12 +47,17 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-26T14:57:37Z",
+  "refreshed": "2026-11-03T20:45:13Z",
   "refs": [
     "MyTradingSys/research/tom_correlation_trick_2026-10-26/EXTRACT.md",
     "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/READ.md"
   ],
-  "result": "",
+  "result": "research/live_reads/divergence_events.csv: event 1 (2026-10-26 14:36Z, BTC -0.10 es +0.32 nq +0.36) with +30/+60/+120 outcomes from watch_rows.csv; guarded appender + README; 4 tests, 2 mutations killed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "research/live_reads, one CSV and a small appender"
   ],
@@ -54,12 +67,13 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "refined",
+  "state": "done",
   "steps": [
     "Create research/live_reads/divergence_events.csv with columns utc,btc_since_open,es_since_open,nq_since_open,vix,r5m_1h_es,r5m_1h_nq,footprint_delta_note,out_30m,out_60m,out_120m",
     "Add event 1 (2026-10-26 14:36Z) and fill outcomes from Binance spot and Yahoo 5m once 120 min have passed",
     "Document in the file header: descriptive only, feeds tom-corr-divergence-backtest as forward evidence, no parameter picked from it"
   ],
+  "taken": "2026-11-03T20:49:42Z",
   "tests": "",
   "title": "Live divergence event log: record each BTC vs ES/NQ divergence read with outcomes at +30/60/120 min (forward evidence for tom-corr-divergence-backtest)",
   "weight": "",

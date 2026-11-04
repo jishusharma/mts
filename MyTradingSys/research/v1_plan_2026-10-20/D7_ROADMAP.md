@@ -39,7 +39,7 @@ its card.
 | 2 | Meta-label Fabio Model C stand-in on 2020-2021 | meta-label-fabio-c-dev-ext-power (ready) | same | NOT ENOUGH DATA on DEV (2.7x underpowered) |
 | 3 | LC4 Levels Confluence: frozen rule, one VALIDATION read | lc-validation (refined, HOLD A-20261018-5 until its base carries a trust tag) | VALIDATION 2025-04..06 | the only frozen rule waiting for its read; check it against the LC1 0-of-12 restatement first |
 | 4 | CryptoCred 4h/1D on DEV, then one VALIDATION read | cryptocred-4h-1d-dev-s3 (raw, filed with this list) | DEV + funding (`Dumps/backtest/raw/fundingRate`) | named in S3 since 10-20 but had no card |
-| 5 | RSI deep-buy: pre-reg, engine, DEV grid | rsi-deep-prereg, rsi-deep-engine(-ladders, -exits), rsi-deep-run-dev (refined) | DEV | S3 next in line |
+| 5 | RSI deep-buy: pre-reg, engine, DEV grid | rsi-deep-prereg, rsi-deep-engine(-ladders, -exits), rsi-deep-run-dev (refined) | DEV | PARKED 11-04: 4 prerequisite studies found no surviving cell; reopen only with a new sourced hypothesis |
 | 6 | Tom v2: a variant that passes GROSS first (near-band placebo on 2020-2021, SETUP_REVIEW.md section 6 test 2) | tom-v2-gross-first-dev-ext (raw, filed with this list) | 2020-2021 | S3 next in line; Tom VP net -0.20..-0.26 R, so no filter can rescue it |
 | 7 | Reclaim at the video's timing (enter at the reclaim close, stop on a close back below) | follow-reclaim-daily-close-stop (raw) | DEV | the one untested piece of the Brando price-action note |
 

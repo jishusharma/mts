@@ -1,0 +1,2 @@
+360 weeks: bull 73 (20%) | bear 0 (0%) | range 222 (62%) | n/a 65 (18%) | bear weeks primary 0 (weekly AND monthly <=40), proxy P40 57 (weekly <=40 alone, OURS)
+proxy P40 mix: 360 weeks: bull 73 (20%) | bear 57 (16%) | range 165 (46%) | n/a 65 (18%)

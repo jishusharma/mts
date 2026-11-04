@@ -1,0 +1,11 @@
+{
+  "card": "lc-validation",
+  "done_when": "validation.md with n, mean R after fees and CI; card result carries the number.",
+  "from": "JIS-NUC",
+  "id": "20261104-051105-lc-validation",
+  "need": "python MyTradingSys/research/levels_confluence_2026-10-14/ladder.py --rule MyTradingSys/research/levels_confluence_2026-10-14/frozen_rule.json --window 2025-04-01..2025-06-30 --out MyTradingSys/research/levels_confluence_2026-10-14/validation.md (full brief: python scripts/dev/tasks.py brief lc-validation)",
+  "posted": "2026-11-04T05:11:05Z",
+  "status": "pending",
+  "target": "DSA-NUC",
+  "title": "LC4 Levels Confluence: run frozen_rule.json once on VALIDATION 2025-04..2025-06 and report"
+}

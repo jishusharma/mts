@@ -86,3 +86,36 @@ computed; Fabio stays a separate layer per PROJECT_VISION.
 
 Also: size for expected gross move well under 0.10% - any Fabio signal on 5m/15m is fee-negative by construction;
 do not let Fabio gate or filter Tom entries.
+
+## Strict-detector rerun (2026-11-04, detectors of 2afc18be6)
+
+Result file: `MyTradingSys/backtest/layers/fabio/fabio_l1_strict_rerun.json` (counted from the raw `summary.json` of
+`F:/MTS/Dumps/backtest/runs/fabio_l1_strict`; legacy comparison on the same window in `fabio_l1_legacy_dev`).
+Command: `python MyTradingSys/backtest/layers/fabio/run_backtest.py --detectors strict --dev-end 2024-06-30 --out <dir>`
+(`--detectors legacy` reproduces the pre-2afc18be6 reading). Window: DEV 2022-01-01..2024-06-30 only (splits.py), 1,313,280
+1m bars, so these numbers are NOT comparable to the tables above (those run to 2026-09-26, mostly beyond DEV). Same grids, 70/30
+IS/OOS, fee 0.10% round trip, verdict rule unchanged. Volume FVG does not use the changed detectors: identical in both modes.
+
+| Rule | TF | Mode | Chosen params | IS n / h5 | OOS n (h5) | OOS h5 gross / net | OOS hit | PBO | Verdict |
+|---|---|---|---|---|---|---|---|---|---|
+| cvd_absorption | 5m | strict | w5, tol 0.2% | 2029 / -0.001% | 797 | +0.011% / -0.089% | 49.7% | 0.882 | no edge |
+| cvd_absorption | 5m | legacy | w5, tol 0.1% | 1835 / +0.008% | 732 | +0.013% / -0.087% | 47.8% | 0.693 | no edge |
+| cvd_absorption | 15m | strict | w2, tol 0.05% | 371 / +0.002% | 154 | -0.008% / -0.108% | 43.5% | 0.760 | no edge |
+| cvd_absorption | 15m | legacy | w3, tol 0.2% | 1133 / -0.009% | 506 | -0.022% / -0.122% | 48.2% | 0.685 | no edge |
+| cvd_absorption | 1h | strict | w2, tol 0.05% | 52 / +0.250% | 18 | +0.154% / +0.054% | 55.6% | 0.562 | insufficient n (18 < 30) |
+| cvd_absorption | 1h | legacy | w5, tol 0.2% | 142 / +0.081% | 80 | +0.008% / -0.092% | 55.0% | 0.623 | no edge |
+| escalation | 5m | strict | lt 0.2%, k 3, lb 50 | 2244 / +0.040% | 1065 | +0.033% / -0.067% | 45.3% | 0.171 | no edge (net < 0) |
+| escalation | 5m | legacy | lt 0.2%, k 3, lb 50 | 9556 / +0.024% | 3913 | +0.004% / -0.096% | 43.8% | 0.893 | no edge |
+| escalation | 15m | strict | lt 0.2%, k 1.5, lb 20 | 812 / +0.007% | 291 | +0.021% / -0.079% | 47.8% | 0.286 | no edge (net < 0) |
+| escalation | 15m | legacy | lt 0.1%, k 1.5, lb 50 | 1527 / +0.061% | 501 | -0.073% / -0.173% | 47.7% | 0.605 | no edge |
+| escalation | 1h | strict | lt 0.1%, k 1.5, lb 20 | 5 / +0.055% | 0 | n/a | n/a | 0.772 | insufficient n (OOS 0) |
+| escalation | 1h | legacy | lt 0.1%, k 3, lb 20 | 92 / +0.013% | 22 | -0.257% / -0.357% | 31.8% | 0.374 | insufficient n (22 < 30) |
+
+Counted event totals (sum of IS events over the 12 variants): escalation 1h strict 117 (only 7 of 12 variants reach the 5-event
+minimum) vs legacy 2,523; escalation 15m 3,775 vs 28,910; 5m 33,676 vs 125,915; cvd 1h 1,498 vs 2,749.
+
+Reading: the strict escalation detector removes the bulk of events (1h about 95% fewer in the grid). With strict detectors no
+cell meets the "edge" rule (OOS n >= 30, net > 0 at h5, PBO < 0.5): the only positive-net h5 cell is cvd 1h strict
+(+0.054% net) on n = 18 and PBO 0.56, so it stays "insufficient n". The earlier 1h escalation +0.113% net hypothesis (above)
+does not survive: the strict 1h escalation has no OOS events on DEV. The recommendations above stand (escalation 1h:
+log-only, no weight). Strict 5m/15m escalation has low PBO (0.17 / 0.29) but negative net, i.e. a stable zero edge, not an edge.

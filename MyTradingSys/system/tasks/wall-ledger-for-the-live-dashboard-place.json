@@ -16,19 +16,19 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Merge remote-tracking branch 'origin/fast-track' into DESKTOP-F7IU69N/gemini-yt-batch-1102",
-      "ref": "c5d033a9eae3",
-      "utc": "2026-11-02T17:09:58Z"
+      "line": "merge origin/fast-track (TRIALS.md: keep both rows)",
+      "ref": "7df5f6ee6598",
+      "utc": "2026-11-03T22:15:46Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "PLANNER 2026-11-02 planner-b-1102 DECISION (OURS): offline module only; measuring the pulled-before-touch rate needs recorded depth, file as a follow-up run card once the module ships. Threshold 1.5M USD is SOURCED (CoinGlass field guide), the 10 USD grid and persistence are OURS. REVIEWED:2026-11-02 T0-ONLY",
+  "note": "PLANNER 2026-11-02 planner-b-1102 DECISION (OURS): offline module only; measuring the pulled-before-touch rate needs recorded depth, file as a follow-up run card once the module ships. Threshold 1.5M USD is SOURCED (CoinGlass field guide), the 10 USD grid and persistence are OURS. REVIEWED:2026-11-02 T0-ONLY REVIEWED:2026-11-04 HOLD (scope folder wall_ledger_2026-11 missing; not started)",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T20:01:02Z",
+  "refreshed": "2026-11-03T22:34:09Z",
   "refs": [
     "MyTradingSys/research/coinglass_field_guide_2026-11-01/FIELD_GUIDE.md"
   ],
@@ -42,7 +42,7 @@
   "scope_out": [
     "live tree, dashboard wiring, any order path; measuring the rate on real data (needs recorded depth, a separate run card)"
   ],
-  "scope_sha": "c5d033a9eae3",
+  "scope_sha": "7df5f6ee6598",
   "size": "M",
   "sources": [
     "MyTradingSys/research/coinglass_field_guide_2026-11-01/FIELD_GUIDE.md"

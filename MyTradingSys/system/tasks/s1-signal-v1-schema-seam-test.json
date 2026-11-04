@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T23:01:48Z",
   "commands": [
     "python -m pytest MyTradingSys/tests/test_signal_v1_schema.py MyTradingSys/tests/test_cbp_query.py -q",
     "python scripts/dev/run_all_tests.py --quick"
@@ -17,25 +18,36 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "already on trunk 29d7c85a4 (queue/signal_v1.schema.json, D6 seam rejects option); closed b",
+      "ref": "b7ffc496a",
+      "utc": "2026-11-03T23:01:48Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "fix(cbp): non-object JSON returns the safe default, not AttributeError",
-      "ref": "66c3f4e049fd",
-      "utc": "2026-10-31T08:00:50Z"
+      "line": "feat(cbp): candidates() turns tradable stored rows into CANDIDATE_UNTESTED records (S4 e2e",
+      "ref": "d286be4a1447",
+      "utc": "2026-11-03T19:35:44Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS, default from asks): the core that rejects option is cbp.validate_row; promote cbp/schema.json as is. ASSUMPTION (OURS): the file is the CBP row schema, not D2's Signal (source, side, stop, order_eligible); those fields wait for the first layer module, not this card. Only cbp/__init__.py names schema.json in code.",
+  "note": "DECISION (OURS, default from asks): the core that rejects option is cbp.validate_row; promote cbp/schema.json as is. ASSUMPTION (OURS): the file is the CBP row schema, not D2's Signal (source, side, stop, order_eligible); those fields wait for the first layer module, not this card. Only cbp/__init__.py names schema.json in code.\nREVIEW-HOLD 2026-11-04 Haiku: already on origin/fast-track as 29d7c85a4 and cbp/schema.json no longer exists; close the card",
   "prio": 1,
   "refine_tries": 1,
   "refined_by": "",
-  "refreshed": "2026-11-03T18:56:06Z",
+  "refreshed": "2026-11-03T22:33:48Z",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D7_ROADMAP.md"
   ],
-  "result": "",
+  "result": "already on trunk 29d7c85a4 (queue/signal_v1.schema.json, D6 seam rejects option); closed by coordinator 2026-11-04",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/queue/signal_v1.schema.json (new; git mv of MyTradingSys/cbp/schema.json, plus the optional instrument property)",
     "MyTradingSys/cbp/__init__.py (SCHEMA_PATH constant, instrument check in validate_row, docstring line 6 path)",
@@ -48,7 +60,7 @@
     "scripts/dev/cbp_run.py behaviour and the CBP store data",
     "any option code (D6: seam only)"
   ],
-  "scope_sha": "66c3f4e049fd",
+  "scope_sha": "d286be4a1447",
   "size": "S",
   "sources": [
     "MyTradingSys/research/v1_plan_2026-10-20/D2_V1_SPEC.md (Module contract: v1 promotes the schema to the one schema)",
@@ -56,13 +68,14 @@
     "MyTradingSys/cbp/__init__.py:ROW_FIELDS, validate_row",
     "MyTradingSys/queue/ is absent today (listed 2026-11-04)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write test_signal_v1_schema.py first and run it: it fails on old code (schema file absent, option instrument accepted).",
     "git mv MyTradingSys/cbp/schema.json MyTradingSys/queue/signal_v1.schema.json; add optional instrument {venue, symbol, kind enum [perp]}; keep the title honest (row v1, owned by MTS).",
     "cbp/__init__.py: SCHEMA_PATH, and in validate_row: instrument not an object -> 'instrument must be an object'; kind != perp -> 'kind not enabled'; update the docstring path.",
     "python -m pytest MyTradingSys/tests/test_signal_v1_schema.py MyTradingSys/tests/test_cbp_query.py -q, then run_all_tests --quick, ship."
   ],
+  "taken": "2026-11-03T23:01:48Z",
   "tests": "test_signal_v1_schema.py: (1) queue/signal_v1.schema.json exists and cbp/schema.json does not; (2) its required list, bias enum and trade direction enum equal cbp.ROW_FIELDS, BIASES, DIRECTIONS; (3) a valid row with instrument kind perp passes; (4) kind option returns 'kind not enabled', a string instrument returns an error, neither raises. All fail on old code.",
   "title": "S1: Signal v1 as the one schema (cbp_contract_v1 promoted) plus the D6 seam test green on CI",
   "weight": "ROUTINE",

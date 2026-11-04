@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T08:46:23Z",
   "commands": [
     "python -m pytest MyTradingSys/execution/test_cotrade.py -q",
     "python scripts/dev/run_all_tests.py --quick"
@@ -29,30 +30,41 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "DROP by Haiku review 2026-11-04: already shipped as 770324fd801b",
+      "ref": "87638e0c3",
+      "utc": "2026-11-04T08:46:23Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "cotrade P5 review minors: parent stop by --of, env guard on kill/net/ensure_stop, hedge ne",
-      "ref": "9368d7725a5c",
-      "utc": "2026-11-01T05:08:07Z"
+      "line": "cotrade P2 review fixes: ladder_pending journal, tick-aligned stop, terminal states, docs",
+      "ref": "770324fd801b",
+      "utc": "2026-11-03T10:50:59Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-31 ACCEPT (Sonnet reviewer Agent, FIX applied once, not re-read, planner DECISION OURS). Depends on cotrade-p1-say-and-place. Martingale: the cap preflight is the safety item, it must fail closed. PLANNER: CRUCIAL, review Agent on the diff before ship. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.",
+  "note": "REVIEWED:2026-10-31 ACCEPT (Sonnet reviewer Agent, FIX applied once, not re-read, planner DECISION OURS). Depends on cotrade-p1-say-and-place. Martingale: the cap preflight is the safety item, it must fail closed. PLANNER: CRUCIAL, review Agent on the diff before ship. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the delivered files.\nREVIEWED:2026-11-04 DROP (Haiku on API credit, job haiku-review-ready-sonnet-1104: Already shipped: ladder and ladder-sync on trunk (770324fd801b).)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T16:52:35Z",
+  "refreshed": "2026-11-03T22:33:05Z",
   "refs": [],
-  "result": "",
+  "result": "DROP by Haiku review 2026-11-04: already shipped as 770324fd801b",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/execution/cotrade.py ladder subcommand, size-rule helper (plan_compiler.py may gain size rule double_total if needed), test_cotrade.py"
   ],
   "scope_out": [
     "No per-fill take-profit (P3); no live-aid panel (P4); no auto_trader routing change; no mainnet"
   ],
-  "scope_sha": "9368d7725a5c",
+  "scope_sha": "770324fd801b",
   "size": "M",
   "sources": [
     "MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md",
@@ -60,13 +72,14 @@
     "MyTradingSys/execution/plan_compiler.py",
     "MyTradingSys/research/eur_low_us_sweep_2026-10-14/RESULT.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/testnet_cotrade_2026-10-31/DESIGN.md sections 2 and 5",
     "Tests first, red on old tree",
     "Rung generator + worst-case preflight + placement + cancel-rest-on-stop",
     "run_all_tests --quick; sync.py ship"
   ],
+  "taken": "2026-11-04T08:46:23Z",
   "tests": "test_cotrade.py: double_total sizes 1,2,3,6,12 X; rungs in % and points, both sides; worst case equals ladder_math.py; over cap or rungs refuses before any order; stop cancels rest; restart mid-ladder. Full list: DESIGN.md s5 P2.",
   "title": "Co-trade P2: doubling-total ladder (1,2,3,6,12 X) with worst-case cap preflight",
   "weight": "CRUCIAL",

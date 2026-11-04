@@ -1,0 +1,79 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-04T01:56:36Z",
+  "commands": [],
+  "created": "2026-11-04T01:45:52Z",
+  "depends_on": [],
+  "done_when": "research/<study>_2026-11-04/PRE_REG.md frozen (## Context block + TRIALS.md rows first), DEV fee-net table by regime/phase/session with day-clustered CI and the prereg_gate power check, VALIDATION read once for DEV survivors, RESULT.md first lines print research_kit.regime_mix_line plus a Regime mix: line, VERDICTS.csv row; HOLDOUT never read",
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "New PRE_REG for the operator edge claim: in a range, the band-to-band move repeats (Tom said to look by session; the rule encoded is OURS, no transcript line found). Test fee-net with research_kit regime (range only), session tag, retest entry; compare to ungated. Every parameter labelled SOURCED or OURS.",
+  "id": "bb-range-to-range-by-session",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "FAIL (powered 15m asia/london/ny family, 0 of 6 net>0, nets -0.12..-0.15 %, range gate add",
+      "ref": "79364ea2c",
+      "utc": "2026-11-04T01:56:36Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "merge origin/fast-track (TRIALS.md: keep both rows)",
+      "ref": "e3e7644331ee",
+      "utc": "2026-11-04T01:17:26Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "e3e7644331ee merge origin/fast-track (TRIALS.md: keep both rows)",
+      "ref": "MyTradingSys/research/layer_lab/TRIALS.md",
+      "utc": "2026-11-04T01:17:26Z"
+    }
+  ],
+  "layers": [
+    "session_timing"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Super Session order 2026-11-04.\nREVIEWED: super 2026-11-04 (coordinator stamp per Super Session order d-context-retest-1104; Lab_Guy wait waived)\nREVIEWED:2026-11-04 ACCEPT (Haiku read on API credit, job haiku-review-2: paths, Context, Regime mix present)\nLABEL FIX 2026-11-04 (Haiku review): the session/larger-range rule attributed to Tom is OURS; no transcript line was found (PRE_REG.md s.Larger range). Never call it the trader's.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-04T01:45:54Z",
+  "refs": [],
+  "result": "FAIL (powered 15m asia/london/ny family, 0 of 6 net>0, nets -0.12..-0.15 %, range gate adds nothing t -0.5); DEV only, VALIDATION unread, HOLDOUT unread. Regime mix: 130 weeks: bull 25 (19%) | bear 0 | range 105 (81%)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/bb_range_to_range_2026-11-04/",
+    "MyTradingSys/research/VERDICTS.csv",
+    "MyTradingSys/research/layer_lab/TRIALS.md"
+  ],
+  "scope_out": [
+    "no live path, no parameter beyond PRE_REG, no new trend tag (use backtest/research_kit.py), HOLDOUT never read"
+  ],
+  "scope_sha": "e3e7644331ee",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/CONTEXT_FILTER_REVIEW_2026-11-04.md",
+    "OPERATOR_DECISIONS d-context-retest-1104"
+  ],
+  "state": "done",
+  "steps": [
+    "read CONTEXT_FILTER_REVIEW_2026-11-04.md, existing bb studies under research/, research_kit.py",
+    "write PRE_REG (## Context block) and TRIALS.md rows first, then runner, DEV run, VALIDATION once for survivors"
+  ],
+  "taken": "2026-11-04T01:56:36Z",
+  "tests": "gate/entry wiring tests: as-of causality (planted future bar changes nothing), session tag and retest entry behave as specified; new tests fail on pre-change code once",
+  "title": "Bollinger range-to-range: in a range the band-to-band move repeats, by session (context re-run 3)",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

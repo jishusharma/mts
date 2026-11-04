@@ -1,0 +1,98 @@
+{
+ "id": "rsi-divergence-mtf-gated-long-2026-11-04",
+ "kind": "backtest",
+ "family": "RSI divergence gated by Malkan regime",
+ "title": "Rerun, long window: gated RSI divergence on BTCUSDT SPOT 2017-08..2024-06 (3x the history), with an OURS bear proxy",
+ "provenance": "builder-export",
+ "date": "2026-11-04",
+ "what": [
+  {
+   "name": "Rule",
+   "value_plain": "same Malkan gate and 10-bar exit as run 1; PRE_REG_LONG.md frozen first",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Bear proxy P40",
+   "value_plain": "weekly RSI14 <= 40 alone, below SMA200; never Malkan's",
+   "label": "OURS"
+  },
+  {
+   "name": "Cost",
+   "value_plain": "fee-net 0.14 % round trip (research_kit)",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Regime mix",
+   "value_plain": "360 weeks long DEV (2017-08-07..2024-06-24): bull 73 (20%) | bear 0 (0%) | range 222 (62%) | n/a 65 (18%) | bear weeks: primary Malkan (weekly AND monthly <=40) 0, proxy P40 (weekly <=40 alone, below SMA200, OURS) 57",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Power gate",
+   "value_plain": "prereg_gate (m = 48) BLOCKs every timeframe; 15m closest: 282 days vs 424 needed",
+   "label": "OURS"
+  },
+  {
+   "name": "Spot vs futures caveat",
+   "value_plain": "spot series differs from run 1 (futures 1m); the run-1 window was already seen, so the new-data-only effect (pre-2022) is not isolated; exchange-maintenance gaps (9-25 per series) not filled",
+   "label": "OURS"
+  }
+ ],
+ "how": "Same event study as run 1 on the 2017-08..2024-06 window, Holm m = 48, day-clustered 95 % CI; W12/W18 and C3_10/C5_14 arms; per-cell run 1 vs long table in RESULT_LONG.md.",
+ "window": "DEV 2017-08-07..2024-06-24 BTCUSDT SPOT klines (not futures, not spliced with run 1); VALIDATION not read (no DEV survivor); HOLDOUT never loaded",
+ "verdict": {
+  "label": "INCONCLUSIVE (underpowered), not FAIL and not PASS. Long window (BTCUSDT SPOT 2017-08..2024-06, PRE_REG_LONG.md frozen first) triples the sample but prereg_gate (m = 48) still BLOCKs every timeframe (15m closest: 282 days vs 424 needed). 0 of 48 confirmatory cells survived the DEV rule",
+  "tone": "warn"
+ },
+ "why": [
+  "Malkan bear gate never fires: 0 bear weeks in 360 (monthly RSI14 never <= 40 since 2017-08; closest 40.4 in 2023-01); the definition was NOT changed; primary bearish cells have 0 events.",
+  "15m aligned long: n 482 / 282 days net -0.080 % [-0.216, +0.055], excess over bull drift +0.027 % (t 0.40); run 1 was n 164 net -0.176 %. Ungated 15m long net -0.102 % [-0.160, -0.045] (n 2091): a gate-vs-ungated gap is not established.",
+  "Bear proxy P40 aligned shorts 15m n 434 net -0.158 % [-0.278, -0.039] (shorts lose after cost; Holm 0.38); 1d n 2 net +16.3 % is a two-trade artifact (n < 30).",
+  "0 survivors (dev_survivors_long.json is []). Next step is more symbols, not another BTC DEV read."
+ ],
+ "kpis": [
+  {
+   "label": "weeks",
+   "value": "360 (bull 73, bear 0, P40 bear 57)"
+  },
+  {
+   "label": "confirmatory cells",
+   "value": "48"
+  },
+  {
+   "label": "survivors",
+   "value": "0 of 48",
+   "tone": "warn"
+  },
+  {
+   "label": "15m aligned long net",
+   "value": "-0.080 % [-0.216, +0.055]",
+   "tone": "warn"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: the study reports cell tables (dev_cells*.csv in the study folder), not a trade list"
+  }
+ ],
+ "parity": null,
+ "source_files": [
+  "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/RESULT_LONG.md",
+  "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/dev_cells_long.csv",
+  "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/dev_survivors_long.json",
+  "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/PRE_REG_LONG.md",
+  "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/BLOCKED_LONG.md"
+ ],
+ "commit": "04518980b",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "INCONCLUSIVE (underpowered), not FAIL and not PASS. Long window (BTCUSDT SPOT 2017-08..2024-06, PRE_REG_LONG.md frozen first) triples the sample but prereg_gate (m = 48) still BLOCKs every timeframe (15m closest: 282 days vs 424 needed). 0 of 48 confirmatory cells survived the DEV rule",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: INCONCLUSIVE (underpowered), not FAIL and not PASS. Long window (BTCUSDT SPOT 2017-08..2024-06, PRE_REG_LONG.md frozen first) triples the sample but prereg_gate (m = 48) still BLOCKs every timeframe (15m closest: 282 days vs 424 needed). 0 of 48 confirmatory cells survived the DEV rule · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
+}

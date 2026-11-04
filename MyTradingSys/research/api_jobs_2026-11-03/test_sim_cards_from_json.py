@@ -6,7 +6,7 @@ import pytest
 HERE = os.path.dirname(os.path.abspath(__file__))
 RES = os.path.join(HERE, '..', 'sim_desk', 'results')
 MD = os.path.join(HERE, '..', 'sim_desk', 'api_review', 'RESULTS_CARDS_2026-11-03.md')
-FILES = sorted(f for f in glob.glob(os.path.join(RES, '*.json')) if not os.path.basename(f).startswith('_'))
+ALL = sorted(f for f in glob.glob(os.path.join(RES, '*.json')) if not os.path.basename(f).startswith('_'))
 
 
 def cards():
@@ -19,11 +19,15 @@ def cards():
 
 
 CARDS = cards()
+# the cards file is the 2026-11-03 set; results added later (id ends -2026-11-04 or newer) have no row here
+FILES = [f for f in ALL if os.path.basename(f)[:-5] in CARDS]
 
 
 def test_all_337_rows_present():
     assert len(FILES) == 337
-    assert set(CARDS) >= {os.path.basename(f)[:-5] for f in FILES}
+    late = [os.path.basename(f)[:-5] for f in ALL if f not in FILES]
+    assert all(i[-10:] >= '2026-11-04' for i in late), late
+    assert len(late) == 10, late   # 2026-11-04 context re-run rows: rsi-div x2, wavetrend-c30 x2, bb x3, fabio-l1-strict, bear-proxy-context-tuning, rsi-40-60-line-behaviour
 
 
 @pytest.mark.parametrize('f', FILES, ids=lambda f: os.path.basename(f)[:-5])

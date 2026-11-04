@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T17:05:08Z",
   "commands": [],
   "created": "2026-11-03T16:00:31Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "build",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "19 passing spec checks; zero-mark defect preserved as failing assertion and scope-blocked ",
+      "ref": "55cc0358c",
+      "utc": "2026-11-03T17:05:08Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -30,7 +37,12 @@
   "refined_by": "",
   "refreshed": "2026-11-03T16:01:04Z",
   "refs": [],
-  "result": "",
+  "result": "20 passing spec checks; zero-mark defect isolated as a strict xfail and scope-blocked in report",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tools/live_aid/test_spec_us_open.py (new)",
     "scripts/dev/extra_tests.tsv",
@@ -44,12 +56,13 @@
   "sources": [
     "MyTradingSys/research/us_open_levels_2026-10-30/study.py and RESULT.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read us_open_levels_2026-10-30/RESULT.md and study.py and the docstrings of the named functions; list expected outputs by hand for boundary cases (empty input, one below, at, one above, malformed)",
     "write the tests, reusing the node runner pattern of test_live_aid.py; run them",
     "make 3 scratch mutations on a temp copy of the .js, confirm each fails a test, write the report, register in extra_tests.tsv"
   ],
+  "taken": "2026-11-03T17:05:08Z",
   "tests": "python -m pytest MyTradingSys/tools/live_aid/test_spec_us_open.py -q",
   "title": "Spec tests for live_aid us_open_rates.js and uoBucket/usOpen in live_aid_indicators.js",
   "weight": "ROUTINE",

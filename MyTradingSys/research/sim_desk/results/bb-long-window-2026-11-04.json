@@ -1,0 +1,99 @@
+{
+ "id": "bb-long-window-2026-11-04",
+ "kind": "backtest",
+ "family": "Bollinger long window",
+ "title": "Rerun, long window: both Bollinger studies (range-to-range A, level-arm retest B) on BTCUSDT SPOT 2017-08..2024-06, plus an OURS bear proxy",
+ "provenance": "builder-export",
+ "date": "2026-11-04",
+ "what": [
+  {
+   "name": "Rule",
+   "value_plain": "same arms and parameters as the two originals; PRE_REG_LONG.md frozen first (12da8913a); ungated control = tagged events only",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Session-range tag, wide-band stratum, P40 proxy",
+   "value_plain": "P40 = weekly RSI14 <= 40 alone, below SMA200; all OURS, never the trader's or Tom's",
+   "label": "OURS"
+  },
+  {
+   "name": "Cost",
+   "value_plain": "fee-net 0.14 % round trip (research_kit)",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Regime mix",
+   "value_plain": "360 weeks long DEV (2017-08-07..2024-06-24): bull 73 (20%) | bear 0 (0%) | range 222 (62%) | n/a 65 (18%) | bear weeks: primary Malkan (weekly AND monthly <=40) 0, proxy P40 (weekly <=40 alone, below SMA200, OURS) 57",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Power gate",
+   "value_plain": "prereg_gate (m 150): PASS only for the 6 A range cells; BLOCK for all 9 B range cells and all 18 P40 cells (BLOCKED_LONG.md)",
+   "label": "OURS"
+  },
+  {
+   "name": "Spot vs futures caveat",
+   "value_plain": "spot, not futures; different series from the originals, so cells compare in size and sign, not bit for bit; the 2022-24 half was already seen, the new-data-only effect is not isolated; maintenance gaps not filled",
+   "label": "OURS"
+  }
+ ],
+ "how": "Pooled Holm m = 30 over A range (6), B range (9), P40 (15); day-clustered 95 % CI; per-cell original vs long table in RESULT_LONG.md.",
+ "window": "DEV 2017-08..2024-06 BTCUSDT SPOT klines (not futures, not spliced); data loaded only to 2024-07-01; VALIDATION not read (no DEV survivor); HOLDOUT never loaded",
+ "verdict": {
+  "label": "Verdict A (bb_range_to_range, powered family): FAIL again for the rule as encoded, now on 2017-08..2024-06 SPOT: 0 of 6 range cells have net > 0, all six nets are -0.115 to -0.165 % per trade with day-clustered CIs entirely below zero. Verdict B (bb_range_retest level arm) and every P40 bear-proxy cell: INCONCLUSIVE (underpowered), not FAIL: prereg_gate (m 150) BLOCKs all 9 B range cells and all 18 P40 cells (PASS only for the 6 A range cells, BLOCKED_LONG.md). 0 of 30 family cells survive; VALIDATION not read; HOLDOUT never loaded.",
+  "tone": "bad"
+ },
+ "why": [
+  "A, range gate, 15m, all sessions, signal entry: n 9008 / 1560 days net -0.128 % [-0.155, -0.102] (original n 4256, -0.130 % [-0.161, -0.099]); ungated tagged control n 12066 net -0.118 %; gate effect -0.010 % (t -1.4). The range gate still does nothing; A P40 cells net -0.110 to -0.148 %.",
+  "A per session: asia n 2697 -0.140 % [-0.182, -0.098]; london n 2093 -0.165 % [-0.220, -0.109]; ny n 3110 -0.123 % [-0.168, -0.079]; Holm p < 0.001 for the negative net.",
+  "B level arm: 0 of 9 cells net > 0, nets -0.045 to -0.238 %; london k 1.0 n 413 net -0.238 % [-0.393, -0.084] (Holm 0.06). CIs wider than +-0.12 %, so a gross edge of 0.12-0.15 % is still not excluded.",
+  "B P40: the only positive nets in either study (asia k0.25 +0.083 % [-0.254, +0.419], n 105) all span zero, Holm p = 1.00. 0 survivors of 30. Not a PASS anywhere; the next step is more symbols or a different exit, each a new PRE_REG."
+ ],
+ "kpis": [
+  {
+   "label": "family cells",
+   "value": "30"
+  },
+  {
+   "label": "survivors",
+   "value": "0 of 30",
+   "tone": "warn"
+  },
+  {
+   "label": "A range cells net > 0",
+   "value": "0 of 6",
+   "tone": "bad"
+  },
+  {
+   "label": "B range cells net > 0",
+   "value": "0 of 9",
+   "tone": "bad"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: the study reports cell tables (dev_cells*.csv in the study folder), not a trade list"
+  }
+ ],
+ "parity": null,
+ "source_files": [
+  "MyTradingSys/research/bb_long_window_2026-11-04/RESULT_LONG.md",
+  "MyTradingSys/research/bb_long_window_2026-11-04/dev_cells_long.csv",
+  "MyTradingSys/research/bb_long_window_2026-11-04/dev_survivors_long.json",
+  "MyTradingSys/research/bb_long_window_2026-11-04/PRE_REG_LONG.md",
+  "MyTradingSys/research/bb_long_window_2026-11-04/BLOCKED_LONG.md"
+ ],
+ "commit": "44a7988b0",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "Verdict A (bb_range_to_range, powered family): FAIL again for the rule as encoded, now on 2017-08..2024-06 SPOT: 0 of 6 range cells have net > 0, all six nets are -0.115 to -0.165 % per trade with day-clustered CIs entirely below zero. Verdict B (bb_range_retest level arm) and every P40 bear-proxy cell: INCONCLUSIVE (underpowered), not FAIL: prereg_gate (m 150) BLOCKs all 9 B range cells and all 18 P40 cells (PASS only for the 6 A range cells, BLOCKED_LONG.md). 0 of 30 family cells survive; VALIDATION not read; HOLDOUT never loaded.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: Verdict A (bb_range_to_range, powered family): FAIL again for the rule as encoded, now on 2017-08..2024-06 SPOT: 0 of 6 range cells have net > 0, all six nets are -0.115 to -0.165 % per trade with day-clustered CIs entirely below zero. Verdict B (bb_range_retest level arm) and every P40 bear-proxy cell: INCONCLUSIVE (underpowered), not FAIL: prereg_gate (m 150) BLOCKs all 9 B range cells and all 18 P40 cells (PASS only for the 6 A range cells, BLOCKED_LONG.md). 0 of 30 family cells survive; VALIDATION not read; HOLDOUT never loaded. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
+}

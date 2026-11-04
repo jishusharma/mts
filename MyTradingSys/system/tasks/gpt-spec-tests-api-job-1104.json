@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest scripts/dev/test_api_job.py scripts/dev/test_api_job_gpt.py -q"
+  ],
+  "created": "2026-11-04T08:33:17Z",
+  "depends_on": [],
+  "done_when": "scripts/dev/test_api_job_gpt.py added with >= 4 tests, each shown to fail on one planted mutation of api_job.py (mutation reverted); python -m pytest scripts/dev/test_api_job.py scripts/dev/test_api_job_gpt.py -q green; registered in run_all_tests.py next to test_api_job.py",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "GPT writes spec and mutation tests for scripts/dev/api_job.py so a regression in the credit launcher (key leak into argv/log, two jobs on one machine, ledger_total counting non-Spent rows, parse_result taking a non-result record) fails a test",
+  "id": "gpt-spec-tests-api-job-1104",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-04T08:33:52Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/api_job.py (read only), scripts/dev/test_api_job_gpt.py (new), scripts/dev/run_all_tests.py (one list line)"
+  ],
+  "scope_out": [
+    "any launch of a real job; the key file; PLAN_API_CREDITS ledger edits"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/system/PLAN_24H_2026-11-04.md (section 3 job queue)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read api_job.py and test_api_job.py",
+    "Write the 4 tests against the public functions (build_cmd, running_jobs via MTS_API_RUNS=tmp, ledger_total, parse_result)",
+    "Plant one mutation per test, see it fail, revert",
+    "Register, run, ship"
+  ],
+  "tests": "test_api_job_gpt.py: build_cmd never contains the key or the key path; launch refuses when running_jobs() is non-empty; ledger_total sums only rows under '## Spent'; parse_result returns done False when no result record",
+  "title": "GPT spec and mutation tests for scripts/dev/api_job.py (headless credit launcher): key never in argv/log, one job per machine, ledger_total parses only Spent rows, parse_result ignores non-result records",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-bb-range-to-range.md'); assert p.exists() and len(p.read_text())>400\""
+  ],
+  "created": "2026-11-04T07:15:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-bb-range-to-range.md audits MyTradingSys/research/bb_range_to_range_2026-11-04/run_backtest.py for lookahead, fee-net math, and session boundary logic, and reports PASS or FAIL with exact line citations.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "D11 feeder check (A-20261104-1): Perform a GPT code and math audit of MyTradingSys/research/bb_range_to_range_2026-11-04/run_backtest.py (shipped in 8ce5461b0, 85eb02983).",
+  "id": "gpt-rederive-bb-range-to-range-1104",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-04 T0-ONLY; D11 feeder card for 8ce5461b0",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "gemini-pro-argon",
+  "refreshed": "2026-11-04T07:15:00Z",
+  "refs": [
+    "MyTradingSys/research/bb_range_to_range_2026-11-04/run_backtest.py",
+    "MyTradingSys/research/bb_range_to_range_2026-11-04/PRE_REG.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-bb-range-to-range.md",
+    "MyTradingSys/research/bb_range_to_range_2026-11-04"
+  ],
+  "scope_out": [],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read PRE_REG.md and run_backtest.py in MyTradingSys/research/bb_range_to_range_2026-11-04",
+    "Check entry/exit bar indexing, fee deduction, and range/session filter implementation against PRE_REG.md",
+    "Write MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-bb-range-to-range.md with findings and verdict"
+  ],
+  "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-bb-range-to-range.md'); assert p.exists() and len(p.read_text())>400\"",
+  "title": "GPT independent re-derivation of bb_range_to_range_2026-11-04 session range metrics",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T08:46:24Z",
   "commands": [
     "python -m pytest MyTradingSys/tests/test_cbp_golden_set.py -q",
     "python scripts/dev/run_all_tests.py --quick"
@@ -17,11 +18,17 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "DROP by Haiku review 2026-11-04: already shipped as 5ea4d7457e19",
+      "ref": "87638e0c3",
+      "utc": "2026-11-04T08:46:24Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "verify_extract_quotes: resolve file:line cites and repo-doc quotes; restore 73 valid cites",
-      "ref": "9996d74165fe",
-      "utc": "2026-11-02T13:40:46Z"
+      "line": "CBP golden-set harness: 12 planted cases through run_once, mutation test for the quote gat",
+      "ref": "5ea4d7457e19",
+      "utc": "2026-11-03T19:58:36Z"
     }
   ],
   "layers": [],
@@ -30,15 +37,20 @@
   "not_twin_of": [
     "cbp-quote-gate-review"
   ],
-  "note": "Piece 1 of 2 from s4-cbp-module-e2e (D5 pieces: harness, consumer e2e). Not builder work: ingestion task install = card cbp-daily-firing-gap; Gate 4 needs 56 scored calls per analyst (13 rows today); CI billing on jishusharma/CryptoScrapper = operator.",
+  "note": "Piece 1 of 2 from s4-cbp-module-e2e (D5 pieces: harness, consumer e2e). Not builder work: ingestion task install = card cbp-daily-firing-gap; Gate 4 needs 56 scored calls per analyst (13 rows today); CI billing on jishusharma/CryptoScrapper = operator.\nREVIEWED:2026-11-04 DROP (Haiku on API credit, job haiku-review-ready-sonnet-1104: Already shipped: golden-set harness on trunk (5ea4d7457e19).)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-03T18:56:06Z",
+  "refreshed": "2026-11-03T22:33:50Z",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D5_CBP_MODULE.md"
   ],
-  "result": "",
+  "result": "DROP by Haiku review 2026-11-04: already shipped as 5ea4d7457e19",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tests/golden_cbp/cases.json (new; 10-12 cases)",
     "MyTradingSys/tests/test_cbp_golden_set.py (new)",
@@ -51,19 +63,20 @@
     "Gate 4 scorecard weights",
     "the ingestion task (card cbp-daily-firing-gap)"
   ],
-  "scope_sha": "9996d74165fe",
+  "scope_sha": "5ea4d7457e19",
   "size": "M",
   "sources": [
     "MyTradingSys/research/v1_plan_2026-10-20/D5_CBP_MODULE.md (Evaluation harness; status table: golden-set PARTIAL, CI blocked by billing)",
     "MyTradingSys/tests/test_cbp_query.py:94-290 (existing single planted cases)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read test_cbp_query.py (GOOD row, _setup, planted cases) and cbp_run.run_once/build_row.",
     "Write cases.json: valid row; fabricated quote; trade quote not in transcript; wrong direction; missing expires_at; expired row; duplicate video_id; no-view video; empty quote fragment.",
     "Write test_cbp_golden_set.py: one parametrized test over the cases through run_once with stub fetch and extract; assert stored rows, rejected reason and the (new, known, rejected) counts.",
     "Add a mutation test: monkeypatch the quote check off and assert a golden case goes red. Run, then run_all_tests --quick; ship."
   ],
+  "taken": "2026-11-04T08:46:24Z",
   "tests": "test_cbp_golden_set.py: parametrized over cases.json, fails on a claim without a quote, a wrong direction, a missing expires_at, a duplicate row (D5 list). Fail-first: the mutation test disables the quote check by monkeypatch and asserts at least one case fails; the file is absent on old code.",
   "title": "S4: CBP golden-set harness (planted bad rows, quote gate, expiry, dedupe) as one pytest",
   "weight": "ROUTINE",

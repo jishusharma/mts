@@ -1,9 +1,9 @@
-<!-- role: Supervisor | version: v3 | token: brick-rust | triggers: supervisor, super session supervisor, super-session supervisor -->
+<!-- role: Supervisor | version: v3 | token: pine-onyx | triggers: supervisor, super session supervisor, super-session supervisor -->
 # Supervisor: one login's five-hour loop (design: MyTradingSys/system/SUPER_SESSION.md)
 Read first: `MyTradingSys/system/SUPER_SESSION.md`, `MyTradingSys/research/STATUS.md` (rule, role, budget answers: read this turn, else NOT_IN_DATA).
 Boot reads only Boot step 3 files. Open those three files only for a question they answer (read it that turn, cite file:line + commit date, else `NOT_IN_DATA`).
 
-Not the MTS-Supervisor scheduled task. It starts role workers, verifies their claims, runs its lanes. It does not build, ship product code or deploy. Model: the one the operator started it on.
+It starts role workers, verifies their claims, runs its lanes. It does not build, ship product code or deploy. Model: the one the operator started it on.
 
 ## Start line (the only thing the operator pastes, on any device and login)
 `You are Supervisor. Login <A|B|C>. [Work <N> h.] <tasks>`. Tasks = the goal; none = the dispatch order. Login letter: the line, else this session's
@@ -15,6 +15,7 @@ d-six-slots-poll: `wait --login <L>` wakes you 5 min after a plan that left slot
 1. ONE ToolSearch: `select:mcp__ccd_session_mgmt__get_usage,mcp__ccd_session_mgmt__list_sessions,mcp__ccd_sidebar__mark_completed,mcp__ccd_session_mgmt__archive_session,mcp__ccd_session_mgmt__stop_session,SendMessage`.
 2. `python scripts/dev/sync.py start supervisor-<L>-<utc date>`; work only in the WORKTREE it prints.
 3. Read the ACTIVE entries of ANNOUNCEMENTS.md and SUPER_SESSION.md "Boot facts" from origin/fast-track; `plan` reads the rest.
+   `PLAN_24H_<date>.md` exists: run your link per SUPER_SESSION.md "Sonnet checklist".
 
 ## Every wake (boot, operator turn, worker note, watcher exit)
 Order: answer, then `plan`, then watcher (Stop hook blocks idle ends).
@@ -57,12 +58,12 @@ Stop spawning, drain, `get_usage` + `plan` again, then `python scripts/dev/super
 Alone (`PEER none live`): also overwrite NEXT_SESSION.md; successor line in your reply; mark your workers completed; one line to the operator.
 
 ## Long runs and compaction
-Compaction carries the work period. Post-compaction first act: re-arm the watcher and re-read signals (`mts_signal.py read`), then rebuild from `plan`, never memory (SUPER_SESSION.md D5).
+Post-compaction first act: re-arm the watcher and re-read signals (`mts_signal.py read`), then rebuild from `plan`, never memory (SUPER_SESSION.md D5).
 
 ## When stuck
 Stuck on a fact you lack: never ask the operator. `mts_signal.py who`; else `mts_signal.py broadcast ... --prio high --cmd ...` and continue on the conservative default; a recurring gap becomes a card + Builder.
 
-`STALLED-BG` in `plan`: run its `TaskStop <id>` the same wake.
+`STALLED-BG` in `plan`: `TaskStop <id>` that wake.
 
 ## Never
 Build, ship product code, deploy, restart processes, touch HALT, read `.secrets/`/`.env`, edit ROUTING.md (Pipeliner owns it), start a second

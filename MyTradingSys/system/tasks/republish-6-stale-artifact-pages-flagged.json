@@ -30,9 +30,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "sim-demo: search box typed backwards (C30 looked missing), fixed; operator item 1 logged",
-      "ref": "a2a631c826a4",
-      "utc": "2026-11-02T19:40:04Z"
+      "line": "sim desk: the four rsi-deep wave results (11-04) on the simulator page",
+      "ref": "4580ff68ded2",
+      "utc": "2026-11-03T22:26:13Z"
     }
   ],
   "layers": [],
@@ -41,11 +41,11 @@
   "not_twin_of": [
     "q17-p5-three-pages"
   ],
-  "note": "REVIEWED:2026-10-31 T0-ONLY Final report ends with a Noticed: line. Blocked? List 2-3 non-destructive fixes, try the safest, verify, then report. | PLANNER 2026-10-31 refined to HAIKU: the 2026-10-30 SKIPPED note is superseded (both remaining stale pages have a jishusharma1985 url; per-login Artifact publish is the step, run from login C). Pages a later q17-p5-three-pages retires are dropped from the list.",
+  "note": "REVIEWED:2026-10-31 T0-ONLY Final report ends with a Noticed: line. Blocked? List 2-3 non-destructive fixes, try the safest, verify, then report. | PLANNER 2026-10-31 refined to HAIKU: the 2026-10-30 SKIPPED note is superseded (both remaining stale pages have a jishusharma1985 url; per-login Artifact publish is the step, run from login C). Pages a later q17-p5-three-pages retires are dropped from the list. REVIEWED:2026-11-04 HOLD (mts_control_room.html missing; page retired 10-31 per test_artifacts)",
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "planner-20261030-d",
-  "refreshed": "2026-11-02T20:00:59Z",
+  "refreshed": "2026-11-03T22:33:43Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -56,7 +56,7 @@
   "scope_out": [
     "no live-tree edit, no deploy, no process or HALT touch, no .secrets or .env read; no product-code edit; never publish a second copy (a new url); no page without edit access ('writer' in Artifact read)"
   ],
-  "scope_sha": "a2a631c826a4",
+  "scope_sha": "4580ff68ded2",
   "size": "S",
   "sources": [],
   "state": "ready",

@@ -76,6 +76,7 @@ pickup turns it into a raw card and replies with the card id. The operator never
 
 ## Promotion gate (tasks.py, enforced since commit 35c10e93, 2026-10-18, Opus review of planner batch 3; Lab_Guy owns the stamp for C1+)
 - Stamp grammar (both accepted): `REVIEWED:<date> <ACCEPT|T0-ONLY>` (planner) and `REVIEWED: <reviewer> <date>` (legacy). T0-ONLY is machine checks only, not a review.
+- Coordinator stamps (`REVIEWED: super|Lead <date>`) count as T0-ONLY (operator 2026-11-04, d-reviews-on-haiku-credit-1104): they unblock a card, they never vouch for it. The review itself is a Haiku read on the API credit (`tasks.py check` + done_when vs the scope paths, batched 5 cards per job, cap 3 USD), a Sonnet read only where done_when needs code reading; the reader writes the real stamp.
 - `tasks.py check` promotes a card to ready only if: no active HOLD/STOP announcement is named in the note (`HOLD A-...`; clear it with `HOLD-CLEARED A-...` once lifted), and IMPORTANT/C1+ cards carry a real stamp (ACCEPT or reviewer-date). ROUTINE/C0 may stay T0-ONLY.
 - `take` and `done` additionally refuse CRUCIAL/CRITICAL or C2/C3 cards without a real stamp; a `live_path: true` card counts as C3.
 - Order: planner drafts and proposes weight and class; ONE batched Lab_Guy pass (up to 5 cards, Sonnet, Google pool) confirms or raises the class and writes the real stamp; C2 also needs a non-Claude spec review; C3 also the coordinator. A random sample of C0 cards is checked for under-classification.

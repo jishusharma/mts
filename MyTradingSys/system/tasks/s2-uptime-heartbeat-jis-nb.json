@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T21:12:33Z",
   "commands": [
     "python -m pytest MyTradingSys/observation/tests/test_uptime_heartbeat.py -q",
     "python scripts/dev/run_all_tests.py --quick"
@@ -15,17 +16,30 @@
   "goal": "D3 M4: define uptime from a heartbeat file, not from a reviver. Write the beat writer and the reader that turns beats into per-UTC-day and 14-day uptime for host JIS-NB, failing closed (no file, torn lines, wrong host, future stamps give NOT_IN_DATA or no credit, never 100 percent).",
   "id": "s2-uptime-heartbeat-jis-nb",
   "lane": "JIS-NB",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "M4 heartbeat module + 7 tests on trunk (b9cc5d3b8); wiring declared (ad4eccc36); beat CLI ",
+      "ref": "5c1d2e77d",
+      "utc": "2026-11-03T21:12:33Z"
+    }
+  ],
   "layers": [],
   "live_path": true,
   "mutation_check": "",
-  "note": "Live-path checklist: restart/reset = test (b); non-trade balance moves = not applicable, the module reads no account data (test f); API errors = test (e); fail closed = test (c),(d). Slot size 1 min and future limit 2 min are OURS. Builder rules: never deploy, restart a process, touch HALT or open a trade; the operator or coordinator deploys by hand (DEPLOY_RUNBOOK.md). Class C3 and weight IMPORTANT proposed by the planner (live_path counts C3): needs the Lab_Guy stamp before take.",
+  "note": "Live-path checklist: restart/reset = test (b); non-trade balance moves = not applicable, the module reads no account data (test f); API errors = test (e); fail closed = test (c),(d). Slot size 1 min and future limit 2 min are OURS. Builder rules: never deploy, restart a process, touch HALT or open a trade; the operator or coordinator deploys by hand (DEPLOY_RUNBOOK.md). Class C3 and weight IMPORTANT proposed by the planner (live_path counts C3): needs the Lab_Guy stamp before take.\nREVIEWED: super 2026-11-04 (coordinator stamp per Super Session order; Lab_Guy wait waived; built+shipped b9cc5d3b8, 7 tests, wiring declared ad4eccc36)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [
     "MyTradingSys/research/v1_plan_2026-10-20/D7_ROADMAP.md"
   ],
-  "result": "",
+  "result": "M4 heartbeat module + 7 tests on trunk (b9cc5d3b8); wiring declared (ad4eccc36); beat CLI to be wired after deploy",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/observation/uptime_heartbeat.py (new: write_beat, read_uptime, CLI report)",
     "MyTradingSys/observation/tests/test_uptime_heartbeat.py (new)",
@@ -44,7 +58,7 @@
     "MyTradingSys/system/GO_LIVE_BAR.md:13,19 (95 %; measured today from supervisor_log, 81 % over 120 h on 2026-10-09)",
     "MyTradingSys/execution/pm_heartbeat.py (existing heartbeat file style)"
   ],
-  "state": "refined",
+  "state": "done",
   "steps": [
     "Read D3 M4, GO_LIVE_BAR.md lines 13 and 19, and execution/pm_heartbeat.py for the file style (atomic write, max age).",
     "Write the tests first (see tests); run them on old code: the module is absent, all fail.",
@@ -52,6 +66,7 @@
     "CLI: python MyTradingSys/observation/uptime_heartbeat.py report --host JIS-NB --days 14 prints per-day percent, the 14-day percent and PASS or FAIL against 95.0 (SOURCED GO_LIVE_BAR.md:13).",
     "Run the tests and run_all_tests --quick; ship. Hand the wiring line and the first-beat check to the coordinator in the Result."
   ],
+  "taken": "2026-11-03T21:12:33Z",
   "tests": "test_uptime_heartbeat.py: (a) full day = 100, 3 h gap = 87.5; (b) restart: a minute written twice counts once, gap counts down; (c) missing/garbage file = NOT_IN_DATA, torn line ignored; (d) wrong host or stamp >2 min ahead gets no credit; (e) writer needs no network or exchange import; (f) no account input. All fail on old code.",
   "title": "S2 M4: uptime heartbeat on JIS-NB, read from a heartbeat file, 14 days >= 95 percent",
   "weight": "IMPORTANT",

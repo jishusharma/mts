@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-04T07:22:14Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-audit-pace-plan.md has one row per written rule (at least 8) with file:line on both sides: MATCH / DEVIATES / NOT_CHECKABLE; line 1 holds the three counts.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Check that the pacing math in scripts/dev/supervisor.py pace_plan and scripts/dev/exhaust.py implements the written budget rules; report each rule with MATCH / DEVIATES. Read-only, gate-closing: a wrong cap spends the week.",
+  "id": "gpt-audit-pace-plan-vs-exhaust-doc-1104",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "bg_watch: a task whose agent is gone is a GHOST, not a STALLED-BG",
+      "ref": "908a03d6600c",
+      "utc": "2026-11-03T20:20:08Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "872fb33b40be Budget rules: one policy, supervisor/traffic/exhaust agree",
+      "ref": "MyTradingSys/system/EXHAUST_PHASE.md",
+      "utc": "2026-10-28T08:34:48Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED: planner-c-1104 2026-11-04 T0-ONLY (template of done gemini-blind-read/gpt-audit cards; twin check: no blind read or audit of this folder in tasks/ or archive/). Never use model output as the source.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-04T07:22:16Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/EXHAUST_PHASE.md (read)",
+    "scripts/dev/supervisor.py (read)",
+    "scripts/dev/exhaust.py (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-audit-pace-plan.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source report or scripts; no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "908a03d6600c",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/system/EXHAUST_PHASE.md:1-40"
+  ],
+  "state": "ready",
+  "steps": [
+    "Number the written rules in EXHAUST_PHASE.md",
+    "Find the code line for each",
+    "Write the table"
+  ],
+  "tests": "audit card, output file is the test; each row quotes the source line it was matched to; repo files stay byte-identical (git diff empty)",
+  "title": "GPT audit: supervisor.pace_plan and exhaust.py plan follow EXHAUST_PHASE.md and the 11-04 budget rules (caps, reserve, 5 h stop)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

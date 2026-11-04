@@ -510,9 +510,12 @@ def build_default_registry(fetch_funding=None, history_fetch=None) -> dict:
     from MyTradingSys.backtest.layers.alerts import live_rsi_divergence as lrd, live_session_levels as lsl
     from MyTradingSys.backtest.layers.alerts import live_bb_top_reversal as lbt, live_candle_close as lcc
     from MyTradingSys.backtest.layers.alerts import live_levels_confluence as llc
+    from MyTradingSys.backtest.layers.alerts import live_confluence_feed as lcf
     store = HistoryStore(history_fetch)
     for layer, sub, tf, fn, need in [
         ("rsi_divergence", "rsi_divergence", "1h", lrd.adapter, None),
+        # RSI 40/60 + Malkan / Krown divergence flags, alert-only (no side, no layer_rules entry): confluence input
+        ("confluence_feed", "rsi_malkan", "1h", lcf.confluence_feed_layer, None),
         ("bb_top_reversal", "bb_top_reversal", "15m", lbt.bb_top_reversal_layer, None),
         ("session_levels", "session_levels", "1m", lsl.adapter, HIST_NEED_BARS["session_levels"]),
         ("candle_close", "candle_close", "1m", lcc.candle_close_layer, HIST_NEED_BARS["candle_close"]),

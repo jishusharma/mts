@@ -49,7 +49,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "dash-designer 10-30: only 1 of 10 enabled analysts fresh; Rekt + Qriptal no row in 5-day store; Benjamin, Bob, Jala, CCU never fetched (cbp_run.py ingests profile=='actionable' only); last ingestion 2026-10-28 10:53Z. PLANNER 2026-11-02: 2bb01c500 fixed the windows to 05:00/20:00 and first-week triggers in code; the host install/verify and the 2-windows-on-one-date proof remain.",
+  "note": "dash-designer 10-30: only 1 of 10 enabled analysts fresh; Rekt + Qriptal no row in 5-day store; Benjamin, Bob, Jala, CCU never fetched (cbp_run.py ingests profile=='actionable' only); last ingestion 2026-10-28 10:53Z. PLANNER 2026-11-02: 2bb01c500 fixed the windows to 05:00/20:00 and first-week triggers in code; the host install/verify and the 2-windows-on-one-date proof remain.\nREVIEWED:2026-11-04 ACCEPT (Haiku read on API credit, job haiku-review-1: done_when testable, scope exists, no newer decision contradicts)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",

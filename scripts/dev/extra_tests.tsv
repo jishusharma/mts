@@ -88,6 +88,7 @@ MyTradingSys/research/loose_code/test_b141_htf_stage2.py
 MyTradingSys/execution/tests/test_deribit_orders_phase3.py
 MyTradingSys/execution/tests/test_executor_reject_diag.py
 MyTradingSys/observation/tests/test_observation.py
+MyTradingSys/observation/tests/test_uptime_heartbeat.py
 MyTradingSys/research/candle_patterns_2026-10-04/pilot/test_p1.py
 MyTradingSys/research/candle_patterns_2026-10-04/pilot/test_pilot.py
 MyTradingSys/research/fast_track_2026-09-27/backtest_xcheck/test_ref_ladder.py
@@ -194,8 +195,23 @@ scripts/dev/test_ff_calendar_snapshot.py
 scripts/dev/test_extra_tests_union.py
 scripts/dev/test_ci_fail.py
 scripts/dev/test_pass_needs_verdict.py
+MyTradingSys/tools/live_aid/test_spec_us_open.py
 
 MyTradingSys/tools/live_aid/test_spec_news.py
 MyTradingSys/research/api_jobs_2026-11-03/test_sim_cards_from_json.py
 MyTradingSys/tools/live_aid/test_spec_flow_feeds.py
 MyTradingSys/tools/live_aid/test_spec_analyst_verdict.py
+MyTradingSys/research/rsi_deep_buy_2026-10-19/test_context_tables.py
+MyTradingSys/research/rsi_deep_buy_2026-10-19/test_divergence_context.py
+MyTradingSys/research/rsi_deep_buy_2026-10-19/test_confluence.py
+MyTradingSys/backtest/test_research_kit_context.py
+MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/test_gate_wiring.py
+MyTradingSys/research/wavetrend_c30_retest_2026-11-04/test_wiring.py
+MyTradingSys/research/bb_range_to_range_2026-11-04/test_range_wiring.py
+MyTradingSys/research/bb_range_retest_2026-11-04/test_level_arm.py
+MyTradingSys/backtest/test_fetch_binance_archive.py
+MyTradingSys/research/wavetrend_c30_retest_2026-11-04/test_wiring_long.py
+MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/test_long_wiring.py
+MyTradingSys/research/bb_long_window_2026-11-04/test_long_wiring.py
+MyTradingSys/research/bear_proxy_context_tuning_2026-11-04/test_wiring.py
+MyTradingSys/research/rsi_40_60_line_behaviour_2026-11-04/test_wiring.py

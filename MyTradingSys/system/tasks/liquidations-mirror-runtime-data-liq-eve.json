@@ -1,35 +1,50 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest -q MyTradingSys/research/liq_mirror_2026-11"
+  ],
   "created": "2026-11-03T14:37:13Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "A mirror script copies liq_events idempotently, and a result table reports the base rate with n and a dated source list. No live-aid change.",
+  "est_turns": 14,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Mirror runtime_data/liq_events to F:/MTS and measure the flush-before-reversal base rate against the ledger; descriptive only.",
   "id": "liquidations-mirror-runtime-data-liq-eve",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "\nREVIEWED:2026-11-04 ACCEPT (Haiku on API credit, job haiku-review-ready-sonnet-1104: New scope folder; source phase1_liq_look.py present; no twin found.)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refs": [],
+  "refreshed": "2026-11-04T05:14:05Z",
+  "refs": [
+    "MyTradingSys/research/c26_roadmap_2026-11-01/phase1_liq_look.py"
+  ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/liq_mirror_2026-11"
+  ],
+  "scope_out": [
+    "MarketDataSnapshot liquidation fields; live-aid lean input (follow-up card); the live tree"
+  ],
+  "scope_sha": "",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read phase1_liq_look.py for the event format.",
+    "Write the failing test on a fixture of 3 events.",
+    "Implement mirror plus base-rate count, run on the NUC copy."
+  ],
+  "tests": "MyTradingSys/research/liq_mirror_2026-11/test_liq_mirror.py::test_mirror_is_idempotent_and_counts_flushes",
   "title": "liquidations: mirror runtime_data/liq_events to F:/MTS, count flush-before-reversal base rate vs the ledger, then a descriptive liquidation input to the live-aid lean; MarketDataSnapshot liquidation fields hardcoded empty",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }

@@ -27,9 +27,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "api_batch: key file fallback (MTS_API_KEY_FILE, F:/ClaudePlaform/key.txt) and wait subcomm",
-      "ref": "58980d9ba0a7",
-      "utc": "2026-11-02T18:29:34Z"
+      "line": "api_batch: disable thinking by default (Claude 5.5 spent the whole max_tokens thinking) + ",
+      "ref": "faf01e226a2d",
+      "utc": "2026-11-03T13:09:29Z"
     },
     {
       "auto": true,
@@ -42,11 +42,11 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 2026-11-02: launch Console API jobs from the NUC too. REVIEWED:2026-11-02 T0-ONLY",
+  "note": "Operator 2026-11-02: launch Console API jobs from the NUC too. REVIEWED:2026-11-02 T0-ONLY\nREVIEWED:2026-11-04 HOLD (Haiku on API credit, job haiku-review-ready-sonnet-1104: Key-file fallback already on trunk (58980d9ba0a7); narrow card to what remains.)",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T20:00:57Z",
+  "refreshed": "2026-11-03T22:32:58Z",
   "refs": [
     "MyTradingSys/system/OPERATOR_DECISIONS.md"
   ],
@@ -59,7 +59,7 @@
   "scope_out": [
     "no real API call, no read of the real key file, no key text anywhere in the repo, no live-tree edit"
   ],
-  "scope_sha": "58980d9ba0a7",
+  "scope_sha": "faf01e226a2d",
   "size": "S",
   "sources": [],
   "state": "ready",

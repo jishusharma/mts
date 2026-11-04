@@ -51,6 +51,7 @@ PYTEST_LAYER_PATHS = [
     "scripts/dev/test_live_owner.py",
     "scripts/dev/test_hosts.py",
     "scripts/dev/test_loop_supervisor_grace.py",
+    "scripts/dev/test_api_job.py",
     "scripts/dev/test_nowin.py",
     "scripts/dev/test_wt_maint.py",
     "scripts/dev/test_outcome_labeler_incremental.py",
@@ -588,6 +589,10 @@ def build_plan(quick):
     # went red 17 min). ~11 s, picked by gate_select.LOOKAHEAD_RE; exit 1 on a new FAIL hit.
     add("3la", "Look-ahead lint: no new unreviewed FAIL hit (lookahead_lint.py --new)", [sys.executable, "scripts/dev/lookahead_lint.py", "--new"], "Step 3la: Look-ahead lint")
     add("3dl", "CI deps lint: no gated test hard-imports a package the ci.yml pip line lacks", [sys.executable, "scripts/dev/ci_deps_lint.py"], "Step 3dl: CI deps lint")
+    # Step 3pc: pre-registration context lint (2026-11-04, d-context-retest-1104: 10 of 33 backtests tested a bare trigger in every regime and
+    # 29 of 33 reports never said what regime their window was). Every PRE_REG not frozen before the rule carries a `## Context` section
+    # (Regime/Phase/Session/Entry), every result a `Regime mix:` line. <1 s; exit 1 on an offender.
+    add("3pc", "PRE_REG context lint: new pre-registrations state regime/phase/session/entry, results state the regime mix", [sys.executable, "scripts/dev/prereg_context_lint.py"], "Step 3pc: PRE_REG context lint")
 
     # Step 4: pytest (math + doc tests), sharded so the slowest step no longer sets the gate's wall time (2026-10-16: one process
     # took 919 s of a 15 min gate). 4/4b/4c = MyTradingSys/tests files round-robin, 4d = doc size/contract tests, 4e = backtest
@@ -960,6 +965,7 @@ CI_FILE_S = {
     "MyTradingSys/research/context_factors_pit_2026-10-16/test_context_asof.py": 19,
     "MyTradingSys/research/context_null_2026-10-16/test_context_null.py": 19,
     "scripts/dev/test_ci_deps_lint.py": 15,
+    "scripts/dev/test_prereg_context_lint.py": 2,
     "MyTradingSys/research/pit_levels_2026-10-16/test_pit_leakage.py": 11,
     "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/test_filter_join.py": 6,
     "scripts/dev/test_lab_query.py": 6,

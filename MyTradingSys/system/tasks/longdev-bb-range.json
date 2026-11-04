@@ -1,0 +1,79 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "context": {
+    "calls_to_edit": 18,
+    "folded": "2026-11-04T03:37:19Z",
+    "misses": 17,
+    "reads": [
+      "MyTradingSys/backtest/research_kit.py",
+      "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/study.py",
+      "scripts/dev/extra_tests.tsv",
+      "MyTradingSys/research/bb_range_retest_2026-11-04/BLOCKED.md",
+      "scripts/dev/lookahead_lint.py"
+    ],
+    "session": "agent-ad771bae2cf3f1b5d"
+  },
+  "created": "2026-11-04T03:29:20Z",
+  "depends_on": [],
+  "done_when": "research/bb_long_window_2026-11-04/PRE_REG_LONG.md frozen first (with ## Context), TRIALS.md rows before outcomes, prereg_gate on the long window, RESULT_LONG.md first line Regime mix with both bear counts, VERDICTS.csv new row; VALIDATION survivors only, HOLDOUT never loaded",
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Second DEV pass on spot 2017-08..2024-06 for bb_range_to_range (e2d5f8bd1) and bb_range_retest (cceca58a9): same arms and parameters, plus ONE OURS bear proxy (d-bear-proxy-1104).",
+  "id": "longdev-bb-range",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "rsi_divergence_mtf_gated long-window DEV pass: INCONCLUSIVE (power gate still blocks, 0 of",
+      "ref": "d27877bfd7b2",
+      "utc": "2026-11-04T03:25:39Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "d27877bfd7b2 rsi_divergence_mtf_gated long-window DEV pass: INCONCLUSIVE (power gate still",
+      "ref": "MyTradingSys/research/layer_lab/TRIALS.md",
+      "utc": "2026-11-04T03:25:39Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-04 HOLD (PRE_REG_LONG and RESULT_LONG already exist; pass appears done)",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "agent-longdev-bb",
+  "refreshed": "2026-11-04T03:29:36Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/bb_long_window_2026-11-04/",
+    "MyTradingSys/research/VERDICTS.csv",
+    "MyTradingSys/research/layer_lab/TRIALS.md",
+    "scripts/dev/extra_tests.tsv"
+  ],
+  "scope_out": [
+    "live tree",
+    "deploys",
+    "other studies"
+  ],
+  "scope_sha": "d27877bfd7b2",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "write PRE_REG_LONG.md and TRIALS rows",
+    "counts + prereg_gate",
+    "dev pass",
+    "report"
+  ],
+  "tests": "MyTradingSys/research/bb_long_window_2026-11-04/test_long_wiring.py fails on pre-change code first",
+  "title": "Long-window (spot 2017-2024) DEV pass for both Bollinger studies (bb_range_to_range, bb_range_retest) with one OURS bear proxy",
+  "weight": "",
+  "worker": "session"
+}

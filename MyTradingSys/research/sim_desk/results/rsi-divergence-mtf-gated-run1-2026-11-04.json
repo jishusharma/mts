@@ -1,0 +1,98 @@
+{
+ "id": "rsi-divergence-mtf-gated-run1-2026-11-04",
+ "kind": "backtest",
+ "family": "RSI divergence gated by Malkan regime",
+ "title": "Rerun, run 1: RSI divergence entries only when monthly AND weekly RSI agree with the daily SMA200 side (15m, 1h, 4h, 1d), DEV 2022-2024",
+ "provenance": "builder-export",
+ "date": "2026-11-04",
+ "what": [
+  {
+   "name": "Rule",
+   "value_plain": "Malkan gate as written: monthly AND weekly RSI >= 60 bull / <= 40 bear, daily SMA200 side; bullish/bearish swing divergence signal, signal or retest entry, exit 10 bars",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Windows and entry arms",
+   "value_plain": "divergence windows 3-10, 5-14, W12, W18; retest N=10 at the swing B close; these are variants of the study",
+   "label": "OURS"
+  },
+  {
+   "name": "Cost",
+   "value_plain": "fee-net 0.14 % round trip (research_kit)",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Regime mix",
+   "value_plain": "130 weeks DEV: bull 25 (19%) | bear 0 (0%) | range 105 (81%) | n/a 0 (0%)",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Power gate",
+   "value_plain": "prereg_gate BLOCK on all four TFs (BLOCKED.md): the 1 / 18 / 43 / 164 aligned bullish setups (1d / 4h / 1h / 15m) cannot detect a plausible effect",
+   "label": "OURS"
+  },
+  {
+   "name": "Survivor rule",
+   "value_plain": "n >= 30, >= 20 days, net > 0, Holm p < 0.05, excess t >= 2",
+   "label": "OURS"
+  }
+ ],
+ "how": "Event study on BTCUSDT 1m aggregated per TF; the gate removes 83 % of 15m events; day-clustered 95 % CI on fee-net return; 256 cells in dev_cells.csv (gate x TF x arm x kind x entry), 32 confirmatory.",
+ "window": "DEV 2022-01-01..2024-06-30 BTCUSDT futures 1m; VALIDATION not read (no DEV survivor); HOLDOUT never loaded",
+ "verdict": {
+  "label": "INCONCLUSIVE (underpowered), not FAIL and not PASS: 0 of 32 confirmatory cells survived the DEV rule; the gate leaves bull in 25 of 130 weeks and never bear, so 0 bearish setups exist",
+  "tone": "warn"
+ },
+ "why": [
+  "15m W12 bullish signal: ungated n 973 net -0.161 % [-0.229, -0.092]; aligned (bull regime) n 164 / 96 days, net -0.176 % [-0.307, -0.045], excess over bull drift -0.064 % (t -1.0): the gate did not make the signal positive.",
+  "1h aligned n 43 net +0.111 % [-0.394, +0.615], t 0.43; 4h n 18 net -0.736 %; 1d n 1. Every positive-looking cell has a CI spanning zero. No confirmatory cell has Holm p below 0.265.",
+  "Bearish aligned cells are empty (0 bear weeks); counter-regime and range bearish 15m net -0.176 % (n 208) and -0.179 % (n 810).",
+  "Next powered step needs more symbols or a longer history (monthly RSI from 2017), not another BTC DEV read. Not a PASS."
+ ],
+ "kpis": [
+  {
+   "label": "regime",
+   "value": "bull 25 / bear 0 / range 105 weeks"
+  },
+  {
+   "label": "confirmatory cells",
+   "value": "32"
+  },
+  {
+   "label": "survivors",
+   "value": "0 of 32",
+   "tone": "warn"
+  },
+  {
+   "label": "aligned 15m long net",
+   "value": "-0.176 % [-0.307, -0.045]",
+   "tone": "bad"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: the study reports cell tables (dev_cells*.csv in the study folder), not a trade list"
+  }
+ ],
+ "parity": null,
+ "source_files": [
+  "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/RESULT.md",
+  "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/dev_cells.csv",
+  "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/dev_survivors.json",
+  "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/PRE_REG.md",
+  "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/BLOCKED.md"
+ ],
+ "commit": "df3294b34",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "INCONCLUSIVE (underpowered), not FAIL and not PASS: 0 of 32 confirmatory cells survived the DEV rule; the gate leaves bull in 25 of 130 weeks and never bear, so 0 bearish setups exist",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: INCONCLUSIVE (underpowered), not FAIL and not PASS: 0 of 32 confirmatory cells survived the DEV rule; the gate leaves bull in 25 of 130 weeks and never bear, so 0 bearish setups exist · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
+}

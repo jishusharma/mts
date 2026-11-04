@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-04T07:22:11Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-meta-label-dev-ext.md has one row per headline number (at least 10): MATCH / DIFF / NOT_IN_DATA; line 1 holds the three counts.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Second-vendor re-derivation of the headline rows of RESULT.md from the saved csv outputs and FORMULAS.md; the existing check was Gemini only.",
+  "id": "gpt-rederive-meta-label-dev-ext-1104",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "meta-label Fabio C dev_ext rerun 2020-01..2022-03: marginal PASS by the frozen rule, flagg",
+      "ref": "c658d6fe52f5",
+      "utc": "2026-11-02T11:20:25Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "c658d6fe52f5 meta-label Fabio C dev_ext rerun 2020-01..2022-03: marginal PASS by the froze",
+      "ref": "MyTradingSys/research/meta_label_dev_ext_2026-10-31/RESULT.md",
+      "utc": "2026-11-02T11:20:25Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED: planner-c-1104 2026-11-04 T0-ONLY (template of done gemini-blind-read/gpt-audit cards; twin check: no blind read or audit of this folder in tasks/ or archive/). Never use model output as the source.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-04T07:22:13Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/meta_label_dev_ext_2026-10-31/RESULT.md (read)",
+    "MyTradingSys/backtest/layers/FORMULAS.md (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-meta-label-dev-ext.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source report or scripts; no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "c658d6fe52f5",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/meta_label_dev_ext_2026-10-31/RESULT.md:1-30"
+  ],
+  "state": "ready",
+  "steps": [
+    "List headline numbers",
+    "Recompute from the saved csv in the folder, not from the script",
+    "Write the table"
+  ],
+  "tests": "audit card, output file is the test; each row quotes the source line it was matched to; repo files stay byte-identical (git diff empty)",
+  "title": "GPT re-derive: meta_label_dev_ext_2026-10-31 RESULT.md headline numbers (Gemini blind-read 1102 was the only check so far)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

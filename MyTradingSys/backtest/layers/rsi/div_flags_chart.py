@@ -9,9 +9,13 @@ trend condition (RSI >= 60 at both points for PRD, <= 40 for NRD). Drawn SOLID (
 KROWN-CONFLUENCE (krown_hidden_divergence.py, generic hidden divergence, NO trend condition, not Malkan): K-HBULL /
 K-HBEAR, drawn DOTTED in violet so they cannot be mistaken for Malkan flags.
 
-Parameters: regular bars window 3-10 and min_rsi_diff 0 = SOURCED (params/malkan_divergence_default.json, quotes there);
-PRD/NRD levels 60/40 = SOURCED (GbXnw_tNMtw_raw.txt:460), PRD/NRD bars window 5-14 = OURS, UNVERIFIED (sources conflict,
-glossary C1); Krown hidden window 3-10 = OURS; RSI period 14 = SOURCED default of the layer
+Pivots (operator decision d-malkan-divergence-window-1104): the lines are drawn between the exact two CLOSE pivots the
+detector used (strict local extremes of the close; wicks are never read), with the SAME windows as the live feed
+(alerts/live_confluence_feed.py): swing-to-swing up to 12 bars = STRONG (primary), 13..18 = OK (secondary), past 18 =
+WEAK, not a signal and not drawn. 12 / 18 = SOURCED (operator relay of Malkan). The label carries window_class.
+Parameters: min bars 3 (regular, SOURCED) and 5 (PRD/NRD, SOURCED words) and min_rsi_diff 0 = SOURCED; PRD/NRD levels
+60/40 = SOURCED (GbXnw_tNMtw_raw.txt:460). The old windows 3-10 (regular) and 5-14 (PRD/NRD) are OURS, comparison only,
+NOT drawn (params/malkan_divergence_default.json still holds them for the feed's legacy column). Krown hidden window 3-10 = OURS; RSI period 14 = SOURCED default of the layer
 (run_divergence_mtf.RSI_PERIOD); the 250-bar view and 1w built from complete Mon-Sun UTC daily bars = OURS (display).
 Causal: the event is stamped one bar after swing B (t_event); the label is drawn at B. The RSI is Wilder RSI from the
 whole history, so truncating future bars never changes an earlier flag (test_div_flags_chart.py).
@@ -33,6 +37,8 @@ sys.path.insert(0, str(REPO))
 from MyTradingSys.backtest.layers.rsi.rsi_core import rsi_core
 from MyTradingSys.backtest.layers.rsi.rsi_divergence import rsi_divergence, KINDS
 from MyTradingSys.backtest.layers.rsi.krown_hidden_divergence import krown_hidden_divergence, KROWN_KINDS
+from MyTradingSys.backtest.layers.alerts.live_confluence_feed import (
+    WINDOW_MAX, REGULAR_MIN_BARS, REVERSE_MIN_BARS, window_class)
 
 PARAMS_PATH = Path(__file__).resolve().parent / "params" / "malkan_divergence_default.json"
 REGISTRY_PATH = REPO / "MyTradingSys" / "backtest" / "layers" / "timeframe" / "registry.json"
@@ -88,7 +94,8 @@ def weekly_from_daily(days):
 
 
 def detect_all(bars, params=None):
-    """Malkan kinds (regular, PRD, NRD) plus KROWN-CONFLUENCE hidden kinds over the whole series.
+    """Malkan kinds (regular, PRD, NRD; live-feed windows 12 STRONG / 18 OK, close pivots) plus KROWN-CONFLUENCE hidden
+    kinds over the whole series. Each event carries a_i / b_i / close_a / close_b of the pivots the detector used.
     Returns events sorted by (b_i, kind) with the RSI series."""
     params = params or json.loads(PARAMS_PATH.read_text(encoding="utf-8"))
     close = [b["c"] for b in bars]
@@ -96,13 +103,12 @@ def detect_all(bars, params=None):
     rsi = rsi_core(close, RSI_PERIOD) if len(close) > RSI_PERIOD + 2 else [None] * len(close)
     evs = []
     if any(r is not None for r in rsi):
-        rv = params["reverse"]
         kh = params["krown_hidden_bars"]
         for kind in KINDS:
-            lo, hi = ((rv["min_bars"], rv["max_bars"]) if kind in ("prd", "nrd")
-                      else (params["min_bars"], params["max_bars"]))
-            for e in rsi_divergence(close, rsi, ts, lo, hi, kind, params.get("min_rsi_diff", 0.0)):
+            lo = REVERSE_MIN_BARS if kind in ("prd", "nrd") else REGULAR_MIN_BARS
+            for e in rsi_divergence(close, rsi, ts, lo, WINDOW_MAX, kind, params.get("min_rsi_diff", 0.0)):
                 e["kind"] = kind
+                e["window_class"] = window_class(e["bars"])
                 evs.append(e)
         for kind in KROWN_KINDS:
             for e in krown_hidden_divergence(close, rsi, ts, kh["min_bars"], kh["max_bars"], kind,
@@ -126,7 +132,7 @@ def table_rows(sel, tf):
     rows = []
     for e in sel:
         rows.append({"n": e["n"], "code": CODE[e["kind"]], "tf": tf, "date_A": _fmt(e["a_t"]),
-                     "date_B": _fmt(e["b_t"]), "event_known_on": _fmt(e["t"]), "bars_A_to_B": e["bars"],
+                     "date_B": _fmt(e["b_t"]), "event_known_on": _fmt(e["t"]), "bars_A_to_B": e["bars"], "window_class": e.get("window_class", ""),
                      "price_A": e["close_a"], "price_B": e["close_b"],
                      "rsi_A": round(e["rsi_a"], 2), "rsi_B": round(e["rsi_b"], 2), "chain": e["chain"]})
     return rows
@@ -153,17 +159,20 @@ def render(bars, evs, rsi, tf, symbol, n_bars, out_png):
     ar.set_ylim(0, 100)
     ar.set_ylabel("RSI(%d)" % RSI_PERIOD)
     n_ann = 0
+    drawn = []
     for e in sel:
         col = COLOR[e["kind"]]
         ls = LINESTYLE.get(e["kind"], "-")
         lw = LINEWIDTH.get(e["kind"], 1.8)
-        ax.plot([e["a_i"], e["b_i"]], [e["close_a"], e["close_b"]], color=col, lw=lw, ls=ls, zorder=3,
-                marker="o", ms=4)
+        ln, = ax.plot([e["a_i"], e["b_i"]], [e["close_a"], e["close_b"]], color=col, lw=lw, ls=ls, zorder=3,
+                      marker="o", ms=4)
+        drawn.append({"n": e["n"], "kind": e["kind"], "x": list(ln.get_xdata()), "y": list(ln.get_ydata())})
         ar.plot([e["a_i"], e["b_i"]], [e["rsi_a"], e["rsi_b"]], color=col, lw=lw, ls=ls, zorder=3,
                 marker="o", ms=4)
         low = e["kind"] in LOW_KINDS
         dy = -1 if low else 1
-        lab = "%s #%d" % (CODE[e["kind"]], e["n"])
+        lab = "%s #%d" % (CODE[e["kind"]], e["n"]) + ((" " + e["window_class"]) if e.get("window_class") else "")
+        drawn[-1]["label"] = lab
         t1 = ax.annotate(lab, (e["b_i"], e["close_b"]), xytext=(0, (26 + 16 * (e["n"] % 2)) * dy), textcoords="offset points",
                          ha="center", va="top" if low else "bottom", fontsize=8, color="white", zorder=5,
                          bbox=dict(boxstyle="round,pad=0.2", fc=col, ec="none"),
@@ -191,12 +200,12 @@ def render(bars, evs, rsi, tf, symbol, n_bars, out_png):
     Path(out_png).parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out_png, dpi=90)
     plt.close(fig)
-    return {"n_events": len(sel), "n_annotations": n_ann, "events": sel}
+    return {"n_events": len(sel), "n_annotations": n_ann, "events": sel, "drawn": drawn}
 
 
 def write_table(rows_by_tf, out_dir, symbol):
     out_dir = Path(out_dir)
-    cols = ["n", "code", "tf", "date_A", "date_B", "event_known_on", "bars_A_to_B", "price_A", "price_B",
+    cols = ["n", "code", "tf", "date_A", "date_B", "event_known_on", "bars_A_to_B", "window_class", "price_A", "price_B",
             "rsi_A", "rsi_B", "chain"]
     with open(out_dir / ("%s_divergences.csv" % symbol), "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=cols, lineterminator="\n")
@@ -204,10 +213,10 @@ def write_table(rows_by_tf, out_dir, symbol):
         for rows in rows_by_tf.values():
             w.writerows(rows)
     lines = ["# %s Malkan RSI divergence flags" % symbol, "",
-             "Numbers match the labels on the charts. Malkan flags: R-BULL / R-BEAR regular divergence (window 3-10 bars "
-             "A..B inclusive, SOURCED); PRD = price higher low + RSI lower low in an uptrend (RSI >= 60 at both "
+             "Numbers match the labels on the charts. Malkan flags: R-BULL / R-BEAR regular divergence (close pivots, "
+             "A..B inclusive up to 12 bars STRONG, 13-18 OK, past 18 not a signal; 12/18 SOURCED, operator relay of Malkan); PRD = price higher low + RSI lower low in an uptrend (RSI >= 60 at both "
              "points), NRD = price lower high + RSI higher high in a downtrend (RSI <= 40 at both points); levels "
-             "SOURCED (GbXnw_tNMtw_raw.txt:460), window 5-14 bars OURS/UNVERIFIED (sources conflict). "
+             "SOURCED (GbXnw_tNMtw_raw.txt:460), same 12/18 window as the live feed (old 5-14 = OURS, comparison only). "
              "KROWN-CONFLUENCE flags: K-HBULL / K-HBEAR = generic hidden divergence with NO trend condition, not "
              "Malkan, window 3-10 OURS. Price = close (Malkan: close to close).", ""]
     for tf, rows in rows_by_tf.items():

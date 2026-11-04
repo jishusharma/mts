@@ -17,9 +17,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "tasks: re-refresh 7 ready cards re-staled by 6267cc8d2 (haiku-refresh-stale-ready-cards-11",
-      "ref": "df065cf70d19",
-      "utc": "2026-11-02T16:52:20Z"
+      "line": "fable R6: re-land counts-only power screen + Krown S8 pre-reg, add COST_BP to costs.csv",
+      "ref": "622a5599aaa3",
+      "utc": "2026-10-28T09:42:43Z"
     },
     {
       "auto": true,
@@ -32,11 +32,11 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator-run only; no session may start or message it.\nHOLD 2026-10-28: E2 was INCONCLUSIVE (332 entry days); at 0.20 entry days/day a forward read needs about 72 months. Run only if REVIEW_O2.md says R7 = run.\nLane OPUS as for fable-run6-powered-prereg (operator-run Fable 5.1 cards use lane OPUS; no FABLE lane exists in tasks.py).\nREVIEWED: Lab_Guy 2026-10-28 ACCEPT (independent Sonnet reviewer; second pass after must-fixes)\nREVIEWED: Opus_O2 2026-10-28 a REFRESHED 2026-11-02: operator decision d-fable-r5-r7-run (commit 9902f31b5) approved R5+R7 on 2026-10-30; approved_by is satisfied. FORWARD_PREREG.md still not on trunk.",
+  "note": "Operator-run only; no session may start or message it.\nHOLD 2026-10-28: E2 was INCONCLUSIVE (332 entry days); at 0.20 entry days/day a forward read needs about 72 months. Run only if REVIEW_O2.md says R7 = run.\nLane OPUS as for fable-run6-powered-prereg (operator-run Fable 5.1 cards use lane OPUS; no FABLE lane exists in tasks.py).\nREVIEWED: Lab_Guy 2026-10-28 ACCEPT (independent Sonnet reviewer; second pass after must-fixes)\nREVIEWED: Opus_O2 2026-10-28 a REFRESHED 2026-11-02: operator decision d-fable-r5-r7-run (commit 9902f31b5) approved R5+R7 on 2026-10-30; approved_by is satisfied. FORWARD_PREREG.md still not on trunk. REVIEWED:2026-11-04 HOLD (scope folder fable_run7_forward_test missing; operator-run only)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T16:52:57Z",
+  "refreshed": "2026-11-03T22:33:11Z",
   "refs": [
     "MyTradingSys/system/handover/FABLE_RUN_R7.md"
   ],
@@ -49,7 +49,7 @@
   "scope_out": [
     "live tree, deploy, mainnet, .secrets, .env, outcome columns and bars >= 2024-07-01"
   ],
-  "scope_sha": "df065cf70d19",
+  "scope_sha": "622a5599aaa3",
   "size": "M",
   "sources": [
     "MyTradingSys/research/fable_run_design_2026-10-28/DESIGN_R7.md"

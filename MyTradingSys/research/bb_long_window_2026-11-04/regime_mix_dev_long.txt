@@ -1,0 +1,2 @@
+360 weeks: bull 73 (20%) | bear 0 (0%) | range 222 (62%) | n/a 65 (18%) | bear weeks: primary Malkan (weekly AND monthly <=40) 0, proxy P40 (weekly <=40 alone, below SMA200, OURS) 57
+proxy P40 mix: 360 weeks: bull 73 (20%) | bear 57 (16%) | range 165 (46%) | n/a 65 (18%)

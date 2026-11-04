@@ -1,0 +1,70 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-04T02:37:50Z",
+  "commands": [],
+  "created": "2026-11-03T22:54:24Z",
+  "depends_on": [],
+  "done_when": "div_flags_chart.py draws each flag line from the exact (A,B) close pivots carried by live_confluence_feed events, shows window_class (STRONG/OK) in the label, and a named test fails on the old drawing and passes on the new one; a regenerated BTCUSDT 1d/1w chart is linked in the result",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "The RSI divergence chart must draw each flag between the two close pivots the detector used (12-bar primary and 18-bar secondary window, close-based, d-malkan-divergence-window-1104), not between re-found extremes.",
+  "id": "rsi-divergence-chart-draws-used-pivots",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Chart draws close pivots of the 12/18 detector, label shows STRONG/OK; test_chart_uses_det",
+      "ref": "eea73da9e",
+      "utc": "2026-11-04T02:37:50Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "malkan RSI: PRD/NRD as Malkan defines them; generic hidden moved to KROWN-CONFLUENCE",
+      "ref": "51b4b9a6fbf1",
+      "utc": "2026-10-27T20:37:06Z"
+    }
+  ],
+  "layers": [
+    "rsi"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEW-HOLD 2026-11-04 Haiku: goal, scope_in, done_when, steps, tests all empty (card.json:12)",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-04T02:33:11Z",
+  "refs": [],
+  "result": "Chart draws close pivots of the 12/18 detector, label shows STRONG/OK; test_chart_uses_detector_pivots failed on old code (event list empty), passes now; chart MyTradingSys/research/malkan_div_flags_2026-11-04/charts/BTCUSDT_1d.png",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/backtest/layers/rsi/div_flags_chart.py",
+    "MyTradingSys/backtest/layers/rsi/test_div_flags_chart.py"
+  ],
+  "scope_out": [
+    "detector rules, thresholds, live runner, alert wiring"
+  ],
+  "scope_sha": "51b4b9a6fbf1",
+  "size": "S",
+  "sources": [
+    "OPERATOR_DECISIONS d-malkan-divergence-window-1104"
+  ],
+  "state": "done",
+  "steps": [
+    "read backtest/layers/rsi/div_flags_chart.py, backtest/layers/alerts/live_confluence_feed.py and its window_class fields",
+    "add a failing test (test_chart_uses_detector_pivots) with a planted wick extreme that differs from the close pivot, then change detect_all/render to take the pivots from the detector"
+  ],
+  "taken": "2026-11-04T02:37:50Z",
+  "tests": "test_chart_uses_detector_pivots fails on the current drawing (wick extreme planted) and passes after the change",
+  "title": "Chart renderer draws the RSI divergence line between the two close pivots the detector actually used (operator: screenshots mark it wrongly on some charts)",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

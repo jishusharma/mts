@@ -1,34 +1,58 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest -q MyTradingSys/research/api_jobs_2026-11-03/test_sim_cards_from_json.py"
+  ],
   "created": "2026-11-03T16:27:19Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "A fixture with banner FAIL (audit-t03_planted_edges) and verdict PASSED n 509 renders FAIL and PASSED respectively; regenerated cards recount 73 EMPTY rows to banner-true labels.",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "The sim results card builder maps each row from banner.state and verdict.label, so no TOO_FEW or FAIL banner shows EMPTY or PASSED.",
   "id": "sim-result-cards-mislabel-verdicts-resul",
-  "lane": "",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sim desk: eight context re-run rows (rsi-div gated x2, wavetrend c30 retest x2, bollinger ",
+      "ref": "13022cb353f7",
+      "utc": "2026-11-04T03:48:43Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "\nREVIEWED:2026-11-04 HOLD (Haiku on API credit, job haiku-review-ready-sonnet-1104: STALE: scope changed 1dab5e297af0 after refresh; re-tag before work.)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refs": [],
+  "refreshed": "2026-11-04T05:13:40Z",
+  "refs": [
+    "MyTradingSys/research/gemini_audits_2026-11-03/blind_read_sim_cards.py"
+  ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/api_jobs_2026-11-03/sim_cards_from_json.py",
+    "MyTradingSys/research/api_jobs_2026-11-03/test_sim_cards_from_json.py"
+  ],
+  "scope_out": [
+    "re-running any sim"
+  ],
+  "scope_sha": "13022cb353f7",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Add the failing fixture test for both mislabelled cases.",
+    "Fix the mapping in sim_cards_from_json.py.",
+    "Regenerate RESULTS_CARDS_2026-11-03.md and compare counts."
+  ],
+  "tests": "MyTradingSys/research/api_jobs_2026-11-03/test_sim_cards_from_json.py::test_banner_and_verdict_mapping",
   "title": "sim result cards mislabel verdicts: RESULTS_CARDS_2026-11-03.md stamps 73 EMPTY rows whose banner is TOO_FEW (45) or FAIL (28), PASSED on audit-t03_planted_edges (banner FAIL), EMPTY on desk-meta_label_fabio_c_dev_ext (verdict PASSED, n 509). Done when the card builder maps from banner.state and verdict.label and a recount matches. Evidence: gemini-blind-read-sim-results-cards-1103",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }

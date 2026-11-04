@@ -1,0 +1,32 @@
+# prereg_gate output (before any return; n = distinct days of the cell, sd = 1.5 x median stop %, m auto + 30, cost 0.14, unit %)
+
+- A_r2r range asia signal [n_events 2697] -> n 1412 sd 0.815566 m 150 z_holm 3.588 MDE 0.096 R + cost 0.14 = 0.236 vs max plausible gross 0.3; n needed 509 PASS: may freeze
+- A_r2r range london signal [n_events 2093] -> n 1270 sd 0.77395 m 150 z_holm 3.588 MDE 0.096 R + cost 0.14 = 0.236 vs max plausible gross 0.3; n needed 459 PASS: may freeze
+- A_r2r range ny signal [n_events 3110] -> n 1465 sd 0.954425 m 150 z_holm 3.588 MDE 0.110 R + cost 0.14 = 0.250 vs max plausible gross 0.3; n needed 698 PASS: may freeze
+- A_r2r bearP40 asia signal [n_events 680] -> n 365 sd 0.891433 m 150 z_holm 3.588 MDE 0.207 R + cost 0.14 = 0.347 vs max plausible gross 0.3; n needed 609 BLOCK: do not freeze (write BLOCKED.md with these numbers)
+- A_r2r bearP40 london signal [n_events 502] -> n 318 sd 0.821322 m 150 z_holm 3.588 MDE 0.204 R + cost 0.14 = 0.344 vs max plausible gross 0.3; n needed 517 BLOCK: do not freeze (write BLOCKED.md with these numbers)
+- A_r2r bearP40 ny signal [n_events 825] -> n 378 sd 1.01911 m 150 z_holm 3.588 MDE 0.232 R + cost 0.14 = 0.372 vs max plausible gross 0.3; n needed 795 BLOCK: do not freeze (write BLOCKED.md with these numbers)
+- A_r2r range asia retest [n_events 2696] -> n 1416 sd 0.815677 m 150 z_holm 3.588 MDE 0.096 R + cost 0.14 = 0.236 vs max plausible gross 0.3; n needed 510 PASS: may freeze
+- A_r2r range london retest [n_events 2093] -> n 1270 sd 0.774117 m 150 z_holm 3.588 MDE 0.096 R + cost 0.14 = 0.236 vs max plausible gross 0.3; n needed 459 PASS: may freeze
+- A_r2r range ny retest [n_events 3110] -> n 1465 sd 0.954434 m 150 z_holm 3.588 MDE 0.110 R + cost 0.14 = 0.250 vs max plausible gross 0.3; n needed 698 PASS: may freeze
+- A_r2r bearP40 asia retest [n_events 679] -> n 366 sd 0.894553 m 150 z_holm 3.588 MDE 0.207 R + cost 0.14 = 0.347 vs max plausible gross 0.3; n needed 613 BLOCK: do not freeze (write BLOCKED.md with these numbers)
+- A_r2r bearP40 london retest [n_events 502] -> n 318 sd 0.821799 m 150 z_holm 3.588 MDE 0.204 R + cost 0.14 = 0.344 vs max plausible gross 0.3; n needed 517 BLOCK: do not freeze (write BLOCKED.md with these numbers)
+- A_r2r bearP40 ny retest [n_events 825] -> n 378 sd 1.01043 m 150 z_holm 3.588 MDE 0.230 R + cost 0.14 = 0.370 vs max plausible gross 0.3; n needed 782 BLOCK: do not freeze (write BLOCKED.md with these numbers)
+- B_retest range asia k0.25 [n_events 486] -> n 374 sd 1.10698 m 150 z_holm 3.588 MDE 0.253 R + cost 0.14 = 0.393 vs max plausible gross 0.3; n needed 939 BLOCK: do not freeze (write BLOCKED.md with these numbers)
+- B_retest bearP40 asia k0.25 [n_events 105] -> n 81 sd 1.19494 m 150 z_holm 3.588 MDE 0.588 R + cost 0.14 = 0.728 vs max plausible gross 0.3; n needed 1094 BLOCK: do not freeze (write BLOCKED.md with these numbers)
+- B_retest range london k0.25 [n_events 390] -> n 316 sd 1.07901 m 150 z_holm 3.588 MDE 0.269 R + cost 0.14 = 0.409 vs max plausible gross 0.3; n needed 892 BLOCK: do not freeze (write BLOCKED.md with these numbers)
+- B_retest bearP40 london k0.25 [n_events 76] -> n 68 sd 1.25182 m 150 z_holm 3.588 MDE 0.672 R + cost 0.14 = 0.812 vs max plausible gross 0.3; n needed 1200 BLOCK: do not freeze (write BLOCKED.md with these numbers)
+- B_retest range ny k0.25 [n_events 439] -> n 345 sd 1.58115 m 150 z_holm 3.588 MDE 0.377 R + cost 0.14 = 0.517 vs max plausible gross 0.3; n needed 1915 BLOCK: do not freeze (write BLOCKED.md with these numbers)
+- B_retest bearP40 ny k0.25 [n_events 109] -> n 84 sd 2.02288 m 150 z_holm 3.588 MDE 0.977 R + cost 0.14 = 1.117 vs max plausible gross 0.3; n needed 3134 BLOCK: do not freeze (write BLOCKED.md with these numbers)
+- B_retest range asia k0.5 [n_events 507] -> n 389 sd 1.08705 m 150 z_holm 3.588 MDE 0.244 R + cost 0.14 = 0.384 vs max plausible gross 0.3; n needed 905 BLOCK: do not freeze (write BLOCKED.md with these numbers)
+- B_retest bearP40 asia k0.5 [n_events 111] -> n 86 sd 1.15511 m 150 z_holm 3.588 MDE 0.552 R + cost 0.14 = 0.692 vs max plausible gross 0.3; n needed 1022 BLOCK: do not freeze (write BLOCKED.md with these numbers)
+- B_retest range london k0.5 [n_events 403] -> n 322 sd 1.0388 m 150 z_holm 3.588 MDE 0.256 R + cost 0.14 = 0.396 vs max plausible gross 0.3; n needed 826 BLOCK: do not freeze (write BLOCKED.md with these numbers)
+- B_retest bearP40 london k0.5 [n_events 77] -> n 69 sd 1.18429 m 150 z_holm 3.588 MDE 0.631 R + cost 0.14 = 0.771 vs max plausible gross 0.3; n needed 1074 BLOCK: do not freeze (write BLOCKED.md with these numbers)
+- B_retest range ny k0.5 [n_events 456] -> n 355 sd 1.55144 m 150 z_holm 3.588 MDE 0.365 R + cost 0.14 = 0.505 vs max plausible gross 0.3; n needed 1843 BLOCK: do not freeze (write BLOCKED.md with these numbers)
+- B_retest bearP40 ny k0.5 [n_events 112] -> n 85 sd 2.02028 m 150 z_holm 3.588 MDE 0.970 R + cost 0.14 = 1.110 vs max plausible gross 0.3; n needed 3126 BLOCK: do not freeze (write BLOCKED.md with these numbers)
+- B_retest range asia k1.0 [n_events 520] -> n 394 sd 1.05335 m 150 z_holm 3.588 MDE 0.235 R + cost 0.14 = 0.375 vs max plausible gross 0.3; n needed 850 BLOCK: do not freeze (write BLOCKED.md with these numbers)
+- B_retest bearP40 asia k1.0 [n_events 113] -> n 86 sd 1.07709 m 150 z_holm 3.588 MDE 0.514 R + cost 0.14 = 0.654 vs max plausible gross 0.3; n needed 889 BLOCK: do not freeze (write BLOCKED.md with these numbers)
+- B_retest range london k1.0 [n_events 413] -> n 330 sd 0.986396 m 150 z_holm 3.588 MDE 0.240 R + cost 0.14 = 0.380 vs max plausible gross 0.3; n needed 745 BLOCK: do not freeze (write BLOCKED.md with these numbers)
+- B_retest bearP40 london k1.0 [n_events 80] -> n 71 sd 1.10937 m 150 z_holm 3.588 MDE 0.583 R + cost 0.14 = 0.723 vs max plausible gross 0.3; n needed 943 BLOCK: do not freeze (write BLOCKED.md with these numbers)
+- B_retest range ny k1.0 [n_events 478] -> n 370 sd 1.52196 m 150 z_holm 3.588 MDE 0.350 R + cost 0.14 = 0.490 vs max plausible gross 0.3; n needed 1774 BLOCK: do not freeze (write BLOCKED.md with these numbers)
+- B_retest bearP40 ny k1.0 [n_events 116] -> n 89 sd 2.0197 m 150 z_holm 3.588 MDE 0.948 R + cost 0.14 = 1.088 vs max plausible gross 0.3; n needed 3124 BLOCK: do not freeze (write BLOCKED.md with these numbers)

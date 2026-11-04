@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-03T23:20:48Z",
   "commands": [],
   "created": "2026-10-27T20:38:55Z",
   "depends_on": [],
@@ -14,11 +15,17 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "live_confluence_feed.py: RSI 40/60 + Malkan (R-BULL/R-BEAR/PRD/NRD, window 12/18 on closes",
+      "ref": "3603b8ba3",
+      "utc": "2026-11-03T23:20:48Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "Reapply \"malkan RSI divergence: hidden kinds + chart flags for 1d/1w\"",
-      "ref": "441faf0090d2",
-      "utc": "2026-10-27T20:23:03Z"
+      "line": "merge origin/fast-track (TRIALS.md: keep both rows)",
+      "ref": "7df5f6ee6598",
+      "utc": "2026-11-03T22:15:46Z"
     },
     {
       "auto": true,
@@ -34,17 +41,22 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks\nREVIEWED: super 2026-11-04 (coordinator stamp per Super Session order d-move-lagging-layers-1104; Lab_Guy wait waived; build together with its sibling card, same area live_levels_confluence.py + layer_rules)\nREVIEW-HOLD 2026-11-04 Haiku: scope names krown_hidden_div_feed.py but rsi_divergence.py:36-37 names krown_hidden_divergence.py; neither exists (STATE STALE after refresh)",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-27T20:53:39Z",
+  "refreshed": "2026-11-03T22:33:36Z",
   "refs": [],
-  "result": "",
+  "result": "live_confluence_feed.py: RSI 40/60 + Malkan (R-BULL/R-BEAR/PRD/NRD, window 12/18 on closes) + Krown hidden flags as alert-only confluence feed, 15 tests",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
-    "MyTradingSys/backtest/layers/krown/krown_hidden_div_feed.py",
-    "MyTradingSys/backtest/layers/krown/test_krown_hidden_div_feed.py",
+    "MyTradingSys/backtest/layers/rsi/krown_hidden_divergence.py",
+    "MyTradingSys/backtest/layers/rsi/test_krown_hidden_divergence.py",
     "MyTradingSys/backtest/layers/rsi/rsi_divergence.py",
     "MyTradingSys/backtest/layers/rsi/test_rsi_divergence.py",
     "MyTradingSys/research/krown_audit_2026-10-22/LAYER_CONFLUENCE_DESIGN.md",
@@ -57,20 +69,21 @@
     "thresholds tuned on VALIDATION/HOLDOUT",
     "Malkan params"
   ],
-  "scope_sha": "441faf0090d2",
+  "scope_sha": "7df5f6ee6598",
   "size": "M",
   "sources": [
     "operator 2026-10-28 priority: stop MTS drifting; account for everything extracted; make it findable",
     "MyTradingSys/research/krown_audit_2026-10-22/LAYER_CONFLUENCE_DESIGN.md:112-115",
     "MyTradingSys/backtest/layers/rsi/rsi_divergence.py:16-24"
   ],
-  "state": "refined",
+  "state": "done",
   "steps": [
-    "Add krown_hidden_div_feed.py: thin causal wrapper over rsi_divergence with hidden kinds, returns events {ts, side, bars, chain}, label OURS, source Krown hNfjyrJEytI 00:16:57-00:17:20 (design T5).",
+    "Add krown_hidden_divergence.py (exists on trunk, 51b4b9a6f: extend it, do not create a new module): thin causal wrapper over rsi_divergence with hidden kinds, returns events {ts, side, bars, chain}, label OURS, source Krown hNfjyrJEytI 00:16:57-00:17:20 (design T5).",
     "Pin Malkan: its real caller run_divergence_mtf.py (line ~195) passes an explicit regular-only kinds tuple; add a test asserting this and that no hidden_* event appears in its output; live_rsi_divergence is read only (assert in the test, no edit).",
     "Document the feed in LAYER_CONFLUENCE_DESIGN.md T5 (consumers: any layer, RSI 40-60 gate as optional input, default off)."
   ],
-  "tests": "test_krown_hidden_div_feed.py fails until the feed module exists; test_run_divergence_mtf.py asserts explicit regular-only kinds and no hidden_* in output, failing on the pre-change code where kinds are implicit.",
+  "taken": "2026-11-03T23:20:48Z",
+  "tests": "test_krown_hidden_divergence.py (new) fails until the feed returns events {ts, side, bars, chain}; test_run_divergence_mtf.py asserts explicit regular-only kinds and no hidden_* in output, failing on the pre-change code where kinds are implicit.",
   "title": "Krown hidden divergence as a shared confluence feed any layer (RSI 40-60 included) can consume; Malkan layer stays PRD/NRD only",
   "weight": "IMPORTANT",
   "worker": "session"

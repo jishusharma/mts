@@ -1,0 +1,79 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-04T01:59:21Z",
+  "commands": [],
+  "created": "2026-11-04T01:45:38Z",
+  "depends_on": [],
+  "done_when": "research/<study>_2026-11-04/PRE_REG.md frozen (## Context block + TRIALS.md rows first), DEV fee-net table by regime/phase/session with day-clustered CI and the prereg_gate power check, VALIDATION read once for DEV survivors, RESULT.md first lines print research_kit.regime_mix_line plus a Regime mix: line, VERDICTS.csv row; HOLDOUT never read",
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Re-run WaveTrend c30 (wavetrend_2026-10-17 atlas was INCONCLUSIVE, 4 of 9 cells FAIL, no RSI confluence) with: entry on the retest after the dot, RSI confluence, split by session. Context via research_kit (regime_tag, session_tag, retest_entry); fee-net; new frozen PRE_REG.",
+  "id": "wavetrend-c30-retest-rsi-session",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "INCONCLUSIVE (underpowered, prereg_gate BLOCK): 0 of 24+96 cells survive Holm on DEV; best",
+      "ref": "3d7943357",
+      "utc": "2026-11-04T01:59:21Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "merge origin/fast-track (TRIALS.md: keep both rows)",
+      "ref": "e3e7644331ee",
+      "utc": "2026-11-04T01:17:26Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "e3e7644331ee merge origin/fast-track (TRIALS.md: keep both rows)",
+      "ref": "MyTradingSys/research/layer_lab/TRIALS.md",
+      "utc": "2026-11-04T01:17:26Z"
+    }
+  ],
+  "layers": [
+    "wavetrend"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Super Session order 2026-11-04.\nREVIEWED: super 2026-11-04 (coordinator stamp per Super Session order d-context-retest-1104; Lab_Guy wait waived)\nREVIEWED:2026-11-04 ACCEPT (Haiku read on API credit, job haiku-review-2: paths, Context, Regime mix present)",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-04T01:45:40Z",
+  "refs": [],
+  "result": "INCONCLUSIVE (underpowered, prereg_gate BLOCK): 0 of 24+96 cells survive Holm on DEV; best 15m sell RSI with-trend net +0.008 % CI [-0.134,+0.149]; buy RSI with-trend 15m net -0.187 % Holm p 0.04 (negative); VALIDATION unread, HOLDOUT unread",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/wavetrend_c30_retest_2026-11-04/",
+    "MyTradingSys/research/VERDICTS.csv",
+    "MyTradingSys/research/layer_lab/TRIALS.md"
+  ],
+  "scope_out": [
+    "no live path, no parameter beyond PRE_REG, no new trend tag (use backtest/research_kit.py), HOLDOUT never read"
+  ],
+  "scope_sha": "e3e7644331ee",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/CONTEXT_FILTER_REVIEW_2026-11-04.md",
+    "OPERATOR_DECISIONS d-context-retest-1104"
+  ],
+  "state": "done",
+  "steps": [
+    "read wavetrend_2026-10-17 PRE_REG/RESULT, CONTEXT_FILTER_REVIEW_2026-11-04.md, research_kit.py",
+    "write PRE_REG (## Context: Regime/Phase/Session/Entry; retest and session rules are OURS until a transcript line is found) and TRIALS.md rows first, then runner, DEV run, VALIDATION once for survivors"
+  ],
+  "taken": "2026-11-04T01:59:21Z",
+  "tests": "gate/entry wiring tests: as-of causality (planted future bar changes nothing), session tag and retest entry behave as specified; new tests fail on pre-change code once",
+  "title": "WaveTrend c30 re-run: retest after the dot plus RSI confluence, by session (context re-run 2)",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

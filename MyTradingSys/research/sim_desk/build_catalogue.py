@@ -39,6 +39,15 @@ EXPORTED_BY_SOURCE = {
     "MyTradingSys/research/fractals_2026-10-31/f3/RESULT.md": "fractals-f3-phase-analogs",
     "MyTradingSys/research/fractals_2026-10-31/f4/RESULT.md": "fractals-f4-8h-state-analogs",
     "MyTradingSys/research/fractals_2026-10-31/phase_tag/phase_tag.py": "fractals-phase-tag",
+    "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/RESULT.md": "rsi-divergence-mtf-gated-run1-2026-11-04",
+    "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/RESULT_LONG.md": "rsi-divergence-mtf-gated-long-2026-11-04",
+    "MyTradingSys/research/wavetrend_c30_retest_2026-11-04/RESULT.md": "wavetrend-c30-retest-run1-2026-11-04",
+    "MyTradingSys/research/wavetrend_c30_retest_2026-11-04/RESULT_LONG.md": "wavetrend-c30-retest-long-2026-11-04",
+    "MyTradingSys/research/bb_range_to_range_2026-11-04/RESULT.md": "bb-range-to-range-2026-11-04",
+    "MyTradingSys/research/bb_range_retest_2026-11-04/RESULT.md": "bb-range-retest-2026-11-04",
+    "MyTradingSys/research/bb_long_window_2026-11-04/RESULT_LONG.md": "bb-long-window-2026-11-04",
+    "MyTradingSys/research/bear_proxy_context_tuning_2026-11-04/RESULT.md": "bear-proxy-context-tuning-2026-11-04",
+    "MyTradingSys/research/rsi_40_60_line_behaviour_2026-11-04/RESULT.md": "rsi-40-60-line-behaviour-2026-11-04",
 }
 
 

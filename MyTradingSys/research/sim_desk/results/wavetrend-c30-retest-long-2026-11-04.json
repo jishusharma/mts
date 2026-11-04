@@ -1,0 +1,98 @@
+{
+ "id": "wavetrend-c30-retest-long-2026-11-04",
+ "kind": "backtest",
+ "family": "WaveTrend C30 retest",
+ "title": "Rerun, long window: WaveTrend dots + trend gate + RSI / divergence on BTCUSDT SPOT 2018-04..2024-06, strict gate plus an OURS proxy arm",
+ "provenance": "builder-export",
+ "date": "2026-11-04",
+ "what": [
+  {
+   "name": "Rule",
+   "value_plain": "same dots, gate and 12-bar exit as run 1; PRE_REG_LONG.md frozen first (f5e2e8fdc)",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Proxy arm",
+   "value_plain": "weekly RSI14 <= 40 alone, below SMA200; added after run 1 on the coordinator's decision, never called Malkan's",
+   "label": "OURS"
+  },
+  {
+   "name": "Cost",
+   "value_plain": "fee-net 0.14 % round trip (research_kit)",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Regime mix",
+   "value_plain": "326 weeks: bull 73 (22%) | bear 0 (0%) | range 222 (68%) | n/a 31 (10%) | strict bear 0 ; proxy bear (weekly RSI14 <= 40 alone, below SMA200, OURS) 57 of 326 weeks",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Power gate",
+   "value_plain": "15m none (optimistic bound) 580 days PASS (0.294 vs 0.30, m=48); every confirmatory cell BLOCK (15m rsi 413 days 0.322; 30m 0.43-0.48; 1h 0.70-0.79)",
+   "label": "OURS"
+  },
+  {
+   "name": "Spot vs futures caveat",
+   "value_plain": "run 1 used USD-M futures 1m resampled; the 2022-2024 old part differs slightly on spot even with identical rules; spot maintenance gaps (9-25 per series) not filled",
+   "label": "OURS"
+  }
+ ],
+ "how": "Same cells as run 1 on the long window with column seg = long / fresh (2018-04..2021-12) / old (2022-24); per-cell run 1 vs long table in RESULT_LONG.md; Holm m = 48 / 192.",
+ "window": "DEV 2018-04-01..2024-06-30 BTCUSDT SPOT klines (native 15m / 30m / 1h / 1d, not spliced with futures); VALIDATION not read (no DEV survivor); HOLDOUT never loaded",
+ "verdict": {
+  "label": "INCONCLUSIVE (underpowered), not FAIL and not PASS. On the long SPOT DEV window (2018-04-01..2024-06-30) the 48 pooled + 192 session cells (strict `with` gate + one OURS proxy arm, Holm m=48 / 192) produced 0 survivors, so VALIDATION stayed unread and HOLDOUT was never loaded. prereg_gate still BLOCKs every confluence cell (BLOCKED_LONG.md).",
+  "tone": "warn"
+ },
+ "why": [
+  "Bare dots still lose on every TF and side: 15m buy -0.115 % [-0.192, -0.038], sell -0.186 % [-0.245, -0.127]; 1h sell -0.544 % [-0.766, -0.323].",
+  "Lead 1 (15m sell RSI >= 60 below SMA200): run 1 +0.008 % was a 2022-24 feature; pooled n 651 net -0.183 % [-0.294, -0.072], fresh 2018-21 n 400 -0.305 %, old n 251 +0.011 %. Lead 2 (1h sell + divergence + retest): pooled n 46 -0.225 % [-1.058, +0.608], fresh n 27 -0.891 %. Neither lead holds out of the original window.",
+  "24 of 24 strict pooled cells have a negative long net. Proxy-bear buys are the only positive pooled cells (15m div n 75 +0.281 % [-0.036, +0.599], excess t 2.63), all Holm 1.00, mostly from the 2018 slice with tiny n: a hypothesis for a future pre-registered run, not a finding.",
+  "192 session cells, 0 survivors."
+ ],
+ "kpis": [
+  {
+   "label": "pooled + session cells",
+   "value": "48 + 192"
+  },
+  {
+   "label": "survivors",
+   "value": "0",
+   "tone": "warn"
+  },
+  {
+   "label": "15m sell RSI long net",
+   "value": "-0.183 % [-0.294, -0.072]",
+   "tone": "bad"
+  },
+  {
+   "label": "proxy bear weeks",
+   "value": "57 of 326"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: the study reports cell tables (dev_cells*.csv in the study folder), not a trade list"
+  }
+ ],
+ "parity": null,
+ "source_files": [
+  "MyTradingSys/research/wavetrend_c30_retest_2026-11-04/RESULT_LONG.md",
+  "MyTradingSys/research/wavetrend_c30_retest_2026-11-04/dev_cells_long.csv",
+  "MyTradingSys/research/wavetrend_c30_retest_2026-11-04/dev_survivors_long.json",
+  "MyTradingSys/research/wavetrend_c30_retest_2026-11-04/PRE_REG_LONG.md",
+  "MyTradingSys/research/wavetrend_c30_retest_2026-11-04/BLOCKED_LONG.md"
+ ],
+ "commit": "f368e28be",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "INCONCLUSIVE (underpowered), not FAIL and not PASS. On the long SPOT DEV window (2018-04-01..2024-06-30) the 48 pooled + 192 session cells (strict `with` gate + one OURS proxy arm, Holm m=48 / 192) produced 0 survivors, so VALIDATION stayed unread and HOLDOUT was never loaded. prereg_gate still BLOCKs every confluence cell (BLOCKED_LONG.md).",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: INCONCLUSIVE (underpowered), not FAIL and not PASS. On the long SPOT DEV window (2018-04-01..2024-06-30) the 48 pooled + 192 session cells (strict `with` gate + one OURS proxy arm, Holm m=48 / 192) produced 0 survivors, so VALIDATION stayed unread and HOLDOUT was never loaded. prereg_gate still BLOCKs every confluence cell (BLOCKED_LONG.md). · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
+}
