@@ -53,6 +53,18 @@ CODE_DIRS = ("scripts/dev/", "scripts/worker/", "MyTradingSys/tests/", "MyTradin
 ALWAYS = ("3w", "3x", "3gd", "3dl")   # wiring, task-card DoR, test-file discovery (B150), CI deps lint: seconds, catch the usual merge-time breaks
 DOC_STEPS = ()   # gate-tiers-by-path (operator q-v1-gate-tiers, 2026-10-20): a docs ship runs no local step; CI gates behind
 CARD_RE = re.compile(r"^MyTradingSys/system/tasks/[^/]+\.json$")   # a card in the diff brings step 3tl (task-card lint) with it
+# gate_gap_2026-11-03 (MyTradingSys/research/gate_gap_2026-11-03.md): docs/data-only ships ran no local step and went red on trunk,
+# 8 of the last 20 reverts. Each path brings the one cheap step that went red, in a docs ship too (step -> paths).
+DOC_MUST = {
+    "3tl": CARD_RE,                                                                 # dsabr-c1..c8 promoted to ready: red at 3tl
+    "3af": re.compile(r"^MyTradingSys/system/OPERATOR_DECISIONS\.md$"),            # Home hub excerpt over its 30000 B cap
+    "4d": re.compile(r"^MyTradingSys/system/handover/[^/]+\.md$"),                 # test_integrity forbidden refs
+}
+
+
+def doc_must(files, all_nums):
+    """The DOC_MUST steps (present in all_nums) a changed path brings, in all_nums order."""
+    return [n for n in all_nums if n in DOC_MUST and any(DOC_MUST[n].match(f) for f in files)]
 # Look-ahead lint (62a05b2eb): any non-test .py the lint scans (MyTradingSys/, not tests/), the lint, its allowlist and its test run step 3la.
 LOOKAHEAD_STEP = "3la"
 LOOKAHEAD_RE = re.compile(r"^(MyTradingSys/(?!tests/)(?:.*/)?(?!test_)[^/]+\.py|scripts/dev/lookahead_(lint\.py|allowlist\.tsv)|"
@@ -201,6 +213,8 @@ MUST_EXTRAS = {
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/test_cost_inventory.py":
         re.compile(r"^MyTradingSys/(backtest|research)/(?!(.*/)?test_[^/]*$).*\.py$|^MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/"),
     "MyTradingSys/research/sim_desk/test_backfill.py": re.compile(r"^MyTradingSys/research/sim_desk/"),
+    # gate_gap_2026-11-03: TRIAL_REGISTRY rows shipped without the rebuilt ledger (C26 Phase 2, rumers): 2 reverts
+    "scripts/dev/test_trial_ledger.py": re.compile(r"^MyTradingSys/research/(.*/)?TRIAL_(REGISTRY[^/]*|LEDGER_BUILT)\.csv$"),
 }
 
 
@@ -261,11 +275,11 @@ def explain(files, steps, mentioned=mentions, named=names_file, step_files=None)
     if not code and not _must_triggered(files):   # a must-pass-extras path (MUST_EXTRAS) is smoke even when data: step 3xm only exists there
         # GATE_SPEED review: the wiring registry is data under system/, but 3x/3w are its only readers (a bad entry would go red only in CI)
         reg = {"3x", "3w"} if any(f == WIRING_REGISTRY for f in files) else set()
-        nums = [n for n in all_nums if n in DOC_STEPS or n in reg]
+        must = set(doc_must(files, all_nums))
+        nums = [n for n in all_nums if n in DOC_STEPS or n in reg or n in must]
         return "docs", nums, f"docs: {len(files)} doc/data file(s) only; no local gate" + (f" except {','.join(nums)}" if nums else "")
     picked = {n for n in ALWAYS if n in all_nums} | subset_steps
-    if "3tl" in all_nums and any(CARD_RE.match(f) for f in files):
-        picked.add("3tl")
+    picked.update(doc_must(files, all_nums))
     always = [n for n in all_nums if n in ALWAYS]
     if len(code) < len(files):                    # docs ride along: their invariants too
         picked |= {n for n in DOC_STEPS if n in all_nums}
