@@ -4,9 +4,9 @@
   "week_resets": 1794204690,
   "week_used": 36.0,
   "window_resets": 1793814138,
-  "window_used": 1.0
+  "window_used": 2.0
  },
- "at": "2026-11-04T13:39:19Z",
+ "at": "2026-11-04T14:13:53Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -22,10 +22,25 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 6.0,
-  "window_pts": 0.0,
-  "window_runs": 2
+  "window_pts": 1.0,
+  "window_runs": 3
  },
  "runs": [
+  {
+   "at": "2026-11-04T14:12:25Z",
+   "card": "gpt-rederive-wavetrend-c30-retest-1104",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 79,
+   "tokens_out": 4087,
+   "tokens_total": 443261,
+   "tokens_uncached": 54790,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
   {
    "at": "2026-11-04T13:38:00Z",
    "card": "gpt-rederive-rsi-div-mtf-gated-1104",
@@ -160,21 +175,6 @@
    "tokens_uncached": 26460,
    "week_pts": 0.0,
    "window_pts": 0.0
-  },
-  {
-   "at": "2026-11-02T16:21:52Z",
-   "card": "gpt-spec-tests-role-line",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "cted (someone shipped first), retry 1/5\nsync: merge of origin/fast-track conflicts; resolve, `git commit`, then run ship again.\nAuto-merging scripts/dev/extra_t",
-   "outcome": "SHIP_FAILED",
-   "seconds": 100,
-   "tokens_out": 6318,
-   "tokens_total": 564790,
-   "tokens_uncached": 36232,
-   "week_pts": 0.0,
-   "window_pts": 1.0
   }
  ]
 }

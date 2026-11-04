@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T14:13:46Z",
   "commands": [
     "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-wavetrend-c30-retest.md'); assert p.exists() and len(p.read_text())>400\""
   ],
@@ -16,6 +17,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "SOUND / MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-wavetrend-c30-rete",
+      "ref": "86ca07fe4",
+      "utc": "2026-11-04T14:13:46Z"
+    },
     {
       "auto": true,
       "kind": "report",
@@ -44,7 +51,12 @@
     "MyTradingSys/research/wavetrend_c30_retest_2026-11-04/study_long.py"
   ],
   "reopened": "2026-11-04T13:19:04Z",
-  "result": "",
+  "result": "SOUND / MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-wavetrend-c30-retest-1104.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-wavetrend-c30-retest.md",
     "MyTradingSys/research/wavetrend_c30_retest_2026-11-04"
@@ -53,12 +65,13 @@
   "scope_sha": "36e6bf1bbf6d",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Inspect study.py and study_long.py in MyTradingSys/research/wavetrend_c30_retest_2026-11-04",
     "Verify that dot trigger, retest bar entry, RSI confluence, and HTF regime gates use closed bars only without future leakage",
     "Write MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-wavetrend-c30-retest.md"
   ],
+  "taken": "2026-11-04T14:13:46Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-wavetrend-c30-retest.md'); assert p.exists() and len(p.read_text())>400\"",
   "title": "GPT independent re-derivation of wavetrend_c30_retest_2026-11-04 retest+RSI+session metrics",
   "weight": "ROUTINE",
