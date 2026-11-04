@@ -16,7 +16,15 @@
   "id": "gpt-spec-tests-live-confluence-feed-1104",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Confluence feed: Malkan window 12 STRONG / 18 OK / >18 WEAK on closes, old windows as comp",
+      "ref": "8ec81970df2f",
+      "utc": "2026-11-03T23:16:15Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "Mutation check (lab_guy, E4: a test must fail first): flip one comparison in the code under test (window bound, pivot rule) and show the new tests fail; revert.",
@@ -24,7 +32,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "gemini-pro-argon",
-  "refreshed": "2026-11-04T07:15:00Z",
+  "refreshed": "2026-11-04T13:43:26Z",
   "refs": [
     "MyTradingSys/backtest/layers/alerts/live_confluence_feed.py"
   ],
@@ -34,7 +42,7 @@
     "MyTradingSys/backtest/layers/alerts/live_confluence_feed.py"
   ],
   "scope_out": [],
-  "scope_sha": "",
+  "scope_sha": "8ec81970df2f",
   "size": "S",
   "sources": [],
   "state": "ready",

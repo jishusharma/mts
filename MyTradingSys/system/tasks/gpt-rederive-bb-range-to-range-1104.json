@@ -15,7 +15,15 @@
   "id": "gpt-rederive-bb-range-to-range-1104",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "label fix: Tom session rule is OURS (bb cards, RESULT.md); refine chart-draws-used-pivots ",
+      "ref": "e8b2dfe9bc1a",
+      "utc": "2026-11-04T02:33:15Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -23,7 +31,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "gemini-pro-argon",
-  "refreshed": "2026-11-04T07:15:00Z",
+  "refreshed": "2026-11-04T13:43:23Z",
   "refs": [
     "MyTradingSys/research/bb_range_to_range_2026-11-04/study.py",
     "MyTradingSys/research/bb_range_to_range_2026-11-04/PRE_REG.md"
@@ -34,7 +42,7 @@
     "MyTradingSys/research/bb_range_to_range_2026-11-04"
   ],
   "scope_out": [],
-  "scope_sha": "",
+  "scope_sha": "e8b2dfe9bc1a",
   "size": "S",
   "sources": [],
   "state": "ready",
