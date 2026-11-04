@@ -14,11 +14,13 @@ Stop at 5 h >= 80%, week >= cap, CI red, no ready cards, the TRANSIT at time, or
 
 ## Next 3 steps
 1. `python scripts/dev/sync.py start supervisor-B-<utc date>`; `get_usage`; `python scripts/dev/supervisor.py plan --login B --five <%> --five-reset <utc> --week <%> --week-reset <utc> --running 0`.
-2. Still working at 13:45Z 11-04. DSA chat rebooted 13:40Z in its Chrome tab, hands-free on, no click needed, working the Tom ledger row; each wake read its panel and the bridge age, send the boot text again if it is quiet. Codex lane works from the NUC with no sign-in step; start ticks with the MTS-Wake-codextick task (20 min gap). lc-validation dropped, levels void.
+2. Still working at 17:00Z 11-04; operator: eco mode, week stop 75%, send review and fix work to the Claude Platform credit (`api_job.py launch`, Haiku for read checks, Sonnet for small fixes, one job at a time). DSA is STOPPED: bridge 0.7.26 is installed in F:/AIBridge, but the operator must reload the extension, refresh the tab and tick Hands-free (the permission system refuses it from a session). After that, tell DSA its last three read results never posted, ask it to re-read smaller pieces, and read the Hands-free box directly each wake. Codex starts with the MTS-Wake-codextick task (20 min gap); before a tick after a codex_run.py fix, fast-forward F:/MTS/mts-codex-lab, since a tick keeps the old code in memory. Gemini: `gemini_queue.py run <card>:medium`, then a capped Haiku job spot-checks and ships the branch.
 3. `python scripts/dev/tasks.py dispatch`; start the next picks.
 
 ## Traps
 - One ship at a time; EXTRA registration forces the ~20 min gate.
+- This machine's account file reads as login A while the app is B; set env MTS_LOGIN=B for supervisor.py and mts_signal.py (raw card login-detection-reads-the-wrong-account-).
+- A ship through red CI needs `sync.py ship --fix-ci`; without it the tool refuses after printing "pure revert", and nothing is pushed.
 
 ## Open
 - Claims above: finish, hand over in the card, or release.
