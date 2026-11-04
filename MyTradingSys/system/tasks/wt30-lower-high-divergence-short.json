@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "class": "C2",
+  "commands": [
+    "python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/wt_bible_studies_2026-11-04/wt30_div_short/RESULT.md').read_text(); assert 'Regime mix:' in t and 'VERDICT' in t.upper()\""
+  ],
+  "created": "2026-11-04T13:57:14Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/wt_bible_studies_2026-11-04/wt30_div_short/PRE_REG.md frozen before any run (from SPEC.md Card 1, prereg_gate output pasted, ## Context and a Regime mix line), then MyTradingSys/research/wt_bible_studies_2026-11-04/wt30_div_short/RESULT.md with per-cell n, net CI, Holm p, a Regime mix line and VERDICT PASS/FAIL/INCONCLUSIVE; VALIDATION read at most once, HOLDOUT never.",
+  "est_turns": 38,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Study the operator's WaveTrend 30m divergence short exactly as SPEC.md Card 1: unconditional event, his-context subset, feature cells, placebo, fee-net; pre-register first. Spec: MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md section Card 1.",
+  "id": "wt30-lower-high-divergence-short",
+  "lane": "SONNET",
+  "layers": [
+    "wavetrend"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "class=C2 (a gate/definition study). NOT stamped: needs the non-Claude spec review of wt_bible_studies SPEC.md (card gemini-spec-review-wt-bible-studies-1104) and then REVIEWED:ACCEPT before take. Windows from splits.py only; HOLDOUT never loaded.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md",
+    "MyTradingSys/research/wt_bible_studies_2026-11-04/wt30_div_short",
+    "MyTradingSys/backtest/layers/wavetrend/wavetrend.py",
+    "MyTradingSys/backtest/splits.py"
+  ],
+  "scope_out": [],
+  "size": "M",
+  "sources": [],
+  "state": "raw",
+  "steps": [
+    "Read MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md Card 1 and backtest/PRE_REG_TEMPLATE.md; run verdicts.py check",
+    "Write PRE_REG.md, run study.py --pass count, run prereg_gate.py --m auto (exit 1 = stop and file BLOCKED.md)",
+    "Run --pass dev, write RESULT.md with the Regime mix line, append the VERDICTS row, ship"
+  ],
+  "tests": "python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/wt_bible_studies_2026-11-04/wt30_div_short/RESULT.md').read_text(); assert 'Regime mix:' in t and 'VERDICT' in t.upper()\"",
+  "title": "WT 30m lower-high divergence short (operator setup): DEV study with features that separate his examples from weak ones",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}
