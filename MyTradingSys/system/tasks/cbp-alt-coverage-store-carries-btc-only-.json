@@ -4,32 +4,54 @@
   "commands": [],
   "created": "2026-11-03T15:39:49Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "ladder(rows, symbol='ETH') returns the ETH 2,350 and 2,250 levels from a fixture row; ladder(rows) for BTC returns byte-identical output to before; CLI --symbol ETH prints them; test_analyst_levels.py passes.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "analyst_levels.ladder() keeps only rows whose symbols include BTC (scripts/dev/analyst_levels.py:66-67) and parse_levels() accepts only 40k..200k (LO/HI, line 26): alt levels (ETH 2,350/2,250 Habib, vdPoppe names from cbp/ALT_BUY_PLAN_2026-10-31.md) can never show. Add a per-symbol ladder (symbol param, per-symbol price band) so alts appear; BTC output unchanged.",
   "id": "cbp-alt-coverage-store-carries-btc-only-",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "analyst_levels: 5 spec-derived tests kill 7 surviving mutations",
+      "ref": "9261aa56e79d",
+      "utc": "2026-11-01T18:59:20Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-04 T0-ONLY. ETH band is OURS. Store ingest half of title not in scope: needs extraction run.",
   "prio": 3,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "gemini-3.8-flash",
+  "refreshed": "2026-11-04T07:09:16Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/analyst_levels.py",
+    "scripts/dev/test_analyst_levels.py"
+  ],
+  "scope_out": [
+    "MyTradingSys/cbp.py",
+    "live path"
+  ],
+  "scope_sha": "9261aa56e79d",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read analyst_levels.py ladder/parse_levels/recent_rows and cbp._norm_symbol",
+    "Add SYMBOL_BANDS dict (BTC 40k-200k kept; ETH band OURS, label as OURS) and symbol arg to parse_levels/ladder",
+    "Add --symbol CLI flag, default BTC",
+    "Add fixture-row tests for ETH and unchanged BTC; ingest of alt rows into the store is a separate card (needs CBP extraction run, post DSA desk task)"
+  ],
+  "tests": "test_analyst_levels.py: new test_ladder_eth_levels fails on current code (BTC-only filter) and passes after; existing BTC tests unchanged",
   "title": "CBP alt coverage: store carries BTC-only symbols (13 rows, 0 alt trades) while ALT_BUY_PLAN found 11 vdPoppe/Jala alt rules; ingest alt symbols and levels (ETH 2,350/2,250 Habib, vdPoppe names) so analyst_levels.py can show alts",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }
