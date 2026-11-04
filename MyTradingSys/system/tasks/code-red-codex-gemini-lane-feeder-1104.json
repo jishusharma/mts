@@ -4,6 +4,15 @@
   "commands": [
     "python -m pytest scripts/dev/test_supervisor.py scripts/dev/test_tasks.py -q"
   ],
+  "context": {
+    "calls_to_edit": 11,
+    "folded": "2026-11-04T12:52:38Z",
+    "misses": 11,
+    "reads": [
+      "MyTradingSys/system/ANNOUNCEMENTS.md"
+    ],
+    "session": "agent-ac123b0bd49b4c9a0"
+  },
   "created": "2026-11-04T07:15:00Z",
   "depends_on": [],
   "done_when": "scripts/dev/tasks.py refine_due() returns non-zero (or supervisor.py plan_lines emits RUN Session_Planner) whenever lane_counts() shows GEMINI < 4 or CODEX < 8; supervisor.py plan_lines surfaces CODEX < 8 even when NUC has no live heartbeat; pytest scripts/dev/test_supervisor.py scripts/dev/test_tasks.py passes 100%.",
