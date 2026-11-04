@@ -211,3 +211,4 @@ MyTradingSys/research/bb_range_to_range_2026-11-04/test_range_wiring.py
 MyTradingSys/research/bb_range_retest_2026-11-04/test_level_arm.py
 MyTradingSys/backtest/test_fetch_binance_archive.py
 MyTradingSys/research/wavetrend_c30_retest_2026-11-04/test_wiring_long.py
+MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/test_long_wiring.py
