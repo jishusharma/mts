@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T09:57:26Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -27,6 +28,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "9/20 revert causes now gated pre-push; MyTradingSys/research/gate_gap_2026-11-03.md; 5 fai",
+      "ref": "1dfa10977",
+      "utc": "2026-11-04T09:57:26Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "tidy: finished worktrees retire right after ship",
@@ -45,7 +52,12 @@
   "refined_by": "",
   "refreshed": "2026-11-03T20:23:08Z",
   "refs": [],
-  "result": "",
+  "result": "9/20 revert causes now gated pre-push; MyTradingSys/research/gate_gap_2026-11-03.md; 5 fail-first tests",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/gate_select.py",
     "scripts/dev/test_gate_select.py",
@@ -59,13 +71,14 @@
   "scope_sha": "59815236e099",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "git log origin/fast-track --grep=Revert --since=7.days: for each, find the CI step that failed (sync.py ci or GitHub run log) and classify: step in smoke gate or not",
     "write the gap table file",
     "for each gap write the failing test, then fix gate_select.py or sync.py",
     "run test_gate_select.py and test_sync.py"
   ],
+  "taken": "2026-11-04T09:57:26Z",
   "tests": "scripts/dev/test_gate_select.py or scripts/dev/test_sync.py: one new test per gap, each fails on pre-change code (the existing test_any_backtest_or_research_py_runs_the_lookahead_step does not count)",
   "title": "Research-script lint and cost-inventory trips cost a revert per study (98 reverts in 7 days): catch them in sync.py ship before push; done when a planted trip stops the ship, not trunk",
   "weight": "IMPORTANT",

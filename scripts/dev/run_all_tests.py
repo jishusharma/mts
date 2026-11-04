@@ -843,6 +843,7 @@ def apply_fast(plan, files, nums, jobs):
             needed.add("3dl")
     if any(gate_select._is_doc(f) for f in files):
         needed.update(gate_select.DOC_STEPS)
+    needed.update(gate_select.doc_must(files, all_nums))   # gate_gap_2026-11-03: a ride-along card keeps 3tl
     keep_nums = {n for n in nums if n in all_nums and n not in pytest_nums and n not in ("3xt", "5b") and (n not in FAST_COSTLY_ALWAYS or n in needed)}         | {n for n in FAST_ALWAYS if n in all_nums}
     units = {}   # key -> (estimated seconds, direct)
 
