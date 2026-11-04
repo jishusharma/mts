@@ -18,9 +18,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "sim desk: eight context re-run rows (rsi-div gated x2, wavetrend c30 retest x2, bollinger ",
-      "ref": "13022cb353f7",
-      "utc": "2026-11-04T03:48:43Z"
+      "line": "rsi 40/60 line behaviour: RSI sits near a random-walk benchmark at both lines, no default ",
+      "ref": "1dab5e297af0",
+      "utc": "2026-11-04T08:32:18Z"
     }
   ],
   "layers": [],
@@ -30,7 +30,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-04T05:13:40Z",
+  "refreshed": "2026-11-04T13:21:38Z",
   "refs": [
     "MyTradingSys/research/gemini_audits_2026-11-03/blind_read_sim_cards.py"
   ],
@@ -42,7 +42,7 @@
   "scope_out": [
     "re-running any sim"
   ],
-  "scope_sha": "13022cb353f7",
+  "scope_sha": "1dab5e297af0",
   "size": "S",
   "sources": [],
   "state": "ready",

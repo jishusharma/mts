@@ -131,7 +131,23 @@ def banner_of(r):
     text = "%s · verdict as written: %s · n=%s · net R after fees %s · try %s · fee break-even %s" % (
         head, label or "none", "?" if n is None else n, "n/a" if net is None else "%+.3f" % net,
         "n/a" if try_no is None else "#%d" % try_no, "n/a" if be is None else "x%s" % be)
-    return {"state": state, "tone": bt, "verdict": label, "n": n, "net_r": net, "try_no": try_no, "breakeven_x": be, "text": text}
+    out = {"state": state, "tone": bt, "verdict": label, "n": n, "net_r": net, "try_no": try_no, "breakeven_x": be, "text": text}
+    if n is None:
+        # No count in the KPIs: a trade_chart example holds every trade of the verdict (net % after fees per trade).
+        tr = next((e.get("trades") for e in r.get("examples", []) if e.get("kind") == "trade_chart" and e.get("trades")), None)
+        if tr:
+            n = len(tr)
+            pct = round(sum(t["net"] for t in tr) / n, 3)
+            if n < MIN_N:
+                state, head = "TOO_FEW", "TOO FEW TRADES"
+            elif tone == "bad" or label.upper().startswith("FAIL"):
+                state, head = "FAIL", "FAIL"
+            else:
+                state, head = "UNCLEAR", "UNCLEAR"  # a % mean is not R: never a PASS from this path
+            out.update(state=state, tone={"FAIL": "bad", "TOO_FEW": "warn", "UNCLEAR": ""}[state], n=n, net_pct=pct,
+                       text="%s · verdict as written: %s · n=%d (trade list) · net %+.3f %%/trade after fees · try %s · fee break-even %s" % (
+                           head, label or "none", n, pct, "n/a" if try_no is None else "#%d" % try_no, "n/a" if be is None else "x%s" % be))
+    return out
 
 
 def trade_row(item):
@@ -483,7 +499,7 @@ show(0);}};}
 function tradeChart(x){const tr=x.trades,n=tr.length,M=(x.tf_min||30)*60000;
 const h='<details class="note"><summary>?</summary><b>How to read it.</b> The rule is checked on every candle; a trade happens only where it fires. Each picture below is one trade on the '+esc(x.tf||"30m")+' chart: '+
 '<span class="good">&#9650; entry</span> (open of the candle after the signal), <span class="bad">&#9660; exit</span>, the shaded box is the time in the trade (green = won, red = lost after fees), the dashed line is the entry price (0 %). '+
-'Prices are shown as % from the entry. Lower panes: WaveTrend (blue dot = the buy dot at or under -53), RSI (orange line = the divergence: price made a lower low, RSI a higher low). '+esc(x.stop_note||"")+'</details>'+
+'Prices are shown as % from the entry. Lower panes: WaveTrend (blue dot = the buy dot at or under -53), RSI (orange line = the divergence: price made a lower low, RSI a higher low). '+esc(x.stop_note||"")+'</details>'+(x.div_rule?'<div class="note" style="color:var(--warn)">&#9888; '+esc(x.div_rule)+'</div>':'')+
 '<div class="ctl"><button id="cvp" aria-label="Previous trade">&lt; Prev</button><button id="cvn" aria-label="Next trade">Next &gt;</button><select id="cvs" aria-label="Pick a trade">'+
 tr.map((t,i)=>'<option value="'+i+'">#'+(i+1)+" "+esc(t.d)+" UTC: "+f2(t.net)+" %</option>").join("")+'</select><button id="cvr" aria-label="Replay this trade candle by candle">&#9654; Replay this trade</button><button id="cvst" aria-label="One candle forward">Step 1 candle &#9656;</button></div><div id="cvph" style="font-size:15px;min-height:2.6em;margin:4px 0"></div><svg id="cvg" viewBox="0 0 700 430" style="max-width:min(100%,calc((100vh - 140px)*1.49))" role="img" aria-label="Candles of the selected trade"></svg><div id="cvi" class="note"></div>';
 const init=()=>{let cur=0,up=null;const stop=()=>{if(window.cvT){clearInterval(window.cvT);window.cvT=null}$("cvr").innerHTML="&#9654; Replay this trade"};const go=i=>{stop();i=Math.max(0,Math.min(n-1,+i));const sl=$("slider");if(sl&&+sl.max===n-1){sl.value=i;sl.oninput()}else cvShow(i)};
