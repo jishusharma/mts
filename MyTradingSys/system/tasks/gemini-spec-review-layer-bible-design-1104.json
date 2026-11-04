@@ -51,7 +51,7 @@
   "scope_sha": "deff345f2714",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/layer_bible/DESIGN.md, MyTradingSys/backtest/layers/FORMULAS.md s20, MyTradingSys/backtest/layers/wavetrend/wavetrend.py",
     "List defects with E-class, severity, fix",
