@@ -1,0 +1,13 @@
+# Salvage of 7 NUC branches (card salvage-unshipped-branches-nuc-1103)
+
+Checked 2026-11-04 after `git fetch origin`. Verdicts: SHIP / DROP / ON-TRUNK. No branch deleted by this card. DECISION (OURS): ref absent = DROP (nothing to cherry); live-path files are never cherry-picked by a Builder.
+
+| branch | commits ahead (git cherry) | files | verdict | reason |
+|---|---|---|---|---|
+| jis-nuc/codex-48h-value-audit | 12 ahead of origin/fast-track (git cherry: 12 `+`, 1 `-` already on trunk = a19ce28e) | 79 files: audit_48h_20261030/ evidence, 7 audit48-* cards, cbp/validation/sim_desk fixes + tests, `BinanceLiquidationAccumulator.java`, `live_validation.py` | SHIP | Fixes not on trunk (trunk lacks the 5s shutdown drain wait and the nonfinite/corrupt-hook-state checks); base f73ff791c is stale so a straight merge would revert trunk Java tests. Live-path files: NOT cherry-picked here, coordinator lands it via DEPLOY_RUNBOOK. Cherry-pick shas: 1b9eb5ee 7e958010 e5bf8716 0e1dbd7c 92c1c3f9 890ea03a a3556bab abffadc7 ba9c6b84 a6ed71c3 abbe1039 71223e64 |
+| jis-nuc/gemini-pick | 0 (ref absent: `git rev-parse origin/<branch>` fails, `git ls-remote --heads origin` empty, no local or backup ref) | none | DROP | Ref exists nowhere reachable; nothing to salvage. Only a NUC-local unpushed copy could hold work (check on NUC before treating as lost). |
+| jis-nuc/codex-gpt-audit-formulas-vs-krown-layer | 0 (ref absent: `git rev-parse origin/<branch>` fails, `git ls-remote --heads origin` empty, no local or backup ref) | none | DROP | Same: ref absent. Twin check: trunk already has gpt-spec-tests-* cards and layer_lab reports. |
+| dsa/jis-nuc-1101-0853 | 0 (ref absent: `git rev-parse origin/<branch>` fails, `git ls-remote --heads origin` empty, no local or backup ref) | none | DROP | Same: ref absent (only dsa/jis-nb-* local branches exist). |
+| jis-nuc/dsa-bridge-exploratory-2 | 0 (ref absent: `git rev-parse origin/<branch>` fails, `git ls-remote --heads origin` empty, no local or backup ref) | none | DROP | Same: ref absent. |
+| gemini-q/fabervaale-cvd-sweep | 0 (ref absent: `git rev-parse origin/<branch>` fails, `git ls-remote --heads origin` empty, no local or backup ref) | none | DROP | Same: ref absent (origin has ~40 other gemini-q/* branches, not this one). |
+| gemini-q/gemini-scan-done-cards-missing-paths-1101 | 0 (ref absent: `git rev-parse origin/<branch>` fails, `git ls-remote --heads origin` empty, no local or backup ref) | none | DROP | Same: ref absent. Twin check: trunk has promote spec test (promotion/test_promote_spec.py), tom-noise report (2026-10-30_gpt-spec-tests-tom-noise-units.md) and q76 recheck reports. |
