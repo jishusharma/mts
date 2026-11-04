@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T01:59:21Z",
   "commands": [],
   "created": "2026-11-04T01:45:38Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "wavetrend-c30-retest-rsi-session",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "INCONCLUSIVE (underpowered, prereg_gate BLOCK): 0 of 24+96 cells survive Holm on DEV; best",
+      "ref": "3d7943357",
+      "utc": "2026-11-04T01:59:21Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +46,12 @@
   "refined_by": "",
   "refreshed": "2026-11-04T01:45:40Z",
   "refs": [],
-  "result": "",
+  "result": "INCONCLUSIVE (underpowered, prereg_gate BLOCK): 0 of 24+96 cells survive Holm on DEV; best 15m sell RSI with-trend net +0.008 % CI [-0.134,+0.149]; buy RSI with-trend 15m net -0.187 % Holm p 0.04 (negative); VALIDATION unread, HOLDOUT unread",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/wavetrend_c30_retest_2026-11-04/",
     "MyTradingSys/research/VERDICTS.csv",
@@ -54,11 +66,12 @@
     "MyTradingSys/research/CONTEXT_FILTER_REVIEW_2026-11-04.md",
     "OPERATOR_DECISIONS d-context-retest-1104"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read wavetrend_2026-10-17 PRE_REG/RESULT, CONTEXT_FILTER_REVIEW_2026-11-04.md, research_kit.py",
     "write PRE_REG (## Context: Regime/Phase/Session/Entry; retest and session rules are OURS until a transcript line is found) and TRIALS.md rows first, then runner, DEV run, VALIDATION once for survivors"
   ],
+  "taken": "2026-11-04T01:59:21Z",
   "tests": "gate/entry wiring tests: as-of causality (planted future bar changes nothing), session tag and retest entry behave as specified; new tests fail on pre-change code once",
   "title": "WaveTrend c30 re-run: retest after the dot plus RSI confluence, by session (context re-run 2)",
   "weight": "ROUTINE",
