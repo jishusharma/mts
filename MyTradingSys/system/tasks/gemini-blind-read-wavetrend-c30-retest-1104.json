@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-04T07:21:54Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-04/wavetrend_c30_retest_blind_read.md has one row per quoted number (at least 12): FOUND / DIFF / NOT_IN_DATA; line 1 holds the three counts; NOT_IN_DATA when klines are absent on the host.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Cross-vendor check (Gemini checks the Claude-built study; the GPT card gpt-audit-wavetrend-c30-retest-1104 checks study code vs PRE_REG): reproduce each quoted n, rate and fee-net R from the saved counts or the script.",
+  "id": "gemini-blind-read-wavetrend-c30-retest-1104",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "wavetrend-c30 long window: INCONCLUSIVE, 0 survivors, both run 1 leads fail on 2018-2021",
+      "ref": "36e6bf1bbf6d",
+      "utc": "2026-11-04T03:28:40Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "36e6bf1bbf6d wavetrend-c30 long window: INCONCLUSIVE, 0 survivors, both run 1 leads fail o",
+      "ref": "MyTradingSys/research/wavetrend_c30_retest_2026-11-04/RESULT_LONG.md",
+      "utc": "2026-11-04T03:28:40Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED: planner-c-1104 2026-11-04 T0-ONLY (template of done gemini-blind-read/gpt-audit cards; twin check: no blind read or audit of this folder in tasks/ or archive/). Never use model output as the source.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-04T07:21:55Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/wavetrend_c30_retest_2026-11-04/RESULT.md (read)",
+    "MyTradingSys/research/wavetrend_c30_retest_2026-11-04/RESULT_LONG.md (read)",
+    "MyTradingSys/research/wavetrend_c30_retest_2026-11-04/counts.csv (read)",
+    "MyTradingSys/research/wavetrend_c30_retest_2026-11-04/counts_long.csv (read)",
+    "MyTradingSys/research/wavetrend_c30_retest_2026-11-04/PRE_REG.md (read)",
+    "MyTradingSys/research/gemini_audits_2026-11-04/wavetrend_c30_retest_blind_read.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source report or scripts; no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "36e6bf1bbf6d",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/wavetrend_c30_retest_2026-11-04/RESULT.md:1-30"
+  ],
+  "state": "ready",
+  "steps": [
+    "List every number quoted in the report",
+    "Re-run the saved script from a scratch copy or read its saved output (counts*.csv); copy the number found",
+    "Write FOUND/DIFF/NOT_IN_DATA per row, counts on line 1"
+  ],
+  "tests": "audit card, output file is the test; each row quotes the source line it was matched to; repo files stay byte-identical (git diff empty)",
+  "title": "[GEMINI] blind re-read of wavetrend_c30_retest_2026-11-04 RESULT.md and RESULT_LONG.md: every number against counts*.csv and study.py",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-04T07:22:09Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-bb-long-window.md has one row per headline number (at least 10): MATCH / DIFF (both values) / NOT_IN_DATA; line 1 holds the three counts.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independently recompute the headline n and fee-net R rows of RESULT_LONG.md from counts_long.csv with the fee formula in FORMULAS.md (not from study_long.py); the Gemini lane gets the follow-up blind read.",
+  "id": "gpt-rederive-bb-long-window-1104",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "bb long-window DEV pass: A (range-to-range) FAIL again, B (retest level) INCONCLUSIVE, 0 o",
+      "ref": "4422152e1417",
+      "utc": "2026-11-04T03:37:20Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "4422152e1417 bb long-window DEV pass: A (range-to-range) FAIL again, B (retest level) INCO",
+      "ref": "MyTradingSys/research/bb_long_window_2026-11-04/RESULT_LONG.md",
+      "utc": "2026-11-04T03:37:20Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED: planner-c-1104 2026-11-04 T0-ONLY (template of done gemini-blind-read/gpt-audit cards; twin check: no blind read or audit of this folder in tasks/ or archive/). Never use model output as the source.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-04T07:22:10Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/bb_long_window_2026-11-04/RESULT_LONG.md (read)",
+    "MyTradingSys/research/bb_long_window_2026-11-04/counts_long.csv (read)",
+    "MyTradingSys/backtest/layers/FORMULAS.md (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-bb-long-window.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source report or scripts; no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "4422152e1417",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/bb_long_window_2026-11-04/RESULT_LONG.md:1-30"
+  ],
+  "state": "ready",
+  "steps": [
+    "List headline numbers",
+    "Compute each from counts_long.csv with the FORMULAS.md fee",
+    "Write the table"
+  ],
+  "tests": "audit card, output file is the test; each row quotes the source line it was matched to; repo files stay byte-identical (git diff empty)",
+  "title": "GPT re-derive: bb_long_window_2026-11-04 RESULT_LONG.md headline fee-net numbers from counts_long.csv and FORMULAS.md",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

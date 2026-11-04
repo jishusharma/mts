@@ -4,31 +4,44 @@
   "commands": [],
   "created": "2026-11-03T18:20:34Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/salvage_nuc_1103/DECISIONS.md has 7 rows (branch, commits ahead of origin/fast-track from git cherry, files, verdict SHIP|DROP|ON-TRUNK, one-line reason); SHIP rows list the cherry-pick sha; no branch deleted by the card",
+  "est_turns": 15,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Review-and-discard: for each of the 7 NUC branches with commits off trunk, decide SHIP / DROP / ALREADY-ON-TRUNK from git evidence, so the branches can be deleted",
   "id": "salvage-unshipped-branches-nuc-1103",
   "lane": "SONNET",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED: planner-c-1104 2026-11-04 T0-ONLY",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T07:19:02Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "Decide ship or drop for 7 NUC branches with commits off trunk (folders removed 2026-11-03, branches kept): jis-nuc/codex-48h-value-audit (12 commits, 78 files), jis-nuc/gemini-pick (promote.py spec tests), jis-nuc/codex-gpt-audit-formulas-vs-krown-layer (tom noise spec tests), dsa/jis-nuc-1101-0853 (q76 trust recheck, its tree has 2 uncommitted aibridge files), jis-nuc/dsa-bridge-exploratory-2 (failing-first bridge tests), gemini-q/fabervaale-cvd-sweep (channel sweep), gemini-q/gemini-scan-done-cards-missing-paths-1101 (audit). Leftover files saved in BinanceDataFeed/Dumps/wt_rescue.",
-  "weight": "",
-  "worker": ""
+  "scope_in": [
+    "MyTradingSys/research/salvage_nuc_1103/DECISIONS.md"
+  ],
+  "scope_out": [
+    "no deletion of branches or Dumps/wt_rescue; no cherry-pick of live-path files; no force or reset"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "tasks/salvage-unshipped-branches-nuc-1103.json title lists the 7 branches"
+  ],
+  "state": "ready",
+  "steps": [
+    "git fetch origin; for each branch git cherry origin/fast-track <branch> and git diff --stat",
+    "grep trunk for the same filenames (twin check: promote.py spec tests, tom noise tests, q76 recheck)",
+    "write DECISIONS.md, defaults DROP when trunk already has the file"
+  ],
+  "tests": "audit card; each row quotes its git cherry count; count of rows == 7",
+  "title": "Decide ship or drop for 7 NUC branches off trunk: jis-nuc/codex-48h-value-audit, jis-nuc/gemini-pick, jis-nuc/codex-gpt-audit-formulas-vs-krown-layer, dsa/jis-nuc-1101-0853, jis-nuc/dsa-bridge-exploratory-2, gemini-q/fabervaale-cvd-sweep, gemini-q/gemini-scan-done-cards-missing-paths-1101",
+  "weight": "IMPORTANT",
+  "worker": "agent"
 }
