@@ -1,0 +1,1 @@
+326 weeks: bull 73 (22%) | bear 0 (0%) | range 222 (68%) | n/a 31 (10%) | strict bear 0 ; proxy bear (weekly RSI14 <= 40 alone, below SMA200, OURS) 57 of 326 weeks
