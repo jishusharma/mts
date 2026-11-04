@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T01:56:36Z",
   "commands": [],
   "created": "2026-11-04T01:45:52Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "bb-range-to-range-by-session",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "FAIL (powered 15m asia/london/ny family, 0 of 6 net>0, nets -0.12..-0.15 %, range gate add",
+      "ref": "79364ea2c",
+      "utc": "2026-11-04T01:56:36Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -39,7 +46,12 @@
   "refined_by": "",
   "refreshed": "2026-11-04T01:45:54Z",
   "refs": [],
-  "result": "",
+  "result": "FAIL (powered 15m asia/london/ny family, 0 of 6 net>0, nets -0.12..-0.15 %, range gate adds nothing t -0.5); DEV only, VALIDATION unread, HOLDOUT unread. Regime mix: 130 weeks: bull 25 (19%) | bear 0 | range 105 (81%)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/bb_range_to_range_2026-11-04/",
     "MyTradingSys/research/VERDICTS.csv",
@@ -54,11 +66,12 @@
     "MyTradingSys/research/CONTEXT_FILTER_REVIEW_2026-11-04.md",
     "OPERATOR_DECISIONS d-context-retest-1104"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read CONTEXT_FILTER_REVIEW_2026-11-04.md, existing bb studies under research/, research_kit.py",
     "write PRE_REG (## Context block) and TRIALS.md rows first, then runner, DEV run, VALIDATION once for survivors"
   ],
+  "taken": "2026-11-04T01:56:36Z",
   "tests": "gate/entry wiring tests: as-of causality (planted future bar changes nothing), session tag and retest entry behave as specified; new tests fail on pre-change code once",
   "title": "Bollinger range-to-range: in a range the band-to-band move repeats, by session (context re-run 3)",
   "weight": "ROUTINE",

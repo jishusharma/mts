@@ -186,10 +186,9 @@ def main():
         for e in evs:
             e["session"] = session_of_event(e)
         for entry in ENTRIES:
-            pool = {}
+            pool = {g_: trades_for(gate_events(evs, regime_at, g_), bars, entry, lo_ms=lo_ms, hi_ms=hi_ms)[0] for g_ in GATES}
             for gate in GATES:
                 ge = gate_events(evs, regime_at, gate)
-                pool[gate], _ = trades_for(ge, bars, entry, lo_ms=lo_ms, hi_ms=hi_ms)
                 inwin = [e for e in ge if lo_ms <= e["t_close"] < hi_ms]
                 for side in SIDES:
                     for sess in ("ALL",) + SESSIONS:
