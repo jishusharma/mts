@@ -6,7 +6,7 @@
   "window_resets": 1793814138,
   "window_used": 1.0
  },
- "at": "2026-11-04T12:44:41Z",
+ "at": "2026-11-04T13:11:08Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -23,9 +23,24 @@
   "astra_runs": 0,
   "week_pts": 6.0,
   "window_pts": 0.0,
-  "window_runs": 0
+  "window_runs": 1
  },
  "runs": [
+  {
+   "at": "2026-11-04T13:09:49Z",
+   "card": "gpt-rederive-wavetrend-c30-retest-1104",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 72,
+   "tokens_out": 2010,
+   "tokens_total": 222220,
+   "tokens_uncached": 50866,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-11-04T12:42:03Z",
    "card": "gpt-audit-context-filter-review-1104",
@@ -160,21 +175,6 @@
    "tokens_uncached": 43320,
    "week_pts": 0.0,
    "window_pts": 0.0
-  },
-  {
-   "at": "2026-11-02T13:14:21Z",
-   "card": "gpt-spec-tests-role-hook-launcher",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 108,
-   "tokens_out": 5535,
-   "tokens_total": 405423,
-   "tokens_uncached": 35856,
-   "week_pts": 0.0,
-   "window_pts": 1.0
   }
  ]
 }

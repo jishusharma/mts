@@ -86,6 +86,9 @@ Why this section exists: the 10-28 session was compacted 6 times; each summary k
 - US open after a spike round trip 11-03 14:24Z: "what u expect at US open - apply MTS" (1m shot 6c6064cdf4a5: 13:30Z spike +0.7 %, full round trip below the 13:30 open by 14:00Z, retest from below at 14:25Z) -> measured same turn: us_open_roundtrip.py (weekdays 2022-01..2025-06, setup = 13:30-14:25 high >= 0.4 % over the 13:30 open and 14:24 close under it), lesson 13
 - Coil and force (10-30): "what kind of force makes that happen? Try to measure it ... how far it will go ... support and resistances are the target ... I cannot understand in which direction the coil will fire." First answers: `research/pre_us_squeeze_2026-10-29/`, `research/bb_pierce_force_2026-10-29/`.
 
+- Bounce + Fabio 11-04 ~09:00Z: "Updates - what is the bounce looking like? What are your expected moves? Tom Fabio concepts points at what?" (4 shots 80dee22e86d3 c8715f4b2ce8 d071b7fbe4ec 134f3f57199c; "Tom Fabio" = Fabio Valentini) -> measured same turn: 4h lower-to-upper BB within 6 bars, band width under median, 2023-2026 n=31: 24h close higher 45%, median max +1.15% / -1.35%; reading = OI falling into the bounce (short covering), rotation inside the 76.4-78.8k balance
+- Big picture + tonight bias 11-04 13:10Z: "read the market - tell me the updates - the big picture and the trade bias tonight - refer all charts on chrome chlaude - load bible in memoty" -> measured same turn: weekday V-day (day low by 06Z, 13Z >=2% above it and within 0.6% of the pre-US high), 1h 2023-03..2026-11, n=93: pre-US high taken in US session 90% (all weekdays 52%), 21Z close above 13Z 59% (49%), median max up +1.42%, max down -0.89%
+
 ## The asks in one table (consolidated 10-30; update here, not in chat)
 
 | Ask | Where it lives | State 10-30 |
