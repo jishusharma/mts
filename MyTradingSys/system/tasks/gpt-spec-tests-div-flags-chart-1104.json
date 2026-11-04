@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/tests/test_div_flags_chart.py -q"
+  ],
+  "created": "2026-11-04T07:15:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/tests/test_div_flags_chart.py verifies close-only pivot selection, 12-bar, 18-bar, and >18-bar WEAK classification in MyTradingSys/backtest/layers/rsi/div_flags_chart.py and exits 0.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "D11 feeder check (A-20261104-1): Independently test MyTradingSys/backtest/layers/rsi/div_flags_chart.py (shipped in cbfc521d4) against d-malkan-divergence-window-1104.",
+  "id": "gpt-spec-tests-div-flags-chart-1104",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-04 T0-ONLY; D11 feeder card for cbfc521d4",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "gemini-pro-argon",
+  "refreshed": "2026-11-04T07:15:00Z",
+  "refs": [
+    "MyTradingSys/backtest/layers/rsi/div_flags_chart.py"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tests/test_div_flags_chart.py",
+    "MyTradingSys/backtest/layers/rsi/div_flags_chart.py"
+  ],
+  "scope_out": [],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/backtest/layers/rsi/div_flags_chart.py and MyTradingSys/tests/test_div_flags_chart.py",
+    "Add boundary tests for span=12, span=13..18, span=19 (WEAK), and verify wicks are ignored when closes do not diverge",
+    "Run pytest MyTradingSys/tests/test_div_flags_chart.py -q"
+  ],
+  "tests": "python -m pytest MyTradingSys/tests/test_div_flags_chart.py -q",
+  "title": "GPT spec tests for div_flags_chart.py 12/18/>18 bar close-only divergence windows",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

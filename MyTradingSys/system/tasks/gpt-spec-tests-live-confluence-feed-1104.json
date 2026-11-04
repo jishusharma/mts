@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/tests/test_live_confluence_feed.py -q"
+  ],
+  "created": "2026-11-04T07:15:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/tests/test_live_confluence_feed.py verifies Malkan RSI divergence and Krown hidden divergence wiring in MyTradingSys/backtest/layers/alerts/live_confluence_feed.py (close-only pivots, 12/18/>18 WEAK tags) and passes pytest.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "D11 feeder check (A-20261104-1): Write independent spec tests for MyTradingSys/backtest/layers/alerts/live_confluence_feed.py shipped in cbfc521d4 and 20165a523.",
+  "id": "gpt-spec-tests-live-confluence-feed-1104",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-04 T0-ONLY; D11 feeder card for cbfc521d4, 20165a523",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "gemini-pro-argon",
+  "refreshed": "2026-11-04T07:15:00Z",
+  "refs": [
+    "MyTradingSys/backtest/layers/alerts/live_confluence_feed.py"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tests/test_live_confluence_feed.py",
+    "MyTradingSys/backtest/layers/alerts/live_confluence_feed.py"
+  ],
+  "scope_out": [],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Inspect MyTradingSys/backtest/layers/alerts/live_confluence_feed.py and MyTradingSys/tests/test_live_confluence_feed.py",
+    "Add spec tests covering close-only divergence detection, 12-bar primary window, 18-bar secondary window, and >18-bar WEAK tagging per d-malkan-divergence-window-1104",
+    "Run pytest MyTradingSys/tests/test_live_confluence_feed.py -q until green"
+  ],
+  "tests": "python -m pytest MyTradingSys/tests/test_live_confluence_feed.py -q",
+  "title": "GPT spec and mutation tests for live_confluence_feed.py Malkan RSI divergence wiring",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

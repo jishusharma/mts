@@ -13,6 +13,12 @@ Entry format: `### A-<yyyymmdd>-<n> <kind> <title>` with kind one of INFO, DO-NO
 
 ## ACTIVE
 
+### A-20261104-1 DO-NOW CODE RED: Zero tolerance on CODEX (GPT) and GEMINI lane starvation across all 3 devices (operator 2026-11-04, d-code-red-codex-gemini-starvation-1104)
+- Applies to: every Claude coordinator, Super Session, Supervisor, Session_Planner, and Builder on all three stations (`JIS-NB`, `JIS-NUC`, `DESKTOP-F7IU69N`).
+- Until: permanent standing rule; enforced on every wake and every ship.
+- What: (1) The operator is furious that Claude AI has repeatedly failed to create work for the `CODEX` (GPT) and `GEMINI` (Flash/Argon) LLMs across the three devices, leaving both non-Claude lanes at `0` ready cards (`0` GPT and `0` Gemini cards created on 2026-11-04 despite 8+ study and code ships, while `SONNET` hoarded `28` ready cards). This has been a recurring miss and will NOT be tolerated. (2) Read `MyTradingSys/research/gemini_audits_2026-11-04/CODE_RED_CODEX_GEMINI_LANE_STARVATION_AUDIT.md`. (3) **Mandatory Feeder Rule on every ship (`D11_PROGRAMME.md` section 4)**: every Claude session that ships a study (`RESULT.md`, `REPORT.md`, `DEV_CHECK.md`) or a `.py` file MUST file and promote to `ready` its companion `[GEMINI]` blind-read card (`lane: CODEX`, title starting with `[GEMINI] `) and/or `CODEX` (`gpt-spec-tests-*` or `gpt-rederive-*`) card in the SAME wake before moving on. (4) **Hard Queue Floors (`CODEX >= 8`, `GEMINI >= 4`)**: whenever `CODEX` ready `< 8` or `GEMINI` ready `< 4`, `Session_Planner` and the active coordinator MUST seed and promote `CODEX` and `[GEMINI]` cards to floor FIRST before refining or dispatching any `SONNET` card. (5) Top pinned `p1` card `code-red-codex-gemini-lane-feeder-1104` (`SONNET`) must be executed immediately to wire `CODEX: 8` and non-Claude `refine_due` triggers into `scripts/dev/supervisor.py` and `scripts/dev/tasks.py`.
+- Why: Non-Claude LLMs across the 3 devices (`JIS-NUC` Codex/Gemini and `DESKTOP-F7IU69N` Antigravity Gemini Pro) sat idle for 8.6 to 13.5+ hours with 0 ready work while Claude sessions burned Claude weekly/API budgets and ignored the D11 feeder rule.
+
 ### A-20261030-1 INFO S0 Freeze and clean is in force (operator 2026-10-30, d-simplify-align-s0)
 - Applies to: every session, planner and supervisor.
 - Until: S0 exits are met (D7_ROADMAP.md), then S1. Changed 2026-11-03 (operator, D7_ROADMAP.md:10): S0 parking ended, parked cards are back in refinement, the cap of 15 ready cards no longer applies. D7_ROADMAP.md wins where this entry differs.

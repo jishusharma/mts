@@ -13,16 +13,17 @@
   "from_inbox": "",
   "goal": "Operator via C: Malkan's 12 SOURCED-as-relay RSI divergence numbers and 20 setups came from 6 English videos; 6 Hindi videos are NOT_IN_DATA. Fetch their captions and extract Malkan concept rows with verified quotes.",
   "id": "malkan-hindi-extract",
-  "lane": "HAIKU",
+  "kind": "run",
+  "lane": "CODEX",
   "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "not_twin_of rsi-deep-engine-exits: that card builds engine exits, this one reads Hindi captions",
-  "prio": 2,
+  "note": "not_twin_of rsi-deep-engine-exits: that card builds engine exits, this one reads Hindi captions; REVIEWED:2026-11-04 T0-ONLY",
+  "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-04T05:11:38Z",
+  "refreshed": "2026-11-04T07:15:00Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -40,7 +41,7 @@
     "Run verify_extract_quotes.py until exit 0"
   ],
   "tests": "python verify_extract_quotes.py",
-  "title": "Extract Malkan RSI divergence concepts from the 6 Hindi videos",
-  "weight": "",
+  "title": "[GEMINI] Extract Malkan RSI divergence concepts from the 6 Hindi videos",
+  "weight": "ROUTINE",
   "worker": "agent"
 }

@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-04T07:22:03Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-audit-rsi-div-mtf-gated.md has one row per PRE_REG rule (at least 8): MATCH / DEVIATES (with file:line) / NOT_CHECKABLE; line 1 holds the three counts.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Check that the study code does what the frozen PRE_REG says: cell grid, DEV/VAL split dates, entry/stop/target, fee-net per FORMULAS.md, Regime mix gate; report each deviation. The Gemini blind-read card checks the numbers (other vendor).",
+  "id": "gpt-audit-rsi-div-mtf-gated-1104",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "prereg context lint: add Context + Regime mix lines to the gated divergence study (trunk l",
+      "ref": "df3294b34e15",
+      "utc": "2026-11-04T00:32:03Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "df3294b34e15 prereg context lint: add Context + Regime mix lines to the gated divergence s",
+      "ref": "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/PRE_REG.md",
+      "utc": "2026-11-04T00:32:03Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED: planner-c-1104 2026-11-04 T0-ONLY (template of done gemini-blind-read/gpt-audit cards; twin check: no blind read or audit of this folder in tasks/ or archive/). Never use model output as the source.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-04T07:22:05Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/PRE_REG.md (read)",
+    "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/study.py (read)",
+    "MyTradingSys/backtest/layers/FORMULAS.md (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-audit-rsi-div-mtf-gated.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source report or scripts; no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "df3294b34e15",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/PRE_REG.md:1-40"
+  ],
+  "state": "ready",
+  "steps": [
+    "Number the PRE_REG rules",
+    "Find the code line implementing each",
+    "Write MATCH/DEVIATES/NOT_CHECKABLE per rule, counts on line 1"
+  ],
+  "tests": "audit card, output file is the test; each row quotes the source line it was matched to; repo files stay byte-identical (git diff empty)",
+  "title": "GPT audit: rsi_divergence_mtf_gated_2026-11-04 study.py follows its PRE_REG.md (cells, split dates, fee formula, regime gate)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

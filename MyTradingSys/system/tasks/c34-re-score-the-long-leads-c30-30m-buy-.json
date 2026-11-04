@@ -4,33 +4,62 @@
   "commands": [],
   "created": "2026-11-02T19:48:12Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/C34_SPOT_COSTS.md has one table (lead, n, gross R, perp fee-net R, spot fee-net R, fee formula cited from FORMULAS.md) computed by a script that is committed; every n and R is the script output; no verdict beyond LEAD/NO-LEAD",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Re-score the long leads (C30 30m buy dot + bull div, C28 2h buy dot) at spot costs (2 bps maker round trip, zero funding, long only) next to the perp costs, from the existing saved trade lists",
   "id": "c34-re-score-the-long-leads-c30-30m-buy-",
-  "lane": "SONNET",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Sim result cards: Verdict/Keep/Totals regenerated from results json; eagle 11-03 docstring",
+      "ref": "9111a1c05590",
+      "utc": "2026-11-03T17:22:16Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "9111a1c05590 Sim result cards: Verdict/Keep/Totals regenerated from results json; eagle 11",
+      "ref": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md",
+      "utc": "2026-11-03T17:22:16Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED: planner-c-1104 2026-11-04 T0-ONLY",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T07:19:08Z",
   "refs": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md",
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/C30_VALIDATION.md"
+  ],
+  "scope_out": [
+    "no new data pulls, no mainnet, BTC only so no powered claim; Regime mix line required per step 3pc"
+  ],
+  "scope_sha": "9111a1c05590",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md:43"
+  ],
+  "state": "ready",
+  "steps": [
+    "read the C30 and C28 trade lists already saved in the folder",
+    "apply spot cost vs perp cost per FORMULAS.md",
+    "write the table"
+  ],
+  "tests": "script recomputes one existing perp number from BACKTEST_CANDIDATES.md and matches it before the spot rows are trusted",
   "title": "C34: re-score the long leads (C30 30m buy dot + bull div, C28 2h buy dot) at spot costs: 2 bps maker round trip, zero funding, long only, vs perp costs; Deribit BTC_USDC is Coinbase-routed 2/5 bps, BTC_USDT 0/0 but 0.39% spread",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "agent"
 }

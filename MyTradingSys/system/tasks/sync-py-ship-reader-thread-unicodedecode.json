@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-04T07:10:01Z",
+  "depends_on": [],
+  "done_when": "scripts/dev/test_sync.py has a new test feeding bytes b'ok \\x98 end' through the gate output reader that passes with no exception and FAILS on the pre-change sync.py; run_all_tests --quick green",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "sync.py ship gate reader thread dies with UnicodeDecodeError (cp1251, byte 0x98) when a test prints non-utf8 bytes; decode subprocess output as utf-8 errors=replace",
+  "id": "sync-py-ship-reader-thread-unicodedecode",
+  "kind": "build",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tidy: finished worktrees retire right after ship",
+      "ref": "59815236e099",
+      "utc": "2026-11-03T18:38:14Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-04T07:18:13Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/sync.py",
+    "scripts/dev/test_sync.py"
+  ],
+  "scope_out": [
+    "no change to gate steps or order; no live tree"
+  ],
+  "scope_sha": "59815236e099",
+  "size": "S",
+  "sources": [
+    "scripts/dev/sync.py:91-96"
+  ],
+  "state": "ready",
+  "steps": [
+    "grep subprocess.run/Popen in sync.py with text=True or encoding unset on gate output (lines ~91,96,1001,1561)",
+    "set encoding='utf-8', errors='replace' on the reader that handles gate output",
+    "add the fail-first test, run python scripts/dev/test_sync.py"
+  ],
+  "tests": "test_sync.py::test_gate_reader_survives_non_utf8_bytes (fail-first on old code)",
+  "title": "sync.py ship: reader thread UnicodeDecodeError cp1251 on gate output (byte 0x98); decode subprocess output as utf-8 errors=replace",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
