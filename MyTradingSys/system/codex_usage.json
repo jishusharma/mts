@@ -4,9 +4,9 @@
   "week_resets": 1794204690,
   "week_used": 37.0,
   "window_resets": 1793832142,
-  "window_used": 0
+  "window_used": 1.0
  },
- "at": "2026-11-04T17:42:27Z",
+ "at": "2026-11-04T18:35:00Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -22,10 +22,25 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 7.0,
-  "window_pts": 0.0,
-  "window_runs": 0
+  "window_pts": 1.0,
+  "window_runs": 1
  },
  "runs": [
+  {
+   "at": "2026-11-04T18:33:01Z",
+   "card": "gpt-spec-tests-live-confluence-feed-1104",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 111,
+   "tokens_out": 6025,
+   "tokens_total": 826965,
+   "tokens_uncached": 48204,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
   {
    "at": "2026-11-04T17:41:39Z",
    "card": "gpt-spec-tests-live-confluence-feed-1104",
@@ -158,21 +173,6 @@
    "tokens_out": 3570,
    "tokens_total": 325502,
    "tokens_uncached": 80524,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-11-04T13:09:49Z",
-   "card": "gpt-rederive-wavetrend-c30-retest-1104",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "BLOCKED",
-   "seconds": 72,
-   "tokens_out": 2010,
-   "tokens_total": 222220,
-   "tokens_uncached": 50866,
    "week_pts": 0.0,
    "window_pts": 0.0
   }
