@@ -1,0 +1,11 @@
+Live one-page mock: data per tab, and what must change to go live (defaults taken, no questions).
+- Market now: runtime/orderflow_live/2026-10-03.csv (latest file, STALE not live). Live: live_mirror.py brief must run on desktop-f7iu69n.
+- Signals: same CSV, 99th-pct big-trade bursts (derived). SAMPLE-SIG = no setup-flag log on trunk; needs a runtime signal export in the mts_home generator.
+- Positions/testnet: SAMPLE-POS, all numbers invented; runtime/order data stays out of the public repo, so it needs a local-only mirror feed.
+- News & calls: research/habib_plan_imbalance_2026-10-20/PLAN_LEDGER.csv (9 calls, 0 scored). News feed itself not built (news_feeds_2026-10-30/REPORT.md).
+- Layers: system/LAYERS.md layer lines + STATUS.md gate board (hand-copied; generator would read LAYERS.md).
+- Health: research/STATUS.md (CI, pages stale, lab queue, digest, .new files, commits 24h).
+- No market_guide.md exists on trunk; Market uses the orderflow CSV instead (default).
+- Generators to change for live: mts_home generator (registry slug mts_home), live_mirror.py brief, status generator.
+- SAMPLE badges: SAMPLE-SIG, SAMPLE-POS.
+- Mock built by artifacts/_gen_live_onepage_mock.py; not published.

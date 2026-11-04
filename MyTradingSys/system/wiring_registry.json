@@ -989,6 +989,10 @@
     "scripts/tools/divergence_monitor.py": {
       "disp": "TOOL",
       "why": "Diagnostic divergence reader, \"tooling, left as is\": MyTradingSys/items/B063_divergence.md:70."
+    },
+    "MyTradingSys/system/artifacts/_gen_live_onepage_mock.py": {
+      "disp": "TOOL",
+      "why": "Builds the one-page live feed mock LIVE_ONEPAGE_MOCK_2026-11-04.html from the orderflow CSV; run by hand (d-sim-ux-1104), mock only."
     }
   }
 }
