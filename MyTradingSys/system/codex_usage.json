@@ -4,9 +4,9 @@
   "week_resets": 1794204690,
   "week_used": 37.0,
   "window_resets": 1793832142,
-  "window_used": 3.0
+  "window_used": 4.0
  },
- "at": "2026-11-04T21:59:12Z",
+ "at": "2026-11-04T22:22:10Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -22,18 +22,33 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 7.0,
-  "window_pts": 3.0,
-  "window_runs": 7
+  "window_pts": 4.0,
+  "window_runs": 8
  },
  "runs": [
+  {
+   "at": "2026-11-04T22:21:10Z",
+   "card": "habib-plan-scoring-not-trades-1104",
+   "effort": "medium",
+   "kind": "build",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 53,
+   "tokens_out": 2171,
+   "tokens_total": 150320,
+   "tokens_uncached": 23477,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
   {
    "at": "2026-11-04T21:58:31Z",
    "card": "gpt-spec-tests-sim-banner-tradelist-1104",
    "effort": "medium",
    "kind": "audit",
    "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
+   "note": "5: Maven tests: SKIP\nStep 5b: Layer tests: SKIP\nStep 5c: Options tests: SKIP\nStep 6: Backtest tests: SKIP\n======================================================",
+   "outcome": "SHIP_FAILED",
    "seconds": 34,
    "tokens_out": 1941,
    "tokens_total": 150033,
@@ -158,21 +173,6 @@
    "tokens_out": 5614,
    "tokens_total": 752756,
    "tokens_uncached": 42246,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-11-04T16:57:15Z",
-   "card": "gpt-rederive-bb-range-to-range-1104",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 59,
-   "tokens_out": 3260,
-   "tokens_total": 229452,
-   "tokens_uncached": 32784,
    "week_pts": 0.0,
    "window_pts": 0.0
   }
