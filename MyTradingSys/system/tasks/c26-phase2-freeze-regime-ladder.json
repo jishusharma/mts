@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T14:37:38Z",
   "commands": [
     "python scripts/dev/prereg_gate.py MyTradingSys/research/c26_roadmap_2026-11-01/PRE_REG_C26_REGIME.md"
   ],
@@ -30,6 +31,12 @@
   "lane": "JIS-NB",
   "latest": [
     {
+      "kind": "ship",
+      "line": "duplicate: PRE_REG_C26_REGIME.md already on trunk (9b2cd4a25)",
+      "ref": "ee29e31e2",
+      "utc": "2026-11-04T14:37:38Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "c26 phase 2: re-ship frozen regime-ladder pre-reg with rebuilt trial ledger",
@@ -46,6 +53,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: already shipped",
   "note": "REVIEWED: Lab_Guy 2026-11-01 class C1 (B-shared: c26-phase3-dev-book reads its output); E4 check = the non-Claude spec review of PRE_REG_C26_REGIME.md is step 3 of the card before the file is final; self-authored, the operator chart confirmation is the second pair of eyes",
   "prio": 2,
   "refine_tries": 0,
@@ -54,7 +62,12 @@
   "refs": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/C26_PRE_REG.md"
   ],
-  "result": "",
+  "result": "duplicate: PRE_REG_C26_REGIME.md already on trunk (9b2cd4a25)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/c26_roadmap_2026-11-01/"
   ],
@@ -67,12 +80,13 @@
     "MyTradingSys/research/c26_roadmap_2026-11-01/C26_REVALIDATION_2026-11-01.md",
     "MyTradingSys/research/c26_roadmap_2026-11-01/PHASE1_RANGE.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read C26_REVALIDATION_2026-11-01.md sections 2-3 and PHASE1_RANGE.md; copy the proposals into PRE_REG_C26_REGIME.md with every number labelled OURS",
     "Encode 3 operator charts as event rows (date, H1, L1, regime by the rule) and write them in",
     "Run prereg_gate.py on the file; add one TRIAL_REGISTRY row per candidate; ship"
   ],
+  "taken": "2026-11-04T14:37:38Z",
   "tests": "none (a pre-registration document); prereg_gate.py passes on the file",
   "title": "C26 Phase 2: freeze the regime rule and Candidates A (single short), B (hedge) and C (ladder in the range) before any DEV P&L; operator confirms on 3 charts",
   "weight": "IMPORTANT",
