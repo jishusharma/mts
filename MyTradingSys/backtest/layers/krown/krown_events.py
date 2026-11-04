@@ -54,6 +54,14 @@ def setup_s9(top_fires):
     """TOP-4 SELL FRAMEWORK (KR-P01): a sell signal for long-term holders, tagged short here for the event study."""
     return [_ev(t, "short", "S9", ["top3of4"]) for t in top_fires]
 
+def retest_event(zone, closes, t, window):
+    """KR-Z09 / Z10 break-wait-retest: an event at bar t only when the flipped zone is first retested at t. Support
+    broken down is retested from below (short); resistance broken up is retested from above (long)."""
+    s = kc.flip_state(zone, closes, t, window)
+    if not s["flipped"] or s["retested"] != t:
+        return None
+    return _ev(t, "short" if s["side"] == "down" else "long", "Z10", ["role_flip", "retest"])
+
 
 def fire_counts(events, nbars):
     out = {s: {"n": 0, "per_10_bars": 0.0} for s in SETUPS}
