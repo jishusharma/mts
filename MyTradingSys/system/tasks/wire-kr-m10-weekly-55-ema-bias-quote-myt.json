@@ -4,33 +4,53 @@
   "commands": [],
   "created": "2026-11-04T21:10:09Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "krown_context.py has weekly_ma_bias(rows, t) using only closed weeks; test_krown_context.py new test passes incl. the point-in-time check; fewer than 200 weeks returns None, never a guess.",
+  "est_turns": 6,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Krown weekly bias: weekly EMA 55 above/below bias (KR-M10, hypothesis H-M4) and weekly 200 SMA state (KR-M04), built on krown_context.weekly_from_daily; point-in-time safe (last closed week only).",
   "id": "wire-kr-m10-weekly-55-ema-bias-quote-myt",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "confluence-s1-f6-direction: exp_dir_4h_ours to F6 (sign since BBWP_4h last <= 50), recount",
+      "ref": "612fc633878c",
+      "utc": "2026-10-25T18:22:34Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "planner-wire43-1104h: verified on trunk 2026-11-05, no code for this rule; params OURS unless the card says SOURCED. Folds: wire-kr-m04 (200-week SMA same function).\nREVIEWED:2026-11-04 T0-ONLY",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T22:23:42Z",
   "refs": [
     "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_vjzy_KxJ_y8.md:118"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/krown/krown_context.py",
+    "MyTradingSys/backtest/layers/krown/test_krown_context.py"
+  ],
+  "scope_out": [
+    "setups and entries"
+  ],
+  "scope_sha": "612fc633878c",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read weekly_from_daily and check_point_in_time in krown_context.py.",
+    "Add weekly_ma_bias returning above/below the weekly EMA 55 and the 200 SMA state from the last closed week.",
+    "Write the fail-first test; run it."
+  ],
+  "tests": "MyTradingSys/backtest/layers/krown/test_krown_context.py::test_weekly_ma_bias_point_in_time (new; fails on trunk, no weekly_ma_bias)",
   "title": "wire KR-M10: Weekly 55 EMA bias (quote MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_vjzy_KxJ_y8.md:118)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

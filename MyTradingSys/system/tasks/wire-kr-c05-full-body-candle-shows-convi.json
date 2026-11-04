@@ -4,33 +4,54 @@
   "commands": [],
   "created": "2026-11-04T21:10:02Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "krown_core.py has full_body(o,h,l,c,i), effort_result(...) and apathy_panic(...) returning labels; test_krown_core.py new tests pass; thresholds sit in the params file labelled OURS.",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Krown candle and volume labels in krown_core.py: full-body conviction candle (KR-C05), effort versus result = huge volume on a tiny candle (KR-V06), apathy versus panic = drift to a low on low volume vs high (KR-V08). No numbers sourced, thresholds OURS.",
   "id": "wire-kr-c05-full-body-candle-shows-convi",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "b-item-krown-core-rsi-returns-100-on-a-f: fix flat window RSI 100 to 50 and update docstri",
+      "ref": "150840644fd0",
+      "utc": "2026-10-20T22:39:21Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "planner-wire43-1104h: verified on trunk 2026-11-05, no code for this rule; params OURS unless the card says SOURCED. Folds: wire-kr-v06, wire-kr-v08.\nREVIEWED:2026-11-04 T0-ONLY",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T22:23:44Z",
   "refs": [
     "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_8MvxK_nxO-0.md:132"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/krown/krown_core.py",
+    "MyTradingSys/backtest/layers/krown/test_krown_core.py",
+    "MyTradingSys/backtest/layers/krown/params"
+  ],
+  "scope_out": [
+    "setups and entries"
+  ],
+  "scope_sha": "150840644fd0",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read is_hammer, vol_ratio and vol_flags in krown_core.py.",
+    "Add the three label functions using body/range and volume ratio.",
+    "Write the fail-first test with hand-built bars; run it."
+  ],
+  "tests": "MyTradingSys/backtest/layers/krown/test_krown_core.py::test_candle_volume_labels (new; fails on trunk, no full_body)",
   "title": "wire KR-C05: Full-body candle shows conviction (quote MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_8MvxK_nxO-0.md:132)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

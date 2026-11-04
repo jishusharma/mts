@@ -1,0 +1,53 @@
+{
+ "verdict": "VOLATILITY-ONLY",
+ "focal": [
+  {
+   "tf": "1m",
+   "htf": "against",
+   "daytag": "all",
+   "n": 15208,
+   "days": 875,
+   "match_excess": -0.009975403831875783,
+   "t": -3.1710309598861803,
+   "p": 0.999240505234892,
+   "holm_pass": false
+  },
+  {
+   "tf": "1m",
+   "htf": "all",
+   "daytag": "prior_trend",
+   "n": 8203,
+   "days": 458,
+   "match_excess": -0.010129125195292743,
+   "t": -2.421713551139808,
+   "p": 0.9922762391218236,
+   "holm_pass": false
+  },
+  {
+   "tf": "15m",
+   "htf": "against",
+   "daytag": "all",
+   "n": 964,
+   "days": 506,
+   "match_excess": 0.013302693219477841,
+   "t": 0.3302857028944685,
+   "p": 0.3705920474021759,
+   "holm_pass": false
+  },
+  {
+   "tf": "15m",
+   "htf": "all",
+   "daytag": "prior_trend",
+   "n": 512,
+   "days": 269,
+   "match_excess": -0.04578159273627016,
+   "t": -0.9959478281051065,
+   "p": 0.8403622525133086,
+   "holm_pass": false
+  }
+ ],
+ "regime_mix": {
+  "BTCUSDT": "130 weeks: bull 25 (19%) | bear 0 (0%) | range 105 (81%) | n/a 0 (0%)",
+  "ETHUSDT": "130 weeks: bull 11 (8%) | bear 0 (0%) | range 119 (92%) | n/a 0 (0%)"
+ }
+}

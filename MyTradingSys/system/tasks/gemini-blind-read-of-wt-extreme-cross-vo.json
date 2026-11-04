@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_WT_EXTREME_CROSS_VOLMATCH.md'); assert p.exists() and len(p.read_text())>400\""
+  ],
+  "created": "2026-11-04T22:04:02Z",
+  "depends_on": [
+    "ms-wt-extreme-cross-volmatch-eth"
+  ],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_WT_EXTREME_CROSS_VOLMATCH.md recomputes every table number of MyTradingSys/research/wt_extreme_cross_volmatch_2026-11/RESULT.md from dev_cells.csv and summary.json, lists each diff, checks the Regime mix: line and the 162-cell / 161-negative counts, and ends with VERDICT: MATCH or MISMATCH",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini blind read of MyTradingSys/research/wt_extreme_cross_volmatch_2026-11/RESULT.md: recompute n, days, matched and unmatched excess, fee-net per symbol and pooled from the CSV first, then diff against the RESULT.md prose.",
+  "id": "gemini-blind-read-of-wt-extreme-cross-vo",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "gemini-blind-read-rsi-40-60-1104",
+    "gemini-blind-read-ms-bb-retest-eth",
+    "gemini-blind-read-ms-level-eth",
+    "gemini-blind-read-rsi-div-mtf-gated-1104"
+  ],
+  "note": "REVIEWED:2026-11-05 T0-ONLY\nWaits on the study card ms-wt-extreme-cross-volmatch-eth (blind-read card, Gemini low effort). | not_twin_of covered: different study.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-04T22:04:35Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_WT_EXTREME_CROSS_VOLMATCH.md; MyTradingSys/research/wt_extreme_cross_volmatch_2026-11"
+  ],
+  "scope_out": [
+    "no edits to the study folder; no re-running the study; gemini low effort"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/wt_extreme_cross_volmatch_2026-11/RESULT.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read dev_cells.csv and summary.json in MyTradingSys/research/wt_extreme_cross_volmatch_2026-11 before RESULT.md",
+    "Recompute per-symbol and pooled n, days, unmatched / matched excess and t, net at 0.10 and 0.14",
+    "Write MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_WT_EXTREME_CROSS_VOLMATCH.md with a per-cell diff table and VERDICT"
+  ],
+  "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_WT_EXTREME_CROSS_VOLMATCH.md'); assert 'VERDICT' in p.read_text()\"",
+  "title": "[GEMINI] Blind read of ms-wt-extreme-cross-volmatch-eth RESULT.md vs CSVs",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
