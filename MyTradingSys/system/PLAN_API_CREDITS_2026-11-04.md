@@ -66,3 +66,5 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-04 | route-tag-closeout-1104 | Opus 5.5 | 5.50 | 18 | shipped ee29e31e, reverted for red CI; reland job running; cap was 10.0 |
 | 2026-11-04 | route-tag-reland-1104 | Sonnet 5.5 | 0.49 | 32 | shipped 6e07fe14; trunk CI red after it (wiring steps 3w/3x), Super notified; cap was 6.0 |
 | 2026-11-04 | labguy-context-filter-two-class-labels-1104 | Haiku 5.5 | 0.02 | 13 | done; ship status unverified; cap was 1.0 |
+| 2026-11-04 | route-tag-reland3-1104 | Sonnet 5.5 | 0.20 | 10 | done; trunk CI queued at finish; cap was 8.0 |
+| 2026-11-04 | labguy-context-filter-two-class-labels-1104 | Haiku 5.5 | 0.03 | 5 | second run of the same card; quick gate still running at finish; cap was 1.0 |
