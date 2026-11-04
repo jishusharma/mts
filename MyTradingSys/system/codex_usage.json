@@ -3,10 +3,10 @@
   "plan": "plus",
   "week_resets": 1794204690,
   "week_used": 37.0,
-  "window_resets": 1793814138,
-  "window_used": 4.0
+  "window_resets": 1793832142,
+  "window_used": 0
  },
- "at": "2026-11-04T16:58:22Z",
+ "at": "2026-11-04T17:42:27Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -22,10 +22,40 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 7.0,
-  "window_pts": 3.0,
-  "window_runs": 8
+  "window_pts": 0.0,
+  "window_runs": 0
  },
  "runs": [
+  {
+   "at": "2026-11-04T17:41:39Z",
+   "card": "gpt-spec-tests-live-confluence-feed-1104",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 42,
+   "tokens_out": 1877,
+   "tokens_total": 222792,
+   "tokens_uncached": 37107,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
+  {
+   "at": "2026-11-04T17:19:41Z",
+   "card": "gpt-spec-tests-fetch-binance-archive-1104",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "4 uncommitted file(s) left in F:\\MTS\\mts-codex-lab: scripts/dev/extra_tests.tsv",
+   "outcome": "OUT_OF_SCOPE",
+   "seconds": 109,
+   "tokens_out": 5614,
+   "tokens_total": 752756,
+   "tokens_uncached": 42246,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-11-04T16:57:15Z",
    "card": "gpt-rederive-bb-range-to-range-1104",
@@ -145,36 +175,6 @@
    "tokens_uncached": 50866,
    "week_pts": 0.0,
    "window_pts": 0.0
-  },
-  {
-   "at": "2026-11-04T12:42:03Z",
-   "card": "gpt-audit-context-filter-review-1104",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 151,
-   "tokens_out": 9784,
-   "tokens_total": 703425,
-   "tokens_uncached": 61833,
-   "week_pts": 0.0,
-   "window_pts": 1.0
-  },
-  {
-   "at": "2026-11-03T15:57:42Z",
-   "card": "kurisko-quad-15m-1h-maker-prereg",
-   "effort": "low",
-   "kind": "run",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 782,
-   "tokens_out": 30315,
-   "tokens_total": 4265537,
-   "tokens_uncached": 125654,
-   "week_pts": 6.0,
-   "window_pts": 38.0
   }
  ]
 }
