@@ -64,7 +64,7 @@
       "note": "2026-10-13: the old Layer Map (backtest matrix + configurator, make_layer_map.py) was replaced at the SAME url by MTS Layers (per-layer road, stuck days, missing steps, decisions waiting on Jis, How MTS runs). make_layer_map.py still builds the old page if wanted. Published on all three logins.",
       "purpose": "Every trading layer's road and where it is stuck.",
       "notes_go_to": "Read only. Put notes on the Research Map.",
-      "published_sha": "6ac8c03e7742a373485a03af2ecde66bcb7552aca1a25e15c0ad49ed051ac04c"
+      "published_sha": "21bfd10a5b9493ebf1e819f884a04d726d7d40de0b1ed127a07ef5fe6516cea4"
     },
     {
       "slug": "tom_fabio_deck",
@@ -222,13 +222,8 @@
       },
       "purpose": "Who says what on BTC bottom and alts, from every CBP analyst video. The one CBP page.",
       "notes_go_to": "Read only.",
-      "note": "The only CBP page. 2026-11-04: live url is BpADz (v5, one screen, 5 tabs: Now, Trail, Analysts, BTC levels, Alts INR); the 2026-10-30 page https://claude.ai/artifact/EsvscEYpcnzjQ231AzcDZC is an old copy to delete. Legacy generator build_dashboard.py (cbp_run.py) still writes cbp_dashboard.html; card to wire build_board.py in.",
-      "published_sha": null,
-      "old_copies": {
-        "jishusharma1985": [
-          "https://claude.ai/artifact/EsvscEYpcnzjQ231AzcDZC"
-        ]
-      }
+      "note": "The only CBP page. 2026-11-04: live url is BpADz (v5, one screen, 5 tabs: Now, Trail, Analysts, BTC levels, Alts INR); the 2026-10-30 page https://claude.ai/artifact/EsvscEYpcnzjQ231AzcDZC was deleted 2026-11-04 (operator click). Legacy generator build_dashboard.py (cbp_run.py) still writes cbp_dashboard.html; card to wire build_board.py in.",
+      "published_sha": null
     },
     {
       "slug": "mts_home",
@@ -254,7 +249,7 @@
       "purpose": "This list: every MTS page, its owner login, where your notes go, and how to open it from any login.",
       "notes_go_to": "Nothing to write here.",
       "note": "The hub (operator 2026-10-16: 'all my artifacts available from one place'). Generated from registry.json; pinned on the home login.",
-      "published_sha": "a47120cbb194c7827ec01ae5cd35032b71247cb477969b401d6495f90a1646ab"
+      "published_sha": "d8831e0861d0d91ad353ec784cad96359aabfe5d48906b60e6b34c88757abf03"
     },
     {
       "slug": "research_map",
@@ -382,7 +377,7 @@
       "urls": {
         "jishu.sharma": "",
         "jishu.awgp": "",
-        "jishusharma1985": "https://claude.ai/artifact/CjdyFBVzZzmtQuU8HiRJuh"
+        "jishusharma1985": ""
       },
       "last_published": {
         "jishusharma1985": "2026-11-01"
@@ -390,7 +385,10 @@
       "purpose": "Throwaway demo of the simulator (requirements talk 2026-11-01).",
       "notes_go_to": "Read only.",
       "note": "Retired 2026-11-04 (Lead declutter): superseded by Test Simulator KaPy7f5B. Operator deletes.",
-      "published_sha": null
+      "published_sha": null,
+      "deleted": {
+        "jishusharma1985": "2026-11-04 (operator click)"
+      }
     },
     {
       "slug": "live_feed_onepage_mock",
