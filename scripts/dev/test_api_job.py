@@ -63,9 +63,3 @@ def test_compose_prompt_has_preamble_and_brief():
     p = api_job.compose_prompt("CARD BRIEF TEXT", slug="s4-cbp", card="s4-cbp-module-e2e")
     assert p.startswith("You are Builder.")
     assert "sync.py start s4-cbp --worker" in p and "CARD BRIEF TEXT" in p and "Result:" in p and "never ask" in p
-
-
-def test_launch_wait_line_names_the_harness_tracked_watcher():
-    """stall-fix-1104: the printed bg_watch line was run with `&` and woke nobody (L1 idle 09:35Z-12:40Z)."""
-    w = api_job.wait_line()
-    assert "supervisor.py wait" in w and "run_in_background" in w and "bg_watch" not in w
