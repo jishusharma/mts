@@ -154,3 +154,31 @@ def test_is_only_loads_bars_only_to_is_end(monkeypatch, tmp_path):
     monkeypatch.setattr(r, "run_cells", lambda pool, w, cells, slip, name: {k: {"r": [0.0], "tag": {}} for k in cells})
     r.main(["--is-only", "--out", str(tmp_path)])
     assert calls == [(r.IS_RANGE[0], r.IS_RANGE[1])], calls
+
+
+def test_days_limit_full_path_produces_oos(monkeypatch, tmp_path):
+    # Hand numbers: --days-limit 2 -> 2 IS + 2 OOS windows (3 OOS offered, third trimmed); every cell R = 0.5 per window.
+    # Hence each model's OOS: days 2, sum 1.0, mean 0.5.
+    import json
+    from unittest.mock import MagicMock
+    one = dt.timedelta(days=1)
+    wins = [{"date": r.IS_RANGE[0] + k * one, "bars": [], "prior": None} for k in range(3)] + \
+           [{"date": r.OOS_RANGE[0] + k * one, "bars": [], "prior": None} for k in range(3)]
+    monkeypatch.setattr(r, "build_windows", lambda a, b: (wins, {}))
+    monkeypatch.setattr(r, "ProcessPoolExecutor", lambda **k: MagicMock())
+    seen = {}
+
+    def fake(pool, w, cells, slip, name):
+        seen[name] = [x["date"] for x in w]
+        return {k: {"r": [0.5] * len(w), "tag": {}} for k in cells}
+
+    monkeypatch.setattr(r, "run_cells", fake)
+    r.main(["--days-limit", "2", "--out", str(tmp_path)])
+    assert len(seen["is_grid"]) == 2 and len(seen["oos_grid"]) == 2
+    assert seen["oos_grid"] == [r.OOS_RANGE[0], r.OOS_RANGE[0] + one]
+    res = json.loads((tmp_path / "results.json").read_text(encoding="utf-8"))
+    assert res["n_is"] == 2 and res["n_oos"] == 2
+    for m in "ABCD":
+        o = res["models"][m]["oos_2bps"]
+        assert o["days"] == 2 and o["sum"] == 1.0 and o["mean"] == 0.5
+    assert (tmp_path / "dayR.json").exists() and not (tmp_path / "is_only.json").exists()
