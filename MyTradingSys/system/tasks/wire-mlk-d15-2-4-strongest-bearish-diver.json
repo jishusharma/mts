@@ -4,33 +4,53 @@
   "commands": [],
   "created": "2026-11-04T21:10:19Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "rsi_divergence.py rsi_divergence() applies rsi_level band to plain bullish/bearish kinds (today only prd/nrd); test_rsi_divergence.py new test passes; default None keeps current output.",
+  "est_turns": 6,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Malkan RSI level filter for plain divergences (MLK-D15: strongest near RSI 60 bearish, 40 bullish; MLK-D16: 70-80 / 20-30 extremes weaker). One video, UNVERIFIED: build the filter as an option and test it on held data later.",
   "id": "wire-mlk-d15-2-4-strongest-bearish-diver",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "malkan RSI: PRD/NRD as Malkan defines them; generic hidden moved to KROWN-CONFLUENCE",
+      "ref": "51b4b9a6fbf1",
+      "utc": "2026-10-27T20:37:06Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "planner-wire43-1104h: verified on trunk 2026-11-05, no code for this rule; params OURS unless the card says SOURCED. Folds: wire-mlk-d16.\nREVIEWED:2026-11-04 T0-ONLY",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T22:23:48Z",
   "refs": [
     "MyTradingSys/research/setup_catalog_2026-10-15/malkan/MALKAN_DIVERGENCE_GLOSSARY.md:190"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/rsi/rsi_divergence.py",
+    "MyTradingSys/backtest/layers/rsi/test_rsi_divergence.py"
+  ],
+  "scope_out": [
+    "backtests, prd/nrd behaviour"
+  ],
+  "scope_sha": "51b4b9a6fbf1",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read rsi_divergence() rsi_level handling for prd/nrd.",
+    "Extend it with an optional (lo, hi) band for plain kinds; None keeps today's behaviour.",
+    "Write the fail-first test with two RSI series inside and outside the band; run it."
+  ],
+  "tests": "MyTradingSys/backtest/layers/rsi/test_rsi_divergence.py::test_plain_divergence_rsi_band (new; fails on trunk, plain kinds ignore rsi_level)",
   "title": "wire MLK-D15: 2.4 Strongest bearish divergence near RSI 60, bullish near 40 (quote MyTradingSys/research/setup_catalog_2026-10-15/malkan/MALKAN_DIVERGENCE_GLOSSARY.md:190)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

@@ -4,33 +4,54 @@
   "commands": [],
   "created": "2026-11-04T21:10:13Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "krown_core.py has rsi_confirms_break(rsi_line, t, side, p) and rsi_extreme(rsi_line, t, p); test_krown_core.py new tests pass; thresholds labelled MIXED/OURS in the params file.",
+  "est_turns": 6,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Krown RSI confirmation in krown_core.py: breakout in an uptrend usually shows overbought RSI (KR-S06, RSI > 70 upside MIXED, hypothesis H-S2) and RSI extremes with downside asymmetry (KR-S04, RSI 10 an example, OURS) as labels on rsi output.",
   "id": "wire-kr-s06-rsi-confirmed-breakout-or-br",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "b-item-krown-core-rsi-returns-100-on-a-f: fix flat window RSI 100 to 50 and update docstri",
+      "ref": "150840644fd0",
+      "utc": "2026-10-20T22:39:21Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "planner-wire43-1104h: verified on trunk 2026-11-05, no code for this rule; params OURS unless the card says SOURCED. Folds: wire-kr-s04.\nREVIEWED:2026-11-04 T0-ONLY",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T22:23:46Z",
   "refs": [
     "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_INOCBmqQupc.md:119"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/krown/krown_core.py",
+    "MyTradingSys/backtest/layers/krown/test_krown_core.py",
+    "MyTradingSys/backtest/layers/krown/params"
+  ],
+  "scope_out": [
+    "entries and exits"
+  ],
+  "scope_sha": "150840644fd0",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read rsi and rsi_zone in krown_core.py.",
+    "Add rsi_confirms_break and rsi_extreme returning side and level label.",
+    "Write the fail-first test with a synthetic rsi line; run it."
+  ],
+  "tests": "MyTradingSys/backtest/layers/krown/test_krown_core.py::test_rsi_confirm_and_extreme (new; fails on trunk, no rsi_confirms_break)",
   "title": "wire KR-S06: RSI-confirmed breakout or breakdown (quote MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_INOCBmqQupc.md:119)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
