@@ -28,7 +28,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "\nREVIEWED:2026-11-04 ACCEPT (Haiku on API credit, job haiku-review-ready-sonnet-1104: days-limit OOS test absent on trunk; scope file present; testable.)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",

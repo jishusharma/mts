@@ -19,7 +19,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "In scripts/dev/supervisor.py break the GEMINI < 4 or CODEX < 8 planner trigger condition and verify the new unit test in scripts/dev/test_supervisor.py fails.",
-  "note": "REVIEWED: operator 2026-11-04 ACCEPT; CODE RED P1 pinned per operator directive d-code-red-codex-gemini-starvation-1104",
+  "note": "REVIEWED: operator 2026-11-04 ACCEPT; CODE RED P1 pinned per operator directive d-code-red-codex-gemini-starvation-1104\nREVIEWED:2026-11-04 HOLD (Haiku on API credit, job haiku-review-ready-sonnet-1104: STALE: scope changed 908a03d6600c after refresh; re-tag before work.)",
   "pinned": true,
   "prio": 1,
   "refine_tries": 0,
