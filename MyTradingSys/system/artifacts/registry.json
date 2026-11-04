@@ -206,7 +206,7 @@
       "title": "CBP Analyst Desk",
       "status": "canonical",
       "pinned": true,
-      "generator": "F:/CryptoScrapper/cbp_v2/tools/build_board.py (v5 tabbed board; recovered 2026-11-04 from the publishing session; not yet wired into cbp_run.py)",
+      "generator": "F:/CryptoScrapper/cbp_v2/tools/build_board.py (v5 tabbed board; run by cbp_run.rebuild_dashboard after every CBP run, wired 2026-11-04)",
       "html": null,
       "single_owner": "jishusharma1985",
       "owner_app": "CBP",
@@ -222,7 +222,7 @@
       },
       "purpose": "Who says what on BTC bottom and alts, from every CBP analyst video. The one CBP page.",
       "notes_go_to": "Read only.",
-      "note": "The only CBP page. 2026-11-04: live url is BpADz (v5, one screen, 5 tabs: Now, Trail, Analysts, BTC levels, Alts INR); the 2026-10-30 page https://claude.ai/artifact/EsvscEYpcnzjQ231AzcDZC was deleted 2026-11-04 (operator click). Legacy generator build_dashboard.py (cbp_run.py) still writes cbp_dashboard.html; card to wire build_board.py in.",
+      "note": "The only CBP page (context source, not signals). Live url BpADz (v5, 5 tabs). 2026-11-04: every CBP run now fetches prices and rebuilds cbp_v2/cbp_board.html; a session still republishes it to this url (artifact tool cannot run from a script).",
       "published_sha": null
     },
     {
