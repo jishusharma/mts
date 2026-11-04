@@ -1,0 +1,93 @@
+{
+ "id": "bb-range-to-range-2026-11-04",
+ "kind": "backtest",
+ "family": "Bollinger range-to-range",
+ "title": "Rerun: Bollinger BB(20,2) close beyond the band, trade to the opposite band (2:1 bracket, 24-bar time-out) in a range regime, 15m BTCUSDT by session",
+ "provenance": "builder-export",
+ "date": "2026-11-04",
+ "what": [
+  {
+   "name": "Rule",
+   "value_plain": "BB(20,2) close beyond the band, target the opposite band, 2:1 bracket, 24-bar time-out, research_kit range regime",
+   "label": "OURS"
+  },
+  {
+   "name": "Sessions and larger-range rule",
+   "value_plain": "asia / london / ny signal-bar sessions and the wide-band stratum are OURS; no transcript line from Tom was found, so it tests the rule as encoded here, never as the trader said it",
+   "label": "OURS"
+  },
+  {
+   "name": "Cost",
+   "value_plain": "fee-net 0.14 % round trip (research_kit)",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Regime mix",
+   "value_plain": "130 weeks DEV: bull 25 (19%) | bear 0 (0%) | range 105 (81%) | n/a 0 (0%)",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Power gate",
+   "value_plain": "powered family: 15m asia / london / ny; 1h / 4h / late are BLOCK and descriptive only",
+   "label": "OURS"
+  }
+ ],
+ "how": "Event study on 1m aggregated to 15m; range-gate vs ungated comparison; sides, wide vs narrow band, 1h / 4h descriptive; the retest arm is the next-open entry (fills 4256 of 4260 = 99.9 %), as disclosed in PRE_REG.",
+ "window": "DEV 2022-01-01..2024-06-30 BTCUSDT futures 1m; VALIDATION not read (no DEV survivor); HOLDOUT never loaded",
+ "verdict": {
+  "label": "FAIL for the rule as encoded in PRE_REG.md on its powered family (15m, asia / london / ny, signal and retest entry): 0 of 6 cells have net > 0, all six nets are -0.12 to -0.15 % per trade with day-clustered CIs entirely below zero. FAIL means stop: it says nothing about 1h / 4h / late (underpowered, descriptive), other band settings, other targets or stops, discretionary reads, other symbols or a bear regime (none in this DEV window).",
+  "tone": "bad"
+ },
+ "why": [
+  "15m range, signal entry: asia n 1200 net -0.122 % [-0.177, -0.067] (target hit 17 %); london n 951 -0.138 % [-0.200, -0.076] (28 %); ny n 1634 -0.153 % [-0.206, -0.100] (21 %). Retest arm -0.121 / -0.130 / -0.143 %.",
+  "The gate does nothing: 15m all sessions range n 4256 net -0.130 % [-0.161, -0.099] vs ungated n 5311 net -0.127 % [-0.154, -0.099], difference t -0.5.",
+  "Gross return is zero within noise and the opposite band is reached in about one trade in five, against about one in three needed to break even on a 2:1 bracket before cost.",
+  "Not shown: that the move never happens, only that it does not pay this bracket after 0.14 %; a take-the-mid exit, a trend-inside-range tag or a maker cost (0.09 %) are untested (new PRE_REG)."
+ ],
+ "kpis": [
+  {
+   "label": "powered cells",
+   "value": "6"
+  },
+  {
+   "label": "cells with net > 0",
+   "value": "0 of 6",
+   "tone": "bad"
+  },
+  {
+   "label": "15m all-session range net",
+   "value": "-0.130 % [-0.161, -0.099]",
+   "tone": "bad"
+  },
+  {
+   "label": "survivors",
+   "value": "0"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: the study reports cell tables (dev_cells*.csv in the study folder), not a trade list"
+  }
+ ],
+ "parity": null,
+ "source_files": [
+  "MyTradingSys/research/bb_range_to_range_2026-11-04/RESULT.md",
+  "MyTradingSys/research/bb_range_to_range_2026-11-04/dev_cells.csv",
+  "MyTradingSys/research/bb_range_to_range_2026-11-04/dev_survivors.json",
+  "MyTradingSys/research/bb_range_to_range_2026-11-04/PRE_REG.md",
+  "MyTradingSys/research/bb_range_to_range_2026-11-04/BLOCKED.md"
+ ],
+ "commit": "e2d5f8bd1",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "FAIL for the rule as encoded in PRE_REG.md on its powered family (15m, asia / london / ny, signal and retest entry): 0 of 6 cells have net > 0, all six nets are -0.12 to -0.15 % per trade with day-clustered CIs entirely below zero. FAIL means stop: it says nothing about 1h / 4h / late (underpowered, descriptive), other band settings, other targets or stops, discretionary reads, other symbols or a bear regime (none in this DEV window).",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: FAIL for the rule as encoded in PRE_REG.md on its powered family (15m, asia / london / ny, signal and retest entry): 0 of 6 cells have net > 0, all six nets are -0.12 to -0.15 % per trade with day-clustered CIs entirely below zero. FAIL means stop: it says nothing about 1h / 4h / late (underpowered, descriptive), other band settings, other targets or stops, discretionary reads, other symbols or a bear regime (none in this DEV window). · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
+}

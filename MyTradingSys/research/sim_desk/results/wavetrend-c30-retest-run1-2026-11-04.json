@@ -1,0 +1,94 @@
+{
+ "id": "wavetrend-c30-retest-run1-2026-11-04",
+ "kind": "backtest",
+ "family": "WaveTrend C30 retest",
+ "title": "Rerun, run 1: WaveTrend +-53 dots with trend gate, RSI / divergence confluence, retest entry and session split (15m, 30m, 1h), DEV 2022-2024",
+ "provenance": "builder-export",
+ "date": "2026-11-04",
+ "what": [
+  {
+   "name": "Signal",
+   "value_plain": "WaveTrend dot in the +-53 band; WT, RSI 14, 3..12-bar close divergence and the cost",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Parameters",
+   "value_plain": "retest = dot-bar midpoint within 6 bars, RSI 40/60, session cutoffs 08/13/21 UTC, 12-bar exit",
+   "label": "OURS"
+  },
+  {
+   "name": "Cost",
+   "value_plain": "fee-net 0.14 % round trip (research_kit)",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Regime mix",
+   "value_plain": "130 weeks: bull 25 (19%) | bear 0 (0%) | range 105 (81%) | n/a 0 (0%)",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Power gate",
+   "value_plain": "prereg_gate BLOCKed every TF before the run (BLOCKED.md): MDE + cost 0.38 / 0.60 / 1.02 against 0.30",
+   "label": "OURS"
+  }
+ ],
+ "how": "Event study per TF; trend gate (SMA200 side) x confluence (none, RSI, divergence) x entry (signal, retest) x session; 1080 cells in dev_cells.csv; day-clustered 95 % CI.",
+ "window": "DEV 2022-01-01..2024-06-30 BTCUSDT 1m; VALIDATION not read (no DEV survivor); HOLDOUT never loaded",
+ "verdict": {
+  "label": "INCONCLUSIVE (underpowered), not FAIL and not PASS. WaveTrend dots with the trend gate, RSI / divergence confluence, retest entry and a session split produced 0 DEV survivors of 24 pooled + 96 session cells (Holm m=24 / 96), so VALIDATION stayed unread and HOLDOUT was never loaded. prereg_gate BLOCKed every TF before the run (BLOCKED.md), so no FAIL can be issued either.",
+  "tone": "warn"
+ },
+ "why": [
+  "Bare dots lose fee-net everywhere: 15m buy -0.131 %, 15m sell -0.202 %, 30m buy -0.103 %, 30m sell -0.254 %, 1h buy -0.342 %, 1h sell -0.295 %; 126 of the 509 cells with n >= 30 have a net CI entirely below zero, none entirely above.",
+  "15m sell + RSI >= 60 with-trend: n 257 / 170 days, net +0.008 % [-0.134, +0.149], excess +0.133 % (t 1.91), Holm p 1.0. 1h sell + divergence retest n 19 / 17 days net +1.117 % [+0.007, +2.227]: the only cell with a CI above zero, on 17 days, 120 cells in the family: a lead, not an edge.",
+  "Buy + RSI <= 40 + trend gate 15m: n 238 net -0.187 % [-0.303, -0.070], Holm p 0.040 (negative, so no survivor). Sessions: 96 cells, 0 survivors.",
+  "Testing the 1h lead needs about 2,100 event-days (n needed 2165): other symbols or a longer history."
+ ],
+ "kpis": [
+  {
+   "label": "pooled + session cells",
+   "value": "24 + 96"
+  },
+  {
+   "label": "survivors",
+   "value": "0",
+   "tone": "warn"
+  },
+  {
+   "label": "15m sell RSI with-trend net",
+   "value": "+0.008 % [-0.134, +0.149]",
+   "tone": "warn"
+  },
+  {
+   "label": "1h sell div retest (lead)",
+   "value": "n 19, +1.117 %",
+   "tone": "warn"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: the study reports cell tables (dev_cells*.csv in the study folder), not a trade list"
+  }
+ ],
+ "parity": null,
+ "source_files": [
+  "MyTradingSys/research/wavetrend_c30_retest_2026-11-04/RESULT.md",
+  "MyTradingSys/research/wavetrend_c30_retest_2026-11-04/dev_cells.csv",
+  "MyTradingSys/research/wavetrend_c30_retest_2026-11-04/dev_survivors.json",
+  "MyTradingSys/research/wavetrend_c30_retest_2026-11-04/PRE_REG.md",
+  "MyTradingSys/research/wavetrend_c30_retest_2026-11-04/BLOCKED.md"
+ ],
+ "commit": "09215469e",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "INCONCLUSIVE (underpowered), not FAIL and not PASS. WaveTrend dots with the trend gate, RSI / divergence confluence, retest entry and a session split produced 0 DEV survivors of 24 pooled + 96 session cells (Holm m=24 / 96), so VALIDATION stayed unread and HOLDOUT was never loaded. prereg_gate BLOCKed every TF before the run (BLOCKED.md), so no FAIL can be issued either.",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: INCONCLUSIVE (underpowered), not FAIL and not PASS. WaveTrend dots with the trend gate, RSI / divergence confluence, retest entry and a session split produced 0 DEV survivors of 24 pooled + 96 session cells (Holm m=24 / 96), so VALIDATION stayed unread and HOLDOUT was never loaded. prereg_gate BLOCKed every TF before the run (BLOCKED.md), so no FAIL can be issued either. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
+}

@@ -1,0 +1,90 @@
+{
+ "id": "fabio-l1-strict-rerun-2026-11-04",
+ "kind": "backtest",
+ "family": "Fabio L1 strict detectors",
+ "title": "Rerun: Fabio layer 1 (CVD absorption, escalation breakout) on the strict detectors of 2afc18be6 vs the legacy detectors, same DEV window",
+ "provenance": "builder-export",
+ "date": "2026-11-04",
+ "what": [
+  {
+   "name": "Rule",
+   "value_plain": "strict vs legacy detector modes of cvd_absorption and escalation; same parameter grids; verdict rule unchanged; volume FVG unchanged (identical in both modes)",
+   "label": "OURS"
+  },
+  {
+   "name": "Cost",
+   "value_plain": "fee 0.10 % round trip (fabio_l1_strict_rerun.json fee_round_trip 0.001)",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Edge rule",
+   "value_plain": "OOS n >= 30, net > 0 at horizon 5, PBO < 0.5",
+   "label": "OURS"
+  },
+  {
+   "name": "Regime mix",
+   "value_plain": "not computed: this rerun is a detector comparison with no regime tag",
+   "label": "OURS"
+  },
+  {
+   "name": "Windows read",
+   "value_plain": "DEV only (splits.py); VALIDATION unread and HOLDOUT never loaded",
+   "label": "SOURCED"
+  }
+ ],
+ "how": "run_backtest.py --detectors strict|legacy --dev-end 2024-06-30; 12 variants per rule and TF; counts taken from the raw summary.json of fabio_l1_strict and fabio_l1_legacy_dev.",
+ "window": "DEV 2022-01-01..2024-06-30 (splits.py DEV_END), 1,313,280 1m bars, 70/30 IS/OOS; not comparable to the older report tables, which run to 2026-09-26",
+ "verdict": {
+  "label": "With strict detectors no cell meets the edge rule (OOS n >= 30, net > 0 at h5, PBO < 0.5)",
+  "tone": "bad"
+ },
+ "why": [
+  "Strict cvd_absorption: 5m OOS n 797 net -0.089 % (PBO 0.882), 15m OOS n 154 net -0.108 % (PBO 0.760), 1h OOS n 18 net +0.054 % (PBO 0.562): insufficient n (18 < 30).",
+  "Strict escalation: 5m OOS n 1065 net -0.067 % (PBO 0.171), 15m OOS n 291 net -0.079 % (PBO 0.286): a stable zero edge, not an edge; 1h has 0 OOS events (IS n 5).",
+  "The strict escalation detector removes the bulk of events (1h grid 117 vs legacy 2,523; 15m 3,775 vs 28,910; 5m 33,676 vs 125,915). The earlier 1h escalation +0.113 % net hypothesis does not survive on DEV.",
+  "The recommendations stand: escalation 1h log-only, no weight. These are mechanical readings with guessed thresholds, not Fabio's discretionary read."
+ ],
+ "kpis": [
+  {
+   "label": "rule x TF cells (strict)",
+   "value": "6"
+  },
+  {
+   "label": "cells meeting the edge rule",
+   "value": "0",
+   "tone": "bad"
+  },
+  {
+   "label": "only positive-net h5 cell",
+   "value": "cvd 1h, n 18, +0.054 %",
+   "tone": "warn"
+  },
+  {
+   "label": "escalation 5m strict PBO",
+   "value": "0.171"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: the study reports cell tables (dev_cells*.csv in the study folder), not a trade list"
+  }
+ ],
+ "parity": null,
+ "source_files": [
+  "MyTradingSys/backtest/layers/fabio/FABIO_L1_REPORT.md",
+  "MyTradingSys/backtest/layers/fabio/fabio_l1_strict_rerun.json"
+ ],
+ "commit": "084c07195",
+ "banner": {
+  "state": "UNCLEAR",
+  "tone": "",
+  "verdict": "With strict detectors no cell meets the edge rule (OOS n >= 30, net > 0 at h5, PBO < 0.5)",
+  "n": null,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "NO TRADE COUNT · verdict as written: With strict detectors no cell meets the edge rule (OOS n >= 30, net > 0 at h5, PBO < 0.5) · n=? · net R after fees n/a · try n/a · fee break-even n/a"
+ }
+}

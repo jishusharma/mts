@@ -1,7 +1,7 @@
 {
 "_doc": "Catalogue of known tests on trunk. kind is inferred (kind_source). Built by sim_desk/build_catalogue.py.",
-"count": 337,
-"exported": 337,
+"count": 345,
+"exported": 345,
 "rows": [
 {
 "id": "st-_archive-loose_2026-10-cbp_profile6_result",
@@ -13,7 +13,7 @@
 "source": "MyTradingSys/research/_archive/loose_2026-10/cbp_profile6_result.md",
 "exported": true,
 "result_id": "st-_archive-loose_2026-10-cbp_profile6_result",
-"date": "2026-10-26",
+"date": "2026-10-25",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -43,7 +43,7 @@
 "exported": true,
 "result_id": "dir-audit_inventory",
 "folder_files": 1,
-"date": "2026-10-30",
+"date": "2026-10-29",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -468,6 +468,48 @@
 "verdict_class": "other"
 },
 {
+"id": "bb-long-window-2026-11-04",
+"family": "Bollinger long window",
+"title": "Rerun, long window: both Bollinger studies (range-to-range A, level-arm retest B) on BTCUSDT SPOT 2017-08..2024-06, plus an OURS bear proxy",
+"kind": "backtest",
+"kind_source": "result file",
+"verdict": "Verdict A (bb_range_to_range, powered family): FAIL again for the rule as encoded, now on 2017-08..2024-06 SPOT: 0 of 6 range cells have net > 0, all six nets are -0.115 to -0.165 % per trade with day-clustered CIs entirely below zero. Verdict B (bb_range_retest level arm) and every P40 bear-proxy cell: INCONCLUSIVE (underpowered), not FAIL: prereg_gate (m 150) BLOCKs all 9 B range cells and all 18 P40 cells (PASS only for the 6 A range cells, BLOCKED_LONG.md). 0 of 30 family cells survive; VALIDATION not read; HOLDOUT never loaded.",
+"source": "MyTradingSys/research/bb_long_window_2026-11-04/RESULT_LONG.md",
+"exported": true,
+"result_id": "bb-long-window-2026-11-04",
+"date": "2026-11-04",
+"status": "FAILED",
+"verdict_class": "failed"
+},
+{
+"id": "bb-range-retest-2026-11-04",
+"family": "Bollinger range retest",
+"title": "Rerun: Bollinger range-to-range with a real return-to-the-band entry (limit at level +- k ATR, k 0.25 / 0.5 / 1.0), 15m BTCUSDT by session",
+"kind": "backtest",
+"kind_source": "result file",
+"verdict": "INCONCLUSIVE (underpowered), not FAIL: prereg_gate BLOCKs all 9 family cells (BLOCKED.md: 146-186 days per cell against 478-1783 needed), so no FAIL is available. 0 of 9 cells survive (dev_survivors.json is []); every cell has net below zero (-0.07 to -0.20 % per trade) and none has a Holm p below 0.17.",
+"source": "MyTradingSys/research/bb_range_retest_2026-11-04/RESULT.md",
+"exported": true,
+"result_id": "bb-range-retest-2026-11-04",
+"date": "2026-11-04",
+"status": "FAILED",
+"verdict_class": "failed"
+},
+{
+"id": "bb-range-to-range-2026-11-04",
+"family": "Bollinger range-to-range",
+"title": "Rerun: Bollinger BB(20,2) close beyond the band, trade to the opposite band (2:1 bracket, 24-bar time-out) in a range regime, 15m BTCUSDT by session",
+"kind": "backtest",
+"kind_source": "result file",
+"verdict": "FAIL for the rule as encoded in PRE_REG.md on its powered family (15m, asia / london / ny, signal and retest entry): 0 of 6 cells have net > 0, all six nets are -0.12 to -0.15 % per trade with day-clustered CIs entirely below zero. FAIL means stop: it says nothing about 1h / 4h / late (underpowered, descriptive), other band settings, other targets or stops, discretionary reads, other symbols or a bear regime (none in this DEV window).",
+"source": "MyTradingSys/research/bb_range_to_range_2026-11-04/RESULT.md",
+"exported": true,
+"result_id": "bb-range-to-range-2026-11-04",
+"date": "2026-11-04",
+"status": "FAILED",
+"verdict_class": "failed"
+},
+{
 "id": "st-bounce_shift_2026-10-30-result",
 "family": "bounce shift",
 "title": "Oversold 5m cascade: does a bounce come, and do momentum-shift signals call it? (2026-10-30)",
@@ -520,7 +562,7 @@
 "source": "MyTradingSys/research/c26_roadmap_2026-11-01/PHASE1_RANGE.md",
 "exported": true,
 "result_id": "dir-c26_roadmap_2026-11-01",
-"folder_files": 4,
+"folder_files": 5,
 "date": "2026-11-01",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
@@ -774,7 +816,7 @@
 "exported": true,
 "result_id": "dir-coordination_audit_20261026",
 "folder_files": 2,
-"date": "2026-10-26",
+"date": "2026-10-25",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -847,7 +889,7 @@
 "exported": true,
 "result_id": "dir-cryptocred_htf_2026-10",
 "folder_files": 2,
-"date": "2026-10-19",
+"date": "2026-10-18",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -936,7 +978,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-cowen_bmsb-245ae944.json",
 "exported": true,
 "result_id": "desk-cowen_bmsb-245ae944",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -950,7 +992,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-cowen_bmsb-113933da.json",
 "exported": true,
 "result_id": "desk-cowen_bmsb-113933da",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -964,7 +1006,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-cowen_bmsb-808a38e7.json",
 "exported": true,
 "result_id": "desk-cowen_bmsb-808a38e7",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -978,7 +1020,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-cowen_bmsb-f53ed8d7.json",
 "exported": true,
 "result_id": "desk-cowen_bmsb-f53ed8d7",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -992,7 +1034,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-cowen_bmsb-0bae3f5d.json",
 "exported": true,
 "result_id": "desk-cowen_bmsb-0bae3f5d",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -1006,7 +1048,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-cowen_bmsb-24c47838.json",
 "exported": true,
 "result_id": "desk-cowen_bmsb-24c47838",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -1020,7 +1062,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-cowen_bmsb-79fca995.json",
 "exported": true,
 "result_id": "desk-cowen_bmsb-79fca995",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -1034,7 +1076,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-cowen_bmsb-235436d9.json",
 "exported": true,
 "result_id": "desk-cowen_bmsb-235436d9",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -1048,7 +1090,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-cowen_bmsb-d3a470df.json",
 "exported": true,
 "result_id": "desk-cowen_bmsb-d3a470df",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -1062,7 +1104,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-cowen_bmsb-a0c48d6a.json",
 "exported": true,
 "result_id": "desk-cowen_bmsb-a0c48d6a",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -1076,7 +1118,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-cowen_bmsb-d5315728.json",
 "exported": true,
 "result_id": "desk-cowen_bmsb-d5315728",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -1090,7 +1132,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-cowen_bmsb-74b965eb.json",
 "exported": true,
 "result_id": "desk-cowen_bmsb-74b965eb",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -1104,7 +1146,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-fabio_v3-305051dc.json",
 "exported": true,
 "result_id": "desk-fabio_v3-305051dc",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -1118,7 +1160,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-fabio_v3-0694292f.json",
 "exported": true,
 "result_id": "desk-fabio_v3-0694292f",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -1132,7 +1174,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-fabio_v3-cc240f2b.json",
 "exported": true,
 "result_id": "desk-fabio_v3-cc240f2b",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -1146,7 +1188,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-fabio_v3-3441877d.json",
 "exported": true,
 "result_id": "desk-fabio_v3-3441877d",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -1160,7 +1202,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-fabio_v3-7da588cc.json",
 "exported": true,
 "result_id": "desk-fabio_v3-7da588cc",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -1174,7 +1216,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-fabio_v3-a955213e.json",
 "exported": true,
 "result_id": "desk-fabio_v3-a955213e",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -1188,7 +1230,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-fabio_v3-b3972cec.json",
 "exported": true,
 "result_id": "desk-fabio_v3-b3972cec",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -1202,7 +1244,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-fabio_v3-b6b13619.json",
 "exported": true,
 "result_id": "desk-fabio_v3-b6b13619",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -1216,7 +1258,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-fabio_v3-dd786e4e.json",
 "exported": true,
 "result_id": "desk-fabio_v3-dd786e4e",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -1230,7 +1272,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-fabio_v3-820e427d.json",
 "exported": true,
 "result_id": "desk-fabio_v3-820e427d",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -1244,7 +1286,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-krown-634f1a37.json",
 "exported": true,
 "result_id": "desk-krown-634f1a37",
-"date": "2026-10-25",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -1258,7 +1300,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-krown-8f1747e4.json",
 "exported": true,
 "result_id": "desk-krown-8f1747e4",
-"date": "2026-10-28",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -1272,7 +1314,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-krown-a2e514ff.json",
 "exported": true,
 "result_id": "desk-krown-a2e514ff",
-"date": "2026-10-28",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -1286,7 +1328,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-krown-304c64f8.json",
 "exported": true,
 "result_id": "desk-krown-304c64f8",
-"date": "2026-10-28",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -1300,7 +1342,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-krown-f70f0e73.json",
 "exported": true,
 "result_id": "desk-krown-f70f0e73",
-"date": "2026-10-28",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -1314,7 +1356,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-krown-b092f221.json",
 "exported": true,
 "result_id": "desk-krown-b092f221",
-"date": "2026-10-28",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -1328,7 +1370,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-levels-fb213d4c.json",
 "exported": true,
 "result_id": "desk-levels-fb213d4c",
-"date": "2026-10-28",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -1342,7 +1384,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-levels-f213f66e.json",
 "exported": true,
 "result_id": "desk-levels-f213f66e",
-"date": "2026-10-28",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -1356,7 +1398,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-levels-2b122b99.json",
 "exported": true,
 "result_id": "desk-levels-2b122b99",
-"date": "2026-10-28",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -1370,7 +1412,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-levels-50dbba30.json",
 "exported": true,
 "result_id": "desk-levels-50dbba30",
-"date": "2026-10-28",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -1384,7 +1426,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-rsi-593e9c2d.json",
 "exported": true,
 "result_id": "desk-rsi-593e9c2d",
-"date": "2026-10-28",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -1398,7 +1440,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-rsi-2a5162fe.json",
 "exported": true,
 "result_id": "desk-rsi-2a5162fe",
-"date": "2026-10-28",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -1412,7 +1454,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-rsi-a6a97db2.json",
 "exported": true,
 "result_id": "desk-rsi-a6a97db2",
-"date": "2026-10-28",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -1426,7 +1468,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-rsi-db26327f.json",
 "exported": true,
 "result_id": "desk-rsi-db26327f",
-"date": "2026-10-28",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -1440,7 +1482,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-tom_vp-5568b609.json",
 "exported": true,
 "result_id": "desk-tom_vp-5568b609",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -1454,7 +1496,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-tom_vp-bcb15fd4.json",
 "exported": true,
 "result_id": "desk-tom_vp-bcb15fd4",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -1468,7 +1510,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-tom_vp-55a87543.json",
 "exported": true,
 "result_id": "desk-tom_vp-55a87543",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -1482,7 +1524,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-tom_vp-d249f15a.json",
 "exported": true,
 "result_id": "desk-tom_vp-d249f15a",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -1496,7 +1538,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-tom_vp-20c09090.json",
 "exported": true,
 "result_id": "desk-tom_vp-20c09090",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -1510,7 +1552,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-tom_vp-c8d2f341.json",
 "exported": true,
 "result_id": "desk-tom_vp-c8d2f341",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -1524,7 +1566,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-tom_vp-d21ae701.json",
 "exported": true,
 "result_id": "desk-tom_vp-d21ae701",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -1538,7 +1580,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-tom_vp-4c1bc9c3.json",
 "exported": true,
 "result_id": "desk-tom_vp-4c1bc9c3",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -1552,7 +1594,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-tom_vp-0fd1a3c0.json",
 "exported": true,
 "result_id": "desk-tom_vp-0fd1a3c0",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -1566,7 +1608,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-tom_vp-f0e6a008.json",
 "exported": true,
 "result_id": "desk-tom_vp-f0e6a008",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -1580,7 +1622,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-tom_vp-8639b801.json",
 "exported": true,
 "result_id": "desk-tom_vp-8639b801",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -1594,7 +1636,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-tom_vp-23158b32.json",
 "exported": true,
 "result_id": "desk-tom_vp-23158b32",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -1608,7 +1650,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-wavetrend-d879ce95.json",
 "exported": true,
 "result_id": "desk-wavetrend-d879ce95",
-"date": "2026-10-28",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -1622,7 +1664,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-wavetrend-a6e775a2.json",
 "exported": true,
 "result_id": "desk-wavetrend-a6e775a2",
-"date": "2026-10-28",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -1636,7 +1678,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-wavetrend-9f0363ce.json",
 "exported": true,
 "result_id": "desk-wavetrend-9f0363ce",
-"date": "2026-10-28",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -1650,7 +1692,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-wavetrend-bddd48ea.json",
 "exported": true,
 "result_id": "desk-wavetrend-bddd48ea",
-"date": "2026-10-28",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -1729,14 +1771,14 @@
 {
 "id": "dir-eagle_eyes_picture_2026-10-28",
 "family": "eagle eyes picture",
-"title": "MTS picture and plan of actions (Eagle_Eyes draft, corrected by an Opus review, 2026-10-28)",
+"title": "Backtest candidates seen live (BTCUSDT, 2026-10-28)",
 "kind": "backtest",
 "kind_source": "inferred from text",
-"verdict": "across all families Tom, Fabio, Krown: UNTESTABLE-AS-BUILT; Malkan intraday, Levels: DEAD. Every 1m-2h family is dead on cost: best gross effect ever measured on DEV 3.8 bp/trade vs a 14 bp round trip (SOURCED R1 s.1, s.3; breakeven.csv:2-…",
-"source": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/PICTURE_AND_PLAN.md",
+"verdict": "Author: Eagle_Eyes (observer). Operator rule (10-28 about 22:40Z): at every price move, watch how the indicators behave around it and log anything worth a backtest. These are things SEEN once in a live session, written as testable definiti…",
+"source": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md",
 "exported": true,
 "result_id": "dir-eagle_eyes_picture_2026-10-28",
-"folder_files": 16,
+"folder_files": 17,
 "date": "2026-10-28",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
@@ -1751,7 +1793,7 @@
 "source": "MyTradingSys/research/sim_desk/results/eagle-c21-bb-pierce.json",
 "exported": true,
 "result_id": "eagle-c21-bb-pierce",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -1765,7 +1807,7 @@
 "source": "MyTradingSys/research/sim_desk/results/eagle-c23-daily-shorts.json",
 "exported": true,
 "result_id": "eagle-c23-daily-shorts",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -1779,7 +1821,7 @@
 "source": "MyTradingSys/research/sim_desk/results/eagle-c24-oi-after-flush.json",
 "exported": true,
 "result_id": "eagle-c24-oi-after-flush",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -1793,7 +1835,7 @@
 "source": "MyTradingSys/research/sim_desk/results/eagle-c25-stochrsi.json",
 "exported": true,
 "result_id": "eagle-c25-stochrsi",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -1807,7 +1849,7 @@
 "source": "MyTradingSys/research/sim_desk/results/eagle-c26-ride.json",
 "exported": true,
 "result_id": "eagle-c26-ride",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -1821,7 +1863,7 @@
 "source": "MyTradingSys/research/sim_desk/results/eagle-c26-fade.json",
 "exported": true,
 "result_id": "eagle-c26-fade",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -1835,7 +1877,7 @@
 "source": "MyTradingSys/research/sim_desk/results/c26-range-ladder.json",
 "exported": true,
 "result_id": "c26-range-ladder",
-"date": "2026-11-01",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -1849,7 +1891,7 @@
 "source": "MyTradingSys/research/sim_desk/results/c26-h1-structural-lower-high.json",
 "exported": true,
 "result_id": "c26-h1-structural-lower-high",
-"date": "2026-11-01",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -1863,7 +1905,7 @@
 "source": "MyTradingSys/research/sim_desk/results/c26-q10-path-distribution.json",
 "exported": true,
 "result_id": "c26-q10-path-distribution",
-"date": "2026-11-01",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -1877,7 +1919,7 @@
 "source": "MyTradingSys/research/sim_desk/results/c26-q5-touch-factors.json",
 "exported": true,
 "result_id": "c26-q5-touch-factors",
-"date": "2026-11-01",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -1891,7 +1933,7 @@
 "source": "MyTradingSys/research/sim_desk/results/c26-q7-liquidation-bands.json",
 "exported": true,
 "result_id": "c26-q7-liquidation-bands",
-"date": "2026-11-01",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -1905,7 +1947,7 @@
 "source": "MyTradingSys/research/sim_desk/results/c26-q8-cvd-divergence.json",
 "exported": true,
 "result_id": "c26-q8-cvd-divergence",
-"date": "2026-11-01",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -1919,7 +1961,7 @@
 "source": "MyTradingSys/research/sim_desk/results/c26-q9-footprint.json",
 "exported": true,
 "result_id": "c26-q9-footprint",
-"date": "2026-11-01",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -1933,7 +1975,7 @@
 "source": "MyTradingSys/research/sim_desk/results/eagle-c26-magnet.json",
 "exported": true,
 "result_id": "eagle-c26-magnet",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -1947,7 +1989,7 @@
 "source": "MyTradingSys/research/sim_desk/results/eagle-c27-wavetrend.json",
 "exported": true,
 "result_id": "eagle-c27-wavetrend",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -1961,7 +2003,7 @@
 "source": "MyTradingSys/research/sim_desk/results/eagle-c28-wt-structure.json",
 "exported": true,
 "result_id": "eagle-c28-wt-structure",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -1975,7 +2017,7 @@
 "source": "MyTradingSys/research/sim_desk/results/eagle-c29-wt-lower-tf.json",
 "exported": true,
 "result_id": "eagle-c29-wt-lower-tf",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -1989,7 +2031,7 @@
 "source": "MyTradingSys/research/sim_desk/results/eagle-c30-wt-rsi-div.json",
 "exported": true,
 "result_id": "eagle-c30-wt-rsi-div",
-"date": "2026-11-01",
+"date": "2026-11-03",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -2003,7 +2045,7 @@
 "source": "MyTradingSys/research/sim_desk/results/eagle-preus-pullback.json",
 "exported": true,
 "result_id": "eagle-preus-pullback",
-"date": null,
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -2094,6 +2136,20 @@
 "result_id": "dir-fabio_date_match_2026-10-18",
 "folder_files": 1,
 "date": "2026-10-18",
+"status": "SEE_VERDICT",
+"verdict_class": "other"
+},
+{
+"id": "fabio-l1-strict-rerun-2026-11-04",
+"family": "Fabio L1 strict detectors",
+"title": "Rerun: Fabio layer 1 (CVD absorption, escalation breakout) on the strict detectors of 2afc18be6 vs the legacy detectors, same DEV window",
+"kind": "backtest",
+"kind_source": "result file",
+"verdict": "With strict detectors no cell meets the edge rule (OOS n >= 30, net > 0 at h5, PBO < 0.5)",
+"source": "MyTradingSys/research/sim_desk/results/fabio-l1-strict-rerun-2026-11-04.json",
+"exported": true,
+"result_id": "fabio-l1-strict-rerun-2026-11-04",
+"date": "2026-11-04",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -2479,6 +2535,20 @@
 "verdict_class": "other"
 },
 {
+"id": "st-gemini_audits_2026-11-01-fractal_results_blind_read",
+"family": "gemini audits",
+"title": "Blind Read Audit: Fractal Results RESULT.md (f1, f2, f3, f4, p1_split, p1b_rsi_feenet)",
+"kind": "audit",
+"kind_source": "inferred from text",
+"verdict": "s. Every number is labeled SOURCED or OURS.",
+"source": "MyTradingSys/research/gemini_audits_2026-11-01/fractal_results_blind_read.md",
+"exported": true,
+"result_id": "st-gemini_audits_2026-11-01-fractal_results_blind_read",
+"date": "2026-11-01",
+"status": "SEE_VERDICT",
+"verdict_class": "other"
+},
+{
 "id": "dir-gemini_audits_2026-10-31",
 "family": "gemini audits",
 "title": "Blind Read Audit: tom_fabio_review_2026-10-31/SETUP_REVIEW.md",
@@ -2490,6 +2560,48 @@
 "result_id": "dir-gemini_audits_2026-10-31",
 "folder_files": 5,
 "date": "2026-10-31",
+"status": "SEE_VERDICT",
+"verdict_class": "other"
+},
+{
+"id": "st-gemini_audits_2026-11-01-recent_results_blind_read",
+"family": "gemini audits",
+"title": "FOUND: 201, NOT_IN_DATA: 20, DIFF: 0",
+"kind": "audit",
+"kind_source": "inferred from text",
+"verdict": "threshold 0) results.json ci[0]: -0.00268 (-0.27 pp) FOUND OURS results.json:primary_near.diff.ci[0]",
+"source": "MyTradingSys/research/gemini_audits_2026-11-01/recent_results_blind_read.md",
+"exported": true,
+"result_id": "st-gemini_audits_2026-11-01-recent_results_blind_read",
+"date": "2026-11-01",
+"status": "SEE_VERDICT",
+"verdict_class": "other"
+},
+{
+"id": "dir-gemini_audits_2026-11-02",
+"family": "Gemini Audits",
+"title": "FOUND: 256 rows (many are file:line cites counted as claims), NOT_IN_DATA: 6, DIFF: 0",
+"kind": "audit",
+"kind_source": "result file",
+"verdict": "S.csv",
+"source": "MyTradingSys/research/sim_desk/results/dir-gemini_audits_2026-11-02.json",
+"exported": true,
+"result_id": "dir-gemini_audits_2026-11-02",
+"date": "2026-11-02",
+"status": "SEE_VERDICT",
+"verdict_class": "other"
+},
+{
+"id": "st-gemini_audits_2026-11-01-older_results_blind_read",
+"family": "gemini audits",
+"title": "FOUND: 495, NOT_IN_DATA: 9, DIFF: 0",
+"kind": "audit",
+"kind_source": "inferred from text",
+"verdict": "Audit of numbers across five older studies:",
+"source": "MyTradingSys/research/gemini_audits_2026-11-01/older_results_blind_read.md",
+"exported": true,
+"result_id": "st-gemini_audits_2026-11-01-older_results_blind_read",
+"date": "2026-11-01",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -2888,7 +3000,7 @@
 "source": "MyTradingSys/research/layer_relations_2026-10/results_tables.md",
 "exported": true,
 "result_id": "st-layer_relations_2026-10-results_tables",
-"date": "2026-10-30",
+"date": "2026-10-29",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -3095,7 +3207,7 @@
 "exported": true,
 "result_id": "dir-malkan_universe_2026-10",
 "folder_files": 1,
-"date": "2026-10-19",
+"date": "2026-10-18",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -3112,6 +3224,20 @@
 "date": "2026-10-31",
 "status": "FAILED",
 "verdict_class": "failed"
+},
+{
+"id": "st-meta_label_dev_ext_2026-10-31-result",
+"family": "meta label dev ext",
+"title": "RESULT: meta-label rerun, Fabio Model C price-only stand-in (ours), pre-DEV window 2020-01-02..2022-03-31",
+"kind": "backtest",
+"kind_source": "inferred from text",
+"verdict": "by the pre-registered rule: PASSED (marginal, read the flags)",
+"source": "MyTradingSys/research/meta_label_dev_ext_2026-10-31/RESULT.md",
+"exported": true,
+"result_id": "st-meta_label_dev_ext_2026-10-31-result",
+"date": "2026-10-31",
+"status": "SEE_VERDICT",
+"verdict_class": "passed"
 },
 {
 "id": "dir-meta_label_roadmap_2026-10-31",
@@ -3167,7 +3293,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-meta_label_fabio_c_dev_ext.json",
 "exported": true,
 "result_id": "desk-meta_label_fabio_c_dev_ext",
-"date": "2026-11-02",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "passed"
 },
@@ -3181,7 +3307,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-meta_label_fabio_c.json",
 "exported": true,
 "result_id": "desk-meta_label_fabio_c",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "SEE_VERDICT",
 "verdict_class": "unclear"
 },
@@ -3195,7 +3321,7 @@
 "source": "MyTradingSys/research/sim_desk/results/desk-meta_label_tom_vp.json",
 "exported": true,
 "result_id": "desk-meta_label_tom_vp",
-"date": "2026-10-31",
+"date": "2026-11-03",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -3213,6 +3339,20 @@
 "date": "2026-10-13",
 "status": "FAILED",
 "verdict_class": "failed"
+},
+{
+"id": "st-michael_lines_2026-11-result",
+"family": "michael lines",
+"title": "RESULT: Michael's stated trend lines vs trendline_core events (BTC DEV 2022-01-01..2024-06-30)",
+"kind": "thought_experiment",
+"kind_source": "inferred from text",
+"verdict": "descriptive only. Go (conditional) for the alert card: detector events exist at all 5 kinds on 4h/1d; stated lines cannot be matched to detector lines because chart frames are not in the repo.",
+"source": "MyTradingSys/research/michael_lines_2026-11/RESULT.md",
+"exported": true,
+"result_id": "st-michael_lines_2026-11-result",
+"date": "2026-11-02",
+"status": "SEE_VERDICT",
+"verdict_class": "other"
 },
 {
 "id": "dir-mts_flow_audit_2026-10-13",
@@ -3498,7 +3638,7 @@
 "title": "Phase 1 Daily Pitchfork Event Study (Standard, Schiff, Modified Schiff, Log Modified Schiff)",
 "kind": "backtest",
 "kind_source": "inferred from text",
-"verdict": "PASS (Modified Schiff +1.50% mean net/trade, 72.12% ML reach)",
+"verdict": "UNPROVEN: PASS withdrawn 2026-11-03, whole-window study with the same final-pivot method; not re-run (mts_audit_2026-11-03/AUDIT.md s2)",
 "source": "MyTradingSys/research/pitchfork_2026-10-19/PHASE1_EVENT_STUDY.md",
 "exported": true,
 "result_id": "lm-pitchfork-1d-20261019",
@@ -3513,7 +3653,7 @@
 "title": "Phase 2 4-Hour Pitchfork & Anchored Volume Profile Confluence Study + Sim Desk Plugin",
 "kind": "backtest",
 "kind_source": "inferred from text",
-"verdict": "PASS (VA confluence PF 1.63, +0.61% net/trade; sim_desk plugin verified)",
+"verdict": "NOT REAL: PASS withdrawn 2026-11-03. Exact causal rerun 2020-2024: -0.011 % net, PF 0.99, n 272, inside placebo (mts_audit_2026-11-03/AUDIT.md s2)",
 "source": "MyTradingSys/research/pitchfork_2026-10-19/PHASE2_4H_POC_STUDY.md",
 "exported": true,
 "result_id": "lm-pitchfork-4h-vp-20261028",
@@ -3563,7 +3703,7 @@
 "exported": true,
 "result_id": "dir-positioning_c1_2026-10",
 "folder_files": 2,
-"date": "2026-10-26",
+"date": "2026-10-25",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -3578,7 +3718,7 @@
 "exported": true,
 "result_id": "dir-positioning_flowhorse_2026-10",
 "folder_files": 1,
-"date": "2026-10-26",
+"date": "2026-10-25",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -3693,7 +3833,7 @@
 "source": "MyTradingSys/research/reclaim_close_stop_2026-11/RESULT.md",
 "exported": true,
 "result_id": "st-reclaim_close_stop_2026-11-result",
-"date": "2026-11-01",
+"date": "2026-10-31",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -3774,15 +3914,14 @@
 },
 {
 "id": "dir-rsi_deep_buy_2026-10-19",
-"family": "rsi deep buy",
+"family": "Rsi Deep Buy",
 "title": "RSI deep-buy probability tables (card rsi-deep-prob-tables, SPEC s2 Steps D-E, OPUS_FRAMING s4)",
 "kind": "backtest",
-"kind_source": "inferred from text",
+"kind_source": "result file",
 "verdict": ". Hourly RSI timeframes have few events.",
-"source": "MyTradingSys/research/rsi_deep_buy_2026-10-19/PROB_REPORT.md",
+"source": "MyTradingSys/research/sim_desk/results/dir-rsi_deep_buy_2026-10-19.json",
 "exported": true,
 "result_id": "dir-rsi_deep_buy_2026-10-19",
-"folder_files": 7,
 "date": "2026-10-19",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
@@ -3813,6 +3952,34 @@
 "exported": true,
 "result_id": "malkan-div-breaks",
 "date": "2026-10-31",
+"status": "FAILED",
+"verdict_class": "failed"
+},
+{
+"id": "rsi-divergence-mtf-gated-long-2026-11-04",
+"family": "RSI divergence gated by Malkan regime",
+"title": "Rerun, long window: gated RSI divergence on BTCUSDT SPOT 2017-08..2024-06 (3x the history), with an OURS bear proxy",
+"kind": "backtest",
+"kind_source": "result file",
+"verdict": "INCONCLUSIVE (underpowered), not FAIL and not PASS. Long window (BTCUSDT SPOT 2017-08..2024-06, PRE_REG_LONG.md frozen first) triples the sample but prereg_gate (m = 48) still BLOCKs every timeframe (15m closest: 282 days vs 424 needed). 0 of 48 confirmatory cells survived the DEV rule",
+"source": "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/RESULT_LONG.md",
+"exported": true,
+"result_id": "rsi-divergence-mtf-gated-long-2026-11-04",
+"date": "2026-11-04",
+"status": "FAILED",
+"verdict_class": "failed"
+},
+{
+"id": "rsi-divergence-mtf-gated-run1-2026-11-04",
+"family": "RSI divergence gated by Malkan regime",
+"title": "Rerun, run 1: RSI divergence entries only when monthly AND weekly RSI agree with the daily SMA200 side (15m, 1h, 4h, 1d), DEV 2022-2024",
+"kind": "backtest",
+"kind_source": "result file",
+"verdict": "INCONCLUSIVE (underpowered), not FAIL and not PASS: 0 of 32 confirmatory cells survived the DEV rule; the gate leaves bull in 25 of 130 weeks and never bear, so 0 bearish setups exist",
+"source": "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/RESULT.md",
+"exported": true,
+"result_id": "rsi-divergence-mtf-gated-run1-2026-11-04",
+"date": "2026-11-04",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -3856,7 +4023,7 @@
 "source": "MyTradingSys/research/rumers_2026-11-01/RUMERS_DIRECT_VIEW_DEEP.md",
 "exported": true,
 "result_id": "dir-rumers_2026-11-01",
-"folder_files": 10,
+"folder_files": 11,
 "date": "2026-11-01",
 "status": "SEE_VERDICT",
 "verdict_class": "passed"
@@ -4375,7 +4542,7 @@
 "source": "MyTradingSys/research/sim_desk/results/tom-corr-divergence-backtest.json",
 "exported": true,
 "result_id": "tom-corr-divergence-backtest",
-"date": "2026-10-29",
+"date": "2026-11-03",
 "status": "FAILED",
 "verdict_class": "failed"
 },
@@ -4470,11 +4637,11 @@
 "title": "Trial ledger: layer lab",
 "kind": "backtest",
 "kind_source": "path",
-"verdict": "427 trial rows logged (every variant tried)",
+"verdict": "466 trial rows logged (every variant tried)",
 "source": "MyTradingSys/research/layer_lab/TRIALS.md",
 "exported": true,
 "result_id": "ledger-layer_lab-trials-md",
-"date": "2026-11-01",
+"date": "2026-11-04",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 },
@@ -4742,6 +4909,34 @@
 "verdict_class": "failed"
 },
 {
+"id": "wavetrend-c30-retest-long-2026-11-04",
+"family": "WaveTrend C30 retest",
+"title": "Rerun, long window: WaveTrend dots + trend gate + RSI / divergence on BTCUSDT SPOT 2018-04..2024-06, strict gate plus an OURS proxy arm",
+"kind": "backtest",
+"kind_source": "result file",
+"verdict": "INCONCLUSIVE (underpowered), not FAIL and not PASS. On the long SPOT DEV window (2018-04-01..2024-06-30) the 48 pooled + 192 session cells (strict `with` gate + one OURS proxy arm, Holm m=48 / 192) produced 0 survivors, so VALIDATION stayed unread and HOLDOUT was never loaded. prereg_gate still BLOCKs every confluence cell (BLOCKED_LONG.md).",
+"source": "MyTradingSys/research/wavetrend_c30_retest_2026-11-04/RESULT_LONG.md",
+"exported": true,
+"result_id": "wavetrend-c30-retest-long-2026-11-04",
+"date": "2026-11-04",
+"status": "FAILED",
+"verdict_class": "failed"
+},
+{
+"id": "wavetrend-c30-retest-run1-2026-11-04",
+"family": "WaveTrend C30 retest",
+"title": "Rerun, run 1: WaveTrend +-53 dots with trend gate, RSI / divergence confluence, retest entry and session split (15m, 30m, 1h), DEV 2022-2024",
+"kind": "backtest",
+"kind_source": "result file",
+"verdict": "INCONCLUSIVE (underpowered), not FAIL and not PASS. WaveTrend dots with the trend gate, RSI / divergence confluence, retest entry and a session split produced 0 DEV survivors of 24 pooled + 96 session cells (Holm m=24 / 96), so VALIDATION stayed unread and HOLDOUT was never loaded. prereg_gate BLOCKed every TF before the run (BLOCKED.md), so no FAIL can be issued either.",
+"source": "MyTradingSys/research/wavetrend_c30_retest_2026-11-04/RESULT.md",
+"exported": true,
+"result_id": "wavetrend-c30-retest-run1-2026-11-04",
+"date": "2026-11-04",
+"status": "FAILED",
+"verdict_class": "failed"
+},
+{
 "id": "dir-wiring_audit_2026-10",
 "family": "wiring audit",
 "title": "Quotes used by WIRING_TOM_FABIO_HABIB.csv (generated; one block per verified fragment)",
@@ -4811,91 +5006,6 @@
 "result_id": "dir-yt_feed_2026-10-31",
 "folder_files": 8,
 "date": "2026-10-31",
-"status": "SEE_VERDICT",
-"verdict_class": "other"
-},
-{
-"id": "st-gemini_audits_2026-11-01-fractal_results_blind_read",
-"family": "gemini audits",
-"title": "Blind Read Audit: Fractal Results RESULT.md (f1, f2, f3, f4, p1_split, p1b_rsi_feenet)",
-"kind": "audit",
-"kind_source": "inferred from text",
-"verdict": "s. Every number is labeled SOURCED or OURS.",
-"source": "MyTradingSys/research/gemini_audits_2026-11-01/fractal_results_blind_read.md",
-"exported": true,
-"result_id": "st-gemini_audits_2026-11-01-fractal_results_blind_read",
-"date": "2026-11-01",
-"status": "SEE_VERDICT",
-"verdict_class": "other"
-},
-{
-"id": "dir-gemini_audits_2026-11-02",
-"family": "gemini audits",
-"title": "FOUND: 106, NOT_IN_DATA: 1, DIFF: 0",
-"kind": "audit",
-"kind_source": "inferred from text",
-"verdict": "Audit of all empirical numbers, percentages, US-window ranges, shares, ladder parameters, caps, and test cases in:",
-"source": "MyTradingSys/research/gemini_audits_2026-11-02/cotrade_blind_read.md",
-"exported": true,
-"result_id": "dir-gemini_audits_2026-11-02",
-"folder_files": 5,
-"date": "2026-11-02",
-"status": "SEE_VERDICT",
-"verdict_class": "other"
-},
-{
-"id": "st-gemini_audits_2026-11-01-recent_results_blind_read",
-"family": "gemini audits",
-"title": "FOUND: 201, NOT_IN_DATA: 20, DIFF: 0",
-"kind": "audit",
-"kind_source": "inferred from text",
-"verdict": "threshold 0) results.json ci[0]: -0.00268 (-0.27 pp) FOUND OURS results.json:primary_near.diff.ci[0]",
-"source": "MyTradingSys/research/gemini_audits_2026-11-01/recent_results_blind_read.md",
-"exported": true,
-"result_id": "st-gemini_audits_2026-11-01-recent_results_blind_read",
-"date": "2026-11-01",
-"status": "SEE_VERDICT",
-"verdict_class": "other"
-},
-{
-"id": "st-gemini_audits_2026-11-01-older_results_blind_read",
-"family": "gemini audits",
-"title": "FOUND: 495, NOT_IN_DATA: 9, DIFF: 0",
-"kind": "audit",
-"kind_source": "inferred from text",
-"verdict": "Audit of numbers across five older studies:",
-"source": "MyTradingSys/research/gemini_audits_2026-11-01/older_results_blind_read.md",
-"exported": true,
-"result_id": "st-gemini_audits_2026-11-01-older_results_blind_read",
-"date": "2026-11-01",
-"status": "SEE_VERDICT",
-"verdict_class": "other"
-},
-{
-"id": "st-meta_label_dev_ext_2026-10-31-result",
-"family": "meta label dev ext",
-"title": "RESULT: meta-label rerun, Fabio Model C price-only stand-in (ours), pre-DEV window 2020-01-02..2022-03-31",
-"kind": "backtest",
-"kind_source": "inferred from text",
-"verdict": "by the pre-registered rule: PASSED (marginal, read the flags)",
-"source": "MyTradingSys/research/meta_label_dev_ext_2026-10-31/RESULT.md",
-"exported": true,
-"result_id": "st-meta_label_dev_ext_2026-10-31-result",
-"date": "2026-10-31",
-"status": "SEE_VERDICT",
-"verdict_class": "passed"
-},
-{
-"id": "st-michael_lines_2026-11-result",
-"family": "michael lines",
-"title": "RESULT: Michael's stated trend lines vs trendline_core events (BTC DEV 2022-01-01..2024-06-30)",
-"kind": "thought_experiment",
-"kind_source": "inferred from text",
-"verdict": "descriptive only. Go (conditional) for the alert card: detector events exist at all 5 kinds on 4h/1d; stated lines cannot be matched to detector lines because chart frames are not in the repo.",
-"source": "MyTradingSys/research/michael_lines_2026-11/RESULT.md",
-"exported": true,
-"result_id": "st-michael_lines_2026-11-result",
-"date": "2026-11-02",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 }
