@@ -1751,3 +1751,7 @@ Answer: given in chat above (an order, not a question); applied, nothing waits o
 ## d-all-llms-move-faster-1104 (2026-11-04 ~14:15Z, operator in chat, login C Lead)
 Operator: "Use all LLMs - move faster".
 Applied: NUC runs 10 ready [GEMINI] review cards in 3 parallel gemini_queue streams (Flash 4, Argon 3, GPT-oss 3) plus a codex_run.py tick, launched from the desktop Lead over the NUC gate; desktop credit chain (L1) stays back to back with Lab Guy's cards added as filed; DSA rows (flake hunt, NUC data inventory) wait for DSA to open. CI red handled the same hour: C31 (e1194e2b) and stall-fix (2f055df7) reverts, both re-land through their authors.
+
+## d-malkan-window-label-1105 | decided 2026-11-04 | Supervisor B (OURS, correcting d-malkan-divergence-window-1104)
+Check of 160 source files (research/malkan_hindi_2026-11-04/WINDOW_RECONCILE_1104.md, 856f44e3): the 12 STRONG / 13-18 OK / over 18 WEAK window has no Malkan source. The sources give 3-10 bars for regular divergence; a Hindi video lists 12 among diluting counts; 18 is never a bar threshold. DECISION (OURS): those three values are labelled OURS from now on, not SOURCED; the running default stays unchanged until a fee-net DEV comparison of both windows (raw card filed). Operator's words stand as the source of the request; they can name a video if one exists outside the 160 files.
+
