@@ -2,6 +2,7 @@
   "approved_by": "",
   "asks": "",
   "class": "C1",
+  "closed": "2026-11-04T19:27:41Z",
   "commands": [
     "python -m pytest MyTradingSys/tests/test_research_kit_context.py -q"
   ],
@@ -18,6 +19,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "34 passed; MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-spec-tests-research-kit-",
+      "ref": "c3118853a",
+      "utc": "2026-11-04T19:27:41Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "research_kit: context harness (regime, phase, session tags, retest-entry, regime-mix line)",
@@ -28,6 +35,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "Flip a boundary comparison or session window check in research_kit.py and verify MyTradingSys/tests/test_research_kit_context.py fails.",
+  "next": "END: requested context specs and retest timing tests added; suite passes",
   "note": "REVIEWED:2026-11-04 ACCEPT by lab_guy | D11 feeder card for d91081762 | lab_guy C1 ACCEPT (B-shared harness; mutation_check present). After the run: Haiku re-derives 1-3 tag counts from raw bars",
   "prio": 1,
   "refine_tries": 0,
@@ -36,7 +44,12 @@
   "refs": [
     "MyTradingSys/backtest/research_kit.py"
   ],
-  "result": "",
+  "result": "34 passed; MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-spec-tests-research-kit-context-1104.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tests/test_research_kit_context.py",
     "MyTradingSys/backtest/research_kit.py"
@@ -45,12 +58,13 @@
   "scope_sha": "57b0b511c3e6",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/backtest/research_kit.py and existing MyTradingSys/tests/test_research_kit_context.py",
     "Add independent spec and boundary tests for regime_mix, session tagging, and retest-entry timing (no same-bar lookahead)",
     "Run pytest MyTradingSys/tests/test_research_kit_context.py -q and verify 0 failures"
   ],
+  "taken": "2026-11-04T19:27:41Z",
   "tests": "python -m pytest MyTradingSys/tests/test_research_kit_context.py -q",
   "title": "GPT spec and mutation tests for research_kit.py context harness and retest-entry mode",
   "weight": "ROUTINE",
