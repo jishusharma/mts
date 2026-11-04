@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T21:59:08Z",
   "commands": [],
   "created": "2026-11-04T13:21:33Z",
   "depends_on": [],
@@ -13,17 +14,30 @@
   "id": "gpt-spec-tests-sim-banner-tradelist-1104",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "5 passed; MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-spec-tests-sim-banner-tra",
+      "ref": "0749bcb1b",
+      "utc": "2026-11-04T21:59:08Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: scoped spec tests pass; no follow-up card needed",
   "note": "REVIEWED:2026-11-04 T0-ONLY | D11 feeder card for sim-demo-opus-1104 ship.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-04T13:22:20Z",
   "refs": [],
-  "result": "",
+  "result": "5 passed; MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-spec-tests-sim-banner-tradelist-1104.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/sim_desk/artifact/test_banner_spec_gpt.py"
   ],
@@ -33,11 +47,12 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "write the expected numbers by hand from a small synthetic trade list",
     "import build_artifact and call banner_of only"
   ],
+  "taken": "2026-11-04T21:59:08Z",
   "tests": "python -m pytest -q MyTradingSys/research/sim_desk/artifact/test_banner_spec_gpt.py",
   "title": "gpt-spec-tests: independent tests for the sim banner trade-list fallback (banner_of)",
   "weight": "ROUTINE",

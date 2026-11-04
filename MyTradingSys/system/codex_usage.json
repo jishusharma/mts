@@ -4,9 +4,9 @@
   "week_resets": 1794204690,
   "week_used": 37.0,
   "window_resets": 1793832142,
-  "window_used": 2.0
+  "window_used": 3.0
  },
- "at": "2026-11-04T20:38:44Z",
+ "at": "2026-11-04T21:59:12Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -22,18 +22,63 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 7.0,
-  "window_pts": 2.0,
-  "window_runs": 4
+  "window_pts": 3.0,
+  "window_runs": 7
  },
  "runs": [
+  {
+   "at": "2026-11-04T21:58:31Z",
+   "card": "gpt-spec-tests-sim-banner-tradelist-1104",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 34,
+   "tokens_out": 1941,
+   "tokens_total": 150033,
+   "tokens_uncached": 23420,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
+  {
+   "at": "2026-11-04T21:31:12Z",
+   "card": "malkan-window-12-18-vs-hindi",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "3 uncommitted file(s) left in F:\\MTS\\mts-codex-lab: MyTradingSys/research/malkan_hindi_2026-11-04/WINDOW_RECONCILE_1104.md",
+   "outcome": "OUT_OF_SCOPE",
+   "seconds": 153,
+   "tokens_out": 9875,
+   "tokens_total": 907616,
+   "tokens_uncached": 58445,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
+  {
+   "at": "2026-11-04T21:00:10Z",
+   "card": "malkan-window-12-18-vs-hindi",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "3 uncommitted file(s) left in F:\\MTS\\mts-codex-lab: MyTradingSys/research/malkan_hindi_2026-11-04/WINDOW_RECONCILE_1104.md",
+   "outcome": "OUT_OF_SCOPE",
+   "seconds": 105,
+   "tokens_out": 6759,
+   "tokens_total": 736914,
+   "tokens_uncached": 65963,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-11-04T20:37:25Z",
    "card": "v-recovery-after-low-sweep-event-study-1104",
    "effort": "medium",
    "kind": "build",
    "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "BLOCKED",
+   "note": "host health: ok\nsync: ship refused: none of your 2 commit(s) carries a `Next:` line; rerun with --next \"<card-id | stage | END: reason>\"",
+   "outcome": "SHIP_FAILED",
    "seconds": 72,
    "tokens_out": 4356,
    "tokens_total": 332638,
@@ -130,51 +175,6 @@
    "tokens_uncached": 32784,
    "week_pts": 0.0,
    "window_pts": 0.0
-  },
-  {
-   "at": "2026-11-04T16:33:56Z",
-   "card": "gpt-rederive-bb-range-to-range-1104",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
-   "seconds": 79,
-   "tokens_out": 4053,
-   "tokens_total": 338716,
-   "tokens_uncached": 60743,
-   "week_pts": 0.0,
-   "window_pts": 1.0
-  },
-  {
-   "at": "2026-11-04T15:51:06Z",
-   "card": "gpt-spec-tests-fetch-binance-archive-1104",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "3 uncommitted file(s) left in F:\\MTS\\mts-codex-lab: MyTradingSys/tests/test_regime_mix_long_1104.py",
-   "outcome": "OUT_OF_SCOPE",
-   "seconds": 79,
-   "tokens_out": 3830,
-   "tokens_total": 496058,
-   "tokens_uncached": 44740,
-   "week_pts": 1.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-11-04T15:28:01Z",
-   "card": "gpt-spec-tests-div-flags-chart-1104",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "3 uncommitted file(s) left in F:\\MTS\\mts-codex-lab: MyTradingSys/tests/test_div_flags_chart.py",
-   "outcome": "OUT_OF_SCOPE",
-   "seconds": 121,
-   "tokens_out": 6168,
-   "tokens_total": 545157,
-   "tokens_uncached": 34413,
-   "week_pts": 0.0,
-   "window_pts": 1.0
   }
  ]
 }
