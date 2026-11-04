@@ -94,6 +94,7 @@ Supervisor and super session are ONE role. Code: `scripts/dev/supervisor.py plan
 - Research Map: `Artifact read` first, edit the one `const DATA = ` line by script in `system/artifacts/research_map.html`, republish to claude.ai/artifact/9nqpZeMeEehadoBoYopZU3 from the jishusharma1985 login. Backtest = fee check at the stated stop first (fee R = 0.14% / stop%), then PRE_REG on DEV only.
 - A worker that merges late hits VERDICTS.csv and wiring_registry.json conflicts: union both sides.
 - Login letters: A jishu.sharma, B jishu.awgp, C jishusharma1985.
+- Route tags (d-route-tag-every-session-1104): ship refuses commits without `Next: <card-id | stage | END: why>`; at load run `route_audit.py check --days 2` and card each finding.
 - API credit: `scripts/dev/api_job.py launch|status|ledger|total` is the one launcher (key read into the child env only; `F:/MTS/api_runs/<slug>/`); ledger = `PLAN_API_CREDITS_2026-11-04.md` Spent table; the day's queue is in the newest `PLAN_24H_<date>.md`.
 - Spawn gate: after `get_usage` run `python scripts/dev/usage_reminder.py record --five <5h%> --elapsed <% of 5 h elapsed>` or the Agent hook refuses (reading older than 10 min). Start Builder/Planner Agents with `isolation: "worktree"`; without it they edit the Supervisor's own tree. `supervisor.py wait` takes no `--running`.
 
