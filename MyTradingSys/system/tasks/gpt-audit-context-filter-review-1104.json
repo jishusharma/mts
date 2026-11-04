@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T12:44:23Z",
   "commands": [
     "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-audit-context-filter-review.md'); assert p.exists() and len(p.read_text())>400\""
   ],
@@ -15,7 +16,14 @@
   "id": "gpt-audit-context-filter-review-1104",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "FIX-FIRST: 2 class mismatches; MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-audi",
+      "ref": "531c89c54",
+      "utc": "2026-11-04T12:44:23Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -27,7 +35,12 @@
   "refs": [
     "MyTradingSys/research/CONTEXT_FILTER_REVIEW_2026-11-04.md"
   ],
-  "result": "",
+  "result": "FIX-FIRST: 2 class mismatches; MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-audit-context-filter-review-1104.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-audit-context-filter-review.md",
     "MyTradingSys/research/CONTEXT_FILTER_REVIEW_2026-11-04.md"
@@ -36,12 +49,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/CONTEXT_FILTER_REVIEW_2026-11-04.md",
     "Spot-check each of the 33 study rows against its actual Python backtest script in MyTradingSys/research/ or MyTradingSys/backtest/",
     "Write MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-audit-context-filter-review.md listing verified rows and any discrepancies"
   ],
+  "taken": "2026-11-04T12:44:23Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-audit-context-filter-review.md'); assert p.exists() and len(p.read_text())>400\"",
   "title": "GPT audit of CONTEXT_FILTER_REVIEW_2026-11-04.md classifications against backtest scripts",
   "weight": "ROUTINE",
