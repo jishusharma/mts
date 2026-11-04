@@ -24290,8 +24290,7 @@
       45.5
      ]
     }
-   ],
-   "div_rule": "Divergence drawn here: OURS rule on candle lows (wicks), older low 8-40 candles back, RSI <= 40 at it; not Malkan's rule (closes only, 12 and 18 candles)."
+   ]
   },
   {
    "kind": "replay",
@@ -24900,11 +24899,10 @@
   "state": "UNCLEAR",
   "tone": "",
   "verdict": "VALIDATION: H1 FAIL, H2 INCONCLUSIVE (mean +0.22 %, CI includes 0, Holm p 0.218). Not promoted; HOLDOUT unread.",
-  "n": 35,
+  "n": null,
   "net_r": null,
   "try_no": null,
   "breakeven_x": null,
-  "text": "UNCLEAR · verdict as written: VALIDATION: H1 FAIL, H2 INCONCLUSIVE (mean +0.22 %, CI includes 0, Holm p 0.218). Not promoted; HOLDOUT unread. · n=35 (trade list) · net -0.066 %/trade after fees · try n/a · fee break-even n/a",
-  "net_pct": -0.066
+  "text": "NO TRADE COUNT · verdict as written: VALIDATION: H1 FAIL, H2 INCONCLUSIVE (mean +0.22 %, CI includes 0, Holm p 0.218). Not promoted; HOLDOUT unread. · n=? · net R after fees n/a · try n/a · fee break-even n/a"
  }
 }
