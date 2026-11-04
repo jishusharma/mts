@@ -63,7 +63,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `t09-f4-live-window-99-bars-swing-layers` refined p2 JIS-NB: T09-F4 S2: 99-bar live window misses 68 of 96 escalation signals; fetch more bars for swing layers
   - `layer-state-snapshot-causal` refined p3 SONNET: S0 park. Meta-label phase 2 (ROADMAP P2 + 2.0): causal layer_state_at(ts) snapshot in sim_desk/studies/_bars.p
   - `oi-pivot-1h-4h-long-oi-followup` refined p3 SONNET: OI pivot candidates at 1h/4h: aggregate the 5m metrics archive 2022-01..2024-06 (DEV), same candidates/outcome
-  - `run-v3-l3-no-test-runs-the-full-non-is-o` raw p3 SONNET: run_v3_l3: no test runs the full non --is-only path; add a --days-limit smoke case that asserts OOS windows an
+  - `run-v3-l3-no-test-runs-the-full-non-is-o` ready p3 SONNET: run_v3_l3: no test runs the full non --is-only path; add a --days-limit smoke case that asserts OOS windows an
   - `fabio-layer-v2-markets` blocked p5 OPUS: Fabio layer v2 spec, part B: data plan per market, cost, stop width, build + recall cards (Opus research)
   - `fabio-layer-v2-spec` blocked p5 OPUS: Fabio layer v2 spec, part A: setup families + sourced rules from his ledger (Opus research)
 
@@ -144,7 +144,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Code: `MyTradingSys/backtest/layers/session`; `MyTradingSys/backtest/layers/session_levels`; `MyTradingSys/backtest/layers/turn_of_candle`
 - Other results: `MyTradingSys/research/t087_session_levels_2026-10-09`; `MyTradingSys/research/eur_low_us_sweep_2026-10-14`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `splits-pre-dev-window` raw p3 SONNET: splits.py: a documented pre-2022 DEV window so long-history studies stop bypassing assert_dev_only (no change 
+  - `splits-pre-dev-window` ready p3 SONNET: splits.py: a documented pre-2022 DEV window so long-history studies stop bypassing assert_dev_only (no change 
 
 ## Volume, candle patterns, daily MA setups, bigtrade (`volume_candles_ma`)
 - Status: No validated edge; volume HOLDOUT sealed; MA numbers NO-SOURCE.
