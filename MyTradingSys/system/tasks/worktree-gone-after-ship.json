@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T20:35:17Z",
   "commands": [],
   "created": "2026-11-03T18:19:41Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "already shipped 59815236e: tidy_after_ship + LAYERS.md/rebuildable/gq/dsa retire; 26/26 ti",
+      "ref": "6540063d4",
+      "utc": "2026-11-04T20:35:17Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Merge remote-tracking branch 'origin/fast-track' into worktree-agent-a9e1d56e976d2bbdd",
@@ -24,13 +31,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: already shipped",
   "note": "REVIEWED:2026-11-04 ACCEPT (Haiku read on API credit, job haiku-review-1: done_when testable, scope exists, no newer decision contradicts)",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-04T15:46:47Z",
   "refs": [],
-  "result": "",
+  "result": "already shipped 59815236e: tidy_after_ship + LAYERS.md/rebuildable/gq/dsa retire; 26/26 tidy tests pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/sync.py, scripts/dev/test_sync.py"
   ],
@@ -38,10 +51,11 @@
   "scope_sha": "d8d73a2bc7dd",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "tidy_noise, REGENERABLE, auto rule, tidy_after_ship"
   ],
+  "taken": "2026-11-04T20:35:17Z",
   "tests": "scripts/dev/test_sync.py tidy tests (5 new, fail on old code)",
   "title": "Finished worktrees retire by themselves after ship",
   "weight": "",

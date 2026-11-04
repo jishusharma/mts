@@ -1,7 +1,16 @@
 {
   "approved_by": "",
-  "asks": "",
+  "asks": "Needs a real review stamp (Lab_Guy or non-Claude); not faked",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-04T20:12:05Z",
+    "misses": 2,
+    "reads": [
+      "scripts/dev/analyst_levels.py"
+    ],
+    "session": "agent-a79ea19a15b71ad87"
+  },
   "created": "2026-11-04T19:18:02Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/C31_FEEDER.md has per-symbol and pooled n, fee-net R per half, Context and Regime mix lines, and verdict POWERED-PASS|POWERED-FAIL|UNDERPOWERED",
@@ -17,7 +26,7 @@
   "mutation_check": "",
   "note": "feeder to C31 UNDERPOWERED verdict",
   "prio": 3,
-  "refine_tries": 0,
+  "refine_tries": 1,
   "refined_by": "",
   "refs": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/c31_halves.py"

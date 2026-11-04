@@ -7,7 +7,7 @@
   ],
   "created": "2026-11-04T12:43:27Z",
   "depends_on": [],
-  "done_when": "MyTradingSys/research/malkan_hindi_2026-11-04/WINDOW_RECONCILE_1104.md has a table of every bar-count quote (video id, quote, English or Hindi), a verdict per threshold, and a proposed malkan_divergence_default.json window labelled SOURCED or OURS",
+  "done_when": "WINDOW_RECONCILE_1104.md has a table of every bar-count quote (video id, quote, English or Hindi, regular or reverse), one verdict row each for 10, 12, 15 and 18 (SOURCED with a video id, OURS or NOT_IN_DATA), and a fenced json block with min_bars/max_bars for regular and reverse labelled SOURCED or OURS; Hindi quotes are exact substrings of raw_transcripts_canonical",
   "est_turns": 14,
   "formula_id": "",
   "formula_ids": [],
@@ -35,18 +35,21 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS): [GEMINI] caption work per operator 10-25; lane CODEX kind audit; changing the numbers is a follow-up after this verdict. Refined by planner-refine-1104. | lab_guy 11-04: C2 (E2 definition feeding div_flags_chart, live_confluence_feed and every Malkan divergence layer). NOT stamped: needs a non-Claude spec review before take (Gemini flash high), then ACCEPT. Test hardened: old test passed on any file containing the word SOURCED (E4).",
+  "note": "DECISION (OURS): [GEMINI] caption work per operator 10-25; lane CODEX kind audit; changing the numbers is a follow-up after this verdict. Refined by planner-refine-1104. | lab_guy 11-04: C2 (E2 definition feeding div_flags_chart, live_confluence_feed and every Malkan divergence layer). Spec review done 2026-11-05: Gemini FIX-FIRST (REVIEW_MALKAN_WINDOW_GEMINI_1104.md), blocking findings spot-checked and fixed by Claude. Test hardened: old test passed on any file containing the word SOURCED (E4).\nREVIEWED:2026-11-05 ACCEPT reviewer=gemini (Gemini spec review REVIEW_MALKAN_WINDOW_GEMINI_1104.md + Sonnet 5.5 spot-check in session malkan-card-fix-1104, no api job id; all blocking findings CONFIRMED and fixed)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-04T13:01:40Z",
+  "refreshed": "2026-11-05T00:00:00Z",
   "refs": [],
   "result": "",
   "scope_in": [
     "MyTradingSys/research/malkan_hindi_2026-11-04/WINDOW_RECONCILE_1104.md",
     "MyTradingSys/research/malkan_hindi_2026-11-04/HINDI_CONCEPTS.md",
     "MyTradingSys/research/malkan_extract_2026-10-15/extracts",
-    "MyTradingSys/backtest/layers/rsi/params/malkan_divergence_default.json"
+    "MyTradingSys/backtest/layers/rsi/params/malkan_divergence_default.json",
+    "raw_transcripts_canonical/",
+    "MyTradingSys/system/OPERATOR_DECISIONS.md",
+    "MyTradingSys/research/malkan_hindi_2026-11-04/check_window_reconcile.py"
   ],
   "scope_out": [
     "editing the params json or div_flags_chart.py (follow-up card after the verdict); live tree"
@@ -54,15 +57,19 @@
   "scope_sha": "9aab0dd1db8f",
   "size": "S",
   "sources": [
-    "MyTradingSys/backtest/layers/rsi/params/malkan_divergence_default.json:17"
+    "MyTradingSys/backtest/layers/rsi/params/malkan_divergence_default.json:4-8,12-17",
+    "MyTradingSys/system/OPERATOR_DECISIONS.md:1685-1686",
+    "raw_transcripts_canonical/GbXnw_tNMtw_raw.txt:382,461",
+    "MyTradingSys/research/malkan_hindi_2026-11-04/HINDI_CONCEPTS.md:14-27"
   ],
   "state": "ready",
   "steps": [
-    "grep the English extracts and HINDI_CONCEPTS.md for bar-count quotes (15, 12, 18, less than)",
-    "Tabulate each quote with video id; run scripts/dev/verify_extract_quotes.py on the file",
-    "State per threshold SOURCED (quote) or OURS; propose the window with the quote"
+    "grep the English extracts, raw_transcripts_canonical/GbXnw_tNMtw_raw.txt (no extract exists for it) and HINDI_CONCEPTS.md for bar-count quotes (3, 5, 7, 10, 12, 14, 15, 18, less than, dilut); the 6 Hindi raw transcripts are one line each, so cite the video id and the quoted text",
+    "Tabulate each quote with video id, English or Hindi, and whether it speaks of regular divergence (params json lines 4-8) or reverse PRD/NRD (lines 12-17); open the source and search for every quote before writing it; take no quote or number from a review or summary you did not find in the source",
+    "Run scripts/dev/verify_extract_quotes.py for the English quotes only: its norm() keeps only [a-z0-9%], so a Hindi quote is skipped or reported MISSING (scripts/dev/verify_extract_quotes.py:36,156,206); check_window_reconcile.py checks Hindi quotes as exact substrings of raw_transcripts_canonical instead",
+    "State per threshold 10, 12, 15, 18 one verdict: SOURCED (quote + video id), OURS, or NOT_IN_DATA; propose a window for regular and for reverse as a fenced json block with min_bars and max_bars, each labelled SOURCED or OURS"
   ],
-  "tests": "python -c \"import pathlib,re; t=pathlib.Path('MyTradingSys/research/malkan_hindi_2026-11-04/WINDOW_RECONCILE_1104.md').read_text(); assert t.count('|')>=20 and re.search(r'SOURCED|OURS',t) and '18' in t\"",
+  "tests": "python MyTradingSys/research/malkan_hindi_2026-11-04/check_window_reconcile.py",
   "title": "Malkan divergence window: d-malkan-divergence-window-1104 uses 12 STRONG / 13-18 OK / >18 WEAK, but the 6 Hindi videos say under 15 bars is powerful, list 12 among diluting counts, and never give 18. Check the English videos and reconcile.",
   "weight": "IMPORTANT",
   "worker": "agent"
