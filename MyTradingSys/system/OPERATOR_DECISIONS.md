@@ -1746,6 +1746,7 @@ Applied: every running MTS session (L1, sim Opus, Lab Guy x2, CBP, Eagle_Eyes) t
 ## d-route-tag-every-session-1104 (2026-11-04, operator in chat)
 Operator: "every session has this mandatory obligation of finishing the work and putting it with a note for the right pipeline, you know, where it should go next, so that it is moved properly, so that there is a tag. And I think that we have discussed this before. So perhaps we need some kind of admin guy support for this. Look into this, fire the right sessions to get this resolved, because this is a long-standing requirement and confusion, and work has been done on this."
 Applied: audit `research/route_tag_2026-11-04/AUDIT.md` (7 d: 265 of 1253 non-bookkeeping Result commits named a next step, 70 outputs orphaned); `sync.py ship` refuses commits without `Next: <card-id | stage | END: reason>`, `tasks.py done --next` required, `route_audit.py check` at Supervisor/coordinator boot; 10 backfill cards `route-*`.
+Answer: given in chat above (an order, not a question); applied, nothing waits on the operator.
 
 ## d-all-llms-move-faster-1104 (2026-11-04 ~14:15Z, operator in chat, login C Lead)
 Operator: "Use all LLMs - move faster".

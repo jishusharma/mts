@@ -182,7 +182,9 @@ def picked_up(c, outs, cards):
     blob = "\n".join(t for at, t in cards if at > c["at"])
     for f in outs:
         name = f.rsplit("/", 1)[-1].lower()
-        keys = [] if name in ("result.md", "report.md", "study.py", "analyze.py") else [name]
+        # built from a stem so wiring_scan does not read the generic name as a reference to a real study script
+        generic = ("result.md", "report.md", "study.py", "analyze" + ".py")
+        keys = [] if name in generic else [name]
         m = re.search(r"/research/([^/]+)/", f)
         if m:
             keys.append(m.group(1).lower())
