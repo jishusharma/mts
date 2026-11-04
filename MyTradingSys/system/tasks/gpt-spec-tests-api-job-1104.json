@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "class": "C1",
   "commands": [
     "python -m pytest scripts/dev/test_api_job.py scripts/dev/test_api_job_gpt.py -q"
   ],
@@ -19,7 +20,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": " | REVIEWED:2026-11-04 ACCEPT; lab_guy C1 (credit spend path; mutation shown in done_when; no live money, testnet-irrelevant)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
