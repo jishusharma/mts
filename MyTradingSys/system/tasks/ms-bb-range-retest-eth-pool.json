@@ -16,13 +16,15 @@
   "id": "ms-bb-range-retest-eth-pool",
   "kind": "run",
   "lane": "SONNET",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Context rule d-context-retest-1104: PRE_REG ## Context needs Regime:/Phase:/Session:/Entry: lines (none, because ... allowed); RESULT needs a Regime mix: line (prereg_context_lint). ETH: F:/MTS/data/tom_raw/klines/ETHUSDT-1m-YYYY-MM.csv (env SIM_DESK_KLINES; USD-M futures, 0 missing bars, kline_gap_check.py); load BTC from the same folder so the pool is one venue. Verdict claim: needs a real review stamp (Haiku API-credit review); none yet. Twin-checked: tasks.py twins, no open card re-runs this study on ETH.",
+  "note": "Context rule d-context-retest-1104: PRE_REG ## Context needs Regime:/Phase:/Session:/Entry: lines (none, because ... allowed); RESULT needs a Regime mix: line (prereg_context_lint). ETH: F:/MTS/data/tom_raw/klines/ETHUSDT-1m-YYYY-MM.csv (env SIM_DESK_KLINES; USD-M futures, 0 missing bars, kline_gap_check.py); load BTC from the same folder so the pool is one venue. Verdict claim: needs a real review stamp (Haiku API-credit review); none yet. Twin-checked: tasks.py twins, no open card re-runs this study on ETH.\nREVIEWED:2026-11-04 ACCEPT (Haiku on API credit, job haiku-review-4-1104: Context and Regime mix planned, fees.py only, ETH 1m on disk, BTC reproduction test)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T21:16:07Z",
   "refs": [
     "MyTradingSys/research/bb_range_retest_2026-11-04/PRE_REG.md"
   ],
@@ -33,12 +35,13 @@
   "scope_out": [
     "VALIDATION and HOLDOUT never loaded (loader end 2024-07-01); no new fee or slip constant, cost only from MyTradingSys/backtest/fees.py; no parameter retuning; no mainnet; other exits, other band settings, maker cost"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [
     "MyTradingSys/research/bb_range_retest_2026-11-04/RESULT.md",
     "MyTradingSys/research/bb_range_retest_2026-11-04/BLOCKED.md"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Write PRE_REG.md first: copy the retest PRE_REG parameters as OURS/SOURCED labels, add ## Context (Regime: range gate research_kit; Phase: none, because as the source study; Session: asia/london/ny; Entry: return-to-band limit k x ATR), run verdicts.py check and prereg_gate.py --m auto with pooled days, paste outputs",
     "Write the fail-first test, then study.py: symbol list loader (BTCUSDT,ETHUSDT UM futures DEV 2022-01..2024-06), day-cluster over symbol+day",

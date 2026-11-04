@@ -15,13 +15,15 @@
   "goal": "level_approach (C15) is descriptive on BTC: best confirm sequences flip between dev halves and only the invalidation row (near_miss, RSI<50, CVD12<=0, below daily BB mid, p 0.21 vs 0.29) looked steady. Replicate on ETH and pooled to see which sequence rows agree across symbols and both halves.",
   "id": "ms-level-approach-eth-replicate",
   "lane": "SONNET",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Context rule d-context-retest-1104: PRE_REG ## Context needs Regime:/Phase:/Session:/Entry: lines (none, because ... allowed); RESULT needs a Regime mix: line (prereg_context_lint). ETH: F:/MTS/data/tom_raw/klines/ETHUSDT-1m-YYYY-MM.csv (env SIM_DESK_KLINES; USD-M futures, 0 missing bars, kline_gap_check.py); load BTC from the same folder so the pool is one venue. Descriptive study, no edge claim; T0-ONLY stamp would be honest for routine checks only. Twin-checked: level-approach-prep and level-approach-study are done, none on ETH.",
+  "note": "Context rule d-context-retest-1104: PRE_REG ## Context needs Regime:/Phase:/Session:/Entry: lines (none, because ... allowed); RESULT needs a Regime mix: line (prereg_context_lint). ETH: F:/MTS/data/tom_raw/klines/ETHUSDT-1m-YYYY-MM.csv (env SIM_DESK_KLINES; USD-M futures, 0 missing bars, kline_gap_check.py); load BTC from the same folder so the pool is one venue. Descriptive study, no edge claim; T0-ONLY stamp would be honest for routine checks only. Twin-checked: level-approach-prep and level-approach-study are done, none on ETH.\nREVIEWED:2026-11-04 ACCEPT (Haiku on API credit, job haiku-review-4-1104: source on trunk, Context lines and Regime mix planned, fee-free descriptive, fail-first test)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T21:16:08Z",
   "refs": [
     "MyTradingSys/research/level_approach_2026-10-30/level_approach.py"
   ],
@@ -32,12 +34,13 @@
   "scope_out": [
     "VALIDATION and HOLDOUT never loaded (loader end 2024-07-01); no new fee or slip constant, cost only from MyTradingSys/backtest/fees.py; no parameter retuning; no mainnet; fee-free descriptive study, no edge claim; the 3 operator shots stay a live_aid hand-check"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [
     "MyTradingSys/research/level_approach_2026-10-30/RESULT.md",
     "MyTradingSys/research/level_approach_2026-10-30/PRE_REG.md"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Write PRE_REG.md: events and classes as C15 (lh, pdh x accepted/close_then_fail/near_miss/wick_back), agreement rule (both symbols, both halves A<2023-07-01, n>=30 each, differs from class base rate) frozen, ## Context lines, verdicts.py check output",
     "Fail-first test, then study.py: symbol list over BTCUSDT,ETHUSDT UM futures 1m DEV",

@@ -15,13 +15,15 @@
   "goal": "wt_extreme_cross result Next step: the HTF-against and prior-trend bounce excess (+0.03 % 1m, +0.21 % 15m) may be volatility, not a WaveTrend effect. Re-test on BTC+ETH DEV with a baseline matched on ATR decile of the event bar; descriptive, fee-net shown but no survivor claim.",
   "id": "ms-wt-extreme-cross-volmatch-eth",
   "lane": "SONNET",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Context rule d-context-retest-1104: PRE_REG ## Context needs Regime:/Phase:/Session:/Entry: lines (none, because ... allowed); RESULT needs a Regime mix: line (prereg_context_lint). ETH: F:/MTS/data/tom_raw/klines/ETHUSDT-1m-YYYY-MM.csv (env SIM_DESK_KLINES; USD-M futures, 0 missing bars, kline_gap_check.py); load BTC from the same folder so the pool is one venue. Verdict claim: needs a real review stamp; none yet. Twin-checked: no open card for the volatility-matched baseline.",
+  "note": "Context rule d-context-retest-1104: PRE_REG ## Context needs Regime:/Phase:/Session:/Entry: lines (none, because ... allowed); RESULT needs a Regime mix: line (prereg_context_lint). ETH: F:/MTS/data/tom_raw/klines/ETHUSDT-1m-YYYY-MM.csv (env SIM_DESK_KLINES; USD-M futures, 0 missing bars, kline_gap_check.py); load BTC from the same folder so the pool is one venue. Verdict claim: needs a real review stamp; none yet. Twin-checked: no open card for the volatility-matched baseline.\nREVIEWED:2026-11-04 ACCEPT (Haiku on API credit, job haiku-review-4-1104: source study on trunk, Context lines and Regime mix planned, fees.py only, fail-first test)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-04T21:16:07Z",
   "refs": [
     "MyTradingSys/research/wt_extreme_cross_2026-11/study.py"
   ],
@@ -32,11 +34,12 @@
   "scope_out": [
     "VALIDATION and HOLDOUT never loaded (loader end 2024-07-01); no new fee or slip constant, cost only from MyTradingSys/backtest/fees.py; no parameter retuning; no mainnet; no target-exit test (that is a later PRE_REG)"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [
     "MyTradingSys/research/wt_extreme_cross_2026-11/RESULT.md"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Write PRE_REG.md: events as the source study (buy wt1<=-50 cross up, sell wt1>=40 cross down, K=10, HTF with/against daily MA), baseline = same-side 10-bar MFE from bars in the same ATR(14) decile (OURS), ## Context lines, verdicts.py check output",
     "Fail-first test, then study.py over BTCUSDT,ETHUSDT 1m UM futures resampled 1m/5m/15m",
