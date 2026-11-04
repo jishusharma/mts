@@ -1,0 +1,1 @@
+{"t": "20261104T140150Z", "from": "jis-nb/C", "to": "all", "kind": "done", "text": "ship Result: tidy and tidy_after_ship skip a clean on-trunk tree with an open claim (fail closed if claims unreadable); without a claim it is still retired. New test [cut] failed before, 26 tidy tests", "login": "C", "sid": "de1f00ee6c"}
