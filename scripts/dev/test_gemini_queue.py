@@ -69,6 +69,15 @@ class ClaimRetryTest(unittest.TestCase):
         self.assertIn("Authentication failed", why)
 
 
+class IdentityEnvTest(unittest.TestCase):
+    def test_sh_passes_identity_env(self):
+        with mock.patch.object(gq.subprocess, "run", return_value=cp(0)) as run:
+            gq.sh(["git", "commit"])
+        env = run.call_args.kwargs["env"]
+        for k, v in gq.IDENTITY.items():
+            self.assertEqual(env[k], v)
+
+
 class RunJobTest(unittest.TestCase):
     def _run(self, claim_result, gate=(True, "")):
         calls = []
@@ -88,8 +97,10 @@ class RunJobTest(unittest.TestCase):
 
     def test_identity_set_and_failure_logged(self):
         calls, log, run = self._run(("fail", "after 6 tries: rejected"))
-        self.assertIn(("config", "user.name", "gemini-queue"), calls)
-        self.assertIn(("config", "user.email", "gemini-queue@mts.local"), calls)
+        # git-identity-1104: identity is per process (env), never `git config` (that wrote the shared .git/config)
+        self.assertFalse([c for c in calls if c[:1] == ("config",)], calls)
+        self.assertEqual(gq.IDENTITY["GIT_AUTHOR_NAME"], "gemini-queue")
+        self.assertEqual(gq.IDENTITY["GIT_COMMITTER_EMAIL"], "gemini-queue@mts.local")
         self.assertTrue(log.startswith("CLAIM FAILED: c1: after 6 tries"), log)
         self.assertEqual(len(log.strip().splitlines()), 1)
         run.assert_not_called()

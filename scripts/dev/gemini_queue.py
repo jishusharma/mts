@@ -43,12 +43,15 @@ CARD:
 
 # A credential-manager prompt must fail fast, never block the queue (NUC 2026-10-24: claim/release push hung on `git credential-manager get`).
 NOPROMPT = {'GCM_INTERACTIVE': 'never', 'GIT_TERMINAL_PROMPT': '0', 'GIT_ASKPASS': ''}
+# SYSTEM has no git identity. Per-process env only: `git config user.name` wrote the SHARED .git/config and every session's commits became gemini-queue.
+IDENTITY = {'GIT_AUTHOR_NAME': 'gemini-queue', 'GIT_AUTHOR_EMAIL': 'gemini-queue@mts.local',
+            'GIT_COMMITTER_NAME': 'gemini-queue', 'GIT_COMMITTER_EMAIL': 'gemini-queue@mts.local'}
 
 
 def sh(cmd, cwd=REPO, timeout=120):
     """subprocess.run with NOPROMPT in the env and a timeout; a timeout comes back as rc 124 with the reason in stderr."""
     try:
-        return subprocess.run(cmd, cwd=str(cwd), capture_output=True, text=True, timeout=timeout, env={**os.environ, **NOPROMPT})
+        return subprocess.run(cmd, cwd=str(cwd), capture_output=True, text=True, timeout=timeout, env={**os.environ, **NOPROMPT, **IDENTITY})
     except subprocess.TimeoutExpired as e:
         return subprocess.CompletedProcess(cmd, 124, '', f'timeout after {timeout}s: {" ".join(map(str, cmd))} {e}')
 
@@ -211,8 +214,6 @@ def run_job(card: str, effort: str, model: str = 'flash') -> None:
         if r.returncode:
             log.write_text('worktree failed: ' + r.stderr, encoding='utf-8', newline='\n')
             return
-    for k, v in (('user.name', 'gemini-queue'), ('user.email', 'gemini-queue@mts.local')):  # SYSTEM has no git identity
-        git('config', k, v, cwd=wt, timeout=30)
     status, why = claim_with_retry(wt, card)
     if status == 'skip':
         log.write_text(f'SKIP {card}: {why}\n', encoding='utf-8', newline='\n')
@@ -232,7 +233,7 @@ def run_job(card: str, effort: str, model: str = 'flash') -> None:
         stop = threading.Event()
         threading.Thread(target=keep_lease, args=(wt, sync.slugify(card), stop), daemon=True).start()   # claim lease: refreshed while the run lasts
         try:
-            p = subprocess.run(cmd, cwd=wt, stdout=f, stderr=subprocess.STDOUT, text=True, env={**child_env(card, brief), **NOPROMPT})
+            p = subprocess.run(cmd, cwd=wt, stdout=f, stderr=subprocess.STDOUT, text=True, env={**child_env(card, brief), **NOPROMPT, **IDENTITY})
         finally:
             stop.set()
         f.write(f'\nEXIT {p.returncode} after {int(time.time() - t0)}s\n')
