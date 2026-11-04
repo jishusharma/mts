@@ -9,7 +9,7 @@
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Fix the encoding of bb-range-to-range (e2d5f8bd1: retest entry filled 99.9% = next-open, so the context rule was not applied). Entry = price returns to the band it just left (touch within k ATR, OURS) after a session-range tag (Tom, SOURCED); exit at the opposite band; same fee, same 3 sessions (asia/london/ny, 15m).",
+  "goal": "Fix the encoding of bb-range-to-range (e2d5f8bd1: retest entry filled 99.9% = next-open, so the context rule was not applied). Entry = price returns to the band it just left (touch within k ATR, OURS) after a session-range tag (OURS; the Tom attribution has no transcript line); exit at the opposite band; same fee, same 3 sessions (asia/london/ny, 15m).",
   "id": "bb-range-retest-level-arm",
   "lane": "SONNET",
   "latest": [
