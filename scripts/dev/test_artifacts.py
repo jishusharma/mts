@@ -37,7 +37,7 @@ class Registry(unittest.TestCase):
         text = "\n".join(af.plan(self.reg, "jishusharma1985"))
         self.assertIn("DELETED      MTS Control Room", text)  # retired and deleted on this login 2026-10-31
         self.assertIn("DELETED      BTC Live Aid", text)  # operator deleted it 2026-11-04
-        self.assertIn("OPERATOR UNPIN+DELETE  Simulator Demo by Haiku", text)
+        self.assertIn("DELETED      Simulator Demo by Haiku", text)
         self.assertIn("OPERATOR UNPIN+DELETE  CBP Desk", "\n".join(af.plan(self.reg, "jishu.sharma")))
         # operator 2026-10-17: every page is published from the home login; the Inbox page moved there (MNuodX), Tom and Fabio has no repo html and stays on jishu.sharma
         self.assertIn("NO COPY      Tom and Fabio", "\n".join(af.plan(self.reg, "jishu.awgp")))
