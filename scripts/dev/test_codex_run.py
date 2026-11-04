@@ -823,5 +823,43 @@ class HostAuthTest(unittest.TestCase):
             cs.assert_not_called()
 
 
+class SoftenPassTest(unittest.TestCase):
+    """2026-11-04: an audit closed with result "PASS <report>" turned trunk CI red (test_pass_needs_verdict reads it as a strategy PASS)."""
+    def run_soften(self, kind, result, **kw):
+        c = card("lab-p", kind=kind, **kw)
+        c.update(state="done", result=result)
+        c["latest"] = [{"kind": "ship", "ref": "abc", "utc": "2026-11-04T00:00:00Z", "line": result}]
+        with tempfile.TemporaryDirectory() as d, contextlib.redirect_stdout(io.StringIO()) as out:
+            c = R.soften_pass(Path(d), c, kind)
+        return c, out.getvalue()
+
+    def test_audit_pass_becomes_sound(self):
+        r = "PASS MyTradingSys/research/layer_lab/reports/x.md"
+        c, out = self.run_soften("audit", r)
+        self.assertEqual(c["result"], "SOUND MyTradingSys/research/layer_lab/reports/x.md")
+        self.assertEqual(c["latest"][0]["line"], c["result"])
+        self.assertIn("SOUND", out)
+        sys.path.insert(0, str(Path(__file__).parent))
+        import test_pass_needs_verdict as V
+        self.assertEqual(V.audit({}, [c], [], {}), {})
+
+    def test_run_pass_becomes_sound(self):
+        c, _ = self.run_soften("run", "  PASS 12 trials, report y.md")
+        self.assertEqual(c["result"], "  SOUND 12 trials, report y.md")
+
+    def test_build_pass_unchanged(self):
+        c, _ = self.run_soften("build", "PASS tests green", tests="test_x fails first")
+        self.assertEqual(c["result"], "PASS tests green")
+
+    def test_passed_and_fail_unchanged(self):
+        for r in ("PASSED x", "FAIL x", "SOUND x"):
+            c, _ = self.run_soften("audit", r)
+            self.assertEqual(c["result"], r)
+
+    def test_flow_card_unchanged(self):
+        c, _ = self.run_soften("audit", "PASS x", flow={"id": "f"})
+        self.assertEqual(c["result"], "PASS x")
+
+
 if __name__ == "__main__":
     unittest.main()
