@@ -17,6 +17,11 @@ We take the most conservative rule: the earliest holdout start (2025-07-01) and 
 project DEV end (2024-06-30). Any study reading past DEV_END must go through
 read_holdout() / an explicit PRE_REG, not through assert_dev_only().
 
+PRE_DEV  PRE_DEV_START .. 2022-01-01   (before DEV; long-history studies only, via
+assert_pre_dev_only(). DECISION (OURS): PRE_DEV_START = 2017-01-01, before the first
+Binance spot bars (2017-08), so it excludes nothing real; it only rejects junk dates.
+PRE_DEV reads no DEV/VALIDATION/HOLDOUT bar, so it is not a holdout read.)
+
 Both dates live in code: DEV_START (2022-01-01, operator-sourced study DEV) and
 DESK_DEV_START (2022-04-01, desk lock). DESK_DEV_START >= DEV_START; the desk guard
 assert_desk_dev_only() is a stricter subset of assert_dev_only() and changes no window.
@@ -31,6 +36,7 @@ DEV_START = pd.Timestamp('2022-01-01')
 # SOURCE (desk lock, OURS-derived from the sim desk plan): research/sim_desk/ROADMAP.md
 # section 1 "the desk may only run the DEV window 2022-04-01..2024-06-30".
 DESK_DEV_START = pd.Timestamp('2022-04-01')
+PRE_DEV_START = pd.Timestamp('2017-01-01')    # OURS: before first Binance spot bar
 DEV_END = pd.Timestamp('2024-07-01')          # exclusive
 VALIDATION_START = DEV_END
 VALIDATION_END = pd.Timestamp('2025-07-01')   # exclusive
@@ -67,6 +73,15 @@ def assert_dev_only(ts_min, ts_max):
         raise SplitViolation(f'{window_of(hi)} timestamp {hi} at/after DEV end {DEV_END}')
     if lo < DEV_START:
         raise SplitViolation(f'timestamp {lo} before DEV start {DEV_START}')
+
+
+def assert_pre_dev_only(ts_min, ts_max):
+    """Raise SplitViolation unless [ts_min, ts_max] lies inside PRE_DEV [PRE_DEV_START, DEV_START)."""
+    lo, hi = _ts(ts_min), _ts(ts_max)
+    if hi >= DEV_START:
+        raise SplitViolation(f'{window_of(hi)} timestamp {hi} at/after DEV start {DEV_START}')
+    if lo < PRE_DEV_START:
+        raise SplitViolation(f'timestamp {lo} before PRE_DEV start {PRE_DEV_START}')
 
 
 def assert_desk_dev_only(ts_min, ts_max):

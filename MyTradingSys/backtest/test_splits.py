@@ -33,6 +33,18 @@ def test_desk_dev_start():
         splits.assert_desk_dev_only('2022-04-01', '2024-07-01')
 
 
+def test_pre_dev_window_guard():
+    assert splits.PRE_DEV_START < splits.DEV_START
+    splits.assert_pre_dev_only('2018-01-01', '2021-12-31 23:59')
+    for lo, hi in [('2021-12-01', '2022-01-01'), ('2021-06-01', '2024-06-30'), ('2025-08-01', '2025-09-01')]:
+        with pytest.raises(splits.SplitViolation):
+            splits.assert_pre_dev_only(lo, hi)
+    with pytest.raises(splits.SplitViolation):
+        splits.assert_pre_dev_only('2010-01-01', '2021-01-01')
+    assert splits.window_of('2021-12-31') == 'PRE_DEV'
+    assert splits.DEV_START == pd.Timestamp('2022-01-01') and splits.DEV_END == pd.Timestamp('2024-07-01')
+
+
 def test_dev_only_filter():
     idx = pd.DatetimeIndex([pd.Timestamp(x) for x in ['2021-12-31', '2022-01-01', '2024-06-30 23:59', '2024-07-01', '2025-08-01']])
     df = pd.DataFrame({'x': range(5)}, index=idx)
