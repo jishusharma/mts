@@ -1,0 +1,60 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-04T17:35:37Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_RSI_40_60_1104.md lists every headline number of the rsi_40_60_line_behaviour_2026-11-04 study recomputed from behaviour_dev.csv, behaviour_val.csv, plays_dev.csv and plays_val.csv in rsi_40_60_line_behaviour_2026-11-04, a per-number match table, and ends with VERDICT: MATCH or MISMATCH.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "D11 feeder check (A-20261104-1): independent Gemini blind read of the rsi_40_60_line_behaviour_2026-11-04 study: recompute the headline numbers from the raw files first, then diff against the stated result.",
+  "id": "gemini-blind-read-rsi-40-60-1104",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "rsi 40/60 line behaviour: RSI sits near a random-walk benchmark at both lines, no default ",
+      "ref": "1dab5e297af0",
+      "utc": "2026-11-04T08:32:18Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "gemini-blind-read-bb-range-studies-1104",
+    "gemini-blind-read-rsi-div-mtf-gated-1104",
+    "gpt-rederive-meta-label-dev-ext-1104"
+  ],
+  "note": "REVIEWED:2026-11-04 T0-ONLY | D11 feeder card (A-20261104-1)",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "session-planner",
+  "refreshed": "2026-11-04T17:35:47Z",
+  "refs": [
+    "MyTradingSys/research/rsi_40_60_line_behaviour_2026-11-04/RESULT.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_RSI_40_60_1104.md",
+    "MyTradingSys/research/rsi_40_60_line_behaviour_2026-11-04"
+  ],
+  "scope_out": [],
+  "scope_sha": "1dab5e297af0",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read behaviour_dev.csv, behaviour_val.csv, plays_dev.csv and plays_val.csv in rsi_40_60_line_behaviour_2026-11-04 before any prose result file",
+    "Recompute counts, win rates and mean or total returns independently of the study code",
+    "Write MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_RSI_40_60_1104.md with a per-number table and VERDICT"
+  ],
+  "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_RSI_40_60_1104.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
+  "title": "[GEMINI] Blind read of rsi_40_60_line_behaviour RESULT.md vs CSVs",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
