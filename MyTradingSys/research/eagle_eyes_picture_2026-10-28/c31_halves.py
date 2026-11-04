@@ -8,7 +8,7 @@ import glob,csv,sys,os,statistics as st,datetime as dt,collections
 sys.path.insert(0,os.path.join(os.path.dirname(os.path.abspath(__file__)),'..','..','backtest'))
 from fees import BINANCE_TAKER  # costs come from fees.py only (test_no_own_costs)
 END=dt.date(2025,7,1); HOLD=20; k=[]
-COST_RT=2*BINANCE_TAKER*1.2  # fee RT + slip RT: FORMULAS section 13 slip = 2 bps RT = 20% of the 10 bp fee RT (OURS)
+RT_DRAG=2*BINANCE_TAKER*1.2  # fee RT + slip RT: FORMULAS section 13 slip = 2 bps RT = 20% of the 10 bp fee RT (OURS)
 for f in sorted(glob.glob('F:/MTS/data/tom_raw/klines/BTCUSDT-1m-*.csv')):
     for r in csv.reader(open(f)):
         if r[0]=='open_time':continue
@@ -36,7 +36,7 @@ def sim(e,stop,target,path):
         if h>=stop: hit='STOP';break
         if l<=target: hit='TGT';break
     x=stop if hit=='STOP' else target if hit=='TGT' else path[-1][4]
-    gross=(e-x)/e/dist; net=gross-COST_RT/dist
+    gross=(e-x)/e/dist; net=gross-RT_DRAG/dist
     return hit,gross,net
 A=collections.defaultdict(list)   # (rule,trend) -> [(date,hit,gross,net)]
 for i in range(50,n-HOLD-1):
