@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/route_audit.py check --days 2"
+  ],
+  "created": "2026-11-04T14:28:40Z",
+  "depends_on": [],
+  "done_when": "REVIEW.md in MyTradingSys/research/route_tag_2026-11-04/ lists each defect with file:line, or says none found",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Blind read of the route-tag gate: does route_audit.py check flag every shipped Result commit with no Next, a missing Next card or a stale Next card, and does sync.py check_route_tags refuse exactly those ships (exempt list too wide or too narrow?)",
+  "id": "gemini-blind-read-route-audit-1104",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "gemini-blind-read-of-scripts-dev-gate-se"
+  ],
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-04T14:30:44Z",
+  "refs": [
+    "scripts/dev/route_audit.py",
+    "MyTradingSys/research/route_tag_2026-11-04/AUDIT.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/route_tag_2026-11-04/REVIEW.md"
+  ],
+  "scope_out": [],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read scripts/dev/route_audit.py, sync.py check_route_tags and commit_pending, tasks.py route_next, test_route_audit.py",
+    "Write REVIEW.md: defects with file:line, exempt-list gaps, false positives"
+  ],
+  "tests": "python -m pytest -q scripts/dev/test_route_audit.py",
+  "title": "[GEMINI] blind read of scripts/dev/route_audit.py + sync.py check_route_tags + tasks.py route_next (route-tag gate 11-04)",
+  "weight": "",
+  "worker": ""
+}
