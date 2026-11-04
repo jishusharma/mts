@@ -4,6 +4,17 @@
   "commands": [
     "python -m pytest -q scripts/dev/test_mts_signal.py"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-04T18:23:15Z",
+    "misses": 15,
+    "reads": [
+      "scripts/dev/supervisor.py",
+      "scripts/dev/bg_watch.py",
+      "scripts/dev/test_supervisor.py"
+    ],
+    "session": "agent-a6fdb1e2a824c9bab"
+  },
   "created": "2026-11-04T17:21:02Z",
   "depends_on": [],
   "done_when": "resolve_login('B') with a fake MTS_CLAUDE_JSON detecting A returns an empty letter and a message naming typed B, detected A and the source; callers exit nonzero on it; the new test in test_mts_signal.py passes and the existing tests stay green.",

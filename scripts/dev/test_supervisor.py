@@ -827,8 +827,8 @@ def test_plan_login_mismatch_uses_detected_letter(monkeypatch, tmp_path, capsys)
     monkeypatch.setattr(S, "plan", lambda repo, login, *a, **k: (seen.setdefault("login", login), (["PLAN"], {}))[1])
     rc = S.main(["plan", "--login", "C", "--five", "1", "--five-reset", "2026-10-23T09:00Z", "--week", "2",
                  "--week-reset", "2026-10-27T09:00Z", "--no-send", "--no-fetch"])
-    assert rc == 0 and seen["login"] == "A"
-    assert "LOGIN MISMATCH: you passed C, this app is logged in as A; using A" in capsys.readouterr().out
+    assert rc == 2 and "login" not in seen
+    assert "LOGIN MISMATCH: you passed C, detected A" in capsys.readouterr().out
     mts_signal._LOGIN_CACHE.clear()
 
 

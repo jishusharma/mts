@@ -155,12 +155,17 @@ def login():
 
 
 def resolve_login(passed):
-    """(letter, message): the detected login wins over a typed one (the account is the truth); message is the MISMATCH line, else ''.
-    With nothing detected the typed letter stands (upper-cased, may be invalid: the caller checks)."""
+    """(letter, message). Fail closed: when a typed letter and the detected one differ, return ("", message naming both letters
+    and the detected source): the home config can differ from the running app, so neither is trusted (OURS: refuse).
+    Nothing detected: the typed letter stands (upper-cased, may be invalid: the caller checks). Never raises."""
     typed = str(passed or "").strip().upper()[:1]
-    det = login()
+    try:
+        det = login()
+    except Exception:
+        det = ""
     if det and typed and typed != det:
-        return det, "LOGIN MISMATCH: you passed %s, this app is logged in as %s; using %s" % (typed, det, det)
+        src = "env MTS_LOGIN" if os.environ.get("MTS_LOGIN", "").strip().upper()[:1] in LOGIN_LETTERS else "home config (~/.claude.json or MTS_CLAUDE_JSON)"
+        return "", "LOGIN MISMATCH: you passed %s, detected %s from %s; no login used (fix MTS_LOGIN or the typed letter)" % (typed, det, src)
     return det or typed, ""
 
 
@@ -1109,6 +1114,7 @@ def budget_cmd(args):
     lg, mism = resolve_login(a.login)
     if mism:
         print(mism)
+        return 2
     if lg not in ("A", "B", "C"):
         print("login unknown: the app account is not in CLOUD_ACCOUNTS.md LOGINS; pass --login A|B|C or set env MTS_LOGIN")
         return 2
