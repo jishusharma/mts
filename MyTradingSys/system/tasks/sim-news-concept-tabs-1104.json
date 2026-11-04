@@ -2,6 +2,22 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-04T15:09:10Z",
+    "misses": 45,
+    "reads": [
+      "scripts/dev/tasks.py",
+      "scripts/dev/supervisor.py",
+      "scripts/dev/health_audit.py",
+      "MyTradingSys/tests/docs/test_integrity.py",
+      "scripts/dev/aibridge_install.py",
+      "scripts/dev/usage_reminder.py",
+      "scripts/dev/status_board.py",
+      "MyTradingSys/system/artifacts/registry.json"
+    ],
+    "session": "3d57e355-b5ad-44a3-9b93-d305d24ba012"
+  },
   "created": "2026-11-04T13:21:27Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/sim_desk/artifact/index.html rebuilt: the top tab bar has a News tab (lists the news-feed results, e.g. dir-news_feeds_2026-10-30, newest first) and one tab per concept family that filters the result list to that concept; test_artifact.py asserts the tab buttons and the filter, and fails on the pre-change build.",
@@ -16,9 +32,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "sim desk: C30 banner reads its trade list; trade chart names its divergence rule (sim demo",
-      "ref": "686c6f9b57a4",
-      "utc": "2026-11-04T13:25:20Z"
+      "line": "Merge origin/fast-track into sim-strip-1104 (index.html rebuilt from merged sources)",
+      "ref": "1cb196217c03",
+      "utc": "2026-11-04T13:31:59Z"
     }
   ],
   "layers": [],
@@ -28,7 +44,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-04T13:26:19Z",
+  "refreshed": "2026-11-04T14:35:35Z",
   "refs": [
     "MyTradingSys/research/sim_desk/DESIGN.md",
     "MyTradingSys/system/OPERATOR_DECISIONS.md"
@@ -42,7 +58,7 @@
   "scope_out": [
     "no desk.py or results/*.json change; no new data fetch; republish is a separate step via the Artifact tool + artifacts.py publish-record"
   ],
-  "scope_sha": "686c6f9b57a4",
+  "scope_sha": "1cb196217c03",
   "size": "M",
   "sources": [],
   "state": "ready",
