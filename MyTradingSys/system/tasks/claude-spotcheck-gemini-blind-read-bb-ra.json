@@ -2,7 +2,7 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
-  "created": "2026-11-04T14:28:27Z",
+  "created": "2026-11-04T14:41:32Z",
   "depends_on": [],
   "done_when": "",
   "est_turns": null,
@@ -10,8 +10,8 @@
   "formula_ids": [],
   "from_inbox": "",
   "goal": "",
-  "id": "route-t053-hedge-blind-read",
-  "lane": "CODEX",
+  "id": "claude-spotcheck-gemini-blind-read-bb-ra",
+  "lane": "",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,10 +19,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refs": [
-    "MyTradingSys/research/t053_hedge_variants_2026-10-30",
-    "MyTradingSys/research/route_tag_2026-11-04/AUDIT.md"
-  ],
+  "refs": [],
   "result": "",
   "scope_in": [],
   "scope_out": [],
@@ -31,7 +28,7 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "[GEMINI] blind read of T053 hedge variants (4a36c8a38, all worse than unhedged): confirm, then END",
+  "title": "[CLAUDE-SPOTCHECK] gemini-blind-read-bb-range-studies-1104: B retest k=0.25 tagged 15m CI quoted at 4th decimal (-0.1829/-0.0296 vs CSV -0.1826/-0.0297)",
   "weight": "",
   "worker": ""
 }

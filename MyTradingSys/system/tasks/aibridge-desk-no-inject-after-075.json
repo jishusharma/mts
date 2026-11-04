@@ -6,6 +6,20 @@
     "python scripts/dev/aibridge_health.py",
     "node scripts/aibridge/tests/block_select.test.js"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-04T14:42:27Z",
+    "misses": 14,
+    "reads": [
+      "scripts/aibridge/tests/fixtures/deepseek_reply.html",
+      "scripts/dev/aibridge_health.py",
+      "scripts/aibridge/extension/manifest.json",
+      "scripts/aibridge/RELEASES.json",
+      "scripts/aibridge/tests/block_select.test.js",
+      "scripts/dev/aibridge_install.py"
+    ],
+    "session": "agent-ad791b8c1d67daa7b"
+  },
   "created": "2026-10-31T14:29:28Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/dsa_bridge_fix_plan_2026-10-31/desk_inject_check.md exists with the three versions equal and the post-F5 panel count; plus either 'blocks run on 0.7.9' or a merged fix with its failing-first test",

@@ -2,7 +2,7 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
-  "created": "2026-11-04T14:28:20Z",
+  "created": "2026-11-04T15:08:28Z",
   "depends_on": [],
   "done_when": "",
   "est_turns": null,
@@ -10,8 +10,8 @@
   "formula_ids": [],
   "from_inbox": "",
   "goal": "",
-  "id": "route-cryptocred-s3-power-unblock",
-  "lane": "SONNET",
+  "id": "ci-red-stays-red-after-a-docs-only-fix-c",
+  "lane": "",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,10 +19,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refs": [
-    "MyTradingSys/research/cryptocred_s3_2026-11",
-    "MyTradingSys/research/route_tag_2026-11-04/AUDIT.md"
-  ],
+  "refs": [],
   "result": "",
   "scope_in": [],
   "scope_out": [],
@@ -31,7 +28,7 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "cryptocred S3 (7501e2816): power gate blocked DEV; widen symbols/window to pass the gate or record END",
+  "title": "CI red stays red after a docs-only fix: ci.yml paths filter skips docs pushes, so the last push run (red) is the trunk verdict; ci_watch/sync ship should read workflow_dispatch runs too, or the revert path should dispatch CI",
   "weight": "",
   "worker": ""
 }
