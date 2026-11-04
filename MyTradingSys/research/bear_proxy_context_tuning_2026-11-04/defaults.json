@@ -1,0 +1,20 @@
+{
+ "A": {
+  "ALL": null,
+  "bull|fresh": null,
+  "bull|mature": null,
+  "range|fresh": null,
+  "range|mature": null,
+  "bear|fresh": null,
+  "bear|mature": null
+ },
+ "B": {
+  "15m": null,
+  "1h": null,
+  "4h": null,
+  "1d": null
+ },
+ "baseline": "rsi14<=40|1w|smaon",
+ "labels": "OURS",
+ "note": "null = keep d-bear-proxy-1104 baseline / no filter default"
+}

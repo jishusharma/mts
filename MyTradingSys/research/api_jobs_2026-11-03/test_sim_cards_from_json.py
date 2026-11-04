@@ -27,7 +27,7 @@ def test_all_337_rows_present():
     assert len(FILES) == 337
     late = [os.path.basename(f)[:-5] for f in ALL if f not in FILES]
     assert all(i[-10:] >= '2026-11-04' for i in late), late
-    assert len(late) == 8, late   # 2026-11-04 context re-run rows: rsi-div x2, wavetrend-c30 x2, bb x3, fabio-l1-strict
+    assert len(late) == 9, late   # 2026-11-04 context re-run rows: rsi-div x2, wavetrend-c30 x2, bb x3, fabio-l1-strict, bear-proxy-context-tuning
 
 
 @pytest.mark.parametrize('f', FILES, ids=lambda f: os.path.basename(f)[:-5])
