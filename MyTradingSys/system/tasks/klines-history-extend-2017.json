@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T03:08:53Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -24,6 +25,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "spot klines 2017-08..2026-10 BTC+ETH 15m-1d, 1110 files 0.18GB; long-window regime mix 0 b",
+      "ref": "7d878d456",
+      "utc": "2026-11-04T03:08:53Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "bb-range-retest-level-arm: freeze PRE_REG, tests, study, TRIALS rows before DEV run",
@@ -42,7 +49,12 @@
   "refined_by": "",
   "refreshed": "2026-11-04T02:42:23Z",
   "refs": [],
-  "result": "",
+  "result": "spot klines 2017-08..2026-10 BTC+ETH 15m-1d, 1110 files 0.18GB; long-window regime mix 0 bear weeks",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/fetch_binance_archive.py",
     "MyTradingSys/backtest/test_fetch_binance_archive.py",
@@ -58,11 +70,12 @@
     "OPERATOR_DECISIONS d-context-retest-1104",
     "Super Session order 2026-11-04 (history length is the binding constraint)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read MyTradingSys/backtest/fetch_binance_archive.py and how research_kit/bt_data read klines (Dumps/backtest/raw_1d layout, find_data_root)",
     "write the failing 2-day-slice test first, extend the fetcher (resumable, paginated or monthly archive, sha256 checksum per month, skip existing), run on BTCUSDT then ETHUSDT, print the long-window regime mix"
   ],
+  "taken": "2026-11-04T03:08:53Z",
   "tests": "a 2-day slice download test (offline fixture for the parser, checksum mismatch rejected, resume skips existing months) fails first on the unextended fetcher",
   "title": "Extend public Binance klines to 2017-08 (BTCUSDT, ETHUSDT; 15m-1d) for the underpowered context re-runs",
   "weight": "ROUTINE",
