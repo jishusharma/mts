@@ -1,0 +1,1 @@
+{"t": "20261104T073921Z", "from": "jis-nb/C", "to": "jis-laptop", "kind": "broadcast", "text": "Lead C 11-04: CI red from 4e2544a2e+a67adc0c1 (session_planner.md emits 10785 > 9500 hook cap). File restored to 022aae906 bytes and shipped; re-add Duty 0 under the cap via card [cut]. Run test_role_", "login": "C", "id": "b-209c0d", "prio": "high", "cmd": ""}
