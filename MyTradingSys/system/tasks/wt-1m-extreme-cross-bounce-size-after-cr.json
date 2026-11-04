@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T20:17:43Z",
   "commands": [
     "python -m pytest -q MyTradingSys/research/wt_extreme_cross_2026-11"
   ],
@@ -14,10 +15,18 @@
   "goal": "Measure WaveTrend 1m extreme-cross outcomes (bounce after cross up from below -50, drop after cross down from above +40) by day type and HTF trend, 1m vs 5m vs 15m, fee-net, DEV only.",
   "id": "wt-1m-extreme-cross-bounce-size-after-cr",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "DEV 2022-01..2024-06: 1m buy -50 bounce MFE 0.161% vs 0.148% baseline (+0.013%, t 3.7), me",
+      "ref": "0dc4ed73e",
+      "utc": "2026-11-04T20:17:43Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: no fee-net edge; vol-matched baseline is the open follow-up in RESULT.md",
   "note": "\nREVIEWED:2026-11-04 ACCEPT (Haiku on API credit, job haiku-review-ready-sonnet-1104: New research folder; DEV guard via splits.py present; testable.)",
   "prio": 2,
   "refine_tries": 0,
@@ -27,7 +36,12 @@
     "MyTradingSys/system/EAGLE_EYES_BIBLE.md",
     "MyTradingSys/backtest/splits.py"
   ],
-  "result": "",
+  "result": "DEV 2022-01..2024-06: 1m buy -50 bounce MFE 0.161% vs 0.148% baseline (+0.013%, t 3.7), median 32 pts; fee-net -0.141% (n 15936); no fee-net edge on 1m/5m/15m; RESULT.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/wt_extreme_cross_2026-11"
   ],
@@ -37,12 +51,13 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Fail-first test: synthetic series gives known cross events and a post-DEV bar raises SplitViolation.",
     "Implement event detection and day-type/HTF tags.",
     "Run on DEV 2022-01..2024-06, write RESULT.md with the table."
   ],
+  "taken": "2026-11-04T20:17:43Z",
   "tests": "MyTradingSys/research/wt_extreme_cross_2026-11/test_wt_extreme_cross.py::test_cross_events_and_dev_guard",
   "title": "WT 1m extreme cross: bounce size after cross up from <-50 and drop after cross down from >+40, by day type (range vs trend) and HTF trend; compare 1m/5m/15m; fee-net; 2022-01..2025-06",
   "weight": "",
