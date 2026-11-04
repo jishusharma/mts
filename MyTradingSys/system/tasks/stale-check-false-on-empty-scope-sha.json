@@ -1,35 +1,59 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest scripts/dev/test_tasks.py -q"
+  ],
   "created": "2026-11-04T13:43:04Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "python -m pytest scripts/dev/test_tasks.py exits 0 with the 2 new tests and tasks.py stale lists no card whose scope_sha is empty and refreshed is newer than its scope change",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "task_state.stale_reason treats a ready card with an empty scope_sha as fresh when its refreshed time is newer than the scope's last commit, so hand-refreshed feeder cards are not skipped as STALE.",
   "id": "stale-check-false-on-empty-scope-sha",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "DSA bridge liveness signal (lanes.dsa) + tasks stale ignores card-only commits",
+      "ref": "01dd8c0556bf",
+      "utc": "2026-11-03T16:04:20Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "refined 2026-11-04 planner-refine-1104c.\nREVIEWED:2026-11-04 T0-ONLY",
   "prio": 3,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "Session_Planner",
+  "refreshed": "2026-11-04T15:18:05Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/task_state.py",
+    "scripts/dev/test_tasks.py"
+  ],
+  "scope_out": [
+    "live-path files",
+    "card JSONs",
+    "no change to the non-empty scope_sha branch"
+  ],
+  "scope_sha": "01dd8c0556bf",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "in stale_reason compare the last_change utc against card refreshed when scope_sha is empty",
+    "stale only when the change is newer than refreshed",
+    "add tests: empty scope_sha with refresh after change is fresh; with change after refresh is stale"
+  ],
+  "tests": "scripts/dev/test_tasks.py: empty scope_sha + refreshed later than last change gives ''; fails on old code (returns 'scope changed')",
   "title": "task_state.stale_reason calls a card stale when scope_sha is empty even if the last change predates refreshed: feeder cards hand-set refreshed, so Gemini skipped all of them on 11-04; treat that case as fresh, test first",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }

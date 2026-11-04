@@ -77,6 +77,13 @@ t('postGate: undefined or non-string draft and missing input are empty-safe', ()
   assert.strictEqual(L.postGate({ idle: false, draft: null, waitedMs: 0, maxMs: 10 }), 'wait');
   assert.strictEqual(L.postGate(undefined), 'stop_busy');
 });
+t('postRetryable: a send that did not land is retried like a busy chat, other failures stop', () => {
+  assert.strictEqual(L.postRetryable('the chat input did not clear after sending'), true);
+  assert.strictEqual(L.postRetryable('the chat never became idle (or an operator draft sits in the input)'), true);
+  assert.strictEqual(L.postRetryable('the chat input was not found'), false);
+  assert.strictEqual(L.postRetryable(''), false);
+  assert.strictEqual(L.postRetryable(undefined), false);
+});
 t('stopNotice: states why and how to re-arm', () => {
   const m = L.stopNotice('the result was not posted');
   assert.ok(m.indexOf('the result was not posted') >= 0);

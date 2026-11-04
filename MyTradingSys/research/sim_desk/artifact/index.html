@@ -90,8 +90,13 @@ let tm=null;
 const KIND={backtest:"backtest",audit:"audit",thought_experiment:"thought experiment"};
 const VC={failed:"failed",unclear:"unclear",passed:"passed",other:"other"};
 function opts(v,all,cur){return '<option value="">'+all+"</option>"+v.map(x=>'<option value="'+esc(x[0])+'"'+(x[0]===cur?" selected":"")+">"+esc(x[1])+"</option>").join("");}
+/*concepts*/
+const CONCEPTS=[["Tom",[" tom "]],["Fabio",[" fabio "]],["Malkan",[" malkan "]],["Krown",[" krown "]],["Bollinger",[" bollinger "," bb "]],["RSI",[" rsi "]],["WaveTrend",[" wavetrend "," wt30 "," wt "]]];
+let CONC=null;
+function inConcept(r,c){const s=" "+((r.family||"")+" "+(r.title||"")+" "+(r.id||"")).toLowerCase().replace(/[^a-z0-9]+/g," ")+" ";if(c==="News")return s.includes(" news ");const e=CONCEPTS.find(x=>x[0]===c);return !!e&&e[1].some(k=>s.includes(k));}
+/*end-concepts*/
 function buildNav(){const g=id=>$(id)?$(id).value:"",q=g("q").toLowerCase(),kf=g("kf"),ff=g("ff"),vf=g("vf"),only=$("onlyx")&&$("onlyx").checked;
-const rows=CAT.filter(r=>(!only||r.exported)&&(!kf||r.kind===kf)&&(!ff||r.family===ff)&&(!vf||(r.verdict_class||"other")===vf)&&(!q||(r.title+" "+r.family+" "+r.verdict+" "+r.kind).toLowerCase().includes(q)))
+const rows=CAT.filter(r=>(!CONC||inConcept(r,CONC))&&(!only||r.exported)&&(!kf||r.kind===kf)&&(!ff||r.family===ff)&&(!vf||(r.verdict_class||"other")===vf)&&(!q||(r.title+" "+r.family+" "+r.verdict+" "+r.kind).toLowerCase().includes(q)))
 .sort((a,b)=>String(b.date||"").localeCompare(String(a.date||""))||a.title.localeCompare(b.title));
 const fams=[...new Set(CAT.map(r=>r.family))].sort((a,b)=>a.localeCompare(b));
 const list=rows.map(r=>'<button data-id="'+esc(r.exported?r.result_id:r.id)+'">'+(r.status==="FAILED"?'<span class="bad">&#9679;</span> ':"")+esc(r.title)+"<small>"+esc(r.date||"no date")+" · "+esc(KIND[r.kind]||r.kind)+" · "+esc(r.family)+(r.exported?"":" · no result card")+"</small></button>").join("");
@@ -266,11 +271,12 @@ $("cnav").onclick=e=>{const b=e.target.closest("button");if(b){halt();chartsTab(
 function commentsTab(){const n=readComments().length;const rows=readComments().slice().reverse().map(c=>{const t=TESTS.find(x=>x.id===c.test_id);return '<div class="cmi"><span>'+esc(stamp(c.ts))+" &middot; "+esc(t?t.title:c.test_id)+" &middot; "+esc(c.chart_id)+"</span> "+esc(c.text)+"</div>"}).join("");
 $("pane").innerHTML='<div class="gridw"><div class="leg"><span>&#9998; '+n+'</span><button type="button" data-copy="1">copy all</button></div>'+rows+"</div>";}
 let TAB="fam";
-const TABS=[["fam","Families","&#9776;"],["grid","Verdict grid","&#9638;"],["charts","Charts","&#9650;"],["cm","Comments","&#9998;"]];
+const TABS=[["fam","Families","&#9776;"],["news","News","&#9993;"]].concat(CONCEPTS.map(c=>["c:"+c[0],c[0],"&#9679;"]),[["grid","Verdict grid","&#9638;"],["charts","Charts","&#9650;"],["cm","Comments","&#9998;"]]);
+const isList=t=>t==="fam"||t==="news"||t.startsWith("c:");
 function showTab(t,id){halt();TAB=t;document.querySelectorAll("#tabs [role=tab]").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===t));$("pane").onclick=null;
-if(t==="fam"){$("pane").innerHTML='<main><nav id="nav" aria-label="Tests"></nav><article id="view" aria-live="polite"></article></main>';buildNav();render(id||location.hash.slice(1));}
+if(isList(t)){CONC=t==="fam"?null:t==="news"?"News":t.slice(2);$("pane").innerHTML='<main><nav id="nav" aria-label="Tests"></nav><article id="view" aria-live="polite"></article></main>';buildNav();render(id||location.hash.slice(1));}
 else if(t==="grid")gridTab();else if(t==="charts")chartsTab(id);else commentsTab();}
 $("tabs").innerHTML=TABS.map(([k,l,g])=>'<button role="tab" data-tab="'+k+'" aria-selected="false">'+g+" "+l+"</button>").join("");
 $("tabs").onclick=e=>{const b=e.target.closest("[role=tab]");if(b)showTab(b.dataset.tab)};
-window.onhashchange=()=>{const id=location.hash.slice(1);if(TAB==="charts")chartsTab(id);else showTab("fam",id)};showTab("fam");
+window.onhashchange=()=>{const id=location.hash.slice(1);if(TAB==="charts")chartsTab(id);else showTab(isList(TAB)?TAB:"fam",id)};showTab("fam");
 </script></body></html>
