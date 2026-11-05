@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-05T07:43:13Z",
   "commands": [],
   "created": "2026-10-28T06:27:20Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "already shipped 7b98ec04b; 26/26 tests pass",
+      "ref": "75bc2f60f",
+      "utc": "2026-11-05T07:43:13Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Supervisor idle fix: fit role budget, retoken, isolate successor_wake handover tests from ",
@@ -24,6 +31,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: nothing left",
   "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
   "pinned": false,
   "prio": 2,
@@ -33,7 +41,12 @@
   "refs": [
     "MyTradingSys/research/fix_verification_2026-10-28/REPORT.md"
   ],
-  "result": "",
+  "result": "already shipped 7b98ec04b; 26/26 tests pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/successor_wake.py",
     "scripts/dev/test_successor_wake.py"
@@ -42,12 +55,13 @@
   "scope_sha": "7b66a91a7a68",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add a seam/fake for Register-ScheduledTask (monkeypatch the PowerShell/subprocess call to write its args to a file instead of registering a real task)",
     "Run the real (non-dry) code path through that seam",
     "Assert the captured fireAt, cwd and command line match what the dry-run reports"
   ],
+  "taken": "2026-11-05T07:43:13Z",
   "tests": "scripts/dev/test_successor_wake.py::test_real_schtasks_path_registers_expected_task_via_fake (new, exercises the path CT-1 found untested)",
   "title": "Real successor wake test: replace Register-ScheduledTask with an echo, assert fireAt, cwd and command (commits 0e07b7418, 3a1c8003b, fa094a92b; fix report CT-1)",
   "weight": "ROUTINE",
