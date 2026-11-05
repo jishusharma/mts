@@ -80,6 +80,28 @@ def test_planted_leak_signals_use_only_past_bars(variant, setup):
     assert [x for x in base if x['bar_index'] <= cut] == [x for x in again if x['bar_index'] <= cut]
 
 
+@pytest.mark.parametrize('vp_filter', ['VA', 'POC'])
+def test_planted_leak_profile_filters_use_only_past_bars(vp_filter):
+    """F5: VA/POC profile (bin width included) must not see bars after `cut`; prices start near the old 5000 bin switch."""
+    s = study()
+    hits = 0
+    for seed in range(300):
+        o, h, l, c = walk(n=120, seed=seed)
+        k = 5200.0 / c[0]
+        h, l, c = h * k, l * k, c * k
+        base = s.signals('modified_schiff', 'BOTH', vp_filter, '4h', h, l, c)
+        cut = 48
+        early = [x for x in base if x['bar_index'] <= cut]
+        if not early:
+            continue
+        hits += 1
+        g = np.full(len(c) - cut - 1, 50.0)
+        again = s.signals('modified_schiff', 'BOTH', vp_filter, '4h', np.r_[h[:cut + 1], g * 1.01],
+                          np.r_[l[:cut + 1], g * 0.99], np.r_[c[:cut + 1], g])
+        assert early == [x for x in again if x['bar_index'] <= cut], seed
+    assert hits >= 10
+
+
 def test_hand_checked_fee_net_trade():
     """Long, market entry at 100, stop 98.5 (1.5% stop), target 103 (2 x risk) hit: gross +2R, fees (taker*100 + maker*103)/1.5 R."""
     a = np.zeros((60, 5))

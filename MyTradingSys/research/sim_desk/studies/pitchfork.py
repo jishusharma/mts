@@ -9,7 +9,12 @@ OURS: ZigZag pivot confirmation delay (4 bars on 4h, 3 bars on 1d) and minimum s
 anchored profile Value Area (70%) and Point of Control (1.5%) confluence filter over the P0-P2 swing (the desk bars
 carry no volume, so the profile weights each bar equally = Time-Price Opportunity / TPO profile); market entry at the
 next bar's open after the setup bar closes; structural stop 1.5% beyond the tine/bar extreme; optional fixed-R target;
-a trade is closed after 60 bars.
+a trade is closed after 60 bars; Hagopian target = entry +/- |UML - ML| (OURS reading of :42, the setup table
+:54-55 'ML -/+ Channel Width' is the unused alternative).
+Desk vs live profile (review F4): bin width is 10 USD for every symbol, the same as live PitchforkSignalLayer.java
+DEFAULT_W_BIN (fixed, so no bin-size lookahead, F5). Gap kept and documented: the desk profile is TPO (each bar weight
+1, the desk bars carry no volume) while live weights bars by real 4h volume, so desk VA/POC results do not measure
+the live volume filter exactly.
 """
 import hashlib
 import sys
@@ -21,8 +26,9 @@ from MyTradingSys.backtest.layers.pitchfork import pitchfork_detector as pd  # n
 
 ID = 'pitchfork'
 TITLE = 'Pitchfork (Andrews / Modified Schiff): tine bounce to the median line and Hagopian failure breakout, BTCUSDT or ETHUSDT'
-MAX_HOLD = 60
-STOP_OFFSET_PCT = 0.015
+MAX_HOLD = 60  # OURS
+STOP_OFFSET_PCT = 0.015  # OURS
+BIN_W = 10.0  # OURS, matches live DEFAULT_W_BIN (FORMULAS 18.1 BTC bin) for every symbol
 TF = {'4h': '4 hours (ours)', '1d': 'daily (ours)'}
 TF_MIN = {'4h': 240, '1d': 1440}
 VARIANT = {
@@ -41,7 +47,7 @@ FILTER = {
     'ALL': 'all confirmed 3-pivot swings, no profile filter (trader)',
 }
 EXIT = {
-    'ML': 'at the median line / 1x channel width target (trader)',
+    'ML': 'at the median line (trader); Hagopian: entry +/- |UML-ML| (ours reading of source :42)',
     'R': 'target at a chosen multiple of risk (ours)',
 }
 DEFAULT = {
@@ -112,7 +118,7 @@ def label(q):
 
 
 def describe(q):
-    ex = f"a target at {q['target_r']:g} x risk" if q['exit'] == 'R' else 'the Median Line (or 1x channel width on Hagopian breakouts)'
+    ex = f"a target at {q['target_r']:g} x risk" if q['exit'] == 'R' else 'the Median Line (or entry +/- |UML-ML| on Hagopian breakouts)'
     return (f"{_bars.SYMBOLS[_bars.symbol_of(q)].split(' (')[0]}, {TF[q['tf']].split(' (')[0]} "
             f"Pitchfork ({VARIANT[q['variant']].split(' (')[0]}), {SETUP[q['setup']].split(' (')[0]}, "
             f"filter: {FILTER[q['vp_filter']].split(' (')[0]}; "
@@ -126,10 +132,8 @@ def signals(variant, setup, vp_filter, tf, h, l, c):
     h_list = [float(x) for x in h]
     l_list = [float(x) for x in l]
     c_list = [float(x) for x in c]
-    lookback = 4 if tf == '4h' else 3
-    min_change = 0.03 if tf == '4h' else 0.04
-    mean_px = sum(c_list[:min(50, len(c_list))]) / max(1, min(50, len(c_list)))
-    bin_w = 10.0 if mean_px >= 5000.0 else (1.0 if mean_px >= 500.0 else 0.5)
+    lookback = 4 if tf == '4h' else 3  # OURS
+    min_change = 0.03 if tf == '4h' else 0.04  # OURS
     return pd.scan_pitchfork_signals(
         highs=h_list,
         lows=l_list,
@@ -141,7 +145,7 @@ def signals(variant, setup, vp_filter, tf, h, l, c):
         min_change_pct=min_change,
         stop_offset_pct=STOP_OFFSET_PCT,
         max_eval_bars=MAX_HOLD,
-        bin_width=bin_w,
+        bin_width=BIN_W,
     )
 
 
