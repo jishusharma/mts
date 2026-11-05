@@ -1,7 +1,7 @@
 {
 "_doc": "Catalogue of known tests on trunk. kind is inferred (kind_source). Built by sim_desk/build_catalogue.py.",
-"count": 355,
-"exported": 355,
+"count": 356,
+"exported": 356,
 "rows": [
 {
 "id": "st-_archive-loose_2026-10-cbp_profile6_result",
@@ -5146,6 +5146,20 @@
 "exported": true,
 "result_id": "level-approach-eth-replicate-2026-11-05",
 "date": "2026-11-05",
+"status": "SEE_VERDICT",
+"verdict_class": "other"
+},
+{
+"id": "oi-pivot-1h-4h-long-oi-followup",
+"family": "OI pivot candidates",
+"title": "OI pivot candidates C1-C4 at 1h / 4h: P(1-ATR reversal first) vs every-bar baseline, BTCUSDT DEV 30 months",
+"kind": "backtest",
+"kind_source": "result file",
+"verdict": "NO EFFECT: 10 of 32 cells reach 401 day clusters and all show |z| < 2 (diff -0.031 to +0.008); the one large gap (4h volume spike at level, -0.10, z -3.85) has only 290 clusters.",
+"source": "MyTradingSys/research/oi_pivot_2026-10-26/RESULT_1H4H.md",
+"exported": true,
+"result_id": "oi-pivot-1h-4h-long-oi-followup",
+"date": "2026-10-26",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
 }

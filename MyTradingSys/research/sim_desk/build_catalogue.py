@@ -24,6 +24,7 @@ STUDY_FILE = re.compile(r"(^|/)(RESULTS?|VERDICT|[A-Z0-9_]*_RESULTS?)[^/]*\.md$"
 # result file -> exported test id (a test appears "exported" when results/<id>.json exists)
 EXPORTED_BY_SOURCE = {
     "MyTradingSys/research/levels_confluence_2026-10-14": "levels_ladder",
+    "MyTradingSys/research/oi_pivot_2026-10-26/RESULT_1H4H.md": "oi-pivot-1h-4h-long-oi-followup",
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T09_live_parity.md": "t09_live_parity",
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T06_cost_fill_realism.md": "t06_cost_fill",
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T07_stale_verdicts.md": "t07_stale_verdicts",
