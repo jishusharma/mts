@@ -66,3 +66,17 @@ def test_only_picks_the_named_subset_in_list_order_and_refuses_a_typo():
         assert "a/test_9.py" in str(e)
     else:
         raise AssertionError("a name that is not an extra test must stop the step")
+
+
+def test_child_env_lets_a_test_in_a_subfolder_import_a_repo_root_package(tmp_path, monkeypatch):
+    # 2026-11-05: a test run from its own folder failed with ModuleNotFoundError: No module named 'MyTradingSys'
+    (tmp_path / "rootpkg").mkdir()
+    (tmp_path / "rootpkg" / "__init__.py").write_text("VALUE = 7" + NL, encoding="utf-8", newline=NL)
+    (tmp_path / "sub").mkdir()
+    (tmp_path / "sub" / "test_imp.py").write_text("from rootpkg import VALUE" + NL + "def test_it():" + NL + "    assert VALUE == 7" + NL,
+                                                  encoding="utf-8", newline=NL)
+    monkeypatch.setattr(rx, "REPO", tmp_path)
+    monkeypatch.setenv("PYTHONPATH", "keepfirst")
+    assert rx.child_env()["PYTHONPATH"] == os.pathsep.join(["keepfirst", str(tmp_path)])
+    ok, tail = rx.run_one("sub/test_imp.py", tmp_path / "bt")
+    assert ok, tail
