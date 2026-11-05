@@ -198,8 +198,9 @@ def main(argv=None):
     if not ok:
         return 1
     if a.apply:
-        if not a.no_post:
-            post_steps(a.repo)
+        if not a.no_post and not post_steps(a.repo):
+            print("STOP: a post step failed (c_drive_guard / wt_maint); not acknowledging.")
+            return 1
         print(ACK_LINE)
     return 0
 

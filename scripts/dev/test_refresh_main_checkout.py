@@ -198,6 +198,19 @@ class T(unittest.TestCase):
         self.assertEqual(R.main(["--repo", str(self.clone)]), 0)
         self.assertNotEqual(g(self.clone, "rev-parse", "HEAD"), g(self.up, "rev-parse", "HEAD"))
 
+    def test_failed_post_steps_fail_cli(self):
+        import contextlib, io
+        orig = R.post_steps
+        R.post_steps = lambda repo, say=print: False
+        buf = io.StringIO()
+        try:
+            with contextlib.redirect_stdout(buf):
+                rc = R.main(["--repo", str(self.clone), "--apply"])
+        finally:
+            R.post_steps = orig
+        self.assertNotEqual(rc, 0)
+        self.assertNotIn(R.ACK_LINE, buf.getvalue())
+
 
 if __name__ == "__main__":
     unittest.main()
