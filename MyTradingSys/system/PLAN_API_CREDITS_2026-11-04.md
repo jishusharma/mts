@@ -129,4 +129,8 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-05 | oi-pivot-1105 | Opus 5.5 | 2.96 | 66 | shipped c7ac075d5; 32 cells, no OI pivot candidate changes reversal rate (descriptive); cap was 6.0 |
 =======
 | 2026-11-05 | oi-pivot-1105 | Opus 5.5 | 2.96 | 66 | OI pivot follow-up shipped: no candidate changes reversal across 32 cells; cap was 6.0 |
+<<<<<<< HEAD
+| 2026-11-05 | pz4-1105 | Opus 5.5 | 4.76 | 97 | blocked at the power gate: Pizzino main setup retest underpowered; cap was 6.0 |
+=======
+>>>>>>> origin/fast-track
 >>>>>>> origin/fast-track
