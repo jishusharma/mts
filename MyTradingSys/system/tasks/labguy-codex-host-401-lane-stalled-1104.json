@@ -1,6 +1,6 @@
 {
   "approved_by": "",
-  "asks": "",
+  "asks": "Re-login Codex on JIS-NUC (machine step via broadcast) or move the GPT lane?",
   "commands": [],
   "created": "2026-11-04T13:18:03Z",
   "depends_on": [],
@@ -17,7 +17,7 @@
   "mutation_check": "",
   "note": "planner 11-04: code side decided in 0b1bf4e20 (401 = IDLE host-auth, no lane_state write); fix needs the NUC Codex re-login (machine step, broadcast) and a stall line in status; scope not fixed, held at try 1/2.",
   "prio": 1,
-  "refine_tries": 2,
+  "refine_tries": 3,
   "refined_by": "",
   "refs": [],
   "result": "",

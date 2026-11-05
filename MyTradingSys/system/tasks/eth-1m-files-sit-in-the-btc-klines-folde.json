@@ -4,15 +4,24 @@
   "commands": [],
   "created": "2026-11-05T00:08:19Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Both ETH study.py files default to the klines_eth folder; new test test_eth_root.py passes; load_klines on the BTC folder has zero ETHUSDT files.",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "ETH studies read ETH 1m from F:/MTS/data/tom_raw/klines_eth (files moved there 11-05) so BTC load_klines callers see no ETH files.",
   "id": "eth-1m-files-sit-in-the-btc-klines-folde",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "level_approach C15 replicated on ETHUSDT + BTC/ETH pooled, DEV only; sim_desk export, GEMI",
+      "ref": "55606b0c9709",
+      "utc": "2026-11-04T22:26:23Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -20,18 +29,31 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-05T01:27:15Z",
   "refs": [
     "MyTradingSys/research/bb_range_retest_eth_pool_2026-11/study.py"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/bb_range_retest_eth_pool_2026-11/study.py",
+    "MyTradingSys/research/level_approach_eth_2026-11/study.py"
+  ],
+  "scope_out": [
+    "load_klines and bt_data.py unchanged; no data files moved"
+  ],
+  "scope_sha": "55606b0c9709",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/bb_range_retest_eth_pool_2026-11/study.py:31"
+  ],
+  "state": "ready",
+  "steps": [
+    "Change FUT_ROOT in bb_range_retest_eth_pool study.py to F:/MTS/data/tom_raw/klines_eth",
+    "Change the default klines root in level_approach_eth study.py (lines 56 and 245) to klines_eth",
+    "Add test_eth_root.py next to each study asserting the default root ends with klines_eth; run test_pool.py and test_replicate.py"
+  ],
+  "tests": "MyTradingSys/research/level_approach_eth_2026-11/test_eth_root.py fails on the old default root, passes after repoint",
   "title": "ETH 1m files sit in the BTC klines folder and break every load_klines caller on a machine that has them (conflicting duplicate open_time, test_live_levels_confluence, gate step 5b): repoint the ms-* ETH studies to F:/MTS/data/tom_raw/klines_eth (files moved there 11-05) or make load_klines symbol-aware",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
