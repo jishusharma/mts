@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-05T01:05:18Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_ANTICIPATION_MAP_1105.md recomputes the anticipation_map_2026-11-05 headline numbers (21855 events, 4 state counts, 8 cells) from the raw DEV files, a per-number match table, and ends with VERDICT: MATCH or MISMATCH.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "D11 feeder check: independent Gemini blind read of the anticipation_map_2026-11-05 study: recompute the 8-cell price x OI x taker-delta table from the raw Binance files first, then diff against RESULT.md.",
+  "id": "gemini-blind-read-of-research-anticipati",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "gemini-blind-read-wall-ledger-2026-11",
+    "gemini-blind-read-of-level-approach-eth-",
+    "gemini-blind-read-rsi-40-60-1104",
+    "gemini-blind-read-of-bb-range-retest-eth"
+  ],
+  "note": "D11 feeder card for anticipation-map-from-current-layer-stat\nREVIEWED:2026-11-05 T0-ONLY",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "anticipation-map-1105",
+  "refreshed": "2026-11-05T01:06:00Z",
+  "refs": [
+    "MyTradingSys/research/anticipation_map_2026-11-05/RESULT.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_ANTICIPATION_MAP_1105.md",
+    "MyTradingSys/research/anticipation_map_2026-11-05"
+  ],
+  "scope_out": [],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read PRE_REG.md definitions only (not RESULT.md, not study.py), then load the raw 1m klines and 5m metrics OI before 2024-07-01",
+    "Recompute the event count, the 4 state counts and the 8 cells (n, share, continue, undone, OI keeps sign) independently of study.py",
+    "Write MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_ANTICIPATION_MAP_1105.md with a per-number table against RESULT.md and VERDICT"
+  ],
+  "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_ANTICIPATION_MAP_1105.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
+  "title": "[GEMINI] blind read of research/anticipation_map_2026-11-05/RESULT.md",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
