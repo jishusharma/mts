@@ -1,0 +1,52 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-05T18:19:15Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_audits/c31_multi_symbol_blind_read.md has one row per quoted number (at least 12): FOUND / DIFF / NOT_IN_DATA; line 1 holds the three counts; NOT_IN_DATA when klines are absent on the host.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Cross-vendor check (Gemini checks the Claude-built study): reproduce each quoted n, target rate, fee-net R, sd and gate number from summary.json or the script.",
+  "id": "gemini-blind-read-of-c31-multi-symbol-20",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED: c31-multi-sym-m2-1105 2026-11-05\nT0-ONLY\n(template of done gemini-blind-read cards; twin check: no blind read of this folder in tasks/). Never use model output as the source.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-05T18:19:55Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/c31_multi_symbol_2026-11/RESULT.md (read)",
+    "MyTradingSys/research/c31_multi_symbol_2026-11/summary.json (read)",
+    "MyTradingSys/research/c31_multi_symbol_2026-11/PRE_REG.md (read)",
+    "MyTradingSys/research/c31_multi_symbol_2026-11/study.py (read)",
+    "MyTradingSys/research/layer_lab/gemini_audits/c31_multi_symbol_blind_read.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source report or scripts; no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/c31_multi_symbol_2026-11/RESULT.md:1-40"
+  ],
+  "state": "ready",
+  "steps": [
+    "List every number quoted in the report",
+    "Read summary.json or re-run study.py from a scratch copy; copy the number found",
+    "Write FOUND/DIFF/NOT_IN_DATA per row, counts on line 1"
+  ],
+  "tests": "audit card, output file is the test; each row quotes the source line it was matched to; repo files stay byte-identical (git diff empty)",
+  "title": "[GEMINI] blind re-read of c31_multi_symbol_2026-11 RESULT.md: every number against summary.json and study.py",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

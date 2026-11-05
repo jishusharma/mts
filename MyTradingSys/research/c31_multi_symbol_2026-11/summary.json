@@ -1,0 +1,56 @@
+{
+ "BTCUSDT": {
+  "n": 14,
+  "tgt_pct": 71,
+  "gross_R": 1.169,
+  "net_R": 1.09,
+  "sd_R": 1.879,
+  "cost_R": 0.079,
+  "years": {
+   "2022": 9,
+   "2023": 5
+  },
+  "regime_mix": {
+   "bull": 46,
+   "bear": 39,
+   "range": 14
+  },
+  "days": 912
+ },
+ "ETHUSDT": {
+  "n": 3,
+  "tgt_pct": 0,
+  "gross_R": -1.0,
+  "net_R": -1.059,
+  "sd_R": 0.023,
+  "cost_R": 0.059,
+  "years": {
+   "2022": 1,
+   "2023": 2
+  },
+  "regime_mix": {
+   "bull": 47,
+   "bear": 37,
+   "range": 16
+  },
+  "days": 912
+ },
+ "POOL": {
+  "n": 17,
+  "tgt_pct": 59,
+  "gross_R": 0.786,
+  "net_R": 0.711,
+  "sd_R": 1.893,
+  "cost_R": 0.075,
+  "years": {
+   "2022": 10,
+   "2023": 7
+  },
+  "t": 1.55
+ },
+ "gate": {
+  "exit": 1,
+  "out": "n 17 sd 1.893 m 221 z_holm 3.688 MDE 2.079 R + cost 0.075 = 2.154 vs max plausible gross 0.3; n needed 1451\nBLOCK: do not freeze (write BLOCKED.md with these numbers)"
+ },
+ "verdict": "UNDERPOWERED"
+}

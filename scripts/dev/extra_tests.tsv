@@ -226,3 +226,4 @@ MyTradingSys/backtest/layers/pitchfork/test_pitchfork_review_fixes.py
 MyTradingSys/research/sim_desk/test_pitchfork.py
 scripts/dev/test_ci_revert.py
 MyTradingSys/backtest/test_fetch_futures_metrics.py
+MyTradingSys/research/c31_multi_symbol_2026-11/test_c31_multi.py
