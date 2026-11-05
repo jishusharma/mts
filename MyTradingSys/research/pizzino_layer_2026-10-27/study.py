@@ -15,13 +15,14 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO))
 from MyTradingSys.backtest.layers.pizzino import pizzino_indicators as pz  # noqa: E402
+from MyTradingSys.backtest import research_kit as rk  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 SPOT = Path("F:/MTS/Dumps/backtest/spot_2017/BTCUSDT")
 DAY = 86_400_000
 DEV_END = 1_719_792_000_000      # 2024-07-01 UTC (backtest/splits.py DEV_END)
 VAL_END = 1_751_328_000_000      # 2025-07-01 UTC (splits.py HOLDOUT start)
-COST_PCT = 0.14                  # round trip, SOURCED research_kit.TAKER_RT_PCT
+COST_PCT = rk.TAKER_RT_PCT       # 0.14 % round trip, SOURCED research_kit
 
 DEFAULT = dict(ns=(1, 2, 3), dm=3, N=2, tol=0.005, R=20, conf=2, rr=1.0, fb=2.0, TS=20, B=None, W=50, tf="1d")
 CELLS = {                        # PRE_REG.md family, frozen before any return
