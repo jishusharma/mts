@@ -125,3 +125,4 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-05 | haiku-review-refined-1105d | Haiku 5.5 | 0.26 | 30 | 20 stamped: 6 ACCEPT 8 HOLD 6 DROP (575d6179); cap was 2.0 |
 | 2026-11-05 | kurisko-1105 | Opus 5.5 | 1.55 | 35 | study written, ship finished by a Builder agent; cap was 6.0 |
 | 2026-11-05 | fable-regate-1105 | Opus 5.5 | 1.60 | 42 | prereg_gate --m auto counts trial ledger (regate fixes); cap was 6.0 |
+| 2026-11-05 | oi-pivot-1105 | Opus 5.5 | 2.96 | 66 | shipped c7ac075d5; 32 cells, no OI pivot candidate changes reversal rate (descriptive); cap was 6.0 |
