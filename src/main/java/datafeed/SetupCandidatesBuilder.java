@@ -297,6 +297,13 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
             return "balance";
         }
         if ("divergent".equals(cvdSlope)) return "trend_unhealthy";
+        // The snapshot emits only rising | falling | flat, so "divergent" never arrives. Trend health (OURS proxy for Tom's
+        // "no liquidity left ... that means low volume", zQTbdEweG3c:231-236, k0zm5NYn0IQ:49-50): outside the value area a CVD
+        // slope opposed to the VWAP slope is an unhealthy trend. Card wave1-classifystate-health-unreachable.
+        boolean outsideVa = "above_vah".equals(priceVsVa) || "below_val".equals(priceVsVa);
+        boolean opposed = ("rising".equals(vwapSlope) && "falling".equals(cvdSlope))
+                || ("falling".equals(vwapSlope) && "rising".equals(cvdSlope));
+        if (outsideVa && opposed) return "trend_unhealthy";
         if ("above_vah".equals(priceVsVa) || "below_val".equals(priceVsVa)) return "trend_healthy";
         if ("aligned".equals(cvdSlope)) return "trend_healthy";
         return "balance";

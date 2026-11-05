@@ -1,34 +1,75 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "closed": "2026-11-05T03:54:23Z",
+  "commands": [
+    "python -m pytest -q scripts/dev/test_codex_run.py"
+  ],
   "created": "2026-11-05T00:16:20Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "After a gate-red ship in cmd_run, lab.hold exists with the card id and step; the new test passes and the three existing ShipHoldTest cases stay green.",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "codex_run.py defines record_ship_failure (writes lab.hold, which stops new runs) but the SHIP_FAILED branch in cmd_run never calls it, so a gate-red lab ship does not stop the lane. Call it there.",
   "id": "codex-lab-failed-ships-not-stopped",
-  "lane": "",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "cmd_run SHIP_FAILED now calls record_ship_failure via ship_run; gate-red writes lab.hold, ",
+      "ref": "760bb7859",
+      "utc": "2026-11-05T03:54:23Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nuc/codex-next-line-1104",
+      "ref": "a6fc52eaae38",
+      "utc": "2026-11-04T20:37:45Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "next": "END: shipped",
+  "note": "REVIEWED:2026-11-05 T0-ONLY",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-05T03:42:10Z",
   "refs": [],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "result": "cmd_run SHIP_FAILED now calls record_ship_failure via ship_run; gate-red writes lab.hold, TIMEOUT none",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/codex_run.py",
+    "scripts/dev/test_codex_run.py"
+  ],
+  "scope_out": [
+    "lab_runs data",
+    "the live path",
+    "sync.py"
+  ],
+  "scope_sha": "a6fc52eaae38",
+  "size": "S",
+  "sources": [
+    "scripts/dev/codex_run.py:116-127 (record_ship_failure, no call site), :873-877 (SHIP_FAILED branch)"
+  ],
+  "state": "done",
+  "steps": [
+    "Confirm record_ship_failure has no caller in codex_run.py (only its definition and tests use it)",
+    "Write the fail-first test: drive the SHIP_FAILED branch with a gate-red ship log and assert lab.hold exists and cmd_next refuses",
+    "Call record_ship_failure(home, cid, ship log text) where outcome becomes SHIP_FAILED; a TIMEOUT log must still write no hold",
+    "Run python -m pytest -q scripts/dev/test_codex_run.py, ship"
+  ],
+  "taken": "2026-11-05T03:54:23Z",
+  "tests": "Fail-first: new ShipHoldTest case in scripts/dev/test_codex_run.py that runs the ship-failure branch (boxed ship patched to a gate-red log) and asserts lab.hold is written; fails on current code.",
   "title": "Codex lab kept running cards for about 6 hours while every lab ship failed the gate on the same test; nothing told a session. scripts/dev/codex_run.py record_ship_failure should have stopped new runs; check that it does.",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

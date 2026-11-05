@@ -53,11 +53,11 @@ To do:
 
 ## UNKNOWNS (open ledger rows, how to measure)
 
-| # | Unknown | How to measure |
-|---|---|---|
-| U1 | Does absorption (high delta, no extension) at a level predict a reversal more often than a matched non-absorption approach? | 1m archive: approaches within 0.3% of prior-day H/L; absorption = delta share >= +0.3 (or <= -0.3) with a move under 0.1% in the next 3 bars; compare the reversal rate vs distance-matched non-absorption approaches |
-| U2 | Does OI rising during a failed push mean shorts opening (a stronger fade) vs OI falling (a weaker fade)? | Needs 5m OI history (Binance futures/data openInterestHist, 30 days only, or the CoinGlass archive); split U1 events by OI change sign |
-| U3 | Does the 1m/2m/3m/5m wick-rejection count at a level change the hold rate? | Count wicks with a close back inside per TF in the 15 min before a touch; hold rate by count |
-| U4 | Does a 5m close back through the stuck swing beat a 1m close as confirmation (false-signal rate vs move captured)? | Same events, both rules, fee-free descriptive; dev/holdout split |
+| # | Unknown | How to measure | Status |
+|---|---|---|---|
+| U1 | Does absorption (high delta, no extension) at a level predict a reversal more often than a matched non-absorption approach? | 1m archive: approaches within 0.3% of prior-day H/L; absorption = delta share >= +0.3 (or <= -0.3) with a move under 0.1% in the next 3 bars; compare the reversal rate vs distance-matched non-absorption approaches | MEASURED 11-05 (research/level_approach_prep_2026-11-05, BTC futures DEV): absorption n=228 reverses 18% vs 27% matched, breaks 22% vs 45%: a stall, not a turn |
+| U2 | Does OI rising during a failed push mean shorts opening (a stronger fade) vs OI falling (a weaker fade)? | Needs 5m OI history (Binance futures/data openInterestHist, 30 days only, or the CoinGlass archive); split U1 events by OI change sign | MEASURED 11-05 from metrics 5m OI on disk: absorption by OI UP / FLAT / DOWN reverses 18 / 15 / 23% (n 67 / 88 / 73): no clear split |
+| U3 | Does the 1m/2m/3m/5m wick-rejection count at a level change the hold rate? | Count wicks with a close back inside per TF in the 15 min before a touch; hold rate by count | MEASURED 11-05: hold 18% with no wick TF (n=280) vs 23-25% with 1+ TFs (n 129-187); more TFs add nothing |
+| U4 | Does a 5m close back through the stuck swing beat a 1m close as confirmation (false-signal rate vs move captured)? | Same events, both rules, fee-free descriptive; dev/holdout split | OPEN: not run |
 | U5 | Do copied (pasted) pitchforks attract price more than random parallels? | pitchfork-operator-charts-prep, after the operator's shots |
 | U6 | Is the range floor 79.1-79.3k (10-16 low) a hold or a break? | Scenario only; scored in SCENARIO_LEDGER, never a call |

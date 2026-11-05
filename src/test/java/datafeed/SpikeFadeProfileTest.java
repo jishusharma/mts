@@ -185,7 +185,7 @@ public class SpikeFadeProfileTest {
         assertNotNull(price, "price arm A1");
         assertNotNull(prof, "profile arm A1 (thin top, POC in the bottom third)");
         assertEquals(24110.0, price.get("zone").get("price").asDouble(), 1e-9);
-        assertEquals(24130.0, price.get("math").get("stop").asDouble(), 1e-9);
+        assertEquals(24206.44, price.get("math").get("stop").asDouble(), 1e-9);   // BTCUSDT feed: A-S2 = 24110 * 1.004 (OURS 0.40 %)
         assertEquals(24010.0, price.get("math").get("target").asDouble(), 1e-9);
         assertFalse(price.has("profile_items"));
         List<String> cond = new ArrayList<>();
@@ -210,7 +210,7 @@ public class SpikeFadeProfileTest {
         ArrayNode k = series(2, false);
         for (int i = k.size() - 50; i < k.size(); i++) ((ArrayNode) k.get(i)).set(5, M.getNodeFactory().numberNode(10.0));
         ArrayNode out = build(k, 24110.0);
-        assertNotNull(arm(out, "price"));
+        assertNull(arm(out, "price"), "A-C3 on the price arm: uniform volume leaves ~170 above the VPOC row of 20");
         assertNull(arm(out, "profile"));
     }
 

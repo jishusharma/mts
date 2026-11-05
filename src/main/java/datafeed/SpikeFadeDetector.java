@@ -37,7 +37,11 @@ final class SpikeFadeDetector {
     static final LocalTime WINDOW_START = LocalTime.of(7, 0);
     static final LocalTime WINDOW_END = LocalTime.of(17, 35);
     static final int LOOKBACK = 20;
-    static final double A_S2_POINTS = 20.0;   // A-S2, k0zm5NYn0IQ:22-24
+    static final double A_S2_POINTS = 20.0;   // A-S2, k0zm5NYn0IQ:22-24 (SOURCED, DAX points: GER40 only)
+    /** OURS: A-S2 width for every non-DAX symbol, % of the zone high; reference TLV2:323 (BTC minimum width 0.40 %). */
+    static final double A_S2_PCT = 0.40;
+    /** OURS (thin has NO-SOURCE, TLV2:61): A-C3 fails when the volume above the session VPOC row, in the top third of the leg profile, exceeds this share of the VPOC row volume. */
+    static final double A_C3_MAX_ABOVE_POC = 0.5;
     /** OURS (no source): a prior-day-high proxy farther above the zone than this % of the zone high gives no candidate (null); other far prior highs are ignored for A-S1. */
     static final double A_S1_MAX_DISTANCE_PCT = 3.0;
     private static final long FIVE_MIN_MS = 300_000L;
@@ -80,14 +84,19 @@ final class SpikeFadeDetector {
 
         /** Whole-archive series from primitive arrays (replay harness): date/time computed once. */
         Bars(long[] t, double[] o, double[] h, double[] l, double[] c) {
+            this(t, o, h, l, c, null);
+        }
+
+        /** Same with a volume series (null: none, profile items NOT_IN_DATA). */
+        Bars(long[] t, double[] o, double[] h, double[] l, double[] c, double[] vol) {
             n = t.length;
             this.t = t;
             this.o = o;
             this.h = h;
             this.l = l;
             this.c = c;
-            v = new double[n];
-            Arrays.fill(v, Double.NaN);
+            v = vol != null ? vol : new double[n];
+            if (vol == null) Arrays.fill(v, Double.NaN);
             date = new LocalDate[n];
             time = new LocalTime[n];
             for (int i = 0; i < n; i++) {
@@ -195,11 +204,25 @@ final class SpikeFadeDetector {
             if (d > maxPrior) maxPrior = d;
         }
         boolean s1 = above != Double.POSITIVE_INFINITY;
-        double stop = s1 ? above : high + A_S2_POINTS;
+        double s2Width = "GER40".equals(sym) ? A_S2_POINTS : high * A_S2_PCT / 100.0;
+        double stop = s1 ? above : high + s2Width;
         double target = open;   // A-T1: start of the impulse
         double risk = stop - high;
         double reward = high - target;
         if (!(risk > 0) || !(reward > 0)) return null;
+
+        // A-C3 (TLV2:61, k0zm5NYn0IQ:357-360): volume above the session VPOC (leg profile, session start to the extreme).
+        // Missing volume stays NOT_IN_DATA and does not gate.
+        boolean volume = true;
+        for (int i = winFirst; i <= hIdx; i++) if (!(b.v[i] >= 0)) { volume = false; break; }
+        double c3Ratio = Double.NaN;
+        if (volume && high > open) {
+            int n = hIdx - winFirst + 1;
+            double[] px = new double[n], vol = new double[n];
+            for (int i = 0; i < n; i++) { px[i] = b.c[winFirst + i]; vol[i] = b.v[winFirst + i]; }
+            c3Ratio = SpikeFadeProfile.aboveVpocRatio(open, high, px, vol);
+            if (c3Ratio > A_C3_MAX_ABOVE_POC) return null;
+        }
 
         // proofs from OHLC (spec 12)
         List<String> proofs = new ArrayList<>();
@@ -240,10 +263,15 @@ final class SpikeFadeDetector {
         var cond = c.putArray("conditions");
         cond.add("A-C1");
         if (c2) cond.add("A-C2");
+        if (!Double.isNaN(c3Ratio)) {
+            cond.add("A-C3");
+            c.put("c3_above_poc_ratio", Math.round(c3Ratio * 10000.0) / 10000.0);
+        }
         var pr = c.putArray("proofs");
         proofs.forEach(pr::add);
         var nid = c.putArray("not_in_data");
-        for (String s : new String[]{"A-C3", "A-C4", "A-P1", "A-P3", "A-P6", "A-P8", "A-P9", "A-P10"}) nid.add(s);
+        for (String s : new String[]{"A-C4", "A-P1", "A-P3", "A-P6", "A-P8", "A-P9", "A-P10"}) nid.add(s);
+        if (Double.isNaN(c3Ratio)) nid.add("A-C3");
         c.put("zone_time_ms", b.t[hIdx]);
         c.put("bars_since_zone", barsSince);
         c.put("price_left_zone_points", Math.round((high - lastClose) * 100.0) / 100.0);

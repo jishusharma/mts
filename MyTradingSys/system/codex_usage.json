@@ -1,12 +1,12 @@
 {
  "allowance": {
   "plan": "plus",
-  "week_resets": 1794204690,
+  "week_resets": 1794204691,
   "week_used": 38.0,
   "window_resets": 1793850253,
-  "window_used": 3.0
+  "window_used": 4.0
  },
- "at": "2026-11-05T02:33:29Z",
+ "at": "2026-11-05T03:27:33Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -22,10 +22,40 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 8.0,
-  "window_pts": 3.0,
-  "window_runs": 9
+  "window_pts": 4.0,
+  "window_runs": 11
  },
  "runs": [
+  {
+   "at": "2026-11-05T03:26:54Z",
+   "card": "gpt-audit-status-board-numbers-1104",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 32,
+   "tokens_out": 1424,
+   "tokens_total": 156333,
+   "tokens_uncached": 25245,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
+  {
+   "at": "2026-11-05T02:58:59Z",
+   "card": "gpt-audit-status-board-numbers-1104",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 47,
+   "tokens_out": 2139,
+   "tokens_total": 241927,
+   "tokens_uncached": 28460,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
   {
    "at": "2026-11-05T02:32:07Z",
    "card": "gpt-audit-pace-plan-vs-exhaust-doc-1104",
@@ -143,36 +173,6 @@
    "tokens_out": 4908,
    "tokens_total": 281224,
    "tokens_uncached": 39516,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-11-04T23:05:10Z",
-   "card": "gpt-audit-bb-range-to-range-1104",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": " 1 step(s)\n  - Step 3xt: Extra tests\nhost health: ok\nSHIP SLOW 448s: top 3 steps Extra tests outside the collected dirs (B150 discovery) 300s, Layer tests (88 m",
-   "outcome": "SHIP_FAILED",
-   "seconds": 53,
-   "tokens_out": 3362,
-   "tokens_total": 223090,
-   "tokens_uncached": 36176,
-   "week_pts": 0.0,
-   "window_pts": 1.0
-  },
-  {
-   "at": "2026-11-04T22:44:01Z",
-   "card": "habib-plan-scoring-not-trades-1104",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": " 1 step(s)\n  - Step 3xt: Extra tests\nhost health: ok\nSHIP SLOW 449s: top 3 steps Extra tests outside the collected dirs (B150 discovery) 300s, Layer tests (88 m",
-   "outcome": "SHIP_FAILED",
-   "seconds": 67,
-   "tokens_out": 4362,
-   "tokens_total": 314303,
-   "tokens_uncached": 35893,
    "week_pts": 0.0,
    "window_pts": 0.0
   }

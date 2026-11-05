@@ -83,7 +83,8 @@ public class SpikeFadeTest {
 
     private static void bar(ArrayNode k, long t, double o, double h, double l, double c) {
         ArrayNode b = k.addArray();
-        b.add(t).add(o).add(h).add(l).add(c).add(10.0).add(t + 59_999L).add(1000.0).add(10).add(5.0).add(500.0).add(0);
+        double vol = t == ms(TODAY, 7, 0) ? 10_000.0 : 10.0;   // session-open volume node: the leg profile is thin above its VPOC (A-C3)
+        b.add(t).add(o).add(h).add(l).add(c).add(vol).add(t + 59_999L).add(1000.0).add(10).add(5.0).add(500.0).add(0);
     }
 
     /** 20 prior weekdays before TODAY, 07:00-09:00 Berlin; legs[i] per session (oldest first). */
@@ -239,16 +240,17 @@ public class SpikeFadeTest {
         ArrayNode k = series();
         int n = k.size();
         long[] t = new long[n];
-        double[] o = new double[n], h = new double[n], l = new double[n], c = new double[n];
+        double[] o = new double[n], h = new double[n], l = new double[n], c = new double[n], v = new double[n];
         for (int i = 0; i < n; i++) {
             JsonNode b = k.get(i);
+            v[i] = b.get(5).asDouble();
             t[i] = b.get(0).asLong();
             o[i] = b.get(1).asDouble();
             h[i] = b.get(2).asDouble();
             l[i] = b.get(3).asDouble();
             c[i] = b.get(4).asDouble();
         }
-        SpikeFadeDetector.Bars full = new SpikeFadeDetector.Bars(t, o, h, l, c);
+        SpikeFadeDetector.Bars full = new SpikeFadeDetector.Bars(t, o, h, l, c, v);
         ObjectNode r = root("GER40", 24106.0);
         ObjectNode fromJson = SpikeFadeDetector.detect(M, r, k, "balance", "GER40");
         ObjectNode fromSlice = SpikeFadeDetector.detect(M, r, new SpikeFadeDetector.Bars(full, 0, n), "balance", "GER40");

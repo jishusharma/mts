@@ -22,7 +22,9 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * classifyState rule table (code comment 2026-09-17, Rule 32): balance when vwap flat|sideways AND cvd flat AND in_va;
  * else cvd divergent -> trend_unhealthy; else outside the value area -> trend_healthy; else cvd aligned -> trend_healthy;
- * else balance.
+ * else balance. Card wave1-classifystate-health-unreachable: the producer emits only rising | falling | flat, so outside the
+ * value area a cvd slope opposed to the vwap slope (rising/falling or falling/rising) is trend_unhealthy (OURS proxy for Tom's
+ * "no liquidity left ... that means low volume", zQTbdEweG3c:231-236, k0zm5NYn0IQ:49-50); the literal "divergent" stays.
  *
  * Scoring (DSA task 012 step 10, OURS, ranking only): raw = min(95, 50 + 7 * proof_count + confluence_bonus);
  * confidence B >= 70, C+ >= 55, C >= 40, else D. Confluence: another candidate zone within 0.3 % (inclusive) of this
@@ -71,26 +73,33 @@ public class SetupCandidatesCriticalWave1Test {
         assertEquals("trend_healthy", state("flat", "aligned", "in_va"));
         assertEquals("balance", state("rising", "rising", "in_va"), "fall-through");
         assertEquals("balance", state("falling", "flat", "in_va"), "vwap not flat -> not the balance gate, fall-through");
+        assertEquals("trend_unhealthy", state("rising", "falling", "above_vah"), "price up, cvd down outside the VA");
+        assertEquals("trend_unhealthy", state("falling", "rising", "below_val"), "price down, cvd up outside the VA");
+        assertEquals("trend_healthy", state("rising", "rising", "above_vah"), "cvd confirms");
+        assertEquals("trend_healthy", state("flat", "falling", "above_vah"), "no vwap trend to oppose");
+        assertEquals("balance", state("rising", "falling", "in_va"), "opposition inside the VA is not a trend");
     }
 
     /**
      * The snapshot producer (MarketDataSnapshot cvd/vwap builders) only ever emits rising | falling | flat for the
-     * slopes, never "divergent" or "aligned". Over that real vocabulary the hand result is: in_va -> balance
-     * (gate or fall-through), outside the value area -> trend_healthy; trend_unhealthy is unreachable.
+     * slopes, never "divergent" or "aligned". Over that real vocabulary the hand result is: in_va -> balance (9 of 27);
+     * outside the value area -> trend_unhealthy when vwap and cvd slopes oppose (2 pairs x 2 sides = 4), else trend_healthy (14).
      */
     @Test
     void classifyStateOverProductionVocabulary() throws Exception {
         String[] slopes = {"rising", "falling", "flat"};
         String[] vas = {"in_va", "above_vah", "below_val"};
-        int healthy = 0, balance = 0;
+        int healthy = 0, balance = 0, unhealthy = 0;
         for (String v : slopes) for (String c : slopes) for (String va : vas) {
             String s = state(v, c, va);
-            assertNotEquals("trend_unhealthy", s, v + "/" + c + "/" + va);
-            assertEquals("in_va".equals(va) ? "balance" : "trend_healthy", s, v + "/" + c + "/" + va);
-            if (s.equals("balance")) balance++; else healthy++;
+            boolean opposed = ("rising".equals(v) && "falling".equals(c)) || ("falling".equals(v) && "rising".equals(c));
+            String want = "in_va".equals(va) ? "balance" : opposed ? "trend_unhealthy" : "trend_healthy";
+            assertEquals(want, s, v + "/" + c + "/" + va);
+            if (s.equals("balance")) balance++; else if (s.equals("trend_unhealthy")) unhealthy++; else healthy++;
         }
         assertEquals(9, balance);
-        assertEquals(18, healthy);
+        assertEquals(14, healthy);
+        assertEquals(4, unhealthy);
     }
 
     // ---------- tier + score + confluence through build() ----------

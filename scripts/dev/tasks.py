@@ -303,7 +303,25 @@ def default_worker(card):
     return (12, "agent") if card.get("size") == "S" else (30, "session")
 
 
-def problems(card, cards=None, reg=None, repo=None):
+_DONE_PATH = re.compile(r"(?<![\w./-])((?:[\w.-]+/)+[\w.-]+\.(?:py|md|tsv|csv|json|txt|java|yml|yaml|sh|html|xml|log))(?![\w/])")
+
+
+def done_when_outside_lab(card):
+    """Repo paths a CODEX audit/run card's done_when names that codex_run.out_of_scope would reject (same rule, imported, not copied):
+    such a run ends OUT_OF_SCOPE after the tokens are spent (malkan-window-12-18-vs-hindi, 2026-11-04, ~900k tokens)."""
+    if card.get("lane") != "CODEX" or card.get("kind") not in ("audit", "run"):
+        return []
+    files = sorted(set(_DONE_PATH.findall(str(card.get("done_when", "")).replace("\\", "/"))))
+    if not files:
+        return []
+    try:
+        import codex_run
+    except ImportError:
+        return []
+    return codex_run.out_of_scope(card["kind"], files, card)
+
+
+def problems(card, cards=None, reg=None, repo=None, lab_scope=False):
     """Definition of Ready: [] when a session can run the card with no question to anyone. Every miss is named."""
     p = []
     repo = Path(repo or REPO)
@@ -397,6 +415,9 @@ def problems(card, cards=None, reg=None, repo=None):
         kind = card.get("kind", "")
         if kind not in CODEX_KINDS:
             p.append(f"kind {kind!r} not one of {', '.join(CODEX_KINDS)} (lane CODEX)")
+        for f in (done_when_outside_lab(card) if lab_scope else []):   # opt-in: 29 ready cards (11-05) already name outside files; lint warns, check rejects raw/refined
+            p.append(f"done_when names {f}, outside the lab folder: a CODEX {kind} run ends OUT_OF_SCOPE (name a file under "
+                     "MyTradingSys/research/layer_lab/ or make the card a build)")
         if kind == "build" and not str(card.get("tests", "")).strip():
             p.append("tests is empty (CODEX build: name the fail-first test)")
         if kind == "run" and not card.get("commands"):
@@ -771,7 +792,7 @@ def cmd_check(a):
     for c in cards:
         if (a.id and c["id"] != a.id) or c["state"] not in ("raw", "refined", "ready", "active"):
             continue
-        miss = problems(c, cards, reg, repo=REPO)
+        miss = problems(c, cards, reg, repo=REPO, lab_scope=c["state"] in ("raw", "refined"))
         if not miss and c["state"] in ("raw", "refined"):
             miss = promotion_problems(c, repo=REPO)
         elif not miss and c["state"] in LIVE and needs_review(c) and stamp_kind(c, repo=REPO) != "real":
@@ -822,6 +843,7 @@ def cmd_lint(a):
             errs.append(f"{c['id']}: unknown state {c['state']!r}")
         elif c["state"] in LIVE:
             errs += [f"{c['id']} ({c['state']}): {m}" for m in problems(c, cards, reg)]
+            warns += [f"WARN {c['id']} ({c['state']}): {m}" for m in problems(c, cards, reg, lab_scope=True) if "outside the lab folder" in m]
             if c["state"] == "ready":
                 late = TS.overdue(c, REPO)
                 if late:          # a warning, never a failure: lint feeds every ship gate and trunk CI (red 2026-10-17 07:36)

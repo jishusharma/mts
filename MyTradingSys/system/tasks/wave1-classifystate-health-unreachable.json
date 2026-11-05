@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-05T03:05:17Z",
   "commands": [
     "mvn -q -Dtest=SetupCandidatesCriticalWave1Test,SpikeFadeCriticalWave1Test test"
   ],
@@ -16,6 +17,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "classifyState: outside VA, vwap vs cvd opposed -> trend_unhealthy (4 of 27 production comb",
+      "ref": "702da1e24",
+      "utc": "2026-11-05T03:05:17Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Pitchfork Layer: Wire Modified Schiff tine bounce and Volume Profile confluence into Setup",
@@ -26,6 +33,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: shipped",
   "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks\nREVIEWED:2026-11-05 ACCEPT (Haiku on API credit, job haiku-review-refined-1105b: trend_unhealthy only via divergent on trunk; fail-first test specified; scope exists)",
   "pinned": false,
   "prio": 2,
@@ -33,7 +41,12 @@
   "refined_by": "",
   "refreshed": "2026-11-05T02:44:40Z",
   "refs": [],
-  "result": "",
+  "result": "classifyState: outside VA, vwap vs cvd opposed -> trend_unhealthy (4 of 27 production combos, was 0)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "src/main/java/datafeed/SetupCandidatesBuilder.java:290-316, MarketDataSnapshot.java:714-773"
   ],
@@ -44,11 +57,12 @@
     "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md",
     "MyTradingSys/research/tom_direction_health_audit_2026-10-17/AUDIT.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the finding in MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md",
     "Fix per the trader source; new test fails first"
   ],
+  "taken": "2026-11-05T03:05:17Z",
   "tests": "a JUnit test that fails on the current code",
   "title": "FINDING HIGH: classifyState health is just 'outside today's VA'; trend_unhealthy unreachable",
   "weight": "CRITICAL",

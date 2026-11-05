@@ -38,6 +38,24 @@ def run_cli(*argv):
     return rc, out.getvalue()
 
 
+class CodexDoneWhenScopeTest(unittest.TestCase):
+    """CODEX audit/run cards whose done_when names a file outside the lab folder end OUT_OF_SCOPE after the tokens are spent."""
+    def codex(self, **kw):
+        return good(lane="CODEX", kind="audit", **kw)
+
+    def test_outside_path_is_a_problem_lab_path_passes(self):
+        bad = T.problems(self.codex(done_when="Report in MyTradingSys/research/layer_lab/x/REPORT.md and scripts/dev/tasks.py edited"), lab_scope=True)
+        self.assertTrue(any("scripts/dev/tasks.py" in m and "OUT_OF_SCOPE" in m for m in bad), bad)
+        self.assertEqual(T.problems(self.codex(done_when="Report in MyTradingSys/research/layer_lab/x/REPORT.md exists"), lab_scope=True), [])
+        self.assertEqual(T.problems(self.codex(done_when="no path named, 5 rows"), lab_scope=True), [])
+        self.assertEqual(T.problems(self.codex(done_when="edits scripts/dev/tasks.py")), [])   # opt-in: ready cards are not hard-failed
+
+    def test_run_flagged_build_and_other_lanes_not(self):
+        self.assertTrue(T.done_when_outside_lab(good(lane="CODEX", kind="run", done_when="writes scripts/dev/out.csv")))
+        self.assertEqual(T.done_when_outside_lab(good(lane="CODEX", kind="build", done_when="edits scripts/dev/tasks.py")), [])
+        self.assertEqual(T.done_when_outside_lab(good(done_when="edits scripts/dev/tasks.py")), [])
+
+
 class DefinitionOfReadyTest(unittest.TestCase):
     def test_good_card_passes(self):
         self.assertEqual(T.problems(good()), [])
