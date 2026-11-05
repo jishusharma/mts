@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-05T01:33:10Z",
   "commands": [],
   "created": "2026-11-05T00:08:19Z",
   "depends_on": [],
@@ -15,6 +16,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "ETH studies read klines_eth per symbol (ca85a2f2); tests pass",
+      "ref": "2b65c069f",
+      "utc": "2026-11-05T01:33:10Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "level_approach C15 replicated on ETHUSDT + BTC/ETH pooled, DEV only; sim_desk export, GEMI",
@@ -25,6 +32,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: repointed",
   "note": "",
   "prio": 2,
   "refine_tries": 0,
@@ -33,7 +41,12 @@
   "refs": [
     "MyTradingSys/research/bb_range_retest_eth_pool_2026-11/study.py"
   ],
-  "result": "",
+  "result": "ETH studies read klines_eth per symbol (ca85a2f2); tests pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/bb_range_retest_eth_pool_2026-11/study.py",
     "MyTradingSys/research/level_approach_eth_2026-11/study.py"
@@ -46,12 +59,13 @@
   "sources": [
     "MyTradingSys/research/bb_range_retest_eth_pool_2026-11/study.py:31"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Change FUT_ROOT in bb_range_retest_eth_pool study.py to F:/MTS/data/tom_raw/klines_eth",
     "Change the default klines root in level_approach_eth study.py (lines 56 and 245) to klines_eth",
     "Add test_eth_root.py next to each study asserting the default root ends with klines_eth; run test_pool.py and test_replicate.py"
   ],
+  "taken": "2026-11-05T01:33:10Z",
   "tests": "MyTradingSys/research/level_approach_eth_2026-11/test_eth_root.py fails on the old default root, passes after repoint",
   "title": "ETH 1m files sit in the BTC klines folder and break every load_klines caller on a machine that has them (conflicting duplicate open_time, test_live_levels_confluence, gate step 5b): repoint the ms-* ETH studies to F:/MTS/data/tom_raw/klines_eth (files moved there 11-05) or make load_klines symbol-aware",
   "weight": "ROUTINE",
