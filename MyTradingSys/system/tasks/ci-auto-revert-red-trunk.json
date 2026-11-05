@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-05T05:13:30Z",
   "commands": [
     "python -m pytest scripts/dev/test_ci_revert.py -q",
     "python scripts/dev/run_all_tests.py --quick"
@@ -16,6 +17,12 @@
   "id": "ci-auto-revert-red-trunk",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "scripts/dev/ci_revert.py: dry-run plan, 3 refusals, --apply 1 revert commit + ship --fix-c",
+      "ref": "8363dcf21",
+      "utc": "2026-11-05T05:13:30Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -34,6 +41,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: card done",
   "not_twin_of": [
     "red-trunk-revert-within-10-min-rule-miss"
   ],
@@ -44,7 +52,12 @@
   "refined_by": "",
   "refreshed": "2026-11-05T04:48:09Z",
   "refs": [],
-  "result": "",
+  "result": "scripts/dev/ci_revert.py: dry-run plan, 3 refusals, --apply 1 revert commit + ship --fix-ci; 9 tests",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/ci_revert.py",
     "scripts/dev/test_ci_revert.py",
@@ -61,7 +74,7 @@
     "scripts/dev/mts_doctor.py:409-434",
     "CLAUDE.md Boot 2 (revert within 10 min)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add a helper in mts_doctor.py returning the full first-red head_sha (ci_revert at :409 returns only a status string with the sha cut to 8); ci_revert.py uses it via ci_fetch (:437). Dry run prints the plan by default.",
     "Refuse (print the manual git revert steps) when the breaking commit is a merge, is not on origin/fast-track, or when later commits touch the same files (git diff --name-only vs the later range).",
@@ -69,6 +82,7 @@
     "mts_doctor.py: the CI-REVERT WARN detail ends with 'run: python scripts/dev/ci_revert.py'; add that command to the CI-REVERT row in MyTradingSys/system/MTS_DOCTOR.md (keep SIZE_CAPS in test_integrity.py within headroom).",
     "scripts/dev/test_ci_revert.py (fake runs, no network): cases per tests field; list test_ci_revert.py in scripts/dev/extra_tests.tsv (the EXTRA source); confirm each fails on the pre-change code (module absent), run python scripts/dev/run_all_tests.py --quick."
   ],
+  "taken": "2026-11-05T05:13:30Z",
   "tests": "test_ci_revert.py: fake runs [green,red@A,red@B] -> plan names A; merge commit refused; later-commit-touches-same-files refused; dry run makes no commit; doctor detail names the command; each fails pre-change (module absent)",
   "title": "CI auto-revert: when CI-REVERT warns (red fast-track), a session or hook reverts the breaking commit within the 10-min window instead of the WARN recurring; touches git history so it is a card, not a heal (HEAL_MAP.md CI-REVERT row)",
   "weight": "CRITICAL",
