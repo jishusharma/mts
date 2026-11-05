@@ -305,5 +305,43 @@ class TestTops(unittest.TestCase):
         self.assertEqual(kc.bear_divergence(h, l, [50, 70, 50, 80, 40], 1), [])
 
 
+def test_candle_volume_labels():
+    p = dict(kc.load_params(), vol_sma=3, low_n=3)
+    # KR-C05: body/range 9/10 = 0.9 >= 0.8 full body; 5/10 = 0.5 is not
+    assert kc.full_body(100, 110, 100, 109, p) == "bull"
+    assert kc.full_body(109, 110, 100, 100, p) == "bear"
+    assert kc.full_body(100, 110, 100, 105, p) is None
+    # KR-V06: prior ranges 2,2,2 (mean 2); last range 0.1 <= 0.5 * 2 and volume ratio 3 >= 2 -> absorption
+    h, l = [12, 12, 12, 10.5], [10, 10, 10, 10.4]
+    assert kc.effort_result(3.0, h, l, 3, p) == "absorption"
+    assert kc.effort_result(1.0, h, l, 3, p) is None
+    assert kc.effort_result(3.0, [12, 12, 12, 12], [10, 10, 10, 10], 3, p) is None
+    # KR-V08: close at the lowest of the last 3 closes: ratio 0.4 <= 0.5 apathy, 2.5 >= 2 panic, 1.0 neither
+    c = [10, 9, 8, 7]
+    assert kc.apathy_panic(0.4, c, 3, p) == "apathy"
+    assert kc.apathy_panic(2.5, c, 3, p) == "panic"
+    assert kc.apathy_panic(1.0, c, 3, p) is None
+    assert kc.apathy_panic(0.4, [10, 9, 8, 9], 3, p) is None
+
+
+def test_ma_pair_state_and_slope():
+    # EMA2 / EMA3 of 1,2,3,2,1 by hand (seed = SMA of first n, alpha 2/(n+1)):
+    # fast: t1 1.5, t2 2.5, t3 2.1667, t4 1.3889 ; slow: t2 2, t3 2, t4 1.5
+    s = kc.ma_pair_state([1, 2, 3, 2, 1], 2, 3)
+    assert s["above"] == [None, None, True, True, False]
+    assert s["cross"] == [(4, "down")]
+    assert kc.ma_slope([1, 2, 4, 7, None], 2) == [None, None, 3, 5, None]
+
+
+def test_vol_trap_and_exhaust():
+    p = dict(kc.load_params(), vol_trap_bbwp=85, vol_exhaust_bbwp=85)
+    line = [None, 40, 90, 95, 80, 60]
+    assert kc.vol_trap(line, 2, p) is True
+    assert kc.vol_trap(line, 1, p) is False
+    assert kc.vol_trap(line, 0, p) is False
+    # first bar back below 85 after expansion is t=4 only
+    assert [kc.vol_exhaust(line, t, p) for t in range(6)] == [False, False, False, False, True, False]
+
+
 if __name__ == "__main__":
     unittest.main()
