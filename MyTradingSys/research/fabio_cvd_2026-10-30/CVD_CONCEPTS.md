@@ -70,12 +70,11 @@ Not worth fetching: the remaining 8 shorts (motivational or promo titles).
   - The CoinGlass panes give CVD and net delta.
 - **What we lack:** a delta footprint by price (needs aggTrades) and Fabio's "big trades" indicator. CoinGlass Large Trades is the nearest proxy.
 - **Already measured on BTC 1m, 10-29 drop study:** bounce delta share did not change the odds of the low breaking (43% vs 46%). That is a quick test of F-CVD8 at the bounce, and it was a null.
-- **Not yet measured:**
-  - F-CVD2: does a CVD trend in balance predict the break side?
-  - F-CVD3: does a CVD lower low with price flat predict a reversal?
-  - Both are measurable with taker delta on the 1m archive. They are filed as U7 and U8 below.
+- **Measured 11-05 (DEV 2022-01..2024-06, RESULT.md in this folder):**
+  - F-CVD2 (U7): box CVD sign tracks the break side only because CVD tracks price; with box price direction fixed it adds nothing.
+  - F-CVD3 (U8): a CVD lower low at an equal low does not predict a reversal; those lows break more often than matched controls.
 
-| # | Unknown | How to measure |
-|---|---|---|
-| U7 | In a pre-US coil (C17 events), does the CVD slope inside the box predict the break side? | Reuse the pre_us_squeeze events; CVD = cumulative taker delta over the box; split by sign; break side up vs down |
-| U8 | CVD lower low with price within 0.1% of the prior low (F-CVD3): reversal rate vs matched non-divergence lows | 1m archive, 15m swings; forward 4 h; distance-matched control |
+| # | Unknown | How to measure | Status |
+|---|---|---|---|
+| U7 | In a pre-US coil (C17 events), does the CVD slope inside the box predict the break side? | Reuse the pre_us_squeeze events; CVD = cumulative taker delta over the box; split by sign; break side up vs down | MEASURED 11-05: CVD+ 59% vs CVD- 35% first-break up (n 298/332), but box price alone 63% vs 27%; within price direction CVD adds +6/-5 pp. Null beyond price |
+| U8 | CVD lower low with price within 0.1% of the prior low (F-CVD3): reversal rate vs matched non-divergence lows | 1m archive, 15m swings; forward 4 h; distance-matched control | MEASURED 11-05: reversal 28.5% (n 1469) vs 31.5% matched control (n 1439); low broken 65.4% vs 59.2%. Null, sign against the claim |
