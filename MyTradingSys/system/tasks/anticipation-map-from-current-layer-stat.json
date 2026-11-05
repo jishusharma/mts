@@ -16,16 +16,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "scenario ledger: 10-29 21:47 base-rate read scored (low broke 23:45Z)",
-      "ref": "3dc87fa0af93",
-      "utc": "2026-10-29T23:56:21Z"
+      "line": "Reapply \"Eagle_Eyes scenario ledger\" 3fe89b16e (CI RED: eagle_eyes.md 7465 B > 7100 budget",
+      "ref": "710ea3b8a624",
+      "utc": "2026-11-04T14:31:03Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "3dc87fa0af93 scenario ledger: 10-29 21:47 base-rate read scored (low broke 23:45Z)",
+      "line": "710ea3b8a624 Reapply \"Eagle_Eyes scenario ledger\" 3fe89b16e (CI RED: eagle_eyes.md 7465 B ",
       "ref": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/SCENARIO_LEDGER.md",
-      "utc": "2026-10-29T23:56:21Z"
+      "utc": "2026-11-04T14:31:03Z"
     }
   ],
   "layers": [],
@@ -36,7 +36,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-29T23:56:30Z",
+  "refreshed": "2026-11-05T00:55:20Z",
   "refs": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/SCENARIO_LEDGER.md",
     "MyTradingSys/tools/live_aid/live_aid.html",
@@ -49,10 +49,10 @@
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/SCENARIO_LEDGER.md"
   ],
   "scope_out": [],
-  "scope_sha": "3dc87fa0af93",
+  "scope_sha": "710ea3b8a624",
   "size": "M",
   "sources": [],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "List reading pairs (price x OI x delta) and their base rates from 1m/5m history",
     "Add live_aid panel rows with n and source tag",

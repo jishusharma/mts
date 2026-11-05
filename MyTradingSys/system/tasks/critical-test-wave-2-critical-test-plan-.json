@@ -36,7 +36,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-29T21:19:25Z",
+  "refreshed": "2026-11-05T00:55:22Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -48,7 +48,7 @@
   "scope_sha": "a97b86446b78",
   "size": "M",
   "sources": [],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Item 6 venue gap on one month",
     "Item 7 funding census of perp backtests",
