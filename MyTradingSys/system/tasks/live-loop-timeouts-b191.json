@@ -23,7 +23,7 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:none DECISION (OURS): split at the B191 commit c93b7ac2 (2026-10-16T15:37Z); data = runtime_data/_mirror/runtime_data/live_runner.log (mirror 2026-10-17T20:16Z, covers both sides; run `python scripts/dev/live_mirror.py pull` first); count lines whose json error contains 'timed out'.\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C2 weight=CRUCIAL); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:none DECISION (OURS): split at the B191 commit c93b7ac2 (2026-10-16T15:37Z); data = runtime_data/_mirror/runtime_data/live_runner.log (mirror 2026-10-17T20:16Z, covers both sides; run `python scripts/dev/live_mirror.py pull` first); count lines whose json error contains 'timed out'.\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C2 weight=CRUCIAL); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.\nREVIEWED:2026-11-05 DROP (Haiku on API credit, job haiku-review-refined-1105c: twin already on trunk as 966d2607d (live-loop timeouts report))",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "gemini-nuc",

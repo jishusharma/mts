@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DRAFT 2026-10-26 Session_Planner (OURS): C2 class: formulas feed every layer; non-Claude spec review by Lab_Guy before ready (promotion gate). Java is read, not edited. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "note": "DRAFT 2026-10-26 Session_Planner (OURS): C2 class: formulas feed every layer; non-Claude spec review by Lab_Guy before ready (promotion gate). Java is read, not edited. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.\nREVIEWED:2026-11-05 HOLD (Haiku on API credit, job haiku-review-refined-1105c: FORMULAS.md sections 25 and 26 already taken on trunk (halving clock, Cowen band); renumber)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "Session_Planner",

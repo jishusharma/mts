@@ -108,3 +108,9 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-05 | level-approach-prep-1105 | Opus 5.5 | 2.21 | 46 | built; ship in gate at job end (verify on trunk); cap was 7.0 |
 | 2026-11-05 | critical-test-w2-1105 | Opus 5.5 | 2.73 | 67 | critical test wave 2: rows 6 FINDING, 7 FINDING, 8 UN(measured); see trunk; cap was 7.0 |
 | 2026-11-05 | haiku-review-refined-1105b | Haiku 5.5 | 0.12 | 19 | stamped 18 cards: 9 ACCEPT, 7 HOLD, 2 DROP; cap was 2.0 |
+| 2026-11-05 | pitchfork-fixes-1105 | Opus 5.5 | 1.55 | 35 | 6 pitchfork desk/python fixes shipped (702d...); cap was 6.0 |
+| 2026-11-05 | spikefade-wave1-1105 | Sonnet 5.5 | 1.47 | 45 | 3 spikefade/wave1 cards shipped as one change 8eda7d8a; cap was 4.0 |
+| 2026-11-05 | oi-toptrader-1105 | Opus 5.5 | 1.03 | 22 | OI top-trader fetch script; fetch was still running at job end (verify on trunk); cap was 6.0 |
+| 2026-11-05 | session-handoff-audit-1105 | Opus 5.5 | 0.90 | 24 | shipped da963242 (session/handoff ship-speed audit); cap was 5.0 |
+| 2026-11-05 | 4b3-successor-wake-1105 | Opus 5.5 | 0.44 | 11 | no build: card already done on trunk, closed; cap was 6.0 |
+| 2026-11-05 | haiku-review-refined-1105c | Haiku 5.5 | 0.22 | 25 | stamped 20 cards: 5 ACCEPT, 9 HOLD, 6 DROP; cap was 2.0 |

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-05T04:37:06Z",
   "commands": [
     "python scripts/dev/successor_wake.py register --login A --at <UTC+3min> --prompt-file <noop-prompt.txt>  (NUC or NB host, one proof fire only)",
     "schtasks /query /tn MTS-SuccWake-A /v"
@@ -27,6 +28,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "already shipped: bf39a4490 stage log + finally unregister (test_run_ps1_logs_stages_and_un",
+      "ref": "da9632426",
+      "utc": "2026-11-05T04:37:06Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Supervisor idle fix: fit role budget, retoken, isolate successor_wake handover tests from ",
@@ -44,6 +51,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: already shipped",
   "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks\nREVIEWED:2026-11-05 ACCEPT (Haiku on API credit, job haiku-review-refined-1105b: scope exists, stage-log test fail-first specified, proof fire testable; no fix on trunk)",
   "pinned": false,
   "prio": 1,
@@ -51,7 +59,12 @@
   "refined_by": "",
   "refreshed": "2026-11-05T02:43:38Z",
   "refs": [],
-  "result": "",
+  "result": "already shipped: bf39a4490 stage log + finally unregister (test_run_ps1_logs_stages_and_unregisters_in_finally), d3570f13b claude -p preflight; cause = expired headless login, named in wake_proof",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/successor_wake.py",
     "scripts/dev/test_successor_wake.py",
@@ -63,7 +76,7 @@
   "scope_sha": "7b66a91a7a68",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read build_script run.ps1 (successor_wake.py:163-210) and wake_proof_2026-10-28; list what run.ps1 logs per stage",
     "Make run.ps1 append stage lines (started, claude found, claude exit code, unregister result) to runtime_data/succwake_<login>.log",
@@ -71,6 +84,7 @@
     "On the NUC or NB host run the proof fire (commands), read the log, fix the failing stage",
     "Write the named cause into MyTradingSys/research/lead/wake_proof_2026-10-28T06-25Z.md"
   ],
+  "taken": "2026-11-05T04:37:06Z",
   "tests": "scripts/dev/test_successor_wake.py::test_run_ps1_logs_stages_and_unregisters_in_finally fails on the old script, passes after",
   "title": "4b3 one-shot successor-wake task fired (schtasks Last Result 0) but no successor Supervisor A work landed on trunk ~50 min later",
   "weight": "IMPORTANT",

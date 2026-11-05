@@ -29,7 +29,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-29T22:30:16Z",
+  "refreshed": "2026-11-05T04:40:51Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -42,7 +42,7 @@
   "sources": [
     "MyTradingSys/research/fabio_cvd_2026-10-30/CVD_CONCEPTS.md"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "U7: reuse pre_us_squeeze events; CVD = cumulative taker delta over the box; split by sign",
     "U8: 15m swing lows on 1m archive; divergence vs distance-matched control; forward 4h",

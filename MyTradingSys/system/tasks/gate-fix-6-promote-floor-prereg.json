@@ -13,13 +13,23 @@
   "goal": "The MDE trade floor uses manifest pre_reg.plausible_net_r (from the PRE_REG gate line); observed net_r stays only for the Holm CI test (GATE_AUDIT.md fix 6).",
   "id": "gate-fix-6-promote-floor-prereg",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "promote.py re-runs the OOS number from oos.trades_csv instead of trusting the manifest (Fa",
+      "ref": "0e752ea53a7e",
+      "utc": "2026-10-16T20:51:51Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DRAFT 2026-10-26 Session_Planner (OURS): C2 (gate): non-Claude spec review plus Haiku re-derivation (lab_guy.md:31) before ready. Migration added per the 2026-10-18 review: a manifest without pre_reg.plausible_net_r is REJECTED (fail closed) with the message to add it; backfill of existing manifests is a separate listed step. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.",
+  "note": "DRAFT 2026-10-26 Session_Planner (OURS): C2 (gate): non-Claude spec review plus Haiku re-derivation (lab_guy.md:31) before ready. Migration added per the 2026-10-18 review: a manifest without pre_reg.plausible_net_r is REJECTED (fail closed) with the message to add it; backfill of existing manifests is a separate listed step. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files.\nREVIEWED:2026-11-05 ACCEPT (Haiku on API credit, job haiku-review-refined-1105c: promote.py mde_floor still reads observed net_r on trunk; named test and backfill specified)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
+  "refreshed": "2026-11-05T04:48:10Z",
   "refs": [
     "MyTradingSys/research/fable_audit_2026-10-18/GATE_AUDIT.md"
   ],
@@ -33,11 +43,12 @@
     "live tree",
     "any outcome study"
   ],
+  "scope_sha": "0e752ea53a7e",
   "size": "S",
   "sources": [
     "MyTradingSys/research/fable_audit_2026-10-18/GATE_AUDIT.md (Fable run 1, b63e8589)"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Write the named test first (net_r doubled and plausible_net_r fixed keeps the same floor; today it falls 4x) and watch it fail.",
     "Change mde_floor (promote.py:62) to read manifest pre_reg.plausible_net_r; keep observed net_r only for the Holm CI test; missing field is REJECT with a clear message.",

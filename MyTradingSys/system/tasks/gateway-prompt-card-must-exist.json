@@ -18,9 +18,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "supervisor: cap SUPER_SESSION.md Session log at the last 5 on append",
-      "ref": "8fac64479e91",
-      "utc": "2026-10-28T06:39:15Z"
+      "line": "mts_signal resolve_login fails closed on typed vs detected login mismatch",
+      "ref": "f854cd8022f4",
+      "utc": "2026-11-04T18:24:01Z"
     }
   ],
   "layers": [],
@@ -31,7 +31,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-28T06:49:01Z",
+  "refreshed": "2026-11-05T04:41:39Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -41,12 +41,12 @@
   "scope_out": [
     "unrelated files; live tree; other cards"
   ],
-  "scope_sha": "8fac64479e91",
+  "scope_sha": "f854cd8022f4",
   "size": "S",
   "sources": [
     "operator ask 2026-10-28 gap 7"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Read the gap text and linked files",
     "Implement the smallest change",

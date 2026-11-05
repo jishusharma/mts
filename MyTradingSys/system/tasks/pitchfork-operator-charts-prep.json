@@ -16,9 +16,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "pitchfork: PF_ARM_TRACE verdict NO, PF-* cannot send an order (auto_trader side parse)",
-      "ref": "ddb4689382c3",
-      "utc": "2026-10-29T17:19:46Z"
+      "line": "Merge remote-tracking branch 'origin/fast-track' into JIS-NB/level-approach-prep-1105",
+      "ref": "3ab26e0c1d42",
+      "utc": "2026-11-05T03:07:09Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "775495c597f6 level-approach prep: live_aid panel (checklist, absorption, OI tell, wick TFs",
+      "ref": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/CARD_SPECS.md",
+      "utc": "2026-11-05T01:36:50Z"
     }
   ],
   "layers": [
@@ -31,7 +38,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-29T21:19:13Z",
+  "refreshed": "2026-11-05T04:40:59Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -40,10 +47,10 @@
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/CARD_SPECS.md"
   ],
   "scope_out": [],
-  "scope_sha": "ddb4689382c3",
+  "scope_sha": "3ab26e0c1d42",
   "size": "M",
   "sources": [],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Wait for operator pitchfork shots; classify with shot.py",
     "Add copy-fork (parallel offset) to pitchfork_detector.py",

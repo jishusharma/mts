@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "gemini_queue: root() reads MTS_GQ_ROOT at call time (laptop)",
-      "ref": "71f3e7aeb2f8",
-      "utc": "2026-10-29T22:50:21Z"
+      "line": "Revert \"Revert route tag re-land 08d51e5b7 (CI RED: wiring stale wavetrend entry, MTS Home",
+      "ref": "dea81301a70a",
+      "utc": "2026-11-04T16:25:21Z"
     }
   ],
   "layers": [],
@@ -29,7 +29,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T00:14:45Z",
+  "refreshed": "2026-11-05T04:41:41Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -39,10 +39,10 @@
   "scope_out": [
     "sync.py claim semantics; any scheduler"
   ],
-  "scope_sha": "71f3e7aeb2f8",
+  "scope_sha": "dea81301a70a",
   "size": "S",
   "sources": [],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Read gemini_queue.py lines 64-115 and test_gemini_queue.py",
     "Write the fail-first test for own-host claim in run_job",

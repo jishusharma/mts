@@ -13,14 +13,29 @@
   "id": "aibridge-sandbox-chat-run-acl-proof",
   "kind": "build",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "lab aibridge-sandbox-chat-run-acl-proof: BLOCKED (build)",
+      "ref": "9349a74d95e0",
+      "utc": "2026-11-02T19:15:40Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "9349a74d95e0 lab aibridge-sandbox-chat-run-acl-proof: BLOCKED (build)",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-11-02_aibridge-sandbox-chat-run-acl-proof.md",
+      "utc": "2026-11-02T19:15:40Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "note": "REVIEWED:2026-11-02 T0-ONLY | Supervisor B 2026-11-03: failed twice on Codex: it needs a copy outside the lab tree, which the sandbox refuses (report 2026-11-02). Back to a Claude worker on the machine with F:/AIBridge. | PLANNER 2026-11-02 planner-b-1102: rescoped from the raw card to sandbox-first so no live install is touched; live apply is the operator's call. Final report ends with a Noticed: line.",
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "",
-  "refreshed": "2026-11-02T16:19:23Z",
+  "refreshed": "2026-11-05T04:41:23Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -32,12 +47,12 @@
     "scripts/aibridge in the repo (bridge owner)",
     "copying any real .secrets content; creating admin or restricted accounts (list as an operator step instead)"
   ],
-  "scope_sha": "",
+  "scope_sha": "9349a74d95e0",
   "size": "M",
   "sources": [
     "MyTradingSys/system/AIBRIDGE_LANE.md:34"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "hash live F:/AIBridge files; copy to F:/MTS/mts-codex-lab/_sandbox/aibridge_acl excluding the secrets dir, add a placeholder secrets file",
     "probe: write a line to sandbox src/policy.json and read the placeholder secrets file from a child process; record both succeed",
