@@ -12,7 +12,7 @@ frozen counts CSV) + c1v2_SELECTION.md (frozen c1v2 cell selection) + v1_C1_sani
 detector C1 counts recomputed on this same data, to be compared against PRE_REG's frozen
 C1 row: 3840/907, 1288/694, 392/331, 104/102, 15/15). No return, MFE/MAE or fee anywhere.
 
-Usage: python c1v2_counts.py --out <dir>
+Usage: python c1v2_counts.py --out c1v2/counts   (frozen run 2026-11-05: c1v2/PRE_REG_C1V2.md)
 """
 import argparse
 import csv
@@ -60,9 +60,16 @@ def run():
         ctx = ce.context(B, wt1, m, htf_wt1, ce.TFS[h] if h else None)
         edges = {"vol": ce.tercile_edges(ctx["vol"]), "part": ce.tercile_edges(ctx["part"])}
         c1_v1, _ = ce.ev_C(B, wt1, K, G, 53)
-        c1_v2 = c1_v2.events(B, wt1, K, G)
-        res[tf] = (c1_v1, c1_v2, ctx, edges, m, len(wt1))
+        c1_v2e = c1_v2.events(B, wt1, K, G)
+        res[tf] = (c1_v1, c1_v2e, ctx, edges, m, len(wt1))
     return res
+
+
+def select_v2(rows):
+    """Frozen select_cells rule on C1_v2 rows: select() only knows event "C1", so the rows go
+    in relabelled as C1 and come back with their own C1_v2 label (rule and FLOOR unchanged)."""
+    chosen = sc.select([dict(r, event="C1") for r in rows if r["event"] == "C1_v2"])
+    return [dict(r, event="C1_v2") for r in chosen]
 
 
 def _rows(tf, m, events, ctx, edges, name):
@@ -97,7 +104,7 @@ def main(out_dir):
         w = csv.DictWriter(fh, fieldnames=list(rows_v2[0].keys()), lineterminator="\n")
         w.writeheader(); w.writerows(rows_v2)
     # frozen c1v2 cell selection: same rule, C1_v2 rows only
-    chosen = sc.select([r for r in rows_v2 if r["event"] == "C1_v2"])
+    chosen = select_v2(rows_v2)
     lines = [f"# c1-v2 frozen cell selection (k={K}, G={G}, FLOOR={sc.FLOOR}, rule = select_cells.py s4).",
              "c1v2 counts: c1v2_counts_k2_G20.csv. Count-only; no outcome read. v1 C1 sanity: v1_C1_sanity.csv.",
              "", "| cell | tf | event | context | events | event_days | side_up | side_lo | mde_d |", "|---|---|---|---|---|---|---|---|---|"]
