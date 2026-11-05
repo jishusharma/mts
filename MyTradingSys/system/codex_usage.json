@@ -6,7 +6,7 @@
   "window_resets": 1793850253,
   "window_used": 2.0
  },
- "at": "2026-11-05T00:15:20Z",
+ "at": "2026-11-05T00:36:53Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -23,17 +23,32 @@
   "astra_runs": 0,
   "week_pts": 8.0,
   "window_pts": 2.0,
-  "window_runs": 4
+  "window_runs": 5
  },
  "runs": [
+  {
+   "at": "2026-11-05T00:35:38Z",
+   "card": "gpt-rederive-bb-long-window-1104",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 68,
+   "tokens_out": 4227,
+   "tokens_total": 412593,
+   "tokens_uncached": 46766,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-11-05T00:14:13Z",
    "card": "gpt-audit-wavetrend-c30-retest-1104",
    "effort": "medium",
    "kind": "audit",
    "model": "gpt-6-luna",
-   "note": "",
-   "outcome": "DONE",
+   "note": " 1 step(s)\n  - Step 3xt: Extra tests\nhost health: ok\nSHIP SLOW 479s: top 3 steps Extra tests outside the collected dirs (B150 discovery) 303s, Layer tests (88 m",
+   "outcome": "SHIP_FAILED",
    "seconds": 59,
    "tokens_out": 3478,
    "tokens_total": 300173,
@@ -160,21 +175,6 @@
    "tokens_uncached": 65963,
    "week_pts": 0.0,
    "window_pts": 0.0
-  },
-  {
-   "at": "2026-11-04T20:37:25Z",
-   "card": "v-recovery-after-low-sweep-event-study-1104",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "host health: ok\nsync: ship refused: none of your 2 commit(s) carries a `Next:` line; rerun with --next \"<card-id | stage | END: reason>\"",
-   "outcome": "SHIP_FAILED",
-   "seconds": 72,
-   "tokens_out": 4356,
-   "tokens_total": 332638,
-   "tokens_uncached": 39770,
-   "week_pts": 0.0,
-   "window_pts": 1.0
   }
  ]
 }
