@@ -1,12 +1,12 @@
 {
  "allowance": {
   "plan": "plus",
-  "week_resets": 1794204691,
+  "week_resets": 1794204690,
   "week_used": 38.0,
   "window_resets": 1793850253,
   "window_used": 3.0
  },
- "at": "2026-11-05T02:04:18Z",
+ "at": "2026-11-05T02:33:29Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -23,9 +23,24 @@
   "astra_runs": 0,
   "week_pts": 8.0,
   "window_pts": 3.0,
-  "window_runs": 8
+  "window_runs": 9
  },
  "runs": [
+  {
+   "at": "2026-11-05T02:32:07Z",
+   "card": "gpt-audit-pace-plan-vs-exhaust-doc-1104",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "DONE",
+   "seconds": 75,
+   "tokens_out": 4297,
+   "tokens_total": 440081,
+   "tokens_uncached": 45256,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-11-05T02:03:21Z",
    "card": "gpt-rederive-meta-label-dev-ext-1104",
@@ -160,21 +175,6 @@
    "tokens_uncached": 35893,
    "week_pts": 0.0,
    "window_pts": 0.0
-  },
-  {
-   "at": "2026-11-04T22:21:10Z",
-   "card": "habib-plan-scoring-not-trades-1104",
-   "effort": "medium",
-   "kind": "build",
-   "model": "gpt-6-luna",
-   "note": "5: Maven tests: SKIP\nStep 5b: Layer tests: SKIP\nStep 5c: Options tests: SKIP\nStep 6: Backtest tests: SKIP\n======================================================",
-   "outcome": "SHIP_FAILED",
-   "seconds": 53,
-   "tokens_out": 2171,
-   "tokens_total": 150320,
-   "tokens_uncached": 23477,
-   "week_pts": 0.0,
-   "window_pts": 1.0
   }
  ]
 }

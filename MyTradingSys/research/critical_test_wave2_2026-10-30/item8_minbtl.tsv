@@ -1,0 +1,42 @@
+id	layers	trials	dev_years	minbtl_budget_sr1	sr_needed_best_of_n	over_budget	standing_pass	dsr
+RSI-DEEP-PRESTUDIES	rsi_levels,rsi_divergence	662	2.5	10	1.98	yes		
+L1-D3	rsi_levels,cryptocred	80	2.5	10	1.55	yes	1h support PBO 0.030, GROSS only: OOS +0.043%/trade < Deribit taker round trip	MISSING
+L1-FABIO	fabio_cvd_absorption,fabio_escalation,fabio_volume_fvg	not recorded	2.5	10				
+FABIO-OF	fabio_of	not recorded	2.5	10				
+FABIO-V3	fabio_v3	not recorded	2.5	10				
+T055-C1	funding_cvd_fade	1	2.5	10	0.00			
+T055-C2	session_momentum	1	2.5	10	0.00			
+T055-C3	turn_of_candle	1	2.5	10	0.00			
+TOM-CORE-0929	tom_core,tom_proofs	not recorded	2.5	10				
+TOM-CORE-1007	tom_core,tom_proofs	not recorded	2.5	10				
+TOM-VP-PHASE2	tom_vp_pivot	48	2.5	10	1.43	yes		
+TOM-VP-RETURN	tom_vp_pivot	not recorded	2.5	10				
+DAX-SMOKE	tom_core,tom_proofs	not recorded	2.5	10				
+RSI-DIV-MTF	rsi_divergence	32	2.5	10	1.33	yes		
+T087	session_levels	not recorded	2.5	10				
+VOLUME	volume	553	2.5	10	1.95	yes		
+CANDLE-P1	candle_patterns	not recorded	2.5	10				
+BIGTRADE-EXIT	bigtrade_fires,cryptocred	54	2.5	10	1.46	yes		
+MARKET-GUIDE	candle_patterns,rsi_levels	not recorded	2.5	10				
+OI-DELTA	oi_delta	not recorded	2.5	10				
+Q33	bb_lvn_triggers	186	2.5	10	1.73	yes		
+ALPHA	ma_daily	not recorded	2.5	10				
+TOM-CORE-BT	tom_core,tom_proofs	not recorded	2.5	10				
+TOM-DIAG-BTC	tom_core	not recorded	2.5	10				
+VP-PIVOT-P2	tom_vp_pivot	not recorded	2.5	10				
+BIGMOVES-A	bigtrade_fires	not recorded	2.5	10				
+FIRES-B1	bigtrade_fires,fabio_cvd_absorption,fabio_escalation,fabio_volume_fvg,rsi_levels,cryptocred,session_momentum,turn_of_candle	not recorded	2.5	10				
+CAPTURE-MATRIX	bigtrade_fires	not recorded	2.5	10				
+CANDLE-D19	candle_patterns	not recorded	2.5	10				
+CANDLE-P0	candle_patterns	not recorded	2.5	10				
+VOL-V1	volume	216	2.5	10	1.76	yes		
+VOL-V2	volume	96	2.5	10	1.59	yes		
+VOL-V3	volume	1	2.5	10	0.00			
+VOL-V4	volume	1	2.5	10	0.00			
+LC-SIZING-QUICK-20261014	session_levels	not recorded	2.5	10				
+CANDLE-CLOSE-DEV-20261014	candle_patterns	not recorded	2.5	10				
+EUR-LOW-US-SWEEP-20261014	session_levels	not recorded	2.5	10				
+EUR-LOW-US-SWEEP-FOLLOWUPS-20261018	session_levels	not recorded	2.5	10				
+PRICE-CVD-DIV-1M5M-20261014	fabio_cvd_absorption,oi_delta	not recorded	2.5	10				
+PITCHFORK-1D-20261019	pitchfork_swing	not recorded	2.5	10				
+PITCHFORK-4H-VP-20261028	pitchfork_swing	3	2.5	10	0.54			
