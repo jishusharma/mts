@@ -751,3 +751,56 @@ def test_level_approach_one_alert_per_level_per_day():
     assert a2["alerts"] == []
     a3 = _la("approachAlerts", lv, a1["seen"], 1_700_000_000_000 + 86_400_000)  # next UTC day: alerts again
     assert len(a3["alerts"]) == 1
+
+# ---------- big-candle story (operator 2026-11-05; rates from research/bigcandle_story_2026-11-05)
+def _bc_cell(n, c1=45.0):
+    h = lambda c: {"cont": c, "lo": c - 5, "hi": c + 5, "undone": 10.0, "nv": n}
+    return {"n": n, "1h": h(c1), "4h": h(50.0), "24h": h(52.0)}
+
+
+BC_RATES = {"UP|DOWN|BUY": _bc_cell(223), "UP|DOWN|BUY|SL": _bc_cell(60, 37.0), "UP|DOWN|BUY|SL|band:range": _bc_cell(37, 35.0),
+            "UP|DOWN|BUY|SL|streak:R1-2": _bc_cell(12, 33.0), "BASE|UP": _bc_cell(11064, 47.0), "BASE|UP|band:range": _bc_cell(5182, 46.0)}
+
+
+def test_bigcandle_picks_most_specific_cell_with_n_30_and_marks_thin():
+    r = _la("bigCandle", 0.006, -0.002, 800, "SL", "range", "R1-2", BC_RATES, None)
+    assert r["story"] == "UP|DOWN|BUY" and r["src"] == "MEASURED"
+    assert r["level"] == "story + top-trader class + 30-day band" and r["cell"]["n"] == 37
+    assert r["base"]["n"] == 5182                                   # baseline of the same direction and band
+    # band cell absent for this phase and the streak cell is THIN (n 12): falls back to story + class (n 60)
+    r = _la("bigCandle", 0.006, -0.002, 800, "SL", "bear", "R1-2", BC_RATES, None)
+    assert r["level"] == "story + top-trader class" and r["cell"]["n"] == 60
+    # only a THIN cell exists: not used as the answer
+    r = _la("bigCandle", 0.006, -0.002, 800, "SL", None, "R1-2", {"UP|DOWN|BUY|SL|streak:R1-2": _bc_cell(12)}, None)
+    assert r["src"] == "THIN" and r["cell"] is None and r["thin"]["cell"]["n"] == 12
+    # nothing measured
+    r = _la("bigCandle", 0.006, -0.002, 800, "SL", None, None, None, None)
+    assert r["src"] == "UNMEASURED" and r["cell"] is None
+
+
+def test_bigcandle_top_trader_unknown_or_flat_falls_back_to_story_and_zero_change_has_no_story():
+    r = _la("bigCandle", 0.006, -0.002, 800, "NA", "range", "R1-2", BC_RATES, None)
+    assert r["level"] == "story only" and r["cell"]["n"] == 223
+    r = _la("bigCandle", 0.006, -0.002, 800, "FLAT", "range", "R1-2", BC_RATES, None)
+    assert r["level"] == "story only"
+    assert _la("bigCandle", 0.0, -0.002, 800, "SL", "range", None, BC_RATES, None)["story"] is None
+    assert _la("bigCandle", None, -0.002, 800, "SL", "range", None, BC_RATES, None)["story"] is None
+
+
+def test_bigcandle_top_trader_class_band_and_streak():
+    up, dn = [{"longShortRatio": "1.72"}, {"longShortRatio": "1.80"}], [{"longShortRatio": "2.43"}, {"longShortRatio": "2.30"}]
+    assert _la("bcTopTraders", up, dn)["cls"] == "SL"               # positions up, accounts down: size long / accounts short
+    assert _la("bcTopTraders", dn, up)["cls"] == "SS"
+    assert _la("bcTopTraders", up, up)["cls"] == "BU" and _la("bcTopTraders", dn, dn)["cls"] == "BD"
+    assert _la("bcTopTraders", [{"longShortRatio": "1.72"}, {"longShortRatio": "1.7201"}], dn)["cls"] == "FLAT"
+    assert _la("bcTopTraders", None, dn)["cls"] == "NA"
+    day = 86400000
+    d1 = [[i * day, 0, 0, 0, 100.0 if i < 5 else 80.0, 0, (i + 1) * day - 1] for i in range(40)]
+    now = 39 * day + 3600000
+    assert _la("bcBand", d1, 85.0, now) == "range"                  # 30-day reference close 80 (day 8): 85/80 = +6 %
+    assert _la("bcBand", d1, 70.0, now) == "bear"
+    assert _la("bcBand", d1, 100.0, now) == "bull"
+    wk = 7 * day
+    w1 = [[i * wk, o, 0, 0, c, 0, (i + 1) * wk - 1] for i, (o, c) in enumerate([(10, 12), (12, 11), (11, 10), (10, 9), (9, 8), (8, 9)])]
+    assert _la("bcStreak", w1, 5 * wk + day) == "R3+"               # the last open week (index 5) is ignored: weeks 1..4 are red
+    assert _la("bcStreak", w1[:2], 2 * wk) == "R1-2"
