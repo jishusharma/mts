@@ -1,6 +1,6 @@
 {
  "_doc": "Hand-kept data for the Layer and Backtest Map (scripts/dev/make_layer_map.py -> MyTradingSys/system/artifacts/layer_map.html). One row per backtest or study; one row per layer. A field the repo does not record is null and the page prints 'not recorded'; never fill a guess. 'read' says how much of the source report was read when the row was written: summary = verdict and method read; header = only the top of the file. Append rows; set asof when you touch the file. Params carry src: sourced (trader's own words), grid (swept in the run), NO-SOURCE (flagged by the provenance rule), code (taken from the repo default).",
- "asof": "2026-10-14",
+ "asof": "2026-11-05",
  "layers": [
   {
    "id": "tom_core",
@@ -770,6 +770,7 @@
  "backtests": [
   {
     "id": "RSI-DEEP-PRESTUDIES",
+    "trials": 662,
     "title": "RSI deep-buy prerequisite studies: context tables, confirmations, confluence, divergence context",
     "date": "2026-11-04",
     "market": "BTCUSDT DEV, VALIDATION read once, HOLDOUT never read",
@@ -789,6 +790,7 @@
   },
   {
    "id": "L1-D3",
+   "trials": 80,
    "title": "D3 RSI tolerance study + CryptoCred adapter (L1)",
    "date": "2026-09-27",
    "market": "BTCUSDT 1m 2022-01-01..2026-09-26, resampled 15m/1h/4h/1d",
@@ -808,6 +810,7 @@
   },
   {
    "id": "L1-FABIO",
+   "trials": null,
    "title": "Fabio L1: CVD absorption, escalation, volume FVG",
    "date": "2026-09-27",
    "market": "BTCUSDT 1m 2022-01..2026-09-26 -> 5m/15m/1h",
@@ -828,6 +831,7 @@
   },
   {
    "id": "FABIO-OF",
+   "trials": null,
    "title": "Fabio on true order flow (aggTrades), conditional model",
    "date": "2026-10-06",
    "market": "BTCUSDT aggTrades 2026-07-01..2026-09-28 (90 usable days)",
@@ -846,6 +850,7 @@
   },
   {
    "id": "FABIO-V3",
+   "trials": null,
    "title": "Fabio v3 layer-3 variants A-D",
    "date": "2026-10-04",
    "market": "not recorded here",
@@ -864,6 +869,7 @@
   },
   {
    "id": "T055-C1",
+   "trials": 1,
    "title": "T055 C1 funding_cvd_fade",
    "date": "2026-09-29, rerun 2026-10-07 (full funding)",
    "market": "BTCUSDT 1m 2022-2026",
@@ -882,6 +888,7 @@
   },
   {
    "id": "T055-C2",
+   "trials": 1,
    "title": "T055 C2 session_momentum",
    "date": "2026-09-29, rerun 2026-10-07",
    "market": "BTCUSDT 5m bars",
@@ -900,6 +907,7 @@
   },
   {
    "id": "T055-C3",
+   "trials": 1,
    "title": "T055 C3 turn-of-candle + quarter-hour imbalance",
    "date": "2026-09-29",
    "market": "BTCUSDT 1m 2022-01..2026 (2,491,200 bars)",
@@ -918,6 +926,7 @@
   },
   {
    "id": "TOM-CORE-0929",
+   "trials": null,
    "title": "Tom core outcome backtest, first run (historical snapshots)",
    "date": "2026-09-30",
    "market": "BTCUSDT snapshots 15 min step",
@@ -937,6 +946,7 @@
   },
   {
    "id": "TOM-CORE-1007",
+   "trials": null,
    "title": "Tom core rerun on current Java (stop floor removed, PR #12)",
    "date": "2026-10-07",
    "market": "BTCUSDT 2022-01-20..2026-09-26 snapshots, 164,257 evaluated",
@@ -956,6 +966,7 @@
   },
   {
    "id": "TOM-VP-PHASE2",
+   "trials": 48,
    "title": "Tom core phase 2: pivot-anchored volume profile touch study",
    "date": "2026-10-09",
    "market": "BTCUSDT 1m 2022-01-01..2026-10-07 (1741 days)",
@@ -974,6 +985,7 @@
   },
   {
    "id": "TOM-VP-RETURN",
+   "trials": null,
    "title": "Tom 70/30 claim: return to prior-day POC after leaving value (count, not a trade test)",
    "date": "2026-10-31",
    "market": "BTCUSDT 1m 2022-01-02..2024-06-30 DEV only (911 UTC days)",
@@ -992,6 +1004,7 @@
   },
   {
    "id": "DAX-SMOKE",
+   "trials": null,
    "title": "Untuned Tom core on DAX vs matched-proof BTC (SMOKE only)",
    "date": "2026-10-10",
    "market": "GER40 snapshots 2026-01 (smoke); BTC 2025-09-01..2026-06-25 dev",
@@ -1011,6 +1024,7 @@
   },
   {
    "id": "RSI-DIV-MTF",
+   "trials": 32,
    "title": "RSI divergence on every timeframe (T089 + T091)",
    "date": "2026-10-09",
    "market": "BTCUSDT 1m 2022-01-01..2026-10-07",
@@ -1029,6 +1043,7 @@
   },
   {
    "id": "T087",
+   "trials": null,
    "title": "Failed first break of prior-day high/low, session targets",
    "date": "2026-10-09",
    "market": "BTCUSDT 1m 2022-01-01..2026-10-07",
@@ -1047,6 +1062,7 @@
   },
   {
    "id": "VOLUME",
+   "trials": 553,
    "title": "BTC volume research V0-V4 (553 pre-registered trials)",
    "date": "2026-10-09",
    "market": "BTCUSDT; DEV then VALIDATION; HOLDOUT 2025-07..2026-09 sealed",
@@ -1065,6 +1081,7 @@
   },
   {
    "id": "CANDLE-P1",
+   "trials": null,
    "title": "Classical candle patterns pilot P0/P1",
    "date": "2026-10-07",
    "market": "BTCUSDT 1d (n=1643) and 1h (n=21888), DEV",
@@ -1083,6 +1100,7 @@
   },
   {
    "id": "BIGTRADE-EXIT",
+   "trials": 54,
    "title": "Bigtrade fires x exit policies (backtest C)",
    "date": "2026-10-09",
    "market": "spot bars, TRAIN/VALIDATE; HOLDOUT 2025-07.. not read",
@@ -1102,6 +1120,7 @@
   },
   {
    "id": "MARKET-GUIDE",
+   "trials": null,
    "title": "Market guide verdict table (which signals carry value)",
    "date": "2026-10-07",
    "market": "BTCUSDT 5m/15m/1h/4h",
@@ -1121,6 +1140,7 @@
   },
   {
    "id": "OI-DELTA",
+   "trials": null,
    "title": "OI delta 4-state classifier backtest",
    "date": "2026-09-21",
    "market": "6362 joined snapshot rows, 8 days (BTC)",
@@ -1139,6 +1159,7 @@
   },
   {
    "id": "Q33",
+   "trials": 186,
    "title": "Tom/Fabio guidance matrix: fee-net trigger x context event study",
    "date": "2026-10-12",
    "market": "BTCUSDT perp 1m 2022-01-01..2026-10-11 (2,512,800 bars) at 15m",
@@ -1157,6 +1178,7 @@
   },
   {
    "id": "ALPHA",
+   "trials": null,
    "title": "Setup alpha/beta: daily long-flat SMA200 variants",
    "date": "2026-10-10",
    "market": "BTCUSDT 1d",
@@ -1175,6 +1197,7 @@
   },
   {
    "id": "TOM-CORE-BT",
+   "trials": null,
    "title": "Tom core outcome backtest on historical snapshots (rerun 2026-10-06)",
    "date": "2026-10-07",
    "market": "BTCUSDT 1m, 4.7 years",
@@ -1194,6 +1217,7 @@
   },
   {
    "id": "TOM-DIAG-BTC",
+   "trials": null,
    "title": "Tom probe diagnostics on BTC backtest (selection / management / session)",
    "date": "2026-10-11",
    "market": "BTCUSDT 1m 2022-01..2026-06-25 (holdout burned, excluded)",
@@ -1212,6 +1236,7 @@
   },
   {
    "id": "VP-PIVOT-P2",
+   "trials": null,
    "title": "VP pivot probe phase 2 (POC/VAH/VAL by family)",
    "date": "2026-10-09",
    "market": "BTCUSDT 1m 2022-01-01..2026-10-08",
@@ -1230,6 +1255,7 @@
   },
   {
    "id": "BIGMOVES-A",
+   "trials": null,
    "title": "Big-move ground truth (ATR zigzag legs) coverage report",
    "date": "2026-10-09",
    "market": "BTCUSDT 1m 2022-01-01..2026-10-07, 2,507,040 bars",
@@ -1248,6 +1274,7 @@
   },
   {
    "id": "FIRES-B1",
+   "trials": null,
    "title": "Fire history of the 19 kline-only live layers + parity replay",
    "date": "2026-10-09",
    "market": "BTCUSDT 1m 2022-01-01..2026-10-07 (perp, then spot rerun)",
@@ -1273,6 +1300,7 @@
   },
   {
    "id": "CAPTURE-MATRIX",
+   "trials": null,
    "title": "Big-move capture matrix: layer fires vs ATR legs (perp, spot)",
    "date": "2026-10-09",
    "market": "BTCUSDT 1m 2022-01-01..2026-10-08, 5m/15m/1h/4h",
@@ -1291,6 +1319,7 @@
   },
   {
    "id": "CANDLE-D19",
+   "trials": null,
    "title": "D19 4h long-only bullish engulfing/kicker at support or 200d SMA",
    "date": "2026-10-04",
    "market": "BTCUSDT 1m 2022-01-01..2026-10-02, 4h",
@@ -1309,6 +1338,7 @@
   },
   {
    "id": "CANDLE-P0",
+   "trials": null,
    "title": "P0 operator candle rule on DEV daily bars",
    "date": "2026-10-04",
    "market": "BTCUSDT perp daily 2020-01-01..2024-06-30",
@@ -1327,6 +1357,7 @@
   },
   {
    "id": "VOL-V1",
+   "trials": 216,
    "title": "Volume event study V1 (1d/4h), White Reality-Check over 216 trials",
    "date": "2026-10-09",
    "market": "BTCUSDT perp 1d/4h DEV 2020-01-01..2024-06-30",
@@ -1345,6 +1376,7 @@
   },
   {
    "id": "VOL-V2",
+   "trials": 96,
    "title": "Volume STATE family on daily bars (V2)",
    "date": "2026-10-09",
    "market": "BTCUSDT perp daily DEV",
@@ -1363,6 +1395,7 @@
   },
   {
    "id": "VOL-V3",
+   "trials": 1,
    "title": "Volume validation V3 (candidate R40D_N and TH1 replication)",
    "date": "2026-10-09",
    "market": "BTCUSDT 4h, validation 2024-07-01..2025-06-30",
@@ -1381,6 +1414,7 @@
   },
   {
    "id": "VOL-V4",
+   "trials": 1,
    "title": "Pooled volume-confirmation premium (V4)",
    "date": "2026-10-09",
    "market": "BTCUSDT 4h h=18, 1d h=10; six event pairs",
@@ -1399,6 +1433,7 @@
   },
   {
    "id": "LC-SIZING-QUICK-20261014",
+   "trials": null,
    "title": "Levels: eight staged sizing/exit diagnostics",
    "date": "2026-10-14",
    "market": "BTCUSDT footprint 1m",
@@ -1417,6 +1452,7 @@
   },
   {
    "id": "CANDLE-CLOSE-DEV-20261014",
+   "trials": null,
    "title": "Close sequences at prior 4h/day/week levels",
    "date": "2026-10-14",
    "market": "Binance BTCUSDT perpetual 1m",
@@ -1435,6 +1471,7 @@
   },
   {
    "id": "EUR-LOW-US-SWEEP-20261014",
+   "trials": null,
    "title": "Retested 24h low broken in the US window (short + 1-1-2-3 ladder, 5-20x)",
    "date": "2026-10-14",
    "market": "Binance BTCUSDT perpetual 1m",
@@ -1453,6 +1490,7 @@
   },
   {
    "id": "EUR-LOW-US-SWEEP-FOLLOWUPS-20261018",
+   "trials": null,
    "title": "EU-low/US-sweep follow-ups: long after sweep+reclaim, 5m RSI-divergence short from the day high, pre-US double-top short",
    "date": "2026-10-18",
    "market": "Binance BTCUSDT perpetual 1m (5m built from 1m)",
@@ -1471,6 +1509,7 @@
   },
   {
    "id": "PRICE-CVD-DIV-1M5M-20261014",
+   "trials": null,
    "title": "Price lower low with CVD higher low (and mirror) on 1m and 5m, OI up/down split",
    "date": "2026-10-14",
    "market": "Binance BTCUSDT perpetual 1m (5m built from 1m); OI = Binance 5m metrics",
@@ -1490,6 +1529,7 @@
   },
   {
    "id": "PITCHFORK-1D-20261019",
+   "trials": null,
    "title": "Phase 1 Daily Pitchfork Event Study (Standard, Schiff, Modified Schiff, Log Modified Schiff)",
    "date": "2026-10-19",
    "market": "Binance BTCUSDT 1D (aggregated from 1m klines)",
@@ -1508,6 +1548,7 @@
   },
   {
    "id": "PITCHFORK-4H-VP-20261028",
+   "trials": 3,
    "title": "Phase 2 4-Hour Pitchfork & Anchored Volume Profile Confluence Study + Sim Desk Plugin",
    "date": "2026-10-28",
    "market": "Binance BTCUSDT 4H & 1m klines",
