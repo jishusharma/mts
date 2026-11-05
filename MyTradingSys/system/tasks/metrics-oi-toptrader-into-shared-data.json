@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-05T04:52:00Z",
   "commands": [],
   "created": "2026-10-29T22:15:31Z",
   "depends_on": [],
@@ -12,10 +13,18 @@
   "goal": "Builder 1441256e (layer relations US-open study) fetched data.binance.vision futures metrics for all of DEV ad hoc (OI, top-trader accounts/positions ratios, global ratio); oi_delta_event_table REPORT.md still says OI NOT_IN_DATA and backtest_gap_review G5 flagged the same. The data lives only in one worker's scratch, so other stations and studies re-fetch or skip it.",
   "id": "metrics-oi-toptrader-into-shared-data",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "fetch_futures_metrics.py: BTCUSDT+ETHUSDT 5m metrics 1768/1769 days each (2022-01-01..2026",
+      "ref": "8eda7d8a5",
+      "utc": "2026-11-05T04:52:00Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: data in shared root; oi_delta_event_table empirical DEV run is the follow-up",
   "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks\nREVIEWED:2026-11-05 ACCEPT (Haiku on API credit, job haiku-review-refined-1105b: new public-archive fetch script; gap and idempotence test specified; no trunk twin)",
   "pinned": false,
   "prio": 2,
@@ -26,7 +35,12 @@
     "MyTradingSys/research/layer_relations_2026-10/LAYER_RELATIONS_US_OPEN.md",
     "MyTradingSys/research/layer_lab/oi_delta_event_table/REPORT.md"
   ],
-  "result": "",
+  "result": "fetch_futures_metrics.py: BTCUSDT+ETHUSDT 5m metrics 1768/1769 days each (2022-01-01..2026-11-04) at MTS_METRICS_ROOT=F:/MTS/data/metrics; 4 short days; re-run skip=31/31; 4 tests",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/fetch_futures_metrics.py"
   ],
@@ -36,12 +50,13 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write the fetch script (data root from env/config)",
     "Run BTCUSDT and ETHUSDT 2022-01..latest, list gaps",
     "Fail-first test, correct REPORT.md NOT_IN_DATA, name the path in the data doc"
   ],
+  "taken": "2026-11-05T04:52:00Z",
   "tests": "test_fetch_futures_metrics.py: gap listing per month and idempotent re-run on a fake archive; fails before the script exists",
   "title": "Fetch data.binance.vision futures metrics (OI, top-trader and global L/S ratios, 2022-01..now) into the canonical NUC data store so every station and backtest reads one copy; correct NOT_IN_DATA in oi_delta_event_table",
   "weight": "IMPORTANT",
