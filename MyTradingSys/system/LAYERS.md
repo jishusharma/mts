@@ -244,7 +244,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Ledger: `MyTradingSys/research/pitchfork_2026-10-19/TRIALS_PITCHFORK.csv`; `MyTradingSys/research/pitchfork_2026-10-19/TRIALS_PITCHFORK_4H.csv`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `pitchfork-engine-implement-hagopian-fail` refined p2 OPUS: Pitchfork engine: implement Hagopian failure breakout candidates (PF-HAG-L / PF-HAG-S) in Java
-  - `pitchfork-fixes-desk-python` refined p2 SONNET: Pitchfork desk/Python review fixes: F1 target reading, F4 profile parity, F5 lookahead + VA leak test, F6 pyth
   - `pitchfork-fixes-live-java` refined p2 JIS-NB: Pitchfork live Java review fixes: F3 stale-bounce gate parity, F6 inverted-fork tine, F7/F9 labels
   - `pitchfork-live-4h-bars-too-few` refined p2 JIS-NB: pitchfork live: snapshot fetches 3 x 4h bars, PitchforkSignalLayer needs 15, so mts.pitchfork=true never fires
   - `pitchfork-operator-charts-prep` refined p2 SONNET: pitchfork: classify operator's pitchfork charts, measure copy-paste (parallel) forks vs random parallels (spec
