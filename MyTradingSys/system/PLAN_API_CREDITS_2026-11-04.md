@@ -100,3 +100,4 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-04 | ms-bb-eth-1104 | Opus 5.5 | 3.51 | 84 | BB range retest pooled BTC+ETH: still INCONCLUSIVE; cap was 7.0 |
 | 2026-11-04 | ms-wt-volmatch-1104 | Opus 5.5 | 2.41 | 52 | WT extreme cross vs ATR-matched baseline on BTC+ETH: VOLATILITY-ONLY; cap was 7.0 |
 | 2026-11-04 | ms-level-eth-1104 | Opus 5.5 | 2.49 | 56 | C15 level approach replicated on ETH: narrow agreement; cap was 7.0 |
+| 2026-11-05 | extra-tests-root-path-1105 | Sonnet 5.5 | 0.28 | 8 | Test runner gives children the repo root; Codex lab results land again; cap was 1.5 |
