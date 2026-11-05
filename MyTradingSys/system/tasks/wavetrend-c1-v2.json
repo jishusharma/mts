@@ -5,17 +5,17 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-05T17:19:33Z",
+    "folded": "2026-11-05T18:14:43Z",
     "misses": 28,
     "reads": [
       "scripts/dev/artifacts.py",
-      "scripts/dev/tasks.py",
       "scripts/dev/supervisor.py",
-      "scripts/dev/usage_reminder.py",
+      "scripts/dev/tasks.py",
       "scripts/dev/sync.py",
+      "scripts/dev/usage_reminder.py",
       "MyTradingSys/system/OPERATOR_DECISIONS.md",
-      "MyTradingSys/system/artifacts/registry.json",
-      "scripts/dev/ci_watch.py"
+      "MyTradingSys/system/PLAN_API_CREDITS_2026-11-04.md",
+      "MyTradingSys/system/artifacts/registry.json"
     ],
     "session": "c6544be9-fafb-4039-a01f-272f24fc1c71"
   },
