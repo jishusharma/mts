@@ -16,12 +16,12 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks\nREVIEWED:2026-11-05 ACCEPT (Haiku on API credit, job haiku-review-refined-1105b: new public-archive fetch script; gap and idempotence test specified; no trunk twin)",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T01:04:45Z",
+  "refreshed": "2026-11-05T02:44:10Z",
   "refs": [
     "MyTradingSys/research/layer_relations_2026-10/LAYER_RELATIONS_US_OPEN.md",
     "MyTradingSys/research/layer_lab/oi_delta_event_table/REPORT.md"
@@ -36,7 +36,7 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Write the fetch script (data root from env/config)",
     "Run BTCUSDT and ETHUSDT 2022-01..latest, list gaps",

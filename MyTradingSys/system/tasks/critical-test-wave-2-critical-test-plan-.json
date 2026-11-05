@@ -1,6 +1,7 @@
 {
   "approved_by": "operator 2026-10-30 via Eagle_Eyes (d-eagle-eyes-missed-boxes-defaults)",
   "asks": "",
+  "closed": "2026-11-05T02:31:14Z",
   "commands": [],
   "created": "2026-10-29T19:55:24Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "critical-test-wave-2-critical-test-plan-",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "wave 2 items 6-8 in TEST_LEDGER.md: #6 FINDING gap p95 13.6 bps; #7 FINDING 90/99 scripts ",
+      "ref": "842d8780f",
+      "utc": "2026-11-05T02:31:14Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -31,6 +38,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "gemini-blind-read-of-critical-test-wave2",
   "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
   "pinned": false,
   "prio": 2,
@@ -38,7 +46,12 @@
   "refined_by": "",
   "refreshed": "2026-11-05T00:55:22Z",
   "refs": [],
-  "result": "",
+  "result": "wave 2 items 6-8 in TEST_LEDGER.md: #6 FINDING gap p95 13.6 bps; #7 FINDING 90/99 scripts fee-only, fabio v3 funding never charged; #8 UNTESTABLE 26/41 rows, budget 10 configs; research/critical_test_wave2_2026-10-30/RESULT.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/CRITICAL_TEST_PLAN.md",
     "MyTradingSys/system/TEST_LEDGER.md",
@@ -48,13 +61,14 @@
   "scope_sha": "a97b86446b78",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Item 6 venue gap on one month",
     "Item 7 funding census of perp backtests",
     "Item 8 trials vs MinBTL per verdict",
     "Second-model review, ledger rows"
   ],
+  "taken": "2026-11-05T02:31:14Z",
   "tests": "n/a (audit lane: results are ledger rows)",
   "title": "critical test wave 2 (CRITICAL_TEST_PLAN.md items 6-8): Binance-vs-Deribit venue gap, funding coverage census of perp backtests, trial count vs Minimum Backtest Length per layer verdict; rows in TEST_LEDGER.md, second-model review",
   "weight": "",

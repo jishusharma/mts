@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nb/dsa-bridge-version-miss",
-      "ref": "60d708f61034",
-      "utc": "2026-10-28T22:16:56Z"
+      "line": "lab gpt-spec-tests-research-kit-context-1104: DONE (audit)",
+      "ref": "204c6c30f518",
+      "utc": "2026-11-04T19:27:47Z"
     }
   ],
   "layers": [
@@ -29,12 +29,12 @@
   "not_twin_of": [
     "pitchfork-review-fixes-2026-10-28"
   ],
-  "note": "AUDIT 2026-11-03 (operator: loosen blockers that make no sense): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "AUDIT 2026-11-03 (operator: loosen blockers that make no sense): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks\nREVIEWED:2026-11-05 ACCEPT (Haiku on API credit, job haiku-review-refined-1105b: six findings each with fail-first test; scope exists; no trunk fix found)",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-29T16:46:12Z",
+  "refreshed": "2026-11-05T02:44:17Z",
   "refs": [
     "MyTradingSys/research/pitchfork_2026-10-19/OPUS_E2E_REVIEW_2026-10-28.md"
   ],
@@ -47,12 +47,12 @@
   "scope_out": [
     "Java live code (card pitchfork-fixes-live-java); source documents; VALIDATION/HOLDOUT reads; re-running studies"
   ],
-  "scope_sha": "60d708f61034",
+  "scope_sha": "204c6c30f518",
   "size": "M",
   "sources": [
     "MyTradingSys/research/pitchfork_2026-10-19/OPUS_E2E_REVIEW_2026-10-28.md"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "F1: DECISION (OURS) take RESEARCH_PITCHFORK_LAYER.md:42 as written, target = entry +/- |UML-ML|; label 'OURS reading' and note the :54-55 alternative; fix detector :528 and the desk EXIT['ML'] label",
     "F5: bin width from data up to bar i only, add a planted-leak test with vp_filter set to VA and POC; F6: pick the tine from p2_is_lower; F10: one zigzag function, detector :334-383 and :412-447 call it",

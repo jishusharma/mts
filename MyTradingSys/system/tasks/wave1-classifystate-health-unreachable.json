@@ -26,12 +26,12 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks\nREVIEWED:2026-11-05 ACCEPT (Haiku on API credit, job haiku-review-refined-1105b: trend_unhealthy only via divergent on trunk; fail-first test specified; scope exists)",
   "pinned": false,
   "prio": 2,
   "refine_tries": 1,
   "refined_by": "",
-  "refreshed": "2026-10-30T01:04:44Z",
+  "refreshed": "2026-11-05T02:44:40Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -44,7 +44,7 @@
     "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md",
     "MyTradingSys/research/tom_direction_health_audit_2026-10-17/AUDIT.md"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Read the finding in MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md",
     "Fix per the trader source; new test fails first"

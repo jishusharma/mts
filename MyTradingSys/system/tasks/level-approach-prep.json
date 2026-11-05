@@ -3,6 +3,15 @@
   "asks": "",
   "closed": "2026-11-05T01:36:20Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-05T02:10:02Z",
+    "misses": 4,
+    "reads": [
+      "MyTradingSys/tools/live_aid/test_live_aid.py"
+    ],
+    "session": "agent-a97daf79ab252803c"
+  },
   "created": "2026-10-29T21:18:22Z",
   "depends_on": [],
   "done_when": "live_aid shows per marked level within 0.5%: checklist, absorption flag, OI tell, flag count, each with n or UNMEASURED; one alert per level approach; unknowns U1-U4 measured or left as open ledger rows.",
