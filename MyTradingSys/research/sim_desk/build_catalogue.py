@@ -23,6 +23,7 @@ AUDIT_WORDS = re.compile(r"audit|review|inventory|reconcile|provenance|parity|ch
 STUDY_FILE = re.compile(r"(^|/)(RESULTS?|VERDICT|[A-Z0-9_]*_RESULTS?)[^/]*\.md$", re.I)
 # result file -> exported test id (a test appears "exported" when results/<id>.json exists)
 EXPORTED_BY_SOURCE = {
+    "MyTradingSys/research/pizzino_layer_2026-10-27/RESULT.md": "pz-4-backtest-2026-11-05",
     "MyTradingSys/research/levels_confluence_2026-10-14": "levels_ladder",
     "MyTradingSys/research/oi_pivot_2026-10-26/RESULT_1H4H.md": "oi-pivot-1h-4h-long-oi-followup",
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/T09_live_parity.md": "t09_live_parity",

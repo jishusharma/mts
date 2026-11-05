@@ -27,7 +27,7 @@ def test_all_337_rows_present():
     assert len(FILES) == 337
     late = [os.path.basename(f)[:-5] for f in ALL if f not in FILES]
     assert all(i[-10:] >= '2026-11-04' for i in late), late
-    assert len(late) == 19, late   # 2026-11-05 oi-pivot-1h-4h-long-oi-followup, wt-extreme-cross-volmatch, level-approach-eth-replicate; 2026-11-04 context re-run rows: rsi-div x2, wavetrend-c30 x2, bb x4 (incl. eth-pool), fabio-l1-strict, bear-proxy-context-tuning, rsi-40-60-line-behaviour; desk-trades x5 (fabio_v3 a-d/b/c, tom_vp-fade, tom_spike_level)
+    assert len(late) == 20, late   # 2026-11-05 pz-4-backtest, oi-pivot-1h-4h-long-oi-followup, wt-extreme-cross-volmatch, level-approach-eth-replicate; 2026-11-04 context re-run rows: rsi-div x2, wavetrend-c30 x2, bb x4 (incl. eth-pool), fabio-l1-strict, bear-proxy-context-tuning, rsi-40-60-line-behaviour; desk-trades x5 (fabio_v3 a-d/b/c, tom_vp-fade, tom_spike_level)
 
 
 @pytest.mark.parametrize('f', FILES, ids=lambda f: os.path.basename(f)[:-5])

@@ -1,7 +1,7 @@
 {
 "_doc": "Catalogue of known tests on trunk. kind is inferred (kind_source). Built by sim_desk/build_catalogue.py.",
-"count": 356,
-"exported": 356,
+"count": 357,
+"exported": 357,
 "rows": [
 {
 "id": "st-_archive-loose_2026-10-cbp_profile6_result",
@@ -5162,6 +5162,20 @@
 "date": "2026-10-26",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
+},
+{
+"id": "pz-4-backtest-2026-11-05",
+"family": "Pizzino",
+"title": "Pizzino layer (SPEC 6 break-retest + nested swing states), BTCUSDT spot 1d/4h/1h, DEV-stage counts and power gate",
+"kind": "backtest",
+"kind_source": "result file",
+"verdict": "BLOCKED: the SPEC 6 setup fires 3 times in 7 years of BTC daily (largest cell n 21 on 1h vs 527+ needed); no return computed, no verdict",
+"source": "MyTradingSys/research/pizzino_layer_2026-10-27/RESULT.md",
+"exported": true,
+"result_id": "pz-4-backtest-2026-11-05",
+"date": "2026-11-05",
+"status": "NOT ENOUGH DATA",
+"verdict_class": "unclear"
 }
 ]
 }
