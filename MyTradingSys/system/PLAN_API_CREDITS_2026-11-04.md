@@ -136,3 +136,4 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 >>>>>>> origin/fast-track
 | 2026-11-05 | wt-c1v2-1105 | Opus 5.5 | 1.96 | 50 | WaveTrend C1 v2 count-only DEV pass frozen; cap was 6.0 |
 | 2026-11-05 | live-orderflow-1105 | Opus 5.5 | 1.85 | 44 | market guide prints one order-flow line each for 1m 5m 15m; cap was 6.0 |
+| 2026-11-05 | labguy-missing-1105 | Sonnet 5.5 | 0.38 | 11 | labguy missing-review shipped 658bde4d; cap was 3.0 |
