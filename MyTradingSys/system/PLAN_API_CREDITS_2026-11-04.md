@@ -115,3 +115,4 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-05 | 4b3-successor-wake-1105 | Opus 5.5 | 0.44 | 11 | no build: card already done on trunk, closed; cap was 6.0 |
 | 2026-11-05 | haiku-review-refined-1105c | Haiku 5.5 | 0.22 | 25 | stamped 20 cards: 5 ACCEPT, 9 HOLD, 6 DROP; cap was 2.0 |
 | 2026-11-05 | ci-auto-revert-1105 | Opus 5.5 | 1.05 | 30 | shipped scripts/dev/ci_revert.py (finds the commit that turned CI red and proposes the revert); cap was 6.0 |
+| 2026-11-05 | gate-fix-6-1105 | Opus 5.5 | 1.20 | 39 | promotion gate min trade count from effect size (gate-fix-6); ship verified separately; cap was 6.0 |
