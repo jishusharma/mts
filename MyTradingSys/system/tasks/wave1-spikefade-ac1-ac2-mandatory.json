@@ -37,7 +37,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks\nREVIEWED:2026-11-05 DROP (Haiku on API credit, job haiku-review-refined-1105b: twin already on trunk as c4ad479e0 (c2_above_prior_day caveat, not a gate))\nREVIEWED:2026-11-05 DROP (Haiku on API credit, job haiku-review-refined-1105c: twin already on trunk as c4ad479e0 (c2_above_prior_day caveat, not a gate))",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks\nREVIEWED:2026-11-05 DROP (Haiku on API credit, job haiku-review-refined-1105b: twin already on trunk as c4ad479e0 (c2_above_prior_day caveat, not a gate))\nREVIEWED:2026-11-05 DROP (Haiku on API credit, job haiku-review-refined-1105c: twin already on trunk as c4ad479e0 (c2_above_prior_day caveat, not a gate))\nREVIEWED:2026-11-05 DROP (Haiku on API credit, job haiku-review-refined-1105d: Twin: A-C2 caveat already on trunk as c4ad479e0 (c2_above_prior_day).)",
   "pinned": false,
   "prio": 2,
   "refine_tries": 1,

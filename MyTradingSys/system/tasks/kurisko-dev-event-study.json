@@ -31,7 +31,7 @@
   "not_twin_of": [
     "krown-dev-event-study"
   ],
-  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks\nREVIEWED:2026-11-05 HOLD (Haiku on API credit, job haiku-review-refined-1105b: PRE_REG.md has no ## Context section; add it before the one DEV run)\nREVIEWED:2026-11-05 HOLD (Haiku on API credit, job haiku-review-refined-1105c: PRE_REG.md has no ## Context section or Regime mix line)",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks\nREVIEWED:2026-11-05 HOLD (Haiku on API credit, job haiku-review-refined-1105b: PRE_REG.md has no ## Context section; add it before the one DEV run)\nREVIEWED:2026-11-05 HOLD (Haiku on API credit, job haiku-review-refined-1105c: PRE_REG.md has no ## Context section or Regime mix line)\nREVIEWED:2026-11-05 ACCEPT (Haiku on API credit, job haiku-review-refined-1105d: Dependency kurisko-prereg-fire-counts done; PRE_REG and scope exist; run-receipt guard testable.)",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,

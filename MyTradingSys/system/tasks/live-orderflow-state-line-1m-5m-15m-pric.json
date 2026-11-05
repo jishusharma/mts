@@ -23,7 +23,7 @@
     "live_engine"
   ],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:none WEIGHT:ROUTINE. Closed bars only. Same file as the next two market_guide cards, which depend on this one. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C1 weight=IMPORTANT); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.\nREVIEWED:2026-11-05 ACCEPT (Haiku on API credit, job haiku-review-refined-1105c: market_guide.py has no order_flow_state on trunk; sources exist; fixture specified)",
+  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:none WEIGHT:ROUTINE. Closed bars only. Same file as the next two market_guide cards, which depend on this one. Verify: content commit sha, git cherry origin/fast-track <sha> empty, git ls-tree shows the files.\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C1 weight=IMPORTANT); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.\nREVIEWED:2026-11-05 ACCEPT (Haiku on API credit, job haiku-review-refined-1105c: market_guide.py has no order_flow_state on trunk; sources exist; fixture specified)\nREVIEWED:2026-11-05 ACCEPT (Haiku on API credit, job haiku-review-refined-1105d: No twin in market_guide.py; scope exists; fixture numbers given; test and gate testable.)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "gemini-nuc",
