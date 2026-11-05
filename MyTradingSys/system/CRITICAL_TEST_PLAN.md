@@ -47,3 +47,5 @@ Reviewer per item: the author model plus one other family (Gemini on NUC for cod
 | 7 | T4 | Funding coverage: list every backtest script that holds a perp position across a funding time; mark which charge the venue's historical funding series (4 scripts reference funding today) | census table; missing ones get a card or a written "fee-only lower bound" label |
 | 8 | T4 | Trial budget: for each layer verdict on record, the trial count vs Minimum Backtest Length for its dev window (about 2.25 y: about 7 independent configs before Sharpe 1 is noise, Bailey et al. 2014); any "pass" must show a deflated Sharpe >= 0.95 | per-layer row: n trials, dev years, MinBTL budget, DSR if it passed |
 
+Wave 2 run 2026-11-05 (`research/critical_test_wave2_2026-10-30/RESULT.md`, ledger rows): #6 FINDING MED (gap p95 13.6 bps, wick-level rules not transferable), #7 FINDING MED (90 of 99 trade scripts fee-only; fabio v3 funding never charged), #8 UNTESTABLE for 26 of 41 rows (no trial count; budget 10 configs on the 2.5 y DEV window, not 7). Second-model read: card gemini-blind-read-of-critical-test-wave2.
+

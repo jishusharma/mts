@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-05T02:28:54Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_CRITICAL_TEST_WAVE2.md lists every headline number of critical_test_wave2_2026-10-30/RESULT.md recomputed from item6_result.json, item7_census.tsv and item8_minbtl.tsv, a per-number match table, and ends with VERDICT: MATCH or MISMATCH.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Second-model blind read of critical test wave 2 (items 6-8): recompute the venue gap, funding census and MinBTL numbers from the raw outputs and scripts, then diff against RESULT.md.",
+  "id": "gemini-blind-read-of-critical-test-wave2",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "gemini-blind-read-rsi-40-60-1104",
+    "gemini-blind-read-wt-extreme-cross-2026-11"
+  ],
+  "note": "REVIEWED:2026-11-05 T0-ONLY | second-model review of critical-test-wave-2-critical-test-plan-",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "critical-test-w2-1105",
+  "refreshed": "2026-11-05T02:29:14Z",
+  "refs": [
+    "MyTradingSys/research/critical_test_wave2_2026-10-30/RESULT.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_CRITICAL_TEST_WAVE2.md",
+    "MyTradingSys/research/critical_test_wave2_2026-10-30"
+  ],
+  "scope_out": [],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read item6_result.json, item7_census.tsv and item8_minbtl.tsv in critical_test_wave2_2026-10-30 before RESULT.md",
+    "Recompute the gap percentiles, the census class counts and MinBTL(N) for N 7..10 independently of the study scripts",
+    "Write MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_CRITICAL_TEST_WAVE2.md with a per-number match table and VERDICT"
+  ],
+  "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_CRITICAL_TEST_WAVE2.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
+  "title": "[GEMINI] blind read of critical_test_wave2 RESULT.md",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
