@@ -223,3 +223,4 @@ MyTradingSys/research/level_approach_eth_2026-11/test_replicate.py
 MyTradingSys/backtest/layers/pitchfork/test_pitchfork_detector.py
 MyTradingSys/backtest/layers/pitchfork/test_pitchfork_review_fixes.py
 MyTradingSys/research/sim_desk/test_pitchfork.py
+MyTradingSys/backtest/test_fetch_futures_metrics.py
