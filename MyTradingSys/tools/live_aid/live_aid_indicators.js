@@ -642,7 +642,79 @@
     return { state: st, now: now, readings: out };
   }
 
-  var api = { AM_TEXT: AM_TEXT, anticipation: anticipation, OM: OM, oiState: oiState, oiWindow: oiWindow, oiNet: oiNet, oiDisagree: oiDisagree, oiBars: oiBars, oiEvents: oiEvents, oiLastEvent: oiLastEvent, oiPath: oiPath, oiTrap: oiTrap, oiEventText: oiEventText, C24: C24, oiExpect: oiExpect,
+  // ---------- level-approach prep (card level-approach-prep; Eagle_Eyes 10-30 operator ask; spec CARD_SPECS.md#level-approach-prep).
+  // Per marked level within 0.5 %: checklist, absorption (delta share >= +0.3 into the level, < 0.1 % extension over the next 3 1m bars),
+  // OI tell, 1m/2m/3m/5m wick rejections in the last 15 min, RSI 70/30 (Wilder, SOURCED), coil, flag count. Thresholds = OURS (PRE_REG).
+  // Rates MEASURED only for prior-day H/L (research/level_approach_prep_2026-11-05, level_approach_rates.js); other levels UNMEASURED.
+  // Descriptive, never an entry call.
+  var LA = { near: 0.5, zone: 0.003, absDs: 0.3, absExt: 0.001, wick: 0.5, winMin: 15, rsiHi: 70, rsiLo: 30, pd: /prev(ious)? day|prior[- ]day/i };
+  var LA_CHECK = {
+    hold: ['absorption: delta into the level, push does not extend', 'OI rising during the push (positions opening against it)', 'wick rejection on 1m/2m/3m/5m', 'RSI extreme into the level'],
+    'break': ['push extends more than 0.1 % past the absorption bars', 'a 1m close 0.1 % beyond the level', 'no wick, delta keeps pressing']
+  };
+  function laWicks(rows, level, up) {
+    var tfs = [], last = rows.length ? +rows[rows.length - 1][0] + 60000 : 0, from = last - LA.winMin * 60000;
+    var win = rows.filter(function (r) { return +r[0] >= from; });
+    [1, 2, 3, 5].forEach(function (tf) {
+      var ms = tf * 60000, g = {};
+      win.forEach(function (r) { var b = Math.floor(+r[0] / ms) * ms; (g[b] = g[b] || []).push(r); });
+      var hit = Object.keys(g).some(function (b) {
+        var s = g[b]; if (s.length !== tf) return false;
+        var o = +s[0][1], c = +s[s.length - 1][4], h = Math.max.apply(null, s.map(function (r) { return +r[2]; })), l = Math.min.apply(null, s.map(function (r) { return +r[3]; }));
+        var rng = h - l; if (!(rng > 0)) return false;
+        var near = up ? h >= level * (1 - LA.zone) : l <= level * (1 + LA.zone), wk = up ? h - Math.max(o, c) : Math.min(o, c) - l;
+        return near && wk >= LA.wick * rng;
+      });
+      if (hit) tfs.push(tf + 'm');
+    });
+    return tfs;
+  }
+  function levelApproach(rows, levels, o) {
+    o = o || {};
+    var px = +o.px, R = o.rates || null;
+    if (!(px > 0) || !rows || rows.length < 6) return [];
+    return (levels || []).filter(function (x) { return isFinite(x.level) && Math.abs(x.level / px - 1) * 100 <= LA.near; }).map(function (x) {
+      var up = x.level >= px, pd = LA.pd.test(x.name || ''), sg = up ? 1 : -1;
+      var push = rows.slice(-6, -3), nx = rows.slice(-3), v = push.reduce(function (s, r) { return s + +r[5]; }, 0);
+      var ds = v > 0 && push.every(function (r) { return r.length > 9 && isFinite(+r[9]); }) ? push.reduce(function (s, r) { return s + 2 * +r[9] - +r[5]; }, 0) / v * sg : NaN;
+      var c = +push[2][4], ext = up ? Math.max.apply(null, nx.map(function (r) { return +r[2]; })) / c - 1 : 1 - Math.min.apply(null, nx.map(function (r) { return +r[3]; })) / c;
+      var absF = isFinite(ds) && ds >= LA.absDs && ext < LA.absExt;
+      var ab = pd && R ? (absF ? R.u1.abs : R.u1.non) : null;
+      var tell = o.doi === null || o.doi === undefined || !isFinite(o.doi) ? null : Math.abs(o.doi) < OM.flat ? 'FLAT' : o.doi > 0 ? 'UP' : 'DOWN';
+      var oiR = pd && R && tell && absF ? R.u2[tell] : null;
+      var tfs = laWicks(rows, x.level, up), wk = pd && R ? R.u3[tfs.length >= 3 ? '3+' : String(tfs.length)] : null;
+      var rsiX = isFinite(o.rsi) && o.rsi !== null && (up ? o.rsi >= LA.rsiHi : o.rsi <= LA.rsiLo);
+      var fl = ['level'];
+      if (absF) fl.unshift('absorption');
+      if (tell === 'UP') fl.push('oi');
+      if (rsiX) fl.push('rsi');
+      if (o.coil) fl.push('coil');
+      if (tfs.length) fl.push('wick');
+      var swing = up ? Math.min.apply(null, push.map(function (r) { return +r[3]; })) : Math.max.apply(null, push.map(function (r) { return +r[2]; }));
+      var extreme = up ? Math.max.apply(null, push.concat(nx).map(function (r) { return +r[2]; })) : Math.min.apply(null, push.concat(nx).map(function (r) { return +r[3]; }));
+      return { level: x.level, name: x.name, side: up ? 'above' : 'below', dist: (x.level / px - 1) * 100, checklist: LA_CHECK,
+        absorption: { flag: absF, ds: ds, ext: ext, n: ab ? ab.n : 0, rate: ab ? ab.rev : null, brk: ab ? ab.brk : null, matched: pd && R ? R.u1.nonMatched : null, src: ab ? 'MEASURED' : 'UNMEASURED' },
+        oi: { tell: tell, n: oiR ? oiR.n : 0, rate: oiR ? oiR.rev : null, src: oiR ? 'MEASURED' : 'UNMEASURED' },
+        wicks: { count: tfs.length, tfs: tfs, n: wk ? wk.n : 0, hold: wk ? wk.hold : null, src: wk ? 'MEASURED' : 'UNMEASURED' },
+        rsiExtreme: rsiX, coil: !!o.coil, flags: fl.length, flagList: fl,
+        confirm: '5m close back through the stuck swing ' + swing.toFixed(1) + '; invalidation beyond the absorption extreme ' + extreme.toFixed(1),
+        alertKey: (x.name || 'level') + '|' + (+x.level).toFixed(1) };
+    }).sort(function (a, b) { return Math.abs(a.dist) - Math.abs(b.dist); });
+  }
+  // One alert per level approach per UTC day; `seen` maps key -> first alert ms (caller keeps it).
+  function approachAlerts(list, seen, now) {
+    var s = {}, day = Math.floor(now / 86400000), out = [];
+    Object.keys(seen || {}).forEach(function (k) { s[k] = seen[k]; });
+    (list || []).forEach(function (x) {
+      var k = x.alertKey + '|' + day;
+      if (s[k]) return;
+      s[k] = now;
+      out.push({ key: k, text: 'Approaching ' + x.name + ' ' + (+x.level).toFixed(1) + ' (' + (x.dist >= 0 ? '+' : '') + x.dist.toFixed(2) + '%, ' + x.side + '), flags ' + x.flags + '/6' });
+    });
+    return { alerts: out, seen: s };
+  }
+
+  var api = { LA: LA, levelApproach: levelApproach, approachAlerts: approachAlerts, AM_TEXT: AM_TEXT, anticipation: anticipation, OM: OM, oiState: oiState, oiWindow: oiWindow, oiNet: oiNet, oiDisagree: oiDisagree, oiBars: oiBars, oiEvents: oiEvents, oiLastEvent: oiLastEvent, oiPath: oiPath, oiTrap: oiTrap, oiEventText: oiEventText, C24: C24, oiExpect: oiExpect,
     AV: AV, rosterRead: rosterRead, analystVote: analystVote, levelWatch: levelWatch, zones: zones, lean: lean, actions: actions, NW: NW, newsTags: newsTags, newsRead: newsRead, newsMerge: newsMerge, newsPulse: newsPulse, foldBars: foldBars, FD: FD, fundRead: fundRead, premium: premium, bybitTick: bybitTick, LQ: LQ, liqDeribit: liqDeribit, liqBybit: liqBybit, liqBinance: liqBinance, liqSum: liqSum, CP: CP, coilPierce: coilPierce, IT: IT, divergence: divergence, flow: flow, flowLive: flowLive, squeeze: squeeze, dom: dom, supports: supports, vwapTest: vwapTest,
     flagDiv: flagDiv, flagSqueeze: flagSqueeze, flagFlow: flagFlow, flagDom: flagDom, flagVwap: flagVwap, confidence: confidence, rma: rma, sma: sma, rsi: rsi, bollinger: bollinger, atr: atr, dayVwap: dayVwap, utcDays: utcDays, wavetrend: wavetrend,
     inversePnlBtc: inversePnlBtc, closedPnlBtc: closedPnlBtc, columns: columns, UO: UO, usOpen: usOpen, nextHighEvent: nextHighEvent };
