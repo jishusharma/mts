@@ -47,11 +47,23 @@
     "s2_vol_mult": {"value": 1.0, "label": "OURS", "source": "S2 volume above average (spec); 'discernible' threshold grid {1.0,1.25,1.5}"},
     "s8_recent": {"value": 5, "label": "OURS", "source": "bars to look back for BBWP <= low (S8)"},
     "s8_break_n": {"value": 10, "label": "OURS", "source": "bars of range the S8 candle must break (not stated)"},
+    "s7_vol_lookback": {"value": 100, "label": "OURS", "source": "'biggest volume bar' window for S7 (KR-V07 gives none)"},
+    "rsi_ob": {"value": 70, "label": "OURS", "source": "KR-S06 MIXED: breakout in an uptrend usually shows RSI > 70 (H-S2, not confirmed)"},
+    "rsi_os": {"value": 30, "label": "OURS", "source": "KR-S06 mirror of rsi_ob for breakdowns; value not stated"},
+    "rsi_ext_low": {"value": 10, "label": "OURS", "source": "KR-S04 RSI 10 given as one example of a downside extreme"},
+    "rsi_ext_high": {"value": 90, "label": "OURS", "source": "KR-S04 mirror of rsi_ext_low; not stated"},
+    "tell_n": {"value": 5, "label": "OURS", "source": "KR-T07 comparison window for flat averages and shrinking volume (not stated)"},
+    "tell_fast": {"value": 5, "label": "OURS", "source": "KR-T07 fast average length (not stated)"},
+    "tell_slow": {"value": 10, "label": "OURS", "source": "KR-T07 slow average length (not stated)"},
+    "tell_flat": {"value": 0.005, "label": "OURS", "source": "KR-T07 slow average move over tell_n bars counted as flat (not stated)"},
+    "tell_spread": {"value": 0.005, "label": "OURS", "source": "KR-T07 fast/slow gap counted as tangled (not stated)"},
+    "tell_vol": {"value": 0.8, "label": "OURS", "source": "KR-T07 recent over prior volume counted as shrinking (not stated)"},
+    "grade_tight": {"value": 0.05, "label": "OURS", "source": "KR-R04 tightness threshold undefined; width over mid"},
+    "flip_window": {"value": 10, "label": "OURS", "source": "KR-Z10 bars after a zone break in which the first retest counts (not stated)"},
     "full_body_ratio": {"value": 0.8, "label": "OURS", "source": "body/range for a full-body conviction candle (KR-C05 gives none)"},
     "tiny_range_frac": {"value": 0.5, "label": "OURS", "source": "tiny candle = range <= this share of the mean prior range (KR-V06 gives none)"},
     "low_n": {"value": 20, "label": "OURS", "source": "drift to a low = close at the lowest close of the last n bars (KR-V08 gives none)"},
     "vol_trap_bbwp": {"value": 85, "label": "OURS", "source": "KR-Q07 volatility trap: BBWP already at or above this at the decision bar (85-93 are the trader's examples only)"},
-    "vol_exhaust_bbwp": {"value": 85, "label": "OURS", "source": "KR-Q06 volatility profit-take flag: first bar back below this after expansion (85-93 examples only)"},
-    "s7_vol_lookback": {"value": 100, "label": "OURS", "source": "'biggest volume bar' window for S7 (KR-V07 gives none)"}
+    "vol_exhaust_bbwp": {"value": 85, "label": "OURS", "source": "KR-Q06 volatility profit-take flag: first bar back below this after expansion (85-93 examples only)"}
   }
 }

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T23:02:42Z",
   "commands": [],
   "created": "2026-11-04T21:10:07Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "range_target + prior_trend_bias, 1 test (R07 height 1.0 -> target 12.0)",
+      "ref": "252673860",
+      "utc": "2026-11-04T23:02:42Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "b-item-krown-core-rsi-returns-100-on-a-f: fix flat window RSI 100 to 50 and update docstri",
@@ -24,6 +31,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: wired offline, tested",
   "note": "planner-wire43-1104h: verified on trunk 2026-11-05, no code for this rule; params OURS unless the card says SOURCED. Folds: wire-kr-m13, wire-kr-l12.\nREVIEWED:2026-11-04 T0-ONLY",
   "prio": 4,
   "refine_tries": 0,
@@ -32,7 +40,12 @@
   "refs": [
     "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_6aA-P4Gvhrc.md:213"
   ],
-  "result": "",
+  "result": "range_target + prior_trend_bias, 1 test (R07 height 1.0 -> target 12.0)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/krown/krown_core.py",
     "MyTradingSys/backtest/layers/krown/test_krown_core.py"
@@ -43,12 +56,13 @@
   "scope_sha": "150840644fd0",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read range_state and trend_state in krown_core.py.",
     "Add range_target (breakout close plus or minus height) and prior_trend_bias (trend_state before the range began).",
     "Write the fail-first test with a synthetic range and breakout; run it."
   ],
+  "taken": "2026-11-04T23:02:42Z",
   "tests": "MyTradingSys/backtest/layers/krown/test_krown_core.py::test_range_target_and_prior_trend (new; fails on trunk, no range_target)",
   "title": "wire KR-R07: Range height projects the first leg (quote MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_6aA-P4Gvhrc.md:213)",
   "weight": "ROUTINE",

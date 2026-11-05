@@ -339,6 +339,25 @@ def zones_at(h, l, c, v, t, p):
     return zones_from(sw, h, l, c, vol_ratio(v[:t + 1], p["vol_sma"]), t, p)
 
 
+def flip_state(zone, closes, t, window):
+    """KR-Z09 / Z10 role flip: a close beyond the zone bound after it formed = broken; the zone then acts the opposite
+    way (flipped) until a close clears its far bound (flip failed); the first close back inside the zone within `window`
+    bars of the break = retested. Uses closes <= t only."""
+    out = {"broken": None, "flipped": False, "retested": None, "side": None}
+    lo, hi = zone["lo"], zone["hi"]
+    up = zone["kind"] == "H"
+    for j in range(zone["avail"] + 1, t + 1):
+        if out["broken"] is None:
+            if (up and closes[j] > hi) or (not up and closes[j] < lo):
+                out.update(broken=j, flipped=True, side="up" if up else "down")
+            continue
+        if (up and closes[j] < lo) or (not up and closes[j] > hi):
+            out["flipped"] = False
+            break
+        if out["retested"] is None and j - out["broken"] <= window and lo <= closes[j] <= hi:
+            out["retested"] = j
+    return out
+
 # ---- RSI, MACD ------------------------------------------------------------------------------------------------
 
 def rsi(c, period):
@@ -373,6 +392,29 @@ def rsi_zone(x, bull=60, bear=40):
     if x < bear:
         return "bear"
     return "range"
+
+def rsi_confirms_break(rsi_line, t, side, p):
+    """KR-S06 (MIXED, H-S2): a breakout usually shows RSI above rsi_ob (long) or below rsi_os (short) at the break bar."""
+    x = rsi_line[t]
+    if x is None:
+        return False
+    return x > p["rsi_ob"] if side == "long" else x < p["rsi_os"]
+
+
+def rsi_extreme(rsi_line, t, p):
+    """KR-S04 (OURS): (side, level) with side 'low'/'high' and level 'extreme' (rsi_ext_*) or 'stretched' (rsi_os/ob)."""
+    x = rsi_line[t]
+    if x is None:
+        return None
+    if x <= p["rsi_ext_low"]:
+        return ("low", "extreme")
+    if x >= p["rsi_ext_high"]:
+        return ("high", "extreme")
+    if x < p["rsi_os"]:
+        return ("low", "stretched")
+    if x > p["rsi_ob"]:
+        return ("high", "stretched")
+    return None
 
 
 def macd(c, fast, slow, sig):
@@ -432,6 +474,65 @@ def coil_score(h, l, t, recent, n):
     a = sum(h[j] - l[j] for j in range(t - recent + 1, t + 1)) / recent
     b = sum(h[j] - l[j] for j in range(t - recent - n + 1, t - recent + 1)) / n
     return a / b if b > 0 else None
+
+def range_target(rs, side):
+    """KR-R07: first-leg target = range height from the breakout (the breakout close when rs carries `close`, else the
+    broken edge). None when rs is None or did not break out on that side. No other multiplier."""
+    if rs is None or rs.get("breakout") != ("up" if side == "long" else "down"):
+        return None
+    if side == "long":
+        return rs.get("close", rs["top"]) + rs["height"]
+    return rs.get("close", rs["bottom"]) - rs["height"]
+
+
+def prior_trend_bias(h, l, c, t, k, tol):
+    """KR-L12: the trend state before the current range began = the last non-range trend_state at or before t."""
+    ts = trend_state(h[:t + 1], l[:t + 1], c[:t + 1], k, tol)
+    for j in range(t, -1, -1):
+        if ts[j]["state"] != "range":
+            return ts[j]["state"]
+    return None
+
+
+def range_tell(c, v, t, p):
+    """KR-T07 (thresholds OURS): flat tangled averages plus shrinking volume. flat = slow SMA moved <= tell_flat over
+    tell_n bars; tangled = fast/slow SMA gap <= tell_spread; vol_shrinking = last tell_n volume over the n before <= tell_vol."""
+    n, fa, sl = p["tell_n"], p["tell_fast"], p["tell_slow"]
+    if t < max(sl - 1 + n, 2 * n - 1):
+        return None
+    slow, fast = sma(c[:t + 1], sl), sma(c[:t + 1], fa)
+    base = slow[t - n]
+    prev = sum(v[t - 2 * n + 1:t - n + 1])
+    if base == 0 or slow[t] == 0 or prev <= 0:
+        return None
+    flat = abs(slow[t] - base) / abs(base) <= p["tell_flat"]
+    tangled = abs(fast[t] - slow[t]) / abs(slow[t]) <= p["tell_spread"]
+    ratio = sum(v[t - n + 1:t + 1]) / prev
+    shrinking = ratio <= p["tell_vol"]
+    return {"flat": flat, "tangled": tangled, "vol_shrinking": shrinking, "vol_ratio": ratio,
+            "tell": flat and tangled and shrinking}
+
+
+def range_grade(h, l, t, p):
+    """KR-R04 (OURS): bars = trailing bars whose high-low box stays within range_width_max of its mid; width = box over
+    mid for the last range_n bars; grade 'tight' (<= grade_tight) or 'loose' (<= range_width_max) else None."""
+    n = p["range_n"]
+    if t < n - 1:
+        return None
+    hi, lo, bars = h[t], l[t], 0
+    for j in range(t, -1, -1):
+        hi, lo = max(hi, h[j]), min(lo, l[j])
+        mid = (hi + lo) / 2
+        if mid <= 0 or (hi - lo) / mid > p["range_width_max"]:
+            break
+        bars += 1
+    top, bottom = max(h[t - n + 1:t + 1]), min(l[t - n + 1:t + 1])
+    mid = (top + bottom) / 2
+    if mid <= 0:
+        return None
+    width = (top - bottom) / mid
+    grade = "tight" if width <= p["grade_tight"] else ("loose" if width <= p["range_width_max"] else None)
+    return {"bars": bars, "width": width, "grade": grade}
 
 
 # ---- tops -----------------------------------------------------------------------------------------------------
