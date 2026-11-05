@@ -169,6 +169,14 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     <span class="tag">Reach odds fall with distance; a touch holding is a coin flip at every distance. Context for what to expect, never a signal; no size, no orders.</span>
   </section>
 
+  <!-- 2c2. ANTICIPATION MAP (card anticipation-map-from-current-layer-stat; research/anticipation_map_2026-11-05; descriptive) -->
+  <section id="p-antic">
+    <div class="hd"><h2>Same data, other readings</h2><span class="src" title="Price x Binance OI over the last 60 min (flat under 0.1 %, OURS), split by Binance taker delta over the same 60 min. Odds = MEASURED fee-free descriptive base rates, Binance USD-M BTCUSDT 1m + metrics 5m OI, DEV 2022-01..2024-06, 21855 hourly events (research/anticipation_map_2026-11-05). Other-venue reading = UNMEASURED (no history on disk).">MEASURED + UNMEASURED</span><span class="age" id="age-am">--</span></div>
+    <div class="vrow"><span class="huge" id="am-state">--</span><span class="sub" id="am-sub"></span></div>
+    <div class="scroll"><table><thead><tr><th>Reading</th><th>How often in this state</th><th>Next 60 min: price continues / move undone</th><th>Deciding layer</th><th>Confirm</th><th>Kill</th></tr></thead><tbody id="am-rows"></tbody></table></div>
+    <span class="tag">Every row reads the same price and OI; the deciding layer splits them. Continuation is near a coin flip in every state: context, never a signal; no size, no orders.</span>
+  </section>
+
   <!-- 2d. WHAT THE MONEY IS DOING (research/eagle_eyes_picture_2026-10-28/OI_COMMENTARY_SPEC.md; descriptive) -->
   <section id="p-money">
     <div class="hd"><h2>What the money is doing</h2><span class="src" title="Price vs open interest per venue over 5 / 15 / 60 min. Six-state sentences, flat under 0.1 %, venues disagree at 0.2 % up vs 0.2 % down, FLUSH / SQUEEZE = a Bybit 5m bar with its wick 0.25 % past the previous close while OI falls 0.2 %, trapped line at OI +0.2 % since the event: OURS (spec fixed before use). Lines marked MEASURED come from C24 (Bybit 5m 07-02..10-30, oi_after_flush.py). Feeds SOURCED: Deribit ticker, Bybit tickers + REST open-interest, Binance fapi openInterest.">OURS + MEASURED</span><span class="tag" id="m-feeds"></span></div>
@@ -259,6 +267,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
 <script src="live_aid_indicators.js"></script>
 <script src="analyst_data.js"></script>
 <script src="us_open_rates.js"></script>
+<script src="anticipation_rates.js"></script>
 <script>
 (function () {
   'use strict';
@@ -641,11 +650,30 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     $('age-uo').textContent = S.klT ? Math.round((now - S.klT) / 1000) + 's' : '--';
   }
 
+  function renderAntic(now) {
+    var rates = typeof ANTICIPATION_RATES !== 'undefined' ? ANTICIPATION_RATES.rates : null, tb = $('am-rows'), w = null, delta = null;
+    try { w = A.oiWindow(omHist('BINANCE'), now, 3600000); } catch (e) { w = { err: 'Binance OI history not loaded' }; }
+    var k5 = S.tf['5m'] || [], last = k5.slice(-12);
+    if (S.venue === 'BINANCE' && last.length === 12 && last.every(function (k) { return k.length > 9 && isFinite(+k[9]); }))
+      delta = last.reduce(function (s, k) { return s + 2 * +k[9] - +k[5]; }, 0);
+    var r = A.anticipation(w && !w.err ? w.dp : null, w && !w.err ? w.doi : null, delta, rates);
+    $('am-state').textContent = r.state ? 'Price ' + r.state.split('|')[0].toLowerCase() + ', OI ' + r.state.split('|')[1].toLowerCase() + ', delta ' + r.now.toLowerCase() : 'no state';
+    $('am-sub').textContent = w && !w.err ? '60 min: price ' + sgn(100 * w.dp, 2) + '%, Binance OI ' + sgn(100 * w.doi, 2) + '%' + (delta === null ? ', taker delta n/a (needs Binance 5m bars)' : ', taker delta ' + fmt(delta, 0) + ' BTC') : (w ? w.err : NID);
+    if (!r.readings.length) { tb.innerHTML = '<tr><td colspan="6" class="dim">flat (under 0.1 %) or inputs missing: no readings</td></tr>'; return; }
+    tb.innerHTML = r.readings.map(function (x) {
+      var odds = x.p === null ? '<span class="dim">UNMEASURED</span>' : '<b>' + x.p + '%</b> (n=' + x.n + ') <span class="dim">MEASURED</span>';
+      var fw = x.cont === null ? '<span class="dim">UNMEASURED</span>' : x.cont + '% / ' + x.kill + '%';
+      return '<tr' + (x.live ? ' class="up"' : '') + '><td>' + (x.live ? '<b>now: </b>' : '') + esc(x.label) + '</td><td>' + odds + '</td><td>' + fw + '</td><td>' + esc(x.decider) + '</td><td>' + esc(x.confirm) + '</td><td>' + esc(x.kill_line) + '</td></tr>';
+    }).join('') + (rates ? '' : '<tr><td colspan="6" class="err">anticipation_rates.js not found next to this page: run python MyTradingSys/research/anticipation_map_2026-11-05/study.py</td></tr>');
+    $('age-am').textContent = S.klT ? Math.round((now - S.klT) / 1000) + 's' : '--';
+  }
+
   function render() {
     var now = Date.now();
     S.a15 = atr15();
     renderTop();
     renderUsOpen(now);
+    try { renderAntic(now); } catch (e) { $('am-rows').innerHTML = '<tr><td colspan="6" class="err">' + esc(e.message) + '</td></tr>'; }
     var coilR = renderCoil(now);
     renderLiq(now);
     renderFund(now);

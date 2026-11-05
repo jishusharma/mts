@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T23:02:46Z",
   "commands": [],
   "created": "2026-11-04T21:09:57Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "flip_state + krown_events.retest_event, 1 test (break bar 3, retest bar 6)",
+      "ref": "252673860",
+      "utc": "2026-11-04T23:02:46Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "b-item-krown-core-rsi-returns-100-on-a-f: fix flat window RSI 100 to 50 and update docstri",
@@ -24,6 +31,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: wired offline, tested",
   "note": "planner-wire43-1104h: verified on trunk 2026-11-05, no code for this rule; params OURS unless the card says SOURCED. Folds: wire-kr-z10 (retest leg), wire-kr-z16 (zone plus rising average joins K1 card output).\nREVIEWED:2026-11-04 T0-ONLY",
   "prio": 2,
   "refine_tries": 0,
@@ -32,7 +40,12 @@
   "refs": [
     "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_qEfES84jwwo.md:143"
   ],
-  "result": "",
+  "result": "flip_state + krown_events.retest_event, 1 test (break bar 3, retest bar 6)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/krown/krown_core.py",
     "MyTradingSys/backtest/layers/krown/krown_events.py",
@@ -44,12 +57,13 @@
   "scope_sha": "150840644fd0",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read zones_at and zone_bounds in krown_core.py.",
     "Add flip_state: close beyond the zone bound = broken, same side now acts opposite = flipped, first touch within the window = retested.",
     "Write the fail-first test with a synthetic close series; run it."
   ],
+  "taken": "2026-11-04T23:02:46Z",
   "tests": "MyTradingSys/backtest/layers/krown/test_krown_core.py::test_zone_role_flip_and_retest (new; fails on trunk, no flip_state)",
   "title": "wire KR-Z09: Role flip (quote MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_qEfES84jwwo.md:143)",
   "weight": "ROUTINE",

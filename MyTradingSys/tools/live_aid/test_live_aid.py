@@ -636,3 +636,41 @@ def test_next_high_event():
     assert e["next"] is None and len(e["last"]) == 1 and e["last"][0]["actual"] == "0.4%" and e["last"][0]["forecast"] == "0.3%"
     # F: empty input -> no event, no results
     assert _next_high([], 0) == {"next": None, "last": []}
+
+
+# ---------- anticipation map (card anticipation-map-from-current-layer-stat; rates from research/anticipation_map_2026-11-05)
+def _anticipation(dp, doi, delta, rates):
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("node not installed")
+    runner = ("const A=require(process.argv[1]);let j='';process.stdin.on('data',d=>j+=d).on('end',()=>{j=JSON.parse(j);"
+              "console.log(JSON.stringify(A.anticipation(j.dp,j.doi,j.delta,j.rates)))})")
+    out = subprocess.run([node, "-e", runner, str(JS)], input=json.dumps({"dp": dp, "doi": doi, "delta": delta, "rates": rates}),
+                         capture_output=True, text=True, timeout=60, env=os.environ.copy())
+    assert out.returncode == 0, out.stderr
+    return json.loads(out.stdout)
+
+
+HAND_RATES = {"UP|UP|BUY": {"n": 100, "share": 80, "cont": 47, "kill": 19, "oiCont": 60},
+              "UP|UP|SELL": {"n": 25, "share": 20, "cont": 48, "kill": 29, "oiCont": 60}}
+
+
+def test_anticipation_price_up_oi_up_lists_readings_with_stored_rates():
+    # price +0.5 %, OI +0.4 %, taker delta +120 BTC: two measured readings (BUY first, it matches the live delta) + one UNMEASURED
+    r = _anticipation(0.005, 0.004, 120, HAND_RATES)
+    assert r["state"] == "UP|UP" and r["now"] == "BUY"
+    rd = r["readings"]
+    assert 2 <= len(rd) <= 4
+    assert [x["key"] for x in rd] == ["UP|UP|BUY", "UP|UP|SELL", "OTHER"]
+    assert (rd[0]["p"], rd[0]["n"], rd[0]["cont"], rd[0]["kill"], rd[0]["src"]) == (80, 100, 47, 19, "MEASURED")
+    assert (rd[1]["p"], rd[1]["n"], rd[1]["src"]) == (20, 25, "MEASURED")
+    assert rd[2]["p"] is None and rd[2]["src"] == "UNMEASURED"
+    assert all(x["decider"] and x["confirm"] and x["kill_line"] for x in rd)
+    assert rd[0]["live"] is True and rd[1]["live"] is False
+
+
+def test_anticipation_flat_or_missing_inputs_give_no_readings():
+    assert _anticipation(0.0005, 0.004, 10, HAND_RATES)["readings"] == []      # price flat under 0.1 %
+    assert _anticipation(None, 0.004, 10, HAND_RATES)["readings"] == []        # price window missing
+    r = _anticipation(0.005, 0.004, 120, None)                                # rates file missing: readings stay, odds UNMEASURED
+    assert [x["src"] for x in r["readings"]] == ["UNMEASURED"] * 3

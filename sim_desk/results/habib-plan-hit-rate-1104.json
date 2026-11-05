@@ -1,0 +1,26 @@
+﻿{
+  "study": "habib-plan-hit-rate-1104",
+  "status": "BLOCKED",
+  "split_scored": "DEV",
+  "eligible_plans": 0,
+  "n": 0,
+  "direction_hit_rate": null,
+  "sweep_rate": null,
+  "target_reached_rate": null,
+  "wilson_ci_95": null,
+  "holdout_rows_scored": 0,
+  "holdout_rows_sealed": 9,
+  "holdout_call_ids": [
+    "QRP-yKm-lCrA_zw-03",
+    "QRP-dYlk1gtY2Lk-01",
+    "QRP-tJnls-_oGXc-02",
+    "QRP-xnuGOjqzcqY-01",
+    "QRP-xnuGOjqzcqY-02",
+    "QRP-t5xiPuo3yuc-03",
+    "QRP-ZPFK3ZsLwoo-05",
+    "QRP-ZPFK3ZsLwoo-06",
+    "QRP-lRB4wMGa9tw-02"
+  ],
+  "operator_action": "Approve/finalize PRE_REG_HABIB_PLANS.md and explicitly unseal the nine holdout calls for one-time scoring, or supply at least 12 typed DEV plans before 2026-06-26.",
+  "report": "MyTradingSys/research/habib_plan_imbalance_2026-10-20/RESULT_PLAN_HIT_RATE.md"
+}

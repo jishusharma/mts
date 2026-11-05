@@ -305,5 +305,148 @@ class TestTops(unittest.TestCase):
         self.assertEqual(kc.bear_divergence(h, l, [50, 70, 50, 80, 40], 1), [])
 
 
+class TestRangeProjection(unittest.TestCase):
+    def test_range_target_and_prior_trend(self):
+        # KR-R07: first-leg target = range height from the breakout. Range [9.5, 10.5], height 1.0.
+        h = [10.5] * 5 + [11.6]
+        l = [9.5] * 5 + [10.4]
+        c = [10.0] * 5 + [11.0]
+        p = dict(kc.load_params(), range_n=5)
+        rs = kc.range_state(h, l, c, 5, p)
+        self.assertEqual(rs["breakout"], "up")
+        self.assertAlmostEqual(kc.range_target(rs, "long"), 11.5)  # broken edge 10.5 + 1.0
+        self.assertAlmostEqual(kc.range_target(dict(rs, close=11.0), "long"), 12.0)  # breakout close + 1.0
+        self.assertIsNone(kc.range_target(rs, "short"))  # no downside break
+        self.assertIsNone(kc.range_target(None, "long"))
+        down = dict(rs, breakout="down", close=9.0)
+        self.assertAlmostEqual(kc.range_target(down, "short"), 8.0)
+        # KR-L12: rising swing highs/lows (k=1), then a flat high and a flat low -> state 'range', prior trend 'up'
+        hh = [10, 12, 11, 14, 13, 16, 15, 16.05, 15, 15.5, 15]
+        ll = [9, 10, 9.5, 11, 10.5, 12, 11.5, 11.8, 11.55, 11.9, 11.9]
+        cc = [9.5, 11, 10, 13, 12, 15, 13, 15, 13, 14, 13]
+        ts = kc.trend_state(hh, ll, cc, 1, 0.01)
+        self.assertEqual(ts[7]["state"], "up")
+        self.assertEqual(ts[10]["state"], "range")
+        self.assertEqual(kc.prior_trend_bias(hh, ll, cc, 10, 1, 0.01), "up")
+        self.assertEqual(kc.prior_trend_bias(hh, ll, cc, 7, 1, 0.01), "up")
+        self.assertIsNone(kc.prior_trend_bias(hh, ll, cc, 2, 1, 0.01))
+
+
+class TestRsiLabels(unittest.TestCase):
+    def test_rsi_confirm_and_extreme(self):
+        p = kc.load_params()
+        line = [None, 50, 72, 69.9, 28, 10, 91, 40]
+        self.assertTrue(kc.rsi_confirms_break(line, 2, "long", p))   # 72 > 70
+        self.assertFalse(kc.rsi_confirms_break(line, 3, "long", p))  # 69.9
+        self.assertFalse(kc.rsi_confirms_break(line, 0, "long", p))  # None
+        self.assertTrue(kc.rsi_confirms_break(line, 4, "short", p))  # 28 < 30
+        self.assertFalse(kc.rsi_confirms_break(line, 2, "short", p))
+        self.assertEqual(kc.rsi_extreme(line, 5, p), ("low", "extreme"))    # 10 <= 10
+        self.assertEqual(kc.rsi_extreme(line, 6, p), ("high", "extreme"))   # 91 >= 90
+        self.assertEqual(kc.rsi_extreme(line, 4, p), ("low", "stretched"))  # 28
+        self.assertEqual(kc.rsi_extreme(line, 2, p), ("high", "stretched")) # 72
+        self.assertIsNone(kc.rsi_extreme(line, 7, p))
+        self.assertIsNone(kc.rsi_extreme(line, 0, p))
+        with open(HERE / "params" / "krown_params.json", encoding="utf-8") as f:
+            raw = json.load(f)["params"]
+        for k in ("rsi_ob", "rsi_os", "rsi_ext_low", "rsi_ext_high"):
+            self.assertEqual(raw[k]["label"], "OURS", k)
+
+
+class TestRangeTell(unittest.TestCase):
+    def test_range_tell_and_grade(self):
+        p = kc.load_params()  # tell_fast 5, tell_slow 10, tell_n 5
+        flat = [100.0] * 30
+        shrink = [100] * 25 + [50] * 5  # last 5 sum 250 vs prior 5 sum 500 -> 0.5
+        r = kc.range_tell(flat, shrink, 29, p)
+        self.assertEqual((r["flat"], r["tangled"], r["vol_shrinking"], r["tell"]), (True, True, True, True))
+        self.assertAlmostEqual(r["vol_ratio"], 0.5)
+        trend = [100.0 + i for i in range(30)]
+        r = kc.range_tell(trend, [100] * 30, 29, p)
+        self.assertEqual((r["flat"], r["tangled"], r["vol_shrinking"], r["tell"]), (False, False, False, False))
+        self.assertIsNone(kc.range_tell(flat, shrink, 5, p))  # too little history
+        # grade: width over mid of the last range_n bars, bars = trailing bars staying inside range_width_max
+        pg = dict(p, range_n=20)
+        h = [30] * 10 + [10.5] * 20
+        l = [0] * 10 + [9.5] * 20
+        g = kc.range_grade(h, l, 29, pg)
+        self.assertEqual(g["bars"], 20)
+        self.assertAlmostEqual(g["width"], 0.1)
+        self.assertEqual(g["grade"], "loose")
+        g = kc.range_grade([10.1] * 30, [9.9] * 30, 29, pg)
+        self.assertEqual(g["bars"], 30)
+        self.assertAlmostEqual(g["width"], 0.02)
+        self.assertEqual(g["grade"], "tight")
+        self.assertIsNone(kc.range_grade(h, l, 5, pg))
+
+
+class TestRoleFlip(unittest.TestCase):
+    ZONE = {"lo": 100.0, "hi": 102.0, "kind": "L", "avail": 0}
+
+    def test_zone_role_flip_and_retest(self):
+        import krown_events as ke
+        z = self.ZONE
+        c = [105, 104, 103, 99, 97, 98, 101.5, 99, 96]
+        self.assertEqual(kc.flip_state(z, c, 2, 5), {"broken": None, "flipped": False, "retested": None, "side": None})
+        s = kc.flip_state(z, c, 5, 5)  # close 99 < lo at bar 3, no return yet
+        self.assertEqual((s["broken"], s["flipped"], s["retested"], s["side"]), (3, True, None, "down"))
+        s = kc.flip_state(z, c, 6, 5)  # 101.5 back inside the zone at bar 6, inside the window
+        self.assertEqual((s["broken"], s["flipped"], s["retested"]), (3, True, 6))
+        self.assertEqual(kc.flip_state(z, c, 8, 5)["retested"], 6)  # first touch only
+        self.assertIsNone(kc.flip_state(z, c, 6, 2)["retested"])  # window 2 covers bars 4-5 only
+        # a close back above the zone kills the flip
+        c2 = [105, 99, 103.5, 98]
+        s = kc.flip_state(z, c2, 3, 5)
+        self.assertEqual((s["broken"], s["flipped"]), (1, False))
+        # resistance zone broken upward: retest from above
+        zh = {"lo": 110.0, "hi": 112.0, "kind": "H", "avail": 0}
+        s = kc.flip_state(zh, [108, 109, 113, 115, 111.0], 4, 5)
+        self.assertEqual((s["broken"], s["side"], s["flipped"], s["retested"]), (2, "up", True, 4))
+        # event: only at the retest bar, short after a support break, long after a resistance break
+        self.assertIsNone(ke.retest_event(z, c, 5, 5))
+        self.assertEqual(ke.retest_event(z, c, 6, 5),
+                         {"i": 6, "side": "short", "setup": "Z10", "tags": ["role_flip", "retest"]})
+        self.assertIsNone(ke.retest_event(z, c, 7, 5))
+        self.assertEqual(ke.retest_event(zh, [108, 109, 113, 115, 111.0], 4, 5)["side"], "long")
+
+
+def test_candle_volume_labels():
+    p = dict(kc.load_params(), vol_sma=3, low_n=3)
+    # KR-C05: body/range 9/10 = 0.9 >= 0.8 full body; 5/10 = 0.5 is not
+    assert kc.full_body(100, 110, 100, 109, p) == "bull"
+    assert kc.full_body(109, 110, 100, 100, p) == "bear"
+    assert kc.full_body(100, 110, 100, 105, p) is None
+    # KR-V06: prior ranges 2,2,2 (mean 2); last range 0.1 <= 0.5 * 2 and volume ratio 3 >= 2 -> absorption
+    h, l = [12, 12, 12, 10.5], [10, 10, 10, 10.4]
+    assert kc.effort_result(3.0, h, l, 3, p) == "absorption"
+    assert kc.effort_result(1.0, h, l, 3, p) is None
+    assert kc.effort_result(3.0, [12, 12, 12, 12], [10, 10, 10, 10], 3, p) is None
+    # KR-V08: close at the lowest of the last 3 closes: ratio 0.4 <= 0.5 apathy, 2.5 >= 2 panic, 1.0 neither
+    c = [10, 9, 8, 7]
+    assert kc.apathy_panic(0.4, c, 3, p) == "apathy"
+    assert kc.apathy_panic(2.5, c, 3, p) == "panic"
+    assert kc.apathy_panic(1.0, c, 3, p) is None
+    assert kc.apathy_panic(0.4, [10, 9, 8, 9], 3, p) is None
+
+
+def test_ma_pair_state_and_slope():
+    # EMA2 / EMA3 of 1,2,3,2,1 by hand (seed = SMA of first n, alpha 2/(n+1)):
+    # fast: t1 1.5, t2 2.5, t3 2.1667, t4 1.3889 ; slow: t2 2, t3 2, t4 1.5
+    s = kc.ma_pair_state([1, 2, 3, 2, 1], 2, 3)
+    assert s["above"] == [None, None, True, True, False]
+    assert s["cross"] == [(4, "down")]
+    assert kc.ma_slope([1, 2, 4, 7, None], 2) == [None, None, 3, 5, None]
+
+
+def test_vol_trap_and_exhaust():
+    p = dict(kc.load_params(), vol_trap_bbwp=85, vol_exhaust_bbwp=85)
+    line = [None, 40, 90, 95, 80, 60]
+    assert kc.vol_trap(line, 2, p) is True
+    assert kc.vol_trap(line, 1, p) is False
+    assert kc.vol_trap(line, 0, p) is False
+    # first bar back below 85 after expansion is t=4 only
+    assert [kc.vol_exhaust(line, t, p) for t in range(6)] == [False, False, False, False, True, False]
+
+
 if __name__ == "__main__":
     unittest.main()

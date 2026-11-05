@@ -52,13 +52,21 @@ def jobs():
     return max(1, n)
 
 
+def child_env(repo=None):
+    """Environment for a test child: the repo root appended after any existing PYTHONPATH, so a test run from its own folder can
+    still import repo-root packages (`from MyTradingSys...`)."""
+    env = dict(os.environ)
+    env["PYTHONPATH"] = os.pathsep.join(p for p in (env.get("PYTHONPATH"), str(repo or REPO)) if p)
+    return env
+
+
 def run_one(rel, basetemp):
     """(ok, one-line result) for one extra test file: its own pytest process, cwd and basetemp."""
     p = REPO / rel
     if not p.exists():
         return False, "missing"
     r = subprocess.run([sys.executable, "-m", "pytest", p.name, "-q", "-p", "no:cacheprovider", f"--basetemp={basetemp}"],
-                       cwd=p.parent, capture_output=True, text=True, errors="replace")
+                       cwd=p.parent, capture_output=True, text=True, errors="replace", env=child_env())
     tail = (r.stdout.strip().splitlines() or ["(no output)"])[-1]
     if r.returncode != 0:
         tail += failure_detail(r.stdout, r.stderr)

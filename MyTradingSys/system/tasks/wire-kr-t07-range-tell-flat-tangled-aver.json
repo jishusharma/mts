@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T23:02:45Z",
   "commands": [],
   "created": "2026-11-04T21:09:44Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "range_tell + range_grade, 1 test (vol ratio 0.5, width 0.1 loose)",
+      "ref": "252673860",
+      "utc": "2026-11-04T23:02:45Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "b-item-krown-core-rsi-returns-100-on-a-f: fix flat window RSI 100 to 50 and update docstri",
@@ -24,6 +31,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: wired offline, tested",
   "note": "planner-wire43-1104h: verified on trunk 2026-11-05, no code for this rule; params OURS unless the card says SOURCED. Folds: wire-kr-r04, wire-kr-r05.\nREVIEWED:2026-11-04 T0-ONLY",
   "prio": 2,
   "refine_tries": 0,
@@ -32,7 +40,12 @@
   "refs": [
     "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_6aA-P4Gvhrc.md:36"
   ],
-  "result": "",
+  "result": "range_tell + range_grade, 1 test (vol ratio 0.5, width 0.1 loose)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/krown/krown_core.py",
     "MyTradingSys/backtest/layers/krown/test_krown_core.py",
@@ -44,12 +57,13 @@
   "scope_sha": "150840644fd0",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read range_state and coil_score in krown_core.py.",
     "Add range_tell (average spread flat and volume ratio falling) and range_grade (bars in range, width over mid).",
     "Write the fail-first test with synthetic bars; run it."
   ],
+  "taken": "2026-11-04T23:02:45Z",
   "tests": "MyTradingSys/backtest/layers/krown/test_krown_core.py::test_range_tell_and_grade (new; fails on trunk, no range_tell)",
   "title": "wire KR-T07: Range tell: flat tangled averages plus shrinking volume (quote MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_6aA-P4Gvhrc.md:36)",
   "weight": "ROUTINE",
