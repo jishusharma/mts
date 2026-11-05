@@ -28,7 +28,14 @@ _sp.loader.exec_module(rt)
 prev, sib = rt.prev, rt.prev._sib
 
 DAY = 86400000
-FUT_ROOT = Path("F:/MTS/data/tom_raw/klines")          # USD-M futures 1m, <SYM>-1m-<YYYY-MM>[-DD].csv
+FUT_ROOT = Path("F:/MTS/data/tom_raw/klines")          # USD-M futures 1m (BTC), <SYM>-1m-<YYYY-MM>[-DD].csv
+ETH_ROOT = Path("F:/MTS/data/tom_raw/klines_eth")      # ETH 1m, moved out of klines 2026-11-05 (duplicate open_time vs BTC)
+
+
+def root_for(sym):
+    return ETH_ROOT if sym == "ETHUSDT" else FUT_ROOT
+
+
 SPOT_1D_ROOT = Path("F:/MTS/Dumps/backtest/spot_2017")  # <SYM>/1d/klines/*.csv, context only (regime)
 SYMBOLS = ("BTCUSDT", "ETHUSDT")
 DEV_START_MS, DEV_END_MS = prev.ms(splits.DEV_START), prev.ms(splits.DEV_END)
@@ -54,7 +61,7 @@ def load_sym_1m(sym, end_ms, root=None):
     period starts at or after end_ms are not opened."""
     if end_ms > DEV_END_MS:
         raise ValueError("end %d after DEV_END %d: VALIDATION/HOLDOUT not loadable here" % (end_ms, DEV_END_MS))
-    root = Path(root) if root is not None else FUT_ROOT
+    root = Path(root) if root is not None else root_for(sym)
     end_day = datetime.fromtimestamp(end_ms / 1000, timezone.utc).strftime("%Y-%m-%d")
     bars = {}
     for p in sorted(root.glob(sym + "-1m-*.csv")):
