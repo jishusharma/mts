@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-05T07:39:43Z",
   "commands": [],
   "created": "2026-10-22T22:41:51Z",
   "depends_on": [
@@ -16,6 +17,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "mts_signal.py: failed ship = note, ship done repeat window 900s; 58 tests pass",
+      "ref": "848838d18",
+      "utc": "2026-11-05T07:39:43Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "mts_signal resolve_login fails closed on typed vs detected login mismatch",
@@ -26,13 +33,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: card complete",
   "note": "REVIEWED:2026-10-26 T0-ONLY | DRAFT 2026-10-26 Session_Planner (OURS): mts_signal.auto_send_text (mts_signal.py:390-425) sends kind done for any 'sync.py ship' command, including a failed one. Verify: content sha, git cherry origin/fast-track <sha> empty, git ls-tree -r origin/fast-track --name-only lists the files. | CLUSTER: same file set as mts-signal-session-start-note (one editor per file); r",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
   "refreshed": "2026-11-05T04:41:02Z",
   "refs": [],
-  "result": "",
+  "result": "mts_signal.py: failed ship = note, ship done repeat window 900s; 58 tests pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/mts_signal.py",
     "scripts/dev/test_mts_signal.py"
@@ -48,12 +61,13 @@
     "scripts/dev/mts_signal.py:390-425,242-256",
     "scripts/dev/sync.py:1026"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read how the PostToolUse payload exposes tool_response (grep tool_response in the hook payload tests) and the ship tests at test_mts_signal.py:164-270.",
     "Write the 3 failing cases first.",
     "Branch on the tool output for verb == ship; extend is_repeat to ship done rows with a 900 s window."
   ],
+  "taken": "2026-11-05T07:39:43Z",
   "tests": "scripts/dev/test_mts_signal.py::test_failed_ship_is_not_done and ::test_repeat_ship_done_dropped fail on the current hook and pass after.",
   "title": "Ship signal: send done only on a completed ship; failed ship = note; drop repeats within 15 min",
   "weight": "ROUTINE",
