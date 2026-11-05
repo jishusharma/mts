@@ -31,7 +31,7 @@
   "prio": 2,
   "refine_tries": 1,
   "refined_by": "",
-  "refreshed": "2026-10-30T01:04:44Z",
+  "refreshed": "2026-11-05T02:44:40Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -44,7 +44,7 @@
     "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md",
     "MyTradingSys/research/tom_direction_health_audit_2026-10-17/AUDIT.md"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Read the finding in MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md",
     "Fix per the trader source; new test fails first"

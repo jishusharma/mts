@@ -21,7 +21,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T01:04:45Z",
+  "refreshed": "2026-11-05T02:44:10Z",
   "refs": [
     "MyTradingSys/research/layer_relations_2026-10/LAYER_RELATIONS_US_OPEN.md",
     "MyTradingSys/research/layer_lab/oi_delta_event_table/REPORT.md"
@@ -36,7 +36,7 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Write the fetch script (data root from env/config)",
     "Run BTCUSDT and ETHUSDT 2022-01..latest, list gaps",
