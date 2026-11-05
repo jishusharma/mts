@@ -17,10 +17,12 @@ def va(bars):
     tot = sum(vol.values()); px = sorted(vol)
     poc = max(px, key=lambda p: vol[p]); i = j = px.index(poc); acc = vol[poc]
     while acc < 0.7 * tot:
-        up = vol[px[j + 1]] if j + 1 < len(px) else -1
-        dn = vol[px[i - 1]] if i > 0 else -1
-        if up >= dn: j += 1; acc += up
-        else: i -= 1; acc += dn
+        # i, j walk price bins (not time): widen the value area one bin up or down
+        up_bin, dn_bin = j + 1, i - 1
+        up = vol[px[up_bin]] if up_bin < len(px) else -1
+        dn = vol[px[dn_bin]] if dn_bin >= 0 else -1
+        if up >= dn: j = up_bin; acc += up
+        else: i = dn_bin; acc += dn
     return px[i], poc, px[j]
 
 def days_local():
