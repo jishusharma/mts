@@ -57,6 +57,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/_archive/loose_2026-10/P2_FABIO_V3_HOLDOUT_STATUS.md`; `MyTradingSys/research/layer_lab/reports/2026-10-12_lab-audit-fabio-ledger-frames.md`; `MyTradingSys/research/orderflow_views_2026-10-14`
 - Roadmap: `MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
+  - `fabio-v3-funding-r-never-called` raw p2 SONNET: fabio v3: costs.funding_r is never called by a runner; FABIO-V3 numbers are fee-only
   - `fabio-v3-model-b-managed-is-rerun` ready p2 JIS-NB: Rerun fabio v3 L3 IS only with managed Model B fills (fix 483a6b035) on JIS-NB; report net R per model
   - `t09-f4-live-window-99-bars-swing-layers` refined p2 JIS-NB: T09-F4 S2: 99-bar live window misses 68 of 96 escalation signals; fetch more bars for swing layers
   - `layer-state-snapshot-causal` refined p3 SONNET: S0 park. Meta-label phase 2 (ROADMAP P2 + 2.0): causal layer_state_at(ts) snapshot in sim_desk/studies/_bars.p
@@ -185,6 +186,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `live-loop-timeouts-b191` refined p3 SONNET: Network: re-check live-loop timeouts after B191 plus wrapper priority and snapshot.cp (read-only report first)
   - `live-orderflow-state-line-1m-5m-15m-pric` refined p3 SONNET: Live read: one order-flow state line per TF (1m/5m/15m price swing vs Binance CVD swing vs OI change), descrip
   - `score-context-reads-automatically-carrie` refined p3 SONNET: Score context reads automatically: carried falsifier lines (HELD/BROKEN/UNTESTED) computed from klines at the 
+  - `venue-gap-tight-stop-rerun-on-deribit` raw p3 SONNET: Venue gap: rerun tight-stop and wick-touch layers on Deribit 1m (p50 6 bps, p95 13.6 bps gap, 2024-05)
 
 ## Callers (posted trade calls: Qriptal, RLinda, Bennett, Crypto Chase, Roman) (`callers`)
 - Status: Score the posted calls on Binance klines before anything else (B162 + multi-analyst ingestion). Self-reported 67.1 % wins, avg win 3.99 %, avg loss 0.63 %: unverified. Multi-provider parser + kline scorecard built (2026-10-18); 4 ingestion cards ready.
