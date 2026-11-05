@@ -37,7 +37,7 @@
   "not_twin_of": [
     "red-trunk-revert-within-10-min-rule-miss"
   ],
-  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks\nREVIEWED:2026-11-05 ACCEPT (Haiku on API credit, job haiku-review-refined-1105c: mts_doctor CI-REVERT (:409) on trunk; new module and tests fail first; no schedule or hook)",
   "pinned": false,
   "prio": 3,
   "refine_tries": 1,
