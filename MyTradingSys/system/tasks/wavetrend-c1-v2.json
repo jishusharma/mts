@@ -5,16 +5,17 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-05T13:31:11Z",
-    "misses": 24,
+    "folded": "2026-11-05T17:19:33Z",
+    "misses": 28,
     "reads": [
       "scripts/dev/artifacts.py",
       "scripts/dev/tasks.py",
       "scripts/dev/supervisor.py",
+      "scripts/dev/usage_reminder.py",
       "scripts/dev/sync.py",
+      "MyTradingSys/system/OPERATOR_DECISIONS.md",
       "MyTradingSys/system/artifacts/registry.json",
-      "scripts/dev/ci_watch.py",
-      "scripts/dev/usage_reminder.py"
+      "scripts/dev/ci_watch.py"
     ],
     "session": "c6544be9-fafb-4039-a01f-272f24fc1c71"
   },
