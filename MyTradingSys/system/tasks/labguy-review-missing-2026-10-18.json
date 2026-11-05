@@ -17,7 +17,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-10-19 T0-ONLY LAB:none CLASS:C1 REVIEWER:none WEIGHT:IMPORTANT. Refined by gemini-yt-pipeliner from desk row 20261018-041544; T0 mechanical checks passed, awaiting non-Gemini Lab_Guy ACCEPT stamp for C1/IMPORTANT promotion.",
+  "note": "REVIEWED:2026-10-19 T0-ONLY LAB:none CLASS:C1 REVIEWER:none WEIGHT:IMPORTANT. Refined by gemini-yt-pipeliner from desk row 20261018-041544; T0 mechanical checks passed, awaiting non-Gemini Lab_Guy ACCEPT stamp for C1/IMPORTANT promotion.\nREVIEWED:2026-11-05 ACCEPT (Haiku on API credit, job haiku-review-refined-1105b: disposition note testable; scope exists; no shipped disposition on trunk)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "gemini-yt-pipeliner",

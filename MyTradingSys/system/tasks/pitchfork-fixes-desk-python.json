@@ -29,7 +29,7 @@
   "not_twin_of": [
     "pitchfork-review-fixes-2026-10-28"
   ],
-  "note": "AUDIT 2026-11-03 (operator: loosen blockers that make no sense): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "AUDIT 2026-11-03 (operator: loosen blockers that make no sense): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks\nREVIEWED:2026-11-05 ACCEPT (Haiku on API credit, job haiku-review-refined-1105b: six findings each with fail-first test; scope exists; no trunk fix found)",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
