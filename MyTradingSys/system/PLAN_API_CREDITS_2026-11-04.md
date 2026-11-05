@@ -102,3 +102,4 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-04 | ms-level-eth-1104 | Opus 5.5 | 2.49 | 56 | C15 level approach replicated on ETH: narrow agreement; cap was 7.0 |
 | 2026-11-04 | wire-krown-a-1104 | Sonnet 5.5 | 0.66 | 18 | 5 Krown wire cards (see trunk); cap was 4.0 |
 | 2026-11-04 | wire-krown-b-1104 | Sonnet 5.5 | 0.49 | 16 | 4 Krown wire cards built; ship pending in gate; cap was 4.0 |
+| 2026-11-05 | haiku-review-refined-1105 | Haiku 5.5 | 0.04 | 32 | stamped 7 refined cards: 1 ACCEPT, 6 HOLD; cap was 2.0 |
