@@ -263,6 +263,46 @@ class SignalTest(unittest.TestCase):
         finally:
             S.last_result = orig
 
+    def ship_with_output(self, out, cwd=None):
+        p = self.bash("python scripts/dev/sync.py ship --release s1 2>&1 | tail -8", cwd=cwd)
+        p["tool_response"] = {"stdout": out, "stderr": "", "exit_code": 0}
+        return p
+
+    def test_failed_ship_is_not_done(self):
+        orig = S.last_result
+        S.last_result = lambda cwd: ""
+        try:
+            ok = S.auto_send_text(self.ship_with_output("push rejected (someone shipped first), retry 1/3\nshipped 3 file(s) to origin/fast-track; released s1"))
+            self.assertEqual(ok, ("ship s1", "done"))
+            for out in ("push rejected (someone shipped first), retry 3/3\nship failed", "shipped 3 file(s) to origin/fast-track\nCI RED abc12345: tests https://x"):
+                text, kind = S.auto_send_text(self.ship_with_output(out))
+                self.assertEqual(kind, "note", out)
+                self.assertTrue(text.startswith("ship failed"), text)
+        finally:
+            S.last_result = orig
+
+    def test_hook_ship_done_twice_gives_one_row(self):
+        self.machine("jis-nb", "pro")
+        orig = S.last_result
+        S.last_result = lambda cwd: ""
+        try:
+            p = self.ship_with_output("shipped 2 file(s) to origin/fast-track; released s1")
+            S.handle(dict(p, session_id="s9"))
+            S.handle(dict(p, session_id="s9"))
+        finally:
+            S.last_result = orig
+        self.machine("jis-nuc", "sharma")
+        self.assertEqual([r["text"] for r in S.load(S.ensure()) if r["kind"] == "done"], ["ship s1"])
+
+    def test_repeat_ship_done_dropped(self):
+        t0 = "20261105T100000Z"
+        row = {"kind": "done", "from": "a", "text": "ship s1 Result: x", "t": t0}
+        rec = lambda t: {"kind": "done", "from": "a", "text": "ship s1 Result: x", "t": t}
+        self.assertTrue(S.is_repeat([row], rec("20261105T101400Z")))
+        self.assertFalse(S.is_repeat([row], rec("20261105T101600Z")))
+        note = dict(row, kind="note", text="n")
+        self.assertFalse(S.is_repeat([note], dict(note, t="20261105T100800Z")))   # a note keeps the 5 minute window
+
     def test_ship_signal_carries_result_line(self):
         sh(self.tmp, "init", "-q", "repo")
         repo = self.tmp / "repo"

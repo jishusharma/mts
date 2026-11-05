@@ -272,7 +272,8 @@ def prune(h):
 REPEAT_SEC = 300   # OURS: an identical note from the same sender inside 5 minutes adds nothing (traffic.py: 87 repeated lines in 72 h)
 
 
-REPEAT_KINDS = ("note", "done")     # a ship signal re-fired with the same Result (3 times after a fast-track merge, 2026-10-28) adds nothing either
+SHIP_REPEAT_SEC = 900   # OURS: a ship done row re-fired inside 15 minutes (merge, retry, re-run) is one ship
+REPEAT_KINDS = ("note", "done")    # a ship signal re-fired with the same Result (3 times after a fast-track merge, 2026-10-28) adds nothing either
 
 
 def is_repeat(rows, rec):
@@ -283,7 +284,8 @@ def is_repeat(rows, rec):
     for r in rows:
         if r.get("kind") == rec.get("kind") and r.get("from") == rec.get("from") and r.get("text") == rec.get("text"):
             try:
-                if 0 <= (t - datetime.strptime(r["t"], "%Y%m%dT%H%M%SZ")).total_seconds() <= REPEAT_SEC:
+                window = SHIP_REPEAT_SEC if rec.get("kind") == "done" and str(rec.get("text") or "").startswith("ship") else REPEAT_SEC
+                if 0 <= (t - datetime.strptime(r["t"], "%Y%m%dT%H%M%SZ")).total_seconds() <= window:
                     return True
             except (KeyError, ValueError):
                 pass
@@ -421,6 +423,23 @@ def last_result(cwd):
 BROADCAST_RE = re.compile(r"^\s*(?:mts\s+broadcast\b\s*[:\-]?|broadcast\s*:)\s*(.*)$", re.IGNORECASE | re.DOTALL)
 
 
+SHIPPED_OK = re.compile(r"\bshipped (?:\d+ file\(s\)|[0-9a-f]{7,})")
+
+
+def tool_output(resp):
+    """The printed text of a Bash tool_response (dict stdout/stderr, or a plain string), else ''."""
+    if isinstance(resp, str):
+        return resp
+    if isinstance(resp, dict):
+        return "\n".join(str(resp[k]) for k in ("stdout", "stderr", "output") if resp.get(k))
+    return ""
+
+
+def ship_failed(out):
+    """A ship whose output lacks sync.py's `shipped N file(s)` line, or has CI RED, did not complete; no output is unknown, not failed."""
+    return bool(out.strip()) and (not SHIPPED_OK.search(out) or "CI RED" in out)
+
+
 def auto_send_text(payload):
     """(text, kind) for the tool calls and events that are worth a signal, else None.
     Command signals carry the verb and the slug only (never the shell tail); a ship adds its Result: line."""
@@ -464,6 +483,8 @@ def auto_send_text(payload):
                 slug = slug if SLUG.match(slug) else ""
             kind = {"claim": "claim", "ship": "done", "release": "done", "start": "note"}[verb]
             text = ("%s %s" % (verb, slug)).strip()
+            if verb == "ship" and ship_failed(tool_output(resp)):
+                return ("ship failed %s" % slug).strip(), "note"
             if verb == "ship":
                 res = last_result(ship_dir(cmd, cwd))
                 if res:
