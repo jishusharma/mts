@@ -1,35 +1,66 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest scripts/dev/test_check_handoff.py -q",
+    "python scripts/dev/check_handoff.py"
+  ],
   "created": "2026-11-05T04:33:29Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "python scripts/dev/check_handoff.py exits 1 on a file whose line-1 date is older than a later body date and exits 0 on the current NEXT_SESSION.md after its header is fixed; pytest scripts/dev/test_check_handoff.py passes",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "check_handoff.py gets rule f: line 1 of NEXT_SESSION.md carries a date older than the newest YYYY-MM-DD dated line in the body (header said 2026-10-30, body 2026-11-04), so exit 1 with one line naming both dates.",
   "id": "handoff-header-date-lint-1105",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "handover: live-feed-onepage v4 shipped 8a701204",
+      "ref": "1d54cdeed71a",
+      "utc": "2026-11-04T08:15:06Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "1d54cdeed71a handover: live-feed-onepage v4 shipped 8a701204",
+      "ref": "MyTradingSys/system/NEXT_SESSION.md",
+      "utc": "2026-11-04T08:15:06Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "planner 11-05 ROUTINE, T0 checker only",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-05T11:20:06Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/check_handoff.py",
+    "scripts/dev/test_check_handoff.py",
+    "MyTradingSys/system/NEXT_SESSION.md"
+  ],
+  "scope_out": [
+    "no change to rules a-e, no new docs, no scheduler"
+  ],
+  "scope_sha": "1d54cdeed71a",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Add the failing test using doc() with a line-1 date earlier than a body date",
+    "Add rule f in check() using a YYYY-MM-DD regex on line 1 and the max date in the body (OURS: strict less-than)",
+    "Fix the line-1 date in NEXT_SESSION.md so the checker passes"
+  ],
+  "tests": "scripts/dev/test_check_handoff.py::test_stale_header_date_fails written first, fails on current check_handoff.py (no rule f), plus a passing same-date case",
   "title": "handoff_lint: flag NEXT_SESSION.md line-1 date older than its newest dated line (header said 2026-10-30, body 2026-11-04)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

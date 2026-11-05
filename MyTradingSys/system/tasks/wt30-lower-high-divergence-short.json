@@ -7,13 +7,18 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-05T06:08:23Z",
-    "misses": 8,
+    "folded": "2026-11-05T11:20:47Z",
+    "misses": 12,
     "reads": [
-      "MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md",
-      "MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md"
+      "scripts/dev/mts_signal.py",
+      "MyTradingSys/backtest/fetch_futures_metrics.py",
+      "scripts/dev/refresh_main_checkout.py",
+      "scripts/dev/check_handoff.py",
+      "scripts/dev/test_check_handoff.py",
+      "MyTradingSys/system/NEXT_SESSION.md",
+      "scripts/dev/test_refresh_main_checkout.py"
     ],
-    "session": "agent-ae2d9d8a9b983efe5"
+    "session": "agent-a7777a933a33f24db"
   },
   "created": "2026-11-04T13:57:14Z",
   "depends_on": [],
