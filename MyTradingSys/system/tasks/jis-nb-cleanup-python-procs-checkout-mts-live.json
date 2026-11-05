@@ -20,16 +20,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "STATION_DISK_2026-10-30: three-machine disk table and cleanup list",
-      "ref": "444bf099cf1d",
-      "utc": "2026-10-30T01:14:10Z"
+      "line": "station cleanup docs: cutover to the laptop 2026-10-22, STATION_CLEANUP s1 from the 2026-1",
+      "ref": "4b192ce1ae09",
+      "utc": "2026-11-04T21:04:23Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "444bf099cf1d STATION_DISK_2026-10-30: three-machine disk table and cleanup list",
-      "ref": "MyTradingSys/system/STATION_DISK_2026-10-30.md",
-      "utc": "2026-10-30T01:14:10Z"
+      "line": "4b192ce1ae09 station cleanup docs: cutover to the laptop 2026-10-22, STATION_CLEANUP s1 fr",
+      "ref": "MyTradingSys/system/STATION_CLEANUP.md",
+      "utc": "2026-11-04T21:04:23Z"
     }
   ],
   "layers": [],
@@ -39,7 +39,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-30T10:01:03Z",
+  "refreshed": "2026-11-05T10:27:37Z",
   "refs": [
     "MyTradingSys/system/STATION_DISK_2026-10-30.md",
     "MyTradingSys/system/STATION_CLEANUP.md",
@@ -54,7 +54,7 @@
     ".mts_live and any data deletion",
     "stopping python processes that are a live engine or an open Claude session"
   ],
-  "scope_sha": "444bf099cf1d",
+  "scope_sha": "4b192ce1ae09",
   "size": "S",
   "sources": [
     "STATION_DISK_2026-10-30.md findings 4 and 5"

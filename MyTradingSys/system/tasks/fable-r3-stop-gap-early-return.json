@@ -17,9 +17,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "B148 part 5 (D10: 10 min heartbeat age) and B146 gate on at 0.3 (D09); Inbox items recorde",
-      "ref": "5c5678d4caa8",
-      "utc": "2026-10-09T08:25:56Z"
+      "line": "wiring audit builder: restore full tree after an index slip; lint-clean quote parsing",
+      "ref": "89619dbe5f66",
+      "utc": "2026-10-28T22:03:30Z"
     }
   ],
   "layers": [],
@@ -30,7 +30,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-05T04:41:33Z",
+  "refreshed": "2026-11-05T10:27:36Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -39,7 +39,7 @@
   "scope_out": [
     "live tree; auto_trader respawn loop; executor; other offline tests"
   ],
-  "scope_sha": "5c5678d4caa8",
+  "scope_sha": "89619dbe5f66",
   "size": "M",
   "sources": [
     "MyTradingSys/research/fable_runs_2026-10-28/R3_LIVE_REDTEAM.md"

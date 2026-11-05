@@ -19,9 +19,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "research_kit: context harness (regime, phase, session tags, retest-entry, regime-mix line)",
-      "ref": "57b0b511c3e6",
-      "utc": "2026-11-03T22:40:27Z"
+      "line": "lab v-recovery-after-low-sweep-event-study-1104: BLOCKED (build)",
+      "ref": "b4ccec690ec2",
+      "utc": "2026-11-04T20:38:44Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "b4ccec690ec2 lab v-recovery-after-low-sweep-event-study-1104: BLOCKED (build)",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-11-04_v-recovery-after-low-sweep-event-study-1104.md",
+      "utc": "2026-11-04T20:38:44Z"
     }
   ],
   "layers": [],
@@ -31,7 +38,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-04T13:01:43Z",
+  "refreshed": "2026-11-05T10:27:40Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -41,7 +48,7 @@
   "scope_out": [
     "live feed code; live tree; Habib or Tom rules (context only)"
   ],
-  "scope_sha": "57b0b511c3e6",
+  "scope_sha": "b4ccec690ec2",
   "size": "M",
   "sources": [
     "OPERATOR QUOTE in note (OURS thresholds: 5 days, 50%, 3h)"

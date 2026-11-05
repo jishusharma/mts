@@ -27,9 +27,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Merge remote-tracking branch 'origin/fast-track' into JIS-NB/route-tag-closeout-1104-2",
-      "ref": "6e07fe14d990",
-      "utc": "2026-11-04T15:36:30Z"
+      "line": "Revert \"Revert route tag re-land 08d51e5b7 (CI RED: wiring stale wavetrend entry, MTS Home",
+      "ref": "dea81301a70a",
+      "utc": "2026-11-04T16:25:21Z"
     }
   ],
   "layers": [],
@@ -39,7 +39,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-04T15:46:41Z",
+  "refreshed": "2026-11-05T10:27:39Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -52,7 +52,7 @@
     "MyTradingSys/aibridge extension code (content.js, loop.js)",
     "deleting or skipping the test"
   ],
-  "scope_sha": "6e07fe14d990",
+  "scope_sha": "dea81301a70a",
   "size": "S",
   "sources": [],
   "state": "ready",
