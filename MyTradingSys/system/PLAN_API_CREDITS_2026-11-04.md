@@ -113,3 +113,4 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-05 | oi-toptrader-1105 | Opus 5.5 | 1.03 | 22 | OI top-trader fetch script; fetch was still running at job end (verify on trunk); cap was 6.0 |
 | 2026-11-05 | session-handoff-audit-1105 | Opus 5.5 | 0.90 | 24 | shipped da963242 (session/handoff ship-speed audit); cap was 5.0 |
 | 2026-11-05 | 4b3-successor-wake-1105 | Opus 5.5 | 0.44 | 11 | no build: card already done on trunk, closed; cap was 6.0 |
+| 2026-11-05 | haiku-review-refined-1105c | Haiku 5.5 | 0.22 | 25 | stamped 20 cards: 5 ACCEPT, 9 HOLD, 6 DROP; cap was 2.0 |
