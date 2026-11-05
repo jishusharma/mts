@@ -14,7 +14,7 @@ Line 1 is `HEALTH: GREEN` or `HEALTH: <n> WARN: <names>`. Each check is OK / WAR
 | Check | Proves |
 |---|---|
 | SIZE-HEADROOM | CLAUDE.md and each role file keep 3% under their cap (caps read from the tests) |
-| CI-REVERT | red runs on fast-track went green within 10 min; trunk is not red now |
+| CI-REVERT | red runs on fast-track went green within 10 min; trunk is not red now (red now: `python scripts/dev/ci_revert.py` prints the revert plan, `--apply` reverts in your worktree and ships) |
 | SHIP-TIME | ship and gate wall time, 72 h, max under 15 min (`runtime_data/gate_timing.jsonl`) |
 | HOOK-REG | main checkout registers role_loader and ci_watch and is under 50 commits behind trunk |
 | DISK | 15 GB free on the repo drive |
