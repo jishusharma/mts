@@ -16,16 +16,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Sim result cards: Verdict/Keep/Totals regenerated from results json; eagle 11-03 docstring",
-      "ref": "9111a1c05590",
-      "utc": "2026-11-03T17:22:16Z"
+      "line": "level approach study (C15): classifier, tests, pre-reg, DEV result",
+      "ref": "3f6c67af484d",
+      "utc": "2026-11-04T19:49:06Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "9111a1c05590 Sim result cards: Verdict/Keep/Totals regenerated from results json; eagle 11",
+      "line": "3f6c67af484d level approach study (C15): classifier, tests, pre-reg, DEV result",
       "ref": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md",
-      "utc": "2026-11-03T17:22:16Z"
+      "utc": "2026-11-04T19:49:06Z"
     }
   ],
   "layers": [],
@@ -35,7 +35,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-04T07:19:08Z",
+  "refreshed": "2026-11-05T10:27:36Z",
   "refs": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md"
   ],
@@ -47,7 +47,7 @@
   "scope_out": [
     "no new data pulls, no mainnet, BTC only so no powered claim; Regime mix line required per step 3pc"
   ],
-  "scope_sha": "9111a1c05590",
+  "scope_sha": "3f6c67af484d",
   "size": "S",
   "sources": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md:43"

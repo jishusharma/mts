@@ -19,9 +19,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "route tag re-land: every ship names where the work goes next (Next: gate, tasks done --nex",
-      "ref": "08d51e5b7fc8",
-      "utc": "2026-11-04T15:22:55Z"
+      "line": "codex lab: gate-red ship writes lab.hold; lint/check flag done_when outside lab",
+      "ref": "7c12edc44529",
+      "utc": "2026-11-05T03:55:05Z"
     }
   ],
   "layers": [],
@@ -31,7 +31,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-11-04T15:46:37Z",
+  "refreshed": "2026-11-05T10:27:38Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -43,7 +43,7 @@
     "card JSONs",
     "no change to the non-empty scope_sha branch"
   ],
-  "scope_sha": "08d51e5b7fc8",
+  "scope_sha": "7c12edc44529",
   "size": "S",
   "sources": [],
   "state": "ready",

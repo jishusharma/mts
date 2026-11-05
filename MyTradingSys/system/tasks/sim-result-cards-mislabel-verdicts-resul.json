@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-05T10:27:08Z",
   "commands": [
     "python -m pytest -q MyTradingSys/research/api_jobs_2026-11-03/test_sim_cards_from_json.py"
   ],
@@ -16,6 +17,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "already on trunk 9111a1c05 (cards map banner.state and verdict.label; test_sim_cards_from_",
+      "ref": "8e4d81ef9",
+      "utc": "2026-11-05T10:27:08Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "rsi 40/60 line behaviour: RSI sits near a random-walk benchmark at both lines, no default ",
@@ -26,6 +33,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: already on trunk 9111a1c05",
   "note": "\nREVIEWED:2026-11-04 HOLD (Haiku on API credit, job haiku-review-ready-sonnet-1104: STALE: scope changed 1dab5e297af0 after refresh; re-tag before work.)",
   "prio": 3,
   "refine_tries": 0,
@@ -34,7 +42,12 @@
   "refs": [
     "MyTradingSys/research/gemini_audits_2026-11-03/blind_read_sim_cards.py"
   ],
-  "result": "",
+  "result": "already on trunk 9111a1c05 (cards map banner.state and verdict.label; test_sim_cards_from_json rc 0)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/api_jobs_2026-11-03/sim_cards_from_json.py",
     "MyTradingSys/research/api_jobs_2026-11-03/test_sim_cards_from_json.py"
@@ -45,12 +58,13 @@
   "scope_sha": "1dab5e297af0",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add the failing fixture test for both mislabelled cases.",
     "Fix the mapping in sim_cards_from_json.py.",
     "Regenerate RESULTS_CARDS_2026-11-03.md and compare counts."
   ],
+  "taken": "2026-11-05T10:27:08Z",
   "tests": "MyTradingSys/research/api_jobs_2026-11-03/test_sim_cards_from_json.py::test_banner_and_verdict_mapping",
   "title": "sim result cards mislabel verdicts: RESULTS_CARDS_2026-11-03.md stamps 73 EMPTY rows whose banner is TOO_FEW (45) or FAIL (28), PASSED on audit-t03_planted_edges (banner FAIL), EMPTY on desk-meta_label_fabio_c_dev_ext (verdict PASSED, n 509). Done when the card builder maps from banner.state and verdict.label and a recount matches. Evidence: gemini-blind-read-sim-results-cards-1103",
   "weight": "",

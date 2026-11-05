@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-05T10:27:06Z",
   "commands": [
     "python -m pytest -q scripts/dev/test_mts_signal.py"
   ],
@@ -28,6 +29,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "already on trunk f854cd802 (resolve_login fails closed on login mismatch)",
+      "ref": "8e4d81ef9",
+      "utc": "2026-11-05T10:27:06Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "mts_signal: session-start note keeps the folder name",
@@ -38,6 +45,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: already on trunk f854cd802",
   "note": "planner-refine-1104e: conservative default = fail closed on mismatch; env MTS_LOGIN stays the explicit override. T0-ONLY stamp\nREVIEWED:2026-11-04 T0-ONLY",
   "prio": 3,
   "refine_tries": 0,
@@ -46,7 +54,12 @@
   "refs": [
     "MyTradingSys/research/login_detection_audit_1104.md"
   ],
-  "result": "",
+  "result": "already on trunk f854cd802 (resolve_login fails closed on login mismatch)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/mts_signal.py",
     "scripts/dev/test_mts_signal.py"
@@ -59,13 +72,14 @@
   "sources": [
     "MyTradingSys/research/login_detection_audit_1104.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read research/login_detection_audit_1104.md, sources 1-4 and ROOT CAUSE",
     "Write the red test first (typed B, detected A via MTS_CLAUDE_JSON fixture)",
     "Change resolve_login to return ('', message) on a mismatch; message names typed letter, detected letter, source (env or home config); grep every caller of resolve_login and make each exit nonzero on an empty letter",
     "Run python -m pytest -q scripts/dev/test_mts_signal.py"
   ],
+  "taken": "2026-11-05T10:27:06Z",
   "tests": "scripts/dev/test_mts_signal.py: new test with fixture MTS_CLAUDE_JSON (detected A) and typed B asserts empty letter + message; fails on the old code, which returns A",
   "title": "mts_signal resolve_login: fail closed when the typed login letter and the detected one differ; name the source; fail-first test with fixture MTS_CLAUDE_JSON (audit login_detection_audit_1104.md)",
   "weight": "ROUTINE",

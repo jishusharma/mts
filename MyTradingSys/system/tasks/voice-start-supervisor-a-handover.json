@@ -32,9 +32,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "supervisor B hand-over at week 74%; credit ledger row",
-      "ref": "3fcbaa0c6bea",
-      "utc": "2026-11-05T01:26:47Z"
+      "line": "handover: Supervisor C L5 close",
+      "ref": "8e4d81ef9ae3",
+      "utc": "2026-11-05T10:21:57Z"
     }
   ],
   "layers": [],
@@ -46,7 +46,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-05T04:41:07Z",
+  "refreshed": "2026-11-05T10:27:40Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -55,7 +55,7 @@
     "MyTradingSys/system/handover/"
   ],
   "scope_out": [],
-  "scope_sha": "3fcbaa0c6bea",
+  "scope_sha": "8e4d81ef9ae3",
   "size": "S",
   "sources": [],
   "state": "ready",
