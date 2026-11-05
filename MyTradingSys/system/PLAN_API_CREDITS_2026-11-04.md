@@ -118,3 +118,4 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-05 | gate-fix-6-1105 | Opus 5.5 | 1.20 | 39 | promotion gate min trade count from effect size (gate-fix-6); ship verified separately; cap was 6.0 |
 | 2026-11-05 | ship-signal-1105 | Sonnet 5.5 | 0.68 | 36 | ship signal done only on completed ship; 15 min repeat window (848838d1); cap was 3.0 |
 | 2026-11-05 | successor-wake-1105b | Sonnet 5.5 | 0.34 | 8 | already on trunk, nothing new; cap was 3.0 |
+| 2026-11-05 | voice-start-1105 | Sonnet 5.5 | 0.22 | 9 | already on trunk (4545f773), nothing new; cap was 3.0 |
