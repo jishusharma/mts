@@ -39,6 +39,11 @@
       "ref": "tom-dax-data",
       "why": "Offline research driver: compiles the engine to %TEMP% and runs SnapAt/TomSnapshotGen on a non-BTC symbol (GER40); research/tom_transfer_2026-10-11/PROBE_PLAN.md; run by hand or a desk task, not by any loop."
     },
+    "MyTradingSys/backtest/fetch_futures_metrics.py": {
+      "disp": "TOOL",
+      "ref": "metrics-oi-toptrader-into-shared-data",
+      "why": "Data fetcher run by hand: public data.binance.vision 5m futures metrics (OI, L/S ratios) into MTS_METRICS_ROOT (fleet F:/MTS/data/metrics); readers load the CSVs from that root (DATA_NOTES.md), not this module."
+    },
     "MyTradingSys/backtest/l1_patch_mds.py": {
       "disp": "REPRO",
       "why": "Generates MarketDataSnapshot.java.archive_mode.new for the Tom core historical backtest; tom_bt_report.py:143 hashes it and :221 cites it in TOM_CORE_BT.md; L1_SLICE1_STATUS.md:76."
