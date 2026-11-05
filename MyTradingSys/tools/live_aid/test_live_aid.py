@@ -674,3 +674,80 @@ def test_anticipation_flat_or_missing_inputs_give_no_readings():
     assert _anticipation(None, 0.004, 10, HAND_RATES)["readings"] == []        # price window missing
     r = _anticipation(0.005, 0.004, 120, None)                                # rates file missing: readings stay, odds UNMEASURED
     assert [x["src"] for x in r["readings"]] == ["UNMEASURED"] * 3
+
+
+# ---------- level-approach prep (card level-approach-prep; rates from research/level_approach_prep_2026-11-05)
+def _la(fn, *args):
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("node not installed")
+    runner = ("const A=require(process.argv[1]);let j='';process.stdin.on('data',d=>j+=d).on('end',()=>{j=JSON.parse(j);"
+              "console.log(JSON.stringify(A[j.fn](...j.args)))})")
+    out = subprocess.run([node, "-e", runner, str(JS)], input=json.dumps({"fn": fn, "args": list(args)}),
+                         capture_output=True, text=True, timeout=60, env=os.environ.copy())
+    assert out.returncode == 0, out.stderr
+    return json.loads(out.stdout)
+
+
+def _bar(i, o, h, l, c, v, tb):
+    # Binance kline layout: [open_time, open, high, low, close, volume, close_time, quote, trades, taker_buy_base]
+    return [1_700_000_040_000 + i * 60_000, o, h, l, c, v, 0, 0, 0, tb]
+
+
+LA_RATES = {"u1": {"abs": {"n": 228, "rev": 18, "brk": 22}, "non": {"n": 659, "rev": 27, "brk": 45}, "nonMatched": 27},
+            "u2": {"UP": {"n": 67, "rev": 18}, "FLAT": {"n": 88, "rev": 15}, "DOWN": {"n": 73, "rev": 23}},
+            "u3": {"0": {"n": 280, "hold": 18}, "1": {"n": 129, "hold": 25}, "2": {"n": 137, "hold": 23}, "3+": {"n": 187, "hold": 23}}}
+
+
+def _absorb_rows(next_high):
+    # 15 quiet bars, then a 3-bar push into 100 (delta share +0.5: taker buy 7.5 of 10), then 3 bars that peak at next_high
+    rows = [_bar(i, 99.0, 99.05, 98.95, 99.0, 10, 5) for i in range(15)]
+    rows += [_bar(15, 99.0, 99.5, 99.0, 99.5, 10, 7.5), _bar(16, 99.5, 99.75, 99.5, 99.75, 10, 7.5), _bar(17, 99.75, 99.8, 99.7, 99.8, 10, 7.5)]
+    rows += [_bar(18 + i, 99.8, next_high, 99.7, 99.78, 10, 5) for i in range(3)]
+    return rows
+
+
+def test_level_approach_absorption_flag_on_hand_built_push():
+    # delta +0.5 into the level 100 (0.2 % above), next 3 bars peak 99.84 (+0.04 %, no extension): absorption flag set
+    r = _la("levelApproach", _absorb_rows(99.84), [{"level": 100.0, "name": "prev day high"}],
+            {"px": 99.78, "doi": 0.002, "rsi": 72, "coil": False, "rates": LA_RATES})
+    assert len(r) == 1
+    x = r[0]
+    assert x["side"] == "above" and abs(x["dist"] - (100 / 99.78 - 1) * 100) < 1e-9
+    assert x["absorption"]["flag"] is True and abs(x["absorption"]["ds"] - 0.5) < 1e-9
+    assert x["absorption"]["n"] == 228 and x["absorption"]["rate"] == 18 and x["absorption"]["src"] == "MEASURED"
+    assert x["oi"]["tell"] == "UP" and x["oi"]["n"] == 67 and x["oi"]["rate"] == 18
+    # flags: absorption, OI tell, level within 0.5 %, RSI 72 extreme into a high; coil off, no wick
+    assert x["flags"] == 4 and sorted(x["flagList"]) == sorted(["absorption", "oi", "level", "rsi"])
+    assert x["checklist"]["hold"] and x["checklist"]["break"] and "5m close" in x["confirm"]
+
+
+def test_level_approach_extension_clears_flag_and_far_level_dropped():
+    # same push but the next bars run to 100.1 (+0.32 %): not absorption; a level 1 % away is not listed
+    r = _la("levelApproach", _absorb_rows(100.1), [{"level": 100.0, "name": "prev day high"}, {"level": 100.8, "name": "weekly high"}],
+            {"px": 99.78, "doi": None, "rsi": None, "coil": None, "rates": LA_RATES})
+    assert [x["name"] for x in r] == ["prev day high"]
+    assert r[0]["absorption"]["flag"] is False and r[0]["oi"]["tell"] is None and r[0]["oi"]["src"] == "UNMEASURED"
+    # the 100.1 spikes close back at 99.78: a real upper wick through the level, so only level + wick remain
+    assert r[0]["flagList"] == ["level", "wick"]
+
+
+def test_level_approach_non_prior_day_level_is_unmeasured_and_wick_counts():
+    # a weekly low 0.3 % below; 1m bars whose lower wick reaches it and closes back up: 1m wick rejection counted
+    rows = [_bar(i, 99.0, 99.05, 98.75, 99.0, 10, 5) for i in range(21)]
+    r = _la("levelApproach", rows, [{"level": 98.7, "name": "weekly low"}], {"px": 99.0, "doi": None, "rsi": 25, "coil": True, "rates": LA_RATES})
+    x = r[0]
+    assert x["side"] == "below" and x["absorption"]["src"] == "UNMEASURED" and x["absorption"]["n"] == 0
+    assert x["wicks"]["count"] >= 1 and "1m" in x["wicks"]["tfs"] and x["wicks"]["src"] == "UNMEASURED"
+    assert "rsi" in x["flagList"] and "coil" in x["flagList"] and "wick" in x["flagList"]
+
+
+def test_level_approach_one_alert_per_level_per_day():
+    lv = [{"level": 100.0, "name": "prev day high", "dist": 0.2, "flags": 3, "side": "above", "alertKey": "prev day high|100.0"}]
+    seen = {}
+    a1 = _la("approachAlerts", lv, seen, 1_700_000_000_000)
+    assert len(a1["alerts"]) == 1 and "prev day high" in a1["alerts"][0]["text"]
+    a2 = _la("approachAlerts", lv, a1["seen"], 1_700_000_600_000)          # 10 min later, same day: no repeat
+    assert a2["alerts"] == []
+    a3 = _la("approachAlerts", lv, a1["seen"], 1_700_000_000_000 + 86_400_000)  # next UTC day: alerts again
+    assert len(a3["alerts"]) == 1

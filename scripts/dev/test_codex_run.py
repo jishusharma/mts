@@ -793,6 +793,18 @@ class ShipHoldTest(unittest.TestCase):
             self.assertIn("HOLD", out.getvalue())
             self.assertIn("lab-a", R.needs_look([card()], {}, [], lab_hold=R.read_hold(d))[0])
 
+    def test_ship_run_gate_red_writes_hold_timeout_does_not(self):
+        with tempfile.TemporaryDirectory() as d:
+            def fake(text, rc=1):
+                return unittest.mock.patch.object(R, "boxed", lambda *a, **k: type("P", (), {"returncode": rc, "stdout": text, "stderr": ""})())
+            with fake("TIMEOUT after 1500s"):
+                self.assertTrue(R.ship_run(Path(d), Path(d) / "run.log", d, "lab-a"))
+            self.assertFalse((Path(d) / "lab.hold").exists())
+            with fake(self.GATE_RED):
+                self.assertIn("Step 4c", R.ship_run(Path(d), Path(d) / "run.log", d, "lab-a"))
+            self.assertIn("lab-a", (Path(d) / "lab.hold").read_text(encoding="utf-8"))
+            self.assertIn("Step 4c", (Path(d) / "run.log.ship.txt").read_text(encoding="utf-8"))
+
     def test_timeout_ship_writes_no_hold(self):
         with tempfile.TemporaryDirectory() as d:
             self.assertFalse(R.record_ship_failure(d, "lab-a", "partial" + chr(10) + "TIMEOUT after 1500s: process tree killed"))
