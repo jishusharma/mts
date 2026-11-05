@@ -127,6 +127,18 @@ def record_ship_failure(home, cid, text):
     return True
 
 
+def ship_run(wt, log, home, cid):
+    """Ship the run commit. Returns '' on success, else the failure note: the full ship log goes to <log>.ship.txt and a gate-red
+    failure writes lab.hold (record_ship_failure) so the lane stops instead of running cards for hours behind a red gate."""
+    s = boxed([sys.executable, "scripts/dev/sync.py", *SHIP_ARGS], wt, SHIP_TIMEOUT_S)
+    if not s.returncode:
+        return ""
+    text = s.stdout + s.stderr
+    Path(str(log) + ".ship.txt").write_text(text, encoding="utf-8", newline="\n")   # which gate step failed
+    record_ship_failure(home, cid, text)
+    return text.strip()[-300:] or "ship failed"
+
+
 def read_hold(home):
     f = Path(home) / "lab.hold"
     return f.read_text(encoding="utf-8").strip() or "lab.hold present" if f.is_file() else ""
@@ -871,10 +883,9 @@ def run_card(card, dry=False, env=os.environ, probing=False):
                 merge_trunk(wt, f"origin/{sync.TRUNK}")
             except SystemExit:
                 pass   # a real clash: sync.py ship below reports it as SHIP_FAILED
-            s = boxed([sys.executable, "scripts/dev/sync.py", *SHIP_ARGS], wt, SHIP_TIMEOUT_S)
-            if s.returncode:
-                outcome, note = "SHIP_FAILED", (s.stdout + s.stderr).strip()[-300:]
-                Path(str(log) + ".ship.txt").write_text(s.stdout + s.stderr, encoding="utf-8", newline="\n")   # which gate step failed
+            failed = ship_run(wt, log, home, cid)
+            if failed:
+                outcome, note = "SHIP_FAILED", failed
         elif not files:
             lane_health.commit_ship(wt, [lane_health.STATE, USAGE], f"lane health: GPT {lane['status']}" + (f" ({lane['reason']})" if lane["reason"] else "") +
                                     f"\n\nResult: {lane_health.why_down(lane) if lane['status'] == 'down' else 'GPT lane up'}\n")

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-05T03:54:25Z",
   "commands": [
     "python -m pytest -q scripts/dev/test_tasks.py",
     "python scripts/dev/tasks.py lint"
@@ -17,6 +18,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "tasks.check rejects raw/refined CODEX audit/run cards whose done_when names a non-lab path",
+      "ref": "760bb7859",
+      "utc": "2026-11-05T03:54:25Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Merge remote-tracking branch 'origin/fast-track' into JIS-NB/route-tag-reland3-1104",
@@ -27,13 +34,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: shipped",
   "note": "REVIEWED:2026-11-05 T0-ONLY",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-05T03:42:15Z",
   "refs": [],
-  "result": "",
+  "result": "tasks.check rejects raw/refined CODEX audit/run cards whose done_when names a non-lab path; lint warns on 27 ready offenders (not edited)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/tasks.py",
     "scripts/dev/test_tasks.py"
@@ -50,13 +63,14 @@
     "scripts/dev/codex_run.py:642-652 (out_of_scope allowed paths)",
     "2026-11-04 malkan-window-12-18-vs-hindi run: OUT_OF_SCOPE at about 900k tokens"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read codex_run.out_of_scope (allowed: the lab folder, the task cards folder, generated files, spec test paths) and tasks.problems",
     "Write the fail-first test: a CODEX audit card with done_when naming a path outside the lab folder gets a problem; one naming a lab path passes",
     "Add the check to tasks.problems for CODEX cards of kind audit and run only; run lint on trunk and list any ready card it newly flags (an earlier lint change was reverted in 06f7943f5: read that diff first and keep this one warning-free for current ready cards)",
     "Run python -m pytest -q scripts/dev/test_tasks.py, ship"
   ],
+  "taken": "2026-11-05T03:54:25Z",
   "tests": "Fail-first: new tests in scripts/dev/test_tasks.py (flagged and unflagged card); the flagged case fails on current code.",
   "title": "Codex audit cards whose done_when names a file outside the lab folder always end OUT_OF_SCOPE (card lint should catch it before a run spends tokens). Happened to malkan-window-12-18-vs-hindi on 2026-11-04 at about 900k tokens; output had to be landed by hand.",
   "weight": "ROUTINE",

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-05T03:54:23Z",
   "commands": [
     "python -m pytest -q scripts/dev/test_codex_run.py"
   ],
@@ -16,6 +17,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "cmd_run SHIP_FAILED now calls record_ship_failure via ship_run; gate-red writes lab.hold, ",
+      "ref": "760bb7859",
+      "utc": "2026-11-05T03:54:23Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nuc/codex-next-line-1104",
@@ -26,13 +33,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: shipped",
   "note": "REVIEWED:2026-11-05 T0-ONLY",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-05T03:42:10Z",
   "refs": [],
-  "result": "",
+  "result": "cmd_run SHIP_FAILED now calls record_ship_failure via ship_run; gate-red writes lab.hold, TIMEOUT none",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/codex_run.py",
     "scripts/dev/test_codex_run.py"
@@ -47,13 +60,14 @@
   "sources": [
     "scripts/dev/codex_run.py:116-127 (record_ship_failure, no call site), :873-877 (SHIP_FAILED branch)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Confirm record_ship_failure has no caller in codex_run.py (only its definition and tests use it)",
     "Write the fail-first test: drive the SHIP_FAILED branch with a gate-red ship log and assert lab.hold exists and cmd_next refuses",
     "Call record_ship_failure(home, cid, ship log text) where outcome becomes SHIP_FAILED; a TIMEOUT log must still write no hold",
     "Run python -m pytest -q scripts/dev/test_codex_run.py, ship"
   ],
+  "taken": "2026-11-05T03:54:23Z",
   "tests": "Fail-first: new ShipHoldTest case in scripts/dev/test_codex_run.py that runs the ship-failure branch (boxed ship patched to a gate-red log) and asserts lab.hold is written; fails on current code.",
   "title": "Codex lab kept running cards for about 6 hours while every lab ship failed the gate on the same test; nothing told a session. scripts/dev/codex_run.py record_ship_failure should have stopped new runs; check that it does.",
   "weight": "ROUTINE",
