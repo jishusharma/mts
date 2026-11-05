@@ -11,7 +11,8 @@ never reads VALIDATION or HOLDOUT data; it only reads the records a research ses
 Manifest (JSON), all keys required:
   setup_id            trade-source prefix, e.g. "layer:fabio:volume_fvg:"
   layer               layer name, e.g. "fabio"
-  pre_reg             {"path": repo-relative PRE_REG file, "git_sha": commit that holds it}
+  pre_reg             {"path": repo-relative PRE_REG file, "git_sha": commit that holds it,
+                       "plausible_net_r": pre-registered plausible gross - cost in R (PRE_REG gate line; sets the MDE trade floor)}
   screen_verdict      {"path": repo-relative file; JSON {"verdict": "PASS"} or a line "VERDICT: PASS"}
   backtest            {"report_path": repo-relative report that carries the BT-TUNED label, "label": "BT-TUNED"}
   oos                 {"fee_net": true, "net_r": x, "ci_low": a, "ci_high": b, "n_trades": n, "trades_csv": repo-relative csv, column net_r}
@@ -59,11 +60,13 @@ def holm_z(variants):
     return NormalDist().inv_cdf(1 - 0.025 / max(1, int(variants)))
 
 
-def mde_floor(o, z):
-    """OURS: n >= max(MIN_TRADES, 4*((z+0.84)*sd/net_r)^2), sd = se*sqrt(n), se = (ci_high-ci_low)/3.92."""
+def mde_floor(o, z, plausible_net_r):
+    """OURS: n >= max(MIN_TRADES, 4*((z+0.84)*sd/plausible_net_r)^2), sd = se*sqrt(n), se = (ci_high-ci_low)/3.92.
+    plausible_net_r is the PRE_REG's pre-registered effect (plausible gross - cost), never the observed net_r
+    (GATE_AUDIT fix 6: a lucky large net_r must not lower its own floor)."""
     se = (o["ci_high"] - o["ci_low"]) / 3.92
     sd = se * math.sqrt(max(o["n_trades"], 0))
-    return max(MIN_TRADES, MDE_SAFETY * ((z + POWER_Z) * sd / o["net_r"]) ** 2)
+    return max(MIN_TRADES, MDE_SAFETY * ((z + POWER_Z) * sd / plausible_net_r) ** 2)
 
 
 def recompute_oos(path):
@@ -258,9 +261,14 @@ def check(manifest, repo=REPO, config_path=None, legacy=False):
                     se = (o["ci_high"] - o["ci_low"]) / 3.92
                     if o["net_r"] - z * se <= 0:
                         reasons.append("Holm-adjusted CI low %.4f (z=%.3f for %d variants) is not above 0" % (o["net_r"] - z * se, z, var))
-                    floor = mde_floor(o, z)
-                    if o["n_trades"] < floor:
-                        reasons.append("n_trades %s below the MDE-based floor of %d (z=%.3f)" % (o["n_trades"], math.ceil(floor), z))
+                    pl = pre.get("plausible_net_r") if pre else None
+                    if not (_num(pl) and pl > 0):
+                        reasons.append("pre_reg.plausible_net_r missing or not a number > 0 (the MDE trade floor needs the "
+                                       "pre-registered plausible gross - cost from the PRE_REG gate line)")
+                    else:
+                        floor = mde_floor(o, z, pl)
+                        if o["n_trades"] < floor:
+                            reasons.append("n_trades %s below the MDE-based floor of %d (z=%.3f, plausible_net_r %s)" % (o["n_trades"], math.ceil(floor), z, pl))
             if int(o["n_trades"]) != o["n_trades"] or o["n_trades"] < MIN_TRADES:
                 reasons.append("n_trades %s below the floor of %d" % (o["n_trades"], MIN_TRADES))
 
