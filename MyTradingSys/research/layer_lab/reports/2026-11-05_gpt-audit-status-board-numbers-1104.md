@@ -1,9 +1,16 @@
-BLOCKED — fresh git counts are required, but the run instruction explicitly forbids running git.
+﻿BLOCKED — fresh Git-backed counts and board output cannot be produced under the explicit no-Git instruction.
 
-What was checked: `scripts/dev/status_board.py` lines 1–40 and the task brief. The requested board run and independent count were not run because the board calls `git log` itself (`status_board.py:426,474`); the independent recount explicitly requires `git log`. Both would violate the run instruction “do NOT run git.”
+## Checked
 
-| Item | Board value | Independent value | Verdict | Source / reason |
-|---|---:|---:|---|---|
-| Three required headline counts | NOT_COLLECTED | NOT_COLLECTED | NOT_CHECKABLE | No board run or `git log` recount permitted by the explicit run constraint. |
+- `scripts/dev/status_board.py:1-5` says the board reads Git log, task cards, signal lines and local resource state; output numbers are measured at run time.
+- `scripts/dev/status_board.py:565-578` is the board entry point. It assembles section output and prints a summary using `ci_runs()`, `supervisors()`, `signal_text()` and `cards()`; the sections include Git-backed measures.
+- `python scripts/dev/tasks.py list --all --prefix gpt-audit-status-board-numbers-1104` was run read-only to inspect the card; this does not provide the requested fresh Git counts.
 
-Task status: left open because the instruction says a blocked card must not be marked done. No repository source files were edited.
+## Findings
+
+| Severity | Source | Result | Evidence | Proposed next step |
+|---|---|---|---|---|
+| HIGH | `scripts/dev/status_board.py:1-5,565-578` | NOT_CHECKABLE | User instruction prohibits running Git. Running the board invokes its Git-backed inputs, and independent recomputation explicitly requires fresh Git counts. No board output or verified count table was obtained. | Run this audit in an environment where the authorized read-only Git commands and board execution are permitted. |
+| HIGH | `MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-audit-status-board.md` | NOT_IN_DATA | The task names this as the source report, but the file is absent at the specified path. | Supply or identify the source report if it is needed for comparison. |
+
+The required row-per-printed-number table cannot be truthfully completed without the prohibited execution and fresh Git counts. The card is not marked done.

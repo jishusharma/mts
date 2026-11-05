@@ -6,7 +6,7 @@
   "window_resets": 1793850253,
   "window_used": 4.0
  },
- "at": "2026-11-05T02:59:53Z",
+ "at": "2026-11-05T03:27:33Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -23,9 +23,24 @@
   "astra_runs": 0,
   "week_pts": 8.0,
   "window_pts": 4.0,
-  "window_runs": 10
+  "window_runs": 11
  },
  "runs": [
+  {
+   "at": "2026-11-05T03:26:54Z",
+   "card": "gpt-audit-status-board-numbers-1104",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 32,
+   "tokens_out": 1424,
+   "tokens_total": 156333,
+   "tokens_uncached": 25245,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-11-05T02:58:59Z",
    "card": "gpt-audit-status-board-numbers-1104",
@@ -160,21 +175,6 @@
    "tokens_uncached": 39516,
    "week_pts": 0.0,
    "window_pts": 0.0
-  },
-  {
-   "at": "2026-11-04T23:05:10Z",
-   "card": "gpt-audit-bb-range-to-range-1104",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": " 1 step(s)\n  - Step 3xt: Extra tests\nhost health: ok\nSHIP SLOW 448s: top 3 steps Extra tests outside the collected dirs (B150 discovery) 300s, Layer tests (88 m",
-   "outcome": "SHIP_FAILED",
-   "seconds": 53,
-   "tokens_out": 3362,
-   "tokens_total": 223090,
-   "tokens_uncached": 36176,
-   "week_pts": 0.0,
-   "window_pts": 1.0
   }
  ]
 }
