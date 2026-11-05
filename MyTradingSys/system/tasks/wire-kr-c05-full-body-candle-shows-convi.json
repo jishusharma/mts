@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T22:32:14Z",
   "commands": [],
   "created": "2026-11-04T21:10:02Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "full_body/effort_result/apathy_panic in krown_core.py; test_candle_volume_labels failed th",
+      "ref": "979705d45",
+      "utc": "2026-11-04T22:32:14Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "b-item-krown-core-rsi-returns-100-on-a-f: fix flat window RSI 100 to 50 and update docstri",
@@ -24,6 +31,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: wired offline, tested",
   "note": "planner-wire43-1104h: verified on trunk 2026-11-05, no code for this rule; params OURS unless the card says SOURCED. Folds: wire-kr-v06, wire-kr-v08.\nREVIEWED:2026-11-04 T0-ONLY",
   "prio": 4,
   "refine_tries": 0,
@@ -32,7 +40,12 @@
   "refs": [
     "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_8MvxK_nxO-0.md:132"
   ],
-  "result": "",
+  "result": "full_body/effort_result/apathy_panic in krown_core.py; test_candle_volume_labels failed then passed; 3 thresholds OURS in params",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/krown/krown_core.py",
     "MyTradingSys/backtest/layers/krown/test_krown_core.py",
@@ -44,12 +57,13 @@
   "scope_sha": "150840644fd0",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read is_hammer, vol_ratio and vol_flags in krown_core.py.",
     "Add the three label functions using body/range and volume ratio.",
     "Write the fail-first test with hand-built bars; run it."
   ],
+  "taken": "2026-11-04T22:32:14Z",
   "tests": "MyTradingSys/backtest/layers/krown/test_krown_core.py::test_candle_volume_labels (new; fails on trunk, no full_body)",
   "title": "wire KR-C05: Full-body candle shows conviction (quote MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_8MvxK_nxO-0.md:132)",
   "weight": "ROUTINE",

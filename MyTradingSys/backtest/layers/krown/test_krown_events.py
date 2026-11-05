@@ -96,5 +96,24 @@ class TestEvents(unittest.TestCase):
         self.assertEqual(ke.setup_s5(["up", None], [10, 10], [11, 11]), [])  # up-cross below the 200: filter says wait
 
 
+def test_setup_s10_s11_from_line_events():
+    ev = [
+        {"line": 1, "state": "eligible", "bar": 5, "arm": "V", "known_at": 5},
+        {"line": 2, "state": "eligible", "bar": 5, "arm": "A", "known_at": 5},
+        {"line": 1, "state": "touched", "bar": 8, "episode": 1, "known_at": 8},
+        {"line": 2, "state": "touched", "bar": 9, "episode": 1, "known_at": 9},
+        {"line": 1, "state": "broken", "bar": 12, "known_at": 12},
+        {"line": 2, "state": "broken", "bar": 13, "known_at": 13},
+        {"line": 3, "state": "touched", "bar": 14, "known_at": 14},
+    ]
+    sides = {1: "support", 2: "resistance"}
+    s10 = ke.setup_s10(ev, sides)
+    # only the volume-anchored line (arm V) counts, and only from the bar its V arm is known; line 3 has no side: skipped
+    assert [(e["i"], e["side"], e["setup"]) for e in s10] == [(8, "long", "S10")]
+    s11 = ke.setup_s11(ev, sides)
+    assert [(e["i"], e["side"], e["setup"]) for e in s11] == [(12, "short", "S11"), (13, "long", "S11")]
+    assert "S10" in ke.SETUPS and "S11" in ke.SETUPS
+
+
 if __name__ == "__main__":
     unittest.main()
