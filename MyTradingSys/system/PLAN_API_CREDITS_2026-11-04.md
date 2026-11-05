@@ -121,3 +121,4 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-05 | voice-start-1105 | Sonnet 5.5 | 0.22 | 9 | already on trunk (4545f773), nothing new; cap was 3.0 |
 | 2026-11-05 | metrics-reland-1105 | Opus 5.5 | 1.54 | 42 | re-landed fetch_futures_metrics.py with wiring_registry entry (ea7db56d); cap was 6.0 |
 | 2026-11-05 | refresh-main-1105 | Sonnet 5.5 | 0.40 | 18 | refresh_main_checkout post-step failures propagate; cap was 3.0 |
+| 2026-11-05 | refresh-stale-1105 | Haiku 5.5 | 0.08 | 17 | 4 closed 23 refreshed (149440d3); cap was 2.0 |
