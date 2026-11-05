@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-04T22:32:15Z",
   "commands": [],
   "created": "2026-11-04T21:10:11Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "vol_trap/vol_exhaust in krown_core.py; test passes; 2 thresholds OURS in params",
+      "ref": "979705d45",
+      "utc": "2026-11-04T22:32:15Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "b-item-krown-core-rsi-returns-100-on-a-f: fix flat window RSI 100 to 50 and update docstri",
@@ -24,6 +31,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: wired offline, tested",
   "note": "planner-wire43-1104h: verified on trunk 2026-11-05, no code for this rule; params OURS unless the card says SOURCED. Folds: wire-kr-q06. KR-Q08 parked separately: per-indicator switching has no defined behaviour.\nREVIEWED:2026-11-04 T0-ONLY",
   "prio": 4,
   "refine_tries": 0,
@@ -32,7 +40,12 @@
   "refs": [
     "MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_kcMnnQr1VFg.md:372"
   ],
-  "result": "",
+  "result": "vol_trap/vol_exhaust in krown_core.py; test passes; 2 thresholds OURS in params",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/krown/krown_core.py",
     "MyTradingSys/backtest/layers/krown/test_krown_core.py",
@@ -44,12 +57,13 @@
   "scope_sha": "150840644fd0",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read bbwp and bbwp_regime in krown_core.py.",
     "Add vol_trap (bbwp already above the high threshold at the decision bar) and vol_exhaust (first bar back below after expansion).",
     "Write the fail-first test with a synthetic bbwp line; run it."
   ],
+  "taken": "2026-11-04T22:32:15Z",
   "tests": "MyTradingSys/backtest/layers/krown/test_krown_core.py::test_vol_trap_and_exhaust (new; fails on trunk, no vol_trap)",
   "title": "wire KR-Q07: The volatility trap (quote MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_kcMnnQr1VFg.md:372)",
   "weight": "ROUTINE",

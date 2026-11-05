@@ -79,6 +79,20 @@ def leash(low, high, ema_line, n):
     return out
 
 
+def ma_pair_state(c, fast, slow):
+    """KR-M09 pair rule: per bar, True when the lower-period EMA is above the higher-period one (None until both exist);
+    'cross' = [(index, 'up'|'down')] of the first bar strictly on the other side."""
+    a, b = ema(c, fast), ema(c, slow)
+    above = [None if a[t] is None or b[t] is None else a[t] > b[t] for t in range(len(c))]
+    cr = crosses(a, b)
+    return {"above": above, "cross": [(t, x) for t, x in enumerate(cr) if x]}
+
+
+def ma_slope(x, n):
+    """KR-M11: signed n-bar difference x[t] - x[t-n]; no threshold (the trader gives none). None where either end is None."""
+    return [None if t < n or x[t] is None or x[t - n] is None else x[t] - x[t - n] for t in range(len(x))]
+
+
 # ---- volume ---------------------------------------------------------------------------------------------------
 
 def vol_ratio(v, n):
@@ -137,6 +151,19 @@ def bbwp_regime(x, high, low):
     return "normal"
 
 
+def vol_trap(bbwp_line, t, p):
+    """KR-Q07 volatility trap: BBWP already at or above vol_trap_bbwp (OURS) at the decision bar. Flag only."""
+    v = bbwp_line[t]
+    return v is not None and v >= p["vol_trap_bbwp"]
+
+
+def vol_exhaust(bbwp_line, t, p):
+    """KR-Q06 profit-take flag: first bar back below vol_exhaust_bbwp (OURS) after an expansion bar. Flag only."""
+    if t < 1 or bbwp_line[t] is None or bbwp_line[t - 1] is None:
+        return False
+    return bbwp_line[t - 1] >= p["vol_exhaust_bbwp"] > bbwp_line[t]
+
+
 # ---- candles --------------------------------------------------------------------------------------------------
 
 def engulfing(h, l, c, i):
@@ -162,6 +189,34 @@ def is_shooting_star(o, h, l, c, p):
     if r <= 0:
         return False
     return (h - max(o, c)) / r >= p["hammer_wick"] and (h - c) / r >= p["hammer_close_pos"]
+
+
+def full_body(o, h, l, c, p):
+    """KR-C05: a full-body candle shows conviction. 'bull' / 'bear' when body/range >= full_body_ratio (OURS), else None."""
+    r = h - l
+    if r <= 0 or abs(c - o) / r < p["full_body_ratio"]:
+        return None
+    return "bull" if c > o else ("bear" if c < o else None)
+
+
+def effort_result(ratio, h, l, i, p):
+    """KR-V06 effort versus result: huge volume (ratio >= vol_mult) on a tiny candle (range <= tiny_range_frac x mean of the
+    vol_sma PRIOR ranges, OURS) -> 'absorption', else None."""
+    n = p["vol_sma"]
+    if ratio is None or i < n or ratio < p["vol_mult"]:
+        return None
+    m = sum(h[j] - l[j] for j in range(i - n, i)) / n
+    return "absorption" if m > 0 and (h[i] - l[i]) <= p["tiny_range_frac"] * m else None
+
+
+def apathy_panic(ratio, c, i, p):
+    """KR-V08: close at the lowest close of the last low_n bars (OURS) on low volume = 'apathy', on high volume = 'panic'."""
+    n = p["low_n"]
+    if ratio is None or i < n or c[i] > min(c[i - n:i]):
+        return None
+    if ratio <= p["vol_half"]:
+        return "apathy"
+    return "panic" if ratio >= p["vol_mult"] else None
 
 
 def is_doji(o, h, l, c, p):
