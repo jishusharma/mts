@@ -447,8 +447,20 @@ def ci_revert(runs, now=None, hours=72, gated=None):
     if red_since:
         warns.append(f"trunk is red now since {red_since[1]} ({(now - red_since[0]).total_seconds() / 60:.0f} min): git revert the breaking commit")
     if warns:
-        return "WARN", "; ".join(warns)
+        return "WARN", "; ".join(warns) + ("; run: python scripts/dev/ci_revert.py" if red_since else "")
     return "OK", f"{len(gaps)} red streak(s) in {hours} h" + (f", slowest {max(m for _, m in gaps):.0f} min" if gaps else "") + ", trunk green"
+
+
+def first_red_sha(runs, gated=None):
+    """Full head_sha of the first red run of the streak fast-track is still in (same filter as ci_revert); None when green now."""
+    gated = gated or ci_gated
+    red = None
+    for r in sorted((r for r in runs if r.get("conclusion") in ("success", "failure")), key=lambda r: r["created_at"]):
+        if r["conclusion"] == "success":
+            red = None
+        elif gated(r["head_sha"]):
+            red = red or r["head_sha"]
+    return red
 
 
 def ci_fetch():
