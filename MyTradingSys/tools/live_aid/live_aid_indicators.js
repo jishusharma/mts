@@ -642,6 +642,76 @@
     return { state: st, now: now, readings: out };
   }
 
+  // ---------- big-candle story (operator 2026-11-05 "understand what the story it tells ... wire this to runtime pipeline"; research/bigcandle_story_2026-11-05).
+  // The live hour's story (price x OI x taker delta, same 8 keys as above) + top-trader class (positions ratio vs accounts ratio over the hour)
+  // + phase (30-day band, weekly red/green streak; all OURS) -> the measured cell of bigcandle_rates.js (1h events with |z| >= 3, DEV 2022-01..2024-06).
+  // Fallback order band -> streak -> story|tt -> story; a cell under n 30 is THIN and never the answer. Descriptive, never an entry call.
+  var BC = { thin: 30, flat: 0.002, band: 0.10, zBig: 3 };
+  function bcClass(posRel, accRel) {
+    if (posRel === null || accRel === null || !isFinite(posRel) || !isFinite(accRel)) return 'NA';
+    if (Math.abs(posRel) < BC.flat || Math.abs(accRel) < BC.flat) return 'FLAT';
+    return posRel > 0 ? (accRel > 0 ? 'BU' : 'SL') : (accRel > 0 ? 'SS' : 'BD');
+  }
+  // pos / acc: [{longShortRatio}] oldest first over the same 60 min (Binance futures/data top-trader ratios).
+  function bcTopTraders(pos, acc) {
+    function rel(a) {
+      if (!a || a.length < 2) return null;
+      var x = +a[0].longShortRatio, y = +a[a.length - 1].longShortRatio;
+      return x > 0 && y > 0 ? y / x - 1 : null;
+    }
+    var p = rel(pos), c = rel(acc);
+    return { pos: p, acc: c, cls: bcClass(p, c) };
+  }
+  // d1: 1d kline rows (ascending, last may be today's partial), px: now. Return bull / bear / range or null (needs a close 30 days back).
+  function bcBand(d1, px, now) {
+    if (!d1 || !isFinite(px)) return null;
+    var ref = null;
+    d1.forEach(function (r) { if (+r[6] <= now - 30 * 86400000) ref = +r[4]; });
+    if (!(ref > 0)) return null;
+    var r = px / ref - 1;
+    return r > BC.band ? 'bull' : r < -BC.band ? 'bear' : 'range';
+  }
+  // w1: 1w kline rows (ascending, Monday 00:00 UTC, last may be this week's partial). Streak group of the completed weeks before this week.
+  function bcStreak(w1, now) {
+    if (!w1) return null;
+    var done = w1.filter(function (r) { return +r[6] < now; });
+    if (!done.length) return null;
+    var col = function (r) { return +r[4] > +r[1] ? 'G' : 'R'; }, c = col(done[done.length - 1]), n = 0;
+    for (var i = done.length - 1; i >= 0 && col(done[i]) === c; i--) n++;
+    return (c === 'R' ? 'R' : 'G') + (n >= 3 ? '3+' : '1-2');
+  }
+  function bcBig(dp, delta, sd) {
+    if (!sd || !isFinite(dp) || !isFinite(delta)) return null;
+    var f = [];
+    if (Math.abs(dp) >= BC.zBig * sd.p) f.push('price');
+    if (Math.abs(delta) >= BC.zBig * sd.d) f.push('delta');
+    return f;   // OI size is not checked live (page holds OI as a ratio, the study's z is in BTC)
+  }
+  function bigCandle(dp, doi, delta, tt, band, streak, rates, sd) {
+    var flat = OM.flat;
+    if (dp === null || doi === null || delta === null || !isFinite(dp) || !isFinite(doi) || !isFinite(delta) || dp === 0 || doi === 0 || delta === 0)
+      return { story: null, cell: null, src: 'UNMEASURED', level: null, thin: null, big: null };
+    var story = (dp > 0 ? 'UP' : 'DOWN') + '|' + (doi > 0 ? 'UP' : 'DOWN') + '|' + (delta > 0 ? 'BUY' : 'SELL'), dir = dp > 0 ? 'UP' : 'DOWN';
+    tt = tt || 'NA';
+    var keys = [];
+    if (tt !== 'NA' && tt !== 'FLAT') {
+      if (band) keys.push([story + '|' + tt + '|band:' + band, 'story + top-trader class + 30-day band']);
+      if (streak) keys.push([story + '|' + tt + '|streak:' + streak, 'story + top-trader class + weekly streak']);
+      keys.push([story + '|' + tt, 'story + top-trader class']);
+    }
+    keys.push([story, 'story only']);
+    var cell = null, level = null, thin = null;
+    for (var i = 0; i < keys.length; i++) {
+      var c = rates && rates[keys[i][0]];
+      if (!c) continue;
+      if (c.n >= BC.thin) { cell = c; level = keys[i][1]; break; }
+      if (!thin) thin = { cell: c, level: keys[i][1] };
+    }
+    var base = rates && (rates['BASE|' + dir + (band ? '|band:' + band : '')] || rates['BASE|' + dir]) || null;
+    return { story: story, tt: tt, band: band || null, streak: streak || null, cell: cell, level: level, thin: thin, base: base,
+             src: cell ? 'MEASURED' : (thin ? 'THIN' : 'UNMEASURED'), big: null, flat: flat };
+  }
+
   // ---------- level-approach prep (card level-approach-prep; Eagle_Eyes 10-30 operator ask; spec CARD_SPECS.md#level-approach-prep).
   // Per marked level within 0.5 %: checklist, absorption (delta share >= +0.3 into the level, < 0.1 % extension over the next 3 1m bars),
   // OI tell, 1m/2m/3m/5m wick rejections in the last 15 min, RSI 70/30 (Wilder, SOURCED), coil, flag count. Thresholds = OURS (PRE_REG).
@@ -714,7 +784,7 @@
     return { alerts: out, seen: s };
   }
 
-  var api = { LA: LA, levelApproach: levelApproach, approachAlerts: approachAlerts, AM_TEXT: AM_TEXT, anticipation: anticipation, OM: OM, oiState: oiState, oiWindow: oiWindow, oiNet: oiNet, oiDisagree: oiDisagree, oiBars: oiBars, oiEvents: oiEvents, oiLastEvent: oiLastEvent, oiPath: oiPath, oiTrap: oiTrap, oiEventText: oiEventText, C24: C24, oiExpect: oiExpect,
+  var api = { LA: LA, levelApproach: levelApproach, approachAlerts: approachAlerts, AM_TEXT: AM_TEXT, anticipation: anticipation, bigCandle: bigCandle, bcTopTraders: bcTopTraders, bcClass: bcClass, bcBand: bcBand, bcStreak: bcStreak, bcBig: bcBig, OM: OM, oiState: oiState, oiWindow: oiWindow, oiNet: oiNet, oiDisagree: oiDisagree, oiBars: oiBars, oiEvents: oiEvents, oiLastEvent: oiLastEvent, oiPath: oiPath, oiTrap: oiTrap, oiEventText: oiEventText, C24: C24, oiExpect: oiExpect,
     AV: AV, rosterRead: rosterRead, analystVote: analystVote, levelWatch: levelWatch, zones: zones, lean: lean, actions: actions, NW: NW, newsTags: newsTags, newsRead: newsRead, newsMerge: newsMerge, newsPulse: newsPulse, foldBars: foldBars, FD: FD, fundRead: fundRead, premium: premium, bybitTick: bybitTick, LQ: LQ, liqDeribit: liqDeribit, liqBybit: liqBybit, liqBinance: liqBinance, liqSum: liqSum, CP: CP, coilPierce: coilPierce, IT: IT, divergence: divergence, flow: flow, flowLive: flowLive, squeeze: squeeze, dom: dom, supports: supports, vwapTest: vwapTest,
     flagDiv: flagDiv, flagSqueeze: flagSqueeze, flagFlow: flagFlow, flagDom: flagDom, flagVwap: flagVwap, confidence: confidence, rma: rma, sma: sma, rsi: rsi, bollinger: bollinger, atr: atr, dayVwap: dayVwap, utcDays: utcDays, wavetrend: wavetrend,
     inversePnlBtc: inversePnlBtc, closedPnlBtc: closedPnlBtc, columns: columns, UO: UO, usOpen: usOpen, nextHighEvent: nextHighEvent };

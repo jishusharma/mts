@@ -177,6 +177,14 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     <span class="tag">Every row reads the same price and OI; the deciding layer splits them. Continuation is near a coin flip in every state: context, never a signal; no size, no orders.</span>
   </section>
 
+  <!-- 2c2b. BIG-CANDLE STORY (operator 2026-11-05; research/bigcandle_story_2026-11-05; descriptive) -->
+  <section id="p-bc">
+    <div class="hd"><h2>Big candle story</h2><span class="src" title="The last 60 min read as one of 8 stories (price x Binance OI x taker delta), plus what the Binance top traders did (positions ratio vs accounts ratio over the same 60 min, flat under 0.2 %) and the phase (30-day price band +-10 %, weekly red/green streak): all OURS. Odds = MEASURED fee-free descriptive base rates from big BTC hours (|z| >= 3 vs the trailing 30 days), DEV 2022-01..2024-06 (research/bigcandle_story_2026-11-05). A cell under n = 30 is THIN and not used.">OURS + MEASURED</span><span class="age" id="age-bc">--</span></div>
+    <div class="vrow"><span class="huge" id="bc-state">--</span><span class="sub" id="bc-sub"></span></div>
+    <div class="scroll"><table><thead><tr><th>Cell used</th><th>n</th><th>Price continues next 1h</th><th>next 4h</th><th>next 24h</th><th>Move undone 1h / 4h / 24h</th><th>Status</th></tr></thead><tbody id="bc-rows"></tbody></table></div>
+    <span class="tag" id="bc-tag">Hours with a big move only; flat hours are not in the table. Continuation is near a coin flip: context, never a signal; no size, no orders.</span>
+  </section>
+
   <!-- 2c3. LEVEL APPROACH PREP (card level-approach-prep; research/level_approach_prep_2026-11-05; descriptive) -->
   <section id="p-lap">
     <div class="hd"><h2>Level approach prep</h2><span class="src" title="Marked levels within 0.5 % (prev day, 2-day, weekly H/L, analyst levels). Absorption = 1m taker delta share >= +0.3 into the level over 3 bars with under 0.1 % extension over the next 3; OI tell = Binance OI over 15 min, flat under 0.1 %; wick rejection on 1m/2m/3m/5m in the last 15 min; RSI 14 on 5m at 70/30; coil from the 15m band: all OURS (PRE_REG). Odds MEASURED fee-free descriptive for prev-day H/L only: Binance USD-M BTCUSDT 1m + metrics 5m OI, DEV 2022-01..2024-06, 887 approaches / 733 touches; every other level UNMEASURED.">OURS + MEASURED</span><span class="age" id="age-lap">--</span></div>
@@ -278,6 +286,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
 <script src="us_open_rates.js"></script>
 <script src="anticipation_rates.js"></script>
 <script src="level_approach_rates.js"></script>
+<script src="bigcandle_rates.js"></script>
 <script>
 (function () {
   'use strict';
@@ -289,6 +298,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
             a15: NaN, tf: {}, venue: null, klErr: '', klT: 0, daily: null,
             trades: [], trT: 0, book: null, bookT: 0, oi: null, oiT: 0, oiHist: [], flowErr: '',
             liq: [], lq: { BYBIT: { t: 0, err: '' }, BINANCE: { t: 0, err: '' } }, byt: { d: null, t: 0 }, news: { items: [], t: 0, err: '' },
+            tt: { pos: null, acc: null, t: 0, err: '' }, ph: { d1: null, w1: null, t: 0, err: '' },
             om: { DERIBIT: { live: [], rest: [], err: '' }, BYBIT: { live: [], rest: [], err: '' }, BINANCE: { live: [], rest: [], err: '' }, bars: [], barsT: 0, barsErr: '' } };
 
   function fmt(x, d) { return isFinite(x) ? x.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }) : '--'; }
@@ -448,6 +458,19 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
       st.rest = r[0].map(function (x) { return { t: +x.timestamp, px: px[+x.timestamp], oi: +x.sumOpenInterest, btc: +x.sumOpenInterest }; })
         .filter(function (x) { return x.px > 0 && x.oi > 0; }).sort(function (a, b) { return a.t - b.t; });
     }, function () {});
+  }
+
+  // Phase + top-trader feeds for the big-candle panel (Binance public futures/data + klines; blocked networks leave the fields NA).
+  function loadTopTraders() {
+    var q = '?symbol=BTCUSDT&period=5m&limit=13';
+    Promise.all([getJson('https://fapi.binance.com/futures/data/topLongShortPositionRatio' + q), getJson('https://fapi.binance.com/futures/data/topLongShortAccountRatio' + q)]).then(function (r) {
+      S.tt = { pos: r[0], acc: r[1], t: Date.now(), err: '' };
+    }, function (e) { S.tt.err = 'top-trader ratios failed: ' + (e.name === 'AbortError' ? 'timeout' : e.message); });
+  }
+  function loadPhase() {
+    Promise.all([getJson('https://fapi.binance.com/fapi/v1/klines?symbol=BTCUSDT&interval=1d&limit=40'), getJson('https://fapi.binance.com/fapi/v1/klines?symbol=BTCUSDT&interval=1w&limit=12')]).then(function (r) {
+      S.ph = { d1: r[0], w1: r[1], t: Date.now(), err: '' };
+    }, function (e) { S.ph.err = 'phase klines failed: ' + (e.name === 'AbortError' ? 'timeout' : e.message); });
   }
 
   var TFS = [{ k: '1m', ms: 60000, n: 1500, dr: '1' }, { k: '5m', ms: 300000, n: 300, dr: '5' }, { k: '15m', ms: 900000, n: 1500, dr: '15' }, { k: '1h', ms: 3600000, n: 1500, dr: '60' }];
@@ -678,6 +701,36 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     $('age-am').textContent = S.klT ? Math.round((now - S.klT) / 1000) + 's' : '--';
   }
 
+  function renderBigCandle(now) {
+    var rates = typeof BIGCANDLE_RATES !== 'undefined' ? BIGCANDLE_RATES.cells : null, meta = typeof BIGCANDLE_RATES !== 'undefined' ? BIGCANDLE_RATES.meta : null;
+    var tb = $('bc-rows'), w = null, delta = null;
+    try { w = A.oiWindow(omHist('BINANCE'), now, 3600000); } catch (e) { w = { err: 'Binance OI history not loaded' }; }
+    var k5 = S.tf['5m'] || [], last = k5.slice(-12);
+    if (S.venue === 'BINANCE' && last.length === 12 && last.every(function (k) { return k.length > 9 && isFinite(+k[9]); }))
+      delta = last.reduce(function (s, k) { return s + 2 * +k[9] - +k[5]; }, 0);
+    var tt = S.tt.pos && S.tt.acc ? A.bcTopTraders(S.tt.pos, S.tt.acc) : { cls: 'NA' };
+    var px = S.bin || NaN, band = S.ph.d1 ? A.bcBand(S.ph.d1, px, now) : null, streak = S.ph.w1 ? A.bcStreak(S.ph.w1, now) : null;
+    var ok = w && !w.err;
+    var r = A.bigCandle(ok ? w.dp : null, ok ? w.doi : null, delta, tt.cls, band, streak, rates);
+    var big = ok && meta ? A.bcBig(w.dp, delta, meta.sd1h) : null;
+    var TTN = { BU: 'size and accounts both longer', BD: 'size and accounts both shorter', SL: 'size long / accounts short', SS: 'size short / accounts long', FLAT: 'top traders flat', NA: 'top-trader feed not loaded' };
+    $('bc-state').textContent = r.story ? 'Story ' + r.story + ', ' + (TTN[r.tt] || r.tt) : 'no story';
+    $('bc-sub').textContent = ok ? 'phase: 30-day ' + (band || 'n/a') + ', weekly streak ' + (streak || 'n/a') + (big === null ? '' : big.length ? '; this hour is BIG in ' + big.join(' + ') + ' (vs a ' + meta.sdAsOf.slice(0, 10) + ' snapshot of 30-day sd)' : '; this hour is not big (under 3 sd): the table below describes big hours only') : (w ? w.err : NID);
+    if (!r.story) { tb.innerHTML = '<tr><td colspan="7" class="dim">inputs missing or a zero change: no story</td></tr>'; return; }
+    function pc(h) { return '<b>' + h.cont + '%</b> <span class="dim">[' + h.lo + '-' + h.hi + ']</span>'; }
+    function line(label, c, status) {
+      var h1 = c['1h'], h4 = c['4h'], h24 = c['24h'];
+      return '<tr><td>' + esc(label) + '</td><td>' + c.n + '</td><td>' + pc(h1) + '</td><td>' + pc(h4) + '</td><td>' + pc(h24) + '</td><td>' + h1.undone + '% / ' + h4.undone + '% / ' + h24.undone + '%</td><td>' + status + '</td></tr>';
+    }
+    var rows = [];
+    if (r.cell) rows.push(line(r.level, r.cell, 'MEASURED'));
+    else if (r.thin) rows.push(line(r.thin.level + ' (n under 30)', r.thin.cell, 'THIN: not used'));
+    else rows.push('<tr><td colspan="7"><span class="dim">UNMEASURED</span> (no cell for this story' + (rates ? '' : ': bigcandle_rates.js not found next to this page, run python MyTradingSys/research/bigcandle_story_2026-11-05/study.py') + ')</td></tr>');
+    if (r.base) rows.push(line('baseline: every ' + (r.story.split('|')[0]) + ' hour' + (band ? ', band ' + band : ''), r.base, 'MEASURED'));
+    tb.innerHTML = rows.join('');
+    $('age-bc').textContent = S.klT ? Math.round((now - S.klT) / 1000) + 's' : '--';
+  }
+
   function lapLevels(now) {
     var L = [], pd = prevDayHL(now), rows = S.daily ? S.daily.rows : [], d0 = dayStart(now);
     if (isFinite(pd.h)) L.push({ level: pd.h, name: 'prev day high' }, { level: pd.l, name: 'prev day low' });
@@ -720,6 +773,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     renderTop();
     renderUsOpen(now);
     try { renderAntic(now); } catch (e) { $('am-rows').innerHTML = '<tr><td colspan="6" class="err">' + esc(e.message) + '</td></tr>'; }
+    try { renderBigCandle(now); } catch (e) { $('bc-rows').innerHTML = '<tr><td colspan="7" class="err">' + esc(e.message) + '</td></tr>'; }
     var coilR = renderCoil(now);
     try { renderLevelApproach(now, coilR); } catch (e) { $('lap-rows').innerHTML = '<tr><td colspan="6" class="err">' + esc(e.message) + '</td></tr>'; }
     renderLiq(now);
@@ -1252,6 +1306,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
   setInterval(render, 1000);
   loadNews(); setInterval(loadNews, 15000);
   setInterval(omSample, 10000); loadBybitOi(); setInterval(loadBybitOi, 60000);
+  loadTopTraders(); setInterval(loadTopTraders, 300000); loadPhase(); setInterval(loadPhase, 3600000);
   loadBinanceOi(true); setInterval(function () { loadBinanceOi(false); }, 30000); setInterval(function () { loadBinanceOi(true); }, 300000);
   loadCal();
   route();

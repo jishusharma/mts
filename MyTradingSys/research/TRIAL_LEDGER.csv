@@ -118,3 +118,6 @@ trendlines_2026-10-17,TL2_sens_close_log_age500,2026-10-28,DEV,F:/MTS/data/tom_r
 eagle_c30_dev_search,C27-C30_all_cells,2026-10-31,DEV,Binance spot BTCUSDT 5m/15m klines (public),WaveTrend dots C27-C29 + C30 256 cells (4 signals x 3 trends x 4 exits x 6 charts - 32),explored
 eagle_c30_prereg,H1_30m_buy53_bulldiv_X1,2026-10-31,VALIDATION,Binance spot BTCUSDT 5m klines (public),30m buy dot wt1<=-53 + bullish RSI div any trend exit centre cross,pre-registered
 eagle_c30_prereg,H2_15m_buy53_bulldiv_2hup_X1,2026-10-31,VALIDATION,Binance spot BTCUSDT 5m klines (public),15m same signal with last closed 2h structure up exit centre cross,pre-registered
+wavetrend_2026-10-17,WT-C1V2-T01,2026-11-05,DEV,F:/MTS/data/tom_raw/klines 1m->5m,C1 c1-v2 paired confirmed pivots k=2 G=20 count-only all TFs,count-only
+wavetrend_2026-10-17,WT-C1V2-A01,2026-11-05,DEV,F:/MTS/data/tom_raw/klines 1m->5m,5m C1_v2 htf:htf_mid primary 12-bar gross vs random clock paired day-block (Holm m=2),pre-registered
+wavetrend_2026-10-17,WT-C1V2-A02,2026-11-05,DEV,F:/MTS/data/tom_raw/klines 1m->5m,5m C1_v2 trend:trend_with primary 12-bar gross vs random clock paired day-block (Holm m=2),pre-registered

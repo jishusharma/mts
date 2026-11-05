@@ -2,7 +2,7 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
-  "created": "2026-11-05T13:52:39Z",
+  "created": "2026-11-05T14:05:29Z",
   "depends_on": [],
   "done_when": "",
   "est_turns": null,
@@ -10,10 +10,12 @@
   "formula_ids": [],
   "from_inbox": "",
   "goal": "",
-  "id": "gemini-blind-read-of-pizzino-pz-4-study-",
-  "kind": "audit",
-  "lane": "CODEX",
-  "layers": [],
+  "id": "bigcandle-rates-runtime-consumer",
+  "kind": "build",
+  "lane": "SONNET",
+  "layers": [
+    "positioning"
+  ],
   "live_path": false,
   "mutation_check": "",
   "note": "",
@@ -29,7 +31,7 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "[GEMINI] blind read of pizzino pz-4 study.py (MyTradingSys/research/pizzino_layer_2026-10-27/study.py)",
+  "title": "bigcandle-rates consumed by live runner/engine: coordinator deploy decision (rates only descriptive; needs a pre-registered rule first)",
   "weight": "",
   "worker": ""
 }
