@@ -216,6 +216,176 @@ def volume_line(vinfo):
     return "4h time-adjusted relative volume: %s (slot baseline n=%d) | effort vs result, match OI scope | descriptive only" % (val_str, n)
 
 
+# ---------------------------------------------------------------- order flow (descriptive only, no tested edge)
+# Swing = recent half-window vs the half before it, bar-close CVD (study.py definition a/d, no context filter).
+# H 1m=15, 5m=12: SOURCED from MyTradingSys/research/orderflow_views_2026-10-14/study.py:12 (OURS there, not a trader's).
+# H 15m=16 (4h halves): OURS, continues the x4 window step. OI change window 60 min: same study (OI split).
+OF_HALF = {"1m": 15, "5m": 12, "15m": 16}
+OF_TF_MS = {"1m": 60000, "5m": 300000, "15m": 900000}
+OI_WINDOW_MS = 3600000
+FAPI = "https://fapi.binance.com"
+
+
+def fapi_kline_bars(raw, now_ms):
+    """fapi kline arrays -> closed bars {t,o,h,l,c,v,tbv,ct}; tbv = taker buy base volume (col 9)."""
+    out = []
+    for r in raw or []:
+        try:
+            if int(r[6]) >= now_ms:
+                continue
+            out.append({"t": int(r[0]), "o": float(r[1]), "h": float(r[2]), "l": float(r[3]), "c": float(r[4]),
+                        "v": float(r[5]), "tbv": float(r[9]), "ct": int(r[6])})
+        except (IndexError, TypeError, ValueError):
+            continue
+    out.sort(key=lambda b: b["t"])
+    return out
+
+
+def resample(bars_1m, ms):
+    """Complete UTC buckets of `ms` from contiguous 1m bars (tbv summed)."""
+    n = ms // 60000
+    buckets = {}
+    for b in bars_1m:
+        buckets.setdefault(b["t"] // ms, []).append(b)
+    out = []
+    for k in sorted(buckets):
+        g = sorted(buckets[k], key=lambda b: b["t"])
+        start = k * ms
+        if [b["t"] for b in g] != [start + i * 60000 for i in range(n)]:
+            continue
+        out.append({"t": start, "o": g[0]["o"], "h": max(b["h"] for b in g), "l": min(b["l"] for b in g),
+                    "c": g[-1]["c"], "v": sum(b["v"] for b in g), "tbv": sum(b["tbv"] for b in g),
+                    "ct": g[-1]["ct"]})
+    return out
+
+
+def oi_at(oi, t):
+    """Latest OI (ts_ms, value) at or before t, within 10 min; None if absent."""
+    best = None
+    for ts, v in oi or []:
+        if t - 600000 <= ts <= t and (best is None or ts > best[0]):
+            best = (ts, v)
+    return None if best is None else best[1]
+
+
+def oi_change_60m(oi, t):
+    a, b = oi_at(oi, t - OI_WINDOW_MS), oi_at(oi, t)
+    if a is None or b is None or a <= 0:
+        return None
+    return (b - a) / a * 100.0
+
+
+def order_flow_state(bars, half, oi):
+    """Price swing vs Binance CVD swing over two half-windows, plus OI 60-min change. None if too few bars."""
+    if len(bars) < 2 * half:
+        return None
+    cvd, c = [], 0.0
+    for b in bars:
+        c += 2 * b["tbv"] - b["v"]
+        cvd.append(c)
+    rec, pri = bars[-half:], bars[-2 * half:-half]
+    lo_r, lo_p = min(b["l"] for b in rec), min(b["l"] for b in pri)
+    hi_r, hi_p = max(b["h"] for b in rec), max(b["h"] for b in pri)
+    ll, hh = lo_r < lo_p, hi_r > hi_p
+    if ll != hh:
+        side = "low" if ll else "high"
+    else:  # outside or inside half: the side whose recent extreme is newer
+        i_lo = max(i for i, b in enumerate(rec) if b["l"] == lo_r)
+        i_hi = max(i for i, b in enumerate(rec) if b["h"] == hi_r)
+        side = "low" if i_lo >= i_hi else "high"
+    cr, cp = cvd[-half:], cvd[-2 * half:-half]
+    if side == "low":
+        price, level = ("LL" if ll else "HL"), lo_r
+        cvd_sw = "LL" if min(cr) < min(cp) else "HL"
+        state = {("LL", "HL"): "bullish CVD divergence", ("LL", "LL"): "CVD confirms the low",
+                 ("HL", "LL"): "CVD lower low, price holds", ("HL", "HL"): "higher low, CVD with it"}[(price, cvd_sw)]
+    else:
+        price, level = ("HH" if hh else "LH"), hi_r
+        cvd_sw = "HH" if max(cr) > max(cp) else "LH"
+        state = {("HH", "LH"): "bearish CVD divergence", ("HH", "HH"): "CVD confirms the high",
+                 ("LH", "HH"): "CVD higher high, price holds", ("LH", "LH"): "lower high, CVD with it"}[(price, cvd_sw)]
+    oi_pct = oi_change_60m(oi, bars[-1]["ct"] + 1)
+    oi_dir = None if oi_pct is None else ("up" if oi_pct > 0 else ("down" if oi_pct < 0 else "flat"))
+    if oi_dir == "up":
+        state += ", OI up (positions opening)"
+    elif oi_dir == "down":
+        state += ", OI down (positions closing)"
+    return {"price": price, "level": level, "cvd": cvd_sw, "oi_pct": oi_pct, "oi": oi_dir, "state": state,
+            "t_close": bars[-1]["ct"] + 1}
+
+
+def order_flow_state_lines(klines_1m, klines_5m, klines_15m, oi):
+    """One descriptive line per TF 1m/5m/15m (closed bars). Marked: no tested edge."""
+    L = []
+    for tf, bars in (("1m", klines_1m), ("5m", klines_5m), ("15m", klines_15m)):
+        h = OF_HALF[tf]
+        s = order_flow_state(bars or [], h, oi)
+        if s is None:
+            L.append("%s: n/a (%d closed bars, need %d) | descriptive only, no tested edge" % (tf, len(bars or []), 2 * h))
+            continue
+        hm = datetime.datetime.fromtimestamp(s["t_close"] / 1000.0, datetime.timezone.utc).strftime("%H:%MZ")
+        L.append("%s @%s: price %s %s | Binance CVD %s | OI 60m %s | %s | descriptive only, no tested edge" % (
+            tf, hm, s["price"], _f(s["level"], 1), s["cvd"],
+            "n/a" if s["oi_pct"] is None else "%+.2f%%" % s["oi_pct"], s["state"]))
+    return L
+
+
+def vwap_00z(bars_1m, now_ms):
+    """hlc3 VWAP of closed 1m bars since 00:00Z of now's UTC day; None if no volume."""
+    day0 = now_ms - now_ms % DAY_MS
+    pv = vv = 0.0
+    for b in bars_1m or []:
+        if b["t"] >= day0 and b["ct"] < now_ms:
+            pv += (b["h"] + b["l"] + b["c"]) / 3.0 * b["v"]
+            vv += b["v"]
+    return pv / vv if vv > 0 else None
+
+
+def load_oi_csv(path):
+    """oi_recorder.py oi_1m.csv rows [ts_ms,iso_utc,symbol,openInterest,source] -> [(ts_ms, oi)]."""
+    out = []
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            for line in f:
+                p = line.strip().split(",")
+                try:
+                    out.append((int(p[0]), float(p[3])))
+                except (IndexError, ValueError):
+                    continue
+    except OSError:
+        return []
+    return out
+
+
+def fetch_orderflow(now_ms, timeout=10):
+    """Public fapi only: 1500 1m klines (covers 00:00Z) and 5m openInterestHist; ([], []) parts on error."""
+    import urllib.request
+
+    def get(url):
+        with urllib.request.urlopen(url, timeout=timeout) as r:
+            return json.loads(r.read().decode())
+    try:
+        k = fapi_kline_bars(get(FAPI + "/fapi/v1/klines?symbol=BTCUSDT&interval=1m&limit=1500"), now_ms)
+    except Exception:
+        k = []
+    try:
+        oi = [(int(x["timestamp"]), float(x["sumOpenInterest"])) for x in
+              get(FAPI + "/futures/data/openInterestHist?symbol=BTCUSDT&period=5m&limit=30")]
+    except Exception:
+        oi = []
+    return k, oi
+
+
+def order_flow_section(bars_1m, oi, now_ms):
+    L = ["## Order flow, 1m/5m/15m (descriptive only, no tested edge: orderflow_views_2026-10-14 RESULT.md)", ""]
+    L += ["- " + x for x in order_flow_state_lines(bars_1m, resample(bars_1m or [], 300000),
+                                                    resample(bars_1m or [], 900000), oi)]
+    L.append("- our 00:00Z VWAP (1m hlc3): %s | CoinGlass CVD levels are chart-relative (they depend on where the "
+             "chart starts); compare CVD shape only, and a chart VWAP may be anchored at the first loaded bar"
+             % _f(vwap_00z(bars_1m, now_ms), 1))
+    return L
+
+
 # ---------------------------------------------------------------- alerts
 def load_alerts(path, now_ms):
     out = []
@@ -267,7 +437,7 @@ def _cx(c):
     return "n/a" if c is None else "%s %d bars ago" % (c[0], c[1])
 
 
-def build(now_ms, kdir, adir, verdicts, candles_mod):
+def build(now_ms, kdir, adir, verdicts, candles_mod, orderflow=None):
     bars = {tf: load_klines(os.path.join(kdir, "BTCUSDT_%s.json" % tf), now_ms) for tf in ("5m", "15m", "1h")}
     bars["4h"] = resample_4h(bars["1h"])
     last_px = None
@@ -320,6 +490,8 @@ def build(now_ms, kdir, adir, verdicts, candles_mod):
     vinfo = volume_info(bars.get("4h", []))
     L += ["", "## Volume [%s] (same-slot baseline, effort vs result, OI scope)" % tagv, "",
           volume_line(vinfo)]
+    if orderflow is not None:
+        L += [""] + order_flow_section(orderflow[0], orderflow[1], now_ms)
     L += ["", "## Alerts, last 24h (turn_of_candle excluded)", "",
           "| tf | layer/sub/event | n | verdict | newest |", "|---|---|---|---|---|"]
     for tf in ALERT_TFS:
@@ -366,9 +538,15 @@ def main(argv=None):
     ap.add_argument("--out", default=os.path.join(MTS, "runtime", "market_guide.md"))
     ap.add_argument("--klines-dir", default=os.path.join(MTS, "market_data", "klines"))
     ap.add_argument("--alerts-dir", default=os.path.join(MTS, "runtime", "alerts"))
+    ap.add_argument("--oi-csv", default=os.path.join(MTS, "runtime", "oi_live", "oi_1m.csv"))
+    ap.add_argument("--no-orderflow", action="store_true", help="skip the public fapi order-flow fetch")
     a = ap.parse_args(argv)
     now_ms = a.now_ms if a.now_ms is not None else int(time.time() * 1000)
-    text = build(now_ms, a.klines_dir, a.alerts_dir, load_verdicts(), _load_candles())
+    of = None
+    if not a.no_orderflow:
+        k1, oi_hist = fetch_orderflow(now_ms)
+        of = (k1, load_oi_csv(a.oi_csv) or oi_hist)
+    text = build(now_ms, a.klines_dir, a.alerts_dir, load_verdicts(), _load_candles(), orderflow=of)
     if a.stdout:
         sys.stdout.write(text)
     else:
