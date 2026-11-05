@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-05T03:05:15Z",
   "commands": [
     "mvn -q -Dtest=SpikeFade* test"
   ],
@@ -16,6 +17,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "A-S2 non-DAX = 0.40 pct of zone high (BTC 1040 -> stop 1044.16, was 1060); GER40 stays 20 ",
+      "ref": "702da1e24",
+      "utc": "2026-11-05T03:05:15Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "SpikeFade: prior-day-high proxy beyond 3% cap returns null (no high+20); replay gate and A",
@@ -26,6 +33,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: shipped",
   "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks\nREVIEWED:2026-11-05 ACCEPT (Haiku on API credit, job haiku-review-refined-1105b: A_S2 fixed 20 points still on trunk (SpikeFadeDetector.java:40,198); test specified)",
   "pinned": false,
   "prio": 2,
@@ -35,7 +43,12 @@
   "refs": [
     "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md"
   ],
-  "result": "",
+  "result": "A-S2 non-DAX = 0.40 pct of zone high (BTC 1040 -> stop 1044.16, was 1060); GER40 stays 20 pts",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "src/main/java/datafeed/SpikeFadeDetector.java",
     "src/test/java/datafeed/SpikeFadeCriticalWave1Test.java"
@@ -48,12 +61,13 @@
   "sources": [
     "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read ITEM3 row A5 and TLV2:94,265,323",
     "Scale the stop per symbol, label OURS",
     "Fail-first test, run mvn -q -Dtest=SpikeFade* test"
   ],
+  "taken": "2026-11-05T03:05:15Z",
   "tests": "SpikeFadeCriticalWave1Test: BTC A-S2 stop distance is >= the scaled width, not 20 dollars; fails on current code",
   "title": "SpikeFade A-S2 fixed 20-point stop is a DAX number applied to BTC",
   "weight": "CRUCIAL",

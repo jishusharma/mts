@@ -94,7 +94,8 @@ public class SpikeFadePathsTest {
     private static void bar(ArrayNode k, int minute, double o, double h, double l, double c) {
         long t = ms(TODAY, 7, 0) + minute * 60_000L;
         ArrayNode b = k.addArray();
-        b.add(t).add(o).add(h).add(l).add(c).add(10.0).add(t + 59_999L).add(1000.0).add(10).add(5.0).add(500.0).add(0);
+        double vol = minute == 0 ? 10_000.0 : 10.0;   // session-open volume node: the leg profile is thin above its VPOC (A-C3)
+        b.add(t).add(o).add(h).add(l).add(c).add(vol).add(t + 59_999L).add(1000.0).add(10).add(5.0).add(500.0).add(0);
     }
 
     private static ArrayNode withRamp() {

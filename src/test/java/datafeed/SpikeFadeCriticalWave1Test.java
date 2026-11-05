@@ -31,8 +31,9 @@ import static org.junit.jupiter.api.Assertions.*;
  *   Median of 20 = (sorted[9] + sorted[10]) / 2 = 0.5 %. Prior day high = 1020; every other prior high = 1005.
  * Case A today: bar i closes 1010+i up to the high 1040 at bar 30, then 1039..1030 at bars 31..40 (no wicks).
  *   leg = 30/1010*100 = 2.9703 %: above the median; rank = 20/20 = 1.0. Last close 1030 > prior high 1020: A-C2 holds.
- *   Nothing above 1040 among prior highs -> A-S2: stop 1040 + 20 = 1060. Target = open 1010. risk 20, reward 30,
- *   gross 1.5. net = (30 - 2*0.0005*1040) / (20 + 1.04) = 28.96 / 21.04 = 1.3764 -> 1.38.
+ *   Nothing above 1040 among prior highs -> A-S2 on BTC (OURS, TLV2:323 min width): stop 1040 * 1.004 = 1044.16.
+ *   Target = open 1010. risk 4.16, reward 30, gross 7.2115 -> 7.21.
+ *   net = (30 - 2*0.0005*1040) / (4.16 + 1.04) = 28.96 / 5.2 = 5.5692 -> 5.57.
  *   A-P2: fall rate (1040-1030)/10 = 1.0 is NOT above the leg rate 30/30 = 1.0 -> no. A-P5: 1040 > 1020 yes.
  *   A-P7: no low under 1010 after the high. A-P4: last 1m bar 07:40 opens a new 5m bucket (incomplete), completed
  *   buckets 07:30 (low 1036) and 07:35 (low 1031 < 1036) -> not inside -> no. Proofs = [A-P5].
@@ -120,20 +121,20 @@ public class SpikeFadeCriticalWave1Test {
         assertNotNull(c, "idea A-C1 + A-C2 hold: must fire");
         assertEquals("fade_short", c.get("setup_type").asText());
         assertEquals(1040.0, c.get("zone").get("price").asDouble(), 0.0);
-        assertEquals(1060.0, c.get("math").get("stop").asDouble(), 0.0);
+        assertEquals(1044.16, c.get("math").get("stop").asDouble(), 0.0);
         assertEquals("A-S2", c.get("stop_rule").asText());
         assertEquals(1010.0, c.get("math").get("target").asDouble(), 0.0);
-        assertEquals(1.5, c.get("math").get("gross_rr").asDouble(), 0.0);
-        assertEquals(1.38, c.get("math").get("net_rr").asDouble(), 0.0);
-        assertTrue(c.get("math").get("rr_sanity").asBoolean(), "gross 1.5 >= 1.5");
-        assertTrue(c.get("math").get("net_rr_sanity").asBoolean(), "1.376 >= floor 1.25");
+        assertEquals(7.21, c.get("math").get("gross_rr").asDouble(), 0.0);
+        assertEquals(5.57, c.get("math").get("net_rr").asDouble(), 0.0);
+        assertTrue(c.get("math").get("rr_sanity").asBoolean(), "gross 7.21 >= 1.5");
+        assertTrue(c.get("math").get("net_rr_sanity").asBoolean(), "5.57 >= floor 1.25");
         assertEquals(1.0, c.get("impulse_rank").asDouble(), 0.0);
         assertEquals(2.9703, c.get("impulse_leg_pct").asDouble(), 0.0);
         assertEquals(10, c.get("bars_since_zone").asInt());
         assertEquals(10.0, c.get("price_left_zone_points").asDouble(), 0.0);
         assertEquals(ms(TODAY, 7, 30), c.get("zone_time_ms").asLong());
         assertEquals(0.97, c.get("math").get("distance_pct").asDouble(), 0.0);
-        assertEquals(19.2308, c.get("stop_n5").asDouble(), 1e-3, "20/1040*100 / 0.1 (N5 = 1/1000 of price)");
+        assertEquals(4.0, c.get("stop_n5").asDouble(), 1e-3, "4.16/1040*100 / 0.1 (N5 = 1/1000 of price)");
         List<String> proofs = new ArrayList<>();
         for (JsonNode p : c.get("proofs")) proofs.add(p.asText());
         assertEquals(List.of("A-P5"), proofs, "P2 tie 1.0 vs 1.0 is not 'above'; P4/P7 absent; P5 1040 > 1020");
@@ -154,7 +155,8 @@ public class SpikeFadeCriticalWave1Test {
      * Case B (A-C1 gate is strict). Prior baseline 900, all 20 legs 4.5 = 0.5 % (same clock up to 07:11 includes the
      * leg bar at 07:10) -> median 0.5 %, prior high 904.5. Today open 1000, high 1005 -> leg 5/1000 = 0.5 %:
      * NOT above the median -> no candidate. Same series with high 1005.5 -> leg 0.55 % > 0.5 % -> fires:
-     * A-C2 1004 > 904.5, stop 1005.5 + 20 = 1025.5 (A-S2), target 1000, risk 20, reward 5.5, gross 0.275.
+     * A-C2 1004 > 904.5, stop 1005.5 * 1.004 = 1009.522 -> 1009.52 (A-S2 BTC, OURS 0.40 %), target 1000, risk 4.022,
+     * reward 5.5, gross 5.5/4.022 = 1.3675.
      */
     @Test
     void caseB_leg_equal_to_median_does_not_fire_just_above_does() {
@@ -162,9 +164,9 @@ public class SpikeFadeCriticalWave1Test {
                 "leg 0.5 % == median 0.5 %: the gate is strictly above");
         ObjectNode c = detect(todayShort(prior(900.0, legs(4.5, 4.5)), 1005.5, 1000.0, 1004.0));
         assertNotNull(c, "leg 0.55 % > median 0.5 %");
-        assertEquals(1025.5, c.get("math").get("stop").asDouble(), 0.0);
+        assertEquals(1009.52, c.get("math").get("stop").asDouble(), 0.0);
         assertEquals(1000.0, c.get("math").get("target").asDouble(), 0.0);
-        assertEquals(0.275, c.get("math").get("gross_rr").asDouble(), 0.006);
+        assertEquals(1.3675, c.get("math").get("gross_rr").asDouble(), 0.006);
         assertEquals(1.0, c.get("impulse_rank").asDouble(), 0.0);
     }
 
@@ -207,7 +209,7 @@ public class SpikeFadeCriticalWave1Test {
 
     /**
      * Case F (A-S1 proxy cap, OURS 3 %): the only prior high above the zone is 1100, 60 above the 1040 zone
-     * (5.77 %), beyond the cap, so it is ignored and A-S2 applies: stop 1060, risk 20, reward 30, gross 1.5.
+     * (5.77 %), beyond the cap, so it is ignored and A-S2 applies: stop 1044.16, risk 4.16, reward 30, gross 7.21.
      * A prior high at 1070 (2.88 %) stays within the cap (case D).
      */
     @Test
@@ -219,8 +221,8 @@ public class SpikeFadeCriticalWave1Test {
         ObjectNode c = detect(k);
         assertNotNull(c);
         assertEquals("A-S2", c.get("stop_rule").asText());
-        assertEquals(1060.0, c.get("math").get("stop").asDouble(), 0.0);
-        assertEquals(1.5, c.get("math").get("gross_rr").asDouble(), 0.0);
+        assertEquals(1044.16, c.get("math").get("stop").asDouble(), 0.0);
+        assertEquals(7.21, c.get("math").get("gross_rr").asDouble(), 0.0);
     }
 
     /**
@@ -236,6 +238,69 @@ public class SpikeFadeCriticalWave1Test {
         assertNull(detect(k), "proxy 1100 is 5.77 % above the zone: fail closed, no high+20 stop");
     }
 
+
+    /** Like todayShort but bar 10 carries volume v10 (the other bars 10); closes at close. */
+    private static ArrayNode todayVol(ArrayNode k, double hi, double close, double v10) {
+        long t0 = ms(TODAY, 7, 0);
+        for (int i = 0; i < 10; i++) bar(k, t0 + i * 60_000L, 1000, 1000, 1000, 1000);
+        k.addArray().add(t0 + 10 * 60_000L).add(1000.0).add(hi).add(1000.0).add(close).add(v10);
+        bar(k, t0 + 11 * 60_000L, close, close, close, close);
+        return k;
+    }
+
+    /**
+     * Case H (A-C3 price arm, TLV2:61, k0zm5NYn0IQ:357-360; ratio 0.5 is OURS, thin has NO-SOURCE). Session leg 1000 -> 1005.5,
+     * 30 rows of 0.1833: bars 0..9 close 1000 -> row 0 holds 100 (the POC); bar 10 closes 1004 -> row 21.
+     * Volume above the POC row = bar 10's volume. 90 / 100 = 0.9 > 0.5: volume above the VPOC, no candidate.
+     * 10 / 100 = 0.1 and exactly 50 / 100 = 0.5 pass (strictly above rejects); A-C3 then leaves not_in_data.
+     */
+    @Test
+    void caseH_volume_above_session_vpoc_rejects_price_arm() {
+        assertNull(detect(todayVol(prior(900.0, legs(4.5, 4.5)), 1005.5, 1004.0, 90.0)),
+                "0.9 of the POC volume sits above the VPOC: A-C3 fails");
+        ObjectNode thin = detect(todayVol(prior(900.0, legs(4.5, 4.5)), 1005.5, 1004.0, 10.0));
+        assertNotNull(thin, "0.1 of the POC volume above: thin top");
+        assertEquals(0.1, thin.get("c3_above_poc_ratio").asDouble(), 1e-9);
+        List<String> nid = new ArrayList<>();
+        for (JsonNode x : thin.get("not_in_data")) nid.add(x.asText());
+        assertFalse(nid.contains("A-C3"), "A-C3 is checked now");
+        List<String> cond = new ArrayList<>();
+        for (JsonNode x : thin.get("conditions")) cond.add(x.asText());
+        assertTrue(cond.contains("A-C3"));
+        assertNotNull(detect(todayVol(prior(900.0, legs(4.5, 4.5)), 1005.5, 1004.0, 50.0)), "ratio 0.5 is not above 0.5");
+    }
+
+    /** Case I (A-C3 NOT_IN_DATA): a series without volume is not gated and keeps A-C3 listed. */
+    @Test
+    void caseI_no_volume_keeps_a_c3_not_in_data() {
+        ArrayNode k = prior(900.0, legs(4.5, 4.5));
+        long t0 = ms(TODAY, 7, 0);
+        for (int i = 0; i < 10; i++) k.addArray().add(t0 + i * 60_000L).add(1000.0).add(1000.0).add(1000.0).add(1000.0);
+        k.addArray().add(t0 + 10 * 60_000L).add(1000.0).add(1005.5).add(1000.0).add(1004.0);
+        k.addArray().add(t0 + 11 * 60_000L).add(1004.0).add(1004.0).add(1004.0).add(1004.0);
+        ObjectNode c = detect(k);
+        assertNotNull(c);
+        boolean listed = false;
+        for (JsonNode x : c.get("not_in_data")) if ("A-C3".equals(x.asText())) listed = true;
+        assertTrue(listed);
+        assertFalse(c.has("c3_above_poc_ratio"));
+    }
+
+    /**
+     * Case J (A-S2 per symbol, TLV2:94,323): GER40 keeps the fixed 20 points (stop 1060), BTCUSDT uses 0.40 % of the zone high
+     * (1040 * 0.004 = 4.16, never 20 dollars), ETHUSDT likewise.
+     */
+    @Test
+    void caseJ_a_s2_width_scales_per_symbol() {
+        ArrayNode k = prior(1000.0, legs(5.0, 20.0));
+        today(k, 1010.0, up30DownTo(1010.0, 1040.0, 1030.0, 10));
+        ObjectNode btc = SpikeFadeDetector.detect(M, M.createObjectNode(), k, "balance", "BTCUSDT");
+        assertEquals(1044.16, btc.get("math").get("stop").asDouble(), 0.0);
+        ObjectNode eth = SpikeFadeDetector.detect(M, M.createObjectNode(), k, "balance", "ETHUSDT");
+        assertEquals(1044.16, eth.get("math").get("stop").asDouble(), 0.0);
+        ObjectNode dax = SpikeFadeDetector.detect(M, M.createObjectNode(), k, "balance", "GER40");
+        assertEquals(1060.0, dax.get("math").get("stop").asDouble(), 0.0);
+    }
     /** Case E (fail closed): fewer than 20 prior sessions -> no candidate even when the idea is plain. */
     @Test
     void caseE_short_history_fails_closed() {

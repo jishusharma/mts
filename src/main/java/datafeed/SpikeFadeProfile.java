@@ -77,6 +77,18 @@ final class SpikeFadeProfile {
         return new Thin(t[0], t[1], t[2], poc, poc / (ROWS / 3));
     }
 
+    /**
+     * A-C3 (price arm): volume traded above the session VPOC at the top of the leg / POC row volume, same 30-row leg profile.
+     * Counts the rows above the POC row that lie in the top third (the "top of the leg"); 0 when the POC is the top row.
+     */
+    static double aboveVpocRatio(double lo, double hi, double[] px, double[] vol) {
+        double[] v = rows(lo, hi, px, vol);
+        int poc = pocRow(v);
+        double above = 0;
+        for (int i = Math.max(poc + 1, 2 * ROWS / 3); i < ROWS; i++) above += v[i];
+        return v[poc] > 0 ? above / v[poc] : 0.0;
+    }
+
     /** @return the profile-arm candidate built from the A1 candidate, or null (arm not applicable / NOT_IN_DATA / not thin). */
     static ObjectNode build(ObjectMapper mapper, ObjectNode a1, SpikeFadeDetector.Bars b, String sym) {
         if ("GER40".equals(sym) && !Boolean.getBoolean(DAX_PROPERTY)) return null;
@@ -173,7 +185,9 @@ final class SpikeFadeProfile {
         p8.put("b_shape", p8ok);
 
         ArrayNode cond = (ArrayNode) c.get("conditions");
-        cond.add("A-C3");
+        boolean hasC3 = false;
+        for (JsonNode x : cond) if ("A-C3".equals(x.asText())) hasC3 = true;
+        if (!hasC3) cond.add("A-C3");
         ArrayNode pr = (ArrayNode) c.get("proofs");
         if (p3ok) pr.add("A-P3");
         if (p8ok) pr.add("A-P8");

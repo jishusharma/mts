@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-05T03:05:14Z",
   "commands": [
     "mvn -q -Dtest=SpikeFade* test"
   ],
@@ -16,6 +17,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "A-C3 price-arm gate: top-third volume above VPOC > 0.5 x POC row rejects (OURS); test fail",
+      "ref": "702da1e24",
+      "utc": "2026-11-05T03:05:14Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "SpikeFade: prior-day-high proxy beyond 3% cap returns null (no high+20); replay gate and A",
@@ -26,6 +33,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: shipped",
   "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks\nREVIEWED:2026-11-05 ACCEPT (Haiku on API credit, job haiku-review-refined-1105b: A-C3 still in not_in_data on trunk (SpikeFadeDetector.java:246); test specified)",
   "pinned": false,
   "prio": 2,
@@ -35,7 +43,12 @@
   "refs": [
     "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md"
   ],
-  "result": "",
+  "result": "A-C3 price-arm gate: top-third volume above VPOC > 0.5 x POC row rejects (OURS); test fails 5 cases on old code; mvn SpikeFade* green",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "src/main/java/datafeed/SpikeFadeDetector.java",
     "src/test/java/datafeed/SpikeFadeCriticalWave1Test.java"
@@ -49,12 +62,13 @@
   "sources": [
     "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read ITEM3 row A4 and TLV2:61 / k0zm5NYn0IQ:357-360",
     "Add the volume-above-VPOC gate to the price arm; label thresholds SOURCED or OURS",
     "Add the fail-first test, run mvn -q -Dtest=SpikeFade* test"
   ],
+  "taken": "2026-11-05T03:05:14Z",
   "tests": "SpikeFadeCriticalWave1Test: new case with volume above VPOC returns null; fails on current code (A-C3 listed not_in_data at SpikeFadeDetector.java:239)",
   "title": "SpikeFade A-C3 (no volume above the session VPOC) is missing on the price arm",
   "weight": "CRUCIAL",
