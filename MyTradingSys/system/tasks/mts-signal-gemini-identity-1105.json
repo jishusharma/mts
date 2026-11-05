@@ -1,35 +1,57 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest scripts/dev/test_mts_signal.py MyTradingSys/tests/test_signal_v1_schema.py -q"
+  ],
   "created": "2026-11-05T04:33:30Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "pytest scripts/dev/test_mts_signal.py passes incl. new test: with MTS_AGENT=gemini-nuc who() ends with /gemini-nuc and with it unset who() is unchanged",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "mts_signal sender id tells gemini-laptop and gemini-nuc apart from Claude on the same host: today who() is host/<login letter> only (0 hits for gemini-nuc or gemini-laptop in mts_signal.py). Add env MTS_AGENT (OURS name) appended as host/<letter>/<agent> when set.",
   "id": "mts-signal-gemini-identity-1105",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "mts_signal: ship done only on a completed ship; failed ship = note; 15 min repeat window",
+      "ref": "848838d182e2",
+      "utc": "2026-11-05T07:36:53Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "planner 11-05 ROUTINE",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-05T11:20:09Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/mts_signal.py",
+    "scripts/dev/test_mts_signal.py"
+  ],
+  "scope_out": [
+    "no change to signal file schema, ack or broadcast logic, no live tree, no secrets"
+  ],
+  "scope_sha": "848838d182e2",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Write the failing test for who() with and without MTS_AGENT",
+    "Edit who() (mts_signal.py ~line 172) to append the sanitised agent name",
+    "Run the whole test_mts_signal.py and test_signal_v1_schema.py"
+  ],
+  "tests": "scripts/dev/test_mts_signal.py::test_who_appends_agent_name written first, fails on current who() (no MTS_AGENT handling)",
   "title": "mts_signal: tell gemini-laptop/gemini-nuc senders apart from Claude on the same host (0 hits for gemini-nuc/gemini-laptop in mts_signal.py)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

@@ -1,35 +1,55 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/layer_lab/reports/2026-11-05_gemini-blind-read-refresh-main-checkout.md'); assert p.exists() and len(p.read_text())>400\""
+  ],
   "created": "2026-11-05T09:10:55Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-05_gemini-blind-read-refresh-main-checkout.md lists each stash, merge and pop path with a code line, the covering test or UNCOVERED, quotes the pytest pass count, and ends with VERDICT: MATCH or MISMATCH.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Independent Gemini blind read of scripts/dev/refresh_main_checkout.py against its test file: from the code alone list every path where protected state (HALT, AUTO_PAUSE, runtime, .mts_live) could be stashed or lost, then check each is covered by a test.",
   "id": "gemini-blind-read-of-scripts-dev-refresh",
   "kind": "audit",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "refresh_main_checkout: post-step failure fails the CLI, no ACK",
+      "ref": "9ef4175fdec1",
+      "utc": "2026-11-05T09:22:48Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "planner 11-05 ROUTINE audit, no REVIEWED stamp needed",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-05T11:19:34Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/reports/2026-11-05_gemini-blind-read-refresh-main-checkout.md",
+    "scripts/dev/refresh_main_checkout.py"
+  ],
   "scope_out": [],
-  "size": "",
+  "scope_sha": "9ef4175fdec1",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Enumerate stash, ff-only merge, diverged merge and pop paths touching the protected prefixes",
+    "Map each path to a test in scripts/dev/test_refresh_main_checkout.py and run that test file",
+    "Write the report with a table and VERDICT"
+  ],
+  "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/layer_lab/reports/2026-11-05_gemini-blind-read-refresh-main-checkout.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] blind read of scripts/dev/refresh_main_checkout.py",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
