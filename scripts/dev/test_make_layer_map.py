@@ -20,6 +20,22 @@ class LayerMapTest(unittest.TestCase):
             self.assertTrue((REPO / b["report"]).exists(), b["report"])
             self.assertIn(b.get("read"), ("summary", "header"), b["id"])
 
+    def test_every_backtest_row_has_trials_matching_minbtl_table(self):
+        # TRIALS is read from item8_minbtl.py by AST, so the test has no import side effects.
+        import ast
+        item8 = REPO / "MyTradingSys" / "research" / "critical_test_wave2_2026-10-30" / "item8_minbtl.py"
+        tree = ast.parse(item8.read_text(encoding="utf-8"))
+        trials = None
+        for node in tree.body:
+            if isinstance(node, ast.Assign) and any(getattr(t, "id", None) == "TRIALS" for t in node.targets):
+                trials = ast.literal_eval(node.value)
+        self.assertIsNotNone(trials, "TRIALS dict not found in item8_minbtl.py")
+        cfg = json.loads(CFG.read_text(encoding="utf-8"))
+        for b in cfg["backtests"]:
+            self.assertIn("trials", b, b["id"])
+            self.assertEqual(b["trials"], trials.get(b["id"]), b["id"])
+        self.assertEqual(sum(1 for b in cfg["backtests"] if b["trials"] is not None), 15)
+
     def test_generator_writes_page(self):
         with tempfile.TemporaryDirectory() as d:
             out = Path(d) / "m.html"
