@@ -6,7 +6,7 @@ implemented (almost every stop distance is OURS and not in v0). Every event at b
 """
 import krown_core as kc
 
-SETUPS = ("S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9")
+SETUPS = ("S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11")
 
 
 def _ev(i, side, setup, tags=None):
@@ -53,6 +53,37 @@ def setup_s8(bbwp, h, l, c, p):
 def setup_s9(top_fires):
     """TOP-4 SELL FRAMEWORK (KR-P01): a sell signal for long-term holders, tagged short here for the event study."""
     return [_ev(t, "short", "S9", ["top3of4"]) for t in top_fires]
+
+
+def _volume_anchored(line_events):
+    """{line id: bar the volume arm V became known} from 'eligible' events with arm V (the line's anchor volume check, E4)."""
+    return {e["line"]: e["bar"] for e in line_events if e.get("state") == "eligible" and e.get("arm") == "V"}
+
+
+def setup_s10(line_events, sides):
+    """KR-L04: a touched event on a volume-anchored line. support -> long, resistance -> short. `sides` = {line id: side}
+    (the detector events carry no side); lines without a side or without a V arm are skipped. Event at the touch bar."""
+    vol = _volume_anchored(line_events)
+    out = []
+    for e in line_events:
+        if e.get("state") != "touched" or e["line"] not in vol or e["bar"] < vol[e["line"]]:
+            continue
+        side = {"support": "long", "resistance": "short"}.get(sides.get(e["line"]))
+        if side:
+            out.append(_ev(e["bar"], side, "S10", ["volume_anchored", f"episode={e.get('episode', 1)}"]))
+    return out
+
+
+def setup_s11(line_events, sides):
+    """KR-L06: a break event of a line. support broken -> short, resistance broken -> long. Same `sides` contract."""
+    out = []
+    for e in line_events:
+        if e.get("state") != "broken":
+            continue
+        side = {"support": "short", "resistance": "long"}.get(sides.get(e["line"]))
+        if side:
+            out.append(_ev(e["bar"], side, "S11", ["line_break"]))
+    return out
 
 
 def fire_counts(events, nbars):

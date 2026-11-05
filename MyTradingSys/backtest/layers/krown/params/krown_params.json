@@ -47,6 +47,11 @@
     "s2_vol_mult": {"value": 1.0, "label": "OURS", "source": "S2 volume above average (spec); 'discernible' threshold grid {1.0,1.25,1.5}"},
     "s8_recent": {"value": 5, "label": "OURS", "source": "bars to look back for BBWP <= low (S8)"},
     "s8_break_n": {"value": 10, "label": "OURS", "source": "bars of range the S8 candle must break (not stated)"},
+    "full_body_ratio": {"value": 0.8, "label": "OURS", "source": "body/range for a full-body conviction candle (KR-C05 gives none)"},
+    "tiny_range_frac": {"value": 0.5, "label": "OURS", "source": "tiny candle = range <= this share of the mean prior range (KR-V06 gives none)"},
+    "low_n": {"value": 20, "label": "OURS", "source": "drift to a low = close at the lowest close of the last n bars (KR-V08 gives none)"},
+    "vol_trap_bbwp": {"value": 85, "label": "OURS", "source": "KR-Q07 volatility trap: BBWP already at or above this at the decision bar (85-93 are the trader's examples only)"},
+    "vol_exhaust_bbwp": {"value": 85, "label": "OURS", "source": "KR-Q06 volatility profit-take flag: first bar back below this after expansion (85-93 examples only)"},
     "s7_vol_lookback": {"value": 100, "label": "OURS", "source": "'biggest volume bar' window for S7 (KR-V07 gives none)"}
   }
 }
