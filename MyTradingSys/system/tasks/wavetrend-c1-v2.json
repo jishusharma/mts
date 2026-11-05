@@ -5,12 +5,15 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-10-27T17:48:09Z",
-    "misses": 1,
+    "folded": "2026-11-05T13:13:32Z",
+    "misses": 20,
     "reads": [
-      "scripts/dev/lookahead_allowlist.tsv"
+      "scripts/dev/artifacts.py",
+      "scripts/dev/tasks.py",
+      "scripts/dev/supervisor.py",
+      "MyTradingSys/system/artifacts/registry.json"
     ],
-    "session": "agent-a4cf139c65e920594"
+    "session": "c6544be9-fafb-4039-a01f-272f24fc1c71"
   },
   "created": "2026-10-18T21:26:38Z",
   "depends_on": [
