@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-05T04:34:36Z",
   "commands": [],
   "created": "2026-10-25T21:20:22Z",
   "depends_on": [
@@ -15,6 +16,12 @@
   "id": "bug-session-handoff-ship-speed-audit",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "6 points: 5 KEEP/1 DROP; ship wall = CI run 2m48s-3m03s, queue 0s; HANDOFF_AUDIT_2026-10-2",
+      "ref": "8eda7d8a5",
+      "utc": "2026-11-05T04:34:36Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,6 +40,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "handoff-header-date-lint-1105",
   "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks\nREVIEWED:2026-11-05 HOLD (Haiku on API credit, job haiku-review-refined-1105: dependency gemini-laptop-open-questions not found; scope files and ci.yml:19 verified)\nREVIEWED:2026-11-05 ACCEPT (Haiku on API credit, job haiku-review-refined-1105b: audit card; per-point KEEP/DROP rows and command evidence testable; scope exists)",
   "pinned": false,
   "prio": 2,
@@ -40,7 +48,12 @@
   "refined_by": "Session_Planner",
   "refreshed": "2026-11-05T02:43:54Z",
   "refs": [],
-  "result": "",
+  "result": "6 points: 5 KEEP/1 DROP; ship wall = CI run 2m48s-3m03s, queue 0s; HANDOFF_AUDIT_2026-10-26.md + 3 cards",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/mts_doctor/HANDOFF_AUDIT_2026-10-26.md",
     "MyTradingSys/system/GEMINI_START.md",
@@ -60,13 +73,14 @@
     "scripts/dev/role_loader.py",
     "AGENTS.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "SPEED: read ci.yml:19 (tasks/** runs CI on purpose, CI review 2026-10-25) and gh run list timings for 5a65fb31, d794c33c; state whether 3m20s was queue or run time.",
     "CONTEXT LOAD: check NEXT_SESSION.md date and owner header; grep role_loader.py and AGENTS.md for who reads it; propose owner+date header only if a loader reads it.",
     "BOOT DOC: verify by repo evidence; fix stale lines in GEMINI_START.md; facts only the laptop can show (F: paths, installed tools) become a card for gemini-laptop. PLATFORM: add PowerShell-safe examples where a doc has a bash heredoc.",
     "RECOVERY and IDENTITY: check the signal naming (gemini-nuc, gemini-laptop) in mts_signal; file cards for anything above a doc edit; write the audit file."
   ],
+  "taken": "2026-11-05T04:34:36Z",
   "tests": "No code unless a fix needs it. Check: python scripts/dev/tasks.py lint passes; every UNVERIFIED line in the audit file ends with a command and its output.",
   "title": "BUG: session/handoff pipeline misses the 2-min ship goal and loads stale context (Gemini laptop audit 2026-10-26)",
   "weight": "IMPORTANT",

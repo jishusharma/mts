@@ -30,7 +30,7 @@ The operator has two inputs on the page, both stored in the artifact's db (not i
 3. Inbox items with status `new`, oldest first:
    - Record first: append the item VERBATIM to `MyTradingSys/system/OPERATOR_INBOX.md` (id, date, kind, text in a
      fenced block; never paraphrase, never fix typos). The repo copy is the durable one; the db can be wiped.
-     Append with Bash (`cat >> MyTradingSys/system/OPERATOR_INBOX.md <<'EOF'`); never Read the file (a full Read costs about 20k tokens).
+     Append with Bash (`cat >> MyTradingSys/system/OPERATOR_INBOX.md <<'EOF'`) or PowerShell (`[IO.File]::AppendAllText((Resolve-Path MyTradingSys/system/OPERATOR_INBOX.md), $text)` with `$text` built from a single-quoted here-string ending in a LF; never Add-Content, it writes CRLF); never Read the file (a full Read costs about 20k tokens).
      Rotation: when `wc -c` shows more than 30000 B, `git mv` it to `MyTradingSys/archive/operator_inbox/<first date>_to_<last date>.md`,
      cut that copy before the 5th-from-last heading (`## <id> | <ts> | <kind>`; pasted text may hold other `##` lines), and recreate
      OPERATOR_INBOX.md from its header plus the cut-off tail. Nothing is trimmed or reworded; test_integrity test_7 caps the live file at 30720 B.
