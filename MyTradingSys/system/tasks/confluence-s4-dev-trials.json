@@ -41,7 +41,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks\nREVIEWED:2026-11-05 HOLD (Haiku on API credit, job haiku-review-refined-1105: PRE_REG_CONFLUENCE.md lacks ## Context and Regime mix; dependency confluence-s3-context-read not found; CONTEXT_READ.md absent)",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks\nREVIEWED:2026-11-05 HOLD (Haiku on API credit, job haiku-review-refined-1105: PRE_REG_CONFLUENCE.md lacks ## Context and Regime mix; dependency confluence-s3-context-read not found; CONTEXT_READ.md absent)\nREVIEWED:2026-11-05 HOLD (Haiku on API credit, job haiku-review-refined-1105b: PRE_REG_CONFLUENCE has no ## Context; run/CONTEXT_READ.md missing (s3 not done))",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
