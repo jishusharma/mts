@@ -213,7 +213,11 @@ class RealRegistry(unittest.TestCase):
             if r["study_dir"].startswith("context_factors"):
                 self.assertNotIn("session-extreme fade", r["kill_scope"], r["study_dir"])
         eur = [r for r in self.row("eur_low_us_sweep_followups_2026-10-18")]
-        self.assertTrue(all("BLOCKED legs are not killed" in r["kill_scope"] for r in eur) and eur)
+        # fix 4 (Q5): the parser-readable sentence replaces "FAIL means stop: none", so the row needs no override
+        self.assertTrue(eur and all(r["kill_scope"].startswith("FAIL/INCONCLUSIVE: stop") and "no leg is killed" in r["kill_scope"]
+                                    for r in eur), [r["kill_scope"][:60] for r in eur])
+        pe = V.parse_study(V.RESEARCH / "eur_low_us_sweep_followups_2026-10-18")
+        self.assertEqual({r["kill_scope"] for r in pe}, {r["kill_scope"] for r in eur})
         per = V.ledger_per_study(RESEARCH_LEDGER, "DEV")
         for st, n in (("bb_top_reversal_2026-10-18", 12), ("eur_low_us_sweep_followups_2026-10-18", 3),
                       ("context_factors_2026-10-16", 16), ("context_factors_pit_2026-10-16", 8 + 14),

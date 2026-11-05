@@ -66,12 +66,37 @@ class PreRegGate(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             fx = Path(d) / "v.csv"
             fx.write_text(nl.join(lines) + nl, newline=nl, encoding="utf-8")
-            code, out = run("--n", "678", "--sd", "1.4", "--cost", "0.1", "--m", "auto", "--new-cells", "2", "--verdicts-csv", str(fx))
+            fl = Path(d) / "l.csv"  # empty ledger keeps the fixture hermetic
+            fl.write_text("study,variant,run_utc,split,data_source,description,status" + nl, newline=nl, encoding="utf-8")
+            code, out = run("--n", "678", "--sd", "1.4", "--cost", "0.1", "--m", "auto", "--new-cells", "2", "--verdicts-csv", str(fx),
+                            "--ledger-csv", str(fl))
             self.assertIn("m 5 ", out)
             self.assertIn("z_holm 2.576", out)
-            code, out = run("--n", "678", "--sd", "1.4", "--cost", "0.1", "--m", "auto", "--verdicts-csv", str(fx))
+            code, out = run("--n", "678", "--sd", "1.4", "--cost", "0.1", "--m", "auto", "--verdicts-csv", str(fx),
+                            "--ledger-csv", str(fl))
             self.assertIn("m 3 ", out)
             self.assertEqual(run("--n", "678", "--sd", "1.4", "--cost", "0.1", "--m", "7")[0], 0)
+
+    def test_m_auto_uses_ledger_count_when_ledger_has_more_variants(self):
+        # REGATE_AUDIT fix 1: m auto = count_with_ledger (per study max of VERDICTS arms and TRIAL_LEDGER variants) + new.
+        # VERDICTS: s1 2 arms, s2 1 = 3. Ledger: s1 4 variants, s4 2 (DEV), s5 1 (VALIDATION, ignored). Per study max:
+        # s1 4 + s2 1 + s4 2 = 7; + 2 new = 9; z_holm(9) = Phi^-1(1 - 0.05/18) = 2.773. VERDICTS-only would give m 5.
+        import tempfile
+        nl = chr(10)
+        vlines = ["study_dir,family,arm,split_read,n,gross_mean_pct,se_pct,cost_pct,verdict,kill_scope,one_run,commit,date",
+                  "s1,f,a,DEV,1,0,0,0,FAIL,none,no,c,d", "s1,f,b,DEV,1,0,0,0,FAIL,none,no,c,d",
+                  "s2,f,(study),DEV,1,0,0,0,FAIL,none,no,c,d"]
+        llines = ["study,variant,run_utc,split,data_source,description,status"]
+        llines += [f"s1,v{i},d,DEV,x,y,pre-registered" for i in range(4)]
+        llines += ["s4,k1,d,DEV,x,y,count-only", "s4,k2,d,DEV,x,y,count-only", "s5,k1,d,VALIDATION,x,y,count-only"]
+        with tempfile.TemporaryDirectory() as d:
+            fv, fl = Path(d) / "v.csv", Path(d) / "l.csv"
+            fv.write_text(nl.join(vlines) + nl, newline=nl, encoding="utf-8")
+            fl.write_text(nl.join(llines) + nl, newline=nl, encoding="utf-8")
+            code, out = run("--n", "678", "--sd", "1.4", "--cost", "0.1", "--m", "auto", "--new-cells", "2",
+                            "--verdicts-csv", str(fv), "--ledger-csv", str(fl))
+            self.assertIn("m 9 ", out)
+            self.assertIn(f"z_holm {independent_z(9):.3f}", out)
 
     def test_z_holm_m1_matches_independent_quantile(self):
         expected = independent_z(1)

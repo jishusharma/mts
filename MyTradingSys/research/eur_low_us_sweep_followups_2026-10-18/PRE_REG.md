@@ -31,4 +31,4 @@ PASS iff gate PASS and n >= 200 and mean net (after 0.10 % fee) > 0 with t >= 2 
 | B RSI-divergence short (BLOCKED, power gate) | 208 | none | none | BLOCKED |
 | C pre-US double-top short (BLOCKED, power gate) | 100 | none | none | BLOCKED |
 
-FAIL means stop: none; BLOCKED legs are not killed (no outcome was read), they are untestable at this design and sample.
+FAIL/INCONCLUSIVE: stop; this BLOCK (count-only) covers only legs A (long after sweep + reclaim), B (RSI-divergence short) and C (pre-US double-top short) of the EUR-low US-sweep follow-ups on BTCUSDT at the registered stops (median 0.405-0.531 %); no leg is killed and the parent eur_low sweep verdict is untouched; a leg returns only with about 2,900 / 12,600 / 2,800 DEV days at sd 1.4 R and m 75, or with a cost below 0.11 R. (Amended 2026-11-05, REGATE_AUDIT.md fix 4 / Q5; wording only, no outcome read.)
