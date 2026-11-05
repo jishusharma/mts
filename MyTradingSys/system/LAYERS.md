@@ -197,7 +197,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/analysts/SCORECARD.md`
 - Roadmap: `MyTradingSys/research/analysts/ROADMAP.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `analyst-ingest-roman-x` refined p3 SONNET: Implement Roman Trading volume-absorption social call listener
+  - `analyst-ingest-roman-x` ready p3 SONNET: Implement Roman Trading volume-absorption social call listener
 
 ## Krown (TA 101: zones, volume, candles, averages, ranges) (`krown`)
 - Status: Spec v0.2 + 120-rule ledger from 15 of 19 reachable TA 101 videos (14 TA + 1 fees). The 4 missing transcripts are on disk since 2026-10-16 (krown_capture_2026-10-16/transcripts/ta101_missing4). Gate G2 reached: KROWN_SETUP_CATALOG.md (commit f4a5182a). One structural stop (compression breakout), no stop distance or size rule: the rest is OURS. Detectors S1-S9 exist (v0, 49 tests; S10-S16 have none). Recall check on his dated examples: 3 of 12 verified against klines, 0 strict hits (RECALL FAIL). No DEV event study yet (card krown-dev-event-study not started); fable run 6 (S8) INCONCLUSIVE.
@@ -246,7 +246,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `pitchfork-engine-implement-hagopian-fail` refined p2 OPUS: Pitchfork engine: implement Hagopian failure breakout candidates (PF-HAG-L / PF-HAG-S) in Java
   - `pitchfork-fixes-live-java` refined p2 JIS-NB: Pitchfork live Java review fixes: F3 stale-bounce gate parity, F6 inverted-fork tine, F7/F9 labels
   - `pitchfork-live-4h-bars-too-few` refined p2 JIS-NB: pitchfork live: snapshot fetches 3 x 4h bars, PitchforkSignalLayer needs 15, so mts.pitchfork=true never fires
-  - `pitchfork-operator-charts-prep` refined p2 SONNET: pitchfork: classify operator's pitchfork charts, measure copy-paste (parallel) forks vs random parallels (spec
+  - `pitchfork-operator-charts-prep` ready p2 SONNET: pitchfork: classify operator's pitchfork charts, measure copy-paste (parallel) forks vs random parallels (spec
   - `sim-desk-plug-in-pitchfork-4h-tine-bounc` refined p2 OPUS: Sim desk: plug in Pitchfork 4H tine-bounce study adapter (Modified Schiff + Volume Profile)
 
 ## Pizzino (Jason bar count + Michael nested swing states) (`pizzino`)
