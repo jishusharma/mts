@@ -220,3 +220,6 @@ MyTradingSys/research/wall_ledger_2026-11/test_wall_ledger.py
 scripts/dev/test_kline_gap_check.py
 MyTradingSys/research/wt_extreme_cross_volmatch_2026-11/test_volmatch.py
 MyTradingSys/research/level_approach_eth_2026-11/test_replicate.py
+MyTradingSys/backtest/layers/pitchfork/test_pitchfork_detector.py
+MyTradingSys/backtest/layers/pitchfork/test_pitchfork_review_fixes.py
+MyTradingSys/research/sim_desk/test_pitchfork.py
