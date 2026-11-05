@@ -613,7 +613,36 @@
     return { next: nx, last: last };
   }
 
-  var api = { OM: OM, oiState: oiState, oiWindow: oiWindow, oiNet: oiNet, oiDisagree: oiDisagree, oiBars: oiBars, oiEvents: oiEvents, oiLastEvent: oiLastEvent, oiPath: oiPath, oiTrap: oiTrap, oiEventText: oiEventText, C24: C24, oiExpect: oiExpect,
+  // ---------- anticipation map (card anticipation-map-from-current-layer-stat; Eagle_Eyes 10-30 operator ask).
+  // Readings of one price x OI state over 60 min, split by Binance taker delta. Odds = MEASURED fee-free descriptive base rates
+  // (research/anticipation_map_2026-11-05, anticipation_rates.js, DEV 2022-01..2024-06); flat 0.1 % and the 60-min window = OURS.
+  // The third reading (other venues lead) has no history on disk: UNMEASURED. Descriptive, never an entry call.
+  var AM_TEXT = {
+    'UP|UP|BUY': ['New aggressive longs: buyers lift and open', 'next 60 min: price above the window high, OI still rising', 'close back below the window start price'],
+    'UP|UP|SELL': ['Shorts opening into the rally, passive longs absorbing', 'taker delta flips to buy and price holds the high', 'close back below the window start price (shorts were right)'],
+    'UP|DOWN|BUY': ['Short covering: buyers lift, positions close', 'OI turns up with price still rising (new longs join)', 'close back below the window start price once covering ends'],
+    'UP|DOWN|SELL': ['Longs take profit into passive bids', 'OI turns up with buy delta', 'close back below the window start price'],
+    'DOWN|UP|SELL': ['New aggressive shorts: sellers hit and open', 'next 60 min: price below the window low, OI still rising', 'close back above the window start price'],
+    'DOWN|UP|BUY': ['Longs opening into the drop, passive shorts absorbing', 'taker delta flips to sell and price holds the low', 'close back above the window start price (longs were right)'],
+    'DOWN|DOWN|SELL': ['Long liquidation: sellers hit, positions close', 'OI turns up with price still falling (new shorts join)', 'close back above the window start price once the flush ends'],
+    'DOWN|DOWN|BUY': ['Shorts take profit into passive offers', 'OI turns up with sell delta', 'close back above the window start price']
+  };
+  function anticipation(dp, doi, delta, rates) {
+    var flat = OM.flat;
+    if (dp === null || doi === null || delta === null || !isFinite(dp) || !isFinite(doi) || !isFinite(delta) || Math.abs(dp) < flat || Math.abs(doi) < flat)
+      return { state: null, now: null, readings: [] };
+    var p = dp > 0 ? 'UP' : 'DOWN', o = doi > 0 ? 'UP' : 'DOWN', st = p + '|' + o, now = delta > 0 ? 'BUY' : 'SELL', other = now === 'BUY' ? 'SELL' : 'BUY';
+    var out = [now, other].map(function (d) {
+      var k = st + '|' + d, r = rates && rates[k], t = AM_TEXT[k];
+      return { key: k, label: t[0], live: d === now, p: r ? r.share : null, n: r ? r.n : 0, cont: r ? r.cont : null, kill: r ? r.kill : null, oiCont: r ? r.oiCont : null,
+               src: r ? 'MEASURED' : 'UNMEASURED', decider: 'Binance taker delta (60 min)', confirm: t[1], kill_line: t[2] };
+    });
+    out.push({ key: 'OTHER', label: 'Another venue leads (Binance OI follows Bybit / Deribit flow)', live: false, p: null, n: 0, cont: null, kill: null, oiCont: null,
+              src: 'UNMEASURED', decider: 'cross-venue OI (Money panel, venues disagree line)', confirm: 'the other venue OI moves first and more', kill_line: 'all venues OI move together' });
+    return { state: st, now: now, readings: out };
+  }
+
+  var api = { AM_TEXT: AM_TEXT, anticipation: anticipation, OM: OM, oiState: oiState, oiWindow: oiWindow, oiNet: oiNet, oiDisagree: oiDisagree, oiBars: oiBars, oiEvents: oiEvents, oiLastEvent: oiLastEvent, oiPath: oiPath, oiTrap: oiTrap, oiEventText: oiEventText, C24: C24, oiExpect: oiExpect,
     AV: AV, rosterRead: rosterRead, analystVote: analystVote, levelWatch: levelWatch, zones: zones, lean: lean, actions: actions, NW: NW, newsTags: newsTags, newsRead: newsRead, newsMerge: newsMerge, newsPulse: newsPulse, foldBars: foldBars, FD: FD, fundRead: fundRead, premium: premium, bybitTick: bybitTick, LQ: LQ, liqDeribit: liqDeribit, liqBybit: liqBybit, liqBinance: liqBinance, liqSum: liqSum, CP: CP, coilPierce: coilPierce, IT: IT, divergence: divergence, flow: flow, flowLive: flowLive, squeeze: squeeze, dom: dom, supports: supports, vwapTest: vwapTest,
     flagDiv: flagDiv, flagSqueeze: flagSqueeze, flagFlow: flagFlow, flagDom: flagDom, flagVwap: flagVwap, confidence: confidence, rma: rma, sma: sma, rsi: rsi, bollinger: bollinger, atr: atr, dayVwap: dayVwap, utcDays: utcDays, wavetrend: wavetrend,
     inversePnlBtc: inversePnlBtc, closedPnlBtc: closedPnlBtc, columns: columns, UO: UO, usOpen: usOpen, nextHighEvent: nextHighEvent };

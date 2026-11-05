@@ -17,3 +17,15 @@ Every A/B map Eagle_Eyes gives the operator, scored after the fact. Purpose: mea
 Running count: 3 maps, the "more likely" side right 2 of 3. Too few to mean anything; the ledger exists so the count grows.
 
 Observation logged with the second row: OI ended (93.73K) below its pre-rally level (about 96.5-97K at 13:30Z) while price held about +0.4% above the pre-rally base. More positions closed than the rally opened.
+
+## Anticipation maps (from 2026-11-05, card anticipation-map-from-current-layer-stat)
+
+The live_aid panel "Same data, other readings" lists, for the live 60-min price x Binance OI state, the reading taker delta supports now, the minority reading and the UNMEASURED other-venue reading. Back-scored on DEV (21,855 hourly events, `research/anticipation_map_2026-11-05/RESULT.md`, fee-free descriptive):
+
+| Score over DEV | Majority reading (delta with price) | Minority reading (delta against price) |
+|---|---:|---:|
+| share of its state | 86-90% | 10-14% |
+| price continues next 60 min | 42-47% | 46-49% |
+| move undone next 60 min (kill line) | 14-19% | 26-30% |
+
+So the deciding layer (taker delta) separates how often the move is undone, not which way price goes next. Every live map given from the panel is logged with `scenario_ledger.py add --likely NONE --text "Anticipation: <state> ..."` (up/down = the window high/low) and machine-scored by `scenario_ledger.py score` like the rows above.

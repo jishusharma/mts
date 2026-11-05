@@ -4,9 +4,9 @@
   "week_resets": 1794204690,
   "week_used": 38.0,
   "window_resets": 1793850253,
-  "window_used": 2.0
+  "window_used": 3.0
  },
- "at": "2026-11-05T00:36:53Z",
+ "at": "2026-11-05T01:26:54Z",
  "caps": {
   "astra_runs_per_window": 1,
   "min_gap_min": 20,
@@ -22,10 +22,40 @@
  "lab": {
   "astra_runs": 0,
   "week_pts": 8.0,
-  "window_pts": 2.0,
-  "window_runs": 5
+  "window_pts": 3.0,
+  "window_runs": 7
  },
  "runs": [
+  {
+   "at": "2026-11-05T01:26:03Z",
+   "card": "gpt-rederive-meta-label-dev-ext-1104",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 43,
+   "tokens_out": 2226,
+   "tokens_total": 260477,
+   "tokens_uncached": 33483,
+   "week_pts": 0.0,
+   "window_pts": 1.0
+  },
+  {
+   "at": "2026-11-05T01:00:38Z",
+   "card": "gpt-rederive-bb-long-window-1104",
+   "effort": "medium",
+   "kind": "audit",
+   "model": "gpt-6-luna",
+   "note": "",
+   "outcome": "BLOCKED",
+   "seconds": 52,
+   "tokens_out": 3047,
+   "tokens_total": 298340,
+   "tokens_uncached": 40061,
+   "week_pts": 0.0,
+   "window_pts": 0.0
+  },
   {
    "at": "2026-11-05T00:35:38Z",
    "card": "gpt-rederive-bb-long-window-1104",
@@ -143,36 +173,6 @@
    "tokens_out": 1941,
    "tokens_total": 150033,
    "tokens_uncached": 23420,
-   "week_pts": 0.0,
-   "window_pts": 0.0
-  },
-  {
-   "at": "2026-11-04T21:31:12Z",
-   "card": "malkan-window-12-18-vs-hindi",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "3 uncommitted file(s) left in F:\\MTS\\mts-codex-lab: MyTradingSys/research/malkan_hindi_2026-11-04/WINDOW_RECONCILE_1104.md",
-   "outcome": "OUT_OF_SCOPE",
-   "seconds": 153,
-   "tokens_out": 9875,
-   "tokens_total": 907616,
-   "tokens_uncached": 58445,
-   "week_pts": 0.0,
-   "window_pts": 1.0
-  },
-  {
-   "at": "2026-11-04T21:00:10Z",
-   "card": "malkan-window-12-18-vs-hindi",
-   "effort": "medium",
-   "kind": "audit",
-   "model": "gpt-6-luna",
-   "note": "3 uncommitted file(s) left in F:\\MTS\\mts-codex-lab: MyTradingSys/research/malkan_hindi_2026-11-04/WINDOW_RECONCILE_1104.md",
-   "outcome": "OUT_OF_SCOPE",
-   "seconds": 105,
-   "tokens_out": 6759,
-   "tokens_total": 736914,
-   "tokens_uncached": 65963,
    "week_pts": 0.0,
    "window_pts": 0.0
   }
