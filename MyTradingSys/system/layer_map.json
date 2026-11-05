@@ -1564,6 +1564,25 @@
    "verdict": "NOT REAL: PASS withdrawn 2026-11-03. Exact causal rerun 2020-2024: -0.011 % net, PF 0.99, n 272, inside placebo (mts_audit_2026-11-03/AUDIT.md s2)",
    "report": "MyTradingSys/research/pitchfork_2026-10-19/PHASE2_4H_POC_STUDY.md",
    "read": "summary"
+  },
+  {
+   "id": "KURISKO-QR-DEV-20261105",
+   "trials": 8,
+   "title": "Kurisko Quad Rotation DEV event study (family rsi): not run, 0 frozen cells",
+   "date": "2026-11-05",
+   "market": "BTCUSDT perp 1m/5m DEV 2022-01..2024-06; VALIDATION and HOLDOUT never read",
+   "layers": [
+    "rsi_levels"
+   ],
+   "params": "bands (9,3),(14,3),(40,4),(60,10) D-line; pattern-low stop; see research/kurisko_2026-10-18/PRE_REG.md",
+   "split": "DEV per backtest/splits.py",
+   "fees": "14 bp taker round trip (count-only, no outcome read)",
+   "interaction": "none (single-layer stochastic quad rotation; RSI arm = operator hypothesis)",
+   "effects": "none read",
+   "n": "8 candidate cells, 0 frozen",
+   "verdict": "BLOCKED: PRE_REG froze 0 of 8 cells (fee-dominated or underpowered); run_dev.py guard refused, no outcome read",
+   "report": "MyTradingSys/research/kurisko_2026-10-18/RESULT.md",
+   "read": "summary"
   }
  ]
 }
