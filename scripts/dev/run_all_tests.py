@@ -39,7 +39,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))   # gate_select
 PYTEST_LAYER_PATHS = [
     "MyTradingSys/backtest/test_splits.py",
     "MyTradingSys/research/bb_state_map_2026-10/test_bb_state_map.py",
-    "MyTradingSys/research/bigcandle_story_2026-11-05/test_study.py",
+    "MyTradingSys/research/bigcandle_story_2026-11-05/test_bigcandle_story.py",
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/test_oi_after_flush_pairing.py",
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/test_scenario_ledger.py",
     "MyTradingSys/backtest/layers/fabio/v3/tests",
