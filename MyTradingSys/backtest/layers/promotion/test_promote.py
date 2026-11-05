@@ -61,7 +61,7 @@ class Base(unittest.TestCase):
         self.regp = self.repo / "promoted.json"
         self.regp.write_text('{"version": 1, "entries": []}', encoding="utf-8")
         self.m = {"setup_id": SID, "layer": "newlayer",
-                  "pre_reg": {"path": "r/PRE_REG.md", "git_sha": self.pre_sha},
+                  "pre_reg": {"path": "r/PRE_REG.md", "git_sha": self.pre_sha, "plausible_net_r": 0.12},
                   "screen_verdict": {"path": "r/screen.json"},
                   "backtest": {"report_path": "r/bt.md", "label": "BT-TUNED"},
                   "oos": {"fee_net": True, "net_r": 0.12, "ci_low": 0.09, "ci_high": 0.15, "n_trades": 250, "trades_csv": "r/oos_trades.csv"},
@@ -104,6 +104,20 @@ class Gates(Base):
 
     def test_trade_floor_is_mde_based(self):
         self.rejected(lambda m: m["oos"].update(ci_low=0.02, ci_high=0.22, n_trades=31), "MDE")
+
+    def test_trade_floor_uses_pre_registered_effect_not_observed_net_r(self):
+        # GATE_AUDIT fix 6: a lucky large net_r must not lower its own floor
+        o, z = self.m["oos"], pm.holm_z(3)
+        doubled = dict(o, net_r=2 * o["net_r"])
+        self.assertEqual(pm.mde_floor(doubled, z, 0.12), pm.mde_floor(o, z, 0.12))
+        self.rejected(lambda m: m["pre_reg"].update(plausible_net_r=0.06), "MDE")     # floor ~510 > 250 trades
+
+    def test_missing_plausible_net_r_rejects(self):
+        def f(m):
+            del m["pre_reg"]["plausible_net_r"]
+        self.rejected(f, "plausible_net_r")
+        self.rejected(lambda m: m["pre_reg"].update(plausible_net_r=0), "plausible_net_r")
+        self.rejected(lambda m: m["pre_reg"].update(plausible_net_r="0.12"), "plausible_net_r")
 
     def test_recompute_matches_manifest_numbers(self):
         n, mean, lo, hi = pm.recompute_oos(self.repo / "r" / "oos_trades.csv")

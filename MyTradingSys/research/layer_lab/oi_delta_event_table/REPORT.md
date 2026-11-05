@@ -1,8 +1,4 @@
-# OI DATA NOW PRESENT — empirical DEV run pending (was BLOCKED)
-
-## Correction 2026-11-05: OI is now in data
-
-The `OI | 0` row and the `NOT_IN_DATA` reading below are superseded. Binance USD-M 5m metrics (OI, top-trader and global long/short ratios) now sit in the shared data root `<MTS_METRICS_ROOT>/<SYMBOL>/` (fleet path F:/MTS/data/metrics), written by `MyTradingSys/backtest/fetch_futures_metrics.py`: BTCUSDT and ETHUSDT 1768 of 1769 days each (2022-01-01..2026-11-04, 11-04 not yet published; 509,051 rows each), 4 short days, ratio columns blank on 91,781 rows up to 2022-12-13. Gap list: `MyTradingSys/system/DATA_NOTES.md`. The empirical DEV run is still to do; the sections below record the pre-fetch state.
+# BLOCKED — empirical OI inputs are missing
 
 ## Built and verified
 

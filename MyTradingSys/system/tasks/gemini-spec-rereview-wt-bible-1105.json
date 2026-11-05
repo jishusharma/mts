@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -c \"import pathlib; assert 'VERDICT:' in pathlib.Path('MyTradingSys/research/layer_lab/REREVIEW_WT_BIBLE_1105.md').read_text()\""
+  ],
+  "created": "2026-11-05T06:07:18Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/REREVIEW_WT_BIBLE_1105.md has one row per old defect 1-8 with line evidence and ends with VERDICT: ACCEPT or FIX-FIRST.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Non-Claude blind re-review of SPEC.md as fixed in bbaa2d3f1 against the 8 defects of REVIEW_GEMINI_1104.md (verdict was FIX-FIRST): confirm each is closed, list new defects only (E1-E7). ACCEPT lets the 3 WT study cards take a real REVIEWED stamp.",
+  "id": "gemini-spec-rereview-wt-bible-1105",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "WT SPEC: exact divergence rule, frozen bin edges and m, verdict rule, Card 2 primary read",
+      "ref": "bbaa2d3f181e",
+      "utc": "2026-11-04T20:41:38Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "bbaa2d3f181e WT SPEC: exact divergence rule, frozen bin edges and m, verdict rule, Card 2 ",
+      "ref": "MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md",
+      "utc": "2026-11-04T20:41:38Z"
+    }
+  ],
+  "layers": [
+    "wavetrend"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:T0-ONLY 2026-11-05 planner; unblocks the 3 WT cards (wt30-lower-high-divergence-short, wt-mtf-cycle-nesting, wt-cycle-clock)",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-05T06:07:51Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md",
+    "MyTradingSys/research/layer_lab/REREVIEW_WT_BIBLE_1105.md",
+    "MyTradingSys/research/wt_bible_studies_2026-11-04/REVIEW_GEMINI_1104.md"
+  ],
+  "scope_out": [],
+  "scope_sha": "bbaa2d3f181e",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read SPEC.md, REVIEW_GEMINI_1104.md, backtest/splits.py, wavetrend.py",
+    "Per old defect 1-8: CLOSED or OPEN with SPEC.md line evidence; list new defects (max 6)",
+    "Write REREVIEW_GEMINI_1105.md ending VERDICT: ACCEPT or FIX-FIRST"
+  ],
+  "tests": "python -c \"import pathlib; assert 'VERDICT:' in pathlib.Path('MyTradingSys/research/layer_lab/REREVIEW_WT_BIBLE_1105.md').read_text()\"",
+  "title": "[GEMINI] Re-review of fixed WT Bible SPEC.md (after bbaa2d3f1): stamp for the 3 WT study cards",
+  "weight": "ROUTINE",
+  "worker": ""
+}

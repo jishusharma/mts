@@ -59,7 +59,7 @@ class SpecGatesTest(unittest.TestCase):
         self.m = {
             "setup_id": SID,
             "layer": "newlayer",
-            "pre_reg": {"path": "r/PRE_REG.md", "git_sha": self.pre_sha},
+            "pre_reg": {"path": "r/PRE_REG.md", "git_sha": self.pre_sha, "plausible_net_r": 0.12},
             "screen_verdict": {"path": "r/screen.json"},
             "backtest": {"report_path": "r/bt.md", "label": "BT-TUNED"},
             "oos": {"fee_net": True, "net_r": 0.12, "ci_low": 0.09, "ci_high": 0.15, "n_trades": 250, "trades_csv": "r/oos_trades.csv"},
