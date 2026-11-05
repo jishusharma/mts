@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "sim-v2: catalogue of every known test, WaveTrend export, kind/parity/ROI fields",
-      "ref": "bd11ebf782e0",
-      "utc": "2026-10-24T19:39:33Z"
+      "line": "sim hosted page: drawdown shading, Monte Carlo band, year-by-year stability flag",
+      "ref": "9e31182d4d34",
+      "utc": "2026-11-03T14:02:21Z"
     }
   ],
   "layers": [],
@@ -29,7 +29,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-28T00:04:16Z",
+  "refreshed": "2026-11-05T04:41:32Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -41,12 +41,12 @@
     "the HIGH 3,200+/3,156 fix (separate card correct-t09-exact-match-count-and-3-200-)",
     "any backtest re-run; T09_live_parity.md prose"
   ],
-  "scope_sha": "bd11ebf782e0",
+  "scope_sha": "9e31182d4d34",
   "size": "S",
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-28_gpt-t09-table-recount.md (MED finding)"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Add a fail-first test asserting the exported RSI 1h row's Live value equals parity_result.json's live_tradable_side (28), not same+live_only (27); see it fail.",
     "Fix export_results.py:123-124 to use the source's tradable/accepted count for Live while keeping the category totals (same/side_diff/off_by_one/live_only) separate.",

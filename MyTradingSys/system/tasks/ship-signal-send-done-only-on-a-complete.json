@@ -18,9 +18,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "exhaust.py plan --read: a quota reading older than 10 min is refused (B199)",
-      "ref": "8020042ba48c",
-      "utc": "2026-10-25T19:28:15Z"
+      "line": "mts_signal resolve_login fails closed on typed vs detected login mismatch",
+      "ref": "f854cd8022f4",
+      "utc": "2026-11-04T18:24:01Z"
     }
   ],
   "layers": [],
@@ -30,7 +30,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-10-25T22:18:15Z",
+  "refreshed": "2026-11-05T04:41:02Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -42,13 +42,13 @@
     "live path, orders, deploy, restarts",
     "new hooks, gate steps or rules beyond the card"
   ],
-  "scope_sha": "8020042ba48c",
+  "scope_sha": "f854cd8022f4",
   "size": "S",
   "sources": [
     "scripts/dev/mts_signal.py:390-425,242-256",
     "scripts/dev/sync.py:1026"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Read how the PostToolUse payload exposes tool_response (grep tool_response in the hook payload tests) and the ship tests at test_mts_signal.py:164-270.",
     "Write the 3 failing cases first.",

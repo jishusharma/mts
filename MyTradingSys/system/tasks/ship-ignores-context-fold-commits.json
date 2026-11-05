@@ -18,9 +18,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nb/bg-process-audit",
-      "ref": "e5bbcb6faab9",
-      "utc": "2026-10-27T23:57:20Z"
+      "line": "Revert \"Revert route tag re-land 08d51e5b7 (CI RED: wiring stale wavetrend entry, MTS Home",
+      "ref": "dea81301a70a",
+      "utc": "2026-11-04T16:25:21Z"
     }
   ],
   "layers": [],
@@ -34,7 +34,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-28T06:48:57Z",
+  "refreshed": "2026-11-05T04:41:53Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -44,12 +44,12 @@
   "scope_out": [
     "unrelated files; live tree; other cards"
   ],
-  "scope_sha": "e5bbcb6faab9",
+  "scope_sha": "dea81301a70a",
   "size": "S",
   "sources": [
     "operator ask 2026-10-28 gap 3"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Read the gap text and linked files",
     "Implement the smallest change",

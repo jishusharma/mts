@@ -40,7 +40,7 @@
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "gemini-4-argon",
-  "refreshed": "2026-10-27T19:29:43Z",
+  "refreshed": "2026-11-05T04:41:25Z",
   "refs": [
     "MyTradingSys/research/_archive/loose_2026-10/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md",
     "MyTradingSys/research/analysts/REVIEW_AND_INGESTION_EVALUATION_2026-10-18.md",
@@ -63,7 +63,7 @@
   "sources": [
     "MyTradingSys/research/_archive/loose_2026-10/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md:116-135"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Implement ingest adapter reading Roman Trading public calls (or operator inbox pastes) with verbatim source_url and published_utc.",
     "Extract entry, stop loss (below volume-anomaly wick), and targets using parse_social_call with ImbalanceConstruct.VOLUME_ABSORPTION.",

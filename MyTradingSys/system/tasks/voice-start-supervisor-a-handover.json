@@ -32,9 +32,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Stray process report in c_drive_guard; Supervisor voice start loads its hand-over",
-      "ref": "4545f7733b55",
-      "utc": "2026-10-28T06:42:49Z"
+      "line": "supervisor B hand-over at week 74%; credit ledger row",
+      "ref": "3fcbaa0c6bea",
+      "utc": "2026-11-05T01:26:47Z"
     }
   ],
   "layers": [],
@@ -46,7 +46,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-28T07:15:16Z",
+  "refreshed": "2026-11-05T04:41:07Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -55,10 +55,10 @@
     "MyTradingSys/system/handover/"
   ],
   "scope_out": [],
-  "scope_sha": "4545f7733b55",
+  "scope_sha": "3fcbaa0c6bea",
   "size": "S",
   "sources": [],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Widen BARE_LOGIN in role_loader.py (~line 210) so the 3 phrases resolve to Supervisor",
     "In build_text (~line 447), append MyTradingSys/system/handover/SUPERVISOR_<L>.md from origin/fast-track when it exists",

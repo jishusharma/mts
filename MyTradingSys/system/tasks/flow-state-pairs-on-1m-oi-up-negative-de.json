@@ -21,7 +21,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-28T22:25:42Z",
+  "refreshed": "2026-11-05T04:41:35Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -35,7 +35,7 @@
   "sources": [
     "operator shot 9ee7ea307f1e 10-28 22:23Z"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Define A/B/C thresholds from the 10-28 shots (OURS)",
     "Count and measure forward moves",

@@ -18,9 +18,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "successor_wake usage handoff: woken session is handed its own pacer reading via a USAGE fi",
-      "ref": "c8dcca8eda10",
-      "utc": "2026-10-28T06:37:47Z"
+      "line": "mts_doctor: add GIT-HUNG check and guard scope_in network git calls with timeout and no-pr",
+      "ref": "d6d63cf459d6",
+      "utc": "2026-11-02T06:42:18Z"
     },
     {
       "auto": true,
@@ -38,7 +38,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-28T06:49:05Z",
+  "refreshed": "2026-11-05T04:41:42Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -49,12 +49,12 @@
   "scope_out": [
     "unrelated files; live tree; other cards"
   ],
-  "scope_sha": "c8dcca8eda10",
+  "scope_sha": "d6d63cf459d6",
   "size": "S",
   "sources": [
     "operator ask 2026-10-28 gap 11"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Read the gap text and linked files",
     "Implement the smallest change",

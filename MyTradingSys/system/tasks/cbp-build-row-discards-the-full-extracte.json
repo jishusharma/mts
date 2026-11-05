@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "gate: run-scoped temp root so test scratch dirs no longer pile up in %TEMP%",
-      "ref": "5200e38f8c41",
-      "utc": "2026-10-28T16:27:36Z"
+      "line": "run_extra_tests: child pytest processes can import repo-root packages",
+      "ref": "6aa98586821d",
+      "utc": "2026-11-05T00:16:20Z"
     }
   ],
   "layers": [],
@@ -29,7 +29,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-29T21:12:23Z",
+  "refreshed": "2026-11-05T04:41:29Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -40,10 +40,10 @@
   "scope_out": [
     "quote gate rules in verify_extract_quotes; the stored row schema of accepted rows; re-running past rejections"
   ],
-  "scope_sha": "5200e38f8c41",
+  "scope_sha": "6aa98586821d",
   "size": "S",
   "sources": [],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "In cbp_run.build_row (line 154) put the full bad quote (strip, first 400 chars) in the reason: \"quote not in transcript: <full>\"",
     "Add scripts/dev/test_cbp_build_row.py: a 150-char fabricated quote is rejected and the reason contains all 150 chars; list it in run_extra_tests.py",

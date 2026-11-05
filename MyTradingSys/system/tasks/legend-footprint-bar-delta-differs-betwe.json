@@ -22,7 +22,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-28T19:30:12Z",
+  "refreshed": "2026-11-05T04:41:45Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -36,7 +36,7 @@
   "sources": [
     "shots f2ffb8a79f67 and 2dab97c8a8fc"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Read the Legend footprint tooltip for the delta definition",
     "Recompute taker delta for 18:30-18:40Z from Binance public trades and compare to both footprints",

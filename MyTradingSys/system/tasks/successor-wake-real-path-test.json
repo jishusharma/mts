@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "successor_wake: gate-blocked (slots < 1, any mode) waits for the next reset",
-      "ref": "8f0a5dc470c6",
-      "utc": "2026-10-28T12:07:48Z"
+      "line": "Supervisor idle fix: fit role budget, retoken, isolate successor_wake handover tests from ",
+      "ref": "7b66a91a7a68",
+      "utc": "2026-10-30T18:03:01Z"
     }
   ],
   "layers": [],
@@ -29,7 +29,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-28T12:51:17Z",
+  "refreshed": "2026-11-05T04:41:05Z",
   "refs": [
     "MyTradingSys/research/fix_verification_2026-10-28/REPORT.md"
   ],
@@ -39,10 +39,10 @@
     "scripts/dev/test_successor_wake.py"
   ],
   "scope_out": [],
-  "scope_sha": "8f0a5dc470c6",
+  "scope_sha": "7b66a91a7a68",
   "size": "S",
   "sources": [],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Add a seam/fake for Register-ScheduledTask (monkeypatch the PowerShell/subprocess call to write its args to a file instead of registering a real task)",
     "Run the real (non-dry) code path through that seam",

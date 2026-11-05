@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "refresh_main_checkout: never stash protected live-state paths (HALT*, AUTO_PAUSE*, runtime",
-      "ref": "134fc32e61a5",
-      "utc": "2026-10-28T17:31:31Z"
+      "line": "test_refresh_main_checkout: give temp clone its own git identity",
+      "ref": "4e712f593daa",
+      "utc": "2026-10-29T23:41:39Z"
     }
   ],
   "layers": [],
@@ -29,7 +29,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-28T18:09:08Z",
+  "refreshed": "2026-11-05T04:41:01Z",
   "refs": [
     "MyTradingSys/research/layer_lab/reports/2026-10-28_gpt-refresh-main-checkout-review.md"
   ],
@@ -43,12 +43,12 @@
     "MyTradingSys/execution/HALT",
     "deployments"
   ],
-  "scope_sha": "134fc32e61a5",
+  "scope_sha": "4e712f593daa",
   "size": "S",
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-28_gpt-refresh-main-checkout-review.md"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Add a focused test proving a failed post step does not emit ACK_LINE and returns nonzero.",
     "Implement failure propagation without changing stash/merge policy.",
