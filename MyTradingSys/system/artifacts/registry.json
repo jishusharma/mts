@@ -59,12 +59,12 @@
       "last_published": {
         "jishu.sharma": "2026-10-13",
         "jishu.awgp": "2026-10-14",
-        "jishusharma1985": "2026-11-04"
+        "jishusharma1985": "2026-11-05"
       },
       "note": "2026-10-13: the old Layer Map (backtest matrix + configurator, make_layer_map.py) was replaced at the SAME url by MTS Layers (per-layer road, stuck days, missing steps, decisions waiting on Jis, How MTS runs). make_layer_map.py still builds the old page if wanted. Published on all three logins.",
       "purpose": "Every trading layer's road and where it is stuck.",
       "notes_go_to": "Read only. Put notes on the Research Map.",
-      "published_sha": "a95197f9ce135f3bf2b4a86ba20ce39794a174ac8dd0ae66f35b3c355845b989"
+      "published_sha": "b5fc76d777fcbf5699cbfcdb36778780877cdf4b5150f35d2f601b620ca10a1f"
     },
     {
       "slug": "tom_fabio_deck",
@@ -194,12 +194,12 @@
         "jishusharma1985": "https://claude.ai/artifact/KaPy7f5BKFsvmqin84DpyF"
       },
       "last_published": {
-        "jishusharma1985": "2026-11-04"
+        "jishusharma1985": "2026-11-05"
       },
       "purpose": "Simulator desk: what each study tested, verdicts and example trades. The runnable desk itself is the local app (research/sim_desk/desk.py).",
       "notes_go_to": "Read only.",
       "note": "Added to the registry 2026-10-25 (operator: new development must show on MTS Home). No repo html path: the sim-desk sessions publish it; staleness is not tracked here. Live page title is 'Test Simulator' (v22, 2026-11-04).",
-      "published_sha": "6a0aa36e8c5f49a1f91a8168f3fd8edb43861d6162b410a97e884c0cf98c2a9e"
+      "published_sha": "fd8e11b5a6da7146aeb27ebc9612d0b4e173cbc273c5fcb317681997020abd0d"
     },
     {
       "slug": "cbp_analyst_desk",
@@ -239,7 +239,7 @@
       "last_published": {
         "jishu.sharma": "never",
         "jishu.awgp": "never",
-        "jishusharma1985": "2026-11-04"
+        "jishusharma1985": "2026-11-05"
       },
       "title": "MTS Home",
       "html": "MyTradingSys/system/artifacts/mts_home.html",
@@ -249,7 +249,7 @@
       "purpose": "This list: every MTS page, its owner login, where your notes go, and how to open it from any login.",
       "notes_go_to": "Nothing to write here.",
       "note": "The hub (operator 2026-10-16: 'all my artifacts available from one place'). Generated from registry.json; pinned on the home login.",
-      "published_sha": "d2624e407e4d22cc52c5c0de5780218dec1816f7055ba188c1af7c7e43fa16d6"
+      "published_sha": "be7f6288af7d330d65b5c4bd17a652d3560bdf1959f41043bc59b5f844f73ef7"
     },
     {
       "slug": "research_map",
