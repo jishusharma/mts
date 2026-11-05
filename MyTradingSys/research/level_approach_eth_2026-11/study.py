@@ -50,10 +50,15 @@ def agreement(cells, base, pooled_ci, pooled_base):
     return "AGREES" if (pooled_base < lo or pooled_base > hi) else "DISAGREES"
 
 
+def root_for(sym, base="F:/MTS/data/tom_raw/klines"):
+    """ETH 1m files were moved to klines_eth on 2026-11-05 (duplicate open_time vs BTC); BTC stays in klines."""
+    return Path(base + "_eth") if sym == "ETHUSDT" else Path(base)
+
+
 def load_symbol(sym, root=None, end_ms=CUTOFF_MS):
     if end_ms > CUTOFF_MS:
         raise ValueError("end %d after DEV cutoff %d: VALIDATION/HOLDOUT not loadable here" % (end_ms, CUTOFF_MS))
-    root = Path(root) if root is not None else Path("F:/MTS/data/tom_raw/klines")
+    root = Path(root) if root is not None else root_for(sym)
     end_month = str(np.datetime64(int(end_ms), "ms").astype("datetime64[M]"))
     paths = []
     for p in sorted(root.glob(sym + "-1m-*.csv")):
@@ -242,7 +247,7 @@ def main():
     import pandas as pd
     ap = argparse.ArgumentParser()
     ap.add_argument("--symbols", default="BTCUSDT,ETHUSDT")
-    ap.add_argument("--klines", default="F:/MTS/data/tom_raw/klines")
+    ap.add_argument("--klines", default=None, help="override root for every symbol; default BTC klines, ETH klines_eth")
     a = ap.parse_args()
     sha = la.require_frozen(HERE / "PRE_REG.md")
     syms = a.symbols.split(",")
