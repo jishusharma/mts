@@ -5,13 +5,16 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-05T13:13:32Z",
-    "misses": 20,
+    "folded": "2026-11-05T13:30:33Z",
+    "misses": 23,
     "reads": [
       "scripts/dev/artifacts.py",
       "scripts/dev/tasks.py",
       "scripts/dev/supervisor.py",
-      "MyTradingSys/system/artifacts/registry.json"
+      "MyTradingSys/system/artifacts/registry.json",
+      "scripts/dev/ci_watch.py",
+      "scripts/dev/usage_reminder.py",
+      "scripts/dev/sync.py"
     ],
     "session": "c6544be9-fafb-4039-a01f-272f24fc1c71"
   },
