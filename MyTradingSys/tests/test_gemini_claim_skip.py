@@ -16,8 +16,10 @@ class ClaimSkipTest(unittest.TestCase):
         self.assertEqual(gq.claim_holder("tom-v2", [("other", {"host": "x"})]), "")
 
     def test_run_job_skips_claimed(self):
+        # The claim belongs to ANOTHER host: an own-host claim is a crash-stranded one and is not skipped (gq-stale-claim-a),
+        # so the holder is pinned to a name no station has, or the test fails only on JIS-NB (2026-11-06, two trunk reverts).
         with tempfile.TemporaryDirectory() as t, mock.patch.object(gq, "ROOT", Path(t)), \
-                mock.patch.object(gq, "git"), mock.patch.object(gq, "card_gate", return_value=(True, "")), mock.patch("sync.open_claims", return_value=[("tom-v2", {"host": "JIS-NB"})]), \
+                mock.patch.object(gq, "git"), mock.patch.object(gq, "card_gate", return_value=(True, "")), mock.patch("sync.open_claims", return_value=[("tom-v2", {"host": "OTHER-STATION"})]), \
                 mock.patch.object(gq.subprocess, "run") as run:
             gq.run_job("tom-v2", "low")
             self.assertIn("SKIP", (Path(t) / "tom-v2.log").read_text(encoding="utf-8"))

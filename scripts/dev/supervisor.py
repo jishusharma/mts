@@ -823,6 +823,9 @@ def brief(card_id: str, role: str | None = None, repo: Path = REPO, card: dict |
             lines.append(f"Scope in: {'; '.join(clean_scope)}")
 
     deps = card.get("depends_on") or []
+    missing = [str(d) for d in deps if not tasks.path_of(repo, str(d)).is_file()]
+    if missing:   # a prompt must not name a card whose file is absent (scope and done-when unreadable): fail loud
+        raise SystemExit(f"supervisor brief: card {card_id} names missing card file(s): {', '.join(missing)}")
     if deps:
         lines.append(f"Depends on: {', '.join(str(d) for d in deps)}")
 

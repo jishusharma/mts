@@ -1471,3 +1471,18 @@ def test_plan_lines_codex_gemini_zero_runs_planner_without_nuc_heartbeat():
     assert not any(l.startswith("RUN Session_Planner") for l in ok)
     only = S.plan_lines("A", "JIS-NB", p, live, dict(ctx, codex_ready=7, gemini_ready=4), gate_key=False)
     assert any("CODEX 7" in l and l.startswith("RUN Session_Planner") for l in only)
+
+
+def test_prompt_with_missing_card_fails(tmp_path):
+    """A prompt naming a card with no tasks/<id>.json (the card itself or a depends_on card) exits non-zero naming it."""
+    d = tmp_path / "MyTradingSys" / "system" / "tasks"
+    d.mkdir(parents=True)
+    (d / "real-card.json").write_text(json.dumps({"id": "real-card", "goal": "g", "depends_on": ["ghost-card"]}), encoding="utf-8")
+    with pytest.raises(SystemExit) as e:
+        S.brief("real-card", repo=tmp_path)
+    assert "ghost-card" in str(e.value)
+    with pytest.raises(SystemExit) as e:
+        S.brief("no-such-card", repo=tmp_path)
+    assert "no-such-card" in str(e.value)
+    (d / "ghost-card.json").write_text(json.dumps({"id": "ghost-card"}), encoding="utf-8")
+    assert "Depends on: ghost-card" in S.brief("real-card", repo=tmp_path)
