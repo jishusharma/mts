@@ -12,7 +12,7 @@
  "goal": "Fee-net DEV run of the T5 detector; arms: partial at the node, no-loss after a new balance, one re-entry; touch and trade-through; power stated. Choose the OURS values on DEV only and freeze them.",
  "id": "tom-btc-dev-backtest",
  "kind": "build",
- "lane": "CODEX",
+ "lane": "SONNET",
  "layers": [
   "tom"
  ],
@@ -42,5 +42,6 @@
  "tests": "run lane",
  "title": "Tom on BTC T6: DEV backtest + adjustments (both fills, maker vs taker entry, management arms) - every variant a trial row",
  "weight": "CRUCIAL",
- "worker": "session"
+ "worker": "session",
+ "rerouted": "2026-11-06 operator: GPT/Codex plan expired; lane CODEX -> SONNET (cross-vendor independence of a re-derive is lost: say so in the result)"
 }
