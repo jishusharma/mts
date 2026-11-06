@@ -1770,3 +1770,8 @@ Applied: 2026-11-05, PLAN_24H_2026-11-05.md link M2.
 Operator (verbatim, via Lead): "2026-11-06 operator: GPT/Codex plan expired; no GPT or Codex lanes. Use both Gemini accounts and the Claude API credit."
 DECISION: no Codex or GPT spawns; 14 CODEX/GPT cards re-routed to SONNET (Builders for code); Gemini cards keep their lane. Credit rule: 83.34 of 100 USD spent, 16.66 left, about 8 USD per day for 2 days, Sonnet or Haiku only (no Opus), check the card is not already on trunk before every job.
 Applied: 2026-11-06, PLAN_24H_2026-11-06.md, tasks/*.json lane field.
+
+## d-us-session-prep-1106 | decided 2026-11-06 | Supervisor C (relayed by Lead C)
+Operator (verbatim, via Lead): "Every US session gets a prep brief. The rolling supervisor runs it at 4 phases as a checklist step (no scheduler): P1 09:00Z pre-market open, P2 13:15Z before the 13:30Z data releases, P3 14:45Z after the open (opening drive and first 15m), P4 21:15Z after the close, scoring. The brief is Context, never a signal; every scenario goes into scenario_ledger.py add and is scored at P4."
+DECISION: card us-session-prep-1106 (Sonnet Builder + Haiku review) builds scripts/dev/us_prep.py (T0, no LLM); the supervisor runs it at each phase from the SUPER_SESSION.md Sonnet checklist; a missed phase is logged, never skipped silently. 11-06 P2 and P3 run by hand before the script exists.
+Applied: 2026-11-06, card us-session-prep-1106.
