@@ -174,6 +174,76 @@ class T(unittest.TestCase):
         self.assertFalse(ok)
         self.assertEqual((ex / "HALT").read_text(), "local-halt")
 
+    # ---- error branches: each test fails if the matching guard in refresh() is removed ----
+    def test_wrong_branch_stops_untouched(self):
+        g(self.clone, "checkout", "-q", "-b", "other")
+        ok, stash = self.run_r(apply=True)
+        self.assertFalse(ok)
+        self.assertIsNone(stash)
+        self.assertIn("expected 'fast-track'", self.text())
+        self.assertEqual(g(self.clone, "rev-parse", "--abbrev-ref", "HEAD"), "other")
+
+    def test_fetch_failure_stops(self):
+        g(self.clone, "remote", "set-url", "origin", str(self.clone.parent / "nope.git"))
+        (self.clone / "dirty.txt").write_text("x")
+        ok, stash = self.run_r(apply=True)
+        self.assertFalse(ok)
+        self.assertIsNone(stash)
+        self.assertIn("git fetch origin failed", self.text())
+        self.assertEqual(g(self.clone, "stash", "list"), "")
+        self.assertEqual((self.clone / "dirty.txt").read_text(), "x")
+
+    def test_stash_failure_stops_before_merge(self):
+        (self.clone / "dirty.txt").write_text("x")
+        head = g(self.clone, "rev-parse", "HEAD")
+        (self.clone / ".git" / "index.lock").write_text("")  # stash cannot take the index lock
+        ok, stash = self.run_r(apply=True)
+        self.assertFalse(ok)
+        self.assertIsNone(stash)
+        self.assertIn("stash failed", self.text())
+        self.assertEqual(g(self.clone, "rev-parse", "HEAD"), head)
+        self.assertEqual((self.clone / "dirty.txt").read_text(), "x")
+
+    def test_merge_conflict_is_aborted_tree_unchanged(self):
+        commit(self.clone, "b.txt", "local-b")  # origin also adds b.txt: add/add conflict
+        g(self.clone, "branch", "wip/x")
+        head = g(self.clone, "rev-parse", "HEAD")
+        (self.clone / "dirty.txt").write_text("x")
+        ok, stash = self.run_r(apply=True, wip_branch="wip/x", merge_if_diverged=True)
+        self.assertFalse(ok)
+        self.assertIn("aborted", self.text())
+        self.assertEqual(g(self.clone, "rev-parse", "HEAD"), head)
+        self.assertFalse((self.clone / ".git" / "MERGE_HEAD").exists())
+        self.assertEqual((self.clone / "b.txt").read_text(), "local-b")
+        self.assertIn(stash, g(self.clone, "stash", "list"))  # dirty work kept, not dropped
+        self.assertIn("git stash pop --index", self.text())
+
+    def test_tracked_protected_changed_both_sides_keeps_local(self):
+        (self.up / "MyTradingSys" / "execution").mkdir(parents=True)
+        commit(self.up, "MyTradingSys/execution/HALT", "v1")
+        g(self.up, "push", "-q", "origin", "fast-track")
+        g(self.clone, "pull", "-q", "--ff-only", "origin", "fast-track")
+        ex = self.clone / "MyTradingSys" / "execution"
+        commit(self.up, "MyTradingSys/execution/HALT", "upstream-v2")
+        g(self.up, "push", "-q", "origin", "fast-track")
+        (ex / "HALT").write_text("local-halt")  # tracked + protected: never stashed, upstream also changed it
+        head = g(self.clone, "rev-parse", "HEAD")
+        ok, stash = self.run_r(apply=True)
+        self.assertFalse(ok)
+        self.assertIn("ff-only impossible", self.text())
+        self.assertEqual((ex / "HALT").read_text(), "local-halt")
+        self.assertEqual(g(self.clone, "rev-parse", "HEAD"), head)
+        self.assertEqual(g(self.clone, "stash", "list"), "")
+
+    def test_head_not_in_wip_branch_blocks(self):
+        g(self.clone, "branch", "wip/old")  # wip points at the pre-local-commit tip
+        commit(self.clone, "local.txt")
+        head = g(self.clone, "rev-parse", "HEAD")
+        ok, _ = self.run_r(apply=True, wip_branch="wip/old", merge_if_diverged=True)
+        self.assertFalse(ok)
+        self.assertIn("is not contained in 'wip/old'", self.text())
+        self.assertEqual(g(self.clone, "rev-parse", "HEAD"), head)
+
     def test_is_protected(self):
         for p in ("MyTradingSys/execution/HALT", "MyTradingSys/execution/HALT_DAILY_LOSS",
                   "MyTradingSys/execution/AUTO_PAUSE", "MyTradingSys/runtime/a/b.csv", ".mts_live/x"):
