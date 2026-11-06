@@ -2,7 +2,7 @@
 
   python MyTradingSys/research/btc_cycles_2026-11/cycle_bottom_flag.py [--csv btc_daily.csv] [--asof YYYY-MM-DD]
 
-Only COMPLETED bars count (date < asof). Testnet only; the trade itself is operator-called (cotrade.py).
+Only COMPLETED bars count (date < asof). Testnet only; the trade itself is operator-called (the testnet co-trade CLI in execution/, never from here).
 Labels: SOURCED = analyst row quoted from scripts/dev/analyst_levels.py output (CBP store); OURS = our choice.
 """
 import argparse
@@ -28,6 +28,9 @@ SOURCE_ROWS = {RECLAIM_5D: "2-day close above 80,350 needed; 3-day close above 7
 ZONE_PCT = 2.0
 STOP_BELOW_PCT = 1.0
 LEVERAGE = 2
+# SOURCED BIBLE.md (mts_bible, row 4 + "Breaks it"): the 2026-07-01 low 57,800 is the bottom unless a new low under 57,800 prints.
+# OURS: after the clock window the same 5d + weekly gates confirm only while no completed daily low since the peak is under it.
+BOTTOM_LOW = 57_800.0
 EXIT_LEVEL = RECLAIM_5D   # exit: weekly close back below the reclaimed level (OURS, card step 2)
 
 
@@ -64,8 +67,11 @@ def state(rows, asof):
     last_wk = None
     zone_top = RECLAIM_5D * (1 + ZONE_PCT / 100)
     streak_low = None
+    min_low = None
     for r in done:
         d = r["d"]
+        if d >= PEAK_DATE:
+            min_low = r["l"] if min_low is None else min(min_low, r["l"])
         if d in wk:
             last_wk = wk[d]
             if st["state"] == "CONFIRMED" and last_wk < EXIT_LEVEL:
@@ -73,7 +79,8 @@ def state(rows, asof):
             elif st["state"] == "IN" and last_wk < EXIT_LEVEL:
                 st.update(state="WAIT", exit_day=d, prev_entry_day=st["entry_day"], entry_day=None, entry=None,
                           stop=None, confirmed_on=None)  # re-armed: a new confirmation is needed
-        if st["state"] == "WAIT" and d in b5 and b5[d] > RECLAIM_5D and WINDOW[0] <= d <= WINDOW[1] \
+        if st["state"] == "WAIT" and d in b5 and b5[d] > RECLAIM_5D \
+                and (WINDOW[0] <= d <= WINDOW[1] or (d > WINDOW[1] and min_low is not None and min_low >= BOTTOM_LOW)) \
                 and last_wk is not None and last_wk >= WEEKLY_FLOOR:
             st.update(state="CONFIRMED", confirmed_on=d)
             streak_low = None
