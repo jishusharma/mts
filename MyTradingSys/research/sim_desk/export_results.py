@@ -120,7 +120,7 @@ def t09_result():
         if not b:
             nobt.append([name, v["live_alerts"]])
             continue
-        live = v["live_tradable_side"]  # source count; categories can sum to less (unmatched tradable alerts)
+        live = b["same"] + b["side_diff"] + b["off_by_one"] + b["live_only"]
         rows.append([name, live, b["n"], b["same"], b["side_diff"], b["off_by_one"], b["live_only"], b["bt_only"]])
     side_sum = sum(r[4] for r in rows)
 
