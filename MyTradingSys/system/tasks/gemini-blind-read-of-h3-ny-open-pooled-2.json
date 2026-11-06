@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/gemini_queue.py run gemini-blind-read-of-h3-ny-open-pooled-2:low"
+  ],
+  "created": "2026-11-06T10:48:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_H3POOLED_1106.md exists with a per-claim table (claim, recomputed value or file:line, MATCH|MISMATCH) and ends with VERDICT: MATCH or MISMATCH; each defect names file:line.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "D11 feeder: independent blind read (run through gemini_queue.py, Gemini effort low, not a Claude Agent) of BLOCKED.md, BLOCKED.md: recompute the quoted MDE and n-needed from prereg_gate.py inputs and check the 2 x 35 bound reasoning.",
+  "id": "gemini-blind-read-of-h3-ny-open-pooled-2",
+  "kind": "audit",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "H3 pooled BTC+ETH NY-open-low: BLOCKED by power gate (n<=70 vs 1801)",
+      "ref": "86bcc0996cfc",
+      "utc": "2026-11-06T10:48:44Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "86bcc0996cfc H3 pooled BTC+ETH NY-open-low: BLOCKED by power gate (n<=70 vs 1801)",
+      "ref": "MyTradingSys/research/h3_ny_open_pooled_2026-11/BLOCKED.md",
+      "utc": "2026-11-06T10:48:44Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-06 T0-ONLY | route [GEMINI] via gemini_queue.py gemini-blind-read-of-h3-ny-open-pooled-2:low; lane was CODEX (retired 11-06)",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-06T12:16:13Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_H3POOLED_1106.md",
+    "MyTradingSys/research/h3_ny_open_pooled_2026-11/BLOCKED.md",
+    "MyTradingSys/research/h3_ny_open_low_2026-10/BLOCKED.md"
+  ],
+  "scope_out": [
+    "editing the files read; reading VALIDATION/HOLDOUT; any fix (a defect becomes a raw card by the coordinator)"
+  ],
+  "scope_sha": "86bcc0996cfc",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/h3_ny_open_pooled_2026-11/BLOCKED.md, MyTradingSys/research/h3_ny_open_low_2026-10/BLOCKED.md before any prose summary of them",
+    "Recompute independently of the code under read, then recompute the quoted MDE and n-needed from prereg_gate.py inputs and check the 2 x 35 bound reasoning",
+    "Write MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_H3POOLED_1106.md with the per-claim table and VERDICT"
+  ],
+  "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_H3POOLED_1106.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
+  "title": "[GEMINI] blind read of h3_ny_open_pooled_2026-11/BLOCKED.md",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

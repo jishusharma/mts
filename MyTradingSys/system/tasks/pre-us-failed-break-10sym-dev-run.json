@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/research/pre_us_failed_break_10sym_2026-11/run_10sym.py"
+  ],
+  "created": "2026-11-06T12:14:42Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/pre_us_failed_break_10sym_2026-11/RESULT.md: verdict word first (PASS|FAIL|INCONCLUSIVE|BLOCKED), pooled n and per-symbol n, mean net bps of K, SE, t, time-cap sum, MDD, a Regime mix: line; gate output pasted; exports sim_desk/results/pre-us-failed-break-10sym-dev-run.json",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Re-run the frozen pre-US failed-break short rule (research/pre_us_failed_break_2026-10/PRE_REG.md s2-7, unchanged) pooled on 10 USD-M symbols, DEV 2022-01..2024-06, fee-net; the 2-symbol run was INCONCLUSIVE n=235.",
+  "id": "pre-us-failed-break-10sym-dev-run",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "fix-single-cost-module: test_no_own_costs + frozen cost allowlist, fee regimes A-D in fees",
+      "ref": "2d7d4d49cf4c",
+      "utc": "2026-10-30T09:55:18Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "backtest-pre-us-failed-break-dev-run",
+    "route-cryptocred-s3-power-unblock"
+  ],
+  "note": "REVIEWED:2026-11-06 ACCEPT | From raw re-run-pre-us-failed-break-and-h3-ny-ope (split). Needs n>=314 per prereg_gate (sd 60 bps OURS, cost 14, m auto+3 cells: MDE 15.3+14 vs 30). Data: BTC klines, ETH klines_eth, others klines_<sym>; never write there. Fees only from backtest/fees.py; new tool scripts need a wiring_registry.json entry; forward-index hits need lookahead_allowlist.tsv rows; RESULT Next: must be an existing card, stage or END: why. No forward-test or validation read.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-06T12:19:03Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/pre_us_failed_break_10sym_2026-11/PRE_REG.md",
+    "MyTradingSys/research/pre_us_failed_break_10sym_2026-11/run_10sym.py",
+    "MyTradingSys/research/pre_us_failed_break_10sym_2026-11/test_run_10sym.py",
+    "MyTradingSys/backtest/fees.py"
+  ],
+  "scope_out": [
+    "any change to the 2-symbol folder pre_us_failed_break_2026-10; PRE_REG numbers; VALIDATION/HOLDOUT; writes into the BTC or ETH data folders; live or testnet orders"
+  ],
+  "scope_sha": "2d7d4d49cf4c",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/pre_us_failed_break_2026-10/PRE_REG.md",
+    "MyTradingSys/system/PLAN_24H_2026-11-06.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "git ls-tree origin/fast-track MyTradingSys/research/ must NOT list pre_us_failed_break_10sym_2026-11 (else stop); read the 2-symbol PRE_REG and RESULT (when on trunk) for the rule",
+    "write PRE_REG.md (new folder) with a '## Context' block (Regime:, Phase: DEV, Session: pre-US 07-13Z, Entry: level break fail), the rule copied by reference, Holm m via verdicts.py check + prereg_gate.py --n 314 --sd 60 --sd-source <file:line> --cost 14 --m auto; BLOCKED with the numbers is a valid end",
+    "write test_run_10sym.py, then run_10sym.py (load_klines per symbol from F:/MTS/data/tom_raw/klines (BTC), klines_eth, klines_<sym>; SOL/XRP/LTC miss 7200 bars: no-signal); count n BEFORE any outcome column, then run once, print every cell",
+    "write RESULT.md (Regime mix:, per-symbol rows, Next: line), verdicts.py backfill, tasks.py done --next; ship; verify sha with git cherry origin/fast-track"
+  ],
+  "tests": "research/pre_us_failed_break_10sym_2026-11/test_run_10sym.py: loader raises on a bar with open >= 2024-07-01, and a symbol with under 7200 DEV bars missing is skipped (no-signal) not zero-filled; both fail before run_10sym.py exists",
+  "title": "Pre-US failed break short: DEV run on 10 symbols, power gate first (needs n>=314)",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}
