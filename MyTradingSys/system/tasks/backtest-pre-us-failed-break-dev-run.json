@@ -4,6 +4,22 @@
   "commands": [
     "python MyTradingSys/research/pre_us_failed_break_2026-10/run_dev.py"
   ],
+  "context": {
+    "calls_to_edit": 16,
+    "folded": "2026-11-06T10:50:56Z",
+    "misses": 13,
+    "reads": [
+      "MyTradingSys/backtest/research_kit.py",
+      "MyTradingSys/research/bb_range_to_range_2026-11-04/study.py",
+      "MyTradingSys/backtest/bt/bt_data.py",
+      "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/study.py",
+      "MyTradingSys/research/pre_us_failed_break_2026-10/PRE_REG.md",
+      "MyTradingSys/research/gross_effect_screen_2026-10-15/screen.py",
+      "MyTradingSys/research/gross_effect_screen_2026-10-15/DATA_MANIFEST.csv",
+      "scripts/dev/lookahead_allowlist.tsv"
+    ],
+    "session": "agent-aa96567074269f0be"
+  },
   "created": "2026-10-28T12:29:35Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/pre_us_failed_break_2026-10/RESULT.md with n episodes, mean net, SE, t, MAE, forced-flat days, a Regime mix: line, a Context: line (Regime/Phase/Session/Entry: window 07-13Z, level break fail), verdict PASS/FAIL/INCONCLUSIVE per section 7; exports sim_desk/results/backtest-pre-us-failed-break-dev-run.json; bars >= 2024-07-01 never opened",
