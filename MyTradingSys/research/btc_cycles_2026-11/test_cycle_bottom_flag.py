@@ -105,6 +105,36 @@ def test_weekly_close_below_reclaim_exits():
     assert "last trade exited" in f.flag_line(rows, d + timedelta(days=1))
 
 
+AFTER = date(2026, 11, 20)
+LATE_B = block_end(date(2026, 11, 22))     # a 5-day block end after the window (> 2026-11-16)
+LATE = {LATE_B - timedelta(days=i): (84_000.0, 85_000.0) for i in range(7)}
+
+
+def test_after_window_no_new_low_confirms():
+    assert LATE_B > f.WINDOW[1]
+    rows = fixture(LATE, end=LATE_B + timedelta(days=3))
+    s = f.state(rows, LATE_B + timedelta(days=1))
+    assert s["state"] == "CONFIRMED" and s["confirmed_on"] == LATE_B
+
+
+def test_after_window_new_low_blocks():
+    over = dict(LATE)
+    over[date(2026, 9, 20)] = (57_000.0, 62_000.0)    # a low under 57,800 after the peak: bottom broken
+    rows = fixture(over, end=LATE_B + timedelta(days=3))
+    assert f.state(rows, LATE_B + timedelta(days=1))["state"] == "WAIT"
+
+
+def test_inside_window_unchanged_by_new_low():
+    over = dict(ABOVE)
+    over[date(2026, 9, 20)] = (57_000.0, 62_000.0)
+    assert f.state(fixture(over), B + timedelta(days=1))["state"] == "CONFIRMED"
+
+
+def test_bottom_low_sourced_from_bible():
+    assert f.BOTTOM_LOW == 57_800.0
+    assert "57,800" in open(os.path.join(HERE, "..", "mts_bible", "BIBLE.md"), encoding="utf-8").read()
+
+
 def test_out_of_window_is_labelled():
     assert " OUT" in f.flag_line(fixture(), date(2026, 11, 20))
     assert " OUT" not in f.flag_line(fixture(), date(2026, 11, 7))

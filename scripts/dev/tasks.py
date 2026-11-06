@@ -8,7 +8,7 @@
   python scripts/dev/tasks.py tried <id> [--asks "<question>"]   # refiner: a try that did not reach ready; --asks parks it for the operator
   python scripts/dev/tasks.py next [--n 3] [--lane SONNET] [--all]   # the first ready cards no session holds, best first (--all: claimed too, marked)
   python scripts/dev/tasks.py brief <id>            # the <= 30 line session prompt for one card
-  python scripts/dev/tasks.py take <id> [--claim <slug>] | done <id> --result "<what>" --next "<card-id | stage | END: why | new:title>" | apply-op <id> bump|hold|drop|approve [--note ..]
+  python scripts/dev/tasks.py take <id> [--claim <slug>] | done <id> --result "<what>" --next "<card-id | stage | END: why | new:title>" | drop <id> --reason "<why>" | apply-op <id> bump|hold|drop|approve [--note ..]
   python scripts/dev/tasks.py tag <id> [--refresh] [--add kind:ref --line "<one line>"]   # state tag + LATEST pointers (TASK_REFINEMENT.md)
   python scripts/dev/tasks.py stale [--refresh]     # ready/active cards whose scope paths changed after their pointers were refreshed
   python scripts/dev/tasks.py sweep [--apply]       # cards whose registry rows are all CLOSED/WONTFIX -> done
@@ -37,7 +37,7 @@ REPO = Path(__file__).resolve().parents[2]
 DIR = "MyTradingSys/system/tasks"
 BUGS = "MyTradingSys/research/BUGS.md"
 LAYER_INDEX = "MyTradingSys/system/layer_index.json"
-MUTATING = ("new", "need", "fill", "check", "take", "tried", "done", "apply-op", "sweep", "flag", "tag", "stale")
+MUTATING = ("new", "need", "fill", "check", "take", "tried", "done", "drop", "apply-op", "sweep", "flag", "tag", "stale")
 
 STATES = ("raw", "refined", "ready", "active", "blocked", "done", "dropped")
 LIVE = ("ready", "active")                      # states that must satisfy the Definition of Ready
@@ -1396,18 +1396,28 @@ def route_next(card, value):
     if value is None:
         return None
     import route_audit as RA
+    import sync
     kind, val = RA.parse_next(value, allow_new=True)
     if kind is None:
-        raise SystemExit(f'tasks: --next: {val}; use --next "<card-id | stage | END: reason | new:<title>>"')
-    if kind == "card" and not path_of(REPO, val).exists():
-        raise SystemExit(f'tasks: --next card {val} does not exist; use --next new:"<title>" to file it')
+        raise SystemExit(f"ship refused: {val}; {sync.NEXT_FIX}")
+    if kind == "card" and (val.lower() == "none" or not path_of(REPO, val).exists()):
+        raise SystemExit(f'ship refused: Next card {val} does not exist; file it (tasks.py new "<title>" --id {val}) or {sync.NEXT_FIX}')
     if kind == "new":
         cid = re.sub(r"[^a-z0-9]+", "-", val.lower()).strip("-")[:40]
+        if cid in ("none", "fix"):
+            raise SystemExit(f'ship refused: Next card {cid} does not exist; file it (tasks.py new "<title>" --id {cid}) or {sync.NEXT_FIX}')
         if not path_of(REPO, cid).exists():
             save(REPO, blank(cid, val, prio=card.get("prio", 3), refs=[path_of(REPO, card["id"]).as_posix()]))
             print(f"filed raw card {cid} (next of {card['id']})")
         return cid
     return value.strip() if kind != "end" else f"END: {val}"
+
+
+def cmd_drop(a):
+    c = get(REPO, a.id)
+    c.update(state="dropped", pinned=False, closed=now(), note=a.reason[:300], reason=a.reason)
+    save(REPO, c)
+    print(f"{a.id}: dropped")
 
 
 def cmd_done(a):
@@ -1799,6 +1809,10 @@ def main(argv=None):
     d.add_argument("--result", required=True)
     d.add_argument("--next", required=True, help='where the work goes next: <card-id> | <stage> | "END: <reason>" | new:"<title>" (files it raw)')
     d.set_defaults(f=cmd_done)
+    dr = sp.add_parser("drop", help="drop a card with a reason")
+    dr.add_argument("id")
+    dr.add_argument("--reason", required=True, help="why the card was dropped")
+    dr.set_defaults(f=cmd_drop)
     cf = sp.add_parser("conflict", help="log two contradicting instructions as one deduplicated bug-conflict-<hash> card (seen count)")
     cf.add_argument("text", nargs="+", help="'A | B' or two args")
     cf.add_argument("--session", default="")

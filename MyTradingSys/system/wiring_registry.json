@@ -961,9 +961,17 @@
       "disp": "TOOL",
       "why": "One-line decision logger documented for hand use in COMMANDS.md:51."
     },
+    "MyTradingSys/system/artifacts/_gen_live_onepage_mock.py": {
+      "disp": "TOOL",
+      "why": "Builds the one-page live feed mock LIVE_ONEPAGE_MOCK_2026-11-04.html from the orderflow CSV; run by hand (d-sim-ux-1104), mock only."
+    },
     "MyTradingSys/tools/live_aid/build_artifact.py": {
       "disp": "TOOL",
       "why": "Builds the one-file claude.ai Artifact preview of live_aid.html (indicators inlined); run by hand when the live aid page changes, named in tools/live_aid/STEPS.md."
+    },
+    "MyTradingSys/tools/live_aid/build_cycle_flag.py": {
+      "disp": "TOOL",
+      "why": "Writes cycle_flag_data.js (the cycle-bottom flag line shown in live_aid.html); run by hand once a day, named in tools/live_aid/STEPS.md."
     },
     "MyTradingSys/tools/us_open_alert.py": {
       "disp": "WIRE",
@@ -994,9 +1002,17 @@
       "disp": "TOOL",
       "why": "Diagnostic divergence reader, \"tooling, left as is\": MyTradingSys/items/B063_divergence.md:70."
     },
-    "MyTradingSys/system/artifacts/_gen_live_onepage_mock.py": {
+    "MyTradingSys/backtest/layers/fabio/rescore.py": {
       "disp": "TOOL",
-      "why": "Builds the one-page live feed mock LIVE_ONEPAGE_MOCK_2026-11-04.html from the orderflow CSV; run by hand (d-sim-ux-1104), mock only."
+      "why": "Fee-net R maths (fees.py costs) for the fee/stop re-score, card fee-stop-rescore-fabio-habib-1106; used by rescore_fabio.py, rescore_habib.py and test_rescore.py."
+    },
+    "MyTradingSys/backtest/layers/fabio/rescore_fabio.py": {
+      "disp": "REPRO",
+      "why": "Re-score driver for fabio_of 09-30 with plan stops; run by hand, writes RESCORE.md figures (card fee-stop-rescore-fabio-habib-1106)."
+    },
+    "MyTradingSys/research/imbalance_qriptal_2026-10-16/rescore_habib.py": {
+      "disp": "REPRO",
+      "why": "Re-score driver for the Habib imbalance fade with plan stops; run by hand, writes RESCORE_tables.json (card fee-stop-rescore-fabio-habib-1106)."
     }
   }
 }
