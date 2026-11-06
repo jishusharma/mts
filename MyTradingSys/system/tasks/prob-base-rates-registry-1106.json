@@ -1,0 +1,64 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-06T19:28:09Z",
+  "depends_on": [],
+  "done_when": "base_rates.js on the live aid with a window label beside every number; the five *_rates.js files gone; test_base_rates.py fails on the five-file layout and passes after; test_live_aid.py loads the registry file",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "UNIFY_2026-11-06.md s5: base_rates.py builds base_rates.json/.js from the five study outputs as they are (level approach, anticipation, big candle, US open, flip cells); row = id, event, condition, outcome, horizon, n, independent units, window, regime mix, fee status, source. Live aid panels read BASE_RATES[id]; the five *_rates.js files are deleted in the same ship. No new study, no backtest.",
+  "hold": "operator decides (UNIFY_2026-11-06.md s6); d-ladder-discuss-first-1106",
+  "id": "prob-base-rates-registry-1106",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "live_aid: show the cycle-bottom flag line",
+      "ref": "9d56864487ba",
+      "utc": "2026-11-06T18:30:27Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-06T19:28:11Z",
+  "refs": [
+    "MyTradingSys/research/prob_dist_layer_brief_2026-10-16/UNIFY_2026-11-06.md",
+    "MyTradingSys/research/prob_dist_layer_brief_2026-10-16/BRIEF.md",
+    "MyTradingSys/system/OPERATOR_DECISIONS.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/",
+    "MyTradingSys/research/prob_dist_layer_brief_2026-10-16/",
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/scenario_ledger.py"
+  ],
+  "scope_out": [
+    "live tree",
+    "new studies",
+    "backtests",
+    "the five study.py files"
+  ],
+  "scope_sha": "9d56864487ba",
+  "size": "S",
+  "sources": [],
+  "state": "raw",
+  "steps": [
+    "Schema + base_rates.py build: read level_approach_prep, anticipation_map, bigcandle_story, us_open_levels, candle_flip cells.csv as they are; validate n > 0, window, units; write tools/live_aid/base_rates.js and research/prob_dist_layer_brief_2026-10-16/BASE_RATES.md",
+    "Live aid: panels read BASE_RATES[id] and show the window label; delete anticipation_rates.js, level_approach_rates.js, bigcandle_rates.js, us_open_rates.js and the flip cell table if any; keep cycle_flag_data.js (a rule, not a rate)",
+    "test_base_rates.py: every row equals its study csv; the test fails on the pre-change tree (no base_rates.js); test_live_aid.py loads the registry instead of the hand-written rates dict",
+    "scenario_ledger.py add --rates <ids>; cycle-bottom-long-testnet-trade-1106 plan cites the rows it uses; ship with --next flip-engine-follow-up-session-adjusted-s"
+  ],
+  "tests": "MyTradingSys/tools/live_aid/test_base_rates.py",
+  "title": "One base-rate registry for the live aid: replace the five *_rates.js globals with base_rates.js built from the existing studies",
+  "weight": "",
+  "worker": "agent"
+}

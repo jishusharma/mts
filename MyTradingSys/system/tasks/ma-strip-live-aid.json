@@ -5,7 +5,7 @@
   "created": "2026-11-06T19:19:26Z",
   "depends_on": [],
   "done_when": "ma_strip.js + test_spec_ma_strip.py green, panel in live_aid.html, build_artifact.py inlines it, REQUIREMENTS.md R21, wiring_scan --check PASS, on trunk with CI green.",
-  "est_turns": null,
+  "est_turns": 30,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
@@ -38,5 +38,5 @@
   "tests": "",
   "title": "MA strip on the live aid: ma_strip.js, panel under the timeframe strip, R21",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }
