@@ -16,7 +16,7 @@
   "goal": "Independent Gemini blind read of research/wt_extreme_cross_volmatch_2026-11/RESULT.md: recompute n, days, mean and fee-net, per-symbol and pooled, from the CSVs first, then diff against the RESULT.md prose.",
   "id": "gemini-blind-read-ms-wt-volmatch-eth",
   "kind": "audit",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [],
   "layers": [],
   "live_path": false,
@@ -25,7 +25,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-04T21:07:49Z",
+  "refreshed": "2026-11-06T12:52:07Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -39,7 +39,7 @@
   "sources": [
     "MyTradingSys/research/wt_extreme_cross_volmatch_2026-11/RESULT.md"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Read the CSVs in MyTradingSys/research/wt_extreme_cross_volmatch_2026-11 before RESULT.md",
     "Recompute per-symbol and pooled n, days, mean, fee-net, CI",

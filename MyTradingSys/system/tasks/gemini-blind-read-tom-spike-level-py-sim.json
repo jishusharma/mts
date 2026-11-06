@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T12:51:40Z",
   "commands": [],
   "created": "2026-11-04T16:49:43Z",
   "depends_on": [],
@@ -15,6 +16,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "VERDICT: MATCH (n=1399, mean net R -0.222 R, 95% CI -0.269 to -0.176 R, diff=0, MyTradingS",
+      "ref": "d23887d6a",
+      "utc": "2026-11-06T12:51:40Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "sim desk: per-trade replay exports for Fabio v3 B/C, Tom value-edge fade and a new Tom spi",
@@ -25,6 +32,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: blind read MATCH",
   "not_twin_of": [
     "gemini-blind-read-bb-range-studies-1104",
     "gemini-blind-read-rsi-div-mtf-gated-1104",
@@ -36,7 +44,12 @@
   "refined_by": "session-planner",
   "refreshed": "2026-11-04T17:35:51Z",
   "refs": [],
-  "result": "",
+  "result": "VERDICT: MATCH (n=1399, mean net R -0.222 R, 95% CI -0.269 to -0.176 R, diff=0, MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_TOM_SPIKE_1104.md)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_TOM_SPIKE_1104.md",
     "MyTradingSys/research/sim_desk/studies/tom_spike_level.py",
@@ -46,12 +59,13 @@
   "scope_sha": "ed0f702ce56b",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read tom_spike_level.py and results/desk-trades-tom_spike_level-2026-11-04.json before any prose result file",
     "Recompute counts, win rates and mean or total returns independently of the study code",
     "Write MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_TOM_SPIKE_1104.md with a per-number table and VERDICT"
   ],
+  "taken": "2026-11-06T12:51:40Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_TOM_SPIKE_1104.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] blind read tom_spike_level.py (sim_desk/studies)",
   "weight": "ROUTINE",
