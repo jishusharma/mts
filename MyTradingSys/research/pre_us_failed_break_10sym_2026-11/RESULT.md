@@ -36,7 +36,7 @@ Regime mix: 130 weeks: bull 25 (19%) | bear 0 (0%) | range 105 (81%) | n/a 0 (0%
 | LINKUSDT | 137 | +9.68 | 92.63 | 0.64 | 125 | +1327 |
 | LTCUSDT | 148 | -17.53 | 109.19 | 0.61 | 136 | -2594 |
 
-By regime week: bull n=255 mean -2.43; range n=1138 mean -2.48. By year: 2022 n=552 +3.64; 2023 n=573 -8.29; 2024 n=268 -2.59. No cell is read as evidence (four of ten symbols positive, none individually tested).
+By regime week: bull n=255 mean -2.43; range n=1138 mean -2.48. By year: 2022 n=552 +3.64; 2023 n=573 -8.29; 2024 n=268 -2.59. No cell is read as evidence (five of ten symbols positive, none individually tested).
 
 ## Gate output
 The sd assumed at freeze (60, OURS) was low: the measured sd is 120. Re-run with the measured sd:

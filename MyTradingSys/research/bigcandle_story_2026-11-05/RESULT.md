@@ -43,7 +43,7 @@ Baseline, every 1h bar: UP bars continue 47 % / 48 % / 50 % at 1h / 4h / 24h (n 
 | DOWN/DOWN/SELL long liquidation | 269 | 43 % [37-49] | 46 % [40-52] | 46 % [41-52] | baseline; only 3 % are fully retraced within 1h, 28 % within 24h (baseline 44 %): a flush hour mostly stays flushed |
 | DOWN/UP/SELL new shorts | 117 | 44 % [35-53] | 44 % [36-54] | 45 % [37-54] | baseline |
 | DOWN/DOWN/SELL x size short / accounts long | 46 | 41 % [28-56] | 33 % [21-47] | 39 % [26-54] | below baseline at 4h, a lead only |
-| the other 3 stories | 10-16 | | | | THIN |
+| the other 4 stories | 10-16 | | | | THIN |
 
 ### The size-long / accounts-short question (class SL after a big UP candle)
 

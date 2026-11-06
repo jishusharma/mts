@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T17:11:07Z",
   "commands": [
     "python scripts/dev/gemini_queue.py run gemini-blind-read-pre-us-failed-break-10sym-1106:low"
   ],
@@ -16,6 +17,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-06_BLIND_READ_PREUS_10SYM_1106.md",
+      "ref": "b2cea4277",
+      "utc": "2026-11-06T17:11:07Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -34,13 +41,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: blind read completed",
   "note": "REVIEWED:2026-11-06 T0-ONLY (D11 feeder, A-20261104-1; twin check run, none). Never use model output as the source.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-06T16:48:58Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-06_BLIND_READ_PREUS_10SYM_1106.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/reports/2026-11-06_BLIND_READ_PREUS_10SYM_1106.md (new)",
     "MyTradingSys/research/pre_us_failed_break_10sym_2026-11/RESULT.md (read)",
@@ -53,12 +66,13 @@
   "scope_sha": "450a966aa4ac",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the source files before any prose summary",
     "Recompute independently of the code under read",
     "Write the table and VERDICT"
   ],
+  "taken": "2026-11-06T17:11:07Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/layer_lab/reports/2026-11-06_BLIND_READ_PREUS_10SYM_1106.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] blind read of pre_us_failed_break_10sym RESULT.md",
   "weight": "ROUTINE",
