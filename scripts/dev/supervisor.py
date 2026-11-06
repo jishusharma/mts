@@ -965,39 +965,6 @@ def estimate_k(hist) -> float | None:
     return round(dw / dp, 3) if dp >= 5 else None
 
 
-EXHAUST_WORKER_BURN = 5.0   # OURS: 5 h points one Claude worker burns per hour (cap in the exhaust window; 11-06: ~20 agents hit 100% in 1.5 h)
-COMMIT_RULE = "brief: commit after every step (a 5 h limit hit kills the agent; uncommitted work is lost)"
-WEEK_PLAN_RE = re.compile(r"^PARAMS login=(\w) t0=(\S+) w0=([\d.]+) cap=([\d.]+) reset=(\S+)", re.M)
-WEEK_BEHIND_PTS = 5         # OURS: behind the week plan by this many points -> SPAWN CATCHUP
-
-
-def week_pace_lines(repo: Path, login: str, week: float, week_reset: str, now: datetime, pl: dict) -> list:
-    """`WEEK PACE` from the login's fixed WEEK_PLAN_<L>.md (exhaust.py weekplan); behind by >= WEEK_BEHIND_PTS also a SPAWN CATCHUP
-    hint sized by the 5 h room (weekly gap / k, never past the 5 h ceiling) with the pace_plan worker bands."""
-    miss = (f"WEEK PACE login={login} NO PLAN for the week resetting {week_reset}: run python scripts/dev/exhaust.py weekplan "
-            f"--login {login} --week {week:g} --reset {week_reset}, then ship it")
-    try:
-        m = WEEK_PLAN_RE.search((Path(repo) / f"MyTradingSys/system/WEEK_PLAN_{login}.md").read_text(encoding="utf-8"))
-    except OSError:
-        m = None
-    if not m or m.group(1) != login:
-        return [miss]
-    plan_reset, want = _utc(m.group(5)), _utc(week_reset)
-    if not plan_reset or not want or abs((plan_reset - want).total_seconds()) > 600:
-        return [miss]
-    tgt = traffic.week_target(_utc(m.group(2)), float(m.group(3)), float(m.group(4)), plan_reset, now)
-    gap = round(tgt) - round(float(week))
-    out = [f"WEEK PACE login={login} target={tgt:.0f}% now={float(week):.0f}% " + (f"behind {gap} pts" if gap > 0 else f"ahead {-gap} pts")]
-    if gap >= WEEK_BEHIND_PTS and pl.get("mode") not in ("STOP", "SUPERVISOR-ONLY"):
-        k = float(pl.get("k") or K_DEFAULT)
-        room = max(0.0, min(gap / k, float(pl.get("ceil") or SPAWN_CEIL) - float(pl.get("five", 0))))
-        n = 4 if room >= 40 else 3 if room >= 20 else 2 if room >= 10 else 1 if room >= 4 else 0
-        if n:
-            out.append(f"SPAWN CATCHUP: {gap} wk pts behind = {gap / k:.0f} pts of 5 h at k {k}; room under the 5 h ceiling "
-                       f"{pl.get('ceil')}% is {room:.0f}: up to {n} worker(s) now, then back to the PLAN slots")
-    return out
-
-
 RAMP = 1    # operator 2026-10-22 ("starts with minimum workers ... the operator can build on it"): at most one new worker per wake
 
 
@@ -1045,11 +1012,6 @@ def pace_plan(now: datetime, rd: dict, cap: float, hist=(), running: int = 0, us
         elif projected < target - 10 and running < 4:
             slots = max(slots, min(4, running + 1))
             why.append(f"burn {burn:.1f}/h projects {projected:.0f}% < target {target:.0f}%: grow")
-    if ceil == traffic.EXHAUST_CEIL and slots:     # exhaust window: workers x burn x hours left must fit under the 95 stop
-        fit = int(max(0.0, ceil - five) // (EXHAUST_WORKER_BURN * max(0.25, min(h_left, wk_h))))
-        if fit < slots:
-            slots = fit
-            why.append(f"exhaust cap {fit}: {EXHAUST_WORKER_BURN:g} pts/h per worker over {min(h_left, wk_h):.1f} h must fit under {ceil}%")
     if five >= ceil or room < 2:
         mode, slots = "STOP", 0
     elif five >= 70 and ceil == SPAWN_CEIL:      # the exhaust window has one stop, no tapering bands
@@ -1183,7 +1145,6 @@ def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_ke
             g = s.get("gates")
             L.append(f"PEER {lg} on {s['host']} mode={s['mode']} run={s['run']} free={s['free']} gates={f'{g[0]}/{g[1]}' if g else '?'} "
                      f"seen {s['at']}")
-    L.extend(ctx.get("week_pace") or [])
     L.append(gates_line(live))
     mine = (live.get(login) or {}).get("gates")
     if mine and mine[0] >= mine[1]:
@@ -1213,13 +1174,13 @@ def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_ke
             L.append(f"NOTE CI RED: usage gate refuses a spawn ({refuse}); no worker is spawned this wake, revert by hand "
                      f"or wait for the gate ({ci.get('message', '')[:80]})")
         else:
-            L.append(f"SPAWN CI RED: one worker on the pinned ci-* card only; nothing else ships ({ci.get('message', '')[:80]}) | {COMMIT_RULE}")
+            L.append(f"SPAWN CI RED: one worker on the pinned ci-* card only; nothing else ships ({ci.get('message', '')[:80]})")
     picks = ctx.get("picks", [])
     if plan["new"] and picks and not ci.get("red"):
         # WORKERS.md rule 2 / roles/supervisor.md:35: Claude Builder cards run as background Agents; only interactive roles are sessions
         kind = lambda p: "agent" if (p.get("role") or "Builder") == "Builder" else (p.get("worker") or "?")
         L.append(f"SPAWN {len(picks)}: " + ", ".join(f"{p['id']} ({p.get('role') or 'Builder'}, {kind(p)}, "
-                                                  f"{'own' if p.get('own', True) else 'peer'})" for p in picks) + f" | {COMMIT_RULE}")
+                                                  f"{'own' if p.get('own', True) else 'peer'})" for p in picks))
     elif plan["new"] and not picks:
         L.append("NOTE no Claude card fits this host: Session_Planner (foreground Agent) refines raw cards, or idle")
     # shared lanes: exactly one live supervisor (lane_owner) acts on each
@@ -1419,10 +1380,6 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
                    _usage_rows())
     prev = _last_plan(login, home)
     notes, ctx = [], {}
-    try:
-        ctx["week_pace"] = week_pace_lines(repo, login, float(rd["week"]), pl["week_reset"], now, pl)
-    except Exception as e:
-        notes.append(f"NOTE WEEK PACE failed ({type(e).__name__}: {str(e)[:80]})")
     wp = work_period(login, now, rd["sid"], work_hours, work_until, home, write=send)
     ctx["work"] = wp
     ctx["transit_now"] = transit_reason(pl, now, context_tokens, wave_start or wave_start_from(hist, now, rd["sid"]), _utc(wp.get("until")))
