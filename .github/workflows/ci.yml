@@ -17,8 +17,6 @@ on:
       - 'MyTradingSys/observation/**'
       - 'MyTradingSys/system/roles/**'      # role files + ROSTER.json: test_role_loader reads them (failure review 2026-10-23 cause 8)
       - 'MyTradingSys/system/tasks/**'      # task cards: the card lint runs in CI; a bad card used to turn the next code sha red (CI review 2026-10-25)
-      - '**/*.md'                           # docs-only pushes get the docs-integrity lane (SHIP_TRAIN.md card 1)
-      - 'MyTradingSys/system/**'
       - '.gitignore'
       - '.claude/settings.json'
       - 'scripts/**'
@@ -38,47 +36,7 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/fast-track' }}
 
 jobs:
-  # Docs-only pushes (nothing under the code paths above changed) run the docs-integrity subset instead of the 15-shard gate.
-  # PRs, new branches and unreadable diffs are never docs-only.
-  changes:
-    runs-on: ubuntu-latest
-    outputs:
-      docs_only: ${{ steps.d.outputs.docs_only }}
-    steps:
-      - id: d
-        env:
-          GH_TOKEN: ${{ github.token }}
-          REPO: ${{ github.repository }}
-          BEFORE: ${{ github.event.before }}
-          SHA: ${{ github.sha }}
-          EVENT: ${{ github.event_name }}
-        run: |
-          docs_only=false
-          if [ "$EVENT" = push ] && [ -n "$BEFORE" ] && [ "${BEFORE#0000000}" != "$BEFORE" ] ; then BEFORE=; fi
-          if [ "$EVENT" = push ] && [ -n "$BEFORE" ]; then
-            files=$(gh api "repos/$REPO/compare/$BEFORE...$SHA" --paginate -q '.files[].filename' 2>/dev/null || true)
-            code='^(src/|MyTradingSys/(backtest|execution|runtime|tests|items|options|observation)/|MyTradingSys/research/.*\.py$|MyTradingSys/system/(roles|tasks)/|\.gitignore$|\.claude/settings\.json$|scripts/|\.github/workflows/)'
-            if [ -n "$files" ] && ! printf '%s\n' "$files" | grep -Eq "$code"; then docs_only=true; fi
-          fi
-          echo "docs_only=$docs_only" >> "$GITHUB_OUTPUT"
-
-  docs-integrity:
-    name: docs integrity (docs-only push)
-    needs: changes
-    if: needs.changes.outputs.docs_only == 'true'
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - run: python -m pip install pytest numpy pandas tzdata
-      - run: python -m pytest MyTradingSys/tests/docs -q
-
   offline-gate:
-    needs: changes
-    if: needs.changes.outputs.docs_only != 'true'
     name: offline gate (${{ matrix.os }} ${{ matrix.shard }})
     strategy:
       fail-fast: false
@@ -156,21 +114,14 @@ jobs:
       - name: Offline gate
         env:
           PYTHONIOENCODING: utf-8
-        # A failed shard reruns once before it counts (SHIP_TRAIN.md R6): a flake passes the second time and is logged as a
-        # warning; a real failure fails twice and still turns the run red.
-        run: |
-          python scripts/dev/run_all_tests.py --shard ${{ matrix.shard }} || {
-            echo "::warning::shard ${{ matrix.os }} ${{ matrix.shard }} failed once, rerunning (flake candidate)"
-            python scripts/dev/run_all_tests.py --shard ${{ matrix.shard }}
-          }
+        run: python scripts/dev/run_all_tests.py --shard ${{ matrix.shard }}
 
   # Operator 2026-10-07: a PR into fast-track merges itself once the gate is green on both OSes.
   # Opt out with the "no-automerge" label or by keeping the PR a draft. Merging here does not deploy:
   # JIS-NB still pulls by hand (stop, merge, test, restart). Fork PRs never get a write token, so they never merge.
   auto-merge:
-    needs: [offline-gate, docs-integrity]
+    needs: offline-gate
     if: >-
-      always() && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') && (needs.offline-gate.result == 'success' || needs.docs-integrity.result == 'success') &&
       github.event_name == 'pull_request' &&
       github.event.pull_request.base.ref == 'fast-track' &&
       github.event.pull_request.head.repo.full_name == github.repository &&
@@ -193,10 +144,8 @@ jobs:
   # The supervisor deploy to the live tree (JIS-NB) is `git merge --ff-only origin/green/fast-track` + restart, so a
   # half-tested push can never be deployed. This job restarts nothing and touches no exchange or secret.
   mark-green:
-    needs: [offline-gate, docs-integrity]
-    if: >-
-      always() && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') && (needs.offline-gate.result == 'success' || needs.docs-integrity.result == 'success') &&
-      github.event_name != 'pull_request' && github.ref == 'refs/heads/fast-track'
+    needs: offline-gate
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/fast-track'
     runs-on: ubuntu-latest
     permissions:
       contents: write
