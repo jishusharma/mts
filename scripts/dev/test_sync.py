@@ -2228,6 +2228,17 @@ class GitNetTimeoutTest(unittest.TestCase):
         self.assertIn("TIMEOUT git push", str(e.exception))
 
 
+class GateReaderNonUtf8Test(unittest.TestCase):
+    def test_gate_reader_survives_non_utf8_bytes(self):
+        """subprocess output holding b'ok \x98 end' must not kill the reader thread (UnicodeDecodeError cp1251/utf-8)."""
+        with tempfile.TemporaryDirectory() as td:
+            subprocess.run(["git", "init", "-q", td], check=True)
+            sha = subprocess.run(["git", "-C", td, "hash-object", "-w", "--stdin"], input=b"ok \x98 end",
+                                 capture_output=True, check=True).stdout.decode().strip()
+            r = sync.git(td, "cat-file", "-p", sha)
+            self.assertTrue(r.stdout.startswith("ok ") and r.stdout.endswith(" end"))
+
+
 if __name__ == "__main__":
     unittest.main()
 

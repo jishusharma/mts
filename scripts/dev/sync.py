@@ -88,12 +88,12 @@ def git(repo, *args, check=True):
     cmd = ["git", "-C", str(repo), *opts, *args]
     if args and args[0] in GIT_NET_VERBS:
         try:
-            r = subprocess.run(cmd, capture_output=True, text=True, timeout=GIT_NET_TIMEOUT_S, env={**os.environ, **GIT_NOPROMPT})
+            r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=GIT_NET_TIMEOUT_S, env={**os.environ, **GIT_NOPROMPT})
         except subprocess.TimeoutExpired:
             r = subprocess.CompletedProcess(cmd, 124, "", f"TIMEOUT git {args[0]} after {GIT_NET_TIMEOUT_S}s (network down or a credential prompt)")
             print(r.stderr, file=sys.stderr)
     else:
-        r = subprocess.run(cmd, capture_output=True, text=True)
+        r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
     if check and r.returncode != 0:
         raise SyncError(f"git {' '.join(args)} failed:\n{r.stdout}{r.stderr}".rstrip())
     return r
@@ -708,7 +708,7 @@ def pull_mirror(repo):
     if not script.exists():
         return
     try:
-        r = subprocess.run([sys.executable, str(script), "pull"], capture_output=True, text=True, timeout=45, cwd=repo)
+        r = subprocess.run([sys.executable, str(script), "pull"], capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=45, cwd=repo)
         print("live mirror: " + ((r.stdout or r.stderr).strip().splitlines() or ["no output"])[-1])
     except (subprocess.TimeoutExpired, OSError) as e:
         print(f"live mirror: skipped ({type(e).__name__}); run live_mirror.py pull by hand")
@@ -1059,7 +1059,7 @@ def wait_own_ci(pushed, fetch=None, failed_jobs=None, sleep=time.sleep, now_fn=t
 def stale_pages_lines(repo):
     """STALE lines from artifacts.py (published pages whose repo build differs from the last publish); raises on tool failure."""
     r = subprocess.run([sys.executable, str(Path(repo) / "scripts" / "dev" / "artifacts.py"), "stale"],
-                       capture_output=True, text=True, timeout=300)
+                       capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=300)
     return [l for l in r.stdout.splitlines() if l.startswith("STALE ")]
 
 
@@ -1625,7 +1625,7 @@ def push_claim_commit(repo, rel, text, msg, branch=CLAIMS_BRANCH, guard=None, sl
         env = {**os.environ, "GIT_INDEX_FILE": str(idx)}
 
         def plumb(*args, stdin=None):
-            r = subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, env=env, input=stdin)
+            r = subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, encoding="utf-8", errors="replace", env=env, input=stdin)
             if r.returncode != 0:
                 raise SyncError(f"git {' '.join(args)} failed:" + chr(10) + f"{r.stdout}{r.stderr}".rstrip())
             return r.stdout.strip()
