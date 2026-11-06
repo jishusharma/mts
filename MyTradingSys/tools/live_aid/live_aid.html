@@ -161,6 +161,14 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     <span class="tag">Watch items from analyst calls and our own vote count. None of these is a backtested signal; no size, no orders. You decide.</span>
   </section>
 
+  <!-- 2c0. PRE-US-OPEN RISK FLAG (card premarket-risk-flag-1105; descriptive, thresholds OURS) -->
+  <section id="p-premkt">
+    <div class="hd"><h2>Pre-US-open risk flag</h2><span class="src" title="ON when Nasdaq-100 futures are below -0.5% or Kospi below -3% vs prior close, weekdays before 14:30Z. Thresholds OURS, from the 11-05 case (NQ -0.6%, Kospi -5.3%, BTC 80.4k to 75.6k). A missing or unreadable quote reads UNKNOWN, never OFF. Quotes: public Yahoo chart endpoint, no key; a browser block (CORS) also reads UNKNOWN. Each ON flag is logged in this browser (localStorage) with BTC 4h later. Descriptive only.">OURS</span><span class="age" id="age-pm">--</span></div>
+    <div class="vrow"><span class="huge" id="pm-flag">--</span><span class="sub" id="pm-sub"></span></div>
+    <div class="sub" id="pm-detail"></div>
+    <span class="tag">Context for the US open, never a signal; no size, no orders. Flag log: <span id="pm-log">none yet</span>.</span>
+  </section>
+
   <!-- 2c. US OPEN LADDER (research/us_open_levels_2026-10-30; descriptive) -->
   <section id="p-usopen">
     <div class="hd"><h2>US open: if up, if down</h2><span class="src" title="Levels known at the open: UTC-day-so-far high/low, prior day, prior 3 days, prior 7 days, and the first-15-min opening range: OURS. Odds = MEASURED base rates, Binance BTCUSDT 1m 2022-01..2026-09, 1230 weekdays: how often a level that far from the open price was reached in the first 2 h, and how often the close 60 min after the first touch was still beyond it. No fees, no entries.">MEASURED</span><span class="age" id="age-uo">--</span></div>
@@ -183,6 +191,14 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     <div class="vrow"><span class="huge" id="bc-state">--</span><span class="sub" id="bc-sub"></span></div>
     <div class="scroll"><table><thead><tr><th>Cell used</th><th>n</th><th>Price continues next 1h</th><th>next 4h</th><th>next 24h</th><th>Move undone 1h / 4h / 24h</th><th>Status</th></tr></thead><tbody id="bc-rows"></tbody></table></div>
     <span class="tag" id="bc-tag">Hours with a big move only; flat hours are not in the table. Continuation is near a coin flip: context, never a signal; no size, no orders.</span>
+  </section>
+
+  <!-- 2c2c. VALUE AREA + ACCEPTANCE (card live-aid-balance-acceptance-1105; research/value_area_acceptance_2026-11-05; descriptive) -->
+  <section id="p-va">
+    <div class="hd"><h2>Value area and acceptance</h2><span class="src" title="Prior UTC day value area: 70 % of the day's 1m volume around the POC, 1m closes binned to $50 (rule of research/value_area_acceptance_2026-11-05/accept80.py): OURS. Acceptance = two consecutive completed 30m closes outside it (after a close inside) or back inside it (after trading outside). Odds are OURS from RESULT.md: BTC 1m, fee-free, descriptive, no placebo yet. Above VAH is UNMEASURED.">OURS</span><span class="age" id="age-va">--</span></div>
+    <div class="vrow"><span class="huge" id="va-state">--</span><span class="sub" id="va-sub"></span></div>
+    <div class="scroll"><table><thead><tr><th>VAL</th><th>POC</th><th>VAH</th><th>Price</th><th>Acceptance flag</th><th>Base rate (OURS)</th></tr></thead><tbody id="va-rows"></tbody></table></div>
+    <span class="tag">Descriptive only: a 2 x 30m close outside or inside the prior day's value is context, never a signal; no size, no orders. Re-entry reaching the far edge 44 % (n 493, CI 40-49 %); accepted below VAL then a further half-width lower 77 % (n 300, CI 72-81 %, partly plain volatility).</span>
   </section>
 
   <!-- 2c3. LEVEL APPROACH PREP (card level-approach-prep; research/level_approach_prep_2026-11-05; descriptive) -->
@@ -287,6 +303,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
 <script src="anticipation_rates.js"></script>
 <script src="level_approach_rates.js"></script>
 <script src="bigcandle_rates.js"></script>
+<script src="premarket_risk.js"></script>
 <script>
 (function () {
   'use strict';
@@ -471,6 +488,15 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     Promise.all([getJson('https://fapi.binance.com/fapi/v1/klines?symbol=BTCUSDT&interval=1d&limit=40'), getJson('https://fapi.binance.com/fapi/v1/klines?symbol=BTCUSDT&interval=1w&limit=12')]).then(function (r) {
       S.ph = { d1: r[0], w1: r[1], t: Date.now(), err: '' };
     }, function (e) { S.ph.err = 'phase klines failed: ' + (e.name === 'AbortError' ? 'timeout' : e.message); });
+  }
+
+  // Prior UTC day 1m rows for the value area: two REST pages (1000 + 440), once per UTC day and retried hourly until complete.
+  function loadPriorDay() {
+    var d0 = Math.floor(Date.now() / 86400000) * 86400000, p0 = d0 - 86400000, u = 'https://fapi.binance.com/fapi/v1/klines?symbol=BTCUSDT&interval=1m&limit=1000&startTime=';
+    if (S.pv && S.pv.day === d0 && !S.pv.err) return;
+    Promise.all([getJson(u + p0), getJson(u + (p0 + 1000 * 60000))]).then(function (r) {
+      S.pv = { day: d0, rows: r[0].concat(r[1]), t: Date.now(), err: '' };
+    }, function (e) { S.pv = { day: d0, rows: null, t: Date.now(), err: 'prior-day 1m failed: ' + (e.name === 'AbortError' ? 'timeout' : e.message) }; });
   }
 
   var TFS = [{ k: '1m', ms: 60000, n: 1500, dr: '1' }, { k: '5m', ms: 300000, n: 300, dr: '5' }, { k: '15m', ms: 900000, n: 1500, dr: '15' }, { k: '1h', ms: 3600000, n: 1500, dr: '60' }];
@@ -664,6 +690,31 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     return r;
   }
 
+  // ---------- pre-US-open risk flag (card premarket-risk-flag-1105) ----------
+  var PMK = { q: null, t: 0, err: '', log: [] };
+  try { PMK.log = JSON.parse(localStorage.getItem('mts_premarket_log') || '[]'); } catch (e) { PMK.log = []; }
+  function loadPremarket() {
+    if (typeof PREMARKET === 'undefined') { PMK.err = 'premarket_risk.js not found next to this page'; return Promise.resolve(); }
+    return PREMARKET.fetchQuotes().then(function (q) { PMK.q = q; PMK.t = Date.now(); PMK.err = ''; })
+      .catch(function (e) { PMK.q = null; PMK.err = e.message; });
+  }
+  function renderPremarket(now) {
+    if (typeof PREMARKET === 'undefined') { $('pm-flag').textContent = 'UNKNOWN'; $('pm-sub').textContent = PMK.err || 'premarket_risk.js not found'; return; }
+    var btc = S.dbtMark || S.dbt || NaN, f = PREMARKET.evaluate(PMK.q || {}, now);
+    $('age-pm').textContent = PMK.t ? Math.round((now - PMK.t) / 1000) + 's' : '--';
+    $('pm-flag').textContent = f.flag;
+    $('pm-sub').textContent = f.reasons.length ? f.reasons.join('; ') : (f.why || (f.flag === 'OFF' ? 'Neither threshold hit.' : '')) + (PMK.err ? ' ' + PMK.err : '');
+    var pc = function (x) { return x === null || x === undefined ? '--' : (x > 0 ? '+' : '') + fmt(x, 2) + '%'; };
+    $('pm-detail').textContent = 'NQ ' + pc(f.nq) + ' | Kospi ' + pc(f.kospi) + ' | VIX ' + (f.vix ? fmt(f.vix.price, 1) + ' (' + pc(f.vix.pct) + ')' : '--') +
+      ' | chips ' + (f.movers.length ? f.movers.map(function (m) { return m.sym + ' ' + pc(m.pct); }).join(', ') : '--');
+    var before = JSON.stringify(PMK.log);
+    PMK.log = PREMARKET.fillOutcomes(PREMARKET.logFlag(PMK.log, f, now, btc), now, btc);
+    if (JSON.stringify(PMK.log) !== before) { try { localStorage.setItem('mts_premarket_log', JSON.stringify(PMK.log)); } catch (e) { /* storage blocked: log stays in memory */ } }
+    $('pm-log').textContent = PMK.log.length ? PMK.log.slice(-3).map(function (e) {
+      return new Date(e.t).toISOString().slice(0, 10) + ' BTC ' + (e.btc0 ? fmt(e.btc0, 0) : '--') + ' to ' + (e.btc4h ? fmt(e.btc4h, 0) + ' (' + pc(e.btc4hPct) + ')' : 'pending 4h');
+    }).join('; ') : 'none yet';
+  }
+
   function renderUsOpen(now) {
     var open = sessionInfo(now - 7200000).us, px = S.dbtMark || S.dbt || (S.tf['5m'] && S.tf['5m'].length ? +S.tf['5m'][S.tf['5m'].length - 1][4] : NaN), rates = typeof US_OPEN_RATES !== 'undefined' ? US_OPEN_RATES.rates : null;
     var r = A.usOpen(S.tf['5m'], S.daily ? S.daily.rows : null, open, now, px, rates), tb = $('uo-rows');
@@ -731,6 +782,20 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     $('age-bc').textContent = S.klT ? Math.round((now - S.klT) / 1000) + 's' : '--';
   }
 
+  function renderVA(now) {
+    var tb = $('va-rows'), pv = S.pv, d0 = dayStart(now), px = venuePrice();
+    var va = pv && pv.rows && pv.day === d0 ? A.vaPriorDay(pv.rows, now) : { err: pv && pv.err ? pv.err : pv && pv.rows ? 'prior-day 1m is from an earlier UTC day, reloading' : 'prior-day 1m not loaded' };
+    if (va.err) { $('va-state').textContent = 'no value area'; $('va-sub').textContent = va.err; tb.innerHTML = '<tr><td colspan="6" class="dim">' + esc(va.err) + ': no flag shown</td></tr>'; return; }
+    var m1 = (S.tf['1m'] || []).filter(function (r) { return +r[0] >= d0; });
+    var ac = A.vaAcceptance(va, m1, now);
+    var NAME = { below: 'ACCEPTED BELOW VAL', above: 'ACCEPTED ABOVE VAH', reentry: 'ACCEPTED BACK INSIDE' }, where = !isFinite(px) ? NID : px < va.val ? 'below VAL' : px > va.vah ? 'above VAH' : 'inside';
+    var rate = ac.rate ? '<b>' + ac.rate.p + '%</b> (n=' + ac.rate.n + ', ' + ac.rate.lo + '-' + ac.rate.hi + '%) ' + (ac.flag === 'below' ? 'a further half-width lower today' : 'reaches the far edge today') + ' <span class="dim">OURS</span>' : ac.flag ? '<span class="dim">UNMEASURED</span>' : '<span class="dim">-</span>';
+    $('va-state').textContent = ac.flag ? NAME[ac.flag] : 'no acceptance flag';
+    $('va-sub').textContent = 'prior UTC day, ' + va.bars + ' 1m bars; ' + ac.closes + ' completed 30m closes today' + (ac.last ? ', last ' + fmt(ac.last.close, 1) + ' at ' + hhmm(ac.last.t) : '') + (ac.err ? '; ' + ac.err : '');
+    tb.innerHTML = '<tr' + (ac.flag ? ' class="up"' : '') + '><td>' + fmt(va.val, 0) + '</td><td>' + fmt(va.poc, 0) + '</td><td>' + fmt(va.vah, 0) + '</td><td>' + (isFinite(px) ? fmt(px, 1) : NID) + ' <span class="dim">' + where + '</span></td><td>' + (ac.flag ? '<b>' + NAME[ac.flag] + '</b>' : 'no') + '</td><td>' + rate + '</td></tr>';
+    $('age-va').textContent = pv.t ? Math.round((now - pv.t) / 1000) + 's' : '--';
+  }
+
   function lapLevels(now) {
     var L = [], pd = prevDayHL(now), rows = S.daily ? S.daily.rows : [], d0 = dayStart(now);
     if (isFinite(pd.h)) L.push({ level: pd.h, name: 'prev day high' }, { level: pd.l, name: 'prev day low' });
@@ -771,9 +836,11 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     var now = Date.now();
     S.a15 = atr15();
     renderTop();
+    try { renderPremarket(now); } catch (e) { $('pm-sub').textContent = e.message; }
     renderUsOpen(now);
     try { renderAntic(now); } catch (e) { $('am-rows').innerHTML = '<tr><td colspan="6" class="err">' + esc(e.message) + '</td></tr>'; }
     try { renderBigCandle(now); } catch (e) { $('bc-rows').innerHTML = '<tr><td colspan="7" class="err">' + esc(e.message) + '</td></tr>'; }
+    try { renderVA(now); } catch (e) { $('va-rows').innerHTML = '<tr><td colspan="6" class="err">' + esc(e.message) + '</td></tr>'; }
     var coilR = renderCoil(now);
     try { renderLevelApproach(now, coilR); } catch (e) { $('lap-rows').innerHTML = '<tr><td colspan="6" class="err">' + esc(e.message) + '</td></tr>'; }
     renderLiq(now);
@@ -1305,8 +1372,9 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
   setInterval(loadDaily, 300000);
   setInterval(render, 1000);
   loadNews(); setInterval(loadNews, 15000);
+  loadPremarket(); setInterval(loadPremarket, 120000);
   setInterval(omSample, 10000); loadBybitOi(); setInterval(loadBybitOi, 60000);
-  loadTopTraders(); setInterval(loadTopTraders, 300000); loadPhase(); setInterval(loadPhase, 3600000);
+  loadTopTraders(); setInterval(loadTopTraders, 300000); loadPhase(); setInterval(loadPhase, 3600000); loadPriorDay(); setInterval(loadPriorDay, 3600000);
   loadBinanceOi(true); setInterval(function () { loadBinanceOi(false); }, 30000); setInterval(function () { loadBinanceOi(true); }, 300000);
   loadCal();
   route();

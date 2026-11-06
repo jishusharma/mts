@@ -14,7 +14,7 @@
   "goal": "Score Habib's Discord plan calls (direction, sweep, target reached) against Binance klines with plan_score.py, not his executions",
   "id": "habib-plan-scoring-not-trades-1104",
   "kind": "build",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
@@ -63,5 +63,6 @@
   "tests": "MyTradingSys/research/habib_plan_imbalance_2026-10-20/test_plan_score.py plus new case test_holdout_rows_never_scored (fails on pre-change code: holdout row scored or n/CI missing)",
   "title": "Score Habib's Discord plans (sweep, push, target reached) not his trades, over the 96 logged posts; ask operator to unseal the 9 holdout plan calls; done when the live feed shows his plan hit rate with n",
   "weight": "",
-  "worker": "session"
+  "worker": "session",
+  "rerouted": "2026-11-06 operator: GPT/Codex plan expired; lane CODEX -> SONNET (cross-vendor independence of a re-derive is lost: say so in the result)"
 }
