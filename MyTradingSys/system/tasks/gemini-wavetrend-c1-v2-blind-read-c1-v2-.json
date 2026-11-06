@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T16:21:24Z",
   "commands": [
     "python scripts/dev/gemini_queue.py run gemini-wavetrend-c1-v2-blind-read-c1-v2-:low"
   ],
@@ -16,6 +17,12 @@
   "kind": "audit",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "wavetrend c1 v2 blind read: matches all design formulas and spec gates; VERDICT: MATCH",
+      "ref": "dbbf6bcf0",
+      "utc": "2026-11-06T16:21:24Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -34,13 +41,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: independent blind read matches",
   "note": "REVIEWED:2026-11-06 T0-ONLY | route [GEMINI] via gemini_queue.py gemini-wavetrend-c1-v2-blind-read-c1-v2-:low; lane was CODEX (retired 11-06)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-06T12:16:25Z",
   "refs": [],
-  "result": "",
+  "result": "wavetrend c1 v2 blind read: matches all design formulas and spec gates; VERDICT: MATCH",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_WT_C1V2_1106.md",
     "MyTradingSys/research/wavetrend_2026-10-17/c1_v2.py",
@@ -52,12 +65,13 @@
   "scope_sha": "a5d30abbd18b",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/wavetrend_2026-10-17/c1_v2.py, MyTradingSys/research/wavetrend_2026-10-17/c1v2/PRE_REG_C1V2.md before any prose summary of them",
     "Recompute independently of the code under read, then check that c1_v2.py implements PRE_REG_C1V2.md section by section and the gate s6.2 numbers",
     "Write MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_WT_C1V2_1106.md with the per-claim table and VERDICT"
   ],
+  "taken": "2026-11-06T16:21:24Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_WT_C1V2_1106.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] wavetrend c1-v2 blind read: c1_v2.py + c1v2/PRE_REG_C1V2.md (gate s6.2)",
   "weight": "ROUTINE",
