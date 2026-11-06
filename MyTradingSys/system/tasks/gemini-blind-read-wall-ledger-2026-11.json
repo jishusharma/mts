@@ -13,7 +13,15 @@
   "id": "gemini-blind-read-wall-ledger-2026-11",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "wall ledger: offline placed/pulled/filled walls from depth snapshots",
+      "ref": "6540063d456d",
+      "utc": "2026-11-04T20:31:30Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -25,7 +33,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "wall-ledger-1104",
-  "refreshed": "2026-11-04T20:31:11Z",
+  "refreshed": "2026-11-06T12:50:20Z",
   "refs": [
     "MyTradingSys/research/wall_ledger_2026-11/RESULT.md"
   ],
@@ -35,7 +43,7 @@
     "MyTradingSys/research/wall_ledger_2026-11"
   ],
   "scope_out": [],
-  "scope_sha": "",
+  "scope_sha": "6540063d456d",
   "size": "S",
   "sources": [],
   "state": "ready",
