@@ -4,6 +4,13 @@
   "commands": [
     "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_RSI_DIV_MTF_1104.md'); assert p.exists() and len(p.read_text())>400\""
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-06T07:36:35Z",
+    "misses": 219,
+    "reads": [],
+    "session": "agent-a99cdecc2422800ee"
+  },
   "created": "2026-11-04T07:15:00Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_RSI_DIV_MTF_1104.md independently recomputes all metrics from MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/*.csv, diffs against RESULT.md, and ends with VERDICT: MATCH or MISMATCH.",
