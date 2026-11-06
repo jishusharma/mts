@@ -437,6 +437,19 @@ def _cx(c):
     return "n/a" if c is None else "%s %d bars ago" % (c[0], c[1])
 
 
+def cycle_flag_line(now_ms):
+    """One-line cycle-bottom flag (research/btc_cycles_2026-11/RULE.md); empty string when unavailable. Never raises."""
+    try:
+        d = os.path.join(MTS, "research", "btc_cycles_2026-11")
+        if d not in sys.path:
+            sys.path.insert(0, d)
+        import cycle_bottom_flag
+        asof = datetime.datetime.fromtimestamp(now_ms / 1000.0, datetime.timezone.utc).date()
+        return cycle_bottom_flag.flag_line(cycle_bottom_flag.load(), asof)
+    except Exception:
+        return ""
+
+
 def build(now_ms, kdir, adir, verdicts, candles_mod, orderflow=None):
     bars = {tf: load_klines(os.path.join(kdir, "BTCUSDT_%s.json" % tf), now_ms) for tf in ("5m", "15m", "1h")}
     bars["4h"] = resample_4h(bars["1h"])
@@ -449,6 +462,9 @@ def build(now_ms, kdir, adir, verdicts, candles_mod, orderflow=None):
     L = ["# BTC market guide", "",
          "Generated %s | last price %s" % (utc, _f(last_px)), "",
          "> Context only - not trade signals. Verdict tags from backtests.", ""]
+    cf = cycle_flag_line(now_ms)
+    if cf:
+        L += ["**%s**" % cf, ""]
     stale = {}
     for tf in TFS:
         b = bars[tf]
