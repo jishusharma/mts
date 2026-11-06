@@ -333,11 +333,89 @@ def manage(plan_id, instrument="BTC-PERPETUAL", max_seconds=None, once=False, to
             print(f"WARNING: could not remove heartbeat ({he!r})")
 
 
+def _plan_labels(plan_id, targets):
+    """F-GAP-1: (entry labels, target labels, stop labels) to sweep by label - from the journaled orders and the
+    intent's compiled plan (an order whose create call landed but was never journaled still carries its label)."""
+    entry_l, target_l, stop_l = set(), {t["label"] for t in targets.values()}, {"stop"}
+    for ev in journal.read_events(plan_id):
+        d = ev.get("data") or {}
+        if ev["event_type"] == "order_placed" and str(d.get("label", "")).startswith("entry"):
+            entry_l.add(d["label"])
+        elif ev["event_type"] == "intent":
+            c = d.get("compiled") or {}
+            entry_l.update(o["label"] for o in c.get("entry_orders") or [] if o.get("label"))
+            target_l.update(o["label"] for o in c.get("target_orders") or [] if o.get("label"))
+            if (c.get("stop_order") or {}).get("label"):
+                stop_l.add(c["stop_order"]["label"])
+    return sorted(entry_l), sorted(target_l), sorted(stop_l)
+
+
+def _flatten_stopless(plan_id, instrument, token, entry_side, targets, reason):
+    """F-GAP-1 fail-closed path: the journal shows a filled entry but no protective stop. Always raises
+    ManagerHalted. Order (FIX3 C3): journal mismatch_halt + HALT file FIRST (survives anything below) -> cancel
+    entries/targets (by id and by label) -> close position -> verify flat -> only then sweep any stop label.
+    Unknown position (read error) -> attempt the close anyway; not confirmed flat -> 'FLATTEN FAILED'."""
+    is_long = entry_side == "BUY"
+    journal.append_event(plan_id, "mismatch_halt", {"reason": reason, "by": "position_manager"})
+    try:
+        HALT_PATH.write_text(f"{datetime.now(timezone.utc).isoformat()} position_manager {plan_id}: {reason}\n",
+                             encoding="utf-8")
+    except Exception as he:  # noqa: BLE001
+        print(f"WARNING: could not write HALT ({he!r})")
+
+    def _quiet(fn, *a):
+        try:
+            fn(*a)
+        except Exception as ce:  # noqa: BLE001 - one failing cancel must never skip the flatten
+            journal.append_event(plan_id, "error", {"context": f"stopless_flatten:{fn.__name__}", "error": repr(ce)})
+
+    try:
+        token = token or _retry_call(do.authenticate)
+        entry_l, target_l, stop_l = _plan_labels(plan_id, targets)
+        entry_ids = [ev["data"]["order_id"] for ev in journal.read_events(plan_id)
+                     if ev["event_type"] == "order_placed"
+                     and str((ev.get("data") or {}).get("label", "")).startswith("entry")]
+        for oid in entry_ids + list(targets):
+            _quiet(do.cancel, token, oid)
+        for lab in entry_l + target_l:
+            _quiet(do.cancel_by_label, token, f"{plan_id}:{lab}"[:64])
+        try:
+            size = _signed(do.get_position(token, instrument).get("size"))
+        except Exception as pe:  # noqa: BLE001 - position unknown: attempt the close anyway
+            journal.append_event(plan_id, "error", {"context": "stopless_flatten:get_position", "error": repr(pe)})
+            size = None
+        if size != 0:
+            try:
+                c = do.close_position(token, instrument)
+                journal.append_event(plan_id, "order_placed", {"order_id": c["order"]["order_id"],
+                                                               "label": "emergency_close",
+                                                               "side": "SELL" if is_long else "BUY",
+                                                               "amount": c["order"].get("filled_amount")})
+            except Exception as xe:  # noqa: BLE001 - e.g. OrderStateUnknown: the re-read decides
+                journal.append_event(plan_id, "error", {"context": "stopless_flatten:close_position",
+                                                        "error": repr(xe)})
+            size = _signed(do.get_position(token, instrument).get("size"))
+        if size != 0:
+            raise ManagerHalted(f"position still {size} after close_position")
+    except Exception as e:  # noqa: BLE001
+        journal.append_event(plan_id, "error", {"context": "stopless_flatten", "error": repr(e)})
+        raise ManagerHalted(f"plan {plan_id}: FLATTEN FAILED ({e}) after: {reason} - CHECK EXCHANGE UI NOW")
+    # flat confirmed: now (and only now) sweep any stop that was placed but never journaled
+    for lab in stop_l:
+        _quiet(do.cancel_by_label, token, f"{plan_id}:{lab}"[:64])
+    raise ManagerHalted(f"plan {plan_id}: flattened + halted: {reason}")
+
+
 def _manage_impl(plan_id, instrument="BTC-PERPETUAL", max_seconds=None, once=False, token=None):
     belief = journal.reconstruct_belief(plan_id)
     if belief["halted"]:
         raise ManagerHalted(f"plan {plan_id} already halted: {belief['halt_reason']}")
     stop, targets, entry_side, entry_filled_total = _plan_orders(plan_id)
+    if stop is None and entry_side is not None and entry_filled_total > 0:
+        # F-GAP-1: executor died between journaling the entry fill and journaling the stop. The position may be
+        # open with no stop we know of - fail closed (HALT + flatten), never just give up.
+        _flatten_stopless(plan_id, instrument, token, entry_side, targets,
+                          f"entry filled ({entry_filled_total}) but no stop journaled (executor crash window)")
     if stop is None or entry_side is None:
         raise ManagerHalted(f"plan {plan_id}: journal has no entry/stop - nothing to manage")
     is_long = entry_side == "BUY"
