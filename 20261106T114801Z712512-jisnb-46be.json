@@ -1,0 +1,1 @@
+{"t": "20261106T114801Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "For login A: Lead C owns the trunk CI fix (full flake-floor revert b0a5327cd shipping). Do NOT revert or edit ci.yml/test_sync. On resume: release done claims, ship finished worktrees, spawn nothing.", "login": "C"}
