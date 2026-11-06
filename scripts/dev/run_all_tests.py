@@ -972,6 +972,7 @@ CI_FILE_S = {
     "scripts/dev/test_prereg_context_lint.py": 2,
     "MyTradingSys/research/pit_levels_2026-10-16/test_pit_leakage.py": 11,
     "MyTradingSys/research/imbalance_qriptal_2026-10-16/filter/test_filter_join.py": 6,
+    "scripts/dev/test_ci_flake_floor.py": 1,
     "scripts/dev/test_lab_query.py": 6,
     "scripts/dev/test_testnet_canary.py": 5,
     "MyTradingSys/tests/test_relay.py": 11,
