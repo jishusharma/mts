@@ -1,7 +1,6 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "2026-11-06T19:26:04Z",
   "commands": [],
   "created": "2026-11-06T19:15:05Z",
   "depends_on": [],
@@ -15,12 +14,6 @@
   "lane": "SONNET",
   "latest": [
     {
-      "kind": "ship",
-      "line": "RESCORE.md x2: no net-positive setup; cost killed both, plan stops do not rescue",
-      "ref": "6d8248218",
-      "utc": "2026-11-06T19:26:04Z"
-    },
-    {
       "auto": true,
       "kind": "ship",
       "line": "run_v3_l3: full non-is-only --days-limit smoke test",
@@ -31,7 +24,6 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "END: no setup net positive, nothing to put on testnet",
   "note": "",
   "prio": 2,
   "refine_tries": 0,
@@ -42,12 +34,7 @@
     "MyTradingSys/research/imbalance_qriptal_2026-10-16/README.md",
     "MyTradingSys/system/OPERATOR_DECISIONS.md"
   ],
-  "result": "RESCORE.md x2: no net-positive setup; cost killed both, plan stops do not rescue",
-  "result_receipt": {
-    "trust": {
-      "tag": "UNCHECKED"
-    }
-  },
+  "result": "",
   "scope_in": [
     "MyTradingSys/backtest/layers/fabio/",
     "MyTradingSys/research/imbalance_qriptal_2026-10-16/"
@@ -59,14 +46,13 @@
   "scope_sha": "db93c29293ce",
   "size": "S",
   "sources": [],
-  "state": "done",
+  "state": "ready",
   "steps": [
     "Load the fabio_of 09-30 trade list (FABIO_OF_REPORT.md method) and the imbalance_qriptal 10-16 trade list; keep the entries, replace the stops with the plan invalidation per setup (label OURS where the level is inferred)",
     "Fees from MyTradingSys/backtest/fees.py (API-verified Deribit): taker 5 bp both sides for market entries, maker 0 for the limit-at-level variant; net R = gross R - fees x entry / risk (FORMULAS.md)",
     "RESCORE.md in each folder: table old stop vs plan stop, gross R, net R, n, per setup; one-line verdict: cost or stop killed the old result",
     "Spec test test_rescore.py with 3 hand-computed trades (fails on an empty rescore module); ship with --next naming the testnet watch card if any setup is net positive, else END"
   ],
-  "taken": "2026-11-06T19:26:04Z",
   "tests": "MyTradingSys/backtest/layers/fabio/test_rescore.py",
   "title": "Re-score fabio_of 09-30 and Habib candle 10-16 with plan stops and maker fees (0.15 % floor retired)",
   "weight": "",
