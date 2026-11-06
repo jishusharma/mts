@@ -2,6 +2,21 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-06T07:43:36Z",
+    "misses": 12,
+    "reads": [
+      "scripts/dev/route_audit.py",
+      "scripts/dev/test_route_audit.py",
+      "MyTradingSys/research/sim_desk/export_trades.py",
+      "MyTradingSys/research/sim_desk/studies/_bars.py",
+      "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_BB_STUDIES_1104.md",
+      "MyTradingSys/research/level_approach_prep_2026-11-05/PRE_REG.md",
+      "MyTradingSys/backtest/layers/FORMULAS.md"
+    ],
+    "session": "agent-ac085a56866d641a1"
+  },
   "created": "2026-11-04T16:49:45Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_EXPORT_TRADES_1104.md lists every headline number of sim_desk export_trades.py and _bars.trade_rows recomputed from export_trades.py and studies/_bars.py (code first, no prose) against FORMULAS.md R definitions, a per-number match table, and ends with VERDICT: MATCH or MISMATCH.",
