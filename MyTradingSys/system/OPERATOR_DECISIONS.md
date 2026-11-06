@@ -1808,3 +1808,9 @@ Funding carry (carry_basis_2026-10-18, 6-15 %/yr, shrinking) is dropped: MTS aim
 Direction: (1) low-leverage long-term longs near confirmed cycle bottoms (CBP bottom signal, buy on or after a good retest); (2) scalps, day and swing trades by session using Tom and Fabio levels (where buyers and sellers sit), bias from indicators and volume, continuation vs counter-trade.
 Lead C finding: the order-flow setups are often positive before costs and negative after (fabio_of: about 0.45 R of cost per trade on 0.15 % stops), so costs, not missing layers, kill most results.
 Answer: carry dropped; direction recorded (operator, 2026-11-06).
+
+## d-phase-first-method-1106 | decided 2026-11-06 | operator (voice, 18:55Z), recorded by Lead C
+Method: an edge is judged by market phase and by patterns that hold now, not by long multi-year backtests. A pattern visible in the current phase goes to the testnet at once and keeps trading until it stops working; we record when it works and the conditions in which it fails. Large-history backtests are not a precondition for testnet trades.
+Example: the BTC four-year cycle (3 up, 1 down) held for 4 cycles; it needs no backtest. Research table: research/btc_cycles_2026-11/cycles.md (16 years of daily prices, blockchain.info before 2017-08, Binance after).
+Bound (Hard rules, unchanged): testnet only; mainnet still needs the fee-net out-of-sample record, which the testnet run now supplies.
+Answer: phase-first, testnet-forward method adopted (operator, 2026-11-06).
