@@ -1814,3 +1814,23 @@ Method: an edge is judged by market phase and by patterns that hold now, not by 
 Example: the BTC four-year cycle (3 up, 1 down) held for 4 cycles; it needs no backtest. Research table: research/btc_cycles_2026-11/cycles.md (16 years of daily prices, blockchain.info before 2017-08, Binance after).
 Bound (Hard rules, unchanged): testnet only; mainnet still needs the fee-net out-of-sample record, which the testnet run now supplies.
 Answer: phase-first, testnet-forward method adopted (operator, 2026-11-06).
+
+## d-stops-follow-trade-1106 | decided 2026-11-06 | operator (voice, 18:04Z), recorded by Lead C
+The 0.15 % minimum stop in fabio_of (09-30) was OURS (a worker's floor), never Fabio's; the Habib candle-extreme stop (10-16) was OURS too. Both are dropped as rules. A stop follows the trade: direction, leverage and the plan's invalidation point (below the level or range traded), never a fixed percentage. Re-score of the two studies with plan stops and maker fees: card fee-stop-rescore-fabio-habib-1106.
+Answer: stops are per trade and per plan; the 0.15 % floor is retired (operator, 2026-11-06).
+
+## d-three-studies-1106 | decided 2026-11-06 | operator ("Yes, start all three", 19:05Z), recorded by Lead C
+Three Sonnet sessions, concepts before code, phase-first: pattern book (chart patterns, candle patterns, trendlines per timeframe, drawn for the operator's eye; takes the trendline half of card live-aid-trendlines-liquidations-1106), Habib concept book (imbalance method wired to his calls; takes card habib-plan-scoring-not-trades-1104), moving-average layer (one MA state per timeframe on the live aid, Krown and the common practice sourced first). Each ships to research/<name>_2026-11/ and appends dated readings to research/mts_bible/BIBLE.md.
+Answer: yes, all three (operator, 2026-11-06 19:05Z); sessions pattern-book, habib-book, ma-layer on JIS-NB.
+
+## d-habib-calls-unsealed-1106 | decided 2026-11-06 | operator (voice, 18:04Z: "see what is happening with Habib's calls, how he is able to do it"), recorded by Lead C
+The 9 priced Habib plans (habib_plan_imbalance_2026-10-20/PLAN_LEDGER.csv, dated inside the 2026-06-26..09-26 holdout) may be scored against klines now: scoring his plans tunes nothing of ours, and d-phase-first-method-1106 removes the backtest-holdout gate for analyst calls. Our own rules still keep their holdout.
+Answer: released for scoring by the Habib session (operator's order, 2026-11-06); reversible by the operator.
+
+## d-ladder-discuss-first-1106 | decided 2026-11-06 | operator (voice, 18:04Z: "first discuss with me and reflect on my ideas"), recorded by Lead C
+Range laddering (the operator's martingale idea) is a written proposal first, no code: fixed total risk split across 3-4 levels in the range, one invalidation below the range, stop width from the range; Fabio's add-in-profit is the trend-phase counterpart. The Habib session writes LADDER_PROPOSAL.md for the operator.
+Answer: proposal only until the operator decides (2026-11-06).
+
+## d-mts-bible-1106 | decided 2026-11-06 | operator (voice, 18:14Z: "keep this in your Bible"), recorded by Lead C
+research/mts_bible/BIBLE.md holds the big-picture truths (cycle clock, turn shapes, two-clock reading, exact lows) with confirm/break conditions; sessions append dated readings, never edit past ones. Each Bible reading with a testable outcome also goes to the scenario ledger so it is scored (S008: July bottom stands).
+Answer: Bible kept and wired to the ledger (operator, 2026-11-06).
