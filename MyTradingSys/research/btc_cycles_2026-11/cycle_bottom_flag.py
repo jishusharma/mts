@@ -2,7 +2,7 @@
 
   python MyTradingSys/research/btc_cycles_2026-11/cycle_bottom_flag.py [--csv btc_daily.csv] [--asof YYYY-MM-DD]
 
-Only COMPLETED bars count (date < asof). Testnet only; the trade itself is operator-called (cotrade.py).
+Only COMPLETED bars count (date < asof). Testnet only; the trade itself is operator-called (the testnet co-trade CLI in execution/, never from here).
 Labels: SOURCED = analyst row quoted from scripts/dev/analyst_levels.py output (CBP store); OURS = our choice.
 """
 import argparse
