@@ -17,15 +17,8 @@
   "goal": "Independent Gemini blind read of research/bb_range_retest_eth_pool_2026-11/RESULT.md: recompute n, days, mean and fee-net, per-symbol and pooled, from the CSVs first, then diff against the RESULT.md prose.",
   "id": "gemini-blind-read-ms-bb-retest-eth",
   "kind": "audit",
-  "lane": "SONNET",
-  "latest": [
-    {
-      "kind": "ship",
-      "line": "VERDICT: CLEAN / NUMBERS MATCH — MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ",
-      "ref": "d57726fb7",
-      "utc": "2026-11-06T13:06:59Z"
-    }
-  ],
+  "lane": "CODEX",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -53,7 +46,7 @@
   "sources": [
     "MyTradingSys/research/bb_range_retest_eth_pool_2026-11/RESULT.md"
   ],
-  "state": "done",
+  "state": "refined",
   "steps": [
     "Read the CSVs in MyTradingSys/research/bb_range_retest_eth_pool_2026-11 before RESULT.md",
     "Recompute per-symbol and pooled n, days, mean, fee-net, CI",
