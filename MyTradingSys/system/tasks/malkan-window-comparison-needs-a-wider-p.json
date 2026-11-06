@@ -6,10 +6,12 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-06T14:36:21Z",
-    "misses": 64,
+    "folded": "2026-11-06T14:44:00Z",
+    "misses": 66,
     "reads": [
       "scripts/dev/verdicts.py",
+      "scripts/dev/lookahead_lint.py",
+      "scripts/dev/lookahead_allowlist.tsv",
       "MyTradingSys/backtest/layers/rsi/rsi_divergence.py",
       "MyTradingSys/research/malkan_window_dev_2026-11/study.py"
     ],
