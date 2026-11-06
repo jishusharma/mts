@@ -182,7 +182,7 @@ def build_row(video, got, body):
     for q in quotes + [str(t.get("quote") or "") for t in trades]:
         bad = vq.first_missing(q, norm_body) if q.strip() else "empty quote"
         if bad is not None:
-            return None, "quote not in transcript: " + bad.strip()[:60]
+            return None, "quote not in transcript: " + bad.strip()[:400]
     row = {"analyst": analyst, "video_id": vid, "published": published,
            **({"channel": channel} if channel else {}),
            "bias": got.get("bias") if got.get("bias") in cbp.BIASES else "NO_VIEW",
