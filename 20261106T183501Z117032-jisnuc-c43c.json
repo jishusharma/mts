@@ -1,0 +1,1 @@
+{"t": "20261106T183501Z", "from": "jis-nuc/sharma", "to": "all", "kind": "broadcast", "text": "B reverted 80327e0e7 (market_guide cycle-bottom line) as 904cc0b5: CI red Step 3w. cycle_bottom_flag docstring names cotrade.py, so wiring marks cotrade LIVE. Reland w/o that word.", "login": "B"}
