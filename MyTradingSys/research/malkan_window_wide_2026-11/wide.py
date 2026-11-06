@@ -78,7 +78,8 @@ def _pivots(vals, rsi, kind, L):
         if rsi[i] is None:
             continue
         v = sgn * vals[i]
-        if all(v < sgn * vals[i - j] and v < sgn * vals[i + j] for j in range(1, L + 1)):
+        around = list(range(i - L, i)) + list(range(i + 1, i + L + 1))   # confirmed L bars later: event is stamped at i + L, never earlier
+        if all(v < sgn * vals[j] for j in around):
             out.append(i)
     return out
 
@@ -91,8 +92,9 @@ def divergences(close, rsi, ts, kind, L=STRENGTH):
     for k in range(1, len(piv)):
         a, b = piv[k - 1], piv[k]
         bars = b - a + 1
+        conf = b + L        # confirmation bar: the event time
         if sign * close[b] < sign * close[a] and sign * rsi[b] - sign * rsi[a] > 0 and 3 <= bars <= 50:
-            out.append({"i": b + L, "t": ts[b + L], "a_i": a, "b_i": b, "bars": bars, "arm": arm_of(bars)})
+            out.append({"i": conf, "t": ts[conf], "a_i": a, "b_i": b, "bars": bars, "arm": arm_of(bars)})
     return out
 
 
@@ -111,7 +113,9 @@ def collect():
             closes = [b["c"] for b in bars]
             ts = [b["t"] for b in bars]
             rsi = rsi_core(closes, base.RSI_PERIOD)
-            rets[tf].extend((closes[i + H] / closes[i] - 1) * 100 for i in range(len(closes) - H))
+            tail = H
+            fwd = [(closes[i + tail] / closes[i] - 1) * 100 for i in range(len(closes) - tail)]   # unconditional 10-bar return, sd for the gate only
+            rets[tf].extend(fwd)
             for kind in KINDS:
                 evs = [e for e in divergences(closes, rsi, ts, kind) if e["arm"]]
                 for arm in ARMS:
