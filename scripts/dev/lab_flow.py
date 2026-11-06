@@ -12,6 +12,7 @@ import tasks
 FLOWS = "MyTradingSys/research/layer_lab/flows"
 DATA_ROOT = Path("F:/MTS/data")
 HOLDOUT_PARTS = {"holdout", "holdouts", "validation_holdout", "test_holdout"}
+DATA_SUFFIXES = {".csv", ".npz", ".zip", ".parquet"}  # content-gated wherever they live; unknown schema fails closed
 DEV_CUTOFF_MS = 1719792000000  # 2024-07-01T00:00:00Z
 VENDOR_MODEL_PREFIXES = {"codex": ("gpt-",), "gemini": ("gemini-",), "claude": ("claude-",)}
 RECIPES = {
@@ -29,7 +30,7 @@ def digest(value):
 
 
 def safe_file(repo, rel):
-    """Resolve an allowed file; only DATA_ROOT files get content timestamp checks."""
+    """Resolve an allowed file; DATA_ROOT files and any csv/npz/zip/parquet in the repo get content timestamp checks."""
     root = Path(repo).resolve()
     requested = Path(rel)
     data_root = Path(DATA_ROOT).resolve()
@@ -49,7 +50,7 @@ def safe_file(repo, rel):
     if any(x in (".secrets", ".git", "execution", "alerts") or x.startswith(".env") for x in parts):
         raise ValueError(f"protected scope: {rel}")
     # Timestamp gate applies to data inputs by content, including renamed/copied files.
-    if p.is_relative_to(data_root):
+    if p.is_relative_to(data_root) or p.suffix.lower() in DATA_SUFFIXES:   # repo data files too (DECISION OURS 2026-11-06)
         try:
             if p.suffix.lower() == ".npz":
                 import numpy as np
@@ -85,7 +86,7 @@ def safe_file(repo, rel):
                             max_open = max(max_open, max(times))
             else:
                 raise ValueError(f"unsupported data format for timestamp verification: {p.suffix or '<none>'}")
-        except (OSError, ValueError, KeyError) as e:
+        except (OSError, ValueError, KeyError, zipfile.BadZipFile, UnicodeDecodeError) as e:
             raise ValueError(f"cannot verify data timestamps: {rel}: {e}") from e
         if max_open is not None and max_open >= DEV_CUTOFF_MS:
             raise ValueError(f"post-cutoff data refused (max open {max_open}): {rel}")
