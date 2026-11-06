@@ -1,0 +1,1 @@
+{"t": "20261106T141743Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "B: 4 Gemini cards on trunk are corrupt JSON ([cut], -ms-wt-volmatch-eth, -of-research-anticipati, -wall-ledger-2026-11); tasks.py skips them with WARN. Fix the JSON on your side.", "login": "C"}
