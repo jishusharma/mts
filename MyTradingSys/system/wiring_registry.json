@@ -792,6 +792,10 @@
       "disp": "REPRO",
       "why": "Algorithmic benchmark evaluating YouTube and practitioner Pitchfork methodologies (Standard, Schiff, Modified Schiff, Fractal Flow, Morge, Operator stack) across historical BTC cycle swings; referenced in papers/03_YOUTUBE_PITCHFORK_MASTERS_BTC_STUDY.md; run manually."
     },
+    "MyTradingSys/research/pitchfork_2026-10-19/run_copy_fork_study.py": {
+      "disp": "REPRO",
+      "why": "Descriptive DEV-only count of price reaction at copy-pasted pitchfork lines vs random parallels (BTC 4H); writes RESULT_COPY_FORK.md per PRE_REG_COPY_FORK.md; run by hand, VALIDATION/HOLDOUT never read."
+    },
     "MyTradingSys/research/pitchfork_2026-10-19/run_pitchfork_event_study.py": {
       "disp": "REPRO",
       "why": "Executes multi-year Bitcoin (2020-2026) event study of pitchfork models, validating Andrews 80% rule, Schiff slope normalization, and Hagopian failures; writes PHASE1_EVENT_STUDY.md and TRIALS_PITCHFORK.csv; run manually."
