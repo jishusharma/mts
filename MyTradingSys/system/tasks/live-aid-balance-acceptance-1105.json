@@ -1,37 +1,67 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest -q MyTradingSys/tools/live_aid/test_live_aid.py"
+  ],
   "created": "2026-11-05T13:20:06Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "live_aid_indicators.js exports value-area + acceptance flag; test_live_aid.py has test_value_area_matches_python and test_acceptance_two_closes (red before the JS change, Python reference on fixture_klines.json); live_aid.html shows 3 lines + flag; pytest on tools/live_aid passes.",
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "live_aid draws prior-day value area (VAL/POC/VAH, rule of research/value_area_acceptance_2026-11-05/accept80.py) and flags 2 consecutive 30m closes accepted outside/inside it; descriptive only, base rates 44% and 77% from RESULT.md labelled OURS.",
   "id": "live-aid-balance-acceptance-1105",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "bigcandle story: big-candle stories x top-trader class x phase base rates + live_aid panel",
+      "ref": "b2010203f032",
+      "utc": "2026-11-05T14:07:16Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "b4e80f81ceb3 eagle: value-area acceptance base rates on BTC + S004 map",
+      "ref": "MyTradingSys/research/value_area_acceptance_2026-11-05/RESULT.md",
+      "utc": "2026-11-05T13:20:07Z"
+    }
+  ],
   "layers": [
     "tom"
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-06 ACCEPT reviewer=sonnet-review-agent-ae068d00 planner=Session_Planner\nplanner 1106: descriptive display card, not a study (no PRE_REG; no trade rule, so no Context/Regime gate). Public data only.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-06T07:53:18Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/live_aid_indicators.js",
+    "MyTradingSys/tools/live_aid/live_aid.html",
+    "MyTradingSys/tools/live_aid/test_live_aid.py",
+    "MyTradingSys/research/value_area_acceptance_2026-11-05/accept80.py",
+    "MyTradingSys/research/value_area_acceptance_2026-11-05/RESULT.md"
+  ],
   "scope_out": [],
-  "size": "",
+  "scope_sha": "b2010203f032",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read accept80.py for the exact VA rule; write the two failing tests with a Python reference on fixture_klines.json",
+    "Port VA + acceptance to live_aid_indicators.js, draw VAL/POC/VAH and the flag in live_aid.html with the base rates labelled OURS",
+    "Run the live_aid tests; ship. verify: content commit sha, cherry against origin/fast-track empty, delivered files in ls-tree of origin/fast-track"
+  ],
+  "tests": "python -m pytest -q MyTradingSys/tools/live_aid/test_live_aid.py",
   "title": "live_aid: draw current balance value area (VAL/POC/VAH) + flag 2x30m acceptance in/out (Tom A-P3/A3, Fabio); base rates from research/value_area_acceptance_2026-11-05",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

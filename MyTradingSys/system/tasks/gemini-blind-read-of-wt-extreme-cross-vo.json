@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T07:34:37Z",
   "commands": [
     "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_WT_EXTREME_CROSS_VOLMATCH.md'); assert p.exists() and len(p.read_text())>400\""
   ],
@@ -17,10 +18,18 @@
   "id": "gemini-blind-read-of-wt-extreme-cross-vo",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MATCH: 162 cells, 161 net10 negative, 144/144 table numbers match; 2 prose-range diffs",
+      "ref": "a5bb9e412",
+      "utc": "2026-11-06T07:34:37Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: blind read complete",
   "not_twin_of": [
     "gemini-blind-read-rsi-40-60-1104",
     "gemini-blind-read-ms-bb-retest-eth",
@@ -33,7 +42,12 @@
   "refined_by": "",
   "refreshed": "2026-11-04T22:04:35Z",
   "refs": [],
-  "result": "",
+  "result": "MATCH: 162 cells, 161 net10 negative, 144/144 table numbers match; 2 prose-range diffs",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_WT_EXTREME_CROSS_VOLMATCH.md; MyTradingSys/research/wt_extreme_cross_volmatch_2026-11"
   ],
@@ -45,12 +59,13 @@
   "sources": [
     "MyTradingSys/research/wt_extreme_cross_volmatch_2026-11/RESULT.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read dev_cells.csv and summary.json in MyTradingSys/research/wt_extreme_cross_volmatch_2026-11 before RESULT.md",
     "Recompute per-symbol and pooled n, days, unmatched / matched excess and t, net at 0.10 and 0.14",
     "Write MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_WT_EXTREME_CROSS_VOLMATCH.md with a per-cell diff table and VERDICT"
   ],
+  "taken": "2026-11-06T07:34:37Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_WT_EXTREME_CROSS_VOLMATCH.md'); assert 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] Blind read of ms-wt-extreme-cross-volmatch-eth RESULT.md vs CSVs",
   "weight": "ROUTINE",
