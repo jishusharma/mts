@@ -2315,7 +2315,8 @@ def main(argv):
                 import ship_train
                 train_ref = ship_train.queue_ref(git(repo, "rev-parse", "--abbrev-ref", "HEAD").stdout.strip())
                 train_since = ship_train.S.stamp()
-            pushed = ship(repo, release_slug=release_slug, after_slug=after_slug, push_ref=train_ref)
+            extra_kw = {"push_ref": train_ref} if train else {}   # default call stays byte-identical (test_sync asserts it)
+            pushed = ship(repo, release_slug=release_slug, after_slug=after_slug, **extra_kw)
             if train and isinstance(pushed, Pushed):
                 write_last_pushed(repo, pushed)
                 print(f"queued {pushed.sha[:8]} on {train_ref}; waiting for the train's verdict on mts-signals")
