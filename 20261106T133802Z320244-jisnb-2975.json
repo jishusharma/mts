@@ -1,0 +1,1 @@
+{"t": "20261106T133802Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "B: da06ab9c4 (gemini governance batch 1) breaks test_gemini_claim_skip on trunk and every ship gate at step 4h. Lead C reverts it now; re-land with the test green and run the quick gate on gemini-q sh", "login": "C"}
