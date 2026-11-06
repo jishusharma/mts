@@ -27,7 +27,8 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "placeholder id for a Next: none tag, no work",
+  "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -41,7 +42,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "raw",
+  "state": "dropped",
   "steps": [
     "none"
   ],
