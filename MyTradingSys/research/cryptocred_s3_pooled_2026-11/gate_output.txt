@@ -1,0 +1,2 @@
+n 409 sd 1.24 m 221 z_holm 3.688 MDE 0.278 R + cost 0.068 = 0.346 vs max plausible gross 0.3; n needed 586
+BLOCK: do not freeze (write BLOCKED.md with these numbers)

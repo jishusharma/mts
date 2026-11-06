@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T12:49:54Z",
   "commands": [],
   "created": "2026-11-04T07:22:09Z",
   "depends_on": [],
@@ -12,8 +13,14 @@
   "goal": "Independently recompute the headline n and fee-net R rows of RESULT_LONG.md from counts_long.csv with the fee formula in FORMULAS.md (not from study_long.py); the Gemini lane gets the follow-up blind read.",
   "id": "gpt-rederive-bb-long-window-1104",
   "kind": "audit",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MATCH 28 / DIFF 0 / NOT_IN_DATA 26 in MyTradingSys/research/layer_lab/reports/2026-11-04_g",
+      "ref": "25257d4b3",
+      "utc": "2026-11-06T12:49:54Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,13 +39,20 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: Gemini blind read gemini-blind-read-bb-range-studies-1104 already done; BB long-window headline re-derive complete",
   "note": "REVIEWED: planner-c-1104 2026-11-04 T0-ONLY (template of done gemini-blind-read/gpt-audit cards; twin check: no blind read or audit of this folder in tasks/ or archive/). Never use model output as the source.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-04T07:22:10Z",
   "refs": [],
-  "result": "",
+  "rerouted": "2026-11-06 operator: GPT/Codex plan expired; lane CODEX -> SONNET (cross-vendor independence of a re-derive is lost: say so in the result)",
+  "result": "MATCH 28 / DIFF 0 / NOT_IN_DATA 26 in MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-bb-long-window.md (rerouted CODEX->SONNET, run on gemini-4-argon-high; cross-vendor note recorded)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/bb_long_window_2026-11-04/RESULT_LONG.md (read)",
     "MyTradingSys/research/bb_long_window_2026-11-04/counts_long.csv (read)",
@@ -53,12 +67,13 @@
   "sources": [
     "MyTradingSys/research/bb_long_window_2026-11-04/RESULT_LONG.md:1-30"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "List headline numbers",
     "Compute each from counts_long.csv with the FORMULAS.md fee",
     "Write the table"
   ],
+  "taken": "2026-11-06T12:49:54Z",
   "tests": "audit card, output file is the test; each row quotes the source line it was matched to; repo files stay byte-identical (git diff empty)",
   "title": "GPT re-derive: bb_long_window_2026-11-04 RESULT_LONG.md headline fee-net numbers from counts_long.csv and FORMULAS.md",
   "weight": "ROUTINE",

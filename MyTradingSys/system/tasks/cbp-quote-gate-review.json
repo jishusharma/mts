@@ -12,7 +12,7 @@
   "goal": "Check each stored CBP row's evidence quote is verbatim in its transcript and list any that verify_extract_quotes.py passes but a human would reject.",
   "id": "cbp-quote-gate-review",
   "kind": "audit",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
@@ -50,5 +50,6 @@
   "tests": "python -m pytest MyTradingSys/tests -k quote (fail-first)",
   "title": "CBP quote gate: cross-vendor review of the 13 stored rows",
   "weight": "",
-  "worker": "session"
+  "worker": "session",
+  "rerouted": "2026-11-06 operator: GPT/Codex plan expired; lane CODEX -> SONNET (cross-vendor independence of a re-derive is lost: say so in the result)"
 }

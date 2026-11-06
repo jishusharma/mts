@@ -273,7 +273,11 @@ class GuardTest(unittest.TestCase):
     def test_logon_prunes_whatever_the_free_space_and_logs_one_line(self):
         make(self.root, "tmpold/f.txt", 30)
         make(self.root, "mts_s4_new/f.txt", 1)
-        self.assertEqual(g.main(["logon"]), 0)
+        old_grace, g.LOGON_GRACE_S = g.LOGON_GRACE_S, 0      # the real run idles 180 s first (boot audit 2026-11-06)
+        try:
+            self.assertEqual(g.main(["logon"]), 0)
+        finally:
+            g.LOGON_GRACE_S = old_grace
         self.assertFalse((self.root / "tmpold").exists())
         self.assertTrue((self.root / "mts_s4_new").exists())
         lines = g.LOG.read_text(encoding="utf-8").splitlines()

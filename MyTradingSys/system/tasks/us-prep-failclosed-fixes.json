@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-06T12:27:44Z",
+  "depends_on": [],
+  "done_when": "us_prep.py fails closed on partial klines, labels open windows PARTIAL, P4 refuses to score before window end; tests assert exact 2026-11-05 fixture values; new tests fail on pre-change code; ship green.",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Fix the 4 defects a Haiku diff review found in scripts/dev/us_prep.py (commit 78d737ea3): partial klines must fail closed, clipped windows must be marked PARTIAL, P4 must not score before the window ends, tests must assert exact fixture values.",
+  "id": "us-prep-failclosed-fixes",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into JIS-NB/us-prep-build-1106-2",
+      "ref": "78d737ea317e",
+      "utc": "2026-11-06T12:23:01Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-06T12:27:59Z",
+  "refs": [],
+  "result": "",
+  "scope_in": "scripts/dev/us_prep.py, scripts/dev/test_us_prep.py",
+  "scope_out": "cbp_run.py, ci.yml, gate config, wiring_registry.json (wiring_scan classes us_prep DEV-TOOL: an entry would fail as STALE)",
+  "scope_sha": "78d737ea317e",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "add failing tests (partial klines, open window PARTIAL, P4 pending, exact values)",
+    "fix us_prep.py:87,157,259",
+    "ship once"
+  ],
+  "tests": "scripts/dev/test_us_prep.py::test_partial_klines_unknown, ::test_open_window_partial, ::test_p4_pending, ::test_fixture_exact_values (fail first)",
+  "title": "us_prep.py: fail closed on partial klines (us_prep.py:87), mark clipped windows PARTIAL (:157), no P4 score before window end (:259), exact fixture asserts (test_us_prep.py:76-81); Haiku REJECT of 78d737ea3",
+  "weight": "",
+  "worker": "agent"
+}

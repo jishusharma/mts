@@ -157,3 +157,66 @@ def test_rebuild_dashboard_survives_failed_fetch(tmp_path, monkeypatch):
 
     cbp_run.rebuild_dashboard(run=run)  # never fails the run
     assert calls == ["fetch_board_data.py", "build_board.py"]  # build still runs on the last data
+
+
+def _fake_fetch_env(tmp_path, monkeypatch, codes):
+    import json
+    (tmp_path / "cbp_v2").mkdir()
+    cfg = {"exclude_regex": "x", "include_regex": "y",
+           "analysts": [{"short": n, "channel": "@" + n, "enabled": True} for n in codes]}
+    (tmp_path / "cbp_v2" / "analysts.json").write_text(json.dumps(cfg), encoding="utf-8")
+    monkeypatch.setattr(cbp_run, "CBP_HOME", tmp_path)
+    monkeypatch.setattr(cbp_run, "TRANSCRIPTS", tmp_path)
+    seen = []
+
+    class R:
+        def __init__(self, rc):
+            self.returncode = rc
+
+        def check_returncode(self):
+            if self.returncode:
+                raise RuntimeError("exit %s" % self.returncode)
+
+    def run(cmd, **kw):
+        name = cmd[cmd.index("--analyst") + 1]
+        seen.append(name)
+        return R(codes[name])
+    return run, seen
+
+
+def test_fetch_new_continues_after_a_nonzero_analyst(tmp_path, monkeypatch, capsys):
+    run, seen = _fake_fetch_env(tmp_path, monkeypatch, {"A": 1, "B": 0, "C": 1})
+    got = cbp_run.fetch_new("2026-10-01", None, run=run)
+    assert seen == ["A", "B", "C"]  # a DEFERRED channel must not stop the rest
+    assert got == ["A", "C"]
+    out = capsys.readouterr().out
+    assert "fetch incomplete for A" in out and "fetch incomplete for C" in out
+
+
+def test_main_saves_rows_but_withholds_stamp_when_fetch_incomplete(tmp_path, monkeypatch, capsys):
+    from datetime import datetime, timezone
+    calls = []
+    monkeypatch.setenv("CBP_STAMP", str(tmp_path / "stamp.json"))
+    monkeypatch.setattr(cbp_run, "rebuild_dashboard", lambda: calls.append("dash"))
+    monkeypatch.setattr(cbp_run, "TRANSCRIPTS", tmp_path)
+    orig = cbp_run.run_once
+    monkeypatch.setattr(cbp_run, "run_once", lambda now: orig(
+        now, fetch=lambda c, k: ["A"], extract=lambda v, b: {}, store=tmp_path / "rows.json"))
+    rc = cbp_run.main(["--force"], now=datetime(2026, 11, 3, 5, 0, tzinfo=timezone.utc))
+    assert rc == 0
+    assert (tmp_path / "rows.json").exists() and (tmp_path / "verdicts.json").exists()  # extraction ran and saved
+    assert not (tmp_path / "stamp.json").exists()  # next window retries the deferred videos
+    assert calls == ["dash"]
+    assert "fetch incomplete for: A" in capsys.readouterr().out
+
+
+def test_main_stamps_when_fetch_complete(tmp_path, monkeypatch):
+    from datetime import datetime, timezone
+    monkeypatch.setenv("CBP_STAMP", str(tmp_path / "stamp.json"))
+    monkeypatch.setattr(cbp_run, "rebuild_dashboard", lambda: None)
+    monkeypatch.setattr(cbp_run, "TRANSCRIPTS", tmp_path)
+    orig = cbp_run.run_once
+    monkeypatch.setattr(cbp_run, "run_once", lambda now: orig(
+        now, fetch=lambda c, k: [], extract=lambda v, b: {}, store=tmp_path / "rows.json"))
+    assert cbp_run.main(["--force"], now=datetime(2026, 11, 3, 5, 0, tzinfo=timezone.utc)) == 0
+    assert (tmp_path / "stamp.json").exists()

@@ -1,7 +1,17 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T08:54:34Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-06T08:56:28Z",
+    "misses": 2,
+    "reads": [
+      "MyTradingSys/system/AIBRIDGE_LANE.md"
+    ],
+    "session": "agent-a9e9d99d113b0029a"
+  },
   "created": "2026-11-02T16:18:54Z",
   "depends_on": [],
   "done_when": "Report MyTradingSys/research/layer_lab/reports/2026-11-02_aibridge-sandbox-chat-run-acl-proof.md holds the before (both probes succeed) and after (both refused, access denied text) transcripts and the icacls lines; live F:/AIBridge file hashes before == after.",
@@ -14,6 +24,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Sandbox ACL proof: before 2/2 probes succeed, after 2/2 refused (icacls deny); live F:/AIB",
+      "ref": "6e494e151",
+      "utc": "2026-11-06T08:54:34Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -31,13 +47,19 @@
   ],
   "layers": [],
   "live_path": false,
+  "next": "END: done",
   "note": "REVIEWED:2026-11-02 T0-ONLY | Supervisor B 2026-11-03: failed twice on Codex: it needs a copy outside the lab tree, which the sandbox refuses (report 2026-11-02). Back to a Claude worker on the machine with F:/AIBridge. | PLANNER 2026-11-02 planner-b-1102: rescoped from the raw card to sandbox-first so no live install is touched; live apply is the operator's call. Final report ends with a Noticed: line.",
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "",
   "refreshed": "2026-11-05T04:41:23Z",
   "refs": [],
-  "result": "",
+  "result": "Sandbox ACL proof: before 2/2 probes succeed, after 2/2 refused (icacls deny); live F:/AIBridge absent on this machine so live-hash check n/a, repo source hashes unchanged; operator rerun step listed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "F:/MTS/mts-codex-lab/_sandbox/aibridge_acl/ (new sandbox copy, no real secrets)",
     "MyTradingSys/research/layer_lab/reports/2026-11-02_aibridge-sandbox-chat-run-acl-proof.md"
@@ -52,13 +74,14 @@
   "sources": [
     "MyTradingSys/system/AIBRIDGE_LANE.md:34"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "hash live F:/AIBridge files; copy to F:/MTS/mts-codex-lab/_sandbox/aibridge_acl excluding the secrets dir, add a placeholder secrets file",
     "probe: write a line to sandbox src/policy.json and read the placeholder secrets file from a child process; record both succeed",
     "apply icacls /deny rules (write on policy.json, read on secrets dir) for the chat-run identity; re-run probes, record access denied",
     "re-hash live files (must match), write report with transcripts and icacls lines; no secrets in the report"
   ],
+  "taken": "2026-11-06T08:54:34Z",
   "tests": "count-based: before probes 2/2 succeed, after probes 2/2 refused, live hashes unchanged (all in the report)",
   "title": "AIBridge: sandbox proof that a chat-run cannot write src/policy.json or read .secrets (OS ACLs, sandbox copy only)",
   "weight": "ROUTINE",
