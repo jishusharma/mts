@@ -2,6 +2,15 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-06T09:47:44Z",
+    "misses": 1,
+    "reads": [
+      "scripts/dev/extra_tests.tsv"
+    ],
+    "session": "agent-a87803c7d8375156e"
+  },
   "created": "2026-11-03T20:34:58Z",
   "depends_on": [],
   "done_when": "Over 3 days of fast-track runs no class-A flaky red (SHIP_TRAIN.md section 1) and a docs-only sha gets its own run",
