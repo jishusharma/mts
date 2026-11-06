@@ -784,6 +784,8 @@ def commit_pending(repo, result, subject=None, nxt=None):
     commit whose body ends `Result: <text>` (and `Next: <tag>`). Clean tree: nothing to commit (commits already made keep their own
     messages), except that --next alone adds an empty `route tag` commit carrying it. Returns the file count."""
     tail = (chr(10) + "Next: " + nxt.strip().removeprefix("Next:").strip()) if nxt else ""
+    if (result is not None or nxt) and git(repo, "rev-parse", "--verify", "--quiet", "HEAD", check=False).returncode != 0:
+        raise SyncError("ship refused: HEAD does not resolve (unborn or unreadable ref, e.g. during git auto-gc); a commit now would be an orphan initial commit")
     if result is None:
         if nxt:
             git(repo, "commit", "--quiet", "--allow-empty", "-m", "route tag" + chr(10) * 2 + "Result: routes the commits of this ship" + tail)
