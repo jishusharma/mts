@@ -59,7 +59,7 @@ NT = 4                             # tranches
 TR_STEP_ATR = 0.5                  # OURS
 TARGET_MIN_ATR = 1.0               # OURS
 TARGET_DEFAULT_ATR = 1.5           # OURS
-SLIP_TAKER_BPS = 2.0               # OURS
+MARKET_LEG_EXTRA_BPS = 2.0               # OURS
 TAKER_BPS = fees.BINANCE_TAKER * 1e4   # SOURCED fees.py (5 bps)
 MAKER_BPS = fees.BINANCE_MAKER * 1e4   # SOURCED fees.py (2 bps)
 N_MIN = 250                        # PRE_REG section 7
@@ -250,8 +250,8 @@ def manage(O, H, L, hr, d, t_rel, atr, wend, funding, ts0=TS0):
     for k, (fp, fi) in enumerate(fills):
         w = 1.0 / NT
         gross += w * (fp - exit_p) / fp * 1e4
-        cin = (TAKER_BPS + SLIP_TAKER_BPS) if k == 0 else MAKER_BPS
-        cout = MAKER_BPS if kind == "target" else (TAKER_BPS + SLIP_TAKER_BPS)
+        cin = (TAKER_BPS + MARKET_LEG_EXTRA_BPS) if k == 0 else MAKER_BPS
+        cout = MAKER_BPS if kind == "target" else (TAKER_BPS + MARKET_LEG_EXTRA_BPS)
         cost += w * (cin + cout)
         fund += w * float(funding_cost_pct(funding, ts0 + fi * MS, ts0 + exit_i * MS, -1)) * 100.0   # % -> bps; + = cost
     net = gross - cost - fund
