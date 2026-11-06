@@ -36,6 +36,9 @@ Inputs: n = nested days, sd OURS 0.25 % (5m) / 0.45 % (15m) typical 12-bar sd (n
 - INCONCLUSIVE otherwise. Phase_only / slope_only / age bins are descriptive controls. No result is a trading claim.
 
 ## Context
-Regime: the operator's rule says trade with the higher-timeframe cycle direction. Regime mix line (research_kit.regime_mix_line, step 3pc): see `regime_mix_count.txt`; half the DEV weeks are n/a because the weekly/monthly RSI needs history before 2022-01 that is not on disk (labelled limitation), the strict Malkan band gives no bear weeks. Results are therefore dominated by range/bull weeks.
+Regime: no regime gate; the operator's rule is to trade with the higher-timeframe cycle direction, and the window's regime is stated by the Regime mix line below (research_kit.regime_mix_line, step 3pc; half the weeks n/a because weekly/monthly RSI history before 2022-01 is not on disk, the strict Malkan band gives no bear weeks).
+Phase: the gate under test: 30m cycle phase (last valid 30m dot: bottom = UP, top = DOWN), its age in median cycles, plus the 4h wt1 slope sign (OURS, Bible).
+Session: none, because the primary read is nested vs rejected dots per TF and a session split would leave too few nested trades per cell.
+Entry: the valid 5m or 15m dot bar close, exit 12 bars of the entry TF later; no retest entry (OURS, SPEC); the first ~33 days of 2022 have no 4h slope (warm-up) and those dots are excluded as unknown gate (5m 128, 15m 43).
 Regime mix: 130 weeks: bull 16 (12%) | bear 0 (0%) | range 49 (38%) | n/a 65 (50%)
 Session / phase: phase = 30m last-dot side, age in median cycles; the first ~33 days of 2022 have no 4h slope (warm-up) and are excluded as unknown gate (5m 128, 15m 43 dots).
