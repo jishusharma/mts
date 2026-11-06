@@ -20,9 +20,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "route tag re-land: every ship names where the work goes next (Next: gate, tasks done --nex",
-      "ref": "08d51e5b7fc8",
-      "utc": "2026-11-04T15:22:55Z"
+      "line": "Revert \"Revert route tag re-land 08d51e5b7 (CI RED: wiring stale wavetrend entry, MTS Home",
+      "ref": "dea81301a70a",
+      "utc": "2026-11-04T16:25:21Z"
     }
   ],
   "layers": [],
@@ -32,8 +32,9 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-04T15:46:13Z",
+  "refreshed": "2026-11-06T12:51:10Z",
   "refs": [],
+  "rerouted": "2026-11-06 operator: GPT/Codex plan expired; lane CODEX -> SONNET (cross-vendor independence of a re-derive is lost: say so in the result)",
   "result": "",
   "scope_in": [
     "scripts/dev/api_job.py (read only), scripts/dev/test_api_job_gpt.py (new), scripts/dev/run_all_tests.py (one list line)"
@@ -41,7 +42,7 @@
   "scope_out": [
     "any launch of a real job; the key file; PLAN_API_CREDITS ledger edits"
   ],
-  "scope_sha": "08d51e5b7fc8",
+  "scope_sha": "dea81301a70a",
   "size": "S",
   "sources": [
     "MyTradingSys/system/PLAN_24H_2026-11-04.md (section 3 job queue)"
@@ -56,6 +57,5 @@
   "tests": "test_api_job_gpt.py: build_cmd never contains the key or the key path; launch refuses when running_jobs() is non-empty; ledger_total sums only rows under '## Spent'; parse_result returns done False when no result record",
   "title": "GPT spec and mutation tests for scripts/dev/api_job.py (headless credit launcher): key never in argv/log, one job per machine, ledger_total parses only Spent rows, parse_result ignores non-result records",
   "weight": "ROUTINE",
-  "worker": "agent",
-  "rerouted": "2026-11-06 operator: GPT/Codex plan expired; lane CODEX -> SONNET (cross-vendor independence of a re-derive is lost: say so in the result)"
+  "worker": "agent"
 }
