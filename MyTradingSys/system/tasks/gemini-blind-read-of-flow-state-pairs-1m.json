@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T13:07:00Z",
   "commands": [
     "python scripts/dev/gemini_queue.py run gemini-blind-read-of-flow-state-pairs-1m:low"
   ],
@@ -17,6 +18,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "VERDICT: CLEAN — MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_FLOWPAIRS_1106.",
+      "ref": "d57726fb7",
+      "utc": "2026-11-06T13:07:00Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "C2 flow-state pairs on 1m (BTCUSDT, 13 days, 5m-OI proxy): A/B/C counts and forward moves",
@@ -27,13 +34,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "gemini-blind-read-of-malkan-window-dev-s",
   "note": "REVIEWED:2026-11-06 T0-ONLY | route [GEMINI] via gemini_queue.py gemini-blind-read-of-flow-state-pairs-1m:low; lane was CODEX (retired 11-06)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-06T12:16:12Z",
   "refs": [],
-  "result": "",
+  "result": "VERDICT: CLEAN — MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_FLOWPAIRS_1106.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_FLOWPAIRS_1106.md",
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/flow_state_pairs_1m.py"
@@ -44,12 +57,13 @@
   "scope_sha": "73d0bbe9fa4d",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/eagle_eyes_picture_2026-10-28/flow_state_pairs_1m.py before any prose summary of them",
     "Recompute independently of the code under read, then state what each flow-state pair is and check the as-of rule (no bar after t is used)",
     "Write MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_FLOWPAIRS_1106.md with the per-claim table and VERDICT"
   ],
+  "taken": "2026-11-06T13:07:00Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_FLOWPAIRS_1106.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] blind read of flow_state_pairs_1m.py",
   "weight": "ROUTINE",
