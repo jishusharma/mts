@@ -606,6 +606,20 @@ class StateTagTest(NextSkipsClaimedTest):
         self.assertEqual(rc, 1)
         self.assertIn("STALE", self.run_cli("list")[1])
 
+    def test_empty_scope_sha_refreshed_after_change_is_fresh(self):
+        self.commit("src/a.py", "x=1" + NL, "2026-10-01T00:00:00+00:00")
+        c = good("TS1", refreshed="2026-10-05T00:00:00+00:00", scope_sha="")
+        c["scope_in"] = ["src/a.py"]
+        T.save(self.repo, c)
+        self.assertEqual(T.TS.stale_reason(T.get(self.repo, "TS1"), self.repo), "")
+
+    def test_empty_scope_sha_change_after_refresh_is_stale(self):
+        self.commit("src/a.py", "x=1" + NL, "2026-10-06T00:00:00+00:00")
+        c = good("TS1", refreshed="2026-10-05T00:00:00+00:00", scope_sha="")
+        c["scope_in"] = ["src/a.py"]
+        T.save(self.repo, c)
+        self.assertIn("scope changed", T.TS.stale_reason(T.get(self.repo, "TS1"), self.repo))
+
     def test_card_file_named_in_scope_still_counts(self):
         f = "MyTradingSys/system/tasks/BASE.json"
         self.commit(f, "{}" + NL)
@@ -1127,6 +1141,17 @@ class ResultTrustTest(unittest.TestCase):
         self.assertEqual(T.card_class(shared), 'C2')
         self.assertEqual(shared['shared_consumers'], ['USE'])
         self.assertEqual(T.result_trust_problems(self.consumer, self.repo), [])
+
+    def test_mark_shared_bases_keeps_crucial_and_critical(self):
+        for weight, expected in (('CRUCIAL', 'CRUCIAL'), ('CRITICAL', 'CRITICAL'), ('', 'B-SHARED')):
+            with self.subTest(weight=weight):
+                self.base['weight'] = weight
+                self.verify()
+                T.mark_shared_bases(self.consumer, self.repo)
+                marked = T.get(self.repo, 'BASE')
+                self.assertEqual(marked['weight'], expected)
+                self.assertEqual(marked['shared_consumers'], ['USE'])
+                self.assertIn(T.card_class(marked), ('C2', 'C3'))
 
     def test_take_and_active_done_enforce_result_trust(self):
         previous = T.REPO

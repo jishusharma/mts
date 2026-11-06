@@ -144,8 +144,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Spec / sources: `MyTradingSys/research/_archive/loose_2026-10/TURN_OF_CANDLE_ORIGIN_2026-10-09.md`
 - Code: `MyTradingSys/backtest/layers/session`; `MyTradingSys/backtest/layers/session_levels`; `MyTradingSys/backtest/layers/turn_of_candle`
 - Other results: `MyTradingSys/research/t087_session_levels_2026-10-09`; `MyTradingSys/research/eur_low_us_sweep_2026-10-14`
-- Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `premarket-risk-flag-1105` ready p1 SONNET: live_aid pre-US-open risk flag: Nasdaq-100 futures, Kospi/SK hynix close, top chip pre-market movers, VIX; fla
+- Open cards: none
 
 ## Volume, candle patterns, daily MA setups, bigtrade (`volume_candles_ma`)
 - Status: No validated edge; volume HOLDOUT sealed; MA numbers NO-SOURCE.
@@ -231,7 +230,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `layer-bible-runtime-1104` raw p1 SONNET: Layer Bible per family + layer_state.py runtime (d-layer-bible-runtime-1104), WaveTrend pilot; design review C
   - `wavetrend-c1-v2` refined p1 SONNET: WaveTrend C1 detector correction and new count-only prereg
-  - `wt-mtf-cycle-nesting` ready p2 SONNET: WT multi-timeframe cycle nesting: 5m/15m zone dots traded only with the 30m cycle phase and 4h slope vs the un
   - `wt30-div-blind-recount-haiku-1104` ready p2 HAIKU: Haiku blind recount of the coordinator WT 30m divergence and cycle-frequency numbers from the written rule onl
 
 ## Pitchfork (Andrews / Schiff / Morge median line) (`pitchfork`)

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T13:52:13Z",
   "commands": [],
   "created": "2026-10-28T19:29:05Z",
   "depends_on": [],
@@ -13,10 +14,18 @@
   "id": "legend-footprint-bar-delta-differs-betwe",
   "kind": "audit",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-06_legend-footprint-bar-delta-differs-betw",
+      "ref": "5425345a2",
+      "utc": "2026-11-06T13:52:13Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: cause identified (bar boundary truncation and instrument divergence)",
   "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
   "pinned": false,
   "prio": 3,
@@ -24,7 +33,12 @@
   "refined_by": "",
   "refreshed": "2026-11-05T04:41:45Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-06_legend-footprint-bar-delta-differs-between-5m-and-3m.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "Legend footprint delta definition; recompute for 18:30-18:40Z from public Binance trades"
   ],
@@ -36,12 +50,13 @@
   "sources": [
     "shots f2ffb8a79f67 and 2dab97c8a8fc"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the Legend footprint tooltip for the delta definition",
     "Recompute taker delta for 18:30-18:40Z from Binance public trades and compare to both footprints",
     "Write the finding in a note and mark the card"
   ],
+  "taken": "2026-11-06T13:52:13Z",
   "tests": "None: read-only investigation, no code change",
   "title": "Legend footprint bar delta differs between 5m and 3m (18:30-18:40Z 2026-10-28: 5m -783.5 vs 3m -493.7); cause NOT_IN_DATA",
   "weight": "",
