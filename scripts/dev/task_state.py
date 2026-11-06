@@ -177,7 +177,7 @@ def stale_reason(card, repo):
     lc = last_change(repo, scope_paths(card, repo), hint=(card.get("scope_sha"), card.get("refreshed")))
     if lc and not card.get("scope_sha") and lc[1]:
         # hand-set refreshed (feeder cards): stale only when the change is newer than the refresh
-        if lc[1] > card["refreshed"]:
+        if lc[1] > (card.get("refreshed") or ""):
             return f"scope changed {lc[0]} {lc[1]} after refresh {card['refreshed']}"
         return ""
     if lc and lc[0] != card.get("scope_sha"):
