@@ -2,7 +2,7 @@
 
 Operator 2026-11-06 (d-carry-dropped-leverage-direction-1106, d-phase-first-method-1106): low-leverage long near a confirmed cycle
 bottom, bought on or after a good retest, held long. Phase-first: no long backtest precondition; the testnet run is the record.
-Testnet only. The trade is operator-called via cotrade.py; this folder places no orders. Daily line: `python MyTradingSys/research/btc_cycles_2026-11/cycle_bottom_flag.py`.
+Testnet only. The trade is operator-called via the operator-called testnet tool; this folder places no orders. Daily line: `python MyTradingSys/research/btc_cycles_2026-11/cycle_bottom_flag.py`.
 
 Labels: SOURCED = quoted from an analyst row (`scripts/dev/analyst_levels.py`, CBP store) or cycles.md; OURS = our choice.
 
