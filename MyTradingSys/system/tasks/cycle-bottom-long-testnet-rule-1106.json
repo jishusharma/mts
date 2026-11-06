@@ -12,6 +12,15 @@
   "goal": "Operator 11-06: low-leverage long near a confirmed cycle bottom, bought on or after a good retest, held long. Cycle 4 is in its bottom window (research/btc_cycles_2026-11/cycles.md). Write RULE.md (bottom-confirmed flag, retest entry, stop, leverage default) and a daily flag script; the testnet trade itself is operator-called.",
   "id": "cycle-bottom-long-testnet-rule-1106",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "d-phase-first-method-1106 + BTC 4-cycle table (16 years)",
+      "ref": "22d35cbbb694",
+      "utc": "2026-11-06T18:00:53Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,6 +28,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-06T18:04:39Z",
   "refs": [
     "MyTradingSys/research/btc_cycles_2026-11/cycles.md",
     "MyTradingSys/system/OPERATOR_DECISIONS.md"
@@ -32,9 +42,10 @@
     "live tree",
     "order placement"
   ],
+  "scope_sha": "22d35cbbb694",
   "size": "M",
   "sources": [],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "RULE.md in research/btc_cycles_2026-11: bottom-confirmed = inside the clock window from cycles.md AND a CBP analyst weekly or 5-day close condition met (quote the analyst rows from analyst_levels.py, e.g. weekly close above a named line); label each threshold SOURCED (analyst) or OURS",
     "Entry: first retest of the reclaimed level that holds on a daily close; stop below the retest swing low (OURS); leverage default 2x on testnet (OURS, operator may change); exit rule: weekly close back below the reclaimed level",
