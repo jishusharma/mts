@@ -54,6 +54,25 @@ class TestFixPlan(unittest.TestCase):
         self.assertEqual(ba.plan_fix([row("task", "AIBridge-Agent", done=True)]), [])
 
 
+class TestNucLeftovers(unittest.TestCase):
+    def test_task_running_mts_files_is_ours_whatever_its_name(self):
+        self.assertEqual(ba.classify("task", "gq13", r"powershell -File F:\MTS\gq\gq13.ps1")[:2], ("MTS", "REMOVE"))
+        self.assertEqual(ba.classify("task", "lab-loop", r"powershell -File F:\MTS\gq\lab_loop.ps1")[:2], ("MTS", "REMOVE"))
+        self.assertEqual(ba.classify("task", "mts-oneshot-ship1")[:2], ("MTS", "REMOVE"))
+        self.assertEqual(ba.classify("task", "OneDrive Reporting Task-S-1", r"%localappdata%\Microsoft\OneDrive\x.exe")[:2], ("other", "KEEP"))
+
+    def test_running_or_pending_one_shot_is_left_alone_but_a_spent_or_recurring_one_goes(self):
+        from datetime import datetime, timezone, timedelta
+        now = datetime(2026, 11, 6, tzinfo=timezone.utc)
+        soon = (now + timedelta(hours=1)).isoformat()
+        past = (now - timedelta(days=3)).isoformat()
+        mk = lambda name, **raw: row("task", name, r"powershell -File F:\MTS\gq\x.ps1", raw=dict(raw))
+        rows = [mk("MTS-Wake-a", state="Ready", next=soon), mk("MTS-Wake-b", state="Ready", next=past), mk("MTS-Wake-c", state="Running"),
+                mk("codexloop", state="Ready", next=soon, rep=True), mk("MTS-Wake-d", state="Ready", next="")]
+        names = sorted(n for _, n, _ in ba.plan_fix(rows, now))
+        self.assertEqual(names, ["MTS-Wake-b", "MTS-Wake-d", "codexloop"])
+
+
 class TestGuardLogonDelay(unittest.TestCase):
     def test_logon_waits_before_the_heavy_cleanup(self):
         import c_drive_guard as g
