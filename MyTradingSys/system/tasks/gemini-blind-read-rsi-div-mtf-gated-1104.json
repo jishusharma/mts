@@ -1,9 +1,17 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T07:37:26Z",
   "commands": [
     "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_RSI_DIV_MTF_1104.md'); assert p.exists() and len(p.read_text())>400\""
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-06T07:54:20Z",
+    "misses": 220,
+    "reads": [],
+    "session": "agent-a99cdecc2422800ee"
+  },
   "created": "2026-11-04T07:15:00Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_RSI_DIV_MTF_1104.md independently recomputes all metrics from MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/*.csv, diffs against RESULT.md, and ends with VERDICT: MATCH or MISMATCH.",
@@ -16,6 +24,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Re-read: 32 FOUND 1 DIFF 3 NOT_IN_DATA; VERDICT MATCH, C5_14 window claim overstated",
+      "ref": "203aedd36",
+      "utc": "2026-11-06T07:37:26Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -34,6 +48,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: blind read complete",
   "note": "REVIEWED:2026-11-04 T0-ONLY | D11 feeder card for c509665ff, 1c865e8c7",
   "prio": 1,
   "refine_tries": 0,
@@ -42,7 +57,12 @@
   "refs": [
     "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/RESULT.md"
   ],
-  "result": "MATCH (read); Claude spot-check 4 of 5 AGREE, 1 DISAGREE at 4th decimal (#3). Card left open.",
+  "result": "Re-read: 32 FOUND 1 DIFF 3 NOT_IN_DATA; VERDICT MATCH, C5_14 window claim overstated",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_RSI_DIV_MTF_1104.md",
     "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04"
@@ -51,12 +71,13 @@
   "scope_sha": "9032134f924a",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Parse the CSV files in MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04 and compute gated vs ungated and strict vs bear-proxy numbers",
     "Compare every number and regime percentage against RESULT.md",
     "Write MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_RSI_DIV_MTF_1104.md with a side-by-side table and VERDICT"
   ],
+  "taken": "2026-11-06T07:37:26Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_RSI_DIV_MTF_1104.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] Blind read of RSI divergence MTF gated and long-window RESULT.md vs CSVs",
   "weight": "ROUTINE",
