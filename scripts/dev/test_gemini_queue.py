@@ -95,6 +95,21 @@ class RunJobTest(unittest.TestCase):
                 gq.run_job("c1", "low")
             return calls, (Path(t) / "c1.log").read_text(encoding="utf-8"), run
 
+    def _run_claims(self, claims):
+        with tempfile.TemporaryDirectory() as t:
+            (Path(t) / "c1").mkdir()
+            with mock.patch.object(gq, "ROOT", Path(t)), mock.patch.object(gq, "git", return_value=cp(0)),                     mock.patch("sync.open_claims", return_value=claims),                     mock.patch.object(gq, "card_gate", return_value=(True, "")),                     mock.patch.object(gq, "claim_with_retry", return_value=("fail", "x")),                     mock.patch.object(gq.subprocess, "run"):
+                gq.run_job("c1", "low")
+            return (Path(t) / "c1.log").read_text(encoding="utf-8")
+
+    def test_own_host_open_claim_not_skipped(self):
+        log = self._run_claims([("c1", {"host": socket.gethostname().upper()})])
+        self.assertFalse(log.startswith("SKIP"), log)
+
+    def test_other_host_open_claim_skipped(self):
+        log = self._run_claims([("c1", {"host": "OTHER-HOST"})])
+        self.assertTrue(log.startswith("SKIP c1: already claimed by OTHER-HOST"), log)
+
     def test_identity_set_and_failure_logged(self):
         calls, log, run = self._run(("fail", "after 6 tries: rejected"))
         # git-identity-1104: identity is per process (env), never `git config` (that wrote the shared .git/config)

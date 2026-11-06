@@ -1353,7 +1353,8 @@ def mark_shared_bases(card, repo=None):
     except (ValueError, OSError):
         return  # the read-only trust gate reports invalid/missing citations
     for cid, base in bases.items():
-        base["weight"] = "B-SHARED"
+        if base.get("weight") not in ("CRUCIAL", "CRITICAL"):   # max weight stays, as promote_shared (DECISION OURS 2026-11-06)
+            base["weight"] = "B-SHARED"
         base["class"] = "C3" if card_class(base) == "C3" else "C2"
         base["shared_consumers"] = sorted(set(base.get("shared_consumers", [])) | {card["id"]})
         save(repo, base)
