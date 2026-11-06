@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T07:40:50Z",
   "commands": [
     "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_BB_STUDIES_1104.md'); assert p.exists() and len(p.read_text())>400\""
   ],
@@ -26,6 +27,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "BLIND_READ_BB_STUDIES_1104.md exists on trunk (40KB), recomputed from CSVs, ends VERDICT: ",
+      "ref": "637a4d703",
+      "utc": "2026-11-06T07:40:50Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "gemini blind reads: Claude spot-check of RSI-div, BB studies, Fabio L1 strict",
@@ -43,6 +50,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: blind read complete, file on trunk",
   "note": "REVIEWED:2026-11-04 T0-ONLY | PATHS FIXED 2026-11-04 (Supervisor B): the card named files that do not exist; MyTradingSys/research/bb_long_window_2026-11-04/RESULT.md -> MyTradingSys/research/bb_long_window_2026-11-04/RESULT_LONG.md. | D11 feeder card for 8ce5461b0, f38aa80a3, 07f4d20f0",
   "prio": 1,
   "refine_tries": 0,
@@ -53,7 +61,12 @@
     "MyTradingSys/research/bb_range_retest_2026-11-04/RESULT.md",
     "MyTradingSys/research/bb_long_window_2026-11-04/RESULT_LONG.md"
   ],
-  "result": "VERDICT: MATCH (read); Claude spot-check 4 of 5 AGREE, 1 DISAGREE at 4th decimal (#4). Card left open.",
+  "result": "BLIND_READ_BB_STUDIES_1104.md exists on trunk (40KB), recomputed from CSVs, ends VERDICT: MATCH; done_when met",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_BB_STUDIES_1104.md",
     "MyTradingSys/research/bb_range_to_range_2026-11-04",
@@ -64,12 +77,13 @@
   "scope_sha": "9032134f924a",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read trades.csv, summary.csv, and long_window_2017_2026.csv in bb_range_to_range_2026-11-04, bb_range_retest_2026-11-04, and bb_long_window_2026-11-04 before reading RESULT.md prose",
     "Recompute trade counts, win rates, mean/total returns, and regime-split rows from the raw CSVs",
     "Compare against each RESULT.md and write MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_BB_STUDIES_1104.md with a per-study table and VERDICT"
   ],
+  "taken": "2026-11-06T07:40:50Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_BB_STUDIES_1104.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] Blind read of Bollinger range-to-range, retest, and long-window RESULT.md vs CSVs",
   "weight": "ROUTINE",
