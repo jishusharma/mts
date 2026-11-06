@@ -7,8 +7,8 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-06T07:55:13Z",
-    "misses": 80,
+    "folded": "2026-11-06T08:14:22Z",
+    "misses": 83,
     "reads": [
       "MyTradingSys/backtest/fetch_futures_metrics.py",
       "MyTradingSys/research/testnet_signal_fast_lane_2026-11-04/DESIGN.md",
