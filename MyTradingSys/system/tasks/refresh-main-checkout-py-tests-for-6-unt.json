@@ -1,34 +1,65 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T08:06:54Z",
   "commands": [],
   "created": "2026-11-06T07:52:45Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "each branch has a test that fails if the branch's guard is removed",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Cover the 6 untested error branches of refresh_main_checkout.py",
   "id": "refresh-main-checkout-py-tests-for-6-unt",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "6 new tests, each mutant-verified to fail when its guard is removed",
+      "ref": "9b942dc1c",
+      "utc": "2026-11-06T08:06:54Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "refresh_main_checkout: tests for 6 error branches",
+      "ref": "9b942dc1ccb9",
+      "utc": "2026-11-06T08:02:32Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: tests complete",
   "note": "",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-06T08:06:51Z",
   "refs": [],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "result": "6 new tests, each mutant-verified to fail when its guard is removed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/test_refresh_main_checkout.py"
+  ],
+  "scope_out": [
+    "refresh_main_checkout.py behavior"
+  ],
+  "scope_sha": "9b942dc1ccb9",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "done",
+  "steps": [
+    "write 6 tests; mutate each guard; ship"
+  ],
+  "taken": "2026-11-06T08:06:54Z",
+  "tests": "scripts/dev/test_refresh_main_checkout.py new tests, mutation-checked",
   "title": "refresh_main_checkout.py: tests for 6 untested error branches; done when each branch has a test that fails if the branch's guard is removed",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }
