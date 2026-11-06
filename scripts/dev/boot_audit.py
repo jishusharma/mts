@@ -23,7 +23,8 @@ import subprocess
 import sys
 
 DELAY_ISO = "PT3M"          # logon delay for DELAY items (OURS)
-MTS_TASK_RE = re.compile(r"^(MTS-.+|AIBridge-Agent)$")
+MTS_TASK_RE = re.compile(r"^(MTS-.+|mts-.+|AIBridge-Agent)$", re.I)
+MTS_CMD_RE = re.compile(r"F:[\\/]+MTS[\\/]|MTS-Worker|BinanceDataFeed|IdeaProjects[\\/]+mts-", re.I)   # a task running MTS files is ours whatever its name (NUC gq*, lab-loop)
 AUTHORISED_TASK_RE = re.compile(r"^(MTS-CBP-Ingestion|MTS-WorktreeMaint-.+|MTS-SuccWake-.+)$")   # SCHEDULING_POLICY s4b, 4b3, CBP
 DELAY_TASK_RE = re.compile(r"^AIBridge-Agent$")
 MTS_RUN_VALUES = {"MTSTempGuard", "MTSLogonWake"}     # SCHEDULING_POLICY s4c, s4d: authorised
@@ -34,7 +35,7 @@ REPO_CMD_RE = re.compile(r"(BinanceDataFeed|mts[-_ ]|MyTradingSys)[^\"]*\.py", r
 
 def classify(kind, name, command="", state="Ready", enabled=True):
     """Pure rule: (owner, verdict, reason, ask). kind is task | run | startup | service."""
-    mts = bool(MTS_TASK_RE.match(name)) if kind == "task" else (name in MTS_RUN_VALUES or bool(REPO_CMD_RE.search(command or "")))
+    mts = (bool(MTS_TASK_RE.match(name)) or bool(MTS_CMD_RE.search(command or ""))) if kind == "task" else (name in MTS_RUN_VALUES or bool(REPO_CMD_RE.search(command or "")))
     if not mts:
         ask = bool(HEAVY_RE.search(name + " " + (command or "")))
         return "other", "KEEP", ("third-party, heavy at boot: operator's call" if ask else "not ours"), ask
@@ -61,9 +62,10 @@ def _ps(script, timeout=60):
 def task_rows():
     """Non-Microsoft enabled scheduled tasks with trigger kinds, logon delay and the catch-up flag."""
     ps = ("$ErrorActionPreference='SilentlyContinue';Get-ScheduledTask|?{$_.TaskPath -notmatch '^\\\\Microsoft\\\\' -and $_.State -ne 'Disabled'}|%{"
-          "$t=$_;$l=@($t.Triggers|?{$_.CimClass.CimClassName -eq 'MSFT_TaskLogonTrigger'});"
+          "$t=$_;$i=Get-ScheduledTaskInfo -TaskName $t.TaskName -TaskPath $t.TaskPath;$nx=$i.NextRunTime;$l=@($t.Triggers|?{$_.CimClass.CimClassName -eq 'MSFT_TaskLogonTrigger'});"
           "[pscustomobject]@{name=$t.TaskName;path=$t.TaskPath;state=[string]$t.State;"
-          "logon=($l.Count -gt 0);delay=[string]($l|select -First 1).Delay;catchup=[bool]$t.Settings.StartWhenAvailable;"
+          "logon=($l.Count -gt 0);delay=[string]($l|select -First 1).Delay;catchup=[bool]$t.Settings.StartWhenAvailable;next=$(if($nx -and $nx.Year -gt 2000){$nx.ToUniversalTime().ToString('o')}else{''});"
+          "rep=[bool](@($t.Triggers|?{$_.Repetition.Interval -or $_.CimClass.CimClassName -match 'Daily|Weekly|Monthly|Logon|Boot'}).Count);"
           "trig=(($t.Triggers|%{$_.CimClass.CimClassName -replace 'MSFT_Task|Trigger',''}) -join ',');"
           "cmd=(($t.Actions|select -First 1).Execute+' '+($t.Actions|select -First 1).Arguments)}}|ConvertTo-Json -Compress")
     out = _ps(ps).strip()
@@ -148,11 +150,27 @@ def collect():
     return rows
 
 
-def plan_fix(rows):
-    """The actions --fix would take: only owner == MTS rows, REMOVE or not-yet-done DELAY. Pure, so the test can pin it."""
+def in_flight(raw, now=None):
+    """A task that is running now, or a one-shot whose single start is still ahead: someone's job in progress, not a leftover."""
+    if raw.get("state") == "Running":
+        return True
+    nxt = raw.get("next") or ""
+    if not nxt or raw.get("rep"):
+        return False
+    try:
+        from datetime import datetime, timezone
+        return datetime.fromisoformat(nxt.replace("Z", "+00:00")) > (now or datetime.now(timezone.utc))
+    except ValueError:
+        return False
+
+
+def plan_fix(rows, now=None):
+    """The actions --fix would take: only owner == MTS rows, REMOVE or not-yet-done DELAY; never a task in flight. Pure, so the test can pin it."""
     acts = []
     for r in rows:
         if r["owner"] != "MTS":
+            continue
+        if r["verdict"] == "REMOVE" and r["kind"] == "task" and in_flight(r["raw"], now):
             continue
         if r["verdict"] == "REMOVE":
             acts.append(("remove_" + r["kind"], r["name"], r["raw"]))
@@ -165,8 +183,9 @@ def apply_fix(acts):
     out = []
     for act, name, raw in acts:
         if act == "remove_task":
-            _ps("Unregister-ScheduledTask -TaskName '%s' -Confirm:$false" % name.replace("'", "''"))
-            out.append("removed task " + name)
+            res = _ps("try{Unregister-ScheduledTask -TaskName '%s' -Confirm:$false -ErrorAction Stop;'ok'}catch{'FAIL '+$_.Exception.Message}"
+                      % name.replace("'", "''")).strip()
+            out.append("removed task " + name if res == "ok" else "could not remove task %s (%s)" % (name, res[:80]))
         elif act == "remove_run" and raw.get("hive") == "HKCU":
             import winreg
             with winreg.OpenKey(winreg.HKEY_CURRENT_USER, raw["key"], 0, winreg.KEY_SET_VALUE) as k:
