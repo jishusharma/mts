@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T14:26:25Z",
   "commands": [],
   "created": "2026-11-04T07:10:01Z",
   "depends_on": [],
@@ -15,6 +16,12 @@
   "lane": "HAIKU",
   "latest": [
     {
+      "kind": "ship",
+      "line": "scripts/dev/sync.py: every subprocess.run decodes utf-8 errors=replace; test GateReaderNon",
+      "ref": "3f62952d2",
+      "utc": "2026-11-06T14:26:25Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "sync ship folds LAYERS regen into own commit; start retires released gateway trees",
@@ -25,13 +32,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: gate reader survives non-utf8 bytes",
   "note": "",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-06T13:57:51Z",
   "refs": [],
-  "result": "",
+  "result": "scripts/dev/sync.py: every subprocess.run decodes utf-8 errors=replace; test GateReaderNonUtf8Test",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/sync.py",
     "scripts/dev/test_sync.py"
@@ -44,12 +57,13 @@
   "sources": [
     "scripts/dev/sync.py:91-96"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "grep subprocess.run/Popen in sync.py with text=True or encoding unset on gate output (lines ~91,96,1001,1561)",
     "set encoding='utf-8', errors='replace' on the reader that handles gate output",
     "add the fail-first test, run python scripts/dev/test_sync.py"
   ],
+  "taken": "2026-11-06T14:26:25Z",
   "tests": "test_sync.py::test_gate_reader_survives_non_utf8_bytes (fail-first on old code)",
   "title": "sync.py ship: reader thread UnicodeDecodeError cp1251 on gate output (byte 0x98); decode subprocess output as utf-8 errors=replace",
   "weight": "ROUTINE",
