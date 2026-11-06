@@ -280,7 +280,7 @@ class RealRepo(unittest.TestCase):
         found, dists, n = lint.lint(REPO, text, repo=self.repo)
         self.assertEqual(found, [])
         self.assertGreater(n, 250)           # the real test set was walked, not an empty list
-        self.assertEqual(dists, ["pytest", "numpy", "pandas", "tzdata"])
+        self.assertEqual(list(dict.fromkeys(dists)), ["pytest", "numpy", "pandas", "tzdata"])   # the docs lane repeats the install line
 
     def test_ci_yml_before_pandas_names_pandas_for_the_five_g5_tests(self):
         # 1c79da79 added pandas to the pip line after CI went red on exactly these files (ModuleNotFoundError at collection)

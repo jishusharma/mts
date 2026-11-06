@@ -1939,12 +1939,15 @@ class OwnCiWaitTest(unittest.TestCase):
         self.assertTrue(sync.ci_starts(["whatever.md"], None))                 # no filter known: assume a run starts (wait, then say none)
         self.assertIsNone(sync.ci_path_filter(tmp / "nowhere"))
 
-    def test_the_real_ci_yml_filter_starts_a_run_for_code_and_cards_but_not_notes(self):
+    def test_the_real_ci_yml_filter_starts_a_run_for_code_cards_and_docs_notes_but_not_other_files(self):
+        """Ship train 1/5: docs and notes pushes start the lightweight docs-integrity lane, so ci_starts must say True for them."""
         globs = sync.ci_path_filter(Path(__file__).resolve().parents[2])
         self.assertTrue(globs, "ci.yml push paths not found")
         self.assertTrue(sync.ci_starts(["scripts/dev/sync.py", "MyTradingSys/system/NEXT_SESSION.md"], globs))
         self.assertTrue(sync.ci_starts(["MyTradingSys/system/tasks/some-card.json"], globs))
-        self.assertFalse(sync.ci_starts(["MyTradingSys/system/NEXT_SESSION.md", "MyTradingSys/research/STATUS.md"], globs))
+        self.assertTrue(sync.ci_starts(["MyTradingSys/system/NEXT_SESSION.md", "MyTradingSys/research/STATUS.md"], globs))
+        self.assertTrue(sync.ci_starts(["README.md"], globs))
+        self.assertFalse(sync.ci_starts(["notes.txt", "data/cache.csv"], globs))
 
     def test_cli_ship_waits_for_its_own_sha_and_exits_3_on_red(self):
         for state, rc in (("red", sync.CI_RED_EXIT), ("green", 0), ("none", 0), ("unknown", 0), ("timeout", 0)):
