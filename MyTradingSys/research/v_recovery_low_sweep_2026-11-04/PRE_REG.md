@@ -17,3 +17,8 @@ For each event, calculate close-to-close BTC returns from recovery close to the 
 
 ## Blocking issue
 No pre-outcome, valid per-event R standard deviation or risk-unit definition exists for the specified fixed-horizon return study. Using outcomes to estimate it would violate the preregistration-before-run requirement. Resolve by defining a risk unit and providing a pre-outcome SD source, or revising the required gate for return-based descriptive studies. No market outcomes were opened.
+
+## Resolution 2026-11-06 (count pass, still no returns read)
+The old "unresolved" gate is replaced by a valid one: the study has no stop, so units are PERCENT (as `wavetrend_c30_retest_2026-11-04/BLOCKED.md`), sd values are typical BTC horizon sds, OURS, not outcomes (4h 1.1, 24h 2.5, 72h 4.3 %), cost 0.14 pp (SOURCED research_kit). `study.py --pass count` on spot BTCUSDT 1h DEV (event as written above; prior low = 120 complete bars before the sweep bar; win-back midpoint of prior low and running sweep low, closes only): 435 events on 195 distinct UTC days (`counts.json`). n for the gate = 195 days (cluster unit).
+`prereg_gate.py --n 195 --sd {1.1|2.5|4.3} --cost 0.14 --m auto --new-cells 3` -> m 224, z_holm 3.691, MDE+cost 0.497 / 0.951 / 1.535 vs 0.30; n needed 970 / 5013 / 14829. All BLOCK (exit 1).
+Consequence: no `--pass dev`, VAL never opened (its rule needs DEV survivors), HOLDOUT never loaded. Verdict INCONCLUSIVE (underpowered). Regime mix: NOT_IN_DATA (unchanged).
