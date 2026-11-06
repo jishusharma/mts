@@ -4,6 +4,16 @@
   "commands": [
     "python scripts/dev/run_all_tests.py --quick"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-06T15:30:57Z",
+    "misses": 18,
+    "reads": [
+      "scripts/dev/test_supervisor.py",
+      "scripts/dev/supervisor.py"
+    ],
+    "session": "agent-afb951b26ac57baa3"
+  },
   "created": "2026-10-28T06:49:00Z",
   "depends_on": [],
   "done_when": "tasks/wake-sleeping-sessions.json, handover-log-cap.json and gemini-lane-fix.json exist on trunk with scope and done-when (from the NUC prompts, wake_proof_2026-10-28T06-25Z.md and handover files; else NOT_IN_DATA); the prompt builder exits non-zero naming a missing card, test fails on old code",
@@ -18,9 +28,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "mts_signal resolve_login fails closed on typed vs detected login mismatch",
-      "ref": "f854cd8022f4",
-      "utc": "2026-11-04T18:24:01Z"
+      "line": "Weekly plan per login wired into Supervisor (re-land, supervisor.md trimmed to budget)",
+      "ref": "39446115d946",
+      "utc": "2026-11-06T13:10:30Z"
     }
   ],
   "layers": [],
@@ -31,7 +41,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-05T04:41:39Z",
+  "refreshed": "2026-11-06T14:42:32Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -41,7 +51,7 @@
   "scope_out": [
     "unrelated files; live tree; other cards"
   ],
-  "scope_sha": "f854cd8022f4",
+  "scope_sha": "39446115d946",
   "size": "S",
   "sources": [
     "operator ask 2026-10-28 gap 7"

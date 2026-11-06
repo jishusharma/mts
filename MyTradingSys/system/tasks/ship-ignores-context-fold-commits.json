@@ -18,9 +18,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Revert \"Revert route tag re-land 08d51e5b7 (CI RED: wiring stale wavetrend entry, MTS Home",
-      "ref": "dea81301a70a",
-      "utc": "2026-11-04T16:25:21Z"
+      "line": "sync.py: check fetched run before trusting path filter in wait_own_ci",
+      "ref": "a70c5d3362bf",
+      "utc": "2026-11-06T15:42:08Z"
     }
   ],
   "layers": [],
@@ -29,12 +29,12 @@
   "not_twin_of": [
     "context-gap-fold-on-ship"
   ],
-  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks | 2026-11-06 B review: Flash branch rejected, its squash_fold_commits runs git reset/--amend inside sync.py ship (hard rule: never reset). Build it without history rewrite: fold stages into the card and rides the next real commit, or ahead_commits/route checks skip fold-only commits.",
   "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-05T04:41:53Z",
+  "refreshed": "2026-11-06T15:48:03Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -44,7 +44,7 @@
   "scope_out": [
     "unrelated files; live tree; other cards"
   ],
-  "scope_sha": "dea81301a70a",
+  "scope_sha": "a70c5d3362bf",
   "size": "S",
   "sources": [
     "operator ask 2026-10-28 gap 3"

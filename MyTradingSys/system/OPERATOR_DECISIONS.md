@@ -1791,3 +1791,13 @@ Applied: 2026-11-06; wiring gaps found go to cards the same turn.
 ## d-slow-boot-session-1106 | decided 2026-11-06 | operator (voice, 12:40Z), Lead C
 DECISION: all three machines boot slowly since the always-on scripts started; a dedicated Sonnet session (slow-boot-fix, JIS-NB) inventories boot and logon items on the desktop, writes scripts/dev/boot_audit.py with --fix for MTS-owned items only, applies it here, broadcasts the step to the laptop and NUC, and lists non-MTS items for the operator. No reboot by a session; boot time is measured on the operator's next restart.
 Applied: 2026-11-06, session local_ffd5a690.
+
+## d-flip-engine-study-1106
+Flip engine study: card candle-flip-probability-study-1106 started on a Sonnet session (operator yes, 2026-11-06 16:10Z).
+2026-11-06 15:00Z, operator (voice): a flipping engine over 20 timeframes (1w ... 1m, incl. 5d/3d/2d/7h/10m/3m/2m) that says how likely the open candle closes its current colour, graphical on the live-aid strip, reviewed by other models. Lead's view: good as a context layer only if measured against the random-walk null (Brownian bridge), 12 pre-registered cells, Brier out of sample; never a signal.
+Answer: yes, start it (operator, 2026-11-06 16:10Z); session flip-study on JIS-NB, branch flip-study-1106.
+
+## d-power-gate-ceiling-1106
+Power gate 0.30 % ceiling with repo-wide Holm m = 238 blocks every DEV study (Builder via Supervisor C, 2026-11-06 14:55Z). Card power-gate-holm-m-decision-1106 READY.
+Recommended: Holm m per study family.
+Answer: default (Holm m per family) applies from 2026-11-07 15:00Z unless the operator overrides; recorded by Lead C.

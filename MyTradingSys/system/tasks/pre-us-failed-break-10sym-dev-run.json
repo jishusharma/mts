@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T12:41:11Z",
   "commands": [
     "python MyTradingSys/research/pre_us_failed_break_10sym_2026-11/run_10sym.py"
   ],
@@ -16,6 +17,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "FAIL powered: n=1393 on 10 symbols DEV, mean -2.47 bps of K fee-net (all-taker 14 bps), t ",
+      "ref": "f9976d43f",
+      "utc": "2026-11-06T12:41:11Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "fix-single-cost-module: test_no_own_costs + frozen cost allowlist, fee regimes A-D in fees",
@@ -26,6 +33,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: powered FAIL on 10 symbols DEV, family closed per PRE_REG s7",
   "not_twin_of": [
     "backtest-pre-us-failed-break-dev-run",
     "route-cryptocred-s3-power-unblock"
@@ -36,7 +44,12 @@
   "refined_by": "",
   "refreshed": "2026-11-06T12:19:03Z",
   "refs": [],
-  "result": "",
+  "result": "FAIL powered: n=1393 on 10 symbols DEV, mean -2.47 bps of K fee-net (all-taker 14 bps), t -0.56, time-cap sum -16.4k bps, MDD 97.9% vs BH 66.9%",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/pre_us_failed_break_10sym_2026-11/PRE_REG.md",
     "MyTradingSys/research/pre_us_failed_break_10sym_2026-11/run_10sym.py",
@@ -52,13 +65,14 @@
     "MyTradingSys/research/pre_us_failed_break_2026-10/PRE_REG.md",
     "MyTradingSys/system/PLAN_24H_2026-11-06.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "git ls-tree origin/fast-track MyTradingSys/research/ must NOT list pre_us_failed_break_10sym_2026-11 (else stop); read the 2-symbol PRE_REG and RESULT (when on trunk) for the rule",
     "write PRE_REG.md (new folder) with a '## Context' block (Regime:, Phase: DEV, Session: pre-US 07-13Z, Entry: level break fail), the rule copied by reference, Holm m via verdicts.py check + prereg_gate.py --n 314 --sd 60 --sd-source <file:line> --cost 14 --m auto; BLOCKED with the numbers is a valid end",
     "write test_run_10sym.py, then run_10sym.py (load_klines per symbol from F:/MTS/data/tom_raw/klines (BTC), klines_eth, klines_<sym>; SOL/XRP/LTC miss 7200 bars: no-signal); count n BEFORE any outcome column, then run once, print every cell",
     "write RESULT.md (Regime mix:, per-symbol rows, Next: line), verdicts.py backfill, tasks.py done --next; ship; verify sha with git cherry origin/fast-track"
   ],
+  "taken": "2026-11-06T12:41:11Z",
   "tests": "research/pre_us_failed_break_10sym_2026-11/test_run_10sym.py: loader raises on a bar with open >= 2024-07-01, and a symbol with under 7200 DEV bars missing is skipped (no-signal) not zero-filled; both fail before run_10sym.py exists",
   "title": "Pre-US failed break short: DEV run on 10 symbols, power gate first (needs n>=314)",
   "weight": "IMPORTANT",

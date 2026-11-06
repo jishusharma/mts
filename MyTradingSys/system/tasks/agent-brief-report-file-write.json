@@ -18,9 +18,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "mts_signal resolve_login fails closed on typed vs detected login mismatch",
-      "ref": "f854cd8022f4",
-      "utc": "2026-11-04T18:24:01Z"
+      "line": "supervisor brief fails loudly when a prompt names a missing card file",
+      "ref": "f49ca80aef26",
+      "utc": "2026-11-06T15:30:59Z"
     },
     {
       "auto": true,
@@ -38,7 +38,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-05T04:41:22Z",
+  "refreshed": "2026-11-06T15:48:04Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -48,7 +48,7 @@
   "scope_out": [
     "unrelated files; live tree; other cards"
   ],
-  "scope_sha": "f854cd8022f4",
+  "scope_sha": "f49ca80aef26",
   "size": "S",
   "sources": [
     "operator ask 2026-10-28 gap 5"

@@ -1,0 +1,83 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "context": {
+    "calls_to_edit": 16,
+    "folded": "2026-11-06T16:28:57Z",
+    "misses": 26,
+    "reads": [
+      "MyTradingSys/tools/live_aid/tf_strip.js",
+      "MyTradingSys/system/ANNOUNCEMENTS.md",
+      "MyTradingSys/research/STATUS.md",
+      "MyTradingSys/tools/live_aid/live_aid.html"
+    ],
+    "session": "83e79aee-71ed-40c9-804c-ac02f1e1fa88"
+  },
+  "created": "2026-11-06T14:56:11Z",
+  "depends_on": [],
+  "done_when": "PRE_REG.md with ## Context frozen before the count; RESULT.md with the Brier of null vs conditioned per TF and the cell table; a P_close_colour function with a spec test; tf_strip.js shows it as a per-row gauge (no new words) with a test in test_spec_tf_strip.py that fails before the change; reviewed by a Haiku credit job (api_job.py, cap 3 USD) and the review attached.",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Operator 2026-11-06: a flip engine for 20 timeframes that says how likely the open candle closes its current colour, shown as a gauge on the live-aid strip. Study, not a signal: fixed anchors, two colour definitions, Brownian-bridge null, 12 pre-registered context cells, Brier vs null out of sample. Design: MyTradingSys/research/candle_flip_probability_2026-11/DESIGN.md",
+  "id": "candle-flip-probability-study-1106",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "live_aid: timeframe strip panel (R19)",
+      "ref": "d6db87075633",
+      "utc": "2026-11-06T12:51:59Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "d6db87075633 live_aid: timeframe strip panel (R19)",
+      "ref": "MyTradingSys/tools/live_aid/REQUIREMENTS.md",
+      "utc": "2026-11-06T12:51:59Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-06T14:56:49Z",
+  "refs": [
+    "MyTradingSys/tools/live_aid/tf_strip.js",
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/scenario_ledger.csv",
+    "MyTradingSys/research/candle_flip_probability_2026-11/DESIGN.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/candle_flip_probability_2026-11/",
+    "MyTradingSys/tools/live_aid/tf_strip.js",
+    "MyTradingSys/tools/live_aid/test_spec_tf_strip.py",
+    "MyTradingSys/tools/live_aid/REQUIREMENTS.md"
+  ],
+  "scope_out": [
+    "any TAKE/SKIP signal",
+    "mainnet",
+    "orders"
+  ],
+  "scope_sha": "d6db87075633",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Build bars for all 20 TFs from 1m spot klines (data-api.binance.vision), fixed anchors, 2024-01-01 to now; write PRE_REG.md (## Context, Regime mix, the 12 cells, Holm m within study)",
+    "Per TF and per minute inside each bar: d_atr, t_left, HTF colour, session, BB position, outcome (close colour, both definitions)",
+    "Null model per TF; realised vs null per cell; Brier of null and of conditioned; RESULT.md",
+    "P_close_colour function + spec test; gauge in tf_strip.js; REQUIREMENTS.md R20; test fails on old code",
+    "Haiku review job via api_job.py (cap 3 USD); attach REVIEW.md; ship with Next:"
+  ],
+  "tests": "MyTradingSys/research/candle_flip_probability_2026-11/test_null_model.py::test_phi_at_open_is_half (new); MyTradingSys/tools/live_aid/test_spec_tf_strip.py::test_close_colour_gauge (new, fails on old tf_strip.js)",
+  "title": "Candle-close-colour probability per timeframe (the flip engine): null model, calibration, context conditioning",
+  "weight": "",
+  "worker": "session"
+}

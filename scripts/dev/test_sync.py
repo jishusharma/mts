@@ -1913,11 +1913,55 @@ class OwnCiWaitTest(unittest.TestCase):
     def test_a_ship_the_ci_path_filter_skips_does_not_wait_or_ask(self):
         globs = ["scripts/**", "MyTradingSys/system/tasks/**"]
         docs = sync.Pushed(self.SHA, ["MyTradingSys/system/NEXT_SESSION.md"])
-        state, out = self.run_wait([AssertionError("must not ask GitHub for a push CI never starts")], pushed=docs, globs=globs)
-        self.assertEqual((state, self.asked, self.slept), ("none", [], []))
+        state, out = self.run_wait([[]], pushed=docs, globs=globs)
+        self.assertEqual((state, self.asked, self.slept), ("none", [self.SHA], []))
         self.assertIn("path filter", out)
+        self.asked.clear()
+        self.slept.clear()
         state, out = self.run_wait([[self.GREEN_RUN]], pushed=sync.Pushed(self.SHA, ["MyTradingSys/system/tasks/x.json"]), globs=globs)
         self.assertEqual(state, "green")
+
+    def test_filter_skips_files_but_fetched_run_is_failure_reports_ci_red(self):
+        globs = ["scripts/**", "MyTradingSys/system/tasks/**"]
+        docs = sync.Pushed(self.SHA, ["MyTradingSys/system/NEXT_SESSION.md"])
+        state, out = self.run_wait([[self.RED_RUN]], pushed=docs, globs=globs)
+        self.assertEqual(state, "red")
+        self.assertIn("CI RED deadbeef", out)
+
+    def test_filter_skips_files_but_fetched_run_is_in_progress_reports_run_state(self):
+        globs = ["scripts/**", "MyTradingSys/system/tasks/**"]
+        docs = sync.Pushed(self.SHA, ["MyTradingSys/system/NEXT_SESSION.md"])
+        in_prog = {"id": 9, "status": "in_progress", "html_url": "https://github.com/o/r/actions/runs/9"}
+        state, out = self.run_wait([[in_prog], [self.GREEN_RUN]], pushed=docs, globs=globs)
+        self.assertEqual(state, "green")
+        self.assertIn("CI green deadbeef", out)
+        self.assertNotIn("the ci.yml path filter skips these files", out)
+
+    def test_ci_command_sha_reports_real_run_state_for_failed_and_in_progress(self):
+        # 4d7c96522: failed run reports CI RED and exits CI_RED_EXIT
+        with mock.patch.object(sync, "ci_runs_for", return_value=[self.RED_RUN]), \
+                mock.patch.object(sync, "ci_failed_jobs", return_value=["offline gate"]), \
+                mock.patch.object(sync, "ci_path_filter", return_value=["scripts/**"]):
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out):
+                rc = sync.ci_verb(Path("."), ["4d7c96522"])
+            self.assertEqual(rc, sync.CI_RED_EXIT)
+            self.assertIn("CI RED 4d7c9652", out.getvalue())
+            self.assertNotIn("the ci.yml path filter skips these files", out.getvalue())
+
+        # 14b12f2c: in progress run reports green upon completion and exits 0
+        in_prog = {"id": 41675390817, "status": "in_progress", "html_url": "https://github.com/o/r/actions/runs/41675390817"}
+        runs = [[in_prog], [self.GREEN_RUN]]
+        def mock_runs(sha):
+            return runs.pop(0) if len(runs) > 1 else runs[0]
+        with mock.patch.object(sync, "ci_runs_for", side_effect=mock_runs), \
+                mock.patch.object(sync, "ci_path_filter", return_value=["scripts/**"]):
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out):
+                rc = sync.wait_own_ci(sync.Pushed("14b12f2c", []), sleep=lambda s: None, globs=["scripts/**"])
+            self.assertEqual(rc, "green")
+            self.assertIn("CI green 14b12f2c", out.getvalue())
+            self.assertNotIn("the ci.yml path filter skips these files", out.getvalue())
 
     def test_ci_path_filter_is_read_from_the_workflow_and_matches_like_github(self):
         tmp = Path(tempfile.mkdtemp())
@@ -2226,6 +2270,17 @@ class GitNetTimeoutTest(unittest.TestCase):
             with self.assertRaises(sync.SyncError) as e:
                 sync.git(".", "push", "origin", "x")
         self.assertIn("TIMEOUT git push", str(e.exception))
+
+
+class GateReaderNonUtf8Test(unittest.TestCase):
+    def test_gate_reader_survives_non_utf8_bytes(self):
+        """subprocess output holding b'ok \x98 end' must not kill the reader thread (UnicodeDecodeError cp1251/utf-8)."""
+        with tempfile.TemporaryDirectory() as td:
+            subprocess.run(["git", "init", "-q", td], check=True)
+            sha = subprocess.run(["git", "-C", td, "hash-object", "-w", "--stdin"], input=b"ok \x98 end",
+                                 capture_output=True, check=True).stdout.decode().strip()
+            r = sync.git(td, "cat-file", "-p", sha)
+            self.assertTrue(r.stdout.startswith("ok ") and r.stdout.endswith(" end"))
 
 
 if __name__ == "__main__":

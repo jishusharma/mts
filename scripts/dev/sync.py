@@ -88,12 +88,12 @@ def git(repo, *args, check=True):
     cmd = ["git", "-C", str(repo), *opts, *args]
     if args and args[0] in GIT_NET_VERBS:
         try:
-            r = subprocess.run(cmd, capture_output=True, text=True, timeout=GIT_NET_TIMEOUT_S, env={**os.environ, **GIT_NOPROMPT})
+            r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=GIT_NET_TIMEOUT_S, env={**os.environ, **GIT_NOPROMPT})
         except subprocess.TimeoutExpired:
             r = subprocess.CompletedProcess(cmd, 124, "", f"TIMEOUT git {args[0]} after {GIT_NET_TIMEOUT_S}s (network down or a credential prompt)")
             print(r.stderr, file=sys.stderr)
     else:
-        r = subprocess.run(cmd, capture_output=True, text=True)
+        r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
     if check and r.returncode != 0:
         raise SyncError(f"git {' '.join(args)} failed:\n{r.stdout}{r.stderr}".rstrip())
     return r
@@ -708,7 +708,7 @@ def pull_mirror(repo):
     if not script.exists():
         return
     try:
-        r = subprocess.run([sys.executable, str(script), "pull"], capture_output=True, text=True, timeout=45, cwd=repo)
+        r = subprocess.run([sys.executable, str(script), "pull"], capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=45, cwd=repo)
         print("live mirror: " + ((r.stdout or r.stderr).strip().splitlines() or ["no output"])[-1])
     except (subprocess.TimeoutExpired, OSError) as e:
         print(f"live mirror: skipped ({type(e).__name__}); run live_mirror.py pull by hand")
@@ -1010,17 +1010,27 @@ def wait_own_ci(pushed, fetch=None, failed_jobs=None, sleep=time.sleep, now_fn=t
     cancelled); only 'red' is a verdict against the author. fetch(sha) -> runs newest first; never raises."""
     sha = pushed.sha
     short = sha[:8]
-    if not ci_starts(pushed.files, globs):
-        print(f"CI: no CI run for {short}: the ci.yml path filter skips these files")
-        return "none"
     get = fetch or ci_runs_for
+    initial_runs = None
+    if not ci_starts(pushed.files, globs):
+        try:
+            initial_runs = get(sha) or []
+        except Exception:
+            initial_runs = []
+        if not initial_runs:
+            print(f"CI: no CI run for {short}: the ci.yml path filter skips these files")
+            return "none"
     print(f"waiting for the CI run of {short} (up to {wait_s // 60} min; `ship --no-ci-wait` skips)", flush=True)
     t0 = now_fn()
     seen, misses = False, 0
     while True:
         run = None
         try:
-            runs = get(sha) or []
+            if initial_runs is not None:
+                runs = initial_runs
+                initial_runs = None
+            else:
+                runs = get(sha) or []
             misses = 0
             run = runs[0] if runs else None
         except Exception as e:      # offline / rate limited: a watcher must never break a ship that already pushed
@@ -1059,7 +1069,7 @@ def wait_own_ci(pushed, fetch=None, failed_jobs=None, sleep=time.sleep, now_fn=t
 def stale_pages_lines(repo):
     """STALE lines from artifacts.py (published pages whose repo build differs from the last publish); raises on tool failure."""
     r = subprocess.run([sys.executable, str(Path(repo) / "scripts" / "dev" / "artifacts.py"), "stale"],
-                       capture_output=True, text=True, timeout=300)
+                       capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=300)
     return [l for l in r.stdout.splitlines() if l.startswith("STALE ")]
 
 
@@ -1625,7 +1635,7 @@ def push_claim_commit(repo, rel, text, msg, branch=CLAIMS_BRANCH, guard=None, sl
         env = {**os.environ, "GIT_INDEX_FILE": str(idx)}
 
         def plumb(*args, stdin=None):
-            r = subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, env=env, input=stdin)
+            r = subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, encoding="utf-8", errors="replace", env=env, input=stdin)
             if r.returncode != 0:
                 raise SyncError(f"git {' '.join(args)} failed:" + chr(10) + f"{r.stdout}{r.stderr}".rstrip())
             return r.stdout.strip()

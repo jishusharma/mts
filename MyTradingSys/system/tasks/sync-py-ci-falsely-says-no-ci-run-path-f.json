@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T15:42:17Z",
   "commands": [],
   "created": "2026-11-03T16:38:35Z",
   "depends_on": [],
@@ -14,25 +15,37 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "scripts/dev/test_sync.py 170 passed",
+      "ref": "a70c5d336",
+      "utc": "2026-11-06T15:42:17Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "Revert \"Revert route tag re-land 08d51e5b7 (CI RED: wiring stale wavetrend entry, MTS Home",
-      "ref": "dea81301a70a",
-      "utc": "2026-11-04T16:25:21Z"
+      "line": "sync.py: decode subprocess output as utf-8 errors=replace (gate reader thread UnicodeDecod",
+      "ref": "e099100f0249",
+      "utc": "2026-11-06T14:07:46Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: task done",
   "note": "refined by Session_Planner 2026-11-03; live-path no; verify: content sha, cherry empty, ls-tree both files\nREVIEWED:2026-11-04 ACCEPT (Haiku on API credit, job haiku-review-ready-sonnet-1104: ci_starts present in sync.py; scope testable; no twin found.)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-05T10:27:38Z",
+  "refreshed": "2026-11-06T14:42:33Z",
   "refs": [
     "scripts/dev/sync.py:950"
   ],
-  "result": "",
+  "result": "scripts/dev/test_sync.py 170 passed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/sync.py",
     "scripts/dev/test_sync.py"
@@ -40,16 +53,17 @@
   "scope_out": [
     ".github/workflows"
   ],
-  "scope_sha": "dea81301a70a",
+  "scope_sha": "e099100f0249",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read sync.py ci_starts (~920) and wait_own_ci (940-990); find why ci_starts false for 14b12f2c/4d7c96522 (merge commit file list vs filter)",
     "write the two failing tests first",
     "check the fetched run before trusting the filter: query ci_runs_for(sha) once, only print 'no CI run' when it returns nothing",
     "run test_sync.py and test_sync_push_race.py"
   ],
+  "taken": "2026-11-06T15:42:17Z",
   "tests": "scripts/dev/test_sync.py: two cases (in_progress run, failure run) with stub fetch and files that match the filter's skip list; must fail on current line 950 early return",
   "title": "sync.py ci falsely says 'no CI run ... path filter skips these files' for shas that have a run: 14b12f2c (run 41675390817 in progress) and 4d7c96522 (run 41671221672 failed), so a red run reads as skipped. Done when sync.py ci <sha> reports the real run state for both cases, with a test.",
   "weight": "ROUTINE",

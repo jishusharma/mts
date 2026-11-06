@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T14:39:32Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -24,6 +25,12 @@
   "lane": "HAIKU",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/C34_SPOT_COSTS.md",
+      "ref": "2fb21b89c",
+      "utc": "2026-11-06T14:39:32Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "C2 flow-state pairs on 1m (BTCUSDT, 13 days, 5m-OI proxy): A/B/C counts and forward moves",
@@ -41,15 +48,21 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:planner-c-1106b 2026-11-06 T0-ONLY. Refreshed after 73d0bbe9f (only a C2 row changed). C30 H1 failed VALIDATION so the 30m row is a cost check, never an edge claim.",
+  "next": "END: NO-LEAD; C30 H1 failed validation, C30 H2 inconclusive, leads remain parked",
+  "note": "REVIEWED:planner-c-1106b 2026-11-06 T0-ONLY. Refreshed after 73d0bbe9f (only a C2 row changed). C30 H1 failed VALIDATION so the 30m row is a cost check, never an edge claim. GATE (supervisor B 11-06, after a Flash run failed ship): no FEE/SLIP/MAKER/TAKER literal constants in the new .py (test_no_own_costs); perp fee = fees.BINANCE_TAKER*2, spot maker from fees.py with the name cited (the 2 bps Coinbase-routed rate is not in fees.py; if used, pass it as a function parameter labelled SOURCED BACKTEST_CANDIDATES.md:43), slippage as a function parameter; run dsa_backtest_audit_2026-10-16/scripts/T06/t06_tables.py so costs.csv lists them (test_cost_inventory); a test that needs the BTC 5m/15m temp cache must pytest.skip when absent.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-06T09:22:39Z",
+  "refreshed": "2026-11-06T14:17:57Z",
   "refs": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/C34_SPOT_COSTS.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md",
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/C30_VALIDATION.md",
@@ -65,12 +78,13 @@
   "sources": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md:43"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "run wt_rsi_div.py and wt_context.py on DEV 2022-01..2024-06 (data F:/MTS/data/tom_raw/klines or MyTradingSys/data/klines), keep the per-trade lists",
     "recompute the perp fee-net number in BACKTEST_CANDIDATES.md C28/C30 rows first; then re-score at 2 bps maker round trip",
     "write C34_SPOT_COSTS.md with the Context and Regime mix lines"
   ],
+  "taken": "2026-11-06T14:39:32Z",
   "tests": "script recomputes one existing perp number from BACKTEST_CANDIDATES.md and matches it before the spot rows are trusted",
   "title": "C34: re-score the long leads (C30 30m buy dot + bull div, C28 2h buy dot) at spot costs: 2 bps maker round trip, zero funding, long only, vs perp costs; Deribit BTC_USDC is Coinbase-routed 2/5 bps, BTC_USDT 0/0 but 0.39% spread",
   "weight": "ROUTINE",

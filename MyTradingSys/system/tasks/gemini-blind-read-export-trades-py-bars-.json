@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T16:22:55Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -30,6 +31,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "Gemini blind read of export_trades.py/_bars.trade_rows: FOUND 28 DIFF 0, VERDICT MATCH",
+      "ref": "dbbf6bcf0",
+      "utc": "2026-11-06T16:22:55Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "sim desk: per-trade replay exports for Fabio v3 B/C, Tom value-edge fade and a new Tom spi",
@@ -40,6 +47,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: audit matched",
   "not_twin_of": [
     "gemini-blind-read-bb-range-studies-1104",
     "gemini-blind-read-rsi-div-mtf-gated-1104",
@@ -51,7 +59,12 @@
   "refined_by": "session-planner",
   "refreshed": "2026-11-04T17:35:49Z",
   "refs": [],
-  "result": "",
+  "result": "Gemini blind read of export_trades.py/_bars.trade_rows: FOUND 28 DIFF 0, VERDICT MATCH",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_EXPORT_TRADES_1104.md",
     "MyTradingSys/research/sim_desk/export_trades.py",
@@ -61,12 +74,13 @@
   "scope_sha": "ed0f702ce56b",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read export_trades.py and studies/_bars.py (code first, no prose) against FORMULAS.md R definitions before any prose result file",
     "Recompute counts, win rates and mean or total returns independently of the study code",
     "Write MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_EXPORT_TRADES_1104.md with a per-number table and VERDICT"
   ],
+  "taken": "2026-11-06T16:22:55Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_EXPORT_TRADES_1104.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] blind read export_trades.py + _bars.trade_rows (sim_desk)",
   "weight": "ROUTINE",
