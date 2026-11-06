@@ -2,7 +2,6 @@
   "approved_by": "",
   "asks": "",
   "class": "C2",
-  "closed": "2026-11-06T12:43:57Z",
   "commands": [
     "python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/wt_bible_studies_2026-11-04/wt30_div_short/RESULT.md').read_text(); assert 'Regime mix:' in t and 'VERDICT' in t.upper()\""
   ],
@@ -36,12 +35,6 @@
   "lane": "SONNET",
   "latest": [
     {
-      "kind": "ship",
-      "line": "BLOCKED by power gate: prereg_gate exit 1 (MDE+cost 0.744 vs 0.30, n needed 2611, DEV has ",
-      "ref": "7136beaeb",
-      "utc": "2026-11-06T12:43:57Z"
-    },
-    {
       "auto": true,
       "kind": "ship",
       "line": "WT SPEC: exact divergence rule, frozen bin edges and m, verdict rule, Card 2 primary read",
@@ -61,19 +54,13 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "next": "END: underpowered on BTC alone; revisit only with multi-symbol DEV data",
   "note": "REVIEWED:2026-11-06 ACCEPT reviewer=sonnet-review-agent-ae068d00 planner=Session_Planner\nclass=C2. SPEC.md was fixed in bbaa2d3f1 after Gemini FIX-FIRST (REVIEW_GEMINI_1104.md). Card fully scoped; depends_on gemini-spec-rereview-wt-bible-1105 (must end VERDICT: ACCEPT before take). Windows from splits.py only; HOLDOUT never loaded. DECISION (OURS, planner 1106): stays SONNET; CODEX build needs an existing mutation-check test file, and the study scripts do not exist yet, so GPT routing is not possible until a test skeleton lands.",
   "prio": 2,
   "refine_tries": 5,
   "refined_by": "",
   "refreshed": "2026-11-06T09:19:35Z",
   "refs": [],
-  "result": "BLOCKED by power gate: prereg_gate exit 1 (MDE+cost 0.744 vs 0.30, n needed 2611, DEV has 183 event-days, m=234); PRE_REG, counts, BLOCKED.md, RESULT.md INCONCLUSIVE filed; no returns computed",
-  "result_receipt": {
-    "trust": {
-      "tag": "UNCHECKED"
-    }
-  },
+  "result": "",
   "scope_in": [
     "MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md",
     "MyTradingSys/research/wt_bible_studies_2026-11-04/wt30_div_short",
@@ -84,13 +71,12 @@
   "scope_sha": "bbaa2d3f181e",
   "size": "M",
   "sources": [],
-  "state": "done",
+  "state": "ready",
   "steps": [
     "Read MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md Card 1 and backtest/PRE_REG_TEMPLATE.md; run verdicts.py check",
     "Write PRE_REG.md, run study.py --pass count, run prereg_gate.py --m auto (exit 1 = stop and file BLOCKED.md)",
     "Run --pass dev, write RESULT.md with the Regime mix line, append the VERDICTS row, ship"
   ],
-  "taken": "2026-11-06T12:43:57Z",
   "tests": "python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/wt_bible_studies_2026-11-04/wt30_div_short/RESULT.md').read_text(); assert 'Regime mix:' in t and 'VERDICT' in t.upper()\"",
   "title": "WT 30m lower-high divergence short (operator setup): DEV study with features that separate his examples from weak ones",
   "weight": "IMPORTANT",

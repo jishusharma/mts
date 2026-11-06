@@ -606,6 +606,20 @@ class StateTagTest(NextSkipsClaimedTest):
         self.assertEqual(rc, 1)
         self.assertIn("STALE", self.run_cli("list")[1])
 
+    def test_empty_scope_sha_refreshed_after_change_is_fresh(self):
+        self.commit("src/a.py", "x=1" + NL, "2026-10-01T00:00:00+00:00")
+        c = good("TS1", refreshed="2026-10-05T00:00:00+00:00", scope_sha="")
+        c["scope_in"] = ["src/a.py"]
+        T.save(self.repo, c)
+        self.assertEqual(T.TS.stale_reason(T.get(self.repo, "TS1"), self.repo), "")
+
+    def test_empty_scope_sha_change_after_refresh_is_stale(self):
+        self.commit("src/a.py", "x=1" + NL, "2026-10-06T00:00:00+00:00")
+        c = good("TS1", refreshed="2026-10-05T00:00:00+00:00", scope_sha="")
+        c["scope_in"] = ["src/a.py"]
+        T.save(self.repo, c)
+        self.assertIn("scope changed", T.TS.stale_reason(T.get(self.repo, "TS1"), self.repo))
+
     def test_card_file_named_in_scope_still_counts(self):
         f = "MyTradingSys/system/tasks/BASE.json"
         self.commit(f, "{}" + NL)

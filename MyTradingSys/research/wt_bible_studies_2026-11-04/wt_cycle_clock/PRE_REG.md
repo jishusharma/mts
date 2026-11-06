@@ -23,5 +23,8 @@ Card `wt-cycle-clock`. Order disclosure: the first `study.py` run happened befor
 `prereg_gate.py --n 126 --sd 1.0 --cost 0 --m auto --new-cells 0` printed `MDE 0.403 R vs max plausible 0.3; n needed 228: BLOCK`. The gate tests an edge claim against Holm family size; this card tests no hypothesis (no Holm, no p-values, no fees), so the BLOCK does not apply to a count table and is recorded here instead of a BLOCKED.md. Consequence: no sentence of the result may read as an edge; 4h episodes are very few (see n_episodes) and are flagged.
 
 ## Context
-Operator's rule: trade with the cycle direction; the clock says where in the cycle we are. Regime: research_kit.regime_mix_line over DEV weeks (half n/a: weekly/monthly RSI history before 2022-01 not on disk). Phase = last valid dot type; age in median cycles of the same TF.
+Regime: none as a gate, because this is a count of the cycle clock over all DEV weeks; the window's regime is stated by the Regime mix line below (research_kit.regime_mix_line; half the weeks n/a, weekly/monthly RSI history before 2022-01 not on disk).
+Phase: the state itself: last valid dot type (bottom/top) and its age in median cycles of the same TF (OURS, Bible); no other phase tag.
+Session: none, because the clock is per TF in hours and a session split would leave too few episodes per cell (4h has 20 cycles).
+Entry: none, because nothing is entered: no trades, no fees, no returns claimed; the move columns are descriptive close-to-close changes.
 Regime mix: 130 weeks: bull 16 (12%) | bear 0 (0%) | range 49 (38%) | n/a 65 (50%)
