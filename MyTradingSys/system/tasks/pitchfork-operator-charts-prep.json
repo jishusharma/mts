@@ -2,6 +2,17 @@
   "approved_by": "operator 2026-10-30 via Eagle_Eyes (d-eagle-eyes-missed-boxes-defaults)",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-06T07:36:05Z",
+    "misses": 7,
+    "reads": [
+      "scripts/dev/extra_tests.tsv",
+      "scripts/dev/run_extra_tests.py",
+      "MyTradingSys/research/pitchfork_2026-10-19/run_pitchfork_event_study.py"
+    ],
+    "session": "agent-a51cc84a61a78d1fe"
+  },
   "created": "2026-10-29T21:18:24Z",
   "depends_on": [],
   "done_when": "His shots classified with pivots, TF and scale; pre-reg shipped; dev count of reactions at copied-fork lines vs random-parallel control with n; holdout untouched.",
@@ -16,9 +27,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "pitchfork desk/python review fixes F1 F4 F5 F6 F9 F10",
-      "ref": "f4043a8d4f0e",
-      "utc": "2026-11-05T02:52:41Z"
+      "line": "Merge remote-tracking branch 'origin/fast-track' into JIS-NB/level-approach-prep-1105",
+      "ref": "3ab26e0c1d42",
+      "utc": "2026-11-05T03:07:09Z"
     },
     {
       "auto": true,
@@ -38,7 +49,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-05T10:27:37Z",
+  "refreshed": "2026-11-05T18:23:07Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -47,7 +58,7 @@
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/CARD_SPECS.md"
   ],
   "scope_out": [],
-  "scope_sha": "f4043a8d4f0e",
+  "scope_sha": "3ab26e0c1d42",
   "size": "M",
   "sources": [],
   "state": "ready",
