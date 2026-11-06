@@ -9,7 +9,7 @@
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "UNIFY_2026-11-06.md s5: base_rates.py builds base_rates.json/.js from the five study outputs as they are (level approach, anticipation, big candle, US open, flip cells); row = id, event, condition, outcome, horizon, n, independent units, window, regime mix, fee status, source. Live aid panels read BASE_RATES[id]; the five *_rates.js files are deleted in the same ship. No new study or backtest (d-prob-registry-1106).",
+  "goal": "UNIFY_2026-11-06.md s5 (d-prob-registry-1106): base_rates.py builds base_rates.js from the five study outputs as they are (level approach, anticipation, big candle, US open, flip cells); row = id, event, condition, outcome, horizon, n, independent units, window, regime mix, fee status, source. Live-aid panels read BASE_RATES[id] with the window shown; the five *_rates.js files are deleted in the same ship. No new study or backtest.",
   "id": "prob-base-rates-registry-1106",
   "lane": "SONNET",
   "latest": [
