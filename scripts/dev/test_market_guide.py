@@ -318,3 +318,10 @@ def test_build_prints_orderflow_section_and_vwap_note(tmp_path):
     assert "## Order flow, 1m/5m/15m (descriptive only, no tested edge" in text
     assert "- 1m @15:09Z: price LL 81622.0" in text
     assert "our 00:00Z VWAP" in text and "chart-relative" in text
+
+
+def test_market_guide_prints_cycle_bottom_flag_line():
+    import market_guide as mg
+    now_ms = 1794009600000  # 2026-11-07T00:00Z
+    line = mg.cycle_flag_line(now_ms)
+    assert line.startswith("CYCLE4 d397 [363-406]") and "WAIT" in line
