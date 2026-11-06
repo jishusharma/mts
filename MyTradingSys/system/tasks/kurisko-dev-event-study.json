@@ -1,6 +1,7 @@
 {
   "approved_by": "operator 2026-10-30 via Eagle_Eyes (d-eagle-eyes-missed-boxes-defaults)",
   "asks": "",
+  "closed": "2026-11-06T09:20:14Z",
   "commands": [],
   "created": "2026-10-18T03:57:28Z",
   "depends_on": [
@@ -16,11 +17,17 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "already on trunk: research/kurisko_2026-10-18/RESULT.md (0 frozen cells, run REFUSED, rece",
+      "ref": "663d27b8a",
+      "utc": "2026-11-06T09:20:14Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "REGATE fixes 3-7: VERDICTS BLOCKED backfill, kill scopes, drop duplicate filter rows, 62 c",
-      "ref": "07695eb16511",
-      "utc": "2026-10-27T21:28:21Z"
+      "line": "bigcandle story: big-candle stories x top-trader class x phase base rates + live_aid panel",
+      "ref": "b2010203f032",
+      "utc": "2026-11-05T14:07:16Z"
     }
   ],
   "layers": [
@@ -28,6 +35,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: DEV run spent, 8 cells BLOCKED by prereg_gate",
   "not_twin_of": [
     "krown-dev-event-study"
   ],
@@ -36,9 +44,14 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-27T22:51:45Z",
+  "refreshed": "2026-11-06T09:19:41Z",
   "refs": [],
-  "result": "",
+  "result": "already on trunk: research/kurisko_2026-10-18/RESULT.md (0 frozen cells, run REFUSED, receipt spent)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/kurisko_2026-10-18/",
     "MyTradingSys/backtest/layers/kurisko/",
@@ -50,19 +63,20 @@
     "new cells or parameters",
     "live wiring"
   ],
-  "scope_sha": "07695eb16511",
+  "scope_sha": "b2010203f032",
   "size": "M",
   "sources": [
     "MyTradingSys/research/kurisko_2026-10-18/PRE_REG.md (written by the previous card)",
     "MyTradingSys/backtest/layers/FORMULAS.md section 13 (cost model and net formula, read only)"
   ],
-  "state": "refined",
+  "state": "done",
   "steps": [
     "read PRE_REG.md; the run script refuses to start if the PRE_REG commit does not precede this run, a cell differs from the frozen list, a data file sha differs from the PRE_REG, or a run receipt (PRE_REG sha, module sha, seed) already exists: one run only.",
     "run each cell once: fee-net R with the cost model and funding rule exactly as frozen in the PRE_REG (no new choice here), MFE/MAE, 200 random-clock placebos with the PRE_REG seed, Holm over the frozen cells; DEV only (the loader refuses bars >= 2024-07-01).",
     "RESULT.md: effect, CI, verdict per cell using ONLY the PRE_REG pass bars: PASS / FAIL / INSUFFICIENT-N (below the frozen event-day floor); verdicts.py backfill; add the layer_map.json row under family rsi.",
     "if a cell passes DEV: create ONE VALIDATION card; if none passes, close as NO EDGE only the cells that reached the frozen floor and mark the rest INSUFFICIENT; a result that contradicts the PRE_REG is reported, not re-cut."
   ],
+  "taken": "2026-11-06T09:20:14Z",
   "tests": "test_run_dev.py: the guard refuses a PRE_REG with a changed cell, a changed data sha and a second run on the same PRE_REG; the loader refuses bars >= 2024-07-01; net R of a one-trade fixture equals the hand value from FORMULAS 13 (written in the test, not taken from the run script); each fails before the guard exists.",
   "title": "Kurisko Quad Rotation: DEV event study, fee-net, same-window placebo",
   "weight": "IMPORTANT",

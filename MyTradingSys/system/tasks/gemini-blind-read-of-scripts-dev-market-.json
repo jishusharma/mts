@@ -1,35 +1,57 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/gemini_queue.py run gemini-blind-read-of-scripts-dev-market-:low"
+  ],
   "created": "2026-11-05T17:12:55Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_MARKETGUIDE_1106.md exists with a per-claim table (claim, recomputed value or file:line, MATCH|MISMATCH) and ends with VERDICT: MATCH or MISMATCH; each defect names file:line.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "D11 feeder: independent blind read (run through gemini_queue.py, Gemini effort low, not a Claude Agent) of market_guide.py: read order_flow_state_lines and check every printed number and threshold has a source or an OURS label.",
   "id": "gemini-blind-read-of-scripts-dev-market-",
   "kind": "audit",
-  "lane": "CODEX",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "market_guide: order-flow state line per TF 1m/5m/15m (descriptive, no tested edge)",
+      "ref": "c8c657cc6666",
+      "utc": "2026-11-05T17:12:00Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-06 T0-ONLY | route [GEMINI] via gemini_queue.py gemini-blind-read-of-scripts-dev-market-:low; lane was CODEX (retired 11-06)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-06T12:16:20Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_MARKETGUIDE_1106.md",
+    "scripts/dev/market_guide.py"
+  ],
+  "scope_out": [
+    "editing the files read; reading VALIDATION/HOLDOUT; any fix (a defect becomes a raw card by the coordinator)"
+  ],
+  "scope_sha": "c8c657cc6666",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read scripts/dev/market_guide.py before any prose summary of them",
+    "Recompute independently of the code under read, then read order_flow_state_lines and check every printed number and threshold has a source or an OURS label",
+    "Write MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_MARKETGUIDE_1106.md with the per-claim table and VERDICT"
+  ],
+  "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_MARKETGUIDE_1106.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] blind read of scripts/dev/market_guide.py order_flow_state_lines",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

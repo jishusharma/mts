@@ -127,12 +127,13 @@ def test_old_videos_never_extracted(tmp_path, monkeypatch):
     assert out == (0, 0, 0) and called == []
 
 
-def test_fetch_failure_propagates(monkeypatch):
+def test_fetch_failure_is_reported_not_raised(monkeypatch):
+    # 2026-11-06: one analyst's nonzero fetch (DEFERRED budget) must not abort the run; it is reported for retry.
     monkeypatch.setattr(cbp_run, "analysts", lambda: ({"exclude_regex": ""},
-                       [{"short": "Krown", "channel": "@x"}]))
-    import pytest
-    with pytest.raises(subprocess.CalledProcessError):
-        cbp_run.fetch_new("2026-10-19", set(), run=lambda cmd, **kw: subprocess.CompletedProcess(cmd, 1))
+                       [{"short": "Krown", "channel": "@x"}, {"short": "Pizzino", "channel": "@y"}]))
+    calls = []
+    out = cbp_run.fetch_new("2026-10-19", set(), run=lambda cmd, **kw: calls.append(cmd) or subprocess.CompletedProcess(cmd, 1))
+    assert out == ["Krown", "Pizzino"] and len(calls) == 2
 
 
 def test_unavailable_extractor_does_not_stamp_success(tmp_path, monkeypatch):

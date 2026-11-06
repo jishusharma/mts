@@ -197,6 +197,7 @@ scripts/dev/test_extra_tests_union.py
 scripts/dev/test_ci_fail.py
 scripts/dev/test_pass_needs_verdict.py
 MyTradingSys/tools/live_aid/test_spec_us_open.py
+MyTradingSys/tools/live_aid/test_spec_premarket.py
 
 MyTradingSys/tools/live_aid/test_spec_news.py
 MyTradingSys/research/api_jobs_2026-11-03/test_sim_cards_from_json.py
@@ -229,3 +230,6 @@ scripts/dev/test_ci_revert.py
 MyTradingSys/backtest/test_fetch_futures_metrics.py
 MyTradingSys/research/c31_multi_symbol_2026-11/test_c31_multi.py
 scripts/dev/test_refresh_main_checkout_errors.py
+scripts/dev/test_cbp_build_row.py
+MyTradingSys/research/malkan_window_dev_2026-11/test_study.py
+scripts/dev/test_us_prep.py

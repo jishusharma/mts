@@ -12,7 +12,7 @@
   "goal": "Make the Codex (GPT) lane work until its session limit, same as the Claude logins, and write down the dispatch order that keeps it fed.",
   "id": "codex-gpt-exhaust-full",
   "kind": "build",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
@@ -66,5 +66,6 @@
   "tests": "new test fails on pre-change code",
   "title": "Codex lane: exhaust GPT to 100% of its session limit, record the run and the dispatch order",
   "weight": "ROUTINE",
-  "worker": "session"
+  "worker": "session",
+  "rerouted": "2026-11-06 operator: GPT/Codex plan expired; lane CODEX -> SONNET (cross-vendor independence of a re-derive is lost: say so in the result)"
 }

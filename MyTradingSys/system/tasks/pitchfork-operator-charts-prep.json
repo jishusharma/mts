@@ -17,28 +17,28 @@
   },
   "created": "2026-10-29T21:18:24Z",
   "depends_on": [],
-  "done_when": "His shots classified with pivots, TF and scale; pre-reg shipped; dev count of reactions at copied-fork lines vs random-parallel control with n; holdout untouched.",
+  "done_when": "MyTradingSys/research/pitchfork_2026-10-19/RESULT_COPY_FORK_ETH.md: same table as RESULT_COPY_FORK.md for ETHUSDT 4H DEV (run_copy_fork_study.py unchanged except the symbol), Regime mix: line, read by the PRE_REG_COPY_FORK rule; shots list or NOT_IN_DATA; VALIDATION/HOLDOUT unread",
   "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Prepare the Pitchfork layer for the operator's method: classify his pitchfork charts, then measure whether copied (pasted, same slope and width) forks attract price more than random parallels. Spec: MyTradingSys/research/eagle_eyes_picture_2026-10-28/CARD_SPECS.md#pitchfork-operator-charts-prep",
+  "goal": "BTC 4H copy-fork count is shipped (RESULT_COPY_FORK.md, diff -2.3 pts, no difference). Remaining: replicate it unchanged on ETHUSDT 4H DEV as a second instrument, and classify any operator pitchfork shots on disk.",
   "id": "pitchfork-operator-charts-prep",
   "lane": "SONNET",
   "latest": [
     {
       "auto": true,
       "kind": "ship",
-      "line": "Merge remote-tracking branch 'origin/fast-track' into JIS-NB/level-approach-prep-1105",
-      "ref": "3ab26e0c1d42",
-      "utc": "2026-11-05T03:07:09Z"
+      "line": "Pitchfork copy-paste fork vs random parallels, BTC 4H DEV count",
+      "ref": "cb341d766dfc",
+      "utc": "2026-11-06T07:36:44Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "775495c597f6 level-approach prep: live_aid panel (checklist, absorption, OI tell, wick TFs",
-      "ref": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/CARD_SPECS.md",
-      "utc": "2026-11-05T01:36:50Z"
+      "line": "cb341d766dfc Pitchfork copy-paste fork vs random parallels, BTC 4H DEV count",
+      "ref": "MyTradingSys/research/pitchfork_2026-10-19/PRE_REG_COPY_FORK.md",
+      "utc": "2026-11-06T07:36:44Z"
     }
   ],
   "layers": [
@@ -46,31 +46,31 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "REVIEWED:planner-c-1106b 2026-11-06 T0-ONLY. Refreshed after cb341d766 (steps 2-3 done).",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-05T18:23:07Z",
+  "refreshed": "2026-11-06T09:23:56Z",
   "refs": [],
   "result": "",
   "scope_in": [
-    "MyTradingSys/backtest/layers/pitchfork/",
-    "MyTradingSys/research/pitchfork_2026-10-19/",
-    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/CARD_SPECS.md"
+    "MyTradingSys/research/pitchfork_2026-10-19/PRE_REG_COPY_FORK.md",
+    "MyTradingSys/research/pitchfork_2026-10-19/run_copy_fork_study.py",
+    "MyTradingSys/research/pitchfork_2026-10-19/RESULT_COPY_FORK.md"
   ],
   "scope_out": [],
-  "scope_sha": "3ab26e0c1d42",
+  "scope_sha": "cb341d766dfc",
   "size": "M",
   "sources": [],
   "state": "ready",
   "steps": [
-    "Wait for operator pitchfork shots; classify with shot.py",
-    "Add copy-fork (parallel offset) to pitchfork_detector.py",
-    "Pre-reg, dev count vs control"
+    "add a symbol argument to run_copy_fork_study.py; ETH 1m at F:/MTS/data/tom_raw/klines_eth built to 4H",
+    "run ETH DEV once; write RESULT_COPY_FORK_ETH.md with Regime mix line",
+    "list operator pitchfork shots under research/screenshots, else write NOT_IN_DATA"
   ],
-  "tests": "test_pitchfork_detector.py: copied fork keeps slope and width at a new anchor; fails before the copy function exists",
+  "tests": "test_pitchfork_copy.py: symbol argument selects the ETH folder and the loader refuses bars >= 2024-07-01; fails before the argument exists",
   "title": "pitchfork: classify operator's pitchfork charts, measure copy-paste (parallel) forks vs random parallels (spec CARD_SPECS.md#pitchfork-operator-charts-prep)",
-  "weight": "",
+  "weight": "ROUTINE",
   "worker": "session"
 }

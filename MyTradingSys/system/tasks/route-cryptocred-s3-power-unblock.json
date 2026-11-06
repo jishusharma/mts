@@ -1,38 +1,83 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/prereg_gate.py --n 414 --sd 1.24 --cost 0.068 --m auto --new-cells 1"
+  ],
+  "context": {
+    "calls_to_edit": 9,
+    "folded": "2026-11-06T10:45:22Z",
+    "misses": 20,
+    "reads": [
+      "MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py",
+      "MyTradingSys/research/cryptocred_s3_2026-11/test_cc_s3_run.py",
+      "MyTradingSys/research/cryptocred_s3_2026-11/BLOCKED.md",
+      "MyTradingSys/research/cryptocred_s3_2026-11/cc_s3_run.py",
+      "MyTradingSys/backtest/bt/bt_data.py",
+      "scripts/dev/prereg_gate.py"
+    ],
+    "session": "agent-a2c4d3e84bcb0e070"
+  },
   "created": "2026-11-04T14:28:20Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/cryptocred_s3_pooled_2026-11/PRE_REG.md frozen with ## Context (Regime/Phase/Session/Entry) and prereg_gate output; if gate exit 0: RESULT.md with n, net R, CI, Regime mix: line, VERDICT; if exit 1: BLOCKED.md with n, MDE and END reason; no VALIDATION/HOLDOUT read",
+  "est_turns": 30,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "New PRE_REG for CryptoCred 4h Setup 1 only (1 cell, ATR buffer 1.0) pooled BTC+ETH DEV, to shrink the Holm family; run only if prereg_gate exits 0, else record END.",
   "id": "route-cryptocred-s3-power-unblock",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "cryptocred 4h/1d S3: power gate BLOCKS the DEV run; tested wrapper built, no outcome read",
+      "ref": "7501e2816fae",
+      "utc": "2026-11-01T01:28:45Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "7501e2816fae cryptocred 4h/1d S3: power gate BLOCKS the DEV run; tested wrapper built, no ",
+      "ref": "MyTradingSys/research/cryptocred_s3_2026-11/BLOCKED.md",
+      "utc": "2026-11-01T01:28:45Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "needs a new PRE_REG (>=540 fills/setup) or operator overrule, not refinable; BLOCKED.md records it",
-  "pinned": false,
+  "note": "REVIEWED:planner-c-1106b 2026-11-06 T0-ONLY. n 414 is a rough 2x of BTC 207, recount first. Data F:/MTS/data/tom_raw/klines and klines_eth.",
   "prio": 3,
   "refine_tries": 2,
   "refined_by": "",
+  "refreshed": "2026-11-06T09:23:10Z",
   "refs": [
     "MyTradingSys/research/cryptocred_s3_2026-11",
     "MyTradingSys/research/route_tag_2026-11-04/AUDIT.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "dropped",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/cryptocred_s3_2026-11/BLOCKED.md",
+    "MyTradingSys/research/cryptocred_s3_2026-11/cc_s3_run.py",
+    "MyTradingSys/research/cryptocred_s3_pooled_2026-11"
+  ],
+  "scope_out": [
+    "VALIDATION/HOLDOUT; changing the 0.30 R cap or repo m; other symbols (only BTC and ETH 1m exist)"
+  ],
+  "scope_sha": "7501e2816fae",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/cryptocred_s3_2026-11/BLOCKED.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "recount Setup 1 fills on BTC and ETH DEV via cc_s3_run.py count mode; no outcome read",
+    "run prereg_gate.py --n <fills> --sd 1.24 --cost 0.068 --m auto --new-cells 1; paste output",
+    "exit 0: freeze PRE_REG then one run; exit 1: write BLOCKED.md and END"
+  ],
+  "tests": "test_pooled_count.py: pooled fill count equals BTC count plus ETH count from the same loader and refuses bars >= 2024-07-01; fails before the pooled loader exists",
   "title": "cryptocred S3 (7501e2816): power gate blocked DEV; widen symbols/window to pass the gate or record END",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }

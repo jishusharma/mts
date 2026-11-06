@@ -804,3 +804,129 @@ def test_bigcandle_top_trader_class_band_and_streak():
     w1 = [[i * wk, o, 0, 0, c, 0, (i + 1) * wk - 1] for i, (o, c) in enumerate([(10, 12), (12, 11), (11, 10), (10, 9), (9, 8), (8, 9)])]
     assert _la("bcStreak", w1, 5 * wk + day) == "R3+"               # the last open week (index 5) is ignored: weeks 1..4 are red
     assert _la("bcStreak", w1[:2], 2 * wk) == "R1-2"
+
+
+# ---------- prior-day value area + 2x30m acceptance (card live-aid-balance-acceptance-1105) ----------
+# Python reference = research/value_area_acceptance_2026-11-05/accept80.py (the study rule), imported, never the JS.
+import sys  # noqa: E402
+
+sys.path.insert(0, str(HERE.parent.parent / "research" / "value_area_acceptance_2026-11-05"))
+import accept80  # noqa: E402
+
+DAY0 = 1_793_059_200_000          # 2026-10-27 00:00 UTC, also the fixture's first bar
+DAY = 86_400_000
+M30 = 1_800_000
+
+
+def _prior_rows(day0=DAY0, n=1440):
+    """A full prior UTC day: closes spread 1000..2000 with uneven volume, so the 70 % area is a proper sub-range."""
+    return [[day0 + i * 60000, 1500.0, 2100.0, 900.0, 1000.0 + (i % 41) * 25.0, 1.0 + (i * i) % 5] for i in range(n)]
+
+
+def _seg(day1, k, close, hi=None, lo=None):
+    """One 30m bar (30 x 1m): flat at `close`, optional wick bar for hi/lo."""
+    t0 = day1 + k * M30
+    rows = [[t0 + m * 60000, close, close, close, close, 1.0] for m in range(30)]
+    if hi is not None:
+        rows[0][2] = hi
+    if lo is not None:
+        rows[0][3] = lo
+    return rows
+
+
+def _va_js(rows, day):
+    return _la("vaPriorDay", rows, day)
+
+
+def test_value_area_matches_python():
+    # the committed fixture (300 real 1m bars): JS valueArea == the study's va()
+    bars = [(int(r[0]), float(r[1]), float(r[2]), float(r[3]), float(r[4]), float(r[5])) for r in ROWS]
+    val, poc, vah = accept80.va(bars)
+    js_va = _la("valueArea", [list(map(float, r)) for r in ROWS])
+    assert (js_va["val"], js_va["poc"], js_va["vah"]) == (val, poc, vah)
+    assert val < poc < vah
+    # a bin tie: 80125 / 50 = 1602.5 -> half-even 1602 (80100), as Python round()
+    tie = [[0, 0, 0, 0, 80125.0, 5.0], [60000, 0, 0, 0, 80175.0, 1.0]]
+    assert _la("valueArea", tie)["poc"] == 80100.0
+    # hand case: volumes by bin 100:1, 150:5, 200:2, 250:1 (total 9, 70 % = 6.3): POC 150, then 200 (2 > 1) -> 7 >= 6.3
+    hand = [[i, 0, 0, 0, c, v] for i, (c, v) in enumerate([(100, 1), (150, 5), (200, 2), (250, 1)])]
+    assert _la("valueArea", hand) == {"val": 150.0, "poc": 150.0, "vah": 200.0}
+    # full prior day through vaPriorDay (window by UTC day) equals the study on the same rows
+    rows = _prior_rows()
+    ref = accept80.va([tuple(r) for r in rows])
+    got = _va_js(rows + _seg(DAY0 + DAY, 0, 1500.0), DAY0 + DAY + 3600000)   # today's rows are excluded
+    assert (got["val"], got["poc"], got["vah"]) == ref and got["bars"] == 1440 and got["val"] < got["vah"]
+
+
+def test_value_area_fails_closed_on_missing_or_bad_data():
+    day = DAY0 + DAY
+    assert "incomplete" in _va_js([], day)["err"] and "incomplete" in _va_js(None, day)["err"]
+    assert "incomplete" in _va_js(_prior_rows(n=1000), day)["err"]                  # partial day (API gap): no guess
+    rows = _prior_rows()
+    for i in range(0, 200):                                                          # 200 unusable rows -> 1240 valid < 1300
+        rows[i][4] = None if i % 2 else "x"
+    assert "incomplete" in _va_js(rows, day)["err"]
+    flat = [[DAY0 + i * 60000, 1, 1, 1, 1500.0, 1.0] for i in range(1440)]           # one bin: VAH == VAL
+    assert "flat" in _va_js(flat, day)["err"]
+    assert _la("valueArea", [[0, 0, 0, 0, 100.0, 0.0]]) is None                      # zero volume
+    # no VA -> acceptance reports no flag and an error, never a stale state
+    assert _la("vaAcceptance", {"err": "x"}, _seg(day, 0, 1500.0), day + M30)["flag"] is None
+    assert _la("vaAcceptance", None, [], day)["err"]
+
+
+def test_acceptance_two_closes():
+    day1 = DAY0 + DAY
+    rows = _prior_rows()
+    va = _va_js(rows, day1)
+    val, vah = va["val"], va["vah"]
+    mid, below, above = (val + vah) / 2, val - 40.0, vah + 40.0
+
+    def study(segs):
+        R, A = accept80.study({"2026-10-27": [tuple(r) for r in rows], "2026-10-28": [tuple(r) for seg in segs for r in seg]})
+        return len(R), len(A)
+
+    def flag(segs, extra_minutes=0):
+        today = [r for seg in segs for r in seg]
+        now = day1 + len(segs) * M30 + extra_minutes * 60000
+        return _la("vaAcceptance", va, rows + today, now)
+
+    # inside, below, below: two consecutive 30m closes below VAL after being inside -> 'below' with the measured 77 % (study: 1 A event)
+    segs = [_seg(day1, 0, mid), _seg(day1, 1, below), _seg(day1, 2, below)]
+    r = flag(segs)
+    assert r["flag"] == "below" and r["src"] == "MEASURED" and r["rate"]["p"] == 77 and r["rate"]["n"] == 300 and study(segs) == (0, 1)
+    # one close below is not acceptance (study: no event); a close back inside resets the run
+    assert flag(segs[:2])["flag"] is None and study(segs[:2]) == (0, 0)
+    reset = segs + [_seg(day1, 3, mid)]
+    assert flag(reset)["flag"] is None
+    # the forming 30m bar never counts: 3 completed segs + 10 min into a 4th (inside), the flag stays on the completed closes
+    assert flag(segs, 10)["flag"] == "below"
+    # wick above VAH then two closes inside: re-entry, measured 44 % (study: 1 R event)
+    segs = [_seg(day1, 0, mid, hi=above), _seg(day1, 1, mid)]
+    r = flag(segs)
+    assert r["flag"] == "reentry" and r["rate"]["p"] == 44 and r["rate"]["n"] == 493 and study(segs) == (1, 0)
+    # inside all day, never outside: no flag
+    segs = [_seg(day1, 0, mid), _seg(day1, 1, mid), _seg(day1, 2, mid)]
+    assert flag(segs)["flag"] is None and study(segs) == (0, 0)
+    # above VAH twice after being inside: flagged but UNMEASURED (the study measured the below side only)
+    segs = [_seg(day1, 0, mid), _seg(day1, 1, above), _seg(day1, 2, above)]
+    r = flag(segs)
+    assert r["flag"] == "above" and r["src"] == "UNMEASURED" and r["rate"] is None
+    # started outside, never inside first: the study requires being inside before counting below -> no flag
+    segs = [_seg(day1, 0, below), _seg(day1, 1, below), _seg(day1, 2, below)]
+    assert flag(segs)["flag"] is None and study(segs) == (0, 0)
+
+
+def test_acceptance_ignores_bad_rows_and_is_stateless_across_restart():
+    day1 = DAY0 + DAY
+    rows = _prior_rows()
+    va = _va_js(rows, day1)
+    below = va["val"] - 40.0
+    segs = _seg(day1, 0, (va["val"] + va["vah"]) / 2) + _seg(day1, 1, below) + _seg(day1, 2, below)
+    now = day1 + 3 * M30
+    a = _la("vaAcceptance", va, segs, now)
+    # a page reload / restart recomputes from the same rows and gets the same answer (no stored state)
+    assert _la("vaAcceptance", va, list(segs), now) == a and a["flag"] == "below"
+    # garbage rows from a failed feed (None/NaN/strings) are dropped, never turned into a close
+    junk = [[day1 + 3 * M30 - 60000, None, None, None, None, None], ["x", 1, 1, 1, 1, 1], None]
+    assert _la("vaAcceptance", va, segs + junk, now)["flag"] == "below"
+    assert _la("vaAcceptance", va, [], now)["flag"] is None                           # empty feed: no flag
