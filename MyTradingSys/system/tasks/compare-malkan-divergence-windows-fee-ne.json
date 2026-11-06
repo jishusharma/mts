@@ -1,35 +1,67 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python MyTradingSys/research/malkan_window_dev_2026-11/study.py"
+  ],
   "created": "2026-11-04T21:48:44Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/malkan_window_dev_2026-11/PRE_REG.md frozen first (## Context Regime/Phase/Session/Entry, prereg_gate output, arms + m), then RESULT.md: per-arm n, fee-net mean, CI, Holm p, Regime mix: line, VERDICT PASS/FAIL/INCONCLUSIVE; VALIDATION/HOLDOUT never loaded",
+  "est_turns": 35,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Pre-register then run on DEV 2022-01..2024-06 (BTC+ETH): regular RSI divergence windows 3-10 bars (Malkan SOURCED) vs 12 / 13-18 / over 18 (OURS), fee-net, default unchanged until result.",
   "id": "compare-malkan-divergence-windows-fee-ne",
   "kind": "run",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Land malkan window reconcile and Claude spot-check",
+      "ref": "acc6ec52f17e",
+      "utc": "2026-11-04T21:47:28Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "acc6ec52f17e Land malkan window reconcile and Claude spot-check",
+      "ref": "MyTradingSys/research/malkan_hindi_2026-11-04/WINDOW_RECONCILE_1104.md",
+      "utc": "2026-11-04T21:47:28Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "planner 11-05 parked: a study card needs its own PRE_REG with ## Context and Regime mix before any run; no fee-net Malkan window runner exists (malkan_div_flags_2026-11-04 holds flags only), so the design is a Sonnet session job; not refinable as a bounded card.",
+  "note": "REVIEWED:planner-c-1106b 2026-11-06 T0-ONLY. Prior park (no runner) answered: runner is step 2 of this card. ETH 1m at F:/MTS/data/tom_raw/klines_eth.",
   "prio": 2,
   "refine_tries": 1,
   "refined_by": "",
+  "refreshed": "2026-11-06T09:22:56Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/malkan_hindi_2026-11-04/WINDOW_RECONCILE_1104.md",
+    "MyTradingSys/research/malkan_div_flags_2026-11-04",
+    "MyTradingSys/research/malkan_window_dev_2026-11"
+  ],
+  "scope_out": [
+    "changing the default window; VALIDATION/HOLDOUT; live wiring"
+  ],
+  "scope_sha": "acc6ec52f17e",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/malkan_hindi_2026-11-04/WINDOW_RECONCILE_1104.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "write PRE_REG.md from WINDOW_RECONCILE_1104.md arms; run prereg_gate.py --m auto",
+    "write study.py: detector as in malkan_div_flags, 1h/4h from 1m F:/MTS/data/tom_raw/klines + klines_eth, DEV only, fees.py costs",
+    "test_study.py, one run, RESULT.md with Regime mix line"
+  ],
+  "tests": "test_study.py: loader refuses bars >= 2024-07-01; a hand-built 2-pivot fixture falls in the window arm the PRE_REG names; fails before study.py exists",
   "title": "Compare Malkan divergence windows fee-net on DEV: sourced 3-10 bars against our 12 / 13-18 / over 18 (research/malkan_hindi_2026-11-04/WINDOW_RECONCILE_1104.md); pre-register first; default stays unchanged until this result",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }

@@ -93,7 +93,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/rsi_divergence_mtf_2026-10-09`
 - Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-11-04_malkan-window-12-18-vs-hindi.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `kurisko-dev-event-study` refined p2 SONNET: Kurisko Quad Rotation: DEV event study, fee-net, same-window placebo
   - `malkan-prereg-dwm-equities` refined p4 SONNET: Malkan: pre-registration for the D/W/M equity home test (items 6/7/8/9/11/12, gates 0a/0f)
 
 ## CryptoCred setups (`cryptocred`)
@@ -231,10 +230,10 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `layer-bible-runtime-1104` raw p1 SONNET: Layer Bible per family + layer_state.py runtime (d-layer-bible-runtime-1104), WaveTrend pilot; design review C
   - `wavetrend-c1-v2` refined p1 SONNET: WaveTrend C1 detector correction and new count-only prereg
-  - `wt-cycle-clock` raw p2 SONNET: WT cycle clock (descriptive): per timeframe, time to the next valid zone dot and move size given the phase in 
-  - `wt-mtf-cycle-nesting` raw p2 SONNET: WT multi-timeframe cycle nesting: 5m/15m zone dots traded only with the 30m cycle phase and 4h slope vs the un
+  - `wt-cycle-clock` ready p2 SONNET: WT cycle clock (descriptive): per timeframe, time to the next valid zone dot and move size given the phase in 
+  - `wt-mtf-cycle-nesting` ready p2 SONNET: WT multi-timeframe cycle nesting: 5m/15m zone dots traded only with the 30m cycle phase and 4h slope vs the un
   - `wt30-div-blind-recount-haiku-1104` ready p2 HAIKU: Haiku blind recount of the coordinator WT 30m divergence and cycle-frequency numbers from the written rule onl
-  - `wt30-lower-high-divergence-short` raw p2 SONNET: WT 30m lower-high divergence short (operator setup): DEV study with features that separate his examples from w
+  - `wt30-lower-high-divergence-short` ready p2 SONNET: WT 30m lower-high divergence short (operator setup): DEV study with features that separate his examples from w
 
 ## Pitchfork (Andrews / Schiff / Morge median line) (`pitchfork`)
 - Status: Pivot amplitude gate is OURS (2 pct reversal, no ATR); doc Rule P-01 2.5 x ATR14 not implemented. Detector, simulator desk plugin (studies/pitchfork.py), and live Java engine (PitchforkSignalLayer.java with Tine Bounce + Hagopian Failure + Volume Profile confluence) built and wired; no edge: the 4H PASS was withdrawn 2026-11-03 after an exact causal rerun (research/mts_audit_2026-11-03/AUDIT.md).
