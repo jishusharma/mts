@@ -3,32 +3,38 @@
   "asks": "",
   "commands": [],
   "created": "2026-11-06T18:07:16Z",
-  "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "depends_on": [
+    "cycle-bottom-long-testnet-rule-1106"
+  ],
+  "done_when": "one operator-called testnet trade logged with flag state, entry, stop, leverage; or the card stays raw until ENTRY OK",
+  "est_turns": 6,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "When cycle_bottom_flag.py (market_guide line) shows ENTRY OK, the operator calls the testnet long through cotrade.py with RULE.md's stop and 2x leverage default; the session logs the trade and the flag state at entry. Builders never place it.",
   "id": "cycle-bottom-long-testnet-trade-1106",
-  "lane": "",
+  "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
   "note": "",
-  "prio": 3,
+  "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refs": [],
+  "refs": [
+    "MyTradingSys/research/btc_cycles_2026-11/RULE.md"
+  ],
   "result": "",
-  "scope_in": [],
+  "scope_in": [
+    "MyTradingSys/research/btc_cycles_2026-11/"
+  ],
   "scope_out": [],
-  "size": "",
+  "size": "S",
   "sources": [],
   "state": "raw",
   "steps": [],
   "tests": "",
   "title": "Cycle-bottom long: operator-called testnet trade (cotrade.py) when the flag shows CONFIRMED/ENTRY OK",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }

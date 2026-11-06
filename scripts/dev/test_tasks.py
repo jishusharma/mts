@@ -149,6 +149,16 @@ class DefinitionOfReadyTest(unittest.TestCase):
 
 
 
+class PathsCommaStringTest(unittest.TestCase):
+    """a17dac0d2: a card whose refs/scope_in is a comma string crashed _paths (list + str TypeError) and every ship's wiring check."""
+    def test_comma_string_and_list_give_the_same_paths(self):
+        as_str = T._paths({"refs": "MyTradingSys/a/x.py, MyTradingSys/b/", "scope_in": "scripts/dev/y.py"})
+        as_list = T._paths({"refs": ["MyTradingSys/a/x.py", "MyTradingSys/b/"], "scope_in": ["scripts/dev/y.py"]})
+        self.assertEqual(as_str, as_list)
+        self.assertEqual(as_str, {"x.py", "MyTradingSys/b", "y.py"})
+        self.assertEqual(T._paths({"refs": ["MyTradingSys/a/x.py"], "scope_in": "scripts/dev/y.py"}), {"x.py", "y.py"})
+
+
 class LayerFieldTest(unittest.TestCase):
     """A card names its layer family (layer_index.json) so LAYERS.md and the brief point the session at the layer's files."""
     def test_unknown_layer_fails_ready_known_layer_passes(self):
