@@ -7,18 +7,12 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-05T11:20:47Z",
-    "misses": 12,
+    "folded": "2026-11-06T07:26:45Z",
+    "misses": 37,
     "reads": [
-      "scripts/dev/mts_signal.py",
-      "MyTradingSys/backtest/fetch_futures_metrics.py",
-      "scripts/dev/refresh_main_checkout.py",
-      "scripts/dev/check_handoff.py",
-      "scripts/dev/test_check_handoff.py",
-      "MyTradingSys/system/NEXT_SESSION.md",
-      "scripts/dev/test_refresh_main_checkout.py"
+      "MyTradingSys/system/LAYER_LAB.md"
     ],
-    "session": "agent-a7777a933a33f24db"
+    "session": "agent-a667485f677ec74a1"
   },
   "created": "2026-11-04T13:57:14Z",
   "depends_on": [],
@@ -35,7 +29,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "class=C2. SPEC.md was fixed in bbaa2d3f1 after Gemini FIX-FIRST (REVIEW_GEMINI_1104.md). Card fully scoped; waits only on a real REVIEWED:ACCEPT stamp from card gemini-spec-rereview-wt-bible-1105, then take. Windows from splits.py only; HOLDOUT never loaded.",
+  "note": "class=C2. SPEC.md was fixed in bbaa2d3f1 after Gemini FIX-FIRST (REVIEW_GEMINI_1104.md). Card fully scoped; waits only on a real REVIEWED:ACCEPT stamp from card gemini-spec-rereview-wt-bible-1105, then take. Windows from splits.py only; HOLDOUT never loaded. DECISION (OURS, planner 1106): stays SONNET; CODEX build needs an existing mutation-check test file, and the study scripts do not exist yet, so GPT routing is not possible until a test skeleton lands.",
   "prio": 2,
   "refine_tries": 5,
   "refined_by": "",
