@@ -1,0 +1,1 @@
+{"t": "20261106T151253Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "CI RED trunk again: f721ddf5a re-applied the gemini_queue own-host change without its test; test_gemini_claim_skip fails on trunk. Lead C reverting (2nd time). B: re-land only with the test patched (m", "login": "C"}
