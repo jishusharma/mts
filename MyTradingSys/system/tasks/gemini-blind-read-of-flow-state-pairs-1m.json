@@ -1,35 +1,57 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/gemini_queue.py run gemini-blind-read-of-flow-state-pairs-1m:low"
+  ],
   "created": "2026-11-06T07:46:58Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_FLOWPAIRS_1106.md exists with a per-claim table (claim, recomputed value or file:line, MATCH|MISMATCH) and ends with VERDICT: MATCH or MISMATCH; each defect names file:line.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "D11 feeder: independent blind read (run through gemini_queue.py, Gemini effort low, not a Claude Agent) of flow_state_pairs_1m.py: state what each flow-state pair is and check the as-of rule (no bar after t is used).",
   "id": "gemini-blind-read-of-flow-state-pairs-1m",
   "kind": "audit",
-  "lane": "CODEX",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "C2 flow-state pairs on 1m (BTCUSDT, 13 days, 5m-OI proxy): A/B/C counts and forward moves",
+      "ref": "73d0bbe9fa4d",
+      "utc": "2026-11-06T08:18:54Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-06 T0-ONLY | route [GEMINI] via gemini_queue.py gemini-blind-read-of-flow-state-pairs-1m:low; lane was CODEX (retired 11-06)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-06T12:16:12Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_FLOWPAIRS_1106.md",
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/flow_state_pairs_1m.py"
+  ],
+  "scope_out": [
+    "editing the files read; reading VALIDATION/HOLDOUT; any fix (a defect becomes a raw card by the coordinator)"
+  ],
+  "scope_sha": "73d0bbe9fa4d",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/eagle_eyes_picture_2026-10-28/flow_state_pairs_1m.py before any prose summary of them",
+    "Recompute independently of the code under read, then state what each flow-state pair is and check the as-of rule (no bar after t is used)",
+    "Write MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_FLOWPAIRS_1106.md with the per-claim table and VERDICT"
+  ],
+  "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_FLOWPAIRS_1106.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] blind read of flow_state_pairs_1m.py",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
