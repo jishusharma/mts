@@ -1,37 +1,67 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest -q MyTradingSys/tools/live_aid/test_spec_premarket.py"
+  ],
   "created": "2026-11-05T16:48:30Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/tools/live_aid/premarket_risk.js (pure function: quotes -> flag + reasons) with MyTradingSys/tools/live_aid/test_spec_premarket.py (fixture quotes, fails before the module exists: 11-05 case flags, quiet day does not, missing quote shows UNKNOWN not OFF) passing, and live_aid.html renders the flag; the live-aid REQUIREMENTS.md gets one row with thresholds labelled OURS.",
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "live_aid shows a pre-US-open risk flag (before 14:30Z) when Nasdaq-100 futures < -0.5% or Kospi < -3% vs prior close, with VIX and top chip movers shown, from a public quote source; each flag is appended to a local log with the BTC 4h outcome later. Thresholds are OURS (from the 11-05 case: NQ -0.6%, Kospi -5.3%, BTC 80.4k to 75.6k), descriptive only.",
   "id": "premarket-risk-flag-1105",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "bigcandle story: big-candle stories x top-trader class x phase base rates + live_aid panel",
+      "ref": "b2010203f032",
+      "utc": "2026-11-05T14:07:16Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "33c901b8efa5 live_aid R17: 2m, 7m, 10m rows folded from 1m, read by strip, divergences and",
+      "ref": "MyTradingSys/tools/live_aid/REQUIREMENTS.md",
+      "utc": "2026-11-03T13:57:53Z"
+    }
+  ],
   "layers": [
     "session_timing"
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-06 ACCEPT reviewer=sonnet-review-agent-ae068d00 planner=Session_Planner\nplanner 1106: no quote source is wired yet; DECISION (OURS): use a public no-key quote endpoint behind one fetch function, tests use fixtures only. No order, key or live-tree access.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-06T07:53:20Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/premarket_risk.js",
+    "MyTradingSys/tools/live_aid/test_spec_premarket.py",
+    "MyTradingSys/tools/live_aid/live_aid.html",
+    "MyTradingSys/tools/live_aid/REQUIREMENTS.md",
+    "MyTradingSys/tools/live_aid/test_spec_us_open.py"
+  ],
   "scope_out": [],
-  "size": "",
+  "scope_sha": "b2010203f032",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Copy the test layout of test_spec_us_open.py; write the three fixture tests first and run them red",
+    "Implement premarket_risk.js and wire the flag into live_aid.html; unreachable source degrades to UNKNOWN (fail closed: never shows a calm OFF)",
+    "Add the REQUIREMENTS row; run live_aid tests; ship. verify: content commit sha, cherry against origin/fast-track empty, delivered files in ls-tree of origin/fast-track"
+  ],
+  "tests": "python -m pytest -q MyTradingSys/tools/live_aid/test_spec_premarket.py",
   "title": "live_aid pre-US-open risk flag: Nasdaq-100 futures, Kospi/SK hynix close, top chip pre-market movers, VIX; flag when NQ futures < -0.5% or Kospi < -3% before 14:30Z; record each flag + BTC 4h outcome (11-05: Qualcomm -26% phone chips after close 11-04, Kospi -5.3%, NQ -0.6% at 12:46Z; BTC 80.4k->75.6k)",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

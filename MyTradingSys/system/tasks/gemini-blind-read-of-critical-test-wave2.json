@@ -1,7 +1,19 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T07:40:42Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-06T07:44:02Z",
+    "misses": 70,
+    "reads": [
+      "scripts/dev/mts_signal.py",
+      "scripts/dev/refresh_main_checkout.py",
+      "scripts/dev/test_refresh_main_checkout.py"
+    ],
+    "session": "agent-a04ed27f4869ff838"
+  },
   "created": "2026-11-05T02:28:54Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_CRITICAL_TEST_WAVE2.md lists every headline number of critical_test_wave2_2026-10-30/RESULT.md recomputed from item6_result.json, item7_census.tsv and item8_minbtl.tsv, a per-number match table, and ends with VERDICT: MATCH or MISMATCH.",
@@ -13,10 +25,18 @@
   "id": "gemini-blind-read-of-critical-test-wave2",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "blind read: 40 MATCH, 1 minor DIFF (6-12% should be 6-11%), lag check not recomputable; VE",
+      "ref": "637a4d703",
+      "utc": "2026-11-06T07:40:42Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: audit complete",
   "not_twin_of": [
     "gemini-blind-read-rsi-40-60-1104",
     "gemini-blind-read-wt-extreme-cross-2026-11"
@@ -29,7 +49,12 @@
   "refs": [
     "MyTradingSys/research/critical_test_wave2_2026-10-30/RESULT.md"
   ],
-  "result": "",
+  "result": "blind read: 40 MATCH, 1 minor DIFF (6-12% should be 6-11%), lag check not recomputable; VERDICT MATCH",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_CRITICAL_TEST_WAVE2.md",
     "MyTradingSys/research/critical_test_wave2_2026-10-30"
@@ -38,12 +63,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read item6_result.json, item7_census.tsv and item8_minbtl.tsv in critical_test_wave2_2026-10-30 before RESULT.md",
     "Recompute the gap percentiles, the census class counts and MinBTL(N) for N 7..10 independently of the study scripts",
     "Write MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_CRITICAL_TEST_WAVE2.md with a per-number match table and VERDICT"
   ],
+  "taken": "2026-11-06T07:40:42Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_CRITICAL_TEST_WAVE2.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] blind read of critical_test_wave2 RESULT.md",
   "weight": "ROUTINE",

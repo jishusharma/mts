@@ -6,7 +6,9 @@
     "python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/wt_bible_studies_2026-11-04/wt_mtf_nesting/RESULT.md').read_text(); assert 'Regime mix:' in t and 'VERDICT' in t.upper()\""
   ],
   "created": "2026-11-04T13:57:15Z",
-  "depends_on": [],
+  "depends_on": [
+    "gemini-spec-rereview-wt-bible-1105"
+  ],
   "done_when": "MyTradingSys/research/wt_bible_studies_2026-11-04/wt_mtf_nesting/PRE_REG.md frozen before any run (from SPEC.md Card 2, prereg_gate output pasted, ## Context and a Regime mix line), then MyTradingSys/research/wt_bible_studies_2026-11-04/wt_mtf_nesting/RESULT.md with per-cell n, net CI, Holm p, a Regime mix line and VERDICT PASS/FAIL/INCONCLUSIVE; VALIDATION read at most once, HOLDOUT never.",
   "est_turns": 38,
   "formula_id": "",
@@ -20,7 +22,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "class=C2. SPEC.md was fixed in bbaa2d3f1 after Gemini FIX-FIRST (REVIEW_GEMINI_1104.md). Card fully scoped; waits only on a real REVIEWED:ACCEPT stamp from card gemini-spec-rereview-wt-bible-1105, then take. Windows from splits.py only; HOLDOUT never loaded.",
+  "note": "REVIEWED:2026-11-06 ACCEPT reviewer=sonnet-review-agent-ae068d00 planner=Session_Planner\nclass=C2. SPEC.md was fixed in bbaa2d3f1 after Gemini FIX-FIRST (REVIEW_GEMINI_1104.md). Card fully scoped; depends_on gemini-spec-rereview-wt-bible-1105 (must end VERDICT: ACCEPT before take). Windows from splits.py only; HOLDOUT never loaded.",
   "prio": 2,
   "refine_tries": 5,
   "refined_by": "",

@@ -108,8 +108,12 @@ def promote_shared(repo):
                     cited.add(cid)
     for cid in cited:
         target = by_id[cid]
-        if target.get("weight") != "B-SHARED":
+        changed = not target.get("shared")
+        target["shared"] = True
+        if target.get("weight") not in ("CRUCIAL", "CRITICAL", "B-SHARED"):   # max weight stays (DECISION OURS 2026-11-06)
             target["weight"] = "B-SHARED"
+            changed = True
+        if changed:
             p = path_of(repo, cid)
             p.write_text(json.dumps(target, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
 

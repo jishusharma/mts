@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T07:37:31Z",
   "commands": [],
   "created": "2026-11-05T18:19:15Z",
   "depends_on": [],
@@ -13,17 +14,30 @@
   "id": "gemini-blind-read-of-c31-multi-symbol-20",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "21 FOUND 1 DIFF 4 NOT_IN_DATA (klines absent); numbers reproduce from summary.json",
+      "ref": "203aedd36",
+      "utc": "2026-11-06T07:37:31Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: blind read complete",
   "note": "REVIEWED: c31-multi-sym-m2-1105 2026-11-05\nT0-ONLY\n(template of done gemini-blind-read cards; twin check: no blind read of this folder in tasks/). Never use model output as the source.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-05T18:19:55Z",
   "refs": [],
-  "result": "",
+  "result": "21 FOUND 1 DIFF 4 NOT_IN_DATA (klines absent); numbers reproduce from summary.json",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/c31_multi_symbol_2026-11/RESULT.md (read)",
     "MyTradingSys/research/c31_multi_symbol_2026-11/summary.json (read)",
@@ -39,12 +53,13 @@
   "sources": [
     "MyTradingSys/research/c31_multi_symbol_2026-11/RESULT.md:1-40"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "List every number quoted in the report",
     "Read summary.json or re-run study.py from a scratch copy; copy the number found",
     "Write FOUND/DIFF/NOT_IN_DATA per row, counts on line 1"
   ],
+  "taken": "2026-11-06T07:37:31Z",
   "tests": "audit card, output file is the test; each row quotes the source line it was matched to; repo files stay byte-identical (git diff empty)",
   "title": "[GEMINI] blind re-read of c31_multi_symbol_2026-11 RESULT.md: every number against summary.json and study.py",
   "weight": "ROUTINE",

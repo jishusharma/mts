@@ -851,6 +851,19 @@ class LabMachineChecksTest(unittest.TestCase):
         T.save(self.repo, good("USE1", scope_in=["BASE1 results.md"]))
         T.promote_shared(self.repo)
         self.assertEqual(T.get(self.repo, "BASE1")["weight"], "B-SHARED")
+        self.assertTrue(T.get(self.repo, "BASE1")["shared"])
+
+    def test_promote_shared_keeps_crucial_and_critical(self):
+        T.save(self.repo, good("CRIT1", weight="CRITICAL"))
+        T.save(self.repo, good("CRUC1", weight="CRUCIAL"))
+        T.save(self.repo, good("IMP1", weight="IMPORTANT"))
+        T.save(self.repo, good("USE1", scope_in=["CRIT1 a.md", "CRUC1 b.md", "IMP1 c.md"]))
+        T.promote_shared(self.repo)
+        self.assertEqual(T.get(self.repo, "CRIT1")["weight"], "CRITICAL")
+        self.assertEqual(T.get(self.repo, "CRUC1")["weight"], "CRUCIAL")
+        self.assertEqual(T.get(self.repo, "IMP1")["weight"], "B-SHARED")
+        for cid in ("CRIT1", "CRUC1", "IMP1"):
+            self.assertTrue(T.get(self.repo, cid)["shared"], cid)
 
     def test_build_requires_a_dummy_or_shuffled_output_mutation_probe(self):
         card = good(lane="CODEX", kind="build", mutation_check="")
