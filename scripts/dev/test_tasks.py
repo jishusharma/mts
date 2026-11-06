@@ -1142,6 +1142,17 @@ class ResultTrustTest(unittest.TestCase):
         self.assertEqual(shared['shared_consumers'], ['USE'])
         self.assertEqual(T.result_trust_problems(self.consumer, self.repo), [])
 
+    def test_mark_shared_bases_keeps_crucial_and_critical(self):
+        for weight, expected in (('CRUCIAL', 'CRUCIAL'), ('CRITICAL', 'CRITICAL'), ('', 'B-SHARED')):
+            with self.subTest(weight=weight):
+                self.base['weight'] = weight
+                self.verify()
+                T.mark_shared_bases(self.consumer, self.repo)
+                marked = T.get(self.repo, 'BASE')
+                self.assertEqual(marked['weight'], expected)
+                self.assertEqual(marked['shared_consumers'], ['USE'])
+                self.assertIn(T.card_class(marked), ('C2', 'C3'))
+
     def test_take_and_active_done_enforce_result_trust(self):
         previous = T.REPO
         T.REPO = self.repo

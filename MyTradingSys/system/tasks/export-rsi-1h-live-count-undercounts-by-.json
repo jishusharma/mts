@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "sim hosted page: drawdown shading, Monte Carlo band, year-by-year stability flag",
-      "ref": "9e31182d4d34",
-      "utc": "2026-11-03T14:02:21Z"
+      "line": "WIP save: rsi1h-count-a-2 (agent died at 5h limit 2026-11-06 08:55Z)",
+      "ref": "4a5a94b30418",
+      "utc": "2026-11-06T12:18:42Z"
     }
   ],
   "layers": [],
@@ -29,7 +29,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-05T04:41:32Z",
+  "refreshed": "2026-11-06T13:57:50Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -41,7 +41,7 @@
     "the HIGH 3,200+/3,156 fix (separate card correct-t09-exact-match-count-and-3-200-)",
     "any backtest re-run; T09_live_parity.md prose"
   ],
-  "scope_sha": "9e31182d4d34",
+  "scope_sha": "4a5a94b30418",
   "size": "S",
   "sources": [
     "MyTradingSys/research/layer_lab/reports/2026-10-28_gpt-t09-table-recount.md (MED finding)"

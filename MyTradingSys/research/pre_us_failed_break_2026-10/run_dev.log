@@ -1,0 +1,17 @@
+DEV bars 1313280  2022-01-01 00:00:00+00:00 .. 2024-06-30 23:59:00+00:00
+buy-and-hold BTC max drawdown over DEV (daily close): 66.9 %
+funding NOT_IN_DATA (flat 1 bp across 08:00Z)
+DECISION (OURS): levels (PDH/ASH/swing) are fixed from bars BEFORE the break bar; a level counts only if >= 0.5 ATR above the day's 00:00 open
+DECISION (OURS): break = first crossing per level per day with the break bar open inside W; ATR(break) used for break/E, ATR(signal bar) for the trade
+DECISION (OURS): high of a bar that pushes E above 1.5 ATR kills the level even if that bar also closes below L (high precedes close)
+DECISION (OURS): ATR = last 1h bar whose close time <= signal bar close; Wilder, seeded with the mean of the first 14 TR
+DECISION (OURS): limit tranches and the target are active from bar t+2 (bar t+1 only holds the open fill); limit fills at its own price on trade-through of one tick
+DECISION (OURS): same bar hits both the target and a higher tranche limit: target first (tranche not filled), the conservative order
+DECISION (OURS): time-cap exit at the open of the window-end bar, taker, +2 bps slippage; funding: raw_fund absent -> flat 1 bp of the open size at 08:00Z (funding NOT_IN_DATA)
+DECISION (OURS): one position per day: only the first signal of the day is traded; the 3-per-day cap is therefore moot
+DECISION (OURS): second reported variant 'window end 13:00' equals the primary (PRE_REG s10 names it, defines nothing different): printed once as primary
+CELL primary_W13 {"bh_mdd_pct": 66.93592932300723, "mae_max": 5.494452016375079, "mae_p50": 0.14090175088371285, "mae_p90": 1.1285631236439702, "mdd_pct": 12.64618005720065, "mean_bps": -1.7339929580194386, "mean_loss": -0.4867131139042281, "mean_pct": -0.017339929580194386, "mean_win": 0.27819133462382684, "n": 176, "sd_pct": 0.689914038653218, "se_pct": 0.052004227359351736, "signals": 228, "t": -0.33343307766837166, "target_days": 22, "target_sum": 11.356064236408505, "timecap_days": 154, "timecap_sum": -14.407891842522716, "verdict": "INCONCLUSIVE", "win_rate": 0.6136363636363636}
+CELL variant_W12 {"bh_mdd_pct": 66.93592932300723, "mae_max": 2.7478468105780456, "mae_p50": 0.10556915131781765, "mae_p90": 0.9410663686701786, "mdd_pct": 8.591461617124214, "mean_bps": -2.118331200505983, "mean_loss": -0.3212389086980196, "mean_pct": -0.021183312005059827, "mean_win": 0.2029088424871506, "n": 138, "sd_pct": 0.4672405788473578, "se_pct": 0.03977415941793114, "signals": 176, "t": -0.5325898099435354, "target_days": 11, "target_sum": 3.9045692396637235, "timecap_days": 127, "timecap_sum": -6.82786629636198, "verdict": "INCONCLUSIVE", "win_rate": 0.572463768115942}
+VERDICT (section 7, primary): INCONCLUSIVE
+Regime mix: 130 weeks: bull 25 (19%) | bear 0 (0%) | range 105 (81%) | n/a 0 (0%)
+episodes by regime: {'range': 152, 'bull': 24}
