@@ -5,7 +5,7 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-06T08:11:30Z",
+    "folded": "2026-11-06T08:16:43Z",
     "misses": 18,
     "reads": [
       "scripts/dev/analyst_levels.py",
