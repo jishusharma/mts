@@ -15,13 +15,16 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[2]
 sys.path.insert(0, str(REPO))
+from MyTradingSys.backtest import fees  # noqa: E402
 
 DATA_GLOB = "F:/MTS/data/tom_raw/klines/BTCUSDT-1m-20??-??.csv"
 DEV_START_MS = 1640995200000          # 2022-01-01 00:00Z
 DEV_END_MS = 1719792000000            # 2024-07-01 00:00Z, exclusive (section 6)
 MIN_MS, HOUR, DAY = 60000, 3600000, 86400000
 TICK = 0.1
-TAKER, MAKER, SLIP = 0.0005, 0.0002, 0.0002     # fees.py:27-28 (BINANCE_*); slippage 2 bps per taker leg (section 5)
+TAKER, MAKER = fees.BINANCE_TAKER, fees.BINANCE_MAKER   # fees.py:27-28 (SOURCED)
+LEG_BPS = 2.0                                    # 2 bps adverse price per taker leg (section 5, OURS)
+SLIP_F = LEG_BPS * 1e-4
 FUND_BP = 1.0                                    # flat 1 bp when held across 08:00Z, raw_fund absent (section 5)
 BRK, EXC, FAILN = 0.10, 1.5, 3                   # section 2
 LVL_MIN = 0.5                                    # level at least 0.5 ATR above the day's 00:00 open
@@ -194,7 +197,7 @@ def run(tp, wend_h):
 
 
 def trade(tp, day0, a, b, ei, atr, e1, w1):
-    fills = [(e1 * (1 - SLIP), 0.25, "T")]                      # sell, taker, slippage against us
+    fills = [(e1 * (1 - SLIP_F), 0.25, "T")]                      # sell, taker, slippage against us
     limits = [e1 + j * 0.5 * atr for j in range(1, TR_N)]
     # S_dn candidates as of the signal bar close
     ts_sig = tp.t[ei - 1]
@@ -210,7 +213,7 @@ def trade(tp, day0, a, b, ei, atr, e1, w1):
     for i in range(ei + 1, b):
         ts = tp.t[i]
         if ts >= w1:
-            exit_px, kind = tp.o[i] * (1 + SLIP), "TIMECAP"
+            exit_px, kind = tp.o[i] * (1 + SLIP_F), "TIMECAP"
             break
         if tp.l[i] <= target - TICK:
             exit_px, kind = target, "TARGET"
@@ -221,7 +224,7 @@ def trade(tp, day0, a, b, ei, atr, e1, w1):
             nfill += 1
         mae = max(mae, _mae(fills, tp.h[i]))
     if exit_px is None:                                           # window end beyond data day end
-        exit_px, kind = tp.c[b - 1] * (1 + SLIP), "TIMECAP"
+        exit_px, kind = tp.c[b - 1] * (1 + SLIP_F), "TIMECAP"
     gross = net = 0.0
     held_0800 = day0 + 8 * HOUR
     for px, size, how in fills:
@@ -231,7 +234,7 @@ def trade(tp, day0, a, b, ei, atr, e1, w1):
         fee_out = (TAKER if kind == "TIMECAP" else MAKER) * units * exit_px
         gross += g
         net += g - fee_in - fee_out
-    # slippage already inside e1*(1-SLIP) and the cap exit price; target-hit tranche exits are maker, 0 slip
+    # slippage already inside e1*(1-SLIP_F) and the cap exit price; target-hit tranche exits are maker, 0 slip
     # funding: flat 1 bp of the open size when the position straddles 08:00Z
     if tp.t[ei] < held_0800 and (kind == "TIMECAP" or True) and _exit_ts(tp, ei, b, exit_px, kind, target, w1) > held_0800:
         net -= FUND_BP * 1e-4 * sum(f[1] for f in fills)
