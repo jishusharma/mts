@@ -1,0 +1,42 @@
+{
+ "BTCUSDT": {
+  "bars_1h": 21888,
+  "ok": true
+ },
+ "ETHUSDT": {
+  "bars_1h": 21888,
+  "ok": true
+ },
+ "SOLUSDT": {
+  "bars_1h": 21768,
+  "ok": true
+ },
+ "BNBUSDT": {
+  "bars_1h": 21888,
+  "ok": true
+ },
+ "XRPUSDT": {
+  "bars_1h": 21768,
+  "ok": true
+ },
+ "DOGEUSDT": {
+  "bars_1h": 21888,
+  "ok": true
+ },
+ "ADAUSDT": {
+  "bars_1h": 21888,
+  "ok": true
+ },
+ "AVAXUSDT": {
+  "bars_1h": 21888,
+  "ok": true
+ },
+ "LINKUSDT": {
+  "bars_1h": 21888,
+  "ok": true
+ },
+ "LTCUSDT": {
+  "bars_1h": 21768,
+  "ok": true
+ }
+}
