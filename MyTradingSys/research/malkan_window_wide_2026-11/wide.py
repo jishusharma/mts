@@ -35,7 +35,30 @@ import verdicts  # noqa: E402
 
 DEV_END_MS = base.DEV_END_MS
 DAY, H, COST, ARMS, KINDS, TF_MS = base.DAY, base.H, base.COST, base.ARMS, base.KINDS, base.TF_MS
-arm_of, resample, load_1m, cell_stats = base.arm_of, base.resample, base.load_1m, base.cell_stats
+arm_of, resample, cell_stats = base.arm_of, base.resample, base.cell_stats
+_COLS = ["open_time", "open", "high", "low", "close"]
+
+
+def load_1m(root, sym, end_ms=DEV_END_MS):
+    """As study.load_1m but tolerates monthly files with no header row (SOL/XRP/LTC 2022-03); never opens a month at/after end_ms."""
+    if end_ms > DEV_END_MS:
+        raise ValueError("loader end %d is past DEV end %d" % (end_ms, DEV_END_MS))
+    out = []
+    y, m = 2022, 1
+    while base._ms(y, m) < end_ms:
+        p = Path(root) / ("%s-1m-%04d-%02d.csv" % (sym, y, m))
+        if p.exists():
+            with open(p, newline="", encoding="utf-8") as f:
+                rows = list(csv.reader(f))
+            if rows and rows[0][0] == "open_time":
+                rows = rows[1:]
+            for r in rows:
+                t = int(r[0])
+                if base.DEV_START_MS <= t < end_ms:
+                    out.append({"t": t, "o": float(r[1]), "h": float(r[2]), "l": float(r[3]), "c": float(r[4])})
+        y, m = (y + 1, 1) if m == 12 else (y, m + 1)
+    out.sort(key=lambda b: b["t"])
+    return out
 STRENGTH = 3                       # OURS: lookaround bars each side
 MIN_BARS_1H = 7200                 # OURS (card): fewer 1h bars = no-signal symbol
 MAX_PLAUSIBLE = prereg_gate.MAX_PLAUSIBLE_GROSS
