@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T13:07:01Z",
   "commands": [
     "python scripts/dev/gemini_queue.py run gemini-blind-read-of-malkan-window-dev-s:low"
   ],
@@ -17,6 +18,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "VERDICT: CLEAN / NUMBERS MATCH — MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ",
+      "ref": "d57726fb7",
+      "utc": "2026-11-06T13:07:01Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Malkan window arms fee-net on DEV: INCONCLUSIVE",
@@ -27,13 +34,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "gemini-blind-read-of-kurisko-run-dev-py-",
   "note": "REVIEWED:2026-11-06 T0-ONLY | route [GEMINI] via gemini_queue.py gemini-blind-read-of-malkan-window-dev-s:low; lane was CODEX (retired 11-06)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-06T12:16:17Z",
   "refs": [],
-  "result": "",
+  "result": "VERDICT: CLEAN / NUMBERS MATCH — MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_MALKAN_WINDOW_1106.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_MALKAN_WINDOW_1106.md",
     "MyTradingSys/research/malkan_window_dev_2026-11/study.py",
@@ -45,12 +58,13 @@
   "scope_sha": "8fa8ac9e2713",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/malkan_window_dev_2026-11/study.py, MyTradingSys/research/malkan_window_dev_2026-11/counts.csv before any prose summary of them",
     "Recompute independently of the code under read, then recompute counts.csv rows from study.py logic and check the window rule against PRE_REG.md",
     "Write MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_MALKAN_WINDOW_1106.md with the per-claim table and VERDICT"
   ],
+  "taken": "2026-11-06T13:07:01Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_MALKAN_WINDOW_1106.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] blind read of malkan_window_dev study.py",
   "weight": "ROUTINE",

@@ -1,19 +1,26 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T13:12:42Z",
   "commands": [],
   "created": "2026-11-04T14:28:19Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_RUMERS_DEV_1104.md lists every DEV_CHECK.md table number recomputed from run_out/dev_shift*.json, a per-number match table, and ends with VERDICT: MATCH or MISMATCH.",
-  "est_turns": null,
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
   "goal": "D11 feeder check (A-20261104-1): independent Gemini blind read of the rumers DEV check (5 frozen rules, DEV 2022-04..2024-06, fee-net): recompute n, hit-rate, mean net R, SE, p and Holm p from run_out/dev_shift*.json first, then diff against DEV_CHECK.md; flag the R2 shift -1 mean of 49.658 R as a possible outlier or bug; confirm 0 PASS-DEV and END.",
   "id": "route-rumers-dev-blind-read",
   "kind": "audit",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "VERDICT: MATCH (75/75 match, 0 PASS-DEV confirmed, R2 shift -1 49.658 R flagged as lookahe",
+      "ref": "040144aae",
+      "utc": "2026-11-06T13:12:42Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -25,6 +32,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "gemini-blind-read-of-kurisko-run-dev-py-",
   "note": "planner-refine-1104e: routine C0 blind read.\nREVIEWED:2026-11-04 T0-ONLY",
   "prio": 3,
   "refine_tries": 0,
@@ -34,7 +42,12 @@
     "MyTradingSys/research/rumers_2026-11-01",
     "MyTradingSys/research/route_tag_2026-11-04/AUDIT.md"
   ],
-  "result": "",
+  "result": "VERDICT: MATCH (75/75 match, 0 PASS-DEV confirmed, R2 shift -1 49.658 R flagged as lookahead denominator artifact — MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_RUMERS_DEV_1104.md)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_RUMERS_DEV_1104.md",
     "MyTradingSys/research/rumers_2026-11-01"
@@ -47,14 +60,15 @@
   "sources": [
     "MyTradingSys/research/rumers_2026-11-01/DEV_CHECK.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read run_out/dev_shift*.json before DEV_CHECK.md",
     "Recompute per-rule n, hit-rate, mean net R, SE, p and Holm p for shifts 0, +1, -1 independently of gen_dev_check.py",
     "Write BLIND_READ_RUMERS_DEV_1104.md with a per-number table and VERDICT"
   ],
+  "taken": "2026-11-06T13:12:42Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_RUMERS_DEV_1104.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] blind read of rumers DEV check (4fb3c2fb5): confirm 0 PASS-DEV, then END",
   "weight": "ROUTINE",
-  "worker": ""
+  "worker": "agent"
 }
