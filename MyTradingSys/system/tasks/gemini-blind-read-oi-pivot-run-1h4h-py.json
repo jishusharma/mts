@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T13:15:36Z",
   "commands": [
     "python scripts/dev/gemini_queue.py run gemini-blind-read-oi-pivot-run-1h4h-py:low"
   ],
@@ -17,6 +18,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_OIPIVOT_1H4H_1106.md",
+      "ref": "5ab90c3de",
+      "utc": "2026-11-06T13:15:36Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "oi pivot 1h/4h DEV follow-up: 32 cells, descriptive",
@@ -27,13 +34,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: blind read completed",
   "note": "REVIEWED:2026-11-06 T0-ONLY | route [GEMINI] via gemini_queue.py gemini-blind-read-oi-pivot-run-1h4h-py:low; lane was CODEX (retired 11-06)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-06T12:16:24Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_OIPIVOT_1H4H_1106.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_OIPIVOT_1H4H_1106.md",
     "MyTradingSys/research/oi_pivot_2026-10-26/run_1h4h.py"
@@ -44,12 +57,13 @@
   "scope_sha": "c7ac075d58e5",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/oi_pivot_2026-10-26/run_1h4h.py before any prose summary of them",
     "Recompute independently of the code under read, then check the OI pivot rule, as-of timing and cost source",
     "Write MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_OIPIVOT_1H4H_1106.md with the per-claim table and VERDICT"
   ],
+  "taken": "2026-11-06T13:15:36Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_OIPIVOT_1H4H_1106.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] blind read oi_pivot run_1h4h.py",
   "weight": "ROUTINE",

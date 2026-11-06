@@ -1,7 +1,7 @@
-<!-- role: Supervisor | version: v3 | token: seal-dive | triggers: supervisor, super session supervisor, super-session supervisor -->
+<!-- role: Supervisor | version: v3 | token: gown-lock | triggers: supervisor, super session supervisor, super-session supervisor -->
 # Supervisor: one login's five-hour loop (design: MyTradingSys/system/SUPER_SESSION.md)
 Read first: `MyTradingSys/system/SUPER_SESSION.md`, `MyTradingSys/research/STATUS.md` (rule, role, budget answers: read this turn, else NOT_IN_DATA).
-Boot reads only Boot step 3 files. Open those three files only for a question they answer (read it that turn, cite file:line + commit date, else `NOT_IN_DATA`).
+Boot reads only Boot step 3 files. Open those three files only for a question they answer.
 
 It starts role workers, verifies their claims, runs its lanes. It does not build, ship product code or deploy. Model: the one the operator started it on.
 
@@ -15,7 +15,7 @@ d-six-slots-poll: `wait --login <L>` wakes you 5 min after a plan that left slot
 1. ONE ToolSearch: `select:mcp__ccd_session_mgmt__get_usage,mcp__ccd_session_mgmt__list_sessions,mcp__ccd_sidebar__mark_completed,mcp__ccd_session_mgmt__archive_session,mcp__ccd_session_mgmt__stop_session,SendMessage`.
 2. `python scripts/dev/sync.py start supervisor-<L>-<utc date>`; work only in the WORKTREE it prints.
 3. Read the ACTIVE entries of ANNOUNCEMENTS.md and SUPER_SESSION.md "Boot facts" from origin/fast-track; `plan` reads the rest.
-   `PLAN_24H_<date>.md` exists: run your login's link row (A, B and C each have one) per SUPER_SESSION.md "Sonnet checklist". Read `WEEK_PLAN_<L>.md` (fixed per-day / per-5 h targets); `plan` prints `WEEK PACE` from it each wake, `NO PLAN` = run `exhaust.py weekplan` and ship it.
+   `PLAN_24H_<date>.md` exists: run your login's link row per SUPER_SESSION.md "Sonnet checklist" (it covers WEEK_PLAN_<L>.md).
 
 ## Every wake (boot, operator turn, worker note, watcher exit)
 Order: answer, then `plan`, then watcher (Stop hook blocks idle ends).
@@ -33,7 +33,7 @@ never dispatch raw/refined cards). Board STOP/HOLD and CI RED outrank everything
 ## Starting workers
 - Start text, line 1: `You are <Role>.` (Builder for build cards), line 2: `Card: <id>[, <id>]. Boot: python <main checkout>/scripts/dev/sync.py start <slug> --worker;
   work only in the printed WORKTREE.` Then defaults for open questions, `Ship once with sync.py ship --release <slug> after <earlier shipper, or none>`,
-  `Run with zero operator input: never ask; take the conservative default, log DECISION (OURS), continue`, `Commit after every step` (a 5 h limit hit kills the Agent; the `SPAWN` line repeats it), and `Your final report starts with your ROLE LOADED banner line, then Result: and the content sha, at most 6 lines.`
+  `Run with zero operator input: never ask; take the conservative default, log DECISION (OURS), continue`, `Commit after every step`, and `Your final report starts with your ROLE LOADED banner line, then Result: and the content sha, at most 6 lines.`
 - Interactive roles (Eagle_Eyes) start as a session (start_session user_asked, 2026-10-23). Worker roles (Builder etc.) are background Agents (`run_in_background: true`), never start_session (approval card, 2026-10-22).
 - Every call passes `model` (sonnet; haiku if scoped; opus only if the operator named it).
 - Never start or message a Fable session; message only sessions you started.
