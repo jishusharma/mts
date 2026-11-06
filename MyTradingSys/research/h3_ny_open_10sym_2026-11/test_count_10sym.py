@@ -1,4 +1,5 @@
 import datetime as dt
+import pytest
 import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -34,6 +35,8 @@ def test_gap_drops_day_and_weekend_is_none():
 
 
 def test_btc_dev_count_equals_35():
+    if not (c.DATA_DIR / "klines").exists():
+        pytest.skip("1m kline cache absent (CI)")
     res = c.count("BTCUSDT", dt.date(2022, 1, 1), dt.date(2024, 7, 1))
     assert res is not None
     assert res["events"] == 35
