@@ -34,7 +34,7 @@ ATR_MULT_ELIG, ATR_BREAK, ATR_DEAD, ATR_STEP, ATR_FALLBACK = 0.5, 0.10, 1.5, 0.5
 FEE_LEG = fees.FEES_ALL_TAKER["entry"]
 ADVERSE_PX = 2 / 1e4              # 2 bps adverse price per leg (the slippage assumption, OURS; fees.py holds no slippage)
 LEG_COST = FEE_LEG + ADVERSE_PX     # 7 bps per leg, 14 bps round trip (the gate cost)
-FUNDING = 0.0001                  # flat 1 bp on weight held across 08:00 UTC, 'funding NOT_IN_DATA' (PRE_REG s5)
+SETTLE_DRAG = 1 / 1e4                  # flat 1 bp on weight held across 08:00 UTC, 'funding NOT_IN_DATA' (PRE_REG s5)
 TRANCHE = 0.25
 _NAME = re.compile(r"-1m-(\d{4})-(\d{2})(?:-\d{2})?\.csv$")
 
@@ -216,9 +216,9 @@ class Sym:
         if exit_px is None:
             exit_px = o[W1]
         gross = sum(TRANCHE * (f - exit_px) / f for f in fills)
-        cost = 2 * LEG_COST * TRANCHE * len(fills)
-        fund = FUNDING * fund_w if (e < 480 and exit_j >= 480) else 0.0
-        net = gross - cost - fund
+        rt_drag = 2 * LEG_COST * TRANCHE * len(fills)
+        fund = SETTLE_DRAG * fund_w if (e < 480 and exit_j >= 480) else 0.0
+        net = gross - rt_drag - fund
         return {"net_bps": net * 1e4, "gross_bps": gross * 1e4, "mae_pct": mae * 100, "outcome": outcome, "tranches": len(fills),
                 "entry": e1, "atr": a, "target": target, "t_min": t}
 
