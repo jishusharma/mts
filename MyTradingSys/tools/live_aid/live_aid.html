@@ -193,6 +193,14 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     <span class="tag" id="bc-tag">Hours with a big move only; flat hours are not in the table. Continuation is near a coin flip: context, never a signal; no size, no orders.</span>
   </section>
 
+  <!-- 2c2c. VALUE AREA + ACCEPTANCE (card live-aid-balance-acceptance-1105; research/value_area_acceptance_2026-11-05; descriptive) -->
+  <section id="p-va">
+    <div class="hd"><h2>Value area and acceptance</h2><span class="src" title="Prior UTC day value area: 70 % of the day's 1m volume around the POC, 1m closes binned to $50 (rule of research/value_area_acceptance_2026-11-05/accept80.py): OURS. Acceptance = two consecutive completed 30m closes outside it (after a close inside) or back inside it (after trading outside). Odds are OURS from RESULT.md: BTC 1m, fee-free, descriptive, no placebo yet. Above VAH is UNMEASURED.">OURS</span><span class="age" id="age-va">--</span></div>
+    <div class="vrow"><span class="huge" id="va-state">--</span><span class="sub" id="va-sub"></span></div>
+    <div class="scroll"><table><thead><tr><th>VAL</th><th>POC</th><th>VAH</th><th>Price</th><th>Acceptance flag</th><th>Base rate (OURS)</th></tr></thead><tbody id="va-rows"></tbody></table></div>
+    <span class="tag">Descriptive only: a 2 x 30m close outside or inside the prior day's value is context, never a signal; no size, no orders. Re-entry reaching the far edge 44 % (n 493, CI 40-49 %); accepted below VAL then a further half-width lower 77 % (n 300, CI 72-81 %, partly plain volatility).</span>
+  </section>
+
   <!-- 2c3. LEVEL APPROACH PREP (card level-approach-prep; research/level_approach_prep_2026-11-05; descriptive) -->
   <section id="p-lap">
     <div class="hd"><h2>Level approach prep</h2><span class="src" title="Marked levels within 0.5 % (prev day, 2-day, weekly H/L, analyst levels). Absorption = 1m taker delta share >= +0.3 into the level over 3 bars with under 0.1 % extension over the next 3; OI tell = Binance OI over 15 min, flat under 0.1 %; wick rejection on 1m/2m/3m/5m in the last 15 min; RSI 14 on 5m at 70/30; coil from the 15m band: all OURS (PRE_REG). Odds MEASURED fee-free descriptive for prev-day H/L only: Binance USD-M BTCUSDT 1m + metrics 5m OI, DEV 2022-01..2024-06, 887 approaches / 733 touches; every other level UNMEASURED.">OURS + MEASURED</span><span class="age" id="age-lap">--</span></div>
@@ -482,6 +490,15 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     }, function (e) { S.ph.err = 'phase klines failed: ' + (e.name === 'AbortError' ? 'timeout' : e.message); });
   }
 
+  // Prior UTC day 1m rows for the value area: two REST pages (1000 + 440), once per UTC day and retried hourly until complete.
+  function loadPriorDay() {
+    var d0 = Math.floor(Date.now() / 86400000) * 86400000, p0 = d0 - 86400000, u = 'https://fapi.binance.com/fapi/v1/klines?symbol=BTCUSDT&interval=1m&limit=1000&startTime=';
+    if (S.pv && S.pv.day === d0 && !S.pv.err) return;
+    Promise.all([getJson(u + p0), getJson(u + (p0 + 1000 * 60000))]).then(function (r) {
+      S.pv = { day: d0, rows: r[0].concat(r[1]), t: Date.now(), err: '' };
+    }, function (e) { S.pv = { day: d0, rows: null, t: Date.now(), err: 'prior-day 1m failed: ' + (e.name === 'AbortError' ? 'timeout' : e.message) }; });
+  }
+
   var TFS = [{ k: '1m', ms: 60000, n: 1500, dr: '1' }, { k: '5m', ms: 300000, n: 300, dr: '5' }, { k: '15m', ms: 900000, n: 1500, dr: '15' }, { k: '1h', ms: 3600000, n: 1500, dr: '60' }];
   // 2m/7m/10m are folded from the 1m rows from the UTC day start (no venue serves them; R17); 4h from 1h on 00/04/08Z ...
   // (Deribit has no 4h candles). Folded rows are read everywhere a timeframe is listed: strip, divergences, forming bar.
@@ -765,6 +782,20 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     $('age-bc').textContent = S.klT ? Math.round((now - S.klT) / 1000) + 's' : '--';
   }
 
+  function renderVA(now) {
+    var tb = $('va-rows'), pv = S.pv, d0 = dayStart(now), px = venuePrice();
+    var va = pv && pv.rows && pv.day === d0 ? A.vaPriorDay(pv.rows, now) : { err: pv && pv.err ? pv.err : pv && pv.rows ? 'prior-day 1m is from an earlier UTC day, reloading' : 'prior-day 1m not loaded' };
+    if (va.err) { $('va-state').textContent = 'no value area'; $('va-sub').textContent = va.err; tb.innerHTML = '<tr><td colspan="6" class="dim">' + esc(va.err) + ': no flag shown</td></tr>'; return; }
+    var m1 = (S.tf['1m'] || []).filter(function (r) { return +r[0] >= d0; });
+    var ac = A.vaAcceptance(va, m1, now);
+    var NAME = { below: 'ACCEPTED BELOW VAL', above: 'ACCEPTED ABOVE VAH', reentry: 'ACCEPTED BACK INSIDE' }, where = !isFinite(px) ? NID : px < va.val ? 'below VAL' : px > va.vah ? 'above VAH' : 'inside';
+    var rate = ac.rate ? '<b>' + ac.rate.p + '%</b> (n=' + ac.rate.n + ', ' + ac.rate.lo + '-' + ac.rate.hi + '%) ' + (ac.flag === 'below' ? 'a further half-width lower today' : 'reaches the far edge today') + ' <span class="dim">OURS</span>' : ac.flag ? '<span class="dim">UNMEASURED</span>' : '<span class="dim">-</span>';
+    $('va-state').textContent = ac.flag ? NAME[ac.flag] : 'no acceptance flag';
+    $('va-sub').textContent = 'prior UTC day, ' + va.bars + ' 1m bars; ' + ac.closes + ' completed 30m closes today' + (ac.last ? ', last ' + fmt(ac.last.close, 1) + ' at ' + hhmm(ac.last.t) : '') + (ac.err ? '; ' + ac.err : '');
+    tb.innerHTML = '<tr' + (ac.flag ? ' class="up"' : '') + '><td>' + fmt(va.val, 0) + '</td><td>' + fmt(va.poc, 0) + '</td><td>' + fmt(va.vah, 0) + '</td><td>' + (isFinite(px) ? fmt(px, 1) : NID) + ' <span class="dim">' + where + '</span></td><td>' + (ac.flag ? '<b>' + NAME[ac.flag] + '</b>' : 'no') + '</td><td>' + rate + '</td></tr>';
+    $('age-va').textContent = pv.t ? Math.round((now - pv.t) / 1000) + 's' : '--';
+  }
+
   function lapLevels(now) {
     var L = [], pd = prevDayHL(now), rows = S.daily ? S.daily.rows : [], d0 = dayStart(now);
     if (isFinite(pd.h)) L.push({ level: pd.h, name: 'prev day high' }, { level: pd.l, name: 'prev day low' });
@@ -809,6 +840,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     renderUsOpen(now);
     try { renderAntic(now); } catch (e) { $('am-rows').innerHTML = '<tr><td colspan="6" class="err">' + esc(e.message) + '</td></tr>'; }
     try { renderBigCandle(now); } catch (e) { $('bc-rows').innerHTML = '<tr><td colspan="7" class="err">' + esc(e.message) + '</td></tr>'; }
+    try { renderVA(now); } catch (e) { $('va-rows').innerHTML = '<tr><td colspan="6" class="err">' + esc(e.message) + '</td></tr>'; }
     var coilR = renderCoil(now);
     try { renderLevelApproach(now, coilR); } catch (e) { $('lap-rows').innerHTML = '<tr><td colspan="6" class="err">' + esc(e.message) + '</td></tr>'; }
     renderLiq(now);
@@ -1342,7 +1374,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
   loadNews(); setInterval(loadNews, 15000);
   loadPremarket(); setInterval(loadPremarket, 120000);
   setInterval(omSample, 10000); loadBybitOi(); setInterval(loadBybitOi, 60000);
-  loadTopTraders(); setInterval(loadTopTraders, 300000); loadPhase(); setInterval(loadPhase, 3600000);
+  loadTopTraders(); setInterval(loadTopTraders, 300000); loadPhase(); setInterval(loadPhase, 3600000); loadPriorDay(); setInterval(loadPriorDay, 3600000);
   loadBinanceOi(true); setInterval(function () { loadBinanceOi(false); }, 30000); setInterval(function () { loadBinanceOi(true); }, 300000);
   loadCal();
   route();
