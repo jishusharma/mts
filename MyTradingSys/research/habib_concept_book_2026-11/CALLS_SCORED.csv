@@ -1,0 +1,10 @@
+call_id,posted_utc,direction,entry,target1,status,fill_utc,target_utc,mae_pct_before_target,stop_given,stopped_before_target,target_dist_bp,net_bp_fee10_nostop,nearest_known_level,gap_bp_24h,entry_touch_h_after_post,target_after_touch_30d,progress_to_target_30d,round_1000,underlying_imbalance,trigger_candle
+QRP-yKm-lCrA_zw-03,2026-07-14T11:47:02Z,short,65600,60000,miss,,,,,,854,,none within 0.3%,49,27,no,59%,no,none,not filled
+QRP-dYlk1gtY2Lk-01,2026-07-21T11:21:33Z,short,66400,65400,full,07-21 12:11,07-23 07:11,0.84,,,151,141,Prior 7d high 66421 (0.03%),0,1,43h,412%,no,1h 07-21 10:00 rv2.4 mid wickless-bottom [open],1h 07-21 13:00 rv2.4 mid rej-wick 5%
+QRP-tJnls-_oGXc-02,2026-08-11T11:59:40Z,short,64600,62000,miss,,,,,,402,,none within 0.3%,13,150,no,22%,no,4h 08-10 12:00 rv2.4 large wick-both [mid],not filled
+QRP-xnuGOjqzcqY-01,2026-08-27T11:39:59Z,long,76600,81000,miss,,,,,,574,,none within 0.3%,303,126,45h,245%,no,12h 08-21 12:00 rv2.7 mid wick-both [open],not filled
+QRP-xnuGOjqzcqY-02,2026-08-27T11:39:59Z,long,72000,100000,miss,,,,,,3889,,none within 0.3%,961,never<=30d,no,,yes,12h 08-20 12:00 rv2.5 mid wick-both [open],not filled
+QRP-t5xiPuo3yuc-03,2026-09-15T11:45:04Z,short,80000,75500,miss,,,,,,562,,Prior 7d high 79890 (0.14%),332,73,no,0%,yes,12h 09-03 12:00 rv2.1 large wickless-bottom [mid],not filled
+QRP-ZPFK3ZsLwoo-05,2026-09-21T07:11:25Z,short,79500,73000,miss,,,,82800,,818,,none within 0.3%,279,never<=30d,no,,no,12h 09-18 12:00 rv2.2 large wickless-bottom [mid],not filled
+QRP-ZPFK3ZsLwoo-06,2026-09-21T07:11:25Z,short,82200,73000,miss,09-21 08:24,,6.32,82800,yes,1119,-122,Prior 7d high 82100 (0.12%),0,1,no,26%,no,12h 09-03 12:00 rv2.1 large wickless-bottom [range],1h 09-21 08:00 rv10.5 large rej-wick 17%; 1h 09-21 09:00 rv8.8 mid rej-wick 40%; 30m 09-21 08:00 rv3.8 large rej-wick 5%; 30m 09-21 08:30 rv21.0 large rej-wick 21%
+QRP-lRB4wMGa9tw-02,2026-09-22T12:16:59Z,short,82800,73000,miss,,,,,,1184,,none within 0.3%,298,137,no,31%,no,1h 09-21 08:00 rv10.5 large wickless-bottom [mid],not filled

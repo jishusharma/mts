@@ -213,7 +213,7 @@
   }
 
 
-  // ---- R21 trendline per row: the last 3 same-side swing pivots that line up (pattern book 2026-11, python twin: research/pattern_book_2026-11/detect_patterns.py strip_trendline) ----
+  // ---- R22 trendline per row: the last 3 same-side swing pivots that line up (pattern book 2026-11, python twin: research/pattern_book_2026-11/detect_patterns.py strip_trendline) ----
   // Closed bars only (the forming bar is dropped). Pivot = strict 3-bar fractal on wicks (known 3 bars later). Among the last 6 pivots of one side the most recent triple
   // whose middle pivot lies within 0.2% of the log-line through the outer two is a 3-touch line (the longest such triple of that newest pivot); else the line through the last two
   // pivots, marked 2 touches. Dead (null) when a closed bar closed beyond it. Thresholds 3 / 0.2% / 6 are OURS (card live-aid-trendlines-liquidations-1106).

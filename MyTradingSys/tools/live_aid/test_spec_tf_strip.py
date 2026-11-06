@@ -184,7 +184,7 @@ def test_close_colour_gauge():
     assert r is not None and r["keep"] is None
 
 
-# ---- R21 trendline per row (python twin: research/pattern_book_2026-11 test_strip_trendline_*) ----
+# ---- R22 trendline per row (python twin: research/pattern_book_2026-11 test_strip_trendline_*) ----
 def _fractal_bars(pivots, n, side="resistance", close=95.0):
     """n bars of high 91 / low 89 (close clipped into the range) with a spike high (or low) at each pivot index; the last bar is the forming one."""
     out = []
