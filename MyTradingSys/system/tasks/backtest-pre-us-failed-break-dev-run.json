@@ -1,35 +1,67 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python MyTradingSys/research/pre_us_failed_break_2026-10/run_dev.py"
+  ],
   "created": "2026-10-28T12:29:35Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/pre_us_failed_break_2026-10/RESULT.md with n episodes, mean net, SE, t, MAE, forced-flat days, a Regime mix: line, a Context: line (Regime/Phase/Session/Entry: window 07-13Z, level break fail), verdict PASS/FAIL/INCONCLUSIVE per section 7; exports sim_desk/results/backtest-pre-us-failed-break-dev-run.json; bars >= 2024-07-01 never opened",
+  "est_turns": 30,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Run the frozen pre-US failed-break short PRE_REG sections 1-7 once on BTCUSDT 1m DEV 2022-01..2024-06, fee-net; verdict by the PRE_REG section 7 bars.",
   "id": "backtest-pre-us-failed-break-dev-run",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "fix-single-cost-module: test_no_own_costs + frozen cost allowlist, fee regimes A-D in fees",
+      "ref": "2d7d4d49cf4c",
+      "utc": "2026-10-30T09:55:18Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "04112bfe2b0e ship: 1 file(s)",
+      "ref": "MyTradingSys/research/pre_us_failed_break_2026-10/PRE_REG.md",
+      "utc": "2026-10-28T15:50:30Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "WAITING 2026-10-28 (planner-2026-10-28-c2): waits on card backtest-the-operator-s-pre-us-failed-br (ready, frozen PRE_REG not yet written). Refine after it is done: needs PRE_REG path, DEV window, prereg_gate.py output, sim_desk/results export; run lane is DSA, not a builder (d-pre-us-failed-break-short-backtest).",
+  "note": "Data path F:/MTS/data/tom_raw/klines/BTCUSDT-1m-*.csv. PRE_REG frozen 2026-10-28 (predates the context rule, allowlisted); RESULT must still carry Regime mix:. REVIEWED:planner-c-1106b 2026-11-06 T0-ONLY",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-06T09:21:39Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "refined",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/pre_us_failed_break_2026-10/PRE_REG.md",
+    "MyTradingSys/research/pre_us_failed_break_2026-10/run_dev.py",
+    "MyTradingSys/backtest/fees.py"
+  ],
+  "scope_out": [
+    "VALIDATION/HOLDOUT reads; changing any PRE_REG number; live or testnet orders"
+  ],
+  "scope_sha": "2d7d4d49cf4c",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/pre_us_failed_break_2026-10/PRE_REG.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "read PRE_REG sections 2-7; run prereg_gate.py with its n, sd, cost and paste the output",
+    "write run_dev.py: loader refuses open >= 2024-07-01, sections 2-5 verbatim, print every cell",
+    "write test_run_dev.py then run once; write RESULT.md with the Regime mix: line"
+  ],
+  "tests": "MyTradingSys/research/pre_us_failed_break_2026-10/test_run_dev.py: loader raises on a bar dated 2024-07-01, and a one-day fixture net equals the hand value from fees.py (written in the test); both fail before run_dev.py exists",
   "title": "Run the frozen pre-US failed-break PRE_REG on DEV fee-net (needs card backtest-the-operator-s-pre-us-failed-br done)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }

@@ -13,7 +13,7 @@
   "goal": "Second-vendor re-derivation of the headline rows of RESULT.md from the saved csv outputs and FORMULAS.md; the existing check was Gemini only.",
   "id": "gpt-rederive-meta-label-dev-ext-1104",
   "kind": "audit",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
     {
       "kind": "ship",
@@ -75,5 +75,6 @@
   "tests": "audit card, output file is the test; each row quotes the source line it was matched to; repo files stay byte-identical (git diff empty)",
   "title": "GPT re-derive: meta_label_dev_ext_2026-10-31 RESULT.md headline numbers (Gemini blind-read 1102 was the only check so far)",
   "weight": "ROUTINE",
-  "worker": "agent"
+  "worker": "agent",
+  "rerouted": "2026-11-06 operator: GPT/Codex plan expired; lane CODEX -> SONNET (cross-vendor independence of a re-derive is lost: say so in the result)"
 }

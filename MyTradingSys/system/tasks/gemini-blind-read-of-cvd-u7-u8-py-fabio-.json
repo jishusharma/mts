@@ -1,35 +1,65 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/gemini_queue.py run gemini-blind-read-of-cvd-u7-u8-py-fabio-:low"
+  ],
   "created": "2026-11-05T17:33:11Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_CVD_U7U8_1106.md exists with a per-claim table (claim, recomputed value or file:line, MATCH|MISMATCH) and ends with VERDICT: MATCH or MISMATCH; each defect names file:line.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "D11 feeder: independent blind read (run through gemini_queue.py, Gemini effort low, not a Claude Agent) of cvd_u7_u8.py, RESULT.md: recompute the U7/U8 headline counts and means from the script and its input, then diff them against RESULT.md.",
   "id": "gemini-blind-read-of-cvd-u7-u8-py-fabio-",
   "kind": "audit",
-  "lane": "CODEX",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "cvd U7/U8: Fabio CVD coil and absorption measured on BTC DEV",
+      "ref": "98223ee41a84",
+      "utc": "2026-11-05T18:11:38Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "98223ee41a84 cvd U7/U8: Fabio CVD coil and absorption measured on BTC DEV",
+      "ref": "MyTradingSys/research/fabio_cvd_2026-10-30/RESULT.md",
+      "utc": "2026-11-05T18:11:38Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-06 T0-ONLY | route [GEMINI] via gemini_queue.py gemini-blind-read-of-cvd-u7-u8-py-fabio-:low; lane was CODEX (retired 11-06)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-06T12:16:10Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_CVD_U7U8_1106.md",
+    "MyTradingSys/research/fabio_cvd_2026-10-30/cvd_u7_u8.py",
+    "MyTradingSys/research/fabio_cvd_2026-10-30/RESULT.md"
+  ],
+  "scope_out": [
+    "editing the files read; reading VALIDATION/HOLDOUT; any fix (a defect becomes a raw card by the coordinator)"
+  ],
+  "scope_sha": "98223ee41a84",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/fabio_cvd_2026-10-30/cvd_u7_u8.py, MyTradingSys/research/fabio_cvd_2026-10-30/RESULT.md before any prose summary of them",
+    "Recompute independently of the code under read, then recompute the U7/U8 headline counts and means from the script and its input, then diff them against RESULT.md",
+    "Write MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_CVD_U7U8_1106.md with the per-claim table and VERDICT"
+  ],
+  "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_CVD_U7U8_1106.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] blind read of cvd_u7_u8.py (fabio_cvd_2026-10-30 U7/U8 study)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
