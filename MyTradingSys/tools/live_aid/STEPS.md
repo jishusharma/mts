@@ -111,3 +111,4 @@ WaveTrend 10/21/4, 0.015, lines 53/60 = OURS (LazyBear defaults; his chart setti
 | Setup checklist: pre-US failed break | brief from Eagle_Eyes; his Deribit log | failed break above last high + momentum shift before US open; OURS definition, not validated |
 | Analyst strip from CBP | brief from Eagle_Eyes | latest Habib / analyst levels from CBP, labelled by venue |
 | All latest inputs (R03) | "all latest inputs" | every layer's latest input on the page, kept current |
+| Cycle flag | One line in the timeframe-strip panel: cycle-bottom flag from `research/btc_cycles_2026-11/cycle_bottom_flag.py`, written to `cycle_flag_data.js` by `build_cycle_flag.py` (run daily), stale after 36 h. Test `test_spec_cycle_flag.py` | BUILT 2026-11-07 |

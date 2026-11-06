@@ -108,6 +108,8 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
   <section id="p-tfs">
     <div class="hd"><h2>Timeframe strip</h2><span class="src" title="Forming bar colour (green = close above open) with the last 3 closed bars; FLIP when the forming bar differs from the last closed bar (time since the bar opened); CVD = taker buy minus sell volume of the forming bar (kline field 9); Bollinger(20,2) position on closes including the forming bar (near = outer 20% of the band: OURS); time to close; the thin bar under the colour cells fills to the chance (random-walk maths on the bar's ATR14 scale) that the forming bar closes with the colour it has now. Levels: prior-day H/L/C and value area (50 USD bins, 70%, hlc3 volume: OURS), Asia 00-08Z and London 08-13Z H/L, day VWAP hlc3 from 00:00Z. A missing value reads a dash, never a guess. Refresh 15 s for 1m-15m, 60 s for the rest.">SPOT DATA</span><span class="tag" id="tfs-feed">spot data: data-api.binance.vision</span><span class="age" id="age-tfs">--</span></div>
     <div class="tfal" id="tfs-al">--</div>
+  <!-- cycle-bottom flag: one line, computed by research/btc_cycles_2026-11/cycle_bottom_flag.py via build_cycle_flag.py -->
+    <p class="tag" id="cycle-flag" title="Cycle-bottom long flag (RULE.md in research/btc_cycles_2026-11): context for the operator-called testnet long, not a signal. SOURCED/OURS labels there.">--</p>
     <div class="tfs">
       <div class="scroll"><table><thead><tr><th>TF</th><th>Forming + last 3</th><th>Flip</th><th>CVD</th><th>Bollinger</th><th>Left</th></tr></thead><tbody id="tfs-rows"></tbody></table></div>
       <div class="scroll"><table class="lvl"><thead><tr><th>Level</th><th>Price</th><th>From price</th></tr></thead><tbody id="tfs-lv"></tbody></table><span class="err" id="tfs-err"></span></div>
@@ -326,6 +328,14 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
 <script src="bigcandle_rates.js"></script>
 <script src="premarket_risk.js"></script>
 <script src="tf_strip.js"></script>
+<script src="cycle_flag_data.js"></script>
+<script src="cycle_flag.js"></script>
+<script>
+(function () {
+  var el = document.getElementById('cycle-flag');
+  if (el) el.textContent = (typeof CYCLEFLAG === 'undefined') ? 'CYCLE FLAG: NOT_IN_DATA (cycle_flag.js missing)' : CYCLEFLAG.text(window.CYCLE_FLAG_DATA, Date.now());
+})();
+</script>
 <script>
 (function () {
   'use strict';
