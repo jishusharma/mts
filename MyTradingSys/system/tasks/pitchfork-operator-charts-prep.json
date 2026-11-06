@@ -4,12 +4,14 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-06T07:36:42Z",
-    "misses": 11,
+    "folded": "2026-11-06T07:40:34Z",
+    "misses": 13,
     "reads": [
       "scripts/dev/extra_tests.tsv",
       "scripts/dev/run_extra_tests.py",
-      "MyTradingSys/research/pitchfork_2026-10-19/run_pitchfork_event_study.py"
+      "scripts/dev/lookahead_allowlist.tsv",
+      "MyTradingSys/research/pitchfork_2026-10-19/run_pitchfork_event_study.py",
+      "scripts/dev/lookahead_lint.py"
     ],
     "session": "agent-a51cc84a61a78d1fe"
   },
