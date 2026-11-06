@@ -139,3 +139,9 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-05 | labguy-missing-1105 | Sonnet 5.5 | 0.38 | 11 | labguy missing-review shipped 658bde4d; cap was 3.0 |
 | 2026-11-05 | cvd-coil-m2-1105 | Opus 5.5 | 1.86 | 42 | shipped 98223ee41; neither Fabio CVD coil/absorption claim holds on BTC DEV 2022-mid2024; cap was 6.0 |
 | 2026-11-06 | flow-state-m2-1105b | Opus 5.5 | 2.89 | 74 | shipped 73d0bbe9f; C2 flow-state pairs on 1m BTCUSDT 13 days, A/B/C counts + forward moves; cap was 6.0 |
+| 2026-11-06 | wt30-recount-m2-1106 | Sonnet 5.5 | 0.69 | 33 | shipped 663d27b8; WT30 blind recount of 30m divergence + cycle counts; cap was 3.0 |
+| 2026-11-06 | flake-floor-m3-1106 | Sonnet 5.5 | 0.82 | 34 | NOT shipped: bad Next tag on commit; work on branch JIS-NB/flake-floor-m3-1106 sha 85e8f27d7; finisher Agent re-lands; cap was 4.0 |
+| 2026-11-06 | c34-rescore-m3-1106 | Sonnet 5.5 | 0.17 | 7 | not built: card STATE STALE + precondition lost; 1 min; cap was 4.0 |
+| 2026-11-06 | malkan-windows-m3-1106 | Sonnet 5.5 | 0.94 | 35 | INCONCLUSIVE: power gate blocked the malkan window design, default 3-10 stays; see commit; cap was 5.0 |
+| 2026-11-06 | h3-ny-open-m3-1106 | Sonnet 5.5 | 0.41 | 14 | END: blocked by power gate, pooled BTC+ETH n<=70; no PRE_REG; cap was 5.0 |
+| 2026-11-06 | cc-s3-10sym-m3-1106 | Sonnet 5.5 | 0.99 | 39 | FAIL (not shipped, trunk CI red): pooled n 1981, fee-net -0.047R CI -0.110..+0.016, 2/10 symbols positive; branch JIS-NB/cc-s3-10sym-m3-1106 5392a26aa; cap was 6.0 |
