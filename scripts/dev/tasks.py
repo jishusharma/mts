@@ -171,7 +171,8 @@ def _title_words(title):
 def _paths(card):
     """Files a card names, one key per unit: `x.py` and its `test_x.py` count once; notes after the path are dropped."""
     out = set()
-    for x in (card.get("refs") or []) + (card.get("scope_in") or []):
+    _l = lambda v: [x.strip() for x in v.split(",")] if isinstance(v, str) else (v or [])  # noqa: E731  (cards may hold a comma string)
+    for x in _l(card.get("refs")) + _l(card.get("scope_in")):
         p = str(x).strip().split(" ", 1)[0].rstrip("/")
         if "/" in p:
             out.add(re.sub(r"^test_", "", p.rsplit("/", 1)[-1]) if p.endswith(".py") else p)
