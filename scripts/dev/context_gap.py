@@ -277,6 +277,25 @@ def card_for(prompt, tree, slug=""):
     return hit[0] if len(hit) == 1 else ""
 
 
+def _git_out(tree, *a):
+    return subprocess.run(["git", "-C", tree, *a], capture_output=True, text=True, timeout=20)
+
+
+def _commit_into_ship(tree, rel):
+    """The fold never makes a commit of its own (ship-ignores-context-fold-commits, DECISION OURS): a fold-only commit on top of
+    uncommitted real work was all a ship pushed. When HEAD is a plain commit not yet on origin/fast-track (the ship's own) the card
+    is amended into it; otherwise the card stays a working-tree change that the ship's own commit picks up."""
+    if not _git_out(tree, "status", "--porcelain", "--", rel).stdout.strip():
+        return "clean"
+    if _git_out(tree, "rev-parse", "--verify", "-q", "HEAD^2").returncode == 0:
+        return "left"   # a merge HEAD: amending it would rewrite the merge
+    if _git_out(tree, "merge-base", "--is-ancestor", "HEAD", "origin/fast-track").returncode != 1:
+        return "left"   # HEAD already on trunk (or no trunk ref): nothing of ours to amend into
+    subprocess.run(["git", "-C", tree, "add", "--", rel], capture_output=True, timeout=20, check=True)
+    subprocess.run(["git", "-C", tree, "commit", "-q", "--amend", "--no-edit", "--", rel], capture_output=True, timeout=20, check=True)
+    return "amended"
+
+
 def fold(transcript, tree, now=None, commit=True):
     """Write context={reads, misses, calls_to_edit, session, folded} into the card this session works on (replace, never append)
     and commit just that card. -> ('folded', card id) | ('unfolded', why). Never raises."""
@@ -307,10 +326,8 @@ def fold(transcript, tree, now=None, commit=True):
         card["context"] = new_ctx
         with open(path, "w", encoding="utf-8", newline=NL) as fh:
             fh.write(json.dumps(card, indent=2, sort_keys=True, ensure_ascii=False) + NL)
-        if commit and subprocess.run(["git", "-C", tree, "status", "--porcelain", "--", rel], capture_output=True, text=True, timeout=20).stdout.strip():
-            subprocess.run(["git", "-C", tree, "add", "--", rel], capture_output=True, timeout=20, check=True)
-            subprocess.run(["git", "-C", tree, "commit", "-q", "-m", f"fold context into card {cid}{NL}{NL}Result: {cid} carries {len(f['reads'])} read-first path(s)",
-                            "--", rel], capture_output=True, timeout=20, check=True)
+        if commit:
+            _commit_into_ship(tree, rel)
         return "folded", cid
     except Exception as e:
         return "unfolded", f"{type(e).__name__}: {e}"[:120]
