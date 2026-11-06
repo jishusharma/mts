@@ -1,9 +1,20 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T07:45:29Z",
   "commands": [
     "python -m pytest -q scripts/dev/test_sync.py"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-06T08:02:11Z",
+    "misses": 27,
+    "reads": [
+      "scripts/dev/wt_maint.py",
+      "scripts/dev/route_audit.py"
+    ],
+    "session": "agent-a02e67d5af973732a"
+  },
   "created": "2026-11-03T20:14:56Z",
   "depends_on": [],
   "done_when": "A ship that changes LAYERS.md adds zero extra commits; start --apply-style retire removes a clean released tree fully on trunk regardless of the 12 h gateway hold.",
@@ -16,6 +27,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "ship amends the LAYERS.md regen into its own unpushed commit (0 extra commits); sync.py st",
+      "ref": "666b1dbff",
+      "utc": "2026-11-06T07:45:29Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Revert \"Revert route tag re-land 08d51e5b7 (CI RED: wiring stale wavetrend entry, MTS Home",
@@ -26,6 +43,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: sync.py noise and tree-retire shipped; worktree-gone-after-ship already covered post-ship tidy",
   "note": "\nREVIEWED:2026-11-04 ACCEPT (Haiku on API credit, job haiku-review-ready-sonnet-1104: Fold test absent on trunk; tree-retire overlaps worktree-gone-after-ship.)",
   "prio": 1,
   "refine_tries": 0,
@@ -34,7 +52,12 @@
   "refs": [
     "MyTradingSys/system/PARALLEL.md"
   ],
-  "result": "",
+  "result": "ship amends the LAYERS.md regen into its own unpushed commit (0 extra commits); sync.py start retires released, fully-shipped gateway-held trees (idle 1 h, not 12 h); 4 new tests fail pre-change",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/sync.py",
     "scripts/dev/test_sync.py"
@@ -45,13 +68,14 @@
   "scope_sha": "dea81301a70a",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write the failing test: count commits after a ship that dirties LAYERS.md (stage_layers path, sync.py near LAYERS_REL).",
     "Amend/fold regen into the last own commit before push.",
     "Write the failing test for retire of a released shipped tree at start, then implement.",
     "Run test_sync.py and ship."
   ],
+  "taken": "2026-11-06T07:45:29Z",
   "tests": "scripts/dev/test_sync.py::test_ship_folds_layers_regen_into_own_commit",
   "title": "Ship: fold the LAYERS.md regen into the ship's own commit (24 extra commits/day) and retire a released, fully-shipped tree at the next sync.py start (59 trees on JIS-NB, most held 12-35 h by the gateway rule)",
   "weight": "",

@@ -716,6 +716,27 @@ class SyncTest(unittest.TestCase):
         self.assertTrue(marked.exists())
         self.assertFalse(plain.exists())
 
+    def test_start_retires_released_shipped_gateway_tree_despite_hold(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            rel = sync.new_worktree(self.a, "rel")        # marked, clean, on trunk, no claim
+            busy = sync.new_worktree(self.a, "busy")      # marked, clean, but an open claim
+            own = sync.new_worktree(self.a, "own")        # marked, unshipped commit
+        for t in (rel, busy, own):
+            (t / sync.GATEWAY_MARKER).write_text("x", newline=chr(10))
+        commit(own, "unshipped.py", "u" + chr(10))
+        later = time.time() + 48 * 3600
+        with mock.patch.object(sync, "open_claims", return_value=[("busy", {})]),                 contextlib.redirect_stdout(io.StringIO()) as out:
+            gone = sync.tidy(self.a, apply=True, now=later, fetch=False, gateway_only=True)
+        self.assertEqual(gone, [str(rel.resolve())], out.getvalue())
+        self.assertFalse(rel.exists())
+        self.assertTrue(busy.exists())
+        self.assertTrue(own.exists())
+
+    def test_start_calls_the_gateway_retire(self):
+        with mock.patch.object(sync, "retire_released_gateway_trees") as m, contextlib.redirect_stdout(io.StringIO()):
+            sync.start(self.a, slug="zzz", quiet=True)
+        m.assert_called_once()
+
     def test_start_writes_gateway_marker_only_on_gateway_profile(self):
         with mock.patch.dict(os.environ, {"MTS_GATEWAY": "1"}):
             self.assertTrue(sync.mark_gateway(self.a))
@@ -2121,6 +2142,40 @@ class ShipResultFlagTest(unittest.TestCase):
                 self.assertEqual(f.read_text(encoding="utf-8"), "regenerated content")
                 self.assertIn("Result:", g("log", "-1", "--format=%B"))
                 self.assertEqual(g("status", "--short").strip(), "")
+
+    def test_ship_folds_layers_regen_into_own_commit(self):
+        with tempfile.TemporaryDirectory() as td:
+            g = self.make_repo(td)
+            f = Path(td) / sync.LAYERS_REL
+            f.parent.mkdir(parents=True)
+            f.write_text("a", encoding="utf-8")
+            g("add", "-A")
+            g("commit", "-q", "-m", "layers")
+            g("update-ref", f"refs/remotes/origin/{sync.TRUNK}", "HEAD")
+            (Path(td) / "work.txt").write_text("w", encoding="utf-8")
+            g("add", "-A")
+            g("commit", "-q", "-m", "own work" + chr(10) * 2 + "Result: w")       # the ship's own commit, not on origin yet
+            own_parent = g("rev-parse", "HEAD~1").strip()
+            f.write_text("regen", encoding="utf-8")
+            self.assertTrue(sync.stage_layers(td, fold=True))
+            self.assertEqual(g("rev-parse", "HEAD~1").strip(), own_parent)   # zero extra commits
+            self.assertIn("own work", g("log", "-1", "--format=%B"))
+            self.assertEqual(g("show", "HEAD:" + sync.LAYERS_REL), "regen")
+            self.assertEqual(g("status", "--short").strip(), "")
+
+    def test_stage_layers_fold_keeps_own_commit_when_head_is_on_origin(self):
+        with tempfile.TemporaryDirectory() as td:
+            g = self.make_repo(td)
+            f = Path(td) / sync.LAYERS_REL
+            f.parent.mkdir(parents=True)
+            f.write_text("a", encoding="utf-8")
+            g("add", "-A")
+            g("commit", "-q", "-m", "layers")
+            g("update-ref", f"refs/remotes/origin/{sync.TRUNK}", "HEAD")
+            before = g("rev-parse", "HEAD").strip()
+            f.write_text("regen", encoding="utf-8")
+            self.assertTrue(sync.stage_layers(td, fold=True))
+            self.assertEqual(g("rev-parse", "HEAD~1").strip(), before)       # pushed commit never rewritten
 
     def test_ship_refuses_staged_uncommitted_files(self):
         with tempfile.TemporaryDirectory() as td:
