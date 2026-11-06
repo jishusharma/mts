@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-06T12:12:02Z",
+  "depends_on": [],
+  "done_when": "scripts/dev/us_prep.py + test_us_prep.py shipped; test uses a fixture day (11-05: Kospi -5.3%, NQ -0.6%, BTC 80.9k to 75.2k) and an UNKNOWN fail-closed case (source unreachable => field UNKNOWN, never a number); both tests fail on the pre-change tree; wiring_registry.json entry; runtime/us_prep output is git-ignored (no runtime data committed); Haiku diff review ACCEPT.",
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "T0 (no LLM) scripts/dev/us_prep.py: US-session prep brief for phases P1-P4 plus a P4 HIT/MISS scorer. Full spec: MyTradingSys/system/specs/us_prep_spec.md. Context, never a signal.",
+  "id": "us-session-prep-1106",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into worktree-agent-ae9633aa3bf83ae8e",
+      "ref": "3c380988c2db",
+      "utc": "2026-11-06T12:03:54Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-06T12:12:24Z",
+  "refs": [],
+  "result": "",
+  "scope_in": "scripts/dev/us_prep.py, scripts/dev/test_us_prep.py, wiring_registry.json, .gitignore entry for MyTradingSys/runtime/us_prep/, SUPER_SESSION.md Sonnet checklist step (phase runner)",
+  "scope_out": "cbp_run.py, ci.yml, gate config, live tree, any order/account data, LLM calls",
+  "scope_sha": "3c380988c2db",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "write failing tests first (fixture day + UNKNOWN fail-closed)",
+    "implement fetchers with timeouts; UNKNOWN on any failure",
+    "value area/POC/VWAP/BB computations from 1m/15m klines (data-api.binance.vision)",
+    "P4 scorer reads 4 phase json + actual H/L/close, HIT/MISS per scenario",
+    "wiring_registry entry, gitignore, checklist step in SUPER_SESSION.md",
+    "ship once; then Haiku diff review"
+  ],
+  "tests": "scripts/dev/test_us_prep.py::test_fixture_day_1105, ::test_unknown_fail_closed (fail before the module exists)",
+  "title": "Build scripts/dev/us_prep.py: T0 US-session prep brief (phases P1-P4) + P4 scorer",
+  "weight": "",
+  "worker": "session"
+}
