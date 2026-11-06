@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T13:46:02Z",
   "commands": [],
   "created": "2026-11-04T20:17:21Z",
   "depends_on": [],
@@ -15,6 +16,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_WT_EXTREME_CROSS.md",
+      "ref": "ac756c098",
+      "utc": "2026-11-06T13:46:02Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "WT extreme-cross bounce size study (1m/5m/15m, DEV) + Gemini feeder card",
@@ -25,6 +32,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: blind read complete, VERDICT MATCH",
   "not_twin_of": [
     "gemini-blind-read-rsi-40-60-1104"
   ],
@@ -36,7 +44,12 @@
   "refs": [
     "MyTradingSys/research/wt_extreme_cross_2026-11/RESULT.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_WT_EXTREME_CROSS.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_WT_EXTREME_CROSS.md",
     "MyTradingSys/research/wt_extreme_cross_2026-11"
@@ -45,12 +58,13 @@
   "scope_sha": "f72763f16b19",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read dev_cells.csv in wt_extreme_cross_2026-11 before RESULT.md",
     "Recompute the headline table (daytag all, htf all) and the day-type / HTF split rows independently of study.py",
     "Write MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_WT_EXTREME_CROSS.md with a per-number table and VERDICT"
   ],
+  "taken": "2026-11-06T13:46:02Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_WT_EXTREME_CROSS.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] blind read of MyTradingSys/research/wt_extreme_cross_2026-11/RESULT.md",
   "weight": "ROUTINE",
