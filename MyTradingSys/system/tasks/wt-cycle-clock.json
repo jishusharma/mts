@@ -2,6 +2,7 @@
   "approved_by": "",
   "asks": "",
   "class": "C2",
+  "closed": "2026-11-06T12:55:14Z",
   "commands": [
     "python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/wt_bible_studies_2026-11-04/wt_cycle_clock/RESULT.md').read_text(); assert 'Regime mix:' in t and 'VERDICT' in t.upper()\""
   ],
@@ -18,6 +19,12 @@
   "id": "wt-cycle-clock",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "COUNT-ONLY DEV tables: cycles/week 5m 8.0, 15m 2.5, 30m 1.2, 1h 0.63, 4h 0.16; median cycl",
+      "ref": "2040748e1",
+      "utc": "2026-11-06T12:55:14Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -38,13 +45,19 @@
   ],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: descriptive tables done; layer_state.py 'which cycle' line can read clock.csv",
   "note": "REVIEWED:2026-11-06 ACCEPT reviewer=sonnet-review-agent-ae068d00 planner=Session_Planner\nclass=C2. SPEC.md was fixed in bbaa2d3f1 after Gemini FIX-FIRST (REVIEW_GEMINI_1104.md). Card fully scoped; depends_on gemini-spec-rereview-wt-bible-1105 (must end VERDICT: ACCEPT before take). Windows from splits.py only; HOLDOUT never loaded.",
   "prio": 2,
   "refine_tries": 5,
   "refined_by": "",
   "refreshed": "2026-11-06T09:19:32Z",
   "refs": [],
-  "result": "",
+  "result": "COUNT-ONLY DEV tables: cycles/week 5m 8.0, 15m 2.5, 30m 1.2, 1h 0.63, 4h 0.16; median cycle 7.9/25.8/43.5/98/454 h; zone dots 15-16% of crosses",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md",
     "MyTradingSys/research/wt_bible_studies_2026-11-04/wt_cycle_clock",
@@ -55,12 +68,13 @@
   "scope_sha": "bbaa2d3f181e",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md Card 3 and backtest/PRE_REG_TEMPLATE.md; run verdicts.py check",
     "Write PRE_REG.md, run study.py --pass count, run prereg_gate.py --m auto (exit 1 = stop and file BLOCKED.md)",
     "Run --pass dev, write RESULT.md with the Regime mix line, append the VERDICTS row, ship"
   ],
+  "taken": "2026-11-06T12:55:14Z",
   "tests": "python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/wt_bible_studies_2026-11-04/wt_cycle_clock/RESULT.md').read_text(); assert 'Regime mix:' in t and 'VERDICT' in t.upper()\"",
   "title": "WT cycle clock (descriptive): per timeframe, time to the next valid zone dot and move size given the phase in the cycle",
   "weight": "IMPORTANT",
