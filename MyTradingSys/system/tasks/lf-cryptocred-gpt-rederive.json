@@ -12,7 +12,7 @@
   "goal": "Independently re-derive the headline backtest numbers (n trades, mean R, fee-net or not, split used) quoted for layer family cryptocred in its result reports, from the raw ledger/data, and list every mismatch. No verdict on keeping or dropping a layer.",
   "id": "lf-cryptocred-gpt-rederive",
   "kind": "audit",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [],
   "layers": [
     "cryptocred"
@@ -49,5 +49,6 @@
   "tests": "none (audit card); proof = the recompute script runs and the table is filled",
   "title": "Layer re-derive: cryptocred (independent recount of the headline numbers behind the fact sheet)",
   "weight": "ROUTINE",
-  "worker": "session"
+  "worker": "session",
+  "rerouted": "2026-11-06 operator: GPT/Codex plan expired; lane CODEX -> SONNET (cross-vendor independence of a re-derive is lost: say so in the result)"
 }

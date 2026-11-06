@@ -1,7 +1,20 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T08:54:22Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-06T08:54:53Z",
+    "misses": 17,
+    "reads": [
+      "scripts/dev/cbp_run.py",
+      "scripts/dev/run_extra_tests.py",
+      "scripts/dev/test_cbp_run.py",
+      "scripts/dev/extra_tests.tsv"
+    ],
+    "session": "agent-ac3afa2326eccc4a2"
+  },
   "created": "2026-10-29T17:10:55Z",
   "depends_on": [],
   "done_when": "run_once appends a rejected row whose reason holds the full (<=400 char) bad quote; test_cbp_build_row.py exits 0 and is listed in run_extra_tests.py; shipped, cherry empty",
@@ -14,6 +27,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "build_row keeps full bad quote (<=400) in rejected reason; test_cbp_build_row.py gated via",
+      "ref": "56e520f55",
+      "utc": "2026-11-06T08:54:22Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "run_extra_tests: child pytest processes can import repo-root packages",
@@ -24,6 +43,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: done",
   "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
   "pinned": false,
   "prio": 3,
@@ -31,7 +51,12 @@
   "refined_by": "",
   "refreshed": "2026-11-05T04:41:29Z",
   "refs": [],
-  "result": "",
+  "result": "build_row keeps full bad quote (<=400) in rejected reason; test_cbp_build_row.py gated via extra_tests.tsv",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/cbp_run.py",
     "scripts/dev/test_cbp_build_row.py",
@@ -43,12 +68,13 @@
   "scope_sha": "6aa98586821d",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "In cbp_run.build_row (line 154) put the full bad quote (strip, first 400 chars) in the reason: \"quote not in transcript: <full>\"",
     "Add scripts/dev/test_cbp_build_row.py: a 150-char fabricated quote is rejected and the reason contains all 150 chars; list it in run_extra_tests.py",
     "python scripts/dev/test_cbp_build_row.py and the cbp tests"
   ],
+  "taken": "2026-11-06T08:54:22Z",
   "tests": "scripts/dev/test_cbp_build_row.py::test_rejected_reason_keeps_full_quote fails on the old [:60] code, passes after",
   "title": "CBP build_row discards the full extracted quote on rejection, keeping only a 60-char fragment",
   "weight": "ROUTINE",

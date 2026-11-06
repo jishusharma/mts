@@ -1,9 +1,17 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T08:51:15Z",
   "commands": [
     "python -c \"import pathlib; assert 'VERDICT:' in pathlib.Path('MyTradingSys/research/layer_lab/REREVIEW_WT_BIBLE_1105.md').read_text()\""
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-06T08:55:11Z",
+    "misses": 24,
+    "reads": [],
+    "session": "agent-adfb62c99c74845f1"
+  },
   "created": "2026-11-05T06:07:18Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/layer_lab/REREVIEW_WT_BIBLE_1105.md has one row per old defect 1-8 with line evidence and ends with VERDICT: ACCEPT or FIX-FIRST.",
@@ -16,6 +24,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "REREVIEW_WT_BIBLE_1105.md: defects 1,3,4,5 CLOSED; 2,6,7,8 OPEN; new N1-N3; VERDICT: FIX-F",
+      "ref": "ca35c7df7",
+      "utc": "2026-11-06T08:51:15Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -36,13 +50,19 @@
   ],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: done",
   "note": "REVIEWED:T0-ONLY 2026-11-05 planner; unblocks the 3 WT cards (wt30-lower-high-divergence-short, wt-mtf-cycle-nesting, wt-cycle-clock)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-05T06:07:51Z",
   "refs": [],
-  "result": "",
+  "result": "REREVIEW_WT_BIBLE_1105.md: defects 1,3,4,5 CLOSED; 2,6,7,8 OPEN; new N1-N3; VERDICT: FIX-FIRST (no stamp for the 3 WT cards)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md",
     "MyTradingSys/research/layer_lab/REREVIEW_WT_BIBLE_1105.md",
@@ -52,12 +72,13 @@
   "scope_sha": "bbaa2d3f181e",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read SPEC.md, REVIEW_GEMINI_1104.md, backtest/splits.py, wavetrend.py",
     "Per old defect 1-8: CLOSED or OPEN with SPEC.md line evidence; list new defects (max 6)",
     "Write REREVIEW_GEMINI_1105.md ending VERDICT: ACCEPT or FIX-FIRST"
   ],
+  "taken": "2026-11-06T08:51:15Z",
   "tests": "python -c \"import pathlib; assert 'VERDICT:' in pathlib.Path('MyTradingSys/research/layer_lab/REREVIEW_WT_BIBLE_1105.md').read_text()\"",
   "title": "[GEMINI] Re-review of fixed WT Bible SPEC.md (after bbaa2d3f1): stamp for the 3 WT study cards",
   "weight": "ROUTINE",
