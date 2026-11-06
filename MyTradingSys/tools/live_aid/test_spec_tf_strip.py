@@ -182,3 +182,61 @@ def test_close_colour_gauge():
     short = bars(101.25)[10:]
     r = _run("P.row(j.b,j.now)", {"b": short, "now": t0 + 150_000})
     assert r is not None and r["keep"] is None
+
+
+# ---- R21 trendline per row (python twin: research/pattern_book_2026-11 test_strip_trendline_*) ----
+def _fractal_bars(pivots, n, side="resistance", close=95.0):
+    """n bars of high 91 / low 89 (close clipped into the range) with a spike high (or low) at each pivot index; the last bar is the forming one."""
+    out = []
+    for i in range(n):
+        h, lo = 91.0, 89.0
+        if i in pivots:
+            if side == "resistance":
+                h = pivots[i]
+            else:
+                lo = pivots[i]
+        out.append(k(i * MIN, close, max(h, close), min(lo, close), close))
+    return out
+
+
+def test_trendline_from_three_pivots():
+    # highs at bars 10, 20, 30 = 100, 110, 121: log-line +10% per 10 bars, so the middle one is exactly on it (0% off, inside 0.2%).
+    # 45 closed bars + 1 forming bar; the line at the forming bar (index 45) = 100 * 1.1^3.5 = 139.5965; slope = ln(1.1)/10 = 0.95310%/bar;
+    # price 95 -> distance (95 - 139.5965) / 95 = -46.944%.
+    r = _run("P.trendline(j.b,'resistance',95)", {"b": _fractal_bars({10: 100.0, 20: 110.0, 30: 121.0}, 46)})
+    assert r["touches"] == 3 and (r["i1"], r["i2"]) == (10, 30)
+    assert abs(r["value"] - 100 * 1.1 ** 3.5) < 1e-6
+    assert abs(r["slopePct"] - 0.9531017980432478) < 1e-9
+    assert abs(r["distPct"] - (95 - 100 * 1.1 ** 3.5) / 95 * 100) < 1e-6
+
+
+def test_trendline_support_rising_and_text():
+    # lows 80, 84, 88.2 at bars 10, 20, 30: +5% per 10 bars; value at index 45 = 80 * 1.05^3.5; price 95 above it
+    r = _run("[P.trendline(j.b,'support',95),P.fmtLine(P.trendline(j.b,'support',95))]", {"b": _fractal_bars({10: 80.0, 20: 84.0, 30: 88.2}, 46, "support")})
+    v = 80 * 1.05 ** 3.5
+    assert r[0]["touches"] == 3 and abs(r[0]["value"] - v) < 1e-6 and r[0]["distPct"] > 0
+    assert r[1] == "S 3t ↗ +%.1f%%" % ((95 - v) / 95 * 100)
+
+
+def test_trendline_two_touch_fallback_dead_line_and_fail_closed():
+    two = _run("P.trendline(j.b,'resistance',95)", {"b": _fractal_bars({10: 100.0, 20: 108.0, 30: 140.0}, 46)})   # middle 3% off the line
+    assert two["touches"] == 2 and (two["i1"], two["i2"]) == (20, 30)
+    dead = _fractal_bars({10: 100.0, 20: 110.0, 30: 121.0}, 46)
+    dead[40] = k(40 * MIN, 95, 300, 89, 300)          # a closed bar closes through the line
+    assert _run("P.trendline(j.b,'resistance',95)", {"b": dead}) is None
+    assert _run("[P.trendline(j.b,'resistance',95),P.trendline(j.s,'resistance',95),P.trendline(j.b,'resistance',null),P.fmtLine(null)]",
+                {"b": _fractal_bars({10: 100.0}, 46), "s": _fractal_bars({}, 5)}) == [None, None, None, "—"]
+
+
+def test_trendline_ignores_the_forming_bar():
+    bars = _fractal_bars({10: 100.0, 20: 110.0, 30: 121.0}, 46)
+    bars[-1] = k(45 * MIN, 95, 5000, 1, 95)           # a wild forming bar changes nothing: closed bars only
+    r = _run("P.trendline(j.b,'resistance',95)", {"b": bars})
+    assert r["touches"] == 3 and abs(r["value"] - 100 * 1.1 ** 3.5) < 1e-6
+
+
+def test_trendline_column_is_wired_into_the_page():
+    html = (HERE / "live_aid.html").read_text(encoding="utf-8")
+    assert "<th title=" in html and ">Trend lines</th>" in html            # the header cell
+    assert "TFSTRIP.trendline(TF.k[tf], sd, tp)" in html and "TFSTRIP.fmtLine(t)" in html   # the row cell calls the pure functions
+    assert "interval=' + tf + '&limit=150" in html                         # enough bars for 6 pivots of 3-bar lookback

@@ -212,8 +212,67 @@
     return m < 120 ? m + 'm' : Math.floor(m / 60) + 'h';
   }
 
+
+  // ---- R21 trendline per row: the last 3 same-side swing pivots that line up (pattern book 2026-11, python twin: research/pattern_book_2026-11/detect_patterns.py strip_trendline) ----
+  // Closed bars only (the forming bar is dropped). Pivot = strict 3-bar fractal on wicks (known 3 bars later). Among the last 6 pivots of one side the most recent triple
+  // whose middle pivot lies within 0.2% of the log-line through the outer two is a 3-touch line (the longest such triple of that newest pivot); else the line through the last two
+  // pivots, marked 2 touches. Dead (null) when a closed bar closed beyond it. Thresholds 3 / 0.2% / 6 are OURS (card live-aid-trendlines-liquidations-1106).
+  function fractals(closed, kk) {
+    var hs = [], ls = [];
+    for (var i = kk; i < closed.length - kk; i++) {
+      var h = num(closed[i][2]), l = num(closed[i][3]);
+      if (h === null || l === null) continue;
+      var hi = true, lo = true;
+      for (var j = i - kk; j <= i + kk; j++) {
+        if (j === i) continue;
+        var hj = num(closed[j][2]), lj = num(closed[j][3]);
+        if (hj === null || lj === null) { hi = lo = false; break; }
+        if (!(h > hj)) hi = false;
+        if (!(l < lj)) lo = false;
+      }
+      if (hi) hs.push({ i: i, price: h });
+      if (lo) ls.push({ i: i, price: l });
+    }
+    return { highs: hs, lows: ls };
+  }
+  function lineAt(ln, i) { return Math.exp(Math.log(ln.p1) + (Math.log(ln.p2) - Math.log(ln.p1)) * (i - ln.i1) / (ln.i2 - ln.i1)); }
+  // side 'support' (lows) | 'resistance' (highs); price = live price. -> {touches, value (line at the forming bar), slopePct (log %/bar), distPct ((price-value)/price*100), i1,p1,i2,p2} or null
+  function trendline(klines, side, price) {
+    if (!Array.isArray(klines) || klines.length < 12) return null;
+    var pr = num(price); if (pr === null || !(pr > 0)) return null;
+    var closed = klines.slice(0, -1), kk = 3, tol = 0.002, look = 6;
+    var f = fractals(closed, kk), pv = (side === 'support' ? f.lows : f.highs).slice(-look);
+    var ln = null, touches = 2;
+    for (var c = pv.length - 1; c > 1 && !ln; c--) {
+      var found = null;
+      for (var a = c - 2; a >= 0; a--) {
+        for (var m = a + 1; m < c; m++) {
+          var cand = { i1: pv[a].i, p1: pv[a].price, i2: pv[c].i, p2: pv[c].price };
+          if (Math.abs(pv[m].price / lineAt(cand, pv[m].i) - 1) <= tol) found = cand;   // the last hit has the smallest a: the longest line
+        }
+      }
+      if (found) { ln = found; touches = 3; }
+    }
+    if (!ln && pv.length >= 2) ln = { i1: pv[pv.length - 2].i, p1: pv[pv.length - 2].price, i2: pv[pv.length - 1].i, p2: pv[pv.length - 1].price };
+    if (!ln || ln.i2 === ln.i1) return null;
+    for (var i = ln.i2 + 1; i < closed.length; i++) {
+      var cl = num(closed[i][4]), v = lineAt(ln, i);
+      if (cl === null) return null;
+      if (side === 'support' ? cl < v : cl > v) return null;
+    }
+    var val = lineAt(ln, closed.length);
+    return { side: side, touches: touches, value: val, slopePct: (Math.log(ln.p2) - Math.log(ln.p1)) / (ln.i2 - ln.i1) * 100, distPct: (pr - val) / pr * 100,
+      i1: ln.i1, p1: ln.p1, i2: ln.i2, p2: ln.p2 };
+  }
+  // text of one line for a row cell: "S 3t ↘ +1.0%" = support, 3 touches, falling, price 1.0% above it. Flat when |slope| < 0.005 %/bar.
+  function fmtLine(t) {
+    if (!t) return '—';
+    var arrow = Math.abs(t.slopePct) < 0.005 ? '→' : t.slopePct > 0 ? '↗' : '↘';
+    return (t.side === 'support' ? 'S' : 'R') + ' ' + t.touches + 't ' + arrow + ' ' + (t.distPct > 0 ? '+' : '') + t.distPct.toFixed(1) + '%';
+  }
+
   var api = { TFS: TFS, SCALP: SCALP, CONTEXT: CONTEXT, BASE: BASE, colour: colour, flip: flip, cvd: cvd, bbPos: bbPos, timeLeftMs: timeLeftMs,
     valueArea: valueArea, levels: levels, row: row, alignment: alignment, fmtLeft: fmtLeft, fmtAgo: fmtAgo,
-    pCloseColour: pCloseColour, keepGauge: keepGauge, atr14: atr14 };
+    pCloseColour: pCloseColour, keepGauge: keepGauge, atr14: atr14, trendline: trendline, fmtLine: fmtLine };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.TFSTRIP = api;
 })(typeof window !== 'undefined' ? window : this);

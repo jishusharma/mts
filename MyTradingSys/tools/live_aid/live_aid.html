@@ -111,7 +111,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
   <!-- cycle-bottom flag: one line, computed by research/btc_cycles_2026-11/cycle_bottom_flag.py via build_cycle_flag.py -->
     <p class="tag" id="cycle-flag" title="Cycle-bottom long flag (RULE.md in research/btc_cycles_2026-11): context for the operator-called testnet long, not a signal. SOURCED/OURS labels there.">--</p>
     <div class="tfs">
-      <div class="scroll"><table><thead><tr><th>TF</th><th>Forming + last 3</th><th>Flip</th><th>CVD</th><th>Bollinger</th><th>Left</th></tr></thead><tbody id="tfs-rows"></tbody></table></div>
+      <div class="scroll"><table><thead><tr><th>TF</th><th>Forming + last 3</th><th>Flip</th><th>CVD</th><th>Bollinger</th><th title="Active trend line of the row: S = support (lows), R = resistance (highs); touches (3t = 3 swing pivots within 0.2% of one line, 2t = the last two pivots); arrow = line direction; % = price above (+) or below (-) the line. Closed bars only; a line closed through is dropped. OURS, pattern book 2026-11.">Trend lines</th><th>Left</th></tr></thead><tbody id="tfs-rows"></tbody></table></div>
       <div class="scroll"><table class="lvl"><thead><tr><th>Level</th><th>Price</th><th>From price</th></tr></thead><tbody id="tfs-lv"></tbody></table><span class="err" id="tfs-err"></span></div>
     </div>
   </section>
@@ -1376,7 +1376,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
   function loadTfs(tfs) {
     if (typeof TFSTRIP === 'undefined') { TF.err.all = 'tf_strip.js not found next to this page'; return Promise.resolve(); }
     return Promise.all(tfs.map(function (tf) {
-      return getJson(TFSTRIP.BASE + '&interval=' + tf + '&limit=60').then(function (r) { TF.k[tf] = r; TF.t[tf] = Date.now(); delete TF.err[tf]; },
+      return getJson(TFSTRIP.BASE + '&interval=' + tf + '&limit=150').then(function (r) { TF.k[tf] = r; TF.t[tf] = Date.now(); delete TF.err[tf]; },
         function (e) { TF.err[tf] = msg(e); });
     }));
   }
@@ -1400,12 +1400,17 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     var rows = {}, H = [], D = '—';
     TFSTRIP.TFS.forEach(function (tf) {
       var r = TF.k[tf] ? TFSTRIP.row(TF.k[tf], now) : null; rows[tf] = r;
-      if (!r) { H.push('<tr><td class="tfn">' + tf + '</td><td colspan="5" class="dim">' + D + (TF.err[tf] ? ' <span class="err">' + esc(TF.err[tf]) + '</span>' : '') + '</td></tr>'); return; }
+      if (!r) { H.push('<tr><td class="tfn">' + tf + '</td><td colspan="6" class="dim">' + D + (TF.err[tf] ? ' <span class="err">' + esc(TF.err[tf]) + '</span>' : '') + '</td></tr>'); return; }
       var cv = r.cvd && r.cvd.dir ? '<b class="' + (r.cvd.dir === 'up' ? 'up' : 'down') + '">' + (r.cvd.dir === 'up' ? '&#9650; buy' : '&#9660; sell') + '</b>' : D;
       var fl = r.flip ? (r.flip.flipped ? '<span class="flip">FLIP</span> <span class="dim">flipped ' + TFSTRIP.fmtAgo(r.flip.ageMs) + ' ago</span>' : '<span class="dim">same</span>') : D;
       var bb = r.bb ? '<span class="bbt"><i style="left:' + r.bb.pos.toFixed(0) + '%"></i></span><span class="' + (r.bb.label.indexOf('upper') >= 0 ? 'down' : r.bb.label.indexOf('lower') >= 0 ? 'up' : 'dim') + '">' + r.bb.label + '</span>' : D;
       var kg = r.keep ? '<span class="kg"><b class="' + (r.keep.colour || '') + '" style="width:' + (r.keep.p * 100).toFixed(0) + '%"></b></span>' : '';
-      H.push('<tr><td class="tfn">' + tf + '</td><td>' + blk(r.colour, 'big') + r.last3.map(function (c) { return blk(c, 'sm'); }).join('') + kg + '</td><td>' + fl + '</td><td>' + cv + '</td><td>' + bb + '</td><td class="num">' + TFSTRIP.fmtLeft(r.leftMs) + '</td></tr>');
+      var tp = TF.k[tf] && TF.k[tf].length ? parseFloat(TF.k[tf][TF.k[tf].length - 1][4]) : NaN;
+      var tls = ['support', 'resistance'].map(function (sd) {
+        var t = isFinite(tp) ? TFSTRIP.trendline(TF.k[tf], sd, tp) : null;
+        return t ? '<span class="' + (sd === 'support' ? 'up' : 'down') + '" title="' + sd + ' line ' + fmt(t.value, 0) + ', slope ' + t.slopePct.toFixed(3) + '%/bar, ' + t.touches + ' touches">' + TFSTRIP.fmtLine(t) + '</span>' : '<span class="dim" title="no live ' + sd + ' line">' + (sd === 'support' ? 'S' : 'R') + ' —</span>';
+      }).join(' &middot; ');
+      H.push('<tr><td class="tfn">' + tf + '</td><td>' + blk(r.colour, 'big') + r.last3.map(function (c) { return blk(c, 'sm'); }).join('') + kg + '</td><td>' + fl + '</td><td>' + cv + '</td><td>' + bb + '</td><td>' + tls + '</td><td class="num">' + TFSTRIP.fmtLeft(r.leftMs) + '</td></tr>');
     });
     $('tfs-rows').innerHTML = H.join('');
     $('tfs-al').textContent = TFSTRIP.alignment(rows);
