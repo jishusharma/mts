@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T07:37:29Z",
   "commands": [],
   "created": "2026-11-04T21:23:52Z",
   "depends_on": [],
@@ -13,10 +14,18 @@
   "id": "gemini-blind-read-of-bb-range-retest-eth",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "21 FOUND 0 DIFF 2 NOT_IN_DATA; VERDICT MATCH",
+      "ref": "203aedd36",
+      "utc": "2026-11-06T07:37:29Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: blind read complete",
   "not_twin_of": [
     "gemini-blind-read-wt-extreme-cross-2026-11",
     "gemini-blind-read-wall-ledger-2026-11",
@@ -32,7 +41,12 @@
   "refs": [
     "MyTradingSys/research/bb_range_retest_eth_pool_2026-11/RESULT.md"
   ],
-  "result": "",
+  "result": "21 FOUND 0 DIFF 2 NOT_IN_DATA; VERDICT MATCH",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_BB_ETH_POOL_1104.md",
     "MyTradingSys/research/bb_range_retest_eth_pool_2026-11"
@@ -41,12 +55,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read dev_cells.csv and counts.csv in bb_range_retest_eth_pool_2026-11 and the shipped bb_range_retest_2026-11-04/dev_cells.csv before any prose result file",
     "Recompute the family rows (gate range, tag tagged, side both, sessions asia/london/ny) per symbol and POOL, and the BTC reproduction n, independently of the study code",
     "Write MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_BB_ETH_POOL_1104.md with a per-number table and VERDICT"
   ],
+  "taken": "2026-11-06T07:37:29Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_BB_ETH_POOL_1104.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] blind read of bb_range_retest_eth_pool_2026-11 RESULT.md",
   "weight": "ROUTINE",

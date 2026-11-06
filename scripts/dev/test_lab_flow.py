@@ -483,6 +483,29 @@ def test_unsupported_data_extension_is_refused(repo, monkeypatch, tmp_path):
         F.safe_file(repo, str(opaque))
 
 
+def test_repo_renamed_csv_with_post_cutoff_bar_is_refused(repo):
+    (repo / "renamed.csv").write_text("t,c\n1719792000000,1\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="post-cutoff"):
+        F.safe_file(repo, "renamed.csv")
+    import numpy as np
+    np.savez(repo / "renamed.npz", t=np.array([1719792000000], dtype=np.int64))
+    with pytest.raises(ValueError, match="post-cutoff"):
+        F.safe_file(repo, "renamed.npz")
+    (repo / "dev.csv").write_text("t,c\n1719705600000,1\n", encoding="utf-8")
+    assert F.safe_file(repo, "dev.csv").name == "dev.csv"
+
+
+def test_repo_unknown_data_extension_is_refused(repo):
+    (repo / "opaque.parquet").write_bytes(b"opaque data")
+    with pytest.raises(ValueError, match="cannot verify data timestamps"):
+        F.safe_file(repo, "opaque.parquet")
+    (repo / "opaque.zip").write_bytes(b"not a zip")
+    with pytest.raises(ValueError, match="cannot verify data timestamps"):
+        F.safe_file(repo, "opaque.zip")
+    (repo / "notes.md").write_text("x", encoding="utf-8")
+    assert F.safe_file(repo, "notes.md").name == "notes.md"
+
+
 def test_seconds_epoch_after_cutoff_is_refused(repo, monkeypatch, tmp_path):
     data_root = tmp_path / "data"
     seconds = data_root / "renamed.csv"
