@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T13:11:41Z",
   "commands": [
     "python scripts/dev/gemini_queue.py run gemini-blind-read-of-kurisko-run-dev-py-:low"
   ],
@@ -17,6 +18,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_KURISKO_RUNDEV_1106.md (9/9 clai",
+      "ref": "abb0ae419",
+      "utc": "2026-11-06T13:11:41Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "kurisko dev event study re-land: 0 frozen cells, guard refuses, no outcome read",
@@ -27,13 +34,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: gemini_queue worker complete",
   "note": "REVIEWED:2026-11-06 T0-ONLY | route [GEMINI] via gemini_queue.py gemini-blind-read-of-kurisko-run-dev-py-:low; lane was CODEX (retired 11-06)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-06T12:16:15Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_KURISKO_RUNDEV_1106.md (9/9 claims MATCH; VERDICT: MATCH)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_KURISKO_RUNDEV_1106.md",
     "MyTradingSys/research/kurisko_2026-10-18/run_dev.py"
@@ -44,12 +57,13 @@
   "scope_sha": "c4b49589b0b5",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/kurisko_2026-10-18/run_dev.py before any prose summary of them",
     "Recompute independently of the code under read, then check the DEV-only loader, fee source and R definition against FORMULAS.md",
     "Write MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_KURISKO_RUNDEV_1106.md with the per-claim table and VERDICT"
   ],
+  "taken": "2026-11-06T13:11:41Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_KURISKO_RUNDEV_1106.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] blind read of kurisko run_dev.py (research/kurisko_2026-10-18)",
   "weight": "ROUTINE",

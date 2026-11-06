@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T13:12:15Z",
   "commands": [
     "python scripts/dev/gemini_queue.py run gemini-blind-read-disposition-missing-1018:low"
   ],
@@ -16,6 +17,12 @@
   "kind": "audit",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "VERDICT: MISMATCH (10/13 claims match, 3 mismatches; 8 findings / 10 cited cards audited i",
+      "ref": "040144aae",
+      "utc": "2026-11-06T13:12:15Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -34,13 +41,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "route-multi-tf-bias-blind-read",
   "note": "REVIEWED:2026-11-06 T0-ONLY | route [GEMINI] via gemini_queue.py gemini-blind-read-disposition-missing-1018:low; lane was CODEX (retired 11-06)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-06T12:16:08Z",
   "refs": [],
-  "result": "",
+  "result": "VERDICT: MISMATCH (10/13 claims match, 3 mismatches; 8 findings / 10 cited cards audited in MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_DISPMISS_1106.md)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_DISPMISS_1106.md",
     "MyTradingSys/research/lab_guy/DISPOSITION_MISSING_2026-10-18.md"
@@ -51,12 +64,13 @@
   "scope_sha": "d8b4857b91b9",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/lab_guy/DISPOSITION_MISSING_2026-10-18.md before any prose summary of them",
     "Recompute independently of the code under read, then count every card the file lists as missing a disposition and re-derive that count from MyTradingSys/system/tasks/*.json states and notes",
     "Write MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_DISPMISS_1106.md with the per-claim table and VERDICT"
   ],
+  "taken": "2026-11-06T13:12:15Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_DISPMISS_1106.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] blind read of lab_guy/DISPOSITION_MISSING_2026-10-18.md",
   "weight": "ROUTINE",
