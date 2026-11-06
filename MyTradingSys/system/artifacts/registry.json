@@ -239,7 +239,7 @@
       "last_published": {
         "jishu.sharma": "never",
         "jishu.awgp": "never",
-        "jishusharma1985": "2026-11-06"
+        "jishusharma1985": "2026-11-07"
       },
       "title": "MTS Home",
       "html": "MyTradingSys/system/artifacts/mts_home.html",
@@ -249,7 +249,7 @@
       "purpose": "This list: every MTS page, its owner login, where your notes go, and how to open it from any login.",
       "notes_go_to": "Nothing to write here.",
       "note": "The hub (operator 2026-10-16: 'all my artifacts available from one place'). Generated from registry.json; pinned on the home login.",
-      "published_sha": "31697e9603bc5eb24980343a4a3e67e8aae1e2c404e2c28d68a995a8daec61f5"
+      "published_sha": "6db1eb81e8d9480a67e81bc5de0d25b8df55bc5dcee2ee677faabcc6f06100e0"
     },
     {
       "slug": "research_map",

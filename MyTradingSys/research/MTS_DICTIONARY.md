@@ -170,7 +170,7 @@ This is the discovery-phase scheme. Add families; do not rename existing ones.
 | Cross-trader rules | [CT-NNN] | Other analyst extracts (Flow Horse, CryptoCred, CrypNuevo). 19 ids in compiled_engine.md. | Live |
 | Verdict tracking | [VERDICT-NNN] | Future analyst opinion pipeline (PROJECT_VISION layer 3). | Planned |
 | MalkanView RSI | [MALKAN-NNN] | RSI 40-60 layer (PROJECT_VISION layer 1). | Planned |
-| Event probability | [PROB-NNN] | Probability distribution layer (PROJECT_VISION layer 2). | Parked |
+| Event probability | [PROB-NNN] | Probability distribution layer (PROJECT_VISION layer 2): 7 descriptive base-rate tables, 5 on the live aid, no shared schema; state and unification plan in research/prob_dist_layer_brief_2026-10-16/UNIFY_2026-11-06.md. | Context (descriptive) |
 | Session frame | [SESSION-NNN] | Session-aware frame (PROJECT_VISION layer 4). | Design |
 | Our invention | [SCREENER] | None. Must not be presented as sourced. | Live |
 
