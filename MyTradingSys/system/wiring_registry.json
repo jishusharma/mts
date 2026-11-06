@@ -973,6 +973,10 @@
       "disp": "TOOL",
       "why": "Writes cycle_flag_data.js (the cycle-bottom flag line shown in live_aid.html); run by hand once a day, named in tools/live_aid/STEPS.md."
     },
+    "MyTradingSys/tools/live_aid/base_rates.py": {
+      "disp": "TOOL",
+      "why": "Builds base_rates.js (the BASE_RATES registry the live aid panels read) and BASE_RATES.md from the study outputs; run by hand after a study re-run: python MyTradingSys/tools/live_aid/base_rates.py build, named in tools/live_aid/STEPS.md."
+    },
     "MyTradingSys/tools/us_open_alert.py": {
       "disp": "WIRE",
       "ref": "ask-p0-37-us-open-alert-line",
