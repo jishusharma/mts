@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T08:05:41Z",
   "commands": [],
   "created": "2026-11-04T14:01:00Z",
   "depends_on": [],
@@ -13,17 +14,30 @@
   "id": "gemini-blind-read-of-scripts-dev-analyst",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "blind read REVIEW: 5 defects (ticker-suffix price dropped, ETH 2020-2039 as year, 1000-bar",
+      "ref": "f5652f993",
+      "utc": "2026-11-06T08:05:41Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "fix-analyst-levels-py-parse-defects-anal",
   "note": "",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-04T20:11:35Z",
   "refs": [],
-  "result": "",
+  "result": "blind read REVIEW: 5 defects (ticker-suffix price dropped, ETH 2020-2039 as year, 1000-bar cap), hit timing correct",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/reports/analyst_levels_blind_read_REVIEW.md"
   ],
@@ -35,12 +49,13 @@
   "sources": [
     "scripts/dev/analyst_levels.py"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read scripts/dev/analyst_levels.py and its tests",
     "Check hit timing vs video publish time and the --symbol ladder",
     "Write the review file: defects with file:line or none found"
   ],
+  "taken": "2026-11-06T08:05:41Z",
   "tests": "python -m pytest -q MyTradingSys/tests/docs/test_integrity.py",
   "title": "[GEMINI] blind read of scripts/dev/analyst_levels.py",
   "weight": "ROUTINE",

@@ -1,7 +1,19 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T08:05:39Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-06T08:27:21Z",
+    "misses": 19,
+    "reads": [
+      "scripts/dev/analyst_levels.py",
+      "scripts/dev/test_analyst_levels.py",
+      "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/REVIEW.md"
+    ],
+    "session": "agent-aeecb36aabe0b87e7"
+  },
   "created": "2026-11-04T17:46:16Z",
   "depends_on": [],
   "done_when": "REVIEW.md in MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/ lists each defect with file:line, or says none found",
@@ -13,17 +25,30 @@
   "id": "gemini-blind-read-malkan-div-trade-chart",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "blind read REVIEW.md: 5 found (2 display-logic), 0 diff vs study trades, no lookahead",
+      "ref": "f5652f993",
+      "utc": "2026-11-06T08:05:39Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "fix-malkan-div-trade-charts-py-display-d",
   "note": "",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-04T20:11:32Z",
   "refs": [],
-  "result": "",
+  "result": "blind read REVIEW.md: 5 found (2 display-logic), 0 diff vs study trades, no lookahead",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/REVIEW.md"
   ],
@@ -35,12 +60,13 @@
   "sources": [
     "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/malkan_div_trade_charts.py"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read malkan_div_trade_charts.py and study.py in rsi_divergence_mtf_gated_2026-11-04",
     "Compare chart marks vs study entries; check for future bars",
     "Write REVIEW.md: defects with file:line or none found"
   ],
+  "taken": "2026-11-06T08:05:39Z",
   "tests": "python -m pytest -q MyTradingSys/tests/docs/test_integrity.py",
   "title": "[GEMINI] blind read: malkan_div_trade_charts.py (rsi_divergence_mtf_gated_2026-11-04)",
   "weight": "ROUTINE",

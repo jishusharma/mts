@@ -1,9 +1,21 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T07:55:22Z",
   "commands": [
     "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/layer_lab/reports/2026-11-05_gemini-blind-read-fetch-futures-metrics.md'); assert p.exists() and len(p.read_text())>400\""
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-06T08:14:22Z",
+    "misses": 83,
+    "reads": [
+      "MyTradingSys/backtest/fetch_futures_metrics.py",
+      "MyTradingSys/research/testnet_signal_fast_lane_2026-11-04/DESIGN.md",
+      "scripts/dev/lookahead_lint.py"
+    ],
+    "session": "agent-a2119e1ef7c61c0e2"
+  },
   "created": "2026-11-05T08:08:12Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-05_gemini-blind-read-fetch-futures-metrics.md lists each docstring claim with a code line, MATCH or MISMATCH per claim (idempotent skip, SHA256 check, 288 rows per day, root resolution order), and ends with VERDICT: MATCH or MISMATCH.",
@@ -17,6 +29,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "fetch_futures_metrics.py docstring vs code: 11 claims all MATCH, VERDICT MATCH",
+      "ref": "c1c978e16",
+      "utc": "2026-11-06T07:55:22Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "data: re-land fetch_futures_metrics.py with its wiring_registry TOOL entry",
@@ -27,6 +45,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: audit complete",
   "not_twin_of": [
     "metrics-oi-toptrader-into-shared-data",
     "gemini-blind-read-wt-extreme-cross-2026-11",
@@ -38,7 +57,12 @@
   "refined_by": "",
   "refreshed": "2026-11-05T11:19:29Z",
   "refs": [],
-  "result": "",
+  "result": "fetch_futures_metrics.py docstring vs code: 11 claims all MATCH, VERDICT MATCH",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/reports/2026-11-05_gemini-blind-read-fetch-futures-metrics.md",
     "MyTradingSys/backtest/fetch_futures_metrics.py"
@@ -47,12 +71,13 @@
   "scope_sha": "ea7db56d7b17",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the code first (resolve_root, download, gap listing) and write expected behaviour per function",
     "Compare each docstring claim to the code with line cites; no network calls, no keys",
     "Write the report with a table and VERDICT"
   ],
+  "taken": "2026-11-06T07:55:22Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/layer_lab/reports/2026-11-05_gemini-blind-read-fetch-futures-metrics.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] blind read of MyTradingSys/backtest/fetch_futures_metrics.py",
   "weight": "ROUTINE",
