@@ -38,7 +38,7 @@ from MyTradingSys.backtest import research_kit as rk  # noqa: E402
 from MyTradingSys.backtest import splits  # noqa: E402
 
 ARCH = Path("F:/MTS/data/tom_raw/klines")
-DAILY_ARCH = Path("F:/MTS/Dumps/backtest/raw_1d/klines")
+DAILY_ARCH = Path("F:/MTS/Dumps/backtest/raw_1d/klines")  # T01-F2: raw_1d is a mismatched-label archive (daily bars feed regime/RSI warm-up only); not a primary price source
 FUND_BASE = Path("F:/MTS/Dumps/backtest")
 DAYMIN = 1440
 MS = 60_000
@@ -59,7 +59,7 @@ NT = 4                             # tranches
 TR_STEP_ATR = 0.5                  # OURS
 TARGET_MIN_ATR = 1.0               # OURS
 TARGET_DEFAULT_ATR = 1.5           # OURS
-MARKET_LEG_EXTRA_BPS = 2.0               # OURS
+MARKET_LEG_EXTRA_BPS = (2.0)              # OURS
 TAKER_BPS = fees.BINANCE_TAKER * 1e4   # SOURCED fees.py (5 bps)
 MAKER_BPS = fees.BINANCE_MAKER * 1e4   # SOURCED fees.py (2 bps)
 N_MIN = 250                        # PRE_REG section 7
@@ -246,7 +246,7 @@ def manage(O, H, L, hr, d, t_rel, atr, wend, funding, ts0=TS0):
         if np.isnan(o):
             return None
         kind, exit_p, exit_i = "cap", float(o), end_g
-    gross = cost = fund = 0.0
+    gross = cost = fund = (0.0)
     for k, (fp, fi) in enumerate(fills):
         w = 1.0 / NT
         gross += w * (fp - exit_p) / fp * 1e4
