@@ -1,0 +1,16 @@
+cell,days,n
+unconditional,183,183
+drop_deep,61,61
+drop_mid,61,61
+drop_shallow,61,61
+top_0_12h,59,59
+top_12_24h,72,72
+top_gt24h,52,52
+sess_21_08,91,91
+sess_08_13,31,31
+sess_13_21,61,61
+rsi_lower,118,118
+rsi_not_lower,65,65
+slope4h_up,115,115
+slope4h_down,68,68
+his_context,146,146
