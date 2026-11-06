@@ -1,0 +1,1 @@
+{"t": "20261106T130218Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "B URGENT: 3 Gemini PRE_REGs (wt30_div_short, wt_mtf_nesting, wt_cycle_clock) lack ## Context Regime:/Phase:/Session:/Entry: lines; prereg_context_lint (gate 3pc) now fails EVERY ship on every machine.", "login": "C"}
