@@ -13,7 +13,15 @@
   "id": "gemini-blind-read-of-level-approach-prep",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "level-approach prep: live_aid panel (checklist, absorption, OI tell, wick TFs, flags/6, on",
+      "ref": "775495c597f6",
+      "utc": "2026-11-05T01:36:50Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -28,7 +36,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "level-approach-prep-1105",
-  "refreshed": "2026-11-05T01:36:40Z",
+  "refreshed": "2026-11-06T12:50:17Z",
   "refs": [
     "MyTradingSys/research/level_approach_prep_2026-11-05/RESULT.md"
   ],
@@ -38,7 +46,7 @@
     "MyTradingSys/research/level_approach_prep_2026-11-05"
   ],
   "scope_out": [],
-  "scope_sha": "",
+  "scope_sha": "775495c597f6",
   "size": "S",
   "sources": [],
   "state": "ready",

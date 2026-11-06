@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T12:43:38Z",
   "commands": [],
   "created": "2026-11-04T07:22:11Z",
   "depends_on": [],
@@ -12,8 +13,14 @@
   "goal": "Second-vendor re-derivation of the headline rows of RESULT.md from the saved csv outputs and FORMULAS.md; the existing check was Gemini only.",
   "id": "gpt-rederive-meta-label-dev-ext-1104",
   "kind": "audit",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "10 MATCH / 1 DIFF / 8 NOT_IN_DATA; MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-",
+      "ref": "4dcfa40ee",
+      "utc": "2026-11-06T12:43:38Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,13 +39,20 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: trade-level csv not saved, rows 12-19 need it",
   "note": "REVIEWED: planner-c-1104 2026-11-04 T0-ONLY (template of done gemini-blind-read/gpt-audit cards; twin check: no blind read or audit of this folder in tasks/ or archive/). Never use model output as the source.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-04T07:22:13Z",
   "refs": [],
-  "result": "",
+  "rerouted": "2026-11-06 operator: GPT/Codex plan expired; lane CODEX -> SONNET (cross-vendor independence of a re-derive is lost: say so in the result)",
+  "result": "10 MATCH / 1 DIFF / 8 NOT_IN_DATA; MyTradingSys/research/layer_lab/reports/2026-11-04_gpt-rederive-meta-label-dev-ext.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/meta_label_dev_ext_2026-10-31/RESULT.md (read)",
     "MyTradingSys/backtest/layers/FORMULAS.md (read)",
@@ -52,12 +66,13 @@
   "sources": [
     "MyTradingSys/research/meta_label_dev_ext_2026-10-31/RESULT.md:1-30"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "List headline numbers",
     "Recompute from the saved csv in the folder, not from the script",
     "Write the table"
   ],
+  "taken": "2026-11-06T12:43:38Z",
   "tests": "audit card, output file is the test; each row quotes the source line it was matched to; repo files stay byte-identical (git diff empty)",
   "title": "GPT re-derive: meta_label_dev_ext_2026-10-31 RESULT.md headline numbers (Gemini blind-read 1102 was the only check so far)",
   "weight": "ROUTINE",

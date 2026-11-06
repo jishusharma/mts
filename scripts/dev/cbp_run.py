@@ -112,9 +112,11 @@ def analysts():
 
 def fetch_new(cutoff, store, run=subprocess.run):
     """yt-dlp captions for each actionable analyst, newest first, stopping at `cutoff` (YYYY-MM-DD).
-    Existing transcripts are skipped by fetch_captions_timed, so reruns download nothing new."""
+    Existing transcripts are skipped by fetch_captions_timed, so reruns download nothing new.
+    Returns the analysts whose fetch exited nonzero; one of them never stops the others."""
     cfg, ans = analysts()
     cookies = CBP_HOME / "cookies_utube_1.txt"
+    incomplete = []
     for an in ans:
         cmd = [sys.executable, str(HERE / "fetch_captions_timed.py"), "--analyst", an["short"],
                "--channel", an["channel"], "--latest", "6", "--scan", "8", "--since", cutoff,
@@ -124,7 +126,10 @@ def fetch_new(cutoff, store, run=subprocess.run):
         if cookies.exists():
             cmd += ["--cookies", str(cookies)]
         result = run(cmd, check=False)
-        result.check_returncode()
+        if result.returncode:  # DEFERRED (per-run --max-videos budget) or DATE_FAILED exits 1: keep going, retry next window
+            print("cbp: fetch incomplete for %s (exit %s); window will be retried" % (an["short"], result.returncode))
+            incomplete.append(an["short"])
+    return incomplete
 
 
 def parse_transcript(path):
@@ -182,7 +187,7 @@ def build_row(video, got, body):
     for q in quotes + [str(t.get("quote") or "") for t in trades]:
         bad = vq.first_missing(q, norm_body) if q.strip() else "empty quote"
         if bad is not None:
-            return None, "quote not in transcript: " + bad.strip()[:60]
+            return None, "quote not in transcript: " + bad.strip()[:400]
     row = {"analyst": analyst, "video_id": vid, "published": published,
            **({"channel": channel} if channel else {}),
            "bias": got.get("bias") if got.get("bias") in cbp.BIASES else "NO_VIEW",
@@ -217,6 +222,13 @@ def build_verdict(video, got, body):
             "alts_general": s(got.get("alts_general")), "alts_general_quote": gq if ok(gq) else ""}
 
 
+class FetchIncomplete(Exception):
+    """Fetch was partial for some analysts; extraction of everything local still ran and was saved."""
+    def __init__(self, analysts, result):
+        super().__init__("fetch incomplete for: " + ", ".join(analysts))
+        self.analysts, self.result = analysts, result
+
+
 def _cause(vid, e):
     err = (getattr(e, "stderr", None) or "").strip() if not isinstance(e, ValueError) else ""
     return "%s: %s" % (vid, (err or str(e) or type(e).__name__)[:160])
@@ -234,7 +246,7 @@ def run_once(now, fetch=fetch_new, extract=llm_extract, store=None):
     except (OSError, ValueError):
         verdicts = {}
     known = {(r["video_id"], r["analyst"]) for r in data["rows"]} | {(x[0], x[1]) for x in data["rejected"]}
-    fetch(vcut, known)
+    incomplete = fetch(vcut, known)
     added = rejected = 0
     failures = []
     cause = []
@@ -266,6 +278,8 @@ def run_once(now, fetch=fetch_new, extract=llm_extract, store=None):
     vpath.write_text(json.dumps(verdicts, indent=1, ensure_ascii=False), encoding="utf-8", newline=chr(10))
     if failures:
         raise RuntimeError("extraction incomplete for %d video(s); retry required: %s" % (len(failures), "; ".join(cause[:3])))
+    if incomplete:
+        raise FetchIncomplete(incomplete, (added, len(data["rows"]), rejected))
     return added, len(data["rows"]), rejected
 
 
@@ -295,15 +309,22 @@ def main(argv=None, now=None):
         if not window:
             print("cbp: not due")
             return 0
+    partial = []
     try:
-        added, total, rejected = run_once(now)
+        try:
+            added, total, rejected = run_once(now)
+        except FetchIncomplete as e:  # rows and verdicts are saved; only the stamp is withheld
+            (added, total, rejected), partial = e.result, e.analysts
     except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as e:
         print("cbp: FAILED (%s); window not marked complete" % type(e).__name__, file=sys.stderr)
         return 1
-    write_stamp(now, window or open_window(now))
+    if not partial:
+        write_stamp(now, window or open_window(now))
     rebuild_dashboard()
     end = now.astimezone(timezone.utc).date().isoformat()  # window = the 5 days up to today
     print("cbp: +%d rows, %d total, window end %s%s" % (added, total, end, ", %d rejected" % rejected if rejected else ""))
+    if partial:
+        print("cbp: window not marked complete, fetch incomplete for: " + ", ".join(partial))
     return 0
 
 
