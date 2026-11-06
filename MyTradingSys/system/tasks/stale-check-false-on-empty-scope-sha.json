@@ -19,9 +19,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "codex lab: gate-red ship writes lab.hold; lint/check flag done_when outside lab",
-      "ref": "7c12edc44529",
-      "utc": "2026-11-05T03:55:05Z"
+      "line": "tasks.promote_shared keeps CRUCIAL/CRITICAL weight, sets shared:true",
+      "ref": "a9f710df834f",
+      "utc": "2026-11-06T08:03:41Z"
     }
   ],
   "layers": [],
@@ -31,7 +31,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
-  "refreshed": "2026-11-05T10:27:38Z",
+  "refreshed": "2026-11-06T13:17:53Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -43,7 +43,7 @@
     "card JSONs",
     "no change to the non-empty scope_sha branch"
   ],
-  "scope_sha": "7c12edc44529",
+  "scope_sha": "a9f710df834f",
   "size": "S",
   "sources": [],
   "state": "ready",
