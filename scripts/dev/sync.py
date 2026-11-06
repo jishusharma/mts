@@ -1010,17 +1010,27 @@ def wait_own_ci(pushed, fetch=None, failed_jobs=None, sleep=time.sleep, now_fn=t
     cancelled); only 'red' is a verdict against the author. fetch(sha) -> runs newest first; never raises."""
     sha = pushed.sha
     short = sha[:8]
-    if not ci_starts(pushed.files, globs):
-        print(f"CI: no CI run for {short}: the ci.yml path filter skips these files")
-        return "none"
     get = fetch or ci_runs_for
+    initial_runs = None
+    if not ci_starts(pushed.files, globs):
+        try:
+            initial_runs = get(sha) or []
+        except Exception:
+            initial_runs = []
+        if not initial_runs:
+            print(f"CI: no CI run for {short}: the ci.yml path filter skips these files")
+            return "none"
     print(f"waiting for the CI run of {short} (up to {wait_s // 60} min; `ship --no-ci-wait` skips)", flush=True)
     t0 = now_fn()
     seen, misses = False, 0
     while True:
         run = None
         try:
-            runs = get(sha) or []
+            if initial_runs is not None:
+                runs = initial_runs
+                initial_runs = None
+            else:
+                runs = get(sha) or []
             misses = 0
             run = runs[0] if runs else None
         except Exception as e:      # offline / rate limited: a watcher must never break a ship that already pushed
