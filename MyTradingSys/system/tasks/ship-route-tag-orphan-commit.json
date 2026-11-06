@@ -4,15 +4,24 @@
   "commands": [],
   "created": "2026-11-06T16:27:46Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "test with a repo whose HEAD rev-parse fails makes commit_pending raise SyncError and create no commit; normal path unchanged",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "commit_pending's empty 'route tag' commit must refuse when HEAD has no parent (unborn read during git auto-gc made an 8702-file initial commit on JIS-NUC/gq-leftovers-b-1106, 11-06)",
   "id": "ship-route-tag-orphan-commit",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sync.py: check fetched run before trusting path filter in wait_own_ci",
+      "ref": "a70c5d3362bf",
+      "utc": "2026-11-06T15:42:08Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -20,18 +29,29 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-06T17:31:22Z",
   "refs": [
     "scripts/dev/sync.py"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/sync.py",
+    "scripts/dev/test_sync_route_tag.py"
+  ],
+  "scope_out": [
+    "MyTradingSys/tools/live_aid"
+  ],
+  "scope_sha": "a70c5d3362bf",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "add fail-first test with a fresh git init repo, no commits",
+    "in commit_pending check git rev-parse --verify HEAD before any commit, SyncError if it fails",
+    "run the sync tests"
+  ],
+  "tests": "scripts/dev/test_sync_route_tag.py: unborn-HEAD fixture must raise (fails on current commit_pending)",
   "title": "sync.py ship made an orphan 'route tag' commit (reflog: commit (initial), full 8702-file tree) on branch JIS-NUC/gq-leftovers-b-1106 in F:/MTS/gq/leftovers-b, during git auto-gc; the real commit stayed in reflog. Merge then failed 'unrelated histories', so nothing bad was pushed. Find why HEAD read as unborn (gc/packed-refs race?) and make the route-tag commit refuse when HEAD has no parent",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }
