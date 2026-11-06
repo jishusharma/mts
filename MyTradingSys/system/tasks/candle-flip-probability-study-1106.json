@@ -2,6 +2,18 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 16,
+    "folded": "2026-11-06T16:28:57Z",
+    "misses": 26,
+    "reads": [
+      "MyTradingSys/tools/live_aid/tf_strip.js",
+      "MyTradingSys/system/ANNOUNCEMENTS.md",
+      "MyTradingSys/research/STATUS.md",
+      "MyTradingSys/tools/live_aid/live_aid.html"
+    ],
+    "session": "83e79aee-71ed-40c9-804c-ac02f1e1fa88"
+  },
   "created": "2026-11-06T14:56:11Z",
   "depends_on": [],
   "done_when": "PRE_REG.md with ## Context frozen before the count; RESULT.md with the Brier of null vs conditioned per TF and the cell table; a P_close_colour function with a spec test; tf_strip.js shows it as a per-row gauge (no new words) with a test in test_spec_tf_strip.py that fails before the change; reviewed by a Haiku credit job (api_job.py, cap 3 USD) and the review attached.",

@@ -2,6 +2,7 @@
   "approved_by": "",
   "asks": "",
   "class": "C1",
+  "closed": "2026-11-06T16:27:20Z",
   "commands": [
     "python -m pytest scripts/dev/test_api_job.py scripts/dev/test_api_job_gpt.py -q"
   ],
@@ -18,6 +19,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "scripts/dev/test_api_job_gpt.py added with 4 mutation-verified tests; all 11 passed; regis",
+      "ref": "dbbf6bcf0",
+      "utc": "2026-11-06T16:27:20Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "route tag re-land: every ship names where the work goes next (Next: gate, tasks done --nex",
@@ -28,13 +35,20 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: spec and mutation tests complete",
   "note": "REVIEWED:2026-11-04 ACCEPT by lab_guy | lab_guy C1 ACCEPT (credit spend path; mutation shown in done_when; no live money, testnet-irrelevant)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-04T15:46:13Z",
   "refs": [],
-  "result": "",
+  "rerouted": "2026-11-06 operator: GPT/Codex plan expired; lane CODEX -> SONNET (cross-vendor independence of a re-derive is lost: say so in the result)",
+  "result": "scripts/dev/test_api_job_gpt.py added with 4 mutation-verified tests; all 11 passed; registered in run_all_tests.py",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/api_job.py (read only), scripts/dev/test_api_job_gpt.py (new), scripts/dev/run_all_tests.py (one list line)"
   ],
@@ -46,16 +60,16 @@
   "sources": [
     "MyTradingSys/system/PLAN_24H_2026-11-04.md (section 3 job queue)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read api_job.py and test_api_job.py",
     "Write the 4 tests against the public functions (build_cmd, running_jobs via MTS_API_RUNS=tmp, ledger_total, parse_result)",
     "Plant one mutation per test, see it fail, revert",
     "Register, run, ship"
   ],
+  "taken": "2026-11-06T16:27:20Z",
   "tests": "test_api_job_gpt.py: build_cmd never contains the key or the key path; launch refuses when running_jobs() is non-empty; ledger_total sums only rows under '## Spent'; parse_result returns done False when no result record",
   "title": "GPT spec and mutation tests for scripts/dev/api_job.py (headless credit launcher): key never in argv/log, one job per machine, ledger_total parses only Spent rows, parse_result ignores non-result records",
   "weight": "ROUTINE",
-  "worker": "agent",
-  "rerouted": "2026-11-06 operator: GPT/Codex plan expired; lane CODEX -> SONNET (cross-vendor independence of a re-derive is lost: say so in the result)"
+  "worker": "agent"
 }

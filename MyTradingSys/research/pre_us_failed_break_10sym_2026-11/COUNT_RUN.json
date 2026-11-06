@@ -1,0 +1,55 @@
+{
+ "per_symbol": {
+  "BTCUSDT": {
+   "n": 177,
+   "days_usable": 907,
+   "missing_bars": 0
+  },
+  "ETHUSDT": {
+   "n": 186,
+   "days_usable": 907,
+   "missing_bars": 0
+  },
+  "SOLUSDT": {
+   "n": 141,
+   "days_usable": 902,
+   "missing_bars": 7200
+  },
+  "BNBUSDT": {
+   "n": 128,
+   "days_usable": 907,
+   "missing_bars": 0
+  },
+  "XRPUSDT": {
+   "n": 124,
+   "days_usable": 902,
+   "missing_bars": 7200
+  },
+  "DOGEUSDT": {
+   "n": 131,
+   "days_usable": 907,
+   "missing_bars": 0
+  },
+  "ADAUSDT": {
+   "n": 106,
+   "days_usable": 907,
+   "missing_bars": 0
+  },
+  "AVAXUSDT": {
+   "n": 115,
+   "days_usable": 907,
+   "missing_bars": 0
+  },
+  "LINKUSDT": {
+   "n": 137,
+   "days_usable": 907,
+   "missing_bars": 0
+  },
+  "LTCUSDT": {
+   "n": 148,
+   "days_usable": 902,
+   "missing_bars": 7200
+  }
+ },
+ "pooled_n": 1393
+}

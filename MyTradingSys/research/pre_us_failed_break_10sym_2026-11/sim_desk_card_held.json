@@ -1,0 +1,75 @@
+{
+ "id": "pre-us-failed-break-10sym-dev-run",
+ "kind": "backtest",
+ "family": "Pre-US failed break short",
+ "provenance": "run",
+ "title": "Pre-US failed-break short, DEV run on 10 USD-M symbols, fee-net",
+ "date": "2026-11-06",
+ "what": [
+  {
+   "name": "Rule",
+   "value_plain": "frozen pre-US failed-break short with 4-tranche scale-in, no stop, 07-13Z window (research/pre_us_failed_break_2026-10/PRE_REG.md s2-7)",
+   "label": "OURS"
+  },
+  {
+   "name": "Costs",
+   "value_plain": "fees.py regime A all-taker 0.0005 per leg + 2 bps slippage per leg, 14 bps round trip",
+   "label": "SOURCED"
+  }
+ ],
+ "how": "run_10sym.py count, gate, PRE_REG.md committed, run_10sym.py dev, analyze.py; one run, DEV 2022-01-01..2024-06-30 only.",
+ "window": "DEV 2022-01-01 .. 2024-06-30",
+ "verdict": {
+  "label": "FAIL powered, n=1393 symbol-days on 10 USD-M symbols DEV: mean -2.47 bps of K fee-net (t -0.56), time-cap sum -16400 bps, MDD 97.9% vs buy-and-hold 66.9%",
+  "tone": "bad"
+ },
+ "why": [
+  "Mean fee-net is negative and not distinguishable from zero (CI -11.1..+6.1 bps).",
+  "91% of episodes end at the time cap; their summed loss exceeds the target-hit gains.",
+  "Powered at the measured sd 120 (n needed 1153): not underpowered."
+ ],
+ "kpis": [
+  {
+   "label": "episodes",
+   "value": "1393"
+  },
+  {
+   "label": "mean net bps of K",
+   "value": "-2.47"
+  },
+  {
+   "label": "t (day-clustered)",
+   "value": "-0.56"
+  },
+  {
+   "label": "regime mix",
+   "value": "130 weeks: bull 25 (19%) | bear 0 (0%) | range 105 (81%) | n/a 0 (0%)"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "episode ledger is research/pre_us_failed_break_10sym_2026-11/ledger.csv"
+  }
+ ],
+ "evidence": [
+  "MyTradingSys/research/pre_us_failed_break_10sym_2026-11/RESULT.md"
+ ],
+ "missing": [],
+ "source_files": [
+  "MyTradingSys/research/pre_us_failed_break_10sym_2026-11/run_10sym.py",
+  "MyTradingSys/research/pre_us_failed_break_10sym_2026-11/RESULT.md"
+ ],
+ "commit": "see git log",
+ "banner": {
+  "state": "FAIL",
+  "tone": "bad",
+  "verdict": "FAIL powered, n=1393 symbol-days on 10 USD-M symbols DEV: mean -2.47 bps of K fee-net (t -0.56), time-cap sum -16400 bps, MDD 97.9% vs buy-and-hold 66.9%",
+  "n": 1393,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "FAIL powered, n=1393 symbol-days on 10 USD-M symbols DEV: mean -2.47 bps of K fee-net (t -0.56), time-cap sum -16400 bps, MDD 97.9% vs buy-and-hold 66.9%"
+ }
+}

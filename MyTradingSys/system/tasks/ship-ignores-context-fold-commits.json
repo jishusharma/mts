@@ -29,7 +29,7 @@
   "not_twin_of": [
     "context-gap-fold-on-ship"
   ],
-  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks | 2026-11-06 B review: Flash branch rejected, its squash_fold_commits runs git reset/--amend inside sync.py ship (hard rule: never reset). Build it without history rewrite: fold stages into the card and rides the next real commit, or ahead_commits/route checks skip fold-only commits.",
   "pinned": false,
   "prio": 3,
   "refine_tries": 0,

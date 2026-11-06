@@ -239,3 +239,9 @@ MyTradingSys/tools/live_aid/analyst_data.js
 MyTradingSys/tools/live_aid/ff_calendar_snapshot.js
 MyTradingSys/observation/uptime_heartbeat.jsonl
 MyTradingSys/runtime/us_prep/
+
+# candle_flip_probability study: 1m kline cache (28 MB) and the row table (over 5 MB), rebuilt by fetch_1m.py / flip_table.py
+MyTradingSys/research/candle_flip_probability_2026-11/klines_1m_cache.csv.gz
+MyTradingSys/research/candle_flip_probability_2026-11/btcusdt_1m.csv.gz
+MyTradingSys/research/candle_flip_probability_2026-11/flip_table.csv.gz
+MyTradingSys/research/candle_flip_probability_2026-11/fetch.log
