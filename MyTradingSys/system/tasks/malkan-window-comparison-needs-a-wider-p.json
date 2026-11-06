@@ -6,8 +6,8 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-06T14:44:00Z",
-    "misses": 66,
+    "folded": "2026-11-06T14:44:56Z",
+    "misses": 68,
     "reads": [
       "scripts/dev/verdicts.py",
       "scripts/dev/lookahead_lint.py",
