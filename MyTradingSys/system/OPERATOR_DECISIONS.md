@@ -1834,3 +1834,7 @@ Answer: proposal only until the operator decides (2026-11-06).
 ## d-mts-bible-1106 | decided 2026-11-06 | operator (voice, 18:14Z: "keep this in your Bible"), recorded by Lead C
 research/mts_bible/BIBLE.md holds the big-picture truths (cycle clock, turn shapes, two-clock reading, exact lows) with confirm/break conditions; sessions append dated readings, never edit past ones. Each Bible reading with a testable outcome also goes to the scenario ledger so it is scored (S008: July bottom stands).
 Answer: Bible kept and wired to the ledger (operator, 2026-11-06).
+
+## d-prob-registry-1106 | decided 2026-11-06 | operator ("Yes, build it", 19:55Z), recorded by Lead C
+The probability layer is context, never a signal: one base-rate registry (base_rates.py -> base_rates.js) replaces the five *_rates.js globals on the live aid, built from the existing study outputs, no new study, no backtest; every number shows its window and n. Card prob-base-rates-registry-1106 goes to a Sonnet Builder now (defaults from UNIFY_2026-11-06.md s6: unify now; rows below the unit minimum shown greyed, never hidden; the leverage cap (D3) waits for a realised testnet log).
+Answer: build it now (operator, 2026-11-06 19:55Z).
