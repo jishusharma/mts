@@ -83,6 +83,43 @@ class Symbols(unittest.TestCase):
             self.assertIn("ETH rows", buf.getvalue())
 
 
+class Defects(unittest.TestCase):
+    def test_price_followed_by_ticker_kept(self):
+        self.assertEqual(al.parse_levels("target 80k BTC"), [80000])
+        self.assertEqual(al.parse_levels("support at 75,000 BTC"), [75000])
+        self.assertEqual(al.parse_levels("ETH 2,350 ETH"), [])  # out of BTC band
+        self.assertEqual(al.parse_levels("holds 2,350 ETH", "ETH"), [2350])
+
+    def test_bare_eth_price_in_year_range_kept(self):
+        self.assertEqual(al.parse_levels("ETH 2030 support", "ETH"), [2030])
+        self.assertEqual(al.parse_levels("support 2,030 and 2,020", "ETH"), [2030, 2020])
+        self.assertEqual(al.parse_levels("by 2030 and in 2026, October 2026", "ETH"), [])
+
+    def test_klines_paginate_past_1000_cap(self):
+        h = 3600
+        t0 = 1_700_000_000
+        pages = [[[ (t0 + i * h) * 1000, 0, 2.0, 1.0, 1.5 ] for i in range(1000)],
+                 [[ (t0 + (1000 + i) * h) * 1000, 0, 2.0, 1.0, 9.0 ] for i in range(5)]]
+        calls = []
+        class R:
+            def __init__(s, d): s.d = d
+            def __enter__(s): return s
+            def __exit__(s, *a): pass
+            def read(s, *a): return json.dumps(s.d).encode()
+        def fake(url, timeout=0):
+            calls.append(url)
+            return R(pages[len(calls) - 1])
+        with mock.patch.object(al.urllib.request, "urlopen", fake), mock.patch.object(al.json, "load", lambda f: f.d):
+            bars = al.spot_1h(datetime.fromtimestamp(t0, timezone.utc))
+        self.assertEqual(len(bars), 1005)
+        self.assertEqual(bars[-1][3], 9.0)
+        self.assertEqual(len(calls), 2)
+
+    def test_mark_empty_bars_raises_clear_error(self):
+        with self.assertRaises(ValueError):
+            al.mark([], [], datetime.now(timezone.utc))
+
+
 class Hit(unittest.TestCase):
     def test_publish_day_bars_never_count(self):
         """Only the date is stored: a touch on the publish day may predate the video, so hit starts the next UTC day."""

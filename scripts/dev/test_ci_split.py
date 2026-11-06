@@ -94,7 +94,7 @@ class ShardTest(unittest.TestCase):
         self.assertIn("run_all_tests.py --shard ${{ matrix.shard }}", text)
         self.assertIn("if: startsWith(matrix.shard, '1/')", text[text.index("actions/setup-java"):][:200] + text[:text.index("actions/setup-java")][-300:])
         mark = text[text.index("\n  mark-green:"):]
-        self.assertIn("needs: [offline-gate, docs-integrity]", mark)   # docs-only pushes go green through the docs lane
+        self.assertIn("needs: offline-gate", mark)
         self.assertIn('compare/$old...$SHA', mark)
         self.assertIn("force=false", mark)
         self.assertIn("group: mark-green", mark)

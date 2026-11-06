@@ -232,4 +232,4 @@ MyTradingSys/research/c31_multi_symbol_2026-11/test_c31_multi.py
 scripts/dev/test_refresh_main_checkout_errors.py
 scripts/dev/test_cbp_build_row.py
 MyTradingSys/research/malkan_window_dev_2026-11/test_study.py
-scripts/dev/test_ci_flake_floor.py
+scripts/dev/test_us_prep.py
