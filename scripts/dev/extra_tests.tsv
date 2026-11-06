@@ -197,6 +197,7 @@ scripts/dev/test_extra_tests_union.py
 scripts/dev/test_ci_fail.py
 scripts/dev/test_pass_needs_verdict.py
 MyTradingSys/tools/live_aid/test_spec_us_open.py
+MyTradingSys/tools/live_aid/test_spec_premarket.py
 
 MyTradingSys/tools/live_aid/test_spec_news.py
 MyTradingSys/research/api_jobs_2026-11-03/test_sim_cards_from_json.py
