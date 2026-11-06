@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T12:54:07Z",
   "commands": [],
   "created": "2026-11-05T01:35:54Z",
   "depends_on": [],
@@ -13,10 +14,25 @@
   "id": "gemini-blind-read-of-level-approach-prep",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_LEVEL_APPROACH_PREP_1105.md",
+      "ref": "e7d82870d",
+      "utc": "2026-11-06T12:54:07Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "level-approach prep: live_aid panel (checklist, absorption, OI tell, wick TFs, flags/6, on",
+      "ref": "775495c597f6",
+      "utc": "2026-11-05T01:36:50Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: audit done",
   "not_twin_of": [
     "gemini-blind-read-of-research-anticipati",
     "gemini-blind-read-rsi-40-60-1104",
@@ -28,29 +44,31 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "level-approach-prep-1105",
-<<<<<<< HEAD
   "refreshed": "2026-11-06T12:50:17Z",
-=======
-  "refreshed": "2026-11-05T01:36:40Z",
->>>>>>> parent of da06ab9c4 (gemini governance batch 1: fix own-claim skip, MTS_AGENT sender id, ship 2 blind reads, promote 3 ETH blind reads, refresh 5 stale cards)
   "refs": [
     "MyTradingSys/research/level_approach_prep_2026-11-05/RESULT.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_LEVEL_APPROACH_PREP_1105.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_LEVEL_APPROACH_PREP_1105.md",
     "MyTradingSys/research/level_approach_prep_2026-11-05"
   ],
   "scope_out": [],
-  "scope_sha": "",
+  "scope_sha": "775495c597f6",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read PRE_REG.md definitions only (not RESULT.md, not study.py), then load the raw BTCUSDT 1m klines and 5m metrics OI before 2024-07-01",
     "Recompute the approach and touch counts, the U1 absorption vs matched table, the U2 OI split and the U3 wick buckets independently of study.py",
     "Write MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_LEVEL_APPROACH_PREP_1105.md with a per-number table against RESULT.md and VERDICT"
   ],
+  "taken": "2026-11-06T12:54:07Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_LEVEL_APPROACH_PREP_1105.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] blind read of level_approach_prep_2026-11-05 RESULT.md",
   "weight": "ROUTINE",
