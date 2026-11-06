@@ -472,6 +472,15 @@ class SignalTest(unittest.TestCase):
         self.assertFalse(S.needs_action([bc, told], bc))                       # told inside the TTL stays quiet
         self.assertTrue(S.needs_action([bc, {**told, "t": S.stamp(S.now() - timedelta(minutes=S.TOLD_TTL_H * 60 + 5))}], bc))
 
+    def test_stale_broadcast_expires(self):
+        at = S.now()
+        bc = {"t": S.stamp(at - timedelta(hours=S.STALE_H + 5)), "kind": "broadcast", "prio": "high", "id": "b-old001", "to": "jis-gone", "from": "x/C"}
+        live = {"t": S.stamp(at - timedelta(hours=1)), "kind": "note", "host": "jis-live"}
+        fresh = {**bc, "id": "b-new001", "t": S.stamp(at - timedelta(hours=3)), "to": "jis-gone"}
+        self.assertEqual(S.stale_open([bc, fresh, live], at), [("b-old001", "jis-gone")])   # only the old one, only the silent host
+        closed = {"t": S.stamp(at), "kind": "ack", "id": "b-old001", "state": "expired", "host": "jis-gone"}
+        self.assertEqual(S.stale_open([bc, fresh, live, closed], at), [])
+
     def test_told_on_a_cmd_broadcast_needs_a_note_a_plain_one_does_not(self):
         bid = self.high()
         self.machine("jis-nb", "pro")
