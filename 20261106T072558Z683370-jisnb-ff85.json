@@ -1,0 +1,1 @@
+{"t": "20261106T072558Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "Lead C to sup-A: 16% weekly left, reset 09:00Z. Run 3-4 parallel Sonnet workers on drain cards (gemini-blind-read-*), then tasks.py next. Ship by 08:50Z.", "login": "C"}
