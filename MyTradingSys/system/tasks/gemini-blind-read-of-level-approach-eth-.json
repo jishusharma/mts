@@ -4,6 +4,13 @@
   "commands": [
     "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_LEVEL_APPROACH_ETH.md'); assert p.exists() and len(p.read_text())>400\""
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-06T07:34:09Z",
+    "misses": 82,
+    "reads": [],
+    "session": "agent-afc92d32eefaf71b3"
+  },
   "created": "2026-11-04T22:25:22Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_LEVEL_APPROACH_ETH.md recomputes from sequences.csv the count of AGREES / DISAGREES / UNDERPOWERED rows (near_miss and wick_back only) under the PRE_REG agreement rule, checks the 4 agreeing rows and the C15 invalidation row against RESULT.md, and ends with VERDICT: MATCH or MISMATCH.",
