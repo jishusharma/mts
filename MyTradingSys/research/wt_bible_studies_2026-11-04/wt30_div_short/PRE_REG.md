@@ -20,5 +20,9 @@ sd 1.8 % = typical BTC 24-bar (12 h) return sd, OURS, not a study outcome; units
 Consequence: the card step says exit 1 = stop. No `--pass dev` is run; BLOCKED.md holds the numbers. Verdict: INCONCLUSIVE (underpowered), no PASS or FAIL claim.
 
 ## Context
+- Regime: none as a gate, because the setup is a counter-trend fade and the SPEC defines no regime filter; DEV regime mix is reported below only (no bear week in DEV).
+- Phase: WaveTrend cycle phase: second lower-high down-cross after a dip below 0 (the divergence), optionally the his-context waves count (3 down-crosses above 0 after a deep up-cross).
+- Session: none as a gate; UTC session of the confirming bar (21-08, 08-13, 13-21) is one of the feature cells (OURS cutoffs).
+- Entry: short at the confirming bar close (30m), exit after 24 bars; exit is not the operator's, no stop claimed (OURS).
 Operator rule (Bible, verbatim in `system/layer_bible/wavetrend.md`): up-move to the red bands, WT fails to reach the centre, three waves above 0, dips below 0, rises again with higher price and lower WT = divergence short; the green line coming down confirms. Regimes: the setup is a counter-trend fade; where regimes differ is the point of the 4h slope and his-context cells (not run).
 Regime mix: 130 weeks: bull 25 (19%) | bear 0 (0%) | range 105 (81%) | n/a 0 (0%)  (DEV, research_kit.regime_tag, `regime_mix_count.txt`; no bear week in DEV, so bear-regime shorts are untestable here).
