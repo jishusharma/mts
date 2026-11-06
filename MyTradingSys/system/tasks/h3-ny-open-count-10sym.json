@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T13:44:27Z",
   "commands": [
     "python MyTradingSys/research/h3_ny_open_10sym_2026-11/count_10sym.py"
   ],
@@ -14,17 +15,30 @@
   "goal": "Count (no outcomes) H3 events on 10 symbols, DEV 2022-01..2024-06: NY-day low over [00:00Z, open+180min) set at open+120..150 and held >=30 min (rule of research/h3_ny_open_low_2026-10/BLOCKED.md, BTC n=35), then run the power gate.",
   "id": "h3-ny-open-count-10sym",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "BLOCKED: only BTC 1m DEV on disk, n=30 vs 1803 needed (gate exit 1, m=222); 9 symbols NOT_",
+      "ref": "eda973b07",
+      "utc": "2026-11-06T13:44:27Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: underpowered; 1803 events needed, 10 symbols would give ~300",
   "note": "REVIEWED:2026-11-06 ACCEPT | From raw re-run-pre-us-failed-break-and-h3-ny-ope (split). Expected pooled n about 350 vs about 1650 needed: BLOCKED is the likely honest end, record it with Next: END: <reason>. PRE_REG would need '## Context' (Regime:/Phase:/Session: NY/Entry:) and the result a Regime mix: line. New tool scripts need a wiring_registry.json entry. Fees from backtest/fees.py only.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-06T12:19:05Z",
   "refs": [],
-  "result": "",
+  "result": "BLOCKED: only BTC 1m DEV on disk, n=30 vs 1803 needed (gate exit 1, m=222); 9 symbols NOT_IN_DATA",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/h3_ny_open_10sym_2026-11/count_10sym.py",
     "MyTradingSys/research/h3_ny_open_10sym_2026-11/test_count_10sym.py",
@@ -40,12 +54,13 @@
     "MyTradingSys/research/h3_ny_open_pooled_2026-11/BLOCKED.md",
     "MyTradingSys/backtest/layers/fabio/v3/day_gates.py"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "git ls-tree origin/fast-track MyTradingSys/research/ must not list h3_ny_open_10sym_2026-11; read the BTC BLOCKED.md event rule and day_gates.ny_open_utc",
     "write test_count_10sym.py (fail first), then count_10sym.py: load_klines per symbol (klines for BTC, klines_eth, klines_<sym>; SOL/XRP/LTC miss 7200 bars: no-signal), drop days with a gap, bars open < 2024-07-01 only; use highs/lows only to locate the day low, never later returns",
     "run verdicts.py check 'ny open low hold' and prereg_gate.py with pooled n; write RESULT.md (Context:, Regime mix:, END: or Next: with the exact n needed if BLOCKED); ship"
   ],
+  "taken": "2026-11-06T13:44:27Z",
   "tests": "research/h3_ny_open_10sym_2026-11/test_count_10sym.py: a fixture day with a low set at open+130 and held 40 min counts 1, a low set at open+110 counts 0, and BTC DEV count equals 35; fails before count_10sym.py exists",
   "title": "H3 NY-open new-low-holds: event COUNT on 10 symbols, count and power gate only",
   "weight": "IMPORTANT",
