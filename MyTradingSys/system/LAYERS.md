@@ -231,7 +231,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `layer-bible-runtime-1104` raw p1 SONNET: Layer Bible per family + layer_state.py runtime (d-layer-bible-runtime-1104), WaveTrend pilot; design review C
   - `wavetrend-c1-v2` refined p1 SONNET: WaveTrend C1 detector correction and new count-only prereg
-  - `gemini-spec-rereview-wt-bible-1105` ready p2 CODEX: [GEMINI] Re-review of fixed WT Bible SPEC.md (after bbaa2d3f1): stamp for the 3 WT study cards
   - `wt-cycle-clock` raw p2 SONNET: WT cycle clock (descriptive): per timeframe, time to the next valid zone dot and move size given the phase in 
   - `wt-mtf-cycle-nesting` raw p2 SONNET: WT multi-timeframe cycle nesting: 5m/15m zone dots traded only with the 30m cycle phase and 4h slope vs the un
   - `wt30-div-blind-recount-haiku-1104` ready p2 HAIKU: Haiku blind recount of the coordinator WT 30m divergence and cycle-frequency numbers from the written rule onl

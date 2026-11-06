@@ -784,7 +784,66 @@
     return { alerts: out, seen: s };
   }
 
-  var api = { LA: LA, levelApproach: levelApproach, approachAlerts: approachAlerts, AM_TEXT: AM_TEXT, anticipation: anticipation, bigCandle: bigCandle, bcTopTraders: bcTopTraders, bcClass: bcClass, bcBand: bcBand, bcStreak: bcStreak, bcBig: bcBig, OM: OM, oiState: oiState, oiWindow: oiWindow, oiNet: oiNet, oiDisagree: oiDisagree, oiBars: oiBars, oiEvents: oiEvents, oiLastEvent: oiLastEvent, oiPath: oiPath, oiTrap: oiTrap, oiEventText: oiEventText, C24: C24, oiExpect: oiExpect,
+  // ---- Prior-day value area + 2x30m acceptance (card live-aid-balance-acceptance-1105; rule = research/value_area_acceptance_2026-11-05/accept80.py) ----
+  // VA = 70 % of the prior UTC day's 1m volume around the POC, 1m closes binned to $50 (half-even, as Python round). Descriptive only.
+  // Rates are OURS (RESULT.md, BTC 1m, fee-free, no placebo). Above-VAH acceptance has no measured rate (UNMEASURED).
+  var VA = { bin: 50, share: 0.7, minBars: 1300, rates: { reentry: { n: 493, p: 44, lo: 40, hi: 49 }, below: { n: 300, p: 77, lo: 72, hi: 81 } } };
+  function halfEven(x) { var f = Math.floor(x), d = x - f; return d < 0.5 ? f : d > 0.5 ? f + 1 : (f % 2 === 0 ? f : f + 1); }
+  function validBar(r) { return !!r && r[2] !== null && r[3] !== null && r[4] !== null && r[5] !== null && isFinite(+r[0]) && isFinite(+r[2]) && isFinite(+r[3]) && isFinite(+r[4]) && isFinite(+r[5]) && +r[5] >= 0; }
+  function valueArea(bars) {
+    var vol = {}, tot = 0;
+    (bars || []).forEach(function (r) {
+      if (!validBar(r)) return;
+      var k = halfEven(+r[4] / VA.bin) * VA.bin; vol[k] = (vol[k] || 0) + +r[5]; tot += +r[5];
+    });
+    var px = Object.keys(vol).map(Number).sort(function (a, b) { return a - b; });
+    if (!px.length || !(tot > 0)) return null;
+    var poc = px[0]; px.forEach(function (p) { if (vol[p] > vol[poc]) poc = p; });
+    var i = px.indexOf(poc), j = i, acc = vol[poc];
+    while (acc < VA.share * tot) {
+      var u = j + 1 < px.length ? vol[px[j + 1]] : -1, d = i - 1 >= 0 ? vol[px[i - 1]] : -1;
+      if (u >= d) { j += 1; acc += u; } else { i -= 1; acc += d; }
+    }
+    return { val: px[i], poc: poc, vah: px[j] };
+  }
+  // Prior-day VA from rows of any span: keeps the UTC day before dayMs; fails closed (err) on too few valid bars or a flat/bad VA.
+  function vaPriorDay(rows, dayMs) {
+    var d0 = Math.floor(dayMs / 86400000) * 86400000, p0 = d0 - 86400000, bad = 0;
+    var day = (rows || []).filter(function (r) { return r && +r[0] >= p0 && +r[0] < d0; });
+    var ok = day.filter(function (r) { var g = validBar(r); if (!g) bad++; return g; });
+    if (ok.length < VA.minBars) return { err: 'prior day 1m incomplete: ' + ok.length + '/1440 valid bars' + (bad ? ' (' + bad + ' bad)' : '') };
+    var v = valueArea(ok);
+    if (!v || !(v.vah > v.val)) return { err: 'prior-day value area is flat or empty' };
+    return { val: v.val, poc: v.poc, vah: v.vah, bars: ok.length };
+  }
+  // Same walk as accept80.study for today's COMPLETED 30m bars. Latch-free: reports the state at the last completed 30m close.
+  function vaAcceptance(va, rows, now) {
+    if (!va || va.err || !isFinite(va.val) || !isFinite(va.vah) || !(va.vah > va.val)) return { flag: null, err: 'no usable value area' };
+    var d0 = Math.floor((+now || 0) / 86400000) * 86400000, g = {};
+    (rows || []).forEach(function (r) {
+      if (!validBar(r) || +r[0] < d0) return;
+      var k = Math.floor(+r[0] / 1800000);
+      if ((k + 1) * 1800000 > now) return;                      // forming 30m bar is not a close
+      (g[k] = g[k] || []).push(r);
+    });
+    var keys = Object.keys(g).map(Number).sort(function (a, b) { return a - b; });
+    var outside = false, wasIn = false, inRun = 0, belowRun = 0, aboveRun = 0, last = null;
+    keys.forEach(function (k) {
+      var s = g[k].sort(function (a, b) { return a[0] - b[0]; }), c = +s[s.length - 1][4];
+      var hi = Math.max.apply(null, s.map(function (r) { return +r[2]; })), lo = Math.min.apply(null, s.map(function (r) { return +r[3]; }));
+      if (hi > va.vah || lo < va.val) outside = true;
+      inRun = outside && c >= va.val && c <= va.vah ? inRun + 1 : 0;
+      if (c >= va.val && c <= va.vah) wasIn = true;
+      belowRun = wasIn && c < va.val ? belowRun + 1 : 0;
+      aboveRun = wasIn && c > va.vah ? aboveRun + 1 : 0;
+      last = { t: (k + 1) * 1800000, close: c };
+    });
+    var flag = !last ? null : belowRun >= 2 ? 'below' : aboveRun >= 2 ? 'above' : inRun >= 2 ? 'reentry' : null;
+    var r = flag === 'below' ? VA.rates.below : flag === 'reentry' ? VA.rates.reentry : null;
+    return { flag: flag, closes: keys.length, last: last, rate: r, src: flag ? (r ? 'MEASURED' : 'UNMEASURED') : null };
+  }
+
+  var api = { VA: VA, valueArea: valueArea, vaPriorDay: vaPriorDay, vaAcceptance: vaAcceptance, LA: LA, levelApproach: levelApproach, approachAlerts: approachAlerts, AM_TEXT: AM_TEXT, anticipation: anticipation, bigCandle: bigCandle, bcTopTraders: bcTopTraders, bcClass: bcClass, bcBand: bcBand, bcStreak: bcStreak, bcBig: bcBig, OM: OM, oiState: oiState, oiWindow: oiWindow, oiNet: oiNet, oiDisagree: oiDisagree, oiBars: oiBars, oiEvents: oiEvents, oiLastEvent: oiLastEvent, oiPath: oiPath, oiTrap: oiTrap, oiEventText: oiEventText, C24: C24, oiExpect: oiExpect,
     AV: AV, rosterRead: rosterRead, analystVote: analystVote, levelWatch: levelWatch, zones: zones, lean: lean, actions: actions, NW: NW, newsTags: newsTags, newsRead: newsRead, newsMerge: newsMerge, newsPulse: newsPulse, foldBars: foldBars, FD: FD, fundRead: fundRead, premium: premium, bybitTick: bybitTick, LQ: LQ, liqDeribit: liqDeribit, liqBybit: liqBybit, liqBinance: liqBinance, liqSum: liqSum, CP: CP, coilPierce: coilPierce, IT: IT, divergence: divergence, flow: flow, flowLive: flowLive, squeeze: squeeze, dom: dom, supports: supports, vwapTest: vwapTest,
     flagDiv: flagDiv, flagSqueeze: flagSqueeze, flagFlow: flagFlow, flagDom: flagDom, flagVwap: flagVwap, confidence: confidence, rma: rma, sma: sma, rsi: rsi, bollinger: bollinger, atr: atr, dayVwap: dayVwap, utcDays: utcDays, wavetrend: wavetrend,
     inversePnlBtc: inversePnlBtc, closedPnlBtc: closedPnlBtc, columns: columns, UO: UO, usOpen: usOpen, nextHighEvent: nextHighEvent };
