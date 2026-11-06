@@ -1,0 +1,64 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-06T16:48:11Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-06_malkan-window-wide.md lists each RESULT number with recomputed value and MATCH / DIFF / NOT_IN_DATA; line 1 holds the three counts.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent GPT re-derivation of the numbers in malkan_window_wide_2026-11/RESULT.md from the raw counts and FORMULAS.md, not from the study code (997f08391/934d47597).",
+  "id": "gpt-rederive-malkan-window-wide-1106",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "malkan wide pivot: counts and gate, BLOCKED",
+      "ref": "934d47597575",
+      "utc": "2026-11-06T14:36:22Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "934d47597575 malkan wide pivot: counts and gate, BLOCKED",
+      "ref": "MyTradingSys/research/malkan_window_wide_2026-11/RESULT.md",
+      "utc": "2026-11-06T14:36:22Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-06 T0-ONLY (D11 feeder, A-20261104-1; twin check run, none). Never use model output as the source.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-06T16:48:12Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/malkan_window_wide_2026-11/RESULT.md (read)",
+    "MyTradingSys/research/malkan_window_wide_2026-11/PRE_REG.md (read)",
+    "MyTradingSys/backtest/layers/FORMULAS.md (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-06_malkan-window-wide.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "934d47597575",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "List every number in RESULT.md",
+    "Recompute each from the CSV/raw counts with FORMULAS.md",
+    "Write the table and counts on line 1"
+  ],
+  "tests": "audit card; output file is the test; git diff of repo files other than the report is empty",
+  "title": "GPT re-derive: malkan_window_wide RESULT.md counts and BLOCKED gate",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
