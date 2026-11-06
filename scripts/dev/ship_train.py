@@ -46,8 +46,10 @@ def split_ref(ref):
 
 
 def status_name(ref):
+    """One file per ref: '/' in a slug becomes '~' (outside the sanitiser's set), so a/b and a-b never share a file."""
     host, slug = split_ref(ref)
-    return f"{re.sub(r'[^A-Za-z0-9._-]+', '-', host)}__{re.sub(r'[^A-Za-z0-9._-]+', '-', slug)}.json"
+    clean = lambda x: re.sub(r"[^A-Za-z0-9._~-]+", "-", x.replace("/", "~"))
+    return f"{clean(host)}__{clean(slug)}.json"
 
 
 def bisect_batch(refs, run_ref, run_batch):

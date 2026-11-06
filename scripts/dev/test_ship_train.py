@@ -25,6 +25,11 @@ class RefNames(unittest.TestCase):
                 T.split_ref(bad)
 
 
+class StatusName(unittest.TestCase):
+    def test_slash_and_dash_slugs_do_not_collide(self):
+        self.assertNotEqual(T.status_name("queue/h/x/y"), T.status_name("queue/h/x-y"))
+
+
 class Bisect(unittest.TestCase):
     def setUp(self):
         self.refs = ["queue/h1/good1", "queue/h2/red", "queue/h3/good2"]
