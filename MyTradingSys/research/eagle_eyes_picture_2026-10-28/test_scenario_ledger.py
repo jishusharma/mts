@@ -22,3 +22,16 @@ def test_score_and_summary():
     rows = [{"score": "HIT", "outcome": "UP"}] * 3 + [{"score": "MISS", "outcome": "DOWN"}, {"score": "", "outcome": ""}]
     s = sl.summary(rows)
     assert "HIT 3 MISS 1" in s and "open 1" in s and "keep logging (4/20" in s
+
+
+def test_add_stores_registry_rates_ids_and_old_rows_untouched(tmp_path, monkeypatch):
+    f = tmp_path / "ledger.csv"
+    f.write_text("id,given_utc,end_utc,likely,up,down,text,outcome,touched_utc,score\n"
+                 "S001,2026-11-04T09:00Z,2026-11-05T09:00Z,DOWN,78850.0,77615.0,old,,,\n", encoding="utf-8", newline="\n")
+    monkeypatch.setattr(sl, "LEDGER", f)
+    sl.main(["add", "--given", "2026-11-07T00:00Z", "--end", "2026-11-08T00:00Z", "--likely", "UP", "--up", "2", "--down", "1",
+             "--text", "new", "--rates", "us_open_levels, bigcandle_story"])
+    sl.main(["add", "--given", "2026-11-07T00:00Z", "--end", "2026-11-08T00:00Z", "--likely", "UP", "--up", "2", "--down", "1", "--text", "none"])
+    rows = sl.load(f)
+    assert rows[0]["text"] == "old" and rows[0]["rates"] == "" and rows[0]["up"] == "78850.0"
+    assert rows[1]["rates"] == "us_open_levels,bigcandle_story" and rows[2]["rates"] == ""

@@ -16,7 +16,7 @@ import urllib.request
 from pathlib import Path
 
 LEDGER = Path(__file__).with_name("scenario_ledger.csv")
-FIELDS = ["id", "given_utc", "end_utc", "likely", "up", "down", "text", "outcome", "touched_utc", "score"]
+FIELDS = ["id", "given_utc", "end_utc", "likely", "up", "down", "text", "outcome", "touched_utc", "score", "rates"]
 KLINES = "https://data-api.binance.vision/api/v3/klines?symbol=BTCUSDT&interval=1m&limit=1000"
 PROMOTE_N = 20
 
@@ -99,18 +99,19 @@ def main(argv=None):
     a.add_argument("--up", type=float, required=True)
     a.add_argument("--down", type=float, required=True)
     a.add_argument("--text", required=True)
+    a.add_argument("--rates", default="", help="base-rate registry ids used (tools/live_aid/base_rates.js), comma separated")
     sub.add_parser("score")
     sub.add_parser("summary")
     args = ap.parse_args(argv)
-    rows = load()
+    rows = load(LEDGER)
     if args.cmd == "add":
         g, e = parse_utc(args.given), parse_utc(args.end)
         if not args.down < args.up or not g < e:
             sys.exit("need down < up and given < end")
         rows.append({"id": f"S{len(rows) + 1:03d}", "given_utc": g.strftime("%Y-%m-%dT%H:%MZ"),
                      "end_utc": e.strftime("%Y-%m-%dT%H:%MZ"), "likely": args.likely, "up": args.up,
-                     "down": args.down, "text": args.text, "outcome": "", "touched_utc": "", "score": ""})
-        save(rows)
+                     "down": args.down, "text": args.text, "outcome": "", "touched_utc": "", "score": "", "rates": ",".join(x.strip() for x in args.rates.split(",") if x.strip())})
+        save(rows, LEDGER)
         print("added", rows[-1]["id"])
     elif args.cmd == "score":
         now = dt.datetime.now(dt.timezone.utc)
@@ -122,7 +123,7 @@ def main(argv=None):
             r["outcome"], r["score"] = out, score_of(r["likely"], out)
             r["touched_utc"] = dt.datetime.fromtimestamp(t / 1000, dt.timezone.utc).strftime("%Y-%m-%dT%H:%MZ") if t else ""
             print(r["id"], out, r["score"])
-        save(rows)
+        save(rows, LEDGER)
     print(summary(rows))
 
 

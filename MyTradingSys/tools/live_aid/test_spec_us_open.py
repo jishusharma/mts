@@ -9,7 +9,7 @@ import pytest
 
 HERE = Path(__file__).resolve().parent
 JS = HERE / "live_aid_indicators.js"
-RATES_JS = HERE / "us_open_rates.js"
+RATES_JS = HERE / "base_rates.js"   # registry (card prob-base-rates-registry-1106)
 
 
 def _node(js):
@@ -84,7 +84,7 @@ def test_rates_table_counts_never_exceed_denominators():
     node = shutil.which("node")
     if not node:
         pytest.skip("node not installed")
-    code = "const fs=require('fs'),vm=require('vm');let s={};vm.runInNewContext(fs.readFileSync(process.argv[1],'utf8'),s);process.stdout.write(JSON.stringify(s.US_OPEN_RATES))"
+    code = "const fs=require('fs'),vm=require('vm');let s={};vm.runInNewContext(fs.readFileSync(process.argv[1],'utf8'),s);process.stdout.write(JSON.stringify(s.BASE_RATES.us_open_levels.table))"
     out = subprocess.run([node, "-e", code, str(RATES_JS)], capture_output=True, text=True, timeout=30, env=os.environ.copy())
     assert out.returncode == 0, out.stderr
     rates = json.loads(out.stdout)["rates"]
