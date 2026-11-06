@@ -676,6 +676,9 @@ def start_check_detached():
         pass
 
 
+LOGON_GRACE_S = 180      # seconds the logon run idles before pruning (OURS; headless, costs nothing while waiting)
+
+
 def logon(repos=()):
     """Logon run: prune now whatever the free space and log one line. A failure is logged, and the run still returns 0."""
     try:
@@ -798,6 +801,7 @@ def main(argv):
                  sum(r["verdict"] == "UNMATCHED" for r in rows)))
         return 0
     if argv[:1] == ["logon"]:
+        time.sleep(LOGON_GRACE_S)     # boot audit 2026-11-06: the cleanup (git, caches) must not compete with the logon
         return logon(repo_args(argv))
     if argv[:1] == ["install"]:
         return install(repos=repo_args(argv))
