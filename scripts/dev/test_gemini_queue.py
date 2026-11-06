@@ -127,6 +127,23 @@ class RunJobTest(unittest.TestCase):
         calls, log, run = self._run(("fail", "x"))   # gate passed: it reached the claim step
         self.assertTrue(log.startswith("CLAIM FAILED"), log)
 
+    def test_own_host_open_claim_proceeds_other_host_skips(self):
+        with tempfile.TemporaryDirectory() as t:
+            (Path(t) / "c1").mkdir()
+            own = [("c1", {"host": socket.gethostname()})]
+            other = [("c1", {"host": "OTHER-HOST-999"})]
+            with mock.patch.object(gq, "ROOT", Path(t)), mock.patch.object(gq, "git", return_value=cp(0)), \
+                    mock.patch.object(gq, "card_gate", return_value=(True, "")), \
+                    mock.patch.object(gq, "claim_with_retry", return_value=("fail", "reached-claim")):
+                with mock.patch("sync.open_claims", return_value=own):
+                    gq.run_job("c1", "low")
+                log_own = (Path(t) / "c1.log").read_text(encoding="utf-8")
+                with mock.patch("sync.open_claims", return_value=other):
+                    gq.run_job("c1", "low")
+                log_other = (Path(t) / "c1.log").read_text(encoding="utf-8")
+        self.assertTrue(log_own.startswith("CLAIM FAILED"), log_own)
+        self.assertTrue(log_other.startswith("SKIP c1: already claimed by OTHER-HOST-999"), log_other)
+
 
 class ModelTokenTest(unittest.TestCase):
     """Operator order 2026-10-31: every Antigravity model reachable from `run <card>[:effort][:model]`."""
