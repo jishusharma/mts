@@ -32,7 +32,7 @@ _erf = np.frompyfunc(math.erf, 1, 1)
 def phi(x):
     """Standard normal CDF, exact via math.erf, array in -> array out."""
     x = np.asarray(x, float)
-    return 0.5 * (1.0 + _erf(x / math.sqrt(2.0)).astype(float))
+    return 0.5 * (1.0 + np.asarray(_erf(x / math.sqrt(2.0)), dtype=float))
 
 
 def offsets(S, points=POINTS):

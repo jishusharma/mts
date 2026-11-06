@@ -35,7 +35,7 @@ Bars with fewer than 20 complete prior bars of the same timeframe are dropped (A
 **P(close on the other side of ref) = Phi(-|d| / sqrt(t_left)); null P(keeps colour) = Phi(|d| / sqrt(t_left)) = p0.** At d = 0, p0 = 0.5 for every t_left.
 (The Lead's brief calls this a Brownian bridge; the formula is the plain Brownian remaining-increment, identical in the brief and here.)
 
-## Context cells: 12, the whole confirmatory family, per timeframe group
+## The 12 cells, the whole confirmatory family, per timeframe group
 HTF (2) x session (3) x BB (2):
 - HTF aligned / split: the FORMING 1d and 1w candle colours at the evaluation minute (price vs the 1d open, price vs the 1w open) agree = aligned, differ or either flat = split. For
   1d..1w rows one of the two is the row's own timeframe (OURS, kept; no row-colour direction is used, so this tests whether HTF agreement changes persistence, not "with the trend").
