@@ -1,29 +1,36 @@
-# Supervisor B handover | written 2026-11-04T05:08Z by JIS-NUC | verify: python scripts/dev/supervisor.py handover --verify   (STALE 0 at last boot)
+# Supervisor B handover | written 2026-11-06T14:45Z by JIS-NUC | verify: python scripts/dev/supervisor.py handover --verify
 
 ## Goal
-Login B on JIS-NUC: mode NORMAL, 5 h 13% (reset 2026-11-04T17:20Z), week 68%; the operator set this login's weekly stop at 75%.
-Stop at 5 h >= 80%, week >= cap, CI red, no ready cards, the TRANSIT at time, or a 3 h wave.
+Login B on JIS-NUC, eco mode. Operator 11-06: work until weekly 95%, do the important things, use every Gemini/agy model (Codex plan exhausted). Week ~84% at write, resets 2026-11-08T17:00Z.
+Stop at week >= 95%, CI red you did not fix, or no ready cards.
 
 ## Truth
-- Peers live at write: A@JIS-LAPTOP | `python scripts/dev/sync.py where --all` | read at 2026-11-04T05:08Z
-- Last picks: none | `python scripts/dev/tasks.py dispatch` | read at 2026-11-04T05:08Z
-- Open claims from JIS-NUC: none | `python scripts/dev/sync.py where --all` | read at 2026-11-04T05:08Z
+- Supervisor tree: C:/Users/E-ngineers/IdeaProjects/mts-jis-nuc-supervisor-b-20261106 (branch JIS-NUC/supervisor-b-20261106b). The main IdeaProjects/BinanceDataFeed checkout is 1900+ commits behind and dirty: never use it.
+- Trunk CI went red 11-06 ~12:50Z from 3 breaks (wt_mtf and wt30_div_short PRE_REG without separate Phase/Session/Entry Context lines; A's 3b5a7c6ee pushed roles/supervisor.md over 7500 B with CRLF). B reverted all three (ae1c5028, 9eac4ad8); 9eac4ad8 green. Both studies relanded clean (ab5bb8a1, 6bdc59c6); A relands its weekly plan.
+- agy quota on JIS-NUC: Argon 429 until ~2026-11-09T18:25Z; Claude/GPT pool 429 until ~2026-11-06T17:48Z; Flash works. Quota view only in Antigravity > model menu > View Usage.
+- Another Gemini governor runs on this NUC (Antigravity hub, F:/MTS/mts-gemini, author gemini-queue) and ships finished gq branches itself; check trunk before shipping a gq branch (merge conflicts on the card = already shipped).
+- Shipped today via B: ~20 Gemini/agy cards (blind reads, re-derives, stale-check, mark_shared weight, sync.py utf-8 decode, C34 NO-LEAD, footprint delta audit), worker studies wt-cycle-clock, wt-mtf FAIL, wt30 BLOCKED, v-recovery INCONCLUSIVE, pre-US failed-break INCONCLUSIVE (n 176 < 250), h3-ny-open 10sym BLOCKED.
 
 ## Ruled out
-- none recorded by the tool; add what was tried and closed (`handover --from <file>`).
+- gpt-oss via agy for re-check cards: fakes or refuses; use sonnet or flash.
+- `tasks.py tried --asks` parks a card for the operator: never use it to leave a note; edit the card `note` field.
 
 ## Next 3 steps
-1. `python scripts/dev/sync.py start supervisor-B-<utc date>`; `get_usage`; `python scripts/dev/supervisor.py plan --login B --five <%> --five-reset <utc> --week <%> --week-reset <utc> --running 0`.
-2. Still working at 17:00Z 11-04; operator: eco mode, week stop 75%, send review and fix work to the Claude Platform credit (`api_job.py launch`, Haiku for read checks, Sonnet for small fixes, one job at a time). DSA is STOPPED: bridge 0.7.26 is installed in F:/AIBridge, but the operator must reload the extension, refresh the tab and tick Hands-free (the permission system refuses it from a session). After that, tell DSA its last three read results never posted, ask it to re-read smaller pieces, and read the Hands-free box directly each wake. Codex starts with the MTS-Wake-codextick task (20 min gap); before a tick after a codex_run.py fix, fast-forward F:/MTS/mts-codex-lab, since a tick keeps the old code in memory. Gemini: `gemini_queue.py run <card>:medium`, then a capped Haiku job spot-checks and ships the branch. At 21:00Z 11-04: Codex results ship again (89482fbfe); Malkan window card is corrected and ready for Codex; if Codex shows BLOCKED or a merge clash, read F:/MTS/nuc_wake/tick.log. At 01:30Z 11-05: week 74%, this session stopped starting work to stay under the 75% stop. Codex results land again: run_extra_tests.py now gives each test the repo root on its import path (paid job extra-tests-root-path-1105), which cleared the lab's 25 stuck commits. A lab ship that fails leaves its reason in F:/codex_home/lab_runs/*.ship.txt; ship from the lab tree with --next after a fix. New Codex BLOCKED to read: gpt-rederive-bb-long-window-1104. The week resets 2026-11-08T17:00Z; pick up from here then, or sooner if the operator raises the cap.
-3. `python scripts/dev/tasks.py dispatch`; start the next picks.
+1. `sync.py start supervisor-B-<date>`; `get_usage`; read `git log origin/fast-track -20`.
+2. Review the Flash branches F:/MTS/gq/gateway-prompt-card-must-exist and sync-py-ci-falsely-says-no-ci-run-path-f; ship after review (`tasks.py done` if not closed). After 17:48Z use `:sonnet` again for builds.
+3. Worker "B worker: ship-train DESIGN.md fix" holds fetch-1m-klines-9sym-dev (9 symbols of 1m 2022-2024 from data.binance.vision); when it lands, the 10-symbol DEV studies (h3-ny-open-count-10sym, pre-us-failed-break-10sym-dev-run) can run.
 
 ## Traps
-- One ship at a time; EXTRA registration forces the ~20 min gate.
-- This machine's account file reads as login A while the app is B; set env MTS_LOGIN=B for supervisor.py and mts_signal.py (raw card login-detection-reads-the-wrong-account-).
-- A ship through red CI needs `sync.py ship --fix-ci`; without it the tool refuses after printing "pure revert", and nothing is pushed.
+- MTS_LOGIN=B for supervisor.py, mts_signal.py, sync.py (the account file reads as login A).
+- Quick gate misses the PRE_REG context lint: run `python scripts/dev/prereg_context_lint.py` before any PRE_REG ship (card quick-gate-prereg-context-lint).
+- New research .py: no FEE/SLIP/MAKER literals (test_no_own_costs), fees from MyTradingSys/backtest/fees.py, regenerate T06 costs.csv with t06_tables.py (test_cost_inventory), data-needing tests must pytest.skip without the cache.
+- gemini_queue SKIPs STALE cards: `tasks.py tag <id> --refresh` and ship before queueing. It reuses an existing gq worktree: remove worktree + branch before a rerun.
+- MyTradingSys/system/LAYERS.md shows up modified (line endings only) after gates: `git checkout --` it before commit; a dirty tree makes test_sync own-CI test and ships fail.
+- Unauthenticated GitHub API: 60 calls/h shared by the machine; poll CI no faster than every 5 min.
+- Never `git revert` with a dirty tree; append-only files (VERDICTS.csv, lookahead_allowlist.tsv) conflict on revert: keep trunk rows, drop only the reverted commit's rows.
 
 ## Open
-- Claims above: finish, hand over in the card, or release.
+- Operator: reload AIBridge extension, refresh DeepSeek tab, tick Hands-free (DSA lane still stopped).
 
 ## Missed last time
 (machine-written by `context_gap.py fold` at the next ship)

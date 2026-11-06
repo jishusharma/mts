@@ -1,0 +1,17 @@
+arm,kind,tf,days,n
+B11_12,bearish,1h,205,211
+C13_18,bearish,1h,226,228
+D19_50,bearish,1h,73,73
+S3_10,bearish,1h,1024,1119
+B11_12,bullish,1h,228,232
+C13_18,bullish,1h,253,259
+D19_50,bullish,1h,67,67
+S3_10,bullish,1h,1123,1240
+B11_12,bearish,4h,53,53
+C13_18,bearish,4h,74,74
+D19_50,bearish,4h,28,28
+S3_10,bearish,4h,294,298
+B11_12,bullish,4h,63,63
+C13_18,bullish,4h,84,84
+D19_50,bullish,4h,10,10
+S3_10,bullish,4h,297,301

@@ -138,3 +138,4 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-06 | malkan-windows-m3-1106 | Sonnet 5.5 | 0.94 | 35 | INCONCLUSIVE: power gate blocked the malkan window design, default 3-10 stays; see commit; cap was 5.0 |
 | 2026-11-06 | h3-ny-open-m3-1106 | Sonnet 5.5 | 0.41 | 14 | END: blocked by power gate, pooled BTC+ETH n<=70; no PRE_REG; cap was 5.0 |
 | 2026-11-06 | cc-s3-10sym-m3-1106 | Sonnet 5.5 | 0.99 | 39 | FAIL (not shipped, trunk CI red): pooled n 1981, fee-net -0.047R CI -0.110..+0.016, 2/10 symbols positive; branch JIS-NB/cc-s3-10sym-m3-1106 5392a26aa; cap was 6.0 |
+| 2026-11-06 | pre-us-10sym-n1-1106 | Sonnet 5.5 | 2.72 | 108 | FAIL powered: pooled n 1393 on 10 symbols, fee-net -2.47 bps of K (t -0.56); ship pending (gate stopped on test_gemini_claim_skip trunk flake); cap was 3.0 |
