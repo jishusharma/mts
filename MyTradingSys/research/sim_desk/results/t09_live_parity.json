@@ -108,7 +108,7 @@
     ],
     [
      "fib_pullback 1h",
-     23,
+     26,
      24,
      23,
      0,
@@ -118,7 +118,7 @@
     ],
     [
      "sr_flip 15m",
-     102,
+     103,
      102,
      102,
      0,
@@ -138,7 +138,7 @@
     ],
     [
      "cvd_absorption 15m",
-     77,
+     78,
      77,
      77,
      0,
@@ -148,7 +148,7 @@
     ],
     [
      "cvd_absorption 1h",
-     22,
+     23,
      22,
      22,
      0,
@@ -238,7 +238,7 @@
     ],
     [
      "rsi_events 1h",
-     27,
+     28,
      17,
      3,
      0,
@@ -268,7 +268,7 @@
     ],
     [
      "turn_of_candle 1m",
-     2880,
+     2910,
      2880,
      2880,
      0,
@@ -578,7 +578,7 @@
   "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T09/out/parity_result.json",
   "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T09/out/exit_result.json"
  ],
- "commit": "446f6c503",
+ "commit": "23ef12fca",
  "banner": {
   "state": "UNCLEAR",
   "tone": "",
