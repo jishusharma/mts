@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Revert \"Revert route tag re-land 08d51e5b7 (CI RED: wiring stale wavetrend entry, MTS Home",
-      "ref": "dea81301a70a",
-      "utc": "2026-11-04T16:25:21Z"
+      "line": "sync.py: decode subprocess output as utf-8 errors=replace (gate reader thread UnicodeDecod",
+      "ref": "e099100f0249",
+      "utc": "2026-11-06T14:07:46Z"
     }
   ],
   "layers": [],
@@ -28,7 +28,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-05T10:27:38Z",
+  "refreshed": "2026-11-06T14:42:33Z",
   "refs": [
     "scripts/dev/sync.py:950"
   ],
@@ -40,7 +40,7 @@
   "scope_out": [
     ".github/workflows"
   ],
-  "scope_sha": "dea81301a70a",
+  "scope_sha": "e099100f0249",
   "size": "S",
   "sources": [],
   "state": "ready",
