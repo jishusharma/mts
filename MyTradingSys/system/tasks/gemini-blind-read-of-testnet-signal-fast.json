@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T07:55:24Z",
   "commands": [],
   "created": "2026-11-04T21:02:31Z",
   "depends_on": [],
@@ -13,17 +14,30 @@
   "id": "gemini-blind-read-of-testnet-signal-fast",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "DESIGN.md blind read: FOUND 16, DIFF 0, NOT_IN_DATA 2",
+      "ref": "c1c978e16",
+      "utc": "2026-11-06T07:55:24Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: audit complete",
   "note": "Never use model output as the source.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-04T21:02:49Z",
   "refs": [],
-  "result": "",
+  "result": "DESIGN.md blind read: FOUND 16, DIFF 0, NOT_IN_DATA 2",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/testnet_signal_fast_lane_2026-11-04/DESIGN.md (read)",
     "MyTradingSys/research/gemini_audits_2026-11-04/testnet_signal_fast_lane_blind_read.md (new)"
@@ -36,12 +50,13 @@
   "sources": [
     "MyTradingSys/research/testnet_signal_fast_lane_2026-11-04/DESIGN.md:1-20"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "List every repo fact quoted in DESIGN.md",
     "Open the cited file and copy the matching line",
     "Write FOUND/DIFF/NOT_IN_DATA per row, counts on line 1"
   ],
+  "taken": "2026-11-06T07:55:24Z",
   "tests": "audit card, output file is the test; each row quotes the source line it was matched to; repo files stay byte-identical",
   "title": "[GEMINI] blind read of testnet_signal_fast_lane_2026-11-04/DESIGN.md",
   "weight": "ROUTINE",
