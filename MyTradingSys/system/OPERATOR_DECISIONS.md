@@ -1838,3 +1838,11 @@ Answer: Bible kept and wired to the ledger (operator, 2026-11-06).
 ## d-prob-registry-1106 | decided 2026-11-06 | operator ("Yes, build it", 19:55Z), recorded by Lead C
 The probability layer is context, never a signal: one base-rate registry (base_rates.py -> base_rates.js) replaces the five *_rates.js globals on the live aid, built from the existing study outputs, no new study, no backtest; every number shows its window and n. Card prob-base-rates-registry-1106 goes to a Sonnet Builder now (defaults from UNIFY_2026-11-06.md s6: unify now; rows below the unit minimum shown greyed, never hidden; the leverage cap (D3) waits for a realised testnet log).
 Answer: build it now (operator, 2026-11-06 19:55Z).
+
+## d-login-c-cap-60-1107 | decided 2026-11-07 | operator (chat, ~09:00Z), recorded by Lead C
+Login C weekly cap is 60 % (was 85 %; at 56 % when said). The last 4 % finish the open tasks end to end; no new task starts on login C this week. Login A (the Lenovo laptop) and the NUC are switched off. Order: DSA fix verified on trunk, then tested by the Haiku watcher; the Builder's base-rate registry; archive done sessions.
+Answer: critical tasks first, no rework, no new tasks (operator, 2026-11-07).
+
+## d-aibridge-ctl-one-line-1107 | decided 2026-11-07 | operator (chat), recorded by Lead C
+The hands-free control box on the DeepSeek page covered most of the screen. It becomes one line (tick, blocks run / cap, link dot, version), draggable; the status, version and agent lines open only on a problem or a click on the version. Shipped as AIBridge 0.7.28.
+Answer: one line, floatable, only the blocks and the version (operator, 2026-11-07).

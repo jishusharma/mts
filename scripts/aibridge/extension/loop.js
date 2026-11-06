@@ -1,7 +1,7 @@
 // loop.js - pure helpers for the auto-loop. No DOM, no chrome.* so node can test them.
 (function (root) {
   var L = {};
-  L.VERSION = '0.7.26';
+  L.VERSION = '0.7.28';
 
   L.fnv = function (s) {
     var h = 2166136261;
@@ -182,6 +182,31 @@
   };
   // 0.7.26: a send that did not land is retried like a busy chat; hands-free turned off on the first miss (2026-11-04).
   L.postRetryable = function (err) { return /never became idle|did not clear/.test(err || ''); };
+  // 0.7.27: a block ran while DSA was still writing it (the stream stalled past the 2 s quiet window; the inline plan reached
+  // the agent cut at 73 chars, 2026-11-06 18:25Z), and the 0.7.22 element lock then kept the finished block from ever running;
+  // the result post also timed out because the page never went idle while DSA kept writing. DeepSeek draws the action bar
+  // (copy, regenerate, like, dislike, read aloud, share: 6 icons) as the sibling after a reply's .ds-message only once the
+  // reply is complete, so a block in an assistant message runs only when that bar is there. A block in a user message (the
+  // operator pasted it) is complete when posted. known=false: no .ds-message ancestor (DeepSeek changed its DOM); the caller
+  // falls back to the quiet rule and writes that to the audit once.
+  L.MIN_BAR_ICONS = 4;
+  // 0.7.28: the control box is one line (tick, runs/cap, link dot, version); the detail lines (status, versions, agent)
+  // open only on a problem, or when the operator clicks the version. The status text itself lives in the line's tooltip.
+  L.ctlDetail = function (status, info, verLevel) {
+    if (verLevel && verLevel !== 'ok') return true;
+    return /FAIL|MISMATCH|not posted|was reloaded|ignored/i.test((status || '') + ' ' + (info || ''));
+  };
+  L.ctlGlyph = function (status) {
+    var s = status || '';
+    if (/^running/.test(s)) return '\u25B6';
+    if (/^waiting|^on:/.test(s)) return '\u2026';
+    return '';
+  };
+  L.replyDone = function (desc) {
+    if (!desc || !desc.hasMsg) return { known: false, done: false };
+    if (!desc.assistant) return { known: true, done: true };
+    return { known: true, done: (desc.barIcons || 0) >= L.MIN_BAR_ICONS };
+  };
   // visible banner text for every auto-off (shown in the page next to the chat, not sent as a message)
   L.stopNotice = function (why) {
     return 'AIBridge hands-free is OFF: ' + (why || 'stopped') + ' Tick the box to re-arm.';
